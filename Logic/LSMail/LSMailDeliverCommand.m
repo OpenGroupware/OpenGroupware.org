@@ -200,7 +200,11 @@ static EONull *null = nil;
 
 - (NSString *)sendBulkMessagesToolPath {
   // TODO: fix this junk
+  // TODO: use NGResourceLocator
   static NSString *toolPath = nil;
+  static NSString *toolName = @"sky_send_bulk_messages";
+  NSFileManager *fm;
+  NSString      *s;
   
   if (toolPath != nil)
     return toolPath;
@@ -208,14 +212,49 @@ static EONull *null = nil;
   if ((toolPath = bulkToolPath) == nil)
     toolPath = @"GNUSTEP_USER_ROOT";
   
-  toolPath =
-    [[NSString alloc] 
-      initWithFormat:@"%@/Tools/%@/%@/%@/sky_send_bulk_messages",
-              [env objectForKey:toolPath],
-              [env objectForKey:@"GNUSTEP_HOST_CPU"],
-              [env objectForKey:@"GNUSTEP_HOST_OS"],
-              [env objectForKey:@"LIBRARY_COMBO"]];
-  return toolPath;
+  fm = [NSFileManager defaultManager];
+  if ([fm fileExistsAtPath:toolPath]) /* do not treat path as an env-var */
+    return toolPath;
+  
+  if ([[env objectForKey:@"GNUSTEP_USER_ROOT"] length] > 0) {
+    BOOL isFlat;
+    
+    s      = [[env objectForKey:@"GNUSTEP_FLATTENED"] lowercaseString];
+    isFlat = [s isEqualToString:@"yes"];
+    
+    s = [[env objectForKey:toolPath] stringByAppendingString:@"/Tools/"];
+    if (isFlat) {
+      s = [s stringByAppendingFormat:@"%@/%@/%@",
+               [env objectForKey:@"GNUSTEP_HOST_CPU"],
+               [env objectForKey:@"GNUSTEP_HOST_OS"],
+               [env objectForKey:@"LIBRARY_COMBO"]];
+    }
+    s = [s stringByAppendingString:@"/"];
+    s = [s stringByAppendingString:toolName];
+    
+    if ([fm fileExistsAtPath:s]) {
+      toolPath = [s copy];
+      return toolPath;
+    }
+  }
+
+  /* check FHS locations */
+  
+  s = [@"/usr/local/bin/" stringByAppendingString:toolName];
+  if ([fm fileExistsAtPath:s]) {
+    toolPath = [s copy];
+    return toolPath;
+  }
+
+  s = [@"/usr/bin/" stringByAppendingString:toolName];
+  if ([fm fileExistsAtPath:s]) {
+    toolPath = [s copy];
+    return toolPath;
+  }
+  
+  [self logWithFormat:@"ERROR: did not find 'sky_send_bulk_messages' tool."];
+  toolPath = nil;
+  return nil;
 }
 
 - (void)performMailingListDeliver:(NSString *)_sendMail for:(NSString *)_for

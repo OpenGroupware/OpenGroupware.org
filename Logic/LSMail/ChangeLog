@@ -1,3 +1,8 @@
+2005-01-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSMailDeliverCommand.m: fixed lookup of sky_send_bulk_messages in FHS
+	  setups (v5.1.13)
+
 2004-12-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSMailDeliverCommand.m: fixed OGo bug #652 (space was missing between
