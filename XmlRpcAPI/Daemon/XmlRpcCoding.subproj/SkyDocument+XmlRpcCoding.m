@@ -18,13 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyDocument+XmlRpcCoding.h"
 #include <XmlRpc/XmlRpcCoder.h>
 #include "common.h"
 
-@implementation SkyDocument(XmlRpcCoding)
+@implementation SkyDocument(XmlRpcAPICoding)
 
 - (id)initWithXmlRpcCoder:(XmlRpcDecoder *)_coder {
   if ((self = [self init])) {
@@ -37,4 +36,4 @@
   [_coder encodeString:[[self documentURL] absoluteString] forKey:@"id"];
 }
 
-@end /* SkyDocument(XmlRpcCoding) */
+@end /* SkyDocument(XmlRpcAPICoding) */

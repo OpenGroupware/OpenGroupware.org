@@ -1,3 +1,9 @@
+2004-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* XmlRpcCoding.subproj/SkyDocument+XmlRpcCoding.[hm]: added proper
+	  header include protection, made category name unique (fixes a
+	  warning on MacOSX) (v5.1.48)
+
 2004-09-27  Helge Hess  <helge.hess@skyrix.com>
 
 	* GNUmakefile: renamed executable to ogo-xmlrpcd-1.0a as requested by 
