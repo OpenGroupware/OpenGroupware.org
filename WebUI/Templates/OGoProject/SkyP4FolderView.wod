@@ -1,4 +1,4 @@
-// $Id: SkyP4FolderView.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller class
 
 ChangeDirField: WOTextField {
   value = changeDirPath;
@@ -180,7 +180,7 @@ FileModDateTD: WETableData {
 }
 
 ModDateField: SkyDateField {
-  date    = currentFile.NSFileModificationDate;
+  date = currentFile.NSFileModificationDate;
 }
 
 FileTitleTD: WETableData {

@@ -26,13 +26,14 @@
 @class WOComponent;
 
 /*
+  SkyProject4Viewer
+
+  A content page used to show a project. It embeds the documents view tab,
+  the jobs tab etc.
+  
   Defaults: (??)
     SkyProjectFileManager_show_unknown_files : show unknown files
 */
-
-@interface NSObject(Private)
-- (NSString *)_unvalidateNotificationNameForPath:(NSString *)_path;
-@end
 
 @interface SkyProject4Viewer : LSWViewerPage
 {
@@ -56,6 +57,10 @@
 #include <NGMime/NGMimeType.h>
 #include <OGoFoundation/OGoClipboard.h>
 #include "common.h"
+
+@interface NSObject(Private)
+- (NSString *)_unvalidateNotificationNameForPath:(NSString *)_path;
+@end
 
 @interface NSObject(DSP)
 - (EOGlobalID *)globalID;
