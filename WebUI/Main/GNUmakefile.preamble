@@ -16,8 +16,11 @@ ADDITIONAL_LIB_DIRS += \
 	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
 
 ADDITIONAL_LIB_DIRS += \
-	-L/usr/local/lib -L/usr/local/apr/lib \
-	-L/usr/local/BerkeleyDB.4.0/lib/	\
+	-L/usr/local/lib -L/usr/local/apr/lib
+
+ifneq ($(FOUNDATION_LIB),apple)
+ADDITIONAL_LIB_DIRS += -L/usr/local/BerkeleyDB.4.0/lib/
+endif
 
 $(WEBUID_NAME)_TOOL_LIBS += \
 	-lOGoFoundation -lOGoDocuments	\
@@ -25,8 +28,8 @@ $(WEBUID_NAME)_TOOL_LIBS += \
 	-lNGObjWeb	\
 	-lLSFoundation	\
 	-lGDLAccess	\
-	-lNGLdap	\
-	-lEOControl	\
+	-lNGLdap -lNGMime	\
+	-lNGStreams -lNGExtensions -lEOControl	\
 	-lXmlRpc -lDOM -lSaxObjC
 
 $(WEBUID_NAME)_TOOL_LIBS += \

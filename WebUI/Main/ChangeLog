@@ -1,3 +1,8 @@
+2004-09-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: added explicit library dependencies for MacOSX
+	  compilation (v5.1.59)
+
 2004-09-22  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.1.58
