@@ -834,10 +834,14 @@ static id noNum(void) {
 
 /* versioning operations */
 
+// TODO: it already happened that someone submitted an array of pathes instead
+//       of a string. This just leads to a "false" value in return.
+//       => we might want to have a tighter check of the input parameters
+
 - (id)project_checkoutFileAtPathAction:(id)_pid:(NSString *)_path:(NSString *)_ver {
   id   fm;
   BOOL ok;
-
+  
   if (![_path isNotNull]) return noNum();
   _path = [_path stringValue];
   
