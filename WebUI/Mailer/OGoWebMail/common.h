@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,28 +18,24 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#ifndef __LSWebInterface_LSWImapMail_common_H__
-#define __LSWebInterface_LSWImapMail_common_H__
+#ifndef __WebUI_OGoWebMail_common_H__
+#define __WebUI_OGoWebMail_common_H__
 
 #import <Foundation/Foundation.h>
-#import <NGExtensions/NGExtensions.h>
-#import <NGStreams/NGStreams.h>
+#include <EOControl/EOControl.h>
+#include <NGExtensions/NGExtensions.h>
 
-#import <GDLAccess/GDLAccess.h>
-#import <GDLExtensions/GDLExtensions.h>
+#include <NGMime/NGMime.h>
+#include <NGImap4/NGImap4.h>
+#include <NGMail/NGMail.h>
 
-#import <NGMime/NGMime.h>
-#import <NGMail/NGMail.h>
-#import <NGHttp/NGHttp.h>
-#import <NGObjWeb/NGObjWeb.h>
-#import <NGImap4/NGImap4.h>
-#import <NGExtensions/NGExtensions.h>
-#import <EOControl/EOControl.h>
+#include <NGObjWeb/NGObjWeb.h>
+
+#include <GDLAccess/GDLAccess.h>
 
 #include <LSFoundation/LSFoundation.h>
 #include <OGoFoundation/OGoFoundation.h>
 #include <OGoFoundation/LSWSession.h>
 
-#endif /* __LSWebInterface_LSWImapMail_common_H__ */
+#endif /* __WebUI_OGoWebMail_common_H__ */

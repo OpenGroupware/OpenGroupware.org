@@ -20,8 +20,8 @@
 */
 // $Id$
 
-#include "common.h"
-#import <NGObjWeb/WOContext.h>
+#include <OGoFoundation/LSWComponent.h>
+#import <Foundation/NSDate.h>
 
 @interface LSWMailsDockView : LSWComponent
 {
@@ -34,6 +34,8 @@
 }
 
 @end /* LSWMailsDockView */
+
+#include "common.h"
 
 @implementation LSWMailsDockView
 
@@ -52,8 +54,8 @@
   /* this component is a session-singleton */
   
   if ((p = [self persistentInstance])) {
-    RELEASE(self);
-    return RETAIN(p);
+    [self release];
+    return [p retain];
   }
 
   if ((self = [super init])) {
@@ -65,12 +67,12 @@
   return self;
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->lastCheck);
+  [self->lastCheck release];
   [super dealloc];
 }
-#endif
+
+/* notifications */
 
 - (void)awake {
   [super awake];
@@ -85,6 +87,8 @@
   self->recheck = NO;
   [super sleep];
 }
+
+/* accessors */
 
 - (void)setHideLink:(BOOL)_flag {
   self->hideLink = _flag;
@@ -107,8 +111,7 @@
   if (!self->recheck)
     return self->count > 0 ? YES : NO;
 
-  RELEASE(self->lastCheck);
-  self->lastCheck = nil;
+  [self->lastCheck release]; self->lastCheck = nil;
 
   sn = (LSWSession *)[self session];
   
