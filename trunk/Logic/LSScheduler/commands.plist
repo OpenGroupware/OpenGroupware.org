@@ -95,6 +95,11 @@
         "proposal"             = { class = "LSAppointmentProposalCommand";      };
         "get-access-team-info" = { class = "LSGetAccessTeamInfoCommand";        };
         "get-comments"         = { class = "LSGetCommentForAppointmentsCommand";};
+        "set-delegation"       = { class = "LSSetDelegationCommand";};
+        "get-delegation"       = { class = "LSGetDelegationCommand";};
+	"get-delegation-for-delegate" = { class = "LSGetDelegationForDelegateCommand";};
+        "add-delegation"       = { class = "LSAddDelegationCommand";};
+        "del-delegation"       = { class = "LSDelDelegationCommand";};
 
         
         "get-comment" = { 

@@ -64,6 +64,12 @@ LSScheduler_OBJC_FILES = \
 	LSNewAppointmentFromVEventCommand.m		\
 	LSGetICalForAppointmentsCommand.m		\
 	NSString+ICal.m					\
+	LSGetDelegationCommand.m			\
+	LSSetDelegationCommand.m			\
+	LSAddDelegationCommand.m			\
+	LSDelDelegationCommand.m			\
+	LSGetDelegationForDelegateCommand.m
+
 
 LSScheduler_RESOURCE_FILES += Version
 
