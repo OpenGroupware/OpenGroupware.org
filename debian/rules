@@ -104,6 +104,7 @@ install: build controlfiles
 	cp -R WebUI/Templates/* $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/templates
 	mkdir $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/www
 	cp -R Themes/WebServerResources/* $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/www
+	-find $(CURDIR)/debian/tmp -name .svn -type d -exec rm -rf \{\} \;
 	mkdir -p $(CURDIR)/debian/tmp/etc/apache/conf.d/
 
 	mkdir -p $(CURDIR)/debian/opengroupware.org-environment/usr/sbin
