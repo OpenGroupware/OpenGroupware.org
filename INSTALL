@@ -6,7 +6,7 @@ Prerequisites
 =============
 
 SOPE 4.3
-- gnustep-make (eg ThirdParty/gstep-make)
+- gnustep-make (gstep-make 1.9.2 or gstep-make 1.10 from www.gnustep.org)
 - Foundation library (eg ThirdParty/libFoundation)
 - libxml2/libxml2-dev
 - autoconf
@@ -60,6 +60,10 @@ Installation:
 
   make -s debug=yes strip=yes install
 
+Or to install in an FHS location:
+
+  make -s debug=yes strip=yes FHS_INSTALL_ROOT=/usr/local install
+
 Important: ensure that GNUstep.sh from gnustep-make is properly loaded into the
            shell environment, otherwise you will see errors like "/common.make"
            not being found.
@@ -75,21 +79,38 @@ TODO: write configuration guide for OGo 1.0.
 - ZideStore
 - nhsd
 
-- links
+links
+*****
   - pushd $GNUSTEP_USER_ROOT
-  - ln -s ~/myogosrctree/WebUI/Resources .
-  - ln -s ~/myogosrctree/Themes/WebServerResources .
+    - ln -s ~/myogosrctree/WebUI/Resources .
+    - ln -s ~/myogosrctree/Themes/WebServerResources .
+  - for FHS layout:
+    - ln -s ~/myogosrctree/WebUI/Resources \
+      $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/translations 
+    - ln -s ~/myogosrctree/Themes/WebServerResources \
+      $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/www
 
-- database
-  - su - postgres
-  - createuser OGo
-  - createdb   OGo
-  - psql -h localhost OGo OGo (must work)
-  - cd Database/PostgreSQL/
-  - psql -h localhost OGo OGo < pg-build-schema.psql
+database
+********
+  su - postgres
+  createuser OGo
+  createdb   OGo
+  psql -h localhost OGo OGo (must work)
+  cd Database/PostgreSQL/
+  psql -h localhost OGo OGo < pg-build-schema.psql
 
-- defaults
-  - LSConnectionDictionary
-  - NGBundlePath
+defaults
+********
+  If you are upgrading, removing defaults should work fine if you use
+  defaults values, thats is:
+    Defaults delete NSGlobalDomain LSModelName
+    Defaults delete NSGlobalDomain NGBundlePath
+    Defaults delete NSGlobalDomain LSAdaptor
+
+  LSConnectionDictionary
+  => no need to set if you use user=OGo, pwd emtpy, DB=OGo
+
+  NGBundlePath
+    => Note: not required for standard locations!
     Defaults write NSGlobalDomain NGBundlePath \
       '"$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/Commands:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/DataSources:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/WebUI:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/"'
