@@ -134,7 +134,7 @@
 
   schedulerselect_fetchkeys = (
     title, location, aptType, startDate, endDate, globalID, ownerId, 
-    accessTeamId, permissions, resourceNames,
+    accessTeamId, permissions, resourceNames,idNormal,idConfidential,idPublic,idPrivate,
     "participants.companyId", "participants.globalID",
     "participants.login",     "participants.firstname",
     "participants.name",      "participants.description",

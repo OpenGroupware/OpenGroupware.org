@@ -20,7 +20,7 @@
 */
 
 #include <OGoFoundation/OGoComponent.h>
-
+#include <LSFoundation/LSCommandContext.h>
 /*
   A component to generate a fetchSpecification for a SkyAptDataSource
   includes input fields for all needed data used in scheduler page. (soon)
@@ -67,6 +67,8 @@
   int      maxSearchCount;
   BOOL     reconfigure;
   BOOL     alreadyReconfigured;
+  NSDictionary * delegation;
+  NSDictionary * selectedDelegation;
 }
 - (BOOL)hasAccounts;
 - (BOOL)hasPersons;
@@ -177,6 +179,9 @@ static NSNumber     *yesNum = nil;
 
     ud = [self runCommand:@"userdefaults::get", @"user", me, nil];
     self->defaults = [ud retain];
+
+    self->delegation = nil;
+    self->selectedDelegation = nil;
   }
   return self;
 }
@@ -202,6 +207,12 @@ static NSNumber     *yesNum = nil;
 
   [self->item            release];
   [self->selectedCompany release];
+  // TD
+  [self->delegation release]; 
+  self->delegation = nil;
+  [self->selectedDelegation release]; 
+  self->selectedDelegation = nil;
+  // TD
   [super dealloc];
 }
 
@@ -406,9 +417,13 @@ static NSNumber     *yesNum = nil;
     
     key = [one valueForKey:@"type"];
     if ((![wanted length]) && [key isEqualToString:@"none"])
+    {
       return one;
+    }
     if ([wanted isEqualToString:key])
+    {	
       return one;
+    }
   }
   return nil;
 }
@@ -944,8 +959,19 @@ static NSNumber     *yesNum = nil;
   return NO;
 }
 
-- (NSNumber *)activeAccountID {
-  return [self->activeAccount valueForKey:@"companyId"];
+//********************************************************************************************
+//
+//
+//
+//
+//********************************************************************************************
+- (NSNumber *)activeAccountID 
+{
+	// ##### TD ########
+	NSNumber *num = [self->activeAccount valueForKey:@"companyId"];
+	[self logWithFormat:@"### activeAccountID : %@",num];
+	return num;
+	// ##### TD ########
 }
 
 - (void)_writePanelResourcesNames:(NSArray *)r {
@@ -1186,6 +1212,191 @@ static NSNumber     *yesNum = nil;
     RELEASE(self->resources);
     self->resources = [self->selectedResources copy];
   }
+}
+//********************************************************************************************
+//
+//
+//
+//
+//********************************************************************************************
+- (NSString *)delegationLabel 
+{
+  NSString *label;
+  [self logWithFormat:@"###### delegationLabel : self->item %@",self->item];
+  if(self->item == nil)
+	  //return @"-----------";
+	  return @"mon agenda";
+
+  label = [self->item valueForKey:@"label"];
+
+  if (label)
+    return label;
+
+  return nil;
+}
+//********************************************************************************************
+//
+//
+//
+//
+//********************************************************************************************
+ //####ADDED BY AO###
+ //DELEGATION
+ //permet d'afficher les types de délégation dans la listeBox de l'overview 
+ -(NSArray *)delegationList
+{
+  
+    NSMutableArray  *delegList= nil;
+    NSArray	    *attributPerson=nil;
+    NSMutableString *accountString=nil;
+    NSEnumerator    *keyEnumerator = nil;
+    NSArray*        arrayOfID = nil;	
+    id 		    resultDictionary = nil;
+    int 	    j; 
+    id              key = nil;
+    id		    aPerson = nil;
+    id		    hasFirstname=nil;
+    id		    loginAccount=nil;
+    NSMutableArray  *globalIds = nil;
+    NSEnumerator    *enumPerson = nil;
+    NSNumber 	    *numberID = nil;
+    EOKeyGlobalID   *gid = nil;
+    NSMutableDictionary * newChoice = nil; 
+    
+    //initialisation
+    delegList = [[NSMutableArray alloc] initWithCapacity:16];
+
+     loginAccount= [[[self session] activeAccount] valueForKey:@"companyId"];   
+    // retreive delegation for active account
+    resultDictionary = [self runCommand:@"appointment::get-delegation-for-delegate",@"withDelegateId",loginAccount,nil];
+
+  
+    if (self->delegation)
+	[self->delegation release];
+
+
+     // we copy all value of the resultDictionary
+    self->delegation = [[NSDictionary alloc] initWithDictionary:resultDictionary copyItems:YES];
+
+    // now we will traverse all object of the dictionary
+    // remember that for each key (four) we have an array (never null) containing
+    // ids (person and team)
+   keyEnumerator = [resultDictionary keyEnumerator];
+   
+    while ((key = [keyEnumerator nextObject]))
+    {
+
+	arrayOfID = [resultDictionary valueForKey:key];
+	// so if this array contain something 
+	// we will construct a dictionary with ours keys
+	if( (arrayOfID != nil) && ([arrayOfID count] > 0) )
+	{
+		globalIds = [NSMutableArray arrayWithCapacity:[arrayOfID count]];
+		for ( j = 0 ; j < [arrayOfID count]; j++)
+		{
+			numberID = [NSNumber numberWithUnsignedInt:[[arrayOfID objectAtIndex:j] intValue]];
+			gid = [EOKeyGlobalID globalIDWithEntityName:@"Person" 
+						keys:&numberID keyCount:1 zone:nil];
+                	[self logWithFormat:@"gid :%@",gid];
+			[globalIds addObject:gid];
+		}
+
+		attributPerson = nil;
+		[self logWithFormat:@"juste avant person::get-by-globalid"];
+		attributPerson = [self runCommand:@"person::get-by-globalid", 
+			       			@"gids",globalIds, 
+						@"attributes",personInfoAttrNames, nil];
+		[self logWithFormat:@"#####attributPerson :%@",attributPerson];
+		if(attributPerson != nil)
+		{
+			enumPerson = [attributPerson objectEnumerator];
+			while((aPerson = [enumPerson nextObject]))
+			{
+				newChoice = [[NSMutableDictionary alloc] init];
+    				accountString     = [NSMutableString stringWithCapacity:64];
+				if(([key isEqualToString:@"idPrivate"]))
+				{
+					[accountString  appendString:@"Private     "];
+				}
+				else if(([key isEqualToString:@"idConfidential"]))
+				{
+					[accountString  appendString:@"Confidential "];
+				}
+				else if(([key isEqualToString:@"idPublic"]))
+				{
+					[accountString  appendString:@"Public       "];
+				}
+				else if(([key isEqualToString:@"idNormal"]))
+				{
+					[accountString  appendString:@"Normal       "];
+				}
+				
+				[accountString  appendString:@" : "];
+				[accountString  appendString:[aPerson  valueForKey:@"name"]];
+				[accountString  appendString:@" "];
+				
+				hasFirstname = [aPerson valueForKey:@"firstname"];
+				if (hasFirstname !=nil)
+				{
+				   [accountString  appendString:hasFirstname];
+				}
+				
+				[newChoice setObject:accountString forKey:@"label"];
+
+				if ([aPerson valueForKey:@"firstname"] !=nil)
+				{
+					[newChoice setObject:[aPerson valueForKey:@"firstname"] forKey:@"firstname"];
+				}
+				else
+				{
+					[newChoice setObject:@"" forKey:@"firstname"];
+					
+				}
+				
+				[newChoice setObject:[aPerson valueForKey:@"name"] forKey:@"name"];
+				[newChoice setObject:[aPerson valueForKey:@"login"] forKey:@"login"];
+				[newChoice setObject:[aPerson valueForKey:@"companyId"] forKey:@"companyId"];
+				[newChoice setObject:[aPerson valueForKey:@"globalID"] forKey:@"globalID"];
+				[newChoice setObject:[aPerson valueForKey:@"isAccount"] forKey:@"isAccount"];
+				[newChoice setObject:key forKey:@"rdvType"];
+				[accountString release];  //newChoice has retain the value
+				[delegList addObject:newChoice];
+			}
+		}
+	}
+   }
+
+    [self logWithFormat:@"ICI 4"];
+   return delegList;
+   
+}
+//********************************************************************************************
+//
+//
+//
+//
+//********************************************************************************************
+- (void) setSelectedDelegation:(id)_type
+{
+	[self logWithFormat:@"******** setSelectedDelegation : type %@ ", _type ];
+	[self->selectedDelegation release];
+
+	self->selectedDelegation = [_type retain];
+	[self logWithFormat:@"#########selectedDelegation :%@",self->selectedDelegation]; 
+
+	[[self session]setActiveAccountInSchedulerViews:[self->selectedDelegation copy]];
+}
+//********************************************************************************************
+//
+//
+//
+//
+//********************************************************************************************
+- (id) selectedDelegation
+{
+	[self logWithFormat:@"******** selectedDelegationi %@",self->selectedDelegation];
+	return self->selectedDelegation;
+
 }
 
 - (NSArray *)distinctCategories:(NSArray *)_items {
