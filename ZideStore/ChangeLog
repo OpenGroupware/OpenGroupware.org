@@ -1,3 +1,7 @@
+2004-08-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Maps/DAVPropSets.plist: added some OOo fields to Cadaver query set
+
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* started reorganization for OGo 1.0 (v1.3.75)

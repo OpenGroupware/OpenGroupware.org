@@ -22,11 +22,17 @@
     davLastModified,
     davLockDiscovery,
     davName,
+    davOOoTargetURL,
     davParentName,
     davResourceType,
     davSourceURL,
     davSupportedLock,
     davURL,
+    isOOoCompactDisc,
+    isOOoFloppy,
+    isOOoRemote,
+    isOOoRemoveable,
+    isOOoVolume,
   );
 
   KOrgExInitialAptQuerySet = (
