@@ -1,3 +1,8 @@
+2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* NSString+ICal.m: fixed OGo bugs #1101 and #1102 (incorrect ical
+	  escaping) (v5.1.56)
+
 2004-11-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetAppointmentsForGlobalIDs.m: major code cleanups (needs more)

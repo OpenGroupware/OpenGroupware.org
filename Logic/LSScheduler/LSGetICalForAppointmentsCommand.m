@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,15 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
-
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
 /*
   This command fetches iCalenderStrings for globalIDs (Date)
   date-objects can also be set directly.
-  It doesn't cache anything 'till now.
+  It does not cache anything so far.
   Just fetches the dates and builds the iCal-Strings
   @see: rfc 2445
 */
@@ -39,8 +37,9 @@
 
 @end
 
+#include "NSString+ICal.h"
 #include "common.h"
-#include <NGObjWeb/WOResponse.h>
+#include <NGObjWeb/WOResponse.h> // TODO: should not be done ..
 
 @implementation LSGetICalForAppointmentsCommand
 
@@ -70,40 +69,7 @@ static NSString   *skyrixId = nil;
 
 // copy&paste from LSGetVCardForGlobalIDsCommand.m
 - (void)_appendTextValue:(NSString *)_str toICal:(NSMutableString *)_iCal {
-  // some loosy comma check
-  int cnt = 0;
-  int i, len;
-  unichar c;
-
-  len = [_str length];
-  for (i = 0; i < len; i++) {
-    c = [_str characterAtIndex:i];
-    if (c == ',' || c == ';' || c == '\n') cnt++;
-  }
-
-  if (cnt) {
-    unichar *newStr;
-    
-    newStr = calloc(len+cnt+1, sizeof(unichar));
-    cnt = 0;
-    for (i = 0; i < len; i++) {
-      c = [_str characterAtIndex:i];
-      if (c == ',' || c == ';') {
-        newStr[i+cnt] = '\\';
-        cnt++;
-      }
-      else if (c == '\n') {
-        newStr[i+cnt] = '\\';
-        cnt++;
-        c = 'n';
-      }
-      newStr[i+cnt] = c;
-    }
-    newStr[i] = 0;
-    _str = [NSString stringWithCharacters:newStr length:len+cnt];
-    if (newStr) free(newStr); newStr = NULL;
-  }
-  [_iCal appendString:_str];
+  [_iCal appendString:[_str stringByEscapingUnsafeICalCharacters]];
 }
 
 - (void)_appendDateValue:(NSCalendarDate *)_date toICal:(NSMutableString*)_s {

@@ -63,6 +63,7 @@ LSScheduler_OBJC_FILES = \
 	LSGetAppointmentsForSourceUrls.m		\
 	LSNewAppointmentFromVEventCommand.m		\
 	LSGetICalForAppointmentsCommand.m		\
+	NSString+ICal.m					\
 
 LSScheduler_RESOURCE_FILES += Version
 
