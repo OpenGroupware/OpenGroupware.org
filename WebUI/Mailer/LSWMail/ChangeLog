@@ -1,3 +1,7 @@
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* removed unused LSWMailFilterEditor (v5.1.12)
+
 2005-03-16  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWMailRenderPage.m: minor code cleanups (v5.1.11)
