@@ -22,6 +22,8 @@
 #include <NGObjWeb/WODynamicElement.h>
 
 /*
+  SkyDateField
+
   this generated a formatted representation of a NSDate object (doesn't
   need to be a NSCalendarDate).
 
@@ -76,11 +78,11 @@
 }
 
 - (void)dealloc {
-  RELEASE(self->formatType);
-  RELEASE(self->spanId);
-  RELEASE(self->formatter);
-  RELEASE(self->dateformat);
-  RELEASE(self->date);
+  [self->formatType release];
+  [self->spanId     release];
+  [self->formatter  release];
+  [self->dateformat release];
+  [self->date       release];
   [super dealloc];
 }
 

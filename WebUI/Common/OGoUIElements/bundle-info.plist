@@ -37,6 +37,8 @@
         { name = SkyCalendarPopUp;             },
         { name = OGoPageButton;                },
         { name = OGoEmbedExternalLink;         },
+        { name = OGoFieldSet;                  },
+        { name = OGoField;                     },
     );
     WODynamicElements = (
         { name = SkySimpleTabItem;             },
@@ -56,6 +58,8 @@
         { name = SkyExternalLink;              },
         { name = OGoPageButton;                },
         { name = OGoEmbedExternalLink;         },
+        { name = OGoFieldSet;                  },
+        { name = OGoField;                     },
     );
     WOComponents = (
         { name = SkyFileManagerTreeView;       },

@@ -33,6 +33,8 @@ OGoUIElements_OBJC_FILES = 		\
 	OGoPageButton.m			\
 	OGoUIElementsBuilder.m		\
 	OGoEmbedExternalLink.m		\
+	OGoFieldSet.m			\
+	OGoField.m			\
 
 OGoUIElements_LANGUAGES = English German
 

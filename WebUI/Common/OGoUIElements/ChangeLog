@@ -1,3 +1,8 @@
+2005-03-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoElemBuilder.m: added new styling elements, OGoField and
+	  OGoFieldSet (OGo:field, OGo:fieldset in .wox) (v5.1.37)
+
 2005-02-11  Helge Hess  <helge.hess@opengroupware.org>
 
 	* added new dynamic element to embed external HTTP content, eg from

@@ -35,6 +35,9 @@
     <OGo:tgroup    .../>    maps to WETableViewGroupMode
     <OGo:td        .../>    maps to WETableData
     <OGo:th        .../>    maps to WETableHeader
+
+    <OGo:field     .../>    maps to OGoField
+    <OGo:fieldset  .../>    maps to OGoFieldSet
 */
 
 @interface OGoUIElementsBuilder : WOxTagClassElemBuilder
@@ -120,6 +123,12 @@ static BOOL  debugOn           = NO;
   c1 = [tagName characterAtIndex:0];
 
   switch (c1) {
+    case 'f': { /* starting with 'f' */
+      if (tl == 5 && [tagName isEqualToString:@"field"])
+	return NSClassFromString(@"OGoField");
+      if (tl == 8 && [tagName isEqualToString:@"fieldset"])
+	return NSClassFromString(@"OGoFieldSet");
+    }
     case 't': { /* starting with 't' */
       unichar c2;
       
