@@ -83,7 +83,7 @@ christmasEve               = "VÃ©spera do Natal";
 corpusChristi              = "Corpus Christi";
 cycle                      = "RepetiÃ§Ã£o";
 cycleEndDate               = "Fim da repetiÃ§Ã£o";
-dayOfPrayerAndRepetance    = "Day of Prayer and Repetance";
+dayOfPrayerAndRepetance    = "Dia do Perdão";
 deathsSunday               = "Finados";
 delete                     = "Excluir";
 easter                     = "Domingo de PÃ¡scoa";
@@ -358,3 +358,55 @@ whitmonday                 = "Whitmonday";
 whitsun                    = "Domingo de Pentecostes";
 wintertimeChange           = "Fim do horÃ¡rio de verÃ£o";
 wnext_day                  = "dia seguinte";
+
+//Brazilian holidays
+// Added Olivier Hallot 
+// Collaboration of Bruno Limmer
+//Feriados Nacionais
+independencia                  = "Independência do Brasil";
+republica                      = "Proclamação da República";
+nsaparecida                    = "Nª Sª de Aparecida";
+finados                        = "Finados";
+tiradentes                     = "Tiradentes"
+NSConceicao                    = "Nª Sª da Conceição";
+//RJ
+SaoSebastiaoRJ_RJ              = "São Sebastião (Capital-RJ)";
+SaoJorgeRJ_RJ                  = "São Jorge (Capital-RJ)";
+SaoBeneditoAR_RJ               = "São Benedito (Angra dos Reis-RJ)";
+ConcienciaNegra_RJ             = "Dia da Conciência Negra (RJ)";
+//SP
+SaoPauloSP_SP                  = "São Paulo (Capital-SP)";
+RevolucaoConstitucionalista_SP = "Revolução Constitucionalista (SP)";
+//RS
+NSNavegantes_RS                = "Nª Sª dos Navegantes (Capital-RS)";
+Farroupilha_RS                 = "Revolução Farroupilha (RS)";
+//MG
+NSdasDores_MG                  = "Nª Sª das Dores (MG)";
+//PE
+AnivRecife_PE                  = "Aniversário do Recife (PE)"; 
+NSCarmo_PE                     = "Nª Sª do Carmo (PE)";
+//SE
+MudancaCapital_SE              = "Mudança da Capital (SE)";
+indSergipe_SE                  = "Independência de Sergipe";
+//CE
+SaoJose_CE                     = "São José (CE)";
+NascPeCicero_CE                = "Nascimento de Pe. Cícecro (CE)";
+//PR
+AnivCuritba_PR                 = "Aniversário de Curitiba (PR)";
+NSdaLuz_PR                     = "Nª Sª da Luz (PR)";
+//PB
+SaoJoao_PB                     = "São João (PB)";
+AnivJoaoPess_PB                = "Aniversário de Joâo Pessoa (PB)";
+//BA
+SaoJoao_BA                     = "São João (BA)";
+indBahia_BA                    = "Independência da Bahia";
+NSSantana_BA                   = "Nª Sª de Santana (BA)";
+//PI
+AnivTere_PI                    = "Aniversáro de Teresina (PI)";
+//AL
+PadroMaceio_AL                 = "Padroeira de Maceió (AL)";
+EmanAlagoas_AL                 = "Emancipação de Alagoas (AL)";
+//MA
+//AM
+//RN
+holyThreeKings_RN             = "Dia de Reis (RN)";
