@@ -39,6 +39,7 @@
 - (NSString *)mailWrappedStringWithLength:(int)_wrapLen
   wrapLongLines:(BOOL)wrapLongLines
 {
+  // TODO: cleanup, optimize and move to NGExtensions
   NSString *str = self;
   
   if (_wrapLen == 0) _wrapLen = 10000;

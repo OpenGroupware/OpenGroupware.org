@@ -169,14 +169,14 @@ static NSArray *ReplyAllArray = nil;
   obj    = [[self session] getTransferObject];
   part   = [obj message];
 
-  while ((o = [fields nextObject])) {
+  while ((o = [fields nextObject]) != nil) {
     NSEnumerator *values;
     id           value;
     
     addr = [NSMutableArray arrayWithCapacity:64];
-      
+    
     values = [part valuesOfHeaderFieldWithName:o];
-    while ((value = [values nextObject]))
+    while ((value = [values nextObject]) != nil)
       [addr addObject:value];
     
     [self _buildReplyHeader:obj to:addr h:o];
