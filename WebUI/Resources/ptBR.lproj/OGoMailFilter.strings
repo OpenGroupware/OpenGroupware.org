@@ -11,6 +11,7 @@ deleteButtonLabel            = "Excluir";
 "doesn't contain"            = "não contém";
 editVacation                 = "Editar";
 "ends with"                  = "termina com";
+fewerButtonLabel             = "Menos";
 filterName                   = "Nome do filtro";
 filterPos                    = "Posição do filtro";
 from                         = "Remetente";
