@@ -1,3 +1,13 @@
+2005-03-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.3.81
+
+	* SxAddress.m, SxPerson.m, SxEnterprise, SxGroup.m: moved GETAction to
+	  SxAddress
+	
+	* SxAddress.m: cleaned up vcard generation code, fixed handling of
+	  content-type, properly deliver vcard in UTF-8
+
 2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAddressFolder.m: fixed GroupDAV namespace to current draft 

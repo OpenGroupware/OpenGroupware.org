@@ -19,8 +19,8 @@
   02111-1307, USA.
 */
 
-#ifndef __sxdavd_SxAddress_H__
-#define __sxdavd_SxAddress_H__
+#ifndef __ZideStore_SxAddress_H__
+#define __ZideStore_SxAddress_H__
 
 #include <ZSFrontend/SxObject.h>
 
@@ -53,4 +53,4 @@
 
 @end /* SxAddress */
 
-#endif /* __sxdavd_SxAddress_H__ */
+#endif /* __ZideStore_SxAddress_H__ */

@@ -94,46 +94,4 @@
   return [NSArray arrayWithObject:res];
 }
 
-- (id)GETAction:(WOContext *)_ctx {
-  SxContactManager *manager;
-  NSEnumerator *e;
-  id person;
-
-  manager = [SxContactManager managerWithContext:
-                              [self commandContextInContext:_ctx]];
-  
-  person = [self primaryKey];
-  person = [EOKeyGlobalID globalIDWithEntityName:[self entityName]
-                          keys:&person keyCount:1 zone:NULL];
-  e = [manager idsAndVersionsAndVCardsForGlobalIDs:
-               [NSArray arrayWithObject:person]];
-  // taking new vCard renderer
-  if ((person = [e nextObject]) == nil) {
-    return [NSException exceptionWithHTTPStatus:500 /* forbidden */
-                        reason:@"invalid person object"];
-  }
-  else {
-    WOResponse *response;
-    NSString *vCard;
-
-    response = [WOResponse responseWithRequest:[_ctx request]];
-      
-    vCard = [person valueForKey:@"vCardData"];
-    if (vCard != nil) {
-      NSData *contentData;
-
-      contentData = [NSData dataWithBytes:[vCard cString]
-                            length:[vCard cStringLength]];
-    
-      [response setStatus:200];
-      [response setContent:contentData];
-    }
-    else {
-      [response setStatus:500];
-      // vCard rendering failed
-    }
-    return response;
-  }
-}
-  
 @end /* SxGroup */

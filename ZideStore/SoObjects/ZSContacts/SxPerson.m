@@ -87,16 +87,11 @@
   manager =
     [SxContactManager managerWithContext:[self commandContextInContext:_ctx]];
 
-#if 0
-  res = [manager fullPersonInfoForPrimaryKey:[self primaryKey]];
-#else
   res = [[manager fullObjectInfosForPrimaryKeys:
 		    [NSArray arrayWithObject:[self primaryKey]]
 		  withSetIdentifier:
                     [(SxPersonFolder *)[self container] contactSetID]]
                   lastObject];
-  
-#endif
   if (res == nil) {
     [self logWithFormat:@"person does not exist: %@", [self nameInContainer]];
     return [NSException exceptionWithHTTPStatus:404 /* not found */
@@ -111,66 +106,7 @@
   else /* fallback, return SoObject to SOPE WebDAV layer */
     res = (id)self;
   
-  return [NSArray arrayWithObject:res];
-}
-
-- (id)GETAction:(WOContext *)_ctx {
-  SxContactManager *manager;
-  id renderer, res;
-  
-  manager = [SxContactManager managerWithContext:
-				[self commandContextInContext:_ctx]];
-  
-  { // taking new vCard renderer
-    NSEnumerator *e;
-    id person;
-
-    person = [self primaryKey];
-    person = [EOKeyGlobalID globalIDWithEntityName:[self entityName]
-                          keys:&person keyCount:1 zone:NULL];
-    e = [manager idsAndVersionsAndVCardsForGlobalIDs:
-                 [NSArray arrayWithObject:person]];
-
-    if ((person = [e nextObject]) == nil) {
-      return [NSException exceptionWithHTTPStatus:500 /* forbidden */
-                          reason:@"invalid person object"];
-    }
-    else {
-      WOResponse *response;
-      NSString *vCard;
-
-      response = [WOResponse responseWithRequest:[_ctx request]];
-
-      vCard = [person valueForKey:@"vCardData"];
-      if (vCard != nil) {
-        NSData *contentData;
-
-        contentData = [NSData dataWithBytes:[vCard cString]
-                              length:[vCard cStringLength]];
-    
-        [response setStatus:200];
-        [response setContent:contentData];
-      }
-      else {
-        [response setStatus:500];
-        // vCard rendering failed
-      }
-      return response;
-    }
-  }
-  
-  if ((res = [manager fullPersonInfoForPrimaryKey:[self primaryKey]]) == nil) {
-    return [NSException exceptionWithHTTPStatus:500 /* forbidden */
-                        reason:@"invalid person object"];
-  }
-
-  if ((renderer = [SxVCardPersonRenderer renderer]) != nil) {
-    return [renderer vCardResponseForObject:res inContext:_ctx
-                     container:[self container]];
-  }
-
-  return [NSException exceptionWithHTTPStatus:500 /* forbidden */
-                      reason:@"initializing renderer failed"];
+  return res != nil ? [NSArray arrayWithObject:res] : nil;
 }
 
 - (Class)updateClass {

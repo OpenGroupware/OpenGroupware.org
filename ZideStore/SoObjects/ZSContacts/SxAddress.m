@@ -449,6 +449,7 @@ static BOOL debugEO = NO;
 }
 
 - (EOGlobalID *)globalID {
+  /* Note: SxObject has a different -globalID method */
   EOGlobalID  *gid;
   int companyId;
   id  value;
@@ -458,9 +459,9 @@ static BOOL debugEO = NO;
   
   companyId = [[self nameInContainer] intValue];
   value = [NSNumber numberWithInt:companyId];
-  gid = [EOKeyGlobalID globalIDWithEntityName:[self entityName]
-		       keys:&value keyCount:1
-		       zone:NULL];
+  gid   = [EOKeyGlobalID globalIDWithEntityName:[self entityName]
+			 keys:&value keyCount:1
+			 zone:NULL];
   return gid;
 }
 
@@ -776,6 +777,40 @@ static BOOL debugEO = NO;
 
 }
 
+/* GET-Action */
+
+- (id)GETAction:(WOContext *)_ctx {
+  SxContactManager *manager;
+  NSEnumerator *e;
+  WOResponse   *response;
+  NSString     *vCard;
+  NSData       *contentData;
+  NSDictionary *result;
+  
+  manager = [SxContactManager managerWithContext:
+				[self commandContextInContext:_ctx]];
+  
+  e = [manager idsAndVersionsAndVCardsForGlobalIDs:
+		 [NSArray arrayWithObject:[self globalID]]];
+  
+  if ((result = [e nextObject]) == nil) {
+    return [NSException exceptionWithHTTPStatus:404 /* not found */
+			reason:@"did not find vcard for given object id"];
+  }
+  
+  if ((vCard = [result valueForKey:@"vCardData"]) == nil) {
+    return [NSException exceptionWithHTTPStatus:500 /* server error */
+			reason:@"vcard renderer failed"];
+  }
+  
+  contentData = [vCard dataUsingEncoding:NSUTF8StringEncoding];
+  
+  response = [WOResponse responseWithRequest:[_ctx request]];
+  [response setStatus:200 /* OK */];
+  [response setHeader:@"text/x-vcard; charset=utf-8" forKey:@"content-type"];
+  [response setContent:contentData];
+  return response;
+}
 
 /* DAV default attributes (allprop queries by ZideLook ;-) */
 

@@ -105,9 +105,10 @@
 }
 
 - (EOGlobalID *)globalID {
+  /* Note: eg SxAddress overrides this with a nameInContainer based method */
   id key;
   
-  if (self->eo) 
+  if (self->eo != nil)
     return [self->eo globalID];
   
   key = [self primaryKey];
