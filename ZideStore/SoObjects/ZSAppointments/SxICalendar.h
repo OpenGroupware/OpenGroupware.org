@@ -26,8 +26,8 @@
 
 /*
   SxICalendar
-
-  A controller for key 'calendar.ics' in a appointment folder
+  
+  A controller object for key 'calendar.ics' in a Calendar folder.
 */
 
 @interface SxICalendar : SxObject
