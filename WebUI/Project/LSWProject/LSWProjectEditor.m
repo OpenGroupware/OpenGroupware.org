@@ -541,12 +541,12 @@ static int      OldProjectCompatiblity = -1;
   [obj run:@"project::get-persons",     nil];
   [obj run:@"project::get-enterprises", nil];
   [obj run:@"project::get-status",      nil];
+  
+  // TODO: should improve fetch of comment
   [obj run:@"project::get-comment", @"relationKey", @"comment", nil];
-
   tmp = [[obj valueForKey:@"comment"] valueForKey:@"comment"];
-
   if (tmp != nil)
-    [[self snapshot] setObject:[tmp copy] forKey:@"comment"];
+    [[self snapshot] setObject:[[tmp copy] autorelease] forKey:@"comment"];
   
   [self->accounts    addObjectsFromArray:[obj valueForKey:@"accounts"]];
   [self->persons     addObjectsFromArray:[obj valueForKey:@"persons"]];
