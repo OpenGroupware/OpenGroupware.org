@@ -18,20 +18,24 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: Application.h 1 2004-08-20 11:17:52Z znek $
 
-#ifndef NGFileManagerZipTool_Project_h
-#define NGFileManagerZipTool_Project_h
+#ifndef __skyxmlrpcd_Application_H__
+#define __skyxmlrpcd_Application_H__
 
-#include "NGFileManagerZipTool.h"
+#include <NGObjWeb/WOApplication.h>
 
-@class NSArray;
-@class NSData;
+@class NSMutableDictionary;
 
-@interface NGFileManagerZipTool(Project)
-- (NSData *)zipProjectPaths:(NSArray *)_srcPaths
-  fileManager:(id)_fileManager
-  compressionLevel:(int)_level;
-@end /* NGFileManagerZipTool+Project */
+@interface Application : WOApplication
+{
+  NSMutableDictionary *cred2sessionId;
+  id                  credentials;
+}
 
-#endif /* NGFileManagerZipTool_Project_h */
+- (id)credentials;
+- (void)setCredentials:(id)_credentials;
+
+@end /* Application */
+
+#endif /* __skyxmlrpcd_Application_H__ */

@@ -18,24 +18,19 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: NSObject+EKVC.h 1 2004-08-20 11:17:52Z znek $
 
-#ifndef __skyxmlrpcd_Application_H__
-#define __skyxmlrpcd_Application_H__
+#ifndef __SkyXmlRpcServer_NSObject_EKVC_H_
+#define __SkyXmlRpcServer_NSObject_EKVC_H_
+#include <Foundation/NSObject.h>
+#include <Foundation/NSDictionary.h>
 
-#include <NGObjWeb/WOApplication.h>
+@interface NSObject(EKVC)
+- (void)takeValuesFromObject:(id)_object keys:(NSString *)_key, ...;
+@end /* NSObject(EKVC) */
 
-@class NSMutableDictionary;
-
-@interface Application : WOApplication
-{
-  NSMutableDictionary *cred2sessionId;
-  id                  credentials;
-}
-
-- (id)credentials;
-- (void)setCredentials:(id)_credentials;
-
-@end /* Application */
-
-#endif /* __skyxmlrpcd_Application_H__ */
+@interface NSMutableDictionary(EKVC)
+- (void)removeAllNulls;
+@end
+  
+#endif /* __SkyXmlRpcServer_NSObject_EKVC_H_ */

@@ -18,19 +18,20 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: NGFileManagerZipTool+Project.h 1 2004-08-20 11:17:52Z znek $
 
-#ifndef __SkyXmlRpcServer_NSObject_EKVC_H_
-#define __SkyXmlRpcServer_NSObject_EKVC_H_
-#include <Foundation/NSObject.h>
-#include <Foundation/NSDictionary.h>
+#ifndef NGFileManagerZipTool_Project_h
+#define NGFileManagerZipTool_Project_h
 
-@interface NSObject(EKVC)
-- (void)takeValuesFromObject:(id)_object keys:(NSString *)_key, ...;
-@end /* NSObject(EKVC) */
+#include "NGFileManagerZipTool.h"
 
-@interface NSMutableDictionary(EKVC)
-- (void)removeAllNulls;
-@end
-  
-#endif /* __SkyXmlRpcServer_NSObject_EKVC_H_ */
+@class NSArray;
+@class NSData;
+
+@interface NGFileManagerZipTool(Project)
+- (NSData *)zipProjectPaths:(NSArray *)_srcPaths
+  fileManager:(id)_fileManager
+  compressionLevel:(int)_level;
+@end /* NGFileManagerZipTool+Project */
+
+#endif /* NGFileManagerZipTool_Project_h */

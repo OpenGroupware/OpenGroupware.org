@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: SkyTeamDocument+XmlRpcCoding.m 1 2004-08-20 11:17:52Z znek $
 
 #include <OGoAccounts/SkyTeamDocument.h>
 #include <XmlRpc/XmlRpcCoder.h>
