@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Last-Translator: Branislav Klocok <branislav.klocok@ofz.sk>\n"
-"PO-Revision-Date: 2005-01-14 12:06+0100\n"
+"PO-Revision-Date: 2005-02-24 15:14+0100\n"
 "Project-Id-Version: LSWMail\n"
 "Language-Team:  <sk@li.org>\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -175,7 +175,7 @@ msgstr "vyprázdniť kôš"
 
 #"fewerButtonLabel" =
 msgid "Fewer"
-msgstr ""
+msgstr "Menej"
 
 #"filter" =
 msgid "Filter"
@@ -183,11 +183,11 @@ msgstr "Filter"
 
 #"filterName" =
 msgid "Filtername"
-msgstr ""
+msgstr "Názov filtra"
 
 #"filterPos" =
 msgid "Filter Position"
-msgstr ""
+msgstr "Umiestnenie filtra"
 
 #"folderName" =
 msgid "Foldername"
@@ -199,27 +199,27 @@ msgstr "Priečinok"
 
 #"folder_noSub" =
 msgid "No Subfolders"
-msgstr ""
+msgstr "Bez podpriečinkov"
 
 #"folder_title" =
 msgid "FolderName"
-msgstr ""
+msgstr "Názov priečinka"
 
 #"folders" =
 msgid "Folders"
-msgstr ""
+msgstr "Priečínky"
 
 #"footerRowLabel1" =
 msgid "SKYRiX"
 msgstr "SKYRiX"
 
 #"footerRowLabel2" =
-msgid "2000-2004 SKYRIX Software AG"
-msgstr "2000-2004 SKYRIX Software AG"
+msgid "2000-2005 SKYRIX Software AG"
+msgstr "2000-2005 SKYRIX Software AG"
 
 #"forward" =
 msgid "forward mail"
-msgstr ""
+msgstr "Poslať správu ďalej"
 
 #"from" =
 msgid "Sender"
@@ -227,15 +227,15 @@ msgstr "Odosielateľ"
 
 #"ignore" =
 msgid "------------------------------------ ignore ------------------------------------"
-msgstr ""
+msgstr "------------------------------------ ignorovať ------------------------------------"
 
 #"is" =
 msgid "is"
-msgstr ""
+msgstr "je"
 
 #"isRead" =
 msgid "read"
-msgstr ""
+msgstr "prečítané"
 
 #"location" =
 msgid "Location"
@@ -251,11 +251,11 @@ msgstr "pošta"
 
 #"mailFolderMoveTitle" =
 msgid "Mail Folder Mover"
-msgstr ""
+msgstr "Prenášač poštového priečinka"
 
 #"mailLabel" =
 msgid "SKYRiX Mail"
-msgstr ""
+msgstr "SKYRiX Mail"
 
 #"mailText" =
 msgid "Text"
@@ -263,27 +263,27 @@ msgstr "Text"
 
 #"mailTitle" =
 msgid "Mails"
-msgstr ""
+msgstr "Pošta"
 
 #"mailstobemoved" =
 msgid "Mails"
-msgstr ""
+msgstr "Pošta"
 
 #"markRead" =
 msgid "mark read"
-msgstr ""
+msgstr "označiť ako prečítané"
 
 #"markUnread" =
 msgid "mark unread"
-msgstr ""
+msgstr "označiť ako neprečítané"
 
 #"match" =
 msgid "match"
-msgstr ""
+msgstr "je rovnaké"
 
 #"messageId" =
 msgid "Message-ID"
-msgstr ""
+msgstr "ID-správy"
 
 #"moreButtonLabel" =
 msgid "More"
@@ -291,7 +291,7 @@ msgstr "Viac"
 
 #"move" =
 msgid "move to"
-msgstr ""
+msgstr "presunúť do"
 
 #"moveFolder" =
 msgid "move folder"
@@ -299,11 +299,11 @@ msgstr "presunúť priečinok"
 
 #"moveMail" =
 msgid "move mail"
-msgstr ""
+msgstr "presunúť poštu"
 
 #"moveTo" =
 msgid "move to"
-msgstr ""
+msgstr "presunúť do"
 
 #"name" =
 msgid "Name"
@@ -319,11 +319,11 @@ msgstr "Ste tu:"
 
 #"new" =
 msgid "new mail"
-msgstr ""
+msgstr "nová pošta"
 
 #"newFilter" =
 msgid "new filter"
-msgstr ""
+msgstr "nový filter"
 
 #"newFolder" =
 msgid "new folder"
@@ -331,27 +331,27 @@ msgstr "nový priečinok"
 
 #"newMail" =
 msgid "new mail"
-msgstr ""
+msgstr "nová pošta"
 
 #"noAddressError" =
 msgid "no email address"
-msgstr ""
+msgstr "bez emailovej adresy"
 
 #"noMailTitle" =
 msgid "no title"
-msgstr ""
+msgstr "bez titulu"
 
 #"object" =
 msgid "ObjectViewer"
-msgstr ""
+msgstr "Prehliadač objektov"
 
 #"object_deleted" =
 msgid "Object was deleted!"
-msgstr ""
+msgstr "Objekt bol zmazaný!"
 
 #"ofTheMessage" =
 msgid "of the message"
-msgstr ""
+msgstr "zo správy"
 
 #"ok" =
 msgid "OK"
@@ -359,11 +359,11 @@ msgstr "OK"
 
 #"or" =
 msgid "any of the following"
-msgstr ""
+msgstr "jedno z nasledujúcich"
 
 #"orThe" =
 msgid "or the"
-msgstr ""
+msgstr "alebo"
 
 #"organization" =
 msgid "Organization"
@@ -371,7 +371,7 @@ msgstr "Organizácia"
 
 #"plainText" =
 msgid "Send as plain text"
-msgstr ""
+msgstr "Odoslať ako čistý text"
 
 #"priority" =
 msgid "Priority"
@@ -379,7 +379,7 @@ msgstr "Dôležitosť"
 
 #"read" =
 msgid "mail read"
-msgstr ""
+msgstr "prečítaná pošta"
 
 #"remove" =
 msgid "remove"
@@ -387,15 +387,15 @@ msgstr "odstrániť"
 
 #"reply" =
 msgid "reply mail"
-msgstr ""
+msgstr "odpovedaná pošta"
 
 #"replyAllMail" =
 msgid "reply all"
-msgstr ""
+msgstr "odpovedať všetkým"
 
 #"replyMail" =
 msgid "reply mail"
-msgstr ""
+msgstr "odpovedaná pošta"
 
 #"saveButtonLabel" =
 msgid "save"
@@ -403,7 +403,7 @@ msgstr "uložiť"
 
 #"search" =
 msgid "Recipient search"
-msgstr ""
+msgstr "Hľadať príjemcu"
 
 #"selectAll" =
 msgid "select all"
@@ -415,7 +415,7 @@ msgstr "odoslať"
 
 #"sendDate" =
 msgid "date"
-msgstr ""
+msgstr "dátum"
 
 #"sendNotLabel" =
 msgid "cancel"
@@ -431,11 +431,11 @@ msgstr "/"
 
 #"showAll" =
 msgid "show all messages"
-msgstr ""
+msgstr "zobraziť všetky správy"
 
 #"showUnread" =
 msgid "show unread"
-msgstr ""
+msgstr "zobraziť neprečítané"
 
 #"sortColumnLabel" =
 msgid "sort Column"
@@ -443,11 +443,11 @@ msgstr "zoradiť stĺpec"
 
 #"sortOpSuffixAND" =
 msgid "all of search fields"
-msgstr ""
+msgstr "všetky vyhľadávacie polia"
 
 #"sortOpSuffixOR" =
 msgid "any of search fields"
-msgstr ""
+msgstr "jedno vyhľadávacie pole"
 
 #"startLabel" =
 msgid "You are here:"
@@ -459,11 +459,11 @@ msgstr "Predmet"
 
 #"the" =
 msgid "the"
-msgstr ""
+msgstr " "
 
 #"thenMoveToFolder" =
 msgid "then move to folder"
-msgstr ""
+msgstr "potom presunúť do priečinka"
 
 #"to" =
 msgid "to"
@@ -471,11 +471,11 @@ msgstr "na"
 
 #"toDoc" =
 msgid "body to document"
-msgstr ""
+msgstr "telo do dokumentu"
 
 #"unread" =
 msgid "mail unread"
-msgstr ""
+msgstr "neprečítaná pošta"
 
 #"upload" =
 msgid "Attachment"

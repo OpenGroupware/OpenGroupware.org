@@ -1,0 +1,1691 @@
+# translation of LSWProject.po to 
+# translation of AddressUI.po to Slovenský
+# Branislav Klocok <branislav.klocok@ofz.sk>, 2004, 2005.
+msgid ""
+msgstr ""
+"Last-Translator: Branislav Klocok <branislav.klocok@ofz.sk>\n"
+"PO-Revision-Date: 2005-02-24 14:40+0100\n"
+"Project-Id-Version: LSWProject\n"
+"Language-Team:  <sk@li.org>\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+"MIME-Version: 1.0"
+
+# // $Id: AddressUI.strings,v 1.15 2004/08/16 14:48:47 frank Exp $
+#"00_created" =
+msgid "created"
+msgstr "vytvorené"
+
+#"00_sequential" =
+msgid "sequential"
+msgstr "sekvenčné"
+
+#"00_sleeping" =
+msgid "sleeping"
+msgstr "spiace"
+
+#"02_rejected" =
+msgid "rejected"
+msgstr "odmietnuté"
+
+#"05_accepted" =
+msgid "accepted"
+msgstr "prijaté"
+
+#"05_changed" =
+msgid "changed"
+msgstr "zmenené"
+
+#"05_processing" =
+msgid "processing"
+msgstr "spracovávam"
+
+#"1" =
+msgid "VERY HIGH"
+msgstr "VEĽMI VYSOKÁ"
+
+#"10_commented" =
+msgid "commented"
+msgstr "komentované"
+
+#"10_out_of_date" =
+msgid "out of date"
+msgstr "mimo dátumu"
+
+#"10_parallel" =
+msgid "parallel"
+msgstr "rovnobežné"
+
+#"15_divided" =
+msgid "divided"
+msgstr "rozdelené"
+
+#"2" =
+msgid "High"
+msgstr "Vysoká"
+
+#"20_processing" =
+msgid "processing"
+msgstr "spracovávam"
+
+#"25_done" =
+msgid "done"
+msgstr "hotovo"
+
+#"27_reactivated" =
+msgid "reactivated"
+msgstr "Reaktivované"
+
+#"3" =
+msgid "Average"
+msgstr "Priemer"
+
+#"30_archived" =
+msgid "archived"
+msgstr "archivované"
+
+#"4" =
+msgid "Low"
+msgstr "Nízka"
+
+#"5" =
+msgid "Very Low"
+msgstr ""
+
+#"Enterprise" =
+msgid "Company"
+msgstr "Spoločnosť"
+
+#"ExtendedView" =
+msgid "Show Companies"
+msgstr "Zobraziť spoločnosti"
+
+#"ExtendedViewProjectCode" =
+msgid "Show Projectcode"
+msgstr "Zobraziť kód projektu"
+
+#"FileSystem" =
+msgid "Filesystem"
+msgstr "Súborový systém"
+
+#"LSWDocumentEditor" =
+msgid "Edit Document"
+msgstr "Upraviť dokument"
+
+#"LSWDocumentMove" =
+msgid "Move Document"
+msgstr "Presunúť dokument"
+
+#"LSWDocumentViewer" =
+msgid "View Document"
+msgstr "Zobraziť dokument"
+
+#"LSWFolderEditor" =
+msgid "Edit Folder"
+msgstr "Upraviť priečinok"
+
+#"LSWNoteEditor" =
+msgid "Edit Note"
+msgstr "Upraviť poznámku"
+
+#"LSWObjectLinkEditor" =
+msgid "Edit Objectlink"
+msgstr "Upraviť odkaz na objekt"
+
+#"LSWObjectLinkViewer" =
+msgid "View Objectlink"
+msgstr "Zobraziť odkaz na objekt"
+
+#"LSWProjectEditor" =
+msgid "Edit Project"
+msgstr "Upraviť projekt"
+
+#"LSWProjectViewer" =
+msgid "View Project"
+msgstr "Zobraziť projekt"
+
+#"LSWProjectWizard" =
+msgid "Edit Project"
+msgstr "Upraviť projekt"
+
+#"LSWProjects" =
+msgid "Projects"
+msgstr "Projekty"
+
+#"LSWTextDocumentEditor" =
+msgid "Edit Textdocument"
+msgstr ""
+
+#"NO" =
+msgid "No"
+msgstr "Nie"
+
+#"ProjectBase" =
+msgid "Project Base"
+msgstr ""
+
+#"ProjectPreferences" =
+msgid "Project Preferences"
+msgstr ""
+
+#"Projects" =
+msgid "Projects"
+msgstr "Projekty"
+
+#"SkyProjectAssignment" =
+msgid "Assign Projects"
+msgstr "Priradiť projekt"
+
+#"Skyrix" =
+msgid "Database"
+msgstr "Databáza"
+
+#"Subversion" =
+msgid "Subversion"
+msgstr ""
+
+#"YES" =
+msgid "Yes"
+msgstr "Áno"
+
+#"_job_" =
+msgid "Task"
+msgstr "Úloha"
+
+#"abstract" =
+msgid "Title"
+msgstr "Nadpis"
+
+#"accessAccounts" =
+msgid "Access List"
+msgstr ""
+
+#"accessList" =
+msgid "Access List"
+msgstr ""
+
+#"accessTeam" =
+msgid "Access Team"
+msgstr ""
+
+#"accessTeams" =
+msgid "Access Teams"
+msgstr ""
+
+#"accountName" =
+msgid "Account"
+msgstr "Účet"
+
+#"action" =
+msgid "Action"
+msgstr "Činnosť"
+
+#"action_checkout" =
+msgid "checkout"
+msgstr ""
+
+#"actor" =
+msgid "Actor"
+msgstr "Aktér"
+
+#"actualWorkSum" =
+msgid "Actual Work"
+msgstr "Aktuálna práca"
+
+#"annotation" =
+msgid "Comment"
+msgstr "Komentár"
+
+#"any_object" =
+msgid "Link to an object"
+msgstr ""
+
+#"appointment" =
+msgid "Link to appointment"
+msgstr ""
+
+#"archive" =
+msgid "archived"
+msgstr "archivované"
+
+#"archiveButton" =
+msgid "archive"
+msgstr "archivovať"
+
+#"archived" =
+msgid "archived"
+msgstr "archivované"
+
+#"assignedEnterprises" =
+msgid "Associated Companies"
+msgstr "Spriaznené spoločnosti"
+
+#"assignedPersons" =
+msgid "Associated Contacts"
+msgstr "Spriaznené kontakty"
+
+#"assignedResources" =
+msgid "assigned resources"
+msgstr ""
+
+#"attributes" =
+msgid "attributes"
+msgstr "atribúty"
+
+#"autorelease" =
+msgid "Autorelease"
+msgstr ""
+
+#"backButton" =
+msgid "go back"
+msgstr ""
+
+#"basedOnVersion" =
+msgid "Based on version"
+msgstr ""
+
+#"blockSize" =
+msgid "Number of list items"
+msgstr "Počet položiek zoznamu"
+
+#"bmp" =
+msgid "Download BMP image"
+msgstr ""
+
+#"cancelButton" =
+msgid "cancel"
+msgstr "zrušiť"
+
+#"category" =
+msgid "Category"
+msgstr "Kategória"
+
+#"changeToFolder" =
+msgid "change to folder"
+msgstr ""
+
+#"checkedOut" =
+msgid "This version was checked out"
+msgstr ""
+
+#"checkout" =
+msgid "Checkout"
+msgstr ""
+
+#"checkoutDate" =
+msgid "Checked out on"
+msgstr ""
+
+#"chooseProject" =
+msgid "Choose Project"
+msgstr ""
+
+#"chooseProjects" =
+msgid "Choose Projects"
+msgstr "Vybrať projekty"
+
+#"clearButtonLabel" =
+msgid "clear form"
+msgstr "vyčistiť formulár"
+
+#"clip" =
+msgid "clip"
+msgstr "klip"
+
+#"clip_long" =
+msgid "place in clipboard"
+msgstr ""
+
+#"clipboard" =
+msgid "Place in clipboard"
+msgstr ""
+
+#"code" =
+msgid "Projectcode"
+msgstr "Kód projektu"
+
+#"comment" =
+msgid "Comment"
+msgstr "Komentár"
+
+#"common" =
+msgid "common"
+msgstr ""
+
+#"contact" =
+msgid "Contacts"
+msgstr "Kontakty"
+
+#"contents" =
+msgid "Contents"
+msgstr "Obsah"
+
+#"createAs" =
+msgid "create as"
+msgstr ""
+
+#"creation" =
+msgid "Creation date"
+msgstr ""
+
+#"creationDate" =
+msgid "Creation"
+msgstr ""
+
+#"creator" =
+msgid "Creator"
+msgstr "Zhotoviteľ"
+
+#"currentEditor" =
+msgid "Current Editor"
+msgstr ""
+
+#"currentOwner" =
+msgid "Current Owner"
+msgstr ""
+
+#"date" =
+msgid "Date"
+msgstr "Dátum"
+
+#"day" =
+msgid "day"
+msgstr "deň"
+
+#"days" =
+msgid "days"
+msgstr ""
+
+#"delete" =
+msgid "delete"
+msgstr "zmazať"
+
+#"deleteButton" =
+msgid "delete"
+msgstr "zmazať"
+
+#"deleteFolderLabel" =
+msgid "delete this folder"
+msgstr ""
+
+#"deletefolder" =
+msgid "delete"
+msgstr "zmazať"
+
+#"doc" =
+msgid "Download WORD document"
+msgstr ""
+
+#"docMoveTitle" =
+msgid "Move Document"
+msgstr ""
+
+#"document" =
+msgid "Link to document"
+msgstr ""
+
+#"documentSubview" =
+msgid "documents subview"
+msgstr "podzobrazenie dokumentov"
+
+#"documentViewer" =
+msgid "Document view"
+msgstr "Pohľad na dokument"
+
+#"documents" =
+msgid "documents"
+msgstr "dokumenty"
+
+#"doneButton" =
+msgid "done"
+msgstr "hotovo"
+
+#"download" =
+msgid "Download"
+msgstr "Stiahnuť"
+
+#"due" =
+msgid "Due"
+msgstr "Termín"
+
+#"duration" =
+msgid "Duration"
+msgstr "Doba trvania"
+
+#"edit" =
+msgid "edit"
+msgstr "upraviť"
+
+#"editModeButton" =
+msgid "switch to editmode"
+msgstr ""
+
+#"editNote" =
+msgid "Edit note"
+msgstr ""
+
+#"editObjectLink" =
+msgid "edit this objectlink"
+msgstr ""
+
+#"edit_access" =
+msgid "Edit Access"
+msgstr ""
+
+#"editattrs" =
+msgid "attributes"
+msgstr "atribúty"
+
+#"edited" =
+msgid "document is edited"
+msgstr ""
+
+#"editingDownloadLabel" =
+msgid "Download"
+msgstr "Stiahnuť"
+
+#"email" =
+msgid "Link to email"
+msgstr ""
+
+#"endDate" =
+msgid "Enddate"
+msgstr "Konečný dátum"
+
+#"enterprise" =
+msgid "Link to company"
+msgstr ""
+
+#"enterpriseProjectAssociates" =
+msgid "Company Associates"
+msgstr ""
+
+#"enterpriseType" =
+msgid "Company"
+msgstr "Spoločnosť"
+
+#"error_leader_not_in_team" =
+msgid "Error: The selected projectlead '%@' is not in the access group %@!"
+msgstr ""
+
+#"error_no_end_date" =
+msgid "Error in field end date: Please set!\n"
+msgstr ""
+
+#"error_no_project" =
+msgid "Error: No project set!\n"
+msgstr ""
+
+#"error_no_project_name" =
+msgid "Error in field name: Please fill in!\n"
+msgstr ""
+
+#"error_no_start_date" =
+msgid "Error in field start date: Please set!\n"
+msgstr ""
+
+#"error_pcode_not_unique" =
+msgid "Error in field projectcode: Already used!\n"
+msgstr ""
+
+#"error_projectContainsDataOrNoAccess" =
+msgid "Error: Project contains data or no access!"
+msgstr ""
+
+#"executant" =
+msgid "Executor"
+msgstr ""
+
+#"extended" =
+msgid "Extended"
+msgstr "Rozšírený"
+
+#"extension" =
+msgid "Extension"
+msgstr "Prípona"
+
+#"external" =
+msgid "External Link"
+msgstr ""
+
+#"favorites" =
+msgid "favorites"
+msgstr "obľúbené"
+
+#"fax" =
+msgid "Download FAX document"
+msgstr ""
+
+#"fileName" =
+msgid "Filename"
+msgstr ""
+
+#"fileSize" =
+msgid "Size"
+msgstr "Veľkosť"
+
+#"fileType" =
+msgid "Object kind"
+msgstr ""
+
+#"fileUpload" =
+msgid "Fileupload"
+msgstr ""
+
+#"finishButton" =
+msgid "finish"
+msgstr ""
+
+#"firstOwner" =
+msgid "First Owner"
+msgstr ""
+
+#"fm" =
+msgid "Download Framemaker document"
+msgstr ""
+
+#"fm_error_1" =
+msgid "Try to move from/to version"
+msgstr ""
+
+#"fm_error_10" =
+msgid "Only current owner or root can move edited files"
+msgstr ""
+
+#"fm_error_11" =
+msgid "Missing access for insert"
+msgstr ""
+
+#"fm_error_12" =
+msgid "Move failed"
+msgstr ""
+
+#"fm_error_13" =
+msgid "doc::set-folder failed"
+msgstr ""
+
+#"fm_error_14" =
+msgid "doc::set-object-link failed"
+msgstr ""
+
+#"fm_error_15" =
+msgid "Missing path extension"
+msgstr ""
+
+#"fm_error_16" =
+msgid "doc::checkout failed"
+msgstr ""
+
+#"fm_error_17" =
+msgid "doc::set failed"
+msgstr ""
+
+#"fm_error_18" =
+msgid "doc::release failed"
+msgstr ""
+
+#"fm_error_19" =
+msgid "doc::move failed"
+msgstr ""
+
+#"fm_error_2" =
+msgid "Try to move root folder"
+msgstr ""
+
+#"fm_error_20" =
+msgid "Missing file"
+msgstr ""
+
+#"fm_error_21" =
+msgid "Missing delete access"
+msgstr ""
+
+#"fm_error_22" =
+msgid "Couldn`t delete at path"
+msgstr ""
+
+#"fm_error_23" =
+msgid "Only current owner or root can delete edited files"
+msgstr ""
+
+#"fm_error_24" =
+msgid "Path is not a folder"
+msgstr ""
+
+#"fm_error_25" =
+msgid "Could not create file"
+msgstr ""
+
+#"fm_error_26" =
+msgid "Missing target"
+msgstr ""
+
+#"fm_error_27" =
+msgid "Missing folder"
+msgstr ""
+
+#"fm_error_28" =
+msgid "Could not create link"
+msgstr ""
+
+#"fm_error_29" =
+msgid "Missing read access"
+msgstr ""
+
+#"fm_error_3" =
+msgid "Try to move do descendant"
+msgstr ""
+
+#"fm_error_30" =
+msgid "Directories or symbolic links has no content!"
+msgstr ""
+
+#"fm_error_31" =
+msgid "Try to copy to descendant"
+msgstr ""
+
+#"fm_error_32" =
+msgid "Source is a folder"
+msgstr ""
+
+#"fm_error_33" =
+msgid "Couldn't create folder"
+msgstr ""
+
+#"fm_error_34" =
+msgid "Missing path"
+msgstr ""
+
+#"fm_error_35" =
+msgid "Missing write access"
+msgstr ""
+
+#"fm_error_36" =
+msgid "Operation is not allowed for versions"
+msgstr ""
+
+#"fm_error_37" =
+msgid "Only current owner or root can edit edited files"
+msgstr ""
+
+#"fm_error_38" =
+msgid "Unsupported file attributes"
+msgstr ""
+
+#"fm_error_39" =
+msgid "Missing document"
+msgstr ""
+
+#"fm_error_4" =
+msgid "Missing source"
+msgstr ""
+
+#"fm_error_40" =
+msgid "Uncomplete document"
+msgstr ""
+
+#"fm_error_41" =
+msgid "Could not autocreate document"
+msgstr ""
+
+#"fm_error_42" =
+msgid "Could not delete tmp file after exception"
+msgstr ""
+
+#"fm_error_43" =
+msgid "Missing propertymanager"
+msgstr ""
+
+#"fm_error_44" =
+msgid "Missing globalID"
+msgstr ""
+
+#"fm_error_45" =
+msgid "Error during add properties"
+msgstr ""
+
+#"fm_error_46" =
+msgid "Error during delete properties"
+msgstr ""
+
+#"fm_error_47" =
+msgid "Error during update properties"
+msgstr ""
+
+#"fm_error_48" =
+msgid "Could not checkout folder"
+msgstr ""
+
+#"fm_error_49" =
+msgid "File is already in edit mode"
+msgstr ""
+
+#"fm_error_5" =
+msgid "Missing destination"
+msgstr ""
+
+#"fm_error_50" =
+msgid "doc::checkout failed"
+msgstr ""
+
+#"fm_error_51" =
+msgid "File is already released"
+msgstr ""
+
+#"fm_error_52" =
+msgid "doc::release failed"
+msgstr ""
+
+#"fm_error_53" =
+msgid "doc::reject failed"
+msgstr ""
+
+#"fm_error_54" =
+msgid "Missing version"
+msgstr ""
+
+#"fm_error_55" =
+msgid "documentversion::checkout failed"
+msgstr ""
+
+#"fm_error_56" =
+msgid "Missing blob name"
+msgstr ""
+
+#"fm_error_57" =
+msgid "reject failed after doc::set failed"
+msgstr ""
+
+#"fm_error_6" =
+msgid "Source path doesn`t exist"
+msgstr ""
+
+#"fm_error_7" =
+msgid "Destination path already exist"
+msgstr ""
+
+#"fm_error_8" =
+msgid "Missing global id for parent folder"
+msgstr ""
+
+#"fm_error_9" =
+msgid "Missing access for move"
+msgstr ""
+
+#"folder" =
+msgid "Folder"
+msgstr "Priečinok"
+
+#"folderEditorTitle" =
+msgid "Folder Editor"
+msgstr ""
+
+#"folderViewer" =
+msgid "Folder view"
+msgstr ""
+
+#"frame" =
+msgid "Download Framemaker document"
+msgstr ""
+
+#"frm" =
+msgid "Download Framemaker document"
+msgstr ""
+
+#"gif" =
+msgid "Download GIF image"
+msgstr ""
+
+#"gz" =
+msgid "Download GZ document"
+msgstr ""
+
+#"hour" =
+msgid "hour"
+msgstr "hodina"
+
+#"hours" =
+msgid "hours"
+msgstr ""
+
+#"htm" =
+msgid "Download HTML document"
+msgstr ""
+
+#"html" =
+msgid "Download HTML document"
+msgstr ""
+
+#"in" =
+msgid "in"
+msgstr "in"
+
+#"job" =
+msgid "Link to task"
+msgstr ""
+
+#"jobHistoryLabel" =
+msgid "Process History"
+msgstr ""
+
+#"jobHistoryTitle" =
+msgid "Process History"
+msgstr ""
+
+#"jobLabel" =
+msgid "task"
+msgstr ""
+
+#"jobStatus" =
+msgid "Status"
+msgstr "Stav"
+
+#"jobs" =
+msgid "Tasks"
+msgstr "Úlohy"
+
+#"jobsLabel" =
+msgid "tasks"
+msgstr "úlohy"
+
+#"jobsSubview" =
+msgid "tasks subview"
+msgstr "podzobrazenie úloh"
+
+#"jobs_title" =
+msgid "Tasks"
+msgstr "Úlohy"
+
+#"jpg" =
+msgid "Download JPG image"
+msgstr ""
+
+#"kilometersLabel" =
+msgid "kilometers"
+msgstr ""
+
+#"kilometersSum" =
+msgid "Kilometers"
+msgstr ""
+
+#"lastModifiedBy" =
+msgid "Last modified by"
+msgstr ""
+
+#"leader" =
+msgid "Projectlead"
+msgstr "Vedúci projektu"
+
+#"link" =
+msgid "Link"
+msgstr "Odkaz"
+
+#"link_appointment" =
+msgid "Appointment"
+msgstr ""
+
+#"link_date" =
+msgid "Appointment"
+msgstr ""
+
+#"link_doc" =
+msgid "Document"
+msgstr "Dokument"
+
+#"link_document" =
+msgid "Document"
+msgstr "Dokument"
+
+#"link_email" =
+msgid "Email"
+msgstr "Email"
+
+#"link_enterprise" =
+msgid "Company"
+msgstr "Spoločnosť"
+
+#"link_external" =
+msgid "External Link"
+msgstr ""
+
+#"link_job" =
+msgid "Task"
+msgstr "Úloha"
+
+#"link_person" =
+msgid "Person"
+msgstr "Osoba"
+
+#"link_project" =
+msgid "Project"
+msgstr "Projekt"
+
+#"lockedLabel" =
+msgid "Locked by"
+msgstr ""
+
+#"logsLabel" =
+msgid "Logs"
+msgstr "Záznamy"
+
+#"mail" =
+msgid "Mail"
+msgstr "Pošta"
+
+#"mailLabel" =
+msgid "mail document link"
+msgstr ""
+
+#"match" =
+msgid "Match"
+msgstr ""
+
+#"maxDuration" =
+msgid "max. duration"
+msgstr ""
+
+#"mif" =
+msgid "Download Framemaker document"
+msgstr ""
+
+#"minutesLabel" =
+msgid "minutes"
+msgstr "zápisy"
+
+#"mode_0" =
+msgid "Main Attributes"
+msgstr ""
+
+#"mode_1" =
+msgid "Accounts"
+msgstr "Účty"
+
+#"mode_2" =
+msgid "Project Manager"
+msgstr ""
+
+#"mode_3" =
+msgid "Companies/Contacts"
+msgstr ""
+
+#"mode_4" =
+msgid "Start/Enddate"
+msgstr ""
+
+#"mode_4.1" =
+msgid "Process List"
+msgstr ""
+
+#"mode_4.2" =
+msgid "Resource Assignment"
+msgstr ""
+
+#"modified" =
+msgid "Modified"
+msgstr "Zmenené"
+
+#"move" =
+msgid "move"
+msgstr ""
+
+#"moveButton" =
+msgid "move"
+msgstr ""
+
+#"moveDocuments" =
+msgid "move documents"
+msgstr ""
+
+#"moveInactiveLabel" =
+msgid "no permission to move"
+msgstr ""
+
+#"moveLabel" =
+msgid "move this folder"
+msgstr ""
+
+#"moveLink" =
+msgid "move this link"
+msgstr ""
+
+#"moveToFolder" =
+msgid "to this folder"
+msgstr ""
+
+#"movefolder" =
+msgid "move"
+msgstr ""
+
+#"mpp" =
+msgid "Download MPP document"
+msgstr ""
+
+#"name" =
+msgid "Name"
+msgstr "Názov"
+
+#"new" =
+msgid "new"
+msgstr "nové"
+
+#"newButton" =
+msgid "new"
+msgstr "nové"
+
+#"newDocumentLabel" =
+msgid "insert new document"
+msgstr ""
+
+#"newFolderLabel" =
+msgid "create new subfolder"
+msgstr ""
+
+#"newJobLabel" =
+msgid "create new task"
+msgstr ""
+
+#"newObjectLinkLabel" =
+msgid "create new objectlink"
+msgstr ""
+
+#"newTextDocumentLabel" =
+msgid "insert new text document"
+msgstr ""
+
+#"newdoc" =
+msgid "new document"
+msgstr "nový dokument"
+
+#"newfolder" =
+msgid "new folder"
+msgstr "nový priečinok"
+
+#"newjob" =
+msgid "new task"
+msgstr ""
+
+#"newlink" =
+msgid "new link"
+msgstr "nový odkaz"
+
+#"newtextdoc" =
+msgid "new textdocument"
+msgstr "nový textový dokument"
+
+#"nextButton" =
+msgid "go forward"
+msgstr ""
+
+#"noDocTitle" =
+msgid "<untitled>"
+msgstr ""
+
+#"noDownload" =
+msgid "no download - document never released"
+msgstr ""
+
+#"noJobAssociated" =
+msgid "-"
+msgstr "-"
+
+#"noOfCols" =
+msgid "Number of columns"
+msgstr "Počet stĺpcov"
+
+#"noProject" =
+msgid "- no project -"
+msgstr ""
+
+#"noactualWorkData" =
+msgid "no worktime data collected"
+msgstr ""
+
+#"nokilometersData" =
+msgid "no kilometer data collected"
+msgstr ""
+
+#"nopercentData" =
+msgid "no completion data collected"
+msgstr ""
+
+#"note" =
+msgid "Note"
+msgstr "Poznámka"
+
+#"note_title" =
+msgid "Title"
+msgstr "Nadpis"
+
+#"notes" =
+msgid "notes"
+msgstr ""
+
+#"notesSubview" =
+msgid "notes subview"
+msgstr ""
+
+#"notetitle" =
+msgid "Name"
+msgstr "Názov"
+
+#"nothingToPaste" =
+msgid "no pasteable content in clipboard"
+msgstr ""
+
+#"nototalWorkData" =
+msgid "no worktime data collected"
+msgstr ""
+
+#"number" =
+msgid "Number"
+msgstr "Číslo"
+
+#"objectLink" =
+msgid "Url"
+msgstr "Url"
+
+#"objectLinkViewerTitle" =
+msgid "Objectlink Viewer"
+msgstr ""
+
+#"objectVersionLabel" =
+msgid "version"
+msgstr ""
+
+#"ofProcess" =
+msgid "sub process of"
+msgstr ""
+
+#"oldJobs" =
+msgid "Tasks"
+msgstr "Úlohy"
+
+#"operativePart" =
+msgid "Operative Part"
+msgstr ""
+
+#"orEnterprise" =
+msgid "or Company"
+msgstr ""
+
+#"owner" =
+msgid "Owner"
+msgstr "Vlastník"
+
+#"parallelProcess" =
+msgid "parallel process"
+msgstr ""
+
+#"paste" =
+msgid "Paste"
+msgstr "Vložiť"
+
+#"pdf" =
+msgid "Download PDF document"
+msgstr ""
+
+#"percent" =
+msgid "%"
+msgstr "%"
+
+#"percentSum" =
+msgid "Completion"
+msgstr ""
+
+#"permissionDenied" =
+msgid "Permission denied"
+msgstr ""
+
+#"permissions_d" =
+msgid "Delete"
+msgstr "Zmazať"
+
+#"permissions_f" =
+msgid "Form Designer"
+msgstr ""
+
+#"permissions_i" =
+msgid "Insert"
+msgstr "Vložiť"
+
+#"permissions_m" =
+msgid "Project Manager"
+msgstr ""
+
+#"permissions_r" =
+msgid "Read"
+msgstr "Prečítané"
+
+#"permissions_w" =
+msgid "Write"
+msgstr ""
+
+#"person" =
+msgid "Link to person"
+msgstr ""
+
+#"personProjectAssociates" =
+msgid "Contact Associates"
+msgstr ""
+
+#"personType" =
+msgid "Person"
+msgstr "Osoba"
+
+#"pot" =
+msgid "Download POT document"
+msgstr ""
+
+#"pps" =
+msgid "Download PPS document"
+msgstr ""
+
+#"ppt" =
+msgid "Download PPT document"
+msgstr ""
+
+#"priority" =
+msgid "Priority"
+msgstr "Dôležitosť"
+
+#"priorityLabel" =
+msgid "Priority"
+msgstr "Dôležitosť"
+
+#"priority_1" =
+msgid "Very High"
+msgstr ""
+
+#"priority_2" =
+msgid "High"
+msgstr "Vysoká"
+
+#"priority_3" =
+msgid "Average"
+msgstr "Priemer"
+
+#"priority_4" =
+msgid "Low"
+msgstr "Nízka"
+
+#"priority_5" =
+msgid "Very Low"
+msgstr ""
+
+#"private" =
+msgid "private"
+msgstr "súkromné"
+
+#"project" =
+msgid "Project"
+msgstr "Projekt"
+
+#"projectEditorTitle" =
+msgid "Project Editor"
+msgstr ""
+
+#"projectLeader" =
+msgid "Projectlead"
+msgstr "Vedúci projektu"
+
+#"projectReportLabel" =
+msgid "Task List Report"
+msgstr ""
+
+#"projectTitle" =
+msgid "Projects"
+msgstr "Projekty"
+
+#"projectUrl" =
+msgid "Project URL"
+msgstr ""
+
+#"projectViewer" =
+msgid "Projectview"
+msgstr ""
+
+#"projectViewerTitle" =
+msgid "Project Viewer"
+msgstr ""
+
+#"projectWindowTitle" =
+msgid "Look for Projects Data"
+msgstr ""
+
+#"projectWizardTitle" =
+msgid "Project Wizard"
+msgstr ""
+
+#"project_assignment_title" =
+msgid "Assign Projects"
+msgstr "Priradiť projekt"
+
+#"project_subview" =
+msgid "Project Subview"
+msgstr ""
+
+#"projects" =
+msgid "Projects"
+msgstr "Projekty"
+
+#"projects_subview" =
+msgid "Projects Subview"
+msgstr ""
+
+#"r" =
+msgid "read"
+msgstr "prečítané"
+
+#"refresh" =
+msgid "refresh"
+msgstr "obnoviť"
+
+#"reject" =
+msgid "reject"
+msgstr "odmietnuť"
+
+#"release" =
+msgid "release"
+msgstr ""
+
+#"releaseDate" =
+msgid "Release Date"
+msgstr ""
+
+#"released" =
+msgid "checkout document"
+msgstr ""
+
+#"renameFolderLabel" =
+msgid "rename this folder"
+msgstr ""
+
+#"renamefolder" =
+msgid "rename"
+msgstr ""
+
+#"resourceName" =
+msgid "Resource Name"
+msgstr ""
+
+#"resourceNumber" =
+msgid "resources"
+msgstr ""
+
+#"resources" =
+msgid "Resources"
+msgstr "Zdroje"
+
+#"root" =
+msgid "root"
+msgstr ""
+
+#"rtf" =
+msgid "Download RTF document"
+msgstr ""
+
+#"rw" =
+msgid "read+write"
+msgstr ""
+
+#"save" =
+msgid "save"
+msgstr "uložiť"
+
+#"saveAndMoveButton" =
+msgid "save and move"
+msgstr ""
+
+#"saveAndNextButton" =
+msgid "save and next"
+msgstr ""
+
+#"saveButton" =
+msgid "save"
+msgstr "uložiť"
+
+#"search" =
+msgid "search"
+msgstr "hľadať"
+
+#"searchAccounts" =
+msgid "Search Accounts"
+msgstr "Hľadať účty"
+
+#"searchAccountsOption" =
+msgid "free search -->"
+msgstr ""
+
+#"searchButton" =
+msgid "search"
+msgstr "hľadať"
+
+#"searchCompanies" =
+msgid "Search Associates"
+msgstr ""
+
+#"searchDocuments" =
+msgid "search"
+msgstr "hľadať"
+
+#"searchEnterprise" =
+msgid "Search Company"
+msgstr "Hľadať spoločnosť"
+
+#"searchProject" =
+msgid "Search Project"
+msgstr "Hľadať projekt"
+
+#"searchProjects" =
+msgid "Search Projects"
+msgstr "hľadať projekty"
+
+#"send" =
+msgid "send"
+msgstr "odoslať"
+
+#"sendContent" =
+msgid "Attach File"
+msgstr "Priložiť súbor"
+
+#"sequentialProcess" =
+msgid "sequential process"
+msgstr ""
+
+#"showAttributes" =
+msgid "show attributes"
+msgstr ""
+
+#"sinceLabel" =
+msgid "since"
+msgstr "od"
+
+#"sit" =
+msgid "Download SIT document"
+msgstr ""
+
+#"size" =
+msgid "Size"
+msgstr "Veľkosť"
+
+#"sortOpSuffixAND" =
+msgid "all of search fields"
+msgstr "všetky vyhľadávacie polia"
+
+#"sortOpSuffixOR" =
+msgid "any of search fields"
+msgstr "jedno vyhľadávacie pole"
+
+#"staff" =
+msgid "staff"
+msgstr ""
+
+#"standardCosts" =
+msgid "Standard Costs"
+msgstr ""
+
+#"startDate" =
+msgid "Startdate"
+msgstr "Počiatočný dátum"
+
+#"startLabel" =
+msgid "You are here:"
+msgstr "Ste tu:"
+
+#"status" =
+msgid "Checkout"
+msgstr ""
+
+#"statusLabel" =
+msgid "Status"
+msgstr "Stav"
+
+#"statusReleased" =
+msgid "document is released"
+msgstr ""
+
+#"subDuration" =
+msgid "duration of sub processes"
+msgstr ""
+
+#"subJobs" =
+msgid "Subtasks"
+msgstr "Podúlohy"
+
+#"taskName" =
+msgid "Taskname"
+msgstr "Názov úlohy"
+
+#"team" =
+msgid "Team"
+msgstr "Skupina"
+
+#"teamNilSelect" =
+msgid "private"
+msgstr "súkromné"
+
+#"text" =
+msgid "Text"
+msgstr "Text"
+
+#"textedit" =
+msgid "texteditor"
+msgstr ""
+
+#"tgz" =
+msgid "Download TGZ document"
+msgstr ""
+
+#"tif" =
+msgid "Download TIF document"
+msgstr ""
+
+#"tiff" =
+msgid "Download TIF document"
+msgstr ""
+
+#"title" =
+msgid "Filename"
+msgstr ""
+
+#"titleLabel" =
+msgid "Filename"
+msgstr ""
+
+#"token" =
+msgid "Token"
+msgstr ""
+
+#"totalWorkSum" =
+msgid "Total Work"
+msgstr "Celkom práce"
+
+#"txt" =
+msgid "Download text document"
+msgstr ""
+
+#"type" =
+msgid "Type"
+msgstr "Typ"
+
+#"unknown" =
+msgid "download miscellaneous document type"
+msgstr ""
+
+#"useStartEndDate" =
+msgid "Start/Enddate"
+msgstr ""
+
+#"version" =
+msgid "Version"
+msgstr "Verzia"
+
+#"view" =
+msgid "Viewer"
+msgstr ""
+
+#"viewButton" =
+msgid "view"
+msgstr ""
+
+#"viewDocument" =
+msgid "View Document"
+msgstr ""
+
+#"viewLink" =
+msgid "View Objectlink"
+msgstr ""
+
+#"viewModeButton" =
+msgid "switch to view mode"
+msgstr ""
+
+#"week" =
+msgid "week"
+msgstr ""
+
+#"weeks" =
+msgid "weeks"
+msgstr ""
+
+#"windowTitleAttributeDocumentEditor" =
+msgid "Edit Attributes"
+msgstr ""
+
+#"windowTitleDocumentEditor" =
+msgid "Edit Document"
+msgstr "Upraviť dokument"
+
+#"windowTitleDocumentViewer" =
+msgid "Document Viewer"
+msgstr ""
+
+#"windowTitleNoteEditor" =
+msgid "Edit Note"
+msgstr "Upraviť poznámku"
+
+#"windowTitleObjectLinkEditor" =
+msgid "Edit Objectlink"
+msgstr ""
+
+#"windowTitleTextDocumentEditor" =
+msgid "Edit Textdocument"
+msgstr ""
+
+#"xls" =
+msgid "Download Excel document"
+msgstr ""
+
+#"zip" =
+msgid "Download Zip document"
+msgstr ""
+
+#"zoomInButton" =
+msgid "zoom in"
+msgstr ""
+
+#"zoomOutButton" =
+msgid "zoom out"
+msgstr ""
+
