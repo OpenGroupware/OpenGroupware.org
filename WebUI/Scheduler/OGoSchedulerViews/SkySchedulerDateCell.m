@@ -21,6 +21,12 @@
 
 #include <NGObjWeb/WODynamicElement.h>
 
+/*
+  SkySchedulerDateCell
+
+  TODO: document what it does.
+*/
+
 @class WOAssociation;
 
 @interface SkySchedulerDateCell : WODynamicElement
@@ -51,39 +57,51 @@ extern unsigned getpid();
 
 @implementation SkySchedulerDateCell
 
+static NSArray *participantSortOrderings = nil;
+
 + (int)version {
   return [super version] + 0;
+}
++ (void)initialize {
+  participantSortOrderings = [[NSArray alloc] initWithObjects:
+                    [EOSortOrdering sortOrderingWithKey:@"isTeam"
+                                    selector:EOCompareAscending],
+                    [EOSortOrdering sortOrderingWithKey:@"isAccount"
+                                    selector:EOCompareAscending],
+                    [EOSortOrdering sortOrderingWithKey:@"login"
+                                    selector:EOCompareAscending],
+                    nil];
 }
 
 - (id)initWithName:(NSString *)_name
   associations:(NSDictionary *)_config
-  template:(WOElement *)_elms
+  template:(WOElement *)_t
 {
-  if ((self = [super initWithName:_name associations:_config template:_elms])) {
-    self->appointment      = OWGetProperty(_config, @"appointment");
-    self->weekday          = OWGetProperty(_config, @"weekday");
-    self->participants     = OWGetProperty(_config, @"participants");
-    self->isClickable      = OWGetProperty(_config, @"isClickable");
-    self->isPrivate        = OWGetProperty(_config, @"isPrivate");
-    self->privateLabel     = OWGetProperty(_config, @"privateLabel");
-    self->action           = OWGetProperty(_config, @"action");
-    self->icon             = OWGetProperty(_config, @"icon");
-    self->isAllDay         = OWGetProperty(_config, @"isAllDay");
-    self->template         = RETAIN(_elms);
+  if ((self = [super initWithName:_name associations:_config template:_t])) {
+    self->appointment  = OWGetProperty(_config, @"appointment");
+    self->weekday      = OWGetProperty(_config, @"weekday");
+    self->participants = OWGetProperty(_config, @"participants");
+    self->isClickable  = OWGetProperty(_config, @"isClickable");
+    self->isPrivate    = OWGetProperty(_config, @"isPrivate");
+    self->privateLabel = OWGetProperty(_config, @"privateLabel");
+    self->action       = OWGetProperty(_config, @"action");
+    self->icon         = OWGetProperty(_config, @"icon");
+    self->isAllDay     = OWGetProperty(_config, @"isAllDay");
+    self->template     = [_t retain];
   }
   return self;
 }
 
 - (void)dealloc {
-  RELEASE(self->isClickable);
-  RELEASE(self->isPrivate);
-  RELEASE(self->participants);
-  RELEASE(self->appointment);
-  RELEASE(self->weekday);
-  RELEASE(self->privateLabel);
-  RELEASE(self->action);
-  RELEASE(self->icon);
-  RELEASE(self->template);
+  [self->template     release];
+  [self->isClickable  release];
+  [self->isPrivate    release];
+  [self->participants release];
+  [self->appointment  release];
+  [self->weekday      release];
+  [self->privateLabel release];
+  [self->action       release];
+  [self->icon         release];
   [super dealloc];
 }
 
@@ -186,6 +204,7 @@ extern unsigned getpid();
   showAMPM:(BOOL)_showAMPM
   inContext:(WOContext *)_ctx
 {
+  // TODO: should be a formatter?
   NSString       *fm;
   NSCalendarDate *sD, *wD;
   BOOL           allDay;
@@ -221,6 +240,7 @@ extern unsigned getpid();
   showAMPM:(BOOL)_showAMPM
   inContext:(WOContext *)_ctx
 {
+  // TODO: should be a formatter?
   NSString       *fm;
   NSCalendarDate *eD, *wD;
   BOOL           allDay;
@@ -266,13 +286,13 @@ extern unsigned getpid();
   }
   else {
     t = [_apt valueForKey:@"title"];
-    if (t == nil) t = [self->privateLabel stringValueInComponent:co];
+    if (![t isNotNull]) t = [self->privateLabel stringValueInComponent:co];
   }
 
   t = [t stringValue];
 
   if (_len != -1) {
-    if ([t length] > _len) {
+    if ([t length] > _len) { // TODO: should be a formatter
       t = [t substringToIndex:(_len - 2)];
       t = [t stringByAppendingString:@".."];
     }
@@ -291,14 +311,13 @@ extern unsigned getpid();
 
   r = [_apt valueForKey:@"resourceNames"];
   r = [r stringValue];
-
+  
   if (_len != -1) {
     if ([r length] > _len) {
       r = [r substringToIndex:(_len - 2)];
       r = [r stringByAppendingString:@".."];
     }
   }
-  
   return r;
 }
 
@@ -309,12 +328,9 @@ extern unsigned getpid();
 {
   SkyAppointmentFormatter *f;
 
-  if (_nl)
-    f = [SkyAppointmentFormatter formatterWithFormat:
-                                 @"%S - %E;\n%T;\n%L;\n%10P;\n%50R"];
-  else
-    f = [SkyAppointmentFormatter formatterWithFormat:
-                                 @"%S - %E; %T; %L; %10P; %50R"];
+  f = [SkyAppointmentFormatter formatterWithFormat:_nl
+			       ? @"%S - %E;\n%T;\n%L;\n%10P;\n%50R"
+			       : @"%S - %E; %T; %L; %10P; %50R"];
   [f setShowFullNames:_showFull];
   [f setRelationDate:[self->weekday valueInComponent:[_ctx component]]];
   if ([self->isAllDay boolValueInComponent:[_ctx component]]) {
@@ -560,25 +576,16 @@ extern unsigned getpid();
   
   /* participants */
   {
-    id      loginPKey = nil;
-    NSArray *p        = nil;
-    int     i, count;
+    NSNumber *loginPKey;
+    NSArray  *p;
+    int      i, count;
 
     loginPKey = [[(id)[_ctx session] activeAccount] valueForKey:@"companyId"];
-    p         = [self->participants valueInComponent:[_ctx component]];
-
-    p = [p sortedArrayUsingKeyOrderArray:
-           [NSArray arrayWithObjects:
-                    [EOSortOrdering sortOrderingWithKey:@"isTeam"
-                                    selector:EOCompareAscending],
-                    [EOSortOrdering sortOrderingWithKey:@"isAccount"
-                                    selector:EOCompareAscending],
-                    [EOSortOrdering sortOrderingWithKey:@"login"
-                                    selector:EOCompareAscending],
-                    nil]];
     
-    count = [p count];
-    if (count == 0) {
+    p = [self->participants valueInComponent:[_ctx component]];
+    p = [p sortedArrayUsingKeyOrderArray:participantSortOrderings];
+    
+    if ((count = [p count]) == 0) {
       /* no participants ?? */
     }
     else if (count <= 5) {
@@ -617,9 +624,9 @@ extern unsigned getpid();
         }
       }
       
-      if (accountCount != count) {
+      if (accountCount != count)
         [_response appendContentHTMLString:@", ..."];
-      }
+      
       [_response appendContentString:@"<br />"];
     }
   }
@@ -671,9 +678,9 @@ extern unsigned getpid();
       }
     }
   }
+
   /* absence */
-  {
-    if (![self->isPrivate boolValueInComponent:co] && sevD) {
+  if (![self->isPrivate boolValueInComponent:co] && sevD) {
       NSString *ab;
       
       ab = [a valueForKey:@"absence"];
@@ -684,7 +691,6 @@ extern unsigned getpid();
         [_response appendContentHTMLString:[ab stringValue]];
         [_response appendContentString:@"</span>"];
       }
-    }
   }
 }
 
