@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyButtonRow.h"
 #include <OGoFoundation/WOSession+LSO.h>
@@ -37,6 +36,7 @@ static NSString *SkyButton_right = @"]";
 @implementation SkyButtonRow
 
 static NSMutableSet *defButtons = nil;
+static NSString *SkyExternalLinkAction = nil;
 
 + (int)version {
   return 3;
@@ -44,13 +44,17 @@ static NSMutableSet *defButtons = nil;
 
 + (void)initialize {
   if (defButtons) return;
-  defButtons = [[NSMutableSet alloc] init];
+  
+  defButtons = [[NSMutableSet alloc] initWithCapacity:8];
   [defButtons addObject:@"edit"];
   [defButtons addObject:@"delete"];
   [defButtons addObject:@"move"];
   [defButtons addObject:@"new"];
   [defButtons addObject:@"mail"];
   [defButtons addObject:@"clip"];
+
+  SkyExternalLinkAction = [[[NSUserDefaults standardUserDefaults]
+                             stringForKey:@"SkyExternalLinkAction"] copy];
 }
 
 - (id)initWithName:(NSString *)_name
@@ -396,12 +400,11 @@ static NSMutableSet *defButtons = nil;
                  @"<a href=\""];
     if ((!hasAction) && (target != nil)) {
       // seems to be external link
-        NSString *action =
-          [[NSUserDefaults standardUserDefaults]
-                           stringForKey:@"SkyExternalLinkAction"];
-        action = [NSString stringWithFormat:@"%@?url=%@", action,
-                           [url stringByEscapingURL]];
-        [_response appendContentHTMLAttributeValue:action];
+      NSString *action;
+      
+      action = [SkyExternalLinkAction stringByAppendingFormat:@"?url=%@",
+                                      [url stringByEscapingURL]];
+      [_response appendContentHTMLAttributeValue:action];
     }
     else {
       [_response appendContentHTMLAttributeValue:url];
@@ -533,11 +536,10 @@ static NSMutableSet *defButtons = nil;
                      @"<a class=\"skybuttonlink\" href=\""];
         if ((!hasAction) && (target != nil)) {
           // seems to be external link
-          NSString *action =
-            [[NSUserDefaults standardUserDefaults]
-                             stringForKey:@"SkyExternalLinkAction"];
-          action = [NSString stringWithFormat:@"%@?url=%@", action,
-                             [url stringByEscapingURL]];
+          NSString *action;
+          
+          action = [SkyExternalLinkAction stringByAppendingFormat:@"?url=%@", 
+                                            [url stringByEscapingURL]];
           [_response appendContentHTMLAttributeValue:action];
         }
         else {
