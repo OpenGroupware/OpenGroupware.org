@@ -139,73 +139,118 @@ static BOOL LSUseBasicAuth           = NO;
   [super sleep];
 }
 
-- (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
-  if ([self->user length] == 0) {
-    NSString *authType;
-    NSString *authUser;
-    
-    authType = [[_ctx request] headerForKey:@"x-webobjects-auth-type"];
-    authUser = [[authType lowercaseString] isEqualToString:@"basic"]
-      ? [[_ctx request] headerForKey:@"x-webobjects-remote-user"]
-      : nil;
-    
-    if ([authUser length] > 0) {
-      NSString *auth;
-      
-      [self setUser:authUser];
+/* response generation */
 
-      if (LSUseBasicAuth) {
-        if ((auth = [[_ctx request] headerForKey:@"authorization"])) {
-          NSRange r;
-          
-          r = [auth rangeOfString:@" " options:NSBackwardsSearch];
-          if (r.length > 0) {
-            auth = [auth substringFromIndex:(r.location + r.length)];
-            auth = [auth stringByDecodingBase64];
-          }
-          else
-            auth = nil;
-        }
-        if (auth) {
-          NSRange r;
+- (void)_setAuthRequiredInResponse:(WOResponse *)_response {
+  [_response setStatus:401 /* Auth Required */];
+  [_response setHeader:@"basic realm=\"OpenGroupware\""
+	     forKey:@"www-authenticate"];
+}
+
+- (BOOL)_basicAuthWithResponse:(WOResponse *)_r inContext:(WOContext *)_ctx {
+  NSString *auth;
+  id lso;
   
-          r = [auth rangeOfString:@":"];
-          auth = (r.length > 0)
-            ? [auth substringFromIndex:(r.location + r.length)]
-            : nil;
-        }
-        
-        if ([auth length] > 0) {
-          id lso;
-          
-          lso = [[WOApplication application] lsoServer];
-          
-          if ([lso isLoginAuthorized:[self user] password:auth]) {
-            [self setPassword:auth];
-            [self takeValue:[NSNumber numberWithBool:YES]
-                  forKey:@"autologin"];
-          }
-        }
-      }
-    }
-    else {
-      if (LSUseBasicAuth) {
-        [_response setHeader:@"basic realm=\"OpenGroupware\""
-                   forKey:@"www-authenticate"];
-        [_response setStatus:401];
-        return;
-      }
-    }
+  if (!LSUseBasicAuth)
+    return YES;
+
+  if ((auth = [[_ctx request] headerForKey:@"authorization"]) != nil) {
+    NSRange r;
+    
+    r = [auth rangeOfString:@" " options:NSBackwardsSearch];
+    if (r.length == 0)
+      return NO; /* abort */
+    
+    auth = [auth substringFromIndex:(r.location + r.length)];
+    auth = [auth stringByDecodingBase64];
   }
+  if (auth != nil) {
+    NSRange r;
+    
+    r = [auth rangeOfString:@":"];
+    auth = (r.length > 0)
+      ? [auth substringFromIndex:(r.location + r.length)]
+      : nil;
+  }
+        
+  if ([auth length] == 0)
+    return NO;
+  
+  lso = [[WOApplication application] lsoServer];
+  if (![lso isLoginAuthorized:[self user] password:auth])
+    return NO;
+
+  [self setPassword:auth];
+  [self takeValue:[NSNumber numberWithBool:YES] forKey:@"autologin"];
+  return YES;
+}
+
+- (BOOL)_userAuthWithResponse:(WOResponse *)_r inContext:(WOContext *)_ctx {
+  NSString *authType;
+  NSString *authUser;
+
+  if ([self->user length] > 0)
+    return YES;
+  
+  authType = [[_ctx request] headerForKey:@"x-webobjects-auth-type"];
+  authUser = [[authType lowercaseString] isEqualToString:@"basic"]
+    ? [[_ctx request] headerForKey:@"x-webobjects-remote-user"]
+    : nil;
+  
+  if ([authUser length] > 0) {
+    [self setUser:authUser];
+    
+    if (LSUseBasicAuth)
+      [self _basicAuthWithResponse:_r inContext:_ctx];
+  }
+  else if (LSUseBasicAuth) { /* basic-auth is on, but no 'remote user' */
+    [self _setAuthRequiredInResponse:_r];
+    return NO;
+  }
+  return YES;
+}
+
+- (void)appendMissingContentErrorToResponse:(WOResponse *)_response {
+  [_response appendContentString:@"<h3>Missing Loginpage Content</h3>"];
+  [_response appendContentString:@"<p>"
+	       @"This is probably due to a setup problem of your OGo server, "
+	       @"most likely OGo could not find the template files."];
+  [_response appendContentString:@"</p>"];
+  [_response appendContentString:
+	       @"<p>Contact your system administrator to resolve the "
+	       @"issue</p>"];
+}
+
+- (void)sanityCheckOnMainResponse:(WOResponse *)_response {
+  /* check for setup issues like missing templates */
+  
+  if ([_response status] != 200)
+    return;
+  
+  if ([[_response content] length] > 0)
+    return;
+
+  [self appendMissingContentErrorToResponse:_response];
+}
+
+- (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
+  if (![self _userAuthWithResponse:_response inContext:_ctx])
+    return;
+  
   [super appendToResponse:_response inContext:_ctx];
+  [self sanityCheckOnMainResponse:_response];
 }
 
 /* accessors */
 
 - (BOOL)hasRestrictedLicense { // TODO: remove
+  [self logWithFormat:@"WARNING(%s): used deprecated method!",
+	  __PRETTY_FUNCTION__];
   return NO;
 }
 - (int)daysLeftForLicense { // TODO: remove
+  [self logWithFormat:@"WARNING(%s): used deprecated method!",
+	  __PRETTY_FUNCTION__];
   return -1;
 }
 
@@ -221,6 +266,8 @@ static BOOL LSUseBasicAuth           = NO;
   return [[app lsoServer] canConnectToDatabase];
 }
 - (BOOL)hasLicense { // TODO: remove
+  [self logWithFormat:@"WARNING(%s): used deprecated method!",
+	  __PRETTY_FUNCTION__];
   return YES;
 }
 
@@ -308,6 +355,7 @@ static BOOL LSUseBasicAuth           = NO;
 - (void)setItem:(id)_i {
   ASSIGN(self->item, _i);
 }
+
 /* server is down */
 
 - (NSDictionary *)connectionDictionary {
@@ -329,6 +377,7 @@ static BOOL LSUseBasicAuth           = NO;
   return [v length] > 0 ? v : @"missing";
 }
 
+/* form restore functionality */
 
 - (BOOL)restorePageMode {
   return [self restorePageName]?YES:NO;
@@ -351,6 +400,17 @@ static BOOL LSUseBasicAuth           = NO;
   ASSIGN(self->restorePageLabel, _pl);;
 }
 
+- (BOOL)isRestoreKey:(NSString *)_key {
+  if ([_key isEqualToString:@"restorePageName"])  return YES;
+  if ([_key isEqualToString:@"restorePageLabel"]) return YES;
+  if ([_key isEqualToString:@"loginName"])        return YES;
+  if ([_key isEqualToString:@"button"])           return YES;
+  if ([_key isEqualToString:@"da"])               return YES;
+  if ([_key isEqualToString:@"o"])                return YES;
+  if ([_key isEqualToString:@"password"])         return YES;
+  return NO;
+}
+
 - (void)initRestoreWithRequest:(WORequest *)_req {
   NSEnumerator        *enumerator;
   NSString            *key;
@@ -365,21 +425,9 @@ static BOOL LSUseBasicAuth           = NO;
         
   parameters = [NSMutableDictionary dictionaryWithCapacity:16];
   enumerator = [[_req formValueKeys] objectEnumerator];
-
-  while ((key = [enumerator nextObject])) {
-    if ([key isEqualToString:@"restorePageName"])
-      continue;
-    if ([key isEqualToString:@"restorePageLabel"])
-      continue;
-    if ([key isEqualToString:@"loginName"])
-      continue;
-    if ([key isEqualToString:@"button"])
-      continue;
-    if ([key isEqualToString:@"da"])
-      continue;
-    if ([key isEqualToString:@"o"])
-      continue;
-    if ([key isEqualToString:@"password"])
+  
+  while ((key = [enumerator nextObject]) != nil) {
+    if ([self isRestoreKey:key])
       continue;
 
     if ([key rangeOfString:@"."].length == 0) {
@@ -396,8 +444,8 @@ static BOOL LSUseBasicAuth           = NO;
   NSString *s;
   
   s = [[[self application] baseURL] absoluteString];
-  return [[[[self context] request] adaptorPrefix] 
-	          stringByAppendingString:s];  
+  s = [[[[self context] request] adaptorPrefix] stringByAppendingString:s];
+  return s;
 }
 
 @end /* Main */
