@@ -1,7 +1,5 @@
-// $Id: SkyLDAP.strings,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
-
-ldap_window_title = "Internet Directory Query"
-SkyLDAPQueryPage  = "Internet Directory Query"
-LDAPQuery         = "LDAP Query"
-
-search            = "suchen"
+// this is for a tool in Misc
+LDAPQuery         = "LDAP Query";
+SkyLDAPQueryPage  = "Internet Directory Query";
+ldap_window_title = "Internet Directory Query";
+search            = "suchen";

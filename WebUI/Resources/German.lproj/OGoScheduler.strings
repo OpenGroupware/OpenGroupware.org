@@ -1,5 +1,3 @@
-// $Id: OGoScheduler.strings,v 1.3 2004/06/22 15:48:19 helge Exp $
-
 00_days             = "Tage";
 05_weeks            = "Wochen";
 10                  = "10 Minuten";

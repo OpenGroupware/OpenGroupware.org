@@ -1,5 +1,3 @@
-// $Id: PersonsUI.strings,v 1.9 2004/08/16 14:48:47 frank Exp $
-
 // TODO: needs trailing ';' for MacOSX
 00_created                    = "erstellt";
 01_dear_ms                    = "Dear Ms.";
@@ -360,5 +358,4 @@ wizardBack                     = "Zurück";
 wizardCancel                   = "Abbrechen";
 wizardFinish                   = "Ende";
 wizardForward                  = "Vorwärts";
-xlink_kd_nr                    = "Xlink Kd.-Nr.";
 zip                            = "PLZ";

@@ -1,5 +1,3 @@
-// $Id: RelatedLinksUI.strings,v 1.4 2004/07/04 20:43:38 helge Exp $
-
 button_linkadd                      = "+";
 linkType_pda_conflicting_ogo_entry  = "konfliktender OGo Eintrag";
 linkType_pda_conflicting_palm_entry = "konfliktender Palm Eintrag";
