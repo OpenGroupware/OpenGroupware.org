@@ -86,7 +86,7 @@ Description: Development files for opengroupware.org-docapi
 Package: libopengroupware.org-docapi5.1
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libopengroupware.org-db-project5.1 | opengroupware.org-project-storage
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopengroupware.org-db-project5.1 | opengroupware.org5.1-project-storage
 Description: OpenGroupware.org document API
  The Document API is a set of Objective-C libraries wrapping the SOPE
  logic in a "document" API.
@@ -107,7 +107,7 @@ Description: Development files for OpenGroupware.org's database storage
 Package: libopengroupware.org-db-project5.1
 Section: libs
 Architecture: any
-Provides: opengroupware.org-project-storage
+Provides: opengroupware.org5.1-project-storage
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Database storage for OpenGroupware.org projects
  Files associated to OpenGroupware.org projects can be stored through different
@@ -127,7 +127,7 @@ Description: Development files for OpenGroupware.org's filesystem storage
 Package: libopengroupware.org-fs-project5.1
 Section: libs
 Architecture: any
-Provides: opengroupware.org-project-storage
+Provides: opengroupware.org5.1-project-storage
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Filesystem storage for OpenGroupware.org projects
  Files associated to OpenGroupware.org projects can be stored through different
@@ -202,7 +202,7 @@ Description: Library of common Web UI elements
 Package: opengroupware.org1.0a-database
 Section: web
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org-database-scripts, sope4.4-gdl1-postgresql
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org-database-scripts, sope_SOPEVER_-gdl1-postgresql
 Description: Database models for OpenGroupware.org
  This package contains the database models for OpenGroupware.org.
 
@@ -216,7 +216,7 @@ Description: Scripts to set up a database for OpenGroupware.org
 
 Package: opengroupware.org1.0a-webui-app
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org1.0a-database, sope4.4-libxmlsaxdriver, opengroupware.org1.0a-webui-core, opengroupware.org1.0a-webui-i18n-en | opengroupware.org1.0a-webui-i18n, opengroupware.org1.0a-webui-theme-default | opengroupware.org1.0a-webui-theme
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org1.0a-database, sope_SOPEVER_-libxmlsaxdriver, opengroupware.org1.0a-webui-core, opengroupware.org1.0a-webui-i18n-en | opengroupware.org1.0a-webui-i18n, opengroupware.org1.0a-webui-theme-default | opengroupware.org1.0a-webui-theme
 Recommends: libapache-mod-ngobjweb, apache, opengroupware.org-environment
 Description: Web UI application of OpenGroupware.org
  This package contains the executable and resources of
@@ -246,6 +246,7 @@ Description: Job component of OpenGroupware.org's Web UI
 Package: opengroupware.org1.0a-webui-mailer
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: opengroupware.org-webmail-tools
 Description: Mailing component of OpenGroupware.org's Web UI
  This package contains a webmail application for OpenGroupware.org's
  web UI. It needs an IMAP server for the mail feed and and SMTP server
@@ -309,7 +310,7 @@ Description: Development Files for the ZideStore server
 Package: opengroupware.org-zidestore1.3
 Section: web
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org1.0a-database, sope4.4-libxmlsaxdriver, sope4.4-versitsaxdriver
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org1.0a-database, sope_SOPEVER_-libxmlsaxdriver, sope_SOPEVER_-versitsaxdriver
 Recommends: libapache-mod-ngobjweb, apache, opengroupware.org-environment
 Description: WebDAV Server for OpenGroupware.org
  The ZideStore Server provides WebDAV access to the OpenGroupware.org
@@ -321,7 +322,7 @@ Description: WebDAV Server for OpenGroupware.org
 
 Package: opengroupware.org1.0a-xmlrpcd
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org1.0a-database, sope4.4-libxmlsaxdriver
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org1.0a-database, sope_SOPEVER_-libxmlsaxdriver
 Recommends: libapache-mod-ngobjweb, apache, opengroupware.org-environment
 Description: XMLRPC daemon for OpenGroupware.org
  The XMLRPC daemon allows to execute groupware functions over the standardized
@@ -362,8 +363,8 @@ Section: web
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, exim4 | mail-transport-agent
 Description: Send mail notifications for appointments to OpenGroupware.org users
- Skyaptnotify is a daemon which reminds OpenGroupware.org users via mail
- of upcoming appointments.
+ Skyaptnotify is a little program which reminds OpenGroupware.org users via
+ mail of upcoming appointments.
 
 Package: opengroupware.org1.0a-webui-i18n-de
 Section: web

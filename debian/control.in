@@ -363,8 +363,8 @@ Section: web
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, exim4 | mail-transport-agent
 Description: Send mail notifications for appointments to OpenGroupware.org users
- Skyaptnotify is a daemon which reminds OpenGroupware.org users via mail
- of upcoming appointments.
+ Skyaptnotify is a little program which reminds OpenGroupware.org users via
+ mail of upcoming appointments.
 
 Package: opengroupware.org_OGOVER_-webui-i18n-de
 Section: web

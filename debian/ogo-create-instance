@@ -288,6 +288,8 @@ set_defaults () {
 	# Hack for nhsd not being able to find conduits in FHS layout. Will be fixed for OGo 1.2, see bug #1300.
 	su - -c "Defaults write ogo-nhsd-1.0a NGBundlePath /usr/lib/opengroupware.org-1.0a/conduits" ${USER}
 	su - -c "Defaults write ogo-nhsd-1.0 NGBundlePath /usr/lib/opengroupware.org-1.0/conduits" ${USER}
+	# In case skyaptnotify gets installed, make sure it logs to the right directory
+	su - -c "Defaults write skyaptnotify /var/log/opengroupware.org/${USER}/skyaptnotify_sent-resources.log" ${USER}
 	echo "done."
 	return 0
 }
