@@ -141,9 +141,9 @@ sub build_package {
 sub prep_changelog {
   print "[DCH]               - calling dch with:\n" if ($verbose eq "yes");
   print "[DCH]               - dch -v $new_version".".svn"."$new_svnrev-1 -D ogo-trunk $dch_msg_trunk\n" if (($verbose eq "yes") and ($build_type eq "trunk"));
-  print "[DCH]               - dch -v $new_version".".svn"."$new_svnrev-1 -D ogo-release $dch_msg_release\n" if (($verbose eq "yes") and ($build_type eq "release"));
+  print "[DCH]               - dch -v $new_version-1 -D ogo-release $dch_msg_release\n" if (($verbose eq "yes") and ($build_type eq "release"));
   system("cd $build_area/$package && /usr/bin/dch -v $new_version".".svn"."$new_svnrev-1 -D ogo-trunk $dch_msg_trunk 1>>$logerr 2>>$logout") if ($build_type eq "trunk");
-  system("cd $build_area/$package && /usr/bin/dch -v $new_version".".svn"."$new_svnrev-1 -D ogo-release $dch_msg_release 1>>$logerr 2>>$logout") if ($build_type eq "release");
+  system("cd $build_area/$package && /usr/bin/dch -v $new_version-1 -D ogo-release $dch_msg_release 1>>$logerr 2>>$logout") if ($build_type eq "release");
 }
 
 sub get_versions_from_src {
@@ -251,6 +251,8 @@ sub get_versions_from_src {
       $new_version = $1;
       $release_codename = $2;
       $remote_release_dirname = "opengroupware-$new_version-$release_codename";
+      warn "WARNING: The version suffix is subject to change!\n";
+      $new_version =~ s/1\.0alpha/1\.0a\./g;
     }
   }
   ###########################################################################
