@@ -21,6 +21,7 @@ ADDITIONAL_LIB_DIRS += \
 ADDITIONAL_BUNDLE_LIBS += \
 	-lOGoFoundation -lOGoDocuments	\
 	-lLSFoundation		\
+	-lGDLAccess		\
 	-lNGObjWeb		\
 	-lNGLdap -lNGMime	\
 	-lNGStreams -lNGExtensions -lEOControl \
