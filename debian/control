@@ -24,7 +24,7 @@ Description: A free and open groupware suite
 Package: opengroupware.org-webui1.0a
 Section: web
 Architecture: all
-Depends: opengroupware.org-webui-app1.0a, opengroupware.org-webui-admin1.0a, opengroupware.org-webui-contact1.0a, opengroupware.org-webui-job1.0a, opengroupware.org-webui-mailer1.0a, opengroupware.org-webui-news1.0a, opengroupware.org-webui-prefs1.0a, opengroupware.org-webui-project1.0a, opengroupware.org-webui-scheduler1.0a
+Depends: opengroupware.org-webui-app1.0a, opengroupware.org-webui-contact1.0a, opengroupware.org-webui-job1.0a, opengroupware.org-webui-mailer1.0a, opengroupware.org-webui-news1.0a, opengroupware.org-webui-project1.0a, opengroupware.org-webui-scheduler1.0a
 Description: Web UI for OpenGroupware.org
  This package depends on all packages that are part of
  OpenGroupware.org's web user interface.
@@ -71,13 +71,53 @@ Description: Development files for opengroupware.org-docapi
 Package: libopengroupware.org-docapi5.1
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopengroupware.org-db-project5.1 | opengroupware.org-project-storage
 Description: OpenGroupware.org document API
  The Document API is a set of Objective-C libraries wrapping the SOPE
  logic in a "document" API.
  .
  This package contains the shared libraries as well as modules containing
  the actual wrappers.
+
+Package: libopengroupware.org-db-project5.1-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-db-project-dev
+Conflicts: libopengroupware.org-db-project-dev
+Depends: libopengroupware.org-db-project5.1 (= ${Source-Version})
+Description: Development files for OpenGroupware.org's database storage
+ This package contains the development files for the shared library in the
+ libopengroupware.org-db-project5.1 package.
+
+Package: libopengroupware.org-db-project5.1
+Section: libs
+Architecture: any
+Provides: opengroupware.org-project-storage
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Database storage for OpenGroupware.org projects
+ Files associated to OpenGroupware.org projects can be stored through different
+ storage backends. This package contains the database storage backend, which
+ stores all files in a database.
+
+Package: libopengroupware.org-fs-project5.1-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-fs-project-dev
+Conflicts: libopengroupware.org-fs-project-dev
+Depends: libopengroupware.org-fs-project5.1 (= ${Source-Version})
+Description: Development files for OpenGroupware.org's filesystem storage
+ This package contains the development files for the shared library in the
+ libopengroupware.org-fs-project5.1 package.
+
+Package: libopengroupware.org-fs-project5.1
+Section: libs
+Architecture: any
+Provides: opengroupware.org-project-storage
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Filesystem storage for OpenGroupware.org projects
+ Files associated to OpenGroupware.org projects can be stored through different
+ storage backends. This package contains the filesystem storage backend, which
+ stores all files plainly on the hosts filesystem.
 
 Package: libopengroupware.org-webmail5.1-dev
 Section: libdevel
@@ -99,6 +139,34 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Webmail functions common for some OpenGroupware.org components
  This library contains webmail functions to be shared among several OpenGroupware.org
  components.
+
+Package: libopengroupware.org-pda5.1-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-pda-dev
+Conflicts: libopengroupware.org-pda-dev
+Depends: libopengroupware.org-pda5.1 (= ${Source-Version})
+Description: Development files for OpenGroupware.org's PDA libraries
+ This package contains the development files for the libraries contained in
+ the libopengroupware.org-pda5.1 package.
+
+Package: libopengroupware.org-pda5.1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: PDA syncing libraries for OpenGroupware.org
+ This package contains the PDA syncing framework for OpenGroupware.org. To enable
+ PDA syncing support on a OpenGroupware.org installation, install the network hotsyncing
+ daemon, available in the opengroupware.org-nhsd package.
+
+Package: opengroupware.org-nhsd1.0a
+Section: web
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Network hotsync daemon for OpenGroupware.org
+ The network hotsync daemon enables users to sync their PDA with their
+ OpenGroupware.org calendars, contacts and tasks. The PDA needs support
+ for the hotsync protocol over TCP/IP in order to use this feature.
 
 Package: libopengroupware.org-webui-foundation5.1-dev
 Section: libdevel
@@ -126,22 +194,17 @@ Description: Database models for OpenGroupware.org
 
 Package: opengroupware.org-webui-app1.0a
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org-webui-core1.0a, opengroupware.org-webui-i18n-en1.0a | opengroupware.org-webui-i18n1.0a, opengroupware.org-webui-theme-default1.0a | opengroupware.org-webui-theme1.0a
 Description: Web UI application of OpenGroupware.org
  This package contains the executable and resources of
  OpenGroupware.org's web application server.
 
-Package: opengroupware.org-webui-common1.0a
+Package: opengroupware.org-webui-core1.0a
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Common elements for OpenGroupware.org's Web UI
+Description: Core elements for OpenGroupware.org's Web UI
  This package contains UI elements that are used in various components
  of OpenGroupware.org's web frontend.
-
-Package: opengroupware.org-webui-admin1.0a
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: FIXME
 
 Package: opengroupware.org-webui-contact1.0a
 Architecture: any
@@ -159,11 +222,6 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: FIXME
 
 Package: opengroupware.org-webui-news1.0a
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: FIXME
-
-Package: opengroupware.org-webui-prefs1.0a
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: FIXME
@@ -264,3 +322,154 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, exim4 | mail-transport-agent
 Description: Send mail notifications for appointments to OpenGroupware.org users
  Skyaptnotify is a daemon which reminds OpenGroupware.org users via mail
  of upcoming appointments.
+
+Package: opengroupware.org-webui-i18n-de1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-i18n1.0a
+Description: German translation for OpenGroupware.org's web UI
+ This package contains the german translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+
+Package: opengroupware.org-webui-i18n-dk1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-i18n1.0a
+Description: Danish translation for OpenGroupware.org's web UI
+ This package contains the german translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+  
+Package: opengroupware.org-webui-i18n-en1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-i18n1.0a
+Description: English translation for OpenGroupware.org's web UI
+ This package contains the german translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+  
+Package: opengroupware.org-webui-i18n-es1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-i18n1.0a
+Description: Spanish translation for OpenGroupware.org's web UI
+ This package contains the german translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+
+Package: opengroupware.org-webui-i18n-fr1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-i18n1.0a
+Description: French translation for OpenGroupware.org's web UI
+ This package contains the german translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+
+Package: opengroupware.org-webui-i18n-hu1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-i18n1.0a
+Description: Hungarian translation for OpenGroupware.org's web UI
+ This package contains the german translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+
+Package: opengroupware.org-webui-i18n-it1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-i18n1.0a
+Description: Italian translation for OpenGroupware.org's web UI
+ This package contains the german translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+
+Package: opengroupware.org-webui-i18n-jp1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-i18n1.0a
+Description: Japanese translation for OpenGroupware.org's web UI
+ This package contains the german translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+  
+Package: opengroupware.org-webui-i18n-nl1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-i18n1.0a
+Description: Dutch translation for OpenGroupware.org's web UI
+ This package contains the german translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+  
+Package: opengroupware.org-webui-i18n-no1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-i18n1.0a
+Description: Norwegian translation for OpenGroupware.org's web UI
+ This package contains the german translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+
+Package: opengroupware.org-webui-i18n-pl1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-i18n1.0a
+Description: Polish translation for OpenGroupware.org's web UI
+ This package contains the german translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+
+Package: opengroupware.org-webui-i18n-pt1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-i18n1.0a
+Description: Portuguese translation for OpenGroupware.org's web UI
+ This package contains the german translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+
+Package: opengroupware.org-webui-i18n-ptbr1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-i18n1.0a
+Description: Portuguese (Brazilian) translation for OpenGroupware.org's web UI
+ This package contains the german translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+  
+Package: opengroupware.org-webui-i18n-se1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-i18n1.0a
+Description: Swedish translation for OpenGroupware.org's web UI
+ This package contains the german translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+
+Package: opengroupware.org-webui-theme-blue1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-theme1.0a
+Description: Blue theme for OpenGroupware.org's web UI
+ The appearance of OpenGroupware.org's web UI can be customized with themes.
+
+Package: opengroupware.org-webui-theme-default1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-theme1.0a
+Description: Default theme for OpenGroupware.org's web UI
+ The appearance of OpenGroupware.org's web UI can be customized with themes.
+  This package contains the default theme.
+  
+Package: opengroupware.org-webui-theme-kde1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-theme1.0a
+Description: Default theme for OpenGroupware.org's web UI
+ The appearance of OpenGroupware.org's web UI can be customized with themes.
+ This package contains the default theme.
+  
+Package: opengroupware.org-webui-theme-ooo1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-theme1.0a
+Description: Default theme for OpenGroupware.org's web UI
+ The appearance of OpenGroupware.org's web UI can be customized with themes.
+ This package contains the default theme.
+  
+Package: opengroupware.org-webui-theme-orange1.0a
+Section: web
+Architecture: all
+Provides: opengroupware.org-webui-theme1.0a
+Description: Default theme for OpenGroupware.org's web UI
+ The appearance of OpenGroupware.org's web UI can be customized with themes.
+ This package contains the default theme.

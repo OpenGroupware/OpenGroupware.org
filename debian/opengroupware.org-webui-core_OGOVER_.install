@@ -1,8 +1,12 @@
+usr/lib/opengroupware.org-*/webui/AdminUI.lso
 usr/lib/opengroupware.org-*/webui/BaseUI.lso
+usr/lib/opengroupware.org-*/webui/PreferencesUI.lso
 usr/lib/opengroupware.org-*/webui/PropertiesUI.lso
 usr/lib/opengroupware.org-*/webui/OGoUIElements.lso
 usr/lib/opengroupware.org-*/webui/RelatedLinksUI.lso
+usr/share/opengroupware.org-*/templates/AdminUI
 usr/share/opengroupware.org-*/templates/BaseUI
+usr/share/opengroupware.org-*/templates/PreferencesUI
 usr/share/opengroupware.org-*/templates/PropertiesUI
 usr/share/opengroupware.org-*/templates/OGoUIElements
 usr/share/opengroupware.org-*/templates/RelatedLinksUI
