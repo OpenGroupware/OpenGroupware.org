@@ -157,6 +157,7 @@
 	NSMutableArray *attributes = nil;
 	NSMutableArray *results = nil;
 	NSDictionary *dictionary = nil;
+	EOModel *myModel = nil;
 
 	NSMutableArray *privateIDs = nil;
 	NSMutableArray *confidentialIDs = nil;
@@ -171,7 +172,10 @@
 
 	// Entity
 
-	sqlEntity = [[self databaseModel] entityNamed:[self entityName]];
+	myModel = [self databaseModel];
+	[self logWithFormat:@"**** myModel : %@",myModel];
+
+	sqlEntity = [myModel entityNamed:[self entityName]];
 	if(sqlEntity == nil)
 	{
 		[self logWithFormat:@"***** entity %@ is not defined in OGoModel !!!",[self entityName]];

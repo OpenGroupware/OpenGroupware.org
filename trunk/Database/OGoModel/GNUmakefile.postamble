@@ -9,7 +9,7 @@ OpenGroupware.org_FrontBase2.eomodel : OGoModel.py
 
 OpenGroupware.org_PostgreSQL.eomodel : OGoModel.py
 	@echo "The PostgreSQL.eomodel seems to be outdated, you might want to regenerate!"
-	#$(PYTHON) genmodel.py $< PostgreSQL >$@
+	$(PYTHON) genmodel.py $< PostgreSQL >$@
 
 endif
 

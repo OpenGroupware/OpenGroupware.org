@@ -54,6 +54,7 @@ ModelClasses_OBJC_FILES = \
 	LSInvoiceAccounting.m		\
 	LSInvoiceAction.m		\
 	LSEvent.m			\
+	LSSchedulerDelegation.m
 
 ADDITIONAL_INCLUDE_DIRS += -I../Headers/ -I..
 

@@ -29,6 +29,7 @@ int main(int argc, const char **argv, char **env) {
      @"opengroupware.org-1.0a/global.plist",
      @"opengroupware.org-1.0a/webui.plist");
 #else
-  return WOWatchDogApplicationMain(@"OpenGroupware", argc, argv);
+	// return WOWatchDogApplicationMain(@"OpenGroupware", argc, argv);
+	return WOApplicationMain(@"OpenGroupware", argc, argv);
 #endif
 }

@@ -566,10 +566,24 @@ static NSString *OGoDateTimeTZFormat     = nil;
 
 /* accessors */
 
-- (id)activeAccount {
+- (id)activeAccount
+{
   NSAssert(self->activeLogin, @"no active account is set !");
   return self->activeLogin;
 }
+
+//############ TD ##################
+- (id)getActiveAccountInSchedulerViews 
+{
+	return self->activeAccountInSchedulerViews;
+}
+
+- (void)setActiveAccountInSchedulerViews:(id)anAccount
+{
+	[self->activeAccountInSchedulerViews release];
+  	self->activeAccountInSchedulerViews = [anAccount retain];
+}
+//############ TD ##################
 
 - (NSString *)activeLogin {
   return [self->lso activeLoginName];
