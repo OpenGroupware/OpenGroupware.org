@@ -3,6 +3,7 @@
 include $(GNUSTEP_MAKEFILES)/common.make
 
 SUBPROJECTS = \
+	ZSCommon	\
 	ZSAppointments	\
 	ZSContacts	\
 	ZSTasks		\

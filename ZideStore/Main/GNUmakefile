@@ -4,8 +4,8 @@ include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 include ./Version
 
-ZIDESTORE = ZideStore$(MAJOR_VERSION)$(MINOR_VERSION)
-WOAPP_NAME = $(ZIDESTORE)
+ZIDESTORE = ogo-zidestore-$(MAJOR_VERSION)$(MINOR_VERSION)
+TOOL_NAME = $(ZIDESTORE)
 
 $(ZIDESTORE)_OBJC_FILES += \
 	ZideStore.m		\
@@ -14,10 +14,7 @@ $(ZIDESTORE)_OBJC_FILES += \
 $(ZIDESTORE)_HEADER_FILES += \
 	SxAuthenticator.h	\
 
-$(ZIDESTORE)_RESOURCE_FILES += \
-	Version				\
-	product.plist			\
-
 -include GNUmakefile.preamble
-include $(GNUSTEP_MAKEFILES)/woapp.make
+include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
+-include fhs.make
