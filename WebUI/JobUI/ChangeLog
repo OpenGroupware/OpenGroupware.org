@@ -1,3 +1,8 @@
+2004-09-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWJobMailPage.m: some code cleanups, added -lastComment and
+	  -isTeamJob accessors (for use in template) (v5.1.48)
+
 2004-09-09  Olivier Hallot  <olivier@ig.com.br>
 
 	* SkyJobList.wo/SkyJobList.wod (JobList): added title and footer line

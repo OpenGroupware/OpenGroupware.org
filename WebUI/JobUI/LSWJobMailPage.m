@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,12 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "LSWJobMailPage.h"
 #include "common.h"
 
 @implementation LSWJobMailPage
+
+/* fetching */
 
 - (NSString *)entityName {
   return @"Job";
@@ -34,26 +35,55 @@
 }
 
 - (void)setObject:(id)_object {
+  id obj;
+  
   [super setObject:_object];
-  {
-    id obj = [self object];
-
-    [obj run:@"job::setcreator",   @"relationKey", @"creator", nil];
-    [obj run:@"job::get-job-history", @"relationKey", @"jobHistory", nil];
-    [self runCommand:@"job::get-job-executants",
+  
+  obj = [self object];
+  
+  [self runCommand:@"job::setcreator",
+          @"relationKey", @"creator", @"object", obj, nil];
+  [self runCommand:@"job::get-job-history", 
+          @"relationKey", @"jobHistory", @"object", obj, nil];
+  [self runCommand:@"job::get-job-executants",
           @"relationKey", @"executant", @"object", obj, nil];
-  }
 }
 
+/* URL */
+
 - (NSString *)objectUrlKey {
-  return [NSString stringWithFormat:@"wa/LSWViewAction/viewJob?jobId=%@",
-                     [[self object] valueForKey:@"jobId"]];
+  NSString *s;
+  
+  if ((s = [[[self object] valueForKey:@"jobId"] stringValue]) == nil)
+    return nil;
+
+  // TODO: we should use some URL creation method (WOContext)
+  return [@"wa/LSWViewAction/viewJob?jobId=" stringByAppendingString:s];
+}
+
+/* accessors */
+
+- (BOOL)isTeamJob {
+  return [[[self object] valueForKey:@"isTeamJob"] boolValue];
+}
+
+- (NSString *)lastComment {
+#warning fix me, this does not return the _last_ entry!
+  NSArray *history;
+  id lastHistoryEntry;
+  
+  history          = [[self object] valueForKey:@"jobHistory"];
+  lastHistoryEntry = [history isNotNull] ? [history lastObject] : nil;
+  
+  // TODO: why is 'toJobHistoryInfo' an array fault?
+  return [lastHistoryEntry valueForKeyPath:
+                             @"toJobHistoryInfo.lastObject.comment"];
 }
 
 @end /* LSWJobMailPage */
 
 @implementation LSWJobHtmlMailPage
-@end
+@end /* LSWJobHtmlMailPage */
 
 @implementation LSWJobTextMailPage
-@end
+@end /* LSWJobTextMailPage */
