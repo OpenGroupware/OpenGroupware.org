@@ -1,8 +1,8 @@
-# $Id: Version 1 2004-08-20 11:17:52Z znek $
+# version file
 
 MAJOR_VERSION=1
 MINOR_VERSION=3
-SUBMINOR_VERSION:=86
+SUBMINOR_VERSION:=87
 
 # v1.3.84 requires libNGObjWeb  v4.3.41
 # v1.1.46 requires libEOControl v4.2.28
