@@ -607,7 +607,7 @@ sub get_latest_sources {
   #<trunk>
   if(("$do_download" eq "yes") and ("$build_type" eq "trunk")) {
     print "[DOWNLOAD_SRC]      - Download sources for a trunk build!\n" if ($verbose eq "yes");
-    @latest = `wget -q -O - http://$dl_host/sources/trunk/LATESTVERSION`;
+    @latest = `wget -q --proxy=off -O - http://$dl_host/sources/trunk/LATESTVERSION`;
     #remap package name to its corresponding source tarball prefix
     #bc specfile names are not always the same as the source tarball name
     $package_mapped_tosrc = "libobjc-lf2" if ("$package" eq "libobjc-lf2");
@@ -635,18 +635,18 @@ sub get_latest_sources {
     $destfilename = $dl_candidate;
     $destfilename =~ s/-r\d+-\d+/-latest/g;
     print "[DOWNLOAD_SRC]      - Will download $dl_candidate and save the file as $destfilename\n" if ($verbose eq "yes");
-    `wget -q -O "$sources_dir/$destfilename" http://$dl_host/sources/trunk/$dl_candidate`;
+    `wget -q --proxy=off -O "$sources_dir/$destfilename" http://$dl_host/sources/trunk/$dl_candidate`;
   }
   #</trunk>
   #<release>
   if(("$do_download" eq "yes") and ("$build_type" eq "release")) {
     #MD5_INDEX comes in handy here, bc this file keeps track of all uploaded releases
-    @latest = `wget -q -O - http://$dl_host/sources/releases/MD5_INDEX`;
+    @latest = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
     chomp $release_tarballname;
     if (grep /$release_tarballname$/, @latest) {
       print "[DOWNLOAD_SRC]      - $release_tarballname should be present for download.\n";
       print "[DOWNLOAD_SRC]      - going to retrieve into -> $sources_dir/$release_tarballname\n";
-      `wget -q -O "$sources_dir/$release_tarballname" http://$dl_host/sources/releases/$release_tarballname`;
+      `wget -q --proxy=off -O "$sources_dir/$release_tarballname" http://$dl_host/sources/releases/$release_tarballname`;
     } else {
       print "[DOWNLOAD_SRC]      - Looks like $release_tarballname isn't even present at $dl_host.\n";
       print "[DOWNLOAD_SRC]      - Senseless to continue - goodbye!\n";
