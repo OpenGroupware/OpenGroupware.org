@@ -70,7 +70,7 @@ foreach $srel (@sope_releases) {
     print "recreating apt-repository for: $host_i_runon\n";
     open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
     print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $buildtarget\n";
-    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/packages/$host_i_runon/releases/$apttarget/\n";
+    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/packages/$host_i_runon/releases/$buildtarget/\n";
     close(SSH);
   }
 }
