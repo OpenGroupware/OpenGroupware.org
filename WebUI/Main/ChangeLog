@@ -1,5 +1,9 @@
 2004-09-27  Helge Hess  <helge.hess@skyrix.com>
 
+	* OpenGroupware.m: changed (runtime) application name to match the
+	  process name (to avoid clashes with . processing in the standard
+	  method) (v5.1.61)
+
 	* GNUmakefile: renamed executable to ogo-webui-1.0a as requested by 
 	  sley (v5.1.60)
 
