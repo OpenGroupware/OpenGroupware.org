@@ -40,6 +40,9 @@
 
     <OGo:field     .../>    maps to OGoField
     <OGo:fieldset  .../>    maps to OGoFieldSet
+
+    <OGo:calpopup .../>        maps to SkyCalendarPopUp
+    <OGo:calpopup-script .../> maps to SkyCalendarScript
 */
 
 @interface OGoUIElementsBuilder : WOxTagClassElemBuilder
@@ -74,6 +77,12 @@ static BOOL  debugOn           = NO;
 - (NSString *)collapsibleComponentName {
   return @"SkyCollapsibleContent";
 }
+- (NSString *)datePopUpComponentName {
+  return @"SkyCalendarPopUp";
+}
+- (NSString *)datePopUpScriptComponentName {
+  return @"SkyCalendarScript";
+}
 
 /* support elements */
 
@@ -83,8 +92,9 @@ static BOOL  debugOn           = NO;
   templateBuilder:(id)_b
 {
   NSMutableDictionary *assocs;
-  NSArray  *children;
-  NSString *cid;
+  WOElement *component;
+  NSArray   *children;
+  NSString  *cid;
   
   if (debugOn) [self debugWithFormat:@"  build %@: %@", _name, _el];
   
@@ -108,9 +118,13 @@ static BOOL  debugOn           = NO;
   
   [_b registerSubComponentWithId:cid 
       componentName:_name bindings:assocs];
+  if (debugOn) 
+    [self logWithFormat:@"ref: %@ => %@, %@: %@", _name, _b, cid, assocs];
   
-  return [[ChildRefClass alloc]
-           initWithName:cid associations:nil contentElements:children];
+  component = [[ChildRefClass alloc]
+		initWithName:cid associations:nil contentElements:children];
+  if (debugOn) [self logWithFormat:@"  %@", component];
+  return component;
 }
 
 - (WOElement *)buildSimpleCollapsible:(id<DOMElement>)_el
@@ -263,9 +277,18 @@ static BOOL  debugOn           = NO;
 
   switch (c1) {
     case 'c': { /* starting with 'c' */
-      if (tl == 11 && [tagName isEqualToString:@"collapsible"])
+      if (tl == 11 && [tagName isEqualToString:@"collapsible"]) {
 	return [self buildComponent:[self collapsibleComponentName]
 		     element:_element templateBuilder:_b];
+      }
+      if (tl == 8 && [tagName isEqualToString:@"calpopup"]) {
+	return [self buildComponent:[self datePopUpComponentName]
+		     element:_element templateBuilder:_b];
+      }
+      if (tl == 15 && [tagName isEqualToString:@"calpopup-script"]) {
+	return [self buildComponent:[self datePopUpScriptComponentName]
+		     element:_element templateBuilder:_b];
+      }
       break;
     }
     case 's': { /* starting with 's' */
@@ -283,6 +306,12 @@ static BOOL  debugOn           = NO;
   
   /* we need to call super, so that the build queue processing continues */
   return [super buildElement:_element templateBuilder:_b];
+}
+
+/* debugging */
+
+- (BOOL)isDebuggingEnabled {
+  return debugOn;
 }
 
 @end /* OGoUIElementsBuilder */

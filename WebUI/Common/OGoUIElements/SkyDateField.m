@@ -24,7 +24,7 @@
 /*
   SkyDateField
 
-  this generated a formatted representation of a NSDate object (doesn't
+  This generated a formatted representation of a NSDate object (doesn't
   need to be a NSCalendarDate).
 
   It uses session context information for formatting.
@@ -68,9 +68,9 @@
   template:(WOElement *)_t
 {
   if ((self = [super initWithName:_name associations:_config template:_t])) {
-    self->date       = [[_config objectForKey:@"date"] copy];
-    self->spanId     = [[_config objectForKey:@"spanId"] copy];
-    self->formatter  = [[_config objectForKey:@"formatter"] copy];
+    self->date       = [[_config objectForKey:@"date"]       copy];
+    self->spanId     = [[_config objectForKey:@"spanId"]     copy];
+    self->formatter  = [[_config objectForKey:@"formatter"]  copy];
     self->dateformat = [[_config objectForKey:@"dateformat"] copy];
     self->formatType = [[_config objectForKey:@"formatType"] copy];
   }
@@ -88,6 +88,55 @@
 
 /* operations */
 
+- (NSFormatter *)newFormatterInContext:(WOContext *)_ctx
+  isToday:(BOOL)_isToday
+{
+  if (self->formatter != nil)
+    return [[self->formatter valueInComponent:[_ctx component]] retain];
+
+  if (self->dateformat != nil) {
+    NSString *fmtstring;
+
+    fmtstring = [self->dateformat stringValueInComponent:[_ctx component]];
+    
+    return [[NSDateFormatter alloc] initWithDateFormat:fmtstring
+				    allowNaturalLanguage:NO];
+  }
+  
+  if ([_ctx hasSession]) {
+    NSFormatter *fmt;
+    NSString *fmtType;
+
+    if (self->formatType != nil) {
+      fmtType = [self->formatType stringValueInComponent:[_ctx component]];
+      if ([fmtType length] == 0)
+        fmtType = nil;
+    }
+    else
+      fmtType = nil;
+    
+    if ([fmtType isEqualToString:@"date"])
+      fmt = [[_ctx session] formatDate];
+    else if ([fmtType isEqualToString:@"time"])
+      fmt = [[_ctx session] formatTime];
+    else if ([fmtType isEqualToString:@"datetime"])
+      fmt = [[_ctx session] formatDateTime];
+    else {
+      if (_isToday) {
+        fmt = [[NSDateFormatter alloc] initWithDateFormat:@"%H:%M:%S"
+                                       allowNaturalLanguage:NO];
+        [fmt autorelease];
+      }
+      else
+        fmt = [[_ctx session] formatDateTime];
+    }
+    
+    return [fmt retain];
+  }
+  
+  return nil;
+}
+
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
   NSDate         *d;
   NSCalendarDate *cdate;
@@ -95,7 +144,7 @@
   NSString       *string;
   NSString       *span;
   
-  if ((d = [self->date valueInComponent:[_ctx component]])) {
+  if ((d = [self->date valueInComponent:[_ctx component]]) != nil) {
     if (![d isNotNull])
       cdate = nil;
     else {
@@ -111,51 +160,7 @@
   
   span = [self->spanId stringValueInComponent:[_ctx component]];
   
-  if (self->formatter) {
-    fmt = [[self->formatter valueInComponent:[_ctx component]] retain];
-  }
-  else if (self->dateformat) {
-    NSString *fmtstring;
-
-    fmtstring = [self->dateformat stringValueInComponent:[_ctx component]];
-    
-    fmt = [[NSDateFormatter alloc]
-                            initWithDateFormat:fmtstring
-                            allowNaturalLanguage:NO];
-  }
-  else if ([_ctx hasSession]) {
-    NSString *fmtType;
-
-    if (self->formatType) {
-      fmtType = [self->formatType stringValueInComponent:[_ctx component]];
-      if ([fmtType length] == 0)
-        fmtType = nil;
-    }
-    else
-      fmtType = nil;
-
-    if ([fmtType isEqualToString:@"date"])
-      fmt = [[_ctx session] formatDate];
-    else if ([fmtType isEqualToString:@"time"])
-      fmt = [[_ctx session] formatTime];
-    else if ([fmtType isEqualToString:@"datetime"])
-      fmt = [[_ctx session] formatDateTime];
-    else {
-      if ([cdate isToday]) {
-        fmt = [[NSDateFormatter alloc] initWithDateFormat:@"%H:%M:%S"
-                                       allowNaturalLanguage:NO];
-        AUTORELEASE(fmt);
-      }
-      else
-        fmt = [[_ctx session] formatDateTime];
-    }
-    
-    RETAIN(fmt);
-  }
-  else
-    fmt = nil;
-  
-  string = fmt
+  string = (fmt = [self newFormatterInContext:_ctx isToday:[cdate isToday]])
     ? [fmt stringForObjectValue:cdate]
     : [cdate description];
   
@@ -174,8 +179,8 @@
 
   /* release objects */
   
-  RELEASE(fmt);   fmt   = nil;
-  RELEASE(cdate); cdate = nil;
+  [fmt   release]; fmt   = nil;
+  [cdate release]; cdate = nil;
 }
 
 @end /* SkyDateField */

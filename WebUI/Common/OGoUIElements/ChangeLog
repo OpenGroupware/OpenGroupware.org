@@ -1,3 +1,17 @@
+2005-04-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.41
+
+	* SkyDateField.m: code cleanups
+
+	* OGoUIElementsBuilder.m: map <OGo:calpopup> to SkyCalendarPopUp and
+	  <OGo:calpopup-script/> to SkyCalendarScript, properly trigger debug
+	  logs
+
+2005-04-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyDateField.m: code cleanups (v5.1.40)
+
 2005-03-23  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoUIElementsBuilder.m: added new <OGo:scollapsible> element which

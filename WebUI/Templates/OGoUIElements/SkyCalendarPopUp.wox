@@ -1,5 +1,4 @@
 <?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
-<!-- $Id: SkyCalendarPopUp.wox,v 1.1 2004/05/04 13:06:29 helge Exp $ -->
 <!-- has a bit weird formatting, but this is required for proper layout ... -->
 <var:if condition="session.isJavaScriptEnabled"
   xmlns="http://www.w3.org/1999/xhtml"
