@@ -42,6 +42,7 @@ my $host_i_runon = "fedora-core3";
 #my $host_i_runon = "sles9";
 #my $host_i_runon = "slss8";
 #my $host_i_runon = "rhel3";
+#my $host_i_runon = "redhat9";
 my $svn_host = 'svn.opengroupware.org';
 my $svn = '/usr/bin/svn';
 my $dl_host = "download.opengroupware.org";

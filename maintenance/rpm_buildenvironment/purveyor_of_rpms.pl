@@ -20,6 +20,7 @@ my $host_i_runon = "fedora-core3";
 #my $host_i_runon = "sles9";
 #my $host_i_runon = "slss8";
 #my $host_i_runon = "rhel3";
+#my $host_i_runon = "redhat9";
 
 my $time_we_started = `date +"%Y%m%d-%H%M%S"`;
 chomp $time_we_started;
@@ -32,7 +33,7 @@ my $specs_dir = "$ENV{'HOME'}/rpm/SPECS";
 # this are the packages I can deal with
 # every package given here should have its own specfile...
 # adding new packages is more or less a copy'n'paste job of code snippets below
-my @poss_packages = qw( ogo-gnustep_make libobjc-lf2 libfoundation libical-sope-devel opengroupware-pilot-link opengroupware-nhsc sope opengroupware mod_ngobjweb_slss8 mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 ogo-environment epoz );
+my @poss_packages = qw( ogo-gnustep_make libobjc-lf2 libfoundation libical-sope-devel opengroupware-pilot-link opengroupware-nhsc sope opengroupware mod_ngobjweb_slss8 mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 ogo-environment epoz );
 my $flavour_we_build_upon;
 my $distrib_define;
 my $memyself = basename($0);
@@ -45,7 +46,7 @@ my @rpms_build;
 #package_wo_source contains packages wo source at all or where i refuse to download
 #the source (source should be already in \$sources_dir)
 my @package_wo_source = qw( ogo-gnustep_make ogo-environment );
-my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 ogo-environment opengroupware-pilot-link opengroupware-nhsc );
+my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 ogo-environment opengroupware-pilot-link opengroupware-nhsc );
 my $release_codename;
 my $remote_release_dirname;
 my $libversion;
@@ -607,6 +608,7 @@ sub get_latest_sources {
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_slss8");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_sles9");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_rhel3");
+    $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_redhat9");
     $package_mapped_tosrc = "sope-epoz" if ("$package" eq "epoz");
     foreach $sourcefile (@latest) {
       $destfilename = shift;
@@ -764,32 +766,37 @@ sub prepare_build_env {
   #I'll prolly do a better flavour detector if I need a better one - for now, this is sufficient
   #for this purpose :p
   #what we get here is also used as %distribution in your .rpmmacros
-  if ( -e "/etc/fedora-release" ) {
+  if ( -f "/etc/fedora-release" ) {
     $flavour_we_build_upon = "fedora";
     $distrib_define = `head -n1 /etc/fedora-release`;
     chomp $distrib_define;
   }
-  if ( -e "/etc/SuSE-release") {
+  if ( -f "/etc/SuSE-release") {
     $flavour_we_build_upon = "suse";
     $distrib_define = `head -n1 /etc/SuSE-release`;
     chomp $distrib_define;
   }
-  if ( -e "/etc/mandrake-release" ) {
+  if ( -f "/etc/mandrake-release" ) {
     $flavour_we_build_upon = "mandrake";
     $distrib_define = `head -n1 /etc/mandrake-release`;
     chomp $distrib_define;
   }
-  if ( -e "/usr/share/doc/redhat-release-3ES") {
-    $flavour_we_build_upon = "fedora";
-    $distrib_define = `head -n1 /etc/redhat-release`;
-    chomp $distrib_define;
-  }
-  if ( -e "/usr/share/doc/redhat-release-3AS") {
-    $flavour_we_build_upon = "fedora";
-    $distrib_define = `head -n1 /etc/redhat-release`;
-    chomp $distrib_define;
-  }
-  if ( -e "/usr/share/doc/redhat-release-3WS") {
+  #if ( -e "/usr/share/doc/redhat-release-3ES") {
+  #  $flavour_we_build_upon = "fedora";
+  #  $distrib_define = `head -n1 /etc/redhat-release`;
+  #  chomp $distrib_define;
+  #}
+  #if ( -e "/usr/share/doc/redhat-release-3AS") {
+  #  $flavour_we_build_upon = "fedora";
+  #  $distrib_define = `head -n1 /etc/redhat-release`;
+  #  chomp $distrib_define;
+  #}
+  #if ( -e "/usr/share/doc/redhat-release-3WS") {
+  #  $flavour_we_build_upon = "fedora";
+  #  $distrib_define = `head -n1 /etc/redhat-release`;
+  #  chomp $distrib_define;
+  #}
+  if ( -f "/etc/redhat-release") {
     $flavour_we_build_upon = "fedora";
     $distrib_define = `head -n1 /etc/redhat-release`;
     chomp $distrib_define;

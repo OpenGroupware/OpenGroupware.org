@@ -12,6 +12,7 @@ DISTRI="fedora-core3"
 #DISTRI="sles9"
 #DISTRI="slss8"
 #DISTRI="rhel3"
+#DISTRI="redhat9"
 
 SPECS="ogo-gnustep_make
 libobjc-lf2
