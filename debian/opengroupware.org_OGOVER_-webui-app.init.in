@@ -3,10 +3,10 @@
 # Initscript for the Openroupware.org application server
 #
 
-DAEMON=ogo-webui-1.0a
+DAEMON=ogo-webui-_OGOVER_
 DPATH=/usr/sbin
 DEFAULT=/etc/default/$DAEMON
-PIDFILE=/var/lib/opengroupware.org/opengroupware.org-webui.pid
+PIDFILE=/var/lib/opengroupware.org/$DAEMON.pid
 
 if [ -e $DEFAULT ]; then
     . $DEFAULT
@@ -34,18 +34,20 @@ should_start() {
 case "$1" in
     start)
         should_start
-        echo "Starting OpenGroupware.org web application server: $DAEMON."
+        echo -n "Starting OpenGroupware.org web application server: $DAEMON"
         if [ ! -f $LOGFILE ]; then
             touch $LOGFILE
         fi
         chown ogo:ogo $LOGFILE
 	chmod 640 $LOGFILE
-	start-stop-daemon -S -b -m -p $PIDFILE -c ogo -x $DAEMON -- "$ARGS" &> "$LOGFILE"
+	start-stop-daemon -S -c ogo -a /usr/bin/daemon -n $DAEMON -- -F $PIDFILE -X "$DPATH/$DAEMON $ARGS" -E daemon.info
+	echo "."
 	;;
 
     stop)
-        echo "Stopping OpenGroupware.org web application server: $DAEMON."
+        echo -n "Stopping OpenGroupware.org web application server: $DAEMON"
 	start-stop-daemon -K -p $PIDFILE -o
+	echo "."
         ;;
 
     restart|force-reload)

@@ -29,6 +29,10 @@ endif
 
 controlfiles: controlfiles-stamp
 controlfiles-stamp: debian/rules clean-controlfiles
+	for f in debian/*.in; do \
+		newname=$$(echo $$f | sed s/.in$$// ); \
+		sed -e s/_OGOVER_/$(OGOVER)/g -e s/_OGOSONAME_/$(OGOSONAME)/g -e s/_ZSVER_/$(ZSVER)/g < $$f > $$newname; \
+	done
 	for f in debian/*_OGOVER_*; do \
 		newname=$$(echo $$f | sed s/_OGOVER_/$(OGOVER)/ ); \
 		cp $$f $$newname; \
@@ -122,9 +126,9 @@ binary-arch: build install
 #	dh_installemacsen
 #	dh_installpam
 #	dh_installmime
-	dh_installinit -popengroupware.org$(OGOVER)-webui-app --init-script=opengroupware.org-webui -- defaults 80
-	dh_installinit -popengroupware.org$(OGOVER)-xmlrpcd --init-script=opengroupware.org-xmlrpcd -- defaults 80
-	dh_installinit -popengroupware.org-zidestore$(ZSVER) --init-script=opengroupware.org-zidestore -- defaults 80
+	dh_installinit -popengroupware.org$(OGOVER)-webui-app --init-script=opengroupware.org$(OGOVER)-webui -- defaults 80
+	dh_installinit -popengroupware.org$(OGOVER)-xmlrpcd --init-script=opengroupware.org$(OGOVER)-xmlrpcd -- defaults 80
+	dh_installinit -popengroupware.org-zidestore$(ZSVER) --init-script=opengroupware.org$(ZSVER)-zidestore -- defaults 80
 	dh_installcron -popengroupware.org-skyaptnotify --name=skyaptnotify
 #	dh_installinfo
 	dh_installman
