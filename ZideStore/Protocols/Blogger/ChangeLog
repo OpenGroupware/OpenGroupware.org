@@ -1,3 +1,12 @@
+2005-01-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.3.6
+
+	* product.plist: register blogger.getRecentPosts action
+
+	* NSObject+Blogger.m: also deliver blog entry content in 'content' key
+	  (used by Blogger API while MetaWeblog uses 'description')
+
 2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* NSObject+Blogger.m: code cleanups, check NSFileSubject for post title

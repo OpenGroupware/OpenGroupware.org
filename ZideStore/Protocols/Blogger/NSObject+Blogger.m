@@ -157,7 +157,7 @@ static NSNumber *noNum = nil;
       dateCreated
       userid
       postid
-      description
+      description / content
       title
       link
       permaLink
@@ -183,8 +183,21 @@ static NSNumber *noNum = nil;
   }
   
   /* description is the first text */
-  if ((str = [self bloggerContentInContext:_ctx]) != nil)
+  if ((str = [self bloggerContentInContext:_ctx]) != nil) {
     [entry setObject:str forKey:@"description"];
+   
+    /*
+      BloggerAPI uses key 'content', which contains:
+        content is <title>$title</title> + $description ?
+    */
+    tmp = [self davDisplayName];
+    if ([tmp isNotNull] && [tmp length] > 0) {
+      tmp = [@"<title>" stringByAppendingString:tmp];
+      tmp = [tmp stringByAppendingString:@"</title>\n"];
+      str = [tmp stringByAppendingString:str];
+    }
+    [entry setObject:str forKey:@"content"];
+  }
   
   /* there can be a second text in 'mt_text_more' */
   

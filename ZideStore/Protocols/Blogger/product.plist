@@ -52,8 +52,15 @@
             positionalKeys = ( appID, postID, login, password, doPublish );
           };
         };
-        "blogger.getRecentPosts" = { /* TODO: implement me */
-            positionalKeys = ( appID, blogID, login, password, numberOfPosts );
+        "blogger.getRecentPosts" = {
+          protectedBy = "View";
+          actionClass = "MetaWeblogGetRecentPosts";
+          // could do: actionName  = "getInBloggerFormat";
+          arguments   = {
+            positionalKeys = ( 
+              appID, blogID, login, password, numberOfPosts 
+            );
+          };
         };
 
 	/* MetaWeblog */
