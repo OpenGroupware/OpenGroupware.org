@@ -34,6 +34,8 @@
 #define XMLRPC_FAULT_INTERNAL_ERROR    5
 #define XMLRPC_FAULT_LOCK_ERROR        6
 #define XMLRPC_MISSING_PERMISSIONS     7
+#define XMLRPC_FAULT_FS_NOVERSIONING   8
+#define XMLRPC_FAULT_TOOMANY_ARGS      9
 #define XMLRPC_FAULT_NOT_FOUND         404
 
 @interface DirectAction : WODirectAction

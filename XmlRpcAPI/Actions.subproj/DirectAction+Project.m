@@ -36,6 +36,13 @@
 
 @implementation DirectAction(Project)
 
+static id yesNum(void) {
+  return [NSNumber numberWithBool:YES];
+}
+static id noNum(void) {
+  return [NSNumber numberWithBool:NO];
+}
+
 - (void)_takeValuesDict:(NSDictionary *)_from
   toProject:(SkyProject **)_to
 {
@@ -65,7 +72,7 @@
   qualifier = [EOQualifier qualifierWithQualifierFormat:@"number=%@",
                            _code];
 
-  hints = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES]
+  hints = [NSDictionary dictionaryWithObject:yesNum()
                         forKey:@"SearchAllProjects"];
   fspec = [[EOFetchSpecification alloc] initWithEntityName:nil
                                         qualifier:qualifier
@@ -103,10 +110,15 @@
 		      reason:r userInfo:ui];
 }
 
+- (id)_fileManagerDoesNotSupportVersioningFault {
+  // TODO: use a proper code
+  return [self faultWithFaultCode:XMLRPC_FAULT_FS_NOVERSIONING
+               reason:@"filemanager does not support versioning"];
+}
+
 - (id)_projectMethodTooManyArgumentsFault {
-  return [NSException exceptionWithName:@"TooManyArguments"
-		      reason:@"too many arguments for method!"
-		      userInfo:nil];
+  return [self faultWithFaultCode:XMLRPC_FAULT_TOOMANY_ARGS
+               reason:@"too many arguments for method!"];
 }
 
 /* methods */
@@ -143,7 +155,7 @@
     if (project == nil) {
       [self logWithFormat:@"ERROR: no project for code '%@' found",
             _projectID];
-      return [NSNumber numberWithBool:NO];
+      return noNum();
     }
 
     owner = [ctx runCommand:@"project::get-owner",
@@ -161,7 +173,7 @@
         ![loginGID isEqual:[[project valueForKey:@"leader"] globalID]])
     {
       NSLog(@"ERROR: Only the project leader is allowed to add accounts");
-      return [NSNumber numberWithBool:NO];
+      return noNum();
     }
     
     account = [ctx runCommand:@"account::get-by-login",
@@ -171,7 +183,7 @@
     if (account == nil) {
       [self logWithFormat:@"ERROR: no account matching login '%@' found",
             _login];
-      return [NSNumber numberWithBool:NO];
+      return noNum();
     }
 
     [account setObject:_rights forKey:@"accessRight"];
@@ -179,12 +191,12 @@
     [ctx runCommand:@"project::assign-accounts",
          @"project", project,
          @"companies",[NSArray arrayWithObject:account],
-         @"hasAccess",[NSNumber numberWithBool:YES],
+         @"hasAccess",yesNum(),
          nil];
 
-    return [NSNumber numberWithBool:YES];
+    return yesNum();
   }
-  return [NSNumber numberWithBool:NO];
+  return noNum();
 }
 
 - (id)project_getAccountsAction:(id)_projectID {
@@ -198,14 +210,14 @@
     if (project == nil) {
       [self logWithFormat:@"ERROR: no project for code '%@' found",
             _projectID];
-      return [NSNumber numberWithBool:NO];
+      return noNum();
     }
 
     return [ctx runCommand:@"project::get-accounts",
                 @"project", project,
                 nil];
   }
-  return [NSNumber numberWithBool:NO];
+  return noNum();
 }
 
 - (id)project_insertAction:(id)_arg {
@@ -298,6 +310,26 @@
   return [[fm contentsAtPath:[_path stringValue]] stringByEncodingBase64];
 }
 
+- (NSData *)project_getFileContentAction:(id)_pid:(NSString *)_path:(NSString *)_version 
+{
+  id fm;
+  
+  if (![_path isNotNull]) return noNum();
+  _path = [_path stringValue];
+  
+  if ((fm = [self fileManagerForCode:_pid]) == nil)
+    return [self _missingFileManagerForProjectIDFault:_pid];
+  
+  if ([_version isNotNull]) {
+    if (![fm supportsVersioningAtPath:_path])
+      return [self _fileManagerDoesNotSupportVersioningFault];
+    
+    return [fm contentsAtPath:_path version:[_version stringValue]];
+  }
+  
+  return [fm contentsAtPath:_path];
+}
+
 - (NSNumber *)project_saveDocumentAction:(id)_pid:(NSString *)_path:(id)_cont {
   id   fm;
   BOOL ok;
@@ -311,7 +343,10 @@
 }
 
 - (NSString *)project_cwdAction:(id)_pid {
+  // TODO: this is non-sense, the client needs to keep its own cwd state
   id fm;
+
+  [self logWithFormat:@"WARNING: client called broken project.cwd function!"];
 
   if ((fm = [self fileManagerForCode:_pid]) == nil)
     return [self _missingFileManagerForProjectIDFault:_pid];
@@ -320,8 +355,11 @@
 }
 
 - (NSNumber *)project_cdAction:(id)_pid:(NSString *)_path {
+  // TODO: this is non-sense, the client needs to keep its own cwd state
   id fm;
-
+  
+  [self logWithFormat:@"WARNING: client called broken project.cd function!"];
+  
   if ((fm = [self fileManagerForCode:_pid]) == nil)
     return [self _missingFileManagerForProjectIDFault:_pid];
   
@@ -370,7 +408,7 @@
     _args = [NSArray arrayWithObject:_args];
   
   if ((count = [_args count]) == 0)
-    return [NSNumber numberWithBool:NO];
+    return noNum();
   
   if ((fileManager = [self fileManagerForCode:_pid]) == nil)
     return [self _missingFileManagerForProjectIDFault:_pid];
@@ -380,9 +418,9 @@
     
     path = [_args objectAtIndex:i];
     if (![fileManager createDirectoryAtPath:path attributes:nil])
-      return [NSNumber numberWithBool:NO];
+      return noNum();
   }
-  return [NSNumber numberWithBool:YES];
+  return yesNum();
 }
 
 - (NSNumber *)project_rmdirAction:(id)_pid:(NSArray *)_args {
@@ -391,7 +429,7 @@
   unsigned count;
 
   if ((count = [_args count]) == 0)
-    return [NSNumber numberWithBool:NO];
+    return noNum();
 
   if ((fileManager = [self fileManagerForCode:_pid]) == nil)
     return [self _missingFileManagerForProjectIDFault:_pid];
@@ -403,18 +441,18 @@
       path = [_args objectAtIndex:i];
 
       if (![fileManager fileExistsAtPath:path isDirectory:&isDir])
-        return [NSNumber numberWithBool:NO];
+        return noNum();
 
       if (!isDir)
-        return [NSNumber numberWithBool:NO];
+        return noNum();
 
       if ([[fileManager directoryContentsAtPath:path] count] > 0)
-        return [NSNumber numberWithBool:NO];
+        return noNum();
      
       if (![fileManager removeFileAtPath:path handler:nil])
-        return [NSNumber numberWithBool:NO];
+        return noNum();
   }
-  return [NSNumber numberWithBool:YES];
+  return yesNum();
 }
 
 - (NSNumber *)project_rmAction:(id)_pid:(NSArray *)_args {
@@ -423,7 +461,7 @@
   unsigned i;
 
   if ((count = [_args count]) == 0)
-    return [NSNumber numberWithBool:NO];
+    return noNum();
 
   if ((fileManager = [self fileManagerForCode:_pid]) == nil)
     return [self _missingFileManagerForProjectIDFault:_pid];
@@ -435,17 +473,17 @@
       path = [_args objectAtIndex:i];
       
       if (![fileManager fileExistsAtPath:path isDirectory:&isDir])
-        return [NSNumber numberWithBool:NO];
+        return noNum();
 
       if (isDir) {
         if ([[fileManager directoryContentsAtPath:path] count] > 0)
-          return [NSNumber numberWithBool:NO];
+          return noNum();
       }
       
       if (![fileManager removeFileAtPath:path handler:nil])
-        return [NSNumber numberWithBool:NO];
+        return noNum();
   }
-  return [NSNumber numberWithBool:YES];
+  return yesNum();
 }
 
 - (id)project_attrAction:(id)_pid:(NSArray *)_args {
@@ -455,8 +493,10 @@
   unsigned count;
   unsigned i;
 
+  if (_args != nil && ![_args isKindOfClass:[NSArray class]])
+    _args = [NSArray arrayWithObject:_args];
   if ((count = [_args count]) == 0)
-    return [NSNumber numberWithBool:NO];
+    return noNum();
 
   if ((fm = [self fileManagerForCode:_pid]) == nil)
     return [self _missingFileManagerForProjectIDFault:_pid];
@@ -508,10 +548,10 @@
   /* preconditions */
   
   if ((count = [_args count]) == 0)
-    return [NSNumber numberWithBool:NO];
+    return noNum();
   
   if (count == 1)
-    return [NSNumber numberWithBool:NO];
+    return noNum();
 
   /* process */
   
@@ -533,9 +573,9 @@
       : destination;
       
     if (![fileManager copyPath:path toPath:dest handler:nil])
-      return [NSNumber numberWithBool:NO];
+      return noNum();
   }
-  return [NSNumber numberWithBool:YES];
+  return yesNum();
 }
 
 - (NSNumber *)project_cpAction:(id)_pid
@@ -556,9 +596,9 @@
   unsigned count;
 
   if ((count = [_args count]) == 0)
-    return [NSNumber numberWithBool:NO];
+    return noNum();
   if (count == 1)
-    return [NSNumber numberWithBool:NO];
+    return noNum();
   
 
   if ((fileManager = [self fileManagerForCode:_pid]) == nil)
@@ -579,9 +619,9 @@
         : destination;
 
       if (![fileManager movePath:path toPath:dest handler:nil])
-        return [NSNumber numberWithBool:NO];
+        return noNum();
   }
-  return [NSNumber numberWithBool:YES];
+  return yesNum();
 }
 
 - (NSNumber *)project_mvAction:(id)_pid
@@ -601,10 +641,10 @@
   BOOL     ok;
   
   if ((count = [_args count]) == 0)
-    return [NSNumber numberWithBool:NO];
+    return noNum();
   
   if (count == 1)
-    return [NSNumber numberWithBool:NO];
+    return noNum();
   
   if ((fm = [self fileManagerForCode:_pid]) == nil)
     return [self _missingFileManagerForProjectIDFault:_pid];
@@ -634,7 +674,7 @@
     _args = [NSArray arrayWithObject:_args];
   
   if ((count = [_args count]) == 0)
-    return [NSNumber numberWithBool:YES];
+    return yesNum();
 
   if ((fileManager = [self fileManagerForCode:_pid]) == nil)
     return [self _missingFileManagerForProjectIDFault:_pid];
@@ -645,9 +685,9 @@
     path = [_args objectAtIndex:i];
 
     if (![fileManager fileExistsAtPath:path])
-      return [NSNumber numberWithBool:NO];
+      return noNum();
   }
-  return [NSNumber numberWithBool:YES];
+  return yesNum();
 }
 
 - (NSNumber *)project_isdirAction:(id)_pid:(NSArray *)_args {
@@ -658,7 +698,7 @@
     _args = [NSArray arrayWithObject:_args];
   
   if ((count = [_args count]) == 0)
-    return [NSNumber numberWithBool:YES];
+    return yesNum();
 
   if ((fileManager = [self fileManagerForCode:_pid]) == nil)
     return [self _missingFileManagerForProjectIDFault:_pid];
@@ -670,12 +710,12 @@
       path = [_args objectAtIndex:i];
 
       if (![fileManager fileExistsAtPath:path isDirectory:&isDir])
-        return [NSNumber numberWithBool:NO];
+        return noNum();
 
       if (!isDir)  
-        return [NSNumber numberWithBool:NO];
+        return noNum();
   }
-  return [NSNumber numberWithBool:YES];
+  return yesNum();
 }
 
 - (NSNumber *)project_islinkAction:(id)_pid:(NSArray *)_args {
@@ -683,7 +723,7 @@
   unsigned i, count;
 
   if ((count = [_args count]) == 0)
-    return [NSNumber numberWithBool:YES];
+    return yesNum();
   
   if ((fileManager = [self fileManagerForCode:_pid]) == nil)
     return [self _missingFileManagerForProjectIDFault:_pid];
@@ -696,20 +736,20 @@
       path = [_args objectAtIndex:i];
       
       if (![fileManager fileExistsAtPath:path isDirectory:&isDir])
-        return [NSNumber numberWithBool:NO];
+        return noNum();
       
       if (isDir)
-        return [NSNumber numberWithBool:NO];
+        return noNum();
 
       if ((attrs = [fileManager fileAttributesAtPath:path 
                                 traverseLink:NO])==nil)
-        return [NSNumber numberWithBool:NO];
+        return noNum();
 
       if (![[attrs objectForKey:NSFileType] 
              isEqualToString:NSFileTypeSymbolicLink])
-        return [NSNumber numberWithBool:NO];
+        return noNum();
   }
-  return [NSNumber numberWithBool:YES];
+  return yesNum();
 }
 
 - (id)project_flushAction:(id)_pid {
@@ -731,7 +771,7 @@
 
   // nothing to zip
   if ((count = [_args count]) == 0)
-    return [NSNumber numberWithBool:NO];
+    return noNum();
   
   if ((fileManager = [self fileManagerForCode:_pid]) == nil)
     return [self _missingFileManagerForProjectIDFault:_pid];
@@ -742,7 +782,7 @@
 
       path = [_args objectAtIndex:i];
       if (![fileManager fileExistsAtPath:path])
-        return [NSNumber numberWithBool:NO];
+        return noNum();
     }
   
   zipData = [zipTool zipProjectPaths:_args 
@@ -772,11 +812,15 @@
 }
 
 - (id)project_fileAttributesAtDirectoryAction:(id)_pid:(NSArray *)_args {
+  // TODO: why is args an array?
   unsigned count;
   id fm;
-
+  
+  if (_args != nil && ![_args isKindOfClass:[NSArray class]])
+    _args = [NSArray arrayWithObject:_args];
+  
   if ((count = [_args count]) == 0)
-    return [NSNumber numberWithBool:NO];
+    return noNum();
   
   if (count > 1)
     return [self _projectMethodTooManyArgumentsFault];
@@ -786,6 +830,92 @@
 
   return [[[fm dataSourceAtPath:[_args objectAtIndex:0]]
                fetchObjects] map:@selector(fileAttributes)];
+}
+
+/* versioning operations */
+
+- (id)project_checkoutFileAtPathAction:(id)_pid:(NSString *)_path:(NSString *)_ver {
+  id   fm;
+  BOOL ok;
+
+  if (![_path isNotNull]) return noNum();
+  _path = [_path stringValue];
+  
+  if ((fm = [self fileManagerForCode:_pid]) == nil)
+    return [self _missingFileManagerForProjectIDFault:_pid];
+  
+  if (![fm supportsVersioningAtPath:_path])
+    return [self _fileManagerDoesNotSupportVersioningFault];
+  
+  ok = [_ver isNotNull]
+    ? [fm checkoutFileAtPath:_path version:_ver handler:nil]
+    : [fm checkoutFileAtPath:_path handler:nil];
+  return ok ? yesNum() : noNum();
+}
+- (id)project_checkoutFileAtPathAction:(id)_pid:(NSString *)_path {
+  return [self project_checkoutFileAtPathAction:_pid:_path:nil];
+}
+
+- (id)project_releaseFileAtPathAction:(id)_pid:(NSString *)_path {
+  id fm;
+
+  if (![_path isNotNull]) return noNum();
+  _path = [_path stringValue];
+  
+  if ((fm = [self fileManagerForCode:_pid]) == nil)
+    return [self _missingFileManagerForProjectIDFault:_pid];
+  
+  if (![fm supportsVersioningAtPath:_path])
+    return [self _fileManagerDoesNotSupportVersioningFault];
+  
+  return [fm releaseFileAtPath:_path handler:nil] ? yesNum() : noNum();
+}
+
+- (id)project_rejectFileAtPathAction:(id)_pid:(NSString *)_path {
+  id fm;
+
+  if (![_path isNotNull]) return noNum();
+  _path = [_path stringValue];
+  
+  if ((fm = [self fileManagerForCode:_pid]) == nil)
+    return [self _missingFileManagerForProjectIDFault:_pid];
+  
+  if (![fm supportsVersioningAtPath:_path])
+    return [self _fileManagerDoesNotSupportVersioningFault];
+  
+  return [fm rejectFileAtPath:_path handler:nil] ? yesNum() : noNum();
+}
+
+- (NSArray *)project_getVersionsAtPathAction:(id)_pid:(NSString *)_path {
+  /* returns an error of the version numbers */
+  id fm;
+
+  if (![_path isNotNull]) return noNum();
+  _path = [_path stringValue];
+  
+  if ((fm = [self fileManagerForCode:_pid]) == nil)
+    return [self _missingFileManagerForProjectIDFault:_pid];
+  
+  if (![fm supportsVersioningAtPath:_path])
+    return [self _fileManagerDoesNotSupportVersioningFault];
+  
+  return [fm versionsAtPath:_path];
+}
+
+- (NSString *)project_getLastVersionAtPathAction:(id)_pid:(NSString *)_path {
+  // TODO: this seems to return incorrect results
+  id fm;
+
+  if (![_path isNotNull]) return noNum();
+  _path = [_path stringValue];
+  
+  if ((fm = [self fileManagerForCode:_pid]) == nil)
+    return [self _missingFileManagerForProjectIDFault:_pid];
+  
+  if (![fm supportsVersioningAtPath:_path])
+    return [self _fileManagerDoesNotSupportVersioningFault];
+  
+  return [fm lastVersionAtPath:_path];
 }
 
 @end /* DirectAction(Project) */

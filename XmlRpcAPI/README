@@ -30,4 +30,17 @@ XMLRPC_FAULT_INVALID_RESULT    4
 XMLRPC_FAULT_INTERNAL_ERROR    5
 XMLRPC_FAULT_LOCK_ERROR        6
 XMLRPC_MISSING_PERMISSIONS     7
+XMLRPC_FAULT_FS_NOVERSIONING   8
+XMLRPC_FAULT_TOOMANY_ARGS      9
 XMLRPC_FAULT_NOT_FOUND         404
+
+xmlrpc_call
+===========
+
+To list implemented methods, just call without arguments
+
+  xmlrpc_call http://helge@localhost/RPC2
+
+Listing a directory of project with code 'DBTEST'
+
+  xmlrpc_call http://helge@localhost/RPC2 project.ls DBTEST /mydir

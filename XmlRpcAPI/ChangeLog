@@ -1,3 +1,17 @@
+2005-02-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* Actions.subproj/DirectAction+Project.m:
+	  - allow a non-array argument for project.fileAttributesAtDirectory 
+	    and project.attr functions (will create a single item array)
+	  - improved faults,
+	  - added various functions to access versioning information:
+	    project.checkoutFileAtPath, project.releaseFileAtPath,
+	    project.rejectFileAtPath, project.getVersionsAtPath,
+	    project.getLastVersionAtPath
+	  - added a method to retrieve the file content as an NSData object:
+	    project.getFileContent (also supports versioning)
+	  (v5.1.58)
+
 2005-02-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* XmlRpcCoding.subproj/SkyPersonDocument+XmlRpcCoding.m: avoid
