@@ -227,18 +227,19 @@
 			  object:self selector:@selector(renderListEntry:)];
 }
 
-/* zide-look */
+/* ZideLook support */
 
 - (id)zideLookRendererInContext:(id)_ctx {
   static Class ZLCLass = NULL;
+  static BOOL didInit = NO;
 
-  if (ZLCLass == NULL) {
-    [self logWithFormat:@"WARNING: using person renderer ..."];
-    ZLCLass = NSClassFromString(@"SxZLPersonRenderer");
-
-    if (ZLCLass == NULL) {
-      [self logWithFormat:@"try to instantiate 'SxZLPersonRenderer'. Missing"
-            @" class"];
+  if (!didInit) {
+    NSString *rcName = @"SxZLPersonRenderer";
+    didInit = YES;
+    
+    if ((ZLCLass = NSClassFromString(rcName)) == Nil) {
+      [self logWithFormat:
+	      @"ERROR: attempt to use '%@' which could not be found."];
     }
   }
   return [ZLCLass rendererWithFolder:self inContext:_ctx];

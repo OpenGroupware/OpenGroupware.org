@@ -1,11 +1,23 @@
+2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.3.75
+
+	* improved handling of external ZLConnect renderer classes (to avoid a
+	  500 on a PROPFIND-0), removed some deprecated code
+
+	* SxVCardPersonRenderer.m: major code cleanups (needs more)
+
+	* SxVCardContactRenderer.m: render vCards in UTF-8, set proper content
+	  type, minor code cleanups
+	
 2004-08-24  Helge Hess  <helge.hess@skyrix.com>
-
+	
 	* added a library, so that linking on MacOSX works (v1.3.74)
-
+	
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
-
+	
 	* expanded subprojects, ZS 1.3 fixes (v1.3.73)
-
+	
 2004-05-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile.preamble (Contacts_BUNDLE_LIBS): fixed dependencies for

@@ -56,15 +56,15 @@
 }
 - (id)zideLookRendererInContext:(id)_ctx {
   /* TODO: move to ZideLook bundle */
-  static Class RendererClass = NULL;
-
-  if (RendererClass == NULL) {
+  static Class RendererClass = Nil;
+  static BOOL didInit = NO;
+  
+  if (!didInit) {
     NSString *className = @"SxZLEnterpriseRenderer";
+    didInit = YES;
     
-    RendererClass = NSClassFromString(className);
-
-    if (RendererClass == NULL) {
-      [self logWithFormat:@"try to instantiate '%@'", className];
+    if ((RendererClass = NSClassFromString(className)) == Nil) {
+      [self logWithFormat:@"ERROR: did not find class '%@'!", className];
       return nil;
     }
   }
@@ -106,6 +106,20 @@
     : [SxContactSetIdentifier privateEnterprises];
 }
 
+- (Class)fullEnterpriseRendererClass {
+  static Class RendererClass = NULL;
+  static BOOL didInit = NO;
+  
+  if (!didInit) {
+    NSString *className = @"SxZLFullEnterpriseRenderer";
+    didInit = YES;
+    
+    if ((RendererClass = NSClassFromString(className)) == Nil)
+      [self logWithFormat:@"ERROR: did not find renderer: '%@'", className];
+  }
+  return RendererClass;
+}
+
 - (id)performWebDAVBulkQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx {
   // TODO: this method should check which attributes are actually queried!
   // TODO: would be better to implement performBulkQuery:onGlobalIDs of
@@ -116,18 +130,6 @@
   unsigned count;
 
   /* get primary keys */
-  static Class RendererClass = NULL;
-
-  if (RendererClass == NULL) {
-    NSString *className = @"SxZLFullEnterpriseRenderer";
-    
-    RendererClass = NSClassFromString(className);
-
-    if (RendererClass == NULL) {
-      [self logWithFormat:@"try to instantiate '%@'", className];
-      return nil;
-    }
-  }
   
   if ((pkeys = [self extractBulkPrimaryKeys:_fs]) == nil)
     return nil;
@@ -138,11 +140,11 @@
           count];
 
   /* fetch */
-#if 1
+
   records = [[self contactManagerInContext:_ctx]
                    fullObjectInfosForPrimaryKeys:pkeys
                    withSetIdentifier:[self contactSetID]];
-#else
+#if 0 /* old code */
   records = [[self contactManagerInContext:_ctx]
                    fullEnterpriseInfosForPrimaryKeys:pkeys];
 #endif
@@ -151,44 +153,12 @@
     return [NSArray array];
   
   /* render to WebDAV */
-#if 1 /* enable if the full renderer is fixed regarding the URL */
-  renderer = [RendererClass rendererWithContext:_ctx 
-			    baseURL:[self baseURL]];
+
+  /* TODO: check whether the full renderer is fixed regarding the URL */
+  renderer = [self fullEnterpriseRendererClass];
+  renderer = [renderer rendererWithContext:_ctx baseURL:[self baseURL]];
   return [SxMapEnumerator enumeratorWithSource:[records objectEnumerator]
 			  object:renderer selector:@selector(renderEntry:)];
-#else
-  {
-    NSMutableArray *davEntries;
-    unsigned       i;
-    
-#warning fix enterprise full renderer to remove this junk
-    davEntries = [NSMutableArray arrayWithCapacity:count];
-    for (i = 0; i < count; i++) {
-      NSString *url;
-      id pkey;
-      id record;
-    
-      record = [records objectAtIndex:i];
-      if ((pkey = [record valueForKey:@"pkey"]) == nil) {
-        [self logWithFormat:@"missing primary key in record: %@", record];
-        continue;
-      }
-      pkey = [pkey stringValue];
-    
-      url = [[self baseURL] stringByAppendingString:pkey];
-    
-      renderer = [[SxZLFullEnterpriseRenderer alloc] initWithContext:_ctx
-                                                     baseURL:url];
-      record = [renderer renderEntry:record];
-      [renderer release]; renderer = nil;
-    
-      if (record == nil)
-        continue;
-      [davEntries addObject:record];
-    }
-    return davEntries;
-  }
-#endif
 }
 
 @end /* SxEnterpriseFolder */

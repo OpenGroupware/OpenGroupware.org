@@ -64,24 +64,25 @@
   return [super fillCompanyRecord:values from:_setProps keySet:keys];
 }
 
+- (Class)selfRendererClass {
+  static Class RendererClass = Nil;
+  static BOOL didInit = NO;
+  if (!didInit) {
+    NSString *className = @"SxZLFullPersonRenderer";
+    didInit = YES;
+    
+    if ((RendererClass = NSClassFromString(className)) == Nil)
+      [self logWithFormat:@"Note: attempt to access '%@'", className];
+    // TODO: need a fallback renderer
+  }
+  return RendererClass;
+}
+
 - (id)davQueryOnSelf:(EOFetchSpecification *)_fs inContext:(id)_ctx {
   /* Note: this is also called for bulk fetches */
   NSDictionary           *res;
   SxContactManager       *manager;
   id                     render;
-
-  static Class RendererClass = NULL;
-
-  if (RendererClass == NULL) {
-    NSString *className = @"SxZLFullPersonRenderer";
-    
-    RendererClass = NSClassFromString(className);
-
-    if (RendererClass == NULL) {
-      [self logWithFormat:@"try to instantiate '%@'", className];
-      return nil;
-    }
-  }
   
   manager =
     [SxContactManager managerWithContext:[self commandContextInContext:_ctx]];
@@ -90,8 +91,8 @@
   res = [manager fullPersonInfoForPrimaryKey:[self primaryKey]];
 #else
   res = [[manager fullObjectInfosForPrimaryKeys:
-                   [NSArray arrayWithObject:[self primaryKey]]
-                 withSetIdentifier:
+		    [NSArray arrayWithObject:[self primaryKey]]
+		  withSetIdentifier:
                     [(SxPersonFolder *)[self container] contactSetID]]
                   lastObject];
   
@@ -101,23 +102,25 @@
     return [NSException exceptionWithHTTPStatus:404 /* not found */
                         reason:@"tried to lookup invalid person key"];
   }
- 
-  render =
-    [RendererClass rendererWithContext:_ctx
-                   baseURL:[(SxFolder *)[self container] baseURL]];
-
-  res = [render renderEntry:res];
-
+  
+  if ((render = [self selfRendererClass]) != Nil) {
+    render = [render rendererWithContext:_ctx
+		     baseURL:[(SxFolder *)[self container] baseURL]];
+    res = [render renderEntry:res];
+  }
+  else /* fallback, return SoObject to SOPE WebDAV layer */
+    res = (id)self;
+  
   return [NSArray arrayWithObject:res];
 }
 
 - (id)GETAction:(WOContext *)_ctx {
-  id renderer, res;
   SxContactManager *manager;
-
+  id renderer, res;
+  
   manager = [SxContactManager managerWithContext:
-                              [self commandContextInContext:_ctx]];
-
+				[self commandContextInContext:_ctx]];
+  
   { // taking new vCard renderer
     NSEnumerator *e;
     id person;

@@ -52,28 +52,29 @@
   return @"team::delete";
 }
 
+- (Class)selfRendererClass {
+  static Class RendererClass = Nil;
+  static BOOL didInit = NO;
+  if (!didInit) {
+    NSString *className = @"SxZLGroupRenderer";
+    didInit = YES;
+    
+    if ((RendererClass = NSClassFromString(className)) == Nil)
+      [self logWithFormat:@"Note: attempt to access '%@'", className];
+    // TODO: need a fallback renderer
+  }
+  return RendererClass;
+}
+
 - (id)davQueryOnSelf:(EOFetchSpecification *)_fs inContext:(id)_ctx {
   /* Note: this is also called for bulk fetches */
   NSDictionary      *res;
   SxContactManager  *manager;
   id                render;
-
-  static Class RendererClass = NULL;
-
-  if (RendererClass == NULL) {
-    NSString *className = @"SxZLGroupRenderer";
-    
-    RendererClass = NSClassFromString(className);
-
-    if (RendererClass == NULL) {
-      [self logWithFormat:@"try to instantiate '%@'", className];
-      return nil;
-    }
-  }
   
   manager = [SxContactManager managerWithContext:
-                              [self commandContextInContext:_ctx]];
-
+				[self commandContextInContext:_ctx]];
+  
   res = [manager fullGroupInfoForPrimaryKey:[self primaryKey]];
 
   if (res == nil) {
@@ -82,12 +83,14 @@
                         reason:@"tried to lookup invalid group key"];
   }
  
-  render =
-    [RendererClass rendererWithFolder:(SxFolder *)[self container]
-                       inContext:_ctx];
-
-  res = [render renderEntry:res];
-
+  if ((render = [self selfRendererClass]) != nil) {
+    render = [render rendererWithFolder:(SxFolder *)[self container]
+		     inContext:_ctx];
+    res = [render renderEntry:res];
+  }
+  else /* fallback, return SoObject to SOPE WebDAV layer */
+    res = (id)self;
+  
   return [NSArray arrayWithObject:res];
 }
 
