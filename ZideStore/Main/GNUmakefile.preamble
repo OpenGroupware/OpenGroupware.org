@@ -27,8 +27,10 @@ ADDITIONAL_TOOL_LIBS += \
         -lZSFrontend	\
 	-lLSFoundation	\
 	-lGDLAccess	\
+	-lNGObjWeb	\
 	-lNGiCal	\
-	-lNGLdap -lNGMime -lNGExtensions -lEOControl	\
+	-lNGLdap -lNGMime\
+	-lNGStreams -lNGExtensions -lEOControl	\
 	-lXmlRpc -lDOM -lSaxObjC
 
 # for OSX
