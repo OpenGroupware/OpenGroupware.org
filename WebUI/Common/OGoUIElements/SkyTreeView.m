@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,9 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 /*
+  SkyTreeView
+  
+  This one wraps the WETreeView and preconfigures some icons.
+
   requires:
             treeview_vertical_13.gif
             treeview_plus_13.gif
@@ -78,9 +81,6 @@
       --- snap ---
 */
 
-
-
-#include "common.h"
 #include <NGObjWeb/WODynamicElement.h>
 
 @interface SkyTreeView : WODynamicElement
@@ -88,6 +88,8 @@
   WOElement *template;
 }
 @end
+
+#include "common.h"
 
 @implementation SkyTreeView
 
@@ -132,9 +134,11 @@
 }
 
 - (void)dealloc {
-  RELEASE(self->template);
+  [self->template release];
   [super dealloc];
 }
+
+/* handling requests */
 
 - (void)takeValuesFromRequest:(WORequest *)_req inContext:(WOContext *)_ctx {
   [self->template takeValuesFromRequest:_req inContext:_ctx];
@@ -143,6 +147,8 @@
 - (id)invokeActionForRequest:(WORequest *)_req inContext:(WOContext *)_ctx {
   return [self->template invokeActionForRequest:_req inContext:_ctx];
 }
+
+/* generating response */
 
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
   [self->template appendToResponse:_response inContext:_ctx];

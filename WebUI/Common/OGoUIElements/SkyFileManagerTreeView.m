@@ -24,6 +24,8 @@
 @class NSString, NSMutableSet, NSArray;
 
 /*
+  SkyFileManagerTreeView
+  
   An UI element to display a filemanager hierachy as a tree. If onClick is not
   overridden, a click on a filelink will change the current directory of the
   filemanager.
