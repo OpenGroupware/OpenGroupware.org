@@ -655,10 +655,10 @@ static NSMutableArray *_getGIDSforIds(SkyPalmPreferences *self,
     tIds = [[NSMutableArray alloc] init];
 
     while ((obj = [enumerator nextObject])) {
-      if ([[[obj valueForKey:@"globalID"] entityName] isEqualToString:@"Person"])
-        {
+      if ([[[obj valueForKey:@"globalID"] entityName] 
+	    isEqualToString:@"Person"]) {
           [pIds addObject:[obj valueForKey:@"companyId"]];
-        }
+      }
       else if ([[[obj valueForKey:@"globalID"] entityName]
                       isEqualToString:@"Team"]) {
           [tIds addObject:[obj valueForKey:@"companyId"]];        
@@ -706,10 +706,10 @@ static NSMutableArray *_getGIDSforIds(SkyPalmPreferences *self,
   NSArray      *args       = nil;
 
   command = [NSString stringWithFormat:@"%@::get-by-globalid", _entityName];
-
-  if ([_entityName isEqualToString:@"Team"] == YES)
+  
+  if ([_entityName isEqualToString:@"Team"])
     args = [NSArray arrayWithObjects:@"description", @"isTeam", nil];
-  else if ([_entityName isEqualToString:@"Person"] == YES)
+  else if ([_entityName isEqualToString:@"Person"])
     args = [NSArray arrayWithObjects:@"name", @"firstname", @"isAccount",
                     @"login", nil];
   else

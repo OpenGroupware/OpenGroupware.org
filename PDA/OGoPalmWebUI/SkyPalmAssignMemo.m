@@ -79,17 +79,54 @@
 
 @implementation SkyPalmAssignMemo
 
-- (void) dealloc {
-  RELEASE(self->fileManager);
-  RELEASE(self->projectGID);
-  RELEASE(self->project);
-  RELEASE(self->privateProjects);
-  RELEASE(self->publicProjects);
-  RELEASE(self->filename);
-  RELEASE(self->filenames);
-  RELEASE(self->files);
+static EOQualifier *privateDBProjectsQualifier = nil;
+static EOQualifier *commonDBProjectsQualifier  = nil;
+static EOQualifier *regularFilesQualifier      = nil;
+static NSArray     *nameSortOrderings          = nil;
+static NSArray     *filenameSortOrderings      = nil;
+
++ (void)initialize {
+  EOQualifier    *q;
+  EOSortOrdering *so;
+
+  /* qualifiers */
+  
+  q = [EOQualifier qualifierWithQualifierFormat:
+		     @"type='private' AND NOT (url hasPrefix: 'file://')"];
+  privateDBProjectsQualifier = [q retain];
+
+  q = [EOQualifier qualifierWithQualifierFormat:
+		     @"type='common' AND NOT (url hasPrefix: 'file://')"];
+  commonDBProjectsQualifier = [q retain];
+
+  q = [EOQualifier qualifierWithQualifierFormat:@"%@=%@",
+		   NSFileType, NSFileTypeRegular];
+  regularFilesQualifier = [q retain];
+
+  /* sort orderings */
+  
+  so = [EOSortOrdering sortOrderingWithKey:@"name" 
+		       selector:EOCompareAscending];
+  nameSortOrderings = [[NSArray alloc] initWithObjects:&so count:1];
+
+  so = [EOSortOrdering sortOrderingWithKey:@"filename" 
+		       selector:EOCompareAscending];
+  filenameSortOrderings = [[NSArray alloc] initWithObjects:&so count:1];
+}
+
+- (void)dealloc {
+  [self->fileManager     release];
+  [self->projectGID      release];
+  [self->project         release];
+  [self->privateProjects release];
+  [self->publicProjects  release];
+  [self->filename        release];
+  [self->filenames       release];
+  [self->files           release];
   [super dealloc];
 }
+
+/* notifications */
 
 - (void)syncSleep {
   RELEASE(self->privateProjects); self->privateProjects = nil;
@@ -168,9 +205,11 @@
   return self->projectGID;
 }
 
-//- (id)file {
-//  return [self skyrixRecord];
-//}
+#if 0
+- (id)file {
+  return [self skyrixRecord];
+}
+#endif
 
 - (EODataSource *)_projectDS {
   EODataSource *lds;
@@ -180,7 +219,10 @@
   return [lds autorelease];
 }
 - (EOFetchSpecification *)_projectFetchSpecForGID:(id)_gid {
-  EOQualifier *qual =
+  EOQualifier *qual;
+
+  // TODO: make that a binding
+  qual =
     [EOQualifier qualifierWithQualifierFormat:
                  @"projectId=%@ AND NOT (url hasPrefix: 'file://')",
                  [[_gid keyValuesArray] objectAtIndex:0]];
@@ -190,20 +232,18 @@
                                sortOrderings:nil];
 }
 - (id)_fetchProject {
+  EODataSource *das = nil;
+  id p = nil;
   id pGID = [self projectGID];
 
-  if (pGID != nil) {
-    EODataSource *das = nil;
-    id p = nil;
+  if (pGID == nil)
+    return nil;
     
-    das = [self _projectDS];
-    [das setFetchSpecification:[self _projectFetchSpecForGID:pGID]];
-    p   = [das fetchObjects];
-    p   = [p lastObject];
-    return p;
-  }
-
-  return nil;
+  das = [self _projectDS];
+  [das setFetchSpecification:[self _projectFetchSpecForGID:pGID]];
+  p   = [das fetchObjects];
+  p   = [p lastObject];
+  return p;
 }
 - (void)setProject:(id)_p {
   ASSIGN(self->project,_p);
@@ -229,9 +269,11 @@
 }
 - (NSString *)filename {
   if (self->filename == nil) {
-    NSString *n = [[self doc] description];
-    [self setFilename:[NSString stringWithFormat:@"%@.txt",
-                                n]];
+    NSString *n;
+
+    n = [[self doc] description];
+    n = [n stringByAppendingString:@".txt"];
+    [self setFilename:n];
   }
   return self->filename;
 }
@@ -248,13 +290,19 @@
 
 // overwriting
 - (void)setPalmRecords:(NSMutableArray *)_palmRecs {
-  NSMutableArray *fns = [NSMutableArray arrayWithCapacity:[_palmRecs count]];
+  NSMutableArray *fns;
   NSEnumerator   *e   = nil;
   id             one  = nil;
 
+  fns = [NSMutableArray arrayWithCapacity:[_palmRecs count]];
   e = [_palmRecs objectEnumerator];
-  while ((one = [e nextObject])) {
-    [fns addObject:[NSString stringWithFormat:@"%@.txt", [one description]]];
+  while ((one = [e nextObject]) != nil) {
+    NSString *n;
+    
+    n = [one description];
+    if (![n isNotNull]) continue;
+    n = [n stringByAppendingString:@".txt"];
+    [fns addObject:n];
   }
   ASSIGN(self->filenames,fns);
   [super setPalmRecords:_palmRecs];
@@ -262,73 +310,64 @@
 
 // wod accessors
 - (BOOL)hasFile {
-  if (self->createNewFileCond == YES)
+  if (self->createNewFileCond)
     return YES;
   return (([self skyrixRecord] != nil) || ([[self skyrixRecords] count]))
     ? YES : NO;
 }
 - (BOOL)listProjects {
-  return ([self projectGID] == nil)
-    ? YES : NO;
+  return ([self projectGID] == nil) ? YES : NO;
 }
 - (BOOL)listFiles {
   if (self->createNewFileCond)
     return NO;
 
-  return (([self projectGID] != nil) && (![self hasFile]))
-    ? YES : NO;
+  return (([self projectGID] != nil) && (![self hasFile])) ? YES : NO;
 }
 - (BOOL)hasProject {
-  return ([self projectGID] != nil)
-    ? YES : NO;
+  return ([self projectGID] != nil) ? YES : NO;
 }
 
 - (NSArray *)_sortOrderings {
-  return [NSArray arrayWithObject:
-                  [EOSortOrdering sortOrderingWithKey:@"name"
-                                  selector:EOCompareAscending]];
+  return nameSortOrderings;
 }
 
 - (EOFetchSpecification *)_projectFetchSpecForPrivateList {
-  EOQualifier *qual =
-    [EOQualifier qualifierWithQualifierFormat:
-                 @"type='private' AND NOT (url hasPrefix: 'file://')"];
   return [EOFetchSpecification fetchSpecificationWithEntityName:@"project"
-                               qualifier:qual
+                               qualifier:privateDBProjectsQualifier
                                sortOrderings:[self _sortOrderings]];
 }
 - (EOFetchSpecification *)_projectFetchSpecForPublicList {
-  EOQualifier *qual =
-    [EOQualifier qualifierWithQualifierFormat:
-                 @"type='common' AND NOT (url hasPrefix: 'file://')"];
   return [EOFetchSpecification fetchSpecificationWithEntityName:@"project"
-                               qualifier:qual
+                               qualifier:commonDBProjectsQualifier
                                sortOrderings:[self _sortOrderings]];
 }
 - (NSArray *)privateProjects {
-  if (self->privateProjects == nil) {
-    id das = nil;
-    id ps  = nil;
+  EODataSource *das;
+  NSArray *ps;
+  
+  if (self->privateProjects != nil)
+    return self->privateProjects;
 
-    das = [self _projectDS];
-    [das setFetchSpecification:[self _projectFetchSpecForPrivateList]];
+  das = [self _projectDS];
+  [das setFetchSpecification:[self _projectFetchSpecForPrivateList]];
 
-    ps  = [das fetchObjects];
-    self->privateProjects = RETAIN(ps);
-  }
+  ps  = [das fetchObjects];
+  self->privateProjects = [ps retain];
   return self->privateProjects;
 }
 - (NSArray *)publicProjects {
-  if (self->publicProjects == nil) {
-    id das = nil;
-    id ps  = nil;
+  EODataSource *das = nil;
+  NSArray *ps  = nil;
+  
+  if (self->publicProjects != nil)
+    return self->publicProjects;
 
-    das = [self _projectDS];
-    [das setFetchSpecification:[self _projectFetchSpecForPublicList]];
+  das = [self _projectDS];
+  [das setFetchSpecification:[self _projectFetchSpecForPublicList]];
 
-    ps = [das fetchObjects];
-    self->publicProjects = RETAIN(ps);
-  }
+  ps = [das fetchObjects];
+  self->publicProjects = [ps retain];
   return self->publicProjects;
 }
 
@@ -337,34 +376,28 @@
 }
 
 - (id)_folderDS {
-  id fm     = nil;
-  id folder = nil;
-
+  id<NSObject,SkyDocumentFileManager> fm;
+  NSString *folder;
+  
   fm     = [self fileManager];
   folder = [fm currentDirectoryPath];
   
-  return [fm dataSourceAtPath:folder];
+  return [(id)fm dataSourceAtPath:folder];
 }
 
 - (NSArray *)_fileSortOrderings {
-  EOSortOrdering *so;
-  so = [EOSortOrdering sortOrderingWithKey:@"filename" 
-		       selector:EOCompareAscending];
-  return [NSArray arrayWithObject:so];
+  return filenameSortOrderings; // TODO: do we need a method here?
 }
 
-- (id)_onlyFilesFetchSpec {
-  EOQualifier *qual =
-    [EOQualifier qualifierWithQualifierFormat:@"%@=%@",
-                 NSFileType, NSFileTypeRegular];
+- (EOFetchSpecification *)_onlyFilesFetchSpec {
   return [EOFetchSpecification fetchSpecificationWithEntityName:@"doc"
-                               qualifier:qual
+                               qualifier:regularFilesQualifier
                                sortOrderings:[self _fileSortOrderings]];
 }
 - (NSArray *)files {
   EODataSource *das;
   
-  if (self->files) return self->files;
+  if (self->files != nil) return self->files;
   
   das = [self _folderDS];
   [das setFetchSpecification:[self _onlyFilesFetchSpec]];
@@ -377,7 +410,9 @@
 }
 
 - (NSArray *)validSyncTypes {
-  NSMutableArray *all = [NSMutableArray array];
+  NSMutableArray *all;
+  
+  all = [NSMutableArray arrayWithCapacity:4];
   // sync do nothing
   [all addObject:[NSNumber numberWithInt:0]];
   
@@ -400,7 +435,7 @@
   if ([[self item] isReadable])
     [self setSkyrixRecord:[self item]];
   else
-    NSLog(@"%s File is not readable!!!", __PRETTY_FUNCTION__);
+    [self logWithFormat:@"%s File is not readable!!!", __PRETTY_FUNCTION__];
 
   return nil;
 }
