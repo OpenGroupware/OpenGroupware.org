@@ -1,8 +1,0 @@
-# $Id$
-
-skydbd_TOOL_LIBS += \
-	-lLSFoundation	\
-	-lOGoDaemon -lXmlSchema		\
-	-lSxComponents -lNGObjWeb	\
-	-lGDLAccess	\
-	-lEOControl	\

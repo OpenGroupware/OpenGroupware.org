@@ -1,7 +1,0 @@
-# $Id$
-
-after-install ::
-	$(MKDIRS) $(TEMPLATE_INSTALL_DIR)/ $(INSTANCE_INSTALL_DIR)
-	cp skysoapproxyd.xml $(TEMPLATE_INSTALL_DIR)/
-	if ! test -f $(INSTANCE_INSTALL_DIR)/iSoapProxy.xml; then\
-	  cp iSoapProxy.xml    $(INSTANCE_INSTALL_DIR)/; fi

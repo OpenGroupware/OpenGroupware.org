@@ -1,6 +1,0 @@
-# $Id$
-
-after-install ::
-	$(MKDIRS) $(TEMPLATE_INSTALL_DIR) $(INSTANCE_INSTALL_DIR)
-	cp skyaccountd.xml $(TEMPLATE_INSTALL_DIR)/
-	cp iAccount.xml    $(INSTANCE_INSTALL_DIR)/

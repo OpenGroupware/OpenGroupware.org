@@ -1,6 +1,0 @@
-# $Id$
-
-skyobjinfod_TOOL_LIBS += \
-	-lOGoDaemon -lXmlSchema		\
-	-lSxComponents -lNGObjWeb	\
-	-lEOControl

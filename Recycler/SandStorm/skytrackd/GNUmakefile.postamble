@@ -1,6 +1,0 @@
-# $Id$
-
-after-install ::
-	$(MKDIRS) $(TEMPLATE_INSTALL_DIR)/ $(INSTANCE_INSTALL_DIR)
-	cp skytrackd.xml $(TEMPLATE_INSTALL_DIR)/
-	cp iTrack.xml    $(INSTANCE_INSTALL_DIR)/

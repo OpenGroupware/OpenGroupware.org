@@ -1,4 +1,0 @@
-# $Id$
-
-Note: for XML-RPC related stuff you might need xmlrpclib.py, located
-in /ThirdParty/pyxmlrpc.

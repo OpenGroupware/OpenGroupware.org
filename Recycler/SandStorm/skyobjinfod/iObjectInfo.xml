@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<instance uid="objinfod" templateclass="skyobjinfod"
-          xmlns="http://www.skyrix.com/od/skymasterd-config">
-  <parameter name="WOPort">
-    <value>auto</value>
-  </parameter>
-</instance>

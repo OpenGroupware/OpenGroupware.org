@@ -1,6 +1,0 @@
-# $Id$
-
-ADDITIONAL_BUNDLE_LIBS += \
-	-lNGScripting	\
-	-lGDLAccess	\
-	-lDOM -lSaxObjC
