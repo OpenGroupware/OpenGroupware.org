@@ -19,7 +19,6 @@
       { name = LSWNewsModule;        },
       { name = LSWNewsArticleViewer; },
       { name = LSWNewsArticleEditor; },
-      { name = LSWNewsArticles;      },
       { name = SkyNews;              },
       { name = SkyNewsPreferences;   },
     );
@@ -37,7 +36,6 @@
     WOComponents = (
       { name = LSWNewsArticleViewer; },
       { name = LSWNewsArticleEditor; },
-      { name = LSWNewsArticles;      },
       { name = SkyNews;              },
       { name = SkyNewsPreferences;   },
     );

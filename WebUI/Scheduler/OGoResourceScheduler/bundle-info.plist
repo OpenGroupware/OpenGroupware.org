@@ -14,7 +14,6 @@
       { name = SkyResourceSchedulerModule;	   },
       { name = SkyResourceSchedulerPage;           },
       { name = SkySchedulerResourcePanel;          },
-      { name = WODirectAction+ResourceSchedulerViews;   }
     );
     
     DockablePages = (

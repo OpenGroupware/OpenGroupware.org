@@ -1,3 +1,7 @@
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* bundle-info.plist: removed a category registered as a class (v5.1.11)
+
 2005-03-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* moved template of SkyResourceSchedulerPage to templates directory
