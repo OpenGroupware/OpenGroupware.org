@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 15 2004-08-21 03:22:17Z helge $
+# GNUstep makefile
 
 include ../common.make
 

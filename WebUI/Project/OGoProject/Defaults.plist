@@ -1,4 +1,4 @@
-{ // $Id$
+{
   skyp4_textedit_rows              = 20;
   skyp4_textedit_columns           = 80;
   skyp4_filelist_sortfield         = "NSFileName";
