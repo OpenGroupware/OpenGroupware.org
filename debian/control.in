@@ -45,6 +45,14 @@ Description: Web UI for OpenGroupware.org
  This package depends on all packages that are part of
  OpenGroupware.org's web user interface.
 
+Package: opengroupware.org-environment
+Section: web
+Architecture: all
+Depends: daemon, opengroupware.org-database-scripts, libfoundation-tools
+Description: Useful tools for an OpenGroupware.org runtime environment
+ This package contains an init script for OpenGroupware.org as well as 
+ a configurator, which allows for automatic instance creation.
+
 Package: libopengroupware.org-logic_OGOSONAME_-dev
 Section: libdevel
 Architecture: any
@@ -194,15 +202,22 @@ Description: Library of common Web UI elements
 Package: opengroupware.org_OGOVER_-database
 Section: web
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org-database-scripts, sope-db-connector
 Description: Database models for OpenGroupware.org
- This package contains the database models and scripts to setup a PostgreSQL
- database for OpenGroupware.org.
+ This package contains the database models for OpenGroupware.org.
+
+Package: opengroupware.org-database-scripts
+Section: web
+Architecture: any
+Replaces: opengroupware.org_OGOVER_-database
+Description: Scripts to set up a database for OpenGroupware.org
+ This package contains the necessary SQL scripts to set up a database for
+ OpenGroupware.org.  
 
 Package: opengroupware.org_OGOVER_-webui-app
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org_OGOVER_-database, sope-libxmlsaxdriver, opengroupware.org_OGOVER_-webui-core, opengroupware.org_OGOVER_-webui-i18n-en | opengroupware.org_OGOVER_-webui-i18n, opengroupware.org_OGOVER_-webui-theme-default | opengroupware.org_OGOVER_-webui-theme
-Recommends: libapache-mod-ngobjweb, apache
+Recommends: libapache-mod-ngobjweb, apache, opengroupware.org-environment
 Description: Web UI application of OpenGroupware.org
  This package contains the executable and resources of
  OpenGroupware.org's web application server.
@@ -295,7 +310,7 @@ Package: opengroupware.org-zidestore_ZSVER_
 Section: web
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org_OGOVER_-database, sope-libxmlsaxdriver, sope-versitsaxdriver
-Recommends: libapache-mod-ngobjweb, apache
+Recommends: libapache-mod-ngobjweb, apache, opengroupware.org-environment
 Description: WebDAV Server for OpenGroupware.org
  The ZideStore Server provides WebDAV access to the OpenGroupware.org
  data. It can be used to cennect native groupware clients with
@@ -307,7 +322,7 @@ Description: WebDAV Server for OpenGroupware.org
 Package: opengroupware.org_OGOVER_-xmlrpcd
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org_OGOVER_-database, sope-libxmlsaxdriver
-Recommends: libapache-mod-ngobjweb, apache
+Recommends: libapache-mod-ngobjweb, apache, opengroupware.org-environment
 Description: XMLRPC daemon for OpenGroupware.org
  The XMLRPC daemon allows to execute groupware functions over the standardized
  XMLRPC API. This is especially useful within scripts or custom applications.

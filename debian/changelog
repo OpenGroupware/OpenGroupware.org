@@ -1,10 +1,14 @@
 opengroupware.org (1.0a.9-1) UNRELEASED; urgency=low
 
   * New upstream release.
-  * Removed all autoconfiguration stuff. This will be done by a separate
-    package, released later.
+  * Replaced previous autoconfiguration stuff with new ogo-create-instance
+    script (in opengroupware.org-environment). This script enables
+    administrators to set up multiple instances of OpenGroupware.org possibly
+    even running different versions (if installed).
+  * New init script handles now all daemons and is able to start multiple
+    instances of OpenGroupware.org.
 
- -- Sebastian Ley <ley@debian.org>  Thu, 21 Oct 2004 18:17:20 +0200
+ -- Sebastian Ley <ley@debian.org>  Wed, 10 Nov 2004 02:22:33 +0100
 
 opengroupware.org (1.0a.8-1) experimental; urgency=low
 

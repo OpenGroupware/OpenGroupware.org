@@ -1,0 +1,437 @@
+#!/bin/bash
+
+# ogo-create-instance
+# Author: Sebastian Ley <ley@debian.org>
+# 
+# This script creates OpenGroupware.org instances and registers them
+# with the Debian init system for OpenGroupware.org.
+# This script is free software, you are allowed to do with it whatever
+# you want.
+
+# Default settings
+USER=ogo
+HOMEDIR=/var/lib/opengroupware.org
+WEBUI_VERSION=1.0a
+ZIDESTORE_VERSION=1.3
+XMLRPCD_VERSION=1.0a
+NHSD_VERSION=none
+DBSETUP=yes
+DB_HOST=localhost
+DB_USER=ogo
+DB_PASSWD=
+DB_PORT=5432
+DB_NAME=ogo
+ATTACHMENT_PATH_EXT=documents
+NEWS_IMAGES_PATH_EXT=news_images/
+NEWS_IMAGES_URL_BASE=NewsImages
+WEBUI_PORT=20000
+ZIDESTORE_PORT=21000
+XMLRPCD_PORT=22000
+WEBUI_LOCATION_MATCH=OpenGroupware
+ZIDESTORE_LOCATION_MATCH=zidestore
+XMLRPCD_LOCATION_MATCH=RPC2
+
+test_root () {
+	if [ ${UID} != "0" ]; then
+		return 1
+	fi
+	return 0
+}
+
+get_input () {
+	 cat << EOF
+
+The OpenGroupware.org daemons are executed as non-root user. Such a user
+will be created during the install process. If you want to create multiple
+instances of OpenGroupware.org each instance must be excuted in as a
+different user. Please note that the specified user must not already exist
+on your system.
+
+EOF
+	echo -n "Username (${USER}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		USER=${REPLY}
+	fi
+
+	cat << EOF
+
+You now need to specify the home directory of the user you specified in
+the last question. This directory must not already exist.
+
+EOF
+	echo -n "Home directory (${HOMEDIR}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		HOMEDIR=${REPLY}
+	fi
+
+	ATTACHMENT_PATH=${HOMEDIR}/${ATTACHMENT_PATH_EXT}
+	NEWS_IMAGES_PATH=${HOMEDIR}/${NEWS_IMAGES_PATH_EXT}
+	NEWS_IMAGES_URL=${NEWS_IMAGES_URL_BASE}-${USER}
+
+	cat << EOF
+
+If you have multiple Versions of OpenGroupware.org installed you can
+choose per instance which versions you want to run. If you type "none"
+for a daemon's version, that daemon won't be started in this instance.
+Please note that only one instance can run the Network Hotsync daemon
+on a host because this daemon is tied to a specific port number.
+
+EOF
+	echo -n "Web user interface version (${WEBUI_VERSION}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		WEBUI_VERSION=${REPLY}
+	fi
+	if [ "${WEBUI_VERSION}" == "none" ]; then
+		WEBUI_VERSION=""
+	fi
+
+	echo -n "Zidestore version (${ZIDESTORE_VERSION}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		ZIDESTORE_VERSION=${REPLY}
+	fi
+	if [ "${ZIDESTORE_VERSION}" == "none" ]; then
+		ZIDESTORE_VERSION=""
+	fi
+
+	echo -n "XMLRPC daemon version (${XMLRPCD_VERSION}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		XMLRPCD_VERSION=${REPLY}
+	fi
+	if [ "${XMLRPCD_VERSION}" == "none" ]; then
+		XMLRPCD_VERSION=""
+	fi
+	
+	echo -n "Network Hotsync daemon version (${NHSD_VERSION}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		NHSD_VERSION=${REPLY}
+	fi
+	if [ "${NHSD_VERSION}" == "none" ]; then
+		NHSD_VERSION=""
+	fi
+	cat << EOF
+
+OpenGroupware.org keeps all data in a PostgreSQL database. Some parameters
+need to be configured in order to enable access to the database. If you
+have not yet created a database, you can let the installation script take
+care of that. For that to work, you need a locally installed and fully
+configured PostgreSQL installation and answer the appropriate question
+with "yes". If you want to reuse an existing database or create the 
+database manually answer "no". In both cases you need to specify the host
+where the database is runing as well as a port, a database user, that
+user's password and adatabase name.
+
+EOF
+	echo -n "Automatically configure the database? (${DBSETUP}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		case ${REPLY} in
+			yes|Yes|YES) 	DBSETUP=yes;;
+			*)		DBSETUP=no;;
+		esac
+	fi
+	
+	echo -n "Database host (${DB_HOST}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		DB_HOST=${REPLY}
+	fi
+
+	echo -n "Database port (${DB_PORT}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		DB_PORT=${REPLY}
+	fi
+
+	echo -n "Database user (${DB_USER}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		DB_USER=${REPLY}
+	fi
+
+
+	echo -n "Database user's password: "
+	read -s
+	echo
+	DB_PASSWD=${REPLY}
+
+	echo -n "Database name (${DB_NAME}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		DB_NAME=${REPLY}
+	fi
+
+	cat << EOF
+
+Each daemon has to listen on a different port for connections. Usually
+the daemons are not connected directly from application but via apache
+and a special module (mod_ngobjweb) which handles the requests. However
+you need to specify the ports the applications listen on."
+
+EOF
+
+	echo -n "Web user interface port (${WEBUI_PORT}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		WEBUI_PORT=${REPLY}
+	fi
+
+	echo -n "Zidestore port (${ZIDESTORE_PORT}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		ZIDESTORE_PORT=${REPLY}
+	fi
+	
+	echo -n "XMLRPC daemon port (${XMLRPCD_PORT}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		XMLRPCD_PORT=${REPLY}
+	fi
+	
+cat << EOF
+
+The apache module forwards requests to the appropriate daemons based on
+the URL which is called. You need to specify which local part of an URL
+should be mapped to which daemon. An example: If you specify
+"OpenGroupware" as Location Match for the Web UI, OpenGroupware.org's
+Web UI will be available under "http://YOURDOMAIN/OpenGroupware".
+
+EOF
+	echo -n "Web UI Location Match (${WEBUI_LOCATION_MATCH}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		WEBUI_LOCATION_MATCH=${REPLY}
+	fi
+	
+	echo -n "Zidestore Location Match (${ZIDESTORE_LOCATION_MATCH}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		ZIDESTORE_LOCATION_MATCH=${REPLY}
+	fi
+	
+	echo -n "YMLRPC daemon  Location Match (${XMLRPCD_LOCATION_MATCH}): "
+	read
+	if [ "${REPLY}" != "" ]; then
+		XMLRPCD_LOCATION_MATCH=${REPLY}
+	fi
+
+	return 0
+}
+
+check_user_available () {
+	echo -n "Check if user ${USER} is available... "
+	if getent group ${USER} >/dev/null 2>&1; then
+		echo "failed"
+		echo "Group ${USER} already exists."
+		return 1
+	fi
+	if getent passwd ${USER} >/dev/null 2>&1; then
+		echo "failed"
+		echo "User ${USER} already exists."
+		return 1
+	fi
+	if [ -e ${HOMEDIR} ]; then
+		echo "failed"
+		echo "Directory ${HOMEDIR} already exists."
+		return 1
+	fi
+	echo "done."
+	return 0
+}
+
+add_user () {
+	echo -n "Adding user and group ${USER}... "
+	addgroup --system ${USER} &>/dev/null
+	adduser --system --shell /bin/bash --home ${HOMEDIR} \
+		--ingroup ${USER} --gecos "OpenGroupware.org" ${USER} &>/dev/null
+	mkdir -p ${HOMEDIR}
+	mkdir -p ${ATTACHMENT_PATH}
+	mkdir -p ${NEWS_IMAGES_PATH}
+	chown ${USER}:${USER} ${HOMEDIR}
+	chown ${USER}:${USER} ${ATTACHMENT_PATH}
+	chown ${USER}:${USER} ${NEWS_IMAGES_PATH}
+	chmod 755 ${HOMEDIR}
+	chmod 755 ${NEWS_IMAGES_PATH}
+	chmod 700 ${ATTACHMENT_PATH}
+	# FIXME: Fix permissions of .libfoundation directory if necessary
+	echo "done."
+	return 0
+}
+
+set_defaults () {
+	echo -n "Set up application defaults... "
+	if [ ! -x /usr/bin/Defaults ]; then
+		echo "failed"
+		echo "Defaults tool not present. Install the libfoundation-tools package"
+		return 1
+	fi
+	su - -c "Defaults write NSGlobalDomain LSConnectionDictionary '{hostName=\"${DB_HOST}\"; userName=\"${DB_USER}\"; password=\"${DB_PASSWD}\"; port=\"${DB_PORT}\"; databaseName=\"${DB_NAME}\"}'" ${USER}
+	su - -c "Defaults write NSGlobalDomain LSAttachmentPath \"${ATTACHMENT_PATH}\"" ${USER}
+	su - -c "Defaults write NSGlobalDomain LSNewsImagesPath \"${NEWS_IMAGES_PATH}\"" ${USER}
+	su - -c "Defaults write NSGlobalDomain LSNewsImagesUrl \"/${USER}-NewsImages\"" ${USER}
+	su - -c "Defaults write NSGlobalDomain SkyLogoutURL \"/${WEBUI_LOCATION_MATCH}\"" ${USER}
+	echo "done."
+	return 0
+}
+
+check_database_available () {
+	return 0
+}
+
+initialize_database () {
+	echo -n "Set up local database... "
+        su - -c "psql postgres -c \"CREATE USER ${DB_USER} WITH PASSWORD '${DB_PASSWD}' \" &>/dev/null || true" postgres
+	su - -c "createdb -O ${DB_USER} ${DB_NAME} &>/dev/null || true" postgres
+        su - -c "export PGPASSWORD=${DB_PASSWD}; psql ${DB_NAME} -U ${DB_USER} -c \"\\dt\" |grep address &>/dev/null || psql ${DB_NAME} -U ${DB_USER} -c \"\\i /usr/lib/opengroupware.org-${WEBUI_VERSION}/commands/OGo.model/Resources/pg-build-schema.psql\" &>/dev/null " ${USER}  || (echo failed; return 1)
+	echo "done."
+	return 0
+}
+
+register_instance () {
+	echo -n "Register new instance to the startup system... "
+	mkdir -p /etc/opengroupware.org
+	mkdir -p /var/log/opengroupware.org/${USER}
+	chown ${USER}:${USER} /var/log/opengroupware.org/${USER}
+	chmod 770 /var/log/opengroupware.org/${USER}
+	if [ -e /etc/opengroupware.org/${USER} ]; then
+		echo "failed"
+		echo "Directory /etc/opengroupware.org/${USER} already exists, cannot register this instance."
+		return 1
+	fi
+	mkdir /etc/opengroupware.org/${USER}
+
+	ln -s ${HOMEDIR}/.libFoundation/Defaults /etc/opengroupware.org/${USER}
+	
+	echo "USER=${USER}" > /etc/opengroupware.org/${USER}/init.conf
+	echo "WEBUI_VERSION=${WEBUI_VERSION}" >> /etc/opengroupware.org/${USER}/init.conf
+	echo "WEBUI_PORT=${WEBUI_PORT}" >> /etc/opengroupware.org/${USER}/init.conf
+	echo "ZIDESTORE_VERSION=${ZIDESTORE_VERSION}" >> /etc/opengroupware.org/${USER}/init.conf
+	echo "ZIDESTORE_PORT=${ZIDESTORE_PORT}" >> /etc/opengroupware.org/${USER}/init.conf
+	echo "XMLRPCD_VERSION=${XMLRPCD_VERSION}" >> /etc/opengroupware.org/${USER}/init.conf
+	echo "XMLRPCD_PORT=${XMLRPCD_PORT}" >> /etc/opengroupware.org/${USER}/init.conf
+	echo "NHSD_VERSION=${NHSD_VERSION}" >> /etc/opengroupware.org/${USER}/init.conf
+
+	echo "<IfModule ngobjweb_module.c>" > /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+  	echo "  <LocationMatch \"^/${WEBUI_LOCATION_MATCH}/*\">" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo "    SetHandler ngobjweb-adaptor" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo "    SetAppPort ${WEBUI_PORT}" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo "  </LocationMatch>" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo "  Alias /${USER}-NewsImages/ ${NEWS_IMAGES_PATH}" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo "  <LocationMatch \"^/${ZIDESTORE_LOCATION_MATCH}/*\">" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo "    SetHandler ngobjweb-adaptor" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo "    SetAppPort ${ZIDESTORE_PORT}" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo "  </LocationMatch>" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo "  <LocationMatch \"^/${XMLRPCD_LOCATION_MATCH}/*\">" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo "    SetHandler ngobjweb-adaptor" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo "    SetAppPort ${XMLRPCD_PORT}" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo "  </LocationMatch>" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo "</IfModule>" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	
+	ln -s /etc/opengroupware.org/${USER}/mod_ngobjweb.conf /etc/apache/conf.d/mod_ngobjweb-${USER}.conf
+	cat << EOF > /etc/opengroupware.org/${USER}/README
+Configuration directory for an OpenGroupware.org instance
+
+This directory contains information needed to run an OpenGroupware.org
+instance. It was created with the 'create-ogo-instance' script and contains
+the following files:
+
+Defaults
+  A link to the instance user's Defaults dir, which is database holding
+  configuration items. They should be modified with the 'Defaults' tool
+  from the libfoundation-tools package.
+
+init.conf
+  This file will be read by /etc/init.d/opengroupware.org and contains
+  variables that determines this instance's behaviour. The USER variable
+  must be set to the user that should execute this instance. The VERSION
+  variables determine the version of the selected component to start
+  (useful if you have multiple versions installed) and the PORT variables
+  set the port on which that component's daemon shall listen.
+
+mod_ngobjweb.conf
+  mod_ngobjweb is an apache module that handles HTTP requests for the
+  specific daemons. This configuration file is linked into 
+  /etc/apache/conf.d and contains the necesary chunks of apache 
+  configuration to make the daemons work together with apache.
+
+EOF
+	echo "done."
+	return 0
+}
+
+reload_apache () {
+	echo -n "Reload apache... "
+	if [ -x /usr/sbin/invoke-rc.d ]; then
+		invoke-rc.d apache reload &> /dev/null
+		invoke-rc.d apache-ssl reload &> /dev/null
+		invoke-rc.d apache-perl reload &> /dev/null
+	else
+		/etc/init.d/apache reload &> /dev/null
+		/etc/init.d/apache-ssl reload &> /dev/null
+		/etc/init.d/apache-perl reload &> /dev/null
+	fi
+	echo "done."
+	return 0
+}
+
+### Execution starts here ###
+
+if ! test_root; then
+	echo "This script must be run as root. Exiting..."
+	exit 1
+fi
+
+if ! get_input; then
+	echo "Could not gather user input. Exiting..."
+	exit 1
+fi
+
+if ! check_user_available; then
+	exit 1
+fi
+
+if ! add_user; then
+	echo "Adding user ${USER} failed. Exiting..."
+	exit 1
+fi
+
+if ! set_defaults; then
+	echo "Could not set application defaults. Exiting..."
+	exit 1
+fi
+
+if [ ${DBSETUP} == "yes" ]; then
+	if ! check_database_available; then
+		echo "Could not access local database. Skipping automatic setup of database."
+	else
+		if ! initialize_database; then
+			echo "Could not set up the database. Skipping automatic setup."
+		fi
+	fi
+else
+	echo "Skipping automatic setup of database"
+fi
+
+if ! register_instance; then
+	echo "Could not register the new OpenGroupware.org instance to the startup system."
+fi
+
+reload_apache
+
+cat << EOF
+Initialization of OpenGroupware.org instance finished.
+Now make sure OpenGroupware.org can access the specified database. Check
+/etc/postgres/postgresql.conf if TCP/IP connections are allowed.
+Also verify that a suitable accessmethod is enabled in
+/etc/postgresql/pg_hba.conf.
+
+You need to (re)start opengroupware.org for the changes to take effect.

@@ -106,6 +106,9 @@ install: build controlfiles
 	cp -R Themes/WebServerResources/* $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/www
 	mkdir -p $(CURDIR)/debian/tmp/etc/apache/conf.d/
 
+	mkdir -p $(CURDIR)/debian/opengroupware.org-environment/usr/sbin
+	install -m755 $(CURDIR)/debian/ogo-create-instance $(CURDIR)/debian/opengroupware.org-environment/usr/sbin
+
 	echo "Alias /OpenGroupware$$(echo $(OGOVER) | sed s/\\.//).woa/WebServerResources/ \
 		/usr/share/opengroupware.org-$(OGOVER)/www/" > \
 		$(CURDIR)/debian/tmp/etc/apache/conf.d/opengroupware.org-resources-$(OGOVER)
@@ -129,6 +132,7 @@ binary-arch: build install
 #	dh_installpam
 #	dh_installmime
 #	dh_installinfo
+	dh_installinit -n -popengroupware.org-environment --init-script=opengroupware.org -- defaults 80
 	dh_installman
 	dh_link -popengroupware.org$(OGOVER)-webui-app usr/share/man/man7/undocumented.7.gz usr/share/man/man8/ogo-webui-$(OGOVER).8.gz
 	dh_link -popengroupware.org$(OGOVER)-xmlrpcd usr/share/man/man7/undocumented.7.gz usr/share/man/man8/ogo-xmlrpcd-$(OGOVER).8.gz
