@@ -1,6 +1,5 @@
 { 
-  /* used by the Appointment backend */
-  __CVS_ID__ = "$Id$";
+  /* used by SxAptManager.m, SxAptSetHandler.m */
 
   FreeBusyAttrs = (
     startDate,

@@ -1,3 +1,18 @@
+2004-09-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* v1.3.90
+	
+	* SxFolder.m: use NGResourceLocator to find DAVPropSets.plist
+
+	* SxMsgRootFolder.m: lookup PersonalFolderInfo.plist using
+	  NGResourceLocator
+
+	* GNUmakefile: added PersonalFolderInfo.plist and DAVPropSets.plist
+	  (where application resources before)
+
+	* OLDavPropMapper.m: moved resource-locator code to a new category,
+	  NGResourceLocator+ZSF.m
+
 2004-09-23  Helge Hess  <helge.hess@skyrix.com>
 
 	* v1.3.89

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,10 +18,10 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxMsgRootFolder.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxMsgRootFolder.h"
 #include "common.h"
+#include "NGResourceLocator+ZSF.h"
 #include <NGExtensions/NGPropertyListParser.h>
 
 @interface NSObject(PubFolder)
@@ -34,21 +34,16 @@
 static NSDictionary *personalFolderMap = nil;
 
 + (void)initialize {
+  NGResourceLocator *locator;
   NSDictionary *info;
-  NSBundle     *bundle;
   NSString     *path;
-
-#if NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY
-  // TODO: hack? - this is because on OSX a library has an own bundle!
-  bundle = [NSBundle mainBundle];
-#else
-  bundle = [NSBundle bundleForClass:self];
-#endif
-  path   = [bundle pathForResource:@"PersonalFolderInfo" ofType:@"plist"];
-  if ([path length] < 20) {
+  
+  locator = [NGResourceLocator zsfResourceLocator];
+  path = [locator lookupFileWithName:@"PersonalFolderInfo.plist"];
+  if ([path length] < 10) {
     info = nil;
-    NSLog(@"ERROR(%s): did not find folder info resource in bundle: %@",
-	  __PRETTY_FUNCTION__, bundle);
+    NSLog(@"ERROR(%s): did not find PersonalFolderInfo.plist!",
+	  __PRETTY_FUNCTION__);
   }
   else if ((info = [NSDictionary skyDictionaryWithContentsOfFile:path]) == nil)
     [self logWithFormat:@"ERROR: could not load folder info: '%@'", path];

@@ -1,4 +1,5 @@
 {
+  /* used by OLDavPropMapper.m */
   "00062003-0000-0000-c000-000000000046" = {
     00008101 = taskStatus;
     00008102 = taskCompletion;

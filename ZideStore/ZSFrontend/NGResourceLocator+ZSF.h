@@ -19,23 +19,18 @@
   02111-1307, USA.
 */
 
-#ifndef __ZSFrontend_OLDavPropMapper_H__
-#define __ZSFrontend_OLDavPropMapper_H__
+#ifndef __ZSFrontend_NGResourceLocator_ZSF_H__
+#define __ZSFrontend_NGResourceLocator_ZSF_H__
 
-#import <Foundation/NSObject.h>
+#include <NGExtensions/NGResourceLocator.h>
 
-@class NSArray, NSDictionary, NSMutableDictionary;
+@interface NGResourceLocator(ZSF)
 
-@interface OLDavPropMapper : NSObject
-{
-  NSMutableDictionary *map;
-  NSMutableDictionary *mapiTags;
-  NSMutableDictionary *mapiIDs;
-  NSArray             *subPropMapper;
-}
-
-- (id)initWithDictionary:(NSDictionary *)_dict;
++ (int)zsfMajorVersion;
++ (int)zsfMinorVersion;
++ (NSString *)zsfShareDirectorySubPath;
++ (NGResourceLocator *)zsfResourceLocator;
 
 @end
 
-#endif /* __ZSFrontend_OLDavPropMapper_H__ */
+#endif /* __ZSFrontend_NGResourceLocator_ZSF_H__ */

@@ -1,4 +1,5 @@
 {
+  /* used by OLDavPropMapper.m */
   0FFB0102 = mapiStoreEntryID;     /* called by Evo on root */
   0FF40003 = cdoAccess;            /* PR_ACCESS - PT_LONG, Evo 1.2 */
   66590102 = exMIMERepresentation; /* apt as iCal ? */

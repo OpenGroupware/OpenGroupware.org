@@ -20,7 +20,7 @@
 */
 
 #include "OLDavPropMapper.h"
-#include <NGExtensions/NGResourceLocator.h>
+#include "NGResourceLocator+ZSF.h"
 #include "common.h"
 
 @interface NSObject(Map)
@@ -31,26 +31,6 @@
 
 + (int)version {
   return 3;
-}
-
-+ (int)zsfMajorVersion {
-  return ZSF_MAJOR_VERSION;
-}
-+ (int)zsfMinorVersion {
-  return ZSF_MINOR_VERSION;
-}
-+ (NSString *)zsfShareDirectorySubPath {
-  return [NSString stringWithFormat:@"share/zidestore-%i.%i/",
-                     [self zsfMajorVersion], [self zsfMinorVersion]];
-}
-
-+ (NGResourceLocator *)zsfResourceLocator {
-  NGResourceLocator *loc = nil;
-  
-  loc = [NGResourceLocator resourceLocatorForGNUstepPath:
-                             @"Library/Libraries/Resources/ZSFrontend"
-                           fhsPath:[self zsfShareDirectorySubPath]];
-  return loc;
 }
 
 - (void)loadSubPropMapperWithDict:(NSDictionary *)_dict {
@@ -72,7 +52,7 @@
   NGResourceLocator *locator;
   NSString *p;
   
-  locator = [[self class] zsfResourceLocator];
+  locator = [NGResourceLocator zsfResourceLocator];
 
   self->map = (_dict != nil)
     ? [_dict mutableCopy] : [[NSMutableDictionary alloc] init];

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -22,6 +22,7 @@
 #include "SxAptManager.h"
 #include "SxAptSetHandler.h"
 #include "SxSetCacheManager.h"
+#include "NGResourceLocator+ZSB.h"
 #include "common.h"
 #include <NGObjWeb/NSException+HTTP.h>
 
@@ -41,6 +42,7 @@ static int  SxAptFolder_MonthsIntoFuture = 12;
 
 + (void)initialize {
   static BOOL didInit = NO;
+  NGResourceLocator *locator;
   NSUserDefaults *ud;
   NSDictionary   *plist;
   NSString       *p;
@@ -48,10 +50,13 @@ static int  SxAptFolder_MonthsIntoFuture = 12;
 
   noNum = [[NSNumber numberWithBool:NO] retain];
   
-  p = [[NSBundle mainBundle] pathForResource:@"AptBackendSets" 
-                             ofType:@"plist"];
-  if ((plist = [NSDictionary dictionaryWithContentsOfFile:p]) == nil)
-    [self logWithFormat:@"could not load apt-backend plist: %@", p];
+  locator = [NGResourceLocator zsbResourceLocator];
+  p = [locator lookupFileWithName:@"AptBackendSets.plist"];
+  plist = [p length] > 10
+    ? [NSDictionary dictionaryWithContentsOfFile:p]
+    : nil;
+  if (plist == nil)
+    [self logWithFormat:@"ERROR: could not load apt-backend plist: %@", p];
   
   freeBusyGetAttrs       = [[plist objectForKey:@"FreeBusyAttrs"]      copy];
   pkeyAndVersionGetAttrs = [[plist objectForKey:@"KeyAndVersionAttrs"] copy];

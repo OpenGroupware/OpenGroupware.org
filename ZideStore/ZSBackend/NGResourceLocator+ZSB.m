@@ -19,23 +19,29 @@
   02111-1307, USA.
 */
 
-#ifndef __ZSFrontend_OLDavPropMapper_H__
-#define __ZSFrontend_OLDavPropMapper_H__
+#include "NGResourceLocator+ZSB.h"
+#include "common.h"
 
-#import <Foundation/NSObject.h>
+@implementation NGResourceLocator(ZSB)
 
-@class NSArray, NSDictionary, NSMutableDictionary;
-
-@interface OLDavPropMapper : NSObject
-{
-  NSMutableDictionary *map;
-  NSMutableDictionary *mapiTags;
-  NSMutableDictionary *mapiIDs;
-  NSArray             *subPropMapper;
++ (int)zsbMajorVersion {
+  return ZSB_MAJOR_VERSION;
+}
++ (int)zsbMinorVersion {
+  return ZSB_MINOR_VERSION;
+}
++ (NSString *)zsbShareDirectorySubPath {
+  return [NSString stringWithFormat:@"share/zidestore-%i.%i/",
+                     [self zsbMajorVersion], [self zsbMinorVersion]];
 }
 
-- (id)initWithDictionary:(NSDictionary *)_dict;
++ (NGResourceLocator *)zsbResourceLocator {
+  NGResourceLocator *loc = nil;
+  
+  loc = [NGResourceLocator resourceLocatorForGNUstepPath:
+                             @"Library/Libraries/Resources/ZSBackend"
+                           fhsPath:[self zsbShareDirectorySubPath]];
+  return loc;
+}
 
-@end
-
-#endif /* __ZSFrontend_OLDavPropMapper_H__ */
+@end /* NGResourceLocator(ZSB) */

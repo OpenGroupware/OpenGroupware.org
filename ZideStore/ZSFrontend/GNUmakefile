@@ -30,6 +30,7 @@ libZSFrontend_HEADER_FILES = \
 	OLDavPropMapper.h	\
 	SxMapEnumerator.h	\
 	EOQualifier+Additions.h	\
+	NGResourceLocator+ZSF.h	\
 
 libZSFrontend_OBJC_FILES = \
 	SxFolder.m		\
@@ -52,11 +53,14 @@ libZSFrontend_OBJC_FILES = \
 	OLDavPropMapper.m	\
 	SxMapEnumerator.m	\
 	EOQualifier+Additions.m	\
+	NGResourceLocator+ZSF.m	\
 
 libZSFrontend_RESOURCES += \
 	E2KAttrMap.plist	\
 	MAPIPropIDMap.plist	\
 	MAPIPropMap.plist	\
+	PersonalFolderInfo.plist\
+	DAVPropSets.plist	\
 
 libZSFrontend_SUBPROJECTS = Mails
 

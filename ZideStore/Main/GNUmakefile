@@ -17,10 +17,6 @@ $(ZIDESTORE)_HEADER_FILES += \
 $(ZIDESTORE)_RESOURCE_FILES += \
 	Version				\
 	product.plist			\
-	\
-	../Maps/DAVPropSets.plist	\
-	../Maps/AptBackendSets.plist	\
-	../Maps/PersonalFolderInfo.plist
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/woapp.make

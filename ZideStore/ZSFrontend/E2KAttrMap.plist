@@ -1,4 +1,5 @@
 {
+  /* used by OLDavPropMapper.m */
   "{http://www.bogus.de/}bogus" = unknownMAPI;
   "{http://schemas.microsoft.com/mapi/string/{00020329-0000-0000-c000-000000000046}/}Keywords" = keywords;
   "{DAV:}refreshperiod" = zlRefreshInMinutes;

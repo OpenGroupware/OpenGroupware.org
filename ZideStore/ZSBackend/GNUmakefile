@@ -28,7 +28,8 @@ libZSBackend_HEADER_FILES = \
 	SxTaskManager.h			\
 	SxUpdateContact.h		\
 	SxUpdateEnterprise.h		\
-	SxUpdatePerson.h
+	SxUpdatePerson.h		\
+	NGResourceLocator+ZSB.h		\
 
 libZSBackend_OBJC_FILES = \
 	SxBackendMaster.m		\
@@ -44,9 +45,13 @@ libZSBackend_OBJC_FILES = \
 	\
 	SxFreeBusyManager.m		\
 	\
-	NSObject+DBColumns.m
+	NSObject+DBColumns.m		\
+	NGResourceLocator+ZSB.m		\
 
 libZSBackend_SUBPROJECTS = Contacts Appointments
+
+libZSBackend_RESOURCES += \
+	Appointments/AptBackendSets.plist
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make

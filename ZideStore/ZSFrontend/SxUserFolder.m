@@ -21,6 +21,7 @@
 
 #include "SxUserFolder.h"
 #include "NSObject+ExValues.h"
+#include "NGResourceLocator+ZSF.h"
 #include "common.h"
 
 #include "SxMsgRootFolder.h"
@@ -42,19 +43,19 @@ static int          zlRefreshInMinutes = 2;
 static NSDictionary *personalFolderMap = nil;
 
 + (void)initialize {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSDictionary   *info;
-  NSBundle *bundle;
+  NSUserDefaults    *ud;
+  NSDictionary      *info;
+  NGResourceLocator *locator;
   NSString *path;
   
-#if NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY
-  // TODO: hack? - this is because on OSX a library has an own bundle!
-  bundle = [NSBundle mainBundle];
-#else
-  bundle = [NSBundle bundleForClass:self];
-#endif
-  path   = [bundle pathForResource:@"PersonalFolderInfo" ofType:@"plist"];
-  if ((info = [NSDictionary skyDictionaryWithContentsOfFile:path]) == nil)
+  ud = [NSUserDefaults standardUserDefaults];
+  
+  locator = [NGResourceLocator zsfResourceLocator];
+  path = [locator lookupFileWithName:@"PersonalFolderInfo.plist"];
+  info = [path length] > 2
+    ? [NSDictionary skyDictionaryWithContentsOfFile:path]
+    : nil;
+  if (info == nil)
     [self logWithFormat:@"ERROR: could not load folder info: '%@' !", path];
   
   storeRootKeys     = [[info objectForKey:@"storeRootKeys"]  copy];

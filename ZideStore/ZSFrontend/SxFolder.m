@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -18,11 +18,11 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxFolder.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxFolder.h"
 #include "SxObject.h"
 #include "OLDavPropMapper.h"
+#include "NGResourceLocator+ZSF.h"
 #include <Main/SxAuthenticator.h>
 #include <NGObjWeb/WEClientCapabilities.h>
 #include <NGObjWeb/SoObjectResultEntry.h>
@@ -599,23 +599,25 @@ static NSString *cachePath  = nil;
 
 - (NSDictionary *)propsetPlist {
   static NSDictionary *plist = nil;
+  NGResourceLocator *locator;
+  NSString *path;
   
-  if (plist == nil) {
-    NSBundle *bundle;
-    NSString *path;
+  if (plist != nil)
+    return plist;
     
-    bundle = [NSBundle bundleForClass:[SxFolder class]];
-    path   = [bundle pathForResource:@"DAVPropSets" ofType:@"plist"];
+  locator = [NGResourceLocator zsfResourceLocator];
+  if ((path = [locator lookupFileWithName:@"DAVPropSets.plist"]) != nil)
     plist = [[NSDictionary alloc] initWithContentsOfFile:path];
-  }
+  else
+    [self logWithFormat:@"ERROR: did not find DAVPropSets.plist!"];
   return plist;
 }
 
 - (NSSet *)propertySetNamed:(NSString *)_name {
   static NSMutableDictionary *propsets = nil;
   NSDictionary *plist;
-  NSArray *array;
-  NSSet   *set;
+  NSArray      *array;
+  NSSet        *set;
   NSEnumerator *enumerator;
   id           obj;
 

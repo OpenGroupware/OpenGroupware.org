@@ -1,3 +1,7 @@
+2004-09-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: moved all maps to appropriate subdirs (v1.3.84)
+
 2004-09-23  Helge Hess  <helge.hess@skyrix.com>
 
 	* ZideStore.m: moved some mappings to ZSFrontend, rewrite startup on
