@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include ../common.make
 
@@ -11,10 +11,6 @@ OGoResourceScheduler_OBJC_FILES = \
 	SkyResourceSchedulerPage.m			\
 	SkySchedulerResourcePanel.m			\
 	WODirectAction+ResourceSchedulerViews.m		\
-
-OGoResourceScheduler_COMPONENTS = \
-	SkyResourceSchedulerPage.wo	\
-	SkySchedulerResourcePanel.wo	\
 
 OGoResourceScheduler_RESOURCE_FILES += Defaults.plist Version
 

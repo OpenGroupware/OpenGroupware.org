@@ -1,5 +1,8 @@
 2005-03-06  Helge Hess  <helge.hess@opengroupware.org>
 
+	* ogo-webui-1.0a/components.cfg: removed a duplicate LSWObjectMailPage
+	  key
+
 	* various templates got changed to use SkySimpleTabItem
 
 	* AdminUI/LSWStaff.html: removed defaults tab as requested in OGo bug

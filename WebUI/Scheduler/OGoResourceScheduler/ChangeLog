@@ -1,3 +1,8 @@
+2005-03-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved template of SkyResourceSchedulerPage to templates directory
+	  (v5.1.10)
+
 2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyResourceSchedulerPage.wo: removed German.lproj and
