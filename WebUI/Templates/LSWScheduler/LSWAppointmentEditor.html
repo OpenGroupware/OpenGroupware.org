@@ -1,5 +1,4 @@
 <#Frame>
-<!-- $Id: LSWAppointmentEditor.html 2 2004-08-20 11:37:44Z znek $ -->
   <#ShowCalPopUp><#Calendar /></#ShowCalPopUp>
 
 <#IsJavaScriptEnabled>
@@ -98,15 +97,15 @@ function searchFieldChanged() {
         <#ValueCell><#EditFont><#AccessTeamSelect /></#EditFont></#ValueCell>
       </tr>
       <#ShowIgnoreConflictsCond>
-      <tr>
-        <#AttributeCell><#Font><#IgnoreConflictsLabel />:</#Font></#AttributeCell>
-        <#ValueCell><#Font><#IgnoreConflictsButtons /></#Font></#ValueCell>
-      </tr>
+        <tr>
+          <#AttributeCell><#Font><#IgnoreConflictsLabel />:</#Font></#AttributeCell>
+          <#ValueCell><#Font><#IgnoreConflictsButtons /></#Font></#ValueCell>
+        </tr>
       </#ShowIgnoreConflictsCond>
       <#ShowAptTypeSelectionCond>
-      <tr>
-         <#AptTypeAttr><#AptTypeSelection /></#AptTypeAttr>
-      </tr>
+        <tr>
+           <#AptTypeAttr><#AptTypeSelection /></#AptTypeAttr>
+        </tr>
       </#ShowAptTypeSelectionCond>
     </#CollContentMode>
     </#AppCollapsible>
@@ -135,7 +134,6 @@ function searchFieldChanged() {
     <tr>
       <td></td>
       <td>
-
         <#SaveSubmit />
 
         <#IsNotNewConditional>

@@ -1,4 +1,4 @@
-// $Id: LSWAppointmentEditor.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
@@ -20,7 +20,7 @@ ShowCalPopUp: WOConditional {
 }
 
 EditorForm: WOForm {
-  name     = "editform";
+  name = "editform";
 }
 
 AppointmentDayLabel: WOString { value = appointmentDayLabel; }

@@ -1,3 +1,7 @@
+2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWScheduler/LSWAppointmentViewer: removed log-tab condition
+
 2004-12-16  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoMailViewers/LSWMimeBodyPartViewer.wod: fixed OGo bug #1091
