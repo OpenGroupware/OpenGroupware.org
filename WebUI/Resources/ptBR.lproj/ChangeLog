@@ -1,3 +1,8 @@
+2004-12-22 Olivier Hallot  <olivier@ig.com.br>
+
+	* Added OGoMailFilter.srtings
+	* Removed strings from OGoWebMail, now in OGoMailFilter
+
 2004-09-20  Olivier Hallot  <olivier@ig.com.br>
 
 .	* Created OGoMailEditor.strings to solve bug 830
