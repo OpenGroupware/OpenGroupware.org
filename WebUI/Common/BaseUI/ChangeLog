@@ -1,3 +1,8 @@
+2005-02-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyObjectField.m: if a link value contains no "://", add "http://" 
+	  as a prefix (v5.1.101)
+
 2005-01-13  Helge Hess  <helge.hess@opengroupware.org>
 	
 	* SkyObjectField.m: enhanced field with a 'key' attribute to avoid the

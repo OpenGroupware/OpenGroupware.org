@@ -138,15 +138,19 @@ static BOOL     validateLinks    = NO;
 
   comp  = [_ctx component];
   link  = [self->href stringValueInComponent:comp];
+  
+  if (![link hasPrefix:@"/"] && ([link rangeOfString:@"://"].length == 0))
+    link = [link length] > 0 ? [@"http://" stringByAppendingString:link] : nil;
+  
   valid = [self isLinkValid:link];
-    
+  
   if (valid) {
     NSDictionary *qd;
     NSString     *da;
     NSString     *ta, *ti;
     // append link
     [_response appendContentString:@"<a href=\""];
-
+    
     da = [self externalLinkAction];
     // use an external server to redirect links
     if ([da length] > 0) {

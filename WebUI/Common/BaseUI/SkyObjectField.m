@@ -33,6 +33,9 @@
 
   Attributes:
     'key' - the key in the object
+
+  This is used in SkyPersonalAttributesViewer => SkyCompanyAttributesViewer
+  (the configurable viewers in the contact viewer)
 */
 
 @interface SkyObjectField : WODynamicElement
@@ -58,6 +61,8 @@
 @end
 
 @implementation SkyObjectField
+
+// TODO: we should use the SkyExternalLink element to render links?
 
 static NSString *ZIDELOOK_MARKER = @"ZideLook rich-text compressed comment:";
 static NSString *SkyExternalLinkAction = nil;
@@ -275,22 +280,31 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
 - (void)_appendLink:(NSString *)data toResponse:(WOResponse *)_res 
   inContext:(WOContext *)_ctx 
 {
-  // external link
+  /* external link */
+  // TODO: use SkyExternalLink dynamic element to render this?
   NSString *tmp;
   NSString *link;
   
   tmp  = [self hrefAttributeInContext:_ctx];
   link = SkyExternalLinkAction;
   tmp  = ([tmp isEqualToString:@""]) ? data : tmp;
+  tmp  = [tmp stringByEscapingURL];
+  
+  if (![tmp hasPrefix:@"/"] > 0 && [tmp rangeOfString:@"://"].length == 0)
+    tmp = [tmp length] > 0 ? [@"http://" stringByAppendingString:tmp] : @"";
+  
+  /* prefix with external link action and append url as a parameter */
+  
   tmp  = [[[link stringValue] stringByAppendingString:@"?url="]
-                 stringByAppendingString:[tmp stringByEscapingURL]];
+                 stringByAppendingString:tmp];
   
   // TODO: the following looks weird! Use the proper NSString method
   tmp = [WOResponse stringByEscapingHTMLAttributeValue:tmp];
-  tmp = [NSString stringWithFormat:tlink,tmp];
+  tmp = [NSString stringWithFormat:tlink, tmp];
   
   [_res appendContentString:tmp];
 }
+
 - (void)_appendMail:(NSString *)data toResponse:(WOResponse *)_res 
   inContext:(WOContext *)_ctx 
 {
