@@ -35,7 +35,7 @@ foreach $srel (@sope_releases) {
   $buildtarget =~ s/-r\d+.*$//g;
   unless(grep /\b$srel\b/, @already_known_sope_rel) {
     print "cleaning up prior actual build...\n";
-    system("sudo rpm -e `rpm -qa|grep -i sope` --nodeps");
+    system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
     print "extracting specfile from $srel\n";
     system("mkdir $ENV{HOME}/spec_tmp/") unless (-e "$ENV{HOME}/spec_tmp/");
     system("tar xfzO $ENV{HOME}/rpm/SOURCES/$srel sope/maintenance/sope.spec >$ENV{HOME}/spec_tmp/$buildtarget.spec");
