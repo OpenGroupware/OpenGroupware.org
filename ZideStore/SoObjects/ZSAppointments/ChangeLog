@@ -1,5 +1,7 @@
 2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SxAppointment.m: fixed generation of 'location' header (v1.3.92)
+
 	* SxAppointment.m: fixed an incorrectly applied fix (v1.3.91)
 
 2004-12-17  Anders Carlsson  <andersca@imendio.com>

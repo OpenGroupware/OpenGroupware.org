@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxAppointmentRenderer.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxAppointmentRenderer.h"
 #include "common.h"
@@ -45,7 +44,7 @@ static BOOL debugRenderer = NO;
 /* rendering */
 
 - (NSString *)productID {
-  return @"SKYRiX 4.1 ZideStore";
+  return @"OpenGroupware.org ZideStore 1.3";
 }
 
 - (NSString *)cnForAccount:(id)_acc {
@@ -425,12 +424,17 @@ static BOOL debugRenderer = NO;
     [self->mime setString:@""];
   
   /* header */
-  //[self->mime appendString:@"thread-index: AcK7OKhPOB/XO+v7SFCdO0Vhe7wWOA==\r\n"];
+#if 0
+  [self->mime appendString:
+	 @"thread-index: AcK7OKhPOB/XO+v7SFCdO0Vhe7wWOA==\r\n"];
+#endif
   [self->mime appendString:@"Thread-Topic: test\r\n"];
   [self->mime appendString:@"MIME-Version: 1.0\r\n"];
-  [self->mime appendString:@"Content-Type: text/calendar; charset=\"utf-8\"\r\n"];
+  [self->mime appendString:
+	 @"Content-Type: text/calendar; charset=\"utf-8\"\r\n"];
   [self->mime appendString:@"Content-Transfer-Encoding: 8bit\r\n"];
-  [self->mime appendString:@"content-class: urn:content-classes:appointment\r\n"];
+  [self->mime appendString:
+	 @"content-class: urn:content-classes:appointment\r\n"];
 #if 0
   [self->mime appendString:
 	@"X-MimeOLE: Produced By Microsoft Exchange V6.0.4417.0\r\n"];
@@ -478,12 +482,17 @@ static BOOL debugRenderer = NO;
     [self->mime setString:@""];
   
   /* header */
-  //[self->mime appendString:@"thread-index: AcK7OKhPOB/XO+v7SFCdO0Vhe7wWOA==\r\n"];
+#if 0
+  [self->mime appendString:
+	 @"thread-index: AcK7OKhPOB/XO+v7SFCdO0Vhe7wWOA==\r\n"];
+#endif
   [self->mime appendString:@"Thread-Topic: test\r\n"];
   [self->mime appendString:@"MIME-Version: 1.0\r\n"];
-  [self->mime appendString:@"Content-Type: text/calendar; charset=\"utf-8\"\r\n"];
+  [self->mime appendString:
+	 @"Content-Type: text/calendar; charset=\"utf-8\"\r\n"];
   [self->mime appendString:@"Content-Transfer-Encoding: 8bit\r\n"];
-  [self->mime appendString:@"content-class: urn:content-classes:appointment\r\n"];
+  [self->mime appendString:
+	 @"content-class: urn:content-classes:appointment\r\n"];
 #if 0
   [self->mime appendString:
 	@"X-MimeOLE: Produced By Microsoft Exchange V6.0.4417.0\r\n"];
@@ -524,6 +533,7 @@ static BOOL debugRenderer = NO;
 
 - (id)renderAppointmentAsICal:(id)_eo {
   NSTimeZone *tz;
+  
   tz = [[_eo valueForKey:@"startDate"] timeZone];
   return [self renderAppointmentAsICal:_eo timezone:tz];
 }

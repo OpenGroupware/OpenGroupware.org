@@ -349,15 +349,21 @@ static BOOL createNewAptWhenNotFound = YES;
   /* set etag header */
   if ((etag = [self davEntityTag]) != nil)
     [r setHeader:etag forKey:@"etag"];
-
+  
   /* set location header */
-  if ((tmp = [_ctx objectForKey:@"SxNewObjectID"]) != nil) {
+  if ([(tmp = [self->eo valueForKey:@"dateId"]) isNotNull]) {
     url = [[self container] baseURLInContext:_ctx];
     if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
-    url = [url stringByAppendingString:[tmp stringValue]];
-    [r setHeader:url forKey:@"location"];
+    
+    tmp = [tmp stringValue];
+    tmp = [tmp stringByAppendingString:@".ics"];
+    
+    [r setHeader:[url stringByAppendingString:tmp] forKey:@"location"];
   }
-  
+  else {
+    [self logWithFormat:
+	    @"WARNING: cannot set location header, missing new object id!"];
+  }
   return r;
 }
 #undef SX_NEWKEY

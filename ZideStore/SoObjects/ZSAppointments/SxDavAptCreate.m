@@ -243,7 +243,7 @@ static NSNumber *yesNum = nil;
     return error;
   }
   
-  if ((tmp = [error valueForKey:@"dateId"])) {
+  if ((tmp = [error valueForKey:@"dateId"]) != nil) {
     [self logWithFormat:@"deliver new date-id: %@", tmp];
     [_ctx setObject:tmp forKey:@"SxNewObjectID"];
   }
