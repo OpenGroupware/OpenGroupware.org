@@ -1,12 +1,13 @@
 OpenGroupware.org Installation Guide
 ====================================
 
-TODO: write install guide for OGo 1.0.
 
 Prerequisites
 =============
 
 SOPE 4.3
+- gnustep-make (eg ThirdParty/gstep-make)
+- Foundation library (eg ThirdParty/libFoundation)
 - libxml2/libxml2-dev
 - autoconf
 - openldap2/openldap2-dev
@@ -16,8 +17,8 @@ SOPE 4.3
 PDA
 - libpisock (eg ThirdParty/pilot-link or pisock-dev on Debian)
 
-Dependencies
-============
+(Internal) Dependencies
+=======================
 
 Logic
 - SOPE 4.3
@@ -43,3 +44,49 @@ ZideStore
 PDA
 - Logic
 - DocumentAPI
+
+Building
+========
+
+If the prerequisites are properly fulfilled, building OpenGroupware.org is
+a simple:
+
+  make -s debug=yes strip=yes all
+
+Get a coffee, compiling all the OGo packages takes about 8 minutes on Debian 
+Athlon 1.8+ (and about 17 minutes on a MacOSX G4 1.25).
+
+Installation:
+
+  make -s debug=yes strip=yes install
+
+Important: ensure that GNUstep.sh from gnustep-make is properly loaded into the
+           shell environment, otherwise you will see errors like "/common.make"
+           not being found.
+
+Configuration
+=============
+
+TODO: write configuration guide for OGo 1.0.
+
+- mod_ngobjweb setup
+- init script
+- starting OGo on the shell
+- ZideStore
+- nhsd
+
+- links
+  - pushd $GNUSTEP_USER_ROOT
+  - ln -s ~/myogosrctree/WebUI/Resources .
+  - ln -s ~/myogosrctree/Themes/WebServerResources .
+
+- database
+  - su - postgres
+  - createuser OGo
+  - createdb   OGo
+  - psql -h localhost OGo OGo (must work)
+  - cd Database/PostgreSQL/
+  - psql -h localhost OGo OGo < pg-build-schema.psql
+
+- defaults
+  - LSConnectionDictionary
