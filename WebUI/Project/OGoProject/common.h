@@ -36,7 +36,7 @@
 
 #include <NGObjWeb/NGObjWeb.h>
 
-#include <WEExtensions/WEClientCapabilities.h>
+#include <NGObjWeb/WEClientCapabilities.h>
 
 #include <LSFoundation/LSCommandContext.h>
 #include <OGoFoundation/OGoFoundation.h>

@@ -30,7 +30,7 @@
 #include "common.h"
 #include <NGMime/NGMime.h>
 #include <OGoScheduler/SkySchedulerConflictDataSource.h>
-#include <WEExtensions/WEClientCapabilities.h>
+#include <NGObjWeb/WEClientCapabilities.h>
 #include <OGoScheduler/SkyAptDataSource.h>
 
 /*
@@ -230,8 +230,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   }
   else if ([tobj isKindOfClass:[NSDictionary class]]) {
     /* dictionary in pasteboard */
-    date = [tobj objectForKey:@"startDate"];
-    addParticipants = [tobj objectForKey:@"participants"];
+    date            = [(NSDictionary *)tobj objectForKey:@"startDate"];
+    addParticipants = [(NSDictionary *)tobj objectForKey:@"participants"];
     [[self session] removeTransferObject];
    }
   else if ([tobj isKindOfClass:[NSCalendarDate class]]) {

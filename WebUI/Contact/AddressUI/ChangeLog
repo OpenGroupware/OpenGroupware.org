@@ -1,3 +1,12 @@
+2004-11-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.49
+
+	* SkyContactImportPage.m: fixed some warnings with gcc 3.4
+
+	* LSWAddressPreferences.m: fixed include of WEClientCapabilities.h for
+	  SOPE 4.5
+
 2004-11-25  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyBusinessCardGathering.m: code cleanups, fixed OGo bug #999,

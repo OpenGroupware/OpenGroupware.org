@@ -262,7 +262,7 @@ static NSNumber *noNum = nil;
   if (!((_ids != nil) && ([_ids count] > 0)))
     return [NSMutableArray arrayWithCapacity:1];
   
-  entity = [[[(id)[self session] commandContext]
+  entity = [[[(OGoSession *)[self session] commandContext]
 	      valueForKey:LSDatabaseKey] entityNamed:_entityName];
   
   enumerator = [_ids objectEnumerator];

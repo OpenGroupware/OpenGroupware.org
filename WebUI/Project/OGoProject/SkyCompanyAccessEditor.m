@@ -108,7 +108,7 @@
   NSMutableSet     *gidsObj;
   NSSet            *gidsNew;
 
-  manager = [[[self session] commandContext] accessManager];
+  manager = [[(OGoSession *)[self session] commandContext] accessManager];
   dict    = [manager allowedOperationsForObjectId:self->globalID];
   gidsObj = [NSMutableSet setWithArray:[dict allKeys]];
   gidsNew = [NSSet setWithArray:[self->accessIds allKeys]];

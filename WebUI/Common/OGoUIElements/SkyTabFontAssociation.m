@@ -18,14 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <NGObjWeb/WOAssociation.h>
 
 @interface SkyTabFontAssociation : WOAssociation
 @end
 
-#include <WEExtensions/WEClientCapabilities.h>
+#include <NGObjWeb/WEClientCapabilities.h>
 #include "common.h"
 
 @implementation SkyTabFontAssociation

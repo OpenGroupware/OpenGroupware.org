@@ -41,7 +41,7 @@
 
 @end /* LSWSkyrixFrame */
 
-#include <WEExtensions/WEClientCapabilities.h>
+#include <NGObjWeb/WEClientCapabilities.h>
 #include <OGoFoundation/LSWEditorPage.h>
 #include <OGoFoundation/OGoClipboard.h>
 #include "common.h"

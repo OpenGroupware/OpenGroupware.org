@@ -39,7 +39,7 @@
 
 @end
 
-#include <WEExtensions/WEClientCapabilities.h>
+#include <NGObjWeb/WEClientCapabilities.h>
 #include <OGoFoundation/OGoSession.h>
 #include <OGoFoundation/OGoNavigation.h>
 #include <NGObjWeb/NGObjWeb.h>

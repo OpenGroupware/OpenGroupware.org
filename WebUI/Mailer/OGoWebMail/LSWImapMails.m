@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: LSWImapMails.m 1 2004-08-20 11:17:52Z znek $
 
 #include "LSWImapMails.h"
 #include "LSWImapMailMove.h"
@@ -26,7 +25,7 @@
 #include "LSWImapMailFolderMove.h"
 #include <NGStreams/NGSocketExceptions.h>
 #include "common.h"
-#include <WEExtensions/WEClientCapabilities.h>
+#include <NGObjWeb/WEClientCapabilities.h>
 #include "SkyImapMailDataSource.h"
 #include "SkyImapMailListState.h"
 #include "SkyImapContextHandler.h"

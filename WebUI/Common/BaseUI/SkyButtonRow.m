@@ -22,7 +22,7 @@
 #include "SkyButtonRow.h"
 #include <OGoFoundation/WOSession+LSO.h>
 #include <LSFoundation/LSCommandContext.h>
-#include <WEExtensions/WEClientCapabilities.h>
+#include <NGObjWeb/WEClientCapabilities.h>
 #include "common.h"
 
 static NSString *SkyButton_ne    = @"button_ne.gif";

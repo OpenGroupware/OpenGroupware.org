@@ -98,8 +98,9 @@ static EOQualifier *trueQualifier     = nil;
   EOCacheDataSource    *cds;
   EOFilterDataSource   *fds;
   EOFetchSpecification *fspec;
-  
-  self->ds = [[SkyProjectDataSource alloc] initWithContext:(id)_cmdctx];
+
+  self->ds = [SkyProjectDataSource alloc]; /* sep line to make gcc happy */
+  self->ds = [(SkyProjectDataSource *)self->ds initWithContext:(id)_cmdctx];
   [self->ds setFetchSpecification:[self _fetchSpecification]];
 
   fspec = [EOFetchSpecification fetchSpecificationWithEntityName:nil
@@ -480,8 +481,9 @@ static EOQualifier *trueQualifier     = nil;
   EODataSource *pds;
   
   class = [self projectDocumentDataSourceClass];
-  pds   = [[class alloc] initWithContext:(id)
-                           [(OGoSession *)[self session] commandContext]];
+  pds   = [class alloc];
+  pds   = [pds initWithContext:(id)
+	         [(OGoSession *)[self session] commandContext]];
   return [pds autorelease];
 }
 
@@ -630,7 +632,7 @@ static EOQualifier *trueQualifier     = nil;
 /* actions */
 
 - (id)clickedFile {
-  return [self activateObject:[item objectForKey:@"globalID"]
+  return [self activateObject:[(NSDictionary *)item objectForKey:@"globalID"]
                withVerb:@"view"];
 }
 

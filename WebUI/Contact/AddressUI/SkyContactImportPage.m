@@ -309,7 +309,7 @@ static NSString *birthdayDateFormat;
 
 /* KVC */
 
-- (void)takeValue:(id)_val forKey:(id)_key {
+- (void)takeValue:(id)_val forKey:(NSString *)_key {
   if (![_key isEqualToString:@"contactType"]) {
     ASSIGN(self->contactType,_val);
     return;
@@ -391,7 +391,7 @@ static NSString *birthdayDateFormat;
   NSString *name;
 
   entry = [self nextEntry];
-  name  = [entry objectForKey:@"name"];
+  name  = [(NSDictionary *)entry objectForKey:@"name"];
   if ([name length] == 0)
     return falseQual;
   
@@ -402,11 +402,15 @@ static NSString *birthdayDateFormat;
   return [EOQualifier qualifierWithQualifierFormat:entry];
 }
 - (EOQualifier *)_qualifierForCompanySearch {
-  id       entry  = [self nextEntry];
-  NSString *desc  = [entry objectForKey:@"name"];
-
+  id       entry;
+  NSString *desc;
+  
+  // TODO: is this correct? (the two lines below where previously in the decl)
+  entry  = [self nextEntry];
+  desc   = [(NSDictionary *)entry objectForKey:@"name"];
+  
   entry = [self nextEntry];
-  desc  = [entry objectForKey:@"name"];
+  desc  = [(NSDictionary *)entry objectForKey:@"name"];
   if ([desc length] == 0)
     return falseQual;
   
@@ -485,7 +489,7 @@ static NSString *birthdayDateFormat;
   e = [_values keyEnumerator];
   while ((one = [e nextObject])) {
     // TODO: move body to separate method
-    val = [_values objectForKey:one];
+    val = [(NSDictionary *)_values objectForKey:one];
     
     if ([one hasPrefix:@"phone."]) {
       [newRecord setPhoneNumber:val forType:[one substringFromIndex:6]];

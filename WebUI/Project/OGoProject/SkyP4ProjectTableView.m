@@ -101,7 +101,7 @@
 - (NSArray *)favoriteProjectIds {
   if (self->favoriteProjectIds == nil) {
     self->favoriteProjectIds =
-      [[[[self session] commandContext]
+      [[[(OGoSession *)[self session] commandContext]
 	       runCommand:@"project::get-favorite-ids", nil] retain];
   }
   return self->favoriteProjectIds;
@@ -178,7 +178,7 @@
   if (!_doRemove && [self isInFavorites])
     return NO; /* already in favorites */
 
-  cmdctx = [[self session] commandContext];
+  cmdctx = [(OGoSession *)[self session] commandContext];
   if (_doRemove)
     [cmdctx runCommand:@"project::remove-favorite",
             @"projectId", [self projectId],

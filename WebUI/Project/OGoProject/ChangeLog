@@ -1,3 +1,12 @@
+2004-11-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.52
+
+	* fixed some gcc 3.4 warnings
+
+	* SkyP4DownloadLink.m, common.h: fixed WEClientCapabilities.h include 
+	  for SOPE 4.5
+
 2004-11-24  Helge Hess  <helge.hess@skyrix.com>
 	
 	* SkyP4FolderView.m: fixed Epoz lookup, now checks epoz_script_main.js 

@@ -37,7 +37,7 @@
 #include "common.h"
 #include "SkyP4DocumentRequestHandler.h"
 #include <NGExtensions/NSString+misc.h>
-#include <WEExtensions/WEClientCapabilities.h>
+#include <NGObjWeb/WEClientCapabilities.h>
 
 @interface WOContext(SkyP4DocumentRequestHandlerDeprecated)
 - (NSString *)p4documentURLForProjectNamed:(NSString *)_pname

@@ -71,9 +71,9 @@
 
 @end
 
-#include <WEExtensions/WEClientCapabilities.h>
+#include <NGObjWeb/WEClientCapabilities.h>
 #include <NGObjWeb/NGObjWeb.h>
-#include <NGExtensions/NGExtensions.h>
+#include "common.h"
 
 static int compareElements(id obj1, id obj2, void *context) {
   int index1, index2;

@@ -62,7 +62,7 @@
 #include <LSFoundation/LSCommandContext.h>
 #include <NGMime/NGMimeType.h>
 #include "OGoScheduler/SkySchedulerConflictDataSource.h"
-#include <WEExtensions/WEClientCapabilities.h>
+#include <NGObjWeb/WEClientCapabilities.h>
 #include <NGExtensions/NSCalendarDate+misc.h>
 
 #include <OGoScheduler/SkyAptDataSource.h>

@@ -23,7 +23,7 @@
 #include "common.h"
 #include <LSFoundation/OGoContextSession.h>
 #include <LSFoundation/OGoContextManager.h>
-#include <WEExtensions/WEClientCapabilities.h>
+#include <NGObjWeb/WEClientCapabilities.h>
 
 @interface Main(PrivateMethods)
 - (id)login;

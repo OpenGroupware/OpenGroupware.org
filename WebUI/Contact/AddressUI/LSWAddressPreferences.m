@@ -46,11 +46,7 @@
 
 #include <OGoFoundation/LSWNotifications.h>
 #include "common.h"
-#ifdef __APPLE__ // TODO ...
-#  include <NGObjWeb/WEClientCapabilities.h>
-#else
-#  include <WEExtensions/WEClientCapabilities.h>
-#endif
+#include <NGObjWeb/WEClientCapabilities.h>
 
 @implementation LSWAddressPreferences
 

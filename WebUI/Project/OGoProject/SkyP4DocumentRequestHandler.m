@@ -442,8 +442,9 @@ static NSCharacterSet *digits = nil;
                                           sortOrderings:nil
                                           usesDistinct:YES isDeep:NO 
 					  hints:nil];
-    
-    pds = [[SkyProjectDataSource alloc] initWithContext:(id)_ctx];
+
+    pds = [SkyProjectDataSource alloc]; // sep line to make gcc happy
+    pds = [pds initWithContext:(id)_ctx];
     
     [pds setFetchSpecification:fspec];
     
@@ -524,7 +525,7 @@ static NSCharacterSet *digits = nil;
   NSString *authUser;
   NSString *auth;
   NSRange  r;
-  id sn;
+  id       sn;
 
   authType = [_request headerForKey:@"x-webobjects-auth-type"];
   authUser = [[authType lowercaseString] isEqualToString:@"basic"]
@@ -585,7 +586,9 @@ static NSCharacterSet *digits = nil;
   [self logWithFormat:
 	  @"%s: created lso-session for login '%@'", __PRETTY_FUNCTION__,
 	  authUser];
-  return [sn commandContext];
+
+  // TODO: Note: the 'sn' is not an OGoSession! but the LSFoundation sn
+  return [(OGoSession *)sn commandContext];
 }
 
 - (WOResponse *)handleRequest:(WORequest *)_request {

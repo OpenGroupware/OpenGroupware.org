@@ -47,10 +47,10 @@
 }
 @end
 
-#include <WEExtensions/WEClientCapabilities.h>
-#import "common.h"
+#include <NGObjWeb/WEClientCapabilities.h>
+#include "common.h"
 
-/* --- SkyPanel   ----------------------------------------------------------- */
+/* SkyPanel */
 
 static NSString *SkyPanel_IsScriptSet = @"IsPanelScriptSet";
 

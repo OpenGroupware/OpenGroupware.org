@@ -74,7 +74,7 @@
 
 #include "common.h"
 #include <OGoFoundation/WOComponent+config.h>
-#include <WEExtensions/WEClientCapabilities.h>
+#include <NGObjWeb/WEClientCapabilities.h>
 
 @interface WOContext(PrivateAPI)
 - (WODynamicElement *)activeFormElement;

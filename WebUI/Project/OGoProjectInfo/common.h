@@ -32,8 +32,6 @@
 #include <NGExtensions/NGFileFolderInfoDataSource.h>
 #include <NGExtensions/NSNull+misc.h>
 
-#include <WEExtensions/WEClientCapabilities.h>
-
 #include <LSFoundation/LSCommandContext.h>
 #include <OGoFoundation/OGoFoundation.h>
 #include <OGoFoundation/OGoSession.h>
