@@ -141,7 +141,13 @@ sub build_rpm {
     print "[RPMBUILD]          - extracting sope.spec as $tmp_sope_spec from sourcetarball to $ENV{HOME}/spec_tmp/$tmp_sope_spec\n" if ($verbose eq "yes");
     system("tar xfzO $ENV{HOME}/rpm/SOURCES/$tmp_sope_src sope/maintenance/sope.spec >$ENV{HOME}/spec_tmp/$tmp_sope_spec");
     #use always the one present in $ENV{HOME}/$spec_tmp (it's most likely already there from a prior sope release build, but we extract it anyway)
-    system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -t release -u no -d yes -b no -f yes -c $ENV{HOME}/rpm/SOURCES/$tmp_sope_src -s $ENV{HOME}/spec_tmp/$tmp_sope_spec");
+    system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -t release -u no -d yes -b no -f yes -v yes -c $ENV{HOME}/rpm/SOURCES/$tmp_sope_src -s $ENV{HOME}/spec_tmp/$tmp_sope_spec");
+    print "[RPMBUILD]          - ... returned from building $tmp_sope_spec\n" if ($verbose eq "yes");
+    print "[RPMBUILD]          - relinking for $build_type build.\n" if ($verbose eq "yes");
+    unlink "$hpath/.rpmmacros" if ( -l "$hpath/.rpmmacros");
+    symlink "$hpath/macros/$host_i_runon/rpmmacros_trunk", "$hpath/.rpmmacros" || die "Arrr!: $!";
+    print "[RPMBUILD]          - continue to build $package $build_type...\n" if ($verbose eq "yes");
+
   }
   system("/usr/bin/rpmbuild -bb $specs_dir/$specfile 1>>$logout 2>>$logerr") if ($build_type eq "trunk");
   system("/usr/bin/rpmbuild -bb $use_specfile 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($use_specdir_specfile eq "no"));
