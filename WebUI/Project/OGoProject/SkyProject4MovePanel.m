@@ -25,6 +25,10 @@
   SkyProject4MovePanel
   
   Used to move files inside projects.
+  
+  Note: this is also called by OGoDocumentImport for the save-and-move
+        operation. In this mode it passes in dictionaries describing new
+	documents in the 'newDocuments' parameter.
 */
 
 @class NSString, NSArray, NSMutableArray;
@@ -81,7 +85,7 @@
 - (void)setTabKey:(NSString *)_key {
   if ([_key isEqualToString:self->tabKey])
     return;
-
+  
   ASSIGNCOPY(self->tabKey, _key);
 }
 - (NSString *)tabKey {
@@ -196,7 +200,7 @@
 
 - (void)setNewDocuments:(NSArray *)_newDocuments {
   ASSIGN(self->newDocuments, _newDocuments);
-  [self->tabKey release]; self->tabKey = @"new";
+  [self setTabKey:@"new"];
 }
 - (NSArray *)newDocuments {
   return self->newDocuments;
@@ -415,6 +419,9 @@
   BOOL          isDir;
   id            l;
 
+#warning TODO: create new documents
+  [self logWithFormat:@"CREATE: %@", self->newDocuments];
+  
   l  = [self labels];
   fm = [self fileManager];
 
@@ -422,7 +429,7 @@
     [self setErrorString:@"No file manager set!"];
     return nil;
   }
-
+  
   dest = [self clickedFolderPath];
 
   if (![fm fileExistsAtPath:dest isDirectory:&isDir]) {
@@ -434,8 +441,7 @@
     return nil;
   }
   
-  cnt = [self->newDocuments count];
-  for (i = 0; i < cnt; i++) {
+  for (i = 0, cnt = [self->newDocuments count]; i < cnt; i++) {
     NSDictionary *aDoc;
     NSString     *fname;
     NSString     *subject;
@@ -444,6 +450,9 @@
     aDoc    = [self->newDocuments objectAtIndex:i];
     fname   = [aDoc valueForKey:@"NSFileName"];
     subject = [aDoc valueForKey:@"NSFileSubject"];
+
+#warning TODO: create new documents
+    [self logWithFormat:@"  doc: %@", aDoc];
 
     if ([subject length] > 0) {
       attrs  = [NSDictionary dictionaryWithObjectsAndKeys:

@@ -1,5 +1,12 @@
 2004-11-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.56
 	
+	* OGoDocumentImport.m: only invoke move panel if the selected project
+	  has subfolders (works around OGo bug #1039)
+	
+	* OGoDocumentImport.m, SkyProject4MovePanel.m: code cleanups
+
 	* added new OGoDocumentImport page as a copy of
 	  SkyProject4DocumentEditor, removed some unnecessary code (v5.1.55)
 

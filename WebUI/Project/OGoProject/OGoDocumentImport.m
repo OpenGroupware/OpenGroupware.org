@@ -414,16 +414,11 @@
   return [[(OGoSession *)[self session] navigation] leavePage];
 }
 
-- (id)saveAndMove {
-  id fm;
-  LSWContentPage *page;
-  NSDictionary   *d;
-  NSString       *fname, *s;
+- (NSDictionary *)newDocumentForMovePanel {
+  NSDictionary *d;
+  NSString     *fname, *s;
   
-  if ((fm = [self fileManager]) == nil)
-    return [self save];
-
-  if (!(fname   = [self fileName]))
+  if ((fname = [self fileName]) == nil)
     fname = @"";
   if ((s = [self subject]) == nil)
     s = @"";
@@ -434,8 +429,48 @@
                         [NSNumber numberWithInt:[self->blob length]],
                         NSFileSize,
                         self->blob, @"content", nil];
-  page = [self pageWithName:@"SkyProject4MovePanel"];
+  return d;
+}
+
+- (BOOL)hasProjectSubFolders {
+  NSEnumerator *names;
+  NSString     *name;
+  id fm;
   
+  if ((fm = [self fileManager]) == nil)
+    return NO;
+  
+  names = [[fm directoryContentsAtPath:@"/"] objectEnumerator];
+  while ((name = [names nextObject]) != nil) {
+    BOOL isDir;
+    
+    name = [@"/" stringByAppendingString:name];
+    if (![fm fileExistsAtPath:name isDirectory:&isDir])
+      continue;
+    
+    if (isDir)
+      return YES;
+  }
+  return NO;
+}
+
+- (id)saveAndMove {
+  OGoContentPage *page;
+  NSDictionary   *d;
+  id fm;
+  
+  if ((fm = [self fileManager]) == nil)
+    return [self save];
+  
+  /* check whether project has subfolders */
+  
+  if (![self hasProjectSubFolders])
+    return [self save];
+  
+  /* trigger move panel in 'new documents mode' */
+  
+  d = [self newDocumentForMovePanel];
+  page = [self pageWithName:@"SkyProject4MovePanel"];
   [page takeValue:[NSArray arrayWithObject:d] forKey:@"newDocuments"];
   [page takeValue:fm                          forKey:@"fileManager"];
   [self enterPage:page]; // TODO: do we need the enter?
@@ -447,6 +482,7 @@
 - (void)setProject:(id)_p {
   if (self->project == _p)
     return;
+  
   ASSIGN(self->project, _p);
   
   if (self->speFlags.fileManagerCreatByProj) {

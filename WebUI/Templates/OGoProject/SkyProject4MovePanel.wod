@@ -15,7 +15,7 @@ TabView: SkyTabView {
 
 MoveTab: SkySimpleTabItem { key = "move"; label = labels.move; }
 CopyTab: SkySimpleTabItem { key = "copy"; label = labels.copy; }
-NewTab:  SkySimpleTabItem { key = "new";  label = labels.move; }
+NewTab:  SkySimpleTabItem { key = "new";  label = labels.tab_createinfolder; }
 
 ShowMove: WOConditional { condition = showMove; }
 ShowCopy: WOConditional { condition = showCopy; }
@@ -42,11 +42,11 @@ CopyFileManagerTree: SkyFileManagerTreeView {
 }
 
 NewFileManagerTree: SkyFileManagerTreeView {
-  fileManager      = fileManager;
-  title            = fileSystemAttributes.NSFileSystemName;
-  unclickablePaths = unclickablePaths;
-  fileSystemPath   = clickedFolderPath;
-  onClick          = "createDocuments";
+  fileManager        = fileManager;
+  title              = fileSystemAttributes.NSFileSystemName;
+  unclickablePaths   = unclickablePaths;
+  fileSystemPath     = clickedFolderPath;
+  onClick            = "createDocuments";
   useFileSystemCache = YES;
 }
 

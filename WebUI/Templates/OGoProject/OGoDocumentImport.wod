@@ -8,9 +8,8 @@ Window: LSWWindowFrame {
 }
 
 Form: WOForm {
-  action  = save;
-  name    = "editform";
-  //name = "textDocumentEditor"; // for Lime
+  action = save;
+  name   = "editform";
 }
 
 ShowFilename: WOConditional {

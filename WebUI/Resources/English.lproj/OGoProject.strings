@@ -416,6 +416,7 @@ statusReleased                      = "document is released";
 subDuration                         = "duration of sub processes";
 subJobs                             = "Subtasks";
 subject                             = "Title";
+tab_createinfolder                  = "Create";
 taskName                            = "Taskname";
 teamNilSelect                       = "private";
 test                                = "preview";
