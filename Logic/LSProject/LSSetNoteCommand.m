@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <LSFoundation/LSDBObjectSetCommand.h>
 
@@ -62,15 +61,18 @@
 }
 
 - (void)_validateKeysForContext:(id)_context {
-  // check constraints 
-
-  id account   = [_context valueForKey:LSAccountKey];
-  id accountId = [account valueForKey:@"companyId"];
-
-  // dont check access if edited during delete of assigned appointment
+  /* dont check access if edited during delete of assigned appointment */
   if (![[self valueForKey:@"dontCheckAccess"] boolValue]) {
+    // check constraints 
+    id       account;
+    NSNumber *accountId;
     NSNumber *ownerPKey;
-
+    
+    account   = [_context valueForKey:LSAccountKey];
+    accountId = [account valueForKey:@"companyId"];
+    
+    [self assert:(accountId != nil) reason:@"missing account id in context!"];
+    
     ownerPKey = [[self object] valueForKey:@"currentOwnerId"];
     [self assert:
             ([accountId isEqual:ownerPKey] || ([accountId intValue] == 10000))

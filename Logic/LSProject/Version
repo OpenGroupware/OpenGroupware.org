@@ -1,6 +1,6 @@
-# $Id$
+# versionf ile
 
-SUBMINOR_VERSION:=29
+SUBMINOR_VERSION:=30
 
 # v5.0.27 requires LSTasks     v5.0.2
 # v5.0.27 requires LSDocuments v5.0.2
