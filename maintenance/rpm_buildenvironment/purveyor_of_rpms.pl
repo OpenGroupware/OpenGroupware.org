@@ -845,7 +845,7 @@ sub prepare_build_env {
   #we use rpm instead of the traditional redhat directory style
   #logs will eat the buildlogs
   my $dir;
-  my @dirs = qw( logs macros rpm rpm/BUILD rpm/RPMS rpm/RPMS/athlon rpm/RPMS/i386 rpm/RPMS/i486 rpm/RPMS/i586 rpm/RPMS/i686 rpm/RPMS/noarch rpm/SOURCES rpm/SPECS rpm/SRPMS rpm/tmp spec_tmp );
+  my @dirs = qw( logs macros rpm rpm/BUILD rpm/RPMS rpm/RPMS/athlon rpm/RPMS/i386 rpm/RPMS/i486 rpm/RPMS/i586 rpm/RPMS/i686 rpm/RPMS/noarch rpm/SOURCES rpm/SPECS rpm/SRPMS rpm/tmp spec_tmp install_tmp );
   if (!$ENV{'HOME'}) {
     print "[FATAL]     Oups! It seems as if there's no valid \$HOME defined.\n";
     exit 127;
