@@ -1,0 +1,926 @@
+# translation of AdminUI.po to 
+# translation of AddressUI.po to Slovenský
+# Branislav Klocok <branislav.klocok@ofz.sk>, 2004, 2005.
+msgid ""
+msgstr ""
+"Last-Translator: Branislav Klocok <branislav.klocok@ofz.sk>\n"
+"PO-Revision-Date: 2005-01-01 23:17+0100\n"
+"Project-Id-Version: AdminUI\n"
+"Language-Team:  <sk@li.org>\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+"MIME-Version: 1.0"
+
+# // $Id: AddressUI.strings,v 1.15 2004/08/16 14:48:47 frank Exp $
+#"Password check failed" =
+#, fuzzy
+msgid "Password check failed"
+msgstr "Heslo"
+
+#"Password too short - must be at least 6 characters" =
+#, fuzzy
+msgid "Password too short - must be at least 6 characters"
+msgstr "Heslo na"
+
+#"Repeated input failed" =
+msgid "Repeated input failed"
+msgstr ""
+
+#"0" =
+#, fuzzy
+msgid "No"
+msgstr "Nie"
+
+#"1" =
+#, fuzzy
+msgid "Yes"
+msgstr "Áno"
+
+#"Action" =
+#, fuzzy
+msgid "Action"
+msgstr "Činnosť"
+
+#"AdditionalPackages" =
+msgid "Additional packages"
+msgstr ""
+
+#"AvailableUpdates" =
+#, fuzzy
+msgid "Available updates"
+msgstr "Dostupné"
+
+#"Category" =
+#, fuzzy
+msgid "Category"
+msgstr "Kategória"
+
+#"Confirmation" =
+msgid "Confirmation"
+msgstr ""
+
+#"CurrentTransaction" =
+msgid "Current transaction"
+msgstr ""
+
+#"Date" =
+#, fuzzy
+msgid "Date"
+msgstr "Dátum"
+
+#"Defaults" =
+msgid "defaults"
+msgstr ""
+
+#"Description" =
+#, fuzzy
+msgid "Description"
+msgstr "Popis"
+
+#"DoYouReallyWantToDeleteLicense" =
+#, fuzzy
+msgid "Do you really want to delete this license file?"
+msgstr "na zmazať súbor?"
+
+#"Download" =
+#, fuzzy
+msgid "Download"
+msgstr "Stiahnuť"
+
+#"English" =
+#, fuzzy
+msgid "English"
+msgstr "Anglicky"
+
+#"English_OGo" =
+#, fuzzy
+msgid "English (OGo)"
+msgstr "Anglicky"
+
+#"English_OOo" =
+#, fuzzy
+msgid "English (OOo)"
+msgstr "Anglicky"
+
+#"English_benhur" =
+#, fuzzy
+msgid "English (BenHur)"
+msgstr "Anglicky"
+
+#"English_blue" =
+#, fuzzy
+msgid "English (Blue)"
+msgstr "Anglicky Modrá"
+
+#"English_kde" =
+#, fuzzy
+msgid "English (KDE)"
+msgstr "Anglicky"
+
+#"English_cobalt" =
+#, fuzzy
+msgid "English (Cobalt)"
+msgstr "Anglicky"
+
+#"English_ems" =
+#, fuzzy
+msgid "English (EMS)"
+msgstr "Anglicky"
+
+#"English_glm" =
+#, fuzzy
+msgid "English (Greenlight Media)"
+msgstr "Anglicky"
+
+#"English_orange" =
+#, fuzzy
+msgid "English (classic)"
+msgstr "Anglicky"
+
+#"Errors" =
+msgid "Errors"
+msgstr ""
+
+#"General" =
+#, fuzzy
+msgid "General"
+msgstr "Všeobecné"
+
+#"GeneralPackageInformations" =
+#, fuzzy
+msgid "General package informations"
+msgstr "Všeobecné"
+
+#"German" =
+#, fuzzy
+msgid "German"
+msgstr "Nemecky"
+
+#"German_OGo" =
+#, fuzzy
+msgid "German (OGo)"
+msgstr "Nemecky"
+
+#"German_OOo" =
+#, fuzzy
+msgid "German (OOo)"
+msgstr "Nemecky"
+
+#"German_benhur" =
+#, fuzzy
+msgid "German (BenHur)"
+msgstr "Nemecky"
+
+#"German_blue" =
+#, fuzzy
+msgid "German (Blue)"
+msgstr "Nemecky Modrá"
+
+#"German_kde" =
+#, fuzzy
+msgid "German (KDE)"
+msgstr "Nemecky"
+
+#"German_cobalt" =
+#, fuzzy
+msgid "German (Cobalt)"
+msgstr "Nemecky"
+
+#"German_ems" =
+#, fuzzy
+msgid "German (EMS)"
+msgstr "Nemecky"
+
+#"German_glm" =
+#, fuzzy
+msgid "German (Greenlight Media)"
+msgstr "Nemecky"
+
+#"German_orange" =
+#, fuzzy
+msgid "German (classic)"
+msgstr "Nemecky"
+
+#"History" =
+msgid "History"
+msgstr ""
+
+#"Host" =
+#, fuzzy
+msgid "Host"
+msgstr "Hostiteľ"
+
+#"Importance" =
+msgid "Importance"
+msgstr ""
+
+#"Install" =
+#, fuzzy
+msgid "Install"
+msgstr "Inštalovať"
+
+#"InstallInProgress" =
+#, fuzzy
+msgid "Installation is in progress..."
+msgstr "Inštalácia in."
+
+#"Installation" =
+#, fuzzy
+msgid "Installation"
+msgstr "Inštalácia"
+
+#"Installed" =
+msgid "Installed"
+msgstr ""
+
+#"InstalledPackages" =
+msgid "Installed packages"
+msgstr ""
+
+#"Key" =
+#, fuzzy
+msgid "Key"
+msgstr "Kľúč"
+
+#"LSWAccountViewer" =
+#, fuzzy
+msgid "View Account"
+msgstr "Zobraziť Účet"
+
+#"LSWEnterpriseLicenseEditor" =
+msgid "Enter license"
+msgstr ""
+
+#"LSWPasswordEditor" =
+#, fuzzy
+msgid "Edit Password"
+msgstr "Upraviť Heslo"
+
+#"LSWStaff" =
+#, fuzzy
+msgid "Administration"
+msgstr "Administrácia"
+
+#"LSWTeamEditor" =
+#, fuzzy
+msgid "Edit Team"
+msgstr "Upraviť"
+
+#"LSWTeamViewer" =
+#, fuzzy
+msgid "View Team"
+msgstr "Zobraziť"
+
+#"Licenses" =
+msgid "Licenses"
+msgstr ""
+
+#"ManagePackages" =
+msgid "manage packages"
+msgstr ""
+
+#"Messages" =
+#, fuzzy
+msgid "Messages"
+msgstr "Správy"
+
+#"NO" =
+#, fuzzy
+msgid "No"
+msgstr "Nie"
+
+#"Package" =
+#, fuzzy
+msgid "Package"
+msgstr "Balíček"
+
+#"PackageHistory" =
+#, fuzzy
+msgid "Transaction history of this package"
+msgstr "z"
+
+#"PackageInformations" =
+#, fuzzy
+msgid "Package informations"
+msgstr "Balíček"
+
+#"PackageName" =
+#, fuzzy
+msgid "Package name"
+msgstr "Balíček"
+
+#"PackageProvides" =
+msgid "This package provides the following packages"
+msgstr ""
+
+#"PackageRequires" =
+msgid "This package requires the following packages"
+msgstr ""
+
+#"Packages" =
+msgid "Packages"
+msgstr ""
+
+#"PackagesToRemove" =
+#, fuzzy
+msgid "Packages to remove"
+msgstr "na odstrániť"
+
+#"Progress" =
+#, fuzzy
+msgid "Progress"
+msgstr "Priebeh"
+
+#"Provides" =
+msgid "Provides"
+msgstr ""
+
+#"RCConnectError" =
+#, fuzzy
+msgid "Unable to connect to red carpet deamon"
+msgstr "na na"
+
+#"Release" =
+msgid "Release"
+msgstr ""
+
+#"Remove" =
+#, fuzzy
+msgid "Remove"
+msgstr "Odstrániť"
+
+#"RequestedPackages" =
+msgid "Requested packages"
+msgstr ""
+
+#"Requires" =
+msgid "Requires"
+msgstr ""
+
+#"Size" =
+#, fuzzy
+msgid "Size"
+msgstr "Veľkosť"
+
+#"SkyDefaultsEditor" =
+#, fuzzy
+msgid "Defaults Editor"
+msgstr "Redaktor"
+
+#"SkyPackageManager" =
+#, fuzzy
+msgid "Package manager"
+msgstr "Balíček"
+
+#"State" =
+#, fuzzy
+msgid "State"
+msgstr "Štát"
+
+#"Step" =
+#, fuzzy
+msgid "Step"
+msgstr "Krok"
+
+#"Summary" =
+#, fuzzy
+msgid "Summary"
+msgstr "Súhrn"
+
+#"SyncFailedError" =
+msgid "Defaults Synchronization failed."
+msgstr ""
+
+#"TimeElapsed" =
+#, fuzzy
+msgid "Time elapsed"
+msgstr "Čas"
+
+#"TimeExpected" =
+#, fuzzy
+msgid "Time expected"
+msgstr "Čas"
+
+#"TimeRemaining" =
+#, fuzzy
+msgid "Time remaining"
+msgstr "Čas"
+
+#"Transactions" =
+#, fuzzy
+msgid "Transactions"
+msgstr "Transakcia"
+
+#"Uninstalled" =
+msgid "Uninstalled"
+msgstr ""
+
+#"UninstalledPackages" =
+msgid "Uninstalled packages"
+msgstr ""
+
+#"Update" =
+#, fuzzy
+msgid "Update"
+msgstr "Aktualizácia"
+
+#"Updates" =
+msgid "Updates"
+msgstr ""
+
+#"User" =
+#, fuzzy
+msgid "User"
+msgstr "Užívateľ"
+
+#"UserManager" =
+#, fuzzy
+msgid "User Manager"
+msgstr "Užívateľ Správca"
+
+#"ValuesDontMatchError" =
+#, fuzzy
+msgid "Values from old[%@] and new[%@] domain don't match."
+msgstr "Hodnoty od a nové."
+
+#"Version" =
+#, fuzzy
+msgid "Version"
+msgstr "Verzia"
+
+#"YES" =
+#, fuzzy
+msgid "Yes"
+msgstr "Áno"
+
+#"account" =
+#, fuzzy
+msgid "Account"
+msgstr "Účet"
+
+#"accountList" =
+#, fuzzy
+msgid "Account List"
+msgstr "Účet Zoznam"
+
+#"accountViewerTitle" =
+#, fuzzy
+msgid "Account Viewer"
+msgstr "Účet"
+
+#"accounts" =
+msgid "accounts"
+msgstr ""
+
+#"accountsSubview" =
+msgid "accounts"
+msgstr ""
+
+#"action" =
+#, fuzzy
+msgid "Action"
+msgstr "Činnosť"
+
+#"addAccounts" =
+#, fuzzy
+msgid "Add Accounts"
+msgstr "Pridať"
+
+#"admin_team_doexport" =
+#, fuzzy
+msgid "Export Team"
+msgstr "Exportovať"
+
+#"admin_team_mailbox" =
+msgid "Team-Mailbox"
+msgstr ""
+
+#"admin_vaddresses" =
+#, fuzzy
+msgid "Virtual Addresses"
+msgstr "Adresy"
+
+#"aptResources" =
+msgid "appt. resources"
+msgstr ""
+
+#"bill" =
+#, fuzzy
+msgid "Bill Address"
+msgstr "Adresa"
+
+#"cancelButtonLabel" =
+#, fuzzy
+msgid "cancel"
+msgstr "zrušiť"
+
+#"cancelDownloadButtonLabel" =
+#, fuzzy
+msgid "cancel download"
+msgstr "zrušiť"
+
+#"clip" =
+#, fuzzy
+msgid "clip"
+msgstr "klip"
+
+#"closeButtonLabel" =
+msgid "close"
+msgstr ""
+
+#"date" =
+#, fuzzy
+msgid "Date"
+msgstr "Dátum"
+
+#"delete" =
+#, fuzzy
+msgid "delete license"
+msgstr "zmazať"
+
+#"deleteButtonLabel" =
+#, fuzzy
+msgid "delete"
+msgstr "zmazať"
+
+#"download" =
+msgid "download"
+msgstr ""
+
+#"edit" =
+#, fuzzy
+msgid "edit"
+msgstr "upraviť"
+
+#"editLabel" =
+#, fuzzy
+msgid "edit dataset"
+msgstr "upraviť"
+
+#"edit_preferences" =
+#, fuzzy
+msgid "edit preferences"
+msgstr "upraviť"
+
+#"email" =
+#, fuzzy
+msgid "Email"
+msgstr "Email"
+
+#"email1" =
+#, fuzzy
+msgid "Email 1"
+msgstr "Email 1"
+
+#"enterLicenseTitle" =
+msgid "Enter a license"
+msgstr ""
+
+#"enterprise_sub_view" =
+msgid "Enterprise Subview"
+msgstr ""
+
+#"external" =
+#, fuzzy
+msgid "External"
+msgstr "Externý"
+
+#"extraAccountLabel" =
+#, fuzzy
+msgid "Extra Account"
+msgstr "Účet"
+
+#"failed" =
+msgid "failed"
+msgstr ""
+
+#"fileContent" =
+msgid "license"
+msgstr ""
+
+#"fileName" =
+msgid "filename"
+msgstr ""
+
+#"finished" =
+msgid "finished"
+msgstr ""
+
+#"firstname" =
+#, fuzzy
+msgid "Firstname"
+msgstr "Meno"
+
+#"groups" =
+msgid "Teams"
+msgstr ""
+
+#"html" =
+msgid "Html"
+msgstr ""
+
+#"installation" =
+msgid "installation"
+msgstr ""
+
+#"internal" =
+#, fuzzy
+msgid "Internal"
+msgstr "Interný"
+
+#"isValid" =
+msgid "Valid"
+msgstr ""
+
+#"job_import_name" =
+#, fuzzy
+msgid "Job Import"
+msgstr "Importovať"
+
+#"language" =
+#, fuzzy
+msgid "Language"
+msgstr "Jazyk"
+
+#"license_company" =
+#, fuzzy
+msgid "Company"
+msgstr "Spoločnosť"
+
+#"license_expire" =
+msgid "Expiration"
+msgstr ""
+
+#"license_file" =
+#, fuzzy
+msgid "File"
+msgstr "Súbor"
+
+#"license_host" =
+#, fuzzy
+msgid "Host"
+msgstr "Hostiteľ"
+
+#"license_modules" =
+#, fuzzy
+msgid "Modules"
+msgstr "Moduly"
+
+#"license_user" =
+#, fuzzy
+msgid "Contact"
+msgstr "Kontakt"
+
+#"licensesTab" =
+msgid "licenses"
+msgstr ""
+
+#"locationTeamLabel" =
+#, fuzzy
+msgid "Location Team"
+msgstr "Umiestnenie"
+
+#"locked" =
+#, fuzzy
+msgid "locked"
+msgstr "zamknuté"
+
+#"loginLabel" =
+#, fuzzy
+msgid "Login"
+msgstr "Prihlásenie"
+
+#"mailConfig" =
+msgid "mail"
+msgstr ""
+
+#"mail_editor_type" =
+#, fuzzy
+msgid "Type of Maileditor"
+msgstr "Typ z"
+
+#"mail_send_type" =
+#, fuzzy
+msgid "Send Mail as"
+msgstr "Odoslať Pošta"
+
+#"members" =
+msgid "Accounts"
+msgstr ""
+
+#"name" =
+#, fuzzy
+msgid "Name"
+msgstr "Názov"
+
+#"new" =
+#, fuzzy
+msgid "new"
+msgstr "nové"
+
+#"newPassword" =
+#, fuzzy
+msgid "new Password"
+msgstr "nové Heslo"
+
+#"newTemplate" =
+#, fuzzy
+msgid "new template user"
+msgstr "nové"
+
+#"nickname" =
+#, fuzzy
+msgid "Nickname"
+msgstr "Prezývka"
+
+#"noLocationLabel" =
+#, fuzzy
+msgid "- no location -"
+msgstr "nie"
+
+#"noValue" =
+#, fuzzy
+msgid "no"
+msgstr "nie"
+
+#"of" =
+#, fuzzy
+msgid "of"
+msgstr "z"
+
+#"oldPassword" =
+#, fuzzy
+msgid "old Password"
+msgstr "Heslo"
+
+#"overview" =
+#, fuzzy
+msgid "Overview"
+msgstr "Obsah"
+
+#"packages" =
+msgid "packages"
+msgstr ""
+
+#"passwordTitle" =
+#, fuzzy
+msgid "Password Editor"
+msgstr "Heslo Redaktor"
+
+#"persons" =
+#, fuzzy
+msgid "Contacts"
+msgstr "Kontakty"
+
+#"plain" =
+#, fuzzy
+msgid "Text"
+msgstr "Text"
+
+#"progress" =
+msgid "progress"
+msgstr ""
+
+#"projects" =
+#, fuzzy
+msgid "Project"
+msgstr "Projekt"
+
+#"providedBy" =
+#, fuzzy
+msgid "provided by"
+msgstr "Autor"
+
+#"refresh" =
+msgid "refresh"
+msgstr ""
+
+#"repeatPassword" =
+#, fuzzy
+msgid "Repeat Password"
+msgstr "Opakovať Heslo"
+
+#"saveButtonLabel" =
+#, fuzzy
+msgid "save"
+msgstr "uložiť"
+
+#"scheduler_chart" =
+msgid "Weekchart"
+msgstr ""
+
+#"scheduler_day" =
+msgid "Dayview"
+msgstr ""
+
+#"scheduler_end_hour" =
+#, fuzzy
+msgid "Calendar Endhour"
+msgstr "Kalendár"
+
+#"scheduler_overview" =
+msgid "Weekoverview"
+msgstr ""
+
+#"scheduler_start_hour" =
+#, fuzzy
+msgid "Calendar Starthour"
+msgstr "Kalendár"
+
+#"scheduler_view" =
+#, fuzzy
+msgid "Calendar View"
+msgstr "Kalendár Zobraziť"
+
+#"search" =
+#, fuzzy
+msgid "search"
+msgstr "hľadať"
+
+#"searchall" =
+#, fuzzy
+msgid "list all"
+msgstr "všetko"
+
+#"searchAccounts" =
+#, fuzzy
+msgid "Search Accounts"
+msgstr "Hľadať"
+
+#"sessionLogTab" =
+msgid "session logs"
+msgstr ""
+
+#"sessionLogs" =
+#, fuzzy
+msgid "Session Logs"
+msgstr "Záznamy"
+
+#"ship" =
+#, fuzzy
+msgid "Ship Address"
+msgstr "Adresa"
+
+#"shutdown" =
+msgid "activate license(s)"
+msgstr ""
+
+#"staffTitle" =
+#, fuzzy
+msgid "Administration"
+msgstr "Administrácia"
+
+#"startButtonLabel" =
+#, fuzzy
+msgid "start"
+msgstr "spustiť"
+
+#"successful" =
+msgid "successful"
+msgstr ""
+
+#"teamLabel" =
+msgid "Teams"
+msgstr ""
+
+#"teamList" =
+#, fuzzy
+msgid "Team List"
+msgstr "Zoznam"
+
+#"teamTitle" =
+#, fuzzy
+msgid "Team Editor"
+msgstr "Redaktor"
+
+#"teamViewerTitle" =
+msgid "Team Viewer"
+msgstr ""
+
+#"teams" =
+msgid "teams"
+msgstr ""
+
+#"teamsSubview" =
+msgid "teams"
+msgstr ""
+
+#"timezone" =
+msgid "Timezone"
+msgstr ""
+
+#"valueNotSet" =
+#, fuzzy
+msgid "<i>(no value configured)</i>"
+msgstr "<i> nie hodnota</i>"
+
+#"yesValue" =
+#, fuzzy
+msgid "yes"
+msgstr "áno"
+
+#"zidestore" =
+msgid "ZideStore"
+msgstr ""
+
