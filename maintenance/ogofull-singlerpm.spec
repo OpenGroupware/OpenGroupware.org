@@ -35,7 +35,8 @@ Source3:       %{ogoall_sope_source}
 Source4:       %{ogoall_ogo_source}
 Prefix:        %{ogoall_prefix}
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
-Conflicts:     sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml sope%{ogoall_sope_major}%{ogoall_sope_minor} sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-core sope%{ogoall_sope_major}%{ogoall_sope_minor}-core-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-mime sope%{ogoall_sope_major}%{ogoall_sope_minor}-mime-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-ical sope%{ogoall_sope_major}%{ogoall_sope_minor}-ical-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1 sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1-postgresql sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1-devel ogo-docapi ogo-docapi-fs-project ogo-docapi-fs-project-devel ogo-docapi-db-project ogo-docapi-db-project-devel ogo-docapi-devel ogo-logic ogo-logic-tools ogo-logic-devel ogo-pda ogo-pda-devel ogo-theme-default ogo-theme-ooo ogo-theme-blue ogo-theme-kde ogo-theme-orange ogo-tools ogo-webui-app ogo-webui-core ogo-webui-core-devel ogo-webui-calendar ogo-webui-contact ogo-webui-mailer ogo-webui-mailer-devel ogo-webui-news ogo-webui-task ogo-webui-project ogo-webui-resource-basque ogo-webui-resource-dk ogo-webui-resource-nl ogo-webui-resource-en ogo-webui-resource-fr ogo-webui-resource-de ogo-webui-resource-hu ogo-webui-resource-it ogo-webui-resource-jp ogo-webui-resource-no ogo-webui-resource-pl ogo-webui-resource-pt ogo-webui-resource-es ogo-webui-resource-sk ogo-webui-resource-ptbr ogo-xmlrpcd ogo-zidestore ogo-zidestore-devel libfoundation%{ogoall_libfoundation_major}%{ogoall_libfoundation_minor} libfoundation%{ogoall_libfoundation_major}%{ogoall_libfoundation_minor}-devel libobjc-lf2 libobjc-lf2-devel
+Conflicts:     sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml sope%{ogoall_sope_major}%{ogoall_sope_minor} sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-core sope%{ogoall_sope_major}%{ogoall_sope_minor}-core-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-mime sope%{ogoall_sope_major}%{ogoall_sope_minor}-mime-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-ical sope%{ogoall_sope_major}%{ogoall_sope_minor}-ical-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1 sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1-postgresql sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1-devel ogo-docapi ogo-docapi-fs-project ogo-docapi-fs-project-devel ogo-docapi-db-project ogo-docapi-db-project-devel ogo-docapi-devel ogo-logic ogo-logic-tools ogo-logic-devel ogo-pda ogo-pda-devel ogo-theme-default ogo-theme-ooo ogo-theme-blue ogo-theme-kde ogo-theme-orange ogo-tools ogo-webui-app ogo-webui-core ogo-webui-core-devel ogo-webui-calendar ogo-webui-contact ogo-webui-mailer ogo-webui-mailer-devel ogo-webui-news ogo-webui-task ogo-webui-project ogo-webui-resource-basque ogo-webui-resource-dk ogo-webui-resource-nl ogo-webui-resource-en ogo-webui-resource-fr ogo-webui-resource-de ogo-webui-resource-hu ogo-webui-resource-it ogo-webui-resource-jp ogo-webui-resource-no ogo-webui-resource-pl ogo-webui-resource-pt ogo-webui-resource-es ogo-webui-resource-sk ogo-webui-resource-ptbr ogo-xmlrpcd ogo-zidestore ogo-zidestore-devel libfoundation%{ogoall_libfoundation_major}%{ogoall_libfoundation_minor} libfoundation%{ogoall_libfoundation_major}%{ogoall_libfoundation_minor}-devel libobjc-lf2 libobjc-lf2-devel ogo-database-setup
+Requires:      mod_ngobjweb
 
 %description
 OpenGroupware.org aims at being an open source groupware server which
@@ -163,7 +164,7 @@ rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations/GNU
 rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www/GNUmakefile"
 rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www/tools"
 
-#one lonely file for meta package...
+#one lonely file for full package...
 echo "You've installed OGo %{ogoall_version} using the monolithic mega package!" \
      >"${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/INSTALLED.USING.OGOFULLPACKAGE"
 cd ..
@@ -191,12 +192,23 @@ ROLLIN_SCHEME=\"YES\"                 # will roll'in the current base DB scheme 
 FORCE_OVERRIDE_PRESENT_SCHEME=\"YES\" # might harm thy current scheme (or not?)
 UPDATE_SCHEMA=\"YES\"                 # will attempt to update the database scheme - if needed
 OGO_USER=\"ogo\"                      # default username (unix) of your OGo install - might vary
+PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
 " >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-webui-1.0a
 
 mkdir -p ${RPM_BUILD_ROOT}/var/lib/opengroupware.org/.libFoundation/Defaults
 mkdir -p ${RPM_BUILD_ROOT}/var/lib/opengroupware.org/documents
 mkdir -p ${RPM_BUILD_ROOT}/var/lib/opengroupware.org/news
 mkdir -p ${RPM_BUILD_ROOT}/var/log/opengroupware
+
+#from ogo-database-setup
+DBSETUP_DEST="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/dbsetup"
+mkdir -p ${DBSETUP_DEST}
+
+cp -Rp Database/SQLite ${DBSETUP_DEST}/
+cp -Rp Database/PostgreSQL ${DBSETUP_DEST}/
+cp -Rp Database/FrontBase ${DBSETUP_DEST}/
+cp %{_specdir}/db_setup_template/database_setup_psql.sh ${DBSETUP_DEST}/
+
 
 #cleanout files we don't want to appear in the ogoall package:
 rm -fr ${RPM_BUILD_ROOT}%{prefix}/.GNUsteprc
@@ -333,7 +345,7 @@ if [ $1 = 1 ]; then
   OGO_HOME="/var/lib/opengroupware.org"
   export PATH=$PATH:%{prefix}/bin
   su - ${OGO_USER} -c "
-  Defaults write NSGlobalDomain LSConnectionDictionary '{hostName=localhost; userName=OGo; password=\"\"; port=5432; databaseName=OGo}'
+  Defaults write NSGlobalDomain LSConnectionDictionary '{hostName=\"127.0.0.1\"; userName=OGo; password=\"\"; port=5432; databaseName=OGo}'
   Defaults write NSGlobalDomain LSNewsImagesPath '/var/lib/opengroupware.org/news'
   Defaults write NSGlobalDomain LSNewsImagesUrl '/ArticleImages'
   Defaults write NSGlobalDomain skyrix_id `hostname`
@@ -343,6 +355,18 @@ if [ $1 = 1 ]; then
   "
   ##
   chmod 755 ${OGO_HOME}
+  ##
+  if [ -f "%{prefix}/share/opengroupware.org-1.0a/dbsetup/database_setup_psql.sh" ]; then
+    %{prefix}/share/opengroupware.org-1.0a/dbsetup/database_setup_psql.sh initial
+  fi
+fi
+
+if [ $1 = 2 ]; then
+  OGO_USER="ogo"
+  OGO_GROUP="skyrix"
+  if [ -e /var/log/opengroupware ]; then
+    chown -R ${OGO_USER}:${OGO_GROUP} /var/log/opengroupware
+  fi
 fi
 
 # ****************************** postun *********************************
@@ -689,8 +713,13 @@ rm -fr ${RPM_BUILD_ROOT}
 %dir %attr(755,ogo,skyrix) %{_var}/lib/opengroupware.org/news
 %dir %attr(700,ogo,skyrix) %{_var}/log/opengroupware
 
+# ogo-database-setup
+%{prefix}/share/opengroupware.org-1.0a/dbsetup
+
 # ********************************* changelog *************************
 %changelog
+* Thu Mar 10 2005 Frank Reppin <frank@opengroupware.org>
+- requires mod_ngobjweb; added ogo-database-setup
 * Tue Mar 08 2005 Frank Reppin <frank@opengroupware.org>
 - updated for ogo-alpha11
 * Tue Mar 01 2005 Frank Reppin <frank@opengroupware.org>

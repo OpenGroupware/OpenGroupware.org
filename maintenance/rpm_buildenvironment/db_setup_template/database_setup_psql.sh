@@ -287,7 +287,7 @@ initial()
     # there shouldn't be an error in the scheme itself! take care!
     IAM="`basename $0`"
     LOG="${TEMP_LOG_PATH}/${IAM}.${NOW}.log"
-    su - ${COMMON_PG_USER} -c "psql -h localhost -U ${OGO_DB_USER} -d ${OGO_DB_ITSELF} -f ${COMMON_OGO_CORE_SCHEME_LOCATION}" 1>/dev/null 2>${LOG}
+    su - ${COMMON_PG_USER} -c "psql -h 127.0.0.1 -U ${OGO_DB_USER} -d ${OGO_DB_ITSELF} -f ${COMMON_OGO_CORE_SCHEME_LOCATION}" 1>/dev/null 2>${LOG}
     if [ -f "${LOG}" ]; then
       echo -e "checking the logfile created during scheme rollin... ${LOG}"
       LOG_SYNTAX_ERR="`grep -iE 'syntax[[:space:]]*error' ${LOG} | sed -r 's~^~  ~g'`"

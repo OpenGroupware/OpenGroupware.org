@@ -547,6 +547,7 @@ ROLLIN_SCHEME=\"YES\"                 # will roll'in the current base DB scheme 
 FORCE_OVERRIDE_PRESENT_SCHEME=\"YES\" # might harm thy current scheme (or not?)
 UPDATE_SCHEMA=\"YES\"                 # will attempt to update the database scheme - if needed
 OGO_USER=\"ogo\"                      # default username (unix) of your OGo install - might vary
+PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
 " >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-webui-1.0a
 
 # ****************************** post *********************************
@@ -1124,6 +1125,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Thu Mar 10 2005 Frank Reppin <frank@opengroupware.org>
+- added PGCLIENTENCODING to sysconfig settings
+  (thus dealing with OGo Bug #1292)
 * Sun Jan 30 2005 Frank Reppin <frank@opengroupware.org>
 - some additional ldconfig calls
 - changed files section for ogo-zidestore

@@ -52,7 +52,7 @@ if [ $1 = 1 ]; then
   OGO_HOME="/var/lib/opengroupware.org"
   export PATH=$PATH:%{prefix}/bin
   su - ${OGO_USER} -c "
-  Defaults write NSGlobalDomain LSConnectionDictionary '{hostName=localhost; userName=OGo; password=\"\"; port=5432; databaseName=OGo}'
+  Defaults write NSGlobalDomain LSConnectionDictionary '{hostName=\"127.0.0.1\"; userName=OGo; password=\"\"; port=5432; databaseName=OGo}'
   Defaults write NSGlobalDomain LSNewsImagesPath '/var/lib/opengroupware.org/news'
   Defaults write NSGlobalDomain LSNewsImagesUrl '/ArticleImages'
   Defaults write NSGlobalDomain skyrix_id `hostname`
@@ -69,6 +69,14 @@ if [ $1 = 1 ]; then
     echo "%{prefix}/lib" >> %{_sysconfdir}/ld.so.conf
   fi
   /sbin/ldconfig
+fi
+
+if [ $1 = 2 ]; then
+  OGO_USER="ogo"
+  OGO_GROUP="skyrix"
+  if [ -e /var/log/opengroupware ]; then
+    chown -R ${OGO_USER}:${OGO_GROUP} /var/log/opengroupware
+  fi
 fi
 
 # ****************************** postun *******************************
@@ -108,6 +116,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Thu Mar 10 2005 Frank Reppin <frank@opengroupware.org>
+- prep fix for initscripts
 * Sat Feb 19 2005 Frank Reppin <frank@opengroupware.org>
 - fixed OGo Bug #1230:
   added LSNewsImagesPath/LSNewsImagesUrl

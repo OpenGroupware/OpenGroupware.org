@@ -30,7 +30,8 @@ USER="ogo"
 DIR="XMLRPCD_INIT_PREFIX"
 BIN="XMLRPCD_INIT_PREFIX/sbin/XMLRPCD_INIT_VERSION"
 PID_FILE="/var/run/XMLRPCD_INIT_VERSION.pid"
-LOG="/var/log/opengroupware/XMLRPCD_INIT_VERSION.log"
+LOGERR="/var/log/opengroupware/XMLRPCD_INIT_VERSION-err.log"
+LOGOUT="/var/log/opengroupware/XMLRPCD_INIT_VERSION-out.log"
 PLIST="xmlrpcd"
 SLEEP=3
 
@@ -45,7 +46,7 @@ start()
     echo -en "${PROG} already runs!"
   else
     echo -en $"Starting ${PROG}:"
-    su - ${USER} -s /bin/bash -c "exec ${BIN}" >> ${LOG} 2>&1 &
+    su - ${USER} -s /bin/bash -c "export PGCLIENTENCODING=${PGCLIENTENCODING}; exec ${BIN} 2>>${LOGERR} 1>>${LOGOUT} &"
     sleep ${SLEEP}
     echo $! > ${PID_FILE}
     PID=`/sbin/pidof "${BIN}"`

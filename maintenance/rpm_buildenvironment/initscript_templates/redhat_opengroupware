@@ -17,7 +17,8 @@ USER="ogo"
 DIR="OGO_INIT_PREFIX"
 BIN="OGO_INIT_PREFIX/sbin/OGO_INIT_VERSION"
 PID_FILE="/var/run/OGO_INIT_VERSION.pid"
-LOG="/var/log/opengroupware/OGO_INIT_VERSION.log"
+LOGERR="/var/log/opengroupware/OGO_INIT_VERSION-err.log"
+LOGOUT="/var/log/opengroupware/OGO_INIT_VERSION-out.log"
 PLIST="NSGlobalDomain"
 SLEEP=3
 
@@ -41,7 +42,7 @@ start()
     echo -en "\n"
   else
     echo -en $"Starting ${PROG} "
-    su - ${USER} -s /bin/bash -c "exec ${BIN}" >> ${LOG} 2>&1 &
+    su - ${USER} -s /bin/bash -c "export PGCLIENTENCODING=${PGCLIENTENCODING}; exec ${BIN} 2>>${LOGERR} 1>>${LOGOUT} &"
     sleep_dots
     echo -en ":"
     echo $! > ${PID_FILE}

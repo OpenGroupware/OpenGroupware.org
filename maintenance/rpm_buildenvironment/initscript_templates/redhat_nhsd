@@ -17,7 +17,8 @@ USER="ogo"
 DIR="NHSD_INIT_PREFIX"
 BIN="NHSD_INIT_PREFIX/sbin/NHSD_INIT_VERSION"
 PID_FILE="/var/run/NHSD_INIT_VERSION.pid"
-LOG="/var/log/opengroupware/NHSD_INIT_VERSION.log"
+LOGERR="/var/log/opengroupware/NHSD_INIT_VERSION-err.log"
+LOGOUT="/var/log/opengroupware/NHSD_INIT_VERSION-out.log"
 PLIST="nhsd"
 SLEEP="3"
 
@@ -41,7 +42,7 @@ start()
     echo -en "\n"
   else
     echo -en $"Starting ${PROG} "
-    su - ${USER} -s /bin/bash -c "exec ${BIN}" >> ${LOG} 2>&1 &
+    su - ${USER} -s /bin/bash -c "export PGCLIENTENCODING=${PGCLIENTENCODING}; exec ${BIN} 2>>${LOGERR} 1>>${LOGOUT} &"
     sleep_dots
     echo -en ":"
     echo $! > ${PID_FILE}
