@@ -181,29 +181,17 @@ static inline BOOL _showUnknownFiles(id self) {
   }
 }
 
-- (NSArray *)_fetchWithSimpleDataSource {
-  SkyAttributeDataSource           *ads;
-  SkySimpleProjectFolderDataSource *sds;
-  EOFetchSpecification             *fs;
-  NSDictionary *hints;
-  NSString     *resStr;
-  EOEntity     *docEnt;
-  EOAttribute  *attr;
-  NSArray      *dsAttrs;
-  EOQualifier  *qualifier;
-  
-  qualifier = [self->fetchSpecification qualifier];
-  
-  sds = [[SkySimpleProjectFolderDataSource alloc]
-	  initWithFolderDataSource:self];
-  ads = [[SkyAttributeDataSource alloc] initWithDataSource:sds
-					context:self->context];
-  fs  = [[EOFetchSpecification alloc] initWithEntityName:@"Doc"
-				      qualifier:qualifier sortOrderings:nil
-				      usesDistinct:YES isDeep:NO hints:nil];
+- (NSString *)_restrictionQualifierStringForSimpleFetchSpec {
+  /* this restriction qualifier is used by the attribute datasource */
+  static EOEntity *docEnt = nil;
+  EOAttribute *attr;
+  NSString    *resStr;
 
-  docEnt = [[self->context valueForKey:LSDatabaseKey] entityNamed:@"Doc"];
-
+  if (docEnt == nil) {
+    docEnt = [[[self->context valueForKey:LSDatabaseKey] 
+		entityNamed:@"Doc"] retain];
+  }
+  
   if ([self isDeepFetchSpecification]) {
     attr   = [docEnt attributeNamed:@"projectId"];
     resStr = [NSString stringWithFormat:@"%@ = %@",
@@ -216,24 +204,58 @@ static inline BOOL _showUnknownFiles(id self) {
                            [attr columnName],
                            [(id)self->folderGID keyValues][0]];
   }
+  return resStr;
+}
+
+- (NSDictionary *)_hintsForSimpleFetchSpec {
+  /* those are the hints for the attribute datasource */
+  NSDictionary *hints;
+  NSString *resStr;
+  
+  resStr = [self _restrictionQualifierStringForSimpleFetchSpec];
   hints  = [NSDictionary dictionaryWithObjectsAndKeys:
 			   resStr, @"restrictionQualifierString",
                            [NSNumber numberWithBool:
 				       [self isDeepFetchSpecification]], 
 			   @"fetchDeep",
                            @"Doc", @"restrictionEntityName", nil];
+  return hints;
+}
 
-  [fs setHints:hints];
-
+- (NSArray *)_fetchWithSimpleDataSource {
+  /* this is used if the filemanager cannot process a qualifier */
+  // TODO: examples for this?
+  /*
+    This uses the SkyAttributeDataSource which can fetch in the extended
+    attributes of an object. SkyAttributeDataSource is in LSFoundation.
+  */
+  SkyAttributeDataSource           *ads;
+  SkySimpleProjectFolderDataSource *sds;
+  EOFetchSpecification             *fs;
+  NSArray     *dsAttrs;
+  EOQualifier *qualifier;
+  
+  qualifier = [self->fetchSpecification qualifier];
+  
+  sds = [[SkySimpleProjectFolderDataSource alloc]
+	  initWithFolderDataSource:self];
+  ads = [[SkyAttributeDataSource alloc] initWithDataSource:sds
+					context:self->context];
+  fs  = [[EOFetchSpecification alloc] initWithEntityName:@"Doc"
+				      qualifier:qualifier sortOrderings:nil
+				      usesDistinct:YES isDeep:NO hints:nil];
+  
+  [fs setHints:[self _hintsForSimpleFetchSpec]];
+  
   [ads setFetchSpecification:fs];
   [ads setDefaultNamespace:
-         [self->fileManager defaultProjectDocumentNamespace]];
+	 [self->fileManager defaultProjectDocumentNamespace]];
   [ads setDbKeys:[self->fileManager readOnlyDocumentKeys]];
   /*
-      SkyProjectFolderDataSource needs only globals ids, therefore it does 
-      not need to -verifyIds
+    SkyProjectFolderDataSource needs only globals ids, therefore it does 
+    not need to -verifyIds
   */
-    
+  
   dsAttrs = [ads fetchObjects];
     
   [fs  release]; fs  = nil;
@@ -273,6 +295,7 @@ static inline BOOL _showUnknownFiles(id self) {
 }
 
 - (NSArray *)_fetchObjects {
+  /* this is the regular fetch method */
   NSString              *attrNotify;
   NSArray               *dsAttrs, *objects;
   EOQualifier           *qualifier;
@@ -292,9 +315,9 @@ static inline BOOL _showUnknownFiles(id self) {
   }
   
   [nc removeObserver:self name:attrNotify object:nil];
-
+  
   qualifier = [self->fetchSpecification qualifier];
-
+  
   if ([SkyProjectFileManager supportQualifier:qualifier]) {
     NSString *folder;
 
@@ -313,6 +336,41 @@ static inline BOOL _showUnknownFiles(id self) {
   return objects;
 }
 
+- (NSArray *)filterOutUnknownFileType:(NSArray *)result {
+  NSEnumerator   *enumerator;
+  NSMutableArray *array;
+  id             obj;
+  BOOL           didFilter;
+  
+  didFilter  = NO;
+  array      = [NSMutableArray arrayWithCapacity:[result count]];
+  enumerator = [result objectEnumerator];
+  while ((obj = [enumerator nextObject]) != nil) {
+    if ([[obj valueForKey:NSFileType] isEqualToString:NSFileTypeUnknown]) {
+      didFilter = YES;
+      continue;
+    }
+    
+    [array addObject:obj];
+  }
+  return didFilter ? array : result;
+}
+
+- (NSArray *)primaryFetchObjects {
+  NSDictionary *hints;
+  
+  hints = [self->fetchSpecification hints];
+  
+  if ([[hints objectForKey:@"onlySubFolderNames"] boolValue])
+    return [self->fileManager subDirectoryNamesForPath:self->path];
+  
+  if (![self->fileManager isReadableFileAtPath:self->path])
+    return [NSArray array]; // TODO: return error/nil?
+  
+  // [self->fileManager flush];
+  return [self _fetchObjects];
+}
+
 - (NSArray *)fetchObjects {
   NSAutoreleasePool *pool;
   NSArray      *result, *sortOrderings;
@@ -325,45 +383,34 @@ static inline BOOL _showUnknownFiles(id self) {
   }
 
   hints = [self->fetchSpecification hints];
-  pool  = [[NSAutoreleasePool alloc] init];
+
+  /* check preconditions */
   
   if ([self->fetchSpecification qualifier] == nil) {
-    if ([[hints objectForKey:EONoFetchWithEmptyQualifierHint] boolValue]) {
-      [pool release];
+    if ([[hints objectForKey:EONoFetchWithEmptyQualifierHint] boolValue])
       return [NSArray array];
-    }
   }
-  if ([[[self->fetchSpecification hints] objectForKey:@"onlySubFolderNames"]
-                                  boolValue]) {
-    result = [self->fileManager subDirectoryNamesForPath:self->path];
-  }
-  else {
-    if (![self->fileManager isReadableFileAtPath:self->path])
-      result = [NSArray array];
-    else {
-      //    [self->fileManager flush];
-      result = [self _fetchObjects];
-    }
-  }
-  if ((sortOrderings = [self->fetchSpecification sortOrderings])) {
-    result = [result sortedArrayUsingKeyOrderArray:sortOrderings];
-  }
+  
+  /* open pool */
+  
+  pool = [[NSAutoreleasePool alloc] init];
+  
+  /* perform fetch */
+  
+  result = [self primaryFetchObjects];
 
-  if (!_showUnknownFiles(self)) {
-    NSEnumerator   *enumerator;
-    NSMutableArray *array;
-    id             obj;
+  /* filter */
+  
+  if (!_showUnknownFiles(self))
+    result = [self filterOutUnknownFileType:result];
 
-    array = [NSMutableArray arrayWithCapacity:[result count]];
-
-    enumerator = [result objectEnumerator];
-
-    while ((obj = [enumerator nextObject])) {
-      if (![[obj valueForKey:NSFileType] isEqualToString:NSFileTypeUnknown])
-        [array addObject:obj];
-    }
-    result = array;
-  }
+  /* sort */
+  
+  if ((sortOrderings = [self->fetchSpecification sortOrderings]) != nil)
+    result = [result sortedArrayUsingKeyOrderArray:sortOrderings]; 
+  
+  /* finish up */
+  
   result = [result shallowCopy];
   [pool release];
   return [result autorelease];

@@ -80,18 +80,19 @@ SELECT DISTINCT p1.kind FROM project p1;
         p1.kind <> '05_historyProject' OR
         p1.kind <> '10_edcProject' OR
         p1.kind <> '15_accountLog' OR
-        p1.kind is NULL AND
+        p1.kind IS NULL AND
     (p1.owner_id = 100407 OR 
-      (p1.project_id = a1.project_id AND a1.company_id = c1.company_id AND 
-       (c1.company_id = 100407 OR c1.company_id in
+      (p1.project_id = a1.project_id AND (a1.company_id = c1.company_id) AND 
+       (c1.company_id = 100407 OR c1.company_id IN
           (SELECT cc1.company_id FROM company cc1, company_assignment aa1
-             WHERE cc1.company_id = aa1.company_id
-                   AND aa1.sub_company_id = 100407)) 
+           WHERE cc1.company_id = aa1.company_id
+                 AND aa1.sub_company_id = 100407)) 
        AND (a1.access_right LIKE '%r%' OR a1.access_right LIKE '%m%')));
 
 *** all allowed processes ***
 
-  SELECT * FROM project p1, project_company_assignment a1, company c1
+  SELECT * 
+  FROM project p1, project_company_assignment a1, company c1
   WHERE p1.kind NOT IN ('invoiceProject', 'historyProject', 'edcProject', \
   'accountLog') AND \
     (p1.owner_id = 'owner' OR \
@@ -138,7 +139,7 @@ SELECT DISTINCT p1.kind FROM project p1;
     qual = [EOQualifier qualifierWithQualifierFormat:@"type=%@", obj];
     [quals addObject:qual];
   }
-  if ([quals count]) {
+  if ([quals count] > 0) {
     EOQualifier *q;
     
     q  = [[[EOOrQualifier alloc] initWithQualifierArray:quals] autorelease];
@@ -264,7 +265,7 @@ SELECT DISTINCT p1.kind FROM project p1;
       return nil;
     }
       
-    while ((row = [_channel fetchAttributes:editingAttrs withZone:NULL])) 
+    while ((row = [_channel fetchAttributes:editingAttrs withZone:NULL])!=nil)
       [result setObject:row forKey:[row objectForKey:@"documentId"]];
     
     [qualifier release]; qualifier = nil;
@@ -296,7 +297,7 @@ SELECT DISTINCT p1.kind FROM project p1;
   NSMutableDictionary *projectForId;
   NGMutableHashMap    *result;
   FMContext           *fmContext;
-
+  
   fmContext = [[[FMContext alloc] initWithContext:self->context] autorelease];
   
   if (![self->context isTransactionInProgress]) {
