@@ -505,6 +505,8 @@ rm -f "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www"
 cp -Rp WebUI/Templates "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates"
 cp -Rp WebUI/Resources "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations"
 cp -Rp Themes/WebServerResources "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www"
+rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates/ChangeLog"
+rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates/GNUmakefile"
 rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates/HelpUI"
 rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations/COPYRIGHT"
 rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations/ChangeLog"
@@ -892,8 +894,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %files webui-app
 %defattr(-,root,root,-)
 %{prefix}/sbin/ogo-webui-1.0a
-%{prefix}/lib/opengroupware.org-1.0a/webui
-%{prefix}/share/opengroupware.org-1.0a/templates
+%{prefix}/share/opengroupware.org-1.0a/templates/ogo-webui-1.0a
 %{prefix}/share/opengroupware.org-1.0a/initscript_templates/*opengroupware
 
 %files webui-core
@@ -905,6 +906,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/lib/opengroupware.org-1.0a/webui/PreferencesUI.lso
 %{prefix}/lib/opengroupware.org-1.0a/webui/PropertiesUI.lso
 %{prefix}/lib/opengroupware.org-1.0a/webui/RelatedLinksUI.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/SoOGo.lso
 %{prefix}/share/opengroupware.org-1.0a/templates/AdminUI
 %{prefix}/share/opengroupware.org-1.0a/templates/BaseUI
 %{prefix}/share/opengroupware.org-1.0a/templates/OGoUIElements
@@ -1089,6 +1091,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Tue Jan 25 2005 Frank Reppin <frank@opengroupware.org>
+- fixed OGo Bug #1197
 * Wed Jan 19 2005 Frank Reppin <frank@opengroupware.org>
 - added 'preun' stages for the initscripts
 - added meta package
