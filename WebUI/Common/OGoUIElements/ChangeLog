@@ -1,5 +1,8 @@
 2005-04-07  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SkyTabView.m: added colors_tabText key to configure the font-color
+	  (v5.1.43)
+
 	* SkySimpleTabItem.m, SkyTabView.m: retrieve tab width/height from
 	  components.cfg, reuse WOAssociation objects (v5.1.42)
 

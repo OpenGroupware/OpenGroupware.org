@@ -84,12 +84,12 @@ static Class        baseClass  = Nil;
       forKey:@"leftCornerIcon"];
   [md setObject:[WOAssociation associationWithValue:@"corner_right.gif"]
       forKey:@"rightCornerIcon"];
-  [md setObject:[WOAssociation associationWithValue:@"black"]
-      forKey:@"fontColor"];
   
   // TODO: use CSS once WETabView can handle that
   [md setObject:[WOAssociation associationWithKeyPath:@"config.colors_tabLeaf"]
       forKey:@"bgColor"];
+  [md setObject:[WOAssociation associationWithKeyPath:@"config.colors_tabText"]
+      forKey:@"fontColor"];
 
   // TODO: theoretical leak ...
   [md setObject:[[NSClassFromString(@"SkyTabFontAssociation") alloc] init]
