@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/OGoComponent.h>
 
@@ -215,12 +214,12 @@ struct DockInfo {
   NSAssert(self->dockInfo, @"could not allocate memory for dock !");
 
   /* find configuration for each page .. */
-
-  for (i = 0; ((pageName = [dockedPageNames nextObject]));) {
+  
+  for (i = 0; ((pageName = [dockedPageNames nextObject]) != nil); ) {
     NSBundle     *bundle;
     NSDictionary *cfgEntry;
     NSString     *componentName, *label, *imageName, *miniView, *miniTextView;
-
+    
     bundle = [bm bundleProvidingResource:pageName ofType:@"DockablePages"];
     if (bundle == nil) {
       [self logWithFormat:@"did not find dockable page %@", pageName];

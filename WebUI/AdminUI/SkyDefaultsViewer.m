@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyDefaultsViewer.h"
 #include "common.h"
@@ -29,7 +28,12 @@
 @interface NSObject(Priv)
 - (NSDictionary *)loadPersistentDomainNamed:(id)_n;
 @end /* NSObject(Priv) */
+
 @implementation SkyDefaultsViewer
+
+- (NSUserDefaults *)userDefaults {
+  return [[[self session] commandContext] userDefaults];
+}
 
 - (void)_initDefaults {
   NSArray         *fileNames;
@@ -41,7 +45,7 @@
   
   ASSIGN(self->defaults, nil);
   
-  envLanguage = [[[[self session] commandContext] userDefaults]
+  envLanguage = [[self userDefaults]
                          valueForKey:@"language"];
 
   if (envLanguage == nil)
@@ -126,7 +130,8 @@
     
     if (([ud persistentDomainForName:obj])) {
       [ud removePersistentDomainForName:obj];
-      [ud setPersistentDomain:[(id)ud loadPersistentDomainNamed:obj] forName:obj];
+      [ud setPersistentDomain:[(id)ud loadPersistentDomainNamed:obj] 
+	  forName:obj];
     }
   }
   [ud synchronize];
@@ -158,6 +163,36 @@
   return self->currentDomainElement;
 }
 
+- (void)setDomains:(NSArray *)_domains {
+  if ([_domains isKindOfClass:[NSArray class]]) {
+    ASSIGN(self->domains, _domains);
+  }
+  else {
+    [self->domains release]; self->domains = nil;
+    
+    if (_domains != nil)
+      self->domains = [[NSArray alloc] initWithObjects:&_domains count:1];
+  }
+}
+- (NSArray *)domains {
+  return self->domains;
+}
+
+- (NSString *)domainKey {
+  NSString *k;
+  
+  k = [self->currentDomain name];
+  k = [@"domain_is_visible_" stringByAppendingString:k];
+  return k;
+}
+
+- (void)setIsVisible:(BOOL)_b {
+  [[self userDefaults] takeValue:[NSNumber numberWithBool:_b] 
+		       forKey:[self domainKey]];
+}
+- (BOOL)isVisible {
+  return [[self userDefaults] boolForKey:[self domainKey]];
+}
 
 /* actions */
 
@@ -168,35 +203,6 @@
   [editor setDomain:currentDomain];
   
   return editor;
-}
-
-- (void)setDomains:(NSArray *)_domains {
-  if ([_domains isKindOfClass:[NSArray class]]) {
-    ASSIGN(self->domains, _domains);
-  }
-  else {
-    ASSIGN(self->domains,nil);
-    if (_domains) {
-      self->domains = [[NSArray alloc] initWithObjects:&_domains count:1];
-    }
-  }
-}
-
-- (NSArray *)domains {
-  return self->domains;
-}
-
-- (BOOL)isVisible {
-  return [[[[self session] commandContext] userDefaults]
-                  boolForKey:
-                  [@"domain_is_visible_" stringByAppendingString:
-                    [self->currentDomain name]]];
-}
-- (void)setIsVisible:(BOOL)_b {
-  [[[[self session] commandContext] userDefaults]
-           takeValue:[NSNumber numberWithBool:_b]
-           forKey:[@"domain_is_visible_" stringByAppendingString:
-                    [self->currentDomain name]]];
 }
 
 @end /* SkyDefaultsViewer */

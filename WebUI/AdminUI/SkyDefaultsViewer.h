@@ -24,6 +24,12 @@
 
 #include <OGoFoundation/OGoComponent.h>
 
+/*
+  SkyDefaultsViewer
+
+  TODO: explain what it does?
+*/
+
 @class NSArray;
 @class SkyDefaultsDomain, SkyDefaultsElement;
 

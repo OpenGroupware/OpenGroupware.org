@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyDefaultsEditor.h"
 #include "common.h"
@@ -107,27 +106,30 @@
   return v;
 }
 
+- (NSString *)_escapeTextValue:(NSString *)_str seperator:(NSString *)sep {
+  NSEnumerator    *enumerator;
+  NSMutableString *str;
+  id              s;
+
+  str = [NSMutableString stringWithCapacity:[_str length]];
+  enumerator = [[_str componentsSeparatedByString:@"\n"] objectEnumerator];
+  while ((s = [[enumerator nextObject] stringByTrimmingSpaces])) {
+    if ([s length] == 0)
+      continue;
+    
+    if ([str length] > 0)
+      [str appendString:sep];
+    
+    [str appendString:s];
+  }
+  return [[str copy] autorelease];
+}
 - (void)setTextValue:(NSString *)_str {
   NSString *sep;
-
-  if ([(sep = [self->currentElement valueSeperator]) length] > 0) {
-    NSEnumerator    *enumerator;
-    NSMutableString *str;
-    id              s;
-
-    str = [NSMutableString stringWithCapacity:[_str length]];
-    enumerator = [[_str componentsSeparatedByString:@"\n"] objectEnumerator];
-    while ((s = [[enumerator nextObject] stringByTrimmingSpaces])) {
-      
-      if ([s length] > 0) {
-        if ([str length] > 0)
-          [str appendString:sep];
-      
-        [str appendString:s];
-      }
-    }
-    _str = [[str copy] autorelease];
-  }
+  
+  if ([(sep = [self->currentElement valueSeperator]) length] > 0)
+    _str = [self _escapeTextValue:_str seperator:sep];
+  
   [self->currentElement setValue:_str];
 }
 

@@ -21,6 +21,12 @@
 
 #include <OGoFoundation/OGoComponent.h>
 
+/*
+  SkyDefaultsElementViewer
+  
+  TODO: explain what it does.
+*/
+
 @class SkyDefaultsElement;
 
 @interface SkyDefaultsElementViewer : OGoComponent
@@ -64,6 +70,7 @@
   
   if ((value = [self->element value]) != nil)
     return [value stringValue];
+  
   return [[self labels] valueForKey:@"valueNotSet"];
 }
 
