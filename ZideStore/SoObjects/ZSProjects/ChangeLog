@@ -1,7 +1,8 @@
 2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxNote.m: catch exceptions when attempting to write notes, fixes OGo
-	  bug #923 (v1.3.87)
+	  bug #923, minor improvements to WebDAV interface, fixes writing of
+	  notes (v1.3.87)
 
 2004-08-24  Helge Hess  <helge.hess@skyrix.com>
 

@@ -243,7 +243,7 @@ static BOOL debugOn = NO;
 /* common DAV attributes */
 
 - (NSString *)davDisplayName {
-  /* TODO: use title if available? */
+  // TODO: use title if available?
   return [self nameInContainer];
 }
 - (BOOL)davIsCollection {

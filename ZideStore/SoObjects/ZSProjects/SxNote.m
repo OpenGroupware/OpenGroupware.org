@@ -65,7 +65,7 @@ static BOOL debugOn = NO;
 
   if (self->noteEO)
     return self->noteEO;
-
+  
   if (_ctx == nil) _ctx = [[WOApplication application] context];
   if ((cmdctx = [self commandContextInContext:_ctx]) == nil) {
     [self logWithFormat:@"ERROR: got no command context ..."];
@@ -76,7 +76,7 @@ static BOOL debugOn = NO;
     [self logWithFormat:@"ERROR: got no primary key for note ..."];
     return nil;
   }
-
+  
   note = [cmdctx runCommand:@"note::get", @"documentId", pkey, nil];
   [self debugWithFormat:@"fetched note: %@", note];
   [cmdctx runCommand:@"note::get-attachment-name", @"notes", note, nil];
@@ -155,8 +155,11 @@ static BOOL debugOn = NO;
   [neo takeValue:data forKey:@"fileContent"];
   
   error = nil;
-  NS_DURING
-    [cmdctx runCommand:@"note::set" arguments:neo];
+  NS_DURING {
+    [cmdctx runCommand:@"note::set", 
+	    @"object", neo, @"fileContent", data,
+	    nil];
+  }
   NS_HANDLER
     error = [localException retain];
   NS_ENDHANDLER;
@@ -200,6 +203,32 @@ static BOOL debugOn = NO;
 #endif
 
   return [NSNumber numberWithBool:NO];
+}
+
+/* WebDAV */
+
+- (NSString *)davDisplayName {
+  // TODO: use title if available?
+  return [self nameInContainer];
+}
+
+- (BOOL)davIsCollection {
+  return NO;
+}
+- (BOOL)davIsFolder {
+  /* this can be overridden by compound documents (aka filewrappers) */
+  return [self davIsCollection];
+}
+- (BOOL)davHasSubFolders {
+  return NO;
+}
+
+- (id)davContentLength {
+  // TODO: a bit expensive, maybe we can do that faster
+  NSString *s;
+  
+  s = [self noteContent];
+  return [s isNotNull] ? [NSNumber numberWithInt:[s length]] : nil;
 }
 
 /* debugging */
