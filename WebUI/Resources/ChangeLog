@@ -1,5 +1,7 @@
 2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
 
+	* German.lproj/OGoMailViewers.strings: added missing semicolons
+
 	* German.lproj/LSWMail.strings, German.lproj/OGoWebMail.strings: added
 	  missing semicolons for Cocoa
 
