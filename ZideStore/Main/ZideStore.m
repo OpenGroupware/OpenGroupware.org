@@ -484,6 +484,7 @@
 
 int main(int argc, char **argv, char **env) {
   NSAutoreleasePool *pool;
+  int rc;
 
   pool = [[NSAutoreleasePool alloc] init];
 #if LIB_FOUNDATION_LIBRARY
@@ -491,8 +492,11 @@ int main(int argc, char **argv, char **env) {
 #endif
   [NGBundleManager defaultBundleManager];
   
-  WOWatchDogApplicationMain(@"ZideStore", argc, (void*)argv);
-
+  rc = WOWatchDogApplicationMainWithServerDefaults
+    (@"ZideStore", argc, (void*)argv,
+     @"opengroupware.org-1.0a/global.plist",
+     @"opengroupware.org-1.0a/zidestore.plist");
+  
   [pool release];
-  return 0;
+  return rc;
 }

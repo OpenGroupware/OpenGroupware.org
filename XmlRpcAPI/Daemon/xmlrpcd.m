@@ -31,7 +31,10 @@ int main(int argc, const char **argv, char **env) {
   [NSProcessInfo initializeWithArguments:(void*)argv count:argc
                  environment:env];
 #endif
-  rc = WOWatchDogApplicationMain(@"XmlRpcApplication", argc, argv);
+  rc = WOWatchDogApplicationMainWithServerDefaults
+    (@"XmlRpcApplication", argc, argv,
+     @"opengroupware.org-1.0a/global.plist",
+     @"opengroupware.org-1.0a/xmlrpcd.plist");
   
   [pool release];
 

@@ -1,8 +1,10 @@
 2004-09-24  Helge Hess  <helge.hess@skyrix.com>
 
+	* ZideStore.m: prepared to use defaults in /etc/ (v1.3.86)
+
 	* v1.3.85
 
-	* made ZideStore a regular, versioned tool (ogo-zidestore-51)
+	* made ZideStore a regular, versioned tool (ogo-zidestore-13)
 
 	* moved product.plist to the new ZSCommon product (SoObjects/)
 
