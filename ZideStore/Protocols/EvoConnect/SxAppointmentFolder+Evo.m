@@ -1,6 +1,6 @@
 // $Id: SxAppointmentFolder+Evo.m 1 2004-08-20 11:17:52Z znek $
 
-#include <SoObjects/Appointments/SxAppointmentFolder.h>
+#include <ZSAppointments/SxAppointmentFolder.h>
 #include "SxEvoAptQueryInfo.h"
 #include "common.h"
 #include <ZSBackend/SxAptManager.h>

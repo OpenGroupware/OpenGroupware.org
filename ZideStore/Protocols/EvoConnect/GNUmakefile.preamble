@@ -6,10 +6,14 @@ OGoROOT=../../..
 ADDITIONAL_INCLUDE_DIRS += -I. -I.. -I../..
 
 ADDITIONAL_INCLUDE_DIRS += \
-	-I$(OGoROOT)/Logic/LSFoundation/
+	-I$(OGoROOT)/Logic/LSFoundation/	\
+	-I../../SoObjects
 
 
 ADDITIONAL_LIB_DIRS += \
+	-L../../SoObjects/ZSAppointments/$(GNUSTEP_OBJ_DIR)	\
+	-L../../SoObjects/ZSContacts/$(GNUSTEP_OBJ_DIR)		\
+	\
 	-L../../ZSFrontend/$(GNUSTEP_OBJ_DIR) \
 	-L../../ZSBackend/$(GNUSTEP_OBJ_DIR)
 

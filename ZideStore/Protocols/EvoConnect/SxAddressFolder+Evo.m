@@ -1,6 +1,6 @@
 // $Id: SxAddressFolder+Evo.m 1 2004-08-20 11:17:52Z znek $
 
-#include <SoObjects/Contacts/SxAddressFolder.h>
+#include <ZSContacts/SxAddressFolder.h>
 #include "SxEvoContactQueryInfo.h"
 #include <ZSFrontend/SxMapEnumerator.h>
 #include "common.h"
