@@ -243,6 +243,8 @@ static NSString *OGoDateTimeTZFormat     = nil;
     id tmp;
 
     tmp = [[self->lso commandContext] valueForKey:LSUserDefaultsKey];
+    //###ADDED BY AO ###
+    NSLog(@"OGOSession.m tmp :%@",tmp);
     ASSIGN(self->userDefaults, tmp);
   }
   // add SkyLanguages
@@ -297,6 +299,11 @@ static NSString *OGoDateTimeTZFormat     = nil;
   [OGoHelpManager sharedHelpManager];
   
   if ((self = [super init])) {
+
+    /* ### TD ### */
+    self->activeAccountInSchedulerViews = nil;
+    /* ### TD ### */
+
     /* setup pasteboard mapping */
 
     self->name2pb =
@@ -350,6 +357,10 @@ static NSString *OGoDateTimeTZFormat     = nil;
   [self->choosenFavorite    release];
   [self->userDefaults       release];
   [self->dockedProjectInfos release];
+  // ######## TD ###########
+  [self->activeAccountInSchedulerViews release];
+  // ######## TD ###########
+
   [super dealloc];
 }
 
@@ -444,6 +455,8 @@ static NSString *OGoDateTimeTZFormat     = nil;
             [[self navigation] enterPage:result];
       }
     }
+    //###ADDED BY AO###
+    NSLog(@"###OGoSession.m result : %@",result);
     return result;
   }
 }

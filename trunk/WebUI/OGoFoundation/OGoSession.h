@@ -44,6 +44,9 @@
 @private
   OGoContextSession    *lso;
   id                   activeLogin; // EO of login-account
+  // ######## TD ###########
+  id 			activeAccountInSchedulerViews;
+  // ######## TD ###########
   
   NSMutableDictionary  *componentsConfig;
   OGoNavigation        *navigation;
@@ -107,6 +110,11 @@
 
 - (void)setPrimaryLanguage:(NSString *)_language;
 - (NSString *)primaryLanguage;
+
+/* ### TD ####*/
+- (id)getActiveAccountInSchedulerViews;
+- (void)setActiveAccountInSchedulerViews:(id)anAccount;
+/* ### TD ####*/
 
 @end
 
