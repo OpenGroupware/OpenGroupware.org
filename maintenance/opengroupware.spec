@@ -1,4 +1,4 @@
-Summary:       OpenGroupware.
+Summary:       A free and open groupware suite.
 Name:          ogo
 Version:       %{ogo_version}
 Release:       %{ogo_release}.%{ogo_buildcount}%{dist_suffix}
@@ -16,432 +16,467 @@ BuildPreReq:   ogo-gnustep_make
 #UseSOPEspec:  sope-4.4beta.1-voyager.spec
 
 %description
-OGo.
+OpenGroupware.org aims at being an open source groupware server which
+integrates with the leading open source office suite products and all
+the leading groupware clients running across all major platforms, and
+to provide access to all functionality and data through open XML-based
+interfaces and APIs. Additionally it has a web User Interface for
+platform independent usage. OpenGroupware.org is built on top of the
+SOPE application server.
 
 #########################################
 %package dbsetup
-Summary:  docapi
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make
+Summary:      This package...
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description dbsetup
 database setup.
 #########################################
 %package docapi
-Summary:  docapi
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      OpenGroupware.org document API
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description docapi
-docapi package.
+The Document API is a set of Objective-C libraries wrapping the SOPE
+logic in a "document" API.
 
 %package docapi-fs-project
-Summary:  docapi fs project
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Filesystem storage for OpenGroupware.org projects
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description docapi-fs-project
-docapi filesystem project package.
+Files associated to OpenGroupware.org projects can be stored through different
+storage backends. This package contains the filesystem storage backend, which
+stores all files on the hosts filesystem.
 
 %package docapi-fs-project-devel
-Summary:  docapi fs project devel
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Development files for OpenGroupware.org's filesystem storage
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description docapi-fs-project-devel
-docapi filesystem project devel package.
+This package contains the development files for the ogo-docapi-fs-project package.
 
 %package docapi-db-project
-Summary:  docapi db project
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Database storage for OpenGroupware.org projects
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description docapi-db-project
-docapi database project package.
+Files associated to OpenGroupware.org projects can be stored through different
+storage backends. This package contains the database storage backend.
 
 %package docapi-db-project-devel
-Summary:  docapi db project devel
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Development files for OpenGroupware.org's database storage
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description docapi-db-project-devel
-docapi database project devel package.
+This package contains the development files for the ogo-docapi-db-project package.
 
 %package docapi-devel
-Summary:  docapi-devel
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Development files for the ogo-docapi package.
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description docapi-devel
-docapi devel package.
+This package contains the development files for the ogo-docapi package.
 #########################################
 %package logic
-Summary:  logic
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      OpenGroupware.org application logic
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description logic
-logic package.
+This package contains OpenGroupware.org's application logic.
 ##
 %package logic-tools
-Summary:  logic-tools
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      OpenGroupware.org application logic tools
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description logic-tools
-logic tools package.
+This package contains OpenGroupware.org application logic tools
+
+ * load-LSModel
+
 ##
 %package logic-devel
-Summary:  logic-devel
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Development files for the OpenGroupware.org application logic
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description logic-devel
-logic devel package.
+This package contains the development files for the OpenGroupware.org
+application logic.
 #########################################
 %package pda
-Summary:  pda
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      PDA syncing framework for OpenGroupware.org
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description pda
-pda package.
+This package contains the PDA syncing framework for OpenGroupware.org.
 
 %package pda-devel
-Summary:  pda devel
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Development files for the PDA syncing framework of OpenGroupware.org
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description pda-devel
-pda devel package.
+This package contains the development files for the PDA syncing
+framework of OpenGroupware.org
 #########################################
 %package theme-default
-Summary:  theme default
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Default theme for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description theme-default
-theme default package.
+This package contains the default theme for OpenGroupware.org's web UI.
 ##
 %package theme-ooo
-Summary:  theme ooo
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      OOo alike theme for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description theme-ooo
-theme ooo package.
+This package contains an OOo alike theme for OpenGroupware.org's web UI.
 ##
 %package theme-blue
-Summary:  theme blue
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Blue theme for OpenGroupware.org's web UI.
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description theme-blue
-theme blue package.
+This package contains a blue theme for OpenGroupware.org's web UI.
 ##
 %package theme-kde
-Summary:  theme kde
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      KDE alike theme for OpenGroupware.org's web UI.
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description theme-kde
-theme kde package.
+This package contains a KDE alike theme for OpenGroupware.org's web UI.
 ##
 %package theme-orange
-Summary:  theme orange
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Orange theme for OpenGroupware.org's web UI.
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description theme-orange
-theme orange package.
+This package contains an orange theme for OpenGroupware.org's web UI.
 #########################################
 %package tools
-Summary:  tools
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Various commandline Tools for OpenGroupware.org
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description tools
-tools package.
+Various tools for OpenGroupware.org.
+You might especially consider installing this package
+if you want to use certain functionalities provided
+with the ogo-webui-mailer package:
+
+  * sky_send_bulk_messages - required for mailing lists in the
+                             OpenGroupware.org webmailer.
+  * sky_install_sieve - required for installing Sieve filters
+                        from within the OpenGroupware.org webmailer.
+
 #########################################
 %package webui-app
-Summary:  webui app
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Web UI application of OpenGroupware.org
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description webui-app
-webui app package.
+This package contains the executable and resources of
+OpenGroupware.org's web application server.
 #
 %package webui-core
-Summary:  webui core
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Core elements for OpenGroupware.org's Web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description webui-core
-webui core package.
+This package contains UI elements that are used in various components
+of OpenGroupware.org's web frontend.
 ##
 %package webui-core-devel
-Summary:  webui core devel
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Development files for the core elements of OpenGroupware.org's Web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description webui-core-devel
-webui core devel package.
+This package contains the development files for the core elements
+of OpenGroupware.org's Web UI
 ##
 %package webui-calendar
-Summary:  webui calendar
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Calendar component of OpenGroupware.org's Web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description webui-calendar
-webui calendar package.
+The calendar component provides personal and shared calendars for
+OpenGroupware.org's web UI. It allows to create and manage appointments
+for individuals and groups and can also detect collisions when creating
+new appointments.
 ##
 %package webui-contact
-Summary:  webui contact
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Contact component of OpenGroupware.org's Web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description webui-contact
-webui contact package.
+The contact component lets users add and manage contacts of individuals
+or companies. Import and export of vcf files is supported, as well as
+importing contacts from a csv file.
 ##
 %package webui-mailer
-Summary:  webui mailer
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Mailer component of OpenGroupware.org's Web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-mailer
-webui mailer package.
+This package contains a webmail application for OpenGroupware.org's
+web UI. It needs an IMAP server for the mail feed and and SMTP server
+to enable the users to send mail.
 ##
 %package webui-mailer-devel
-Summary:  webui mailer devel
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Development files for the mailer component of OpenGroupware.org's Web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-mailer-devel
-webui mailer devel package.
+This package contains the development files for the mailer component
+of OpenGroupware.org's Web UI
 ##
 %package webui-news
-Summary:  webui news
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      News component of OpenGroupware.org's Web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-news
-webui news package.
+The news component shows recent appointments and tasks for each user.
+Additionally it supports the creation and display of simple news items.
 ##
 %package webui-task
-Summary:  webui task
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Task component of OpenGroupware.org's Web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-task
-webui task package.
+The task component enables users to assign and manage tasks
+related to projects or standalone.
 ##
 %package webui-project
-Summary:  webui project
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Project component of OpenGroupware.org's Web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-project
-webui project package.
+The project component adds project management capabilities to
+OpenGroupware.org's web UI. It allows to assign and track a
+project's status, add documents and links and interworks nicely
+with the task component to assign specific tasks within a project.
 ##
 %package webui-resource-basque
-Summary:  webui resource basque
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Basque translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description webui-resource-basque
-webui resource basque package.
+This package contains the Basque translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-dk
-Summary:  webui resource dk
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Danish translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-resource-dk
-webui resource dk package.
+This package contains the Danish translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-nl
-Summary:  webui resource nl
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Dutch translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-resource-nl
-webui resource nl package.
+This package contains the Dutch translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-en
-Summary:  webui resource en
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      English translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-resource-en
-webui resource en package.
+This package contains the English translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-fr
-Summary:  webui resource fr
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      French translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description webui-resource-fr
-webui resource fr package.
+This package contains the French translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-de
-Summary:  webui resource de
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      German translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-resource-de
-webui resource de package.
+This package contains the German translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-hu
-Summary:  webui resource hu
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Hungarian translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-resource-hu
-webui resource hu package.
+This package contains the Hungarian translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-it
-Summary:  webui resource it
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Italian translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-resource-it
-webui resource it package.
+This package contains the Italian translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-jp
-Summary:  webui resource jp
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Japanese translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-resource-jp
-webui resource jp package.
+This package contains the Japanese translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-no
-Summary:  webui resource no
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Norwegian translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-resource-no
-webui resource no package.
+This package contains the Norwegian translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-pl
-Summary:  webui resource pl
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Polish translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-resource-pl
-webui resource pl package.
+This package contains the Polish translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-pt
-Summary:  webui resource pt
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Portuguese translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make 
 AutoReqProv:  off
 
 %description webui-resource-pt
-webui resource pt package.
+This package contains the Portuguese translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-es
-Summary:  webui resource es
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Spanish translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-resource-es
-webui resource es package.
+This package contains the Spanish translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-sk
-Summary:  webui resource sk
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Slovak translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-resource-sk
-webui resource sk package.
-##
-#%package webui-resource-se
-#Summary:  webui resource se
-#Group:  Development/Libraries
-##Requires:  ogo-gnustep_make 
-#AutoReqProv:  off
-#
-#%description webui-resource-se
-#webui resource se package.
+This package contains the Slovak translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-ptbr
-Summary:  webui resource ptbr
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Portuguese (Brazilian) translation for OpenGroupware.org's web UI
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description webui-resource-ptbr
-webui resource ptbr package.
+This package contains the Portuguese (Brazilian) translation for OpenGroupware.org's web UI.
 #########################################
 %package xmlrpcd
-Summary:  xmlrpcd
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      XMLRPC daemon for OpenGroupware.org
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description xmlrpcd
-xmlrpcd package.
+The XMLRPC daemon allows to execute groupware functions over the standardized
+XMLRPC API. This is especially useful within scripts or custom applications.
 #########################################
 %package zidestore
-Summary:  zidestore
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Shared libraries of the OpenGroupware.org zidestore server
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description zidestore
-zidestore package.
+The ZideStore Server provides WebDAV access to the OpenGroupware.org
+data. It can be used to connect native groupware clients with
+OpenGroupware.org. Currently supported are calendaring clients that use
+iCal subscriptions, an Ximian Evolution plugin is under development.
 
 %package zidestore-devel
-Summary:  zidestore devel
-Group:  Development/Libraries
-#Requires:  ogo-gnustep_make 
+Summary:      Development Files for the ZideStore server
+Group:        Development/Libraries
+#Requires:    ogo-gnustep_make
 AutoReqProv:  off
 
 %description zidestore-devel
-zidestore devel package.
-
+This package contains development files for the libraries of the ZideStore
+server.
 #########################################
 %prep
 rm -fr ${RPM_BUILD_ROOT}
