@@ -21,6 +21,16 @@
 
 #include <OGoFoundation/OGoContentPage.h>
 
+/*
+  SkyAptResourceGroupsList
+  
+  Bindings:
+    aptResourceGroups - NSArray of ??? - input parameter
+  
+  TODO: what does it display, where is it used?
+  TODO: apparently this is not used anywhere!
+*/
+
 @class NSArray, NSDictionary;
 
 @interface SkyAptResourceGroupsList : OGoContentPage
@@ -35,14 +45,9 @@
 }
 @end
 
-#include <OGoFoundation/LSWNotifications.h>
-#include <OGoFoundation/OGoFoundation.h>
 #include <LSFoundation/LSFoundation.h>
-#include <NGObjWeb/NGObjWeb.h>
 #include <NGMime/NGMimeType.h>
-#include <NGExtensions/NSCalendarDate+misc.h>
-#import <EOControl/EOControl.h>
-#import <Foundation/Foundation.h>
+#include "common.h"
 
 @interface NSObject(Gid)
 - (EOGlobalID *)globalID;
@@ -50,18 +55,16 @@
 
 @implementation SkyAptResourceGroupsList
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
   [self unregisterAsObserver];
-  RELEASE(self->attributes);
-  RELEASE(self->aptResourceGroups);
-  RELEASE(self->aptResourceGroup);
-  RELEASE(self->selectedAttribute);
+  [self->attributes        release];
+  [self->aptResourceGroups release];
+  [self->aptResourceGroup  release];
+  [self->selectedAttribute release];
   [super dealloc];
 }
-#endif
 
-//accessors  
+/* accessors */
 
 - (void)setStart:(unsigned)_startIndex {
   self->startIndex = _startIndex;
@@ -105,10 +108,12 @@
   return self->aptResourceGroup;
 }
 
-// actions
+/* actions */
 
 - (id)viewAptResourceGroup {
-  id p = [self pageWithName:@"SkyAptResourceGroupEditor"];
+  id p;
+
+  p = [self pageWithName:@"SkyAptResourceGroupEditor"];
   [p setObject:self->aptResourceGroup];
   return p;
 }
@@ -117,4 +122,4 @@
   return [self pageWithName:@"SkyAptResourceGroupEditor"];
 }
 
-@end
+@end /* SkyAptResourceGroupsList */

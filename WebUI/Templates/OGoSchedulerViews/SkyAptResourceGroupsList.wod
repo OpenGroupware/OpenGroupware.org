@@ -1,5 +1,6 @@
-// $Id: SkyAptResourceGroupsList.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
+// TODO: replace with WETableView
 AptResourceGroupList: LSWTableView {
   labels            = labels;
   title             = labels.aptResourceGroups;
@@ -19,7 +20,7 @@ AptResourceGroupList: LSWTableView {
                 sort     = YES;
         },
   );
-};
+}
 
 AptResourceGroupButtons: SkyButtonRow {
   onNew      = newAptResourceGroup;

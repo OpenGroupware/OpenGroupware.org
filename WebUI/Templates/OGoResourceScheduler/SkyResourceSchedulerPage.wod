@@ -1,4 +1,4 @@
-// $Id: SkyResourceSchedulerPage.wod,v 1.2 2004/08/09 23:17:31 helge Exp $
+// bind template to controller
 
 Frame:  LSWSkyrixFrame {}
 
@@ -37,23 +37,13 @@ DayHChart: SkyInlineDayHChart {
   day        = day;
   dayDirectActionName = "viewDayResources";
 }
-DayOverviewLink: WOHyperlink {
-  action = switchToDayOverview;
-}
-DayHChartLink: WOHyperlink {
-  action = switchToDayHChart;
-}
-DayVChartLink: WOHyperlink {
-  action = switchToDayVChart;
-}
-DayHChartActive: WOConditional {
-  condition = dayViewKey;
-  value     = "hchart";
-}
-DayVChartActive: WOConditional {
-  condition = dayViewKey;
-  value     = "vchart";
-}
+
+DayOverviewLink: WOHyperlink { action = switchToDayOverview; }
+DayHChartLink:   WOHyperlink { action = switchToDayHChart;   }
+DayVChartLink:   WOHyperlink { action = switchToDayVChart;   }
+
+DayHChartActive: WOConditional { condition = dayViewKey; value = "hchart"; }
+DayVChartActive: WOConditional { condition = dayViewKey; value = "vchart"; }
 DayOverviewActive: WOConditional {
   condition = dayViewKey;
   value     = "overview";

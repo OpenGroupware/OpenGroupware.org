@@ -21,6 +21,17 @@
 
 #include <OGoFoundation/OGoContentPage.h>
 
+/*
+  SkyAptResourceList
+  
+  Bindings:
+    aptResources - NSArray of ??? - input parameter
+  
+  Currently only called by LSWStaff (the admin app).
+  
+  TODO: what does it display?
+*/
+
 @class NSArray, NSDictionary;
 
 @interface SkyAptResourceList : OGoContentPage
@@ -35,14 +46,9 @@
 }
 @end
 
-#include <OGoFoundation/LSWNotifications.h>
-#include <OGoFoundation/OGoFoundation.h>
 #include <LSFoundation/LSFoundation.h>
-#include <NGObjWeb/NGObjWeb.h>
 #include <NGMime/NGMimeType.h>
-#include <NGExtensions/NSCalendarDate+misc.h>
-#import <EOControl/EOControl.h>
-#import <Foundation/Foundation.h>
+#include "common.h"
 
 @interface NSObject(Gid)
 - (EOGlobalID *)globalID;

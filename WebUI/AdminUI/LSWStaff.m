@@ -21,6 +21,13 @@
 
 #include <OGoFoundation/LSWContentPage.h>
 
+/*
+  LSWStaff
+  
+  This is the main page containing the admin application (just some tabs which
+  lead to other components).
+*/
+
 @class NSString, NSArray, NSDictionary;
 
 @interface LSWStaff : LSWContentPage
@@ -229,21 +236,19 @@ static NGMimeType *eoTeamType           = nil;
 /* accessors */
 
 - (int)blockSize {
-  id sn = [self session]; 
+  OGoSession *sn = (id)[self session]; 
   return [[[sn userDefaults] objectForKey:@"usermanager_blocksize"] intValue];
 }
 
 - (void)setTabKey:(NSString *)_key {
-  id tmp = self->tabKey;
-  self->tabKey = [_key retain];
-  [tmp release];
+  ASSIGN(self->tabKey, _key);
 }
 - (NSString *)tabKey {
   return self->tabKey;
 }
 
 - (void)setSearchString:(NSString *)_searchString {
-  ASSIGN(self->searchString, _searchString);
+  ASSIGNCOPY(self->searchString, _searchString);
 }
 - (NSString *)searchString {
   return self->searchString;
