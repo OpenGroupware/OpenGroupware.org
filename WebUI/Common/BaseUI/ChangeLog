@@ -1,3 +1,8 @@
+2004-09-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Main.m: be a bit more tolerant when being invoked in an incorrect
+	  context (v5.1.93)
+
 2004-09-22  Helge Hess  <helge.hess@skyrix.com>
 
 	* added Main and OGoLogoutPage components from main application

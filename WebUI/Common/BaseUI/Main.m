@@ -210,7 +210,15 @@ static BOOL LSUseBasicAuth           = NO;
 }
 
 - (BOOL)isSkyrixUp {
-  return [[[self application] lsoServer] canConnectToDatabase];
+  id app;
+  
+  app = [self application];
+  if (![app respondsToSelector:@selector(lsoServer)]) {
+    [self logWithFormat:
+	    @"ERROR: application object doesn't match BaseUI Main component!"];
+    return NO;
+  }
+  return [[app lsoServer] canConnectToDatabase];
 }
 - (BOOL)hasLicense { // TODO: remove
   return YES;

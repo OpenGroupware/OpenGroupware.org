@@ -1,6 +1,6 @@
 # version info
 
-SUBMINOR_VERSION:=92
+SUBMINOR_VERSION:=93
 
 # Requirements:
 #   v5.0.40 => NGObjWeb v4.2.143
