@@ -73,3 +73,6 @@ if($host_i_runon eq "fedora-core3") {
   print "building yum-repo for $host_i_runon\n";
   system("sh $ENV{HOME}/prepare_yum_fcore3.sh");
 }
+
+#polish buildenv after we're done...
+system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
