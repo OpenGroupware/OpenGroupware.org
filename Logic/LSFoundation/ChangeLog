@@ -1,3 +1,9 @@
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSModuleManager.m: changed behaviour to +initialize all classes on
+	  bundle loading. This ensures all initialization is done prior the
+	  app runs (slows down startup time!) (v5.1.95)
+
 2005-03-14  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyPropertyValues.m: fixed a bug when saving short property strings

@@ -1,5 +1,3 @@
-# $Id$
-
 LSAddress
 =========
 
@@ -14,9 +12,7 @@ Class Hierachy
     <LSBaseCommand>
       LSCheckLoginCommand
       LSCheckPermissionCompanyCommand
-      LSGetBookmarkCommand
       LSGetUserDefaultsCommand
-      LSNewBookmarkCommand
       LSRegisterUserDefaultsCommand
       LSUserDefaultCommand
       LSWriteUserDefaultsCommand

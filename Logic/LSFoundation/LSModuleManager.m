@@ -31,6 +31,13 @@
 - (void)registerDefaultsOfBundle:(NSBundle *)_bundle;
 @end
 
+@interface NSObject(OGoModuleManagerLoad)
+
++ (void)lsModuleManager:(LSModuleManager *)_manager 
+  didLoadClassFromBundle:(NSBundle *)_bundle;
+
+@end /* NSObject(OGoModuleManagerLoad) */
+
 @implementation LSModuleManager
 
 + (int)version {
@@ -39,17 +46,19 @@
 
 - (id)initForBundle:(NSBundle *)_bundle bundleManager:(NGBundleManager *)_mng {
   if ((self = [super init])) {
+    NSString *s;
+    
 #if 0
-    NSLog(@"initializing command BUNDLE %@.",
-          [[_bundle bundlePath] lastPathComponent]);
+    [self debugWithFormat:@"initializing command BUNDLE %@.",
+          [[_bundle bundlePath] lastPathComponent]];
 #endif
+    
     [self registerDefaults];
-
-    self->moduleName =
-      [[[[_bundle bundlePath] lastPathComponent]
-                  stringByDeletingPathExtension]
-                  copyWithZone:[self zone]];
-    self->moduleBundle = RETAIN(_bundle);
+    
+    s = [_bundle bundlePath];
+    s = [[s lastPathComponent]stringByDeletingPathExtension];
+    self->moduleName   = [s copy];
+    self->moduleBundle = [_bundle retain];
     
     [self registerDefaultsOfBundle:_bundle];
   }  
@@ -58,8 +67,8 @@
 
 - (id)initWithModule:(NSString *)_name fromBundle:(NSBundle *)_bundle {
   if ((self = [super init])) {
-    self->moduleName   = [_name copyWithZone:[self zone]];
-    self->moduleBundle = RETAIN(_bundle);
+    self->moduleName   = [_name copy];
+    self->moduleBundle = [_bundle retain];
 
     [self registerDefaultsOfBundle:_bundle];
   }
@@ -163,4 +172,54 @@
   [(id)[self class] performSelector:_cmd];
 }
 
+/* postprocessing */
+
+- (void)registerClassesOfBundle:(NSBundle *)_bundle {
+  /* ensure that +initialize is called right after loading the plugin */
+  NSEnumerator *classes;
+  id classDict;
+  
+  classes = [[_bundle providedResourcesOfType:@"classes"] objectEnumerator];
+  while ((classDict = [classes nextObject])) {
+    NSString *clazzName;
+    Class    clazz;
+    
+    if ((clazzName = [classDict objectForKey:@"name"]) == nil) {
+      [self logWithFormat:@"ERROR: got invalid 'classes' dict: %@", classDict];
+      continue;
+    }
+    
+    if ((clazz = NSClassFromString(clazzName)) == Nil) {
+      [self logWithFormat:
+	      @"WARNING: did not find class as registered in bundle: '%@'\n  "
+	      @"%@", clazzName, _bundle];
+      continue;
+    }
+    
+    [clazz lsModuleManager:self didLoadClassFromBundle:_bundle];
+  }
+}
+
+/* Bundle Load Notification */
+
+- (void)bundleManager:(NGBundleManager *)_manager
+  didLoadBundle:(NSBundle *)_bundle
+{
+  [self registerClassesOfBundle:_bundle];
+  
+#if DEBUG && 0
+  NSLog(@"%s: loaded bundle: %@", __PRETTY_FUNCTION__, [_bundle bundleName]);
+#endif
+}
+
 @end /* LSModuleManager */
+
+@implementation NSObject(LSModuleManagerLoad)
+
++ (void)lsModuleManager:(LSModuleManager *)_manager 
+  didLoadClassFromBundle:(NSBundle *)_bundle
+{
+  // do nothing, +initialize will be called by the runtime
+}
+
+@end /* NSObject(LSModuleManagerLoad) */

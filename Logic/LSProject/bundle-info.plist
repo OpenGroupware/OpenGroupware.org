@@ -75,7 +75,6 @@
         { name = LSSetNoteCommand;                           },
         { name = LSSetPersonsForProjectCommand;              },
         { name = LSSetProjectCommand;                        },
-        { name = LSSetResourceAssignmentCommand;             },
     );
   };
 }

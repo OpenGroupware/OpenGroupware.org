@@ -1,3 +1,8 @@
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* bundle-info.plist: removed LSSetResourceCommand, this is provided by
+	  LSResource.cmd (v5.1.37)
+
 2005-02-24  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSDeleteProjectCommand.m: properly delete project properties if a
