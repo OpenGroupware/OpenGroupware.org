@@ -1,3 +1,7 @@
+2004-11-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed some issue with RelatedLinksUI
+
 2004-11-23  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoProject/SkyProject4Desktop.html|.wod: use repetion to generate
