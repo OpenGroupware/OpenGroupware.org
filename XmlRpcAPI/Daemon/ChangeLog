@@ -1,3 +1,7 @@
+2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added FHS installation of xmlrpcd (v5.1.40)
+
 2004-09-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Application.m: override WOHttpTransactionUseSimpleParser default and

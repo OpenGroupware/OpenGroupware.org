@@ -24,3 +24,4 @@ xmlrpcd_SUBPROJECTS = \
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
+-include fhs.make

@@ -1,3 +1,7 @@
+2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added FHS installation support for tools
+
 2004-08-31  Helge Hess  <helge.hess@skyrix.com>
 
 	* GNUmakefile.preamble: added library lookup pathes for FHS

@@ -51,3 +51,4 @@ sky_send_bulk_messages_OBJC_FILES = sky_send_bulk_messages.m
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
+-include fhs.make
