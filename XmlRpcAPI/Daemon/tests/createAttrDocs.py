@@ -5,9 +5,10 @@ import xmlrpclib, time, sys, getpass, time
 HOST="localhost"
 LOGIN="helge"
 PROJECTCODE="DBTEST"
+#PROJECTCODE="USERFAV_10280"
 EXT="jadis"
 DIR="/jadis"
-COUNT=10
+COUNT=5
 
 p = "Enter password for user %s: " % ( LOGIN,)
 PWD = getpass.getpass(p)
@@ -27,6 +28,8 @@ except TypeError, e:
 print "Server:", server
 
 base=int(time.time() - 1103488050)
+#commentbase=base
+commentbase="jadis-"
 
 #print server.project.ls(PROJECTCODE)
 
@@ -48,9 +51,9 @@ print "Creating %i files in project %s, folder %s ..." % \
 
 for i in range(1, COUNT + 1):
     fn = "test-%s-%i.%s" % ( base, i, EXT )
-    attrs = { 'commentid': base + i,
+    attrs = { 'commentid': commentbase + str(i),
               'created':   '2004-10-10',
-              'previewid': base + i,
+              'previewid': str(base) + "-" + str(i),
               'subject':   'autocreate title' + fn,
               'label':     'auto label' }
     doc = server.project.newDocument(PROJECTCODE, DIR+"/"+fn,

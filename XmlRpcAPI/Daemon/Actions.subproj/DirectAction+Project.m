@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <EOControl/EOControl.h>
 #include <OGoProject/SkyProject.h>
@@ -630,7 +629,10 @@
 - (NSNumber *)project_existsAction:(id)_pid:(NSArray *)_args {
   SkyProjectFileManager *fileManager;
   unsigned i, count;
-
+  
+  if ([_args isKindOfClass:[NSString class]])
+    _args = [NSArray arrayWithObject:_args];
+  
   if ((count = [_args count]) == 0)
     return [NSNumber numberWithBool:YES];
 
@@ -652,6 +654,9 @@
   SkyProjectFileManager *fileManager;
   unsigned i, count;
 
+  if ([_args isKindOfClass:[NSString class]])
+    _args = [NSArray arrayWithObject:_args];
+  
   if ((count = [_args count]) == 0)
     return [NSNumber numberWithBool:YES];
 

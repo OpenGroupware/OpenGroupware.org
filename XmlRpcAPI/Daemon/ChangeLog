@@ -1,3 +1,8 @@
+2004-12-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Project.m: project.exists and
+	  project.isdir now accept non-array path parameter (v5.1.50)
+
 2004-09-29  Helge Hess  <helge.hess@skyrix.com>
 
 	* fhs.make: install daemon into $FHS_ROOT/sbin (v5.1.49)
