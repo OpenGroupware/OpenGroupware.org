@@ -15,3 +15,8 @@
 	* added some missing keys to OGoScheduler and OGoSchedulerViews found in German files
 	* fixed typo in LSWScheduler
 
+2004-10-11  Jorrit Jorritsma <jjorritsma@aboveit.nl>
+
+	* fixed case of lots of strings
+	* unified lots of entries
+	* fixed some untranslated entries
