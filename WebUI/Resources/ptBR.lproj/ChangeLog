@@ -1,3 +1,10 @@
+
+2005-02-12 Olivier Hallot <olivier@ig.com.br>
+
+	* Minor UTF-8 translation correction in OGoScheduler.strings 
+	* Added string "cancelButtonLabel" in OGoProject.strings need by OOo
+	theme.
+
 2005-01-02 Olivier Hallot <olivier@ig.com.br>
 
 	* Minor translation correction in OGoScheduler.strings 
