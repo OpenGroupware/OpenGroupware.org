@@ -1,4 +1,4 @@
-// $Id: SkyProject4DocumentViewer.wod,v 1.3 2004/04/20 12:19:49 helge Exp $
+// $Id: SkyProject4DocumentViewer.wod 2 2004-08-20 11:37:44Z znek $
 
 Frame: LSWSkyrixFrame {}
 
@@ -76,31 +76,11 @@ Buttons: SkyButtonRow {
   pubpreview = labels.pubPreview;
 }
 
-ShowOnlyForm: WOConditional {
-  condition = showOnlyForm;
-}
-ShowNotOnlyForm: WOConditional {
-  condition = showOnlyForm;
-  negate    = YES;
-}
-HasForm: WOConditional {
-  condition = hasForm;
-}
 UseStdViewer: WOConditional {
   condition = YES;
 }
 IsDesigner: WOConditional {
   condition = isAccountDesigner;
-}
-
-Form: WOComponentReference { // the form which replaces the std viewer
-  component   = formComponent;
-  
-  /* pass-through vars */
-  document     = document;
-  formDocument = formDocument;
-  fileManager  = fileManager;
-  preview      = NO;
 }
 
 /* standard viewer */
@@ -132,12 +112,6 @@ FileName: WOString {
 
 TabView: SkyTabView {
   selection = session.userDefaults.skyp4_documentviewer_tab;
-}
-
-FormTab: SkySimpleTabItem {
-  key      = "form";
-  label    = labels.form;
-  //action   = reloadForm;
 }
 
 VersionsTab: SkySimpleTabItem {
@@ -225,52 +199,6 @@ PropButtons: SkyButtonRow {
   onEdit   = editProperties;
   edit     = labels.edit;
   hasEdit  = hasEditAttrs;
-}
-
-/* form preview tab */
-
-IsForm: WOConditional {
-  condition = isSkyrixForm;
-}
-IsNotForm: WOConditional {
-  condition = isSkyrixForm;
-  negate    = YES;
-}
-
-PreviewTab: SkySimpleTabItem {
-  key       = "form";
-  action    = formTabClicked;
-  label     = labels.form;
-}
-
-PreviewTabTitle: LSWViewerTitle {
-  title    = labels.formPreview;
-  gentable = YES;
-}
-
-FormPreview: WOComponentReference { // form preview in the std viewer
-  component = previewFormComponent;
-  
-  /* pass-through vars */
-  preview      = YES;
-  formDocument = document;
-  fileManager  = fileManager;
-}
-
-HasLog: WOConditional {
-  condition = hasJavaScriptLog;
-}
-Log: WOString {
-  value    = session.javaScriptLog;
-  insertBR = YES;
-}
-ClearLog: WOHyperlink {
-  action   = clearJavaScriptLog;
-  string   = labels.clear;
-}
-PreviewLogTitle: LSWViewerTitle {
-  title    = labels.javaScriptLog;
-  gentable = YES;
 }
 
 /* access */
@@ -387,15 +315,9 @@ PubSourceTab: SkySimpleTabItem {
   icon     = "source";
 }
 
-PubShowPreview: WOConditional {
-  condition = showPubPreview;
-}
-PubShowSource: WOConditional {
-  condition = showPubSource;
-}
-PubShowLinks: WOConditional {
-  condition = showPubLinks;
-}
+PubShowPreview: WOConditional { condition = showPubPreview; }
+PubShowSource:  WOConditional { condition = showPubSource;  }
+PubShowLinks:   WOConditional { condition = showPubLinks;   }
 
 PubPartPreview: SkyPubPartPreview {
   fileManager = fileManager;
@@ -415,37 +337,7 @@ IsNotAVersion: WOConditional {
   negate    = YES;
 }
 
-/* Form customizing stuff */
-
-HasDocContentForm: WOConditional {
-  condition = hasDocContentForm;
-}
-DocContentForm: WOComponentReference {
-  component  = docContentForm;
-  preview    = NO;
-  document   = document;
-}
-
-HasDocAttributesForm: WOConditional {
-  condition = hasDocAttributesForm;
-}
-DocAttributesForm: WOComponentReference {
-  component  = docAttributesForm;
-  preview    = NO;
-  document   = document;
-}
-
-HasDocVersionsForm: WOConditional {
-  condition = hasDocVersionsForm;
-}
-DocVersionsForm: WOComponentReference {
-  component  = docVersionsForm;
-  preview    = NO;
-  document   = document;
-}
-
-// download log
-
+/* download log */
 
 ShowDownloadLogsCond: WOConditional {
   condition = session.userDefaults.skyp4_log_documentdownload;
@@ -456,10 +348,6 @@ DownloadLogTab: SkySimpleTabItem {
 }
 DownloadLogList: SkyP4DocumentDownloadLogList {
   document = document;
-}
-
-IsEnterpriseEdition: WOConditional {
-  condition = application.isEnterpriseEdition.boolValue;
 }
 
 NoReadAccessWarning : SkyRichString {

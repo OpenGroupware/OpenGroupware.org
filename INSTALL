@@ -90,3 +90,6 @@ TODO: write configuration guide for OGo 1.0.
 
 - defaults
   - LSConnectionDictionary
+  - NGBundlePath
+    Defaults write NSGlobalDomain NGBundlePath \
+      '"$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/Commands:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/DataSources:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/WebUI:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/"'

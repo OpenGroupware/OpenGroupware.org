@@ -1,4 +1,4 @@
-// $Id: SkyListView.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+// template bindings
 
 RowRep: WORepetition {
   list = rowList;
@@ -50,6 +50,7 @@ IsItalicStyle: WOConditional {
   condition = isItalicStyle;
 }
 
+// TODO: use CSS
 Font: WOGenericContainer {
   elementName   = "font";
   color         = config.font_color;
@@ -66,13 +67,12 @@ UsePopUpCond: WOConditional {
 }
 
 CheckerPopUp: WOPopUpButton {
-  list            = popUpList;
-  item            = popUpItem;
-  string          = popUpItemLabel;
-  selection       = popUpSelection;
-  singleSelection = YES;
-  nilString       = popUpNilString;
-};
+  list      = popUpList;
+  item      = popUpItem;
+  string    = popUpItemLabel;
+  selection = popUpSelection;
+  nilString = popUpNilString;
+}
 
 UseCheckBoxesCond: WOConditional {
   condition = useCheckBox;
@@ -160,9 +160,9 @@ TemplateValue: WOString {
 
 HasAttributesCond : WOConditional {
   condition = hasAttributes;
-};
+}
 
 HasAttributesCondElse : WOConditional {
   condition = hasAttributes;
   negate    = YES;
-};
+}

@@ -1,4 +1,4 @@
-// $Id: SkyObjectPropertyEditor.wod,v 1.5 2003/12/22 17:09:12 helge Exp $
+// $Id: SkyObjectPropertyEditor.wod 2 2004-08-20 11:37:44Z znek $
 
 Frame: LSWSkyrixFrame {}
 
@@ -68,9 +68,8 @@ NewName: WOTextField {
   value = newAttributeName;
 }
 NewType: WOPopUpButton {
-  list            = ( "string", "number", "date", "url" );
-  selection       = newAttributeType;
-  singleSelection = YES;
+  list      = ( "string", "number", "date", "url" );
+  selection = newAttributeType;
 }
 NewValue: WOTextField {
   value = newAttributeValue;

@@ -1,3 +1,7 @@
+2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+
+	* removed use of deprecated singleSelection binding (v5.0.88)
+
 2004-08-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyDock.wo: fixed an XHTML incompatibility in blue and orange theme

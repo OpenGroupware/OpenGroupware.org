@@ -1,12 +1,5 @@
 <#Frame>
-  <!-- $Id: SkyProject4DocumentViewer.html,v 1.4 2004/07/09 11:21:57 helge Exp $ -->
   <#Window>
-    <#ShowOnlyForm>
-      <#IsNotForm><#Form       /></#IsNotForm>
-      <#IsForm   ><#FormPreview/></#IsForm>
-    </#ShowOnlyForm>
-    
-    <#ShowNotOnlyForm>
       <table width="100%" border="0" cellpadding="4" cellspacing="0">
         <#MainButtonRow>
           <td colspan="2">
@@ -33,10 +26,6 @@
       <#TabView>
         <#IsNotAVersion>
           <#AttributesTab>
-            <#HasDocAttributesForm>
-              <#DocAttributesForm/>
-            </#HasDocAttributesForm>
-            
             <#StandardAttrsTitle><#AttrsButtons/></#StandardAttrsTitle>
             
             <table border="0" cellspacing="0" cellpadding="1" width="100%">
@@ -53,18 +42,7 @@
           </#AttributesTab>
         </#IsNotAVersion>
         
-        <#HasForm>
-          <#FormTab>
-            <#IsDesigner>
-              <small><i>Current Account is FormEditor</i><hr size="1" /></small>
-            </#IsDesigner>
-            <#Form/>
-          </#FormTab>
-        </#HasForm> 
-
         <#ContentsTab>
-          <#HasDocContentForm><#DocContentForm/></#HasDocContentForm>
-            
           <#ContentsTabTitle/>
             
           <table border="0" cellspacing="0" cellpadding="1" width="100%">
@@ -89,18 +67,6 @@
           </#HasReadAccessElse>
         </#ContentsTab>
           
-        <#IsForm>
-          <#PreviewTab>
-            <#PreviewTabTitle/>
-            <#FormPreview/>
-            
-            <#HasLog>
-              <br />
-              <#PreviewLogTitle><#ClearLog/></#PreviewLogTitle>
-              <small><#Log/></small>
-            </#HasLog>
-          </#PreviewTab>
-        </#IsForm>
         
         <#HasPublisher>
           <#PubShowPreview>
@@ -120,7 +86,6 @@
           <#IsNotAVersion>
 
             <#VersionsTab>
-              <#HasDocVersionsForm><#DocVersionsForm/></#HasDocVersionsForm>
               <#VersionList/>
             </#VersionsTab>
             
@@ -135,6 +100,5 @@
           </#IsNotAVersion>
         </#SupportsAccess>
       </#TabView>
-    </#ShowNotOnlyForm>
   </#Window>
 </#Frame>

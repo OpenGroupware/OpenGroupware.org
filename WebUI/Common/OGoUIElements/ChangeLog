@@ -1,3 +1,7 @@
+2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+
+	* removed usage of deprecated singleSelection binding (v5.1.28)
+
 2004-07-26  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyAccessList.m: do not call [session teams], fixed a bug introduced

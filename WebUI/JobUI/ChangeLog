@@ -1,3 +1,7 @@
+2004-08-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* removed usage of deprecated singleSelection binding (v5.1.46)
+
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWJobEditor.m: does not call [session teams] anymore (and doesn't

@@ -1,4 +1,4 @@
-// $Id: SkyAccessList.wod,v 1.4 2004/07/26 20:06:35 helge Exp $
+// $Id: SkyAccessList.wod 2 2004-08-20 11:37:44Z znek $
 
 TableContent:  WOTableContent    {}
 TableHeader:   WOTableHeader     {}
@@ -21,17 +21,16 @@ HeaderCellMiddle: WOGenericContainer {
 }
 
 TeamString: WOString {
-  value   = labels.team;
+  value = labels.team;
 }
 
 TeamsPopUp: WOPopUpButton {
-  list            = fetchTeamEOs;
-  item            = item;
-  string          = item.description;
-  selection       = team;
-  singleSelection = YES;
-  nilString       = labels.searchAccountsOption;
-  onChange        = "document.editform.submit(); return true";
+  list      = fetchTeamEOs;
+  item      = item;
+  string    = item.description;
+  selection = team;
+  nilString = labels.searchAccountsOption;
+  onChange  = "document.editform.submit(); return true";
 }
 
 AccountSearchField: WOTextField {

@@ -1,4 +1,4 @@
-// $Id: SkyDayOfMonthPopUp.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+// template bindings
 
 PopUp: WOPopUpButton {
   list            = self;
@@ -6,5 +6,4 @@ PopUp: WOPopUpButton {
   string          = itemLabel;
   selection       = day;
   onChange        = ^onChange;
-  singleSelection = YES;
 }

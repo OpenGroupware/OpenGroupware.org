@@ -237,7 +237,7 @@ static NSArray *accessCheckFlags = nil;
     s = [NSString stringWithFormat:@"could not change directory to: %@",
                     _path];
     
-    [self setErrorStgring:s];
+    [self setErrorString:s];
 #endif
     [self->selectedFiles removeAllObjects];
   }

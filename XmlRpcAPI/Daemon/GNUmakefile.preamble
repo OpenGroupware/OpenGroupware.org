@@ -8,7 +8,7 @@ xmlrpcd_TOOL_LIBS += \
 	-lOGoDocuments		\
 	-lLSFoundation		\
 	-lGDLAccess		\
-	-lNGObjWeb -lNGScripting\
+	-lNGXmlRpc -lNGObjWeb -lNGScripting\
 	-lNGLdap -lNGMime	\
 	-lNGStreams -lNGExtensions -lEOControl \
 	-lXmlRpc -lDOM -lSaxObjC

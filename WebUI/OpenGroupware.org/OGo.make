@@ -1,6 +1,6 @@
 # Localized Resources
 
-OpenGroupware_LANGUAGES = \
+OpenGroupware10a_LANGUAGES = \
 	English German Danish Dutch Spanish French Italian Polish \
 	English_blue   German_blue	\
 	English_orange German_orange	\
@@ -8,11 +8,11 @@ OpenGroupware_LANGUAGES = \
 	English_kde			\
 	ptBR
 
-OpenGroupware_LOCALIZED_RESOURCE_FILES = \
+OpenGroupware10a_LOCALIZED_RESOURCE_FILES = \
 	componentAttributes.cfg	\
 	components.cfg		\
 
-OpenGroupware_DERIVED_RESOURCES = \
+OpenGroupware10a_DERIVED_RESOURCES = \
 	German.lproj/components.cfg	\
 	Danish.lproj/components.cfg	\
 	Dutch.lproj/components.cfg	\

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,10 +18,9 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#import "common.h"
-#import "DateIntervalFormatter.h"
+#include "DateIntervalFormatter.h"
+#include "common.h"
 
 #define HOUR_SECONDS   (3600)
 #define DAY_SECONDS    (24*3600)
@@ -29,24 +28,26 @@
 @implementation DateIntervalFormatter
 
 - (NSString *)stringForObjectValue:(id)anObject {
-  if (![anObject isKindOfClass:[NSNumber class]]) {
+  unsigned int interval, days, hours;
+  char buf[32];
+  
+  if (![anObject isKindOfClass:[NSNumber class]])
     return nil;
-  }
-  else {
-    unsigned int interval = [anObject intValue];
-    unsigned int days     = (interval / DAY_SECONDS);
-    unsigned int hours    = (interval % DAY_SECONDS)  / HOUR_SECONDS;
 
-    if (days && hours == 0)
-      return [NSString stringWithFormat:@"%d", days];
-
-    return [NSString stringWithFormat:@"%d", hours];
-  }
+  interval = [anObject intValue];
+  days     = (interval / DAY_SECONDS);
+  hours    = (interval % DAY_SECONDS)  / HOUR_SECONDS;
+  
+  if (days != 0 && hours == 0)
+    sprintf(buf, "%d", days);
+  else
+    sprintf(buf, "%d", hours);
+  return [NSString stringWithCString:buf];
 }
 
 - (BOOL)getObjectValue:(id *)obj
-             forString:(NSString *)string
-      errorDescription:(NSString **)error
+  forString:(NSString *)string
+  errorDescription:(NSString **)error
 {
   unsigned int intResult;
   NSScanner *scanner = [NSScanner scannerWithString:string];
@@ -77,10 +78,10 @@
     else
       *error  =  @"Choose '1d' = 1 day, '1h' = 1 hour";
   }
-  else if (error)
-    *error = @"Couldn't convert to int";
+  else if (error != nil)
+    *error = @"Could not convert to int";
   
   return result;
 }
    
-@end
+@end /* DateIntervalFormatter */

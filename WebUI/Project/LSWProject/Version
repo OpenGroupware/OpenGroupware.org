@@ -1,6 +1,6 @@
-# $Id$
+# $Id: Version 1 2004-08-20 11:17:52Z znek $
 
-SUBMINOR_VERSION:=36
+SUBMINOR_VERSION:=37
 
 # Requirements:
 #   v5.0.34 requires libOGoProject        v5.0.29

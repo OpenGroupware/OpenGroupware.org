@@ -1,3 +1,7 @@
+2004-08-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* DateIntervalFormatter.m: minor code cleanup (v5.1.37)
+
 2004-08-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWFolderEditor.wo, LSWProjectWizard.wo, LSWTextDocumentEditor.wo,
