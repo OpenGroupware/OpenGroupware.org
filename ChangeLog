@@ -1,3 +1,8 @@
+2005-03-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* configure: on OSX use --disable-strip / --with-gnustep per default,
+	  check for weird library combos on OSX
+
 2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* configure: check for required and optional linking dependencies, eg

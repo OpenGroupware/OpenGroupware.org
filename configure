@@ -131,6 +131,18 @@ function validateGNUstepArgs() {
   fi
 }
 
+function setupAppleArgs() {
+  ARG_WITH_STRIP=0
+  ARG_WITH_GNUSTEP=1
+  
+  if test "xLIBRARY_COMBO" != "apple-apple-nil"; then
+    if test "xLIBRARY_COMBO" != "apple-apple-apple"; then
+      echo "WARNING: detected unusual GNUstep setup: $LIBRARY_COMBO"
+      echo ""
+    fi
+  fi
+}
+
 function validateArgs() {
   # validate prefix (could be better?)
   case "x$ARG_PREFIX" in
@@ -393,6 +405,11 @@ validateGNUstepArgs
 source $DARG_GNUSTEP_SH
 if test $ARG_BEQUIET != 1; then
   printGNUstepSetup;
+fi
+
+# setup some GNUstep dependend defaults
+if test "x$GNUSTEP_HOST_VENDOR" = "xapple"; then
+  setupAppleArgs;
 fi
 
 # ensure the parameters make sense

@@ -34,7 +34,6 @@ OGoSchedulerViews_OBJC_FILES = \
 	SkyAptResourceGroupsList.m	\
 
 OGoSchedulerViews_RESOURCE_FILES += Defaults.plist Version
-OGoSchedulerViews_LOCALIZED_RESOURCE_FILES += OGoSchedulerViews.ccfg
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
