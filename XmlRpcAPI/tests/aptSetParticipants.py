@@ -14,7 +14,7 @@ APTID=sys.argv[4]
 p = "Enter password for user %s: " % ( LOGIN,)
 PWD = getpass.getpass(p)
 
-#URL="http://%s:%s@%s:80/RPC2" % ( LOGIN, PWD, HOST )
+URL2="http://%s:%s@%s:80/RPC2" % ( LOGIN, PWD, HOST )
 URL="http://%s:80/RPC2" % ( HOST, )
 
 # ********** setup server object
