@@ -136,7 +136,7 @@ initial()
   
   if [ "x${PATCH_PGHBA_CONF}" = "xYES" -a -f "${COMMON_PGHBA_CONF}" ]; then
     echo -e "checking ${COMMON_PGHBA_CONF}"
-    if [ "`grep -E '^host[[:space:]]*${OGO_DB_ITSELF}[[:space:]]*${OGO_DB_USER}[[:space:]]*127.0.0.1[[:space:]]*255.255.255.255' ${COMMON_PGHBA_CONF}`" -o "`grep -E '^local[[:space:]]*all[[:space:]]*all[[:space:]]*trust' ${COMMON_PGHBA_CONF}`" ]; then
+    if [ "`grep -E '^host[[:space:]]*${OGO_DB_ITSELF}[[:space:]]*${OGO_DB_USER}[[:space:]]*127.0.0.1[[:space:]]*255.255.255.255' ${COMMON_PGHBA_CONF}`" -a "`grep -E '^local[[:space:]]*all[[:space:]]*all[[:space:]]*trust' ${COMMON_PGHBA_CONF}`" ]; then
       echo -e "  no patching needed for ${COMMON_PGHBA_CONF}"
       #restart to activate is already either `yes` or `no`
     else
