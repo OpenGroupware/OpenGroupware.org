@@ -3,7 +3,7 @@
 0                        = "Nej";
 1                        = "Ja";
 ArticleEditorWindowTitle = "Nyheds redigering";
-ArticleViewerWindowTitle = "Nyheds Læser";
+ArticleViewerWindowTitle = "Nyheds LÃ¦ser";
 ClipboardLabel           = "kopier til udklipsholder";
 DefaultAccessPreferences = "Standard adgangs indstillinger";
 LSWNewsArticleEditor     = "Rediger Nyheder";

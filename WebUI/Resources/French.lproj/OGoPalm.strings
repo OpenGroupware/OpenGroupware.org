@@ -2,30 +2,30 @@
 
 SkyPalmAssignAddress = "Assigner un contact"
 SkyPalmAssignDate    = "Assigner un rendez-vous"
-SkyPalmAssignJob     = "Assigner une tâche"
+SkyPalmAssignJob     = "Assigner une tÃ¢che"
 SkyPalmAssignMemo    = "Assigner un document"
 
-SkyPalmAddressEditor = "Éditer une adresse Palm"
-SkyPalmDateEditor    = "Éditer une date Palm"
-SkyPalmMemoEditor    = "Éditer un mémo Palm"
-SkyPalmJobEditor     = "Éditer une tâche Palm"
+SkyPalmAddressEditor = "Ã‰diter une adresse Palm"
+SkyPalmDateEditor    = "Ã‰diter une date Palm"
+SkyPalmMemoEditor    = "Ã‰diter un mÃ©mo Palm"
+SkyPalmJobEditor     = "Ã‰diter une tÃ¢che Palm"
 
 SkyPalmAddressViewer                = "Visualisateur d'adresse Palm "
 SkyPalmDateViewer                   = "Visualisateur d'agenda Palm"
 SkyPalmDateCopyViewer               = "Visualisateur d'agenda Palm"
-SkyPalmMemoViewer                   = "Visualisateur de mémo Palm"
-SkyPalmJobViewer                    = "Visualisateur de tâche Palm"
+SkyPalmMemoViewer                   = "Visualisateur de mÃ©mo Palm"
+SkyPalmJobViewer                    = "Visualisateur de tÃ¢che Palm"
 
 SkyPalmPage                          = "Synchronisation Palm"
-SkyPalmPreferences                   = "Préférences de Synchronisation Palm"
+SkyPalmPreferences                   = "PrÃ©fÃ©rences de Synchronisation Palm"
 SkyPalmPreferences_addressList       = "Lister d'Addresse"
 SkyPalmPreferences_dateList          = "Liste de date"
-SkyPalmPreferences_memoList          = "Liste de mémo"
-SkyPalmPreferences_jobList           = "Liste de tâche"
+SkyPalmPreferences_memoList          = "Liste de mÃ©mo"
+SkyPalmPreferences_jobList           = "Liste de tÃ¢che"
 SkyPalmPreferences_addressAttributes = "Champs Contacts"
 SkyPalmPreferences_dateAttributes    = "Champs Agenda"
-SkyPalmPreferences_memoAttributes    = "Champs Mémo"
-SkyPalmPreferences_jobAttributes     = "Champs Tâches"
+SkyPalmPreferences_memoAttributes    = "Champs MÃ©mo"
+SkyPalmPreferences_jobAttributes     = "Champs TÃ¢ches"
 SkyPalmPreferences_palmSync          = "HotSync"
 SkyPalmPreferences_skyrixAddressType = "Type d'adresse OGo"
 SkyPalmPreferences_skyrixAddressAttributeMapping = "Correspondance d'adresse OGo"
@@ -33,45 +33,45 @@ SkyPalmPreferences_skyrixPersonSync  = "Synchronisation des contacts OGo"
 SkyPalmPreferences_skyrixPersonSyncAttributes = "Correspondance d'attributs"
 SkyPalmPreferences_skyrixEnterpriseSync = "Synchronisation des entreprises OGo"
 SkyPalmPreferences_skyrixEnterpriseSyncAttributes = "Correspondance d'attributs"
-SkyPalmPreferences_syncWithSkyrixAfterPalmSync  = "Synchroniser avec OGo après HotSync"
+SkyPalmPreferences_syncWithSkyrixAfterPalmSync  = "Synchroniser avec OGo aprÃ¨s HotSync"
 SkyPalmPreferences_syncWithSkyrixBeforePalmSync = "Synchroniser avec OGo avant HotSync"
 
 action_assignSkyrixAddress = "Affectation aux contacts OGo"
 action_assignSkyrixAppointment = "Affectation aux rendez-vous OGo"
-action_assignSkyrixJob     = "Assigner une tâche"
+action_assignSkyrixJob     = "Assigner une tÃ¢che"
 action_assignSkyrixMemo    = "Assigner un document"
 action_changeAddress       = "changer l'adresse"
 action_changeAddresses     = "changer les adresses"
 action_changeAppointment   = "changer le rendez-vous"
 action_changeFile          = "changer le fichier"
 action_changeFolder        = "changer le dossier"
-action_changeJobAssignment = "changer de tâche"
+action_changeJobAssignment = "changer de tÃ¢che"
 action_changeProject       = "changer le projet"
-action_complete            = "terminé"
-action_createEnterprises   = "Créer des entreprises"
-action_createNewFile       = "Créer un nouveau fichier"
-action_createNewSkyrixRecord = "Créer une nouvelle entrée"
-action_createPersons       = "Créer des personnes"
-action_createSkyrixRecords = "créer des entrées"
+action_complete            = "terminÃ©"
+action_createEnterprises   = "CrÃ©er des entreprises"
+action_createNewFile       = "CrÃ©er un nouveau fichier"
+action_createNewSkyrixRecord = "CrÃ©er une nouvelle entrÃ©e"
+action_createPersons       = "CrÃ©er des personnes"
+action_createSkyrixRecords = "crÃ©er des entrÃ©es"
 action_delete              = "Effacer"
 action_deleteDates         = "Effacer les dates"
-action_detachDates         = "Détacher les dates"
-action_detachDate          = "Détacher la date"
-action_detachSkyrixEntry   = "Détacher l'entrée OGo"
-action_edit                = "Éditer"
-action_hidedeleted         = "Cacher les entrées supprimées"
+action_detachDates         = "DÃ©tacher les dates"
+action_detachDate          = "DÃ©tacher la date"
+action_detachSkyrixEntry   = "DÃ©tacher l'entrÃ©e OGo"
+action_edit                = "Ã‰diter"
+action_hidedeleted         = "Cacher les entrÃ©es supprimÃ©es"
 action_markAsNew           = "Marquer comme nouveau"
-action_refresh             = "Rafraîchir"
+action_refresh             = "RafraÃ®chir"
 action_save                = "Enregistrer"
 action_searchAddress       = "Rechercher une adresse"
-action_searchCategories    = "Rechercher une catégorie"
-action_select              = "Sélectionner"
-action_select_category_device = "Sélectionner une catégorie"
+action_searchCategories    = "Rechercher une catÃ©gorie"
+action_select              = "SÃ©lectionner"
+action_select_category_device = "SÃ©lectionner une catÃ©gorie"
 action_showAppointments    = "Voir les rendez-vous"
-action_syncWithSkyrixEntry = "Synchroniser avec une entrée OGo"
-action_uncomplete          = "Pas terminé"
+action_syncWithSkyrixEntry = "Synchroniser avec une entrÃ©e OGo"
+action_uncomplete          = "Pas terminÃ©"
 action_undelete            = "Annuler effacer"
-action_unhidedeleted       = "Afficher les entrées supprimées"
+action_unhidedeleted       = "Afficher les entrÃ©es supprimÃ©es"
 
 // generated keys
 alarmUnit_0        = "Minute(s)";
@@ -87,15 +87,15 @@ alarmUnit_2n       = "Jours";
 // generated keys
 and                = "et"
 
-aptType_none       = "- non spécifié -"
-aptType_meeting    = "réunion"
+aptType_none       = "- non spÃ©cifiÃ© -"
+aptType_meeting    = "rÃ©union"
 aptType_holiday    = "vacances"
 aptType_duedate    = "date attendue"
-aptType_outward    = "rendez-vous extérieur"
+aptType_outward    = "rendez-vous extÃ©rieur"
 aptType_birthday   = "anniversaire"
 aptType_tradeshow  = "salon"
-aptType_home       = "à domicile"
-aptType_call       = "au téléphone"
+aptType_home       = "Ã  domicile"
+aptType_call       = "au tÃ©lÃ©phone"
 aptType_ill        = "malade"
 
 // generated keys
@@ -103,13 +103,13 @@ assign-skyrix-record = "Assignment to OGo entry"
 
 // attributes of palm-records
 attribute_00nothing      = "--";
-attribute_access         = "Accès"
+attribute_access         = "AccÃ¨s"
 attribute_address        = "Adresse"
 attribute_alarm          = "Alarme"
 attribute_aptType        = "Type"
-attribute_categoryName   = "Catégorie"
+attribute_categoryName   = "CatÃ©gorie"
 attribute_city           = "Ville"
-attribute_company        = "Société"
+attribute_company        = "SociÃ©tÃ©"
 attribute_country        = "Pays"
 attribute_custom0        = "Champ sur mesure 0"
 attribute_custom1        = "Champ sur mesure 1"
@@ -128,31 +128,31 @@ attribute_filename       = "Nom du fichier"
 attribute_firstname      = "Nom"
 attribute_home           = "Domicile"
 attribute_isCompleted    = "Complet"
-attribute_jobStatus      = "État"
+attribute_jobStatus      = "Ã‰tat"
 attribute_lastname       = "Nom"
 attribute_location       = "Lieu"
 attribute_main           = "Main"
-attribute_memo           = "Mémo"
-attribute_mobile         = "Téléphone portable"
+attribute_memo           = "MÃ©mo"
+attribute_mobile         = "TÃ©lÃ©phone portable"
 attribute_name           = "Nom"
 attribute_nickname       = "Surnom"
 attribute_note           = "Note"
-attribute_number         = "Numéro"
+attribute_number         = "NumÃ©ro"
 attribute_other          = "Autre"
-attribute_owner          = "Propriétaire"
+attribute_owner          = "PropriÃ©taire"
 attribute_pager          = "Pager"
 attribute_palmSync       = "Synchronisation Palm"
-attribute_priority       = "Priorité"
-attribute_projectCode    = "Référence des projets"
+attribute_priority       = "PrioritÃ©"
+attribute_projectCode    = "RÃ©fÃ©rence des projets"
 attribute_projectLeader  = "Chef de projet"
-attribute_repeat         = "Répéter type"
-attribute_repeatEnddate  = "Répéter date de fin"
+attribute_repeat         = "RÃ©pÃ©ter type"
+attribute_repeatEnddate  = "RÃ©pÃ©ter date de fin"
 attribute_size           = "Taille"
 attribute_skyrixRecord   = "OGo entry"
 attribute_skyrixSync     = "OGo synchronization"
 attribute_skyrixSyncType = "OGo synchronization type"
-attribute_startdate      = "Date de début"
-attribute_state          = "État"
+attribute_startdate      = "Date de dÃ©but"
+attribute_state          = "Ã‰tat"
 attribute_title          = "Titre"
 attribute_work           = "Travail"
 attribute_zipcode        = "Code postal"
@@ -174,20 +174,20 @@ bool_yes           = "Oui"
 
 calendarPopupDuedateLabel   = "rechecher date attendue"
 calendarPopupEnddateLabel   = "rechecher date fin"
-calendarPopupStartdateLabel = "rechecher date départ"
+calendarPopupStartdateLabel = "rechecher date dÃ©part"
 cancelButtonLabel  = "Annuler"
 
 // generated keys
-complete           = "achevé"
-complete_archived  = "achevé (archivé)";
+complete           = "achevÃ©"
+complete_archived  = "achevÃ© (archivÃ©)";
 
 // generated keys
-create-skyrix-record  = "Créer une entrée OGo"
+create-skyrix-record  = "CrÃ©er une entrÃ©e OGo"
 
 // generated keys
 enterprise         = "Entreprise"
 
-error_nodeviceentry = "Aucune entrée trouvée dans la base de données. Merci de synchroniser avec votre PDA d'abord."
+error_nodeviceentry = "Aucune entrÃ©e trouvÃ©e dans la base de donnÃ©es. Merci de synchroniser avec votre PDA d'abord."
 
 forTheNext         = "suivant"
 
@@ -195,27 +195,27 @@ forTheNext         = "suivant"
 frequencyFirst     = "";
 frequencyLast      = "dernier";
 frequencyND        = "nd";
-frequencyRD        = "ème";
+frequencyRD        = "Ã¨me";
 frequencySecond    = "autre";
 frequencyST        = "er";
-frequencyTH        = "ème";
+frequencyTH        = "Ã¨me";
 
 from               = "De"
 
 // generated keys
-incomplete         = "inachevé"
-incomplete_archived = "inachevé (archivé)"
+incomplete         = "inachevÃ©"
+incomplete_archived = "inachevÃ© (archivÃ©)"
 
 // generated keys
-is_archived        = "Archivé"
-is_deleted         = "Effacé"
-is_modified        = "Modifié"
+is_archived        = "ArchivÃ©"
+is_deleted         = "EffacÃ©"
+is_modified        = "ModifiÃ©"
 is_new             = "Nouveau"
 is_untouched       = ""
 
 label_addressType     = "Type d'adresse"
-label_autoScrollSize  = "Taille automatique de défilement (seulement pour les butineurs spécifiques)"
-label_batchSize       = "Entrées par page"
+label_autoScrollSize  = "Taille automatique de dÃ©filement (seulement pour les butineurs spÃ©cifiques)"
+label_batchSize       = "EntrÃ©es par page"
 label_days            = "jours"
 label_every           = "chaque"
 label_file            = "dossier"
@@ -224,16 +224,16 @@ label_filename        = "nom du fichier"
 label_folder          = "dossier"
 label_hotsync_conduits    = "Conduits HotSync"
 label_newFile             = "nouveau fichier"
-label_non_selection_title = "Non sélectionnés"
+label_non_selection_title = "Non sÃ©lectionnÃ©s"
 label_onlyMyAppointments  = "uniquement mes rendez-vous";
 label_palmAddress     = "adresse Palm"
 label_palmAddresses   = "adresses Palm"
 label_palmDate        = "Date Palm"
-label_palmJob         = "Tâche Palm"
-label_palmMemo        = "Mémo Palm"
+label_palmJob         = "TÃ¢che Palm"
+label_palmMemo        = "MÃ©mo Palm"
 label_pda_timezone    = "Fuseau horaire Palm"
 label_popup_all       = "Tous"
-label_privateProjects = "Projets privés"
+label_privateProjects = "Projets privÃ©s"
 label_project         = "Projet"
 label_publicProjects  = "Projets publics"
 label_readAccess      = "Lu"
@@ -241,7 +241,7 @@ label_removeException = "Supprime exception"
 label_repeat_days     = "Jour(s)"
 label_repeat_months   = "Mois(s)"
 label_repeat_weeks    = "Semaine(s)"
-label_repeat_years    = "Année(s)"
+label_repeat_years    = "AnnÃ©e(s)"
 label_repeatDaily     = "Quotidien"
 label_repeatMonthlyByDate = "Mensuel par date"
 label_repeatMonthlyByDay  = "Mensuel par jour de la semaine"
@@ -251,70 +251,70 @@ label_repeatSkyrixMonthly = "mensuellement"
 label_repeatSkyrixWeekday = "jours de la semaine"
 label_repeatWeekly    = "hebdomadaire"
 label_repeatYearly    = "annuellement"
-label_repetition      = "répétition"
-label_repetitions     = "répétitions"
+label_repetition      = "rÃ©pÃ©tition"
+label_repetitions     = "rÃ©pÃ©titions"
 label_searchResult    = "search result"
-label_selection_title = "Champs sélectionnés"
+label_selection_title = "Champs sÃ©lectionnÃ©s"
 label_showAppointments = "Voir les rendez-vous"
 label_skyrixAddress   = "Adresse OGo"
 label_skyrixAddresses = "Adresses OGo"
 label_skyrixAppointment  = "Rendez-vous OGo"
 label_skyrixAppointments = "Rendez-vous OGo"
 label_skyrixDocument  = "Document OGo"
-label_skyrixJob       = "Tâche OGo"
-label_skyrixJobs      = "Tâche OGo"
-label_toDoJobs        = "Liste des tâche à faire"
+label_skyrixJob       = "TÃ¢che OGo"
+label_skyrixJobs      = "TÃ¢che OGo"
+label_toDoJobs        = "Liste des tÃ¢che Ã  faire"
 label_validFiles      = "Valider les fichiers"
-label_writeAccess     = "Écrire"
+label_writeAccess     = "Ã‰crire"
 
 // generated keys
 list_title_address = "Adresses Palm"
 list_title_date    = "Dates Palm"
-list_title_job     = "Tâche Palm"
-list_title_memo    = "Mémos Palm"
+list_title_job     = "TÃ¢che Palm"
+list_title_memo    = "MÃ©mos Palm"
 
 // generated keys
 month_1            = "janvier"
 month_10           = "octobre"
 month_11           = "novembre"
-month_12           = "décembre"
-month_2            = "février"
+month_12           = "dÃ©cembre"
+month_2            = "fÃ©vrier"
 month_3            = "mars"
 month_4            = "avril"
 month_5            = "mai"
 month_6            = "juin"
 month_7            = "juillet"
-month_8            = "août"
+month_8            = "aoÃ»t"
 month_9            = "septembre"
 
 // generated keys
 new_address_from_skyrix = "Nouveau contact OGo"
 new_date_from_skyrix    = "Nouveau rendez-vous OGo"
-new_job_from_skyrix     = "Nouvelle tâche OGo"
+new_job_from_skyrix     = "Nouvelle tÃ¢che OGo"
 new_memo_from_skyrix    = "Nouveau document"
-new-from-skyrix-record  = "Nouvelle entrée OGo"
+new-from-skyrix-record  = "Nouvelle entrÃ©e OGo"
 
 new_address             = "Nouveau contact Palm"
 new_date                = "Nouvelle date Palm"
-new_memo                = "Nouveau mémo Palm"
-new_job                 = "Nouvelle tâche Palm"
+new_memo                = "Nouveau mÃ©mo Palm"
+new_job                 = "Nouvelle tÃ¢che Palm"
 
 // generated keys
 person             = "personne"
 
 // generated keys
-pri_very_high      = "Très haut"
+pri_very_high      = "TrÃ¨s haut"
 pri_high           = "Haut"
 pri_normal         = "Normal"
 pri_low            = "Bas"
-pri_very_low       = "Très bas"
+pri_very_low       = "TrÃ¨s bas"
 
 // generated keys
-record_is_archived = "Enregistrement supprimé du Palm"
-record_is_modified = "Enregistrement modifié"
+record_is_archived = "Enregistrement supprimÃ© du Palm"
+record_is_modified = "Enregistrement modifiÃ©"
 record_is_new      = "Nouvel enregistrement"
-record_is_untouched  = "Enregistrement non modifié"
-record_id_deleted  = "Enregistrement sera supprimé à la synchro"
+record_is_untouched  = "Enregistrement non modifiÃ©"
+record_id_deleted  = "Enregistrement sera supprimÃ© Ã  la synchro"
 
 // generated keys
 repeatDailyFormat  = "Tous les %@ jours"
@@ -325,7 +325,7 @@ repeatWeeklyFormat        = "Toutes les %@ semaines le %@"
 repeatYearlyFormat        = "Le %@ %@ tous les %@ ans"
 
 showButtonLabel    = "Voir"
-showRepeatings     = "Voir les répetitions"
+showRepeatings     = "Voir les rÃ©petitions"
 
 // generated keys
 skyrixAddressType_         = "--"
@@ -333,14 +333,14 @@ skyrixAddressType_bill     = "Adresse de facturation"
 skyrixAddressType_location = "Adresse"
 skyrixAddressType_mailing  = "Adresse courriel"
 skyrixAddressType_private  = "Adresse personnelle"
-skyrixAddressType_ship     = "Adresse d'expédition"
+skyrixAddressType_ship     = "Adresse d'expÃ©dition"
 
 // generated keys
 skyrixAttribute_00nothing     = "--"
-skyrixAttribute_01_tel        = "Téléphone 1"
-skyrixAttribute_02_tel        = "Téléphone 2"
-skyrixAttribute_03_tel_funk   = "Téléphone portable"
-skyrixAttribute_05_tel_private = "Téléphone personnel"
+skyrixAttribute_01_tel        = "TÃ©lÃ©phone 1"
+skyrixAttribute_02_tel        = "TÃ©lÃ©phone 2"
+skyrixAttribute_03_tel_funk   = "TÃ©lÃ©phone portable"
+skyrixAttribute_05_tel_private = "TÃ©lÃ©phone personnel"
 skyrixAttribute_10_fax        = "Fax"
 skyrixAttribute_15_fax_private = "Fax personnel"
 skyrixAttribute_account       = "Compte"
@@ -348,16 +348,16 @@ skyrixAttribute_bank          = "Banque"
 skyrixAttribute_bankCode      = "Code banquaire"
 skyrixAttribute_birthday      = "Anniversaire"
 skyrixAttribute_comment       = "Commentaire"
-skyrixAttribute_degree        = "Diplôme"
+skyrixAttribute_degree        = "DiplÃ´me"
 skyrixAttribute_email         = "Adresse courriel"
 skyrixAttribute_email1        = "Adresse courriel 1"
 skyrixAttribute_email2        = "Adresse courriel 2"
 skyrixAttribute_firstname     = "Nom"
 skyrixAttribute_gender        = "Sexe"
 skyrixAttribute_job_title     = "Fonction"
-skyrixAttribute_keywords      = "Catégories"
+skyrixAttribute_keywords      = "CatÃ©gories"
 skyrixAttribute_login         = "Identifiant"
-skyrixAttribute_middlename    = "2ème nom"
+skyrixAttribute_middlename    = "2Ã¨me nom"
 skyrixAttribute_name          = "Nom"
 skyrixAttribute_name1         = "Nom 1"
 skyrixAttribute_name2         = "Nom 2"
@@ -371,25 +371,25 @@ skyrixAttribute_salutation    = "Salutation"
 skyrixAttribute_url           = "Url"
 
 // generated keys
-skyrixjob_state_00_created    = "Créé"
-skyrixjob_state_02_rejected   = "Rejeté"
-skyrixjob_state_05_accepted   = "Accepté"
+skyrixjob_state_00_created    = "CrÃ©Ã©"
+skyrixjob_state_02_rejected   = "RejetÃ©"
+skyrixjob_state_05_accepted   = "AcceptÃ©"
 skyrixjob_state_20_processing = "En cours de traitement"
 skyrixjob_state_25_done       = "Fait"
-skyrixjob_state_30_archived   = "Archivé"
+skyrixjob_state_30_archived   = "ArchivÃ©"
 
 // generated keys
-sync_state_100     = "Enregistrements OGo et Palm synchronisés"
-sync_state_101     = "Enregistrement Palm modifié"
-sync_state_102     = "Enregistrement OGo modifié"
-sync_state_short_100     = "OGo&Palm synchronisés"
-sync_state_short_101     = "Enreg. Palm modifié"
-sync_state_short_102     = "Enreg. OGo modifié"
+sync_state_100     = "Enregistrements OGo et Palm synchronisÃ©s"
+sync_state_101     = "Enregistrement Palm modifiÃ©"
+sync_state_102     = "Enregistrement OGo modifiÃ©"
+sync_state_short_100     = "OGo&Palm synchronisÃ©s"
+sync_state_short_101     = "Enreg. Palm modifiÃ©"
+sync_state_short_102     = "Enreg. OGo modifiÃ©"
 
 // generated keys
 sync_type_0        = "N'a rien fait"
-sync_type_1        = "L'enregistrement OGo à écrasé celui Palm"
-sync_type_2        = "L'enregistrement Palm à écrasé celui OGo"
+sync_type_1        = "L'enregistrement OGo Ã  Ã©crasÃ© celui Palm"
+sync_type_2        = "L'enregistrement Palm Ã  Ã©crasÃ© celui OGo"
 sync_type_short_0  = "OGo || Palm"
 sync_type_short_1  = "OGo ==> Palm"
 sync_type_short_2  = "OGo <== Palm"
@@ -398,15 +398,15 @@ tab_address        = "Adresse"
 tab_addressBook    = "Adresses"
 tab_attributes     = "Attributs"
 tab_dateBook       = "Agenda"
-tab_memo           = "Mémo"
-tab_memoPad        = "Mémo pad"
+tab_memo           = "MÃ©mo"
+tab_memoPad        = "MÃ©mo pad"
 tab_origin         = "Origine"
 tab_palmSync       = "synchronisation Palm"
-tab_repetitions    = "répétitions"
+tab_repetitions    = "rÃ©pÃ©titions"
 tab_skyrixSync     = "synchronisation OGo"
-tab_todoList       = "liste des tâches à faire"
+tab_todoList       = "liste des tÃ¢ches Ã  faire"
 
-to                 = "à"
+to                 = "Ã "
 
 // generated keys
 weekday_long_0     = "dimanche"
@@ -424,56 +424,56 @@ weekday_short_4    = "jeu."
 weekday_short_5    = "ven."
 weekday_short_6    = "sam."
 
-SkyPalmPref_postSyncMustBeActivated   = "(PostSynchro doit être activé)";
-SkyPalmPref_preSyncMustBeActivated   = "(PréSynchro doit être activé)";
+SkyPalmPref_postSyncMustBeActivated   = "(PostSynchro doit Ãªtre activÃ©)";
+SkyPalmPref_preSyncMustBeActivated   = "(PrÃ©Synchro doit Ãªtre activÃ©)";
 SkyPalmPreferences_address   = "Contacts";
 SkyPalmPreferences_datebook   = "Agenda";
 SkyPalmPreferences_importOGoContacts   = "Importer les contacts OGo dans votre Palm";
 SkyPalmPreferences_importOGoDates   = "Importer l'agenda OGo dans votre Palm";
 SkyPalmPreferences_importOGoDatesFrom   = "de";
-SkyPalmPreferences_importOGoDatesTo   = "à";
+SkyPalmPreferences_importOGoDatesTo   = "Ã ";
 SkyPalmPreferences_importPalmContacts   = "Importer les contacts Palm dans OGo";
 SkyPalmPreferences_importPalmDates   = "Importer l'agenda Palm dans OGo";
-SkyPalmPreferences_job   = "Tâches";
-SkyPalmPreferences_memo   = "Mémo";
-SkyPalmPreferences_ogoDateDefaultReadAccess   = "Accès en lecture de la date OGo par défaut";
-SkyPalmPreferences_ogoDateDefaultWriteAccess   = "Accès en écriture de la date OGo par défaut";
+SkyPalmPreferences_job   = "TÃ¢ches";
+SkyPalmPreferences_memo   = "MÃ©mo";
+SkyPalmPreferences_ogoDateDefaultReadAccess   = "AccÃ¨s en lecture de la date OGo par dÃ©faut";
+SkyPalmPreferences_ogoDateDefaultWriteAccess   = "AccÃ¨s en Ã©criture de la date OGo par dÃ©faut";
 SkyPalmPreferences_ogoTwoWaySync   = "Synchro bidirectionnelle OGo";
 SkyPalmPreferences_postSync   = "Activer la PostSynchro";
-SkyPalmPreferences_postSyncHelp   = "Synchro avec OGo après HotSync";
-SkyPalmPreferences_preSync   = "Activer la PréSynchro";
+SkyPalmPreferences_postSyncHelp   = "Synchro avec OGo aprÃ¨s HotSync";
+SkyPalmPreferences_preSync   = "Activer la PrÃ©Synchro";
 SkyPalmPreferences_preSyncHelp   = "Synchro avec OGo avant HotSync";
-SkyPalmPreferences_private   = "- privé -";
+SkyPalmPreferences_private   = "- privÃ© -";
 SkyPalmPreferences_webui   = "Interface web";
-action_forceOGoOverPalm   = "Écraser les changements dans le Palm";
-action_forcePalmOverOGo   = "Écraser les changements dans OGo";
+action_forceOGoOverPalm   = "Ã‰craser les changements dans le Palm";
+action_forcePalmOverOGo   = "Ã‰craser les changements dans OGo";
 conflict_handling_0   = "Ne rien synchroniser";
-conflict_handling_1   = "Créer une nouvelle entrée OGo";
-conflict_handling_2   = "Écraser les changements dans l'entrée d'OGo";
-conflict_handling_3   = "Écraser les changements dans l'entrée du Palm";
+conflict_handling_1   = "CrÃ©er une nouvelle entrÃ©e OGo";
+conflict_handling_2   = "Ã‰craser les changements dans l'entrÃ©e d'OGo";
+conflict_handling_3   = "Ã‰craser les changements dans l'entrÃ©e du Palm";
 conflict_notification_0   = "Ne pas signaler";
-conflict_notification_5   = "Créer une tâche";
+conflict_notification_5   = "CrÃ©er une tÃ¢che";
 import_ogo_contacts_sync_favorites   = "Importer les contacts favoris";
 import_ogo_contacts_sync_nothing   = "Ne rien importer";
 import_ogo_contacts_sync_owned_contacts   = "Importer mes propres contacts";
 import_palm_contacts_sync_all   = "Importer tous les contacts du Palm";
-import_palm_contacts_sync_non_private   = "Importer les contacts non-privés du Palm";
+import_palm_contacts_sync_non_private   = "Importer les contacts non-privÃ©s du Palm";
 import_palm_contacts_sync_nothing   = "Ne rien importer";
-import_palm_dates_sync_all   = "Importer tous les événements Palm";
-import_palm_dates_sync_non_private   = "Importer les événements Palm non-privés";
+import_palm_dates_sync_all   = "Importer tous les Ã©vÃ©nements Palm";
+import_palm_dates_sync_non_private   = "Importer les Ã©vÃ©nements Palm non-privÃ©s";
 import_palm_dates_sync_nothing   = "Ne rien importer";
 label_conflict_handling   = "Gestion des conflits";
 label_conflict_notification   = "Notification des conflits";
 skyrixAttribute_assistantName   = "Nom de l'assistant";
-skyrixAttribute_associatedCompany   = "Entreprise associée";
+skyrixAttribute_associatedCompany   = "Entreprise associÃ©e";
 skyrixAttribute_bossName   = "Nom du patron";
-skyrixAttribute_department   = "Département";
+skyrixAttribute_department   = "DÃ©partement";
 skyrixAttribute_email3   = "Adresse courriel 3";
-skyrixAttribute_imAddress   = "Adresse de messagerie instantanée";
+skyrixAttribute_imAddress   = "Adresse de messagerie instantanÃ©e";
 skyrixAttribute_occupation   = "Profession";
 skyrixAttribute_office   = "Bureau";
 skyrixAttribute_partnerName   = "Nom du partenaire";
-sync_state_103         = "Enregistrements OGo et Palm changés";
-sync_state_short_103   = "OGo&Palm changés";
+sync_state_103         = "Enregistrements OGo et Palm changÃ©s";
+sync_state_short_103   = "OGo&Palm changÃ©s";
 sync_type_3   = "Synchronisation bidirectionnelle";
 sync_type_short_3   = "OGo <=> Palm";

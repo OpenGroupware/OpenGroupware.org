@@ -1,3 +1,11 @@
+2004-11-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* recoded English, German, Basque, Danish, Dutch, French, Italian,
+	  Norwegian, Portuguese, Spanish, ptBR translations to UTF-8 (requires
+	  libOGoFoundation v5.1.77)
+	
+	* removed empty Swedish project
+
 2004-11-25  Helge Hess  <helge.hess@opengroupware.org>
 
 	* added Polish translation by Michal Panasiewicz

@@ -2,8 +2,8 @@
 
 // Note: work in progress, no need for translation yet
 
-dock_cyrusadminapp = "Administração Cyrus";
-OGoCyrusAdminPage  = "Administração Cyrus";
+dock_cyrusadminapp = "AdministraÃ§Ã£o Cyrus";
+OGoCyrusAdminPage  = "AdministraÃ§Ã£o Cyrus";
 tab_mailboxes      = "Cx. Postais";
 tab_info           = "Servidor";
 tab_ogo            = "OGo";

@@ -8,4 +8,4 @@ sender            = "Absender";
 date              = "Datum";
 toDoc             = "Mail zum Dokument"
 download          = "Mail herunterladen"
-contentLength     = "Gr��e";
+contentLength     = "GrÃ¶Ãe";

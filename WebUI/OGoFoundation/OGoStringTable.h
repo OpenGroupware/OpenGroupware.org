@@ -24,6 +24,14 @@
 
 #import <Foundation/NSObject.h>
 
+/*
+  OGoStringTable
+  
+  Keeps the contents of a .strings file (translation mapping file).
+  
+  TODO: support standard translation formats.
+*/
+
 @class NSString, NSDictionary, NSDate;
 
 @interface OGoStringTable : NSObject

@@ -1,7 +1,7 @@
 // v1.1 - Francisco Azevedo <francisco@OpenGroupware.org>
 
-LSWMailPreferences 	= "Preferências de emails"
-DefaultAccessPreferences= "Preferência de acesso padrão"
+LSWMailPreferences 	= "PreferÃªncias de emails"
+DefaultAccessPreferences= "PreferÃªncia de acesso padrÃ£o"
 Imap                  	= "Imap";
 
 saveButtonLabel       	= "Guardar"
@@ -24,7 +24,7 @@ viewAttachmentsInline 	= "Ver anexos na mensagem"
 viewAttachmentBodysInEditor = "Ver o corpo dos anexos no editor"
 
 YES                   	= "Sim"
-NO                    	= "Não"
+NO                    	= "NÃ£o"
 login                 	= "Login"
 
 imapPasswd1 		= "Password"
@@ -33,11 +33,11 @@ imapUser    		= "Utilizador"
 imapHost    		= "Servidor"
 
 viewStatus 		= "Ver estado dos emails"
-asIcon     		= "como ícone"
+asIcon     		= "como Ã­cone"
 
-label_newMail_single 	= "Você tem um novo email!";
-label_newMail_multi  	= "Você tem %i novos emails!";
-label_newMail_no     	= "Não há emails novos!";
+label_newMail_single 	= "VocÃª tem um novo email!";
+label_newMail_multi  	= "VocÃª tem %i novos emails!";
+label_newMail_no     	= "NÃ£o hÃ¡ emails novos!";
 
 action_viewMail    	= "Ver email"
 action_refresh     	= "Actualizar";
@@ -45,5 +45,5 @@ action_closeWindow 	= "Fechar janela";
 
 activeMail              = "Email"
 inactiveMail            = "Email (inactivo)"
-newMail                 = "Email (por lêr)"
+newMail                 = "Email (por lÃªr)"
 

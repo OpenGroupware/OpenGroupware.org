@@ -2,13 +2,13 @@
 
 archiveFormat        = "Formato do arquivo"
 targetFile           = "Ficheiro de destino"
-compressionLevel     = "NÌvel de compress„o"
+compressionLevel     = "N√≠vel de compress√£o"
 saveAttributes       = "Guardar atributos"
 targetDir            = "Pasta de destino"
 fileName             = "Nome do ficheiro";
 size                 = "Tamanho";
-owner                = "Propriet·rio actual";
-subject              = "TÌtulo";
+owner                = "Propriet√°rio actual";
+subject              = "T√≠tulo";
 releaseDate          = "Modificado em";
 exclude              = "Excluir"
 filePath             = "Caminho do ficheiro"
@@ -16,7 +16,7 @@ date                 = "Data"
 remove               = "Eliminar ficheiro arquivado"
 overwrite            = "Sobrescrever ficheiros existentes"
 restoreAttributes    = "Tentar restaurar os ficheiros do arquivo"
-archiveContent       = "Conte˙do do ficheiro arquivado"
+archiveContent       = "Conte√∫do do ficheiro arquivado"
 cancel               = "Cancelar"
 unzip                = "Unzip"
 zip                  = "Zip"

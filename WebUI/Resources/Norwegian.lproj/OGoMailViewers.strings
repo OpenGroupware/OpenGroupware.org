@@ -8,4 +8,4 @@ sender           = "Avsender"
 date             = "Dato";
 toDoc            = "epost til dokument"
 download         = "last ned epost"
-contentLength    = "Størrelse"
+contentLength    = "StÃ¸rrelse"

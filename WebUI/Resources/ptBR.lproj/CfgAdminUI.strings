@@ -3,8 +3,8 @@
 // Note: work in progress, no need for translation yet
 
 OGoAccountsVirtualConfigFile = "Postfix Virtual: OGo Accounts";
-OGoCfgAdminPage              = "Administração de Configurações";
-OGoCyrusConfigFile           = "Configuração Cyrus";
+OGoCfgAdminPage              = "AdministraÃ§Ã£o de ConfiguraÃ§Ãµes";
+OGoCyrusConfigFile           = "ConfiguraÃ§Ã£o Cyrus";
 OGoPostfixConfigFile         = "Postfix Main Configuration";
 OGoTeamsVirtualConfigFile    = "Postfix Virtual: OGo Teams";
 OGoCyrusConfigEditor         = "Cyrus Configuration Editor";
@@ -13,12 +13,12 @@ OGoAccountsVirtualEditor     = "Accounts Virtual Editor";
 OGoTeamsVirtualEditor        = "Teams Virtual Editor";
 OGoQuotaTabConfigFile        = "Cyrus Quota and Mailbox Configuration";
 OGoQuotaTabEditor            = "Cyrus Mailboxes and Quota Configuration";
-dock_cfgadminapp             = "Administração de Configurações";
-tab_config                   = "Configurações";
-tab_configs                  = "Configurações";
+dock_cfgadminapp             = "AdministraÃ§Ã£o de ConfiguraÃ§Ãµes";
+tab_config                   = "ConfiguraÃ§Ãµes";
+tab_configs                  = "ConfiguraÃ§Ãµes";
 tab_debug                    = "debug";
 tab_pathconfig               = "Caminhos";
 tab_preview	        	     = "preview";
 tab_saslconfig               = "SASL";
 tab_tlsconfig                = "TLS";
-tv_config_database           = "Banco de dados de configurações";
+tv_config_database           = "Banco de dados de configuraÃ§Ãµes";

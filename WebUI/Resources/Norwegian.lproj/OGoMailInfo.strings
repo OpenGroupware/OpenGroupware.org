@@ -7,7 +7,7 @@ Imap                  = "Epost"
 saveButtonLabel       = "lagre"
 cancelButtonLabel     = "avbryt"
 
-"mail_editor_type"    = "Tyope epostverktøy"
+"mail_editor_type"    = "Tyope epostverktÃ¸y"
 internal              = "Intern"
 external              = "Ekstern"
 
@@ -21,7 +21,7 @@ subjectLength         = "Tittellengde"
 
 viewImagesInline      = "Vis bilde i epost"
 viewAttachmentsInline = "Vis vedlegg i epost"
-viewAttachmentBodysInEditor = "Se vedlegg i redigeringsverktøy"
+viewAttachmentBodysInEditor = "Se vedlegg i redigeringsverktÃ¸y"
 
 YES                   = "Ja"
 NO                    = "Nei"

@@ -8,4 +8,4 @@ sender           = "Remite";
 date             = "Fecha";
 toDoc            = "correo a documento"
 download         = "descargar correo"
-contentLength    = "Tamaño";
+contentLength    = "TamaÃ±o";

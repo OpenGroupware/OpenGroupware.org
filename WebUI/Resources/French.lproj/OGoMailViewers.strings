@@ -3,9 +3,9 @@
 subject          = "Sujet";
 to               = "Destinataire";
 cc               = "Copie carbone";
-bcc              = "Copie cachée"
-sender           = "Expéditeur";
+bcc              = "Copie cachÃ©e"
+sender           = "ExpÃ©diteur";
 date             = "Date";
 toDoc            = "Courrier vers document"
-download         = "Télécharger le courrier"
+download         = "TÃ©lÃ©charger le courrier"
 contentLength    = "Taille";

@@ -1,3 +1,9 @@
+2004-11-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoStringTable.m: treat string tables as UTF-8 per default now, you
+	  can still enable the old Latin-1 escaping using the 
+	  'OGoStringTableUseLatin1' default (v5.1.76)
+
 2004-11-13  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.75

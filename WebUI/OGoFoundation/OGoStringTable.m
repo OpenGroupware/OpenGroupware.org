@@ -25,6 +25,14 @@
 @implementation OGoStringTable
 
 static BOOL debugOn = NO;
+static BOOL useLatin1Strings = NO;
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  debugOn          = [ud boolForKey:@"OGoStringTableDebugEnabled"];
+  useLatin1Strings = [ud boolForKey:@"OGoStringTableUseLatin1"];
+}
 
 + (id)stringTableWithPath:(NSString *)_path {
   return [[(OGoStringTable *)[self alloc] initWithPath:_path] autorelease];
@@ -45,36 +53,52 @@ static BOOL debugOn = NO;
 /* loading */
 
 - (NSException *)reportParsingError:(NSException *)_error {
-  NSLog(@"%s: could not load strings file '%@': %@", 
-        __PRETTY_FUNCTION__, self->path, _error);
+  [self logWithFormat:@"%s: could not load strings file '%@': %@", 
+          __PRETTY_FUNCTION__, self->path, _error];
   return nil;
 }
 
+- (NSStringEncoding)stringsFileEncoding {
+  return useLatin1Strings ? NSISOLatin1StringEncoding : NSUTF8StringEncoding;
+}
+
 - (void)checkState {
-  NSString     *tmp;
+  NSString     *plistString;
   NSDictionary *plist;
+  NSData       *rawData;
   
-  if (self->data)
+  if (self->data != nil)
     return;
   
-  if ((tmp = [NSString stringWithContentsOfFile:self->path]) == nil) {
-    self->data = nil;
+  rawData = [[NSData alloc] initWithContentsOfMappedFile:self->path];
+  if (rawData == nil) {
+    [self logWithFormat:@"ERROR: could not load strings file: %@", self->path];
     return;
   }
   
-  self->data = nil;
+  plistString = [[NSString alloc] initWithData:rawData 
+				  encoding:[self stringsFileEncoding]];
+  [rawData release]; rawData = nil;
+  if (plistString == nil) {
+    [self logWithFormat:@"ERROR: could not decode strings file charset: %@", 
+	    self->path];
+    return;
+  }
+  
   NS_DURING {
-    if ((plist = [tmp propertyListFromStringsFileFormat]) == nil) {
+    if ((plist = [plistString propertyListFromStringsFileFormat]) == nil) {
       NSLog(@"%s: could not load strings file '%@'",
             __PRETTY_FUNCTION__,
             self->path);
     }
-    self->data = [plist copy];
+    self->data     = [plist copy];
     self->lastRead = [[NSDate date] retain];
   }
   NS_HANDLER
     [[self reportParsingError:localException] raise];
   NS_ENDHANDLER;
+  
+  [plistString release];
 }
 
 /* access */

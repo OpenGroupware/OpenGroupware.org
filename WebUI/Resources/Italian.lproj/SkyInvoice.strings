@@ -2,21 +2,21 @@
 
 00_accounting                   = "Contabilita'"
 00_created                      = "creato";
-01_03_quarter                   = "1° Trimestre"
+01_03_quarter                   = "1Â° Trimestre"
 01_january                      = "Gennaio"
 02_february                     = "Febbraio"
 03_march                        = "Marzo"
-04_06_quarter                   = "2° Trimestre"
+04_06_quarter                   = "2Â° Trimestre"
 04_april                        = "Aprile"
 05_may                          = "Maggio"
 05_monition_printout            = "Stampa Sollecito"
 05_printed                      = "stampato";
 06_june                         = "Giugno"
-07_09_quarter                   = "3° Trimestre
+07_09_quarter                   = "3Â° Trimestre
 07_july                         = "Luglio"
 08_august                       = "Augosto"
 09_september                    = "Settembre"
-10_12_quarter                   = "4° Trimestre"
+10_12_quarter                   = "4Â° Trimestre"
 10_canceled                     = "cancellato";
 10_invoice_printout             = "Stampa Fattura"
 10_october                      = "Ottobre"
@@ -24,8 +24,8 @@
 12_december                     = "Dicembre"
 15_canceling                    = "Cancella"
 15_monition                     = "Sollecito";
-16_monition2                    = "2° Sollecito";
-17_monition3                    = "3° Sollecito";
+16_monition2                    = "2Â° Sollecito";
+17_monition3                    = "3Â° Sollecito";
 20_done                         = "fatto";
 20_settling                     = "Pagato";
 

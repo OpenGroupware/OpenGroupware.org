@@ -1,7 +1,7 @@
 // $Id: OGoMailInfo.strings,v 1.4 2004/08/02 02:48:55 olivier Exp $
 
-LSWMailPreferences      = "Preferências de mensagens";
-DefaultAccessPreferences= "Preferência de acesso padrão";
+LSWMailPreferences      = "PreferÃªncias de mensagens";
+DefaultAccessPreferences= "PreferÃªncia de acesso padrÃ£o";
 Imap                    = "Mensagens";
 saveButtonLabel         = "Salvar";
 cancelButtonLabel       = "Cancelar";
@@ -18,17 +18,17 @@ viewImagesInline        = "Ver imagens na mensagem";
 viewAttachmentsInline   = "Ver anexos na mensagem";
 viewAttachmentBodysInEditor = "Ver o corpo dos anexos no editor";
 YES                     = "Sim";
-NO                      = "Não";
+NO                      = "NÃ£o";
 login                   = "Login";
 imapPasswd1             = "Senha";
 imapPasswd2             = "Repetir a senha";
-imapUser                = "Usuário";
+imapUser                = "UsuÃ¡rio";
 imapHost                = "Servidor";
 viewStatus              = "Ver status das mensagens";
-asIcon                  = "como ícone";
-label_newMail_single    = "Você tem uma nova mensagem!";
-label_newMail_multi     = "Você tem %i novas mensagens!";
-label_newMail_no        = "Não há novas mensagens!";
+asIcon                  = "como Ã­cone";
+label_newMail_single    = "VocÃª tem uma nova mensagem!";
+label_newMail_multi     = "VocÃª tem %i novas mensagens!";
+label_newMail_no        = "NÃ£o hÃ¡ novas mensagens!";
 action_viewMail         = "Ver mensagem"
 action_refresh          = "Atualizar";
 action_closeWindow      = "Fechar janela";

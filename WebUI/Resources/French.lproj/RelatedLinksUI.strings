@@ -1,20 +1,20 @@
 // $Id: RelatedLinksUI.strings,v 1.1 2004/08/10 22:30:14 helge Exp $
 
 button_linkadd                      = "ajouter";
-linkType_pda_conflicting_ogo_entry  = "Conflit avec une entrée OGo";
-linkType_pda_conflicting_palm_entry = "Conflit avec une entrée Palm";
-linkType_pda_new_ogo_entry          = "Nouvelle entrée OGo";
+linkType_pda_conflicting_ogo_entry  = "Conflit avec une entrÃ©e OGo";
+linkType_pda_conflicting_palm_entry = "Conflit avec une entrÃ©e Palm";
+linkType_pda_new_ogo_entry          = "Nouvelle entrÃ©e OGo";
 linkentity_Date                     = "Rendez-vous";
 linkentity_Enterprise               = "Entreprise";
-linkentity_Job                      = "Tâche";
+linkentity_Job                      = "TÃ¢che";
 linkentity_Person                   = "Personne";
 linkentity_Project                  = "Projet";
-linkentity_Team                     = "Équipe";
+linkentity_Team                     = "Ã‰quipe";
 linkentity_external                 = "externe";
 linksToObject                       = "Liens pointant vers cet objet";
-note_nolinksconfigured              = "Note: Pas de type de lien configuré pour une création manuelle de type.";
-popup_createLink                    = "[créer un lien]";
+note_nolinksconfigured              = "Note: Pas de type de lien configurÃ© pour une crÃ©ation manuelle de type.";
+popup_createLink                    = "[crÃ©er un lien]";
 tableview_footertitle               = "Liens";
 tableview_linklabel                 = "lien";
-tableview_linkstitle                = "Liens liés";
+tableview_linkstitle                = "Liens liÃ©s";
 tableview_linktype                  = "type";
