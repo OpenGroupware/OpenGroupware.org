@@ -115,6 +115,9 @@ install: build controlfiles
 	echo "Alias /OpenGroupware$$(echo $(OGOVER) | sed s/\\.//).woa/WebServerResources/ \
 		/usr/share/opengroupware.org-$(OGOVER)/www/" > \
 		$(CURDIR)/debian/tmp/etc/apache/conf.d/opengroupware.org-resources-$(OGOVER)
+	echo "Alias /OpenGroupware$$(echo $(OGOVER) | sed s/\\.//).woa/WebServerResources/ \
+		/usr/share/opengroupware.org-$(OGOVER)/www/" > \
+		$(CURDIR)/debian/tmp/etc/apache2/conf.d/opengroupware.org-resources-$(OGOVER)
 
 # Build architecture-independent files here.
 binary-indep: build install
