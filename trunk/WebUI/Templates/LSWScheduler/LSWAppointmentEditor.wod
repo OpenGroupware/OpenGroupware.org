@@ -196,6 +196,7 @@ SaveAllSubmit: WOSubmitButton {
         class            = "button_wide";
 }
 
+/*
 DeleteAllLink: WOHyperlink {
   action   = deleteAllCyclic;
   string   = labels.deleteAllButtonLabel;

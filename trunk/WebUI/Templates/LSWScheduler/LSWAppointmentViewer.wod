@@ -81,6 +81,16 @@ IsUserOwnerElse: WOConditional {
   negate    = YES;
 }
 
+//preference des rendez vous
+IsUserCreator: WOConditional {
+  condition = isUserCreator;
+}
+
+IsUserCreatorElse: WOConditional {
+  condition = isUserCreator;
+  negate    = YES;
+}
+
 EditLink: WOHyperlink {
   action   = edit;
   filename = "edit.gif";
@@ -125,15 +135,33 @@ NotificationTimeAttr: SkyAttribute {
   valueColor = "subValueCell";
 }
 
+
+//Propriétaire du rendez-vous
+OwnerAttr: SkyAttribute {
+  label  = labels.owner;
+  string = appointment.owner.login;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+ArchivedOwnerAttr: SkyAttribute {
+  label  = labels.owner;
+  string = appointment.owner.login;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+  valueFontColor = "colors_deleted_object";
+}
+
+//Créateur du rendez-vous
 CreatorAttr: SkyAttribute {
   label  = labels.creator;
-  string = appointment.owner.login;
+  string = appointment.creator.login;
   keyColor   = "subAttributeCell";
   valueColor = "subValueCell";
 }
 ArchivedCreatorAttr: SkyAttribute {
   label  = labels.creator;
-  string = appointment.owner.login;
+  //string = appointment.creator.login;
+  string = appointment.creator.login;
   keyColor   = "subAttributeCell";
   valueColor = "subValueCell";
   valueFontColor = "colors_deleted_object";
@@ -189,12 +217,32 @@ AptTypeAttr: SkySubAttribute {
   label  = labels.attribute_aptType;
   string = aptTypeLabel;
 }
+//######ADDED BY AO######
+//######Préférence du rendez-vous#######
+
+RdvTypeAttr: SkyAttribute {
+  label  = labels.rdvType;
+  //string = rdvTypeLabel;
+  string = object.rdvType;
+  keyColor = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+//#######################
 WriteAccessAttr: SkyAttribute {
   label      = labels.writeAccess;
   string     = writeAccessList;
   keyColor   = "subAttributeCell";
   valueColor = "subValueCell";
 }
+//######ADDED BY AO######
+//#################READ###############
+ReadAccessAttr: SkyAttribute {
+  label      = labels.readAccess;
+  string     = readAccessList;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+	
 AbsenceAttr: SkyAttribute {
   label      = labels.absence;
   string     = object.absence;
@@ -225,6 +273,7 @@ Notes: SkyNoteList {
 StartDayAttribute:   WOString { value = labels.startDay;  }
 StartTimeAttribute:  WOString { value = labels.startTime; }
 EndTimeAttribute:    WOString { value = labels.endTime;   }
+//###ADDED BY AO###
 CreatorAttribute:    WOString { value = labels.creator;   }
 AccessTeamAttribute: WOString { value = labels.accessTeamLabel; }
 CommentAttribute:    WOString { value = labels.comment;   }
@@ -304,6 +353,32 @@ IsOwnerArchivedCond: WOConditional {
   condition = isOwnerArchived;  
 }
 
+IsCreatorArchivedCondElse: WOConditional {
+  condition = isCreatorArchived;
+  negate    = YES;
+}
+
+IsCreatorArchivedCond: WOConditional {
+  condition = isCreatorArchived;  
+}
+
+IsLogTabEnabled: WOConditional {
+  condition = isLogTabEnabled;
+}
+
 RelatedLinks: OGoObjectLinkList {
   object = appointment;
+}
+
+//-----------------------------------
+//####ADDED BY AO####
+//Ajout 
+
+DelegAttribute:    WOString { value = labels.deleg; }
+
+DelegAttr: SkyAttribute {
+  label      = labels.delegrdv;
+  string     = object.delegrdv;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
 }

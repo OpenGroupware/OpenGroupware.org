@@ -29,9 +29,17 @@ PreferencesForm: WOForm {
   name = "editform";
 }
 
+/*
 CancelButton: WOHyperlink {
   action = cancel;
   string = labels.cancel;
+  class  = "button_narrow";
+}
+*/
+
+CancelButton: WOSubmitButton {
+  action = cancel;
+  value = labels.cancel;
   class  = "button_narrow";
 }
 
@@ -167,9 +175,7 @@ SchedulerTimeInputTypeAccess: WOCheckBox {
 SchedulerAptTypeInputTypeAccess: WOCheckBox {
   checked = isSchedulerAptTypeInputTypeEditableRoot;
 }
-SchedulerRdvTypeInputTypeAccess: WOCheckBox {
-  checked = isSchedulerRdvTypeInputTypeEditableRoot;
-}
+
 SchedulerStartHourAccess: WOCheckBox {
   checked = isSchedulerStartHourEditableRoot;
 }
@@ -193,9 +199,7 @@ SchedulerTimeInputTypeLabel: WOString {
 SchedulerAptTypeInputTypeLabel: WOString {
   value = labels.scheduler_apttype_input_type;
 }
-SchedulerRdvTypeInputTypeLabel: WOString {
-  value = labels.scheduler_rdvtype_input_type;
-}
+
 SchedulerStartHourLabel: WOString {
   value = labels.scheduler_start_hour;
 }
