@@ -561,6 +561,15 @@ PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
 USE_SKYAPTNOTIFY=\"YES\"              # periodically runs aptnotify - or not
 " >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-webui-1.0a
 
+echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
+" >>${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-nhsd-1.0a
+
+echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
+" >>${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-xmlrpcd-1.0a
+
+echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
+" >>${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-zidestore-1.3
+
 # ****************************** post *********************************
 %post meta
 if [ $1 = 1 ]; then
@@ -904,6 +913,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/lib/opengroupware.org-1.0a/datasources/OGoPalmDS.ds/stamp.make
 %{prefix}/lib/opengroupware.org-1.0a/webui/OGoPalm.lso
 %{prefix}/share/opengroupware.org-1.0a/initscript_templates/*nhsd
+%attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-nhsd-1.0a
 
 %files pda-devel
 %defattr(-,root,root,-)
@@ -1136,6 +1146,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %defattr(-,root,root,-)
 %{prefix}/sbin/ogo-xmlrpcd-1.0a
 %{prefix}/share/opengroupware.org-1.0a/initscript_templates/*xmlrpcd
+%attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-xmlrpcd-1.0a
 
 %files zidestore
 %defattr(-,root,root,-)
@@ -1148,6 +1159,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/lib/libZSTasks*.so.1.3*
 %{prefix}/lib/zidestore-1.3
 %{prefix}/share/zidestore-1.3
+%attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-zidestore-1.3
 
 %files zidestore-devel
 %defattr(-,root,root,-)
@@ -1162,7 +1174,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
-* Mon Mar 13 2005 Frank Reppin <frank@opengroupware.org>
+* Tue Mar 15 2005 Frank Reppin <frank@opengroupware.org>
+- added sysconfigs to packages xmlrpcd/zidestore/pda
+* Mon Mar 14 2005 Frank Reppin <frank@opengroupware.org>
 - added ogo-aptnotify.sh
 * Thu Mar 10 2005 Frank Reppin <frank@opengroupware.org>
 - added PGCLIENTENCODING to sysconfig settings

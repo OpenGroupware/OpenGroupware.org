@@ -169,6 +169,7 @@ echo "You've installed OGo %{ogoall_version} using the monolithic mega package!"
      >"${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/INSTALLED.USING.OGOFULLPACKAGE"
 cd ..
 
+#prepare initscript templates
 INITSCRIPTS_TMP_DIR_OGO="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/initscript_templates"
 INITSCRIPTS_TMP_DIR_ZIDE="${RPM_BUILD_ROOT}%{prefix}/share/zidestore-1.3/initscript_templates"
 mkdir -p ${INITSCRIPTS_TMP_DIR_OGO}
@@ -182,6 +183,12 @@ cp %{_specdir}/initscript_templates/suse_xmlrpcd ${INITSCRIPTS_TMP_DIR_OGO}/
 cp %{_specdir}/initscript_templates/suse_opengroupware ${INITSCRIPTS_TMP_DIR_OGO}/
 cp %{_specdir}/initscript_templates/suse_zidestore ${INITSCRIPTS_TMP_DIR_ZIDE}/
 
+#template for ogo-aptnotify
+APTNOTIFY_TMP_DIR="${SHAREDIR}/aptnotify_template"
+mkdir -p ${APTNOTIFY_TMP_DIR}
+cp %{_specdir}/aptnotify_template/ogo-aptnotify.sh ${APTNOTIFY_TMP_DIR}/
+
+#create sysconfig
 mkdir -p ${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig
 echo "RUN_DBSCRIPT=\"YES\"                  # will run the whole script - or not, as thou wish
 PATCH_POSTGRESQL_CONF=\"YES\"         # will backup and patch postgresql.conf - if needed
@@ -193,7 +200,17 @@ FORCE_OVERRIDE_PRESENT_SCHEME=\"YES\" # might harm thy current scheme (or not?)
 UPDATE_SCHEMA=\"YES\"                 # will attempt to update the database scheme - if needed
 OGO_USER=\"ogo\"                      # default username (unix) of your OGo install - might vary
 PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
+USE_SKYAPTNOTIFY=\"YES\"              # periodically runs aptnotify - or not
 " >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-webui-1.0a
+
+echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
+" >>${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-nhsd-1.0a
+
+echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
+" >>${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-xmlrpcd-1.0a
+
+echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
+" >>${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-zidestore-1.3
 
 mkdir -p ${RPM_BUILD_ROOT}/var/lib/opengroupware.org/.libFoundation/Defaults
 mkdir -p ${RPM_BUILD_ROOT}/var/lib/opengroupware.org/documents
@@ -337,6 +354,18 @@ if [ $1 = 1 ]; then
     chkconfig --add "${ZIDESTORE_INIT_VERSION}"
     /sbin/ldconfig
   fi
+  ##
+  OGO_SYSCONF="ogo-webui-1.0a"
+  OGO_PREFIX="%{prefix}"
+  CRON_D="%{_sysconfdir}/cron.d"
+  if [ -d "${CRON_D}" ]; then
+    echo "*/5 * * * root %{prefix}/bin/ogo-aptnotify.sh >/dev/null" >%{_sysconfdir}/cron.d/ogo-aptnotify
+  fi
+  sed "s^OGO_SYSCONF^${OGO_SYSCONF}^g; \
+       s^OGO_PREFIX^${OGO_PREFIX}^g" \
+       "%{prefix}/share/opengroupware.org-1.0a/aptnotify_template/ogo-aptnotify.sh" \
+       >"%{prefix}/bin/ogo-aptnotify.sh"
+  chmod 750 "%{prefix}/bin/ogo-aptnotify.sh"
   ## link in /etc
   cd %{_sysconfdir}
   ln -s %{_var}/lib/opengroupware.org/.libFoundation opengroupware.org
@@ -398,7 +427,6 @@ fi
 
 # ****************************** preun *********************************
 %preun
-# pda
 if [ $1 = 0 ]; then
   NHSD_INIT_VERSION="ogo-nhsd-1.0a"
   NHSD_INIT_PREFIX="%{prefix}"
@@ -462,6 +490,13 @@ if [ $1 = 0 ]; then
       chkconfig --del "${ZIDESTORE_INIT_VERSION}"
       rm -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}"
     fi
+  fi
+  ##
+  if [ -f "%{_sysconfdir}/cron.d/ogo-aptnotify" ]; then
+    rm -f "%{_sysconfdir}/cron.d/ogo-aptnotify"
+  fi
+  if [ -f "%{prefix}/bin/ogo-aptnotify.sh" ]; then
+    rm -f "%{prefix}/bin/ogo-aptnotify.sh"
   fi
 fi
 
@@ -537,6 +572,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/bin/skyprojectexporter
 %{prefix}/bin/skyprojectimporter
 %{prefix}/bin/skyruncmd
+%{prefix}/share/opengroupware.org-1.0a/aptnotify_template/ogo-aptnotify.sh
 %{prefix}/lib/%{ogo_libogopalmui}.so.5.1*
 %{prefix}/lib/%{ogo_libogopalm}.so.5.1*
 %{prefix}/lib/libLSAddress*.so.5.1*
@@ -629,9 +665,12 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/lib/opengroupware.org-1.0a/webui/SoOGo.lso
 %{prefix}/lib/zidestore-1.3
 %{prefix}/sbin/ogo-nhsd-1.0a
+%attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-nhsd-1.0a
 %{prefix}/sbin/ogo-webui-1.0a
 %{prefix}/sbin/ogo-xmlrpcd-1.0a
+%attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-xmlrpcd-1.0a
 %{prefix}/sbin/ogo-zidestore-1.3
+%attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-zidestore-1.3
 %{prefix}/share/opengroupware.org-1.0a/initscript_templates/*xmlrpcd
 %{prefix}/share/zidestore-1.3
 %{prefix}/share/opengroupware.org-1.0a/INSTALLED.USING.OGOFULLPACKAGE
@@ -718,6 +757,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Tue Mar 15 2005 Frank Reppin <frank@opengroupware.org>
+- MFC
 * Thu Mar 10 2005 Frank Reppin <frank@opengroupware.org>
 - requires mod_ngobjweb; added ogo-database-setup
 * Tue Mar 08 2005 Frank Reppin <frank@opengroupware.org>
