@@ -1,0 +1,10 @@
+# $Id: README 1 2004-08-20 11:17:52Z znek $
+
+Appointments Backend for ZideStore
+==================================
+
+Defaults
+========
+ZLAptLogChanges              - BOOL
+SxAptFolder_MonthsIntoPast   - int (2)
+SxAptFolder_MonthsIntoFuture - int (12)

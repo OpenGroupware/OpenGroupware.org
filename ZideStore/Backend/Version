@@ -1,4 +1,0 @@
-# $Id$
-
-include ../Version
-SUBMINOR_VERSION:=75

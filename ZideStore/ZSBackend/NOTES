@@ -1,0 +1,40 @@
+$Id: NOTES 1 2004-08-20 11:17:52Z znek $
+
+Caching/Folder-Version Thoughts
+===============================
+
+- TODO: locking, keine rollbacks bei ID-set checks
+- TODO: garbage collection (alte sets und caches wegloeschen ...)
+
+- Update von der Version
+  - irgendjemand fragt nach der Version
+    - wir kontrollieren
+      a) ist die Version als Dirty markiert (bekannte Aenderung ueber DAV?)
+      b) ist der Timeout fuer die Version rum ?
+      c) haben wir schon eine Version
+    - wenn weder a noch b
+      - return aktuelle Version
+    - wenn a oder b, fetchen wir die Folder-Set aus der Datenbank
+      - wir vergleichen die Set mit der Set der aktuellen Version
+        - gleich geblieben, wir returnen die gespeicherte Version
+        - geaendert, dann erhoehen wir die Generation und speichern
+          die gefetchte Set unter dem neuen ID
+
+- Evo fragt alle Appointments von /donald/Calendar
+  
+  - wir schauen die aktuelle Folder Version nach
+    => wie ?, wann wird aktualisiert ?, wer tut das ?
+  
+  - wenn passt, dann
+    - schauen ob "evofull.version" existiert
+      - wenn ja, => deliver
+      - wenn nein, wie passt nicht
+  
+  - wenn nicht passt oder nicht vorhanden
+    - fetche alles
+    - speichere nach evofull.version
+
+- Evo fragt alle Contacts von /donald/Contacts/
+
+  - prefix erzeugt extra cache datei !
+    Bsp: priv-persons-a.plist

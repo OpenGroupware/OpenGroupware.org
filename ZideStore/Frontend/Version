@@ -1,7 +1,0 @@
-# $Id$
-
-include ../Version
-SUBMINOR_VERSION:=85
-
-# v1.2.72 requires libNGExtensions v4.2.91
-# v1.1.56 - v1.1.61 require matching Logic packages
