@@ -140,9 +140,9 @@ foreach $srel (@sope_releases) {
         $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libobjc_install_candidate_devel http://$dl_host/packages/$host_i_runon/releases/ThirdParty/$libobjc_install_candidate_devel");
         print "FATAL: system call (wget) returned $rc whilst downloading $libobjc_install_candidate_devel into install_tmp/\n" and exit 1 unless($rc == 0);
         #wipe out old and install the chosen one.
-        system("sudo rpm -e `rpm -qa|grep -i '^libobjc-lf2'` --nodeps --noscripts");
-        system("/usr/bin/sudo /bin/rpm -Uvh --force --noscripts $ENV{HOME}/install_tmp/$libobjc_install_candidate");
-        system("/usr/bin/sudo /bin/rpm -Uvh --force --noscripts $ENV{HOME}/install_tmp/$libobjc_install_candidate_devel");
+        system("sudo rpm -e `rpm -qa|grep -i '^libobjc-lf2'` --nodeps");
+        system("/usr/bin/sudo /bin/rpm -Uvh --force $ENV{HOME}/install_tmp/$libobjc_install_candidate");
+        system("/usr/bin/sudo /bin/rpm -Uvh --force $ENV{HOME}/install_tmp/$libobjc_install_candidate_devel");
         system("sudo /sbin/ldconfig");
       }
       if($libfoundation_install_candidate) {
@@ -158,9 +158,9 @@ foreach $srel (@sope_releases) {
         print "downloading $libfoundation_install_candidate_devel to install_tmp/\n";
         $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libfoundation_install_candidate_devel http://$dl_host/packages/$host_i_runon/releases/ThirdParty/$libfoundation_install_candidate_devel");
         print "FATAL: system call (wget) returned $rc whilst downloading $libfoundation_install_candidate into install_tmp/\n" and exit 1 unless($rc == 0);
-        system("sudo rpm -e `rpm -qa|grep -i '^libfoundation'` --nodeps --noscripts");
-        system("/usr/bin/sudo /bin/rpm -Uvh --force --noscripts $ENV{HOME}/install_tmp/$libfoundation_install_candidate");
-        system("/usr/bin/sudo /bin/rpm -Uvh --force --noscripts $ENV{HOME}/install_tmp/$libfoundation_install_candidate_devel");
+        system("sudo rpm -e `rpm -qa|grep -i '^libfoundation'` --nodeps");
+        system("/usr/bin/sudo /bin/rpm -Uvh --force $ENV{HOME}/install_tmp/$libfoundation_install_candidate");
+        system("/usr/bin/sudo /bin/rpm -Uvh --force $ENV{HOME}/install_tmp/$libfoundation_install_candidate_devel");
         system("sudo /sbin/ldconfig");
       }
     } else {
