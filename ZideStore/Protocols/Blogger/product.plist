@@ -1,0 +1,71 @@
+{
+  requires = ( ZSCommon );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+
+  classes = {
+  };
+  
+  categories = {
+    SxFolder = {
+      methods = {
+	"blogger.getUsersBlogs" = {
+          protectedBy = "View";
+          actionClass = "BloggerGetUserBlogs";
+          arguments   = { positionalKeys = ( appID, login, password ); };
+        };
+
+	"blogger.getUserInfo" = {
+          protectedBy = "View";
+          actionClass = "BloggerGetUserInfo";
+          arguments   = { positionalKeys = ( appID, login, password ); };
+        };
+	
+	"blogger.getTemplate" = {
+          protectedBy = "View";
+          actionClass = "BloggerGetTemplate";
+          arguments   = {
+            positionalKeys = ( appID, blogID, login, password, templateType );
+          };
+        };
+
+        "metaWeblog.newPost" = {
+          protectedBy = "View";
+          actionClass = "MetaWeblogPost";
+          actionName  = "newPost";
+          arguments   = {
+            positionalKeys = ( blogID, login, password, entry, doPublish );
+          };
+        };
+        "metaWeblog.getRecentPosts" = {
+          protectedBy = "View";
+          actionClass = "MetaWeblogGetRecentPosts";
+          arguments   = {
+            positionalKeys = ( blogID, login, password, numberOfPosts );
+          };
+        };
+	
+        "mt.supportedTextFilters" = {
+          protectedBy = "View";
+          actionClass = "MovableTypeAction";
+          actionName  = "supportedTextFilters";
+          arguments   = {
+            positionalKeys = ( );
+          };
+        };
+        "mt.getCategoryList" = {
+          protectedBy = "View";
+          actionClass = "MovableTypeAction";
+          actionName  = "getCategoryList";
+          arguments   = {
+            positionalKeys = ( blogID, login, password );
+          };
+        };
+      };
+    };
+  };
+}

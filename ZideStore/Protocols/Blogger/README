@@ -1,0 +1,35 @@
+Blogger
+=======
+
+Attempt to implement the Blogger XML-RPC API for ZideStore.
+
+
+Root Methods vs Context Methods
+===============================
+
+Note that we could define the methods on the application object, because the
+API has no concept of object traversal.
+All the methods get a parameter specifing the blog and user in question.
+
+Currently this isn't done because there can be quite a lot of blogs in OGo for
+one user (especially in project contexts).
+
+TODO
+====
+- authentication should be done via XML-RPC, not via basic auth
+
+
+Links
+=====
+
+http://www.movabletype.org/docs/mtmanual_programmatic.html
+
+
+What Ecto Does
+==============
+
+1. XML-RPC: bloggers.getUsersBlogs
+2. on each blog URL: GET
+3. metaWeblog.getRecentPosts
+4. mt.supportedTextFilters
+5. mt.getCategoryList
