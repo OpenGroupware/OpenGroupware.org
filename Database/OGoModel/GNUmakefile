@@ -8,9 +8,12 @@ BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.0a/
 
 #ADDITIONAL_CPPFLAGS += -DUSE_EO_RECORDS=1
 
+OGo_PRINCIPAL_CLASS = OGoModel
+
 OGo_OBJC_FILES = \
-	LSEOObject.m			\
-	LSDatabaseObject.m		\
+	OGoModel.m	\
+	LSEOObject.m	\
+	LSDatabaseObject.m
 
 OGo_SUBPROJECTS = Classes
 

@@ -1,13 +1,12 @@
-// $Id$
 {
-  bundleHandler = LSModuleManager;
+  bundleHandler = OGoModel;
   
   requires = {
     bundleManagerVersion = 1;
     
     classes = (
-      { name = NSObject;                 },
-      { name = LSModuleManager; exact-version = 1; },
+      { name = NSObject;                           },
+      { name = OGoModel; exact-version = 1;        },
       { name = EOGenericRecord; exact-version = 2; }
     );
   };
