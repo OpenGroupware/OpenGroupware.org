@@ -24,6 +24,16 @@
 
 @implementation LSWJobMailPage
 
+static NSArray *historySortOrderings = nil;
+
++ (void)initialize {
+  EOSortOrdering *so;
+  
+  so = [EOSortOrdering sortOrderingWithKey:@"actionDate"
+		       selector:EOCompareAscending];
+  historySortOrderings = [[NSArray alloc] initWithObjects:&so count:1];
+}
+
 /* fetching */
 
 - (NSString *)entityName {
@@ -68,16 +78,19 @@
 }
 
 - (NSString *)lastComment {
-#warning fix me, this does not return the _last_ entry!
-  NSArray *history;
-  id lastHistoryEntry;
+  NSArray  *history;
+  NSArray  *sortedHistory;
+  NSString *comment;
   
-  history          = [[self object] valueForKey:@"jobHistory"];
-  lastHistoryEntry = [history isNotNull] ? [history lastObject] : nil;
+  history = [[self object] valueForKey:@"jobHistory"];
+  if (![history isNotNull])
+    return nil;
   
-  // TODO: why is 'toJobHistoryInfo' an array fault?
-  return [lastHistoryEntry valueForKeyPath:
-                             @"toJobHistoryInfo.lastObject.comment"];
+  sortedHistory = [history sortedArrayUsingKeyOrderArray:historySortOrderings];
+  comment = [[[[sortedHistory lastObject] 
+  		valueForKey:@"toJobHistoryInfo"] lastObject]
+	      valueForKey:@"comment"];
+  return [[comment retain] autorelease];
 }
 
 @end /* LSWJobMailPage */

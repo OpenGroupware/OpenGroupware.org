@@ -1,3 +1,8 @@
+2004-12-22  Michael Koetter  <m.koetter@oraise.de>
+
+	* LSWJobMailPage.m: send proper comment in task mails (fixes OGo bug
+	  #924) (v5.1.49)
+
 2004-09-27  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWJobMailPage.m: some code cleanups, added -lastComment and
