@@ -1,15 +1,1815 @@
+# translation of AddressUI.po to 
 # translation of AddressUI.po to Slovenský
-# Branislav Klocok <branislav.klocok@ofz.sk>, 2004.
+# Branislav Klocok <branislav.klocok@ofz.sk>, 2004, 2005.
 msgid ""
 msgstr ""
-""
-"Last-Translator: Branislav Klocok <branislav.klocok@ofz.sk>"
-"PO-Revision-Date: 2004-10-22 18:55+0200"
-"Project-Id-Version: AddressUI"
-"Language-Team: Slovenský <translators@skopenoffice.org>"
-"Content-Type: text/plain; charset=UTF-8"
-"Content-Transfer-Encoding: 8bit"
-"X-Generator: KBabel 1.9.1"
+"Last-Translator: Branislav Klocok <branislav.klocok@ofz.sk>\n"
+"PO-Revision-Date: 2005-01-01 23:08+0100\n"
+"Project-Id-Version: AddressUI\n"
+"Language-Team:  <sk@li.org>\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
 "MIME-Version: 1.0"
 
 # // $Id: AddressUI.strings,v 1.15 2004/08/16 14:48:47 frank Exp $
+#"01_dear_ms" =
+msgid "Dear Ms."
+msgstr "Vážená pani"
+
+#"02_dear_mrs" =
+msgid "Dear Mrs."
+msgstr "Vážená pani"
+
+#"03_dear_mr" =
+msgid "Dear Mr."
+msgstr "Vážený pán"
+
+#"04_dear_prof" =
+msgid "Dear Prof."
+msgstr "Vážený pán profesor"
+
+#"05_dear_dr" =
+msgid "Dear Dr."
+msgstr "Vážený pán doktor"
+
+#"06_geehrt_herr" =
+msgid "Sehr geehrter Herr"
+msgstr "Vážený pán"
+
+#"07_geehrt_frau" =
+msgid "Sehr geehrte Frau"
+msgstr "Vážená pani"
+
+#"08_geehrt_herr_prof" =
+msgid "Sehr geehrter Herr Prof."
+msgstr "Vážený pán profesor"
+
+#"09_geehrt_herr_dr" =
+msgid "Sehr geehrter Herr Dr."
+msgstr "Vážený doktor"
+
+#"10_geehrt_frau_prof" =
+msgid "Sehr geehrte Frau Prof."
+msgstr "Vážená profesorka"
+
+#"11_geehrt_frau_dr" =
+msgid "Sehr geehrte Frau Dr."
+msgstr "Vážená doktorka"
+
+#"12_monsieur" =
+msgid "Monsieur"
+msgstr "Vážený pán"
+
+#"13_madame" =
+msgid "Madame"
+msgstr "Vážená pani"
+
+#"14_signora" =
+msgid "Signora"
+msgstr "Vážená slečna"
+
+#"15_signore" =
+msgid "Signore"
+msgstr "Vážený pán"
+
+#"Mappe versch." =
+msgid "Mappe versch."
+msgstr "Mappe versch."
+
+#"job_title" =
+msgid "Position"
+msgstr "Umiestnenie"
+
+#"other_title1" =
+msgid "Other Position 1"
+msgstr "Ostatné umiestnenie 1"
+
+#"other_title2" =
+msgid "Other Position 2"
+msgstr "Ostatné umiestnenie 2"
+
+#"00_created" =
+msgid "created"
+msgstr "Vytvorené"
+
+#"01_tel" =
+msgid "Telephone 1"
+msgstr "Telefón 1"
+
+#"01_tel_search" =
+msgid "Telephone 1"
+msgstr "Telefón 1"
+
+#"02_rejected" =
+msgid "rejected"
+msgstr "odmietnuté"
+
+#"02_tel" =
+msgid "Telephone 2"
+msgstr "Telefón 2"
+
+#"02_tel_search" =
+msgid "Telephone 2"
+msgstr "Telefón 2"
+
+#"03_tel_funk" =
+msgid "Mobile"
+msgstr "Mobil"
+
+#"05_accepted" =
+msgid "accepted"
+msgstr "prijaté"
+
+#"05_changed" =
+msgid "changed"
+msgstr "zmenené"
+
+#"05_tel_private" =
+msgid "Telephone private"
+msgstr "Telefón súkromný"
+
+#"05_tel_private_search" =
+msgid "Tel private"
+msgstr "Telefón súkromný"
+
+#"06_tel" =
+msgid "Telephone 3"
+msgstr "Telefón 3"
+
+#"06_tel_search" =
+msgid "Telephone 3"
+msgstr "Telefón 3"
+
+#"07_tel" =
+msgid "Telephone 4"
+msgstr "Telefón 4"
+
+#"07_tel_search" =
+msgid "Telephone 4"
+msgstr "Telefón 4"
+
+#"08_tel" =
+msgid "Telephone 5"
+msgstr "Telefón 5"
+
+#"08_tel_search" =
+msgid "Telephone 5"
+msgstr "Telefón 5"
+
+#"09_tel" =
+msgid "Telephone 6"
+msgstr "Telefón 6"
+
+#"09_tel_search" =
+msgid "Telephone 6"
+msgstr "Telefón 6"
+
+#"10_archived" =
+msgid "archived"
+msgstr "archivované"
+
+#"10_commented" =
+msgid "commented"
+msgstr "komentované"
+
+#"10_fax" =
+msgid "Fax"
+msgstr "Fax"
+
+#"10_fax_search" =
+msgid "Fax"
+msgstr "Fax"
+
+#"15_divided" =
+msgid "divided"
+msgstr "Rozdelené"
+
+#"15_fax_private" =
+msgid "Fax private"
+msgstr "Fax súkromný"
+
+#"15_fax_private_search" =
+msgid "Fax private"
+msgstr "Fax súkromný"
+
+#"20_email" =
+msgid "Email"
+msgstr "Email"
+
+#"20_processing" =
+msgid "processing"
+msgstr "spracovávam"
+
+#"21_email" =
+msgid "Email"
+msgstr "Email"
+
+#"25_done" =
+msgid "done"
+msgstr "hotovo"
+
+#"25_isdn" =
+msgid "ISDN"
+msgstr "ISDN"
+
+#"27_reactivated" =
+msgid "reactivated"
+msgstr "Reaktivované"
+
+#"30_archived" =
+msgid "archived"
+msgstr "archivované"
+
+#"AddressAccessPreferences" =
+msgid "Default Access Preferences"
+msgstr "Východzie nastavenie prístupu"
+
+#"AddressPreferences" =
+msgid "Company/Contact Preferences"
+msgstr "Spoločnosť/Nastavenia kontaktu"
+
+#"Contacts" =
+msgid "Contacts"
+msgstr "Kontakty"
+
+#"EditEnterpriseLabel" =
+msgid "Edit Company"
+msgstr "Upraviť spoločnosť"
+
+#"EnterpriseEditorAssignTitle" =
+msgid "Person Assignment"
+msgstr "Priradenie osoby"
+
+#"EnterpriseEditorTitle" =
+msgid "Company Editor"
+msgstr "Editor spoločnosti"
+
+#"EnterpriseSearchPageTitle" =
+msgid "Company Search (wizard mode)"
+msgstr "Vyhľadávanie spoločnosti (režim sprievodcu)"
+
+#"Enterprises" =
+msgid "Companies"
+msgstr "Spoločnosti"
+
+#"ExtendedView" =
+msgid "Show Companies"
+msgstr "Zobraziť spoločnosti"
+
+#"FormLetterLink" =
+msgid "Formletter"
+msgstr "Formulárový list"
+
+#"LSWAddressEditor" =
+msgid "Edit Address"
+msgstr "Upraviť adresy"
+
+#"LSWAddressPreferences" =
+msgid "Contacts/Enterp. Pref."
+msgstr "Kontakty/Nastavenia podniku"
+
+#"LSWEnterpriseAdvancedSearch" =
+msgid "Advanced Search for Companies"
+msgstr "Rozšírené hľadanie pre spoločnosti"
+
+#"LSWEnterpriseEditor" =
+msgid "Edit Company"
+msgstr "Upraviť spoločnosť"
+
+#"LSWEnterpriseSearchPage" =
+msgid "Company Search (wizard mode)"
+msgstr "Vyhľadávanie spoločnosti (režim sprievodcu)"
+
+#"LSWEnterpriseViewer" =
+msgid "View Company"
+msgstr "Zobraziť spoločnosť"
+
+#"LSWPersonAdvancedSearch" =
+msgid "Advanced Search for Contacts"
+msgstr "Rozšírené hľadanie pre kontakty"
+
+#"LSWPersonEditor" =
+msgid "Edit Person"
+msgstr "Upraviť osobu"
+
+#"LSWPersonViewer" =
+msgid "View Person"
+msgstr "Zobraziť osobu"
+
+#"LSWPersons" =
+msgid "Contacts"
+msgstr "Kontakty"
+
+#"NO" =
+msgid "no"
+msgstr "nie"
+
+#"SkyBusinessCardGathering" =
+msgid "Card Gathering"
+msgstr "Zber kariet"
+
+#"SkyContactImportUploadPage" =
+msgid "Import contacts"
+msgstr "Importovať kontakty"
+
+#"SkyTelephoneEditor" =
+msgid "Edit Tel./Fax"
+msgstr "Upraviť Tel./Fax"
+
+#"YES" =
+msgid "yes"
+msgstr "áno"
+
+#"account" =
+msgid "Account"
+msgstr "Účet"
+
+#"accountingInfo" =
+msgid "Accounting Information"
+msgstr "Účtovné informácie"
+
+#"action" =
+msgid "Action"
+msgstr "Činnosť"
+
+#"actor" =
+msgid "Actor"
+msgstr "Aktér"
+
+#"actualWork" =
+msgid "Actual Work"
+msgstr "Aktuálna práca"
+
+#"addPersonsLabel" =
+msgid "add Persons"
+msgstr "pridať osoby"
+
+#"address" =
+msgid "Address"
+msgstr "Adresa"
+
+#"addressClipboardFormat" =
+msgid "address clipboard format"
+msgstr "adresa formát schránky"
+
+#"addressClipboardFormatHelp" =
+msgid "available wildcards: $name1$, $name2$, $name3$, $street$, $zip$, $city$, $country$, $state$, $type$"
+msgstr "dostupné zástupné znaky: $name1$, $name2$, $name3$, $street$, $zip$, $city$, $country$, $state$, $type$"
+
+#"addressType" =
+msgid "Addresstype"
+msgstr "Typ adresy"
+
+#"address_city" =
+msgid "City"
+msgstr "Obec"
+
+#"address_country" =
+msgid "Country"
+msgstr "Krajina"
+
+#"address_name1" =
+msgid "Name 1"
+msgstr "Názov 1"
+
+#"address_name2" =
+msgid "Name 2"
+msgstr "Názov 2"
+
+#"address_name3" =
+msgid "Name 3"
+msgstr "Názov 3"
+
+#"address_state" =
+msgid "State"
+msgstr "Štát"
+
+#"address_street" =
+msgid "Street"
+msgstr "Ulica"
+
+#"address_zip" =
+msgid "Zip"
+msgstr "PSČ"
+
+#"addresseditor_saveButtonLabel" =
+msgid "save"
+msgstr "uložiť"
+
+#"addresseditor_title" =
+msgid "Address Editor"
+msgstr "Editor adries"
+
+#"addressesInCompanyEditor" =
+msgid "Addresses in Person/Company Editor"
+msgstr "Adresy v editore pre osoby/spoločnosti"
+
+#"addresspreferences_title" =
+msgid "Address Preferences"
+msgstr "Nastavenia adresy"
+
+#"addresstype_bill" =
+msgid "Bill address"
+msgstr "Fakturačná adresa"
+
+#"addresstype_location" =
+msgid "Location address"
+msgstr "Adresa sídla"
+
+#"addresstype_mailing" =
+msgid "Mailing address"
+msgstr "Poštová adresa"
+
+#"addresstype_private" =
+msgid "Private address"
+msgstr "Súkromná adresa"
+
+#"addresstype_ship" =
+msgid "Ship address"
+msgstr "Adresa pre doručenie"
+
+#"addressviewer_noeditpermission" =
+msgid "no editpermissions"
+msgstr "nedostatočné práva pre úpravu"
+
+#"advertising_medium" =
+msgid "Advertising medium"
+msgstr "Reklamné médium"
+
+#"age" =
+msgid "Age"
+msgstr "Vek"
+
+#"allPhones" =
+msgid "all Phones/Fax"
+msgstr "všetky telefóny/faxy"
+
+#"appropriation_request" =
+msgid "Appropriation request"
+msgstr "Požiadavka na povolenie"
+
+#"appropriation_request_comment" =
+msgid "Appropr. req. comment"
+msgstr "Poznámka k požiadavke na povolenie"
+
+#"associatedCompanies" =
+msgid "Associated Companies"
+msgstr "Spriaznené spoločnosti"
+
+#"associatedContacts" =
+msgid "Associated Contacts"
+msgstr "Spriaznené kontakty"
+
+#"attributes" =
+msgid "attributes"
+msgstr "atribúty"
+
+#"bank" =
+msgid "Bank"
+msgstr "Banka"
+
+#"bankCode" =
+msgid "Bankcode"
+msgstr "Kód banky"
+
+#"bank_code" =
+msgid "Bankcode"
+msgstr "Kód banky"
+
+#"bank_comment" =
+msgid "Bank comment"
+msgstr "Komentár k banke"
+
+#"bill" =
+msgid "Bill address"
+msgstr "Fakturačná adresa"
+
+#"birthday" =
+msgid "Birthday"
+msgstr "Narodeniny"
+
+#"blockSize" =
+msgid "Number of listitems"
+msgstr "Počet položiek v zozname"
+
+#"branch" =
+msgid "Company"
+msgstr "Spoločnosť"
+
+#"branche" =
+msgid "Branche"
+msgstr "Odvetvie"
+
+#"branche_other" =
+msgid "Other branche"
+msgstr "Iné odvetvie"
+
+#"cancelButtonLabel" =
+msgid "cancel"
+msgstr "zrušiť"
+
+#"category" =
+msgid "Category"
+msgstr "Kategória"
+
+#"categoryLabel" =
+msgid "Category"
+msgstr "Kategória"
+
+#"chamber_of_trade" =
+msgid "Chamber"
+msgstr "Komora"
+
+#"chamber_of_trade_comment" =
+msgid "Chamber comment"
+msgstr "Poznámka ku komore"
+
+#"chamber_of_trade_state" =
+msgid "Chamber state"
+msgstr "Štát komory"
+
+#"chooseEnterprise" =
+msgid "choose Company&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+msgstr "vybrať spoločnosť&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+
+#"chooseMailingAddress" =
+msgid "choose Mailing Address"
+msgstr "vybrať poštovú adresu"
+
+#"choosePrivateAddress" =
+msgid "choose Private Address"
+msgstr "vybrať súkromnú adresu"
+
+#"chooseProjects" =
+msgid "Choose Projects"
+msgstr "Vybrať projekty"
+
+#"city" =
+msgid "City"
+msgstr "Obec"
+
+#"clearButtonLabel" =
+msgid "Clear form"
+msgstr "Vyčistiť formulár"
+
+#"clip" =
+msgid "clip"
+msgstr "klip"
+
+#"comment" =
+msgid "Comment"
+msgstr "Komentár"
+
+#"common_gathering_title" =
+msgid "Common Attributes"
+msgstr "Spoločné atribúty"
+
+#"company_gathering_title_new" =
+msgid "New Company"
+msgstr "Nová spoločnosť"
+
+#"company_gathering_title_search" =
+msgid "Company Search"
+msgstr "Vyhľadávanie spoločnosti"
+
+#"competition_products" =
+msgid "Competition products"
+msgstr "Konkurenčné produkty"
+
+#"completionDate" =
+msgid "Completion Date"
+msgstr "Dátum vyhotovenia"
+
+#"contact" =
+msgid "Contact"
+msgstr "Kontakt"
+
+#"contact_type" =
+msgid "Contact type"
+msgstr "Typ kontaktu"
+
+#"copyIntoClipboard" =
+msgid "Copy into clipboard"
+msgstr "Kopírovať do schránky"
+
+#"country" =
+msgid "Country"
+msgstr "Krajina"
+
+#"creationDate" =
+msgid "Date"
+msgstr "Dátum"
+
+#"creator" =
+msgid "Creator"
+msgstr "Zhotoviteľ"
+
+#"date_of_purchase" =
+msgid "Date of purchase"
+msgstr "Dátum nákupu"
+
+#"decision" =
+msgid "Decision"
+msgstr "Rozhodnutie"
+
+#"default_pattern" =
+msgid "Default pattern"
+msgstr "Východzia vzorka"
+
+#"degree" =
+msgid "Degree"
+msgstr "Stupeň"
+
+#"deleteButtonLabel" =
+msgid "delete"
+msgstr "zmazať"
+
+#"deleteFolder" =
+msgid "delete folder"
+msgstr "zmazať priečinok"
+
+#"deleteImage" =
+msgid "Delete Picture"
+msgstr "Zmazať obrázok"
+
+#"description" =
+msgid "Description"
+msgstr "Popis"
+
+#"documents" =
+msgid "documents"
+msgstr "dokumenty"
+
+#"download" =
+msgid "Download"
+msgstr "Stiahnuť"
+
+#"downloadFormletter" =
+msgid "Download Formletter"
+msgstr "Stiahnuť formulár"
+
+#"edit" =
+msgid "edit"
+msgstr "upraviť"
+
+#"editFolder" =
+msgid "edit folder"
+msgstr "upraviť priečinok"
+
+#"editorSearchResult" =
+msgid "Search results in Person/Company Editor"
+msgstr "Hľadať výsledky v editore osôb/spoločností"
+
+#"ego_infoline" =
+msgid "Ego Infoline"
+msgstr "Ego Infoline"
+
+#"email" =
+msgid "Email"
+msgstr "Email"
+
+#"email1" =
+msgid "Email 1"
+msgstr "Email 1"
+
+#"email2" =
+msgid "Email 2"
+msgstr "Email 2"
+
+#"email3" =
+msgid "Email 3"
+msgstr "Email 3"
+
+#"emptyTrash" =
+msgid "empty trash"
+msgstr "vyprázdniť kôš"
+
+#"endDate" =
+msgid "End date"
+msgstr "Koncový dátum"
+
+#"enterprise" =
+msgid "Company"
+msgstr "Spoločnosť"
+
+#"enterpriseSearch" =
+msgid "Company Search"
+msgstr "Vyhľadávanie spoločnosti"
+
+#"enterpriseView" =
+msgid "Company"
+msgstr "Spoločnosť"
+
+#"enterpriseViewer" =
+msgid "Company view"
+msgstr "Zobrazenie spoločnosť"
+
+#"enterprise_name" =
+msgid "Name"
+msgstr "Názov"
+
+#"enterprise_number" =
+msgid "Number"
+msgstr "Číslo"
+
+#"enterprise_state" =
+msgid "Company state"
+msgstr "Štát spoločnosti"
+
+#"enterprise_state_comment" =
+msgid "Company state comment"
+msgstr "Poznámka pre štát spoločnosti"
+
+#"enterprise_sub_view" =
+msgid "Company Subview"
+msgstr "Podobrazenie spoločnosti"
+
+#"enterprises" =
+msgid "companies"
+msgstr "spoločnosti"
+
+#"enterpriseviewer_logsLabel" =
+msgid "Logs"
+msgstr "Záznamy"
+
+#"enterpriseviewer_logsTitle" =
+msgid "Company Logs"
+msgstr "Záznamy spoločnosti"
+
+#"enterpriseviewer_personlabel" =
+msgid "Contacts"
+msgstr "Kontakty"
+
+#"enterpriseviewer_personlist" =
+msgid "Contacts list"
+msgstr "Zoznam kontaktov"
+
+#"enterpriseviewer_projectlabel" =
+msgid "Contacts"
+msgstr "Kontakty"
+
+#"enterpriseviewer_projectlist" =
+msgid "Contacts list"
+msgstr "Zoznam kontaktov"
+
+#"enterpriseviewer_tab_attributes" =
+msgid "attributes subview"
+msgstr "podzobrazenie atribútov"
+
+#"enterpriseviewer_tab_bill" =
+msgid "bill address"
+msgstr "Fakturačná adresa"
+
+#"enterpriseviewer_tab_documents" =
+msgid "documents subview"
+msgstr "podzobrazenie dokumentov"
+
+#"enterpriseviewer_tab_jobs" =
+msgid "tasks subview"
+msgstr "podzobrazenie úloh"
+
+#"enterpriseviewer_tab_overview" =
+msgid "overview subview"
+msgstr "podzobrazenie prehľadu"
+
+#"enterpriseviewer_tab_persons" =
+msgid "contact persons"
+msgstr "kontaktné osoby"
+
+#"enterpriseviewer_tab_projects" =
+msgid "projects subview"
+msgstr "podzobrazenie projektov"
+
+#"enterpriseviewer_tab_ship" =
+msgid "ship address"
+msgstr "Adresa pre doručenie"
+
+#"enterpriseviewer_tab_urls" =
+msgid "urls"
+msgstr "Internetové URL"
+
+#"enterpriseviewer_title" =
+msgid "Company Viewer"
+msgstr "Prehliadač spoločnosťi"
+
+#"evaluation_status" =
+msgid "Evaluation status"
+msgstr "Status vyhodnocovania"
+
+#"executant" =
+msgid "Owner"
+msgstr "Vlastník"
+
+#"favoured_contact_type" =
+msgid "Favoured contact type"
+msgstr "Obľúbený typ kontaktu"
+
+#"female" =
+msgid "female"
+msgstr "žena"
+
+#"first" =
+msgid "first "
+msgstr "prvé"
+
+#"firstName" =
+msgid "Firstname"
+msgstr "Meno"
+
+#"firstname" =
+msgid "Firstname"
+msgstr "Meno"
+
+#"folderTitle" =
+msgid "Foldername"
+msgstr "Názov priečinka"
+
+#"formletterButtonLabel" =
+msgid "Formletter"
+msgstr "Formulárový list"
+
+#"formletter_kind" =
+msgid "Form Letter"
+msgstr "Formulárový list"
+
+#"forward_request_to" =
+msgid "Forward to"
+msgstr "Poslať ďalej"
+
+#"framemaker" =
+msgid "Framemaker"
+msgstr "Rámcovač"
+
+#"function" =
+msgid "Position"
+msgstr "Umiestnenie"
+
+#"gathering" =
+msgid "Business Card Gathering"
+msgstr "Zber vizitiek"
+
+#"import_action_abort" =
+msgid "abort import"
+msgstr "prerušiť import"
+
+#"import_action_cancel" =
+msgid "cancel"
+msgstr "zrušiť"
+
+#"import_action_ignoreRecord" =
+msgid "ignore record"
+msgstr "ignorovať záznam"
+
+#"import_action_import" =
+msgid "import"
+msgstr "import"
+
+#"import_action_importRecord" =
+msgid "import record"
+msgstr "importovať záznam"
+
+#"import_action_importRecordPrivate" =
+msgid "import record as private"
+msgstr "importovať záznam ako súkromný"
+
+#"import_action_importRecordPublic" =
+msgid "import record as public"
+msgstr "importovať záznam ako verejný"
+
+#"import_action_markDuplicate" =
+msgid "mark as duplicate"
+msgstr "označiť ako duplicitný"
+
+#"import_action_openInBussinessCardGathering" =
+msgid "open in bussiness card gathering"
+msgstr "Otvoriť v zbere vizitiek"
+
+#"import_action_openInEditor" =
+msgid "open record in editor"
+msgstr "Otvoriť záznam v editore"
+
+#"import_action_proceed" =
+msgid "proceed import"
+msgstr "pokračovať v importe"
+
+#"import_action_skip" =
+msgid "skip record"
+msgstr "preskočiť záznam"
+
+#"import_action_upload" =
+msgid "upload"
+msgstr "načítať"
+
+#"import_attribute_column" =
+msgid "column"
+msgstr "stĺpec"
+
+#"import_error_failedWritingImportRule" =
+msgid "failed writing import rule"
+msgstr "Neúspešné zapísanie importného pravidla"
+
+#"import_error_missingAttributes" =
+msgid "missing attributes"
+msgstr "chýbajúce atribúty"
+
+#"import_error_missingData" =
+msgid "missing import data"
+msgstr "chýbajúce importné dáta"
+
+#"import_error_missingFile" =
+msgid "missing import file"
+msgstr "chýbajúci importný súbor"
+
+#"import_error_missingMapping" =
+msgid "missing attribute mapping"
+msgstr "chýbajúce priradenie atribútov"
+
+#"import_error_noData" =
+msgid "File contains no data"
+msgstr "Súbor neobsahuje žiadne dáta"
+
+#"import_label_alreadyImported" =
+msgid "imported records"
+msgstr "importované záznamy"
+
+#"import_label_attribute" =
+msgid "attribute"
+msgstr "atribút"
+
+#"import_label_beTolerant" =
+msgid "be tolerant"
+msgstr "byť tolerantný"
+
+#"import_label_beTolerantDesc" =
+msgid "be tolerant about non terminated quotes (values may not contain the separator character)"
+msgstr "byť tolerantný voči neukončeným úvodzovkám (niektoré hodnoty nemusia obsahovať znak oddeľovača)"
+
+#"import_label_example" =
+msgid "example"
+msgstr "príklad"
+
+#"import_label_file" =
+msgid "file"
+msgstr "súbor"
+
+#"import_label_fileType" =
+msgid "file format"
+msgstr "formát súboru"
+
+#"import_label_hasOldImportData" =
+msgid "unimported data excists. with a new import those entries will be deleted."
+msgstr "existujú neimportované dáta. s novým importom budú tieto záznamy zmazané."
+
+#"import_label_ignored" =
+msgid "ignored records"
+msgstr "ignorované záznamy"
+
+#"import_label_importEnterprise" =
+msgid "Import companies"
+msgstr "Importovať spoločnosti"
+
+#"import_label_importPerson" =
+msgid "Import persons"
+msgstr "Importovať osoby"
+
+#"import_label_importPrivate" =
+msgid "import private"
+msgstr "importovať súkromne"
+
+#"import_label_mapping" =
+msgid "mapping"
+msgstr "priradenie"
+
+#"import_label_markedDuplicate" =
+msgid "duplicate records"
+msgstr "dvojité záznamy"
+
+#"import_label_moMoreRecords" =
+msgid "no more records to import"
+msgstr "neexistujú ďalšie záznamy pre import"
+
+#"import_label_nextRecord" =
+msgid "next record"
+msgstr "ďalší záznam"
+
+#"import_label_recordsToProceed" =
+msgid "records to proceed"
+msgstr "záznamy na spracovanie"
+
+#"import_label_similarRecords" =
+msgid "similar records in OGo"
+msgstr "podobné záznamy v OGo"
+
+#"import_type_auto" =
+msgid "auto"
+msgstr "automaticky"
+
+#"import_type_defaultcsv" =
+msgid "comma-separated values"
+msgstr "hodnoty oddelené čiarkou"
+
+#"import_type_defaulttsv" =
+msgid "tab-separated values"
+msgstr "hodnoty oddelené tabulátorom"
+
+#"import_type_msoutlookcsv" =
+msgid "Outlook, comma-separated values"
+msgstr "Outlook, hodnoty oddelené čiarkou"
+
+#"import_type_msoutlookexpcsv" =
+msgid "Outlook Express/Windows Addressbook, semicolon-separated values"
+msgstr "Outlook Express/Windows Addressbook, hodnoty oddelené bodkočiarkou"
+
+#"import_type_netscapecsv" =
+msgid "Netscape, comma-separated values"
+msgstr "Netscape, hodnoty oddelené čiarkou"
+
+#"import_type_netscapetsv" =
+msgid "Netscape, tab-separated values"
+msgstr "Netscape, hodnoty oddelené tabulátorom"
+
+#"import_windowtitle" =
+msgid "Import contacts"
+msgstr "Importovať kontakty"
+
+#"inAddressSubView" =
+msgid "in sub view 'address'"
+msgstr "v podzobrazení 'adresy'"
+
+#"inAttributesSubView" =
+msgid "in sub view 'attributes'"
+msgstr "v podzobrazení 'atribútov'"
+
+#"info" =
+msgid "Info"
+msgstr "Informácie"
+
+#"infoline" =
+msgid "Infoline"
+msgstr "Infolinka"
+
+#"infoline_comment_intern" =
+msgid "Comment internal"
+msgstr "Interná poznámka"
+
+#"information_package" =
+msgid "Information package"
+msgstr "Informačný balíček"
+
+#"jobComment" =
+msgid "Comment"
+msgstr "Komentár"
+
+#"jobStatus" =
+msgid "Status"
+msgstr "Stav"
+
+#"jobs" =
+msgid "tasks"
+msgstr "úlohy"
+
+#"keywords" =
+msgid "Categories"
+msgstr "Kategórie"
+
+#"kilometers" =
+msgid "Travel Kilometers"
+msgstr "Cestovné kilometre"
+
+#"kilometersLabel" =
+msgid "kilometer(s)"
+msgstr "kilometer(tre)"
+
+#"kind" =
+msgid "Kind"
+msgstr "Druh"
+
+#"last" =
+msgid "last"
+msgstr "posledné"
+
+#"lastName" =
+msgid "Lastname"
+msgstr "Priezvisko"
+
+#"link" =
+msgid "Link"
+msgstr "Odkaz"
+
+#"location" =
+msgid "Location"
+msgstr "Umiestnenie"
+
+#"location_address" =
+msgid "Location address"
+msgstr "Adresa sídla"
+
+#"locationaddresseditor_wizard_title" =
+msgid "Location Address (wizard mode)"
+msgstr "Adresa sídla (režim sprievodcu)"
+
+#"logText" =
+msgid "Log Message"
+msgstr "Správa zo záznamu"
+
+#"login" =
+msgid "Login"
+msgstr "Prihlásenie"
+
+#"loginStatus" =
+msgid "is account"
+msgstr "je účet"
+
+#"mailing" =
+msgid "mailing"
+msgstr "poštový"
+
+#"mailing_address" =
+msgid "Mailing address"
+msgstr "Poštová adresa"
+
+#"mailingaddresseditor_wizard_title" =
+msgid "Mailing Address (wizard mode)"
+msgstr "Poštová adresa (režim sprievodcu)"
+
+#"male" =
+msgid "male"
+msgstr "muž"
+
+#"matchmode_and" =
+msgid "match all words"
+msgstr "všetky zhodné slová"
+
+#"matchmode_or" =
+msgid "match one word"
+msgstr "jedno zhodné slovo"
+
+#"maxResults" =
+msgid "max. results"
+msgstr "max. výsledkov"
+
+#"middlename" =
+msgid "Middlename"
+msgstr "Prostredné meno"
+
+#"minutesLabel" =
+msgid "minute(s)"
+msgstr "minúta(ty)"
+
+#"moveFolder" =
+msgid "move folder"
+msgstr "presunúť priečinok"
+
+#"name" =
+msgid "Name"
+msgstr "Názov"
+
+#"name1" =
+msgid "Name 1"
+msgstr "Názov 1"
+
+#"name2" =
+msgid "Name 2"
+msgstr "Názov 2"
+
+#"name3" =
+msgid "Name 3"
+msgstr "Názov 3"
+
+#"nameHtmlMailPage" =
+msgid "Name"
+msgstr "Názov"
+
+#"new" =
+msgid "new"
+msgstr "nové"
+
+#"newButtonLabel" =
+msgid "new"
+msgstr "nové"
+
+#"newFolder" =
+msgid "new folder"
+msgstr "nový priečinok"
+
+#"newPattern" =
+msgid "Attributes"
+msgstr "Atribúty"
+
+#"new_pattern" =
+msgid "new pattern"
+msgstr "nová vzorka"
+
+#"newsletter" =
+msgid "Newsletter"
+msgstr "Noviny"
+
+#"next" =
+msgid "next"
+msgstr "ďalší"
+
+#"nickname" =
+msgid "Nickname"
+msgstr "Prezývka"
+
+#"noContact" =
+msgid "- no contact -"
+msgstr "- nie je kontakt -"
+
+#"noOfCols" =
+msgid "Number of columns"
+msgstr "Počet stĺpcov"
+
+#"noOfColsEditor" =
+msgid "No. of columns - Editor search results"
+msgstr "Počet stĺpcov - výsledky hľadania v editore"
+
+#"noOfColsViewer" =
+msgid "No. of columns - Patterns"
+msgstr "Počet stĺpcov - Vzorky"
+
+#"non_empty_only" =
+msgid "hide empty fields"
+msgstr "skryť prázdne polia"
+
+#"notify" =
+msgid "Notify"
+msgstr "Upozorniť"
+
+#"number" =
+msgid "Number"
+msgstr "Číslo"
+
+#"number_of_employed" =
+msgid "Number of employed"
+msgstr "Počet obsadených"
+
+#"number_of_users" =
+msgid "Number of users"
+msgstr "Počet užívateľov"
+
+#"objectVersion" =
+msgid "Version"
+msgstr "Verzia"
+
+#"overview" =
+msgid "overview"
+msgstr "prehľad"
+
+#"owner" =
+msgid "Owner"
+msgstr "Vlastník"
+
+#"palmCategory" =
+msgid "Palm Category"
+msgstr "Palm Kategória"
+
+#"palmSync" =
+msgid "Palm Sync"
+msgstr "Palm Synchronizácia"
+
+#"participants" =
+msgid "Participants"
+msgstr "Účastníci"
+
+#"pattern" =
+msgid "Pattern"
+msgstr "Vzorka"
+
+#"patternAlreadyExists" =
+msgid "Pattern already exists"
+msgstr "Vzorka už existuje"
+
+#"pattern_name" =
+msgid "Pattern name"
+msgstr "Názov vzorky"
+
+#"percentComplete" =
+msgid "Percent Complete"
+msgstr "Percent hotovo"
+
+#"percentLabel" =
+msgid "%"
+msgstr "%"
+
+#"personView" =
+msgid "Person"
+msgstr "Osoba"
+
+#"personViewer" =
+msgid "Person view"
+msgstr "Zobrazenie osoby"
+
+#"person_assignment_title" =
+msgid "Assign Persons"
+msgstr "Priradiť osoby"
+
+#"person_gathering_title" =
+msgid "Person"
+msgstr "Osoba"
+
+#"personeditor_categoryLabel" =
+msgid "Category"
+msgstr "Kategória"
+
+#"personeditor_commentLabel" =
+msgid "Comment"
+msgstr "Komentár"
+
+#"personeditor_contactLabel" =
+msgid "Contact"
+msgstr "Kontakt"
+
+#"personeditor_infoLabel" =
+msgid "Info"
+msgstr "Informácie"
+
+#"personeditor_privateLabel" =
+msgid "Private"
+msgstr "Súkromné"
+
+#"personeditor_readonlyLabel" =
+msgid "Readonly"
+msgstr "Len na čítanie"
+
+#"personeditor_saveButtonLabel" =
+msgid "save"
+msgstr "uložiť"
+
+#"personeditor_title" =
+msgid "Person Editor"
+msgstr "Editor osôb"
+
+#"personeditor_wizard_title" =
+msgid "Person Editor (wizard mode)"
+msgstr "Editor osôb (režim sprievodcu)"
+
+#"personeditro_cancelButtonLabel" =
+msgid "cancel"
+msgstr "zrušiť"
+
+#"personeditro_deleteButtonLabel" =
+msgid "delete"
+msgstr "zmazať"
+
+#"persons" =
+msgid "contacts"
+msgstr "kontakty"
+
+#"persons_new_person" =
+msgid "create new person"
+msgstr "vytvoriť novú osobu"
+
+#"persons_sub_view" =
+msgid "Person Subview"
+msgstr "Podzobrazenie osôb"
+
+#"persons_table_label" =
+msgid "Contacts"
+msgstr "Kontakty"
+
+#"persons_table_title" =
+msgid "Contacts"
+msgstr "Kontakty"
+
+#"persons_window_title" =
+msgid "Look for Contacts Data"
+msgstr "Hľadať dáta kontaktov"
+
+#"personviewer_appointments" =
+msgid "Termine"
+msgstr "Termín"
+
+#"personviewer_logsLabel" =
+msgid "Logs"
+msgstr "Záznamy"
+
+#"personviewer_logsTitle" =
+msgid "Person Logs"
+msgstr "Záznamy osôb"
+
+#"personviewer_personlabel" =
+msgid "Persons"
+msgstr "Osoby"
+
+#"personviewer_personlist" =
+msgid "Persons"
+msgstr "Osoby"
+
+#"personviewer_privateLabel" =
+msgid " (private)"
+msgstr " (súkromné)"
+
+#"personviewer_projectlabel" =
+msgid "Projects"
+msgstr "Projekty"
+
+#"personviewer_projectlist" =
+msgid "Projects"
+msgstr "Projekty"
+
+#"personviewer_tab_appointments" =
+msgid "Appointments"
+msgstr "Schôdzky"
+
+#"personviewer_tab_enterprises" =
+msgid "companies subview"
+msgstr "podzobrazenie spoločností"
+
+#"personviewer_tab_location" =
+msgid "location subview"
+msgstr "podzobrazenie umiestnenia"
+
+#"personviewer_tab_log" =
+msgid "change logs"
+msgstr "záznamy zmien"
+
+#"personviewer_tab_mail" =
+msgid "mails"
+msgstr "pošta"
+
+#"personviewer_tab_mailing" =
+msgid "mailing subview"
+msgstr "poštové podzobrazenie"
+
+#"personviewer_tab_person" =
+msgid "person subview"
+msgstr "podzobrazenie osôb"
+
+#"personviewer_tab_picture" =
+msgid "Picture"
+msgstr "Obrázok"
+
+#"personviewer_tab_private" =
+msgid "home address subview"
+msgstr "podzobrazenie domácej adresy"
+
+#"personviewer_tab_projects" =
+msgid "projects subview"
+msgstr "podzobrazenie projektov"
+
+#"personviewer_title" =
+msgid "Person Viewer"
+msgstr "Prehliadač osôb"
+
+#"picture" =
+msgid "picture"
+msgstr "obrázok"
+
+#"pictureUpload" =
+msgid "Picture Upload"
+msgstr "Načítať obrázok"
+
+#"previous" =
+msgid "previous"
+msgstr "predchádzajúci"
+
+#"priority" =
+msgid "Priority"
+msgstr "Dôležitosť"
+
+#"priority_1" =
+msgid "very high"
+msgstr "veľmi vysoká"
+
+#"priority_2" =
+msgid "high"
+msgstr "vysoká"
+
+#"priority_3" =
+msgid "average"
+msgstr "normálna"
+
+#"priority_4" =
+msgid "low"
+msgstr "nízka"
+
+#"priority_5" =
+msgid "very low"
+msgstr "veľmi nízka"
+
+#"private" =
+msgid "private"
+msgstr "súkromné"
+
+#"privateLabel" =
+msgid "Private"
+msgstr "Súkromné"
+
+#"private_address" =
+msgid "Private address"
+msgstr "Súkromná adresa"
+
+#"privateaddresseditor_wizard_title" =
+msgid "Private Address (wizard mode)"
+msgstr "Súkromná adresa (režim sprievodcu)"
+
+#"prognosed_end_evaluation" =
+msgid "Prognosed end of evaluation period"
+msgstr "Predpokladaný koniec vyhodnocovacieho obdobia"
+
+#"project" =
+msgid "Project"
+msgstr "Projekt"
+
+#"projectCode" =
+msgid "Projectcode"
+msgstr "Kód projektu"
+
+#"projectLeader" =
+msgid "Projectlead"
+msgstr "Vedúci projektu"
+
+#"project_assignment_title" =
+msgid "Assign Projects"
+msgstr "Priradiť projekt"
+
+#"project_name" =
+msgid "Name"
+msgstr "Názov"
+
+#"projects" =
+msgid "projects"
+msgstr "projekty"
+
+#"prospect_category" =
+msgid "Prospect category"
+msgstr "Kategória prospektu"
+
+#"prospect_category_other" =
+msgid "Other prospect category"
+msgstr "Iná kategória prospektu"
+
+#"purchased_product" =
+msgid "Purchased product"
+msgstr "Kúpený produkt"
+
+#"qualification" =
+msgid "Qualification"
+msgstr "Kvalifikácia"
+
+#"readonly" =
+msgid "read only"
+msgstr "len na čítanie"
+
+#"readonlyLabel" =
+msgid "Readonly"
+msgstr "Len na čítanie"
+
+#"realized_turnover" =
+msgid "Realized turnover"
+msgstr "Realizovaný obrat"
+
+#"reason_for_decision" =
+msgid "Reason for decision"
+msgstr "Dôvod pre rozhodnutie"
+
+#"reason_for_testing" =
+msgid "Reason for testing"
+msgstr "Dôvod pre testovanie"
+
+#"requirements" =
+msgid "Requirements"
+msgstr "Požiadavky"
+
+#"requirements_other" =
+msgid "Other requirements"
+msgstr "Ostatné požiadavky"
+
+#"resign" =
+msgid "resign"
+msgstr "rezignovať"
+
+#"resignInactive" =
+msgid "no permission to resign"
+msgstr "nedostatočné práva na rezignáciu"
+
+#"resources" =
+msgid "Resources"
+msgstr "Zdroje"
+
+#"sales_activity" =
+msgid "Sales activity"
+msgstr "Predajná aktivita"
+
+#"salutation" =
+msgid "Salutation"
+msgstr "Oslovenie"
+
+#"saveButtonLabel" =
+msgid "save"
+msgstr "uložiť"
+
+#"savedSearches" =
+msgid "quicklist -->"
+msgstr "rýchly zoznam -->"
+
+#"savedSearchesAdd" =
+msgid "add to quicklist"
+msgstr "pridať na rýchly zoznam"
+
+#"savedSearchesDelete" =
+msgid "remove from quicklist"
+msgstr "odstrániť z rýchleho zoznamu"
+
+#"savedSearchesShow" =
+msgid "show"
+msgstr "ukázať"
+
+#"search" =
+msgid "search"
+msgstr "hľadať"
+
+#"searchButtonLabel" =
+msgid "search"
+msgstr "hľadať"
+
+#"searchCompanyButtonLabel" =
+msgid "search"
+msgstr "hľadať"
+
+#"searchContactButtonLabel" =
+msgid "search contact"
+msgstr "hľadať kontakt"
+
+#"searchEnterprise" =
+msgid "search for company"
+msgstr "hľadať spoločnosť"
+
+#"searchPersonsLabel" =
+msgid "search persons"
+msgstr "hľadať osoby"
+
+#"searchProjects" =
+msgid "search projects"
+msgstr "hľadať projekty"
+
+#"send" =
+msgid "send"
+msgstr "odoslať"
+
+#"sensitivity" =
+msgid "Sensitivity"
+msgstr "Citlivosť"
+
+#"sensitivity_1" =
+msgid "normal"
+msgstr "normálne"
+
+#"sensitivity_2" =
+msgid "personal"
+msgstr "osobné"
+
+#"sensitivity_3" =
+msgid "private"
+msgstr "súkromné"
+
+#"sensitivity_4" =
+msgid "confidential"
+msgstr "dôverné"
+
+#"setAccessLabel" =
+msgid "Set permissions (r/w)"
+msgstr "Nastaviť oprávnenia (r/w)"
+
+#"several_locations" =
+msgid "Several locations"
+msgstr "Niekoľko umiestnení"
+
+#"sex" =
+msgid "Gender"
+msgstr "Pohlavie"
+
+#"ship" =
+msgid "Ship address"
+msgstr "Adresa pre doručenie"
+
+#"size" =
+msgid "Size"
+msgstr "Veľkosť"
+
+#"skyrixUser" =
+msgid "OGo Account"
+msgstr "OGo účet"
+
+#"startDate" =
+msgid "Start"
+msgstr "Spustiť"
+
+#"starttime_evaluation" =
+msgid "Start time of evaluation"
+msgstr "Počiatočný čas vyhodnocovania"
+
+#"state" =
+msgid "State"
+msgstr "Štát"
+
+#"street" =
+msgid "Street"
+msgstr "Ulica"
+
+#"suffix" =
+msgid "Suffix"
+msgstr "Prípona"
+
+#"technology_kind" =
+msgid "technologybased"
+msgstr "založené na technológii"
+
+#"tel_no_from" =
+msgid "Tel.-No. from"
+msgstr "Tel. číslo od"
+
+#"telephoneLabel" =
+msgid "Telephone"
+msgstr "Telefón"
+
+#"time_of_download" =
+msgid "Time of download"
+msgstr "Čas stiahnutia"
+
+#"title" =
+msgid "Title"
+msgstr "Nadpis"
+
+#"totalWork" =
+msgid "Total Work"
+msgstr "Celkom práce"
+
+#"trial_download" =
+msgid "Trial version download"
+msgstr "Stahnutie skúšobnej verzie"
+
+#"turnover" =
+msgid "Turnover"
+msgstr "Obrat"
+
+#"undefined" =
+msgid "undefined"
+msgstr "nedefinované"
+
+#"url" =
+msgid "Url"
+msgstr "Url"
+
+#"urls" =
+msgid "urls"
+msgstr "Internetové URL"
+
+#"viewer_config" =
+msgid "configure"
+msgstr "nastaviť"
+
+#"viewerconfig_cancel" =
+msgid "cancel"
+msgstr "zrušiť"
+
+#"viewerconfig_delete" =
+msgid "delete"
+msgstr "zmazať"
+
+#"viewerconfig_save" =
+msgid "save"
+msgstr "uložiť"
+
+#"viewerconfig_save_as_new" =
+msgid "save as new"
+msgstr "uložiť ako nové"
+
+#"windowTitleSkyTelephoneEditor" =
+msgid "Edit Telephone-/Fax Numbers"
+msgstr "Upraviť Telefónne/Faxové čísla"
+
+#"winword" =
+msgid "Winword"
+msgstr "Winword"
+
+#"wizard" =
+msgid "Wizard"
+msgstr "Sprievodca"
+
+#"wizardBack" =
+msgid "Back"
+msgstr "Späť"
+
+#"wizardCancel" =
+msgid "Cancel"
+msgstr "Zrušiť"
+
+#"wizardFinish" =
+msgid "Finish"
+msgstr "Koniec"
+
+#"wizardForward" =
+msgid "Forward"
+msgstr "Poslať ďalej"
+
+#"xlink_kd_nr" =
+msgid "Xlink no"
+msgstr "Xlink číslo"
+
+#"zip" =
+msgid "Zip"
+msgstr "PSČ"
+
