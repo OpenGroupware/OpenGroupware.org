@@ -1,5 +1,8 @@
 2004-09-08  Helge Hess  <helge.hess@opengroupware.org>
 
+	* Application.m: override WOHttpTransactionUseSimpleParser default and
+	  always use the simple parser (v5.1.39)
+
 	* XmlRpcCoding.subproj/SkyPersonDocument+XmlRpcCoding.m: removed
 	  duplicate generation of 'firstname', should fix OGo bug #911
 	  (v5.1.38)

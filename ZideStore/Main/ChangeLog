@@ -1,3 +1,8 @@
+2004-09-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* ZideStore.m: override WOHttpTransactionUseSimpleParser default and
+	  always use the simple parser (v1.3.80)
+
 2004-09-08  Helge Hess  <helge.hess@skyrix.com>
 
 	* ZideStore.m: do not warn on empty GNUstep env variables (v1.3.79)

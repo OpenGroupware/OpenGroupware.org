@@ -422,6 +422,14 @@
   }
 }
 
+- (BOOL)shouldUseSimpleHTTPParserForTransaction:(id)_tx {
+  /* 
+     Always use the simple parser for ZideStore, ignore
+     WOHttpTransactionUseSimpleParser default.
+  */
+  return YES;
+}
+
 - (WOResponse *)dispatchRequest:(WORequest *)_request {
   WOResponse *resp;
 

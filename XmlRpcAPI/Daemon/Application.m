@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "Application.h"
 #include "common.h"
@@ -48,12 +47,16 @@
   [super dealloc];
 }
 
+/* accessors */
+
 - (void)setCredentials:(NSString *)_credentials {
   ASSIGNCOPY(self->credentials, _credentials);
 }
 - (NSString *)credentials {
   return self->credentials;
 }
+
+/* sessions as cache objects */
 
 - (id)_initializeSessionInContext:(WOContext *)_ctx {
   id        cred       = nil;
@@ -77,6 +80,16 @@
     }
   }
   return session;
+}
+
+/* ensure simple parser */
+
+- (BOOL)shouldUseSimpleHTTPParserForTransaction:(id)_tx {
+  /* 
+     Always use the simple parser for ZideStore, ignore
+     WOHttpTransactionUseSimpleParser default.
+  */
+  return YES;
 }
 
 @end /* Application */
