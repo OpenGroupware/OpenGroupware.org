@@ -1,3 +1,8 @@
+2004-11-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* BaseUI/Main.wod (Form): properly specify that the form is not
+	  supposed to generate a session (?wosid=NO)
+
 2004-11-03  Helge Hess  <helge.hess@skyrix.com>
 
 	* fixed some theme templates which broke to the missing elements for
