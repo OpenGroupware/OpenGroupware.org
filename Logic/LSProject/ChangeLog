@@ -1,3 +1,8 @@
+2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* bundle-info.plist: removed LSGetAttachmentNameCommand class
+	  declaration (is in LSDocuments) (v5.1.31)
+
 2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSSetNoteCommand.m: improved error handling (v5.1.30)

@@ -68,6 +68,7 @@
         { name = LSSetDocumentCommand;                       },
         { name = LSSetFolderCommand;                         },
         { name = LSSetObjectLinkCommand;                     },
+        { name = LSGetAttachmentNameCommand;                 },
     );
   };
 }

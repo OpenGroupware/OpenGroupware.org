@@ -1,6 +1,6 @@
-# versionf ile
+# Version file
 
-SUBMINOR_VERSION:=30
+SUBMINOR_VERSION:=31
 
 # v5.0.27 requires LSTasks     v5.0.2
 # v5.0.27 requires LSDocuments v5.0.2

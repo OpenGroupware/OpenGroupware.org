@@ -62,7 +62,6 @@
         { name = LSFetchEnterpriseRelationCommand;           },
         { name = LSFetchPersonRelationCommand;               },
         { name = LSFetchTeamRelationCommand;                 },
-        { name = LSGetAttachmentNameCommand;                 },
         { name = LSGetFavoriteProjectIdsCommand;             },
         { name = LSGetProjectCommand;                        },
         { name = LSGetProjectForGlobalIDs;                   },
