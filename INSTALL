@@ -5,7 +5,7 @@ OpenGroupware.org Installation Guide
 Prerequisites
 =============
 
-SOPE 4.3
+SOPE 4.4
 - gnustep-make (gstep-make 1.9.2 or gstep-make 1.10 from www.gnustep.org)
 - Foundation library (eg ThirdParty/libFoundation)
 - libxml2/libxml2-dev
@@ -21,7 +21,7 @@ PDA
 =======================
 
 Logic
-- SOPE 4.3
+- SOPE 4.4
 
 DocumentAPI
 - Logic
@@ -54,7 +54,7 @@ a simple:
   make -s debug=yes strip=yes all
 
 Get a coffee, compiling all the OGo packages takes about 8 minutes on Debian 
-Athlon 1.8+ (and about 17 minutes on a MacOSX G4 1.25).
+Athlon 1.8+ (and about 17 minutes on a MacOSX G4 1.25, 13min on YDL).
 
 Installation:
 
