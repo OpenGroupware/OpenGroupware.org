@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxNote.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxNote.h"
 #include "common.h"
@@ -125,6 +124,7 @@ static BOOL debugOn = NO;
 
 - (id)PUTAction:(id)_ctx {
   LSCommandContext *cmdctx;
+  NSException      *error;
   NSData           *data;
   id               neo;
   
@@ -134,7 +134,7 @@ static BOOL debugOn = NO;
   }
   
   [self debugWithFormat:@"write file content: %@ ...", [self nameInContainer]];
-
+  
   if ((cmdctx = [self commandContextInContext:_ctx]) == nil) {
     [self logWithFormat:@"ERROR: got no command context ..."];
     return nil;
@@ -154,13 +154,27 @@ static BOOL debugOn = NO;
   [neo takeValue:[NSNumber numberWithInt:[data length]] forKey:@"fileSize"];
   [neo takeValue:data forKey:@"fileContent"];
   
-  [cmdctx runCommand:@"note::set" arguments:neo];
+  error = nil;
+  NS_DURING
+    [cmdctx runCommand:@"note::set" arguments:neo];
+  NS_HANDLER
+    error = [localException retain];
+  NS_ENDHANDLER;
   
   if ([cmdctx isTransactionInProgress]) {
-    if (![cmdctx commit]) {
-      return [NSException exceptionWithHTTPStatus:500
-			  reason:@"could not commit transaction!"];
+    if (error == nil) {
+      if (![cmdctx commit]) {
+	return [NSException exceptionWithHTTPStatus:500
+			    reason:@"could not commit transaction!"];
+      }
     }
+    else
+      [cmdctx rollback];
+  }
+  
+  if (error != nil) {
+    [self debugWithFormat:@"failed: %@", error];
+    return [error autorelease];
   }
   
   return [NSNumber numberWithBool:YES];
