@@ -1,0 +1,25 @@
+// $Id: OGoUIElements.strings,v 1.1 2004/09/03 09:10:01 cvsuser Exp $
+
+accountName        = "kontua";
+cal_birthday       = "urtemuga";
+cal_browse         = "bilatu";
+cal_completionDate = "epemuga";
+cal_cycleEndDate   = "zikloa amaitu";
+cal_duedate        = "epemuga";
+cal_endDate        = "amaitu";
+cal_enddate        = "amaitu";
+cal_from           = "hasi";
+cal_repeatEnddate  = "zikloa amaitu";
+cal_startDate      = "hasi";
+cal_startdate      = "hasi";
+cal_to             = "amaitu";
+deselectAll        = "aukeraketa ezabatu";
+first              = "lehenengoa";
+last               = "azkena";
+next               = "hurrengoa";
+of                 = "Guztira: ";
+page               = "Orrialdea";
+previous           = "aurrekoa";
+selectAll          = "denak aukeratu";
+sortColumn         = "zutabeak ordenatu";
+to                 = "-";

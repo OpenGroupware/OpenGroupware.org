@@ -1,0 +1,35 @@
+// $Id: OGoResourceScheduler.strings,v 1.1 2004/09/03 09:10:01 cvsuser Exp $
+
+April                    = "Apirila";
+August                   = "Abuztua";
+December                 = "Abendua";
+February                 = "Otsaila";
+January                  = "Urtarrila";
+July                     = "Uztaila";
+June                     = "Ekaina" ;
+March                    = "Martxoa";
+May                      = "Maiatza";
+November                 = "Azaroa";
+October                  = "Urria";
+ResourceScheduler        = "Baliabideak";
+September                = "Iraila";
+SkyResourceSchedulerPage = "Baliabideen egutegia";
+hchart                   = "Zerrenda";
+next_day                 = "hurrengo eguna";
+next_month               = "datorren hilabetean";
+next_week                = "datorren astean";
+next_year                = "datorren urtean";
+overview                 = "Gainbegiratu";
+previous_day             = "aurreko eguna";
+previous_month           = "aurreko hilabetean";
+previous_week            = "aurreko astean";
+previous_year            = "iaz";
+print_view               = "printview";
+proposal                 = "proposamena";
+showButtonLabel          = "erakutsi";
+this_day                 = "gaur";
+this_month               = "hil honetan";
+this_week                = "aste honetan";
+this_year                = "aurten";
+vchart                   = "Chart";
+weekTabLabelFormat       = "%d. astea";
