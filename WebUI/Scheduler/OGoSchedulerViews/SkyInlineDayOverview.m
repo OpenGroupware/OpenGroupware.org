@@ -51,12 +51,7 @@
 #include <OGoFoundation/LSWNavigation.h>
 #include <OGoFoundation/WOComponent+Commands.h>
 #include <LSFoundation/LSCommandContext.h>
-#include <NGExtensions/NGExtensions.h>
 #include <NGExtensions/EOFilterDataSource.h>
-#import <NGMime/NGMimeType.h>
-#import <EOControl/EOControl.h>
-#import <EOAccess/EOAccess.h>
-#import <NGObjWeb/NGObjWeb.h>
 
 @implementation SkyInlineDayOverview
 

@@ -20,11 +20,11 @@
 */
 
 #import <Foundation/Foundation.h>
-
 #include <EOControl/EOControl.h>
 #include <NGExtensions/NGExtensions.h>
-#include <NGObjWeb/NGObjWeb.h>
 
-#include <LSFoundation/LSCommandContext.h>
+#import <NGMime/NGMimeType.h>
 
-#include <OGoFoundation/OGoFoundation.h>
+#import <GDLAccess/GDLAccess.h>
+
+#include <OGoFoundation/OGoSession.h>

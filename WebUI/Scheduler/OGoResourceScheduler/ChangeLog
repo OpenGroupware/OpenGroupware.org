@@ -1,3 +1,7 @@
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyResourceSchedulerPage.m: minor code cleanups (v5.1.8)
+
 2004-08-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyResourceSchedulerPage.wo/SkyResourceSchedulerPage.html: fixed a

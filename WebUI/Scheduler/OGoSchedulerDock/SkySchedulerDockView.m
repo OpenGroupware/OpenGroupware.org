@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWComponent.h>
 
@@ -28,13 +27,7 @@
 }
 @end
 
-#include <OGoFoundation/LSWSession.h>
-#import <NGObjWeb/WOContext.h>
-#import <NGMime/NGMimeType.h>
-#import <EOAccess/EOAccess.h>
-#import <EOControl/EOControl.h>
-#import <NGExtensions/NGExtensions.h>
-#import <Foundation/Foundation.h>
+#include "common.h"
 
 @implementation SkySchedulerDockView
 
@@ -137,14 +130,16 @@
       }
     }
   }
-
+  
   if (isPerson) {
     /* if person is dropped, make new apt with person as participant */      
     NSDictionary *d;
+    NSArray *a;
 
-    d = [NSDictionary dictionaryWithObject:
-                      [NSArray arrayWithObjects:&obj count:1]
+    a = [[NSArray alloc] initWithObjects:&obj count:1];
+    d = [NSDictionary dictionaryWithObject:a
                       forKey:@"participants"];
+    [a release]; a = nil;
       
     [[self session] transferObject:d owner:self];
     

@@ -21,9 +21,6 @@
 // $Id$
 
 #include "SkyInlineAptDataSourceView.h"
-#include <OGoScheduler/SkyAptDataSource.h>
-#include "SkyAppointmentFormatter.h"
-
 
 @class NSCalendarDate;
 
@@ -42,6 +39,8 @@
 
 @end
 
+#include <OGoScheduler/SkyAptDataSource.h>
+#include "SkyAppointmentFormatter.h"
 #include <OGoFoundation/WOComponent+config.h>
 #include <OGoFoundation/LSWSession.h>
 #include <OGoFoundation/LSWNavigation.h>
@@ -49,10 +48,7 @@
 #include <LSFoundation/LSCommandContext.h>
 #include <NGExtensions/NGExtensions.h>
 #include <NGMime/NGMimeType.h>
-#import <EOControl/EOControl.h>
-#import <EOAccess/EOAccess.h>
-#import <NGObjWeb/NGObjWeb.h>
-#import <Foundation/Foundation.h>
+#include "common.h"
 
 @implementation SkyInlineDayChart
 
@@ -71,8 +67,12 @@
   [super dealloc];
 }
 
+/* notifications */
+
 - (void)syncAwake {
-  NSUserDefaults *ud = (id)[(id)[self session] userDefaults];
+  NSUserDefaults *ud;
+  
+  ud = (id)[(id)[self session] userDefaults];
   self->interval =
     [[ud objectForKey:@"scheduler_dayoverview_timeinterval"] doubleValue];
   self->dayStart =
@@ -118,7 +118,7 @@
   return @"#000000";
 }
 
-// additional accessors
+/* additional accessors */
 
 - (int)secondsFromTimeInterval:(NSTimeInterval)_interval {
   return [[NSNumber numberWithDouble:_interval] intValue];

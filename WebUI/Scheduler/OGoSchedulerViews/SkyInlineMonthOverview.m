@@ -54,13 +54,9 @@
 #include <OGoFoundation/LSWNavigation.h>
 #include <OGoFoundation/WOComponent+Commands.h>
 #include <LSFoundation/LSCommandContext.h>
-#include <NGExtensions/NGExtensions.h>
 #include <NGExtensions/EOFilterDataSource.h>
 #include <NGMime/NGMimeType.h>
-#import <EOControl/EOControl.h>
-#import <EOAccess/EOAccess.h>
-#import <NGObjWeb/NGObjWeb.h>
-#import <Foundation/Foundation.h>
+#include "common.h"
 
 @interface SkyInlineMonthOverview(PrivateMethods)
 - (void)setMonthDayCellColor:(NSString *)_color;

@@ -30,7 +30,6 @@
 #include "common.h"
 #include <LSFoundation/LSFoundation.h>
 #include <OGoFoundation/OGoFoundation.h>
-#include <GDLExtensions/GDLExtensions.h>
 #include <NGMime/NGMimeType.h>
 
 @implementation SkyAptResourceViewer

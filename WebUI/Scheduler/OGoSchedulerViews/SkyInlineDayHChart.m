@@ -47,13 +47,9 @@
 
 @end
 
-#include <EOControl/EOControl.h>
 #include <OGoScheduler/SkyAptDataSource.h>
 #include "SkyAppointmentFormatter.h"
 #include "common.h"
-#include <EOAccess/EOAccess.h>
-#include <OGoFoundation/LSWSession.h>
-#include <OGoFoundation/WOComponent+Commands.h>
 
 @implementation SkyInlineDayHChart
 
@@ -81,7 +77,7 @@
   NSUserDefaults *ud;
   
   [super syncAwake];
-
+  
   ud = [(id)[self session] userDefaults];
   self->maxInfoLength = 
     [ud integerForKey:@"scheduler_daychart_maxaptinfolength"];
@@ -141,9 +137,9 @@
   
   while (pos < cnt) {
     int width = pos * step;
-    if ((width >= self->dayStart) && (width <= self->dayEnd)) {
+    if ((width >= self->dayStart) && (width <= self->dayEnd))
       [ma addObject:[NSNumber numberWithInt:pos]];
-    }
+    
     pos++;
   }
   return ma;

@@ -14,32 +14,26 @@ WOBUNDLE_EXTENSION   = .lso
 SCHEDULER_LIBS += \
 	-lOGoScheduler -lOGoSchedulerTools \
 	-lOGoFoundation	-lOGoDocuments \
-	-lLSFoundation	\
-	-lGDLAccess	\
-	-lNGObjWeb	\
-	-lNGLdap -lNGMime -lNGStreams -lNGExtensions -lEOControl \
+	-lLSFoundation		\
+	-lGDLAccess		\
+	-lNGObjWeb		\
+	-lNGLdap -lNGMime	\
+	-lNGStreams -lNGExtensions -lEOControl \
 	-lXmlRpc
 
 ADDITIONAL_INCLUDE_DIRS += 		\
 	-I.. -I../..			\
-	-I../../../Logic/LSFoundation	\
-	-I../../../DocumentAPI		\
+	-I$(OGoROOT)/Logic/LSFoundation	\
+	-I$(OGoROOT)/DocumentAPI
 
-ADDITIONAL_LIB_DIRS     += -L../../OGoFoundation/$(GNUSTEP_OBJ_DIR)
+ADDITIONAL_LIB_DIRS += \
+	-L$(WebUIROOT)/OGoFoundation/$(GNUSTEP_OBJ_DIR) \
+	-L$(OGoROOT)/DocumentAPI/OGoScheduler/$(GNUSTEP_OBJ_DIR) \
+	-L$(OGoROOT)/DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR) \
+	-L$(OGoROOT)/Logic/LSScheduler/$(GNUSTEP_OBJ_DIR) \
+	-L$(OGoROOT)/Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
 
 #ADDITIONAL_WOBUNDLE_LIBS += $(SCHEDULER_LIBS)
 ADDITIONAL_BUNDLE_LIBS += $(SCHEDULER_LIBS)
 
 ADDITIONAL_CPPFLAGS += -Wall
-
-ifeq ($(GNUSTEP_TARGET_OS),mingw32)
-LSWAddress_BUNDLE_LIBS += \
-	-lNGMime \
-	-lNGStreams -lNGExtensions -lEOControl \
-	-lFoundation -lobjc
-endif
-
-ifeq ($(FOUNDATION_LIB),nx)
-BUNDLE_LIBS += -lFoundationExt
-ADDITIONAL_LDFLAGS += -framework Foundation
-endif

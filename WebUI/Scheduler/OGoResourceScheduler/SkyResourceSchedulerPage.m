@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWContentPage.h>
 
@@ -52,6 +51,7 @@
 @end
 
 #include "common.h"
+#include <NGMime/NGMimeType.h>
 #include <OGoScheduler/SkyHolidayCalculator.h>
 #include <OGoScheduler/SkyAptDataSource.h>
 
@@ -388,8 +388,8 @@
 }
 
 - (id)dayOverviewPrint {
-  id         page;
-  WOResponse *r;
+  WOComponent *page;
+  WOResponse  *r;
 
   page = [self pageWithName:@"SkyInlineDayOverview"];
   [page takeValue:self->dataSource forKey:@"dataSource"];
@@ -403,8 +403,8 @@
 }
 
 - (id)monthOverviewPrint {
-  id page;
-  WOResponse *r;
+  WOComponent *page;
+  WOResponse  *r;
 
   page = [self pageWithName:@"SkyPrintMonthOverview"];
   [page takeValue:self->dataSource forKey:@"dataSource"];
@@ -418,13 +418,12 @@
 }
 
 - (id)overviewPrint {
-  WOResponse *r;
+  if ([self->selectedTab isEqualToString:@"dayoverview"])
+    return [self dayOverviewPrint];
 
-  if ([self->selectedTab isEqualToString:@"dayoverview"]) {
-    r = [self dayOverviewPrint];
-  }
-  else if ([self->selectedTab isEqualToString:@"weekoverview"]) {
-    id         page;
+  if ([self->selectedTab isEqualToString:@"weekoverview"]) {
+    WOResponse  *r;
+    WOComponent *page;
 
     page = [self pageWithName:@"SkyPrintWeekOverview"];
     [page takeValue:self->dataSource forKey:@"dataSource"];
@@ -432,33 +431,34 @@
     [page takeValue:self->holidays   forKey:@"holidays"];
     r = [page generateResponse];
     [r setHeader:@"text/html" forKey:@"content-type"];
-  }
-  else if ([self->selectedTab isEqualToString:@"monthoverview"]) {
-    r = [self monthOverviewPrint];
+    return r;
   }
   
-  return r;
+  if ([self->selectedTab isEqualToString:@"monthoverview"])
+    return [self monthOverviewPrint];
+  
+  return nil;
 }
 
 - (id)appointmentProposal {
-  id ct;
+  WOComponent *ct;
   
   ct = [[self session] instantiateComponentForCommand:@"proposal"
                        type:[NGMimeType mimeType:@"eo/date"]];
   [[self context] takeValue:self->timeZone forKey:@"SkySchedulerTimeZone"];
 
-  if (ct) {
-    if (![self->dataSource isResCategorySelected]) {
-      [ct addResources:[self->dataSource resources]];
-    }
-    [ct setParticipantsFromGids:[self->dataSource companies]];
-    [self->dataSource clear];
-  }
-  
+  if (ct == nil)
+    return nil;
+
+  if (![self->dataSource isResCategorySelected])
+    [ct addResources:[self->dataSource resources]];
+
+  [ct setParticipantsFromGids:[self->dataSource companies]];
+  [self->dataSource clear];
   return ct;
 }
 
-// KV-Coding
+/* KVC */
 
 - (void)takeValue:(id)_value forKey:(id)_key {
   if ([_key isEqualToString:@"year"]) {

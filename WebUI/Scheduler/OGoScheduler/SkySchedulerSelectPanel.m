@@ -87,7 +87,6 @@
 @end
 
 #include "common.h"
-#import <GDLExtensions/GDLExtensions.h>
 #include <OGoFoundation/OGoFoundation.h>
 #include <LSFoundation/LSCommandContext.h>
 #include <OGoScheduler/SkyAppointmentQualifier.h>
