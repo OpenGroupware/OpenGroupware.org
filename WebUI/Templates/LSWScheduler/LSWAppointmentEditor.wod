@@ -23,7 +23,6 @@ EditorForm: WOForm {
   name = "editform";
 }
 
-AppointmentDayLabel: WOString { value = appointmentDayLabel; }
 
 WarningModeCond: WOConditional {
   condition = isInWarningMode;
@@ -55,10 +54,6 @@ AptDateSelection: SkyAptDateSelection {
   isNewOrNotCyclic = isNewOrNotCyclic;
   formName         = "editform";
   useAMPMDates     = showAMPMDates;
-}
-
-NotificationLabel: WOString {
-    value = labels.notificationTime;
 }
 
 MeasuresPopUp: WOPopUpButton {
@@ -122,12 +117,9 @@ HasParticipantsConditional: WOConditional {
   condition = hasParticipantSelection;
 }
 
-AppointmentOnLabel: WOString { value = labels.appointmentOnLabel; }
-CycleEndDateLabel:  WOString { value = labels.cycleEndDateLabel;  }
-
 IsNotNewConditional: WOConditional {
-        condition = isInNewMode;
-        negate    = YES;
+  condition = isInNewMode;
+  negate    = YES;
 }
 
 SaveSubmit: WOSubmitButton {
@@ -174,17 +166,17 @@ DeleteSubmitJS: JSConfirmPanel {
 }
 
 DateProposalSubmit: WOSubmitButton {
-        action           = appointmentProposal;
-        value            = labels.proposalButtonLabel;
-        class            = "button_narrow";
+  action = appointmentProposal;
+  value  = labels.proposalButtonLabel;
+  class  = "button_narrow";
 }
 
 SaveAllSubmit: WOSubmitButton {
-        action           = saveAllCyclic;
-        value            = labels.saveAllButtonLabel;
-        title            = labels.saveAllButtonLabel_title;
-        disabled         = isSaveDisabled;
-        class            = "button_wide";
+  action   = saveAllCyclic;
+  value    = labels.saveAllButtonLabel;
+  title    = labels.saveAllButtonLabel_title;
+  disabled = isSaveDisabled;
+  class    = "button_wide";
 }
 
 DeleteAllLink: WOHyperlink {
@@ -222,25 +214,17 @@ MoveDirectionPopUp: WOPopUpButton {
   string    = moveDirectionLabel;
 }
 MoveSubmit: WOSubmitButton {
-        action          = moveAppointment;
-        value           = labels.moveButtonLabel;
-        title           = labels.moveButtonLabel_title;
-        class           = "button_narrow";
+  action = moveAppointment;
+  value  = labels.moveButtonLabel;
+  title  = labels.moveButtonLabel_title;
+  class  = "button_narrow";
 }
 
 AttributeCell: SkyAttributeCell {}
 ValueCell:     SkyValueCell     {}
 ValueCell2:    SkyValueCell     { alignTop = YES; }
 
-TitleAttribute:      WOString { value = labels.title;    }
-LocationAttribute:   WOString { value = labels.location; }
-AbsenceAttribute:    WOString { value = labels.absence;  }
-CreatorAttribute:    WOString { value = labels.creator;  }
-AccessTeamAttribute: WOString { value = labels.accessTeamLabel; }
-CommentAttribute:    WOString { value = labels.comment;  }
-SearchParticipantsAttribute: WOString { value = labels.searchParticipants; }
-AddParticipantsAttribute:    WOString { value = labels.addParticipants;    }
-MoveAppointmentAttribute:    WOString { value = labels.moveAppointment;    }
+
 
 MainButtonRow: WOGenericContainer {
   elementName = "tr";
@@ -248,7 +232,7 @@ MainButtonRow: WOGenericContainer {
 }
 
 IgnoreConflictsCheckBox: WOCheckBox {
-        checked = ignoreConflicts;
+  checked = ignoreConflicts;
 }
 
 IgnoreConflictsPopUp: WOPopUpButton {
@@ -271,9 +255,6 @@ IgnoreConflictsButtons: WORadioButtonList {
   suffix    = "&nbsp;";
 }
 
-IgnoreConflictsLabel: WOString {
-  value = labels.ignoreConflictsLabel;
-}
 
 // aptType is not the repetition type .. !!
 ShowAptTypeSelectionCond: WOConditional {
@@ -289,10 +270,6 @@ AptTypeSelection: SkyAptTypeSelection {
 
 AbsenceCheckBox: WOCheckBox {
   checked = isAbsence;
-}
-
-ReachableLabel: WOString {
-  value = labels.reachable;
 }
 
 Font:     SkyConfigFont     {}
@@ -317,18 +294,13 @@ Cycle: WOString {
   escapeHTML = NO;
 }
 
-CycleAttribute:  WOString { value = labels.type;   }
-UntilLabel:      WOString { value = labels.until;  }
-BeforeLabel:     WOString { value = labels.before; }
-AttendanceLabel: WOString { value = labels.attendance; }
-
 CycleEndDateString: WOString {
   value = cycleEndDateString;
 }
 CycleEndDate: WOTextField {
-        name      = "cycleEndDate";
-        value     = cycleEndDate;
-        SIZE      = 12;
+  name  = "cycleEndDate";
+  value = cycleEndDate;
+  SIZE  = 12;
 }
 
 CalendarPopupCycleEndDateLink: SkyCalendarPopUp {
@@ -337,7 +309,7 @@ CalendarPopupCycleEndDateLink: SkyCalendarPopUp {
 }
 
 AttendanceChecker: WOCheckBox {
-    checked = isAttendance;
+  checked = isAttendance;
 }
 
 Calendar: SkyCalendarScript {}
@@ -436,3 +408,25 @@ DefaultAction: WOImageButton {
   filename = "invisible_space_1.gif";
   BORDER   = 0;
 }
+
+/* label strings */
+
+AbsenceAttribute:            WOString { value = labels.absence;            }
+AccessTeamAttribute:         WOString { value = labels.accessTeamLabel;    }
+AddParticipantsAttribute:    WOString { value = labels.addParticipants;    }
+AppointmentDayLabel:         WOString { value = appointmentDayLabel;       }
+AppointmentOnLabel:          WOString { value = labels.appointmentOnLabel; }
+AttendanceLabel:             WOString { value = labels.attendance;         }
+BeforeLabel:                 WOString { value = labels.before;             }
+CommentAttribute:            WOString { value = labels.comment;            }
+CreatorAttribute:            WOString { value = labels.creator;            }
+CycleAttribute:              WOString { value = labels.type;               }
+CycleEndDateLabel:           WOString { value = labels.cycleEndDateLabel;  }
+IgnoreConflictsLabel:        WOString { value = labels.ignoreConflictsLabel; }
+LocationAttribute:           WOString { value = labels.location;           }
+MoveAppointmentAttribute:    WOString { value = labels.moveAppointment;    }
+NotificationLabel:           WOString { value = labels.notificationTime;   }
+ReachableLabel:              WOString { value = labels.reachable;          }
+SearchParticipantsAttribute: WOString { value = labels.searchParticipants; }
+TitleAttribute:              WOString { value = labels.title;              }
+UntilLabel:                  WOString { value = labels.until;              }

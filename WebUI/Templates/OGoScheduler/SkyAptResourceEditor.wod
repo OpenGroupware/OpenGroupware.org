@@ -1,4 +1,4 @@
-// $Id: SkyAptResourceEditor.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
@@ -11,12 +11,13 @@ AptResourceForm : WOForm {
   name    = "aptResEditor";
 }
 
+// TODO: replace LSWObjectEditor with individual fields
 AptResourceEditor : LSWObjectEditor {
   labels     = labels;
   object     = aptResource;
   attributes = (
-    { key = "email";  label = "resourceEmail" },
-    { key = "emailSubject";  label = "resourceEmailSubject" },
+    { key = "email";        label = "resourceEmail" },
+    { key = "emailSubject"; label = "resourceEmailSubject" },
   );
 }
 

@@ -1,3 +1,7 @@
+2005-04-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWScheduler/LSWAppointmentEditor.wod: some template cleanups
+
 2005-04-04  Helge Hess  <helge.hess@skyrix.com>
 
 	* BaseUI: removed CVS ID comments, minor template cleanups
