@@ -12,7 +12,7 @@ Source:        %{ogo_source}
 Prefix:        %{ogo_prefix}
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildPreReq:   ogo-gnustep_make
-#UseSOPEsrc:   sope-4.4beta.1-voyager-r481.tar.gz
+#UseSOPEsrc:   sope-4.4beta.1-voyager-r496.tar.gz
 #UseSOPEspec:  sope-4.4beta.1-voyager.spec
 
 %description
