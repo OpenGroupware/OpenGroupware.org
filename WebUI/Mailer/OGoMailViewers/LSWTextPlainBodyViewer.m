@@ -84,53 +84,52 @@ static int UseFoundationStringEncodingForMimeText = -1;
 
 /* content */
 
+- (NSString *)bodyDataCharset {
+  NSString *charset;
+  
+  charset = [[[self partOfBody] contentType] valueOfParameter:@"charset"];
+  return ([charset length] > 0) ? charset : @"us-ascii";
+}
+
 - (NSString *)bodyAsString {
   NSString *s;
+  NSData   *data;
+  NSString *en;
 
-  s = nil;
-  
-  if ([self->body isKindOfClass:[NSString class]]) {
-    s = self->body;
+  if ([self->body isKindOfClass:[NSString class]])
+    return self->body;
+
+  if ([self->body isKindOfClass:[NSURL class]]) {
+    NSString *part;
+
+    part = [[[self->body query] componentsSeparatedByString:@"="] lastObject];
+    data = [self->source contentsOfPart:part];
   }
-  else {
-    NSData   *data;
-    NSString *en;
-    
-    if ([self->body isKindOfClass:[NSURL class]]) {
-      NSString *part;
+  else if ([self->body isKindOfClass:[NSData class]])
+    data = self->body;
 
-      part = [[[self->body query] componentsSeparatedByString:@"="] lastObject];
-      data = [self->source contentsOfPart:part];
-    }
-    else if ([self->body isKindOfClass:[NSData class]]) {
-      data = self->body;
-    }
-    if ((en = [[self encoding] lowercaseString])) {
-      if ([en isEqualToString:@"quoted-printable"]) {
+  if ((en = [[self encoding] lowercaseString]) != nil) {
+    if ([en isEqualToString:@"quoted-printable"]) {
         data = [data dataByDecodingQuotedPrintable];
-      }
-      else if ([en isEqualToString:@"base64"]) {
+    }
+    else if ([en isEqualToString:@"base64"]) {
         data = [data dataByDecodingBase64];
-      }
-    }
-    if (!UseFoundationStringEncodingForMimeText) {
-      NSString *charset;
-
-      charset = [[[self partOfBody] contentType] valueOfParameter:@"charset"];
-
-      if (![charset length])
-        charset = @"us-ascii";
-      
-      s = [NSString stringWithData:data usingEncodingNamed:charset];
-    }
-    if (s == nil) {
-      s = [[[NSString alloc] initWithData:data
-                             encoding:NSISOLatin1StringEncoding] autorelease];
     }
   }
+  
+  s = nil;
+  if (!UseFoundationStringEncodingForMimeText) {
+    s = [NSString stringWithData:data 
+		  usingEncodingNamed:[self bodyDataCharset]];
+  }
+  if (s == nil) {
+    s = [[[NSString alloc] initWithData:data
+                           encoding:NSISOLatin1StringEncoding] autorelease];
+  }
+  
   if (s == nil)
     s = [self->body stringValue];
-
+  
   return s;
 }
 
@@ -145,8 +144,12 @@ static int UseFoundationStringEncodingForMimeText = -1;
   
   s = [self bodyAsString];
   
-#warning TODO: check textWrapWidth configuration (use a default?)
-  wrapLength = [[[self config] valueForKey:@"textWrapWidth"] intValue];
+  wrapLength =
+    [[[self userDefaults] objectForKey:@"MailerPlainTextWrapWidth"] intValue];
+
+  [self logWithFormat:@"WRAP: %s, at %i",
+	[self defShouldWrapLongLines] ? "yes" : "no",
+	wrapLength];
 
   s = [s stringByWrappingWithWrapLen:wrapLength
          wrapLongLines:[self defShouldWrapLongLines]];

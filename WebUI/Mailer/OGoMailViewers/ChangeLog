@@ -1,3 +1,9 @@
+2005-01-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWTextPlainBodyViewer.m: more code cleanups, do not retrieve text
+	  wrapping width from the components.cfg but from the
+	  'MailerPlainTextWrapWidth' default (fixes OGo bug #276) (v5.1.23)
+	
 2005-01-05  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWTextPlainBodyViewer.m: code cleanups (v5.1.22)

@@ -5,4 +5,6 @@
     "text/plain",
     "text/html" 
   );
+  
+  MailerPlainTextWrapWidth = 80;
 }
