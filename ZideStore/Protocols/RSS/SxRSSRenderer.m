@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -18,11 +18,10 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxRSSRenderer.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxRSSRenderer.h"
 #include "common.h"
-#include <Frontend/SxFolder.h>
+#include <ZSFrontend/SxFolder.h>
 
 #include <EOControl/EOGenericRecord.h>
 #include <EOControl/EOKeyGlobalID.h>

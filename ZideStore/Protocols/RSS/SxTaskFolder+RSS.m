@@ -1,6 +1,6 @@
 // $Id: SxTaskFolder+RSS.m 1 2004-08-20 11:17:52Z znek $
 
-#include "SxTaskFolder.h"
+#include <SoObjects/Tasks/SxTaskFolder.h>
 #include "SxRSSTaskRenderer.h"
 #include "common.h"
 
@@ -12,6 +12,7 @@
          SxTaskFolder and SOPE will create the SxRSSTaskRenderer automagically.
 */
 - (id)rssInContext:(id)_ctx {
+  // TODO: implement as SoMethod!
   id renderer;
   
   if ((renderer = [SxRSSTaskRenderer renderer]) != nil)

@@ -14,22 +14,11 @@ RSS_OBJC_FILES = \
 	SxRSSTaskRenderer.m	\
 	SxTaskFolder+RSS.m	\
 
-RSS_BUNDLE_LIBS += -lNGObjWeb
-
 RSS_RESOURCE_FILES += \
 	bundle-info.plist	\
 	Version			\
 	product.plist
 
-ADDITIONAL_INCLUDE_DIRS += \
-	-I. -I../Products/Tasks -I..
-
-# make
-
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
-
-after-all ::
-	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
-	  cp ../bundle-info.plist .)

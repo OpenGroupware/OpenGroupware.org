@@ -1,0 +1,15 @@
+# compilation settings
+
+OGoROOT=../../..
+
+
+ADDITIONAL_INCLUDE_DIRS += -I. -I.. -I../..
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I$(OGoROOT)/Logic/LSFoundation/
+
+ADDITIONAL_LIB_DIRS += \
+	-L../../ZSFrontend/$(GNUSTEP_OBJ_DIR) \
+	-L../../ZSBackend/$(GNUSTEP_OBJ_DIR)
+
+RSS_BUNDLE_LIBS += -lNGObjWeb

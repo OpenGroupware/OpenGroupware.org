@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,20 +18,19 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxUserFolder+WCAP.m 1 2004-08-20 11:17:52Z znek $
 
-#include "SxUserFolder.h"
+#include <ZSFrontend/SxUserFolder.h>
 #include "SoWCAPRenderer.h"
 #include "WCAPResultSet.h"
-#include "NSObject+ExValues.h"
+#include <ZSFrontend/NSObject+ExValues.h>
 #include <NGObjWeb/SoObjects.h>
 #include "common.h"
 #include <NGiCal/iCalPerson.h>
 #include "WCAPEvent.h"
 #include "WCAPToDo.h"
-#include <Backend/SxAptManager.h>
-#include <Backend/SxTaskManager.h>
-#include <Backend/SxBackendManager.h>
+#include <ZSBackend/SxAptManager.h>
+#include <ZSBackend/SxTaskManager.h>
+#include <ZSBackend/SxBackendManager.h>
 #include <LSFoundation/LSFoundation.h>
 
 #define WCAP_COMPONENT_FREEBUSY 0x00
@@ -89,7 +88,7 @@
   [event setStartDate:[_record valueForKey:@"startDate"]];
   [event setEndDate:[_record valueForKey:@"endDate"]];
   [event setPriority:[_record valueForKey:@"importance"]];
-  [event setSequence:@"0"];
+  [event setSequence:[NSNumber numberWithInt:0]];
 
   participants = [[_record valueForKey:@"participants"] objectEnumerator];
   ownerId      = [_record valueForKey:@"ownerId"];
@@ -121,7 +120,7 @@
   [todo setDue:      [_record valueForKey:@"endDate"]];
   [todo setCompleted:[_record valueForKey:@"completionDate"]];
   [todo setPriority: [[_record valueForKey:@"priority"] stringValue]];
-  [todo setSequence:@"0"];
+  [todo setSequence:[NSNumber numberWithInt:0]];
   [todo setPercentComplete:
         [[_record valueForKey:@"percentComplete"] stringValue]];
 

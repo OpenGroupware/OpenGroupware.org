@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include $(GNUSTEP_MAKEFILES)/common.make
 
@@ -17,21 +17,11 @@ WCAP_OBJC_FILES = \
 	WCAPResultSet.m		\
 	WCAPToDo.m		\
 
-WCAP_BUNDLE_LIBS += -lNGObjWeb
-
 WCAP_RESOURCE_FILES += \
 	bundle-info.plist	\
 	Version			\
 	product.plist
 
-ADDITIONAL_INCLUDE_DIRS += -I. -I../Frontend -I..
-
-# make
-
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
-
-after-all ::
-	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
-	  cp ../bundle-info.plist .)
