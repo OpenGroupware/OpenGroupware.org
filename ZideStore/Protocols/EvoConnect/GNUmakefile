@@ -11,12 +11,24 @@ EvoConnect_PRINCIPAL_CLASS = EvoConnectProduct
 EvoConnect_OBJC_FILES = \
 	EvoConnectProduct.m	\
 	SxOptionsForm.m		\
+	\
+	SxEvoAptQueryInfo.m		\
+	SxAppointmentFolder+Evo.m	\
+	\
+	SxEvoContactQueryInfo.m		\
+	SxEvoContactRenderer.m		\
+	SxEvoFullContactParser.m	\
+	SxEvoEnterpriseRenderer.m	\
+	SxEvoFullEnterpriseParser.m	\
+	SxEvoGroupRenderer.m		\
+	SxEvoPersonRenderer.m		\
+	SxEvoFullPersonParser.m		\
+	\
+	SxAddressFolder+Evo.m		\
 
 EvoConnect_RESOURCE_FILES += \
 	Version			\
 	product.plist		\
-
-EvoConnect_SUBPROJECTS += Contacts Appointments
 
 # make
 

@@ -1,14 +1,20 @@
-# $Id$
+# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
+
+OGoROOT=../..
+
+
+ADDITIONAL_INCLUDE_DIRS += -I. -I..
 
 ADDITIONAL_INCLUDE_DIRS += \
-	-I. -I../Frontend -I../Backend -I..
+	-I$(OGoROOT)/Logic/LSFoundation/
+
 
 ADDITIONAL_LIB_DIRS += \
-	-L../Frontend/$(GNUSTEP_OBJ_DIR) \
-	-L../Backend/$(GNUSTEP_OBJ_DIR)
+	-L../ZSFrontend/$(GNUSTEP_OBJ_DIR) \
+	-L../ZSBackend/$(GNUSTEP_OBJ_DIR)
 
 PrefsUI_BUNDLE_LIBS += \
-	-lZideStoreBackend \
+	-lZSBackend \
 	-lGDLAccess \
 	-lNGObjWeb -lNGScripting \
 	-lNGMime -lNGStreams -lNGExtensions -lEOControl \

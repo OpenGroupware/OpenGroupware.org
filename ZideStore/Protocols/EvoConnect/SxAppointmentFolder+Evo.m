@@ -1,9 +1,9 @@
 // $Id: SxAppointmentFolder+Evo.m 1 2004-08-20 11:17:52Z znek $
 
-#include "SxAppointmentFolder.h"
+#include <SoObjects/Appointments/SxAppointmentFolder.h>
 #include "SxEvoAptQueryInfo.h"
 #include "common.h"
-#include <Backend/SxAptManager.h>
+#include <ZSBackend/SxAptManager.h>
 
 @interface SxAppointmentFolder(UsedPrivates)
 - (SxAptManager *)aptManagerInContext:(id)_ctx;

@@ -1,11 +1,11 @@
 // $Id: SxAddressFolder+Evo.m 1 2004-08-20 11:17:52Z znek $
 
-#include "SxAddressFolder.h"
+#include <SoObjects/Contacts/SxAddressFolder.h>
 #include "SxEvoContactQueryInfo.h"
-#include "SxMapEnumerator.h"
+#include <ZSFrontend/SxMapEnumerator.h>
 #include "common.h"
 
-#include <Backend/SxContactManager.h>
+#include <ZSBackend/SxContactManager.h>
 
 @interface SxAddressFolder(Evo)
 - (id)performEvoQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx;
