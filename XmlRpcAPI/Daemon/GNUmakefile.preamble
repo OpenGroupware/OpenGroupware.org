@@ -2,7 +2,7 @@
 
 OGoROOT=../..
 
-xmlrpcd_TOOL_LIBS += \
+ogo-xmlrpcd-51_TOOL_LIBS += \
 	-lOGoContacts -lOGoScheduler -lOGoJobs -lOGoAccounts -lOGoProject \
 	-lOGoSchedulerTools 	\
 	-lOGoDocuments		\

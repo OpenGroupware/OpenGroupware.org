@@ -2,9 +2,9 @@
 
 include $(GNUSTEP_MAKEFILES)/common.make
 
-TOOL_NAME = xmlrpcd
+TOOL_NAME = ogo-xmlrpcd-51
 
-xmlrpcd_OBJC_FILES = \
+ogo-xmlrpcd-51_OBJC_FILES = \
 	xmlrpcd.m			\
 	Application.m			\
 	XmlRpcApplication.m		\
@@ -17,7 +17,7 @@ xmlrpcd_OBJC_FILES = \
 	EOControl+XmlRpcDirectAction.m	\
 	NSObject+EKVC.m			\
 
-xmlrpcd_SUBPROJECTS = \
+ogo-xmlrpcd-51_SUBPROJECTS = \
 	Actions.subproj		\
 	XmlRpcCoding.subproj	\
 
