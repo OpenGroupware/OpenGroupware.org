@@ -57,7 +57,7 @@ if [ $1 = 1 ]; then
   Defaults write NSGlobalDomain skyrix_id `hostname`
   Defaults write NSGlobalDomain TimeZoneName GMT
   Defaults write NSGlobalDomain WOHttpAllowHost '( localhost, 127.0.0.1, localhost.localdomain)'
-  Defaults write nhsd NGBundlePath '%{prefix}/opengroupware.org-1.0a/conduits'
+  Defaults write NSGlobalDomain NGBundlePath '%{prefix}/lib/opengroupware.org-1.0a/conduits'
   "
   ##
   if [ -f %{_var}/lib/pgsql/data/pg_hba.conf ]; then
