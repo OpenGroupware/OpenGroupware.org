@@ -303,7 +303,7 @@ Description: Development Files for the ZideStore server
 Package: opengroupware.org-zidestore_ZSVER_
 Section: web
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org_OGOVER_-database, sope-libxmlsaxdriver, sope-icalsaxdriver
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org_OGOVER_-database, sope-libxmlsaxdriver, sope-versitsaxdriver
 Recommends: libapache-mod-ngobjweb, apache
 Description: WebDAV Server for OpenGroupware.org
  The ZideStore Server provides WebDAV access to the OpenGroupware.org
