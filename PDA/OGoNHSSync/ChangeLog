@@ -1,3 +1,7 @@
+2004-09-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile (libOGoNHS_VERSION): fixed version to include subminor
+
 2004-09-09  Helge Hess  <helge.hess@skyrix.com>
 
 	* added FHS install (conduits are installed in
