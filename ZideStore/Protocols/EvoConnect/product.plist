@@ -1,5 +1,5 @@
 {
-  requires = ( MAIN, Contacts, Tasks, Appointments );
+  requires = ( ZSCommon, Contacts, Tasks, Appointments );
 
   publicResources = (
   );
@@ -15,9 +15,5 @@
   };
 
   categories = {
-    SxUserFolder = {
-      methods = {
-      };
-    };
   };
 }

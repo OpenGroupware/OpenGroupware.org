@@ -1,5 +1,5 @@
 {
-  requires = ( MAIN, Tasks );
+  requires = ( ZSCommon, Tasks );
 
   publicResources = (
   );
