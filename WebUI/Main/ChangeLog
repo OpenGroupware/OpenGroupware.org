@@ -1,5 +1,8 @@
 2004-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OpenGroupware.m: fixed name of the application (was the full path
+	  instead of just the basename of the executable) (v5.1.64)
+
 	* OpenGroupware.m: fixed incompatibility with MacOSX gcc (v5.1.63)
 
 2004-09-27  Helge Hess  <helge.hess@skyrix.com>

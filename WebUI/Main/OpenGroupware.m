@@ -174,7 +174,8 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
   static NSString *cName = nil;
   if (cName != nil)
     return cName;
-  cName = [[[[NSProcessInfo processInfo] arguments] objectAtIndex:0] copy];
+  cName = [[[[[NSProcessInfo processInfo] arguments] objectAtIndex:0] 
+	                     lastPathComponent] copy];
   return cName;
 }
 
