@@ -134,11 +134,13 @@
 
   if ([self isAttributeSupported:@"comment"])
     [_coder encodeString:[self comment] forKey:@"comment"];
-
+  
   if ([self isAttributeSupported:@"keywords"])
     [_coder encodeString:[self keywords] forKey:@"keywords"];
-
-  //  [_coder encodeObject:[self globalID]              forKey:@"globalID"];
+  
+#if 0
+  [_coder encodeObject:[self globalID]              forKey:@"globalID"];
+#endif
   [_coder encodeInt:[[self objectVersion] intValue] forKey:@"objectVersion"];
   [_coder encodeBoolean:self->status.isComplete     forKey:@"isComplete"];
 }

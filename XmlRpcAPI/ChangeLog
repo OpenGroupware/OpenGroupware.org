@@ -1,3 +1,9 @@
+2005-01-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* XmlRpcCoding.subproj/SkyEnterpriseDocument+XmlRpcCoding.m: removed
+	  generation of 'keywords' field (already done by the superclass),
+	  should remove OGo bug #1152 (v5.1.55)
+
 2005-01-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed makefiles for project relocation (v5.1.54)

@@ -31,7 +31,6 @@
     [self setNumber:     [_coder decodeStringForKey:@"number"]];
     [self setName:       [_coder decodeStringForKey:@"name"]];
     [self setPriority:   [_coder decodeStringForKey:@"priority"]];
-    [self setKeywords:   [_coder decodeStringForKey:@"keywords"]];
     [self setSalutation: [_coder decodeStringForKey:@"salutation"]];
     [self setUrl:        [_coder decodeStringForKey:@"url"]];
     [self setBank:       [_coder decodeStringForKey:@"bank"]];
@@ -47,7 +46,6 @@
   [_coder encodeString:[self number]     forKey:@"number"];
   [_coder encodeString:[self name]       forKey:@"name"];    
   [_coder encodeString:[self priority]   forKey:@"priority"];
-  [_coder encodeString:[self keywords]   forKey:@"keywords"];
   [_coder encodeString:[self salutation] forKey:@"salutation"];
   [_coder encodeString:[self url]        forKey:@"url"];
   [_coder encodeString:[self bank]       forKey:@"bank"];
