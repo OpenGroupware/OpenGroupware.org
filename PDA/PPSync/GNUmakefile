@@ -5,19 +5,21 @@ GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
 include ../Version
 include ./Version
 
-LIBRARY_NAME       = libPPSync
-TOOL_NAME          = nhsd ppls
-# PYEXTMODULE_NAME   = PPSyncInternal
+OGO_NHSD_NAME = ogo-nhsd-$(MAJOR_VERSION)$(MINOR_VERSION)
+OGO_PPLS_NAME = ogo-ppls-$(MAJOR_VERSION)$(MINOR_VERSION)
+
+LIBRARY_NAME = libPPSync
+TOOL_NAME    = $(OGO_NHSD_NAME) $(OGO_PPLS_NAME)
 
 libPPSync_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libPPSync_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
-ppls_OBJC_FILES = \
-	ppls.m			\
-	NHSNameServiceDaemon.m	\
+# tools
 
-nhsd_OBJC_FILES = \
-	nhsd.m			\
-	NHSNameServiceDaemon.m	\
+$(OGO_PPLS_NAME)_OBJC_FILES += ppls.m NHSNameServiceDaemon.m
+$(OGO_NHSD_NAME)_OBJC_FILES += nhsd.m NHSNameServiceDaemon.m
+
+# library
 
 libPPSync_HEADER_FILES = \
 	PPAddressDatabase.h	\

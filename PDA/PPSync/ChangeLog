@@ -1,3 +1,8 @@
+2004-09-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: fixed library version, added versioning to tools (nhsd
+	  is now called ogo-nhsd-51) (v5.1.9)
+
 2004-09-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile.preamble (xxx_TOOL_LIBS): added libEOControl as a

@@ -4,8 +4,8 @@ ADDITIONAL_CPPFLAGS += -Wall
 
 libPPSync_INCLUDE_DIRS += -I.. -I../libpisock
 
-nhsd_INCLUDE_DIRS += -I.. -I../NGStreams
-ppls_INCLUDE_DIRS += -I.. -I../NGStreams
+$(OGO_NHSD_NAME)_INCLUDE_DIRS += -I.. -I../NGStreams
+$(OGO_PPLS_NAME)_INCLUDE_DIRS += -I.. -I../NGStreams
 
 
 # this is Debian Woody
@@ -17,17 +17,17 @@ libPPSync_LIBRARIES_DEPEND_UPON += \
 	-lEOControl	\
 	-lpisock
 
-nhsd_TOOL_LIBS += \
+$(OGO_NHSD_NAME)_TOOL_LIBS += \
 	-lGDLAccess  \
 	-lNGStreams -lNGExtensions -lEOControl \
 	-lPPSync -lpisock
 
-ppls_TOOL_LIBS += \
+$(OGO_PPLS_NAME)_TOOL_LIBS += \
 	-lGDLAccess  \
 	-lNGStreams -lNGExtensions -lEOControl \
 	-lPPSync -lpisock
 
-ppls_LIB_DIRS += -L$(GNUSTEP_OBJ_DIR)
-nhsd_LIB_DIRS += -L$(GNUSTEP_OBJ_DIR)
+$(OGO_PPLS_NAME)_LIB_DIRS += -L$(GNUSTEP_OBJ_DIR)
+$(OGO_NHSD_NAME)_LIB_DIRS += -L$(GNUSTEP_OBJ_DIR)
 
 ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib
