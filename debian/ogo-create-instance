@@ -285,6 +285,9 @@ set_defaults () {
 	su - -c "Defaults write NSGlobalDomain LSNewsImagesUrl \"/NewsImages-${USER}\"" ${USER}
 	su - -c "Defaults write NSGlobalDomain SkyLogoutURL \"/${WEBUI_LOCATION_MATCH}\"" ${USER}
 	su - -c "Defaults write NSGlobalDomain TimeZoneName GMT" ${USER}
+	# Hack for nhsd not being able to find conduits in FHS layout. Will be fixed for OGo 1.2, see bug #1300.
+	su - -c "Defaults write ogo-nhsd-1.0a NGBundlePath /usr/lib/opengroupware.org-1.0a/conduits" ${USER}
+	su - -c "Defaults write ogo-nhsd-1.0 NGBundlePath /usr/lib/opengroupware.org-1.0/conduits" ${USER}
 	echo "done."
 	return 0
 }
