@@ -1,3 +1,13 @@
+2004-10-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyPalmAssignDate.m: major code cleanups (v5.1.26)
+
+2004-10-01  Tiny Toon  <tiny@tinytoon.de>
+	
+	* SkyPalmAssignDate.m: added 'location' to fetch attributes
+	
+	* bundle-info.plist: removed dependency on BaseUI and OGoUIElements
+
 2004-09-21  Helge Hess  <helge.hess@skyrix.com>
 
 	* code cleanups in all files (v5.1.25)

@@ -374,11 +374,34 @@
 
 // assignement to skyrix document (SkyAppointmentDocument)
 
+- (BOOL)_isAllDayApt:(id)_apt {
+  NSCalendarDate *start, *end;
+  
+  start = [_apt startDate];
+  end   = [_apt endDate];
+  if (([start hourOfDay] == 0) &&
+      ([start minuteOfHour] == 0) &&
+      ([start secondOfMinute] == 0) &&
+      ((([end hourOfDay] == 0) &&
+        ([end minuteOfHour] == 0) &&
+        ([end secondOfMinute] == 0)) ||
+       (([end hourOfDay] == 23) &&
+        ([end minuteOfHour] == 59)
+        )))
+    {
+      return YES;
+    }
+  return NO;
+}
+
 - (void)takeValuesFromSkyrixRecord:(id)_skyrixRecord {
   // of type SkyAppointmentDocument
   NSString       *type = nil;
   NSCalendarDate *end  = nil;
+  BOOL           noTime;
 
+  noTime = [self _isAllDayApt:_skyrixRecord];
+  
   end = [_skyrixRecord endDate];
   if (![end isDateOnSameDay:[_skyrixRecord startDate]])
     end = [[_skyrixRecord endDate] endOfDay];
@@ -393,6 +416,8 @@
   [self setRepeatStartWeek:0];
   [self setRepeatOn:0];
   [self setRepeatFrequency:1];
+  [self setIsUntimed:noTime];
+  
   if (type == nil) {
     [self setRepeatType:REPEAT_TYPE_SINLGE]; // no more repetitions
     [self setRepeatFrequency:0];
@@ -519,7 +544,7 @@
                   @"dateId", @"startDate", @"endDate", @"cycleEndDate",
                   @"type", @"title", @"globalID", @"permissions",
                   @"participants.login", @"objectVersion", @"comment",
-                  @"accessTeamId", @"writeAccessList", 
+                  @"location", @"accessTeamId", @"writeAccessList", 
                   nil];
 }
 - (NSDictionary *)_hintsForSkyrixRecord {

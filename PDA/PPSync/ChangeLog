@@ -1,3 +1,7 @@
+2004-10-01  Tiny Toon  <tiny@tinytoon.de>
+	
+	* PPSyncContext.m: added debugging code (v5.1.12)
+
 2004-09-29  Helge Hess  <helge.hess@skyrix.com>
 
 	* fhs.make: install daemon into $FHS_ROOT/sbin (v5.1.11)

@@ -1,3 +1,12 @@
+2004-10-01  Tiny Toon  <tiny@tinytoon.de>
+
+	* v5.1.29
+
+	* SkyPalmDateDocument.m: improved support for allday appointments
+
+	* SkyPalmPreSync.m, SkyPalmDateDataSource.m, SkyPalmDateDocument.m:
+	  added 'location' to fetch attributes
+
 2004-09-26  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile: added proper library version for gstep-make 1.10

@@ -1,14 +1,10 @@
-// $Id$
 {
-  cvsid         = "$Id$";
   bundleHandler = SkyPalmModule;
 
   requires = {
     bundleManagerVersion = 1;
     
     bundles = ( 
-      { name = BaseUI;        type = lso; },
-      { name = OGoUIElements; type = lso; },      
     );
     classes = (
       { name = NSObject;          },

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoPalmUI/SkyPalmAssignEntry.h>
 
@@ -37,8 +36,7 @@
 
 @end /* SkyPalmAssignDate */
 
-#import <Foundation/Foundation.h>
-#include <OGoFoundation/OGoFoundation.h>
+#include "common.h"
 
 #include <OGoScheduler/SkyAppointmentDataSource.h>
 #include <OGoScheduler/SkyAppointmentQualifier.h>
@@ -48,11 +46,6 @@
 
 #include <NGExtensions/NSCalendarDate+misc.h>
 #include <NGExtensions/EODataSource+NGExtensions.h>
-#include <NGObjWeb/WOContext.h>
-#include <NGObjWeb/WOResourceManager.h>
-#include <EOControl/EOFetchSpecification.h>
-#include <EOControl/EOSortOrdering.h>
-#include <EOControl/EOKeyGlobalID.h>
 
 @interface SkyPalmAssignDate(PrivatMethods)
 - (id)newSkyrixRecordForPalmDoc:(SkyPalmDocument *)_doc;
@@ -62,35 +55,33 @@
 
 - (id)init {
   if ((self = [super init])) {
-    NSCalendarDate *date  = [NSCalendarDate date];
-    self->apts       = nil;
-    self->searchApts = NO;
+    NSCalendarDate *date;
+    
     self->days       = 14;  // appointments of next 14 days
-
-    self->fromDate   = [date descriptionWithCalendarFormat:@"%Y-%m-%d"];
-    RETAIN(self->fromDate);
+    
+    date  = [NSCalendarDate date];
+    self->fromDate   = [[date descriptionWithCalendarFormat:@"%Y-%m-%d"] copy];
     date = [date dateByAddingYears:0 months:0 days:14];
-    self->toDate     = [date descriptionWithCalendarFormat:@"%Y-%m-%d"];
-    RETAIN(self->toDate);
+    self->toDate     = [[date descriptionWithCalendarFormat:@"%Y-%m-%d"] copy];
+    
     self->onlyMyAppointments = YES;
   }
   return self;
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->apts);
-  RELEASE(self->fromDate);
-  RELEASE(self->toDate);
+  [self->apts     release];
+  [self->fromDate release];
+  [self->toDate   release];
   [super dealloc];
 }
-#endif
 
-// accessors
+/* accessors */
 
 - (EOGlobalID *)allIntranetGID {
-  id allIntra = [self runCommand:@"team::get",
-                      @"login", @"all intranet", nil];
+  NSArray *allIntra;
+
+  allIntra = [self runCommand:@"team::get", @"login", @"all intranet", nil];
   if ([allIntra count] != 1) {
     NSLog(@"%s didn't find all intranet or more than one team with login (%d)"
           @"'all intranet'", __PRETTY_FUNCTION__, [allIntra count]);
@@ -99,22 +90,26 @@
   return [[allIntra lastObject] valueForKey:@"globalID"];
 }
 - (NSArray *)_companiesToFetchFor {
-  id activeAccount = [[[self session] activeAccount] valueForKey:@"globalID"];
-  id aIgid         = (self->onlyMyAppointments) ? nil :[self allIntranetGID];
+  EOGlobalID *activeAccount;
+  EOGlobalID *aIgid;
+  
+  activeAccount = [[[self session] activeAccount] valueForKey:@"globalID"];
+  aIgid         = (self->onlyMyAppointments) ? nil :[self allIntranetGID];
   return [NSArray arrayWithObjects:activeAccount, aIgid, nil];
 }
 
 - (SkyAppointmentQualifier *)_qualifierFrom:(NSCalendarDate *)_from
-                                         to:(NSCalendarDate *)_to
+  to:(NSCalendarDate *)_to
 {
-  SkyAppointmentQualifier *qual = nil;
-  qual = [[SkyAppointmentQualifier alloc] init];
+  SkyAppointmentQualifier *qual;
+  
+  qual = [[[SkyAppointmentQualifier alloc] init] autorelease];
   [qual setStartDate:_from];
   [qual setEndDate:_to];
   [qual setTimeZone:[[self session] timeZone]];
   [qual setCompanies:[self _companiesToFetchFor]];
   [qual setResources:[NSArray array]];
-  return AUTORELEASE(qual);
+  return qual;
 }
 - (NSArray *)_attributesWanted {
   return [NSArray arrayWithObjects:
@@ -122,7 +117,7 @@
                   @"endDate", @"cycleEndDate", @"type", @"aptType", 
                   @"title", @"globalID", @"permissions",
                   @"participants.login", @"comment",
-                  @"accessTeamId", @"writeAccessList",
+                  @"location", @"accessTeamId", @"writeAccessList",
                   nil];
 }
 - (NSArray *)_sortOrderings {
@@ -132,11 +127,11 @@
 }
 - (NSDictionary *)_hints {
   return [NSDictionary dictionaryWithObjectsAndKeys:
-                       [self _attributesWanted],      @"attributes",
+                         [self _attributesWanted], @"attributes",
                        nil];
 }
 - (EOFetchSpecification *)_fetchSpecFrom:(NSCalendarDate *)_from
-                                      to:(NSCalendarDate *)_to
+  to:(NSCalendarDate *)_to
 {
   EOFetchSpecification *fspec =
     [EOFetchSpecification fetchSpecificationWithEntityName:@"Date"
@@ -200,13 +195,14 @@
   }
   if ((actualId != nil) && ([actualId intValue] > 0)) {
     return [EOQualifier qualifierWithQualifierFormat:
-                        @"skyrix_id > 0 AND is_deleted=0 AND is_archived=0 "
+                        @"(skyrix_id > 0) AND (is_deleted=0) AND "
+                        @"(is_archived=0) "
                         @"AND NOT (palm_date_id=%@) "
-                        @"AND device_id=%@", actualId, [self deviceId]];
+                        @"AND (device_id=%@)", actualId, [self deviceId]];
   }
   return [EOQualifier qualifierWithQualifierFormat:
-                      @"skyrix_id > 0 AND is_deleted=0 AND is_archived=0 "
-                      @"AND device_id=%@", [self deviceId]];
+                      @"(skyrix_id > 0) AND (is_deleted=0) AND (is_archived=0)"
+                      @" AND (device_id=%@)", [self deviceId]];
 }
 - (EOFetchSpecification *)_fetchSpecForPalmDS {
   return [EOFetchSpecification fetchSpecificationWithEntityName:@"palm_date"
@@ -221,37 +217,38 @@
   return (SkyPalmDateDataSource *)das;
 }
 - (NSArray *)_assignedDateIds {
-  SkyPalmDateDataSource *das     = [self _palmDataSource];
-  NSEnumerator          *all     = nil;
-  id                    one      = nil;
-  NSMutableArray        *dateIds = nil;
+  SkyPalmDateDataSource *das;
+  NSEnumerator          *all;
+  id                    one;
+  NSMutableArray        *dateIds;
   
+  das     = [self _palmDataSource];
   [das setFetchSpecification:[self _fetchSpecForPalmDS]];
   all = [[das fetchObjects] objectEnumerator];
-  dateIds = [NSMutableArray array];
-
-  while ((one = [all nextObject])) {
+  dateIds = [NSMutableArray arrayWithCapacity:64];
+  
+  while ((one = [all nextObject]) != nil)
     [dateIds addObject:[one skyrixId]];
-  }
   
   return dateIds;
 }
 
 - (NSArray *)_filterAptsWithoutBindings:(NSArray *)_src {
-  NSArray        *assignedIds = [self _assignedDateIds];
-  NSEnumerator   *all         = nil;
-  id             one          = nil;
-  NSMutableArray *filtered    = nil;
-  NSNumber       *dateId      = nil;
+  NSArray        *assignedIds;
+  NSEnumerator   *all;
+  id             one;
+  NSMutableArray *filtered;
 
+  assignedIds = [self _assignedDateIds];
   all      = [_src objectEnumerator];
-  filtered = [NSMutableArray array];
-
+  filtered = [NSMutableArray arrayWithCapacity:64];
+  
   while ((one = [all nextObject])) {
-    if ([one hasParentDate])
-      dateId = [one parentDateId];
-    else
-      dateId = [one valueForKey:@"dateId"];
+    NSNumber *dateId;
+    
+    dateId = [one hasParentDate]
+      ? [one parentDateId]
+      : [one valueForKey:@"dateId"];
     if (dateId == nil) {
       dateId =
         [[[one valueForKey:@"globalID"] keyValuesArray] objectAtIndex:0];

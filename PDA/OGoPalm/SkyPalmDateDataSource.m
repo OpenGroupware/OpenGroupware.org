@@ -331,7 +331,7 @@
                   @"dateId", @"startDate", @"endDate", @"cycleEndDate",
                   @"type", @"title", @"globalID", @"permissions",
                   @"participants.login", @"objectVersion", @"comment",
-                  @"accessTeamId", @"writeAccessList", 
+                  @"location", @"accessTeamId", @"writeAccessList", 
                   nil];
 }
 - (NSDictionary *)_hintsForSkyrixRecordGIDs:(NSArray *)_gids {

@@ -337,8 +337,6 @@
     else {
       /* process card info */
       NSMutableDictionary *d;
-      //struct DBInfo dbinfo;
-      //int j;
 
       if (ci.card != i) {
         NSLog(@"WARNING: retrieved card number (%i) "
@@ -372,7 +370,9 @@
       
       /* determine databases on card */
 
-#if 0
+#if 0 // TODO: what is that, debugging code? move to own method?
+      { int j;
+        struct DBInfo dbinfo;
       /* mh [2003-02-19]:
        *
        * going thru all databases in -prepare() 
@@ -413,6 +413,7 @@
         lastDBInfoIndex[i] = dbinfo.index + 1;
         
         dbName  = [NSString stringWithCString:dbinfo.name];
+        NSLog(@"%s: found database %@", __PRETTY_FUNCTION__, dbName);
         
         dbClass = [self _classForDatabaseNamed:dbName
                         withInfo:&dbinfo
@@ -445,6 +446,7 @@
             NSCountMapTable(self->databases),
             i);
 # endif /* DEBUG */
+      }
 #endif /* 0 */
     }
   }
