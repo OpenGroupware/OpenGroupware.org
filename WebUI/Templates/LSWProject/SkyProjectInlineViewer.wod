@@ -1,4 +1,4 @@
-// $Id: SkyProjectInlineViewer.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller class
 
 Title: LSWViewerTitle {
   title = project.name;
@@ -22,17 +22,35 @@ Buttons: SkyButtonRow {
   ordering = ();
 }
 
+NameLabel:      WOString { value = labels.name;      }
+NumberLabel:    WOString { value = labels.number;    }
+StartDateLabel: WOString { value = labels.startDate; }
+
+ProjectName:   WOString { value = project.name;   }
+ProjectNumber: WOString { value = project.number; }
+
+ProjectStartDate: WOString {
+  value     = project.startDate;
+  formatter = session.formatDate;
+}
+ProjectEndDate: WOString {
+  value     = project.endDate;
+  formatter = session.formatDate;
+}
+
+ProjectLink: WOHyperlink {
+  directActionName = "activate";
+  ?oid             = project.projectId;
+}
+
+// TODO: replace with tags (notice 'markArchivedObjects')
 ProjectViewer: LSWObjectViewer {
   labels              = labels;
   object              = project;
-  dateFormatter       = session.formatDate;
   valueColor          = "subValueCell";
   attributeColor      = "subAttributeCell";
   markArchivedObjects = YES;
   attributes     = (
-    { key = "name";      },
-    { key = "number";    label = "code"; },
-    { key = "startDate"; },
     { 
       key    = "owner"; 
       relKey = "login"; 
@@ -127,11 +145,11 @@ AccessTeamsLabel: WOString {
 }
 
 PersonProjectAssociatesLabel: WOString {
-  value     = labels.personProjectAssociates;
+  value = labels.personProjectAssociates;
 }
 
 EnterpriseProjectAssociatesLabel: WOString {
-  value     = labels.enterpriseProjectAssociates;
+  value = labels.enterpriseProjectAssociates;
 }
 
 /* styles */

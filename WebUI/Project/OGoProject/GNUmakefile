@@ -40,6 +40,7 @@ OGoProject_OBJC_FILES = \
 	OGoDocAction.m			\
 	OGoProjectAction.m		\
 	OGoDocumentImport.m		\
+	OGoProjectQuicklist.m		\
 
 # resources
 

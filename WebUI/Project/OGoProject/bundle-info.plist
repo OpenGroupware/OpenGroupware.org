@@ -41,6 +41,7 @@
       { name = SkyP4DocumentRequestHandler.m;  },
       { name = NGUnixTool;                     },
       { name = OGoDocumentImport;              },
+      { name = OGoProjectQuicklist;            },
     );
     WOComponents = (
       { name = SkyProject4Desktop;         },
@@ -63,6 +64,7 @@
       { name = SkyP4DocJournal;                },
       { name = SkyP4DocumentDownloadLogList;   },
       { name = OGoDocumentImport;              },
+      { name = OGoProjectQuicklist;            },
     );
     
     DockablePages = (

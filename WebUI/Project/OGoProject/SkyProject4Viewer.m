@@ -70,10 +70,10 @@ static BOOL showUnknownFiles_flag  = NO;
 
 static inline BOOL _showUnknownFiles(id self) {
   if (!showUnknownFiles_flag) {
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     showUnknownFiles_flag  = YES;
-    showUnknownFiles_value = [[NSUserDefaults standardUserDefaults]
-                                      boolForKey:@"SkyProjectFileManager_show_"
-                                              @"unknown_files"];
+    showUnknownFiles_value =
+      [ud boolForKey:@"SkyProjectFileManager_show_unknown_files"];
   }
   return showUnknownFiles_value;
 }
@@ -93,7 +93,7 @@ static inline BOOL _showUnknownFiles(id self) {
   return self;
 }
 
-#if 0 // hh asks: ??
+#if 0 // hh asks: why is it commented out??
 - (void)clearPathCache {
   [self->pathToDS removeAllObjects];
 }
@@ -227,7 +227,7 @@ static inline BOOL _showUnknownFiles(id self) {
 - (id)project {
   id projectID;
   
-  if (self->project) 
+  if (self->project != nil) 
     return self->project;
 
   if ((projectID = [self fileSystemNumber]) == nil) {
@@ -292,6 +292,53 @@ static inline BOOL _showUnknownFiles(id self) {
             objectForKey:@"skyp4_filelist_hide_folders"] boolValue];
 }
 
+- (EOQualifier *)hideFoldersQualifier {
+  static EOQualifier *hideFoldersQ = nil;
+  EOQualifier *q;
+  
+  if (hideFoldersQ != nil)
+    return hideFoldersQ;
+
+  if (_showUnknownFiles(self)) {
+    q = [EOQualifier qualifierWithQualifierFormat:
+                           @"(NSFileType != 'NSFileTypeDirectory')", nil];
+  }
+  else {
+    q = [EOQualifier qualifierWithQualifierFormat:
+                           @"(NSFileType != 'NSFileTypeDirectory') AND"
+                           @"(NSFileType != 'NSFileTypeUnknown')", nil];
+  }
+  hideFoldersQ = [q retain];
+  return hideFoldersQ;
+}
+- (EOQualifier *)showFoldersQualifier {
+  static EOQualifier *showFoldersQ = nil;
+  EOQualifier *q;
+    
+  if (showFoldersQ != nil)
+    return showFoldersQ;
+
+  if (!_showUnknownFiles(self)) {
+          q = [EOQualifier qualifierWithQualifierFormat:
+                           @"(NSFileType != 'NSFileTypeUnknown')", nil];
+  }
+  else
+    q = nil;
+  
+  showFoldersQ = [q retain];
+  return showFoldersQ;
+}
+
+- (void)cacheDataSource:(EODataSource *)_ds forPath:(NSString *)_path {
+  if (_ds == nil || _path == nil)
+    return;
+
+  if (self->pathToDS == nil)
+    self->pathToDS = [[NSMutableDictionary alloc] initWithCapacity:8];
+  
+  [self->pathToDS setObject:_ds forKey:_path];
+}
+
 - (id)selectedDataSource {
   /* TODO: split up this method */
   EOFetchSpecification *fspec;
@@ -315,54 +362,23 @@ static inline BOOL _showUnknownFiles(id self) {
 #endif  
   ds = [self->pathToDS objectForKey:path];
   if (ds == nil || ![ds isValid]) {
-    static EOQualifier *hideFoldersQ = nil;
-    static EOQualifier *showFoldersQ = nil;
-    
-    if ((hideFolders = [self defaultFileListShouldHideFolders])) {
-      if (hideFoldersQ == nil) {
-        if (_showUnknownFiles(self)) {
-          q = [EOQualifier qualifierWithQualifierFormat:
-                           @"(NSFileType != 'NSFileTypeDirectory')", nil];
-        }
-        else {
-          q = [EOQualifier qualifierWithQualifierFormat:
-                           @"(NSFileType != 'NSFileTypeDirectory') AND"
-                           @"(NSFileType != 'NSFileTypeUnknown')", nil];
-        }
-        hideFoldersQ = [q retain];
-      }
-      else
-        q = hideFoldersQ;
-    }
-    else {
-      if (showFoldersQ == nil) {
-        q = nil;
-        if (!_showUnknownFiles(self)) {
-          q = [EOQualifier qualifierWithQualifierFormat:
-                           @"(NSFileType != 'NSFileTypeUnknown')", nil];
-        }
-        showFoldersQ = [q retain];
-      }
-      else
-        q = showFoldersQ;
-    }
+    q = ((hideFolders = [self defaultFileListShouldHideFolders]))
+      ? [self hideFoldersQualifier]
+      : [self showFoldersQualifier];
     
     fspec = [EOFetchSpecification fetchSpecificationWithEntityName:nil
                                   qualifier:q
                                   sortOrderings:nil];
     
-    if ([[self fileManager] supportsFolderDataSourceAtPath:path])
+    if ([[self fileManager] supportsFolderDataSourceAtPath:path]) {
       ds = [(id<NGFileManagerDataSources>)[self fileManager]
                                           dataSourceAtPath:path];
+    }
     
-    if (self->pathToDS == nil)
-      self->pathToDS = [[NSMutableDictionary alloc] initWithCapacity:8];
-    if (ds != nil)
-      [self->pathToDS setObject:ds forKey:path];
-    
+    [self cacheDataSource:ds forPath:path];
     [ds setFetchSpecification:fspec];
   }
-
+  
   return [[ds retain] autorelease];
 }
 

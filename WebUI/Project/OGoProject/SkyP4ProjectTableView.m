@@ -18,18 +18,17 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/OGoComponent.h>
 
-@class EOFilterDataSource, NSUserDefaults;
+@class EODataSource, NSUserDefaults;
 
 @interface SkyP4ProjectTableView : OGoComponent
 {
-  EOFilterDataSource *dataSource;
-  NSArray            *selections;
-  NSUserDefaults     *userDefaults;
-  NSArray            *favoriteProjectIds;
+  EODataSource   *dataSource;
+  NSArray        *selections;
+  NSUserDefaults *userDefaults;
+  NSArray        *favoriteProjectIds;
 
   /* temporary */
   id   project;
@@ -56,10 +55,10 @@
 
 /* accessors */
 
-- (void)setDataSource:(EOFilterDataSource *)_ds {
+- (void)setDataSource:(EODataSource *)_ds {
   ASSIGN(self->dataSource, _ds);
 }
-- (EOFilterDataSource *)dataSource {
+- (EODataSource *)dataSource {
   return self->dataSource;
 }
 
@@ -131,6 +130,7 @@
 /* actions */
 
 - (NSString *)newWizardURL {
+  // TODO: is this still used?
   /* 
      TODO: this is necessary because SkyButtonRow can't trigger direct
            actions. (which should be fixed)
@@ -153,7 +153,7 @@
   NSString       *sortedKey;
   NSArray        *sos         = nil;
   EOSortOrdering *so          = nil;
-  SEL      sel;
+  SEL            sel;
   
   ud        = [self userDefaults];
   sortedKey = [ud stringForKey:@"skyp4_desktop_sortfield"];
@@ -163,30 +163,31 @@
   so  = [EOSortOrdering sortOrderingWithKey:sortedKey selector:sel];
   sos = [NSArray arrayWithObject:so];
   
-  if (![[[self dataSource] sortOrderings] isEqual:sos])
-    [[self dataSource] setSortOrderings:sos];
+  if (![[(EOFilterDataSource *)[self dataSource] sortOrderings] isEqual:sos])
+    [(EOFilterDataSource *)[self dataSource] setSortOrderings:sos];
   
   return nil;
 }
 
 - (BOOL)_modifyFavorites:(BOOL)_doRemove {
-  //NSMutableArray *favIds;
-  id cmdctx;
-    
+  LSCommandContext *cmdctx;
+  
   if (_doRemove && ![self isInFavorites])
     return NO; /* not in favorites */
   if (!_doRemove && [self isInFavorites])
     return NO; /* already in favorites */
 
   cmdctx = [(OGoSession *)[self session] commandContext];
-  if (_doRemove)
+  if (_doRemove) {
     [cmdctx runCommand:@"project::remove-favorite",
             @"projectId", [self projectId],
             nil];
-  else
+  }
+  else {
     [cmdctx runCommand:@"project::add-favorite",
             @"projectId", [self projectId],
             nil];
+  }
   
   [self->favoriteProjectIds release]; self->favoriteProjectIds = nil;
   return YES;

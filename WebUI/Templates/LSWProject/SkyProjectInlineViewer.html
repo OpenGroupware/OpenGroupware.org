@@ -1,7 +1,23 @@
-<!-- $Id: SkyProjectInlineViewer.html 2 2004-08-20 11:37:44Z znek $ -->
-
 <table width="100%" border="0" cellpadding="4" cellspacing="0">
   <#Title><#Buttons /></#Title>
+  
+  <tr>
+    <#SubAttributeCell>
+      <#Font><#NameLabel/> (<#NumberLabel/>):</#Font>
+    </#SubAttributeCell>
+    <#SubValueCell>
+      <#Font>
+        <#ProjectLink><#ProjectName/></#ProjectLink>
+        (<#ProjectNumber/>)
+      </#Font>
+    </#SubValueCell>
+  </tr>
+  <tr>
+    <#SubAttributeCell><#Font><#StartDateLabel/>:</#Font></#SubAttributeCell>
+    <#SubValueCell><#Font>
+      <#ProjectStartDate/> <!-- - <#ProjectEndDate/> -->
+    </#Font></#SubValueCell>
+  </tr>
 
   <#ProjectViewer />
 
@@ -13,6 +29,7 @@
       </#SubValueCell>
     </tr>
   </#ShowProjectUrl>
+
   <#HasAccessTeam>
     <tr>
       <#SubAttributeCell><#Font><nobr><#AccessTeamLabel />:</nobr></#Font></#SubAttributeCell>

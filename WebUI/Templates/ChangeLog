@@ -1,3 +1,10 @@
+2004-12-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWProject/SkyProjectInlineViewer.html: join number and name in
+	  one line
+
+	* OGoProject/SkyProject4Viewer.html: removed deprecated forms tags
+
 2004-11-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoProject/SkyProject4MovePanel.wod: added different label for 

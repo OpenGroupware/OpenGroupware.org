@@ -24,12 +24,6 @@ TabView: SkyTabView {
   selection = session.userDefaults.skyp4_projectviewer_tab;
 }
 
-FormsTab: SkySimpleTabItem {
-  key      = "form";
-  label    = labels.form;
-  action   = reloadIndexForm;
-}
-
 DocumentsTab: SkySimpleTabItem { key = "documents"; label = labels.documents; }
 SearchTab:    SkySimpleTabItem { key = "search";    label = labels.search;    }
 FSInfoTab:    SkySimpleTabItem { key = "attributes";label = labels.attributes;}
@@ -79,7 +73,7 @@ FileManagerTree: SkyFileManagerTreeView {
 /* FileSystem Info */
 
 FSInfo: SkyProjectInlineViewer {
-  project  = fileSystemAttributes.object;
+  project  = fileSystemAttributes.object; // TODO: quite a hack! fix it
   showClip = NO;
   showSend = NO;
 }
@@ -182,40 +176,6 @@ ShowFolderContent: WOConditional {
   condition = showFolderContent;
 }
 
-ShowFolderForm: WOConditional {
-  condition = showFolderForm;
-}
-
-FolderForm: WOComponentReference {
-  component   = folderForm;
-  fileManager = fileManager;
-  preview     = NO;
-  dataSource  = selectedDataSource;
-  folderPath  = fileManager.currentDirectoryPath;
-}
-
-HasHeadForm: WOConditional {
-  condition = hasHeadForm;
-}
-
-HasTailForm: WOConditional {
-  condition = hasTailForm;
-}
-
-HeadForm: WOComponentReference {
-  component  = headForm;
-  preview    = NO;
-  dataSource = selectedDataSource;
-  folderPath = fileManager.currentDirectoryPath;
-}
-
-TailForm: WOComponentReference {
-  component  = tailForm;
-  preview    = NO;
-  dataSource = selectedDataSource;
-  folderPath = fileManager.currentDirectoryPath;
-}
-
 ProjectLabel: WOString { value = labels.project; }
 ProjectName:  WOString { value = label; }
 
@@ -224,7 +184,7 @@ AttributeCell: WOGenericContainer {
   align	      = "right"; // hh: not top aligned?
   bgcolor     = config.colors_attributeCell;
   width       = "15%";
-};
+}
 
 ValueCell: SkyValueCell {}
 Font:      SkyConfigFont {}

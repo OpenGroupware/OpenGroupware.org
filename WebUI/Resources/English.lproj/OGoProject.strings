@@ -243,6 +243,7 @@ jobs                                = "Tasks";
 jobsSubview                         = "tasks";
 jobs_title                          = "Tasks";
 jpg                                 = "Download JPG image";
+label_no_projects_matching_category = "No projects matches query.";
 lastModifiedBy                      = "Last modified by";
 leader                              = "Projectlead";
 link                                = "Link";

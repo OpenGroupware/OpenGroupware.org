@@ -251,6 +251,7 @@ jobs                  = "Jobs";
 jobsSubview           = "Jobs";
 jobs_title            = "Jobliste";
 jpg                   = "JPG Bild laden";
+label_no_projects_matching_category = "Keine passenden Projekte.";
 lastModifiedBy        = "Letzter Bearbeiter";
 leader                = "Project Manager";
 link                  = "Link";

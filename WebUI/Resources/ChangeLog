@@ -1,4 +1,11 @@
+2004-12-01  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* English|German.lproj/OGoProject.strings: added new
+	  label_no_projects_matching_category key
+	
 2004-11-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* German.lproj/PreferencesUI.strings: added missing semicolons
 
 	* German.lproj/OGoMailEditor.strings: added missing semicolons
 

@@ -1,65 +1,44 @@
 <#Frame>
-  <!-- $Id: SkyProject4Viewer.html 2 2004-08-20 11:37:44Z znek $ -->
   <#Window>
+    <#Title><#Buttons/></#Title>
 
-    <#ShowOnlyForm><#IndexForm/></#ShowOnlyForm>
-    
-    <#ShowNotOnlyForm>
-      <#Title><#Buttons/></#Title>
-
-      <table width="100%" border="0" cellpadding="4" cellspacing="0">
-        <tr>
-          <#AttributeCell><#Font><#ProjectLabel/>:</#Font></#AttributeCell>
-          <#ValueCell    ><#Font><b><#ProjectName/></b></#Font></#ValueCell>
-        </tr>
-      </table>
+    <table width="100%" border="0" cellpadding="4" cellspacing="0">
+      <tr>
+        <#AttributeCell><#Font><#ProjectLabel/>:</#Font></#AttributeCell>
+        <#ValueCell    ><#Font><b><#ProjectName/></b></#Font></#ValueCell>
+      </tr>
+    </table>
       
-      <p>
-        <#TabView>
-          <#FSInfoTab><#FSInfo/></#FSInfoTab>
+    <p>
+      <#TabView>
+        <#FSInfoTab><#FSInfo/></#FSInfoTab>
 
-          <#ShowForm>
-            <#FormsTab>
-              <#IsDesigner>
-                <small>
-                  <i>Current Account is FormEditor</i><hr size="1" />
-                </small>
-              </#IsDesigner>
-              <#IndexPreview/>
-            </#FormsTab>
-          </#ShowForm>
+        <#DocumentsTab>
+          <#Form>
+            <#ShowTree>
+              <table border="0" width="100%">
+                <tr>
+                  <td valign='top' width='15%'>
+                    <#FileManagerTree/>
+                  </td>
+                  <td width='10'></td>
+                  <td id="cdlistcell" valign='top' width='85%'>
+                  <#DoHideTree/>
+            </#ShowTree>
+            
+            <#DontShowTree><#DoShowTree/></#DontShowTree>
+            
+            <#ShowFolderContent><#FolderView/></#ShowFolderContent>
+            
+            <#ShowTree></td></tr></table></#ShowTree>
+
+          </#Form>
+        </#DocumentsTab>
         
-          <#DocumentsTab>
-            <#HasHeadForm><#HeadForm/></#HasHeadForm>
-
-            <#Form>
-              <#ShowTree>
-                <table border="0" width="100%">
-                  <tr>
-                    <td valign='top' width='15%'>
-                      <#FileManagerTree/>
-                    </td>
-                    <td width='10'></td>
-                    <td id="cdlistcell" valign='top' width='85%'>
-                    <#DoHideTree/>
-              </#ShowTree>
-            
-              <#DontShowTree><#DoShowTree/></#DontShowTree>
-            
-              <#ShowFolderForm   ><#FolderForm/></#ShowFolderForm>
-              <#ShowFolderContent><#FolderView/></#ShowFolderContent>
-            
-              <#ShowTree></td></tr></table></#ShowTree>
-
-            </#Form>
-            <#HasTailForm><#TailForm/></#HasTailForm>
-          </#DocumentsTab>
-        
-          <#SearchTab><#Search           /></#SearchTab>
-          <#JobsTab  ><#ProjectJobListAct/></#JobsTab>
-          <#NotesTab ><#Notes            /></#NotesTab>
-          <#LinkTab  ><#RelatedLinks     /></#LinkTab>
-        </#TabView>
-    </#ShowNotOnlyForm>
+        <#SearchTab><#Search           /></#SearchTab>
+        <#JobsTab  ><#ProjectJobListAct/></#JobsTab>
+        <#NotesTab ><#Notes            /></#NotesTab>
+        <#LinkTab  ><#RelatedLinks     /></#LinkTab>
+      </#TabView>
   </#Window>
 </#Frame>

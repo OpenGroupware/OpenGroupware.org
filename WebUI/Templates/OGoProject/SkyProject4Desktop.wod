@@ -51,6 +51,48 @@ Tab: SkySimpleTabItem {
 TabTableView: SkyP4ProjectTableView {
   dataSource = tabDataSource;
 }
+TabQuickList: OGoProjectQuicklist {
+  dataSource = tabDataSource;
+}
+
+IsQuickViewActive: WOConditional { condition = isQuickViewActive; }
+IsListViewActive:  WOConditional { condition = isListViewActive; }
+
+QSelLink: WOHyperlink {
+  action = showQuickView;
+}
+LSelLink: WOHyperlink {
+  action = showListView;
+}
+
+ToggleCell: WOGenericContainer {
+  elementName = "td";
+  ALIGN       = "left";
+  VALIGN      = "middle";
+  BGCOLOR     = config.colors_mainButtonRow;
+  WIDTH       = "1%";
+}
+ButtonCell: WOGenericContainer {
+  elementName = "td";
+  //COLSPAN   = "2";
+  ALIGN       = "right";
+  BGCOLOR     = config.colors_mainButtonRow;
+}
+
+QuickViewIcon: WOImage {
+  filename = "icon_apt_chart.gif";
+  BORDER   = "0";
+  VALIGN   = "TOP";
+  ALT      = labels.quickview;
+  title    = labels.quickview;
+}
+ListViewIcon: WOImage {
+  filename = "icon_apt_list.gif";
+  BORDER   = "0";
+  VALIGN   = "TOP";
+  ALT      = labels.list;
+  title    = labels.list;
+}
 
 /* Selected Projects */
 
@@ -171,9 +213,6 @@ NameLink: WOHyperlink {
   action = clickedProject;
   string = item.project.name;
 }
-
-
-
 
 
 FileSizeTD: WETableData {

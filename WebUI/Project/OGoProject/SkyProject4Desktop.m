@@ -55,6 +55,11 @@
   id item;
   id prevItem;
   id currentTab;
+
+  struct {
+    int isListViewActive:1;
+    int reserved:31;
+  } spdFlags;
 }
 
 - (EOFetchSpecification *)_fetchSpecification;
@@ -94,21 +99,20 @@ static EOQualifier *trueQualifier     = nil;
   [OGoFileManagerFactory sharedFileManagerFactory];
 }
 
-- (void)_setupDataSourceInContext:(LSCommandContext *)_cmdctx {
-  EOCacheDataSource    *cds;
-  EOFilterDataSource   *fds;
+- (EOFetchSpecification *)fetchSpecWithJustTheGroupings {
   EOFetchSpecification *fspec;
-
-  self->ds = [SkyProjectDataSource alloc]; /* sep line to make gcc happy */
-  self->ds = [(SkyProjectDataSource *)self->ds initWithContext:(id)_cmdctx];
-  [self->ds setFetchSpecification:[self _fetchSpecification]];
-
+  
   fspec = [EOFetchSpecification fetchSpecificationWithEntityName:nil
                                 qualifier:nil
                                 sortOrderings:nil];
   [fspec setGroupings:[self groupings]];
+  return fspec;
+}
+
+- (void)wrapDataSourceInCacheAndFilter {
+  EOCacheDataSource  *cds;
+  EOFilterDataSource *fds;
   
-  [self->ds setFetchSpecification:fspec];
   cds = [[EOCacheDataSource alloc] initWithDataSource:self->ds];
   [self->ds autorelease]; self->ds = nil;
   [cds setTimeout:projectDataSourceCacheTimeout];
@@ -116,6 +120,17 @@ static EOQualifier *trueQualifier     = nil;
   fds = [[EOFilterDataSource alloc] initWithDataSource:cds];
   self->ds = (id)fds;
   [cds release];
+}
+
+- (void)_setupDataSourceInContext:(LSCommandContext *)_cmdctx {
+  self->ds = [SkyProjectDataSource alloc]; /* sep line to make gcc happy */
+  self->ds = [(SkyProjectDataSource *)self->ds initWithContext:(id)_cmdctx];
+  
+  // TODO: twice?
+  [self->ds setFetchSpecification:[self _fetchSpecification]];
+  [self->ds setFetchSpecification:[self fetchSpecWithJustTheGroupings]];
+  
+  [self wrapDataSourceInCacheAndFilter];
 }
 
 - (id)init {
@@ -253,6 +268,13 @@ static EOQualifier *trueQualifier     = nil;
   return self->currentTab;
 }
 
+- (BOOL)isQuickViewActive {
+  return self->spdFlags.isListViewActive ? NO : YES;
+}
+- (BOOL)isListViewActive {
+  return self->spdFlags.isListViewActive ? YES : NO;
+}
+
 - (NSString *)currentTabLabel {
   NSString *k;
   
@@ -264,7 +286,7 @@ static EOQualifier *trueQualifier     = nil;
 - (EODataSource *)tabDataSource {
   EOQualifier *q;
   
-  /* might want to use one DS per tab-key? */
+  // TODO: we need to use one DS per tab-key!
   
   q = [EOQualifier qualifierWithQualifierFormat:
                      [[self currentTab] objectForKey:@"qualifier"]];
@@ -477,17 +499,27 @@ static EOQualifier *trueQualifier     = nil;
   return NSClassFromString(@"SkyProjectDocumentDataSource");
 }
 - (EODataSource *)projectDocumentDataSource {
+  LSCommandContext *cmdctx;
   Class        class;
   EODataSource *pds;
   
+  cmdctx = [(OGoSession *)[self session] commandContext];
   class = [self projectDocumentDataSourceClass];
   pds   = [class alloc];
-  pds   = [pds initWithContext:(id)
-	         [(OGoSession *)[self session] commandContext]];
+  pds   = [(SkyProjectDataSource *)pds initWithContext:cmdctx];
   return [pds autorelease];
 }
 
 /* actions */
+
+- (id)showQuickView {
+  self->spdFlags.isListViewActive = 0;
+  return nil;
+}
+- (id)showListView {
+  self->spdFlags.isListViewActive = 1;
+  return nil;
+}
 
 - (id)refetch {
   [(EOCacheDataSource *)[(EOCacheDataSource *)[self dataSource] source] clear];
