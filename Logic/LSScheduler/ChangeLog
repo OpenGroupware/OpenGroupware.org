@@ -1,3 +1,7 @@
+2004-11-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSAptAccessCommand.m: properly include common.h (v5.1.54)
+
 2004-11-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.53

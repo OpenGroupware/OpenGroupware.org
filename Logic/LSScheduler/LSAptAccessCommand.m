@@ -27,6 +27,8 @@
   key is the gid and the value is the permission-string.
 */
 
+@class NSArray;
+
 @interface LSAptAccessCommand : LSDBObjectBaseCommand
 {
   NSArray *gids;
@@ -36,9 +38,7 @@
 
 #include <LSFoundation/LSCommandKeys.h>
 #include <LSFoundation/LSFoundation.h>
-#import <Foundation/Foundation.h>
-#import <EOControl/EOControl.h>
-#import <GDLAccess/GDLAccess.h>
+#include "common.h"
 
 @implementation LSAptAccessCommand
 
