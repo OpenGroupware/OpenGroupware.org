@@ -341,13 +341,21 @@ static BOOL debugOn = NO;
   
   if ([SkyProjectFileManager supportQualifier:qualifier]) {
     NSString *folder;
-
+    
+    if (debugOn) {
+      [self debugWithFormat:@"  fetch with filemanager '%@': %@", 
+	      self->path, qualifier];
+    }
+    
     folder  = self->path;
     dsAttrs = [self->fileManager searchChildsForFolder:folder
                    deep:fetchDeep qualifier:qualifier];
   }
-  else
+  else {
+    if (debugOn) 
+      [self debugWithFormat:@"  fetch with simple DS: %@", qualifier];
     dsAttrs = [self _fetchWithSimpleDataSource];
+  }
   
   objects = [self _fetchDocumentsForObjects:dsAttrs];
   objects = [self _applyFetchLimit:objects];
@@ -507,6 +515,10 @@ static BOOL debugOn = NO;
 
 - (BOOL)isDebuggingEnabled {
   return debugOn;
+}
+
+- (NSString *)loggingPrefix {
+  return [NSString stringWithFormat:@"<0x%08X[SPF-DS:%@]>", self, self->path];
 }
 
 /* description */

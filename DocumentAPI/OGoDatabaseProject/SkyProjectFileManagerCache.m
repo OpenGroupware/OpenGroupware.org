@@ -71,6 +71,7 @@
 
 @implementation SkyProjectFileManagerCache
 
+static BOOL     debugSearch = NO;
 static NSNumber *yesNum = nil;
 
 + (void)initialize {
@@ -574,63 +575,62 @@ static NSNumber *yesNum = nil;
   NSFileType = 'NSFileTypeDirectory'
 */
 
-- (NSArray *)searchChildsForFolder:(NSString *)_path
-  deep:(BOOL)_deep
+- (NSArray *)deepSearchChildrenForFolder:(NSString *)_path
   qualifier:(EOQualifier *)_qualifier
   manager:(id)_manager
 {
-  NSArray *childs;
+  // called only by searchChildsForFolder:..
+  NSMutableArray *children;
+  EOQualifier  *qual;
+  NSArray      *docs;
+  NSDictionary *docEditings;
+  NSEnumerator *enumerator;
+  id           doc;
+  BOOL         evalQual;
 
-  childs = nil;
-
-  if (!_deep) {
-    childs = [self childAttributesAtPath:_path manager:_manager];
-
-    if (_qualifier != nil)
-      childs = [childs filteredArrayUsingQualifier:_qualifier context:nil];
+  /* preconditions */
+  
+  if (![_path isEqualToString:@"/"]) {
+    [self logWithFormat:
+	    @"ERROR(%s): fetch deep only allowed for root path, got: '%@'",
+            __PRETTY_FUNCTION__, _path];
+    return nil;
   }
-  else if ([_path isEqualToString:@"/"]) {
-    // TODO: move to own method
-    EOQualifier  *qual;
-    NSArray      *docs;
-    NSDictionary *docEditings;
-    NSEnumerator *enumerator;
-    id           doc;
-    BOOL         evalQual;
 
-    qual        =
-      [SkyProjectFileManager convertQualifier:_qualifier
-                             projectId:[self->project valueForKey:@"projectId"]
-                             evalInMemory:&evalQual];
-    docs        = [self fetchDocsForParentId:nil siblingId:nil qualifier:qual];
-    docEditings = [self fetchDocEditingsForParentId:nil siblingId:nil docPKeys:
+  qual = [SkyProjectFileManager convertQualifier:_qualifier
+				projectId:
+				  [self->project valueForKey:@"projectId"]
+				evalInMemory:&evalQual];
+  docs        = [self fetchDocsForParentId:nil siblingId:nil qualifier:qual];
+  docEditings = [self fetchDocEditingsForParentId:nil siblingId:nil docPKeys:
                         [docs map:@selector(valueForKey:) with:@"documentId"]];
-    childs      = [NSMutableArray arrayWithCapacity:16];
-    enumerator  = [docs objectEnumerator];
 
-    while ((doc = [enumerator nextObject])) {
+  children    = [NSMutableArray arrayWithCapacity:16];
+  enumerator  = [docs objectEnumerator];
+  while ((doc = [enumerator nextObject]) != nil) {
+    // TODO: can we refactor that?
       NSDictionary  *fileAttrs;
       NSString      *path, *parent;
       EOKeyGlobalID *gid;
       NSNumber      *key;
 
-      key    = [doc objectForKey:@"parentDocumentId"];
-
+      if ((key = [doc objectForKey:@"parentDocumentId"]) == nil)
+	continue;
       if (![key isNotNull])
         continue;
-
+      
       gid    = [EOKeyGlobalID globalIDWithEntityName:@"Doc"
                               keys:&key keyCount:1 zone:NULL];
       parent = [self pathForGID:gid manager:_manager];
       
-      fileAttrs = [SkyProjectFileManager buildFileAttrsForDoc:doc
-                        editing:[docEditings objectForKey:
-                                             [doc objectForKey:@"documentId"]]
-                        atPath:parent isVersion:NO
-                                         projectId:[self->project
-                                                     valueForKey:@"projectId"]
-                                         fileAttrContext:self];
-      [(NSMutableArray *)childs addObject:fileAttrs];
+      fileAttrs = [SkyProjectFileManager 
+		    buildFileAttrsForDoc:doc
+		    editing:[docEditings objectForKey:
+					   [doc objectForKey:@"documentId"]]
+		    atPath:parent isVersion:NO
+		    projectId:[self->project valueForKey:@"projectId"]
+		    fileAttrContext:self];
+      [children addObject:fileAttrs];
       
       gid  = [fileAttrs objectForKey:@"globalID"];
       path = [fileAttrs objectForKey:@"NSFilePath"];
@@ -638,19 +638,48 @@ static NSNumber *yesNum = nil;
       [[self fileName2GIDCache] setObject:gid forKey:path];
       [[self pk2FileNameCache] setObject:path forKey:[gid keyValues][0]];
       [[self fileAttributesAtPathCache] setObject:fileAttrs forKey:path];
-    }
-    if (evalQual) {
-      if ([_qualifier isNotNull])
-        childs = [childs filteredArrayUsingQualifier:_qualifier context:nil];
+  }
+  
+  if (evalQual && [_qualifier isNotNull]) {
+    children = (id)[children filteredArrayUsingQualifier:_qualifier 
+			     context:nil];
+  }
+  return children;
+}
+
+- (NSArray *)searchChildsForFolder:(NSString *)_path
+  deep:(BOOL)_deep
+  qualifier:(EOQualifier *)_qualifier
+  manager:(id)_manager
+{
+  NSArray *children;
+
+  children = nil;
+  
+  if (debugSearch) 
+    [self logWithFormat:@"fm-search: '%@': %@", _path, _qualifier];
+  
+  if (!_deep) {
+    children = [self childAttributesAtPath:_path manager:_manager];
+    if (debugSearch)
+      [self logWithFormat:@"  flat found %d children.", [children count]];
+    
+    if (_qualifier != nil) {
+      children = [children filteredArrayUsingQualifier:_qualifier context:nil];
+      if (debugSearch) {
+	[self logWithFormat:@"  filtered out %@ to %d children.", 
+	        _qualifier, [children count]];
+      }
     }
   }
   else {
-    [self logWithFormat:
-	    @"ERROR(%s): fetch deep only allowed for root path, using %@",
-            __PRETTY_FUNCTION__, _path];
-    return nil;
+    children = [self deepSearchChildrenForFolder:_path 
+		     qualifier:_qualifier manager:_manager];
   }
-  return childs;
+
+  if (debugSearch) 
+    [self logWithFormat:@"=> fm-search found %d children.", [children count]];
+  return children;
 }
 
 /* accessors */
