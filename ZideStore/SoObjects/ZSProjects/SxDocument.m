@@ -1,7 +1,28 @@
-// $Id: SxDocument.m 1 2004-08-20 11:17:52Z znek $
+/*
+  Copyright (C) 2002-2004 SKYRIX Software AG
+
+  This file is part of OpenGroupware.org.
+
+  OGo is free software; you can redistribute it and/or modify it under
+  the terms of the GNU Lesser General Public License as published by the
+  Free Software Foundation; either version 2, or (at your option) any
+  later version.
+
+  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+  License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with OGo; see the file COPYING.  If not, write to the
+  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+  02111-1307, USA.
+*/
 
 #include "SxDocument.h"
 #include "SxProjectFolder.h"
+#include <OGoDocuments/SkyDocumentFileManager.h>
+#include <OGoDocuments/SkyDocument.h>
 #include "common.h"
 
 // TODO: might add support for versions?! (aka name.txt;1)
@@ -58,6 +79,20 @@ static BOOL debugOn = NO;
                  stringByAppendingString:[self nameInContainer]];
 }
 
+- (SkyDocument *)documentInContext:(id)_ctx {
+  id<SkyDocumentFileManager> fm;
+  NSString *p;
+  
+  if (_ctx == nil) _ctx = [[WOApplication application] context];
+  
+  if ((fm = [self fileManagerInContext:_ctx]) == nil)
+    return nil;
+  if ([(p = [self storagePath]) length] == 0)
+    return nil;
+  
+  return [fm documentAtPath:p];
+}
+
 /* attributes */
 
 - (NSDictionary *)fileAttributes {
@@ -72,6 +107,25 @@ static BOOL debugOn = NO;
     //[self debugWithFormat:@"ATTRS: %@", self->attrCache];
   }
   return self->attrCache;
+}
+
+/* content */
+
+- (NSString *)contentAsStringInContext:(id)_ctx {
+  SkyDocument *doc;
+  
+  if ((doc = [self documentInContext:_ctx]) == nil)
+    return nil;
+  if ([doc isKindOfClass:[NSException class]])
+    return (id)doc;
+  
+  if (![doc supportsFeature:SkyDocumentFeature_STRINGBLOB])
+    return nil;
+  
+  return [(id<SkyStringBLOBDocument>)doc contentAsString];
+}
+- (NSString *)contentAsString {
+  return [self contentAsStringInContext:nil];
 }
 
 /* key/value coding */
@@ -264,6 +318,23 @@ static BOOL debugOn = NO;
   return [[self fileAttributes] objectForKey:NSFileModificationDate];
 }
 
+/* Blogger support */
+
+- (NSString *)bloggerContentInContext:(id)_ctx {
+  NSString *s;
+  
+  s = [[self nameInContainer] pathExtension];
+  if ([s isEqualToString:@"txt"]) {
+    s = [self contentAsStringInContext:_ctx];
+    s = [@"<pre>" stringByAppendingString:s];
+    s = [s stringByAppendingString:@"</pre>"];
+    return s;
+  }
+  if ([s isEqualToString:@"html"])
+    return [self contentAsStringInContext:_ctx];
+  
+  return @"<i>This ZideStore document is unsupported in Blogger</i>";
+}
 
 /* debugging */
 

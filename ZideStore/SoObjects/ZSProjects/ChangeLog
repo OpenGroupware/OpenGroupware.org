@@ -1,5 +1,13 @@
 2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v1.3.92
+
+	* SxDocumentFolder.m: override some SxFolder methods which are not
+	  used in the SxDocumentFolder, added support for Blogger post's
+
+	* SxDocument.m: added -contentAsString method, added special method for
+	  Blogger content
+
 	* v1.3.91
 
 	* SxNote.m: implemented object deletion

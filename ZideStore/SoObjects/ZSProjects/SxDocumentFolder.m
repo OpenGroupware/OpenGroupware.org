@@ -1,7 +1,27 @@
-// $Id: SxDocumentFolder.m 1 2004-08-20 11:17:52Z znek $
+/*
+  Copyright (C) 2002-2004 SKYRIX Software AG
+
+  This file is part of OpenGroupware.org.
+
+  OGo is free software; you can redistribute it and/or modify it under
+  the terms of the GNU Lesser General Public License as published by the
+  Free Software Foundation; either version 2, or (at your option) any
+  later version.
+
+  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+  License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with OGo; see the file COPYING.  If not, write to the
+  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+  02111-1307, USA.
+*/
 
 #include "SxDocumentFolder.h"
 #include "SxProjectFolder.h"
+#include <OGoDocuments/NGLocalFileManager.h>
 #include "common.h"
 
 @implementation SxDocumentFolder
@@ -187,6 +207,15 @@ static BOOL debugOn = NO;
 }
 
 /* child lookup */
+
+- (id)childForNewKey:(NSString *)_key inContext:(id)_ctx {
+  /* triggered by SxFolder lookup */
+  return nil; // we implement our own mechanism
+}
+- (Class)recordClassForKey:(NSString *)_key {
+  /* triggered by SxFolder lookup */
+  return nil; // we implement our own mechanism
+}
 
 - (id)folderWithName:(NSString *)_name inContext:(id)_ctx {
   id folder;
@@ -471,6 +500,67 @@ static BOOL debugOn = NO;
 }
 - (NSDate *)davLastModified {
   return [[self fileAttributes] objectForKey:NSFileModificationDate];
+}
+
+/* Blogger support */
+
+- (NSString *)bloggerPostEntryWithTitle:(NSString *)_title
+  description:(NSString *)_content creationDate:(NSCalendarDate *)_date
+  inContext:(id)_ctx
+{
+  id<SkyDocumentFileManager> fm; // TODO: need a protocol here
+  NSString     *p, *fn;
+  SkyDocument  *doc;
+  
+  if ((fm = [self fileManagerInContext:_ctx]) == nil)
+    return nil;
+  
+  // TODO: improve filename creation procedure ...
+  fn = [NSString stringWithFormat:@"post%d.html", time(NULL)];
+  p  = [self storagePath];
+  if (![p hasSuffix:@"/"]) p = [p stringByAppendingString:@"/"];
+  p  = [p stringByAppendingString:fn];
+  
+  /* first write content */
+
+  if (![fm writeContents:[_content dataUsingEncoding:NSISOLatin1StringEncoding]
+	   atPath:p]) {
+    [self logWithFormat:@"ERROR: could not write to path: %@", p];
+    return nil;
+  }
+  
+  /* then set attrs */
+  
+  if ((doc = [fm documentAtPath:p]) == nil) {
+    [self logWithFormat:@"ERROR: did not find new document: %@", p];
+    return nil;
+  }
+  
+  [doc takeValue:_title forKey:@"NSFileSubject"];
+  if (![doc save]) {
+    [self logWithFormat:@"ERROR: could not save document: %@", p];
+    return nil;
+  }
+
+  /* commit */
+  
+  if ([[self commandContextInContext:_ctx] isTransactionInProgress]) {
+    if (![[self commandContextInContext:_ctx] commit]) {
+      [self logWithFormat:@"ERROR: could not commit transaction!"];
+      [[self commandContextInContext:_ctx] rollback];
+      return nil;
+    }
+  }
+  
+  /* 
+     The current convention for the post IDs is Blog/Post, because post edit
+     operations only transfer the post ID and _not_ the blog (so we need to
+     embed the blog name).
+     At least for DB projects this would not be necessary, since they can
+     locate documents by DB primary key.
+  */
+  p = [[self nameInContainer] stringByAppendingString:@"/"];
+  return [p stringByAppendingString:fn];
 }
 
 /* debugging */

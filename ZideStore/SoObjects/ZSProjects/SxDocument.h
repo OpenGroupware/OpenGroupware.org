@@ -32,7 +32,7 @@
 
 @class NSString, NSDictionary;
 @class EOGlobalID;
-@class SxProjectFolder;
+@class SxProjectFolder, SkyDocument;
 
 @interface SxDocument : SxObject
 {
@@ -49,6 +49,8 @@
 - (id)fileManagerInContext:(id)_ctx;
 - (id)fileManager;
 - (NSString *)storagePath;
+
+- (SkyDocument *)documentInContext:(id)_ctx;
 
 @end
 
