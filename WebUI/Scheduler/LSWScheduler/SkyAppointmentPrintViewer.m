@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWViewerPage.h>
 
@@ -70,9 +69,7 @@
 
 - (id)init {
   if ((self = [super init])) {
-    self->writeAccessList = [[NSMutableString alloc] init];
-    self->aptTypes = nil;
-    self->aptType  = nil;
+    self->writeAccessList = [[NSMutableString alloc] initWithCapacity:128];
   }
   return self;
 }
@@ -90,8 +87,9 @@
 
 - (void)_fetchComment {
   id tmp;
-  id obj = [self object];
-
+  id obj;
+  
+  obj = [self object];
   if ([obj isKindOfClass:[NSDictionary class]]) return;
 
   [obj run:@"appointment::get-comment", @"relationKey", @"dateInfo", nil];
@@ -100,7 +98,8 @@
 }
 
 - (void)_fetchWriteAccessList {
-  NSEnumerator *enumerator = nil;
+  // TODO: split up
+  NSEnumerator   *enumerator = nil;
   id             objId = nil;
   NSString       *list = nil;
   EOGlobalID     *oid  = nil;
@@ -419,25 +418,19 @@
 @implementation SkyAppointmentPrintViewer(PrivateMethodes)
 
 - (id)_getOwnerOf:(id)_app {
-  id theOwner;
+  NSString *ownerId;
 
-  theOwner = [_app valueForKey:@"toOwner"];
-  if (theOwner == nil) {
-    NSString *ownerId;
-
-    ownerId = [_app valueForKey:@"ownerId"];
-    return ([ownerId isNotNull])
-      ? [[self runCommand:@"person::get", @"companyId", ownerId, nil]
-               lastObject]
-      : nil;
-  }
-  else
-    return [theOwner valueForKey:@"toPerson"];
+  ownerId = [_app valueForKey:@"ownerId"];
+  if (![ownerId isNotNull])
+    return nil;
+  
+  return  [[self runCommand:@"person::get", @"companyId", ownerId, nil]
+	    lastObject];
 }
 
 - (id)_getAccessTeamOf:(id)_app {
   id theAccessTeam;
-
+  
   theAccessTeam = [_app valueForKey:@"toAccessTeam"];
   if (theAccessTeam == nil) {
     NSString *accessTeamId;
@@ -459,6 +452,7 @@
 
   if (_gid == nil) return nil;
 
+  // TODO: move attrs to Defaults.plist
   result = [self run:@"appointment::get-by-globalid",
                  @"gids",       [NSArray arrayWithObject:_gid],
                  @"timeZone",   self->timeZone,

@@ -300,13 +300,8 @@ IsOwnerArchivedCondElse: WOConditional {
   condition = isOwnerArchived;
   negate    = YES;
 }
-
 IsOwnerArchivedCond: WOConditional {
   condition = isOwnerArchived;  
-}
-
-IsLogTabEnabled: WOConditional {
-  condition = isLogTabEnabled;
 }
 
 RelatedLinks: OGoObjectLinkList {

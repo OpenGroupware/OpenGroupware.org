@@ -1,3 +1,8 @@
+2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAppointmentPrintViewer.m: explicitly fetch owner (do not use
+	  relationship fault), related to OGo bug #1065 (v5.1.60)
+
 2004-11-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWAppointmentViewer.m: ensure that account has proper access to view
