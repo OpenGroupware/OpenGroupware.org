@@ -1,3 +1,7 @@
+2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.23)
+
 2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
 
 	* install into Library/OpenGroupware.org-1.0a/WebUI (v5.1.22)

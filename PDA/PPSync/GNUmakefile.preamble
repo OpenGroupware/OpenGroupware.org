@@ -29,3 +29,5 @@ ppls_TOOL_LIBS += \
 
 ppls_LIB_DIRS += -L$(GNUSTEP_OBJ_DIR)
 nhsd_LIB_DIRS += -L$(GNUSTEP_OBJ_DIR)
+
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib
