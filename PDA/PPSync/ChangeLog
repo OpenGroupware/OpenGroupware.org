@@ -1,3 +1,7 @@
+2004-12-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* NHSNameServiceDaemon.m: minor code cleanups (v5.1.13)
+
 2004-10-01  Tiny Toon  <tiny@tinytoon.de>
 	
 	* PPSyncContext.m: added debugging code (v5.1.12)

@@ -20,14 +20,12 @@
 */
 
 #include "NHSNameServiceDaemon.h"
-#import <Foundation/Foundation.h>
-#import <Foundation/UnixSignalHandler.h>
-#import <EOControl/EOControl.h>
-#import <NGExtensions/NGExtensions.h>
-#import <NGStreams/NGNet.h>
-#import <PPSync/PPSyncContext.h>
-#import <PPSync/PPSyncPort.h>
-#import <PPSync/PPPostSync.h>
+#include "common.h"
+#include <Foundation/UnixSignalHandler.h>
+#include <NGStreams/NGNet.h>
+#include <PPSync/PPSyncContext.h>
+#include <PPSync/PPSyncPort.h>
+#include <PPSync/PPPostSync.h>
 
 #include "PPTransaction.h"
 
