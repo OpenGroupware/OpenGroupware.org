@@ -26,7 +26,7 @@ my $dl_host = "download.opengroupware.org";
 # this are the packages I can deal with
 # every package given here should have its own specfile...
 # adding new packages is more or less a copy'n'paste job of code snippets below
-my @poss_packages = qw( ogo-gnustep_make libobjc-lf2 libfoundation libical-sope-devel opengroupware-pilot-link opengroupware-nhsc sope opengroupware mod_ngobjweb_slss8 mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment epoz ogo-database-setup );
+my @poss_packages = qw( ogo-gnustep_make libobjc-lf2 libfoundation libical-sope-devel opengroupware-pilot-link opengroupware-nhsc sope opengroupware mod_ngobjweb_slss8 mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment epoz ogo-database-setup ogofull);
 my $flavour_we_build_upon;
 my $distrib_define;
 my $memyself = basename($0);
@@ -38,8 +38,8 @@ my $rpm;
 my @rpms_build;
 #package_wo_source contains packages wo source at all or where i refuse to download
 #the source (source should be already in \$sources_dir)
-my @package_wo_source = qw( ogo-gnustep_make ogo-environment ogo-database-setup );
-my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment opengroupware-pilot-link opengroupware-nhsc ogo-database-setup ogo-meta );
+my @package_wo_source = qw( ogo-gnustep_make ogo-environment ogo-database-setup ogofull);
+my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment opengroupware-pilot-link opengroupware-nhsc ogo-database-setup ogo-meta ogofull);
 my $release_codename;
 my $remote_release_dirname;
 my $libversion;
@@ -385,6 +385,15 @@ sub get_current_from_rpmmacro {
       $cur_svnrev = $cline if ($cline =~ s/^\%ogo_dbsetup_release\s+//);
       $cur_buildcount = $cline if ($cline =~ s/^\%ogo_dbsetup_buildcount\s+//);
     }
+    #ogofull fake
+    if ($package eq "ogofull") {
+      #$cur_version = $cline if ($cline =~ s/^\%ogofull_version\s+//);
+      $cur_version = "1.0a";
+      #$cur_svnrev = $cline if ($cline =~ s/^\%ogofull_release\s+//);
+      $cur_svnrev = "0";
+      #$cur_buildcount = $cline if ($cline =~ s/^\%ogofull_buildcount\s+//);
+      $cur_buildcount = "0";
+    }
   }
   #wipe out prefix to svn revision used in rpmmacros_trunk/rpmmacros_release before comparision...
   $cur_svnrev =~ s/\D+//g;
@@ -627,6 +636,14 @@ sub collect_patchinfo {
   }
   ###########################################################################
   if ($package eq "ogo-database-setup") {
+    $new_major = "1.0a";
+    $new_minor = "0";
+    $new_svnrev = "0";
+    $new_version = (defined $version_override ? $version_override : $new_major);
+  }
+  ####
+  if ($package eq "ogofull") {
+    #ogofull must be adjusted in the specfile itself
     $new_major = "1.0a";
     $new_minor = "0";
     $new_svnrev = "0";
