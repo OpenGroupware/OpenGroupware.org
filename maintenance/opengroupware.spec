@@ -394,6 +394,15 @@ AutoReqProv:	off
 
 %description webui-resource-se
 webui resource se package.
+###
+#%package webui-resource-se
+#Summary:		webui resource se
+#Group:			Development/Libraries
+##Requires:		ogo-gnustep_make 
+#AutoReqProv:	off
+
+%description webui-resource-se
+webui resource se package.
 ##
 %package webui-resource-ptbr
 Summary:		webui resource ptbr
@@ -801,9 +810,9 @@ rm -fr ${RPM_BUILD_ROOT}
 %defattr(-,root,root,-)
 %{prefix}/share/opengroupware.org-1.0a/translations/Spanish.lproj
 
-%files webui-resource-se
-%defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0a/translations/Swedish.lproj
+#%files webui-resource-se
+#%defattr(-,root,root,-)
+#%{prefix}/share/opengroupware.org-1.0a/translations/Swedish.lproj
 
 %files webui-resource-ptbr
 %defattr(-,root,root,-)
@@ -846,5 +855,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Tue Nov 30 2004 Frank Reppin <frank@opengroupware.org>
+- removed webui-resource-se since it's not part
+  of the build anymore.
 * Wed Sep 09 2004 Frank Reppin <frank@opengroupware.org>
 - initial build
