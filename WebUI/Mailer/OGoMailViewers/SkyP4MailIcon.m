@@ -21,6 +21,8 @@
 
 #include <NGObjWeb/WODynamicElement.h>
 
+// TODO: what does it, who uses that?
+
 @interface SkyP4MailIcon : WODynamicElement
 {
   WOAssociation *projectName;

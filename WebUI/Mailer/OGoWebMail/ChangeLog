@@ -1,3 +1,8 @@
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* bundle-info.plist: moved mailing-list registry entries to
+	  OGoRecipientLists bundle (v5.1.104)
+
 2005-03-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Defaults.plist: changed default MDN text to English as requested in

@@ -31,7 +31,7 @@
         { name = SkyMessageRfc822Viewer;            },
         { name = SkyImapDownloadAction;             },
         { name = OGoMailDownloadAction;             },
-        { name = SkyMailIcon;                       },
+        { name = SkyP4MailIcon;                     },
     );
     
     WOComponents = (

@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefiles
 
 include ../common.make
 
@@ -19,7 +19,7 @@ OGoMailViewers_OBJC_FILES = \
 	LSWMultipartAlternativeBodyViewer.m	\
 	LSWImageBodyViewer.m			\
 	OGoMailDownloadAction.m			\
-	SkyMailIcon.m				\
+	SkyP4MailIcon.m				\
 	SkyDecodeWrapperData.m			\
 	NSString+TextWrap.m			\
 	NSString+LinkExtract.m			\

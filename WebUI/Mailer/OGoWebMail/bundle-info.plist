@@ -39,9 +39,6 @@
       { name = LSWImapMailDeletePage;   },
       { name = SkyImapMailRestrictions; },
       { name = SkyImapMailPrintViewer; },
-      { name = SkyMailingListDataSource; },
-      { name = SkyMailingListViewer; },    
-      { name = SkyMailingListEditor; },
     );
           
     PreferencePages = (
@@ -83,8 +80,6 @@
       { name = SkyImapMailListHeader;  },
       { name = SkyImapMailListFooter;  },
       { name = SkyImapMailPrintViewer; },
-      { name = SkyMailingListViewer; },
-      { name = SkyMailingListEditor; },
     );
 
     LSWCommands = (

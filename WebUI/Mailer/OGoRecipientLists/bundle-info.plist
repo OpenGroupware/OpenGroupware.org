@@ -20,10 +20,15 @@
   
   provides = {
     classes = (
-      { name = OGoRecipientListsModule; },
+      { name = OGoRecipientListsModule;  },
+      { name = SkyMailingListDataSource; },
+      { name = SkyMailingListViewer;     },
+      { name = SkyMailingListEditor;     },
     );
     
     WOComponents = (
+      { name = SkyMailingListViewer; },
+      { name = SkyMailingListEditor; },
     );
 
     LSWCommands = (
