@@ -1,4 +1,4 @@
-%define ogoall_version                  1.0alpha11
+%define ogoall_version                  1.0alpha12
 %define ogoall_release                  1
 %define ogoall_buildcount               0
 %define ogoall_prefix                   /usr/local
@@ -15,7 +15,7 @@
 %define ogoall_sope_major               4
 %define ogoall_sope_minor               4
 %define ogoall_sope_makeflags           debug=yes
-%define ogoall_ogo_source               opengroupware.org-1.0alpha11-ultra-r778.tar.gz
+%define ogoall_ogo_source               opengroupware.org-1.0alpha12-ultra-r829.tar.gz
 %define ogoall_ogo_makeflags            debug=yes
 
 Summary:       A free and open groupware suite.
@@ -35,7 +35,7 @@ Source3:       %{ogoall_sope_source}
 Source4:       %{ogoall_ogo_source}
 Prefix:        %{ogoall_prefix}
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
-Conflicts:     sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml sope%{ogoall_sope_major}%{ogoall_sope_minor} sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-core sope%{ogoall_sope_major}%{ogoall_sope_minor}-core-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-mime sope%{ogoall_sope_major}%{ogoall_sope_minor}-mime-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-ical sope%{ogoall_sope_major}%{ogoall_sope_minor}-ical-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1 sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1-postgresql sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1-devel ogo-docapi ogo-docapi-fs-project ogo-docapi-fs-project-devel ogo-docapi-db-project ogo-docapi-db-project-devel ogo-docapi-devel ogo-logic ogo-logic-tools ogo-logic-devel ogo-pda ogo-pda-devel ogo-theme-default ogo-theme-ooo ogo-theme-blue ogo-theme-kde ogo-theme-orange ogo-tools ogo-webui-app ogo-webui-core ogo-webui-core-devel ogo-webui-calendar ogo-webui-contact ogo-webui-mailer ogo-webui-mailer-devel ogo-webui-news ogo-webui-task ogo-webui-project ogo-webui-resource-basque ogo-webui-resource-dk ogo-webui-resource-nl ogo-webui-resource-en ogo-webui-resource-fr ogo-webui-resource-de ogo-webui-resource-hu ogo-webui-resource-it ogo-webui-resource-jp ogo-webui-resource-no ogo-webui-resource-pl ogo-webui-resource-pt ogo-webui-resource-es ogo-webui-resource-sk ogo-webui-resource-ptbr ogo-xmlrpcd ogo-zidestore ogo-zidestore-devel libfoundation%{ogoall_libfoundation_major}%{ogoall_libfoundation_minor} libfoundation%{ogoall_libfoundation_major}%{ogoall_libfoundation_minor}-devel libobjc-lf2 libobjc-lf2-devel ogo-database-setup
+Conflicts:     sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml sope%{ogoall_sope_major}%{ogoall_sope_minor} sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-core sope%{ogoall_sope_major}%{ogoall_sope_minor}-core-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-mime sope%{ogoall_sope_major}%{ogoall_sope_minor}-mime-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-ical sope%{ogoall_sope_major}%{ogoall_sope_minor}-ical-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1 sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1-postgresql sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1-devel ogo-docapi ogo-docapi-fs-project ogo-docapi-fs-project-devel ogo-docapi-db-project ogo-docapi-db-project-devel ogo-docapi-devel ogo-logic ogo-logic-tools ogo-logic-devel ogo-pda ogo-pda-devel ogo-theme-default ogo-theme-ooo ogo-theme-blue ogo-theme-kde ogo-theme-orange ogo-tools ogo-webui-app ogo-webui-core ogo-webui-core-devel ogo-webui-calendar ogo-webui-contact ogo-webui-mailer ogo-webui-mailer-devel ogo-webui-news ogo-webui-task ogo-webui-project ogo-webui-resource-basque ogo-webui-resource-dk ogo-webui-resource-nl ogo-webui-resource-en ogo-webui-resource-fr ogo-webui-resource-de ogo-webui-resource-hu ogo-webui-resource-it ogo-webui-resource-jp ogo-webui-resource-no ogo-webui-resource-pl ogo-webui-resource-pt ogo-webui-resource-es ogo-webui-resource-sk ogo-webui-resource-ptbr ogo-xmlrpcd ogo-zidestore ogo-zidestore-devel libfoundation%{ogoall_libfoundation_major}%{ogoall_libfoundation_minor} libfoundation%{ogoall_libfoundation_major}%{ogoall_libfoundation_minor}-devel libobjc-lf2 libobjc-lf2-devel ogo-database-setup libfoundation libfoundation-devel
 Requires:      mod_ngobjweb
 
 %description
@@ -46,6 +46,10 @@ to provide access to all functionality and data through open XML-based
 interfaces and APIs. Additionally it has a web User Interface for
 platform independent usage. OpenGroupware.org is built on top of the
 SOPE application server.
+
+This is an 'All-in-One' package providing everything needed to evaluate
+OpenGroupware.org (you only need to install the mod_ngobjweb for your
+distribution separately).
 
 #########################################
 %prep
@@ -117,11 +121,6 @@ make %{ogoall_libfoundation_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT
                                        FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
                                        install
 
-#make %{ogoall_libfoundation_makeflags} INSTALL_ROOT_DIR=${RPM_BUILD_ROOT} \
-#                                       GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix} \
-#                                       FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
-#                                       install
-
 rm -f ${RPM_BUILD_ROOT}%{prefix}/Library/Headers/libFoundation/extensions/exceptions/FoundationException.h
 rm -f ${RPM_BUILD_ROOT}%{prefix}/Library/Headers/libFoundation/extensions/exceptions/GeneralExceptions.h
 rm -f ${RPM_BUILD_ROOT}%{prefix}/Library/Headers/libFoundation/extensions/exceptions/NSCoderExceptions.h
@@ -148,31 +147,32 @@ make %{ogoall_ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}
                              BUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
                              WOBUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
                              install
+cd ..
 
-SHAREDIR="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a"
-rm -f "${SHAREDIR}/templates"
-rm -f "${SHAREDIR}/translations"
-rm -f "${SHAREDIR}/www"
-cp -Rp WebUI/Templates "${SHAREDIR}/templates"
-cp -Rp WebUI/Resources "${SHAREDIR}/translations"
-cp -Rp Themes/WebServerResources "${SHAREDIR}/www"
-rm -fr "${SHAREDIR}/templates/ChangeLog"
-rm -fr "${SHAREDIR}/templates/GNUmakefile"
-rm -fr "${SHAREDIR}/templates/HelpUI"
-rm -fr "${SHAREDIR}/translations/COPYRIGHT"
-rm -fr "${SHAREDIR}/translations/ChangeLog"
-rm -fr "${SHAREDIR}/translations/GNUmakefile"
-rm -fr "${SHAREDIR}/www/GNUmakefile"
-rm -fr "${SHAREDIR}/www/tools"
+SHAREDIR_OGO="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a"
+SHAREDIR_ZIDE="${RPM_BUILD_ROOT}%{prefix}/share/zidestore-1.3"
+rm -f "${SHAREDIR_OGO}/templates"
+rm -f "${SHAREDIR_OGO}/translations"
+rm -f "${SHAREDIR_OGO}/www"
+cp -Rp WebUI/Templates "${SHAREDIR_OGO}/templates"
+cp -Rp WebUI/Resources "${SHAREDIR_OGO}/translations"
+cp -Rp Themes/WebServerResources "${SHAREDIR_OGO}/www"
+rm -fr "${SHAREDIR_OGO}/templates/ChangeLog"
+rm -fr "${SHAREDIR_OGO}/templates/GNUmakefile"
+rm -fr "${SHAREDIR_OGO}/templates/HelpUI"
+rm -fr "${SHAREDIR_OGO}/translations/COPYRIGHT"
+rm -fr "${SHAREDIR_OGO}/translations/ChangeLog"
+rm -fr "${SHAREDIR_OGO}/translations/GNUmakefile"
+rm -fr "${SHAREDIR_OGO}/www/GNUmakefile"
+rm -fr "${SHAREDIR_OGO}/www/tools"
 
 #one lonely file for full package...
 echo "You've installed OGo %{ogoall_version} using the monolithic mega package!" \
-     >"${SHAREDIR}/INSTALLED.USING.OGOFULLPACKAGE"
-cd ..
+     >"${SHAREDIR_OGO}/INSTALLED.USING.OGOFULLPACKAGE"
 
 #prepare initscript templates
-INITSCRIPTS_TMP_DIR_OGO="${SHAREDIR}/initscript_templates"
-INITSCRIPTS_TMP_DIR_ZIDE="${RPM_BUILD_ROOT}%{prefix}/share/zidestore-1.3/initscript_templates"
+INITSCRIPTS_TMP_DIR_OGO="${SHAREDIR_OGO}/initscript_templates"
+INITSCRIPTS_TMP_DIR_ZIDE="${SHAREDIR_ZIDE}/initscript_templates"
 mkdir -p ${INITSCRIPTS_TMP_DIR_OGO}
 mkdir -p ${INITSCRIPTS_TMP_DIR_ZIDE}
 cp %{_specdir}/initscript_templates/redhat_nhsd ${INITSCRIPTS_TMP_DIR_OGO}/
@@ -193,7 +193,7 @@ touch ${INITSCRIPT_DST}/ogo-xmlrpcd-1.0a
 touch ${INITSCRIPT_DST}/ogo-zidestore-1.3
 
 #template for ogo-aptnotify
-APTNOTIFY_TMP_DIR="${SHAREDIR}/aptnotify_template"
+APTNOTIFY_TMP_DIR="${SHAREDIR_OGO}/aptnotify_template"
 mkdir -p ${APTNOTIFY_TMP_DIR}
 cp %{_specdir}/aptnotify_template/ogo-aptnotify.sh ${APTNOTIFY_TMP_DIR}/
 
@@ -227,7 +227,7 @@ mkdir -p ${RPM_BUILD_ROOT}/var/lib/opengroupware.org/news
 mkdir -p ${RPM_BUILD_ROOT}/var/log/opengroupware
 
 #from ogo-database-setup
-DBSETUP_DEST="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/dbsetup"
+DBSETUP_DEST="${SHAREDIR_OGO}/dbsetup"
 mkdir -p ${DBSETUP_DEST}
 
 cp -Rp Database/SQLite ${DBSETUP_DEST}/
@@ -770,6 +770,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Thu Mar 18 2005 Frank Reppin <frank@opengroupware.org>
+- be current and more descriptive descriptive description
+- divided sharedir into sharedir_ogo/sharedir_zide
 * Thu Mar 17 2005 Frank Reppin <frank@opengroupware.org>
 - MFC (SHAREDIR wasn't even known yet...)
 * Wed Mar 16 2005 Frank Reppin <frank@opengroupware.org>
