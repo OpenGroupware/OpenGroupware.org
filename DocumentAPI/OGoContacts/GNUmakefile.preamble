@@ -1,13 +1,16 @@
-# $Id$
+# compilation settings
 
 ADDITIONAL_LIB_DIRS += \
 	-L../OGoDocuments/$(GNUSTEP_OBJ_DIR)	\
-	-L../LSFoundation/$(GNUSTEP_OBJ_DIR)
+	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
 
 libOGoContacts_LIBRARIES_DEPEND_UPON += \
 	-lOGoDocuments			\
-	-lLSFoundation -lGDLAccess \
-	-lNGStreams -lNGExtensions -lEOControl
+	-lLSFoundation -lGDLAccess	\
+	-lNGLdap			\
+	-lNGMime			\
+	-lNGStreams -lNGExtensions -lEOControl	\
+	-lDOM -lSaxObjC
 
 OGoContacts_LIB_DIRS       += \
 	-L./$(GNUSTEP_OBJ_DIR)	\

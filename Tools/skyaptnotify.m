@@ -279,6 +279,7 @@ static BOOL     coreOnException = NO;
 }
 
 - (NSArray *)savedSentResources {
+  // TODO: move to an own object (AptNotifySentResourcesFile?)
   NSString       *contents;
   NSArray        *lines;
   NSEnumerator   *e;
@@ -574,10 +575,9 @@ static BOOL     coreOnException = NO;
 
 - (EOQualifier *)_qualifierForAptResources {
   EOQualifier *qual = nil;
+  
   qual = [EOQualifier qualifierWithQualifierFormat:
-                      @"(NOT ((name=%@ ) "
-                      @"OR (name=''))) "
-                      @"AND (%@ > -1)",
+                      @"(NOT ((name = %@) OR (name = ''))) AND (%@ > -1)",
                       [NSNull null], @"notification_time"];
   return qual;
 }
@@ -590,7 +590,7 @@ static BOOL     coreOnException = NO;
                        nil];
   rs = [rs filteredArrayUsingQualifier:[self _qualifierForAptResources]];
   if (self->beVerbose)
-    NSLog(@"fetched aptResources (%d)", [rs count]);
+    [self logWithFormat:@"fetched aptResources (%d)", [rs count]];
   return rs;
 }
 
@@ -598,22 +598,19 @@ static BOOL     coreOnException = NO;
 
 - (id)_ownerForApt:(id)_apt {
   NSArray *person;
-
-  person =
-    [[self context] runCommand:@"person::get-by-globalid",
-                    @"gid", [_apt ownerGID],
-                    nil];
+  
+  person = [[self context] runCommand:@"person::get-by-globalid",
+			   @"gid", [_apt ownerGID], nil];
   return [person lastObject];
 }
 - (NSArray *)_participantsForApt:(id)_apt {
   NSArray *parts;
-
-  parts =
-    [[self context] runCommand:@"appointment::get-participants",
-                    @"object",    [_apt asDict],
-                    @"returnType",
-                    [NSNumber numberWithInt:LSDBReturnType_ManyObjects],
-                    nil];
+  
+  parts = [[self context] runCommand:@"appointment::get-participants",
+			  @"object",    [_apt asDict],
+			  @"returnType",
+			  [NSNumber numberWithInt:LSDBReturnType_ManyObjects],
+			  nil];
   [[self context] runCommand:@"person::get-extattrs",
                   @"objects", parts,
                   @"relationKey", @"companyValue", nil];

@@ -1,3 +1,7 @@
+2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: cleaned up linking on MacOSX (v5.1.41)
+
 2004-12-22  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyCompanyDataSource.m: implemented OGo searches for

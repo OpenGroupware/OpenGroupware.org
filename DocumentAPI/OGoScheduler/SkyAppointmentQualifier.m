@@ -44,10 +44,12 @@
       [md removeObjectForKey:@"resources"];
     }
     if ((tmp = [md objectForKey:@"companies"])) {
+      // TODO: ensure that the contents can be non-EO objects!
       [self setCompanies:tmp];
       [md removeObjectForKey:@"companies"];
     }
     if ((tmp = [md objectForKey:@"personIds"])) {
+      // TODO: ensure that the contents are integers (coerce!)
       [self setPersonIds:tmp];
       [md removeObjectForKey:@"personIds"];
     }
@@ -55,7 +57,7 @@
       [self setTimeZone:tmp];
       [md removeObjectForKey:@"timeZone"];
     }
-    
+
     if ([md count] > 0) {
       [self logWithFormat:
               @"WARNING: could not set keys in appointment qualifier: %@",

@@ -1,3 +1,7 @@
+2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* skyaptnotify.m: minor code cleanups
+
 2005-01-24  Helge Hess  <helge.hess@skyrix.com>
 
 	* sky_install_sieve.m: fixed deletion of scripts (should fix OGo bug
