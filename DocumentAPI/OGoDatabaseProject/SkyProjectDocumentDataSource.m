@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyProjectDocumentDataSource.h"
 #include "SkyProjectFileManager.h"
@@ -27,15 +26,14 @@
 #include "common.h"
 
 static inline BOOL _showUnknownFiles(id self) {
-
-static BOOL showUnknownFiles_value = NO;
-static BOOL showUnknownFiles_flag  = NO;
-
+  static BOOL showUnknownFiles_value = NO;
+  static BOOL showUnknownFiles_flag  = NO;
+  
  if (!showUnknownFiles_flag) {
+   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     showUnknownFiles_flag  = YES;
-    showUnknownFiles_value = [[NSUserDefaults standardUserDefaults]
-                                   boolForKey:@"SkyProjectFileManager_show_"
-                                              @"unknown_files"];
+    showUnknownFiles_value = 
+      [ud boolForKey:@"SkyProjectFileManager_show_unknown_files"];
   }
   return showUnknownFiles_value;
 }
@@ -53,56 +51,57 @@ static BOOL showUnknownFiles_flag  = NO;
 
 - (id)initWithContext:(id)_ctx {
   if ((self = [super init])) {
-    ASSIGN(self->context, _ctx);
+    self->context = [_ctx retain];
   }
   return self;
 }
 
 - (void)dealloc {
-  RELEASE(self->context);
-  RELEASE(self->fetchSpecification);
-  RELEASE(self->projects);
+  [self->context            release];
+  [self->fetchSpecification release];
+  [self->projects           release];
   [super dealloc];
 }
 
 /*
+  SELECT c1.description 
+  FROM project p1, project_company_assignment a1, company c1
+  WHERE p1.fname = '007' AND p1.project_id = a1.project_id AND
+        a1.company_id = c1.company_id;
 
-select c1.description from project p1, project_company_assignment a1, company c1 where p1.fname = '007' and p1.project_id = a1.project_id and a1.company_id = c1.company_id;
-
-*** alle erlaubten Prozesse ***
+*** all allowed processes ***
 
 j = 100407
-select distinct p1.kind FROM project p1 ;
+SELECT DISTINCT p1.kind FROM project p1;
 
-  select distinct p1.fname
+  SELECT DISTINCT p1.fname
   FROM project p1, project_company_assignment a1, company c1 
-  where p1.kind <> '00_invoiceProject' OR
+  WHERE p1.kind <> '00_invoiceProject' OR
         p1.kind <> '05_historyProject' OR
         p1.kind <> '10_edcProject' OR
         p1.kind <> '15_accountLog' OR
         p1.kind is NULL AND
     (p1.owner_id = 100407 OR 
       (p1.project_id = a1.project_id AND a1.company_id = c1.company_id AND 
-       (c1.company_id = 100407 or c1.company_id in
+       (c1.company_id = 100407 OR c1.company_id in
           (SELECT cc1.company_id FROM company cc1, company_assignment aa1
              WHERE cc1.company_id = aa1.company_id
                    AND aa1.sub_company_id = 100407)) 
-       AND (a1.access_right like '%r%' OR a1.access_right like '%m%')));
+       AND (a1.access_right LIKE '%r%' OR a1.access_right LIKE '%m%')));
 
-*** alle erlaubten Prozesse ***
+*** all allowed processes ***
 
-  select * from project p1, project_company_assignment a1, company c1 \
-  where p1.kind not in ('invoiceProject', 'historyProject', 'edcProject', \
+  SELECT * FROM project p1, project_company_assignment a1, company c1
+  WHERE p1.kind NOT IN ('invoiceProject', 'historyProject', 'edcProject', \
   'accountLog') AND \
     (p1.owner_id = 'owner' OR \
       (p1.project_id = a1.project_id AND a1.company_id = c1.company_id AND \
        (c1.company_id = 'owner` or c1.company_id in (team_ids)) \
-       AND (c1.access_right like '%r%' OR c1.access_right like '%m%')))
+       AND (c1.access_right LIKE '%r%' OR c1.access_right LIKE '%m%')))
+*/
 
-       
- */
-
-/* Hints:
+/* 
+   Hints:
      ProjectKind: archived, private
 
    without
@@ -115,11 +114,11 @@ select distinct p1.kind FROM project p1 ;
      NSFileType, NSFileSubject, NSFileName
 */
 
-- (EOFetchSpecification *)fetchSpecification {
-  return self->fetchSpecification;
-}
 - (void)setFetchSpecification:(EOFetchSpecification *)_fs {
   ASSIGN(self->fetchSpecification, _fs);
+}
+- (EOFetchSpecification *)fetchSpecification {
+  return self->fetchSpecification;
 }
 
 - (EOFetchSpecification *)fetchSpecificationForProjectDS {
@@ -131,32 +130,31 @@ select distinct p1.kind FROM project p1 ;
   fs    = nil;
   kinds = [[[self->fetchSpecification hints] objectForKey:@"kinds"]
                                       objectEnumerator];
-
+  
   quals = [NSMutableArray arrayWithCapacity:3];
-  while ((obj = [kinds nextObject])) {
+  while ((obj = [kinds nextObject]) != nil) {
     EOQualifier *qual;
 
     qual = [EOQualifier qualifierWithQualifierFormat:@"type=%@", obj];
     [quals addObject:qual];
   }
   if ([quals count]) {
-    fs = [[EOFetchSpecification alloc] init];
-    AUTORELEASE(fs);
-    [fs setQualifier:[[[EOOrQualifier alloc] initWithQualifierArray:quals]
-                                      autorelease]];
+    EOQualifier *q;
+    
+    q  = [[[EOOrQualifier alloc] initWithQualifierArray:quals] autorelease];
+    fs = [[[EOFetchSpecification alloc] init] autorelease];
+    [fs setQualifier:q];
   }
   return fs;
 }
 
-- (NSArray *)fetchDocsWithChannel:(EOAdaptorChannel *)_channel
-{
-  NSArray          *projectIds;
-  EOQualifier      *qual;
-  int              maxInQual = 250, cnt, pcnt;
-  EOEntity         *entity;
-  NSMutableArray   *result;
-
+- (NSArray *)fetchDocsWithChannel:(EOAdaptorChannel *)_channel {
   static NSArray *docAttrs = nil;
+  NSArray        *projectIds;
+  EOQualifier    *qual;
+  int            maxInQual = 250, cnt, pcnt;
+  EOEntity       *entity;
+  NSMutableArray *result;
 
   qual = [self->fetchSpecification qualifier];
 
@@ -167,9 +165,9 @@ select distinct p1.kind FROM project p1 ;
   }
   entity = [[[[self->context valueForKey:LSDatabaseKey] adaptor] model]
                              entityNamed:@"Doc"];
-  if (!docAttrs) {
+  if (docAttrs == nil)
     docAttrs = [[entity attributes] retain];
-  }
+  
   result     = [[NSMutableArray alloc] initWithCapacity:32];
   projectIds = [[self projects] mappedArrayUsingSelector:@selector(projectId)];
   qual       = [SkyProjectFileManager convertQualifier:qual projectId:nil
@@ -189,7 +187,7 @@ select distinct p1.kind FROM project p1 ;
     cnt     +=maxInQual;
     expr     = [qual sqlExpressionWithAdaptor:
                          [[_channel adaptorContext] adaptor]
-                         attributes:docAttrs];
+		     attributes:docAttrs];
     expr     = [expr stringByAppendingString:
                      [NSString stringWithFormat:@" AND (projectId IN (%@))",
                          [subProjectIds componentsJoinedByString:@","]]];
@@ -271,15 +269,15 @@ select distinct p1.kind FROM project p1 ;
 }
 
 - (NSArray *)projects {
-  if (self->projects == nil) {
-    SkyProjectDataSource *ds;
+  SkyProjectDataSource *ds;
   
-    ds = [[[SkyProjectDataSource alloc] initWithContext:self->context]
-                                 autorelease];
-    [ds setFetchSpecification:[self fetchSpecificationForProjectDS]];
+  if (self->projects != nil)
+    return self->projects;
   
-    self->projects = [[ds fetchObjects] retain];
-  }
+  ds = [[[SkyProjectDataSource alloc] initWithContext:self->context]
+                               autorelease];
+  [ds setFetchSpecification:[self fetchSpecificationForProjectDS]];
+  self->projects = [[ds fetchObjects] retain];
   return self->projects;
 }
 
@@ -301,11 +299,11 @@ select distinct p1.kind FROM project p1 ;
     commitTransaction = YES;
     [self->context begin];
   }
-  else {
+  else
     commitTransaction = NO;
-  }
+  
   channel = [[self->context valueForKey:LSDatabaseChannelKey] adaptorChannel];
-
+  
   if ([[self projects] count] == 0)
     return [NSArray array];
   
@@ -315,92 +313,76 @@ select distinct p1.kind FROM project p1 ;
     NSLog(@"ERROR[%s]: Missing docs", __PRETTY_FUNCTION__);
     return nil;
   }
-
+  
   if ([docs count] == 0)
     return [NSArray array];
   
   {
     id obj;
     
-    enumerator = [[self projects] objectEnumerator];
+    enumerator   = [[self projects] objectEnumerator];
     projectForId = [NSMutableDictionary dictionaryWithCapacity:
                                         [[self projects] count]];
-
-    while ((obj = [enumerator nextObject])) {
+    
+    while ((obj = [enumerator nextObject]) != nil)
       [projectForId setObject:obj forKey:[obj valueForKey:@"projectId"]];
-    }
   }
   
   docEditings = [self fetchDocEditingsForDocs:docs channel:channel];
   enumerator  = [docs objectEnumerator];
   result      = [[NGMutableHashMap alloc] initWithCapacity:[docs count]];
-  while ((doc = [enumerator nextObject])) {
+  while ((doc = [enumerator nextObject]) != nil) {
     NSDictionary *dic;
     NSDictionary *p;
-
+    EOGlobalID   *rootGid;
+    id editing;
+    
+    editing = [docEditings objectForKey:[doc valueForKey:@"documentId"]];
     p   = [projectForId objectForKey:[doc valueForKey:@"projectId"]];
-    dic = [SkyProjectFileManager buildFileAttrsForDoc:doc
-                                 editing:
-                                 [docEditings objectForKey:
-                                              [doc valueForKey:@"documentId"]]
-                                 atPath:nil
-                                 isVersion:NO
-                                 projectId:nil
+    dic = [SkyProjectFileManager buildFileAttrsForDoc:doc editing:editing
+                                 atPath:nil isVersion:NO projectId:nil
                                  projectName:[p valueForKey:@"name"]
                                  projectNumber:[p valueForKey:@"number"]
                                  fileAttrContext:fmContext];
 
-    {
-      id rootGid;
-
-      if ((rootGid = [dic objectForKey:@"SkyParentGID"])) {
-        if (_showUnknownFiles(self)) {
-          [result addObject:dic forKey:rootGid];
-        }
-        else if (![[dic objectForKey:NSFileType] isEqual:NSFileTypeUnknown]) {
-          [result addObject:dic forKey:rootGid];
-        }
-      }
+    if ((rootGid = [dic objectForKey:@"SkyParentGID"]) != nil) {
+      if (_showUnknownFiles(self))
+	[result addObject:dic forKey:rootGid];
+      else if (![[dic objectForKey:NSFileType] isEqual:NSFileTypeUnknown])
+	[result addObject:dic forKey:rootGid];
     }
   }
   docs = nil;
   {
+    NSEnumerator *enumerator;
+    id           pid;
     NSArray *pgids;
-    
     
     pgids = [[self->context accessManager] objects:[result allKeys]
                                           forOperation:@"r"];
-
-    {
-      NSEnumerator *enumerator;
-      id           pid;
-
-      enumerator = [pgids objectEnumerator];
-      docs       = [NSMutableArray arrayWithCapacity:[result count] * 5];
+    
+    enumerator = [pgids objectEnumerator];
+    docs       = [NSMutableArray arrayWithCapacity:[result count] * 5];
       
-      while ((pid = [enumerator nextObject])) {
-        NSEnumerator *docEnum;
-        id           obj;
+    while ((pid = [enumerator nextObject]) != nil) {
+      NSEnumerator *docEnum;
+      id           obj;
+      
+      docEnum = [result objectEnumeratorForKey:pid];
+      while ((obj = [docEnum nextObject])) {
+	NSEnumerator *pEnum;
+	id           p;
 
-        docEnum = [result objectEnumeratorForKey:pid];
-
-        while ((obj = [docEnum nextObject])) {
-          NSEnumerator *pEnum;
-          id           p;
-
-          obj = [obj mutableCopy];
-          AUTORELEASE(obj);
-          [docs addObject:obj];
-
-          pEnum = [[self projects] objectEnumerator];
-
-          while ((p = [pEnum nextObject])) {
-            if ([[p valueForKey:@"projectId"]
-                    isEqual:[obj objectForKey:@"projectId"]]) {
-              [obj setObject:p forKey:@"project"];
-            }
-          }
-        }
+	obj = [[obj mutableCopy] autorelease];
+	[docs addObject:obj];
+	  
+	pEnum = [[self projects] objectEnumerator];
+	while ((p = [pEnum nextObject]) != nil) {
+	  if ([[p valueForKey:@"projectId"]
+		isEqual:[obj objectForKey:@"projectId"]]) {
+	    [obj setObject:p forKey:@"project"];
+	  }
+	}
       }
     }
   }

@@ -1,8 +1,8 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
-
-  This file is part of OGo
-
+  Copyright (C) 2000-2004 SKYRIX Software AG
+  
+  This file is part of OpenGroupware.org.
+  
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
@@ -18,12 +18,17 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __SkyProjectDocumentDataSource_H__
 #define __SkyProjectDocumentDataSource_H__
 
 #include <EOControl/EODataSource.h>
+
+/*
+  SkyProjectDocumentDataSource
+
+  TODO: document
+*/
 
 @class NSArray;
 @class EOFetchSpecification;
@@ -34,13 +39,18 @@
   EOFetchSpecification *fetchSpecification;
   NSArray              *projects;
 }
+
 - (id)initWithContext:(id)_ctx;
 
-- (EOFetchSpecification *)fetchSpecification;
+/* accessors */
+
 - (void)setFetchSpecification:(EOFetchSpecification *)_fs;
+- (EOFetchSpecification *)fetchSpecification;
+
+/* operation */
 
 - (NSArray *)fetchObjects;
 
-@end /* SkyProjectDocumentDataSource */
+@end
 
 #endif /* __SkyProjectDocumentDataSource_H__ */

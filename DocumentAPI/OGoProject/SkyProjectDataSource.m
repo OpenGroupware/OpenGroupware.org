@@ -44,26 +44,23 @@ static NSNumber *yesNum = nil;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSDictionary *defs;
+  NSArray *v;
   
   if (yesNum == nil) yesNum = [[NSNumber numberWithBool:YES] retain];
   
-  {
-    NSDictionary *defs;
-    NSArray *v;
-    
-    // TODO: all of them could be removed?
-    v = [[NSArray alloc] initWithObjects:
+  // TODO: all of them could be removed?
+  v = [[NSArray alloc] initWithObjects:
 			 @"00_invoiceProject",
 	                 @"05_historyProject",
 		         @"10_edcProject",
 		         @"15_accountLog", nil];
-    defs = [[NSDictionary alloc] initWithObjectsAndKeys:
+  defs = [[NSDictionary alloc] initWithObjectsAndKeys:
                                    v, @"hiddenprojectkinds", nil];
-    [ud registerDefaults:defs];
-    [defs release]; [v release];
-  }
+  [ud registerDefaults:defs];
+  [defs release]; defs = nil; [v release]; v= nil;
   
-  if (hiddenProjectTypes)
+  if (hiddenProjectTypes == nil)
     hiddenProjectTypes = [[ud arrayForKey:@"hiddenprojectkinds"] copy];
 }
 

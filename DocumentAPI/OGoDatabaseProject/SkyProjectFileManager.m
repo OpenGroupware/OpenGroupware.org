@@ -143,8 +143,8 @@ static inline NSNumber *boolNum(BOOL value) {
             @"invalid superclass (%@) version %i !",
             NSStringFromClass([self superclass]), [super version]);
   
-  if (yesNum    == nil) yesNum = [[NSNumber numberWithBool:YES] retain];
-  if (noNum     == nil) noNum  = [[NSNumber numberWithBool:NO] retain];
+  if (yesNum    == nil) yesNum    = [[NSNumber numberWithBool:YES] retain];
+  if (noNum     == nil) noNum     = [[NSNumber numberWithBool:NO] retain];
   if (emptyData == nil) emptyData = [[NSData alloc] init];
 }
 

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoDatabaseProject/SkyProjectDocument.h>
 #include <OGoDatabaseProject/SkyProjectFileManager.h>
@@ -69,31 +68,28 @@
 @implementation SkyProjectDocument
 
 static int DebugOn = -1;
+static NSNumber *yesNum = nil;
+static NSNumber *noNum  = nil;
 
 + (int)version {
   return [super version] + 0; /* v1 */
 }
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
   NSAssert2([super version] == 1,
             @"invalid superclass (%@) version %i !",
             NSStringFromClass([self superclass]), [super version]);
   
-  if (DebugOn == -1) {
-    DebugOn = [[NSUserDefaults standardUserDefaults]
-                               boolForKey:@"SkyProjectDocumentDebug"]
-      ? 1 : 0;
-  }
-}
+  DebugOn = [ud boolForKey:@"SkyProjectDocumentDebug"] ? 1 : 0;
 
-static NSNumber *yesNum = nil;
-static NSNumber *noNum  = nil;
+  if (yesNum == nil) yesNum = [[NSNumber numberWithBool:YES] retain];
+  if (noNum  == nil) noNum  = [[NSNumber numberWithBool:NO]  retain];
+}
 
 - (id)initWithGlobalID:(EOGlobalID *)_gid
   fileManager:(SkyProjectFileManager *)_fm
 {
-  if (!yesNum) yesNum = [[NSNumber numberWithBool:YES] retain];
-  if (!noNum)  noNum  = [[NSNumber numberWithBool:NO]  retain];
-
 #if DEBUG
   NSAssert1(_fm, @"missing filemanager argument for document %@ ..", _gid);
 #endif
@@ -523,9 +519,8 @@ static NSNumber *noNum  = nil;
     if (([(path = [self path]) length])) {
       ;
     }
-    else if (([(path = [self filename]) length])) {
+    else if (([(path = [self filename]) length]) > 0)
       path = [dsPath stringByAppendingPathComponent:path];
-    }
     else
       path = dsPath;
   }
