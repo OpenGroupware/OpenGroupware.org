@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
  
 #include "SkyProjectFileManager.h"
 #include "common.h"
@@ -173,6 +172,26 @@ static inline NSNumber *boolNum(BOOL value) {
                                 
 }
 
+static BOOL isRootAccountID(NSNumber *cid) {
+  return [cid intValue] == 10000 ? YES : NO;
+}
+
++ (NSString *)faMimeTypeForExtension:(NSString *)_ext
+  fileAttrContext:(id<SkyProjectFileManagerContext>)_context
+{
+  // TODO: this is not per user?! should use standard defaults, right?
+  NSUserDefaults *ud;
+  NSString *mimeType;
+  
+  _ext     = [_ext lowercaseString];
+  ud       = [[_context commandContext] valueForKey:LSUserDefaultsKey];
+  mimeType = [[ud dictionaryForKey:@"LSMimeTypes"] objectForKey:_ext];
+  
+  if (mimeType == nil)
+    mimeType = @"application/octet-stream";
+  return mimeType;
+}
+
 + (NSDictionary *)buildFileAttrsForDoc:(NSDictionary *)_doc
   editing:(NSDictionary *)_editing
   atPath:(NSString *)_path
@@ -200,9 +219,12 @@ static inline NSNumber *boolNum(BOOL value) {
   if ((tmp = [_doc valueForKey:@"isObjectLink"]))
     isLink = [tmp boolValue];
 
-  attrs   = [[NSMutableDictionary alloc] initWithCapacity:12];
-  if (_editing) {
-    id acc;
+  attrs = [[NSMutableDictionary alloc] initWithCapacity:12];
+
+  /* determine primary document */
+
+  if (_editing != nil) {
+    NSNumber *acc;
 
     [attrs takeValue:[_editing valueForKey:@"documentEditingId"]
            forKey:@"__documentEditingId__"];
@@ -210,20 +232,19 @@ static inline NSNumber *boolNum(BOOL value) {
     acc = [[[_context commandContext] valueForKey:LSAccountKey]
                   valueForKey:@"companyId"];
     if ([acc isEqual:[_editing valueForKey:@"currentOwnerId"]] ||
-        [acc isEqual:[NSNumber numberWithInt:10000]]) {
+	isRootAccountID(acc)) {
       doc = _editing;
     }
-    else {
+    else
       doc = _doc;
-    }
   }
-  else {
-    doc     = _doc;
-  }
+  else
+    doc = _doc;
+  
   realDoc = _doc;
   
-  tmp     = [SkyProjectFileManager formatTitle:[doc valueForKey:@"title"]];
-
+  // TODO: document what this does? Can we use an NSFormatter?
+  tmp = [SkyProjectFileManager formatTitle:[doc valueForKey:@"title"]];
   [attrs setObject:tmp forKey:@"filename"];
   
   if ((tmp = [doc valueForKey:@"abstract"])) {
@@ -232,15 +253,14 @@ static inline NSNumber *boolNum(BOOL value) {
     [attrs setObject:tmp forKey:@"NSFileSubject"];
   }
   
-  if ((tmp = [doc valueForKey:@"fileType"])) {
+  if ((tmp = [doc valueForKey:@"fileType"]))
     [attrs setObject:tmp forKey:@"fileType"];
-  }
-
+  
   if ((tmp = [doc valueForKey:@"fileSize"]))
     [attrs setObject:tmp forKey:@"fileSize"];
   
   if (!_isVersion) {
-    if (!_editing) {
+    if (_editing == nil) {
       [attrs setObject:@"released" forKey:@"status"];
     }
     else if ((tmp = [doc valueForKey:@"status"]))
@@ -250,10 +270,11 @@ static inline NSNumber *boolNum(BOOL value) {
   }
   
   {
+    // TODO: move to own method
     EOKeyGlobalID *gid;
     NSNumber      *uid;
     NSString      *entityName;
-
+    
     if (_isVersion) {
       entityName = @"DocumentVersion";
       uid        = [doc valueForKey:@"documentVersionId"];
@@ -267,7 +288,7 @@ static inline NSNumber *boolNum(BOOL value) {
 
       if (![(pid = [realDoc valueForKey:@"projectId"]) isNotNull])
         pid = _projectId;
-          
+      
       [SkyProjectFileManager setProjectID:pid
                              forDocID:uid context:[_context commandContext]];
     }
@@ -291,18 +312,19 @@ static inline NSNumber *boolNum(BOOL value) {
     NSString *fn, *fp, *ex;
 
     fn = [SkyProjectFileManager formatTitle:[doc valueForKey:@"title"]];
-
-    if (([ex = [doc valueForKey:@"fileType"] isNotNull]))
-      if ([ex length])
+    
+    if ([(ex = [doc valueForKey:@"fileType"]) isNotNull]) {
+      if ([ex length] > 0)
         if (![ex hasPrefix:@" "])
           fn = [fn stringByAppendingPathExtension:ex];
+    }
 
-    if ([fn length]) {
+    if ([fn length] > 0) {
       [attrs setObject:fn forKey:@"SkyFileName"];
       [attrs setObject:fn forKey:NSFileName];
     }
-
-    if ([_path length]) {
+    
+    if ([_path length] > 0) {
       fp = (_path != nil)
         ? [_path stringByAppendingPathComponent:fn]
         : fn;
@@ -318,13 +340,13 @@ static inline NSNumber *boolNum(BOOL value) {
     }
     else if (_projectId != nil) { /* got root */
       if (![fn length]) {
-        [attrs setObject:@"/"           forKey:@"SkyFileName"];
-        [attrs setObject:@"/"           forKey:NSFileName];
-        [attrs setObject:@"/"           forKey:@"fileName"];
+        [attrs setObject:@"/" forKey:@"SkyFileName"];
+        [attrs setObject:@"/" forKey:NSFileName];
+        [attrs setObject:@"/" forKey:@"fileName"];
       }
-      [attrs setObject:@"/"           forKey:@"SkyFilePath"];
-      [attrs setObject:@"/"           forKey:NSFilePath];
-
+      [attrs setObject:@"/"   forKey:@"SkyFilePath"];
+      [attrs setObject:@"/"   forKey:NSFilePath];
+      
       if (![[attrs objectForKey:@"fileType"] length])
         [attrs setObject:[EONull null]  forKey:@"fileType"];
       
@@ -335,6 +357,7 @@ static inline NSNumber *boolNum(BOOL value) {
     }
     {
       NSNumber *pid;
+      
       if (![(pid = [realDoc valueForKey:@"projectId"]) isNotNull])
         pid = _projectId;
       [attrs setObject:pid forKey:@"projectId"];
@@ -342,8 +365,8 @@ static inline NSNumber *boolNum(BOOL value) {
   }
   if (!_isVersion) {
     NSNumber *pid;
-
-    if (!(pid = [realDoc valueForKey:@"parentDocumentId"])) {
+    
+    if ((pid = [realDoc valueForKey:@"parentDocumentId"]) == nil) {
       [attrs setObject:boolNum(YES) forKey:@"SkyIsRootDirectory"];
     }
     else {
@@ -411,7 +434,7 @@ static inline NSNumber *boolNum(BOOL value) {
       }
       
       edBlob = nil;
-      if (number) {
+      if (number != nil) {
 	EOKeyGlobalID *gid;
 	
         if (removeCache)
@@ -449,34 +472,30 @@ static inline NSNumber *boolNum(BOOL value) {
       fm  = [NSFileManager defaultManager];
       len = [[fm fileAttributesAtPath:blobName traverseLink:YES]
                  objectForKey:NSFileSize];
-      if (len) {
-        NSString *mimeType, *ext;
+      if (len > 0) {
+	// TODO: the mime type should not be dependend on filesize?
+        NSString *mimeType;
         
         [attrs setObject:NSFileTypeRegular forKey:NSFileType];
         [attrs setObject:len forKey:NSFileSize];
-
-        ext      = [[[attrs objectForKey:NSFileName] pathExtension]
-                            lowercaseString];
-        mimeType = [[[[_context commandContext] valueForKey:LSUserDefaultsKey]
-                                dictionaryForKey:@"LSMimeTypes"]
-                                objectForKey:ext];
-        if (!mimeType)
-          mimeType = @"application/octet-stream";
-
+	
+	mimeType = [self faMimeTypeForExtension:
+			   [[attrs objectForKey:NSFileName] pathExtension]
+			 fileAttrContext:_context];
         [attrs setObject:mimeType forKey:@"NSFileMimeType"];
       }
-      else {
+      else
         [attrs setObject:NSFileTypeUnknown forKey:NSFileType];
-      }
+      
       [attrs setObject:blobName forKey:@"SkyBlobPath"];
     }
     else {
       [attrs setObject:NSFileTypeUnknown forKey:NSFileType];
     }
   }
-  if ([[attrs objectForKey:NSFilePath] isEqualToString:@"/"]) {
+  if ([[attrs objectForKey:NSFilePath] isEqualToString:@"/"])
     [attrs setObject:NSFileTypeDirectory forKey:NSFileType];
-  }
+  
   /* apply document attrs */
   {
     id tmp;
@@ -497,7 +516,7 @@ static inline NSNumber *boolNum(BOOL value) {
       tmp =  (_editing) ? [_editing valueForKey:@"currentOwnerId"]
                         : [doc valueForKey:@"currentOwnerId"];
     }
-    if (tmp) {
+    if (tmp != nil) {
       NSString *accountLogin;
 
 #if !LIB_FOUNDATION_LIBRARY
@@ -547,14 +566,16 @@ static inline NSNumber *boolNum(BOOL value) {
       [attrs setObject:tmp forKey:NSFileModificationDate];
     }
   }
-  if (_pNumber)
+  if (_pNumber != nil)
     [attrs setObject:_pNumber forKey:@"projectNumber"];
 
-  if (_pName)
+  if (_pName != nil)
     [attrs setObject:_pName forKey:@"projectName"];
   
-  if ((tmp = _projectId))
+  if ((tmp = _projectId) != nil)
     [attrs setObject:tmp forKey:@"projectId"];
+  
+  /* finish up, copy attributes, release pool */
   
   result = [attrs copy];
   
