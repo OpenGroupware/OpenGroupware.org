@@ -283,7 +283,7 @@ initial()
   
   if [ "x${CREATE_DB_USER_SUCCESS}" = "xYES" -a "x${CREATE_DB_ITSELF_SUCCESS}" = "xYES" -o "x${FORCE_OVERRIDE_PRESENT_SCHEME}" = "xYES" ]; then
     echo -e "  we've successfully created both the user ${OGO_DB_USER} and the raw database ${OGO_DB_ITSELF}"
-    echo -e "  we'll know fill the database with the scheme itself"
+    echo -e "  we'll now fill the database with the scheme itself"
     # there shouldn't be an error in the scheme itself! take care!
     IAM="`basename $0`"
     LOG="${TEMP_LOG_PATH}/${IAM}.${NOW}.log"
