@@ -38,6 +38,7 @@
   BOOL isNoColl;
   BOOL isApt;
   BOOL isInst012;
+  BOOL isInst01;
   
   NSCalendarDate *startDate;
   NSCalendarDate *endDate;
@@ -49,6 +50,8 @@
 
 - (NSCalendarDate *)startDate;
 - (NSCalendarDate *)endDate;
+
+- (BOOL)isInstance01AndAptTypeQuery;
 
 @end
 

@@ -33,13 +33,17 @@
   startDate = [qinfo startDate];
   endDate   = [qinfo endDate];
   if (startDate == nil || endDate == nil) {
-    /* could not process qualifier */
-    [self logWithFormat:@"UNKNOWN QUAL: %@", [_fs qualifier]];
-#if 0
-    return nil;
-#else
-    // TODO: see SxEvoAptQueryInfo, there is a new query without dates in 2.0
+    if ([qinfo isInstance01AndAptTypeQuery]) {
+      /* new in Evo Connector 2.0 */
+      // TODO: do we need to set start/end date?
+    }
+    else {
+      /* could not process qualifier */
+      [self logWithFormat:@"UNKNOWN QUAL: %@", [_fs qualifier]];
+#if 0 /* be tolerant */
+      return nil;
 #endif
+    }
   }
   
   /* start query */

@@ -48,6 +48,7 @@
 static EOQualifier *davIsNoColl = nil;
 static EOQualifier *davIsApt    = nil;
 static EOQualifier *davIsInstType012 = nil;
+static EOQualifier *davIsInstType01  = nil;
 
 + (void)initialize {
   if (davIsNoColl == nil) {
@@ -62,6 +63,11 @@ static EOQualifier *davIsInstType012 = nil;
   if (davIsInstType012 == nil) {
     davIsInstType012 = [[EOQualifier qualifierWithQualifierFormat:
        @"exInstanceType = 0 OR exInstanceType = 1 OR exInstanceType = 2"] 
+       retain];
+  }
+  if (davIsInstType01 == nil) {
+    davIsInstType01 = [[EOQualifier qualifierWithQualifierFormat:
+       @"exInstanceType = 0 OR exInstanceType = 1"] 
        retain];
   }
 }
@@ -90,6 +96,12 @@ static EOQualifier *davIsInstType012 = nil;
 }
 - (NSCalendarDate *)endDate {
   return self->endDate;
+}
+
+- (BOOL)isInstance01AndAptTypeQuery {
+  return ((self->isApt && self->isInst01 && !self->isInst012 &&
+           !self->isNoColl) &&
+          self->startDate == nil && self->endDate == nil) ? YES : NO;
 }
 
 /* disassemble fetch-spec */
@@ -132,6 +144,7 @@ static EOQualifier *davIsInstType012 = nil;
   self->isNoColl  = [qs removeQualifier:davIsNoColl];
   self->isApt     = [qs removeQualifier:davIsApt];
   self->isInst012 = [qs removeQualifier:davIsInstType012];
+  self->isInst01  = [qs removeQualifier:davIsInstType01];
   
   // TODO: check operation
   // Note: this is weird, but correct (end=>start, start=>end) ;-)
