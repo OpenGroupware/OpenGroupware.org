@@ -1,4 +1,8 @@
-# $Id: README 1 2004-08-20 11:17:52Z znek $
+EvoConnect
+==========
 
 The ZideStore methods used to connect Evolution using the Ximian
 Connector should be moved in here.
+
+Note: Evo looks for public folders in "/public", so you need to properly map
+      that to ZideStore in the Apache config.

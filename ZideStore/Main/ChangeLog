@@ -1,3 +1,8 @@
+2004-10-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* ZideStore.m: check for 'public' key prior calling parent, otherwise
+	  it won't be found (v1.3.89)
+
 2004-09-29  Helge Hess  <helge.hess@skyrix.com>
 
 	* fhs.make: install daemon into $FHS_ROOT/sbin (v1.3.88)

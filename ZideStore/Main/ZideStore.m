@@ -354,12 +354,13 @@
     }
   }
   
+  if ([[_key lowercaseString] isEqualToString:@"public"])
+    return [self publicFolder:_key container:self];
+  
   /* first check attributes directly bound to the application */
   if ((obj = [super lookupName:_key inContext:_ctx acquire:_flag]))
     return obj;
   
-  if ([[_key lowercaseString] isEqualToString:@"public"])
-    return [self publicFolder:_key container:self];
   
   if ([self isRootKey:_key])
     return self;

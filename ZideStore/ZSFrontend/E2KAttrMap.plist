@@ -193,4 +193,5 @@
   
   /* Evo Connector 2.x */
   "{http://schemas.microsoft.com/exchange/}permanenturl" = exPermanentURL;
+  "{http://schemas.microsoft.com/exchange/}oof-state" = exOutOfOfficeState;
 }

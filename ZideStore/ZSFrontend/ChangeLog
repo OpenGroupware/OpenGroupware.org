@@ -1,5 +1,9 @@
 2004-10-18  Helge Hess  <helge.hess@skyrix.com>
 
+	* v1.3.95
+
+	* E2KAttrMap.plist: added mapping for oof-state
+
 	* v1.3.94
 
 	* added SxStoreInfoFolder for NON_IPM_SUBTREE queries
