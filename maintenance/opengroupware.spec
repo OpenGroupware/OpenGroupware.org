@@ -549,6 +549,8 @@ if [ $1 = 1 ]; then
          >%{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
     chown root:root %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
     chmod 755 %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
+    insserv -f %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
+    ln -s %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}" /usr/sbin/rc"${NHSD_INIT_VERSION}"
   else
     sed "s^NHSD_INIT_VERSION^${NHSD_INIT_VERSION}^g; \
          s^NHSD_INIT_PREFIX^${NHSD_INIT_PREFIX}^g" \
@@ -571,6 +573,8 @@ if [ $1 = 1 ]; then
          >%{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
     chown root:root %{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
     chmod 755 %{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
+    insserv -f %{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
+    ln -s %{_sysconfdir}/init.d/"${OGO_INIT_VERSION}" /usr/sbin/rc"${OGO_INIT_VERSION}"
   else
     sed "s^OGO_INIT_VERSION^${OGO_INIT_VERSION}^g; \
          s^OGO_INIT_PREFIX^${OGO_INIT_PREFIX}^g" \
@@ -601,6 +605,8 @@ if [ $1 = 1 ]; then
          >%{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
     chown root:root %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
     chmod 755 %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
+    insserv -f %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
+    ln -s %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}" /usr/sbin/rc"${XMLRPCD_INIT_VERSION}"
   else
     sed "s^XMLRPCD_INIT_VERSION^${XMLRPCD_INIT_VERSION}^g; \
          s^XMLRPCD_INIT_PREFIX^${XMLRPCD_INIT_PREFIX}^g" \
@@ -623,6 +629,8 @@ if [ $1 = 1 ]; then
          >%{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
     chown root:root %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
     chmod 755 %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
+    insserv -f %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
+    ln -s %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}" /usr/sbin/rc"${ZIDESTORE_INIT_VERSION}"
   else
     sed "s^ZIDESTORE_INIT_VERSION^${ZIDESTORE_INIT_VERSION}^g; \
          s^ZIDESTORE_INIT_PREFIX^${ZIDESTORE_INIT_PREFIX}^g" \
@@ -642,7 +650,9 @@ if [ $1 = 0 ]; then
   if [ -f "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}" ]; then
     if [ -f "/etc/SuSE-release" ]; then
       "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}"
       rm -f "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}"
+      rm -f /usr/sbin/rc"${NHSD_INIT_VERSION}"
     else
       service "${NHSD_INIT_VERSION}" stop
       chkconfig "${NHSD_INIT_VERSION}" off
@@ -659,7 +669,9 @@ if [ $1 = 0 ]; then
   if [ -f "%{_sysconfdir}/init.d/${OGO_INIT_VERSION}" ]; then
     if [ -f "/etc/SuSE-release" ]; then
       "%{_sysconfdir}/init.d/${OGO_INIT_VERSION}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${OGO_INIT_VERSION}"
       rm -f "%{_sysconfdir}/init.d/${OGO_INIT_VERSION}"
+      rm -f /usr/sbin/rc"${OGO_INIT_VERSION}"
     else
       service "${OGO_INIT_VERSION}" stop
       chkconfig "${OGO_INIT_VERSION}" off
@@ -681,7 +693,9 @@ if [ $1 = 0 ]; then
   if [ -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}" ]; then
     if [ -f "/etc/SuSE-release" ]; then
       "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}"
       rm -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}"
+      rm -f /usr/sbin/rc"${XMLRPCD_INIT_VERSION}"
     else
       service "${XMLRPCD_INIT_VERSION}" stop
       chkconfig "${XMLRPCD_INIT_VERSION}" off
@@ -698,7 +712,9 @@ if [ $1 = 0 ]; then
   if [ -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}" ]; then
     if [ -f "/etc/SuSE-release" ]; then
       "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}"
       rm -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}"
+      rm -f /usr/sbin/rc"${ZIDESTORE_INIT_VERSION}"
     else
       service "${ZIDESTORE_INIT_VERSION}" stop
       chkconfig "${ZIDESTORE_INIT_VERSION}" off
@@ -1091,6 +1107,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Wed Jan 26 2005 Frank Reppin <frank@opengroupware.org>
+- dealt with OGo Bug #1202 (insserve on SUSE && symlink rc* scripts in /usr/sbin)
 * Tue Jan 25 2005 Frank Reppin <frank@opengroupware.org>
 - fixed OGo Bug #1197
 * Wed Jan 19 2005 Frank Reppin <frank@opengroupware.org>
