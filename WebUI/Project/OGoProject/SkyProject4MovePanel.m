@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,9 +18,14 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWContentPage.h>
+
+/*
+  SkyProject4MovePanel
+  
+  Used to move files inside projects.
+*/
 
 @class NSString, NSArray, NSMutableArray;
 
@@ -273,6 +278,35 @@
   return self->clickedFolderPath;
 }
 
+/* failed files */
+
+- (void)fileManager:(id)_fm moveFailedForFile:(NSString *)_file code:(int)_c {
+  if (!self->failedFiles)
+    self->failedFiles = [[NSMutableArray alloc] initWithCapacity:64];
+  [self->failedFiles addObject:_file];
+}
+
+- (void)resetFailedFiles {
+  [self->failedFiles release]; self->failedFiles = nil;
+}
+
+- (BOOL)hasFailedFiles {
+  return [self->failedFiles count] > 0 ? YES : NO;
+}
+
+- (void)setFailedFilesErrorString {
+  id l;
+
+  l = [self labels];
+  if ([self->failedFiles count] == [self->pathsToMove count]) {
+    [self setErrorString:[l valueForKey:@"no files could be moved."]];
+  }
+  else {
+    [self setPathsToMove:self->failedFiles];
+    [self setErrorString:[l valueForKey:@"some files could be moved."]];
+  }
+}
+
 /* actions */
 
 - (id)selectProject {
@@ -280,27 +314,19 @@
   return nil;
 }
 
-- (void)fileManager:(id)_fm moveFailedForFile:(NSString *)_file code:(int)_code
-{
-  if (!self->failedFiles)
-    self->failedFiles = [[NSMutableArray alloc] initWithCapacity:64];
-  [self->failedFiles addObject:_file];
-}
-
 - (id)moveToFolder {
   NSString *destination;
   id       fm, l;
   BOOL     isDir;
   
-
-  [self->failedFiles release]; self->failedFiles = nil;
-
+  [self resetFailedFiles];
+  
   l           = [self labels];
   destination = [self clickedFolderPath];
   fm          = [self fileManager];
 
   [self debugWithFormat:@"move to folder: %@.", destination];
-
+  
   if (![fm fileExistsAtPath:destination isDirectory:&isDir]) {
     [self setErrorString:[l valueForKey:@"Missing folder"]];
     return nil;
@@ -310,36 +336,30 @@
     return nil;
   }
   
-  {
-    /* start move loop */
-    if (![self->pathsToMove count])
-      return nil;
+  if ([self->pathsToMove count] == 0)
+    return nil;
     
-    if (![fm movePaths:self->pathsToMove toPath:destination handler:self]) {
-      return [self printError];
-    }
-    
-    if ([self->failedFiles count] == 0) {
-      /* no errors, everything moved .. */
-      [fm changeCurrentDirectoryPath:destination];
-      return [[(OGoSession *)[self session] navigation] leavePage];
-    }
-
-    if ([self->failedFiles count] == [self->pathsToMove count]) {
-      [self setErrorString:[l valueForKey:@"no files could be moved."]];
-    }
-    else {
-      [self setPathsToMove:self->failedFiles];
-      [self setErrorString:[l valueForKey:@"some files could be moved."]];
-    }
-    [self->failedFiles release]; self->failedFiles = nil;
+  if (![fm movePaths:self->pathsToMove toPath:destination handler:self])
+    return [self printError];
+  
+  if (![self hasFailedFiles]) {
+    /* no errors, everything moved .. */
+    [fm changeCurrentDirectoryPath:destination];
+    return [[(OGoSession *)[self session] navigation] leavePage];
   }
-  return nil;
+  
+  [self setFailedFilesErrorString];
+  [self resetFailedFiles];
+  return nil; /* stay on page */
 }
 
 - (id)copyToFolder {
+  NSMutableArray *leftFiles;
   NSString *destination;
-  id fm, l;
+  unsigned i, count;
+  id       fm, l;
+  
+  [self resetFailedFiles];
   
   destination = [self clickedFolderPath];
   fm          = [self fileManager];
@@ -347,45 +367,43 @@
   
   [self debugWithFormat:@"copy to folder: %@.", destination];
   
-  if ([fm changeCurrentDirectoryPath:destination]) {
-    /* start copy loop */
-    unsigned i, count;
-    NSMutableArray *leftFiles;
-
-    leftFiles = [[self->pathsToMove mutableCopy] autorelease];
-    
-    count = [self->pathsToMove count];
-    for (i = 0; i < count; i++) {
-      NSString *path;
-      NSString *fdest;
-      
-      path = [self->pathsToMove objectAtIndex:i];
-      fdest = [destination stringByAppendingPathComponent:
-                             [path lastPathComponent]];
-
-      if ([fm copyPath:path toPath:fdest handler:nil]) {
-        [leftFiles removeObject:path];
-      }
-    }
-    if ([leftFiles count] == 0)
-      /* no errors, everything copied .. */
-      return [[(OGoSession *)[self session] navigation] leavePage];
-
-    if ([leftFiles count] == [self->pathsToMove count]) {
-      [self printError];
-      if ([[self errorString] length] == 0)
-        [self setErrorString:[l valueForKey:@"no files could be copied."]];
-    }
-    else {
-      [self setPathsToCopy:leftFiles];
-      [self printError];
-      if ([[self errorString] length] == 0)
-        [self setErrorString:[l valueForKey:@"some files could be copied."]];
-    }
-  }
-  else
+  if (![fm changeCurrentDirectoryPath:destination]) {
     [self setErrorString:[l valueForKey:@"couldn't change directory .."]];
+    return nil; /* stay on page */
+  }
+
+  /* start copy loop */
+
+  leftFiles = [[self->pathsToMove mutableCopy] autorelease];
+    
+  count = [self->pathsToMove count];
+  for (i = 0; i < count; i++) {
+    NSString *path;
+    NSString *fdest;
+      
+    path = [self->pathsToMove objectAtIndex:i];
+    fdest = [path lastPathComponent];
+    fdest = [destination stringByAppendingPathComponent:fdest];
+      
+    if ([fm copyPath:path toPath:fdest handler:nil])
+      [leftFiles removeObject:path];
+  }
   
+  if ([leftFiles count] == 0)
+    /* no errors, everything copied .. */
+    return [[(OGoSession *)[self session] navigation] leavePage];
+  
+  if ([leftFiles count] == [self->pathsToMove count]) {
+    [self printError];
+    if ([[self errorString] length] == 0)
+      [self setErrorString:[l valueForKey:@"no files could be copied."]];
+  }
+  else {
+    [self setPathsToCopy:leftFiles];
+    [self printError];
+    if ([[self errorString] length] == 0)
+      [self setErrorString:[l valueForKey:@"some files could be copied."]];
+  }
   return nil;
 }
 
@@ -416,21 +434,26 @@
     return nil;
   }
   
-  
   cnt = [self->newDocuments count];
-  for (i=0; i<cnt; i++) {
-    NSDictionary *aDoc    = [self->newDocuments objectAtIndex:i];
-    NSString     *fname   = [aDoc valueForKey:@"NSFileName"];
-    NSString     *subject = [aDoc valueForKey:@"NSFileSubject"];
-    NSDictionary *attrs   = nil;
+  for (i = 0; i < cnt; i++) {
+    NSDictionary *aDoc;
+    NSString     *fname;
+    NSString     *subject;
+    NSDictionary *attrs;
+    
+    aDoc    = [self->newDocuments objectAtIndex:i];
+    fname   = [aDoc valueForKey:@"NSFileName"];
+    subject = [aDoc valueForKey:@"NSFileSubject"];
 
     if ([subject length] > 0) {
       attrs  = [NSDictionary dictionaryWithObjectsAndKeys:
                              subject, @"NSFileSubject", nil];
     }
+    else
+      attrs = nil;
 
     fname = [dest stringByAppendingPathComponent:fname];
-
+    
     [self logWithFormat:@"save fm='%@' %d bytes at %@ .. attrs='%@'",
           fm,
           [[aDoc valueForKey:@"content"] length], fname, attrs];
@@ -440,8 +463,8 @@
       return [self printErrorWithSource:fname destination:nil];
     }
   }
-
-  nav = [self navigation];
+  
+  nav = [[self session] navigation];
   [nav leavePage];
   [nav leavePage];
   return [nav activePage];

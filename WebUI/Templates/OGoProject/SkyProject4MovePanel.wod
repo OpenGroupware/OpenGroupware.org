@@ -1,4 +1,4 @@
-// $Id: SkyProject4MovePanel.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller class
 
 Frame: LSWSkyrixFrame {
 }
@@ -13,29 +13,13 @@ TabView: SkyTabView {
   selection = tabKey;
 }
 
-MoveTab: SkySimpleTabItem {
-  key      = "move";
-  label    = labels.move;
-}
-CopyTab: SkySimpleTabItem {
-  key      = "copy";
-  label    = labels.copy;
-}
-NewTab: SkySimpleTabItem {
-  key      = "new";
-  label    = labels.move;
-}
+MoveTab: SkySimpleTabItem { key = "move"; label = labels.move; }
+CopyTab: SkySimpleTabItem { key = "copy"; label = labels.copy; }
+NewTab:  SkySimpleTabItem { key = "new";  label = labels.move; }
 
-
-ShowMove: WOConditional {
-  condition = showMove;
-}
-ShowCopy: WOConditional {
-  condition = showCopy;
-}
-ShowNew: WOConditional {
-  condition = showNew;
-}
+ShowMove: WOConditional { condition = showMove; }
+ShowCopy: WOConditional { condition = showCopy; }
+ShowNew:  WOConditional { condition = showNew;  }
 
 
 /* tree view */
@@ -45,7 +29,7 @@ MoveFileManagerTree: SkyFileManagerTreeView {
   title              = fileSystemAttributes.NSFileSystemName;
   unclickablePaths   = unclickablePaths;
   fileSystemPath     = clickedFolderPath;
-  onClick            = "moveToFolder";
+  onClick            = "moveToFolder"; // TODO: do we need quoting here?
   useFileSystemCache = YES;
 }
 CopyFileManagerTree: SkyFileManagerTreeView {
@@ -147,6 +131,6 @@ SelProjectTabView: SkyTabView {
 }
 
 SelProjectTab: SkySimpleTabItem {
-  key      = "project";
-  label    = labels.project;
+  key   = "project";
+  label = labels.project;
 }

@@ -1,5 +1,7 @@
 2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
-
+	
+	* SkyProject4MovePanel.m: code cleanups (v5.1.54)
+	
 	* SkyProject4DocumentViewer.m: code cleanups, improved behaviour in an
 	  edge condition (should fix OGo bug #1047), fixed Epoz lookup
 	  (v5.1.53)

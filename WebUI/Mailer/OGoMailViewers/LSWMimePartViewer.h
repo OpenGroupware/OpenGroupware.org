@@ -25,6 +25,12 @@
 #include <OGoFoundation/OGoComponent.h>
 #import <NGObjWeb/WOSession.h>
 
+/*
+  LSWMimePartViewer
+  
+  Subclasses: LSWMimeBodyPartViewer
+*/
+
 @class NSString, NSArray, NSNumber, NSData;
 @class NGMimeType;
 

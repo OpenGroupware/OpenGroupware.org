@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "LSWMimePartViewer.h"
 #include "LSWPartBodyViewer.h"
@@ -54,6 +53,22 @@
 @end /* WOComponent(Download) */
 
 @implementation LSWMimePartViewer
+
+static int CreateMailDownloadFileNamesDisable = -1;
+static int ShowBodyDependingSizeDisable = -1;
+static int ShowBodySize = -1;
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  CreateMailDownloadFileNamesDisable =
+    [ud boolForKey:@"CreateMailDownloadFileNamesDisable"] ? 1 : 0;
+  ShowBodyDependingSizeDisable =
+    [ud boolForKey:@"ShowBodySizeDisable"] ? 1 : 0;
+  
+  ShowBodySize = [ud integerForKey:@"ShowBodySize"];
+  if (ShowBodySize < 1000) ShowBodySize = 100000;
+}
 
 - (id)init {
   if ((self = [super init])) {
@@ -342,6 +357,7 @@
 }
 
 - (id)downloadPart {
+  // TODO: split up method
   WOResponse *response;
   id         content;
   NSString   *disposition, *transferEncoding, *fileName, *type;
@@ -453,90 +469,94 @@
   return response;
 }
 
-- (id)toDoc {
-  OGoContentPage *page;
-  id             nv;
-  id             body;
-
-  nv   = [[[self context] valueForKey:@"page"] navigation];  
-  page = [self pageWithName:@"SkyProject4DocumentEditor"];
+- (id)buildDocumentBodyForPath {
+  id body;
   
-  [page takeValue:[NSNumber numberWithBool:YES] forKey:@"isImport"];
-
-  [nv enterPage:page];
-
   body = [self body];
   if ([body isKindOfClass:[NSString class]])
     body = [body dataUsingEncoding:[NSString defaultCStringEncoding]];
   else if ([body isKindOfClass:[NSURL class]])
     body = [self contentForURL:body];
-  
-  [page takeValue:body forKey:@"blob"];
-  {
-    NSString                            *path;
-    NGMimeContentDispositionHeaderField *cd;
+  return body;
+}
 
-    cd = [[NGMimeContentDispositionHeaderField alloc]
-             initWithString:[self contentDisposition]];
+- (NSString *)buildDocumentPathForPart {
+  NSString *path;
+  
+  path = [self contentDisposition];
+  if ([path length] > 0) {
+    NGMimeContentDispositionHeaderField *cd;
     
+    cd = [[NGMimeContentDispositionHeaderField alloc]
+	   initWithString:[self contentDisposition]];
     path = [[[cd filename] copy] autorelease];
     [cd release]; cd = nil;
+  }
+  else
+    path = nil;
+  
+  if (path == nil) {
+    NGMimeType *ct;
+    NSString   *subject;
+    
+    ct   = [self contentType];
+    path = [[ct parametersAsDictionary] objectForKey:@"name"];
     
     if (path == nil) {
-      NGMimeType *ct;
-      NSString   *subject;
-
-      ct = [self contentType];
-
-      path = [[ct parametersAsDictionary] objectForKey:@"name"];
-
-      if (!path) {
-        if ([[ct type] isEqualToString:@"text"]) {
-          if ([[ct subType] isEqualToString:@"html"]) {
-            path = @".html";
-          }
-          else {
-            path = @".txt";
-          }
-        }
-        else {
-          path = [@"." stringByAppendingString:[ct subType]];;
-        }
-        if (!(subject = [[self source] valueForKey:@"subject"])) {
-          subject = @"<unknown>";
-        }
-        path = [subject stringByAppendingString:path];
+      if ([[ct type] isEqualToString:@"text"]) {
+	path = ([[ct subType] isEqualToString:@"html"])
+	  ? @".html" : @".txt";
       }
-    }
-#if LIB_FOUNDATION_LIBRARY
-    if ([path isKindOfClass:[NSInlineUTF16String class]]) {
-      path = [NSString stringWithFormat:@"%@", path];
-      /* hack to avoid utf16 string confusings */
-    }
-#endif
-    
-    [page takeValue:path forKey:@"fileName"];
-    { /* build abstract */
-      id       tmp;
-      NSString *subject;
-
-      tmp = [[self source] valueForKey:@"sendDate"];
-      if ([tmp respondsToSelector:@selector(descriptionWithCalendarFormat:)])
-        tmp = [tmp descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M"];
       else
-        tmp = @"<unknown>";
-
-      if (![tmp length])
-        tmp = @"<unknown>";
+	path = [@"." stringByAppendingString:[ct subType]];;
       
-      subject = [[self source] valueForKey:@"subject"];
-      if (!subject)
-        subject = @"<unknown>";
-
-      [page takeValue:[NSString stringWithFormat:@"%@ [%@]", subject, tmp]
-            forKey:@"subject"];
+      if ((subject = [[self source] valueForKey:@"subject"]) == nil)
+	subject = @"<unknown>";
+      
+      path = [subject stringByAppendingString:path];
     }
   }
+#if LIB_FOUNDATION_LIBRARY
+  if ([path isKindOfClass:[NSInlineUTF16String class]]) {
+    path = [NSString stringWithFormat:@"%@", path];
+    /* hack to avoid utf16 string confusings */
+  }
+#endif
+  return path;
+}
+
+- (NSString *)buildDocumentTitleForPart {
+  id       tmp;
+  NSString *subject;
+
+  tmp = [[self source] valueForKey:@"sendDate"];
+  if ([tmp respondsToSelector:@selector(descriptionWithCalendarFormat:)])
+    tmp = [tmp descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M"];
+  else
+    tmp = @"<unknown>";
+      
+  if ([tmp length] == 0)
+    tmp = @"<unknown>";
+  
+  subject = [[self source] valueForKey:@"subject"];
+  if (![subject isNotNull])
+    subject = @"<unknown>";
+  
+  return [NSString stringWithFormat:@"%@ [%@]", subject, tmp];
+}
+
+- (id)toDoc {
+  OGoContentPage *page;
+  
+  // TODO: shouldn't we use a separate page for imports?
+  page = [self pageWithName:@"SkyProject4DocumentEditor"];
+  [page takeValue:[NSNumber numberWithBool:YES]    forKey:@"isImport"];
+  [page takeValue:[self buildDocumentBodyForPath]  forKey:@"blob"];
+  [page takeValue:[self buildDocumentPathForPart]  forKey:@"fileName"];
+  [page takeValue:[self buildDocumentTitleForPart] forKey:@"subject"];
+  
+  // TODO: is this required?
+  [[[[self context] valueForKey:@"page"] navigation] enterPage:page];
   return page;
 }
 
@@ -614,27 +634,23 @@
   return [[self body] isKindOfClass:[NSURL class]];
 }
 
-- (id)downloadPartActionName {
+- (NSString *)downloadPartActionName {
+  /* 
+     This appends a filename to the download action, this helps with browser
+     detection of filenames and filetypes in case the browser does not
+     properly work on the content disposition field.
+  */
   NSString *name;
-
+  
   if ((name = [[[self->part contentType] parametersAsDictionary]
-                            objectForKey:@"name"])) {
-    return [NSString stringWithFormat:@"get/%@", name];
-  }
-  else {
-    int static CreateMailDownloadFileNamesDisable = -1;
-
-    if (CreateMailDownloadFileNamesDisable == -1) {
-      CreateMailDownloadFileNamesDisable =
-        [[NSUserDefaults standardUserDefaults]
-                         boolForKey:@"CreateMailDownloadFileNamesDisable"]?1:0;
-    }
-    if (CreateMailDownloadFileNamesDisable)
-      return @"get";
-    else
-      return [NSString stringWithFormat:@"get/download.%@",
-                       [[self->part contentType] subType]];
-  }
+                            objectForKey:@"name"]))
+    return [@"get/" stringByAppendingString:[name stringValue]];
+  
+  if (CreateMailDownloadFileNamesDisable)
+    return @"get";
+  
+  name = [[self->part contentType] subType];
+  return [@"get/download." stringByAppendingString:name];
 }
 
 - (NSString *)url {
@@ -655,75 +671,56 @@
 }
 
 - (BOOL)showBodyDepSize {
-  static int ShowBodyDependingSizeDisable = -1;
-  static int ShowBodySize = -1;
-  
-
-  if (ShowBodyDependingSizeDisable == -1) {
-    ShowBodyDependingSizeDisable =
-      [[NSUserDefaults standardUserDefaults]
-                       boolForKey:@"ShowBodySizeDisable"]?1:0;
-  }
-  if (ShowBodySize == -1) {
-    ShowBodySize =
-      [[NSUserDefaults standardUserDefaults] integerForKey:@"ShowBodySize"];
-
-    if (ShowBodySize < 1000) {
-      ShowBodySize = 100000;
-    }
-  }
-  if (ShowBodyDependingSizeDisable) {
+  if (ShowBodyDependingSizeDisable)
     return YES;
-  }
-
-  if ([self showBodyDepSizeVar]) {
+  
+  if ([self showBodyDepSizeVar])
     return [[self showBodyDepSizeVar] boolValue];
-  }
-
+  
   if ([[[self->part contentType] type] isEqualToString:@"application"])
     return NO;
   
-  if (([[self contentLength] intValue] > ShowBodySize)) {
+  if (([[self contentLength] intValue] > ShowBodySize))
     return NO;
-  }
+  
   return YES;
 }
 
+- (BOOL)isImageViewerComponent:(WOComponent *)_component {
+  return [_component isKindOfClass:[LSWImageBodyViewer class]];
+}
+
 - (BOOL)showBodyDepSizeEnabled {
-  static int ShowBodyDependingSizeDisable = -1;
   BOOL       viewImageInline;
   
-  if (ShowBodyDependingSizeDisable == -1) {
-    ShowBodyDependingSizeDisable =
-      [[NSUserDefaults standardUserDefaults]
-                       boolForKey:@"ShowBodySizeDisable"]?1:0;
-  }
   viewImageInline =
-    [[[self session] userDefaults]
-                     boolForKey:@"mail_viewImagesInline"];
-
-  if ([[self bodyViewerComponent] isKindOfClass:[LSWImageBodyViewer class]]
+    [[[self session] userDefaults] boolForKey:@"mail_viewImagesInline"];
+  
+  if ([self isImageViewerComponent:[self bodyViewerComponent]]
       && !viewImageInline) {
     return NO;
   }
-  return !ShowBodyDependingSizeDisable;
+  return ShowBodyDependingSizeDisable ? NO : YES;
 }
 
 - (NSString *)partKey {
   NSString *key;
   
-  if (!(key = [self url])) {
-    key = [NSString stringWithFormat:@"%08x", [self  body]];
+  if ((key = [self url]) == nil) {
+    unsigned char buf[32];
+    
+    // TODO: better use some part hier-id?
+    sprintf(buf, "%08x", (unsigned)[self body]); 
+    key = [NSString stringWithCString:buf];
   }
   return key;
 }
 
 - (NSNumber *)showBodyDepSizeVar {
   NSMutableDictionary *cache;
-
+  
   cache = [[self session] valueForKey:@"ShowBodyPartsCache"];
-
-  if (!cache) {
+  if (cache == nil) {
     cache = [NSMutableDictionary dictionaryWithCapacity:64];
     [[self session] takeValue:cache forKey:@"ShowBodyPartsCache"];
   }
@@ -744,15 +741,11 @@
 
 - (id)alternateShowBody {
   NSNumber *n;
-
-  n = [self showBodyDepSizeVar];
-
-  if (n) {
-    n = [NSNumber numberWithBool:![n boolValue]];
-  }
-  else {
-    n = [NSNumber numberWithBool:![self showBodyDepSize]];
-  }
+  
+  n = ((n = [self showBodyDepSizeVar]) != nil)
+    ? [NSNumber numberWithBool:[n boolValue]          ? NO : YES]
+    : [NSNumber numberWithBool:[self showBodyDepSize] ? NO : YES];
+  
   [self setShowBodyDepSizeVar:n];
   return nil;
 }

@@ -1,11 +1,11 @@
-<!-- $Id: LSWMimeBodyPartViewer.html 2 2004-08-20 11:37:44Z znek $ -->
-<table border="0" width="100%" cellpadding="0" cellspacing="0">
-  <#IsNoComposite>
-    <#IsNoEo>
-      <#IsNoRfc>
+<#IsNoComposite>
+  <#IsNoEo>
+    <#IsNoRfc>
+      <table border="0" width="100%" cellpadding="0" cellspacing="0">
         <#PartHeaderRow>
           <td width="20%"><#Font><nobr><#ContTypeLabel/>:</nobr></#Font></td>
           <td><#Font><#ContentType /></#Font></td>
+          
           <#IsPrintModeCondElse>          
             <td align="right" width="1%"
               ><#ShowBodyDepSizeEnabledCondElse
@@ -27,22 +27,24 @@
             <td align="right" width="1%">&nbsp;</td>
           </#IsPrintModeCond>
         </#PartHeaderRow>
+        
         <#HasContentLength>
           <#PartHeaderRow>
             <td width="20%"><#Font><nobr><#LengthLabel/>:</nobr></#Font></td>
             <td colspan="4"><#Font><#ContentLength /></#Font></td>
           </#PartHeaderRow>
         </#HasContentLength>
+	
         <#HasContentDisposition>
           <#PartHeaderRow>
             <td width="20%"><#Font><nobr><#DispoLabel/>:</nobr></#Font></td>
             <td colspan="4"><#Font><#ContentDisposition /></#Font></td>
           </#PartHeaderRow>
         </#HasContentDisposition>
-      </#IsNoRfc>
-    </#IsNoEo>
-  </#IsNoComposite>
-</table>
+      </table>
+    </#IsNoRfc>
+  </#IsNoEo>
+</#IsNoComposite>
 
 <!-- mime body -->
 <#IsNoRfc>

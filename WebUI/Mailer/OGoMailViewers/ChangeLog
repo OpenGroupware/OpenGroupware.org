@@ -1,3 +1,7 @@
+2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWMimePartViewer.m: major code cleanups (v5.1.20)
+
 2004-09-22  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile: moved components config to Templates (v5.1.19)
