@@ -500,7 +500,7 @@ make %{ogo_makeflags}
 # ****************************** install ******************************
 %install
 FAKE_GSROOT="${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep"
-mkdir -p $FAKE_GSROOT
+mkdir -p ${FAKE_GSROOT}
 
 make %{ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${FAKE_GSROOT} \
                       BUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
