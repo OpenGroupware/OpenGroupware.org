@@ -1,3 +1,8 @@
+2004-09-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* clhtml_current_yearmonth.py, find-changelogs.sh: two new helper
+	  scripts to ease setup
+
 2003-10-20  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* Moved some common functions into changelogparser.py
