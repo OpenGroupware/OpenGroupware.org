@@ -86,6 +86,8 @@
   NSMutableArray       *removedAccounts; // accounts/teams
                                          // removed from assignment
 
+  NSMutableDictionary *properties;
+
   struct {
     BOOL isEdited;
     BOOL isValid;
@@ -127,6 +129,9 @@
 
 - (void)setStatus:(NSString *)_status;
 - (NSString *)status;
+
+- (void)setProperties:(NSDictionary *)_properties;
+- (NSDictionary *)properties;
 
 - (void)setProjectAccounts:(NSArray *)_accounts;
 

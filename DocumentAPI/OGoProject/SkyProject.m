@@ -93,6 +93,7 @@ static NSNull   *null  = nil;
 }
 
 - (void)dealloc {
+  [self->properties release];
   [self->dataSource release];
   [self->globalID   release];
   [self->name       release];
@@ -104,7 +105,7 @@ static NSNull   *null  = nil;
   [self->leader     release];
   [self->team       release];
   [self->accounts   release];
-  [self->removedAccounts release];
+  [self->removedAccounts       release];
   [self->companyAssignmentsIds release];
   [super dealloc];
 }
@@ -136,15 +137,16 @@ static NSNull   *null  = nil;
   [self->team          release];  self->team      = nil;
   [self->projectStatus release];  self->projectStatus = nil;
   [self->companyAssignmentsIds release]; self->companyAssignmentsIds = nil;
-  [self->accounts        release]; self->accounts  = nil;
+  [self->accounts        release]; self->accounts        = nil;
   [self->removedAccounts release]; self->removedAccounts = nil;
-  
+  [self->properties      release]; self->properties      = nil;
+
   self->status.isValid = NO;
 }
 
 
 - (BOOL)isComplete {
-  if ([self isValid] == NO)
+  if (![self isValid])
     return NO;
   
   return YES;
@@ -213,25 +215,37 @@ static NSNull   *null  = nil;
   return self->kind;
 }
 
+- (void)setProperties:(NSDictionary *)_properties {
+  ASSIGNCOPY_IFNOT_EQUAL(self->properties, _properties, self->status.isEdited);
+}
+- (NSDictionary *)properties {
+  return self->properties;
+}
+
 /* leader */
+
 - (void)setLeader:(SkyDocument *)_leader {
-  //  id inputId   = nil;
-  //  id currentId = nil;
+#if 0
+  id inputId   = nil;
+  id currentId = nil;
+#endif
 
-  if (![self->leader isEqual:_leader]) {
-
-    if ([self->leader isKindOfClass:[EOGlobalID class]]) {
-      if (![[[(EOKeyGlobalID *)self->leader keyValuesArray] lastObject]
-                           isEqual:[[(EOKeyGlobalID *)[_leader globalID]
-                                                      keyValuesArray] lastObject]]) {
-        self->status.isEdited = YES;
-      }
-    }
-    else {
+  if (self->leader == _leader || [self->leader isEqual:_leader])
+    return;
+  
+  if ([self->leader isKindOfClass:[EOGlobalID class]]) {
+    NSNumber *clid, *nlid;
+    
+    clid = [[(EOKeyGlobalID *)self->leader keyValuesArray] lastObject];
+    nlid = [[(EOKeyGlobalID *)[_leader globalID] keyValuesArray] lastObject];
+    if (![clid isEqual:nlid])
       self->status.isEdited = YES;
-    }
-    ASSIGN(self->leader, _leader);
   }
+  else
+    self->status.isEdited = YES;
+  
+  ASSIGN(self->leader, _leader);
+  
 #if 0 // HH says: someone explain that!
   inputId = [[(EOKeyGlobalID *)[_leader globalID] keyValuesArray] lastObject];
 
@@ -443,6 +457,9 @@ static NSNull   *null  = nil;
   else if ([_key isEqualToString:@"type"]) {
     ASSIGN(self->type, _value);
   }
+  else if ([_key isEqualToString:@"extended"]) {
+    ASSIGN(self->properties, _value);
+  }
 }
 
 - (id)valueForKey:(NSString *)_key {
@@ -459,8 +476,7 @@ static NSNull   *null  = nil;
     return self->projectAccounts;
   if ([_key isEqualToString:@"url"])
     return self->url;
-
-  return nil;
+  return [self->properties valueForKey: _key];
 }
 
 - (NSString *)description {
@@ -567,7 +583,7 @@ static NSNull   *null  = nil;
   NSArray *array;
   id obj;
   
-  if ([self isValid] == NO)
+  if (![self isValid])
     return NO;
 
   if ([self globalID] == nil) {
@@ -629,6 +645,37 @@ static NSNull   *null  = nil;
   return result;
 }
 
+- (void)_fetchProperties {
+  static NSString *nsPrefix = @"{http://www.skyrix.com/namespaces/project}";
+  static NSString *ns       = @"http://www.skyrix.com/namespaces/project";
+  NSDictionary *oprops;
+  NSEnumerator *keyEnum;
+  NSString     *key;
+  unsigned int nslen;
+
+  /* free contained properties */
+  
+  [self->properties release]; self->properties = nil;
+
+  /* fetch */
+  
+  oprops = [[[self context] propertyManager] propertiesForGlobalID:
+                                               [self globalID]
+                                             namespace:ns];
+  
+  /* remove namespace prefix from property names */
+  
+  self->properties = [[NSMutableDictionary alloc] initWithCapacity:6];
+  nslen   = [nsPrefix length];
+  keyEnum = [oprops keyEnumerator];
+  while ((key = [keyEnum nextObject]) != nil) {
+    NSString *str;
+    
+    str = [key substringFromIndex:nslen];
+    [self->properties setObject:[oprops objectForKey:key] forKey:str];
+  }
+}
+
 - (void)_loadDocument:(id)_object {
   [self setName:      [_object valueForKey:@"name"]];
   [self setStartDate: [_object valueForKey:@"startDate"]];
@@ -643,6 +690,8 @@ static NSNull   *null  = nil;
     self->type = [[_object valueForKey:@"type"] copy];
   }
 
+  /* load company relationships */
+  
   [self->leader release]; self->leader = nil;
   self->leader = 
     [[self _personGidFromId:[_object valueForKey:@"ownerId"]] copy];
@@ -657,10 +706,17 @@ static NSNull   *null  = nil;
   self->companyAssignmentsIds = [_object valueForKey:@"companyAssignments"];
   self->companyAssignmentsIds =
     [[self->companyAssignmentsIds valueForKey:@"companyId"] retain];
+
+  /* fix status flags */
   
   self->status.isValid     = YES;
   self->status.isComplete  = YES;
   self->status.isEdited    = NO;
+  
+#if 0 // the code below is _very_ inefficient for set fetches
+  /* Load properties */
+  [self _fetchProperties];
+#endif
 }
 
 - (EOGlobalID *)leader_id {

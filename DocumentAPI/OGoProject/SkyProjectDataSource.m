@@ -457,20 +457,56 @@ static NSNumber *yesNum = nil;
   return [[[SkyProject alloc] initWithContext:self->context] autorelease];
 }
 
+- (void)updatePropertiesOfDocument:(SkyProject *)_obj {
+  static NSString *nsPrefix = @"{http://www.skyrix.com/namespaces/project}";
+  NSMutableDictionary *oprops;
+  NSEnumerator        *keyEnum;
+  NSString            *key, *str;
+  
+  /* add proper namespace prefixes */
+  
+  oprops  = [[NSMutableDictionary alloc] initWithCapacity:6];
+  keyEnum = [[_obj properties] keyEnumerator];
+  while((key = [keyEnum nextObject]) != nil) {
+    str = [key characterAtIndex:0] == '{'
+      ? key : [nsPrefix stringByAppendingString:key];
+    
+    [oprops setObject:[[_obj properties] objectForKey:key] forKey:str];
+  }
+  
+  /* update in store */
+  
+  [[self->context propertyManager] takeProperties:oprops 
+                                   globalID:[_obj globalID]];
+  [oprops release]; oprops = nil;
+}
+
 - (void)insertObject:(id)_obj {
   NSDictionary *dict;
 
   dict = ([_obj respondsToSelector:@selector(asDict)]) ? [_obj asDict] : _obj;
   dict = [self->context runCommand:@"project::new" arguments:dict];
   [(id)_obj _setGlobalID:[dict valueForKey:@"globalID"]];
+  
+  /* Update properties */
+  [self updatePropertiesOfDocument:_obj];
+  
+  /* post changes */
   [self postDataSourceChangedNotification];
 }
 
 - (void)deleteObject:(id)_obj {
-  NSDictionary *dict = [_obj asDict];
+  NSDictionary *dict;
 
+  dict = [_obj asDict];
+  
+  /* post changes */
   [dict takeValue:yesNum forKey:@"reallyDelete"];
   [self->context runCommand:@"project::delete" arguments:dict];
+  
+  /* Note: properties are deleted by project::delete automagically */
+  
+  /* post changes */
   [self postDataSourceChangedNotification];
 }
 
@@ -482,6 +518,11 @@ static NSNumber *yesNum = nil;
   
   dict = [_obj asDict];
   [self->context runCommand:@"project::set" arguments:dict];
+  
+  /* Update properties */
+  [self updatePropertiesOfDocument:_obj];
+  
+  /* post changes */
   [self postDataSourceChangedNotification];
 }
 

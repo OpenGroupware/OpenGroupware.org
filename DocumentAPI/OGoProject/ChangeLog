@@ -1,3 +1,13 @@
+2005-02-24  Helge Hess  <helge.hess@skyrix.com>
+	
+	* SkyProject.m, SkyProjectDataSource.m: some code cleanups, property
+	  code bugfixes (v5.1.38)
+
+2005-02-16  Rafel Amer  <amer@ruth.upc.edu>
+
+	* SkyProject.m, SkyProjectDataSource.m: added automatic access to
+	  project properties
+
 2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyProjectDataSource.m: minor code cleanups (v5.1.37)
