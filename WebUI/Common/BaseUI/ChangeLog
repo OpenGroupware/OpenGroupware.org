@@ -1,3 +1,9 @@
+2005-01-13  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* SkyObjectField.m: enhanced field with a 'key' attribute to avoid the
+	  requirement for a full 'attribute' dictionary specification
+	  (v5.1.100)
+	
 2004-11-26  Helge Hess  <helge.hess@skyrix.com>
 
 	* fixed include of WEClientCapabilities.h for SOPE 4.5 (v5.1.99)

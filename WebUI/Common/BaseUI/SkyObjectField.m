@@ -28,6 +28,11 @@
   SkyObjectField
   
   Note: this is used by SkyCompanyAttributesViewer.
+
+  TODO: document!
+
+  Attributes:
+    'key' - the key in the object
 */
 
 @interface SkyObjectField : WODynamicElement
@@ -36,7 +41,8 @@
   WOAssociation *attributes;
   WOAssociation *labels;
   WOAssociation *action;
-
+  WOAssociation *key;      /* for use without 'attributes' */
+  
   WOElement     *template;
 }
 - (NSString *)_attributeValueInContext:(WOContext *)_ctx;
@@ -72,11 +78,11 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
   template:(WOElement *)_t 
 {
   if ((self = [super initWithName:_name associations:_config template:_t])) {
-
     self->object     = OWGetProperty(_config, @"object");
     self->attributes = OWGetProperty(_config, @"attributes");
     self->labels     = OWGetProperty(_config, @"labels");
     self->action     = OWGetProperty(_config, @"action");
+    self->key        = OWGetProperty(_config, @"key");
 
     self->template = [_t retain];
   }
@@ -103,6 +109,10 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
 
 - (NSString *)keyAttributeInContext:(WOContext *)_ctx {
   NSDictionary *attrib;
+  
+  if (self->key != nil)
+    return [self->key stringValueInComponent:[_ctx component]];
+  
   attrib = [self _attributesDictInContext:_ctx];
   return [[attrib valueForKey:@"key"] stringValue];
 }
