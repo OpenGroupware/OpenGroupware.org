@@ -31,7 +31,7 @@
   ".strings" files containing label translations)
 */
 
-@class NSString, NSMutableDictionary;
+@class NSString, NSArray, NSMutableDictionary;
 @class WOComponent;
 
 @interface OGoStringTableManager : NSObject
