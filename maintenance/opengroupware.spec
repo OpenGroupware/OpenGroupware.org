@@ -269,6 +269,15 @@ AutoReqProv:	off
 %description webui-project
 webui project package.
 ##
+%package webui-resource-basque
+Summary:		webui resource basque
+Group:			Development/Libraries
+#Requires:		ogo-gnustep_make 
+AutoReqProv:	off
+
+%description webui-resource-basque
+webui resource basque package.
+##
 %package webui-resource-dk
 Summary:		webui resource dk
 Group:			Development/Libraries
@@ -739,6 +748,10 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/share/opengroupware.org-1.0a/templates/OGoProject
 %{prefix}/share/opengroupware.org-1.0a/templates/OGoProjectInfo
 %{prefix}/share/opengroupware.org-1.0a/templates/OGoProjectZip
+
+%files webui-resource-basque
+%defattr(-,root,root,-)
+%{prefix}/share/opengroupware.org-1.0a/translations/Basque.lproj
 
 %files webui-resource-dk
 %defattr(-,root,root,-)
