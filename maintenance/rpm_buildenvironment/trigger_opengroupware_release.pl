@@ -167,7 +167,7 @@ foreach $orel (@ogo_releases) {
     my $rpm_count = @sope;
     print "must install $rpm_count RPMS ($use_sope) from install_tmp/ ... this may take some seconds\n";
     foreach $line(@sope) {
-      $rc = system("sudo rpm -U --force --noscripts $ENV{HOME}/install_tmp/$line");
+      $rc = system("sudo rpm -U --nodeps --force --noscripts $ENV{HOME}/install_tmp/$line");
       print "$line ($rc)...ok, done!\n" if($rc == 0);
       print "\nFATAL: system call (rpm) returned $rc whilst installing required RPMS from install_tmp/\n" and exit 1 unless($rc == 0);
     }
