@@ -91,7 +91,7 @@
   id p;
   
   [self logWithFormat:@"%@ get post: %@",  [self login], [self postID]];
-
+  
   if ((p = [self post]) == nil) {
     return [NSException exceptionWithName:@"DidNotFindPost"
 			reason:@"did not find specified post!"

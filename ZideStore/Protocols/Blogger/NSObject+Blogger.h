@@ -52,6 +52,7 @@
 
 @interface NSObject(PostObject)
 
+- (NSString *)bloggerContentInContext:(id)_ctx;
 - (NSDictionary *)bloggerPostInfoInContext:(id)_ctx;
 
 @end

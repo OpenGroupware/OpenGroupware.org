@@ -63,6 +63,20 @@ static NSNumber *noNum = nil;
   return infos;
 }
 
+- (NSString *)bloggerContentInContext:(id)_ctx {
+  NSString *str;
+  
+  if ((str = [self valueForKey:@"contentAsString"]) == nil)
+    return nil;
+  
+  if ([str hasPrefix:OGo_HTML_MARKER])
+    return [str substringFromIndex:[OGo_HTML_MARKER length]];
+
+  str = [NSString stringWithFormat:@"<p>%@</p>", 
+		    [str stringByEscapingHTMLString]];
+  return str;
+}
+
 - (NSString *)bloggerPostIDInContext:(id)_ctx {
   /* default post ID is container name + entry name */
   NSString *tmp;
@@ -103,15 +117,8 @@ static NSNumber *noNum = nil;
   }
   
   /* description is the first text */
-  if ((str = [self valueForKey:@"contentAsString"])) {
-    if ([str hasPrefix:OGo_HTML_MARKER])
-      str = [str substringFromIndex:[OGo_HTML_MARKER length]];
-    else {
-      str = [NSString stringWithFormat:@"<p>%@</p>", 
-		      [str stringByEscapingHTMLString]];
-    }
+  if ((str = [self bloggerContentInContext:_ctx]) != nil)
     [entry setObject:str forKey:@"description"];
-  }
   
   /* there can be a second text in 'mt_text_more' */
   
@@ -130,6 +137,7 @@ static NSNumber *noNum = nil;
 }
 
 - (id)lookupBlogWithID:(NSString *)_blogID inContext:(id)_ctx {
+  [self logWithFormat:@"lookup BLOG: %@", _blogID];
   return [self lookupName:_blogID inContext:_ctx acquire:NO];
 }
 

@@ -436,7 +436,7 @@ static NSString *cachePath  = nil;
 }
 
 - (id)childForNewKey:(NSString *)_key inContext:(id)_ctx {
-  [self logWithFormat:@"Note: class does not specify class for new key: '%@'",
+  [self logWithFormat:@"Note: class does not specify object for new key: '%@'",
 	  _key];
   return nil;
 }

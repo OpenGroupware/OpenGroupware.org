@@ -96,7 +96,7 @@
 
 - (id)post {
   NSString *pid;
-
+  
   if ((pid = [self postID]) == nil)
     return nil;
   

@@ -1,5 +1,8 @@
 2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
 
+	* NSObject+Blogger.h: added category method to retrieve Blog content
+	  (v1.3.4)
+
 	* v1.3.3
 
 	* BloggerAction.m: implemented deletePost method
