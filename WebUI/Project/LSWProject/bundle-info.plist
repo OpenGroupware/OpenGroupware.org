@@ -23,10 +23,7 @@
       { name = LSWProjectModule;          },
       { name = LSWProjects;               },
       { name = LSWProjectEditor;          },
-      { name = LSWTextDocumentEditor;     },
       { name = LSWDocumentViewer;         },
-      { name = LSWFolderEditor;           },
-      { name = LSWDocumentMove;           },
       { name = LSWDocumentMailPage;       },
       { name = LSWDocumentHtmlMailPage;   },
       { name = LSWDocumentTextMailPage;   },
@@ -34,7 +31,6 @@
       { name = LSWProjectHtmlMailPage;    },
       { name = LSWProjectTextMailPage;    },
       { name = LSWDocumentDownloadAction; },
-      { name = LSWDocumentAdvancedSearch; },
       { name = LSWProjectJobList;         },
       { name = LSWProjectPreferences;     },
       { name = SkyProjectAssignment;      },
@@ -51,15 +47,11 @@
       { name = SkyProjectInlineViewer;    },
       { name = LSWProjects;               },
       { name = LSWProjectEditor;          },
-      { name = LSWTextDocumentEditor;     },
       { name = LSWDocumentViewer;         },
-      { name = LSWFolderEditor;           },
-      { name = LSWDocumentMove;           },
       { name = LSWDocumentHtmlMailPage;   },
       { name = LSWDocumentTextMailPage;   },
       { name = LSWProjectHtmlMailPage;    },
       { name = LSWProjectTextMailPage;    },
-      { name = LSWDocumentAdvancedSearch; },
       { name = LSWProjectJobList;         },
       { name = LSWProjectPreferences;     },
       { name = SkyProjectAssignment;      },
@@ -98,26 +90,6 @@
       { verb = edit;   type = "eo/project";  component = LSWProjectEditor; },
       { verb = delete; type = "eo/project";  component = LSWProjectEditor; },
       { verb = view;   type = "eo/doc";      component = LSWDocumentViewer; },
-      { verb = move;   type = "eo/doc";      component = LSWDocumentMove;   },
-      {
-        verb = editTextDocument; type = "eo/documentediting";
-        component = LSWTextDocumentEditor;
-      },
-      {
-        verb      = newTextDocument;
-        type      = "eo/doc";
-        component = LSWTextDocumentEditor;
-      },
-      { 
-        verb      = newFolder;  
-        type      = "eo/doc"; 
-        component = LSWFolderEditor; 
-      },
-      { 
-        verb      = editFolder;
-        type      = "eo/doc";
-        component = LSWFolderEditor; 
-      },
 
       {
         verb      = "view-jobs-inline";

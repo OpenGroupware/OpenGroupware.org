@@ -1,3 +1,10 @@
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWProject: removed unused LSWTextDocumentEditor, LSWFolderEditor,
+	  LSWDocumentMove, LSWDocumentAdvancedSearch
+
+	* LSWMail: removed unused LSWMailFilterEditor templates
+
 2005-03-15  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoDocInlineViewers: prepared componentenized document viewer
