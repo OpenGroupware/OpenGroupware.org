@@ -8,6 +8,8 @@ SUBPROJECTS = \
 	OGoMailInfo	\
 	OGoMailViewers	\
 	OGoMailEditor	\
+	OGoMailFilter	\
+	OGoRecipientLists
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/aggregate.make

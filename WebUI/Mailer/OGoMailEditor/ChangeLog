@@ -1,5 +1,7 @@
 2004-08-22  Helge Hess  <helge.hess@opengroupware.org>
 
+	* removed dependency on SkyMailingListDataSource header (v5.1.2)
+
 	* moved mail editor to separate bundle OGoMailEditor (v5.1.1)
 
 2004-07-15  Helge Hess  <helge.hess@opengroupware.org>

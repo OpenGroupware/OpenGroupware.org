@@ -1,0 +1,11 @@
+# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
+
+OGoRecipientLists_INCLUDE_DIRS += -I. -I.. -I../..
+
+OGoRecipientLists_WOBUNDLE_LIBS += \
+	-lOGoFoundation	\
+	-lNGScripting	\
+	-lNGMime -lEOControl \
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(OGoRecipientLists_WOBUNDLE_LIBS)

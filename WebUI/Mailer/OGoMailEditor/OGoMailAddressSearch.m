@@ -25,7 +25,6 @@
 #include "OGoMailAddressRecord.h"
 #include "OGoMailAddressRecordResult.h"
 #include <OGoWebMail/SkyImapMailRestrictions.h>
-#include <OGoWebMail/SkyMailingListDataSource.h>
 #include "common.h"
 #include <NGExtensions/NSString+Ext.h>
 
@@ -129,11 +128,13 @@ static int  DefMaxSearchCount             = 10;
 
 /* searching in mailing lists */
 
-- (SkyMailingListDataSource *)mailingListDS {
-  SkyMailingListDataSource *ds;
+- (EODataSource *)mailingListDS {
+  EODataSource *ds;
   
-  ds = [SkyMailingListDataSource alloc]; /* separate line to make gcc happy */
-  ds = [ds initWithContext:(id)cmdctx];
+  ds = [NSClassFromString(@"SkyMailingListDataSource") alloc];
+
+  // TODO: fix prototype
+  ds = [(SkyAccessManager *)ds initWithContext:cmdctx];
   return [ds autorelease];
 }
 

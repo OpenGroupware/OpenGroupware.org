@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: SkyMailingListManager.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __SkyMailingListManager_H__
 #define __SkyMailingListManager_H__

@@ -31,10 +31,6 @@ OGoWebMail_OBJC_FILES = \
 	\
 	SkyImapMailRestrictions.m	\
 	SkyImapMailPrintViewer.m	\
-	SkyMailingListManager.m		\
-	SkyMailingListViewer.m		\
-	SkyMailingListEditor.m		\
-	SkyMailingListDataSource.m	\
 	SkyImapContextHandler.m		\
 	SkyImapMailActions.m		\
 	\
@@ -58,8 +54,6 @@ OGoWebMail_COMPONENTS = \
 	SkyImapMailListHeader.wo	\
 	SkyImapMailListFooter.wo  	\
 	SkyImapMailPrintViewer.wo	\
-	SkyMailingListViewer.wo		\
-	SkyMailingListEditor.wo		\
 
 OGoWebMail_LANGUAGES = English German
 

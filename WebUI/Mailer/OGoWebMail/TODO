@@ -2,7 +2,7 @@
 
 - split this bundle!
   - it contains *24* components, should be about 3 bundles
-    - filtering/vacation support could go into an own bundle
+    - filtering/vacation support could go into an own bundle [done]
     - mailing lists could go into an own bundle
     - printing could go into an own bundle
 

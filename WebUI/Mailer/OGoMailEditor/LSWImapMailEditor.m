@@ -21,7 +21,6 @@
 
 #include "LSWImapMailEditor.h"
 #include <OGoWebMail/SkyImapMailRestrictions.h>
-#include <OGoWebMail/SkyMailingListDataSource.h>
 #include <OGoWebMail/SkyImapContextHandler.h>
 #include "NGMimeType+Mailer.h"
 #include "NSString+MailEditor.h"
@@ -373,13 +372,15 @@ static Class      StrClass        = nil;
   return [LSWImapMailEditor _eAddressForPerson:_person];
 }
 
-- (SkyMailingListDataSource *)mailingListDS {
-  SkyMailingListDataSource *ds;
+- (EODataSource *)mailingListDS {
+  EODataSource     *ds;
   LSCommandContext *cmdctx;
   
   cmdctx = (id)[[self session] commandContext];
-  ds = [(SkyMailingListDataSource *)[SkyMailingListDataSource alloc] 
-				    initWithContext:(id)cmdctx];
+  ds = [NSClassFromString(@"SkyMailingListDataSource") alloc];
+
+  // TODO: fix prototype
+  ds = [(SkyAccessManager *)ds initWithContext:(id)cmdctx];
   return [ds autorelease];
 }
 

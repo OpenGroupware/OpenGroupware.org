@@ -18,24 +18,24 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#ifndef __SkyMailingListDataSource_H__
-#define __SkyMailingListDataSource_H__
+#ifndef __WebUI_OGoWebMail_common_H__
+#define __WebUI_OGoWebMail_common_H__
 
-#include <EOControl/EODataSource.h>
+#import <Foundation/Foundation.h>
+#include <EOControl/EOControl.h>
+#include <NGExtensions/NGExtensions.h>
 
-@class NSString, EOFetchSpecification;
+#include <NGMime/NGMime.h>
+#include <NGImap4/NGImap4.h>
+#include <NGMail/NGMail.h>
 
-@interface SkyMailingListDataSource : EODataSource
-{
-  NSString             *path;
-  EOFetchSpecification *fetchSpecification;
-  id                   context;
-}
+#include <NGObjWeb/NGObjWeb.h>
 
-- (id)initWithContext:(id)_ctx;
+#include <GDLAccess/GDLAccess.h>
 
-@end /* SkyMailingListDataSource */
+#include <LSFoundation/LSFoundation.h>
+#include <OGoFoundation/OGoFoundation.h>
+#include <OGoFoundation/LSWSession.h>
 
-#endif /* __SkyMailingListDataSource_H__ */
+#endif /* __WebUI_OGoWebMail_common_H__ */

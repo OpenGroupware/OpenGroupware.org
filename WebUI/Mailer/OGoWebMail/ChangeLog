@@ -1,5 +1,7 @@
 2004-08-22  Helge Hess  <helge.hess@opengroupware.org>
 
+	* moved mailing list to separate bundle OGoRecipientLists (v5.1.94)
+
 	* moved filter/vacation components to separate bundle OGoMailFilter
 	  (v5.1.93)
 
