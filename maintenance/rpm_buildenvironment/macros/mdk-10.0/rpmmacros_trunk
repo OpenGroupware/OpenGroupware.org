@@ -3,8 +3,8 @@
 %debug_package %{nil}
 %_topdir /home/build/rpm
 %_tmppath %{_topdir}/tmp
-%distribution mdk
-%dist_suffix %{nil}
+%distribution %{nil}
+%dist_suffix mdk
 
 ###
 %libf_objc_version 0
@@ -15,6 +15,9 @@
 %libf_objc_prefix /usr/local
 ###
 %libf_version 0
+%libf_major_version 0
+%libf_minor_version 0
+%libf_libversion %{nil}
 %libf_release trunk_r0
 %libf_buildcount 0
 %libf_makeflags debug=yes

@@ -215,10 +215,13 @@ sub pre_patch_rpmmacros {
     #libfoundation...
     if ($package eq "libfoundation") {
       $line = "\%libf_version $new_version" if ($line =~ m/^\%libf_version/);
+      $line = "\%libf_major_version $new_major" if ($line =~ m/^\%libf_major_version/);
+      $line = "\%libf_minor_version $new_minor" if ($line =~ m/^\%libf_minor_version/);
       $line = "\%libf_release trunk_r$new_svnrev" if (($line =~ m/^\%libf_release/) and ($build_type eq "trunk"));
       $line = "\%libf_release r$new_svnrev" if (($line =~ m/^\%libf_release/) and ($build_type eq "release"));
       $line = "\%libf_buildcount $new_buildcount" if ($line =~ m/^\%libf_buildcount/);
       $line = "\%libf_source $release_tarballname" if (($line =~ m/^\%libf_source/) and ($build_type eq "release"));
+      $line = "\%libf_libversion $libversion" if ($line =~ m/^\%libf_libversion/);
     }
     #libical-sope-devel...
     if ($package eq "libical-sope-devel") {
@@ -481,6 +484,7 @@ sub collect_patchinfo {
     chomp $new_sminor if (defined $new_sminor);
     chomp $new_svnrev if (defined $new_svnrev);
     $new_version = "$new_major.$new_minor.$new_sminor";
+    $libversion = "$new_major.$new_minor";
     $remote_release_dirname = "ThirdParty" if($build_type eq "release");
   }
   ###########################################################################
