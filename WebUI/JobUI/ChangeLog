@@ -1,3 +1,8 @@
+2005-03-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyJobList.m: changed to use direct action for activating a job
+	  (v5.1.51)
+
 2004-12-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.50

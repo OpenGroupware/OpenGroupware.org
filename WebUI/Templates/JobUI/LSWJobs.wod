@@ -39,6 +39,8 @@ PalmJobTab: SkySimpleTabItem {
   label  = labels.palmJobs;
 }
 
+// TODO: convert to WETableView!
+
 ToDoList: LSWTableView {
   labels            = labels;
   title             = labels.jobListTitle;

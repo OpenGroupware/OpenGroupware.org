@@ -273,10 +273,6 @@ static NSDictionary *iconMap = nil;
   return nil;
 }
 
-- (id)viewJob {
-  return [self activateObject:self->job withVerb:@"view"];
-}
-
 /* notifications */
 
 - (void)noteChange:(NSString *)_cn onObject:(id)_object {

@@ -31,9 +31,13 @@ Status: WOString {
 
 NameData: WETableData {
   title   = labels.taskName;
-  string  = job.name;
   sortKey = "name";
-  action  = viewJob;
+}
+NameLink: WOHyperlink {
+  string = job.name;
+  directActionName = "viewJob";
+  actionClass      = "LSWViewAction";
+  ?jobId           = job.jobId;
 }
 
 EnddateData: WETableData {
