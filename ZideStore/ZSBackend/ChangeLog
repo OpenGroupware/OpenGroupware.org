@@ -1,3 +1,7 @@
+2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxRecordCacheManager.m: minor improvement in cache logging (v1.3.82)
+
 2004-10-19  Helge Hess  <helge.hess@skyrix.com>
 
 	* NGResourceLocator+ZSF.m: look for resources in GNUstep tree at

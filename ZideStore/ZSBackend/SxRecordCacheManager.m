@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxRecordCacheManager.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxRecordCacheManager.h"
 #include "common.h"
@@ -33,18 +32,19 @@ static NSDictionary        *MemCacheConfig = nil;
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   
-  DebugOn = [ud boolForKey:@"SxDebugCache"];
+  if ((DebugOn = [ud boolForKey:@"SxDebugCache"]))
+    NSLog(@"Note: record cache debugging is enabled (SxDebugCache).");
   
   if (CachePath == nil)
-    CachePath = [[ud objectForKey:@"SxCachePath"] copy];
+    CachePath = [[ud stringForKey:@"SxCachePath"] copy];
   if (CachePath == nil)
     CachePath = @"/var/cache/zidestore";
   
-  [self logWithFormat:@"caching ZideStore objects in: '%@'", CachePath];
-
-  if (MemCacheConfig == nil) {
-    MemCacheConfig = [ud dictionaryForKey:@"SxMemoryCacheConfig"];
-  }
+  [self logWithFormat:@"caching ZideStore objects in: '%@' (SxCachePath)",
+	  CachePath];
+  
+  if (MemCacheConfig == nil)
+    MemCacheConfig = [[ud dictionaryForKey:@"SxMemoryCacheConfig"] copy];
 }
 
 + (id)recordCacheForType:(NSString *)_type dateAttributes:(NSArray *)_attrs {
