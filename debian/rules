@@ -117,12 +117,10 @@ install: build controlfiles
 
 	mkdir -p $(CURDIR)/debian/tmp/etc/apache/conf.d/
 	mkdir -p $(CURDIR)/debian/tmp/etc/apache2/conf.d/
+	mkdir -p $(CURDIR)/debian/tmp/etc/opengroupware.org/
 	echo "Alias /OpenGroupware$$(echo $(OGOVER) | sed s/\\.//).woa/WebServerResources/ \
 		/usr/share/opengroupware.org-$(OGOVER)/www/" > \
-		$(CURDIR)/debian/tmp/etc/apache/conf.d/opengroupware.org-resources-$(OGOVER)
-	echo "Alias /OpenGroupware$$(echo $(OGOVER) | sed s/\\.//).woa/WebServerResources/ \
-		/usr/share/opengroupware.org-$(OGOVER)/www/" > \
-		$(CURDIR)/debian/tmp/etc/apache2/conf.d/opengroupware.org-resources-$(OGOVER)
+		$(CURDIR)/debian/tmp/etc/opengroupware.org/apache-resources-$(OGOVER)
 
 # Build architecture-independent files here.
 binary-indep: build install
@@ -149,6 +147,10 @@ binary-arch: build install
 	dh_link -popengroupware.org$(OGOVER)-xmlrpcd usr/share/man/man7/undocumented.7.gz usr/share/man/man8/ogo-xmlrpcd-$(OGOVER).8.gz
 	dh_link -popengroupware.org$(OGOVER)-nhsd usr/share/man/man7/undocumented.7.gz usr/share/man/man8/ogo-nhsd-$(OGOVER).8.gz
 	dh_link -popengroupware.org-zidestore$(ZSVER) usr/share/man/man7/undocumented.7.gz usr/share/man/man8/ogo-zidestore-$(ZSVER).8.gz
+	dh_link -popengroupware.org$(OGOVER)-webui-app etc/opengroupware.org/apache-resources-$(OGOVER) \
+		etc/apache/conf.d/opengroupware.org-resources-$(OGOVER)
+	dh_link -popengroupware.org$(OGOVER)-webui-app etc/opengroupware.org/apache-resources-$(OGOVER) \
+		etc/apache2/conf.d/opengroupware.org-resources-$(OGOVER)
 	dh_link
 	dh_strip
 	dh_compress
