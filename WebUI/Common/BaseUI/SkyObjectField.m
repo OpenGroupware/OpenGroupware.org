@@ -314,7 +314,7 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
     [_res appendContentString:@"</i>"];
     return;
   }
-    
+  
   sepData = [data componentsSeparatedByString:@"\n"];
   for (i = 0, cnt = [sepData count]; i < cnt; i++) {
     NSString *s;
