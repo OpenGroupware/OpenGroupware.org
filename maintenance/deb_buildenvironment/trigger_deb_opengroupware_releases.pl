@@ -106,8 +106,6 @@ foreach $orel (@ogo_releases) {
 }
 close(KNOWN_OGo_RELEASES);
 
-exit 0;
-
 if($i_really_had_sth_todo eq "yes") { 
   #polish buildenv after we're done...
   print "we're almost at the end... cleaning up what we've done so far...\n";
