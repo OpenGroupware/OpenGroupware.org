@@ -9,3 +9,9 @@
 	* added start and end keys for dutch holidaygroups
 	* imported missing strings from English.lproj
 	* made some corrections
+
+2004-09-30  Jorrit Jorritsma <jjorritsma@aboveit.nl>
+
+	* added some missing keys to OGoScheduler and OGoSchedulerViews found in German files
+	* fixed typo in LSWScheduler
+
