@@ -1,10 +1,11 @@
 # translation of BaseUI.po to 
+# translation of BaseUI.po to
 # translation of AddressUI.po to Slovenský
 # Branislav Klocok <branislav.klocok@ofz.sk>, 2004, 2005.
 msgid ""
 msgstr ""
 "Last-Translator: Branislav Klocok <branislav.klocok@ofz.sk>\n"
-"PO-Revision-Date: 2005-01-11 14:55+0100\n"
+"PO-Revision-Date: 2005-01-14 10:35+0100\n"
 "Project-Id-Version: BaseUI\n"
 "Language-Team:  <sk@li.org>\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,381 +15,314 @@ msgstr ""
 
 # // $Id: AddressUI.strings,v 1.15 2004/08/16 14:48:47 frank Exp $
 #"Really Delete" =
-#, fuzzy
 msgid "Do you really want to delete this record?"
-msgstr "na zmazať?"
+msgstr "Určite chcete zmazať tento záznam?"
 
 #"00_created" =
-#, fuzzy
 msgid "created"
-msgstr "Vytvorené"
+msgstr "vytvorené"
 
 #"05_changed" =
-#, fuzzy
 msgid "changed"
 msgstr "zmenené"
 
 #"10_archived" =
-#, fuzzy
 msgid "archived"
 msgstr "archivované"
 
 #"LastError" =
-#, fuzzy
 msgid "Last Error:"
-msgstr "Chyba:"
+msgstr "Posledná chyba:"
 
 #"lastError" =
-#, fuzzy
 msgid "Last Error:"
-msgstr "Chyba:"
+msgstr "Posledná chyba:"
 
 #"SkyErrorPanel" =
-#, fuzzy
 msgid "View Error"
-msgstr "Zobraziť Chyba"
+msgstr "Zobraziť chybu"
 
 #"SkyRequestViewer" =
-#, fuzzy
 msgid "View Browser Request"
-msgstr "Zobraziť Prehliadač Požiadavka"
+msgstr "Zobraziť požiadavku prehliadača"
 
 #"SkyWizardChoicePage" =
-#, fuzzy
 msgid "Choice Page (wizard mode)"
-msgstr "Stránka Sprievodca režim"
+msgstr "Stránka výberu (režim sprievodcu)"
 
 #"SkyWizardResultList" =
-#, fuzzy
 msgid "Result Page (wizard mode)"
-msgstr "Výsledok Stránka Sprievodca režim"
+msgstr "Stránka výsledku (režim sprievodcu)"
 
 #"action" =
-#, fuzzy
 msgid "Action"
 msgstr "Činnosť"
 
 #"actor" =
-#, fuzzy
 msgid "Actor"
 msgstr "Aktér"
 
 #"bookmarks" =
-#, fuzzy
 msgid "Bookmarks"
 msgstr "Záložky"
 
 #"calendarPopupBirthday" =
-#, fuzzy
 msgid "browse for birthday"
-msgstr "pre"
+msgstr "Prehliadať narodeniny"
 
 #"calendarPopupEndDate" =
-#, fuzzy
 msgid "browse for endDate"
-msgstr "pre"
+msgstr "Prehliadať konečný dátum"
 
 #"calendarPopupStartDate" =
-#, fuzzy
 msgid "browse for startDate"
-msgstr "pre"
+msgstr "Prehliadať počiatočný dátum"
 
 #"cancel" =
-#, fuzzy
 msgid "cancel"
 msgstr "zrušiť"
 
 #"clearErrorString" =
 msgid "clear"
-msgstr ""
+msgstr "vyčistiť"
 
 #"creationDate" =
-#, fuzzy
 msgid "Date"
 msgstr "Dátum"
 
 #"delete" =
-#, fuzzy
 msgid "delete"
 msgstr "zmazať"
 
 #"desktop" =
-#, fuzzy
 msgid "Desktop"
 msgstr "Pracovná plocha"
 
 #"deselectAll" =
-#, fuzzy
 msgid "deselect all"
-msgstr "všetko"
+msgstr "Odznačiť všetko"
 
 #"fastSearch" =
-#, fuzzy
 msgid "Fast Search"
-msgstr "Rýchlo Hľadať"
+msgstr "Rýchle hľadanie"
 
 #"first" =
 msgid "first"
-msgstr ""
+msgstr "prvé"
 
 #"footer_logstate" =
 msgid "Session expires"
-msgstr ""
+msgstr "Sedenie končí"
 
 #"footer_skyrixag" =
 msgid "SKYRIX Software AG"
-msgstr ""
+msgstr "SKYRIX Software AG"
 
 #"footer_skyrix" =
 msgid "SKYRiX"
-msgstr ""
+msgstr "SKYRiX"
 
 #"footer_user" =
-#, fuzzy
 msgid "User"
 msgstr "Užívateľ"
 
 #"gotoEditLabel" =
-#, fuzzy
 msgid "edit"
 msgstr "upraviť"
 
 #"gotoFirstLabel" =
 msgid "first"
-msgstr ""
+msgstr "prvé"
 
 #"gotoImportLabel" =
-#, fuzzy
 msgid "import new datasets"
-msgstr "import nové"
+msgstr "importovať nové dátové sady"
 
 #"gotoLastLabel" =
-#, fuzzy
 msgid "last"
 msgstr "posledné"
 
 #"gotoNewLabel" =
-#, fuzzy
 msgid "new dataset"
-msgstr "nové"
+msgstr "nová dátová sada"
 
 #"gotoNewLinkLabel" =
-#, fuzzy
 msgid "new"
 msgstr "nové"
 
 #"gotoNextLabel" =
-#, fuzzy
 msgid "next"
 msgstr "ďalší"
 
 #"gotoPreviousLabel" =
-#, fuzzy
 msgid "previous"
 msgstr "predchádzajúci"
 
 #"last" =
-#, fuzzy
 msgid "last"
 msgstr "posledné"
 
 #"logText" =
-#, fuzzy
 msgid "Log Text"
-msgstr "Text"
+msgstr "Text záznamu"
 
 #"logout" =
-#, fuzzy
 msgid "Logout"
 msgstr "Odhlásiť sa"
 
 #"logsLabel" =
-#, fuzzy
 msgid "Logs"
 msgstr "Záznamy"
 
 #"logsTitle" =
-#, fuzzy
 msgid "Logs"
 msgstr "Záznamy"
 
 #"mdnReturnReceiptQuestion" =
-#, fuzzy
 msgid "The sender of the message requested a receipt to be returned. Do you wish to send one?"
-msgstr "z na na odoslať?"
+msgstr "Odosielateľ správy požaduje zaslanie potvrdenia o doručení. Chcete ho zaslať?"
 
 #"navposition" =
 msgid "You are here:"
-msgstr ""
+msgstr "Ste tu:"
 
 #"next" =
-#, fuzzy
 msgid "next"
 msgstr "ďalší"
 
 #"noCopyToSentFolder" =
-#, fuzzy
 msgid "Sending is possible, but copying the message to sent folder will fail! Send?"
-msgstr "na odoslané Odoslať?"
+msgstr "Odoslanie je možné, ale skopírovanie správy do priečinka pre odoslané správy zlyhá! Odoslať?"
 
 #"of" =
-#, fuzzy
 msgid "of"
 msgstr "z"
 
 #"ofLabel" =
-#, fuzzy
 msgid "of"
 msgstr "z"
 
 #"ok" =
 msgid "    ok    "
-msgstr ""
+msgstr "    ok    "
 
 #"page" =
-#, fuzzy
 msgid "Page"
 msgstr "Stránka"
 
 #"pageLabel" =
-#, fuzzy
 msgid "Page"
 msgstr "Stránka"
 
 #"preferences" =
 msgid "Preferences"
-msgstr ""
+msgstr "Nastavenia"
 
 #"previous" =
-#, fuzzy
 msgid "previous"
 msgstr "predchádzajúci"
 
 #"reallyDeleteMail" =
-#, fuzzy
 msgid "Are you sure you want to move the selected messages into the trash?"
-msgstr "na Správy?"
+msgstr "Ste si istý, že chcete presunúť vybrané správy do koša?"
 
 #"reallyEmptyTrash" =
-#, fuzzy
 msgid "Are you sure you want to empty the trash?"
-msgstr "na prázdny?"
+msgstr "Ste si istý, že chcete vyprázdniť kôš?"
 
 #"reallyRemoveFolder" =
-#, fuzzy
 msgid "Are you sure you want to move the selected folder into the trash?"
-msgstr "na?"
+msgstr "Ste si istý, že chcete presunúť vybraný priečinok do koša?"
 
 #"reallyImmRemoveFolder" =
-#, fuzzy
 msgid "Are you sure you want to delete the selected folder?"
-msgstr "na zmazať?"
+msgstr "Ste si istý, že chcete zmazať vybraný priečinok?"
 
 #"save" =
-#, fuzzy
 msgid "save"
 msgstr "uložiť"
 
 #"selectAll" =
-#, fuzzy
 msgid "select all"
 msgstr "vybrať všetko"
 
 #"sortColumn" =
-#, fuzzy
 msgid "sort Column"
-msgstr "Stĺpec"
+msgstr "zoradiť stĺpec"
 
 #"sortColumnLabel" =
-#, fuzzy
 msgid "sort Column"
-msgstr "Stĺpec"
+msgstr "zoradiť stĺpec"
 
 #"tableview_importLinkLabel" =
-#, fuzzy
 msgid "import"
 msgstr "import"
 
 #"tableview_newLinkLabel" =
-#, fuzzy
 msgid "new"
 msgstr "nové"
 
 #"tableview_refreshLinkLabel" =
-#, fuzzy
 msgid "refresh"
 msgstr "obnoviť"
 
 #"to" =
-#, fuzzy
 msgid "to"
 msgstr "na"
 
 #"toLabel" =
-#, fuzzy
 msgid "to"
 msgstr "na"
 
 #"week" =
-#, fuzzy
 msgid "Week"
 msgstr "Týždeň"
 
 #"wizardBack" =
-#, fuzzy
 msgid "Back"
 msgstr "Späť"
 
 #"wizardCancel" =
-#, fuzzy
 msgid "Cancel"
 msgstr "Zrušiť"
 
 #"wizardChoiceTitle" =
-#, fuzzy
 msgid "Choice Page (wizard mode)"
-msgstr "Stránka Sprievodca režim"
+msgstr "Stránka výberu (režim sprievodcu)"
 
 #"wizardFinish" =
-#, fuzzy
 msgid "Finish"
 msgstr "Koniec"
 
 #"wizardResultListTitle" =
-#, fuzzy
 msgid "Result Page (wizard mode)"
-msgstr "Výsledok Stránka Sprievodca režim"
+msgstr "Stránka výsledku (režim sprievodcu)"
 
 #"wizardSave" =
-#, fuzzy
 msgid "Save"
 msgstr "Uložiť"
 
 #"OGo" =
 msgid "OGo"
-msgstr ""
+msgstr "OGo"
 
 #"misc" =
 msgid "Misc"
-msgstr ""
+msgstr "Rôzne"
 
 #"home" =
-#, fuzzy
 msgid "Home"
 msgstr "Domov"
 
 #"desk" =
-#, fuzzy
 msgid "Desktop"
 msgstr "Pracovná plocha"
 
 #"mail" =
-#, fuzzy
 msgid "New Email"
-msgstr "Nový Email"
+msgstr "Nový email"
 
 #"inbox" =
-#, fuzzy
 msgid "Inbox"
 msgstr "Došlá pošta"
 

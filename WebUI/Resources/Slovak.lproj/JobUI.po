@@ -1,0 +1,951 @@
+# translation of JobUI.po to 
+# translation of AddressUI.po to Slovenský
+# Branislav Klocok <branislav.klocok@ofz.sk>, 2004, 2005.
+msgid ""
+msgstr ""
+"Last-Translator: Branislav Klocok <branislav.klocok@ofz.sk>\n"
+"PO-Revision-Date: 2005-01-14 11:04+0100\n"
+"Project-Id-Version: JobUI\n"
+"Language-Team:  <sk@li.org>\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+"MIME-Version: 1.0"
+
+# // $Id: AddressUI.strings,v 1.15 2004/08/16 14:48:47 frank Exp $
+#"00_created" =
+msgid "created"
+msgstr "vytvorené"
+
+#"02_rejected" =
+msgid "rejected"
+msgstr "odmietnuté"
+
+#"05_accepted" =
+msgid "accepted"
+msgstr "prijaté"
+
+#"05_changed" =
+msgid "changed"
+msgstr "zmenené"
+
+#"1" =
+msgid "very high"
+msgstr "veľmi vysoká"
+
+#"10_archived" =
+msgid "archived"
+msgstr "archivované"
+
+#"10_commented" =
+msgid "commented"
+msgstr "komentované"
+
+#"15_divided" =
+msgid "divided"
+msgstr "Rozdelené"
+
+#"2" =
+msgid "high"
+msgstr "vysoká"
+
+#"20_processing" =
+msgid "processing"
+msgstr "spracovávam"
+
+#"25_done" =
+msgid "done"
+msgstr "hotovo"
+
+#"27_reactivated" =
+msgid "reactivated"
+msgstr "Reaktivované"
+
+#"3" =
+msgid "average"
+msgstr "normálna"
+
+#"30_archived" =
+msgid "archived"
+msgstr "archivované"
+
+#"4" =
+msgid "low"
+msgstr "nízka"
+
+#"5" =
+msgid "very low"
+msgstr "veľmi nízka"
+
+#"AccessWarning" =
+msgid "The selected task owner has no access rights to the person. Assign the required access rights to him?"
+msgstr ""
+
+#"Always" =
+msgid "Always"
+msgstr "Vždy"
+
+#"Comment" =
+msgid "Comment"
+msgstr "Komentár"
+
+#"CouldntSetAccessRights" =
+msgid "Couldn`t set access rights!"
+msgstr ""
+
+#"GroupLabel" =
+msgid "Teamtasks"
+msgstr ""
+
+#"ImportAnnotation" =
+msgid "Imported Task"
+msgstr ""
+
+#"JobHtmlPageTitleLabel" =
+msgid "Task Mailpage"
+msgstr ""
+
+#"JobImportWindowTitle" =
+msgid "Task Import"
+msgstr ""
+
+#"JobViewerWindowTiltle" =
+msgid "Task Viewer"
+msgstr ""
+
+#"Jobs" =
+msgid "Tasks"
+msgstr "Úlohy"
+
+#"LSWJobAction" =
+msgid "Task Action"
+msgstr ""
+
+#"LSWJobEditor" =
+msgid "Edit Task"
+msgstr ""
+
+#"LSWJobViewer" =
+msgid "Task Viewer"
+msgstr ""
+
+#"LSWJobs" =
+msgid "Tasks"
+msgstr "Úlohy"
+
+#"Never" =
+msgid "Never"
+msgstr "Nikdy"
+
+#"NoTeamAndExecutantsWasSelected" =
+msgid "Error: A team or an account has to be selected as owner!"
+msgstr ""
+
+#"OnAcceptDone" =
+msgid "On accept/done"
+msgstr ""
+
+#"SkyAssignProjectToJobEditor" =
+msgid "assign project to task"
+msgstr ""
+
+#"SkyJobAttributesEditor" =
+msgid "Task Editor"
+msgstr ""
+
+#"TeamAndExecutantsWasSelected" =
+msgid "Error: Either a team or an account can be selected as owner!"
+msgstr ""
+
+#"TeamAndNoProjectWasSelected" =
+msgid "Team but no project was selected!"
+msgstr ""
+
+#"accept" =
+msgid "accepted"
+msgstr "prijaté"
+
+#"accept2" =
+msgid "accept"
+msgstr ""
+
+#"acceptDisabled" =
+msgid "you are not the owner or the task is already accepted"
+msgstr ""
+
+#"accountSeperator" =
+msgid "----------"
+msgstr ""
+
+#"accountingInfo" =
+msgid "Accounting Information"
+msgstr "Účtovné informácie"
+
+#"action" =
+msgid "Action"
+msgstr "Činnosť"
+
+#"actor" =
+msgid "Actor"
+msgstr "Aktér"
+
+#"actualWork" =
+msgid "Actual Work"
+msgstr "Aktuálna práca"
+
+#"addAccounts" =
+msgid "Add Owners"
+msgstr ""
+
+#"annotation" =
+msgid "annotate"
+msgstr ""
+
+#"annotationDisabled" =
+msgid "no permission to annotate task"
+msgstr ""
+
+#"annotationLabel" =
+msgid "Annotation"
+msgstr "Anotácia"
+
+#"annotationSubmit" =
+msgid "Set"
+msgstr "Nastaviť"
+
+#"archive" =
+msgid "archived"
+msgstr "archivované"
+
+#"archive2" =
+msgid "archive"
+msgstr ""
+
+#"archiveDisabled" =
+msgid "you aren't creator or task is already archived"
+msgstr ""
+
+#"archivedJobs" =
+msgid "archived tasks"
+msgstr ""
+
+#"assignProject" =
+msgid "assign project"
+msgstr "priradiť projekt"
+
+#"associatedCompanies" =
+msgid "Associated Companies"
+msgstr "Spriaznené spoločnosti"
+
+#"associatedContacts" =
+msgid "Associated Contacts"
+msgstr "Spriaznené kontakty"
+
+#"attributes" =
+msgid "Attributes"
+msgstr "Atribúty"
+
+#"attributesTab" =
+msgid "attributes"
+msgstr "atribúty"
+
+#"blockSize" =
+msgid "Number of listitems"
+msgstr "Počet položiek v zozname"
+
+#"byLabel" =
+msgid "by"
+msgstr "Autor"
+
+#"cancel" =
+msgid "cancel"
+msgstr "zrušiť"
+
+#"category" =
+msgid "Category"
+msgstr "Kategória"
+
+#"categoryLabel" =
+msgid "Category"
+msgstr "Kategória"
+
+#"category_" =
+msgid "- no category -"
+msgstr ""
+
+#"category_Administration" =
+msgid "Administration"
+msgstr "Administrácia"
+
+#"category_Development" =
+msgid "Development"
+msgstr ""
+
+#"category_Layout" =
+msgid "Layout"
+msgstr "Formát"
+
+#"category_Private" =
+msgid "Private"
+msgstr "Súkromné"
+
+#"clearTimer" =
+msgid "clear timer"
+msgstr ""
+
+#"clip" =
+msgid "clip"
+msgstr "klip"
+
+#"comment" =
+msgid "commented"
+msgstr "komentované"
+
+#"commentAttributes" =
+msgid "Comment"
+msgstr "Komentár"
+
+#"commonAttributes" =
+msgid "Common"
+msgstr "Spoločný"
+
+#"completionDate" =
+msgid "Completion Date"
+msgstr "Dátum vyhotovenia"
+
+#"createLabel" =
+msgid "created by"
+msgstr ""
+
+#"created" =
+msgid "created"
+msgstr "vytvorené"
+
+#"creator" =
+msgid "Creator"
+msgstr "Zhotoviteľ"
+
+#"creatorLabel" =
+msgid "Creator"
+msgstr "Zhotoviteľ"
+
+#"current" =
+msgid "current task"
+msgstr ""
+
+#"date" =
+msgid "Date"
+msgstr "Dátum"
+
+#"delegatedJobs" =
+msgid "delegated tasks"
+msgstr ""
+
+#"delete" =
+msgid "delete"
+msgstr "zmazať"
+
+#"descriptionLabel" =
+msgid "Description"
+msgstr "Popis"
+
+#"detachProject" =
+msgid "detach project"
+msgstr ""
+
+#"divided" =
+msgid "divided"
+msgstr "Rozdelené"
+
+#"done" =
+msgid "done"
+msgstr "hotovo"
+
+#"done2" =
+msgid "done"
+msgstr "hotovo"
+
+#"doneDisabled" =
+msgid "you are not the owner or the task is already done"
+msgstr ""
+
+#"due" =
+msgid "Due"
+msgstr ""
+
+#"edit" =
+msgid "edit"
+msgstr "upraviť"
+
+#"editDisabled" =
+msgid "no edit permissions"
+msgstr ""
+
+#"empty" =
+msgid ""
+msgstr ""
+
+#"endDate" =
+msgid "Enddate"
+msgstr ""
+
+#"endDateLabel" =
+msgid "Enddate"
+msgstr ""
+
+#"errorDesription" =
+msgid "Error description"
+msgstr ""
+
+#"error_cannotAssignProject" =
+msgid "cannot assign project"
+msgstr ""
+
+#"error_cannotDetachProject" =
+msgid "cannot detach project"
+msgstr ""
+
+#"error_end_before_now" =
+msgid "Error: end before today!"
+msgstr ""
+
+#"error_end_before_start" =
+msgid "Error: end before start!"
+msgstr ""
+
+#"error_noProjectSelected" =
+msgid "no project selected"
+msgstr ""
+
+#"error_no_end_date" =
+msgid "Error in field enddate: please fill in!"
+msgstr ""
+
+#"error_no_name" =
+msgid "Error in field name: please fill in! "
+msgstr "Chyba v názve poľa: prosím vyplňte! "
+
+#"error_no_start_date" =
+msgid "Error in field startdate: please fill in!"
+msgstr ""
+
+#"error_start_before_now" =
+msgid "Error: start before today!"
+msgstr ""
+
+#"executant" =
+msgid "Owner"
+msgstr "Vlastník"
+
+#"executantAttributes" =
+msgid "Owner"
+msgstr "Vlastník"
+
+#"executantLabel" =
+msgid "Owner"
+msgstr "Vlastník"
+
+#"executantSelection" =
+msgid "Select Owners"
+msgstr ""
+
+#"executantsLabel" =
+msgid "Owners"
+msgstr ""
+
+#"extendedAttributes" =
+msgid "Extended"
+msgstr "Rozšírený"
+
+#"fileUpload" =
+msgid "File Upload"
+msgstr ""
+
+#"footerRowLabel1" =
+msgid "OpenGroupware.org"
+msgstr ""
+
+#"footerRowLabel2" =
+msgid "2000-2004 SKYRIX Software AG"
+msgstr ""
+
+#"future" =
+msgid "upcoming tasks"
+msgstr ""
+
+#"gotoMailUrlLabel" =
+msgid "mail url"
+msgstr ""
+
+#"hideErrors" =
+msgid "Hide errors"
+msgstr ""
+
+#"hierachie" =
+msgid "Hierachie"
+msgstr ""
+
+#"import" =
+msgid "Import"
+msgstr "Importovať"
+
+#"importErrors" =
+msgid "Import Errors"
+msgstr ""
+
+#"job" =
+msgid "Task"
+msgstr ""
+
+#"jobActionHeadLine_accept" =
+msgid "Accept Task"
+msgstr ""
+
+#"jobActionHeadLine_annotate" =
+msgid "Annotate Task"
+msgstr ""
+
+#"jobActionHeadLine_archive" =
+msgid "Archive Task"
+msgstr ""
+
+#"jobActionHeadLine_done" =
+msgid "Done Task"
+msgstr ""
+
+#"jobActionHeadLine_reject" =
+msgid "Reject Task"
+msgstr ""
+
+#"jobActionWindowTitle" =
+msgid "Task Action"
+msgstr ""
+
+#"jobComment" =
+msgid "Comment"
+msgstr "Komentár"
+
+#"jobEditorWindowTitle" =
+msgid "Task Editor"
+msgstr ""
+
+#"jobHistoryLabel" =
+msgid "Taskhistory"
+msgstr ""
+
+#"jobHistoryList" =
+msgid "history"
+msgstr ""
+
+#"jobHistoryTitle" =
+msgid "Task History"
+msgstr ""
+
+#"jobImportWindowTitle" =
+msgid "Task Import"
+msgstr ""
+
+#"jobLabel" =
+msgid "Task"
+msgstr ""
+
+#"jobListLabel" =
+msgid "Tasks"
+msgstr "Úlohy"
+
+#"jobListTitle" =
+msgid "Tasklist"
+msgstr ""
+
+#"jobName" =
+msgid "Taskname"
+msgstr ""
+
+#"jobPreferencesLabel" =
+msgid "Task Preferences"
+msgstr ""
+
+#"jobSeperatorLabel" =
+msgid "/"
+msgstr ""
+
+#"jobStatus" =
+msgid "Status"
+msgstr "Stav"
+
+#"jobViewer" =
+msgid "Taskview"
+msgstr ""
+
+#"jobViewerWindowTitle" =
+msgid "Task Viewer"
+msgstr ""
+
+#"jobeditor_title" =
+msgid "Task Editor"
+msgstr ""
+
+#"joblist_view" =
+msgid "Tasklist"
+msgstr ""
+
+#"jobs" =
+msgid "Subtasks"
+msgstr ""
+
+#"jobsWindowLabel" =
+msgid "Tasks"
+msgstr "Úlohy"
+
+#"jobview" =
+msgid "Task Subiew"
+msgstr ""
+
+#"jobviewer_tab_links" =
+msgid "links"
+msgstr "odkazy"
+
+#"keywords" =
+msgid "Keywords"
+msgstr "Kľúčové slová"
+
+#"kilometers" =
+msgid "Travel Kilometers"
+msgstr "Cestovné kilometre"
+
+#"kilometersLabel" =
+msgid "km"
+msgstr "km"
+
+#"linkLabel" =
+msgid "Link"
+msgstr "Odkaz"
+
+#"locationLabel" =
+msgid "Location"
+msgstr "Umiestnenie"
+
+#"logText" =
+msgid "Log Message"
+msgstr "Správa zo záznamu"
+
+#"logsTitle" =
+msgid "logs"
+msgstr "záznamy"
+
+#"mail" =
+msgid "send"
+msgstr "odoslať"
+
+#"minutes" =
+msgid "minutes"
+msgstr ""
+
+#"name" =
+msgid "Name"
+msgstr "Názov"
+
+#"new" =
+msgid "new"
+msgstr "nové"
+
+#"newJob" =
+msgid "New Task"
+msgstr ""
+
+#"noOfCols" =
+msgid "Number of columns"
+msgstr "Počet stĺpcov"
+
+#"noProject" =
+msgid "-- No Project --"
+msgstr ""
+
+#"noTeamSelected" =
+msgid "No team selected"
+msgstr ""
+
+#"notify" =
+msgid "Notify"
+msgstr "Upozorniť"
+
+#"notifyCreator" =
+msgid "Notify creator"
+msgstr ""
+
+#"objectVersionLabel" =
+msgid "Version"
+msgstr "Verzia"
+
+#"oldJob" =
+msgid "Old Task"
+msgstr ""
+
+#"onLabel" =
+msgid "on"
+msgstr "zapnúť"
+
+#"oneControlJob" =
+msgid "One controltask"
+msgstr ""
+
+#"palmJobs" =
+msgid "Palm Tasks"
+msgstr ""
+
+#"parentJob" =
+msgid "Parent Task"
+msgstr ""
+
+#"participantsLabel" =
+msgid "Participants"
+msgstr "Účastníci"
+
+#"percentComplete" =
+msgid "Percent Complete"
+msgstr "Percent hotovo"
+
+#"prefExeJobs" =
+msgid "assigned tasks"
+msgstr ""
+
+#"preferredAccounts" =
+msgid "Select Preferred Owners"
+msgstr ""
+
+#"preferredExecutants" =
+msgid "Preferred Owners"
+msgstr ""
+
+#"priority" =
+msgid "Priority"
+msgstr "Dôležitosť"
+
+#"priorityLabel" =
+msgid "Priority"
+msgstr "Dôležitosť"
+
+#"priority_1" =
+msgid "very high"
+msgstr "veľmi vysoká"
+
+#"priority_2" =
+msgid "high"
+msgstr "vysoká"
+
+#"priority_3" =
+msgid "average"
+msgstr "normálna"
+
+#"priority_4" =
+msgid "low"
+msgstr "nízka"
+
+#"priority_5" =
+msgid "very low"
+msgstr "veľmi nízka"
+
+#"privateJobs" =
+msgid "private tasks"
+msgstr ""
+
+#"privateLabel" =
+msgid "me"
+msgstr ""
+
+#"project" =
+msgid "Project"
+msgstr "Projekt"
+
+#"projectAttributes" =
+msgid "Project"
+msgstr "Projekt"
+
+#"projectJobs" =
+msgid "project tasks"
+msgstr ""
+
+#"projectLabel" =
+msgid "Project"
+msgstr "Projekt"
+
+#"reactivate" =
+msgid "reactivated"
+msgstr "Reaktivované"
+
+#"records" =
+msgid "Record number"
+msgstr "Číslo záznamu"
+
+#"referredPerson" =
+msgid "Assigned Person"
+msgstr ""
+
+#"reject" =
+msgid "rejected"
+msgstr "odmietnuté"
+
+#"reject2" =
+msgid "reject"
+msgstr ""
+
+#"resubmission" =
+msgid "resubmission"
+msgstr ""
+
+#"resume" =
+msgid "Resume"
+msgstr ""
+
+#"resumeAll" =
+msgid "Resume all"
+msgstr ""
+
+#"resumeSelected" =
+msgid "Resume selected"
+msgstr ""
+
+#"save" =
+msgid "save"
+msgstr "uložiť"
+
+#"saveButtonLabel_accept" =
+msgid "accept task and save comment"
+msgstr ""
+
+#"saveButtonLabel_annotate" =
+msgid "save annotation"
+msgstr ""
+
+#"saveButtonLabel_archive" =
+msgid "archive task and save comment"
+msgstr ""
+
+#"saveButtonLabel_done" =
+msgid "make task done and save comment"
+msgstr ""
+
+#"saveButtonLabel_reject" =
+msgid "reject done and save comment"
+msgstr ""
+
+#"searchButtonLabel" =
+msgid "search"
+msgstr "hľadať"
+
+#"searchExecutants" =
+msgid "Search Owners"
+msgstr ""
+
+#"searchLabel" =
+msgid "Search"
+msgstr "Hľadať"
+
+#"searchPreferredAccounts" =
+msgid "Preferred Owners (%@)"
+msgstr ""
+
+#"searchProjectButtonLabel" =
+msgid "Search Project"
+msgstr ""
+
+#"send" =
+msgid "Send"
+msgstr "Odoslať"
+
+#"sensitivity" =
+msgid "Sensitivity"
+msgstr "Citlivosť"
+
+#"sensitivity_1" =
+msgid "normal"
+msgstr "normálne"
+
+#"sensitivity_2" =
+msgid "personal"
+msgstr "osobné"
+
+#"sensitivity_3" =
+msgid "private"
+msgstr "súkromné"
+
+#"sensitivity_4" =
+msgid "confidential"
+msgstr "dôverné"
+
+#"show" =
+msgid "show"
+msgstr "ukázať"
+
+#"showErrors" =
+msgid "Show errors"
+msgstr ""
+
+#"startDate" =
+msgid "Startdate"
+msgstr ""
+
+#"startDateLabel" =
+msgid "Startdate"
+msgstr ""
+
+#"startTimer" =
+msgid "start timer"
+msgstr ""
+
+#"statusLabel" =
+msgid "Status"
+msgstr "Stav"
+
+#"stopTimer" =
+msgid "stop timer"
+msgstr ""
+
+#"subJobLabel" =
+msgid "Subtask for"
+msgstr ""
+
+#"subJobList" =
+msgid "subtask list"
+msgstr ""
+
+#"subJobListLabel" =
+msgid "Tasks"
+msgstr "Úlohy"
+
+#"subJobListTitle" =
+msgid "Subtask list"
+msgstr ""
+
+#"takeSearchField" =
+msgid "Search -->"
+msgstr ""
+
+#"taskName" =
+msgid "Task name"
+msgstr ""
+
+#"teamLabel" =
+msgid "Team"
+msgstr ""
+
+#"timer" =
+msgid "Timer"
+msgstr ""
+
+#"titleLabel" =
+msgid "Title"
+msgstr "Nadpis"
+
+#"toDoList" =
+msgid "to do list"
+msgstr ""
+
+#"toProject" =
+msgid "Project"
+msgstr "Projekt"
+
+#"totalWork" =
+msgid "Total Work"
+msgstr "Celkom práce"
+

@@ -1,10 +1,11 @@
 # translation of AddressUI.po to 
+# translation of AddressUI.po to
 # translation of AddressUI.po to Slovenský
 # Branislav Klocok <branislav.klocok@ofz.sk>, 2004, 2005.
 msgid ""
 msgstr ""
 "Last-Translator: Branislav Klocok <branislav.klocok@ofz.sk>\n"
-"PO-Revision-Date: 2005-01-01 23:08+0100\n"
+"PO-Revision-Date: 2005-01-14 10:44+0100\n"
 "Project-Id-Version: AddressUI\n"
 "Language-Team:  <sk@li.org>\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -431,7 +432,7 @@ msgstr "Adresa pre doručenie"
 
 #"addressviewer_noeditpermission" =
 msgid "no editpermissions"
-msgstr "nedostatočné práva pre úpravu"
+msgstr "nedostatočné oprávnenia pre úpravu"
 
 #"advertising_medium" =
 msgid "Advertising medium"
