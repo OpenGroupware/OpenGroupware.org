@@ -46,7 +46,7 @@
 
 @implementation WODirectAction(LoginAction)
 
-static BOOL debugOn = YES;
+static BOOL debugOn = NO;
 static NSNumber *nYes = nil;
 static int LSUseLowercaseLogin  = -1;
 static int LSAllowSpacesInLogin = -1;
