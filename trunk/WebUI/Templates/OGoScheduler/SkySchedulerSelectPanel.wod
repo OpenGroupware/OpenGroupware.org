@@ -75,6 +75,17 @@ AptTypeSelection: WOPopUpButton {
   selection = selectedAptType;
 }
 
+//###ADDED BY AO### 
+SchedulerDeleg : WOPopUpButton { 
+  onChange     = "document.windowform.submit(); return true";
+  list         = delegationList;
+  item         = item;
+  string       = delegationLabel;
+  selection    = selectedDelegation;
+  //noSelectionString = "---------------";
+  noSelectionString = "mon agenda";
+}
+
 ExtendLink: WOHyperlink {
   action = extend;
 }
