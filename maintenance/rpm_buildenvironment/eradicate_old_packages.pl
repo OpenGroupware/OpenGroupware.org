@@ -17,6 +17,7 @@ my @distris = qw(fedora-core2
   suse82
   suse91
   suse92
+  conectiva10
 );
 
 my $current_group;

@@ -25,7 +25,7 @@ my $dl_host = "download.opengroupware.org";
 # this are the packages I can deal with
 # every package given here should have its own specfile...
 # adding new packages is more or less a copy'n'paste job of code snippets below
-my @poss_packages = qw( ogo-gnustep_make libobjc-lf2 libfoundation libical-sope-devel opengroupware-pilot-link opengroupware-nhsc sope opengroupware mod_ngobjweb_slss8 mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 ogo-environment epoz );
+my @poss_packages = qw( ogo-gnustep_make libobjc-lf2 libfoundation libical-sope-devel opengroupware-pilot-link opengroupware-nhsc sope opengroupware mod_ngobjweb_slss8 mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment epoz );
 my $flavour_we_build_upon;
 my $distrib_define;
 my $memyself = basename($0);
@@ -38,7 +38,7 @@ my @rpms_build;
 #package_wo_source contains packages wo source at all or where i refuse to download
 #the source (source should be already in \$sources_dir)
 my @package_wo_source = qw( ogo-gnustep_make ogo-environment );
-my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 ogo-environment opengroupware-pilot-link opengroupware-nhsc );
+my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment opengroupware-pilot-link opengroupware-nhsc );
 my $release_codename;
 my $remote_release_dirname;
 my $libversion;
@@ -650,6 +650,7 @@ sub get_latest_sources {
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_sles9");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_rhel3");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_redhat9");
+    $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_conectiva10");
     $package_mapped_tosrc = "sope-epoz" if ("$package" eq "epoz");
     foreach $sourcefile (@latest) {
       $destfilename = shift;
@@ -857,6 +858,10 @@ sub prepare_build_env {
   } elsif ( -f "/etc/redhat-release") {
     $flavour_we_build_upon = "fedora";
     $distrib_define = `head -n1 /etc/redhat-release`;
+    chomp $distrib_define;
+  } elsif ( -f "/etc/conectiva-release") {
+    $flavour_we_build_upon = "fedora";
+    $distrib_define = `head -n1 /etc/conectiva-release`;
     chomp $distrib_define;
   }
 }
