@@ -1,3 +1,8 @@
+2005-03-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Defaults.plist: changed default MDN text to English as requested in
+	  OGo bug #1283 (v5.1.103)
+
 2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWImapMailViewer.m: fixed an edge case with a missing header field
