@@ -171,11 +171,11 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
 
 - (NSString *)name {
   /* override to avoid clashes with "." processing */
-  static NSString *name = nil;
-  if (name != nil)
-    return name;
-  name = [[[[NSProcessInfo processInfo] arguments] objectAtIndex:0] copy];
-  return name;
+  static NSString *cName = nil;
+  if (cName != nil)
+    return cName;
+  cName = [[[[NSProcessInfo processInfo] arguments] objectAtIndex:0] copy];
+  return cName;
 }
 
 - (void)loadBundlesOfType:(NSString *)_type inPath:(NSString *)_p {

@@ -1,3 +1,7 @@
+2004-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OpenGroupware.m: fixed incompatibility with MacOSX gcc (v5.1.63)
+
 2004-09-27  Helge Hess  <helge.hess@skyrix.com>
 
 	* GNUmakefile.preamble: added /usr/lib to library search path (v5.1.62)
