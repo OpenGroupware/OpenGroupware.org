@@ -1,3 +1,7 @@
+2004-09-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: fixed library search path (v1.3.79)
+
 2004-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile.preamble (libZSBackend_LIBRARIES_DEPEND_UPON): fixed

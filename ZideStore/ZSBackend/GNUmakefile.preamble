@@ -20,6 +20,12 @@ ADDITIONAL_INCLUDE_DIRS += \
 
 ADDITIONAL_INCLUDE_DIRS += -I$(OGoROOT)/Logic
 
+ADDITIONAL_LIB_DIRS += \
+	-L$(OGoROOT)/Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
+
+ADDITIONAL_LIB_DIRS += \
+        -L/usr/local/lib -L/usr/lib
+
 libZSBackend_LIBRARIES_DEPEND_UPON += \
 	-lLSFoundation	\
 	-lGDLAccess	\
