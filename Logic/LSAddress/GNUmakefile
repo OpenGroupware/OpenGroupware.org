@@ -49,3 +49,4 @@ LSAddress_RESOURCE_FILES += Defaults.plist Version
 include $(GNUSTEP_MAKEFILES)/library.make
 include ../commandbundle.make
 -include GNUmakefile.postamble
+-include fhs.make

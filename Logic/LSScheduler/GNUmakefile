@@ -74,3 +74,4 @@ ADDITIONAL_LIB_DIRS += -L./$(GNUSTEP_OBJ_DIR)
 include $(GNUSTEP_MAKEFILES)/library.make
 include ../commandbundle.make
 -include GNUmakefile.postamble
+-include fhs.make
