@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWContentPage.h>
 
@@ -455,12 +454,12 @@ static NSNumber *noNum = nil;
     
   while ((n = [enumerator nextObject])) {
     if ([n hasSuffix:@"(resCategory)"]) {
-      NSString *s;
+      NSString *k;
 	
       n = [[n  componentsSeparatedByString:@" ("] objectAtIndex:0];
-      s = [[NSString alloc] initWithFormat:@"%@ (%@)", n, s];
-      [r addObject:s];
-      [s release];
+      k = [[NSString alloc] initWithFormat:@"%@ (%@)", n, s];
+      [r addObject:k];
+      [k release];
     }
     else 
       [r addObject:n];

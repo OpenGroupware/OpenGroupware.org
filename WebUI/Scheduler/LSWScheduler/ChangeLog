@@ -1,3 +1,8 @@
+2004-09-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWSchedulerPreferences.m: fixed OGo bug #908 (calendar preferences
+	  crashed with resource categories) (v5.1.55)
+
 2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWAppointmentViewer.wo: removed German.lproj and German_orange.lproj
