@@ -12,7 +12,7 @@ Source:        %{ogo_source}
 Prefix:        %{ogo_prefix}
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildPreReq:   ogo-gnustep_make
-#UseSOPE:      sope-4.4beta.1-voyager
+#UseSOPE:      sope-4.4beta.2-voyager
 
 %description
 OpenGroupware.org aims at being an open source groupware server which
