@@ -46,7 +46,8 @@
 /* accessors */
 
 - (void)setCurrentTableName:(NSString *)_name {
-  ASSIGNCOPY(self->currentTableName, _name);
+  [self->currentTableName autorelease];
+  self->currentTableName = [_name copy];
 }
 - (NSString *)currentTableName {
   return self->currentTableName;
