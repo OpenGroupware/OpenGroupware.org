@@ -44,31 +44,8 @@ static inline BOOL _showUnknownFiles(id self) {
 
 @interface SkyProjectFileManager(Internals)
 
-- (void)_checkCWDFor:(NSString *)_source;
 - (id)_project;
-- (NSString *)_defaultCompleteProjectDocumentNamespace;
 - (NSArray *)subDirectoryNamesForPath:(NSString *)_path;
-- (NSString *)_makeAbsolute:(NSString *)_path;
-- (void)_subpathsAtPath:(NSString *)_path array:(NSMutableArray *)_array;
-- (BOOL)_copyPath:(NSString*)_src toPath:(NSString*)_dest handler:(id)_handler;
-
-- (BOOL)moveDir:(EOGenericRecord *)_srcGen
-  toPath:(EOGenericRecord *)_destGen
-  name:(NSString *)_dirName
-  extension:(NSString *)_dirExt
-  handler:(id)_handleru;
-
-- (BOOL)moveLink:(EOGenericRecord *)_srcGen
-  toPath:(EOGenericRecord *)_destGen
-  name:(NSString *)_linkName
-  extension:(NSString *)_linkExt
-  handler:(id)_handler;
-
-- (BOOL)moveFile:(EOGenericRecord *)_srcGen
-  toPath:(EOGenericRecord *)_destGen
-  name:(NSString *)_fileName
-  extension:(NSString *)_fileExt
- handler:(id)_handler;
 
 @end /* SkyProjectFileManager(Internals) */
 
