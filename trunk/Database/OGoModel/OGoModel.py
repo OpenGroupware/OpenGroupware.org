@@ -5606,3 +5606,32 @@ PalmCategory = {
       flags:      [ lock, property, ],
     },
 } #entity palm_category
+
+SchedulerDelegation = {
+    table:     "scheduler_delegation",
+    className: 'LSSchedulerDelegation',
+    
+    # attributes
+    
+    "companyId": {
+      column:     "company_id",
+      coltype:    't_id',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ primaryKey, lock, property, ],
+    },
+    "rdvType": {
+      column:     "rdv_type",
+      coltype:    't_smallstring',
+      valueClass: 'NSString',
+      width:      100,
+      flags:      [ lock, property, ],
+    },
+    "delegateCompanyId": {
+      column:     "delegate_company_id",
+      coltype:    't_id',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ lock, property, ],
+    },
+ }
