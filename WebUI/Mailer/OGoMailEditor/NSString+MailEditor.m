@@ -197,4 +197,43 @@
   return YES;
 }
 
+/* signature */
+
+- (NSString *)stringByAddingSignature:(NSString *)sign useHTML:(BOOL)_doHtml
+  escapeSignature:(BOOL)_doEscape
+{
+  NSString *str;
+  
+  if ([[sign stringByTrimmingSpaces] length] == 0)
+    return self;
+  
+  if (!_doHtml) {
+    return [[self stringByAppendingString:@"\n-- \n"] 
+                  stringByAppendingString:sign];
+  }
+
+  /* HTML mode */
+  
+  /* Note: we cannot use <br /> due to Epoz */
+  str = [self stringByAppendingString:@"\n<br>-- \n<br>"];
+  
+  if (_doEscape) {
+    // TODO: why not -stringByEscapingHTML?
+    sign = [sign stringByReplacingString:@"<"  withString:@"&lt;"];
+    sign = [sign stringByReplacingString:@">"  withString:@"&gt;"];
+    sign = [sign stringByReplacingString:@"\n" withString:@"\n<br>"];
+  }
+  return [str stringByAppendingString:sign];
+}
+
+- (NSString *)stringByAddingCompanyDisclaimer:(NSString *)_s {
+  NSString *tmp;
+  
+  if ([_s length] == 0)
+    return self;
+  
+  tmp = [self stringByAppendingString:@"\n\n"];
+  return [tmp stringByAppendingString:_s];
+}
+
 @end /* NSString(MailEditor) */

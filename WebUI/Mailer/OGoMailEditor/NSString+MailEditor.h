@@ -42,6 +42,13 @@
 
 - (BOOL)doesLookLikeMailAddressWithDomain;
 
+/* signature */
+
+- (NSString *)stringByAddingSignature:(NSString *)sign useHTML:(BOOL)_doHtml
+  escapeSignature:(BOOL)_doEscape;
+
+- (NSString *)stringByAddingCompanyDisclaimer:(NSString *)_s;
+
 @end
 
 #endif /* __OGoWebMail_NSString_MailEditor_H__ */

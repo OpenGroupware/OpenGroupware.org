@@ -152,7 +152,7 @@ static Class      StrClass        = nil;
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   if (didInit) return;
   didInit = YES;
-
+  
   DataClass = [NSData   class];
   StrClass  = [NSString class];
   
@@ -186,8 +186,8 @@ static Class      StrClass        = nil;
   TextHtmlType   = [[NGMimeType mimeType:@"text"      subType:@"html"]   copy];
   MultiMixedType = [[NGMimeType mimeType:@"multipart" subType:@"mixed"]  copy];
   MultiSxType    = [[NGMimeType mimeType:@"multipart" subType:@"skyrix"] copy];
-
-  if (skyrixId) {
+  
+  if (skyrixId != nil) {
     NSDictionary *paras;
     
     paras = [NSDictionary dictionaryWithObjectsAndKeys: 
@@ -216,10 +216,7 @@ static Class      StrClass        = nil;
     id obj;
     
     obj = [def objectForKey:@"mail_from_type_enabled"];
-    if (obj == nil)
-      v = YES;
-    else
-      v = [obj boolValue];
+    v = (obj == nil) ? YES : [obj boolValue];
   }
 
   defKey = v ? @"MailHeaderFields" : @"MailHeaderFieldsWithoutFrom";
@@ -348,21 +345,24 @@ static Class      StrClass        = nil;
 - (NSDictionary *)_emptyEntry {
   NSString *l;
   
+  // TODO: use some specific object instead of NSDictionary ...
   l = [[self labels] valueForKey:@"ignore"];
   return [[[NSDictionary alloc] initWithObjectsAndKeys:
                                   @"", @"email",
                                   l, @"label", nil] autorelease];
 }
 
-/* typing */
+/* content-page type, triggers different portal behaviour */
 
 - (BOOL)isEditorPage {
   return YES;
 }
 
+/* addresses */
+
 + (NSString *)_eAddressForPerson:(id)_person {
   NSString *eAddr;
-
+  
   if ([(eAddr = [_person valueForKey:@"email1"]) isNotNull])
     return eAddr;
   if ([(eAddr = [_person valueForKey:@"email2"]) isNotNull])
@@ -380,8 +380,8 @@ static Class      StrClass        = nil;
   
   cmdctx = (id)[[self session] commandContext];
   ds = [NSClassFromString(@"SkyMailingListDataSource") alloc];
-
-  // TODO: fix prototype
+  
+  // TODO: fix prototype (this is not a SkyAccessManager ..)
   ds = [(SkyAccessManager *)ds initWithContext:(id)cmdctx];
   return [ds autorelease];
 }
@@ -504,10 +504,9 @@ static Class      StrClass        = nil;
   OGoMailAddressSearch *searcher;
   Class clazz;
   
-  if ([self isExtendedSearch]) 
-    clazz = [OGoComplexMailAddressSearch class];
-  else
-    clazz = [OGoSimpleMailAddressSearch class];
+  clazz = [self isExtendedSearch]
+    ? [OGoComplexMailAddressSearch class]
+    : [OGoSimpleMailAddressSearch  class];
   
   searcher = [[clazz alloc] initWithCommandContext:
                               [[self session] commandContext]];
@@ -547,6 +546,8 @@ static Class      StrClass        = nil;
   
   return self; /* stay on page */
 }
+
+/* IMAP4 handling for Sent mail */
 
 - (SkyImapContextHandler *)imapCtxHandler {
   return [SkyImapContextHandler imapContextHandlerForSession:[self session]];
@@ -601,20 +602,19 @@ static Class      StrClass        = nil;
   return ([self imapContext] == nil) ? NO : YES;
 }
 
+/* sending a message */
+
 - (id)buildMessageAndSend:(BOOL)_send save:(BOOL)_save {
   [self setIsInWarningMode:NO];
   return [self buildMessageAndSend:_send save:_save checkAddress:YES];
 }
 
+/* adding company disclaimer */
+
 - (void)addCompanyDisclaimer {
   NSString *tmp;
   
-  if ([CompanyDisclaimer length] == 0)
-    return;
-  
-  tmp = self->mailText;
-  tmp = [tmp stringByAppendingString:@"\n\n"];
-  tmp = [tmp stringByAppendingString:CompanyDisclaimer];
+  tmp = [self->mailText stringByAddingCompanyDisclaimer:CompanyDisclaimer];
   ASSIGNCOPY(self->mailText, tmp);
 }
 
@@ -773,9 +773,8 @@ static Class      StrClass        = nil;
   fromAddressArray:(NSArray *)_addresses
 {
   unsigned i, cnt;
-
-  cnt = [_addresses count];
-  for (i = 0; i < cnt; i++) {
+  
+  for (i = 0, cnt = [_addresses count]; i < cnt; i++) {
     NSDictionary *entry;
     NSString     *addr;
     NSString     *header;
@@ -827,15 +826,12 @@ static Class      StrClass        = nil;
   gen  = [[NGMimeMessageGenerator alloc] init];
   path = [gen generateMimeFromPartToFile:message];
   [gen release]; gen = nil;
-    
+  
   if (path != nil)
     return path;
   
-  if (LSWMailLogEnabled) {
-    [self logWithFormat:
-	    @"could not write message to file: %@", message];
-  }
-  [self setErrorString:@"Message generation failed"];
+  if (LSWMailLogEnabled)
+    [self logWithFormat:@"could not write message to file: %@", message];
   return nil;
 }
 
@@ -1159,7 +1155,7 @@ static Class      StrClass        = nil;
   emailAddrs   = [NSMutableArray arrayWithCapacity:[self->addresses count]];
   mailingLists = [NSMutableArray arrayWithCapacity:2];
   
-  /* filter addresses */
+  /* filter addresses (this fills the To/Cc/Bcc fields) */
   
   [self _filterOutMailingLists:mailingLists
 	emailAddresses:emailAddrs
@@ -1223,8 +1219,11 @@ static Class      StrClass        = nil;
   
   /* at this point 'message' should contain a message, save that to a file */
   
-  if ((messageFileName = [self saveMessageToFile:message]) == nil)
+  if ((messageFileName = [self saveMessageToFile:message]) == nil) {
+    [self setErrorString:@"Message generation failed"];
     return nil;
+  }
+  
   /* after that we need to ensure that the tmpfile is deleted! */
   
   /* section to actually send using mail */
@@ -1517,6 +1516,8 @@ static Class      StrClass        = nil;
   return self->addresses;
 }
 - (void)addAddressRecord:(NSDictionary *)_record {
+  // DEPRECATED
+  // Note: not called by -addReceiver:type: anymore
   if ([_record isNotNull]) [self->addresses addObject:_record];
 }
 
@@ -1563,15 +1564,15 @@ static Class      StrClass        = nil;
   enumerator = [self->attachments objectEnumerator];
   mimeAtt = [NSMutableArray arrayWithCapacity:16];
   
-  while ((dict = [enumerator nextObject])) {
+  while ((dict = [enumerator nextObject]) != nil) {
     NGMimeBodyPart   *mimePart;
     NGMutableHashMap *map;
     id               obj;
-
+    
     map = [[NGMutableHashMap alloc] initWithCapacity:8];
-    if ((obj = [dict objectForKey:@"content-disposition"]))
+    if ((obj = [dict objectForKey:@"content-disposition"]) != nil)
       [map setObject:obj forKey:@"content-disposition"];
-    if ((obj = [dict objectForKey:@"mimeType"]))
+    if ((obj = [dict objectForKey:@"mimeType"]) != nil)
       [map setObject:obj forKey:@"content-type"];
 
     mimePart = [NGMimeBodyPart bodyPartWithHeader:map];
@@ -1668,52 +1669,86 @@ static Class      StrClass        = nil;
   ASSIGNCOPY(self->mailText, _content);
 }
 
-- (void)setContentWithoutSign:(NSString *)_content {
-  // TODO: move to separate method, ie an NSString method?
-  NSUserDefaults *ud;
-  NSString *sign;
-  
-  ud   = [self userDefaults];
-  sign = [ud objectForKey:@"signature"];
-  
+- (void)setContentAndAppendSignature:(NSString *)_content {
   if (![_content isKindOfClass:StrClass])
     _content = @"";
   
-  if ([[sign stringByTrimmingSpaces] length] > 0) {
-    if ([self useEpoz]) {
-      _content = [_content stringByAppendingString:@"\n<br>-- \n<br>"];
-      
-      if (![self doesAllowHTMLSignature]) {
-        // TODO: why not -stringByEscapingHTML?
-        sign = [sign stringByReplacingString:@"<"  withString:@"&lt;"];
-        sign = [sign stringByReplacingString:@">"  withString:@"&gt;"];
-        sign = [sign stringByReplacingString:@"\n" withString:@"\n<br>"];
-      }
-      _content = [_content stringByAppendingString:sign];
-    }
-    else {
-      _content = [[_content stringByAppendingString:@"\n-- \n"]
-                                        stringByAppendingString:sign];
-    }
-  }
+  _content = [_content stringByAddingSignature:
+                         [[self userDefaults] stringForKey:@"signature"]
+                       useHTML:[self useEpoz]
+                       escapeSignature:![self doesAllowHTMLSignature]];
   [self setContent:_content];
+}
+- (void)setContentWithoutSign:(NSString *)_content {
+  // DEPRECATED
+  [self setContentAndAppendSignature:_content];
+}
+
+- (NSString *)_recipientLabelForTeam:(id)_teamEO address:(NSString *)addr {
+  NSString *teamName;
+  
+  teamName = [_teamEO valueForKey:@"description"];
+  
+  if ([[_teamEO valueForKey:@"email"] isNotNull])
+    return [StrClass stringWithFormat:@"%@ <%@>", teamName, addr];
+  
+  return [StrClass stringWithFormat:@"%@: %@", teamName, [addr shortened:80]];
+}
+
+- (NSString *)_getRecipientAddressForTeam:(id)_person {
+  NSString        *addr;
+  NSArray         *members;
+  NSMutableString *eAddrs;
+  int             i, cnt;
+  BOOL            first; 
+  
+  if ([(addr = [_person valueForKey:@"email"]) isNotNull])
+    return addr;
+
+  /* collect addresses of members */
+  
+  eAddrs  = [NSMutableString stringWithCapacity:32];
+  members = [self _getMemberEOsOfTeamEO:_person];
+  
+  for (i = 0, cnt = [members count], first = YES; i < cnt; i++) {
+    NSString *a;
+    id       p;
+    
+    p = [members objectAtIndex:i];
+    a = [self _formatEmail:[self _eAddressForPerson:p] forPerson:p];
+
+    if (a == nil)
+      continue;
+    
+    if (!first) 
+      [eAddrs appendString:@","];
+    else
+      first = NO;
+            
+    // TODO: fix to use proper escaping?
+    a = [[a componentsSeparatedByString:@","] componentsJoinedByString:@""];
+    a = [[a componentsSeparatedByString:@"'"] componentsJoinedByString:@""];
+    
+    [eAddrs appendString:a];
+  }
+  return eAddrs;
 }
 
 - (void)addReceiver:(id)_person type:(NSString *)_rcvType {
   // TODO: split up this mess, clean up
   NSString *addr, *label;
-  BOOL     isTeam, isEp;
   NSArray  *array;
   NSString *objType;
 
   label   = nil;
   addr    = nil;
-  objType = nil;
-  isTeam  = NO;
-  isEp    = NO;
   
+  /* decode special args inreceiver type */
+  
+  objType = nil;
   if ([_rcvType rangeOfString:@":"] .length > 0) {
-    if ((array = [_rcvType componentsSeparatedByString:@":"])) {
+    // TODO: explain why this is done!
+    if ((array = [_rcvType componentsSeparatedByString:@":"]) != nil) {
       _rcvType = [array objectAtIndex:0];
       objType  = [array lastObject];
     }
@@ -1724,50 +1759,16 @@ static Class      StrClass        = nil;
     addr  = _person;
   }
   else {
+    BOOL isTeam, isEp;
+    
     // TODO: so many sideeffects :-( hard to refacture
     isTeam = [[_person valueForKey:@"isTeam"] boolValue];
     isEp   = ([[_person valueForKey:@"isEnterprise"] boolValue]);
     
-    if (isTeam) {
+    if (isTeam)
+      addr = [self _getRecipientAddressForTeam:_person];
+    else if (isEp)
       addr = [_person valueForKey:@"email"];
-
-      if (![addr isNotNull]) {
-        NSArray         *members;
-        NSMutableString *eAddrs;
-        int             i, cnt;
-        BOOL            first; 
-
-        first   = YES; 
-        eAddrs  = [NSMutableString stringWithCapacity:32];
-        members = [self _getMemberEOsOfTeamEO:_person];
-	
-        for (i = 0, cnt = [members count]; i < cnt; i++) {
-          NSString *a;
-          id       p;
-
-          p = [members objectAtIndex:i];
-          a = [self _formatEmail:[self _eAddressForPerson:p] forPerson:p];
-
-          if (a != nil) {
-            if (!first) 
-              [eAddrs appendString:@","];
-            else
-              first = NO;
-
-            a = [[a componentsSeparatedByString:@","]
-                    componentsJoinedByString:@""];
-            a = [[a componentsSeparatedByString:@"'"]
-                    componentsJoinedByString:@""];
-            
-            [eAddrs appendString:a];
-          }
-        }
-        addr = eAddrs;
-      }
-    }
-    else if (isEp) {
-      addr = [_person valueForKey:@"email"];
-    }    
     else {
       addr = [objType isEqualToString:@"email2"]
         ? [_person valueForKey:@"email2"]
@@ -1785,22 +1786,15 @@ static Class      StrClass        = nil;
       label = [self _eAddressLabelForPerson:_person andAddress:addr];
       addr  = [self _formatEmail:addr forPerson:_person];
     }
-    else if (isTeam) {
-      if ([_person valueForKey:@"email"]) {
-        label = [StrClass stringWithFormat:@"%@ <%@>",
-                          [_person valueForKey:@"description"], addr];
-      }
-      else {
-        label = [StrClass stringWithFormat:@"%@: %@",
-                          [_person valueForKey:@"description"],
-                          [addr shortened:80]];
-      }
-    }
+    else if (isTeam)
+      label = [self _recipientLabelForTeam:_person address:addr];
     else if (isEp) {
       label = [StrClass stringWithFormat:@"%@ <%@>",
                         [_person valueForKey:@"name"], addr];
     }
   }
+
+  // TODO: what does the stuff below do?
   {  
     NSMutableDictionary *dict;
     NSMutableArray      *e;
@@ -1812,8 +1806,8 @@ static Class      StrClass        = nil;
     [dict setObject:e        forKey:@"emails"];
     [dict setObject:_rcvType forKey:@"header"];
     
-    [self addAddressRecord:dict];
-
+    [self->addresses addObject:dict];
+    
     if ((![[self mailRestrictions] emailAddressAllowed:addr])) {
       label = [label stringByAppendingFormat:@" (%@)",
                      [[self labels] valueForKey:@"label_prohibited"]];
@@ -2711,7 +2705,7 @@ static Class      StrClass        = nil;
   enumerator = [self->uploadArray objectEnumerator];
   [self setErrorString:nil];
 
-  while ((dict = [enumerator nextObject])) {
+  while ((dict = [enumerator nextObject]) != nil) {
     [self confirmUploadWithData:[dict objectForKey:@"data"]
           fileName:[dict objectForKey:@"fileName"]];
 
@@ -2816,7 +2810,7 @@ static Class      StrClass        = nil;
   result = nil;
   
   enumerator = [self->addresses objectEnumerator];
-  while ((obj = [enumerator nextObject])) {
+  while ((obj = [enumerator nextObject]) != nil) {
     NSString *header;
     NSString *value;
     
@@ -2869,19 +2863,20 @@ static Class      StrClass        = nil;
   enumerator = [self->addresses objectEnumerator];
   array      = [NSMutableArray array];
   result     = nil;
-  while ((obj = [enumerator nextObject])) {
+  while ((obj = [enumerator nextObject]) != nil) {
     if ([[obj objectForKey:@"header"] isEqualToString:_header])
       break;
   }
   if (obj != nil)  /* already set */
     return;
   
+  // TODO: explain the split
   enumerator = [[_mail componentsSeparatedByString:@"''"] objectEnumerator];
-  while ((obj = [enumerator nextObject])) {
+  while ((obj = [enumerator nextObject]) != nil) {
     NSDictionary *dict;
     
     dict = [self _createAddressMailDictForObject:obj header:_header];
-    [self addAddressRecord:dict];
+    if ([dict isNotNull]) [self->addresses addObject:dict];
     [dict release]; dict = nil;
   }
 }
@@ -2926,11 +2921,11 @@ static Class      StrClass        = nil;
   return self->pwd;
 }
 
-- (BOOL)savePassword {
-  return self->savePasswd;
-}
 - (void)setSavePassword:(BOOL)_passwd {
   self->savePasswd = _passwd;
+}
+- (BOOL)savePassword {
+  return self->savePasswd;
 }
 
 - (id)isLoginNumber {
@@ -2938,6 +2933,7 @@ static Class      StrClass        = nil;
 }
 
 - (id)doLogin {
+  // TODO: move somewhere else
   NSUserDefaults *defs;
   OGoSession     *sn;
   id             ctx;
@@ -2973,10 +2969,12 @@ static Class      StrClass        = nil;
   return (self->warningKind == Warning_Save) ? [self save] : [self send];
 }
 
-- (void)setBindingDictionary:(NSDictionary *)_dict {
+- (void)setBindingDictionary:(NSDictionary *)_dict { // TODO: what is this for?
 }
-- (void)setBindingLabels:(id)_labels {
+- (void)setBindingLabels:(id)_labels { // TODO: what is this for?
 }
+
+/* upload handling */
 
 - (BOOL)isLastUploadField {
   return ([self->uploadArray count] == (self->uploadArrayIdx + 1)) ? YES : NO;
@@ -2985,39 +2983,47 @@ static Class      StrClass        = nil;
   return (self->uploadArrayIdx == 0) ? YES : NO;
 }
 
+/* handling of from addresses */
+
 - (NSArray *)fromList {
   NSArray  *list;
   id       sn, acc;
   NSString *str;
 
   sn   = [self session];
+
+  /* check whether we have a from default */
+  
   list = [[sn userDefaults] valueForKey:@"mail_fromPopupList"];
-
-  if ([list count])
+  if ([list count] > 0)
     return list;
+  
+  /* otherwise build the address */
 
+  // TODO: the EO=>email could actually be a formatter object?
   acc = [sn activeAccount];
-
   str = [LSWImapMailEditor _eAddressLabelForPerson:acc];
-
   if (str == nil)
     str = [acc valueForKey:@"login"];
-
+  
   str = [LSWImapMailEditor _formatEmail:str forPerson:acc];
-
   return [NSArray arrayWithObject:str];
 }
 
-- (NSString *)selectedFrom {
-  return self->selectedFrom;
-}
 - (void)setSelectedFrom:(NSString *)_s {
   ASSIGNCOPY(self->selectedFrom, _s);
 }
+- (NSString *)selectedFrom {
+  return self->selectedFrom;
+}
+
+/* Epoz */
 
 - (BOOL)isEpozEnabled {
   return IsEpozEnabled ? YES : NO;
 }
+
+/* Warning Panel */
 
 - (NSString *)warningPhrase {
   id l;
