@@ -276,6 +276,7 @@ set_defaults () {
 		return 1
 	fi
 	su - -c "Defaults write NSGlobalDomain LSConnectionDictionary '{hostName=\"${DB_HOST}\"; userName=\"${DB_USER}\"; password=\"${DB_PASSWD}\"; port=\"${DB_PORT}\"; databaseName=\"${DB_NAME}\"}'" ${USER}
+	su - -c "Defaults write NSGlobalDomain skyrix_id \"`/bin/hostname`-${USER}\"" ${USER}
 	su - -c "Defaults write NSGlobalDomain SkyFSPath \"${SKYFS_PATH}\"" ${USER}
 	su - -c "Defaults write NSGlobalDomain LSAttachmentPath \"${ATTACHMENT_PATH}\"" ${USER}
 	su - -c "Defaults write NSGlobalDomain LSNewsImagesPath \"${NEWS_IMAGES_PATH}\"" ${USER}
