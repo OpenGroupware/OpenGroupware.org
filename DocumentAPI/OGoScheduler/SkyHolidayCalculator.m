@@ -18,10 +18,14 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: SkyHolidayCalculator.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SkyHolidayCalculator.h"
 #include "common.h"
+
+@interface NSCalendarDate(Easter)
++ (NSCalendarDate *)easterForHolidaysForYear:(int)y timeZone:(NSTimeZone *)_tz;
+@end
 
 @implementation SkyHolidayCalculator
 
@@ -41,10 +45,14 @@ static NSDictionary *holidaysConfig = nil;
   NSString *path;
   id tmp;
   
+  /* extract pathes from GNUstep environment */
+  
   env = [[NSProcessInfo processInfo] environment];
   if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
     tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
   pathes = [tmp componentsSeparatedByString:@":"];
+  
+  /* check pathes */
   
   fm = [NSFileManager defaultManager];
   e = [pathes objectEnumerator];
@@ -54,11 +62,24 @@ static NSDictionary *holidaysConfig = nil;
     path = [path stringByAppendingPathComponent:@"OGoScheduler"];
     path = [path stringByAppendingPathComponent:@"Holidays.plist"];
     
-    if (![fm isReadableFileAtPath:path])
-      continue;
-    
-    return path;
+    if ([fm isReadableFileAtPath:path])
+      return path;
   }
+  
+  /* check FHS pathes */
+  
+  pathes = [NSArray arrayWithObjects:
+		      @"/usr/local/share/opengroupware.org-1.0a/",
+		      @"/usr/share/opengroupware.org-1.0a/",
+		    nil];
+  e = [pathes objectEnumerator];
+  while ((path = [e nextObject])) {
+    path = [path stringByAppendingPathComponent:@"Holidays.plist"];
+    
+    if ([fm isReadableFileAtPath:path])
+      return path;
+  }
+  
   return nil;
 }
 
@@ -119,11 +140,11 @@ static NSDictionary *holidaysConfig = nil;
 /* accessors */
 
 - (void)_resetYearCaches {
-  RELEASE(self->holidays);     self->holidays    = nil;
-  RELEASE(self->easter);       self->easter       = nil;
-  RELEASE(self->firstMay);     self->firstMay     = nil;
-  RELEASE(self->firstAdvent);  self->firstAdvent  = nil;
-  RELEASE(self->christmasEve); self->christmasEve = nil;
+  [self->holidays     release]; self->holidays     = nil;
+  [self->easter       release]; self->easter       = nil;
+  [self->firstMay     release]; self->firstMay     = nil;
+  [self->firstAdvent  release]; self->firstAdvent  = nil;
+  [self->christmasEve release]; self->christmasEve = nil;
 }
 
 - (void)setYear:(int)_year {
@@ -159,59 +180,11 @@ static NSDictionary *holidaysConfig = nil;
   ASSIGN(self->easter,_easter);
 }
 
-// calculation of easter
 - (NSCalendarDate *)easter {
-  // Ostern
-  /* http://www.uni-bamberg.de/~ba1lw1/fkal.html#Algorithmus */
-  int y = self->year;
-  unsigned m, n;
-  int a, b, c, d, e;
-  unsigned easterMonth, easterDay;
-  
-  if (self->easter)
-    return self->easter;
-
-  if ((y > 1699) && (y < 1800)) {
-      m = 23;
-      n = 3;
+  if (self->easter == nil) {
+    self->easter = [[NSCalendarDate easterForHolidaysForYear:self->year
+				    timeZone:self->timeZone] copy];
   }
-  else if ((y > 1799) && (y < 1900)) {
-      m = 23;
-      n = 4;
-  }
-  else if ((y > 1899) && (y < 2100)) {
-      m = 24;
-      n = 5;
-  }
-  else if ((y > 2099) && (y < 2200)) {
-      m = 24;
-      n = 6;
-  }
-  else {
-    [self logWithFormat:@"WARNING: cannot calculate easter of year %d", y];
-    return nil;
-  }
-    
-  a = y % 19;
-  b = y % 4;
-  c = y % 7;
-  d = (19 * a + m) % 30;
-  e = (2 * b + 4 * c + 6 * d + n) % 7;
-  
-  easterMonth = 3;
-  easterDay   = 22 + d + e;
-  if (easterDay > 31) {
-    easterDay  -= 31;
-    easterMonth = 4;
-    if (easterDay == 26)
-      easterDay = 19;
-    if ((easterDay == 25) && (d == 28) && (a > 10))
-      easterDay = 18;
-  }
-
-  self->easter =
-    [[NSCalendarDate alloc] initWithYear:y month:easterMonth day:easterDay
-			    hour:0 minute:0 second:0 timeZone:self->timeZone];
   return self->easter;
 }
 
@@ -652,3 +625,59 @@ static NSDictionary *holidaysConfig = nil;
 }
 
 @end /* SkyHolidayCalculator */
+
+@implementation NSCalendarDate(Easter)
+
++ (NSCalendarDate *)easterForHolidaysForYear:(int)y timeZone:(NSTimeZone *)_tz{
+  // TODO: probably a DUP with something in NGExtensions
+  // Ostern
+  /* http://www.uni-bamberg.de/~ba1lw1/fkal.html#Algorithmus */
+  unsigned m, n;
+  int a, b, c, d, e;
+  unsigned easterMonth, easterDay;
+  
+  if ((y > 1699) && (y < 1800)) {
+      m = 23;
+      n = 3;
+  }
+  else if ((y > 1799) && (y < 1900)) {
+      m = 23;
+      n = 4;
+  }
+  else if ((y > 1899) && (y < 2100)) {
+      m = 24;
+      n = 5;
+  }
+  else if ((y > 2099) && (y < 2200)) {
+      m = 24;
+      n = 6;
+  }
+  else {
+    [self logWithFormat:@"WARNING: cannot calculate easter of year %d", y];
+    return nil;
+  }
+    
+  a = y % 19;
+  b = y % 4;
+  c = y % 7;
+  d = (19 * a + m) % 30;
+  e = (2 * b + 4 * c + 6 * d + n) % 7;
+  
+  easterMonth = 3;
+  easterDay   = 22 + d + e;
+  if (easterDay > 31) {
+    easterDay  -= 31;
+    easterMonth = 4;
+    if (easterDay == 26)
+      easterDay = 19;
+    if ((easterDay == 25) && (d == 28) && (a > 10))
+      easterDay = 18;
+  }
+
+  return
+    [[[NSCalendarDate alloc] initWithYear:y month:easterMonth day:easterDay
+			     hour:0 minute:0 second:0 timeZone:_tz]
+      autorelease];
+}
+
+@end /* NSCalendarDate(Easter) */
