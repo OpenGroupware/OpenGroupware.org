@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SkyMailingListDataSource.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SkyMailingListDataSource.h"
 #include "common.h"
@@ -39,35 +38,47 @@
   [super dealloc];
 }
 
+/* path */
+
+- (NSString *)_buildPath {
+  NSNumber *accountId;
+  NSString *p;
+  
+  accountId = [[self->context valueForKey:LSAccountKey]
+		              valueForKey:@"companyId"];
+  p = [accountId stringValue];
+  p = [p stringByAppendingPathExtension:@"mailingListManager"];
+  
+  p = [[[NSUserDefaults standardUserDefaults]
+                        stringForKey:@"LSAttachmentPath"]
+                        stringByAppendingPathComponent:p];
+  return p;
+}
+
 /* accessors */
 
-- (EOFetchSpecification *)fetchSpecification {
-  return self->fetchSpecification;
-}
 - (void)setFetchSpecification:(EOFetchSpecification *)_fs {
   ASSIGN(self->fetchSpecification, _fs);
 }
+- (EOFetchSpecification *)fetchSpecification {
+  return self->fetchSpecification;
+}
 
 - (NSString *)path {
-  if (self->path)
+  if (self->path != nil)
     return self->path;
-
-  self->path = [[[[self->context valueForKey:LSAccountKey]
-                                 valueForKey:@"companyId"]
-                                 stringValue]
-                                 stringByAppendingPathExtension:
-                                   @"mailingListManager"];
-  self->path = [[[NSUserDefaults standardUserDefaults]
-                                 stringForKey:@"LSAttachmentPath"]
-                                 stringByAppendingPathComponent:self->path];
-  self->path = [self->path copy];
+  
+  self->path = [[self _buildPath] copy];
   return self->path;
 }
+
+/* operations */
+
 - (NSArray *)fetchObjects {
   NSFileManager *fm;
 
   fm = [NSFileManager defaultManager];
-
+  
   if ([fm fileExistsAtPath:[self path]])
     return [NSArray arrayWithContentsOfFile:self->path];
   
@@ -75,7 +86,8 @@
 }
 
 - (void)save:(NSArray *)_array {
-  [_array writeToFile:[self path] atomically:YES];
+  NSAssert([_array writeToFile:[self path] atomically:YES],
+	   @"writing mailing list failed");
 }
 
 - (void)insertObject:(id)_object {
@@ -88,8 +100,8 @@
   enumerator = [a objectEnumerator];
   name       = [(NSDictionary *)_object objectForKey:@"name"];
 
-  if (![name length]) {
-    NSLog(@"%s: couldn`t insert spam entry %@, missing name",
+  if ([name length] == 0) {
+    NSLog(@"%s: could not insert spam entry %@, missing name",
           __PRETTY_FUNCTION__, _object);
   }
   while ((obj = [enumerator nextObject])) {
@@ -97,7 +109,7 @@
       break;
   }
   if (obj) {
-    NSLog(@"%s: couldn`t insert entry, name already exist %@",
+    NSLog(@"%s: could not insert entry, name already exist %@",
           __PRETTY_FUNCTION__, obj);
     return;
   }
@@ -119,7 +131,7 @@
   name  = [(NSDictionary *)_object objectForKey:@"name"];
 
   if (![name length]) {
-    NSLog(@"%s: couldn`t delete spam entry %@, missing name",
+    NSLog(@"%s: could not delete spam entry %@, missing name",
           __PRETTY_FUNCTION__, _object);
     return;
   }
@@ -168,7 +180,7 @@
     i++;
   }
   if (obj == nil) {
-    NSLog(@"%s: couldn`t update entry %@", __PRETTY_FUNCTION__, _object);
+    NSLog(@"%s: could not update entry %@", __PRETTY_FUNCTION__, _object);
     return;
   }
   array = [array mutableCopy];
