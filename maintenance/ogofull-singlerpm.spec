@@ -1,5 +1,5 @@
 %define ogoall_version                  1.0alpha11
-%define ogoall_release                  0
+%define ogoall_release                  1
 %define ogoall_buildcount               0
 %define ogoall_prefix                   /usr/local
 %define ogoall_gstepmake_source         gnustep-make-1.10.0.tar.gz
