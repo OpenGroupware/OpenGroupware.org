@@ -24,7 +24,7 @@
 @class NSString, NSData;
 @class EOGlobalID;
 
-@interface SkyProject4DocumentEditor : LSWContentPage
+@interface OGoDocumentImport : LSWContentPage
 {
   id         fileManager;
   EOGlobalID *folderGID;
@@ -42,11 +42,9 @@
   NSData   *blob;
 
   struct {
-    int isImport:1;
     int fileManagerCreatByProj:1;
     int documentCreaByFM:1;
-    int useEpoz:1;
-    int reserved:28;
+    int reserved:30;
   } speFlags;
   
   id project;
@@ -68,10 +66,10 @@
 #include "OGoComponent+FileManagerError.h"
 #include "common.h"
 
-/* TODO: include proper headers and add typing to avoid warnings! */
-// TODO: move import to a separate component?
+// TODO: this was created as a copy of SkyProject4DocumentEditor, the editor
+//       specific parts need to get removed
 
-@implementation SkyProject4DocumentEditor
+@implementation OGoDocumentImport
 
 /* TODO: add version check */
 
@@ -88,82 +86,6 @@
   [self->project     release];
   [self->blob        release];
   [super dealloc];
-}
-
-- (id)editDocument:(SkyProjectDocument *)_object {
-  [self setDocument:_object];
-  return self;
-}
-- (id)editAsNewDocument:(SkyProjectDocument *)_object {
-  id fm, ds, doc;
-  
-  if ((fm = [_object fileManager]) == nil) {
-    [self logWithFormat:@"missing filemanager in object ..."];
-    return nil;
-  }
-  if ((ds = [fm dataSourceAtPath:@"."]) == nil) {
-    [self logWithFormat:@"missing datasource at path . ..."];
-    return nil;
-  }
-  
-  doc = [ds createObject];
-  [doc takeValue:[_object valueForKey:@"NSFileSubject"]
-       forKey:@"NSFileSubject"];
-  [doc setContentString:[_object contentAsString]];
-  [self setDocument:doc];
-  return self;
-}
-
-- (id)activateDocument:(SkyProjectDocument *)_object
-  verb:(NSString *)_verb type:(NGMimeType *)_type
-{
-  if (_object == nil) {
-    [self logWithFormat:@"missing object to invoke with command '%@'", _verb];
-    return nil;
-  }
-  
-  if ([_verb isEqualToString:@"edit"])
-    return [self editDocument:_object];
-  if ([_verb isEqualToString:@"editAsNew"])
-    return [self editAsNewDocument:_object];
-  
-  return nil;
-}
-
-- (id)activateObject:(id)_object
-  verb:(NSString *)_verb type:(NGMimeType *)_type
-{
-  SkyProjectDocument *doc;
-  
-  if (_object == nil)
-    return nil;
-
-  doc = nil;
-  if ([_object isKindOfClass:[EOGlobalID class]]) {
-    id cmdctx;
-    cmdctx = [(OGoSession *)[self session] commandContext];
-    doc = [[cmdctx documentManager]
-                   documentForGlobalID:_object];
-  }
-  else if ([_object isKindOfClass:[NSURL class]]) {
-    id cmdctx;
-    cmdctx = [(OGoSession *)[self session] commandContext];
-    doc = [[cmdctx documentManager]
-                   documentForURL:_object];
-  }
-#if 0  
-  else if ([_object isKindOfClass:[SkyProjectDocument class]])
-    doc = _object;
-#endif
-  else if ([_object isKindOfClass:[SkyDocument class]])
-    doc = _object;
-  
-  
-  if (doc)
-    return [self activateDocument:doc verb:_verb type:_type];
-  
-  [self logWithFormat:@"couldn't activate object %@", _object];
-  return nil;
 }
 
 /* accessors */
@@ -340,17 +262,6 @@
   return [[self fileManager] supportsLockingAtPath:[self filePath]];
 }
 
-- (BOOL)hasSaveAndRelease {
-  if ([self fileId] == nil)
-    return NO;
-  return [self hasVersioning];
-}
-- (BOOL)hasSaveAndUnlock {
-  if ([self fileId] == nil)
-    return NO;
-  return (![self hasVersioning] && [self hasLocking]) ? YES : NO;
-}
-
 - (NSString *)windowTitle {
   NSString *path;
   NSString *edit;
@@ -382,23 +293,10 @@
   return YES;
 }
 
-- (void)setIsEpozEnabled:(BOOL)_flag {
-  self->speFlags.useEpoz = _flag ? 1 : 0;
-}
-- (BOOL)isEpozEnabled {
-  return self->speFlags.useEpoz ? YES : NO;
-}
-
-- (void)setIsImport:(BOOL)_imp {
-  if (_imp) {
-    [self logWithFormat:
-	    @"WARNING: attempt to set import flag, the import panel is now a"
-	    @"separate component (OGoDocumentImport)"];
-  }
-  self->speFlags.isImport = _imp ? 1 : 0;
-}
 - (BOOL)isImport {
-  return self->speFlags.isImport ? YES : NO;
+  [self logWithFormat:@"WARNING(%s): called deprecated method.",
+	  __PRETTY_FUNCTION__];
+  return YES;
 }
 
 /* actions */
@@ -462,7 +360,7 @@
   return viewer;
 }
 
-- (id)_saveAndRelease:(BOOL)_release unlock:(BOOL)_unlock {
+- (id)save {
   /* TODO: better error messages in this method! */
   SkyProjectFileManager *fm;
   SkyProjectDocument    *ldocument;
@@ -509,28 +407,7 @@
     return nil;
   }
   
-  /* now handle auto-release/unlock */
-    
-  if (_release) {
-    if (![ldocument releaseDocument])
-      [self setErrorString:@"couldn't release file after writing data .."];
-  }
-  else if (_unlock) {
-    if (![ldocument unlockDocument])
-      [self setErrorString:@"couldn't unlock file after writing data .."];
-  }
-  
   return [[(OGoSession *)[self session] navigation] leavePage];
-}
-
-- (id)save {
-  return [self _saveAndRelease:NO unlock:NO];
-}
-- (id)saveAndRelease {
-  return [self _saveAndRelease:YES unlock:NO];
-}
-- (id)saveAndUnlock {
-  return [self _saveAndRelease:NO unlock:YES];
 }
 
 - (id)cancel {
@@ -543,9 +420,6 @@
   NSDictionary   *d;
   NSString       *fname, *s;
   
-  if (![self isImport])
-    return [self save];
-
   if ((fm = [self fileManager]) == nil)
     return [self save];
 
@@ -564,7 +438,7 @@
   
   [page takeValue:[NSArray arrayWithObject:d] forKey:@"newDocuments"];
   [page takeValue:fm                          forKey:@"fileManager"];
-  [self enterPage:page];
+  [self enterPage:page]; // TODO: do we need the enter?
   return page;
 }
 
@@ -585,111 +459,4 @@
   return self->project;
 }
 
-- (void)takeValue:(id)_v forKey:(id)_key {
-  if ([_key isEqualToString:@"blob"])
-    [self setBlob:_v];
-  else if ([_key isEqualToString:@"fileName"])
-    [self setFileName:_v];
-  else if ([_key isEqualToString:@"subject"])
-    [self setSubject:_v];
-  else if ([_key isEqualToString:@"isImport"])
-    [self setIsImport:[_v boolValue]];
-  else
-    [super takeValue:_v forKey:_key];
-}
-
-
-- (id)valueForKey:(id)_key {
-  if ([_key isEqualToString:@"blob"])
-    return [self blob];
-  if ([_key isEqualToString:@"fileName"])
-    return [self fileName];
-  if ([_key isEqualToString:@"subject"])
-    return [self subject];
-  if ([_key isEqualToString:@"isImport"])
-    return [NSNumber numberWithBool:[self isImport]];
-  
-  return [super valueForKey:_key];
-}
-
-@end /* SkyProject4DocumentEditor */
-
-@implementation SkyProject4DocumentEditor(Restore)
-
-- (void)setFolderPath:(NSString *)_path {
-  ASSIGN(self->folderPath, _path);
-}
-
-- (NSString *)projectId {
-  id gid;
-
-  gid = [[[self fileManager] fileSystemAttributesAtPath:@"/"]
-                objectForKey:@"NSFileSystemNumber"];
-  if (gid)
-    return [[gid keyValues][0] stringValue];
-
-  return nil;
-}
-
-- (void)setProjectId:(id)_pid {
-  ASSIGN(self->projectId, _pid);
-}
-
-- (void)prepareForRestorePage {
-}
-
-- (void)verifyDataForRestorePage {
-  EOGlobalID *gid;
-  NSString   *fPath;
-  BOOL       isDir;
-
-  if (!self->projectId) {
-    [self setErrorString:[[self labels] valueForKey:@"Missing project id"]];
-    return;
-  }
-
-  if (!self->folderPath)
-    self->folderPath = @"/";
-
-  gid = [EOKeyGlobalID globalIDWithEntityName:@"Project"
-                       keys:&self->projectId keyCount:1 zone:NULL];
-
-  [self->fileManager release]; self->fileManager = nil;
-  
-  self->fileManager =
-    [[OGoFileManagerFactory fileManagerInContext:
-                            [(id)[self session] commandContext]
-                            forProjectGID:gid] retain];
-
-  [self->fileManager changeCurrentDirectoryPath:self->folderPath];
-  [self setFolderId:[self->fileManager globalIDForPath:self->folderPath]];
-
-  [self->fileGID release];  self->fileGID  = nil;
-  [self->document release]; self->document = nil;
-  
-  fPath = [self->folderPath stringByAppendingPathComponent:self->fileName];
-  
-  if ([self->fileManager fileExistsAtPath:fPath isDirectory:&isDir]) {
-    if (!isDir) {
-      SkyProjectFileManager *fm;
-      
-      fm = self->fileManager ;
-      self->document = [[fm documentAtPath:fPath] retain];
-      self->fileGID = [[self->document globalID] retain];
-    }
-  }
-  if (self->document == nil) {
-    EODataSource *ds;
-    
-    ds = [self->fileManager dataSourceAtPath:self->folderPath];
-    self->document = [[ds createObject] retain];
-  }
-  if (self->text)
-    [self->document setContentString:self->text];
-
-  if (self->subject)
-    [self->document takeValue:self->subject forKey:@"NSFileSubject"];
-}
-
-
-@end /* SkyProject4DocumentEditor(Restore) */
+@end /* OGoDocumentImport */

@@ -1,3 +1,8 @@
+2004-11-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* English|German.lproj/OGoProject.strings: added title for new
+	  OGoDocumentImport page
+
 2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* German.lproj/OGoMailViewers.strings: added missing semicolons

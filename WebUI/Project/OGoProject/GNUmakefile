@@ -39,6 +39,7 @@ OGoProject_OBJC_FILES = \
 	SkyProject4DocumentDeletePage.m \
 	OGoDocAction.m			\
 	OGoProjectAction.m		\
+	OGoDocumentImport.m		\
 
 # resources
 

@@ -1,3 +1,8 @@
+2004-11-30  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* added new OGoDocumentImport page as a copy of
+	  SkyProject4DocumentEditor, removed some unnecessary code (v5.1.55)
+
 2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
 	
 	* SkyProject4MovePanel.m: code cleanups (v5.1.54)

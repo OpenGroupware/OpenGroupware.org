@@ -1,0 +1,26 @@
+<#Frame>
+  <#Window>
+    <#Form>
+      <table border='0' cellspacing='0' cellpadding='3' width='100%'>
+        <#ShowFilename> <!-- is editable -->
+          <tr><#FilenameAttr><#Filename/></#FilenameAttr></tr>
+          <tr><#SubjectAttr><#Subject/></#SubjectAttr></tr>
+        </#ShowFilename>
+        <#NoShowFilename>  <!-- is not editable -->
+          <tr><#FilePathAttr/></tr>
+        </#NoShowFilename>
+
+        <#ProjectSelection/>
+        
+        <tr>
+          <td></td>
+          <td>
+            <#SaveButton/>
+            <#SaveAndMoveButton/>
+            <#CancelButton/>
+          </td>
+        </tr>
+      </table>
+    </#Form>
+  </#Window>
+</#Frame>

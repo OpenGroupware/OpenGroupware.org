@@ -548,9 +548,13 @@ static int ShowBodySize = -1;
 - (id)toDoc {
   OGoContentPage *page;
   
+#if 1
+  page = [self pageWithName:@"OGoDocumentImport"];
+#else
   // TODO: shouldn't we use a separate page for imports?
   page = [self pageWithName:@"SkyProject4DocumentEditor"];
   [page takeValue:[NSNumber numberWithBool:YES]    forKey:@"isImport"];
+#endif
   [page takeValue:[self buildDocumentBodyForPath]  forKey:@"blob"];
   [page takeValue:[self buildDocumentPathForPart]  forKey:@"fileName"];
   [page takeValue:[self buildDocumentTitleForPart] forKey:@"subject"];

@@ -1,0 +1,70 @@
+// bind template to controller class
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = windowTitle;
+  onClose = cancel;
+}
+
+Form: WOForm {
+  action  = save;
+  name    = "editform";
+  //name = "textDocumentEditor"; // for Lime
+}
+
+ShowFilename: WOConditional {
+  condition = showFilename;
+}
+NoShowFilename: WOConditional {
+  condition = showFilename;
+  negate    = YES;
+}
+
+FilePathAttr: SkyAttribute {
+  label  = labels.fileName;
+  string = filePath;
+}
+FolderAttr: SkyAttribute {
+  label  = labels.folder;
+  string = folderPath;
+}
+SubjectAttr:  SkyAttribute { label = labels.subject;  }
+FilenameAttr: SkyAttribute { label = labels.fileName; }
+TextEditAttr: SkyAttribute { label = labels.textedit; }
+
+Subject: WOTextField {
+  value = subject;
+  size  = config.textField_size2;
+  name  = "subject"
+}
+Filename: WOTextField {
+  value = fileName;
+  size  = config.textField_size2;
+  name  = "fileName";
+}
+
+SaveButton: WOSubmitButton {
+  action = save;
+  value  = labels.save;
+  class  = "button_narrow";
+}
+SaveAndMoveButton: WOSubmitButton {
+  action = saveAndMove;
+  value  = labels.saveAndMoveButton;
+  class  = "button_wide";
+}
+
+CancelButton: WOHyperlink {
+  action = cancel;
+  string = labels.cancel;
+  class  = "button_narrow";
+}
+
+ProjectSelection: SkyProjectSelection {
+  project           = project;
+  title             = labels.project;
+  searchEnterprises = YES;
+  noProjectEnabled  = NO;
+  markFirst         = YES;
+}

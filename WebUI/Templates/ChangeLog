@@ -1,3 +1,7 @@
+2004-11-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoProject: added templates for document import
+
 2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoMailViewers/LSWMimeBodyPartViewer.html: fixed a table nesting
