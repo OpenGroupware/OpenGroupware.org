@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __SkyDocumentFileManager_H__
 #define __SkyDocumentFileManager_H__
