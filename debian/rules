@@ -27,7 +27,7 @@ ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 	INSTALL_PROGRAM += -s
 endif
 
-controlfiles: controlfiles-stamp
+controlfiles: controlfiles-stamp debian/control
 controlfiles-stamp: debian/rules clean-controlfiles
 	for f in debian/*.in; do \
 		newname=$$(echo $$f | sed s/.in$$// ); \
@@ -68,7 +68,7 @@ debian/control: debian/control.in debian/rules
 	sed -e s/_OGOVER_/$(OGOVER)/g -e s/_OGOSONAME_/$(OGOSONAME)/g -e s/_ZSVER_/$(ZSVER)/g < debian/control.in > debian/control
 
 build: build-stamp
-build-stamp: patch-stamp debian/control controlfiles
+build-stamp: patch-stamp controlfiles
 	dh_testdir
 
 	CFLAGS="$(CFLAGS)" . $(GNUSTEP_SETUP); \
