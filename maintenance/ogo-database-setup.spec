@@ -10,7 +10,6 @@ Group:        Development/Libraries
 AutoReqProv:  off
 Source:       %{ogo_dbsetup_source}
 Prefix:       %{ogo_dbsetup_prefix}
-Requires:     ogo-environment
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %if %{?_postgresql_server_is_within_postgresql:1}%{!?_postgresql_server_is_within_postgresql:0}
@@ -59,6 +58,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Tue Mar 01 2005 Frank Reppin <frank@opengroupware.org>
+- drop dependency on ogo-environment
 * Sat Jan 29 2005 Frank Reppin <frank@opengroupware.org>
 - run 'database_setup_psql.sh initial' in post (if 1)
   (execution can be fully disabled by editing sysconfig/ogo-webui-1.0a)
