@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 
@@ -6,7 +6,7 @@ MODULE_NAME = LSWPreferences
 
 WOBUNDLE_NAME        = PreferencesUI
 WOBUNDLE_EXTENSION   = .lso
-WOBUNDLE_INSTALL_DIR = $(GNUSTEP_LOCAL_ROOT)/Library/OpenGroupware.org
+WOBUNDLE_INSTALL_DIR = $(GNUSTEP_LOCAL_ROOT)/Library/OpenGroupware.org-1.0a/WebUI/
 
 PreferencesUI_PRINCIPAL_CLASS = LSWPreferencesModule
 

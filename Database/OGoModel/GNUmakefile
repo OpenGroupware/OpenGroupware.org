@@ -1,10 +1,10 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include $(GNUSTEP_MAKEFILES)/common.make
 
 BUNDLE_NAME        = OGo
 BUNDLE_EXTENSION   = .model
-BUNDLE_INSTALL_DIR = $(GNUSTEP_LOCAL_ROOT)/Library/OpenGroupware.org
+BUNDLE_INSTALL_DIR = $(GNUSTEP_LOCAL_ROOT)/Library/OpenGroupware.org-1.0a/
 
 #ADDITIONAL_CPPFLAGS += -DUSE_EO_RECORDS=1
 

@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include $(GNUSTEP_MAKEFILES)/common.make
 -include ../Version
@@ -73,5 +73,3 @@ ADDITIONAL_LIB_DIRS += -L./$(GNUSTEP_OBJ_DIR)
 include $(GNUSTEP_MAKEFILES)/library.make
 include ../commandbundle.make
 -include GNUmakefile.postamble
-
-

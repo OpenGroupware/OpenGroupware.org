@@ -7,7 +7,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 include $(WebUIROOT)/Version
 
 WOBUNDLE_EXTENSION   = .lso
-WOBUNDLE_INSTALL_DIR = $(GNUSTEP_LOCAL_ROOT)/Library/OpenGroupware.org
+WOBUNDLE_INSTALL_DIR = $(GNUSTEP_LOCAL_ROOT)/Library/OpenGroupware.org-1.0a/WebUI/
 
 ADDITIONAL_INCLUDE_DIRS += 		\
 	-I.. -I$(WebUIROOT)		\

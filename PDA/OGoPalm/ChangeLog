@@ -1,3 +1,8 @@
+2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+
+	* install datasources into Library/OpenGroupware.org-1.0a/DataSources/
+	  (v5.1.27)
+
 2004-04-22  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.0.26

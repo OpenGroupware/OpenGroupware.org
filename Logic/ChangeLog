@@ -1,0 +1,5 @@
+2004-08-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* command bundles now install into Library/OpenGroupware-1.0a/Commands
+
+	* created project level makefile

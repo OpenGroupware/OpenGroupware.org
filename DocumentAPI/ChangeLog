@@ -1,0 +1,6 @@
+2004-08-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* datasource bundles now install into 
+	  Library/OpenGroupware-1.0a/DataSources
+
+	* created project level makefile

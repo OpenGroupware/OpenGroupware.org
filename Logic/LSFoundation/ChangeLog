@@ -1,3 +1,8 @@
+2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+
+	* OGoContextManager.m: preload bundles from 
+	  Library/OpenGroupware.org-1.0a (v5.1.82)
+
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile.preamble: fixed linking dependency on MacOSX (v5.1.81)
