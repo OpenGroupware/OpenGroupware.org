@@ -52,7 +52,7 @@ foreach $tprel (@tp_releases) {
   next if (grep /$tprel/, @skip_list);
   $buildtarget = $tprel;
   $buildtarget =~ s/-r\d+.*$//g;
-  print "checking for buildtarget: $buildtarget\n";
+  #print "checking for buildtarget: $buildtarget\n";
   unless(grep /\b$tprel\b/, @already_known_tp_rel) {
     my $cleanup;
     my $mapped_temp_specfilename;
