@@ -7,6 +7,8 @@ include ./Version
 
 OGO_NHSD_NAME = ogo-nhsd-1.0a
 OGO_PPLS_NAME = ogo-ppls-1.0a
+FHS_DAEMONS   = $(OGO_NHSD_NAME)
+FHS_TOOLS     = $(OGO_PPLS_NAME)
 
 LIBRARY_NAME = libPPSync
 TOOL_NAME    = $(OGO_NHSD_NAME) $(OGO_PPLS_NAME)

@@ -1,3 +1,7 @@
+2004-09-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* fhs.make: install daemon into $FHS_ROOT/sbin (v1.3.88)
+
 2004-09-27  Helge Hess  <helge.hess@skyrix.com>
 
 	* GNUmakefile: renamed ogo-zidestore-13 to ogo-zidestore-1.3 (v1.3.87)

@@ -1,3 +1,7 @@
+2004-09-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* fhs.make: install daemon into $FHS_ROOT/sbin (v5.1.49)
+
 2004-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* XmlRpcCoding.subproj/SkyDocument+XmlRpcCoding.[hm]: added proper

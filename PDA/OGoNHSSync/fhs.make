@@ -7,6 +7,7 @@ ifneq ($(FHS_INSTALL_ROOT),)
 FHS_INCLUDE_DIR=$(FHS_INSTALL_ROOT)/include/
 FHS_LIB_DIR=$(FHS_INSTALL_ROOT)/lib/
 FHS_BIN_DIR=$(FHS_INSTALL_ROOT)/bin/
+FHS_SBIN_DIR=$(FHS_INSTALL_ROOT)/sbin/
 FHS_DS_DIR=$(FHS_LIB_DIR)opengroupware.org-1.0a/conduits/
 
 NONFHS_LIBDIR="$(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR)/"
@@ -41,15 +42,26 @@ ifneq ($(TOOL_NAME),)
 fhs-bin-dirs ::
 	$(MKDIRS) $(FHS_BIN_DIR)
 
+fhs-sbin-dirs ::
+	$(MKDIRS) $(FHS_SBIN_DIR)
+
 move-tools-to-fhs :: fhs-bin-dirs
 	@echo "moving tools from $(NONFHS_BINDIR) to $(FHS_BIN_DIR) .."
 	for i in $(TOOL_NAME); do \
 	  mv "$(NONFHS_BINDIR)/$${i}" $(FHS_BIN_DIR); \
 	done
 
+move-daemons-to-fhs :: fhs-sbin-dirs
+	@echo "moving daemons from $(NONFHS_BINDIR) to $(FHS_SBIN_DIR) .."
+	for i in $(DAEMON_NAME); do \
+	  mv "$(NONFHS_BINDIR)/$${i}" $(FHS_SBIN_DIR); \
+	done
+
 else
 
 move-tools-to-fhs ::
+
+move-daemons-to-fhs :: 
 
 endif
 
@@ -77,7 +89,7 @@ endif
 # master
 
 move-to-fhs :: move-headers-to-fhs move-libs-to-fhs move-tools-to-fhs \
-		move-conduits-to-fhs
+		move-daemons-to-fhs move-conduits-to-fhs
 
 after-install :: move-to-fhs
 
