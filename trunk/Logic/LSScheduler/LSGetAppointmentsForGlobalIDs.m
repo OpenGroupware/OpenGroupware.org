@@ -63,26 +63,45 @@ static NSSet *AllListAttrs = nil;
   if (AllListAttrs == nil) {
     AllListAttrs = 
       [[NSSet alloc] initWithObjects: @"dateId", @"parentDateId", @"startDate",
-                     @"endDate", @"cycleEndDate", @"ownerId", @"accessTeamId",
+                     @"endDate", @"cycleEndDate", @"ownerId", @"creatorId",@"accessTeamId",
                      @"isAttendance", @"isAbsence", @"isViewAllowed",
-                     @"isConflictDisabled", @"type", @"notificationTime",
+                     @"isConflictDisabled", @"type", @"rdvType",@"notificationTime",
                      @"fbtype", @"busyType",
                      @"dbStatus", @"objectVersion", @"resourceNames", nil];
   }
+}
+
+- (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain
+{
+	self = [super initForOperation:_operation inDomain:_domain];
+	if(self)
+	{
+  		gids = nil ;
+		attributes = nil ;
+		timeZone = nil ;
+		sortOrderings = nil ;
+		singleFetch = NO;
+		groupBy  = nil ;
+  
+		/* transient state */
+		access  = nil ;
+	}
+	return self;
 }
 
 - (NSString *)entityName {
   return @"Date";
 }
 
-- (void)dealloc {
-  [self->groupBy       release];
-  [self->access        release];
-  [self->sortOrderings release];
-  [self->timeZone      release];
-  [self->attributes    release];
-  [self->gids          release];
-  [super dealloc];
+- (void)dealloc
+{
+	[self->groupBy       release];
+	[self->access        release];
+	[self->sortOrderings release];
+	[self->timeZone      release];
+	[self->attributes    release];
+	[self->gids          release];
+	[super dealloc];
 }
 
 /* execution */

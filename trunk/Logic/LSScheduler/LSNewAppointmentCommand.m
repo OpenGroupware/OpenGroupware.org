@@ -21,56 +21,76 @@
 
 #include "LSNewAppointmentCommand.h"
 #include "common.h"
-
+//####ADDED BY AO ###
+#include <OGoFoundation/OGoSession.h>
 @interface LSNewAppointmentCommand(UsedCommands)
 
-- (NSArray *)fetchConflictGIDsOfParticipants:(NSArray *)_parts
-  andResources:(NSArray *)_resources
-  from:(NSCalendarDate *)_startDate to:(NSCalendarDate *)_endDate
-  inContext:(id)_context;
+	- (NSArray *)fetchConflictGIDsOfParticipants:(NSArray *)_parts
+	andResources:(NSArray *)_resources
+	from:(NSCalendarDate *)_startDate to:(NSCalendarDate *)_endDate
+	inContext:(id)_context;
 
-- (void)_newCyclicDatesInContext:(id)_context;
-- (void)_assignParticipantsInContext:(id)_context;
-- (void)_addLogInContext:(id)_context;
+	- (void)_newCyclicDatesInContext:(id)_context;
+	- (void)_assignParticipantsInContext:(id)_context;
+	- (void)_addLogInContext:(id)_context;
 
-@end /* LSNewAppointmentCommand(UsedCommands) */
+	@end /* LSNewAppointmentCommand(UsedCommands) */
 
-@implementation LSNewAppointmentCommand
+	@implementation LSNewAppointmentCommand
 
-static NSNumber *yesNum = nil;
-static NSNumber *noNum  = nil;
-static NSNull   *null   = nil;
-static NSArray  *startDateOrderings = nil;
+	static NSNumber *yesNum = nil;
+	static NSNumber *noNum  = nil;
+	static NSNull   *null   = nil;
+	static NSArray  *startDateOrderings = nil;
+//*************************************************************************************
+//
+//
+//
+//
+//*************************************************************************************
++ (void)initialize 
+{
+	static BOOL didInit = NO;
+	if (didInit) return;
+	didInit = YES;
+	// TODO: check parent class version!
 
-+ (void)initialize {
-  static BOOL didInit = NO;
-  if (didInit) return;
-  didInit = YES;
-  // TODO: check parent class version!
-  
-  if (yesNum == nil) yesNum = [[NSNumber numberWithBool:YES] retain];
-  if (noNum  == nil) noNum  = [[NSNumber numberWithBool:NO]  retain];
-  if (null   == nil) null   = [[NSNull null] retain];
-  
-  if (startDateOrderings == nil) {
-    EOSortOrdering *o;
-    
-    o = [EOSortOrdering sortOrderingWithKey:@"startDate"
-                        selector:EOCompareAscending];
-    startDateOrderings = [[NSArray alloc] initWithObjects:&o count:1];
-  }
+	if (yesNum == nil) yesNum = [[NSNumber numberWithBool:YES] retain];
+	if (noNum  == nil) noNum  = [[NSNumber numberWithBool:NO]  retain];
+	if (null   == nil) null   = [[NSNull null] retain];
+
+	if (startDateOrderings == nil) 
+	{
+		EOSortOrdering *o;
+
+		o = [EOSortOrdering sortOrderingWithKey:@"startDate" selector:EOCompareAscending];
+		startDateOrderings = [[NSArray alloc] initWithObjects:&o count:1];
+	}
 }
 
-- (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
-  if ((self = [super initForOperation:_operation inDomain:_domain])) {
-    [self setIsWarningIgnored:noNum];
-    
-    [self takeValue:@"00_created"          forKey:@"logAction"];
-    [self takeValue:@"Appointment created" forKey:@"logText"];
-  }
-  return self;
+//*************************************************************************************
+//
+//
+//
+//
+//*************************************************************************************
+- (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain 
+{
+	if ((self = [super initForOperation:_operation inDomain:_domain])) {
+		[self setIsWarningIgnored:noNum];
+
+		[self takeValue:@"00_created"          forKey:@"logAction"];
+		[self takeValue:@"Appointment created" forKey:@"logText"];
+	}
+	return self;
 }
 
+//*************************************************************************************
+//
+//
+//
+//
+//*************************************************************************************
 - (void)dealloc {
   [self->comment          release];
   [self->isWarningIgnored release];
@@ -80,219 +100,269 @@ static NSArray  *startDateOrderings = nil;
 
 /* command methods */
 
+//*************************************************************************************
+//
+//
+//
+//
+//*************************************************************************************
 - (NSString *)_stringForParticipant:(id)_part andIsViewAllowed:(BOOL)_flag {
-  id label = nil;
-  
-  if ([[_part valueForKey:@"isTeam"] boolValue])
-    label = [_part valueForKey:@"description"];
-  else if ([[_part valueForKey:@"isAccount"] boolValue])
-    label = [_part valueForKey:@"login"];
-  else if (_flag)
-    label = [_part valueForKey:@"name"];
-  
-  if (![label isNotNull])
-    label = @"*";
+	id label = nil;
 
-  return label;
+	if ([[_part valueForKey:@"isTeam"] boolValue])
+		label = [_part valueForKey:@"description"];
+	else if ([[_part valueForKey:@"isAccount"] boolValue])
+		label = [_part valueForKey:@"login"];
+	else if (_flag)
+		label = [_part valueForKey:@"name"];
+
+	if (![label isNotNull])
+		label = @"*";
+
+	return label;
 }
 
+//*************************************************************************************
+//
+//
+//
+//
+//*************************************************************************************
 - (void)_checkAndPrepareAddedCommands {
-  id<NSObject,LSCommand> cmd = nil;
-  NSEnumerator *cmds = [[self commands] objectEnumerator];
-  id           pkey  = [[self object] valueForKey:[self primaryKeyName]];
+	id<NSObject,LSCommand> cmd = nil;
+	NSEnumerator *cmds = [[self commands] objectEnumerator];
+	id           pkey  = [[self object] valueForKey:[self primaryKeyName]];
 
-  while ((cmd = [cmds nextObject])) {
-    if ([cmd isKindOfClass:[LSDBObjectBaseCommand class]]) {
-      [cmd takeValue:pkey forKey:@"dateId"];
-    }
-  }
+	while ((cmd = [cmds nextObject])) {
+		if ([cmd isKindOfClass:[LSDBObjectBaseCommand class]]) {
+			[cmd takeValue:pkey forKey:@"dateId"];
+		}
+	}
 }
 
+//*************************************************************************************
+//
+//
+//
+//
+//*************************************************************************************
 - (void)_checkStartDateIsBeforeEndDate {
-  NSCalendarDate *startDate, *endDate;
-  
-  startDate = LSCommandGet(self, @"startDate");
-  endDate   = LSCommandGet(self, @"endDate");
-  if (![startDate isNotNull] || ![endDate isNotNull])
-    return;
-  
-  if ([startDate compare:endDate] == NSOrderedDescending) {
-    [self logWithFormat:@"WARNING: enddate before startdate, reversing!"];
-    LSCommandSet(self, @"endDate",   startDate);
-    LSCommandSet(self, @"startDate", endDate);
-  }
+	NSCalendarDate *startDate, *endDate;
+
+	startDate = LSCommandGet(self, @"startDate");
+	endDate   = LSCommandGet(self, @"endDate");
+	if (![startDate isNotNull] || ![endDate isNotNull])
+		return;
+
+	if ([startDate compare:endDate] == NSOrderedDescending) {
+		[self logWithFormat:@"WARNING: enddate before startdate, reversing!"];
+		LSCommandSet(self, @"endDate",   startDate);
+		LSCommandSet(self, @"startDate", endDate);
+	}
 }
 
+//*************************************************************************************
+//
+//
+//
+//
+//*************************************************************************************
 - (void)_appendConflict:(id)ap toString:(NSMutableString *)conflictString
-  inContext:(id)_context 
+inContext:(id)_context 
 {
-  /* TODO: duplicate conflict code in new-command! */
-  NSString *title = nil;
-  NSString *resN  = nil;
-  id       sD     = nil;
-  id       eD     = nil;
-  NSArray  *ps    = nil;
-  NSMutableString *p = nil;
-  int      j, psCnt;
+	/* TODO: duplicate conflict code in new-command! */
+	NSString *title = nil;
+	NSString *resN  = nil;
+	id       sD     = nil;
+	id       eD     = nil;
+	NSArray  *ps    = nil;
+	NSMutableString *p = nil;
+	int      j, psCnt;
 
-  if (![[ap valueForKey:@"isViewAllowed"] boolValue] &&
-      [ap valueForKey:@"accessTeamId"] == nil) {
-    title = @"*";          
-  } 
-  else {
-    title = [ap valueForKey:@"title"];
-  }
-  
-  sD = [ap valueForKey:@"startDate"];
-  eD = [ap valueForKey:@"endDate"];
+	if (![[ap valueForKey:@"isViewAllowed"] boolValue] &&
+			[ap valueForKey:@"accessTeamId"] == nil) {
+		title = @"*";          
+	} 
+	else {
+		title = [ap valueForKey:@"title"];
+	}
 
-  ps = [ap valueForKey:@"participants"]; 
-  p  = [[NSMutableString alloc] init];
-        
-  for (j = 0, psCnt = [ps count]; j < psCnt; j++) {
-    if (j > 0)
-      [p appendString:@", "];
-      
-    [p appendString:
-           [self _stringForParticipant:[ps objectAtIndex:j]
-                 andIsViewAllowed:
-                 [[ap valueForKey:@"isViewAllowed"] boolValue]]];
-  }
-  
-  sD = [sD descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M"];
-  eD = [eD descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M"];
-  resN = [ap valueForKey:@"resourceNames"];
+	sD = [ap valueForKey:@"startDate"];
+	eD = [ap valueForKey:@"endDate"];
 
-  resN = (resN != nil) 
-    ? [NSString stringWithFormat:@"(%@)", resN]
-    : @"";
-  
-  [conflictString appendFormat:@"%@ - %@, %@: %@ %@\n", 
-                    sD, eD, p, title, resN];
-  [p release]; p = nil;
+	ps = [ap valueForKey:@"participants"];
+	
+	p  = [[NSMutableString alloc] init];
+
+	for (j = 0, psCnt = [ps count]; j < psCnt; j++) {
+		if (j > 0)
+			[p appendString:@", "];
+
+		[p appendString:
+			[self _stringForParticipant:[ps objectAtIndex:j]
+			andIsViewAllowed:
+			[[ap valueForKey:@"isViewAllowed"] boolValue]]];
+	}
+
+	sD = [sD descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M"];
+	eD = [eD descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M"];
+	resN = [ap valueForKey:@"resourceNames"];
+
+	resN = (resN != nil) 
+		? [NSString stringWithFormat:@"(%@)", resN]
+		: @"";
+
+	[conflictString appendFormat:@"%@ - %@, %@: %@ %@\n", 
+		sD, eD, p, title, resN];
+	[p release]; p = nil;
 }
 
+//*************************************************************************************
+//
+//
+//
+//
+//*************************************************************************************
 - (void)_processConflicts:(NSArray *)conflicts timeZone:(NSTimeZone *)_tz
-  inContext:(id)_context 
+inContext:(id)_context 
 {
-  NSMutableString *conflictString;
-  unsigned int i, cnt;
-  
-  conflicts =
-      LSRunCommandV(_context, @"appointment", @"get-by-globalid",
-                    @"gids",          conflicts,
-                    @"sortOrderings", startDateOrderings,
-                    @"timeZone",     _tz,
-                    nil);
-  cnt = [conflicts count];
-    
-  conflictString = [NSMutableString stringWithCapacity:256];
-  [conflictString setString:@"There are conflicts:\n"]; 
-  
-  for (i = 0; i < cnt; i++) {
-    id ap;
-    
-    ap = [conflicts objectAtIndex:i];
-    [self _appendConflict:ap toString:conflictString inContext:_context];
-  }
-  
-  [_context rollback];
-  
-  // TODO: fix command not to signal conflicts using an exception!
-  [self assert:NO reason:conflictString];
+	NSMutableString *conflictString;
+	unsigned int i, cnt;
+
+	conflicts =
+		LSRunCommandV(_context, @"appointment", @"get-by-globalid",
+				@"gids",          conflicts,
+				@"sortOrderings", startDateOrderings,
+				@"timeZone",     _tz,
+				nil);
+	cnt = [conflicts count];
+
+	conflictString = [NSMutableString stringWithCapacity:256];
+	[conflictString setString:@"There are conflicts:\n"]; 
+
+	for (i = 0; i < cnt; i++) {
+		id ap;
+
+		ap = [conflicts objectAtIndex:i];
+		[self _appendConflict:ap toString:conflictString inContext:_context];
+	}
+
+	[_context rollback];
+
+	// TODO: fix command not to signal conflicts using an exception!
+	[self assert:NO reason:conflictString];
 }
 
+//*************************************************************************************
+//
+//
+//
+//
+//*************************************************************************************
 - (void)_checkConflictsInContext:(id)_context {
-  NSCalendarDate *startDate, *endDate;
-  NSString       *resNames;
-  NSArray        *res        = nil;
-  NSArray        *conflicts  = nil;
-  int            cnt;
+	NSCalendarDate *startDate, *endDate;
+	NSString       *resNames;
+	NSArray        *res        = nil;
+	NSArray        *conflicts  = nil;
+	int            cnt;
 
-  startDate  = [self valueForKey:@"startDate"];
-  endDate    = [self valueForKey:@"endDate"];
-  resNames   = [self valueForKey:@"resourceNames"];
-  
-  if ([resNames isNotNull])
-    res = [resNames componentsSeparatedByString:@", "];
+	startDate  = [self valueForKey:@"startDate"];
+	endDate    = [self valueForKey:@"endDate"];
+	resNames   = [self valueForKey:@"resourceNames"];
 
-  conflicts = [self fetchConflictGIDsOfParticipants:self->participants
-                    andResources:res
-                    from:startDate to:endDate
-                    inContext:_context];
-  
-  if ((cnt = [conflicts count]) > 0) {
-    [self _processConflicts:conflicts timeZone:[startDate timeZone] 
-          inContext:_context];
-  }
+	if ([resNames isNotNull])
+		res = [resNames componentsSeparatedByString:@", "];
+
+	conflicts = [self fetchConflictGIDsOfParticipants:self->participants
+		andResources:res
+		from:startDate to:endDate
+		inContext:_context];
+
+	if ((cnt = [conflicts count]) > 0) {
+		[self _processConflicts:conflicts timeZone:[startDate timeZone] 
+			inContext:_context];
+	}
 }
 
+//*************************************************************************************
+//
+//
+//
+//
+//*************************************************************************************
 - (BOOL)_hasParent {
-  return [[[self object] valueForKey:@"parentDateId"] isNotNull];
+	return [[[self object] valueForKey:@"parentDateId"] isNotNull];
 }
+//*************************************************************************************
+//
+//
+//
+//
+//*************************************************************************************
 - (BOOL)_dateIsCyclic {
-  return [[[self object] valueForKey:@"type"] isNotNull];
+	return [[[self object] valueForKey:@"type"] isNotNull];
 }
 
+//*************************************************************************************
+//
+//
+//
+//
+//*************************************************************************************
 - (BOOL)_newDateInfoInContext:(id)_context {
-  id           dateInfo  = nil;
-  NSDictionary *pk       = nil;
-  EOEntity     *myEntity = [[self databaseModel] entityNamed:@"DateInfo"];
-  id           pkey      = [[self object] valueForKey:[self primaryKeyName]];
+	id           dateInfo  = nil;
+	NSDictionary *pk       = nil;
+	EOEntity     *myEntity = [[self databaseModel] entityNamed:@"DateInfo"];
+	id           pkey      = [[self object] valueForKey:[self primaryKeyName]];
 
-  pk       = [self newPrimaryKeyDictForContext:_context keyName:@"dateId"];
-  dateInfo = [self produceEmptyEOWithPrimaryKey:pk entity:myEntity];
-  [dateInfo takeValue:[dateInfo valueForKey:@"dateId"] forKey:@"dateInfoId"];
+	pk       = [self newPrimaryKeyDictForContext:_context keyName:@"dateId"];
+	dateInfo = [self produceEmptyEOWithPrimaryKey:pk entity:myEntity];
+	[dateInfo takeValue:[dateInfo valueForKey:@"dateId"] forKey:@"dateInfoId"];
 
-  [dateInfo takeValue:null forKey:@"dateId"];
-  
-  if ([self comment]) [dateInfo takeValue:[self comment] forKey:@"comment"];
+	[dateInfo takeValue:null forKey:@"dateId"];
 
-  [dateInfo takeValue:pkey        forKey:@"dateId"];
-  [dateInfo takeValue:@"inserted" forKey:@"dbStatus"];
-  return [[self databaseChannel] insertObject:dateInfo];
+	if ([self comment]) [dateInfo takeValue:[self comment] forKey:@"comment"];
+
+	[dateInfo takeValue:pkey        forKey:@"dateId"];
+	[dateInfo takeValue:@"inserted" forKey:@"dbStatus"];
+	return [[self databaseChannel] insertObject:dateInfo];
 }
 
+//*************************************************************************************
+//
+//
+//
+//
+//*************************************************************************************
 - (void)_prepareForExecutionInContext:(id)_context {
-  id owner = nil;
-  NSNumber *pId;
-  
-  [self assert:([[self valueForKey:@"title"] length] != 0)
-        reason:@"missing title attribute"];
-  
-  pId   = [self valueForKey:@"parentDateId"];
-  owner = [self valueForKey:@"ownerId"];
-  
-  // set owner of appointment
+	id owner = nil;
+	
+	id creator =nil;
+	NSNumber *pId;
 
-  if (![pId isNotNull]) {
-    if (owner != nil) {
-      if ([[[_context valueForKey:LSAccountKey]
-                      valueForKey:@"companyId"] intValue] != 10000) {
-        [self assert:NO
-              reason:@"Only root is allowd to explicit set an owner for "
-              @"appointments!"];
-      }
-    }
-    else {
-      owner = [[_context valueForKey:LSAccountKey] valueForKey:@"companyId"];
-    
-      [self assert:(owner != nil) reason:@"No owner for appointment!"];
+	[self assert:([[self valueForKey:@"title"] length] != 0)
+		reason:@"missing title attribute"];
+	[self logWithFormat:@"context = %@",_context];
+	
 
-      [self takeValue:owner forKey:@"ownerId"];
-    }
-  }
-  [self takeValue:[NSNumber numberWithInt:1] forKey:@"objectVersion"];
-  
-  [self assert:([self->participants count] > 0)
-        reason:@"no participants set !"];
+	pId   = [self valueForKey:@"parentDateId"];
+	creator = [self valueForKey:@"creatorId"];
+	owner = [self valueForKey:@"ownerId"];
 
-  [self _checkStartDateIsBeforeEndDate];
+	//####ADDED BY AO####
+	[self assert:([self valueForKey:@"ownerId" ]  !=nil) reason:@"no owner"];
+	[self assert:([self valueForKey:@"creatorId" ]  !=nil) reason:@"no creator"];
+	//####ADDED BY AO####
+  	
+        [self takeValue:[NSNumber numberWithInt:1] forKey:@"objectVersion"];
+	[self assert:([self->participants count] > 0)
+              reason:@"no participants set !"];
+  	[self _checkStartDateIsBeforeEndDate];
+  	
+	if (![self->isWarningIgnored boolValue])
+    	[self _checkConflictsInContext:_context];
   
-  if (![self->isWarningIgnored boolValue])
-    [self _checkConflictsInContext:_context];
-  
-  [super _prepareForExecutionInContext:_context];
+  	[super _prepareForExecutionInContext:_context];
 }
 
 - (void)_executeInContext:(id)_context {
@@ -325,7 +395,7 @@ static NSArray  *startDateOrderings = nil;
         reason:@"no participants set !"];
   
   [self _assignParticipantsInContext:_context];
-
+  
   if ([self _dateIsCyclic] && ![self _hasParent])
     [self _newCyclicDatesInContext:_context];
   
@@ -360,7 +430,16 @@ static NSArray  *startDateOrderings = nil;
 - (NSArray *)participants {
   return self->participants;
 }
+//###ADDED BY AO###
+/*
+- (void)setCreator:(NSString *)_creator {
+  ASSIGN(creator, _creator);
+}
 
+- (NSArray *)creator {
+  return self->creator;
+}
+*/
 - (void)setCycleEndDateFromString:(NSString *)_cycleEndDateString {
   NSCalendarDate *myDate = nil;
 
@@ -374,7 +453,8 @@ static NSArray  *startDateOrderings = nil;
 /* key/value coding */
 
 - (void)takeValue:(id)_value forKey:(id)_key {
-  if ([_key isEqualToString:@"cycleEndDate"]) {
+  if ([_key isEqualToString:@"cycleEndDate"]) 
+  {
     if ([_value isKindOfClass:[NSCalendarDate class]])
       [super takeValue:_value forKey:@"cycleEndDate"];
     else 

@@ -52,7 +52,7 @@
  *   person.degree
  *   person.isPrivate
  *   person.ownerId
- *
+ *   person.creatorId
  *   person.enterprises
  *                     
  *   enterprises.description
@@ -129,8 +129,9 @@ static NSNumber *yesNum                         = nil;
                        @"person.enterprises",
                        @"person.isPrivate",
                        @"person.ownerId",
-                       @"person.isPerson",
-                       
+//###ADDED BY AO###
+		       @"person.creatorId",
+		       @"person.isPerson",
                        @"enterprises.description",
                        @"enterprises.companyId",
                        @"enterprises.globalID",
