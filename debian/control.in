@@ -371,7 +371,7 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: German translation for OpenGroupware.org's web UI
  This package contains the German translations for OpenGroupware.org's web UI.
- You need to have at last one transaltion package installed.
+ You need to have at last one translation package installed.
 
 Package: opengroupware.org_OGOVER_-webui-i18n-dk
 Section: web
@@ -379,7 +379,7 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Danish translation for OpenGroupware.org's web UI
  This package contains the Danish translations for OpenGroupware.org's web UI.
- You need to have at last one transaltion package installed.
+ You need to have at last one translation package installed.
   
 Package: opengroupware.org_OGOVER_-webui-i18n-en
 Section: web
@@ -387,7 +387,7 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: English translation for OpenGroupware.org's web UI
  This package contains the English translations for OpenGroupware.org's web UI.
- You need to have at last one transaltion package installed.
+ You need to have at last one translation package installed.
   
 Package: opengroupware.org_OGOVER_-webui-i18n-es
 Section: web
@@ -395,7 +395,7 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Spanish translation for OpenGroupware.org's web UI
  This package contains the Spanish translations for OpenGroupware.org's web UI.
- You need to have at last one transaltion package installed.
+ You need to have at last one translation package installed.
 
 Package: opengroupware.org_OGOVER_-webui-i18n-eu
 Section: web
@@ -403,7 +403,7 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Basque translation for OpenGroupware.org's web UI
  This package contains the Basque translations for OpenGroupware.org's web UI.
- You need to have at last one transaltion package installed.
+ You need to have at last one translation package installed.
 
 Package: opengroupware.org_OGOVER_-webui-i18n-fr
 Section: web
@@ -411,7 +411,7 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: French translation for OpenGroupware.org's web UI
  This package contains the French translations for OpenGroupware.org's web UI.
- You need to have at last one transaltion package installed.
+ You need to have at last one translation package installed.
 
 Package: opengroupware.org_OGOVER_-webui-i18n-hu
 Section: web
@@ -419,7 +419,7 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Hungarian translation for OpenGroupware.org's web UI
  This package contains the Hungarian translations for OpenGroupware.org's web UI.
- You need to have at last one transaltion package installed.
+ You need to have at last one translation package installed.
 
 Package: opengroupware.org_OGOVER_-webui-i18n-it
 Section: web
@@ -427,7 +427,7 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Italian translation for OpenGroupware.org's web UI
  This package contains the Italian translations for OpenGroupware.org's web UI.
- You need to have at last one transaltion package installed.
+ You need to have at last one translation package installed.
 
 Package: opengroupware.org_OGOVER_-webui-i18n-jp
 Section: web
@@ -435,7 +435,7 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Japanese translation for OpenGroupware.org's web UI
  This package contains the Japanese translations for OpenGroupware.org's web UI.
- You need to have at last one transaltion package installed.
+ You need to have at last one translation package installed.
   
 Package: opengroupware.org_OGOVER_-webui-i18n-nl
 Section: web
@@ -443,7 +443,7 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Dutch translation for OpenGroupware.org's web UI
  This package contains the Dutch translations for OpenGroupware.org's web UI.
- You need to have at last one transaltion package installed.
+ You need to have at last one translation package installed.
   
 Package: opengroupware.org_OGOVER_-webui-i18n-no
 Section: web
@@ -451,7 +451,7 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Norwegian translation for OpenGroupware.org's web UI
  This package contains the Norwegian translations for OpenGroupware.org's web UI.
- You need to have at last one transaltion package installed.
+ You need to have at last one translation package installed.
 
 Package: opengroupware.org_OGOVER_-webui-i18n-pl
 Section: web
@@ -459,7 +459,7 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Polish translation for OpenGroupware.org's web UI
  This package contains the Polish translations for OpenGroupware.org's web UI.
- You need to have at last one transaltion package installed.
+ You need to have at last one translation package installed.
 
 Package: opengroupware.org_OGOVER_-webui-i18n-pt
 Section: web
@@ -467,7 +467,7 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Portuguese translation for OpenGroupware.org's web UI
  This package contains the Portuguese translations for OpenGroupware.org's web UI.
- You need to have at last one transaltion package installed.
+ You need to have at last one translation package installed.
 
 Package: opengroupware.org_OGOVER_-webui-i18n-ptbr
 Section: web
@@ -475,7 +475,7 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Portuguese (Brazilian) translation for OpenGroupware.org's web UI
  This package contains the Portuguese (Brazil) translations for OpenGroupware.org's
- web UI.  You need to have at last one transaltion package installed.
+ web UI.  You need to have at last one translation package installed.
   
 Package: opengroupware.org_OGOVER_-webui-i18n-se
 Section: web
@@ -483,7 +483,15 @@ Architecture: all
 Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Swedish translation for OpenGroupware.org's web UI
  This package contains the Swedish translations for OpenGroupware.org's web UI.
- You need to have at last one transaltion package installed.
+ You need to have at last one translation package installed.
+
+Package: opengroupware.org_OGOVER_-webui-i18n-sv
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: Slovak translation for OpenGroupware.org's web UI
+ This package contains the Slovak translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
 
 Package: opengroupware.org_OGOVER_-webui-theme-blue
 Section: web
