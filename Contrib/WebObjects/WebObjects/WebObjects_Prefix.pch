@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'WebObjects' target in the 'WebObjects' project.
-//
-
-#ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-#endif
