@@ -20,6 +20,7 @@ my @skip_list = qw( libical-sope1-r30.tar.gz
   libFoundation-1.0.59-r29.tar.gz
   libFoundation-1.0.64-r61.tar.gz
   libFoundation-1.0.65-r63.tar.gz
+  gnustep-objc-lf2.95.3-r88.tar.gz
 );
 
 my $build_opts = "-v yes -u yes -t release -d yes -f yes";
