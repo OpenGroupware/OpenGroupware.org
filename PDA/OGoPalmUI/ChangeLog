@@ -1,3 +1,7 @@
+2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* added FHS installation (v5.1.5)
+
 Wed Dec 10 20:28:07 2003  Martin Hoerning  <martin@opengroupware.org>
 
 	* SkyPalmAssignEntry.m: enabled 2way sync (v4.1.4)

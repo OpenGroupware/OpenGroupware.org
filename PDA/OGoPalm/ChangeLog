@@ -1,3 +1,7 @@
+2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* added FHS installation (v5.1.28)
+
 2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
 
 	* install datasources into Library/OpenGroupware.org-1.0a/DataSources/

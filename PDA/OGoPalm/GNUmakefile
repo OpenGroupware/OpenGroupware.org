@@ -54,6 +54,7 @@ libOGoPalm_OBJC_FILES = \
 
 libOGoPalm_HEADER_FILES_DIR         = ./OGoPalm
 libOGoPalm_HEADER_FILES_INSTALL_DIR = /OGoPalm
+FHS_HEADER_DIRS = OGoPalm
 
 OGoPalmDS_OBJC_FILES = SkyPalmBundleManager.m
 
@@ -61,3 +62,4 @@ OGoPalmDS_OBJC_FILES = SkyPalmBundleManager.m
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
+-include ../../DocumentAPI/fhslib.make

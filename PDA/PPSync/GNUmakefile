@@ -63,3 +63,4 @@ libPPSync_HEADER_FILES_INSTALL_DIR = /PPSync
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
+-include fhs.make

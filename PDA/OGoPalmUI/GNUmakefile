@@ -31,8 +31,10 @@ libOGoPalmUI_OBJC_FILES = \
 
 libOGoPalmUI_HEADER_FILES_DIR         = .
 libOGoPalmUI_HEADER_FILES_INSTALL_DIR = /OGoPalmUI
+FHS_HEADER_DIRS = OGoPalmUI
 
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make
 -include GNUmakefile.postamble
+-include ../../DocumentAPI/fhslib.make

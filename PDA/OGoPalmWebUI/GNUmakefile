@@ -99,3 +99,4 @@ OGoPalm_RESOURCE_FILES += Defaults.plist
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
+-include ../../WebUI/fhsbundle.make
