@@ -462,6 +462,9 @@ make %{ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OG
                       WOBUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
                      install
 
+rm -f "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates"
+rm -f "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations"
+rm -f "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www"
 cp -Rp WebUI/Templates "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates"
 cp -Rp WebUI/Resources "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations"
 cp -Rp Themes/WebServerResources "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www"
