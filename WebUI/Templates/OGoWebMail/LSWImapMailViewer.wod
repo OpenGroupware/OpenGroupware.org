@@ -1,4 +1,4 @@
-// $Id: LSWImapMailViewer.wod,v 1.5 2004/01/23 00:29:35 helge Exp $
+// $Id: LSWImapMailViewer.wod 2 2004-08-20 11:37:44Z znek $
 
 Frame: LSWSkyrixFrame {}
 
