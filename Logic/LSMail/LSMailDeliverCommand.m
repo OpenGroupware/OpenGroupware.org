@@ -465,6 +465,9 @@ static EONull *null = nil;
   parser = nil;
   addr   = nil;
   
+  if (ImapDebugEnabled)
+    [self logWithFormat:@"parsing email string: '%@'", _str];
+  
   NS_DURING {
     parser = [NGMailAddressParser mailAddressParserWithString:_str];
     addr   = [[parser parseAddressList] lastObject];
@@ -476,8 +479,11 @@ static EONull *null = nil;
     addr   = nil;
   }
   NS_ENDHANDLER;
-
-  return (addr) ? [addr address] : _str;
+  
+  if (ImapDebugEnabled)
+    [self logWithFormat:@"  got: '%@'", addr];
+  
+  return (addr != nil) ? [addr address] : _str;
 }
 
 - (void)_removeMailTmpFile {
@@ -608,7 +614,7 @@ static EONull *null = nil;
 
   
   enumerator = [_recipients objectEnumerator];
-  while ((str = [enumerator nextObject])) {
+  while ((str = [enumerator nextObject]) != nil) {
     NSEnumerator *e;
     NSString     *s;
 
@@ -618,13 +624,19 @@ static EONull *null = nil;
     }
     
     e = [[str componentsSeparatedByString:@","] objectEnumerator];
-    while ((s = [e nextObject])) {
-          s = [[s componentsSeparatedByString:@"'"]
-                  componentsJoinedByString:@""];
-          s = [[s componentsSeparatedByString:@","]
-                  componentsJoinedByString:@""];
-          
-          [sendmail appendFormat:@"'%@'", [self mailAddrForStr:s]];
+    while ((s = [e nextObject]) != nil) {
+      // remove "'" and "," - doesn't make a lot of sense? (bug 652?)
+      if (ImapDebugEnabled)
+	[self logWithFormat:@"Cleanup string: '%@'", s];
+      
+      // Note: can't contain a comma, its split on comma's?
+      s = [[s componentsSeparatedByString:@"'"]
+              componentsJoinedByString:@""];
+      s = [[s componentsSeparatedByString:@","]
+              componentsJoinedByString:@""];
+      
+      if (ImapDebugEnabled) [self logWithFormat:@"  => string: '%@'", s];
+      [sendmail appendFormat:@" '%@'", [self mailAddrForStr:s]];
     }
     [sendmail appendString:@" "];
   }

@@ -1,3 +1,9 @@
+2004-12-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSMailDeliverCommand.m: fixed OGo bug #652 (space was missing between
+	  group member email addresses), print email processing debug
+	  information when ImapDebugEnabled is on (v5.1.12)
+
 2004-12-16  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSMailDeliverCommand.m: added LSKeepMailTmpFiles default to keep
