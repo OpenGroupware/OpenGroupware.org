@@ -1,7 +1,7 @@
 # $Id$
 
 validate-xml ::
-	xmllint --noout *.wox
+#	xmllint --noout *.wox
 
 before-all :: $(OGoMailViewers_DERIVED_RESOURCES) validate-xml
 

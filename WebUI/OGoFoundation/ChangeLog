@@ -1,5 +1,7 @@
 2004-09-14  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoSession.m: removed a debug log (v5.1.71)
+
 	* OGoStringTableManager.h: fixed a missing declaration for Cocoa
 	  Foundation (v5.1.70)
 

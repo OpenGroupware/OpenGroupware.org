@@ -429,7 +429,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
   NSUserDefaults *ud;
   
   if ([[self commandContext] isTransactionInProgress]) {
-    [self logWithFormat:@"lso: %@, committing", self->lso];
+    [self debugWithFormat:@"lso: %@, committing", self->lso];
     if (![[self commandContext] commit]) {
       [self logWithFormat:@"lso: %@: commit failed.", self->lso];
       [[[self navigation] activePage] setErrorString:@"tx commit failed."];
