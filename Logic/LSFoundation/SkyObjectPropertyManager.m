@@ -577,7 +577,6 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   NSDictionary     *row;
   NSMutableArray   *result;
   NSArray          *tmp;
-  
   NSString    *oidName, *nsName, *tName, *kName, *typeName;
   EOAttribute *oidAttr, *nsAttr, *keyAttr, *typeAttr;
 
@@ -592,10 +591,10 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   nsName = [nsAttr columnName];
     
   keyAttr = [e attributeNamed:@"key"];
-  kName   =  [keyAttr columnName];
+  kName   = [keyAttr columnName];
 
   typeAttr = [e attributeNamed:@"objectType"];
-  typeName =  [typeAttr columnName];
+  typeName = [typeAttr columnName];
 
     
   if (![_name isNotNull])
@@ -655,6 +654,8 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
     [qualifier insertString:s atIndex:0];
     [s release];
   }
+
+
   [self _ensureOpenTransaction];
   {
     if (![adc evaluateExpression:qualifier]) {
@@ -663,21 +664,24 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
       return [NSArray array];
     }
     result = [[NSMutableArray alloc] initWithCapacity:255];
-
+    
     if (GIDAttributes == nil) {
+      EOEntity *e = [self entity];
+      
       GIDAttributes = [[NSArray alloc]
-                                initWithObjects:@"objectId",
-                                @"objectType", nil];
+			initWithObjects:
+			  [e attributeNamed:@"objectId"],
+			  [e attributeNamed:@"objectType"], nil];
     }
     {
       NSMutableArray *array;
       NSEnumerator   *enumerator;
 
       array = [[NSMutableArray alloc] initWithCapacity:128];
-
-      while ((row = [adc fetchAttributes:GIDAttributes withZone:NULL])) {
+      
+      while ((row = [adc fetchAttributes:GIDAttributes withZone:NULL])!=nil)
         [array addObject:row];
-      }
+      
       [adc cancelFetch];
       
       enumerator = [array objectEnumerator];
@@ -696,6 +700,7 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
       [array release]; array = nil;
     }
   }
+  
   tmp = [result copy];
   [result release]; result = nil;
   
