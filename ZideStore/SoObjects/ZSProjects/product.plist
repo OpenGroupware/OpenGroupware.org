@@ -15,6 +15,17 @@
       superclass    = "SxFolder";
       protectedBy   = "View";
       defaultAccess = "allow";
+
+      methods = {
+        "Notes.rss" = {
+          protectedBy = "View";
+          pageName    = "SxProjectNotesRSS"; 
+        };
+        "Notes.rdf" = {
+          protectedBy = "View";
+          pageName    = "SxProjectNotesRDF"; 
+        };
+      };
     };
 
     SxDocumentFolder = {
@@ -38,6 +49,14 @@
       superclass    = "SxObject";
       protectedBy   = "View";
       defaultAccess = "allow";
+      methods = {
+        "asPreHTML" = {
+          protectedBy = "View";
+        };
+        "asBrHTML" = {
+          protectedBy = "View";
+        };
+      };
     };
   };
 

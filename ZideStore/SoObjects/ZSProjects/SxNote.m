@@ -63,7 +63,7 @@ static BOOL debugOn = NO;
   NSNumber *pkey;
   id       note;
 
-  if (self->noteEO)
+  if (self->noteEO != nil)
     return self->noteEO;
   
   if (_ctx == nil) _ctx = [[WOApplication application] context];
@@ -118,8 +118,38 @@ static BOOL debugOn = NO;
 /* actions */
 
 - (id)GETAction:(id)_ctx {
-  [self logWithFormat:@"get note ..."];
   return [self noteContent];
+}
+
+- (id)asPreHTMLAction:(id)_ctx {
+  /* for use in RSS, wrap note content in <pre> tags */
+  WOResponse *r;
+  
+  r = [_ctx response];
+  [r setHeader:@"text/html" forKey:@"content-type"];
+  [r appendContentString:@"<pre>"];
+  [r appendContentHTMLString:[self noteContent]];
+  [r appendContentString:@"</pre>"];
+  return r;
+}
+
+- (id)asBrHTMLAction:(id)_ctx {
+  /* for use in RSS, replace newlines with <br /> tags */
+  WOResponse   *r;
+  NSString     *s;
+  NSEnumerator *e;
+  
+  if ((s = [self noteContent]) == nil)
+    return nil;
+  
+  r = [_ctx response];
+  [r setHeader:@"text/html" forKey:@"content-type"];
+  e = [[s componentsSeparatedByString:@"\n"] objectEnumerator];
+  while ((s = [e nextObject])) {
+    [r appendContentHTMLString:s];
+    [r appendContentString:@"<br />"];
+  }
+  return r;
 }
 
 - (id)PUTAction:(id)_ctx {
@@ -229,6 +259,16 @@ static BOOL debugOn = NO;
   
   s = [self noteContent];
   return [s isNotNull] ? [NSNumber numberWithInt:[s length]] : nil;
+}
+
+- (NSDate *)davLastModified {
+  id note;
+
+  if ((note = [self _fetchNoteEOInContext:nil]) == nil)
+    return note;
+  
+  // TODO: hm, where is the _modification_ date stored?
+  return [note valueForKey:@"creationDate"];
 }
 
 /* debugging */

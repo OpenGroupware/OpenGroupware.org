@@ -1,5 +1,13 @@
 2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v1.3.88
+	
+	* SxNote.m: added asBrHTML and asPreHTML actions, use creationDate as
+	  the davLastModified date (should be changed!)
+	
+	* added RSS support for project notes. The RSS is exposed as
+	  "Notes.rss" in the project folder.
+	
 	* SxNote.m: catch exceptions when attempting to write notes, fixes OGo
 	  bug #923, minor improvements to WebDAV interface, fixes writing of
 	  notes (v1.3.87)

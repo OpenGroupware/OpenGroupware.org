@@ -19,6 +19,8 @@ libZSProjects_OBJC_FILES = \
 	SxProjectNotesFolder.m	\
 	SxNote.m		\
 	\
+	SxProjectNotesRSS.m	\
+	\
 	SxDocumentFolder+Perf.m	\
 
 Projects_RESOURCE_FILES += 	\
