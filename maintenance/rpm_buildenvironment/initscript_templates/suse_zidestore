@@ -70,7 +70,7 @@ stop()
   echo -en $"Stopping ${PROG}:"
   if [ -f "${PID_FILE}" ] ; then
     PID=`cat ${PID_FILE}`
-    if [ "`kill ${PID} >> ${LOG} 2>&1`" ] ; then
+    if [ "`kill ${PID} 2>>${LOGERR} 1>>${LOGOUT}`" ] ; then
       rm -f ${PID_FILE}
       rm -f /var/lock/subsys/${PROG}
     else

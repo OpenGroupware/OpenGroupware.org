@@ -74,7 +74,7 @@ stop()
   echo -en $"Stopping ${PROG} "
   if [ -f "${PID_FILE}" ] ; then
     PID=`cat ${PID_FILE}`
-    if [ "`kill ${PID} >> ${LOG} 2>&1`" ] ; then
+    if [ "`kill ${PID} 2>>${LOGERR} 1>>${LOGOUT}`" ] ; then
       sleep_dots
       echo -en ":"
       success
