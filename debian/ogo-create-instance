@@ -257,15 +257,13 @@ add_user () {
 	mkdir -p ${SKYFS_PATH}
 	mkdir -p ${ATTACHMENT_PATH}
 	mkdir -p ${NEWS_IMAGES_PATH}
-	chown ${USER}:${USER} ${HOMEDIR}
-	chown ${USER}:${USER} ${SKYFS_PATH}
-	chown ${USER}:${USER} ${ATTACHMENT_PATH}
-	chown ${USER}:${USER} ${NEWS_IMAGES_PATH}
+	mkdir -p ${HOMEDIR}/.libFoundation/Defaults
+	chown -R ${USER}:${USER} ${HOMEDIR}
 	chmod 755 ${HOMEDIR}
 	chmod 755 ${NEWS_IMAGES_PATH}
 	chmod 700 ${SKYFS_PATH}
 	chmod 700 ${ATTACHMENT_PATH}
-	# FIXME: Fix permissions of .libfoundation directory if necessary
+	chmod 700 ${HOMEDIR}/.libFoundation/Defaults
 	echo "done."
 	return 0
 }
@@ -281,7 +279,7 @@ set_defaults () {
 	su - -c "Defaults write NSGlobalDomain SkyFSPath \"${SKYFS_PATH}\"" ${USER}
 	su - -c "Defaults write NSGlobalDomain LSAttachmentPath \"${ATTACHMENT_PATH}\"" ${USER}
 	su - -c "Defaults write NSGlobalDomain LSNewsImagesPath \"${NEWS_IMAGES_PATH}\"" ${USER}
-	su - -c "Defaults write NSGlobalDomain LSNewsImagesUrl \"/${USER}-NewsImages\"" ${USER}
+	su - -c "Defaults write NSGlobalDomain LSNewsImagesUrl \"/NewsImages-${USER}\"" ${USER}
 	su - -c "Defaults write NSGlobalDomain SkyLogoutURL \"/${WEBUI_LOCATION_MATCH}\"" ${USER}
 	su - -c "Defaults write NSGlobalDomain TimeZoneName GMT" ${USER}
 	echo "done."
@@ -333,7 +331,7 @@ register_instance () {
 	echo "    SetAppPort ${WEBUI_PORT}" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
 	echo "  </LocationMatch>" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
 	echo >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
-	echo "  Alias /${USER}-NewsImages/ ${NEWS_IMAGES_PATH}" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
+	echo "  Alias /NewsImages-${USER}/ ${NEWS_IMAGES_PATH}" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
 	echo >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
 	echo "  <LocationMatch \"^/${ZIDESTORE_LOCATION_MATCH}/*\">" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
 	echo "    SetHandler ngobjweb-adaptor" >> /etc/opengroupware.org/${USER}/mod_ngobjweb.conf
