@@ -1,0 +1,13 @@
+#Startup configuration for the OpenGroupware.org XMLRPC daemon
+#This file will be sourced by /etc/init.d/opengroupware.org-xmlrpcd
+
+#If set "false", the application server won't be started on boot,
+#regardless of the runlevel settings.
+START_AT_BOOT=true
+
+#Arguments to passed to the application server. Change these values only
+#if you know what you are doing!
+ARGS="-WOPort 22000 -WOHttpAllowHost localhost"
+
+#File that OpenGroupware.org should log to
+LOGFILE=/var/log/opengroupware.org-xmlrpcd.log

@@ -1,0 +1,13 @@
+#Startup configuration for the OpenGroupware.org zidestore server
+#This file will be sourced by /etc/init.d/zidestore
+
+#If set "false", the zidestore server won't be started on boot,
+#regardless of the runlevel settings.
+START_AT_BOOT=true
+
+#Arguments to passed to the zidestore server. Change these values only
+#if you know what you are doing!
+ARGS="-WOPort 21000 -WOHttpAllowHost localhost"
+
+#File that ZideStore should log to
+LOGFILE=/var/log/opengroupware.org-zidestore.log

@@ -1,0 +1,6 @@
+usr/include/LSFoundation
+usr/include/OGoSchedulerTools
+usr/lib/libLSAddress.so
+usr/lib/libLSFoundation.so
+usr/lib/libLSSearch.so
+usr/lib/libOGoSchedulerTools.so

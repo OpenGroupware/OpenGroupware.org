@@ -1,0 +1,12 @@
+usr/lib/libOGoAccounts.so.*
+usr/lib/libOGoBase.so.*
+usr/lib/libOGoContacts.so.*
+usr/lib/libOGoDatabaseProject.so.*
+usr/lib/libOGoDocuments.so.*
+usr/lib/libOGoFileSystemProject.so.*
+usr/lib/libOGoJobs.so.*
+usr/lib/libOGoProject.so.*
+usr/lib/libOGoRawDatabase.so.*
+usr/lib/libOGoScheduler.so.*
+usr/lib/opengroupware.org-*/datasources
+usr/share/opengroupware.org-*/Holidays.plist

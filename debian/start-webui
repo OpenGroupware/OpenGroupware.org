@@ -1,0 +1,105 @@
+#!/bin/bash
+# start-webui:
+# Starts and controls instances of the OpenGroupware.org application server.
+# Date: 06.03.2004
+# Author: Sebastian Ley <ley@debian.org>
+#
+# Modify the following variable to match the location of the gnustep-make
+# installation:
+GNUSTEP_MAKE_DIR=/usr/lib/opengroupware.org/System/Makefiles
+
+PROGNAME=$0
+LOOP=0
+TIMEREGISTER=([0]=-100 [1]=-100 [2]=-100 [3]=-100 [4]=-100)
+
+usage() {
+	cat <<EOF
+Usage: $PROGNAME [-l LOGFILE] [-a ARGUMENTS] [-p PIDFILE] [-h]
+Starts and controls the OpenGroupware.org application server.
+
+  -l LOGFILE
+        Log Output of application server to LOGFILE
+	Default: ~/opengroupware.org-webui.log
+  -a ARGUMENTS
+        Invoke the application server with argument string ARGUMENTS
+	Default: "-WOPort 20000 -WOHttpAllowHost localhost"
+  -p PIDFILE
+  	Store process ID of this script. Useful for usage in initscripts.
+	Default: ~/opengroupware.org-webui.pid
+  -h
+        Prints this help text
+EOF
+}
+
+start_time() {
+	TIMEREGISTER[$LOOP]=$SECONDS
+	return 0
+}
+
+respawn_too_fast() {
+	DIFF=$((${TIMEREGISTER[$LOOP]}-${TIMEREGISTER[$((($LOOP+1)%5))]}))
+	LOOP=$((($LOOP+1)%5))
+	if [ "$DIFF" -lt "20" ]; then
+		return 0
+	fi
+	return 1
+}
+
+
+while getopts "p:l:a:h" OPT; do
+	case $OPT in
+		l)	if [ -z "$OPTARG" ]; then usage; exit 1; fi
+			LOGFILE="$OPTARG"
+			;;
+		a)	if [ -z "$OPTARG" ]; then usage; exit 1; fi
+			ARGS="$OPTARG"
+			;;
+		p)	if [ -z "$OPTARG" ]; then usage; exit 1; fi
+			PIDFILE="$OPTARG"
+			;;
+		h)	usage
+			exit 0
+			;;
+		\?)	usage
+			exit 0
+			;;
+	esac
+done
+
+if [ -z "$LOGFILE" ]; then
+	LOGFILE=~/opengroupware.org-webui.log
+fi
+if [ -z "$ARGS" ]; then
+	ARGS="-WOPort 20000 -WOHttpAllowHost localhost"
+fi
+if [ -z "$PIDFILE" ]; then
+	PIDFILE=~/opengroupware.org-webui.pid
+fi
+
+echo $$ > $PIDFILE
+
+export LOGNAME=`whoami`
+. $GNUSTEP_MAKE_DIR/GNUstep.sh
+cd $GNUSTEP_SYSTEM_ROOT/WOApps/OpenGroupware.woa
+
+TERMINATE=
+while [ ! $TERMINATE ]; do
+	./OpenGroupware $ARGS > /dev/null 2>> "$LOGFILE" &
+	trap "TERMINATE=1; kill $!" 1 2 15
+	start_time
+	wait $!
+	STATUS=$?
+	if [ "$STATUS" != "0" ]; then
+		echo "[Control script] OpenGroupware.org application server has exitet abnormally with status $STATUS." >> "$LOGFILE"
+	else
+		echo "[Control script] OpenGroupware.org application server has exitet normally."  >> "$LOGFILE"
+	fi
+	if respawn_too_fast; then
+		echo "[Control script] OpenGroupware.org application server respawning too fast. Exiting..." >> "$LOGFILE"
+		TERMINATE=1
+	fi
+done
+
+echo "" > $PIDFILE
+
+exit 0

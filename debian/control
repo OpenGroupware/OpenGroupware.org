@@ -1,0 +1,266 @@
+Source: opengroupware.org
+Section: web
+Priority: extra
+Maintainer: Sebastian Ley <ley@debian.org>
+Build-Depends: debhelper (>= 4.0.0), dpatch, gnustep-make-ogo, libfoundation-ogo-dev, libobjc-lf-dev, libsope-core-dev, libsope-appserver-dev, libsope-xml-dev, libsope-gnustep-db-dev, libsope-mime-dev, libsope-ldap-dev, libldap-dev, libsope-ical-dev, gobjc | objc-compiler, libpisock-dev
+Standards-Version: 3.6.1
+
+Package: opengroupware.org1.0a
+Section: web
+Architecture: all
+Depends: opengroupware.org-webui1.0a, opengroupware.org-xmlrpcd1.0a, opengroupware.org-zidestore1.3
+Description: A free and open groupware suite
+ OpenGroupware.org aims at being an open source groupware server which
+ integrates with the leading open source office suite products and all
+ the leading groupware clients running across all major platforms, and
+ to provide access to all functionality and data through open XML-based
+ interfaces and APIs. Additionally it has a web User Interface for
+ platform independent usage. OpenGroupware.org is built on top of the
+ SOPE application server.
+ .
+ This package depends on all necessary components needed to run
+ OpenGroupware.org and it creates the necessary runtime environment.
+
+Package: opengroupware.org-webui1.0a
+Section: web
+Architecture: all
+Depends: opengroupware.org-webui-app1.0a, opengroupware.org-webui-admin1.0a, opengroupware.org-webui-contact1.0a, opengroupware.org-webui-job1.0a, opengroupware.org-webui-mailer1.0a, opengroupware.org-webui-news1.0a, opengroupware.org-webui-prefs1.0a, opengroupware.org-webui-project1.0a, opengroupware.org-webui-scheduler1.0a
+Description: Web UI for OpenGroupware.org
+ This package depends on all packages that are part of
+ OpenGroupware.org's web user interface.
+
+Package: opengroupware.org-environment
+Section: web
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Creates the runtime environment for OpenGroupware.org
+ This package creates a user and group for OpenGroupware.org and guides
+ the user through the database setup. Additionally all necessary
+ application defaults needed to run OpenGroupware.org are created.
+
+Package: libopengroupware.org-logic5.1-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-logic-dev
+Conflicts: libopengroupware.org-logic-dev
+Depends: libopengroupware.org-logic5.1 (= ${Source-Version})
+Description: Development files for opengroupware.org-logic
+ This package contains the header files for the libraries contained in
+ the libopengroupware.org-logic5.1 package.
+
+Package: libopengroupware.org-logic5.1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Shared libraries of the OpenGroupware.org application logic
+ This package contains OpenGroupware.org's application logic.
+
+Package: libopengroupware.org-docapi5.1-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-docapi-dev
+Conflicts: libopengroupware.org-docapi-dev
+Depends: libopengroupware.org-docapi5.1 (= ${Source-Version})
+Description: Development files for opengroupware.org-docapi
+ The Document API is a set of Objective-C libraries wrapping the SOPE
+ logic in a "document" API.
+ .
+ This package contains the development files for the libraries contained in
+ the libopengroupware.org-docapi5.1 package.
+
+Package: libopengroupware.org-docapi5.1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: OpenGroupware.org document API
+ The Document API is a set of Objective-C libraries wrapping the SOPE
+ logic in a "document" API.
+ .
+ This package contains the shared libraries as well as modules containing
+ the actual wrappers.
+
+Package: libopengroupware.org-webmail5.1-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-webmail-dev
+Conflicts: libopengroupware.org-webmail-dev
+Depends: libopengroupware.org-webmail5.1 (= ${Source-Version})
+Description: Webmail functions common for some OpenGroupware.org components
+ This library contains webmail functions to be shared among several OpenGroupware.org
+ components.
+ .
+ This package contains the development files for the libraries contained in
+ the libopengroupware.org-webmail5.1 package.
+
+Package: libopengroupware.org-webmail5.1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Webmail functions common for some OpenGroupware.org components
+ This library contains webmail functions to be shared among several OpenGroupware.org
+ components.
+
+Package: libopengroupware.org-webui-foundation5.1-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-webui-foundation-dev
+Conflicts: libopengroupware.org-webui-foundation-dev
+Depends: libopengroupware.org-webui-foundation5.1 (= ${Source-Version})
+Description: Library of common Web UI elements
+ This library contains common elements of OpenGroupware.org's Web UI.
+
+Package: libopengroupware.org-webui-foundation5.1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Library of common Web UI elements
+ This library contains common elements of OpenGroupware.org's Web UI.
+
+Package: opengroupware.org-database1.0a
+Section: web
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Database models for OpenGroupware.org
+ This package contains the database models and scripts to setup a PostgreSQL
+ database for OpenGroupware.org.
+
+Package: opengroupware.org-webui-app1.0a
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Web UI application of OpenGroupware.org
+ This package contains the executable and resources of
+ OpenGroupware.org's web application server.
+
+Package: opengroupware.org-webui-common1.0a
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Common elements for OpenGroupware.org's Web UI
+ This package contains UI elements that are used in various components
+ of OpenGroupware.org's web frontend.
+
+Package: opengroupware.org-webui-admin1.0a
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: FIXME
+
+Package: opengroupware.org-webui-contact1.0a
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: FIXME
+
+Package: opengroupware.org-webui-job1.0a
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: FIXME
+
+Package: opengroupware.org-webui-mailer1.0a
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: FIXME
+
+Package: opengroupware.org-webui-news1.0a
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: FIXME
+
+Package: opengroupware.org-webui-prefs1.0a
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: FIXME
+
+Package: opengroupware.org-webui-project1.0a
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: FIXME
+
+Package: opengroupware.org-webui-scheduler1.0a
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: FIXME
+
+Package: libopengroupware.org-zidestore1.3
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Shared libraries of the OpenGroupware.org zidestore server
+ The ZideStore Server provides WebDAV access to the OpenGroupware.org
+ data. It can be used to cennect native groupware clients with
+ OpenGroupware.org. Currently supported are calendaring clients that use
+ iCal subscriptions, an Ximian Evolution plugin is under development.
+ .
+ This package contains the shared libraries of the ZideStore server and some
+ common modules.
+
+Package: libopengroupware.org-zidestore1.3-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-zidestore-dev
+Conflicts: libopengroupware.org-zidestore-dev
+Depends: libopengroupware.org-zidestore1.3 (= ${Source-Version})
+Description: Development Files for the ZideStore server
+ The ZideStore Server provides WebDAV access to the OpenGroupware.org
+ data. It can be used to cennect native groupware clients with
+ OpenGroupware.org. Currently supported are calendaring clients that use
+ iCal subscriptions, an Ximian Evolution plugin is under development.
+ .
+ This package contains development files for the libraries of the ZideStore
+ server.
+
+Package: opengroupware.org-zidestore1.3
+Section: web
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: libapache-mod-ngobjweb, apache
+Description: WebDAV Server for OpenGroupware.org
+ The ZideStore Server provides WebDAV access to the OpenGroupware.org
+ data. It can be used to cennect native groupware clients with
+ OpenGroupware.org. Currently supported are calendaring clients that use
+ iCal subscriptions, an Ximian Evolution plugin is under development.
+ .
+ This package contains the server executable.
+
+Package: opengroupware.org-xmlrpcd1.0a
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: libapache-mod-ngobjweb, apache
+Description: XMLRPC daemon for OpenGroupware.org
+ The XMLRPC daemon allows to execute groupware functions over the standardized
+ XMLRPC API. This is especially useful within scripts or custom applications.
+ .
+ This package contains the daemon which accepts and processes the XML commands.
+
+Package: opengroupware.org-misc-tools
+Section: misc
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Various commandline tools for OpenGroupware.org
+ This package contains some commandline tools for OpenGroupware.org, which are
+ mostly useful for development and debugging.
+
+Package: opengroupware.org-webmail-tools
+Section: web
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Enhances: opengroupware.org-webui-mailer
+Description: Tools for the webmailing component of OpenGroupware.org
+ This package contains some tools that enhance the webmailing
+ component of OpenGroupware.org. In particular, the following tools
+ are part of the package:
+ .
+  * sky_send_bulk_messages:
+    Required for mailing lists in the OpenGroupware.org webmailer.
+  * sky_install_sieve:
+    Required for installing Sieve filters from the OpenGroupware.org webmailer.
+    The filters are stored in an internal format in OpenGroupware.org and
+    sky_install_sieve is invoked to convert that into Sieve and transfer it to
+    the server.
+  * sky_install_procmail:
+    Same as sky_install_sieve but for procmail.
+
+Package: opengroupware.org-skyaptnotify
+Section: web
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, exim4 | mail-transport-agent
+Description: Send mail notifications for appointments to OpenGroupware.org users
+ Skyaptnotify is a daemon which reminds OpenGroupware.org users via mail
+ of upcoming appointments.

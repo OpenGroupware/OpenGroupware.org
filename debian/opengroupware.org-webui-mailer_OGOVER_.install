@@ -1,0 +1,10 @@
+usr/lib/opengroupware.org-*/webui/LSWMail.lso
+usr/lib/opengroupware.org-*/webui/OGoWebMail.lso
+usr/lib/opengroupware.org-*/webui/OGoMailInfo.lso
+usr/lib/opengroupware.org-*/webui/OGoMailViewers.lso
+usr/lib/opengroupware.org-*/webui/OGoRecipientLists.lso
+usr/share/opengroupware.org-*/templates/LSWMail
+usr/share/opengroupware.org-*/templates/OGoWebMail
+usr/share/opengroupware.org-*/templates/OGoMailInfo
+usr/share/opengroupware.org-*/templates/OGoMailViewers
+usr/share/opengroupware.org-*/templates/OGoRecipientLists

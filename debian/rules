@@ -1,0 +1,147 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# Include dpatch stuff.
+include /usr/share/dpatch/dpatch.make
+
+CFLAGS = -Wall -g
+MAKE_FLAGS = messages=yes OPTFLAG=-O0
+
+GNUSTEP_SETUP=/usr/lib/opengroupware.org/System/Library/Makefiles/GNUstep.sh
+
+OGOVER=1.0a
+OGOSONAME=5.1
+ZSVER=1.3
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+	INSTALL_PROGRAM += -s
+endif
+
+controlfiles: controlfiles-stamp
+controlfiles-stamp: debian/rules clean-controlfiles
+	for f in debian/*_OGOVER_*; do \
+		newname=$$(echo $$f | sed s/_OGOVER_/$(OGOVER)/ ); \
+		cp $$f $$newname; \
+		echo $$newname >> controlfiles.tmp; \
+	done
+	for f in debian/*_OGOSONAME_*; do \
+		newname=$$(echo $$f | sed s/_OGOSONAME_/$(OGOSONAME)/ ); \
+		cp $$f $$newname; \
+		echo $$newname >> controlfiles.tmp; \
+	done
+	for f in debian/*_ZSVER_*; do \
+		newname=$$(echo $$f | sed s/_ZSVER_/$(ZSVER)/ ); \
+		cp $$f $$newname; \
+		echo $$newname >> controlfiles.tmp; \
+	done
+	mv controlfiles.tmp controlfiles-stamp
+
+clean-controlfiles:
+	if [ -f controlfiles-stamp ]; then \
+		for f in $$(cat controlfiles-stamp); do \
+			rm $$f; \
+		done; \
+		rm controlfiles-stamp; \
+	fi
+	if [ -f controlfiles.tmp ]; then \
+		for f in $$(cat controlfiles-stamp); do \
+			rm $$f; \
+		done; \
+		rm controlfiles.tmp; \
+	fi
+
+debian/control: debian/control.in debian/rules
+	sed -e s/_OGOVER_/$(OGOVER)/g -e s/_OGOSONAME_/$(OGOSONAME)/g -e s/_ZSVER_/$(ZSVER)/g < debian/control.in > debian/control
+
+build: build-stamp
+build-stamp: patch-stamp debian/control controlfiles
+	dh_testdir
+
+	CFLAGS="$(CFLAGS)" . $(GNUSTEP_SETUP); \
+		$(MAKE) $(MAKE_FLAGS) all
+
+	touch build-stamp
+
+clean: unpatch clean-controlfiles
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+
+	-. $(GNUSTEP_SETUP); $(MAKE) clean
+	-. $(GNUSTEP_SETUP); $(MAKE) distclean
+
+	dh_clean 
+
+install: build controlfiles
+	dh_testdir
+	dh_testroot
+	dh_clean -k 
+	dh_installdirs
+
+	# Add here commands to install the package into debian/tmp
+	CFLAGS="$(CFLAGS)" . $(GNUSTEP_SETUP); \
+		$(MAKE) $(MAKE_FLAGS) install \
+		GNUSTEP_INSTALLATION_DIR=$(CURDIR)/debian/tmp/$$GNUSTEP_SYSTEM_ROOT \
+		FHS_INSTALL_ROOT=$(CURDIR)/debian/tmp/usr
+
+	mkdir $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/translations
+	cp -R WebUI/Resources/* $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/translations
+	mkdir $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/templates
+	cp -R WebUI/Templates/* $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/templates
+	mkdir $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/www
+	cp -R Themes/WebServerResources/* $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/www
+
+	#mkdir -p debian/opengroupware.org-webui-app/usr/lib/opengroupware.org/bin
+	#install -m 755 debian/start-webui debian/opengroupware.org-webui-app/usr/lib/opengroupware.org/bin 
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs 
+	dh_installdocs
+	dh_installexamples
+	dh_install --sourcedir=debian/tmp
+#	dh_installmenu
+#	dh_installdebconf	
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installmime
+	dh_installinit -popengroupware.org-webui-app$(OGOVER) --init-script=opengroupware.org-webui -- defaults 80
+	dh_installinit -popengroupware.org-xmlrpcd$(OGOVER) --init-script=opengroupware.org-xmlrpcd -- defaults 80
+	dh_installinit -popengroupware.org-zidestore$(ZSVER) --init-script=opengroupware.org-zidestore -- defaults 80
+	dh_installcron -popengroupware.org-skyaptnotify --name=skyaptnotify
+#	dh_installinfo
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_perl
+#	dh_python
+	dh_makeshlibs -V
+	dh_installdeb
+	dh_shlibdeps -L libopengroupware.org-docapi$(OGOSONAME) -L libopengroupware.org-logic$(OGOSONAME) \
+		libopengroupware.org-webui-foundation$(OGOSONAME) -L libopengroupware.org-zidestore$(ZSVER) \
+		-L libopengroupware.org-webmail$(OGOSONAME) -l debian/tmp/usr/lib
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

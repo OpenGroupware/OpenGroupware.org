@@ -1,0 +1,66 @@
+#!/bin/sh
+#
+# Initscript for the Openroupware.org XMLRPC daemon
+#
+
+PNAME="opengroupware.org-xmlrpcd"
+DAEMON=xmlrpcd
+CDPATH=/usr/lib/opengroupware.org/System/Tools
+WRAPPER=/usr/lib/opengroupware.org/bin/start-xmlrpcd
+DEFAULT=/etc/default/$PNAME
+PIDFILE=/var/lib/opengroupware.org/opengroupware.org-xmlrpcd.pid
+
+if [ -e $DEFAULT ]; then
+    . $DEFAULT
+fi
+
+if [ -z "$ARGS" ]; then
+    ARGS="-WOPort 22000 -WOHttpAllowHost localhost"
+fi
+
+if [ -z "$LOGFILE" ]; then
+    LOGFILE=/var/log/opengroupware.org-xmlrpcd.log
+fi
+
+should_start() {
+    if [ "$START_AT_BOOT" = "false" ]; then
+        echo "OpenGroupware.org XMLRPC daemon not started as requested"
+        exit 0
+    fi
+    if [ ! -x $CDPATH/$DAEMON ]; then
+	echo "OpenGroupware.org XMLRPC daemon is not executable, not starting"
+	exit 0
+    fi
+}
+
+case "$1" in
+    start)
+        should_start
+        echo "Starting OpenGroupware.org XMLRPC daemon: $DAEMON."
+        if [ ! -f $LOGFILE ]; then
+            touch $LOGFILE
+        fi
+        chown ogo:ogo $LOGFILE
+	chmod 640 $LOGFILE
+	start-stop-daemon -S -b -p $PIDFILE -n start-webui -c ogo -a $WRAPPER -- -a "$ARGS" -l "$LOGFILE" -p $PIDFILE
+	;;
+
+    stop)
+        echo "Stopping OpenGroupware.org XMLRPC daemon: $DAEMON."
+	start-stop-daemon -K -p $PIDFILE -o
+        ;;
+
+    restart|force-reload)
+        $0 stop
+	sleep 1
+        $0 start
+        ;;
+    reload)
+        echo "Can't reload configuration without restarting. Use /etc/init.d/$PNAME restart."
+        exit 0
+        ;;
+    *)
+        echo "Usage: /etc/init.d/$PNAME {start|stop|reload|force-reload|restart}"
+        exit 1
+        ;;
+esac
