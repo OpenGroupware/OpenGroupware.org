@@ -61,27 +61,31 @@
   return [fileType lowercaseString];
 }
 
-- (void)_validateKeysForContext:(id)_context {
-  if (self->project != nil) {
-    id rootFolder = nil;
+- (void)_validateForProject:(id)_project inContext:(id)_context {
+  id rootFolder;
+    
+  LSRunCommandV(_context, @"project",  @"get-root-document",
+		@"object",  _project,
+		@"relationKey", @"rootDocument", nil);
+
+  rootFolder = [_project valueForKey:@"rootDocument"];
+
+  ASSIGN(self->folder, rootFolder);
   
-    LSRunCommandV(_context, @"project",  @"get-root-document",
-                  @"object",  self->project,
-                  @"relationKey", @"rootDocument", nil);
-
-    rootFolder = [self->project valueForKey:@"rootDocument"];
-
-    ASSIGN(self->folder, rootFolder);
-
-    [self assert:((self->folder != nil) &&
+  [self assert:((self->folder != nil) &&
                   [[self->folder valueForKey:@"isFolder"] boolValue])
-          reason:@"No folder set for note!"];
-  }
+	reason:@"No folder set for note!"];
+}
+
+- (void)_validateKeysForContext:(id)_context {
+  if (self->project != nil)
+    [self _validateForProject:self->project inContext:_context];
+  
   [super _validateKeysForContext:_context];
 }
 
 - (void)_prepareForExecutionInContext:(id)_context {
-  id obj = nil;
+  id obj;
   
   if (![[self valueForKey:@"isFolder"] boolValue]) {
     id account   = [_context valueForKey:LSAccountKey];
@@ -111,24 +115,26 @@
 }
 
 - (void)_executeInContext:(id)_context {
+  id       obj;
+  NSString *path;
+  NSString *fileName = nil;
+  
   [super _executeInContext:_context];
 
   // save attachement
-  if (self->fileContent != nil) {
-    id       obj       = nil;
-    NSString *path     = nil;
-    NSString *fileName = nil;
-    
-    obj  = [self object];
-    path = [[_context userDefaults] stringForKey:@"LSAttachmentPath"];
-    
-    fileName = [[[obj valueForKey:@"documentId"] stringValue]
-                 stringByAppendingPathExtension:[obj valueForKey:@"fileType"]];
-    fileName = [path stringByAppendingPathComponent:fileName];
-
-    [self assert:[self->fileContent writeToFile:fileName atomically:YES]
-          reason:@"Error during save of note attachment!"];
-  }
+  if (self->fileContent == nil)
+    return;
+  
+  obj  = [self object];
+  path = [[_context userDefaults] stringForKey:@"LSAttachmentPath"];
+  
+  fileName = [[obj valueForKey:@"documentId"] stringValue];
+  fileName = [fileName stringByAppendingPathExtension:
+			 [obj valueForKey:@"fileType"]];
+  fileName = [path stringByAppendingPathComponent:fileName];
+  
+  [self assert:[self->fileContent writeToFile:fileName atomically:YES]
+	reason:@"Error during save of note attachment!"];
 }
 
 /* accessors */
@@ -141,14 +147,14 @@
 }
 
 - (void)setFilePath:(NSString *)_filePath {
-  ASSIGN(self->filePath, _filePath);
+  ASSIGNCOPY(self->filePath, _filePath);
 }
 - (NSString *)filePath {
   return self->filePath;
 }
 
 - (void)setFileContent:(NSString *)_fileContent {
-  ASSIGN(self->fileContent, _fileContent);
+  ASSIGNCOPY(self->fileContent, _fileContent);
 }
 - (NSString *)fileContent {
   return self->fileContent;

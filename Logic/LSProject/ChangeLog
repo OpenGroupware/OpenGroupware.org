@@ -1,3 +1,7 @@
+2005-01-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSNewNoteCommand.m: code cleanups (v5.1.35)
+
 2004-12-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSNewProjectCommand.m: minor code cleanups (v5.1.34)
