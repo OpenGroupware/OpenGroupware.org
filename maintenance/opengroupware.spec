@@ -491,40 +491,45 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ****************************** build ********************************
 %build
-source %{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
+#source %{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
+./configure --prefix=${RPM_BUILD_ROOT}%{prefix} \
+            --enable-debug \
+            --gsmake=%{prefix}/OGo-GNUstep
 make %{ogo_makeflags}
 
 # ****************************** install ******************************
 %install
-source %{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
+#source %{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
 mkdir -p GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep
 
-make %{ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep \
-                      FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
-                      BUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
-                      WOBUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
-                      install
+#make %{ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep \
+#                      FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
+#                      BUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
+#                      WOBUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
+#                      install
+make install
 
-rm -f "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates"
-rm -f "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations"
-rm -f "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www"
-cp -Rp WebUI/Templates "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates"
-cp -Rp WebUI/Resources "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations"
-cp -Rp Themes/WebServerResources "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates/ChangeLog"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates/GNUmakefile"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates/HelpUI"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations/COPYRIGHT"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations/ChangeLog"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations/GNUmakefile"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www/GNUmakefile"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www/tools"
+SHAREDIR="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a"
+rm -f "${SHAREDIR}/templates"
+rm -f "${SHAREDIR}/translations"
+rm -f "${SHAREDIR}/www"
+cp -Rp WebUI/Templates "${SHAREDIR}/templates"
+cp -Rp WebUI/Resources "${SHAREDIR}/translations"
+cp -Rp Themes/WebServerResources "${SHAREDIR}/www"
+rm -fr "${SHAREDIR}/templates/ChangeLog"
+rm -fr "${SHAREDIR}/templates/GNUmakefile"
+rm -fr "${SHAREDIR}/templates/HelpUI"
+rm -fr "${SHAREDIR}/translations/COPYRIGHT"
+rm -fr "${SHAREDIR}/translations/ChangeLog"
+rm -fr "${SHAREDIR}/translations/GNUmakefile"
+rm -fr "${SHAREDIR}/www/GNUmakefile"
+rm -fr "${SHAREDIR}/www/tools"
 
 #one lonely file for meta package...
 echo "You've installed OGo %{ogo_version}-%{ogo_release} using the meta package!" \
-     >"${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/INSTALLED.USING.METAPACKAGE"
+     >"${SHAREDIR}/INSTALLED.USING.METAPACKAGE"
 
-INITSCRIPTS_TMP_DIR_OGO="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/initscript_templates"
+INITSCRIPTS_TMP_DIR_OGO="${SHAREDIR}/initscript_templates"
 INITSCRIPTS_TMP_DIR_ZIDE="${RPM_BUILD_ROOT}%{prefix}/share/zidestore-1.3/initscript_templates"
 mkdir -p ${INITSCRIPTS_TMP_DIR_OGO}
 mkdir -p ${INITSCRIPTS_TMP_DIR_ZIDE}

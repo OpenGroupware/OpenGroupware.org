@@ -1,6 +1,6 @@
 2005-03-10  Helge Hess  <helge.hess@skyrix.com>
 
 	* opengroupware.spec, ogofull-singlerpm.spec: changed dependency to
-	  SOPE 4.4b.4
+	  SOPE 4.4b.4, use configure, improved specfile
 
 	* created ChangeLog
