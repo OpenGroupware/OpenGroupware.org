@@ -11,7 +11,8 @@ License:       GPL
 URL:           http://www.opengroupware.org
 Group:         Development/Libraries
 AutoReqProv:   off
-Source:        %{ogo_source}
+Source0:       %{sope_source}
+Source1:       %{ogo_source}
 Prefix:        %{ogo_prefix}
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 #UseSOPE:      sope-4.4beta.2-voyager
@@ -28,14 +29,27 @@ SOPE application server.
 #########################################
 %prep
 rm -fr ${RPM_BUILD_ROOT}
-%setup -n sope
-%setup -n opengroupware.org
+mkdir ${RPM_BUILD_ROOT}
+cd ${RPM_BUILD_ROOT}
+mkdir tmp
+tar zxf %{_sourcedir}/%{sope_source} -C tmp
+mv tmp/* sope
+tar zxf %{_sourcedir}/%{ogo_source} -C tmp
+mv tmp/* ogo
+rm -rf tmp
 
 # ****************************** build ********************************
 %build
 source %{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
+
+cd sope
 make %{sope_makeflags}
+make %{sope_makeflags} install
+cd ..
+
+cd ogo
 make %{ogo_makeflags}
+cd ..
 
 # ****************************** install ******************************
 %install
