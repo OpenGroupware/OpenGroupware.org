@@ -17,11 +17,11 @@ my $type = "releases";
 my $verbose = "no";
 my @distris = qw( fedora-core3
                   fedora-core2
-                  suse92
-                  suse91
                   suse82
-                  mdk-10.1
+                  suse91
+                  suse92
                   mdk-10.0
+                  mdk-10.1
                   slss8
                   sles9
 );
@@ -63,6 +63,7 @@ if (!$opt_n) {
 } else {
   $rel_name = $opt_n;
   chomp $rel_name;
+  print "checking for existence of: /var/virtual_hosts/download/packages/$distri/$type/$rel_name\n";
   print "Doesn't exist?\n" and exit 0 unless (-e "/var/virtual_hosts/download/packages/$distri/$type/$rel_name");
 }
 

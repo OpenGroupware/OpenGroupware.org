@@ -19,12 +19,12 @@ my $type = "trunk";
 my $verbose = "no";
 my @distris = qw( fedora-core3
                   fedora-core2
-                  suse92
-                  suse91
                   suse82
+                  suse91
+                  suse92
                   sles9
-                  mdk-10.1
                   mdk-10.0
+                  mdk-10.1
                   slss8
 );
 
