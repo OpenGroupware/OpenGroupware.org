@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include ../common.make
 
@@ -12,7 +12,6 @@ OGoUIElements_OBJC_FILES = 		\
 	SkyTabView.m                  	\
         SkyTabFontAssociation.m		\
 	SkyTabAssociation.m		\
-	SkyTabItem.m			\
 	SkyTableView.m                	\
 	SkyTreeView.m                 	\
 	SkyCollapsibleContent.m       	\

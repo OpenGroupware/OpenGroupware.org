@@ -51,37 +51,44 @@
 
 @implementation SkySimpleTabItem
 
-- (id)initWithName:(NSString *)_name
-  associations:(NSDictionary *)_config
+static NSDictionary *defAssocs = nil;
+static Class        baseClass  = Nil;
+
++ (void)initialize {
+  NSMutableDictionary *md;
+
+  if ((baseClass = NSClassFromString(@"WETabItem")) == Nil)
+    NSLog(@"ERROR(%s): missing WETabItem class", __PRETTY_FUNCTION__);
+  
+  md = [[NSMutableDictionary alloc] initWithCapacity:8];
+  
+  [md setObject:[WOAssociation associationWithValue:@"tab_.gif"]
+      forKey:@"tabIcon"];
+  [md setObject:[WOAssociation associationWithValue:@"tab_left.gif"]
+      forKey:@"leftTabIcon"];
+  [md setObject:[WOAssociation associationWithValue:@"tab_selected.gif"]
+      forKey:@"selectedTabIcon"];
+  [md setObject:[WOAssociation associationWithValue:@"1"]
+      forKey:@"asBackground"];
+  
+  [md setObject:[WOAssociation associationWithKeyPath:@"config.tab_fixwidth"]
+      forKey:@"width"];
+  [md setObject:[WOAssociation associationWithKeyPath:@"config.tab_fixheight"]
+      forKey:@"height"];
+  
+  defAssocs = [md copy];
+  [md release];
+}
+
+- (id)initWithName:(NSString *)_name associations:(NSDictionary *)_config
   template:(WOElement *)_template
 {
-  WOAssociation *a;
-  Class         c;
-
-  if ((c = NSClassFromString(@"WETabItem")) == Nil) {
-    NSLog(@"ERROR(%s): missing WETabItem class", __PRETTY_FUNCTION__);
-    [self release];
-    return nil;
-  }
+  [(id)_config addEntriesFromDictionary:defAssocs];
   
-#define SetAssociationValue(_key_, _value_)                                 \
-             if ([_config objectForKey:_key_] == nil) {                     \
-               a = [WOAssociation associationWithValue:_value_];            \
-               [(NSMutableDictionary *)_config setObject:a forKey:_key_];   \
-             }                                                              \
- 
-  SetAssociationValue(@"asBackground",     @"1");
-  SetAssociationValue(@"width",            @"100");
-  SetAssociationValue(@"height",           @"22");
-  SetAssociationValue(@"tabIcon",          @"tab_.gif");
-  SetAssociationValue(@"leftTabIcon",      @"tab_left.gif");
-  SetAssociationValue(@"selectedTabIcon",  @"tab_selected.gif");
-
-#undef SetAssociationValue
-  
-  self->template = [[c alloc] initWithName:_name
-                              associations:_config
-                              template:_template];
+  // TODO: should we just release 'self' and return the object?
+  self->template = [[baseClass alloc] initWithName:_name
+				      associations:_config
+				      template:_template];
   return self;
 }
 

@@ -42,12 +42,12 @@
   TabView: SkyTabView {
     selection = selection;
   }
-  FirstTab: SkyTabItem {
+  FirstTab: SkySimpleTabItem {
     key    = "first";
     label  = labels.persons;
     action = personTabClicked;
   }
-  SecondTab: SkyTabItem {
+  SecondTab: SkySimpleTabItem {
     key    = "second";
     label  = "labels.projects";
     action = projectsTabClicked;
@@ -69,48 +69,46 @@
 
 @implementation SkyTabView
 
+static NSDictionary *defAssocs = nil;
+static Class        baseClass  = Nil;
+
++ (void)initialize {
+  NSMutableDictionary *md;
+  
+  if ((baseClass = NSClassFromString(@"WETabView")) == Nil)
+    NSLog(@"ERROR(%s): missing WETabView class", __PRETTY_FUNCTION__);
+  
+  md = [[NSMutableDictionary alloc] initWithCapacity:8];
+
+  [md setObject:[WOAssociation associationWithValue:@"corner_left.gif"]
+      forKey:@"leftCornerIcon"];
+  [md setObject:[WOAssociation associationWithValue:@"corner_right.gif"]
+      forKey:@"rightCornerIcon"];
+  [md setObject:[WOAssociation associationWithValue:@"black"]
+      forKey:@"fontColor"];
+  
+  // TODO: use CSS once WETabView can handle that
+  [md setObject:[WOAssociation associationWithKeyPath:@"config.colors_tabLeaf"]
+      forKey:@"bgColor"];
+
+  // TODO: theoretical leak ...
+  [md setObject:[[NSClassFromString(@"SkyTabFontAssociation") alloc] init]
+      forKey:@"fontSize"];
+  
+  defAssocs = [md copy];
+  [md release];
+}  
+
 - (id)initWithName:(NSString *)_name
   associations:(NSDictionary *)_config
   template:(WOElement *)_template
 {
-  WOAssociation *a;
-  Class         c;
+  [(NSMutableDictionary *)_config addEntriesFromDictionary:defAssocs];
   
-  if ((c = NSClassFromString(@"WETabView")) == Nil) {
-    NSLog(@"%s: missing WETabView class", __PRETTY_FUNCTION__);
-    [self release];
-    return nil;
-  }
-
-  // TODO: use CSS
-
-#define SetAssociationValue(_key_, _value_)                                 \
-             if ([_config objectForKey:_key_] == nil) {                     \
-               a = [WOAssociation associationWithValue:_value_];            \
-               [(NSMutableDictionary *)_config setObject:a forKey:_key_];   \
-             }
-  
-  if ([_config objectForKey:@"bgColor"] == nil) {
-    a = [WOAssociation associationWithKeyPath:@"config.colors_tabLeaf"];
-    [(NSMutableDictionary *)_config setObject:a forKey:@"bgColor"];
-  }
-  
-  SetAssociationValue(@"leftCornerIcon",  @"corner_left.gif");
-  SetAssociationValue(@"rightCornerIcon", @"corner_right.gif");
-  SetAssociationValue(@"fontColor",       @"black");
-
-  if ([_config objectForKey:@"fontSize"] == nil) {
-    a = [[NSClassFromString(@"SkyTabFontAssociation") alloc] init];
-    [(NSMutableDictionary *)_config setObject:a forKey:@"fontSize"];
-    [a release];;
-  }
-  
-#undef SetAssociationPath
-#undef SetAssociationValue
-  
-  self->template = [[c alloc] initWithName:_name
-                              associations:_config
-                              template:_template];
+  // TODO: should we just release 'self' and return the object?
+  self->template = [[baseClass alloc] initWithName:_name
+				      associations:_config
+				      template:_template];
   return self;
 }
 
@@ -119,7 +117,7 @@
   [super dealloc];
 }
 
-/* request processing */
+/* processing requests */
 
 - (void)takeValuesFromRequest:(WORequest *)_req inContext:(WOContext *)_ctx {
   [self->template takeValuesFromRequest:_req inContext:_ctx];
@@ -128,6 +126,8 @@
 - (id)invokeActionForRequest:(WORequest *)_req inContext:(WOContext *)_ctx {
   return [self->template invokeActionForRequest:_req inContext:_ctx];
 }
+
+/* generating response */
 
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
   [self->template appendToResponse:_response inContext:_ctx];

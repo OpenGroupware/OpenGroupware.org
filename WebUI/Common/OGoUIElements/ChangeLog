@@ -1,3 +1,8 @@
+2005-04-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkySimpleTabItem.m, SkyTabView.m: retrieve tab width/height from
+	  components.cfg, reuse WOAssociation objects (v5.1.42)
+
 2005-04-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.41
