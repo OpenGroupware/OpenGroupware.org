@@ -355,6 +355,7 @@ static BOOL createNewAptWhenNotFound = YES;
     url = [[self container] baseURLInContext:_ctx];
     if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
     url = [url stringByAppendingString:[tmp stringValue]];
+    [r setHeader:etag forKey:@"location"];
   }
   
   return r;
