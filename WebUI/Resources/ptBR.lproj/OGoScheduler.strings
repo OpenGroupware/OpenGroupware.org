@@ -363,3 +363,20 @@ whitsun                     = "Domingo de Ramos";
 whitmonday                  = "Whitmonday";
 wintertimeChange            = "Fim do horario de verão";
 wnext_day                   = "Dia seguinte";
+
+// Added Olivier Hallot Brazilian holidays
+//Feriados Nacionais
+independencia                  = "Independência do Brasil";
+republica                      = "Proclamação da República";
+nsaparecida                    = "Nossa Senhora de Aparecida";
+finados                        = "Finados";
+tiradentes                     = "Tiradentes"
+//RJ
+SaoSebastiaoRJ_RJ              = "São Sebastião (Rio de Janeiro)";
+SaoJorgeRJ_RJ                  = "São Jorge (Rio de Janeiro)";
+SaoBeneditoAR_RJ               = "São Benedito (Angra dos Reis)";
+ImaculadaConceicaoAR_RJ        = "Imaculada Conceição (Angra dos Reis)";
+ConcienciaNegra_RJ             = "Dia da Conciência Negra";
+//SP
+SaoPauloSP_SP                  = "São Paulo (Capital)";
+RevolucaoConstitucionalista_SP = "Revolução Constitucionalista";
