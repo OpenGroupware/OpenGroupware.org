@@ -67,7 +67,7 @@ foreach $tprel (@tp_releases) {
     $package_to_build = "epoz" if ($tprel =~ m/epoz/i);
     $tardirname = "sope-epoz" if ($tprel =~ m/epoz/i);
     ##
-    $cleanup = "gnustep-objc" if ($tprel =~ m/gnustep-objc/i);
+    $cleanup = "libobjc-lf2" if ($tprel =~ m/gnustep-objc/i);
     $mapped_temp_specfilename = "libobjc-lf2.spec" if ($tprel =~ m/gnustep-objc/i);
     $package_to_build = "libobjc-lf2" if ($tprel =~ m/gnustep-objc/i);
     $tardirname = "libobjc-lf2" if ($tprel =~ m/gnustep-objc/i);
