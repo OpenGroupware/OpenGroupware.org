@@ -285,6 +285,12 @@ initial()
       #  echo -e "  NOTICE found:"
       #  echo -e "  ${LOG_NOTICE_ERR}"
       #fi
+      # NOTICE is neither classified as FATAL or ERROR according to PostgreSQL code... and it should prolly be
+      # on stdout rather than on stderr... however - nice to know that there are NOTICES'es anyways
+      # ... maybe we got a use for it.
+      # I don't want to stop the setup only if we see some `NOTICE`es when we rollin the scheme
+      # since it only points to situations where nothing particular weird happened (which might harm the setup itself)
+      # (and therefor it's commented out - might change in future PostgreSQL version - therefor still part of this script)
       if [ ! -n "${LOG_SYNTAX_ERR}" -a ! -n "${LOG_FATAL_ERR}" ]; then
         echo -e "removing log - not needed anymore"
         rm -f ${LOG}
