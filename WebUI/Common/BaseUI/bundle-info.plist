@@ -51,7 +51,6 @@
         { name = SkyPanel;                     },
         { name = SkyPanelLink;                 },
         { name = SkyWarningPanel;              },
-        { name = SkyTableView;                 },
         { name = SkySearchPanel;               },
         { name = SkyListSorter;                },
         { name = SkyObjectField;               },

@@ -1,3 +1,8 @@
+2005-03-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* bundle-info.plist: removed SkyTableView (class is implemented in a
+	  different bundle) (v5.1.104)
+
 2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
 
 	* bundle-info.plist: removed deprecated LSWTab* classes from registry
