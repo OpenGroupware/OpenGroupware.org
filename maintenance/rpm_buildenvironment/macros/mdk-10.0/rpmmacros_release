@@ -3,19 +3,19 @@
 %debug_package %{nil}
 %_topdir /home/build/rpm
 %_tmppath %{_topdir}/tmp
-%distribution %{nil}
-%dist_suffix mdk
+%distribution mdk
+%dist_suffix %{nil}
 
 ###
 %libf_objc_version 0
-%libf_objc_release trunk_r0
+%libf_objc_release 0
 %libf_objc_buildcount 0
 %libf_objc_makeflags debug=yes
 %libf_objc_source libobjc-lf2-trunk-latest.tar.gz
 %libf_objc_prefix /usr/local
 ###
 %libf_version 0
-%libf_release trunk_r0
+%libf_release 0
 %libf_buildcount 0
 %libf_makeflags debug=yes
 %libf_source libfoundation-trunk-latest.tar.gz
@@ -29,7 +29,7 @@
 %ogo_gnustep_make_prefix /usr/local
 ###
 %ogo_version 0
-%ogo_release trunk_r0
+%ogo_release 0
 %ogo_buildcount 0
 %ogo_makeflags debug=no
 %ogo_source opengroupware.org-trunk-latest.tar.gz
@@ -47,7 +47,7 @@
 %ogo_env_prefix /usr/local
 ###
 %libical_version 0
-%libical_release trunk_r0
+%libical_release 0
 %libical_buildcount 0
 %libical_makeflags debug=no
 %libical_source libical-sope-trunk-latest.tar.gz
@@ -56,7 +56,7 @@
 %sope_version 0
 %sope_major_version 0
 %sope_minor_version 0
-%sope_release trunk_r0
+%sope_release 0
 %sope_buildcount 0
 %sope_makeflags debug=no
 %sope_source sope-trunk-latest.tar.gz
@@ -64,7 +64,7 @@
 %sope_libversion %{nil}
 ###
 %mod_ngobjweb_version 0
-%mod_ngobjweb_release trunk_r0
+%mod_ngobjweb_release 0
 %mod_ngobjweb_buildcount 0
 %mod_ngobjweb_makeflags debug=no
 %mod_ngobjweb_source sope-mod_ngobjweb-trunk-latest.tar.gz
@@ -91,8 +91,8 @@
 %epoz_source sope-epoz-trunk-latest.tar.gz
 %epoz_prefix /usr/local
 ###
-%ogo_dbsetup_version 1.0a
-%ogo_dbsetup_release trunk_r0
+%ogo_dbsetup_version 0
+%ogo_dbsetup_release 0
 %ogo_dbsetup_buildcount 0
 %ogo_dbsetup_makeflags debug=yes
 %ogo_dbsetup_source opengroupware.org-trunk-latest.tar.gz

@@ -91,7 +91,7 @@
 %epoz_source sope-epoz-trunk-latest.tar.gz
 %epoz_prefix /usr/local
 ###
-%ogo_dbsetup_version 1.0a
+%ogo_dbsetup_version 0
 %ogo_dbsetup_release trunk_r0
 %ogo_dbsetup_buildcount 0
 %ogo_dbsetup_makeflags debug=yes
