@@ -184,6 +184,7 @@ sub pre_patch_rpmmacros {
       $line = "\%ogo_gnustep_make_version $new_version" if ($line =~ m/^\%ogo_gnustep_make_version/);
       $line = "\%ogo_gnustep_make_release $new_svnrev" if ($line =~ m/^\%ogo_gnustep_make_release/);
       $line = "\%ogo_gnustep_make_buildcount $new_buildcount" if ($line =~ m/^\%ogo_gnustep_make_buildcount/);
+      $line = "\%ogo_gnustep_make_source $release_tarballname" if (($line =~ m/^\%ogo_gnustep_make_source/) and ($build_type eq "release"));
     }
     #libobjc-lf2...
     if ($package eq "libobjc-lf2") {
@@ -191,6 +192,7 @@ sub pre_patch_rpmmacros {
       $line = "\%libf_objc_release trunk_r$new_svnrev" if (($line =~ m/^\%libf_objc_release/) and ($build_type eq "trunk"));
       $line = "\%libf_objc_release r$new_svnrev" if (($line =~ m/^\%libf_objc_release/) and ($build_type eq "release"));
       $line = "\%libf_objc_buildcount $new_buildcount" if ($line =~ m/^\%libf_objc_buildcount/);
+      $line = "\%libf_objc_source $release_tarballname" if (($line =~ m/^\%libf_objc_source/) and ($build_type eq "release"));
     }
     #libfoundation...
     if ($package eq "libfoundation") {
@@ -198,6 +200,7 @@ sub pre_patch_rpmmacros {
       $line = "\%libf_release trunk_r$new_svnrev" if (($line =~ m/^\%libf_release/) and ($build_type eq "trunk"));
       $line = "\%libf_release r$new_svnrev" if (($line =~ m/^\%libf_release/) and ($build_type eq "release"));
       $line = "\%libf_buildcount $new_buildcount" if ($line =~ m/^\%libf_buildcount/);
+      $line = "\%libf_source $release_tarballname" if (($line =~ m/^\%libf_source/) and ($build_type eq "release"));
     }
     #libical-sope-devel...
     if ($package eq "libical-sope-devel") {
@@ -205,6 +208,7 @@ sub pre_patch_rpmmacros {
       $line = "\%libical_release trunk_r$new_svnrev" if (($line =~ m/^\%libical_release/) and ($build_type eq "trunk"));
       $line = "\%libical_release r$new_svnrev" if (($line =~ m/^\%libical_release/) and ($build_type eq "release"));
       $line = "\%libical_buildcount $new_buildcount" if ($line =~ m/^\%libical_buildcount/);
+      $line = "\%libical_source $release_tarballname" if (($line =~ m/^\%libical_source/) and ($build_type eq "release"));
     }
     #sope..
     if ($package eq "sope") {
@@ -231,6 +235,7 @@ sub pre_patch_rpmmacros {
       $line = "\%mod_ngobjweb_release trunk_r$new_svnrev" if (($line =~ m/^\%mod_ngobjweb_release/) and ($build_type eq "trunk"));
       $line = "\%mod_ngobjweb_release r$new_svnrev" if (($line =~ m/^\%mod_ngobjweb_release/) and ($build_type eq "release"));
       $line = "\%mod_ngobjweb_buildcount $new_buildcount" if ($line =~ m/^\%mod_ngobjweb_buildcount/);
+      $line = "\%mod_ngobjweb_source $release_tarballname" if (($line =~ m/^\%mod_ngobjweb_source/) and ($build_type eq "release"));
     }
     #ogo-environment...
     if ($package eq "ogo-environment") {
@@ -245,6 +250,7 @@ sub pre_patch_rpmmacros {
       $line = "\%ogo_pilotlink_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_pilotlink_release/) and ($build_type eq "trunk"));
       $line = "\%ogo_pilotlink_release r$new_svnrev" if (($line =~ m/^\%ogo_pilotlink_release/) and ($build_type eq "release"));
       $line = "\%ogo_pilotlink_buildcount $new_buildcount" if ($line =~ m/^\%ogo_pilotlink_buildcount/);
+      $line = "\%ogo_pilotlink_source $release_tarballname" if (($line =~ m/^\%ogo_pilotlink_source/) and ($build_type eq "release"));
     }
     #opengroupware-nhsc...
     if ($package eq "opengroupware-nhsc") {
@@ -252,6 +258,7 @@ sub pre_patch_rpmmacros {
       $line = "\%ogo_nhsc_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_nhsc_release/) and ($build_type eq "trunk"));
       $line = "\%ogo_nhsc_release r$new_svnrev" if (($line =~ m/^\%ogo_nhsc_release/) and ($build_type eq "release"));
       $line = "\%ogo_nhsc_buildcount $new_buildcount" if ($line =~ m/^\%ogo_nhsc_buildcount/);
+      $line = "\%ogo_nhsc_source $release_tarballname" if (($line =~ m/^\%ogo_nhsc_source/) and ($build_type eq "release"));
     }
     #epoz
     if ($package eq "epoz") {
@@ -259,6 +266,7 @@ sub pre_patch_rpmmacros {
       $line = "\%epoz_release trunk_r$new_svnrev" if (($line =~ m/^\%epoz_release/) and ($build_type eq "trunk"));
       $line = "\%epoz_release r$new_svnrev" if (($line =~ m/^\%epoz_release/) and ($build_type eq "release"));
       $line = "\%epoz_buildcount $new_buildcount" if ($line =~ m/^\%epoz_buildcount/);
+      $line = "\%epoz_source $release_tarballname" if (($line =~ m/^\%epoz_source/) and ($build_type eq "release"));
     }
     #see flavour detector...
     $line = "\%distribution $distrib_define" if ($line =~ m/^\%distribution/);
@@ -406,6 +414,7 @@ sub collect_patchinfo {
     $new_sminor = "0";
     $new_svnrev = "0";
     $new_version = "$new_major.$new_minor.$new_sminor";
+    $remote_release_dirname = "ThirdParty" if($build_type eq "release");
   }
   ###########################################################################
   if ($package eq "libobjc-lf2") {
@@ -422,6 +431,7 @@ sub collect_patchinfo {
     $new_minor = "95";
     $new_sminor = "3";
     $new_version = "$new_major.$new_minor.$new_sminor";
+    $remote_release_dirname = "ThirdParty" if($build_type eq "release");
   }
   ###########################################################################
   if ($package eq "libfoundation") {
@@ -439,6 +449,7 @@ sub collect_patchinfo {
     chomp $new_sminor if (defined $new_sminor);
     chomp $new_svnrev if (defined $new_svnrev);
     $new_version = "$new_major.$new_minor.$new_sminor";
+    $remote_release_dirname = "ThirdParty" if($build_type eq "release");
   }
   ###########################################################################
   if ($package eq "libical-sope-devel") {
@@ -451,6 +462,7 @@ sub collect_patchinfo {
     close(LIBICAL);
     chomp $new_svnrev if (defined $new_svnrev);
     $new_version = "4.3";
+    $remote_release_dirname = "ThirdParty" if($build_type eq "release");
   }
   ###########################################################################
   if ($package eq "sope") {
@@ -575,6 +587,7 @@ sub collect_patchinfo {
     chomp $new_sminor if (defined $new_sminor);
     chomp $new_svnrev if (defined $new_svnrev);
     $new_version = "$new_major.$new_minor.$new_sminor";
+    $remote_release_dirname = "ThirdParty" if($build_type eq "release");
   }
   print "[CURRENT SOURCE]    - $package VERSION:$new_version SVNREV:$new_svnrev\n" if ($verbose eq "yes");
 }
@@ -832,7 +845,7 @@ sub prepare_build_env {
   #we use rpm instead of the traditional redhat directory style
   #logs will eat the buildlogs
   my $dir;
-  my @dirs = qw( logs macros rpm rpm/BUILD rpm/RPMS rpm/RPMS/athlon rpm/RPMS/i386 rpm/RPMS/i486 rpm/RPMS/i586 rpm/RPMS/i686 rpm/RPMS/noarch rpm/SOURCES rpm/SPECS rpm/SRPMS rpm/tmp);
+  my @dirs = qw( logs macros rpm rpm/BUILD rpm/RPMS rpm/RPMS/athlon rpm/RPMS/i386 rpm/RPMS/i486 rpm/RPMS/i586 rpm/RPMS/i686 rpm/RPMS/noarch rpm/SOURCES rpm/SPECS rpm/SRPMS rpm/tmp spec_tmp );
   if (!$ENV{'HOME'}) {
     print "[FATAL]     Oups! It seems as if there's no valid \$HOME defined.\n";
     exit 127;
