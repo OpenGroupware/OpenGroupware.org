@@ -43,6 +43,7 @@ my @rpms_build;
 #the source (source should be already in \$sources_dir)
 my @package_wo_source = qw( ogo-gnustep_make ogo-environment );
 my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 ogo-environment opengroupware-pilot-link opengroupware-nhsc );
+my $release_codename;
 
 die "Please make sure that everything is in place!\n";
 prepare_build_env();
@@ -416,10 +417,16 @@ sub collect_patchinfo {
     $new_version = "$new_major.$new_minor";
     #release has more digits in the version than trunk...
     if ($build_type eq "release") {
+      # \$release_tarballname is an argv -> <-c release_tarballname>
+      # unfortunately - not really predictable... see below:
+      # (I hope that we stick with the current version scheme in releases:
+      #    <sope|opengroupware.org>-<version>-<codename>-<somejunk>
+      # )
       $new_version = $release_tarballname;
-      #hardcoded codename here... 
-      $new_version =~ s/sope-(.*)-shapeshifter//g;
+      $new_version =~ s/sope-(.*)-(.*)-//g;
       $new_version = $1;
+      $release_codename = $2;
+      # %version cannot contain dashes... rpm will complain if it does
     }
   }
   ###########################################################################
@@ -435,9 +442,12 @@ sub collect_patchinfo {
     #hardcoded basevalue... helge tells me :]
     $new_version = "1.0a";
     if ($build_type eq "release") {
+      #check comments above (in sope)
       $new_version = $release_tarballname;
-      $new_version =~ s/opengroupware.org-(.*)-shapeshifter//g;
+      $new_version =~ s/opengroupware.org-(.*)-(.*)-//g;
       $new_version = $1;
+      $release_codename = $2;
+      # %version cannot contain dashes... rpm will complain if it does
     }
   }
   ###########################################################################
