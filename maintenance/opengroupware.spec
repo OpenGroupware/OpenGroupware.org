@@ -1,3 +1,6 @@
+%define smaj 4
+%define smin 4
+
 Summary:       A free and open groupware suite.
 Name:          ogo
 Version:       %{ogo_version}
@@ -26,7 +29,7 @@ SOPE application server.
 %package meta
 Summary:      OpenGroupware.org META package
 Group:        Development/Libraries
-Requires:     libobjc-lf2 libfoundation10 sope44-xml sope44-xml-tools sope44-core sope44-mime sope44-appserver sope44-appserver-tools sope44-ldap sope44-ldap-tools sope44-ical sope44-gdl1-postgresql sope44-gdl1 ogo-docapi ogo-docapi-db-project ogo-docapi-fs-project ogo-logic ogo-logic-tools ogo-pda ogo-theme-default ogo-tools ogo-webui-app ogo-webui-calendar ogo-webui-contact ogo-webui-core ogo-webui-mailer ogo-webui-news ogo-webui-project ogo-webui-resource-de ogo-webui-resource-en ogo-webui-task ogo-xmlrpcd ogo-zidestore ogo-environment mod_ngobjweb
+Requires:     libobjc-lf2 libfoundation10 sope%{smaj}%{smin}-xml sope%{smaj}%{smin}-xml-tools sope%{smaj}%{smin}-core sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-appserver-tools sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-ldap-tools sope%{smaj}%{smin}-ical sope%{smaj}%{smin}-gdl1-postgresql sope%{smaj}%{smin}-gdl1 ogo-docapi ogo-docapi-db-project ogo-docapi-fs-project ogo-logic ogo-logic-tools ogo-pda ogo-theme-default ogo-tools ogo-webui-app ogo-webui-calendar ogo-webui-contact ogo-webui-core ogo-webui-mailer ogo-webui-news ogo-webui-project ogo-webui-resource-de ogo-webui-resource-en ogo-webui-task ogo-xmlrpcd ogo-zidestore ogo-environment mod_ngobjweb
 AutoReqProv:  off
 
 %description meta
@@ -39,7 +42,7 @@ a lot of dependencies.
 %package docapi
 Summary:      OpenGroupware.org document API
 Group:        Development/Libraries
-#Requires:    ogo-gnustep_make 
+Requires:     sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-logic libfoundation10
 AutoReqProv:  off
 
 %description docapi
@@ -49,7 +52,7 @@ logic in a "document" API.
 %package docapi-fs-project
 Summary:      Filesystem storage for OpenGroupware.org projects
 Group:        Development/Libraries
-Requires:     ogo-docapi
+Requires:     sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic libfoundation10
 AutoReqProv:  off
 
 %description docapi-fs-project
@@ -69,7 +72,7 @@ This package contains the development files for the ogo-docapi-fs-project packag
 %package docapi-db-project
 Summary:      Database storage for OpenGroupware.org projects
 Group:        Development/Libraries
-Requires:     ogo-docapi
+Requires:     sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic libfoundation10
 AutoReqProv:  off
 
 %description docapi-db-project
@@ -97,7 +100,7 @@ This package contains the development files for the ogo-docapi package.
 %package logic
 Summary:      OpenGroupware.org application logic
 Group:        Development/Libraries
-#Requires:    ogo-gnustep_make 
+Requires:     sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml libfoundation10
 AutoReqProv:  off
 
 %description logic
@@ -106,7 +109,7 @@ This package contains OpenGroupware.org's application logic.
 %package logic-tools
 Summary:      OpenGroupware.org application logic tools
 Group:        Development/Libraries
-Requires:     ogo-logic
+Requires:     ogo-logic sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml libfoundation10 libobjc-lf2
 AutoReqProv:  off
 
 %description logic-tools
@@ -128,7 +131,7 @@ application logic.
 %package pda
 Summary:      PDA syncing framework for OpenGroupware.org
 Group:        Development/Libraries
-Requires:     ogo-webui-app
+Requires:     sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-core sope%{smaj}%{smin}-xml sope%{smaj}%{smin}-ldap libfoundation10 libobjc-lf2 ogo-webui-app ogo-docapi ogo-logic
 AutoReqProv:  off
 
 %description pda
@@ -192,7 +195,7 @@ This package contains an orange theme for OpenGroupware.org's web UI.
 %package tools
 Summary:      Various commandline Tools for OpenGroupware.org
 Group:        Development/Libraries
-#Requires:    ogo-gnustep_make 
+Requires:     sope%{smaj}%{smin}-core sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-gdl1 libfoundation10 libobjc-lf2 ogo-logic ogo-docapi
 AutoReqProv:  off
 
 %description tools
@@ -451,6 +454,7 @@ This package contains the Portuguese (Brazilian) translation for OpenGroupware.o
 %package xmlrpcd
 Summary:      XMLRPC daemon for OpenGroupware.org
 Group:        Development/Libraries
+Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-core sope%{smaj}%{smin}-xml libfoundation10 libobjc-lf2 ogo-logic ogo-docapi
 AutoReqProv:  off
 
 %description xmlrpcd
@@ -460,7 +464,7 @@ XMLRPC API. This is especially useful within scripts or custom applications.
 %package zidestore
 Summary:      ZideStore server for OpenGroupware.org
 Group:        Development/Libraries
-#Requires:    ogo-gnustep_make
+Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ical sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-core sope%{smaj}%{smin}-xml sope%{smaj}%{smin}-ldap ogo-logic libfoundation10
 AutoReqProv:  off
 
 %description zidestore
@@ -472,7 +476,7 @@ iCal subscriptions, an Ximian Evolution plugin is under development.
 %package zidestore-devel
 Summary:      Development Files for the ZideStore server
 Group:        Development/Libraries
-Requires:     ogo-zidestore
+Requires:     ogo-gnustep_make ogo-zidestore
 AutoReqProv:  off
 
 %description zidestore-devel
