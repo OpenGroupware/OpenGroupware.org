@@ -10,10 +10,14 @@ Group:        Development/Libraries
 AutoReqProv:  off
 Source:       %{ogo_dbsetup_source}
 Prefix:       %{ogo_dbsetup_prefix}
-#Patch:
-Requires:     ogo-environment postgresql-server
-#BuildPreReq: 
+Requires:     ogo-environment
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root
+
+%if %{?_postgresql_server_is_within_postgresql:1}%{!?_postgresql_server_is_within_postgresql:0}
+Requires: postgresql
+%else
+Requires: postgresql-server
+%endif
 
 %description
 This package sets up the Database required by OGo.
@@ -59,5 +63,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Tue Jan 25 2005 Frank Reppin <frank@opengroupware.org>
+- fix for OGo Bug #1192
 * Sun Jan 16 2005 Frank Reppin <frank@opengroupware.org>
 - initial release
