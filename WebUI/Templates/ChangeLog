@@ -1,5 +1,7 @@
 2005-04-07  Helge Hess  <helge.hess@opengroupware.org>
 
+	* updated themes/components.cfg with tab-text fontcolor settings
+	
 	* updated themes/components.cfg with tab-width/height settings
 
 2005-04-06  Helge Hess  <helge.hess@opengroupware.org>
