@@ -1,3 +1,7 @@
+2004-12-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoProject/SkyProject4DocumentViewer: removed elements for Publisher
+
 2004-12-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWProject/SkyProjectInlineViewer.html: fixed output of extended

@@ -11,7 +11,7 @@ Window: LSWWindowFrame {
 
 Buttons: SkyButtonRow {
   oid         = documentId;
-  ordering    = ( pubpreview, editasnew, delete, rename,
+  ordering    = ( editasnew, delete, rename,
                   checkout, reject, release, 
                   lock, unlock, mail,
                   upload, edit, test, refresh, unzip, saveas);
@@ -53,10 +53,6 @@ Buttons: SkyButtonRow {
   hasUnzip    = hasUnzip;
   hasSaveAs   = hasSaveAs;
   
-  hasPubPreview    = hasPubPreview;
-  targetPubPreview = "pubPreviewTarget";
-  urlPubPreview    = pubPreviewURL;
-  
   /* labels */
   checkout    = labels.checkout;
   reject      = labels.reject;
@@ -73,7 +69,6 @@ Buttons: SkyButtonRow {
   refresh     = labels.refresh;
   unzip       = labels.unzip;
   saveas      = labels.saveAs;
-  pubpreview = labels.pubPreview;
 }
 
 UseStdViewer: WOConditional {
@@ -179,10 +174,10 @@ SizeAttr: SkySubAttribute {
 }
 
 BLOBContentViewer: SkyProject4BLOBViewer {
-  fileManager   = fileManager;
-  documentId    = documentId;
-  document      = document;
-  mimeType      = documentMimeType;
+  fileManager = fileManager;
+  documentId  = documentId;
+  document    = document;
+  mimeType    = documentMimeType;
 }
 
 /* log */
@@ -203,7 +198,7 @@ PropButtons: SkyButtonRow {
 
 /* access */
 
-AccessTab : SkySimpleTabItem {
+AccessTab: SkySimpleTabItem {
   key       = "access";
   action    = accessTabClicked;
   label     = labels.access;
@@ -265,7 +260,7 @@ AttrsButtons: SkyButtonRow {
   hasEdit  = hasEditAttrs;
 }
 
-AccessList : SkyAccessList {
+AccessList: SkyAccessList {
   accessList   = accessIds;
   isInTable    = NO;
   accessChecks = accessChecks;
@@ -273,63 +268,18 @@ AccessList : SkyAccessList {
   isViewerMode = YES;
 }
 
-AttrViewer : WODictionaryRepetition {
+AttrViewer: WODictionaryRepetition {
   dictionary = docStandardAttrs;
   key        = key;
   item       = item;
 }
 
-AttrKey : SkySubAttribute {
+AttrKey: SkySubAttribute {
   label = labels.$key;
   width = "15%";
 }
-AttrItem : WOString {
+AttrItem: WOString {
   value = item;
-}
-
-/* SkyPublisher */
-
-HasPublisher: WOConditional {
-  condition = hasPublisher;
-}
-/*
-PublisherTabs: SkyPubDocViewTabs {
-  fileManager = fileManager;
-  document    = document;
-}
-*/
-
-PubPreviewTab: SkySimpleTabItem {
-  key      = "pub_preview";
-  label    = labels.preview;
-  icon     = "preview";
-}
-PubLinksTab: SkySimpleTabItem {
-  key      = "pub_links";
-  label    = labels.links;
-  icon     = "links";
-}
-PubSourceTab: SkySimpleTabItem {
-  key      = "pub_source";
-  label    = labels.source;
-  icon     = "source";
-}
-
-PubShowPreview: WOConditional { condition = showPubPreview; }
-PubShowSource:  WOConditional { condition = showPubSource;  }
-PubShowLinks:   WOConditional { condition = showPubLinks;   }
-
-PubPartPreview: SkyPubPartPreview {
-  fileManager = fileManager;
-  document    = document;
-}
-PubSource: SkyPubPartSourceViewer {
-  fileManager = fileManager;
-  document    = document;
-}
-PubLinks: SkyPubLinks {
-  fileManager = fileManager;
-  document    = document;
 }
 
 IsNotAVersion: WOConditional {
@@ -350,27 +300,27 @@ DownloadLogList: SkyP4DocumentDownloadLogList {
   document = document;
 }
 
-NoReadAccessWarning : SkyRichString {
+NoReadAccessWarning: SkyRichString {
   color="red";
   value = labels.noReadAccessWarning;
 }
 
-HasReadAccessElse : WOConditional {
+HasReadAccessElse: WOConditional {
   condition = canReadFile;
   negate    = YES;
 }
-HasReadAccess : WOConditional {
+HasReadAccess: WOConditional {
   condition = canReadFile;
 }
 
-SupportsProperties : WOConditional {
+SupportsProperties: WOConditional {
   condition = supportsProperties;
 }
-SupportsAccess : WOConditional {
+SupportsAccess: WOConditional {
   condition = fileManager.supportAccessRights;
 }
 
-HasNoProjectLite : WOConditional {
+HasNoProjectLite: WOConditional {
   condition = session.hasProjectLite;
   negate    = YES;
 }
