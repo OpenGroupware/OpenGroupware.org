@@ -1,4 +1,4 @@
-%define ogoall_version                  1.0alpha10
+%define ogoall_version                  1.0alpha11
 %define ogoall_release                  0
 %define ogoall_buildcount               0
 %define ogoall_prefix                   /usr/local
