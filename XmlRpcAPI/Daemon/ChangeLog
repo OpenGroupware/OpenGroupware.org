@@ -1,3 +1,8 @@
+2004-12-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Person.m: copy 'isPrivate' value from
+	  dictionary to document (v5.1.51)
+
 2004-12-19  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Actions.subproj/DirectAction+Project.m: project.exists and

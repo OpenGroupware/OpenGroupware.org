@@ -59,6 +59,7 @@
              @"isReadonly",
              @"keywords",
              @"isAccount",
+             @"isPrivate",
              @"login",
           nil];
 
