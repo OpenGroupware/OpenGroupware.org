@@ -53,7 +53,7 @@
 #include <OGoFoundation/LSWMailEditorComponent.h>
 #include <OGoFoundation/LSWMasterComponent.h>
 #include <OGoFoundation/LSWMimeContent.h>
-#include <OGoFoundation/LSWModuleManager.h>
+#include <OGoFoundation/OGoModuleManager.h>
 #include <OGoFoundation/LSWNotifications.h>
 #include <OGoFoundation/OGoObjectMailPage.h>
 

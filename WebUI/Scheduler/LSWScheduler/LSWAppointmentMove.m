@@ -57,7 +57,7 @@
 #include "common.h"
 #include <OGoFoundation/OGoSession.h>
 #include <OGoFoundation/LSWNotifications.h>
-#include <OGoFoundation/LSWNavigation.h>
+#include <OGoFoundation/OGoNavigation.h>
 #include <OGoFoundation/LSWMailEditorComponent.h>
 #include <LSFoundation/LSCommandContext.h>
 #include <NGMime/NGMimeType.h>

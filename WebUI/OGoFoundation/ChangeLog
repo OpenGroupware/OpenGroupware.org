@@ -1,3 +1,22 @@
+2004-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.74
+	
+	* OGoSession.m: do not lookup config values in OGoModuleManager but
+	  only in the main components.cfg
+
+	* OGoModuleManager.m: removed support for per-bundle components.cfg
+	  files (bundlename.ccfg), all config things now need to be placed in
+	  the master components.cfg file (Note: components.cfg is considered
+	  deprecated and should not be used!)
+	
+	* removed LSWNavigation.h (use OGoNavigation.h)
+
+	* renamed LSWModuleManager.h to OGoModuleManager.h
+	
+	* OGoContentPage.m: removed ability to acquire page labels from the
+	  components config (use the labels facility instead!)
+
 2004-09-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoResourceManager.m: fixed to properly lookup components.cfg in

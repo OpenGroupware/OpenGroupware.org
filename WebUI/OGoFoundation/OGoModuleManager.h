@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,17 +18,25 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#ifndef __LSWebInterface_LSWPreferences_LSWPreferencesModule_H__
-#define __LSWebInterface_LSWPreferences_LSWPreferencesModule_H__
+#ifndef __OGoFoundation_LSWModuleManager_H__
+#define __OGoFoundation_LSWModuleManager_H__
 
-#include <OGoFoundation/LSWModuleManager.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSMapTable.h>
 
-@interface LSWPreferencesModule : LSWModuleManager
+@class NSString, NSArray, NSMutableDictionary;
+@class WOComponent;
+
+@interface OGoModuleManager : NSObject
 {
 }
 
 @end
 
-#endif /* __LSWebInterface_LSWPreferences_LSWPreferencesModule_H__ */
+/* for compatibility, to be removed */
+
+@interface LSWModuleManager : OGoModuleManager
+@end
+
+#endif /* __OGoFoundation_LSWModuleManager_H__ */

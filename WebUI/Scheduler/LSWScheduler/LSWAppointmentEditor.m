@@ -18,14 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "LSWAppointmentEditor.h"
 #include "LSWAppointmentEditor+Fetches.h"
 #include "OGoAppointmentDateFormatter.h"
 #include <OGoFoundation/OGoSession.h>
 #include <OGoFoundation/LSWNotifications.h>
-#include <OGoFoundation/LSWNavigation.h>
+#include <OGoFoundation/OGoNavigation.h>
 #include <OGoFoundation/LSWMailEditorComponent.h>
 #include <LSFoundation/LSCommandContext.h>
 #include "common.h"

@@ -153,15 +153,6 @@
   if ((label = [[self labels] valueForKey:[self name]]))
     return label;
   
-  if ((label = [[self config] valueForKey:@"label"])) {
-#if DEBUG // DEPRECATED!
-    [self debugWithFormat:
-            @"WARNING: took label of page %@ from ccfg !",
-            [self name]];
-#endif
-    return label;
-  }
-  
   return [self name];
 }
 

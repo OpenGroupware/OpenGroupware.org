@@ -44,7 +44,7 @@
 #include <LSFoundation/LSCommandKeys.h>
 #include <LSFoundation/LSBaseCommand.h>
 #include <OGoFoundation/OGoSession.h>
-#include <OGoFoundation/LSWNavigation.h>
+#include <OGoFoundation/OGoNavigation.h>
 #include "common.h"
 #include <NGObjWeb/NGObjWeb.h>
 #include <NGLdap/NGLdap.h>

@@ -42,8 +42,7 @@ libOGoFoundation_HEADER_FILES = \
 	LSWMailEditorComponent.h	\
 	LSWMasterComponent.h		\
 	LSWMimeContent.h		\
-	LSWModuleManager.h		\
-	LSWNavigation.h			\
+	OGoModuleManager.h		\
 	LSWNotifications.h		\
 	OGoObjectMailPage.h		\
 	OGoResourceManager.h		\

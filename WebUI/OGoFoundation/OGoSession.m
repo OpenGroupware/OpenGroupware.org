@@ -27,7 +27,6 @@
 #include "NSObject+LSWPasteboard.h"
 #include "OGoNavigation.h"
 #include "LSWMimeContent.h"
-#include "LSWModuleManager.h"
 #include "common.h"
 #include <LSFoundation/OGoContextSession.h>
 #include <LSFoundation/OGoContextManager.h>
@@ -59,11 +58,6 @@
 @interface NSObject(gids)
 
 - (EOGlobalID *)globalID;
-
-- (id)configValueForKey:(NSString *)_key 
-  inComponent:(WOComponent *)_component 
-  languages:(NSArray *)_langs;
-
 - (NSString *)labelForObjectInSession:(id)_sn;
 
 @end
@@ -764,9 +758,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
   return [cfg valueForKey:_componentName];
 }
 
-- (id)configValueForKey:(NSString *)_key 
-  inComponent:(WOComponent *)_component 
-{
+- (id)configValueForKey:(NSString *)_key inComponent:(WOComponent *)_component{
   /* TODO: split this big method */
   NSTimeInterval st;
   id             cConfig, result;
@@ -780,54 +772,36 @@ static NSString *OGoDateTimeTZFormat     = nil;
   
   /* go up the component hierachy */
   for (comp = _component; comp; comp = [(WOComponent *)comp parent]) {
-    if ([comp isComponent]) {
-      NSString *componentName;
-      NSBundle *bundle;
-      id bundlePrincipal, value;
+    NSString *componentName;
+    id value;
+    
+    if (![comp isComponent])
+      continue;
       
-      value  = nil;
-      if ((bundle = [bm bundleForClass:[comp class]]) == nil ) {
-	[self logWithFormat:
-		@"ERROR: did not find bundle for component\n"
-	        @"  object: '%@'\n"
-  	        @"  class:  '%@'",
-	        comp, [comp class]];
-	continue;
-      }
+    componentName = [comp name];
       
-      bundlePrincipal = [bm principalObjectOfBundle:bundle];
-      componentName   = [comp name];
+    /* look into global components cfg */
+    cConfig = [self configurationOfComponentNamed:componentName];
+    value   = [cConfig valueForKey:_key];
       
-      /* first ask bundle-manager */
-      if ([bundlePrincipal respondsToSelector:
-             @selector(configValueForKey:inComponent:languages:)]) {
-        value = [bundlePrincipal configValueForKey:_key
-                                 inComponent:comp
-                                 languages:[self languages]];
-      }
-      if (value == nil) {
-        /* then look into global components cfg */
-        cConfig = [self configurationOfComponentNamed:componentName];
-        value   = [cConfig valueForKey:_key];
-      }
-      if (value) {
-        /* found a value for the component */
-	if (debugConfig) {
-	  if (comp != _component) {
-	    /* the value is inherited */
-	    [self debugWithFormat:
+    if (value == nil)
+      continue;
+    
+    /* found a value for the component */
+    if (debugConfig) {
+      if (comp != _component) {
+        /* the value is inherited */
+        [self debugWithFormat:
 		    @"inherited value for config key %@ on %@ from %@",
 		    _key, [_component name], [comp name]];
-	  }
-	}
-        result = value;
-        goto done;
       }
     }
+    result = value;
+    goto done;
   }
   
   /* check in LSWMasterComponent config */
-  if ((cConfig = [self configurationOfComponentNamed:@"master"])) {
+  if ((cConfig = [self configurationOfComponentNamed:@"master"]) != nil) {
     id value;
     
     if ((value = [cConfig valueForKey:_key])) {

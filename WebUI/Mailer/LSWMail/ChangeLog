@@ -1,3 +1,8 @@
+2004-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* moved Headers to main directory, removed empty English.lproj, moved
+	  LSWMailModule.h into .m file (v5.1.10)
+
 2004-09-22  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile: moved component config to Templates (v5.1.9)

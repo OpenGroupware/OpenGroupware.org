@@ -13,13 +13,6 @@ LSWMail_OBJC_FILES = \
         LSWObjectTextMailPage.m		\
 	LSWDeletedObjectViewer.m	\
 
-LSWMail_COMPONENTS = \
-        LSWMailHtmlRenderPage.wo	\
-        LSWMailTextRenderPage.wo	\
-        LSWObjectHtmlMailPage.wo	\
-        LSWObjectTextMailPage.wo	\
-        LSWDeletedObjectViewer.wo	\
-
 LSWMail_LANGUAGES = English German 
 
 LSWMail_RESOURCE_FILES += Version

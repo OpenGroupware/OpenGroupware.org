@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include <OGoFoundation/LSWModuleManager.h>
+#include <OGoFoundation/OGoModuleManager.h>
 
 @interface OGoMailEditorModule : OGoModuleManager
 

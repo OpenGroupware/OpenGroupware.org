@@ -357,9 +357,10 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
     path = [path stringByAppendingPathComponent:@"components.cfg"];
     
     if ([fm fileExistsAtPath:path]) {
-#warning fixme
+#if 0
       [self logWithFormat:@"components.cfg theme %@ fw %@: %@",
 	    _theme, _fwName, path];
+#endif
       [self cacheValue:path inCache:self->keyToPath];
       return path;
     }

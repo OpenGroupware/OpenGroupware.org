@@ -130,7 +130,7 @@ static __inline__ void chRemove(OGoConfigHandler *table, id key);
   
   if (_key == nil)
     return nil;
-  if ((value = chGet(self, _key)))
+  if ((value = chGet(self, _key)) != nil)
     return value;
   
   /* let the session determine the correct value */
@@ -139,13 +139,13 @@ static __inline__ void chRemove(OGoConfigHandler *table, id key);
                             configValueForKey:_key
                             inComponent:self->component];
   
-  if (value) {
+  if (value != nil) {
     /* register value in cache */
     chInsert(self, _key, value);
     return value;
   }
-  else
-    return nil;
+  
+  return nil;
 }
 
 /* finals */
