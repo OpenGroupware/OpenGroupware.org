@@ -15,8 +15,8 @@ my $host_i_runon;
 my $mod_ngobjweb_to_use;
 my $time_we_started = `date +"%Y%m%d-%H%M%S"`;
 chomp $time_we_started;
-our ($opt_p,$opt_f,$opt_t,$opt_b,$opt_d,$opt_c,$opt_v,$opt_u,$opt_s,$opt_r);
-my ($package,$force_rebuild,$build_type,$bump_buildcount,$do_download,$release_tarballname,$verbose,$do_upload,$use_specfile,$rdirbase);
+our ($opt_p,$opt_f,$opt_t,$opt_b,$opt_d,$opt_c,$opt_v,$opt_u,$opt_s,$opt_r,$opt_n);
+my ($package,$force_rebuild,$build_type,$bump_buildcount,$do_download,$release_tarballname,$verbose,$do_upload,$use_specfile,$rdirbase,$fake_svn);
 my $hpath = "$ENV{'HOME'}";
 my $logs_dir = "$ENV{'HOME'}/logs";
 my $sources_dir = "$ENV{'HOME'}/rpm/SOURCES";
@@ -202,15 +202,15 @@ sub pre_patch_rpmmacros {
     #ogo-gnustep_make...
     if ($package eq "ogo-gnustep_make") {
       $line = "\%ogo_gnustep_make_version $new_version" if ($line =~ m/^\%ogo_gnustep_make_version/);
-      $line = "\%ogo_gnustep_make_release $new_svnrev" if ($line =~ m/^\%ogo_gnustep_make_release/);
+      $line = "\%ogo_gnustep_make_release $new_svnrev" if (($line =~ m/^\%ogo_gnustep_make_release/) and ($fake_svn eq "no"));
       $line = "\%ogo_gnustep_make_buildcount $new_buildcount" if ($line =~ m/^\%ogo_gnustep_make_buildcount/);
       $line = "\%ogo_gnustep_make_source $release_tarballname" if (($line =~ m/^\%ogo_gnustep_make_source/) and ($build_type eq "release"));
     }
     #libobjc-lf2...
     if ($package eq "libobjc-lf2") {
       $line = "\%libf_objc_version $new_version" if ($line =~ m/^\%libf_objc_version/);
-      $line = "\%libf_objc_release trunk_r$new_svnrev" if (($line =~ m/^\%libf_objc_release/) and ($build_type eq "trunk"));
-      $line = "\%libf_objc_release r$new_svnrev" if (($line =~ m/^\%libf_objc_release/) and ($build_type eq "release"));
+      $line = "\%libf_objc_release trunk_r$new_svnrev" if (($line =~ m/^\%libf_objc_release/) and ($build_type eq "trunk") and ($fake_svn eq "no"));
+      $line = "\%libf_objc_release r$new_svnrev" if (($line =~ m/^\%libf_objc_release/) and ($build_type eq "release") and ($fake_svn eq "no"));
       $line = "\%libf_objc_buildcount $new_buildcount" if ($line =~ m/^\%libf_objc_buildcount/);
       $line = "\%libf_objc_source $release_tarballname" if (($line =~ m/^\%libf_objc_source/) and ($build_type eq "release"));
     }
@@ -219,8 +219,8 @@ sub pre_patch_rpmmacros {
       $line = "\%libf_version $new_version" if ($line =~ m/^\%libf_version/);
       $line = "\%libf_major_version $new_major" if ($line =~ m/^\%libf_major_version/);
       $line = "\%libf_minor_version $new_minor" if ($line =~ m/^\%libf_minor_version/);
-      $line = "\%libf_release trunk_r$new_svnrev" if (($line =~ m/^\%libf_release/) and ($build_type eq "trunk"));
-      $line = "\%libf_release r$new_svnrev" if (($line =~ m/^\%libf_release/) and ($build_type eq "release"));
+      $line = "\%libf_release trunk_r$new_svnrev" if (($line =~ m/^\%libf_release/) and ($build_type eq "trunk") and ($fake_svn eq "no"));
+      $line = "\%libf_release r$new_svnrev" if (($line =~ m/^\%libf_release/) and ($build_type eq "release") and ($fake_svn eq "no"));
       $line = "\%libf_buildcount $new_buildcount" if ($line =~ m/^\%libf_buildcount/);
       $line = "\%libf_source $release_tarballname" if (($line =~ m/^\%libf_source/) and ($build_type eq "release"));
       $line = "\%libf_libversion $libversion" if ($line =~ m/^\%libf_libversion/);
@@ -228,8 +228,8 @@ sub pre_patch_rpmmacros {
     #libical-sope-devel...
     if ($package eq "libical-sope-devel") {
       $line = "\%libical_version $new_version" if ($line =~ m/^\%libical_version/);
-      $line = "\%libical_release trunk_r$new_svnrev" if (($line =~ m/^\%libical_release/) and ($build_type eq "trunk"));
-      $line = "\%libical_release r$new_svnrev" if (($line =~ m/^\%libical_release/) and ($build_type eq "release"));
+      $line = "\%libical_release trunk_r$new_svnrev" if (($line =~ m/^\%libical_release/) and ($build_type eq "trunk") and ($fake_svn eq "no"));
+      $line = "\%libical_release r$new_svnrev" if (($line =~ m/^\%libical_release/) and ($build_type eq "release") and ($fake_svn eq "no"));
       $line = "\%libical_buildcount $new_buildcount" if ($line =~ m/^\%libical_buildcount/);
       $line = "\%libical_source $release_tarballname" if (($line =~ m/^\%libical_source/) and ($build_type eq "release"));
     }
@@ -238,8 +238,8 @@ sub pre_patch_rpmmacros {
       $line = "\%sope_version $new_version" if ($line =~ m/^\%sope_version/);
       $line = "\%sope_major_version $new_major" if ($line =~ m/^\%sope_major_version/);
       $line = "\%sope_minor_version $new_minor" if ($line =~ m/^\%sope_minor_version/);
-      $line = "\%sope_release trunk_r$new_svnrev" if (($line =~ m/^\%sope_release/) and ($build_type eq "trunk"));
-      $line = "\%sope_release r$new_svnrev" if (($line =~ m/^\%sope_release/) and ($build_type eq "release"));
+      $line = "\%sope_release trunk_r$new_svnrev" if (($line =~ m/^\%sope_release/) and ($build_type eq "trunk") and ($fake_svn eq "no"));
+      $line = "\%sope_release r$new_svnrev" if (($line =~ m/^\%sope_release/) and ($build_type eq "release") and ($fake_svn eq "no"));
       $line = "\%sope_buildcount $new_buildcount" if ($line =~ m/^\%sope_buildcount/);
       $line = "\%sope_source $release_tarballname" if (($line =~ m/^\%sope_source/) and ($build_type eq "release"));
       $line = "\%sope_libversion $libversion" if ($line =~ m/^\%sope_libversion/);
@@ -247,55 +247,55 @@ sub pre_patch_rpmmacros {
     #opengroupware...
     if ($package eq "opengroupware") {
       $line = "\%ogo_version $new_version" if ($line =~ m/^\%ogo_version/);
-      $line = "\%ogo_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_release/) and ($build_type eq "trunk"));
-      $line = "\%ogo_release r$new_svnrev" if (($line =~ m/^\%ogo_release/) and ($build_type eq "release"));
+      $line = "\%ogo_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_release/) and ($build_type eq "trunk") and ($fake_svn eq "no"));
+      $line = "\%ogo_release r$new_svnrev" if (($line =~ m/^\%ogo_release/) and ($build_type eq "release") and ($fake_svn eq "no"));
       $line = "\%ogo_buildcount $new_buildcount" if ($line =~ m/^\%ogo_buildcount/);
       $line = "\%ogo_source $release_tarballname" if (($line =~ m/^\%ogo_source/) and ($build_type eq "release"));
     }
     #mod_ngobjweb...
     if ($package =~ m/^mod_ngobjweb_/) {
       $line = "\%mod_ngobjweb_version $new_version" if ($line =~ m/^\%mod_ngobjweb_version/);
-      $line = "\%mod_ngobjweb_release trunk_r$new_svnrev" if (($line =~ m/^\%mod_ngobjweb_release/) and ($build_type eq "trunk"));
-      $line = "\%mod_ngobjweb_release r$new_svnrev" if (($line =~ m/^\%mod_ngobjweb_release/) and ($build_type eq "release"));
+      $line = "\%mod_ngobjweb_release trunk_r$new_svnrev" if (($line =~ m/^\%mod_ngobjweb_release/) and ($build_type eq "trunk") and ($fake_svn eq "no"));
+      $line = "\%mod_ngobjweb_release r$new_svnrev" if (($line =~ m/^\%mod_ngobjweb_release/) and ($build_type eq "release") and ($fake_svn eq "no"));
       $line = "\%mod_ngobjweb_buildcount $new_buildcount" if ($line =~ m/^\%mod_ngobjweb_buildcount/);
       $line = "\%mod_ngobjweb_source $release_tarballname" if (($line =~ m/^\%mod_ngobjweb_source/) and ($build_type eq "release"));
     }
     #ogo-environment...
     if ($package eq "ogo-environment") {
       $line = "\%ogo_env_version $new_version" if ($line =~ m/^\%ogo_env_version/);
-      $line = "\%ogo_env_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_env_release/) and ($build_type eq "trunk"));
-      $line = "\%ogo_env_release r$new_svnrev" if (($line =~ m/^\%ogo_env_release/) and ($build_type eq "release"));
+      $line = "\%ogo_env_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_env_release/) and ($build_type eq "trunk") and ($fake_svn eq "no"));
+      $line = "\%ogo_env_release r$new_svnrev" if (($line =~ m/^\%ogo_env_release/) and ($build_type eq "release") and ($fake_svn eq "no"));
       $line = "\%ogo_env_buildcount $new_buildcount" if ($line =~ m/^\%ogo_env_buildcount/);
     }
     #opengroupware-pilot-link...
     if ($package eq "opengroupware-pilot-link") {
       $line = "\%ogo_pilotlink_version $new_version" if ($line =~ m/^\%ogo_pilotlink_version/);
-      $line = "\%ogo_pilotlink_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_pilotlink_release/) and ($build_type eq "trunk"));
-      $line = "\%ogo_pilotlink_release r$new_svnrev" if (($line =~ m/^\%ogo_pilotlink_release/) and ($build_type eq "release"));
+      $line = "\%ogo_pilotlink_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_pilotlink_release/) and ($build_type eq "trunk") and ($fake_svn eq "no"));
+      $line = "\%ogo_pilotlink_release r$new_svnrev" if (($line =~ m/^\%ogo_pilotlink_release/) and ($build_type eq "release") and ($fake_svn eq "no"));
       $line = "\%ogo_pilotlink_buildcount $new_buildcount" if ($line =~ m/^\%ogo_pilotlink_buildcount/);
       $line = "\%ogo_pilotlink_source $release_tarballname" if (($line =~ m/^\%ogo_pilotlink_source/) and ($build_type eq "release"));
     }
     #opengroupware-nhsc...
     if ($package eq "opengroupware-nhsc") {
       $line = "\%ogo_nhsc_version $new_version" if ($line =~ m/^\%ogo_nhsc_version/);
-      $line = "\%ogo_nhsc_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_nhsc_release/) and ($build_type eq "trunk"));
-      $line = "\%ogo_nhsc_release r$new_svnrev" if (($line =~ m/^\%ogo_nhsc_release/) and ($build_type eq "release"));
+      $line = "\%ogo_nhsc_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_nhsc_release/) and ($build_type eq "trunk") and ($fake_svn eq "no"));
+      $line = "\%ogo_nhsc_release r$new_svnrev" if (($line =~ m/^\%ogo_nhsc_release/) and ($build_type eq "release") and ($fake_svn eq "no"));
       $line = "\%ogo_nhsc_buildcount $new_buildcount" if ($line =~ m/^\%ogo_nhsc_buildcount/);
       $line = "\%ogo_nhsc_source $release_tarballname" if (($line =~ m/^\%ogo_nhsc_source/) and ($build_type eq "release"));
     }
     #epoz
     if ($package eq "epoz") {
       $line = "\%epoz_version $new_version" if ($line =~ m/^\%epoz_version/);
-      $line = "\%epoz_release trunk_r$new_svnrev" if (($line =~ m/^\%epoz_release/) and ($build_type eq "trunk"));
-      $line = "\%epoz_release r$new_svnrev" if (($line =~ m/^\%epoz_release/) and ($build_type eq "release"));
+      $line = "\%epoz_release trunk_r$new_svnrev" if (($line =~ m/^\%epoz_release/) and ($build_type eq "trunk") and ($fake_svn eq "no"));
+      $line = "\%epoz_release r$new_svnrev" if (($line =~ m/^\%epoz_release/) and ($build_type eq "release") and ($fake_svn eq "no"));
       $line = "\%epoz_buildcount $new_buildcount" if ($line =~ m/^\%epoz_buildcount/);
       $line = "\%epoz_source $release_tarballname" if (($line =~ m/^\%epoz_source/) and ($build_type eq "release"));
     }
     #ogo-database-setup...
     if ($package eq "ogo-database-setup") {
       $line = "\%ogo_dbsetup_version $new_version" if ($line =~ m/^\%ogo_dbsetup_version/);
-      $line = "\%ogo_dbsetup_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_dbsetup_release/) and ($build_type eq "trunk"));
-      $line = "\%ogo_dbsetup_release r$new_svnrev" if (($line =~ m/^\%ogo_dbsetup_release/) and ($build_type eq "release"));
+      $line = "\%ogo_dbsetup_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_dbsetup_release/) and ($build_type eq "trunk") and ($fake_svn eq "no"));
+      $line = "\%ogo_dbsetup_release r$new_svnrev" if (($line =~ m/^\%ogo_dbsetup_release/) and ($build_type eq "release") and ($fake_svn eq "no"));
       $line = "\%ogo_dbsetup_buildcount $new_buildcount" if ($line =~ m/^\%ogo_dbsetup_buildcount/);
     }
     #see flavour detector...
@@ -394,7 +394,8 @@ sub get_current_from_rpmmacro {
   #   bumped too? Seems silly... should only apply when we force a rebuild.
   unless("$cur_svnrev" eq "$new_svnrev") {
     $do_build = "yes";
-    print "[DOBUILD LOGIC]     - $package SVNREV NEW: $new_svnrev SVNREV OLD: $cur_svnrev -> setting \$do_build = \"$do_build\"\n" if ($verbose eq "yes");
+    print "[DOBUILD LOGIC]     - $package SVNREV NEW: $new_svnrev SVNREV OLD: $cur_svnrev -> setting \$do_build = \"$do_build\"\n" if (($verbose eq "yes") and ($fake_svn eq "no"));
+    print "[FAKE BUILD   ]     - $package SVNREV NEW: $new_svnrev SVNREV OLD: $cur_svnrev -> setting \$do_build = \"$do_build\" but won't patch .rpmmacros\n" if (($verbose eq "yes") and ($fake_svn eq "yes"));
   }
   unless("$cur_version" eq "$new_version") {
     $do_build = "yes";
@@ -735,6 +736,9 @@ sub get_latest_sources {
     } elsif ( -f "$sources_dir/$release_tarballname" ) {
       print "[DOWNLOAD_SRC]      - using $sources_dir/$release_tarballname\n" if ($verbose eq "yes");
       print "[DOWNLOAD_SRC]      - bc I had no luck downloading the sources from $dl_host\n" if ($verbose eq "yes");
+    } elsif ($fake_svn eq "yes") {
+      `wget -q --proxy=off -O "$sources_dir/$release_tarballname" http://$dl_host/sources/trunk/$release_tarballname`;
+      print "[DOWNLOAD_SRC]      - FAKE BUILD SOURCES -> sources/trunk/$release_tarballname\n";
     } else {
       print "[DOWNLOAD_SRC]      - Looks like $release_tarballname isn't even present at neither $dl_host nor $sources_dir/.\n" if ($verbose eq "yes");
       print "[DOWNLOAD_SRC]      - Senseless to continue - goodbye!\n" if ($verbose eq "yes");
@@ -745,7 +749,7 @@ sub get_latest_sources {
 }
 
 sub get_commandline_options {
-  getopt('pftbdcvusr');
+  getopt('pftbdcvusrn');
   #self explaining...
   if (!$opt_p) {
     print "No package given!\n";
@@ -805,8 +809,8 @@ sub get_commandline_options {
   # (not required for 'ogo-environment.spec') bc there
   # we don't have a sourcefile
   # 
-  # The release trigger scripts determine the `real` name
-  # and it gets then feeded into the 'purveyor_of_rpms.pl'
+  # The release trigger scripts determines the `real` name
+  # and it then gets fed into the 'purveyor_of_rpms.pl'
   if (!$opt_c) {
     $release_tarballname = "none";
   } else {
@@ -859,8 +863,19 @@ sub get_commandline_options {
     #a package into a non-existant directory.
     #Examples for a common option given to <-r> are available at:
     #  http://download.opengroupware.org/packages/fedora-core3/releases/
-    #  
+    #  (see the subdirs there)
     $rdirbase = $opt_r;
+  }
+  #This `fakes` the SVN... that is - it won't alter
+  #the SVN revision when we patch our .rpmmacros
+  #(there are cases were we call the purveyor_of_rpms.pl from within certain trigger*release.pl scripts
+  #in order to reset the buildenvironment into a defined state (mostly trunk) - and thus we ensure, that the .rpmmmacros_trunk
+  #doesn't get hurt that bad at the end of a release build)
+  #WARNING: need to readjust my explanation skills :>
+  if (!$opt_n or ($opt_n !~ m/^yes$/i)) {
+    $fake_svn = "no";
+  } else {
+    $fake_svn = "yes";
   }
   #sanitize... weird option combinations
   if (($build_type eq "release") and ($release_tarballname eq "none") and (! grep /^$package$/, @package_wo_source)) {
@@ -884,6 +899,7 @@ sub get_commandline_options {
     print "[COMMANDLINE]       - uploading into directory  using default location determined by $memyself\n" if(!$opt_r);
     print "[COMMANDLINE]       - detected distribution     $distrib_define\n";
     print "[COMMANDLINE]       - flavour we build upon     $flavour_we_build_upon\n";
+    print "[COMMANDLINE]       - fake SVN revision        <-n $fake_svn>\n";
   }
 }
 
