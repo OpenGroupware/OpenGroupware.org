@@ -61,10 +61,14 @@ static BOOL debugFavorites = YES;
 - (void)addObject:(id)_fav {
   int i, count;
   id  favGid;
-
-  favGid = [_fav respondsToSelector:@selector(globalID)]
-    ? [_fav globalID]
-    : [_fav valueForKey:@"globalID"];
+  
+  if ([_fav isKindOfClass:[EOGlobalID class]])
+    favGid = _fav;
+  else {
+    favGid = [_fav respondsToSelector:@selector(globalID)]
+      ? [_fav globalID]
+      : [_fav valueForKey:@"globalID"];
+  }
   
   if (![favGid isNotNull]) {
     if (debugFavorites)
