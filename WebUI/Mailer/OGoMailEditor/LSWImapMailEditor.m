@@ -205,6 +205,7 @@ static Class      StrClass        = nil;
 
 - (void)_setupFromPopUp {
   NSUserDefaults *def;
+  NSString       *defKey;
   BOOL v;
 
   def = [self userDefaults]; 
@@ -220,10 +221,9 @@ static Class      StrClass        = nil;
     else
       v = [obj boolValue];
   }
-  // TODO: "self config"??
-  self->addressKeys = [[self config] valueForKey:(v)
-                                     ? @"MailHeaderFields"
-                                     : @"MailHeaderFieldsWithoutFrom"];
+
+  defKey = v ? @"MailHeaderFields" : @"MailHeaderFieldsWithoutFrom";
+  self->addressKeys = [[def arrayForKey:defKey] copy];
 }
 
 - (id)init {
@@ -233,8 +233,6 @@ static Class      StrClass        = nil;
     self->mimeParts   = [[NSMutableArray alloc] initWithCapacity:5];
     self->warningKind = Warning_Send;
     
-    self->searchString          = nil;
-    self->addressEntryPopupItem = nil;
     if ([self useEpoz]) {
       self->flags.sendPlainText = 1;
     }
@@ -252,6 +250,8 @@ static Class      StrClass        = nil;
 }
 
 - (void)dealloc {
+  [self->addressKey     release];
+  [self->addressKeys    release];
   [self->pwd            release];
   [self->login          release];
   [self->host           release];
@@ -264,11 +264,6 @@ static Class      StrClass        = nil;
   [self->uploadItem     release];
   [self->searchString   release];
   [self->selectedFrom   release];
-  
-  self->addressKeys  = nil;
-  self->attachment   = nil;
-  self->addressEntry = nil;
-  self->addressEntryPopupItem = nil;
   [super dealloc];
 }
 
@@ -361,9 +356,9 @@ static Class      StrClass        = nil;
 + (NSString *)_eAddressForPerson:(id)_person {
   NSString *eAddr;
 
-  if ((eAddr = [_person valueForKey:@"email1"]))
+  if ([(eAddr = [_person valueForKey:@"email1"]) isNotNull])
     return eAddr;
-  if ((eAddr = [_person valueForKey:@"email2"]))
+  if ([(eAddr = [_person valueForKey:@"email2"]) isNotNull])
     return eAddr;
   return [_person valueForKey:@"email3"];
 }
@@ -570,7 +565,7 @@ static Class      StrClass        = nil;
     [self->host retain];
     [self->login retain];
   }
-  if (ctx) {
+  if (ctx != nil) {
     NGImap4Client *client;
     NSDictionary  *res;
 
@@ -578,8 +573,8 @@ static Class      StrClass        = nil;
 
     client = [ctx client];
     res    = [client noop];
-
-    if ([ctx lastException]) {
+    
+    if ([ctx lastException] != nil) {
       [[self imapCtxHandler] resetImapContextWithSession:[self session]];
       [self->host  release]; self->host = nil;
       [self->login release]; self->login = nil;
@@ -1424,9 +1419,24 @@ static Class      StrClass        = nil;
   return count;
 }
 
+/* address keys (header fields in the popup) */
+
 - (NSArray *)addressKeys {
   return self->addressKeys;
 }
+
+- (void)setAddressKey:(NSString *)_key {
+  ASSIGNCOPY(self->addressKey, _key);
+}
+- (NSString *)addressKey {
+  return self->addressKey;
+}
+
+- (NSString *)addressKeyLabel {
+  return [[self labels] valueForKey:[self addressKey]];
+}
+
+/* attachments */
 
 - (NSArray *)attachmentsAsMime {
   NSMutableArray *mimeAtt; 

@@ -1,7 +1,5 @@
-// $Id: OGoWebMail.ccfg,v 1.2 2003/10/27 18:16:31 jan Exp $
 {
-
-  LSWImapMailEditor = {
+  LSWImapMailEditor = { /* NOTE: those are now defaults in OGoMailEditor */
      MailHeaderFields            = ("to", "cc", "bcc", "reply-to", "from");
      MailHeaderFieldsWithoutFrom = ("to", "cc", "bcc");
   }; // LSWImapMailEditor

@@ -1,5 +1,4 @@
 <#Frame>
-  <!-- $Id: LSWImapMailEditor.html 2 2004-08-20 11:37:44Z znek $ -->
   <#Window>
     <#WarningModeCondElse>
       <#UploadForm>
@@ -24,7 +23,9 @@
           <!-- Addresses -->
           <#AddressRep>
             <tr>
-              <#AttributeCell><#Font><#AddressKeysPopup /></#Font></#AttributeCell>
+              <!-- this is the to,cc,bcc popup -->
+              <#AttributeCell><#Font
+                 ><#AddressKeysPopup /></#Font></#AttributeCell>
               <#ValueCell><#EditFont>
                 <#RecipientsPopup />
               </#EditFont></#ValueCell>
@@ -89,7 +90,8 @@
             <#AttributeCell><#Font>
               <#IsFirstUploadField>
                 <#HasOnlyOneField><#UploadString />:</#HasOnlyOneField>
-                <#HasMoreThanOneField><#UploadsString />:</#HasMoreThanOneField>
+                <#HasMoreThanOneField
+                   ><#UploadsString />:</#HasMoreThanOneField>
               </#IsFirstUploadField> 
             </#Font></#AttributeCell>
             <#ValueCell><#EditFont>

@@ -1,3 +1,17 @@
+2004-09-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.3
+
+	* LSWImapMailEditor.m: lookup header fields for from/to/cc popup in
+	  userdefaults instead of component config
+
+	* Defaults.plist: added MailHeaderFields and
+	  MailHeaderFieldsWithoutFrom defaults (where component config fields
+	  before)
+
+	* LSWImapMailEditor.wo/LSWImapMailEditor.wod: removed uses of
+	  singleSelection
+
 2004-08-22  Helge Hess  <helge.hess@opengroupware.org>
 
 	* removed dependency on SkyMailingListDataSource header (v5.1.2)

@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: LSWImapMailEditor.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __OGoWebMail_LSWImapMailEditor_H__
 #define __OGoWebMail_LSWImapMailEditor_H__
@@ -45,8 +44,8 @@
   id             item;
   NSMutableArray      *attachments;
   NSMutableDictionary *attachment;
-  int            attachmentIdx;
-  id             addressEntryPopupItem;
+  int                 attachmentIdx;
+  id                  addressEntryPopupItem;
   struct {
     int sendPlainText:1;
     int returnReceipt:1;
@@ -76,6 +75,7 @@
     Warning_Send,
     Warning_Save
   } warningKind;
+  NSString *addressKey; /* item of addresskeys, a headerfield name */
 }
 
 /* actions */

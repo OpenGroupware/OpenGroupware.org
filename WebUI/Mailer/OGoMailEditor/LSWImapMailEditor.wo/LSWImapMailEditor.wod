@@ -20,10 +20,12 @@ AddressRep: WORepetition {
   index = count; // TODO: this is confusing?!
 }
 
+// TODO: this should be an own dynamic element!
 AddressKeysPopup: WOPopUpButton {
   list      = addressKeys;
+  item      = addressKey;
+  string    = addressKeyLabel;
   selection = addressEntry.header;
-  singleSelection = YES;
 }
 
 RecipientsPopup: WOPopUpButton {
@@ -31,7 +33,6 @@ RecipientsPopup: WOPopUpButton {
   string    = addressEntryPopupItem.label;
   selection = addressEntry.email;
   item      = addressEntryPopupItem;
-  singleSelection = YES;
 }
 
 SearchLabel: WOString {
@@ -329,9 +330,8 @@ FromLabel: WOString {
 }
 
 FromPopup: WOPopUpButton {
-  list            = fromList;
-  singleSelection = YES;
-  selection       = selectedFrom;
+  list      = fromList;
+  selection = selectedFrom;
 }
 
 PlainTextCheckboxEnabled: WOConditional {

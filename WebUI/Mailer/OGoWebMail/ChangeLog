@@ -1,3 +1,9 @@
+2004-09-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: do not generate the components.ccfg as a drived
+	  resource for German.lproj, should not be necessary anymore, removed
+	  German.lproj (v5.1.98)
+
 2004-09-09  Helge Hess  <helge.hess@skyrix.com>
 
 	* GNUmakefile: fixed version of libOGoWebMail, added FHS install of

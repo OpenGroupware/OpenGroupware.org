@@ -71,18 +71,11 @@ OGoWebMail_COMPONENTS = \
 	SkyImapMailListFooter.wo  	\
 	SkyImapMailPrintViewer.wo	\
 
-OGoWebMail_LANGUAGES = English German
+OGoWebMail_LANGUAGES = English
 
 OGoWebMail_LOCALIZED_RESOURCE_FILES = OGoWebMail.ccfg
 
 OGoWebMail_RESOURCE_FILES += Defaults.plist Version
-
-OGoWebMail_DERIVED_RESOURCES = 		\
-	German.lproj/OGoWebMail.ccfg  	\
-
-German.lproj/OGoWebMail.ccfg : English.lproj/OGoWebMail.ccfg
-	echo "// generated from $(<), do not modify !" >$@
-	cat $< >>$@
 
 include GNUmakefile.components
 
