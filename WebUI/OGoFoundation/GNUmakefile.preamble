@@ -1,4 +1,4 @@
-# $Id$
+# compilation settings
 
 libOGoFoundation_INCLUDE_DIRS += -I..
 
@@ -8,10 +8,12 @@ libOGoFoundation_LIB_DIRS += \
 libOGoFoundation_LIBRARIES_DEPEND_UPON += \
 	-lOGoDocuments	\
 	-lLSFoundation	\
+	-lGDLAccess	\
 	-lNGObjWeb	\
 	-lNGMime	\
+	-lNGLdap	\
 	-lNGStreams -lNGExtensions -lEOControl \
-	-lDOM -lSaxObjC
+	-lXmlRpc -lDOM -lSaxObjC
 
 # flags
 

@@ -1,3 +1,11 @@
+2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.83
+
+	* LSWClipboardOwner.m: some code cleanups
+
+	* GNUmakefile.preamble: fixed linking on MacOSX
+
 2005-02-16  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.1.82

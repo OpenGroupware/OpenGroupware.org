@@ -19,35 +19,38 @@
   02111-1307, USA.
 */
 
-#import "common.h"
-#import "LSWClipboardOwner.h"
-#import "OWPasteboard.h"
+#include "LSWClipboardOwner.h"
+#include "OWPasteboard.h"
+#include "common.h"
+
+// TODO: check whether this is actually used anywhere
+//       this is used in OGoSession+Clipboard.m
 
 @implementation LSWClipboardOwner
 
 - (id)initWithSession:(WOSession *)_session object:(id)_object {
   if ((self = [super init])) {
     self->session = _session;
-    self->object  = RETAIN(_object);
+    self->object  = [_object retain];
   }
   return self;
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->object);
+  [self->object release];
   [super dealloc];
 }
-#endif
+
+/* factory */
 
 + (id)clipboardOwnerForSession:(WOSession *)_session {
-  return AUTORELEASE([[self alloc] initWithSession:_session object:nil]);
+  return [[[self alloc] initWithSession:_session object:nil] autorelease];
 }
 + (id)clipboardOwnerForSession:(WOSession *)_session object:(id)_object {
-  return AUTORELEASE([[self alloc] initWithSession:_session object:_object]);
+  return [[[self alloc] initWithSession:_session object:_object] autorelease];
 }
 
-// pasteboard owner
+/* pasteboard owner */
 
 - (void)pasteboardChangedOwner:(OWPasteboard *)_pasteboard {
   NSLog(@"%@: pasteboard changed owner ..", self);
@@ -58,9 +61,9 @@
 
   NSLog(@"%@: provide data for type %@ in pasteboard with types %@",
         self, _type, [_pasteboard types]);
-
-  if (self->object)
+  
+  if (self->object != nil)
     [_pasteboard setObject:self->object forType:_type];
 }
 
-@end
+@end /* LSWClipboardOwner */

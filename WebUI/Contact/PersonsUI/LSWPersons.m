@@ -59,6 +59,7 @@
 #include <OGoFoundation/SkyWizard.h>
 #include <NGMime/NGMimeType.h>
 #include <NGExtensions/EOCacheDataSource.h>
+#include <NGExtensions/NSString+Ext.h>
 #include <OGoContacts/SkyPersonDataSource.h>
 #include "common.h"
 

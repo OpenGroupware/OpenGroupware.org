@@ -19,7 +19,10 @@
   02111-1307, USA.
 */
 
-#import <Foundation/NSObject.h>
+#ifndef __OGoFoundation_LSWClipboardOwner_H__
+#define __OGoFoundation_LSWClipboardOwner_H__
+
+#include <Foundation/NSObject.h>
 
 @class WOSession;
 
@@ -33,3 +36,5 @@
 + (id)clipboardOwnerForSession:(WOSession *)_session object:(id)_object;
 
 @end
+
+#endif /* __OGoFoundation_LSWClipboardOwner_H__ */

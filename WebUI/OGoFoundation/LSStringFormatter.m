@@ -19,9 +19,12 @@
   02111-1307, USA.
 */
 
-#import "common.h"
-#import "LSStringFormatter.h"
+#include "LSStringFormatter.h"
+#include "common.h"
 #include <GDLAccess/EONull.h>
+
+// TODO: check whether this is actually used somewhere
+//       it is instantiated by OGoSession.m
 
 @implementation LSStringFormatter
 
@@ -47,4 +50,4 @@
   return YES;
 }
 
-@end
+@end /* LSStringFormatter */

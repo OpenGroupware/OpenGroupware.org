@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2004 Helge Hess
+  Copyright (C) 2004-2005 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -20,6 +20,7 @@
 */
 
 #include "EOQualifier+PersonUI.h"
+#include <NGExtensions/NSString+Ext.h>
 #include "common.h"
 
 @implementation EOQualifier(PersonUI)

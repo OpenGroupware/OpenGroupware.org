@@ -19,8 +19,8 @@
   02111-1307, USA.
 */
 
-#ifndef __LSWebInterface_LSWFoundation_LSStringFormatter_H__
-#define __LSWebInterface_LSWFoundation_LSStringFormatter_H__
+#ifndef __OGoFoundation_LSStringFormatter_H__
+#define __OGoFoundation_LSStringFormatter_H__
 
 #import <Foundation/NSFormatter.h>
 
@@ -40,4 +40,4 @@
 
 @end
 
-#endif /* __LSWebInterface_LSWFoundation_LSStringFormatter_H__ */
+#endif /* __OGoFoundation_LSStringFormatter_H__ */

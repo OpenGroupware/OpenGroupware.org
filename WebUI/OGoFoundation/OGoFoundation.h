@@ -29,7 +29,6 @@
 #include <OGoFoundation/OGoNavigation.h>
 #include <OGoFoundation/OGoSession.h>
 
-#include <OGoFoundation/LSStringFormatter.h>
 #include <OGoFoundation/NSObject+LSWPasteboard.h>
 #include <OGoFoundation/OGoResourceManager.h>
 #include <OGoFoundation/LSWTreeState.h>
@@ -45,7 +44,6 @@
 #include <OGoFoundation/SkyMoneyFormatter.h>
 
 #include <OGoFoundation/OGoSession.h>
-#include <OGoFoundation/LSWClipboardOwner.h>
 #include <OGoFoundation/LSWConfigHandler.h>
 #include <OGoFoundation/OGoEditorPage.h>
 #include <OGoFoundation/LSWEditorPage+Wizard.h>

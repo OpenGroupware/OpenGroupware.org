@@ -46,7 +46,6 @@ extern void __link_WOComponent_Commands(void);
   [OGoConfigHandler      self];
   [LSWViewerPage         self];
   [OGoEditorPage         self];
-  [LSStringFormatter     self];
   [OGoSession            self];
 }
 
