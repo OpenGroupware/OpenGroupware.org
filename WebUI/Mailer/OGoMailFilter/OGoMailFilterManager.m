@@ -167,26 +167,44 @@ static BOOL     SieveLogPassword      = NO;
 }
 
 - (NSString *)pathToFilterInstallScript {
-  NSDictionary *env;
-  NSString     *sievePath;
+  NSFileManager *fm;
+  NSDictionary  *env;
   
-  // TODO: add support for flattened
   // TODO: use Foundation file-search function to locate binary
-  env       = [[NSProcessInfo processInfo] environment];
-  sievePath =
-    [NSString stringWithFormat:@"%@/Tools/%@/%@/%@/sky_install_sieve",
-                [env objectForKey:SkyInstallSievePrefixVar],
-                [env objectForKey:@"GNUSTEP_HOST_CPU"],
-                [env objectForKey:@"GNUSTEP_HOST_OS"],
-                [env objectForKey:@"LIBRARY_COMBO"]];
+  env = [[NSProcessInfo processInfo] environment];
+
+  /* check GNUstep locations */
   
-  if (![[self fileManager] isExecutableFileAtPath:sievePath]) {
-    [self logWithFormat:@"ERROR: did not find executable sieve binary: '%@'",
-	    sievePath];
-    return nil;
+  if ([[env objectForKey:@"GNUSTEP_USER_ROOT"] length] > 0) {
+    NSString *sievePath;
+    NSString *tmp;
+    
+    sievePath = [env objectForKey:SkyInstallSievePrefixVar];
+    sievePath = [sievePath stringByAppendingString:@"/Tools/"];
+    tmp       = [[env objectForKey:@"GNUSTEP_FLATTENED"] lowercaseString];
+    
+    if (![tmp isEqualToString:@"yes"]) {
+      sievePath = [sievePath stringByAppendingFormat:@"%@/%@/%@",
+                             [env objectForKey:@"GNUSTEP_HOST_CPU"],
+                             [env objectForKey:@"GNUSTEP_HOST_OS"],
+                             [env objectForKey:@"LIBRARY_COMBO"]];
+    }
+    sievePath = [sievePath stringByAppendingString:@"sky_install_sieve"];
+    
+    fm = [self fileManager];
+    if ([fm isExecutableFileAtPath:sievePath])
+      return sievePath;
   }
+
+  /* check FHS locations */
   
-  return sievePath;
+  if ([fm fileExistsAtPath:@"/usr/local/bin/sky_install_sieve"])
+    return @"/usr/local/bin/sky_install_sieve";
+  if ([fm fileExistsAtPath:@"/usr/bin/sky_install_sieve"])
+    return @"/usr/bin/sky_install_sieve";
+  
+  [self logWithFormat:@"ERROR: did not find 'sky_install_sieve' tool."];
+  return nil;
 }
 
 - (NSArray *)getTaskArgumentsAndDebugArguments:(NSArray **)_debugArgs 
