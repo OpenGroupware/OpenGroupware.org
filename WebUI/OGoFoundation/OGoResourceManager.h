@@ -30,7 +30,7 @@
 @interface OGoResourceManager : OWResourceManager
 {
 @private
-  NSMutableDictionary   *componentToPath;
+  NSMutableDictionary   *keyToComponentPath;
   NSMutableDictionary   *keyToURL;
   NSMutableDictionary   *keyToPath;
   OGoStringTableManager *labelManager;

@@ -139,8 +139,8 @@ static NSNull        *null = nil;
 - (id)initWithPath:(NSString *)_path {
   if ((self = [super initWithPath:_path])) {
     if ([WOApplication isCachingEnabled]) {
-      self->componentToPath =
-	[[NSMutableDictionary allocWithZone:[self zone]] initWithCapacity:128];
+      self->keyToComponentPath =
+	[[NSMutableDictionary alloc] initWithCapacity:128];
       
       self->keyToPath = [[NSMutableDictionary alloc] initWithCapacity:1024];
       self->keyToURL = [[NSMutableDictionary alloc] initWithCapacity:1024];
@@ -156,11 +156,11 @@ static NSNull        *null = nil;
 }
 
 - (void)dealloc {
-  [self->cachedKey       release];
-  [self->labelManager    release];
-  [self->keyToURL        release];
-  [self->keyToPath       release];
-  [self->componentToPath release];
+  [self->cachedKey          release];
+  [self->labelManager       release];
+  [self->keyToURL           release];
+  [self->keyToPath          release];
+  [self->keyToComponentPath release];
   [super dealloc];
 }
 
@@ -596,15 +596,23 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
 /* locate components */
 
 - (NSString *)lookupComponentInStandardPathes:(NSString *)_name
-  inFramework:(NSString *)_framework
+  inFramework:(NSString *)_framework theme:(NSString *)_theme
 {
   // TODO: what about languages/themes?!
   NSEnumerator *e;
   NSString *path;
   
+  [self logWithFormat:@"LOOKUP %@-%@-%@", _name, _framework, _theme];
+  
   e = [templatePathes objectEnumerator];
   while ((path = [e nextObject])) {
     NSString *pe;
+
+    if (_theme != nil) {
+      // TODO: should be lower case for FHS? or use a different path?
+      path = [path stringByAppendingPathComponent:@"Themes"];
+      path = [path stringByAppendingPathComponent:_theme];
+    }
     
     if ([_framework length] > 0) {
       NSString *pureName;
@@ -620,6 +628,8 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
     if ([fm fileExistsAtPath:pe])
       return pe;
 
+    [self logWithFormat:@"  path: %@", path];
+
     pe = [path stringByAppendingPathExtension:@"html"];
     if ([fm fileExistsAtPath:pe]) {
       /* 
@@ -631,6 +641,45 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
     }
   }
   
+  return nil;
+}
+- (NSString *)lookupComponentInStandardPathes:(NSString *)_name
+  inFramework:(NSString *)_framework languages:(NSArray *)_langs
+{
+  NSString *path;
+  NSString *theme;
+  
+  /* extract theme from language array (we do not support nested themes ATM) */
+  
+  theme = nil;
+  if ([_langs count] > 1) {
+    NSRange r;
+    
+    theme = [_langs objectAtIndex:0];
+    r = [theme rangeOfString:@"_"];
+    theme = (r.length > 0)
+      ? [theme substringFromIndex:(r.location + r.length)]
+      : nil;
+  }
+  else
+    theme = nil;
+
+  /* check theme dirs */
+  
+  if (theme != nil) {
+    path = [self lookupComponentInStandardPathes:_name inFramework:_framework
+		 theme:theme];
+    if (path != nil)
+      return path;
+  }
+
+  /* check base dirs */
+  
+  path = [self lookupComponentInStandardPathes:_name inFramework:_framework
+	       theme:nil];
+  if (path != nil)
+    return path;
+
   return nil;
 }
 
@@ -673,7 +722,7 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
 }
 
 - (NSString *)pathToComponentNamed:(NSString *)_name
-  inFramework:(NSString *)_fw
+  inFramework:(NSString *)_fw languages:(NSArray *)_langs
 {
   // TODO: what about languages in lookup?
   NSString *path;
@@ -685,7 +734,9 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   
   /* first check cache */
   
-  if ((path = [self->componentToPath objectForKey:_name]) != nil) {
+  path = checkCache(self->keyToComponentPath, self->cachedKey, _name, _fw,
+		    [_langs count] > 0 ? [_langs objectAtIndex:0]:@"English");
+  if (path != nil) {
     if (debugComponents)
       [self logWithFormat:@"  use cached location: %@", path];
     return [path isNotNull] ? path : nil;
@@ -693,7 +744,9 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   
   /* look in FHS locations */
 
-  if ((path = [self lookupComponentInStandardPathes:_name inFramework:_fw])) {
+  path = [self lookupComponentInStandardPathes:_name inFramework:_fw
+	       languages:_langs];
+  if (path != nil) {
     if (debugComponents)
       [self logWithFormat:@"  found in standard pathes: %@", path];
     goto done;
@@ -701,8 +754,8 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   
   /* try to find component by standard NGObjWeb method */
   
-  if ((path = [super pathToComponentNamed:_name inFramework:_fw])) {
-    /* Note: this uses -pathForResourceNamed:inFramework:languages: */
+  path = [super pathToComponentNamed:_name inFramework:_fw languages:_langs];
+  if (path != nil) {
     if (debugComponents)
       [self logWithFormat:@"  found using OWResourceManager: %@", path];
     goto done;
@@ -718,7 +771,7 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   
   /* did not find component */
  done:
-  [self->componentToPath setObject:(path ? path : (id)null) forKey:_name];
+  [self cacheValue:path inCache:self->keyToComponentPath];
   return path;
 }
 

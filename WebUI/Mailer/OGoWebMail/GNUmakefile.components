@@ -1,26 +1,2 @@
 #$Id$
 
-WO_COMPONENTS = 		\
-	LSWImapMails 		\
-	LSWImapMailViewer	\
-	SkyImapMailList		\
-	SkyImapMailListHeader	\
-
-WO_COMPONENTS:=$(strip $(WO_COMPONENTS))
-
-INSTALL_COMPONENTS: 
-	@(		\
-          for i in $(WO_COMPONENTS); do \
-	    echo "building derived templates $$i component"; \
-	    $(MKDIRS) $$i.wo/German.lproj; \
-	    \
-	    touch $$i.wo/German.lproj/$$i.html;	\
-	    \
-	    echo "<!-- do not modify generate from $$i.wo/English.lproj/$$i.html -->" >$$i.wo/German.lproj/$$i.html;		\
-	    cat $$i.wo/English.lproj/$$i.html >>$$i.wo/German.lproj/$$i.html;\
-	    \
-	    touch $$i.wo/German.lproj/$$i.wod;\
-	    echo "// do not modify ($$i.wo/English.lproj/$$i.wod) " >$$i.wo/German.lproj/$$i.wod;			\
-	    cat $$i.wo/English.lproj/$$i.wod >>$$i.wo/German.lproj/$$i.wod; \
-	    \
-	  done; )

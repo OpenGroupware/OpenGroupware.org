@@ -1,5 +1,8 @@
 2004-09-13  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoResourceManager.m: made template lookup language/theme specific
+	  (v5.1.68)
+
 	* OGoResourceManager.m: print a warning if no template directory is
 	  configured (v5.1.67)
 
