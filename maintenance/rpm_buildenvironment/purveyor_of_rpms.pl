@@ -48,7 +48,6 @@ prepare_build_env();
 get_commandline_options();
 my $logerr = "$logs_dir/$package-$time_we_started.err";
 my $logout = "$logs_dir/$package-$time_we_started.out";
-exit 0;
 get_latest_sources();
 link_rpmmacros();
 collect_patchinfo();
