@@ -208,19 +208,22 @@ sub pre_patch_rpmmacros {
     #ogo-environment...
     if ($package eq "ogo-environment") {
       $line = "\%ogo_env_version $new_version" if ($line =~ m/^\%ogo_env_version/);
-      $line = "\%ogo_env_release $new_svnrev" if ($line =~ m/^\%ogo_env_release/);
+      $line = "\%ogo_env_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_env_release/) and ($build_type eq "trunk"));
+      $line = "\%ogo_env_release r$new_svnrev" if (($line =~ m/^\%ogo_env_release/) and ($build_type eq "release"));
       $line = "\%ogo_env_buildcount $new_buildcount" if ($line =~ m/^\%ogo_env_buildcount/);
     }
     #opengroupware-pilot-link...
     if ($package eq "opengroupware-pilot-link") {
       $line = "\%ogo_pilotlink_version $new_version" if ($line =~ m/^\%ogo_pilotlink_version/);
-      $line = "\%ogo_pilotlink_release $new_svnrev" if ($line =~ m/^\%ogo_pilotlink_release/);
+      $line = "\%ogo_pilotlink_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_pilotlink_release/) and ($build_type eq "trunk"));
+      $line = "\%ogo_pilotlink_release r$new_svnrev" if (($line =~ m/^\%ogo_pilotlink_release/) and ($build_type eq "release"));
       $line = "\%ogo_pilotlink_buildcount $new_buildcount" if ($line =~ m/^\%ogo_pilotlink_buildcount/);
     }
     #opengroupware-nhsc...
     if ($package eq "opengroupware-nhsc") {
       $line = "\%ogo_nhsc_version $new_version" if ($line =~ m/^\%ogo_nhsc_version/);
-      $line = "\%ogo_nhsc_release $new_svnrev" if ($line =~ m/^\%ogo_nhsc_release/);
+      $line = "\%ogo_nhsc_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_nhsc_release/) and ($build_type eq "trunk"));
+      $line = "\%ogo_nhsc_release r$new_svnrev" if (($line =~ m/^\%ogo_nhsc_release/) and ($build_type eq "release"));
       $line = "\%ogo_nhsc_buildcount $new_buildcount" if ($line =~ m/^\%ogo_nhsc_buildcount/);
     }
     #epoz
@@ -317,7 +320,7 @@ sub get_current_from_rpmmacro {
   print "[CURRENT RPMMACROS] - $package VERSION:$cur_version SVNREV:$cur_svnrev BUILDCOUNT:$cur_buildcount\n" if ($verbose eq "yes");
   # * evertime the svn revision changes ... we should build a new rpm
   # * and bump the buildcount - or not? why bumping the buildcount when svn revision
-  #   bumped too?
+  #   bumped too? Seems silly... should only apply when we force a rebuild.
   unless("$cur_svnrev" eq "$new_svnrev") {
     $do_build = "yes";
     print "[DOBUILD LOGIC]     - $package SVNREV NEW: $new_svnrev SVNREV OLD: $cur_svnrev -> setting \$do_build = \"$do_build\"\n" if ($verbose eq "yes");
@@ -327,11 +330,15 @@ sub get_current_from_rpmmacro {
     $version_bumped = "yes";
     print "[DOBUILD LOGIC]     - $package VERSION NEW: $new_version VERSION OLD: $cur_version -> setting \$do_build = \"$do_build\"\n" if ($verbose eq "yes");
   }
+  #next case matches whenever we see a SVNREV change without a bumped version.
   if (("$do_build" eq "yes") and ("$version_bumped" eq "no")) {
     $new_buildcount = $cur_buildcount;
     $new_buildcount++ unless ($bump_buildcount eq "no");
-    print "[DOBUILD LOGIC]     - $package raising buildcount from: $cur_buildcount to: $new_buildcount\n" if ($verbose eq "yes");
+    print "[DOBUILD LOGIC]     - $package raising buildcount from: $cur_buildcount to: $new_buildcount\n" if (($verbose eq "yes") and ($bump_buildcount eq "yes"));
+    print "[DOBUILD LOGIC]     - $package not raising buildcount from - current buildcount is $new_buildcount\n" if (($verbose eq "yes") and ($bump_buildcount eq "no"));
   }
+  # next case deals with major/minor version bumps... we're resetting the buildcount
+  # to '0' again (unless... see code.)
   if (("$do_build" eq "yes") and ("$version_bumped" eq "yes")) {
     $new_buildcount = $cur_buildcount;
     $new_buildcount = "0" unless ($bump_buildcount eq "no");
@@ -343,9 +350,9 @@ sub get_current_from_rpmmacro {
     print "[DOBUILD LOGIC]     - $package rebuild not necessary but I was called with force rebuild bumping from: $cur_buildcount to: $new_buildcount\n" if ($verbose eq "yes");
     $do_build = "yes";
   }
-  #don't waste time rebuilding mod_ngobjweb with every svn revision change...
-  #we only want to rebuild this package if the apache version has changed.
-  if (($package =~ m/^(mod_ngobjweb_|^epoz)/) and ($force_rebuild eq "no") and ("$cur_version" eq "$new_version")) {
+  #don't waste time rebuilding mod_ngobjweb, epoz, libfoundation with every svn revision change...
+  #we only want to rebuild this package if we see the version has changed.
+  if (($package =~ m/^(mod_ngobjweb_|^epoz|^libfoundation)/) and ($force_rebuild eq "no") and ("$cur_version" eq "$new_version")) {
     $do_build = "no";
     print "[DOBUILD LOGIC]     - $package prevented rebuild of $package because old: $cur_version new: $new_version are the same.\n" if ($verbose eq "yes");
   }
@@ -375,7 +382,8 @@ sub collect_patchinfo {
   }
   ###########################################################################
   if ($package eq "libobjc-lf2") {
-    open(LIBOBJCLF2, "tar xfzO $sources_dir/libobjc-lf2-trunk-latest.tar.gz libobjc-lf2/REVISION.svn|");
+    open(LIBOBJCLF2, "tar xfzO $sources_dir/libobjc-lf2-trunk-latest.tar.gz libobjc-lf2/REVISION.svn|") if ($build_type eq "trunk");
+    open(LIBOBJCLF2, "tar xfzO $sources_dir/$release_tarballname libobjc-lf2/REVISION.svn|") if ($build_type eq "release");
     while(<LIBOBJCLF2>) {
       chomp;
       $new_svnrev = $_ if ($_ =~ s/^SVN_REVISION:=//g);
@@ -407,7 +415,8 @@ sub collect_patchinfo {
   }
   ###########################################################################
   if ($package eq "libical-sope-devel") {
-    open(LIBICAL, "tar xfzO $sources_dir/libical-sope-trunk-latest.tar.gz libical-sope/REVISION.svn|");
+    open(LIBICAL, "tar xfzO $sources_dir/libical-sope-trunk-latest.tar.gz libical-sope/REVISION.svn|") if ($build_type eq "trunk");
+    open(LIBICAL, "tar xfzO $sources_dir/$release_tarballname libical-sope/REVISION.svn|") if ($build_type eq "release");
     while(<LIBICAL>) {
       chomp;
       $new_svnrev = $_ if ($_ =~ s/^SVN_REVISION:=//g);
@@ -472,7 +481,8 @@ sub collect_patchinfo {
   }
   ###########################################################################
   if ($package =~ m/^mod_ngobjweb_/) {
-    open(NGO, "tar xfzO $sources_dir/sope-mod_ngobjweb-trunk-latest.tar.gz sope-mod_ngobjweb/REVISION.svn|");
+    open(NGO, "tar xfzO $sources_dir/sope-mod_ngobjweb-trunk-latest.tar.gz sope-mod_ngobjweb/REVISION.svn|") if ($build_type eq "trunk");
+    open(NGO, "tar xfzO $sources_dir/$release_tarballname sope-mod_ngobjweb/REVISION.svn|") if ($build_type eq "release");
     while(<NGO>) {
       chomp;
       $new_svnrev = $_ if ($_ =~ s/^SVN_REVISION:=//g);
@@ -519,7 +529,8 @@ sub collect_patchinfo {
   }
   ###########################################################################
   if ($package eq "epoz") {
-    open(EPOZ, "tar xfzO $sources_dir/sope-epoz-trunk-latest.tar.gz sope-epoz/Version sope-epoz/REVISION.svn|");
+    open(EPOZ, "tar xfzO $sources_dir/sope-epoz-trunk-latest.tar.gz sope-epoz/Version sope-epoz/REVISION.svn|") if ($build_type eq "trunk");
+    open(EPOZ, "tar xfzO $sources_dir/$release_tarballname sope-epoz/Version sope-epoz/REVISION.svn|") if ($build_type eq "release");
     while(<EPOZ>) {
       chomp;
       $new_major = $_ if ($_ =~ s/^MAJOR_VERSION=//);
@@ -591,6 +602,7 @@ sub get_latest_sources {
   my $destfilename;
   my $package_mapped_tosrc = $package;
   my $dl_host = "download.opengroupware.org";
+  #<trunk>
   if(("$do_download" eq "yes") and ("$build_type" eq "trunk")) {
     print "[DOWNLOAD_SRC]      - Download sources for a trunk build!\n" if ($verbose eq "yes");
     @latest = `wget -q -O - http://$dl_host/sources/trunk/LATESTVERSION`;
@@ -623,19 +635,22 @@ sub get_latest_sources {
     print "[DOWNLOAD_SRC]      - Will download $dl_candidate and save the file as $destfilename\n" if ($verbose eq "yes");
     `wget -q -O "$sources_dir/$destfilename" http://$dl_host/sources/trunk/$dl_candidate`;
   }
+  #</trunk>
+  #<release>
   if(("$do_download" eq "yes") and ("$build_type" eq "release")) {
     #MD5_INDEX comes in handy here, bc this file keeps track of all uploaded releases
-    #http://download.opengroupware.org/sources/releases/LATEST-RELEASES might be better
-    #if I trigger which release should be build next.... todo.
     @latest = `wget -q -O - http://$dl_host/sources/releases/MD5_INDEX`;
     chomp $release_tarballname;
     if (grep /$release_tarballname$/, @latest) {
       print "[DOWNLOAD_SRC]      - $release_tarballname should be present for download.\n";
+      print "[DOWNLOAD_SRC]      - going to retrieve into -> $sources_dir/$release_tarballname\n";
       `wget -q -O "$sources_dir/$release_tarballname" http://$dl_host/sources/releases/$release_tarballname`;
     } else {
       print "[DOWNLOAD_SRC]      - Looks like $release_tarballname isn't even present at $dl_host.\n";
+      print "[DOWNLOAD_SRC]      - Senseless to continue - goodbye!\n";
       exit 1;
     }
+  #</release>
   }
 }
 
@@ -664,6 +679,9 @@ sub get_commandline_options {
   } else {
     $force_rebuild = "yes";
   }
+  #distinguish between different build type
+  #(either trunk or release)
+  #default >> trunk - build a 'trunk' rpm
   if (!$opt_t or ($opt_t !~ m/^release$/i)) {
     $build_type = "trunk";
   } else {
@@ -672,7 +690,7 @@ sub get_commandline_options {
   #the following might be handy to debug build issues
   #without raising the buildcount on subsequent build attempts
   #thus - we safe our .rpmmacros buildcount settings
-  #default >> yes - always bump buildcount
+  #default >> yes - always bump buildcount (if needed, which isn't always the case... see code)
   if (!$opt_b or ($opt_b !~ m/^no$/i)) {
     $bump_buildcount = "yes";
   } else {
@@ -682,7 +700,7 @@ sub get_commandline_options {
   #current sources from MASTER_SITE_OPENGROUPWARE or if we
   #are happy with the sources in rpm/SOURCES
   #this requires `wget`
-  #default >> yes - always attempt to download the sources
+  #default >> yes - always attempt to download the sources from \$dl_host
   if (!$opt_d or ($opt_d !~ m/^no$/i)) {
     $do_download = "yes";
   } else {
@@ -690,12 +708,15 @@ sub get_commandline_options {
   }
   #release tarballname specifies for which release we actually
   #build this package... this setting is required, if we
-  #build one of the release packages
+  #build a release package.
   #I need a real name here ala:
   # opengroupware.org-1.0alpha8-shapeshifter-r233.tar.gz or
   # sope-4.3.8-shapeshifter-r210.tar.gz
   # (not required for 'ogo-environment.spec') bc there
   # we don't have a sourcefile
+  # 
+  # The release trigger scripts determine the `real` name
+  # and it gets then feeded into the 'purveyor_of_rpms.pl'
   if (!$opt_c) {
     $release_tarballname = "none";
   } else {
@@ -711,17 +732,19 @@ sub get_commandline_options {
   #to a later defined remote_host
   #default >> no - don't try to upload packages
   if (!$opt_u or ($opt_u !~ m/^yes$/i)) {
+    #obviously - the package will be present in rpm/RPMS/${arch}
     $do_upload = "no";
   } else {
     $do_upload = "yes"
   }
   #explicitly use the named specfile instead of the one
   #we keep in rpm/SPECS/
-  #this is required to build specific releases
-  #trigger_sope_releases.pl uses this.
+  #this is required to build releases
+  #trigger_sope_releases.pl/trigger_opengroupware_releases.pl use this.
   if (!$opt_s) {
     #this is the default location...
-    #later eradicated in trunk builds
+    #(I really should copy the specfile from the sourcetarball into $specs_dir
+    # prior the trunk builds - TODO)
     $use_specfile = "$specs_dir/$package.spec";
   } else {
     chomp $opt_s;
