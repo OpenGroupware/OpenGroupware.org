@@ -44,6 +44,8 @@
 
 @implementation NSString(SkyPropValues)
 
+static NSStringEncoding BlobPropStringEncoding = NSISOLatin1StringEncoding;
+
 - (NSString *)_skyPropValueKind {
   return @"valueString";
 }
@@ -59,11 +61,11 @@
   
   len = [self cStringLength];
   
+  // TODO: Unicode
+  _vals->vBlob = [self dataUsingEncoding:BlobPropStringEncoding];
+  _vals->bSize = [NSNumber numberWithInt:[_vals->vBlob length]];
+  
   if (len > 255) { /* only first part in valueString, whole string to blob */
-    _vals->vBlob
-      = [self dataUsingEncoding:[NSString defaultCStringEncoding]];
-    
-    _vals->bSize   = [NSNumber numberWithInt:[_vals->vBlob length]];
     _vals->vString = [self substringToIndex:255];
   }
   else if (len > 0) {
@@ -83,10 +85,13 @@
         _vals->vFloat = [NSNumber numberWithFloat:f];
     }
   }
+  
+  // TODO: specify an explicit format string!
   _vals->vDate = [NSCalendarDate dateWithString:self];
 }
 
 @end /* NSString(SkyPropValues) */
+
 
 @implementation NSNumber(SkyPropValues)
 
@@ -118,6 +123,7 @@
 
 @end /* NSNumber(SkyPropValues) */
 
+
 @implementation NSCalendarDate(SkyPropValues)
 
 - (NSString *)_skyPropValueKind {
@@ -141,6 +147,7 @@
 
 @end /* NSCalendarDate(SkyPropValues) */
 
+
 @implementation EOKeyGlobalID(SkyPropValues)
 
 - (NSString *)_skyPropValueKind {
@@ -155,6 +162,7 @@
 }
 
 @end /* EOKeyGlobalID(SkyPropValues) */
+
 
 @implementation NSData(SkyPropValues)
 
@@ -176,6 +184,7 @@
 }
 
 @end /* NSData(SkyPropValues) */
+
 
 @implementation NSURL(SkyPropValues)
 

@@ -1,3 +1,8 @@
+2005-03-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyPropertyValues.m: fixed a bug when saving short property strings
+	  to blob values (as reported by Rafel Amer) (v5.1.94)
+
 2005-03-14  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoContextManager.m: use 127.0.0.1 as default database host to avoid

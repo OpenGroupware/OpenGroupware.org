@@ -1181,9 +1181,9 @@ FREE_ARRAYS:
   if ([_properties count] == 0)
     return nil;
     
-  keys = malloc(sizeof(id) * 8);
-  objs = malloc(sizeof(id) * 8);
-
+  keys = calloc(9, sizeof(id));
+  objs = calloc(9, sizeof(id));
+  
   keys[0] = @"preferredType";
   keys[1] = @"valueString";  
   keys[2] = @"valueInt";
