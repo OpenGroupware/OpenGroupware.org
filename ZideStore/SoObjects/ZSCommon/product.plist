@@ -92,8 +92,8 @@
       protectedBy   = "View";
       defaultAccess = "allow";
       defaultRoles = {
-        "View"               = "Anonymous";
-        "WebDAV Access"      = "Authenticated";
+        "View"          = "Anonymous";
+        "WebDAV Access" = "Authenticated";
       };
       methods = {
       };
