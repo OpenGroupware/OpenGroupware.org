@@ -1,3 +1,10 @@
+2004-11-19  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* OpenGroupware.m: fixed cookie handling to be compatible with
+	  libNGObjWeb v4.5.89, should be compatible with older versions.
+	  This prohibited login when an expired session cookie is set.
+	  Improved handling of expiration cookies. (v5.1.67)
+
 2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
 
 	* DirectAction.m: removed deprecated downloadBookmark action (v5.1.66)

@@ -481,22 +481,22 @@ nbuckets, nindices, narrays, idxsize);
   OGoSession    *sn;
   OGoNavigation *nav;
   WOComponent   *component;
-
+  
   [self logWithFormat:
-          @"instance failed to restore page (ctx=%@) ...",
+          @"failed to restore page, ctx: %@",
           self, _ctx];
   
   if ((sn = (OGoSession *)[_ctx session]) == nil) {
-    [self debugWithFormat:@"couldn't find session .."];
+    [self debugWithFormat:@"did not find session .."];
     return [super handlePageRestorationErrorInContext:_ctx];
   }
   if ((nav = [sn navigation]) == nil) {
-    [self debugWithFormat:@"couldn't find navigation in session %@ ..", sn];
+    [self debugWithFormat:@"did not find navigation in session: %@", sn];
     return [super handlePageRestorationErrorInContext:_ctx];
   }
   
   if ((component = [nav activePage]) == nil) {
-    [self debugWithFormat:@"couldn't find active page in navigation %@ ..",sn];
+    [self debugWithFormat:@"did not find active page in navigation: %@",sn];
     return [super handlePageRestorationErrorInContext:_ctx];
   }
   
@@ -528,6 +528,41 @@ nbuckets, nindices, narrays, idxsize);
   return nil;
 }
 
+- (WOCookie *)expireCookieInContext:(WOContext *)_ctx {
+  // TODO: fix this hack
+  static BOOL doNotSetCookiePath    = NO;
+  static BOOL didCheckCookieDefault = NO;
+  WOCookie *cookie;
+  NSString *uri;
+  
+  if (!didCheckCookieDefault) {
+    doNotSetCookiePath = [[NSUserDefaults standardUserDefaults] 
+			   boolForKey:@"WOUseGlobalCookiePath"];
+    didCheckCookieDefault = YES;
+    if (doNotSetCookiePath)
+      [self debugWithFormat:@"Note: using global cookie path!"];
+  }
+  
+  /* Note: section copied from WORequestHandler */
+  if (!doNotSetCookiePath) {
+    NSString *tmp;
+      
+    if ((uri = [[_ctx request] applicationName]) == nil)
+      uri = [self name];
+    uri = [@"/" stringByAppendingString:uri];
+    if ((tmp = [[_ctx request] adaptorPrefix]))
+      uri = [tmp stringByAppendingString:uri];
+  }
+  else
+    uri = @"/";
+
+  cookie = [WOCookie cookieWithName:[self name]
+                     value:@"nil" path:uri domain:nil
+                     expires:[NSDate dateWithTimeIntervalSinceNow:(-600.0)]
+                     isSecure:NO];
+  return cookie;
+}
+
 - (WOResponse *)sxRestorePageInContext:(WOContext *)_ctx {
   /* activate main page with the given hidden parameters */
   WOComponent *page;
@@ -549,13 +584,11 @@ nbuckets, nindices, narrays, idxsize);
   
   response = [page generateResponse];
   
-  cookie = [WOCookie cookieWithName:[self name]
-                     value:@"nil"
-                     path:[_ctx urlSessionPrefix]
-                     domain:nil
-                     expires:[NSDate dateWithTimeIntervalSinceNow:(-600.0)]
-                     isSecure:NO];
-  [response addCookie:cookie];
+  // TODO: the cookie should be set by SOPE?!
+  
+  if ((cookie = [self expireCookieInContext:_ctx]) != nil)
+    [response addCookie:cookie];
+  
   [response setHeader:@"text/html; charset=iso-8859-1" forKey:@"content-type"];
   return response;
 }
@@ -646,9 +679,10 @@ nbuckets, nindices, narrays, idxsize);
   
   jumpTo = [self locationForSessionRedirectInContext:_ctx];
   [self logWithFormat:
-          @"%@ instance failed to restore session (ctx=%@):\n"
+          @"%@ failed to restore session %@:\n"
+          @"  ctx:            %@\n",
           @"  redirecting to: %@",
-          self, _ctx, jumpTo];
+          self, [[_ctx request] sessionID], _ctx, jumpTo];
   
   if ((response = [_ctx response]) == nil)
     response = [WOResponse responseWithRequest:[_ctx request]];
@@ -676,13 +710,8 @@ nbuckets, nindices, narrays, idxsize);
               @"  Page is going to be reloaded in some seconds ..\n"
               @"</body>"];
   
-  cookie = [WOCookie cookieWithName:[self name]
-                     value:@"nil"
-                     path:[_ctx urlSessionPrefix]
-                     domain:nil
-                     expires:[NSDate dateWithTimeIntervalSinceNow:(-600.0)]
-                     isSecure:NO];
-  [response addCookie:cookie];
+  if ((cookie = [self expireCookieInContext:_ctx]) != nil)
+    [response addCookie:cookie];
   
   return response;
 }
