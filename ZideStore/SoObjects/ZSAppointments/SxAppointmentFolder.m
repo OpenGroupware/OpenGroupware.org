@@ -560,25 +560,16 @@
 			  object:self selector:@selector(renderListGIDEntry:)];
 }
 
-- (id)getIDsAndVersionsAction:(id)_ctx {
+- (NSString *)getIDsAndVersionsInContext:(id)_ctx {
   SxAptManager *am;
   NSString     *csv;
-  WOResponse   *response;
-  
+
   am = [self aptManagerInContext:_ctx];
-  
   if ((csv = [am idsAndVersionsCSVForAppointmentSet:[self aptSetID]]) == nil) {
-    [self logWithFormat:@"could not fetch appointment set ?!"];
+    [self logWithFormat:@"ERROR: could not fetch appointment set?!"];
     return nil;
   }
-  response = [(WOContext *)_ctx response];
-  [response setStatus:200 /* OK */];
-  [response setHeader:@"text/plain" forKey:@"content-type"];
-  [response setHeader:@"close"      forKey:@"connection"];
-  
-  [response appendContentString:csv];
-  
-  return response;
+  return csv;
 }
 
 - (SEL)fetchSelectorForQuery:(EOFetchSpecification *)_fs
@@ -603,6 +594,8 @@
     propName = [propNames anyObject];
     if ([propName isEqualToString:@"davURL"])
       return @selector(performDavURLQuery:inContext:);
+    if ([propName isEqualToString:@"davEntityTag"])
+      return @selector(performETagsQuery:inContext:);
   }
   else if ([propNames count] == 2) {
     if ([propNames containsObject:@"davUid"] &&

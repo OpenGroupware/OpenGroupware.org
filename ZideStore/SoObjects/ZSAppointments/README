@@ -19,6 +19,22 @@ SxFreeBusy                  a controller that returns freebusy information in
 SxICalendar                 a controller to return the folder appointment
                             information in the iCalendar format
 
+Hierarchy
+=========
+
+  [NSObject]
+    [SxObject]
+      SxAppointment
+      SxFreeBusy
+      SxICalendar
+    [SxFolder]
+      SxAppointmentFolder
+    [SxDavAction]
+      SxDavAptAction
+        SxDavAptChange
+        SxDavAptCreate
+    SxAppointmentMessageParser
+
 Defaults
 ========
 
