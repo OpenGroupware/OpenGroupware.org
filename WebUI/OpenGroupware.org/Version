@@ -4,4 +4,4 @@
 #       it's *NOT* the version of the whole OpenGroupware.org environment !!!
 #       (each OpenGroupware.org component has it's own version)
 
-SUBMINOR_VERSION:=52
+SUBMINOR_VERSION:=53

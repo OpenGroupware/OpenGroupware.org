@@ -1,6 +1,5 @@
-// NSUserDefaults
 {
-  LSAttachmentPath                   = "/home/siteadm/attachments";
+  LSAttachmentPath                   = "/var/opengroupware.org/attachments";
   UseFlatDocumentFileStructureStatus = NO;
   LSJobImportFormat = {
     Seperator = ";";

@@ -1,3 +1,5 @@
 # $Id$
 
-SUBMINOR_VERSION:=41
+SUBMINOR_VERSION:=43
+
+# v5.1.43 requires libNGExtensions v4.3.113

@@ -18,9 +18,9 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "LSUserDefaultsFunctions.h"
+#include <NGExtensions/NSFileManager+Extensions.h>
 #include "common.h"
 
 // TODO: replace this function junk with a proper method!
@@ -34,9 +34,33 @@ NSString *__getUserDefaultsPath_LSLogic_LSAddress(id self, id _context,
   
   if (LSAttachmentPath == nil) {
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    
     LSAttachmentPath = [ud stringForKey:@"LSAttachmentPath"];
     if ([LSAttachmentPath length] == 0)
       NSLog(@"ERROR: LSAttachmentPath default is not set!");
+    else {
+      NSFileManager *fm;
+      BOOL isDir;
+      
+      fm = [NSFileManager defaultManager];
+      if (![fm fileExistsAtPath:LSAttachmentPath isDirectory:&isDir]) {
+        NSLog(@"Note: configured LSAttachmentPath does not exist: %@",
+              LSAttachmentPath);
+        
+        if (![fm createDirectoriesAtPath:LSAttachmentPath attributes:nil]) {
+          NSLog(@"ERROR: could not create LSAttachmentPath (ensure that "
+                @"the OGo process can write in this directory!): %@",
+                LSAttachmentPath);
+          LSAttachmentPath = nil;
+          return nil;
+        }
+      }
+      else if (!isDir) {
+        NSLog(@"ERROR: configured LSAttachmentPath is not a directory: '%@'",
+              LSAttachmentPath);
+        LSAttachmentPath = nil;
+      }
+    }
   }
   
   fileName = [[_uid stringValue] stringByAppendingPathExtension:@"defaults"];
@@ -53,6 +77,8 @@ NSMutableDictionary *__getUserDefaults_LSLogic_LSAddress(id self, id _context,
   def      = nil;
   manager  = [NSFileManager defaultManager];
   fileName = __getUserDefaultsPath_LSLogic_LSAddress(self, _context, _uid);
+  if (fileName == nil)
+    return nil;
   
   if ([manager fileExistsAtPath:fileName]) {
     def = [[[NSMutableDictionary alloc] initWithContentsOfFile:fileName]
@@ -71,8 +97,12 @@ void __writeUserDefaults_LSLogic_LSAddress(id self,id _context,
   NSString *path;
   
   path = __getUserDefaultsPath_LSLogic_LSAddress(self, _context, _uid);
+  
+  [self assert:([path length] > 0)
+        reason:@"LSAttachmentPath is not properly configured!"];
+  
   [self assert:[_defaults writeToFile:path atomically:YES]
-        reason:@"Couldn`t write User-Defaults"];
+        reason:@"Could not write User-Defaults"];
 }
 
 void __registerVolatileLoginDomain_LSLogic_LSAddress(id self, id _context,

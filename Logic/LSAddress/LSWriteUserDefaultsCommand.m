@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <LSFoundation/LSBaseCommand.h>
 
@@ -35,29 +34,24 @@
 
 @end
 
-#import "common.h"
-#import "LSUserDefaultsFunctions.h"
+#include "common.h"
+#include "LSUserDefaultsFunctions.h"
 
 @implementation LSWriteUserDefaultsCommand
 
-- (void)dealloc {
-  [self->key release];
-  [self->value release];
-  [self->defaults release];
-  [self->userId release];
-  [super dealloc];
-}
-
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
   if ((self = [super initForOperation:_operation inDomain:_domain])) {
-    if ([_operation isEqualToString:@"delete"]) {
-      self->delete = YES;
-    }
-    else {
-      self->delete = NO;
-    }
+    self->delete = [_operation isEqualToString:@"delete"];
   }
   return self;
+}
+
+- (void)dealloc {
+  [self->key      release];
+  [self->value    release];
+  [self->defaults release];
+  [self->userId   release];
+  [super dealloc];
 }
 
 /* command type */
@@ -72,7 +66,7 @@
 /* prepare for execution */
 
 - (void)_prepareForExecutionInContext:(id)_context {
-  id account = [_context valueForKey:LSAccountKey];
+  id account;
   
   if (self->defaults == nil) {
     NSLog(@"WARNING: defaults == nil using StandardUserDefaults");
@@ -83,6 +77,7 @@
   if (!self->delete)
     [self assert:[self->value isNotNull] reason:@"expect a value"];
   
+  account = [_context valueForKey:LSAccountKey];
   if (self->userId == nil) {
     self->userId = [[account valueForKey:@"companyId"] retain];
   }
@@ -111,15 +106,19 @@
 }
 
 - (void)takeValue:(id)_value forKey:(id)_key {
-  if ([_key isEqualToString:@"key"])
+  if ([_key isEqualToString:@"key"]) {
     ASSIGNCOPY(self->key, _value);
-  else if ([_key isEqualToString:@"value"])
+  }
+  else if ([_key isEqualToString:@"value"]) {
     ASSIGNCOPY(self->value, _value);
+  }
   else if ([_key isEqualToString:@"defaults"] ||
-           [_key isEqualToString:@"userdefaults"])
+           [_key isEqualToString:@"userdefaults"]) {
     ASSIGN(self->defaults, _value);
-  else if ([_key isEqualToString:@"userId"])
+  }
+  else if ([_key isEqualToString:@"userId"]) {
     ASSIGN(self->userId, _value);
+  }
   else
     [super takeValue:_value forKey:_key];
 }

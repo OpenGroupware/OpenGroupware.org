@@ -1,6 +1,11 @@
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+	
+	* LSWriteUserDefaultsCommand.m: minor code cleanups, attempt to
+	  autocreate LSAttachmentPath if it doesn't exist (v5.1.43)
+	
 2004-09-01  Helge Hess  <helge.hess@opengroupware.org>
 
-	* added makefile for FHS install (v5.1.19)
+	* added makefile for FHS install (v5.1.42)
 
 2004-06-21  Helge Hess  <helge.hess@opengroupware.org>
 

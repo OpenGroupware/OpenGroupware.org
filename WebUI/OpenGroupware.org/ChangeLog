@@ -1,3 +1,7 @@
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.m: also load bundles from FHS locations (v5.1.53)
+
 2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OpenGroupware.m: temporarily patch bundlepath for preloading of

@@ -95,7 +95,7 @@ static NSString *FHSOGoBundleDir        = nil;
   e = [_paths objectEnumerator];
   while ((p = [e nextObject])) {
     NSString *dp;
-
+    
     if ([p rangeOfString:FHSOGoBundleDir].length > 0) {
       // this is an FHS path, use different lookup algorithm
       // TODO: somewhat a hack ..., fix somehow

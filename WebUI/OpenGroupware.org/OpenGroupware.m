@@ -132,6 +132,8 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
 	    [[bundle bundlePath] lastPathComponent]);
     }
     
+    // TODO: this should happen automagically? (SoProductRegistry listens for
+    //       bundle load notifications?)
     [reg registerProductBundle:bundle];
   }
 }
@@ -180,6 +182,15 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
     if (logBundleLoading) NSLog(@"load WebUI plugins ...");
     e = [pathes objectEnumerator];
     while ((p = [e nextObject])) {
+
+      if ([p rangeOfString:FHSOGoBundleDir].length > 0) {
+        // this is an FHS path, use different lookup algorithm
+        // TODO: somewhat a hack ..., fix somehow
+        
+        [self loadBundlesOfType:@"lso" inPath:p];
+        continue;
+      }
+      
       p = [p stringByAppendingPathComponent:OGoBundlePathSpecifier];
       [self loadBundlesOfType:@"lso" inPath:p];
       p = [p stringByAppendingPathComponent:@"WebUI"];

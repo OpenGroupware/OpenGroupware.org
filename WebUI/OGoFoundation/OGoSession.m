@@ -577,7 +577,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
   NGBundleManager *bm = [NGBundleManager defaultBundleManager];
   NSBundle     *bundle;
   NSDictionary *cfgEntry;
-
+  
   bundle = [bm bundleProvidingResource:pageName ofType:@"DockablePages"];
   if (bundle == nil) {
     [self logWithFormat:@"ERROR: did not find dockable page: '%@'", pageName];

@@ -51,7 +51,6 @@
 static OGoContextManager *lso = nil;
 static int      LSUseLowercaseLogin            = -1;
 static int      LSAllowSpacesInLogin           = -1;
-static BOOL     logBundleLoading               = NO;
 static BOOL     loadCommandBundlesOnStartup    = YES;
 static BOOL     loadDataSourceBundlesOnStartup = YES;
 static NSString *OGoBundlePathSpecifier        = nil;
@@ -152,7 +151,6 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
   [self registerInUserDefaults:[NSUserDefaults standardUserDefaults]];
   OGoBundlePathSpecifier = [[ud stringForKey:@"OGoBundlePathSpecifier"] copy];
   FHSOGoBundleDir        = [[ud stringForKey:@"OGoFHSBundleSubPath"]    copy];
-  logBundleLoading       = [ud boolForKey:@"OGoLogBundleLoading"];
   [self loadCommandBundles];
   
   LSUseLowercaseLogin    = [ud boolForKey:@"LSUseLowercaseLogin"] ? 1 : 0;
