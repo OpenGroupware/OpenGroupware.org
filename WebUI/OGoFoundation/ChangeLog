@@ -1,3 +1,8 @@
+2004-09-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoResourceManager.m: fixed to properly lookup components.cfg in
+	  the Templates directories (v5.1.73)
+
 2004-09-21  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.1.72

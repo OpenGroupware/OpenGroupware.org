@@ -35,6 +35,10 @@ static NSString      *prefix   = nil;
 static NSFileManager *fm   = nil;
 static NSNull        *null = nil;
 
+static NSString *shareSubPath     = @"share/opengroupware.org-1.0a/";
+static NSString *templatesSubPath = 
+  @"Library/OpenGroupware.org-1.0a/Templates/";
+
 /* locate resource directories */
 
 + (NSArray *)findResourceDirectoryPathesWithName:(NSString *)_name
@@ -78,7 +82,7 @@ static NSNull        *null = nil;
   e   = [tmp objectEnumerator];
   
   while ((tmp = [e nextObject]) != nil) {
-    tmp = [tmp stringByAppendingString:@"share/opengroupware.org-1.0a/"];
+    tmp = [tmp stringByAppendingString:shareSubPath];
     tmp = [tmp stringByAppendingString:_fhs];
     if ([ma containsObject:tmp]) continue;
     
@@ -128,7 +132,7 @@ static NSNull        *null = nil;
   
   // TODO: use appname to enable different setups, maybe some var too
   templatePathes = [[self findResourceDirectoryPathesWithName:
-			    @"Library/OpenGroupware.org-1.0a/Templates/"
+			    templatesSubPath
 			  fhsName:@"templates/"] copy];
   if (debugOn)
     NSLog(@"template pathes: %@", templatePathes);
@@ -143,7 +147,7 @@ static NSNull        *null = nil;
 	[[NSMutableDictionary alloc] initWithCapacity:128];
       
       self->keyToPath = [[NSMutableDictionary alloc] initWithCapacity:1024];
-      self->keyToURL = [[NSMutableDictionary alloc] initWithCapacity:1024];
+      self->keyToURL  = [[NSMutableDictionary alloc] initWithCapacity:1024];
     }
     else
       [self logWithFormat:@"Note: component path caching is disabled!"];
@@ -326,20 +330,90 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
 }
 
 - (NSString *)lookupComponentsConfigInFramework:(NSString *)_fwName
+  theme:(NSString *)_theme
+{
+  NSString     *path;
+  NSEnumerator *e;
+  
+  /* check cache */
+  
+  path = checkCache(self->keyToPath, self->cachedKey, @"components.cfg",
+		    _fwName, _theme);
+  if (path != nil) {
+    if (debugOn) [self debugWithFormat:@"  found in cache: %@", path];
+    return [path isNotNull] ? path : nil;
+  }
+
+  /* traverse template dirs */
+  
+  e = [templatePathes objectEnumerator];
+  while ((path = [e nextObject]) != nil) {
+    if (_theme != nil) {
+      path = [path stringByAppendingPathComponent:@"Themes"];
+      path = [path stringByAppendingPathComponent:_theme];
+    }
+    if (_fwName != nil)
+      path = [path stringByAppendingPathComponent:_fwName];
+    path = [path stringByAppendingPathComponent:@"components.cfg"];
+    
+    if ([fm fileExistsAtPath:path]) {
+      [self cacheValue:path inCache:self->keyToPath];
+      return path;
+    }
+  }
+  
+  /* cache miss */
+  [self cacheValue:nil inCache:self->keyToPath];
+  return nil;
+}
+
+- (NSString *)lookupComponentsConfigInFramework:(NSString *)_fwName
   languages:(NSArray *)_langs
 {
+  NSEnumerator *e;
   NSString *rpath;
-#warning TODO: lookup 
-
+  
+  if (![_fwName isNotNull])
+    _fwName = [[WOApplication application] name];
+  
   if (debugOn) {
     [self debugWithFormat:@"lookup components cfg: %@/%@", _fwName,
             [_langs componentsJoinedByString:@","]];
   }
   
+  /* check themes */
+  
+  e = [_langs objectEnumerator];
+  while ((rpath = [e nextObject]) != nil) {
+    NSRange  r;
+    NSString *theme;
+    
+    r = [rpath rangeOfString:@"_"];
+    theme = (r.length > 0)
+      ? [rpath substringFromIndex:(r.location + r.length)]
+      : nil; /* default theme */
+    
+    rpath = [self lookupComponentsConfigInFramework:_fwName theme:theme];
+    if (rpath != nil)
+      return rpath;
+    
+    [self logWithFormat:@"Note: did not find components.cfg for theme: %@",
+	    (theme != nil ? theme : @"default-theme")];
+  }
+  
   /* look using OWResourceManager */
+  
   rpath = [super pathForResourceNamed:@"components.cfg"
                  inFramework:_fwName
 		 languages:_langs];
+
+  /* not found */
+  
+  if (rpath == nil) {
+    [self logWithFormat:@"Note: did not find components.cfg: %@/%@", 
+	    _fwName ? _fwName : @"[app]",
+            [_langs componentsJoinedByString:@","]];
+  }
   return rpath;
 }
 
