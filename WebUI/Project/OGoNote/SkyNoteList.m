@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWContentPage.h>
 
@@ -376,6 +375,14 @@ static NGMimeType *eoNoteType    = nil;
   return nil;
 }
 
+- (NSString *)defaultNoteTitle {
+  NSCalendarDate *now;
+    
+  now = [[[NSCalendarDate alloc] init] autorelease];
+  [now setTimeZone:[[self session] timeZone]];
+  return [now descriptionWithCalendarFormat:@"%Y%m%d"];
+}
+
 - (id)noteQuickCreate {
   NSMutableDictionary *newNote;
   NSNumber *accountId;
@@ -388,15 +395,8 @@ static NGMimeType *eoNoteType    = nil;
   
   /* provide a default title */
   
-  if ([self->newNoteTitle length] == 0) {
-    NSCalendarDate *now;
-    
-    now = [[NSCalendarDate alloc] init];
-    [now setTimeZone:[[self session] timeZone]];
-    self->newNoteTitle = 
-      [[now descriptionWithCalendarFormat:@"%Y%m%d"] copy];
-    [now release];
-  }
+  if ([self->newNoteTitle length] == 0)
+    self->newNoteTitle = [[self defaultNoteTitle] copy];
   
   /* create note record */
 

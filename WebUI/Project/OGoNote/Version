@@ -1,6 +1,6 @@
-# $Id$
+# Version file
 
-SUBMINOR_VERSION:=11
+SUBMINOR_VERSION:=12
 
 # Requirements:
 #   v5.0.9 => BaseUI v5.0.73
