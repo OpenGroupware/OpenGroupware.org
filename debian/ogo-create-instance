@@ -21,6 +21,7 @@ DB_USER=ogo
 DB_PASSWD=
 DB_PORT=5432
 DB_NAME=ogo
+SKYFS_PATH_EXT=skyfs
 ATTACHMENT_PATH_EXT=documents
 NEWS_IMAGES_PATH_EXT=news_images/
 NEWS_IMAGES_URL_BASE=NewsImages
@@ -66,6 +67,7 @@ EOF
 		HOMEDIR=${REPLY}
 	fi
 
+	SKYFS_PATH=${HOMEDIR}/${SKYFS_PATH_EXT}
 	ATTACHMENT_PATH=${HOMEDIR}/${ATTACHMENT_PATH_EXT}
 	NEWS_IMAGES_PATH=${HOMEDIR}/${NEWS_IMAGES_PATH_EXT}
 	NEWS_IMAGES_URL=${NEWS_IMAGES_URL_BASE}-${USER}
@@ -170,8 +172,10 @@ EOF
 
 Each daemon has to listen on a different port for connections. Usually
 the daemons are not connected directly from application but via apache
-and a special module (mod_ngobjweb) which handles the requests. However
-you need to specify the ports the applications listen on."
+and a special module (mod_ngobjweb) which handles the requests.
+However you need to specify the ports the applications listen on. Its
+also possible to supply listening network address, like so;
+localhost:port."
 
 EOF
 
@@ -250,13 +254,16 @@ add_user () {
 	adduser --system --shell /bin/bash --home ${HOMEDIR} \
 		--ingroup ${USER} --gecos "OpenGroupware.org" ${USER} &>/dev/null
 	mkdir -p ${HOMEDIR}
+	mkdir -p ${SKYFS_PATH}
 	mkdir -p ${ATTACHMENT_PATH}
 	mkdir -p ${NEWS_IMAGES_PATH}
 	chown ${USER}:${USER} ${HOMEDIR}
+	chown ${USER}:${USER} ${SKYFS_PATH}
 	chown ${USER}:${USER} ${ATTACHMENT_PATH}
 	chown ${USER}:${USER} ${NEWS_IMAGES_PATH}
 	chmod 755 ${HOMEDIR}
 	chmod 755 ${NEWS_IMAGES_PATH}
+	chmod 700 ${SKYFS_PATH}
 	chmod 700 ${ATTACHMENT_PATH}
 	# FIXME: Fix permissions of .libfoundation directory if necessary
 	echo "done."
@@ -271,10 +278,12 @@ set_defaults () {
 		return 1
 	fi
 	su - -c "Defaults write NSGlobalDomain LSConnectionDictionary '{hostName=\"${DB_HOST}\"; userName=\"${DB_USER}\"; password=\"${DB_PASSWD}\"; port=\"${DB_PORT}\"; databaseName=\"${DB_NAME}\"}'" ${USER}
+	su - -c "Defaults write NSGlobalDomain SkyFSPath \"${SKYFS_PATH}\"" ${USER}
 	su - -c "Defaults write NSGlobalDomain LSAttachmentPath \"${ATTACHMENT_PATH}\"" ${USER}
 	su - -c "Defaults write NSGlobalDomain LSNewsImagesPath \"${NEWS_IMAGES_PATH}\"" ${USER}
 	su - -c "Defaults write NSGlobalDomain LSNewsImagesUrl \"/${USER}-NewsImages\"" ${USER}
 	su - -c "Defaults write NSGlobalDomain SkyLogoutURL \"/${WEBUI_LOCATION_MATCH}\"" ${USER}
+	su - -c "Defaults write NSGlobalDomain TimeZoneName GMT" ${USER}
 	echo "done."
 	return 0
 }
@@ -297,6 +306,7 @@ register_instance () {
 	mkdir -p /etc/opengroupware.org
 	mkdir -p /var/log/opengroupware.org/${USER}
 	chown ${USER}:${USER} /var/log/opengroupware.org/${USER}
+	chmod 755 /var/log/opengroupware.org
 	chmod 770 /var/log/opengroupware.org/${USER}
 	if [ -e /etc/opengroupware.org/${USER} ]; then
 		echo "failed"
