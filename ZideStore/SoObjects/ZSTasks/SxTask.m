@@ -115,7 +115,8 @@ static BOOL debugParser = YES;
 
 - (int)cdoAction {
   /* MAPI 10800003 */
-  return 1280; /* whatever this is and means ... (taken from Apache), also 272 */
+  return 1280;
+  /* whatever this is and means ... (taken from Apache), also 272 */
 }
 - (NSString *)mapiID_8112_int {
   return @"2";

@@ -1,7 +1,7 @@
 # $Id: Version 1 2004-08-20 11:17:52Z znek $
 
 include ../Version
-SUBMINOR_VERSION:=89
+SUBMINOR_VERSION:=91
 
 # v1.3.89 requires libNGExtensions v4.3.116
 # v1.2.72 requires libNGExtensions v4.2.91

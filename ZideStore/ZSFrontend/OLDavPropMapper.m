@@ -101,8 +101,8 @@
 - (id)objectForCadaverKey:(NSString *)_key {
   static NSString *p = @"{http://webdav.org/cadaver/custom-properties/}";
   [self logWithFormat:@"query cadaver key: %@", _key];
-  if (![p hasPrefix:p]) return p;
-  return [p substringFromIndex:[p length]];
+  if (![_key hasPrefix:p]) return p;
+  return [_key substringFromIndex:[p length]];
 }
 
 static NSString *mp1 = @"{http://schemas.microsoft.com/mapi/proptag}x";
