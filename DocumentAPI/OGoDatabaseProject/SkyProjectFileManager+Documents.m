@@ -25,11 +25,7 @@
 #include <OGoProject/NSString+XMLNamespaces.h>
 
 // TODO: this needs serious cleanup
-
 // TODO: use constants for error codes!
-
-// #define DEBUG_DOCS_FOR_OBJS 1
-// #define DEBUG_FILEATTRS_FOR_GIDS 1
 
 @class NSArray, EOGenericRecord;
 
@@ -88,6 +84,9 @@
 @end
 
 #include "common.h"
+
+static BOOL debugDocMapping = NO;
+static BOOL debugAttrFetch  = NO;
 
 @implementation SkyProjectFileManager(Documents)
 
@@ -544,9 +543,10 @@ static BOOL isRootAccountId(NSNumber *aid) {
     id      o;
     NSArray *gidArr;
     
-#if DEBUG_DOCS_FOR_OBJS
-    NSLog(@"%s:  process %i gids ...", __PRETTY_FUNCTION__, gidCnt);
-#endif
+    if (debugDocMapping) {
+      [self logWithFormat:@"%s:  process %i gids ...", 
+	      __PRETTY_FUNCTION__, gidCnt];
+    }
     
     gidArr = [[NSArray alloc] initWithObjects:gids count:gidCnt];
     
@@ -554,14 +554,15 @@ static BOOL isRootAccountId(NSNumber *aid) {
       NSAutoreleasePool *pool;
       
       pool = [[NSAutoreleasePool alloc] init];
-#if DEBUG_DOCS_FOR_OBJS
-      NSLog(@"%s:    get attrsfor gids ...", __PRETTY_FUNCTION__);
-#endif
+      if (debugDocMapping) {
+	[self logWithFormat:@"%s:    get attrsfor gids ...", 
+	      __PRETTY_FUNCTION__];
+      }
       
       enumerator = [[self _fileAttributesForDocGIDs:gidArr] objectEnumerator];
-#if DEBUG_DOCS_FOR_OBJS
-      NSLog(@"%s:    done.", __PRETTY_FUNCTION__);
-#endif
+      if (debugDocMapping)
+	[self logWithFormat:@"%s:    done.", __PRETTY_FUNCTION__];
+      
       enumerator = [enumerator retain];
       [pool release];
       enumerator = [enumerator autorelease];
@@ -590,54 +591,71 @@ static BOOL isRootAccountId(NSNumber *aid) {
   
   /* fetch the attributes */
   
-#if DEBUG_DOCS_FOR_OBJS
-  NSLog(@"%s:  fetching attrs for %i docs ...",
-        __PRETTY_FUNCTION__, [_objs count]);
-#endif
+  if (debugDocMapping) {
+    [self logWithFormat:@"%s:  fetching attrs %@ for %i docs ...",
+	  __PRETTY_FUNCTION__, [_attrs componentsJoinedByString:@","],
+	  [_objs count]];
+  }
+  
   [self fetchAttributes:_attrs forDocs:_objs];
-#if DEBUG_DOCS_FOR_OBJS
-  NSLog(@"%s: returned %i docs.", __PRETTY_FUNCTION__, [_objs count]);
-#endif
+
+  if (debugDocMapping) {
+    [self logWithFormat:@"%s: returned %i docs.", 
+	  __PRETTY_FUNCTION__, [_objs count]];
+  }
   
   return _objs;
 }
 
 - (void)fetchAttributes:(NSArray *)_attrs forDocs:(NSArray *)_objs {
   NSArray                  *docKeys, *gids;
-  NSString                 *obj, *ns;
+  NSString                 *ns, *attrName;
   NSMutableSet             *nameSpaces;
   SkyObjectPropertyManager *pm;
   NSEnumerator             *enumerator;
   
   if (!([_attrs isNotNull] && [_attrs count] > 0))
     return;
-    
+
+  /* extract namespaces */
+  
   nameSpaces = [[NSMutableSet alloc] init];
   docKeys    = [self readOnlyDocumentKeys];
   enumerator = [_attrs objectEnumerator];
-    
-  while ((obj = [enumerator nextObject]) != nil) {
-    if ([docKeys containsObject:obj])
+  while ((attrName = [enumerator nextObject]) != nil) {
+    if ([docKeys containsObject:attrName])
       continue;
-
-    ns = [obj hasXMLNamespace]
-      ? [obj xmlNamespace]
+    
+    ns = [attrName hasXMLNamespace]
+      ? [attrName xmlNamespace]
       : [self defaultProjectDocumentNamespace];
-      
+    
     [nameSpaces addObject:ns];
   }
+  if (debugAttrFetch) {
+    [self logWithFormat:@"fetch namespaces: %@",
+	  [[nameSpaces allObjects] componentsJoinedByString:@","]];
+  }
+
+  /* fetch */
+  
   gids       = [_objs map:@selector(globalID)];
   enumerator = [nameSpaces objectEnumerator];
   pm         = [[self context] propertyManager];
-    
+  
   while ((ns = [enumerator nextObject]) != nil) {
     NSDictionary *nsRes;
     NSEnumerator *objEnum;
     id           o;
 
-    nsRes   = [pm propertiesForGlobalIDs:gids namespace:ns];
+    /* fetch all properties of the given namespace */
+    nsRes = [pm propertiesForGlobalIDs:gids namespace:ns];
+    
+    if (debugAttrFetch)
+      [self logWithFormat:@"  fetched namespace '%@': %@", ns, nsRes];
+    
+    /* iterate the documents and fill the values */
     objEnum = [_objs objectEnumerator];
-      
     while ((o = [objEnum nextObject]) != nil) {
       [o _takeAttributesFromDictionary:[nsRes objectForKey:[o globalID]]
 	 namespace:ns isComplete:YES]; /* all default ns */
@@ -645,6 +663,7 @@ static BOOL isRootAccountId(NSNumber *aid) {
   }
   [nameSpaces release]; nameSpaces = nil;
 }
+
 - (NSMutableDictionary *)_mapAttrsNamespaces:(NSDictionary *)_dict
   forDoc:(SkyProjectDocument *)_doc
 {
