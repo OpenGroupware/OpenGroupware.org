@@ -1,3 +1,8 @@
+2004-09-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* ZideStore.m: use ZS version from makefile to build bundle lookup
+	  pathes (v1.3.82)
+
 2004-09-10  Helge Hess  <helge.hess@skyrix.com>
 
 	* GNUmakefile: moved PrefsUI image resources to PrefsUI bundle (works

@@ -1,17 +1,20 @@
 # ZideStore makefile
 
 include $(GNUSTEP_MAKEFILES)/common.make
+include ../Version
+include ./Version
 
-WOAPP_NAME = ZideStore13
+ZIDESTORE = ZideStore$(MAJOR_VERSION)$(MINOR_VERSION)
+WOAPP_NAME = $(ZIDESTORE)
 
-ZideStore13_OBJC_FILES += \
+$(ZIDESTORE)_OBJC_FILES += \
 	ZideStore.m		\
 	SxAuthenticator.m	\
 
-ZideStore13_HEADER_FILES += \
+$(ZIDESTORE)_HEADER_FILES += \
 	SxAuthenticator.h	\
 
-ZideStore13_RESOURCE_FILES += \
+$(ZIDESTORE)_RESOURCE_FILES += \
 	Version				\
 	product.plist			\
 	\
@@ -21,12 +24,6 @@ ZideStore13_RESOURCE_FILES += \
 	../Maps/MAPIPropIDMap.plist	\
 	../Maps/AptBackendSets.plist	\
 	../Maps/PersonalFolderInfo.plist
-
-#ZideStore13_WEBSERVER_RESOURCE_FILES += \
-#	../PrefsUI/English.lproj/*.gif 	\
-#	../PrefsUI/English.lproj/*.jpg 	\
-#	../PrefsUI/English.lproj/*.ico	\
-#	../PrefsUI/English.lproj/*.css	\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/woapp.make

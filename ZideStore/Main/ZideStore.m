@@ -42,6 +42,7 @@
   static NSArray *searchPathes = nil;
   NSMutableArray *ma;
   NSDictionary   *env;
+  NSString       *relName;
   id tmp;
   
   if (searchPathes != nil)
@@ -49,6 +50,14 @@
   
   env = [[NSProcessInfo processInfo] environment];
   ma  = [NSMutableArray arrayWithCapacity:6];
+
+#if COCOA_Foundation_LIBRARY
+  relName = @"";
+#else
+  relName = @"Library/";
+#endif
+  relName = [NSString stringWithFormat:@"%@ZideStore-%i.%i", relName,
+                      ZS_MAJOR_VERSION, ZS_MINOR_VERSION];
 
 #if COCOA_Foundation_LIBRARY
   tmp = NSSearchPathForDirectoriesInDomains(NSAllLibrariesDirectory,
@@ -59,7 +68,7 @@
       
     e = [tmp objectEnumerator];
     while ((tmp = [e nextObject])) {
-      tmp = [tmp stringByAppendingPathComponent:@"ZideStore-1.3"];
+      tmp = [tmp stringByAppendingPathComponent:relName];
       if (![ma containsObject:tmp])
         [ma addObject:tmp];
     }
@@ -74,18 +83,20 @@
       
     e = [tmp objectEnumerator];
     while ((tmp = [e nextObject])) {
-      tmp = [tmp stringByAppendingPathComponent:@"Library/ZideStore-1.3"];
+      tmp = [tmp stringByAppendingPathComponent:relName];
       if (![ma containsObject:tmp])
         [ma addObject:tmp];
     }
   }
 #endif
-  
-  [ma addObject:@"/usr/local/lib/zidestore-1.3/"];
-  [ma addObject:@"/usr/lib/zidestore-1.3/"];
+
+  relName = [NSString stringWithFormat:@"lib/zidestore-%i.%i/",
+                      ZS_MAJOR_VERSION, ZS_MINOR_VERSION];
+  [ma addObject:[@"/usr/local/" stringByAppendingPathComponent:relName]];
+  [ma addObject:[@"/usr/"       stringByAppendingPathComponent:relName]];
   
   searchPathes = [ma copy];
-    
+  
   if ([searchPathes count] == 0)
     NSLog(@"%s: no search pathes were found !", __PRETTY_FUNCTION__);
   

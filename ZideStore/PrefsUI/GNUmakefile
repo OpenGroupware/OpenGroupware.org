@@ -1,10 +1,12 @@
 # $Id$
 
 include $(GNUSTEP_MAKEFILES)/common.make
+include ../Version
+include ./Version
 
 BUNDLE_NAME        = PrefsUI
 BUNDLE_EXTENSION   = .zsp
-BUNDLE_INSTALL_DIR = $(GNUSTEP_USER_ROOT)/Library/ZideStore-1.3
+BUNDLE_INSTALL_DIR = $(GNUSTEP_USER_ROOT)/Library/ZideStore-$(MAJOR_VERSION).$(MINOR_VERSION
 
 PrefsUI_PRINCIPAL_CLASS = PrefsUIProduct
 

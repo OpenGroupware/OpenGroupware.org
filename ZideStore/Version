@@ -1,4 +1,5 @@
-# $Id: Version 1 2004-08-20 11:17:52Z znek $
+# version file
 
 MAJOR_VERSION=1
 MINOR_VERSION=3
+SUBMINOR_VERSION=0

@@ -1,6 +1,11 @@
-# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
+# compile settings
 
 OGoROOT=../..
+
+ADDITIONAL_CPPFLAGS += \
+        -DZS_MAJOR_VERSION=$(MAJOR_VERSION) \
+        -DZS_MINOR_VERSION=$(MINOR_VERSION) \
+        -DZS_SUBMINOR_VERSION=$(SUBMINOR_VERSION)
 
 ADDITIONAL_INCLUDE_DIRS += \
         -I..
