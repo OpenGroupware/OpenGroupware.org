@@ -1,4 +1,4 @@
-// $Id: SkyDock.wod,v 1.7 2004/02/13 14:08:27 helge Exp $
+// bind template to component class
 
 IsTextMode: WOConditional {
   // tables, but no imgs
@@ -62,48 +62,8 @@ MiniView: WOComponentReference {
   hideLink  = disableLinks;
 }
 
-// bookmarks
+// prefs
 
-SkyDockShowBookmarks: WOConditional {
-  condition = session.userDefaults.SkyDockShowBookmarks;
-}
-SkyDockShowDesktop: WOConditional {
-  condition = session.userDefaults.SkyDockShowDesktop;
-}
-
-PersonalBookmarkLink: WOHyperlink {
-  directActionName = "downloadBookmark";
-  actionClass      = "DirectAction";
-  ?pkey            = session.activeAccount.companyId.stringValue;
-  target           = "private_desktop";
-  CLASS            = "skydockfont";
-}
-
-PublicBookmarkLink: WOHyperlink {
-   directActionName = "downloadBookmark";
-   actionClass      = "DirectAction";
-   ?pkey            = "10000";
-   target           = "public_desktop";
-   STYLE            = "text-decoration:none";
-}
-
-PersonalBookmarkImage: WOImage {
-  filename = "menu_bookmarks_labeled.gif";
-  ALT      = labels.bookmarks;
-  BORDER   = 0;
-}
-PublicBookmarkImage: WOImage {
-  filename = "menu_desktop_labeled.gif";
-  ALT      = labels.desktop;
-  BORDER   = 0;
-}
-
-PersonalBookmarkLabel: WOString {
-  value = labels.bookmarks;
-}
-PublicBookmarkLabel: WOString {
-  value = labels.desktop;
-}
 PrefsLabel: WOString {
   value      = labels.preferences;
   escapeHTML = NO;

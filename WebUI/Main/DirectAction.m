@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "DirectAction.h"
 #include <LSFoundation/OGoContextManager.h>
@@ -56,6 +55,8 @@ static NGMimeType *textHtmlType  = nil;
   return rootLogin;
 }
 
+/* accessors */
+
 - (void)setPkey:(int)_key {
   self->pkey = _key;
 }
@@ -63,49 +64,7 @@ static NGMimeType *textHtmlType  = nil;
   return self->pkey;
 }
 
-- (id<WOActionResults>)downloadBookmarkAction {
-  WOSession  *sn;
-  NGMimeType *mt   = nil;  
-  NSData     *data = nil;
-  NSNumber   *accountId;
-  
-  [self takeFormValuesForKeys:@"pkey", nil];
-  
-  if (self->pkey <= 0) {
-    [self logWithFormat:@"invalid pkey !"];
-    return nil;
-  }
-  
-  if ((sn  = [self existingSession]) == nil) {
-    [self logWithFormat:@"no session active !"];
-    return nil;
-  }
-  
-  accountId = [[sn activeAccount] valueForKey:@"companyId"]; 
-  if ((self->pkey == 10000) || (self->pkey == [accountId intValue])) {
-    /* root login */
-    data = [sn runCommand:@"bookmark::get",
-                 @"object", [NSNumber numberWithInt:self->pkey], nil];
-    if (data == nil || [data length] == 0) {
-      NSString *s = @"Found no bookmark file for account!";
-      data        = [s dataUsingEncoding:NSASCIIStringEncoding];
-      mt          = textPlainType;
-    }
-    else {
-      mt = textHtmlType;
-    }
-    return [LSWMimeContent mimeContent:data ofType:mt
-			   inContext:[sn context]];
-  }
-  else {
-    NSString *s = @"No permission for bookmark file of account!";
-    data        = [s dataUsingEncoding:NSASCIIStringEncoding];
-    mt          = textPlainType;
-      
-    return [LSWMimeContent mimeContent:data ofType:mt 
-			   inContext:[sn context]];
-  }
-}
+/* actions */
 
 - (id<WOActionResults>)logoutAction {
   [[self existingSession] terminate];
@@ -185,9 +144,6 @@ static NGMimeType *textHtmlType  = nil;
   }
   else if ([_actionName isEqualToString:@"_vti_rpc"]) {
     result = [super performActionNamed:@"_vti_rpc"];
-  }
-  else if ([_actionName isEqualToString:@"downloadBookmark"]) {
-    result = [super performActionNamed:@"downloadBookmark"];
   }
   else {
     id lso;

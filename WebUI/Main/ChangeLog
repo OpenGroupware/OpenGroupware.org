@@ -1,3 +1,7 @@
+2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* DirectAction.m: removed deprecated downloadBookmark action (v5.1.66)
+
 2004-09-29  Helge Hess  <helge.hess@skyrix.com>
 
 	* fhs.make: install daemon into $FHS_ROOT/sbin (v5.1.65)

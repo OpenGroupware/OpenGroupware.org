@@ -62,48 +62,8 @@ MiniView: WOComponentReference {
   hideLink  = disableLinks;
 }
 
-// bookmarks
+// prefs
 
-SkyDockShowBookmarks: WOConditional {
-  condition = session.userDefaults.SkyDockShowBookmarks;
-}
-SkyDockShowDesktop: WOConditional {
-  condition = session.userDefaults.SkyDockShowDesktop;
-}
-
-PersonalBookmarkLink: WOHyperlink {
-  directActionName = "downloadBookmark";
-  actionClass      = "DirectAction";
-  ?pkey            = session.activeAccount.companyId.stringValue;
-  target           = "private_desktop";
-  CLASS            = "skydockfont";
-}
-
-PublicBookmarkLink: WOHyperlink {
-   directActionName = "downloadBookmark";
-   actionClass      = "DirectAction";
-   ?pkey            = "10000";
-   target           = "public_desktop";
-   STYLE            = "text-decoration:none";
-}
-
-PersonalBookmarkImage: WOImage {
-  filename = "menu_bookmarks_labeled.gif";
-  ALT      = labels.bookmarks;
-  BORDER   = 0;
-}
-PublicBookmarkImage: WOImage {
-  filename = "menu_desktop_labeled.gif";
-  ALT      = labels.desktop;
-  BORDER   = 0;
-}
-
-PersonalBookmarkLabel: WOString {
-  value = labels.bookmarks;
-}
-PublicBookmarkLabel: WOString {
-  value = labels.desktop;
-}
 PrefsLabel: WOString {
   value      = labels.preferences;
   escapeHTML = NO;
@@ -153,64 +113,16 @@ PrefsLink: WOHyperlink {
   CLASS            = "skydockfont";
 }
 
-HomeLink: WOHyperlink {
-  directActionName = "downloadBookmark";
-  actionClass      = "DirectAction";
-  ?pkey            = session.activeAccount.companyId.stringValue;
-  target           = "private_desktop";
-  CLASS            = "skydockfont";
-}
-
-DeskLink: WOHyperlink {
-   directActionName = "downloadBookmark";
-   actionClass      = "DirectAction";
-   ?pkey            = "10000";
-   target           = "public_desktop";
-   CLASS            = "skydockfont";
-}
-
-PrefsImage: WOImage {
-  filename = "menu_static_prefs.gif";
-  alt      = labels.preferences;
-  border   = 0;
-}
-
-HomeImage: WOImage {
-  filename = "menu_static_home.gif";
-  ALT      = labels.bookmarks;
-  BORDER   = 0;
-};
-
-DeskImage: WOImage {
-  filename = "menu_static_desk.gif";
-  ALT      = labels.desktop;
-  BORDER   = 0;
-};
-
 PrefsImageRight: WOImage {
   filename = "menu_static_prefs_right.gif";
   alt      = labels.preferences;
   border   = 0;
 }
 
-HomeImageRight: WOImage {
-  filename = "menu_static_home_right.gif";
-  ALT      = labels.bookmarks;
-  BORDER   = 0;
-};
-
-DeskImageRight: WOImage {
-  filename = "menu_static_desk_right.gif";
-  ALT      = labels.desktop;
-  BORDER   = 0;
-};
-
 StaticDockEntries: WORepetition {
   list      = pages;
-  //  index     = index;
   identifier = Peferences;
   item      = dockComponent
-  //count     = 1;
 }
 
 PrefsCond: WOConditional {
@@ -221,12 +133,6 @@ PrefsCond: WOConditional {
 DockedProjects: SkyDockedProjects {
   isInTextMode = isInTextMode;
 }
-IsProjectLicensed: SkyLicenseConditional {
-  modules  = ( Project, ProjectLite );
-  ormode   = YES;
-  showInfo = NO;
-}
-
 
 HasMiniTextView: WOConditional {
   condition = hasDockMiniTextView;

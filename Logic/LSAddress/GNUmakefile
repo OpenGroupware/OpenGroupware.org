@@ -25,8 +25,6 @@ LSAddress_OBJC_FILES = \
 	LSUserDefaults.m			\
 	_NSUserDefaults.m			\
 	LSCheckLoginCommand.m              	\
-	LSNewBookmarkCommand.m             	\
-	LSGetBookmarkCommand.m             	\
 	LSSetCategoriesCommand.m            	\
 	LSSetResourcesCommand.m             	\
 	LSRegisterUserDefaultsCommand.m		\

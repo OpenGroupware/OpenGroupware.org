@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWContentPage.h>
 
@@ -41,7 +40,6 @@
   BOOL           hideInactiveButtons;
   BOOL           buttonTextMode;
   BOOL           dockTextMode;
-  BOOL           dockShowBookmarks;
   BOOL           dockShowDesktop;
   int            maxClipCount;
   int            maxNavLabelLength;
@@ -52,7 +50,6 @@
 
   /* access */
   BOOL           isDockablePagesEditable;
-  BOOL           isDockShowBookmarksEditable;
   BOOL           isDockShowDesktopEditable;
   BOOL           isLanguageEditable;
   BOOL           isTimezoneEditable;
@@ -260,14 +257,10 @@ static NSNumber *NoNumber  = nil;
   
   self->dockTextMode    = [[_ud objectForKey:@"SkyDockTextMode"]    boolValue];
   self->dockShowDesktop = [[_ud objectForKey:@"SkyDockShowDesktop"] boolValue];
-  self->dockShowBookmarks =
-    [[_ud objectForKey:@"SkyDockShowBookmarks"] boolValue];
-
+  
   self->isDockablePagesEditable =
     [self _isEditable:@"SkyDockablePagesOrdering"];
   self->isDockShowDesktopEditable   = [self _isEditable:@"SkyDockShowDesktop"];
-  self->isDockShowBookmarksEditable =
-    [self _isEditable:@"SkyDockShowBookmarks"];
   self->isLanguageEditable = [self _isEditable:@"language"];
   self->isTimezoneEditable = [self _isEditable:@"timezone"];
 }
@@ -373,9 +366,6 @@ static NSNumber *NoNumber  = nil;
 - (BOOL)isDockTextModeEditable {
   return self->isRoot || [self _isEditable:@"SkyDockTextMode"];
 }
-- (BOOL)isDockShowBookmarksEditable {
-  return self->isRoot || self->isDockShowBookmarksEditable;
-}
 - (BOOL)isDockShowDesktopEditable {
   return self->isRoot || self->isDockShowDesktopEditable;
 }
@@ -396,13 +386,6 @@ static NSNumber *NoNumber  = nil;
 }
 - (BOOL)isDockablePagesEditableRoot {
   return self->isDockablePagesEditable;
-}
-
-- (void)setIsDockShowBookmarksEditableRoot:(BOOL)_flag {
-  self->isDockShowBookmarksEditable = _flag;
-}
-- (BOOL)isDockShowBookmarksEditableRoot {
-  return self->isDockShowBookmarksEditable;
 }
 
 - (void)setIsDockShowDesktopEditableRoot:(BOOL)_flag {
@@ -663,13 +646,6 @@ static NSNumber *NoNumber  = nil;
   return self->dockTextMode;
 }
 
-- (void)setDockShowBookmarks:(BOOL)_value {
-  self->dockShowBookmarks = _value;
-}
-- (BOOL)dockShowBookmarks {
-  return self->dockShowBookmarks;
-}
-
 - (void)setDockShowDesktop:(BOOL)_value {
   self->dockShowDesktop = _value;
 }
@@ -804,10 +780,6 @@ static NSNumber *NoNumber  = nil;
   if ([self isDockTextModeEditable])
     [self _writeDefault:@"SkyDockTextMode" boolValue:self->dockTextMode];
   
-  if ([self isDockShowBookmarksEditable]) {
-    [self _writeDefault:@"SkyDockShowBookmarks" 
-	  boolValue:self->dockShowBookmarks];
-  }
   if ([self isDockShowDesktopEditable])
     [self _writeDefault:@"SkyDockShowDesktop" boolValue:self->dockShowDesktop];
   
@@ -832,8 +804,6 @@ static NSNumber *NoNumber  = nil;
 	  boolValue:self->isDockablePagesEditable];
     [self _writeRootDefault:@"SkyDockShowDesktop"
 	  boolValue:self->isDockShowDesktopEditable];
-    [self _writeRootDefault:@"SkyDockShowBookmarks"
-	  boolValue:self->isDockShowBookmarksEditable];
     
     [self _writeRootDefault:@"language" boolValue:self->isLanguageEditable];
     [self _writeRootDefault:@"timezone" boolValue:self->isTimezoneEditable];
