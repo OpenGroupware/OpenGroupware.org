@@ -527,6 +527,7 @@ rm -fr "${SHAREDIR}/www/tools"
 echo "You've installed OGo %{ogo_version}-%{ogo_release} using the meta package!" \
      >"${SHAREDIR}/INSTALLED.USING.METAPACKAGE"
 
+#prepare initscript templates
 INITSCRIPTS_TMP_DIR_OGO="${SHAREDIR}/initscript_templates"
 INITSCRIPTS_TMP_DIR_ZIDE="${RPM_BUILD_ROOT}%{prefix}/share/zidestore-1.3/initscript_templates"
 mkdir -p ${INITSCRIPTS_TMP_DIR_OGO}
@@ -540,6 +541,12 @@ cp %{_specdir}/initscript_templates/suse_xmlrpcd ${INITSCRIPTS_TMP_DIR_OGO}/
 cp %{_specdir}/initscript_templates/suse_opengroupware ${INITSCRIPTS_TMP_DIR_OGO}/
 cp %{_specdir}/initscript_templates/suse_zidestore ${INITSCRIPTS_TMP_DIR_ZIDE}/
 
+#template for ogo-aptnotify
+APTNOTIFY_TMP_DIR="${SHAREDIR}/aptnotify_template"
+mkdir -p ${APTNOTIFY_TMP_DIR}
+cp %{_specdir}/aptnotify_template/ogo-aptnotify.sh ${APTNOTIFY_TMP_DIR}/
+
+#create sysconfig
 mkdir -p ${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig
 echo "RUN_DBSCRIPT=\"YES\"                  # will run the whole script - or not, as thou wish
 PATCH_POSTGRESQL_CONF=\"YES\"         # will backup and patch postgresql.conf - if needed
@@ -551,6 +558,7 @@ FORCE_OVERRIDE_PRESENT_SCHEME=\"YES\" # might harm thy current scheme (or not?)
 UPDATE_SCHEMA=\"YES\"                 # will attempt to update the database scheme - if needed
 OGO_USER=\"ogo\"                      # default username (unix) of your OGo install - might vary
 PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
+USE_SKYAPTNOTIFY=\"YES\"              # periodically runs aptnotify - or not
 " >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-webui-1.0a
 
 # ****************************** post *********************************
@@ -558,6 +566,21 @@ PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
 if [ $1 = 1 ]; then
   #must rework dependencies
   /sbin/ldconfig
+fi
+
+%post tools
+if [ $1 = 1 ]; then
+  OGO_SYSCONF="ogo-webui-1.0a"
+  OGO_PREFIX="%{prefix}"
+  CRON_D="%{_sysconfdir}/cron.d"
+  if [ -d "${CRON_D}" ]; then
+    echo "*/5 * * * root %{prefix}/bin/ogo-aptnotify.sh >/dev/null" >%{_sysconfdir}/cron.d/ogo-aptnotify
+  fi
+  sed "s^OGO_SYSCONF^${OGO_SYSCONF}^g; \
+       s^OGO_PREFIX^${OGO_PREFIX}^g" \
+       "%{prefix}/share/opengroupware.org-1.0a/aptnotify_template/ogo-aptnotify.sh" \
+       >"%{prefix}/bin/ogo-aptnotify.sh"
+  chmod 750 "%{prefix}/bin/ogo-aptnotify.sh"
 fi
 
 %post pda
@@ -668,6 +691,16 @@ if [ $1 = 1 ]; then
 fi
 
 # ****************************** preun *********************************
+%preun tools
+if [ $1 = 0 ]; then
+  if [ -f "%{_sysconfdir}/cron.d/ogo-aptnotify" ]; then
+    rm -f "%{_sysconfdir}/cron.d/ogo-aptnotify"
+  fi
+  if [ -f "%{prefix}/bin/ogo-aptnotify.sh" ]; then
+    rm -f "%{prefix}/bin/ogo-aptnotify.sh"
+  fi
+fi
+
 %preun pda
 if [ $1 = 0 ]; then
   NHSD_INIT_VERSION="ogo-nhsd-1.0a"
@@ -934,6 +967,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/bin/skyprojectexporter
 %{prefix}/bin/skyprojectimporter
 %{prefix}/bin/skyruncmd
+%{prefix}/share/opengroupware.org-1.0a/aptnotify_template/ogo-aptnotify.sh
 
 %files webui-app
 %defattr(-,root,root,-)
@@ -1128,6 +1162,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Mon Mar 13 2005 Frank Reppin <frank@opengroupware.org>
+- added ogo-aptnotify.sh
 * Thu Mar 10 2005 Frank Reppin <frank@opengroupware.org>
 - added PGCLIENTENCODING to sysconfig settings
   (thus dealing with OGo Bug #1292)
