@@ -6,6 +6,7 @@ use strict;
 
 my $keep_revisions = "4";
 my $current_distri;
+my $must_rebuild_sth = "no";
 my @distris = qw(fedora-core2
   fedora-core3
   mdk-10.0
@@ -25,10 +26,12 @@ my @groups = qw( epoz
   libfoundation
   libfoundation10
   libobjc-lf2
+  ogo-database-setup
   ogo-docapi
   ogo-environment
   ogo-gnustep_make
   ogo-logic
+  ogo-meta
   ogo-pda
   ogo-theme
   ogo-tools
@@ -81,6 +84,7 @@ foreach $current_distri(@distris) {
         push(@for_removal, $dc);
         #print "     could delete files from group $current_group*trunk_r$dc*\n";
         print OUT "rm -f /var/virtual_hosts/download/packages/$current_distri/trunk/$current_group*trunk_r$dc*.rpm\n";
+        $must_rebuild_sth = "yes" if(@for_removal);
       }
       print "\$keep_revisions = $keep_revisions is larger/equal $no_of_versions....\n";
       print "will kick -> @for_removal\n";
@@ -92,12 +96,15 @@ foreach $current_distri(@distris) {
       print "Minimum required package count to be left in repo is: $keep_revisions\n";
       print "... but I found only $no_of_versions RPMS(s) here.\n";
       print "########################################### next one ....\n";
+      $must_rebuild_sth = "no";
     }
   }
   #exit 0;
-  print OUT "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/packages/$current_distri/trunk/\n";
-  print OUT "/home/www/scripts/do_LATESTVERSION.pl /var/virtual_hosts/download/packages/$current_distri/trunk/\n";
-  print OUT "/home/www/scripts/trunk_apt4rpm_build.pl -d $current_distri\n";
-  print OUT "#================================================================================================\n";
+  if($must_rebuild_sth eq "yes") {
+    print OUT "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/packages/$current_distri/trunk/\n";
+    print OUT "/home/www/scripts/do_LATESTVERSION.pl /var/virtual_hosts/download/packages/$current_distri/trunk/\n";
+    print OUT "/home/www/scripts/trunk_apt4rpm_build.pl -d $current_distri\n";
+    print OUT "#================================================================================================\n";
+  }
 }
 close(OUT);
