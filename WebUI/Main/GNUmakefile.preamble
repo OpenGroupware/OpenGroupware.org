@@ -16,7 +16,7 @@ ADDITIONAL_LIB_DIRS += \
 	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
 
 ADDITIONAL_LIB_DIRS += \
-	-L/usr/local/lib -L/usr/local/apr/lib
+	-L/usr/local/lib -L/usr/local/apr/lib -L/usr/lib
 
 ifneq ($(FOUNDATION_LIB),apple)
 ADDITIONAL_LIB_DIRS += -L/usr/local/BerkeleyDB.4.0/lib/

@@ -1,5 +1,7 @@
 2004-09-27  Helge Hess  <helge.hess@skyrix.com>
 
+	* GNUmakefile.preamble: added /usr/lib to library search path (v5.1.62)
+
 	* OpenGroupware.m: changed (runtime) application name to match the
 	  process name (to avoid clashes with . processing in the standard
 	  method) (v5.1.61)
