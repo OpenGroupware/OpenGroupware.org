@@ -1,0 +1,152 @@
+// $Id: SkyImapMailListFooter.wod 2 2004-08-20 11:37:44Z znek $
+
+TableHeaderRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_tableHeaderRow;
+};
+
+Font: SkyConfigFont {}
+
+DoShowTree: WOHyperlink {
+  action   = doShowTree;
+  filename = "tree_show.gif";
+  border   = "0";
+  align    = "bottom";
+  alt      = labels.showFolderTree;
+  title    = labels.showFolderTree;
+}
+
+DoHideTree: WOHyperlink {
+  action   = doHideTree;
+  filename = "tree_hide.gif";
+  border   = "0";
+  align    = "bottom";
+  alt      = labels.hideFolderTree;
+  title    = labels.hideFolderTree;
+}
+
+ShowTreeCond: WOConditional {
+  condition = showTree;
+}
+
+HideTreeCond: WOConditional {
+  condition = showTree;
+  negate    = YES;
+}
+
+CurrentFolderPath: WOString {
+  value = selectedFolder.absoluteName;
+};
+
+HasNewFolder: WOConditional {
+  condition = canNewFolder;
+};
+
+HasEditFolder: WOConditional {
+  condition = canEditFolder;
+}
+
+HasMoveFolder: WOConditional {
+  condition = canMoveFolder;
+}
+
+HasDeleteFolder: WOConditional {
+  condition = canDeleteFolder;
+}
+
+HasNewFilter: WOConditional {
+  condition = allowNewFilter;
+};
+
+FilterCond: WOConditional {
+  condition = serverHasFilter;
+}
+
+// --- buttons ---
+
+NewFolder: WOHyperlink {
+  filename = "icon_new_folder.gif";
+  action   = newFolder;
+  alt      = labels.newFolder;
+  title    = labels.newFolder;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+};
+
+EditFolder: WOHyperlink {
+  filename = "icon_edit_folder.gif";
+  action   = editFolder;
+  alt      = labels.editFolder;
+  title    = labels.editFolder;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+};
+
+MoveFolder: WOHyperlink {
+  filename = "icon_move_folder.gif";
+  action   = moveFolder;
+  alt      = labels.moveFolder;
+  title    = labels.moveFolder;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+};
+
+DeleteFolder: WOHyperlink {
+  filename = "icon_delete_folder.gif";
+  action   = deleteFolder;
+  alt      = labels.deleteFolder;
+  title    = labels.deleteFolder;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+};
+
+NewFilter:  WOHyperlink {
+  filename = "icon_new_filter.gif";
+  action   = newFilterForFolder;
+  alt      = labels.newFilter;
+  title    = labels.newFilter;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+};
+
+EmptyTrash: WOHyperlink {
+  filename         = "icon_full_trash.gif";
+  disabledFilename = "icon_empty_trash.gif";
+  action           = emptyTrash;
+  alt              = labels.emptyTrash;
+  title            = labels.emptyTrash;
+  align            = "center";
+  valign           = "middle";
+  border           = "0";
+  disabled         = isTrashEmpty;
+};
+
+NewMail: WOHyperlink {
+  filename = "icon_new_mail.gif";
+  action   = newMail;
+  alt      = labels.new;
+  title    = labels.new;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+}
+
+FolderRep: WORepetition {
+  list = folders;
+  item = folder;
+}
+
+SubFolderRep: WORepetition {
+  list = selectedFolder.subFolders;
+  item = folder;
+}
+
+FolderAction: WOHyperlink {
+  string = folder.name;
+  action = folderClicked;
+}

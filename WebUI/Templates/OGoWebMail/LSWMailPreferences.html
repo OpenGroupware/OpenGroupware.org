@@ -1,0 +1,97 @@
+<#Frame>
+  <!-- $Id: LSWMailPreferences.html 2 2004-08-20 11:37:44Z znek $ -->
+  <#Window>
+    <#PreferencesForm>
+      <table border="0" cellspacing="0" cellpadding="4" width="100%">
+
+        <!-- Values -->
+      <#GeneralDefaultsTitle>
+        <#MailEditorType />
+        <#MailSendType />
+        <#UseEpozMailEditor />
+        <#ShowHtmlMailTextInline />
+        <#ViewImagesInline />
+        <#ViewAttachmentsInline />
+        <#ViewAttachmentBodysInEditor />
+        <#ShowAllUnreadLinks />
+        <#ShowTargetInFilterList />
+        <#WrapLongLines />
+        <#ShowPopupOnNewMails />
+        <#NextMesgAfterDelete />
+        <#ShowUnreadMesgAsNext />
+        <#ReplyToField />
+        <#OrganizationField />
+        <#MailFromTypeEnabled />
+        <#ShowUnsubscribedFolder />
+        <#ShowUnsubscribedFolderInRootFolder />
+        <#NumberOfUploadFieldInMailEditor />
+      </#GeneralDefaultsTitle>
+
+      <tr><td colspan="4"></td></tr>
+      <#MDNTitle>
+        <#MDNType />
+        <#MDNText><#MDNTextHelp /></#MDNText>
+        <#MDNSubject><#MDNSubjectHelp /></#MDNSubject>
+      </#MDNTitle>
+
+      <tr><td colspan="4"></td></tr>
+      <#GeneralMailListTitle>
+        <#SubjectLengthField />
+        <#SenderLengthField />
+      </#GeneralMailListTitle>
+
+      <tr><td colspan="4"></td></tr>
+
+      <#MailListTitle>
+        <#MailListBlockSize />
+        <#MailListAttributesFrame>
+          <#MailListAttributes><#SorterItem /></#MailListAttributes>
+        </#MailListAttributesFrame>
+        <#SentMailListAttributesFrame>
+          <#SentMailListAttributes><#SorterItem /></#SentMailListAttributes>
+        </#SentMailListAttributesFrame>
+      </#MailListTitle>
+
+      <tr><td colspan="4"></td></tr>
+      <#SearchMailListTitle>
+        <#SearchMailListBlockSize />
+        <#SearchMailListAttrsFrame>
+          <#SearchMailListAttributes>
+            <#SorterItem />
+          </#SearchMailListAttributes>
+        </#SearchMailListAttrsFrame>
+      </#SearchMailListTitle>
+
+      <tr><td colspan="4"></td></tr>
+
+      <#SignatureTitle><#SignatureField /></#SignatureTitle>      
+
+      <#EditSpezialFolderCond>
+        <tr><td colspan="4"></td></tr>
+        <#SpecialFolderTitle>
+          <#TrashFolderFrame ><#TrashFolderPopup  /></#TrashFolderFrame>
+          <#SentFolderFrame  ><#SentFolderPopup   /></#SentFolderFrame>
+          <#DraftsFolderFrame><#DraftsFolderPopup /></#DraftsFolderFrame>
+        </#SpecialFolderTitle>
+      </#EditSpezialFolderCond>
+
+      <#IsFromPopupEnabled>
+        <tr><td colspan="4"></td></tr>
+        <#FromPopupValuesTitle>
+          <#FromPopupFrame>
+            <#FromPopupList><#FromPopupItem /></#FromPopupList>
+          </#FromPopupFrame>
+          <#EnableFromPopup />
+          <#FromPopupInitialValues />
+        </#FromPopupValuesTitle>
+      </#IsFromPopupEnabled> 
+
+        <tr>
+          <td colspan=4 align="center">
+            <#SaveSubmit />
+            <#CancelButton />
+        </tr>
+      </table>
+    </#PreferencesForm>
+  </#Window>
+</#Frame>

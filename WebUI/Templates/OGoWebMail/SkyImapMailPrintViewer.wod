@@ -1,0 +1,27 @@
+// $Id: SkyImapMailPrintViewer.wod 2 2004-08-20 11:37:44Z znek $
+
+PrintTitle: WOString {
+  value = printTitle;
+}
+
+HeaderRep: WORepetition {
+  list = headers;
+  item = header;
+}
+
+HeaderKey: SkyRichString {
+  isBold = YES;
+  value  = headerLabel;
+}
+
+HeaderValue: SkyRichString {
+  value = headerValue;
+}
+
+MessageViewer: SkyMessageRfc822Viewer {
+  part        = emailContent;
+  showHeaders = 0;
+  printMode   = 1;
+  source      = object;
+}
+

@@ -1,0 +1,87 @@
+// $Id: LSWImapMailLogin.wod 2 2004-08-20 11:37:44Z znek $
+
+Font: SkyConfigFont {}
+
+LoginForm: WOForm { name = "loginForm"; }
+
+LoginSubmit: WOSubmitButton {
+  action = doLogin;
+  value  = loginLabel;
+  class  = loginButtonClass;
+}
+
+CancelButton: WOSubmitButton {
+  action = cancel;
+  value  = labels.cancel;
+  class  = "button_narrow";
+}
+
+LogoutButton: WOHyperlink {
+  action = doLogout;
+  string = labels.logout;
+  class  = "button_narrow";
+}
+
+SendMail: WOSubmitButton {
+  action   = doSend;
+  value    = labels.sendOnly;
+  class    = "button_wide";
+}
+
+HideSendButtonElse: WOConditional {
+  condition = hideSendField;
+  negate    = YES;
+}
+
+// AttributeCell: SkyAttributeCell {}
+
+AttributeCell: WOGenericContainer {
+  elementName = "td";
+  ALIGN	      = "right";
+  VALIGN      = "top";
+  BGCOLOR     = attributeCellColor;
+  WIDTH       = "15%";
+}
+ValueCell: WOGenericContainer {
+  elementName = "td";
+  ALIGN	      = "left";
+  BGCOLOR     = valueCellColor;
+  WIDTH       = "100%"
+}
+
+EditFont: WOGenericContainer { // TODO: replace with CSS
+  elementName   = "font";
+  color         = config.editFont.color;
+  size          = config.editFont.size;
+  face          = config.editFont.face;
+}
+
+ClearSubmit: WOSubmitButton {
+  action = clearForm;
+  value  = labels.clearButtonLabel;
+  class  = "button_narrow";
+}
+
+LoginLabel:    WOString { value = labels.login;    }
+PasswordLabel: WOString { value = labels.password; }
+SaveLabel:     WOString { value = labels.save;     }
+HostLabel:     WOString { value = labels.host;     }
+
+Login:    WOTextField     { value = login;    name = "login";    }
+Password: WOPasswordField { value = password; name = "password"; }
+
+SavePasswordCheckbox: WOCheckBox {
+  checked = savePassword;
+}
+
+HostString: WOString    { value = host; }
+Host:       WOTextField { value = host; }
+
+IsLoginIn:  WOConditional { condition = isLogin;          }
+IsInEditor: WOConditional { condition = isInEditEditPage; }
+
+IsEditableCond:     WOConditional { condition = editable; }
+IsEditableCondElse: WOConditional {
+  negate    = YES;
+  condition = editable;
+}

@@ -1,0 +1,13 @@
+// $Id: OGoDefaultViewField.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: OGoDefaultEditFrame {
+  componentLabels = componentLabels;
+  key             = key;
+  defaults        = defaults;
+  formatter       = formatter;
+  localizeValue   = localizeValue;
+  useFormatter    = useFormatter;
+  isInViewerMode  = YES;
+}
+
+Content : WOComponentContent {}
