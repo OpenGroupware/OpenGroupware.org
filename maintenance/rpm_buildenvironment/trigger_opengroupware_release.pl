@@ -131,6 +131,7 @@ foreach $orel (@ogo_releases) {
     $apttarget =~ s/^opengroupware\.org/opengroupware/g;
     print "thus calling: /home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $apttarget\n";
     print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $apttarget\n";
+    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/packages/$host_i_runon/releases/$apttarget/\n";
     close(SSH);
   }
 }
