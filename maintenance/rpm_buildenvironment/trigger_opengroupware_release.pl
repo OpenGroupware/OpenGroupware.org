@@ -31,7 +31,7 @@
 # ./purveyor_of_rpms.pl -p opengroupware -t release -v yes -u yes -d yes -c <see below> -c spec_tmp/<see below>
 
 use strict;
-#die "WARNING: not yet configured!\n";
+die "WARNING: not yet configured!\n";
 my $host_i_runon = "fedora-core3";
 #my $host_i_runon = "fedora-core2";
 #my $host_i_runon = "suse92";
