@@ -71,6 +71,7 @@
 - (id)renderListEntry:(id)_entry {
   // contentlength,lastmodified,displayname,executable,resourcetype
   // checked-in,checked-out
+  // TODO: move to a renderer class
   /*
     <key name="{DAV:}href"    >$baseURL$/$pkey$.vcf?sn=$sn$</key>
     <key name="davContentType">text/vcard</key>
@@ -78,8 +79,9 @@
   */
   NSMutableDictionary *record;
   NSString *url, *cn, *pkey;
+  id tmp;
   
-  if ((record = [_entry mutableCopy]) == nil)
+  if ((record = [[_entry mutableCopy] autorelease]) == nil)
     return nil;
   
   // getting: pkey, sn, givenname
@@ -92,7 +94,16 @@
   
   [record setObject:url forKey:@"{DAV:}href"];
   [record setObject:cn forKey:@"davDisplayName"];
-  return [record autorelease];
+  
+  /* render etag */
+  
+  if ([(tmp = [record objectForKey:@"version"]) isNotNull]) {
+    tmp = [@":" stringByAppendingString:[tmp stringValue]];
+    tmp = [pkey stringByAppendingString:tmp];
+    [record setObject:tmp forKey:@"davEntityTag"];
+  }
+
+  return record;
 }
 
 - (id)renderDirListEntry:(id)_entry {

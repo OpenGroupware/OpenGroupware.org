@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxEnterpriseFolder.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxEnterpriseFolder.h"
 #include "SxEnterprise.h"
@@ -74,6 +73,7 @@
 - (id)renderListEntry:(id)_entry {
   // contentlength,lastmodified,displayname,executable,resourcetype
   // checked-in,checked-out
+  // TODO: move to a renderer class
   /*
     <key name="{DAV:}href"    >$baseURL$/$pkey$.vcf?sn=$sn$</key>
     <key name="davContentType">text/vcard</key>
@@ -81,21 +81,32 @@
   */
   NSMutableDictionary *record;
   NSString *url, *cn, *pkey;
+  id tmp;
   
-  if ((record = [_entry mutableCopy]) == nil)
+  if ((record = [[_entry mutableCopy] autorelease]) == nil)
     return nil;
   
   // getting: pkey, sn, givenname
   if ((pkey = [[record valueForKey:@"pkey"] stringValue]) == nil)
     return nil;
-  cn = [record valueForKey:@"cn"];
+  
+  cn  = [record valueForKey:@"cn"];
   url = [NSString stringWithFormat:@"%@%@.vcf", [self baseURL], pkey];
   if ([cn length] > 0)
     url = [url stringByAppendingFormat:@"?cn=%@", [cn stringByEscapingURL]];
   
   [record setObject:url forKey:@"{DAV:}href"];
   [record setObject:cn?cn:pkey forKey:@"davDisplayName"];
-  return [record autorelease];
+
+  /* render etag */
+  
+  if ([(tmp = [record objectForKey:@"version"]) isNotNull]) {
+    tmp = [@":" stringByAppendingString:[tmp stringValue]];
+    tmp = [pkey stringByAppendingString:tmp];
+    [record setObject:tmp forKey:@"davEntityTag"];
+  }
+  
+  return record;
 }
 
 /* queries */

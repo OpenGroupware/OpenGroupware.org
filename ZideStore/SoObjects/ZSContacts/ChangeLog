@@ -1,5 +1,8 @@
 2004-12-06  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SxEnterpriseFolder.m, SxAddressFolder.m, SxGroupsFolder.m: added
+	  generation of etag on list queries (v1.3.79)
+
 	* SxPersonFolder.m: properly render etag for list queries, moved list
 	  query rendering to separate object (fixed GroupDAV compatibility)
 	  (v1.3.78)

@@ -127,6 +127,8 @@
 
 - (id)renderListEntry:(id)_entry {
   // TODO: who uses that? isn't that overridden by all subclasses?
+  //       - used by SxGroupFolder
+  // TODO: move to a renderer class
   // contentlength,lastmodified,displayname,executable,resourcetype
   // checked-in,checked-out
   /*
@@ -136,15 +138,25 @@
   */
   NSMutableDictionary *record;
   NSString *url, *pkey;
+  id tmp;
   
-  if ((record = [_entry mutableCopy]) == nil)
+  if ((record = [[_entry mutableCopy] autorelease]) == nil)
     return nil;
   
   pkey = [[record objectForKey:@"pkey"] stringValue];
-  url = [NSString stringWithFormat:@"%@%@.vcf", [self baseURL], pkey];
+  url  = [NSString stringWithFormat:@"%@%@.vcf", [self baseURL], pkey];
   [record setObject:url  forKey:@"{DAV:}href"];
   [record setObject:pkey forKey:@"davDisplayName"];
-  return [record autorelease];
+  
+  /* render etag */
+  
+  if ([(tmp = [record objectForKey:@"version"]) isNotNull]) {
+    tmp = [@":" stringByAppendingString:[tmp stringValue]];
+    tmp = [pkey stringByAppendingString:tmp];
+    [record setObject:tmp forKey:@"davEntityTag"];
+  }
+  
+  return record;
 }
 
 - (NSEnumerator *)runListQueryWithContactManager:(SxContactManager *)_cm {
