@@ -563,8 +563,8 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/sbin/ogo-nhsd-1.0a
 %{prefix}/bin/ogo-ppls-1.0a
 %{prefix}/lib/libOGoNHS*.so.5.1*
-%{prefix}/lib/libOGoPalmUI*.so.5.1*
-%{prefix}/lib/libOGoPalm*.so.5.1*
+%{prefix}/lib/%{ogo_libogopalmui}.so.5.1*
+%{prefix}/lib/%{ogo_libogopalm}.so.5.1*
 %{prefix}/lib/libPPSync*.so.5.1*
 %{prefix}/lib/opengroupware.org-1.0a/conduits/OpenGroupwareNHS.conduit/OpenGroupwareNHS
 %{prefix}/lib/opengroupware.org-1.0a/conduits/OpenGroupwareNHS.conduit/Resources/Info-gnustep.plist
@@ -583,8 +583,8 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/include/OGoPalmUI
 %{prefix}/include/PPSync
 %{prefix}/lib/libOGoNHS*.so
-%{prefix}/lib/libOGoPalmUI*.so
-%{prefix}/lib/libOGoPalm*.so
+%{prefix}/lib/%{ogo_libogopalmui}.so
+%{prefix}/lib/%{ogo_libogopalm}.so
 %{prefix}/lib/libPPSync*.so
 
 %files theme-default

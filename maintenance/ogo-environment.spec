@@ -1,7 +1,7 @@
 Summary:		OGo environment
 Name:			ogo-environment
 Version:		%{ogo_env_version}
-Release:		%{ogo_env_release}.%{ogo_env_buildcount}
+Release:		%{ogo_env_buildcount}
 Vendor:			http://www.opengroupware.org
 Packager:		Frank Reppin <frank@opengroupware.org>	
 License:		LGPL
@@ -49,7 +49,7 @@ fi
 if [ $1 = 1 ]; then
   cd %{_sysconfdir}
   ln -s %{_var}/lib/opengroupware.org/.libFoundation opengroupware.org
-  ### some defaults
+  ## some defaults
   OGO_USER="ogo"
   export PATH=$PATH:%{prefix}/bin
   su - ${OGO_USER} -c "
@@ -59,7 +59,7 @@ if [ $1 = 1 ]; then
   Defaults write NSGlobalDomain WOHttpAllowHost '( localhost, 127.0.0.1, localhost.localdomain)'
   Defaults write nhsd NGBundlePath '%{prefix}/opengroupware.org-1.0a/conduits'
   "
-  #################
+  ##
   if [ -f %{_var}/lib/pgsql/data/pg_hba.conf ]; then
     if [ "`grep -iE '^host.*all.*all.*127.0.0.1.*trust$' /var/lib/pgsql/data/pg_hba.conf`" ]; then
       echo -en "pg_hba.conf seems to be OK.\n"
@@ -74,6 +74,13 @@ if [ $1 = 1 ]; then
       echo -en "postgresql.conf needs to be edited - please refer to our FAQ\n"
     fi
   fi
+  ##
+  if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
+    echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/opengroupware.conf
+  elif [ ! "`grep '%{prefix}/lib' %{_sysconfdir}/ld.so.conf`" ]; then
+    echo "%{prefix}/lib" >> %{_sysconfdir}/ld.so.conf
+  fi
+  /sbin/ldconfig
 fi
 
 # ****************************** postun *******************************
@@ -92,6 +99,10 @@ if [ $1 = 0 ]; then
   if [ -h "/etc/opengroupware.org" ]; then
     rm /etc/opengroupware.org
   fi
+  if [ -e %{_sysconfdir}/ld.so.conf.d/opengroupware.conf ]; then
+    rm -f %{_sysconfdir}/ld.so.conf.d/opengroupware.conf
+  fi
+  /sbin/ldconfig
 fi
 
 # ****************************** clean ********************************
