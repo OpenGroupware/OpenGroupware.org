@@ -5,7 +5,7 @@
 ChangeLog parser.
 """
 
-__version__ = "@()$Id: changelogparser.py,v 1.3 2003/10/20 15:42:14 znek Exp $"
+__version__ = "@()$Id: changelogparser.py 2 2004-08-20 11:37:44Z znek $"
 
 
 import sys
@@ -229,6 +229,7 @@ def structuredEntriesFromChangeLog(rawChangeLog, datematch=None):
     ] 
     """
     entries = []
+    logs = []
     currentLog = ""
     lines = rawChangeLog.split("\n")
     for line in lines:
