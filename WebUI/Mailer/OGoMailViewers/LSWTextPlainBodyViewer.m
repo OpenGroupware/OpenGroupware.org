@@ -36,10 +36,10 @@
 static int UseFoundationStringEncodingForMimeText = -1;
 
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
   UseFoundationStringEncodingForMimeText =
-      [[NSUserDefaults standardUserDefaults]
-                       boolForKey:@"UseFoundationStringEncodingForMimeText"]
-      ? 1 : 0;
+    [ud boolForKey:@"UseFoundationStringEncodingForMimeText"] ? 1 : 0;
 }
 
 - (void)dealloc {
@@ -47,11 +47,11 @@ static int UseFoundationStringEncodingForMimeText = -1;
   [super dealloc];
 }
 
+/* accessors */
 
 - (BOOL)isDownloadable {
   return YES;
 }
-/* accessors */
 
 - (void)setItem:(id)_item {
   ASSIGN(self->item, _item);
@@ -67,9 +67,25 @@ static int UseFoundationStringEncodingForMimeText = -1;
   [super sleep];
 }
 
-- (NSArray *)contentString {
+/* defaults */
+
+- (NSUserDefaults *)userDefaults {
+  return [[self session] userDefaults];
+}
+
+- (BOOL)defShouldWrapLongLines {
+  return [[self userDefaults] boolForKey:@"mail_wrapLongLines"];
+}
+
+- (BOOL)defShouldUseInternalMailer {
+  return [[[self userDefaults] stringForKey:@"mail_editor_type"]
+                 isEqualToString:@"internal"];
+}
+
+/* content */
+
+- (NSString *)bodyAsString {
   NSString *s;
-  int wrapLength;
 
   s = nil;
   
@@ -107,42 +123,52 @@ static int UseFoundationStringEncodingForMimeText = -1;
       
       s = [NSString stringWithData:data usingEncodingNamed:charset];
     }
-    if (!s) {
+    if (s == nil) {
       s = [[[NSString alloc] initWithData:data
                              encoding:NSISOLatin1StringEncoding] autorelease];
     }
   }
-  if (!s)
+  if (s == nil)
     s = [self->body stringValue];
 
+  return s;
+}
+
+- (NSDictionary *)printInfoWithTextValue:(NSString *)_value {
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+                         _value, @"value", @"text", @"kind", nil];
+}
+
+- (NSArray *)contentString {
+  NSString *s;
+  int wrapLength;
+  
+  s = [self bodyAsString];
+  
+#warning TODO: check textWrapWidth configuration (use a default?)
   wrapLength = [[[self config] valueForKey:@"textWrapWidth"] intValue];
 
   s = [s stringByWrappingWithWrapLen:wrapLength
-         wrapLongLines:[[[self session] userDefaults]
-                               boolForKey:@"mail_wrapLongLines"]];
-
+         wrapLongLines:[self defShouldWrapLongLines]];
+  
   return [self printMode]
-    ?  [NSArray arrayWithObject:
-                [NSDictionary dictionaryWithObjectsAndKeys:
-                              s,       @"value",
-                              @"text", @"kind",
-                              nil]]
+    ? [NSArray arrayWithObject:[self printInfoWithTextValue:s]]
     : [s findContainedLinks];
 }
 
 - (BOOL)isActionLink {
-  if ([[self->item objectForKey:@"urlKind"] isEqualToString:@"mailto:"] &&
-      [[[[self session] userDefaults] objectForKey:@"mail_editor_type"]
-               isEqualToString:@"internal"]) {
-    return YES;
-  }
-  return NO;
+  if (![[self->item objectForKey:@"urlKind"] isEqualToString:@"mailto:"])
+    return NO;
+  if (![self defShouldUseInternalMailer])
+    return NO;
+  
+  return YES;
 }
 
 - (id)sendMail {
-  id mailEditor;
+  id mailEditor; // TODO: add value
   id val;
-
+  
   mailEditor = (id)[[self application] pageWithName:@"LSWImapMailEditor"];
   if (mailEditor == nil)
     return nil;
