@@ -1,4 +1,4 @@
-# $Id: Version 1 2004-08-20 11:17:52Z znek $
+# version file
 
 include ../Version
-SUBMINOR_VERSION:=77
+SUBMINOR_VERSION:=78

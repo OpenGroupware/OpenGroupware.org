@@ -128,7 +128,7 @@ static BOOL debugOn = NO;
   /* for use in RSS, wrap note content in <pre> tags */
   WOResponse *r;
   
-  r = [_ctx response];
+  r = [(WOContext *)_ctx response];
   [r setHeader:@"text/html" forKey:@"content-type"];
   [r appendContentString:@"<pre>"];
   [r appendContentHTMLString:[self contentAsString]];
@@ -145,7 +145,7 @@ static BOOL debugOn = NO;
   if ((s = [self contentAsString]) == nil)
     return nil;
   
-  r = [_ctx response];
+  r = [(WOContext *)_ctx response];
   [r setHeader:@"text/html" forKey:@"content-type"];
   e = [[s componentsSeparatedByString:@"\n"] objectEnumerator];
   while ((s = [e nextObject])) {
