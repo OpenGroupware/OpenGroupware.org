@@ -55,3 +55,28 @@ after-all ::
 	  ln -sf ../bundle-info.plist .)
 endif
 endif # mingw32
+
+
+# FHS support (this is a hack and is going to be done by gstep-make!)
+
+ifneq ($(FHS_INSTALL_ROOT),)
+
+FHS_LIB_DIR=$(FHS_INSTALL_ROOT)/lib/
+FHS_CMD_DIR=$(FHS_LIB_DIR)opengroupware.org-1.0a/commands/
+
+fhs-sax-dirs ::
+	$(MKDIRS) $(FHS_CMD_DIR)
+
+move-bundles-to-fhs :: fhs-sax-dirs
+	@echo "moving bundles $(BUNDLE_INSTALL_DIR) to $(FHS_CMD_DIR) .."
+	for i in $(BUNDLE_NAME); do \
+          j="$(FHS_CMD_DIR)/$${i}$(BUNDLE_EXTENSION)"; \
+	  if test -d $$j; then rm -r $$j; fi; \
+	  mv "$(BUNDLE_INSTALL_DIR)/$${i}$(BUNDLE_EXTENSION)" $$j; \
+	done
+
+move-to-fhs :: move-bundles-to-fhs
+
+after-install :: move-to-fhs
+
+endif

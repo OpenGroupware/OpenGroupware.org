@@ -115,8 +115,9 @@ static NSString *OGoBundlePathSpecifier        = nil;
   pathes = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,
 					       NSAllDomainsMask,
 					       YES);
-  pathes = [pathes arrayByAddingObject:@"/usr/local/lib/opengroupware.org/"];
-  pathes = [pathes arrayByAddingObject:@"/usr/lib/opengroupware.org/"];
+  pathes =
+    [pathes arrayByAddingObject:@"/usr/local/lib/opengroupware.org-1.0a/"];
+  pathes = [pathes arrayByAddingObject:@"/usr/lib/opengroupware.org-1.0a/"];
   
   // TODO: use "Skyrix5" for Skyrix5 (patch in migration script)
   

@@ -15,3 +15,5 @@ load-LSModel_TOOL_LIBS += \
 	-lNGLdap -lNGMime \
 	-lEOControl -lNGExtensions -lNGStreams \
 	-lDOM -lSaxObjC
+
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib

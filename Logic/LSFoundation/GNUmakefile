@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 include ./Version
@@ -101,3 +101,4 @@ load-LSModel_OBJC_FILES = load-LSModel.m
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
+-include fhs.make
