@@ -484,10 +484,10 @@ static NSArray *startDateOrdering = nil;
                  from:from to:to];
 #endif
 
-  if ([dates isKindOfClass:[NSException class]]) {
+  if ([dates isKindOfClass:[NSException class]])
     return dates;
-  }
-  else if (dates == nil) {
+  
+  if (dates == nil) {
     WOResponse *response = [(WOContext *)_ctx response];
     [response setStatus:400]; /* bad request */
     [response appendContentString:@"got no result for freebusy request"];

@@ -136,9 +136,8 @@
   if ([_key isEqualToString:@"Calendar"])
     return [self calendarFolderInContext:_ctx];
 
-  if ([_key isEqualToString:@"freebusy"]) {
+  if ([_key isEqualToString:@"freebusy"])
     return [self freeBusyInContext:_ctx];
-  }
   
   return [super lookupName:_key inContext:_ctx acquire:_flag];
 }

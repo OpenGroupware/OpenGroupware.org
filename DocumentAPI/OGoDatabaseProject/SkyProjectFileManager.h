@@ -99,7 +99,8 @@ typedef enum {
 - (BOOL)movePath:(NSString *)_source toPath:(NSString *)_dest
   handler:(id)_handler;
 
-- (BOOL)movePaths:(NSArray *)_files toPath:(NSString *)_dest handler:(id)_handler;
+- (BOOL)movePaths:(NSArray *)_files toPath:(NSString *)_dest 
+  handler:(id)_handler;
 
 - (BOOL)trashFilesAtPaths:(NSArray *)_path handler:(id)_handler;
 
@@ -128,6 +129,7 @@ typedef enum {
 - (BOOL)supportsUniqueFileIds;
 - (EODataSource *)dataSourceForDocumentSearchAtPath:(NSString *)_path;
 - (BOOL)isSymbolicLinkEnabledAtPath:(NSString *)_path;
+
 @end /* SkyProjectFileManager */
 
 @class NSString, NSData, NSException;

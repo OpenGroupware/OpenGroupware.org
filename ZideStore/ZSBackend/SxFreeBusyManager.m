@@ -84,8 +84,10 @@ static SxFreeBusyManager *sharedInstance = NULL;
   if (self->model) 
     return [self->model name];
 
+  // TODO: sometimes isn't properly setup (when the -modelName is used before
+  //       the LSBase is loaded)
   modelName = [[NSUserDefaults standardUserDefaults]
-                               objectForKey:@"LSModelName"];
+                               stringForKey:@"LSModelName"];
   
   if (modelName == nil) {
     EOAdaptorChannel *chan;
