@@ -204,7 +204,7 @@ static BOOL isRootAccountID(NSNumber *cid) {
     if (![warnedExt containsObject:_ext]) {
       [self logWithFormat:
 	      @"WARNING: did not find MIME type for extension %@: %@",
-	      _ext, types];
+              _ext, [[types allKeys] componentsJoinedByString:@","]];
       [warnedExt addObject:_ext];
     }
   }
