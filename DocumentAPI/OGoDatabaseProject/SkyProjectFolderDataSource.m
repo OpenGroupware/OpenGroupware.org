@@ -353,7 +353,7 @@ static inline BOOL _showUnknownFiles(id self) {
     
     [array addObject:obj];
   }
-  return didFilter ? array : result;
+  return didFilter ? array : (id)result;
 }
 
 - (NSArray *)primaryFetchObjects {

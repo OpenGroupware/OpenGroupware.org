@@ -1,3 +1,7 @@
+2004-12-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyProjectFolderDataSource.m: fixed a small warning (v5.1.43)
+
 2004-12-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyProjectFolderDataSource.m, SkyProjectDocumentDataSource.m: minor
