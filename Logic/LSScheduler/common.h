@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __OGo_LSScheduler_common_H__
 #define __OGo_LSScheduler_common_H__
@@ -33,5 +32,15 @@
 
 #include <LSFoundation/LSFoundation.h>
 #include <LSFoundation/OGoContextManager.h>
+
+
+/* public hacks */
+
+#if COCOA_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
+// TODO: fixes warnings and works, but should be updated to new API
+@interface NSCalendarDate(TimeZoneDetail)
+- (NSTimeZone *)timeZoneDetail;
+@end
+#endif
 
 #endif /* __OGo_LSScheduler_common_H__ */

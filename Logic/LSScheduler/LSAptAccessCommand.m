@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
@@ -43,6 +42,17 @@
 
 @implementation LSAptAccessCommand
 
+static NSString *right_deluv = @"deluv";
+static NSString *right_luv   = @"luv";
+static NSString *right_lv    = @"lv";
+static NSString *right_l     = @"l";
+static EONull   *null  = nil;
+
++ (void)initialize {
+  if (null == nil)
+    null = [[EONull null] retain];
+}
+
 - (NSString *)entityName {
   return @"Date";
 }
@@ -54,7 +64,68 @@
 
 /* execution */
 
-- (void)_executeInContext:(id)_context {
+- (BOOL)isRootAccountPKey:(NSNumber *)_pkey inContext:(id)_ctx {
+  return [_pkey intValue] == 10000 ? YES : NO;
+}
+
+- (void)setReturnValueToCopyOfValue:(id)_value {
+  id copyValue;
+  
+  copyValue = [_value copy];
+  [self setReturnValue:copyValue];
+  [copyValue release];
+}
+
+- (NSArray *)_fetchTeamGIDsOfAccountWithGID:(EOGlobalID *)_gid
+  inContext:(id)_ctx
+{
+  return LSRunCommandV(_ctx, @"account", @"teams",
+		       @"object", _gid,
+		       @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
+		       nil);
+}
+
+- (NSArray *)_fetchMemberGIDsOfTeamWithGID:(EOGlobalID *)_gid
+  inContext:(id)_ctx
+{
+  return LSRunCommandV(_ctx, @"team", @"members",
+		       @"team", _gid,
+		       @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
+		       nil);
+}
+
+- (EOKeyGlobalID *)teamGID:(NSNumber *)_pkey {
+  if (_pkey == nil) return nil;
+  return [EOKeyGlobalID globalIDWithEntityName:@"Team"
+			keys:&_pkey keyCount:1 zone:NULL];
+}
+- (EOKeyGlobalID *)personGID:(NSNumber *)_pkey {
+  if (_pkey == nil) return nil;
+  return [EOKeyGlobalID globalIDWithEntityName:@"Person"
+			keys:&_pkey keyCount:1 zone:NULL];
+}
+
+- (void)_executeForRootInContext:(id)_context {
+  /* root has access to all operations */
+  NSMutableDictionary *access;
+  NSEnumerator *e;
+  EOGlobalID   *gid;
+  
+  if (self->singleFetch) {
+    [self setReturnValue:right_deluv];
+    return;
+  }
+  
+  access = [NSMutableDictionary dictionaryWithCapacity:[self->gids count]];
+  e = [self->gids objectEnumerator];
+  while ((gid = [e nextObject]) != nil)
+    [access setObject:right_deluv forKey:gid];
+  
+  [self setReturnValueToCopyOfValue:access];
+}
+
+- (void)_executeInContext:(id)_ctx {
+  // TODO: split up this HUGE method
   NSAutoreleasePool     *pool;
   EOEntity              *entity;
   NSArray               *attrs;
@@ -67,14 +138,6 @@
   id                    login;
   int                   loginPid;
   NSArray               *loginTeams;
-  static NSString *right_deluv = @"deluv";
-  static NSString *right_luv   = @"luv";
-  static NSString *right_lv    = @"lv";
-  static NSString *right_l     = @"l";
-  static EONull   *null  = nil;
-  
-  if (null == nil)
-    null = [[EONull null] retain];
   
   if ((gidCount = [self->gids count]) == 0) {
     [self setReturnValue:nil];
@@ -83,35 +146,19 @@
   
   pool = [[NSAutoreleasePool alloc] init];
   
-  login    = [_context valueForKey:LSAccountKey];
-  loginPid = [[login valueForKey:@"companyId"] intValue];
-
-  if (loginPid == 10000) {
-    if (self->singleFetch) {
-      [self setReturnValue:right_deluv];
-    }
-    else {
-      NSEnumerator *e;
-      EOGlobalID *gid;
-      
-      access = [NSMutableDictionary dictionaryWithCapacity:gidCount];
-      
-      e = [self->gids objectEnumerator];
-      while ((gid = [e nextObject])) {
-        [access setObject:right_deluv forKey:gid];
-      }
-      
-      [self setReturnValue:AUTORELEASE([access copy])];
-    }
-    RELEASE(pool);
+  login    = [_ctx valueForKey:LSAccountKey];
+  
+  if ([self isRootAccountPKey:[login valueForKey:@"companyId"] 
+	    inContext:_ctx]) {
+    [self _executeForRootInContext:_ctx];
+    [pool release];
     return;
   }
   
-  loginTeams = LSRunCommandV(_context,
-                             @"account", @"teams",
-                             @"object", [login valueForKey:@"globalID"],
-                             @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
-                             nil);
+  loginPid = [[login valueForKey:@"companyId"] intValue];
+
+  loginTeams = [self _fetchTeamGIDsOfAccountWithGID:
+		       [login valueForKey:@"globalID"] inContext:_ctx];
   
   access          = [NSMutableDictionary dictionaryWithCapacity:gidCount];
   writeAccessLists= [NSMutableDictionary dictionaryWithCapacity:gidCount];
@@ -126,7 +173,7 @@
                      [entity attributeNamed:@"writeAccessList"],
                      nil];
   
-  adCh = [[_context valueForKey:LSDatabaseChannelKey] adaptorChannel];
+  adCh = [[_ctx valueForKey:LSDatabaseChannelKey] adaptorChannel];
   [self assert:(adCh != nil) reason:@"missing adaptor channel"];
   
   batchSize = gidCount > 200 ? 200 : gidCount;
@@ -229,12 +276,12 @@
         }
         
         if (hasReadAccess) {
-          id   l              = nil;
+          id   l;
           BOOL hasWriteAccess = NO;
-
+	  
           l = [row valueForKey:@"writeAccessList"];
-
-          if (l != null) {
+	  
+          if ([l isNotNull]) {
             NSArray    *acl;
             int        j, cnt;
             EOGlobalID *wAccessTeamGid;
@@ -276,8 +323,8 @@
           {
             // write access list may be needed later
             id l = [row valueForKey:@"writeAccessList"];
-
-            if (l != null && l != nil)
+	    
+            if ([l isNotNull] && l != nil)
               [writeAccessLists setObject:l forKey:gid];
           }
         }
@@ -295,14 +342,14 @@
     
     loginGid = [login valueForKey:@"globalID"];
     
-    ps = LSRunCommandV(_context, @"appointment", @"get-participants",
+    ps = LSRunCommandV(_ctx, @"appointment", @"get-participants",
                        @"dates", readAccessDates,
                        @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
                        nil);
     
     teamToPs  = nil;
     agids = [readAccessDates objectEnumerator];
-    while ((gid = [agids nextObject])) {
+    while ((gid = [agids nextObject]) != nil) {
       NSArray  *psa;
       unsigned psac;
       BOOL     hasReadAccess  = NO;
@@ -326,18 +373,15 @@
           EOGlobalID *pgid;
           
           pgid = [psa objectAtIndex:i];
-
+	  
           if ([[pgid entityName] isEqualToString:@"Team"]) {
             NSSet *pss;
             
             if ((pss = [teamToPs objectForKey:pgid]) == nil) {
-              id tmp;
-              tmp = LSRunCommandV(_context, @"team", @"members",
-                                  @"team", pgid,
-                                  @"fetchGlobalIDs",
-                                  [NSNumber numberWithBool:YES],
-                                  nil);
-              if (tmp) {
+              NSArray *tmp;
+	      
+	      tmp = [self _fetchMemberGIDsOfTeamWithGID:pgid inContext:_ctx];
+              if (tmp != nil) {
                 pss = [NSSet setWithArray:tmp];
                 [teamToPs setObject:pss forKey:pgid];
               }
@@ -354,11 +398,10 @@
         // now account has read access
         // maybe also write access
         // --> check writeAccessList
-        id   l              = nil;
-
+        id l;
+	
         l = [writeAccessLists objectForKey:gid];
-
-        if (l != null) {
+        if ([l isNotNull]) {
           NSArray    *acl;
           int        j, cnt;
           EOGlobalID *wAccessTeamGid;
@@ -369,17 +412,12 @@
             
           for (j = 0; j < cnt; j++) {
             NSNumber *staffPid;
-
+	    
             staffPid = [NSNumber numberWithInt:
-                                 [[acl objectAtIndex:j] intValue]];
-
-            wAccessTeamGid = [EOKeyGlobalID globalIDWithEntityName:@"Team"
-                                            keys:&staffPid keyCount:1
-                                            zone:NULL];
-            wAccessPartGid = [EOKeyGlobalID globalIDWithEntityName:@"Person"
-                                            keys:&staffPid keyCount:1
-                                            zone:NULL];
-
+				   [[acl objectAtIndex:j] intValue]];
+	    
+            wAccessTeamGid = [self teamGID:staffPid];
+            wAccessPartGid = [self personGID:staffPid];
             if ([loginTeams containsObject:wAccessTeamGid]) {
               hasWriteAccess = YES;
               break;
@@ -390,9 +428,8 @@
             }
           }
         }
-        if (hasWriteAccess) {
+        if (hasWriteAccess)
           [access setObject:right_deluv forKey:gid];
-        }
       }
     }
   }
@@ -402,9 +439,9 @@
   if (self->singleFetch)
     [self setReturnValue:[access objectForKey:[self->gids lastObject]]];
   else
-    [self setReturnValue:AUTORELEASE([access copy])];
+    [self setReturnValueToCopyOfValue:access];
   
-  RELEASE(pool);
+  [pool release];
 }
 
 /* accessors */

@@ -1,3 +1,11 @@
+2004-11-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.53
+
+	* LSAptAccessCommand.m: code cleanups, needs more
+
+	* common.h: fixed -timeZoneDetail warnings on MacOSX
+
 2004-06-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetAppointmentCommand.m: minor code cleanups, fixed an RC issue 
