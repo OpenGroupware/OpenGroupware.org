@@ -3,8 +3,8 @@
 %debug_package %{nil}
 %_topdir /home/build/rpm
 %_tmppath %{_topdir}/tmp
-%distribution Fedora Core release 2 (Tettnang)
-%dist_suffix cl
+%distribution %{nil}
+%dist_suffix %{nil}
 
 ###
 %libf_objc_version 0
@@ -61,7 +61,7 @@
 %sope_makeflags debug=yes
 %sope_source sope-trunk-latest.tar.gz
 %sope_prefix /usr/local
-%sope_libversion 
+%sope_libversion %{nil}
 ###
 %mod_ngobjweb_version 0
 %mod_ngobjweb_release trunk_r0
