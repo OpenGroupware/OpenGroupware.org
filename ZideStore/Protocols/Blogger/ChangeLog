@@ -1,5 +1,8 @@
 2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
 
+	* NSObject+Blogger.m: code cleanups, check NSFileSubject for post title
+	  prior resorting to davDisplayName (v1.3.5)
+
 	* NSObject+Blogger.h: added category method to retrieve Blog content
 	  (v1.3.4)
 
