@@ -22,7 +22,7 @@
 
 #include "SxObject.h"
 #include "SxFolder.h"
-#include "SxAuthenticator.h"
+#include <Main/SxAuthenticator.h>
 #include "OLDavPropMapper.h"
 #include "mapiflags.h"
 #include "common.h"

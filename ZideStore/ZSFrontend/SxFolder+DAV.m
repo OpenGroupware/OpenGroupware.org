@@ -23,7 +23,7 @@
 #include "SxFolder.h"
 #include "SxObject.h"
 #include "OLDavPropMapper.h"
-#include "SxAuthenticator.h"
+#include <Main/SxAuthenticator.h>
 #include <NGObjWeb/WEClientCapabilities.h>
 #include <NGObjWeb/SoObjectResultEntry.h>
 #include "mapiflags.h"

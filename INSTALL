@@ -1,0 +1,38 @@
+OpenGroupware.org Installation Guide
+====================================
+
+TODO: write install guide for OGo 1.0.
+
+Prerequisites
+=============
+
+SOPE 4.3
+- libxml2/libxml2-dev
+- autoconf
+- openldap2/openldap2-dev
+- libical (eg ThirdParty/libical)
+- postgresql-dev
+
+Dependencies
+============
+
+Logic
+- SOPE 4.3
+
+DocumentAPI
+- Logic
+
+WebUI
+- Logic
+- DocumentAPI
+
+Tools
+- Logic
+- DocumentAPI
+
+XmlRpcAPI
+- Logic
+- DocumentAPI
+
+ZideStore
+- Logic

@@ -1,6 +1,11 @@
 # $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
 
-ADDITIONAL_INCLUDE_DIRS += -I. -I.. -I./Contacts/ -I../Backend/
+OGoROOT=../..
+
+ADDITIONAL_INCLUDE_DIRS += -I. -I.. -I./Contacts/
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I$(OGoROOT)/Logic/LSFoundation/
 
 libZideStoreFrontend_LIBRARIES_DEPEND_UPON += \
         -lZideStoreBackend      \
@@ -10,4 +15,4 @@ libZideStoreFrontend_LIBRARIES_DEPEND_UPON += \
 	-lXmlRpc -lDOM -lSaxObjC
 
 libZideStoreFrontend_LIB_DIRS += \
-	-L../Backend/$(GNUSTEP_OBJ_DIR)
+	-L../ZSBackend/$(GNUSTEP_OBJ_DIR)

@@ -1,5 +1,7 @@
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSWNewsArticleEditor.h: fixed header file (v5.1.11)
+
 	* LSWNewsArticleEditor.m: fixed a warning on MacOSX (v5.1.10)
 
 2004-05-09  Helge Hess  <helge.hess@opengroupware.org>

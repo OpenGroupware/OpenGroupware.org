@@ -122,7 +122,7 @@
 }
 
 - (void)setHasRelatedArticle:(BOOL)_value {
-  if (_value != nil) {
+  if (_value) {
     if (![self->relatedArticles containsObject:self->newsArticle])
       [self->relatedArticles addObject:self->newsArticle];
   }

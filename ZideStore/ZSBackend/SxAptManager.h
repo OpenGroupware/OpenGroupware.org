@@ -18,17 +18,17 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxAptManager.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __Backend_SxAptManager_H__
 #define __Backend_SxAptManager_H__
 
-#include <Backend/SxBackendManager.h>
+#include <ZSBackend/SxBackendManager.h>
 
 /*
   SxAptManager, SxAptSetIdentifier
   
-  Manage the appointment backend. Identify folder sets using the set-identifier.
+  Manage the appointment backend. Identify folder sets using the
+  set-identifier.
 */
 
 @class NSString, NSDate, NSArray, NSDictionary, NSMutableDictionary;
