@@ -197,7 +197,7 @@ static BOOL showGroupOverviewFolders = -1;
   /* davDisplayName,davResourceType,outlookMessageClass,cdoDisplayType */
   [self logWithFormat:
           @"ZL Group Messages Query [depth=%@]: %@",
-          [[_ctx request] headerForKey:@"depth"],
+	  [[(WOContext *)_ctx request] headerForKey:@"depth"],
           [[_fs selectedWebDAVPropertyNames] componentsJoinedByString:@","]];
   return [NSArray array];
 }

@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWViewerPage.h>
 
@@ -903,8 +902,8 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
           @"documentId", [[self object] valueForKey:@"documentId"], nil];
 
   if ([self isCheckoutEnabled]) {
-    result = [self runCommand:@"documentversion::checkout" object:self->version];
-
+    result = [self runCommand:@"documentversion::checkout" 
+		   object:self->version];
     if (result) {
       if (![self commit]) {
         [self setErrorString:@"Could not commit document-version checkout !"];
@@ -934,6 +933,7 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
 }
 
 - (id)reallyDelete {
+  // TODO: cleanup
   id result = nil;
 
   if ([[[self object] valueForKey:@"status"] isEqualToString:@"released"]) {
@@ -963,11 +963,6 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
     [self back];
   }
   return nil;
-}
-
-- (id)cancel {
-  [self setIsInWarningMode:NO];
-  return nil;  
 }
 
 - (id)folderLink {
@@ -1023,50 +1018,52 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
 }
 
 - (BOOL)showContentInline {
-  BOOL doShow;
-
+  NSArray      *pluginEnabledBrowsers;
+  NSEnumerator *e;
+  NSString     *s;
+  NSString     *browser;
+  BOOL         doShow;
+  
   doShow = [[[self session] userDefaults] boolForKey:@"LSPluginViewerEnabled"];
-  if (doShow) {
-    /*
+  if (!doShow)
+    return NO;
+
+  /*
       IE4.5/Mac:  'Mozilla/4.0 (compatible; MSIE 4.5; Mac_PowerPC)'
       IE5/Win:    'Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)'
       NS4.61/Mac: 'Mozilla/4.61 (Macintosh; I; PPC)'
       NS4.61/Win: 'Mozilla/4.61 [en] (WinNT; I)'
-    */
-    NSArray  *pluginEnabledBrowsers;
+  */
 
-    pluginEnabledBrowsers =
-      [[[self session] userDefaults] arrayForKey:@"LSPluginEnabledUserAgents"];
-
-    if (pluginEnabledBrowsers) {
-      NSString *browser;
+  pluginEnabledBrowsers =
+    [[[self session] userDefaults] arrayForKey:@"LSPluginEnabledUserAgents"];
+  
+  if (!pluginEnabledBrowsers)
+    return NO;
     
-      if ((browser = [[[self context] request] headerForKey:@"user-agent"])) {
-        NSEnumerator *e;
-        NSString     *s;
-
-        e = [pluginEnabledBrowsers objectEnumerator];
-        while ((s = [e nextObject])) {
-          if ([browser indexOfString:s] != NSNotFound)
-            return YES;
-        }
-      }
-#if DEBUG
-      [self debugWithFormat:@"user-agent: '%@'", browser];
-#endif
-    }
+  if ((browser = [[[self context] request] headerForKey:@"user-agent"]) != nil)
+    return NO;
+  
+  e = [pluginEnabledBrowsers objectEnumerator];
+  while ((s = [e nextObject]) != nil) {
+    NSRange r;
+	  
+    r = [browser rangeOfString:s];
+    if (r.length > 0)
+      return YES;
   }
   return NO;
 }
 
 - (BOOL)showAsEmbeddedObject {
-  NSString *fileType = [[self object] valueForKey:@"fileType"];
-
+  NSString *fileType;
+  
 #if 0
   if (![self showContentInline])
     return NO;
 #endif
-
+  
+  fileType = [[self object] valueForKey:@"fileType"];
   if ([fileType isEqualToString:@"gif"] ||
       [fileType isEqualToString:@"jpg"] ||
       [fileType isEqualToString:@"jpeg"])
@@ -1076,9 +1073,9 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
 }
 
 - (NSString *)inlineObjectMimeType {
-  NSDictionary *mimeTypes = nil;
-  NSString *fileType;
-
+  NSDictionary *mimeTypes;
+  NSString     *fileType;
+  
   fileType  = [[self object] valueForKey:@"fileType"];
   mimeTypes = [[[self session] userDefaults] dictionaryForKey:@"LSMimeTypes"];
   fileType  = [mimeTypes valueForKey:fileType];
@@ -1097,7 +1094,7 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
   
   if ((path = [[self object] valueForKey:@"attachmentName"]))
     return [NSData dataWithContentsOfFile:path];
-
+  
   return nil;
 }
 
@@ -1118,7 +1115,7 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
   [self->inlineViewer takeValue:self->fileName          forKey:@"fileName"];
   [self->inlineViewer takeValue:[self inlineContentUrl] forKey:@"uri"];
   
-  return self->inlineViewer ? YES : NO;
+  return self->inlineViewer != nil ? YES : NO;
 }
 - (id)inlineObjectViewer {
   return self->inlineViewer;
@@ -1168,12 +1165,11 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
   return self->item;
 }
 
-- (unsigned)folderIndex {
-  return self->folderIndex;
-}
-
 - (void)setFolderIndex:(unsigned)_index {
   self->folderIndex = _index;
+}
+- (unsigned)folderIndex {
+  return self->folderIndex;
 }
 
 - (NSString *)itemTitle {
@@ -1228,12 +1224,14 @@ static NSString *ProjectNamespace = @"http://www.skyrix.com/Project";
   return [self->property substringFromIndex:[ProjectNamespace length] + 2];
 }
 
-- (id)propertyItem {
-  return self->property;
-}
 - (void)setPropertyItem:(id)_p {
   ASSIGN(self->property, _p);
 }
+- (id)propertyItem {
+  return self->property;
+}
+
+/* actions */
 
 - (id)editProperty {
   id page = nil;
@@ -1246,6 +1244,11 @@ static NSString *ProjectNamespace = @"http://www.skyrix.com/Project";
 	forKey:@"value"];
   [self enterPage:page];
   return nil;
+}
+
+- (id)cancel {
+  [self setIsInWarningMode:NO];
+  return nil;  
 }
 
 @end /* LSWDocumentViewer */

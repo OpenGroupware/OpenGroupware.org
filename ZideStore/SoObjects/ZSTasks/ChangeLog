@@ -1,3 +1,7 @@
+2004-11-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxTask.m: fixed a MacOSX warning (v1.3.75)
+
 2004-11-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxTaskFolder.m: added custom resource type tag for folders 

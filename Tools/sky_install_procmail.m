@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -21,13 +21,18 @@
 
 // Note: this source *really* needs a LOT of cleanup
 
+#import <Foundation/NSObject.h>
+
+@class NSArray;
+
+@interface SkyInstallProcMail : NSObject
++ (int)runWithArguments:(NSArray *)_args;
+@end
+
 #import <Foundation/Foundation.h>
 #include <NGExtensions/NGObjectMacros.h>
 #include <NGImap4/NGSieveClient.h>
 #include <NGStreams/NGInternetSocketAddress.h>
-
-@interface SkyInstallProcMail : NSObject
-@end
 
 @implementation SkyInstallProcMail
 
@@ -204,7 +209,7 @@ static BOOL     EnableSpamassasinFilter = NO;
   forward    = nil;
   firstEntry = YES;
   
-  procmailFilter = [NSMutableString arrayWithCapacity:2048];
+  procmailFilter = [NSMutableString stringWithCapacity:2048];
   
   [procmailFilter appendString:procmailInit];
   

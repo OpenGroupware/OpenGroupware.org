@@ -1,3 +1,8 @@
+2004-11-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxVCardContactRenderer.m, SxAddressFolder.m, SxGroupsFolder.m,
+	  SxGroupFolder.m: fixed a warning on MacOSX (v1.3.77)
+
 2004-11-01  Helge Hess  <helge.hess@opengroupware.org>
 	
 	* SxAddressFolder.m: added custom resource type tag for folders

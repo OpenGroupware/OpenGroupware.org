@@ -250,7 +250,7 @@
   
   if ([self doExplainQueries]) {
     [self logWithFormat:@"ZL Address Query [depth=%@]: %@",
-            [[_ctx request] headerForKey:@"depth"],
+	    [[(WOContext *)_ctx request] headerForKey:@"depth"],
             [[_fs selectedWebDAVPropertyNames] componentsJoinedByString:@","]];
   }
   
@@ -270,7 +270,7 @@
   
   if ([self doExplainQueries]) {
     [self logWithFormat:@"ZL Address Book Query [depth=%@]: %@",
-            [[_ctx request] headerForKey:@"depth"],
+	    [[(WOContext *)_ctx request] headerForKey:@"depth"],
             [[_fs selectedWebDAVPropertyNames] componentsJoinedByString:@","]];
   }
   

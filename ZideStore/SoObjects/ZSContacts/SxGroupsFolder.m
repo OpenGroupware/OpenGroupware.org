@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -238,7 +238,7 @@
     // mh: ZideLook turns spaces into '_' (bug 1233 in bugzilla)
     NSString *ua;
     
-    ua = [[_ctx request] headerForKey:@"user-agent"];
+    ua = [[(WOContext *)_ctx request] headerForKey:@"user-agent"];
     if ([ua rangeOfString:@"ZIDEStore"].length > 0) {
       _key = [[_key componentsSeparatedByString:@"_"]
                     componentsJoinedByString:@" "];
@@ -264,7 +264,7 @@
   /* davDisplayName,davResourceType,outlookMessageClass,cdoDisplayType */
   if ([self doExplainQueries]) {
     [self logWithFormat:@"ZL Groups Messages Query [depth=%@]: %@",
-            [[_ctx request] headerForKey:@"depth"],
+	    [[(WOContext *)_ctx request] headerForKey:@"depth"],
             [[_fs selectedWebDAVPropertyNames] componentsJoinedByString:@","]];
   }
   

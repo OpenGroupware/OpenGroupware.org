@@ -1,3 +1,9 @@
+2004-11-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* sky_install_procmail.m: fixed a warning on MacOSX
+
+	* skyaptnotify.m: minor code cleanup, fixed a warning on MacOSX
+
 2004-11-16  Helge Hess  <helge.hess@skyrix.com>
 
 	* sky_install_sieve.m: major code cleanups (needs testing!)

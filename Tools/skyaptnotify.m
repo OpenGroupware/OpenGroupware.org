@@ -70,6 +70,7 @@
 #include <LSFoundation/OGoContextManager.h>
 #include <LSFoundation/OGoContextSession.h>
 #include <NGExtensions/NSNull+misc.h>
+#include <NGExtensions/NSString+Ext.h>
 #include <NGExtensions/EODataSource+NGExtensions.h>
 #include <NGMail/NGMail.h>
 #include <NGMime/NGMime.h>
@@ -433,7 +434,8 @@ static BOOL     coreOnException = NO;
   aptIds = [NSMutableArray arrayWithCapacity:4];
   
   // going through apts
-  while ((one = [e nextObject])) {
+  // TODO: split
+  while ((one = [e nextObject]) != nil) {
     NSNumber *dateId;
     
     dateId = [(EOKeyGlobalID *)[one globalID] keyValues][0];
@@ -443,7 +445,7 @@ static BOOL     coreOnException = NO;
                       componentsSeparatedByString:@","];
     resE      = [resources objectEnumerator];
     // going through resources of apt
-    while ((res = [resE nextObject])) {
+    while ((res = [resE nextObject]) != nil) {
       res = [res stringByTrimmingWhiteSpaces];
       ov = [one objectVersion];
       if (ov == nil)
@@ -1323,19 +1325,22 @@ static int      SMSMAXCHARS         = 160;
 #if 1
     // TODO: improve
     // cutting country prefix for now
-    int idx;
+    NSRange r;
     
-    if ((idx = [_pager indexOfString:@"-"]) == NSNotFound) {
-      if ((idx = [_pager indexOfString:@"/"]) == NSNotFound) {
-        if ((idx = [_pager indexOfString:@" "]) == NSNotFound) {
-          NSLog(@"WARNING[%s]: cannot parse pager id %@",
+    r = [_pager rangeOfString:@"-"];
+    if (r.length == 0) {
+      r = [_pager rangeOfString:@"/"];
+      if (r.length == 0) {
+	r = [_pager rangeOfString:@" "];
+        if (r.length == 0) {
+          NSLog(@"WARNING[%s]: cannot parse pager id: '%@'",
                 __PRETTY_FUNCTION__, _pager);
           return nil;
         }
       }
     }
-    _pager = [NSString stringWithFormat:@"0%@",
-                       [_pager substringFromIndex:idx+1]];
+    _pager = [_pager substringFromIndex:(r.location + r.length)];
+    _pager = [@"0" stringByAppendingString:_pager];
 #else
     // this doesn't seem to work with sendpage
     int idx = 1;

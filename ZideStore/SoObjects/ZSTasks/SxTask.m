@@ -463,9 +463,9 @@ static BOOL debugParser = YES;
   NSString *comment;
   
   r    = [(WOContext *)_ctx response];
-  part = [[_ctx request] content];
+  part = [[(WOContext *)_ctx request] content];
   if (debugParser)
-    [self logWithFormat:@"should parse %i bytes ..", [part length]];
+    [self logWithFormat:@"should parse %d bytes ..", [part length]];
   
   if ([part length] == 0) {
     [self logWithFormat:@"missing content for PUT ..."];

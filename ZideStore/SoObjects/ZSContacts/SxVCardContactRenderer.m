@@ -33,7 +33,9 @@
 /* operations */
 
 - (NSString *)vCardStringForObject:(id)_object {
-  return [self subclassResponsibility:_cmd];
+  [self logWithFormat:@"ERROR(%s): method must be implemented in subclass!",
+	__PRETTY_FUNCTION__];
+  return nil;
 }
 
 - (NSString *)addressStringForDict:(NSDictionary *)_dict {
@@ -113,7 +115,7 @@
   WOResponse *response;
   NSString   *vCard;
   
-  response = [WOResponse responseWithRequest:[_ctx request]];
+  response = [WOResponse responseWithRequest:[(WOContext *)_ctx request]];
   
   if ((vCard = [self vCardForObject:_object inContainer:_container]) != nil) {
     NSData *contentData;

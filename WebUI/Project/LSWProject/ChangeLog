@@ -1,3 +1,7 @@
+2004-11-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWDocumentViewer.m: minor code cleanups (v5.1.43)
+
 2004-09-26  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWProjectEditor.m: fixed a small memory leak in fetching project

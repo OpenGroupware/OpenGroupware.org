@@ -329,7 +329,7 @@ static BOOL createNewAptWhenNotFound = YES;
   
   /* setup response */
   
-  r = [_ctx response];
+  r = [(WOContext *)_ctx response];
 
   [r setStatus:
        [self shouldReturn201AfterPUTInContext:_ctx]
@@ -489,7 +489,7 @@ static BOOL createNewAptWhenNotFound = YES;
 
   /* setup response */
   
-  r = [_ctx response];
+  r = [(WOContext *)_ctx response];
 
   [r setStatus:
        [self shouldReturn201AfterPUTInContext:_ctx]

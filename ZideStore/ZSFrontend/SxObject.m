@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -432,7 +432,7 @@
   WORequest *rq;
   NSString  *c;
   
-  if ((rq = [_ctx request]) == nil)
+  if ((rq = [(WOContext *)_ctx request]) == nil)
     return nil; /* be tolerant - no request, no condition */
   
   if ((c = [rq headerForKey:@"if-match"]) != nil) {
