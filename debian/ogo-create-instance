@@ -444,3 +444,4 @@ Also verify that a suitable accessmethod is enabled in
 /etc/postgresql/pg_hba.conf.
 
 You need to (re)start opengroupware.org for the changes to take effect.
+EOF
