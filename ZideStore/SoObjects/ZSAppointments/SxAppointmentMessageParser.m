@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxAppointmentMessageParser.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxAppointmentMessageParser.h"
 #include "common.h"
@@ -44,9 +43,7 @@ static SaxObjectDecoder *sax = nil;
   return [[[self alloc] init] autorelease];
 }
 
-- (void)dealloc {
-  [super dealloc];
-}
+/* parsing */
 
 - (id)rsvpValue:(NSString *)_rsvp {
   if ([[_rsvp lowercaseString] isEqualToString:@"true"])
@@ -473,11 +470,36 @@ static SaxObjectDecoder *sax = nil;
   return YES;
 }
 
+- (id)parseICalendarData:(NSData *)_data {
+  NSAutoreleasePool *pool;
+  id result;
+
+  if (_data == nil) {
+    [self debugWithFormat:@"got no iCalendar data ..."];
+    return nil;
+  }
+  [self debugWithFormat:@"should parse %i bytes ..", [_data length]];
+  
+  pool = [[NSAutoreleasePool alloc] init];
+  {
+    iCalCalendar *cal;
+    
+    cal    = [self parseICalData:_data];
+    result = [self processCalendar:cal andHeader:nil];
+  
+    result = [result retain];
+  }
+  [pool release];
+  return [result autorelease];
+}
+
 - (id)parseMessageData:(NSData *)_data {
+  /* parse a MIME message containing iCalendar data */
   NGMimeMessageParser *mimeParser;
   NSAutoreleasePool   *pool;
   NSMutableDictionary *header = nil;
   iCalCalendar        *cal    = nil;
+  NSData *iCalData;
   id part;
   id result;
 
@@ -489,11 +511,11 @@ static SaxObjectDecoder *sax = nil;
   /* Evolution PUT's a MIME message containing an iCal file */
   mimeParser = [[NGMimeMessageParser alloc] init];
   [mimeParser setDelegate:self];
-  part = [mimeParser parsePartFromData:_data];
-  [mimeParser release];
+  part = [[[mimeParser parsePartFromData:_data] retain] autorelease];
+  [mimeParser release]; mimeParser = nil;
   
   if (part == nil) {
-    [self logWithFormat:@"could not parse MIME structure."];
+    [self logWithFormat:@"ERROR: could not parse MIME structure."];
     [pool release];
     return nil;
   }
@@ -526,21 +548,27 @@ static SaxObjectDecoder *sax = nil;
     }
   }
   
-  _data = [part body];
-  if ([_data length] == 0) {
+  iCalData = [part body];
+  if ([iCalData length] == 0) {
     /* Note: only seems to work with the simple-http-parser ! */
-    [self logWithFormat:@"part contains no data !"];
+    [self logWithFormat:@"ERROR: submitted part contains no data!"];
     result = nil;
   }
   else {
     /* parse the body */
-    cal    = [self parseICalData:_data];
+    cal    = [self parseICalData:iCalData];
     result = [self processCalendar:cal andHeader:header];
   }
   
   result = [result retain];
   [pool release];
   return [result autorelease];
+}
+
+/* debugging */
+
+- (BOOL)isDebuggingEnabled {
+  return debugParser;
 }
 
 @end /* SxAppointmentMessageParser */

@@ -40,21 +40,22 @@
 
 @implementation SxAppointment
 
-static int createGroupAptsInGroupFolder = -1;
 static NSNumber *yesNum = nil;
-static BOOL logAptChange = NO;
+static BOOL createGroupAptsInGroupFolder = NO;
+static BOOL logAptChange             = NO;
+static BOOL createNewAptWhenNotFound = YES;
 
 + (void)initialize {
-  NSUserDefaults *ud;
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     
   if (yesNum == nil) yesNum = [[NSNumber numberWithBool:YES] retain];
-    
-  ud = [NSUserDefaults standardUserDefaults];
-  if (createGroupAptsInGroupFolder == -1) {
-    createGroupAptsInGroupFolder =
-      [ud boolForKey:@"ZLCreateGroupAppointmentsInGroupFolders"];
-  }
+  
+  createGroupAptsInGroupFolder =
+    [ud boolForKey:@"ZLCreateGroupAppointmentsInGroupFolders"];
   logAptChange = [ud boolForKey:@"ZLAptLogChanges"];
+  
+  if ([ud boolForKey:@"ZLApt404OnMissingPUTTargets"])
+    createNewAptWhenNotFound = NO;
 }
 
 + (BOOL)logAptChange {
@@ -160,9 +161,12 @@ static BOOL logAptChange = NO;
 
   if (RendererClass == NULL) {
     RendererClass = NSClassFromString(@"SxZLFullAptRenderer");
-
+    
     if (RendererClass == NULL) {
-      [self logWithFormat:@"Try to instantiate 'SxZLFullAptRenderer' class"];
+      // TODO: fall back to a default renderer?!
+      [self logWithFormat:
+              @"Note: did not find 'SxZLFullAptRenderer' class, cannot "
+              @"render <allprop/>."];
       return nil;
     }
   }
@@ -318,9 +322,16 @@ static BOOL logAptChange = NO;
   /* fetch EO */
   
   if ((obj = [self objectInContext:_ctx]) == nil) {
-    [self logWithFormat:@"got no EO object !"];
-    return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-			reason:@"could not locate SKYRiX object for ID !"];
+    if (createNewAptWhenNotFound) {
+      [self logWithFormat:
+              @"Note: object not yet available in DB, creating a new one!"];
+      return [self createAptWithInfo:_info inContext:_ctx];
+    }
+    else {
+      [self logWithFormat:@"got no EO object !"];
+      return [NSException exceptionWithHTTPStatus:404 /* Not Found */
+                          reason:@"could not locate database object for ID!"];
+    }
   }
   
   /* check version */
@@ -435,29 +446,31 @@ static BOOL logAptChange = NO;
 }
 #undef SX_DIFFKEY
 
-- (id)putMessageAction:(id)_ctx {
+- (id)_processPUTData:(NSData *)_content
+  withParseSelector:(SEL)_parseSel inContext:(id)_ctx
+{
   /* request body contains a message/rfc822 */
   SxAppointmentMessageParser *parser;
-  NSData  *content;
   NSArray *infos;
   id      info;
   
-  content = [[(WOContext *)_ctx request] content];
-  if ([content length] == 0) {
+  if ([_content length] == 0) {
     return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
-                        reason:@"got empty PUT body, cannot parse MIME !"];
+                        reason:@"got empty PUT body"];
   }
   
-  if ((parser = [SxAppointmentMessageParser parser]) == nil)
-    return [NSException exceptionWithHTTPStatus:500 reason:@"got no parser !"];
+  if ((parser = [SxAppointmentMessageParser parser]) == nil) {
+    return [NSException exceptionWithHTTPStatus:500 
+                        reason:@"missing MIME/iCal parser !"];
+  }
   
-  if ((infos = [parser parseMessageData:content]) == nil) {
+  if ((infos = [parser performSelector:_parseSel withObject:_content]) ==nil) {
     return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
-                        reason:@"could not parse message !"];
+                        reason:@"could not parse submitted data!"];
   }
   if ([infos count] == 0) {
     return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
-                        reason:@"ical contained no vevent !"];
+                        reason:@"no vevent record found in submitted data!"];
   }
   if ([infos count] > 1) {
     [self logWithFormat:
@@ -468,9 +481,20 @@ static BOOL logAptChange = NO;
   
   // read_access_group = $group
   
-  return ([self isNew])
+  return [self isNew]
     ? [self createAptWithInfo:info inContext:_ctx]
     : [self patchAptWithInfo:info  inContext:_ctx];
+}
+
+- (id)putMessageAction:(id)_ctx {
+  return [self _processPUTData:[[(WOContext *)_ctx request] content]
+               withParseSelector:@selector(parseMessageData:)
+               inContext:_ctx];
+}
+- (id)putICalendarAction:(id)_ctx {
+  return [self _processPUTData:[[(WOContext *)_ctx request] content]
+               withParseSelector:@selector(parseICalendarData:)
+               inContext:_ctx];
 }
 
 - (id)PUTAction:(id)_ctx {
@@ -488,12 +512,34 @@ static BOOL logAptChange = NO;
   }
   
   ctype = [[(WOContext *)_ctx request] headerForKey:@"content-type"];
+
   if ([ctype hasPrefix:@"message/rfc822"])
     return [self putMessageAction:_ctx];
   
-  [self logWithFormat:@"don't know how to handle this PUT ?"];
+  if ([ctype hasPrefix:@"text/vcalendar"])
+    return [self putICalendarAction:_ctx];
+  
+  if ([ctype length] == 0) {
+    static NSData *iCalSignature = nil;
+    NSData *data;
+
+    if (iCalSignature == nil) {
+      iCalSignature = [[NSData alloc] initWithBytes:@"BEGIN:VCALENDAR" 
+                                      length:15];
+    }
+    
+    [self logWithFormat:@"Note: client submitted no content-type!"];
+    data = [[(WOContext *)_ctx request] content];
+    if ([data hasPrefix:iCalSignature]) {
+      [self logWithFormat:
+              @"request seems to contain iCalendar data, try that."];
+    }
+    return [self putICalendarAction:_ctx];
+  }
+  
+  [self logWithFormat:@"Note: does not accept PUTs of type: '%@'", ctype];
   return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
-                      reason:@"cannot handle this PUT (not a message/rfc822)"];
+                      reason:@"invalid format for PUT (not a message/rfc822)"];
 }
 
 - (void)fetchOwnerForAppointment:(id)_apt inContext:(id)_ctx {
