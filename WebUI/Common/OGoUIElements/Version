@@ -1,6 +1,6 @@
-# $Id: Version 1 2004-08-20 11:17:52Z znek $
+# version file
 
-SUBMINOR_VERSION:=29
+SUBMINOR_VERSION:=30
 
 # v5.0.22 requires libNGObjWeb v4.2.361
 # v5.0.22 requires BaseUI v5.0.74

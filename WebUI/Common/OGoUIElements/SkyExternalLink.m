@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,22 +18,22 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <NGObjWeb/WODynamicElement.h>
 
 /*
- * component for external links
- * for dereffering links
- *
- * bindings:
- * href, target, string, title
- *
- * does this:
- * <a href="$externalLinkAction?url=$href" target="$target" title="$title">
- * $string<content></a>
- *
- */
+  SkyExternalLink
+
+  Dynamic element which allows to jump to external links. This is implemented
+  as a redirect and avoids that the link target sees the OGo session ID in the
+  'referer' header.
+
+  bindings:
+    href, target, string, title
+  does this:
+    <a href="$externalLinkAction?url=$href" target="$target" title="$title">
+    $string<content></a>
+*/
 
 @interface SkyExternalLink : WODynamicElement
 {
@@ -45,7 +45,7 @@
   WOElement *template;
 }
 
-@end /* SkyExternalLink */
+@end
 
 #include "common.h"
 #include <NGExtensions/NSString+misc.h>
@@ -113,7 +113,8 @@ static BOOL     validateLinks    = NO;
 
 /* is a valid external link? */
 - (BOOL)isLinkValid:(NSString *)_link {
-  if ([_link length] == 0) return NO;
+  if ([_link length] == 0) 
+    return NO;
   if ([self checkIfValid]) {
     NSURL *url = [NSURL URLWithString:_link];
     if ([[url host] length] == 0) {
@@ -140,82 +141,65 @@ static BOOL     validateLinks    = NO;
   valid = [self isLinkValid:link];
     
   if (valid) {
-      NSDictionary *qd;
-      NSString     *da;
-      NSString     *ta, *ti;
-      // append link
-      [_response appendContentString:@"<a href=\""];
+    NSDictionary *qd;
+    NSString     *da;
+    NSString     *ta, *ti;
+    // append link
+    [_response appendContentString:@"<a href=\""];
 
-      da = [self externalLinkAction];
-      // use an external server to redirect links
-      if ([da length]) {
-        da = [NSString stringWithFormat:@"%@?url=%@", da,
-                       [link stringByEscapingURL]];
-      }
-      else {
-        // build query dictionary for direct action
-        qd = [NSDictionary dictionaryWithObjectsAndKeys:
+    da = [self externalLinkAction];
+    // use an external server to redirect links
+    if ([da length] > 0) {
+      da = [da stringByAppendingString:@"?url="];
+      da = [da stringByAppendingString:[link stringByEscapingURL]];
+    }
+    else {
+      // build query dictionary for direct action
+      qd = [NSDictionary dictionaryWithObjectsAndKeys:
                            link, @"url",
-                           nil];
-        // build direct action
-        da = [_ctx directActionURLForActionNamed:@"viewExternalLink"
-                   queryDictionary:qd];
-      }
-      [_response appendContentString:da];
-      [_response appendContentString:@"\" target=\""];
+                         nil];
+      // build direct action
+      da = [_ctx directActionURLForActionNamed:@"viewExternalLink"
+                 queryDictionary:qd];
+    }
+    [_response appendContentString:da];
+    [_response appendContentCharacter:'\"'];
       
-      // appending target
-      ta = [self->target stringValueInComponent:comp];
-      if ([ta length] == 0) ta = @"SKYRiX External Link Frame";
-      [_response appendContentString:ta];
-      [_response appendContentString:@"\" title=\""];
+    /* appending target */
+    [_response appendContentString:@" target=\""];
+    ta = [self->target stringValueInComponent:comp];
+    if ([ta length] == 0) ta = @"OGo External Link Frame";
+    [_response appendContentString:ta];
+    [_response appendContentCharacter:'\"'];
       
-      // appending title
-      ti = [self->title stringValueInComponent:comp];
-      if ([ti length] == 0)
-        ti = [NSString stringWithFormat:@"External Link: %@", link];
-      [_response appendContentString:ti];
-      [_response appendContentCharacter:'\"'];
+    /* appending title */
+    [_response appendContentString:@" title=\""];
+    ti = [self->title stringValueInComponent:comp];
+    if ([ti length] == 0)
+      ti = [@"External Link: " stringByAppendingString:link];
+    [_response appendContentString:ti];
+    [_response appendContentCharacter:'\"'];
 
-      [self appendExtraAttributesToResponse:_response inContext:_ctx];
+    [self appendExtraAttributesToResponse:_response inContext:_ctx];
 
-      [_response appendContentCharacter:'>'];
+    [_response appendContentCharacter:'>'];
+      
+    /* append string */
+    s = [self->string stringValueInComponent:comp];
+    if ([s length] > 0) [_response appendContentHTMLString:s];
 
-      // append string
-      s = [self->string stringValueInComponent:comp];
-      if ([s length] > 0) [_response appendContentHTMLString:s];
-
-      // append content
-      [self->template appendToResponse:_response inContext:_ctx];
+    /* append embedded content */
+    [self->template appendToResponse:_response inContext:_ctx];
   }
   else if (![self hideInvalidLinks]) {
-      s = [self->string stringValueInComponent:comp];
-      if ([s length] > 0) [_response appendContentHTMLString:s];
-      
+    s = [self->string stringValueInComponent:comp];
+    if ([s length] > 0) [_response appendContentHTMLString:s];
   }
   
   if (valid) {
-      // close link  
-      [_response appendContentString:@"</a>"];
+    // close link  
+    [_response appendContentString:@"</a>"];
   }
 }
 
 @end /* SkyExternalLink */
-
-#if 0 /* now implemented in Skyrix.m */
-@implementation WODirectAction(SkyExternalLinkAction)
-- (id<WOActionResults>)viewExternalLinkAction {
-  NSString   *url      = [[self request] formValueForKey:@"url"];
-  WOResponse *response = [WOResponse responseWithRequest:[self request]];
-
-  [response appendContentString:
-            @"<html><head><title>OpenGroupware.org External Link</title>\n"];  
-  [response appendContentString:
-            @"<meta http-equiv=\"refresh\" content=\"0; url="];
-  [response appendContentString:url];
-  [response appendContentString:@"\">\n"];
-  [response appendContentString:@"</head></html>\n"];
-  return response;
-}
-@end /* WODirectAction(SkyExternalLinkAction) */
-#endif

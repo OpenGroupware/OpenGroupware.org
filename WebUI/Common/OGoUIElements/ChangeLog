@@ -1,3 +1,7 @@
+2004-10-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyExternalLink.m: removed some old code, minor cleanups (v5.1.30)
+
 2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyTableView.wo: moved template files from English.lproj to main .wo
