@@ -537,6 +537,18 @@ cp %{_specdir}/initscript_templates/suse_xmlrpcd ${INITSCRIPTS_TMP_DIR_OGO}/
 cp %{_specdir}/initscript_templates/suse_opengroupware ${INITSCRIPTS_TMP_DIR_OGO}/
 cp %{_specdir}/initscript_templates/suse_zidestore ${INITSCRIPTS_TMP_DIR_ZIDE}/
 
+mkdir -p ${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig
+echo "RUN_DBSCRIPT=\"YES\"                  # will run the whole script - or not, as thou wish
+PATCH_POSTGRESQL_CONF=\"YES\"         # will backup and patch postgresql.conf - if needed
+PATCH_PGHBA_CONF=\"YES\"              # will backup and patch pg_hba.conf - if needed
+CREATE_DB_USER=\"YES\"                # will create a DB user for OpenGroupware.org
+CREATE_DB_ITSELF=\"YES\"              # will create the DB itself for OpenGroupware.org
+ROLLIN_SCHEME=\"YES\"                 # will roll'in the current base DB scheme of OGo
+FORCE_OVERRIDE_PRESENT_SCHEME=\"YES\" # might harm thy current scheme (or not?)
+UPDATE_SCHEMA=\"YES\"                 # will attempt to update the database scheme - if needed
+OGO_USER=\"ogo\"                      # default username (unix) of your OGo install - might vary
+" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-webui-1.0a
+
 # ****************************** post *********************************
 %post meta
 if [ $1 = 1 ]; then
@@ -918,6 +930,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/sbin/ogo-webui-1.0a
 %{prefix}/share/opengroupware.org-1.0a/templates/ogo-webui-1.0a
 %{prefix}/share/opengroupware.org-1.0a/initscript_templates/*opengroupware
+%attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-webui-1.0a
 
 %files webui-core
 %defattr(-,root,root,-)
@@ -1113,6 +1126,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Sat Jan 29 2005 Frank Reppin <frank@opengroupware.org>
+- added sysconfig settings (will summon /etc/sysconfig/ogo-webui-1.0a)
+  with some variables regarding automated database setup operations
 * Fri Jan 28 2005 Frank Reppin <frank@opengroupware.org>
 - major dependency rework
 * Wed Jan 26 2005 Frank Reppin <frank@opengroupware.org>
