@@ -1,3 +1,7 @@
+2005-01-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAccountDataSource.m: minor code cleanups (v5.1.18)
+
 2004-08-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyAccountDataSource.m: more code cleanups (v5.0.17)

@@ -57,6 +57,31 @@ static NSSet *NativeKeys = nil;
             NSStringFromClass([self superclass]), [super version]);
 }
 
+- (void)_registerForNotifications {
+  NSNotificationCenter *nc;
+
+  nc = [NSNotificationCenter defaultCenter];      
+    
+  [nc addObserver:self selector:@selector(accountWasChanged:)
+      name:SkyNewAccountNotification object:nil];
+  [nc addObserver:self selector:@selector(accountWasChanged:)
+      name:SkyUpdatedAccountNotification object:nil];
+  [nc addObserver:self selector:@selector(accountWasChanged:)
+      name:SkyDeletedAccountNotification object:nil];
+}
+
+- (void)_setupNativeKeys {
+  EOModel *model;
+  
+  if (NativeKeys != nil)
+    return;
+
+  model      = [[[self->context valueForKey:LSDatabaseKey] adaptor] model];
+  NativeKeys = [[NSSet alloc] initWithArray:
+                           [[[model entityNamed:@"Person"] attributes]
+                           map:@selector(name)]];
+}
+
 - (id)initWithContext:(id)_context { // designated initializer
   if (_context == nil) {
 #if DEBUG
@@ -68,27 +93,10 @@ static NSSet *NativeKeys = nil;
   }
   
   if ((self = [super init])) {
-    NSNotificationCenter *nc;
-
-    nc = [NSNotificationCenter defaultCenter];      
-    
-    [nc addObserver:self selector:@selector(accountWasChanged:)
-        name:SkyNewAccountNotification object:nil];
-    [nc addObserver:self selector:@selector(accountWasChanged:)
-        name:SkyUpdatedAccountNotification object:nil];
-    [nc addObserver:self selector:@selector(accountWasChanged:)
-        name:SkyDeletedAccountNotification object:nil];
-    
     ASSIGN(self->context, _context);
     
-    if (NativeKeys == nil) {
-      EOModel *model;
-      
-      model      = [[[self->context valueForKey:LSDatabaseKey] adaptor] model];
-      NativeKeys = [[NSSet allocWithZone:[self zone]] initWithArray:
-                           [[[model entityNamed:@"Person"] attributes]
-                           map:@selector(name)]];
-    }
+    [self _registerForNotifications];
+    [self _setupNativeKeys];
   }
   return self;
 }

@@ -19,8 +19,8 @@
   02111-1307, USA.
 */
 
-#ifndef __Skyrix_SkyrixApps_Libraries_SkyAccounts_SkyAccountDataSource_H__
-#define __Skyrix_SkyrixApps_Libraries_SkyAccounts_SkyAccountDataSource_H__
+#ifndef __OGoAccounts_SkyAccountDataSource_H__
+#define __OGoAccounts_SkyAccountDataSource_H__
 
 #include <EOControl/EODataSource.h>
 
@@ -36,12 +36,15 @@
   EOFetchSpecification *fetchSpecification;
   id                   context;
 }
+
 - (NSSet *)nativeKeys;
+
 - (id)context;
+
 @end
 
 @interface SkyAccountDocumentGlobalIDResolver : NSObject
 //  <SkyDocumentGlobalIDResolver>
 @end
 
-#endif /*__Skyrix_SkyrixApps_Libraries_SkyAccounts_SkyAccountDataSource_H__*/
+#endif /*__OGoAccounts_SkyAccountDataSource_H__*/
