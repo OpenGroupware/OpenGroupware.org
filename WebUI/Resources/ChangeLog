@@ -1,5 +1,7 @@
 2004-11-30  Helge Hess  <helge.hess@opengroupware.org>
 
+	* German.lproj/OGoMailEditor.strings: added missing semicolons
+
 	* English|German.lproj/OGoProject.strings: added tab_createinfolder
 	  label (used in OGoDocumentImport => SkyProject4MovePanel)
 	
