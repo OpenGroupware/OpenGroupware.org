@@ -81,7 +81,7 @@ static NSArray *accessCheckFlags = nil;
                                fhsPath:@"share/opengroupware.org-1.0a/www"];
   p = [locator lookupFileWithName:@"epoz_script_main.js"];
   hasEpoz = [fm fileExistsAtPath:p];
-  if (!hasEpoz) NSLog(@"Note: did not find Epoz.");
+  if (!hasEpoz) NSLog(@"Note: folder-view did not find Epoz.");
   
   accessCheckFlags = 
     [[NSArray alloc] initWithObjects:@"d", @"i", @"r", @"w", nil];

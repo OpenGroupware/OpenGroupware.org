@@ -42,11 +42,16 @@
 @implementation SkyP4DocumentDownloadLogList
 
 static EOQualifier *actionDownloadQual = nil;
+static EOFetchSpecification *fspec = nil;
 
 + (void)initialize {
   if (actionDownloadQual == nil) {
     actionDownloadQual = 
       [[EOQualifier qualifierWithQualifierFormat:@"action='download'"] retain];
+    
+    fspec = [[EOFetchSpecification fetchSpecificationWithEntityName:@"log"
+				   qualifier:actionDownloadQual 
+				   sortOrderings:nil] retain];
   }
 }
 
@@ -59,7 +64,7 @@ static EOQualifier *actionDownloadQual = nil;
 /* accessors */
 
 - (void)setDocument:(SkyProjectDocument *)_doc {
-  ASSIGN(self->document,_doc);
+  ASSIGN(self->document, _doc);
 }
 - (SkyProjectDocument *)document {
   return self->document;
@@ -69,7 +74,7 @@ static EOQualifier *actionDownloadQual = nil;
 
 - (void)sleep {
   [super sleep];
-  [(EOCacheDataSource *)self->ds clear];
+  [self->ds release]; self->ds = nil;
 }
 
 /* accessors */
@@ -78,23 +83,18 @@ static EOQualifier *actionDownloadQual = nil;
   return [(OGoSession *)[self session] commandContext];
 }
 
-- (EOFetchSpecification *)_fspec {
-  return [EOFetchSpecification fetchSpecificationWithEntityName:@"log"
-                               qualifier:actionDownloadQual sortOrderings:nil];
-}
-
 - (EODataSource *)dataSource {
   SkyLogDataSource *rds;
   
-  if (self->ds)
+  if (self->ds != nil)
     return self->ds;
-
+  
   rds = [[SkyLogDataSource alloc] initWithContext:[self _commandContext]
 				  globalID:[self->document globalID]];
-  [rds setFetchSpecification:[self _fspec]];
-  [rds autorelease];
+  [rds setFetchSpecification:fspec];
   
   self->ds = [[EOCacheDataSource alloc] initWithDataSource:rds];
+  [rds release];
   return self->ds;
 }
 

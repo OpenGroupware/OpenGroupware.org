@@ -203,16 +203,39 @@ static BOOL       debugViewerLookup = NO;
   self->viewer = nil;
 }
 
+- (id)lookupPlainTextViewer {
+  NSData *data;
+    
+  if ((data = [self content]) == nil)
+    [self debugWithFormat:@"missing content .."];
+    
+  if ([data isSkyTextEditable]) {
+    WOComponent *v;
+    
+    if ((v = [self _makeDocViewerForType:textPlainType content:data]) != nil) {
+      [self debugWithFormat:@"use plain/text viewer: %@", v];
+      return v;
+    }
+  }
+  else {
+    [self debugWithFormat:@"data is not text/plain .."];
+  }
+  return nil;
+}
+
 - (id)viewerComponent {
   NGMimeType *mtype;
   BOOL doShow;
   
   // TODO: explain this section, what does 'isPluginViewerEnabled'?
   if ((doShow = [self isPluginViewerEnabled])) {
-    if (self->viewer) {
+    if (self->viewer != nil) {
       if ([self->viewer respondsToSelector:@selector(object)]) {
-        if ([[self->viewer object] isEqual:[self content]])
+        if ([[self->viewer object] isEqual:[self content]]) {
+	  if (debugViewerLookup)
+	    [self logWithFormat:@"use viewer: %@", self->viewer];
           return self->viewer;
+	}
       }
 
       /* Note: here is a case where the self->viewer is preserved! */
@@ -236,7 +259,7 @@ static BOOL       debugViewerLookup = NO;
     
     self->viewer = 
       [[self _makeDocViewerForType:mtype content:[self content]] retain];
-    if (self->viewer) {
+    if (self->viewer != nil) {
       [self debugWithFormat:@"use viewer: %@", self->viewer];
       return self->viewer;
     }
@@ -244,28 +267,11 @@ static BOOL       debugViewerLookup = NO;
   
   /* found no proper inline viewer, check for plaintext types */
   
-  if (self->viewer == nil) {
-    NSData *data;
-    
-    if ((data = [self content]) == nil)
-      [self debugWithFormat:@"missing content .."];
-    
-    if ([data isSkyTextEditable]) {
-      mtype = textPlainType;
-      
-      self->viewer = [[self _makeDocViewerForType:mtype content:data] retain];
-      if (self->viewer) {
-        [self debugWithFormat:@"use plain/text viewer: %@", self->viewer];
-        return self->viewer;
-      }
-    }
-    else {
-      [self debugWithFormat:@"data is not text/plain .."];
-    }
-  }
+  if (self->viewer == nil)
+    self->viewer = [[self lookupPlainTextViewer] retain];
   
   if (self->viewer == nil)
-    [self debugWithFormat:@"did not find viewer for type %@", mtype];
+    [self debugWithFormat:@"did not find viewer for type: '%@'", mtype];
   
   return self->viewer;
 }
