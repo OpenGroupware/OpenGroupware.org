@@ -246,6 +246,7 @@ Description: Job component of OpenGroupware.org's Web UI
 Package: opengroupware.org_OGOVER_-webui-mailer
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: opengroupware.org-webmail-tools
 Description: Mailing component of OpenGroupware.org's Web UI
  This package contains a webmail application for OpenGroupware.org's
  web UI. It needs an IMAP server for the mail feed and and SMTP server
