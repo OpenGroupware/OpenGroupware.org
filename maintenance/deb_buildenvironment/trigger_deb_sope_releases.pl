@@ -3,8 +3,7 @@
 
 use strict;
 #die "WARNING: not yet configured!\n";
-my $host_i_runon = "sid";
-#my $host_i_runon = "sarge";
+my $host_i_runon = "sarge";
 my $svn_host = 'svn.opengroupware.org';
 my $svn = '/usr/bin/svn';
 my $dl_host = "download.opengroupware.org";
@@ -60,14 +59,6 @@ foreach $srel (@sope_releases) {
 close(KNOWN_SOPE_RELEASES);
 
 if($i_really_had_sth_todo eq "yes") { 
-  if($host_i_runon eq "fedora-core2") {
-    print "building yum-repo for $host_i_runon\n";
-    system("sh $ENV{HOME}/prepare_yum_fcore2.sh");
-  }
-  if($host_i_runon eq "fedora-core3") {
-    print "building yum-repo for $host_i_runon\n";
-    system("sh $ENV{HOME}/prepare_yum_fcore3.sh");
-  }
   #polish buildenv after we're done...
   print "we're almost at the end... cleaning up what we've done so far...\n";
   system("sudo dpkg --purge `dpkg -l | awk '{print \$2}' | grep -iE '(^libsope|^sope|^libical-sope)'`");

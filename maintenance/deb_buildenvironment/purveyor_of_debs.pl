@@ -156,6 +156,7 @@ sub get_versions_from_src {
     $new_sminor = "0";
     $new_svnrev = "0";
     $new_version = "$new_major.$new_minor.$new_sminor";
+    $remote_release_dirname = "ThirdParty" if($build_type eq "release");
   }
   ###########################################################################
   if ($package eq "libobjc-lf2") {
@@ -171,6 +172,7 @@ sub get_versions_from_src {
     $new_minor = "95";
     $new_sminor = "3";
     $new_version = "$new_major.$new_minor.$new_sminor";
+    $remote_release_dirname = "ThirdParty" if($build_type eq "release");
   }
   ###########################################################################
   if ($package eq "libfoundation") {
@@ -188,6 +190,7 @@ sub get_versions_from_src {
     chomp $new_sminor if (defined $new_sminor);
     chomp $new_svnrev if (defined $new_svnrev);
     $new_version = "$new_major.$new_minor.$new_sminor";
+    $remote_release_dirname = "ThirdParty" if($build_type eq "release");
   }
   ###########################################################################
   if ($package eq "libical-sope") {
@@ -199,6 +202,7 @@ sub get_versions_from_src {
     close(LIBICAL);
     chomp $new_svnrev if (defined $new_svnrev);
     $new_version = "4.3";
+    $remote_release_dirname = "ThirdParty" if($build_type eq "release");
   }
   ###########################################################################
   if ($package eq "sope") {
@@ -255,6 +259,7 @@ sub get_versions_from_src {
     $new_minor = "0";
     $new_svnrev = "0";
     $new_version = "$new_major";
+    $remote_release_dirname = "ThirdParty" if($build_type eq "release");
   }
   ###########################################################################
   if ($package eq "sope-epoz") {
@@ -272,6 +277,7 @@ sub get_versions_from_src {
     chomp $new_sminor if (defined $new_sminor);
     chomp $new_svnrev if (defined $new_svnrev);
     $new_version = "$new_major.$new_minor.$new_sminor";
+    $remote_release_dirname = "ThirdParty" if($build_type eq "release");
   }
   ###########################################################################
   print "[CURRENT SOURCE]    - $package VERSION:$new_version SVNREV:$new_svnrev\n" if ($verbose eq "yes");

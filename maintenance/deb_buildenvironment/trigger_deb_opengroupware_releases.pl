@@ -50,7 +50,7 @@ foreach $orel (@ogo_releases) {
     $i_really_had_sth_todo = "yes";
     print "Retrieving: http://$dl_host/sources/releases/$orel\n";
     system("wget -q -O $ENV{HOME}/sources/$orel http://$dl_host/sources/releases/$orel");
-    #since we build the OGo release using a specific SOPE release... we must clean
+    #since we build the OGo release using a specific SOPE release... we must 
     #cleanup prior OGo *and* SOPE builds
     #I guess we don't need to do it exactly this way bc apt-get install in a later stage
     #will remove packages we don't need too. But hey - why not?
@@ -79,6 +79,17 @@ foreach $orel (@ogo_releases) {
       print "calling `purveyor_of_debs.pl -p sope -v yes -t release -u no -d yes -f yes -c $srel`\n";
       system("$ENV{HOME}/purveyor_of_debs.pl -p sope -v yes -t release -u no -d yes -f yes -c $srel");
     }
+    if ($orel =~ m/alpha10/i) {
+      #major hack... bc I didn't saw the builddeps file.
+      my $srel = "sope-4.4beta.2-voyager-r527.tar.gz";
+      #warn "This will fetch the most recent 4.3 ... but what to do\n"
+      #warn "if we want to use a specific 4.3 (ie 4.3.9 vs 4.3.10)??\n"
+      #system("sudo apt-get install libsope-core4.4-dev --assume-yes");
+      warn "HACK? isn't it better to do it my way (that is rebuilding from source\n";
+      warn "without doing an apt-get install <wanted_sope_release>:\n";
+      print "calling `purveyor_of_debs.pl -p sope -v yes -t release -u no -d yes -f yes -c $srel`\n";
+      system("$ENV{HOME}/purveyor_of_debs.pl -p sope -v yes -t release -u no -d yes -f yes -c $srel");
+    }
     print "OGo_REL: building debs for OGo $orel\n";
     print "calling `purveyor_of_debs.pl -p opengroupware $build_opts -c $orel\n";
     system("$ENV{HOME}/purveyor_of_debs.pl -p opengroupware.org $build_opts -c $orel");
@@ -98,14 +109,6 @@ close(KNOWN_OGo_RELEASES);
 exit 0;
 
 if($i_really_had_sth_todo eq "yes") { 
-  if($host_i_runon eq "fedora-core2") {
-    print "building yum-repo for $host_i_runon\n";
-    system("sh $ENV{HOME}/prepare_yum_fcore2.sh");
-  }
-  if($host_i_runon eq "fedora-core3") {
-    print "building yum-repo for $host_i_runon\n";
-    system("sh $ENV{HOME}/prepare_yum_fcore3.sh");
-  }
   #polish buildenv after we're done...
   print "we're almost at the end... cleaning up what we've done so far...\n";
   system("sudo dpkg --purge `dpkg -l | awk '{print \$2}' | grep -iE '(^libsope|^sope|^libical-sope)'`");
