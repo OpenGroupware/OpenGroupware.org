@@ -3,21 +3,21 @@
 %debug_package %{nil}
 %_topdir /home/build/rpm
 %_tmppath %{_topdir}/tmp
-%distribution Fedora %{nil}
+%distribution %{nil}
 %dist_suffix %{nil}
 
 ###
 %libf_objc_version 0
 %libf_objc_release trunk_r0
 %libf_objc_buildcount 0
-%libf_objc_makeflags debug=no
+%libf_objc_makeflags debug=yes
 %libf_objc_source libobjc-lf2-trunk-latest.tar.gz
 %libf_objc_prefix /usr/local
 ###
 %libf_version 0
 %libf_release trunk_r0
 %libf_buildcount 0
-%libf_makeflags debug=no
+%libf_makeflags debug=yes
 %libf_source libfoundation-trunk-latest.tar.gz
 %libf_prefix /usr/local
 ###
