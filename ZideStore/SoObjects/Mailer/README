@@ -1,0 +1,15 @@
+# README for Mailer SoObjects
+
+Class Overview
+==============
+
+SOGoMailManager
+- backend class connecting to NGImap4, will probably move to SOGoLogic
+
+Defaults
+========
+
+SOGoEnableIMAP4Debug       YES|NO - enable/disable debugging in SOGoMailManager
+SOGoDisableIMAP4Pooling    YES|NO - disable IMAP4 connection pooling
+SOGoMailSpoolPath	   path   - FS path where mail drafts are stored
+SOGoNoDraftDeleteAfterSend YES|NO - makes the draft's -delete method a NOOP

@@ -1,0 +1,140 @@
+<?xml version="1.0" standalone="yes"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+      xmlns:label="OGo:label"
+>
+  <head>
+    <title>
+      <var:string value="title"/>
+    </title>
+    
+    <meta name="description" content="SOGo Web Interface"/>
+    <meta name="author" content="SKYRIX Software AG"/>
+    <meta name="robots" content="stop"/>
+    
+    <script rsrc:src="mailer.js"> </script>
+    
+    <link type="text/css" rel="stylesheet" rsrc:href="uix.css"/>
+    <link type="text/css" rel="stylesheet" rsrc:href="mailer.css"/>
+    <link href="mailto:info@skyrix.com" rev="made"/>
+  </head>
+
+  <body style="background-color: #D4D0C8;">
+   <!-- 
+     Note: the 'href' is required, otherwise an element-id will get created
+     -->
+   <form name="pageform" href="#" sidInUrl="NO">
+    <table border="0" width="100%" cellspacing="0" cellpadding="2"
+           style="position: fixed; height: 48px; z-index: 100;"
+    >
+      <!-- this table is required for right alignment -->
+      <tr>
+        <td valign="top" class="vertframerow">
+          <var:component className="UIxMailToolbar" />
+        </td>
+        <td align="right" width="80" class="vertframerow">
+          <table border="0">
+            <tr>
+              <td class="tb_icon" style="width: 36px; padding-right: 8px;"
+                  ><div class="tbicon_logo"> </div></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <div style="height: 58px; clear: both;"> </div> <!-- consume toolbar -->
+    
+    <table border="0" width="100%" cellspacing="0" cellpadding="2"
+    >
+      <tr class="vertframerow">
+        <td width="100%" valign="top" class="vertframerow" colspan="2">
+          <var:if condition="hideFolderTree">
+            <var:component-content/>
+          </var:if>
+          
+          <var:if condition="hideFolderTree" const:negate="YES">
+            <table width="100%">
+              <tr>
+                <td width="25%" valign="top" class="foldercell">
+                  <div class="titlediv"
+                       ><var:string label:value="Folders" /></div>
+                  <div style="height: 95%">
+                    <div class="embedwhite_out">
+                      <div class="embedwhite_in">
+                        <var:component className="UIxMailTree" />
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td style="width: 6px;"> </td>
+                <td valign="top" class="contentcell">
+                  <var:component-content/>
+                </td>
+              </tr>
+            </table>
+          </var:if>
+        </td>
+      </tr>
+    </table>
+    
+    
+    <!-- debugging -->
+    <var:if condition="isUIxDebugEnabled">
+      <table border="0" width="100%">
+        <tr>
+          <td colspan="2">
+            <hr />
+            <table border="0" style="font-size: 9pt;">
+              <tr>
+                <td valign="top">clientObject:</td>
+                <td valign="top"><var:string value="clientObject" /></td>
+              </tr>
+              <tr>
+                <td valign="top">IMAP4-URL:</td>
+                <td valign="top"><var:string
+                    value="clientObject.imap4URL.absoluteString" /></td>
+              </tr>
+              <tr>
+                <td valign="top">traversal stack:</td>
+                <td valign="top">
+                  <var:foreach list="context.objectTraversalStack" item="item">
+                    <var:string value="item" /><br />
+                  </var:foreach>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top">traversal path:</td>
+                <td valign="top">
+                  <var:foreach list="context.soRequestTraversalPath"
+                               item="item" const:separator=" => ">
+                    <var:string value="item" />
+                  </var:foreach>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top">request type:</td>
+                <td valign="top"><var:string value="context.soRequestType"/>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top">path info:</td>
+                <td valign="top"><var:string value="context.pathInfo"/></td>
+              </tr>
+              <tr>
+                <td valign="top">rootURL:</td>
+                <td valign="top"><var:string value="context.rootURL"/></td>
+              </tr>
+              <tr>
+                <td valign="top">active user:</td>
+                <td valign="top"><var:string value="context.activeUser"/></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </var:if>
+   </form>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+# Version file
+
+SUBMINOR_VERSION:=zs9
+
+# v0.9.6 requires libNGMime v4.5.207
+# v0.9.1 requires libNGMime v4.3.194

@@ -1,0 +1,48 @@
+{
+  requires = ( MAIN );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+  
+  classes = {
+    SOGoMailBaseObject = {
+      superclass    = "SOGoObject";
+    };
+
+    SOGoMailAccounts = {
+      superclass    = "SOGoMailBaseObject";
+    };
+
+    SOGoMailAccount = {
+      superclass    = "SOGoMailBaseObject";
+    };
+
+    SOGoMailFolder = {
+      superclass    = "SOGoMailBaseObject";
+      defaultRoles = {
+        "Add Folders" = "Owner";
+      };
+    };
+
+    SOGoMailObject = {
+      superclass    = "SOGoMailBaseObject";
+    };
+    
+    SOGoMailBodyPart = {
+      superclass    = "SOGoMailBaseObject";
+    };
+    SOGoImageMailBodyPart = {
+      superclass    = "SOGoMailBodyPart";
+    };
+
+    SOGoDraftsFolder = {
+      superclass    = "SOGoMailBaseObject";
+    };
+    SOGoDraftObject = {
+      superclass    = "SOGoMailBaseObject";
+    };
+  };
+}

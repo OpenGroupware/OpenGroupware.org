@@ -1,0 +1,434 @@
+.aptview_title {
+  font-size:        10pt;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  color:            #000000;
+  font-weight:      bold;
+}
+
+.aptview_text {
+  font-size:        10pt;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  color:            #000000;
+}
+
+.apt_other {
+  color:            #000000;
+}
+
+.apt_other_print {
+  font-style:       italic;
+}
+
+.anais_me {
+  color:            #0000FF;
+}
+
+.anais_uids {
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        10pt;
+}
+
+
+/* new stuff for Thunderbird like mailer */
+
+.vertframerow {
+  border-top-color:    white;
+  border-top-width:    1;
+  border-top-style:    solid;
+  border-bottom-color: #808080;
+  border-bottom-width: 1;
+  border-bottom-style: solid;
+
+  background-color:    #D4D0C8;
+
+  font-family:  Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:    10pt;
+}
+.foldercell {
+  font-family:  Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:    10pt;
+  width:        25%;
+}
+.contentcell {
+  font-family:  Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:    10pt;
+}
+.embedwhite_out {
+  border-width:        1;
+  border-style:        solid;
+  border-top-color:    #808080;
+  border-left-color:   #808080;
+  border-bottom-color: white;
+  border-right-color:  white;
+}
+.embedwhite_in {
+  border-width:        1;
+  border-style:        solid;
+  border-top-color:    #808080; /* TODO */
+  border-left-color:   #808080; /* TODO */
+  border-bottom-color: #808080;
+  border-right-color:  #808080;
+
+  background-color:    white;
+  /* height:              300px; */
+  /* height: 100%; */
+}
+.titlediv {
+  height:         24px;
+  vertical-align: middle;
+  padding-top:    6px;
+  padding-left:   6px;
+}
+
+.whitesec_title {
+  background-color: #D4D0C8;
+  padding:          4px;
+}
+
+.treecell {
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:   10pt;
+  color:       black;
+  vertical-align: bottom;
+}
+
+/* toolbar */
+
+.tb_toolbar {
+  height:        30px;
+}
+.tb_toolbar_group {
+  height:        30px;
+  padding-right: 16px;
+}
+
+.tb_icon {
+  text-align: center;
+}
+.tb_label {
+  font-size:   11px;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  color:       #000000;
+  text-align:  center;
+}
+.tb_spacer { 
+  width: 16px;
+}
+
+.tb_icon a {
+  width:   30px;
+  height:  30px;
+  margin:  0px auto;
+  display: block;
+}
+
+.tbicon_logo {
+  background-image: url(lori_32x32.png);
+  width:  32px;
+  height: 32px;
+}
+
+.tbicon_getmail     { background-image: url(tbtb_getmail.png);     }
+.tbicon_compose     { background-image: url(tbtb_compose.png);     }
+.tbicon_addressbook { background-image: url(tbtb_addressbook.png); }
+.tbicon_reply       { background-image: url(tbtb_reply.png);       }
+.tbicon_replyall    { background-image: url(tbtb_replyall.png);    }
+.tbicon_forward     { background-image: url(tbtb_forward.png);     }
+.tbicon_delete      { background-image: url(tbtb_delete.png);      }
+.tbicon_junk        { background-image: url(tbtb_trash.png);       }
+.tbicon_print       { background-image: url(tbtb_print.png);       }
+.tbicon_stop        { background-image: url(tbtb_deletedoc.png);   }
+.tbicon_send        { background-image: url(tbtb_compose_send_30x30.png);   }
+.tbicon_attach      { background-image: url(tbtb_compose_attach_30x30.png); }
+.tbicon_save        { background-image: url(tbtb_compose_file_30x30.png);   }
+
+/* mail tableview */
+
+.tableview { 
+  font-size:      9pt;
+  font-family:    Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  vertical-align: top;
+}
+
+.tableview_selected { 
+  font-size:        9pt;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  vertical-align:   top;
+  background-color: #ffffcc;
+}
+
+td.tbtv_navcell { 
+  border-width:        1;
+  border-style:        solid;
+  border-top-color:    white;
+  border-left-color:   white;
+  border-bottom-color: #808080;
+  border-right-color:  #808080;
+  padding-top:         4px;
+  padding-bottom:      3px;
+  padding-left:        4px;
+  padding-right:       4px;
+  
+  background-color:    #D4D0C8;
+}
+
+td.tbtv_headercell { 
+  border-width:        1;
+  border-style:        solid;
+  border-top-color:    white;
+  border-left-color:   white;
+  border-bottom-color: #808080;
+  border-right-color:  #808080;
+  padding-top:         4px;
+  padding-bottom:      3px;
+  padding-left:        4px;
+  padding-right:       4px;
+  
+  background-color:    #D4D0C8;
+}
+
+td.tbtv_actcell { 
+  border-width:        1;
+  border-style:        solid;
+  border-top-color:    #808080;
+  border-left-color:   #808080;
+  border-bottom-color: #808080;
+  border-right-color:  #808080;
+  padding-top:         4px;
+  padding-bottom:      3px;
+  padding-left:        4px;
+  padding-right:       4px;
+  
+  background-color:    #D4D0C8;
+}
+
+td.tbtv_headercell a {
+  margin:  0px auto;
+  display: block;
+  color:   black;
+}
+td.tbtv_headercell a:hover {
+  margin:  0px auto;
+  display: block;
+  color:   black;
+  text-decoration: none;
+  /* background-color: #C4C0B8; */
+}
+
+td.tbtv_headercell img.tbtv_sortcell { 
+  text-align: right;
+  border:     0px;
+  width:      12px;
+  height:     12px;
+}
+
+span.mailer_datefield { 
+  white-space: nowrap;
+}
+
+div.mailer_readmailsubject { 
+  background-image:    url(message-mail-read.png);
+  background-repeat:   no-repeat;
+  background-position: 0px 0px;
+  padding-top:         1px;
+  padding-left:        20px;
+}
+div.mailer_unreadmailsubject { 
+  background-image:    url(message-mail.png);
+  background-repeat:   no-repeat;
+  background-position: 0px 0px;
+  padding-left:        20px;
+  padding-top:         1px;
+  font-weight:         bold;
+}
+div.mailer_readmailsubject a { 
+  color:           black;
+  text-decoration: none;
+}
+div.mailer_unreadmailsubject a { 
+  color:           black;
+  text-decoration: none;
+}
+
+td.mailer_listcell_deleted {
+  text-decoration: line-through;
+}
+td.mailer_listcell_regular {
+}
+
+div.mailer_readicon { 
+  /* TODO: use Thunderbird icon */
+  background-image:    url(icon_read.gif);
+  background-repeat:   no-repeat;
+  background-position: 0px 4px;
+}
+div.mailer_readicon a {
+  width:   17px;
+  height:  17px;
+  margin:  0px auto;
+  display: block;
+}
+div.mailer_unreadicon { 
+  /* TODO: use Thunderbird icon */
+  background-image:    url(icon_unread.gif);
+  background-repeat:   no-repeat;
+  background-position: 0px 4px;
+}
+div.mailer_unreadicon a {
+  width:   17px;
+  height:  17px;
+  margin:  0px auto;
+  display: block;
+}
+
+/* fields (key/value UI), eg used in mail viewer */
+
+table.mailer_fieldtable { 
+  width: 100%;
+
+  border-bottom-color: #808080;
+  border-bottom-width: 1;
+  border-bottom-style: solid;
+}
+tr.mailer_fieldrow { 
+  font-size:   9pt;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+}
+td.mailer_fieldname {
+  padding-left:   24px;
+  text-align:     right;
+  font-weight:    bold;
+  vertical-align: top;
+}
+td.mailer_fieldvalue {
+  width: 95%;
+}
+td.mailer_subjectfieldvalue {
+  font-weight: bold;
+}
+td.mailer_fieldvalue a {
+  text-decoration: underline;
+  vertical-align:  top;
+}
+
+div.mailer_mailcontent { 
+  border-top-color: white;
+  border-top-width: 1;
+  border-top-style: solid;
+  background-color: white;
+  padding:          8px;
+}
+
+img.mailer_imagecontent {
+  border: 0px;
+}
+pre.mailer_plaincontent { 
+}
+
+/* compose */
+
+div#compose_panel div {
+  padding: 2px;
+}
+
+div#compose_fromline {
+}
+div#compose_toselection { 
+}
+div#compose_internetmarker { 
+  padding:          8px;
+  text-align:       center;
+  background-color: white;
+  border-color:     red;
+  border-width:     2px;
+  border-style:     solid;
+}
+div#compose_subject { 
+  border-bottom-color: #808080;
+  border-bottom-width: 1;
+  border-bottom-style: solid;
+}
+div#compose_text { 
+  border-top-color:    white;
+  border-top-width:    1;
+  border-top-style:    solid;
+}
+
+div#compose_toselection select { 
+  font-size: 10px;
+}
+div#compose_toselection input { 
+  font-size: 10px;
+}
+
+input#compose_subject_input {
+  font-size: 10px;
+  width:     100%;
+}
+
+.compose_label { 
+  font-size:  11px;
+  text-align: left;
+}
+
+div#compose_text textarea { 
+  width:  100%;
+  height: 280px;
+}
+
+/* attachment editor */
+
+form#attachment_form { 
+  background-color: #D4D0C8;
+  padding: 1px;
+}
+
+div#attachment_list { 
+  border-top-color:    white;
+  border-top-width:    1;
+  border-top-style:    solid;
+}
+
+form#attachment_form input {
+  font-size: 10px;
+}
+
+div#attachment_upload { 
+  border-bottom-color: #808080;
+  border-bottom-width: 1;
+  border-bottom-style: solid;
+  padding: 4px;
+}
+
+td.attachment_uplabel { 
+  width:      15%;
+  font-size:  11px;
+  text-align: left;
+}
+
+/* attachment link viewer */
+
+div.linked_attachment_frame {
+  background-color: #D4D0C8;
+  padding:          4px;
+}
+
+div.linked_attachment_body {
+  font-family:  Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:           10pt;
+  padding:             4px;
+
+  border-width:        1;
+  border-style:        solid;
+  border-top-color:    white;
+  border-left-color:   white;
+  border-bottom-color: #808080;
+  border-right-color:  #808080;
+}
+
+div.linked_attachment_meta {
+  color:        #444444;
+  font-style:   italic;
+  border-width: 0;
+  padding:      2px;
+}
