@@ -273,7 +273,7 @@ static NSArray *calFormats = nil;
   NSString     *key;
 
   keys = [self->keysToBeDeleted objectEnumerator];
-  while ((key = [keys nextObject]))
+  while ((key = [keys nextObject]) != nil)
     [self->props removeObjectForKey:key];
   
   [self->keysToBeDeleted removeAllObjects];
@@ -287,7 +287,7 @@ static NSArray *calFormats = nil;
   exc = [[self propertyManager]
                takeProperties:self->props globalID:[self globalID]];
 
-  if (exc) {
+  if (exc != nil) {
     [self setErrorString:[exc description]];
     return nil;
   }

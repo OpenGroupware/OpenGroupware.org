@@ -54,7 +54,7 @@
   SkyProjectFileManager      *fileManager;
   SkyProjectFolderDataSource *dataSource;
   
-  // bitset-struct
+  // TODO: make it a bitset-struct
   struct {
     BOOL isEdited;
     BOOL blobChanged;
@@ -81,7 +81,10 @@
   NSMutableDictionary *newExtAttrs;
 }
 
-- (id)initWithGlobalID:(EOGlobalID *)_gid fileManager:(SkyProjectFileManager*)_fm;
+- (id)initWithGlobalID:(EOGlobalID *)_gid
+  fileManager:(SkyProjectFileManager*)_fm;
+
+/* document status */
 
 - (void)invalidate;
 - (BOOL)isValid;
@@ -89,6 +92,8 @@
 - (BOOL)isNew;
 - (BOOL)isEdited;
 - (BOOL)isComplete; /* is no if doc is initialize with attrs, use reload */
+
+/* document system properties */
 
 - (BOOL)isVersioned;
 - (BOOL)isDeletable;
@@ -103,6 +108,8 @@
 - (NSString *)subject;
 - (NSString *)path;
 
+/* attributes */
+
 - (NSDictionary *)extendedAttributes;
 - (NSDictionary *)extendedAttributesForNamespace:(NSString *)_ns;
 - (NSDictionary *)attributes;
@@ -111,9 +118,13 @@
 - (NSArray *)documentKeys;
 - (NSArray *)readOnlyDocumentKeys;
 
+/* related objects */
+
 - (SkyProjectFileManager *)fileManager;
 - (EODataSource *)folderDataSource;
 - (EODataSource *)historyDataSource;
+
+/* equality */
 
 - (BOOL)isEqual:(id)_obj;
 - (BOOL)isEqualToDocument:(SkyProjectDocument *)_doc;
