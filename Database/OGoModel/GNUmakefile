@@ -4,7 +4,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 
 BUNDLE_NAME        = OGo
 BUNDLE_EXTENSION   = .model
-BUNDLE_INSTALL_DIR = $(GNUSTEP_LOCAL_ROOT)/Library/OpenGroupware.org-1.0a/
+BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.0a/
 
 #ADDITIONAL_CPPFLAGS += -DUSE_EO_RECORDS=1
 

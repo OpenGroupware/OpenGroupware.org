@@ -1,7 +1,7 @@
 # $Id$
 
 RESOURCES_INSTALLATION_DIR = \
-		$(GNUSTEP_LOCAL_ROOT)/Resources
+		$(GNUSTEP_INSTALLATION_DIR)/Resources
 
 Skyrix_LANGUAGE_Projects = \
 	English.lproj 		\

@@ -20,7 +20,7 @@ FHS_HEADER_DIRS = OGoNHS
 
 BUNDLE_NAME        = OpenGroupwareNHS
 BUNDLE_EXTENSION   = .conduit
-BUNDLE_INSTALL_DIR = $(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a
+BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.0a
 
 OpenGroupwareNHS_OBJC_FILES = \
 	OGoNHSConduit.m	\

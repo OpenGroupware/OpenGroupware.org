@@ -4,7 +4,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 
 WOBUNDLE_NAME        = OGoLDAPClientUI
 WOBUNDLE_EXTENSION   = .lso
-WOBUNDLE_INSTALL_DIR = $(GNUSTEP_LOCAL_ROOT)/Library/OpenGroupware.org
+WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org
 
 OGoLDAPClientUI_PRINCIPAL_CLASS = LdapViewerModule
 

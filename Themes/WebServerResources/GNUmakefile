@@ -1,7 +1,7 @@
 # $Id$
 
 WEBSERVER_RESOURCES_INSTALLATION_DIR = \
-		$(GNUSTEP_LOCAL_ROOT)/WebServerResources
+		$(GNUSTEP_INSTALLATION_DIR)/WebServerResources
 
 Skyrix_LANGUAGE_Projects = \
 	English.lproj		\
