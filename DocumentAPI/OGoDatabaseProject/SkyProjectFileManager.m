@@ -306,7 +306,7 @@ static inline NSNumber *boolNum(BOOL value) {
       return YES;
     }
   }
-  self->lastErrorCode = 34;
+  self->lastErrorCode = 34; // TODO: USE A #define or enum!
   return NO;
 }
 
@@ -356,14 +356,14 @@ static inline NSNumber *boolNum(BOOL value) {
 
   /* check whether _path contains a version-spec (eg filename;2) */
   
-  if ((version = [_path pathVersion])) {
+  if ((version = [_path pathVersion]) != nil) {
     return [self fileAttributesAtPath:[_path stringByDeletingPathVersion]
                  traverseLink:_followLink version:version];
   }
   attrs = [self->cache fileAttributesAtPath:_path manager:self];
   if (!_followLink)
     return attrs;
-
+  
   /* resolve link target */
   
   if (![[attrs objectForKey:NSFileType]

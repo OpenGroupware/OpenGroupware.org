@@ -180,15 +180,34 @@ static BOOL isRootAccountID(NSNumber *cid) {
   fileAttrContext:(id<SkyProjectFileManagerContext>)_context
 {
   // TODO: this is not per user?! should use standard defaults, right?
-  NSUserDefaults *ud;
+  static NSDictionary *types = nil;
   NSString *mimeType;
+
+  if ([types count] == 0) {
+    NSUserDefaults *ud;
+    
+    ud    = [NSUserDefaults standardUserDefaults];
+    types = [[ud dictionaryForKey:@"LSMimeTypes"] copy];
+  }
   
   _ext     = [_ext lowercaseString];
-  ud       = [[_context commandContext] valueForKey:LSUserDefaultsKey];
-  mimeType = [[ud dictionaryForKey:@"LSMimeTypes"] objectForKey:_ext];
+  mimeType = [types objectForKey:_ext];
   
-  if (mimeType == nil)
+  if (mimeType == nil) {
+    static NSMutableSet *warnedExt = nil;
+    
     mimeType = @"application/octet-stream";
+    
+    if (warnedExt == nil)
+      warnedExt = [[NSMutableSet alloc] initWithCapacity:16];
+    
+    if (![warnedExt containsObject:_ext]) {
+      [self logWithFormat:
+	      @"WARNING: did not find MIME type for extension %@: %@",
+	      _ext, types];
+      [warnedExt addObject:_ext];
+    }
+  }
   return mimeType;
 }
 
@@ -201,7 +220,7 @@ static BOOL isRootAccountID(NSNumber *cid) {
   projectNumber:(NSString *)_pNumber
   fileAttrContext:(id<SkyProjectFileManagerContext>)_context
 {
-  /* TODO: split up this huge method */
+  // TODO: split up this huge method
   id                  realDoc, doc, tmp;
   BOOL                isLink;
   NSMutableDictionary *attrs;

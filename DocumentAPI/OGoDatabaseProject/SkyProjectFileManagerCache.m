@@ -416,7 +416,7 @@ static NSNumber *yesNum = nil;
     cache = [NSMutableDictionary dictionaryWithCapacity:256];
     [self takeCacheValue:cache forKey:deleteCache];
   }
-  if (!(result = [cache objectForKey:_path])) {
+  if ((result = [cache objectForKey:_path]) == nil) {
     NSDictionary *attrs;
     EOGlobalID   *gid;
     

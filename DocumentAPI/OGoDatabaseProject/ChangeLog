@@ -1,3 +1,12 @@
+2004-12-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.45
+
+	* SkyProjectFileManager+FileAttributes.m: print a warning in case no
+	  MIME type could be found for an extension (used for NSFileMimeType)
+
+	* SkyProjectFileManagerCache+Internals.m: major code cleanups
+
 2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyProjectFileManager+Notifications.m: minor code cleanups (v5.1.44)

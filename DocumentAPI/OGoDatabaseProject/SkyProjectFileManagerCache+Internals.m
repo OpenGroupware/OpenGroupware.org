@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-// TODO: needs cleanup
+// TODO: needs serious cleanup
 
 #include <OGoDatabaseProject/SkyProjectFileManagerCache.h>
 #include <EOControl/EOQualifier.h>
@@ -833,18 +833,20 @@ static inline NSNumber *boolNum(BOOL value) {
 
     if (selExpr == nil) {
       selExpr = [[self buildSelectForSiblingsSearch:entity attrs:editingAttrs]
-		  retain];
+		       retain];
     }
     
     cnt     = [_sids count];
     results = [NSMutableDictionary dictionaryWithCapacity:cnt];
 
-    for (i = 0; i < cnt; i+=MaxInQualifierCount) {
+    for (i = 0; i < cnt; i += MaxInQualifierCount) {
       NSArray *sArray;
-
-      sArray = [_sids subarrayWithRange:
-			NSMakeRange(i, (cnt-i  > MaxInQualifierCount)
-				    ?MaxInQualifierCount:cnt-i)];
+      NSRange r;
+      
+      // TODO: weird range?
+      r = NSMakeRange(i, ((cnt - i) > MaxInQualifierCount) 
+		      ? MaxInQualifierCount:(cnt - i));
+      sArray = [_sids subarrayWithRange:r];
       
       expression = [[NSString alloc] initWithFormat:selExpr,
                                      [self->project valueForKey:@"projectId"],
@@ -983,50 +985,106 @@ static inline NSNumber *boolNum(BOOL value) {
 }
 
 /* fetch objects for fileattributes and path2gid cache */
-- (void)cacheChildsForFolder:(NSString *)_folder
+
+- (void)_processChildsForFolderDocument:(id)doc
+  inProjectWithPKey:(NSNumber *)pid
+  atFolderPath:(NSString *)_folderPath
+  documentEditingDictionaries:(NSDictionary *)docEditings
+  fillPathToGIDMap:(NSMutableDictionary *)fn2gid
+  fillPKeyToPathMap:(NSMutableDictionary *)pk2fn
+  fillPathToAttrMap:(NSMutableDictionary *)faAtPath
+  addToChildAttrArray:(NSMutableArray *)childAttrs
+  addToChildNamesArray:(NSMutableArray *)childNames
+{
+  NSDictionary  *fileAttrs, *editing;
+  NSString      *path;
+  EOKeyGlobalID *gid;
+  NSNumber      *projectId;
+  
+  editing   = [docEditings objectForKey:[doc objectForKey:@"documentId"]];
+  projectId = [self->project valueForKey:@"projectId"];
+  fileAttrs = [SkyProjectFileManager buildFileAttrsForDoc:doc
+				     editing:editing
+				     atPath:_folderPath isVersion:NO
+				     projectId:projectId
+				     fileAttrContext:self];
+  gid  = [fileAttrs objectForKey:@"globalID"];
+  path = [fileAttrs objectForKey:@"NSFilePath"];
+  
+  // TODO: I suppose all those maps should be in a single, own datastructure
+  //       object?! (hh says)
+  [fn2gid   setObject:gid forKey:path];
+  [pk2fn    setObject:path forKey:[gid keyValues][0]];
+  [faAtPath setObject:fileAttrs forKey:path];
+  [childAttrs addObject:fileAttrs];
+  [childNames addObject:[fileAttrs objectForKey:@"NSFileName"]];
+  
+  [SkyProjectFileManager setProjectID:pid forDocID:[gid keyValues][0]
+			 context:self->context];
+}
+
+- (void)cacheChildNames:(NSArray *)_childNames andAttributes:(NSArray *)_attrs
+  forFolderPath:(NSString *)_folderPath
+{
+  // TODO: should be an own datastructure object?
+  if (_folderPath == nil)
+    return;
+
+  _attrs      = [_attrs copy];
+  _childNames = [_childNames copy];
+  
+  [[self fileName2ChildAttrs] setObject:_attrs      forKey:_folderPath];
+  [[self fileName2ChildNames] setObject:_childNames forKey:_folderPath];
+
+  [_attrs      release];
+  [_childNames release];
+}
+
+- (void)cacheChildsForFolder:(NSString *)_folderPath
   orSiblingsForId:(NSNumber *)_sid
 {
   // TODO: split up this method
+  // - called by -fileAttributesAtPath:manager: (with filename, nil)
   EOKeyGlobalID       *gid;
   NSMutableDictionary *pk2fn, *fn2gid, *faAtPath;
-
-  if (_folder && _sid) {
+  
+  /* the parameters are either or, and cannot be specified at the same time */
+  
+  if (_folderPath != nil && _sid != nil) {
     NSLog(@"ERROR[%s]: internal inconsistency _folder != nil && _sid != nil",
           __PRETTY_FUNCTION__);
     return;
   }
-  if (![_sid isNotNull] && ![_folder cStringLength]) {
+  if (![_sid isNotNull] && [_folderPath cStringLength] == 0)
     return;
-  }
-
+  
   gid = nil;
   { /* cache status for unknown objects ... */
     id                  statObj;
     NSMutableDictionary *mdict;
     
-    mdict = [self cacheChildsForFolderStatusCache];
-
-    statObj = (_folder) ? (id)_folder : (id)_sid;
-      
-    if ([mdict objectForKey:statObj]) {
+    mdict   = [self cacheChildsForFolderStatusCache];
+    statObj = (_folderPath != nil) ? (id)_folderPath : (id)_sid;
+    
+    if ([mdict objectForKey:statObj])
       return;
-    }
     
     [mdict setObject:[NSNumber numberWithBool:YES] forKey:statObj];
   }
   
-  if (_folder) {
-    gid = [[self fileName2GIDCache] objectForKey:_folder];
+  if (_folderPath != nil) {
+    gid = [[self fileName2GIDCache] objectForKey:_folderPath];
     if (![gid isNotNull]) {
-#if 0      
+#if 0 // TODO: why commented out? regular operation?
       NSLog(@"WARNING[%s]: missing gid for path %@", __PRETTY_FUNCTION__,
-            _folder);
+            _folderPath);
 #endif      
       return;
     }
   }  
 
-  if (_sid || gid) {
+  // TOD: gid seems to be the 'parent gid'
+  if (_sid != nil || gid != nil) {
     NSArray        *docs;
     NSMutableArray *childAttrs, *childNames;
     NSDictionary   *docEditings;
@@ -1037,22 +1095,25 @@ static inline NSNumber *boolNum(BOOL value) {
     pid         = [self->project valueForKey:@"projectId"];
     childAttrs  = [NSMutableArray arrayWithCapacity:127];
     childNames  = [NSMutableArray arrayWithCapacity:127];
-
-    parentId    = (gid) ? [gid keyValues][0] : nil;
+    
+    parentId    = (gid != nil) ? [gid keyValues][0] : nil;
     docs        = [self fetchDocsForParentId:parentId siblingId:_sid
                         qualifier:nil];
     docEditings = [self fetchDocEditingsForParentId:parentId siblingId:_sid
                         docPKeys:nil];
-    enumerator  = [docs objectEnumerator];
-
-    if (!_folder && [docs count]) { /* got parent from cache */
+    
+    // TODO: document what the stuff below does (and why it is recursive)
+    
+    if (_folderPath == nil && [docs count] > 0) { /* got parent from cache */
       static int recursionFlag = 0;
-        
       NSNumber *key;
-
+      
+      // TODO: does this limit folder nesting to 10 levels?
       if (recursionFlag > 10) {
-        NSLog(@"ERROR[%s] internal inconsistency recursion during get attrs ..",
-              __PRETTY_FUNCTION__);
+        [self logWithFormat:
+		@"ERROR[%s] internal inconsistency recursion during retrieval "
+	        @"of file attributes (rec %i > 10) ...",
+                __PRETTY_FUNCTION__, recursionFlag];
         return;
       }
       recursionFlag++;
@@ -1062,52 +1123,42 @@ static inline NSNumber *boolNum(BOOL value) {
         
         gid = [EOKeyGlobalID globalIDWithEntityName:@"Doc"
                              keys:&key keyCount:1 zone:NULL];
-        _folder = [self pathForGID:gid manager:nil];
+	
+	// TODO: does the thing below trigger the recursion?
+        _folderPath = [self pathForGID:gid manager:nil];
       }
       recursionFlag--;
     }
+    
+    /* fill caches from document */
+    
     fn2gid   = [self fileName2GIDCache];
     pk2fn    = [self pk2FileNameCache];
     faAtPath = [self fileAttributesAtPathCache];
-    while ((doc = [enumerator nextObject])) {
-      NSDictionary  *fileAttrs;
-      NSString      *path;
-      EOKeyGlobalID *gid;
-
-      fileAttrs = [SkyProjectFileManager buildFileAttrsForDoc:doc
-                                         editing:[docEditings objectForKey:
-                                             [doc objectForKey:@"documentId"]]
-                                         atPath:_folder isVersion:NO
-                                         projectId:[self->project
-                                                        valueForKey:
-                                                        @"projectId"]
-                                         fileAttrContext:self];
-      gid  = [fileAttrs objectForKey:@"globalID"];
-      path = [fileAttrs objectForKey:@"NSFilePath"];
-
-      [fn2gid   setObject:gid forKey:path];
-      [pk2fn    setObject:path forKey:[gid keyValues][0]];
-      [faAtPath setObject:fileAttrs forKey:path];
-      [childAttrs addObject:fileAttrs];
-      [childNames addObject:[fileAttrs objectForKey:@"NSFileName"]];
-      [SkyProjectFileManager setProjectID:pid forDocID:[gid keyValues][0]
-                             context:self->context];
+    
+    enumerator  = [docs objectEnumerator];
+    while ((doc = [enumerator nextObject]) != nil) {
+      [self _processChildsForFolderDocument:doc inProjectWithPKey:pid
+	    atFolderPath:_folderPath documentEditingDictionaries:docEditings
+	    fillPathToGIDMap:fn2gid fillPKeyToPathMap:pk2fn
+	    fillPathToAttrMap:faAtPath 
+	    addToChildAttrArray:childAttrs addToChildNamesArray:childNames];
     }
-    [[childNames copy] autorelease];
-    [[childAttrs copy] autorelease];
-    if (_folder) {
-      [[self fileName2ChildAttrs] setObject:childAttrs forKey:_folder];
-      [[self fileName2ChildNames] setObject:childNames forKey:_folder];
-    }
-    else if ([childAttrs count]) {
+
+    /* derive folder name from attributes */
+    
+    if (_folderPath == nil && ([childAttrs count] > 0)) {
       NSDictionary *child;
-
+      
       child = [childAttrs lastObject];
-      _folder = [[child objectForKey:NSFilePath]
-                        stringByDeletingLastPathComponent];
-      [[self fileName2ChildAttrs] setObject:childAttrs forKey:_folder];
-      [[self fileName2ChildNames] setObject:childNames forKey:_folder];
+      _folderPath = [[child objectForKey:NSFilePath]
+                            stringByDeletingLastPathComponent];
     }
+
+    /* cache child names and attributes */
+    
+    [self cacheChildNames:childNames andAttributes:childAttrs
+	  forFolderPath:_folderPath];
   }
 }
 

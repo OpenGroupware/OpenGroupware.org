@@ -103,19 +103,22 @@
   return array;
 }
 
-- (NSDictionary *)fileAttributesAtPath:(NSString *)_path manager:(id)_manager
-{
+- (NSDictionary *)fileAttributesAtPath:(NSString *)_path manager:(id)_manager {
   NSDictionary *result;
 
-  if (![_path length])
+  if ([_path length] == 0)
     return nil;
   
-  if (!(result = [[self fileAttributesAtPathCache] objectForKey:_path])) {
+  if ((result = [[self fileAttributesAtPathCache] objectForKey:_path]) ==nil) {
+    /* 
+       Fetch all file attributes for the folder the file is in and cache that.
+       Then retrieve the result from the cache.
+    */
     [self cacheChildsForFolder:[_path stringByDeletingLastPathComponent]
-          orSiblingsForId:nil];
+          orSiblingsForId:nil /* Note: only one argument is allowed */];
     result = [[self fileAttributesAtPathCache] objectForKey:_path];
   }
-  if (!result) {
+  if (result == nil) {
     NSMutableDictionary *mdict;
 
     mdict = [self fileAttributesAtPathCache];
