@@ -305,4 +305,4 @@ wizardCancel                                   = "Cancelar ";
 wizardFinish                                   = "Finalizar";
 wizardForward                                  = "Próximo";
 xlink_kd_nr                                    = "Número do Xlink";
-zip                                            = "CEP"
+zip                                            = "CEP";
