@@ -1,5 +1,5 @@
 togglecreate              = "Schnell erstellen";
-create                    = "Erstellen"
+create                    = "Erstellen";
 "no name set ..."           = "Es wurde kein Name gesetzt";
 "no process manager set..." = "Es wurde kein Aufgaben Manager gesetzt";
 "no project set..."         = "Es wurde kein Projekt angegeben";
@@ -79,7 +79,7 @@ basedOnVersion          = "Basiert auf Version";
 blockSize               = "Anzahl der Listeneinträge";
 bmp                     = "BMP Bild laden";
 cancelButtonLabel         = "Abbrechen";
-cancel			= "Abbrechen"
+cancel			= "Abbrechen";
 cancelButton            = "Abbrechen";
 category                = "Kategorie";
 changeToFolder          = "In den Ordner wechseln";

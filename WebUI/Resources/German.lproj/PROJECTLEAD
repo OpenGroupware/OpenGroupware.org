@@ -1,1 +1,5 @@
-PROJECTLEAD=dlsz@gmx.net
+# author information
+
+PROJECTLEAD=sley@debian.org
+CONTRIBUTOR=hh@skyrix.com
+CONTRIBUTOR=dlsz@gmx.net

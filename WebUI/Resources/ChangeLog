@@ -1,3 +1,7 @@
+2005-03-23  Daniel Schulz  <dlsz@gmx.net>
+
+	* German.lproj: added missing semicolons, fixed some bugs
+
 2005-03-22  Helge Hess  <helge.hess@opengroupware.org>
 
 	* German.lproj/OGoProject.strings: added translation for 'logs' key

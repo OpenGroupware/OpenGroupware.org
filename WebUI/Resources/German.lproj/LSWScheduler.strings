@@ -1,3 +1,4 @@
+links	      = "Links";
 00            = "00:00";
 00_created    = "erstellt";
 01            = "01:00";
@@ -553,7 +554,7 @@ proposalWindowTitle          = "Termine suchen";
 reachable                    = "erreichbar";
 really_delete                = "Wollen Sie den Termin wirklich löschen?";
 reformationsDay              = "Reformationstag";
-removeMe                     = "mich entfernen";
+removeMe                     = "Mich entfernen";
 removeParticipantLog         = "Teilnehmer entfernt: ";
 removed                      = "entf&auml;llt";
 resCategory                  = "Kategorie";

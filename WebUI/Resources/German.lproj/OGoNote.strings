@@ -1,6 +1,6 @@
-"Quick Create Title" = "Titel der Notiz"
+"Quick Create Title" = "Titel der Notiz";
 togglecreate        = "Schnell erstellen";
-create              = "Erstellen"
+create              = "Erstellen";
 00_created          = "erstellt";
 00_process          = "Vorgang";
 00_sequential       = "sequentieller";

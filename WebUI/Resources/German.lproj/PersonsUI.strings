@@ -1,5 +1,5 @@
 // TODO: needs trailing ';' for MacOSX
-import 			      = "Import"
+import 			      = "Import";
 00_created                    = "erstellt";
 01_dear_ms                    = "Dear Ms.";
 01_tel                        = "Telefon 1";

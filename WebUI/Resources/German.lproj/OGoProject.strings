@@ -1,7 +1,7 @@
 quickview		  = "Schnellansicht";
 list                      = "Liste";
-update                    = "Update"
-links 			  = "Links"
+update                    = "Aktualisieren";
+links 			  = "Links";
 "Couldn`t lock project, project already locked" = "Das Projekt kann nicht beschrieben werden, da es von einem anderern Anwender gesperrt wurde.";
 "Path already exists"     = "Verzeichnis existiert bereits";
 "missing filename"        = "Es wurde kein Dateiname angegeben.";
@@ -276,7 +276,6 @@ link_project          = "Projekt";
 locked                = "gesperrt";
 lockedLabel           = "Gesperrt durch";
 logsLabel             = "Logs";
-logs                  = "Logs";
 logsTitle             = "Process Logs";
 mail                  = "Verschicken";
 mailLabel             = "Dokument Link mailen";
