@@ -1,10 +1,8 @@
-%define smaj 4
-%define smin 4
 %define lfmaj 1
 %define lfmin 0
 
 Summary:       A free and open groupware suite.
-Name:          ogofull
+Name:          ogosopefull
 Version:       %{ogo_version}
 Release:       %{ogo_release}.%{ogo_buildcount}%{dist_suffix}
 Vendor:        http://www.opengroupware.org
@@ -30,17 +28,34 @@ SOPE application server.
 #########################################
 %prep
 rm -fr ${RPM_BUILD_ROOT}
+%setup -n sope
 %setup -n opengroupware.org
 
 # ****************************** build ********************************
 %build
 source %{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
+make %{sope_makeflags}
 make %{ogo_makeflags}
 
 # ****************************** install ******************************
 %install
 source %{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
 mkdir -p GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep
+
+# SOPE
+
+mkdir -p ${RPM_BUILD_ROOT}%{prefix}/lib/lib
+make %{sope_makeflags} INSTALL_ROOT_DIR=${RPM_BUILD_ROOT} \
+                       GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix} \
+                       FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
+                       install
+
+rm -f ${RPM_BUILD_ROOT}%{prefix}/bin/rss2plist1
+rm -f ${RPM_BUILD_ROOT}%{prefix}/bin/rss2plist2
+rm -f ${RPM_BUILD_ROOT}%{prefix}/bin/rssparse
+rm -f ${RPM_BUILD_ROOT}%{prefix}/bin/testqp
+
+# OGo
 
 make %{ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep \
                       FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
@@ -94,6 +109,20 @@ OGO_USER=\"ogo\"                      # default username (unix) of your OGo inst
 
 # ****************************** post *********************************
 %post
+
+# SOPE
+
+if [ $1 = 1 ]; then
+  if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
+    echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/sope%{sope_major_version}%{sope_minor_version}.conf
+  elif [ ! "`grep '%{prefix}/lib' %{_sysconfdir}/ld.so.conf`" ]; then
+    echo "%{prefix}/lib" >> %{_sysconfdir}/ld.so.conf
+  fi
+  /sbin/ldconfig
+fi
+
+# OGo
+
 if [ $1 = 1 ]; then
   #must rework dependencies
   /sbin/ldconfig
@@ -206,6 +235,15 @@ if [ $1 = 1 ]; then
   fi
 fi
 
+# ****************************** postun *********************************
+%postun
+if [ $1 = 0 ]; then
+  if [ -e %{_sysconfdir}/ld.so.conf.d/sope%{sope_major_version}%{sope_minor_version}.conf ]; then
+    rm -f %{_sysconfdir}/ld.so.conf.d/sope%{sope_major_version}%{sope_minor_version}.conf
+  fi
+  /sbin/ldconfig
+fi
+
 # ****************************** preun *********************************
 %preun
 # pda
@@ -300,81 +338,44 @@ rm -fr ${RPM_BUILD_ROOT}
 %files
 %defattr(-,root,root,-)
 
+# sope
+%{prefix}/bin/connect-EOAdaptor
+%{prefix}/bin/load-EOAdaptor
+%{prefix}/bin/xmlrpc_call
+%{prefix}/lib/libDOM*.so.%{sope_libversion}*
+%{prefix}/lib/libEOControl*.so.%{sope_libversion}*
+%{prefix}/lib/libGDLAccess*.so.%{sope_libversion}*
+%{prefix}/lib/libNGExtensions*.so.%{sope_libversion}*
+%{prefix}/lib/libNGLdap*.so.%{sope_libversion}*
+%{prefix}/lib/libNGMime*.so.%{sope_libversion}*
+%{prefix}/lib/libNGObjWeb*.so.%{sope_libversion}*
+%{prefix}/lib/libNGStreams*.so.%{sope_libversion}*
+%{prefix}/lib/libNGXmlRpc*.so.%{sope_libversion}*
+%{prefix}/lib/libNGiCal*.so.%{sope_libversion}*
+%{prefix}/lib/libSaxObjC*.so.%{sope_libversion}*
+%{prefix}/lib/libSoOFS*.so.%{sope_libversion}*
+%{prefix}/lib/libWEExtensions*.so.%{sope_libversion}*
+%{prefix}/lib/libWOExtensions*.so.%{sope_libversion}*
+%{prefix}/lib/libWOXML*.so.%{sope_libversion}*
+%{prefix}/lib/libXmlRpc*.so.%{sope_libversion}*
+%{prefix}/lib/sope-%{sope_libversion}/dbadaptors/PostgreSQL.gdladaptor
+%{prefix}/lib/sope-%{sope_libversion}/products/SoCore.sxp
+%{prefix}/lib/sope-%{sope_libversion}/products/SoOFS.sxp
+%{prefix}/lib/sope-%{sope_libversion}/saxdrivers/STXSaxDriver.sax
+%{prefix}/lib/sope-%{sope_libversion}/saxdrivers/libxmlSAXDriver.sax
+%{prefix}/lib/sope-%{sope_libversion}/saxdrivers/versitSaxDriver.sax
+%{prefix}/lib/sope-%{sope_libversion}/wox-builders/WEExtensions.wox
+%{prefix}/lib/sope-%{sope_libversion}/wox-builders/WOExtensions.wox
+%{prefix}/sbin/sope-%{sope_major_version}.%{sope_minor_version}
+%{prefix}/share/sope-%{sope_libversion}/ngobjweb/DAVPropMap.plist
+%{prefix}/share/sope-%{sope_libversion}/ngobjweb/Defaults.plist
+%{prefix}/share/sope-%{sope_libversion}/ngobjweb/Languages.plist
+%{prefix}/share/sope-%{sope_libversion}/saxmappings/NGiCal.xmap
+
 # ogo
-%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoAccounts.ds
-%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoBase.ds
-%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoContacts.ds
-%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoJobs.ds
-%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoProject.ds
-%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoRawDatabase.ds
-%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoScheduler.ds
-%{prefix}/lib/libOGoAccounts*.so.5.1*
-%{prefix}/lib/libOGoBase*.so.5.1*
-%{prefix}/lib/libOGoContacts*.so.5.1*
-%{prefix}/lib/libOGoDocuments*.so.5.1*
-%{prefix}/lib/libOGoJobs*.so.5.1*
-%{prefix}/lib/libOGoProject*.so.5.1*
-%{prefix}/lib/libOGoRawDatabase*.so.5.1*
-%{prefix}/lib/libOGoScheduler*.so.5.1*
-%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoFileSystemProject.ds
-%{prefix}/lib/libOGoFileSystemProject*.so.5.1*
-%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoDatabaseProject.ds
-%{prefix}/lib/libOGoDatabaseProject*.so.5.1*
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSAccount.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSAddress.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSBase.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSDocuments.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSEnterprise.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSMail.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSNews.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSPerson.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSProject.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSResource.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSScheduler.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSSearch.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSTasks.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSTeam.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/OGo.model
-%{prefix}/lib/libLSAddress*.so.5.1*
-%{prefix}/lib/libLSFoundation*.so.5.1*
-%{prefix}/lib/libLSSearch*.so.5.1*
-%{prefix}/lib/libOGoSchedulerTools*.so.5.1*
+%attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-webui-1.0a
 %{prefix}/bin/load-LSModel
-%{prefix}/sbin/ogo-nhsd-1.0a
 %{prefix}/bin/ogo-ppls-1.0a
-%{prefix}/lib/libOGoNHS*.so.5.1*
-%{prefix}/lib/%{ogo_libogopalmui}.so.5.1*
-%{prefix}/lib/%{ogo_libogopalm}.so.5.1*
-%{prefix}/lib/libPPSync*.so.5.1*
-%{prefix}/lib/opengroupware.org-1.0a/conduits/OpenGroupwareNHS.conduit/OpenGroupwareNHS
-%{prefix}/lib/opengroupware.org-1.0a/conduits/OpenGroupwareNHS.conduit/Resources/Info-gnustep.plist
-%{prefix}/lib/opengroupware.org-1.0a/conduits/OpenGroupwareNHS.conduit/bundle-info.plist
-%{prefix}/lib/opengroupware.org-1.0a/conduits/OpenGroupwareNHS.conduit/stamp.make
-%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoPalmDS.ds/OGoPalmDS
-%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoPalmDS.ds/Resources/Info-gnustep.plist
-%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoPalmDS.ds/bundle-info.plist
-%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoPalmDS.ds/stamp.make
-%{prefix}/lib/opengroupware.org-1.0a/webui/OGoPalm.lso
-%{prefix}/share/opengroupware.org-1.0a/initscript_templates/*nhsd
-%{prefix}/share/opengroupware.org-1.0a/www/Danish.lproj
-%{prefix}/share/opengroupware.org-1.0a/www/English.lproj
-%{prefix}/share/opengroupware.org-1.0a/www/German.lproj
-%{prefix}/share/opengroupware.org-1.0a/www/Italian.lproj
-%{prefix}/share/opengroupware.org-1.0a/www/Polish.lproj
-%{prefix}/share/opengroupware.org-1.0a/www/Spanish.lproj
-%{prefix}/share/opengroupware.org-1.0a/www/WOStats.xsl
-%{prefix}/share/opengroupware.org-1.0a/www/menu.js
-%{prefix}/share/opengroupware.org-1.0a/templates/Themes/OOo
-%{prefix}/share/opengroupware.org-1.0a/www/English_OOo.lproj
-%{prefix}/share/opengroupware.org-1.0a/www/German_OOo.lproj
-%{prefix}/share/opengroupware.org-1.0a/templates/Themes/blue
-%{prefix}/share/opengroupware.org-1.0a/www/English_blue.lproj
-%{prefix}/share/opengroupware.org-1.0a/www/German_blue.lproj
-%{prefix}/share/opengroupware.org-1.0a/templates/Themes/kde
-%{prefix}/share/opengroupware.org-1.0a/www/English_kde.lproj
-%{prefix}/share/opengroupware.org-1.0a/templates/Themes/orange
-%{prefix}/share/opengroupware.org-1.0a/www/English_orange.lproj
-%{prefix}/share/opengroupware.org-1.0a/www/German_orange.lproj
 %{prefix}/bin/sky_add_account
 %{prefix}/bin/sky_del_account
 %{prefix}/bin/sky_get_login_names
@@ -390,74 +391,156 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/bin/skyprojectexporter
 %{prefix}/bin/skyprojectimporter
 %{prefix}/bin/skyruncmd
-%{prefix}/sbin/ogo-webui-1.0a
-%{prefix}/share/opengroupware.org-1.0a/templates/ogo-webui-1.0a
-%{prefix}/share/opengroupware.org-1.0a/initscript_templates/*opengroupware
-%attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-webui-1.0a
+%{prefix}/lib/%{ogo_libogopalmui}.so.5.1*
+%{prefix}/lib/%{ogo_libogopalm}.so.5.1*
+%{prefix}/lib/libLSAddress*.so.5.1*
+%{prefix}/lib/libLSFoundation*.so.5.1*
+%{prefix}/lib/libLSSearch*.so.5.1*
+%{prefix}/lib/libOGoAccounts*.so.5.1*
+%{prefix}/lib/libOGoBase*.so.5.1*
+%{prefix}/lib/libOGoContacts*.so.5.1*
+%{prefix}/lib/libOGoDatabaseProject*.so.5.1*
+%{prefix}/lib/libOGoDocuments*.so.5.1*
+%{prefix}/lib/libOGoFileSystemProject*.so.5.1*
 %{prefix}/lib/libOGoFoundation*.so.5.1*
+%{prefix}/lib/libOGoJobs*.so.5.1*
+%{prefix}/lib/libOGoNHS*.so.5.1*
+%{prefix}/lib/libOGoProject*.so.5.1*
+%{prefix}/lib/libOGoRawDatabase*.so.5.1*
+%{prefix}/lib/libOGoScheduler*.so.5.1*
+%{prefix}/lib/libOGoSchedulerTools*.so.5.1*
+%{prefix}/lib/libOGoWebMail*.so.5.1*
+%{prefix}/lib/libPPSync*.so.5.1*
+%{prefix}/lib/libZSAppointments*.so.1.3*
+%{prefix}/lib/libZSBackend*.so.1.3*
+%{prefix}/lib/libZSContacts*.so.1.3*
+%{prefix}/lib/libZSFrontend*.so.1.3*
+%{prefix}/lib/libZSProjects*.so.1.3*
+%{prefix}/lib/libZSTasks*.so.1.3*
+%{prefix}/lib/opengroupware.org-1.0a/commands/LSAccount.cmd
+%{prefix}/lib/opengroupware.org-1.0a/commands/LSAddress.cmd
+%{prefix}/lib/opengroupware.org-1.0a/commands/LSBase.cmd
+%{prefix}/lib/opengroupware.org-1.0a/commands/LSDocuments.cmd
+%{prefix}/lib/opengroupware.org-1.0a/commands/LSEnterprise.cmd
+%{prefix}/lib/opengroupware.org-1.0a/commands/LSMail.cmd
+%{prefix}/lib/opengroupware.org-1.0a/commands/LSNews.cmd
+%{prefix}/lib/opengroupware.org-1.0a/commands/LSPerson.cmd
+%{prefix}/lib/opengroupware.org-1.0a/commands/LSProject.cmd
+%{prefix}/lib/opengroupware.org-1.0a/commands/LSResource.cmd
+%{prefix}/lib/opengroupware.org-1.0a/commands/LSScheduler.cmd
+%{prefix}/lib/opengroupware.org-1.0a/commands/LSSearch.cmd
+%{prefix}/lib/opengroupware.org-1.0a/commands/LSTasks.cmd
+%{prefix}/lib/opengroupware.org-1.0a/commands/LSTeam.cmd
+%{prefix}/lib/opengroupware.org-1.0a/commands/OGo.model
+%{prefix}/lib/opengroupware.org-1.0a/conduits/OpenGroupwareNHS.conduit/OpenGroupwareNHS
+%{prefix}/lib/opengroupware.org-1.0a/conduits/OpenGroupwareNHS.conduit/Resources/Info-gnustep.plist
+%{prefix}/lib/opengroupware.org-1.0a/conduits/OpenGroupwareNHS.conduit/bundle-info.plist
+%{prefix}/lib/opengroupware.org-1.0a/conduits/OpenGroupwareNHS.conduit/stamp.make
+%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoAccounts.ds
+%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoBase.ds
+%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoContacts.ds
+%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoDatabaseProject.ds
+%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoFileSystemProject.ds
+%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoJobs.ds
+%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoPalmDS.ds/OGoPalmDS
+%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoPalmDS.ds/Resources/Info-gnustep.plist
+%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoPalmDS.ds/bundle-info.plist
+%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoPalmDS.ds/stamp.make
+%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoProject.ds
+%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoRawDatabase.ds
+%{prefix}/lib/opengroupware.org-1.0a/datasources/OGoScheduler.ds
+%{prefix}/lib/opengroupware.org-1.0a/webui/AddressUI.lso
 %{prefix}/lib/opengroupware.org-1.0a/webui/AdminUI.lso
 %{prefix}/lib/opengroupware.org-1.0a/webui/BaseUI.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/OGoUIElements.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/PreferencesUI.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/PropertiesUI.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/RelatedLinksUI.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/SoOGo.lso
-%{prefix}/share/opengroupware.org-1.0a/templates/AdminUI
-%{prefix}/share/opengroupware.org-1.0a/templates/BaseUI
-%{prefix}/share/opengroupware.org-1.0a/templates/OGoUIElements
-%{prefix}/share/opengroupware.org-1.0a/templates/PreferencesUI
-%{prefix}/share/opengroupware.org-1.0a/templates/PropertiesUI
-%{prefix}/share/opengroupware.org-1.0a/templates/RelatedLinksUI
-%{prefix}/lib/opengroupware.org-1.0a/webui/LSWScheduler.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/OGoResourceScheduler.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/OGoScheduler.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/OGoSchedulerDock.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/OGoSchedulerViews.lso
-%{prefix}/share/opengroupware.org-1.0a/templates/LSWScheduler
-%{prefix}/share/opengroupware.org-1.0a/templates/OGoResourceScheduler
-%{prefix}/share/opengroupware.org-1.0a/templates/OGoScheduler
-%{prefix}/share/opengroupware.org-1.0a/templates/OGoSchedulerDock
-%{prefix}/share/opengroupware.org-1.0a/templates/OGoSchedulerViews
-%{prefix}/share/opengroupware.org-1.0a/Holidays.plist
-%{prefix}/lib/opengroupware.org-1.0a/webui/AddressUI.lso
 %{prefix}/lib/opengroupware.org-1.0a/webui/EnterprisesUI.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/JobUI.lso
 %{prefix}/lib/opengroupware.org-1.0a/webui/LDAPAccounts.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/PersonsUI.lso
-%{prefix}/share/opengroupware.org-1.0a/templates/AddressUI
-%{prefix}/share/opengroupware.org-1.0a/templates/EnterprisesUI
-%{prefix}/share/opengroupware.org-1.0a/templates/LDAPAccounts
-%{prefix}/share/opengroupware.org-1.0a/templates/PersonsUI
-%{prefix}/lib/libOGoWebMail*.so.5.1*
 %{prefix}/lib/opengroupware.org-1.0a/webui/LSWMail.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/LSWProject.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/LSWScheduler.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/NewsUI.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/OGoDocInlineViewers.lso
 %{prefix}/lib/opengroupware.org-1.0a/webui/OGoMailEditor.lso
 %{prefix}/lib/opengroupware.org-1.0a/webui/OGoMailFilter.lso
 %{prefix}/lib/opengroupware.org-1.0a/webui/OGoMailInfo.lso
 %{prefix}/lib/opengroupware.org-1.0a/webui/OGoMailViewers.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/OGoNote.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/OGoPalm.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/OGoProject.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/OGoProjectInfo.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/OGoProjectZip.lso
 %{prefix}/lib/opengroupware.org-1.0a/webui/OGoRecipientLists.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/OGoResourceScheduler.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/OGoScheduler.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/OGoSchedulerDock.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/OGoSchedulerViews.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/OGoUIElements.lso
 %{prefix}/lib/opengroupware.org-1.0a/webui/OGoWebMail.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/PersonsUI.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/PreferencesUI.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/PropertiesUI.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/RelatedLinksUI.lso
+%{prefix}/lib/opengroupware.org-1.0a/webui/SoOGo.lso
+%{prefix}/lib/zidestore-1.3
+%{prefix}/sbin/ogo-nhsd-1.0a
+%{prefix}/sbin/ogo-webui-1.0a
+%{prefix}/sbin/ogo-xmlrpcd-1.0a
+%{prefix}/sbin/ogo-zidestore-1.3
+%{prefix}/share/opengroupware.org-1.0a/initscript_templates/*xmlrpcd
+%{prefix}/share/zidestore-1.3
+%{prefix}/share/opengroupware.org-1.0a/Holidays.plist
+%{prefix}/share/opengroupware.org-1.0a/initscript_templates/*nhsd
+%{prefix}/share/opengroupware.org-1.0a/initscript_templates/*opengroupware
+%{prefix}/share/opengroupware.org-1.0a/templates/AddressUI
+%{prefix}/share/opengroupware.org-1.0a/templates/AdminUI
+%{prefix}/share/opengroupware.org-1.0a/templates/BaseUI
+%{prefix}/share/opengroupware.org-1.0a/templates/EnterprisesUI
+%{prefix}/share/opengroupware.org-1.0a/templates/JobUI
+%{prefix}/share/opengroupware.org-1.0a/templates/LDAPAccounts
 %{prefix}/share/opengroupware.org-1.0a/templates/LSWMail
+%{prefix}/share/opengroupware.org-1.0a/templates/LSWProject
+%{prefix}/share/opengroupware.org-1.0a/templates/LSWScheduler
+%{prefix}/share/opengroupware.org-1.0a/templates/NewsUI
+%{prefix}/share/opengroupware.org-1.0a/templates/OGoDocInlineViewers
 %{prefix}/share/opengroupware.org-1.0a/templates/OGoMailEditor
 %{prefix}/share/opengroupware.org-1.0a/templates/OGoMailFilter
 %{prefix}/share/opengroupware.org-1.0a/templates/OGoMailInfo
 %{prefix}/share/opengroupware.org-1.0a/templates/OGoMailViewers
-%{prefix}/share/opengroupware.org-1.0a/templates/OGoRecipientLists
-%{prefix}/share/opengroupware.org-1.0a/templates/OGoWebMail
-%{prefix}/lib/opengroupware.org-1.0a/webui/NewsUI.lso
-%{prefix}/share/opengroupware.org-1.0a/templates/NewsUI
-%{prefix}/lib/opengroupware.org-1.0a/webui/JobUI.lso
-%{prefix}/share/opengroupware.org-1.0a/templates/JobUI
-%{prefix}/lib/opengroupware.org-1.0a/webui/LSWProject.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/OGoDocInlineViewers.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/OGoNote.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/OGoProject.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/OGoProjectInfo.lso
-%{prefix}/lib/opengroupware.org-1.0a/webui/OGoProjectZip.lso
-%{prefix}/share/opengroupware.org-1.0a/templates/LSWProject
-%{prefix}/share/opengroupware.org-1.0a/templates/OGoDocInlineViewers
 %{prefix}/share/opengroupware.org-1.0a/templates/OGoNote
 %{prefix}/share/opengroupware.org-1.0a/templates/OGoProject
 %{prefix}/share/opengroupware.org-1.0a/templates/OGoProjectInfo
 %{prefix}/share/opengroupware.org-1.0a/templates/OGoProjectZip
+%{prefix}/share/opengroupware.org-1.0a/templates/OGoRecipientLists
+%{prefix}/share/opengroupware.org-1.0a/templates/OGoResourceScheduler
+%{prefix}/share/opengroupware.org-1.0a/templates/OGoScheduler
+%{prefix}/share/opengroupware.org-1.0a/templates/OGoSchedulerDock
+%{prefix}/share/opengroupware.org-1.0a/templates/OGoSchedulerViews
+%{prefix}/share/opengroupware.org-1.0a/templates/OGoUIElements
+%{prefix}/share/opengroupware.org-1.0a/templates/OGoWebMail
+%{prefix}/share/opengroupware.org-1.0a/templates/PersonsUI
+%{prefix}/share/opengroupware.org-1.0a/templates/PreferencesUI
+%{prefix}/share/opengroupware.org-1.0a/templates/PropertiesUI
+%{prefix}/share/opengroupware.org-1.0a/templates/RelatedLinksUI
+%{prefix}/share/opengroupware.org-1.0a/templates/Themes/OOo
+%{prefix}/share/opengroupware.org-1.0a/templates/Themes/blue
+%{prefix}/share/opengroupware.org-1.0a/templates/Themes/kde
+%{prefix}/share/opengroupware.org-1.0a/templates/Themes/orange
+%{prefix}/share/opengroupware.org-1.0a/templates/ogo-webui-1.0a
+%{prefix}/share/opengroupware.org-1.0a/www/Danish.lproj
+%{prefix}/share/opengroupware.org-1.0a/www/English.lproj
+%{prefix}/share/opengroupware.org-1.0a/www/English_OOo.lproj
+%{prefix}/share/opengroupware.org-1.0a/www/English_blue.lproj
+%{prefix}/share/opengroupware.org-1.0a/www/English_kde.lproj
+%{prefix}/share/opengroupware.org-1.0a/www/English_orange.lproj
+%{prefix}/share/opengroupware.org-1.0a/www/German.lproj
+%{prefix}/share/opengroupware.org-1.0a/www/German_OOo.lproj
+%{prefix}/share/opengroupware.org-1.0a/www/German_blue.lproj
+%{prefix}/share/opengroupware.org-1.0a/www/German_orange.lproj
+%{prefix}/share/opengroupware.org-1.0a/www/Italian.lproj
+%{prefix}/share/opengroupware.org-1.0a/www/Polish.lproj
+%{prefix}/share/opengroupware.org-1.0a/www/Spanish.lproj
+%{prefix}/share/opengroupware.org-1.0a/www/WOStats.xsl
+%{prefix}/share/opengroupware.org-1.0a/www/menu.js
 
 # translations
 %{prefix}/share/opengroupware.org-1.0a/translations/Basque.lproj
@@ -476,18 +559,6 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/share/opengroupware.org-1.0a/translations/Spanish.lproj
 %{prefix}/share/opengroupware.org-1.0a/translations/ptBR.lproj
 
-%{prefix}/sbin/ogo-xmlrpcd-1.0a
-%{prefix}/share/opengroupware.org-1.0a/initscript_templates/*xmlrpcd
-
-%{prefix}/sbin/ogo-zidestore-1.3
-%{prefix}/lib/libZSAppointments*.so.1.3*
-%{prefix}/lib/libZSBackend*.so.1.3*
-%{prefix}/lib/libZSContacts*.so.1.3*
-%{prefix}/lib/libZSFrontend*.so.1.3*
-%{prefix}/lib/libZSProjects*.so.1.3*
-%{prefix}/lib/libZSTasks*.so.1.3*
-%{prefix}/lib/zidestore-1.3
-%{prefix}/share/zidestore-1.3
 
 # ********************************* changelog *************************
 %changelog
