@@ -32,6 +32,7 @@ static NSDictionary *intTypeAttr    = nil;
 static NSDictionary *floatTypeAttr  = nil;
 static NSDictionary *dateTypeAttr   = nil;
 static NSDictionary *base64TypeAttr = nil;
+static NSDictionary *mvStrTypeAttr  = nil;
 static NSTimeZone   *gmt            = nil;
 
 @implementation NSObject(ExValues)
@@ -65,6 +66,16 @@ static NSTimeZone   *gmt            = nil;
   if (v == 1) return v1;
   return [SoWebDAVValue valueForObject:[NSString stringWithFormat:@"%i", v]
 			attributes:intTypeAttr];
+}
+
+- (id)exDavStringArrayValue {
+  if (mvStrTypeAttr == nil) {
+    mvStrTypeAttr = [[NSDictionary alloc] 
+                         initWithObjectsAndKeys:@"mv.string", XMLTAG_MS_DTTYPE,
+                         nil];
+  }
+  return [SoWebDAVValue valueForObject:[self stringValue]
+			attributes:mvStrTypeAttr];
 }
 
 - (id)exDavBase64Value {

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -18,10 +18,9 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: NSObject+ExValues.h 1 2004-08-20 11:17:52Z znek $
 
-#ifndef __sxdavd_NSObject_ExValues_H__
-#define __sxdavd_NSObject_ExValues_H__
+#ifndef __ZideStore_NSObject_ExValues_H__
+#define __ZideStore_NSObject_ExValues_H__
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDate.h>
@@ -34,6 +33,7 @@
 - (id)exDavFloatValue;
 - (id)exDavIntValue;
 - (id)exDavBase64Value;
+- (id)exDavStringArrayValue;
 
 - (NSString *)asExUID;
 
@@ -70,4 +70,4 @@
 
 @end
     
-#endif /* __sxdavd_NSObject_ExValues_H__ */
+#endif /* __ZideStore_NSObject_ExValues_H__ */

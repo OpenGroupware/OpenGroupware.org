@@ -327,7 +327,11 @@ static BOOL debugParser = YES;
 }
 
 - (NSString *)keywords {
-  return [[self object] valueForKey:@"keywords"];
+  /* Note this need to be tagged as a string array for Connector 2.0.2 */
+  NSString *kw;
+  
+  kw = [[self object] valueForKey:@"keywords"];
+  return [kw exDavStringArrayValue];
 }
 
 - (id)taskCommonStart {

@@ -1,3 +1,9 @@
+2004-10-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* NSObject+ExValues.m: added -exDavStringArrayValue method to return
+	  a value properly tagged as mv.string (required by Connector 2.0.2)
+	  (v1.3.97)
+
 2004-10-19  Helge Hess  <helge.hess@skyrix.com>
 
 	* NGResourceLocator+ZSF.m: look for resources in GNUstep tree at
