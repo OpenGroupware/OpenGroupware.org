@@ -25,6 +25,7 @@ OGO_USER="ogo"                      # default username (unix) of your OGo instal
 # I thought it might be useful to be some more generic here...
 # this might allow one to use this script even for non standard PostgreSQL installations
 COMMON_PG_USER="postgres"
+COMMON_PG_GROUP="postgres"
 COMMON_PG_PROCESSNAME="postmaster"
 COMMON_PG_DATADIR_PREFIX="/var/lib/pgsql/data"
 COMMON_POSTGRESQL_CONF="${COMMON_PG_DATADIR_PREFIX}/postgresql.conf"
@@ -34,6 +35,7 @@ DEFAULT_OGO_DB_NAME="OGo"
 DEFAULT_OGO_DB_USER="OGo"
 TEMP_LOG_PATH="/tmp"
 NOW=`date +%Y%m%d-%H%M%S`
+RUNS_ON="`uname`"
 
 # where are the schemes we need?
 COMMON_OGO_CORE_SCHEME_LOCATION="/usr/local/share/opengroupware.org-1.0a/dbsetup/PostgreSQL/pg-build-schema.psql"
@@ -60,8 +62,8 @@ fi
 # get needed values from already installed plist
 # LSConnectionDictionary might be present
 LS_CONNECTION_DIR="`su - ${OGO_USER} -c \"Defaults read NSGlobalDomain LSConnectionDictionary\" 2>/dev/null`"
-OGO_DB_USER="`echo ${LS_CONNECTION_DIR} | sed -r 's#.*userName\s+=\s+##;s#;.*$##;s#\"##g'`"
-OGO_DB_ITSELF="`echo ${LS_CONNECTION_DIR} | sed -r 's#.*databaseName\s+=\s+##;s#;.*$##;s#\"##g'`"
+OGO_DB_USER="`echo ${LS_CONNECTION_DIR} | sed -r 's#.*userName[[:space:]]=[[:space:]]##;s#;.*$##;s#\"##g'`"
+OGO_DB_ITSELF="`echo ${LS_CONNECTION_DIR} | sed -r 's#.*databaseName[[:space:]]=[[:space:]]##;s#;.*$##;s#\"##g'`"
 # use default values if we don't have a LSConnectionDictionary
 if [ "x${OGO_DB_USER}" = "x" ]; then
   #the default `Defaults` value == OGo
@@ -124,6 +126,16 @@ initial()
     fi
   fi
 
+  # check where we run on and get stats of config files
+  if [ "x${RUNS_ON}" = "xLinux" ]; then
+    POSTGRESQL_CONF_UID="`stat -c %u ${COMMON_POSTGRESQL_CONF}`"
+    POSTGRESQL_CONF_GID="`stat -c %g ${COMMON_POSTGRESQL_CONF}`"
+    POSTGRESQL_CONF_ACR="`stat -c %a ${COMMON_POSTGRESQL_CONF}`"
+    PGHBA_CONF_UID="`stat -c %u ${COMMON_PGHBA_CONF}`"
+    PGHBA_CONF_GID="`stat -c %g ${COMMON_PGHBA_CONF}`"
+    PGHBA_CONF_ACR="`stat -c %a ${COMMON_PGHBA_CONF}`"
+  fi
+
   #bail out immediately - if none exists... shouldn't happen in known cases
   #after we had an successful initdb with running postgresql
   if [ ! -f "${COMMON_POSTGRESQL_CONF}" ]; then
@@ -159,6 +171,10 @@ initial()
       echo -e "  need to patch ${COMMON_POSTGRESQL_CONF}"
       echo -e "  backup current one to ${COMMON_POSTGRESQL_CONF}.${NOW}"
       sed -i.${NOW} -r "s~^#tcpip_socket.*~tcpip_socket = true~" ${COMMON_POSTGRESQL_CONF}
+      chmod ${POSTGRESQL_CONF_ACR} ${COMMON_POSTGRESQL_CONF}
+      chmod ${POSTGRESQL_CONF_ACR} ${COMMON_POSTGRESQL_CONF}.${NOW}
+      chown ${POSTGRESQL_CONF_UID}:${POSTGRESQL_CONF_GID} ${COMMON_POSTGRESQL_CONF}
+      chown ${POSTGRESQL_CONF_UID}:${POSTGRESQL_CONF_GID} ${COMMON_POSTGRESQL_CONF}.${NOW}
       NEED_RESTART_TO_ACTIVATE="YES"
     fi
   else
@@ -178,6 +194,10 @@ initial()
       cp ${COMMON_PGHBA_CONF} ${COMMON_PGHBA_CONF}.${NOW}
       #sed -i.${NOW} -r "s~#host\s+all\s+all\s+127.0.0.1\s+255.255.255.255.*~host    ${OGO_DB_ITSELF}    ${OGO_DB_USER}    127.0.0.1    255.255.255.255    trust~" ${COMMON_PGHBA_CONF}
       echo "host  ${OGO_DB_ITSELF}    ${OGO_DB_USER}    127.0.0.1    255.255.255.255    trust" >>${COMMON_PGHBA_CONF}
+      chmod ${PGHBA_CONF_ACR} ${COMMON_PGHBA_CONF}
+      chmod ${PGHBA_CONF_ACR} ${COMMON_PGHBA_CONF}.${NOW}
+      chown ${PGHBA_CONF_UID}:${PGHBA_CONF_GID} ${COMMON_PGHBA_CONF}
+      chown ${PGHBA_CONF_UID}:${PGHBA_CONF_GID} ${COMMON_PGHBA_CONF}.${NOW}
       NEED_RESTART_TO_ACTIVATE="YES"
     fi
   else
