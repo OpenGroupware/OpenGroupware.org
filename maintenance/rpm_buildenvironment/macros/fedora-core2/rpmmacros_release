@@ -7,66 +7,66 @@
 %dist_suffix %{nil}
 
 ###
-%libf_objc_version 2.95.3
-%libf_objc_release r56
-%libf_objc_buildcount 1
-%libf_objc_makeflags debug=yes
+%libf_objc_version 0
+%libf_objc_release trunk_r0
+%libf_objc_buildcount 0
+%libf_objc_makeflags debug=no
 %libf_objc_source libobjc-lf2-trunk-latest.tar.gz
 %libf_objc_prefix /usr/local
 ###
-%libf_version 1.0.63
-%libf_release r56
-%libf_buildcount 1
-%libf_makeflags debug=yes
+%libf_version 0
+%libf_release trunk_r0
+%libf_buildcount 0
+%libf_makeflags debug=no
 %libf_source libfoundation-trunk-latest.tar.gz
 %libf_prefix /usr/local
 ###
-%ogo_gnustep_make_version 1.10.0
+%ogo_gnustep_make_version 0
 %ogo_gnustep_make_release 0
-%ogo_gnustep_make_buildcount 1
-%ogo_gnustep_make_makeflags debug=yes
+%ogo_gnustep_make_buildcount 0
+%ogo_gnustep_make_makeflags debug=no
 %ogo_gnustep_make_source gnustep-make-1.10.0.tar.gz
 %ogo_gnustep_make_prefix /usr/local
 ###
-%ogo_version 1.0alpha8
-%ogo_release r233
-%ogo_buildcount 1
-%ogo_makeflags debug=yes
-%ogo_source opengroupware.org-1.0alpha8-shapeshifter-r233.tar.gz
+%ogo_version 0
+%ogo_release trunk_r0
+%ogo_buildcount 0
+%ogo_makeflags debug=no
+%ogo_source opengroupware.org-trunk-latest.tar.gz
 %ogo_prefix /usr/local
 #this fixes the complaints about 'file listed twice'
-#and allows a successful build on older rpm release 0
-%ogo_libogopalmui libOGoPalmUI_d
-%ogo_libogopalm libOGoPalm_d
+#and allows a successful build on older rpm releases
+%ogo_libogopalmui libOGoPalmUI
+%ogo_libogopalm libOGoPalm
 ###
-%ogo_env_version 1.0a
+%ogo_env_version 0
 %ogo_env_release 0
 %ogo_env_buildcount 0
-%ogo_env_makeflags debug=yes
+%ogo_env_makeflags debug=no
 %ogo_env_source %{nil}
 %ogo_env_prefix /usr/local
 ###
-%libical_version 4.3
-%libical_release r55
-%libical_buildcount 1
-%libical_makeflags debug=yes
+%libical_version 0
+%libical_release trunk_r0
+%libical_buildcount 0
+%libical_makeflags debug=no
 %libical_source libical-sope-trunk-latest.tar.gz
 %libical_prefix /usr/local
 ###
-%sope_version 4.3.9
-%sope_major_version 4
-%sope_minor_version 3
-%sope_release r301
-%sope_buildcount 1
-%sope_makeflags debug=yes
-%sope_source sope-4.3.9-shapeshifter-r301.tar.gz
+%sope_version 0
+%sope_major_version 0
+%sope_minor_version 0
+%sope_release trunk_r0
+%sope_buildcount 0
+%sope_makeflags debug=no
+%sope_source sope-trunk-latest.tar.gz
 %sope_prefix /usr/local
 %sope_libversion 
 ###
-%mod_ngobjweb_version 2.0.51
-%mod_ngobjweb_release r235
+%mod_ngobjweb_version 0
+%mod_ngobjweb_release trunk_r0
 %mod_ngobjweb_buildcount 0
-%mod_ngobjweb_makeflags debug=yes
+%mod_ngobjweb_makeflags debug=no
 %mod_ngobjweb_source sope-mod_ngobjweb-trunk-latest.tar.gz
 %mod_ngobjweb_prefix /usr/local
 ###
@@ -90,4 +90,11 @@
 %epoz_makeflags %{nil}
 %epoz_source sope-epoz-trunk-latest.tar.gz
 %epoz_prefix /usr/local
+###
+%ogo_dbsetup_version 1.0a
+%ogo_dbsetup_release trunk_r0
+%ogo_dbsetup_buildcount 0
+%ogo_dbsetup_makeflags debug=yes
+%ogo_dbsetup_source opengroupware.org-trunk-latest.tar.gz
+%ogo_dbsetup_prefix /usr/local
 

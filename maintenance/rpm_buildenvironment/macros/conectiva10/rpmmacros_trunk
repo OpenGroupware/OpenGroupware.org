@@ -3,7 +3,7 @@
 %debug_package %{nil}
 %_topdir /home/build/rpm
 %_tmppath %{_topdir}/tmp
-%distribution Conectiva Linux 10
+%distribution Fedora Core release 2 (Tettnang)
 %dist_suffix cl
 
 ###
@@ -90,4 +90,11 @@
 %epoz_makeflags %{nil}
 %epoz_source sope-epoz-trunk-latest.tar.gz
 %epoz_prefix /usr/local
+###
+%ogo_dbsetup_version 1.0a
+%ogo_dbsetup_release trunk_r0
+%ogo_dbsetup_buildcount 0
+%ogo_dbsetup_makeflags debug=yes
+%ogo_dbsetup_source opengroupware.org-trunk-latest.tar.gz
+%ogo_dbsetup_prefix /usr/local
 
