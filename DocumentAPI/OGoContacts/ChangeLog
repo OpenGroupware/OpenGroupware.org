@@ -1,3 +1,7 @@
+2004-12-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyPersonDocument.m: minor code cleanups (v5.1.39)
+
 2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyContactsAccessHandler.m: some code cleanups (needs more) (v5.1.38)

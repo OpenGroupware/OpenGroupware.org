@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyPersonDocument.h"
 #include "common.h"
@@ -74,10 +73,9 @@ static NSArray * addressTypes = nil;
     [self _loadDocument:_person];
     if (addressTypes == nil) {
       NSUserDefaults *ud = [[self context] userDefaults];
-
-      addressTypes = [[ud objectForKey:@"LSAddressType"]
-                          objectForKey:@"Person"];
-      RETAIN(addressTypes);
+      
+      addressTypes = 
+	[[[ud dictionaryForKey:@"LSAddressType"] objectForKey:@"Person"] copy];
     }
   }
   return self;
@@ -130,17 +128,17 @@ static NSArray * addressTypes = nil;
 }
 
 - (void)dealloc {
-  RELEASE(self->firstname);
-  RELEASE(self->middlename);
-  RELEASE(self->name);
-  RELEASE(self->number);
-  RELEASE(self->nickname);
-  RELEASE(self->salutation);
-  RELEASE(self->degree);
-  RELEASE(self->url);
-  RELEASE(self->gender);
-  RELEASE(self->birthday);
-  RELEASE(self->enterpriseDataSource);
+  [self->firstname  release];
+  [self->middlename release];
+  [self->name       release];
+  [self->number     release];
+  [self->nickname   release];
+  [self->salutation release];
+  [self->degree     release];
+  [self->url        release];
+  [self->gender     release];
+  [self->birthday   release];
+  [self->enterpriseDataSource release];
 
   [self->partnerName       release];
   [self->assistantName     release];
@@ -174,7 +172,7 @@ static NSArray * addressTypes = nil;
   else {
     ds = [[SkyPersonEnterpriseDataSource alloc] initWithContext:[self context]
                                                 personId:[self globalID]];
-    return AUTORELEASE(ds);
+    return [ds autorelease];
   }
 }
 
@@ -183,7 +181,7 @@ static NSArray * addressTypes = nil;
 
   ds = [[SkyPersonProjectDataSource alloc] initWithContext:[self context]
                                            personId:[self globalID]];
-  return AUTORELEASE(ds);
+  return [ds autorelease];
 }
 
 - (EODataSource *)jobDataSource {
@@ -194,11 +192,11 @@ static NSArray * addressTypes = nil;
     clz = NSClassFromString(@"SkyPersonJobDataSource");
 
 
-  if (self->globalID != nil) {
-    ds = [[clz alloc] initWithContext:[self context] personId:[self globalID]];
-  }
-    
-  return AUTORELEASE(ds);
+  if (self->globalID == nil)
+    return nil;
+
+  ds = [[clz alloc] initWithContext:[self context] personId:[self globalID]];
+  return [ds autorelease];
 }
   
 /* accessors */
@@ -351,17 +349,17 @@ static NSArray * addressTypes = nil;
 // -----------------------------------------------------------------------
 
 - (void)invalidate {
-  RELEASE(self->firstname);    self->firstname    = nil;
-  RELEASE(self->middlename);   self->middlename   = nil;
-  RELEASE(self->name);         self->name         = nil;
-  RELEASE(self->number);       self->number       = nil;
-  RELEASE(self->nickname);     self->nickname     = nil;
-  RELEASE(self->salutation);   self->salutation   = nil;
-  RELEASE(self->degree);       self->degree       = nil;
-  RELEASE(self->url);          self->url          = nil;
-  RELEASE(self->gender);       self->gender       = nil;
-  RELEASE(self->birthday);     self->birthday     = nil;
-  RELEASE(self->login);        self->login        = nil;
+  [self->firstname  release]; self->firstname    = nil;
+  [self->middlename release]; self->middlename   = nil;
+  [self->name       release]; self->name         = nil;
+  [self->number     release]; self->number       = nil;
+  [self->nickname   release]; self->nickname     = nil;
+  [self->salutation release]; self->salutation   = nil;
+  [self->degree     release]; self->degree       = nil;
+  [self->url        release]; self->url          = nil;
+  [self->gender     release]; self->gender       = nil;
+  [self->birthday   release]; self->birthday     = nil;
+  [self->login      release]; self->login        = nil;
 
   [self->partnerName   release];     self->partnerName       = nil;
   [self->assistantName release];     self->assistantName     = nil;
@@ -373,7 +371,7 @@ static NSArray * addressTypes = nil;
 }
 
 /*
-    "isReadonly": { auch bei enterprises !!! }
+    "isReadonly": { also for enterprises !!! }
 
 
   
