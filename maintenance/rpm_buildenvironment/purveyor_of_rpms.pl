@@ -483,10 +483,14 @@ sub collect_patchinfo {
       $new_version = `/bin/rpm --qf '%{version}' -q httpd-devel`;
       print "Senseless to continue... got no version for mod_ngobjweb\n" and exit 1 if ($?);
     }
-    if (($flavour_we_build_upon eq "suse") or ($flavour_we_build_upon eq "mandrake")) {
-      warn "This does not match on SLSS8.... \n";
+    if ((($flavour_we_build_upon eq "suse") or ($flavour_we_build_upon eq "mandrake")) and ($distrib_define !~ m/^suse sles-8/i)) {
       $new_version = `/bin/rpm --qf '%{version}' -q apache2-devel`;
+      print "We're on $distrib_define\n";
       print "Sensesless to continue... got no version for mod_ngobjweb\n" and exit 1 if ($?);
+    }
+    if ($distrib_define =~ m/^suse sles-8/i) {
+      $new_version = `/bin/rpm --qf '%{version}' -q apache-devel`;
+      print "Senseless to continue... got no version for mod_ngobjweb\n" and exit 1 if ($?);
     }
   }
   ###########################################################################
