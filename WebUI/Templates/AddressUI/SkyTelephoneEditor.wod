@@ -1,27 +1,23 @@
-// $Id: SkyTelephoneEditor.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
 Window: LSWWindowFrame {
   title = labels.windowTitleSkyTelephoneEditor;
   onClose = cancel;
-};
+}
 
 TeleRep: WORepetition {
   list = teleTypes;
   item = teleType;
-};
+}
 
 Form: WOForm {
   name = "telephoneEditor";
-};
+}
 
-NumberLabel: WOString {
-  value = telephoneType;
-};
-InfoLabel: WOString {
-  value = labels.info;
-};
+NumberLabel: WOString { value = telephoneType; }
+InfoLabel:   WOString { value = labels.info;   }
 
 NumberTF: WOTextField {
   value     = telephone.number;
@@ -29,7 +25,7 @@ NumberTF: WOTextField {
   formatter = session.formatString;
   name      = textFieldNumberName;
   maxLength = "255";
-};
+}
 
 InfoTF: WOTextField {
   value     = telephone.info;
@@ -37,7 +33,7 @@ InfoTF: WOTextField {
   formatter = session.formatString;
   name      = textFieldInfoName;
   maxLength = "255";
-};
+}
 
 SaveSubmit: WOImageButton {
   action           = save;
@@ -47,16 +43,16 @@ SaveSubmit: WOImageButton {
   disabledFilename = "save_inactive.gif";
   disabled         = isSaveDisabled;
   border           = "0";
-};
+}
 CancelSubmit: WOHyperlink {
-  action           = cancel;
-  filename         = "cancel.gif";
-  alt              = labels.cancelButtonLabel;
-  border           = "0";
-};
+  action   = cancel;
+  filename = "cancel.gif";
+  alt      = labels.cancelButtonLabel;
+  border   = "0";
+}
 
-AttributeCell: SkyAttributeCell {};
-ValueCell    : SkyValueCell {};
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
 
-Font: SkyConfigFont {};
-EditFont: SkyConfigEditFont {};
+Font:          SkyConfigFont     {}
+EditFont:      SkyConfigEditFont {}

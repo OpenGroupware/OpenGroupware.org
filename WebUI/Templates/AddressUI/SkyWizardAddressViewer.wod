@@ -1,7 +1,7 @@
-// $Id: SkyWizardAddressViewer.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 Title: LSWViewerTitle {
-  title     = labels.addressView;
+  title = labels.addressView;
 }
 
 AddressViewer : LSWObjectViewer {
