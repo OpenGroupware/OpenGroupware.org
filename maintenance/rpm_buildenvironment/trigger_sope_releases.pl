@@ -51,7 +51,7 @@ foreach $srel (@sope_releases) {
   unless(grep /\b$srel\b/, @already_known_sope_rel) {
     $i_really_had_sth_todo = "yes";
     print "Retrieving: http://$dl_host/sources/releases/$srel\n";
-    system("wget -q -O $ENV{HOME}/rpm/SOURCES/$srel http://$dl_host/sources/releases/$srel");
+    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$srel http://$dl_host/sources/releases/$srel");
     print "cleaning up prior actual build...\n";
     system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
     print "extracting specfile from $srel\n";

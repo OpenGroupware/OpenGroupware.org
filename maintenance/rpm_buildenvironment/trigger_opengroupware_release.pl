@@ -85,7 +85,7 @@ foreach $orel (@ogo_releases) {
   unless(grep /\b$orel\b/, @already_known_ogo_rel) {
     $i_really_had_sth_todo = "yes";
     print "Retrieving: http://$dl_host/sources/releases/$orel\n";
-    system("wget -q -O $ENV{HOME}/rpm/SOURCES/$orel http://$dl_host/sources/releases/$orel");
+    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$orel http://$dl_host/sources/releases/$orel");
     #since we build the OGo release using a specific SOPE release... we must clean
     #cleanup prior OGo *and* SOPE builds
     print "cleaning up previous SOPE build...\n";
