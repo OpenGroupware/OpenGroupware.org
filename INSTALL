@@ -83,12 +83,15 @@ links
 *****
   - pushd $GNUSTEP_USER_ROOT
     - ln -s ~/myogosrctree/WebUI/Resources .
+    - ln -s ~/myogosrctree/WebUI/Templates .
     - ln -s ~/myogosrctree/Themes/WebServerResources .
   - for FHS layout:
     - ln -s ~/myogosrctree/WebUI/Resources \
-      $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/translations 
+            $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/translations 
+    - ln -s ~/myogosrctree/WebUI/Templates \
+            $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/templates
     - ln -s ~/myogosrctree/Themes/WebServerResources \
-      $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/www
+            $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/www
 
 database
 ********
