@@ -487,7 +487,7 @@ static BOOL  hasEpoz             = NO;
       }
     }
   }
-  else if (SkyFSGlobalIDClass) {
+  else if (SkyFSGlobalIDClass != Nil) {
     if ([gid isKindOfClass:SkyFSGlobalIDClass]) {
       NSString *lpath;
 
@@ -1303,4 +1303,3 @@ static BOOL  hasEpoz             = NO;
 }
 
 @end /* SkyProject4DocumentViewer */
-
