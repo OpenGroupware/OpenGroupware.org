@@ -18,13 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxDavAptChange.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxDavAptChange.h"
 #include "SxAppointment.h"
 #include "common.h"
 
 #include <ZSBackend/SxAptManager.h>
+#include <ZSBackend/NSString+rtf.h>
 
 // TODO: title change does not work yet (duplicate dav-ids !)
 

@@ -1,3 +1,7 @@
+2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxDavAptChange.m: fixed a compile warning (v1.3.79)
+
 2004-08-24  Helge Hess  <helge.hess@skyrix.com>
 
 	* added a library, so that linking on MacOSX works (v1.3.78)

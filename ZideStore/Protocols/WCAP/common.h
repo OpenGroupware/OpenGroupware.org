@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,16 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: common.h 1 2004-08-20 11:17:52Z znek $
 
 #import <Foundation/Foundation.h>
 
-#if LIB_FOUNDATION_LIBRARY
-#  import <Foundation/exceptions/GeneralExceptions.h>
-#elif NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY
-#  import <FoundationExt/NSObjectMacros.h>
-#  import <FoundationExt/NSString+Ext.h>
-#  import <FoundationExt/GeneralExceptions.h>
+#if NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY
+#  include <NGExtensions/NGObjectMacros.h>
+#  include <NGExtensions/NSString+Ext.h>
 #endif
 
 #include <NGExtensions/NGExtensions.h>

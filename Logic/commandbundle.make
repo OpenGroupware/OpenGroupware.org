@@ -1,4 +1,4 @@
-# $Id: commandbundle.make 10 2004-08-21 01:23:23Z helge $
+# CommandBundle Makefile
 
 $(COMMAND_BUNDLE)_OBJC_FILES += $(COMMAND_BUNDLE)Commands.m
 

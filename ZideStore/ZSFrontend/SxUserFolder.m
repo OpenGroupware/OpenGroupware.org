@@ -413,7 +413,7 @@ static NSDictionary *personalFolderMap = nil;
     
     Queried by Evo on the home-folder.
   */
-#if 1
+#if 0
 #  warning Evo testing enabled
   ExStoreEntryID *entryID;
   NSString *dn;
@@ -428,7 +428,7 @@ static NSDictionary *personalFolderMap = nil;
   return val;
 #else
   return [[[NSUserDefaults standardUserDefaults] objectForKey:@"skyrix_id"]
-	   exDavBase64Value];
+	                   exDavBase64Value];
 #endif
 }
 

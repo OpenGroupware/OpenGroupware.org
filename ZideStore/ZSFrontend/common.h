@@ -23,9 +23,7 @@
 #import <Foundation/Foundation.h>
 #undef dateTime
 
-#if LIB_FOUNDATION_LIBRARY
-#  include <Foundation/exceptions/GeneralExceptions.h>
-#elif NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY
+#if NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY
 #  include <NGExtensions/NGObjectMacros.h>
 #  include <NGExtensions/NSString+Ext.h>
 #endif

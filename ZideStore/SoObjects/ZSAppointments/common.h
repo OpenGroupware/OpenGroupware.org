@@ -18,13 +18,10 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: common.h 1 2004-08-20 11:17:52Z znek $
 
 #import <Foundation/Foundation.h>
 
-#if LIB_FOUNDATION_LIBRARY
-#  import <Foundation/exceptions/GeneralExceptions.h>
-#elif NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY
+#if NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY
 #  include <NGExtensions/NGObjectMacros.h>
 #  include <NGExtensions/NSString+Ext.h>
 #endif

@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxFolder.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __Frontend_SxFolder_H__
 #define __Frontend_SxFolder_H__
@@ -109,6 +108,8 @@
 - (id)PUTAction:(id)_ctx;
 - (id)DELETEAction:(id)_ctx;
 
+- (id)getIDsAndVersionsAction:(id)_ctx;
+
 @end
 
 @interface SxFolder(WebDAV)
@@ -135,8 +136,6 @@
 - (NSString *)entryAllPropSetName;
 - (BOOL)isBulkQueryContext:(id)_ctx; /* required for selecting the proper set */
 - (NSArray *)defaultWebDAVPropertyNamesInContext:(id)_ctx;
-
-- (id)getIDsAndVersionsAction:(id)_ctx;
 
 @end
 
