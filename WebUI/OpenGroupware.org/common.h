@@ -20,19 +20,18 @@
 */
 // $Id$
 
-#ifndef __Skyrix_common_H__
-#define __Skyrix_common_H__
+#ifndef __OpenGroupware_common_H__
+#define __OpenGroupware_common_H__
 
 #import <Foundation/Foundation.h>
 #import <Foundation/NSDateFormatter.h>
-
-#include <GDLAccess/GDLAccess.h>
-#include <GDLExtensions/GDLExtensions.h>
 
 #include <NGExtensions/NGExtensions.h>
 #include <NGStreams/NGStreams.h>
 #include <NGStreams/NGNet.h>
 #include <NGMime/NGMime.h>
+
+#include <GDLAccess/GDLAccess.h>
 
 #include <NGObjWeb/NGObjWeb.h>
 #include <NGObjWeb/WODirectAction.h>
@@ -41,4 +40,4 @@
 #include <LSFoundation/LSFoundation.h>
 #include <OGoFoundation/OGoFoundation.h>
 
-#endif /* __Skyrix_common_H__ */
+#endif /* __OpenGroupware_common_H__ */

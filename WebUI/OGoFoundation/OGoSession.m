@@ -31,7 +31,6 @@
 #include "LSWModuleManager.h"
 #include "common.h"
 #include <NGScripting/NGScriptLanguage.h>
-#include <NGJavaScript/NGJavaScript.h>
 #include <LSFoundation/OGoContextSession.h>
 #include <LSFoundation/OGoContextManager.h>
 #include <NGHttp/NGHttp.h>
@@ -292,14 +291,6 @@ static NSString *OGoDateTimeTZFormat     = nil;
                        NSObjectMapValueCallBacks,
                        120);
     self->favorites = [[NSMutableArray alloc] initWithCapacity:10];
-
-    /* setup JavaScript mapping context */
-#if 0 // old, before skyrix-sope-42
-    self->jsMapContext = [[NGJavaScriptObjectMappingContext alloc] init];
-#else
-    self->jsMapContext = (id)[[NGScriptLanguage languageWithName:@"javascript"]
-			                        createMappingContext];
-#endif    
   }
   return self;
 }
@@ -309,8 +300,6 @@ static NSString *OGoDateTimeTZFormat     = nil;
                          postNotificationName:@"OGoSessionFinalizing"
                          object:self];
   [self removeObserver:self];
-  
-  [self->jsMapContext release];
   
   if (self->activationCommandToConfig)
     NSFreeMapTable(self->activationCommandToConfig);
@@ -338,12 +327,6 @@ static NSString *OGoDateTimeTZFormat     = nil;
   [self->userDefaults       release];
   [self->dockedProjectInfos release];
   [super dealloc];
-}
-
-/* JavaScript context */
-
-- (NGJavaScriptObjectMappingContext *)jsMapContext {
-  return self->jsMapContext;
 }
 
 /* notifications */
@@ -469,7 +452,6 @@ static NSString *OGoDateTimeTZFormat     = nil;
                          postNotificationName:@"OGoSessionAwake"
                          object:nil];
   
-  [self->jsMapContext pushContext];
   [[self commandContext] pushContext];
   
   if (!self->isAwake && (self->activeLogin != nil)) {
@@ -535,12 +517,6 @@ static NSString *OGoDateTimeTZFormat     = nil;
             (endTime - sleepStart),
             (endTime - ownSleepStart)];
   }
-  
-  /* pop JavaScript context */
-  
-  [self->jsMapContext collectGarbage];
-  [self->jsMapContext popContext];
-  [self->jsMapContext collectGarbage];
   
   if (profileSleep) {
     NSTimeInterval endTime;

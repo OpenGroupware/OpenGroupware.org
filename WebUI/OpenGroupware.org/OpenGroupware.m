@@ -33,8 +33,6 @@
 #include <NGObjWeb/OWViewRequestHandler.h>
 #include <NGHttp/NGHttp.h>
 
-#include <NGJavaScript/NGJavaScript.h>
-
 @interface NSObject(OpenGroupware)
 - (void)registerDefaults;
 + (void)printStatistics;
@@ -276,9 +274,6 @@ static BOOL loadWebUIBundlesOnStartup = YES;
     [self _setVersion];
     
 #if DEBUG
-    [self debugWithFormat:@"JS version: %@",
-            [NGJavaScriptRuntime javaScriptImplementationVersion]];
-
     [self logWithFormat:@"CTI Dialers: %@",
             [[self availableCTIDialers] componentsJoinedByString:@","]];
 #endif

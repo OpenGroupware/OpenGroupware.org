@@ -7,17 +7,11 @@ libOGoFoundation_LIB_DIRS += \
 
 libOGoFoundation_LIBRARIES_DEPEND_UPON += \
 	-lOGoDocuments	\
-	-lNGJavaScript -lNGScripting \
 	-lLSFoundation	\
 	-lNGObjWeb	\
-	-lNGMime -lNGStreams -lNGExtensions -lEOControl \
+	-lNGMime	\
+	-lNGStreams -lNGExtensions -lEOControl \
 	-lDOM -lSaxObjC
-
-ifeq ($(GNUSTEP_TARGET_OS),mingw32)
-libOGoFoundation_LIBRARIES_DEPEND_UPON += \
-	-lGDLAccess -lGDLExtensions		\
-	-lFoundation -lobjc
-endif
 
 # flags
 

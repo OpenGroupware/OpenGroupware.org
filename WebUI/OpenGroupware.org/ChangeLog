@@ -1,3 +1,7 @@
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* remove dependency on NGJavaScript (v5.1.49)
+
 2004-08-11  Helge Hess  <helge@dogbert.in.skyrix.com>
 
 	* Main.wo/English.lproj/Main.html: fixed a missing </tr> close tag

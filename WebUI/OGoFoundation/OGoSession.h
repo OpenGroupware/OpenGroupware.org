@@ -37,7 +37,6 @@
 @class OWPasteboard;
 @class LSCommandContext, OGoContextSession;
 @class OGoNavigation;
-@class NGJavaScriptObjectMappingContext;
 
 @interface OGoSession : WOSession
 {
@@ -80,9 +79,6 @@
 
   // userDefaults
   NSUserDefaults       *userDefaults;
-  
-  // JavaScript
-  NGJavaScriptObjectMappingContext *jsMapContext;
 }
 
 /* LSOffice commands */
@@ -112,10 +108,6 @@
 
 - (void)setPrimaryLanguage:(NSString *)_language;
 - (NSString *)primaryLanguage;
-
-/* JavaScript context */
-
-- (NGJavaScriptObjectMappingContext *)jsMapContext;
 
 @end
 

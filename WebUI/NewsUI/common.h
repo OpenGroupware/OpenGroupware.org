@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,17 +18,15 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#ifndef __LSWebInterface_LSWNews_common_H__
-#define __LSWebInterface_LSWNews_common_H__
+#ifndef __WebUI_NewsUI_common_H__
+#define __WebUI_NewsUI_common_H__
 
 #import <Foundation/Foundation.h>
 #import <NGExtensions/NGExtensions.h>
 #import <NGStreams/NGStreams.h>
 
 #import <GDLAccess/GDLAccess.h>
-#import <GDLExtensions/GDLExtensions.h>
 
 #import <NGMime/NGMime.h>
 #import <NGHttp/NGHttp.h>
@@ -37,4 +35,4 @@
 #include <LSFoundation/LSFoundation.h>
 #include <OGoFoundation/OGoFoundation.h>
 
-#endif /* __LSWebInterface_LSWNews_common_H__ */
+#endif /* __WebUI_NewsUI_common_H__ */

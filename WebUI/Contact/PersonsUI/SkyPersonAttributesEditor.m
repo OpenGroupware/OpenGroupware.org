@@ -32,6 +32,8 @@
 @end /* SkyPersonAttributesEditor */
 
 #include "common.h"
+#include <NGMime/NGMimeType.h>
+#include <GDLAccess/EONull.h>
 #include <OGoContacts/SkyPersonDocument.h>
 
 @interface SkyPersonAttributesEditor(PrivateMethodes)

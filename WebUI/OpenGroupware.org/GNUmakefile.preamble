@@ -7,34 +7,23 @@ ADDITIONAL_INCLUDE_DIRS += 		\
 	-I../../DocumentAPI		\
 
 ADDITIONAL_LIB_DIRS += \
-	-L../OGoFoundation/$(GNUSTEP_OBJ_DIR)	\
-	-L../../SOPE/skyrix-sope/WEExtensions/$(GNUSTEP_OBJ_DIR) \
-	-L../../SOPE/skyrix-sope/WOExtensions/$(GNUSTEP_OBJ_DIR) \
+	-L../OGoFoundation/$(GNUSTEP_OBJ_DIR)			\
+	-L../../DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR)	\
+	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
+
+ADDITIONAL_LIB_DIRS += \
 	-L/usr/local/lib -L/usr/local/apr/lib \
 	-L/usr/local/BerkeleyDB.4.0/lib/	\
 
 OpenGroupware_TOOL_LIBS += \
 	-lOGoFoundation -lOGoDocuments	\
-	-lWEExtensions -lWOExtensions -lNGScripting -lXmlRpc \
-	-lNGObjDOM -lNGObjWeb		\
-	-lLSFoundation			\
-	-lGDLExtensions	-lGDLAccess	\
-	-lNGLdap			\
-	-lEOControl			\
-	-lDOM -lSaxObjC			\
+	-lWEExtensions -lWOExtensions -lNGScripting \
+	-lNGObjWeb	\
+	-lLSFoundation	\
+	-lGDLAccess	\
+	-lNGLdap	\
+	-lEOControl	\
+	-lXmlRpc -lDOM -lSaxObjC
+
+OpenGroupware_TOOL_LIBS += \
 	-lldap
-
-OpenGroupware_TOOL_LIBS += -lNGJavaScript -ljs \
-
-ifeq ($(WITH_PYTHON),yes)
-OpenGroupware_TOOL_LIBS += -lNGPython -lPython
-endif
-
-ifeq ($(debug),yes)
-ifeq ($(efence),yes)
-OpenGroupware_TOOL_LIBS += -lefence
-endif
-ifeq ($(dmalloc),yes)
-OpenGroupware_TOOL_LIBS += -ldmalloc
-endif
-endif

@@ -3,7 +3,6 @@
 include $(GNUSTEP_MAKEFILES)/common.make
 
 WOAPP_NAME = OpenGroupware
-WOAPP_EXTENSION=org
 
 # Resources
 

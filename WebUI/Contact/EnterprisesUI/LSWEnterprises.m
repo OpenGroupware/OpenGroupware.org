@@ -20,11 +20,12 @@
 */
 // $Id$
 
-#import "common.h"
-#import "LSWEnterprises.h"
-#import <OGoFoundation/LSWNotifications.h>
+#include "LSWEnterprises.h"
+#include "common.h"
+#include <OGoFoundation/LSWNotifications.h>
 #include <NGExtensions/EOCacheDataSource.h>
 #include <OGoContacts/SkyEnterpriseDataSource.h>
+#include <NGMime/NGMimeType.h>
 
 @interface WOComponent(LSWAddressAdditions)
 - (id)fullSearch;

@@ -57,6 +57,7 @@
 #include <OGoFoundation/LSWNotifications.h>
 #include "LSWAddressFunctions.h"
 #include <OGoFoundation/SkyWizard.h>
+#include <NGMime/NGMimeType.h>
 #include <NGExtensions/EOCacheDataSource.h>
 #include <OGoContacts/SkyPersonDataSource.h>
 #include "common.h"

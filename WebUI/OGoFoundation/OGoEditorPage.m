@@ -18,14 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/OGoEditorPage.h>
 #include <OGoFoundation/WOSession+LSO.h>
 #include <OGoFoundation/WOComponent+Commands.h>
 #include <OGoFoundation/SkyWizard.h>
 #include <OGoFoundation/OGoNavigation.h>
-#include <EOAccess/EOEntity+Factory.h>
+#include <GDLAccess/EOEntity+Factory.h>
 #import "common.h"
 
 @implementation OGoEditorPage
@@ -75,8 +74,6 @@
   type:(NGMimeType *)_type
   configuration:(id)_cfg
 {
-  BOOL result = NO;
-  
   [self clearEditor];
   self->activationCommand = [_command copy];
   
@@ -85,30 +82,23 @@
 
   if (self->isInNewMode) {
     self->snapshot = [[NSMutableDictionary alloc] initWithCapacity:32];
-    result = [self prepareForNewCommand:_command type:_type
-                   configuration:nil];
+    return [self prepareForNewCommand:_command type:_type configuration:nil];
   }
-  else {
-    self->object = [[[self session] getTransferObject] retain];
-    if (self->object) {
-      
-      // make snapshot
-      self->snapshot =
-        [[self->object valuesForKeys:[[self->object entity] attributeNames]]
-                       mutableCopy];
-      
-      result = [self prepareForEditCommand:_command type:_type
-                     configuration:nil];
-    }
-    else {
-      [self setErrorString:@"No object in transfer pasteboard !"];
-      result = NO;
-    }
+
+  if ((self->object = [[[self session] getTransferObject] retain]) == nil) {
+    [self setErrorString:@"No object in transfer pasteboard !"];
+    return NO;
   }
-  return result;
+      
+  /* make snapshot */
+  self->snapshot =
+    [[self->object valuesForKeys:[[self->object entity] attributeNames]]
+                   mutableCopy];
+      
+  return [self prepareForEditCommand:_command type:_type configuration:nil];
 }
 
-// object
+/* object */
 
 - (NSString *)activationCommand {
   return self->activationCommand;
@@ -117,7 +107,6 @@
 - (void)setIsInNewMode:(BOOL)_status {
   self->isInNewMode = _status;
 }
-
 - (BOOL)isInNewMode {
   return self->isInNewMode;
 }
@@ -125,7 +114,6 @@
 - (void)setIsInWizardMode:(BOOL)_status {
   self->isInWizardMode = _status;
 }
-
 - (BOOL)isInWizardMode {
   return self->isInWizardMode;
 }

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -20,14 +20,13 @@
 */
 // $Id$
 
-#ifndef __LSWebInterface_LSWAddress_common_H__
-#define __LSWebInterface_LSWAddress_common_H__
+#ifndef __WebUI_AddressUI_common_H__
+#define __WebUI_AddressUI_common_H__
 
 #import <Foundation/Foundation.h>
 
 #include <NGExtensions/NGExtensions.h>
 #include <GDLAccess/GDLAccess.h>
-#include <GDLExtensions/GDLExtensions.h>
 
 #include <NGObjWeb/NGObjWeb.h>
 
@@ -36,4 +35,4 @@
 #include <OGoFoundation/LSWNotifications.h>
 #include <OGoFoundation/LSWSession.h>
 
-#endif /* __LSWebInterface_LSWAddress_common_H__ */
+#endif /* __WebUI_AddressUI_common_H__ */

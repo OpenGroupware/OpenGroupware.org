@@ -24,6 +24,7 @@
 
 #include <OGoFoundation/SkyWizard.h>
 #include "common.h"
+#include <NGMime/NGMimeType.h>
 
 @interface SkyPersonWizard : SkyWizard 
 @end

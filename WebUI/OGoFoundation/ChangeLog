@@ -1,3 +1,11 @@
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.58
+
+	* OGoEditorPage.m: minor code cleanups, fixed a SOPE 4.3 issue
+
+	* OGoSession.m: removed dependency on NGJavaScript
+
 2004-08-09  Helge Hess  <helge@dogbert.in.skyrix.com>
 
 	* OGoSession+UserManagement.m: fixed a warning (v5.0.57)

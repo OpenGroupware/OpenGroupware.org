@@ -12,13 +12,16 @@ ADDITIONAL_INCLUDE_DIRS += 		\
 	-I../../Logic/LSFoundation	\
 	-I../../DocumentAPI		\
 
-ADDITIONAL_LIB_DIRS     += -L../OGoFoundation/$(GNUSTEP_OBJ_DIR)
+ADDITIONAL_LIB_DIRS += \
+	-L../OGoFoundation/$(GNUSTEP_OBJ_DIR)		\
+	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)	\
 
 ADDITIONAL_BUNDLE_LIBS += \
 	-lOGoFoundation -lOGoDocuments	\
-	-lLSFoundation	\
-	-lNGObjWeb	\
-	-lNGLdap -lNGMime -lNGStreams -lNGExtensions -lEOControl \
+	-lLSFoundation		\
+	-lNGObjWeb		\
+	-lNGLdap -lNGMime	\
+	-lNGStreams -lNGExtensions -lEOControl \
 	-lXmlRpc
 
 ADDITIONAL_CPPFLAGS += -Wall -pipe -Wno-protocol

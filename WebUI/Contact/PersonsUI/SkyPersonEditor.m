@@ -38,6 +38,7 @@
 // TODO: this code should be cleaned up !
 
 #include "common.h"
+#include <GDLAccess/EONull.h>
 #include <OGoContacts/SkyPersonDocument.h>
 #include <OGoContacts/SkyPersonDataSource.h>
 
@@ -49,8 +50,8 @@
 
 - (void)dealloc {
   [self->pictureFilePath release];
-  [self->pictureData release];
-  [self->addressType release];
+  [self->pictureData     release];
+  [self->addressType     release];
   [super dealloc];
 }
 

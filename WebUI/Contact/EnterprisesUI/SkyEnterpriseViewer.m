@@ -61,6 +61,7 @@
 #include "common.h"
 #include <OGoFoundation/LSWMailEditorComponent.h>
 #include <EOControl/EOArrayDataSource.h>
+#include <NGMime/NGMimeType.h>
 #include <OGoContacts/SkyEnterpriseAddressConverterDataSource.h>
 #include <OGoContacts/SkyEnterpriseDocument.h>
 #include <OGoDatabaseProject/SkyProjectFileManager.h>
