@@ -234,7 +234,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Contact component of OpenGroupware.org's Web UI
  The contact component lets users add and manage contacts of individuals
- or companies. Import and export of vcf files is supported.
+ or companies. Export of vcf files is supported.
 
 Package: opengroupware.org1.0a-webui-job
 Architecture: any
