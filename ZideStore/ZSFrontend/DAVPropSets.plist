@@ -35,6 +35,8 @@
     isOOoRemoveable,
     isOOoVolume,
   );
+  
+  QueryETagsSet = ( davEntityTag );
 
   KOrgExInitialAptQuerySet = (
     davURL,

@@ -479,6 +479,8 @@ static NSString *cachePath  = nil;
   return nil;
 }
 
+/* IDs and Versions */
+
 - (NSString *)getIDsAndVersionsInContext:(id)_ctx {
   // return all IDs and Versions in this format:
   //   ID:Version\n
@@ -496,9 +498,61 @@ static NSString *cachePath  = nil;
   response = [(WOContext *)_ctx response];
   [response setStatus:200]; /* OK */
   [response setHeader:@"text/plain" forKey:@"content-type"];
+  [response setHeader:@"close"      forKey:@"connection"];
   [response appendContentString:s];
   return response;
 }
+
+- (id)performETagsQuery:(EOFetchSpecification *)_fspec inContext:(id)_ctx {
+  // TODO: rewrite getIDsAndVersionsInContext: to return some array/dict
+  NSMutableArray *entries;
+  NSString *csv;
+  NSArray  *lines;
+  unsigned i, count;
+  
+  if ((csv = [self getIDsAndVersionsInContext:_ctx]) == nil)
+    return nil;
+  
+  if ([csv length] == 0)
+    return [NSArray array];
+  
+  lines   = [csv componentsSeparatedByString:@"\n"];
+  count   = [lines count];
+  entries = [NSMutableArray arrayWithCapacity:count];
+  
+  // [self logWithFormat:@"process lines: %@", lines];
+  
+  for (i = 0; i < count; i++) {
+    NSDictionary *record;
+    NSString *line, *pkey, *etag, *url;
+    id       keys[2], values[2];
+    NSRange  r;
+    
+    line = [lines objectAtIndex:i];
+    r    = [line rangeOfString:@":"];
+    if (r.length == 0) {
+      [self logWithFormat:@"ERROR: malformed getIDsAndVersions file!"];
+      continue;
+    }
+    
+    pkey = [line substringToIndex:r.location];
+    etag = line;
+    
+    url  = [[NSString alloc] initWithFormat:@"%@%@.ics", [self baseURL], pkey];
+    
+    keys[0] = @"{DAV:}href";   values[0] = url;
+    keys[1] = @"davEntityTag"; values[1] = etag;
+    
+    record = [[NSDictionary alloc] initWithObjects:values forKeys:keys
+				   count:2];
+    [entries addObject:record];
+    [record release]; record = nil;
+    [url    release]; url    = nil;
+  }
+  return entries;
+}
+
+/* name lookup */
 
 - (id)lookupName:(NSString *)_name inContext:(id)_ctx acquire:(BOOL)_ac {
   NSString *nkey;
@@ -732,11 +786,30 @@ static NSString *cachePath  = nil;
   return NO;
 }
 
+- (BOOL)isETagsQuery:(EOFetchSpecification *)_fs {
+  // subfolders
+  static NSSet *listSet  = nil;
+  id propNames;
+  
+  if (listSet == nil) 
+    listSet = [[self propertySetNamed:@"QueryETagsSet"] retain];
+  
+  if ((propNames = [_fs selectedWebDAVPropertyNames]) == nil)
+    return NO;
+  
+  if ([propNames count] > [listSet count])
+    return NO;
+  
+  propNames = [NSSet setWithArray:propNames];
+  
+  return [propNames isSubsetOfSet:listSet];
+}
+
 - (BOOL)isWebDAVListQuery:(EOFetchSpecification *)_fs {
   // subfolders
   static NSSet *listSet  = nil;
   id propNames;
-
+  
   if (listSet == nil) 
     listSet = [[self propertySetNamed:@"CadaverListSet"] retain];
   

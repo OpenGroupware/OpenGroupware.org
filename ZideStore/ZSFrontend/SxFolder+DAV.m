@@ -295,6 +295,7 @@
     return @selector(performMsgInfoQuery:inContext:);
   if ([self isSubFolderQuery:_fs])
     return @selector(performSubFolderQuery:inContext:);
+  
   return NULL;
 }
 
@@ -309,6 +310,11 @@
 - (SEL)defaultFetchSelectorForListQuery {
   if ([self respondsToSelector:@selector(performListQuery:inContext:)])
     return @selector(performListQuery:inContext:);
+  return NULL;
+}
+- (SEL)defaultFetchSelectorForETagsQuery {
+  if ([self respondsToSelector:@selector(performETagsQuery:inContext:)])
+    return @selector(performETagsQuery:inContext:);
   return NULL;
 }
 
@@ -335,8 +341,17 @@
     return [self defaultFetchSelectorForEvoQuery];
   }
   
-  if ([self isWebDAVListQuery:_fs])
+  if ([self isETagsQuery:_fs]) {
+    if ([self doExplainQueries])
+      [self logWithFormat:@"select etags query for WebDAV etags set"];
+    return [self defaultFetchSelectorForETagsQuery];
+  }
+  
+  if ([self isWebDAVListQuery:_fs]) {
+    if ([self doExplainQueries])
+      [self logWithFormat:@"select list query for WebDAV list set"];
     return [self defaultFetchSelectorForListQuery];
+  }
   
   if ([self doExplainQueries]) {
     [self logWithFormat:
@@ -369,7 +384,7 @@
   /* classify flat request (deep is processed like flat) */
   
   propNames = [NSSet setWithArray:[_fs selectedWebDAVPropertyNames]];
-
+  
   handler = [self fetchSelectorForQuery:_fs 
 		  onAttributeSet:propNames
 		  inContext:_ctx];
@@ -386,7 +401,7 @@
                     componentsJoinedByString:@","]];
     }
   }
-  if (handler) {
+  if (handler != NULL) {
     id (*m)(id, SEL, EOFetchSpecification *, id);
     
     if ([self doExplainQueries]) {

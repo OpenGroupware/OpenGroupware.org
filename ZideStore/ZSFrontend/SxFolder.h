@@ -98,6 +98,7 @@
 - (BOOL)isMsgInfoQuery:(EOFetchSpecification *)_fs;
 - (BOOL)isSubFolderQuery:(EOFetchSpecification *)_fs;
 - (BOOL)isWebDAVListQuery:(EOFetchSpecification *)_fs;
+- (BOOL)isETagsQuery:(EOFetchSpecification *)_fs;
 
 - (id)performMsgInfoQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx;
 - (id)performSubFolderQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx;
