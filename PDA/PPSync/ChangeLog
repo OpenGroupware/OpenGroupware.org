@@ -1,3 +1,8 @@
+2004-09-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble (xxx_TOOL_LIBS): added libEOControl as a
+	  dependency for the tools (seems to be a problem on Solaris) (v5.1.8)
+
 2004-09-09  Helge Hess  <helge.hess@skyrix.com>
 
 	* added FHS installation (v5.1.7)

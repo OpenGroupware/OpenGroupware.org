@@ -19,12 +19,12 @@ libPPSync_LIBRARIES_DEPEND_UPON += \
 
 nhsd_TOOL_LIBS += \
 	-lGDLAccess  \
-	-lNGStreams -lNGExtensions \
+	-lNGStreams -lNGExtensions -lEOControl \
 	-lPPSync -lpisock
 
 ppls_TOOL_LIBS += \
 	-lGDLAccess  \
-	-lNGStreams -lNGExtensions \
+	-lNGStreams -lNGExtensions -lEOControl \
 	-lPPSync -lpisock
 
 ppls_LIB_DIRS += -L$(GNUSTEP_OBJ_DIR)
