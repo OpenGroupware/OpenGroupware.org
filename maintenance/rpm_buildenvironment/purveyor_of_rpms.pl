@@ -88,8 +88,11 @@ sub move_to_dest {
     print "[MOVETODEST]        - $package rolling out '$rpm_basename' to $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "yes"));
     print "[MOVETODEST]        - $package won't copy '$rpm_basename' to $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "no"));
     system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_trunk_dir/ 1>>$logout 2>>$logerr") if (($build_type eq "trunk") and ($do_upload eq "yes"));
+    system("/usr/bin/ssh $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_trunk_dir/$rpm_basename 1>>$logout 2>>$logerr") if (($build_type eq "trunk") and ($do_upload eq "yes"));
     system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_rel_dir/$rdirbase/ 1>>$logout 2>>$logerr") if (($rdirbase) and ($build_type eq "release") and ($do_upload eq "yes"));
+    system("/usr/bin/ssh $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_rel_dir/$rdirbase/$rpm_basename 1>>$logout 2>>$logerr") if (($rdirbase) and ($build_type eq "release") and ($do_upload eq "yes"));
     system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_rel_dir/$remote_release_dirname/ 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
+    system("/usr/bin/ssh $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_rel_dir/$remote_release_dirname/$rpm_basename 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
     $remote_dir = $remote_trunk_dir if ($build_type eq "trunk");
     $remote_dir = $remote_rel_dir if ($build_type eq "release");
     print "[LINKATDEST]        - will not really link $ln_name <- $rpm_basename at $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "no") and ($build_type eq "trunk"));
