@@ -513,14 +513,11 @@ rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www/GNUmakefile"
 rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www/tools"
 
 # ****************************** post *********************************
-%post
 
 # ****************************** postun *********************************
-%postun
 
 # ****************************** clean ********************************
 %clean
-
 rm -fr ${RPM_BUILD_ROOT}
 
 # ****************************** files ********************************

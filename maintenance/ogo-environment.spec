@@ -22,7 +22,6 @@ Adds the required user/group and some configurations.
 rm -fr ${RPM_BUILD_ROOT}
 
 # ****************************** build ********************************
-%build
 
 # ****************************** install ******************************
 %install
