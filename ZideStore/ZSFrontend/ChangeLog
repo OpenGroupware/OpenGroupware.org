@@ -1,5 +1,7 @@
 2004-10-07  Helge Hess  <helge.hess@skyrix.com>
 
+	* OLDavPropMapper.m: map out some problematic keys (v1.3.92)
+
 	* OLDavPropMapper.m: fixed processing of Cadaver property keys 
 	  (v1.3.91)
 

@@ -98,11 +98,32 @@
 
 /* lookup */
 
+- (BOOL)isForbiddenGenericKey:(NSString *)_key {
+  static NSString *keys[] = {
+    @"retain", @"release", @"autorelease", @"class", @"superclass",
+    @"zone", @"isProxy", @"retainCount", @"hash", @"self", @"gcFinalize", 
+    nil
+  };
+  register unsigned i;
+  
+  for (i = 0; keys[i] != nil; i++) {
+    if ([_key isEqualToString:keys[i]]) return YES;
+  }
+  return NO;
+}
+
 - (id)objectForCadaverKey:(NSString *)_key {
   static NSString *p = @"{http://webdav.org/cadaver/custom-properties/}";
-  [self logWithFormat:@"query cadaver key: %@", _key];
-  if (![_key hasPrefix:p]) return p;
-  return [_key substringFromIndex:[p length]];
+  [self debugWithFormat:@"query cadaver key: %@", _key];
+  if (![_key hasPrefix:p]) 
+    _key = p;
+  else
+    _key = [_key substringFromIndex:[p length]];
+  if ([self isForbiddenGenericKey:_key]) {
+    [self logWithFormat:@"attempt to access protected property: '%@'", _key];
+    return nil;
+  }
+  return _key;
 }
 
 static NSString *mp1 = @"{http://schemas.microsoft.com/mapi/proptag}x";
