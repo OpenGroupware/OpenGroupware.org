@@ -33,7 +33,7 @@ mkdir -p ${RPM_BUILD_ROOT}/var/log/opengroupware
 if [ $1 = 1 ]; then
   OGO_USER="ogo"
   OGO_GROUP="skyrix"
-  OGO_SHELL="`which bash`"
+  OGO_SHELL="/bin/bash"
   OGO_HOME="/var/lib/opengroupware.org"
   echo -en "adding group ${OGO_GROUP}.\n"
   /usr/sbin/groupadd "${OGO_GROUP}" 2>/dev/null || :
@@ -103,6 +103,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Tue Feb 01 2005 Frank Reppin <frank@opengroupware.org>
+- don't use 'which' to determine the path to 'bash'
+  (every buildhost has /bin/bash)
 * Mon Jan 31 2005 Frank Reppin <frank@opengroupware.org>
 - put NGBundlePath pointing to the conduits from NSGlobalDomain.plist
   to ogo-nhsd-1.0a.plist
