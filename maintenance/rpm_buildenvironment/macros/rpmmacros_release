@@ -4,7 +4,16 @@
 %_topdir /home/build/rpm
 %_tmppath %{_topdir}/tmp
 %distribution %{nil}
+# common dist suffixes are
+#   cl  - used by Conectiva
+#   mdk - used by Mandrake
+#   (set to nil if not needed)
 %dist_suffix %{nil}
+# the next macro determines if the postgresql-server
+# is provided by the postgresql package itself
+# (which is true for at least Conectiva 10)
+# don't even use this macro rather than setting it to false!!!
+#%_postgresql_server_is_within_postgresql true
 
 ###
 %libf_objc_version 0
