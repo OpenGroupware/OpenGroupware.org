@@ -82,7 +82,15 @@ BaseUI_RESOURCE_FILES += \
 	SkyWarningMode.wox		\
 	SkyWeekOfYearPopUp.wox          \
 
--include OGo.make
+BaseUI_LANGUAGES = \
+	English		\
+	English_orange  \
+	English_blue   	\
+	English_OOo     \
+	English_kde
+
+BaseUI_RESOURCE_FILES += Defaults.plist Version
+
 -include SKYRIX.make
 
 -include GNUmakefile.preamble

@@ -1,6 +1,6 @@
 # $Id: Version 1 2004-08-20 11:17:52Z znek $
 
-SUBMINOR_VERSION:=88
+SUBMINOR_VERSION:=89
 
 # Requirements:
 #   v5.0.40 => NGObjWeb v4.2.143
