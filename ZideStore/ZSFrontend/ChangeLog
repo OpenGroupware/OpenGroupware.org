@@ -1,5 +1,10 @@
 2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SxFolder.m: print a log if record factory methods are not overridden
+	  by subclass (v1.3.100)
+
+	* SxFolder.m: minor improvement to PUT log (v1.3.99)
+
 	* SxMsgRootFolder.m, SxUserFolder.m, SxPublicFolder.m, 
 	  SxStoreInfoFolder.m: deliver folder keys as toManyRelationshipKeys, 
 	  not as toOneRelationshipKeys (v1.3.98)

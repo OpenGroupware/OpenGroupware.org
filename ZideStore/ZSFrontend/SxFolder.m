@@ -430,10 +430,14 @@ static NSString *cachePath  = nil;
 }
 
 - (Class)recordClassForKey:(NSString *)_key {
+  [self logWithFormat:@"Note: class does not specify class for key: '%@'",
+	  _key];
   return Nil;
 }
 
 - (id)childForNewKey:(NSString *)_key inContext:(id)_ctx {
+  [self logWithFormat:@"Note: class does not specify class for new key: '%@'",
+	  _key];
   return nil;
 }
 
@@ -542,7 +546,8 @@ static NSString *cachePath  = nil;
   recClass = [self recordClassForKey:nkey];
   value = [[recClass alloc] initWithName:nkey inFolder:self];
   if (value == nil) {
-    [self logWithFormat:@"ERROR: got no record for key %@", nkey];
+    [self logWithFormat:@"ERROR(%s): got no record for key %@", 
+	    __PRETTY_FUNCTION__, nkey];
     return nil;
   }
   value = [value autorelease];
@@ -578,9 +583,14 @@ static NSString *cachePath  = nil;
 
 - (id)PUTAction:(id)_ctx {
   /* per default, return nothing ... */
-  WOResponse *r = [(WOContext *)_ctx response];
+  WOResponse *r;
+
+  r = [(WOContext *)_ctx response];
   [r setStatus:200 /* Ok */];
-  [self logWithFormat:@"PUT on folder, just saying OK"];
+  
+  [self logWithFormat:
+	  @"PUT on folder (probably attempt to create an object!), "
+	  @"just saying OK (path-info: '%@')", [_ctx pathInfo]];
   return r;
 }
 
