@@ -46,6 +46,7 @@
 
 @implementation WODirectAction(LoginAction)
 
+static BOOL debugOn = YES;
 static NSNumber *nYes = nil;
 static int LSUseLowercaseLogin  = -1;
 static int LSAllowSpacesInLogin = -1;
@@ -121,17 +122,23 @@ static int LSAllowSpacesInLogin = -1;
   WOComponent *page = nil;
   
   da = [(NSDictionary *)[self session] objectForKey:@"LoginAction"];
-  if (da == nil) return nil;
+  if (da == nil)
+    da = [(NSDictionary *)[self session] objectForKey:@"directActionObject"];
+  if (da == nil) {
+    if (debugOn) {
+      [self logWithFormat:@"found no 'LoginAction' in session: %@", 
+	      [self session]];
+    }
+    return nil;
+  }
   
   da = [[da retain] autorelease];
   [(NSMutableDictionary *)[self session] removeObjectForKey:@"LoginAction"];
   
   page = (id)[da performActionNamed:[[self request] formValueForKey:@"da"]];
 
-#if DEBUG
-  [self debugWithFormat:@"executing direct action (page is %@) ..",
-        [page name]];
-#endif
+  if (debugOn)
+    [self logWithFormat:@"executing direct action, page is: %@", [page name]];
   
   if (![page isContentPage])
     return page;
@@ -158,10 +165,10 @@ static int LSAllowSpacesInLogin = -1;
   /* activate mail editor */
   
   if ((page = [self pageWithName:pageName]) == nil) {
-    [self logWithFormat:@"couldn`t restore page with name %@", pageName];
+    [self logWithFormat:@"could not restore page with name %@", pageName];
     return nil;
   }
-
+  
   if ([page respondsToSelector:@selector(prepareForRestorePage)])
     [page prepareForRestorePage];
   
@@ -326,7 +333,7 @@ static int LSAllowSpacesInLogin = -1;
   [self _configureUserAgentFromRequest:req];
 
 #if DEBUG && 0
-  NSLog(@"session cfg %@", [[self session] variableDictionary]);
+  [self logWithFormat:@"session cfg %@", [[self session] variableDictionary]];
 #endif
   
   /* get OGo session */
@@ -368,12 +375,20 @@ static int LSAllowSpacesInLogin = -1;
   
   /* check direct action hooks */
   
-  if ((tpage = [self _processRedirectURL:[req formValueForKey:@"url"]]) != nil)
+  if ((tpage = [self _processRedirectURL:[req formValueForKey:@"url"]]) !=nil){
+    if (debugOn) [self logWithFormat:@"redirect to URL: %@", tpage];
     page = tpage;
-  else if ((tpage = [self _processLoginActionInSession]) != nil)
+  }
+  else if ((tpage = [self _processLoginActionInSession]) != nil) {
+    if (debugOn) [self logWithFormat:@"used login action: %@", tpage];
     page = tpage;
-  else if ((tpage = [self _processPageRestorationWithRequest:req]) != nil)
+  }
+  else if ((tpage = [self _processPageRestorationWithRequest:req]) != nil) {
+    if (debugOn) [self logWithFormat:@"page restoration: %@", tpage];
     page = tpage;
+  }
+  else if (debugOn) 
+    [self logWithFormat:@"default page: %@", tpage];
   
   return page;
 }

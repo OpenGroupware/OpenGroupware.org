@@ -119,7 +119,6 @@ static NGMimeType *textHtmlType  = nil;
   }
   
   [self logWithFormat:@"default direct action (return Main ..) .."];
-  
   return [self pageWithName:@"Main"];
 }
 
@@ -162,8 +161,13 @@ static NGMimeType *textHtmlType  = nil;
 		 request:[self request]];
   }
   
-  /* show main page when we have no session */
+  /* 'activate' works without a session */
   
+  if ([_actionName isEqualToString:@"activate"])
+    return [super performActionNamed:@"activate"];
+  
+  /* show main page when we have no session */
+
   // TODO: should perform redirect?
   return [self pageWithName:@"Main"];
 }

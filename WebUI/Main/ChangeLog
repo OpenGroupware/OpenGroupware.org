@@ -1,3 +1,11 @@
+2005-03-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.76
+
+	* DirectAction.m: allow 'activate' method without session info
+
+	* WODirectAction+LoginAction.m: added some debug logs
+
 2005-03-13  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.75
