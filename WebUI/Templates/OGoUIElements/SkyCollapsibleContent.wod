@@ -1,4 +1,4 @@
-// $Id: SkyCollapsibleContent.wod,v 1.2 2004/05/06 12:53:50 helge Exp $
+// $Id: SkyCollapsibleContent.wod 2 2004-08-20 11:37:44Z znek $
 
 ComponentContent : WOComponentContent {};
 

@@ -1,4 +1,4 @@
-// $Id: LSWMailHtmlRenderPage.wod,v 1.2 2003/10/29 13:13:20 jan Exp $
+// $Id: LSWMailHtmlRenderPage.wod 2 2004-08-20 11:37:44Z znek $
 
 Window: LSWWindowFrame {
   title = subject;

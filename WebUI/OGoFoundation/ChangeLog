@@ -1,3 +1,8 @@
+2004-09-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoResourceManager.m: print a warning if no template directory is
+	  configured (v5.1.67)
+
 2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.66

@@ -1,4 +1,4 @@
-// $Id: LSWMailTextRenderPage.wod,v 1.2 2004/05/19 19:00:32 helge Exp $
+// $Id: LSWMailTextRenderPage.wod 2 2004-08-20 11:37:44Z znek $
 
 Content: WOString {
   value      = content;

@@ -44,7 +44,6 @@ static NSNull        *null = nil;
   NSFileManager  *fm;
   NSMutableArray *ma;
   NSDictionary   *env;
-  NSString       *key;
   BOOL           isDir;
   id tmp;
 
@@ -133,6 +132,8 @@ static NSNull        *null = nil;
 			  fhsName:@"templates/"] copy];
   if (debugOn)
     NSLog(@"template pathes: %@", templatePathes);
+  if ([templatePathes count] == 0)
+    NSLog(@"WARNING: found no directories containing OGo templates!");
 }
 
 - (id)initWithPath:(NSString *)_path {
