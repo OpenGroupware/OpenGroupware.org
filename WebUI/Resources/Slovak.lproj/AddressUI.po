@@ -1,10 +1,12 @@
 # translation of AddressUI.po to 
+# translation of AddressUI.po to
+# translation of AddressUI.po to
 # translation of AddressUI.po to Slovenský
 # Branislav Klocok <branislav.klocok@ofz.sk>, 2004.
 msgid ""
 msgstr ""
 "Last-Translator: Branislav Klocok <branislav.klocok@ofz.sk>\n"
-"PO-Revision-Date: 2004-12-22 16:52+0100\n"
+"PO-Revision-Date: 2004-12-28 12:06+0100\n"
 "Project-Id-Version: AddressUI\n"
 "Language-Team:  <sk@li.org>\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,93 +17,89 @@ msgstr ""
 # // $Id: AddressUI.strings,v 1.15 2004/08/16 14:48:47 frank Exp $
 #"01_dear_ms" =
 msgid "Dear Ms."
-msgstr ""
+msgstr "Vážená pani"
 
 #"02_dear_mrs" =
 msgid "Dear Mrs."
-msgstr ""
+msgstr "Vážená pani"
 
 #"03_dear_mr" =
 msgid "Dear Mr."
-msgstr ""
+msgstr "Vážený pán"
 
 #"04_dear_prof" =
 msgid "Dear Prof."
-msgstr ""
+msgstr "Vážený pán profesor"
 
 #"05_dear_dr" =
 msgid "Dear Dr."
-msgstr ""
+msgstr "Vážený pán doktor"
 
 #"06_geehrt_herr" =
 msgid "Sehr geehrter Herr"
-msgstr ""
+msgstr "Vážený pán"
 
 #"07_geehrt_frau" =
 msgid "Sehr geehrte Frau"
-msgstr ""
+msgstr "Vážená pani"
 
 #"08_geehrt_herr_prof" =
 msgid "Sehr geehrter Herr Prof."
-msgstr ""
+msgstr "Vážený pán profesor"
 
 #"09_geehrt_herr_dr" =
 msgid "Sehr geehrter Herr Dr."
-msgstr ""
+msgstr "Vážený doktor"
 
 #"10_geehrt_frau_prof" =
 msgid "Sehr geehrte Frau Prof."
-msgstr ""
+msgstr "Vážená profesorka"
 
 #"11_geehrt_frau_dr" =
 msgid "Sehr geehrte Frau Dr."
-msgstr ""
+msgstr "Vážená doktorka"
 
 #"12_monsieur" =
 msgid "Monsieur"
-msgstr ""
+msgstr "Vážený pán"
 
 #"13_madame" =
 msgid "Madame"
-msgstr ""
+msgstr "Vážená pani"
 
 #"14_signora" =
 msgid "Signora"
-msgstr ""
+msgstr "Vážená slečna"
 
 #"15_signore" =
 msgid "Signore"
-msgstr ""
+msgstr "Vážený pán"
 
 #"Mappe versch." =
 msgid "Mappe versch."
-msgstr ""
+msgstr "Mappe versch."
 
 #"job_title" =
 msgid "Position"
 msgstr "Pozícia"
 
 #"other_title1" =
-#, fuzzy
 msgid "Other Position 1"
-msgstr "Ostatné Umiestnenie 1"
+msgstr "Ostatné umiestnenie 1"
 
 #"other_title2" =
-#, fuzzy
 msgid "Other Position 2"
-msgstr "Ostatné Umiestnenie 2"
+msgstr "Ostatné umiestnenie 2"
 
 #"00_created" =
 msgid "created"
 msgstr "Vytvorené"
 
 #"01_tel" =
-#, fuzzy
 msgid "Telephone 1"
 msgstr "Telefón 1"
 
 #"01_tel_search" =
-#, fuzzy
 msgid "Telephone 1"
 msgstr "Telefón 1"
 
@@ -110,17 +108,14 @@ msgid "rejected"
 msgstr "odmietnuté"
 
 #"02_tel" =
-#, fuzzy
 msgid "Telephone 2"
 msgstr "Telefón 2"
 
 #"02_tel_search" =
-#, fuzzy
 msgid "Telephone 2"
 msgstr "Telefón 2"
 
 #"03_tel_funk" =
-#, fuzzy
 msgid "Mobile"
 msgstr "Mobil"
 
@@ -129,876 +124,768 @@ msgid "accepted"
 msgstr "prijaté"
 
 #"05_changed" =
-#, fuzzy
 msgid "changed"
 msgstr "zmenené"
 
 #"05_tel_private" =
-#, fuzzy
 msgid "Telephone private"
-msgstr "Telefón"
+msgstr "Telefón súkromný"
 
 #"05_tel_private_search" =
 msgid "Tel private"
-msgstr ""
+msgstr "Telefón súkromný"
 
 #"06_tel" =
-#, fuzzy
 msgid "Telephone 3"
 msgstr "Telefón 3"
 
 #"06_tel_search" =
-#, fuzzy
 msgid "Telephone 3"
 msgstr "Telefón 3"
 
 #"07_tel" =
-#, fuzzy
 msgid "Telephone 4"
 msgstr "Telefón 4"
 
 #"07_tel_search" =
-#, fuzzy
 msgid "Telephone 4"
 msgstr "Telefón 4"
 
 #"08_tel" =
-#, fuzzy
 msgid "Telephone 5"
 msgstr "Telefón 5"
 
 #"08_tel_search" =
-#, fuzzy
 msgid "Telephone 5"
 msgstr "Telefón 5"
 
 #"09_tel" =
-#, fuzzy
 msgid "Telephone 6"
 msgstr "Telefón 6"
 
 #"09_tel_search" =
-#, fuzzy
 msgid "Telephone 6"
 msgstr "Telefón 6"
 
 #"10_archived" =
 msgid "archived"
-msgstr ""
+msgstr "archivované"
 
 #"10_commented" =
 msgid "commented"
-msgstr ""
+msgstr "komentované"
 
 #"10_fax" =
-#, fuzzy
 msgid "Fax"
 msgstr "Fax"
 
 #"10_fax_search" =
-#, fuzzy
 msgid "Fax"
 msgstr "Fax"
 
 #"15_divided" =
 msgid "divided"
-msgstr ""
+msgstr "Rozdelené"
 
 #"15_fax_private" =
-#, fuzzy
 msgid "Fax private"
-msgstr "Fax"
+msgstr "Fax súkromný"
 
 #"15_fax_private_search" =
-#, fuzzy
 msgid "Fax private"
-msgstr "Fax"
+msgstr "Fax súkromný"
 
 #"20_email" =
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #"20_processing" =
 msgid "processing"
-msgstr ""
+msgstr "spracovávam"
 
 #"21_email" =
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #"25_done" =
 msgid "done"
-msgstr ""
+msgstr "hotovo"
 
 #"25_isdn" =
 msgid "ISDN"
-msgstr ""
+msgstr "ISDN"
 
 #"27_reactivated" =
 msgid "reactivated"
-msgstr ""
+msgstr "Reaktivované"
 
 #"30_archived" =
 msgid "archived"
-msgstr ""
+msgstr "archivované"
 
 #"AddressAccessPreferences" =
-#, fuzzy
 msgid "Default Access Preferences"
-msgstr "Východzie"
+msgstr "Východzie nastavenie prístupu"
 
 #"AddressPreferences" =
-#, fuzzy
 msgid "Company/Contact Preferences"
-msgstr "Spoločnosť"
+msgstr "Spoločnosť/Nastavenia kontaktu"
 
 #"Contacts" =
 msgid "Contacts"
-msgstr ""
+msgstr "Kontakty"
 
 #"EditEnterpriseLabel" =
-#, fuzzy
 msgid "Edit Company"
-msgstr "Upraviť Spoločnosť"
+msgstr "Upraviť spoločnosť"
 
 #"EnterpriseEditorAssignTitle" =
-#, fuzzy
 msgid "Person Assignment"
-msgstr "Priradenie"
+msgstr "Priradenie osoby"
 
 #"EnterpriseEditorTitle" =
-#, fuzzy
 msgid "Company Editor"
-msgstr "Spoločnosť Redaktor"
+msgstr "Editor spoločnosťi"
 
 #"EnterpriseSearchPageTitle" =
-#, fuzzy
 msgid "Company Search (wizard mode)"
-msgstr "Spoločnosť Hľadať Sprievodca režim"
+msgstr "Vyhľadávanie spoločnosti (režim sprievodcu)"
 
 #"Enterprises" =
 msgid "Companies"
-msgstr ""
+msgstr "Spoločnosti"
 
 #"ExtendedView" =
-#, fuzzy
 msgid "Show Companies"
-msgstr "Zobraziť"
+msgstr "Zobraziť spoločnosti"
 
 #"FormLetterLink" =
 msgid "Formletter"
-msgstr ""
+msgstr "Formulárový list"
 
 #"LSWAddressEditor" =
-#, fuzzy
 msgid "Edit Address"
-msgstr "Upraviť Adresa"
+msgstr "Upraviť adresy"
 
 #"LSWAddressPreferences" =
 msgid "Contacts/Enterp. Pref."
-msgstr ""
+msgstr "Kontakty/Nastavenia podniku"
 
 #"LSWEnterpriseAdvancedSearch" =
-#, fuzzy
 msgid "Advanced Search for Companies"
-msgstr "Hľadať pre"
+msgstr "Rozšírené hľadanie pre spoločnosti"
 
 #"LSWEnterpriseEditor" =
-#, fuzzy
 msgid "Edit Company"
-msgstr "Upraviť Spoločnosť"
+msgstr "Upraviť spoločnosť"
 
 #"LSWEnterpriseSearchPage" =
-#, fuzzy
 msgid "Company Search (wizard mode)"
-msgstr "Spoločnosť Hľadať Sprievodca režim"
+msgstr "Vyhľadávanie spoločnosti (režim sprievodcu)"
 
 #"LSWEnterpriseViewer" =
-#, fuzzy
 msgid "View Company"
-msgstr "Zobraziť Spoločnosť"
+msgstr "Zobraziť spoločnosť"
 
 #"LSWPersonAdvancedSearch" =
-#, fuzzy
 msgid "Advanced Search for Contacts"
-msgstr "Hľadať pre"
+msgstr "Rozšírené hľadanie pre kontakty"
 
 #"LSWPersonEditor" =
-#, fuzzy
 msgid "Edit Person"
-msgstr "Upraviť"
+msgstr "Upraviť osobu"
 
 #"LSWPersonViewer" =
-#, fuzzy
 msgid "View Person"
-msgstr "Zobraziť"
+msgstr "Zobraziť osobu"
 
 #"LSWPersons" =
 msgid "Contacts"
-msgstr ""
+msgstr "Kontakty"
 
 #"NO" =
 msgid "no"
-msgstr ""
+msgstr "nie"
 
 #"SkyBusinessCardGathering" =
 msgid "Card Gathering"
-msgstr ""
+msgstr "Zber kariet"
 
 #"SkyContactImportUploadPage" =
-#, fuzzy
 msgid "Import contacts"
-msgstr "Importovať"
+msgstr "Importovať kontakty"
 
 #"SkyTelephoneEditor" =
-#, fuzzy
 msgid "Edit Tel./Fax"
-msgstr "Upraviť Fax"
+msgstr "Upraviť Tel./Fax"
 
 #"YES" =
-#, fuzzy
 msgid "yes"
 msgstr "áno"
 
 #"account" =
-#, fuzzy
 msgid "Account"
 msgstr "Účet"
 
 #"accountingInfo" =
-#, fuzzy
 msgid "Accounting Information"
-msgstr "Informácia"
+msgstr "Účtovné informácie"
 
 #"action" =
-#, fuzzy
 msgid "Action"
 msgstr "Činnosť"
 
 #"actor" =
 msgid "Actor"
-msgstr ""
+msgstr "Aktér"
 
 #"actualWork" =
 msgid "Actual Work"
-msgstr ""
+msgstr "Aktuálna práca"
 
 #"addPersonsLabel" =
 msgid "add Persons"
-msgstr ""
+msgstr "pridať osoby"
 
 #"address" =
-#, fuzzy
 msgid "Address"
 msgstr "Adresa"
 
 #"addressClipboardFormat" =
-#, fuzzy
 msgid "address clipboard format"
-msgstr "adresa"
+msgstr "adresa formát schránky"
 
 #"addressClipboardFormatHelp" =
 msgid "available wildcards: $name1$, $name2$, $name3$, $street$, $zip$, $city$, $country$, $state$, $type$"
-msgstr ""
+msgstr "dostupné zástupné znaky: $name1$, $name2$, $name3$, $street$, $zip$, $city$, $country$, $state$, $type$"
 
 #"addressType" =
 msgid "Addresstype"
-msgstr ""
+msgstr "Typ adresy"
 
 #"address_city" =
-#, fuzzy
 msgid "City"
 msgstr "Obec"
 
 #"address_country" =
-#, fuzzy
 msgid "Country"
 msgstr "Krajina"
 
 #"address_name1" =
-#, fuzzy
 msgid "Name 1"
 msgstr "Názov 1"
 
 #"address_name2" =
-#, fuzzy
 msgid "Name 2"
 msgstr "Názov 2"
 
 #"address_name3" =
-#, fuzzy
 msgid "Name 3"
 msgstr "Názov 3"
 
 #"address_state" =
-#, fuzzy
 msgid "State"
 msgstr "Štát"
 
 #"address_street" =
-#, fuzzy
 msgid "Street"
 msgstr "Ulica"
 
 #"address_zip" =
 msgid "Zip"
-msgstr ""
+msgstr "PSČ"
 
 #"addresseditor_saveButtonLabel" =
 msgid "save"
-msgstr ""
+msgstr "uložiť"
 
 #"addresseditor_title" =
-#, fuzzy
 msgid "Address Editor"
-msgstr "Adresa Redaktor"
+msgstr "Editor adries"
 
 #"addressesInCompanyEditor" =
-#, fuzzy
 msgid "Addresses in Person/Company Editor"
-msgstr "Adresy in Spoločnosť Redaktor"
+msgstr "Adresy v editore pre osoby/spoločnosti"
 
 #"addresspreferences_title" =
-#, fuzzy
 msgid "Address Preferences"
-msgstr "Adresa"
+msgstr "Nastavenia adresy"
 
 #"addresstype_bill" =
-#, fuzzy
 msgid "Bill address"
-msgstr "adresa"
+msgstr "Fakturačná adresa"
 
 #"addresstype_location" =
-#, fuzzy
 msgid "Location address"
-msgstr "Umiestnenie adresa"
+msgstr "Adresa sídla"
 
 #"addresstype_mailing" =
-#, fuzzy
 msgid "Mailing address"
-msgstr "adresa"
+msgstr "Poštová adresa"
 
 #"addresstype_private" =
-#, fuzzy
 msgid "Private address"
-msgstr "Súkromné adresa"
+msgstr "Súkromná adresa"
 
 #"addresstype_ship" =
-#, fuzzy
 msgid "Ship address"
-msgstr "adresa"
+msgstr "Adresa pre doručenie"
 
 #"addressviewer_noeditpermission" =
 msgid "no editpermissions"
-msgstr ""
+msgstr "nedostatočné práva pre úpravu"
 
 #"advertising_medium" =
-#, fuzzy
 msgid "Advertising medium"
-msgstr "stredné"
+msgstr "Reklamné médium"
 
 #"age" =
 msgid "Age"
-msgstr ""
+msgstr "Vek"
 
 #"allPhones" =
-#, fuzzy
 msgid "all Phones/Fax"
-msgstr "všetko Fax"
+msgstr "všetky telefóny/faxy"
 
 #"appropriation_request" =
 msgid "Appropriation request"
-msgstr ""
+msgstr "Požiadavka na povolenie"
 
 #"appropriation_request_comment" =
 msgid "Appropr. req. comment"
-msgstr ""
+msgstr "Poznámka k požiadavke na povolenie"
 
 #"associatedCompanies" =
 msgid "Associated Companies"
-msgstr ""
+msgstr "Spriaznené spoločnosti"
 
 #"associatedContacts" =
 msgid "Associated Contacts"
-msgstr ""
+msgstr "Spriaznené kontakty"
 
 #"attributes" =
 msgid "attributes"
-msgstr ""
+msgstr "atribúty"
 
 #"bank" =
 msgid "Bank"
-msgstr ""
+msgstr "Banka"
 
 #"bankCode" =
 msgid "Bankcode"
-msgstr ""
+msgstr "Kód banky"
 
 #"bank_code" =
 msgid "Bankcode"
-msgstr ""
+msgstr "Kód banky"
 
 #"bank_comment" =
 msgid "Bank comment"
-msgstr ""
+msgstr "Komentár k banke"
 
 #"bill" =
-#, fuzzy
 msgid "Bill address"
-msgstr "adresa"
+msgstr "Fakturačná adresa"
 
 #"birthday" =
 msgid "Birthday"
-msgstr ""
+msgstr "Narodeniny"
 
 #"blockSize" =
-#, fuzzy
 msgid "Number of listitems"
-msgstr "Číslo z"
+msgstr "Počet položiek v zozname"
 
 #"branch" =
-#, fuzzy
 msgid "Company"
 msgstr "Spoločnosť"
 
 #"branche" =
 msgid "Branche"
-msgstr ""
+msgstr "Odvetvie"
 
 #"branche_other" =
-#, fuzzy
 msgid "Other branche"
-msgstr "Ostatné"
+msgstr "Iné odvetvie"
 
 #"cancelButtonLabel" =
-#, fuzzy
 msgid "cancel"
 msgstr "zrušiť"
 
 #"category" =
-#, fuzzy
 msgid "Category"
 msgstr "Kategória"
 
 #"categoryLabel" =
-#, fuzzy
 msgid "Category"
 msgstr "Kategória"
 
 #"chamber_of_trade" =
 msgid "Chamber"
-msgstr ""
+msgstr "Komora"
 
 #"chamber_of_trade_comment" =
 msgid "Chamber comment"
-msgstr ""
+msgstr "Poznámka ku komore"
 
 #"chamber_of_trade_state" =
 msgid "Chamber state"
-msgstr ""
+msgstr "Štát komory"
 
 #"chooseEnterprise" =
-#, fuzzy
 msgid "choose Company&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-msgstr "Spoločnosť&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+msgstr "vybrať spoločnosť&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 
 #"chooseMailingAddress" =
-#, fuzzy
 msgid "choose Mailing Address"
-msgstr "Adresa"
+msgstr "vybrať poštovú adresu"
 
 #"choosePrivateAddress" =
-#, fuzzy
 msgid "choose Private Address"
-msgstr "Súkromné Adresa"
+msgstr "vybrať súkromnú adresu"
 
 #"chooseProjects" =
-#, fuzzy
 msgid "Choose Projects"
-msgstr "Vybrať"
+msgstr "Vybrať projekty"
 
 #"city" =
-#, fuzzy
 msgid "City"
 msgstr "Obec"
 
 #"clearButtonLabel" =
-#, fuzzy
 msgid "Clear form"
-msgstr "Vyčistiť"
+msgstr "Vyčistiť formulár"
 
 #"clip" =
 msgid "clip"
-msgstr ""
+msgstr "klip"
 
 #"comment" =
-#, fuzzy
 msgid "Comment"
 msgstr "Komentár"
 
 #"common_gathering_title" =
-#, fuzzy
 msgid "Common Attributes"
-msgstr "Spoločný Atribúty"
+msgstr "Spoločné atribúty"
 
 #"company_gathering_title_new" =
-#, fuzzy
 msgid "New Company"
-msgstr "Nový Spoločnosť"
+msgstr "Nová spoločnosť"
 
 #"company_gathering_title_search" =
-#, fuzzy
 msgid "Company Search"
-msgstr "Spoločnosť Hľadať"
+msgstr "Vyhľadávanie spoločnosti"
 
 #"competition_products" =
 msgid "Competition products"
-msgstr ""
+msgstr "Konkurenčné produkty"
 
 #"completionDate" =
-#, fuzzy
 msgid "Completion Date"
-msgstr "Dátum"
+msgstr "Dátum vyhotovenia"
 
 #"contact" =
 msgid "Contact"
-msgstr ""
+msgstr "Kontakt"
 
 #"contact_type" =
 msgid "Contact type"
-msgstr ""
+msgstr "Typ kontaktu"
 
 #"copyIntoClipboard" =
-#, fuzzy
 msgid "Copy into clipboard"
-msgstr "Kopírovať"
+msgstr "Kopírovať do schránky"
 
 #"country" =
-#, fuzzy
 msgid "Country"
 msgstr "Krajina"
 
 #"creationDate" =
-#, fuzzy
 msgid "Date"
 msgstr "Dátum"
 
 #"creator" =
 msgid "Creator"
-msgstr ""
+msgstr "Zhotoviteľ"
 
 #"date_of_purchase" =
-#, fuzzy
 msgid "Date of purchase"
-msgstr "Dátum z"
+msgstr "Dátum nákupu"
 
 #"decision" =
 msgid "Decision"
-msgstr ""
+msgstr "Rozhodnutie"
 
 #"default_pattern" =
-#, fuzzy
 msgid "Default pattern"
-msgstr "Východzie"
+msgstr "Východzia vzorka"
 
 #"degree" =
 msgid "Degree"
-msgstr ""
+msgstr "Stupeň"
 
 #"deleteButtonLabel" =
-#, fuzzy
 msgid "delete"
 msgstr "zmazať"
 
 #"deleteFolder" =
-#, fuzzy
 msgid "delete folder"
-msgstr "zmazať"
+msgstr "zmazať priečinok"
 
 #"deleteImage" =
-#, fuzzy
 msgid "Delete Picture"
-msgstr "Zmazať"
+msgstr "Zmazať obrázok"
 
 #"description" =
-#, fuzzy
 msgid "Description"
 msgstr "Popis"
 
 #"documents" =
 msgid "documents"
-msgstr ""
+msgstr "dokumenty"
 
 #"download" =
-#, fuzzy
 msgid "Download"
 msgstr "Stiahnuť"
 
 #"downloadFormletter" =
-#, fuzzy
 msgid "Download Formletter"
-msgstr "Stiahnuť"
+msgstr "Stiahnuť formulár"
 
 #"edit" =
 msgid "edit"
-msgstr ""
+msgstr "upraviť"
 
 #"editFolder" =
 msgid "edit folder"
-msgstr ""
+msgstr "upraviť priečinok"
 
 #"editorSearchResult" =
-#, fuzzy
 msgid "Search results in Person/Company Editor"
-msgstr "Hľadať in Spoločnosť Redaktor"
+msgstr "Hľadať výsledky v editore osôb/spoločnosťí"
 
 #"ego_infoline" =
 msgid "Ego Infoline"
-msgstr ""
+msgstr "Ego Infoline"
 
 #"email" =
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #"email1" =
-#, fuzzy
 msgid "Email 1"
-msgstr "1"
+msgstr "Email 1"
 
 #"email2" =
-#, fuzzy
 msgid "Email 2"
-msgstr "2"
+msgstr "Email 2"
 
 #"email3" =
-#, fuzzy
 msgid "Email 3"
-msgstr "3"
+msgstr "Email 3"
 
 #"emptyTrash" =
-#, fuzzy
 msgid "empty trash"
-msgstr "prázdny"
+msgstr "vyprázdniť kôš"
 
 #"endDate" =
-#, fuzzy
 msgid "End date"
 msgstr "Koncový dátum"
 
 #"enterprise" =
-#, fuzzy
 msgid "Company"
 msgstr "Spoločnosť"
 
 #"enterpriseSearch" =
-#, fuzzy
 msgid "Company Search"
-msgstr "Spoločnosť Hľadať"
+msgstr "Vyhľadávanie spoločnosti"
 
 #"enterpriseView" =
-#, fuzzy
 msgid "Company"
 msgstr "Spoločnosť"
 
 #"enterpriseViewer" =
-#, fuzzy
 msgid "Company view"
-msgstr "Spoločnosť"
+msgstr "Zobrazenie spoločnosťi"
 
 #"enterprise_name" =
-#, fuzzy
 msgid "Name"
 msgstr "Názov"
 
 #"enterprise_number" =
-#, fuzzy
 msgid "Number"
 msgstr "Číslo"
 
 #"enterprise_state" =
-#, fuzzy
 msgid "Company state"
-msgstr "Spoločnosť"
+msgstr "Štát spoločnosťi"
 
 #"enterprise_state_comment" =
-#, fuzzy
 msgid "Company state comment"
-msgstr "Spoločnosť"
+msgstr "Poznámka pre štát spoločnosťi"
 
 #"enterprise_sub_view" =
-#, fuzzy
 msgid "Company Subview"
-msgstr "Spoločnosť"
+msgstr "Podobrazenie spoločnosťi"
 
 #"enterprises" =
 msgid "companies"
-msgstr ""
+msgstr "spoločnosti"
 
 #"enterpriseviewer_logsLabel" =
 msgid "Logs"
-msgstr ""
+msgstr "Záznamy"
 
 #"enterpriseviewer_logsTitle" =
-#, fuzzy
 msgid "Company Logs"
-msgstr "Spoločnosť"
+msgstr "Záznamy spoločnosťi"
 
 #"enterpriseviewer_personlabel" =
 msgid "Contacts"
-msgstr ""
+msgstr "Kontakty"
 
 #"enterpriseviewer_personlist" =
 msgid "Contacts list"
-msgstr ""
+msgstr "Zoznam kontaktov"
 
 #"enterpriseviewer_projectlabel" =
 msgid "Contacts"
-msgstr ""
+msgstr "Kontakty"
 
 #"enterpriseviewer_projectlist" =
 msgid "Contacts list"
-msgstr ""
+msgstr "Zoznam kontaktov"
 
 #"enterpriseviewer_tab_attributes" =
 msgid "attributes subview"
-msgstr ""
+msgstr "podzobrazenie atribútov"
 
 #"enterpriseviewer_tab_bill" =
-#, fuzzy
 msgid "bill address"
-msgstr "adresa"
+msgstr "Fakturačná adresa"
 
 #"enterpriseviewer_tab_documents" =
 msgid "documents subview"
-msgstr ""
+msgstr "podzobrazenie dokumentov"
 
 #"enterpriseviewer_tab_jobs" =
 msgid "tasks subview"
-msgstr ""
+msgstr "podzobrazenie úloh"
 
 #"enterpriseviewer_tab_overview" =
 msgid "overview subview"
-msgstr ""
+msgstr "podzobrazenie prehľadu"
 
 #"enterpriseviewer_tab_persons" =
 msgid "contact persons"
-msgstr ""
+msgstr "kontaktné osoby"
 
 #"enterpriseviewer_tab_projects" =
 msgid "projects subview"
-msgstr ""
+msgstr "podzobrazenie projektov"
 
 #"enterpriseviewer_tab_ship" =
-#, fuzzy
 msgid "ship address"
-msgstr "adresa"
+msgstr "Adresa pre doručenie"
 
 #"enterpriseviewer_tab_urls" =
 msgid "urls"
-msgstr ""
+msgstr "Internetové URL"
 
 #"enterpriseviewer_title" =
-#, fuzzy
 msgid "Company Viewer"
-msgstr "Spoločnosť"
+msgstr "Prehliadač spoločnosťi"
 
 #"evaluation_status" =
 msgid "Evaluation status"
-msgstr ""
+msgstr "Status vyhodnocovania"
 
 #"executant" =
 msgid "Owner"
-msgstr ""
+msgstr "Vlastník"
 
 #"favoured_contact_type" =
 msgid "Favoured contact type"
-msgstr ""
+msgstr "Obľúbený typ kontaktu"
 
 #"female" =
 msgid "female"
-msgstr ""
+msgstr "žena"
 
 #"first" =
 msgid "first "
-msgstr ""
+msgstr "prvé"
 
 #"firstName" =
 msgid "Firstname"
-msgstr ""
+msgstr "Meno"
 
 #"firstname" =
 msgid "Firstname"
-msgstr ""
+msgstr "Meno"
 
 #"folderTitle" =
 msgid "Foldername"
-msgstr ""
+msgstr "Názov priečinka"
 
 #"formletterButtonLabel" =
 msgid "Formletter"
-msgstr ""
+msgstr "Formulárový list"
 
 #"formletter_kind" =
-#, fuzzy
 msgid "Form Letter"
 msgstr "Formulárový list"
 
 #"forward_request_to" =
-#, fuzzy
 msgid "Forward to"
-msgstr "Poslať ďalej na"
+msgstr "Poslať ďalej"
 
 #"framemaker" =
 msgid "Framemaker"
-msgstr ""
+msgstr "Rámcovač"
 
 #"function" =
-#, fuzzy
 msgid "Position"
-msgstr "Umiestnenie"
+msgstr "Pozícia"
 
 #"gathering" =
-#, fuzzy
 msgid "Business Card Gathering"
-msgstr "Pracovný"
+msgstr "Zber vizitiek"
 
 #"import_action_abort" =
 msgid "abort import"
-msgstr ""
+msgstr "prerušiť import"
 
 #"import_action_cancel" =
-#, fuzzy
 msgid "cancel"
 msgstr "zrušiť"
 
 #"import_action_ignoreRecord" =
 msgid "ignore record"
-msgstr ""
+msgstr "ignorovať záznam"
 
 #"import_action_import" =
 msgid "import"
-msgstr ""
+msgstr "import"
 
 #"import_action_importRecord" =
 msgid "import record"
-msgstr ""
+msgstr "importovať záznam"
 
 #"import_action_importRecordPrivate" =
 msgid "import record as private"
-msgstr ""
+msgstr "importovať záznam ako súkromný"
 
 #"import_action_importRecordPublic" =
 msgid "import record as public"
-msgstr ""
+msgstr "importovať záznam ako verejný"
 
 #"import_action_markDuplicate" =
 msgid "mark as duplicate"
-msgstr ""
+msgstr "označiť ako duplicitný"
 
 #"import_action_openInBussinessCardGathering" =
-#, fuzzy
 msgid "open in bussiness card gathering"
-msgstr "in"
+msgstr "Otvoriť v zbere vizitiek"
 
 #"import_action_openInEditor" =
 #, fuzzy
@@ -1027,8 +914,9 @@ msgid "failed writing import rule"
 msgstr ""
 
 #"import_error_missingAttributes" =
+#, fuzzy
 msgid "missing attributes"
-msgstr ""
+msgstr "atribúty"
 
 #"import_error_missingData" =
 #, fuzzy
@@ -1046,7 +934,7 @@ msgstr ""
 #"import_error_noData" =
 #, fuzzy
 msgid "File contains no data"
-msgstr "Súbor dáta"
+msgstr "Súbor nie dáta"
 
 #"import_label_alreadyImported" =
 msgid "imported records"
@@ -1110,7 +998,7 @@ msgstr ""
 #"import_label_moMoreRecords" =
 #, fuzzy
 msgid "no more records to import"
-msgstr "na"
+msgstr "nie na"
 
 #"import_label_nextRecord" =
 #, fuzzy
@@ -1158,7 +1046,7 @@ msgstr ""
 #"import_windowtitle" =
 #, fuzzy
 msgid "Import contacts"
-msgstr "Importovať"
+msgstr "Importovať kontakty"
 
 #"inAddressSubView" =
 #, fuzzy
@@ -1168,7 +1056,7 @@ msgstr "in adresa"
 #"inAttributesSubView" =
 #, fuzzy
 msgid "in sub view 'attributes'"
-msgstr "in"
+msgstr "in atribúty"
 
 #"info" =
 #, fuzzy
@@ -1242,7 +1130,7 @@ msgstr "Umiestnenie"
 #"location_address" =
 #, fuzzy
 msgid "Location address"
-msgstr "Umiestnenie adresa"
+msgstr "Adresa sídla"
 
 #"locationaddresseditor_wizard_title" =
 #, fuzzy
@@ -1270,7 +1158,7 @@ msgstr ""
 #"mailing_address" =
 #, fuzzy
 msgid "Mailing address"
-msgstr "adresa"
+msgstr "Poštová adresa"
 
 #"mailingaddresseditor_wizard_title" =
 #, fuzzy
@@ -1368,8 +1256,9 @@ msgid "Nickname"
 msgstr "Prezývka"
 
 #"noContact" =
+#, fuzzy
 msgid "- no contact -"
-msgstr ""
+msgstr "nie"
 
 #"noOfCols" =
 #, fuzzy
@@ -1491,8 +1380,9 @@ msgid "Comment"
 msgstr "Komentár"
 
 #"personeditor_contactLabel" =
+#, fuzzy
 msgid "Contact"
-msgstr ""
+msgstr "Kontakt"
 
 #"personeditor_infoLabel" =
 #, fuzzy
@@ -1509,8 +1399,9 @@ msgid "Readonly"
 msgstr ""
 
 #"personeditor_saveButtonLabel" =
+#, fuzzy
 msgid "save"
-msgstr ""
+msgstr "uložiť"
 
 #"personeditor_title" =
 #, fuzzy
@@ -1545,17 +1436,19 @@ msgid "Person Subview"
 msgstr ""
 
 #"persons_table_label" =
+#, fuzzy
 msgid "Contacts"
-msgstr ""
+msgstr "Kontakty"
 
 #"persons_table_title" =
+#, fuzzy
 msgid "Contacts"
-msgstr ""
+msgstr "Kontakty"
 
 #"persons_window_title" =
 #, fuzzy
 msgid "Look for Contacts Data"
-msgstr "pre Dáta"
+msgstr "pre Kontakty Dáta"
 
 #"personviewer_appointments" =
 msgid "Termine"
@@ -1683,7 +1576,7 @@ msgstr "Súkromné"
 #"private_address" =
 #, fuzzy
 msgid "Private address"
-msgstr "Súkromné adresa"
+msgstr "Súkromná adresa"
 
 #"privateaddresseditor_wizard_title" =
 #, fuzzy
@@ -1777,7 +1670,7 @@ msgstr ""
 #"resignInactive" =
 #, fuzzy
 msgid "no permission to resign"
-msgstr "na"
+msgstr "nie na"
 
 #"resources" =
 msgid "Resources"
@@ -1793,8 +1686,9 @@ msgid "Salutation"
 msgstr "Oslovenie"
 
 #"saveButtonLabel" =
+#, fuzzy
 msgid "save"
-msgstr ""
+msgstr "uložiť"
 
 #"savedSearches" =
 msgid "quicklist -->"
@@ -1884,7 +1778,7 @@ msgstr ""
 #"ship" =
 #, fuzzy
 msgid "Ship address"
-msgstr "adresa"
+msgstr "Adresa pre doručenie"
 
 #"size" =
 #, fuzzy
@@ -1985,12 +1879,14 @@ msgid "delete"
 msgstr "zmazať"
 
 #"viewerconfig_save" =
+#, fuzzy
 msgid "save"
-msgstr ""
+msgstr "uložiť"
 
 #"viewerconfig_save_as_new" =
+#, fuzzy
 msgid "save as new"
-msgstr ""
+msgstr "uložiť"
 
 #"windowTitleSkyTelephoneEditor" =
 #, fuzzy
@@ -2026,10 +1922,12 @@ msgid "Forward"
 msgstr "Poslať ďalej"
 
 #"xlink_kd_nr" =
+#, fuzzy
 msgid "Xlink no"
-msgstr ""
+msgstr "nie"
 
 #"zip" =
+#, fuzzy
 msgid "Zip"
-msgstr ""
+msgstr "PSČ"
 
