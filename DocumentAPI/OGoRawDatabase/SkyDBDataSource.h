@@ -24,6 +24,16 @@
 
 #include <OGoRawDatabase/SkyAdaptorDataSource.h>
 
+/*
+  SkyDBDataSource
+  
+  Returns SkyDBDocuments as the result of fetches. That is, it wraps the
+  dictionaries returned by SkyAdaptorDataSource into documents.
+  
+  TODO: we need a schema, eg the SkyDocumentType filled with the attributes
+        available for the datasource.
+*/
+
 @interface SkyDBDataSource : SkyAdaptorDataSource
 {
 }

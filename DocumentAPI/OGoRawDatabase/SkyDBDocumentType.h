@@ -26,11 +26,11 @@
 
 @interface SkyDBDocumentType : SkyDocumentType
 {
-@protected
   NSString *entityName;
 }
-- (id)entityName;
+
 - (void)setEntityName:(NSString *)_eName;
+- (id)entityName;
 
 - (BOOL)isEqual:(id)_obj;
 - (BOOL)isEqualToDBDocumentType:(SkyDBDocumentType *)_type;

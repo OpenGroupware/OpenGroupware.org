@@ -51,17 +51,17 @@
   return self;
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->dataSource);
-  RELEASE(self->dict);
-  RELEASE(self->gid);
-  RELEASE(self->entityName);
-  RELEASE(self->docType);
-  RELEASE(self->supportedKeys);
+  [self->dataSource    release];
+  [self->dict          release];
+  [self->gid           release];
+  [self->entityName    release];
+  [self->docType       release];
+  [self->supportedKeys release];
   [super dealloc];
 }
-#endif
+
+/* capabilities */
 
 - (BOOL)isDeletable {
   EOGlobalID *lgid;

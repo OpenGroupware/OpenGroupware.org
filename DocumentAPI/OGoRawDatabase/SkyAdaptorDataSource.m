@@ -85,49 +85,56 @@
   return self;
 }
 
-- (NSTimeZone *)_defaultTimeZone {
-  NSTimeZone *tz;
+/* timezone handling */
+
+- (NSString *)_defaultTimeZoneName {
   NSString *tzname;
   
   tzname = [[[self class] defaultsForContext:self->context]
                    stringForKey:@"timezone"];
   if ([tzname length] == 0) tzname = @"GMT";
-  
-  tz = [NSTimeZone timeZoneWithAbbreviation:tzname];
-  
-  return tz;
+  return tzname;
+}
+
+- (NSTimeZone *)_defaultTimeZone {
+  return [NSTimeZone timeZoneWithAbbreviation:[self _defaultTimeZoneName]];
+}
+
+- (void)_setTimeZone:(NSTimeZone *)_tz 
+  inFetchSpecification:(EOFetchSpecification *)_fSpec
+{
+  NSMutableDictionary *dict;
+    
+  dict = [[_fSpec hints] mutableCopy];
+  [dict setObject:_tz forKey:EOFetchResultTimeZone];
+  [_fSpec setHints:dict];
+  [dict release];
 }
 
 - (void)setFetchSpecification:(EOFetchSpecification *)_fSpec {
   NSTimeZone *tz;
-    
+  
   tz = [self _defaultTimeZone];
-
-  if (tz && ![_fSpec isEqual:[self fetchSpecification]]) {
-    NSMutableDictionary *dict;
-    
-    dict = [[_fSpec hints] mutableCopy];
-    [dict setObject:tz forKey:EOFetchResultTimeZone];
-    [_fSpec setHints:dict];
-    RELEASE(dict);
-  }
+  if (tz != nil && ![_fSpec isEqual:[self fetchSpecification]])
+    [self _setTimeZone:tz inFetchSpecification:_fSpec];
+  
   [super setFetchSpecification:_fSpec];
 }
 
+/* managing transactions */
+
 - (EOAdaptorChannel *)beginTransaction {
-  if (self->context == nil) {
+  if (self->context == nil)
     return [super beginTransaction];
+
+  if (![self->context isTransactionInProgress]) {
+    self->commitTransaction = YES;
+    [self->context begin];
   }
-  else {
-    if ([self->context isTransactionInProgress] == NO) {
-      self->commitTransaction = YES;
-      [self->context begin];
-    }
-    else {
-      self->commitTransaction = NO;
-    }
-    return [[self->context valueForKey:LSDatabaseChannelKey] adaptorChannel];
-  }
+  else
+    self->commitTransaction = NO;
+  
+  return [[self->context valueForKey:LSDatabaseChannelKey] adaptorChannel];
 }
 
 - (void)commitTransaction {
@@ -135,8 +142,8 @@
     [super commitTransaction];
     return;
   }
-
-  if (self->commitTransaction == YES) {
+  
+  if (self->commitTransaction) {
     self->commitTransaction = NO;
     [self->context commit];
   }

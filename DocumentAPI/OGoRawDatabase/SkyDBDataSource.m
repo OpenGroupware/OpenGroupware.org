@@ -37,6 +37,8 @@
 
 @implementation SkyDBDataSource
 
+static NSNull *null = nil;
+
 + (int)version {
   return [super version] + 0; /* v2 */
 }
@@ -44,6 +46,9 @@
   NSAssert2([super version] == 2,
             @"invalid superclass (%@) version %i !",
             NSStringFromClass([self superclass]), [super version]);
+  
+  if (null == nil)
+    null = [[NSNull null] retain];
 }
 
 - (id)context {
@@ -95,53 +100,51 @@
   return entityName;
 }
 
+- (NSSet *)newTableKeySetForAttributeArray:(NSArray *)_attrs {
+  NSArray *a;
+  
+  a = [[_attrs map:@selector(columnName)] map:@selector(lowercaseString)];
+  return [[NSSet alloc] initWithArray:a];
+}
+
 - (id)createObject {
   SkyDBDocument    *doc    = nil;
-  EOAdaptorChannel *adC    = nil;
+  EOAdaptorChannel *adC;
   NSDictionary     *dict   = nil;
-  NSString         *eName  = nil;
+  NSString         *eName;
+  NSSet         *tableKeys;
+  NSEnumerator  *enumerator = nil;
+  id            obj         = nil;
+  NSArray       *attrs;
+  id            *keys       = NULL;
+  id            *vals       = NULL;
+  unsigned      cnt;
 
   eName = [self _entityName];
   adC   = [self beginTransaction];
-  {
-    NSSet   *tableKeys = nil;
-    NSEnumerator  *enumerator = nil;
-    id            obj         = nil;
-    NSArray       *attrs      = nil;
-    id            *keys       = NULL;
-    id            *vals       = NULL;
-    int           cnt         = 0;
-    static NSNull *null       = nil;
-
-    if (null == nil)
-      null = [[NSNull null] retain];
-    
-     attrs = [adC attributesForTableName:eName];
-     if ([attrs count] == 0) {
-       [NSException raise:NSInvalidArgumentException
-		    format:@"couldn`t find table for entity named %@",
-		      eName];
-     }
-    
-    tableKeys = [[NSSet alloc] initWithArray:
-                               [[attrs map:@selector(columnName)]
-                                       map:@selector(lowercaseString)]];
-    cnt = [tableKeys count];
-    keys = calloc(cnt, sizeof(id));
-    vals = calloc(cnt, sizeof(id));
-    cnt  = 0;
-    enumerator = [tableKeys objectEnumerator];
-    while ((obj = [enumerator nextObject])) {
-      keys[cnt] = obj;
-      vals[cnt] = null;
-      cnt++;
-    }
-    dict = [NSMutableDictionary dictionaryWithObjects:vals
-                                forKeys:keys count:cnt];
-    
-    free(keys); keys = NULL;
-    free(vals); vals = NULL;
+  
+  attrs = [adC attributesForTableName:eName];
+  if ([attrs count] == 0) {
+    [NSException raise:NSInvalidArgumentException
+		 format:@"could not find table for entity named %@", eName];
   }
+  
+  tableKeys = [self newTableKeySetForAttributeArray:attrs];
+  cnt  = [tableKeys count];
+  keys = calloc(cnt + 2, sizeof(id));
+  vals = calloc(cnt + 2, sizeof(id));
+  cnt  = 0;
+  enumerator = [tableKeys objectEnumerator];
+  while ((obj = [enumerator nextObject]) != nil) {
+    keys[cnt] = obj;
+    vals[cnt] = null;
+    cnt++;
+  }
+  dict = [NSMutableDictionary dictionaryWithObjects:vals
+			      forKeys:keys count:cnt];
+    
+  if (keys != NULL) free(keys); keys = NULL;
+  if (vals != NULL) free(vals); vals = NULL;
   
   doc = [[SkyDBDocument alloc]
                         initWithDataSource:self
@@ -155,6 +158,7 @@
 - (BOOL)canProcessObject:(id)_object {
   return [_object isKindOfClass:[SkyDBDocument class]] ? YES : NO;
 }
+
 - (void)_checkObject:(id)_obj {
   if ([self canProcessObject:_obj])
     return;
@@ -164,27 +168,41 @@
 		 @"argument passed in is not a SkyDBDocument object: %@",_obj];
 }
 
+/* operations */
+
+- (NSException *)isDocumentValidForInsertion:(SkyDBDocument *)_doc {
+  if ([_doc globalID] != nil) {
+    [NSException raise:NSInvalidArgumentException
+		 format:@"document is already inserted: %@", _doc];
+  }
+  if (![_doc isComplete]) {
+    [NSException raise:NSInvalidArgumentException
+		 format:@"document is incomplete: %@", _doc];
+  }
+  return nil;
+}
+
+- (NSException *)isDocumentValidForUpdate:(SkyDBDocument *)_doc {
+  if (![_doc isValid]) {
+    [NSException raise:NSInvalidArgumentException
+		 format:@"document is incomplete: %@", _doc];
+  }
+  return nil;
+}
+
 - (void)insertObject:(id)_obj {
-  SkyDBDocument       *doc    = nil;
+  SkyDBDocument       *doc;
   NSMutableDictionary *dict   = nil;
 
   if (_obj == nil) return;
   [self _checkObject:_obj];
   doc = _obj;
   
-  if ([doc globalID] != nil) {
-    [NSException raise:NSInvalidArgumentException
-		 format:@"document is already inserted: %@", doc];
-  }
-  if (![doc isComplete]) {
-    [NSException raise:NSInvalidArgumentException
-		 format:@"document is incomplete: %@", doc];
-  }
+  [[self isDocumentValidForInsertion:doc] raise];
+  
   dict = [doc _keyValues];
   
-#if DEBUG && 0
-  NSLog(@"INSERT document:\n%@\record:\n%@", doc, dict);
-#endif
+  [self debugWithFormat:@"INSERT document:\n%@\record:\n%@", doc, dict];
   
   [super insertObject:dict];
   
@@ -199,11 +217,9 @@
   if (_obj == nil) return;
   [self _checkObject:_obj];
   doc = _obj;
+
+  [[self isDocumentValidForUpdate:doc] raise];
   
-  if (![doc isValid]) {
-    NSLog(@"ERROR[%s] try to update invalid doc", __PRETTY_FUNCTION__);
-    return;
-  }
   dict = [[[doc _keyValues] mutableCopy] autorelease];
   [dict setObject:[doc globalID] forKey:@"globalID"];
   [super updateObject:dict];

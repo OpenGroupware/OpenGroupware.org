@@ -24,6 +24,16 @@
 
 #include <GDLAccess/EOAdaptorDataSource.h>
 
+/*
+  SkyAdaptorDataSource
+  
+  TODO: document what it does.
+  
+  I think it is just a thin wrapper which does two things:
+  a) manage the connection using the LSCommandContext
+  b) set timezone information in the fetchspec
+*/
+
 @class NSDictionary;
 
 @interface SkyAdaptorDataSource : EOAdaptorDataSource

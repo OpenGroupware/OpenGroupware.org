@@ -24,6 +24,12 @@
 
 #include <OGoDocuments/SkyDocument.h>
 
+/*
+  SkyDBDocument
+  
+  Represents a database row as fetched from the SkyDBDataSource.
+*/
+
 @class NSMutableDictionary, NSDictionary, NSString, NSArray;
 @class EOGlobalID;
 @class SkyDocumentType, SkyDBDocumentType, SkyDBDataSource;

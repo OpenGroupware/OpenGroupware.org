@@ -25,14 +25,14 @@
 @implementation SkyDBDocumentType
 
 - (void)dealloc {
-  RELEASE(self->entityName);
+  [self->entityName release];
   [super dealloc];
 }
 
 /* accessors */
 
 - (void)setEntityName:(NSString *)_eName {
-  ASSIGN(self->entityName, _eName);
+  ASSIGNCOPY(self->entityName, _eName);
 }
 - (id)entityName {
   return self->entityName;
