@@ -104,7 +104,11 @@ initial()
       echo -e "Found '/etc/init.d/postgresql'"
       /etc/init.d/postgresql start
       #and check if we had success....
-      #I cannot rely on the returncode here...
+      #I cannot really rely on the returncode here...
+      #while SUSE returns the actually true exitcode, Fedora doesn't
+      #(SUSE returns indeed 1 if the start failed... Fedora returns 0 in every case
+      #where the initscript itself exited with 0 - which doesn't necessarily suggest
+      #that PostgreSQL is indeed running again :p)
       PIDS="`pgrep -u ${COMMON_PG_USER} ${COMMON_PG_PROCESSNAME}`"
       PIDS="`echo ${PIDS} | sed -r 's#\n# #g'`"
       if [ -n "${PIDS}" ]; then
@@ -119,10 +123,35 @@ initial()
       exit 1
     fi
   fi
+
+  #bail out immediately - if none exists... shouldn't happen in known cases
+  #after we had an successful initdb with running postgresql
+  if [ ! -f "${COMMON_POSTGRESQL_CONF}" ]; then
+    echo -e "Although we had an initdb... I cannot see ${COMMON_POSTGRESQL_CONF}"
+    echo -e "this indicates a probably really fatal error."
+    echo -e "I cannot proceed setting up the OGo Database ${OGO_DB_ITSELF}"
+    echo -e "... I quit!"
+    echo -e "I suggest that you consult:"
+    echo -e "  ${OGO_ML_INDEX}"
+    echo -e "  ${OGO_FAQ_INDEX}"
+    echo -e "  ${OGO_BUGZILLA_INDEX}"
+    exit 1
+  fi
+  if [ ! -f "${COMMON_PGHBA_CONF}" ]; then
+    echo -e "Although we had an initdb... I cannot see ${COMMON_PGHBA_CONF}"
+    echo -e "this indicates a probably really fatal error."
+    echo -e "I cannot proceed setting up the OGo Database ${OGO_DB_ITSELF}"
+    echo -e "... I quit!"
+    echo -e "I suggest that you consult:"
+    echo -e "  ${OGO_ML_INDEX}"
+    echo -e "  ${OGO_FAQ_INDEX}"
+    echo -e "  ${OGO_BUGZILLA_INDEX}"
+    exit 1
+  fi
   
-  if [ "x${PATCH_POSTGRESQL_CONF}" = "xYES" -a -f "${COMMON_POSTGRESQL_CONF}" ]; then
+  if [ "x${PATCH_POSTGRESQL_CONF}" = "xYES" ]; then
     echo -e "checking ${COMMON_POSTGRESQL_CONF}"
-    if [ "`grep -E '^tcpip_socket[[:space:]]*=[[:space:]]*true' ${COMMON_POSTGRESQL_CONF}`"  ]; then
+    if [ "`grep -E "^tcpip_socket[[:space:]]*=[[:space:]]*true$" ${COMMON_POSTGRESQL_CONF}`"  ]; then
       echo -e "  no patching needed for ${COMMON_POSTGRESQL_CONF}"
       echo -e "  'tcpip_socket = true' already set."
       NEED_RESTART_TO_ACTIVATE="NO"
@@ -132,19 +161,29 @@ initial()
       sed -i.${NOW} -r "s~^#tcpip_socket.*~tcpip_socket = true~" ${COMMON_POSTGRESQL_CONF}
       NEED_RESTART_TO_ACTIVATE="YES"
     fi
+  else
+    echo -e "You didn't set PATCH_POSTGRESQL_CONF to \"YES\"... is set to ${PATCH_POSTGRESQL_CONF}"
+    echo -e "So you don't want me to check your ${COMMON_POSTGRESQL_CONF}!"
+    echo -e "skipping to next step..."
   fi
   
-  if [ "x${PATCH_PGHBA_CONF}" = "xYES" -a -f "${COMMON_PGHBA_CONF}" ]; then
+  if [ "x${PATCH_PGHBA_CONF}" = "xYES" ]; then
     echo -e "checking ${COMMON_PGHBA_CONF}"
-    if [ "`grep -E '^host[[:space:]]*${OGO_DB_ITSELF}[[:space:]]*${OGO_DB_USER}[[:space:]]*127.0.0.1[[:space:]]*255.255.255.255' ${COMMON_PGHBA_CONF}`" -a "`grep -E '^local[[:space:]]*all[[:space:]]*all[[:space:]]*trust' ${COMMON_PGHBA_CONF}`" ]; then
+    if [ "`grep -E "^host[[:space:]]*${OGO_DB_ITSELF}[[:space:]]*${OGO_DB_USER}[[:space:]]*127.0.0.1[[:space:]]*255.255.255.255[[:space:]]*trust$" ${COMMON_PGHBA_CONF}`" ]; then
       echo -e "  no patching needed for ${COMMON_PGHBA_CONF}"
       #restart to activate is already either `yes` or `no`
     else
       echo -e "  need to patch ${COMMON_PGHBA_CONF}"
       echo -e "  backup current one to ${COMMON_PGHBA_CONF}.${NOW}"
-      sed -i.${NOW} -r "s~#host\s+all\s+all\s+127.0.0.1\s+255.255.255.255.*~host    ${OGO_DB_ITSELF}    ${OGO_DB_USER}    127.0.0.1    255.255.255.255    trust~;s~local\s+all\s+all\s+ident\s+sameuser~local    all    all    trust~" ${COMMON_PGHBA_CONF}
+      cp ${COMMON_PGHBA_CONF} ${COMMON_PGHBA_CONF}.${NOW}
+      #sed -i.${NOW} -r "s~#host\s+all\s+all\s+127.0.0.1\s+255.255.255.255.*~host    ${OGO_DB_ITSELF}    ${OGO_DB_USER}    127.0.0.1    255.255.255.255    trust~" ${COMMON_PGHBA_CONF}
+      echo "host  ${OGO_DB_ITSELF}    ${OGO_DB_USER}    127.0.0.1    255.255.255.255    trust" >>${COMMON_PGHBA_CONF}
       NEED_RESTART_TO_ACTIVATE="YES"
     fi
+  else
+    echo -e "You didn't set PATCH_PGHBA_CONF to \"YES\"... is set to ${PATCH_PGHBA_CONF}"
+    echo -e "So you don't want me to check your ${COMMON_PGHBA_CONF}!"
+    echo -e "skipping to next step..."
   fi
   
   # config changes are done...
@@ -228,7 +267,7 @@ initial()
     # there shouldn't be an error in the scheme itself! take care!
     IAM="`basename $0`"
     LOG="${TEMP_LOG_PATH}/${IAM}.${NOW}.log"
-    su - ${COMMON_PG_USER} -c "psql -U ${OGO_DB_USER} -d ${OGO_DB_ITSELF} -f ${COMMON_OGO_CORE_SCHEME_LOCATION}" 1>/dev/null 2>${LOG}
+    su - ${COMMON_PG_USER} -c "psql -h localhost -U ${OGO_DB_USER} -d ${OGO_DB_ITSELF} -f ${COMMON_OGO_CORE_SCHEME_LOCATION}" 1>/dev/null 2>${LOG}
     if [ -f "${LOG}" ]; then
       echo -e "checking the logfile created during scheme rollin... ${LOG}"
       LOG_SYNTAX_ERR="`grep -iE 'syntax[[:space:]]*error' ${LOG} | sed -r 's~^~  ~g'`"
