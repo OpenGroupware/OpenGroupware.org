@@ -186,9 +186,9 @@ CurrentAttr: SkyAttribute {
 }
 
 CurrentAttrValue: SkyObjectField {
-  object     = props;
-  attributes = currentAttr;
-  labels     = labels;
+  object       = props;
+  attributes   = currentAttr;
+  labels       = labels;
   privateLabel = privateLabel;
 }
 

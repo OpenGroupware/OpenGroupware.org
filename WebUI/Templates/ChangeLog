@@ -1,3 +1,8 @@
+2004-12-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWProject/SkyProjectInlineViewer.html: fixed output of extended
+	  project attributes (OGo bug #1123)
+
 2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWScheduler/LSWAppointmentViewer: removed log-tab condition
