@@ -68,7 +68,7 @@
 
 /* subfolders */
 
-- (NSArray *)toOneRelationshipKeys {
+- (NSArray *)toManyRelationshipKeys {
   static NSArray *keys = nil;
   if (keys == nil) {
     keys = [[NSArray alloc] initWithObjects:

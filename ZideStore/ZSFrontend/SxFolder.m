@@ -779,7 +779,7 @@ static NSString *cachePath  = nil;
     return [NSArray array];
   
   if ([self doExplainQueries]) {
-    [self logWithFormat:@"  deliver objects for toOneRelation: %@", 
+    [self logWithFormat:@"  deliver objects for davChildKeys: %@", 
 	    [names componentsJoinedByString:@","]];
   }
   

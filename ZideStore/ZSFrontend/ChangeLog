@@ -1,3 +1,9 @@
+2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxMsgRootFolder.m, SxUserFolder.m, SxPublicFolder.m, 
+	  SxStoreInfoFolder.m: deliver folder keys as toManyRelationshipKeys, 
+	  not as toOneRelationshipKeys (v1.3.98)
+
 2004-10-22  Helge Hess  <helge.hess@skyrix.com>
 
 	* NSObject+ExValues.m: added -exDavStringArrayValue method to return

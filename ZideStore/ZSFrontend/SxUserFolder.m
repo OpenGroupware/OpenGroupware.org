@@ -130,13 +130,19 @@ static NSDictionary *personalFolderMap = nil;
   
   return [folderRootKeys objectEnumerator];
 }
-- (NSArray *)toOneRelationshipKeys {
+- (NSArray *)toManyRelationshipKeys {
   NSEnumerator *e;
   
-  [self debugWithFormat:@"toOneRelationshipKeys was called ..."];
+  [self debugWithFormat:@"toManyRelationshipKeys was called ..."];
   if ((e = [self davChildKeysInContext:nil]) == nil)
     return nil;
   return [[[NSArray alloc] initWithObjectsFromEnumerator:e] autorelease];
+}
+
+- (NSArray *)toOneRelationshipKeys {
+  [self debugWithFormat:
+	  @"toOneRelationshipKeys was called (returns nothing) ..."];
+  return nil;
 }
 
 /* personal IPM folders */
