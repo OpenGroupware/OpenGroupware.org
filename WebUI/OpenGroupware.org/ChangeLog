@@ -1,3 +1,9 @@
+2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OpenGroupware.m: temporarily patch bundlepath for preloading of
+	  bundles (to make it work without an NGBundle being configured)
+	  (v5.1.52)
+
 2004-08-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OpenGroupware.m: look for bundles in

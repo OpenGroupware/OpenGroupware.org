@@ -1,3 +1,10 @@
+2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoResourceManager.m: look for WebServerResources in the
+	  "opengroupware.org-1.0a/share/www/" subdir of /usr/local and /usr
+	  and Resources (.strings) in the 
+	  "opengroupware.org-1.0a/share/translations/" subdir (v5.1.62)
+
 2004-08-31  Helge Hess  <helge.hess@skyrix.com>
 
 	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.61)

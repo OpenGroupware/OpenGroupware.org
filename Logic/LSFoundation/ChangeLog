@@ -1,3 +1,11 @@
+2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoContextManager.m: removed code to fetch modelname from the
+	  database, temporarily patch bundlepath for preloading of bundles (to
+	  make it work without an NGBundle being configured), added a default
+	  LSConnectionDictionary (DB: OGo, user: OGo, port: 5432, 
+	  host: localhost, no password) (v5.1.86)
+
 2004-09-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* moved header files into main directory (was in the LSFoundation

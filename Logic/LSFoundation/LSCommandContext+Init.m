@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <LSFoundation/LSCommandContext.h>
 #include <LSFoundation/OGoContextManager.h>
@@ -62,7 +61,7 @@
       return nil;
     }
     if (dbContext == nil) {
-      [self logWithFormat:@"could not create database context for db %@ !", db];
+      [self logWithFormat:@"could not create database context for db %@!", db];
       [self release];
       return nil;
     }
@@ -92,8 +91,8 @@
     
     [self takeValue:tx forKey:LSDBTransactionKey];
     
-    /* setup notifications */
 #if 0
+    /* setup notifications */
     [nc addObserver:self
         selector:@selector(handleContextNotification:)
         name:nil
@@ -103,9 +102,6 @@
         name:nil
         object:self->dbChannel];
 #endif
-
-    /* register FileManager */
-
   }
   return self;
 }

@@ -46,31 +46,32 @@ libLSFoundation_HEADER_FILES = \
 	SkyAccessHandler.h		\
 	OGoObjectLink.h			\
 	OGoObjectLinkManager.h		\
+	NGBundleManager+OGo.h		\
 
 libLSFoundation_OBJC_FILES = \
-	LSArrayFilterCommand.m		\
-	LSBaseCommand.m			\
-	LSCommandContext.m		\
-	LSCommandContext+Login.m	\
-	LSCommandContext+Init.m		\
-	LSDBArrayFilterCommand.m	\
-	LSDBFetchRelationCommand.m	\
-	LSDBObjectBaseCommand.m		\
-	LSDBObjectCommandException.m	\
-	LSDBObjectDeleteCommand.m	\
-	LSDBObjectGetCommand.m		\
-	LSDBObjectNewCommand.m		\
-	LSDBObjectNewKeyCommand.m	\
-	LSDBObjectSetCommand.m		\
-	LSDBObjectTransactionCommand.m	\
-	LSDBTransaction.m		\
-	LSMail.m			\
-	LSModuleManager.m		\
-	LSSort.m			\
-	LSSortCommand.m			\
-	LSTypeManager.m			\
-	EODatabaseChannel+LSAdditions.m	\
-	LSGetObjectForGlobalIDs.m	\
+	LSArrayFilterCommand.m			\
+	LSBaseCommand.m				\
+	LSCommandContext.m			\
+	LSCommandContext+Login.m		\
+	LSCommandContext+Init.m			\
+	LSDBArrayFilterCommand.m		\
+	LSDBFetchRelationCommand.m		\
+	LSDBObjectBaseCommand.m			\
+	LSDBObjectCommandException.m		\
+	LSDBObjectDeleteCommand.m		\
+	LSDBObjectGetCommand.m			\
+	LSDBObjectNewCommand.m			\
+	LSDBObjectNewKeyCommand.m		\
+	LSDBObjectSetCommand.m			\
+	LSDBObjectTransactionCommand.m		\
+	LSDBTransaction.m			\
+	LSMail.m				\
+	LSModuleManager.m			\
+	LSSort.m				\
+	LSSortCommand.m				\
+	LSTypeManager.m				\
+	EODatabaseChannel+LSAdditions.m		\
+	LSGetObjectForGlobalIDs.m		\
 	SkyObjectPropertyManager.m		\
 	SkyObjectPropertyManagerHandler.m	\
 	SkyObjectPropertyManager+Internals.m	\
@@ -87,6 +88,7 @@ libLSFoundation_OBJC_FILES = \
 	SkyPropertyValues.m			\
 	OGoObjectLink.m				\
 	OGoObjectLinkManager.m			\
+	NGBundleManager+OGo.m			\
 
 libLSFoundation_INCLUDE_DIRS             = -ILSFoundation
 libLSFoundation_HEADER_FILES_DIR         = .

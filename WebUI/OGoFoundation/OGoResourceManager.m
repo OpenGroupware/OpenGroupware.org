@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: OGoResourceManager.m 1 2004-08-20 11:17:52Z znek $
 
 #include "OGoResourceManager.h"
 #include "common.h"
@@ -45,6 +44,71 @@
 @implementation OGoResourceManager
 
 static BOOL debugOn = NO;
+static NSArray  *wsPathes = nil;
+static NSString *suffix = nil;
+static NSString *prefix = nil;
+
+/* locate resource directories */
+
++ (NSArray *)findResourceDirectoryPathesWithName:(NSString *)_name
+  fhsName:(NSString *)_fhs
+{
+  NSFileManager  *fm;
+  NSMutableArray *ma;
+  NSDictionary   *env;
+  NSString       *key;
+  BOOL           isDir;
+  id tmp;
+
+  fm  = [NSFileManager defaultManager];
+  ma  = [NSMutableArray arrayWithCapacity:8];
+  env = [[NSProcessInfo processInfo] environment];
+    
+  if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
+    tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
+  tmp = [tmp componentsSeparatedByString:@":"];
+  tmp = [tmp objectEnumerator];
+  
+  while ((key = [tmp nextObject])) {
+    NSString *tmp;
+    
+    if ((tmp = [env objectForKey:key]) == nil)
+      continue;
+    
+    if (![tmp hasSuffix:@"/"])
+      tmp = [tmp stringByAppendingString:@"/"];
+      
+    tmp = [tmp stringByAppendingString:_name];
+    if ([ma containsObject:tmp]) continue;
+      
+    if (![fm fileExistsAtPath:tmp isDirectory:&isDir])
+      continue;
+      
+    if (!isDir) continue;
+    
+    [ma addObject:tmp];
+  }
+
+  /* hack in FHS pathes */
+  
+  key = @"/usr/local/share/opengroupware.org-1.0a/www/";
+  if ([fm fileExistsAtPath:key isDirectory:&isDir]) {
+    if (isDir) 
+      [ma addObject:key];
+    else
+      [self logWithFormat:@"path is not a directory: %@", key];
+  }
+  
+  key = @"/usr/share/opengroupware.org-1.0a/www/";
+  if ([fm fileExistsAtPath:key isDirectory:&isDir]) {
+    if (isDir) 
+      [ma addObject:key];
+    else
+      [self logWithFormat:@"path is not a directory: %@", key];
+  }
+  
+  return ma;
+}
 
 + (int)version {
   return [super version] + 0 /* v4 */;
@@ -54,11 +118,19 @@ static BOOL debugOn = NO;
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   if (isInitialized) return;
   isInitialized = YES;
+  
   NSAssert2([super version] == 4,
 	    @"invalid superclass (%@) version %i !",
 	    NSStringFromClass([self superclass]), [super version]);
   
   debugOn = [ud boolForKey:@"OGoResourceManagerDebugEnabled"];
+  suffix  = [[ud stringForKey:@"WOApplicationSuffix"] copy];
+  prefix  = [[ud stringForKey:@"WOResourcePrefix"]    copy];
+  
+  wsPathes = [[self findResourceDirectoryPathesWithName:
+		      @"WebServerResources/" fhsName:@"www/"] copy];
+  if (debugOn)
+    [self debugWithFormat:@"WebServerResources pathes: %@", wsPathes];
 }
 
 - (void)dealloc {
@@ -75,48 +147,9 @@ static BOOL debugOn = NO;
   return [NGBundleManager defaultBundleManager];
 }
 
-/* locate resource directories */
-
-- (NSArray *)findResourceDirectoryPathesWithName:(NSString *)_name {
-  NSFileManager  *fm;
-  NSMutableArray *ma;
-  NSDictionary   *env;
-  NSString       *key;
-  id tmp;
-
-  fm  = [NSFileManager defaultManager];
-  ma  = [NSMutableArray arrayWithCapacity:8];
-  env = [[NSProcessInfo processInfo] environment];
-    
-  if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
-    tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
-  tmp = [tmp componentsSeparatedByString:@":"];
-  tmp = [tmp objectEnumerator];
-    
-  while ((key = [tmp nextObject])) {
-    NSString *tmp;
-    BOOL     isDir;
-      
-    if ((tmp = [env objectForKey:key]) == nil)
-      continue;
-      
-    if (![tmp hasSuffix:@"/"])
-      tmp = [tmp stringByAppendingString:@"/"];
-      
-    tmp = [tmp stringByAppendingString:_name];
-    if ([ma containsObject:tmp]) continue;
-      
-    if (![fm fileExistsAtPath:tmp isDirectory:&isDir])
-      continue;
-      
-    if (!isDir) continue;
-    
-    [ma addObject:tmp];
-  }
-  return ma;
-}
-
-- (NSString *)findResourceDirectoryNamed:(NSString *)_name {
+- (NSString *)findResourceDirectoryNamed:(NSString *)_name
+  fhsName:(NSString *)_fhs
+{
   static NSDictionary *env = nil;
   NSFileManager *fm;
   NSString      *path;
@@ -124,17 +157,27 @@ static BOOL debugOn = NO;
   
   if (env == nil) env = [[[NSProcessInfo processInfo] environment] retain];
   fm = [NSFileManager defaultManager];
+
+  /* look in GNUstep pathes */
   
   if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
     tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
   tmp = [tmp componentsSeparatedByString:@":"];
   
-  // TODO: add MacOSX support, add FHS fallback (/usr/share/)
-  
   tmp = [tmp objectEnumerator];
   while ((path = [tmp nextObject])) {
     path = [path stringByAppendingPathComponent:_name];
     
+    if ([fm fileExistsAtPath:path])
+      return path;
+  }
+
+  /* look in FHS pathes */
+  
+  tmp = [NSArray arrayWithObjects:@"/usr/local", @"/usr", nil];
+  tmp = [tmp objectEnumerator];
+  while ((path = [tmp nextObject])) {
+    path = [path stringByAppendingPathComponent:_fhs];
     if ([fm fileExistsAtPath:path])
       return path;
   }
@@ -148,9 +191,6 @@ static BOOL debugOn = NO;
   language:(NSString *)_language
   applicationName:(NSString *)_appName
 {
-  static NSArray  *wsPathes = nil;
-  static NSString *suffix = nil;
-  static NSString *prefix = nil;
   NSString      *key;
   NSString      *url;
   NSEnumerator  *e;
@@ -162,7 +202,7 @@ static BOOL debugOn = NO;
                     _name,
                     _language?_language:@"-"];
   
-  if ((url = [self->keyToURL objectForKey:key])) {
+  if ((url = [self->keyToURL objectForKey:key]) != nil) {
     if (![url isNotNull])
       return nil;
     return url;
@@ -171,24 +211,6 @@ static BOOL debugOn = NO;
   if (debugOn) [self logWithFormat:@"LOOKUP '%@'", _name];
   
   fm  = [NSFileManager defaultManager];
-  
-  if (suffix == nil) {
-    suffix = [[NSUserDefaults standardUserDefaults]
-                              stringForKey:@"WOApplicationSuffix"];
-  }
-  if (prefix == nil) {
-    prefix = [[NSUserDefaults standardUserDefaults]
-                              stringForKey:@"WOResourcePrefix"];
-  }
-  
-  /* setup available WebServerResources locations */
-  
-  if (wsPathes == nil) {
-    wsPathes = [[self findResourceDirectoryPathesWithName:
-			@"WebServerResources/"] copy];
-    if (debugOn)
-      [self debugWithFormat:@"WebServerResources pathes: %@", wsPathes];
-  }
   
   /* check for framework resources */
   
@@ -621,11 +643,13 @@ static NSNull *null = nil;
   if (_tableName == nil) _tableName = @"default";
   
   fm = [NSFileManager defaultManager];
-  if ((rpath = [self findResourceDirectoryNamed:@"Resources"]) == nil) {
+  rpath = [self findResourceDirectoryNamed:@"Resources" 
+		fhsName:@"share/opengroupware.org-1.0a/translations/"];
+  if (rpath == nil) {
     [self logWithFormat:@"missing $GNUSTEP_USER_ROOT/Resources directory ..."];
     return nil;
   }
-
+  
   /* look into language projects .. */
   
   e = [_languages objectEnumerator];

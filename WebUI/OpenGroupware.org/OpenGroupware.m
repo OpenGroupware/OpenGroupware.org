@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: OpenGroupware.m 11 2004-08-21 02:07:00Z helge $
 
 #if GNU_RUNTIME
 #  include <objc/sarray.h>
@@ -57,6 +56,7 @@ static BOOL UseRefreshPageForExternalLink = NO;
 static BOOL coreOn                    = NO;
 static BOOL logBundleLoading          = NO;
 static BOOL loadWebUIBundlesOnStartup = YES;
+static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
 
 + (int)version {
   return [super version];
@@ -96,6 +96,8 @@ static BOOL loadWebUIBundlesOnStartup = YES;
 }
 
 - (void)loadBundlesOfType:(NSString *)_type inPath:(NSString *)_p {
+  // TODO: use NGBundleManager+OGo in LSFoundation
+  //       => cannot ATM, because we also register in the product registry
   SoProductRegistry *reg;
   NGBundleManager *bm;
   NSFileManager   *fm;
@@ -105,7 +107,7 @@ static BOOL loadWebUIBundlesOnStartup = YES;
   reg = [SoProductRegistry sharedProductRegistry];
   
   if (logBundleLoading)
-    NSLog(@"  load bundles of type %@ in path %@", _type, _p);
+    NSLog(@"  load bundles of type '%@' in path: '%@'", _type, _p);
   bm = [NGBundleManager defaultBundleManager];
   fm = [NSFileManager defaultManager];
   e  = [[fm directoryContentsAtPath:_p] objectEnumerator];
@@ -133,25 +135,49 @@ static BOOL loadWebUIBundlesOnStartup = YES;
     [reg registerProductBundle:bundle];
   }
 }
+- (NSString *)bundlePathSpecifier {
+  return [[NSUserDefaults standardUserDefaults]
+	                  stringForKey:@"OGoBundlePathSpecifier"];
+}
 - (void)preloadBundles {
-  NSEnumerator  *e;
-  NSString      *p;
-  NSArray       *pathes;
-  NSString      *OGoBundlePathSpecifier;
-
-  OGoBundlePathSpecifier = [[NSUserDefaults standardUserDefaults]
-			     stringForKey:@"OGoBundlePathSpecifier"];
+  NGBundleManager *bm;
+  NSEnumerator *e;
+  NSString     *p;
+  NSArray      *pathes;
+  NSString     *OGoBundlePathSpecifier;
+  NSArray      *oldPathes;
   
+  OGoBundlePathSpecifier = [self bundlePathSpecifier];
+
+  /* find pathes */
+  
+  // TODO: use "Skyrix5" for Skyrix5 (patch in migration script)
   pathes = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,
 					       NSAllDomainsMask,
 					       YES);
-  pathes = [pathes arrayByAddingObject:@"/usr/local/lib/opengroupware.org/"];
-  pathes = [pathes arrayByAddingObject:@"/usr/lib/opengroupware.org/"];
+  if ([FHSOGoBundleDir length] > 0) {
+    // TODO: should be some search path, eg LD_LIBRARY_SEARCHPATH?
+    p      = [@"/usr/local/" stringByAppendingPathComponent:FHSOGoBundleDir];
+    p      = [p stringByAppendingPathComponent:@"webui/"];
+    pathes = [pathes arrayByAddingObject:p];
+    p      = [@"/usr/" stringByAppendingString:FHSOGoBundleDir];
+    p      = [p stringByAppendingPathComponent:@"webui/"];
+    pathes = [pathes arrayByAddingObject:p];
+  }
   
-  // TODO: use "Skyrix5" for Skyrix5 (patch in migration script)
+  /* temporarily patch bundle search path */
+  
+  bm = [NGBundleManager defaultBundleManager];
+  oldPathes = [[bm bundleSearchPaths] copy];
+  if ([pathes count] > 0) {
+    /* add default fallback */
+    [bm setBundleSearchPaths:[pathes arrayByAddingObjectsFromArray:oldPathes]];
+  }
+  
+  /* load WebUI bundles */
   
   if (loadWebUIBundlesOnStartup) {
-    if (logBundleLoading) NSLog(@"load command bundles ...");
+    if (logBundleLoading) NSLog(@"load WebUI plugins ...");
     e = [pathes objectEnumerator];
     while ((p = [e nextObject])) {
       p = [p stringByAppendingPathComponent:OGoBundlePathSpecifier];
@@ -160,7 +186,14 @@ static BOOL loadWebUIBundlesOnStartup = YES;
       [self loadBundlesOfType:@"lso" inPath:p];
     }
   }
-
+  
+  /* unpatch bundle search path */
+  
+  [bm setBundleSearchPaths:oldPathes];
+  [oldPathes release];
+  
+  /* load SoProducts */
+  
   [[SoProductRegistry sharedProductRegistry] loadAllProducts];
 }
 
@@ -258,10 +291,10 @@ static BOOL loadWebUIBundlesOnStartup = YES;
     [self _applyMinimumActiveSessionCount];
 
     /* setup LSOffice server */
-
+    
     if ((self->lso = [[OGoContextManager defaultManager] retain]) == nil) {
-      NSLog(@"Could not setup OGoContextManager "
-            @"(probably not yet configured) !");
+      [self logWithFormat:@"Could not setup OGoContextManager "
+            @"(DB probably not yet configured)!"];
     }
     
     [self _setupRequestHandlers];
@@ -288,7 +321,7 @@ static BOOL loadWebUIBundlesOnStartup = YES;
     if ([self->lso isLoginAuthorized:@"root" password:@""])
       [self logWithFormat:@"root has no password, you need to assign one!"];
     
-    [self logWithFormat:@"SKYRiX instance initialized .."];
+    [self logWithFormat:@"OpenGroupware.org instance initialized."];
   }
   return self;
 }

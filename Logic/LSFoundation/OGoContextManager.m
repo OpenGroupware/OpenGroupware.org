@@ -22,6 +22,7 @@
 #include "OGoContextManager.h"
 #include "OGoContextSession.h"
 #include "LSBundleCmdFactory.h"
+#include "NGBundleManager+OGo.h"
 #include "common.h"
 #include <NGExtensions/NGBundleManager.h>
 #include <LSFoundation/LSFoundation.h>
@@ -54,94 +55,91 @@ static BOOL     logBundleLoading               = NO;
 static BOOL     loadCommandBundlesOnStartup    = YES;
 static BOOL     loadDataSourceBundlesOnStartup = YES;
 static NSString *OGoBundlePathSpecifier        = nil;
+static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
 
 + (void)registerInUserDefaults:(NSUserDefaults *)_defs {
-  NSArray *timeZoneNames;
+  NSArray      *timeZoneNames;
+  NSDictionary *defs;
+  NSDictionary *condict;
   
   // TODO: why are the timezone names declared in this place? Sounds like
   //       a task for the user-interface?!
+  
+  condict = [NSDictionary dictionaryWithObjectsAndKeys:
+			    @"OGo",       @"userName",
+			    @"OGo",       @"databaseName",
+  			    @"5432",      @"port",
+			    @"localhost", @"hostName",
+			  nil];
+  
   timeZoneNames = [NSArray arrayWithObjects:
 			     @"MET", @"GMT", @"PST", @"EST", @"CST", nil];
-  [_defs registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
-           @"",                           @"LSAuthLDAPServer",
-           @"c=DE",                       @"LSAuthLDAPServerRoot",
-           [NSNumber numberWithInt:389],  @"LSAuthLDAPServerPort",
-           @"uid",                        @"LSLDAPLoginField",
-           @"OGoModel",                   @"LSOfficeModel",
-           timeZoneNames,                 @"LSTimeZones",
-           @"OpenGroupware.org-1.0a",     @"OGoBundlePathSpecifier",
-           [NSNumber numberWithBool:YES], @"LSSessionAccountLogEnabled",
-           nil]];
+  defs = [NSDictionary dictionaryWithObjectsAndKeys:
+           @"",                            @"LSAuthLDAPServer",
+           @"c=DE",                        @"LSAuthLDAPServerRoot",
+           [NSNumber numberWithInt:389],   @"LSAuthLDAPServerPort",
+           @"uid",                         @"LSLDAPLoginField",
+           @"OGoModel",                    @"LSOfficeModel",
+           timeZoneNames,                  @"LSTimeZones",
+	   condict,                        @"LSConnectionDictionary",
+           @"OpenGroupware.org-1.0a",      @"OGoBundlePathSpecifier",
+           @"lib/opengroupware.org-1.0a/", @"OGoFHSBundleSubPath",
+           [NSNumber numberWithBool:YES],  @"LSSessionAccountLogEnabled",
+          nil];
+  [_defs registerDefaults:defs];
 }
 
-+ (void)loadBundlesOfType:(NSString *)_type inPath:(NSString *)_p {
-  NGBundleManager *bm;
-  NSFileManager   *fm;
-  NSEnumerator *e;
-  NSString     *p;
-  
-  if (logBundleLoading)
-    NSLog(@"  load bundles of type %@ in path %@", _type, _p);
-  bm = [NGBundleManager defaultBundleManager];
-  fm = [NSFileManager defaultManager];
-  e  = [[fm directoryContentsAtPath:_p] objectEnumerator];
-  
-  while ((p = [e nextObject])) {
-    NSBundle *bundle;
-    
-    if (![[p pathExtension] isEqualToString:_type])
-      continue;
-    p = [_p stringByAppendingPathComponent:p];
-    
-    if ((bundle = [bm bundleWithPath:p]) == nil)
-      continue;
-    
-    if (![bm loadBundle:bundle]) {
-      NSLog(@"could not load bundle: %@", bundle);
-      continue;
-    }
-    
-    if (logBundleLoading) {
-      NSLog(@"    did load bundle: %@", 
-	    [[bundle bundlePath] lastPathComponent]);
-    }
-  }
-}
 + (void)loadCommandBundles {
-  NSEnumerator  *e;
-  NSString      *p;
-  NSArray       *pathes;
+  NGBundleManager *bm;
+  NSString     *p;
+  NSArray      *pathes;
+  NSArray      *oldPathes;
+
+  /* find pathes */
   
+  // TODO: use "Skyrix5" for Skyrix5 (patch in migration script)
   pathes = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,
 					       NSAllDomainsMask,
 					       YES);
-  pathes =
-    [pathes arrayByAddingObject:@"/usr/local/lib/opengroupware.org-1.0a/"];
-  pathes = [pathes arrayByAddingObject:@"/usr/lib/opengroupware.org-1.0a/"];
-  
-  // TODO: use "Skyrix5" for Skyrix5 (patch in migration script)
-  
-  if (loadCommandBundlesOnStartup) {
-    if (logBundleLoading) NSLog(@"load command bundles ...");
-    e = [pathes objectEnumerator];
-    while ((p = [e nextObject])) {
-      p = [p stringByAppendingPathComponent:OGoBundlePathSpecifier];
-      [self loadBundlesOfType:@"cmd" inPath:p];
-      p = [p stringByAppendingPathComponent:@"Commands"];
-      [self loadBundlesOfType:@"cmd" inPath:p];
-    }
+  if ([FHSOGoBundleDir length] > 0) {
+    // TODO: should be some search path, eg LD_LIBRARY_SEARCHPATH?
+    NSString *bp;
+    
+    bp     = [@"/usr/local/" stringByAppendingPathComponent:FHSOGoBundleDir];
+    p      = [bp stringByAppendingPathComponent:@"commands"];
+    pathes = [pathes arrayByAddingObject:p];
+    p      = [bp stringByAppendingPathComponent:@"datasources"];
+    pathes = [pathes arrayByAddingObject:p];
+    
+    bp     = [@"/usr/" stringByAppendingPathComponent:FHSOGoBundleDir];
+    p      = [bp stringByAppendingPathComponent:@"commands"];
+    pathes = [pathes arrayByAddingObject:p];
+    p      = [bp stringByAppendingPathComponent:@"datasources"];
+    pathes = [pathes arrayByAddingObject:p];
   }
 
-  if (loadDataSourceBundlesOnStartup) {
-    if (logBundleLoading) NSLog(@"load datasource bundles ...");
-    e = [pathes objectEnumerator];
-    while ((p = [e nextObject])) {
-      p = [p stringByAppendingPathComponent:OGoBundlePathSpecifier];
-      [self loadBundlesOfType:@"ds" inPath:p];
-      p = [p stringByAppendingPathComponent:@"DataSources"];
-      [self loadBundlesOfType:@"ds" inPath:p];
-    }
+  /* temporarily patch bundle search path */
+  
+  bm = [NGBundleManager defaultBundleManager];
+  oldPathes = [[bm bundleSearchPaths] copy];
+  if ([pathes count] > 0) {
+    /* add default fallback */
+    [bm setBundleSearchPaths:[pathes arrayByAddingObjectsFromArray:oldPathes]];
   }
+  
+  /* load bundles */
+  
+  if (loadCommandBundlesOnStartup) {
+    [bm loadBundlesOfType:@"model" typeDirectory:@"Models"   inPaths:pathes];
+    [bm loadBundlesOfType:@"cmd"   typeDirectory:@"Commands" inPaths:pathes];
+  }
+  if (loadDataSourceBundlesOnStartup)
+    [bm loadBundlesOfType:@"ds" typeDirectory:@"DataSources" inPaths:pathes];
+  
+  /* unpatch bundle search path */
+  
+  [bm setBundleSearchPaths:oldPathes];
+  [oldPathes release];
 }
 
 + (void)initialize {
@@ -152,6 +150,8 @@ static NSString *OGoBundlePathSpecifier        = nil;
   
   [self registerInUserDefaults:[NSUserDefaults standardUserDefaults]];
   OGoBundlePathSpecifier = [[ud stringForKey:@"OGoBundlePathSpecifier"] copy];
+  FHSOGoBundleDir        = [[ud stringForKey:@"OGoFHSBundleSubPath"]    copy];
+  logBundleLoading       = [ud boolForKey:@"OGoLogBundleLoading"];
   [self loadCommandBundles];
   
   LSUseLowercaseLogin    = [ud boolForKey:@"LSUseLowercaseLogin"] ? 1 : 0;
@@ -167,45 +167,6 @@ static NSString *OGoBundlePathSpecifier        = nil;
 - (NSException *)_logSetupConnectException:(NSException *)_exception {
   NSLog(@"connect failed: %@", _exception);
   return nil;
-}
-
-- (NSString *)_fetchModelNameFromDatabase:(BOOL *)_canConnect_ {
-  NSString *modelName = nil;
-  
-  NS_DURING {
-    if (![self->adChannel isOpen]) {
-        if (![self->adChannel openChannel]) {
-          modelName = nil;
-          *_canConnect_ = NO;
-        }
-    }
-    if (*_canConnect_) {
-      if ([self->adChannel evaluateExpression:
-                 @"SELECT model_name FROM object_model"]) {
-	NSArray      *attrs;
-	NSDictionary *record;
-
-	attrs = [self->adChannel describeResults];
-	record = [self->adChannel fetchAttributes:attrs withZone:NULL];
-	[self->adChannel cancelFetch];
-
-	modelName = [record objectForKey:@"modelName"];
-	[self->adContext commitTransaction];
-      }
-      [self->adChannel closeChannel];
-    }
-    else {
-      [self logWithFormat:@"could not begin transaction."];
-      modelName = nil;
-    }
-  }
-  NS_HANDLER {
-    [[self _logSetupConnectException:localException] raise];
-    *_canConnect_ = NO;
-  }
-  NS_ENDHANDLER;
-  
-  return modelName;
 }
 
 - (BOOL)processModelWithName:(NSString *)modelName 
@@ -315,15 +276,10 @@ static NSString *OGoBundlePathSpecifier        = nil;
   *(&modelName) = /* eg OpenGroupware.org_PostgreSQL or Skyrix5_PostgreSQL */
     [OGoBundlePathSpecifier stringByAppendingString:@"_PostgreSQL"];
   
-  if ([defs objectForKey:@"LSModelName"]) {
-    *(&modelName) = [defs objectForKey:@"LSModelName"];
-    
-    [self debugWithFormat:@"using configured model name %@", modelName];
-  }
-  else
-    modelName = [self _fetchModelNameFromDatabase:&canConnect];
+  *(&modelName) = [defs stringForKey:@"LSModelName"];
+  [self debugWithFormat:@"using configured model name %@", modelName];
   
-  if (modelName) {
+  if (modelName != nil) {
     canConnect = [self processModelWithName:modelName
 		       connectionDictionary:conDict];
   }
@@ -342,7 +298,7 @@ static NSString *OGoBundlePathSpecifier        = nil;
         selector:@selector(_requireClassDescriptionForClass:)
         name:@"EOClassDescriptionNeededForClassNotification"
         object:nil];
-
+    
     if (![self setupAdaptor]) {
       [self release];
       return nil;
@@ -390,7 +346,7 @@ static NSString *OGoBundlePathSpecifier        = nil;
 
   c = [_notification object];
   className = NSStringFromClass(c);
-
+  
   if (![className hasPrefix:@"LS"])
     return;
 
