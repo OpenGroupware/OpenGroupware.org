@@ -19,9 +19,12 @@
   02111-1307, USA.
 */
 
-#include <Foundation/Foundation.h>
+#import <Foundation/Foundation.h>
+
 #include <EOControl/EOControl.h>
-#include <LSFoundation/LSFoundation.h>
+#include <NGExtensions/NGExtensions.h>
 #include <NGExtensions/NGBundleManager.h>
 #include <NGExtensions/NSNull+misc.h>
 #include <GDLAccess/EOAdaptorChannel.h>
+
+#include <LSFoundation/LSFoundation.h>

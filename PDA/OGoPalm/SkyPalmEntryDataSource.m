@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoPalm/SkyPalmEntryDataSource.h>
 #include <OGoPalm/SkyPalmDateDataSource.h>
@@ -75,6 +74,16 @@
 @end
 
 @implementation SkyPalmEntryDataSource
+
+static NSArray *dbs = nil;
+static NSMutableDictionary *devicesCache = nil;
+
++ (void)initialize {
+  dbs = [[NSArray alloc] initWithObjects:
+                             @"AddressDB", @"DatebookDB",
+                             @"MemoDB", @"ToDoDB", nil];
+  devicesCache = [[NSMutableDictionary alloc] initWithCapacity:16];
+}
 
 + (SkyPalmEntryDataSource *)dataSourceWithContext:(LSCommandContext *)_ctx
   forPalmDb:(NSString *)_palmDb
@@ -146,30 +155,34 @@
 }
 
 - (void)dealloc {
-  RELEASE(self->categoryDataSource);
-  RELEASE(self->context);
-  RELEASE(self->ds);
-  RELEASE(self->sortOrderings);
-  RELEASE(self->devicesForUser);
+  [self->categoryDataSource release];
+  [self->context        release];
+  [self->ds             release];
+  [self->sortOrderings  release];
+  [self->devicesForUser release];
   [super dealloc];
 }
 
 /* default accessors */
 
 - (NSString *)entityName {
-  NSLog(@"entityName NOT overwriten ... this won't work !");
+  [self logWithFormat:@"ERROR(%s): subclass MUST override this method.",
+	  __PRETTY_FUNCTION__];
   return nil;
 }
 - (NSString *)palmDb {
-  NSLog(@"palmDb NOT overwriten ... this won't work !");
+  [self logWithFormat:@"ERROR(%s): subclass MUST override this method.",
+	  __PRETTY_FUNCTION__];
   return nil;
 }
 - (SkyPalmDocument *)allocDocument {
-  NSLog(@"allocDocument NOT overwriten ... this won't work !");
+  [self logWithFormat:@"ERROR(%s): subclass MUST override this method.",
+	  __PRETTY_FUNCTION__];
   return [SkyPalmDocument alloc];
 }
 - (NSDictionary *)_bulkFetchSkyrixRecords:(NSArray *)_docs {
-  NSLog(@"_bulkFetchSkyrixRecords NOT overwriten!");
+  [self logWithFormat:@"ERROR(%s): subclass MUST override this method.",
+	  __PRETTY_FUNCTION__];
   return [NSDictionary dictionary];
 }
 
@@ -182,20 +195,22 @@
 }
 - (void)_setFetchSpecification:(EOFetchSpecification *)_spec {
   // no overwriting
-  if (![_spec isEqual:[self fetchSpecification]]) {
+  if ([_spec isEqual:[self fetchSpecification]])
+    return;
 
-    [self setSortOrderings:[_spec sortOrderings]];
-    [_spec setSortOrderings:nil];
+  [self setSortOrderings:[_spec sortOrderings]];
+  [_spec setSortOrderings:nil];
    
-    [self->ds setFetchSpecification:_spec];
-    [self postDataSourceChangedNotification];
-  }
+  [self->ds setFetchSpecification:_spec];
+  [self postDataSourceChangedNotification];
 }
 - (void)setFetchSpecification:(EOFetchSpecification *)_spec {
   [self _setFetchSpecification:_spec];
 }
 - (EOFetchSpecification *)fetchSpecification {
-  EOFetchSpecification *spec = [self->ds fetchSpecification];
+  EOFetchSpecification *spec;
+
+  spec = [self->ds fetchSpecification];
   [spec setSortOrderings:self->sortOrderings];
   return spec;
 }
@@ -229,14 +244,11 @@
 }
 
 - (NSArray *)_fetchDictionarys {
-  NSArray              *objs = nil;
-
-  objs = [self->ds fetchObjects];
-  return objs;
+  return [self->ds fetchObjects];
 }
 - (NSArray *)fetchObjects {
-  NSArray        *objs = nil;
-  NSMutableArray *docs = nil;
+  NSArray        *objs;
+  NSMutableArray *docs;
   id             one   = nil;
   BOOL           fetchCats = YES;
   BOOL           fetchSkyRecs = NO;
@@ -252,16 +264,16 @@
   }
 
   {
-    id hints, tmp;
+    NSDictionary *hints;
+    id tmp;
+    
     hints = [[self fetchSpecification] hints];
-    tmp   = [hints valueForKey:@"fetchCategories"];
-    if (tmp)
+    if ((tmp = [hints valueForKey:@"fetchCategories"]) != nil)
       fetchCats = [tmp boolValue];
-    tmp   = [hints valueForKey:@"fetchSkyrixRecords"];
-    if (tmp)
+    if ((tmp = [hints valueForKey:@"fetchSkyrixRecords"]) != nil)
       fetchSkyRecs = [tmp boolValue];
   }
-
+  
   if (fetchCats)
     [self assignCategories:docs];
 
@@ -295,9 +307,9 @@
     }
   }
   
-  if (self->sortOrderings != nil) {
+  if (self->sortOrderings != nil)
     return [docs sortedArrayUsingKeyOrderArray:self->sortOrderings];
-  }
+  
   return docs;
 }
 
@@ -400,33 +412,33 @@
                                qualifier:qual sortOrderings:nil];
 }
 
-- (NSArray *)devicesForUser:(NSNumber *)_compId
-                     palmDb:(NSString *)_palmDb {
-  NSEnumerator   *e    = nil;
-  NSMutableArray *devs = [NSMutableArray array];
+- (NSArray *)devicesForUser:(NSNumber *)_compId palmDb:(NSString *)_palmDb {
+  NSEnumerator   *e;
+  NSMutableArray *devs;
   id             dev;
-  SkyPalmEntryDataSource *das = nil;
-  id             hints = nil;
-  id             fetchSpec = nil;
+  SkyPalmEntryDataSource *das;
+  NSMutableDictionary  *hints;
+  EOFetchSpecification *fetchSpec;
+  
+  devs = [NSMutableArray arrayWithCapacity:4];
+  das = [SkyPalmEntryDataSource dataSourceWithContext:self->context
+				forPalmDb:_palmDb];
 
-  das =
-    [SkyPalmEntryDataSource dataSourceWithContext:self->context
-                            forPalmDb:_palmDb];
-
-  fetchSpec = [self _deviceFetchSpecForCompany:_compId
-                    dataSource:das];
+  /* setup fetch spec */
+  
+  fetchSpec = [self _deviceFetchSpecForCompany:_compId dataSource:das];
   hints     = [[fetchSpec hints] mutableCopy];
   if (hints == nil)
     hints = [[NSMutableDictionary alloc] initWithCapacity:1];
-  [hints setObject:[NSNumber numberWithBool:NO]
-         forKey:@"fetchCategories"];
+  [hints setObject:[NSNumber numberWithBool:NO] forKey:@"fetchCategories"];
   [fetchSpec setHints:hints];
-  RELEASE(hints);
+  [hints release]; hints = nil;
   
   [das setFetchSpecification:fetchSpec];
-
-  e = [[das fetchObjects] objectEnumerator];
   
+  /* fetch */
+  
+  e = [[das fetchObjects] objectEnumerator];
   while ((dev = [e nextObject])) {
     dev = [dev deviceId];
     if (![devs containsObject:dev])
@@ -435,66 +447,56 @@
   return devs;
 }
 - (NSArray *)devicesForUser:(NSNumber *)_compId {
+  NSArray *devs = nil;
   NSArray *array;
   
   if (_compId == nil)
     return [NSArray array];
   
-  if (!(array = [self->devicesForUser objectForKey:_compId])) {
-    NSArray *devs = nil;
-    static NSArray *dbs = nil;
-    static NSMutableDictionary *devicesCache = nil;
-    /*
-     * !!!!!! WARNING !!!!
-     * might be a problem for multipalm possibilities
-     * has to be checked!!!!
-     * but for now it's in here for speed enhancement
-     */
+  if ((array = [self->devicesForUser objectForKey:_compId]) != nil)
+    return array;
 
-    if (self->devicesForUser == nil)
-      self->devicesForUser = [[NSMutableDictionary alloc] initWithCapacity:64];
+  /*
+    TODO:
+    might be a problem for multipalm possibilities
+    has to be checked!!!!
+    but for now it's in here for speed enhancement
+  */
+
+  if (self->devicesForUser == nil)
+    self->devicesForUser = [[NSMutableDictionary alloc] initWithCapacity:64];
     
-    if (devicesCache == nil) {
-      devicesCache = [[NSMutableDictionary alloc] initWithCapacity:16];
-    }
-    else {
-      devs = [devicesCache valueForKey:[_compId stringValue]];
-      if (devs != nil) return devs;
-    }
-
-    if (dbs == nil)
-      dbs = [[NSArray alloc] initWithObjects:
-                             @"AddressDB", @"DatebookDB",
-                             @"MemoDB", @"ToDoDB", nil];
-
-    devs = [self devicesForUser:_compId palmDb:[self palmDb]];
+  devs = [devicesCache valueForKey:[_compId stringValue]];
+  if (devs != nil) return devs;
   
+  devs = [self devicesForUser:_compId palmDb:[self palmDb]];
+  if ((devs == nil) || ([devs count] == 0)) {
+    NSEnumerator *e;
+    id           one;
+    
+    e  = [dbs objectEnumerator];
+    while ((one = [e nextObject]) != nil) {
+      if (![one isEqualToString:[self palmDb]]) {
+	devs = [self devicesForUser:_compId palmDb:one];
+	if ((devs != nil) && ([devs count] > 0))
+	  break;
+      }
+    }
+      
     if ((devs == nil) || ([devs count] == 0)) {
-      NSEnumerator *e  = [dbs objectEnumerator];
-      id           one = nil;
-    
-      while ((one = [e nextObject])) {
-        if (![one isEqualToString:[self palmDb]]) {
-          devs = [self devicesForUser:_compId palmDb:one];
-          if ((devs != nil) && ([devs count] > 0))
-            break;
-        }
-      }
-
-      if ((devs == nil) || ([devs count] == 0)) {
-        NSLog(@"%s WARNING: no valid deviceIds in the palm entities "
-              @"(%@) for actual user!",
-              __PRETTY_FUNCTION__, [dbs componentsJoinedByString:@", "]);
-        // no valid devices found for user
-        return nil;
-      }
+      [self logWithFormat:
+	      @"WARNING(%s): no valid deviceIds in the palm entities "
+              @"(%@) for current user!",
+              __PRETTY_FUNCTION__, [dbs componentsJoinedByString:@", "]];
+      // no valid devices found for user
+      return nil;
     }
-
-    [devicesCache setObject:devs forKey:_compId];
-  
-    array = devs;
-    [self->devicesForUser setObject:array forKey:_compId];
   }
+  
+  [devicesCache setObject:devs forKey:_compId];
+  
+  array = devs;
+  [self->devicesForUser setObject:array forKey:_compId];
   return array;
 }
 - (NSArray *)devices {

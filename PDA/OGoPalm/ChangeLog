@@ -1,3 +1,11 @@
+2004-12-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.30
+
+	* SkyPalmEntryDataSource.m: fixed some logs, minor code cleanups
+
+	* SkyPalmCategoryDocument.m: minor code cleanups
+
 2004-10-01  Tiny Toon  <tiny@tinytoon.de>
 
 	* v5.1.29

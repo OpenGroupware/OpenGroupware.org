@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,13 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoPalm/SkyPalmCategoryDocument.h>
 
 #if 0
 @interface SkyPalmAddressCategoryDocument : SkyPalmCategoryDocument
-{}
+{
+}
 @end
 
 @interface SkyPalmMemoCategoryDocument : SkyPalmCategoryDocument
@@ -43,11 +43,12 @@
 
 #include <OGoPalm/SkyPalmCategoryDataSource.h>
 #include <OGoPalm/NGMD5Generator.h>
+#include "common.h"
 
 @implementation SkyPalmCategoryDocument
 
 - (id)initWithDictionary:(NSDictionary *)_src
-          fromDataSource:(SkyPalmCategoryDataSource *)_ds
+  fromDataSource:(SkyPalmCategoryDataSource *)_ds
 {
   if ((self = [self init])) {
     self->palmId        = 0;
@@ -61,13 +62,15 @@
 }
 
 - (id)initAsNewWithDictionary:(NSDictionary *)_src
-               fromDataSource:(SkyPalmCategoryDataSource *)_ds
+  fromDataSource:(SkyPalmCategoryDataSource *)_ds
 {
-  NSMutableDictionary *dict = [_src mutableCopy];
+  NSMutableDictionary *dict;
+
+  dict = [_src mutableCopy];
   [dict removeObjectForKey:@"globalID"];
   
   self = [self initWithDictionary:dict fromDataSource:_ds];
-  RELEASE(dict);
+  [dict release];;
   
   return self;
 }
@@ -76,19 +79,17 @@
                fromDataSource:_ds];
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->source);
-  RELEASE(self->dataSource);
-  // values
-  RELEASE(self->categoryName);
-  RELEASE(self->md5Hash);
-  RELEASE(self->deviceId);
+  [self->source       release];
+  [self->dataSource   release];
+  [self->categoryName release];
+  [self->md5Hash      release];
+  [self->deviceId     release];
   [super dealloc];
 }
-#endif
 
-// accessors
+/* accessors */
+
 - (void)setPalmId:(int)_pid {
   self->palmId = _pid;
 }
@@ -111,21 +112,21 @@
 }
 
 - (void)setCategoryName:(NSString *)_name {
-  ASSIGN(self->categoryName,_name);
+  ASSIGNCOPY(self->categoryName,_name);
 }
 - (NSString *)categoryName {
   return self->categoryName;
 }
 
 - (void)setMd5Hash:(NSString *)_hash {
-  ASSIGN(self->md5Hash,_hash);
+  ASSIGNCOPY(self->md5Hash,_hash);
 }
 - (NSString *)md5Hash {
   return self->md5Hash;
 }
 
 - (void)setDeviceId:(NSString *)_did {
-  ASSIGN(self->deviceId,_did);
+  ASSIGNCOPY(self->deviceId,_did);
 }
 - (NSString *)deviceId {
   return self->deviceId;
@@ -151,17 +152,17 @@
 }
 
 - (void)_setDataSource:(SkyPalmCategoryDataSource *)_ds {
-  ASSIGN(self->dataSource,_ds);
+  ASSIGN(self->dataSource, _ds);
 }
 
 - (void)prepareAsNew {
-  NSString *device = [[self devices] objectAtIndex:0];
-
+  NSString *device;
+  
   //  NSLog(@"%s Preparing as new", __PRETTY_FUNCTION__);
 
-  if (device == nil) {
-    NSLog(@"%s !!!! WARNING !!!! parent %@ has no valid devices",
-          __PRETTY_FUNCTION__, self->dataSource);
+  if ((device = [[self devices] objectAtIndex:0]) == nil) {
+    [self logWithFormat:@"WARNING(%s): parent %@ has no valid devices",
+          __PRETTY_FUNCTION__, self->dataSource];
     return;
   }
 
@@ -175,12 +176,12 @@
 }
 
 - (void)updateSource:(NSDictionary *)_src
-      fromDataSource:(SkyPalmCategoryDataSource *)_ds
+  fromDataSource:(SkyPalmCategoryDataSource *)_ds
 {
   if (_ds == self->dataSource)
     [self _setSourceAndParse:_src];
   else {
-    // _ds has no access to modifie document
+    // _ds has no access to modify document
   }
 }
 
