@@ -1,3 +1,11 @@
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.5
+
+	* work on doc-viewer components
+
+	* bundle-info.plist: changed doc-part format
+
 2005-03-15  Helge Hess  <helge.hess@opengroupware.org>
 
 	* started to prepare componentenized document viewer (v5.1.4)

@@ -38,6 +38,7 @@
 
 - (void)dealloc {
   [self->historyDataSource release];
+  [self->path        release];
   [self->fsinfo      release];
   [self->documentGID release];
   [self->fileManager release];
@@ -61,21 +62,25 @@
 
 - (void)syncSleep {
   [self reset];
-  [self syncSleep];
+  [super syncSleep];
 }
 
 /* accessors */
 
+#if USE_PASSIVE_SYNC
 - (BOOL)synchronizesVariablesWithBindings {
   return NO;
 }
+#endif
 
 - (void)setFileManager:(id<NSObject,SkyDocumentFileManager>)_fm {
   ASSIGN(self->fileManager, _fm);
 }
 - (id<NSObject,SkyDocumentFileManager>)fileManager {
+#if USE_PASSIVE_SYNC
   if (self->fileManager == nil)
     self->fileManager = [[self valueForBinding:@"fileManager"] retain];
+#endif
   return self->fileManager;
 }
 
@@ -83,8 +88,10 @@
   ASSIGN(self->documentGID, _gid);
 }
 - (EOGlobalID *)documentGlobalID {
+#if USE_PASSIVE_SYNC
   if (self->documentGID == nil)
     self->documentGID = [[self valueForBinding:@"documentGlobalID"] retain];
+#endif
   return self->documentGID;
 }
 
@@ -92,8 +99,10 @@
   ASSIGN(self->document, _doc);
 }
 - (id)document {
+#if USE_PASSIVE_SYNC
   if (self->document == nil)
     self->document = [[self valueForBinding:@"document"] retain];
+#endif
   return self->document;
 }
 
@@ -115,8 +124,15 @@
   return self->historyDataSource;
 }
 
+- (void)setDocumentPath:(NSString *)_value {
+  ASSIGNCOPY(self->path, _value);
+}
 - (NSString *)documentPath {
+#if USE_PASSIVE_SYNC
   return [self valueForBinding:@"documentPath"];
+#else
+  return self->path;
+#endif
 }
 
 - (NSString *)_documentPath {

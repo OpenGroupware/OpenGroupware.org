@@ -3,5 +3,5 @@
 VersionList: SkyProject4VersionList {
   fileManager = fileManager;
   dataSource  = historyDataSource;
-  documentId  = documentId;
+  documentId  = documentGlobalID;
 }

@@ -22,9 +22,64 @@
 #include <OGoDocInlineViewers/OGoDocPartViewer.h>
 
 @interface OGoDocLogsViewer : OGoDocPartViewer
+{
+  EODataSource *ds;
+}
+
 @end
 
+#include <OGoDatabaseProject/SkyProjectDocument.h>
+#include <OGoBase/SkyLogDataSource.h>
+#include <NGExtensions/EOCacheDataSource.h>
 #include "common.h"
 
 @implementation OGoDocLogsViewer
+
+static EOQualifier *actionDownloadQual = nil;
+
++ (void)initialize {
+  if (actionDownloadQual == nil) {
+    actionDownloadQual = 
+      [[EOQualifier qualifierWithQualifierFormat:@"action='download'"] retain];
+  }
+}
+
+- (void)dealloc {
+  [self->ds release];
+  [super dealloc];
+}
+
+/* notifications */
+
+- (void)reset {
+  [(EOCacheDataSource *)self->ds clear];
+  [super reset];
+}
+
+/* accessors */
+
+- (id)_commandContext {
+  return [(OGoSession *)[self session] commandContext];
+}
+
+- (EOFetchSpecification *)_fspec {
+  return [EOFetchSpecification fetchSpecificationWithEntityName:@"log"
+                               qualifier:actionDownloadQual sortOrderings:nil];
+}
+
+- (EODataSource *)logDataSource {
+  SkyLogDataSource *rds;
+  
+  if (self->ds)
+    return self->ds;
+
+  rds = [[SkyLogDataSource alloc] initWithContext:[self _commandContext]
+				  globalID:[self->document globalID]];
+  [rds setFetchSpecification:[self _fspec]];
+  [rds autorelease];
+  
+  self->ds = [[EOCacheDataSource alloc] initWithDataSource:rds];
+  return self->ds;
+}
+
 @end /* OGoDocLogsViewer */

@@ -1,5 +1,9 @@
 // bind template to controller
 
-DownloadLogList: SkyP4DocumentDownloadLogList {
+DownloadLogListOld: SkyP4DocumentDownloadLogList {
   document = document;
+}
+
+DownloadLogList: SkyObjectLogList {
+  dataSource = logDataSource;
 }

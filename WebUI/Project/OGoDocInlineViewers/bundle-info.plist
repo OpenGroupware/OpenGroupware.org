@@ -38,12 +38,11 @@
     );
 
     OGoDocViewers = (
-      { name = OGoDocAccessViewer;      },
-      { name = OGoDocAttrsViewer;       },
-      { name = OGoDocContentsViewer;    },
-      { name = OGoDocLogsViewer;        },
-      { name = OGoDocPartViewer;        },
-      { name = OGoDocVersionsViewer;    },
+      { name = access;     component = OGoDocAccessViewer;   },
+      { name = attributes; component = OGoDocAttrsViewer;    },
+      { name = contents;   component = OGoDocContentsViewer; },
+      { name = logs;       component = OGoDocLogsViewer;     },
+      { name = versions;   component = OGoDocVersionsViewer; },
     );
 
     LSWCommands = (

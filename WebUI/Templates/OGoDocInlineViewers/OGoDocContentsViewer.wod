@@ -5,10 +5,6 @@ ContentsTabTitle: LSWViewerTitle {
   gentable = YES;
 }
 
-HasReadAccess: WOConditional {
-  condition = canReadFile;
-}
-
 DownloadAttr: SkySubAttribute {
   label  = labels.download;
 }
@@ -22,7 +18,7 @@ FileName: WOString {
   value  = documentName;
 }
 VersionString: WOString {
-  value = versionString;
+  value = versionString; // TODO: apparently bound to no value!
 }
 
 MimeTypeAttr: SkySubAttribute {
@@ -44,7 +40,7 @@ HasReadAccess: WOConditional {
 
 BLOBContentViewer: SkyProject4BLOBViewer {
   fileManager = fileManager;
-  documentId  = documentId;
+  documentId  = documentGlobalID;
   document    = document;
   mimeType    = documentMimeType;
 }

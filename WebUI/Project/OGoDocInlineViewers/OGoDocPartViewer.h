@@ -31,8 +31,6 @@
   Abstract superclass for viewer components which are used inside the
   OGo document viewer (usually as the content of one tab).
 
-  Note: this component turns automatic synchronisation off.
-
   Required bindings:
   - fileManager
   - document
@@ -51,6 +49,7 @@
   SkyProjectDocument *document;
   EOGlobalID         *documentGID;
   NSDictionary       *fsinfo;
+  NSString           *path;
 }
 
 /* notifications */
