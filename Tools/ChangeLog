@@ -1,3 +1,7 @@
+2004-10-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* sky_install_sieve.m: some code cleanups (needs a lot more ...)
+
 2004-09-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* skyaptnotify.m: message template texts are now configurable using

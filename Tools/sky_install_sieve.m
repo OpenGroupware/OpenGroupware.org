@@ -25,23 +25,15 @@
 
 @interface InstallSieve : NSObject
 {
-  NSString *fileName;
-  NSString *port;
-  NSString *serverName;
-  NSString *login;
-  NSString *password;
+  NSString *login, *password, *server, *port, *dictName, *sievName;
 }
-- (id)initWithFileName:(NSString *)_file
-  port:(NSString *)_port
-  serverName:(NSString *)_serverName
-  login:(NSString *)_login
-  password:(NSString *)_password;
-- (BOOL)deleteScript;
-- (BOOL)installScript;
+
++ (int)runWithArguments:(NSArray *)_args;
 
 @end
 
-#if COCOA_Foundation_LIBRARY || APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
+#if COCOA_Foundation_LIBRARY || APPLE_Foundation_LIBRARY || \
+    NeXT_Foundation_LIBRARY
 #  include <NGExtensions/NGObjectMacros.h>
 #endif
 
@@ -49,7 +41,11 @@
 #include <NGMail/NGMail.h>
 #include <NGStreams/NGInternetSocketAddress.h>
 #include <NGStreams/NGSocketExceptions.h>
-#import <Foundation/Foundation.h>
+#include "common.h"
+
+// TODO: this is a mess! needs a lot of cleanup
+
+@implementation InstallSieve
 
 id _getArg(NSDictionary *_arg, NSArray *_keys) {
   id           obj;
@@ -57,15 +53,16 @@ id _getArg(NSDictionary *_arg, NSArray *_keys) {
 
   enumerator = [_keys objectEnumerator];
   while ((obj = [enumerator nextObject])) {
-    id o = nil;
+    id o;
+    
     if ((o = [_arg objectForKey:obj]) != nil)
       return o;
   }
   return nil;
 }
 
-NSString *convertFileToSieveFormat(NSString *_fileName) {
-  // TODO: cleanup this huge file!
+- (NSString *)convertFileToSieveFormat:(NSString *)_fileName {
+  // TODO: cleanup this huge method!
   NSArray         *f;
   NSMutableString *sieveFilter;
   NSEnumerator    *enumerator;
@@ -83,7 +80,7 @@ NSString *convertFileToSieveFormat(NSString *_fileName) {
   vacation = nil;
   forward   = nil;
   
-  while ((aFilter = [enumerator nextObject])) {
+  while ((aFilter = [enumerator nextObject]) != nil) {
     if ([[aFilter objectForKey:@"kind"] isEqualToString:@"vacation"])
       vacation = aFilter;
     else if ([[aFilter objectForKey:@"kind"] isEqualToString:@"forward"])
@@ -161,14 +158,14 @@ NSString *convertFileToSieveFormat(NSString *_fileName) {
 
       isFirst   = YES;
       
-      if (firstEntry == YES) {
+      if (firstEntry) {
         [sieveFilter appendString:@"if "];
         firstEntry = NO;
       }
       else
         [sieveFilter appendString:@"elsif "];
 
-      if ([[aFilter objectForKey:@"match"] isEqualToString:@"or"] == YES)
+      if ([[aFilter objectForKey:@"match"] isEqualToString:@"or"])
         [sieveFilter appendString:@"anyof ("];
       else
         [sieveFilter appendString:@"allof ("];
@@ -179,25 +176,26 @@ NSString *convertFileToSieveFormat(NSString *_fileName) {
 
         kind = [aEntry objectForKey:@"filterKind"];
         
-        if (isFirst == YES)
+        if (isFirst)
           isFirst = NO;
         else
           [sieveFilter appendString:@", "];
 
-        if ([kind isEqualToString:@"contains"] == YES)
+        // TODO: this might conflict with UI labels?!
+        if ([kind isEqualToString:@"contains"])
           [sieveFilter appendString:@"header :contains"];
-        else if ([kind isEqualToString:@"doesn`t contain"] == YES)
+        else if ([kind isEqualToString:@"doesn`t contain"])
           [sieveFilter appendString:@"not header :contains"];
-        else if ([kind isEqualToString:@"is"] == YES)
+        else if ([kind isEqualToString:@"is"])
           [sieveFilter appendString:@"header :is"];
-        else if ([kind isEqualToString:@"isn`t"] == YES)
+        else if ([kind isEqualToString:@"isn`t"])
           [sieveFilter appendString:@"not header :is"];
-        else if ([kind isEqualToString:@"begins with"] == YES)
+        else if ([kind isEqualToString:@"begins with"])
           [sieveFilter appendString:@"header :matches"];
-        else if ([kind isEqualToString:@"ends with"] == YES)
+        else if ([kind isEqualToString:@"ends with"])
           [sieveFilter appendString:@"header :matches"];
         else
-          NSLog(@"couldn`t use entry %@", aEntry);
+          NSLog(@"couldn`t use entry '%@'", aEntry);
 
         {
           NSEnumerator *e;
@@ -220,12 +218,12 @@ NSString *convertFileToSieveFormat(NSString *_fileName) {
           }
           [sieveFilter appendString:@"] \""];
         }
-        if ([kind isEqualToString:@"ends with"] == YES)
+        if ([kind isEqualToString:@"ends with"])
           [sieveFilter appendString:@"*"];
 
         [sieveFilter appendString:[aEntry objectForKey:@"string"]];
 
-        if ([kind isEqualToString:@"begins with"] == YES)
+        if ([kind isEqualToString:@"begins with"])
           [sieveFilter appendString:@"*"];
 
         [sieveFilter appendString:@"\""];
@@ -236,7 +234,7 @@ NSString *convertFileToSieveFormat(NSString *_fileName) {
         [sieveFilter appendString:@"fileinto \""];
 
         fileName = [aFilter objectForKey:@"folder"];
-        if ([fileName hasPrefix:@"/"] == YES)
+        if ([fileName hasPrefix:@"/"])
           fileName = [fileName substringWithRange:
                                NSMakeRange(1, [fileName length] - 1)];
 
@@ -276,7 +274,7 @@ NSString *convertFileToSieveFormat(NSString *_fileName) {
   return [sieveFilter autorelease];
 }
 
-NSDictionary *getArgs() {
+- (NSDictionary *)getArgs {
   /* determine argument domain take from NSUserDefaults */
   NSMutableDictionary *defArgs = nil;
   NSArray             *args;
@@ -327,23 +325,10 @@ NSDictionary *getArgs() {
   return defArgs;
 }  
 
-int main(int argc, const char **argv, char **env) {
-  int result;
-  NSAutoreleasePool *pool;
-
-  *(&result) = 0;
-#if LIB_FOUNDATION_LIBRARY
-  [NSProcessInfo initializeWithArguments:(void*)argv count:argc environment:env];
-  [NSAutoreleasePool enableDoubleReleaseCheck:NO];
-#endif
-  //NGInitTextStdio();
-
-  pool = [NSAutoreleasePool new];
-  if (argc == 1) {
-    printf("  sky_install_sieve 2.0\n");
+- (void)usage {
+    printf("  sky_install_sieve\n");
     printf("\n");
-    printf("  Author Jan Reichmann (jr@skyrix.com)\n\n");    
-    printf("  Install cyrus sieve filters.\n");
+    printf("  Install Cyrus Sieve filters.\n");
     printf("  \n");
     printf("  Defaults/Arguments\n");
     printf("\n");
@@ -352,74 +337,115 @@ int main(int argc, const char **argv, char **env) {
     printf("  server               or s   nil  server name (Default = '"
            "localhost')\n");
     printf("  port                 or po  nil  port (Default = '2000')\n");
-    printf("  install-dictionary   or id  nil  filename with filters as dictionary"
-           " format to install\n");
+    printf("  install-dictionary   or id  nil  filename with filters as "
+           "dictionary format to install\n");
     printf("  install-sieve        or is  nil  filename with filters as sieve "
            "format to install\n");
     printf("\n");
     printf("  return values : 0   - OK\n");
     printf("\n");
-    return 0;
+}
+
+/* running */
+
+- (void)handleException:(NSException *)_exception {
+  if (_exception == nil)
+    return;
+
+  [self logWithFormat:@"ERROR: got exception: %@", _exception];
+
+  if ([_exception isKindOfClass:[NGCouldNotConnectException class]]) {
+    printf("couldn`t connect to server\n");
+    exit(4);
   }
+  
+  exit(5);
+}
+
+- (NSString *)sieveScriptName {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSString *scriptName;
+  
+  scriptName = [ud stringForKey:@"SieveScriptName"];
+  if ([scriptName length] == 0)
+    scriptName = @"ogo";
+  return scriptName;
+}
+
+- (id)_getArg:(NSString *)_k1:(NSString *)_k2 from:(NSDictionary *)_args {
+  return _getArg(_args, [NSArray arrayWithObjects:_k1, _k2, nil]);
+}
+- (BOOL)_extractParameters {
+  NSDictionary *args;
+
+  args = [self getArgs];
+  
+  self->login    = [[self _getArg:@"login":@"l"  from:args] copy];
+  self->password = [[self _getArg:@"pwd":@"p"    from:args] copy];
+  self->port     = [[self _getArg:@"port":@"po"  from:args] copy];
+  self->server   = [[self _getArg:@"server":@"s" from:args] copy];
+  self->dictName = [[self _getArg:@"install-dictionary":@"id" from:args] copy];
+  self->sievName = [[self _getArg:@"install-sieve":@"is" from:args] copy];
+
+  /* validate */
+  
+  if ([login length] == 0) {
+    NSLog(@"missing login");
+    return NO;
+  }
+  if (password == nil)
+    return NO;
+  
+  if (port == nil)
+    self->port = @"2000";
+  if (server == nil)
+    self->server = @"localhost";
+  
+  return YES;
+}
+
+- (NSString *)_extractFilter {
+  NSString *filter;
+  
+  if (dictName != nil) {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:dictName]) {
+      NSLog(@"missing file at path %@", dictName);
+      return nil;
+    }
+    filter = [self convertFileToSieveFormat:dictName];
+  }
+  else if (sievName != nil) {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:dictName]) {
+      NSLog(@"missing file at path %@", dictName);
+      return nil;
+    }
+    filter = [NSString stringWithContentsOfFile:sievName];
+  }
+  else {
+    NSLog(@"missing action");
+    return nil;
+  }
+  return filter;
+}
+
+- (int)runWithArguments:(NSArray *)_args {
+  if ([_args count] < 2) {
+    [self usage];
+    return 1;
+  }
+  
   NS_DURING {
-    NSDictionary *args;
-    NSString     *login, *password, *server, *port, *dictName;
-    NSString     *sievName, *filter, *scriptName;
-
+    NSString *filter, *scriptName;
     
-
-    args     = getArgs();
-    login    = _getArg(args, [NSArray arrayWithObjects:@"login", @"l", nil]);
-    password = _getArg(args, [NSArray arrayWithObjects:@"pwd", @"p", nil]);
-    port     = _getArg(args, [NSArray arrayWithObjects:@"port", @"po", nil]);
-    server   = _getArg(args, [NSArray arrayWithObjects:@"server", @"s", nil]);
-    dictName = _getArg(args, [NSArray arrayWithObjects:@"install-dictionary",
-                                      @"id", nil]);
-    sievName = _getArg(args, [NSArray arrayWithObjects:@"install-sieve",
-                                      @"is", nil]);
-
+    if (![self _extractParameters])
+      return 1;
+    
     filter     = nil;
-
-    scriptName = [[NSUserDefaults standardUserDefaults]
-                                  stringForKey:@"SieveScriptName"];
-
-    if (![scriptName length])
-      scriptName = @"ogo";
-
-    if (login == nil) {
-      NSLog(@"missing login");
+    scriptName = [self sieveScriptName];
+    
+    if ((filter = [self _extractFilter]) == nil)
       return 1;
-    }
-    if (password == nil) {
-      password = @"";
-      return 1;
-    }
-    if (port == nil) {
-      port = @"2000";
-      return 1;
-    }
-    if (server == nil) {
-      server = @"localhost";
-      return 1;
-    }
-    if (dictName != nil) {
-      if (![[NSFileManager defaultManager] fileExistsAtPath:dictName]) {
-        NSLog(@"missing file at path %@", dictName);
-        return 1;
-      }
-      filter = convertFileToSieveFormat(dictName);
-    }
-    else if (sievName != nil) {
-      if (![[NSFileManager defaultManager] fileExistsAtPath:dictName]) {
-        NSLog(@"missing file at path %@", dictName);
-        return 1;
-      }
-      filter = [NSString stringWithContentsOfFile:sievName];
-    }
-    else {
-      NSLog(@"missing action");
-      return 1;
-    }
+    
     {
       NGSieveClient           *client;
       NGInternetSocketAddress *addr;
@@ -438,7 +464,7 @@ int main(int argc, const char **argv, char **env) {
         NSLog(@"login failed for %@ user %@", client, login);
         exit(3);
       }
-      if ([filter length]) {
+      if ([filter length] > 0) {
         [client putScript:scriptName script:filter]; 
         [client setActiveScript:scriptName]; 
         [client closeConnection];
@@ -449,16 +475,34 @@ int main(int argc, const char **argv, char **env) {
       }
     }
   }
-  NS_HANDLER {
-    printf("got exception %s\n", [[localException description] cString]);
-
-    if ([localException isKindOfClass:[NGCouldNotConnectException class]]) {
-      printf("couldn`t connect to server\n");
-      exit(4);
-    }
-    [localException raise];
-  }
+  NS_HANDLER
+    [self handleException:localException];
   NS_ENDHANDLER;
-  RELEASE(pool);
+
+  return 0;
+}
++ (int)runWithArguments:(NSArray *)_args {
+  return [[[[self alloc] init] autorelease] runWithArguments:_args];
+}
+
+@end /* InstallSieve */
+
+int main(int argc, const char **argv, char **env) {
+  int result;
+  NSAutoreleasePool *pool;
+  
+  *(&result) = 0;
+  pool = [[NSAutoreleasePool alloc] init];
+#if LIB_FOUNDATION_LIBRARY
+  [NSProcessInfo initializeWithArguments:(void *)argv count:argc 
+                 environment:env];
+  [NSAutoreleasePool enableDoubleReleaseCheck:NO];
+#endif
+  
+  result =
+    [InstallSieve runWithArguments:
+                    [[NSProcessInfo processInfo] argumentsWithoutDefaults]];
+  
+  [pool release];
   return result;
 }
