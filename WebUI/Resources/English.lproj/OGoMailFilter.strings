@@ -13,6 +13,7 @@ cancelButtonLabel               = "cancel";
 cc                              = "cc";
 contains                        = "contains";
 deleteButtonLabel               = "delete";
+editVacation                    = "edit";
 filterName                      = "Filtername";
 filterPos                       = "Filter Position";
 from                            = "Sender";

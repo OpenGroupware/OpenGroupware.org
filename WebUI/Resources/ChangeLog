@@ -1,7 +1,7 @@
 2004-12-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* English|German.lproj/OGoMailFilter.strings: added missing delete
-	  button label
+	  button label and editVacation label
 
 	* English|German.lproj: added OGoMailFilter.strings (module was split
 	  out of OGoWebMail), should fix OGo bug 1107
