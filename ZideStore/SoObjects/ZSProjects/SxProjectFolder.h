@@ -26,9 +26,11 @@
 
 /*
   SxProjectFolder
-
+  
     parent-folder: SxProjectsFolder
     subobjects:    SxDocumentFolder +...
+
+  This folder represents a project (_not_ a folder inside  project).
 */
 
 @class NSString, NSException;
