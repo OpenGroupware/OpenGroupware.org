@@ -15,7 +15,7 @@ SOPE 4.3
 - postgresql-dev
 
 PDA
-- libpisock (eg ThirdParty/pilot-link or pisock-dev on Debian)
+- libpisock (eg ThirdParty/pilot-link or libpisock-dev on Debian)
 
 (Internal) Dependencies
 =======================

@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: DirectAction+Job.m 1 2004-08-20 11:17:52Z znek $
 
 #include "DirectAction.h"
 #include <EOControl/EOControl.h>
@@ -147,9 +147,11 @@
 - (id)getJobByGlobalID:(NSString *)_gid {
   EOGlobalID *gid;
   id result;
-
+  
   if ([_gid isKindOfClass:[NSDictionary class]])
     _gid = [(NSDictionary *)_gid objectForKey:@"jobId"];
+  
+  _gid = [_gid stringValue];
   
   if (_gid == nil) {
     // TODO: raise fault?
@@ -161,6 +163,7 @@
     gid = [[[self commandContext] documentManager] globalIDForURL:_gid];
   }
   else {
+    _gid = (id)[NSNumber numberWithInt:[_gid intValue]];
     gid = [EOKeyGlobalID globalIDWithEntityName:@"Job"
                          keys:&_gid keyCount:1 zone:NULL];
   }

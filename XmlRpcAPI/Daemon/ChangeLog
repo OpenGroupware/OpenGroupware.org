@@ -1,3 +1,8 @@
+2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+
+	* Actions.subproj/DirectAction+Job.m(jobs.deleteJob): fixed an issue 
+	  with the ID not being a string object (v5.1.32)
+
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.31
