@@ -1,3 +1,7 @@
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* bundle-info.plist: removed missing SkyPalmEntryListViewer (v5.1.28)
+
 2005-02-23  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyPalmAssignMemo.m: various code improvements (v5.1.27)

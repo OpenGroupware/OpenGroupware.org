@@ -21,7 +21,6 @@
 	{ name = SkyPalmPage;                   },
         
         { name = SkyPalmDataSourceViewer;       },
-        { name = SkyPalmEntryListViewer;        },
         { name = SkyPalmRecordList;             },
         { name = SkyPalmAddressList;            },
         { name = SkyPalmDateList;               },
