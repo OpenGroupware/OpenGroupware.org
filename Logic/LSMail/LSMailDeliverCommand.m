@@ -44,6 +44,7 @@ static NSDictionary  *env          = nil;
 static int           DeniedStatusMailForMailingLists = -1;
 static int           ParseMailAddress = -1;
 static BOOL          ImapDebugEnabled = NO;
+static BOOL          keepTmpFiles     = NO;
 static EONull *null = nil;
 
 + (void)initialize {
@@ -75,6 +76,9 @@ static EONull *null = nil;
     [ud boolForKey:@"DeniedStatusMailForMailingLists"] ? 1 : 0;
   ImapDebugEnabled = [ud boolForKey:@"ImapDebugEnabled"];
   ParseMailAddress = [ud boolForKey:@"UseOnlyMailboxNameForSendmail"] ? 1 : 0;
+  
+  if ((keepTmpFiles = [ud boolForKey:@"LSKeepMailTmpFiles"]))
+    NSLog(@"WARNING: keeping temporary mail message files!");
 }
 
 - (void)dealloc {
@@ -554,20 +558,17 @@ static EONull *null = nil;
     [self setReturnValue:[self _errorExceptionWithReason:str]];
     return;
   }
-
+  
   [self logWithFormat:@"[1] Could not write mail to sendmail! <%d>",
 	  errorCode];
-  if ([self->mimeData length] > 5000) {
-	[self logWithFormat:@"[1] message: [size: %d]",
-	      [self->mimeData length]];
-  }
-  else {
-	[self logWithFormat:@"[1] message: <%s>",
-	      (char *)[self->mimeData bytes]];
-  }
-  [self assert:NO
-	format:@"Writing to '%@' failed with code [%d]", 
-	  sendMailPath, errorCode];
+  if ([self->mimeData length] > 5000)
+    [self logWithFormat:@"[1] message: [size: %d]", [self->mimeData length]];
+  else
+    [self logWithFormat:@"[1] message: <%s>", (char *)[self->mimeData bytes]];
+  
+  [NSException raise:@"LSMailDeliveryException"
+	       format:@"Writing to '%@' failed with code [%d]", 
+	         sendMailPath, errorCode];
 }
 
 - (void)sendMailToExternals:(NSArray *)_recipients inContext:(id)_context {
@@ -591,7 +592,10 @@ static EONull *null = nil;
   if (self->mimeData == nil && self->messageTmpFile == nil) {
     if (![self _generateTemporaryFileForPart])
       return;
-    deleteTmp = YES;
+    
+    deleteTmp = keepTmpFiles ? NO : YES;
+    if (!deleteTmp)
+      [self logWithFormat:@"Note: keeping temporary message file!"];
   }
   email    = nil;
   sendmail = [self buildSendMailCommandLineInContext:_context sender:&email];
