@@ -18,9 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <LSFoundation/LSDBObjectGetCommand.h>
+
+/*
+  TODO: describe what it does
+*/
 
 @interface LSGetProjectCommand : LSDBObjectGetCommand
 @end
@@ -33,14 +36,15 @@
 /* command methods */
 
 - (void)_executeInContext:(id)_context {
-  id                  obj    = nil;
-  NSMutableDictionary *cache = nil;
-
+  NSMutableDictionary *cache;
+  id obj = nil;
+  
   cache = [_context valueForKey:@"_cache_Projects"];
   
   if ([cache isNotNull]) {
-    id pid = [self valueForKey:@"projectId"];
+    NSNumber *pid;
 
+    pid = [self valueForKey:@"projectId"];
     if ([pid isNotNull]) {
       id p;
       
@@ -57,7 +61,7 @@
   [super _executeInContext:_context];
 
   obj = [self object];
-
+  
   LSRunCommandV(_context, @"project", @"get-owner",
                 @"objects",     obj,
                 @"relationKey", @"owner", nil);
@@ -68,11 +72,13 @@
                 @"objects",     obj,
                 @"relationKey", @"companyAssignments", nil);
   LSRunCommandV(_context, @"project", @"get-status", @"projects", obj, nil);
-
+  
   {
-    id p = LSRunCommandV(_context,
-                         @"project", @"check-get-permission",
-                         @"object",  obj, nil);
+    id p;
+    
+    p = LSRunCommandV(_context,
+		      @"project", @"check-get-permission",
+		      @"object",  obj, nil);
     [self setReturnValue:p];
     
     if (cache != nil) {
@@ -97,27 +103,35 @@
   return @"Project";
 }
 
+/* accessors */
+
+- (void)setProjectGlobalID:(EOKeyGlobalID *)_gid {
+  [self takeValue:(_gid ? [_gid keyValues][0] : nil) forKey:@"projectId"];
+}
+- (EOKeyGlobalID *)projectGlobalID {
+  id v;
+    
+  v = [super valueForKey:@"projectId"];
+  v = [EOKeyGlobalID globalIDWithEntityName:[self entityName]
+		     keys:&v keyCount:1
+		     zone:NULL];
+  return v;
+}
+
 /* KVC */
 
 - (void)takeValue:(id)_value forKey:(id)_key {
- if ([_key isEqualToString:@"gid"]) {
-    _key   = @"projectId";
-    _value = [_value keyValues][0];
+  if ([_key isEqualToString:@"gid"]) {
+    [self setProjectGlobalID:_value];
+    return;
   }
   [super takeValue:_value forKey:_key];
 }
 
 - (id)valueForKey:(id)_key {
-  if ([_key isEqualToString:@"gid"]) {
-    id v;
-    
-    v = [super valueForKey:@"projectId"];
-    v = [EOKeyGlobalID globalIDWithEntityName:[self entityName]
-                       keys:&v keyCount:1
-                       zone:NULL];
-    return v;
-  }
-
+  if ([_key isEqualToString:@"gid"])
+    return [self projectGlobalID];
+  
   return [super valueForKey:_key];
 }
 

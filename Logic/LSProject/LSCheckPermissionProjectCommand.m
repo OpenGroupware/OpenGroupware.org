@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #import <LSFoundation/LSBaseCommand.h>
 
@@ -30,12 +29,16 @@
 @implementation LSCheckPermissionProjectCommand
 
 - (void)_executeInContext:(id)_context {
-  id   login   = [_context valueForKey:LSAccountKey];
-  id   project = [self object];
-  id   teamId  = [project valueForKey:@"teamId"];
-  int  loginId = [[login valueForKey:@"companyId"] intValue];
+  NSNumber *teamId, *loginId;
+  id   login;
+  id   project;
   BOOL retVal  = NO;
-
+  
+  login   = [_context valueForKey:LSAccountKey];
+  project = [self object];
+  teamId  = [project valueForKey:@"teamId"];
+  loginId = [[login valueForKey:@"companyId"] intValue];
+  
   [self assert:(project != nil) reason:@"No project is set"];
   if (![teamId isNotNull]) {
     if ([[project valueForKey:@"ownerId"] intValue] == loginId)
@@ -54,7 +57,7 @@
     staff = [NSArray arrayWithObjects:
                      [project valueForKey:@"team"],
                      [project valueForKey:@"owner"], nil];
-
+    
     retVal = [LSRunCommandV(_context, @"login", @"check-login",
                      @"staffList", staff,
                      nil) boolValue];
@@ -62,4 +65,4 @@
   [self setReturnValue:[NSNumber numberWithBool:retVal]];
 }
 
-@end
+@end /* LSCheckPermissionProjectCommand */

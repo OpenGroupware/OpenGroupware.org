@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,17 +18,20 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#import <LSFoundation/LSBaseCommand.h>
+#include <LSFoundation/LSBaseCommand.h>
+
+/*
+  project::check-write-permission
+
+  TODO: document!
+  - has special handling for fake projects?
+*/
 
 @interface LSCheckWritePermissionProjectCommand : LSBaseCommand
-{
-}
-
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSCheckWritePermissionProjectCommand
 
@@ -53,25 +56,24 @@
   
   permittedObjs = [NSMutableArray arrayWithCapacity:128];
   teams         = [account valueForKey:@"groups"];
-
+  
   if (teams == nil) {
-      teams = LSRunCommandV(_context, @"account", @"teams",
-                            @"object", account, nil);
+    teams = LSRunCommandV(_context, @"account", @"teams",
+			  @"object", account, nil);
   }
 
   for (i = 0; i < cnt; i++) {
-      id   proj   = [obj objectAtIndex:i];
+    id proj;
 
-      if ([[proj valueForKey:@"isFake"] boolValue]) {
-        [permittedObjs addObject:proj];
-      }
-      else if ([[proj valueForKey:@"ownerId"] isEqual:acId]) {
-        [permittedObjs addObject:proj];
-      }
-      else if ([teams containsObject:[proj valueForKey:@"team"]]) {
-        [permittedObjs addObject:proj];
-      }
-      else {
+    proj = [obj objectAtIndex:i];
+
+    if ([[proj valueForKey:@"isFake"] boolValue])
+      [permittedObjs addObject:proj];
+    else if ([[proj valueForKey:@"ownerId"] isEqual:acId])
+      [permittedObjs addObject:proj];
+    else if ([teams containsObject:[proj valueForKey:@"team"]])
+      [permittedObjs addObject:proj];
+    else {
         NSArray *assignments = nil;
         int     i, cnt;
         BOOL    wasFound;
@@ -132,4 +134,4 @@
   [self setReturnValue:permittedObjs];
 }
 
-@end /*LSCheckWritePermissionProjectCommand */
+@end /* LSCheckWritePermissionProjectCommand */
