@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,12 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "NSObject+EKVC.h"
 #include "common.h"
 
 @implementation NSObject(EKVC)
+
 - (void)takeValuesFromObject:(id)_object keys:(NSString *)_key, ... {
   va_list  list;
   NSString *key;
@@ -40,10 +40,13 @@
   }
   va_end(list);
 }
+
 @end /* NSObject(EKVC) */
 
 @implementation NSMutableDictionary(EKVC)
+
 - (void)removeAllNulls {
+  // TODO: what is this supposed to do?
   static Class NullClass = Nil;
   NSDictionary *dummy   = nil;
   NSEnumerator *keyEnum = nil;
@@ -52,14 +55,13 @@
   if (NullClass == Nil)
     NullClass = [EONull class];
 
-  dummy   = [[NSDictionary alloc] initWithDictionary:self];
+  dummy   = [[NSDictionary alloc] initWithDictionary:self]; // TODO: release?
   keyEnum = [dummy keyEnumerator];
   
   while ((key = [keyEnum nextObject])) {
-    if (([[dummy objectForKey:key] isKindOfClass:NullClass])) {
+    if (([[dummy objectForKey:key] isKindOfClass:NullClass]))
       [self removeObjectForKey:key];
-    }
   }
 }
-@end /* NSMutableDictionary */
 
+@end /* NSMutableDictionary */

@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoContacts/SkyCompanyDocument.h>
 #include <XmlRpc/XmlRpcCoder.h>
@@ -32,9 +31,9 @@
 @implementation SkyCompanyDocument(XmlRpcCoding)
 
 - (id)initWithXmlRpcCoder:(XmlRpcDecoder *)_coder {
-  id tmp;
-
   if ((self = [super initWithXmlRpcCoder:_coder])) {
+    id tmp;
+    
     [self setSupportedAttributes:
           [_coder decodeArrayForKey:@"supportedAttributes"]];
 

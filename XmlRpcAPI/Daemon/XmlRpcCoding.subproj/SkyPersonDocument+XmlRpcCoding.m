@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: SkyPersonDocument+XmlRpcCoding.m 1 2004-08-20 11:17:52Z znek $
 
 #include <OGoContacts/SkyPersonDocument.h>
 #include <XmlRpc/XmlRpcCoder.h>
@@ -53,7 +53,6 @@
   [super encodeWithXmlRpcCoder:_coder];
   [_coder encodeString:[self firstname]  forKey:@"firstname"];
   [_coder encodeString:[self middlename] forKey:@"middlename"];
-  [_coder encodeString:[self firstname]  forKey:@"firstname"];
   [_coder encodeString:[self middlename] forKey:@"middlename"];
   [_coder encodeString:[self name]       forKey:@"name"];
   [_coder encodeString:[self nickname]   forKey:@"nickname"];

@@ -1,3 +1,9 @@
+2004-09-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* XmlRpcCoding.subproj/SkyPersonDocument+XmlRpcCoding.m: removed
+	  duplicate generation of 'firstname', should fix OGo bug #911
+	  (v5.1.38)
+
 2004-09-06  Helge Hess  <helge.hess@skyrix.com>
 
 	* updated common.h files for new LSFoundation header files location
