@@ -16,6 +16,7 @@ my @latest;
 my $tarball_name;
 my $srel;
 my $buildtarget;
+my $perform_things_outside_buildhost = "yes";
 my $hpath = "$ENV{HOME}/";
 my @skip_list = qw( sope-4.2pre-r3.tar.gz
 sope-4.3.1-shapeshifter-r96.tar.gz
@@ -42,7 +43,22 @@ foreach $srel (@sope_releases) {
   $buildtarget = $srel;
   $buildtarget =~ s/-r\d+.*$//g;
   unless(grep /\b$srel\b/, @already_known_sope_rel) {
+    my $dep;
+    my @prereq;
     $i_really_had_sth_todo = "yes";
+    print "preparing...\n";
+    print "cleaning up/purging libfoundation/libobjc-lf2 prior actual build...\n";
+    system("sudo dpkg --purge --force-all `dpkg -l | awk '{print \$2}' | grep -iE '(libfoundation|libobjc-lf2)'`");
+    open(SOPE_DEPS, "$ENV{HOME}/sarge_thirdparty_sope_release.hints") || die "Arrr: $!\n";
+    @prereq = <SOPE_DEPS>;
+    close(SOPE_DEPS);
+    print "installing prequired packages to satisfy automatic dependency generator...\n";
+    foreach $dep(@prereq) {
+      chomp $dep;
+      print "Retrieving: $dep\n";
+      system("wget --proxy=off -q -O $ENV{HOME}/deb_store/$dep http://$dl_host/packages/debian/dists/$host_i_runon/releases/ThirdParty/binary-i386/$dep");
+      system("sudo dpkg -i --force-all $ENV{HOME}/deb_store/$dep");
+    }
     print "Retrieving: http://$dl_host/sources/releases/$srel\n";
     system("wget -q --proxy=off -O $ENV{HOME}/sources/$srel http://$dl_host/sources/releases/$srel");
     print "cleaning up prior actual build...\n";
@@ -52,9 +68,11 @@ foreach $srel (@sope_releases) {
     system("$ENV{HOME}/purveyor_of_debs.pl -p sope $build_opts -c $srel");
     print KNOWN_SOPE_RELEASES "$srel\n";
     print "recreating apt-repository for: $host_i_runon - $buildtarget\n";
-    open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
-    print SSH "/home/www/scripts/release_debian_apt.sh $host_i_runon $buildtarget\n";
-    close(SSH);
+    if($perform_things_outside_buildhost eq "yes") {
+      open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
+      print SSH "/home/www/scripts/release_debian_apt.sh $host_i_runon $buildtarget\n";
+      close(SSH);
+    }
   }
 }
 close(KNOWN_SOPE_RELEASES);

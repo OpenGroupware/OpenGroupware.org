@@ -16,6 +16,7 @@ my @latest;
 my $tarball_name;
 my $tprel;
 my $buildtarget;
+my $perform_things_outside_buildhost = "yes";
 my $hpath = "$ENV{HOME}/";
 my @tp_packages = qw( sope-epoz libobjc-lf2 libfoundation libical-sope );
 my @skip_list = qw( libical-sope1-r30.tar.gz
@@ -25,8 +26,11 @@ my @skip_list = qw( libical-sope1-r30.tar.gz
   gnustep-objc-lf2.95.3-r85.tar.gz
 );
 
-my $build_opts = "-v yes -u yes -t release -d yes -f yes";
+#my $build_opts = "-v yes -u yes -t release -d yes -f yes";
+my $build_opts = "-v yes -u no -t release -d yes -f yes";
 my @tp_releases;
+
+mkdir("$ENV{HOME}/deb_store", 0755) unless -e ("$ENV{HOME}/deb_store");
 
 @tp_releases = `wget --proxy=off -q -O - http://$dl_host/sources/releases/MD5_INDEX`;
 open(KNOWN_TP_RELEASES, ">> $hpath/ThirdParty.known.rel");
@@ -59,14 +63,32 @@ foreach $tprel (@tp_releases) {
     ###
     print "cleaning up/purging $cleanup prior actual build...\n";
     system("sudo dpkg --purge --force-all `dpkg -l | awk '{print \$2}' | grep -iE '(^$cleanup)'`");
+    if($package_to_build eq "libobjc-lf2") {
+      my $dep;
+      my @prereq;
+      print "cleaning up/purging libfoundation as well...\n";
+      system("sudo dpkg --purge --force-all `dpkg -l | awk '{print \$2}' | grep -i 'libfoundation'`");
+      open(LIBOBJC_LF2_DEPS, "$ENV{HOME}/sarge_thirdparty_libobjclf2_release.hints") || die "Arrr: $!\n";
+      @prereq = <LIBOBJC_LF2_DEPS>;
+      close(LIBOBJC_LF2_DEPS);
+      print "installing prequired packages to satisfy automatic dependency generator...\n";
+      foreach $dep(@prereq) {
+        chomp $dep;
+        print "Retrieving: $dep\n";
+        system("wget --proxy=off -q -O $ENV{HOME}/deb_store/$dep http://$dl_host/packages/debian/dists/$host_i_runon/releases/ThirdParty/binary-i386/$dep");
+        system("sudo dpkg -i --force-all $ENV{HOME}/deb_store/$dep");
+      } 
+    }
     print "ThirdParty_REL: building debs for ThirdParty $tprel\n";
     print "calling `purveyor_of_debs.pl -p $package_to_build $build_opts -c $tprel\n";
     system("$ENV{HOME}/purveyor_of_debs.pl -p $package_to_build $build_opts -c $tprel");
     print KNOWN_TP_RELEASES "$tprel\n";
-    print "recreating apt-repository for: $host_i_runon - ThirdParty\n";
-    open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
-    print SSH "/home/www/scripts/release_debian_apt.sh $host_i_runon ThirdParty\n";
-    close(SSH);
+    if($perform_things_outside_buildhost eq "yes") {   
+      print "recreating apt-repository for: $host_i_runon - ThirdParty\n";
+      open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
+      print SSH "/home/www/scripts/release_debian_apt.sh $host_i_runon ThirdParty\n";
+      close(SSH);
+    }
   }
 }
 close(KNOWN_TP_RELEASES);

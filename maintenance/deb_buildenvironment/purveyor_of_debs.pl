@@ -139,7 +139,6 @@ sub build_package {
 }
 
 sub prep_changelog {
-  print "DEBUGGGG: $package\n";
   print "[DCH]               - calling dch with:\n" if ($verbose eq "yes");
   print "[DCH]               - dch -v $new_version".".svn"."$new_svnrev-1 -D ogo-trunk $dch_msg_trunk\n" if (($verbose eq "yes") and ($build_type eq "trunk"));
   print "[DCH]               - dch -v $new_version".".svn"."$new_svnrev-1 -D ogo-release $dch_msg_release\n" if (($verbose eq "yes") and ($build_type eq "release"));
