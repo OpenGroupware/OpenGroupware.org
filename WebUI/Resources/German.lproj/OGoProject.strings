@@ -276,6 +276,7 @@ link_project          = "Projekt";
 locked                = "gesperrt";
 lockedLabel           = "Gesperrt durch";
 logsLabel             = "Logs";
+logs                  = "Logs";
 logsTitle             = "Process Logs";
 mail                  = "Verschicken";
 mailLabel             = "Dokument Link mailen";

@@ -1,9 +1,9 @@
 <#Frame>
   <#Window>
-      <table width="100%" border="0" cellpadding="4" cellspacing="0">
-        <#MainButtonRow>
-          <td colspan="2">
-            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <table width="100%" border="0" cellpadding="4" cellspacing="0">
+      <#MainButtonRow>
+        <td colspan="2">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
               <tr>
                 <td align="left" valign="middle" width="19">
                   <#DownloadLink><#DocIcon/></#DownloadLink>
@@ -16,22 +16,19 @@
                 </td>
                 <td align="right" valign="top"><#Buttons/></td>
               </tr>
-            </table>
-          </td>
-        </#MainButtonRow>
-      </table>
+          </table>
+        </td>
+      </#MainButtonRow>
+    </table>
       
-      <br />
+    <br />
       
-      <#TabView>
-        <#ActiveTabKeys>
-          <#ShowActiveTabKey>
-            <#ActiveTab>
-              <#ActiveTabKey/>
-              <#ActiveTabComponent/>
-            </#ActiveTab>
-          </#ShowActiveTabKey>
-        </#ActiveTabKeys>
-      </#TabView>
+    <#TabView>
+      <#ActiveTabKeys>
+        <#ShowActiveTabKey>
+          <#ActiveTab><#ActiveTabComponent/></#ActiveTab>
+        </#ShowActiveTabKey>
+      </#ActiveTabKeys>
+    </#TabView>
   </#Window>
 </#Frame>

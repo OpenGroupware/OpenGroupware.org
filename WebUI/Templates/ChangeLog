@@ -1,3 +1,8 @@
+2005-03-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoProject/SkyProject4DocumentViewer.wod: removed unused element
+	  declarations
+
 2005-03-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoProject/SkyP4FolderView.html: some template cleanups
