@@ -18,8 +18,8 @@ Description: A free and open groupware suite
  platform independent usage. OpenGroupware.org is built on top of the
  SOPE application server.
  .
- This package depends on all necessary components needed to run
- OpenGroupware.org and it creates the necessary runtime environment.
+ This package depends on all necessary components needed to run the
+ recent version of OpenGroupware.org.
 
 Package: opengroupware.org_OGOVER_
 Section: web
@@ -35,7 +35,7 @@ Description: A free and open groupware suite
  SOPE application server.
  .
  This package depends on all necessary components needed to run
- OpenGroupware.org and it creates the necessary runtime environment.
+ OpenGroupware.org, version _OGOVER_.
 
 Package: opengroupware.org_OGOVER_-webui
 Section: web
@@ -44,15 +44,6 @@ Depends: opengroupware.org_OGOVER_-webui-app, opengroupware.org_OGOVER_-webui-co
 Description: Web UI for OpenGroupware.org
  This package depends on all packages that are part of
  OpenGroupware.org's web user interface.
-
-Package: opengroupware.org-environment
-Section: web
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Creates the runtime environment for OpenGroupware.org
- This package creates a user and group for OpenGroupware.org and guides
- the user through the database setup. Additionally all necessary
- application defaults needed to run OpenGroupware.org are created.
 
 Package: libopengroupware.org-logic_OGOSONAME_-dev
 Section: libdevel
