@@ -577,6 +577,7 @@ if [ $1 = 1 ]; then
     chown root:root %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
     chmod 755 %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
     chkconfig --add "${NHSD_INIT_VERSION}"
+    /sbin/ldconfig
   fi
 fi
 
@@ -633,6 +634,7 @@ if [ $1 = 1 ]; then
     chown root:root %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
     chmod 755 %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
     chkconfig --add "${XMLRPCD_INIT_VERSION}"
+    /sbin/ldconfig
   fi
 fi
 
@@ -657,6 +659,7 @@ if [ $1 = 1 ]; then
     chown root:root %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
     chmod 755 %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
     chkconfig --add "${ZIDESTORE_INIT_VERSION}"
+    /sbin/ldconfig
   fi
 fi
 
@@ -678,6 +681,7 @@ if [ $1 = 0 ]; then
       rm -f "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}"
     fi
   fi
+  /sbin/ldconfig
 fi
 
 %preun webui-app
@@ -721,6 +725,7 @@ if [ $1 = 0 ]; then
       rm -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}"
     fi 
   fi
+  /sbin/ldconfig
 fi
 
 %preun zidestore
@@ -740,6 +745,7 @@ if [ $1 = 0 ]; then
       rm -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}"
     fi
   fi
+  /sbin/ldconfig
 fi
 
 # ****************************** clean ********************************
@@ -1102,15 +1108,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/lib/libZSFrontend*.so.1.3*
 %{prefix}/lib/libZSProjects*.so.1.3*
 %{prefix}/lib/libZSTasks*.so.1.3*
-%{prefix}/lib/zidestore-1.3/Appointments.zsp
-%{prefix}/lib/zidestore-1.3/Contacts.zsp
-%{prefix}/lib/zidestore-1.3/EvoConnect.zsp
-%{prefix}/lib/zidestore-1.3/PrefsUI.zsp
-%{prefix}/lib/zidestore-1.3/Projects.zsp
-%{prefix}/lib/zidestore-1.3/RSS.zsp
-%{prefix}/lib/zidestore-1.3/Tasks.zsp
-%{prefix}/lib/zidestore-1.3/WCAP.zsp
-%{prefix}/lib/zidestore-1.3/ZSCommon.zsp
+%{prefix}/lib/zidestore-1.3
 %{prefix}/share/zidestore-1.3
 
 %files zidestore-devel
@@ -1126,6 +1124,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Sun Jan 30 2005 Frank Reppin <frank@opengroupware.org>
+- some additional ldconfig calls
+- changed files section for ogo-zidestore
 * Sat Jan 29 2005 Frank Reppin <frank@opengroupware.org>
 - added sysconfig settings (will summon /etc/sysconfig/ogo-webui-1.0a)
   with some variables regarding automated database setup operations
