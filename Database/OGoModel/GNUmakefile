@@ -16,9 +16,14 @@ OGo_SUBPROJECTS = Classes
 
 MODELS = \
 	OpenGroupware.org_FrontBase2.eomodel	\
-	OpenGroupware.org_PostgreSQL.eomodel	\
+	OpenGroupware.org_PostgreSQL.eomodel
 
-OGo_RESOURCE_FILES += Version $(MODELS)
+CREATE_SCRIPTS = \
+	../PostgreSQL/pg-build-schema.psql		\
+	../PostgreSQL/pg-build-schema.psql.constraints	\
+	../PostgreSQL/pg-update-schema.psql
+
+OGo_RESOURCE_FILES += Version $(MODELS) $(CREATE_SCRIPTS)
 
 -include GNUmakefile.preamble
 

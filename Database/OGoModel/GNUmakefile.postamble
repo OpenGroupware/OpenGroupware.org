@@ -4,10 +4,12 @@
 ifneq ($(PYTHON),)
 
 OpenGroupware.org_FrontBase2.eomodel : OGoModel.py
-	$(PYTHON) genmodel.py $< FrontBase >$@
+	@echo "The FrontBase2.eomodel seems to be outdated, you might want to regenerate!"
+	#$(PYTHON) genmodel.py $< FrontBase >$@
 
 OpenGroupware.org_PostgreSQL.eomodel : OGoModel.py
-	$(PYTHON) genmodel.py $< PostgreSQL >$@
+	@echo "The PostgreSQL.eomodel seems to be outdated, you might want to regenerate!"
+	#$(PYTHON) genmodel.py $< PostgreSQL >$@
 
 endif
 

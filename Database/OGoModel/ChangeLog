@@ -1,3 +1,11 @@
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.11
+
+	* GNUmakefile: include PostgreSQL SQL create/update scripts in bundle
+
+	* GNUmakefile.postamble: do not autogenerate the EOModels
+
 2004-08-31  Helge Hess  <helge.hess@skyrix.com>
 
 	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.10)
