@@ -397,6 +397,14 @@ Description: Spanish translation for OpenGroupware.org's web UI
  This package contains the Spanish translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
 
+Package: opengroupware.org1.0a-webui-i18n-eu
+Section: web
+Architecture: all
+Provides: opengroupware.org1.0a-webui-i18n
+Description: Basque translation for OpenGroupware.org's web UI
+ This package contains the Basque translations for OpenGroupware.org's web UI.
+ You need to have at last one transaltion package installed.
+
 Package: opengroupware.org1.0a-webui-i18n-fr
 Section: web
 Architecture: all
