@@ -1,6 +1,4 @@
 {
-  CVSID="$Id$";
-
   LSDisableSessionLog = NO;
 
   LSMimeTypes = {
@@ -117,6 +115,7 @@
         "ppt"     = "application/vnd.ms-powerpoint";
         "proxy"   = "application/x-ns-proxy-autoconfig";
         "ps"      = "application/postscript";
+        "psql"    = "text/plain";
         "pub"     = "application/x-mspublisher";
         "py"      = "application/x-python";
         "qt"      = "video/quicktime";
@@ -138,6 +137,7 @@
         "snd"     = "audio/basic";
         "spr"     = "application/x-sprite";
         "sprite"  = "application/x-sprite";
+        "sql"     = "text/plain";
         "src"     = "application/x-wais-source";
         "stc"     = "application/vnd.sun.xml.calc.template";
         "std"     = "application/vnd.sun.xml.draw.template";
