@@ -1,3 +1,7 @@
+2004-12-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added Holidays-dutch.plist as provided by Jorrit Jorittsma (v5.1.30)
+
 2004-11-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyAppointmentDocumentGlobalIDResolver.m: minor code cleanups
