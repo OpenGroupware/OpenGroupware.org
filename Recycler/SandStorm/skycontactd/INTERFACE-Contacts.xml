@@ -1,0 +1,362 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+
+<interface name="com.skyrix.contacts" 
+           xmlns="http://www.skyrix.com/skyrix-idl"
+           xmlns:xrt="http://www.skyrix.com/od/xmlrpc-types"
+           xmlns:xsd="urn://example-namespace">
+
+  <documentation lang="en">
+    This interface makes it possible to access the contact
+    informations stored in SKYRiX from the outside. It provides search
+    functions (e.g. advanced search, fulltext search) as well as get and set
+    operations for contacts.
+  </documentation>
+  <documentation lang="de">
+    Dieses Interface erm'oglicht es, auf die im SKYRiX System gespeicherten
+    Personendaten zuzugreifen. Es bietet Funktionen zum
+    Suchen von Eintr'agen (bspw. erweiterte Suche oder Volltextsuche) sowie
+    Methoden zum Setzen, Abfragen und L'oschen von Personen.
+  </documentation>
+
+  <method name="search">
+    <signature>
+      <input name="query" type="xsd:string">
+        <documentation lang="en">
+          query string
+        </documentation>
+        <documentation lang="de">
+          Suchanfrage
+        </documentation>
+      </input>
+      <input name="limit" type="xsd:int">
+        <documentation lang="en">
+          query limit
+        </documentation>
+        <documentation lang="de">
+          Suchlimit
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of person documents
+        </documentation>
+        <documentation lang="de">
+          Array von Personendokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="query" type="xsd:string">
+        <documentation lang="en">
+          query string
+        </documentation>
+        <documentation lang="de">
+          Suchanfrage
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of person documents
+        </documentation>
+        <documentation lang="de">
+          Array von Personendokumenten
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.search('schulze')
+       ]]>
+      <documentation lang="en">
+        Fetches all persons matching 'schulze' in their "name",
+        "firstname", "description" or "login" attribute.
+      </documentation>
+      <documentation lang="de">
+        Findet alle Personen, bei denen die Zeichenkette 'schulze'
+        im Attribut "name", "firstname", "description" oder "login"
+        vorkommt.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "search" finds all persons matching the given searchstring
+      in one of their "name", "firstname", "description" or "login"
+      attribute. It's possible to limit the results by providing the optional
+      search limit argument.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "search" findet alle Personen, bei denen die 'ubergebene
+      Zeichenkette in einem der Attribute "name", "firstname", "description"
+      oder "login" vorkommt. Mit dem alternativ 'ubergebbaren Suchlimit kann
+      die Anzahl der zur'uckgegebenen Resultate eingeschr'ankt werden.
+    </documentation>
+  </method>
+
+  <method name="fulltextSearch">
+    <signature>
+      <input name="query" type="xsd:string">
+        <documentation lang="en">
+          query string
+        </documentation>
+        <documentation lang="de">
+          Suchanfrage
+        </documentation>
+      </input>
+      <input name="limit" type="xsd:int">
+        <documentation lang="en">
+          query limit
+        </documentation>
+        <documentation lang="de">
+          Suchlimit
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of person documents
+        </documentation>
+        <documentation lang="de">
+          Array von Personendokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="query" type="xsd:string">
+        <documentation lang="en">
+          query string
+        </documentation>
+        <documentation lang="de">
+          Suchanfrage
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of person documents
+        </documentation>
+        <documentation lang="de">
+          Array von Personendokumenten
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.fulltextSearch('schulze')
+       ]]>
+      <documentation lang="en">
+        Fetches all persons matching 'schulze' in one of their
+        attributes.
+      </documentation>
+      <documentation lang="de">
+        Findet alle Personen, bei denen die Zeichenkette 'schulze'
+        in mindestens einem Attribut vorkommt.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "fulltextSearch" finds all persons matching the 
+      given searchstring in one of their attributes.
+      It's possible to limit the results by providing the optional
+      search limit argument.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "fulltextSearch" findet alle Personen, bei denen die 
+      'ubergebene  Zeichenkette in mindestens einem der Attribute vorkommt. 
+      Mit dem alternativ 'ubergebbaren Suchlimit kann die Anzahl der 
+      zur'uckgegebenen Resultate eingeschr'ankt werden.
+    </documentation>
+
+  </method>  
+
+   <method name="advancedSearch">
+    <signature>
+      <input name="attributes" type="xsd:struct">
+        <documentation lang="en">
+          query attributes
+        </documentation>
+        <documentation lang="de">
+          Suchattribute
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of person documents
+        </documentation>
+        <documentation lang="de">
+          Array von Personendokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="attributes" type="xsd:struct">
+        <documentation lang="en">
+          query attributes
+        </documentation>
+        <documentation lang="de">
+          Suchattribute
+        </documentation>
+      </input>
+      <input name="extattrs" type="xsd:struct">
+        <documentation lang="en">
+          extended query attributes
+        </documentation>
+        <documentation lang="de">
+          erweiterte Suchattribute
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of person documents
+        </documentation>
+        <documentation lang="de">
+          Array von Personendokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="attributes" type="xsd:struct">
+        <documentation lang="en">
+          query attributes
+        </documentation>
+        <documentation lang="de">
+          Suchattribute
+        </documentation>
+      </input>
+      <input name="extattrs" type="xsd:struct">
+        <documentation lang="en">
+          extended query attributes
+        </documentation>
+        <documentation lang="de">
+          erweiterte Suchattribute
+        </documentation>
+      </input>
+      <input name="limit" type="xsd:int">
+        <documentation lang="en">
+          query limit
+        </documentation>
+        <documentation lang="de">
+          Suchlimit
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of person documents
+        </documentation>
+        <documentation lang="de">
+          Array von Personendokumenten
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        dict = {}
+        dict['name'] = "Schulze"
+        dict['firstname'] = "Bernd"
+        result = server.advancedSearch(dict)
+       ]]>
+      <documentation lang="en">
+        Fetches all persons with the name "Bernd Schulze".
+      </documentation>
+      <documentation lang="de">
+        Findet alle Personen, die "Bernd Schulze" heissen.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "advancedSearch" takes 2 dictionaries with special
+      search keys. It returns all persons who match to all these given keys.
+      It's possible to limit the results by providing the optional
+      search limit argument.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "advancedSearch" hat 2 Dictionaries mit speziellen
+      Suchschl'usseln als Argumente. Er gibt die Personen zur'uck, deren
+      Attribute allen Schl'usselwerten entsprechen.
+      Mit dem alternativ 'ubergebbaren Suchlimit kann die Anzahl der 
+      zur'uckgegebenen Resultate eingeschr'ankt werden.
+    </documentation>
+  </method>
+
+  <method name="getContact">
+    <signature>
+      <input name="id" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <output type="xsd:struct">
+        <documentation lang="en">
+          person document
+        </documentation>
+        <documentation lang="de">
+          Personendokument
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.getContact("10160")
+       ]]>
+      <documentation lang="en">
+        Fetches the person with the SKYRiX ID "10160."
+      </documentation>
+      <documentation lang="de">
+        Gibt die Person mit der SKYRiX ID "10160" zur'uck.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "getContact" gets the person for the given SKYRiX ID.
+      The ID can be either in the URL format (skyrix://host.name/123456)
+      or just the person ID (e.g. 123456).
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "getContact" gibt die der 'ubergebenen SKYRiX ID entsprechende
+      Person zur'uck. Die ID kann dabei sowohl im URL-Format (z.B.
+      skyrix://host.name/123456) als auch als normale Personen-ID (z.B.
+      123456) vorliegen.
+    </documentation>
+  </method>  
+
+  <method name="getContacts">
+    <signature>
+      <input name="ids" type="xsd:array">
+        <documentation lang="en">
+          array of person IDs
+        </documentation>
+        <documentation lang="de">
+          Array von Personen-IDs
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of person documents
+        </documentation>
+        <documentation lang="de">
+          Array von Personendokumenten
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.getContacts(["10160","10178"])
+       ]]>
+      <documentation lang="en">
+        Fetches the persons with the SKYRiX IDs "10160" and "10178".
+      </documentation>
+      <documentation lang="de">
+        Gibt die Personen mit den SKYRiX IDs "10160" und "10178" zur'uck.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "getContacts" gets the persons for the given SKYRiX IDs.
+      The ID can be either in the URL format (skyrix://host.name/123456)
+      or just the person ID (e.g. 123456).
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "getContacts" gibt die den 'ubergebenen SKYRiX IDs 
+      entsprechenden Personen zur'uck. 
+      Die ID kann dabei sowohl im URL-Format (z.B.
+      skyrix://host.name/123456) als auch als normale Personen-ID (z.B.
+      123456) vorliegen.
+    </documentation>
+  </method>
+</interface>

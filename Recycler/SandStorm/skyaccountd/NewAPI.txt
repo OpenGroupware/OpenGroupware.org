@@ -1,0 +1,159 @@
+# $Id$
+
+I would like to model this API in terms of NSS (Name Service Switch),
+PAM (Pluggable Authentication Modules) and Unix (useradd,userdel etc).
+
+Authentication
+==============
+PAM: http://www.kernel.org/pub/linux/libs/pam/Linux-PAM-html/pam_modules.html
+
+int authenticate(String login, base64 pwd)
+  => 0 success, valid credentials
+  => 1 credentials insufficient
+  => 2 authinfo unavailable
+  => 3 user unknown
+  => 4 maxtries
+  (see PAM)
+
+Account Management
+==================
+NSS: http://www.gnu.org/manual/glibc-2.0.6/html_chapter/libc_26.html#SEC459
+man getpwent
+
+# not yet ready ...
+struct getAccount(String uid)
+struct getAccountWithName(String name)
+void   updateAccount(String uid, struct record)
+String createAccount(struct record) # returns uid
+void   deleteAccount(String uid)
+
+array  getAccounts()
+array  fetchAccounts(FetchSpec fetchSpec)
+
+bool   isAccountLocked(String uid)
+void   lockAccount(String uid)
+void   unlockAccount(String uid)
+
+---snip:jr---
+ Method account.get(pattern)
+    Parameters: pattern:<string> - search pattern for account
+        Result: array
+   Description: returns the search result from the pattern,
+                a array of dictionaries with: {name, firstname, login, url}
+
+
+  Method account.update(dictionary)
+    Parameters: dictionary:<dictionary> - account data { url <string> = , 
+                                                         credentials <string> = ,
+                                                         name <string> = ,
+                                                         firstname <string> = }
+        Result: BOOL
+   Description: updates an account.
+
+
+  Method account.create(dictionary)
+    Parameters: dictionary:<dictionary> - account data { credentials <string> = ,
+                                                         name <string> = ,
+                                                         firstname <string> = ,
+                                                         groups <array> = (group,)}
+        Result: BOOL
+   Description: creates an account.
+    
+
+  Method account.delete(url)
+    Parameters: url:<string> - account url
+        Result: BOOL
+   Description: deletes an account.
+---snap:jr---
+
+Group Management
+================
+NSS: http://www.gnu.org/manual/glibc-2.0.6/html_chapter/libc_26.html#SEC464
+
+struct getGroup(String gid)
+struct getGroupWithName(String name)
+void   updateGroup(String gid, struct record)
+array  getGroups([uid])
+array  fetchGroups(FetchSpec fetchSpec)
+String createGroup(struct record) # returns gid
+
+---snip:jr---
+ Method group.get(pattern)
+    Parameters: pattern:<string> - search pattern for group
+        Result: array
+   Description: returns the search result from the pattern,
+                a array of dictionaries with: {url, name}
+
+
+  Method group.create(dictionary)
+    Parameters: dictionary:<dictionary> - account data { name <string> = , 
+                                                         members <array> = (login,)}
+        Result: BOOL
+   Description: creates a group.
+
+
+  Method group.delete(url)
+    Parameters: url:<string> - group url
+        Result: BOOL
+   Description: deletes a group.
+
+
+  Method group.update(dictionary)
+    Parameters: dictionary:<dictionary> - account data { url <string> = , 
+                                                         name <string> = ,}
+        Result: BOOL
+   Description: updates an group.
+
+ Method group.addMember(login)
+    Parameters: login:<string> - account url
+        Result: BOOL
+   Description: adds a groupmember.
+
+
+  Method group.deleteMember(login)
+    Parameters: login:<string> - account url
+        Result: BOOL
+   Description: removes a groupmember.
+
+
+  Method group.setMembers(logins)
+    Parameters: logins:<array> - array of account urls
+        Result: BOOL
+   Description: sets group members
+
+ Method account.groupNames(login)        
+    Parameters: login:<string> - login url
+        Result: array
+   Description: returns all groups names
+
+
+  Method account.groups(login)        
+    Parameters: login:<string> - login url
+        Result: array
+   Description: returns a {url, name}-tuple of groups
+
+
+  Method account.addGroup(login, group)        
+    Parameters: login:<string> - login url
+                group:<string> - group url
+        Result: BOOL
+   Description: adds a group to a account
+
+
+  Method account.removeGroup(login, group)        
+    Parameters: login:<string> - login url
+                group:<string> - group url
+        Result: BOOL
+   Description: removes a group from a account
+
+
+  Method account.setGroups(login, groups)        
+    Parameters: login:<string> - login url
+                groups:<array> - array of group-urls
+        Result: BOOL
+   Description: sets the account groups
+---snap:jr---
+
+Password Management
+===================
+PAM: http://www.kernel.org/pub/linux/libs/pam/Linux-PAM-html/pam_modules.html

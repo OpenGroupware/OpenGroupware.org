@@ -1,0 +1,21 @@
+// $Id$
+
+Title: LSWViewerTitle {
+  title    = labels.source;
+  gentable = YES;
+}
+RawTitle: LSWViewerTitle {
+  title    = labels.rawsource;
+  gentable = YES;
+}
+
+Viewer: WOString {
+  value    = document.string;
+}
+
+//DOM: WOString { value = document.contentAsDOMDocument;}
+
+DOM: WORenderDOM {
+  domDocument = document.contentAsDOMDocument;
+  factory     = odrFactory;
+}
