@@ -1,5 +1,7 @@
 2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SkyNoteEditor.m: code cleanup in delete method (v5.1.13)
+
 	* SkyNoteList.m: minor code cleanup (v5.1.12)
 
 2004-07-27  Helge Hess  <helge.hess@opengroupware.org>
