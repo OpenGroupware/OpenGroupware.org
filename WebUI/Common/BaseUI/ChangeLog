@@ -1,3 +1,7 @@
+2004-10-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyObjectField.m: code cleanups (v5.1.94)
+
 2004-09-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Main.m: be a bit more tolerant when being invoked in an incorrect

@@ -249,7 +249,8 @@ char   pilotport[255];
   ctx = (PPSyncContext *)[ec rootObjectStore];
 
   processedConduits = [NSMutableSet setWithCapacity:16];
-
+  
+  // TODO: requires NGBundlePath default
   conduits = [[bm providedResourcesOfType:@"PPConduits"] objectEnumerator];
   while ((conduit = [conduits nextObject])) {
     NSString *conduitName;

@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "LSSetCompanyCommand.h"
 #include "common.h"
@@ -43,17 +42,16 @@
 }
 
 - (void)dealloc {
-  [self->telephones  release];
-  [self->comment     release];
-  [self->pictureData release];
+  [self->telephones      release];
+  [self->comment         release];
+  [self->pictureData     release];
   [self->pictureFilePath release];
   [super dealloc];
 }
 
-// command methods
+/* command methods */
 
 - (BOOL)_setCompanyInfo:(id)_ctx {
-#if 1
   NSNumber       *objId;
   EOSQLQualifier *qual;
   EOModel        *model;
@@ -106,41 +104,6 @@
     }
     return isOk;
   }
-#else
-  BOOL isOk       = NO;
-  id   genObjInfo = nil;
-  id   obj        = [self object];
-
-  [self assert:(obj != nil) reason:@"no company object set for operation !"];
-
-  
-  genObjInfo = [obj valueForKey:@"toCompanyInfo"];
-
-  if (genObjInfo) {
-    id c;
-
-    c = [self comment];
-
-    if (![c length])
-      c = [EONull null];
-    
-    [genObjInfo takeValue:c forKey:@"comment"];
-    {
-      id obj;
-
-      obj = [self primaryKeyValue];
-      if ([obj intValue] != 0)
-	[genObjInfo takeValue:obj forKey:@"companyId"];
-    }
-
-    [genObjInfo takeValue:@"updated" forKey:@"status"];
-
-    [self assert:(genObjInfo != nil) reason:@"no toCompanyInfo to update .."];
-    isOk = [[self databaseChannel] updateObject:genObjInfo];
-  }
-
-  return isOk;
-#endif
 }
 
 - (void)_setExtendedAttributesInContext:(id)_context {

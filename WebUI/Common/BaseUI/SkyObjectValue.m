@@ -18,9 +18,14 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <NGObjWeb/NGObjWeb.h>
+
+/*
+  SkyObjectValue
+  
+  TODO: where is it used? describe what it does.
+*/
 
 @class WOAssociation;
 
@@ -35,28 +40,28 @@
   WOAssociation *action; // for Hyperlinks
   WOAssociation *bold;   // display non archived as bold
   /*
-    <WOConditional condition=object.dbStatus; value='archived'; negate=YES;>
+    <var:if condition=object.dbStatus; value='archived'; negate=YES;>
       <font color = config.font_color
-            face        = config.font_face
-            size        = config.font_size>
+            face  = config.font_face
+            size  = config.font_size>
         value
       </font>
-    </WOConditional>
-    <WOConditional condition=object.dbStatus value='archived'>
+    </var:if>
+    <var:if condition=object.dbStatus value='archived'>
       <font color = config.colors_deleted_object 
-            face        = config.font_face
-            size        = config.font_size>
+            face  = config.font_face
+            size  = config.font_size>
         value
       </font>
-    </WOConditional>
+    </var:if>
   */    
 }
 
 @end /* SkyObjectValue */
 
-#import <NGObjWeb/WODynamicElement.h>
-#import <OGoFoundation/WOComponent+config.h>
-#import "common.h"
+#include <NGObjWeb/WODynamicElement.h>
+#include <OGoFoundation/WOComponent+config.h>
+#include "common.h"
 
 @implementation SkyObjectValue
 

@@ -1,6 +1,5 @@
 // NSUserDefaults
 {
-  LSAddress_CVSID = "$Id$";
   BuildFormletterPath = "buildFormletter.py";
   LSAddressType = {
     Enterprise = ( "ship", "bill" );

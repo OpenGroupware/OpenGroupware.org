@@ -1,4 +1,3 @@
-// $Id$
 {
   EnterpriseAttributes = (
     { key = "name";                                               }, 

@@ -18,12 +18,17 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <NGObjWeb/WODynamicElement.h>
 
 @class NSString;
 @class WOAssociation, WOElement, WOContext;
+
+/*
+  SkyObjectField
+  
+  Note: this is used by SkyCompanyAttributesViewer.
+*/
 
 @interface SkyObjectField : WODynamicElement
 {
@@ -121,6 +126,7 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
 
 - (BOOL)isHrefInContext:(WOContext *)_ctx {
   NSDictionary *attrib;
+  
   attrib = [self _attributesDictInContext:_ctx];
   return ([attrib valueForKey:@"href"] != nil) ? YES : NO;
 }
@@ -139,7 +145,7 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
     : tmp;
 }
 
-- (BOOL)isType3InContext:(WOContext *)_ctx {
+- (BOOL)isEMailTypeInContext:(WOContext *)_ctx {
   id           ttype;
   NSDictionary *attrib;
   attrib = [self _attributesDictInContext:_ctx];
@@ -154,6 +160,19 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
 }
 
 
+- (NSString *)_localizeKeyValue:(id)_value attribute:(id)_attribute
+  inContext:(WOContext *)_ctx
+{
+  NSString *labelKey;
+  
+  labelKey = [_attribute valueForKey:@"key"];
+  labelKey = [labelKey stringByAppendingString:@"_"];
+  labelKey = [labelKey stringByAppendingString:[_value description]];
+  
+  return [[_attribute valueForKey:@"localizeKey"] boolValue]
+    ? [self localizeValueAttribute:labelKey inContext:_ctx]
+    : [labelKey stringValue];
+}
 - (NSString *)_attributeValueInContext:(WOContext *)_ctx {
   id           tmp;
   NSArray      *ak; /* all keys */
@@ -163,10 +182,9 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
 
   attrib = [self _attributesDictInContext:_ctx];
 
-  ak     = [attrib allKeys];
-  obj    = [self->object valueInComponent:[_ctx component]];
-    
-  tmp    = [obj valueForKey:[self keyAttributeInContext:_ctx]];
+  ak  = [attrib allKeys];
+  obj = [self->object valueInComponent:[_ctx component]];
+  tmp = [obj valueForKey:[self keyAttributeInContext:_ctx]];
 
   if (![tmp isNotNull])
     ret = @"";
@@ -179,25 +197,17 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
       ? [self localizeValueAttribute:[tmp stringValue] inContext:_ctx]
       : [tmp stringValue];
   }
-
-  else if ([ak containsObject:@"localizeKey"]) {
-    NSString *labelKey;
-    
-    labelKey = [attrib valueForKey:@"key"];
-    labelKey = [labelKey stringByAppendingFormat:@"_%@", tmp];
-    
-    ret = ([[attrib valueForKey:@"localizeKey"] boolValue])
-      ? [self localizeValueAttribute:labelKey inContext:_ctx]
-      : [labelKey stringValue];
-  }
-  
+  else if ([ak containsObject:@"localizeKey"])
+    ret = [self _localizeKeyValue:tmp attribute:attrib inContext:_ctx];
   else if ([ak containsObject:@"calendarFormat"]) {
     ret = ([tmp isKindOfClass:[NSCalendarDate class]])
       ? [tmp descriptionWithCalendarFormat:
              [self calFormatAttributeInContext:_ctx]]
       : [tmp stringValue];
   }
-  else ret = [tmp stringValue];
+  else
+    ret = [tmp stringValue];
+  
   return ret;
 }
 
@@ -229,7 +239,7 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
   id          mailEditor;
   NSString    *keyAttr, *type;
   
-  if (!([self isType3InContext:_ctx] && [self isMailEditorInContext:_ctx]))
+  if (!([self isEMailTypeInContext:_ctx] && [self isMailEditorInContext:_ctx]))
     /* not an active element */
     return nil;
     
@@ -319,20 +329,19 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
 
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
   NSString *data;
-  BOOL     url, email;
+  BOOL     closeAnker;
   
-  data  = [self _attributeValueInContext:_ctx];
-  url   = NO;
-  email = NO;
+  data       = [self _attributeValueInContext:_ctx];
+  closeAnker = NO;
   
-  if ((url = [self isHrefInContext:_ctx]))
+  if ((closeAnker = [self isHrefInContext:_ctx]))
     [self _appendLink:data toResponse:_response inContext:_ctx];
-  else if ((email = [self isType3InContext:_ctx]))
+  else if ((closeAnker = [self isEMailTypeInContext:_ctx]))
     [self _appendMail:data toResponse:_response inContext:_ctx];
   
   [self _appendValue:data toResponse:_response inContext:_ctx];
   
-  if (url || email) [_response appendContentString:@"</a>"];
+  if (closeAnker) [_response appendContentString:@"</a>"];
   
   /* this seems to be intentional */
   

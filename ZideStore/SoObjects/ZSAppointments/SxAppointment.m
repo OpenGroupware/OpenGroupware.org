@@ -200,6 +200,8 @@ static BOOL createNewAptWhenNotFound = YES;
   }
 
 - (id)createAptWithInfo:(NSDictionary *)_info inContext:(id)_ctx {
+  // TODO: should we make a redirect to the created file? probably confuses
+  //       clients but is likely to be the correct thing to do.
   NSMutableArray      *keys;
   NSMutableDictionary *changeSet;
   NSException    *error;

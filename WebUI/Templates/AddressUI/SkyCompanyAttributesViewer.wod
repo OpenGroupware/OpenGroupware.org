@@ -1,9 +1,9 @@
-// $Id: SkyCompanyAttributesViewer.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller class
 
 TitleContent: WOComponentContent {}
 
 Title: LSWViewerTitle {
-  title     = enterprise.name;
+  title = enterprise.name;
 }
 
 CompanyAttrRep: WORepetition {
@@ -25,34 +25,27 @@ CurrentAttrValue: SkyObjectField {
   labels     = labels;
 }
 
-IsCurrentVisible: WOConditional {
-  condition = isCurrentAttributeVisible;
-}
-
-HideIfEmptyCond: WOConditional {
-  condition = doHideEmpty;
-}
+IsCurrentVisible:    WOConditional { condition = isCurrentAttributeVisible; }
+HideIfEmptyCond:     WOConditional { condition = doHideEmpty;               }
+IsNotEmpty:          WOConditional { condition = isNotEmpty;                }
+ShowAddressTypeCond: WOConditional { condition = showAddressType;           }
+IsNotJobViewer:      WOConditional { condition = isJobViewer; negate = YES; }
 
 DontHideIfEmptyCond: WOConditional {
   condition = doHideEmpty;
   negate    = YES;
 }
 
-IsNotEmpty: WOConditional {
-  condition = isNotEmpty;
-}
-
 PublicExtAttrRep: WORepetition {
   list = publicAttributes;
   item = currentAttr;
 }
-
 PrivateExtAttrRep: WORepetition {
   list = privateAttributes;
   item = currentAttr;
 }
 
-// telephones
+/* telephones */
 
 TelephoneViewer: SkyTelephoneViewer {
   noTableAndTitle = YES;
@@ -65,10 +58,6 @@ TelephoneViewer: SkyTelephoneViewer {
 AddressTypeRepetition: WORepetition {
   list = addressTypes;
   item = addressType;
-}
-
-ShowAddressTypeCond: WOConditional {
-  condition = showAddressType;
 }
 
 TypeCell: WOGenericContainer {
@@ -100,11 +89,6 @@ AddressViewer : LSWObjectViewer {
     { key = "state";   },
     { key = "country"; }
   );
-}
-
-IsNotJobViewer: WOConditional {
-  condition = isJobViewer;
-  negate    = YES;
 }
 
 AttrSuffix: WOString {

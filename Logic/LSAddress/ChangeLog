@@ -1,3 +1,9 @@
+2004-10-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSSetCompanyCommand.m: removed some code which was commented out
+	  (relationship is fetched explicitly instead of using a fault)
+	  (v5.1.44)
+
 2004-09-06  Helge Hess  <helge.hess@skyrix.com>
 	
 	* LSWriteUserDefaultsCommand.m: minor code cleanups, attempt to
