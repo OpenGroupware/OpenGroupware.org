@@ -41,7 +41,7 @@
         "blogger.editPost" = { /* TODO: implement me */
           arguments   = {
             positionalKeys = ( 
-              appID, blogID, login, password, entry, doPublish
+              appID, postID, login, password, entry, doPublish
             );
           };
         };
