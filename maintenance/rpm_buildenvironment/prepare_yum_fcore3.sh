@@ -11,7 +11,7 @@ ssh www@download.opengroupware.org "rm -fr ${YUMREPO}/trunk/headers/"
 ssh www@download.opengroupware.org "rm -fr ${YUMREPO}/releases/headers/"
 
 echo -en "rsyncing from download.opengroupware.org...\n"
-rsync -a rsync://download.opengroupware.org/yummer ${YUMTEMP}
+rsync -a rsync://download.opengroupware.org/fcore3 ${YUMTEMP}
 rm -fr ${YUMTEMP}/trunk/headers
 rm -fr ${YUMTEMP}/releases/headers
 echo -en "creating headers for trunk\n"
