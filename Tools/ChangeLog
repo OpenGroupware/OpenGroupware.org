@@ -1,3 +1,8 @@
+2004-12-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* sky_install_sieve.m: fixed OGo bug #1087, argument processing was
+	  broken
+
 2004-11-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* sky_install_procmail.m: fixed a warning on MacOSX

@@ -567,9 +567,9 @@ int main(int argc, const char **argv, char **env) {
   [NSAutoreleasePool enableDoubleReleaseCheck:NO];
 #endif
   
+  // Note: do _not_ use argumentsWithoutDefaults (done by tool)
   result =
-    [InstallSieve runWithArguments:
-                    [[NSProcessInfo processInfo] argumentsWithoutDefaults]];
+    [InstallSieve runWithArguments:[[NSProcessInfo processInfo] arguments]];
   
   [pool release];
   return result;
