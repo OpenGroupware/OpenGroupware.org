@@ -1,4 +1,4 @@
-# $Id: GNUmakefile.preamble 12 2004-08-21 02:22:09Z helge $
+# compilation settings
 
 OGoROOT   =../..
 WebUIROOT =..

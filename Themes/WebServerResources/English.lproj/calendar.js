@@ -1,3 +1,5 @@
+// TODO: is this still used somewhere? feedback to hh!
+
 calDateFormat    = "yyyy-MM-DD";
 
 // CALENDAR COLORS

@@ -1,0 +1,5 @@
+2004-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* moved in product.plist from main executable
+
+	* started SoOGo product bundle

@@ -41,6 +41,10 @@
 - (NSArray *)availableCTIDialers;
 @end
 
+@interface OpenGroupware(Defaults)
++ (NSDictionary *)defaultOGoDefaults;
+@end
+
 @interface WOApplication(JS)
 - (void)registerClass:(Class)_class forScriptedComponent:(NSString *)_comp;
 - (Class)classForScriptedComponent:(NSString *)_comp;
@@ -58,14 +62,86 @@ static BOOL logBundleLoading          = NO;
 static BOOL loadWebUIBundlesOnStartup = YES;
 static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
 
++ (NSArray *)defaultOGoAppointmentTypes {
+  // labels for these defined in string files
+  // this is in this main defaults, to ensure it is loaded when loading either
+  // SkyScheduler *or* LSWScheduler
+  NSMutableArray *ma;
+  NSDictionary   *d;
+  
+  ma = [[NSMutableArray alloc] initWithCapacity:16];
+  
+  // TODO: this is really, well, weird ;->
+  d = [[NSDictionary alloc] initWithObjectsAndKeys:@"none", @"type",
+                              @"apt_icon_default.gif", @"icon",nil];
+  [ma addObject:d]; [d release]; d = nil;
+  d = [[NSDictionary alloc] initWithObjectsAndKeys:@"birthday", @"type",
+                              @"apt_icon_birthday.gif", @"icon", nil];
+  [ma addObject:d]; [d release]; d = nil;
+  d = [[NSDictionary alloc] initWithObjectsAndKeys:@"tradeshow", @"type",
+                              @"apt_icon_tradeshow.gif", @"icon", nil];
+  [ma addObject:d]; [d release]; d = nil;
+  d = [[NSDictionary alloc] initWithObjectsAndKeys:@"meeting", @"type",
+                              @"apt_icon_meeting.gif", @"icon", nil];
+  [ma addObject:d]; [d release]; d = nil;
+  d = [[NSDictionary alloc] initWithObjectsAndKeys:@"holiday", @"type",
+                              @"apt_icon_holiday.gif", @"icon", nil];
+  [ma addObject:d]; [d release]; d = nil;
+  d = [[NSDictionary alloc] initWithObjectsAndKeys:@"duedate", @"type",
+                              @"apt_icon_duedate.gif", @"icon", nil];
+  [ma addObject:d]; [d release]; d = nil;
+  d = [[NSDictionary alloc] initWithObjectsAndKeys:@"outward", @"type",
+                              @"apt_icon_outwards.gif", @"icon", nil];
+  [ma addObject:d]; [d release]; d = nil;
+  d = [[NSDictionary alloc] initWithObjectsAndKeys:@"home", @"type",
+                              @"apt_icon_home.gif", @"icon", nil];
+  [ma addObject:d]; [d release]; d = nil;
+  d = [[NSDictionary alloc] initWithObjectsAndKeys:@"call", @"type",
+                              @"apt_icon_call.gif", @"icon", nil];
+  [ma addObject:d]; [d release]; d = nil;
+  d = [[NSDictionary alloc] initWithObjectsAndKeys:@"ill", @"type",
+                              @"apt_icon_ill.gif", @"icon", nil];
+  [ma addObject:d]; [d release]; d = nil;
+  
+  d = [ma copy];
+  [ma release];
+  return [d autorelease];
+}
++ (NSArray *)defaultOGoLanguages {
+  // TODO: is this necessary? We should locate the themes by scanning the
+  //       Themes directory
+  return [NSArray arrayWithObjects:
+                    @"English_OOo", @"English_blue", @"English_orange",
+                    @"English_kde",
+                  nil];
+}
+
++ (NSDictionary *)defaultOGoDefaults {
+  NSDictionary *defs;
+  
+  defs = [NSDictionary dictionaryWithObjectsAndKeys:
+                       [NSNumber numberWithBool:YES], 
+                       @"LSPageRefreshOnBacktrack",
+                       [NSNumber numberWithInt:1200], 
+                       @"LSLoginPageExpireTimeout",
+                       [NSNumber numberWithInt:300], 
+                       @"SkyProjectFileManagerClickTimeout",
+                       @"", @"SkyLogoutURL",
+                       [self defaultOGoLanguages], @"SkyLanguages",
+                       [self defaultOGoAppointmentTypes],
+                       @"SkyScheduler_defaultAppointmentTypes",
+                       nil];
+  return defs;
+}
+
 + (int)version {
-  return [super version];
+  return [super version] + 0; /* v6 */
 }
 
 + (void)initialize {
   static BOOL isInitialized = NO;
-  NSUserDefaults *ud;
-  NSString *p;
+  NSUserDefaults    *ud;
+  NSAutoreleasePool *pool;
 
   if (isInitialized)
     return;
@@ -74,18 +150,14 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
   NSAssert1([super version] == 6,
             @"invalid superclass (WOApplication) version %i !",
             [super version]);
+
+  pool = [[NSAutoreleasePool alloc] init];
   
   ud = [NSUserDefaults standardUserDefaults];
   
   /* register app defaults */
   
-  p = [[NSBundle mainBundle] pathForResource:@"Defaults" ofType:@"plist"];
-  if (p) {
-    NSDictionary *d;
-    
-    if ((d = [NSDictionary dictionaryWithContentsOfFile:p]))
-      [ud registerDefaults:d];
-  }
+  [ud registerDefaults:[self defaultOGoDefaults]];
   
   /* load values of defaults */
 
@@ -93,6 +165,8 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
   coreOn           = [ud boolForKey:@"OGoCoreOnException"];
   UseRefreshPageForExternalLink =
     [ud boolForKey:@"UseRefreshPageForExternalLink"];
+  
+  [pool release];
 }
 
 - (void)loadBundlesOfType:(NSString *)_type inPath:(NSString *)_p {

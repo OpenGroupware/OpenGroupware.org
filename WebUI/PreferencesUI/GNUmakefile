@@ -21,19 +21,7 @@ PreferencesUI_OBJC_FILES = 		\
 	OGoDefaultEditFrame.m		\
 	OGoDefaultViewField.m		\
 
-PreferencesUI_COMPONENTS = 		\
-	LSWPreferencesViewer.wo 	\
-	LSWPreferencesEditor.wo 	\
-	SkyDefaultEditField.wo		\
-	SkyDisplayPreferences.wo	\
-	OGoDefaultEditField.wo		\
-	OGoDefaultEditFrame.wo		\
-	OGoDefaultViewField.wo		\
-
-PreferencesUI_LANGUAGES = English
-
 PreferencesUI_RESOURCE_FILES += Defaults.plist Version
-PreferencesUI_INCLUDE_DIRS   += -IHeaders
 
 -include SKYRIX.make
 

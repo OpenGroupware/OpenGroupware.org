@@ -1,5 +1,7 @@
 2004-09-22  Helge Hess  <helge.hess@skyrix.com>
 
+	* GNUmakefile: moved Headers into main directory (v5.1.36)
+
 	* moved LSWPreferencesModule.h into .m file (v5.1.35)
 
 2004-09-07  Helge Hess  <helge.hess@skyrix.com>

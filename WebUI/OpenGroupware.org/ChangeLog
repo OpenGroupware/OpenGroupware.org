@@ -1,3 +1,18 @@
+2004-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.57
+	
+	* moved Defaults.plist contents to OpenGroupware.m, so that
+	  the app can become a tool
+
+	* removed superflous OGo.make
+	
+	* moved WOStats.xsl, calendar.js to Themes (is calendar.js still used?)
+	
+	* removed unused menu.js
+	
+	* moved product.plist to own OGo WebUI bundle (SoOGo) 
+
 2004-09-21  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.1.56
@@ -308,5 +323,3 @@ Mon Jul  7 16:16:32 2003  Helge Hess  <helge.hess@skyrix.com>
 Fri Jun 18 17:50:43 1999  Helge Hess  <helge@trex.mdlink.de>
 
 	* activation.cfg: added 'forward' command for mails
-	
-

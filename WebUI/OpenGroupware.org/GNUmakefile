@@ -1,24 +1,8 @@
-# $Id$
+# GNUstep Makefile
 
 include $(GNUSTEP_MAKEFILES)/common.make
 
 WOAPP_NAME = OpenGroupware10a
-
-# Resources
-
-#OpenGroupware10a_WEBSERVER_RESOURCE_FILES += menu.js WOStats.xsl
-
-OpenGroupware10a_RESOURCE_FILES += \
-	Defaults.plist	\
-	calendar.js 	\
-	product.plist	\
-	Version
-
-# Components
-
-OpenGroupware10a_COMPONENTS += Main.wo OGoLogoutPage.wo
-
-# Sources
 
 OpenGroupware10a_OBJC_FILES = \
 	OpenGroupware.m			\
@@ -28,11 +12,6 @@ OpenGroupware10a_OBJC_FILES = \
 	DirectAction.m			\
 	WODirectAction+LoginAction.m	\
 	SoOGoAuthenticator.m
-
--include SKYRIX.make
--include OGo.make
-
-# Project Makefiles
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/woapp.make
