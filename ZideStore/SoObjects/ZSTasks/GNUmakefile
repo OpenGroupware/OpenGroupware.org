@@ -5,8 +5,14 @@ include ../common.make
 BUNDLE_NAME  = Tasks
 LIBRARY_NAME = libZSTasks
 
+
+libZSTasks_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libZSTasks_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+
+
 Tasks_PRINCIPAL_CLASS = TasksProduct
 Tasks_OBJC_FILES      = Product.m
+
 
 libZSTasks_OBJC_FILES = \
 	SxTask.m		\

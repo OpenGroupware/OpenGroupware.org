@@ -8,6 +8,9 @@ LIBRARY_NAME = libZSProjects
 Projects_PRINCIPAL_CLASS = ProjectsProduct
 Projects_OBJC_FILES      = Product.m
 
+libZSProjects_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libZSProjects_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+
 libZSProjects_OBJC_FILES = \
 	SxProjectFolder.m	\
 	SxProjectsFolder.m	\

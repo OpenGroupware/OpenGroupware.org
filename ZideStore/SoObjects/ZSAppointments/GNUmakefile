@@ -8,6 +8,9 @@ LIBRARY_NAME = libZSAppointments
 Appointments_PRINCIPAL_CLASS = AppointmentsProduct
 Appointments_OBJC_FILES      = Product.m
 
+libZSAppointments_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libZSAppointments_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+
 libZSAppointments_OBJC_FILES = \
 	SxAppointment.m			\
 	SxAppointment+Participants.m	\

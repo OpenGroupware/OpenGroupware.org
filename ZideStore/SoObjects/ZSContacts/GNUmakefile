@@ -8,6 +8,9 @@ LIBRARY_NAME = libZSContacts
 Contacts_PRINCIPAL_CLASS = ContactsProduct
 Contacts_OBJC_FILES      = Product.m
 
+libZSContacts_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libZSContacts_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+
 libZSContacts_OBJC_FILES = \
 	SxAddress.m		\
 	SxAddressFolder.m	\
