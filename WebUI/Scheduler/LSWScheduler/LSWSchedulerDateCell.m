@@ -21,6 +21,13 @@
 
 #include <NGObjWeb/WODynamicElement.h>
 
+/*
+  LSWSchedulerDateCell
+
+  This dynamic element renders most appointment info "snippets" in OGo
+  views.
+*/
+
 @class WOAssociation;
 
 @interface LSWSchedulerDateCell : WODynamicElement
@@ -61,20 +68,50 @@ static NSArray *isAccountThenLoginOrderings = nil;
 
 + (void)initialize {
   if (isAccountThenLoginOrderings == nil) {
+    EOSortOrdering *lso, *aso;
+    
+    aso = [EOSortOrdering sortOrderingWithKey:@"isAccount"
+			  selector:EOCompareAscending];
+    lso = [EOSortOrdering sortOrderingWithKey:@"login"
+			  selector:EOCompareAscending];
     isAccountThenLoginOrderings = [[NSArray alloc] initWithObjects:
-                    [EOSortOrdering sortOrderingWithKey:@"isAccount"
-                                    selector:EOCompareAscending],
-                    [EOSortOrdering sortOrderingWithKey:@"login"
-                                    selector:EOCompareAscending],
-						   nil];
+						     aso, lso, nil];
+  }
+}
+
+- (void)_setupDefaultBindings {
+  if (self->linkColor == nil) {
+    self->linkColor =
+      [WOAssociation associationWithKeyPath:@"config.colors_appointmentLink"];
+    RETAIN(self->linkColor);
+  }
+  if (self->ownerColor == nil) {
+    self->ownerColor =
+      [WOAssociation associationWithKeyPath:@"config.colors_ownerColor"];
+    RETAIN(self->ownerColor);
+  }
+  if (self->titleColor == nil) {
+    self->titleColor =
+      [WOAssociation associationWithKeyPath:@"config.colors_titleColor"];
+    RETAIN(self->titleColor);
+  }
+  if (self->locationColor == nil) {
+    self->locationColor =
+      [WOAssociation associationWithKeyPath:@"config.colors_locationColor"];
+    RETAIN(self->locationColor);
+  }
+  if (self->color == nil) {
+    self->color =
+      [WOAssociation associationWithKeyPath:@"config.colors_contentText"];
+    RETAIN(self->color);
   }
 }
 
 - (id)initWithName:(NSString *)_name
   associations:(NSDictionary *)_config
-  template:(WOElement *)_elms
+  template:(WOElement *)_t
 {
-  if ((self = [super initWithName:_name associations:_config template:_elms])) {
+  if ((self = [super initWithName:_name associations:_config template:_t])) {
     self->appointment      = OWGetProperty(_config, @"appointment");
     self->weekday          = OWGetProperty(_config, @"weekday");
     self->linkColor        = OWGetProperty(_config, @"linkColor");
@@ -89,31 +126,7 @@ static NSArray *isAccountThenLoginOrderings = nil;
     self->privateLabel     = OWGetProperty(_config, @"privateLabel");
     self->action           = OWGetProperty(_config, @"action");
     
-    if (self->linkColor == nil) {
-      self->linkColor =
-        [WOAssociation associationWithKeyPath:@"config.colors_appointmentLink"];
-      RETAIN(self->linkColor);
-    }
-    if (self->ownerColor == nil) {
-      self->ownerColor =
-        [WOAssociation associationWithKeyPath:@"config.colors_ownerColor"];
-      RETAIN(self->ownerColor);
-    }
-    if (self->titleColor == nil) {
-      self->titleColor =
-        [WOAssociation associationWithKeyPath:@"config.colors_titleColor"];
-      RETAIN(self->titleColor);
-    }
-    if (self->locationColor == nil) {
-      self->locationColor =
-        [WOAssociation associationWithKeyPath:@"config.colors_locationColor"];
-      RETAIN(self->locationColor);
-    }
-    if (self->color == nil) {
-      self->color =
-        [WOAssociation associationWithKeyPath:@"config.colors_contentText"];
-      RETAIN(self->color);
-    }
+    [self _setupDefaultBindings];
   }
   return self;
 }
@@ -145,18 +158,19 @@ static NSArray *isAccountThenLoginOrderings = nil;
   return nil;
 }
 
+/* generating response */
+
 - (void)_appendParticipant:(id)_person login:(id)_loginPKey 
   owner:(id)_ownerPKey
   toResponse:(WOResponse *)_response
   inContext:(WOContext *)_ctx
 {
-  id       pkey;
+  NSNumber *pkey;
   NSString *label1        = nil;
   NSString *label2        = nil;
   BOOL     isLoginAccount = NO;
   BOOL     isAccount      = NO;
   BOOL     isOwner        = NO;
-  //NSString *c  = [self->color stringValueInComponent:[self component]];
   NSString *oc;
 
   pkey = [_person valueForKey:@"companyId"];
@@ -186,19 +200,16 @@ static NSArray *isAccountThenLoginOrderings = nil;
     label2 = nil;
   }
   
-  if (label1 == nil) {
-#if 0
-    label1 = [pkey stringValue];
-#else
+  if (label1 == nil)
     label1 = @"*";
-#endif
-  }
   
-  if (isLoginAccount)  [_response appendContentString:@"<B>"];
-  else if (!isAccount) [_response appendContentString:@"<I>"];
+  // TODO: replace tags with CSS
+  
+  if (isLoginAccount)  [_response appendContentString:@"<b>"];
+  else if (!isAccount) [_response appendContentString:@"<i>"];
 
   if (isOwner && (oc != nil)) {
-    [_response appendContentString:@"<FONT COLOR=\""];
+    [_response appendContentString:@"<font color=\""];
     [_response appendContentHTMLAttributeValue:oc];
     [_response appendContentString:@"\">"];
   }
@@ -210,27 +221,24 @@ static NSArray *isAccountThenLoginOrderings = nil;
   }
         
   if (isOwner && (oc != nil))
-    [_response appendContentString:@"</FONT>"];
+    [_response appendContentString:@"</font>"];
 
-  if (isLoginAccount)  [_response appendContentString:@"</B>"];
-  else if (!isAccount) [_response appendContentString:@"</I>"];
+  if (isLoginAccount)  [_response appendContentString:@"</b>"];
+  else if (!isAccount) [_response appendContentString:@"</i>"];
 }
 
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
   // TODO: split up this huge method
+  // TODO: improve labels
+  // TODO: replace font tag with CSS
   WOComponent    *co = [_ctx component];
-  id             a     = nil;
-  NSString       *c    = nil;
-  NSString       *lc   = nil;
-  NSCalendarDate *wD   = nil;
-  id             owner = nil;
-  id             oc    = nil;
-  id             loc   = nil;
-  id             tc    = nil;
-  BOOL           link  = NO;
-  BOOL           priv  = NO;
-  BOOL           sevD  = NO;
-  BOOL           noAcc = NO;
+  id             a;
+  NSString       *c;
+  NSString       *lc;
+  NSCalendarDate *wD;
+  id             owner;
+  NSString       *oc, *tc, *loc;
+  BOOL           link, priv, sevD, noAcc;
   
   a    = [self->appointment      valueInComponent:co];
   wD   = [self->weekday          valueInComponent:co];
@@ -243,7 +251,7 @@ static NSArray *isAccountThenLoginOrderings = nil;
   priv = [self->isPrivate        boolValueInComponent:co];
   sevD = [self->isForSeveralDays boolValueInComponent:co];
   
-  noAcc = ([a valueForKey:@"accessTeamId"] == nil);
+  noAcc = ([a valueForKey:@"accessTeamId"] == nil) ? YES : NO;
   owner = [a valueForKey:@"ownerId"];
     
   if (lc == nil) lc = c;

@@ -1,4 +1,3 @@
-// NSUserDefaults
 {
   scheduler_time_input_type            = "PopUp";
   scheduler_apttype_input_type         = "Icons";
