@@ -1,3 +1,8 @@
+2004-09-09  Olivier Hallot  <olivier@ig.com.br>
+
+	* SkyJobList.wo/SkyJobList.wod (JobList): added title and footer line
+	  to tasks (OGo bug #837) (v5.1.47)
+
 2004-08-23  Helge Hess  <helge.hess@skyrix.com>
 
 	* removed usage of deprecated singleSelection binding (v5.1.46)

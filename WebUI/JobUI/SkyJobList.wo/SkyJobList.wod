@@ -1,8 +1,4 @@
-// $Id: SkyJobList.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
-
-IsLicensed: SkyLicenseConditional {
-  modules = ( Jobs );
-}
+// bind template to class
 
 JobList: SkyTableView {
   dataSource   = dataSource;
@@ -11,6 +7,8 @@ JobList: SkyTableView {
   currentBatch = start;
   isDescending = isDescending;
   sortedKey    = sortedKey;
+  titleString  = labels.jobsWindowLabel;
+  footerString = labels.jobsWindowLabel;
 }
 
 StatusData: WETableData {
