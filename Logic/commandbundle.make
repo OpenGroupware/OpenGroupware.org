@@ -1,4 +1,4 @@
-# $Id$
+# $Id: commandbundle.make 10 2004-08-21 01:23:23Z helge $
 
 $(COMMAND_BUNDLE)_OBJC_FILES += $(COMMAND_BUNDLE)Commands.m
 
@@ -19,7 +19,9 @@ else
 $(COMMAND_BUNDLE)_BUNDLE_LIBS += \
 	-lLSFoundation	\
 	-lGDLAccess	\
-	-lNGStreams -lNGExtensions -lEOControl
+	-lNGMime	\
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lXmlRpc -lDOM -lSaxObjC
 endif
 
 ifeq ($(FOUNDATION_LIB),nx)

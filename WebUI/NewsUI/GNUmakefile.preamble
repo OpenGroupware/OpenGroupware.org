@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile.preamble 12 2004-08-21 02:22:09Z helge $
 
 OGoROOT   =../..
 WebUIROOT =..
@@ -6,6 +6,7 @@ WebUIROOT =..
 ADDITIONAL_BUNDLE_LIBS += \
 	-lGDLAccess	\
 	-lNGScripting	\
+	-lNGMime	\
 	-lDOM -lSaxObjC
 
 ADDITIONAL_LIB_DIRS += \

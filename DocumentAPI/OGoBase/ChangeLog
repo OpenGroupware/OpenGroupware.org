@@ -1,3 +1,7 @@
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added GNUmakefile.preamble/postamble (v5.1.8)
+
 2004-03-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyLogDocument.m: fixed a warning with gstep-base (v5.0.7)

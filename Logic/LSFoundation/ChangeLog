@@ -1,5 +1,7 @@
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
 
+	* GNUmakefile.preamble: fixed linking dependency on MacOSX (v5.1.81)
+
 	* fixed for SOPE 3.3 (v5.1.80)
 
 2004-07-04  Helge Hess  <helge.hess@opengroupware.org>

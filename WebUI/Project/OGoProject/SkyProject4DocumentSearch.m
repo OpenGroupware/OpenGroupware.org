@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,11 +18,11 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/OGoComponent.h>
 
-@class EOGlobalID, EOFetchSpecification, NSString, EOGlobalID;
+@class NSString, NSMutableDictionary;
+@class EOGlobalID, EOFetchSpecification, EOGlobalID;
 
 @interface SkyProject4DocumentSearch : OGoComponent
 {
@@ -32,7 +32,7 @@
   EOGlobalID          *fsgid;
   id                  dataSource;
   id                  fileManager;
-  id currentFile;
+  id                  currentFile;
 }
 
 - (EOFetchSpecification *)fetchSpecification;
@@ -82,22 +82,9 @@
 				 [[self session] commandContext]
                                forProjectGID:_gid];
     }
-#if 0    
-    self->dataSource =
-      [[SkyProjectFolderDataSource alloc]
-                                   initWithContext:
-                                   [(LSWSession *)[self session]
-                                                  commandContext]
-                                   folderGID:
-                                   [self->fileManager globalIDForPath:@"/"]
-                                   projectGID:_gid
-                                   path:@"/"
-                                   fileManager:self->fileManager];
-#else
     self->dataSource =
       [[self->fileManager dataSourceForDocumentSearchAtPath:@"/"] retain];
     
-#endif
     [self->dataSource setFetchSpecification:[self fetchSpecification]];
   }
 }
@@ -128,29 +115,31 @@
 - (BOOL)isExternalLink {
   id       f;
   NSString *linkTarget;
+  NSString *linkPath;
 
   f = [self currentFile];
   
-  if ([[f valueForKey:NSFileType] isEqualToString:NSFileTypeSymbolicLink]) {
-    linkTarget = [f valueForKey:@"SkyLinkTarget"];
+  if (![[f valueForKey:NSFileType] isEqualToString:NSFileTypeSymbolicLink])
+    return NO;
 
-    if ([linkTarget isNotNull] && [linkTarget length] > 0) {
-      NSString *linkPath;
-      
-      linkPath   = [[self currentFile] valueForKey:NSFilePath];
-      linkTarget = [self->fileManager
-                        pathContentOfSymbolicLinkAtPath:linkPath];
+  linkTarget = [f valueForKey:@"SkyLinkTarget"];
 
-      if ([self->fileManager fileExistsAtPath:linkTarget isDirectory:NULL])
-        return NO;
-      /* old style link */
-      if ([linkTarget hasPrefix:@"/Skyrix/wa/LSWViewAction/view"]) {
-        return NO;
-      }
-      if ([NSURL URLWithString:linkTarget])
-        return YES;
-    }
-  }
+  if (!([linkTarget isNotNull] && [linkTarget length] > 0))
+    return NO;
+  
+  linkPath   = [[self currentFile] valueForKey:NSFilePath];
+  linkTarget = [self->fileManager
+		    pathContentOfSymbolicLinkAtPath:linkPath];
+
+  if ([self->fileManager fileExistsAtPath:linkTarget isDirectory:NULL])
+    return NO;
+  /* old style link */
+  if ([linkTarget hasPrefix:@"/Skyrix/wa/LSWViewAction/view"])
+    return NO;
+  
+  if ([NSURL URLWithString:linkTarget] != nil)
+    return YES;
+  
   return NO;
 }
 
@@ -245,8 +234,10 @@
   
   if ([(s = [self->bindings objectForKey:@"title"]) length] > 0) {
     EOQualifier *q;
-    
-    if ([s indexOfString:@"*"] == NSNotFound)
+    NSRange r;
+
+    r = [s rangeOfString:@"*"];
+    if (r.length == 0)
       s  = [[@"*" stringByAppendingString:s] stringByAppendingString:@"*"];
 
     q = [[EOKeyValueQualifier alloc]
@@ -259,11 +250,14 @@
   
   if ([(s = [self->bindings objectForKey:@"filename"]) length] > 0) {
     EOQualifier *q;
-
-    if ([s indexOfString:@"*"] == NSNotFound)
+    NSRange r;
+    
+    r = [s rangeOfString:@"*"];
+    if (r.length == 0)
       s = [[@"*" stringByAppendingString:s] stringByAppendingString:@"*"];
    
-    if ([s indexOfString:@"."] == NSNotFound)
+    r = [s rangeOfString:@"."];
+    if (r.length == 0)
       s  = [s stringByAppendingString:@".*"];
     
     q = [[EOKeyValueQualifier alloc]

@@ -1,3 +1,7 @@
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWEnterpriseAdvancedSearch.m: fixed a MacOSX warning (v5.1.31)
+
 2004-06-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWEnterprises.m, SkyAssignPersonSubEditor.m: various code cleanups

@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 include ./Version
@@ -31,24 +31,7 @@ OGoBase_PRINCIPAL_CLASS = SkyBaseBundleManager
 OGoBase_OBJC_FILES = 	\
 	SkyBaseBundleManager.m \
 
-OGoBase_LIB_DIRS    += -L./$(GNUSTEP_OBJ_DIR)
-OGoBase_BUNDLE_LIBS += -lOGoBase
-
-ADDITIONAL_CPP_FLAGS += -Wall
-
-ADDITIONAL_INCLUDE_DIRS += -I..	-I../OGoDocuments/
-
-ADDITIONAL_LIB_DIRS += -L../OGoDocuments/$(GNUSTEP_OBJ_DIR) \
-
-ifeq ($(FOUNDATION_LIB),nx)
-ADDITIONAL_LDFLAGS += -framework Foundation
-endif
-
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
-
-after-OGoBase-all ::
-	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
-	  $(LN_S) -f ../bundle-info.plist .)

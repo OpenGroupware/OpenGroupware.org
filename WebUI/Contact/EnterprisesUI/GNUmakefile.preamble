@@ -1,12 +1,13 @@
-# $Id$
+# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
 
 EnterprisesUI_RESOURCE_FILES += Defaults.plist Version
 
 ADDITIONAL_WOBUNDLE_LIBS += \
 	-lOGoFoundation \
-	-lNGScripting \
+	-lNGScripting	\
 	-lOGoDocuments -lOGoContacts -lLSFoundation \
-	-lGDLAccess \
+	-lGDLAccess	\
+	-lNGMime	\
 	-lNGExtensions -lEOControl \
 	-lDOM -lSaxObjC
 

@@ -18,10 +18,11 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: LSWPersonAdvancedSearch.m 1 2004-08-20 11:17:52Z znek $
 
 #include "LSWPersonAdvancedSearch.h"
 #include "common.h"
+#include <NGExtensions/NSString+Ext.h>
 #include <OGoContacts/SkyPersonAddressConverterDataSource.h>
 
 @interface LSWPersonAdvancedSearch(PrivateMethodes)

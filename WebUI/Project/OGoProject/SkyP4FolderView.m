@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/OGoComponent.h>
 
@@ -46,6 +45,7 @@
 #include "OGoComponent+FileManagerError.h"
 #include "NGUnixTool.h"
 #include "common.h"
+#include <NGExtensions/NSString+Ext.h>
 
 @interface NGFileManager(SymbolicLinks)
 // this is implemented by SkyFSFileManager and SkyDBFileManager

@@ -1,11 +1,13 @@
-# $Id$
+# compile flags
 
 libOGoRawDatabase_INCLUDE_DIRS += -I..
 
 libOGoRawDatabase_LIBRARIES_DEPEND_UPON += \
-	-lOGoDocuments  \
-        -lGDLAccess     \
-        -lNGExtensions -lEOControl
+	-lOGoDocuments  	\
+        -lGDLAccess     	\
+	-lNGMime -lNGLdap	\
+        -lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
 
 ADDITIONAL_LIB_DIRS += -L../OGoDocuments/$(GNUSTEP_OBJ_DIR)
 

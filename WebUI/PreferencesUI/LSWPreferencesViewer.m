@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWViewerPage.h>
 
@@ -55,7 +54,7 @@ static int keySort(id o1, id o2, void *ctx) {
   
   o1 = [o1 objectForKey:key];
   o2 = [o2 objectForKey:key];
-  return [o1 compare:o2];
+  return [(NSString *)o1 compare:o2];
 }
 
 + (void)initialize {

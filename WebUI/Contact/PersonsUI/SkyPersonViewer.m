@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/OGoViewerPage.h>
 
@@ -56,6 +55,7 @@
 #include <OGoContacts/SkyPersonDocument.h>
 #include <OGoContacts/SkyPersonDataSource.h>
 #include <OGoContacts/SkyPersonAddressConverterDataSource.h>
+#include <NGMime/NGMimeType.h>
 #include "common.h"
 
 @class NSEnumerator;

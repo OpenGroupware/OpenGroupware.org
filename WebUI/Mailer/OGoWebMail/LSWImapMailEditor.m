@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "LSWImapMailEditor.h"
 #include "SkyImapMailRestrictions.h"
@@ -28,6 +27,7 @@
 #include "NSString+MailEditor.h"
 #include "OGoMailAddressSearch.h"
 #include "common.h"
+#include <NGExtensions/NSString+Ext.h>
 #include <NGMime/NGMimeFileData.h>
 
 // TODO: this file is WAY to big and needs to be split into several classes
@@ -475,8 +475,6 @@ static Class      StrClass        = nil;
 /* actions */
 
 - (NSString *)_preprocessSearchItem:(NSString *)searchItem {
-  // TODO: Unicode!
-  // TODO: this just trims leading spaces, right? => NGExtensions
   return [searchItem stringByTrimmingLeadSpaces];
 }
 - (id)_processesProhibitedAddresses:(NSArray *)prohibited {

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: SkyMailIcon.m 1 2004-08-20 11:17:52Z znek $
 
 #include <NGObjWeb/WODynamicElement.h>
 
@@ -31,8 +31,9 @@
 
 @end
 
-#include <NGMime/NGMimeType.h>
 #include "common.h"
+#include <NGMime/NGMimeType.h>
+#include <NGExtensions/NSString+Ext.h>
 
 @implementation SkyP4MailIcon
 
@@ -48,10 +49,12 @@
 }
 
 - (void)dealloc {
-  RELEASE(self->mimeType);
-  RELEASE(self->documentPath);
+  [self->mimeType     release];
+  [self->documentPath release];
   [super dealloc];
 }
+
+/* generating response */
 
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
   WOResourceManager *rm;
@@ -90,7 +93,7 @@
 
   if (src == nil) {
     nMType = [NGMimeType mimeType:mType];
-    mmType = [[nMType type] stringByReplacingString:@"-" withString:@"_"];
+    mmType = [[nMType type]    stringByReplacingString:@"-" withString:@"_"];
     msType = [[nMType subType] stringByReplacingString:@"-" withString:@"_"];
 
     key = [NSString stringWithFormat:
@@ -143,9 +146,8 @@
     [_response appendContentString:
                  @"\" border='0' align='bottom' height='16' width='19' />"];
   }
-  else {
+  else
     [_response appendContentHTMLString:[path lastPathComponent]];
-  }
 }
 
 @end /* SkyP4MailIcon */

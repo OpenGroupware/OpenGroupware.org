@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile.preamble 10 2004-08-21 01:23:23Z helge $
 
 LSSearch_INCLUDE_DIRS += -I../LSFoundation -I..
 LSSearch_LIB_DIRS += \
@@ -17,9 +17,11 @@ LSSearch_BUNDLE_LIBS += \
 	-lDOM -lSaxObjC
 
 libLSSearch_LIBRARIES_DEPEND_UPON += \
-	-lLSFoundation	\
-	-lGDLAccess 	\
-	-lNGStreams -lNGExtensions -lEOControl
+	-lLSFoundation		\
+	-lGDLAccess 		\
+	-lNGMime -lNGLdap	\
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
 
 ifeq ($(GNUSTEP_TARGET_OS),mingw32)
 LSSearch_BUNDLE_LIBS += -lFoundation -lobjc

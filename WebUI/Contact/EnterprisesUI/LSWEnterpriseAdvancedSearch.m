@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: LSWEnterpriseAdvancedSearch.m 1 2004-08-20 11:17:52Z znek $
 
 #include <OGoFoundation/LSWComponent.h>
 
@@ -51,7 +51,8 @@
 
 @end /* LSWEnterpriseAdvancedSearch */
 
-#import "common.h"
+#include "common.h"
+#include <NGExtensions/NSString+Ext.h>
 #include <OGoContacts/SkyEnterpriseAddressConverterDataSource.h>
 
 @implementation LSWEnterpriseAdvancedSearch
@@ -61,17 +62,17 @@
     NSMutableArray *keys = nil;
     NSArray *attrs       = nil;
     int     i, cnt;
-
+    
+    // TODO: move this code to a method
     keys = [NSMutableArray arrayWithCapacity:16];
 
     attrs = [[[self session]
                     userDefaults]
                     arrayForKey:@"SkyPublicExtendedEnterpriseAttributes"];
 
-    for (i = 0, cnt = [attrs count]; i < cnt; i++) {
+    for (i = 0, cnt = [attrs count]; i < cnt; i++)
       [keys addObject:[[attrs objectAtIndex:i] objectForKey:@"key"]];
-    }
-
+    
     keys = (id)[keys sortedArrayUsingSelector:@selector(compare:)];
     self->extendedAttributeKeys = [keys retain];
     

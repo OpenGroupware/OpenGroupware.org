@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWEditorPage.h>
 
@@ -41,9 +40,10 @@
 - (void)exportFilter;
 @end /* SkyVacationEditor */
 
-#include "common.h"
 #include "LSWImapMails.h"
 #include "LSWImapMailFilterManager.h"
+#include "common.h"
+#include <NGExtensions/NSString+Ext.h>
 
 @implementation SkyVacationEditor
 

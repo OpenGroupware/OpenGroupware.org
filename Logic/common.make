@@ -1,4 +1,4 @@
-# $Id$
+# $Id: common.make 1 2004-08-20 11:17:52Z znek $
 
 OGoROOT=..
 

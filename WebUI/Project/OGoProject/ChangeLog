@@ -1,5 +1,13 @@
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v5.1.44
+	
+	* SkyProject4DocumentSearch.m: replaced -indexOfString: calls with
+	  -rangeOfString:
+	
+	* SkyP4FolderView.m, SkyProject4DocumentRename.m: fixed MacOSX 
+	  warnings
+	
 	* removed forms (v5.1.43)
 
 2004-07-27  Helge Hess  <helge.hess@opengroupware.org>

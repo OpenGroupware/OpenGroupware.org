@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "OGoMailAddressSearch.h"
 #include "SkyImapMailRestrictions.h"
@@ -28,6 +27,7 @@
 #include "OGoMailAddressRecord.h"
 #include "OGoMailAddressRecordResult.h"
 #include "common.h"
+#include <NGExtensions/NSString+Ext.h>
 
 // TODO: needs more cleanup, but much better than before ;-)
 // TODO: document search restrictions!
