@@ -1,10 +1,10 @@
 button_linkadd                      = "+";
-linkType_pda_conflicting_ogo_entry  = "konfliktender OGo Eintrag";
-linkType_pda_conflicting_palm_entry = "konfliktender Palm Eintrag";
-linkType_pda_new_ogo_entry          = "neu angelegter OGo Eintrag";
+linkType_pda_conflicting_ogo_entry  = "Konfliktender OGo Eintrag";
+linkType_pda_conflicting_palm_entry = "Konfliktender Palm Eintrag";
+linkType_pda_new_ogo_entry          = "Neu angelegter OGo Eintrag";
 linkentity_Date                     = "Termin";
 linkentity_Enterprise               = "Firma";
-linkentity_Job                      = "Job";
+linkentity_Job                      = "Aufgabe";
 linkentity_Person                   = "Person";
 linkentity_Project                  = "Projekt";
 linkentity_Team                     = "Team";

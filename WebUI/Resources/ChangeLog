@@ -1,3 +1,13 @@
+2005-03-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* German.lproj/AddressUI.strings: some indent-cleanups, fixed a
+	  missing semicolon
+
+2005-03-22  Daniel Schulz  <dlsz@gmx.net>
+
+	* German.lproj: major review of German translation, use consistent
+	  terms and case
+
 2005-03-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* English|German.lproj: added OGoDocInlineViewers.strings file with

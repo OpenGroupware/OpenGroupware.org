@@ -1,6 +1,6 @@
 accountName        = "Account";
 cal_birthday       = "Geburtstag";
-cal_browse         = "suche";
+cal_browse         = "Suche";
 cal_completionDate = "Fälligkeitstermin";
 cal_cycleEndDate   = "Zyklusende";
 cal_duedate        = "Fälligkeitstermin";

@@ -1,6 +1,6 @@
 archiveContent       = "Inhalt der Archiv-Datei";
 archiveFormat        = "Archiv-Format";
-cancel               = "cancel";
+cancel               = "Abbrechen";
 compressionLevel     = "Kompressions-Stufe";
 date                 = "Datum";
 exclude              = "ausschließen";
