@@ -1,3 +1,7 @@
+2004-11-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkySimpleTabItem.m: minor code cleanups (v5.1.31)
+
 2004-10-14  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyExternalLink.m: removed some old code, minor cleanups (v5.1.30)

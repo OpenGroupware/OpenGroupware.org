@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWViewerPage.h>
 #include <OGoDocuments/SkyDocumentFileManager.h>
@@ -50,10 +49,12 @@
 }
 
 - (void)setFileManager:(id)_fm;
+- (id)fileSystemNumber;
 
 @end
 
 #include <NGMime/NGMimeType.h>
+#include <OGoFoundation/OGoClipboard.h>
 #include "common.h"
 
 @interface NSObject(DSP)
@@ -128,13 +129,10 @@ static inline BOOL _showUnknownFiles(id self) {
 }
 
 - (BOOL)isViewerForSameObject:(id)_object {
-  id gid;
-
   if ((id)_object == (id)self->fileManager)
     return YES;
   
-  gid = [[self fileSystemAttributes] objectForKey:@"NSFileSystemNumber"];
-  if ([_object isEqual:gid])
+  if ([_object isEqual:[self fileSystemNumber]])
     return YES;
   
   return NO;
@@ -232,10 +230,8 @@ static inline BOOL _showUnknownFiles(id self) {
   if (self->project) 
     return self->project;
 
-  projectID = [[self fileSystemAttributes]
-                     valueForKey:@"NSFileSystemNumber"];
-  if (projectID == nil) {
-    [self logWithFormat:@"Couldn't find valid project ID"];
+  if ((projectID = [self fileSystemNumber]) == nil) {
+    [self logWithFormat:@"ERROR: could not find valid project ID"];
     return nil;
   }
     
@@ -291,6 +287,11 @@ static inline BOOL _showUnknownFiles(id self) {
   return self->folderDropPath;
 }
 
+- (BOOL)defaultFileListShouldHideFolders {
+  return [[[(OGoSession *)[self session] userDefaults]
+            objectForKey:@"skyp4_filelist_hide_folders"] boolValue];
+}
+
 - (id)selectedDataSource {
   /* TODO: split up this method */
   EOFetchSpecification *fspec;
@@ -317,11 +318,7 @@ static inline BOOL _showUnknownFiles(id self) {
     static EOQualifier *hideFoldersQ = nil;
     static EOQualifier *showFoldersQ = nil;
     
-    hideFolders = [[[(OGoSession *)[self session] userDefaults]
-                                 objectForKey:@"skyp4_filelist_hide_folders"]
-                                 boolValue];
-    
-    if (hideFolders) {
+    if ((hideFolders = [self defaultFileListShouldHideFolders])) {
       if (hideFoldersQ == nil) {
         if (_showUnknownFiles(self)) {
           q = [EOQualifier qualifierWithQualifierFormat:
@@ -360,7 +357,7 @@ static inline BOOL _showUnknownFiles(id self) {
     
     if (self->pathToDS == nil)
       self->pathToDS = [[NSMutableDictionary alloc] initWithCapacity:8];
-    if (ds)
+    if (ds != nil)
       [self->pathToDS setObject:ds forKey:path];
     
     [ds setFetchSpecification:fspec];
@@ -375,6 +372,9 @@ static inline BOOL _showUnknownFiles(id self) {
   
   self->fsinfo = [[[self fileManager] fileSystemAttributesAtPath:@"/"] copy];
   return self->fsinfo;
+}
+- (id)fileSystemNumber {
+  return [[self fileSystemAttributes] objectForKey:@"NSFileSystemNumber"];
 }
 
 /* form project */
@@ -469,10 +469,14 @@ static inline BOOL _showUnknownFiles(id self) {
 }
 
 - (NSString *)objectUrlKey {
-  return [[NSString stringWithFormat:
-                    @"wa/LSWViewAction/viewProject?projectId=%@&documentId=%@",
-                    [[self object] valueForKey:@"projectId"],
-                    [self pidForCurrentDirectoryPath]] stringByEscapingURL];
+  NSString *s;
+  
+  // TODO: use some URL construction method?
+  s = @"wa/LSWViewAction/viewProject";
+  s = [s stringByAppendingFormat:@"?projectId=%@&documentId=%@",
+           [[self object] valueForKey:@"projectId"],
+           [self pidForCurrentDirectoryPath]];
+  return [s stringByEscapingURL];
 }
 
 /* Pub Preview URLs */
@@ -510,16 +514,12 @@ static inline BOOL _showUnknownFiles(id self) {
 /* actions */
 
 - (id)placeInClipboard {
-  [(OGoSession *)[self session]
-         addFavorite:
-           [[self fileSystemAttributes] objectForKey:NSFileSystemNumber]];
+  [[(OGoSession *)[self session] favorites] addObject:[self fileSystemNumber]];
   return nil;
 }
 
 - (id)edit {
-  return [self activateObject:
-               [[self fileSystemAttributes] objectForKey:@"NSFileSystemNumber"]
-               withVerb:@"edit"];
+  return [self activateObject:[self fileSystemNumber] withVerb:@"edit"];
 }
 
 - (id)droppedOnFolder {

@@ -54,6 +54,7 @@
 
   id item;
   id prevItem;
+  id currentTab;
 }
 
 - (EOFetchSpecification *)_fetchSpecification;
@@ -136,6 +137,7 @@ static EOQualifier *trueQualifier     = nil;
 }
 
 - (void)dealloc {
+  [self->currentTab     release];
   [self->clippedGIDs    release];
   [self->project        release];
   [self->ds             release];
@@ -172,6 +174,8 @@ static EOQualifier *trueQualifier     = nil;
 - (EODataSource *)documentDS {
   return self->documentDS;
 }
+
+/* datasources */
 
 - (EOFetchSpecification *)_fetchSpecification {
   EOFetchSpecification *fspec;
@@ -211,7 +215,6 @@ static EOQualifier *trueQualifier     = nil;
   
   [self->ds setAuxiliaryQualifier:self->searchQualifier];
   [self->ds setGroupings:nil];
-
   return self->ds;
 }
 
@@ -230,6 +233,46 @@ static EOQualifier *trueQualifier     = nil;
   [self->ds setGroupings:nil];
   return self->ds;
 }
+
+/* tabs */
+
+- (NSArray *)tabs {
+  static NSArray *tabs = nil;
+  if (tabs == nil) {
+    tabs = [[[NSUserDefaults standardUserDefaults]
+              arrayForKey:@"skyp4_desktop_tabs"] copy];
+  }
+  return tabs;
+}
+
+- (void)setCurrentTab:(NSDictionary *)_info {
+  ASSIGN(self->currentTab, _info);
+}
+- (NSDictionary *)currentTab {
+  return self->currentTab;
+}
+
+- (NSString *)currentTabLabel {
+  NSString *k;
+  
+  k = [[self currentTab] objectForKey:@"labelKey"];
+  if ([k length] == 0)
+    k = [[self currentTab] objectForKey:@"key"];
+  return [[self labels] valueForKey:k];
+}
+- (EODataSource *)tabDataSource {
+  EOQualifier *q;
+  
+  /* might want to use one DS per tab-key? */
+  
+  q = [EOQualifier qualifierWithQualifierFormat:
+                     [[self currentTab] objectForKey:@"qualifier"]];
+  [self->ds setAuxiliaryQualifier:q];
+  [self->ds setGroupings:nil];
+  return self->ds;
+}
+
+/* accessors */
 
 - (void)setProject:(id)_project {
   ASSIGN(self->project, _project);
@@ -453,11 +496,16 @@ static EOQualifier *trueQualifier     = nil;
   return [self activateObject:[project globalID] withVerb:@"view"];
 }
 
-- (id)newWizard {
+- (id)newProject {
   NGMimeType *mt;
   
   mt = [NGMimeType mimeType:@"eo" subType:@"project"];
   return [[self session] instantiateComponentForCommand:@"new" type:mt];
+}
+- (id)newWizard {
+  [self logWithFormat:@"WARNING(%s): used deprecated method!",
+        __PRETTY_FUNCTION__];
+  return [self newProject];
 }
 
 - (id)searchProjects {

@@ -1,5 +1,14 @@
 2004-11-23  Helge Hess  <helge.hess@skyrix.com>
 
+	* SkyProject4Desktop.m: made project desktop tabs configurable using
+	  the 'skyp4_desktop_tabs' default (v5.1.50)
+
+	* v5.1.49
+
+	* SkyProject4Viewer.m: code cleanups
+
+	* SkyProject4Desktop.m: added -newProject action, deprecated -newWizard
+
 	* SkyProject4Desktop.m: major code cleanups, completed incomplete 
 	  search code in -searchProjects (did not use the 
 	  EOFetchSpecification?) (v5.1.48)

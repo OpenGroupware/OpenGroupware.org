@@ -1,18 +1,18 @@
-// $Id: SkyProject4Desktop.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller class
 
 Frame: LSWSkyrixFrame {
 }
 Window: LSWWindowFrame {
-  title = labels.projects;
+  title   = labels.projects;
   onClose = session.navigation.leavePage;
 }
 
 Buttons: SkyButtonRow {
-  ordering = ( wizard, update );
+  ordering = ( new, update );
   onUpdate = refetch;
-  onWizard = newWizard;
+  onNew    = newProject;
   update   = labels.update;
-  wizard   = labels.new;
+  new      = labels.new;
 }
 
 /* tabs */
@@ -22,41 +22,35 @@ TabView: SkyTabView {
 }
 
 FavoritesTab: SkySimpleTabItem {
-  key       = "favorites";
-  label     = labels.favorites;
+  key   = "favorites";
+  label = labels.favorites;
 }
 SearchTab: SkySimpleTabItem {
-  key       = "search";
-  label     = labels.search;
-}
-CommonTab: SkySimpleTabItem {
-  key       = "common";
-  label     = labels.common;
-}
-PrivateTab: SkySimpleTabItem {
-  key       = "private";
-  label     = labels.private;
-}
-ArchivedTab: SkySimpleTabItem {
-  key       = "archived";
-  label     = labels.archived;
+  key   = "search";
+  label = labels.search;
 }
 
-DocumentsTab : SkySimpleTabItem {
-  key       = "documents";
-  label     = labels.documents;
-}
-
-HasNoProjectLite : WOConditional {
-  condition = session.hasProjectLite;
-  negate    = YES;
+DocumentsTab: SkySimpleTabItem {
+  key   = "documents";
+  label = labels.documents;
 }
 
 FavoriteProjects: SkyP4ProjectTableView { dataSource = favoriteDataSource; }
 SearchProjects:   SkyP4ProjectTableView { dataSource = searchDataSource;   }
-PublicProjects:   SkyP4ProjectTableView { dataSource = publicDataSource;   }
-PrivateProjects:  SkyP4ProjectTableView { dataSource = privateDataSource;  }
-ArchivedProjects: SkyP4ProjectTableView { dataSource = archivedDataSource; }
+
+/* tabs */
+
+Tabs: WORepetition {
+  list = tabs;
+  item = currentTab;
+}
+Tab: SkySimpleTabItem {
+  key   = currentTab.key;
+  label = currentTabLabel;
+}
+TabTableView: SkyP4ProjectTableView {
+  dataSource = tabDataSource;
+}
 
 /* Selected Projects */
 
@@ -82,7 +76,7 @@ SearchForm: WOForm {
 }
 
 
-ExtendedSearchComponent : WOCollapsibleComponentContent {
+ExtendedSearchComponent: WOCollapsibleComponentContent {
   condition   = NO;
   visibility  = firstVisibility;
   openedLabel = labels.extendedSearch;
@@ -92,47 +86,41 @@ ExtendedSearchComponent : WOCollapsibleComponentContent {
   //  submitActionName = clearClicks;
 }
 
-IsCloseCondition : WOConditional {
+IsCloseCondition: WOConditional {
   condition = firstVisibility;
 }
 
-Title : WOString {
-  value = labels.subject;
-}
-FileName : WOString {
-  value = labels.fileName;
-}
-Extension : WOString {
-  value = labels.extension;
-}
+Title:     WOString { value = labels.subject;   }
+FileName:  WOString { value = labels.fileName;  }
+Extension: WOString { value = labels.extension; }
 
-TitleField : WOTextField {
+TitleField: WOTextField {
   value = title;
   size  = 60;
 //  style = textFieldStyle;
 }
 
-FileNameField : WOTextField {
+FileNameField: WOTextField {
   value = fileName;
   size  = 60;
 //  style = textFieldStyle;
 }
 
-ExtensionField : WOTextField {
+ExtensionField: WOTextField {
   value = extension;
   size  = 60;
 //  style = textFieldStyle;
 }
 
-IsExtendedSearchElse : WOConditional {
+IsExtendedSearchElse: WOConditional {
   condition = isExtendetSearch;
   negate    = YES;
 }
-IsExtendedSearch : WOConditional {
+IsExtendedSearch: WOConditional {
   condition = isExtendetSearch;
 }
 
-ExtendedSearchTableView : SkyTableView {
+ExtendedSearchTableView: SkyTableView {
   //  list           = searchProjectArray;
   dataSource     = documentDS;
   item           = item;

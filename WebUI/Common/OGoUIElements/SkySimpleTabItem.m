@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 /*
   The SkySimpleTabItem behaves similiar to the SkyTabItem, but does
@@ -60,8 +59,8 @@
   Class         c;
 
   if ((c = NSClassFromString(@"WETabItem")) == Nil) {
-    NSLog(@"%s: missing WETabItem class", __PRETTY_FUNCTION__);
-    RELEASE(self);
+    NSLog(@"ERROR(%s): missing WETabItem class", __PRETTY_FUNCTION__);
+    [self release];
     return nil;
   }
   
@@ -87,10 +86,11 @@
 }
 
 - (void)dealloc {
-  RELEASE(self->template);
-  
+  [self->template release];
   [super dealloc];
 }
+
+/* processing requests */
 
 - (void)takeValuesFromRequest:(WORequest *)_req inContext:(WOContext *)_ctx {
   [self->template takeValuesFromRequest:_req inContext:_ctx];
@@ -99,6 +99,8 @@
 - (id)invokeActionForRequest:(WORequest *)_req inContext:(WOContext *)_ctx {
   return [self->template invokeActionForRequest:_req inContext:_ctx];
 }
+
+/* generating response */
 
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
   [self->template appendToResponse:_response inContext:_ctx];
