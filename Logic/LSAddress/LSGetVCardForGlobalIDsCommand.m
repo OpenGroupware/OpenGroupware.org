@@ -18,19 +18,20 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
 /*
   This command fetches vCards for globalIds (Person or Enterprise).
   It first fetches the current ids and version of the objects
-  (during what the access is checked)
+  (during that the access is checked)
   and looks for cached vCards ( <id>.<version>.vcf in LSAttachmentPath)
   and builds new if needed.
-
+  
   @see: RFC 2426
- */
+*/
+
+@class NSString, NSArray;
 
 @interface LSGetVCardForGlobalIDsCommand : LSDBObjectBaseCommand
 {
@@ -49,6 +50,25 @@
 
 @implementation LSGetVCardForGlobalIDsCommand
 
+static NSString     *LSAttachmentPath = nil;
+static NSString     *skyrixId = nil;
+static NSDictionary *addressMapping = nil;
+static NSDictionary *telephoneMapping = nil;
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  skyrixId = [ud stringForKey:@"skyrix_id"];
+  skyrixId = [[NSString alloc] initWithFormat:@"skyrix://%@/%@/",
+			         [[NSHost currentHost] name], skyrixId];
+  
+  addressMapping   = [[ud dictionaryForKey:@"LSVCard_AddressMapping"]   copy];
+  telephoneMapping = [[ud dictionaryForKey:@"LSVCard_TelephoneMapping"] copy];
+  
+  LSAttachmentPath = [[ud stringForKey:@"LSAttachmentPath"] copy];
+  NSLog(@"Note: storing cached vCards files in: '%@'", LSAttachmentPath);
+}
+
 - (void)dealloc {
   [self->attributes release];
   [self->groupBy    release];
@@ -56,61 +76,62 @@
   [super dealloc];
 }
 
-// results are retained
 - (id)_prepareResultForCount:(int)_cnt {
-  if (([self->attributes count]) && ([self->groupBy length]))
+  /* Note: results are retained */
+  
+  if (([self->attributes count] != 0) && ([self->groupBy length] > 0))
     return [[NSMutableDictionary alloc] initWithCapacity:_cnt+1];
   
-  return [[NSMutableArray alloc] initWithCapacity:_cnt+1];
+  return [[NSMutableArray alloc] initWithCapacity:(_cnt + 1)];
 }
+
 - (void)_addVCard:(NSString *)_vCard ofRecord:(id)_record
   toResult:(id)_result
 {
-  if (_vCard == nil) {
-    NSLog(@"WARNING[%s]: got no vCard!", __PRETTY_FUNCTION__);
+  NSMutableDictionary *entry;
+  id tmp;
+  id val;
+  
+  if (![_vCard isNotNull]) {
+    [self logWithFormat:@"WARNING[%s]: got no vCard!", __PRETTY_FUNCTION__];
     return;
   }
-  if ([self->attributes count]) {
-    NSMutableDictionary *entry;
-    id tmp;
-
-    entry = [[NSMutableDictionary alloc] initWithCapacity:4];
-    [entry setObject:_vCard forKey:@"vCardData"];
-    if ([self->attributes containsObject:@"companyId"]) {
-      if ((tmp = [_result valueForKey:@"companyId"]))
-        [entry setObject:tmp forKey:@"companyId"];
-    }
-    if ([self->attributes containsObject:@"globalID"]) {
-      if ((tmp = [_result valueForKey:@"globalID"]))
-        [entry setObject:tmp forKey:@"globalID"];
-    }
-    if ([self->attributes containsObject:@"objectVersion"]) {
-      if ((tmp = [_result valueForKey:@"objectVersion"]))
-        [entry setObject:tmp forKey:@"objectVersion"];
-    }
-
-    if ([self->groupBy length]) {
-      id val;
-      
-      tmp = [entry valueForKey:self->groupBy];
-      if (tmp == nil) {
-        NSLog(@"WARNING[%s]: cannot map entry %@ by key %@",
-              __PRETTY_FUNCTION__, entry, self->groupBy);
-        return;
-      }
-      if ((val = [_result valueForKey:tmp])) {
-        NSLog(@"WARNING[%s]: map already contains an entry for key %@: %@",
-              __PRETTY_FUNCTION__, tmp, val);
-        return;
-      }
-      [(NSMutableDictionary *)_result setObject:entry forKey:tmp];
-    }
-    else
-      [_result addObject:entry];
-  }
-  else {
+  if ([self->attributes count] == 0) {
     [_result addObject:_vCard];
+    return;
   }
+  
+  entry = [[NSMutableDictionary alloc] initWithCapacity:4];
+  [entry setObject:_vCard forKey:@"vCardData"];
+  if ([self->attributes containsObject:@"companyId"]) {
+    if ((tmp = [_result valueForKey:@"companyId"]))
+      [entry setObject:tmp forKey:@"companyId"];
+  }
+  if ([self->attributes containsObject:@"globalID"]) {
+    if ((tmp = [_result valueForKey:@"globalID"]))
+      [entry setObject:tmp forKey:@"globalID"];
+  }
+  if ([self->attributes containsObject:@"objectVersion"]) {
+    if ((tmp = [_result valueForKey:@"objectVersion"]))
+      [entry setObject:tmp forKey:@"objectVersion"];
+  }
+  
+  if ([self->groupBy length] == 0) {
+    [_result addObject:entry];
+    return;
+  }
+      
+  if ((tmp = [entry valueForKey:self->groupBy]) == nil) {
+    NSLog(@"WARNING[%s]: cannot map entry %@ by key %@",
+	  __PRETTY_FUNCTION__, entry, self->groupBy);
+    return;
+  }
+  if ((val = [_result valueForKey:tmp]) != nil) {
+    NSLog(@"WARNING[%s]: map already contains an entry for key %@: %@",
+	  __PRETTY_FUNCTION__, tmp, val);
+    return;
+  }
+  [(NSMutableDictionary *)_result setObject:entry forKey:tmp];
 }
 
 /* build vCard */
@@ -152,12 +173,13 @@
 }
 
 - (void)_appendName:(NSString *)_name andValue:(id)_value
-            toVCard:(NSMutableString *)_vCard
+  toVCard:(NSMutableString *)_vCard
 {
   [_vCard appendString:_name];
   [_vCard appendString:@":"];
   if ([_value isKindOfClass:[NSArray class]]) {
     int cnt, i;
+    
     for (i = 0, cnt = [_value count]; i < cnt; i++)
       [self _appendTextValue:[_value objectAtIndex:i] toVCard:_vCard];
   }
@@ -175,21 +197,24 @@
 {
   // FN and N are required
   NSString *tmp, *tmp2, *fn;
+  
   // N, name components
   // FN, formated name
   tmp  = [_person valueForKey:@"name"];
   tmp2 = [_person valueForKey:@"firstname"];
-  if (([tmp isNotNull] && ([tmp length])) &&
-      ([tmp2 isNotNull] && ([tmp2 length])))
-    fn = [NSString stringWithFormat:@"%@ %@", tmp2, tmp];
+  if (([tmp isNotNull] && ([tmp length] > 0)) &&
+      ([tmp2 isNotNull] && ([tmp2 length] > 0))) {
+    fn = [[tmp2 stringByAppendingString:@" "] stringByAppendingString:tmp];
+  }
   else if ([tmp isNotNull] && [tmp length])
     fn = tmp;  // ok, lastname
   else if ([tmp2 isNotNull] && [tmp2 length])
     fn = tmp2; // take firstname
-  else // no firstname, no lastname, take id
+  else { // no firstname, no lastname, take id
     fn = [NSString stringWithFormat:@"Person: %@",
                    [_person valueForKey:@"companyId"]];
-
+  }
+  
   // N:lastname;givenname;additional names;honorific prefixes;
   //   honorifix suffixes
   [_vCard appendString:@"N:"];
@@ -290,19 +315,10 @@
 /* common contact data */
 - (void)_appendContactData:(id)_contact toVCard:(NSMutableString *)_vCard {
   // UID, COMMENT, CATEGORIES, CLASS, URL
-  static NSString *skyrixId = nil;
   id tmp;
-
-  if (skyrixId == nil) {
-    skyrixId = [[NSUserDefaults standardUserDefaults]
-                                valueForKey:@"skyrix_id"];
-    skyrixId = [[NSString alloc] initWithFormat:@"skyrix://%@/%@/",
-                                 [[NSHost currentHost] name],
-                                 skyrixId];
-  }
-
-  tmp = [skyrixId stringByAppendingFormat:@"%@",
-                  [_contact valueForKey:@"companyId"]];
+  
+  tmp = [skyrixId stringByAppendingString:
+		    [[_contact valueForKey:@"companyId"] stringValue]];
   // UID
   [self _appendName:@"UID"
         andValue:tmp
@@ -368,30 +384,26 @@
 /* address data */
 
 - (void)_appendAddressData:(id)_contact toVCard:(NSMutableString *)_vCard
-                 inContext:(id)_context
+  inContext:(id)_context
 {
   // ADR, LABEL
-  static NSDictionary *addressMapping = nil;
   NSArray *addrs;
   int i, cnt;
-
-  if (addressMapping == nil) {
-    addressMapping = [[NSUserDefaults standardUserDefaults]
-                                      objectForKey:@"LSVCard_AddressMapping"];
-    addressMapping = [addressMapping retain];
-  }
-
+  
   // fetch address data
   addrs = LSRunCommandV(_context,
                         @"address", @"get",
-                        @"companyId", [_contact valueForKey:@"companyId"],
+                        @"companyId",  [_contact valueForKey:@"companyId"],
                         @"returnType", intObj(LSDBReturnType_ManyObjects),
                         nil);
   for (i = 0, cnt = [addrs count]; i < cnt; i++) {
     NSString *label;
-    id address = [addrs objectAtIndex:i];
-    id type    = [address valueForKey:@"type"];
+    id address;
+    id type;
     NSString *name1, *name2, *name3, *street, *city, *zip, *country, *state;
+    
+    address = [addrs objectAtIndex:i];
+    type    = [address valueForKey:@"type"];
 
     name1   = [address valueForKey:@"name1"];
     name2   = [address valueForKey:@"name2"];
@@ -458,17 +470,9 @@
 - (void)_appendTelephoneData:(id)_company toVCard:(NSMutableString *)_vCard
 {
   // TEL
-  static NSDictionary *telephoneMapping = nil;
   NSArray *telephones;
   int i, cnt;
-
-  if (telephoneMapping == nil) {
-    telephoneMapping =
-      [[NSUserDefaults standardUserDefaults]
-                       objectForKey:@"LSVCard_TelephoneMapping"];
-    telephoneMapping = [telephoneMapping retain];
-  }
-
+  
   telephones = [_company valueForKey:@"telephones"];
   for (i = 0, cnt = [telephones count]; i < cnt; i++) {
     id telephone;
@@ -499,7 +503,7 @@
   vCard = [NSMutableString stringWithCapacity:32];
   [vCard appendString:@"BEGIN:vCard\r\n"];
   [vCard appendString:@"VERSION:3.0\r\n"];
-  [vCard appendString:@"PRODID:-//OpenGroupware.org//LSAddress v5.0.19\r\n"];
+  [vCard appendString:@"PRODID:-//OpenGroupware.org//LSAddress v5.1.0\r\n"];
   [vCard appendString:@"PROFILE:vCard\r\n"];
 
   gid = [_comp valueForKey:@"globalID"];
@@ -568,7 +572,7 @@
   result =
     [NSMutableArray arrayWithCapacity:[persons count]+[enterprises count]+
                     [teams count]];
-  if ([persons count]) 
+  if ([persons count] > 0)
     [result addObjectsFromArray:
             LSRunCommandV(_context,
                           @"person",     @"get-by-globalid",
@@ -576,7 +580,7 @@
                           @"attributes", attrs,
                           nil)];
 
-  if ([enterprises count]) 
+  if ([enterprises count] > 0)
     [result addObjectsFromArray:
             LSRunCommandV(_context,
                           @"enterprise", @"get-by-globalid",
@@ -584,7 +588,7 @@
                           @"attributes", attrs,
                           nil)];
 
-  if ([teams count]) 
+  if ([teams count] > 0)
     [result addObjectsFromArray:
             LSRunCommandV(_context,
                           @"team", @"get-by-globalid",
@@ -601,7 +605,6 @@
 
 /* caching */
 - (id)_cachedVCardForRecord:(id)_record inContext:(id)_context {
-  NSUserDefaults *ud;
   NSString       *path;
   NSString       *file;
   NSFileManager  *manager;
@@ -616,13 +619,13 @@
           __PRETTY_FUNCTION__, _record);
     return nil;
   }
-
-  ud   = [NSUserDefaults standardUserDefaults];
-  path = [ud stringForKey:@"LSAttachmentPath"];
-
-  file = [NSString stringWithFormat:@"%@.%@.vcf", cId, oV];
+  
+  path = LSAttachmentPath;
+  
+  file = [[NSString alloc] initWithFormat:@"%@.%@.vcf", cId, oV];
   path = [path stringByAppendingPathComponent:file];
-
+  [file release]; file = nil;
+  
   manager = [NSFileManager defaultManager];
   
   if ([manager fileExistsAtPath:path]) 
@@ -631,9 +634,8 @@
 }
 
 - (void)_cacheVCard:(NSString *)_vCard forContact:(id)_comp
-          inContext:(id)_context
+  inContext:(id)_context
 {
-  NSUserDefaults *ud;
   NSString       *path;
   NSString       *file;
   NSFileManager  *manager;
@@ -651,9 +653,7 @@
     return;
   }
 
-  ud   = [NSUserDefaults standardUserDefaults];
-  path = [ud stringForKey:@"LSAttachmentPath"];
-
+  path = LSAttachmentPath;
   file = [NSString stringWithFormat:@"%@.%@.vcf", cId, oV];
   path = [path stringByAppendingPathComponent:file];
 
@@ -700,44 +700,51 @@
 }
 
 - (id)_buildResponseForVCards:(id)_vCards inContext:(id)_context {
-  id data;
-  id response;
+  // TODO: this does not belong here, the command should only provide the
+  //       NSData or NSString objects
+  NSString *s;
+  NSData   *data;
+  id       response;
   
   if ([_vCards isKindOfClass:[NSDictionary class]]) 
     _vCards = [_vCards allValues];
   if ([self->attributes count])
     _vCards = [_vCards valueForKey:@"vCardData"];
   
-  data     = [[_vCards componentsJoinedByString:@""]
-                       dataUsingEncoding:[NSString defaultCStringEncoding]];
-  response = [[NSClassFromString(@"WOResponse") alloc] init];
+  s    = [_vCards componentsJoinedByString:@""];
+  data = [s dataUsingEncoding:NSUTF8StringEncoding];
+  response = [[[NSClassFromString(@"WOResponse") alloc] init] autorelease];
   [response setStatus:200];
-  [response setHeader:@"text/x-vcard" forKey:@"content-type"];
+  [response setHeader:@"text/x-vcard; charset=utf-8" forKey:@"content-type"];
   [response setHeader:@"identity" forKey:@"content-encoding"];
   [response setContent:data];
-
-  return [response autorelease];
+  
+  return response;
 }
 
 - (void)_executeInContext:(id)_context {
   NSArray *records;
+  id      result; 
   int     cnt;
 
-  records = [self _fetchIdsAndVersionsInContext:_context];
+  /* fetch data */
 
+  records = [self _fetchIdsAndVersionsInContext:_context];
+  
+  /* process data */
+  
   if ((cnt = [records count])) {
-    id result; 
     NSMutableArray *uncachedPersons;
     NSMutableArray *uncachedEnterprises;
     NSMutableArray *uncachedTeams;
     id cached, record;
-
+    
     result = [self _prepareResultForCount:cnt]; // retained
 
     uncachedPersons     = [[NSMutableArray alloc] initWithCapacity:8];
     uncachedEnterprises = [[NSMutableArray alloc] initWithCapacity:8];
     uncachedTeams       = [[NSMutableArray alloc] initWithCapacity:8];
-
+    
     while (cnt--) {
       record = [records objectAtIndex:cnt];
       cached = [self _cachedVCardForRecord:record inContext:_context];
@@ -746,6 +753,7 @@
       }
       else {
         EOKeyGlobalID *gid;
+	
         gid = [record valueForKey:@"globalID"];
         if ([[gid entityName] isEqualToString:@"Person"])
           [uncachedPersons addObject:record];
@@ -754,51 +762,55 @@
         else if ([[gid entityName] isEqualToString:@"Team"])
           [uncachedTeams addObject:record];
         else {
-          [self assert:NO
-                reason:[NSString stringWithFormat:
+	  NSString *error;
+	  
+	  error = [NSString stringWithFormat:
                                  @"invalid entityName '%@' "
                                  @"(Person, Enterprise and Team accepted)",
-                                 [gid entityName]]];
+			    [gid entityName]];
+          [self assert:NO reason:error];
         }
       }
     }
 
-    if ([uncachedPersons count]) 
+    if ([uncachedPersons count] > 0) {
       [self _buildAndCacheVCardsForContacts:uncachedPersons
             type:@"person"
             result:result
             inContext:_context];
+    }
     
-    if ([uncachedEnterprises count]) 
+    if ([uncachedEnterprises count] > 0) {
       [self _buildAndCacheVCardsForContacts:uncachedEnterprises
             type:@"enterprise"
             result:result
             inContext:_context];
+    }
     
-    if ([uncachedTeams count]) 
+    if ([uncachedTeams count] > 0) {
       [self _buildAndCacheVCardsForContacts:uncachedTeams
             type:@"team"
             result:result
             inContext:_context];
+    }
     
 
     [uncachedPersons     release];
     [uncachedEnterprises release];
     [uncachedTeams       release];
 
-    [self setReturnValue:(self->buildResponse)
-          ? [self _buildResponseForVCards:result inContext:_context]
-          : result];
-    [result release];
   }
   else
-    [self setReturnValue:(self->buildResponse)
-          ? [self _buildResponseForVCards:[NSArray array]
-                  inContext:_context]
-          : [NSArray array]];
+    result = [[NSArray alloc] init];
+
+  // TODO: the build response should not be used
+  [self setReturnValue:(self->buildResponse)
+	? [self _buildResponseForVCards:result inContext:_context]
+	: result];
+  [result release];
 }
 
-// accessors
+/* accessors */
 
 - (void)setGlobalIDs:(NSArray *)_gids {
   ASSIGN(self->gids,_gids);
@@ -815,6 +827,13 @@
 }
 
 - (void)setBuildResponse:(BOOL)_flag {
+#if DEBUG
+  if (_flag) {
+    [self logWithFormat:
+	    @"Note: uses vcard command to generate WOResponse which is "
+	    @"deprecated"];
+  }
+#endif
   self->buildResponse = _flag;
 }
 - (BOOL)buildResponse {

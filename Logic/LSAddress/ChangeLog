@@ -1,3 +1,9 @@
+2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* LSGetVCardForGlobalIDsCommand.m: some code cleanups, encode response
+	  contents in UTF-8 and report that in the MIME type, print a warning
+	  if the response generation is used (v5.1.45)
+	
 2004-10-01  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSSetCompanyCommand.m: removed some code which was commented out
