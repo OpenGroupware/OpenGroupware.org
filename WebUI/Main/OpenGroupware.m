@@ -460,6 +460,8 @@ static BOOL logBundleLoading          = NO;
     keepURL = YES;
   else if ([rhkey isEqualToString:@"wa"])
     keepURL = YES;
+  else if ([rhkey isEqualToString:@"so"])
+    keepURL = YES;
   else
     keepURL = NO;
   

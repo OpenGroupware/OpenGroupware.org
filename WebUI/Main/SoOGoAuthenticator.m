@@ -27,6 +27,7 @@
 
 @interface WOApplication(UsedPrivates)
 - (NSString *)locationForSessionRedirectInContext:(WOContext *)_ctx;
+- (WOCookie *)expireCookieInContext:(WOContext *)_ctx;
 @end
 
 @implementation SoOGoAuthenticator
@@ -87,31 +88,51 @@ static SoUser *anonymous = nil;
   uroles = [NSArray arrayWithObjects:
 		      SoRole_Authenticated,
 		      SoRole_Anonymous,
-		      nil];
+		    nil];
   return uroles;
+}
+
+- (NSString *)removeSessionIDFromURI:(NSString *)_uri {
+  NSRange  r;
+  NSString *p, *q;
+  
+  r = [_uri rangeOfString:@"?"];
+  if (r.length == 0) return _uri;
+  
+  r = [_uri rangeOfString:@"wosid="];
+  if (r.length == 0) return _uri;
+  
+  // TODO: replace is easier than parsing ...
+  //       the query parsing must move to some NGExtensions NSString category
+  p = [_uri substringToIndex:r.location];
+  q = [_uri substringFromIndex:(r.location + r.length)];
+  return [[p stringByAppendingString:@"oldwosid="] stringByAppendingString:q];
 }
 
 - (WOResponse *)unauthorized:(NSString *)_reason inContext:(WOContext *)_ctx {
   /* Note: not setting expire-cookie, should not be required */
   WOApplication *app;
   WOResponse *response;
-  NSString   *jumpTo;
+  NSString   *jumpTo, *s;
+  WOCookie   *cookie;
   
   app    = [WOApplication application];
   jumpTo = [app locationForSessionRedirectInContext:_ctx];
   
   /* add URL which triggered the issue */
   
-  jumpTo = [jumpTo stringByAppendingString:
-		     ([jumpTo rangeOfString:@"?"].length == 0) 
-		     ? @"?url=" : @"&url="];
-  jumpTo = [jumpTo stringByAppendingString:
-		     [[[_ctx request] uri] stringByEscapingURL]];
-
+  s      = ([jumpTo rangeOfString:@"?"].length == 0) ? @"?url=" : @"&url=";
+  jumpTo = [jumpTo stringByAppendingString:s];
+  s      = [self removeSessionIDFromURI:[[_ctx request] uri]];
+  jumpTo = [jumpTo stringByAppendingString:[s stringByEscapingURL]];
+  
   /* generate response */
   
   if ((response = [_ctx response]) == nil)
     response = [WOResponse responseWithRequest:[_ctx request]];
+  
+  if ((cookie = [[WOApplication application] expireCookieInContext:_ctx])!=nil)
+    [response addCookie:cookie];
   
   [response setStatus:302];
   [response setHeader:jumpTo forKey:@"location"];

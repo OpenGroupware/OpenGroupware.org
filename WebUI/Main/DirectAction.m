@@ -84,14 +84,14 @@ static NGMimeType *textHtmlType  = nil;
   [self logWithFormat:@"  vti-method: %@", vtiMethod];
   [self logWithFormat:@"  request:    %@", [self request]];
   headerKeys = [[[self request] headerKeys] objectEnumerator];
-  while ((s = [headerKeys nextObject])) {
+  while ((s = [headerKeys nextObject]) != nil) {
     [self debugWithFormat:@"  header %@: %@",
             s,
             [[self request] headerForKey:s]];
   }
 
   headerKeys = [[[self request] formValueKeys] objectEnumerator];
-  while ((s = [headerKeys nextObject])) {
+  while ((s = [headerKeys nextObject]) != nil) {
     [self debugWithFormat:@"  form   %@: %@",
             s,
             [[self request] formValueForKey:s]];

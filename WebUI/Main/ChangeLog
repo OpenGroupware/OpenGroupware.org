@@ -1,5 +1,16 @@
 2005-03-13  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v5.1.75
+	
+	* OpenGroupware.m: keep 'so' URLs on login redirect
+	
+	* WODirectAction+LoginAction.m: removed support for deprecated
+	  'loginName' form parameter (use 'login' instead!), added support for
+	  login-redirect URLs (url query parameter)
+	  
+	* SoOGoAuthenticator.m: remove wosid from auth-redirect URLs, set sid
+	  expire cookie
+	
 	* v5.1.74
 	
 	* OpenGroupware.m: removed response stack (should not be necessary

@@ -96,6 +96,25 @@ static int LSAllowSpacesInLogin = -1;
   return [self pageWithName:@"OGoLogoutPage"];
 }
 
+- (id)_processRedirectURL:(NSString *)_url {
+  WOResponse *r;
+  
+  if ([_url length] == 0)
+    return nil;
+  
+  _url = ([_url rangeOfString:@"?"].length == 0)
+    ? [_url stringByAppendingString:@"?wosid="]
+    : [_url stringByAppendingString:@"&wosid="];
+  _url = [_url stringByAppendingString:[[self session] sessionID]];
+  
+  [self logWithFormat:@"redirect to: %@", _url];
+  
+  r = [[self context] response];
+  [r setStatus:302 /* redirect */];
+  [r setHeader:_url forKey:@"location"];
+  return r;
+}
+
 - (id)_processLoginActionInSession {
   WODirectAction *da;
   OGoNavigation  *nav;
@@ -104,7 +123,7 @@ static int LSAllowSpacesInLogin = -1;
   da = [(NSDictionary *)[self session] objectForKey:@"LoginAction"];
   if (da == nil) return nil;
   
-  [[da retain] autorelease];
+  da = [[da retain] autorelease];
   [(NSMutableDictionary *)[self session] removeObjectForKey:@"LoginAction"];
   
   page = (id)[da performActionNamed:[[self request] formValueForKey:@"da"]];
@@ -284,7 +303,7 @@ static int LSAllowSpacesInLogin = -1;
     [self logWithFormat:@"did not find OpenGroupware.org server .."];
     return [self pageWithName:@"Main"];
   }
-
+  
   if ((login = [self _cleanUpLoginActionLogin:login]) == nil) {
     [self debugWithFormat:@"No login name was specified."];
     return [self pageWithName:@"Main"];
@@ -310,7 +329,7 @@ static int LSAllowSpacesInLogin = -1;
   NSLog(@"session cfg %@", [[self session] variableDictionary]);
 #endif
   
-  /* get Skyrix session */
+  /* get OGo session */
   
   if ((sn = [lso login:login password:pwd]) == nil) {
     /* couldn't login */
@@ -332,7 +351,7 @@ static int LSAllowSpacesInLogin = -1;
   
   [self _applyDebuggingDefaultsOnSession:sn];
   
-  if ((page = [self _attachOGoSession:sn]))
+  if ((page = [self _attachOGoSession:sn]) != nil) /* returns error page */
     return page;
   
   /* start page */
@@ -349,9 +368,11 @@ static int LSAllowSpacesInLogin = -1;
   
   /* check direct action hooks */
   
-  if ((tpage = [self _processLoginActionInSession]))
+  if ((tpage = [self _processRedirectURL:[req formValueForKey:@"url"]]) != nil)
     page = tpage;
-  else if ((tpage = [self _processPageRestorationWithRequest:req]))
+  else if ((tpage = [self _processLoginActionInSession]) != nil)
+    page = tpage;
+  else if ((tpage = [self _processPageRestorationWithRequest:req]) != nil)
     page = tpage;
   
   return page;
@@ -361,12 +382,6 @@ static int LSAllowSpacesInLogin = -1;
   WORequest *req;
   
   req = [self request];
-  
-  if ([req formValueForKey:@"loginName"]) {
-    return [self loginActionWithLogin:[req formValueForKey:@"loginName"]
-                 password:[req formValueForKey:@"password"]
-                 request:req];
-  }
   
   return [self loginActionWithLogin:[req formValueForKey:@"login"]
                password:[req formValueForKey:@"password"]
