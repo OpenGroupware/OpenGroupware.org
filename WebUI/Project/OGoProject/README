@@ -1,5 +1,3 @@
-# $Id$
-
 Viewer Lookup
 =============
 
@@ -33,8 +31,30 @@ KVC (if available):
 If mail viewers are used for displaying document content, this information is
 not passed to the viewer.
 
+
+Configurable Desktop Tabs
+=========================
+
+Desktop tabs are configurable using the 'skyp4_desktop_tabs' default, see the
+Defaults.plist. Eg to display all projects of kind 'ABC' in a new tab, but NOT
+in common, use this:
+---snip---
+  (
+    { key = ppublic;   labelKey = common;   
+      qualifier = "type='common' AND NOT kind='ABC'";   },
+    { key = pprivate;  labelKey = private;  qualifier = "type='private'";  },
+    { key = parchived; labelKey = archived; qualifier = "type='archived'"; },
+
+    { key = ABC; labelKey = ABC; 
+      qualifier = "kind='ABC'"; },
+  )
+---snap---
+
+
 Special Form-Files
 ==================
+
+NOTE: forms are removed in OGo 1.0a
 
 All forms are reloaded when you press the button 'refresh'
 
