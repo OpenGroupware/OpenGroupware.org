@@ -1,3 +1,13 @@
+2005-01-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.14
+
+	* SkyNoteList.m: do not create a note if the note content is missing
+	  (should fix OGo bug #1200)
+
+	* SkyNoteEditor.m: properly check whether a note content is provided by
+	  the user
+
 2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyNoteEditor.m: code cleanup in delete method (v5.1.13)

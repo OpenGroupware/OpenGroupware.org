@@ -78,7 +78,7 @@ static BOOL hasLSWProjects = NO;
   type:(NGMimeType *)_type
   configuration:(NSDictionary *)_cmdCfg
 {
-  self->fileContent = [[NSMutableString alloc] init];
+  self->fileContent = [[NSMutableString alloc] initWithCapacity:1024];
   return YES;
 }
 
@@ -158,17 +158,18 @@ static BOOL hasLSWProjects = NO;
 }
 
 - (BOOL)checkConstraints {
-  NSMutableString *error;
-  NSString        *pTitle;
+  NSString *pTitle;
   
-  error  = [NSMutableString stringWithCapacity:128];
   pTitle = [[self snapshot] valueForKey:@"title"];
   
-  if (![pTitle isNotNull] || [pTitle length] == 0)
-    [error appendString:@" No note name set."];
-
-  if ([error length] > 0) {
-    [self setErrorString:error];
+  if (![pTitle isNotNull] || [pTitle length] == 0) {
+    [self setErrorString:@"No note title set!"];
+    return YES;
+  }
+  
+  if (![self->fileContent isNotNull]) self->fileContent = @"";
+  if ([self->fileContent length] == 0) {
+    [self setErrorString:@"Content for a note is missing!"];
     return YES;
   }
   
@@ -192,16 +193,14 @@ static BOOL hasLSWProjects = NO;
   accountId = [[sn activeAccount] valueForKey:@"companyId"];
   note      = [self snapshot];
 
-  if (self->fileContent == nil) self->fileContent = @"";
-  
   flength = [self->fileContent length];
-  
+
   [note takeValue:accountId                    forKey:@"firstOwnerId"];
   [note takeValue:accountId                    forKey:@"currentOwnerId"];
   [note takeValue:self->fileContent            forKey:@"fileContent"];
   [note takeValue:[NSNumber numberWithBool:NO] forKey:@"isFolder"];
   [note takeValue:[NSNumber numberWithInt:flength] forKey:@"fileSize"];
-
+  
   if (self->project != nil)
     [note takeValue:self->project forKey:@"project"];
 

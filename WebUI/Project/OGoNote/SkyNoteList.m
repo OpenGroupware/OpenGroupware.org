@@ -333,7 +333,7 @@ static NGMimeType *eoNoteType    = nil;
     [ct takeValue:[self project] forKey:@"project"];
   if (self->appointment)
     [ct takeValue:self->appointment forKey:@"appointment"];
-
+  
   return ct;
 }
 
@@ -388,7 +388,7 @@ static NGMimeType *eoNoteType    = nil;
   NSNumber *accountId;
   id tmp;
   
-  if ([self->newNoteBody length] == 0) {
+  if (![self->newNoteBody isNotNull] || [self->newNoteBody length] == 0) {
     [self setErrorString:@"Cannot create note without body!"];
     return nil;
   }
