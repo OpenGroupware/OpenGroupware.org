@@ -102,7 +102,7 @@ static BOOL logBundleLoading          = NO;
 }
 + (NSArray *)defaultOGoLanguages {
   // TODO: is this necessary? We should locate the themes by scanning the
-  //       Themes directory
+  //       Themes directory (OGo bug #1112)
   return [NSArray arrayWithObjects:
                     @"English_OOo", @"English_blue", @"English_orange",
                     @"English_kde",
@@ -120,7 +120,6 @@ static BOOL logBundleLoading          = NO;
                        [NSNumber numberWithInt:300], 
                        @"SkyProjectFileManagerClickTimeout",
                        @"", @"SkyLogoutURL",
-                       [self defaultOGoLanguages], @"SkyLanguages",
                        [self defaultOGoAppointmentTypes],
                        @"SkyScheduler_defaultAppointmentTypes",
                        nil];

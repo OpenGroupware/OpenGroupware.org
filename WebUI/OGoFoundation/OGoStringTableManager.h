@@ -40,6 +40,8 @@
   NSMutableDictionary *compLabelCache;
 }
 
++ (NSArray *)availableOGoTranslations;
+
 /* string tables */
 
 - (NSString *)labelForKey:(NSString *)_key component:(WOComponent *)_component;

@@ -1,3 +1,17 @@
+2004-12-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.81
+
+	* OGoSession.m: locate translations and resources by performing a
+	  directory scan. This should fix OGo bug #1120 and #1112
+
+	* OGoStringTableManager.m: use OGoResourceManager methods to locate
+	  search directories, added method to detect available OGo translations
+	  (+availableOGoTranslations)
+
+	* OGoResourceManager.m: added method to detect available OGo themes
+	  (+availableOGoThemes)
+
 2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoSession.m: removed config reload code (v5.1.80)

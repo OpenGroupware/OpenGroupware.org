@@ -28,6 +28,8 @@
 #include "WOComponent+config.h"
 #include "NSObject+LSWPasteboard.h"
 #include "LSWMimeContent.h"
+#include "OGoResourceManager.h"
+#include "OGoStringTableManager.h"
 #include "common.h"
 #include <LSFoundation/OGoContextSession.h>
 #include <LSFoundation/OGoContextManager.h>
@@ -178,6 +180,37 @@ static NSString *OGoDateTimeTZFormat     = nil;
   }
 }
 
+- (NSArray *)availableOGoLanguages {
+  static NSArray *llangs = nil;
+  NSMutableArray *langs;
+  NSEnumerator *e;
+  NSString     *s;
+
+  if (llangs != nil) return llangs;
+  
+  langs = [NSMutableArray arrayWithCapacity:32];
+  
+  /* first add themes */
+  
+  e = [[OGoResourceManager availableOGoThemes] objectEnumerator];
+  while ((s = [e nextObject]) != nil) {
+    s = [@"English_" stringByAppendingString:s];
+    if ([langs containsObject:s]) continue;
+    [langs addObject:s];
+  }
+
+  /* then add translations */
+  
+  e = [[OGoStringTableManager availableOGoTranslations] objectEnumerator];
+  while ((s = [e nextObject]) != nil) {
+    if ([langs containsObject:s]) continue;
+    [langs addObject:s];
+  }
+  
+  llangs = [langs copy];
+  return llangs;
+}
+
 - (BOOL)configureForLSOfficeSession:(OGoContextSession *)_sn {
   NSString *language;
   
@@ -216,7 +249,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
   {
     NSArray *skyLangs = nil;
     
-    skyLangs = [self->userDefaults arrayForKey:@"SkyLanguages"];
+    skyLangs = [self availableOGoLanguages];
 
     if ([skyLangs count] > 0) {
       NSMutableArray *l;

@@ -21,6 +21,7 @@
 
 #include "OGoStringTableManager.h"
 #include "OGoStringTable.h"
+#include "OGoResourceManager.h"
 #include "common.h"
 
 @implementation OGoStringTableManager
@@ -68,7 +69,7 @@ static BOOL   debugOn = NO;
 
 /* resource pathes */
 
-- (NSString *)findResourceDirectoryNamed:(NSString *)_name
++ (NSString *)findResourceDirectoryNamed:(NSString *)_name
   fhsName:(NSString *)_fhs
 {
   static NSDictionary *env = nil;
@@ -81,22 +82,17 @@ static BOOL   debugOn = NO;
 
   /* look in GNUstep pathes */
   
-  if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
-    tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
-  tmp = [tmp componentsSeparatedByString:@":"];
-  
-  tmp = [tmp objectEnumerator];
-  while ((path = [tmp nextObject])) {
+  tmp = [[OGoResourceManager rootPathesInGNUstep] objectEnumerator];
+  while ((path = [tmp nextObject]) != nil) {
     path = [path stringByAppendingPathComponent:_name];
     
     if ([fm fileExistsAtPath:path])
       return path;
   }
-
+  
   /* look in FHS pathes */
   
-  tmp = [NSArray arrayWithObjects:@"/usr/local", @"/usr", nil];
-  tmp = [tmp objectEnumerator];
+  tmp = [[OGoResourceManager rootPathesInFHS] objectEnumerator];
   while ((path = [tmp nextObject])) {
     path = [path stringByAppendingPathComponent:_fhs];
     if ([fm fileExistsAtPath:path])
@@ -293,6 +289,54 @@ static BOOL   debugOn = NO;
   return _default;
 }
 
++ (NSArray *)availableOGoTranslations {
+  static NSArray *ltranslations = nil;
+  NSMutableSet  *translations;
+  NSEnumerator  *e;
+  NSFileManager *fm;
+  NSString      *path;
+  NSArray       *translationPathes;
+
+  if (ltranslations != nil)
+    return ltranslations;
+  
+  // TODO: use lists ..., or maybe NGResourceLocator
+  path = [self findResourceDirectoryNamed:@"Resources" 
+		fhsName:@"share/opengroupware.org-1.0a/translations/"];
+  if (path == nil)
+    return nil;
+
+  translationPathes = [NSArray arrayWithObject:path];
+  translations = [NSMutableSet setWithCapacity:16];
+  fm           = [NSFileManager defaultManager];
+  
+  e = [translationPathes objectEnumerator];
+  while ((path = [e nextObject]) != nil) {
+    NSEnumerator *dl;
+    NSString *l;
+    
+    dl = [[fm directoryContentsAtPath:path] objectEnumerator];
+    while ((l = [dl nextObject]) != nil) {
+      if (![l hasSuffix:@".lproj"])
+	continue;
+      if ([l hasPrefix:@"."])
+	continue;
+      
+      l = [l stringByDeletingPathExtension];
+      [translations addObject:l];
+    }
+  }
+  
+  ltranslations = [[translations allObjects] copy];
+  if ([ltranslations count] > 0) {
+    NSLog(@"Note: located translations: %@", 
+	  [ltranslations componentsJoinedByString:@", "]);
+  }
+  else
+    NSLog(@"Note: located no additional translations.");
+  return ltranslations;
+}
+
 - (NSString *)_resourceStringForKey:(NSString *)_key
   inTableNamed:(NSString *)_tableName
   withDefaultValue:(NSString *)_default
@@ -306,8 +350,9 @@ static BOOL   debugOn = NO;
   if (_tableName == nil) _tableName = @"default";
   
   fm = [NSFileManager defaultManager];
-  rpath = [self findResourceDirectoryNamed:@"Resources" 
-		fhsName:@"share/opengroupware.org-1.0a/translations/"];
+  // TODO: should be NGResourceLocator method?
+  rpath = [[self class] findResourceDirectoryNamed:@"Resources" 
+			fhsName:@"share/opengroupware.org-1.0a/translations/"];
   if (rpath == nil) {
     [self logWithFormat:@"missing $GNUSTEP_USER_ROOT/Resources directory ..."];
     return nil;
@@ -316,7 +361,7 @@ static BOOL   debugOn = NO;
   /* look into language projects .. */
   
   e = [_languages objectEnumerator];
-  while ((language = [e nextObject])) {
+  while ((language = [e nextObject]) != nil) {
     OGoStringTable *table;
     NSArray  *ls;
     NSRange  r;

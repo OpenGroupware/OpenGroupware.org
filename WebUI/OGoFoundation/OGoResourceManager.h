@@ -24,7 +24,7 @@
 
 #import <NGObjWeb/OWResourceManager.h>
 
-@class NSMutableDictionary;
+@class NSArray, NSMutableDictionary;
 @class OGoStringTableManager, OGoResourceKey;
 
 @interface OGoResourceManager : OWResourceManager
@@ -36,6 +36,10 @@
   OGoStringTableManager *labelManager;
   OGoResourceKey        *cachedKey;
 }
+
++ (NSArray *)rootPathesInGNUstep; /* GNUSTEP_PATHLIST */
++ (NSArray *)rootPathesInFHS;     /* /usr/local, /usr */
++ (NSArray *)availableOGoThemes;
 
 @end
 

@@ -1,5 +1,3 @@
-// $Id: PreferencesUI.strings,v 1.14 2004/08/04 23:19:52 helge Exp $
-
 "Account with login '%@' already exists." = "Account with login '%@' already exists.";
 "GMT+0100" = "GMT+0100";
 "GMT+0200" = "GMT+0200";

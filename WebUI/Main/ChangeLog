@@ -1,3 +1,8 @@
+2004-12-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OpenGroupware.m: removed SkyLanguages default (not required anymore)
+	  (v5.1.71)
+
 2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
 	
 	* OpenGroupware.m: removed some deprecated scripting code, do not

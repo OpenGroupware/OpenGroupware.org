@@ -38,8 +38,23 @@ static NSNull        *null = nil;
 static NSString *shareSubPath     = @"share/opengroupware.org-1.0a/";
 static NSString *templatesSubPath = 
   @"Library/OpenGroupware.org-1.0a/Templates/";
+static NSString *themesDirName    = @"Themes";
 
 /* locate resource directories */
+
++ (NSArray *)rootPathesInGNUstep {
+  NSDictionary *env;
+  id tmp;
+  
+  env = [[NSProcessInfo processInfo] environment];
+  if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
+    tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
+  
+  return [tmp componentsSeparatedByString:@":"];
+}
++ (NSArray *)rootPathesInFHS {
+  return [NSArray arrayWithObjects:@"/usr/local/", @"/usr/", nil];
+}
 
 + (NSArray *)findResourceDirectoryPathesWithName:(NSString *)_name
   fhsName:(NSString *)_fhs
@@ -47,19 +62,13 @@ static NSString *templatesSubPath =
   NSEnumerator   *e;
   NSFileManager  *fm;
   NSMutableArray *ma;
-  NSDictionary   *env;
   BOOL           isDir;
   id tmp;
 
   fm  = [NSFileManager defaultManager];
   ma  = [NSMutableArray arrayWithCapacity:8];
-  env = [[NSProcessInfo processInfo] environment];
-    
-  if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
-    tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
-  tmp = [tmp componentsSeparatedByString:@":"];
-  e   = [tmp objectEnumerator];
   
+  e = [[self rootPathesInGNUstep] objectEnumerator];
   while ((tmp = [e nextObject]) != nil) {
     if (![tmp hasSuffix:@"/"])
       tmp = [tmp stringByAppendingString:@"/"];
@@ -78,9 +87,7 @@ static NSString *templatesSubPath =
 
   /* hack in FHS pathes */
   
-  tmp = [NSArray arrayWithObjects:@"/usr/local/", @"/usr/", nil];
-  e   = [tmp objectEnumerator];
-  
+  e = [[self rootPathesInFHS] objectEnumerator];
   while ((tmp = [e nextObject]) != nil) {
     tmp = [tmp stringByAppendingString:shareSubPath];
     tmp = [tmp stringByAppendingString:_fhs];
@@ -138,6 +145,44 @@ static NSString *templatesSubPath =
     NSLog(@"template pathes: %@", templatePathes);
   if ([templatePathes count] == 0)
     NSLog(@"WARNING: found no directories containing OGo templates!");
+}
+
++ (NSArray *)availableOGoThemes {
+  static NSArray *lthemes = nil;
+  NSMutableSet  *themes;
+  NSEnumerator  *e;
+  NSFileManager *fm;
+  NSString      *path;
+
+  if (lthemes != nil)
+    return lthemes;
+  
+  themes = [NSMutableSet setWithCapacity:16];
+  fm     = [NSFileManager defaultManager];
+  
+  e = [templatePathes objectEnumerator];
+  while ((path = [e nextObject]) != nil) {
+    NSArray *dl;
+    
+    path = [path stringByAppendingPathComponent:themesDirName];
+    dl   = [fm directoryContentsAtPath:path];
+    
+    [themes addObjectsFromArray:dl];
+  }
+  
+  /* remove directories to be ignored */
+  [themes removeObject:@".svn"];
+  [themes removeObject:@"CVS"];
+  
+  lthemes = [[[themes allObjects] 
+	       sortedArrayUsingSelector:@selector(compare:)] copy];
+  if ([lthemes count] > 0) {
+    NSLog(@"Note: located themes: %@", 
+	  [lthemes componentsJoinedByString:@", "]);
+  }
+  else
+    NSLog(@"Note: located no additional themes.");
+  return lthemes;
 }
 
 - (id)initWithPath:(NSString *)_path {
@@ -353,7 +398,7 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   e = [templatePathes objectEnumerator];
   while ((path = [e nextObject]) != nil) {
     if (_theme != nil) {
-      path = [path stringByAppendingPathComponent:@"Themes"];
+      path = [path stringByAppendingPathComponent:themesDirName];
       path = [path stringByAppendingPathComponent:_theme];
     }
     if (_fwName != nil)
@@ -715,7 +760,7 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
 
     if (_theme != nil) {
       // TODO: should be lower case for FHS? or use a different path?
-      path = [path stringByAppendingPathComponent:@"Themes"];
+      path = [path stringByAppendingPathComponent:themesDirName];
       path = [path stringByAppendingPathComponent:_theme];
     }
     
