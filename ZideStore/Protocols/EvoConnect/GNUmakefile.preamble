@@ -13,9 +13,10 @@ ADDITIONAL_INCLUDE_DIRS += \
 ADDITIONAL_LIB_DIRS += \
 	-L../../SoObjects/ZSAppointments/$(GNUSTEP_OBJ_DIR)	\
 	-L../../SoObjects/ZSContacts/$(GNUSTEP_OBJ_DIR)		\
-	\
 	-L../../ZSFrontend/$(GNUSTEP_OBJ_DIR) \
 	-L../../ZSBackend/$(GNUSTEP_OBJ_DIR)
+
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib
 
 EvoConnect_BUNDLE_LIBS += \
 	-lZSFrontend	\

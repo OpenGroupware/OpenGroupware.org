@@ -89,7 +89,7 @@
   if ((tmp = [record valueForKey:@"middlename"]))
     [record setObject:tmp forKey:@"middleName"];
 
-#warning bs: name suffix is not working yet  
+  // TODO bs: name suffix is not working yet
   if ((tmp = [record valueForKey:@"namesuffix"]))
     [record setObject:tmp forKey:@"namesuffix"];
   

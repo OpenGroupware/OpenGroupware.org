@@ -1,3 +1,7 @@
+2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+	
+	* GNUmakefile.preamble: added library lookup pathes for FHS (v1.3.78)
+	
 2004-08-30  Helge Hess  <helge.hess@opengroupware.org>
 	
 	* ZideStore.m: load ZideStore bundles from /usr/local/lib/zidestore-1.3

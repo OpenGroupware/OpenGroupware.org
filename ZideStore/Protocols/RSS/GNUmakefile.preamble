@@ -10,9 +10,11 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-I../../SoObjects
 
 ADDITIONAL_LIB_DIRS += \
-	-L../../SoObjects/ZSTasks/$(GNUSTEP_OBJ_DIR)		\
+	-L../../SoObjects/ZSTasks/$(GNUSTEP_OBJ_DIR) \
 	\
 	-L../../ZSFrontend/$(GNUSTEP_OBJ_DIR) \
 	-L../../ZSBackend/$(GNUSTEP_OBJ_DIR)
+
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib
 
 RSS_BUNDLE_LIBS += -lNGObjWeb

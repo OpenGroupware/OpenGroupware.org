@@ -16,4 +16,7 @@ libZSFrontend_LIBRARIES_DEPEND_UPON += \
 	-lXmlRpc -lDOM -lSaxObjC
 
 libZSFrontend_LIB_DIRS += \
-	-L../ZSBackend/$(GNUSTEP_OBJ_DIR)
+	-L../ZSBackend/$(GNUSTEP_OBJ_DIR)       \
+	-L$(OGoROOT)/Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
+
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib

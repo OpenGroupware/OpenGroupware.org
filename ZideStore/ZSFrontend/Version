@@ -1,7 +1,7 @@
 # $Id: Version 1 2004-08-20 11:17:52Z znek $
 
 include ../Version
-SUBMINOR_VERSION:=86
+SUBMINOR_VERSION:=87
 
 # v1.2.72 requires libNGExtensions v4.2.91
 # v1.1.56 - v1.1.61 require matching Logic packages

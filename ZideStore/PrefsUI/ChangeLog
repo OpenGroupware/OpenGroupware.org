@@ -1,3 +1,7 @@
+2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+	
+	* GNUmakefile.preamble: added library lookup pathes for FHS (v1.3.8)
+	
 2004-06-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile.preamble (PrefsUI_BUNDLE_LIBS): fixed dependencies for

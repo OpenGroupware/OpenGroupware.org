@@ -21,3 +21,5 @@ ADDITIONAL_LIB_DIRS += \
 	-L../../ZSFrontend/$(GNUSTEP_OBJ_DIR)	\
 	-L../../ZSBackend/$(GNUSTEP_OBJ_DIR)	\
 	-L./$(GNUSTEP_OBJ_DIR)
+
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib

@@ -1,8 +1,22 @@
 # $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
 
+OGoROOT=../..
+
+ADDITIONAL_INCLUDE_DIRS += \
+        -I..
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I$(OGoROOT)/Logic/LSFoundation/
+
 ADDITIONAL_LIB_DIRS += \
 	-L../ZSBackend/$(GNUSTEP_OBJ_DIR) \
-	-L../ZSFrontend/$(GNUSTEP_OBJ_DIR)
+	-L../ZSFrontend/$(GNUSTEP_OBJ_DIR)\
+
+ADDITIONAL_LIB_DIRS += \
+	-L../ZSBackend/$(GNUSTEP_OBJ_DIR)       \
+	-L$(OGoROOT)/Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
+
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib
 
 ADDITIONAL_TOOL_LIBS += \
         -lZSBackend	\
