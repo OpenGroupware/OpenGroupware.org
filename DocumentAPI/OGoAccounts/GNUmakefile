@@ -28,6 +28,7 @@ libOGoAccounts_OBJC_FILES = \
 
 libOGoAccounts_HEADER_FILES_DIR         = .
 libOGoAccounts_HEADER_FILES_INSTALL_DIR = /OGoAccounts
+FHS_HEADER_DIRS = OGoAccounts
 
 OGoAccounts_PRINCIPAL_CLASS = SkyAccountsBundleManager
 OGoAccounts_OBJC_FILES = SkyAccountsBundleManager.m
@@ -40,7 +41,4 @@ OGoAccounts_RESOURCE_FILES += Defaults.plist
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
-
-after-OGoAccounts-all ::
-	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
-	  $(LN_S) -f ../bundle-info.plist .)
+-include ../fhslib.make

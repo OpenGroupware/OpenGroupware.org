@@ -39,9 +39,12 @@ libOGoDocuments_OBJC_FILES = \
 
 libOGoDocuments_HEADER_FILES_DIR         = .
 libOGoDocuments_HEADER_FILES_INSTALL_DIR = /OGoDocuments
+FHS_HEADER_DIRS = OGoDocuments
+
 libOGoDocuments_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 libOGoDocuments_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make
 -include GNUmakefile.postamble
+-include ../fhslib.make

@@ -29,6 +29,7 @@ libOGoFileSystemProject_OBJC_FILES =	\
 
 libOGoFileSystemProject_HEADER_FILES_DIR         = .
 libOGoFileSystemProject_HEADER_FILES_INSTALL_DIR = /OGoFileSystemProject
+FHS_HEADER_DIRS = OGoFileSystemProject
 
 OGoFileSystemProject_PRINCIPAL_CLASS = SkyFSProjectModule
 
@@ -39,12 +40,8 @@ OGoFileSystemProject_BUNDLE_LIBS  += -lLSFoundation -lOGoFileSystemProject
 
 ADDITIONAL_BUNDLE_LIBS += -lOGoFileSystemProject
 
-
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
-
-after-OGoFileSystemProject-all ::
-	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION); \
-	$(LN_S) -f ../bundle-info.plist .; cd ..)
+-include ../fhslib.make

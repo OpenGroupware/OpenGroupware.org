@@ -55,6 +55,7 @@ libOGoContacts_OBJC_FILES = \
 
 libOGoContacts_HEADER_FILES_DIR         = .
 libOGoContacts_HEADER_FILES_INSTALL_DIR = /OGoContacts
+FHS_HEADER_DIRS = OGoContacts
 
 OGoContacts_PRINCIPAL_CLASS = SkyContactsBundleManager
 
@@ -68,7 +69,4 @@ OGoContacts_RESOURCE_FILES += Defaults.plist
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
-
-after-OGoContacts-all ::
-	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
-	  $(LN_S) -f ../bundle-info.plist .)
+-include ../fhslib.make

@@ -8,6 +8,8 @@ BUNDLE_EXTENSION   = .ds
 
 libOGoRawDatabase_HEADER_FILES_DIR         = .
 libOGoRawDatabase_HEADER_FILES_INSTALL_DIR = /OGoRawDatabase
+FHS_HEADER_DIRS = OGoRawDatabase
+
 libOGoRawDatabase_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 libOGoRawDatabase_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
@@ -28,7 +30,9 @@ OGoRawDatabase_OBJC_FILES = \
 
 OGoRawDatabase_PRINCIPAL_CLASS = OGoRawDatabaseModule
 
+ifeq ($(tests),yes)
 TOOL_NAME = testdb
+endif
 
 testdb_OBJC_FILES = testdb.m
 
@@ -41,3 +45,4 @@ include $(GNUSTEP_MAKEFILES)/tool.make
 endif
 
 -include GNUmakefile.postamble
+-include ../fhslib.make

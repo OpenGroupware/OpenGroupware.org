@@ -21,6 +21,7 @@ libOGoBase_OBJC_FILES = \
 
 libOGoBase_HEADER_FILES_DIR         = .
 libOGoBase_HEADER_FILES_INSTALL_DIR = /OGoBase
+FHS_HEADER_DIRS = OGoBase
 
 libOGoBase_LIBRARIES_DEPEND_UPON += \
 	-lOGoDocuments			\
@@ -36,3 +37,4 @@ OGoBase_OBJC_FILES = 	\
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
+-include ../fhslib.make

@@ -38,6 +38,7 @@ libOGoProject_OBJC_FILES = \
 
 libOGoProject_HEADER_FILES_DIR         = .
 libOGoProject_HEADER_FILES_INSTALL_DIR = /OGoProject
+FHS_HEADER_DIRS = OGoProject
 
 # datasource/accesshandler bundle
 
@@ -51,7 +52,4 @@ OGoProject_OBJC_FILES += \
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
-
-after-OGoProject-all ::
-	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION); \
-	$(LN_S) -f ../bundle-info.plist .; cd ..)
+-include ../fhslib.make

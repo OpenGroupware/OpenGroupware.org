@@ -8,10 +8,14 @@ BUNDLE_NAME        = OGoScheduler
 BUNDLE_EXTENSION   = .ds
 
 # TODO: this should rather check the makefile version!
+ifeq ($(FHS_INSTALL_ROOT),)
 ifeq ($(FOUNDATION_LIB),fd)
 RESOURCES_DIR=$(GNUSTEP_LOCAL_ROOT)/Libraries/Resources/OGoScheduler
 else
 RESOURCES_DIR=$(GNUSTEP_LOCAL_ROOT)/Library/Libraries/Resources/OGoScheduler
+endif
+else
+RESOURCES_DIR=$(FHS_INSTALL_ROOT)/share/opengroupware.org-1.0a
 endif
 
 libOGoScheduler_CPPFLAGS += \
@@ -41,6 +45,7 @@ libOGoScheduler_OBJC_FILES = \
 
 libOGoScheduler_HEADER_FILES_DIR         = .
 libOGoScheduler_HEADER_FILES_INSTALL_DIR = /OGoScheduler
+FHS_HEADER_DIRS = OGoScheduler
 
 libOGoScheduler_RESOURCES = \
 	Holidays.plist
@@ -54,3 +59,4 @@ OGoScheduler_RESOURCE_FILES += Defaults.plist
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
+-include ../fhslib.make

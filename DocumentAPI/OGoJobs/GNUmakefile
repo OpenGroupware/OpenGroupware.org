@@ -29,6 +29,7 @@ libOGoJobs_OBJC_FILES = 				\
 
 libOGoJobs_HEADER_FILES_DIR         = .
 libOGoJobs_HEADER_FILES_INSTALL_DIR = /OGoJobs
+FHS_HEADER_DIRS = OGoJobs
 
 OGoJobs_OBJC_FILES = \
 	SkyJobsBundleManager.m 	\
@@ -38,7 +39,4 @@ OGoJobs_OBJC_FILES = \
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
-
-after-OGoJobs-all ::
-	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
-	  $(LN_S) -f ../bundle-info.plist .)
+-include ../fhslib.make
