@@ -84,6 +84,15 @@ static NGMimeType *gidPropType = nil;
   return [(OGoSession *)[self session] timeZone];
 }
 
+/* commands */
+
+- (void)_fillEditingEO {
+  [self runCommand:@"documentediting::get-attachment-name",
+          @"documentEditing", self->editing, nil];
+  [self runCommand:@"documentediting::get-current-owner",
+          @"object", self->editing, @"relationKey", @"currentOwner", nil];
+}
+
 /* operations */
 
 static int compareDocumentVersions(id version1, id version2, void *context) {
@@ -93,10 +102,7 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
 }
 
 - (void)_handleEditingAttachment {
-  [self runCommand:@"documentediting::get-attachment-name",
-          @"documentEditing", self->editing, nil];
-  [self->editing run:@"documentediting::get-current-owner",
-                   @"relationKey", @"currentOwner", nil];
+  [self _fillEditingEO];
 }
 
 - (void)_fetchVersions {

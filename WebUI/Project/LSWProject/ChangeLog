@@ -1,3 +1,7 @@
+2004-11-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWProjectEditor.m: minor code cleanups (v5.1.44)
+
 2004-11-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWDocumentViewer.m: minor code cleanups (v5.1.43)

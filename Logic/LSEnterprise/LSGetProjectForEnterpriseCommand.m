@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,40 +18,39 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#import <LSFoundation/LSDBObjectBaseCommand.h>
+#include <LSFoundation/LSDBObjectBaseCommand.h>
 
 @interface LSGetProjectForEnterpriseCommand : LSDBObjectBaseCommand
 @end
 
-#import "common.h"
-#import <GDLAccess/EOSQLQualifier.h>
+#include "common.h"
 
 @implementation LSGetProjectForEnterpriseCommand
 
-// command methods
-
 - (EOSQLQualifier *)_qualifierForProjects {
-  EOEntity       *projectEntity = [[self databaseModel] entityNamed:@"Project"];
-  EOSQLQualifier *qualifier     = nil;
+  EOEntity       *projectEntity;
+  EOSQLQualifier *qualifier;
 
-  qualifier = [[EOSQLQualifier alloc] initWithEntity:projectEntity
-                                      qualifierFormat:
-                                      @"%A=%@ AND (isFake=0 OR isFake IS NULL)"
-                                      @" AND dbStatus <> 'archived'",
-                                      @"toProjectCompanyAssignment.companyId",
-                                      [[self object] valueForKey:@"companyId"]];
+  projectEntity = [[self databaseModel] entityNamed:@"Project"];
+  
+  qualifier =
+    [[EOSQLQualifier alloc] initWithEntity:projectEntity
+                            qualifierFormat:
+                              @"(%A=%)@ AND ((isFake = 0) OR (isFake IS NULL))"
+                              @" AND (dbStatus <> 'archived')",
+                              @"toProjectCompanyAssignment.companyId",
+                              [[self object] valueForKey:@"companyId"]];
   [qualifier setUsesDistinct:YES];
-  return AUTORELEASE(qualifier);  
+  return [qualifier autorelease];  
 }
 
 - (NSArray *)_fetchProjects {
-  NSMutableArray    *myProjects = nil;
-  EODatabaseChannel *channel    = nil;
-  BOOL              isOk        = NO;
-  id                obj         = nil; 
-
+  NSMutableArray    *myProjects;
+  EODatabaseChannel *channel;
+  BOOL              isOk;
+  id                obj; 
+  
   channel    = [self databaseChannel];
   myProjects = [NSMutableArray arrayWithCapacity:8];
 
@@ -61,10 +60,9 @@
 
   [self assert:isOk reason:[sybaseMessages description]];
   
-  while ((obj = [channel fetchWithZone:NULL])) {
+  while ((obj = [channel fetchWithZone:NULL]))
     [myProjects addObject:obj];
-    obj = nil;
-  }
+  
   return myProjects;
 }
 
@@ -93,13 +91,13 @@
 }
 
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Enterprise";
 }
 
-// key/value coding
+/* key/value coding */
 
 - (void)takeValue:(id)_value forKey:(id)_key {
   if ([_key isEqualToString:@"enterprise"]) {
@@ -112,7 +110,8 @@
 - (id)valueForKey:(id)_key {
   if ([_key isEqualToString:@"enterprise"])
     return [self object];
+
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSGetProjectForEnterpriseCommand */

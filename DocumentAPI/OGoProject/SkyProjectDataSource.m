@@ -43,16 +43,28 @@ static NSArray  *hiddenProjectTypes = nil;
 static NSNumber *yesNum = nil;
 
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
   if (yesNum == nil) yesNum = [[NSNumber numberWithBool:YES] retain];
   
-  if (hiddenProjectTypes == nil) {
-    hiddenProjectTypes = 
-      [[NSArray alloc] initWithObjects:
+  {
+    NSDictionary *defs;
+    NSArray *v;
+    
+    // TODO: all of them could be removed?
+    v = [[NSArray alloc] initWithObjects:
 			 @"00_invoiceProject",
 	                 @"05_historyProject",
 		         @"10_edcProject",
 		         @"15_accountLog", nil];
+    defs = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                   v, @"hiddenprojectkinds", nil];
+    [ud registerDefaults:defs];
+    [defs release]; [v release];
   }
+  
+  if (hiddenProjectTypes)
+    hiddenProjectTypes = [[ud arrayForKey:@"hiddenprojectkinds"] copy];
 }
 
 - (NSNotificationCenter *)notificationCenter {
@@ -202,6 +214,11 @@ static NSNumber *yesNum = nil;
   return [_projects sortedArrayUsingKeyOrderArray:sortOrderings];
 }
 
+- (id)loginAccountEO {
+  /* avoid using this method, rather base stuff on primary key */
+  return [self->context valueForKey:LSAccountKey];
+}
+
 - (NSArray *)fetchObjects {
   NSAutoreleasePool *pool;
   NSArray      *projects      = nil;
@@ -221,12 +238,10 @@ static NSNumber *yesNum = nil;
   fetchLimit    = [self->fetchSpecification fetchLimit];
   
   if (SearchAllProjects) {
-    projects = [self _fetchProjectsForPersonEO:
-		       [self->context valueForKey:LSAccountKey]];
+    projects = [self _fetchProjectsForPersonEO:[self loginAccountEO]];
   }
   else {
-    projects = [self _fetchProjectsForPersonEO:
-		       [self->context valueForKey:LSAccountKey]
+    projects = [self _fetchProjectsForPersonEO:[self loginAccountEO]
 		     butNotThoseOfKind:notTheseKinds];
   }
   

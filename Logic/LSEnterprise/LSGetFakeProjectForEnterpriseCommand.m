@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,27 +18,27 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#import <LSFoundation/LSDBObjectBaseCommand.h>
+#include <LSFoundation/LSDBObjectBaseCommand.h>
 
 @interface LSGetFakeProjectForEnterpriseCommand : LSDBObjectBaseCommand
 @end
 
-#import "common.h"
-#import <GDLAccess/EOSQLQualifier.h>
+#include "common.h"
 
 @implementation LSGetFakeProjectForEnterpriseCommand
 
 /* command methods */
 
 - (EOSQLQualifier *)_qualifierForProjects {
-  EOEntity       *projectEntity = [[self databaseModel] entityNamed:@"Project"];
-  EOSQLQualifier *qualifier     = nil;
+  EOEntity       *projectEntity;
+  EOSQLQualifier *qualifier;
 
-  qualifier = [[EOSQLQualifier alloc] initWithEntity:projectEntity
-                                   qualifierFormat:
-                                   @"%A=%@ AND isFake=1",
+  projectEntity = [[self databaseModel] entityNamed:@"Project"];
+  qualifier =
+    [[EOSQLQualifier alloc] initWithEntity:projectEntity
+                            qualifierFormat:
+                                   @"(%A = %@) AND (isFake = 1)",
                                    @"toProjectCompanyAssignment.companyId",
                                    [[self object] valueForKey:@"companyId"]];
   [qualifier setUsesDistinct:YES];
@@ -47,17 +47,17 @@
 
 - (NSArray *)_fetchProjects {
   NSMutableArray  *myProjects;
-  BOOL            isOk        = NO;
-  id              obj         = nil; 
+  BOOL            isOk;
+  id              obj; 
 
   myProjects = [NSMutableArray arrayWithCapacity:8];
   isOk = [[self databaseChannel] selectObjectsDescribedByQualifier:
-                                 [self _qualifierForProjects]
+                                   [self _qualifierForProjects]
                                  fetchOrder:nil];
   
   [self assert:isOk reason:[sybaseMessages description]];
   
-  while ((obj = [[self databaseChannel] fetchWithZone:NULL]))
+  while ((obj = [[self databaseChannel] fetchWithZone:NULL]) != nil)
     [myProjects addObject:obj];
   
   return myProjects;

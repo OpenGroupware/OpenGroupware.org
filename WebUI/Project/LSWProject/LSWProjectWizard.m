@@ -669,8 +669,10 @@ int _compareAccounts(id e1, id e2, void* context) {
 }
 
 - (id)insertObject {
-  id project    = [self snapshot];
-
+  id project;
+  
+  project = [self snapshot];
+  
   [self _action];
   [project takeValue:self->accounts forKey:@"accounts"];
   

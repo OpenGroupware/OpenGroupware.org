@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWEditorPage.h>
 
@@ -441,16 +440,18 @@ static int      OldProjectCompatiblity = -1;
       NSEnumerator *enumerator;
 
       cnt  = 0;
-      objs = malloc(sizeof(id) * [array count]);
+      objs = calloc([array count], sizeof(id));
       enumerator = [array objectEnumerator];
-      while ((o = [enumerator nextObject])) {
-        if ([[o valueForKey:@"hasAccess"] boolValue]) {
-          objs[cnt++] = o;
-        }
+      while ((o = [enumerator nextObject]) != nil) {
+        if (![[o valueForKey:@"hasAccess"] boolValue])
+          continue;
+        
+        objs[cnt] = o;
+        cnt++;
       }
       array = [NSArray arrayWithObjects:objs count:cnt];
       
-      free(objs); objs = NULL;
+      if (objs) free(objs); objs = NULL;
     }
     
     array = [array map:@selector(valueForKey:) with:@"companyId"];
@@ -461,22 +462,20 @@ static int      OldProjectCompatiblity = -1;
     accs       = [NSMutableArray array];
     teams      = [NSMutableArray array];
 
-    while ((o = [enumerator nextObject])) {
+    while ((o = [enumerator nextObject]) != nil) {
       NSString *n;
 
       n = [o entityName];
-      if ([n isEqualToString:@"Person"]) {
+      if ([n isEqualToString:@"Person"])
         [accs addObject:o];
-      }
-      else if ([n isEqualToString:@"Team"]) {
+      else if ([n isEqualToString:@"Team"])
         [teams addObject:o];
-      }
       else {
         NSLog(@"WARNING[%s]: got unknown company-assignment obj %@",
               __PRETTY_FUNCTION__, o);
       }
     }
-    allAss = [NSMutableArray array];
+    allAss = [NSMutableArray arrayWithCapacity:16];
     teams  = [self runCommand:@"team::get-by-globalID",
                    @"gids", teams, @"attributes", teamAttrs, nil];
     enumerator = [teams objectEnumerator];
@@ -498,7 +497,7 @@ static int      OldProjectCompatiblity = -1;
       [allAss addObject:a];
       [a release]; a = nil;
     }
-
+    
     {
       // adding the filtered accounts because of no read - rights
       NSEnumerator *e;
@@ -510,30 +509,34 @@ static int      OldProjectCompatiblity = -1;
       gids = [allAss map:@selector(valueForKey:) with:@"globalID"];
       
       while ((one = [e nextObject])) {
-        if (![gids containsObject:[one valueForKey:@"globalID"]]) {
-          id       cid, gid, dict;
-          NSString *name, *fname, *login;
+        NSNumber      *cid;
+        EOKeyGlobalID *gid;
+        NSDictionary  *dict;
+        NSString      *name, *fname, *login;
+        
+        if ([gids containsObject:[one valueForKey:@"globalID"]])
+          continue;
 
-          cid   = [one valueForKey:@"companyId"];
-          name  = [one valueForKey:@"name"];
-          fname = [one valueForKey:@"fname"];
-          login = [one valueForKey:@"login"];
-          gid   = [one valueForKey:@"globalID"];
+        // TODO: wrap in method
+        cid   = [one valueForKey:@"companyId"];
+        name  = [one valueForKey:@"name"];
+        fname = [one valueForKey:@"fname"];
+        login = [one valueForKey:@"login"];
+        gid   = [one valueForKey:@"globalID"];
           
-          if ( name == nil) name  = @"";
-          if (fname == nil) fname = @"";
-          if (login == nil) login = @"";
-          dict = [NSDictionary dictionaryWithObjectsAndKeys:
+        if ( name == nil) name  = @"";
+        if (fname == nil) fname = @"";
+        if (login == nil) login = @"";
+        dict = [NSDictionary dictionaryWithObjectsAndKeys:
                                           cid,   @"companyId",
                                           fname, @"firstname",
                                           gid,   @"globalID",
                                           login, @"login",
                                           name,  @"name",
                                           nil];
-          dict = [dict mutableCopy];
-          [allAss addObject:dict];
-          [dict release]; dict = nil;
-        }
+        dict = [dict mutableCopy];
+        [allAss addObject:dict];
+        [dict release]; dict = nil;
       }
     }
     [obj takeValue:allAss forKey:@"accounts"];
@@ -581,7 +584,7 @@ static int      OldProjectCompatiblity = -1;
                                      [[self object] globalID]];
     [[self snapshot] takeValuesFromDictionary:oprops];
   }
-
+  
   if ([_command isEqualToString:@"delete"]) {
     if ([self isDeleteDisabled]) {
       OGoContentPage *page;
@@ -673,8 +676,8 @@ static int      OldProjectCompatiblity = -1;
       NSDictionary *dict;
 
       cnt  = [self->accounts count];
-      keys = malloc(sizeof(id) * cnt);
-      vals = malloc(sizeof(id) * cnt);
+      keys = calloc(cnt + 2, sizeof(id));
+      vals = calloc(cnt + 2, sizeof(id));
       cnt  = 0;
       
       enumerator = [self->accounts objectEnumerator];

@@ -1,5 +1,10 @@
 2004-11-23  Helge Hess  <helge.hess@skyrix.com>
 
+	* SkyProjectDataSource.m: made 'hidden' project kinds configurable
+	  using the 'hiddenprojectkinds' array default, defaults to
+	  00_invoiceProject, 05_historyProject, 10_edcProject, 15_accountLog
+	  (all of which are deprecated and should be removed) (v5.1.32)
+	
 	* v5.1.31
 
 	* EOQualifier+Project.[hm]: moved in some generic qualifier methods

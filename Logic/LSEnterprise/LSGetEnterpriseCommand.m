@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,15 +18,14 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#import <LSFoundation/LSDBObjectGetCommand.h>
+#include <LSFoundation/LSDBObjectGetCommand.h>
 
 @interface LSGetEnterpriseCommand : LSDBObjectGetCommand
 @end
 
 #include "common.h"
-#import <EOControl/EOKeyGlobalID.h>
+#include <EOControl/EOKeyGlobalID.h>
 
 @implementation LSGetEnterpriseCommand
 
@@ -67,18 +66,16 @@
 }
 
 - (id)valueForKey:(id)_key {
-  id v;
-  
   if ([_key isEqualToString:@"gid"]) {
+    id v;
+    
     v = [super valueForKey:@"companyId"];
     v = [EOKeyGlobalID globalIDWithEntityName:[self entityName]
                        keys:&v keyCount:1
                        zone:NULL];
+    return v;
   }
-  else
-    v = [super valueForKey:_key];
-  
-  return v;
+  return [super valueForKey:_key];
 }
 
-@end
+@end /* LSGetEnterpriseCommand */

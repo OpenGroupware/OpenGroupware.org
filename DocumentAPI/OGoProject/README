@@ -7,6 +7,16 @@ OGoProject
   'SkyProjectDocument' is a document (BLOB) stored inside the project document
   storage.
 
+  Note: do not mix up the project *type* (like common, private, archived) with
+        the project *kind*. The first is a derived attribute while the second
+        is a field stored in the database to identify 'special' projects.
+        
+        A 'regular' OGo database does not fill the 'kind' field.
+        
+        Note that a project also has a field 'isFake' which is for projects
+        attached to a company record. Fake projects are not shown in the
+        project desktop.
+
 Defaults
 ========
 
@@ -19,6 +29,8 @@ Defaults
   SkyProjectFileManager_show_unknown_files  - BOOL
 
   SkyProjectDocumentDebug              - BOOL
+
+  hiddenprojectkinds - array of strings
 
 Supported Default-Attributes on Documents:
 ==========================================

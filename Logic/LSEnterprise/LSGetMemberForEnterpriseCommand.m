@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "LSGetMemberForCompanyCommand.h"
 
@@ -32,16 +31,14 @@
 - (BOOL)fetchGlobalIDs;
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSGetMemberForEnterpriseCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->attributes);
+  [self->attributes release];
   [super dealloc];
 }
-#endif
  
 // record initializer
 
@@ -87,7 +84,8 @@
 // key/value coding
 
 - (void)takeValue:(id)_value forKey:(id)_key {
-  if ([_key isEqualToString:@"enterprise"] || [_key isEqualToString:@"object"]) {
+  if ([_key isEqualToString:@"enterprise"] || 
+      [_key isEqualToString:@"object"]) {
     [self setGroup:_value];
     return;
   }
@@ -99,19 +97,19 @@
     [self setAttributes:_value];
     return;
   }
-  else
-    [super takeValue:_value forKey:_key];
+
+  [super takeValue:_value forKey:_key];
 }
 
 - (id)valueForKey:(id)_key {
   if ([_key isEqualToString:@"enterprise"] || [_key isEqualToString:@"object"])
     return [self group];
-  else if ([_key isEqualToString:@"enterprises"])
+  if ([_key isEqualToString:@"enterprises"])
     return [self groups];
-  else if ([_key isEqualToString:@"attributes"])
+  if ([_key isEqualToString:@"attributes"])
     return [self attributes];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
-@end
+@end /* LSGetMemberForEnterpriseCommand */

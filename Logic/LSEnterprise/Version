@@ -1,5 +1,5 @@
-# $Id$
+# version file
 
-SUBMINOR_VERSION:=10
+SUBMINOR_VERSION:=11
 
 # v5.0.10 requires LSSearch v5.0.13

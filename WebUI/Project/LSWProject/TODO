@@ -1,4 +1,5 @@
-$Id$
+TODO LSWProject
+===============
 
 - LSWProjectEditor
   - currently doesn't use a component for projectlead and access list selection
@@ -21,3 +22,5 @@ $Id$
 
 - LSWProjectWizard
   - needs cleanup
+  - use by: ???
+  - bound to: 'eo/project' newWizard and editWizard
