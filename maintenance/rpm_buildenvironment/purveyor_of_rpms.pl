@@ -560,19 +560,16 @@ sub collect_patchinfo {
     chomp $new_svnrev if (defined $new_svnrev);
     if ($flavour_we_build_upon eq "fedora") {
       $new_version = `/bin/rpm --qf '%{version}' -q httpd-devel`;
-      print "Senseless to continue... got no version for mod_ngobjweb\n" and exit 1 if ($?);
-    }
-    if ((($flavour_we_build_upon eq "suse") or ($flavour_we_build_upon eq "mandrake")) and ($distrib_define !~ m/^suse sles-8/i) or ($distrib_define !~ m/^conectiva linux 10/i)) {
+      print "Senseless to continue... got no version for mod_ngobjweb whilst '/bin/rpm --qf '%{version}' -q httpd-devel'\n" and exit 1 if ($?);
+    } elsif ((($flavour_we_build_upon eq "suse") or ($flavour_we_build_upon eq "mandrake")) and ($distrib_define !~ m/^suse sles-8/i) or ($distrib_define !~ m/^conectiva linux 10/i)) {
       $new_version = `/bin/rpm --qf '%{version}' -q apache2-devel`;
-      print "Sensesless to continue... got no version for mod_ngobjweb\n" and exit 1 if ($?);
-    }
-    if ($distrib_define =~ m/^suse sles-8/i) {
+      print "Sensesless to continue... got no version for mod_ngobjweb whilst '/bin/rpm --qf '%{version}' -q apache2-devel'\n" and exit 1 if ($?);
+    } elsif ($distrib_define =~ m/^suse sles-8/i) {
       $new_version = `/bin/rpm --qf '%{version}' -q apache-devel`;
-      print "Senseless to continue... got no version for mod_ngobjweb\n" and exit 1 if ($?);
-    }
-    if ($distrib_define =~ m/^conectiva linux 10/i) {
+      print "Senseless to continue... got no version for mod_ngobjweb whilst '/bin/rpm --qf '%{version}' -q apache-devel'\n" and exit 1 if ($?);
+    } elsif ($distrib_define =~ m/^conectiva linux 10/i) {
       $new_version = `/bin/rpm --qf '%{version}' -q apache-devel`;
-      print "Senseless to continue... got no version for mod_ngobjweb\n" and exit 1 if ($?);
+      print "Senseless to continue... got no version for mod_ngobjweb whilst '/bin/rpm --qf '%{version}' -q apache-devel'\n" and exit 1 if ($?);
     }
   }
   ###########################################################################
@@ -719,7 +716,7 @@ sub get_latest_sources {
   }
   #</trunk>
   #<release>
-  if(("$do_download" eq "yes") and ("$build_type" eq "release")) {
+  if(("$do_download" eq "yes") and ("$build_type" eq "release") and ($package !~ m/^mod_ngobjweb_/)) {
     #MD5_INDEX comes in handy here, bc this file keeps track of all uploaded releases
     @latest = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
     chomp $release_tarballname;
