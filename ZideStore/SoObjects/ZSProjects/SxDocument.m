@@ -109,6 +109,43 @@ static BOOL debugOn = NO;
   return self->attrCache;
 }
 
+- (NSString *)etag {
+  NSDictionary *attrs;
+  NSString *s;
+  
+  if ((attrs = [self fileAttributes]) == nil)
+    return nil;
+
+  if ([(s = [attrs valueForKey:@"SkyStatus"]) isNotNull]) {
+    /* we assume a DB backend */
+    if ([s isEqualToString:@"edited"]) {
+      s = [attrs valueForKey:@"NSFileModificationDate"];
+      if ([s isKindOfClass:[NSDate class]]) {
+        s = [NSString stringWithFormat:@"edit_%09d_",
+                      (unsigned int)[(NSDate *)s timeIntervalSince1970]];
+      }
+      else
+        s = [@"edit-" stringByAppendingString:s];
+    }
+    else
+      s = @"v";
+    
+    s = [s stringByAppendingString:
+             [[attrs valueForKey:@"SkyVersionCount"] stringValue]];
+    return s;
+  }
+  else if ([(s = [attrs valueForKey:@"NSFileModificationDate"]) isNotNull]) {
+    /* we assume an FS backend */
+    if ([s isKindOfClass:[NSDate class]]) {
+      s = [NSString stringWithFormat:@"md%09d",
+                    (unsigned int)[(NSDate *)s timeIntervalSince1970]];
+    }
+    return s;
+  }
+
+  return nil;
+}
+
 /* content */
 
 - (NSString *)contentAsStringInContext:(id)_ctx {
@@ -222,7 +259,49 @@ static BOOL debugOn = NO;
   return [NSNumber numberWithBool:YES];
 }
 
+- (void)applyFileAttributesOnResponse:(WOResponse *)_response {
+  NSDictionary *attrs;
+  NSString *s;
+  
+  if ((attrs = [self fileAttributes]) == nil)
+    return;
+  
+  if ([(s = [attrs valueForKey:@"NSFileMimeType"]) isNotNull])
+    [_response setHeader:s forKey:@"content-type"];
+  if ([(s = [attrs valueForKey:@"NSFileSize"]) isNotNull])
+    [_response setHeader:[s stringValue] forKey:@"content-length"];
+  
+  if ((s = [self etag]) != nil)
+    [_response setHeader:s forKey:@"etag"];
+}
+
+- (id)HEADAction:(id)_ctx {
+  WOResponse *r;
+  id       fm;
+  NSString *p;
+
+  if ((fm = [self fileManagerInContext:_ctx]) == nil)
+    return [self internalError:@"could not locate filemanager for project"];
+  
+  if ([(p = [self storagePath]) length] == 0)
+    return [self internalError:@"could not calc project relative path"];
+  
+  if (![fm fileExistsAtPath:p]) {
+    return [NSException exceptionWithHTTPStatus:404 /* not found */
+			reason:@"document does not exist"];
+  }
+  
+  r = [_ctx response];
+  [r setStatus:200 /* OK */];
+  [r setContent:(NSData *)[NSData data]];
+  [self applyFileAttributesOnResponse:r];
+  
+  // TODO: add MIME typing etc
+  return r;
+}
+
 - (id)GETAction:(id)_ctx {
+  WOResponse *r;
   id       fm;
   NSString *p;
   NSData   *content;
@@ -240,9 +319,15 @@ static BOOL debugOn = NO;
     return [NSException exceptionWithHTTPStatus:404 /* not found */
 			reason:@"could not read content of document"];
   }
+
+  r = [_ctx response];
+  [r setStatus:200 /* OK */];
+  [r setContent:content];
+  
+  [self applyFileAttributesOnResponse:r];
   
   // TODO: add MIME typing etc
-  return content;
+  return r;
 }
 
 - (id)DELETEAction:(WOContext *)_ctx {

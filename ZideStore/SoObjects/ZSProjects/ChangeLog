@@ -1,3 +1,8 @@
+2005-01-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxDocument.m: added generation of etag, fixed generation of content
+	  type, added support for HEAD (v1.3.93)
+
 2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.3.92
