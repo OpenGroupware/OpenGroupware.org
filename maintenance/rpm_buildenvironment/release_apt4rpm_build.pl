@@ -20,6 +20,7 @@ my @distris = qw( fedora-core3
   suse82
   suse91
   suse92
+  mdk-10.1
   mdk-10.0
   slss8
   sles9
