@@ -1,3 +1,8 @@
+2005-03-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* BaseUI/Main.wod: fixed login actions (properly keep the session id in
+	  the form), fixes OGo bug #1325
+
 2005-03-22  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoProject/SkyProject4DocumentViewer.wod: removed unused element

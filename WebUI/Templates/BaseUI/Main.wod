@@ -27,7 +27,7 @@ Form: WOForm {
   directActionName = "login";
   ?da              = directAction;
   ?o               = cycleId;
-  ?wosid           = NO;
+  // Note: do not disabled ?wosid's. This breaks login actions
 }
 BrowserConfigDetect: WOHiddenField {
   name  = "browserconfig";
@@ -54,7 +54,7 @@ Login: WOTextField {
 Password: WOPasswordField {
   name  = "password";
   value = password;
-  SIZE  = 12;
+  size  = 12;
 }
 
 IsAutoLogin: WOConditional {
@@ -91,13 +91,13 @@ Font: WOGenericContainer {
           COLOR         = "black";//config.font_color;
           SIZE          = "2";//config.font_size;
           FACE          = "Arial,Helvetica,Verdana,Geneva,Tahoma";//config.font_face;
-};
+}
 EditFont: WOGenericContainer {
         elementName   = "FONT";
           COLOR         = "";//config.editFont.color;
           SIZE          = "2";//config.editFont.size;
           FACE          = "";//config.editFont.face;
-};
+}
 
 DirectActionIsSet: WOConditional {
   condition = hasDirectAction;
@@ -111,17 +111,9 @@ DAClass: WOString {
 
 /* database stuff */
 
-Database: WOString {
-  value = databaseName;
-}
-
-DBServer: WOString {
-  value = databaseServer;
-}
-
-DBUser: WOString {
-  value = databaseUser;
-}
+Database: WOString { value = databaseName;   }
+DBServer: WOString { value = databaseServer; }
+DBUser:   WOString { value = databaseUser;   }
 
 IsLoginNotAuthorizedCond: WOConditional {
   condition = isLoginNotAuthorized;
@@ -131,12 +123,6 @@ LoginIsNotAuthorizedLabel: WOString {
   value = "Wrong Password or User";
 }
 
-LinePix: WOImage {
-  filename         = "line_stretch.gif";
-};
-LineLeft: WOImage {
-  filename         = "line_left.gif";
-};
-LineRight: WOImage {
-  filename         = "line_right.gif";
-};
+LinePix:   WOImage { filename = "line_stretch.gif"; }
+LineLeft:  WOImage { filename = "line_left.gif";    }
+LineRight: WOImage { filename = "line_right.gif";   }
