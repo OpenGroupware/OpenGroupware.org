@@ -1,3 +1,8 @@
+2005-04-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* bundle-info.plist: use SkyDocEmbedInlineViewer (iframe) to display
+	  text/html files in a project (v5.1.8)
+
 2005-03-19  Helge Hess  <helge.hess@opengroupware.org>
 
 	* added GNUmakefile.preamble for MacOSX (v5.1.7)

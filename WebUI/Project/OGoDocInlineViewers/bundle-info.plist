@@ -83,6 +83,12 @@
         component = SkyDocEmbedInlineViewer;
       },
 
+      { // TODO: is this reasonable? or do we need to strip content?
+        verb      = "docview-inline";
+        type      = "text/html";
+        component = SkyDocEmbedInlineViewer;
+      },
+
       {
         verb      = "docview-inline";
         type      = "image/gif";
