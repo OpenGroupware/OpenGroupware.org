@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include $(GNUSTEP_MAKEFILES)/common.make
 
@@ -31,3 +31,4 @@ OGo_INCLUDE_DIRS = -IHeaders
 
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
+-include fhs.make
