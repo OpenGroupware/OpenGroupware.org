@@ -1,3 +1,9 @@
+2005-04-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoProject/SkyProject4DocumentEditor: minor template cleanups
+
+	* OGoUIElements/SkyTextEditor: minor template cleanups
+
 2005-04-01  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoWebMail/LSWImapMailViewer.wod: disabled download-all to fix OGo

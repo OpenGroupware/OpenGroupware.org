@@ -1,19 +1,9 @@
-// $Id: SkyTextEditor.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
-HasName: WOConditional {
-  condition = hasName;
-}
-HasNameElse: WOConditional {
-  condition = hasName;
-  negate    = YES;
-}
-UseEpoz: WOConditional {
-  condition = enableEpoz;
-}
-DoNotUseEpoz: WOConditional {
-  condition = enableEpoz;
-  negate    = YES;
-}
+HasName:      WOConditional { condition = hasName;    }
+HasNameElse:  WOConditional { condition = hasName;    negate = YES; }
+UseEpoz:      WOConditional { condition = enableEpoz; }
+DoNotUseEpoz: WOConditional { condition = enableEpoz; negate = YES; }
 
 TextEditorName: WOText {
   name     = name;
@@ -23,17 +13,17 @@ TextEditorName: WOText {
   wrap     = ^wrap;
 }
 TextEditor: WOText {
-  value    = text;
-  rows     = rows;
-  cols     = columns;
-  wrap     = ^wrap;
+  value = text;
+  rows  = rows;
+  cols  = columns;
+  wrap  = ^wrap;
 }
 
 EpozEditorName: WEEpozEditor {
-  name     = name;
-  value    = text;
-  rows     = rows;
-  cols     = columns;
+  name  = name;
+  value = text;
+  rows  = rows;
+  cols  = columns;
 }
 
 WithControls: WOConditional {

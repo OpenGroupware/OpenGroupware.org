@@ -13,31 +13,14 @@ Form: WOForm {
   //name = "textDocumentEditor"; // for Lime
 }
 
-ShowFilename: WOConditional {
-  condition = showFilename;
-}
-NoShowFilename: WOConditional {
-  condition = showFilename;
-  negate    = YES;
-}
+ShowFilename:   WOConditional { condition = showFilename; }
+NoShowFilename: WOConditional { condition = showFilename; negate = YES; }
 
-FilePathAttr: SkyAttribute {
-  label  = labels.fileName;
-  string = filePath;
-}
-FolderAttr: SkyAttribute {
-  label  = labels.folder;
-  string = folderPath;
-}
-SubjectAttr: SkyAttribute {
-  label  = labels.subject;
-}
-FilenameAttr: SkyAttribute {
-  label = labels.fileName;
-}
-TextEditAttr: SkyAttribute {
-  label = labels.textedit;
-}
+FilePathAttr: SkyAttribute { label = labels.fileName; string = filePath;   }
+FolderAttr:   SkyAttribute { label = labels.folder;   string = folderPath; }
+SubjectAttr:  SkyAttribute { label = labels.subject;  }
+FilenameAttr: SkyAttribute { label = labels.fileName; }
+TextEditAttr: SkyAttribute { label = labels.textedit; }
 
 Subject: WOTextField {
   value    = subject;
@@ -60,32 +43,28 @@ TextEditor: SkyTextEditor {
   enableEpoz       = isEpozEnabled;
 }
 
-HasSaveAndRelease: WOConditional {
-  condition = hasSaveAndRelease;
-}
-HasSaveAndUnlock: WOConditional {
-  condition = hasSaveAndUnlock;
-}
+HasSaveAndRelease: WOConditional { condition = hasSaveAndRelease; }
+HasSaveAndUnlock:  WOConditional { condition = hasSaveAndUnlock;  }
 
 SaveButton: WOSubmitButton {
-  action   = save;
-  value    = labels.save;
-  class    = "button_narrow";
+  action = save;
+  value  = labels.save;
+  class  = "button_narrow";
 }
 SaveAndMoveButton: WOSubmitButton {
-  action   = saveAndMove;
-  value    = labels.saveAndMoveButton;
-  class    = "button_wide";
+  action = saveAndMove;
+  value  = labels.saveAndMoveButton;
+  class  = "button_wide";
 }
 SaveAndReleaseButton: WOSubmitButton {
-  action   = saveAndRelease;
-  value    = labels.saveAndRelease;
-  class    = "button_wide";
+  action = saveAndRelease;
+  value  = labels.saveAndRelease;
+  class  = "button_wide";
 }
 SaveAndUnlockButton: WOSubmitButton {
-  action   = saveAndUnlock;
-  value    = labels.saveAndUnlock;
-  class    = "button_wide";
+  action = saveAndUnlock;
+  value  = labels.saveAndUnlock;
+  class  = "button_wide";
 }
 
 CancelButton: WOHyperlink {
@@ -94,60 +73,30 @@ CancelButton: WOHyperlink {
   class  = "button_narrow";
 }
 
-/* Form customizing stuff */
+/* page restoration support */
 
-HasDocEditForm: WOConditional {
-  condition = hasDocEditForm;
-}
-DocEditForm: WOComponentReference {
-  component  = docEditForm;
-  preview    = NO;
-  document   = document;
-}
-
-IsFormLicensed: SkyLicenseConditional {
-  modules  = ( Forms );
-  showInfo = NO;
-}
-
-
-LoginName : WOHiddenField {
+LoginName: WOHiddenField {
   value = session.activeAccount.login;
   name  = "loginName";
 }
-PageName : WOHiddenField {
+PageName: WOHiddenField {
   value = name;
   name  = "restorePageName";
 }
 
-PageLabel : WOHiddenField {
+PageLabel: WOHiddenField {
   value = labels.RestoreDocumentEditor;
   name  = "restorePageLabel";
 }
 
-ProjectId: WOHiddenField {
-  value = projectId;
-  name  = "projectId";
-}
+ProjectId:      WOHiddenField { value = projectId;  name  = "projectId"; }
+FolderPath:     WOHiddenField { value = folderPath; name = "folderPath"; }
+FilenameHidden: WOHiddenField { value = fileName;   name = "fileName";   }
 
-FolderPath: WOHiddenField {
-  value = folderPath;
-  name  = "folderPath";
-}
+/* import mode (should move to own component?!) */
 
-FilenameHidden: WOHiddenField {
-  value    = fileName;
-  name     = "fileName";
-}
-
-IsImportCond : WOConditional {
-  condition = isImport;
-}
-
-IsImportCondElse : WOConditional {
-  condition = isImport;
-  negate    = YES;
-}
+IsImportCond:     WOConditional { condition = isImport; }
+IsImportCondElse: WOConditional { condition = isImport; negate = YES; }
 
 ProjectSelection: SkyProjectSelection {
   project           = project;
@@ -155,6 +104,4 @@ ProjectSelection: SkyProjectSelection {
   searchEnterprises = YES;
   noProjectEnabled  = NO;
   markFirst         = YES;
-};
-
-
+}
