@@ -60,7 +60,7 @@ stores all files on the hosts filesystem.
 %package docapi-fs-project-devel
 Summary:      Development files for OpenGroupware.org's filesystem storage
 Group:        Development/Libraries
-Requires:     ogo-docapi-fs
+Requires:     ogo-docapi-fs-project
 AutoReqProv:  off
 
 %description docapi-fs-project-devel
@@ -79,7 +79,7 @@ storage backends. This package contains the database storage backend.
 %package docapi-db-project-devel
 Summary:      Development files for OpenGroupware.org's database storage
 Group:        Development/Libraries
-Requires:     ogo-docapi-db
+Requires:     ogo-docapi-db-project
 AutoReqProv:  off
 
 %description docapi-db-project-devel
