@@ -112,29 +112,7 @@ static BOOL debugOn = YES;
   return [[self container] imap4Login];
 }
 - (NSString *)imap4Password {
-  /*
-    Extract password from basic authentication.
-    
-    TODO: we might want to
-    a) move the primary code to SOGoMailAccount
-    b) cache the password
-  */
-  WORequest *rq;
-  NSString  *auth;
-  NSArray   *creds;
-  
-  rq = [[(WOApplication *)[WOApplication application] context] request];
-  if ((auth = [rq headerForKey:@"authorization"]) == nil) {
-    /* no basic auth */
-    return nil;
-  }
-  
-  creds = [SoHTTPAuthenticator parseCredentials:auth];
-  if ([creds count] < 2)
-    /* somehow invalid */
-    return nil;
-  
-  return [creds objectAtIndex:1]; /* the password */
+  return [(SOGoMailBaseObject *)[self mailAccountFolder] imap4Password];
 }
 
 - (NGImap4Client *)imap4ClientForURL:(NSURL *)_url password:(NSString *)_pwd {

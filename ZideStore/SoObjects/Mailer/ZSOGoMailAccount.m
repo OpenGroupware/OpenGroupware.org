@@ -19,8 +19,8 @@
   02111-1307, USA.
 */
 
-#include "OGoMailAccount.h"
-
+#include "ZSOGoMailAccount.h"
+#include "ZSOGoMailAuthenticator.h"
 #include <NGObjWeb/SoHTTPAuthenticator.h>
 #include <LSFoundation/LSCommandContext.h>
 #include "common.h"
@@ -28,74 +28,6 @@
 @interface SOGoMailAccount(UsedPrivates)
 - (BOOL)useSSL;
 @end
-
-#include <NGObjWeb/SoHTTPAuthenticator.h>
-
-@interface ZSOGoMailAuthenticator : SoHTTPAuthenticator
-{
-  ZSOGoMailAccount *account;
-  id               context; /* non-retained (TODO: not required?) */
-}
-
-@end
-
-#include "SOGoMailManager.h"
-
-@implementation ZSOGoMailAuthenticator
-
-- (id)initWithMailAccount:(ZSOGoMailAccount *)_account context:(id)_ctx {
-  if ((self = [super init])) {
-    self->account = [_account retain];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [self->account release];
-  [super dealloc];
-}
-
-/* parent */
-
-- (id)parentAuthenticator {
-  return [[self->account container] authenticatorInContext:self->context];
-}
-
-- (BOOL)checkLogin:(NSString *)_login password:(NSString *)_pwd {
-  id client;
-
-  [self logWithFormat:@"CHECK LOGIN: %@", _login];
-  
-  client = [[self->account mailManager] imap4ClientForURL:
-					  [self->account imap4URL] 
-					password:_pwd];
-  if (client == nil)
-    return NO;
-  if ([client isKindOfClass:[NSException class]]) {
-    [self logWithFormat:@"ERROR: could not login: %@", client];
-    return NO;
-  }
-  return YES;
-}
-
-/* user management */
-
-#if 0
-- (SoUser *)userInContext:(WOContext *)_ctx {
-  return [[self parentAuthenticator] userInContext:_ctx];
-}
-- (NSArray *)rolesForLogin:(NSString *)_login {
-  return [[self parentAuthenticator] rolesForLogin:_login];
-}
-#endif
-
-/* ZideStore support */
-
-- (id)commandContextInContext:(id)_ctx {
-  return [[self parentAuthenticator] commandContextInContext:_ctx];
-}
-
-@end /* ZSOGoMailAuthenticator */
 
 @implementation ZSOGoMailAccount
 
@@ -125,13 +57,18 @@
   return [creds objectAtIndex:0]; /* the user */
 }
 
+- (NSUserDefaults *)userDefaultsInContext:(id)_ctx {
+  if (_ctx == nil)
+    _ctx = [(WOApplication *)[WOApplication application] context];
+  
+  return [[self commandContextInContext:_ctx] userDefaults];
+}
+
 - (NSString *)loginAndHostFromDefaults {
   NSUserDefaults *ud;
-  WOContext *ctx;
-  NSString  *s, *t;
+  NSString *s, *t;
   
-  ctx = [(WOApplication *)[WOApplication application] context];
-  ud  = [[self commandContextInContext:ctx] userDefaults];
+  ud = [self userDefaultsInContext:nil];
   
   s = [ud stringForKey:@"imap_host"];
   if (![s isNotNull] || [s length] == 0)
@@ -142,6 +79,40 @@
       s = [[t stringByAppendingString:@"@"] stringByAppendingString:s];
   }
   return s;
+}
+
+- (NSString *)imap4Password {
+  /*
+    Extract password from basic authentication.
+    
+    TODO: we might want to
+    a) move the primary code to SOGoMailAccount
+    b) cache the password
+  */
+  WORequest *rq;
+  NSString  *auth;
+  NSArray   *creds;
+  
+  auth = [[self userDefaultsInContext:nil] stringForKey:@"imap_passwd"];
+  if ([auth length] > 0) {
+    [self logWithFormat:@"PWD: %@", auth];
+    return auth;
+  }
+  
+  [self logWithFormat:@"no password stored in defaults, try HTTP one ..."];
+  
+  rq = [[(WOApplication *)[WOApplication application] context] request];
+  if ((auth = [rq headerForKey:@"authorization"]) == nil) {
+    /* no basic auth */
+    return nil;
+  }
+  
+  creds = [SoHTTPAuthenticator parseCredentials:auth];
+  if ([creds count] < 2)
+    /* somehow invalid */
+    return nil;
+  
+  return [creds objectAtIndex:1]; /* the password */
 }
 
 - (NSURL *)imap4URL {
@@ -177,11 +148,13 @@
   return self->imap4URL;
 }
 
+#if 0
 /* authenticator */
 
 - (id)authenticatorInContext:(id)_ctx {
   return [[[ZSOGoMailAuthenticator alloc]
 	    initWithMailAccount:self context:_ctx] autorelease];
 }
+#endif
 
 @end /* ZSOGoMailAccount */

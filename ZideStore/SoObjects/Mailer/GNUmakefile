@@ -14,7 +14,6 @@ Mailer_OBJC_FILES += \
 	\
 	SOGoMailBaseObject.m		\
 	SOGoMailAccount.m		\
-	OGoMailAccount.m		\
 	SOGoMailFolder.m		\
 	SOGoMailObject.m		\
 	\
@@ -24,6 +23,10 @@ Mailer_OBJC_FILES += \
 	\
 	SOGoDraftsFolder.m		\
 	SOGoDraftObject.m		\
+
+Mailer_OBJC_FILES += \
+	ZSOGoMailAccount.m		\
+	ZSOGoMailAuthenticator.m	\
 
 Mailer_RESOURCE_FILES += \
 	Version		\

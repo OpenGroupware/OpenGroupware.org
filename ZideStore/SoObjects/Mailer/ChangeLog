@@ -1,3 +1,11 @@
+2005-02-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.zs75
+
+	* product.plist: allow read access to mail objects per default
+
+	* SOGoMailBaseObject.m: defer password lookup to mail account
+
 2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v0.9.zs74

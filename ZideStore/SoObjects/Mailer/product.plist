@@ -10,6 +10,7 @@
   classes = {
     SOGoMailBaseObject = {
       superclass    = "SxObject";
+      defaultAccess = "allow";
     };
 
     SOGoMailAccount = {
