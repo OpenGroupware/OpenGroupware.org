@@ -117,8 +117,8 @@ MoveSubmit: WOSubmitButton {
   value           = labels.moveButtonLabel;
   class           = "button_narrow";
 }
-CancelSubmit: WOHyperlink {
+CancelSubmit: WOSubmitButton {
   action = cancel;
-  string = labels.cancelButtonLabel;
+  value = labels.cancelButtonLabel;
   class  = "button_narrow";
 }

@@ -40,11 +40,19 @@ SearchSubmit: WOSubmitButton {
   class  = "button_narrow";
 }
 
+CancelSubmit: WOSubmitButton {
+  action = cancel;
+  value = labels.cancelButtonLabel;
+  class  = "button_narrow";
+}
+
+/*
 CancelSubmit: WOHyperlink {
   action = cancel;
   string = labels.cancelButtonLabel;
   class  = "button_narrow";
 }
+*/
 
 AttributeCell: SkyAttributeCell {}
 ValueCell:     SkyValueCell     {}

@@ -167,6 +167,9 @@ SchedulerTimeInputTypeAccess: WOCheckBox {
 SchedulerAptTypeInputTypeAccess: WOCheckBox {
   checked = isSchedulerAptTypeInputTypeEditableRoot;
 }
+SchedulerRdvTypeInputTypeAccess: WOCheckBox {
+  checked = isSchedulerRdvTypeInputTypeEditableRoot;
+}
 SchedulerStartHourAccess: WOCheckBox {
   checked = isSchedulerStartHourEditableRoot;
 }
@@ -189,6 +192,9 @@ SchedulerTimeInputTypeLabel: WOString {
 }
 SchedulerAptTypeInputTypeLabel: WOString {
   value = labels.scheduler_apttype_input_type;
+}
+SchedulerRdvTypeInputTypeLabel: WOString {
+  value = labels.scheduler_rdvtype_input_type;
 }
 SchedulerStartHourLabel: WOString {
   value = labels.scheduler_start_hour;
@@ -329,7 +335,7 @@ AccountSelectionWriteAccess: SkyParticipantsSelection {
 }
 
 AccessTitle: SkyCollapsibleContent {
-  visibility = session.userDefaults.scheduler_pref_expand_access;
+  visibility = session.userDefaults.scheduler_pref_expand_writeaccess;
   title      = labels.writeAccess;
 }
 
@@ -529,4 +535,91 @@ AttachAppointmentsToMail: SkyDefaultEditField {
   isEditable = YES;
   valueType  = "checkbox";
   value      = attachAppointments;
+}
+
+//####ADDED BY AO#####
+//-----------acces en lecture ---------------
+readAccessTitle: SkyCollapsibleContent {
+  visibility = session.userDefaults.scheduler_pref_expand_readaccess;
+    title      = labels.readAccess;
+    }
+
+AccountSelectionReadAccess: SkyParticipantsSelection {
+ 	 participants         = readAccess;
+    	 selectedParticipants = selectedReadAccess;
+      	 onlyAccounts         = YES;
+         viewHeadLine         = NO;
+	 headLineLabel        = "searchPopupEntries";
+	 searchLabel          = "searchReadAccess";
+	 selectionLabel       = "setReadAccess";
+	 }
+
+//####ADDED BY AO#####
+//delegation de rdv 
+
+
+delegRdvTitle: SkyCollapsibleContent {
+  visibility = session.userDefaults.scheduler_pref_expand_delegRdv;
+  title      = labels.delegrdv;
+  }
+  
+//prive
+delegRdvPrivTitle: SkyCollapsibleContent {
+  visibility = session.userDefaults.scheduler_pref_expand_delegRdvPriv;
+  title      = labels.delegrdvpriv;
+}
+AccountSelectionDelegPrivAccess: SkyParticipantsSelection {
+         participants         = delegRdvPriv;
+         selectedParticipants = selectedDelegRdvPriv;
+         onlyAccounts         = YES;
+         viewHeadLine         = NO;
+         headLineLabel        = "searchPopupEntries";
+         searchLabel          = "searchDelegRdvPriv";
+	 selectionLabel       = "setDelegRdvPriv";
+	 }
+//public
+
+delegRdvPubliTitle: SkyCollapsibleContent {
+  visibility = session.userDefaults.scheduler_pref_expand_delegRdvPubli;
+  title      = labels.delegrdvpubli;
+}
+AccountSelectionDelegPubliAccess: SkyParticipantsSelection {
+         participants         = delegRdvPubli;
+         selectedParticipants = selectedDelegRdvPubli;
+         onlyAccounts         = YES;
+         viewHeadLine         = NO;
+         headLineLabel        = "searchPopupEntries";
+         searchLabel          = "searchDelegRdvPubli";
+	 selectionLabel       = "setDelegRdvPubli";
+	 }
+//Normal
+
+delegRdvNormTitle: SkyCollapsibleContent {
+  visibility = session.userDefaults.scheduler_pref_expand_delegRdvNorm;
+  title      = labels.delegrdvnorm;
+}
+AccountSelectionDelegNormAccess: SkyParticipantsSelection {
+         participants         = delegRdvNorm;
+         selectedParticipants = selectedDelegRdvNorm;
+         onlyAccounts         = YES;
+         viewHeadLine         = NO;
+         headLineLabel        = "searchPopupEntries";
+         searchLabel          = "searchDelegRdvNorm";
+	 selectionLabel       = "setDelegRdvNorm";
+	 }
+
+//Confidentiel
+
+delegRdvConfTitle: SkyCollapsibleContent {
+  visibility = session.userDefaults.scheduler_pref_expand_delegRdvConf;
+  title      = labels.delegrdvconf;
+}
+AccountSelectionDelegConfAccess: SkyParticipantsSelection {
+         participants         = delegRdvConf;
+         selectedParticipants = selectedDelegRdvConf;
+         onlyAccounts         = YES;
+         viewHeadLine         = NO;
+         headLineLabel        = "searchPopupEntries";
+         searchLabel          = "searchDelegRdvConf";
+	 selectionLabel       = "setDelegRdvConf";
 }

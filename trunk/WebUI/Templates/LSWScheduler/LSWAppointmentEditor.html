@@ -92,21 +92,35 @@ function searchFieldChanged() {
           </#ValueCell>
         </tr>
       </#IsNotificationEnabled>
-      <tr>
+      <!--<tr>
         <#AttributeCell><#Font><#AccessTeamAttribute />:</#Font></#AttributeCell>
         <#ValueCell><#EditFont><#AccessTeamSelect /></#EditFont></#ValueCell>
       </tr>
+      <tr>
+         <#AttributeCell><#Font><#WriteAccessAttribute />:</#Font></#AttributeCell>
+	 <#ValueCell><#EditFont><#WriteAccessSelect /></#EditFont></#ValueCell>
+      </tr>-->
+			    
       <#ShowIgnoreConflictsCond>
-        <tr>
-          <#AttributeCell><#Font><#IgnoreConflictsLabel />:</#Font></#AttributeCell>
-          <#ValueCell><#Font><#IgnoreConflictsButtons /></#Font></#ValueCell>
-        </tr>
+      <tr>
+        <#AttributeCell><#Font><#IgnoreConflictsLabel />:</#Font></#AttributeCell>
+        <#ValueCell><#Font><#IgnoreConflictsButtons /></#Font></#ValueCell>
+      </tr>
       </#ShowIgnoreConflictsCond>
       <#ShowAptTypeSelectionCond>
-        <tr>
-           <#AptTypeAttr><#AptTypeSelection /></#AptTypeAttr>
-        </tr>
+      <tr>
+         <#AptTypeAttr><#AptTypeSelection /></#AptTypeAttr>
+      </tr>
       </#ShowAptTypeSelectionCond>
+      <!-- ADDED BY GLC -->
+        <tr>
+           <#AttributeCell><#Font><#RdvLabel />:</#Font></#AttributeCell>
+           <!--
+	   <#ValueCell><#Font><#RdvButtons/></#Font></#ValueCell>
+           -->
+	   <#ValueCell><#Font><#RdvPopUp/></#Font></#ValueCell>
+	</tr>
+    <!-- ADDED BY GLC --> 	
     </#CollContentMode>
     </#AppCollapsible>
 
@@ -121,7 +135,10 @@ function searchFieldChanged() {
     <tr><td colspan="2"></td></tr>
 
     <#AccessTitle><#AccessSelection /></#AccessTitle>
-
+    <!-- ##ADDED BY AO-->
+    <tr><td colspan="2"></td></tr>
+    <#ReadAccessTitle><#ReadAccessSelection /></#ReadAccessTitle>
+    
     <tr><td colspan="2"></td></tr>
 
     <#CommentTitle>
@@ -133,33 +150,9 @@ function searchFieldChanged() {
 
     <tr>
       <td></td>
-      <td>
-        <#SaveSubmit />
-
-        <#IsNotNewConditional>
-          <#IsCyclic><#SaveAllSubmit /></#IsCyclic>
-        </#IsNotNewConditional>
-
-        <#IsMailEnabled><#SaveAndMailSubmit /></#IsMailEnabled>
-
-        <#IsNotNewConditional>
-          <#IsDeleteEnabled>
-            <#IsJavaScriptEnabled ><#DeleteSubmitJS/></#IsJavaScriptEnabled>
-            <#IsJavaScriptDisabled><#DeleteLink    /></#IsJavaScriptDisabled>
-          </#IsDeleteEnabled>
-          
-          <#IsCyclic><#DeleteAllLink /></#IsCyclic>
-        </#IsNotNewConditional>
-
-        <#CancelSubmit />
-
-        <!--#DateProposalSubmit/-->
-      </td>
-    </tr>
-
     <tr><td colspan="2"></td></tr>
 
-    <#IsNotNewConditional>
+       <#IsNotNewConditional>
         <!-- move appointment section -->
         <#MoveTitle>
             <tr>
@@ -176,9 +169,33 @@ function searchFieldChanged() {
             </tr>
         </#MoveTitle>
       </#IsNotNewConditional>
-
+    </tr>
+ </table>
       <!-- end of edit panel -->
-    </table>
+ <table> 
+      <td>
+        <#SaveSubmit />
+
+        <#IsNotNewConditional>
+          <#IsCyclic><#SaveAllSubmit /></#IsCyclic>
+        </#IsNotNewConditional>
+
+        <#IsMailEnabled><#SaveAndMailSubmit /></#IsMailEnabled>
+
+        <#IsNotNewConditional>
+          <#IsDeleteEnabled>
+            <#IsJavaScriptEnabled ><#DeleteSubmitJS/></#IsJavaScriptEnabled>
+            <#IsJavaScriptDisabled><#DeleteButton /></#IsJavaScriptDisabled>
+          </#IsDeleteEnabled>
+          
+          <#IsCyclic><#DeleteAllLink /></#IsCyclic>
+        </#IsNotNewConditional>
+
+        <#CancelSubmit />
+
+        <!--#DateProposalSubmit/-->
+      </td>
+</table>
   </#EditorForm>
  </#WarningModeCondElse>
 

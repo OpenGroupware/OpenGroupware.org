@@ -140,8 +140,17 @@ SaveAndMailSubmit: WOSubmitButton {
   action = saveAndSendMail;
   value  = labels.saveAndMailButtonLabel;
   title  = labels.saveAndMailButtonLabel_title;
-  class  = "button_wide";
+  class  = "button_narrow";
 }
+
+DeleteButton: WOSubmitButton {
+  action   = delete;
+  value    = labels.deleteButtonLabel;
+  title    = labels.deleteButtonLabel_title;
+  disabled = isDeleteDisabled;
+  class    = "button_narrow";
+}
+
 DeleteLink: WOHyperlink {
   action   = delete;
   string   = labels.deleteButtonLabel;
@@ -194,12 +203,27 @@ DeleteAllLink: WOHyperlink {
   disabled = isDeleteDisabled;
   class    = "button_wide";
 }
-
-CancelSubmit: WOHyperlink {
-  action   = cancel;
-  string   = labels.cancelButtonLabel;
-  class    = "button_narrow";
+*/
+DeleteAllLink: WOSubmitButton {
+  action   = deleteAllCyclic;
+  value   = labels.deleteAllButtonLabel;
+  title    = labels.deleteAllButtonLabel_title;
+  disabled = isDeleteDisabled;
+  class    = "button_wide";
 }
+
+CancelSubmit: WOSubmitButton {
+  action   = cancel;
+  value    = labels.cancelButtonLabel;
+  //title    = labels.cancelButtonLabel_title;
+  title    = labels.cancelButtonLabel;
+  class	   = "button_wide";
+}
+//CancelSubmit: WOHyperlink {
+//  action   = cancel;
+// string   = labels.cancelButtonLabel;
+//  class    = "button_narrow";
+//}
 
 // move section
 
@@ -286,6 +310,35 @@ AptTypeAttr: SkyAttribute {
 AptTypeSelection: SkyAptTypeSelection {
   selection = appointment.aptType;
 }
+
+//----------- ADDED BY GLC
+RdvButtons: WORadioButtonList {
+   list      = ( "Private", "Confidential", "Normal" , "Public");
+   item      = item;
+   value     = RdvLabel;
+   //selection = RdvButtonSelection;
+   selection = appointment.rdvType;
+   prefix    = "&nbsp;";
+   suffix    = "&nbsp;";
+   disabled  = true;
+}
+
+RdvPopUp: WOPopUpButton {
+  //list              = (Private,Public,Normal,Confidential);
+  list		    = rdvList;
+  item              = item;
+  string            = RdvLabel;
+  selection         = appointment.rdvType;
+  
+  //noSelectionString = "-";
+}
+
+
+
+RdvLabel: WOString {
+   value = labels.RdvLabel;
+}
+//----------- ADDED BY GLC 
 
 AbsenceCheckBox: WOCheckBox {
   checked = isAbsence;
@@ -397,6 +450,13 @@ ParticipantsTitle:  SkyCollapsibleContent {
   submitActionName = "";
   isClicked = isParticipantsClicked;
 }
+//####ADDED BY AO###
+CreatorTitle:  SkyCollapsibleContent {
+  visibility = session.userDefaults.scheduler_editor_expand_participants;
+  title      = labels.creator;
+  //submitActionName = "";
+  //isClicked = isParticipantsClicked;
+}
 
 ResourcesTitle:  SkyCollapsibleContent {
   visibility = session.userDefaults.scheduler_editor_expand_resources;
@@ -436,3 +496,40 @@ DefaultAction: WOImageButton {
   filename = "invisible_space_1.gif";
   BORDER   = 0;
 }
+
+//-----------------------------
+//Combo acces en ecriture 
+
+WriteAccessAttribute: WOString { value = labels.writeAccess; }
+
+WriteAccessSelect: WOPopUpButton {
+  list              = accessTeams;
+  item              = item;
+  string            = item.description;
+  selection         = selectedAccessTeam;
+  noSelectionString = labels.privateAppointment;
+}
+
+//-----------------------------
+//####ADDED BY AO#####
+//Regler acces en lecture
+ReadAccessAttribute: WOString { value = labels.assignViewAccess; }
+
+ReadAccessTitle:  SkyCollapsibleContent {
+  visibility = session.userDefaults.scheduler_editor_expand_read;
+  title      = labels.assignReadAccess;
+  submitActionName = "";
+  isClicked = isAccessClicked;
+}
+
+ReadAccessSelection: SkyParticipantsSelection {
+  participants         = readAccessMembers;
+  selectedParticipants = selectedReadAccessMembers;
+  onlyAccounts         = YES;
+  headLineLabel        = "assignAccessRights";
+  searchLabel          = "searchAccounts";
+  selectionLabel       = "chooseAccounts";
+  viewHeadLine         = NO;
+  isClicked            = isAccessClicked;
+}
+

@@ -26,20 +26,34 @@
     
             <tr><#ResourceAttr /></tr>
             <tr><#AptTypeAttr /></tr>
-    
+	<!-- ADDED BY AO-->   
+            <tr><#RdvTypeAttr /></tr>
             <#IsAbsenceCond><tr><#AbsenceAttr /></tr></#IsAbsenceCond> 
     
             <tr>
               <#IsOwnerArchivedCondElse>
-                <#CreatorAttr />
+                <#OwnerAttr />
               </#IsOwnerArchivedCondElse>
               <#IsOwnerArchivedCond>
-                <#ArchivedCreatorAttr />
+                <#ArchivedOwnerAttr />
               </#IsOwnerArchivedCond>
             </tr>
-            <tr><#ReadPermissionAttr><#AccessTeam /></#ReadPermissionAttr></tr>
-            <tr><#WriteAccessAttr /></tr>
-            <tr><#CommentAttr><#Comment /></#CommentAttr></tr>
+	<!-- ADDED BY AO-->   
+	<!-- Créateur-->	    
+            <tr>
+              <#IsCreatorArchivedCondElse>
+                <#CreatorAttr />
+              </#IsCreatorArchivedCondElse>
+              <#IsCreatorArchivedCond>
+                <#ArchivedCreatorAttr />
+              </#IsCreatorArchivedCond>
+            </tr>
+	<!-- ADDED BY AO-->   
+            <!--<tr><#ReadPermissionAttr><#AccessTeam /></#ReadPermissionAttr></tr>-->
+            <tr><#ReadAccessAttr /></tr>
+	    <tr><#WriteAccessAttr /></tr>
+            <!--<tr><#DelegAttr /></tr>-->
+	    <tr><#CommentAttr><#Comment /></#CommentAttr></tr>
             <tr><#IgnoreConflictsAttr /></tr>
             <tr><#ObjectVersionAttr   /></tr>
           </table>
@@ -49,7 +63,9 @@
         <#AptNotesTab       ><#Notes            /></#AptNotesTab>
         <#LinkTab           ><#RelatedLinks     /></#LinkTab>
         
-        <#LogsTab><#LogList /></#LogsTab>
+        <#IsLogTabEnabled>
+          <#LogsTab><#LogList /></#LogsTab>
+        </#IsLogTabEnabled> 
       </#Tab>
     </p>
   </#Window>

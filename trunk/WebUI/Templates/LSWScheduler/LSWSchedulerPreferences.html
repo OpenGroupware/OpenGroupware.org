@@ -59,7 +59,12 @@
       <#AccessTitle>
         <#AccountSelectionWriteAccess />
       </#AccessTitle> 
-
+ 	
+      <tr><td colspan="2"></td></tr>
+       <#readAccessTitle>
+         <#AccountSelectionReadAccess />
+       </#readAccessTitle>
+			     
       <tr><td colspan="2"></td></tr>
       <#HolidaysTitle>
         <tr>
@@ -163,7 +168,29 @@
           <#AttachAppointmentsToMail />
       </#MailTemplateTitle>
 
-        <#IsRoot>
+<!--delegation d'agenda-->
+      <tr><td colspan="2"></td></tr>
+        <#delegRdvTitle>
+		<#AccountSelectionDelegPrivAccess />
+	   	<#AccountSelectionDelegConfAccess />
+	   	<#AccountSelectionDelegNormAccess />
+	   	<#AccountSelectionDelegPubliAccess />
+	</#delegRdvTitle>
+	<!--
+	<#delegRdvPrivTitle>
+		<#AccountSelectionDelegPrivAccess />
+	</#delegRdvPrivTitle>
+	<#delegRdvConfTitle>
+	   	<#AccountSelectionDelegConfAccess />
+        </#delegRdvConfTitle>
+        <#delegRdvNormTitle>
+	   	<#AccountSelectionDelegNormAccess />
+        </#delegRdvNormTitle>
+        <#delegRdvPubliTitle>
+	   	<#AccountSelectionDelegPubliAccess />
+        </#delegRdvPubliTitle>
+	-->
+	<#IsRoot>
 
         <tr><td colspan="2"></td></tr>
           <#AccessWindowTitle>
@@ -182,6 +209,15 @@
             </#AttributeCell>
             <#ValueCell>
               <#EditFont><#SchedulerAptTypeInputTypeAccess /></#EditFont>
+            </#ValueCell>
+          </tr>
+          <!-- Permet de définir le type de rdv par defaut popup ou list-->
+	  <tr>
+            <#AttributeCell>
+              <#Font><#SchedulerRdvTypeInputTypeLabel />:</#Font>
+            </#AttributeCell>
+            <#ValueCell>
+              <#EditFont><#SchedulerRdvTypeInputTypeAccess /></#EditFont>
             </#ValueCell>
           </tr>
           <#ShowNotificationDevicesRootCond>
