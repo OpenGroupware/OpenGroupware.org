@@ -226,6 +226,36 @@ static BOOL createNewAptWhenNotFound = YES;
     [keys removeObject:__key__];\
   }
 
+- (NSArray *)defaultParticipantsInContext:(id)_ctx {
+  /* for new appointments which have no participant set */
+  id account, team;
+    
+  if ((createGroupAptsInGroupFolder) && ((team = [self groupInContext:_ctx])))
+    return [NSArray arrayWithObject:team];
+  
+  account = [[self commandContextInContext:_ctx] valueForKey:LSAccountKey];
+  return account ? [NSArray arrayWithObject:account] : nil;
+}
+
+- (NSMutableArray *)participantsForCreateInContext:(id)_ctx {
+  NSMutableArray *participants;
+  id team;
+
+  participants = [NSMutableArray arrayWithCapacity:16];
+  if (![self isInOverviewFolder])
+    return participants;
+    
+  if ((team = [self groupInContext:_ctx]) != nil)
+    [participants addObject:team];
+  else {
+    id account;
+    
+    account = [[self commandContextInContext:_ctx] valueForKey:LSAccountKey];
+    [participants addObject:account];
+  }
+  return participants;
+}
+
 - (id)createAptWithInfo:(NSDictionary *)_info inContext:(id)_ctx {
   // TODO: should we make a redirect to the created file? probably confuses
   //       clients but is likely to be the correct thing to do.
@@ -234,8 +264,9 @@ static BOOL createNewAptWhenNotFound = YES;
   NSMutableDictionary *changeSet;
   NSException    *error;
   NSString       *log, *etag;
-  NSMutableArray *participants;
+  NSArray        *participants;
   WOResponse     *r;
+  NSString       *url;
   id tmp;
   
   if (logAptChange) [self logWithFormat:@"GOT: %@", _info];
@@ -254,38 +285,18 @@ static BOOL createNewAptWhenNotFound = YES;
   [keys removeObject:@"priority"];
   
   /* participants */
-  participants = [NSMutableArray array];
-  if ([self isInOverviewFolder]) {
-    id team = [self groupInContext:_ctx];
-    if (team)
-      [participants addObject:team];
-    else
-      [participants addObject:
-                    [[self commandContextInContext:_ctx]
-                           valueForKey:LSAccountKey]];
-  }
 
+  participants = [self participantsForCreateInContext:_ctx];
+  
   tmp = [self fetchParticipantsForPersons:
                 [_info objectForKey:@"participants"]
               inContext:_ctx];
-  if ([tmp count]) { // if at least one participant
-    [participants addObjectsFromArray:tmp];
+  if ([tmp count] > 0) { // if at least one participant
+    [(NSMutableArray *)participants addObjectsFromArray:tmp];
     [keys removeObject:@"participants"];
   }
-  else if (![participants count]) { // if no participants, add current account
-    id team;
-    
-    if ((createGroupAptsInGroupFolder) &&
-        ((team = [self groupInContext:_ctx]))) {
-      participants = [NSArray arrayWithObject:team];
-    }
-    else {
-      id account;
-      
-      account = [[self commandContextInContext:_ctx] valueForKey:LSAccountKey];
-      participants = [NSArray arrayWithObject:account];
-    }
-  }
+  else if ([participants count] == 0) // if no parts, add current account
+    participants = [self defaultParticipantsInContext:_ctx];
   
   /* check values */
   
@@ -335,9 +346,16 @@ static BOOL createNewAptWhenNotFound = YES;
        [self shouldReturn201AfterPUTInContext:_ctx]
        ? 201 /* Created */ : 200 /* OK */];
 
-  // TODO: set location header for new appointment
+  /* set etag header */
   if ((etag = [self davEntityTag]) != nil)
     [r setHeader:etag forKey:@"etag"];
+
+  /* set location header */
+  if ((tmp = [_ctx objectForKey:@"SxNewObjectID"]) != nil) {
+    url = [[self container] baseURLInContext:_ctx];
+    if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
+    url = [url stringByAppendingString:[tmp stringValue]];
+  }
   
   return r;
 }
@@ -733,7 +751,7 @@ static BOOL createNewAptWhenNotFound = YES;
   inContext:(id)_ctx
 {
   SxDavAptCreate *creator;
-
+  
   creator = [[[SxDavAptCreate alloc] 
                               initWithName:_name properties:_props
                               forAppointment:self] autorelease];
