@@ -1,5 +1,9 @@
 2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
-
+	
+	* SxObject.m: added -davEntityTag method which constructs an entity
+	  tag based on the 'objectVersion' of the EO, added methods to check
+	  HTTP etag condition headers (v1.3.103)
+	
 	* SxFolder.m, DAVPropSets.plist: added support for a WebDAV query
 	  containing just the etag (v1.3.102)
 	

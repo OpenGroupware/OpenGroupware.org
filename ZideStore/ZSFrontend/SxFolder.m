@@ -535,6 +535,7 @@ static NSString *cachePath  = nil;
       continue;
     }
     
+    /* NOTE: do _not_ change etag, used in other places! */
     pkey = [line substringToIndex:r.location];
     etag = line;
     

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -18,10 +18,9 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxObject.h 1 2004-08-20 11:17:52Z znek $
 
-#ifndef __sxdavd3_SxObject_H__
-#define __sxdavd3_SxObject_H__
+#ifndef __ZideStore_SxObject_H__
+#define __ZideStore_SxObject_H__
 
 #import <Foundation/NSObject.h>
 
@@ -40,7 +39,7 @@
   - fetch
 */
 
-@class NSNumber, NSString, NSMutableDictionary, NSSet;
+@class NSNumber, NSString, NSMutableDictionary, NSSet, NSException;
 @class EOGlobalID;
 @class LSCommandContext;
 
@@ -87,6 +86,8 @@
 - (id)GETAction:(id)_ctx;
 - (id)DELETEAction:(id)_ctx;
 
+- (NSException *)matchesRequestConditionInContext:(id)_ctx;
+
 /* reflection necessary for operation */
 
 - (id)primaryDeleteObjectInContext:(id)_ctx;
@@ -100,4 +101,4 @@
 
 @end
 
-#endif /* __sxdavd3_SxObject_H__ */
+#endif /* __ZideStore_SxObject_H__ */

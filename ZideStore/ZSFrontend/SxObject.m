@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxObject.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxObject.h"
 #include "SxFolder.h"
@@ -94,7 +93,7 @@
 }
 
 - (NSNumber *)primaryKey {
-  if (self->eo) 
+  if (self->eo != nil)
     /* we have an EO and therefore a "real" primary key */
     return [self->eo valueForKey:[[self class] primaryKeyName]];
   
@@ -203,6 +202,20 @@
 }
 - (BOOL)davIsCollection {
   return NO;
+}
+
+- (NSString *)davEntityTag {
+  id obj;
+  
+  if ((obj = [self object]) == nil)
+    return nil;
+  if ((obj = [obj valueForKey:@"objectVersion"]) == nil)
+    return nil;
+  if (![obj isNotNull])
+    return nil;
+  
+  /* NOTE: do _not_ change etag, used in other places! */
+  return [NSString stringWithFormat:@"%@:%@", [self primaryKey], obj];
 }
 
 /* property sets */
@@ -339,6 +352,101 @@
                      [self primaryKey]];
 }
 
+/* checking if-headers */
+
+- (NSArray *)parseETagList:(NSString *)_c {
+  NSMutableArray *ma;
+  NSArray  *etags;
+  unsigned i, count;
+  
+  if ([_c length] == 0)
+    return nil;
+  if ([_c isEqualToString:@"*"])
+    return nil;
+  
+  etags = [_c componentsSeparatedByString:@","];
+  count = [etags count];
+  ma    = [NSMutableArray arrayWithCapacity:count];
+  for (i = 0; i < count; i++) {
+    NSString *etag;
+    
+    etag = [[etags objectAtIndex:i] stringByTrimmingSpaces];
+    if ([etag hasPrefix:@"\""] && [etag hasSuffix:@"\""])
+      etag = [etag substringWithRange:NSMakeRange(1, [etag length] - 2)];
+    
+    if (etag != nil) [ma addObject:etag];
+  }
+  return ma;
+}
+
+- (NSException *)checkIfMatchCondition:(NSString *)_c inContext:(id)_ctx {
+  /* only run the request if one of the etags matches the resource etag */
+  NSArray  *etags;
+  NSString *etag;
+  
+  if ([_c isEqualToString:@"*"])
+    /* to ensure that the resource exists! */
+    return nil;
+  
+  if ((etags = [self parseETagList:_c]) == nil)
+    return nil;
+  if ([etags count] == 0) /* no etags to check for? */
+    return nil;
+  
+  etag = [self davEntityTag];
+  if ([etag length] == 0) /* has no etag, ignore */
+    return nil;
+  
+  if ([etags containsObject:etag]) {
+    [self debugWithFormat:@"etag '%@' matches: %@", etag, etags];
+    return nil; /* one etag matches, so continue with request */
+  }
+  
+  // TODO: we might want to return the davEntityTag in the response
+  [self debugWithFormat:@"etag '%@' does not match: %@", etag, etags];
+  return [NSException exceptionWithHTTPStatus:412 /* Precondition Failed */
+		      reason:@"Precondition Failed"];
+}
+
+- (NSException *)checkIfNoneMatchCondition:(NSString *)_c inContext:(id)_ctx {
+  /*
+    If one of the etags is still the same, we can ignore the request.
+    
+    Can be used for PUT to ensure that the object does not exist in the store
+    and for GET to retrieve the content only if if the etag changed.
+  */
+#if 0
+  if ([_c isEqualToString:@"*"])
+    return nil;
+  
+  if ((a = [self parseETagList:_c]) == nil)
+    return nil;
+#else
+  [self logWithFormat:@"TODO: implement if-none-match for etag: '%@'", _c];
+#endif
+  return nil;
+}
+
+- (NSException *)matchesRequestConditionInContext:(id)_ctx {
+  NSException *error;
+  WORequest *rq;
+  NSString  *c;
+  
+  if ((rq = [_ctx request]) == nil)
+    return nil; /* be tolerant - no request, no condition */
+  
+  if ((c = [rq headerForKey:@"if-match"]) != nil) {
+    if ((error = [self checkIfMatchCondition:c inContext:_ctx]) != nil)
+      return error;
+  }
+  if ((c = [rq headerForKey:@"if-none-match"]) != nil) {
+    if ((error = [self checkIfNoneMatchCondition:c inContext:_ctx]) != nil)
+      return error;
+  }
+  
+  return nil;
+}
+
 /* actions */
 
 - (id)davCreateObject:(NSString *)_name properties:(NSDictionary *)_props 
@@ -352,7 +460,17 @@
 
 - (id)PUTAction:(id)_ctx {
   /* per default, return nothing ... */
-  WOResponse *r = [(WOContext *)_ctx response];
+  NSException *error;
+  WOResponse *r;
+
+  /* check HTTP preconditions */
+  
+  if ((error = [self matchesRequestConditionInContext:_ctx]))
+    return error;
+  
+  /* fake default */
+  
+  r = [(WOContext *)_ctx response];
   [r setStatus:200 /* Ok */];
   [self logWithFormat:@"PUT on object, just saying OK"];
   return r;
@@ -425,6 +543,13 @@
     return [NSException exceptionWithHTTPStatus:403 /* forbidden */
 			reason:@"object deletion is not allowed"];
   }
+
+  /* check HTTP preconditions */
+  
+  if ((error = [self matchesRequestConditionInContext:_ctx]))
+    return error;
+
+  /* perform actual delete */
   
   error = [self primaryDeleteObjectInContext:_ctx];
   
