@@ -46,6 +46,7 @@ libOGoDatabaseProject_OBJC_FILES = \
 	SkyProjectDocumentDataSource.m		\
 	SkyDocumentIdHandler.m			\
 	FMContext.m				\
+	SkySimpleProjectFolderDataSource.m	\
 
 libOGoDatabaseProject_HEADER_FILES_DIR         = .
 libOGoDatabaseProject_HEADER_FILES_INSTALL_DIR = /OGoDatabaseProject

@@ -178,21 +178,23 @@ SELECT DISTINCT p1.kind FROM project p1;
   while (cnt <= pcnt) {
     NSArray        *subProjectIds;
     EOSQLQualifier *sqlQual;
-    NSString       *expr;
+    NSString       *expr, *s;
     NSDictionary   *row;
+    NSRange        r;
 
-    subProjectIds = [projectIds subarrayWithRange:
-                                NSMakeRange(cnt, (maxInQual+cnt)<pcnt?
-                                            maxInQual:(pcnt-cnt))];
+    r = NSMakeRange(cnt, (maxInQual+cnt)<pcnt?
+		    maxInQual:(pcnt-cnt));
+    subProjectIds = [projectIds subarrayWithRange:r];
+    
     cnt     +=maxInQual;
     expr     = [qual sqlExpressionWithAdaptor:
                          [[_channel adaptorContext] adaptor]
 		     attributes:docAttrs];
-    expr     = [expr stringByAppendingString:
-                     [NSString stringWithFormat:@" AND (projectId IN (%@))",
-                         [subProjectIds componentsJoinedByString:@","]]];
+    s = [NSString stringWithFormat:@" AND (projectId IN (%@))",
+		   [subProjectIds componentsJoinedByString:@","]];
+    expr = [expr stringByAppendingString:s];
 #if LIB_FOUNDATION_LIBRARY
-    expr     = [expr stringByReplacingString:@"%" withString:@"%%"];
+    expr = [expr stringByReplacingString:@"%" withString:@"%%"];
 #else
 #  warning FIXME: incorrect implementation for this Foundation library!
 #endif
@@ -206,8 +208,8 @@ SELECT DISTINCT p1.kind FROM project p1;
       return nil;
     }
     [sqlQual release]; sqlQual = nil;
-
-    while ((row = [_channel fetchAttributes:docAttrs withZone:NULL]))
+    
+    while ((row = [_channel fetchAttributes:docAttrs withZone:NULL]) != nil)
       [result addObject:row];
   }
   return result;
@@ -235,12 +237,16 @@ SELECT DISTINCT p1.kind FROM project p1;
     EOSQLQualifier *qualifier;
     NSArray        *subDocs;
     NSDictionary   *row;
+    NSString       *docIdList;
 
     subDocs   = [_docs subarrayWithRange:
 			 NSMakeRange(cnt, (maxInQual+cnt)<pcnt?
 				     maxInQual:(pcnt-cnt))];
     cnt      += maxInQual;
     // TODO: should use "safe" pkey join for IN (like in LSDBBaseCommand)
+    
+    docIdList = [[subDocs map:@selector(objectForKey:)
+			  with:@"documentId"] componentsJoinedByString:@","];
     qualifier = [[EOSQLQualifier alloc]
                                  initWithEntity:entity
                                  qualifierFormat:@"(%A = %@)"
@@ -249,9 +255,7 @@ SELECT DISTINCT p1.kind FROM project p1;
                                  [NSNumber numberWithBool:NO],
                                  @"toDoc.status", @"edited",
                                  @"toDoc.documentId",
-                                 [[subDocs map:@selector(objectForKey:)
-                                           with:@"documentId"]
-                                           componentsJoinedByString:@","]];
+                                 docIdList];
     if (![_channel selectAttributes:editingAttrs
                   describedByQualifier:qualifier fetchOrder:nil lock:NO]) {
       NSLog(@"ERROR[%s]: select failed for qualifier %@ attrs %@ ",
@@ -359,7 +363,7 @@ SELECT DISTINCT p1.kind FROM project p1;
     NSArray *pgids;
     
     pgids = [[self->context accessManager] objects:[result allKeys]
-                                          forOperation:@"r"];
+					   forOperation:@"r"];
     
     enumerator = [pgids objectEnumerator];
     docs       = [NSMutableArray arrayWithCapacity:[result count] * 5];

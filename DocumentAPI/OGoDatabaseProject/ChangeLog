@@ -1,3 +1,12 @@
+2004-12-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.38
+
+	* SkyProjectFolderDataSource.m: code cleanups, moved
+	  SkySimpleProjectFolderDataSource to own file
+
+	* SkyProjectDocumentDataSource.m: minor code cleanups
+
 2004-12-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyDocumentIdHandler.m: refresh cache data on fail, should fix OGo

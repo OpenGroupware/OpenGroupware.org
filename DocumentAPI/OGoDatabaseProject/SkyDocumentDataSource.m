@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoDatabaseProject/SkyDocumentDataSource.h>
 #include <OGoDatabaseProject/SkyProjectFolderDataSource.h>
@@ -29,18 +28,18 @@
 
 - (id)init {
 #if DEBUG
-  NSLog(@"ERROR[%s] Wrong initializer, use 'initWithContext:'",
+  NSLog(@"ERROR(%s): invalid initializer, use 'initWithContext:'",
         __PRETTY_FUNCTION__);
 #endif
-  RELEASE(self);
+  [self release];
   return nil;
 }
 
 - (id)initWithContext:(id)_context projectGlobalID:(EOGlobalID *)_pgid {
   SkyProjectFileManager      *fm;
   SkyProjectFolderDataSource *fds;
-
-  NSLog(@"WARNING[%@] is DEPRICATED, use SkyProjectFolderDataSource ...",
+  
+  NSLog(@"WARNING[%@] is DEPRECATED, use SkyProjectFolderDataSource ...",
         NSStringFromClass([self class]));
   
   fm  = [[SkyProjectFileManager alloc] initWithContext:_context

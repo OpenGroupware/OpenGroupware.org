@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __SkyProjectFolderDataSource_H__
 #define __SkyProjectFolderDataSource_H__
@@ -32,11 +31,11 @@
 /*
   Hints:
   
-    fetchDeep[BOOL]          : fetch all subdocuments from folder, currently only
-                               on root folders
+    fetchDeep[BOOL]          : fetch all subdocuments from folder, currently
+                               only on root folders
 
-    onlySubFolderNames[BOOL] : returns an array with subfolder names (use cache;
-                               for TreeView)
+    onlySubFolderNames[BOOL] : returns an array with subfolder names (use
+                               cache; for TreeView)
 */
 
 @interface SkyProjectFolderDataSource : EODataSource
@@ -57,12 +56,18 @@
   path:(NSString *)_path
   fileManager:(SkyProjectFileManager *)_fm;
 
+/* accessors */
+
 - (BOOL)isValid;
 
-- (EOFetchSpecification *)fetchSpecification;
 - (void)setFetchSpecification:(EOFetchSpecification *)_fspec;
+- (EOFetchSpecification *)fetchSpecification;
+
+/* fetching */
 
 - (NSArray *)fetchObjects;
+
+/* modifications */
 
 - (id)createObject;
 - (void)insertObject:(id)_obj;

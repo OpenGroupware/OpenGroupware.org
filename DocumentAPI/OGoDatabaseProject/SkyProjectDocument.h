@@ -18,12 +18,21 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __SkyProjectDocument_H__
 #define __SkyProjectDocument_H__
 
 #include <OGoDocuments/SkyDocument.h>
+
+/*
+  SkyProjectDocument
+
+  Note: this document object does not represent a project but a file in a
+        database project. The 'document' class for project documents is
+	'SkyProject'.
+  
+  TODO: document
+*/
 
 @class NSString, NSData, NSMutableDictionary, NSDictionary, NSArray;
 @class SkyObjectPropertyManager, SkyProjectFileManager, SkyProjectFolderDataSource;

@@ -25,7 +25,7 @@
 #include "common.h"
 #include "SkyProjectDocument.h"
 #include "SkyProjectFileManager.h"
-
+#include "SkySimpleProjectFolderDataSource.h"
 
 static inline BOOL _showUnknownFiles(id self) {
   static BOOL showUnknownFiles_value = NO;
@@ -103,96 +103,10 @@ static inline BOOL _showUnknownFiles(id self) {
 - (EOGlobalID *)_projectGID;
 @end /* SkyProjectFolderDataSource(Internals) */
 
-@interface SkySimpleProjectFolderDataSource : EODataSource
-{
-@protected
-  SkyProjectFolderDataSource *source;
-  EOFetchSpecification       *fetchSpecification;
-}
-@end
-
-@implementation SkySimpleProjectFolderDataSource
-
-- (id)initWithFolderDataSource:(SkyProjectFolderDataSource *)_ds {
-  if ((self = [super init])) {
-    ASSIGN(self->source, _ds);
-    self->fetchSpecification = nil;
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [self->source             release];
-  [self->fetchSpecification release];
-  [super dealloc];
-}
-
-/* accessors */
-
-- (void)setFetchSpecification:(EOFetchSpecification *)_fs {
-  if ([_fs isEqual:self->fetchSpecification])
-    return;
-  
-  ASSIGNCOPY(self->fetchSpecification, _fs);
-  [self postDataSourceChangedNotification];
-}
-- (EOFetchSpecification *)fetchSpecification {
-  return self->fetchSpecification;
-}
-
-/* fetching */
-
-- (NSArray *)fetchObjects {
-  NSAutoreleasePool     *pool;
-  NSArray               *result;
-  NSString              *folder;
-  BOOL                  fetchDeep;
-  SkyProjectFileManager *fileManager;
-  EOQualifier           *qual;
-  unsigned fetchLimit;
-
-  pool = [[NSAutoreleasePool alloc] init];
-  
-  fetchLimit = [self->fetchSpecification fetchLimit];
-  
-  fileManager = [self->source _fileManager];
-  qual        = [self->fetchSpecification qualifier];
-  folder      = [fileManager pathForGlobalID:[source _folderGID]];
-  
-  fetchDeep   = [[[self->fetchSpecification hints] objectForKey:@"fetchDeep"]
-                                            boolValue];
-  
-  result      = [fileManager searchChildsForFolder:folder
-                             deep:fetchDeep
-                             qualifier:[self->fetchSpecification qualifier]];
-
-  /* apply fetch limit */
-  if ((fetchLimit != 0) && ([result count] > fetchLimit)) {
-    NSLog(@"%@: fetch limit reached (limit=%d, count=%d)",
-          self, fetchLimit, [result count]);
-    
-    result = [result subarrayWithRange:NSMakeRange(0, fetchLimit)];
-  }
-  
-  /* apply sort orderings */
-  {
-    NSArray *so;
-    
-    if ((so = [self->fetchSpecification sortOrderings]) != nil)
-      result = [result sortedArrayUsingKeyOrderArray:so];
-  }
-  
-  result = [result shallowCopy];
-  [pool release];
-  return [result autorelease];
-}
-
-@end /* SkySimpleProjectFolderDataSource */
-
 @implementation SkyProjectFolderDataSource
 
 - (id)init {
-  NSLog(@"ERROR[%s] wrong initializer use initWithContext:"
+  NSLog(@"ERROR(%s): wrong initializer use initWithContext:"
         @"folderGID:projectGID:", __PRETTY_FUNCTION__);
   [self release];
   return nil;
@@ -205,14 +119,13 @@ static inline BOOL _showUnknownFiles(id self) {
   fileManager:(SkyProjectFileManager *)_fm
 {
   if ((self = [super init])) {
-    ASSIGN(self->context,    _ctx);
-    ASSIGN(self->folderGID,  _fgid);
-    ASSIGN(self->projectGID, _pgid);
-    ASSIGN(self->path, _path);
-    ASSIGN(self->fileManager, _fm);    
-    self->isValid             = YES;
-    self->fetchSpecification  = nil;
-
+    self->context     = [_ctx retain];
+    self->folderGID   = [_fgid retain];
+    self->projectGID  = [_pgid retain];
+    self->path        = [_path copy];
+    self->fileManager = [_fm retain];    
+    self->isValid     = YES;
+    
     NSAssert(self->fileManager, @"missing file-manager");
     NSAssert(self->folderGID,   @"missing folder global id");
 
@@ -245,10 +158,6 @@ static inline BOOL _showUnknownFiles(id self) {
   return self->isValid;
 }
 
-- (EOFetchSpecification *)fetchSpecification {
-  return [[self->fetchSpecification copy] autorelease];
-}
-
 - (void)setFetchSpecification:(EOFetchSpecification *)_fspec {
   if ([self->fetchSpecification isEqual:_fspec])
     return;
@@ -256,8 +165,135 @@ static inline BOOL _showUnknownFiles(id self) {
   ASSIGNCOPY(self->fetchSpecification, _fspec);
   [self postDataSourceChangedNotification];
 }
+- (EOFetchSpecification *)fetchSpecification {
+  return [[self->fetchSpecification copy] autorelease];
+}
 
-/* actions */
+- (BOOL)isDeepFetchSpecification {
+  return [[[[self fetchSpecification] hints] objectForKey:@"fetchDeep"] 
+	   boolValue];;
+}
+
+/* fetching */
+
+- (NSArray *)_sortObjects:(NSArray *)objects {
+  NSArray *so = nil;
+    
+  if ((so = [self->fetchSpecification sortOrderings]) == nil)
+    return objects;
+  
+  return [objects sortedArrayUsingKeyOrderArray:so];
+}
+
+- (void)_registerForNotifications:(NSArray *)objects 
+  name:(NSString *)attrNotify
+{
+  NSNotificationCenter *nc;
+  NSEnumerator *enumerator;
+  id           obj;
+  
+  nc = [NSNotificationCenter defaultCenter];
+
+  enumerator = [objects objectEnumerator];
+  while ((obj = [enumerator nextObject]) != nil) {
+    // TODO: possibly a notification bug      
+      
+    [nc addObserver:self
+	selector:@selector(postDataSourceChangedNotification)
+	name:attrNotify object:[obj globalID]];
+  }
+}
+
+- (NSArray *)_fetchWithSimpleDataSource {
+  SkyAttributeDataSource           *ads;
+  SkySimpleProjectFolderDataSource *sds;
+  EOFetchSpecification             *fs;
+  NSDictionary *hints;
+  NSString     *resStr;
+  EOEntity     *docEnt;
+  EOAttribute  *attr;
+  NSArray      *dsAttrs;
+  EOQualifier  *qualifier;
+  
+  qualifier = [self->fetchSpecification qualifier];
+  
+  sds = [[SkySimpleProjectFolderDataSource alloc]
+	  initWithFolderDataSource:self];
+  ads = [[SkyAttributeDataSource alloc] initWithDataSource:sds
+					context:self->context];
+  fs  = [[EOFetchSpecification alloc] initWithEntityName:@"Doc"
+				      qualifier:qualifier sortOrderings:nil
+				      usesDistinct:YES isDeep:NO hints:nil];
+
+  docEnt = [[self->context valueForKey:LSDatabaseKey] entityNamed:@"Doc"];
+
+  if ([self isDeepFetchSpecification]) {
+    attr   = [docEnt attributeNamed:@"projectId"];
+    resStr = [NSString stringWithFormat:@"%@ = %@",
+                           [attr columnName],
+                           [(id)self->projectGID keyValues][0]];
+  }
+  else {
+    attr   = [docEnt attributeNamed:@"parentDocumentId"];
+    resStr = [NSString stringWithFormat:@"%@ = %@",
+                           [attr columnName],
+                           [(id)self->folderGID keyValues][0]];
+  }
+  hints  = [NSDictionary dictionaryWithObjectsAndKeys:
+			   resStr, @"restrictionQualifierString",
+                           [NSNumber numberWithBool:
+				       [self isDeepFetchSpecification]], 
+			   @"fetchDeep",
+                           @"Doc", @"restrictionEntityName", nil];
+
+  [fs setHints:hints];
+
+  [ads setFetchSpecification:fs];
+  [ads setDefaultNamespace:
+         [self->fileManager defaultProjectDocumentNamespace]];
+  [ads setDbKeys:[self->fileManager readOnlyDocumentKeys]];
+  /*
+      SkyProjectFolderDataSource needs only globals ids, therefore it does 
+      not need to -verifyIds
+  */
+    
+  dsAttrs = [ads fetchObjects];
+    
+  [fs  release]; fs  = nil;
+  [ads release]; ads = nil;
+  [sds release]; sds = nil;
+
+  return dsAttrs;
+}
+
+- (NSArray *)_fetchDocumentsForObjects:(NSArray *)dsAttrs {
+  NSArray *fetchKeys;
+  NSArray *ns;
+    
+  fetchKeys = [[self->fetchSpecification hints] objectForKey:@"fetchKeys"];
+  if (fetchKeys != nil) {
+    return [self->fileManager documentsForObjects:dsAttrs
+		withAttributes:fetchKeys];
+  }
+  
+  ns = [NSArray arrayWithObject:
+		  [self->fileManager defaultProjectDocumentNamespace]];
+  return [self->fileManager documentsForObjects:dsAttrs withAttributes:ns];
+}
+
+- (NSArray *)_applyFetchLimit:(NSArray *)objects {
+  unsigned fetchLimit;
+    
+  if ((fetchLimit = [self->fetchSpecification fetchLimit]) == 0)
+    return objects;
+
+  if ([objects count] <= fetchLimit)
+    return objects;
+  
+  [self logWithFormat:@"%@: fetch limit reached (limit=%d, count=%d)",
+              self, fetchLimit, [objects count]];
+  return [objects subarrayWithRange:NSMakeRange(0, fetchLimit)];
+}
 
 - (NSArray *)_fetchObjects {
   NSString              *attrNotify;
@@ -265,14 +301,14 @@ static inline BOOL _showUnknownFiles(id self) {
   EOQualifier           *qualifier;
   NSNotificationCenter  *nc;
   BOOL                  fetchDeep;
-
-  fetchDeep  = [[[[self fetchSpecification] hints]
-                        objectForKey:@"fetchDeep"] boolValue];
+  
+  fetchDeep  = [self isDeepFetchSpecification];
   nc         = [NSNotificationCenter defaultCenter];
   attrNotify = [[self->context propertyManager]
                                modifyPropertiesForGIDNotificationName];
   if (fetchDeep) {
     if (![self->path isEqualToString:@"/"]) {
+      // TODO: avoid raising exceptions
       [NSException raise:NSInvalidArgumentException
 		   format:@"fetchdeep is only allowed on root folders"];
     }
@@ -289,115 +325,14 @@ static inline BOOL _showUnknownFiles(id self) {
     dsAttrs = [self->fileManager searchChildsForFolder:folder
                    deep:fetchDeep qualifier:qualifier];
   }
-  else {
-    SkyAttributeDataSource           *ads;
-    SkySimpleProjectFolderDataSource *sds;
-    EOFetchSpecification             *fs;
-
-    sds = [[SkySimpleProjectFolderDataSource alloc]
-                                             initWithFolderDataSource:self];
-    ads = [[SkyAttributeDataSource alloc] initWithDataSource:sds
-                                          context:self->context];
-    fs  = [[EOFetchSpecification alloc] initWithEntityName:@"Doc"
-                                        qualifier:qualifier sortOrderings:nil
-                                        usesDistinct:YES isDeep:NO hints:nil];
-    {
-      NSDictionary *hints;
-      NSString     *resStr;
-      EOEntity     *docEnt;
-      EOAttribute  *attr;
-
-      docEnt = [[self->context valueForKey:LSDatabaseKey] entityNamed:@"Doc"];
-
-      if (fetchDeep) {
-        attr   = [docEnt attributeNamed:@"projectId"];
-        resStr = [NSString stringWithFormat:@"%@ = %@",
-                           [attr columnName],
-                           [(id)self->projectGID keyValues][0]];
-      }
-      else {
-        attr   = [docEnt attributeNamed:@"parentDocumentId"];
-
-        resStr = [NSString stringWithFormat:@"%@ = %@",
-                           [attr columnName],
-                           [(id)self->folderGID keyValues][0]];
-      }
-      hints  = [NSDictionary dictionaryWithObjectsAndKeys:
-                             resStr, @"restrictionQualifierString",
-                             [NSNumber numberWithBool:fetchDeep], @"fetchDeep",
-                             @"Doc", @"restrictionEntityName", nil];
-
-      [fs setHints:hints];
-    }
-    [ads setFetchSpecification:fs];
-    [ads setDefaultNamespace:
-         [self->fileManager defaultProjectDocumentNamespace]];
-    [ads setDbKeys:[self->fileManager readOnlyDocumentKeys]];
-    /*
-      SkyProjectFolderDataSource needs only globals ids, therefore it doesn`t need
-      to -verifyIds
-    */
-
-    dsAttrs = [ads fetchObjects];
-    
-    [fs  release]; fs  = nil;
-    [ads release]; ads = nil;
-    [sds release]; sds = nil;
-  }
+  else
+    dsAttrs = [self _fetchWithSimpleDataSource];
   
-  {
-    NSArray *fetchKeys = nil;
-    
-    fetchKeys = [[self->fetchSpecification hints] objectForKey:@"fetchKeys"];
-    if (fetchKeys != nil) {
-      objects = [self->fileManager documentsForObjects:dsAttrs
-                     withAttributes:fetchKeys];
-    }
-    else {
-      NSArray *ns = nil;
-      
-      ns      = [NSArray arrayWithObject:
-                         [self->fileManager defaultProjectDocumentNamespace]];
-      objects = [self->fileManager documentsForObjects:dsAttrs
-                                   withAttributes:ns];
-    }
-  }
-
-  /* apply limit */
-  {
-    unsigned fetchLimit;
-    
-    if ((fetchLimit = [self->fetchSpecification fetchLimit]) > 0) {
-      if ([objects count] > fetchLimit) {
-        NSLog(@"%@: fetch limit reached (limit=%d, count=%d)",
-              self, fetchLimit, [objects count]);
-        
-        objects = [objects subarrayWithRange:NSMakeRange(0, fetchLimit)];
-      }
-    }
-  }
+  objects = [self _fetchDocumentsForObjects:dsAttrs];
+  objects = [self _applyFetchLimit:objects];
+  objects = [self _sortObjects:objects];
   
-  /* apply sort orderings */
-  {
-    NSArray *so = nil;
-
-    if ((so = [self->fetchSpecification sortOrderings]) != nil)
-      objects = [objects sortedArrayUsingKeyOrderArray:so];
-  }
-  
-  { /* register for notifications */
-    NSEnumerator *enumerator = nil;
-    id           obj         = nil;
-
-    enumerator = [objects objectEnumerator];
-    while ((obj = [enumerator nextObject])) {
-      // TODO: possibly a notification bug      
-      
-      [nc addObserver:self
-          selector:@selector(postDataSourceChangedNotification)
-          name:attrNotify object:[obj globalID]];
-    }
-  }
+  [self _registerForNotifications:objects name:attrNotify];
   return objects;
 }
 
@@ -457,13 +392,15 @@ static inline BOOL _showUnknownFiles(id self) {
   return [result autorelease];
 }
 
+/* modification operations */
+
 - (id)createObject {
   SkyProjectDocument *doc = nil;
   
   doc = [[SkyProjectDocument alloc] initWithGlobalID:nil
                                     fileManager:self->fileManager];
   [doc setDataSource:self];
-  //hh?? dann geht speichern nicht ...:
+  //hh?? using this save does not work ...:
   /// [doc takeValue:self->path forKey:NSFilePath];
   return [doc autorelease];
 }
@@ -489,17 +426,20 @@ static inline BOOL _showUnknownFiles(id self) {
 
 /* description */
 
-- (NSString *)description {
-  NSMutableString *ms;
-
-  ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+- (void)appendAttributesToDescription:(NSMutableString *)ms {
   if (self->context)     [ms appendFormat:@" ctx=0x%08X", self->context];
   if (self->projectGID)  [ms appendFormat:@" pgid=%@", self->projectGID];
   if (self->folderGID)   [ms appendFormat:@" fgid=%@", self->folderGID];
   if (self->path)        [ms appendFormat:@" path='%@'", self->path];
   if (!self->isValid)    [ms appendString:@" INVALID"];
   if (self->fileManager) [ms appendFormat:@" fm=%@", self->fileManager];
+}
+- (NSString *)description {
+  NSMutableString *ms;
+  
+  ms = [NSMutableString stringWithCapacity:128];
+  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+  [self appendAttributesToDescription:ms];
   [ms appendString:@">"];
   return ms;
 }
@@ -527,4 +467,4 @@ static inline BOOL _showUnknownFiles(id self) {
   return self->path;
 }
 
-@end /* Internals */
+@end /* SkyProjectFolderDataSource */

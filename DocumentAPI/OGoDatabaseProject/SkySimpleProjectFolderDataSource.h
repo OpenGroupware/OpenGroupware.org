@@ -19,27 +19,29 @@
   02111-1307, USA.
 */
 
-#ifndef __OGoDatabaseProject_SkyDocumentDataSource_H__
-#define __OGoDatabaseProject_SkyDocumentDataSource_H__
+#ifndef __SkySimpleProjectFolderDataSource_H__
+#define __SkySimpleProjectFolderDataSource_H__
 
-#import <EOControl/EODataSource.h>
+#include <EOControl/EODataSource.h>
 
 /*
-  SkyDocumentDataSource
+  SkySimpleProjectFolderDataSource
   
-  Apparently this is deprecated in favor of 'SkyProjectFolderDataSource'.
-
-  TODO: document what it does.
+  TODO: explain what this is used for.
 */
 
-@class EOGlobalID;
+@class EOFetchSpecification;
+@class SkyProjectFolderDataSource;
 
-@interface SkyDocumentDataSource : EODataSource
+@interface SkySimpleProjectFolderDataSource : EODataSource
 {
+@protected
+  SkyProjectFolderDataSource *source;
+  EOFetchSpecification       *fetchSpecification;
 }
 
-- (id)initWithContext:(id)_context projectGlobalID:(EOGlobalID *)_pgid;
+- (id)initWithFolderDataSource:(SkyProjectFolderDataSource *)_ds;
 
 @end
 
-#endif /* __OGoDatabaseProject_SkyDocumentDataSource_H__ */
+#endif /* __SkySimpleProjectFolderDataSource_H__ */
