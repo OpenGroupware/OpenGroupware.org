@@ -1,3 +1,8 @@
+2005-01-02 Olivier Hallot <olivier@ig.com.br>
+
+	* Minor translation correction in OGoScheduler.strings 
+	* Added missing semicolons
+
 2004-12-31 Olivier Hallot <olivier@ig.com.br>
 
 	* Solved bug 1127, on OGoScheduler 
