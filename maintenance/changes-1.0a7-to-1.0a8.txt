@@ -1,28 +1,16 @@
 compare /home/helge/dev/complete/OpenGroupware.org/releases/1.0alpha7-shapeshifter with /home/helge/dev/OGo-1.0a/
 added:   debian
-added:   DocumentAPI/OGoContacts/OGoContacts.ds
 changed: DocumentAPI/OGoDocuments/
      2004-09-24  Helge Hess  <helge.hess@skyrix.com>
      	* SkyDocumentManagerImp.m: do not throw exception in case the
      	  "skyrix_id" default is not configured (just prints a warning)
      	  (v5.1.22)
-added:   DocumentAPI/OGoProject/OGoProject.ds
-added:   DocumentAPI/OGoRawDatabase/OGoRawDatabase.ds
-added:   DocumentAPI/OGoBase/OGoBase.ds
-added:   DocumentAPI/OGoAccounts/OGoAccounts.ds
-added:   DocumentAPI/OGoDatabaseProject/OGoDatabaseProject.ds
-added:   DocumentAPI/OGoScheduler/OGoScheduler.ds
-added:   DocumentAPI/OGoJobs/OGoJobs.ds
-added:   DocumentAPI/OGoFileSystemProject/OGoFileSystemProject.ds
 changed: Database/OGoModel/
      2004-09-28  Helge Hess  <helge.hess@opengroupware.org>
      	* added an own principal class for the bundle (v5.1.13)
 added:   Database/OGoModel/OGoModel.m
 added:   Database/OGoModel/OGo.model
 added:   Misc/Invoice/ChangeLog
-added:   Misc/Invoice/SkyInvoice/SkyInvoice.lso
-added:   Misc/Invoice/SkyInvoiceLib/SkyInvoiceDS.ds
-added:   Misc/Invoice/LSInvoice/LSInvoice.cmd
 added:   Themes/WebServerResources/English.lproj/calendar.js
 added:   Themes/WebServerResources/English.lproj/WOStats.xsl
 removed: ZideStore/Maps
@@ -121,28 +109,14 @@ added:   ZideStore/SoObjects/ZSProjects/SxProjectNotesRSS.m
 added:   maintenance/ogo-environment.spec
 added:   maintenance/opengroupware.spec
 added:   maintenance/changes-1.0a7-to-1.0a8.txt
-added:   Logic/LSSearch/LSSearch.cmd
-added:   Logic/LSTasks/LSTasks.cmd
-added:   Logic/LSBase/LSBase.cmd
-added:   Logic/LSTeam/LSTeam.cmd
-added:   Logic/LSNews/LSNews.cmd
-added:   Logic/LSScheduler/LSScheduler.cmd
 changed: Logic/LSProject/
      2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
      	* LSSetNoteCommand.m: improved error handling (v5.1.30)
-added:   Logic/LSProject/LSProject.cmd
-added:   Logic/LSMail/LSMail.cmd
-added:   Logic/LSAccount/LSAccount.cmd
-added:   Logic/LSEnterprise/LSEnterprise.cmd
-added:   Logic/LSPerson/LSPerson.cmd
-added:   Logic/LSDocuments/LSDocuments.cmd
-added:   Logic/LSResource/LSResource.cmd
 changed: Logic/LSAddress/
      2004-10-01  Helge Hess  <helge.hess@skyrix.com>
      	* LSSetCompanyCommand.m: removed some code which was commented out
      	  (relationship is fetched explicitly instead of using a fault)
      	  (v5.1.44)
-added:   Logic/LSAddress/LSAddress.cmd
 added:   Contrib/check-wox-vs-wo.sh
 changed: XmlRpcAPI/Daemon/
      2004-09-29  Helge Hess  <helge.hess@skyrix.com>
@@ -169,7 +143,6 @@ changed: PDA/OGoPalmWebUI/
      	* bundle-info.plist: removed dependency on BaseUI and OGoUIElements
      2004-09-21  Helge Hess  <helge.hess@skyrix.com>
      	* code cleanups in all files (v5.1.25)
-added:   PDA/OGoPalmWebUI/OGoPalm.lso
 changed: PDA/OGoPalm/
      2004-10-01  Tiny Toon  <tiny@tinytoon.de>
      	* v5.1.29
@@ -204,18 +177,8 @@ changed: WebUI/JobUI/
      2004-09-27  Helge Hess  <helge.hess@skyrix.com>
      	* LSWJobMailPage.m: some code cleanups, added -lastComment and
      	  -isTeamJob accessors (for use in template) (v5.1.48)
-added:   WebUI/JobUI/JobUI.lso
-added:   WebUI/Contact/LDAPAccounts/LDAPAccounts.lso
-added:   WebUI/Contact/EnterprisesUI/EnterprisesUI.lso
-added:   WebUI/Contact/AddressUI/AddressUI.lso
-added:   WebUI/Contact/PersonsUI/PersonsUI.lso
-added:   WebUI/Scheduler/OGoSchedulerDock/OGoSchedulerDock.lso
-added:   WebUI/Scheduler/LSWScheduler/LSWScheduler.lso
-added:   WebUI/Scheduler/OGoSchedulerViews/OGoSchedulerViews.lso
 removed: WebUI/Scheduler/OGoSchedulerViews/English.lproj
 removed: WebUI/Scheduler/OGoSchedulerViews/English_blue.lproj
-added:   WebUI/Scheduler/OGoResourceScheduler/OGoResourceScheduler.lso
-added:   WebUI/Scheduler/OGoScheduler/OGoScheduler.lso
 added:   WebUI/Templates/ogo-webui-1.0a
 added:   WebUI/Templates/GNUmakefile
 removed: WebUI/Templates/OpenGroupware10a
@@ -247,20 +210,15 @@ added:   WebUI/Templates/OGoMailViewers/LSWMultipartAlternativeBodyViewer.wox-no
 added:   WebUI/Templates/OGoMailViewers/LSWTextPlainBodyViewer.wox-notyet
 removed: WebUI/Templates/OGoMailViewers/LSWMultipartAlternativeBodyViewer.wox
 removed: WebUI/Templates/OGoMailViewers/LSWTextPlainBodyViewer.wox
-added:   WebUI/NewsUI/NewsUI.lso
 changed: WebUI/Mailer/OGoWebMail/
      2004-09-21  Helge Hess  <helge.hess@skyrix.com>
      	* LSWImapMail2Project.m: fixed a memory leak (no -dealloc!) (v5.1.100)
-added:   WebUI/Mailer/OGoWebMail/OGoWebMail.lso
 removed: WebUI/Mailer/OGoWebMail/English.lproj/OGoWebMail.ccfg
 changed: WebUI/Mailer/OGoMailViewers/
      2004-09-22  Helge Hess  <helge.hess@opengroupware.org>
      	* GNUmakefile: moved components config to Templates (v5.1.19)
-added:   WebUI/Mailer/OGoMailViewers/OGoMailViewers.lso
 removed: WebUI/Mailer/OGoMailViewers/German.lproj
 removed: WebUI/Mailer/OGoMailViewers/English.lproj/OGoMailViewers.ccfg
-added:   WebUI/Mailer/OGoMailFilter/OGoMailFilter.lso
-added:   WebUI/Mailer/OGoMailInfo/OGoMailInfo.lso
 changed: WebUI/Mailer/LSWMail/
      2004-09-22  Helge Hess  <helge.hess@skyrix.com>
      	* moved Headers to main directory, removed empty English.lproj, moved
@@ -276,7 +234,6 @@ added:   WebUI/Mailer/LSWMail/LSWMailEditor.h
 added:   WebUI/Mailer/LSWMail/LSWMailRenderPage.h
 added:   WebUI/Mailer/LSWMail/LSWDeletedObjectViewer.h
 added:   WebUI/Mailer/LSWMail/LSWMailFolderMove.h
-added:   WebUI/Mailer/LSWMail/LSWMail.lso
 added:   WebUI/Mailer/LSWMail/LSWMailFolderTree.h
 added:   WebUI/Mailer/LSWMail/LSWObjectHtmlMailPage.h
 added:   WebUI/Mailer/LSWMail/LSWMailSearch.h
@@ -287,8 +244,6 @@ added:   WebUI/Mailer/LSWMail/LSWMailMove.h
 removed: WebUI/Mailer/LSWMail/German.lproj
 removed: WebUI/Mailer/LSWMail/English.lproj
 removed: WebUI/Mailer/LSWMail/Headers
-added:   WebUI/Mailer/OGoRecipientLists/OGoRecipientLists.lso
-added:   WebUI/Mailer/OGoMailEditor/OGoMailEditor.lso
 changed: WebUI/Common/BaseUI/
      2004-10-01  Helge Hess  <helge.hess@skyrix.com>
      	* SkyObjectField.m: minor change to link generation (v5.1.95)
@@ -304,11 +259,7 @@ added:   WebUI/Common/BaseUI/Main.h
 added:   WebUI/Common/BaseUI/Main.m
 added:   WebUI/Common/BaseUI/OGoLogoutPage.h
 added:   WebUI/Common/BaseUI/OGoLogoutPage.m
-added:   WebUI/Common/BaseUI/BaseUI.lso
 removed: WebUI/Common/BaseUI/LSWBaseModule.h
-added:   WebUI/Common/RelatedLinksUI/RelatedLinksUI.lso
-added:   WebUI/Common/OGoUIElements/OGoUIElements.lso
-added:   WebUI/Common/PropertiesUI/PropertiesUI.lso
 changed: WebUI/OGoFoundation/
      2004-09-22  Helge Hess  <helge.hess@skyrix.com>
      	* v5.1.74
@@ -347,25 +298,17 @@ changed: WebUI/PreferencesUI/
      2004-09-22  Helge Hess  <helge.hess@skyrix.com>
      	* GNUmakefile: moved Headers into main directory (v5.1.36)
      	* moved LSWPreferencesModule.h into .m file (v5.1.35)
-added:   WebUI/PreferencesUI/PreferencesUI.lso
 added:   WebUI/PreferencesUI/LSWPreferencesFunctions.h
 added:   WebUI/PreferencesUI/LSWPreferencesEditor.h
 removed: WebUI/PreferencesUI/Headers
 changed: WebUI/AdminUI/
      2004-09-21  Helge Hess  <helge.hess@skyrix.com>
      	* SkyDefaultsElementViewer.m: fixed a memory leak (v5.1.31)
-added:   WebUI/AdminUI/AdminUI.lso
-added:   WebUI/Project/OGoNote/OGoNote.lso
-added:   WebUI/Project/OGoDocInlineViewers/OGoDocInlineViewers.lso
 changed: WebUI/Project/LSWProject/
      2004-09-26  Helge Hess  <helge.hess@opengroupware.org>
      	* LSWProjectEditor.m: fixed a small memory leak in fetching project
      	  comments (v5.1.42)
      2004-09-22  Helge Hess  <helge.hess@opengroupware.org>
      	* GNUmakefile: moved component config to Templates (v5.1.41)
-added:   WebUI/Project/LSWProject/LSWProject.lso
 removed: WebUI/Project/LSWProject/German.lproj
 removed: WebUI/Project/LSWProject/English.lproj/LSWProject.ccfg
-added:   WebUI/Project/OGoProject/OGoProject.lso
-added:   WebUI/Project/OGoProjectZip/OGoProjectZip.lso
-added:   WebUI/Project/OGoProjectInfo/OGoProjectInfo.lso
