@@ -51,6 +51,23 @@ static int NGImap4_messageWithURL = -1;
   return [[self imapCtxHandler] sessionImapContext:[self existingSession]];
 }
 
+- (WOResponse *)sessionExpiredResponse {
+  // TODO: DUP code to OpenGroupware.m (should be handled by NGObjWeb?)
+  // TODO: it would be great if we could login and then jump to the mail
+  WOResponse *r;
+  NSString   *jumpTo;
+  
+  jumpTo = [[[self context] applicationURL] absoluteString];
+  jumpTo = [[[self request] adaptorPrefix] stringByAppendingString:jumpTo];
+  if (![jumpTo hasSuffix:@"/"])
+    jumpTo = [jumpTo stringByAppendingString:@"/"];
+  
+  r = [[self context] response];
+  [r setStatus:302 /* redirect */];
+  [r setHeader:jumpTo forKey:@"location"];
+  return [[r retain] autorelease];
+}
+
 - (id<WOActionResults>)viewImapMailAction {
   // TODO: split up this huge method
   NSString              *str, *listName, *action;
@@ -65,8 +82,8 @@ static int NGImap4_messageWithURL = -1;
   
   if ([self existingSession] == nil) {
     // TODO: create session and remember the invocation?
-    [self logWithFormat:@"no session or session expired."];
-    return nil;
+    [self logWithFormat:@"no session or session expired"];
+    return [self sessionExpiredResponse];
   }
   if (!NGImap4_messageWithURL) {
     [self logWithFormat:@"DA unavailable, update your NGMime!"];
