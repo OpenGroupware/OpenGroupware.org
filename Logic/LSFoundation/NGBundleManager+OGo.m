@@ -43,7 +43,8 @@ static NSString *FHSOGoBundleDir        = nil;
     NSLog(@"  load bundles of type %@ in path %@", _type, _p);
   bm = [NGBundleManager defaultBundleManager];
   fm = [NSFileManager defaultManager];
-  e  = [[fm directoryContentsAtPath:_p] objectEnumerator];
+  e  = [[[fm directoryContentsAtPath:_p] 
+	  sortedArrayUsingSelector:@selector(compare:)] objectEnumerator];
   
   while ((p = [e nextObject])) {
     NSBundle *bundle;
