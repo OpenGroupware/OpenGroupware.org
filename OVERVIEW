@@ -18,19 +18,6 @@ Database
 - contains SQL schema for the storage backend and the model required
   to map SQL records to objects
 
-ThirdParty
-==========
-[required]
-
-Snapshots of ThirdParty software required to build OpenGroupware.org.
-
-SOPE
-====
-[required]
-
-The OpenGroupware.org application server.
-- basic libraries for HTML, HTTP, IMAP4, XML, LDAP, ... processing
-
 Logic
 =====
 [required]
@@ -77,33 +64,9 @@ ZideStore adds WebDAV, iCalendar/HTTP and WCAP protocols to the
 OpenGroupware.org server and is used to connect native clients like
 Glow or Apple iCal.app.
 
-AdminUI
-=======
-[optional]
-
-The AdminUI contains generators for various standard Unix files, like
-Postfix virtual files. The generation is (usually) done based on the
-OGo account database.
-
 PDA
 ===
 [optional]
 
 Contains the daemons and applications required to sync OpenGroupware.org with
 Palm devices.
-
-SandStorm
-=========
-[experimental]
-
-Several XML-RPC daemons put together using the SandStorm protocol and
-the associated registry.
-
-Publisher
-=========
-[experimental]
-
-This is a simple extension to OGo projects which allow you to implemented
-template driven exports of static HTML servers.
-Suitable for smaller webservers (exports take a long time), also used for 
-the www.opengroupware.org website :-)

@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# $Id: write_postfix.py,v 1.1 2003/12/12 14:36:45 helge Exp $
+# $Id$
 
 import xmlrpclib, time, sys, os;
 from WriteAccounts import *;

@@ -1,4 +1,4 @@
-# $Id: WriteAccounts.py,v 1.1 2003/12/12 14:33:31 helge Exp $
+# $Id$
 
 import xmlrpclib, time, sys, os;
 import XmlRpcdClient;

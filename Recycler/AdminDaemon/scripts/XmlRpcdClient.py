@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# $Id: XmlRpcdClient.py,v 1.3 2003/12/12 15:08:09 helge Exp $
+# $Id$
 
 import xmlrpclib, time, sys, os;
 

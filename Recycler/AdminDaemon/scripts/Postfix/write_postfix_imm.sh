@@ -1,5 +1,5 @@
 #!/bin/bash
-# $Id: write_postfix_imm.sh,v 1.1 2003/12/12 14:36:45 helge Exp $
+# $Id$
 
 source Postfix/local_vars.sh;
 

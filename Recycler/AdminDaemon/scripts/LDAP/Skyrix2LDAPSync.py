@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# $Id: Skyrix2LDAPSync.py,v 1.1 2003/12/12 14:23:01 helge Exp $
+# $Id$
 
 import xmlrpclib, string, ConfigParser, sys, ldap, socket
 from types import *

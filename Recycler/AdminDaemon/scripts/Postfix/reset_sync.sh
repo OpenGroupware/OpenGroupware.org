@@ -1,5 +1,5 @@
 #!/bin/bash
-# $Id: reset_sync.sh,v 1.1 2003/12/12 14:36:45 helge Exp $
+# $Id$
 
 source vars.sh;
 

@@ -1,4 +1,4 @@
-# $Id: vars.sh,v 1.2 2003/12/12 14:26:19 helge Exp $
+# $Id$
 
 # what a mess ... rewrite as proper Python config file as demonstrated by
 # Bjoern in the LDAP code.
