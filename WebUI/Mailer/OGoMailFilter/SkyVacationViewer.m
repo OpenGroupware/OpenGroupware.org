@@ -18,21 +18,20 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWViewerPage.h>
 
-@class NSString, NGImap4Context;
+@class NSDictionary;
 
 @interface SkyVacationViewer : LSWViewerPage
 {
   NSDictionary *vacation;
   NSDictionary *forward;
 }
-@end /* SkyVacationViewer */
+
+@end
 
 #include "common.h"
-#include "LSWImapMails.h"
 #include "LSWImapMailFilterManager.h"
 
 @implementation SkyVacationViewer
@@ -102,11 +101,10 @@
 }
 
 - (NSString *)keepMailString {
-  return [[self labels] valueForKey:
-                        ([[self->forward objectForKey:@"keepMails"]
-                                         boolValue])?@"YES":@"NO"];
+  BOOL keepFlag;
+
+  keepFlag = [[self->forward objectForKey:@"keepMails"] boolValue];
+  return [[self labels] valueForKey:keepFlag ? @"YES" : @"NO"];
 }
 
 @end /* SkyVacationViewer */
-
-

@@ -1,5 +1,8 @@
 2004-08-22  Helge Hess  <helge.hess@opengroupware.org>
 
+	* moved filter/vacation components to separate bundle OGoMailFilter
+	  (v5.1.93)
+
 	* v5.1.92
 
 	* moved mail editor to separate bundle OGoMailEditor

@@ -21,7 +21,7 @@
 
 #include <OGoFoundation/LSWEditorPage.h>
 
-@class NSString, NGImap4Context, NSMutableDictionary, NSMutableArray;
+@class NSString, NSMutableDictionary, NSMutableArray;
 
 @interface SkyVacationEditor : LSWEditorPage
 {
@@ -38,9 +38,8 @@
 }
 - (void)_updateEmailsList;
 - (void)exportFilter;
-@end /* SkyVacationEditor */
+@end
 
-#include "LSWImapMails.h"
 #include "LSWImapMailFilterManager.h"
 #include "common.h"
 #include <NGExtensions/NSString+Ext.h>

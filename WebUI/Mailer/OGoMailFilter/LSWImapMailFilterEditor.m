@@ -18,11 +18,10 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include "LSWImapMails.h"
 #include "LSWImapMailFilterEditor.h"
 #include "LSWImapMailFilterManager.h"
+#include <OGoWebMail/LSWImapBuildFolderDict.h>
 #include "common.h"
 
 @interface NSObject(LSWImapMailFilterEditor)

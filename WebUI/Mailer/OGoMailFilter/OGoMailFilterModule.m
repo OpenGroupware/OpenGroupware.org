@@ -18,35 +18,23 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
+// $Id: OGoMailFilterModule.m 1 2004-08-20 11:17:52Z znek $
 
-#include "LSWImapBuildFolderDict.h"
-#include "common.h"
+#include <OGoFoundation/LSWModuleManager.h>
 
-@implementation LSWImapBuildFolderDict
-
-+ (void)buildFolderDictionary:(NSMutableDictionary *)_dict
-  folder:(NSArray *)_folders
-  prefix:(NSString *)_prefix
+@interface OGoMailFilterModule : LSWModuleManager
 {
-  NSEnumerator  *folderEnum;
-  NGImap4Folder *fold;
-
-  folderEnum = [_folders objectEnumerator];
-
-  while ((fold = [folderEnum nextObject])) {
-    NSString *prefix;
-    NSArray  *f;
-        
-    prefix = _prefix;
-    f      = [fold subFolders];
-    
-    prefix = [prefix stringByAppendingString:[fold name]];
-    [_dict setObject:fold forKey:prefix];
-    if ([f count] > 0) {
-      [self buildFolderDictionary:_dict folder:f 
-	    prefix:[prefix stringByAppendingString:@"@ @"]];
-    }
-  }
 }
 
-@end /* LSWImapBuildFolderDict */
+@end
+
+@implementation OGoMailFilterModule
+
++ (int)version {
+  return 1;
+}
+
+- (void)_linkClasses {
+}
+
+@end /* OGoMailFilterModule */

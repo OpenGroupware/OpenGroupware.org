@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,10 +18,9 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: LSWImapMails.h 1 2004-08-20 11:17:52Z znek $
 
-#ifndef __LSWebInterface_LSWImapMail_LSWImapMails_H__
-#define __LSWebInterface_LSWImapMail_LSWImapMails_H__
+#ifndef __WebUI_OGoWebMail_LSWImapMails_H__
+#define __WebUI_OGoWebMail_LSWImapMails_H__
 
 #include <OGoFoundation/LSWContentPage.h>
 
@@ -69,14 +68,6 @@
 
 @end
 
-@interface LSWImapBuildFolderDict : NSObject
+#include "LSWImapBuildFolderDict.h"
 
-+ (void)buildFolderDictionary:(NSMutableDictionary *)_dict
-  folder:(NSArray *)_folders prefix:(NSString *)_prefix;
-
-@end
-
-
-
-
-#endif /* __LSWebInterface_LSWImapMail_LSWImapMails_H__ */
+#endif /* __WebUI_OGoWebMail_LSWImapMails_H__ */

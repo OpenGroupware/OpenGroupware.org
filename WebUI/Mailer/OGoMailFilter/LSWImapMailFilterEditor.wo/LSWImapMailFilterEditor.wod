@@ -1,4 +1,4 @@
-// $Id: LSWImapMailFilterEditor.wod,v 1.7 2004/04/26 10:34:23 helge Exp $
+// $Id: LSWImapMailFilterEditor.wod 2 2004-08-20 11:37:44Z znek $
 
 Frame: LSWSkyrixFrame {}
 

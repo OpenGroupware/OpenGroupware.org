@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include ../common.make
 
@@ -8,7 +8,6 @@ OGoWebMail_PRINCIPAL_CLASS = OGoWebMailModule
 
 OGoWebMail_OBJC_FILES = \
         OGoWebMailModule.m		\
-	LSWImapMailFilterManager.m	\
         LSWImapMails.m			\
         LSWImapMailFolderTree.m		\
 	NGImap4+KVC.m		 	\
@@ -17,7 +16,6 @@ OGoWebMail_OBJC_FILES = \
         LSWImapMailFolderMove.m		\
         LSWImapMailMove.m		\
 	LSWImapMailSearch.m		\
-	LSWImapMailFilterEditor.m	\
 	LSWImapMailLogin.m		\
 	SkyImapMailFolderTree.m     	\
 	LSWImapMail2Project.m		\
@@ -32,8 +30,6 @@ OGoWebMail_OBJC_FILES = \
 	LSWImapMailDeletePage.m		\
 	\
 	SkyImapMailRestrictions.m	\
-	SkyVacationViewer.m		\
-	SkyVacationEditor.m		\
 	SkyImapMailPrintViewer.m	\
 	SkyMailingListManager.m		\
 	SkyMailingListViewer.m		\
@@ -43,8 +39,6 @@ OGoWebMail_OBJC_FILES = \
 	SkyImapMailActions.m		\
 	\
 	LSWImapBuildFolderDict.m	\
-	\
-	OGoMailFilterManager.m		\
 
 OGoWebMail_COMPONENTS = \
         LSWImapMails.wo			\
@@ -54,7 +48,6 @@ OGoWebMail_COMPONENTS = \
         LSWImapMailFolderMove.wo	\
         LSWImapMailMove.wo		\
         LSWImapMailSearch.wo		\
-	LSWImapMailFilterEditor.wo	\
 	LSWImapMailLogin.wo		\
 	SkyImapMailFolderTree.wo        \
 	LSWImapMail2Project.wo		\
@@ -64,8 +57,6 @@ OGoWebMail_COMPONENTS = \
 	SkyImapMailListConfigPanel.wo   \
 	SkyImapMailListHeader.wo	\
 	SkyImapMailListFooter.wo  	\
-	SkyVacationViewer.wo		\
-	SkyVacationEditor.wo		\
 	SkyImapMailPrintViewer.wo	\
 	SkyMailingListViewer.wo		\
 	SkyMailingListEditor.wo		\

@@ -19,34 +19,23 @@
   02111-1307, USA.
 */
 
-#include "LSWImapBuildFolderDict.h"
-#include "common.h"
+#ifndef __WebUI_OGoWebMail_common_H__
+#define __WebUI_OGoWebMail_common_H__
 
-@implementation LSWImapBuildFolderDict
+#import <Foundation/Foundation.h>
+#include <EOControl/EOControl.h>
+#include <NGExtensions/NGExtensions.h>
 
-+ (void)buildFolderDictionary:(NSMutableDictionary *)_dict
-  folder:(NSArray *)_folders
-  prefix:(NSString *)_prefix
-{
-  NSEnumerator  *folderEnum;
-  NGImap4Folder *fold;
+#include <NGMime/NGMime.h>
+#include <NGImap4/NGImap4.h>
+#include <NGMail/NGMail.h>
 
-  folderEnum = [_folders objectEnumerator];
+#include <NGObjWeb/NGObjWeb.h>
 
-  while ((fold = [folderEnum nextObject])) {
-    NSString *prefix;
-    NSArray  *f;
-        
-    prefix = _prefix;
-    f      = [fold subFolders];
-    
-    prefix = [prefix stringByAppendingString:[fold name]];
-    [_dict setObject:fold forKey:prefix];
-    if ([f count] > 0) {
-      [self buildFolderDictionary:_dict folder:f 
-	    prefix:[prefix stringByAppendingString:@"@ @"]];
-    }
-  }
-}
+#include <GDLAccess/GDLAccess.h>
 
-@end /* LSWImapBuildFolderDict */
+#include <LSFoundation/LSFoundation.h>
+#include <OGoFoundation/OGoFoundation.h>
+#include <OGoFoundation/LSWSession.h>
+
+#endif /* __WebUI_OGoWebMail_common_H__ */

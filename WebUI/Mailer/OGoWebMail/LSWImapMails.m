@@ -24,7 +24,6 @@
 #include "LSWImapMailMove.h"
 #include "LSWImapMailViewer.h"
 #include "LSWImapMailFolderMove.h"
-#include "LSWImapMailFilterManager.h"
 #include <NGStreams/NGSocketExceptions.h>
 #include "common.h"
 #include <WEExtensions/WEClientCapabilities.h>
@@ -35,6 +34,8 @@
 @interface NSObject(LSWImapMailFilter)
 - (void)setRootFolder:(NGImap4Folder *)_rootFolder;
 - (void)setFolderForFilter:(NGImap4Folder *)_folder;
+
+- (id)filterForUser:(id)_accountEO;
 @end
 
 @interface LSWImapMails(Private)
@@ -229,6 +230,22 @@ static int  DisableFilter = -1;
   [self->toDeletedMails release];     self->toDeletedMails = nil;
 }
 
+- (void)setErrorFromImapException:(NSException *)localException {
+  id l;
+  
+  if (localException == nil)
+    return;
+
+  l = [self labels];
+      
+  if ([localException isKindOfClass:[NGIOException class]])
+    [self setErrorString:[l valueForKey:@"Couldn`t connect to host"]];
+  else  if ([localException isKindOfClass:[NGImap4Exception class]])
+    [self setErrorString:[l valueForKey:[localException reason]]];
+  else
+    [self setErrorString:[localException description]];
+}
+
 - (BOOL)initializeImapWithPasswd:(NSString *)_passwd {
   // TODO: split up
   NSUserDefaults *defs;
@@ -264,8 +281,6 @@ static int  DisableFilter = -1;
   }
   if (self->mailDataSource == nil || self->rootFolder == nil ||
       self->selectedFolder == nil) {
-    id localException;
-
     ASSIGN(self->rootFolder,     [imapCtx serverRoot]);
     ASSIGN(self->selectedFolder, [imapCtx inboxFolder]);
 
@@ -300,24 +315,19 @@ static int  DisableFilter = -1;
     /* get or create trash and sent folder */
     [self registerFolderWithFilterForRefresh];
     
-    if ((localException = [imapCtx lastException])) {
-      id l;
-
-      l = [self labels];
-      
-      if ([localException isKindOfClass:[NGIOException class]]) {
-        [self setErrorString:[l valueForKey:@"Couldn`t connect to host"]];
-      }
-      else  if ([localException isKindOfClass:[NGImap4Exception class]]) {
-        [self setErrorString:[l valueForKey:[localException reason]]];
-      }
-      else {
-        [self setErrorString:[localException description]];
-      }
-    }
+    [self setErrorFromImapException:[imapCtx lastException]];
   }
   return YES;
 }
+
+/* filters */
+
+- (id)filterManager {
+  // TODO: improve that
+  return NSClassFromString(@"LSWImapMailFilterManager");
+}
+
+/* notifications */
 
 - (void)syncAwake {
   // TODO: splitup
@@ -392,8 +402,9 @@ static int  DisableFilter = -1;
         id a;
 
         a = [[self session] activeAccount];
-        
-        self->filterList = [[LSWImapMailFilterManager filterForUser:a] retain];
+	
+        // TODO: improve
+        self->filterList = [[[self filterManager] filterForUser:a] retain];
         [self registerFolderWithFilterForRefresh];
       }
     }
@@ -426,15 +437,16 @@ static int  DisableFilter = -1;
   [folderWithFilter addObject:self->rootFolder];
   [imapCtx removeAllFromRefresh];
   
-  enumerator = [[LSWImapMailFilterManager filterForUser:[s activeAccount]]
-                                          objectEnumerator];
+  enumerator = [[[self filterManager] filterForUser:[s activeAccount]]
+                                      objectEnumerator];
   while ((filterEntry = [enumerator nextObject])) {
     NGImap4Folder *f;
     
     f = [imapCtx folderWithName:[filterEntry objectForKey:@"folder"]];
+    if (f == nil)
+      continue;
     
-    if (f != nil)
-      [folderWithFilter addObject:f];
+    [folderWithFilter addObject:f];
   }
   enumerator = [folderWithFilter objectEnumerator];
   while ((obj = [enumerator nextObject]))

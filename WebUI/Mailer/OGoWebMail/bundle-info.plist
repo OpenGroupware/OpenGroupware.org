@@ -33,7 +33,6 @@
       { name = LSWImapMailFolderMove;   },
       { name = LSWImapMailMove;         },
       { name = LSWImapMailSearch;       },
-      { name = LSWImapMailFilterEditor; },
       { name = LSWImapMailLogin;        },
       { name = SkyImapMailFolderTree;   },
       { name = LSWImapMail2Project;     },
@@ -46,8 +45,6 @@
       { name = SkyImapMailListFooter;   },
       { name = LSWImapMailDeletePage;   },
       { name = SkyImapMailRestrictions; },
-      { name = SkyVacationViewer; },
-      { name = SkyVacationEditor; },
       { name = SkyImapMailPrintViewer; },
       { name = SkyMailingListDataSource; },
       { name = SkyMailingListViewer; },    
@@ -84,7 +81,6 @@
       { name = LSWImapMailMove;         },
       { name = LSWImapMailSearch;       },
       { name = LSWImapMailLogin;        },
-      { name = LSWImapMailFilterEditor; },
       { name = SkyImapMailFolderTree;   },
       { name = LSWImapMail2Project;     },
       { name = LSWMailPreferences;      },
@@ -93,26 +89,15 @@
       { name = SkyImapMailListConfigPanel;  },
       { name = SkyImapMailListHeader;  },
       { name = SkyImapMailListFooter;  },
-      { name = SkyVacationViewer; },
-      { name = SkyVacationEditor; },
       { name = SkyImapMailPrintViewer; },
       { name = SkyMailingListViewer; },
       { name = SkyMailingListEditor; },
     );
 
     LSWCommands = (
-      { verb = view;      type = "objc/NGImap4Message";
+      { 
+        verb = view; type = "objc/NGImap4Message";
         component = LSWImapMailViewer; },
-
-      { verb = new;    type = "objc/imap-filter";
-        component = LSWImapMailFilterEditor;},
-      { verb = edit;    type = "objc/imap-filter";
-        component = LSWImapMailFilterEditor;},      
-
-      { verb = new;    type = "objc/imap-vacation";
-        component = SkyVacationEditor;},
-      { verb = edit;    type = "objc/imap-vacation";
-        component = SkyVacationEditor;},
       
       { 
         verb = edit; type = "objc/NGImap4Folder";
