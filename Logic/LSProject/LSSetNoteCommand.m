@@ -61,9 +61,10 @@
 }
 
 - (void)_validateKeysForContext:(id)_context {
+  /* check constraints  */
+  
   /* dont check access if edited during delete of assigned appointment */
   if (![[self valueForKey:@"dontCheckAccess"] boolValue]) {
-    // check constraints 
     id       account;
     NSNumber *accountId;
     NSNumber *ownerPKey;
@@ -71,9 +72,12 @@
     account   = [_context valueForKey:LSAccountKey];
     accountId = [account valueForKey:@"companyId"];
     
-    [self assert:(accountId != nil) reason:@"missing account id in context!"];
+    [self assert:[_context isNotNull]  reason:@"missing context!"];
+    [self assert:[accountId isNotNull] reason:@"missing login-id in context!"];
     
     ownerPKey = [[self object] valueForKey:@"currentOwnerId"];
+    [self assert:[ownerPKey isNotNull] reason:@"missing owner of object!"];
+    
     [self assert:
             ([accountId isEqual:ownerPKey] || ([accountId intValue] == 10000))
           reason:@"only owner can edit an edited note!"];
@@ -86,11 +90,14 @@
   NSString *fileType = nil;
   
   if (![[self valueForKey:@"isFolder"] boolValue]) {
-      id account   = [_context valueForKey:LSAccountKey];
-      id accountId = [account valueForKey:@"companyId"];
+    id       account;
+    NSNumber *accountId;
+    
+    account   = [_context valueForKey:LSAccountKey];
+    accountId = [account valueForKey:@"companyId"];
 
-      [self takeValue:accountId forKey:@"currentOwnerId"];
-      fileType = [self _fileType];
+    [self takeValue:accountId forKey:@"currentOwnerId"];
+    fileType = [self _fileType];
   }
   if (self->project != nil)
     [self takeValue:[self->project valueForKey:@"projectId"]
