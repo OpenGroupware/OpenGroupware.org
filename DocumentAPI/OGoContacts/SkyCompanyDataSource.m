@@ -342,15 +342,16 @@
   return result;
 }
 
+/* primary datasource entry function */
+
 - (NSArray *)fetchObjects {
-  // TODO: split up method
-  EOQualifier  *qualifier  = nil;
-  NSArray      *companies  = nil;
-  NSDictionary *hints      = nil;
-  BOOL         fetchIds    = NO;
-  BOOL         fetchGids   = NO;
-  int          fetchLimit  = 0;
-  BOOL         shouldMakeGidsFromIds = YES;
+  EOQualifier  *qualifier;
+  NSArray      *companies;
+  NSDictionary *hints;
+  BOOL         fetchIds;
+  BOOL         fetchGids;
+  int          fetchLimit;
+  BOOL         shouldMakeGidsFromIds;
   NSArray      *result;
   
   qualifier  = [self->fetchSpecification qualifier];
@@ -365,6 +366,7 @@
   fetchIds   = [[hints objectForKey:@"fetchIds"] boolValue];
   fetchGids  = [[hints objectForKey:@"fetchGlobalIDs"] boolValue];
   
+  shouldMakeGidsFromIds = YES;
   companies = [self _primaryFetchCompaniesForQualifier:qualifier
                     fetchLimit:fetchLimit
                     shouldMakeGidsFromIds:&shouldMakeGidsFromIds];
@@ -386,6 +388,8 @@
   
   return result ? result : [NSArray array];
 }
+
+/* datasource operations */
 
 - (id)createObject {
   // TODO: should rather set -lastException?
@@ -435,15 +439,13 @@
          object:_obj];
 }
 
-@end /* SkyCompanyDataSource */
-
-@implementation SkyCompanyDataSource(PrivateMethodes)
+/* PrivateMethodes */
 
 - (NSArray *)_attributes {
-  NSArray        *attributes    = nil;
-  NSMutableArray *fSpecAttrs    = nil;
+  NSArray        *attributes;
+  NSMutableArray *fSpecAttrs;
   BOOL           didChangeFSpec = NO;
-
+  
   attributes = [[self->fetchSpecification hints] objectForKey:@"attributes"];
   fSpecAttrs = [[NSMutableArray alloc] initWithArray:attributes];
 
@@ -581,14 +583,20 @@
   operator:(NSString *)_operator
   fetchLimit:(unsigned int)_fetchLimit
 {
+  /* a primary fetch method called for EOAndQualifier/EOOrQualifier's */
   NSArray *searchRecords;
   NSArray *result = nil, *fullResults = nil;
-  NSArray *fullSearchStrings = nil;
+  NSArray *fullSearchStrings;
+
+  /* split qualifiers */
   
+  fullSearchStrings = nil;
   searchRecords = [self searchRecordsFromQualifier:_qual
                         fullTextSearchValues:&fullSearchStrings];
   if ([searchRecords isKindOfClass:[NSException class]])
     return searchRecords;
+
+  /* perform searches */
   
   if ([fullSearchStrings count] == 1) {
     /* a single fulltext search */
@@ -710,6 +718,7 @@
   fullTextSearchValues:(NSArray **)fullText_
 {
   // TODO: split up this huge method!, needs serious cleanup
+  NSMutableDictionary *valueToCompanyRecord;
   NSMutableArray *result         = nil;
   NSMutableArray *fullSearchKeys = nil;
   NSArray        *quals          = nil;
@@ -717,7 +726,7 @@
   NSString       *cmp;
   unsigned i, cnt;
   id company, address, info, pValue, phone;
-
+  
   checkForAsterisk = YES;
   cmp = @"LIKE";
   
@@ -730,22 +739,21 @@
     ? [(id)_qualifier qualifiers]
     : [NSArray arrayWithObject:_qualifier];
   
-  cnt = [quals count];
-
   if ([_qualifier isKindOfClass:[EOKeyValueQualifier class]]) {
     cmp = (SEL_EQ([(id)_qualifier selector], EOQualifierOperatorEqual))
       ? @"EQUAL"
       : @"LIKE";
     checkForAsterisk = NO;
   }
-  
+
+  valueToCompanyRecord = nil;
   company = [self _searchRecordForEntityNamed:[self nameOfEntity] op:cmp];
   address = [self _searchRecordForEntityNamed:@"Address"          op:cmp];
   pValue  = [self _searchRecordForEntityNamed:@"CompanyValue"     op:cmp];
   info    = [self _searchRecordForEntityNamed:@"CompanyInfo"      op:cmp];
   phone   = [self _searchRecordForEntityNamed:@"Telephone"        op:cmp];
   
-  for (i = 0; i < cnt; i++) {
+  for (i = 0, cnt = [quals count]; i < cnt; i++) {
     NSException         *exception;
     EOKeyValueQualifier *qual;
     NSString            *key;
@@ -758,7 +766,7 @@
     
     exception = [self _validateSearchRecordQualifier:qual 
                       rootQualifier:_qualifier];
-    if (exception) [exception raise]; // TODO: do not raise
+    if (exception != nil) [exception raise]; // TODO: do not raise
     
     key   = [self _mapKeyFromDocToEO:[qual key]];
     value = [[qual value] stringValue];
@@ -789,10 +797,37 @@
     fragments = [key componentsSeparatedByString:@"."];
     
     if ([fragments count] == 1) {
-      if ([key isEqualToString:@"comment"])
+      if ([key isEqualToString:@"comment"]) {
         [info takeValue:value forKey:@"comment"];
-      else if (([[self nativeKeys] member:key]))
-        [company takeValue:value forKey:key];
+      }
+      else if (([[self nativeKeys] member:key])) {
+	if ((company != nil) && ([company valueForKey:key] == nil)) {
+	  /* everything is fine, key is not yet set */
+	  [company takeValue:value forKey:key];
+	}
+	else {
+	  /* key has already been set, need special treatment */
+	  if (valueToCompanyRecord == nil) {
+	    valueToCompanyRecord = 
+	      [[NSMutableDictionary alloc] initWithCapacity:4];
+	    
+	    /* remember existing record, the key must be impossible */
+	    [valueToCompanyRecord setObject:company forKey:@"\n\t\n"];
+	    company = nil;
+	  }
+	  
+	  /* now we group by value to ensure that we don't get DUPs */
+	  
+	  if ((company = [valueToCompanyRecord objectForKey:value]) == nil) {
+	    /* create new search record */
+	    company = [self _searchRecordForEntityNamed:[self nameOfEntity] 
+			    op:cmp];
+	    [valueToCompanyRecord setObject:company forKey:value];
+	  }
+	  [company takeValue:value forKey:key];
+	  company = nil;
+	}
+      }
       else {
         [pValue takeValue:key   forKey:@"attribute"];
         [pValue takeValue:value forKey:@"value"];
@@ -817,7 +852,14 @@
   }
 
   result = [NSMutableArray arrayWithCapacity:5];
-  [result addObject:company];
+  
+  if (valueToCompanyRecord != nil) {
+    [result addObjectsFromArray:[valueToCompanyRecord allValues]];
+    [valueToCompanyRecord release]; valueToCompanyRecord = nil;
+  }
+  
+  if (company != nil && ![result containsObject:company])
+    [result addObject:company];
   
   if ([[[info searchDict] allKeys] count] > 0)
     [result addObject:info];
@@ -828,13 +870,19 @@
   if ([[[phone searchDict] allKeys] count] > 0)
     [result addObject:phone];
   
-  if (fullText_) {
+  if (fullText_ != NULL) {
     *fullText_ = [[fullSearchKeys copy] autorelease];
   }
   else if ([fullSearchKeys count] > 0) {
     [self logWithFormat:@"WARNING: not processing fulltext searches: %@",
             fullSearchKeys];
   }
+
+#if 0  
+  [self logWithFormat:@"Converted qualifier %@ to search records: %@", 
+	  _qualifier, result];
+#endif
+  
   return result;
 }
 
@@ -848,4 +896,4 @@
   return [self _morphEOsToDocuments:companies];
 }
 
-@end /* SkyCompanyDataSource(PrivateMethodes) */
+@end /* SkyCompanyDataSource */

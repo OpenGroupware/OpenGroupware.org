@@ -1,3 +1,13 @@
+2004-12-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.51
+	
+	* EOQualifier+PersonUI.m: added ability to create OR qualifier for
+	  search strings which contain spaces (related to OGo enh #1034)
+
+	* LSWPersons.m: trim spaces in search string, moved qualifier creation
+	  to EOQualifier category in an own file
+	
 2004-11-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* code cleanups (v5.1.50)

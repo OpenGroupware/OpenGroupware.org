@@ -18,9 +18,14 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <LSSearch/LSExtendedSearchCommand.h>
+
+/*
+  person::extended-search
+  
+  TODO: document parameters
+*/
 
 @class NSString, NSArray, NSDictionary;
 
@@ -122,7 +127,7 @@
   allKeys = [allKeys sortedArrayUsingSelector:@selector(isEqualToString:)];
   keyEnum = [allKeys objectEnumerator];
 
-  while ((key = [keyEnum nextObject])) {
+  while ((key = [keyEnum nextObject]) != nil) {
     NSArray  *keyComponents; // i.e. "01_tel.info" -> ("01_tel", "info")
     NSString *entity;
 
@@ -158,6 +163,7 @@
 /* search attributes */
 
 - (void)setSearchAttributes:(NSDictionary *)_searchAttributes {
+  // TODO: array of XXX, what is XXX?
   ASSIGN(self->searchAttributes, _searchAttributes);
 }
 - (NSDictionary *)searchAttributes {
@@ -165,9 +171,9 @@
 }
 
 - (void)setAttributes:(NSArray *)_attributes {
+  // TODO: array of XXX, what is XXX?
   ASSIGN(self->attributes, _attributes);
 }
-
 - (NSArray *)attributes {
   return self->attributes;
 }
@@ -195,7 +201,7 @@
     
     comp = [self->keywordComparator isEqualToString:@"EQUAL"]
       ? (id)@"="
-      : ([self->keywordComparator length] 
+      : ([self->keywordComparator length] > 0
          ? self->keywordComparator 
          : (id)@"LIKE" );
     keyw = [self->keyword lowercaseString];
@@ -203,24 +209,24 @@
     format = [[NSMutableString alloc] initWithCapacity:256];
     [format appendString:@"("];
     /* exact */
-    [format appendString:@"lower(%A) "];
+    [format appendString:@"(LOWER(%A) "];
     [format appendString:comp];
-    [format appendString:@" '%@' OR "];
+    [format appendString:@" '%@') OR "];
     
     /* suffix */
-    [format appendString:@"lower(%A) "];
+    [format appendString:@"(LOWER(%A) "];
     [format appendString:comp];
-    [format appendString:@" '%%, %@' OR "];
+    [format appendString:@" '%%, %@') OR "];
 
     /* middle */
-    [format appendString:@"lower(%A) "];
+    [format appendString:@"(LOWER(%A) "];
     [format appendString:comp];
-    [format appendString:@" '%%, %@, %%' OR "];
+    [format appendString:@" '%%, %@, %%') OR "];
     
     /* prefix */
-    [format appendString:@"lower(%A) "];
+    [format appendString:@"(LOWER(%A) "];
     [format appendString:comp];
-    [format appendString:@" '%@, %%'"];
+    [format appendString:@" '%@, %%')"];
     [format appendString:@")"];
     
     q = [[EOSQLQualifier alloc] initWithEntity:[qualifier entity]
@@ -337,12 +343,11 @@
   return @"Person";
 }
 
-- (BOOL)withoutAccounts {
-  return self->withoutAccounts;
-}
-
 - (void)setWithoutAccounts:(BOOL)_b {
   self->withoutAccounts = _b;
+}
+- (BOOL)withoutAccounts {
+  return self->withoutAccounts;
 }
 
 /* key/value coding */

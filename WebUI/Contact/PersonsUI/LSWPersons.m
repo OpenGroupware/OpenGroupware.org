@@ -53,6 +53,7 @@
 
 @end
 
+#include "EOQualifier+PersonUI.h"
 #include <OGoFoundation/LSWNotifications.h>
 #include "LSWAddressFunctions.h"
 #include <OGoFoundation/SkyWizard.h>
@@ -192,10 +193,16 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 /* accessors  */
 
 - (void)setSearchText:(NSString *)_text {
+  _text = [_text stringByTrimmingSpaces];
   ASSIGNCOPY(self->searchText, _text);
 }
 - (NSString *)searchText {
   return self->searchText;
+}
+- (BOOL)isMultiValueSearchText {
+  if ([self->searchText length] == 0)
+    return NO;
+  return [self->searchText rangeOfString:@" "].length > 0 ? YES : NO;
 }
 
 - (void)setHasSearched:(BOOL)_searched {
@@ -290,14 +297,6 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 
 /* notifications */
 
-- (EOQualifier *)qualifierForGlobalID:(EOGlobalID *)_gid {
-  if (_gid == nil) return nil;
-  return [[[EOKeyValueQualifier alloc] initWithKey:@"globalID"
-                                       operatorSelector:
-                                         EOQualifierOperatorEqual
-                                       value:_gid] autorelease];
-}
-
 - (void)personAdded:(NSNotification *)_n {
   EOFetchSpecification *fspec;
   id obj;
@@ -310,47 +309,8 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
   
   fspec = [self fetchSpecification];
   
-  [fspec setQualifier:[self qualifierForGlobalID:[obj globalID]]];
+  [fspec setQualifier:[EOQualifier qualifierForGlobalID:[obj globalID]]];
   [self->dataSource setFetchSpecification:fspec];
-}
-
-/* qualifiers */
-
-- (EOQualifier *)qualifierForPersonSearch:(NSString *)_s {
-  NSString *qs;
-  
-  if (_s == nil) _s = @"";
-  
-  qs = [NSString stringWithFormat:
-                   @"(name LIKE '*%@*') OR (firstname LIKE '*%@*') OR "
-                   @"(nickname LIKE '*%@*') OR (login LIKE '*%@*')", 
-                   _s, _s, _s, _s];
-  return [EOQualifier qualifierWithQualifierFormat:qs];
-}
-
-- (EOQualifier *)qualifierForFullTextSearch:(NSString *)_s {
-  EOQualifier *q;
-  
-  if ([_s isEqualToString:@"%"]) _s = @"";
-  
-  q = [[EOKeyValueQualifier alloc] initWithKey:@"fullSearchString"
-                                   operatorSelector:EOQualifierOperatorLike
-                                   value:_s];
-  return [q autorelease];
-}
-
-- (EOQualifier *)qualifierForPrimaryKeys:(NSArray *)_pkeys {
-  EOQualifier *q;
-  
-  // TODO: document why we need this fake object
-  if ([_pkeys count] == 0) _pkeys = [NSArray arrayWithObject:@"0"];
-  
-  // TODO: EOQualifierOperatorEqual is wrong, should be "in" or something like
-  //       that
-  q = [[EOKeyValueQualifier alloc] initWithKey:@"companyId"
-                                   operatorSelector:EOQualifierOperatorEqual
-                                   value:_pkeys];
-  return [q autorelease];
 }
 
 /* actions */
@@ -430,10 +390,13 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
   EOFetchSpecification *fspec;
   
   fspec = [self fetchSpecification];
-  [fspec setQualifier:[self qualifierForPersonSearch:self->searchText]];
+  [fspec setQualifier:
+	   [EOQualifier qualifierForPersonNameString:self->searchText]];
   [self->dataSource setFetchSpecification:fspec];
   
   // TODO: explain, when did the search happen?
+  //       => probably a datasource which is bound to the .wod
+  //       => _viewIfOnePerson calls _performFetch
   self->opFlags.hasSearched = 1;
   return [self _viewIfOnePerson];
 }
@@ -454,7 +417,7 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
   fspec = [self fetchSpecification];
   favs  = [[[self session] userDefaults] objectForKey:@"person_favorites"];
   
-  [fspec setQualifier:[self qualifierForPrimaryKeys:favs]];
+  [fspec setQualifier:[EOQualifier qualifierForPersonPrimaryKeys:favs]];
   [self->dataSource setFetchSpecification:fspec];
   
   self->opFlags.hasSearched = 1;
@@ -595,9 +558,11 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 }
 
 - (Class)wizardClass {
+  // TODO: check whether this is used somewhere
   return NSClassFromString(@"SkyPersonWizard");
 }
 - (id)wizard {
+  // TODO: check whether this is used somewhere
   SkyWizard *wizard;
   
   wizard = [[self wizardClass] wizardWithSession:[self session]];

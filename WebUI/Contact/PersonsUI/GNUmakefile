@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include ../common.make
 
@@ -24,14 +24,7 @@ PersonsUI_OBJC_FILES += \
 	SkyPersonLDAPViewer.m		\
 	SkyPersonWizard.m		\
 	OGoPersonLinkEditor.m		\
-
-ifeq ($(wox),yes)
-
-PersonsUI_RESOURCE_FILES += \
-	SkyPersonViewer.wox	\
-	SkyPersonProjectList.wox
-
-endif
+	EOQualifier+PersonUI.m		\
 
 PersonsUI_RESOURCE_FILES += Defaults.plist Version
 

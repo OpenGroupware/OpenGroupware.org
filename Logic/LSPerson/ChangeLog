@@ -1,3 +1,7 @@
+2004-12-22  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* LSExtendedSearchPersonCommand.m: minor code cleanups (v5.1.20)
+	
 2004-11-23  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSGetAssignedProjectIdsForPersonCommand.m: code cleanups (v5.1.19)
