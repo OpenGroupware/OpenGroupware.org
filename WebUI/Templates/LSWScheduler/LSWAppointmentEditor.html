@@ -1,0 +1,206 @@
+<#Frame>
+<!-- $Id: LSWAppointmentEditor.html 2 2004-08-20 11:37:44Z znek $ -->
+  <#ShowCalPopUp><#Calendar /></#ShowCalPopUp>
+
+<#IsJavaScriptEnabled>
+<script language="JavaScript">
+<!-- hide
+
+var editorIsCancel = false;
+var editorIsSearch = false;
+
+function validateEditorContent() {
+  var errorString = "";
+
+  if (editorIsCancel) return true;
+  if (editorIsSearch) return true;
+
+  editorIsCancel = false;
+  editorIsSearch = false;
+
+  if (document.editform.startTimePopUp.selectedIndex > 
+      document.editform.endTimePopUp.selectedIndex)
+    errorString = errorString + " => End time before start time.\n";
+
+  if (document.editform.title.value.length == 0)
+    errorString = errorString + " => No title set.\n";
+
+  if (errorString.length > 0) {
+    alert("invalid input:\n" + errorString);
+    return false;
+  }
+  else
+    return true;
+}
+
+function searchFieldChanged() {
+  editorIsSearch = true;
+  document.editform.submit();
+  return true;
+}
+
+// -->
+</script>
+</#IsJavaScriptEnabled>
+
+<#Window>
+ <#WarningModeCondElse>
+  <#EditorForm>
+    <!-- edit panel -->
+    <table width="100%" border="0" cellpadding="4" cellspacing="0">
+      <!-- appointment date title -->
+
+      <#AppCollapsible>
+        <#CollTitleMode>
+          &nbsp;<#Font><b><#AppointmentOnLabel />&nbsp;<#AppointmentDayLabel /><#IsNotNewConditional><#IsCyclic>&nbsp;(<#Cycle />&nbsp;<#UntilLabel />&nbsp;<#CycleEndDateString />)</#IsCyclic></#IsNotNewConditional></b></#Font>
+        </#CollTitleMode>
+      
+        <#CollContentMode>
+          <tr><td colspan="2"> </td></tr>
+
+          <!-- apointment form -->
+          <#AptDateSelection />
+
+      <tr>
+        <#AttributeCell><#Font><#TitleAttribute />:</#Font></#AttributeCell>
+        <#ValueCell><#EditFont><#TitleTextField /></#EditFont></#ValueCell>
+      </tr>
+      <tr>
+        <#AttributeCell><#Font><#LocationAttribute />:</#Font></#AttributeCell>
+        <#ValueCell><#EditFont>
+                <#LocationTextField />
+        </#EditFont></#ValueCell>
+      </tr>
+      <#IsInNewMode>
+        <tr>
+          <#AttributeCell><#Font><#CycleAttribute />:</#Font></#AttributeCell>
+          <#ValueCell><#EditFont>
+            <#CyclePopUp />
+            <#Font><#CycleEndDateLabel />:</#Font>
+            <#CycleEndDate />
+            <#ShowCalPopUp>
+              <#CalendarPopupCycleEndDateLink />
+            </#ShowCalPopUp>
+          </#EditFont></#ValueCell>
+        </tr>
+      </#IsInNewMode>
+      <#IsNotificationEnabled>
+        <tr>
+          <#AttributeCell><#Font><#NotificationLabel />:</#Font></#AttributeCell>
+          <#ValueCell>
+            <#EditFont><#MeasuresPopUp /></#EditFont>
+            <#Font><#BeforeLabel /></#Font>
+          </#ValueCell>
+        </tr>
+      </#IsNotificationEnabled>
+      <tr>
+        <#AttributeCell><#Font><#AccessTeamAttribute />:</#Font></#AttributeCell>
+        <#ValueCell><#EditFont><#AccessTeamSelect /></#EditFont></#ValueCell>
+      </tr>
+      <#ShowIgnoreConflictsCond>
+      <tr>
+        <#AttributeCell><#Font><#IgnoreConflictsLabel />:</#Font></#AttributeCell>
+        <#ValueCell><#Font><#IgnoreConflictsButtons /></#Font></#ValueCell>
+      </tr>
+      </#ShowIgnoreConflictsCond>
+      <#ShowAptTypeSelectionCond>
+      <tr>
+         <#AptTypeAttr><#AptTypeSelection /></#AptTypeAttr>
+      </tr>
+      </#ShowAptTypeSelectionCond>
+    </#CollContentMode>
+    </#AppCollapsible>
+
+    <tr><td colspan="2"></td></tr>
+
+    <#ParticipantsTitle><#ParticipantsSelection /></#ParticipantsTitle>
+
+    <tr><td colspan="2"></td></tr>
+
+    <#ResourcesTitle><#ResourceSelection /></#ResourcesTitle>
+
+    <tr><td colspan="2"></td></tr>
+
+    <#AccessTitle><#AccessSelection /></#AccessTitle>
+
+    <tr><td colspan="2"></td></tr>
+
+    <#CommentTitle>
+      <tr>
+        <#AttributeCell><#Font><#CommentAttribute />:</#Font></#AttributeCell>
+        <#ValueCell><#EditFont><#CommentTextArea /></#EditFont></#ValueCell>
+      </tr>
+    </#CommentTitle>
+
+    <tr>
+      <td></td>
+      <td>
+
+        <#SaveSubmit />
+
+        <#IsNotNewConditional>
+          <#IsCyclic><#SaveAllSubmit /></#IsCyclic>
+        </#IsNotNewConditional>
+
+        <#IsMailEnabled><#SaveAndMailSubmit /></#IsMailEnabled>
+
+        <#IsNotNewConditional>
+          <#IsDeleteEnabled>
+            <#IsJavaScriptEnabled ><#DeleteSubmitJS/></#IsJavaScriptEnabled>
+            <#IsJavaScriptDisabled><#DeleteLink    /></#IsJavaScriptDisabled>
+          </#IsDeleteEnabled>
+          
+          <#IsCyclic><#DeleteAllLink /></#IsCyclic>
+        </#IsNotNewConditional>
+
+        <#CancelSubmit />
+
+        <!--#DateProposalSubmit/-->
+      </td>
+    </tr>
+
+    <tr><td colspan="2"></td></tr>
+
+    <#IsNotNewConditional>
+        <!-- move appointment section -->
+        <#MoveTitle>
+            <tr>
+             <#AttributeCell><#Font><#MoveAppointmentAttribute />:</#Font></#AttributeCell>
+             <#ValueCell><#EditFont>
+               <#MoveAmountPopUp    />
+               <#MoveUnitPopUp      />
+               <#MoveDirectionPopUp />
+             </#EditFont></#ValueCell>
+            </tr>
+            <tr>
+              <td></td>
+              <td><#MoveSubmit /></td>
+            </tr>
+        </#MoveTitle>
+      </#IsNotNewConditional>
+
+      <!-- end of edit panel -->
+    </table>
+  </#EditorForm>
+ </#WarningModeCondElse>
+
+ <#WarningModeCond>
+   <#Warning />  
+ </#WarningModeCond>
+</#Window>
+
+<#WarningModeCondElse>
+
+<#IsJavaScriptEnabled>
+<script language="JavaScript">
+<!-- hide
+if (document.editform.title) {
+  document.editform.title.focus();
+}
+// -->
+</script>
+</#IsJavaScriptEnabled>
+
+</#WarningModeCondElse>
+
+</#Frame>

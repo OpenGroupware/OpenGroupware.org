@@ -1,3 +1,12 @@
+2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.66
+
+	* OGoResourceManager.m: moved label lookup code to own
+	  OGoStringTableManager class, major internal cleanups, improved
+	  caching system (introduced OGoResourceKey class), does not look for
+	  (.wo/.wox) templates in WebServerResources
+
 2004-09-06  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.1.65

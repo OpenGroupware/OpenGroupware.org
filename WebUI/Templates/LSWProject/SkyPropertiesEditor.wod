@@ -1,0 +1,67 @@
+// $Id: SkyPropertiesEditor.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = "edit attributes"; //windowTitle;
+  onClose = cancel;
+}
+
+Form : WOForm {
+   name    = "propertyEditor";
+   action  = save;
+}
+
+AttributeCell: SkyAttributeCell  {}
+ValueCell:     SkyValueCell      {}
+ 
+Font:          SkyConfigFont     {}
+EditFont:      SkyConfigEditFont {}
+
+PropertyName : WOString {
+  value = key;
+}
+
+PropertyValue : WOTextField {
+  value = value;
+}
+
+DeleteBox : WOCheckBox {
+  checked = deleteFlag;
+}
+DeleteLabel : WOString {
+  value = labels.delete;
+}
+
+SaveSubmit: WOImageButton {
+        action           = save;
+        filename         = "save.gif";
+        name             = labels.saveButton;
+        ALT              = labels.saveButton;
+        BORDER           = 0;
+};
+DeleteSubmit: WOImageButton {
+        action           = deleteAction;
+        filename         = "remove.gif";
+        name             = labels.deleteButton;
+        ALT              = labels.deleteButton;
+        BORDER           = 0;
+};
+NewSubmit: WOImageButton {
+        action           = new;
+        filename         = "new_big.gif";
+        name             = labels.newButton;
+        ALT              = labels.newButton;
+        BORDER           = 0;
+};
+CancelSubmit: WOHyperlink {
+        action           = cancel;
+        filename         = "cancel.gif";
+        ALT              = labels.cancelButton;
+        BORDER           = 0;
+};
+
+PropertyRep : WORepetition {
+  list = properties;
+  item = item;
+}

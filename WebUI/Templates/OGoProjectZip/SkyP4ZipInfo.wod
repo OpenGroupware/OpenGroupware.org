@@ -1,0 +1,42 @@
+// $Id: SkyP4ZipInfo.wod 2 2004-08-20 11:37:44Z znek $
+
+FileManagerTree: SkyFileManagerTreeView {
+  fileManager      = fileManager;
+  title            = "fooo";
+  //  unclickablePaths = unclickablePaths;
+  fileSystemPath   = clickedFolderPath;
+  onClick          = "unzipToFolder";
+}
+
+InfoString: WOString {
+  value = "info.allKeys.description;";
+}
+
+InfoRep: WORepetition {
+  list = infoKeys;
+  item = infoKey;
+}
+
+PathName: WOString {
+  value = infoKey;
+}
+
+LabelPath: WOString {
+  value = labels.filePath;
+}
+
+LabelSize: WOString {
+  value = labels.size;
+}
+
+LabelDate: WOString {
+  value = labels.date;
+}
+
+Date: WOString {
+  value = infoItem.date;
+}
+
+Time: WOString {
+  value = infoItem.time;
+}

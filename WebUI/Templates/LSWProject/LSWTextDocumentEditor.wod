@@ -1,0 +1,126 @@
+// $Id: LSWTextDocumentEditor.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.windowTitleTextDocumentEditor;
+  onClose = cancel;
+}
+
+TextDocumentForm : WOForm {
+        name    = "textDocumentEditor";
+}
+
+FileNameLabel : WOString {
+        value = labels.fileName;
+};
+FileName : WOTextField {
+        value = snapshot.title;
+        SIZE  = config.textField_size2;
+}
+FileType : WOString {
+        value = snapshot.fileType;
+}
+
+DocumentEditor : LSWObjectEditor {
+  labels     = labels;
+  object     = document;
+  attributes = (
+    { key = "abstract"; }
+  );
+}
+
+DocumentEditorWithContact : LSWObjectEditor {
+  labels     = labels;
+  object     = document;
+  attributes = (
+    { key = "abstract"; },
+    { key = "contact";  }
+  );
+}
+
+BackLink : WOHyperlink {
+        action = back;
+        string = "back";
+}
+
+WarningModeCond : WOConditional {
+        condition = isInWarningMode;
+}
+
+WarningModeCondElse : WOConditional {
+        condition = isInWarningMode;
+        negate    = YES;
+}
+
+Warning : LSWWarningPanel {
+        onOk      = warningOkAction;
+        phrase    = warningPhrase;
+}
+
+NewModeCondElse : WOConditional {
+        condition = isInNewMode;
+        negate    = YES;
+}
+
+NewModeCond : WOConditional {
+        condition = isInNewMode;
+}
+
+SaveSubmit: WOImageButton {
+        action           = save;
+        filename         = "save.gif";
+        name             = labels.saveButton;
+        ALT              = labels.saveButton;
+        disabledFilename = "save_inactive.gif";
+        disabled         = isSaveDisabled;
+        BORDER           = 0;
+};
+DeleteSubmit: WOHyperlink {
+        action           = delete;
+        filename         = "remove.gif";
+        ALT              = labels.deleteButton;
+        disabledFilename = "remove_inactive.gif";
+        disabled         = isDeleteDisabled;
+        BORDER           = 0;
+};
+CancelSubmit: WOHyperlink {
+        action           = cancel;
+        filename         = "cancel.gif";
+        ALT              = labels.cancelButton;
+        BORDER           = 0;
+};
+
+Text : WOString {
+        value = labels.text;
+};
+
+TextInput : WOText {
+        value     = fileContent;
+        formatter = session.formatString;
+        WRAP      = "physical";
+        ROWS      = config.textField_rows3;
+        COLS      = config.textField_cols2;
+        name      = "focusField";
+};
+
+AutoReleaseLabel : WOString {
+        value = labels.autorelease;
+};
+AutoReleaseCheckbox : WOCheckBox {
+        checked = autoRelease;
+};
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+IsContactAttrEnabled: WOConditional {
+  condition = isContactAttrEnabled;
+}
+IsContactAttrDisabled: WOConditional {
+  condition = isContactAttrEnabled;
+  negate    = YES;
+}

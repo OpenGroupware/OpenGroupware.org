@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: LSWSkyrixFrame.m 1 2004-08-20 11:17:52Z znek $
 
 #include <OGoFoundation/OGoComponent.h>
 
@@ -47,6 +47,10 @@
 #include "common.h"
 
 #define LSWSkyrixFrame_CtxKey @"__LSWSkyrixFrame"
+
+@interface WORequest(UsedPrivates)
+- (NSCalendarDate *)startDate;
+@end
 
 @implementation LSWSkyrixFrame
 
@@ -477,21 +481,21 @@ static BOOL debugPageRefresh = NO;
 /* timings */
 
 - (NSString *)timingsString {
-  NSDictionary   *rui;
   NSTimeInterval duration;
-  NSDate *rStartDate;
-  NSDate *now;
+  NSDate         *rStartDate;
+  NSDate         *now;
+  unsigned char  buf[16];
   
   if (!showTimings)
     return @"";
   
-  rui = [[[self context] request] userInfo];
-  if ((rStartDate = [rui objectForKey:@"WORequestStartDate"]) == nil)
+  if ((rStartDate = [[[self context] request] startDate]) == nil)
     return @"";
   
   now      = [NSDate date];
   duration = [now timeIntervalSinceDate:rStartDate];
-  return [NSString stringWithFormat:@" (%.3fs)", duration];
+  sprintf(buf, " (%.3fs)", duration);
+  return [NSString stringWithCString:buf];
 }
 
 @end /* LSWSkyrixFrame */

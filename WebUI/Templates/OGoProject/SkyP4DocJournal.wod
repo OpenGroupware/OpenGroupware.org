@@ -1,0 +1,170 @@
+// $Id: SkyP4DocJournal.wod 2 2004-08-20 11:37:44Z znek $
+
+ChartMatrix: WEHSpanTableMatrix {
+  list        = journalDS.fetchObjects;
+  item        = currentFile;
+  columns     = columns;
+  rows        = journalDS.fetchObjects;
+  column      = column;
+  row         = row;
+  itemActive  = isDocInCell;
+  isRowActive = isDocInRow;
+  WIDTH       = "100%";
+  BORDER      = 1;
+  CELLPADDING = 0;
+  CELLSPACING = 2;
+}
+
+ChartTitle: WETableMatrixLabel {
+  position    = "top";
+  elementName = "td";
+  BGCOLOR     = config.colors_headerLabelCell;
+  ALIGN       = "CENTER";
+  span        = columnsPerDay;
+//  WIDTH       = "80";
+}
+ColumnTitle: WOString {
+  value = column;
+}
+
+ChartRowTitle: WETableMatrixLabel {
+  position    = "left";
+  elementName = "td";
+  BGCOLOR     = config.colors_leftLabelCell;
+//  WIDTH       = 2;
+}
+
+EmptyCell: WETableMatrixNoContent {
+  elementName = "td";
+  BGCOLOR     = config.colors_emptyCell;
+}
+
+Bottom: WETableMatrixLabel {
+  position    = "bottom";
+  elementName = "td";
+}
+
+ChartCell: WETableMatrixContent {
+  elementName = "td";
+  BGCOLOR     = config.colors_contentCell;
+  ALIGN       = "top";
+}
+
+// tableview
+
+ResultList: SkyTableView {
+  dataSource   = journalDS;
+  item         = currentFile;
+  batchSize    = 10;
+  sortedKey    = "NSFileName";
+  cacheTimeout = session.userDefaults.skyp4_searchlist_cachetimeout;
+}
+
+TitleMode:  WETableViewTitleMode  {}
+FooterMode: WETableViewFooterMode {}
+ButtonMode: WETableViewButtonMode {}
+
+FileDownload: SkyP4DownloadLink {
+  projectId    = fileSystemNumber;
+  documentPath = currentFile.NSFilePath;
+}
+
+FileIcon: SkyP4DocumentIcon {
+  projectName  = fileSystemName;
+  documentPath = currentFile.NSFilePath;
+  mimeType     = currentFile.NSFileMimeType;
+}
+
+FileName: WETableData {
+  title   =  labels.fileName;
+  sortKey = "NSFileName";
+}
+FileNameLink: WOHyperlink {
+  action  = clickedFile;
+  string  = currentFile.NSFileName;
+}
+
+FileSize: WETableData {
+  title   = labels.size;
+  sortKey = "NSFileSize";
+  string  = currentFile.NSFileSize;
+}
+
+FileOwner: WETableData {
+  title   = labels.currentOwner;
+  sortKey = "NSFileOwnerAccountName";
+  string  = currentFile.NSFileOwnerAccountName;
+}
+
+FileSubject: WETableData {
+  title   = labels.subject;
+  sortKey = "NSFileSubject";
+  string  = currentFile.NSFileSubject;
+}
+
+ParentFolder: WETableData {
+  title   = labels.folder;
+}
+ParentFolderLink: WOString {
+  //action  = clickedParentFolder;
+  //string  = currentFileParentFolder;
+  value = currentFileParentFolder;
+}
+
+Results : WOString {
+  value = labels.results;
+}
+
+Files : WOString {
+  value = labels.results;
+}
+
+Filename : WOString {
+  value = labels.fileName;
+}
+
+Extension : WOString {
+  value = labels.extension;
+}
+
+/* checkin/checkout */
+
+IsFileNotDir: WOConditional {
+  condition = currentFile.NSFileType;
+  value     = "NSFileTypeRegular";
+}
+
+IsFileLocked: WOConditional {
+  condition = currentFileIsLocked;
+}
+
+IsFileCheckedOut: WOConditional {
+  condition = currentFileIsCheckedOut;
+}
+
+IsExternalLinkCondElse : WOConditional {
+  negate = YES;
+  condition = isExternalLink;
+}
+IsExternalLinkCond : WOConditional {
+  condition = isExternalLink;
+}
+
+//ExternalFileLink : WOHyperlink {
+//  href   = linkHref;
+//  target = "externalLink";
+//  string = currentFile.NSFileName;
+//}
+ExternalFileLink : SkyExternalLink {
+  href   = linkHref;
+  target = "externalLink";
+  string = currentFile.NSFileName;
+}
+
+Locked : WOString {
+  value = labels.locked;
+}
+
+CheckedOut : WOString {
+  value = labels.locked;
+}

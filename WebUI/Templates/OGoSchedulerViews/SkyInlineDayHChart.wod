@@ -1,0 +1,142 @@
+// $Id: SkyInlineDayHChart.wod 2 2004-08-20 11:37:44Z znek $
+
+DragScript: WEDragScript {}
+DropScript: WEDropScript {}
+
+NewAppointmentLinkFont : WOGenericContainer {
+  elementName = "font";
+  COLOR       = config.colors_newAppointmentLink;
+  SIZE         = "-4";
+}
+
+NewAppointment: WOHyperlink {
+  directActionName = "newApt";
+  ?year   = day.yearOfCommonEra;
+  ?month  = day.monthOfYear;
+  ?day    = day.dayOfMonth;
+  ?hour   = hour.hourOfDay;
+  ?minute = hour.minuteOfHour;
+  ?tz     = day.timeZone.abbreviation;
+  ?ctx    = context.contextID;
+  //action = newAppointment;
+}
+
+NewString: WOString {
+  value = labels.new;
+}
+
+IsResCategorySelected: WOConditional {
+  condition = isResCategorySelected;
+  negate    = YES;
+}
+
+// hori - matrix
+
+HasRows: WOConditional {
+  condition = hasRows;
+}
+
+ChartMatrix: WEHSpanTableMatrix {
+  list        = cacheDataSource.fetchObjects;
+  item        = appointment;
+  columns     = columns;
+  rows        = rows;
+  column      = column;
+  row         = row;
+  itemActive  = isAppointmentInCell;
+  isRowActive = isAppointmentInRow;
+
+//  rowHeight   = 8;
+  WIDTH       = "100%";
+  BORDER      = 0;
+  CELLPADDING = 0;
+  CELLSPACING = 2;
+}
+
+ChartTitle: WETableMatrixLabel {
+  elementName = "td";
+  position    = "top";
+  BGCOLOR     = config.colors_headerLabelCell;
+  ALIGN       = "CENTER";
+//  span        = columnsPerDay;
+//  WIDTH       = "80";
+}
+HourLabel: WOString {
+  value = hourLabel;
+}
+
+ChartRowTitle: WETableMatrixLabel {
+  elementName = "td";
+  position    = "left";
+  BGCOLOR     = config.colors_leftLabelCell;
+}
+RowInfo: WOString {
+  value = currentRowLabel;
+}
+
+EmptyCell: WETableMatrixNoContent {
+  elementName = "td";
+  BGCOLOR     = config.colors_emptyCell;
+}
+
+ChartCell: WETableMatrixContent {
+  elementName = "td";
+  BGCOLOR     = config.colors_contentCell;
+  ALIGN       = "top";
+}
+// matrix content
+
+AptLink: WOHyperlink {
+  directActionName = "viewApt";
+  ?oid    = appointmentOID;
+  ?entity = appointmentEntity;
+  ?tz  = appointment.startDate.timeZone.abbreviation;
+  ?ctx = context.contextID;
+  
+  TITLE  = shortTextForApt;
+}
+ViewAptAction: WOHyperlink {
+  action = viewAppointment;
+  TITLE  = shortTextForApt;
+}
+
+/* appointments */
+
+IsViewAccessAllowed: WOConditional {
+  condition = appointmentViewAccessAllowed;
+}
+IsViewAccessAllowedElse: WOConditional {
+  condition = appointmentViewAccessAllowed;
+  negate    = YES;
+}
+UseDACond: WOConditional {
+  condition = useDirectActionForView;
+}
+UseDACondElse: WOConditional {
+  condition = useDirectActionForView;
+  negate    = YES;
+}
+
+AptDrag: WEDragContainer {
+  tag         = "appointment";
+  object      = appointment;
+  isDraggable = isAppointmentDraggable;
+}
+
+AptInfoIcon: WOImage {
+  filename = dateCellIcon;
+  BORDER   = "0";
+  VALIGN   = "top";
+  ALT      = shortTextForApt;
+  TITLE    = shortTextForApt;
+}
+
+AptInfo: WOString {
+  value     = appointment;
+  formatter = aptInfoFormatter;
+}
+
+TitleFont : WOGenericContainer {
+  elementName = "font";
+  COLOR       = config.colors_titleColor;
+}

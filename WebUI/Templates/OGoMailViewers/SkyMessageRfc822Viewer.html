@@ -1,0 +1,135 @@
+<!-- $Id: SkyMessageRfc822Viewer.html 2 2004-08-20 11:37:44Z znek $ -->
+<#IsNoEo>
+  <table border="0" width="100%" cellpadding="0" cellspacing="0">
+    <#IsNotRoot>
+      <#PartHeaderRow>
+        <td width="20%"><#Font><nobr><#SubjectLabel />:</nobr></#Font></td>
+        <td colspan="4"><#Font><#Subject /></#Font></td>
+      </#PartHeaderRow>
+      <#PartHeaderRow>
+        <td width="20%"><#Font><nobr><#DateLabel />:</nobr></#Font></td>
+        <td colspan="4"><#Font><#Date /></#Font></td>
+      </#PartHeaderRow>
+      <#PartHeaderRow>
+        <td width="20%"><#Font><nobr><#SenderLabel />:</nobr></#Font></td>
+        <td colspan="4"><#Font><#From /></#Font></td>
+      </#PartHeaderRow>
+      <#PartHeaderRow>
+        <td width="20%"><#Font><nobr><#ToLabel />:</nobr></#Font></td>
+        <td colspan="4">
+            <#Font><#To /></#Font>
+            <#ToCollapserCond><#ToCollapser /></#ToCollapserCond>
+            <#ToExpanderCond><#ToExpander /></#ToExpanderCond>
+        </td>
+      </#PartHeaderRow>
+      <#HasCC>
+        <#PartHeaderRow>
+          <td width="20%"><#Font><nobr><#CCLabel />:</nobr></#Font></td>
+          <td colspan="4">
+              <#Font><#Cc /></#Font>
+              <#CcCollapserCond><#CcCollapser /></#CcCollapserCond>
+              <#CcExpanderCond ><#CcExpander  /></#CcExpanderCond>
+          </td>
+        </#PartHeaderRow>
+      </#HasCC>
+      <#HasOrganization>
+        <#PartHeaderRow>
+          <td width="20%"><nobr><#Font
+              ><#OrganizationLabel />:</nobr></#Font></td>
+          <td colspan="4"><#Font><#Organization /></#Font></td>
+        </#PartHeaderRow>
+      </#HasOrganization>
+      <#IsNoCompositeBody>
+        <#HasContentLength>
+          <#PartHeaderRow>
+            <td width="20%"><#Font><nobr><#ContentLen />:</nobr></#Font></td>
+            <td colspan="4"><#Font><#ContentLength /></#Font></td>
+          </#PartHeaderRow>
+        </#HasContentLength>
+
+        <#PartHeaderRow>
+          <td width="20%" valign="top"
+              ><#Font><nobr><#ContTypeLabel/>:</nobr></#Font></td>
+          <td><#Font><#ContentType /></#Font></td>
+          <#IsPrintModeCondElse>
+              <td align="right" width="1%"><#ShowBodyDepSizeEnabledCondElse
+                  >&nbsp;</#ShowBodyDepSizeEnabledCondElse
+                  ><#ShowBodyDepSizeEnabledCond><#ShowBodyDepSizeCond
+                  ><#CollapsedBodyLink /></#ShowBodyDepSizeCond
+                  ><#ShowBodyDepSizeCondElse><#ExpandedBodyLink 
+                  /></#ShowBodyDepSizeCondElse></#ShowBodyDepSizeEnabledCond
+                  ></td>
+              <td align="right" width="1%"><#HasProjectCond><#ToDoc 
+                  /></#HasProjectCond></td>
+              <td align="right" width="1%"><#HasUrlBodyElse><#Download
+                  ><#DownloadIcon /></#Download></#HasUrlBodyElse
+                  ><#HasUrlBody><#ActionUrl><#DownloadIcon 
+                  /></#ActionUrl></#HasUrlBody></td>
+          </#IsPrintModeCondElse>
+          <#IsPrintModeCond>
+              <td align="right" width="1%">&nbsp;</td>
+              <td align="right" width="1%">&nbsp;</td>
+              <td align="right" width="1%">&nbsp;</td>
+          </#IsPrintModeCond>
+        </#PartHeaderRow>
+      </#IsNoCompositeBody>
+    </#IsNotRoot>
+  </table>
+</#IsNoEo>
+
+<#IsNotRoot>
+  <#IsNoComposite>
+    <#ShowBodyDepSizeEnabledCond>
+      <#ShowBodyCond>
+        <#ShowBodyDepSizeCond>
+          <hr size="0" />
+          <#MimeBodyViewer />
+        </#ShowBodyDepSizeCond>
+      </#ShowBodyCond>
+    </#ShowBodyDepSizeEnabledCond>
+  </#IsNoComposite>
+  <#IsComposite>
+        <hr size="0" />
+        <#MimeBodyViewer />
+  </#IsComposite>
+</#IsNotRoot>
+<#IsRoot>
+  <#IsMultiPartElse>
+    <table border="0" width="100%" cellpadding="0" cellspacing="0">
+      <#PartHeaderRow>
+          <td width="20%"><#Font><nobr><#ContTypeLabel/>:</nobr></#Font></td>
+        <td><#Font><#ContentType /></#Font></td>
+          <#IsPrintModeCondElse>
+              <td align="right" width="1%"><#ShowBodyDepSizeEnabledCondElse
+                >&nbsp;</#ShowBodyDepSizeEnabledCondElse
+                ><#ShowBodyDepSizeEnabledCond><#ShowBodyDepSizeCond
+                ><#CollapsedBodyLink /></#ShowBodyDepSizeCond
+                ><#ShowBodyDepSizeCondElse><#ExpandedBodyLink 
+                /></#ShowBodyDepSizeCondElse></#ShowBodyDepSizeEnabledCond
+                ></td>
+              <td align="right" width="1%"><#HasProjectCond
+                  ><#ToDoc /></#HasProjectCond></td>
+              <td align="right" width="1%"><#HasUrlBodyElse
+                  ><#Download><#DownloadIcon /></#Download></#HasUrlBodyElse
+                  ><#HasUrlBody><#ActionUrl><#DownloadIcon /></#ActionUrl
+                  ></#HasUrlBody></td>
+          </#IsPrintModeCondElse>
+          <#IsPrintModeCond>
+            <td align="right" width="1%">&nbsp;</td>
+            <td align="right" width="1%">&nbsp;</td>
+            <td align="right" width="1%">&nbsp;</td>
+          </#IsPrintModeCond>
+      </#PartHeaderRow>
+    </table>
+  </#IsMultiPartElse>
+
+  <#ShowBodyDepSizeEnabledCond>
+      <#ShowBodyCond>
+        <#ShowBodyDepSizeCond>
+          <hr size="0" />
+          <#MimeBodyViewer />
+        </#ShowBodyDepSizeCond>
+      </#ShowBodyCond>
+  </#ShowBodyDepSizeEnabledCond>
+  <!-- end of MimeBodyViewer -->
+</#IsRoot>

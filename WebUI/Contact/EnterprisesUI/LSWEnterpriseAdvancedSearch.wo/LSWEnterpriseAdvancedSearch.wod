@@ -1,4 +1,4 @@
-// $Id: LSWEnterpriseAdvancedSearch.wod,v 1.4 2003/12/22 17:05:48 helge Exp $
+// $Id: LSWEnterpriseAdvancedSearch.wod 2 2004-08-20 11:37:44Z znek $
 
 Label: WOString { value = labels.LSWEnterpriseAdvancedSearch; }
 
@@ -29,12 +29,11 @@ CountryField: WOTextField {
 }
 
 ExtendedAttrs: WOPopUpButton {
-  list            = currentValues;
-  item            = item;
-  string          = currentLabel;
-  selection       = companyValueAttribute;
-  singleSelection = YES;
-  nilString       = "-";
+  list      = currentValues;
+  item      = item;
+  string    = currentLabel;
+  selection = companyValueAttribute;
+  nilString = "-";
 }
 
 ExtendedValue: WOTextField {
@@ -43,12 +42,11 @@ ExtendedValue: WOTextField {
 }
 
 CategoryPopUp: WOPopUpButton {
-  list            = session.categoryNames;
-  item            = item;
-  string          = item;
-  selection       = enterprise.keywords;
-  singleSelection = YES;
-  nilString       = "-";
+  list      = session.categoryNames;
+  item      = item;
+  string    = item;
+  selection = enterprise.keywords;
+  nilString = "-";
 }
 
 CategoryLabel:  WOString { value = labels.categoryLabel;  }
@@ -123,11 +121,10 @@ Font:     SkyConfigFont     {}
 EditFont: SkyConfigEditFont {}
 
 MaxSearchCountPopUp: WOPopUpButton {
-  list            = ( "100", "200", "500", "1000");
-  item            = item;
-  string          = item;
-  selection       = maxSearchCount;
-  singleSelection = YES;
+  list      = ( "100", "200", "500", "1000");
+  item      = item;
+  string    = item;
+  selection = maxSearchCount;
 }
 
 MaxSearchCountLabel: WOString {
@@ -199,11 +196,10 @@ LoadSearchAttr: SkySubAttribute {
   width = "30%";
 }
 LoadSearchPopUp: WOPopUpButton {
-  list            = savedSearches;
-  nilString       = "--";
-  selection       = searchTitle;
-  singleSelection = YES;
-  onChange        = "document.savedSearch.submit(); return true";
+  list      = savedSearches;
+  nilString = "--";
+  selection = searchTitle;
+  onChange  = "document.savedSearch.submit(); return true";
 }
 
 HasNoJavaScriptCond: WOConditional {

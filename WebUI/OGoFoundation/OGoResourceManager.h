@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: OGoResourceManager.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __OGoFoundation_OGoResourceManager_H__
 #define __OGoFoundation_OGoResourceManager_H__
@@ -26,16 +25,16 @@
 #import <NGObjWeb/OWResourceManager.h>
 
 @class NSMutableDictionary;
+@class OGoStringTableManager, OGoResourceKey;
 
 @interface OGoResourceManager : OWResourceManager
 {
 @private
-  NSMutableDictionary *componentToPath;
-  NSMutableDictionary *nameToTable;
-  NSMutableDictionary *keyToURL;
-  NSMutableDictionary *keyToPath;
-
-  NSMutableDictionary *compLabelCache;
+  NSMutableDictionary   *componentToPath;
+  NSMutableDictionary   *keyToURL;
+  NSMutableDictionary   *keyToPath;
+  OGoStringTableManager *labelManager;
+  OGoResourceKey        *cachedKey;
 }
 
 @end

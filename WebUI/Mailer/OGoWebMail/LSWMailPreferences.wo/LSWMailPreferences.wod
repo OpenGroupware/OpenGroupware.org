@@ -1,4 +1,4 @@
-// $Id: LSWMailPreferences.wod,v 1.8 2004/06/08 15:43:55 helge Exp $
+// bind to class
 
 Frame: LSWSkyrixFrame {}
 
@@ -290,7 +290,7 @@ MDNSubjectHelp: SkyRichString {
   value = labels.mdnSubjectHelp;
 }
 
-SenderLengthField : OGoDefaultEditField {
+SenderLengthField: OGoDefaultEditField {
   defaults        = defaults;
   componentLabels = labels;
   key             = "mail_senderLength";
@@ -300,7 +300,7 @@ SenderLengthField : OGoDefaultEditField {
   valueList   = ( "10", "15", "20", "25", "30", "35", "40", "45", "50" );
 }
 
-SubjectLengthField : OGoDefaultEditField {
+SubjectLengthField: OGoDefaultEditField {
   defaults        = defaults;
   componentLabels = labels;
   key             = "mail_subjectLength";
@@ -377,12 +377,11 @@ TrashFolderFrame: OGoDefaultEditFrame {
   key             = "mail_trashFolderName";
   isEditableDef   = YES;
 }
-TrashFolderPopup : WOPopUpButton {
-  list            = folderList;
-  item            = item;
-  string          = folder;
-  singleSelection = YES;
-  selection       = trashFolder;
+TrashFolderPopup: WOPopUpButton {
+  list      = folderList;
+  item      = item;
+  string    = folder;
+  selection = trashFolder;
 }
 
 SentFolderFrame: OGoDefaultEditFrame {
@@ -391,12 +390,11 @@ SentFolderFrame: OGoDefaultEditFrame {
   key             = "mail_sentFolderName";
   isEditableDef   = YES;
 }
-SentFolderPopup : WOPopUpButton {
-  list            = folderList;
-  item            = item;
-  string          = folder;
-  singleSelection = YES;
-  selection       = sentFolder;
+SentFolderPopup: WOPopUpButton {
+  list      = folderList;
+  item      = item;
+  string    = folder;
+  selection = sentFolder;
 }
 
 DraftsFolderFrame: OGoDefaultEditFrame {
@@ -406,15 +404,14 @@ DraftsFolderFrame: OGoDefaultEditFrame {
   isEditableDef   = YES;
 }
 
-DraftsFolderPopup : WOPopUpButton {
-  list            = folderList;
-  item            = item;
-  string          = folder;
-  singleSelection = YES;
-  selection       = draftsFolder;
+DraftsFolderPopup: WOPopUpButton {
+  list      = folderList;
+  item      = item;
+  string    = folder;
+  selection = draftsFolder;
 }
 
-FromPopupListLabel : WOString {
+FromPopupListLabel: WOString {
   value = labels.fromPopupList;
 }
 
@@ -432,7 +429,7 @@ FromPopupList: SkyListSorter {
   list              = fromPopupValues;
 }
 
-FromPopupItem : WOString {
+FromPopupItem: WOString {
   value = item;
 }
 
@@ -474,7 +471,7 @@ SentMailListAttributes: SkyListSorter {
                 "contentLen", "isFlagged" );
 }
 
-IsFromPopupEnabled : WOConditional {
+IsFromPopupEnabled: WOConditional {
   condition = isFromPopupEnabled;
 }
 
@@ -486,7 +483,7 @@ ValueCell:     SkyValueCell     {}
 Font:     SkyConfigFont     {}
 EditFont: SkyConfigEditFont {}
 
-EditSpezialFolderCond : WOConditional {
+EditSpezialFolderCond: WOConditional {
   condition = isEditSpezialFolderEnabled;
 }
 

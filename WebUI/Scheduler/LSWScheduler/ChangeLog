@@ -1,3 +1,8 @@
+2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* removed deprecated 'singleSelection' bindings from components
+	  (v5.1.56)
+
 2004-09-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWSchedulerPreferences.m: fixed OGo bug #908 (calendar preferences

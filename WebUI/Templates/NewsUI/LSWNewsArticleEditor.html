@@ -1,0 +1,100 @@
+<!-- $Id: LSWNewsArticleEditor.html 2 2004-08-20 11:37:44Z znek $ -->
+
+<#Frame>
+  <#Window>
+      <#WarningModeCondElse>
+        <table border="0" cellspacing="0" cellpadding="4" width="100%">
+          <#NewsArticleForm>
+            <#MainButtonRow>
+              <td colspan="2">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td>
+                      <#Font><b>
+                        <#NewModeCondElse>
+                          <#NewNewsArticleLabel/>
+                        </#NewModeCondElse>
+                        <#Article/></b>&nbsp;
+                      </#Font>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </#MainButtonRow>
+            <tr><td colspan="2"></td></tr>
+            <tr>
+              <#AttributeCell>
+                <#Font><#ArticleNameLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#ArticleName/></#EditFont>
+              </#ValueCell>
+            </tr>
+            <tr>
+              <#AttributeCell>
+                <#Font><#ArticleCaptionLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#ArticleCaption/></#EditFont>
+              </#ValueCell>
+            </tr>
+            <tr>
+              <#AttributeCell>
+                <#Font><#Text/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#TextInput/></#EditFont>
+              </#ValueCell>
+            </tr>
+            <tr>
+              <#AttributeCell>
+                <#Font><#IndexArticleLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#IsIndexArticle/></#EditFont>
+              </#ValueCell>
+            </tr>
+            <tr>
+              <#AttributeCell>
+                <#Font><#FileUploadLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#FileUpload/></#EditFont>
+              </#ValueCell>
+            </tr>
+            <tr>
+              <#AttributeCell>
+                <#Font><#DeleteImageLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#DeleteImageCheckBox/></#EditFont>
+              </#ValueCell>
+            </tr>
+            <tr>
+              <#AttributeCell>
+                <#Font><#NewsArticleLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#Font>
+                  <#NewsArticleRep>
+                    <#RelatedArticleCheckBox/>
+                    <#NewsArticle/>
+                    <br />
+                  </#NewsArticleRep>
+                </#Font>
+              </#ValueCell>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <#IsSaveEnabled><#SaveSubmit /></#IsSaveEnabled><#IsSaveDisabled><#SaveSubmitDA /></#IsSaveDisabled>
+								<#CancelSubmit />
+                <#IsDeleteEnabled><#DeleteSubmit /></#IsDeleteEnabled>
+              </td>
+            </tr>
+          </#NewsArticleForm>
+        </table>
+      </#WarningModeCondElse>
+      <#WarningModeCond><#Warning/></#WarningModeCond>
+  </#Window>
+</#Frame>

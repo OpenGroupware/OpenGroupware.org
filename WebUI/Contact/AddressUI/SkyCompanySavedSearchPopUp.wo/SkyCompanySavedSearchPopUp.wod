@@ -1,4 +1,4 @@
-// $Id: SkyCompanySavedSearchPopUp.wod,v 1.2 2003/09/30 17:07:13 thomas Exp $
+// bind to class
 
 LoadForm: WOForm {
   name   = "loadform";
@@ -8,17 +8,16 @@ LoadForm: WOForm {
 SearchTitlePopUp: WOPopUpButton {
   list      = listKeys;
   selection = searchTitle;
-  singleSelection = YES;
   onChange  = "document.loadform.submit(); return true";
   nilString = labels.savedSearches;
 }
 
 SearchLoadSubmit: WOSubmitButton {
-  action   = loadSearch;
-  name     = "savedSearchLoadButton";
-  value    = labels.savedSearchesShow;
-  title    = labels.savedSearchesShow;
-  class    = "button_narrow";
+  action = loadSearch;
+  name   = "savedSearchLoadButton";
+  value  = labels.savedSearchesShow;
+  title  = labels.savedSearchesShow;
+  class  = "button_narrow";
 }
 
 ShowRemoveButtonCond: WOConditional {

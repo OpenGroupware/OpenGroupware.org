@@ -6,7 +6,7 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
 >
-  <!-- $Id: LSWObjectEditor.wox,v 1.4 2004/04/30 12:11:20 helge Exp $ -->
+  <!-- $Id: LSWObjectEditor.wox 2 2004-08-20 11:37:44Z znek $ -->
   <tr>
     <td align="right" valign="top" var:bgcolor="config.colors_attributeCell"
         width="15%" var:colspan="colspanA"><OGo:font>
@@ -20,7 +20,6 @@
 	<var:case const:key="enum">
           <var:popup list="currentValues"  item="item" 
                      string="currentLabel" selection="attributeValue" 
-                     const:singleSelection="YES"
                      const:nilString="-" />
         </var:case>
 	

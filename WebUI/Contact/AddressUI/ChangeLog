@@ -1,3 +1,7 @@
+2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* removed deprecated 'singleSelection' binding from templates (v5.1.47)
+
 2004-09-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyContactImportPage.m: added -setContactType: accessor method, this

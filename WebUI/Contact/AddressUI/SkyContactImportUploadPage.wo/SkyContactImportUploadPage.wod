@@ -1,4 +1,4 @@
-// $Id: SkyContactImportUploadPage.wod,v 1.8 2003/12/22 17:04:53 helge Exp $
+// bind to class
 
 Frame: LSWSkyrixFrame {}
 
@@ -61,7 +61,6 @@ FileTypePopUp: WOPopUpButton {
   item      = item;
   string    = fileTypeLabel;
   selection = importType;
-  singleSelection = YES;
 }
 
 PrivateCheckBox: WOCheckBox {
@@ -107,7 +106,6 @@ MappedAttributePopUp: WOPopUpButton {
   item              = item;
   string            = mappedAttributeLabel;
   selection         = mappedAttribute;
-  singleSelection   = YES;
   noSelectionString = "--";
 }
 

@@ -1,0 +1,98 @@
+// $Id: SkyP4UnzipPanel.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+Window: LSWWindowFrame {
+  title   = "Unzip";
+  onClose = session.navigation.leavePage;
+}
+
+Form: WOForm {}
+
+TabView: SkyTabView {
+  selection = tabKey;
+}
+
+UnzipTab: SkySimpleTabItem {
+  key      = "Unzip";
+  label    = labels.unzip;
+  icon     = "unzip";
+}
+
+UnzipFileManagerTree: SkyFileManagerTreeView {
+  fileManager      = fileManager;
+  title            = fileSystemAttributes.NSFileSystemName;
+  unclickablePaths = unclickablePaths;
+}
+
+ZipTable: SkyTableView {
+  list  = infoList;
+  item  = infoItem;
+}
+
+PathTD: WETableData {
+  title  = labels.targetDir;
+  string = infoItem.pathName;
+}
+
+SizeTD: WETableData {
+  title  = labels.size;
+  string = infoItem.size;
+}
+
+DateTD: WETableData {
+  title  = labels.date;
+  string = dateAndTime;
+}
+
+ExcludeTD: WETableData {
+  title = labels.exclude;
+}
+
+Exclude: WOCheckBox {
+  checked = exclude;
+}
+
+RestoreAttributes: WOCheckBox {
+  checked = restoreAttributes;
+}
+
+Overwrite: WOCheckBox {
+  checked = overwrite;
+}
+
+Remove: WOCheckBox {
+  checked = remove;
+}
+
+UnzipButton: WOSubmitButton {
+  action = unzip;
+  value  = labels.unzip;
+  class  = "button_narrow";
+}
+
+CancelButton: WOHyperlink {
+  action = session.navigation.leavePage;
+  string = labels.cancel;
+  class  = "button_narrow";
+}
+
+LabelRestoreAttributes: WOString {
+  value  = labels.restoreAttributes;
+}
+
+LabelOverwrite: WOString {
+  value  = labels.overwrite;
+}
+
+LabelRemove: WOString {
+  value  = labels.remove;
+}
+
+LabelTargetDirectory: WOString {
+  value  = labels.targetDir;
+}
+
+LabelContent: WOString {
+  value  = labels.archiveContent;
+}
+

@@ -1,0 +1,126 @@
+// $Id: SkyInlineYearOverview.wod 2 2004-08-20 11:37:44Z znek $
+
+Font: SkyConfigFont {}
+
+MonthsOfYearRep: WORepetition {
+  list = ( 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+  item = month;
+}
+
+IsResCategorySelected: WOConditional {
+  condition = isResCategorySelected;
+  negate    = YES;
+}
+
+MonthCell: WOGenericContainer {
+  elementName = "td";
+
+  WIDTH       = "25%";
+  ALIGN       = "left";
+  VALIGN      = "top";
+}
+
+MonthRep: SkyMonthRepetition {
+  year        = year;
+  month       = month;
+  timeZone    = timeZone;
+  firstDay    = 1; // monday
+  tableTags   = YES;
+
+  startDate   = startDate;
+  endDate     = endDate;
+  isInMonth   = isInMonth;
+
+  WIDTH       = "100%";
+  CELLSPACING = "2";
+  CELLPADDING = "0";
+  BORDER      = "0";
+}
+
+HeadlineCell: SkyMonthLabel {
+  orientation = "header";
+
+  ALIGN       = "center";
+  BGCOLOR     = config.colors_weekdayHeaderCell;
+}
+
+SwitchToMonthView: WOHyperlink {
+  disabled         = isMonthDirectActionDisabled;
+  directActionName = monthDirectActionName;
+  ?year            = year;
+  ?month           = month;
+  ?tz              = timeZone.abbreviation;
+}
+
+MonthLabel: WOString {
+  value      = labels.$monthString;
+  escapeHTML = NO;
+}
+
+HeaderCell: SkyMonthLabel {
+  orientation = "top";
+  dayOfWeek   = dayOfWeek;
+
+  ALIGN       = "center";
+  WIDTH       = "14%";
+  BGCOLOR     = config.colors_weekdayHeaderCell;
+}
+
+WeekdayTitle: WOString {
+  value = labels.$weekdayString;
+}
+
+LeftBorderCell: SkyMonthLabel {
+  orientation = "left";
+  weekOfYear  = weekOfYear;
+
+  ALIGN       = "center";
+  VALIGN      = "middle";
+  BGCOLOR     = colorOfWeekCell;
+  WIDTH       = "2%";
+}
+
+SwitchToWeekView: WOHyperlink {
+  disabled         = isWeekDirectActionDisabled;
+  directActionName = weekDirectActionName;
+  ?year            = yearForViewWeek;
+  ?week            = weekOfYear;
+  ?tz              = timeZone.abbreviation;
+}
+
+WeekOfYearLabel: WOString {
+  value  = weekOfYear;
+}
+
+ContentCell: SkyMonthCell {
+  ALIGN       = "left";
+  VALIGN      = "top";
+  BGCOLOR     = colorOfDayCell;
+}
+
+ViewDay: WOHyperlink {
+  disabled         = isDayDirectActionDisabled;
+  directActionName = dayDirectActionName;
+  ?year            = startDate.yearOfCommonEra;
+  ?month           = startDate.monthOfYear;
+  ?day             = startDate.dayOfMonth;
+  ?tz              = timeZone.abbreviation;
+}
+
+DayLabel: WOString {
+  value = startDate.dayOfMonth;
+}
+
+// Conditional
+
+IncludeTRStartTag: WOConditional { condition = includeTRStartTag; }
+IncludeTREndTag:   WOConditional { condition = includeTREndTag;   }
+IsMonth:           WOConditional { condition = isInMonth;         }
+IsNotMonth:        WOConditional { condition = isInMonth; negate = YES; }
+IsToday:           WOConditional { condition = isToday;           }
+IsNotToday:        WOConditional { condition = isToday;   negate = YES; }
+
+ShowDayLinkFont : WOGenericContainer {
+  elementName = "font";
+  COLOR       = config.colors_showDayLink;
+}

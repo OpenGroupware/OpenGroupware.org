@@ -1,0 +1,91 @@
+<!-- $Id: SkyProject4MovePanel.html 2 2004-08-20 11:37:44Z znek $ -->
+<#Frame>
+  <#Window>
+    <table border='0' width="100%">
+      <tr>
+        <td valign="top" align="left">
+          <#TabView>
+
+           <#ShowMove>
+            <#MoveTab>
+              <table border='0' width='100%'>
+                <tr>
+                  <td valign='top' width='15%'>
+                    <#MoveFileManagerTree/>
+                  </td>
+                  
+                  <td valign='top'>
+                    <#SelectedFileList>
+                      <#FileNameTD><#FileIcon/>&nbsp;<#FileName/></#FileNameTD>
+                      <#FileSize/>
+                      <#FileOwner/>
+                      <#FileSubject/>
+                    </#SelectedFileList>
+                  </td>
+                </tr>
+              </table>
+            </#MoveTab>
+           </#ShowMove>
+            
+           <#ShowCopy>
+            <#CopyTab>
+              <table border='0' width='100%'>
+                <tr>
+                  <td valign='top' width='15%'>
+                    <#CopyFileManagerTree/>
+                  </td>
+          
+                  <td valign='top'>
+                    <#SelectedFileList>
+                      <#FileNameTD><#FileIcon/>&nbsp;<#FileName/></#FileNameTD>
+                      <#FileSize/>
+                      <#FileOwner/>
+                      <#FileSubject/>
+                    </#SelectedFileList>
+                  </td>
+                </tr>
+              </table>
+            </#CopyTab>
+           </#ShowCopy>
+            
+           <#ShowNew>
+            <#NewTab>
+              <table border='0' width='100%'>
+                <tr>
+                  <td valign='top' width='15%'>
+                    <#NewFileManagerTree/>
+                  </td>
+          
+                  <td valign='top'>
+                    <#SelectedFileList>
+                      <#FileNameTD><#FileName/></#FileNameTD>
+                      <#FileSize/>
+                      <#FileSubject/>
+                    </#SelectedFileList>
+                  </td>
+                </tr>
+              </table>
+            </#NewTab>
+           </#ShowNew>
+
+          </#TabView>
+        </td>
+        
+        <#ShowSelectProject>
+          <td valign="top" align="left">
+            <#SelProjectTabView>
+             <#SelProjectTab>
+              <#Form>
+                <#ShowSelectProject>
+                  <#SelectProject/><hr size="1" />
+                  <#SelectProjectButton/>
+                </#ShowSelectProject>
+              </#Form>
+             </#SelProjectTab>
+            </#SelProjectTabView>
+          </td>
+        </#ShowSelectProject>
+      </tr>
+    </table>
+  </#Window>
+</#Frame>

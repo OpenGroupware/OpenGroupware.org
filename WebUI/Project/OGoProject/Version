@@ -1,6 +1,6 @@
-# $Id: Version 15 2004-08-21 03:22:17Z helge $
+# version file
 
-SUBMINOR_VERSION:=46
+SUBMINOR_VERSION:=47
 
 # Requirements:
 #   v5.0.42 requires libOGoProject    v5.0.28

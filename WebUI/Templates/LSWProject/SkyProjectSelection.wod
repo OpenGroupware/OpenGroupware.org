@@ -1,0 +1,80 @@
+// $Id: SkyProjectSelection.wod 2 2004-08-20 11:37:44Z znek $
+
+AttributeCell: SkyAttributeCell  {}
+ValueCell:     SkyValueCell      {}
+
+Font:          SkyConfigFont     {}
+EditFont:      SkyConfigEditFont {}
+
+ProjectSearchLabel: WOString {
+  value = labels.searchProject;
+}
+EnterpriseSearchLabel: WOString {
+  value = labels.Enterprise;
+}
+
+ProjectSearchField: WOTextField {
+  name     = "projectSearch";
+  value    = searchProjectText;
+}
+EnterpriseSearchField: WOTextField {
+  name     = "enterpriseSearch";
+  value    = searchEnterpriseText;
+}
+
+ProjectSearchSubmit: WOSubmitButton {
+  action   = projectSearch;
+  name     = "projectSearchSelection";
+  value    = labels.search;
+  class    = "button_narrow";
+}
+EnterpriseSearchSubmit: WOSubmitButton {
+  action   = enterpriseSearch;
+  name     = "enterpriseSearchSelection";
+  value    = labels.Enterprise;
+  class    = "button_narrow";
+}
+
+
+ProjectsLabel: WOString {
+  value = labels.chooseProject;
+  escapeHTML = NO;
+}
+
+ProjectListWithNoProject: SkyListView {
+  list            = projects;
+  columns         = 4;
+  useRadioButtons = YES;
+  selectedItems   = selectedProjects;
+  nilString       = labels.noProject;
+  attributes      = ( { key = "skyProjectSelectionLabel"; } );
+}
+
+ProjectList: SkyListView {
+  list            = projects;
+  columns         = 4;
+  useRadioButtons = YES;
+  selectedItems   = selectedProjects;
+  attributes      = ( { key = "skyProjectSelectionLabel"; } );
+}
+
+SearchEnterprisesCond: WOConditional {
+  condition = searchEnterprises;
+}
+
+NoProjectEnabled: WOConditional {
+  condition = noProjectEnabled;
+}
+
+NoProjectDisabled: WOConditional {
+  condition = noProjectEnabled;
+  negate    = YES;
+}
+
+WithTitles: WOConditional {
+  condition = withoutTitles;
+  negate    = YES;
+}
+WithoutTitles: WOConditional {
+  condition = withoutTitles;
+}

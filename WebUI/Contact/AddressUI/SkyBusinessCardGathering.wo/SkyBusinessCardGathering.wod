@@ -1,4 +1,4 @@
-// $Id: SkyBusinessCardGathering.wod,v 1.8 2003/12/22 17:04:53 helge Exp $
+// $Id: SkyBusinessCardGathering.wod 2 2004-08-20 11:37:44Z znek $
 
 Frame: LSWSkyrixFrame {}
 
@@ -160,10 +160,9 @@ CategoryAttr: SkyAttribute {
 }
 
 CategoryPopUp: WOPopUpButton {
-  list            = session.categoryNames;
-  selection       = category;
-  singleSelection = YES;
-  nilString       = "-";
+  list      = session.categoryNames;
+  selection = category;
+  nilString = "-";
 }
 
 LastCategoryCond: WOConditional {

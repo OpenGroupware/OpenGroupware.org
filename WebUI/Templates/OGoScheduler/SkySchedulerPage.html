@@ -1,0 +1,121 @@
+<#Frame>
+  <!-- $Id: SkySchedulerPage.html 2 2004-08-20 11:37:44Z znek $ -->
+  <#Window>
+    <#SelectPanel/>
+    
+    <#Tab>
+      <#DayOverviewTab>
+        <table border="0" cellpadding="4" width="100%" cellspacing="2">
+          <tr>
+            <#ToggleCell>
+              <table border='0' cellpadding='0' cellspacing='0'>
+                <tr>
+                 <#DayOverviewActive>
+                  <td><#OverviewIconInactive/></td>
+                  <td><#DayVChartLink><#VChartIcon/></#DayVChartLink></td>
+                  <td><#DayHChartLink><#HChartIcon/></#DayHChartLink></td>
+                 </#DayOverviewActive>
+                
+                 <#DayVChartActive>
+                  <td>
+                    <#DayOverviewLink><#OverviewIcon/></#DayOverviewLink>
+                  </td>
+                  <td><#VChartIconInactive/></td>
+                  <td><#DayHChartLink><#HChartIcon/></#DayHChartLink></td>
+                 </#DayVChartActive>
+                
+                 <#DayHChartActive>
+                  <td>
+                    <#DayOverviewLink><#OverviewIcon/></#DayOverviewLink>
+                  </td>
+                  <td><#DayVChartLink><#VChartIcon/></#DayVChartLink></td>
+                  <td><#HChartIconInactive/></td>
+                 </#DayHChartActive>
+                </tr>
+              </table> 
+            </#ToggleCell>
+
+            <#ButtonCell><#Buttons/></#ButtonCell>
+          </tr>
+        </table>
+        
+        <#DayOverviewActive><#DayOverview/></#DayOverviewActive>
+        <#DayVChartActive  ><#DayVChart  /></#DayVChartActive>
+        <#DayHChartActive  ><#DayHChart  /></#DayHChartActive>
+      </#DayOverviewTab>
+
+      <#WeekOverviewTab>
+        <table border="0" cellpadding="4" width="100%" cellspacing="2">
+          <tr>
+            <#ToggleCell>
+              <table border='0' cellpadding='0' cellspacing='0'>
+               <tr>
+                <#WeekOverviewActive>
+                  <td><#OverviewIconInactive/></td>
+                  <td><#WeekVChartLink><#VChartIcon/></#WeekVChartLink></td>
+                  <td><#WeekHChartLink><#HChartIcon/></#WeekHChartLink></td>
+                  <td>
+                    <#WeekColumnViewLink
+                       ><#ColumnViewIcon/></#WeekColumnViewLink>
+                  </td>
+                </#WeekOverviewActive>
+
+                <#WeekVChartActive>
+                  <td>
+                    <#WeekOverviewLink><#OverviewIcon/></#WeekOverviewLink>
+                  </td>
+                  <td><#VChartIconInactive/></td>
+                  <td><#WeekHChartLink><#HChartIcon/></#WeekHChartLink></td>
+                  <td>
+                    <#WeekColumnViewLink
+		       ><#ColumnViewIcon/></#WeekColumnViewLink>
+                  </td>
+                </#WeekVChartActive>
+
+                <#WeekHChartActive>
+                  <td>
+                    <#WeekOverviewLink><#OverviewIcon/></#WeekOverviewLink>
+                  </td>
+                  <td><#WeekVChartLink><#VChartIcon/></#WeekVChartLink></td>
+                  <td><#HChartIconInactive/></td>
+                  <td>
+                    <#WeekColumnViewLink
+                      ><#ColumnViewIcon/></#WeekColumnViewLink>
+                  </td>
+                </#WeekHChartActive>
+
+                <#WeekColumnViewActive>
+                  <td>
+                    <#WeekOverviewLink><#OverviewIcon/></#WeekOverviewLink>
+                  </td>
+                  <td><#WeekVChartLink><#VChartIcon/></#WeekVChartLink></td>
+                  <td><#WeekHChartLink><#HChartIcon/></#WeekHChartLink></td>
+                  <td><#ColumnViewIconInactive/></td>
+                </#WeekColumnViewActive>
+
+               </tr>
+              </table>
+            </#ToggleCell>
+          
+            <#ButtonCell><#Buttons/></#ButtonCell>
+          </tr>
+        </table>
+        
+        <#WeekOverviewActive  ><#WeekOverview/></#WeekOverviewActive>
+        <#WeekVChartActive    ><#WeekVChart/></#WeekVChartActive>
+        <#WeekHChartActive    ><#WeekHChart/></#WeekHChartActive>
+        <#WeekColumnViewActive><#WeekColumnView/></#WeekColumnViewActive>
+      </#WeekOverviewTab>
+
+      <#MonthOverviewTab>
+        <table border="0" cellpadding="4" width="100%" cellspacing="2">
+          <tr><#ButtonCell><#Buttons/></#ButtonCell></tr>
+        </table>
+        
+        <#MonthOverview/>
+      </#MonthOverviewTab>
+
+      <#YearOverviewTab><#YearOverview/></#YearOverviewTab>
+    </#Tab>
+  </#Window>
+</#Frame>

@@ -1,6 +1,6 @@
-// $Id$
+// $Id: Defaults.plist 1 2004-08-20 11:17:52Z znek $
 {
-  "CVS-Id"  = "$Id$";
+  "CVS-Id"  = "$Id: Defaults.plist 1 2004-08-20 11:17:52Z znek $";
   "CVS-Tag" = "$Name:  $";
 
   LSReloadConfiguration                = NO;
@@ -14,10 +14,10 @@
   SkyLogoutURL                         = "";
   OGoLogBundleLoading                  = NO;
   SkyLanguages = ( 
-    English_OOo,    German_OOo,
-    English_blue,   German_blue,
-    English_orange, German_orange,
-    English_kde,    German_kde
+    English_OOo,
+    English_blue,
+    English_orange,
+    English_kde
   );
 
   // labels for these defined in string files

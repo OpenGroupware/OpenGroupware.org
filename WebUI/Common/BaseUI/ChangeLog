@@ -1,3 +1,8 @@
+2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWSkyrixFrame.m: fixed timing calculation for new SOPE 4.3 API
+	  (use -startDate) (v5.1.90)
+
 2004-09-07  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.1.89

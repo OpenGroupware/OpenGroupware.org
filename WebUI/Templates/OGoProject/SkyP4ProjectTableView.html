@@ -1,0 +1,22 @@
+<!-- $Id: SkyP4ProjectTableView.html 2 2004-08-20 11:37:44Z znek $ -->
+
+<#ProjectTableView>
+  <#TitleMode><b><#ProjectsLabel/></b></#TitleMode>
+  <#ButtonMode><#Buttons/></#ButtonMode>
+
+  <#GroupMode><#Group/></#GroupMode>
+  
+  <#PCode/>
+  <#PName><#Font><#NameLink/></#Font></#PName>
+  <#PStartDate><#Font><#StartDateField/></#Font></#PStartDate>
+
+  <#PLeader/>
+
+  <#PFavoritesHeader>&nbsp;</#PFavoritesHeader>
+  <#PFavorites>
+    <#IsInFavoritesCond    ><#RemoveFromFavorites/></#IsInFavoritesCond>
+    <#IsInFavoritesCondElse><#AddToFavorites     /></#IsInFavoritesCondElse>
+  </#PFavorites>
+  
+  <#FooterMode><#ProjectsLabel/>:</#FooterMode>
+</#ProjectTableView>

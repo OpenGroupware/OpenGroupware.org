@@ -1,3 +1,8 @@
+2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyP4ZipPanel.wo: removed deprecated 'singleSelection' binding
+	  (v5.1.11)
+
 2004-07-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* common.h: removed unused includes (v5.0.10)

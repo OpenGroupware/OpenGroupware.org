@@ -1,3 +1,8 @@
+2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyProject4NewLink.wo: removed deprecated 'singleSelection' binding
+	  (v5.1.47)
+
 2004-08-23  Helge Hess  <helge.hess@skyrix.com>
 
 	* GNUmakefile.preamble: fixed a linking path (v5.1.46)

@@ -1,3 +1,8 @@
+2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWEnterpriseAdvancedSearch.wo: removed deprecated 'singleSelection'
+	  binding (v5.1.32)
+
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWEnterpriseAdvancedSearch.m: fixed a MacOSX warning (v5.1.31)

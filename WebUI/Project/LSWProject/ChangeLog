@@ -1,3 +1,11 @@
+2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.40
+
+	* removed deprecated 'singleSelection' binding
+
+	* LSWProjectWizard.wo/LSWProjectWizard.wod: template cleanups
+
 2004-08-31  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWProjectEditor.m, DateIntervalFormatter.m: fixed compile warnings

@@ -1,4 +1,4 @@
-// $Id: LSWMailFilterEditor.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+// bind to class
 
 Frame: LSWSkyrixFrame {}
 
@@ -36,7 +36,7 @@ SaveSubmit: WOImageButton {
   name     = labels.saveButtonLabel;
   alt      = labels.saveButtonLabel;
   border   = "0";
-};
+}
 
 DeleteSubmit: WOHyperlink {
   action           = delete;
@@ -46,7 +46,7 @@ DeleteSubmit: WOHyperlink {
   disabled         = isDeleteDisabled;
   alt              = labels.deleteButtonLabel;
   border           = "0";
-};
+}
 
 CancelSubmit: WOHyperlink {
   action   = cancel;
@@ -54,14 +54,14 @@ CancelSubmit: WOHyperlink {
   name     = labels.cancelButtonLabel;
   alt      = labels.cancelButtonLabel;
   border   = "0";
-};
+}
 
 AttributeCell: WOGenericContainer {
   elementName = "td";
   align       = "right";
   bgcolor     = config.colors_attributeCell;
   width       = "15%";
-};
+}
 
 ValueCell: SkyValueCell {}
 
@@ -74,11 +74,14 @@ FilterRep: WORepetition {
   list  = filter.entries;
   index = index;
   item  = entry;
-};
-
-FilterNameLabel: WOString {
-  value = labels.filterName;
 }
+
+FilterNameLabel:  WOString { value = labels.filterName;   }
+FilterPosLabel:   WOString { value = labels.filterPos;    }
+OfTheMessage:     WOString { value = labels.ofTheMessage; }
+ActionLabel:      WOString { value = labels.action;       }
+MatchLabel:       WOString { value = labels.match; escapeHTML = NO; }
+ThenMoveToFolder: WOString { value = labels.thenMoveToFolder; }
 
 FilterName: WOTextField {
   name      = "filtername";
@@ -87,49 +90,40 @@ FilterName: WOTextField {
   size      = 40;
 }
 
-FilterPosLabel: WOString {
-  value = labels.filterPos;
-}
-
 FilterPos: WOPopUpButton {
-  list            = filterPos;
-  selection       = filter.filterPos;
-  item            = item;
-  singleSelection = YES;
+  list      = filterPos;
+  selection = filter.filterPos;
+  item      = item;
 }
 
 TheLabel: WOString {
   value = theLabel;
 }
 
-OfTheMessage: WOString {
-  value = labels.ofTheMessage;
-};
-
 FieldPopup: WOPopUpButton {
-//list            = config.MailHeaderFields;
-  list            = ("from", "to", "cc", "subject" );
-  string          = mailHeaderLabel;
-  item            = item;
-  selection       = entry.headerField;
-  singleSelection = YES;
-};
+  // TODO: why not a dynamic list from the defaults?
+  //list    = config.MailHeaderFields;
+  list      = ("from", "to", "cc", "subject" );
+  string    = mailHeaderLabel;
+  item      = item;
+  selection = entry.headerField;
+}
 
 FilterKindPopup: WOPopUpButton {
-//list            = config.FilterKinds;
-  list            = ("contains", "doesn't contain", "is", "isn't", "begins with",
-                     "ends with" );
-  string          = filterKindLabel;
-  item            = item;
-  selection       = entry.filterKind;
-  singleSelection = YES;
-};
+  // TODO: why not a dynamic list from the defaults?
+  //list    = config.FilterKinds;
+  list      = ("contains", "doesn't contain", "is", "isn't", "begins with",
+               "ends with" );
+  string    = filterKindLabel;
+  item      = item;
+  selection = entry.filterKind;
+}
 
 SearchStringField: WOTextField {
   value     = entry.string;
   formatter = session.formatString;
   size      = 40;
-};
+}
 
 MoreSubmit: WOImageButton {
   action   = more;
@@ -137,7 +131,7 @@ MoreSubmit: WOImageButton {
   name     = labels.moreButtonLabel;
   alt      = labels.moreButtonLabel;
   border   = "0";
-};
+}
 
 FewerSubmit: WOImageButton {
   action           = fewer;
@@ -147,15 +141,6 @@ FewerSubmit: WOImageButton {
   disabledFilename = "fewer_inactive.gif";
   disabled         = forbidfewer;
   border           = "0";
-};
-
-ActionLabel: WOString {
-  value = labels.action;
-}
-
-MatchLabel: WOString {
-  value      = labels.match;
-  escapeHTML = NO;
 }
 
 MatchRadioList: WORadioButtonList {
@@ -166,13 +151,9 @@ MatchRadioList: WORadioButtonList {
 }
 
 FolderPopUpButton: WOPopUpButton {
-  list            = folderList;
-  item            = item;
-  string          = folderString;
-  singleSelection = YES;
-  selection       = filterFolder;
+  list      = folderList;
+  item      = item;
+  string    = folderString;
+  selection = filterFolder;
 }
 
-ThenMoveToFolder: WOString {
-  value = labels.thenMoveToFolder;
-}

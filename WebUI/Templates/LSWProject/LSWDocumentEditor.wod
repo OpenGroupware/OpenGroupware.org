@@ -1,0 +1,162 @@
+// $Id: LSWDocumentEditor.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.windowTitleDocumentEditor;
+  onClick = cancel;
+  onClose = cancel;
+}
+
+DocumentForm : WOForm {
+   ENCTYPE = "multipart/form-data";
+   name    = "documentEditor";
+   action  = save;
+}
+
+DocumentEditor : LSWObjectEditor {
+  labels     = labels;
+  object     = document;
+  attributes = ( 
+    { key = "abstract"; }
+  );
+}
+DocumentEditorWithContact : LSWObjectEditor {
+  labels     = labels;
+  object     = document;
+  attributes = (
+    { key = "abstract"; },
+    { key = "contact";  }
+  );
+}
+
+BackLink : WOHyperlink {
+        action = back;
+        string = "back";
+}
+
+WarningModeCond : WOConditional {
+        condition = isInWarningMode;
+}
+
+WarningModeCondElse : WOConditional {
+        condition = isInWarningMode;
+        negate    = YES;
+}
+
+AttrEditElse : WOConditional {
+        condition = isAttrEdit;
+        negate    = YES;
+}
+
+Warning : LSWWarningPanel {
+        onOk   = warningOkAction;
+        phrase = warningPhrase;
+}
+
+NewModeCondElse : WOConditional {
+        condition = isInNewMode;
+        negate    = YES;
+}
+
+NewModeCond : WOConditional {
+        condition = isInNewMode;
+}
+
+FileNameLabel : WOString {
+        value = labels.fileName;
+};
+FileName : WOTextField {
+        value = snapshot.title;
+        SIZE  = config.textField_size2;
+}
+RealFileName : WOTextField {
+        value = filePath;
+        SIZE  = config.textField_size2;
+}
+FileType : WOString {
+        value = snapshot.fileType;
+}
+
+SaveSubmit: WOImageButton {
+        action           = insertObject;
+        filename         = "save.gif";
+        name             = labels.saveButton;
+        ALT              = labels.saveButton;
+        disabledFilename = "save_inactive.gif";
+        disabled         = isSaveDisabled;
+        BORDER           = 0;
+};
+
+SaveAndMoveSubmit: WOImageButton {
+        action           = saveAndMove;
+        filename         = "save_and_move.gif";
+        name             = labels.saveAndMoveButton;
+        ALT              = labels.saveAndMoveButton;
+        BORDER           = 0;
+};
+
+DeleteSubmit: WOHyperlink {
+        action           = delete;
+        filename         = "remove.gif";
+        ALT              = labels.deleteButton;
+        disabledFilename = "remove_inactive.gif";
+        disabled         = isDeleteDisabled;
+        BORDER           = 0;
+};
+CancelSubmit: WOHyperlink {
+        action           = cancel;
+        filename         = "cancel.gif";
+        ALT              = labels.cancelButton;
+        BORDER           = 0;
+};
+
+FileUploadLabel : WOString {
+        value = labels.fileUpload;
+};
+
+FileUpload : WOFileUpload {
+        data = data;
+        filePath = filePath;
+        SIZE  = config.textField_size2;
+};
+
+AutoReleaseLabel : WOString {
+        value = labels.autorelease;
+};
+AutoReleaseCheckbox : WOCheckBox {
+        checked = autoRelease;
+};
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+IsImportCond : WOConditional {
+  condition = isImport;
+};
+
+IsImportCondElse : WOConditional {
+  condition = isImport;
+  negate    = YES;
+};
+
+FileNameString : WOString {
+  value = snapshot.title;
+};
+
+ProjectSelection: SkyProjectSelection {
+  project           = project;
+  title             = labels.project;
+  searchEnterprises = YES;
+  noProjectEnabled  = NO;
+};
+IsContactAttrEnabled: WOConditional {
+  condition = isContactAttrEnabled;
+}
+IsContactAttrDisabled: WOConditional {
+  condition = isContactAttrEnabled;
+  negate    = YES;
+}

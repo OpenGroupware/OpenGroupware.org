@@ -1,0 +1,75 @@
+<#Frame>
+ <!-- $Id: LSWDocumentEditor.html 2 2004-08-20 11:37:44Z znek $ -->
+<#Window>
+ <#WarningModeCondElse>
+  <table border="0" cellspacing="0" cellpadding="3" width="100%">
+    <#DocumentForm>
+      <tr>
+        <#AttributeCell>
+          <#Font><#FileNameLabel />:</#Font>
+        </#AttributeCell>
+        <#ValueCell>
+          <#EditFont>
+            <#IsImportCondElse>
+              <#FileName />
+              <#NewModeCondElse> . <#FileType /></#NewModeCondElse>
+            </#IsImportCondElse>
+            <#IsImportCond><#RealFileName /></#IsImportCond>
+          </#EditFont>
+        </#ValueCell>
+      </tr>
+
+      <#IsImportCond         ><#ProjectSelection /></#IsImportCond>
+      <#IsContactAttrDisabled><#DocumentEditor   /></#IsContactAttrDisabled>
+      <#IsContactAttrEnabled>
+        <#DocumentEditorWithContact />
+      </#IsContactAttrEnabled>
+
+      <#IsImportCondElse>
+        <#AttrEditElse>
+          <tr>
+            <#AttributeCell>
+              <#Font><#FileUploadLabel />:</#Font>
+            </#AttributeCell>
+            <#ValueCell>
+              <#EditFont><#FileUpload /></#EditFont>
+            </#ValueCell>
+          </tr>
+        </#AttrEditElse>
+      </#IsImportCondElse>
+      <!--tr>
+        <#AttributeCell><#Font><#AutoReleaseLabel/>:</#Font></#AttributeCell>
+        <#ValueCell><#Font><#AutoReleaseCheckbox/></#Font></#ValueCell>
+      </tr-->
+      <tr> 
+        <td>&nbsp;</td>
+        <td>
+          <#SaveSubmit />
+          <#IsImportCond><#SaveAndMoveSubmit /></#IsImportCond>
+          <#CancelSubmit />
+          <#IsImportCondElse>
+            <#NewModeCondElse><#DeleteSubmit /></#NewModeCondElse>
+          </#IsImportCondElse>
+        </td>
+      </tr>
+    </#DocumentForm>
+  </table>
+ </#WarningModeCondElse>
+
+ <#WarningModeCond>
+   <#Warning />  
+ </#WarningModeCond>
+</#Window>
+
+<script language="JavaScript">
+<!-- hide
+if (document.documentEditor) {
+  if (document.documentEditor.abstract) {
+    document.documentEditor.abstract.focus();
+    /*document.documentEditor.abstract.select();*/
+  }
+}
+// -->
+</script>
+
+</#Frame>

@@ -1,0 +1,177 @@
+// $Id: SkyMessageRfc822Viewer.wod 2 2004-08-20 11:37:44Z znek $
+
+// -- header
+
+PartHeaderRow: WOGenericContainer {
+  elementName = "TR";
+  BGCOLOR     = config.colors_partHeader;
+}
+
+IsRoot:    WOConditional { condition = isRootPart; }
+IsNotRoot: WOConditional { condition = isRootPart; negate = YES; }
+
+Subject:            WOString { value = subject; }
+From:               WOString { value = from;    }
+To:                 WOString { value = to;      }
+Cc:                 WOString { value = cc;      }
+Date:               WOString { value = date;    }
+Organization:       WOString { value = organization;         }
+ContentLen:         WOString { value = labels.contentLength; }
+ContentType:        WOString { value = contentType;          }
+ContentLength:      WOString { value = contentLength;        }
+ContentDisposition: WOString { value = contentDisposition;   }
+
+HasContentLength:      WOConditional { condition = hasContentLength;   }
+HasContentDisposition: WOConditional { condition = contentDisposition; }
+HasCC:                 WOConditional { condition = hasCC;              }
+HasOrganization:       WOConditional { condition = hasOrganization;    }
+
+IsPrintModeCondElse: WOConditional { condition = printMode; negate = YES; }
+IsPrintModeCond:     WOConditional { condition = printMode; }
+
+Download: WOHyperlink {
+  action   = downloadPart;
+  //  filename = downloadIconName;
+  ALT      = labels.download;
+  TITLE    = labels.download;
+  TARGET   = downloadTarget;
+  BORDER   = 0;
+}
+
+DownloadIcon: SkyP4MailIcon {
+  mimeType = contentType;
+  // documentPath = couldbepathtodoc ?;
+}
+
+HasProjectCond: WOConditional {
+  condition = isProjectApplicationAvailable;
+}
+ToDoc: WOHyperlink {
+  action   = toDoc;
+  filename = "project.gif";
+  ALT      = labels.toDoc;
+  TITLE    = labels.toDoc;
+  BORDER   = 0;
+}
+
+// -- body
+
+MimeBodyPartViewer: WOComponentReference {
+  component    = bodyPartViewerComponent;
+  nestingDepth = nestingDepth;
+  printMode    = printMode;
+}
+
+MimeBodyRow: WOGenericContainer {
+  elementName = "TR";
+  BGCOLOR     = config.colors_partBody;
+}
+
+MimeBodyViewer: WOComponentReference {
+  component    = bodyViewerComponent;
+  nestingDepth = nestingDepth;
+  printMode    = printMode;
+}
+
+IsNoComposite: WOConditional {
+  condition = isCompositeType;
+  negate    = YES;
+}
+
+IsComposite:     WOConditional { condition = isCompositeType;     }
+IsCompositeBody: WOConditional { condition = bodyPartIsComposite; }
+IsNoCompositeBody: WOConditional {
+  condition = bodyPartIsComposite;
+  negate    = YES;
+}
+
+IsNoEo:  WOConditional { condition = isEoType;  negate = YES; }
+IsNoRfc: WOConditional { condition = isRfcType; negate = YES; }
+IsRfc:   WOConditional { condition = isRfcType; }
+
+/* labels */
+
+SubjectLabel:      WOString { value = labels.subject;      }
+SenderLabel:       WOString { value = labels.sender;       }
+DateLabel:         WOString { value = labels.date;         }
+ToLabel:           WOString { value = labels.to;           }
+CCLabel:           WOString { value = labels.cc;           }
+BccLabel:          WOString { value = labels.bcc;          }
+OrganizationLabel: WOString { value = labels.organization; }
+ContTypeLabel:     WOString { value = "Content Type";      }
+
+Font: SkyConfigFont {}
+
+ShowBodyDepSizeEnabledCond: WOConditional {
+  condition = showBodyDepSizeEnabled;
+}
+ShowBodyDepSizeEnabledCondElse: WOConditional {
+  condition = showBodyDepSizeEnabled;
+  negate    = YES;
+}
+
+ShowBodyDepSizeCond: WOConditional {
+  condition = showBodyDepSize;
+}
+ShowBodyDepSizeCondElse: WOConditional {
+  condition = showBodyDepSize;
+  negate    = YES;
+}
+
+ExpandedBodyLink: WOHyperlink {
+  action = alternateShowBody;
+  filename = "collapsed.gif";
+  BORDER   = 0;
+}
+CollapsedBodyLink: WOHyperlink {
+  action = alternateShowBody;
+  filename = "expanded.gif";
+  BORDER   = 0;
+}
+
+ShowBodyCond:   WOConditional { condition = showBody; }
+HasUrlBody:     WOConditional { condition = hasUrl;   }
+HasUrlBodyElse: WOConditional { condition = hasUrl; negate = YES; }
+
+ActionUrl: WOHyperlink {
+  directActionName = downloadPartActionName;
+  actionClass      = "SkyImapDownloadAction";
+  //  filename         = "document_txt.gif";
+  ?url             = url;
+  ?mimeType        = mimeTypeString;
+  ?encoding        = encodingString;
+  ALT      = labels.download;
+  TITLE    = labels.download;
+  TARGET   = downloadTarget;
+  BORDER   = 0;
+}
+
+ToCollapserCond: WOConditional { condition = showToCollapser; }
+ToExpanderCond:  WOConditional { condition = showToExpander;  }
+CcCollapserCond: WOConditional { condition = showCcCollapser; }
+CcExpanderCond:  WOConditional { condition = showCcExpander;  }
+
+ToCollapser: WOHyperlink {
+  action   = collapseTo;
+  filename = "expanded.gif";
+  BORDER   = "0";
+}
+ToExpander: WOHyperlink {
+  action   = expandTo;
+  filename = "collapsed.gif";
+  BORDER   = "0";
+}
+
+CcCollapser: WOHyperlink {
+  action   = collapseCc;
+  filename = "expanded.gif";
+  BORDER   = "0";
+}
+CcExpander: WOHyperlink {
+  action   = expandCc;
+  filename = "collapsed.gif";
+  BORDER   = "0";
+}
+
+IsApp:           WOConditional { condition = isApp; }
+IsMultiPartElse: WOConditional { condition = isMultipart; negate = YES; }

@@ -1,0 +1,241 @@
+// $Id: SkyP4FolderView.wod 2 2004-08-20 11:37:44Z znek $
+
+ChangeDirField: WOTextField {
+  value = changeDirPath;
+  size  = 60;
+  style = textFieldStyle;
+}
+ChangeDirButton: WOImageButton {
+  filename = "icon_view_all.gif";
+  action   = changeDirectory;
+  name     = labels.cd;
+  ALT      = labels.cd;
+  title    = labels.cd;
+  BORDER   = 0;
+  VALIGN   = "bottom";
+}
+RenameCurrentFolderButton: WOImageButton {
+  filename = "icon_move_folder.gif";
+  action   = renameFolder;
+  name     = labels.renamefolder;
+  ALT      = labels.renamefolder;
+  title    = labels.renamefolder;
+  BORDER   = 0;
+  VALIGN   = "bottom";
+}
+CreateNewFolderButton: WOImageButton {
+  filename = "icon_new_folder.gif";
+  action   = createNewFolder;
+  name     = labels.createfolder;
+  ALT      = labels.createfolder;
+  title    = labels.createfolder;
+  BORDER   = 0;
+  VALIGN   = "baseline";
+}
+DeleteFolderButton: WOImageButton {
+  filename = "icon_delete_folder.gif";
+  action   = deleteFolder;
+  name     = labels.deletefolder;
+  ALT      = labels.deletefolder;
+  title    = labels.deletefolder;
+  BORDER   = 0;
+  VALIGN   = "baseline";
+}
+
+EditAccessButton: WOImageButton {
+  filename = "icon_rights.gif";
+  action   = editAccess;
+  name     = labels.editAccess;
+  ALT      = labels.editAccess;
+  title    = labels.editAccess;
+  BORDER   = 0;
+  VALIGN   = "baseline";
+}
+
+EmptyTrashLink: JSConfirmPanel {
+  filename       = "icon_empty_trash.gif";
+  action         = emptyTrash;
+  confirmMessage = labels.reallyEmptyTrashQ;
+  altTag         = labels.emptyTrash;
+  name           = labels.emptyTrash;
+  BORDER         = 0;
+}
+
+
+TitleMode:  WETableViewTitleMode  {}
+FooterMode: WETableViewFooterMode {}
+ButtonMode: WETableViewButtonMode {}
+
+FileListButtons: SkyButtonRow {
+  ordering = ( link, upload, new, newinepoz );
+  
+  onNew        = newDocument;
+  onNewinepoz  = newDocumentInEpoz;
+  onUpload     = uploadDocument;
+  onLink       = newLink;
+  new          = labels.new;
+  newinepoz    = labels.newInEpoz;
+  upload       = labels.fileUpload;
+  link         = labels.newlink;
+  hasNew       = folder.isInsertable;
+  hasUpload    = folder.isInsertable;
+  hasLink      = isSymbolicLinkEnabled;
+  hasNewinepoz = isEpozEnabled;
+}
+
+FileList: SkyTableView {
+  dataSource     = dataSource;
+  item           = currentFile;
+  sortedKey      = sortedKey;
+  isDescending   = isDescending;
+  //  cacheTimeout   = 0;
+  selections     = selectedFiles;
+  //autoScroll     = session.userDefaults.skyp4_filelist_autoscrollsize;
+  //batchSize      = session.userDefaults.skyp4_filelist_batchsize;
+  //scrollOnClient = YES;
+  showGroupTitle = NO;
+}
+
+DeleteButton: WOSubmitButton {
+  action   = deleteSelection;
+  value    = labels.delete2;
+  class    = "button_narrow";
+}
+ReleaseButton: WOSubmitButton {
+  action   = releaseSelection;
+  value    = labels.release;
+  class    = "button_narrow";
+}
+MoveButton: WOSubmitButton {
+  action   = moveSelection;
+  value    = labels.move;
+  class    = "button_narrow";
+}
+CopyButton: WOSubmitButton {
+  action   = copySelection;
+  value    = labels.copy;
+  class    = "button_narrow";
+}
+ZipButton: WOSubmitButton {
+  action   = zipSelection;
+  value    = labels.zipButton;
+  class    = "button_narrow";
+}
+
+DoesZipExist: WOConditional {
+  condition = doesZipExist;
+}
+
+FileName: WETableData {
+  title   = labels.fileName;
+  sortKey = "NSFileName";
+}
+
+IsFileDir: WOConditional {
+  condition = currentFile.NSFileType;
+  value     = "NSFileTypeRegular";
+  negate    = YES;
+}
+IsFileNotDir: WOConditional {
+  condition = currentFile.NSFileType;
+  value     = "NSFileTypeRegular";
+}
+FileDownload: SkyP4DownloadLink {
+  projectId    = fileSystemNumber;
+  documentPath = currentFile.NSFilePath;
+}
+FileIcon: SkyP4DocumentIcon {
+  projectName  = fileSystemName;
+  documentPath = currentFile.NSFilePath;
+  mimeType     = currentFile.NSFileMimeType;
+}
+
+FileNameLink: WOHyperlink {
+  action  = clickedFile;
+  //  string  = fileLinkName; //
+  string = currentFile.NSFileName;
+}
+
+DragFile: WEDragContainer {
+  tag    = "projectfile";
+  object = currentFile;
+}
+
+FileSizeTD: WETableData {
+  title   = labels.size;
+  sortKey = "NSFileSize";
+  string  = currentFile.NSFileSize;
+}
+
+FileOwnerTD: WETableData {
+  title   = labels.currentOwner;
+  sortKey = "NSFileOwnerAccountName";
+  //string  = currentFile.color;
+  string  = currentFile.NSFileOwnerAccountName;
+}
+
+FileModDateTD: WETableData {
+  title   = labels.modified;
+  sortKey = "NSFileModificationDate";
+}
+
+ModDateField: SkyDateField {
+  date    = currentFile.NSFileModificationDate;
+}
+
+FileTitleTD: WETableData {
+  title   = labels.subject;
+  sortKey = "NSFileSubject";
+  string  = currentFile.NSFileSubject;
+}
+
+/* parent dir button */
+
+HasGoUp: WOConditional {
+  condition = hasGoUp;
+}
+GoUp: WOHyperlink {
+  action   = goUp;
+  filename = "narrow_up_icon.gif";
+  BORDER   = 0;
+  ALIGN    = "bottom";
+  ALT      = labels.goToParentDir;
+  title    = labels.goToParentDir;
+}
+
+/* checkin/checkout */
+
+IsFileLocked:     WOConditional { condition = currentFileIsLocked;     }
+IsFileCheckedOut: WOConditional { condition = currentFileIsCheckedOut; }
+
+IsExternalLinkCondElse: WOConditional {
+  negate = YES;
+  condition = isExternalLink;
+}
+IsExternalLinkCond: WOConditional {
+  condition = isExternalLink;
+}
+
+//ExternalFileLink: WOHyperlink {
+//  href   = linkHref;
+//  target = "externalLink";
+//  string = currentFile.NSFileName;
+//}
+ExternalFileLink: SkyExternalLink {
+  href   = linkHref;
+  target = "externalLink";
+  string = currentFile.NSFileName;
+}
+
+Locked:     WOString { value = labels.locked; }
+CheckedOut: WOString { value = labels.locked; }
+
+Font: SkyConfigFont {}
+
+SupportAccessRights: WOConditional {
+  condition = fileManager.supportAccessRights;
+}
+
+SupportsVersioning: WOConditional {
+  condition = fileManager.supportsVersioning;
+}

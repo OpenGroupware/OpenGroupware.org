@@ -100,6 +100,8 @@ libOGoFoundation_OBJC_FILES = \
 	OGoHelpManager.m		\
 	OGoEditorPage.m			\
 	OGoStringTable.m		\
+	OGoStringTableManager.m		\
+	OGoResourceKey.m		\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make

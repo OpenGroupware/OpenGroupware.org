@@ -1,0 +1,48 @@
+<#Frame>
+<!--$Id: SkyProjectAssignment.html 2 2004-08-20 11:37:44Z znek $ -->
+<#Window>
+  <table border="0" cellspacing="0" cellpadding="4" width="100%">
+    <#Form>
+      <#NewModeCondElse><#Title /></#NewModeCondElse>
+      <tr>
+        <#AttributeCell><#Font><#SearchProjects />:</#Font></#AttributeCell>
+        <#ValueCell>
+          <#EditFont><#SearchField /></#EditFont>
+          <#SearchSubmit />&nbsp;
+          <#NewSubmit />
+          <table border="0" cellpadding="0" cellspacing="0">
+            <tr>
+              <td nowrap="nowrap"><small><#Font><#ExtendedCheckBox /><#ExtendedString />&nbsp;</#Font></small></td>
+            </tr>
+          </table>
+          <hr size="1" />
+        </#ValueCell>
+      </tr>
+
+      <#ProjectsConditional>
+        <tr>
+          <#AttributeCell><#Font><#AddProjects />:</#Font></#AttributeCell>
+          <#ValueCell><#Font>
+            <#ProjectsList />
+            <#IsListNotEmpty><hr size="1" /></#IsListNotEmpty>
+            <#ResultList />
+          </#Font></#ValueCell>
+        </tr>
+      </#ProjectsConditional>
+   
+      <tr>
+        <td>&nbsp;</td>
+        <td><#SaveSubmit /><#CancelSubmit /></td>
+      </tr>
+     </#Form>
+  </table>
+ </#Window>
+
+<script language="JavaScript">
+<!--
+if (document.editform.elements[0]) {
+  document.editform.elements[0].select();
+}
+// -->
+</script>
+</#Frame>

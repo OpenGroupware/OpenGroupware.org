@@ -1,0 +1,106 @@
+// $Id: SkyP4ProjectTableView.wod 2 2004-08-20 11:37:44Z znek $
+
+ProjectTableView: SkyTableView {
+  dataSource   = dataSource;
+  item         = project;
+//groups       = groups;
+  sortedKey    = session.userDefaults.skyp4_desktop_sortfield; // name
+  isDescending = isDescending;
+//cacheTimeout = session.userDefaults.skyp4_desktop_cachetimeout;
+//autoScroll   = session.userDefaults.skyp4_desktop_autoscrollsize;
+  batchSize    = session.userDefaults.skyp4_desktop_batchsize;
+  sortAction   = "sortAction";
+//selections   = selections;
+  showGroupTitle = NO;
+}
+
+TitleMode:  WETableViewTitleMode  {}
+FooterMode: WETableViewFooterMode {}
+ButtonMode: WETableViewButtonMode {}
+GroupMode:  WETableViewGroupMode  {}
+
+PCode: WETableData {
+  title   = labels.code;
+  sortKey = "number";
+  string  = project.number;
+}
+PName: WETableData {
+  title   = labels.name;
+  sortKey = "name";
+}
+PStartDate: WETableData {
+  title     = labels.startDate;
+  sortKey   = "startDate";
+}
+PLeader: WETableData {
+  title   = labels.projectLeader;
+  string  = project.leaderName;
+  sortKey = "leaderName";
+}
+
+StartDateField: SkyDateField {
+  date       = project.startDate;
+  formatType = "date";
+}
+
+NameLink: WOHyperlink {
+  directActionName = "activate";
+  ?oid = project.projectId;
+  string = project.name;
+}
+
+Buttons: SkyButtonRow {
+  ordering  = ( wizard, refresh );
+  onRefresh = parent.refetch;
+  urlWizard = newWizardURL;
+  refresh   = labels.refresh;
+  wizard    = labels.new;
+}
+
+Group: WERichString {
+  value    = groups;
+  isItalic = YES;
+}
+
+ProjectsLabel: WOString {
+  value = labels.projects;
+}
+
+// --- favorites -----------------------
+
+PFavoritesHeader: WETableHeader {
+  WIDTH = 20;
+}
+
+PFavorites: WETableData {
+  WIDTH = 20;
+}
+
+IsInFavoritesCond: WOConditional {
+  condition = isInFavorites;
+}
+
+IsInFavoritesCondElse: WOConditional {
+  condition = isInFavorites;
+  negate    = YES;
+}
+
+AddToFavorites: WOHyperlink {
+  filename = "favorite_plus.gif";
+  action   = addToFavorites;
+  name     = labels.addToFavorites;
+  ALT      = labels.addToFavorites;
+  BORDER   = 0;
+  VALIGN   = "bottom";
+}
+
+RemoveFromFavorites: WOHyperlink {
+  filename = "favorite_minus.gif";
+  action   = removeFromFavorites;
+  name     = labels.removeFromFavorites;
+  ALT      = labels.removeFromFavorites;
+  BORDER   = 0;
+  VALIGN   = "bottom";
+}
+
+Font:     SkyConfigFont {};

@@ -1,3 +1,10 @@
+2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.2
+
+	* LSWImapMailFilterEditor.wo/LSWImapMailFilterEditor.wod: template
+	  cleanups
+
 2004-08-22  Helge Hess  <helge.hess@opengroupware.org>
 
 	* moved filter/vacation components to separate bundle OGoMailFilter

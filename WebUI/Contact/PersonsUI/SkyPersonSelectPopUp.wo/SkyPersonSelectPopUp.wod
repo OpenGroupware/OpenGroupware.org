@@ -1,13 +1,12 @@
-// $Id: SkyPersonSelectPopUp.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+// bind to class
 
 PopUp: WOPopUpButton {
-  list            = visibleCompanies;
-  item            = item;
-  value           = item.companyId;
-  string          = itemLabel;
-  selection       = selectedCompany;
-  singleSelection = YES;
-  onChange        = ^onChange;
+  list      = visibleCompanies;
+  item      = item;
+  value     = item.companyId;
+  string    = itemLabel;
+  selection = selectedCompany;
+  onChange  = ^onChange;
 }
 
 WithSearchField: WOConditional {

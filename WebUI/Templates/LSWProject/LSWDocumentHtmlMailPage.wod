@@ -1,0 +1,101 @@
+// $Id: LSWDocumentHtmlMailPage.wod 2 2004-08-20 11:37:44Z znek $
+
+MainButtonRow: WOGenericContainer {
+  elementName = "TR";
+  BGCOLOR     = config.colors_mainButtonRow;
+}
+
+TitleExternal : WOString {
+  value  = objectTitle;
+}
+
+TitleExternalLink : WOHyperlink {
+  string           = objectTitle;
+  directActionName = "activate";
+  ?wosid           = NO;
+  ?oid             = object.documentId;
+}
+
+TitleAction : WOHyperlink {
+  action = viewObject;
+  string = objectTitle;
+}
+
+InlineLinkCond : WOConditional {
+  condition = inlineLink;
+}
+InlineLinkCondElse : WOConditional {
+  condition = inlineLink;
+  negate    = YES;
+}
+
+Abstract : WOString {
+  value = object.abstract;
+}
+
+TitleLabel : WOString {
+  value = labels.title;
+}
+
+FolderLabel : WOString {
+  value = labels.folder;
+}
+
+AbstractLabel : WOString {
+  value = labels.abstract;
+}
+
+DocumentViewerLabel : WOString {
+  value = labels.documentViewer;
+}
+
+FolderViewerLabel : WOString {
+  value = labels.folderViewer;
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+Font: SkyConfigFont {}
+
+IsInFormCondition : WOConditional {
+  condition = isInForm;
+}
+
+IsFolder : WOConditional {
+  condition = object.isFolder.boolValue;
+}
+
+IsNotFolder : WOConditional {
+  condition = object.isFolder.boolValue;
+  negate    = YES;
+}
+
+SendContentLabel : WOString {
+  value      = labels.sendContent;
+  escapeHTML = NO;
+}
+
+SendContentCheckbox : WOCheckBox {
+  checked = attachData;
+}
+ShowDirectActionLink : WOConditional {
+  condition = showDirectActionLink;
+}
+ShowDirectActionLinkElse : WOConditional {
+  condition = showDirectActionLink;
+  negate    = YES;
+}
+Contact : WOString {
+  value = object.contact;
+}
+ContactLabel : WOString {
+  value = labels.contact;
+}
+IsContactAttrEnabled: WOConditional {
+  condition = isContactAttrEnabled;
+}
+IsContactAttrDisabled: WOConditional {
+  condition = isContactAttrEnabled;
+  negate    = YES;
+}

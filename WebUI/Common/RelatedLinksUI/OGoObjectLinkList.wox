@@ -34,7 +34,6 @@
                        list="linkTypeNames" item="linkType" 
                        value="linkType"
                        string="labels.$linkType" 
-                       const:singleSelection="YES"
                        var:noSelectionString="labels.popup_createLink"
                        html:onChange="this.form.submit(); return true" />
             

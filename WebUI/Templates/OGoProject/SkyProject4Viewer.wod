@@ -1,0 +1,230 @@
+// $Id: SkyProject4Viewer.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = label;
+  onClose = closeWindow;
+  hasTest = isTestMode;
+  onTest  = disableTest;
+}
+
+ProfFileName: SkyProfileTemplate {
+  profileId = "FileNameField";
+}
+
+Form: WOForm {}
+
+Title: LSWViewerTitle {
+  title    = fileSystemAttributes.NSFileSystemName;
+  gentable = YES;
+}
+
+TabView: SkyTabView {
+  selection = session.userDefaults.skyp4_projectviewer_tab;
+}
+
+FormsTab: SkySimpleTabItem {
+  key      = "form";
+  label    = labels.form;
+  action   = reloadIndexForm;
+}
+
+DocumentsTab: SkySimpleTabItem { key = "documents"; label = labels.documents; }
+SearchTab:    SkySimpleTabItem { key = "search";    label = labels.search;    }
+FSInfoTab:    SkySimpleTabItem { key = "attributes";label = labels.attributes;}
+NotesTab:     SkySimpleTabItem { key = "notes";   label = labels.notes;       }
+JournalTab:   SkySimpleTabItem { key = "journal"; label = labels.journal;     }
+JobsTab:      SkySimpleTabItem { key = "jobs";    label = labels.jobsSubview; }
+LinkTab:      SkyTabItem       { key = "links";   label = labels.links;       }
+
+Buttons: SkyButtonRow {
+  ordering    = ( pubpreview, publisher, mail, test, refresh, clip );
+
+  onRefresh    = refresh;
+  onClip       = placeInClipboard;
+  onMail       = mailObject;
+  onTest       = goTestMode;
+  hasTest      = canTest;
+  urlMail      = objectUrl;
+  onPublisher  = showPublisher;
+  hasPublisher = isPublisherEnabled;
+  
+  hasPubPreview    = hasPubPreview;
+  targetPubPreview = "pubPreviewTarget";
+  urlPubPreview    = pubPreviewURL;
+  
+  /* labels */
+  clip       = labels.clip;
+  mail       = labels.send;
+  test       = labels.test;
+  refresh    = labels.refresh;
+  pubpreview = labels.pubPreview;
+}
+
+/* folder tree */
+
+FileManagerTree: SkyFileManagerTreeView {
+  fileManager    = fileManager;
+  title          = shortTitle;
+  zoomDefault    = "skyp4_projectviewer_zoom";
+
+  onDrop         = "droppedOnFolder";
+  droppedObject  = droppedFile;
+  fileSystemPath = folderDropPath;
+  dropTags       = ( projectfile );
+  useFileSystemCache = YES;
+}
+
+/* FileSystem Info */
+
+FSInfo: SkyProjectInlineViewer {
+  project  = fileSystemAttributes.object;
+  showClip = NO;
+  showSend = NO;
+}
+
+/* search */
+
+Search: SkyProject4DocumentSearch {
+  projectId = fileSystemAttributes.NSFileSystemNumber;
+}
+
+/* table views */
+
+ProjectJobListAct: LSWProjectJobList {
+  projectId         = fileSystemAttributes.NSFileSystemNumber;
+  showProjectReport = YES;
+}
+
+RelatedLinks: OGoObjectLinkList {
+  object = project;
+}
+
+Notes: SkyNoteList {
+  title     = fileSystemAttributes.NSFileSystemName;
+  projectId = fileSystemAttributes.NSFileSystemNumber;
+}
+
+Journal: SkyP4DocJournal {
+  fileManager = fileManager;
+}
+
+/* forms */
+
+ShowForm: WOConditional {
+  condition = hasIndexForm;
+}
+
+IndexForm: WOComponentReference {
+  component   = currentForm;
+  fileManager = fileManager;
+  preview     = NO;
+}
+
+IndexPreview: WOComponentReference {
+  component   = currentForm;
+  fileManager = fileManager;
+  preview     = YES;
+}
+
+IsDesigner: WOConditional {
+  condition = isAccountDesigner;
+}
+
+IsNotDesigner: WOConditional {
+  condition = isAccountDesigner;
+  negate    = YES;
+}
+
+ShowOnlyForm: WOConditional {
+  condition = showOnlyIndexForm;
+}
+
+ShowNotOnlyForm: WOConditional {
+  condition = showOnlyIndexForm;
+  negate    = YES;
+}
+
+/* tree */
+
+ShowTree: WOConditional {
+  condition = hideTree;
+  negate    = YES;
+}
+
+DontShowTree: WOConditional {
+  condition = hideTree;
+}
+DoShowTree: WOHyperlink {
+  action   = doShowTree;
+  filename = "tree_show.gif";
+  border   = "0";
+  alt      = labels.showFolderTree;
+}
+
+DoHideTree: WOHyperlink {
+  action   = doHideTree;
+  filename = "tree_hide.gif";
+  border   = "0";
+  align    = "bottom";
+  alt      = labels.hideFolderTree;
+}
+
+FolderView: SkyP4FolderView {
+  fileManager = fileManager;
+  dataSource  = selectedDataSource;
+}
+
+/* folder form */
+
+ShowFolderContent: WOConditional {
+  condition = showFolderContent;
+}
+
+ShowFolderForm: WOConditional {
+  condition = showFolderForm;
+}
+
+FolderForm: WOComponentReference {
+  component   = folderForm;
+  fileManager = fileManager;
+  preview     = NO;
+  dataSource  = selectedDataSource;
+  folderPath  = fileManager.currentDirectoryPath;
+}
+
+HasHeadForm: WOConditional {
+  condition = hasHeadForm;
+}
+
+HasTailForm: WOConditional {
+  condition = hasTailForm;
+}
+
+HeadForm: WOComponentReference {
+  component  = headForm;
+  preview    = NO;
+  dataSource = selectedDataSource;
+  folderPath = fileManager.currentDirectoryPath;
+}
+
+TailForm: WOComponentReference {
+  component  = tailForm;
+  preview    = NO;
+  dataSource = selectedDataSource;
+  folderPath = fileManager.currentDirectoryPath;
+}
+
+ProjectLabel: WOString { value = labels.project; }
+ProjectName:  WOString { value = label; }
+
+AttributeCell: WOGenericContainer {
+  elementName = "td";
+  align	      = "right"; // hh: not top aligned?
+  bgcolor     = config.colors_attributeCell;
+  width       = "15%";
+};
+
+ValueCell: SkyValueCell {}
+Font:      SkyConfigFont {}

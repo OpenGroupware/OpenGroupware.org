@@ -1,5 +1,5 @@
 # $Id: Version 1 2004-08-20 11:17:52Z znek $
 
-SUBMINOR_VERSION:=55
+SUBMINOR_VERSION:=56
 
 # v5.0.52 requires libNGObjWeb v4.2.402
