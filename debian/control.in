@@ -86,7 +86,7 @@ Description: Development files for opengroupware.org-docapi
 Package: libopengroupware.org-docapi_OGOSONAME_
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libopengroupware.org-db-project_OGOSONAME_ | opengroupware.org-project-storage
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopengroupware.org-db-project_OGOSONAME_ | opengroupware.org_OGOSONAME_-project-storage
 Description: OpenGroupware.org document API
  The Document API is a set of Objective-C libraries wrapping the SOPE
  logic in a "document" API.
@@ -107,7 +107,7 @@ Description: Development files for OpenGroupware.org's database storage
 Package: libopengroupware.org-db-project_OGOSONAME_
 Section: libs
 Architecture: any
-Provides: opengroupware.org-project-storage
+Provides: opengroupware.org_OGOSONAME_-project-storage
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Database storage for OpenGroupware.org projects
  Files associated to OpenGroupware.org projects can be stored through different
@@ -127,7 +127,7 @@ Description: Development files for OpenGroupware.org's filesystem storage
 Package: libopengroupware.org-fs-project_OGOSONAME_
 Section: libs
 Architecture: any
-Provides: opengroupware.org-project-storage
+Provides: opengroupware.org_OGOSONAME_-project-storage
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Filesystem storage for OpenGroupware.org projects
  Files associated to OpenGroupware.org projects can be stored through different
