@@ -49,48 +49,57 @@
             <OGo:font
               ><input type="checkbox" name="extsearch"
                       var:checked="isExtendedSearch"
-              ><OGo:label key="mail_editor_extsearch" /></OGo:font>
+              /><OGo:label key="mail_editor_extsearch" /></OGo:font>
           </OGo:td-value>
         </tr>  
 
         <!-- Addresses -->
         <var:foreach list="addresses" item="addressEntry" index="count">
             <tr>
+<!-- TODO
               <#AttributeCell><OGo:font><#AddressKeysPopup /></OGo:font></#AttributeCell>
               <#ValueCell><OGo:editfont>
                 <#RecipientsPopup />
               </OGo:editfont></#ValueCell>
+-->
             </tr>
         </var:foreach>
         <var:if condition="session.userDefaults.mail_enableFromPopup">
             <tr>
+<!-- TODO
                 <#AttributeCell><OGo:font><#FromLabel />:</OGo:font></#AttributeCell>
                 <#ValueCell><OGo:editfont>
                   <#FromPopup />
                 </OGo:editfont></#ValueCell>
+-->
             </tr>
         </var:if>
           
         <!-- Mail Subject -->
         <tr>
+<!-- TODO
            <#AttributeCell><OGo:font><#SubjectLabel />:</OGo:font></#AttributeCell>
            <#ValueCellMailText><OGo:editfont>
               <#Subject />          
            </OGo:editfont></#ValueCellMailText>
+-->
         </tr>
           
         <!-- Mail Text Body -->
         <tr>
+<!-- TODO
            <#AttributeCell><OGo:font>
               <#MailTextString />:
             </OGo:font></#AttributeCell>
            <#ValueCellMailText><OGo:editfont>
               <#MailText />
             </OGo:editfont></#ValueCellMailText>
+-->
         </tr>
 
         <!-- Option Checkboxes -->
         <tr>
+<!-- TODO
             <#AttributeCell><OGo:font><#OptionsLabel />:</OGo:font></#AttributeCell>
             <#ValueCellMailText><OGo:font>
               <#PlainTextCheckboxEnabled>
@@ -99,6 +108,7 @@
 
               <#ReturnReceiptCheckbox /> <#ReturnReceiptLabel />
             </OGo:font></#ValueCellMailText>
+-->
         </tr>
           
         <!-- Buttons (Send, Save, Cancel) -->
@@ -124,6 +134,7 @@
         <var:foreach list="uploadArray" item="uploadItem" 
                      index="uploadArrayIdx">
           <tr>
+<!-- TODO
             <#AttributeCell><OGo:font>
               <var:if condition="isFirstUploadField">
                 <#HasOnlyOneField><#UploadString />:</#HasOnlyOneField>
@@ -134,11 +145,13 @@
               <#UploadField />&nbsp;
               <var:if condition="isLastUploadField"><#UploadConfirm /></var:if>
             </OGo:editfont></#ValueCell>
+-->
           </tr>
         </var:foreach>
       </table>
 
       <table border="0" cellspacing="0" cellpadding="0" width="100%">
+<!-- TODO
         <var:foreach list="attachments" item="attachment">
           <tr><td colspan="2"><hr size="1" /></td></tr>
           <tr>
@@ -151,6 +164,7 @@
           <tr><td colspan="2" align="right"><#RemoveAttachment /></td></tr>
           <tr><td colspan="2"><#AttachmentViewer /></td></tr>
         </var:foreach>
+-->
       </table>
     </form>
   </var:if>
@@ -159,7 +173,7 @@
     <table width="100%" border="0" cellpadding="4" cellspacing="0">
       <tr>
         <td align="center"><OGo:font><b
-            ><var:string value="warningPhrase" /></OGo:font></b></td>
+            ><var:string value="warningPhrase" /></b></OGo:font></td>
       </tr>
       <tr><td><entity name="nbsp"/></td></tr>
     </table>
