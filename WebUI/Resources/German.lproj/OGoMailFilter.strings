@@ -12,6 +12,7 @@ andThe                          = "und das";
 cancelButtonLabel               = "abbrechen";
 cc                              = "CC";
 contains                        = "enthält";
+deleteButtonLabel               = "löschen";
 filterName                      = "Filtername";
 filterPos                       = "Filter Position";
 from                            = "Sender";
