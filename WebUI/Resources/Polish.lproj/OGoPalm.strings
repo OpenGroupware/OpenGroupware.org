@@ -1,4 +1,4 @@
-// $Id: OGoPalm.strings,v 1.1 2004/11/14 08:18:06 wolvverine Exp $
+// $Id: OGoPalm.strings,v 1.2 2004/11/30 03:24:47 wolvverine Exp $
 
 SkyPalmAddressEditor                = "Edit palmaddress";
 SkyPalmAddressViewer                = "Palmaddress Viewer";
@@ -28,9 +28,9 @@ SkyPalmPreferences_importOGoDatesTo   = "and";
 SkyPalmPreferences_importPalmContacts = "import Palm contacts into OGo";
 SkyPalmPreferences_importPalmDates    = "import Palm dates into OGo";
 SkyPalmPreferences_job                = "Todolist";
-SkyPalmPreferences_jobAttributes      = "Columns";
+SkyPalmPreferences_jobAttributes      = "Kolumny";
 SkyPalmPreferences_memo               = "Memo Pad";
-SkyPalmPreferences_memoAttributes     = "Columns";
+SkyPalmPreferences_memoAttributes     = "Kolumny";
 SkyPalmPreferences_ogoDateDefaultReadAccess  = "default OGo date read access";
 SkyPalmPreferences_ogoDateDefaultWriteAccess = "default OGo date write access";
 SkyPalmPreferences_ogoTwoWaySync     = "OGo 2Way-Sync";
