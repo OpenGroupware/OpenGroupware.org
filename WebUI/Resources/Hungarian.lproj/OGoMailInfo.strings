@@ -44,6 +44,6 @@ action_refresh     = "refresh";
 action_closeWindow = "close window";
 
 activeMail              = "Email"
-inactiveMail            = "Email (inaktív)"
+inactiveMail            = "Email (inaktÃ­v)"
 newMail                 = "Email (olvasatlan)"
 
