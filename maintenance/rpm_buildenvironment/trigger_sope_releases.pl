@@ -76,5 +76,10 @@ if($i_really_had_sth_todo eq "yes") {
     system("sh $ENV{HOME}/prepare_yum_fcore3.sh");
   }
   #polish buildenv after we're done...
+  print "we're almost at the end... cleaning up what we've done so far...\n";
   system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
+  #go back to latest trunk build - that is, before we grabbed a new release we had
+  #the most current sope trunk built/installed
+  print "restoring latest build state...\n";
+  system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -u no -d no -f yes -b no");
 }
