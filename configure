@@ -17,7 +17,8 @@ ARG_PREFIX=""
 ARG_GSMAKE="$GNUSTEP_MAKEFILES"
 ARG_CFGMAKE="$PWD/config.make"
 ARG_WITH_GNUSTEP=0
-ARG_WITH_DEBUG=0
+ARG_WITH_DEBUG=1
+ARG_WITH_STRIP=1
 ARG_WITHOUT_LIBPISOCK=0
 
 DARG_GNUSTEP_SH="$ARG_GSMAKE/GNUstep.sh"
@@ -46,6 +47,7 @@ Installation directories:
   --configmake=PATH       path to the config file being created
   --with-gnustep          install in GNUstep tree
   --enable-debug          turn on debugging and compile time warnings
+  --enable-strip          turn on stripping of debug symbols
 
 _ACEOF
 
@@ -68,6 +70,11 @@ function printParas() {
     echo "  debug:  yes";
   else
     echo "  debug:  no";
+  fi
+  if test $ARG_WITH_STRIP = 1; then 
+    echo "  strip:  yes";
+  else
+    echo "  strip:  no";
   fi
   
   echo "  prefix: $ARG_PREFIX"
@@ -231,6 +238,15 @@ function genConfigMake() {
   fi
   cfgwrite ""
   
+  if test $ARG_WITH_STRIP = 1; then
+    cfgwrite "# configured to produce stripped code";
+    cfgwrite "strip:=yes"
+  else
+    cfgwrite "# configured not to strip code";
+    cfgwrite "strip:=no"
+  fi
+  cfgwrite ""
+  
   cfgwrite "# enforce shared libraries";
   cfgwrite "shared:=yes"
   cfgwrite ""
@@ -349,6 +365,15 @@ function processOption() {
 	;;
     "x--enable-debug")
         ARG_WITH_DEBUG=1
+	;;
+    "x--disable-debug")
+        ARG_WITH_DEBUG=0
+	;;
+    "x--enable-strip")
+        ARG_WITH_STRIP=1
+	;;
+    "x--disable-strip")
+        ARG_WITH_STRIP=0
 	;;
     "x--without-pisock")
         ARG_WITHOUT_LIBPISOCK=1
