@@ -487,27 +487,25 @@ server.
 #########################################
 %prep
 rm -fr ${RPM_BUILD_ROOT}
-%setup -n opengroupware.org
+%setup -q -n opengroupware.org
 
 # ****************************** build ********************************
 %build
-#source %{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
 ./configure --prefix=${RPM_BUILD_ROOT}%{prefix} \
             --enable-debug \
             --gsmake=%{prefix}/OGo-GNUstep
+
 make %{ogo_makeflags}
 
 # ****************************** install ******************************
 %install
-#source %{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
-mkdir -p GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep
+FAKE_GSROOT="${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep"
+mkdir -p $FAKE_GSROOT
 
-#make %{ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep \
-#                      FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
-#                      BUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
-#                      WOBUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
-#                      install
-make install
+make %{ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${FAKE_GSROOT} \
+                      BUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
+                      WOBUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
+                      install
 
 SHAREDIR="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a"
 rm -f "${SHAREDIR}/templates"
