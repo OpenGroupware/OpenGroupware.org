@@ -1,8 +1,5 @@
-%define lfmaj 1
-%define lfmin 0
-
 Summary:       A free and open groupware suite.
-Name:          ogosopefull
+Name:          ogoall
 Version:       %{ogo_version}
 Release:       %{ogo_release}.%{ogo_buildcount}%{dist_suffix}
 Vendor:        http://www.opengroupware.org
@@ -11,8 +8,11 @@ License:       GPL
 URL:           http://www.opengroupware.org
 Group:         Development/Libraries
 AutoReqProv:   off
-Source0:       %{sope_source}
-Source1:       %{ogo_source}
+Source0:       %{ogo_gnustep_make_source}
+Source1:       %{libf_objc_source}
+Source2:       %{libf_source}
+Source3:       %{sope_source}
+Source4:       %{ogo_source}
 Prefix:        %{ogo_prefix}
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 #XXUseSOPE:      sope-4.4beta.2-voyager
@@ -32,15 +32,48 @@ rm -fr ${RPM_BUILD_ROOT}
 mkdir ${RPM_BUILD_ROOT}
 cd ${RPM_BUILD_ROOT}
 mkdir tmp
+
+tar zxf %{_sourcedir}/%{ogo_gnustep_make_source} -C tmp
+mv tmp/* gnustep-make
+tar zxf %{_sourcedir}/%{libf_objc_source} -C tmp
+mv tmp/* libobjc-lf2
+tar zxf %{_sourcedir}/%{libf_source} -C tmp
+mv tmp/* libfoundation
 tar zxf %{_sourcedir}/%{sope_source} -C tmp
 mv tmp/* sope
 tar zxf %{_sourcedir}/%{ogo_source} -C tmp
 mv tmp/* ogo
+
 rm -rf tmp
 
 # ****************************** build ********************************
 %build
-source %{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
+
+OGO_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep
+
+export CPPFLAGS=-Wno-import
+export CFLAGS=-O0
+./configure --prefix=${OGO_INSTALL_ROOT} \
+  --with-library-combo=gnu-fd-nil \
+  --with-user-root=${OGO_INSTALL_ROOT} \
+  --with-network-root=${OGO_INSTALL_ROOT} \
+  --with-local-root=${OGO_INSTALL_ROOT} \
+  --without-system-root
+
+make %{ogo_gnustep_make_makeflags} install
+
+source ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
+
+cd libobjc-lf2
+make %{libf_objc_makeflags} all
+make %{libf_objc_makeflags} install
+cd ..
+
+export CFLAGS="-Wno-import -O0"
+./configure
+make %{libf_makeflags} all
+make %{libf_makeflags} install
+unset CFLAGS
 
 cd sope
 make %{sope_makeflags}
@@ -53,8 +86,30 @@ cd ..
 
 # ****************************** install ******************************
 %install
-source %{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
+source ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
 mkdir -p GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep
+
+# libobjc-lf
+
+make %{libf_objc_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep install
+
+mkdir -p ${RPM_BUILD_ROOT}%{prefix}/lib
+mv ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Libraries/libobjc*.so.lf2* \
+   ${RPM_BUILD_ROOT}%{prefix}/lib/
+
+# libFoundation
+
+mkdir -p ${RPM_BUILD_ROOT}%{prefix}/lib
+mkdir -p ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Makefiles/Additional
+
+make %{libf_makeflags} INSTALL_ROOT_DIR=${RPM_BUILD_ROOT} \
+                       GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix} \
+                       FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
+                       install
+
+rm -f ${RPM_BUILD_ROOT}%{prefix}/Library/Headers/libFoundation/extensions/exceptions/FoundationException.h
+rm -f ${RPM_BUILD_ROOT}%{prefix}/Library/Headers/libFoundation/extensions/exceptions/GeneralExceptions.h
+rm -f ${RPM_BUILD_ROOT}%{prefix}/Library/Headers/libFoundation/extensions/exceptions/NSCoderExceptions.h
 
 # SOPE
 
@@ -121,8 +176,58 @@ UPDATE_SCHEMA=\"YES\"                 # will attempt to update the database sche
 OGO_USER=\"ogo\"                      # default username (unix) of your OGo install - might vary
 " >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-webui-1.0a
 
+# patch GNUstep make pathes
+
+OLD=${RPM_BUILD_ROOT}%{prefix}
+NEW=%{prefix}
+%{__perl} -i.build -pe"s~${OLD}~${NEW}~g" ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.csh
+%{__perl} -i.build -pe"s~${OLD}~${NEW}~g" ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
+%{__perl} -i.build -pe"s~${OLD}~${NEW}~g" ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/.GNUsteprc
+
 # ****************************** post *********************************
 %post
+# gstep-make
+if [ $1 = 1 ]; then
+  cd %{prefix}/OGo-GNUstep
+  ln -s Library/Makefiles
+fi
+
+if [ $1 = 2 ]; then
+  #can I vanish? guess not - but who knows?
+  cd %{prefix}/OGo-GNUstep
+  if [ ! -e "Makefiles" ]; then
+    ln -s Library/Makefiles
+  fi
+fi
+
+# libobjc-lf
+if [ $1 = 1 ]; then
+  if [ -e %{prefix}/lib/libobjc_d.so.lf2 ]; then
+    cd %{prefix}/OGo-GNUstep/Library/Libraries
+    ln -s %{prefix}/lib/libobjc_d.so.lf2
+  fi
+  if [ -e %{prefix}/lib/libobjc.so.lf2 ]; then
+    cd %{prefix}/OGo-GNUstep/Library/Libraries
+    ln -s %{prefix}/lib/libobjc.so.lf2
+  fi
+  if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
+    echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/libobjc-lf2.conf
+  elif [ ! "`grep '%{prefix}/lib' %{_sysconfdir}/ld.so.conf`" ]; then
+    echo "%{prefix}/lib" >> %{_sysconfdir}/ld.so.conf
+  fi
+  /sbin/ldconfig
+fi
+
+# libFoundation
+
+if [ $1 = 1 ]; then
+  if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
+    echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/libfoundation.conf
+  elif [ ! "`grep '%{prefix}/lib' %{_sysconfdir}/ld.so.conf`" ]; then
+    echo "%{prefix}/lib" >> %{_sysconfdir}/ld.so.conf
+  fi
+  /sbin/ldconfig
+fi
 
 # SOPE
 
@@ -251,11 +356,43 @@ fi
 
 # ****************************** postun *********************************
 %postun
+# SOPE
 if [ $1 = 0 ]; then
   if [ -e %{_sysconfdir}/ld.so.conf.d/sope%{sope_major_version}%{sope_minor_version}.conf ]; then
     rm -f %{_sysconfdir}/ld.so.conf.d/sope%{sope_major_version}%{sope_minor_version}.conf
   fi
+fi
+
+# libFoundation
+
+if [ $1 = 0 ]; then
+  if [ -e %{_sysconfdir}/ld.so.conf.d/libfoundation.conf ]; then
+    rm -f %{_sysconfdir}/ld.so.conf.d/libfoundation.conf
+  fi
+fi
+
+# libobjc-lf
+if [ $1 = 0 ]; then
+  if [ -h %{prefix}/OGo-GNUstep/Library/Libraries/libobjc_d.so.lf2 ]; then
+    rm -f %{prefix}/OGo-GNUstep/Library/Libraries/libobjc_d.so.lf2
+  fi
+  if [ -h %{prefix}/OGo-GNUstep/Library/Libraries/libobjc.so.lf2 ]; then
+    rm -f %{prefix}/OGo-GNUstep/Library/Libraries/libobjc.so.lf2
+  fi
+  if [ -e %{_sysconfdir}/ld.so.conf.d/libobjc-lf2.conf ]; then
+    rm -f %{_sysconfdir}/ld.so.conf.d/libobjc-lf2.conf
+  fi
+fi
+
+# run ldconfig
+if [ $1 = 0 ]; then
   /sbin/ldconfig
+fi
+
+# gstep-make
+if [ $1 = 0 ]; then
+cd %{prefix}/OGo-GNUstep
+  rm -f Makefiles
 fi
 
 # ****************************** preun *********************************
@@ -351,6 +488,52 @@ rm -fr ${RPM_BUILD_ROOT}
 # ****************************** files ********************************
 %files
 %defattr(-,root,root,-)
+
+# gstep-make
+%{prefix}/OGo-GNUstep/.GNUsteprc
+%{prefix}/OGo-GNUstep/.GNUsteprc.build
+%{prefix}/OGo-GNUstep/Library/Libraries
+%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep-reset.sh
+%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.csh
+%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.csh.build
+%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
+%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh.build
+%{prefix}/OGo-GNUstep/Library/Makefiles/clean_cpu.sh
+%{prefix}/OGo-GNUstep/Library/Makefiles/clean_os.sh
+%{prefix}/OGo-GNUstep/Library/Makefiles/clean_vendor.sh
+%{prefix}/OGo-GNUstep/Library/Makefiles/config.guess
+%{prefix}/OGo-GNUstep/Library/Makefiles/config.sub
+%{prefix}/OGo-GNUstep/Library/Makefiles/cpu.sh
+%{prefix}/OGo-GNUstep/Library/Makefiles/fixpath.sh
+%{prefix}/OGo-GNUstep/Library/Makefiles/install-sh
+%{prefix}/OGo-GNUstep/Library/Makefiles/java-executable.template
+%{prefix}/OGo-GNUstep/Library/Makefiles/ld_lib_path.csh
+%{prefix}/OGo-GNUstep/Library/Makefiles/ld_lib_path.sh
+%{prefix}/OGo-GNUstep/Library/Makefiles/mkinstalldirs
+%{prefix}/OGo-GNUstep/Library/Makefiles/os.sh
+%{prefix}/OGo-GNUstep/Library/Makefiles/relative_path.sh
+%{prefix}/OGo-GNUstep/Library/Makefiles/spec-debug-alone-rules.template
+%{prefix}/OGo-GNUstep/Library/Makefiles/spec-debug-rules.template
+%{prefix}/OGo-GNUstep/Library/Makefiles/spec-rules.template
+%{prefix}/OGo-GNUstep/Library/Makefiles/strip_makefiles.sh
+%{prefix}/OGo-GNUstep/Library/Makefiles/tar-exclude-list
+%{prefix}/OGo-GNUstep/Library/Makefiles/transform_paths.sh
+%{prefix}/OGo-GNUstep/Library/Makefiles/user_home
+%{prefix}/OGo-GNUstep/Library/Makefiles/vendor.sh
+%{prefix}/OGo-GNUstep/Library/Makefiles/which_lib
+%{prefix}/OGo-GNUstep/share/config.site
+
+# libobjc-lf
+%{prefix}/lib/libobjc*.so.lf2*
+
+# libFoundation
+
+%{prefix}/bin/Defaults
+%{prefix}/lib/libFoundation*.so.%{libf_version}
+%{prefix}/lib/libFoundation*.so.%{libf_major_version}.%{libf_minor_version}
+%{prefix}/share/libFoundation/CharacterSets
+%{prefix}/share/libFoundation/Defaults
+%{prefix}/share/libFoundation/TimeZoneInfo
 
 # sope
 %{prefix}/bin/connect-EOAdaptor
