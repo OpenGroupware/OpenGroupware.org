@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 include ./Version
@@ -8,6 +8,7 @@ BUNDLE_NAME        = OGoJobs
 BUNDLE_EXTENSION   = .ds
 
 libOGoJobs_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoJobs_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoJobs_HEADER_FILES = 				\
 	SkyPersonJobDataSource.h			\

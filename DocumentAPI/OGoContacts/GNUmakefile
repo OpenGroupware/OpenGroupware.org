@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 include ./Version
@@ -8,6 +8,7 @@ BUNDLE_NAME        = OGoContacts
 BUNDLE_EXTENSION   = .ds
 
 libOGoContacts_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoContacts_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoContacts_HEADER_FILES = \
 	SkyPersonDataSource.h				\

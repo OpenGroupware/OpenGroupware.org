@@ -6,6 +6,7 @@ include ./Version
 LIBRARY_NAME = libZSFrontend
 
 libZSFrontend_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libZSFrontend_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libZSFrontend_HEADER_FILES_DIR         = .
 libZSFrontend_HEADER_FILES_INSTALL_DIR = /ZSFrontend

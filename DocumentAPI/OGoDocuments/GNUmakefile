@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 
@@ -40,6 +40,7 @@ libOGoDocuments_OBJC_FILES = \
 libOGoDocuments_HEADER_FILES_DIR         = .
 libOGoDocuments_HEADER_FILES_INSTALL_DIR = /OGoDocuments
 libOGoDocuments_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoDocuments_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make

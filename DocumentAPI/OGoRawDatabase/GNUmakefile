@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 
@@ -9,6 +9,7 @@ BUNDLE_EXTENSION   = .ds
 libOGoRawDatabase_HEADER_FILES_DIR         = .
 libOGoRawDatabase_HEADER_FILES_INSTALL_DIR = /OGoRawDatabase
 libOGoRawDatabase_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoRawDatabase_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoRawDatabase_HEADER_FILES = 	\
 	SkyDBDocument.h		\

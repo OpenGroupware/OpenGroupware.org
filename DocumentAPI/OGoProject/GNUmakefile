@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 include ./Version
@@ -8,6 +8,7 @@ BUNDLE_NAME        = OGoProject
 BUNDLE_EXTENSION   = .ds
 
 libOGoProject_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoProject_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoProject_HEADER_FILES = \
 	SkyProject.h				\

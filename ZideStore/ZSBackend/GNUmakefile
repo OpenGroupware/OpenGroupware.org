@@ -6,6 +6,7 @@ include ./Version
 LIBRARY_NAME = libZSBackend
 
 libZSBackend_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libZSBackend_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libZSBackend_HEADER_FILES_DIR         = .
 libZSBackend_HEADER_FILES_INSTALL_DIR = /ZSBackend

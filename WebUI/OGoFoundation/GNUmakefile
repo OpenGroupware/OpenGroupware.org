@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 include ./Version
@@ -6,6 +6,7 @@ include ./Version
 LIBRARY_NAME = libOGoFoundation
 
 libOGoFoundation_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoFoundation_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoFoundation_HEADER_FILES_DIR         = .
 libOGoFoundation_HEADER_FILES_INSTALL_DIR = /OGoFoundation

@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 include ./Version
@@ -7,6 +7,7 @@ COMMAND_BUNDLE = LSAddress
 LIBRARY_NAME   = libLSAddress
 
 libLSAddress_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libLSAddress_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libLSAddress_OBJC_FILES = \
 	LSNewCompanyCommand.m              	\

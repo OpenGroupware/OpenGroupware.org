@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 include ./Version
@@ -18,6 +18,7 @@ libOGoScheduler_CPPFLAGS += \
   -DRESOURCES_DIR="$(RESOURCES_DIR)"
 
 libOGoScheduler_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoScheduler_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoScheduler_HEADER_FILES = \
 	SkyAppointmentQualifier.h		\

@@ -6,6 +6,7 @@ include ./Version
 LIBRARY_NAME = libLSFoundation
 
 libLSFoundation_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libLSFoundation_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 libLSFoundation_DLL_DEF = libLSFoundation.def
 
 libLSFoundation_HEADER_FILES = \
