@@ -1,3 +1,7 @@
+2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyProjectFileManager+Notifications.m: minor code cleanups (v5.1.44)
+
 2004-12-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyProjectFolderDataSource.m: fixed a small warning (v5.1.43)

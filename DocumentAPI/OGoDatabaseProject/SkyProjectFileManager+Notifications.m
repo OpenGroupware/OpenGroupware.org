@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,11 +18,22 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoDatabaseProject/SkyProjectFileManager.h>
 #include <OGoDatabaseProject/SkyProjectFileManagerCache.h>
 #include "common.h"
+
+// TODO: notification names should be constant
+/*
+  Currently such notifications are posted:
+    notification 29950/_change object 0x00000000
+  
+  In such a case the name should be "OGoProjectChange", the object should be
+  the project global id and the userinfo of the notification should contain
+  information on the object which changed.
+  
+  We could -in addition- also send out notifications on document global ids.
+*/
 
 @interface SkyProjectFileManager(ErrorHandling_Internals)
 - (BOOL)_buildErrorWithSource:(NSString *)_src dest:(NSString *)_dest
@@ -128,18 +139,17 @@
 static NSNotificationCenter *notificationCenter = nil;
 
 - (NSNotificationCenter *)notificationCenter {
-  if (notificationCenter == nil) {
-    notificationCenter = [NSNotificationCenter defaultCenter];
-    RETAIN(notificationCenter);
-  }
+  if (notificationCenter == nil)
+    notificationCenter = [[NSNotificationCenter defaultCenter] retain];
   return notificationCenter;
 }
+
+// TODO: notification names should be constant - see top of file
 
 - (NSString *)notificationNameForPath:(NSString *)_path {
   if (self->notifyPathName == nil) {
     self->notifyPathName =
-      [[[self->cache project] valueForKey:@"projectId"] stringValue];
-    RETAIN(self->notifyPathName);
+      [[[[self->cache project] valueForKey:@"projectId"] stringValue] copy];
   }
   if (!(_path = [self _makeAbsolute:_path])) {
     [self _buildErrorWithSource:_path dest:nil msg:20 handler:nil cmd:_cmd];
