@@ -1497,27 +1497,29 @@ static int      OldProjectCompatiblity = -1;
 		      stringValue:[project valueForKey:@"url"]
 		      commandContext:cmdctx];
   [project takeValue:[url stringValue] forKey:@"url"];
-  
+
+  // TODO: remove accounts in a new project?
   [project takeValue:[self _prepareAccountsForInsert:self->accounts]
            forKey:@"accounts"];
   [project takeValue:self->accountsToRemove forKey:@"removedAccounts"];
 
   [project takeValue:noNum forKey:@"isFake"];
-
+  
   if (self->ownerSelection != nil) {
-    [project takeValue:[self->ownerSelection
-                            valueForKey:@"companyId"] forKey:@"ownerId"];
+    [project takeValue:[self->ownerSelection valueForKey:@"companyId"] 
+	     forKey:@"ownerId"];
   }
-
-  if ([project valueForKey:@"team"] == nil &&
-      self->ownerSelection == nil) {
-    [project takeValue:[[[self session] activeAccount]
-                               valueForKey:@"companyId"] forKey:@"ownerId"];
-    [project takeValue:null forKey:@"teamId"];
+  
+  if ([project valueForKey:@"team"] == nil && self->ownerSelection == nil) {
+    NSNumber *ownerPKey;
+    
+    ownerPKey = [[[self session] activeAccount] valueForKey:@"companyId"];
+    [project takeValue:ownerPKey forKey:@"ownerId"];
+    [project takeValue:null      forKey:@"teamId"];
   }
   newProject = [self runCommand:@"project::new" arguments:project];
-
-  if (newProject)
+  
+  if (newProject != nil)
     [self _updateAssignmentsForObj:newProject];  
 
   return newProject;

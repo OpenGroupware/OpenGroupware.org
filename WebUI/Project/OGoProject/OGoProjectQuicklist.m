@@ -21,6 +21,12 @@
 
 #include <OGoFoundation/OGoComponent.h>
 
+/*
+  OGoProjectQuicklist
+
+  TODO: document what it does.
+*/
+
 @class EODataSource;
 
 @interface OGoProjectQuicklist : OGoComponent
