@@ -9,7 +9,7 @@ URL:			http://www.opengroupware.org
 Group:			Development/Libraries
 AutoReqProv:	off
 Source:			%{ogo_source}
-Prefix:			/usr/local
+Prefix:			%{ogo_prefix}
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildPreReq:	ogo-gnustep_make
 
@@ -20,7 +20,7 @@ OGo.
 %package dbsetup
 Summary:		docapi
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make
+#Requires:		ogo-gnustep_make
 AutoReqProv:	off
 
 %description dbsetup
@@ -29,7 +29,7 @@ database setup.
 %package docapi
 Summary:		docapi
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description docapi
@@ -38,7 +38,7 @@ docapi package.
 %package docapi-fs-project
 Summary:		docapi fs project
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description docapi-fs-project
@@ -47,7 +47,7 @@ docapi filesystem project package.
 %package docapi-fs-project-devel
 Summary:		docapi fs project devel
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description docapi-fs-project-devel
@@ -56,7 +56,7 @@ docapi filesystem project devel package.
 %package docapi-db-project
 Summary:		docapi db project
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description docapi-db-project
@@ -65,7 +65,7 @@ docapi database project package.
 %package docapi-db-project-devel
 Summary:		docapi db project devel
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description docapi-db-project-devel
@@ -74,7 +74,7 @@ docapi database project devel package.
 %package docapi-devel
 Summary:		docapi-devel
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description docapi-devel
@@ -83,7 +83,7 @@ docapi devel package.
 %package logic
 Summary:		logic
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description logic
@@ -92,7 +92,7 @@ logic package.
 %package logic-tools
 Summary:		logic-tools
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description logic-tools
@@ -101,7 +101,7 @@ logic tools package.
 %package logic-devel
 Summary:		logic-devel
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description logic-devel
@@ -110,7 +110,7 @@ logic devel package.
 %package pda
 Summary:		pda
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description pda
@@ -119,7 +119,7 @@ pda package.
 %package pda-devel
 Summary:		pda devel
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description pda-devel
@@ -128,7 +128,7 @@ pda devel package.
 %package theme-default
 Summary:		theme default
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description theme-default
@@ -137,7 +137,7 @@ theme default package.
 %package theme-ooo
 Summary:		theme ooo
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description theme-ooo
@@ -146,7 +146,7 @@ theme ooo package.
 %package theme-blue
 Summary:		theme blue
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description theme-blue
@@ -155,7 +155,7 @@ theme blue package.
 %package theme-kde
 Summary:		theme kde
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description theme-kde
@@ -164,7 +164,7 @@ theme kde package.
 %package theme-orange
 Summary:		theme orange
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description theme-orange
@@ -173,7 +173,7 @@ theme orange package.
 %package tools
 Summary:		tools
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description tools
@@ -182,7 +182,7 @@ tools package.
 %package webui-app
 Summary:		webui app
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-app
@@ -191,7 +191,7 @@ webui app package.
 %package webui-core
 Summary:		webui core
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-core
@@ -200,7 +200,7 @@ webui core package.
 %package webui-core-devel
 Summary:		webui core devel
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-core-devel
@@ -209,7 +209,7 @@ webui core devel package.
 %package webui-calendar
 Summary:		webui calendar
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-calendar
@@ -218,7 +218,7 @@ webui calendar package.
 %package webui-contact
 Summary:		webui contact
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-contact
@@ -227,7 +227,7 @@ webui contact package.
 %package webui-mailer
 Summary:		webui mailer
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-mailer
@@ -236,7 +236,7 @@ webui mailer package.
 %package webui-mailer-devel
 Summary:		webui mailer devel
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-mailer-devel
@@ -245,7 +245,7 @@ webui mailer devel package.
 %package webui-news
 Summary:		webui news
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-news
@@ -254,7 +254,7 @@ webui news package.
 %package webui-task
 Summary:		webui task
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-task
@@ -263,7 +263,7 @@ webui task package.
 %package webui-project
 Summary:		webui project
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-project
@@ -272,7 +272,7 @@ webui project package.
 %package webui-resource-dk
 Summary:		webui resource dk
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-resource-dk
@@ -281,7 +281,7 @@ webui resource dk package.
 %package webui-resource-nl
 Summary:		webui resource nl
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-resource-nl
@@ -290,7 +290,7 @@ webui resource nl package.
 %package webui-resource-en
 Summary:		webui resource en
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-resource-en
@@ -299,7 +299,7 @@ webui resource en package.
 %package webui-resource-fr
 Summary:		webui resource fr
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-resource-fr
@@ -308,7 +308,7 @@ webui resource fr package.
 %package webui-resource-de
 Summary:		webui resource de
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-resource-de
@@ -317,7 +317,7 @@ webui resource de package.
 %package webui-resource-hu
 Summary:		webui resource hu
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-resource-hu
@@ -326,7 +326,7 @@ webui resource hu package.
 %package webui-resource-it
 Summary:		webui resource it
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-resource-it
@@ -335,7 +335,7 @@ webui resource it package.
 %package webui-resource-jp
 Summary:		webui resource jp
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-resource-jp
@@ -344,7 +344,7 @@ webui resource jp package.
 %package webui-resource-no
 Summary:		webui resource no
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-resource-no
@@ -353,7 +353,7 @@ webui resource no package.
 %package webui-resource-pl
 Summary:		webui resource pl
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-resource-pl
@@ -362,7 +362,7 @@ webui resource pl package.
 %package webui-resource-pt
 Summary:		webui resource pt
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-resource-pt
@@ -371,7 +371,7 @@ webui resource pt package.
 %package webui-resource-es
 Summary:		webui resource es
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-resource-es
@@ -380,7 +380,7 @@ webui resource es package.
 %package webui-resource-se
 Summary:		webui resource se
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-resource-se
@@ -389,7 +389,7 @@ webui resource se package.
 %package webui-resource-ptbr
 Summary:		webui resource ptbr
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description webui-resource-ptbr
@@ -398,7 +398,7 @@ webui resource ptbr package.
 %package xmlrpcd
 Summary:		xmlrpcd
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description xmlrpcd
@@ -407,7 +407,7 @@ xmlrpcd package.
 %package zidestore
 Summary:		zidestore
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description zidestore
@@ -416,7 +416,7 @@ zidestore package.
 %package zidestore-devel
 Summary:		zidestore devel
 Group:			Development/Libraries
-Requires:		ogo-gnustep_make 
+#Requires:		ogo-gnustep_make 
 AutoReqProv:	off
 
 %description zidestore-devel
@@ -560,7 +560,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 %files pda
 %defattr(-,root,root,-)
-%{prefix}/bin/ogo-nhsd-1.0a
+%{prefix}/sbin/ogo-nhsd-1.0a
 %{prefix}/bin/ogo-ppls-1.0a
 %{prefix}/lib/libOGoNHS*.so.5.1*
 %{prefix}/lib/libOGoPalmUI*.so.5.1*
@@ -641,7 +641,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 %files webui-app
 %defattr(-,root,root,-)
-%{prefix}/bin/ogo-webui-1.0a
+%{prefix}/sbin/ogo-webui-1.0a
 %{prefix}/lib/opengroupware.org-1.0a/webui
 %{prefix}/share/opengroupware.org-1.0a/templates
 
@@ -798,11 +798,11 @@ rm -fr ${RPM_BUILD_ROOT}
 
 %files xmlrpcd
 %defattr(-,root,root,-)
-%{prefix}/bin/ogo-xmlrpcd-1.0a
+%{prefix}/sbin/ogo-xmlrpcd-1.0a
 
 %files zidestore
 %defattr(-,root,root,-)
-%{prefix}/bin/ogo-zidestore-1.3
+%{prefix}/sbin/ogo-zidestore-1.3
 %{prefix}/lib/libZSAppointments*.so.1.3*
 %{prefix}/lib/libZSBackend*.so.1.3*
 %{prefix}/lib/libZSContacts*.so.1.3*
@@ -834,4 +834,4 @@ rm -fr ${RPM_BUILD_ROOT}
 # ********************************* changelog *************************
 %changelog
 * Wed Sep 09 2004 Frank Reppin <frank@opengroupware.org>
-  - initial build
+- initial build
