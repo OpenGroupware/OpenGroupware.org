@@ -33,6 +33,8 @@
   
   Defaults: (??)
     SkyProjectFileManager_show_unknown_files : show unknown files
+  
+  TODO: use OGoProjectDocView component for document tab
 */
 
 @interface SkyProject4Viewer : LSWViewerPage
@@ -41,8 +43,6 @@
   NSMutableDictionary *pathToDS;
   
   NSDictionary *fsinfo;
-  WOComponent  *folderForm;
-  NSString     *folderFormDirPath;
   NSString     *folderDropPath;
   
   id           project;
@@ -125,6 +125,7 @@ static inline BOOL _showUnknownFiles(id self) {
 }
 
 - (NSString *)shortTitle {
+  // TODO: should be a formatter, unused when we move to OGoProjectDocView
   NSString *title;
 
   title = [self label];
@@ -280,13 +281,14 @@ static inline BOOL _showUnknownFiles(id self) {
     return;
   ASSIGN(self->fileManager, _fm);
   [self->fileManager changeCurrentDirectoryPath:@"/"];
+  [self->pathToDS removeAllObjects];
 }
 - (id<NSObject,SkyDocumentFileManager>)fileManager {
   return self->fileManager;
 }
 
 - (void)setFolderDropPath:(NSString *)_path {
-  ASSIGN(self->folderDropPath, _path);
+  ASSIGNCOPY(self->folderDropPath, _path);
 }
 - (NSString *)folderDropPath {
   return self->folderDropPath;
@@ -583,7 +585,6 @@ static inline BOOL _showUnknownFiles(id self) {
   [self setHideTree:NO];
   return nil;
 }
-
 - (id)doHideTree {
   [self setHideTree:YES];
   return nil;

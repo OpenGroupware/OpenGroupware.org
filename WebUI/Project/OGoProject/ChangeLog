@@ -1,3 +1,15 @@
+2004-12-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.61
+	
+	* SkyProject4Viewer.m: reset path datasource cache if the filemanager
+	  changes
+
+	* added new OGoProjectDocView component (contains what the document
+	  tab in the project viewer shows)
+	
+	* SkyProject4Viewer.m: removed ivars related to folder forms
+
 2004-12-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyProject4NewLink.m: fixed a warning (v5.1.60)
