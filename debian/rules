@@ -104,9 +104,11 @@ install: build controlfiles
 	cp -R WebUI/Templates/* $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/templates
 	mkdir $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/www
 	cp -R Themes/WebServerResources/* $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/www
+	mkdir -p $(CURDIR)/debian/tmp/etc/apache/conf.d/
 
-	#mkdir -p debian/opengroupware.org-webui-app/usr/lib/opengroupware.org/bin
-	#install -m 755 debian/start-webui debian/opengroupware.org-webui-app/usr/lib/opengroupware.org/bin 
+	echo "Alias /OpenGroupware$$(echo $(OGOVER) | sed s/\\.//).woa/WebServerResources/ \
+		/usr/share/opengroupware.org-$(OGOVER)/www/" > \
+		$(CURDIR)/debian/tmp/etc/apache/conf.d/opengroupware.org-resources-$(OGOVER)
 
 # Build architecture-independent files here.
 binary-indep: build install
