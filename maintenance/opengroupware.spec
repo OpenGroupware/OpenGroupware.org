@@ -871,7 +871,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
-* Wed Dev 29 2004 Frank Reppin <frank@opengroupware.org>
+* Wed Dec 29 2004 Frank Reppin <frank@opengroupware.org>
 - added Slovak.lproj (webui-resource-sk)
 * Tue Nov 30 2004 Frank Reppin <frank@opengroupware.org>
 - removed webui-resource-se since it's not part
