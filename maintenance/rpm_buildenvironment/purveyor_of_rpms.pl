@@ -12,6 +12,7 @@ use File::Basename;
 # NEW >  moved this variable into an external configfile called
 #        $ENV{'HOME'}/purveyor_of_rpms.conf
 my $host_i_runon;
+my $mod_ngobjweb_to_use;
 my $time_we_started = `date +"%Y%m%d-%H%M%S"`;
 chomp $time_we_started;
 our ($opt_p,$opt_f,$opt_t,$opt_b,$opt_d,$opt_c,$opt_v,$opt_u,$opt_s,$opt_r);

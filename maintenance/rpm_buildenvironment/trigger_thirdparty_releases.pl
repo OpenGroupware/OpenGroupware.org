@@ -3,6 +3,7 @@
 
 use strict;
 my $host_i_runon;
+my $mod_ngobjweb_to_use;
 my $svn_host = 'svn.opengroupware.org';
 my $svn = '/usr/bin/svn';
 my $dl_host = "download.opengroupware.org";
