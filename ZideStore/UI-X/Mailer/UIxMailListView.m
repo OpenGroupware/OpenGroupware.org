@@ -45,8 +45,8 @@
 @end
 
 #include "common.h"
-#include <SOGo/SoObjects/Mailer/SOGoMailFolder.h>
-#include <SOGo/SoObjects/Mailer/SOGoMailObject.h>
+#include <SoObjects/Mailer/SOGoMailFolder.h>
+#include <SoObjects/Mailer/SOGoMailObject.h>
 
 @implementation UIxMailListView
 

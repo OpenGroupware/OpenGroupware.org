@@ -21,10 +21,10 @@
 
 #include "UIxMailEditorAction.h"
 
-#include <SOGo/SoObjects/Mailer/SOGoDraftsFolder.h>
-#include <SOGo/SoObjects/Mailer/SOGoDraftObject.h>
-#include <SOGo/SoObjects/Mailer/SOGoMailAccount.h>
-#include <SOGo/SoObjects/Mailer/SOGoMailObject.h>
+#include <SoObjects/Mailer/SOGoDraftsFolder.h>
+#include <SoObjects/Mailer/SOGoDraftObject.h>
+#include <SoObjects/Mailer/SOGoMailAccount.h>
+#include <SoObjects/Mailer/SOGoMailObject.h>
 #include "common.h"
 
 @implementation UIxMailEditorAction

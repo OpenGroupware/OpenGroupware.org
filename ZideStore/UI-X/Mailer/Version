@@ -1,6 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=zs98
+SUBMINOR_VERSION:=zs99
 
 # v0.9.97 requires SoObjects/Mailer v0.9.71
 # v0.9.97 requires libNGExtensions  v4.5.142

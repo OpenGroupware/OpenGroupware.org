@@ -29,8 +29,8 @@
 @end
 
 #include "UIxMailTreeBlock.h"
-#include <SOGo/SoObjects/Mailer/SOGoMailBaseObject.h>
-#include <SOGo/SoObjects/Mailer/SOGoMailAccount.h>
+#include <SoObjects/Mailer/SOGoMailBaseObject.h>
+#include <SoObjects/Mailer/SOGoMailAccount.h>
 #include "common.h"
 #include <NGObjWeb/SoComponent.h>
 #include <NGObjWeb/SoObject+SoDAV.h>

@@ -37,7 +37,7 @@
 
 @end
 
-#include <SOGo/SoObjects/Sieve/SOGoSieveScriptObject.h>
+#include <SoObjects/Sieve/SOGoSieveScriptObject.h>
 #include "common.h"
 
 @implementation UIxSieveEditor

@@ -45,7 +45,7 @@
 
 @end
 
-#include <SOGo/SoObjects/Mailer/SOGoDraftObject.h>
+#include <SoObjects/Mailer/SOGoDraftObject.h>
 #include "common.h"
 
 @implementation UIxMailEditorAttach

@@ -32,7 +32,7 @@
 }
 @end
 
-#include <SOGo/SoObjects/Mailer/SOGoMailBaseObject.h>
+#include <SoObjects/Mailer/SOGoMailBaseObject.h>
 #include "common.h"
 #include <NGObjWeb/SoComponent.h>
 

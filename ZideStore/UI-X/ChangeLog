@@ -1,3 +1,7 @@
+2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added a common.make
+
 2005-01-17  Helge Hess  <helge.hess@skyrix.com>
 
 	* Scheduler, Projects: fixed some incorrect includes, fixed makefiles

@@ -1,5 +1,5 @@
 {
-  requires = ( MAIN, CommonUI, Mailer, Sieve );
+  requires = ( MAIN, Mailer /*, Sieve */ );
 
   publicResources = (
     "uix.css",

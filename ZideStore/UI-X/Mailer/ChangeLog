@@ -1,5 +1,13 @@
 2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v0.9.zs99
+
+	* GNUmakefile: install into FHS
+
+	* fixed includes (removed SOGo/)
+
+	* fixed some missing label: namespaces
+
 	* import SOGo mailer (v0.9.97) into ZideStore (v0.9.zs98)
 
 2005-02-09  Helge Hess  <helge.hess@opengroupware.org>

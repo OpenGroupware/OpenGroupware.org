@@ -24,8 +24,8 @@
 @interface UIxMailForwardAction : UIxMailEditorAction
 @end
 
-#include <SOGo/SoObjects/Mailer/SOGoMailObject.h>
-#include <SOGo/SoObjects/Mailer/SOGoDraftObject.h>
+#include <SoObjects/Mailer/SOGoMailObject.h>
+#include <SoObjects/Mailer/SOGoDraftObject.h>
 #include "common.h"
 
 @implementation UIxMailForwardAction

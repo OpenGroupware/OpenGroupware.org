@@ -1,6 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 <div xmlns="http://www.w3.org/1999/xhtml"
      xmlns:var="http://www.skyrix.com/od/binding"
+     xmlns:label="OGo:label"
      class="linked_attachment_frame"
 >
   <div class="linked_attachment_body">

@@ -42,9 +42,9 @@
 
 @end
 
-#include <SOGo/SoObjects/Mailer/SOGoDraftObject.h>
-#include <SOGo/SoObjects/Mailer/SOGoMailFolder.h>
-#include <SOGo/SoObjects/Mailer/SOGoMailAccount.h>
+#include <SoObjects/Mailer/SOGoDraftObject.h>
+#include <SoObjects/Mailer/SOGoMailFolder.h>
+#include <SoObjects/Mailer/SOGoMailAccount.h>
 #include <NGMail/NGMimeMessage.h>
 #include <NGMail/NGMimeMessageGenerator.h>
 #include "common.h"

@@ -24,8 +24,8 @@
 @interface UIxMailReplyAction : UIxMailEditorAction
 @end
 
-#include <SOGo/SoObjects/Mailer/SOGoMailObject.h>
-#include <SOGo/SoObjects/Mailer/SOGoDraftObject.h>
+#include <SoObjects/Mailer/SOGoMailObject.h>
+#include <SoObjects/Mailer/SOGoDraftObject.h>
 #include <NGImap4/NGImap4EnvelopeAddress.h>
 #include <NGImap4/NGImap4Envelope.h>
 #include "common.h"

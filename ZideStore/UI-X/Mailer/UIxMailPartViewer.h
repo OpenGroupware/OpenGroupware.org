@@ -23,6 +23,7 @@
 #define __Mailer_UIxMailPartViewer_H__
 
 #include <SOGoUI/UIxComponent.h>
+//#include <NGObjWeb/WOComponent.h>
 
 /*
   UIxMailPartViewer
@@ -32,7 +33,7 @@
 
 @class NSData, NSArray, NSFormatter;
 
-@interface UIxMailPartViewer : UIxComponent
+@interface UIxMailPartViewer : WOComponent
 {
   NSArray *partPath;
   id      bodyInfo;
