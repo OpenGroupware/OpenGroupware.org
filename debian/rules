@@ -128,6 +128,10 @@ binary-arch: build install
 	dh_installcron -popengroupware.org-skyaptnotify --name=skyaptnotify
 #	dh_installinfo
 	dh_installman
+	dh_link -popengroupware.org$(OGOVER)-webui-app usr/share/man/man7/undocumented.7.gz usr/share/man/man8/ogo-webui-$(OGOVER).8.gz
+	dh_link -popengroupware.org$(OGOVER)-xmlrpcd usr/share/man/man7/undocumented.7.gz usr/share/man/man8/ogo-xmlrpcd-$(OGOVER).8.gz
+	dh_link -popengroupware.org$(OGOVER)-nhsd usr/share/man/man7/undocumented.7.gz usr/share/man/man8/ogo-nhsd-$(OGOVER).8.gz
+	dh_link -popengroupware.org-zidestore$(ZSVER) usr/share/man/man7/undocumented.7.gz usr/share/man/man8/ogo-zidestore-$(ZSVER).8.gz
 	dh_link
 	dh_strip
 	dh_compress
