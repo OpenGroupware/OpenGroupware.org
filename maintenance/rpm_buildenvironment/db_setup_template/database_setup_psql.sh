@@ -30,6 +30,9 @@ COMMON_PG_DATADIR_PREFIX="/var/lib/pgsql/data"
 COMMON_POSTGRESQL_CONF="${COMMON_PG_DATADIR_PREFIX}/postgresql.conf"
 COMMON_PGHBA_CONF="${COMMON_PG_DATADIR_PREFIX}/pg_hba.conf"
 COMMON_PG_INITSCRIPT="/etc/init.d/postgresql"
+# Thou shalt not alter \${NOW}!!!
+# required to set the correct timestamp on updates to certain files!
+# (thus... never ever touch this, tks)
 NOW=`date +%Y%m%d-%H%M%S`
 
 # where are the schemes we need?
