@@ -1,3 +1,8 @@
+2004-11-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAppointmentDocumentGlobalIDResolver.m: minor code cleanups
+	  (v5.1.29)
+
 2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyHolidayCalculator.m: lookup Holidays.plist in FHS locations

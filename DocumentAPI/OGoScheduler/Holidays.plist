@@ -1,6 +1,4 @@
 {
-  CVSID = "$Id$";
-  
   scheduler_everyyear_holidays = {
     "bylaw" = {
       "01-01" = "newYear";         // Neujahr
