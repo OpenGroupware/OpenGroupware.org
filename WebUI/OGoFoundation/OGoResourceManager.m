@@ -357,6 +357,9 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
     path = [path stringByAppendingPathComponent:@"components.cfg"];
     
     if ([fm fileExistsAtPath:path]) {
+#warning fixme
+      [self logWithFormat:@"components.cfg theme %@ fw %@: %@",
+	    _theme, _fwName, path];
       [self cacheValue:path inCache:self->keyToPath];
       return path;
     }
@@ -451,7 +454,8 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   while ((language = [e nextObject])) {
       NSString *rpath;
       
-      if (debugOn) [self logWithFormat:@"  check language: '%@'", language];
+      if (debugOn) 
+	[self logWithFormat:@"  check language (%@): '%@'", _name, language];
       rpath = [self _pathForOGoResourceNamed:_name inFramework:_fwName
 		    language:language];
       if (rpath != nil) {

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,10 +18,10 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyInlineAptDataSourceView.h"
-#include <OGoScheduler/SkyAptDataSource.h>
+
+@class NSCalendarDate;
 
 @interface SkyInlineWeekOverview : SkyInlineAptDataSourceView
 {
@@ -32,24 +32,22 @@
 
 @end
 
+#include <OGoScheduler/SkyAptDataSource.h>
+
 @interface NSObject(SkyInlineWeekOverview_PRIVATE)
 - (void)setResources:(id)_resources;
 - (void)setParticipantsFromGids:(id)_gids;
 @end
 
-#include <OGoFoundation/OGoFoundation.h>
 #include <LSFoundation/LSFoundation.h>
-#include <NGExtensions/NGExtensions.h>
 #include <NGExtensions/EOFilterDataSource.h>
-#include <EOControl/EOQualifier.h>
 #include <NGMime/NGMimeType.h>
-#import <NGObjWeb/NGObjWeb.h>
-#import <Foundation/Foundation.h>
+#include "common.h"
 
 @implementation SkyInlineWeekOverview
 
 + (int)version {
-  return [super version] + 0;
+  return [super version] + 0; // TODO: which version?
 }
 
 /* accessors */
@@ -136,10 +134,12 @@
   return [super personWasDropped:_person];
 }
 
-// dnd support
+/* dnd support */
 
 - (NSCalendarDate *)droppedAptDateWithOldDate:(NSCalendarDate *)_date {
-  NSCalendarDate *toDate = [self currentDate];
+  NSCalendarDate *toDate;
+
+  toDate = [self currentDate];
 
   return [NSCalendarDate dateWithYear:[toDate yearOfCommonEra]
                          month:[toDate monthOfYear]

@@ -1,4 +1,11 @@
-// $Id: SkyInlineWeekOverview.wod 2 2004-08-20 11:37:44Z znek $
+// used components.cfg config key:
+//   colors_titleColor
+//   colors_contentText
+//   colors_sundayHeaderCell    (titleColor)
+//   colors_saturdayHeaderCell  (titleColor)
+//   colors_weekdayHeaderCell   (titleColor)
+//   colors_selectedContentCell (contentColor)
+//   colors_contentCell         (contentColor)
 
 DragScript: WEDragScript {}
 DropScript: WEDropScript {}
