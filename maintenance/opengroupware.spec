@@ -386,6 +386,15 @@ AutoReqProv:	off
 %description webui-resource-es
 webui resource es package.
 ##
+%package webui-resource-sk
+Summary:		webui resource sk
+Group:			Development/Libraries
+#Requires:		ogo-gnustep_make 
+AutoReqProv:	off
+
+%description webui-resource-sk
+webui resource sk package.
+##
 %package webui-resource-se
 Summary:		webui resource se
 Group:			Development/Libraries
@@ -808,6 +817,10 @@ rm -fr ${RPM_BUILD_ROOT}
 %files webui-resource-pt
 %defattr(-,root,root,-)
 %{prefix}/share/opengroupware.org-1.0a/translations/Portuguese.lproj
+
+%files webui-resource-sk
+%defattr(-,root,root,-)
+%{prefix}/share/opengroupware.org-1.0a/translations/Slovak.lproj
 
 %files webui-resource-es
 %defattr(-,root,root,-)
