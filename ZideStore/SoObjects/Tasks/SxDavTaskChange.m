@@ -25,8 +25,8 @@
 #include "SxTaskStatus.h"
 #include "common.h"
 #include <GDLAccess/GDLAccess.h>
-#include <Frontend/NSObject+ExValues.h>
-#include <Backend/NSString+rtf.h>
+#include <ZSFrontend/NSObject+ExValues.h>
+#include <ZSBackend/NSString+rtf.h>
 
 @implementation SxDavTaskChange
 

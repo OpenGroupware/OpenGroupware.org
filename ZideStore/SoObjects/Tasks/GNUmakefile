@@ -1,6 +1,6 @@
 # $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
-include $(GNUSTEP_MAKEFILES)/common.make
+include ../common.make
 
 BUNDLE_NAME = Tasks
 

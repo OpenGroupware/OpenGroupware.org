@@ -18,17 +18,16 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxTask.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxTask.h"
 #include "SxTaskRenderer.h"
 #include "SxTaskStatus.h"
 #include "SxDavTaskCreate.h"
 #include "SxDavTaskChange.h"
-#include <Frontend/NSObject+ExValues.h>
-#include <Backend/NSString+rtf.h>
-#include <Backend/SxTaskManager.h>
-#include <Backend/SxContactManager.h>
+#include <ZSFrontend/NSObject+ExValues.h>
+#include <ZSBackend/NSString+rtf.h>
+#include <ZSBackend/SxTaskManager.h>
+#include <ZSBackend/SxContactManager.h>
 #include "common.h"
 
 #include <NGMail/NGMimeMessageParser.h> // for comments from Evolution
