@@ -1,3 +1,13 @@
+2004-12-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.92
+
+	* SkyObjectPropertyManager.m: code cleanup
+
+	* SkyAttributeDataSource.m: more code cleanups
+
+	* SkyAttributeDataSource.m: major code cleanups (v5.1.91)
+
 2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.90

@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SkyObjectPropertyManager+Internals.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SkyObjectPropertyManager+Internals.h"
 #include <LSFoundation/SkyObjectPropertyManager.h>
@@ -367,7 +366,8 @@ extern NSString *SkyOPMWrongPropertyKeyExceptionName;
   return str;
 }
 
-- (BOOL)_operation:(NSString *)_operation allowedOnProperties:(NSArray *)_prop {
+- (BOOL)_operation:(NSString *)_operation allowedOnProperties:(NSArray *)_prop{
+  // TODO: split this huge method
   id           *access_ids, *object_ids, *property_ids, login;
   NSEnumerator *enumerator;
   NSDictionary *dict;
@@ -607,6 +607,7 @@ FREE_ARRAYS:
 - (NSMutableString *)_kVQualExpressionString:(EOQualifier *)_qualifier
   negate:(BOOL)_negate identifier:(NSString *)_ident
 {
+  // TODO: split method
   NSMutableString *result;
   id              value;
   NSString        *nsp, *key, *oidName, *nsName, *tName, *kName;
@@ -1006,6 +1007,7 @@ FREE_ARRAYS:
 - (NSException *)_addProperties:(NSDictionary *)_properties 
   accessOID:(EOGlobalID *)_access globalID:(id)_gid checkExist:(BOOL)_check
 {
+  // TODO: split method
   NSException      *result;
   NSEnumerator     *enumerator;
   NSString         *key;
@@ -1153,6 +1155,7 @@ FREE_ARRAYS:
 - (NSException *)_updateProperties:(NSDictionary *)_properties 
   globalID:(id)_gid checkExist:(BOOL)_check
 {
+  // TODO: split method
   NSException      *result;
   NSEnumerator     *enumerator;
   EOAdaptorChannel *adc;
@@ -1346,7 +1349,7 @@ FREE_ARRAYS:
 		   fetchOrder:nil
 		   lock:NO];
       [q release]; q = nil;
-
+      
       if (error != nil) {
 	[self logWithFormat:@"ERROR(%s): could not select: %@",
 	        __PRETTY_FUNCTION__, error];

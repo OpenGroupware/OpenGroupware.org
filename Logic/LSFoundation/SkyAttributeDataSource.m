@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyAttributeDataSource.h"
 #include "common.h"
@@ -51,13 +50,15 @@
 
 - (id)initWithDataSource:(EODataSource *)_ds context:(id)_context {
   if ((self = [super init])) {
-    NSAssert([_ds isKindOfClass:[EODataSource class]], @"_ds != EODataSource");
-    ASSIGN(self->context, _context);
-    ASSIGN(self->source, _ds);
-    self->fetchSpecification = nil;
-    self->namespaces         = nil;
-    self->verifyIds          = NO;
-    self->dbKeys             = nil;
+    if (![_ds isKindOfClass:[EODataSource class]]) {
+      [self logWithFormat:@"ERROR(%s): expected datasource as parameter: %@", 
+	    __PRETTY_FUNCTION__, _ds];
+      [self release];
+      return nil;
+    }
+
+    self->context = [_context retain];
+    self->source  = [_ds retain];
   }
   return self;
 }
@@ -88,83 +89,133 @@
 }
 
 - (NSSet *)namespaces {
-  NSLog(@"WARNING[%s]: use of depricated method, set namespace in hints"
-        ,__PRETTY_FUNCTION__);
+  [self logWithFormat:
+	  @"WARNING(%s): use of deprecated method, set namespace in hints",
+	  __PRETTY_FUNCTION__];
   return self->namespaces;
 }
 - (void)setNamespaces:(NSSet *)_ns {
-  NSLog(@"WARNING[%s]: use of depricated method, set namespace in hints",
-        __PRETTY_FUNCTION__);
+  [self logWithFormat:
+	  @"WARNING(%s): use of deprecated method, set namespace in hints",
+          __PRETTY_FUNCTION__];
   ASSIGN(self->namespaces, _ns);
 }
 
+- (EOModel *)model {
+  static EOModel *model = nil;
+  
+  if (model != nil)
+    return model;
+  
+  model = [[[[self->context valueForKey:LSDatabaseKey] adaptor] model] retain];
+  return model;
+}
+- (EOAttribute *)primaryKeyOfEntityNamed:(NSString *)entityName {
+  return [[[[self model] entityNamed:entityName] 
+	    primaryKeyAttributes] lastObject];
+}
+
+- (void)setGlobalIDKey:(NSString *)_gidName {
+  ASSIGNCOPY(self->globalIdKey, _gidName);
+}
 - (NSString *)globalIDKey {
   NSString *entityName = nil;
   
   if (self->globalIdKey == nil &&
       (entityName = [self->fetchSpecification entityName]) != nil) {
-    EOModel  *model = nil;
-    NSString *key   = nil;
-
-    model = [[[self->context valueForKey:LSDatabaseKey] adaptor] model];
-    key   =  [(EOAttribute *)[[[model entityNamed:entityName]
-                                      primaryKeyAttributes] lastObject]
-                             columnName];
-    self->globalIdKey = RETAIN(key);
+    NSString *key;
+    
+    key = [[self primaryKeyOfEntityNamed:entityName] columnName];
+    self->globalIdKey = [key copy];
   }
   return self->globalIdKey;
 }
 
-- (void)setGlobalIDKey:(NSString *)_gidName {
-  ASSIGN(self->globalIdKey, _gidName);
-}
-
 /* verifies Ids from PropertyManager agains source */
-
-- (BOOL)verifyIds {
-  return self->verifyIds;
-}
 
 - (void)setVerifyIds:(BOOL)_bool {
   self->verifyIds = _bool;
 }
+- (BOOL)verifyIds {
+  return self->verifyIds;
+}
+
+/* fetch method */
+
+- (BOOL)isNamespaceOrDbKeysValid {
+  if (self->defaultNamespace == nil && self->dbKeys != nil)
+    return NO;
+  if (self->defaultNamespace != nil && self->dbKeys == nil)
+    return NO;
+  return YES;
+}
+
+- (void)_fetchPropertiesInNamespaces:(NSSet *)ns
+  forObjects:(NSArray *)objects withGIDs:(NSArray *)gids
+{
+  SkyObjectPropertyManager *objPropMan;
+  NSEnumerator *nsEnum;
+  NSString     *namesp;
+  
+  objPropMan = [self->context propertyManager];
+  nsEnum     = [ns objectEnumerator];
+  while ((namesp = [nsEnum nextObject]) != nil) {
+    NSDictionary *props   = nil;
+    NSEnumerator *objEnum = nil;
+    id           obj      = nil;
+    
+    props   = [objPropMan propertiesForGlobalIDs:gids namespace:namesp];
+    objEnum = [objects objectEnumerator];
+    
+    while ((obj = [objEnum nextObject]) != nil) {
+      NSDictionary *p = nil;
+      
+      if ((p = [props objectForKey:[self _gidForObj:obj]]) != nil)
+        [obj takeValue:p forKey:namesp];
+      else {
+        [obj takeValue:[NSMutableDictionary dictionaryWithCapacity:8] 
+	     forKey:namesp];
+      }
+    }
+  }
+}
 
 - (NSArray *)fetchObjects {
-  NSArray                  *objects    = nil;
-  NSArray                  *gids       = nil;
-  NSEnumerator             *enumerator = nil;
-  NSString                 *namesp     = nil;
-  SkyObjectPropertyManager *objPropMan = nil;
-  EOQualifier              *qualifier  = nil;
-  NSSet                    *ns         = nil;
+  NSArray     *objects = nil;
+  NSArray     *gids    = nil;
+  EOQualifier *qualifier;
+  NSSet       *ns;
+  
+  ns = (self->namespaces != nil)
+    ? self->namespaces
+    : [[self->fetchSpecification hints] objectForKey:@"namespaces"];
 
-  if (self->namespaces != nil)
-    ns = self->namespaces;
-  else {
-    ns = [[self->fetchSpecification hints] objectForKey:@"namespaces"];
-  }
+  /* check preconditions */
   
   if ((qualifier = [self->fetchSpecification qualifier]) == nil) {
-    NSLog(@"WARNING[%s]: missing qualifier", __PRETTY_FUNCTION__);
+    [self logWithFormat:@"WARNING(%s): missing qualifier", 
+	    __PRETTY_FUNCTION__];
+    return nil;
+  }
+  
+  if (![self isNamespaceOrDbKeysValid]) {
+    [self logWithFormat:
+	    @"ERROR(%s): either defaultNamespace and dbKeys has to be nil "
+            @"or values", __PRETTY_FUNCTION__];
     return nil;
   }
 
-  if ((self->defaultNamespace == nil && self->dbKeys != nil) ||
-      (self->defaultNamespace != nil && self->dbKeys == nil)) {
-    NSLog(@"ERROR[%s]: either defaultNamespace and dbKeys has to be nil "
-          @"or values", __PRETTY_FUNCTION__);
-    return nil;
-  }
+  /* setup cache */
   
-  [self->_gid2ObjCache release];
-  
+  [self->_gid2ObjCache release]; self->_gid2ObjCache = nil;
   self->_gid2ObjCache = [[NSMutableDictionary alloc] initWithCapacity:128];
-  objPropMan          = [self->context propertyManager];
+
+  /* fetch GIDs and objects */
   
   if ([self _hasAttributeKey:qualifier]) {
-    gids    = [[self _evaluateQualifier:qualifier] allObjects];
+    gids = [[self _evaluateQualifier:qualifier] allObjects];
     [self _freeCaches];
-    objects = (self->verifyIds == YES) ? [self _buildObjects:gids] : gids;
+    objects = self->verifyIds ? [self _buildObjects:gids] : gids;
   }
   else {
     id           *objs       = NULL;
@@ -174,36 +225,26 @@
 
     [self->source setFetchSpecification:self->fetchSpecification];
     objects    = [self->source fetchObjects];
-    objs       = malloc(sizeof(id) * [objects count]);
+    objs       = calloc([objects count] + 2, sizeof(id));
     enumerator = [objects objectEnumerator];
-    while ((obj = [enumerator nextObject])) {
-      objs[objCnt++] = [self _gidForObj:obj];
+    while ((obj = [enumerator nextObject]) != nil) {
+      objs[objCnt] = [self _gidForObj:obj];
+      objCnt++;
     }
     gids = [NSArray arrayWithObjects:objs count:objCnt];
     free(objs); objs = NULL;
   }
-  enumerator = [ns objectEnumerator];
-  while ((namesp = [enumerator nextObject])) {
-    NSDictionary *props   = nil;
-    NSEnumerator *objEnum = nil;
-    id           obj      = nil;
-
-    props   = [objPropMan propertiesForGlobalIDs:gids namespace:namesp];
-    objEnum = [objects objectEnumerator];
-    
-    while ((obj = [objEnum nextObject])) {
-      NSDictionary *p = nil;
-
-      if ((p = [props objectForKey:[self _gidForObj:obj]]) != nil)
-        [obj takeValue:p forKey:namesp];
-      else
-        [obj takeValue:[NSMutableDictionary dictionary] forKey:namesp];
-    }
-  }
+  
+  /* fetch properties */
+  
+  [self _fetchPropertiesInNamespaces:ns forObjects:objects withGIDs:gids];
+  
   [self->_gid2ObjCache release]; self->_gid2ObjCache = nil;
 
   return objects;
 }
+
+/* operations */
 
 - (id)createObject {
   return [self->source createObject];
@@ -221,6 +262,8 @@
   [self->source updateObject:_obj];
 }
 
+/* accessors */
+
 - (void)setDbKeys:(NSArray *)_keys {
   ASSIGN(self->dbKeys, _keys);
 }
@@ -229,7 +272,7 @@
 }
 
 - (void)setDefaultNamespace:(NSString *)_ns {
-  ASSIGN(self->defaultNamespace, _ns);
+  ASSIGNCOPY(self->defaultNamespace, _ns);
 }
 - (NSString *)defaultNamespace {
   return self->defaultNamespace;

@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SkyObjectPropertyManager.m 1 2004-08-20 11:17:52Z znek $
 
 #include <LSFoundation/SkyObjectPropertyManager.h>
 #include "SkyObjectPropertyManager+Internals.h"
@@ -75,49 +74,32 @@ NSString *SkyOPMWrongPropertyKeyExceptionName=
 
 static NSNumber *YesNumber = nil;
 static NSNumber *NoNumber  = nil;
+static int PropertyRowBatchSize = 150;
 
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
   if (YesNumber == nil)
     YesNumber = [[NSNumber numberWithBool:YES] retain];
   if (NoNumber == nil)
     NoNumber = [[NSNumber numberWithBool:NO] retain];
   
-  if (NSNumberClass == Nil)
-    NSNumberClass = [NSNumber class];
-
-  if (NSStringClass == Nil)
-    NSStringClass = [NSString class];
-
-  if (EOKeyGlobalIDClass == Nil)
-    EOKeyGlobalIDClass = [EOKeyGlobalID class];
-
-  if (EOGenericRecordClass == Nil)
-    EOGenericRecordClass = [EOGenericRecord class];
-
-  if (NSCalendarDateClass == Nil)
-    NSCalendarDateClass = [NSCalendarDate class];
-  
-  if (EOAndQualifierClass == Nil)
-    EOAndQualifierClass = [EOAndQualifier class];
-
-  if (EOOrQualifierClass == Nil)
-    EOOrQualifierClass = [EOOrQualifier class];
-
-  if (EOKeyValueQualifierClass == Nil)
-    EOKeyValueQualifierClass = [EOKeyValueQualifier class];
-
-  if (EONotQualifierClass == Nil)
-    EONotQualifierClass = [EONotQualifier class];
-
-  if (EOKeyComparisonQualifierClass == Nil)
-    EOKeyComparisonQualifierClass = [EOKeyComparisonQualifier class];
+  NSNumberClass        = [NSNumber class];
+  NSStringClass        = [NSString class];
+  EOKeyGlobalIDClass   = [EOKeyGlobalID class];
+  EOGenericRecordClass = [EOGenericRecord class];
+  NSCalendarDateClass  = [NSCalendarDate class];
+  EOAndQualifierClass  = [EOAndQualifier class];
+  EOOrQualifierClass   = [EOOrQualifier class];
+  EOKeyValueQualifierClass      = [EOKeyValueQualifier class];
+  EONotQualifierClass           = [EONotQualifier class];
+  EOKeyComparisonQualifierClass = [EOKeyComparisonQualifier class];
 
   if (SharedEONull == nil)
     SharedEONull = [NSNull null];
-
+  
   SkyObjectPropertyManagerDebug =
-    [[NSUserDefaults standardUserDefaults]
-                     boolForKey:@"SkyObjectPropertyManagerDebug"];
+    [ud boolForKey:@"SkyObjectPropertyManagerDebug"];
   [SkyObjectPropertyManager __initialize__Internals__];
 }
 
@@ -127,22 +109,18 @@ static NSNumber *NoNumber  = nil;
     
     self->context = _ctx; /* not retained */
     NSAssert(self->context != nil, @"###1 couldn`t find command context");
-
-    self->dbMessages          = [[NSMutableArray allocWithZone:z] init];
-    self->typeManager         = [self->context typeManager]; /* not retained */
-    self->_maskPropertyCache  = [[NSMutableDictionary allocWithZone:z] init];
-    self->_maskAccessCache    = [[NSMutableDictionary allocWithZone:z] init];
-    self->_maskObjectCache    = [[NSMutableDictionary allocWithZone:z] init];
-    self->_loginId            = nil;
-    self->_groupIds           = nil;
-    self->database            = nil;
-    self->adChannel           = nil;
-    self->entity              = nil;
-    self->defaultNamespace    = nil;
     
-    if (ObjPropManHandler == nil) {
-      ObjPropManHandler = [[SkyObjectPropertyManagerHandler alloc] init];
-    }
+    self->typeManager        = [self->context typeManager]; /* not retained */
+    self->dbMessages         = 
+      [[NSMutableArray allocWithZone:z] initWithCapacity:2];
+    self->_maskPropertyCache = 
+      [[NSMutableDictionary allocWithZone:z] initWithCapacity:64];
+    self->_maskAccessCache   = 
+      [[NSMutableDictionary allocWithZone:z] initWithCapacity:64];
+    self->_maskObjectCache   =
+      [[NSMutableDictionary allocWithZone:z] initWithCapacity:64];
+    
+    ObjPropManHandler = [[SkyObjectPropertyManagerHandler alloc] init];
     [ObjPropManHandler addManager:self];
   }
   self->identCount = 0;
@@ -170,11 +148,32 @@ static NSNumber *NoNumber  = nil;
   [super dealloc];
 }
 
+static NSString *nsCleanup(NSString *nsp) {
+  if (nsp == nil)        return nil;
+  if (![nsp isNotNull])  return nil;
+  if ([nsp length] == 0) return nil;
+  return nsp;
+}
+static NSString *nsString(NSString *ns) {
+  if (ns == nil)
+    return nil;
+  
+  return [[@"{" stringByAppendingString:ns] stringByAppendingString:@"}"];
+}
+static NSString *nsNameString(NSString *ns, NSString *n) {
+  if (ns == nil)
+    return n;
+  if (n == nil)
+    return nsString(ns);
+  
+  return [nsString(ns) stringByAppendingString:n];
+}
+
 /* transaction support */
 
 - (void)_ensureOpenTransaction {
   if (![self->context isTransactionInProgress]) {
-    NSAssert([self->context begin], @"couldn`t begin transaction");
+    NSAssert([self->context begin], @"could not begin transaction");
   }
 }
 
@@ -182,6 +181,43 @@ static NSNumber *NoNumber  = nil;
   return [self propertiesForGlobalID:_gid namespace:nil];
 }
 
+- (NSArray *)attributesForProperties {
+  EOEntity *e;
+  
+  if (AttrsForProperties != nil)
+    return AttrsForProperties;
+
+  e = [self entity];
+  AttrsForProperties =
+    [[NSArray alloc] initWithObjects:
+                         [e attributeNamed:@"key"],
+                         [e attributeNamed:@"namespacePrefix"],
+                         [e attributeNamed:@"preferredType"],
+                         [e attributeNamed:@"valueString"],
+                         [e attributeNamed:@"valueInt"],
+                         [e attributeNamed:@"valueFloat"],
+                         [e attributeNamed:@"valueDate"],
+                         [e attributeNamed:@"valueOID"],
+                         [e attributeNamed:@"valueBlob"],
+                         [e attributeNamed:@"blobSize"],
+                         [e attributeNamed:@"accessKey"],
+                         [e attributeNamed:@"objectId"],
+                         [e attributeNamed:@"objectPropertyId"], nil];
+  return AttrsForProperties;
+}
+- (NSArray *)attributesForAllKeys {
+  EOEntity *e;
+  
+  if (AttrsForAllKeys != nil)
+    return AttrsForAllKeys;
+
+  e = [self entity];
+  AttrsForAllKeys = [[NSArray alloc] initWithObjects:
+                                       [e attributeNamed:@"key"],
+                                       [e attributeNamed:@"namespacePrefix"],
+				     nil];
+  return AttrsForAllKeys;
+}
 
 - (NSMutableArray *)_fetchPropertyRowsForGlobalIDs:(NSArray *)_gids 
   namespace:(NSString *)_ns 
@@ -196,7 +232,7 @@ static NSNumber *NoNumber  = nil;
   NSDictionary     *fetch;
 
   adc       = [self adaptorChannel];
-  batchSize = 150;
+  batchSize = PropertyRowBatchSize;
   cnt       = 0;
   tz        = [self _defaultTimeZone];
   gidCnt    = [_gids count];
@@ -206,7 +242,8 @@ static NSNumber *NoNumber  = nil;
   while (gidCnt > 0) {
     NSException *error;
     NSRange     range;
-
+    NSArray     *attrs;
+    
     range     = NSMakeRange(cnt, (gidCnt > batchSize) ? batchSize : gidCnt);
     currBatch = [_gids subarrayWithRange:range];
     gidCnt    = gidCnt - batchSize;
@@ -221,25 +258,9 @@ static NSNumber *NoNumber  = nil;
 	   [self _qualifierInStringForGIDs:currBatch],
 	   _ns];
     
-    if (AttrsForProperties == nil) {
-      AttrsForProperties =
-        [[NSArray alloc] initWithObjects:
-                         [e attributeNamed:@"key"],
-                         [e attributeNamed:@"namespacePrefix"],
-                         [e attributeNamed:@"preferredType"],
-                         [e attributeNamed:@"valueString"],
-                         [e attributeNamed:@"valueInt"],
-                         [e attributeNamed:@"valueFloat"],
-                         [e attributeNamed:@"valueDate"],
-                         [e attributeNamed:@"valueOID"],
-                         [e attributeNamed:@"valueBlob"],
-                         [e attributeNamed:@"blobSize"],
-                         [e attributeNamed:@"accessKey"],
-                         [e attributeNamed:@"objectId"],
-                         [e attributeNamed:@"objectPropertyId"], nil];
-    }
-
-    error = [adc selectAttributesX:AttrsForProperties
+    attrs = [self attributesForProperties];
+    
+    error = [adc selectAttributesX:attrs
 		 describedByQualifier:q fetchOrder:nil lock:NO];
     if (error != nil) {
       NSLog(@"ERROR[%s]: select for qualifier %@ failed: %@",
@@ -249,8 +270,7 @@ static NSNumber *NoNumber  = nil;
     }
     [q release]; q = nil;
     
-    while ((fetch = [adc fetchAttributes:AttrsForProperties
-                         withZone:NULL])) {
+    while ((fetch = [adc fetchAttributes:attrs withZone:NULL])) {
       /* correct timezone */
       [[fetch valueForKey:@"valueDate"] setTimeZone:tz];
       [tmp addObject:fetch];
@@ -309,10 +329,23 @@ static NSNumber *NoNumber  = nil;
   }
   if (object == nil) 
     object = [_obj objectForKey:_pt];
-
-  if (object)
+  
+  if (object != nil)
     [dict setObject:object forKey:_key];
 }  
+
+- (BOOL)isReadAccessAllowedOnProperty:(id)obj {
+  NSArray *objArray;
+  BOOL    hasAccess;
+  
+  if (obj == nil) return NO;
+  
+  objArray = [[NSArray alloc] initWithObjects:&obj count:1];
+  hasAccess = [self _operation:@"r" allowedOnProperties:objArray];
+  [objArray release]; objArray = nil;
+  return hasAccess;
+}
+
 /*
   returns a dictionary with gids as keys and dictionaries of properties as 
   value
@@ -329,37 +362,33 @@ static NSNumber *NoNumber  = nil;
 
   _gids = [[self->context accessManager] objects:_gids forOperation:@"r"];
 
-  if (![_gids count])
+  if ([_gids count] == 0)
     return nil;
-
+  
   mapOIDsWithGIDs = [self mapOIDsWithGIDs:_gids];
   
   if (![_namespace isNotNull])
     ns = nil;
-  else if (![_namespace length])
+  else if ([_namespace length] == 0)
     ns = nil;
   else
     ns = _namespace;
-
+  
   [self _ensureOpenTransaction];
 
   tmp = [self _fetchPropertyRowsForGlobalIDs:_gids namespace:ns];
-
-  if (ns)
+  
+  if (ns != nil)
     ns = [[@"{" stringByAppendingString:ns] stringByAppendingString:@"}"];
   
-  props      = [[NSMutableDictionary alloc] init];
+  props      = [[NSMutableDictionary alloc] initWithCapacity:64];
   enumerator = [tmp objectEnumerator];
   
-  while ((obj = [enumerator nextObject])) {
+  while ((obj = [enumerator nextObject]) != nil) {
     NSString *pt, *k;
-    BOOL hasAccess;
     
-    k = nil;
-    
-    hasAccess = [self _operation:@"r"
-		      allowedOnProperties:[NSArray arrayWithObject:obj]];
-    if (!hasAccess) continue;
+    if (![self isReadAccessAllowedOnProperty:obj])
+      continue;
     
     pt = [obj objectForKey:@"preferredType"];
     if (![pt isNotNull])
@@ -367,20 +396,19 @@ static NSNumber *NoNumber  = nil;
 
     k = [obj objectForKey:@"key"];
     
-    if (ns) {
+    if (ns != nil)
       k = [ns stringByAppendingString:k];
-    }
     else {
       NSString *nsp;
 
       nsp = [obj objectForKey:@"namespacePrefix"];
       if (![nsp isNotNull])
 	nsp = nil;
-      else if (![nsp length])
+      else if ([nsp length] == 0)
 	nsp = nil;
       
-      if (nsp)
-	k = [NSString stringWithFormat:@"{%@}%@", nsp, k];
+      if (nsp != nil)
+	k = nsNameString(nsp, k);
     }
     
     [self _setObjectValue:obj
@@ -430,6 +458,7 @@ static NSNumber *NoNumber  = nil;
   NSDictionary     *fetch;
   NSException      *error;
   id               tmp;
+  NSArray          *attrs;
   
   e    = [self entity];
   adc  = [self adaptorChannel];
@@ -437,14 +466,9 @@ static NSNumber *NoNumber  = nil;
   type = nil;
 
   [self _objectId:_gid objectId:&oid objectType:&type];
-
-  if (![_namespace isNotNull])
-    ns = nil;
-  else if ([_namespace length] == 0)
-    ns = nil;
-  else
-    ns = _namespace;
-    
+  
+  ns = nsCleanup(_namespace);
+  
   qualifier = [EOSQLQualifier alloc];
   qualifier = (ns == nil)
     ? [qualifier initWithEntity:e qualifierFormat:@"objectId = %@", oid]
@@ -453,15 +477,10 @@ static NSNumber *NoNumber  = nil;
 		   oid, ns];
   
   [self _ensureOpenTransaction];
-
-  if (AttrsForAllKeys == nil) {
-    AttrsForAllKeys = [[NSArray alloc] initWithObjects:
-                                       [e attributeNamed:@"key"],
-                                       [e attributeNamed:@"namespacePrefix"],
-                                       nil];
-  }
-
-  error = [adc selectAttributesX:AttrsForAllKeys describedByQualifier:qualifier
+  
+  attrs = [self attributesForProperties];
+  
+  error = [adc selectAttributesX:attrs describedByQualifier:qualifier
 	       fetchOrder:nil lock:NO];
   if (error != nil) {
     NSLog(@"ERROR[%s]: select for qualifier %@ failed: %@", 
@@ -472,11 +491,10 @@ static NSNumber *NoNumber  = nil;
   [qualifier release]; qualifier = nil;
 
   keys = [[NSMutableArray alloc] initWithCapacity:16];
-
-  if (ns != nil)
-    ns = [[@"{" stringByAppendingString:ns] stringByAppendingString:@"}"];
-    
-  while ((fetch = [adc fetchAttributes:AttrsForAllKeys withZone:NULL])) {
+  
+  ns = nsString(ns);
+  
+  while ((fetch = [adc fetchAttributes:attrs withZone:NULL])) {
     NSString *k;
     
     if (ns != nil) {
@@ -484,22 +502,13 @@ static NSNumber *NoNumber  = nil;
     }
     else {
       NSString *nsp;      
-
-      nsp = [fetch objectForKey:@"namespacePrefix"];
-      if (![nsp isNotNull])
-        nsp = nil;
-      else if ([nsp length] == 0)
-        nsp = nil;
-
-      k = (nsp != nil)
-        ? [[[@"{" stringByAppendingString:nsp]
-                  stringByAppendingString:@"}"] stringByAppendingString:
-                                                [fetch objectForKey:@"key"]]
-        : [fetch objectForKey:@"key"];
+      
+      nsp = nsCleanup([fetch objectForKey:@"namespacePrefix"]);
+      k   = nsNameString(nsp, [fetch objectForKey:@"key"]);
     }
     if (k == nil) {
-      NSLog(@"WARNING[%s]: missing key for globalID %@", __PRETTY_FUNCTION__,
-            _gid);
+      [self logWithFormat:@"WARNING(%s): missing key for globalID %@", 
+	    __PRETTY_FUNCTION__, _gid];
       k = @"";
     }
     [keys addObject:k];
@@ -510,6 +519,7 @@ static NSNumber *NoNumber  = nil;
   return [tmp autorelease];
 }
 
+/* accessors */
 
 - (void)setRestrictionEntityName:(NSString *)_entity {
   ASSIGN(self->restEntityName, _entity);
@@ -531,6 +541,8 @@ static NSNumber *NoNumber  = nil;
 - (NSString *)restrictionQualifierString {
   return self->restQualStr;
 }
+
+/* property row */
 
 - (EOGlobalID *)_processPropertyGlobalIDRow:(NSDictionary *)row {
   NSString   *en;
@@ -615,7 +627,7 @@ static NSNumber *NoNumber  = nil;
                typeName, [self value:_name forAttr:typeAttr]];
   }
   if (self->restQualStr != nil) {
-    /* append qual format (like object_id in (1234, 2345) */
+    /* append qual format (like 'object_id IN (1234, 2345)' */
     [qualifier insertString:@"(" atIndex:0];
     [qualifier appendString:@") AND "];
     [qualifier appendString:self->restQualStr];
@@ -629,7 +641,7 @@ static NSNumber *NoNumber  = nil;
     NSString *s;
     s = [[NSString alloc] initWithFormat:
 			    @"SELECT DISTINCT %@, %@ FROM %@ WHERE ",
-			  oidName, typeName, tName];
+			    oidName, typeName, tName];
     [qualifier insertString:s atIndex:0];
     [s release];
   }
@@ -667,9 +679,9 @@ static NSNumber *NoNumber  = nil;
         [array addObject:row];
       }
       [adc cancelFetch];
+      
       enumerator = [array objectEnumerator];
-
-      while ((row = [enumerator nextObject])) {
+      while ((row = [enumerator nextObject]) != nil) {
 	EOGlobalID *gid;
 	
 	if ((gid = [self _processPropertyGlobalIDRow:row]) == nil) {
@@ -1203,7 +1215,7 @@ static NSNumber *NoNumber  = nil;
       NSMutableDictionary *dict;
       id                  prop;
 
-      dict = [[NSMutableDictionary alloc] init];
+      dict = [[NSMutableDictionary alloc] initWithCapacity:64];
       props = [[access objectsForKey:obj] objectEnumerator];
       while ((prop = [props nextObject])) {
         [dict setObject:[keys objectForKey:prop] forKey:prop];
@@ -1219,6 +1231,8 @@ static NSNumber *NoNumber  = nil;
   }
   return YES;
 }
+
+/* debugging */
 
 - (BOOL)isDebuggingEnabled {
   return SkyObjectPropertyManagerDebug;

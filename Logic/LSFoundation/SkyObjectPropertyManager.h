@@ -18,12 +18,20 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SkyObjectPropertyManager.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __OGo_LSFoundation_SkyObjectPropertyManager__
 #define __OGo_LSFoundation_SkyObjectPropertyManager__
 
 #import <Foundation/NSObject.h>
+
+/*
+  SkyObjectPropertyManager
+  
+  TODO: document class.
+  
+  This class is the primary interface to extended attributes stored in the
+  object_properties table.
+*/
 
 @class NSDictionary, NSArray, NSString, NSException, NSMutableArray, NSNumber;
 @class NSMutableDictionary, NSSet;
@@ -76,20 +84,19 @@ extern NSString *SkyOPMWrongPropertyKeyExceptionName;
 
 - (id)initWithContext:(LSCommandContext *)_ctx;
 
-/* 
- returns a dictionary with all key-value pairs for the given _obj
-*/
+/* returns a dictionary with all key-value pairs for the given _obj */
 - (NSDictionary *)propertiesForGlobalID:(id)_obj;
 
 /* 
- returns a dictionary with key-value pairs for the given _obj with read 
- access for the given owner (user_id / group_id)
+  returns a dictionary with key-value pairs for the given _obj with read 
+  access for the given owner (user_id / group_id)
 */
 - (NSDictionary *)propertiesForGlobalID:(EOGlobalID *)_gid
   namespace:(NSString *)_namespace;
 
 /*
-  returns a dictionary with gids as keys and dictionaries of properties as value
+  returns a dictionary with gids as keys and dictionaries of properties as
+  value
 */
 - (NSDictionary *)propertiesForGlobalIDs:(NSArray *)_gids
   namespace:(NSString *)_namespace;
@@ -101,18 +108,18 @@ extern NSString *SkyOPMWrongPropertyKeyExceptionName;
   namespace:(NSString *)_namespace;
 
 /*
-  Qualifier could looks like:
-            1234::color = 'gray' AND count = 5 and oid IN (1,2,3)
-
+  Qualifier looks like:
+    1234::color = 'gray' AND count = 5 and oid IN (1,2,3)
+   
   Returns an array of EOKeyGlobalIds.
 */
 - (NSArray *)globalIDsForQualifier:(EOQualifier *)_propertyQualifier 
   entityName:(NSString *)_name;
 
 /*
- writes the properties for the given object with _owner
- if something failed, an exception is returned
- _access could be a id(read/write) or an access-list
+  writes the properties for the given object with _owner
+  if something failed, an exception is returned
+  _access could be a id(read/write) or an access-list
 */
 - (NSException *)addProperties:(NSDictionary *)_properties 
   accessOID:(EOGlobalID *)_access
@@ -168,16 +175,12 @@ extern NSString *SkyOPMWrongPropertyKeyExceptionName;
 - (EOEntity *)entity;
 - (EOAdaptorChannel *)adaptorChannel;
 
-/*
-  this ns will be used if a key has no namespace
-*/
+/* this ns will be used if a key has no namespace */
 
-- (NSString *)defaultNamespace;
 - (void)setDefaultNamespace:(NSString *)_str;
+- (NSString *)defaultNamespace;
 
-/*
-  notification name for modify attributes for a global id
-*/
+/* notification name for modify attributes for a global id */
 - (NSString *)modifyPropertiesForGIDNotificationName;
 
 /*
