@@ -164,13 +164,13 @@ static NSNumber *yesNum = nil;
     if (![teamId isNotNull]) teamId = nil;
             
     if ((teamId == nil) && [pca count] == 0 &&
-	[[obj valueForKey:@"dbStatus"]
-	  isEqualToString:@"archived"] == NO) { /* private */
+	![[obj valueForKey:@"dbStatus"]
+	  isEqualToString:@"archived"]) { /* private */
       type = @"private";
     }
     else if (((teamId != nil) || [pca count] > 0) &&
-	     [[obj valueForKey:@"dbStatus"]
-	       isEqualToString:@"archived"] == NO) { /* common */
+	     ![[obj valueForKey:@"dbStatus"]
+	       isEqualToString:@"archived"]) { /* common */
       type = @"common";
     }
     else if ([[obj valueForKey:@"dbStatus"]
