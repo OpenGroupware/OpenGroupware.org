@@ -8,6 +8,8 @@ SUBPROJECTS = \
 	ZSBackend	\
 	ZSFrontend	\
 	SoObjects	\
+	Main		\
+	\
 	PrefsUI		\
 
 # some products do not yet compile with Cocoa Foundation
