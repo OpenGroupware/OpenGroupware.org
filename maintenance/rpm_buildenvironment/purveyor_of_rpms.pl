@@ -12,8 +12,6 @@ use File::Basename;
 # NEW >  moved this variable into an external configfile called
 #        $ENV{'HOME'}/purveyor_of_rpms.conf
 my $host_i_runon;
-eval getconf("$ENV{'HOME'}/purveyor_of_rpms.conf") or die "FATAL: $@\n";
-
 my $time_we_started = `date +"%Y%m%d-%H%M%S"`;
 chomp $time_we_started;
 our ($opt_p,$opt_f,$opt_t,$opt_b,$opt_d,$opt_c,$opt_v,$opt_u,$opt_s,$opt_r);
@@ -44,6 +42,7 @@ my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse
 my $release_codename;
 my $remote_release_dirname;
 my $libversion;
+eval getconf("$ENV{'HOME'}/purveyor_of_rpms.conf") or die "FATAL: $@\n";
 
 prepare_build_env();
 get_commandline_options();
@@ -808,7 +807,7 @@ sub get_commandline_options {
   }
   if ($verbose eq "yes") {
     print "########################################\n"; 
-    print "[COMMANDLINE]       - host I run on             <-p $host_i_runon>\n";
+    print "[COMMANDLINE]       - host I run on             $host_i_runon\n";
     print "[COMMANDLINE]       - package to build          <-p $package>\n";
     print "[COMMANDLINE]       - force_rebuild             <-f $force_rebuild>\n";
     print "[COMMANDLINE]       - type of build             <-t $build_type>\n";
