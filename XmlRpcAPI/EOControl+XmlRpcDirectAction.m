@@ -30,15 +30,14 @@
   if ((self = [self init])) {
     id tmp;
 
-    if ((tmp = [_baseValue objectForKey:@"qualifier"])) {
-      if ([tmp isKindOfClass:[NSDictionary class]])
-        tmp = [EOQualifier qualifierToMatchAllValues:tmp];
-      else
-        tmp = [EOQualifier qualifierWithQualifierFormat:tmp];
-        
+    if ((tmp = [_baseValue objectForKey:@"qualifier"]) != nil) {
+      tmp = ([tmp isKindOfClass:[NSDictionary class]])
+        ? [EOQualifier qualifierToMatchAllValues:tmp]
+	: [EOQualifier qualifierWithQualifierFormat:tmp];
+      
       [self setQualifier:tmp];
     }
-    if ((tmp = [_baseValue objectForKey:@"sortOrderings"])) {
+    if ((tmp = [_baseValue objectForKey:@"sortOrderings"]) != nil) {
         NSArray        *sos = nil;
         EOSortOrdering *so;
 

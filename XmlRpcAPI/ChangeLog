@@ -1,3 +1,8 @@
+2005-01-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* EOControl+XmlRpcDirectAction.m, 
+	  Actions.subproj/DirectAction+Account.m: minor code cleanups (v5.1.56)
+
 2005-01-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* XmlRpcCoding.subproj/SkyEnterpriseDocument+XmlRpcCoding.m: removed

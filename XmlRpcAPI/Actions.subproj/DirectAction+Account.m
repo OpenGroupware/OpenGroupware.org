@@ -392,36 +392,31 @@
 }
 
 - (id)account_getTeamsForLoginAction:(NSString *)_login {
-  id ctx;
+  LSCommandContext *ctx;
+  id acc;
 
-  if ((ctx = [self commandContext]) != nil) {
-    id acc;
+  if ((ctx = [self commandContext]) == nil)
+    return [NSNumber numberWithBool:NO];
 
-    acc = [ctx runCommand:@"account::get-by-login",
-               @"login", _login,
-               nil];
-
-    if (acc != nil) {
-      return [ctx runCommand:@"account::teams",
-                  @"account", acc,
-                  nil];
-    }
-  }
+  acc = [ctx runCommand:@"account::get-by-login", @"login", _login, nil];
+  if (acc != nil)
+    return [ctx runCommand:@"account::teams", @"account", acc, nil];
+  
   return [NSNumber numberWithBool:NO];
 }
 
 - (id)account_deleteByNumberAction:(NSString *)_login {
   id account = nil;
-
+  
   _login = [_login stringValue];
   if ([_login length] == 0)
     return [NSNumber numberWithBool:NO];
   
-  if ((account = [self _getAccountByLogin:_login])) {
-    [[self personDataSource] deleteObject:account];
-    return [NSNumber numberWithBool:YES];
-  }
-  return [NSNumber numberWithBool:NO];
+  if ((account = [self _getAccountByLogin:_login]) == nil)
+    return [NSNumber numberWithBool:NO];
+
+  [[self personDataSource] deleteObject:account];
+  return [NSNumber numberWithBool:YES];
 }
 
 - (id)account_deleteByLoginAction:(NSString *)_login {
@@ -431,22 +426,24 @@
   if ([_login length] == 0)
     return [NSNumber numberWithBool:NO];
   
-  if ((account = [self _getAccountByLogin:_login])) {
-    [[self personDataSource] deleteObject:account];
-    return [NSNumber numberWithBool:YES];
-  }
-  return [NSNumber numberWithBool:NO];
+  if ((account = [self _getAccountByLogin:_login]) == nil)
+    return [NSNumber numberWithBool:NO];
+  
+  [[self personDataSource] deleteObject:account];
+  return [NSNumber numberWithBool:YES];
 }
 
 - (NSArray *)account_fetchAction:(id)_arg {
   EOFetchSpecification *fspec;
-  EODataSource         *accountDS = [self accountDataSource];
-
-  fspec = [[[EOFetchSpecification alloc] initWithBaseValue:_arg] autorelease];
+  EODataSource         *accountDS;
+  
+  accountDS = [self accountDataSource];
+  fspec = [[EOFetchSpecification alloc] initWithBaseValue:_arg];
+  // TODO: should we warn or even fault if qualifier is nil?
   [fspec setEntityName:@"account"];
-
   [accountDS setFetchSpecification:fspec];
-
+  [fspec release]; fspec = nil;
+  
   return [accountDS fetchObjects];
 }
 
@@ -459,16 +456,19 @@
 
 - (id)account_insertAction:(id)_account:(NSNumber *)_dontCryptPassword {
   LSCommandContext *ctx;
-
-  if ((ctx = [self commandContext]) != nil) {
     NSMutableDictionary *args = nil;
     NSString *templateUserId;
     id result;
 
-    if ((templateUserId = [_account valueForKey:@"templateUserId"]) != nil) {
-      EOGlobalID *gid;
+  if ((ctx = [self commandContext]) == nil) {
+    [self logWithFormat:@"Invalid command context"];
+    return [NSNumber numberWithBool:NO];
+  }
 
-      if (([templateUserId intValue] == 0) &&
+  if ((templateUserId = [_account valueForKey:@"templateUserId"]) != nil) {
+    EOGlobalID *gid;
+
+    if (([templateUserId intValue] == 0) &&
           (![templateUserId hasPrefix:@"skyrix://"])) {
         id account;
 
@@ -481,11 +481,11 @@
         else
           return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_RESULT
                        reason:@"Invalid template user account"];
-      }
-      else
-        gid = [[ctx documentManager] globalIDForURL:templateUserId];
+    }
+    else
+      gid = [[ctx documentManager] globalIDForURL:templateUserId];
 
-      if (gid != nil) {
+    if (gid != nil) {
         id tmpId;
         id account = nil;
 
@@ -515,55 +515,50 @@
           return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
                        reason:@"Didn't find account for template user ID"];
         }
-      }
-      else {
-        return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
-                     reason:@"Couldn't find template user for user ID"];
-      }
     }
+    else {
+      return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+		   reason:@"Couldn't find template user for user ID"];
+    }
+  }
 
-    if ([_dontCryptPassword boolValue]) {
+  if ([_dontCryptPassword boolValue]) {
       if (args == nil) 
         args = [_account mutableCopy];
 
       [args setObject:[NSNumber numberWithBool:YES]
             forKey:@"dontCryptPassword"];
-    }
-
-    if (args != nil) {
-      result = [ctx runCommand:@"account::new" arguments:args];
-      [args release]; args = nil;
-    }
-    else
-      result = [ctx runCommand:@"account::new" arguments:_account];
-
-    return [self _dictionaryForAccountEOGenericRecord:result];
   }
 
-  [self logWithFormat:@"Invalid command context"];
-  return [NSNumber numberWithBool:NO];
+  if (args != nil) {
+      result = [ctx runCommand:@"account::new" arguments:args];
+      [args release]; args = nil;
+  }
+  else
+      result = [ctx runCommand:@"account::new" arguments:_account];
+
+  return [self _dictionaryForAccountEOGenericRecord:result];
 }
 
 - (id)account_updateAction:(id)_account {
   LSCommandContext *ctx;
+  SkyAccountDocument *account = nil;
+  NSString *tmp;
 
-  if ((ctx = [self commandContext]) != nil) {
-    SkyAccountDocument *account = nil;
-    NSString *tmp;
+  if ((ctx = [self commandContext]) == nil) // TODO: improve error
+    return [NSNumber numberWithBool:NO];
 
-    if ((tmp = [_account valueForKey:@"id"]) != nil)
-      account = [self _getAccountForURL:tmp inContext:ctx];
-    else
-      return [self faultWithFaultCode:XMLRPC_FAULT_MISSING_PARAMETER
-                   reason:@"Missing ID in account record"];
-    
-    if (account != nil) {
-      [self _takeValuesDict:_account toAccount:&account];
-      [[self accountDataSource] updateObject:account];
-      return account;
-    }
+  if ((tmp = [_account valueForKey:@"id"]) == nil) {
+    return [self faultWithFaultCode:XMLRPC_FAULT_MISSING_PARAMETER
+		 reason:@"Missing ID in account record"];
   }
-  return [NSNumber numberWithBool:NO];
+  
+  if ((account = [self _getAccountForURL:tmp inContext:ctx]) == nil)
+    return [NSNumber numberWithBool:NO];
+
+  [self _takeValuesDict:_account toAccount:&account];
+  [[self accountDataSource] updateObject:account];
+  return account;
 }
 
 - (id)account_deleteAction:(id)_account {
