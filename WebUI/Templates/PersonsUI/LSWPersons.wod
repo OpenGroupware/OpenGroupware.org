@@ -1,4 +1,4 @@
-// $Id: LSWPersons.wod 2 2004-08-20 11:37:44Z znek $
+// binds template to controller class
 
 Frame: LSWSkyrixFrame {}
 
@@ -116,9 +116,9 @@ SearchField: WOTextField {
 }
 
 SearchSubmit: WOSubmitButton {
-  action           = personSearch;
-  value            = labels.searchButtonLabel;
-  class            = "button_narrow";
+  action = personSearch;
+  value  = labels.searchButtonLabel;
+  class  = "button_narrow";
 }
 
 IsSearchLimited: WOConditional {

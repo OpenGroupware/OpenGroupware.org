@@ -124,15 +124,19 @@ static BOOL       hasSkyInfolineGathering = NO;
 - (LSCommandContext *)commandContext {
   return [(OGoSession *)[self session] commandContext];
 }
+- (Class)dataSourceClass {
+  return [SkyPersonDataSource class];
+}
 - (void)_setupDataSource {
   SkyPersonDataSource *ds;
   
-  if (self->dataSource) return;
+  if (self->dataSource != nil)
+    return;
   
-  ds = [(SkyPersonDataSource *)[SkyPersonDataSource alloc] 
-                               initWithContext:[self commandContext]];
+  ds = [[self dataSourceClass] alloc]; /* sep line to make gcc happy */
+  ds = [ds initWithContext:[self commandContext]];
   self->dataSource = [[EOCacheDataSource alloc] initWithDataSource:ds];
-  [ds release];
+  [ds release]; ds = nil;
 }
 
 - (void)_registerForNotifications {
@@ -424,7 +428,7 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 
 - (id)personSearch {
   EOFetchSpecification *fspec;
-
+  
   fspec = [self fetchSpecification];
   [fspec setQualifier:[self qualifierForPersonSearch:self->searchText]];
   [self->dataSource setFetchSpecification:fspec];
