@@ -528,6 +528,10 @@ sub collect_patchinfo {
       $new_version = `/bin/rpm --qf '%{version}' -q apache-devel`;
       print "Senseless to continue... got no version for mod_ngobjweb\n" and exit 1 if ($?);
     }
+    if ($distrib_define =~ m/^conectiva linux 10/i) {
+      $new_version = `/bin/rpm --qf '%{version}' -q apache-devel`;
+      print "Senseless to continue... got no version for mod_ngobjweb\n" and exit 1 if ($?);
+    }
   }
   ###########################################################################
   if ($package eq "ogo-environment") {
