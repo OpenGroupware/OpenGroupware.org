@@ -1,3 +1,7 @@
+2005-02-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed Copyright information
+
 2005-01-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* English.lproj/OGoScheduler.strings: added extend/unextend labels as
