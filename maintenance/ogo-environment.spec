@@ -49,14 +49,19 @@ if [ $1 = 1 ]; then
   ln -s %{_var}/lib/opengroupware.org/.libFoundation opengroupware.org
   ## some defaults
   OGO_USER="ogo"
+  OGO_HOME="/var/lib/opengroupware.org"
   export PATH=$PATH:%{prefix}/bin
   su - ${OGO_USER} -c "
   Defaults write NSGlobalDomain LSConnectionDictionary '{hostName=localhost; userName=OGo; password=\"\"; port=5432; databaseName=OGo}'
+  Defaults write NSGlobalDomain LSNewsImagesPath '/var/lib/opengroupware.org/news'
+  Defaults write NSGlobalDomain LSNewsImagesUrl '/ArticleImages'
   Defaults write NSGlobalDomain skyrix_id `hostname`
   Defaults write NSGlobalDomain TimeZoneName GMT
   Defaults write NSGlobalDomain WOHttpAllowHost '( localhost, 127.0.0.1, localhost.localdomain)'
   Defaults write ogo-nhsd-1.0a NGBundlePath '%{prefix}/lib/opengroupware.org-1.0a/conduits'
   "
+  ##
+  chmod 755 ${OGO_HOME}
   ##
   if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
     echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/opengroupware.conf
@@ -98,11 +103,16 @@ rm -fr ${RPM_BUILD_ROOT}
 %dir %attr(700,ogo,skyrix) %{_var}/lib/opengroupware.org/.libFoundation
 %dir %attr(700,ogo,skyrix) %{_var}/lib/opengroupware.org/.libFoundation/Defaults
 %dir %attr(700,ogo,skyrix) %{_var}/lib/opengroupware.org/documents
-%dir %attr(700,ogo,skyrix) %{_var}/lib/opengroupware.org/news
+%dir %attr(755,ogo,skyrix) %{_var}/lib/opengroupware.org/news
 %dir %attr(700,ogo,skyrix) %{_var}/log/opengroupware
 
 # ********************************* changelog *************************
 %changelog
+* Sat Feb 19 2005 Frank Reppin <frank@opengroupware.org>
+- fixed OGo Bug #1230:
+  added LSNewsImagesPath/LSNewsImagesUrl
+  made homedir and newsdir accessible for 'o' (ro - in order
+  to satisfy apache)
 * Tue Feb 01 2005 Frank Reppin <frank@opengroupware.org>
 - don't use 'which' to determine the path to 'bash'
   (every buildhost has /bin/bash)
