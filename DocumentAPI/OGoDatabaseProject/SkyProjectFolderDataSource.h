@@ -29,8 +29,14 @@
 @class SkyProjectFileManager;                           
 
 /*
-  Hints:
+  SkyProjectFolderDataSource
+
+  TODO: more docu
   
+  This datasource should be used to run document queries on a single project,
+  it can either query a single folder or a whole project.
+  
+  Hints:
     fetchDeep[BOOL]          : fetch all subdocuments from folder, currently
                                only on root folders
 

@@ -28,6 +28,12 @@
   SkyProjectDocumentDataSource
 
   TODO: document
+  
+  Apparently this is the datasource used for cross-project searches while
+  SkyProjectFolderDataSource is used if you request a datasource for a single
+  project or project folder.
+  
+  Note: apparently it does not support fetchkeys.
 */
 
 @class NSArray;

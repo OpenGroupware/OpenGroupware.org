@@ -15,6 +15,18 @@ huge class doing all kinds of things at the same time. This needs to get
 refactored into several small units doing specific things.
 
 
+Database Storage
+================
+
+Tables: document / document_version / document_editing
+
+- folders are regular document's
+- links are document's
+- documents know their parents, not the reverse
+- filenames are stored in the 'title' column
+  - extensions are stored separate, in the 'filetype' column
+
+
 Standard File Attribute Keys
 ============================
 
