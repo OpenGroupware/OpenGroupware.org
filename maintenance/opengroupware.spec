@@ -29,7 +29,7 @@ SOPE application server.
 %package meta
 Summary:      OpenGroupware.org META package
 Group:        Development/Libraries
-Requires:     libobjc-lf2 libfoundation10 sope%{smaj}%{smin}-xml sope%{smaj}%{smin}-xml-tools sope%{smaj}%{smin}-core sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-appserver-tools sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-ldap-tools sope%{smaj}%{smin}-ical sope%{smaj}%{smin}-gdl1-postgresql sope%{smaj}%{smin}-gdl1 ogo-docapi ogo-docapi-db-project ogo-docapi-fs-project ogo-logic ogo-logic-tools ogo-pda ogo-theme-default ogo-tools ogo-webui-app ogo-webui-calendar ogo-webui-contact ogo-webui-core ogo-webui-mailer ogo-webui-news ogo-webui-project ogo-webui-resource-de ogo-webui-resource-en ogo-webui-task ogo-xmlrpcd ogo-zidestore ogo-environment mod_ngobjweb
+Requires:     libobjc-lf2 libfoundation10 sope%{smaj}%{smin}-xml sope%{smaj}%{smin}-core sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-ical sope%{smaj}%{smin}-gdl1-postgresql sope%{smaj}%{smin}-gdl1 ogo-docapi ogo-docapi-db-project ogo-docapi-fs-project ogo-logic ogo-logic-tools ogo-pda ogo-theme-default ogo-tools ogo-webui-app ogo-webui-calendar ogo-webui-contact ogo-webui-core ogo-webui-mailer ogo-webui-news ogo-webui-project ogo-webui-resource-de ogo-webui-resource-en ogo-webui-task ogo-xmlrpcd ogo-zidestore ogo-environment mod_ngobjweb
 AutoReqProv:  off
 
 %description meta
