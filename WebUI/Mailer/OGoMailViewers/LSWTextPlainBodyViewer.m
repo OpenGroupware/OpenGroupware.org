@@ -146,11 +146,7 @@ static int UseFoundationStringEncodingForMimeText = -1;
   
   wrapLength =
     [[[self userDefaults] objectForKey:@"MailerPlainTextWrapWidth"] intValue];
-
-  [self logWithFormat:@"WRAP: %s, at %i",
-	[self defShouldWrapLongLines] ? "yes" : "no",
-	wrapLength];
-
+  
   s = [s stringByWrappingWithWrapLen:wrapLength
          wrapLongLines:[self defShouldWrapLongLines]];
   
