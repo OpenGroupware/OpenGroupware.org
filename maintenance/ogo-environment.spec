@@ -10,9 +10,7 @@ Group:        Development/Libraries
 AutoReqProv:  off
 #Source:      %{ogo_env_source}
 Prefix:       %{ogo_env_prefix}
-#Patch:
 #Requires:    
-#BuildPreReq: 
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
@@ -28,6 +26,7 @@ rm -fr ${RPM_BUILD_ROOT}
 mkdir -p ${RPM_BUILD_ROOT}/var/lib/opengroupware.org/.libFoundation/Defaults
 mkdir -p ${RPM_BUILD_ROOT}/var/lib/opengroupware.org/documents
 mkdir -p ${RPM_BUILD_ROOT}/var/lib/opengroupware.org/news
+mkdir -p ${RPM_BUILD_ROOT}/var/log/opengroupware
 
 # ****************************** post ********************************
 %pre
@@ -115,8 +114,11 @@ rm -fr ${RPM_BUILD_ROOT}
 %dir %attr(700,ogo,skyrix) %{_var}/lib/opengroupware.org/.libFoundation/Defaults
 %dir %attr(700,ogo,skyrix) %{_var}/lib/opengroupware.org/documents
 %dir %attr(700,ogo,skyrix) %{_var}/lib/opengroupware.org/news
+%dir %attr(700,ogo,skyrix) %{_var}/log/opengroupware
 
 # ********************************* changelog *************************
 %changelog
+* Tue Jan 18 2005 Frank Reppin <frank@opengroupware.org>
+- add logdir (/var/log/opengroupware)
 * Wed Sep 09 2004 Frank Reppin <frank@opengroupware.org>
 - initial release
