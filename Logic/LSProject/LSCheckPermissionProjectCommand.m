@@ -19,19 +19,26 @@
   02111-1307, USA.
 */
 
-#import <LSFoundation/LSBaseCommand.h>
+#include <LSFoundation/LSBaseCommand.h>
+
+/*
+  LSCheckPermissionProjectCommand
+
+  TODO: document
+*/
 
 @interface LSCheckPermissionProjectCommand : LSBaseCommand
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSCheckPermissionProjectCommand
 
 - (void)_executeInContext:(id)_context {
-  NSNumber *teamId, *loginId;
+  NSNumber *teamId;
   id   login;
   id   project;
+  int  loginId;
   BOOL retVal  = NO;
   
   login   = [_context valueForKey:LSAccountKey];

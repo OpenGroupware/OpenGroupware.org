@@ -1,3 +1,8 @@
+2004-12-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSCheckPermissionProjectCommand.m: fixed a bug (some incorrect type)
+	  (v5.1.33)
+
 2004-12-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetProjectCommand.m, LSCheckWritePermissionProjectCommand.m,
