@@ -24,8 +24,8 @@ my $host_i_runon = "fedora-core3";
 
 my $time_we_started = `date +"%Y%m%d-%H%M%S"`;
 chomp $time_we_started;
-our ($opt_p,$opt_f,$opt_t,$opt_b,$opt_d,$opt_c,$opt_v,$opt_u,$opt_s);
-my ($package,$force_rebuild,$build_type,$bump_buildcount,$do_download,$release_tarballname,$verbose,$do_upload,$use_specfile);
+our ($opt_p,$opt_f,$opt_t,$opt_b,$opt_d,$opt_c,$opt_v,$opt_u,$opt_s,$opt_r);
+my ($package,$force_rebuild,$build_type,$bump_buildcount,$do_download,$release_tarballname,$verbose,$do_upload,$use_specfile,$rdirbase);
 my $hpath = "$ENV{'HOME'}";
 my $logs_dir = "$ENV{'HOME'}/logs";
 my $sources_dir = "$ENV{'HOME'}/rpm/SOURCES";
@@ -80,6 +80,7 @@ sub move_to_dest {
     open(SSH, "|/usr/bin/ssh $remote_user\@$remote_host");
     print SSH "cd $remote_dir\n";
     print SSH "mkdir -p $remote_release_dirname\n";
+    print SSH "mkdir -p $rdirbase\n" if ($rdirbase); #didn't I mention that it's already there :)
     close(SSH);
   }
   foreach $rpm (@rpms_build) {
@@ -89,9 +90,11 @@ sub move_to_dest {
     chomp $prep_ln_name;
     chomp $forarch;
     $ln_name = "$prep_ln_name-latest.$forarch.rpm";
+    print "[MOVETODEST]        - $package will be put into $rdirbase as requested via commandline\n" if (($verbose eq "yes") and ($do_upload eq "yes") and ($rdirbase));
     print "[MOVETODEST]        - $package rolling out '$rpm_basename' to $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "yes"));
     print "[MOVETODEST]        - $package won't copy '$rpm_basename' to $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "no"));
     system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_trunk_dir/ 1>>$logout 2>>$logerr") if (($build_type eq "trunk") and ($do_upload eq "yes"));
+    system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_rel_dir/$rdirbase/ 1>>$logout 2>>$logerr") if (($rdirbase) and ($build_type eq "release") and ($do_upload eq "yes"));
     system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_rel_dir/$remote_release_dirname/ 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes"));
     $remote_dir = $remote_trunk_dir if ($build_type eq "trunk");
     $remote_dir = $remote_rel_dir if ($build_type eq "release");
@@ -657,7 +660,7 @@ sub get_latest_sources {
 }
 
 sub get_commandline_options {
-  getopt('pftbdcvus');
+  getopt('pftbdcvusr');
   #self explaining...
   if (!$opt_p) {
     print "No package given!\n";
@@ -753,6 +756,25 @@ sub get_commandline_options {
     #should be a relative path to the specfile
     $use_specfile = $opt_s;
   }
+  #upload the package into \$rdirbase instead of the
+  #automagically determined location on the \$dl_host
+  #using this option ensures that certain packages end up
+  #in the correct place (required to put ie ogo-environment,
+  #mod_ngobjweb etc in the codenamed dirs.
+  if (!$opt_r) {
+    #defaults to nothing useful at all
+  } else {
+    chomp $opt_r;
+    #Don't use a full pathname here (I don't basename($_) this var)!
+    #The given directory already exists (I repeat... *already exists*)...
+    #...because it was already created during another another run (either trigger_sope or trigger_opengroupware
+    #release build)... there won't be a `normal` case where the script will die whilst trying to upload
+    #a package into a non-existant directory.
+    #Examples for a common option given to <-r> are available at:
+    #  http://download.opengroupware.org/packages/fedora-core3/releases/
+    #  
+    $rdirbase = $opt_r;
+  }
   #sanitize... weird option combinations
   if (($build_type eq "release") and ($release_tarballname eq "none") and (! grep /^$package$/, @package_wo_source)) {
     print "Check your commandline - no '-c <tarballname>' given for release build!\n";
@@ -761,17 +783,19 @@ sub get_commandline_options {
   }
   if ($verbose eq "yes") {
     print "########################################\n"; 
-    print "[COMMANDLINE]       - package to build <-p $package>\n";
-    print "[COMMANDLINE]       - force_rebuild  <-f $force_rebuild>\n";
-    print "[COMMANDLINE]       - type of build <-t $build_type>\n";
-    print "[COMMANDLINE]       - bump buildcount <-b $bump_buildcount>\n";
-    print "[COMMANDLINE]       - do download <-d $do_download>\n";
-    print "[COMMANDLINE]       - do upload <-u $do_upload>\n";
-    print "[COMMANDLINE]       - release tarballname <-c $release_tarballname>\n";
-    print "[COMMANDLINE]       - verbose <-v $verbose>\n";
-    print "[COMMANDLINE]       - flavour we build upon $flavour_we_build_upon\n";
-    print "[COMMANDLINE]       - detected distribution $distrib_define\n";
-    print "[COMMANDLINE]       - using specfile $use_specfile\n";
+    print "[COMMANDLINE]       - package to build          <-p $package>\n";
+    print "[COMMANDLINE]       - force_rebuild             <-f $force_rebuild>\n";
+    print "[COMMANDLINE]       - type of build             <-t $build_type>\n";
+    print "[COMMANDLINE]       - bump buildcount           <-b $bump_buildcount>\n";
+    print "[COMMANDLINE]       - do download               <-d $do_download>\n";
+    print "[COMMANDLINE]       - do upload                 <-u $do_upload>\n";
+    print "[COMMANDLINE]       - release tarballname       <-c $release_tarballname>\n";
+    print "[COMMANDLINE]       - verbose                   <-v $verbose>\n";
+    print "[COMMANDLINE]       - using specfile            <-s $use_specfile>\n";
+    print "[COMMANDLINE]       - uploading into directory  <-r $rdirbase>\n" if($opt_r);
+    print "[COMMANDLINE]       - uploading into directory  using default location determined by $memyself\n" if(!$opt_r);
+    print "[COMMANDLINE]       - detected distribution     $distrib_define\n";
+    print "[COMMANDLINE]       - flavour we build upon     $flavour_we_build_upon\n";
   }
 }
 
