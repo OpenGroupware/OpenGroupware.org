@@ -1,3 +1,12 @@
+2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.48
+
+	* NSString+VCard.m: properly escape backslashes
+
+	* LSGetVCardForGlobalIDsCommand.m: move vCard escaping code to own
+	  file
+
 2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetCompanyForMemberCommand.m: code cleanups, do not use IN

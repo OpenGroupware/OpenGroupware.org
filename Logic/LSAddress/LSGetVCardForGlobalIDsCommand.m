@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -45,6 +45,7 @@
 @end
 
 // TODO: do we really need to have a dependency on WOResponse?
+#include "NSString+VCard.h"
 #include "common.h"
 #include <NGObjWeb/WOResponse.h>
 
@@ -137,39 +138,7 @@ static NSDictionary *telephoneMapping = nil;
 /* build vCard */
 
 - (void)_appendTextValue:(NSString *)_str toVCard:(NSMutableString *)_vCard {
-  // some loosy comma check
-  int cnt = 0;
-  int i, len;
-  unichar c;
-
-  len = [_str length];
-  for (i = 0; i < len; i++) {
-    c = [_str characterAtIndex:i];
-    if (c == ',' || c == ';' || c == '\n') cnt++;
-  }
-
-  if (cnt) {
-    unichar *newStr;
-    newStr = calloc(len+cnt+1, sizeof(unichar));
-    cnt = 0;
-    for (i = 0; i < len; i++) {
-      c = [_str characterAtIndex:i];
-      if (c == ',' || c == ';') {
-        newStr[i+cnt] = '\\';
-        cnt++;
-      }
-      else if (c == '\n') {
-        newStr[i+cnt] = '\\';
-        cnt++;
-        c = 'n';
-      }
-      newStr[i+cnt] = c;
-    }
-    newStr[i+cnt] = 0;
-    _str = [NSString stringWithCharacters:newStr length:len+cnt];
-    free(newStr); newStr = NULL;
-  }
-  [_vCard appendString:_str];
+  [_vCard appendString:[_str stringByEscapingUnsafeVCardCharacters]];
 }
 
 - (void)_appendName:(NSString *)_name andValue:(id)_value

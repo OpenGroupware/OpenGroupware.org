@@ -18,9 +18,21 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <LSFoundation/LSDBObjectNewCommand.h>
+
+/*
+  project::new command
+  
+  Parameters:
+    url
+    accounts
+    removedAccounts
+    isFake
+    ownerId
+    teamId
+    ...
+*/
 
 @class NSString, NSArray;
 
@@ -72,12 +84,15 @@
 }
 
 - (void)_newProjectInfoInContext:(id)_context {
-  id           project     = [self object];
-  id           pkey        = [project valueForKey:[self primaryKeyName]];
-  EOEntity     *infoEntity = [[self databaseModel] entityNamed:@"ProjectInfo"];
-  id           info        = nil;
-  NSDictionary *pk         = nil;
+  id           project;
+  NSNumber     *pkey;
+  EOEntity     *infoEntity;
+  id           info;
+  NSDictionary *pk;
 
+  project     = [self object];
+  pkey        = [project valueForKey:[self primaryKeyName]];
+  infoEntity = [[self databaseModel] entityNamed:@"ProjectInfo"];
   pk   = [self newPrimaryKeyDictForContext:_context keyName:@"projectInfoId"];
   info = [self produceEmptyEOWithPrimaryKey:pk entity:infoEntity];
 
@@ -123,6 +138,18 @@
   return [[self databaseChannel] insertObject:document];
 }
 
+- (void)_autoAssignProjectNumber {
+    /* autocreate project number */
+    id       obj;
+    NSString *nr;
+    
+    obj = [self object];
+    
+    nr = [[obj valueForKey:[self primaryKeyName]] stringValue];
+    nr = [@"P" stringByAppendingString:nr];
+    [obj takeValue:nr forKey:@"number"];
+}
+
 - (void)_prepareForExecutionInContext:(id)_context {
   NSString *n;
   
@@ -131,17 +158,8 @@
   [super _prepareForExecutionInContext:_context];
   
   n = [self->recordDict valueForKey:@"number"];
-  if (![n isNotNull]) {
-    /* autocreate project number */
-    id       obj = [self object];
-    NSString *nr;
-    
-    obj = [self object];
-    
-    nr = [[obj valueForKey:[self primaryKeyName]] stringValue];
-    nr = [@"P" stringByAppendingString:nr];
-    [obj takeValue:nr forKey:@"number"];
-  }
+  if (![n isNotNull])
+    [self _autoAssignProjectNumber];
 }
 
 - (void)postProjectDidChange {

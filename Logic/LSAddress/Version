@@ -1,5 +1,5 @@
 # version file
 
-SUBMINOR_VERSION:=47
+SUBMINOR_VERSION:=48
 
 # v5.1.43 requires libNGExtensions v4.3.113
