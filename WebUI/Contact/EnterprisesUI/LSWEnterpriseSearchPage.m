@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,11 +18,10 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#import "common.h"
-#import <OGoFoundation/SkyWizard.h>
 #include <OGoFoundation/LSWEditorPage.h>
+
+@class NSArray, NSString;
 
 @interface LSWEnterpriseSearchPage : LSWEditorPage
 {
@@ -35,6 +34,8 @@
 
 @end /* LSWEnterpriseSearchPage */
 
+#include "common.h"
+
 int compareEnterprises(id e1, id e2, void* context) {
   return [[e1 valueForKey:@"description"]
           caseInsensitiveCompare:[e2 objectForKey:@"description"]];
@@ -44,14 +45,18 @@ int compareEnterprises(id e1, id e2, void* context) {
 
 - (void)dealloc {
   [self->searchResult release];
-  [self->item release];
+  [self->item         release];
   [self->searchString release];
   [super dealloc];
 }
 
+/* accessors */
+
 - (BOOL)isEditorPage {
   return YES;
 }
+
+/* actions */
 
 - (id)search {
   NSMutableArray *result;
@@ -71,6 +76,7 @@ int compareEnterprises(id e1, id e2, void* context) {
 }
 
 - (BOOL)isWizardFinish {
+  // TODO: is this still required? (it is supported in the template)
   return (([super isWizardFinish]) && ([self->searchResult count]>0));
 }
 

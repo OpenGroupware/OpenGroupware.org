@@ -19,17 +19,22 @@
   02111-1307, USA.
 */
 
-#include <OGoFoundation/SkyEditorPage.h>
+#ifndef __EnterprisesUI_SkyPersonFormatter_H__
+#define __EnterprisesUI_SkyPersonFormatter_H__
 
-@interface SkyAssignPersonEditor : SkyEditorPage
-@end
+#import <Foundation/NSFormatter.h>
 
-#include "common.h"
+/*
+  SkyPersonFormatter
 
-@implementation SkyAssignPersonEditor
+  TODO: describe what it does!
+  TODO: might be used in several places?
+*/
 
-- (NSString *)windowTitle {
-  return @"EnterpriseEditorAssignTitle";
+@interface SkyPersonFormatter : NSFormatter
+{
 }
 
-@end /* SkyAssignPersonEditor */
+@end
+
+#endif /* __EnterprisesUI_SkyPersonFormatter_H__ */

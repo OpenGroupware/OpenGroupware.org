@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include ../common.make
 
@@ -20,6 +20,7 @@ EnterprisesUI_OBJC_FILES = 			\
 	SkyEnterpriseViewer.m			\
 	SkyAssignPersonSubEditor.m		\
 	SkyAssignPersonEditor.m			\
+	SkyPersonFormatter.m			\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make

@@ -43,12 +43,14 @@
 }
 
 - (NSString *)objectUrlKey {
-  return [NSString stringWithFormat:
-                     @"wa/LSWViewAction/viewEnterprise?companyId=%@",
-                     [[self object] valueForKey:@"companyId"]];
+  NSString *s;
+
+  s = @"wa/LSWViewAction/viewEnterprise";
+  return [s stringByAppendingFormat:@"?companyId=%@",
+	      [[self object] valueForKey:@"companyId"]];
 }
 
-@end
+@end /* LSWEnterpriseMailPage */
 
 @implementation LSWEnterpriseHtmlMailPage
 @end

@@ -19,8 +19,8 @@
   02111-1307, USA.
 */
 
-#ifndef __LSWebInterface_LSWAddress_LSWEnterprises_H__
-#define __LSWebInterface_LSWAddress_LSWEnterprises_H__
+#ifndef __EnterprisesUI_LSWEnterprises_H__
+#define __EnterprisesUI_LSWEnterprises_H__
 
 #include <OGoFoundation/OGoContentPage.h>
 
@@ -44,7 +44,7 @@
   NSString     *searchTitle;
 }
 
-// actions
+/* actions */
 
 - (WOComponent *)tabClicked;
 - (WOComponent *)fullSearch;
@@ -52,4 +52,4 @@
 
 @end
 
-#endif /* __LSWebInterface_LSWAddress_LSWEnterprises_H__ */
+#endif /* __EnterprisesUI_LSWEnterprises_H__ */

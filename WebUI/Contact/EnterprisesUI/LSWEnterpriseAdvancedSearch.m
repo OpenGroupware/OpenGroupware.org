@@ -58,7 +58,7 @@
 
 - (id)init {
   if ((self = [super init])) {
-    NSMutableArray *keys = nil;
+    NSMutableArray *keys;
     NSArray *attrs       = nil;
     int     i, cnt;
     
@@ -76,33 +76,30 @@
     self->extendedAttributeKeys = [keys retain];
     
     self->enterprise = [[NSMutableDictionary alloc] initWithCapacity:16];
-    
-    self->qualifier      = nil;
-    self->formletterData = nil;
   }
   return self;
 }
 
 - (void)dealloc {
-  [self->enterprise release];
+  [self->enterprise            release];
   [self->extendedAttributeKeys release];
-  [self->formletterData release];
-  [self->qualifier release];
-  [self->maxSearchCount release];
-
+  [self->formletterData        release];
+  [self->qualifier             release];
+  [self->maxSearchCount        release];
+  
   [self->udKey       release];
   [self->searchTitle release];
   [self->saveTitle   release];
   [super dealloc];
 }
 
-// defaults
+/* defaults */
 
 - (NSArray *)extendedEnterpriseAttributesKeys {
   return self->extendedAttributeKeys;
 }
 
-// accessors
+/* accessors */
 
 - (void)setEnterprise:(NSMutableDictionary *)_enterprise {
   ASSIGN(self->enterprise, _enterprise);
@@ -153,7 +150,7 @@
   return (label == nil) ? self->item : label;
 }
 
-// actions
+/* search support */
 
 - (NSMutableDictionary *)_createSearchInfo {
   NSMutableDictionary *dict;
@@ -278,6 +275,8 @@
   }
 }
 
+/* actions */
+
 - (id)search {
   [self _createQualifier];
   [self->formletterData release]; self->formletterData = nil;
@@ -286,11 +285,11 @@
 
 - (id)formletter {
   SkyEnterpriseAddressConverterDataSource *ds    = nil;
-  EOFetchSpecification                    *fspec = nil;
-  NSDictionary                            *hints = nil;
-  NSString                                *kind  = nil;
-  id                                      ctx    = nil;
-  NSData                                  *data  = nil;
+  EOFetchSpecification *fspec;
+  NSDictionary         *hints;
+  NSString             *kind;
+  id                   ctx;
+  NSData               *data  = nil;
 
   [self _createQualifier];
 
@@ -306,18 +305,16 @@
   [ds setFetchSpecification:fspec];
   data  = [[ds fetchObjects] lastObject];
   ASSIGN(self->formletterData, data);
-
+  
   [fspec release]; fspec = nil;
   [ds    release]; ds    = nil;
   [hints release]; hints = nil;
-  
   return nil;
 }
 
 - (id)clearForm {
   [self _createQualifier];
   [self->enterprise removeAllObjects];
-
   return nil;
 }
 
@@ -326,6 +323,7 @@
 }
 
 /* SavedSearches */
+// TODO: move to some separate class
 
 - (void)setUserDefaultKey:(NSString *)_key {
   ASSIGN(self->udKey,_key);
@@ -422,7 +420,7 @@
   NSDictionary   *info;
   NSUserDefaults *ud;
 
-  if (![self->searchTitle length]) {
+  if ([self->searchTitle length] == 0) {
     [self _setSearchFields:nil];
     [self setSaveTitle:@""];
     [self setShowTab:NO];
@@ -449,4 +447,4 @@
   return nil;
 }
 
-@end /* LSWEnterpriseAdvancedSearch(SavedSearches) */
+@end /* LSWEnterpriseAdvancedSearch */

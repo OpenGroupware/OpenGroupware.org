@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,13 +18,11 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#import "common.h"
 #include <OGoFoundation/SkyEditorComponent.h>
-#include <OGoContacts/SkyEnterpriseDocument.h>
-#include <OGoContacts/SkyPersonDataSource.h>
-#include <OGoContacts/SkyPersonDocument.h>
+
+@class NSString, NSMutableArray;
+@class SkyPersonDocument, SkyPersonDataSource;
 
 @interface SkyAssignPersonSubEditor : SkyEditorComponent
 {
@@ -38,32 +36,14 @@
   SkyPersonDocument   *newPerson;
   SkyPersonDataSource *personDataSource;
 }
+
 @end /* SkyAssignPersonSubEditor */
 
-@interface SkyPersonFormatter : NSFormatter
-@end
-
-@implementation SkyPersonFormatter
-- (NSString *)stringForObjectValue:(id)_account {
-  NSString *result = nil;
-
-  if ((result = [_account valueForKey:@"name"]) == nil) {
-    if ((result = [_account valueForKey:@"login"]) == nil) {
-      if ((result = [_account valueForKey:@"nickname"]) == nil) {
-        result = [NSString stringWithFormat:@"pkey<%@>",
-                           [_account valueForKey:@"companyId"]];
-      }
-    }
-  }
-  else {
-    NSString *fn = [_account valueForKey:@"firstname"];
-
-    if ([fn isNotNull])
-      result = [NSString stringWithFormat:@"%@, %@", result, fn];
-  }
-  return result;
-}
-@end
+#include "SkyPersonFormatter.h"
+#include "common.h"
+#include <OGoContacts/SkyEnterpriseDocument.h>
+#include <OGoContacts/SkyPersonDataSource.h>
+#include <OGoContacts/SkyPersonDocument.h>
 
 static int comparePersons(id e1, id e2, void* context) {
   static SkyPersonFormatter *formatter = nil;
@@ -94,13 +74,13 @@ static int comparePersons(id e1, id e2, void* context) {
 }
 
 - (void)dealloc {
-  [self->resultList release];
-  [self->persons release];
-  [self->addedPersons release];
-  [self->removedPersons release];
-  [self->searchText release];
+  [self->resultList       release];
+  [self->persons          release];
+  [self->addedPersons     release];
+  [self->removedPersons   release];
+  [self->searchText       release];
   [self->personDataSource release];
-  [self->newPerson release];
+  [self->newPerson        release];
   [super dealloc];
 }
 

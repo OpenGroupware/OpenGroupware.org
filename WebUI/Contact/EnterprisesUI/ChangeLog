@@ -1,3 +1,13 @@
+2004-11-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.33
+
+	* SkyAssignPersonSubEditor.m: code cleanups, moved SkyPersonFormatter
+	  class to own file
+
+	* LSWEnterpriseAdvancedSearch.m, LSWEnterpriseSearchPage.m: minor code
+	  cleanups
+
 2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWEnterpriseAdvancedSearch.wo: removed deprecated 'singleSelection'

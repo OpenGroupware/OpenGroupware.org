@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "LSWEnterprises.h"
 #include "common.h"
@@ -136,6 +135,7 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
 }
 
 - (NSMutableString *)iconItem {
+  // TODO: why does this return a mutable string?
   return [NSMutableString stringWithString:[[self item] lowercaseString]];
 }
 

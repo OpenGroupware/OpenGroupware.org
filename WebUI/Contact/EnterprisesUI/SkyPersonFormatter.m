@@ -19,17 +19,30 @@
   02111-1307, USA.
 */
 
-#include <OGoFoundation/SkyEditorPage.h>
-
-@interface SkyAssignPersonEditor : SkyEditorPage
-@end
-
+#include "SkyPersonFormatter.h"
 #include "common.h"
 
-@implementation SkyAssignPersonEditor
+@implementation SkyPersonFormatter
 
-- (NSString *)windowTitle {
-  return @"EnterpriseEditorAssignTitle";
+- (NSString *)stringForObjectValue:(id)_account {
+  NSString *result = nil;
+
+  if ((result = [_account valueForKey:@"name"]) == nil) {
+    if ((result = [_account valueForKey:@"login"]) == nil) {
+      if ((result = [_account valueForKey:@"nickname"]) == nil) {
+        result = [NSString stringWithFormat:@"pkey<%@>",
+                           [_account valueForKey:@"companyId"]];
+      }
+    }
+  }
+  else {
+    NSString *fn;
+    
+    fn = [_account valueForKey:@"firstname"];
+    if ([fn isNotNull])
+      result = [NSString stringWithFormat:@"%@, %@", result, fn];
+  }
+  return result;
 }
 
-@end /* SkyAssignPersonEditor */
+@end /* SkyPersonFormatter */
