@@ -5,7 +5,7 @@ $(RESOURCES_DIR) :
 
 zidestore-resources : $(RESOURCES_DIR) $(libZSFrontend_RESOURCES)
 	@(if [ "$(libZSFrontend_RESOURCES)" != "" ]; then \
-	  echo "Copying resources into install path ..."; \
+	  echo "Copying resources into install path: $(RESOURCES_DIR)"; \
           for ff in $(libZSFrontend_RESOURCES); do \
 	    cp $$ff $(RESOURCES_DIR)/$$ff; \
           done; \

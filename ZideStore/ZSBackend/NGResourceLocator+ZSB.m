@@ -34,12 +34,17 @@
   return [NSString stringWithFormat:@"share/zidestore-%i.%i/",
                      [self zsbMajorVersion], [self zsbMinorVersion]];
 }
++ (NSString *)zsbGNUstepSubPath {
+  return [NSString stringWithFormat:
+                     @"Library/Libraries/Resources/ZideStore-%i.%i/",
+                     [self zsfMajorVersion], [self zsfMinorVersion]];
+}
 
 + (NGResourceLocator *)zsbResourceLocator {
   NGResourceLocator *loc = nil;
   
   loc = [NGResourceLocator resourceLocatorForGNUstepPath:
-                             @"Library/Libraries/Resources/ZSBackend"
+                             [self zsbGNUstepSubPath]
                            fhsPath:[self zsbShareDirectorySubPath]];
   return loc;
 }
