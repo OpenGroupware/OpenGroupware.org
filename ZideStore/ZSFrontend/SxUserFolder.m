@@ -263,6 +263,21 @@ static NSDictionary *personalFolderMap = nil;
            initWithName:_name inContainer:_ctx] autorelease];
 }
 
+- (id)lookupInbox:(NSString *)_key inContext:(id)_ctx {
+  Class clazz;
+  
+  if ((clazz = NSClassFromString(@"ZSOGoMailAccount")) == Nil) {
+    static BOOL didWarn = NO;
+    if (!didWarn) {
+      [self logWithFormat:@"Note: the SOGo mailer is not installed."];
+      didWarn = YES;
+    }
+    return nil;
+  }
+  
+  return [[[clazz alloc] initWithName:_key inContainer:self] autorelease];
+}
+
 - (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
   NSString *ua;
   id tmp;
@@ -301,11 +316,13 @@ static NSDictionary *personalFolderMap = nil;
     else
       return nil;
   }
-  
 #endif /* SAME_AS_ROOT */
   
   if ([_key isEqualToString:@"calendar.ics"] || [_key isEqualToString:@"ics"])
     return [self iCalendarForName:_key inContext:_ctx];
+
+  if ([_key isEqualToString:@"Mail"])
+    return [self lookupInbox:_key inContext:_ctx];
   
   return [super lookupName:_key inContext:_ctx acquire:_flag];
 }

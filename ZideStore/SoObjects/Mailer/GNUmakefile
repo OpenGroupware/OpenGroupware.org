@@ -13,8 +13,8 @@ Mailer_OBJC_FILES += \
 	SOGoMailConnectionEntry.m	\
 	\
 	SOGoMailBaseObject.m		\
-	SOGoMailAccounts.m		\
 	SOGoMailAccount.m		\
+	OGoMailAccount.m		\
 	SOGoMailFolder.m		\
 	SOGoMailObject.m		\
 	\
@@ -32,3 +32,4 @@ Mailer_RESOURCE_FILES += \
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
+-include ../../fhsbundle.make

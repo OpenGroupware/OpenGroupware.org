@@ -57,6 +57,7 @@
 - (id)initWithEO:(id)_eo                inFolder:(id)_folder;
 - (id)initWithName:(NSString *)_key     inFolder:(id)_folder;
 - (id)initNewWithName:(NSString *)_name inFolder:(id)_folder;
+- (id)initWithName:(NSString *)_key     inContainer:(id)_folder;
 
 /* accessors */
 

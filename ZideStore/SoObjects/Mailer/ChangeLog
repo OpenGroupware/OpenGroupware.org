@@ -1,5 +1,19 @@
 2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v0.9.zs73
+	
+	* GNUmakefile: install into FHS
+
+	* added OGoMailAccount object (to patch SOGoMailAccount for OGo usage)
+	
+	* SOGoDraftsFolder.m: use so-user to construct spool path
+
+	* SOGoMailBaseObject.h (SxObject): inherit from SxObject instead of
+	  SOGoObject
+
+	* fixed some includes for ZideStore, removed SOGoMailAccounts which
+	  isn't required for ZideStore
+
 	* import SOGo mailer (v0.9.71) into ZideStore (v0.9.zs72)
 
 2005-02-09  Helge Hess  <helge.hess@opengroupware.org>

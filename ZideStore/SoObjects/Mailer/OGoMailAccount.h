@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2004 SKYRIX Software AG
+  Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -18,29 +18,25 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#ifndef __Mailer_SOGoMailAccounts_H__
-#define __Mailer_SOGoMailAccounts_H__
+#ifndef __Mailer_ZSSOGoMailAccount_H__
+#define __Mailer_ZSSOGoMailAccount_H__
 
-#include <SOGo/SOGoObject.h>
+#include "SOGoMailAccount.h"
 
 /*
-  SOGoMailAccounts
-    Parent object: SOGoUserFolder
-    Child objects: SOGoMailAccount
-    
-  The SOGoMailAccounts folder contains the mail accounts which are associated
-  with a user.
-
-  Note: this is not yet an IMAP4 object. Its a wrapper which contains the root
-        IMAP4 objects.
+  ZSOGoMailAccount
+    Parent object: SxUserFolder
+    Child objects: SOGoMailFolder
+  
+  The ZSOGoMailAccount represents the IMAP4 mail account configured in the
+  OGo preferences (login panel in the traditional UI).
 */
 
-@interface SOGoMailAccounts : SOGoObject
+@interface ZSOGoMailAccount : SOGoMailAccount
 {
 }
 
 @end
 
-#endif /* __Mailer_SOGoMailAccounts_H__ */
+#endif /* __Mailer_ZSOGoMailAccount_H__ */

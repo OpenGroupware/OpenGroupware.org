@@ -59,6 +59,9 @@
   return self;
 }
 
+- (id)initWithName:(NSString *)_key inContainer:(id)_folder {
+  return [self initWithName:_key inFolder:_folder];
+}
 - (id)init {
   return [self initWithName:nil inFolder:nil];
 }

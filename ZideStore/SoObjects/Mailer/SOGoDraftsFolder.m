@@ -75,9 +75,11 @@ static NSString *spoolFolder = nil;
 }
 - (NSString *)userSpoolFolderPath {
   NSString *p, *n;
+  SoUser *u;
   
   p = [self spoolFolderPath];
-  n = [[self lookupUserFolder] nameInContainer];
+  u = [[(WOApplication *)[WOApplication application] context] activeUser];
+  n = [u login];
   return [p stringByAppendingPathComponent:n];
 }
 

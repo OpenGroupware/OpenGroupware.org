@@ -22,7 +22,7 @@
 #ifndef __Mailer_SOGoMailFolder_H__
 #define __Mailer_SOGoMailFolder_H__
 
-#include <SOGo/SoObjects/Mailer/SOGoMailBaseObject.h>
+#include <SoObjects/Mailer/SOGoMailBaseObject.h>
 #import <Foundation/NSRange.h>
 
 /*

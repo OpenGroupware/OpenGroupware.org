@@ -1,7 +1,7 @@
 # Version file
 
 include ../Version
-SUBMINOR_VERSION:=105
+SUBMINOR_VERSION:=106
 
 # v1.3.89 requires libNGExtensions v4.3.116
 # v1.2.72 requires libNGExtensions v4.2.91

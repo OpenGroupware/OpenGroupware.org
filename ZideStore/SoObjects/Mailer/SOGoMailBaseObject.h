@@ -22,7 +22,7 @@
 #ifndef __Mailer_SOGoMailBaseObject_H__
 #define __Mailer_SOGoMailBaseObject_H__
 
-#include <SOGo/SOGoObject.h>
+#include <ZSFrontend/SxObject.h>
 
 /*
   SOGoMailBaseObject
@@ -43,7 +43,7 @@
 @class SOGoMailManager;
 @class SOGoMailAccount;
 
-@interface SOGoMailBaseObject : SOGoObject
+@interface SOGoMailBaseObject : SxObject
 {
   NSURL *imap4URL;
 }

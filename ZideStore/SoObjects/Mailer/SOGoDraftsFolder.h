@@ -22,7 +22,7 @@
 #ifndef __Mailer_SOGoDraftsFolder_H__
 #define __Mailer_SOGoDraftsFolder_H__
 
-#include <SOGo/SoObjects/Mailer/SOGoMailBaseObject.h>
+#include <SoObjects/Mailer/SOGoMailBaseObject.h>
 
 /*
   SOGoDraftsFolder

@@ -1,3 +1,11 @@
+2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.3.106
+	
+	* SxUserFolder.m: mapped "Mail" to OGoMailAccount
+	
+	* SxObject.m: added -initWithName:inContainer: for SOGo compatibility
+
 2004-12-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxFolder+DAV.m: detect davURL and etag queries and call some standard
