@@ -1,0 +1,7 @@
+// $Id: SkyLDAP.strings,v 1.2 2004/11/17 21:20:27 wolvverine Exp $
+
+ldap_window_title = "Internet Directory Query"
+SkyLDAPQueryPage  = "Internet Directory Query"
+LDAPQuery         = "LDAP Query"
+
+search            = "szukaj"
