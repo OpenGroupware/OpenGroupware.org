@@ -1,10 +1,13 @@
 # $Id$
 
 include $(GNUSTEP_MAKEFILES)/common.make
+include ./Version
 
-TOOL_NAME = ogo-xmlrpcd-51
+XMLRPCD_NAME = ogo-xmlrpcd-$(MAJOR_VERSION)$(MINOR_VERSION)
 
-ogo-xmlrpcd-51_OBJC_FILES = \
+TOOL_NAME = $(XMLRPCD_NAME)
+
+$(XMLRPCD_NAME)_OBJC_FILES = \
 	xmlrpcd.m			\
 	Application.m			\
 	XmlRpcApplication.m		\
@@ -17,7 +20,7 @@ ogo-xmlrpcd-51_OBJC_FILES = \
 	EOControl+XmlRpcDirectAction.m	\
 	NSObject+EKVC.m			\
 
-ogo-xmlrpcd-51_SUBPROJECTS = \
+$(XMLRPCD_NAME)_SUBPROJECTS = \
 	Actions.subproj		\
 	XmlRpcCoding.subproj	\
 
