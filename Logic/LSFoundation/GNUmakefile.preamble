@@ -4,7 +4,7 @@ ADDITIONAL_CPPFLAGS += -Wall
 
 load-LSModel_LIB_DIRS  += -L./$(GNUSTEP_OBJ_DIR)
 load-LSModel_TOOL_LIBS += \
-	-lLSFoundation -lGDLAccess -lGDLExtensions \
+	-lLSFoundation -lGDLAccess \
 	-lNGLdap -lNGMime \
 	-lEOControl -lNGExtensions -lNGStreams \
 	-lDOM -lSaxObjC
@@ -16,7 +16,7 @@ endif
 #libLSFoundation_LIB_DIRS += 
 libLSFoundation_LIBRARIES_DEPEND_UPON += \
 	-lNGStreams -lNGExtensions -lEOControl	\
-	-lGDLExtensions -lGDLAccess -lNGLdap -lNGMime
+	-lGDLAccess -lNGLdap -lNGMime
 
 ifneq ($(GNUSTEP_TARGET_OS),darwin1.1)
 libLSFoundation_LIBRARIES_DEPEND_UPON += 

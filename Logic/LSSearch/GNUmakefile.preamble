@@ -9,15 +9,16 @@ libLSSearch_INCLUDE_DIRS += -I../LSFoundation -I..
 libLSSearch_LIB_DIRS += -L../LSFoundation/$(GNUSTEP_OBJ_DIR)
 
 LSSearch_BUNDLE_LIBS += \
-	-lLSSearch	\
-	-lLSFoundation	\
-	-lGDLAccess -lGDLExtensions	\
-	-lNGLdap -lNGMime -lNGStreams -lNGExtensions -lEOControl \
+	-lLSSearch		\
+	-lLSFoundation		\
+	-lGDLAccess		\
+	-lNGLdap -lNGMime	\
+	-lNGStreams -lNGExtensions -lEOControl \
 	-lDOM -lSaxObjC
 
 libLSSearch_LIBRARIES_DEPEND_UPON += \
 	-lLSFoundation	\
-	-lGDLAccess -lGDLExtensions	\
+	-lGDLAccess 	\
 	-lNGStreams -lNGExtensions -lEOControl
 
 ifeq ($(GNUSTEP_TARGET_OS),mingw32)

@@ -1,4 +1,4 @@
-# $Id$
+# shared makefile settings
 
 OGoROOT=..
 
@@ -10,6 +10,11 @@ GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
 
 BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org
 
-ADDITIONAL_CPPFLAGS     += -pipe -Wall -Wno-protocol
+ADDITIONAL_CPPFLAGS += -pipe -Wall -Wno-protocol
 
-ADDITIONAL_INCLUDE_DIRS += -I../../Logic/LSFoundation -I../
+ADDITIONAL_INCLUDE_DIRS += \
+	-I../../Logic/LSFoundation	\
+	-I../
+
+ADDITIONAL_LIB_DIRS += \
+	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)

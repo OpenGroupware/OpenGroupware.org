@@ -1,3 +1,8 @@
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: directly include OGoCycleDateCalculator header
+	  from Logic, directly link scheduler tools in Logic (v5.1.27)
+
 2004-08-09  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyHolidayCalculator.m: major code cleanups, locate Holidays.plist in

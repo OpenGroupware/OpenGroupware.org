@@ -25,7 +25,7 @@
 #include "common.h"
 #include "SkyAppointmentQualifier.h"
 #include <EOControl/EOSortOrdering.h>
-#include <OGoSchedulerTools/OGoCycleDateCalculator.h>
+#include "OGoCycleDateCalculator.h"
 
 @implementation SkySchedulerConflictDataSource
 

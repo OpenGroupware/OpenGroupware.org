@@ -1,5 +1,5 @@
 # $Id$
 
-SUBMINOR_VERSION:=79
+SUBMINOR_VERSION:=80
 
 # v5.0.66 requires libEOControl v4.2.39

@@ -14,8 +14,8 @@ $(COMMAND_BUNDLE)_PRINCIPAL_CLASS = $(COMMAND_BUNDLE)Commands
 
 $(COMMAND_BUNDLE)_BUNDLE_LIBS += \
 	-lLSFoundation	\
-	-lGDLAccess -lGDLExtensions -lEOControl	\
-	-lNGStreams -lNGExtensions
+	-lGDLAccess	\
+	-lNGStreams -lNGExtensions -lEOControl
 
 ifeq ($(GNUSTEP_TARGET_OS),cygwin32)
 $(COMMAND_BUNDLE)_BUNDLE_LIBS += -lFoundation -lobjc
