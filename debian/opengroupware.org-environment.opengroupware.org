@@ -30,6 +30,9 @@ XMLRPCAPP=ogo-xmlrpcd
 NHSDAPP=ogo-nhsd
 DPATH=/usr/sbin
 
+# OGo always comunicates in ISO-8859-1 with PostgreSQL
+export PGCLIENTENCODING=LATIN1
+
 clear_vars () {
 	USER=
 	WEBUI_VERSION=

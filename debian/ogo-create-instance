@@ -296,7 +296,7 @@ check_database_available () {
 initialize_database () {
 	echo -n "Set up local database... "
 	su - -c "createuser -A -D ${DB_USER} &>/dev/null || true" postgres
-	su - -c "createdb -O ${DB_USER} ${DB_NAME} &>/dev/null || true" postgres
+	su - -c "createdb --encoding LATIN1 -O ${DB_USER} ${DB_NAME} &>/dev/null || true" postgres
 	su - -c "psql ${DB_NAME} postgres -c \"ALTER USER ${DB_USER} WITH PASSWORD '${DB_PASSWD}'\" &>/dev/null || true" postgres
         su - -c "export PGPASSWORD=${DB_PASSWD}; psql ${DB_NAME} -U ${DB_USER} -c \"\\dt\" |grep address &>/dev/null || psql ${DB_NAME} -U ${DB_USER} -c \"\\i /usr/lib/opengroupware.org-${WEBUI_VERSION}/commands/OGo.model/Resources/pg-build-schema.psql\" &>/dev/null " ${USER}  || (echo failed; return 1)
 	echo "done."
