@@ -29,8 +29,11 @@
   
     parent-folder: SxProjectFolder
     subjects:      SxProjectNote
+    
+  This folder represents the collection of notes associated with a project.
 */
 
+@class NSString;
 @class EOGlobalID;
 @class SxProjectFolder;
 
@@ -41,6 +44,11 @@
 
 - (EOGlobalID *)projectGlobalIDInContext:(id)_ctx;
 - (SxProjectFolder *)projectFolder;
+
+/* operations */
+
+- (id)createNoteWithTitle:(NSString *)_title content:(id)_content
+  inContext:(id)_ctx;
 
 @end
 

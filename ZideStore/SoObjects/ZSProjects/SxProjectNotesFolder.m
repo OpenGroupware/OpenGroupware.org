@@ -56,10 +56,10 @@ static BOOL debugOn = NO;
   LSCommandContext *cmdctx;
   id tmp;
   
+  if (self->projectEO != nil) 
+    return self->projectEO;
   if ((cmdctx = [self commandContextInContext:_ctx]) == nil)
     return nil;
-  if (self->projectEO) 
-    return self->projectEO;
   
   tmp = [cmdctx runCommand:@"project::get-by-globalid",
 		  @"gid", [self projectGlobalIDInContext:_ctx],
@@ -157,35 +157,77 @@ static BOOL debugOn = NO;
   return [[self fetchNoteNamesInContext:_ctx] objectEnumerator];
 }
 
-/* name lookup */
+/* operations */
 
-- (id)lookupStoredName:(NSString *)_name inContext:(id)_ctx {
-  id note;
-  
-  [self debugWithFormat:@"lookup stored '%@'", _name];
-  
-  if (!isdigit([_name characterAtIndex:0]))
-    return nil;
-
-  if ([_name rangeOfString:@"-"].length > 0) {
-    /* MacOSX submits such filenames: 807-101606857-752.txt */
-    return nil;
-  }
-  
-  note = [[NSClassFromString(@"SxNote") alloc] 
-	   initWithName:_name inContainer:self];
-  return [note autorelease];
-}
-
-- (id)lookupName:(NSString *)_name inContext:(id)_ctx acquire:(BOOL)_flag {
+- (id)createNoteWithTitle:(NSString *)_title content:(id)_content
+  inContext:(id)_ctx
+{
+  LSCommandContext    *cmdctx;
+  NSMutableDictionary *newNote;
+  NSNumber *accountId;
+  id project;
   id tmp;
   
-  if ([_name length] == 0) return nil;
+  if ((cmdctx = [self commandContextInContext:_ctx]) == nil) {
+    return [NSException exceptionWithHTTPStatus:500 /* Internal Error */
+			reason:@"got no command context"];
+  }
+  project = [self _fetchProjectEOInContext:_ctx];
+  if (![project isNotNull]) {
+    return [NSException exceptionWithHTTPStatus:500 /* internal error */
+			reason:@"did not find project EO for new note!"];
+  }
   
-  if ((tmp = [self lookupStoredName:_name inContext:_ctx]))
-    return tmp;
+  accountId = [[cmdctx valueForKey:LSAccountKey] valueForKey:@"companyId"];
+  newNote   = [NSMutableDictionary dictionaryWithCapacity:16];
   
-  return [super lookupName:_name inContext:_ctx acquire:_flag];
+  [newNote takeValue:_title     forKey:@"title"];
+  [newNote takeValue:accountId  forKey:@"firstOwnerId"];
+  [newNote takeValue:accountId  forKey:@"currentOwnerId"];
+  [newNote takeValue:_content   forKey:@"fileContent"];
+  [newNote takeValue:[NSNumber numberWithBool:NO] forKey:@"isFolder"];
+  [newNote takeValue:[NSNumber numberWithInt:[_content length]] 
+	   forKey:@"fileSize"];
+  
+  [newNote takeValue:project forKey:@"project"];
+  
+  NS_DURING
+    tmp = [cmdctx runCommand:@"note::new" arguments:newNote];
+  NS_HANDLER
+    tmp = localException;
+  NS_ENDHANDLER;
+  
+  if ([cmdctx isTransactionInProgress]) {
+    if (![tmp isKindOfClass:[NSException class]]) {
+      if (![cmdctx commit]) {
+	return [NSException exceptionWithHTTPStatus:500 /* server error */
+			    reason:@"could not commit transaction!"];
+      }
+    }
+    else
+      [cmdctx rollback];
+  }
+  
+  return tmp;
+}
+
+/* name lookup */
+
+- (BOOL)isPrimaryKeyName:(NSString *)_name {
+  if (!isdigit([_name characterAtIndex:0]))
+    return NO;
+  
+  if ([_name rangeOfString:@"-"].length > 0) {
+    /* MacOSX submits such filenames: 807-101606857-752.txt */
+    return NO;
+  }
+  
+  return YES; /* Note: can still be not available */
+}
+
+- (Class)recordClassForKey:(NSString *)_key {
+  // triggered by super lookup
+  return NSClassFromString(@"SxNote");
 }
 
 /* permissions */
@@ -221,6 +263,33 @@ static BOOL debugOn = NO;
   return NO;
 }
 
+/* blogger */
+
+- (NSString *)bloggerPostEntryWithTitle:(NSString *)_title
+  description:(NSString *)_content creationDate:(NSCalendarDate *)_date
+  inContext:(id)_ctx
+{
+  // TODO: can we keep the creationDate?
+  id eo;
+  
+  /* we add an HTML marker (because a note has no type) */
+  if (![_content hasPrefix:OGo_HTML_MARKER])
+    _content = [OGo_HTML_MARKER stringByAppendingString:_content];
+  
+  eo = [self createNoteWithTitle:_title content:_content inContext:_ctx];
+  if (eo == nil || [eo isKindOfClass:[NSException class]])
+    return eo;
+  
+  /* 
+     The current convention for the post IDs is Blog/Post, because post edit
+     operations only transfer the post ID and _not_ the blog (so we need to
+     embed the blog name).
+  */
+  return [NSString stringWithFormat:@"%@/%@.txt",
+		     [self nameInContainer],
+		     [eo valueForKey:@"documentId"]];
+}
+
 /* debugging */
 
 - (BOOL)isDebuggingEnabled {
@@ -231,9 +300,7 @@ static BOOL debugOn = NO;
   NSMutableString *ms = [NSMutableString stringWithCapacity:128];
   
   [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
-  
   [ms appendFormat:@" name='%@'", [self nameInContainer]];
-  
   [ms appendString:@">"];
   return ms;
 }

@@ -91,6 +91,10 @@ static BOOL debugOn = YES;
   return [[self toManyRelationshipKeys] containsObject:_name];
 }
 
+- (BOOL)isNewKey:(NSString *)_key inContext:(id)_ctx {
+  return [self isProjectName:_key inContext:_ctx] ? NO : YES;
+}
+
 - (id)projectFolder:(NSString *)_name inContext:(id)_ctx {
   id folder;
   

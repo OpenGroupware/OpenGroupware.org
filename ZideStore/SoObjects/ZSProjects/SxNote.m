@@ -20,7 +20,12 @@
 */
 
 #include "SxNote.h"
+#include "SxProjectFolder.h"
 #include "common.h"
+
+@interface SxProjectFolder(FetchEO)
+- (id)_fetchEOInContext:(id)_ctx;
+@end
 
 @implementation SxNote
 
@@ -114,14 +119,58 @@ static BOOL debugOn = NO;
 /* permissions */
 
 - (BOOL)isDeletionAllowed {
-  // TODO: implement!
+  /* only owner may delete notes */
+  LSCommandContext *cmdctx;
+  NSNumber *accountId;
+  id neo;
+  
+  if ((cmdctx = [self commandContextInContext:nil]) == nil)
+    return NO;
+  if ((neo = [self _fetchNoteEOInContext:nil]) == nil)
+    return NO;
+  
+  accountId = [[cmdctx valueForKey:LSAccountKey] valueForKey:@"companyId"];
+  if ([accountId isEqual:[neo valueForKey:@"currentOwnerId"]])
+    return YES;
+  if ([accountId isEqual:[neo valueForKey:@"firstOwnerId"]])
+    return YES;
+  
   return NO;
+}
+
+/* operations */
+
+- (id)createNoteWithTitle:(NSString *)_title content:(id)_content
+  inContext:(id)_ctx
+{
+  return [[self container] createNoteWithTitle:_title content:_ctx 
+			   inContext:_ctx];
 }
 
 /* actions */
 
 - (id)GETAction:(id)_ctx {
-  return [self contentAsString];
+  NSString *content;
+  
+  content = [self contentAsString];
+  if ([content isNotNull]) {
+    WOResponse *r;
+    
+    r = [(WOContext *)_ctx response];
+    if ([content hasPrefix:OGo_HTML_MARKER]) {
+      [r setHeader:@"text/html" forKey:@"content-type"];
+      content = [content substringFromIndex:[OGo_HTML_MARKER length]];
+    }
+    else
+      [r setHeader:@"text/plain" forKey:@"content-type"];
+    [r appendContentString:content];
+    return r;
+  }
+  if ([content isKindOfClass:[NSException class]])
+    return content;
+  
+  return [NSException exceptionWithHTTPStatus:404 /* Not Found */
+		      reason:@"did not find note!"];
 }
 
 - (id)asPreHTMLAction:(id)_ctx {
@@ -155,6 +204,15 @@ static BOOL debugOn = NO;
   return r;
 }
 
+- (NSString *)defaultNoteTitle {
+  NSCalendarDate *now;
+  
+  now = [[[NSCalendarDate alloc] init] autorelease];
+  [now setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+  return [@"x" stringByAppendingString:
+	     [now descriptionWithCalendarFormat:@"%Y%m%dZ"]];
+}
+
 - (id)PUTAction:(id)_ctx {
   LSCommandContext *cmdctx;
   NSException      *error;
@@ -170,32 +228,40 @@ static BOOL debugOn = NO;
   
   if ((cmdctx = [self commandContextInContext:_ctx]) == nil) {
     [self logWithFormat:@"ERROR: got no command context ..."];
-    return nil;
+    return [NSException exceptionWithHTTPStatus:500 /* Internal Error */
+			reason:@"got no command context"];
   }
-  
-  if ((neo = [self _fetchNoteEOInContext:_ctx]) == nil) {
-    return [NSException exceptionWithHTTPStatus:404 /* not found */
-			reason:@"did not find EO for note"];
-  }
-  
+
   if ((data = [[(WOContext *)_ctx request] content]) == nil) {
     static NSData *emptyData = nil;
     if (emptyData == nil) emptyData = [[NSData alloc] init];
     data = (id)emptyData;
   }
   
-  [neo takeValue:[NSNumber numberWithInt:[data length]] forKey:@"fileSize"];
-  [neo takeValue:data forKey:@"fileContent"];
-  
   error = nil;
-  NS_DURING {
-    [cmdctx runCommand:@"note::set", 
-	    @"object", neo, @"fileContent", data,
-	    nil];
+  if ((neo = [self _fetchNoteEOInContext:_ctx]) != nil) {
+    /* modify existing note */
+    [neo takeValue:[NSNumber numberWithInt:[data length]] forKey:@"fileSize"];
+    [neo takeValue:data forKey:@"fileContent"];
+  
+    NS_DURING {
+      [cmdctx runCommand:@"note::set", @"object", neo, @"fileContent", data,
+	      nil];
+    }
+    NS_HANDLER
+      error = [localException retain];
+    NS_ENDHANDLER;
   }
-  NS_HANDLER
-    error = [localException retain];
-  NS_ENDHANDLER;
+  else {
+    /* create new note */
+    // TODO: we might want to set a location header for the new object
+    id tmp;
+    
+    tmp = [self createNoteWithTitle:[self defaultNoteTitle]
+		content:data inContext:_ctx];
+    if ([tmp isKindOfClass:[NSException class]])
+      error = [tmp retain];
+  }
   
   if ([cmdctx isTransactionInProgress]) {
     if (error == nil) {
@@ -288,6 +354,14 @@ static BOOL debugOn = NO;
 - (BOOL)isDebuggingEnabled {
   return debugOn;
 }
+
+- (NSString *)loggingPrefix {
+  return [NSString stringWithFormat:@"|%@:%@|",
+                     NSStringFromClass([self class]), 
+                     [self nameInContainer]];
+}
+
+/* description */
 
 - (NSString *)description {
   NSMutableString *ms = [NSMutableString stringWithCapacity:128];

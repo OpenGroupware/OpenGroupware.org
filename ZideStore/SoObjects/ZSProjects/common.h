@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2003-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -39,3 +39,5 @@
 #include <LSFoundation/LSFoundation.h>
 #include <LSFoundation/LSCommandContext.h>
 #include <GDLAccess/EOAdaptorChannel.h>
+
+#define OGo_HTML_MARKER @"<!-- html marker -->\n"
