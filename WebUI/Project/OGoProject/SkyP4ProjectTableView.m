@@ -21,6 +21,12 @@
 
 #include <OGoFoundation/OGoComponent.h>
 
+/*
+  SkyP4ProjectTableView
+  
+  TODO: document what it does, what parameters it takes.
+*/
+
 @class EODataSource, NSUserDefaults;
 
 @interface SkyP4ProjectTableView : OGoComponent
@@ -129,12 +135,12 @@
 
 /* actions */
 
-- (NSString *)newWizardURL {
-  // TODO: is this still used?
+- (NSString *)newProjectURL {
   /* 
      TODO: this is necessary because SkyButtonRow can't trigger direct
            actions. (which should be fixed)
   */
+  // TODO: isn't there some generic method which does that?
   static NSString *keys[3] = { @"wosid", @"t", nil };
   NSDictionary *qd;
   id values[2];
@@ -147,12 +153,17 @@
 			   @"OGoProjectAction/new"
 			 queryDictionary:qd];
 }
+- (NSString *)newWizardURL {
+  [self logWithFormat:@"DEPRECATED(%s): function is deprecated!",
+	  __PRETTY_FUNCTION__];
+  return [self newProjectURL];
+}
 
 - (id)sortAction {
   NSUserDefaults *ud;
   NSString       *sortedKey;
-  NSArray        *sos         = nil;
-  EOSortOrdering *so          = nil;
+  NSArray        *sos;
+  EOSortOrdering *so;
   SEL            sel;
   
   ud        = [self userDefaults];

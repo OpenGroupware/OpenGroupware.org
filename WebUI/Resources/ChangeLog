@@ -1,5 +1,7 @@
 2004-12-01  Helge Hess  <helge.hess@opengroupware.org>
-	
+
+	* German.lproj/AdminUI.strings: added missing semicolons
+
 	* English|German.lproj/OGoProject.strings: added new
 	  label_no_projects_matching_category key
 	

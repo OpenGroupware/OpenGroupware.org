@@ -1,5 +1,11 @@
 2004-12-01  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v5.1.58
+	
+	* SkyProject4Desktop.m: added support for bundle tabs
+	
+	* SkyP4ProjectTableView.m: minor code cleanups
+	
 	* v5.1.57
 	
 	* SkyProject4Desktop.m: added ability to switch between quicklist and

@@ -27,7 +27,7 @@
   This is the main entry page of the projects application.
 */
 
-@class NSString;
+@class NSString, NSMutableDictionary;
 @class EOFetchSpecification, EOQualifier;
 @class EOFilterDataSource, EODataSource;
 
@@ -60,6 +60,8 @@
     int isListViewActive:1;
     int reserved:31;
   } spdFlags;
+
+  NSMutableDictionary *nameToExtComponent;
 }
 
 - (EOFetchSpecification *)_fetchSpecification;
@@ -82,12 +84,17 @@ static EOQualifier *archivedQualifier = nil;
 static EOQualifier *publicQualifier   = nil;
 static EOQualifier *privateQualifier  = nil;
 static EOQualifier *trueQualifier     = nil;
+static NSArray     *extDesktopPages   = nil;
 
 + (void)initialize {
+  NGBundleManager *bm;
   static BOOL didInit = NO;
   if (didInit) return;
   didInit = YES;
-
+  
+  bm = [[NGBundleManager defaultBundleManager] retain];
+  extDesktopPages = [[bm providedResourcesOfType:@"ProjectDesktopPages"] copy];
+  
   trueQualifier = [[EOQualifier qualifierWithQualifierFormat:@"1=1"] retain];
   
   archivedQualifier =
@@ -153,6 +160,7 @@ static EOQualifier *trueQualifier     = nil;
 }
 
 - (void)dealloc {
+  [self->nameToExtComponent release];
   [self->currentTab     release];
   [self->clippedGIDs    release];
   [self->project        release];
@@ -659,6 +667,36 @@ static EOQualifier *trueQualifier     = nil;
 
 - (BOOL)showGroup {
   return YES;
+}
+
+/* bundles */
+
+- (NSArray *)bundleTabs {
+  return extDesktopPages;
+}
+
+- (WOComponent *)tabComponent {
+  WOComponent *page;
+  NSString    *compName;
+  
+  compName = [[self currentTab] valueForKey:@"component"];
+  
+  if ((page = [self->nameToExtComponent objectForKey:compName]) != nil) {
+    [page ensureAwakeInContext:[self context]];
+    return page;
+  }
+  
+  if ((page = [self pageWithName:compName]) == nil) {
+    [self setErrorString:@"Did not find news extension page!"];
+    return nil;
+  }
+  
+  if (self->nameToExtComponent == nil) {
+    self->nameToExtComponent = 
+      [[NSMutableDictionary alloc] initWithCapacity:4];
+  }
+  [self->nameToExtComponent setObject:page forKey:compName];
+  return page;
 }
 
 /* actions */

@@ -24,14 +24,10 @@ PCode: WETableData {
   sortKey = "number";
   string  = project.number;
 }
-PName: WETableData {
-  title   = labels.name;
-  sortKey = "name";
-}
-PStartDate: WETableData {
-  title     = labels.startDate;
-  sortKey   = "startDate";
-}
+
+PName:      WETableData { title = labels.name;      sortKey = "name";      }
+PStartDate: WETableData { title = labels.startDate; sortKey = "startDate"; }
+
 PLeader: WETableData {
   title   = labels.projectLeader;
   string  = project.leaderName;
@@ -51,12 +47,12 @@ ProjectName: WOString {
   value = project.name;
 }
 
-Buttons: SkyButtonRow { // TODO: is wizard really used?
-  ordering  = ( wizard, refresh );
+Buttons: SkyButtonRow {
+  ordering  = ( create, refresh );
   onRefresh = parent.refetch;
-  urlWizard = newWizardURL;
+  urlCreate = newProjectURL;
   refresh   = labels.refresh;
-  wizard    = labels.new;
+  create    = labels.new;
 }
 
 Group: WERichString {
@@ -70,18 +66,12 @@ ProjectsLabel: WOString {
 
 // --- favorites -----------------------
 
-PFavoritesHeader: WETableHeader {
-  WIDTH = 20;
-}
-
-PFavorites: WETableData {
-  WIDTH = 20;
-}
+PFavoritesHeader: WETableHeader { WIDTH = 20; }
+PFavorites:       WETableData   { WIDTH = 20; }
 
 IsInFavoritesCond: WOConditional {
   condition = isInFavorites;
 }
-
 IsInFavoritesCondElse: WOConditional {
   condition = isInFavorites;
   negate    = YES;

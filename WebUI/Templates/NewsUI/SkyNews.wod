@@ -97,7 +97,7 @@ IsAccountNewsEditor: WOConditional {
   condition = isAccountNewsEditor;
 }
 
-// tabs
+/* tabs loaded from bundles */
 
 ExtTabs: WORepetition {
   list = bundleTabs;

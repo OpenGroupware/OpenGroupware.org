@@ -70,7 +70,14 @@ ToggleCell: WOGenericContainer {
   ALIGN       = "left";
   VALIGN      = "middle";
   BGCOLOR     = config.colors_mainButtonRow;
-  WIDTH       = "1%";
+  WIDTH       = "4%";
+}
+SearchCell: WOGenericContainer {
+  elementName = "td";
+  ALIGN       = "left";
+  VALIGN      = "middle";
+  BGCOLOR     = config.colors_mainButtonRow;
+  WIDTH       = "40%";
 }
 ButtonCell: WOGenericContainer {
   elementName = "td";
@@ -274,3 +281,20 @@ FileNameTD: WETableData {
   title   = labels.fileName;
   sortKey = "NSFileName";
 }
+
+/* tabs loaded from bundles */
+
+ExtTabs: WORepetition {
+  list = bundleTabs;
+  item = currentTab;
+}
+
+ExtTab: SkySimpleTabItem {
+  key   = currentTab.name;
+  label = currentTab.labelKey;
+}
+
+ExtContent: WOComponentReference {
+  component = tabComponent;
+}
+

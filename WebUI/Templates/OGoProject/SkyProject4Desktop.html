@@ -47,19 +47,36 @@
             </#ExtendedSearchTableView>   
           </#DocumentsTab>
 
+          <#ExtTabs><#ExtTab><#ExtContent/></#ExtTab></#ExtTabs>
+
           <#Tabs>
             <#Tab>
-              <table border="0" cellpadding="4" width="100%" cellspacing="2">
+              <table border="0" cellpadding="4" width="100%" cellspacing="0">
                 <tr>
                   <#ToggleCell>
                     <table border='0' cellpadding='0' cellspacing='0'>
                       <tr>
-                        <td><#QSelLink><#QuickViewIcon /></#QSelLink></td>
-                        <td><#LSelLink><#ListViewIcon  /></#LSelLink></td>
+                        <#IsQuickViewActive>
+                          <td><#QuickViewIcon /></td>
+                          <td><#LSelLink><#ListViewIcon  /></#LSelLink></td>
+                        </#IsQuickViewActive>
+                        <#IsListViewActive>
+                          <td><#QSelLink><#QuickViewIcon /></#QSelLink></td>
+                          <td><#ListViewIcon /></td>
+                        </#IsListViewActive>
                       </tr>
                     </table>
                   </#ToggleCell>
-                  <#ButtonCell><!-- #Buttons/ --></#ButtonCell>
+
+                  <!-- #SearchCell>
+                  </#SearchCell -->
+                  
+                  <#ButtonCell>
+                    <#IsQuickViewActive><#Buttons /></#IsQuickViewActive>
+                  </#ButtonCell>
+                </tr>
+                <tr>
+                  <td style="height: 2px;"><div style="height: 2px;" /></td>
                 </tr>
               </table>
               

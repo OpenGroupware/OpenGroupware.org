@@ -1,5 +1,9 @@
 2004-12-01  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoProject/SkyProject4Desktop.wod: added support for bundle tabs
+
+	* OGoProject/SkyProject4Desktop.html: added buttons to tab lists
+
 	* LSWProject/SkyProjectInlineViewer.html: join number and name in
 	  one line
 
