@@ -30,9 +30,9 @@ COMMON_PG_DATADIR_PREFIX="/var/lib/pgsql/data"
 COMMON_POSTGRESQL_CONF="${COMMON_PG_DATADIR_PREFIX}/postgresql.conf"
 COMMON_PGHBA_CONF="${COMMON_PG_DATADIR_PREFIX}/pg_hba.conf"
 COMMON_PG_INITSCRIPT="/etc/init.d/postgresql"
-# Thou shalt not alter \${NOW}!!!
-# required to set the correct timestamp on updates to certain files!
-# (thus... never ever touch this, tks)
+DEFAULT_OGO_DB_NAME="OGo"
+DEFAULT_OGO_DB_USER="OGo"
+TEMP_LOG_PATH="/tmp"
 NOW=`date +%Y%m%d-%H%M%S`
 
 # where are the schemes we need?
@@ -65,164 +65,210 @@ OGO_DB_ITSELF="`echo ${LS_CONNECTION_DIR} | sed -r 's#.*databaseName\s+=\s+##;s#
 # use default values if we don't have a LSConnectionDictionary
 if [ "x${OGO_DB_USER}" = "x" ]; then
   #the default `Defaults` value == OGo
-  OGO_DB_USER="OGo"
+  OGO_DB_USER="${DEFAULT_OGO_DB_USER}"
 fi
 
 if [ "x${OGO_DB_ITSELF}" = "x" ]; then
   #the default `Defaults` value == OGo
-  OGO_DB_ITSELF="OGo"
+  OGO_DB_ITSELF="${DEFAULT_OGO_DB_NAME}"
 fi
 
-# get current postgres state
-# postgresql is already installed due to dependencies
-if [ ! -f "${COMMON_PG_DATADIR_PREFIX}/PG_VERSION"  ]; then
-  echo -e "PostgreSQL not yet initialized."
-  echo -e "(will be initialized by the initscript)"
-  MUST_START_PG="YES"
-elif [ ! "`pgrep -u ${COMMON_PG_USER} ${COMMON_PG_PROCESSNAME}`" ]; then
-  echo -e "PostgreSQL doesn't run yet."
-  MUST_START_PG="YES"
-else
-  echo -e "PostgreSQL seems to be already initialized"
-  echo -e "and I can see it running:"
-  PIDS="`pgrep -u ${COMMON_PG_USER} ${COMMON_PG_PROCESSNAME}`"
-  PIDS="`echo ${PIDS} | sed -r 's#\n# #g'`"
-  echo -e "PIDS used: ${PIDS}"
-fi
-
-if [ "x${MUST_START_PG}" = "xYES" ]; then
-  #the initscript is named 'rhdb' on at least RHEL3
-  if [ -f "/etc/init.d/rhdb" ]; then
-    echo -e "Found '/etc/init.d/rhdb'..."
-    /etc/init.d/rhdb start
-    COMMON_PG_INITSCRIPT="/etc/init.d/rhdb"
-  #everywhere else it should be 'postgresql'
-  #(at least on all our RPM buildhosts)
-  elif [ -f "/etc/init.d/postgresql" ]; then
-    echo -e "Found '/etc/init.d/postgresql'"
-    /etc/init.d/postgresql start
-    #and check if we had success....
-    #I cannot rely on the returncode here...
+initial()
+{
+  # get current postgres state
+  # postgresql is already installed due to dependencies
+  if [ ! -f "${COMMON_PG_DATADIR_PREFIX}/PG_VERSION"  ]; then
+    echo -e "PostgreSQL not yet initialized."
+    echo -e "(will be initialized by the initscript)"
+    MUST_START_PG="YES"
+  elif [ ! "`pgrep -u ${COMMON_PG_USER} ${COMMON_PG_PROCESSNAME}`" ]; then
+    echo -e "PostgreSQL doesn't run yet."
+    MUST_START_PG="YES"
+  else
+    echo -e "PostgreSQL seems to be already initialized"
+    echo -e "and I can see it running:"
+    PIDS="`pgrep -u ${COMMON_PG_USER} ${COMMON_PG_PROCESSNAME}`"
+    PIDS="`echo ${PIDS} | sed -r 's#\n# #g'`"
+    echo -e "PIDS used: ${PIDS}"
+  fi
+  
+  if [ "x${MUST_START_PG}" = "xYES" ]; then
+    #the initscript is named 'rhdb' on at least RHEL3
+    if [ -f "/etc/init.d/rhdb" ]; then
+      echo -e "Found '/etc/init.d/rhdb'..."
+      /etc/init.d/rhdb start
+      COMMON_PG_INITSCRIPT="/etc/init.d/rhdb"
+    #everywhere else it should be 'postgresql'
+    #(at least on all our RPM buildhosts)
+    elif [ -f "/etc/init.d/postgresql" ]; then
+      echo -e "Found '/etc/init.d/postgresql'"
+      /etc/init.d/postgresql start
+      #and check if we had success....
+      #I cannot rely on the returncode here...
+      PIDS="`pgrep -u ${COMMON_PG_USER} ${COMMON_PG_PROCESSNAME}`"
+      PIDS="`echo ${PIDS} | sed -r 's#\n# #g'`"
+      if [ -n "${PIDS}" ]; then
+        echo -e "OK! PostgreSQL runs now: ($PIDS)"
+      else
+        echo -e "Arrr! PostgreSQL doesn't run!"
+        echo -e "It probably failed to start."
+        exit 1
+      fi
+    else
+      echo -e "Don't know how to start PostgreSQL."
+      exit 1
+    fi
+  fi
+  
+  if [ "x${PATCH_POSTGRESQL_CONF}" = "xYES" -a -f "${COMMON_POSTGRESQL_CONF}" ]; then
+    echo -e "checking ${COMMON_POSTGRESQL_CONF}"
+    if [ "`grep -E '^tcpip_socket[[:space:]]*=[[:space:]]*true' ${COMMON_POSTGRESQL_CONF}`"  ]; then
+      echo -e "  no patching needed for ${COMMON_POSTGRESQL_CONF}"
+      echo -e "  'tcpip_socket = true' already set."
+      NEED_RESTART_TO_ACTIVATE="NO"
+    else
+      echo -e "  need to patch ${COMMON_POSTGRESQL_CONF}"
+      echo -e "  backup current one to ${COMMON_POSTGRESQL_CONF}.${NOW}"
+      sed -i.${NOW} -r "s~^#tcpip_socket.*~tcpip_socket = true~" ${COMMON_POSTGRESQL_CONF}
+      NEED_RESTART_TO_ACTIVATE="YES"
+    fi
+  fi
+  
+  if [ "x${PATCH_PGHBA_CONF}" = "xYES" -a -f "${COMMON_PGHBA_CONF}" ]; then
+    echo -e "checking ${COMMON_PGHBA_CONF}"
+    if [ "`grep -E '^host[[:space:]]*${OGO_DB_ITSELF}[[:space:]]*${OGO_DB_USER}[[:space:]]*127.0.0.1[[:space:]]*255.255.255.255' ${COMMON_PGHBA_CONF}`" -o "`grep -E '^local[[:space:]]*all[[:space:]]*all[[:space:]]*trust' ${COMMON_PGHBA_CONF}`" ]; then
+      echo -e "  no patching needed for ${COMMON_PGHBA_CONF}"
+      #restart to activate is already either `yes` or `no`
+    else
+      echo -e "  need to patch ${COMMON_PGHBA_CONF}"
+      echo -e "  backup current one to ${COMMON_PGHBA_CONF}.${NOW}"
+      sed -i.${NOW} -r "s~#host\s+all\s+all\s+127.0.0.1\s+255.255.255.255.*~host    ${OGO_DB_ITSELF}    ${OGO_DB_USER}    127.0.0.1    255.255.255.255    trust~;s~local\s+all\s+all\s+ident\s+sameuser~local    all    all    trust~" ${COMMON_PGHBA_CONF}
+      NEED_RESTART_TO_ACTIVATE="YES"
+    fi
+  fi
+  
+  # config changes are done...
+  # restart if required
+  if [ "x${NEED_RESTART_TO_ACTIVATE}" = "xYES" ]; then
+    echo -e "The changes we've made require that we restart PostgreSQL..."
+    ${COMMON_PG_INITSCRIPT} stop
+    ${COMMON_PG_INITSCRIPT} start
     PIDS="`pgrep -u ${COMMON_PG_USER} ${COMMON_PG_PROCESSNAME}`"
     PIDS="`echo ${PIDS} | sed -r 's#\n# #g'`"
     if [ -n "${PIDS}" ]; then
-      echo -e "OK! PostgreSQL runs now: ($PIDS)"
+      echo -e "OK! PostgreSQL runs again: ($PIDS)"
     else
+      # PAX VOBISCUM!
+      # hopefully not due to an error in above mentioned patch section :p
       echo -e "Arrr! PostgreSQL doesn't run!"
-      echo -e "It probably failed to start."
+      echo -e "It probably failed to restart."
       exit 1
     fi
-  else
-    echo -e "Don't know how to start PostgreSQL."
-    exit 1
   fi
-fi
-
-if [ "x${PATCH_POSTGRESQL_CONF}" = "xYES" -a -f "${COMMON_POSTGRESQL_CONF}" ]; then
-  echo -e "checking ${COMMON_POSTGRESQL_CONF}"
-  if [ "`grep -E '^tcpip_socket[[:space:]]*=[[:space:]]*true' ${COMMON_POSTGRESQL_CONF}`"  ]; then
-    echo -e "  no patching needed for ${COMMON_POSTGRESQL_CONF}"
-    echo -e "  'tcpip_socket = true' already set."
-    NEED_RESTART_TO_ACTIVATE="NO"
-  else
-    echo -e "  need to patch ${COMMON_POSTGRESQL_CONF}"
-    echo -e "  backup current one to ${COMMON_POSTGRESQL_CONF}.${NOW}"
-    sed -i.${NOW} -r "s~^#tcpip_socket.*~tcpip_socket = true~" ${COMMON_POSTGRESQL_CONF}
-    NEED_RESTART_TO_ACTIVATE="YES"
-  fi
-fi
-
-if [ "x${PATCH_PGHBA_CONF}" = "xYES" -a -f "${COMMON_PGHBA_CONF}" ]; then
-  echo -e "checking ${COMMON_PGHBA_CONF}"
-  if [ "`grep -E '^host[[:space:]]*${OGO_DB_ITSELF}[[:space:]]*${OGO_DB_USER}[[:space:]]*127.0.0.1[[:space:]]*255.255.255.255' ${COMMON_PGHBA_CONF}`" -o "`grep -E '^local[[:space:]]*all[[:space:]]*all[[:space:]]*trust' ${COMMON_PGHBA_CONF}`" ]; then
-    echo -e "  no patching needed for ${COMMON_PGHBA_CONF}"
-    #restart to activate is already either `yes` or `no`
-  else
-    echo -e "  need to patch ${COMMON_PGHBA_CONF}"
-    echo -e "  backup current one to ${COMMON_PGHBA_CONF}.${NOW}"
-    sed -i.${NOW} -r "s~#host\s+all\s+all\s+127.0.0.1\s+255.255.255.255.*~host    ${OGO_DB_ITSELF}    ${OGO_DB_USER}    127.0.0.1    255.255.255.255    trust~;s~local\s+all\s+all\s+ident\s+sameuser~local    all    all    trust~" ${COMMON_PGHBA_CONF}
-    NEED_RESTART_TO_ACTIVATE="YES"
-  fi
-fi
-
-# config changes are done...
-# restart if required
-if [ "x${NEED_RESTART_TO_ACTIVATE}" = "xYES" ]; then
-  echo -e "The changes we've made require that we restart PostgreSQL..."
-  ${COMMON_PG_INITSCRIPT} stop
-  ${COMMON_PG_INITSCRIPT} start
-  PIDS="`pgrep -u ${COMMON_PG_USER} ${COMMON_PG_PROCESSNAME}`"
-  PIDS="`echo ${PIDS} | sed -r 's#\n# #g'`"
-  if [ -n "${PIDS}" ]; then
-    echo -e "OK! PostgreSQL runs again: ($PIDS)"
-  else
-    # PAX VOBISCUM!
-    # hopefully not due to an error in above mentioned patch section :p
-    echo -e "Arrr! PostgreSQL doesn't run!"
-    echo -e "It probably failed to restart."
-    exit 1
-  fi
-fi
-
-# create user...
-if [ "x${CREATE_DB_USER}" = "xYES" ]; then
-  echo -e "creating database user: ${OGO_DB_USER}"
-  RC_CREATE_USER="`su - ${COMMON_PG_USER} -c \"createuser -A -D ${OGO_DB_USER}\" 2>&1>/dev/null`"
-  if [ -n "${RC_CREATE_USER}" ]; then
-    echo -e "  Whoups! We've encountered an error during 'createuser':"
-    echo -e "  The errormessage was => ${RC_CREATE_USER}"
-    if [ "`echo ${RC_CREATE_USER} | grep -iE 'already[[:space:]]*exists'`" ]; then
-      echo -e "  This isn't necessarily an error - I was *maybe* summoned via commandline with the wrong options"
-      echo -e "  or you've attempted to recreate the database user '${OGO_DB_USER}' without removing him/her(?) first"
-      CREATE_DB_USER_WAS_PRESENT="YES"
+  
+  # create user...
+  if [ "x${CREATE_DB_USER}" = "xYES" ]; then
+    echo -e "creating database user: ${OGO_DB_USER}"
+    RC_CREATE_USER="`su - ${COMMON_PG_USER} -c \"createuser -A -D ${OGO_DB_USER}\" 2>&1>/dev/null`"
+    if [ -n "${RC_CREATE_USER}" ]; then
+      echo -e "  Whoups! We've encountered an error during 'createuser':"
+      echo -e "  The errormessage was => ${RC_CREATE_USER}"
+      if [ "`echo ${RC_CREATE_USER} | grep -iE 'already[[:space:]]*exists'`" ]; then
+        echo -e "  This isn't necessarily an error - I was *maybe* summoned via commandline with the wrong options"
+        echo -e "  or you've attempted to recreate the database user '${OGO_DB_USER}' without removing him/her(?) first"
+        CREATE_DB_USER_WAS_PRESENT="YES"
+      else
+        echo -e "  I don't know how to handle this exception - might be FATAL... please consider reading the FAQ/Bugzilla"
+        echo -e "  regarding database setup issues or feel free to participate in our mailinglists - you're very welcome"
+        echo -e "  to suggest further enhancements to our installation processes. ThankYou!!"
+        echo -e "  ${OGO_ML_INDEX}"
+        echo -e "  ${OGO_FAQ_INDEX}"
+        echo -e "  ${OGO_BUGZILLA_INDEX}"
+        exit 1
+      fi
     else
-      echo -e "  I don't know how to handle this exception - might be FATAL... please consider reading the FAQ/Bugzilla"
-      echo -e "  regarding database setup issues or feel free to participate in our mailinglists - you're very welcome"
-      echo -e "  to suggest further enhancements to our installation processes. ThankYou!!"
+      echo -e "  ... OK! (${RC_CREATE_USER})"
+      CREATE_DB_USER_SUCCESS="YES"
+    fi
+  fi
+  
+  # create database...
+  if [ "x${CREATE_DB_ITSELF}" = "xYES" ]; then
+    echo -e "creating the database itself: ${OGO_DB_ITSELF}"
+    RC_CREATE_DB="`su - ${COMMON_PG_USER} -c \"createdb -O ${OGO_DB_USER} ${OGO_DB_ITSELF}\" 2>&1>/dev/null`"
+    if [ -n "${RC_CREATE_DB}" ]; then
+      echo -e "  Whoups! We've encountered an error during 'createdb':"
+      echo -e "  The errormessage was => ${RC_CREATE_DB}"
+      if [ "`echo ${RC_CREATE_DB} | grep -iE 'already[[:space:]]*exists'`" ]; then
+        echo -e "  This isn't necessarily an error - I was *maybe* summoned via commandline with the wrong options"
+        echo -e "  or you've attempted to recreate the database '${OGO_DB_ITSELF}' without removing him/her(?) first"
+        CREATE_DB_ITSELF_WAS_PRESENT="YES"
+      else
+        echo -e "  I don't know how to handle this exception - might be FATAL... please consider reading the FAQ/Bugzilla"
+        echo -e "  regarding database setup issues or feel free to participate in our mailinglists - you're very welcome"
+        echo -e "  to suggest further enhancements to our installation processes. Thank You!!"
+        echo -e "  ${OGO_ML_INDEX}"
+        echo -e "  ${OGO_FAQ_INDEX}"
+        echo -e "  ${OGO_BUGZILLA_INDEX}"
+        exit 1
+      fi
+    else
+      echo -e "  ... OK! (${RC_CREATE_DB})"
+      CREATE_DB_ITSELF_SUCCESS="YES"
+    fi
+  fi
+  
+  
+  # roll in pg-build-scheme.psql
+  # veni, vidi, vici!
+  
+  if [ "x${CREATE_DB_USER_SUCCESS}" = "xYES" -a "x${CREATE_DB_ITSELF_SUCCESS}" = "xYES" -o "x${FORCE_OVERRIDE_PRESENT_SCHEME}" = "xYES" ]; then
+    echo -e "  we've successfully created both the user ${OGO_DB_USER} and the raw database ${OGO_DB_ITSELF}"
+    echo -e "  we'll know fill the database with the scheme itself"
+    # there shouldn't be an error in the scheme itself! take care!
+    IAM="`basename $0`"
+    LOG="${TEMP_LOG_PATH}/${IAM}.${NOW}.log"
+    su - ${COMMON_PG_USER} -c "psql -U ${OGO_DB_USER} -d ${OGO_DB_ITSELF} -f ${COMMON_OGO_CORE_SCHEME_LOCATION}" 1>/dev/null 2>${LOG}
+    if [ -f "${LOG}" ]; then
+      echo -e "checking the logfile created during scheme rollin... ${LOG}"
+      LOG_SYNTAX_ERR="`grep -iE 'syntax[[:space:]]*error' ${LOG} | sed -r 's~^~  ~g'`"
+      LOG_FATAL_ERR="`grep -E 'FATAL' ${LOG} | sed -r 's~^~  ~g'`"
+      #LOG_NOTICE_ERR="`grep -E 'NOTICE' ${LOG} | sed -r 's~^~  ~g'`"
+      if [ -n "${LOG_SYNTAX_ERR}" ]; then
+        echo -e "  syntax error found:"
+        echo -e "${LOG_SYNTAX_ERR}"
+      fi
+      if [ -n "${LOG_FATAL_ERR}" ]; then
+        echo -e "  FATAL error found:"
+        echo -e "${LOG_FATAL_ERR}"
+      fi
+      #if [ -n "${LOG_NOTICE_ERR}" ]; then
+      #  echo -e "  NOTICE found:"
+      #  echo -e "  ${LOG_NOTICE_ERR}"
+      #fi
+      if [ ! -n "${LOG_SYNTAX_ERR}" -a ! -n "${LOG_FATAL_ERR}" ]; then
+        echo -e "removing log - not needed anymore"
+        rm -f ${LOG}
+      fi
+    fi
+    if [ -n "${LOG_SYNTAX_ERR}" -o "${LOG_FATAL_ERR}" ]; then
+      echo -e "The above shown errors will significantly harm the functionality of your OpenGroupware"
+      echo -e "installation."
+      echo -e "I suggest that you consult:"
       echo -e "  ${OGO_ML_INDEX}"
       echo -e "  ${OGO_FAQ_INDEX}"
       echo -e "  ${OGO_BUGZILLA_INDEX}"
+      echo -e "before you proceed! Thankyou!"
       exit 1
     fi
-  else
-    echo -e "  ... OK! (${RC_CREATE_USER})"
-    CREATE_DB_USER_SUCCESS="YES"
   fi
-fi
+}
 
-# create database...
-if [ "x${CREATE_DB_ITSELF}" = "xYES" ]; then
-  echo -e "creating the database itself: ${OGO_DB_ITSELF}"
-  RC_CREATE_DB="`su - ${COMMON_PG_USER} -c \"createdb -O ${OGO_DB_USER} ${OGO_DB_ITSELF}\" 2>&1>/dev/null`"
-  if [ -n "${RC_CREATE_DB}" ]; then
-    echo -e "  Whoups! We've encountered an error during 'createdb':"
-    echo -e "  The errormessage was => ${RC_CREATE_DB}"
-    if [ "`echo ${RC_CREATE_DB} | grep -iE 'already[[:space:]]*exists'`" ]; then
-      echo -e "  This isn't necessarily an error - I was *maybe* summoned via commandline with the wrong options"
-      echo -e "  or you've attempted to recreate the database '${OGO_DB_ITSELF}' without removing him/her(?) first"
-      CREATE_DB_ITSELF_WAS_PRESENT="YES"
-    else
-      echo -e "  I don't know how to handle this exception - might be FATAL... please consider reading the FAQ/Bugzilla"
-      echo -e "  regarding database setup issues or feel free to participate in our mailinglists - you're very welcome"
-      echo -e "  to suggest further enhancements to our installation processes. Thank You!!"
-      echo -e "  ${OGO_ML_INDEX}"
-      echo -e "  ${OGO_FAQ_INDEX}"
-      echo -e "  ${OGO_BUGZILLA_INDEX}"
-      exit 1
-    fi
-  else
-    echo -e "  ... OK! (${RC_CREATE_DB})"
-    CREATE_DB_ITSELF_SUCCESS="YES"
-  fi
-fi
-
-
-# roll in pg-build-scheme.psql
-# veni, vidi, vici!
-
-if [ "x${CREATE_DB_USER_SUCCESS}" = "xYES" -a "x${CREATE_DB_ITSELF_SUCCESS}" = "xYES" -o "x${OVERRIDE_PRESENT_SCHEME}" = "xYES" ]; then
-  echo -e "  we've successfully created both the user ${OGO_DB_USER} and the raw database ${OGO_DB_ITSELF}"
-  echo -e "  we'll know fill the database with the scheme itself"
-  # there shouldn't be an error in the scheme itself! take care!
-  su - ${COMMON_PG_USER} -c "psql -U ${OGO_DB_USER} -d ${OGO_DB_ITSELF} -f ${COMMON_OGO_CORE_SCHEME_LOCATION}" 2>&1>/dev/null
-fi
+case "${1}" in
+  initial)
+    initial
+  ;;
+  *)
+    echo -e "Usage: $0 initial"
+  ;;
+esac
