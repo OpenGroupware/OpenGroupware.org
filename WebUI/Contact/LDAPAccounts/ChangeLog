@@ -1,3 +1,7 @@
+2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved templates to Templates directory (OGo bug #1284) (v5.1.7)
+
 2004-08-06  Helge Hess  <helge.hess@skyrix.com>
 
 	* added orange theme (v5.0.6)

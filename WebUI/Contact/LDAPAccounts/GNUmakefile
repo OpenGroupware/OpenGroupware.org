@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include ../common.make
 
@@ -12,14 +12,9 @@ LDAPAccounts_OBJC_FILES = \
 	SkyGenericLDAPViewer.m		\
 	NGLdapConnection+DNSearch.m	\
 
-LDAPAccounts_COMPONENTS = \
-	WelcomeNewLDAPAccount.wo	\
-	SkyGenericLDAPViewer.wo		\
-
 # resources
 
 LDAPAccounts_RESOURCE_FILES += Defaults.plist Version
-LDAPAccounts_LANGUAGES = English German
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
