@@ -1,3 +1,7 @@
+2004-09-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoResourceManager.m: removed some superflous debug logs (v5.1.69)
+
 2004-09-13  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoResourceManager.m: made template lookup language/theme specific

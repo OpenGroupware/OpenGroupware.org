@@ -602,8 +602,6 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   NSEnumerator *e;
   NSString *path;
   
-  [self logWithFormat:@"LOOKUP %@-%@-%@", _name, _framework, _theme];
-  
   e = [templatePathes objectEnumerator];
   while ((path = [e nextObject])) {
     NSString *pe;
@@ -627,8 +625,6 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
     pe = [path stringByAppendingPathExtension:@"wox"];
     if ([fm fileExistsAtPath:pe])
       return pe;
-
-    [self logWithFormat:@"  path: %@", path];
 
     pe = [path stringByAppendingPathExtension:@"html"];
     if ([fm fileExistsAtPath:pe]) {
