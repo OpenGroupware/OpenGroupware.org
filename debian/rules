@@ -107,11 +107,12 @@ install: build controlfiles
 	mkdir $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/www
 	cp -R Themes/WebServerResources/* $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/www
 	-find $(CURDIR)/debian/tmp -name .svn -type d -exec rm -rf \{\} \;
-	mkdir -p $(CURDIR)/debian/tmp/etc/apache/conf.d/
 
 	mkdir -p $(CURDIR)/debian/opengroupware.org-environment/usr/sbin
 	install -m755 $(CURDIR)/debian/ogo-create-instance $(CURDIR)/debian/opengroupware.org-environment/usr/sbin
 
+	mkdir -p $(CURDIR)/debian/tmp/etc/apache/conf.d/
+	mkdir -p $(CURDIR)/debian/tmp/etc/apache2/conf.d/
 	echo "Alias /OpenGroupware$$(echo $(OGOVER) | sed s/\\.//).woa/WebServerResources/ \
 		/usr/share/opengroupware.org-$(OGOVER)/www/" > \
 		$(CURDIR)/debian/tmp/etc/apache/conf.d/opengroupware.org-resources-$(OGOVER)
