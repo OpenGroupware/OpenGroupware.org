@@ -1,0 +1,483 @@
+# translation of LSWMail.po to 
+# translation of AddressUI.po to Slovenský
+# Branislav Klocok <branislav.klocok@ofz.sk>, 2004, 2005.
+msgid ""
+msgstr ""
+"Last-Translator: Branislav Klocok <branislav.klocok@ofz.sk>\n"
+"PO-Revision-Date: 2005-01-14 12:06+0100\n"
+"Project-Id-Version: LSWMail\n"
+"Language-Team:  <sk@li.org>\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+"MIME-Version: 1.0"
+
+# // $Id: AddressUI.strings,v 1.15 2004/08/16 14:48:47 frank Exp $
+#"begins with" =
+msgid "begins with"
+msgstr "začína s"
+
+#"doesn't contain" =
+msgid "doesn't contain"
+msgstr "neobsahuje"
+
+#"ends with" =
+msgid "ends with"
+msgstr "končí s"
+
+#"isn't" =
+msgid "isn't"
+msgstr "nie je"
+
+#"FolderEditorTitle" =
+msgid "Mail Folder Editor"
+msgstr "Editor poštového priečinka"
+
+#"LSWMailEditor" =
+msgid "Compose Mail"
+msgstr "Písať správu"
+
+#"LSWMailFilterEditor" =
+msgid "Edit Mail Filter"
+msgstr "Upraviť filter pošty"
+
+#"LSWMailFilterEditor_windowTitle" =
+msgid "Mail Filter Editor"
+msgstr "Editor filtra pošty"
+
+#"LSWMailFolderEditor" =
+msgid "Edit Folder"
+msgstr "Upraviť priečinok"
+
+#"LSWMailFolderMove" =
+msgid "Move Mail Folder"
+msgstr "Presunúť priečinok pošty"
+
+#"LSWMailMove" =
+msgid "Move Mail"
+msgstr "Presunúť poštu"
+
+#"LSWMailPreferences" =
+msgid "Mail Preferences"
+msgstr "Nastavenia pošty"
+
+#"LSWMailViewer" =
+msgid "View Mail"
+msgstr "Zobraziť poštu"
+
+#"LSWMails" =
+msgid "Mail"
+msgstr "Pošta"
+
+#"Mail" =
+msgid "Mail"
+msgstr "Pošta"
+
+#"MailEditorTitle" =
+msgid "Mail Editor"
+msgstr "Editor pošty"
+
+#"MailFilterList" =
+msgid "mail filters"
+msgstr "filtre pošty"
+
+#"MailMoveTitle" =
+msgid "Mail Mover"
+msgstr "presúvač pošty"
+
+#"MailSource" =
+msgid "mail source"
+msgstr "zdroj správy"
+
+#"MailViewerTitle" =
+msgid "Mail Viewer"
+msgstr "Prehliadač pošty"
+
+#"action" =
+msgid "action"
+msgstr "činnosť"
+
+#"add" =
+msgid "add"
+msgstr "pridať"
+
+#"and" =
+msgid "all of the following"
+msgstr "všetky z nasledujúcich"
+
+#"andThe" =
+msgid "and the"
+msgstr "a"
+
+#"cancelButtonLabel" =
+msgid "cancel"
+msgstr "zrušiť"
+
+#"cc" =
+msgid "cc"
+msgstr "cc"
+
+#"clearButtonLabel" =
+msgid "clear form"
+msgstr "vyčistiť formulár"
+
+#"clip" =
+msgid "clip"
+msgstr "klip"
+
+#"contains" =
+msgid "contains"
+msgstr "obsahuje"
+
+#"content" =
+msgid "Content"
+msgstr "Obsah"
+
+#"contentLen" =
+msgid "size"
+msgstr "veľkosť"
+
+#"contentLength" =
+msgid "Size"
+msgstr "Veľkosť"
+
+#"contentType" =
+msgid "Content Type"
+msgstr "Typ obsahu"
+
+#"date" =
+msgid "Date"
+msgstr "Dátum"
+
+#"deleteButtonLabel" =
+msgid "delete"
+msgstr "zmazať"
+
+#"deleteFolder" =
+msgid "delete folder"
+msgstr "zmazať priečinok"
+
+#"deleteMail" =
+msgid "delete mail"
+msgstr "zmazať správu"
+
+#"download" =
+msgid "download mail"
+msgstr "stiahnuť poštu"
+
+#"editFolder" =
+msgid "edit folder"
+msgstr "upraviť priečinok"
+
+#"emptyTrash" =
+msgid "empty trash"
+msgstr "vyprázdniť kôš"
+
+#"fewerButtonLabel" =
+msgid "Fewer"
+msgstr ""
+
+#"filter" =
+msgid "Filter"
+msgstr "Filter"
+
+#"filterName" =
+msgid "Filtername"
+msgstr ""
+
+#"filterPos" =
+msgid "Filter Position"
+msgstr ""
+
+#"folderName" =
+msgid "Foldername"
+msgstr "Názov priečinka"
+
+#"folderTitle" =
+msgid "Folder"
+msgstr "Priečinok"
+
+#"folder_noSub" =
+msgid "No Subfolders"
+msgstr ""
+
+#"folder_title" =
+msgid "FolderName"
+msgstr ""
+
+#"folders" =
+msgid "Folders"
+msgstr ""
+
+#"footerRowLabel1" =
+msgid "SKYRiX"
+msgstr "SKYRiX"
+
+#"footerRowLabel2" =
+msgid "2000-2004 SKYRIX Software AG"
+msgstr "2000-2004 SKYRIX Software AG"
+
+#"forward" =
+msgid "forward mail"
+msgstr ""
+
+#"from" =
+msgid "Sender"
+msgstr "Odosielateľ"
+
+#"ignore" =
+msgid "------------------------------------ ignore ------------------------------------"
+msgstr ""
+
+#"is" =
+msgid "is"
+msgstr ""
+
+#"isRead" =
+msgid "read"
+msgstr ""
+
+#"location" =
+msgid "Location"
+msgstr "Umiestnenie"
+
+#"lswmails_windowtitle=" =
+msgid "Mail"
+msgstr "Pošta"
+
+#"mail" =
+msgid "mail"
+msgstr "pošta"
+
+#"mailFolderMoveTitle" =
+msgid "Mail Folder Mover"
+msgstr ""
+
+#"mailLabel" =
+msgid "SKYRiX Mail"
+msgstr ""
+
+#"mailText" =
+msgid "Text"
+msgstr "Text"
+
+#"mailTitle" =
+msgid "Mails"
+msgstr ""
+
+#"mailstobemoved" =
+msgid "Mails"
+msgstr ""
+
+#"markRead" =
+msgid "mark read"
+msgstr ""
+
+#"markUnread" =
+msgid "mark unread"
+msgstr ""
+
+#"match" =
+msgid "match"
+msgstr ""
+
+#"messageId" =
+msgid "Message-ID"
+msgstr ""
+
+#"moreButtonLabel" =
+msgid "More"
+msgstr "Viac"
+
+#"move" =
+msgid "move to"
+msgstr ""
+
+#"moveFolder" =
+msgid "move folder"
+msgstr "presunúť priečinok"
+
+#"moveMail" =
+msgid "move mail"
+msgstr ""
+
+#"moveTo" =
+msgid "move to"
+msgstr ""
+
+#"name" =
+msgid "Name"
+msgstr "Názov"
+
+#"navigation_separator" =
+msgid "/"
+msgstr "/"
+
+#"navigation_startLabel" =
+msgid "You are here:"
+msgstr "Ste tu:"
+
+#"new" =
+msgid "new mail"
+msgstr ""
+
+#"newFilter" =
+msgid "new filter"
+msgstr ""
+
+#"newFolder" =
+msgid "new folder"
+msgstr "nový priečinok"
+
+#"newMail" =
+msgid "new mail"
+msgstr ""
+
+#"noAddressError" =
+msgid "no email address"
+msgstr ""
+
+#"noMailTitle" =
+msgid "no title"
+msgstr ""
+
+#"object" =
+msgid "ObjectViewer"
+msgstr ""
+
+#"object_deleted" =
+msgid "Object was deleted!"
+msgstr ""
+
+#"ofTheMessage" =
+msgid "of the message"
+msgstr ""
+
+#"ok" =
+msgid "OK"
+msgstr "OK"
+
+#"or" =
+msgid "any of the following"
+msgstr ""
+
+#"orThe" =
+msgid "or the"
+msgstr ""
+
+#"organization" =
+msgid "Organization"
+msgstr "Organizácia"
+
+#"plainText" =
+msgid "Send as plain text"
+msgstr ""
+
+#"priority" =
+msgid "Priority"
+msgstr "Dôležitosť"
+
+#"read" =
+msgid "mail read"
+msgstr ""
+
+#"remove" =
+msgid "remove"
+msgstr "odstrániť"
+
+#"reply" =
+msgid "reply mail"
+msgstr ""
+
+#"replyAllMail" =
+msgid "reply all"
+msgstr ""
+
+#"replyMail" =
+msgid "reply mail"
+msgstr ""
+
+#"saveButtonLabel" =
+msgid "save"
+msgstr "uložiť"
+
+#"search" =
+msgid "Recipient search"
+msgstr ""
+
+#"selectAll" =
+msgid "select all"
+msgstr "vybrať všetko"
+
+#"send" =
+msgid "send"
+msgstr "odoslať"
+
+#"sendDate" =
+msgid "date"
+msgstr ""
+
+#"sendNotLabel" =
+msgid "cancel"
+msgstr "zrušiť"
+
+#"sender" =
+msgid "Sender"
+msgstr "Odosielateľ"
+
+#"separator" =
+msgid "/"
+msgstr "/"
+
+#"showAll" =
+msgid "show all messages"
+msgstr ""
+
+#"showUnread" =
+msgid "show unread"
+msgstr ""
+
+#"sortColumnLabel" =
+msgid "sort Column"
+msgstr "zoradiť stĺpec"
+
+#"sortOpSuffixAND" =
+msgid "all of search fields"
+msgstr ""
+
+#"sortOpSuffixOR" =
+msgid "any of search fields"
+msgstr ""
+
+#"startLabel" =
+msgid "You are here:"
+msgstr "Ste tu:"
+
+#"subject" =
+msgid "Subject"
+msgstr "Predmet"
+
+#"the" =
+msgid "the"
+msgstr ""
+
+#"thenMoveToFolder" =
+msgid "then move to folder"
+msgstr ""
+
+#"to" =
+msgid "to"
+msgstr "na"
+
+#"toDoc" =
+msgid "body to document"
+msgstr ""
+
+#"unread" =
+msgid "mail unread"
+msgstr ""
+
+#"upload" =
+msgid "Attachment"
+msgstr "Príloha"
+

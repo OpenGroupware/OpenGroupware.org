@@ -1,10 +1,11 @@
 # translation of JobUI.po to 
+# translation of JobUI.po to
 # translation of AddressUI.po to Slovenský
 # Branislav Klocok <branislav.klocok@ofz.sk>, 2004, 2005.
 msgid ""
 msgstr ""
 "Last-Translator: Branislav Klocok <branislav.klocok@ofz.sk>\n"
-"PO-Revision-Date: 2005-01-14 11:04+0100\n"
+"PO-Revision-Date: 2005-01-14 11:58+0100\n"
 "Project-Id-Version: JobUI\n"
 "Language-Team:  <sk@li.org>\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -79,7 +80,7 @@ msgstr "veľmi nízka"
 
 #"AccessWarning" =
 msgid "The selected task owner has no access rights to the person. Assign the required access rights to him?"
-msgstr ""
+msgstr "Vybraný vlastník úlohy nemá prístupové oprávnenia k osobe. Priradiť mu tieto oprávnenia?"
 
 #"Always" =
 msgid "Always"
@@ -91,27 +92,27 @@ msgstr "Komentár"
 
 #"CouldntSetAccessRights" =
 msgid "Couldn`t set access rights!"
-msgstr ""
+msgstr "Nebolo možne nastaviť oprávnenia!"
 
 #"GroupLabel" =
 msgid "Teamtasks"
-msgstr ""
+msgstr "Skupinové úlohy"
 
 #"ImportAnnotation" =
 msgid "Imported Task"
-msgstr ""
+msgstr "Importované úlohy"
 
 #"JobHtmlPageTitleLabel" =
 msgid "Task Mailpage"
-msgstr ""
+msgstr "Stránka pošty pre úlohy"
 
 #"JobImportWindowTitle" =
 msgid "Task Import"
-msgstr ""
+msgstr "Importovať úlohu"
 
 #"JobViewerWindowTiltle" =
 msgid "Task Viewer"
-msgstr ""
+msgstr "Prehliadač úloh"
 
 #"Jobs" =
 msgid "Tasks"
@@ -119,15 +120,15 @@ msgstr "Úlohy"
 
 #"LSWJobAction" =
 msgid "Task Action"
-msgstr ""
+msgstr "Činnosť úlohy"
 
 #"LSWJobEditor" =
 msgid "Edit Task"
-msgstr ""
+msgstr "Upraviť úlohu"
 
 #"LSWJobViewer" =
 msgid "Task Viewer"
-msgstr ""
+msgstr "Prehliadač úloh"
 
 #"LSWJobs" =
 msgid "Tasks"
@@ -139,27 +140,27 @@ msgstr "Nikdy"
 
 #"NoTeamAndExecutantsWasSelected" =
 msgid "Error: A team or an account has to be selected as owner!"
-msgstr ""
+msgstr "Chyba: Ako vlastník musí byť vybraná skupina alebo účet!"
 
 #"OnAcceptDone" =
 msgid "On accept/done"
-msgstr ""
+msgstr "Na prijatie/hotovo"
 
 #"SkyAssignProjectToJobEditor" =
 msgid "assign project to task"
-msgstr ""
+msgstr "priradiť projekt k úlohe"
 
 #"SkyJobAttributesEditor" =
 msgid "Task Editor"
-msgstr ""
+msgstr "Editor úloh"
 
 #"TeamAndExecutantsWasSelected" =
 msgid "Error: Either a team or an account can be selected as owner!"
-msgstr ""
+msgstr "Chyba: Ako vlastník môže byt vybraná buď skupina alebo účet!"
 
 #"TeamAndNoProjectWasSelected" =
 msgid "Team but no project was selected!"
-msgstr ""
+msgstr "Bola vybraná skupina ale nie projekt!"
 
 #"accept" =
 msgid "accepted"
@@ -167,15 +168,15 @@ msgstr "prijaté"
 
 #"accept2" =
 msgid "accept"
-msgstr ""
+msgstr "prijať"
 
 #"acceptDisabled" =
 msgid "you are not the owner or the task is already accepted"
-msgstr ""
+msgstr "nie ste vlastníkom úlohy alebo úloha bola už akceptovaná"
 
 #"accountSeperator" =
 msgid "----------"
-msgstr ""
+msgstr "----------"
 
 #"accountingInfo" =
 msgid "Accounting Information"
@@ -195,19 +196,19 @@ msgstr "Aktuálna práca"
 
 #"addAccounts" =
 msgid "Add Owners"
-msgstr ""
+msgstr "Pridať vlastníkov"
 
 #"annotation" =
 msgid "annotate"
-msgstr ""
+msgstr "komentovať"
 
 #"annotationDisabled" =
 msgid "no permission to annotate task"
-msgstr ""
+msgstr "nedostatočné oprávnenia pre komentovanie úlohy"
 
 #"annotationLabel" =
 msgid "Annotation"
-msgstr "Anotácia"
+msgstr "Komentár"
 
 #"annotationSubmit" =
 msgid "Set"
@@ -219,15 +220,15 @@ msgstr "archivované"
 
 #"archive2" =
 msgid "archive"
-msgstr ""
+msgstr "archivovať"
 
 #"archiveDisabled" =
 msgid "you aren't creator or task is already archived"
-msgstr ""
+msgstr "nie ste tvorcom úlohy alebo úloha bola už archivovaná"
 
 #"archivedJobs" =
 msgid "archived tasks"
-msgstr ""
+msgstr "archivované úlohy"
 
 #"assignProject" =
 msgid "assign project"
@@ -271,7 +272,7 @@ msgstr "Kategória"
 
 #"category_" =
 msgid "- no category -"
-msgstr ""
+msgstr "- žiadna kategória -"
 
 #"category_Administration" =
 msgid "Administration"
@@ -279,7 +280,7 @@ msgstr "Administrácia"
 
 #"category_Development" =
 msgid "Development"
-msgstr ""
+msgstr "Vývoj"
 
 #"category_Layout" =
 msgid "Layout"
@@ -291,7 +292,7 @@ msgstr "Súkromné"
 
 #"clearTimer" =
 msgid "clear timer"
-msgstr ""
+msgstr "vyčistiť časovač"
 
 #"clip" =
 msgid "clip"
@@ -315,7 +316,7 @@ msgstr "Dátum vyhotovenia"
 
 #"createLabel" =
 msgid "created by"
-msgstr ""
+msgstr "Vytvorené"
 
 #"created" =
 msgid "created"
@@ -323,15 +324,15 @@ msgstr "vytvorené"
 
 #"creator" =
 msgid "Creator"
-msgstr "Zhotoviteľ"
+msgstr "Tvorca"
 
 #"creatorLabel" =
 msgid "Creator"
-msgstr "Zhotoviteľ"
+msgstr "Tvorca"
 
 #"current" =
 msgid "current task"
-msgstr ""
+msgstr "Aktuálna úloha"
 
 #"date" =
 msgid "Date"
@@ -339,7 +340,7 @@ msgstr "Dátum"
 
 #"delegatedJobs" =
 msgid "delegated tasks"
-msgstr ""
+msgstr "postúpené úlohy"
 
 #"delete" =
 msgid "delete"
@@ -351,7 +352,7 @@ msgstr "Popis"
 
 #"detachProject" =
 msgid "detach project"
-msgstr ""
+msgstr "Uvoľniť projekt"
 
 #"divided" =
 msgid "divided"
@@ -367,11 +368,11 @@ msgstr "hotovo"
 
 #"doneDisabled" =
 msgid "you are not the owner or the task is already done"
-msgstr ""
+msgstr "nie ste vlastníkom úlohy alebo úloha bola už dokončená"
 
 #"due" =
 msgid "Due"
-msgstr ""
+msgstr "Termín"
 
 #"edit" =
 msgid "edit"
@@ -379,7 +380,7 @@ msgstr "upraviť"
 
 #"editDisabled" =
 msgid "no edit permissions"
-msgstr ""
+msgstr "nedostatočné oprávnenia pre úpravu"
 
 #"empty" =
 msgid ""
@@ -387,39 +388,39 @@ msgstr ""
 
 #"endDate" =
 msgid "Enddate"
-msgstr ""
+msgstr "Konečný dátum"
 
 #"endDateLabel" =
 msgid "Enddate"
-msgstr ""
+msgstr "Konečný dátum"
 
 #"errorDesription" =
 msgid "Error description"
-msgstr ""
+msgstr "Popis chyby"
 
 #"error_cannotAssignProject" =
 msgid "cannot assign project"
-msgstr ""
+msgstr "nemôžem priradiť projekt"
 
 #"error_cannotDetachProject" =
 msgid "cannot detach project"
-msgstr ""
+msgstr "nemôžem uvoľniť projekt"
 
 #"error_end_before_now" =
 msgid "Error: end before today!"
-msgstr ""
+msgstr "Chyba: Koniec je pred dnešným dňom!"
 
 #"error_end_before_start" =
 msgid "Error: end before start!"
-msgstr ""
+msgstr "Chyba: Koniec je pred začiatkom!"
 
 #"error_noProjectSelected" =
 msgid "no project selected"
-msgstr ""
+msgstr "nebol vybraný žiadny projekt"
 
 #"error_no_end_date" =
 msgid "Error in field enddate: please fill in!"
-msgstr ""
+msgstr "Chyba v poli konečného dátumu: prosím vyplňte!"
 
 #"error_no_name" =
 msgid "Error in field name: please fill in! "
@@ -427,11 +428,11 @@ msgstr "Chyba v názve poľa: prosím vyplňte! "
 
 #"error_no_start_date" =
 msgid "Error in field startdate: please fill in!"
-msgstr ""
+msgstr "Chyba v poli počiatočného dátumu: prosím vyplňte!"
 
 #"error_start_before_now" =
 msgid "Error: start before today!"
-msgstr ""
+msgstr "Chyba: Začiatok je pred dnešným dňom!"
 
 #"executant" =
 msgid "Owner"
@@ -447,11 +448,11 @@ msgstr "Vlastník"
 
 #"executantSelection" =
 msgid "Select Owners"
-msgstr ""
+msgstr "Vybrať vlastníkov"
 
 #"executantsLabel" =
 msgid "Owners"
-msgstr ""
+msgstr "Vlastníci"
 
 #"extendedAttributes" =
 msgid "Extended"
@@ -459,31 +460,31 @@ msgstr "Rozšírený"
 
 #"fileUpload" =
 msgid "File Upload"
-msgstr ""
+msgstr "Načítať súbor"
 
 #"footerRowLabel1" =
 msgid "OpenGroupware.org"
-msgstr ""
+msgstr "OpenGroupware.org"
 
 #"footerRowLabel2" =
 msgid "2000-2004 SKYRIX Software AG"
-msgstr ""
+msgstr "2000-2004 SKYRIX Software AG"
 
 #"future" =
 msgid "upcoming tasks"
-msgstr ""
+msgstr "nastávajúce úlohy"
 
 #"gotoMailUrlLabel" =
 msgid "mail url"
-msgstr ""
+msgstr "url pošty"
 
 #"hideErrors" =
 msgid "Hide errors"
-msgstr ""
+msgstr "Skryť chyby"
 
 #"hierachie" =
 msgid "Hierachie"
-msgstr ""
+msgstr "Hierarchia"
 
 #"import" =
 msgid "Import"
@@ -491,35 +492,35 @@ msgstr "Importovať"
 
 #"importErrors" =
 msgid "Import Errors"
-msgstr ""
+msgstr "Importovať chyby"
 
 #"job" =
 msgid "Task"
-msgstr ""
+msgstr "Úloha"
 
 #"jobActionHeadLine_accept" =
 msgid "Accept Task"
-msgstr ""
+msgstr "Prijať úlohu"
 
 #"jobActionHeadLine_annotate" =
 msgid "Annotate Task"
-msgstr ""
+msgstr "Komentovať úlohu"
 
 #"jobActionHeadLine_archive" =
 msgid "Archive Task"
-msgstr ""
+msgstr "Archivovať úlohu"
 
 #"jobActionHeadLine_done" =
 msgid "Done Task"
-msgstr ""
+msgstr "Dokončiť úlohu"
 
 #"jobActionHeadLine_reject" =
 msgid "Reject Task"
-msgstr ""
+msgstr "Odmietnuť úlohu"
 
 #"jobActionWindowTitle" =
 msgid "Task Action"
-msgstr ""
+msgstr "Činnosť úlohy"
 
 #"jobComment" =
 msgid "Comment"
@@ -527,27 +528,27 @@ msgstr "Komentár"
 
 #"jobEditorWindowTitle" =
 msgid "Task Editor"
-msgstr ""
+msgstr "Editor úloh"
 
 #"jobHistoryLabel" =
 msgid "Taskhistory"
-msgstr ""
+msgstr "História úlohy"
 
 #"jobHistoryList" =
 msgid "history"
-msgstr ""
+msgstr "história"
 
 #"jobHistoryTitle" =
 msgid "Task History"
-msgstr ""
+msgstr "História úlohy"
 
 #"jobImportWindowTitle" =
 msgid "Task Import"
-msgstr ""
+msgstr "Importovať úlohu"
 
 #"jobLabel" =
 msgid "Task"
-msgstr ""
+msgstr "Úloha"
 
 #"jobListLabel" =
 msgid "Tasks"
@@ -555,19 +556,19 @@ msgstr "Úlohy"
 
 #"jobListTitle" =
 msgid "Tasklist"
-msgstr ""
+msgstr "Zoznam úloh"
 
 #"jobName" =
 msgid "Taskname"
-msgstr ""
+msgstr "Názov úlohy"
 
 #"jobPreferencesLabel" =
 msgid "Task Preferences"
-msgstr ""
+msgstr "Nastavenia úlohy"
 
 #"jobSeperatorLabel" =
 msgid "/"
-msgstr ""
+msgstr "/"
 
 #"jobStatus" =
 msgid "Status"
@@ -575,23 +576,23 @@ msgstr "Stav"
 
 #"jobViewer" =
 msgid "Taskview"
-msgstr ""
+msgstr "Zobrazenie úlohy"
 
 #"jobViewerWindowTitle" =
 msgid "Task Viewer"
-msgstr ""
+msgstr "Prehliadač úloh"
 
 #"jobeditor_title" =
 msgid "Task Editor"
-msgstr ""
+msgstr "Editor úloh"
 
 #"joblist_view" =
 msgid "Tasklist"
-msgstr ""
+msgstr "Zoznam úloh"
 
 #"jobs" =
 msgid "Subtasks"
-msgstr ""
+msgstr "Podúlohy"
 
 #"jobsWindowLabel" =
 msgid "Tasks"
@@ -599,7 +600,7 @@ msgstr "Úlohy"
 
 #"jobview" =
 msgid "Task Subiew"
-msgstr ""
+msgstr "Podpohľad úloh"
 
 #"jobviewer_tab_links" =
 msgid "links"
@@ -639,7 +640,7 @@ msgstr "odoslať"
 
 #"minutes" =
 msgid "minutes"
-msgstr ""
+msgstr "zápisy"
 
 #"name" =
 msgid "Name"
@@ -651,7 +652,7 @@ msgstr "nové"
 
 #"newJob" =
 msgid "New Task"
-msgstr ""
+msgstr "Nová úloha"
 
 #"noOfCols" =
 msgid "Number of columns"
@@ -659,11 +660,11 @@ msgstr "Počet stĺpcov"
 
 #"noProject" =
 msgid "-- No Project --"
-msgstr ""
+msgstr "-- Žiaden projekt --"
 
 #"noTeamSelected" =
 msgid "No team selected"
-msgstr ""
+msgstr "Nebola vybraná žiadna skupina"
 
 #"notify" =
 msgid "Notify"
@@ -671,7 +672,7 @@ msgstr "Upozorniť"
 
 #"notifyCreator" =
 msgid "Notify creator"
-msgstr ""
+msgstr "Tvorca upomienok"
 
 #"objectVersionLabel" =
 msgid "Version"
@@ -679,7 +680,7 @@ msgstr "Verzia"
 
 #"oldJob" =
 msgid "Old Task"
-msgstr ""
+msgstr "Stará úloha"
 
 #"onLabel" =
 msgid "on"
@@ -687,15 +688,15 @@ msgstr "zapnúť"
 
 #"oneControlJob" =
 msgid "One controltask"
-msgstr ""
+msgstr "Jedna kontrolná úloha"
 
 #"palmJobs" =
 msgid "Palm Tasks"
-msgstr ""
+msgstr "Palm úlohy"
 
 #"parentJob" =
 msgid "Parent Task"
-msgstr ""
+msgstr "Hlavná úloha"
 
 #"participantsLabel" =
 msgid "Participants"
@@ -707,15 +708,15 @@ msgstr "Percent hotovo"
 
 #"prefExeJobs" =
 msgid "assigned tasks"
-msgstr ""
+msgstr "priradené úlohy"
 
 #"preferredAccounts" =
 msgid "Select Preferred Owners"
-msgstr ""
+msgstr "Vybrať preferovaných vlastníkov"
 
 #"preferredExecutants" =
 msgid "Preferred Owners"
-msgstr ""
+msgstr "Preferovaný vlastníci"
 
 #"priority" =
 msgid "Priority"
@@ -747,11 +748,11 @@ msgstr "veľmi nízka"
 
 #"privateJobs" =
 msgid "private tasks"
-msgstr ""
+msgstr "súkromné úlohy"
 
 #"privateLabel" =
 msgid "me"
-msgstr ""
+msgstr "ja"
 
 #"project" =
 msgid "Project"
@@ -763,7 +764,7 @@ msgstr "Projekt"
 
 #"projectJobs" =
 msgid "project tasks"
-msgstr ""
+msgstr "úlohy projektu"
 
 #"projectLabel" =
 msgid "Project"
@@ -779,7 +780,7 @@ msgstr "Číslo záznamu"
 
 #"referredPerson" =
 msgid "Assigned Person"
-msgstr ""
+msgstr "Priradiť osobu"
 
 #"reject" =
 msgid "rejected"
@@ -787,23 +788,23 @@ msgstr "odmietnuté"
 
 #"reject2" =
 msgid "reject"
-msgstr ""
+msgstr "odmietnuť"
 
 #"resubmission" =
 msgid "resubmission"
-msgstr ""
+msgstr "znovuodoslanie"
 
 #"resume" =
 msgid "Resume"
-msgstr ""
+msgstr "Pokračovať"
 
 #"resumeAll" =
 msgid "Resume all"
-msgstr ""
+msgstr "Pokračovať všetky"
 
 #"resumeSelected" =
 msgid "Resume selected"
-msgstr ""
+msgstr "Pokračovať vybrané"
 
 #"save" =
 msgid "save"
@@ -811,23 +812,23 @@ msgstr "uložiť"
 
 #"saveButtonLabel_accept" =
 msgid "accept task and save comment"
-msgstr ""
+msgstr "akceptovať úlohu a uložiť komentár"
 
 #"saveButtonLabel_annotate" =
 msgid "save annotation"
-msgstr ""
+msgstr "uložiť komentár"
 
 #"saveButtonLabel_archive" =
 msgid "archive task and save comment"
-msgstr ""
+msgstr "archivovať úlohu a uložiť komentár"
 
 #"saveButtonLabel_done" =
 msgid "make task done and save comment"
-msgstr ""
+msgstr "dokončiť úlohu a uložiť komentár"
 
 #"saveButtonLabel_reject" =
 msgid "reject done and save comment"
-msgstr ""
+msgstr "odmietnuť dokončenie a uložiť komentár"
 
 #"searchButtonLabel" =
 msgid "search"
@@ -835,7 +836,7 @@ msgstr "hľadať"
 
 #"searchExecutants" =
 msgid "Search Owners"
-msgstr ""
+msgstr "Hľadať vlastníkov"
 
 #"searchLabel" =
 msgid "Search"
@@ -843,11 +844,11 @@ msgstr "Hľadať"
 
 #"searchPreferredAccounts" =
 msgid "Preferred Owners (%@)"
-msgstr ""
+msgstr "Preferovaný vlastníci (%@)"
 
 #"searchProjectButtonLabel" =
 msgid "Search Project"
-msgstr ""
+msgstr "Hľadať projekt"
 
 #"send" =
 msgid "Send"
@@ -879,19 +880,19 @@ msgstr "ukázať"
 
 #"showErrors" =
 msgid "Show errors"
-msgstr ""
+msgstr "Zobraziť chyby"
 
 #"startDate" =
 msgid "Startdate"
-msgstr ""
+msgstr "Počiatočný dátum"
 
 #"startDateLabel" =
 msgid "Startdate"
-msgstr ""
+msgstr "Počiatočný dátum"
 
 #"startTimer" =
 msgid "start timer"
-msgstr ""
+msgstr "spustiť časovač"
 
 #"statusLabel" =
 msgid "Status"
@@ -899,15 +900,15 @@ msgstr "Stav"
 
 #"stopTimer" =
 msgid "stop timer"
-msgstr ""
+msgstr "zastaviť časovač"
 
 #"subJobLabel" =
 msgid "Subtask for"
-msgstr ""
+msgstr "Podúloha pre"
 
 #"subJobList" =
 msgid "subtask list"
-msgstr ""
+msgstr "zoznam podúloh"
 
 #"subJobListLabel" =
 msgid "Tasks"
@@ -915,23 +916,23 @@ msgstr "Úlohy"
 
 #"subJobListTitle" =
 msgid "Subtask list"
-msgstr ""
+msgstr "Zoznam podúloh"
 
 #"takeSearchField" =
 msgid "Search -->"
-msgstr ""
+msgstr "Hľadať -->"
 
 #"taskName" =
 msgid "Task name"
-msgstr ""
+msgstr "Názov úlohy"
 
 #"teamLabel" =
 msgid "Team"
-msgstr ""
+msgstr "Skupina"
 
 #"timer" =
 msgid "Timer"
-msgstr ""
+msgstr "Časovač"
 
 #"titleLabel" =
 msgid "Title"
@@ -939,7 +940,7 @@ msgstr "Nadpis"
 
 #"toDoList" =
 msgid "to do list"
-msgstr ""
+msgstr "zoznam položiek urobiť"
 
 #"toProject" =
 msgid "Project"
