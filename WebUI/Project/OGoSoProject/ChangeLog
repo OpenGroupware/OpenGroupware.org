@@ -1,0 +1,9 @@
+2005-03-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSoProjects.m: properly lookup methods
+
+2005-03-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* started work on So URL based access to the project application
+
+	* created ChangeLog

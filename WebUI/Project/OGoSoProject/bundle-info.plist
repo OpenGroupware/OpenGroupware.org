@@ -1,0 +1,25 @@
+{
+  bundleHandler = OGoSoProjectModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+    );
+    classes = (
+      { name = NSObject;          },
+      { name = LSWModuleManager;  exact-version = 2; },
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = OGoSoProjectModule;  },
+      { name = OGoSoProjects; },
+      { name = OGoSoProject;  },
+    );
+    
+    WOComponents = (
+    );
+  };
+}
