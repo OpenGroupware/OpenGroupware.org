@@ -175,7 +175,7 @@ sub build_rpm {
       chomp $rpm;
       print "[RPMBUILD]          - $package summoned $rpm ($current_rpm_name)\n" if ($verbose eq "yes");
       system("/usr/bin/sudo rpm -Uvh --force --nodeps $rpm 1>>$logout 2>>$logerr") unless ((grep /^$package$/, @dont_install) or (grep /^$current_rpm_name$/, @dont_install));
-      print "[RPMBUILD]          - $package didn't install $package locally bc it's not needed in further buildprocess\n" if (($verbose eq "yes") and (grep /^$package$/, @dont_install) or (grep /^$current_rpm_name$/, @dont_install));
+      print "[RPMBUILD]          - $package didn't install $current_rpm_name locally bc it's not needed in further buildprocess\n" if (($verbose eq "yes") and (grep /^$package$/, @dont_install) or (grep /^$current_rpm_name$/, @dont_install));
       system("/usr/bin/sudo /sbin/ldconfig 1>>$logout 2>>$logerr");
     }
   } else {
