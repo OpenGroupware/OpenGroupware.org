@@ -4,7 +4,6 @@ include $(GNUSTEP_MAKEFILES)/common.make
 
 SUBPROJECTS += \
 	OGoFoundation		\
-	OGoForms		\
 	OpenGroupware.org	\
 	Common			\
 	Contact			\

@@ -8,7 +8,6 @@ SUBPROJECTS = \
 	OGoProjectInfo		\
 	OGoDocInlineViewers	\
 	OGoProjectZip		\
-	OGoProjectForms		\
 	LSWProject		\
 
 -include GNUmakefile.preamble
