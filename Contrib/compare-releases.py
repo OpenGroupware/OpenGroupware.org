@@ -2,6 +2,17 @@
 
 import sys, os, stat
 
+excludeList = (
+    ".svn", "obj",
+    "config.guess", "config.status", "config.log", "config.cache",
+    "Resources",
+    "ix86", "core"
+)
+excludeSuffixes = (
+    ".xcode", ".o", ".so", "_obj", ".gdladaptor", ".sax", ".sxp",
+    ".zsp", ".woa", ".bundle", ".tmp"
+)
+
 def usage():
     print "usage: %s <tree a> <tree b>" % ( sys.argv[0], )
     sys.exit(1)
@@ -34,17 +45,6 @@ def compareLists(pathA, pathB):
     return (both, added, removed)
 
 # end compareLists
-
-excludeList = (
-    ".svn", "obj",
-    "config.guess", "config.status", "config.log", "config.cache",
-    "Resources",
-    "ix86"
-)
-excludeSuffixes = (
-    ".xcode", ".o", ".so", "_obj", ".gdladaptor", ".sax", ".sxp",
-    ".zsp", ".woa", ".bundle"
-)
 
 def shouldHideFile(filename):
     if filename in excludeList:
