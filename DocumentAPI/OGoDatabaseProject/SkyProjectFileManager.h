@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __SkyProjectFileManager_H__
 #define __SkyProjectFileManager_H__
@@ -79,7 +78,7 @@ typedef enum {
 
 /* generic stuff */
 
-- (BOOL)changeFileAttributes:(NSDictionary *)attributes atPath:(NSString *)_path;
+- (BOOL)changeFileAttributes:(NSDictionary *)_attrs atPath:(NSString *)_path;
 
 - (NSDictionary *)fileAttributesAtPath:(NSString *)_path
   traverseLink:(BOOL)_followLink;
