@@ -44,7 +44,7 @@
   NSDictionary   *env;
   id tmp;
   
-  if (searchPathes)
+  if (searchPathes != nil)
     return searchPathes;
   
   env = [[NSProcessInfo processInfo] environment];
@@ -78,9 +78,6 @@
       if (![ma containsObject:tmp])
         [ma addObject:tmp];
     }
-  }
-  else {
-    NSLog(@"%s: empty library search path !", __PRETTY_FUNCTION__);
   }
 #endif
   

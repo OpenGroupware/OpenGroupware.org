@@ -1,3 +1,7 @@
+2004-09-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* ZideStore.m: do not warn on empty GNUstep env variables (v1.3.79)
+
 2004-08-31  Helge Hess  <helge.hess@skyrix.com>
 	
 	* GNUmakefile.preamble: added library lookup pathes for FHS (v1.3.78)

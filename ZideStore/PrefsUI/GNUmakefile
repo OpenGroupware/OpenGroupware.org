@@ -4,7 +4,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 
 BUNDLE_NAME        = PrefsUI
 BUNDLE_EXTENSION   = .zsp
-BUNDLE_INSTALL_DIR = $(GNUSTEP_USER_ROOT)/Library/ZideStore12
+BUNDLE_INSTALL_DIR = $(GNUSTEP_USER_ROOT)/Library/ZideStore-1.3
 
 PrefsUI_PRINCIPAL_CLASS = PrefsUIProduct
 
@@ -33,3 +33,4 @@ PrefsUI_RESOURCE_FILES += \
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
+-include ../fhsbundle.make
