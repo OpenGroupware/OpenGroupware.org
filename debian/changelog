@@ -1,3 +1,11 @@
+opengroupware.org (1.0a.9-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+  * Removed all autoconfiguration stuff. This will be done by a separate
+    package, released later.
+
+ -- Sebastian Ley <ley@debian.org>  Thu, 21 Oct 2004 18:17:20 +0200
+
 opengroupware.org (1.0a.8-1) experimental; urgency=low
 
   * Initial Release of converted sources. Upstream has done heavy
