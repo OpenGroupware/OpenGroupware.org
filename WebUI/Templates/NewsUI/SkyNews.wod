@@ -1,4 +1,4 @@
-// $Id: SkyNews.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller class
 
 Frame: LSWSkyrixFrame {}
 
@@ -16,6 +16,9 @@ NewsTab: SkyTabItem {
   action = tabClicked;
   label  = labels.news;
   icon   = "news";
+  // enable after 1.0 branch (requires SOPE 4.5)
+  // actionClass      = "SkyNews";
+  // directActionName = "showNewsTab";
 }
 
 EditorsTab: SkyTabItem {
@@ -23,14 +26,12 @@ EditorsTab: SkyTabItem {
   action = tabClicked;
   label  = labels.news_editors;
   icon   = "news_editors";
+  // enable after 1.0 branch (requires SOPE 4.5)
+  // actionClass      = "SkyNews";
+  // directActionName = "showNewsEditorTab";
 }
 
 JobList: SkyJobList {}
-
-IsSchedulerLicensed: SkyLicenseConditional {
-  modules = ( Scheduler2 );
-  showInfo = NO;
-}
 
 AppointmentList: SkyNewsAppointmentList {}
 
@@ -94,4 +95,20 @@ IsIndexArticle: WOString {
 
 IsAccountNewsEditor: WOConditional {
   condition = isAccountNewsEditor;
+}
+
+// tabs
+
+ExtTabs: WORepetition {
+  list = bundleTabs;
+  item = currentTab;
+}
+
+ExtTab: SkySimpleTabItem {
+  key   = currentTab.name;
+  label = currentTab.labelKey;
+}
+
+ExtContent: WOComponentReference {
+  component = tabComponent;
 }

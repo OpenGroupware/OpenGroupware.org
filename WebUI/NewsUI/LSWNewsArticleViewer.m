@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "common.h"
 #include "LSWNewsArticleViewer.h"
@@ -63,7 +62,7 @@ static inline NSString *_getUrl(id self, NSString *_str) {
     str++;
     cnt++;
   }
-  free(string);
+  if (string) free(string);
   if (cnt == 0) {
     NSLog(@"WARNING: found URL without characters");
     return @"";
@@ -80,54 +79,55 @@ static inline void _parseForLink(id self, NSMutableArray *_text_,
   int  i, cnt = 0;
   
   for (i = 0, cnt = [_text_ count]; i < cnt; i++) {
+    NSString *str = nil;
+    NSRange  r;
+    
     obj = [_text_ objectAtIndex:i];
 
-    if ([[obj objectForKey:@"kind"] isEqualToString:@"text"] == YES) {
-      NSString *str = nil;
-      NSRange  r;
+    if (![[obj objectForKey:@"kind"] isEqualToString:@"text"])
+      continue;
 
-      str = [obj objectForKey:@"value"];
-      r = [str rangeOfString:_kind];
+    str = [obj objectForKey:@"value"];
+    r = [str rangeOfString:_kind];
       
-      while (r.length > 0) {
-        NSString     *s = nil;
-	NSDictionary *d;
+    while (r.length > 0) {
+      NSString     *s = nil;
+      NSDictionary *d;
 	
-        [_text_ removeObjectAtIndex:i];
+      [_text_ removeObjectAtIndex:i];
 	
+      d = [[NSDictionary alloc] initWithObjectsAndKeys:
+				  [str substringToIndex:r.location],@"value",
+				@"text", @"kind", nil];
+      [_text_ insertObject:d atIndex:i];
+      [d release];
+
+      s = _getUrl(self, [str substringFromIndex:r.location]);
+
+      if ([s length] > [_kind length]) {
 	d = [[NSDictionary alloc] initWithObjectsAndKeys:
-				    [str substringToIndex:r.location],@"value",
-				    @"text", @"kind", nil];
-        [_text_ insertObject:d atIndex:i];
+				    s,      @"value",
+				  _kind,  @"urlKind",
+				  @"url", @"kind", nil];
+	[_text_ insertObject:d atIndex:i+1];
 	[d release];
-
-        s = _getUrl(self, [str substringFromIndex:r.location]);
-
-        if ([s length] > [_kind length]) {
-	  d = [[NSDictionary alloc] initWithObjectsAndKeys:
-				      s,      @"value",
-				      _kind,  @"urlKind",
-				      @"url", @"kind", nil];
-          [_text_ insertObject:d atIndex:i+1];
-	  [d release];
-        }
-        else {
-	  d = [[NSDictionary alloc] initWithObjectsAndKeys:
-				      s,       @"value",
-				      @"text", @"kind", nil];
-          [_text_ insertObject:d atIndex:i+1];
-	  [d release];
-        }
-        str = [str substringFromIndex:(r.location + [s length])];
-
-        [_text_ insertObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                       str,  @"value",
-                                       @"text", @"kind", nil]
-                atIndex:i+2];
-        cnt += 2;
-        i   += 2;
-        r = [str rangeOfString:_kind];
       }
+      else {
+	d = [[NSDictionary alloc] initWithObjectsAndKeys:
+				    s,       @"value",
+				  @"text", @"kind", nil];
+	[_text_ insertObject:d atIndex:i+1];
+	[d release];
+      }
+      str = [str substringFromIndex:(r.location + [s length])];
+
+      [_text_ insertObject:[NSDictionary dictionaryWithObjectsAndKeys:
+					   str,  @"value",
+					 @"text", @"kind", nil]
+	      atIndex:i+2];
+      cnt += 2;
+      i   += 2;
+      r = [str rangeOfString:_kind];
     }
   }
 }
@@ -136,17 +136,19 @@ static inline NSArray *_filterLinks(id self, NSString *_str) {
   NSMutableArray *array     = nil;
   NSEnumerator   *linkKinds = nil;
   NSString       *kind      = nil;
+  NSDictionary   *record;
 
   linkKinds = [[NSArray arrayWithObjects:@"http:",@"https:", @"file:",
                                          @"ftp:", @"news:", @"mailto:", nil]
                         objectEnumerator];
 
-  array = [NSMutableArray arrayWithObject:
-                          [NSDictionary dictionaryWithObjectsAndKeys:
-                                        _str, @"value", @"text", @"kind", nil]];
-  while ((kind = [linkKinds nextObject])) {
+  record = [NSDictionary dictionaryWithObjectsAndKeys:
+			   _str, @"value", @"text", @"kind", nil];
+  array = [NSMutableArray arrayWithObjects:&record count:1];
+  
+  while ((kind = [linkKinds nextObject]) != nil)
     _parseForLink(self, array, kind);
-  }
+
   return array;
 }
 - (id)init {
@@ -156,39 +158,30 @@ static inline NSArray *_filterLinks(id self, NSString *_str) {
   return self;
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
   [self unregisterAsObserver];
-  RELEASE(self->imageUrl);
-  RELEASE(self->fileName);
-  RELEASE(self->relatedArticles);
-  RELEASE(self->newsArticle);
-  RELEASE(self->item);
+  [self->imageUrl        release];
+  [self->fileName        release];
+  [self->relatedArticles release];
+  [self->newsArticle     release];
+  [self->item            release];
   [super dealloc];
 }
-#endif
+
+/* operations */
 
 - (void)_setImageUrl {
   NSFileManager  *manager;
   NSUserDefaults *defaults;
   NSString       *url, *imagesUrl, *path;
   id             obj, ext, articleId;
+  NSEnumerator   *enumerator;
   
-  NSEnumerator *enumerator;
-
   static NSArray *ExtensionList = nil;
 
   if (ExtensionList == nil) {
-    ExtensionList = [[NSUserDefaults standardUserDefaults]
-                                     arrayForKey:@"NewArticleExtensionList"];
-
-    if (ExtensionList) {
-      ExtensionList = [ExtensionList retain];
-    }
-    else {
-      ExtensionList = [[NSArray alloc] initWithObjects:
-                                       @"jpg", @"jpeg", @"gif", @"png", nil];
-    }
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    ExtensionList = [[ud arrayForKey:@"NewsArticleExtensionList"] copy];
   }
     
   manager   = [NSFileManager defaultManager];
@@ -210,23 +203,19 @@ static inline NSArray *_filterLinks(id self, NSString *_str) {
 
   while ((ext = [enumerator nextObject])) {
     NSString *fn, *imageFileName;
-
-    fn = [NSString stringWithFormat:@"%@/%@.",
-                            path, articleId];
-
-    imageFileName = [NSString stringWithFormat:@"%@%@",
-                              fn, ext];
+    
+    fn            = [NSString stringWithFormat:@"%@/%@.", path, articleId];
+    imageFileName = [NSString stringWithFormat:@"%@%@", fn, ext];
 
     if (![manager fileExistsAtPath:imageFileName]) {
       ext = [ext uppercaseString];
-      imageFileName = [NSString stringWithFormat:@"%@%@",
-                                fn, ext];
+      imageFileName = [NSString stringWithFormat:@"%@%@", fn, ext];
       if (![manager fileExistsAtPath:imageFileName]) {
         continue;
       }
     }
     self->imageUrl = [[NSString alloc] initWithFormat:@"%@/%@.%@",
-                                       url, articleId, ext];
+                                         url, articleId, ext];
     break;
   }
 }
@@ -241,7 +230,8 @@ static inline NSArray *_filterLinks(id self, NSString *_str) {
   ASSIGN(self->relatedArticles, rA);
 }
 
-- (BOOL)prepareForActivationCommand:(NSString *)_command type:(NGMimeType *)_type
+- (BOOL)prepareForActivationCommand:(NSString *)_command 
+  type:(NGMimeType *)_type
   configuration:(NSDictionary *)_cmdCfg
 {
   if ([super prepareForActivationCommand:_command type:_type
@@ -254,8 +244,9 @@ static inline NSArray *_filterLinks(id self, NSString *_str) {
     path     = [defaults stringForKey:@"LSAttachmentPath"];
     obj      = [self object];
     
-    self->fileName = [[NSString alloc] initWithFormat:@"%@/%@.txt",
-                                       path, [obj valueForKey:@"newsArticleId"]];
+    self->fileName = 
+      [[NSString alloc] initWithFormat:@"%@/%@.txt",
+			  path, [obj valueForKey:@"newsArticleId"]];
     
     return YES;
   }

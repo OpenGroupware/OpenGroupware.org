@@ -35,9 +35,53 @@
 
 @implementation LSNewEnterpriseCommand
 
+static NSNumber *yesNum = nil;
+static NSNumber *noNum  = nil;
+
++ (void)initialize {
+  yesNum = [[NSNumber numberWithBool:YES] retain];
+  noNum  = [[NSNumber numberWithBool:NO]  retain];
+}
+
 - (void)dealloc {
   [self->persons release];
   [super dealloc];
+}
+
+/* operation */
+
+- (NSCalendarDate *)defaultFakeProjectEndDate {
+  static NSCalendarDate *endDate = nil;
+  if (endDate == nil) {
+    endDate = [[NSCalendarDate dateWithString:@"2032-12-31 23:59:59"
+			       calendarFormat:@"%Y-%m-%d %H:%M:%S"] copy];
+  }
+  return endDate;
+}
+
+- (void)_createIndexDocumentWithTitle:(NSString *)_title
+  inProject:(id)proj inContext:(id)_context
+{
+  id rootDoc;
+  
+  LSRunCommandV(_context, @"project", @"get-root-document",
+		@"object",      proj,
+		@"relationKey", @"rootDocument", nil);
+  rootDoc = [proj valueForKey:@"rootDocument"];
+  
+  LSRunCommandV(_context, @"doc", @"new",
+		@"title",       @"index",
+		@"abstract",    _title,
+		@"fileContent", @"",
+		@"fileType",    @"txt",
+		@"fileSize",    [NSNumber numberWithInt:0],
+		@"isFolder",    noNum,
+		@"isNote",      noNum,
+		@"isIndexDoc",  yesNum,
+		@"autoRelease", yesNum,
+		@"project",     proj,
+		@"folder",      rootDoc,
+		nil);
 }
 
 - (id)_newProjectInContext:(id)_context {
@@ -47,60 +91,36 @@
   ep = [self object];
   
   start = [NSCalendarDate date];
-  end   = [NSCalendarDate dateWithString:@"2032-12-31 23:59:59"
-                          calendarFormat:@"%Y-%m-%d %H:%M:%S"];
+  end   = [self defaultFakeProjectEndDate];
   
   proj = LSRunCommandV(_context, @"project", @"new",
                           @"name",      [ep valueForKey:@"description"],
                           @"startDate", start,
                           @"endDate",   end,
                           @"ownerId",   [ep valueForKey:@"ownerId"],
-                          @"isFake",    [NSNumber numberWithBool:YES],
+                          @"isFake",    yesNum,
                           nil);      
-
-  if (proj) {
-    id rootDoc = nil;
-
-    LSRunCommandV(_context, @"project",     @"get-root-document",
-                            @"object",      proj,
-                            @"relationKey", @"rootDocument", nil);
-
-    rootDoc = [proj valueForKey:@"rootDocument"];
-    
-    LSRunCommandV(_context, @"doc", @"new",
-                  @"title",       @"index",
-                  @"abstract",    [ep valueForKey:@"description"],
-                  @"fileContent", @"",
-                  @"fileType",    @"txt",
-                  @"fileSize",    [NSNumber numberWithInt:0],
-                  @"isFolder",    [NSNumber numberWithBool:NO],
-                  @"isNote",      [NSNumber numberWithBool:NO],
-                  @"isIndexDoc",  [NSNumber numberWithBool:YES],
-                  @"autoRelease", [NSNumber numberWithBool:YES],
-                  @"project",     proj,
-                  @"folder",      rootDoc,
-                  nil);
-    return proj;
-  }
-  return nil;
+  if (proj == nil)
+    return nil;
+  
+  [self _createIndexDocumentWithTitle:[ep valueForKey:@"description"]
+	inProject:proj inContext:_context];
+  return proj;
 }
 
 - (void)_prepareForExecutionInContext:(id)_context {
   [super _prepareForExecutionInContext:_context];
-  [[self object] takeValue:[NSNumber numberWithBool:YES]
-                 forKey:@"isEnterprise"];
-  
-  
+  [[self object] takeValue:yesNum forKey:@"isEnterprise"];
 }
 
 - (void)_executeInContext:(id)_context {
   id proj = nil;
 
   [super _executeInContext:_context];
-
+  
   proj = [self _newProjectInContext:_context];
-
-  if (proj) {
+  
+  if (proj != nil) {
     LSRunCommandV(_context, @"enterprise", @"assign-projects",
                   @"object",   [self object],
                   @"projects", [NSArray arrayWithObject:proj], nil);
@@ -120,17 +140,16 @@
   return @"Enterprise";
 }
 
-// accessors
+/* accessors */
 
 - (void)setPersons:(NSArray *)_persons {
   ASSIGN(persons, _persons);
 }
-
 - (NSArray *)persons {
   return self->persons;
 }
 
-// key/value coding
+/* key/value coding */
 
 - (void)takeValue:(id)_value forKey:(id)_key {
   if ([_key isEqualToString:@"persons"]) {

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -21,21 +21,23 @@
 
 #include <OGoFoundation/OGoContentPage.h>
 
-@class NSString, NSDictionary;
+@class NSString, NSDictionary, NSMutableDictionary;
 @class EOArrayDataSource;
 
 @interface SkyNews : OGoContentPage
 {
 @protected
-  EOArrayDataSource *dataSource;
-  NSString          *tabKey;
-  NSDictionary      *selectedAttribute;
-  unsigned          startIndex;
-  id                article;
-  BOOL              isDescending;
-  BOOL              isAccountNewsEditor;
-  BOOL              fetchArticles;
-  NSString          *sortedKey;
+  EOArrayDataSource   *dataSource;
+  NSString            *tabKey;
+  NSDictionary        *selectedAttribute;
+  unsigned            startIndex;
+  id                  article;
+  BOOL                isDescending;
+  BOOL                isAccountNewsEditor;
+  BOOL                fetchArticles;
+  NSString            *sortedKey;
+  NSMutableDictionary *nameToExtComponent;
+  id                  currentTab;
 }
 @end
 
@@ -50,9 +52,14 @@
 
 @implementation SkyNews
 
-static NGMimeType *eoNewsType = nil;
+static NGBundleManager *bm           = nil;
+static NGMimeType      *eoNewsType   = nil;
+static NSArray         *allNewsPages = nil;
 
 + (void)initialize {
+  bm = [[NGBundleManager defaultBundleManager] retain];
+  allNewsPages = [[bm providedResourcesOfType:@"NewsPages"] copy];
+  
   if (eoNewsType == nil)
     eoNewsType = [[NGMimeType mimeType:@"eo" subType:@"newsarticle"] retain];
 }
@@ -62,8 +69,8 @@ static NGMimeType *eoNewsType = nil;
 
   /* this component is a session-singleton */
   if ((p = [self persistentInstance])) {
-    RELEASE(self);
-    return RETAIN(p);
+    [self release];
+    return [p retain];
   }
   
   if ((self = [super init])) {
@@ -72,75 +79,21 @@ static NGMimeType *eoNewsType = nil;
     [self registerForNotificationNamed:LSWNewNewsArticleNotificationName];
     [self registerForNotificationNamed:LSWUpdatedNewsArticleNotificationName];
     [self registerForNotificationNamed:LSWDeletedNewsArticleNotificationName];
- 
-    self->sortedKey = [@"name" retain];
-
+    
+    self->sortedKey  = @"name";
     self->dataSource = [[EOArrayDataSource alloc] init];
-
   }
   return self;
 }
 
 - (void)dealloc {
   [self unregisterAsObserver];
+  [self->nameToExtComponent release];
   [self->dataSource release];
-  [self->article release];
-  [self->tabKey release];
-  [self->sortedKey release];
+  [self->article    release];
+  [self->tabKey     release];
+  [self->sortedKey  release];
   [super dealloc];
-}
-
-/* operations */
-
-- (void)_fetchArticles {
-  NSArray *a = nil;
-
-  a = [self runCommand:@"newsarticle::get",
-            @"returnType", intObj(LSDBReturnType_ManyObjects), nil];
-  [self->dataSource setArray:a];
-}
-
-- (void)syncAwake {
-  [super syncAwake];
-  
-  if (!self->fetchArticles)
-    return;
-  
-  [self _fetchArticles];
-  self->fetchArticles = NO;
-}
-
-- (id)tabClicked {
-  NSArray *teams = nil;
-  id      acnt   = nil;
-  int     i, cnt;
-  
-  if ([self->tabKey isEqualToString:@"editors"]) {
-    self->startIndex = 0;
-    [self _fetchArticles];
-    return nil;
-  } 
-
-  if ([[self session] activeAccountIsRoot]) {
-    self->isAccountNewsEditor = YES;
-    return nil;
-  }
-      
-  acnt  = [[self session] activeAccount];
-  teams = [self runCommand:@"account::teams",
-                  @"account",    acnt,
-                  @"returnType", intObj(LSDBReturnType_ManyObjects),
-		nil];
-
-  for (i = 0, cnt = [teams count]; i < cnt; i++) {
-      id team = [teams objectAtIndex:i];
-      
-      if ([[team valueForKey:@"login"] isEqualToString:@"newseditors"]) {
-        self->isAccountNewsEditor = YES;
-        break;
-      }
-  }
-  return nil;
 }
 
 /* accessors */
@@ -187,6 +140,119 @@ static NGMimeType *eoNewsType = nil;
   return self->article;    
 }
 
+/* operations */
+
+- (void)_fetchArticles {
+  NSArray *a = nil;
+
+  a = [self runCommand:@"newsarticle::get",
+            @"returnType", intObj(LSDBReturnType_ManyObjects), nil];
+  [self->dataSource setArray:a];
+}
+
+- (NSArray *)_fetchTeamEOsOfAccountEO:(id)_acnt {
+  return [self runCommand:@"account::teams",
+                  @"account",    _acnt,
+                  @"returnType", intObj(LSDBReturnType_ManyObjects),
+	       nil];
+}
+
+- (BOOL)_checkWhetherAccountIsNewsEditor {
+  NSArray  *teams;
+  unsigned i, cnt;
+  
+  if ([[self session] activeAccountIsRoot])
+    return YES;
+  
+  teams = [self _fetchTeamEOsOfAccountEO:[[self session] activeAccount]];
+  
+  /* scan for 'newseditors' team */
+  for (i = 0, cnt = [teams count]; i < cnt; i++) {
+    id team;
+    
+    team = [teams objectAtIndex:i];
+    if ([[team valueForKey:@"login"] isEqualToString:@"newseditors"])
+      return YES;
+  }
+  
+  return NO;
+}
+
+/* bundles */
+
+- (NSArray *)bundleTabs {
+  return allNewsPages;
+}
+
+- (void)setCurrentTab:(id)_tab {
+  ASSIGN(self->currentTab, _tab);
+}
+- (id)currentTab {
+  return self->currentTab;
+}
+
+- (WOComponent *)tabComponent {
+  WOComponent *page;
+  NSString    *compName;
+  
+  compName = [[self currentTab] valueForKey:@"component"];
+  
+  if ((page = [self->nameToExtComponent objectForKey:compName]) != nil) {
+    [page ensureAwakeInContext:[self context]];
+    return page;
+  }
+  
+  if ((page = [self pageWithName:compName]) == nil) {
+    [self setErrorString:@"Did not find news extension page!"];
+    return nil;
+  }
+  
+  if (self->nameToExtComponent == nil) {
+    self->nameToExtComponent = 
+      [[NSMutableDictionary alloc] initWithCapacity:4];
+  }
+  [self->nameToExtComponent setObject:page forKey:compName];
+  return page;
+}
+
+/* notifications */
+
+- (void)syncAwake {
+  [super syncAwake];
+  
+  if (!self->fetchArticles)
+    return;
+  
+  [self _fetchArticles];
+  self->fetchArticles = NO;
+}
+
+/* actions */
+
+- (id)tabClicked {
+  if ([self->tabKey isEqualToString:@"editors"]) {
+    self->startIndex = 0;
+    [self _fetchArticles];
+    return nil;
+  } 
+  
+  self->isAccountNewsEditor = [self _checkWhetherAccountIsNewsEditor];
+  return nil;
+}
+
+- (id)showNewsTabAction {
+  [self setTabKey:@"news"];
+  [self tabClicked];
+  return self;
+}
+- (id)showNewsEditorTabAction {
+  [self setTabKey:@"editors"];
+  [self tabClicked];
+  return self;
+}
+
+/* accessors */
+
 - (BOOL)isAccountNewsEditor {
   return self->isAccountNewsEditor;    
 }
@@ -218,6 +284,8 @@ static NGMimeType *eoNewsType = nil;
   ct = [[self session] instantiateComponentForCommand:@"new" type:eoNewsType];
   return ct;
 }
+
+/* notifications */
 
 - (void)noteChange:(NSString *)_cn onObject:(id)_object {
   [super noteChange:_cn onObject:_object];
