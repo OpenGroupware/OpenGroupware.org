@@ -22,6 +22,7 @@
 
 #include "SxPersonFolder.h"
 #include "SxPerson.h"
+#include "ZSPersonListEntryRenderer.h"
 #include <ZSFrontend/SxRendererFactory.h>
 #include <ZSFrontend/SxMapEnumerator.h>
 #include <ZSBackend/SxContactManager.h>
@@ -49,36 +50,14 @@
 
 /* rendering */
 
-- (id)renderListEntry:(id)_entry {
-  // contentlength,lastmodified,displayname,executable,resourcetype
-  // checked-in,checked-out
-  /*
-    <key name="{DAV:}href"    >$baseURL$/$pkey$.vcf?sn=$sn$</key>
-    <key name="davContentType">text/vcard</key>
-    <key name="davDisplayName">$sn$, $givenname$</key>
-  */
-  NSMutableDictionary *record;
-  NSString *url, *dname;
-  NSString *sn, *pkey;
-  
-  if ((record = [_entry mutableCopy]) == nil)
-    return nil;
-  
-  // getting: pkey, sn, givenname
-  sn   = [record objectForKey:@"sn"];
-  pkey = [[record objectForKey:@"pkey"] stringValue];
-  
-  url = [NSString stringWithFormat:@"%@%@.vcf", [self baseURL], pkey];
-  if ([sn length] > 0)
-    url = [url stringByAppendingFormat:@"?sn=%@", [sn stringByEscapingURL]];
-  
-  [record setObject:url forKey:@"{DAV:}href"];
+// TODO: we need a generic class renderer mapping
 
-  dname = [NSString stringWithFormat:@"%@, %@",
-                    sn,
-                    [record objectForKey:@"givenname"]];
-  [record setObject:dname forKey:@"davDisplayName"];
-  return [record autorelease];
+- (id)renderListEntry:(id)_entry {
+  // TODO: should be moved out
+  static ZSPersonListEntryRenderer *renderer = nil;
+  if (renderer == nil)
+    renderer = [[ZSPersonListEntryRenderer sharedListEntryRenderer] retain];
+  return [renderer renderEntry:_entry representingSoObject:self];
 }
 
 - (id)evoRendererInContext:(id)_ctx {

@@ -126,6 +126,7 @@
 /* FileSystem */
 
 - (id)renderListEntry:(id)_entry {
+  // TODO: who uses that? isn't that overridden by all subclasses?
   // contentlength,lastmodified,displayname,executable,resourcetype
   // checked-in,checked-out
   /*
@@ -221,7 +222,7 @@
   NSEnumerator *e = nil;
   
   cm = [self contactManagerInContext:_ctx];
-  e = [self runListQueryWithContactManager:cm];
+  e  = [self runListQueryWithContactManager:cm];
   return [SxMapEnumerator enumeratorWithSource:e 
 			  object:self selector:@selector(renderListEntry:)];
 }
@@ -372,7 +373,7 @@
   
   handler = [super fetchSelectorForQuery:_fs onAttributeSet:propNames
                    inContext:_ctx];
-  if (handler) return handler;
+  if (handler != NULL) return handler;
   
   /* ZideLook Address Query */
   if ([propNames isSubsetOfSet:zlAddrQuery])

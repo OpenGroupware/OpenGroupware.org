@@ -1,3 +1,9 @@
+2004-12-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxPersonFolder.m: properly render etag for list queries, moved list
+	  query rendering to separate object (fixed GroupDAV compatibility)
+	  (v1.3.78)
+
 2004-11-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxVCardContactRenderer.m, SxAddressFolder.m, SxGroupsFolder.m,

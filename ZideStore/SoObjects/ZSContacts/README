@@ -7,11 +7,12 @@ WebDAV Frontend to Contact like SKYRiX data, that is, to Enterprises,
 Persons (includes Accounts) and Teams.
 
 Folders:
-  SxAddressFolder [abstract]
-    SxPersonFolder
-      SxGroupFolder
-    SxEnterpriseFolder
-    SxGroupsFolder
+  [SxFolder]
+    SxAddressFolder [abstract]
+      SxPersonFolder
+        SxGroupFolder
+      SxEnterpriseFolder
+      SxGroupsFolder
 
 Records:
   SxAddress

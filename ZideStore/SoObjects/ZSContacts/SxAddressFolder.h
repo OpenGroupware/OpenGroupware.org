@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxAddressFolder.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __sxdavd_SxAddressFolder_H__
 #define __sxdavd_SxAddressFolder_H__
