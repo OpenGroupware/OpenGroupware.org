@@ -65,7 +65,6 @@ my $use_sope;
 my @t_sope;
 my $sope_rpm;
 my $sope_spec;
-#my $sope_src;
 eval getconf("$ENV{'HOME'}/purveyor_of_rpms.conf") or die "FATAL: $@\n";
 
 sub getconf {
