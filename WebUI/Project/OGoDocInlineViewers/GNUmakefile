@@ -10,10 +10,13 @@ OGoDocInlineViewers_OBJC_FILES += \
 	SkyDocInlineViewersModule.m	\
 	SkyDocEmbedInlineViewer.m	\
 	SkyDocImageInlineViewer.m	\
-
-OGoDocInlineViewers_COMPONENTS += \
-	SkyDocEmbedInlineViewer.wo	\
-	SkyDocImageInlineViewer.wo	\
+	\
+	OGoDocPartViewer.m		\
+	OGoDocAccessViewer.m		\
+	OGoDocAttrsViewer.m		\
+	OGoDocContentsViewer.m		\
+	OGoDocLogsViewer.m		\
+	OGoDocVersionsViewer.m		\
 
 OGoDocInlineViewers_RESOURCE_FILES += Defaults.plist Version
 

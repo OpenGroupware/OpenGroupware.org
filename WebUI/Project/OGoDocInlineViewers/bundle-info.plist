@@ -15,13 +15,37 @@
   provides = {
     classes = (
       { name = SkyDocInlineViewersModule; },
-      { name = SkyDocEmbedInlineViewer; },
-      { name = SkyDocImageInlineViewer; },
+      { name = SkyDocEmbedInlineViewer;   },
+      { name = SkyDocImageInlineViewer;   },
+      { name = OGoDocPartViewer;          },
+      { name = OGoDocAccessViewer;        },
+      { name = OGoDocAttrsViewer;         },
+      { name = OGoDocContentsViewer;      },
+      { name = OGoDocLogsViewer;          },
+      { name = OGoDocPartViewer;          },
+      { name = OGoDocVersionsViewer;      },
     );
+
     WOComponents = (
       { name = SkyDocEmbedInlineViewer; },
       { name = SkyDocImageInlineViewer; },
+      { name = OGoDocAccessViewer;      },
+      { name = OGoDocAttrsViewer;       },
+      { name = OGoDocContentsViewer;    },
+      { name = OGoDocLogsViewer;        },
+      { name = OGoDocPartViewer;        },
+      { name = OGoDocVersionsViewer;    },
     );
+
+    OGoDocViewers = (
+      { name = OGoDocAccessViewer;      },
+      { name = OGoDocAttrsViewer;       },
+      { name = OGoDocContentsViewer;    },
+      { name = OGoDocLogsViewer;        },
+      { name = OGoDocPartViewer;        },
+      { name = OGoDocVersionsViewer;    },
+    );
+
     LSWCommands = (
       {
         verb      = "docview-inline";
