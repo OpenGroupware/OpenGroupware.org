@@ -538,6 +538,8 @@ nbuckets, nindices, narrays, idxsize);
   else {
     jumpTo = [[_ctx applicationURL] absoluteString];
     jumpTo = [[request adaptorPrefix] stringByAppendingString:jumpTo];
+    if (![jumpTo hasSuffix:@"/"])
+      jumpTo = [jumpTo stringByAppendingString:@"/"];
   }
   return jumpTo;
 }

@@ -1,6 +1,6 @@
 2004-09-07  Helge Hess  <helge.hess@skyrix.com>
 
-	* v5.0.89
+	* v5.1.89
 
 	* do not generate German templates as derived resources (not necessary
 	  anymore with the fixed OGoResourceManager)

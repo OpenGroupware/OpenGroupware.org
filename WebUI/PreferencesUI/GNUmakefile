@@ -30,7 +30,11 @@ PreferencesUI_COMPONENTS = 		\
 	OGoDefaultEditFrame.wo		\
 	OGoDefaultViewField.wo		\
 
--include OGo.make
+PreferencesUI_LANGUAGES = English
+
+PreferencesUI_RESOURCE_FILES += Defaults.plist Version
+PreferencesUI_INCLUDE_DIRS   += -IHeaders
+
 -include SKYRIX.make
 
 -include GNUmakefile.preamble

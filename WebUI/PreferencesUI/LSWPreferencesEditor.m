@@ -232,17 +232,17 @@ static NSArray  *UserDefKeys        = nil;
 
 /* accessors */
 
-- (void)setData:(id)_data { 
+- (void)setData:(id)_data { // TODO: probably unused now
   ASSIGN(self->data, _data);
 }
-- (id)data {
+- (id)data { // TODO: probably unused now
   return self->data;
 }
 
-- (void)setFilePath:(id)_path { 
+- (void)setFilePath:(id)_path {  // TODO: probably unused now
   ASSIGN(self->filePath, _path);
 }
-- (id)filePath {
+- (id)filePath { // TODO: probably unused now
   return self->filePath;
 }
  

@@ -75,16 +75,6 @@ CancelSubmit: WOHyperlink {
   class  = "button_narrow";
 }
 
-FileUploadLabel: WOString {
-  value = labels.fileUploadLabel;
-}
-
-FileUpload: WOFileUpload {
-  data     = data;
-  filePath = filePath;
-  size     = 40;
-}
-
 IsRootCond: WOConditional {
   condition = session.activeAccountIsRoot;
 }
@@ -159,18 +149,16 @@ IsTemplateUserCheckBox: WOCheckBox {
 }
 
 TeamPopUp: WOPopUpButton {
-  list            = session.locationTeams;
-  item            = item;
-  selection       = locationTeam;
-  singleSelection = YES;
-  string          = item.description;
-  nilString       = labels.noLocationLabel;
+  list      = session.locationTeams;
+  item      = item;
+  selection = locationTeam;
+  string    = item.description;
+  nilString = labels.noLocationLabel;
 }
 
 TemplateUserPopup: WOPopUpButton {
-  list            = templateUserNames;
-  selection       = templateUserId;
-  singleSelection = YES;
+  list      = templateUserNames;
+  selection = templateUserId;
 }
 
 TeamLabel: WOString {
