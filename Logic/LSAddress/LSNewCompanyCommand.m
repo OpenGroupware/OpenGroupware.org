@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "LSNewCompanyCommand.h"
 #include "common.h"
@@ -67,12 +66,12 @@ static NSString *autoNumberPrefix = @"OGo";
 }
 
 - (void)dealloc {
-  RELEASE(self->comment);
-  RELEASE(self->telephones);
-  RELEASE(self->_newAddrCmds);
-  RELEASE(self->_newTelephoneCmds);
-  RELEASE(self->pictureData);
-  RELEASE(self->pictureFilePath);
+  [self->comment           release];
+  [self->telephones        release];
+  [self->_newAddrCmds      release];
+  [self->_newTelephoneCmds release];
+  [self->pictureData       release];
+  [self->pictureFilePath   release];
   [super dealloc];
 }
 
