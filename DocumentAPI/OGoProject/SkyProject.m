@@ -501,7 +501,7 @@ static NSNull   *null  = nil;
 
   if (projectId != nil)
     [dict setObject:projectId forKey:@"projectId"];
-
+  
   [dict takeValue:[self name]      forKey:@"name"];
   [dict takeValue:[self startDate] forKey:@"startDate"];
   [dict takeValue:[self endDate]   forKey:@"endDate"];
@@ -548,7 +548,7 @@ static NSNull   *null  = nil;
       [all addObject:tmp];
     }
 
-    if ([all count])
+    if ([all count] > 0)
       [dict takeValue:all forKey:@"accounts"];
 
     e   = [self->removedAccounts objectEnumerator];
