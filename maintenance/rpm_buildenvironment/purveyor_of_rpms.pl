@@ -10,12 +10,14 @@ die "PLEASE MAKE SURE TO EDIT \$host_i_runon\n";
 # I'll also create a directory like \$ENV{'HOME'}/macros/\$host_i_runon
 # where I *expect* the rpmmacros to be present!
 # The purveyor will fail royally if it's not there.
+#my $host_i_runon = "fedora-core3";
 my $host_i_runon = "fedora-core2";
-#my $host_i_runon = "suse82";
-#my $host_i_runon = "suse91";
 #my $host_i_runon = "suse92";
-#my $host_i_runon = "mdk-10.0";
+#my $host_i_runon = "suse91";
+#my $host_i_runon = "suse82";
 #my $host_i_runon = "mdk-10.1";
+#my $host_i_runon = "mdk-10.0";
+#my $host_i_runon = "sles9";
 #my $host_i_runon = "slss8";
 
 my $time_we_started = `date +"%Y%m%d-%H%M%S"`;
