@@ -25,13 +25,13 @@
 #include "SxAppointmentFolder.h"
 #include "SxDavAptCreate.h"
 #include "SxDavAptChange.h"
-#include "SxRenderer.h"
-#include "SxRendererFactory.h"
+#include <ZSFrontend/SxRenderer.h>
+#include <ZSFrontend/SxRendererFactory.h>
 #include "common.h"
 #include <EOControl/EOKeyGlobalID.h>
-#include <Backend/Appointments/SxAppointmentRenderer.h>
-#include <Backend/SxContactManager.h>
-#include <Backend/SxAptManager.h>
+#include <ZSBackend/Appointments/SxAppointmentRenderer.h>
+#include <ZSBackend/SxContactManager.h>
+#include <ZSBackend/SxAptManager.h>
 
 // TODO: set SxNewObjectID in context for ZideLook
 

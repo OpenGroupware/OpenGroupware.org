@@ -21,8 +21,8 @@
 
 #include "SxAppointment.h"
 #include "common.h"
-#include <Backend/SxContactManager.h>
-#include <Backend/SxAptManager.h>
+#include <ZSBackend/SxContactManager.h>
+#include <ZSBackend/SxAptManager.h>
 
 /* clean up, looks messy */
 

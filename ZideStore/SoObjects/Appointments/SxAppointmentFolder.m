@@ -25,16 +25,16 @@
 #include "SxICalendar.h"
 #include "common.h"
 
-#include <Frontend/SxMapEnumerator.h>
-#include <Frontend/EOQualifier+Additions.h>
-#include <Frontend/NSObject+ExValues.h>
-#include <Backend/NSString+rtf.h>
-#include <Backend/SxAptManager.h>
-#include <Backend/SxContactManager.h>
-#include <Backend/SxBackendMaster.h>
+#include <ZSFrontend/SxMapEnumerator.h>
+#include <ZSFrontend/EOQualifier+Additions.h>
+#include <ZSFrontend/NSObject+ExValues.h>
+#include <ZSBackend/NSString+rtf.h>
+#include <ZSBackend/SxAptManager.h>
+#include <ZSBackend/SxContactManager.h>
+#include <ZSBackend/SxBackendMaster.h>
 
 // TODO: remove dependency
-#include <Backend/Appointments/SxAppointmentRenderer.h>
+#include <ZSBackend/Appointments/SxAppointmentRenderer.h>
 
 @interface NSObject(UsedPrivates) // TODO: fix that
 - (id)rendererWithFolder:(id)_folder inContext:(id)_ctx;

@@ -23,7 +23,7 @@
 #ifndef __Appointments_SxAppointmentFolder_H__
 #define __Appointments_SxAppointmentFolder_H__
 
-#include "SxFolder.h"
+#include <ZSFrontend/SxFolder.h>
 
 /*
   SxAppointmentFolder

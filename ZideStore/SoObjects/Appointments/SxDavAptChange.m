@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -24,7 +24,7 @@
 #include "SxAppointment.h"
 #include "common.h"
 
-#include <Backend/SxAptManager.h>
+#include <ZSBackend/SxAptManager.h>
 
 // TODO: title change does not work yet (duplicate dav-ids !)
 

@@ -7,7 +7,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 SUBPROJECTS = \
 	ZSBackend	\
 	ZSFrontend	\
-	SoProducts	\
+	SoObjects	\
 	PrefsUI		\
 
 # some products do not yet compile with Cocoa Foundation

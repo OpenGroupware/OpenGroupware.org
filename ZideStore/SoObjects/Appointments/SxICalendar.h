@@ -18,12 +18,11 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxICalendar.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __Appointments_SxICalendar_H__
 #define __Appointments_SxICalendar_H__
 
-#include "SxObject.h"
+#include <ZSFrontend/SxObject.h>
 
 /*
   SxICalendar

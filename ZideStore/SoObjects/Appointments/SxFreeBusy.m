@@ -18,13 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxFreeBusy.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxFreeBusy.h"
 #include "common.h"
-#include "NSObject+ExValues.h"
-#include <Backend/SxAptManager.h>
-#include <Backend/SxFreeBusyManager.h>
+#include <ZSFrontend/NSObject+ExValues.h>
+#include <ZSBackend/SxAptManager.h>
+#include <ZSBackend/SxFreeBusyManager.h>
 
 #include <NGExtensions/NSCalendarDate+misc.h>
 #include <EOControl/EOSortOrdering.h>
