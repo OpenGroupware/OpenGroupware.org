@@ -1,7 +1,7 @@
-opengroupware.org (1.0a.r99-1) experimental; urgency=low
+opengroupware.org (1.0a.8-1) experimental; urgency=low
 
   * Initial Release of converted sources. Upstream has done heavy
     restructuring of the sources, see also the SOPE changelog for details.
 
- -- Sebastian Ley <ley@debian.org>  Wed, 15 Sep 2004 18:35:50 +0200
+ -- Sebastian Ley <ley@debian.org>  Sat,  2 Oct 2004 18:17:07 +0200
 
