@@ -2,7 +2,7 @@ Source: opengroupware.org
 Section: web
 Priority: extra
 Maintainer: Sebastian Ley <ley@debian.org>
-Build-Depends: debhelper (>= 4.0.0), dpatch, gnustep-make-ogo, libfoundation-dev, libobjc-lf-dev, libsope-core-dev, libsope-appserver-dev, libsope-xml-dev, libsope-gdl1-dev, libsope-mime-dev, libsope-ldap-dev, libldap-dev, libsope-ical-dev, gobjc | objc-compiler, libpisock-dev
+Build-Depends: debhelper (>= 4.0.0), dpatch, gnustep-make-ogo, libfoundation-dev, libobjc-lf-dev, libsope-core-dev, libsope-appserver-dev, libsope-xml-dev, libsope-gdl1-dev, libsope-mime-dev, libsope-ldap-dev, libldap-dev, libsope-ical-dev, gobjc | objc-compiler, libpisock-dev, po-debconf
 Standards-Version: 3.6.1
 
 Package: opengroupware.org

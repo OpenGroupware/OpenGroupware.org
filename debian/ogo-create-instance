@@ -9,6 +9,7 @@
 # you want.
 
 # Default settings
+DEBCONF=no
 USER=ogo
 HOMEDIR=/var/lib/opengroupware.org
 WEBUI_VERSION=1.0a
@@ -32,6 +33,7 @@ WEBUI_LOCATION_MATCH=OpenGroupware
 ZIDESTORE_LOCATION_MATCH=zidestore
 XMLRPCD_LOCATION_MATCH=RPC2
 
+# Subroutines
 test_root () {
 	if [ ${UID} != "0" ]; then
 		return 1
@@ -66,11 +68,6 @@ EOF
 	if [ "${REPLY}" != "" ]; then
 		HOMEDIR=${REPLY}
 	fi
-
-	SKYFS_PATH=${HOMEDIR}/${SKYFS_PATH_EXT}
-	ATTACHMENT_PATH=${HOMEDIR}/${ATTACHMENT_PATH_EXT}
-	NEWS_IMAGES_PATH=${HOMEDIR}/${NEWS_IMAGES_PATH_EXT}
-	NEWS_IMAGES_URL=${NEWS_IMAGES_URL_BASE}-${USER}
 
 	cat << EOF
 
@@ -249,6 +246,11 @@ check_user_available () {
 }
 
 add_user () {
+	SKYFS_PATH=${HOMEDIR}/${SKYFS_PATH_EXT}
+	ATTACHMENT_PATH=${HOMEDIR}/${ATTACHMENT_PATH_EXT}
+	NEWS_IMAGES_PATH=${HOMEDIR}/${NEWS_IMAGES_PATH_EXT}
+	NEWS_IMAGES_URL=${NEWS_IMAGES_URL_BASE}-${USER}
+
 	echo -n "Adding user and group ${USER}... "
 	addgroup --system ${USER} &>/dev/null
 	adduser --system --shell /bin/bash --home ${HOMEDIR} \
@@ -386,6 +388,16 @@ EOF
 	return 0
 }
 
+generate_password () {
+	MATRIX="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+	LENGTH="8"
+	while [ "${n:=1}" -le "$LENGTH" ]; do
+		DB_PASSWD="$DB_PASSWD${MATRIX:$(($RANDOM%${#MATRIX})):1}"
+		let n+=1
+	done
+	return 0
+}
+
 reload_apache () {
 	echo -n "Reload apache... "
 	if [ -x /usr/sbin/invoke-rc.d ]; then
@@ -405,14 +417,22 @@ reload_apache () {
 
 ### Execution starts here ###
 
+while getopts "d" option ; do
+	case "$option" in
+		d) DEBCONF=yes; generate_password;;
+	esac
+done
+
 if ! test_root; then
 	echo "This script must be run as root. Exiting..."
 	exit 1
 fi
 
-if ! get_input; then
-	echo "Could not gather user input. Exiting..."
-	exit 1
+if [ "$DEBCONF" = "no" ]; then
+	if ! get_input; then
+		echo "Could not gather user input. Exiting..."
+		exit 1
+	fi
 fi
 
 if ! check_user_available; then
