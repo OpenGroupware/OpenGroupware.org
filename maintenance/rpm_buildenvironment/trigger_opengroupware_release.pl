@@ -184,6 +184,7 @@ foreach $orel (@ogo_releases) {
     system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-environment $build_opts -r $apttarget");
     system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-database-setup $build_opts -r $apttarget");
     system("$ENV{HOME}/purveyor_of_rpms.pl -p $mod_ngobjweb_to_use.spec $build_opts -c rpm/SOURCES/sope-mod_ngobjweb-trunk-latest.tar.gz -r $apttarget");
+    system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-gnustep_make $build_opts -c rpm/SOURCES/gnustep-make-1.10.0.tar.gz -r $apttarget");
     print "thus calling: /home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $apttarget\n";
     print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $apttarget\n";
     print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/packages/$host_i_runon/releases/$apttarget/\n";
