@@ -1,3 +1,7 @@
+2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: removed old derived resources rules (v5.1.41)
+
 2004-11-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyInlineAptDataSourceView.m: minor code cleanups (v5.1.40)

@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include ../common.make
 
@@ -35,13 +35,6 @@ OGoSchedulerViews_OBJC_FILES = \
 
 OGoSchedulerViews_RESOURCE_FILES += Defaults.plist Version
 OGoSchedulerViews_LOCALIZED_RESOURCE_FILES += OGoSchedulerViews.ccfg
-
-OGoSchedulerViews_LANGUAGES = \
-	English		\
-	English_blue 	\
-	English_orange
-
--include SKYRIX.make
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
