@@ -20,12 +20,14 @@ libPPSync_LIBRARIES_DEPEND_UPON += \
 $(OGO_NHSD_NAME)_TOOL_LIBS += \
 	-lGDLAccess  \
 	-lNGStreams -lNGExtensions -lEOControl \
-	-lPPSync -lpisock
+	-lPPSync -lpisock \
+	-lDOM -lSaxObjC
 
 $(OGO_PPLS_NAME)_TOOL_LIBS += \
 	-lGDLAccess  \
 	-lNGStreams -lNGExtensions -lEOControl \
-	-lPPSync -lpisock
+	-lPPSync -lpisock \
+	-lDOM -lSaxObjC
 
 $(OGO_PPLS_NAME)_LIB_DIRS += -L$(GNUSTEP_OBJ_DIR)
 $(OGO_NHSD_NAME)_LIB_DIRS += -L$(GNUSTEP_OBJ_DIR)
