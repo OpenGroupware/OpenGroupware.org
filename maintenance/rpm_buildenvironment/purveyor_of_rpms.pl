@@ -4,13 +4,12 @@
 use strict;
 use Getopt::Std;
 use File::Basename;
-die "PLEASE MAKE SURE TO EDIT \$host_i_runon\n";
+#die "PLEASE MAKE SURE TO EDIT \$host_i_runon\n";
 
 # must be the same as the dest dir on the \$remote_host
 # I'll also create a directory like \$ENV{'HOME'}/macros/\$host_i_runon
 # where I *expect* the rpmmacros to be present!
 # The purveyor will fail royally if it's not there.
-#my $host_i_runon = "fedora-core3";
 my $host_i_runon = "fedora-core2";
 #my $host_i_runon = "suse82";
 #my $host_i_runon = "suse91";
@@ -18,12 +17,11 @@ my $host_i_runon = "fedora-core2";
 #my $host_i_runon = "mdk-10.0";
 #my $host_i_runon = "mdk-10.1";
 #my $host_i_runon = "slss8";
-#my $host_i_runon = "sles9";
 
 my $time_we_started = `date +"%Y%m%d-%H%M%S"`;
 chomp $time_we_started;
-our ($opt_p,$opt_f,$opt_t,$opt_b,$opt_d,$opt_c,$opt_v,$opt_u);
-my ($package,$force_rebuild,$build_type,$bump_buildcount,$do_download,$release_tarballname,$verbose,$do_upload);
+our ($opt_p,$opt_f,$opt_t,$opt_b,$opt_d,$opt_c,$opt_v,$opt_u,$opt_s);
+my ($package,$force_rebuild,$build_type,$bump_buildcount,$do_download,$release_tarballname,$verbose,$do_upload,$use_specfile);
 my $hpath = "$ENV{'HOME'}";
 my $logs_dir = "$ENV{'HOME'}/logs";
 my $sources_dir = "$ENV{'HOME'}/rpm/SOURCES";
@@ -48,7 +46,7 @@ my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse
 my $release_codename;
 my $remote_release_dirname;
 
-die "Please make sure that everything is in place!\n";
+#die "Please make sure that everything is in place!\n";
 prepare_build_env();
 get_commandline_options();
 my $logerr = "$logs_dir/$package-$time_we_started.err";
@@ -112,7 +110,8 @@ sub build_rpm {
   unless (-f "$specs_dir/$specfile") {
     print "[RPMBUILD]          - $package didn't found $specfile in $specs_dir\n" and exit 1 if ($verbose eq "yes");
   }
-  system("/usr/bin/rpmbuild -bb $specs_dir/$specfile 1>>$logout 2>>$logerr");
+  system("/usr/bin/rpmbuild -bb $specs_dir/$specfile 1>>$logout 2>>$logerr") if ($build_type eq "trunk");
+  system("/usr/bin/rpmbuild -bb $ENV{HOME}/$use_specfile 1>>$logout 2>>$logerr") if ($build_type eq "release");
   open(OUTLOG, "$logout");
   @outlog = <OUTLOG>;
   close(OUTLOG);
@@ -439,8 +438,7 @@ sub collect_patchinfo {
       $new_version = $1;
       $release_codename = $2;
       # %version cannot contain dashes... rpm will complain if it does
-      $remote_release_dirname = "$new_version-$release_codename";
-      print "DEBUGGGGGGGGGGGGGGGGGGG $remote_release_dirname\n";
+      $remote_release_dirname = "sope-$new_version-$release_codename";
     }
   }
   ###########################################################################
@@ -462,7 +460,7 @@ sub collect_patchinfo {
       $new_version = $1;
       $release_codename = $2;
       # %version cannot contain dashes... rpm will complain if it does
-      $remote_release_dirname = "$new_version-$release_codename";
+      $remote_release_dirname = "opengroupware-$new_version-$release_codename";
     }
   }
   ###########################################################################
@@ -629,7 +627,7 @@ sub get_latest_sources {
 }
 
 sub get_commandline_options {
-  getopt('pftbdcvu');
+  getopt('pftbdcvus');
   #self explaining...
   if (!$opt_p) {
     print "No package given!\n";
@@ -704,6 +702,19 @@ sub get_commandline_options {
   } else {
     $do_upload = "yes"
   }
+  #explicitly use the named specfile instead of the one
+  #we keep in rpm/SPECS/
+  #this is required to build specific releases
+  #trigger_sope_releases.pl uses this.
+  if (!$opt_s) {
+    #this is the default location...
+    #later eradicated in trunk builds
+    $use_specfile = "$specs_dir/$package.spec";
+  } else {
+    chomp $opt_s;
+    #should be a relative path to the specfile
+    $use_specfile = $opt_s;
+  }
   #sanitize... weird option combinations
   if (($build_type eq "release") and ($release_tarballname eq "none") and (! grep /^$package$/, @package_wo_source)) {
     print "Check your commandline - no '-c <tarballname>' given for release build!\n";
@@ -722,6 +733,7 @@ sub get_commandline_options {
     print "[COMMANDLINE]       - verbose <-v $verbose>\n";
     print "[COMMANDLINE]       - flavour we build upon $flavour_we_build_upon\n";
     print "[COMMANDLINE]       - detected distribution $distrib_define\n";
+    print "[COMMANDLINE]       - using specfile $use_specfile\n";
   }
 }
 
