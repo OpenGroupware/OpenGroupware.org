@@ -530,6 +530,12 @@ cp %{_specdir}/initscript_templates/suse_opengroupware ${INITSCRIPTS_TMP_DIR_OGO
 cp %{_specdir}/initscript_templates/suse_zidestore ${INITSCRIPTS_TMP_DIR_ZIDE}/
 
 # ****************************** post *********************************
+%post meta
+if [ $1 = 1 ]; then
+  #must rework dependencies
+  /sbin/ldconfig
+fi
+
 %post pda
 if [ $1 = 1 ]; then
   NHSD_INIT_VERSION="ogo-nhsd-1.0a"
