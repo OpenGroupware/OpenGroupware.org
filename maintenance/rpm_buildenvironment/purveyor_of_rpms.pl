@@ -4,7 +4,7 @@
 use strict;
 use Getopt::Std;
 use File::Basename;
-#die "PLEASE MAKE SURE TO EDIT \$host_i_runon\n";
+die "PLEASE MAKE SURE TO EDIT \$host_i_runon\n";
 
 # must be the same as the dest dir on the \$remote_host
 # I'll also create a directory like \$ENV{'HOME'}/macros/\$host_i_runon
@@ -45,8 +45,9 @@ my @package_wo_source = qw( ogo-gnustep_make ogo-environment );
 my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 ogo-environment opengroupware-pilot-link opengroupware-nhsc );
 my $release_codename;
 my $remote_release_dirname;
+my $libversion;
 
-#die "Please make sure that everything is in place!\n";
+die "Please make sure that everything is in place!\n";
 prepare_build_env();
 get_commandline_options();
 my $logerr = "$logs_dir/$package-$time_we_started.err";
@@ -183,6 +184,7 @@ sub pre_patch_rpmmacros {
       $line = "\%sope_release r$new_svnrev" if (($line =~ m/^\%sope_release/) and ($build_type eq "release"));
       $line = "\%sope_buildcount $new_buildcount" if ($line =~ m/^\%sope_buildcount/);
       $line = "\%sope_source $release_tarballname" if (($line =~ m/^\%sope_source/) and ($build_type eq "release"));
+      $line = "\%sope_libversion $libversion" if ($line =~ m/^\%sope_libversion/);
     }
     #opengroupware...
     if ($package eq "opengroupware") {
@@ -426,6 +428,7 @@ sub collect_patchinfo {
     chomp $new_minor if (defined $new_minor);
     chomp $new_svnrev if (defined $new_svnrev);
     $new_version = "$new_major.$new_minor";
+    $libversion = "$new_major.$new_minor";
     #release has more digits in the version than trunk...
     if ($build_type eq "release") {
       # \$release_tarballname is an argv -> <-c release_tarballname>
