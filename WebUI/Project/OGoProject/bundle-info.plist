@@ -38,7 +38,7 @@
       { name = SkyP4DownloadLink;              },
       { name = SkyP4DocJournal;                },
       { name = SkyP4DocumentDownloadLogList;   },
-      { name = SkyP4DocumentRequestHandler.m;  },
+      { name = SkyP4DocumentRequestHandler;    },
       { name = NGUnixTool;                     },
       { name = OGoDocumentImport;              },
       { name = OGoProjectQuicklist;            },

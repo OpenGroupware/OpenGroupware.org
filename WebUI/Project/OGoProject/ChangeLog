@@ -1,5 +1,7 @@
 2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
 
+	* bundle-info.plist: fixed a typo (v5.1.64)
+
 	* minor code cleanups (v5.1.63)
 
 2004-12-31  Helge Hess  <helge.hess@opengroupware.org>

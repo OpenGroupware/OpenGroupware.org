@@ -59,7 +59,7 @@
   [[WOApplication application]
                   registerRequestHandler:rh
                   forKey:@"g"];
-  [rh release];
+  [rh release]; rh = nil;
 }
 
 @end /* SkyProject4Module */
