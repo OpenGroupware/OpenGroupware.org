@@ -1,3 +1,9 @@
+2004-09-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* English|German.lproj: copied OGoWebMail.strings to
+	  OGoMailEditor.strings to ensure labels in the new OGoMailEditor
+	  bundle. Note that this will contain superflous strings
+
 2004-08-16 Frank Reppin <frank@opengroupware.org>
 
 	* German.lproj/PreferencesUI.strings: 'Jobs' is 'Aufgaben' in
