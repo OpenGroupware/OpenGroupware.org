@@ -6,7 +6,7 @@
     
     classes = (
       { name = NSObject;                           },
-      { name = OGoModel; exact-version = 1;        },
+      { name = OGoModel; exact-version = 0;        },
       { name = EOGenericRecord; exact-version = 2; }
     );
   };

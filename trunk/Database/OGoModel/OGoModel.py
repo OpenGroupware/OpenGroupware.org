@@ -2545,6 +2545,13 @@ Date = {
       valueType:  'i',
       flags:      [ lock, property, allowsNull, ],
     },
+    "creatorId": {
+      column:     "creator_id",
+      coltype:    't_id',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ lock, property, allowsNull, ],
+    },
     "accessTeamId": {
       column:     "access_team_id",
       coltype:    't_id',
@@ -2595,6 +2602,13 @@ Date = {
       width:      100,
       flags:      [ property, allowsNull, ],
     },
+    "rdvType": {
+      column:     "rdv_type",
+      coltype:    't_smallstring',
+      valueClass: 'NSString',
+      width:      100,
+      flags:      [ property, allowsNull, ],
+    },
     "location": {
       column:     "location",
       coltype:    't_string',
@@ -2618,6 +2632,13 @@ Date = {
     },
     "writeAccessList": {
       column:     "write_access_list",
+      coltype:    't_string',
+      valueClass: 'NSString',
+      width:      255,
+      flags:      [ property, allowsNull, ],
+    },
+    "readAccessList": {   
+      column:     "read_access_list",
       coltype:    't_string',
       valueClass: 'NSString',
       width:      255,
