@@ -1,3 +1,11 @@
+2004-08-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.92
+
+	* moved mail editor to separate bundle OGoMailEditor
+
+	* moved header files out of Headers into main directory
+
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed some MacOSX warnings (v5.1.91)
@@ -366,8 +374,8 @@ Tue Nov 11 14:06:00 2003  Jan Reichmann  <jr@skyrix.com>
 
 	* v5.0.37
 	
-	* LSWImapMailFilterEditor, SkyVacationEditor: do not leave page if sieve 
-	   server login failed
+	* LSWImapMailFilterEditor, SkyVacationEditor: do not leave page if 
+	  sieve server login failed
 
 	* LSWImapMailFilterManager: check task termination status whether 
 	  login failed or host not found
@@ -416,8 +424,8 @@ Wed Nov  5 17:41:28 2003  Jan Reichmann  <jr@skyrix.com>
 
 Wed Nov  5 14:06:48 2003  Jan Reichmann  <jr@skyrix.com>
 
-	* LSWImapMailEditor.m: fixed type (evoz => epoz), fixed signature 
-	  handling if epoz is used (v5.0.30)
+	* LSWImapMailEditor.m: fixed type (evoz => Epoz), fixed signature 
+	  handling if Epoz is used (v5.0.30)
 
 Tue Nov  4 17:39:45 2003  Jan Reichmann  <jr@skyrix.com>
 
@@ -465,7 +473,7 @@ Wed Oct 29 18:24:28 2003  Jan Reichmann  <jr@skyrix.com>
 
 Wed Oct 29 13:14:49 2003  Jan Reichmann  <jr@skyrix.com>
 
-	* LSWImapMailEditor, LSWMailPreferences: add evoz support 
+	* LSWImapMailEditor, LSWMailPreferences: add Epoz support 
 	  in editor (v4.0.20)
 
 2003-10-28  Thomas Schild  <ts@skyrix.com>

@@ -1,4 +1,3 @@
-// $Id$
 {
   bundleHandler = OGoWebMailModule;
 
@@ -27,7 +26,6 @@
   provides = {
     classes = (
       { name = OGoWebMailModule;        },
-      { name = LSWImapMailEditor;       },
       { name = LSWImapMails;            },
       { name = LSWImapMailFolderTree;   },
       { name = LSWImapMailViewer;       },
@@ -78,7 +76,6 @@
     );
     
     WOComponents = (
-      { name = LSWImapMailEditor;       },
       { name = LSWImapMails;            },
       { name = LSWImapMailFolderTree;   },
       { name = LSWImapMailViewer;       },
@@ -106,18 +103,6 @@
     LSWCommands = (
       { verb = view;      type = "objc/NGImap4Message";
         component = LSWImapMailViewer; },
-      { verb = edit;      type = "objc/NGImap4Message";
-        component = LSWImapMailEditor; },
-      { verb = new;        type = "objc/NGImap4Message";
-        component = LSWImapMailEditor; },
-      { verb = reply;     type = "objc/NGImap4Message";
-        component = LSWImapMailEditor; },
-      { verb = reply-all; type = "objc/NGImap4Message";
-        component = LSWImapMailEditor; },
-      { verb = forward;   type = "objc/NGImap4Message";
-        component = LSWImapMailEditor; },
-      { verb = edit-as-new;   type = "objc/NGImap4Message";
-        component = LSWImapMailEditor; },
 
       { verb = new;    type = "objc/imap-filter";
         component = LSWImapMailFilterEditor;},

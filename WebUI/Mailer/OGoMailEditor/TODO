@@ -1,0 +1,11 @@
+TODO Notes for OGoMailEditor
+============================
+
+- LSWImapMailEditor
+  - this needs SERIOUS cleanup
+    - has *3200* lines, almost 100KB in size
+      - update: we are already down to 2700 lines :-)
+    - methods with hundreds of lines
+    - loads of duplicate code
+  - should probably be refactored to have a "mail construction object" which
+    deals with all the attachments etc

@@ -18,11 +18,10 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: LSWImapMails.m 1 2004-08-20 11:17:52Z znek $
 
 #include "LSWImapMails.h"
 #include "LSWImapMailMove.h"
-#include "LSWImapMailEditor.h"
 #include "LSWImapMailViewer.h"
 #include "LSWImapMailFolderMove.h"
 #include "LSWImapMailFilterManager.h"
@@ -811,12 +810,11 @@ static int  DisableFilter = -1;
 
 - (id)newMail {
   NGMimeType  *mt;
-  id          ct;
-
+  WOComponent *ct;
+  
   mt = [NGMimeType mimeType:@"objc" subType:@"NGImap4Message"];
-
   ct = [[self session] instantiateComponentForCommand:@"new" type:mt];
-  [ct setImapContext:[self imapContext]];
+  [ct takeValue:[self imapContext] forKey:@"imapContext"];
   return ct;
 }
 

@@ -1,0 +1,339 @@
+// $Id: LSWImapMailEditor.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: OGoWindowFrame {
+  title      = labels.MailEditorTitle;
+  onClose    = cancel;
+  focusField = "searchString";
+  focusForm  = "uploadform";
+}
+
+UploadForm: WOForm {
+  name    = "uploadform";
+  ENCTYPE = "multipart/form-data";  
+}
+
+AddressRep: WORepetition {
+  list  = addresses;
+  item  = addressEntry;
+  index = count; // TODO: this is confusing?!
+}
+
+AddressKeysPopup: WOPopUpButton {
+  list      = addressKeys;
+  selection = addressEntry.header;
+  singleSelection = YES;
+}
+
+RecipientsPopup: WOPopUpButton {
+  list      = addressEntry.emails;
+  string    = addressEntryPopupItem.label;
+  selection = addressEntry.email;
+  item      = addressEntryPopupItem;
+  singleSelection = YES;
+}
+
+SearchLabel: WOString {
+  value = labels.search;
+}
+
+MailText: SkyTextEditor {
+  text       = mailText;
+  name       = "mailText";
+  wrap       = "physical";
+  rows       = session.userDefaults.mail_editor_text_rows;
+  columns    = session.userDefaults.mail_editor_text_columns;
+  enableEpoz = useEpoz;
+}
+
+Subject: WOTextField {
+  value = mailSubject;
+  size  = textFieldSize;
+  name  = "mailSubject";
+}
+
+ValueCell: WOGenericContainer { 
+  elementName = "td";
+  align       = "left";
+  bgcolor     = config.colors_valueCell;
+  width       = "100%"
+}
+
+ValueCellMailText: WOGenericContainer { 
+        elementName = "td";
+        ALIGN       = "left";
+        BGCOLOR     = config.colors_valueCell;
+        WIDTH       = "100%";
+}
+
+ValueCellAttachment: WOGenericContainer { 
+        elementName = "TD";
+        ALIGN       = "middle";
+        BGCOLOR     = config.colors_valueCell;
+        WIDTH       = "100%";
+}
+
+AttributeCell: SkyAttributeCell {}
+
+SubjectLabel: WOString { value = labels.subject; }
+MailLabel:    WOString { value = labels.mail;    }
+OptionsLabel: WOString { value = labels.mail_editor_options; }
+
+Cancel: WOHyperlink {
+  action = cancel;
+  string = labels.sendNotLabel;
+  class  = "button_narrow";
+}
+
+CancelAppointmentNotification: WOHyperlink {
+  action = cancelAndDeleteAppointment;
+  string = labels.sendNotLabel;
+  class  = "button_narrow";
+}
+
+SearchTextField: WOTextField {
+  value = searchString;
+  size  = textFieldSize;
+  name  = "searchString";
+}
+
+AddSubmit: WOSubmitButton {
+  action   = addAddress;
+  value    = labels.mail_editor_addrecipient;
+  class    = "button_narrow";
+}
+
+UploadRep: WORepetition {
+  list  = uploadArray;
+  item  = uploadItem;
+  index = uploadArrayIdx;
+}
+
+UploadField: WOFileUpload {
+  data     = uploadData;
+  filePath = uploadFileName;
+}
+
+UploadConfirm: WOSubmitButton {
+  action = confirmUpload;
+  value  = labels.upload;
+  class  = "button_wide";
+}
+
+UploadString: WOString {
+  value = labels.upload;
+}
+
+MailTextString: WOString {
+  value = labels.mailText;
+}
+
+AttachedObjectRepetition: WORepetition {
+  list = attachments;
+  item = attachment;
+}
+
+AttachedObjectViewer: WOComponentReference {
+  component      = currentAttachedObjectComponent;
+  isInForm       = YES;
+  attachData     = attachment.attachData;
+  objectData     = attachment.objectData;
+  objectDataType = attachment.objectDataType;
+  objectDataContentDisposition = attachment.objectDataContentDisposition;
+}
+
+AttachmentRepetition: WORepetition {
+  list = mimeParts;
+  item = attachment;
+}
+ 
+AttachmentViewer: WOComponentReference {
+  component = currentAttachmentComponent;
+  isInForm  = YES;
+}
+
+MimePartViewer: LSWMultipartMixedBodyViewer {
+  body         = attachmentParts;
+  nestingDepth = nestingDepth;
+}
+
+PlainTextLabel:     WOString { value = labels.plainText;             }
+ReturnReceiptLabel: WOString { value = labels.returnReceipt;         }
+ExtSearchLabel:     WOString { value = labels.mail_editor_extsearch; }
+
+PlainTextCheckbox: WOCheckBox {
+  name    = "sendPlainText";
+  checked = sendPlainText;
+}
+ReturnReceiptCheckbox: WOCheckBox {
+  name    = "returnReceipt";
+  checked = returnReceipt;
+}
+ExtSearchCheckbox: WOCheckBox {
+  name    = "extsearch";
+  checked = isExtendedSearch;
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+RemoveAttachment: WOHyperlink {
+  action = removeAttachment;
+  string = labels.remove;
+  class  = "button_narrow";
+}
+
+BindingRep: WORepetition {
+  list = bindingKeys;
+  item = binding;
+}
+
+BindingName: WOString {
+  value = binding;
+}
+
+BindingLabel:       WOString { value = bindingLabel; }
+AttachObjectLabel: WOString { value = labels.attachObject; }
+
+AttachObjectCheckBox: WOCheckBox {
+  checked = attachment.sendObject;
+}
+
+SendMail: WOSubmitButton {
+  action   = send;
+  value    = labels.send;
+  class    = "button_narrow";
+}
+
+SaveMail: WOSubmitButton {
+  action   = save;
+  value    = labels.saveButtonLabel;
+  class    = "button_narrow";
+}
+
+IsJavaScriptEnabled: WOConditional {
+  condition = session.isJavaScriptEnabled;
+}
+IsJavaScriptDisabled: WOConditional {
+  condition = session.isJavaScriptEnabled;
+  negate    = YES;
+}
+HasImapContext: WOConditional {
+  condition = hasImapContext;
+}
+HasNoImapContext: WOConditional {
+  condition = hasImapContext;
+  negate    = YES;
+}
+IsAppointmentNotification: WOConditional {
+  condition = isAppointmentNotification;
+}
+IsNotAppointmentNotification: WOConditional {
+  condition = isAppointmentNotification;
+  negate    = YES;
+}
+
+WarningModeCond: WOConditional {
+  condition = isInWarningMode;
+}
+WarningModeCondElse: WOConditional {
+  condition = isInWarningMode;
+  negate    = YES;
+}
+
+Warning: LSWWarningPanel {
+  onOk     = "send";
+  onCancel = "nothing";
+  phrase   = "noCopyToSentFolder";
+}
+
+CopyMailToSent: WOConditional {
+  condition = session.userDefaults.SkyNoMailCopyToSent;
+  negate    = YES;
+}
+
+LoginName: WOHiddenField {
+  value = session.activeAccount.login;
+  name  = "loginName";
+}
+PageName: WOHiddenField {
+  value = name;
+  name  = "restorePageName";
+}
+
+PageLabel: WOHiddenField {
+  value = labels.RestoreImapMailEditor;
+  name  = "restorePageLabel";
+}
+
+PrevToSelections: WOHiddenField {
+  value = prevToSelections;
+  name  = "prevToSelections";
+}
+PrevCcSelections: WOHiddenField {
+  value = prevCcSelections;
+  name  = "prevCcSelections";
+}
+PrevBccSelections: WOHiddenField {
+  value = prevBccSelections;
+  name  = "prevBccSelections";
+}
+
+NoCopyMailToSent: WOConditional {
+  condition = session.userDefaults.SkyNoMailCopyToSent.boolValue;
+}
+
+Login: LSWImapMailLogin {
+  password         = password;
+  login            = login;
+  host             = host;
+  savePassword     = savePassword;
+  isInEditEditPage = YES;
+  hideSendField    = hideSendField;
+}
+
+WarningPhrase: WOString {
+  value = warningPhrase;  
+}
+
+IsFirstUploadField: WOConditional {
+  condition = isFirstUploadField;
+}
+
+HasOnlyOneField: WOConditional {
+  condition = uploadArray.count;
+  value     = 1;
+}
+
+HasMoreThanOneField: WOConditional {
+  condition = uploadArray.count;
+  value     = 1;
+  negate    = YES;
+}
+
+UploadsString: WOString {
+  value = labels.uploads;
+}
+
+IsLastUploadField: WOConditional {
+  condition = isLastUploadField;
+}
+
+IsFromPopupEnabled: WOConditional {
+  condition = session.userDefaults.mail_enableFromPopup;
+}
+
+FromLabel: WOString {
+  value = labels.from;
+}
+
+FromPopup: WOPopUpButton {
+  list            = fromList;
+  singleSelection = YES;
+  selection       = selectedFrom;
+}
+
+PlainTextCheckboxEnabled: WOConditional {
+  condition = isPlainTextCheckboxEnabled;
+}

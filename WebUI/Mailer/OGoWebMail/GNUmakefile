@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 
@@ -9,7 +9,6 @@ OGoWebMail_PRINCIPAL_CLASS = OGoWebMailModule
 OGoWebMail_OBJC_FILES = \
         OGoWebMailModule.m		\
 	LSWImapMailFilterManager.m	\
-        LSWImapMailEditor.m		\
         LSWImapMails.m			\
         LSWImapMailFolderTree.m		\
 	NGImap4+KVC.m		 	\
@@ -44,20 +43,11 @@ OGoWebMail_OBJC_FILES = \
 	SkyImapMailActions.m		\
 	\
 	LSWImapBuildFolderDict.m	\
-	NSString+MailEditor.m		\
-	LSWImapMailEditor+Activation.m	\
-	NGMimeType+Mailer.m		\
 	\
-	OGoMailAddressSearch.m		\
-	OGoComplexMailAddressSearch.m	\
-	OGoSimpleMailAddressSearch.m	\
-	OGoMailAddressRecordResult.m	\
-	OGoMailAddressRecord.m		\
 	OGoMailFilterManager.m		\
 
 OGoWebMail_COMPONENTS = \
         LSWImapMails.wo			\
-        LSWImapMailEditor.wo		\
         LSWImapMailFolderTree.wo	\
         LSWImapMailViewer.wo		\
         LSWImapMailFolderEditor.wo	\
@@ -82,7 +72,7 @@ OGoWebMail_COMPONENTS = \
 
 OGoWebMail_LANGUAGES = English German
 
-OGoWebMail_LOCALIZED_RESOURCE_FILES = OGoWebMail.ccfg Version
+OGoWebMail_LOCALIZED_RESOURCE_FILES = OGoWebMail.ccfg
 
 OGoWebMail_RESOURCE_FILES += Defaults.plist Version
 
@@ -98,10 +88,3 @@ include GNUmakefile.components
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
-
-before-all :: \
-	$(OGoWebMail_DERIVED_RESOURCES)	\
-	INSTALL_COMPONENTS		\
-
-clean ::
-	rm -f $(OGoWebMail_DERIVED_RESOURCES)

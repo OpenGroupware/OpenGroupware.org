@@ -48,15 +48,14 @@
 @end
 
 #include "SkyImapContextHandler.h"
-#include "LSWImapMailEditor.h"
 #include "LSWImapMails.h"
 #include "common.h"
 #include <NGExtensions/NSString+Ext.h>
 
-@interface LSWImapMailEditor(AddressFormation)
-+ (NSString *)_eAddressForPerson:(id)_person;
-+ (NSString *)_formatEmail:(NSString *)_email forPerson:(id)_person;
-@end /* LSWImapMailEditor(AddressFormation) */
+@interface NSObject(MailFormattingManager)
+- (NSString *)_eAddressForPerson:(id)_person;
+- (NSString *)_formatEmail:(NSString *)_email forPerson:(id)_person;
+@end
 
 @implementation LSWMailPreferences
 
@@ -368,18 +367,23 @@ static NSArray *NumberOfUploadFieldsValues = nil;
   return NumberOfUploadFieldsValues;
 }
 
+- (id)mailFormattingManager {
+  // TODO: weird ...
+  return NSClassFromString(@"LSWImapMailEditor");
+}
+
 - (NSString *)accountEmail {
-  id             ac;
-  NSString       *str;
+  id       ac;
+  NSString *str;
 
   ac = (self->account != nil)
      ? self->account : [[self session] activeAccount];
-
-  if ((str = [LSWImapMailEditor _eAddressForPerson:ac]) == nil)
+  
+  if ((str = [[self mailFormattingManager] _eAddressForPerson:ac]) == nil)
     str = [ac valueForKey:@"login"];
   
-  str = [LSWImapMailEditor _formatEmail:str forPerson:ac];
-
+  str = [[self mailFormattingManager] _formatEmail:str forPerson:ac];
+  
   return (str == nil) ? (NSString *)@"<empty>" : str;
 }
 
