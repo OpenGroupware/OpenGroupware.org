@@ -668,7 +668,7 @@ static Class      StrClass        = nil;
 
 - (void)wrapMailText {
   NSUserDefaults *ud;
-  NSString *tmp;
+  NSString *contentStr;
   
   if (![self->mailText isNotNull]) {
     ASSIGN(self->mailText, @"");
@@ -679,10 +679,11 @@ static Class      StrClass        = nil;
   if (![self shouldWrapOutgoingMails])
     return;
   
-  tmp = self->mailText;
-  tmp = [[tmp mailWrappedStringWithLength:[self outgoingMailWrappingLength]
-              wrapLongLines:[self shouldWrapLongLines]] copy];
-  ASSIGNCOPY(self->mailText, tmp);
+  contentStr = [self->mailText 
+		    mailWrappedStringWithLength:
+		      [self outgoingMailWrappingLength]
+		    wrapLongLines:[self shouldWrapLongLines]];
+  ASSIGNCOPY(self->mailText, contentStr);
 }
 
 /* building and sending */
@@ -715,6 +716,7 @@ static Class      StrClass        = nil;
 }
 - (void)_addDefaultReplyToIfMissingToMap:(NGMutableHashMap *)map {
   NSString *replyTo;
+  
   if ([[map objectsForKey:@"reply-to"] count] > 0)
     return; /* has reply-to set */
   
@@ -761,16 +763,17 @@ static Class      StrClass        = nil;
   emailAddresses:(NSMutableArray *)emailAddrs
   prohibitedAddresses:(NSMutableArray *)prohibited
   emailAddressHeaderMap:(NGMutableHashMap *)map
+  fromAddressArray:(NSArray *)_addresses
 {
   unsigned i, cnt;
 
-  cnt = [self->addresses count];
+  cnt = [_addresses count];
   for (i = 0; i < cnt; i++) {
     NSDictionary *entry;
     NSString     *addr;
     NSString     *header;
     
-    entry = [self->addresses objectAtIndex:i];
+    entry = [_addresses objectAtIndex:i];
     addr  = [(NSDictionary *)[entry objectForKey:@"email"] 
                                     objectForKey:@"email"];
     if ([addr length] == 0)
@@ -787,12 +790,12 @@ static Class      StrClass        = nil;
       [prohibited addObject:addr];
       continue;
     }
-
+    
     header = [entry objectForKey:@"header"];
-    [map addObject:addr forKey:header];
+    [map addObject:addr forKey:header]; /* add to envelope */
     if (![header isEqualToString:@"from"] &&
 	![header isEqualToString:@"reply-to"])
-      [emailAddrs addObject:addr];
+      [emailAddrs addObject:addr]; /* add to actual recipients */
   }
 }
 
@@ -873,22 +876,237 @@ static Class      StrClass        = nil;
   return message;
 }
 
-#define RELEASE_MESSAGE(__error__string__, __messageFileName__)     \
-  if (__error__string__)                                 \
-    [self setErrorString:__error__string__];             \
-  message = nil;                \
-  if (__messageFileName__) {				 \
-    [[NSFileManager defaultManager]                      \
-                    removeFileAtPath:__messageFileName__ \
-                    handler:nil]; \
+- (void)_purgeMessageFile:(NSString *)_path andSetError:(NSString *)_error {
+  if ([_error isNotNull])
+    [self setErrorString:_error];
+  if ([_path isNotNull])
+    [[NSFileManager defaultManager] removeFileAtPath:_path handler:nil];
+}
+
+- (void)_handleDeliverException:(NSException *)_exc
+  path:(NSString *)messageFileName
+{
+  NSString *reason;
+
+  reason = [_exc reason];
+  if ([self _isMessageToBigDeliverException:_exc] ||
+      [self _isMissingSendmailDeliverException:_exc]) {
+    NSArray  *a;
+    NSString *errorStr;
+      
+    a = [reason componentsSeparatedByString:@" "];
+    if ([a count] != 2) {
+      if (LSWMailLogEnabled) {
+	[self logWithFormat:@"%s:%d: Unexpected error string %@",
+	      __PRETTY_FUNCTION__, __LINE__, reason];
+      }
+      [self _purgeMessageFile:messageFileName andSetError:reason];
+      return;
+    }
+    errorStr = [StrClass stringWithFormat:
+			   [[self labels] valueForKey:[a objectAtIndex:0]],
+			 [a objectAtIndex:1]];
+    [self _purgeMessageFile:messageFileName andSetError:errorStr];
   }
+  else
+    [self _purgeMessageFile:messageFileName andSetError:reason];
+}
+
+- (BOOL)_sendMessage:(NGMimeMessage *)message path:(NSString *)messageFileName
+  to:(NSArray *)emailAddrs
+{
+  NSException *result;
+
+  if ([emailAddrs count] == 0)
+    return YES;
+
+  result = [self _deliverMailTo:emailAddrs messageFilePath:messageFileName];
+  if ([result isKindOfClass:[NSException class]]) {
+    message = nil;
+    [self _handleDeliverException:result path:messageFileName];
+    return NO;
+  }
+  if (![self commit]) {
+    [self rollback];
+    [self _purgeMessageFile:messageFileName andSetError:nil];
+    return NO;
+  }
+  return YES;
+}
+- (BOOL)_sendMessage:(NGMimeMessage *)message path:(NSString *)messageFileName
+  to:(NSArray *)emailAddrs mailingLists:(NSArray *)mailingLists
+{
+  /* sends mail to email addrs, mailing lists and copies the message to Sent */
+  
+  if (![self _sendMessage:message path:messageFileName to:emailAddrs])
+    return NO;
+  
+  if ([mailingLists count] > 0) {
+    // TODO: explain this code
+    // TODO: do we really need the emailAddrs here?
+    [self _deliverMailTo:emailAddrs messageFilePath:messageFileName
+	  mailingLists:[self _collectMailingLists:mailingLists]];
+  }
+  if (![self sendMessageToSent:messageFileName]) {
+    NSException *exc;
+    NSString    *wp, *reason;
+    id          l;
+
+    exc = [[self imapContext] lastException];
+    l   = [self labels];
+    wp  = [l valueForKey:@"copyToSendOrdnerFailed"];
+        
+    if ((reason = [exc reason])) {
+      reason = [l valueForKey:reason];
+    }
+    wp = [StrClass stringWithFormat:@"%@: '%@'.", wp, reason];
+    [self _purgeMessageFile:messageFileName andSetError:wp];
+    return NO;
+  }
+  
+  return YES;
+}
+
+- (NGMimeBodyPart *)newBodyPartForAttachmentObject:(id)obj {
+  /* 
+     Create a body part object for an attachment object as stored in the
+     self->attachments array.
+     
+     Note: returns a _retained_ body part object!
+  */
+  NGMimeBodyPart   *bp;
+  NGMutableHashMap *h;
+  
+  if (![[obj objectForKey:@"attachData"] boolValue])
+    return nil;
+
+  h = [[NGMutableHashMap alloc] initWithCapacity:4];
+
+  [h setObject:[obj valueForKey:@"objectDataType"]
+     forKey:@"content-type"];
+  [h setObject:[obj valueForKey:@"objectDataContentDisposition"]
+     forKey:@"content-disposition"];
+    
+  bp = [[NGMimeBodyPart alloc] initWithHeader:h];
+  
+  if ([(NGMimeType *)[obj valueForKey:@"objectDataType"] isTextType]) {
+    // TODO: is this really necessary?
+    NSString *s;
+    
+    s = [[StrClass alloc]
+	    initWithData:[obj valueForKey:@"objectData"]
+	    encoding:[StrClass defaultCStringEncoding]];
+    [bp setBody:s];
+    [s release]; s = nil;
+  }
+  else
+    [bp setBody:[obj valueForKey:@"objectData"]];
+  [h release];
+  return bp;
+}
+
+- (void)_checkAttachmentsToSend:(NSMutableArray *)atts {
+  /*
+    Adds attachment objects to 'atts' array.
+    
+    Walks over 'self->attachments' and 'self->mimeParts' arrays. The first
+    array is transformed to 'NGMimeBodyPart' objects while the latter already
+    contains such (and objects are directly added to the result).
+  */
+  NSEnumerator   *enumerator;
+  NGMimeBodyPart *bodyPart;
+  NSDictionary   *obj;
+  
+  enumerator = [self->attachments objectEnumerator];
+  while ((obj = [enumerator nextObject])) {
+    bodyPart = [self newBodyPartForAttachmentObject:obj];
+    [atts addObject:bodyPart];
+    [bodyPart release];
+  }
+  
+  enumerator = [self->mimeParts objectEnumerator];
+  while ((bodyPart = [enumerator nextObject]) != nil)
+    [atts addObject:bodyPart];
+}
+
+- (void)_processSenderAddressesInMap:(NGMutableHashMap *)map {
+  // TODO: what exactly does this do? improve variable names!
+  /*
+    if 'e' is available:
+    - if there is no reply-to in 'map', sets to e
+    - if there is no from     in 'map', sets to e
+    - always set return path to <$oe>
+  */
+  id oe, e, a;
+
+  e  = nil;
+  oe = nil;
+    
+  if ([self enableFromPopUp]) {
+    NGMailAddressParser *p;
+      
+    e  = self->selectedFrom;
+    p  = [NGMailAddressParser mailAddressParserWithString:e];
+    oe = [[[p parseAddressList] objectEnumerator] nextObject];
+  }
+  if ([e length] == 0) {
+    a =  [[self session] activeAccount];
+    oe = [self _eAddressForPerson:a];
+    
+    if ([oe length] == 0) {
+      oe = [a valueForKey:@"login"];
+      e  = oe;
+    }
+    else
+      e = [self _formatEmail:oe forPerson:a];
+  }
+
+  if (e == nil)
+    return;
+  
+  /* set some headers based on 'e' */
+  
+  if ([map countObjectsForKey:@"reply-to"] == 0)
+    [map setObject:e forKey:@"reply-to"]; // only email
+  
+  [map setObject:[StrClass stringWithFormat:@"<%@>", oe]
+       forKey:@"return-path"]; // only email
+  
+  // better method for email: _eAddressLabelForPerson
+  
+  if ([map countObjectsForKey:@"from"] == 0) 
+    [map setObject:e forKey:@"from"]; // name and email
+}
+
+- (NSString *)defaultMailSubject {
+  return @"no subject";
+}
 
 - (id)buildMessageAndSend:(BOOL)_send save:(BOOL)_save
   checkAddress:(BOOL)_checkAddr
 {
   // TODO: split up this huge method!
-  // TODO: we probably need some "send transaction" object which also takes
-  //       care of that RELEASE_MESSAGE junk
+  // TODO: we probably need some "send transaction" object which takes
+  //       care of disposing the temporary object (_purgeMessageFile: method)
+  /*
+    Operation:
+    1. wraps mail text
+    2. adds company disclaimer to mail text
+    3. if required, set default mail subject
+    4. add recipients to header map
+       - filter out mailing lists
+       - filter out prohibited addresses
+    5. add standard headers
+    6. collect body parts of attachments to send
+    7. if missing, add disposition-notification-to
+    8. add default reply-to
+    9. add default organization header
+    10. create message object
+    11. save message to file
+    12. send message || save-to-drafts
+    13. cleanups
+    14. set IMAP4 flags for forwarded/replied
+  */
   NSAutoreleasePool *pool;
   NGMutableHashMap  *map;
   NSMutableArray    *emailAddrs, *atts, *prohibited, *mailingLists;
@@ -904,22 +1122,29 @@ static Class      StrClass        = nil;
   [self setErrorString:nil];
   [self wrapMailText];
   [self addCompanyDisclaimer];
-
-  if (![self->mailSubject length])
-    self->mailSubject = @"no subject";
+  
+  if ([self->mailSubject length] == 0) {
+    ASSIGNCOPY(self->mailSubject, [self defaultMailSubject]);
+  }
   
   emailAddrs   = [NSMutableArray arrayWithCapacity:[self->addresses count]];
   mailingLists = [NSMutableArray arrayWithCapacity:2];
   
+  /* filter addresses */
+  
   [self _filterOutMailingLists:mailingLists
 	emailAddresses:emailAddrs
 	prohibitedAddresses:prohibited
-	emailAddressHeaderMap:map];
+	emailAddressHeaderMap:map
+	fromAddressArray:self->addresses];
   
   if ([prohibited count] != 0) {
     [self _setErrorStringForProhibitedAddresses:prohibited];
     return nil;
   }
+  
+  /* check whether any recipients are left */
+
   if (([emailAddrs count] == 0 && [mailingLists count] == 0) && _checkAddr) {
     if (LSWMailLogEnabled) {
       [self logWithFormat:@"%s:%d: missing emailAddrs %@ mailingLists %@",
@@ -932,96 +1157,16 @@ static Class      StrClass        = nil;
   [self addStandardSendHeadersToMap:map]; /* subject, date, MIME, X-Mailer */
   
   /* check whether to attach data */
-  {
-    // TODO: move to seperate method */
-    NSEnumerator *enumerator;
-    NSDictionary *obj;
-
-    enumerator = [self->attachments objectEnumerator];
-    obj        = nil;
-    atts       = [NSMutableArray arrayWithCapacity:16];
-    
-    while ((obj = [enumerator nextObject])) {
-      NGMimeBodyPart   *bp;
-      NGMutableHashMap *h;
-      
-      if (![[obj objectForKey:@"attachData"] boolValue])
-	continue;
-
-      h = [[NGMutableHashMap alloc] initWithCapacity:4];
-
-      [h setObject:[obj valueForKey:@"objectDataType"]
-	 forKey:@"content-type"];
-      [h setObject:[obj valueForKey:@"objectDataContentDisposition"]
-	 forKey:@"content-disposition"];
-      bp = [[NGMimeBodyPart alloc] initWithHeader:h];
-        
-      if ([(NGMimeType *)[obj valueForKey:@"objectDataType"] isTextType]) {
-	NSString *s;
-
-	s = [[StrClass alloc]
-	      initWithData:[obj valueForKey:@"objectData"]
-	      encoding:[StrClass defaultCStringEncoding]];
-	[bp setBody:s];
-	[s release]; s = nil;
-      }
-      else
-	[bp setBody:[obj valueForKey:@"objectData"]];
-
-      [atts addObject:bp];
-      [h  release]; h  = nil;
-      [bp release]; bp = nil;
-    }
-    
-    enumerator = [self->mimeParts objectEnumerator];
-    while ((obj = [enumerator nextObject]))
-      [atts addObject:obj];
-  }
-
-  // TODO: this seems to setup sender addresses
-  {
-    id oe, e, a;
-
-    e  = nil;
-    oe = nil;
-    
-    if ([self enableFromPopUp]) {
-      NGMailAddressParser *p;
-      
-      e  = self->selectedFrom;
-      p  = [NGMailAddressParser mailAddressParserWithString:e];
-      oe = [[[p parseAddressList] objectEnumerator] nextObject];
-    }
-    if ([e length] == 0) {
-      a =  [[self session] activeAccount];
-      oe = [self _eAddressForPerson:a];
-
-      if (![oe length]) {
-        oe = [a valueForKey:@"login"];
-        e  = oe;
-      }
-      else {
-        e = [self _formatEmail:oe forPerson:a];
-      }
-    }
-
-    if (e != nil) {
-      if ([map countObjectsForKey:@"reply-to"] == 0)
-        [map setObject:e forKey:@"reply-to"]; // only email
-      
-      [map setObject:[StrClass stringWithFormat:@"<%@>", oe]
-           forKey:@"return-path"]; // only email
-
-      // better method for email: _eAddressLabelForPerson
-
-      if ([map countObjectsForKey:@"from"] == 0) 
-        [map setObject:e forKey:@"from"]; // name and email
-    }
-  }
   
-  [self _addDispositionInfoToMap:map];
-  [self _addDefaultReplyToIfMissingToMap:map];
-  [self _addDefaultOrganizationIfMissingToMap:map];
+  atts = [NSMutableArray arrayWithCapacity:16];
+  [self _checkAttachmentsToSend:atts];
+  
+  // TODO: this seems to setup sender addresses
+  [self _processSenderAddressesInMap:map];
+  
+  [self _addDispositionInfoToMap:map];         // 'Disposition-Notification-To'
+  [self _addDefaultReplyToIfMissingToMap:map]; // default 'reply-to' header
+  [self _addDefaultOrganizationIfMissingToMap:map]; // 'organization' header
   
   if ([atts count] > 0) { // add attachments
     message = [self _buildMultiPartMessageWithHeaders:map
@@ -1044,90 +1189,32 @@ static Class      StrClass        = nil;
     }
   }
   
+  /* at this point 'message' should contain a message, save that to a file */
+  
   if ((messageFileName = [self saveMessageToFile:message]) == nil)
     return nil;
   /* after that we need to ensure that the tmpfile is deleted! */
   
   /* section to actually send using mail */
   if (_send) {
-    NSString    *reason;
-    NSException *result;
-    
-    if ([emailAddrs count] > 0) {
-      result = [self _deliverMailTo:emailAddrs 
-		     messageFilePath:messageFileName];
-      if ([result isKindOfClass:[NSException class]]) {
-        RELEASE_MESSAGE(nil, nil);
-	
-        reason = [result reason];
-        if ([self _isMessageToBigDeliverException:result] ||
-	    [self _isMissingSendmailDeliverException:result]) {
-          NSArray  *a;
-          NSString *errorStr;
-
-          a = [reason componentsSeparatedByString:@" "];
-          if ([a count] != 2) {
-            if (LSWMailLogEnabled) {
-              [self logWithFormat:@"%s:%d: Unexpected error string %@",
-                    __PRETTY_FUNCTION__, __LINE__, reason];
-            }
-            RELEASE_MESSAGE(reason, messageFileName);
-            return nil;
-          }
-          errorStr = [StrClass stringWithFormat:
-                               [[self labels] valueForKey:[a objectAtIndex:0]],
-                               [a objectAtIndex:1]];
-          RELEASE_MESSAGE(errorStr, messageFileName);
-          return nil;
-        }
-        else {
-          RELEASE_MESSAGE(reason, messageFileName);
-          return nil;
-        }
-      }
-      if (![self commit]) {
-        [self rollback];
-        RELEASE_MESSAGE(nil, messageFileName);
-        return nil;
-      }
-    }
-    if ([mailingLists count] > 0) {
-      // TODO: explain this code
-      [self _deliverMailTo:emailAddrs messageFilePath:messageFileName
-	    mailingLists:[self _collectMailingLists:mailingLists]];
-    }
-    if (![self sendMessageToSent:messageFileName]) {
-      NSException *exc;
-      NSString    *wp, *reason;
-      id          l;
-
-      exc = [[self imapContext] lastException];
-      l   = [self labels];
-      wp  = [l valueForKey:@"copyToSendOrdnerFailed"];
-        
-      if ((reason = [exc reason])) {
-        reason = [l valueForKey:reason];
-      }
-      wp = [StrClass stringWithFormat:@"%@: '%@'.", wp, reason];
-      RELEASE_MESSAGE(wp, messageFileName);
+    if (![self _sendMessage:message path:messageFileName to:emailAddrs
+	       mailingLists:mailingLists])
       return nil;
-    }
   }
   
   /* section to save mail in drafts */
-  if (_save) {
-    if (![self sendMessageToDrafts:messageFileName]) {
-      id tmp;
-
-      tmp = [[self labels] valueForKey:@"couldNotSaveMessageToDraft"];
-      RELEASE_MESSAGE(tmp, messageFileName);
-      return nil;
-    }
+  if (_save && ![self sendMessageToDrafts:messageFileName]) {
+    NSString *error;
+    
+    error = [[self labels] valueForKey:@"couldNotSaveMessageToDraft"];
+    [self _purgeMessageFile:messageFileName andSetError:error];
+    return nil;
   }
-  RELEASE_MESSAGE(nil, messageFileName);
-
+  [self _purgeMessageFile:messageFileName andSetError:nil];
+  message = nil;
+  
   [self leavePage];
-  [self->mimeParts removeAllObjects];
+  [self->mimeParts   removeAllObjects];
   [self->attachments removeAllObjects];
   /* mark message */
   {
@@ -1145,10 +1232,8 @@ static Class      StrClass        = nil;
   [pool release]; pool = nil;
   
   [self _patchWebMailMasterPageAfterSend];
-  return nil;
+  return nil; /* Note: leavePage is called above */
 }
-
-#undef RELEASE_MESSAGE
 
 - (id)send {
   [self confirmUpload];
