@@ -10,6 +10,7 @@ libZSFrontend_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libZSFrontend_HEADER_FILES_DIR         = .
 libZSFrontend_HEADER_FILES_INSTALL_DIR = /ZSFrontend
+FHS_HEADER_DIRS = ZSFrontend
 
 libZSFrontend_HEADER_FILES = \
 	ExStoreEntryID.h	\
@@ -57,3 +58,4 @@ libZSFrontend_SUBPROJECTS = Mails
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make
 -include GNUmakefile.postamble
+-include ../fhslib.make

@@ -38,3 +38,4 @@ include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
 -include ../../fhsbundle.make
+-include ../../fhslib.make

@@ -10,6 +10,7 @@ libZSBackend_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libZSBackend_HEADER_FILES_DIR         = .
 libZSBackend_HEADER_FILES_INSTALL_DIR = /ZSBackend
+FHS_HEADER_DIRS = ZSBackend
 
 libZSBackend_HEADER_FILES = \
 	NSObject+DBColumns.h		\
@@ -50,3 +51,4 @@ libZSBackend_SUBPROJECTS = Contacts Appointments
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make
 -include GNUmakefile.postamble
+-include ../fhslib.make
