@@ -4,7 +4,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 include ./Version
 
-WEBUID_NAME = ogo-webui-$(MAJOR_VERSION)$(MINOR_VERSION)
+WEBUID_NAME = ogo-webui-1.0a
 
 TOOL_NAME = $(WEBUID_NAME)
 

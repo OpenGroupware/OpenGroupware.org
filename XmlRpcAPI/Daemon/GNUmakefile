@@ -3,7 +3,7 @@
 include $(GNUSTEP_MAKEFILES)/common.make
 include ./Version
 
-XMLRPCD_NAME = ogo-xmlrpcd-$(MAJOR_VERSION)$(MINOR_VERSION)
+XMLRPCD_NAME = ogo-xmlrpcd-1.0a
 
 TOOL_NAME = $(XMLRPCD_NAME)
 

@@ -1,12 +1,12 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include $(GNUSTEP_MAKEFILES)/common.make
 GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
 include ../Version
 include ./Version
 
-OGO_NHSD_NAME = ogo-nhsd-$(MAJOR_VERSION)$(MINOR_VERSION)
-OGO_PPLS_NAME = ogo-ppls-$(MAJOR_VERSION)$(MINOR_VERSION)
+OGO_NHSD_NAME = ogo-nhsd-1.0a
+OGO_PPLS_NAME = ogo-ppls-1.0a
 
 LIBRARY_NAME = libPPSync
 TOOL_NAME    = $(OGO_NHSD_NAME) $(OGO_PPLS_NAME)

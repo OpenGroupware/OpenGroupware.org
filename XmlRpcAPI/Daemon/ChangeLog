@@ -1,3 +1,8 @@
+2004-09-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: renamed executable to ogo-xmlrpcd-1.0a as requested by 
+	  sley (v5.1.47)
+
 2004-09-24  Helge Hess  <helge.hess@skyrix.com>
 
 	* xmlrpcd.m: prepared to use defaults in /etc/ (v5.1.46)

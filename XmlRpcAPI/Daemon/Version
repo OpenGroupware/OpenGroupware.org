@@ -1,8 +1,8 @@
-# $Id: Version 9 2004-08-21 00:42:59Z helge $
+# version file
 
 MAJOR_VERSION=5
 MINOR_VERSION=1
-SUBMINOR_VERSION:=46
+SUBMINOR_VERSION:=47
 
 # v5.1.46 requires libNGObjWeb     v4.3.41
 # v5.0.16 requires libEOControl    v4.2.39

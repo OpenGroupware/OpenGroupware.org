@@ -1,3 +1,8 @@
+2004-09-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: renamed executable to ogo-webui-1.0a as requested by 
+	  sley (v5.1.60)
+
 2004-09-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile.preamble: added explicit library dependencies for MacOSX

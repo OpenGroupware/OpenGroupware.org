@@ -1,3 +1,8 @@
+2004-09-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: renamed executable to ogo-nhsd-1.0a as requested by 
+	  sley (v5.1.10)
+
 2004-09-14  Helge Hess  <helge.hess@skyrix.com>
 
 	* GNUmakefile: fixed library version, added versioning to tools (nhsd
