@@ -305,6 +305,22 @@ static BOOL createNewAptWhenNotFound = YES;
   [self objectInContext:_ctx];
 }
 
+- (BOOL)shouldReturn201AfterPUTInContext:(WOContext *)_ctx {
+  WEClientCapabilities *cc;
+  NSString *ua;
+  
+  cc = [[(WOContext *)_ctx request] clientCapabilities];
+  ua = [cc userAgentType];
+  if ([ua isEqualToString:@"Evolution"])
+    /* Evo needs 201, otherwise an error will be shown */
+    return YES;
+  if ([ua isEqualToString:@"ZideLook"])
+    return YES;
+  
+  /* if I remember right, Cadaver complains on 201 */
+  return NO;
+}
+
 #define SX_DIFFKEY(__key__) \
   if ((tmp = [_info valueForKey:__key__])) {\
     if (![tmp isEqual:[eo valueForKey:__key__]])\
@@ -443,7 +459,9 @@ static BOOL createNewAptWhenNotFound = YES;
   if ([error isKindOfClass:[NSException class]])
     return error;
   
-  return [NSException exceptionWithHTTPStatus:200 /* OK */
+  return [NSException exceptionWithHTTPStatus:
+                        [self shouldReturn201AfterPUTInContext:_ctx]
+                        ? 201 /* Created */ : 200 /* OK */
 		      reason:@"updated object"];
 }
 #undef SX_DIFFKEY
@@ -522,6 +540,7 @@ static BOOL createNewAptWhenNotFound = YES;
     return [self putICalendarAction:_ctx];
   
   if ([ctype length] == 0) {
+    // TODO: what clients do that?
     static NSData *iCalSignature = nil;
     NSData *data;
 

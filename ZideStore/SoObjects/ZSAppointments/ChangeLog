@@ -1,3 +1,8 @@
+2004-10-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxAppointment.m: return HTTP status 201 (Created) after successful 
+	  PUT when triggered by Evolution (v1.3.82)
+
 2004-09-30  Helge Hess  <helge.hess@skyrix.com>
 
 	* v1.3.81
