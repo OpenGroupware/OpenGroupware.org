@@ -151,6 +151,8 @@ static NSString       *imap4Separator  = nil;
   
   if (client == nil)
     return nil;
+  if ([client isKindOfClass:[NSException class]])
+    return client;
   
   /* sideeffect of -imap4ClientForURL:password: is to create a cache entry */
   return [self entryForURL:_url];
@@ -192,7 +194,8 @@ static NSString       *imap4Separator  = nil;
             [_url absoluteString], [_url baseURL],
             NSStringFromClass([[_url baseURL] class]),
             client];
-    return nil;
+    return [NSException exceptionWithHTTPStatus:401 /* Auth Required */
+			reason:@"IMAP4 login failed"];
   }
   
   [self debugWithFormat:@"created new IMAP4 connection for URL: %@", _url];
@@ -361,6 +364,8 @@ static NSString       *imap4Separator  = nil;
   
   if ((entry = [self entryForURL:_url password:_pwd]) == nil)
     return nil;
+  if ([entry isKindOfClass:[NSException class]])
+    return (id)entry;
   
   /* check hierarchy cache */
   
@@ -406,6 +411,8 @@ static NSString       *imap4Separator  = nil;
   
   if ((entry = [self entryForURL:_url password:_pwd]) == nil)
     return nil;
+  if ([entry isKindOfClass:[NSException class]])
+    return (id)entry;
   
   /* check hierarchy cache */
   
@@ -455,6 +462,8 @@ static NSString       *imap4Separator  = nil;
   
   if ((entry = [self entryForURL:_url password:_pwd]) == nil)
     return nil;
+  if ([entry isKindOfClass:[NSException class]])
+    return (id)entry;
   
   /* check cache */
   
@@ -515,7 +524,9 @@ static NSString       *imap4Separator  = nil;
   
   if ((client = [self imap4ClientForURL:_url password:_pwd]) == nil)
     return nil;
-
+  if ([client isKindOfClass:[NSException class]])
+    return (id)client;
+  
   /* select folder */
 
   if (![self selectFolder:_url inClient:client])
@@ -546,6 +557,8 @@ static NSString       *imap4Separator  = nil;
   
   if ((client = [self imap4ClientForURL:_url password:_pwd]) == nil)
     return nil; // TODO: return error?
+  if ([client isKindOfClass:[NSException class]])
+    return (id)client;
   
   /* select folder */
   
@@ -720,6 +733,8 @@ static NSString       *imap4Separator  = nil;
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
 			reason:@"did not find IMAP4 folder"];
   }
+  if ([entry isKindOfClass:[NSException class]])
+    return (id)entry;
 
   /* construct path */
   
@@ -755,6 +770,8 @@ static NSString       *imap4Separator  = nil;
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
 			reason:@"did not find IMAP4 folder"];
   }
+  if ([entry isKindOfClass:[NSException class]])
+    return (id)entry;
   
   /* delete */
   

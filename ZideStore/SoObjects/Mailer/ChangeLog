@@ -1,5 +1,9 @@
 2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v0.9.zs74
+
+	* SOGoMailManager.m: improved handling of login errors
+
 	* v0.9.zs73
 	
 	* GNUmakefile: install into FHS

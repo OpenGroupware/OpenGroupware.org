@@ -1,6 +1,6 @@
 # Version file
 
-SUBMINOR_VERSION:=zs73
+SUBMINOR_VERSION:=zs74
 
 # v0.9.69 requires libNGMime       v4.5.210
 # v0.9.55 requires libNGExtensions v4.5.136

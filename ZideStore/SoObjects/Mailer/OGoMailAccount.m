@@ -29,6 +29,74 @@
 - (BOOL)useSSL;
 @end
 
+#include <NGObjWeb/SoHTTPAuthenticator.h>
+
+@interface ZSOGoMailAuthenticator : SoHTTPAuthenticator
+{
+  ZSOGoMailAccount *account;
+  id               context; /* non-retained (TODO: not required?) */
+}
+
+@end
+
+#include "SOGoMailManager.h"
+
+@implementation ZSOGoMailAuthenticator
+
+- (id)initWithMailAccount:(ZSOGoMailAccount *)_account context:(id)_ctx {
+  if ((self = [super init])) {
+    self->account = [_account retain];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [self->account release];
+  [super dealloc];
+}
+
+/* parent */
+
+- (id)parentAuthenticator {
+  return [[self->account container] authenticatorInContext:self->context];
+}
+
+- (BOOL)checkLogin:(NSString *)_login password:(NSString *)_pwd {
+  id client;
+
+  [self logWithFormat:@"CHECK LOGIN: %@", _login];
+  
+  client = [[self->account mailManager] imap4ClientForURL:
+					  [self->account imap4URL] 
+					password:_pwd];
+  if (client == nil)
+    return NO;
+  if ([client isKindOfClass:[NSException class]]) {
+    [self logWithFormat:@"ERROR: could not login: %@", client];
+    return NO;
+  }
+  return YES;
+}
+
+/* user management */
+
+#if 0
+- (SoUser *)userInContext:(WOContext *)_ctx {
+  return [[self parentAuthenticator] userInContext:_ctx];
+}
+- (NSArray *)rolesForLogin:(NSString *)_login {
+  return [[self parentAuthenticator] rolesForLogin:_login];
+}
+#endif
+
+/* ZideStore support */
+
+- (id)commandContextInContext:(id)_ctx {
+  return [[self parentAuthenticator] commandContextInContext:_ctx];
+}
+
+@end /* ZSOGoMailAuthenticator */
+
 @implementation ZSOGoMailAccount
 
 /* IMAP4 */
@@ -107,6 +175,13 @@
   
   self->imap4URL = [[NSURL alloc] initWithString:s];
   return self->imap4URL;
+}
+
+/* authenticator */
+
+- (id)authenticatorInContext:(id)_ctx {
+  return [[[ZSOGoMailAuthenticator alloc]
+	    initWithMailAccount:self context:_ctx] autorelease];
 }
 
 @end /* ZSOGoMailAccount */

@@ -1,5 +1,9 @@
 2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v0.9.zs100
+
+	* product.plist: removed SOGoMailAccounts methods
+
 	* v0.9.zs99
 
 	* GNUmakefile: install into FHS

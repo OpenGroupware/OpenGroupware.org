@@ -248,26 +248,6 @@
       };
     };
     
-    SOGoMailAccounts = {
-      slots = {
-        toolbar = {
-          protectedBy = "View";
-          value = ( /* the toolbar groups */
-            ( /* first group */
-              { link  = "getMail";
-                cssClass = "tbicon_getmail"; label = "Get Mail"; },
-            )
-          );
-        };
-      };
-      methods = {
-        view = {
-          protectedBy = "View";
-          pageName    = "UIxMailAccountsView"; 
-        };
-      };
-    };
-    
     SOGoMailAccount = {
       slots = {
         toolbar = {
