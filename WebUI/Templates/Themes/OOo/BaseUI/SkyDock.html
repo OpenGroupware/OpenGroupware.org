@@ -19,18 +19,12 @@
     <#ActivePageIsEditor>
       <#DockEntries>
        <tr><td>
-        <#HasMiniView>
-          <#MiniView />
-        </#HasMiniView>
-        <#LacksMiniView>
-          <#DockImage />
-        </#LacksMiniView>
+        <#HasMiniView  ><#MiniView  /></#HasMiniView>
+        <#LacksMiniView><#DockImage /></#LacksMiniView>
        </td></tr>
       </#DockEntries>
     </#ActivePageIsEditor>
-  <#IsProjectLicensed>
     <#DockedProjects />
-  </#IsProjectLicensed>
   </table>
   </td>
 </#IsNotTextMode>
@@ -41,12 +35,8 @@
     <#ActivePageIsNotEditor>
       <#DockEntries>
        <tr><td>
-        <#HasMiniView>
-          <#MiniView />
-        </#HasMiniView>
-        <#LacksMiniView>
-          <#DockLink><#DockImage /></#DockLink>
-        </#LacksMiniView>
+        <#HasMiniView  ><#MiniView /></#HasMiniView>
+        <#LacksMiniView><#DockLink><#DockImage /></#DockLink></#LacksMiniView>
        </td></tr>
       </#DockEntries>
     </#ActivePageIsNotEditor>
@@ -54,18 +44,12 @@
     <#ActivePageIsEditor>
       <#DockEntries>
        <tr><td>
-        <#HasMiniView>
-          <#MiniView />
-        </#HasMiniView>
-        <#LacksMiniView>
-          <#DockImage />
-        </#LacksMiniView>
+        <#HasMiniView  ><#MiniView  /></#HasMiniView>
+        <#LacksMiniView><#DockImage /></#LacksMiniView>
        </td></tr>
       </#DockEntries>
     </#ActivePageIsEditor>
-  <#IsProjectLicensed>
     <#DockedProjects />
-  </#IsProjectLicensed>
   </table>
   </td>
 </#IsTextMode>
@@ -74,27 +58,18 @@
 <#Font>
   <#TextDockEntries>
     <#ActivePageIsNotEditor>
-      <#HasMiniTextView>
-        <#MiniTextView />
-      </#HasMiniTextView>
+      <#HasMiniTextView><#MiniTextView /></#HasMiniTextView>
       <#LacksMiniTextView>
-        <#DockLink>
-          <#DockLabel /></#DockLink>
+        <#DockLink><#DockLabel /></#DockLink>
       </#LacksMiniTextView>
     </#ActivePageIsNotEditor>
 
     <#ActivePageIsEditor>
-      <#HasMiniTextView>
-        <#MiniTextView />
-      </#HasMiniTextView>
-      <#LacksMiniTextView>
-        <#DockLabel />
-      </#LacksMiniTextView>
+      <#HasMiniTextView  ><#MiniTextView /></#HasMiniTextView>
+      <#LacksMiniTextView><#DockLabel    /></#LacksMiniTextView>
     </#ActivePageIsEditor>
   </#TextDockEntries>
-      <#IsProjectLicensed>
-        <#DockedProjects />
-      </#IsProjectLicensed>
+      <#DockedProjects />
 
   -
 

@@ -113,6 +113,11 @@ PrefsLink: WOHyperlink {
   CLASS            = "skydockfont";
 }
 
+PrefsImage: WOImage {
+  filename = "menu_static_prefs.gif";
+  alt      = labels.preferences;
+  border   = 0;
+}
 PrefsImageRight: WOImage {
   filename = "menu_static_prefs_right.gif";
   alt      = labels.preferences;

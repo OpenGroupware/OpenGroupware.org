@@ -1,4 +1,4 @@
-// $Id: SkyDock.wod,v 1.1 2004/08/05 02:02:21 helge Exp $
+// bind template to controller class
 
 IsTextMode: WOConditional {
   // tables, but no imgs

@@ -1,3 +1,8 @@
+2004-11-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* fixed some theme templates which broke to the missing elements for
+	  bookmarks
+
 2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
 
 	* removed bookmark stuff in all .wod files (might give missing elements
