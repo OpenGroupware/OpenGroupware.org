@@ -1,0 +1,100 @@
+// $Id: SkyPersonEnterpriseSetViewer.wod,v 1.2 2004/08/09 23:28:26 helge Exp $
+
+EnterpriseTitle: LSWViewerTitle { title = enterpriseViewerTitle; }
+
+DeleteLink: SkyButtonRow {
+   ordering = ( del );
+   del      = labels.resign;
+   onDel    = separatePerson;
+}
+
+EnterpriseLink: WOHyperlink {
+  action = viewEnterprise;
+  string = enterprise.name;
+}
+
+HasMoreEnterprises:     WOConditional { condition = hasMoreEnterprises; }
+NotFirstEnterpriseCond: WOConditional { condition = isNotFirstEnterprise; }
+NotFirstEnterpriseCondElse: WOConditional {
+  condition = isNotFirstEnterprise;
+  negate    = YES;
+}
+NotLastEnterpriseCond:     WOConditional { condition = isNotLastEnterprise; }
+NotLastEnterpriseCondElse: WOConditional {
+  condition = isNotLastEnterprise;
+  negate    = YES;
+}
+
+NextLink: WOHyperlink {
+  action   = nextEnterprise;
+  filename = "next.gif";
+  border   = 0;
+  alt      = labels.next;
+  align    = "top";
+}
+
+NextLinkBlind: WOImage {
+  filename = "next_blind.gif";
+  border   = 0;
+  alt      = "";
+  align    = "top";
+}
+PreviousLink: WOHyperlink {
+  action   = previousEnterprise;
+  filename = "previous.gif";
+  border   = 0;
+  alt      = labels.previous;
+  align    = "top";
+}
+PreviousLinkBlind: WOImage {
+  filename = "previous_blind.gif";
+  border   = 0;
+  alt      = "";
+  align    = "top";
+}
+FirstLink: WOHyperlink {
+  action   = firstEnterprise;
+  filename = "first.gif";
+  border   = 0;
+  align    = "top";
+  alt      = labels.first;
+}
+FirstLinkBlind: WOImage {
+  filename = "first_blind.gif";
+  border   = 0;
+  alt      = "";
+  align    = "top";
+}
+LastLink: WOHyperlink {
+  action   = lastEnterprise;
+  filename = "last.gif";
+  border   = 0;
+  alt      = labels.last;
+  align    = "top";
+}
+LastLinkBlind: WOImage {
+  filename = "last_blind.gif";
+  border   = 0;
+  alt      = "";
+  align     = "top";
+}
+
+EnterpriseSubViewer: LSWObjectViewer {
+  labels         = labels;
+  object         = enterprise;
+  attributeColor = "subAttributeCell";
+  valueColor     = "subValueCell";
+  attributes     = (
+    { key = "name"; label="enterprise_name"; action = "viewEnterprise"; },
+    { key = "url";  href = ""; target = "enterpriseUrl"; }
+  );
+}
+
+AddressesViewer: SkyAddressesViewer {
+  company = enterprise;
+  columns = 3;
+}
+
+PersonList: SkyPersonList {
+  dataSource = enterprise.personDataSource;
+}

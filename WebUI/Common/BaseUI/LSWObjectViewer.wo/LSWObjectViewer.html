@@ -1,0 +1,38 @@
+<!-- $Id: LSWObjectViewer.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+   
+<#AttributeRep>
+  <#ShowAttribute>
+    <tr>
+      <#AttributeCell>
+        <#Font><#Attribute/>:</#Font></#AttributeCell>
+      
+      <#ValueCell>
+        <#Font>
+          <#ArrayAttrCond>
+            <#RelatedObjectRep>
+              <#IsDeletedObjectCondElse>
+                <#Cell/>
+              </#IsDeletedObjectCondElse>
+
+              <#IsDeletedObjectCond>
+                <#CellForDeletedObj/>
+              </#IsDeletedObjectCond>
+            </#RelatedObjectRep>
+          </#ArrayAttrCond>
+    
+          <#ArrayAttrCondElse>
+            <#IsDeletedObjectCondElse>
+              <#Cell/>
+            </#IsDeletedObjectCondElse>
+
+            <#IsDeletedObjectCond>
+              <#CellForDeletedObj/>
+            </#IsDeletedObjectCond>
+          </#ArrayAttrCondElse>
+
+          &nbsp;    
+        </#Font>
+      </#ValueCell>
+    </tr>
+  </#ShowAttribute>
+</#AttributeRep>

@@ -1,0 +1,59 @@
+<tr>
+  <#AttributeCell><#Font><#StartTimeAttribute/>:</#Font></#AttributeCell>
+  <#ValueCell><#EditFont>
+    <#JavaScriptEnabledCond>
+     <script language="JavaScript">
+       <!-- Begin
+       var isNS4 = (document.layers) ? true : false;
+       var isIE4 = (document.all && !document.getElementyById) ? true : false;
+       var isIE5 = (document.all && document.getElementyById)  ? true : false;
+       var isNS6 = (!document.all && document.getElementyById) ? true : false;
+
+       function boxChecked(flag,divId,formName) {
+         visible = flag ? false : true;
+         // show / hide
+         object = false;
+         if (isIE4 || isIE5) object = document.all[divId].style;
+         else if (isNS4)     object = document.layers[divId];
+         else if ((object = document.getElementById(divId)))
+           object = object.style;
+         if (object) object.visibility = visible ? 'visible' : 'hidden';
+       }
+
+       // End -->
+     </script>
+    </#JavaScriptEnabledCond>
+    <#StartTimeInputSpan
+      ><#PopUpTimeInputCond
+        ><#AMPMCond
+          ><#StartHourPopUp/><#AMPMSpan><#StartAMPMPopUp/></#AMPMSpan
+        ></#AMPMCond><#AMPMCondElse><#StartHourPopUp/></#AMPMCondElse
+        >:<#StartMinutePopUp
+      /></#PopUpTimeInputCond
+      ><#TextFieldInputCond><#StartTimeField/></#TextFieldInputCond
+    ></#StartTimeInputSpan
+    ><#IsNewOrNotCyclic
+      ><#StartDate
+      /><#ShowCalPopUp><#CalendarPopupStartDateLink/></#ShowCalPopUp
+    ></#IsNewOrNotCyclic
+    ><#IsAllDayCheckBox/><#AllDayAttribute/>
+  </#EditFont></#ValueCell>
+</tr>
+<tr>
+  <#AttributeCell><#Font><#EndTimeAttribute/>:</#Font></#AttributeCell>
+  <#ValueCell><#EditFont>
+    <#EndTimeInputSpan
+      ><#PopUpTimeInputCond
+        ><#AMPMCond
+          ><#EndHourPopUp/><#AMPMSpan><#EndAMPMPopUp/></#AMPMSpan
+          ></#AMPMCond><#AMPMCondElse><#EndHourPopUp/></#AMPMCondElse
+        >:<#EndMinutePopUp 
+      /></#PopUpTimeInputCond
+      ><#TextFieldInputCond><#EndTimeField/></#TextFieldInputCond
+    ></#EndTimeInputSpan
+    ><#IsNewOrNotCyclic
+      ><#EndDate
+      /><#ShowCalPopUp><#CalendarPopupEndDateLink/></#ShowCalPopUp
+    ></#IsNewOrNotCyclic>
+  </#EditFont></#ValueCell>
+</tr>

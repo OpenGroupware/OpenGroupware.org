@@ -1,0 +1,29 @@
+<!-- $Id: SkyImapMailPrintViewer.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+
+<html>
+  <head>
+    <title><#PrintTitle/></title>
+  </head>
+  <body onload="javascript:window.print()" bgcolor="#FFFFFF" text="#000000" 
+        link="#000000" vlink="#000000">
+    <table width="100%" border="1" cellpadding="0" cellspacing="0">
+      <tr>
+        <td>
+          <table width="100%" border="0" cellpadding="4" cellspacing="0">
+            <#HeaderRep>
+              <tr>
+                <td align="right" valign="top">
+                  <#HeaderKey/>:
+                </td>
+                <td><#HeaderValue/></td>
+              </tr>
+            </#HeaderRep>
+          </table>
+        </td>
+      </tr>
+      <tr bgcolor="#FFFFFF">
+        <td><#MessageViewer/></td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+<!-- $Id: SkyDockedProjects.html,v 1.1 2003/08/04 15:21:35 thomas Exp $ -->
+
+<#DockedProjectRep>
+  <tr>
+    <td>
+      <#ActivePageIsNotEditor>
+        <#ViewProject><#HasIconData><#IconWithData/></#HasIconData><#HasIconDataElse><#IconWithFilename/></#HasIconDataElse></#ViewProject>
+      </#ActivePageIsNotEditor>
+
+      <#ActivePageIsEditor><#HasIconData><#IconWithData/></#HasIconData><#HasIconDataElse><#IconWithFilename/></#HasIconDataElse>
+      </#ActivePageIsEditor>
+    </td>
+  </tr>
+</#DockedProjectRep>

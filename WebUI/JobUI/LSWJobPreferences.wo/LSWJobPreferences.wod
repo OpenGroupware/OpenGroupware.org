@@ -1,0 +1,71 @@
+// $Id: LSWJobPreferences.wod,v 1.4 2003/12/22 17:06:31 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = labels.jobPreferencesLabel;
+  onClose = session.navigation.leavePage;
+}
+
+WindowTitle: LSWViewerTitle {
+  title = accountLabel;
+}
+
+PreferencesForm: WOForm {}
+
+CancelButton: WOHyperlink {
+  action = cancel;
+  string = labels.cancel;
+  class  = "button_narrow";
+}
+
+JobListViewField: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.joblist_view;
+  isEditable = isJobListViewEditable;
+  valueType  = "popup";
+  value      = jobListView;
+  valueList  = ( "toDoList", "delegatedJobs", "archivedJobs" );
+}
+
+JobViewField: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.jobview;
+  isEditable = isJobViewEditable;
+  valueType  = "popup";
+  value      = jobView;
+  valueList  = ( "subJobList", "jobHistoryList" );
+}
+
+SaveSubmit: WOSubmitButton {
+  action   = save;
+  name     = labels.save;
+  value    = labels.save;
+  class    = "button_narrow";
+}
+
+AttributeCell: SkyAttributeCell { 
+  width = "15%"; 
+}
+
+ValueCell: SkyValueCell {}
+
+IsRoot: WOConditional {
+  condition = isRoot;
+}
+
+BlockSizeField: SkyDefaultEditField {
+  label      = labels.blockSize;
+  isEditable = isBlockSizeEditable;
+  valueType  = "popup";
+  value      = blockSize;
+  valueList  = ( "10", "20", "30", "40", "50", "60", "70", "80", "90", "100" );
+}
+
+ColumnSizeField: SkyDefaultEditField {
+  label      = labels.noOfCols;
+  isEditable = isNoOfColsEditable;
+  valueType  = "popup";
+  value      = noOfCols;
+  valueList  = ( "1", "2", "3", "4", "5" );
+}

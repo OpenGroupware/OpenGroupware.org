@@ -1,0 +1,5 @@
+# $Id$
+
+SUBMINOR_VERSION:=46
+
+# v5.0.38 requires OGoUIElements v5.0.20

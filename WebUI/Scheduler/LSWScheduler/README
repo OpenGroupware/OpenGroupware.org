@@ -1,0 +1,20 @@
+# $Id$
+
+LSWScheduler
+============
+
+This contains "pretty old" components, coming from about SKYRiX 3.5. Since some
+of them are pretty complex and hard to rewrite from scratch, they are still
+used ;-)
+One limitation is that most of the components in here work on EO objects
+instead of GID commands.
+
+
+NOTES
+=====
+
+SkyParticipantsSelection
+========================
+- used in: SkyPalmPreferences, LSWAppointmentProposal, LSWSchedulerPreferences,
+           LSWAppointmentEditor
+- Note: LSWProjectEditor has its own mechanism for doing that ...

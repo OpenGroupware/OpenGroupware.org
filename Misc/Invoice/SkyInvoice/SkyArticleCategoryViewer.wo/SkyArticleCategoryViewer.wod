@@ -1,0 +1,83 @@
+// $Id: SkyArticleCategoryViewer.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+//Style
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.articleCategoryViewerWindowTitle;
+  onClose = session.navigation.leavePage;
+}
+
+CategoryTitle: LSWViewerTitle {
+  title     = category.categoryName;
+}
+
+Buttons: SkyButtonRow {
+  ordering = ( edit, delete );
+  /* defaultButtons */
+  hasEdit   = isEditEnabled;
+  hasDelete = isDeleteEnabled;
+  onEdit    = edit;
+  onDelete  = delete;
+  /* labels */
+  edit          = labels.editCategory;
+  delete        = labels.deleteCategory;
+}
+
+//Tabs
+
+TabView: SkyTabView {
+  selection = tabKey;
+}
+
+AttributesTab: SkyTabItem {
+  key       = "attributes";
+  action    = tabClicked;
+  label     = labels.attributes;
+  icon      = "attributes";
+}
+
+//Attributes
+
+Title: LSWViewerTitle {
+  title   = category.categoryName;
+}
+
+CategorySubViewer: LSWObjectViewer {
+  labels         = labels;
+  object         = category;
+  valueColor     = "subValueCell";
+  attributeColor = "subAttributeCell";
+  attributes     = (
+    {   key     = "categoryName"; },
+    {   key     = "categoryAbbrev"; }
+  );
+}
+
+//delete-warning
+
+WarningCond : WOConditional {
+  condition = isInWarningMode;
+}
+
+WarningCondElse : WOConditional {
+  condition = isInWarningMode;
+  negate    = YES;
+}
+
+Warning : LSWWarningPanel {
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
+}
+
+// sales
+SalesTab: SkyTabItem {
+  key       = "sales";
+  action    = tabClicked;
+  label     = labels.sales;
+  icon      = "sales";
+}
+Sales: SkyInvoiceInlineSalesViewer {
+  validArticleIds = articleIds;
+}

@@ -1,0 +1,39 @@
+<!-- $Id: LSWMimeMessageViewer.html,v 1.3 2004/07/09 12:49:42 helge Exp $ -->
+<table border="0" width="100%" cellpadding="3" cellspacing="0">
+  <#ShowHeaders>  
+    <#PartHeaderRow> 
+      <td width="15%"><#Font><#SubjectLabel />:</#Font></td>
+      <td><#Font><#Subject /></#Font></td>
+    </#PartHeaderRow>
+
+    <#PartHeaderRow>
+      <td width="15%"><#Font><#SenderLabel />:</#Font></td>
+      <td><#Font><#Sender /></#Font></td>
+    </#PartHeaderRow>
+
+    <#PartHeaderRow>
+      <td width="15%"><#Font><#DateLabel />:</#Font></td>
+      <td><#Font><#Date /></#Font></td>
+    </#PartHeaderRow>
+  
+    <#PartHeaderRow>
+      <td width="15%"><#Font><#TypeLabel />:</#Font></td>
+      <td><#Font><#ContentType /></#Font></td>
+    </#PartHeaderRow>
+  
+    <#PartHeaderRow>
+      <td width="15%"><#Font><#MsgIdLabel />:</#Font></td>
+      <td><#Font><#MsgId /></#Font></td>
+    </#PartHeaderRow>
+  
+    <#PartHeaderRow>
+      <td width="15%"><#Font><#OrganizationLabel />:</#Font></td>
+      <td><#Font><#Organization /></#Font></td>
+    </#PartHeaderRow>
+  </#ShowHeaders>
+
+  <tr><td></td><td></td></tr>
+</table>
+
+<!-- mail body -->
+<#MailBodyViewer />

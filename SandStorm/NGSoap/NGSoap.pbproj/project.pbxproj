@@ -1,0 +1,419 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 38;
+	objects = {
+		014CEA440018CDF011CA2923 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				OPTIMIZATION_CFLAGS = "-O0";
+			};
+			isa = PBXBuildStyle;
+			name = Development;
+		};
+		014CEA450018CDF011CA2923 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			isa = PBXBuildStyle;
+			name = Deployment;
+		};
+//010
+//011
+//012
+//013
+//014
+//030
+//031
+//032
+//033
+//034
+		034768DFFF38A50411DB9C8B = {
+			children = (
+				034768E0FF38A50411DB9C8B,
+			);
+			isa = PBXGroup;
+			name = Products;
+			refType = 4;
+		};
+		034768E0FF38A50411DB9C8B = {
+			isa = PBXFrameworkReference;
+			path = NGSoap.framework;
+			refType = 3;
+		};
+//030
+//031
+//032
+//033
+//034
+//080
+//081
+//082
+//083
+//084
+		0867D690FE84028FC02AAC07 = {
+			buildStyles = (
+				014CEA440018CDF011CA2923,
+				014CEA450018CDF011CA2923,
+			);
+			isa = PBXProject;
+			mainGroup = 0867D691FE84028FC02AAC07;
+			productRefGroup = 034768DFFF38A50411DB9C8B;
+			projectDirPath = "";
+			targets = (
+				0867D69CFE84028FC02AAC07,
+			);
+		};
+		0867D691FE84028FC02AAC07 = {
+			children = (
+				695E39A002CB87DA00A800C6,
+				695E39A202CB87DA00A800C6,
+				695E39A302CB87DA00A800C6,
+				695E39A902CB87DA00A800C6,
+				695E39A102CB87DA00A800C6,
+				08FB77AEFE84172EC02AAC07,
+				089C1665FE841158C02AAC07,
+				1058C7B0FEA5585E11CA2CBB,
+				034768DFFF38A50411DB9C8B,
+			);
+			isa = PBXGroup;
+			name = NGSoap;
+			refType = 4;
+		};
+		0867D69BFE84028FC02AAC07 = {
+			isa = PBXFrameworkReference;
+			name = Foundation.framework;
+			path = /System/Library/Frameworks/Foundation.framework;
+			refType = 0;
+		};
+		0867D69CFE84028FC02AAC07 = {
+			buildPhases = (
+				0867D69DFE84028FC02AAC07,
+				0867D69EFE84028FC02AAC07,
+				0867D69FFE84028FC02AAC07,
+				0867D6A0FE84028FC02AAC07,
+				0867D6A2FE84028FC02AAC07,
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_VERSION = A;
+				HEADER_SEARCH_PATHS = "";
+				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "-DCOMPILE_AS_FRAMEWORK=1 -DNeXT_Foundation_LIBRARY=1 -DCOCOA_Foundation_LIBRARY=1 -DNeXT_RUNTIME=1 -DAPPLE_RUNTIME=1";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = NGSoap;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+				WRAPPER_EXTENSION = framework;
+			};
+			dependencies = (
+			);
+			isa = PBXFrameworkTarget;
+			name = NGSoap;
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = NGSoap;
+			productReference = 034768E0FF38A50411DB9C8B;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>NGSoap</string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>com.skyrix.core.NGSoap</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>4.2</string>
+	<key>NSPrincipalClass</key>
+	<string></string>
+</dict>
+</plist>
+";
+			shouldUseHeadermap = 1;
+		};
+		0867D69DFE84028FC02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+				695E39AB02CB87DA00A800C6,
+				695E39AE02CB87DA00A800C6,
+				695E39AF02CB87DA00A800C6,
+				695E39B102CB87DA00A800C6,
+			);
+			isa = PBXHeadersBuildPhase;
+		};
+		0867D69EFE84028FC02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+				089C1668FE841158C02AAC07,
+			);
+			isa = PBXResourcesBuildPhase;
+		};
+		0867D69FFE84028FC02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+				695E39B002CB87DA00A800C6,
+				695E39B202CB87DA00A800C6,
+			);
+			isa = PBXSourcesBuildPhase;
+		};
+		0867D6A0FE84028FC02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+				695E399F02CB87A300A800C6,
+				695E39CF02CB87FC00A800C6,
+				695E3A1F02CB880B00A800C6,
+				695E3A3102CB882200A800C6,
+				695E3A5E02CB888600A800C6,
+				695E3A7402CB889900A800C6,
+			);
+			isa = PBXFrameworksBuildPhase;
+		};
+		0867D6A2FE84028FC02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+		};
+		089C1665FE841158C02AAC07 = {
+			children = (
+				089C1666FE841158C02AAC07,
+			);
+			isa = PBXGroup;
+			name = Resources;
+			refType = 4;
+		};
+		089C1666FE841158C02AAC07 = {
+			children = (
+				089C1667FE841158C02AAC07,
+			);
+			isa = PBXVariantGroup;
+			name = InfoPlist.strings;
+			refType = 4;
+		};
+		089C1667FE841158C02AAC07 = {
+			fileEncoding = 10;
+			isa = PBXFileReference;
+			name = English;
+			path = English.lproj/InfoPlist.strings;
+			refType = 4;
+		};
+		089C1668FE841158C02AAC07 = {
+			fileRef = 089C1666FE841158C02AAC07;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		08FB77AEFE84172EC02AAC07 = {
+			children = (
+				695E39A402CB87DA00A800C6,
+				695E39A502CB87DA00A800C6,
+				695E39A702CB87DA00A800C6,
+				695E39A602CB87DA00A800C6,
+				695E39A802CB87DA00A800C6,
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+		};
+//080
+//081
+//082
+//083
+//084
+//100
+//101
+//102
+//103
+//104
+		1058C7B0FEA5585E11CA2CBB = {
+			children = (
+				695E3A5F02CB889900A800C6,
+				0867D69BFE84028FC02AAC07,
+				695E39B402CB87FB00A800C6,
+				695E39D002CB880B00A800C6,
+				695E3A2002CB882200A800C6,
+				695E3A3502CB888600A800C6,
+			);
+			isa = PBXGroup;
+			name = "Linked Frameworks";
+			path = "";
+			refType = 4;
+		};
+//100
+//101
+//102
+//103
+//104
+//690
+//691
+//692
+//693
+//694
+		695E399F02CB87A300A800C6 = {
+			fileRef = 0867D69BFE84028FC02AAC07;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		695E39A002CB87DA00A800C6 = {
+			isa = PBXFileReference;
+			path = ChangeLog;
+			refType = 4;
+		};
+		695E39A102CB87DA00A800C6 = {
+			isa = PBXFileReference;
+			path = common.h;
+			refType = 4;
+		};
+		695E39A202CB87DA00A800C6 = {
+			isa = PBXFileReference;
+			path = GNUmakefile;
+			refType = 4;
+		};
+		695E39A302CB87DA00A800C6 = {
+			isa = PBXFileReference;
+			path = GNUmakefile.preamble;
+			refType = 4;
+		};
+		695E39A402CB87DA00A800C6 = {
+			isa = PBXFileReference;
+			path = NGSoap.h;
+			refType = 4;
+		};
+		695E39A502CB87DA00A800C6 = {
+			isa = PBXFileReference;
+			path = NGSoapClient.h;
+			refType = 4;
+		};
+		695E39A602CB87DA00A800C6 = {
+			isa = PBXFileReference;
+			path = NGSoapClient.m;
+			refType = 4;
+		};
+		695E39A702CB87DA00A800C6 = {
+			isa = PBXFileReference;
+			path = "SOAPBody+DocumentStyle.h";
+			refType = 4;
+		};
+		695E39A802CB87DA00A800C6 = {
+			isa = PBXFileReference;
+			path = "SOAPBody+DocumentStyle.m";
+			refType = 4;
+		};
+		695E39A902CB87DA00A800C6 = {
+			isa = PBXFileReference;
+			path = soapClientTest.m;
+			refType = 4;
+		};
+		695E39AB02CB87DA00A800C6 = {
+			fileRef = 695E39A102CB87DA00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		695E39AE02CB87DA00A800C6 = {
+			fileRef = 695E39A402CB87DA00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		695E39AF02CB87DA00A800C6 = {
+			fileRef = 695E39A502CB87DA00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		695E39B002CB87DA00A800C6 = {
+			fileRef = 695E39A602CB87DA00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		695E39B102CB87DA00A800C6 = {
+			fileRef = 695E39A702CB87DA00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		695E39B202CB87DA00A800C6 = {
+			fileRef = 695E39A802CB87DA00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		695E39B402CB87FB00A800C6 = {
+			isa = PBXFrameworkReference;
+			path = FoundationExt.framework;
+			refType = 3;
+		};
+		695E39CF02CB87FC00A800C6 = {
+			fileRef = 695E39B402CB87FB00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		695E39D002CB880B00A800C6 = {
+			isa = PBXFrameworkReference;
+			path = NGObjWeb.framework;
+			refType = 3;
+		};
+		695E3A1F02CB880B00A800C6 = {
+			fileRef = 695E39D002CB880B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		695E3A2002CB882200A800C6 = {
+			isa = PBXFrameworkReference;
+			path = SOAP.framework;
+			refType = 3;
+		};
+		695E3A3102CB882200A800C6 = {
+			fileRef = 695E3A2002CB882200A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		695E3A3502CB888600A800C6 = {
+			isa = PBXFrameworkReference;
+			path = XmlSchema.framework;
+			refType = 3;
+		};
+		695E3A5E02CB888600A800C6 = {
+			fileRef = 695E3A3502CB888600A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		695E3A5F02CB889900A800C6 = {
+			isa = PBXFrameworkReference;
+			path = WSDL.framework;
+			refType = 3;
+		};
+		695E3A7402CB889900A800C6 = {
+			fileRef = 695E3A5F02CB889900A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+	};
+	rootObject = 0867D690FE84028FC02AAC07;
+}

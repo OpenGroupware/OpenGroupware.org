@@ -1,0 +1,58 @@
+2004-07-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.11
+
+	* common.h: removed some unused includes
+
+	* SkyNoteList.m: minor code cleanups
+
+2004-05-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added postamble which validates WOx files prior building
+	  (v5.0.10)
+
+2004-05-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyNoteList: added "quick note creation" form for fast and easy
+	  note creation (v5.0.9)
+
+	* SkyNoteList.wo: changed to WOx template (v5.0.8)
+
+2004-03-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyNoteList.m: minor code cleanups (v5.0.7)
+
+2004-03-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyNoteEditor.wo: minor template cleanups (v5.0.6)
+
+2004-02-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.5
+
+	* GNUmakefile: fixed makefile for MacOSX
+
+	* SkyNoteList.m: replaced -indexOfString: with -rangeOfString:
+
+2003-12-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyNoteEditor.wo: fixed CSS 'id' vs 'class' issue (v5.0.4)
+
+2003-10-27  Thomas Schild  <ts@skyrix.com>
+
+	* SkyNoteEditor.wo: cancel/deleteButton --> css WOHyperlink button
+	  (v5.0.3)
+
+2003-10-08  Thomas Schild  <ts@skyrix.com>
+
+	* SkyNoteEditor.wo: imageButton --> css submitButton
+
+Mon Jul  7 18:39:10 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.2)
+
+2003-05-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* v4.1.1
+	
+	* GNUmakefile: added a Version file

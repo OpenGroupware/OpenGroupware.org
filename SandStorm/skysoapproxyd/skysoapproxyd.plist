@@ -1,0 +1,18 @@
+{
+  "translator.babelFish" = {
+    wsdl    = "http://www.xmethods.net/sd/2001/BabelFishService.wsdl";
+    service = "BabelFishService";
+  };
+  "translator.num2word" = {
+    wsdl="http://www.tankebolaget.se/scripts/NumToWords.dll/wsdl/INumToWords";
+    service = "INumToWordsservice";
+  };
+  "misc.IPLocator" = {
+    wsdl    = "http://64.78.60.122/GeoPinPoint.asmx?WSDL";
+    service = "GeoPinPoint";
+  };
+  "misc.currency" = {
+    wsdl    = "http://www.xmethods.net/sd/2001/CurrencyExchangeService.wsdl";
+    service = "CurrencyExchangeService";
+  };
+}

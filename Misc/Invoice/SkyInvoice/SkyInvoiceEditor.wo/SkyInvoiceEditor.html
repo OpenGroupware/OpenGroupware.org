@@ -1,0 +1,105 @@
+<!-- $Id: SkyInvoiceEditor.html,v 1.1 2003/07/15 15:31:07 helge Exp $ -->
+
+<#Frame>
+  <#Window>
+    <#Form>
+
+      <TABLE border="0" cellspacing="0" cellpadding="4" width="100%">
+
+        <tr><#ToggleAttr>
+          <#CurLabel />
+        </#ToggleAttr></tr>
+
+        <TR>
+          <#AttributeCell><#Font><#InvoiceDateLabel />:</#Font></#AttributeCell>
+          <#ValueCell><#EditFont>
+            <#InvoiceDate />
+          </#EditFont></#ValueCell>
+        </TR>
+
+        <#IsInEditMode>
+          <TR>
+            <#AttributeCell><#Font><#InvoiceNrLabel />:</#Font></#AttributeCell>
+            <#ValueCell><#EditFont>
+              <#InvoiceNr />
+            </#EditFont></#ValueCell>
+          </TR>
+        </#IsInEditMode><!-- IsInEditMode -->
+
+        <#IsTypeEditableCond>
+          <TR>
+            <#AttributeCell><#Font><#InvoiceKindLabel />:</#Font></#AttributeCell>
+            <#ValueCell><#Font>
+              <#InvoiceKindPopup /><#UpdateKindSubmit />
+            </#Font></#ValueCell>
+          </TR>
+        </#IsTypeEditableCond><!-- IsTypeEditableCond -->
+
+        <TR>
+          <#AttributeCell><#Font><#SearchLabel />:</#Font></#AttributeCell>
+          <#ValueCell>
+            <#EditFont>
+              <#SearchDebitorField />
+              <#SearchDebitorSubmit />
+            </#EditFont>
+          </#ValueCell>
+        </TR>
+
+        <#HasDebitorCond>
+          <TR>
+            <#AttributeCell><#Font><#DebitorLabel />:</#Font></#AttributeCell>
+            <#ValueCell><#Font>
+              <#Debitor />
+            </#Font></#ValueCell>
+          </TR>
+        </#HasDebitorCond><!-- HasDebitorCond -->
+
+        <TR>
+          <#AttributeCell><#Font><#CommentLabel />:</#Font></#AttributeCell>
+          <#ValueCell><#EditFont>
+            <#CommentText />
+          </#EditFont></#ValueCell>
+        </TR>
+
+        <#SearchArticlesErrorCond>
+          <TR>
+            <#AttributeCell><#ErrorFont><#SearchArticlesErrorLabel />:</#ErrorFont></#AttributeCell>
+            <#ValueCell><#EditFont>
+              <PRE><#ErrorString /></PRE>
+            </#EditFont></#ValueCell>
+          </TR>
+        </#SearchArticlesErrorCond><!-- SearchArticlesErrorCond -->
+
+        <#ArticlesEditableCondElse>
+          <TR>
+            <#AttributeCell><#Font><#AddArticleLabel />:</#Font></#AttributeCell>
+            <#ValueCell><#Font>
+              <FONT SIZE="+2">
+                <PRE><#Articles /></PRE>
+              </FONT>
+            </#Font></#ValueCell>
+          </TR>
+        </#ArticlesEditableCondElse><!-- ArticlesEditableCondElse -->
+        <#ArticlesEditableCond>
+          <TR>
+            <#AttributeCell><#Font><#AddArticleLabel />:</#Font></#AttributeCell>
+            <#ValueCell><#EditFont>
+              <#AddArticlesArea />
+            </#EditFont></#ValueCell>
+          </TR>
+        </#ArticlesEditableCond>
+
+        <TR>
+          <TD>&nbsp;</TD>
+          <TD>
+            <#ArticlesEditableCond>
+              <#CheckSubmit />
+            </#ArticlesEditableCond>
+            <#SaveSubmit />
+            <#CancelSubmit />
+          </TD>
+        </TR>
+      </TABLE>
+    </#Form><!-- Form -->
+  </#Window>
+</#Frame>

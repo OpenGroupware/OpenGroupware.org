@@ -1,0 +1,65 @@
+# $Id$
+
+Common parameter types
+
+  FetchSpecification:
+
+   Normally an EOFetchSpecification is expected. If the client doesn't support
+   EOFetchSpecifications you can use a Dictionary or even a String instead.
+
+   The Dictionary has following keys:
+
+         'qualifier': an Qualifier, e.g. qualifier = "name like '*Duck*'"
+     'sortOrderings': an array of SortOrderings
+        'fetchLimit': an integer,  e.g. fetchLimit = 100
+
+     e.g. FetchSpecification = { 
+                                 qualifier     = "name like '*Duck*';
+                                 sortOrderings = ( { 
+                                                     key      = "name";
+                                                     selector = "ascending";
+                                                   }
+                                                 );
+                               }
+
+   The String only represents the qualifier. (The sortOrderings are not set).
+     
+     e.g. FetchSpecification = "name like '*Duck*'"
+
+  SortOrdering:
+
+    Normally an EOSortOrdering is expected. If the client doesn't support
+    EOSortOrderings you can use a Dictionary or even a String instead.
+
+    The Dictionary has following keys:
+
+          'key': name of the attribute to be sorted (String), e.g. key = "name"
+     'selector': either "ascending"                 or
+                        "descending"                or
+                        "caseInsensitiveAscending"  or
+                        "caseInsensitiveDescending"
+
+     e.g. SortOrdering = {
+                           key      = "name";
+                           selector = "descending";
+                         }
+
+    The String only represents the key. (The selector is set to "ascending").
+
+    e.g. SortOrdering = "name";
+
+  Qualfier:
+
+    Normally an EOQualifier is expected. If the client doesn't support
+    EOQualifiers you can use a String or a Dictionary instead.
+
+    The Dictionary is considered to represent an EOAndQualifier
+      e.g. Qualifier = {
+                          name      = "Duck";
+                          firstname = "Donald";
+                       }
+
+           would be this qualifier: "name='Duck' and firstname='Donald'"
+  
+    The String represents the qualifier format.
+    e.g. Qualifier = "name like '*Duck*'"

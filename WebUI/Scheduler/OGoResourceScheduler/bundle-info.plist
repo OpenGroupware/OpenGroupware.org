@@ -1,0 +1,38 @@
+{
+  bundleHandler = SkyResourceSchedulerModule;
+  
+  requires = {
+    bundleManagerVersion = 1;
+
+    bundles = (
+    );
+    classes = (
+      { name = LSWComponent;     exact-version = 2; },
+      { name = LSWContentPage;   exact-version = 3; },
+      { name = LSWModuleManager; exact-version = 2; }
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = SkyResourceSchedulerModule;	   },
+      { name = SkyResourceSchedulerPage;           },
+      { name = SkySchedulerResourcePanel;          },
+      { name = WODirectAction+ResourceSchedulerViews;   }
+    );
+    
+    DockablePages = (
+      {
+        name      = "ResourceScheduler";
+        component = "SkyResourceSchedulerPage";
+        labelKey  = "ResourceScheduler";
+        image     = "menu_resources_labeled.gif";
+        listicon  = "icon_resources_26x21.gif";
+      }
+    );
+    WOComponents = (
+      { name = SkyResourceSchedulerPage;     },
+      { name = SkySchedulerResourcePanel;    }
+    );
+  };
+}

@@ -1,0 +1,130 @@
+// $Id: SkyVacationViewer.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+VacationButtonRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_mainButtonRow;
+}
+
+VacationButtons: SkyButtonRow {
+  ordering = (edit,new);
+  onNew    = new;
+  onEdit   = edit;
+  hasNew   = hasVacationElse;
+  hasEdit  = hasVacation;
+  new      = labels.newVacation;
+  edit     = labels.editVacation;
+}
+
+VacationTitle: LSWViewerTitle {
+  title = labels.vacationTitle;
+}
+
+NoVacationNoticeDefined: WOString {
+  value = labels.noVacationNoticeDefined;
+}
+
+AttributeCell: SkyAttributeCell {}
+
+ValueCell: SkyValueCell { 
+  alignTop = YES;
+}
+
+Font: SkyConfigFont {}
+
+AttributeCellTwo: SkyAttributeCell { 
+  colspan     = "2"; 
+  aligncenter = YES;
+}
+
+HasVacationCondition: WOConditional {
+  condition = hasVacation;
+}
+HasVacationConditionElse: WOConditional {
+  condition = hasVacationElse;
+}
+
+SubjectLabel: SkyAttribute {
+  label      = labels.subject;
+  doTR       = YES;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+
+Subject: WOString {
+  value = vacation.subject;
+}
+
+KeepLabel: SkyAttribute {
+  label      = labels.keepMails;
+  doTR       = YES;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+
+Keep: WOString {
+  value = keepMailString;
+}
+
+TextLabel: SkyAttribute {
+  label      = labels.text;
+  doTR       = YES;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+
+Text: WOString {
+  value = vacation.text;
+}
+
+AddressLabel:  SkyAttribute {
+  label      = labels.addresses;
+  doTR       = YES;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+
+AddressRep: WORepetition {
+  list = vacation.emails;
+  item = email;
+}
+
+Address: WOString {
+  value = email;
+}
+
+ForwardRep: WORepetition {
+  list = forward.emails;
+  item = email;
+}
+
+Empty: SkyAttribute {
+  label      = "";
+  doTR       = YES;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+ForwardLabel: SkyAttribute {
+  label      = labels.vforward;
+  doTR       = YES;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+Forward: WOString {
+  value = forward.address;
+}
+
+RepeatLabel: SkyAttribute {
+  label      = labels.repeat;
+  doTR       = YES;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+
+Repeat: WOString {
+  value = vacation.repeatInterval;
+}
+
+InDays: WOString {
+  value = labels.inDays;
+}
+

@@ -1,0 +1,32 @@
+{
+  bundleHandler = LSSearchCommands;
+
+  requires = {
+    bundleManagerVersion = 1;
+    bundles = ( 
+      { name = LSBase; type = cmd; }
+    );
+    classes = (
+      { name = NSObject; },
+      { name = LSDBObjectBaseCommand; exact-version = 1; }
+    );
+  };
+  
+  provides = {
+    LSCommands = (
+        { name = "search::newrecord";      },
+        { name = "search::extendedsearch"; },
+        { name = "search::fullsearch";     }
+    );
+    classes = (
+        { name = LSBaseSearch;             },
+        { name = LSExtendedSearch;         },
+        { name = LSExtendedSearchCommand;  },
+        { name = LSFullSearch;             },
+        { name = LSFullSearchCommand;      },
+        { name = LSGenericSearchRecord;    },
+        { name = LSNewSearchRecordCommand; },
+        { name = LSSearchCommands;         }
+    );
+  };
+}

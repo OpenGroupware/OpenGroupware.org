@@ -1,0 +1,15 @@
+# $Id$
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I. -I../Frontend -I../Backend -I..
+
+ADDITIONAL_LIB_DIRS += \
+	-L../Frontend/$(GNUSTEP_OBJ_DIR) \
+	-L../Backend/$(GNUSTEP_OBJ_DIR)
+
+PrefsUI_BUNDLE_LIBS += \
+	-lZideStoreBackend \
+	-lGDLAccess \
+	-lNGObjWeb -lNGScripting \
+	-lNGMime -lNGStreams -lNGExtensions -lEOControl \
+	-lXmlRpc -lDOM -lSaxObjC

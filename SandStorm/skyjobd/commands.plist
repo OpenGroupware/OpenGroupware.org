@@ -1,0 +1,23 @@
+// $Id$
+
+{
+  domainList = ( job );
+
+  domains = {
+    "job" = {
+      operations = {
+        "new"                  = { class = "LSNewJobCommand";             };
+        "delete"               = { class = "LSDeleteJobCommand";          };
+        "jobaction"            = { class = "LSJobActionCommand";          };
+
+        "get-todo-jobs"        = { class = "LSFetchToDoJobsCommand";      };
+        "get-private-jobs"     = { class = "LSFetchPrivateJobsCommand";   };
+        "get-archived-jobs"    = { class = "LSFetchArchivedJobsCommand";  };
+        "get-control-jobs"     = { class = "LSFetchControlJobsCommand";   };
+        "get-delegated-jobs"   = { class = "LSFetchDelegatedJobsCommand"; };
+
+        "get-by-globalid"      = { class = "LSGetJobsForGlobalIDs";       };
+      };
+    };
+  };
+}

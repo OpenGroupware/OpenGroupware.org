@@ -1,0 +1,7 @@
+# $Id$
+
+# NOTE: This is just the version of the executable OpenGroupware.org bundle,
+#       it's *NOT* the version of the whole OpenGroupware.org environment !!!
+#       (each OpenGroupware.org component has it's own version)
+
+SUBMINOR_VERSION:=48

@@ -1,0 +1,314 @@
+// $Id: LSWImapMailViewer.wod,v 1.5 2004/01/23 00:29:35 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.MailViewerTitle;
+  onClose = session.navigation.leavePage;
+}
+
+Title: LSWViewerTitle {
+  title     = subject;
+  icon      = "icon_flagged.gif";
+  iconLabel = labels.isFlagged;
+  iconCond  = hasUnFlag;
+}
+
+TabView: SkyTabView {
+  selection = tabKey;
+}
+
+MailTab: SkyTabItem {
+  key    = "mail";
+  label  = labels.Mail;
+  icon   = "mail";
+  action = tabClicked;
+}
+
+SourceTab: SkyTabItem {
+  key    = "source";
+  label  = labels.MailSource;
+  icon   = "mailsource";
+  action = tabClicked;
+}
+
+Buttons: SkyButtonRow {
+  oid         = object.documentId;
+
+  urlPrev     = prevUrl;
+  urlNext     = nextUrl;
+  urlNextunread = nextUnreadUrl;
+  urlPrevunread = prevUnreadUrl;
+  
+  /* custom buttons */
+  ordering    = ( prevunread, prev, reply, allrep, forward, next, nextunread );
+  onReply     = reply;
+  onForward   = forward;
+  onAllrep    = replyAll;
+  
+  /* labels */
+  reply       = labels.replyMail;
+  allrep      = labels.replyAllMail;
+  forward     = labels.forward;
+  nextunread  = labels.nextUnread; 
+  prevunread  = labels.prevUnread; 
+
+  next        = labels.next;
+  prev        = labels.prev;
+}
+
+Buttons2: SkyButtonRow {
+  oid         = object.documentId;
+
+  /* default buttons */
+  onClip      = placeInClipboard;
+  onMove      = move;
+  onDelete    = delete;
+  onNew       = newMail;
+  onClip      = placeInClipboard;
+  hasProject  = projectAllowed;
+  onProject   = copyToProject;
+
+  urlFlag = flagUrl;
+  urlUnflag = unFlagUrl;
+
+  hasFlag = hasFlag;
+  hasUnFlag = hasUnFlag;
+
+  onPrint     = printMail;
+  targetPrint = "Mail Printview";
+  
+  /* custom buttons */
+  ordering    = ( editasnew, flag, unflag, print );
+  onReply     = reply;
+  onForward   = forward;
+  onAllrep    = replyAll;
+  oneditasnew = editAsNew;
+
+  /* labels */
+  editasnew   = labels.editAsNew;
+  clip        = labels.clip;
+  move        = labels.moveMail;
+  delete      = labels.deleteMail;
+  new         = labels.newMail;
+  project     = labels.project;
+
+  print       = labels.print;
+
+  flag        = labels.markFlagged;
+  unflag      = labels.markUnflagged;
+}
+
+HasCC: WOConditional {
+  condition = hasCC;
+}
+
+MainButtonRow: WOGenericContainer {
+  elementName = "tr";
+  BGCOLOR     = config.colors_mainButtonRow;
+}
+
+Font: SkyConfigFont {}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     { alignTop=YES; }
+
+// header fields
+
+Subject:      WOString { value = object.subject;      }
+Sender:       WOString { value = object.sender;       }
+Type:         WOString { value = object.contentType;  }
+Size:         WOString { value = object.contentLen;   }
+MsgId:        WOString { value = object.messageId;    }
+Organization: WOString { value = object.organization; }
+Priority:     WOString { value = object.priority;     }
+To:           WOString { value = to;                  }
+CC:           WOString { value = cc;                  }
+Bcc:          WOString { value = bcc;                 }
+
+Date: WOString {
+  value     = sendDate;
+  formatter = session.formatDateTime;
+}
+
+SubjectLabel: WOString { value = labels.subject;      }
+SenderLabel:  WOString { value = labels.sender;       }
+DateLabel:    WOString { value = labels.date;  }
+TypeLabel:    WOString { value = labels.contentType;  }
+SizeLabel:    WOString { value = labels.contentLength;
+                         escapeHTML = NO;}
+MsgIdLabel:   WOString { value = labels.messageId;}
+ToLabel:      WOString { value = labels.to;}
+CCLabel:      WOString { value = labels.cc;}
+BccLabel:     WOString { value = labels.bcc;}
+OrganizationLabel: WOString { value = labels.organization;}
+PriorityLabel: WOString { value = labels.priority;
+                          escapeHTML = NO;}
+// message part viewer
+
+MessageViewer: LSWMimeMessageViewer {
+  part        = emailContent;
+  showHeaders = 0;
+  source      = object;
+}
+
+Source: WOString {
+  value = mailSourceString;
+}
+
+MailBodyRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_messageBody;
+}
+
+PartHeaderRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_partHeader;
+}
+
+HasProject : WOConditional {
+  condition = projectAllowed;
+}
+
+ToDoc: WOHyperlink {
+  action   = toDoc;
+  filename = "project.gif";
+  alt      = labels.toDoc;
+  title    = labels.toDoc;
+  border   = 0;
+};
+
+Download: WOHyperlink {
+  action   = downloadSource;
+  filename = "document_txt.gif";
+  ALT      = labels.download;
+  TITLE    = labels.download;
+  TARGET   = downloadTarget;
+  BORDER   = 0;
+};
+
+ProjectSelection: SkyProjectSelection {
+  project = project;        // returns the selected project
+  title   = labels.project; // (optional)
+  searchEnterprises = YES;  // search for enterpriseProjects 
+};
+
+// to and cc collapsing
+
+ToCollapserCond: WOConditional {
+  condition = showToCollapser;
+}
+
+ToExpanderCond: WOConditional {
+  condition = showToExpander;
+}
+
+ToCollapser: WOHyperlink {
+  action   = collapseTo;
+  filename = "expanded.gif";
+  BORDER   = "0";
+}
+ToExpander: WOHyperlink {
+  action   = expandTo;
+  filename = "collapsed.gif";
+  BORDER   = "0";
+}
+
+CcCollapserCond: WOConditional {
+  condition = showCcCollapser;
+}
+
+CcExpanderCond: WOConditional {
+  condition = showCcExpander;
+}
+
+CcCollapser: WOHyperlink {
+  action   = collapseCc;
+  filename = "expanded.gif";
+  BORDER   = "0";
+}
+CcExpander: WOHyperlink {
+  action   = expandCc;
+  filename = "collapsed.gif";
+  BORDER   = "0";
+}
+
+AskToReturnReceiptCondElse: WOConditional {
+  condition = askToReturnReceipt;
+  negate    = YES;
+}
+AskToReturnReceiptCond: WOConditional {
+  condition = askToReturnReceipt;
+}
+
+ReceiptQuestion: LSWWarningPanel {
+  onOk     = "sendMDN";
+  onCancel = "sendNoMDN";
+  phrase   = "mdnReturnReceiptQuestion";
+}
+
+SourceIsOpen : WOConditional {
+  condition = viewSourceEnabled;
+}
+SourceIsOpenElse : WOConditional {
+  condition = viewSourceEnabled;
+  negate    = YES;
+}
+ExpandedSourceLink : WOHyperlink {
+  action = alternateShowSource;
+  filename = "collapsed.gif";
+  BORDER   = 0;
+}
+CollapsedSourceLink : WOHyperlink {
+  action = alternateShowSource;
+  filename = "expanded.gif";
+  BORDER   = 0;
+}
+WarningModeCond : WOConditional {
+        condition = isInWarningMode;
+}
+
+WarningModeCondElse : WOConditional {
+        condition = isInWarningMode;
+        negate    = YES;
+}
+
+Warning : LSWWarningPanel {
+        onOk      = warningOkAction;
+        phrase    = warningPhrase;
+}
+
+DownLoadRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_partHeader;
+}
+
+DownloadAllLabel : WOString {
+  value = labels.downloadAll;
+}
+
+DownloadAll: WOHyperlink {
+  action   = downloadAll;
+  //  filename = downloadIconName;
+  ALT      = labels.download;
+  TITLE    = labels.download;
+  BORDER   = 0;
+}
+
+DownloadIcon : SkyP4MailIcon {
+  mimeType     = contentType;
+  //  documentPath = doof;
+}
+
+DownloadAllCond : WOConditional {
+  condition = downloadAllEnabled;
+}
+
+DownloadAllString : WOString {
+  value = downloadAllString;
+  escapeHTML = NO;  
+}
+
+IsDownloadAllEnabled : WOConditional {
+  condition = isDownloadAllEnabled;
+}

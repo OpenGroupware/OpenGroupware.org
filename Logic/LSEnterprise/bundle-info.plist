@@ -1,0 +1,59 @@
+// $Id$
+{
+  bundleHandler = LSEnterpriseCommands;
+  
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = LSAddress; type = cmd; },
+    );
+    
+    classes = (
+      { name = NSObject;              },
+      { name = LSBaseCommand;            exact-version = 1; },
+      { name = LSDBObjectBaseCommand;    exact-version = 1; },
+      { name = LSDBObjectDeleteCommand;  exact-version = 1; },
+      { name = LSDBObjectSetCommand;     exact-version = 2; },
+      { name = LSDBObjectGetCommand;     exact-version = 3; },
+      { name = LSDBFetchRelationCommand; exact-version = 1; },
+      { name = LSExtendedSearchCommand;  exact-version = 2; },
+      { name = LSFullSearchCommand;      exact-version = 3; },
+      { name = LSGetObjectForGlobalIDs;  exact-version = 1; },
+    );
+  };
+
+  provides = {
+    LSCommands = (
+        { name = "enterprise::new";              },
+        { name = "enterprise::set";              },
+        { name = "enterprise::get";              },
+        { name = "enterprise::delete";           },
+        { name = "enterprise::get-comment";      },
+        { name = "enterprise::enterprises";      },
+        { name = "enterprise::get-persons";      },
+        { name = "enterprise::get-telephones";   },
+        { name = "enterprise::get-projects";     },
+        { name = "enterprise::get-fake-project"; },
+        { name = "enterprise::set-persons";      },
+        { name = "enterprise::check-permission"; },
+        { name = "enterprise::get-extattrs";     },
+        { name = "enterprise::full-search";      },
+        { name = "enterprise::extended-search";  },
+        { name = "enterprise::assign-projects";  },
+        { name = "enterprise::get-by-globalid";  },        
+    );
+    classes = (
+        { name = LSExtendedSearchEnterpriseCommand;   },
+        { name = LSFullSearchEnterpriseCommand;       },
+        { name = LSGetEnterpriseCommand;              },
+        { name = LSGetMemberForEnterpriseCommand;     },
+        { name = LSGetFakeProjectForEnterpriseCommand;},
+        { name = LSGetProjectForEnterpriseCommand;    },
+        { name = LSNewEnterpriseCommand;              },
+        { name = LSSetEnterpriseCommand;              },
+        { name = LSEnterpriseCommands;                },
+        { name = LSGetEnterprisesForGlobalIDs;        },        
+    );
+  };
+}

@@ -1,0 +1,28 @@
+<!-- $Id: SkyPalmDateWeekOverview.html,v 1.1 2003/07/14 16:18:25 helge Exp $ -->
+<#WeekOverview>
+
+  <#TitleMode>
+    <#DayTitle />
+  </#TitleMode><!-- TitleMode -->
+
+  <#InfoMode>
+    <#HasEventsCond>
+      <#Font>
+        <#EventRep>
+          <#ViewDate>
+            <#Description /></#ViewDate>
+          <#IsNotLastEvent><BR></#IsNotLastEvent>
+        </#EventRep><HR>
+      </#Font><!-- Font -->
+    </#HasEventsCond><!-- HasEventsCond -->
+  </#InfoMode>
+
+  <#ContentMode>
+    <#Font>
+      <#ViewDate>
+        <#Startdate /></#ViewDate>
+      <#Description />
+    </#Font><!-- Font -->
+  </#ContentMode><!-- ContentMode -->
+
+</#WeekOverview><!-- WeekOverview -->

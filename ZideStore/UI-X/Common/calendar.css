@@ -1,0 +1,15 @@
+.weekoverview_title {
+  color:            #000000;
+  background-color: #AAAAAA;
+}
+.weekoverview_content {
+  color:            #FFFFFF;
+  background-color: #DDDDDD;
+}
+
+.weekoverview_content a {
+  color:           #0000FF;
+  font-family:     Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  letter-spacing:  0pt;
+  text-decoration: none;
+}

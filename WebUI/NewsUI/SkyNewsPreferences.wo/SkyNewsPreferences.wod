@@ -1,0 +1,79 @@
+// $Id: SkyNewsPreferences.wod,v 1.4 2003/12/22 16:53:55 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.NewsPreferences;
+  onClose = session.navigation.leavePage;
+}
+
+IsLicensed: SkyLicenseConditional {
+  modules = ( News );
+}
+
+WindowTitle: LSWViewerTitle {
+  title = accountLabel;
+}
+
+AccessWindowTitle: LSWViewerTitle {
+  title = labels.DefaultAccessPreferences;
+}
+
+PreferencesForm: WOForm {}
+
+CancelButton: WOHyperlink {
+  action   = cancel;
+  string   = labels.cancelButtonLabel;
+  class    = "button_narrow";
+}
+
+BlockSizeField: SkyDefaultEditField {
+  label      = labels.blockSize;
+  isEditable = YES;
+  valueType  = "popup";
+  value      = blockSize;
+  valueList  = ( "10", "20", "30", "40", "50", "75", "100", "150" );
+}
+
+FilterDaysField: SkyDefaultEditField {
+  label      = labels.filterDays;
+  isEditable = YES;
+  valueType  = "popup";
+  value      = filterDays;
+  valueList  = ( "1", "2", "3", "4", "5", "6", "7", "14", "21", "28" );
+}
+
+ShowOverdueJobs: SkyDefaultEditField {
+  label      = labels.showOverdueJobs;
+  isEditable = YES;
+  valueType  = "checkbox";
+  value      = showOverdueJobs;
+}
+
+SaveSubmit: WOSubmitButton {
+  action   = save;
+  name     = labels.saveButtonLabel;
+  value    = labels.saveButtonLabel;
+  class    = "button_narrow";
+}
+
+AttributeCell: SkyAttributeCell { 
+  width = "15%"; 
+}
+
+ValueCell: SkyValueCell {}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+ShowNewsOnTopLabel: WOString {
+  value = labels.showNewsOnTop;
+}
+
+ShowNewsOnTopChecker: WOCheckBox {
+  checked = isShowNewsOnTop;
+}
+
+IsRoot: WOConditional {
+  condition = isRoot;
+}

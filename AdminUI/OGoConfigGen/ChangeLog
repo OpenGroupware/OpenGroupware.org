@@ -1,0 +1,11 @@
+2004-01-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoTeamsVirtualConfigFile.m: properly check admin_team_doexport
+	  flags
+
+	* added Version (starting with 1.0.2)
+
+2004-01-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* created ChangeLog
+

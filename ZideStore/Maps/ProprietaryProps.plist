@@ -1,0 +1,42 @@
+{
+  // $Id$
+  /*
+    mappings for other proprietary groupware servers ...
+    
+    That API is horribly broken from a WebDAV point of view. In fact, while
+    it uses some WebDAV XML syntax, it hasn't much to do with it in any other 
+    way.
+    
+    As a simple example, to perform a document move operation, the manual 
+    recommends to use a *PUT* with a payload containing a proppatch style
+    XML document! Well, why not use WebDAV MOVE instead and allow for a 
+    properly maintained WebDAV document namespace?
+    Similiar stuff for deleting documents - it would be too easy to use the
+    standard DELETE method when you can use a XML PUT to do the same thing
+    in a more complicated way ;->
+    And it uses absolutly *NO* standard WebDAV properties (eg writeRights),
+    not to speak of WebDAV ACL.
+  */
+  "{SLOX:}accessright"       = brkDavHasAccessPermission;
+  "{SLOX:}changeFrom"        = brkDavChangedBy;
+  "{SLOX:}createFrom"        = brkDavCreatedBy;
+  "{SLOX:}creationTime"      = brkDavCreationTimestamp;
+  "{SLOX:}folderreadrights"  = brkDavFolderReadACL;
+  "{SLOX:}folderwriterights" = brkDavFolderWriteACL;
+  "{SLOX:}group"             = brkDavGroupName;
+  "{SLOX:}lastModified"      = brkDavLastModified;
+  "{SLOX:}name"              = davDisplayName;
+  "{SLOX:}objectReadRights"  = brkDavObjectReadACL;
+  "{SLOX:}objectWriteRights" = brkDavObjectWriteACL;
+  "{SLOX:}objectreadrights"  = brkDavObjectReadACL;
+  "{SLOX:}objectwriterights" = brkDavObjectWriteACL;
+  "{SLOX:}objecttype"        = brkDavObjectType;
+  "{SLOX:}owner"             = brkDavOwner;
+  "{SLOX:}parentfolder"      = brkDavParentFolderID;
+  "{SLOX:}parentid"          = brkDavParentID;
+  "{SLOX:}readrights"        = brkDavReadACL;
+  "{SLOX:}rootfolder"        = brkDavRootFolder;
+  "{SLOX:}sloxid"            = brkDavObjectID;
+  "{SLOX:}type"              = brkDavFolderType;
+  "{SLOX:}writeRights"       = brkDavWriteACL;
+}

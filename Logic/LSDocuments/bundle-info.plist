@@ -1,0 +1,73 @@
+{
+  bundleHandler = LSDocumentsCommands;
+
+  requires = {
+    bundleManagerVersion = 1;
+    bundles = (
+      { name = LSSearch;  type = cmd; }
+    );
+    classes = (
+    );
+  };
+  
+  provides = {
+    LSCommands = (
+        { name = "doc::check-get-permission";             },
+        { name = "doc::checkout";                         },
+        { name = "doc::delete";                           },
+        { name = "doc::extended-search";                  },
+        { name = "doc::get";                              },
+        { name = "doc::get-attachment-name";              },
+        { name = "doc::get-by-globalid";                  },
+        { name = "doc::get-current-owner";                },
+        { name = "doc::get-document-editing";             },
+        { name = "doc::move";                             },
+        { name = "doc::new";                              },
+        { name = "doc::reject";                           },
+        { name = "doc::release";                          },
+        { name = "doc::set";                              },
+        { name = "doc::set-folder";                       },
+        { name = "doc::set-object-link";                  },
+        { name = "documentediting::check-get-permission"; },
+        { name = "documentediting::get";                  },
+        { name = "documentediting::get-attachment-name";  },
+        { name = "documentediting::get-by-globalid";      },
+        { name = "documentediting::get-current-owner";    },
+        { name = "documentversion::check-get-permission"; },
+        { name = "documentversion::checkout";             },
+        { name = "documentversion::delete";               },
+        { name = "documentversion::get";                  },
+        { name = "documentversion::get-attachment-name";  },
+        { name = "documentversion::get-last-owner";       },
+        { name = "documentversion::new";                  },
+        { name = "documentversion::set";                  },
+    );
+    classes = (
+        { name = LSDocumentsCommands;                        },
+        { name = LSCheckGetPermissionDocumentCommand;        },
+        { name = LSCheckGetPermissionDocumentEditingCommand; },
+        { name = LSCheckGetPermissionDocumentVersionCommand; },
+        { name = LSCheckoutDocumentCommand;                  },
+        { name = LSCheckoutDocumentVersionCommand;           },
+        { name = LSDeleteDocumentCommand;                    },
+        { name = LSDeleteDocumentVersionCommand;             },
+        { name = LSExtendedSearchDocumentCommand;            },
+        { name = LSFetchIndexDocumentCommand;                },
+        { name = LSFetchRootDocumentCommand;                 },
+        { name = LSFilterAndSortDocCommand;                  },
+        { name = LSFilterAndSortFolderCommand;               },
+        { name = LSGetDocumentCommand;                       },
+        { name = LSGetDocumentEditingCommand;                },
+        { name = LSGetDocumentEditingForGlobalIDs;           },
+        { name = LSGetDocumentForGlobalIDs;                  },
+        { name = LSGetDocumentVersionCommand;                },
+        { name = LSMoveDocumentCommand;                      },
+        { name = LSNewDocumentCommand;                       },
+        { name = LSRejectDocumentCommand;                    },
+        { name = LSReleaseDocumentCommand;                   },
+        { name = LSSetDocumentCommand;                       },
+        { name = LSSetFolderCommand;                         },
+        { name = LSSetObjectLinkCommand;                     },
+    );
+  };
+}

@@ -1,0 +1,31 @@
+// $Id: SkyNavigation.wod,v 1.1 2003/08/04 14:53:35 thomas Exp $
+
+YouAreHereLabel : WOString {
+  value = labels.navposition;
+}
+
+NavRepetition: WORepetition {
+  list      = session.navigation.pageStack;
+  item      = item;
+  index     = index;
+  separator = " / ";
+}
+IsLastNavLink: WOConditional { 
+  condition = isNavLinkClickable; 
+  negate    = YES; 
+}
+IsNotLastNavLink: WOConditional {
+  condition = isNavLinkClickable;
+}
+
+NavLink: WOHyperlink {
+  action     = navigate;
+}
+NavLabel: WOString {
+  value      = itemLabel;
+  escapeHTML = YES;
+}
+
+Small: WOConditional {
+  condition = smallFont;
+}

@@ -1,0 +1,103 @@
+// $Id$
+{
+  bundleHandler = LSWSchedulerModule;
+  
+  requires = {
+    bundleManagerVersion = 1;
+
+    bundles = (
+      { name = LSScheduler;  type = cmd; },
+      { name = OGoScheduler; type = lso; },
+    );
+    classes = (
+      { name = LSWComponent;     exact-version = 2; },
+      { name = LSWContentPage;   exact-version = 3; },
+      { name = LSWModuleManager; exact-version = 2; },
+      { name = SkyAttributeCell;     },
+      { name = SkyValueCell;         },
+      { name = SkyAttribute;         },
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = LSWSchedulerModule;         },
+      { name = LSWSchedulerDateTitle;      },
+      { name = LSWSchedulerDateCell;       },
+      { name = LSWAppointmentMailPage;     },
+      { name = LSWAppointmentHtmlMailPage; },
+      { name = LSWAppointmentTextMailPage; },
+      { name = LSWAppointmentEditor;       },
+      { name = LSWAppointmentViewer;       },
+      { name = LSWSchedulerPreferences;    },
+      { name = LSWAppointmentProposal;     },
+      { name = SkyParticipantsSelection;   },
+      { name = SkyResourceSelection;       },      
+      { name = SkyAptParticipantsList;     },
+      { name = LSWAppointmentMove;         },
+      { name = SkyAptDateSelection;        },
+      { name = SkyAppointmentPrintViewer;  },
+      { name = SkyAptTypeSelection;        },
+    );
+    
+    PreferencePages = (
+      { 
+        name      = "Scheduler";
+        component = "LSWSchedulerPreferences";
+        labelKey  = "Scheduler";
+        icon      = "icon_scheduler_26x21.gif";
+      }
+    );
+    
+    WOComponents = (
+      { name = LSWAppointmentHtmlMailPage; },
+      { name = LSWAppointmentTextMailPage; },
+      { name = LSWAppointmentEditor;       },
+      { name = LSWAppointmentViewer;       },
+      { name = LSWSchedulerPreferences;    },
+      { name = LSWAppointmentProposal;     },      
+      { name = SkyParticipantsSelection;   },
+      { name = SkyResourceSelection;       },      
+      { name = SkyAptParticipantsList;     },
+      { name = LSWAppointmentMove;         },
+      { name = SkyAptDateSelection;        },
+      { name = SkyAppointmentPrintViewer;  },
+      { name = SkyAptTypeSelection;        },
+    );
+
+    LSWCommands = (
+      { 
+        verb      = view;
+        type      = "eo-gid/date";
+        component = LSWAppointmentViewer; 
+      },
+      { verb = view;     type = "eo/date"; component = LSWAppointmentViewer; },
+      
+      { verb=print; type="eo-gid/date"; component=SkyAppointmentPrintViewer;},
+      { verb=print; type="eo/date";     component=SkyAppointmentPrintViewer;},
+      
+      { verb = edit;     type = "eo/date"; component = LSWAppointmentEditor; },
+      { verb = new;      type = "eo/date"; component = LSWAppointmentEditor; },
+      { verb = proposal; type = "eo/date"; component = LSWAppointmentProposal; },
+      { verb = move;     type = "eo/date"; component = LSWAppointmentMove; },
+      { 
+        verb = mailview; type = "eo-pkey/date";
+        component = LSWAppointmentHtmlMailPage; 
+      },
+      {
+        verb = htmlMail; type = "eo/date";
+        component = LSWAppointmentHtmlMailPage; 
+      },
+      { 
+        verb = textMail; type = "eo/date";
+        component = LSWAppointmentTextMailPage; 
+      },
+      
+      {
+        verb      = link-inline-preview;
+        type      = "eo-gid/date";
+        component = LSWAppointmentHtmlMailPage; 
+      }
+    );
+  };
+}

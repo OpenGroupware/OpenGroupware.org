@@ -1,0 +1,37 @@
+2004-06-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Projects/common.h, Projects/GNUmakefile: fixed for MacOSX
+
+2004-06-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Scheduler/OGoCalWeekOverview.m: moved navigation URL generation to
+	  superclass (now generic because we use the 'ownMethodName'). Could
+	  even be moved to OGoCalView?
+	
+	* Scheduler/OGoCalMonthView.m: added next/prev month URL generation
+	  methods, calculate startdate from form value
+
+	* Scheduler/OGoCalView.m: added -ownMethodName method to return the
+	  last path component of the request URL (the SOPE method), eg
+	  'weekoverview' for OGoCalWeekView, added 
+	  -dateNavigationURLWithNewStartDate: method to calculate 'startDate'
+	  URLs (should be improved to include existing query parameters!)
+
+	* Scheduler/OGoCalWeekOverview.m: minor tweaks ;-)
+
+2004-06-03  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Scheduler/OGoCalWeekView.m: construct startDate from formValue,
+	  otherwise use current week's monday as startDate.
+
+	* Scheduler/OGoCalWeekOverview.wox: switch back/forth
+
+	* Scheduler/OGoCalWeekOverview.m: provide URLs for switching back/forth
+	  weekoverview.
+
+	* Scheduler/OGoCalView.[hm]: methods for converting dates into strings
+	  and vice versa.
+
+	* Scheduler/OGoAppointmentView.m, Scheduler/OGoCalView.m: fixed include
+
+	* ChangeLog: created

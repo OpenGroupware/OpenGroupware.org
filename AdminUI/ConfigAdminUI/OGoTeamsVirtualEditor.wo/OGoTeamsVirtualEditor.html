@@ -1,0 +1,64 @@
+<#Frame>
+  <!-- $Id: OGoTeamsVirtualEditor.html,v 1.2 2004/01/30 16:12:03 helge Exp $ -->
+  <#Window>
+
+   <#Form>
+    <#TabView>
+      <#ConfigTab>
+        <p style="border: 1px solid black; padding: 8px;">
+          <#Font>
+            This configuration creates a Postfix virtual file containing the
+            email mappings specified in the team records. It will map a team
+            name to the email addresses of the team members and will also
+            produce virtual aliases for a team if told to do so.
+            <br />
+            <br />
+            Note: Remember that special chars like umlauts or spaces will be
+            transformed to produce RFC822 compliant email addresses. Take care
+            not to create duplicate email aliases.
+          </#Font>
+        </p>
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+          <tr>
+            <#ACell><#Font>Settings:</#Font></#ACell>
+            <#VCell><#EditFont>
+              <#IgnoreExport/> Ignore during export.<br />
+              <#IgnoreVAddrs/> Ignore virtual addresses attached to team.<br/>
+            </#EditFont></#VCell>
+          </tr>
+          <tr>
+            <#ACell><#Font>EMails:</#Font></#ACell>
+            <#VCell><#EditFont>
+              <#GenEMail/> generate valias for team email address.<br />
+            </#EditFont></#VCell>
+          </tr>
+
+          <tr>
+            <#ACell><#Font>Raw Prefix:</#Font></#ACell>
+            <#VCell><#EditFont><#RawPrefix/></#EditFont></#VCell>
+          </tr>
+          <tr>
+            <#ACell><#Font>Raw Suffix:</#Font></#ACell>
+            <#VCell><#EditFont><#RawSuffix/></#EditFont></#VCell>
+          </tr>
+<!--
+          <tr>
+            <#ACell><#Font>Actions:</#Font></#ACell>
+            <#VCell><#EditFont>
+              <#Submit/>
+            </#EditFont></#VCell>
+          </tr>
+-->
+        </table>
+      </#ConfigTab>
+
+      <#PreviewTab>
+        <pre style="border: 1px solid black; padding: 8px;"
+            ><#PreviewContent/></pre>
+      </#PreviewTab>
+
+      <#DebugTab><#Obj/></#DebugTab>
+    </#TabView>
+   </#Form>
+  </#Window>
+</#Frame>

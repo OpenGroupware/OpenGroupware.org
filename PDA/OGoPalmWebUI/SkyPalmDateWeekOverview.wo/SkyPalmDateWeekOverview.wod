@@ -1,0 +1,61 @@
+// $Id: SkyPalmDateWeekOverview.wod,v 1.1 2003/07/14 16:18:25 helge Exp $
+
+// style
+Font: SkyConfigFont {}
+
+// week overview
+WeekOverview: WEWeekOverview {
+  list         = recordsWithoutEvents;
+  item         = record;
+  identifier   = recordIdentifier;
+  weekStart    = weekStart;
+  dayIndex     = dayIndex;
+
+  startDateKey = "startdate";
+  endDateKey   = "enddate";
+  titleColor   = titleColor;   // "#FFDAAA";
+  contentColor = contentColor; // "#FAE8B8";
+}
+TitleMode:   WEWeekOverviewTitleMode   {};
+InfoMode:    WEWeekOverviewInfoMode    {};
+ContentMode: WEWeekOverviewContentMode {};
+
+// title
+DayTitle: LSWSchedulerDateTitle {
+  title      = labels.$currentWeekdayLabel;
+  disableNew = YES;
+  highlight  = currentDate.isToday;
+  date       = currentDate;
+}
+
+// conditionals
+HasEventsCond: WOConditional {
+  condition = hasDayEvents;
+}
+IsNotLastEvent: WOConditional {
+  condition = eventIndex;
+  value     = eventsOfDay.count;
+  negate    = YES;
+}
+
+// events
+EventRep: WORepetition {
+  list  = eventsOfDay;
+  item  = record;
+  index = eventIndex;
+}
+Event: WOString {
+  value = record.description;
+}
+
+// date
+Startdate: WOString {
+  value      = record.startdate;
+  dateformat = "%H:%M";
+}
+Description: WOString {
+  value = record.description;
+}
+ViewDate: WOHyperlink {
+  href = viewDirectActionURL;
+}

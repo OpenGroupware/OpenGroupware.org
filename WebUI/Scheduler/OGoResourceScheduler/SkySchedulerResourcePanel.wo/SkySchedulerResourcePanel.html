@@ -1,0 +1,40 @@
+<!-- $Id: SkySchedulerResourcePanel.html,v 1.2 2003/11/05 14:09:49 thomas Exp $ -->
+<#Form>
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr bgcolor="#E0E0E0">
+      <td align="left" valign="center" width="99%">
+        <#SearchTF />
+	<#TimeZonePopUp />
+        <#IsWeekModeCond><#WeekPopUp /></#IsWeekModeCond>
+        <#Submit />
+      </td>
+      
+      <#IsDayModeCond>
+        <td align="right" valign="top"><#LastDay><#LastDayImg /></#LastDay></td>
+        <td align="right" valign="top"><nobr><#ThisDay /></nobr></td>
+        <td align="right" valign="top"><#NextDay><#NextDayImg /></#NextDay></td>
+      </#IsDayModeCond>
+      
+      <#IsWeekModeCond>
+        <td align="right" valign="top"><#LastWeek><#LastWeekImg /></#LastWeek></td>
+        <td align="right" valign="top"><nobr><#ThisWeek /></nobr></td>
+        <td align="right" valign="top"><#NextWeek><#NextWeekImg /></#NextWeek></td>
+      </#IsWeekModeCond>
+
+      <#IsMonthModeCond>
+        <td align="right" valign="top"><#LastMonth><#LastMonthImg /></#LastMonth></td>
+        <td align="right" valign="top"><nobr><#ThisMonth /></nobr></td>
+        <td align="right" valign="top"><#NextMonth><#NextMonthImg /></#NextMonth></td>
+      </#IsMonthModeCond>
+    </tr>
+    <tr bgcolor="#e0e0e0">
+      <td align="left" valign="center">
+        <#ResourceCategoryPopUp />
+        <#ShowResourcesCond><#ResourcePopUp /></#ShowResourcesCond>
+      </td>
+      <td align="right" valign="top">&nbsp;</td>
+      <td align="right" valign="top">&nbsp;</td>
+      <td align="right" valign="top">&nbsp;</td>
+    </tr>
+  </table>
+</#Form>

@@ -1,0 +1,429 @@
+// $Id: SkyInvoices.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+//Style
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.invoices_windowLabel;
+  onClose = session.navigation.leavePage;
+}
+
+EditFont: SkyConfigEditFont {}
+
+// Tabs
+
+ToggleAttr: SkyAttribute {
+  label = labels.currency;
+}
+TogglePanel: SkyInlineCurrencyToggle {
+  currency = session.userDefaults.invoice_currency;
+}
+
+TabView: SkyTabView {
+  selection = tabKey;
+}
+
+InvoicesTab: SkyTabItem {
+  key        = "invoices";
+  action     = tabClicked;
+  label      = labels.invoices;
+  icon       = "invoices";
+}
+
+ArticlesTab: SkyTabItem {
+  key       = "articles";
+  action    = tabClicked;
+  label     = labels.articles;
+  icon      = "articles";
+}
+
+ArticleCategoriesTab: SkyTabItem {
+  key        = "articleCategories";
+  action     = tabClicked;
+  label      = labels.articleCategories;
+  icon       = "categories";
+}
+
+UnitsTab: SkyTabItem {
+  key        = "units";
+  action     = tabClicked;
+  label      = labels.units;
+  icon       = "units";
+}
+
+MonitionsTab: SkyTabItem {
+  key        = "monitions";
+  action     = tabClicked;
+  label      = labels.monitions;
+  icon       = "monitions";
+}
+
+OverviewTab: SkyTabItem {
+  key        = "overview";
+  action     = tabClicked;
+  label      = labels.overview;
+  icon       = "overview";
+}
+
+AccountsTab: SkyTabItem {
+  key        = "accounts";
+  action     = tabClicked;
+  label      = labels.invoiceAccounts;
+  icon       = "invoiceaccounts";
+}
+
+// Conditional
+
+InvoicesCond: WOConditional {
+  condition = tabKey;
+  value     = "invoices";
+}
+
+OverviewCond: WOConditional {
+  condition = tabKey;
+  value     = "overview";
+}
+
+// MonthFilter
+
+Form: WOForm {
+  name   = "searchform";
+  action = search;
+}
+
+Year: WOTextField {
+  value = selectedYear;
+  size  = 4;
+}
+
+MonthPopup: WOPopUpButton {
+  list            = ( 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 );
+  item            = item;
+  string          = monthLabel;
+  selection       = selectedMonth;
+  name            = "selectedMonth";
+  singleSelection = YES;
+  onChange        = "document.searchform.submit(); return true";
+}
+
+KindPopup: WOPopUpButton {
+  list            = invoiceKinds;
+  item            = item;
+  string          = labelForItem;
+  selection       = selectedKind;
+  singleSelection = YES;
+  onChange        = "document.searchform.submit(); return true";
+}
+
+SearchSubmit: WOImageButton {
+  filename = "show.gif";
+  name     = labels.show;
+  ALT      = labels.show;
+  BORDER   = 0;
+}
+
+InvoiceSearchField: WOTextField {
+  value = invoiceSearchString;
+  size  = 20;
+}
+
+InvoiceSearchSubmit: WOImageButton {
+  action   = searchInvoice;
+  filename = "search.gif";
+  name     = labels.search;
+  ALT      = labels.search;
+  BORDER   = 0;
+}
+
+ListViewEnabledCond: WOConditional {
+  condition = isListViewDisabled;
+  negate    = YES;
+}
+ListViewDisabledCond: WOConditional {
+  condition = isListViewDisabled;
+}
+
+ResultNumber: WOString {
+  value = invoices.count;
+}
+ResultLabel: WOString {
+  value = labels.searchResult;
+}
+
+BackToListview: WOHyperlink {
+  action = clearSearch;
+}
+BackLabel: WOString {
+  value = labels.back;
+}
+
+//overviewform
+
+OverviewForm: WOForm {
+  name = "overviewform";
+  action = computeOverview;
+}
+
+FromTF: WOTextField {
+  size  = 10;
+  value = overviewFrom;
+}
+
+ToTF: WOTextField {
+  size  = 10;
+  value = overviewTo;
+}
+
+OverviewSubmit: WOImageButton {
+  filename = "show.gif";
+  name     = labels.show;
+  ALT      = labels.show;
+  BORDER   = 0;
+}
+
+
+// List
+
+InvoiceForm: WOForm {
+  name   = "InvoicesForm";
+  action = buttonAction;
+}
+
+CopyInvoicesButton: WOImageButton {
+  action   = copyInvoices;
+  filename = "copy_small.gif";
+  name     = labels.copyInvoices;
+  ALT      = labels.copyInvoices;
+  BORDER   = 0;
+}
+
+MoveInvoicesButton: WOImageButton {
+  action   = moveInvoices;
+  filename = "move_small.gif";
+  name     = labels.moveInvoices;
+  ALT      = labels.moveInvoices;
+  BORDER   = 0;
+}
+
+CertifyPrintoutButton: WOImageButton {
+  action   = certifyPrintouts;
+  filename = "confirmprintout_small.gif";
+  name     = labels.certifyPrintout;
+  ALT      = labels.certifyPrintout;
+  BORDER   = 0;
+}
+
+InvoicesSettledButton: WOImageButton {
+  action   = settleInvoices;
+  filename = "settled_small.gif";
+  name     = labels.finishInvoice;
+  ALT      = labels.finishInvoice;
+  BORDER   = 0;
+}
+
+InvoicesList: SkyInvoiceList {
+  invoices          = invoices;
+  selected          = selected;
+  formName          = "InvoicesForm";
+  attributes        = session.userDefaults.SkyInvoice_InvoiceList_attributes;
+}
+
+//articles
+
+ArticlesForm: WOForm {
+  action = searchArticles;
+}
+
+ArticleSearchTextField: WOTextField {
+  value = articleSearchString;
+}
+
+ArticleSearchButton: WOImageButton {
+  action   = searchArticles;
+  filename = "search_small.gif";
+  name     = labels.searchArticles;
+  ALT      = labels.searchArticles;
+  BORDER   = 0;  
+}
+
+ArticleButtons: SkyButtonRow {
+  ordering    = ( new );
+  onNew       = newArticle;
+  new         = labels.new;
+  tipNew      = labels.new;
+}
+
+ArticlesList: SkyArticlesList {
+  articles = articles;
+  item     = item;
+  action   = "viewArticle";
+}
+/*
+ArticlesList: LSWTableView {
+  labels            = labels;
+  title             = labels.articles;
+  start             = start;
+  label             = labels.articles;
+  list              = articles;
+  item              = item;
+  selectedAttribute = selectedAttribute;
+  blockSize         = session.userDefaults.invoice_blocksize;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+  numberFormatter   = numberFormatter;
+  attributes        = (
+    {
+      key      = "sArticleNr";
+      labelKey = "articleNr";
+      sort     = YES;
+      action   = "viewArticle";
+    },
+    {
+      key      = "articleName";
+      labelKey = "articleName";
+      sort  = YES;
+    },
+    {
+      key      = "articleCategory";
+      relKey   = "categoryName";
+      labelKey = "articleCategory";
+      sort     = NO;
+    },
+    {
+      key      = "articleUnit";
+      relKey   = "description";
+      labelKey = "articleUnit";
+      sort     = NO;
+    },
+    {
+      key      = "vat";
+      labelKey = "articleVat";
+      sort     = YES;
+    },
+    {
+      key      = "comment";
+      labelKey = "comment";
+      sort     = NO;
+    },
+    {
+      key      = "price";
+      labelKey = "price";
+      sort     = YES;
+      align    = "RIGHT";
+    }
+  );
+}
+*/
+
+ArticleCategoriesButtons: SkyButtonRow {
+  ordering    = ( new );
+  onNew       = newArticleCategory;
+  new         = labels.new;
+  tipNew      = labels.new;
+}
+
+ArticleCategoriesList: LSWTableView {
+  labels            = labels;
+  title             = labels.articleCategories;
+  start             = start;
+  label             = labels.articleCategories;
+  list              = articleCategories;
+  item              = item;
+  selectedAttribute = selectedAttribute;
+  blockSize         = session.userDefaults.invoice_blocksize;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+  attributes        = (
+    { 
+      key         = "categoryName";
+      labelKey    = "categoryName";
+      action      = "viewArticleCategory";
+      sort        = YES;
+    },
+    { 
+      key         = "categoryAbbrev";
+      labelKey    = "categoryAbbrev";
+      sort        = YES;
+    }
+  );
+}
+
+UnitsButtons: SkyButtonRow {
+  ordering    = ( new );
+  onNew       = newUnit;
+  new         = labels.new;
+  tipNew      = labels.new;
+}
+
+UnitsList: LSWTableView {
+  title             = labels.units;
+  start             = start;
+  label             = labels.units;
+  list              = units;
+  item              = item;
+  selectedAttribute = selectedAttribute;
+  blockSize         = session.userDefaults.invoice_blocksize;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+  labels            = labels;
+  attributes        = (
+    { key         = "singularUnit";
+      labelKey    = "singularUnit";
+      isLocalized = YES;
+      action      = "viewUnit";
+      sort        = YES;
+    },
+    { key         = "pluralUnit";
+      labelKey    = "pluralUnit";
+      isLocalized = YES;
+      sort        = YES;
+    },
+    { key         = "description";
+      labelKey    = "description";
+      isLocalized = YES;
+      sort        = NO;
+    }
+  );
+}
+
+MonitionDebitorList: SkyMonitionDebitorsList {
+  debitors = badDebitors;
+  item     = item;
+  action   = "viewMonitions";
+}
+
+AccountsList: LSWTableView {
+  title             = labels.invoiceAccounts;
+  start             = start;
+  label             = labels.invoiceAccounts;
+  list              = accounts;
+  item              = item;
+  selectedAttribute = selectedAttribute;
+  blockSize         = session.userDefaults.invoice_blocksize;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+  labels            = labels;
+  numberFormatter   = currencyFormatter;
+  attributes        = (
+    { key         = "accountNr";
+      labelKey    = "accountNr";
+      action      = "viewAccount";
+      sort        = YES;
+    },
+    { key         = "debitor";
+      relKey      = "description";
+      labelKey    = "debitor";
+      sort        = YES;
+    },
+    { key         = "balance";
+      labelKey    = "balance";
+      sort        = YES;
+      align       = "RIGHT";
+    }
+  );
+}
+
+OverviewOutput: WOString {
+  value = overviewOutput;
+}

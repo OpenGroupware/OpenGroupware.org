@@ -1,0 +1,32 @@
+How to setup a SandStorm environment
+
+(1) Setup your Defaults
+=======================
+
+Defaults/NSGlobalDomain.plist:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // change this to your registry URL
+    SxComponentRegistryURL = "http://marvin:21000/RPC2";
+    SxDefaultNamespacePrefix = "marvin.oracle";
+    SxRegistryComponentUser = root;
+    SxRegistryComponentPassword = xx;
+
+Defaults/skyregistryd.plist:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    SxMasterRegistryURL = "http://marvin:12000/RPC2";
+
+Defaults/skymasterd.plist:
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+    SMAuthenticationUser = root;
+    SMAuthenticationPassword = yy;
+
+
+(2) Setup the master daemon
+===========================
+    - copy the template files you need from $SKYRIX_ROOT/install/masterd
+      to $GNUSTEP_USER_ROOT/config/skymasterd
+    - copy the instance files for the daemons you want to run from
+      $SKYRIX_ROOT/install/masterd/instances to $GNUSTEP_USER_ROOT/config/
+      skymasterd-instances and _EDIT_ them (esp. watch the port settings
+      in these files)
+    - control the daemon using skyrun.rc/skydaemon.rc from install/

@@ -1,0 +1,11 @@
+2004-02-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* v1.0.1
+
+	* InstanceView.m: added ivars for bindings
+
+	* DirectAction.m: fixed redirection to external URLs
+
+2004-02-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* initial OGo check-in (v1.0.0)

@@ -1,0 +1,17 @@
+# $Id$
+
+ADDITIONAL_BUNDLE_LIBS += \
+	-lOGoProject -lOGoDocuments
+
+ifeq ($(GNUSTEP_TARGET_OS),mingw32)
+LSWProject_WOBUNDLE_LIBS += \
+	-lNGMime -lNGHttp \
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lFoundation -lobjc
+endif
+
+LSWProject_INCLUDE_DIRS += -IHeaders -I../..
+
+ADDITIONAL_CPPFLAGS += -Wall
+
+LSWProject_LIB_DIRS += -L../../LSWFoundation/$(GNUSTEP_OBJ_DIR)

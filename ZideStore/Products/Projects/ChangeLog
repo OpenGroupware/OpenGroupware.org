@@ -1,0 +1,98 @@
+2004-07-30  Helge Hess  <helge@dogbert.in.skyrix.com>
+	
+	* SxDocumentFolder+Perf.m: include the folder itself in WebDAV result
+	  sets if Konqueror is the user agent (a hack to work around the hack
+	  for IE ...) (should fix OGo bug 857) (v1.2.85)
+	
+	* SxDocumentFolder.m, SxProjectFolder.m: fixed some issues with 
+	  filesystem projects (should fix OGo bug 852) (v1.2.84)
+
+2004-07-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxDocument.m: fixed a bug with object deletion (v1.2.83)
+
+2004-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxDocumentFolder.m: improvements to debug logs, changed the lookup
+	  for PUT operations (v1.2.82)
+
+2004-07-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxProjectsFolder.m, SxDocumentFolder.m, SxDocument.m, SxNote.m: 
+	  fixed a warning with newer gcc's (v1.2.81)
+
+2004-04-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.2.80
+
+	* SxProjectsFolder.m: debugging can be enabled using the 
+	  SxProjectFolderDebugEnabled default
+
+	* SxDocumentFolder.m: fixed a bug in storage path construction, 
+	  debugging can be enabled using the SxDocumentFolderDebugEnabled
+	  default
+
+2004-03-22  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* added SkyProjectNotesFolder for mapping "notes" to WebDAV (v1.2.79)
+	
+2004-02-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.2.78
+
+	* GNUmakefile.preamble: fixed library dependencies for OSX
+
+	* SxDocument.m, SxDocumentFolder.m, SxDocumentFolder+Perf.m: fixed some
+	  compilation warnings on OSX (v1.2.78)
+
+2003-12-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxDocumentFolder.m: minor fixes and cleanups (v1.2.77)
+
+2003-12-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxProjectsFolder.m: check parent-names prior fetching project names
+	  (v1.2.76)
+
+2003-11-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxDocumentFolder+Perf.m: properly escape filenames used to construct
+	  URL (relates to bug 456) (v1.2.75)
+
+	* SxDocumentFolder+Perf.m: added a hack to make the document folders
+	  work with Nautilus (v1.2.74)
+
+2003-11-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxProjectsFolder.m: fixed include (v1.2.73)
+
+2003-11-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxProjectsFolder.m: added method to return "rawDataSource" 
+	  (SkyProjectDataSource) (v1.2.72)
+
+2003-11-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.2.71
+
+	* SxDocumentFolder.m: implemented toOneRelationshipKeys and 
+	  toManyRelationshipKeys
+
+	* SxProjectsFolder.m: check in name lookup whether a name is really
+	  an existing project (otherwise continue lookup in SoClass)
+
+2003-11-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* MOVE/COPY seem to work now for most cases
+
+2003-11-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxDocument, SxDocumentFolder: prepared for implementation of MOVE
+	  and COPY
+
+	* added descriptions (v1.2.70)
+
+2003-11-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved the Frontend Projects subproject into this separate 
+	  Projects.zsp product (v1.2.68)

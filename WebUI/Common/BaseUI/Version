@@ -1,0 +1,6 @@
+# $Id$
+
+SUBMINOR_VERSION:=87
+
+# Requirements:
+#   v5.0.40 => NGObjWeb v4.2.143

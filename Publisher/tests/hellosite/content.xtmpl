@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<span xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:js="http://www.skyrix.com/od/javascript"
+>
+  <!--
+    The content-template should *only* contain the body of the object. It's
+    intended for objects which do not render their body as the content (but
+    their attributes for example)
+    -->
+  <SKYOBJ insertvalue="var" name="body" />
+</span>

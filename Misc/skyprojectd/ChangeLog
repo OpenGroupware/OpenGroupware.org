@@ -1,0 +1,88 @@
+2003-08-19  Helge Hess  <helge.hess@skyrix.com>
+
+	* added to OGo CVS, updated sources to change class names
+
+2003-07-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyProject_PUT.m: checkout files on demand
+
+	* Session.m: more cleanups
+
+2003-07-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* skyprojectd.m: adjusted superclass version (WOApplication v6)
+
+	* split up some source files
+
+	* Session.m: compiles with current Skyrix41e
+
+Tue Feb 25 21:50:41 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* SkyProject*: SkyProject -> SkyDBProject
+
+Fri Nov 22 11:24:48 2002    <jan@skyrix.com>
+
+	* GNUmakefile.preamble: fixed 41->41e Makefile
+
+Fri Feb  8 14:27:19 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* skyprojectd.m: !LIB_FOUNDATION_LIBRARY -> !LIB_FOUNDATION_BOEHM_GC
+
+Tue Nov 13 13:04:30 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyProjectRequestHandler.m: log status and headers if LogDAVResponse
+	  is turned on
+
+Mon Nov  5 18:43:25 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* Session.m: fixed -dealloc #ifdef
+
+Mon Nov  5 16:45:53 2001  Jan 
+
+	* Session.m: add notifications
+
+Thu Aug 30 19:21:10 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyProjectFileManager.py: added a folder datasource
+
+Thu Aug 30 18:30:43 2001  Helge Hess  <helge.hess@skyrix.com>
+	
+	* SkyProjectFileManager.py: rewritten some parsing ...
+	
+Wed Aug  8 11:47:51 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyProject_PROPFIND.m: fix for WebFolders
+
+Thu Aug  2 23:25:24 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* major cleanups, better support for 'depth', GoLive support
+
+Thu Aug  2 22:19:34 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyProjectRequestHandler.m: fixed memory leak (daClass handler wasn't
+	  released)
+
+Thu Aug  2 21:04:08 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyProjectRequestHandler.m: added request/response logging features
+
+	* SkyProjectDirectAction+Prop.m (_propsForPath): fixed bug in DAV
+	  implementation (href was encoded as a property, not as a child of
+	  <response>)
+
+Thu Jul 26 10:49:46 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* skyprojectd.m: made it a watch-dog application
+
+Mon Jul 23 15:48:12 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* skyprojectd.m: adjusted for increased superclass version
+
+Fri Feb 23 16:25:20 2001  Jan Reichmann  <jan@skyrix.com>
+
+	* SkyProjectDirectAction.m: add write access only for edited files
+
+Fri Feb 23 16:24:24 2001  Jan Reichmann  <jan@skyrix.com>
+
+	* SkyProjectDirectAction+Prop.m: add <D:isreadonly\>
+

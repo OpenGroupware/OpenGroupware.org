@@ -1,0 +1,25 @@
+// $Id: SkyWizardAddressViewer.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+Title: LSWViewerTitle {
+  title     = labels.addressView;
+}
+
+AddressViewer : LSWObjectViewer {
+  object         = snapshot;
+  labels         = labels;
+  attributeColor = config.colors_attributeCell;
+  valueColor     = config.colors_valueCell;
+  attributes     = (
+    { key = "addressType"; localizeValue = 1;},
+    { key = "name1"; }, 
+    { key = "name2"; }, 
+    { key = "name3"; }, 
+    { key = "street"; },
+    { key = "city"; }, 
+    { key = "zip"; },
+    { key = "state"; }, 
+    { key = "country"; }, 
+//    { key = "05_tel_private"; },
+//    { key = "15_fax_private"; },
+  );
+};

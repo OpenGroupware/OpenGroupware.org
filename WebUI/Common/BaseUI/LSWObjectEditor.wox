@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<var:foreach 
+  list="attributes" item="attribute"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+>
+  <!-- $Id: LSWObjectEditor.wox,v 1.4 2004/04/30 12:11:20 helge Exp $ -->
+  <tr>
+    <td align="right" valign="top" var:bgcolor="config.colors_attributeCell"
+        width="15%" var:colspan="colspanA"><OGo:font>
+      <var:string value="attributeLabel" const:escapeHTML="NO" />:
+    </OGo:font></td>
+    
+    <td align="left" valign="top" var:bgcolor="config.colors_valueCell"
+        var:colspan="colspanV"><OGo:editfont>
+
+      <var:switch selection="fieldType">
+	<var:case const:key="enum">
+          <var:popup list="currentValues"  item="item" 
+                     string="currentLabel" selection="attributeValue" 
+                     const:singleSelection="YES"
+                     const:nilString="-" />
+        </var:case>
+	
+	<var:case const:key="multi">
+          <var:multiselection list="currentValues" item="item"
+                              string="currentLabel" 
+                              selection="attributeValue" 
+                              const:size="4" const:multiple="YES" />
+        </var:case>
+	
+	<var:case const:key="checkbox">
+          <input type="checkbox" var:checked="isValueChecked" />
+        </var:case>
+
+        <!-- TODO: add special support for email (using JS validation) -->
+
+        <var:default>
+          <input type="text" size="40" maxlength="255"
+                 var:name="textFieldName" 
+                 var:value="attributeValue" 
+                 var:formatter="session.formatString" />
+          
+          <!-- additional calpopup buttons working on the textfield -->
+          <var:if condition="session.isJavaScriptEnabled">
+            <var:switch selection="attribute.key">
+              <var:case const:key="startDate">
+                <OGo:calendarpopup name="startDate" />
+              </var:case>
+
+              <var:case const:key="endDate">
+                <OGo:calendarpopup name="endDate" />
+              </var:case>
+
+              <var:case const:key="completionDate">
+                <!-- todo: is the formname correct? -->
+                <OGo:calendarpopup name="completionDate" 
+                                   formName="personEditor" />
+              </var:case>
+
+              <var:case const:key="birthday">
+                <!-- todo: is the formname correct? -->
+                <OGo:calendarpopup name="birthday" formName="personEditor" />
+              </var:case>
+	    </var:switch>
+          </var:if> <!-- isJavaScriptEnabled -->
+        </var:default>
+      </var:switch>
+    </OGo:editfont></td>
+  </tr>
+</var:foreach>

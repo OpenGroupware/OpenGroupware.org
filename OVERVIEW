@@ -1,0 +1,109 @@
+# $Id$
+
+Overview over OpenGroupware.org Sourcecode Repository
+=====================================================
+
+The source repository contains several top-level project directories. In
+each of the the directories you will find a "PROJECTLEAD" file which
+contains the email address of the person maintaining the subsection. So
+if you have any questions, feel free to contact the maintainer.
+
+Note that you have to build the packages in a proper order, see the build
+howto on http://www.opengroupware.org/.
+
+Database
+========
+[required]
+
+- contains SQL schema for the storage backend and the model required
+  to map SQL records to objects
+
+ThirdParty
+==========
+[required]
+
+Snapshots of ThirdParty software required to build OpenGroupware.org.
+
+SOPE
+====
+[required]
+
+The OpenGroupware.org application server.
+- basic libraries for HTML, HTTP, IMAP4, XML, LDAP, ... processing
+
+Logic
+=====
+[required]
+
+The business logic of OpenGroupware.org. If you trigger functionality using
+Logic commands instead of direct SQL, all permissions etc will be ensured. For
+example the appointment::fetch command will only return appointment information
+you have access to.
+
+DocumentAPI
+===========
+[required]
+
+- a wrapper which puts the Document/DataSource/FileManager abstraction on top 
+  of Logic
+- this is used mainly by the WebUI and the XmlRpcAPI
+
+WebUI
+=====
+[recommended]
+
+The primary HTML user-interface of OpenGroupware.org. You can find the main
+executable in OpenGroupware.org/WebUI/OpenGroupware.org/OpenGroupware.woa.
+
+Themes
+======
+[recommended]
+
+The images of the WebUI are kept in a separate directory to reduce CVS
+load during updates.
+
+XmlRpcAPI
+=========
+[recommended]
+
+Contains the daemon (and later client libraries) to access the 
+OpenGroupware.org functionality using XML-RPC.
+
+ZideStore
+=========
+[recommended]
+
+ZideStore adds WebDAV, iCalendar/HTTP and WCAP protocols to the 
+OpenGroupware.org server and is used to connect native clients like
+Glow or Apple iCal.app.
+
+AdminUI
+=======
+[optional]
+
+The AdminUI contains generators for various standard Unix files, like
+Postfix virtual files. The generation is (usually) done based on the
+OGo account database.
+
+PDA
+===
+[optional]
+
+Contains the daemons and applications required to sync OpenGroupware.org with
+Palm devices.
+
+SandStorm
+=========
+[experimental]
+
+Several XML-RPC daemons put together using the SandStorm protocol and
+the associated registry.
+
+Publisher
+=========
+[experimental]
+
+This is a simple extension to OGo projects which allow you to implemented
+template driven exports of static HTML servers.
+Suitable for smaller webservers (exports take a long time), also used for 
+the www.opengroupware.org website :-)

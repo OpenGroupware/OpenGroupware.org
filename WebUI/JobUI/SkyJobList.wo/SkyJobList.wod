@@ -1,0 +1,84 @@
+// $Id: SkyJobList.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+IsLicensed: SkyLicenseConditional {
+  modules = ( Jobs );
+}
+
+JobList: SkyTableView {
+  dataSource   = dataSource;
+  item         = job;
+  batchSize    = 30;
+  currentBatch = start;
+  isDescending = isDescending;
+  sortedKey    = sortedKey;
+}
+
+StatusData: WETableData {
+  title   = labels.jobStatus;
+}
+
+StatusIconData: WETableData {
+  title   = "";
+  sortKey = "jobStatus";
+}
+
+StatusIcon: WOImage {
+  filename = statusIcon;
+  alt      = labels.$jobStatus;
+}
+
+Status: WOString { 
+  value = labels.$jobStatus; 
+}
+
+NameData: WETableData {
+  title   = labels.taskName;
+  string  = job.name;
+  sortKey = "name";
+  action  = viewJob;
+}
+
+EnddateData: WETableData {
+  title   = labels.due;
+  sortKey = "endDate";
+}
+
+Enddate: WOString {
+  color     = enddateColor;
+  value     = job.endDate;
+  formatter = session.formatDate;
+}
+
+CreatorData: WETableData {
+  title   = labels.creator;
+}
+
+IsCreatorVisibleCond: WOConditional {
+  condition = creatorIsVisible;
+}
+
+IsCreatorVisibleCondElse: WOConditional {
+  condition = creatorIsVisible;
+  negate    = YES;
+}
+
+Creator: WOString {
+  value = job.creator.login;
+}
+
+ExecutantData: WETableData {
+  title   = labels.executant;
+}
+
+IsExecutantVisibleCond: WOConditional {
+  condition = executantIsVisible;
+}
+
+IsExecutantVisibleCondElse: WOConditional {
+  condition = executantIsVisible;
+  negate    = YES;
+}
+
+Executant: WOString {
+  value = job.__executant_name__;
+}

@@ -1,0 +1,11 @@
+// $Id: OGoMailViewers.strings,v 1.1 2003/10/14 09:28:17 helge Exp $
+
+subject          = "件名";
+to               = "宛先";
+cc               = "Cc";
+bcc              = "Bcc"
+sender           = "差出人";
+date             = "日付";
+toDoc            = "ドキュメントに転送";
+download         = "メールのダウンロード";
+contentLength    = "サイズ";

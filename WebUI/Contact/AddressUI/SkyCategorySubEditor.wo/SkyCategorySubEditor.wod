@@ -1,0 +1,26 @@
+// $Id: SkyCategorySubEditor.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+CategoryRep: WORepetition {
+  list  = categories;
+  item  = category;
+  index = categoryIndex;
+};
+
+CategoryPopup : WOPopUpButton {
+  list            = session.categoryNames;
+  item            = item;
+  string          = item;
+  selection       = selectedCategory;
+  singleSelection = YES;
+  nilString       = "-";
+};
+
+CategoryLabel : WOString {
+  value = labels.personeditor_categoryLabel;
+};
+
+AttributeCell: SkyAttributeCell  {}
+ValueCell:     SkyValueCell      {}
+Font:          SkyConfigFont     {}
+EditFont:      SkyConfigEditFont {}
+

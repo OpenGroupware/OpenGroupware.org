@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<!-- $Id: SkyCalendarScript.wox,v 1.2 2004/05/06 12:53:50 helge Exp $ -->
+<var:if condition="session.isJavaScriptEnabled"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+><script language="JavaScript" var:src="scriptURL">
+<!-- 
+  a space is required so that the tag is not generated as <script /> which
+  confuses some browsers in HTML mode (they continue parsing for the close
+  tag)
+-->
+</script></var:if>

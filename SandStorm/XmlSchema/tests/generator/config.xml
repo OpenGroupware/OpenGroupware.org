@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<config xmlns="http://www.skyrix.com/od/skymasterd-config">
+  <performcheck>0</performcheck>
+  <performautostart>0</performautostart>
+  <checkinterval>60</checkinterval>
+  <defaultpriority>5</defaultpriority>
+  <defaultrestartdelay>60</defaultrestartdelay>
+  <template templateclass="TestClass1">
+    <singleton>1</singleton>
+    <required>1</required>
+    <runcheck>0</runcheck>
+    <autostart>0</autostart>
+    <autorestart>1</autorestart>
+    <zombieable>0</zombieable>
+    <priority>13</priority>
+    <restartdelay>120</restartdelay>
+    <pidfile>/tmp/test.pid</pidfile>
+    <executable>/usr/bin/test</executable>
+    <taskclass>TestTaskClass</taskclass>
+    <cmdline>-WOPort 12010</cmdline>
+    <defaultEntry>
+      <name>entry1</name>
+      <value>value1</value>
+    </defaultEntry>
+  </template>
+
+  <template templateclass="TestClass2">
+    <singleton>1</singleton>
+    <required>1</required>
+    <runcheck>0</runcheck>
+    <autostart>0</autostart>
+    <autorestart>1</autorestart>
+    <zombieable>0</zombieable>
+    <priority>13</priority>
+    <restartdelay>120</restartdelay>
+    <pidfile>/tmp/test2.pid</pidfile>
+    <executable>/usr/bin/tes2t</executable>
+    <taskclass>TestTaskClass2</taskclass>
+    <cmdline>-WOPort 12012</cmdline>
+    <defaultEntry>
+      <name>entry2</name>
+      <value>value2</value>
+    </defaultEntry>
+  </template>
+
+  <template templateclass="TestClass3">
+    <singleton>1</singleton>
+    <required>1</required>
+    <runcheck>0</runcheck>
+    <autostart>0</autostart>
+    <autorestart>1</autorestart>
+    <zombieable>0</zombieable>
+    <priority>13</priority>
+    <restartdelay>120</restartdelay>
+    <pidfile>/tmp/test3.pid</pidfile>
+    <executable>/usr/bin/test3</executable>
+    <taskclass>TestTaskClass3</taskclass>
+    <cmdline>-WOPort 12013</cmdline>
+    <defaultEntry>
+      <name>entry3</name>
+      <value>value3</value>
+    </defaultEntry>
+  </template>
+
+</config>

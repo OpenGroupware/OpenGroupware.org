@@ -1,0 +1,65 @@
+// $Id: SkyMailingListViewer.wod,v 1.2 2003/12/11 13:51:44 helge Exp $
+
+// table view structure
+
+Switcher: WESwitch {
+  selections = ("name", "description", "emailCount");
+}
+NameCase:  WECase { key = "name";        }
+DescCase:  WECase { key = "description"; }
+EmailCase: WECase { key = "emailCount";  }
+
+SpamTableView: SkyTableView {
+  dataSource     = dataSource;
+  batchSize      = 20;
+  currentBatch   = currentBatch;
+  
+  item           = item;
+
+  sortedKey      = sortedKey;
+  isDescending   = isDescending;
+
+  scrollOnClient = NO;
+  autoScroll     = NO;
+}
+
+NameData: WETableData {
+  title   = labels.ListName;
+  sortKey = "name";
+}
+
+DescData: WETableData {
+  title = labels.ListDescription;
+}
+
+EmailData: WETableData {
+  title   = labels.ListEmailCount;
+  sortKey = "emailCount";
+}
+
+Buttons: SkyButtonRow {
+  ordering = ( );
+  onNew    = new;
+  new      = labels.newList;
+  tipNew   = labels.newList;
+}
+
+TitleMode:  WETableViewTitleMode  {}
+ButtonMode: WETableViewButtonMode {}
+FooterMode: WETableViewFooterMode {}
+
+// table view content
+
+EditSpamAction: WOHyperlink {
+  action = edit;
+}
+
+SpamName:   WOString { value = item.name;         }
+Desc:       WOString { value = item.description;  }
+EmailCount: WOString { value = item.emails.count; }
+
+Font: SkyConfigFont {}
+
+MailingListManagerLabel: WOString {
+  value = labels.MailingListManagerLabel;
+}

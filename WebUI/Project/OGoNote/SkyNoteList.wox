@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<!-- $Id: SkyNoteList.wox,v 1.3 2004/05/01 16:03:08 helge Exp $ -->
+<span
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+>
+ <form var:action="noteQuickCreate">
+
+  <!-- title with new note link -->
+  <table cellspacing="0" cellpadding="1" border="0" width="100%">
+    <tr var:bgcolor="config.colors_tableViewAttributeCell">
+      <td><OGo:font><b><var:string value="title" /></b></OGo:font></td>
+      <td align="right">
+        <OGo:buttons>
+          <OGo:button name="showhide" label="togglecreate" 
+                      action="toggleQuickCreate" />
+          <OGo:button name="createnewnote" label="new" 
+                      action="createNewNote" />
+        </OGo:buttons>
+      </td> 
+    </tr>
+    <tr><td colspan="2"></td></tr>
+  </table>
+
+  <!-- The notes list -->
+  <table border="0" width="100%" cellpadding="1" cellspacing="0">
+    <var:if condition="shouldShowQuickCreate">
+      <tr var:bgcolor="config.colors_tableViewHeaderCell">
+        <td colspan="3"><OGo:font><b>
+          <entity name="nbsp"/><OGo:label key="Quick Create Title" />
+          <entity name="nbsp"/>
+        </b></OGo:font></td>
+        <td width="75%"><OGo:font><b>
+          <OGo:label key="note" /><entity name="nbsp"/>
+        </b></OGo:font></td>
+        <td><entity name="nbsp"/></td>
+        <td><entity name="nbsp"/></td>
+      </tr>
+      <tr>
+        <td colspan="3" align="left" valign="top">
+          <input type="text" var:value="newNoteTitle" 
+                 size="20" style="width: 100%;" />
+        </td>
+        <td colspan="3" align="left" valign="top">
+          <textarea var:value="newNoteBody" style="width: 100%;" 
+                    rows="3" />
+          <br />
+          <input type="submit" var:action="noteQuickCreate" 
+                 var:value="labels.create" />
+        </td>
+      </tr>
+      <tr><td colspan="7"><small><hr size="1" /></small></td></tr>
+    </var:if>
+    
+    <tr var:bgcolor="config.colors_tableViewHeaderCell">
+      <td nowrap="nowrap"><OGo:font><b>
+        <entity name="nbsp"/><OGo:label key="notetitle" /><entity name="nbsp"/>
+      </b></OGo:font></td>
+      <td><OGo:font><b>
+        <OGo:label key="owner" /><entity name="nbsp"/>
+      </b></OGo:font></td>
+      
+      <td nowrap="nowrap"><OGo:font><b>
+        <OGo:label key="creation" /><entity name="nbsp"/>
+      </b></OGo:font></td> 
+      <td width="75%"><OGo:font><b>
+        <OGo:label key="note" /><entity name="nbsp"/>
+      </b></OGo:font></td>
+      
+      <td><entity name="nbsp"/></td>
+      <td><entity name="nbsp"/></td>
+    </tr>
+    <tr><td colspan="6"></td></tr>
+    
+    <var:foreach list="notes" item="note">
+      <tr>
+        <td align="left" valign="top"><OGo:font>
+          <var:string value="note.title" /><entity name="nbsp"/>
+        </OGo:font></td>
+        <td align="left" valign="top">
+          <OGo:objectvalue object="note.currentOwner" key="login" />
+          <entity name="nbsp"/>
+        </td>
+        
+        <td align="left" valign="top" nowrap="nowrap"><OGo:font>
+          <var:string value="note.creationDate" 
+                      formatter="session.formatDateTime" />
+          <entity name="nbsp"/>
+        </OGo:font></td>
+        <td align="left" valign="top"><OGo:font>
+	  <var:string value="noteContent" const:insertBR="YES" />
+          <entity name="nbsp"/>
+        </OGo:font></td>
+
+        <td align="right" valign="top"><OGo:font>
+          <var:switch selection="parent.name">
+
+            <var:case const:key="SkyProject4Viewer">
+              <var:if condition="isAppointmentAssigned">
+                <var:if condition="isAppointmentViewAllowed">
+  		<a var:action="view"
+                    ><img filename="icon_appointmentlink.gif" 
+                          var:alt="note.toDate.title" border="0" /></a>
+  		<br />
+                </var:if>
+              </var:if>
+            </var:case>
+    
+            <var:case const:key="LSWAppointmentViewer">
+              <var:if condition="isProjectEnabled">
+                <var:if condition="isProjectAssigned">
+                  <var:if condition="isProjectLinkDisabled" const:negate="YES">
+  		  <a var:action="view"
+                      ><img filename="icon_projectlink.gif"
+                            var:alt="note.toDate.title" border="0" /></a>
+                  </var:if>
+                  <var:if condition="isProjectLinkDisabled">
+  		  <img filename="icon_projectlink_inactive.gif"
+  		       var:alt="note.toDate.title" border="0" />
+                  </var:if>
+                  <br />
+                </var:if>
+              </var:if>
+            </var:case>
+          </var:switch>
+        </OGo:font></td>
+
+        <td align="right" valign="top"><OGo:font>
+          <var:if condition="isEditDisabled" const:negate="YES">
+	    <a var:action="editNote"
+              ><img filename="icon_editnote.gif"
+		    var:alt="labels.editNote" border="0" /></a>
+          </var:if>
+          <var:if condition="isEditDisabled">
+            <img filename="icon_editnote_inactive.gif"
+		 var:alt="labels.editNote" border="0" />
+          </var:if></OGo:font>
+          <br />
+        </td>
+      </tr>
+
+      <tr><td colspan="7"><small><hr size="1" /></small></td></tr>
+    </var:foreach>
+  </table>
+ </form>
+</span>

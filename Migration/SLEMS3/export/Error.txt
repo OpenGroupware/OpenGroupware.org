@@ -1,0 +1,12 @@
+# $Id: Error.txt,v 1.1 2003/08/27 10:20:22 helge Exp $
+
+HH asks: what is this good for?
+
+groups          1
+accounts        2
+resource_groups 3
+resources       4
+public_persons  5
+private_persons 6
+appointments    7
+jobs            8

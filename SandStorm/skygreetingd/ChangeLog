@@ -1,0 +1,10 @@
+2004-04-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* updated for OGo environment, does not properly compile yet (v5.0.2)
+
+Tue Aug 13 14:28:53 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* added interface registration for namespace "greeting"
+	
+	* created ChangeLog
+

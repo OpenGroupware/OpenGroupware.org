@@ -1,0 +1,204 @@
+// NSUserDefaults
+{
+  LSAddress_CVSID = "$Id$";
+  BuildFormletterPath = "buildFormletter.py";
+  LSAddressType = {
+    Enterprise = ( "ship", "bill" );
+    Person     = ( "private", "mailing", "location" );
+  };
+
+  LSTeleType = {
+    Enterprise = ( 
+        "01_tel", 
+        "02_tel", 
+        "10_fax" 
+    );
+    Person = ( 
+        "01_tel", 
+        "02_tel",
+        "03_tel_funk",
+        "05_tel_private", 
+        "10_fax", 
+        "15_fax_private",
+    );
+  };
+
+  formletter_kind  = "winword";
+  formletter_kinds = ("winword", "framemaker", "excel");
+
+  SkyPublicExtendedPersonAttributes = (
+    { key = "email1";       type = 3;         }, // email
+    { key = "email2";       type = 3;         }, // email
+    { key = "email3";       type = 3;         }, // email
+    { key = "job_title";                      }, // string
+    { key = "other_title1";                   }, // string
+    { key = "other_title2";                   }, // string
+  );
+  SkyPrivateExtendedPersonAttributes = (
+  );
+
+  SkyPublicExtendedEnterpriseAttributes = (
+    { key = "email2";       type = 3;         }, // email
+    { key = "email3";       type = 3;         }, // email
+    { key = "job_title";                      }, // string
+    { key = "other_title1";                   }, // string
+    { key = "other_title2";                   }, // string
+  );
+
+  SkyPrivateExtendedEnterpriseAttributes = (
+  );
+
+  ConverterAttributes = {
+    contentTypes = {
+      vCard       = "text/x-vcard";
+      formLetter  = "text/plain";
+    };
+    vCardKeys = {
+      prefix      = "BEGIN:vCard\nVERSION:3.0\nFN:";
+
+      firstname   = "";
+      middlename  = " ";
+      name        = " ";
+      address     = "ADR;TYPE=WORK,POSTAL,PARCEL:";
+      address.street = "";
+      tel1.number = "\nTEL;TYPE=VOICE,MSG,WORK:";
+      tel2.number = "\nTEL;TYPE=VOICE,MSG,WORK:";
+      fax.number  = "\nTEL;TYPE=FAX,WORK:";
+      url         = "\nURL:";
+
+      suffix      = "\nEND:vCard\n";
+    };
+  LSVCard = ("firstname", "middlename", "name", "tel1.number", "tel2.number",
+               "fax.number", "url");   
+   
+  };
+  RequiredAttributes = {
+    Person      = ("degree", "firstname", "name", "salutation", "sex",
+                  "email1");
+    Enterprise  = ("description", "bank", "bank_code", "account");
+    Address     = ("name1", "name2", "name3", "street", "zip", "city");
+    Telephone   = ("number", "type", "info");
+  };
+
+  LSPersonFormLetter = {
+   framemaker = (
+      { key = "toAddress.name1";      suffix = "\n";             },
+      { key = "toAddress.name2";      suffix = "\n";             },
+      { key = "toAddress.name3";      suffix = "\n";             },
+      { key = "degree";               suffix = " ";              },
+      { key = "firstname";            suffix = " ";              },
+      { key = "name";                 suffix = "\n\n";           },
+      { key = "toAddress.street";     suffix = "\n";             },
+      { key = "toAddress.zip";        suffix = " ";              },
+      { key = "toAddress.city";       suffix = "\n\n\n\n\n\n";   },
+      { key = "salutation";           suffix = " ";              },
+      { key = "name";                 suffix = ",\n\n";          }
+    );
+    winword = (
+      { key = "salutation";       suffix = ";";  },
+      { key = "gender";           suffix = ";";  },
+      { key = "degree";           suffix = ";";  },
+      { key = "firstname";        suffix = ";";  },
+      { key = "name";             suffix = ";";  },
+      { key = "toAddress.name1";  suffix = ";";  },
+      { key = "toAddress.name2";  suffix = ";";  },
+      { key = "toAddress.name3";  suffix = ";";  },
+      { key = "toAddress.street"; suffix = ";";  },
+      { key = "toAddress.zip";    suffix = ";";  },
+      { key = "toAddress.city";   suffix = ";";  },
+      { key = "tel1.number";      suffix = ";";  },
+      { key = "email1";           suffix = "\n"; }
+    );
+    excel = (
+      { key = "salutation";       suffix = "\t";   },
+      { key = "gender";           suffix = "\t";   },
+      { key = "degree";           suffix = "\t";   },
+      { key = "firstname";        suffix = "\t";   },
+      { key = "name";             suffix = "\t";   },
+      { key = "toAddress.name1";  suffix = "\t";   },
+      { key = "toAddress.name2";  suffix = "\t";   },
+      { key = "toAddress.name3";  suffix = "\t";   },
+      { key = "toAddress.street"; suffix = "\t";   },
+      { key = "toAddress.zip";    suffix = "\t";   },
+      { key = "toAddress.city";   suffix = "\t";   },
+      { key = "tel1.number";      suffix = "\t";   },
+      { key = "email1";           suffix = "\n"; }
+    );
+  };
+  LSEnterpriseFormLetter = {
+    framemaker = (
+      { key = "toAddress.name1";      suffix = "\n";             },
+      { key = "toAddress.name2";      suffix = "\n";             },
+      { key = "toAddress.name3";      suffix = "\n";             },
+      { key = "toAddress.street";     suffix = "\n";             },
+      { key = "toAddress.zip";        suffix = " ";              },
+      { key = "toAddress.city";       suffix = "\n\n\n\n\n\n\n"; },
+      { key = "toPerson.salutation";  suffix = " ";              },
+      { key = "toPerson.name";        suffix = ",\n\n";          }
+    );
+    winword = (
+      { key = "toPerson.salutation";  suffix = ";";  },
+      { key = "toPerson.gender";      suffix = ";";  },
+      { key = "toPerson.degree";      suffix = ";";  },
+      { key = "toPerson.firstname";   suffix = ";";  },
+      { key = "toPerson.name";        suffix = ";";  },
+      { key = "description";          suffix = ";";  },
+      { key = "toAddress.name1";      suffix = ";";  },
+      { key = "toAddress.name2";      suffix = ";";  },
+      { key = "toAddress.name3";      suffix = ";";  },
+      { key = "toAddress.street";     suffix = ";";  },
+      { key = "toAddress.zip";        suffix = ";";  },
+      { key = "toAddress.city";       suffix = ";";  },
+      { key = "toPerson.tel1.number"; suffix = ";";  },
+      { key = "toPerson.email1";      suffix = ";";  },
+      { key = "bank";                 suffix = ";";  },
+      { key = "bankCode";             suffix = ";";  },
+      { key = "account";              suffix = "\n"; }
+    );
+    excel = (
+      { key = "toPerson.salutation";  suffix = "\t"; },
+      { key = "toPerson.gender";      suffix = "\t"; },
+      { key = "toPerson.degree";      suffix = "\t"; },
+      { key = "toPerson.firstname";   suffix = "\t"; },
+      { key = "toPerson.name";        suffix = "\t"; },
+      { key = "description";          suffix = "\t"; },
+      { key = "toAddress.name1";      suffix = "\t"; },
+      { key = "toAddress.name2";      suffix = "\t"; },
+      { key = "toAddress.name3";      suffix = "\t"; },
+      { key = "toAddress.street";     suffix = "\t"; },
+      { key = "toAddress.zip";        suffix = "\t"; },
+      { key = "toAddress.city";       suffix = "\t"; },
+      { key = "toPerson.tel1.number"; suffix = "\t"; },
+      { key = "toPerson.email1";      suffix = "\t"; },
+      { key = "bank";                 suffix = "\t"; },
+      { key = "bankCode";             suffix = "\t"; },
+      { key = "account";              suffix = "\n"; }
+    );
+  };
+  LSVCard = ("firstname", "middlename", "name", "tel1.number", "tel2.number",
+             "fax.number", "url");
+
+  // ADR TYPES: dom, intl, postal, parcel, home, work, pref,
+  // @see rfc 2426
+  LSVCard_AddressMapping = {
+    "location" = "dom";
+    "private"  = "home";
+    "mailing"  = "pref,postal,intl,parcel";
+    "ship"     = "pref,postal,intl,work,dom";
+    "bill"     = "intl,parcel";
+  };
+  // TEL TYPES: home, msg, work, pref, fax, cell, page, bbs, modem, isdn, pcs,
+  //            voice, video, car
+  // @see rfc 2426
+  LSVCard_TelephoneMapping = {
+    "01_tel"         = "work,pref,voice";
+    "02_tel"         = "work,voice";
+    "10_fax"         = "work,fax";
+    "03_tel_funk"    = "cell,voice";
+    "05_tel_private" = "home,voice";
+    "15_fax_private" = "home,fax";
+  };
+
+  LSAutoCompanyLoginPrefix  = "OGo";
+  LSAutoCompanyNumberPrefix = "OGo";
+}

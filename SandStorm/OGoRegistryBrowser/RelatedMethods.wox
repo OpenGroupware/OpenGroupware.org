@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='iso-8859-1' standalone='yes'?>
+<span xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant">
+  <var:if condition="hasRelatedMethodNames">
+    <var:foreach list="relatedMethodNames" 
+                 item="relatedMethodName">
+      <a var:action="runMethodPage"><var:string value="relatedMethodName"/></a>
+    </var:foreach>
+   <!--form var:action="runMethodPage">
+    <var:popup list="relatedMethodNames" height="8"
+               item="item" 
+               selection="relatedMethodName" 
+               string="itemString"
+               const:singleSelection="YES"
+    /><input type="submit" const:value="Go" var:action="runMethodPage"/>
+   </form -->
+  </var:if>
+</span>

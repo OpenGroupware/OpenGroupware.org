@@ -1,0 +1,108 @@
+// $Id: LSWImapMailMove.wod,v 1.2 2003/10/17 12:32:22 jan Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = copyOrMoveTitle;
+  onClose = session.navigation.leavePage;
+}
+
+Form : WOForm {
+}
+
+MoveToLabel : WOString {
+  value = copyOrMoveTo;
+};
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+// --- tree ---------------------------------------------
+
+FolderTree: SkyTreeView {
+  list    = rootFolders;
+  item    = currentFolder;
+  sublist = currentFolder.subFolders;
+  zoom    = treeState.isExpanded;
+}
+
+FolderTreeCell: WETreeData {
+  isTreeElement = YES;
+  icon       = folderIcon;
+  cornerIcon = cornerFolderIcon;
+  BGCOLOR    = folderBGColor;
+};
+
+CurrentFolderLink: WOHyperlink {
+  action = folderClicked;
+  string = currentFolder.name;
+};
+
+CurrentFolderName: WOString {
+  value = currentFolder.name;
+};
+
+
+// ------------------------------------------------------
+
+MailTableView: SkyTableView {
+  list           = mails;
+  batchSize      = mails.count;
+  item           = mail;
+};
+
+TitleMode:  WETableViewTitleMode  {};
+ButtonMode: WETableViewButtonMode {};
+FooterMode: WETableViewFooterMode {};
+
+Switcher: WESwitch {
+  selections = ("subject", "sender");
+};
+
+SubjectCase:    WECase { key = "subject";    };
+SenderCase:       WECase { key = "sender";    };
+
+SenderData: WETableData {
+  title   = labels.sender;
+  negateSortDir = YES;
+};
+
+SubjectData: WETableData {
+  title   = labels.subject;
+};
+
+Subject: WOString {
+    value = mail.subject;
+}
+Sender: WOString {
+    value = mail.sender;
+}
+Size: WOString {
+    value = mail.contentLen;
+}
+Date: WOString {
+    value = mail.sendDate;
+}
+
+/* labels */
+
+SubjectLabel: WOString {
+    value = labels.subject;
+}
+SenderLabel: WOString {
+    value = labels.sender;
+}
+DateLabel: WOString {
+    value = labels.sendDate;
+    dateFormat = "%Y-%m-%d %H:%M";
+    //formatter = session.formatDateTime;
+}
+SizeLabel: WOString {
+    value = labels.contentLen;
+}
+Title: LSWViewerTitle {
+  title     = copyOrMoveTo;
+}
+AttributeCell: SkyAttributeCell { alignLeft=YES; width="30%"; }
+ValueCell:     SkyValueCell     { alignTop=YES; width="70%"; }
+

@@ -1,0 +1,35 @@
+# $Id$
+
+LSSearch_INCLUDE_DIRS += -I../LSFoundation -I..
+LSSearch_LIB_DIRS += \
+	-L$(GNUSTEP_OBJ_DIR) \
+	-L../LSFoundation/$(GNUSTEP_OBJ_DIR)
+
+libLSSearch_INCLUDE_DIRS += -I../LSFoundation -I..
+libLSSearch_LIB_DIRS += -L../LSFoundation/$(GNUSTEP_OBJ_DIR)
+
+LSSearch_BUNDLE_LIBS += \
+	-lLSSearch	\
+	-lLSFoundation	\
+	-lGDLAccess -lGDLExtensions	\
+	-lNGLdap -lNGMime -lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
+
+libLSSearch_LIBRARIES_DEPEND_UPON += \
+	-lLSFoundation	\
+	-lGDLAccess -lGDLExtensions	\
+	-lNGStreams -lNGExtensions -lEOControl
+
+ifeq ($(GNUSTEP_TARGET_OS),mingw32)
+LSSearch_BUNDLE_LIBS += -lFoundation -lobjc
+libLSSearch_LIBRARIES_DEPEND_UPON += -lFoundation -lobjc
+endif
+
+ifeq ($(GNUSTEP_TARGET_OS),cygwin32)
+LSSearch_BUNDLE_LIBS += -lFoundation -lobjc
+libLSSearch_LIBRARIES_DEPEND_UPON += -lFoundation -lobjc
+endif
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif

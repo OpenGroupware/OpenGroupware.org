@@ -1,0 +1,45 @@
+{
+  bundleHandler = HelloWorldModule;
+  
+  requires = {
+    bundleManagerVersion = 1;
+
+    bundles = (
+	// this bundle doesn't need any special bundles
+    );
+    classes = (
+        // need the bundles providing LSWContentPage, LSWModuleManager
+        // and SkyRichString to be loaded
+      { name = LSWContentPage;   exact-version = 3; },
+      { name = SkyRichString; },
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = HelloWorld;       },
+    );
+
+   // the settings for packes which apear in the dock bar
+   // (the link list on the left)
+    DockablePages = (
+      {
+        // a name for this page
+        name      = "Hello World";
+        // which component should be loaded on the click
+        component = "HelloWorld";
+        // the key mapping to HelloWorld.plist in the Resources
+        // (which doesn't exist)
+        labelKey  = "HelloWorld";
+        // taking the news image :-)
+        image     = "menu_news_labeled.gif";
+        listicon  = "icon_news_26x21.gif";
+      }
+    );
+    
+    WOComponents = (
+      { name = HelloWorld; },
+    );
+
+  };
+}

@@ -1,0 +1,82 @@
+// $Id: SkyPropertyEditor.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = "edit attributes"; //windowTitle;
+  onClose = cancel;
+}
+
+Form : WOForm {
+   name    = "propertyEditor";
+   action  = save;
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+PropertyValueLabel : WOString {
+  value = "value";
+}
+
+PropertyNameLabel : WOString {
+  value = "name";
+}
+
+PropertyNameField : WOTextField {
+  value = key;
+}
+PropertyName : WOString {
+  value = key;
+}
+
+IsNewCond : WOConditional {
+  condition = isNew;
+}
+IsNewCondElse : WOConditional {
+  condition = isNew;
+  negate    = YES;
+}
+
+PropertyValue : WOTextField {
+  value = value;
+}
+
+SaveSubmit: WOImageButton {
+        action           = save;
+        filename         = "save.gif";
+        name             = labels.saveButton;
+        ALT              = labels.saveButton;
+        BORDER           = 0;
+};
+DeleteSubmit: WOHyperlink {
+        action           = delete;
+        filename         = "remove.gif";
+        ALT              = labels.deleteButton;
+        disabledFilename = "remove_inactive.gif";
+        disabled         = isDeleteDisabled;
+        BORDER           = 0;
+};
+CancelSubmit: WOHyperlink {
+        action           = cancel;
+        filename         = "cancel.gif";
+        ALT              = labels.cancelButton;
+        BORDER           = 0;
+};
+
+IsDeleteEnabledCond : WOConditional {
+  condition = isDeleteEnabled;
+}
+
+PropertyTypeLabel : WOString {
+  value = "type";
+}
+
+PropertyTypePopup : WOPopUpButton {
+  list            = ("string", "number", "date");
+  selection       = propertyType;
+  singleSelection = YES;
+}

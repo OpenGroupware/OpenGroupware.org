@@ -1,0 +1,7 @@
+# $Id$
+
+skyjobd_TOOL_LIBS += \
+	-lOGoDaemon -lXmlSchema		\
+	-lSxComponents -lNGObjWeb	\
+	-lOGoJobs	\
+	-lEOControl

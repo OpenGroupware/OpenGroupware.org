@@ -1,0 +1,17 @@
+{
+  "00062003-0000-0000-c000-000000000046" = {
+    00008101 = taskStatus;
+    00008102 = taskCompletion;
+    0000810F = taskCompletionDate;
+    0000811C = cdoItemIsComplete;
+    00008104 = taskCommonStart;
+    00008105 = taskCommonEnd;
+  };
+  "00062008-0000-0000-c000-000000000046" = {
+    00008586 = associatedContacts;
+    00008506 = mapiID_8506_bool;
+  };
+  "00062004-0000-0000-c000-000000000046" = {
+    00008025 = mapiID_8025_bool;
+  };
+}

@@ -1,0 +1,174 @@
+// $Id: LSWNewsArticleEditor.wod,v 1.4 2003/12/22 16:53:55 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.ArticleEditorWindowTitle;
+  onClose = cancel;
+}
+
+IsNewsLicensed: SkyLicenseConditional {
+  modules = ( News );
+}
+
+WarningModeCond: WOConditional {
+  condition = isInWarningMode;
+}
+
+WarningModeCondElse: WOConditional {
+  condition = isInWarningMode;
+  negate    = YES;
+}
+
+Warning: LSWWarningPanel {
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
+}
+
+NewsArticleForm: WOForm {
+  enctype = "multipart/form-data";
+}
+
+
+BackLink: WOHyperlink {
+  action = back;
+  string = "back";
+}
+
+NewModeCondElse: WOConditional {
+  condition = isInNewMode;
+  negate    = YES;
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+SaveSubmit: WOSubmitButton {
+  action           = save;
+  name             = labels.saveButtonLabel;
+  value            = labels.saveButtonLabel;
+  class            = "button_narrow";
+}
+SaveSubmitDA: WOSubmitButton {
+  action           = save;
+  name             = labels.saveButtonLabel;
+  value            = labels.saveButtonLabel;
+  class            = "button_narrow_da";
+}
+IsSaveDisabled: WOConditional {
+  condition = isSaveDisabled;
+}
+IsSaveEnabled: WOConditional {
+  condition = isSaveDisabled;
+  negate    = YES;
+}
+CancelSubmit: WOHyperlink {
+  action   = cancel;
+  string   = labels.cancelButtonLabel;
+  class    = "button_narrow";
+}
+DeleteSubmit: WOHyperlink {
+  action = delete;
+  string = labels.deleteButtonLabel;
+  class  = "button_narrow";
+}
+IsDeleteEnabled: WOConditional {
+  condition = isDeleteDisabled;
+  negate    = YES;
+}
+
+ArticleNameLabel: WOString {
+  value = labels.articleNameLabel;
+}
+
+ArticleName: WOTextField {
+  value = article.name;
+  size  = "40";
+}
+
+Article: WOString {
+  value = article.name;
+}
+
+ArticleCaptionLabel: WOString {
+  value      = labels.articleCaptionLabel;
+  escapeHTML = NO;
+}
+
+ArticleCaption: WOTextField {
+  value = article.caption;
+  size  = "40";
+}
+
+FileUploadLabel: WOString {
+  value = labels.fileUploadLabel;
+}
+
+FileUpload: WOFileUpload {
+  data     = data;
+  filePath = filePath;
+   size    = "40";
+}
+
+Text: WOString {
+  value = labels.textLabel;
+}
+
+TextInput: WOText {
+  value     = fileContent;
+  formatter = session.formatString;
+  wrap      = "physical";
+  rows      = "20";
+  cols      = "80";
+  name      = "focusField";
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+MainButtonRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_mainButtonRow;
+}
+
+NewsArticleRep: WORepetition {
+  list = allArticles;
+  item = newsArticle;
+}
+
+RelatedArticleCheckBox: WOCheckBox {
+  checked = hasRelatedArticle;
+}
+
+NewsArticle: WOString {
+  value = newsArticle.name;
+}
+
+NewsArticleLabel: WOString {
+  value = labels.relatedArticlesLabel;
+}
+
+NewNewsArticleLabel: WOString {
+  value = labels.newNews;
+}
+
+DeleteImageLabel: WOString {
+  value      = labels.deleteImage;
+  escapeHTML = NO;
+}
+
+DeleteImageCheckBox: WOCheckBox {
+  checked = deleteImage;
+}
+
+IndexArticleLabel: WOString {
+  value = labels.indexArticle;
+}
+
+IsIndexArticle: WOCheckBox {
+  checked = article.isIndexArticle;
+}
+
+IsLicensed: SkyLicenseConditional {
+  modules = ( News );
+}

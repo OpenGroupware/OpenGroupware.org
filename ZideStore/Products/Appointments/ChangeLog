@@ -1,0 +1,42 @@
+2004-07-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAppointment.m, SxAppointment+Participants.m, SxAppointmentFolder.m:
+	  fixed zone arguments from nil to NULL, minor code cleanups (v1.2.77)
+
+2004-05-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxFreeBusy.m: minor code cleanups (v1.2.76)
+
+2004-04-05  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxAppointment.m, SxICalendar.m: report "OpenGroupware.org ZideStore"
+	  as iCalendar product id, instead of "SKYRiX 4.1 xx" (v1.2.75)
+
+2004-03-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAppointmentFolder.m: added support for using PROPPATCH to create
+	  new objects, added some special handling for Kontact (v1.2.74)
+	
+2004-02-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxICalendar.m: minor cleanups (v1.2.73)
+
+2004-02-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* various tweaks for MacOSX compilation (v1.2.72)
+
+2003-12-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxAppointmentFolder.m: only create SxAppointment controllers for
+	  names starting with a number (eg "28378", but not "view") (v1.2.71)
+
+Tue Nov 18 15:13:18 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* SxICalendar.m: added set handling on update (to detect deleted 
+	  events). added publish-only mode (to not delete all the other
+	  events of the set) (solves ogo bug 258) v1.2.69
+
+2003-11-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* moved Frontend/Appointments subproject into a separate ZSP product
+	  (v1.2.68)

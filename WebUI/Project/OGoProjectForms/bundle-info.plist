@@ -1,0 +1,40 @@
+{ // $Id$
+  bundleHandler = SkyP4FormsModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = (
+    );
+    classes = (
+      { name = LSWComponent;     exact-version = 2; },
+      { name = LSWContentPage;   exact-version = 3; },
+      { name = LSWModuleManager; exact-version = 2; },
+    );
+  };
+
+  provides = {
+    classes = (
+      { name = SkyP4FormsModule;         },
+      { name = SkyP4ViewerFormComponent; },
+      { name = SkyP4AppFormComponent;    },
+      { name = SkyP4FormPage;            },
+    );
+    WOComponents = (
+      { name = SkyP4FormPage;            },
+    );
+    
+    DockablePages = (
+    );
+    
+    LSWCommands = (
+    );
+
+    SAXDrivers = ( 
+        { 
+          name        = libxmlSAXDriver;
+          sourceTypes = ( "skyrix/form" ); 
+        },
+    );
+  };
+}

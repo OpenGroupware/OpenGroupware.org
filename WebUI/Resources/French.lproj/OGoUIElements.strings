@@ -1,0 +1,28 @@
+accountName       = "Compte"
+deselectAll       = "Tout désélectionner"
+first             = "Premier"
+last              = "Dernier"
+next              = "Suivant"
+of                = "sur"
+page              = "Page"
+previous          = "Précédent"
+selectAll         = "Tout sélectionner"
+sortColumn        = "Trier la colonne"
+to                = "à"
+
+cal_browse        = "browse"
+cal_birthday      = "anniversaire"
+cal_duedate       = "date attendue"
+cal_completionDate = "date d'achèvement"
+cal_endDate       = "fin"
+cal_enddate       = "fin"
+cal_to            = "à"
+cal_from          = "début"
+cal_startDate     = "début"
+cal_startdate     = "début"
+cal_cycleEndDate  = "fin de répétition"
+cal_repeatEnddate = "fin de répétition"
+
+validateHTML   = "Valider le HTML";
+validateXML   = "Valider le XML";
+

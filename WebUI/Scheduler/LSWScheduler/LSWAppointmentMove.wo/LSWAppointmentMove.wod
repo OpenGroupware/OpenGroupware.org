@@ -1,0 +1,128 @@
+// $Id: LSWAppointmentMove.wod,v 1.4 2003/12/22 16:54:42 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.moveAppointment;
+  onClose = cancel;
+}
+
+EditorForm: WOForm {
+  name   = "editform";
+  action = moveAppointment;
+}
+
+MainButtonRow: WOGenericContainer {
+  elementName = "tr";
+  BGCOLOR     = config.colors_mainButtonRow;
+}
+
+MoveTitleLabel: WOString {
+  value = moveAppointmentLabel;
+}
+
+Font:          SkyConfigFont     {}
+
+Title: SkyAttribute {
+  label  = labels.title;
+  string = appointment.title;
+}
+Location: SkyAttribute {
+  label  = labels.location;
+  string = appointment.location;
+}
+StartDateAttr: SkyAttribute {
+  label = labels.startDate;
+}
+StartDate: WOString {
+  value = niceStartDate;
+}
+EndDateAttr: SkyAttribute {
+  label = labels.endDate;
+}
+EndDate: WOString {
+  value = niceEndDate;
+}
+
+MoveAttr: SkyAttribute {
+  label = labels.move;
+}
+
+MoveForwardLabel: SkyRichString { value = moveForwardLabel; }
+MoveBackwardLabel: SkyRichString { value = moveBackwardLabel; }
+
+Move15MinPrefix:      SkyRichString { value = move15minPrefix; }
+15MinForwardExample:  SkyRichString { value = move15minForwardExample; }
+15MinBackwardExample: SkyRichString { value = move15minBackwardExample; }
+Move15MinBackward:    WOHyperlink { action = move15minBackwardAction; }
+Move15MinForward:     WOHyperlink { action = move15minForwardAction; }
+
+Move30MinPrefix:      SkyRichString { value = move30minPrefix; }
+30MinForwardExample:  SkyRichString { value = move30minForwardExample; }
+30MinBackwardExample: SkyRichString { value = move30minBackwardExample; }
+Move30MinBackward:    WOHyperlink { action = move30minBackwardAction; }
+Move30MinForward:     WOHyperlink { action = move30minForwardAction; }
+
+Move1HourPrefix:      SkyRichString { value = move1hourPrefix; }
+1HourForwardExample:  SkyRichString { value = move1hourForwardExample; }
+1HourBackwardExample: SkyRichString { value = move1hourBackwardExample; }
+Move1HourBackward:    WOHyperlink { action = move1hourBackwardAction; }
+Move1HourForward:     WOHyperlink { action = move1hourForwardAction; }
+
+
+MoveRep: WORepetition {
+  list = (
+  { prefixKey = "move_moveto";      labelKey = "move_by1day";
+    unit      = "days";             amount   = 1;   },
+  { prefixKey = "move_moveto";      labelKey = "move_by1weekday";
+    unit      = "weekdays";         amount   = 1;   },
+  { prefixKey = "move_moveto";      labelKey = "move_by1week";
+    unit      = "weeks";            amount   = 1;   },
+  );
+  item = item;
+}
+
+MovePrefix: SkyRichString { value = movePrefix; }
+MoveLabel:  SkyRichString { value = moveLabel;  }
+MoveSuffix: SkyRichString { value = moveSuffix; }
+MoveAction: WOHyperlink { action = moveAptAction; }
+MoveExample: SkyRichString { value = moveExampleString; }
+
+MoveTo: SkyAttribute {
+  label = labels.move_moveto;
+}
+AmountPopUp: WOPopUpButton {
+  list            = ( "", 1, 2, 3, 4, 5, 6, 10, 20, 30 );
+  item            = item;
+  selection       = moveAmount;
+  string          = moveAmountLabel;
+  singleSelection = YES;
+}
+
+UnitPopUp: WOPopUpButton {
+  list            = ( "minutes", "hours", "days", "weekdays", "weeks",
+                      "months" );
+  item            = item;
+  selection       = moveUnit;
+  string          = moveUnitLabel;
+  singleSelection = YES;
+}
+
+MoveDirectionPopUp: WOPopUpButton {
+  list            = idxArray2;
+  item            = item;
+  selection       = moveDirection;
+  string          = moveDirectionLabel;
+  singleSelection = YES;
+}
+
+MoveSubmit: WOSubmitButton {
+  action          = moveAppointment;
+  value           = labels.moveButtonLabel;
+  class           = "button_narrow";
+}
+CancelSubmit: WOHyperlink {
+  action = cancel;
+  string = labels.cancelButtonLabel;
+  class  = "button_narrow";
+}

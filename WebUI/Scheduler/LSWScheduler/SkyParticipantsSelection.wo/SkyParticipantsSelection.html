@@ -1,0 +1,45 @@
+<#ViewHeadLineCond>
+  <#MainButtonRow>
+    <td colspan="2">
+      <#Font><b><#SearchLabel /></b></#Font> <!-- Font -->
+    </td>
+  </#MainButtonRow>
+  <tr><td colspan="2"></td></tr>
+</#ViewHeadLineCond>
+
+<tr>
+  <#AttributeCell><#Font><#SearchParticipantsAttribute />:</#Font></#AttributeCell>
+
+  <#ValueCell><#EditFont>
+    <#TeamsPopUp />
+    <#SearchField />
+    <#SearchSubmit />
+    <#WithAnyCheckBoxCond>
+      <table border="0" bordercolordark="black" bordercolorlight="white" 
+             cellpadding="0" cellspacing="0">
+        <tr>
+          <#WithEnterpriseCheckBox>
+            <#ValueCell><small><#Font><#ExtendedCheckBox /><#ExtendedString />&nbsp;</#Font></small></#ValueCell>
+          </#WithEnterpriseCheckBox>
+          <#WithResolveTeamsCheckBox>
+            <#ValueCell><small><#Font><#ResolveTeamsCheckBox /><#ResolveTeamsString />&nbsp;</#Font></small></#ValueCell>
+          </#WithResolveTeamsCheckBox>
+        </tr>
+      </table>
+    </#WithAnyCheckBoxCond>
+    <hr size="1" noshade="noshade" />
+  </#EditFont></#ValueCell>
+</tr>
+
+<#ParticipantsConditional>
+  <tr>
+    <#AttributeCell><#Font><#AddParticipantsAttribute />:</#Font></#AttributeCell>
+    <#ValueCell>
+      <#Font>
+        <#ParticipantList />
+        <#ResultList />
+        <hr noshade size="1">
+      </#Font>
+    </#ValueCell>
+  </tr>
+</#ParticipantsConditional>

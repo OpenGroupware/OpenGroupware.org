@@ -1,0 +1,69 @@
+<!-- $Id: SkyProject4DocumentEditor.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+
+<#Frame>
+  <#Window>
+    <#Form>
+
+      <#LoginName/>
+      <#PageName/>
+      <#PageLabel/>
+      <#FolderPath/>
+      <#ProjectId/>
+
+      <table border='0' cellspacing='0' cellpadding='3' width='100%'>
+        <#ShowFilename>
+          <#IsImportCondElse>
+            <tr><#FolderAttr/></tr>
+          </#IsImportCondElse>
+          <tr><#FilenameAttr><#Filename/></#FilenameAttr></tr>
+          <tr><#SubjectAttr><#Subject/></#SubjectAttr></tr>
+        </#ShowFilename>
+        <#NoShowFilename>
+          <tr>
+            <#FilePathAttr/>
+            <#FilenameHidden/>
+          </tr>
+        </#NoShowFilename>
+
+        <#IsImportCondElse>
+          <#HasDocEditForm>
+            <tr>
+              <td></td>
+              <td><#DocEditForm/></td>
+            </tr>
+          </#HasDocEditForm>
+
+          <tr>
+            <td></td>
+            <td>
+              <#SaveButton/>
+              <#HasSaveAndRelease><#SaveAndReleaseButton/></#HasSaveAndRelease>
+              <#HasSaveAndUnlock ><#SaveAndUnlockButton /></#HasSaveAndUnlock>
+              <#CancelButton/>
+            </td>
+          </tr>
+        </#IsImportCondElse>
+
+        <#IsImportCond>
+          <#ProjectSelection/>
+        </#IsImportCond>
+        
+        <#IsImportCondElse>
+          <tr><#TextEditAttr><#TextEditor/></#TextEditAttr></tr>
+        </#IsImportCond>
+
+        <tr>
+          <td></td>
+          <td>
+            <#SaveButton/>
+            <#IsImportCond><#SaveAndMoveButton/></#IsImportCond>
+            <#HasSaveAndRelease><#SaveAndReleaseButton/></#HasSaveAndRelease>
+            <#HasSaveAndUnlock><#SaveAndUnlockButton/></#HasSaveAndUnlock>
+            <#CancelButton/>
+          </td>
+        </tr>
+      </table>
+
+    </#Form>
+  </#Window>
+</#Frame>

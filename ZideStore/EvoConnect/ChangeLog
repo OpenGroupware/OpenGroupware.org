@@ -1,0 +1,10 @@
+2003-11-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* adjusted for new "product-rich" ZideStore 1.2, now installs in 
+	  Library/ZideStore12 (v1.2.2)
+
+2003-09-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* moved in implementation from Frontend/Contacts
+
+	* created ChangeLog

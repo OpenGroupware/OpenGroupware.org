@@ -1,0 +1,35 @@
+2004-05-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble (Contacts_BUNDLE_LIBS): fixed dependencies for
+	  recent MacOSX gcc (v1.2.72)
+
+2004-03-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxGroupsFolder, SxGroupFolder: added URL shortcuts for retrieving the
+	  iCalendar representations of groups (v1.2.71)
+
+2004-03-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.2.70
+
+	* SxAddressFolder.h: properly declare NSEnumerator
+
+	* SxEnterprise.m, SxGroup.m, SxPerson.m: fixed some compile warnings
+	  with gstep-base
+
+2003-12-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.2.69
+
+	* Persons/SxPersonFolder.m: only created SxPerson objects for "number"
+	  names (eg 28371.EML, but not for "Donald%20Duck.EML"). In case of a
+	  non-numeric name, the lookup should perform a query on the source_url
+	  table!
+
+	* SxAddressFolder.m: added a -description method
+
+2003-11-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved the Frontend Contacts, Enterprises, Groups and Person 
+	  subprojects into this separate Contact.zsp product
+	  (v1.2.68)

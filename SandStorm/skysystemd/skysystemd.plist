@@ -1,0 +1,73 @@
+{
+  components = {
+    "com.skyrix.system" = {
+      methods = {
+        find = {
+          executable = "/usr/bin/find";
+          help       = "execute the UNIX find command\n
+                        -> (array, string)";
+          signatures = {
+            "array,string" = { 
+              cmdline    = "$1$";
+              result     = "$stdout$";
+              resultType = "arrayOfLines";
+            };
+            "array,string,string" = {
+              cmdline    = "$1$ -name $2$"; 
+              result     = "$stdout$";
+              resultType = "arrayOfLines";
+            };
+            "array,string,string,string" = {
+              cmdline    = "$1$ -name $2$ -type $3$"; 
+              result     = "$stdout$";
+              resultType = "arrayOfLines";
+            };
+          };
+          fault = {
+            code    = "$exit$";
+            message = "$stderr$";
+          };
+        };
+        
+        ls = {
+          executable = "/bin/ls";
+          help       = "start ls";
+          signatures = {
+            "array,string" = { 
+              cmdline    = "$1$";
+              result     = "$stdout$";
+              resultType = "arrayOfLines";
+            };
+          };
+          fault = {
+            code    = "$exit$";
+            message = "$stderr$";
+          };
+        };
+        
+        bc = {
+          executable = "/usr/bin/bc";
+          help       = "start bc";
+          signatures = {
+            "i4,string" = {
+              stdin	 = "$1$\n";
+              result     = "$stdout$";
+            };
+            "i4,i4,i4" = {
+              stdin	 = "$1$ + $2$\n";
+              result     = "$stdout$";
+            };
+            "i4,i4,i4,string" = {
+              stdin	 = "$1$ $3$ $2$\n";
+              result     = "$stdout$";
+            };
+          };
+          fault = {
+            code    = "$exit$";
+            message = "$stderr$";
+          };
+        };
+      };
+    };
+  };
+}

@@ -1,0 +1,41 @@
+// $Id: SkyProject4DocumentVersionSave.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.saveAs;
+  onClose = cancel;
+}
+
+Form: WOForm {
+  action  = saveFile;
+  name    = "saveform";
+}
+
+FilePathAttr: SkyAttribute {
+  label  = labels.fileName;
+  string = filePath;
+}
+
+FilenameAttr: SkyAttribute {
+  label = labels.newFileName;
+}
+
+Filename: WOTextField {
+  value    = newFilePath;
+  size     = config.textField_size2;
+}
+
+SaveButton: WOImageButton {
+  filename = "save.gif";
+  action   = saveFile;
+  name     = labels.save;
+  ALT      = labels.save;
+  BORDER   = 0;
+}
+CancelButton: WOHyperlink {
+  action   = cancel;
+  filename = "cancel.gif";
+  alt      = labels.cancel;
+  border   = 0;
+}

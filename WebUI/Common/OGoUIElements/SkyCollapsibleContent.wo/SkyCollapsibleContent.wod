@@ -1,0 +1,62 @@
+// $Id: SkyCollapsibleContent.wod,v 1.2 2004/05/06 12:53:50 helge Exp $
+
+ComponentContent : WOComponentContent {};
+
+TitleMode:   WECollapsibleTitleMode {};
+ContentMode: WEContextConditional {
+  contextKey = "WECollapsible_TitleMode";
+  negate     = YES;
+};
+
+ContextKeyTitle: WEContextKey {
+  key = "SkyCollapsible_TitleMode";
+}
+
+ContextKeyButton: WEContextKey {
+  key = "SkyCollapsible_ButtonMode";
+}
+
+CollapsibleComponentContent: WECollapsibleComponentContent {
+  condition  = condition;
+  visibility = visibility;
+}
+
+CollapsibleAction: WECollapsibleAction {
+  openedImageFileName = openedImageFileName;
+  closedImageFileName = closedImageFileName;
+  openedLabel         = openedLabel;
+  closedLabel         = closedLabel;
+  submitActionName    = submitActionName;
+  action              = action;
+  fragmentIdentifier  = fragmentIdentifier;
+  isClicked           = isClicked;
+}
+
+StructuredModeCond: WOConditional {
+  condition = structuredMode;
+}
+
+StructuredModeCondElse: WOConditional {
+  condition = structuredMode;
+  negate    = YES;
+}
+
+IsTitleCond: WOConditional {
+  condition = isTitleSet;
+}
+
+TitleRow: WOGenericContainer {
+  elementName = "tr";
+  BGCOLOR     = titleColor;
+};
+TitleTD: WOGenericContainer {
+  elementName = "td";
+  COLSPAN     = titleColspan;
+}
+
+Font: SkyConfigFont {};
+
+Title: WOString {
+  value = title;
+}
+

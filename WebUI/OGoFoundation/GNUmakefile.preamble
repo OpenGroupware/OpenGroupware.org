@@ -1,0 +1,31 @@
+# $Id$
+
+libOGoFoundation_INCLUDE_DIRS += -I..
+
+libOGoFoundation_LIB_DIRS += \
+	-L../../DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR)
+
+libOGoFoundation_LIBRARIES_DEPEND_UPON += \
+	-lOGoDocuments	\
+	-lNGJavaScript -lNGScripting \
+	-lLSFoundation	\
+	-lNGObjWeb	\
+	-lNGMime -lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
+
+ifeq ($(GNUSTEP_TARGET_OS),mingw32)
+libOGoFoundation_LIBRARIES_DEPEND_UPON += \
+	-lGDLAccess -lGDLExtensions		\
+	-lFoundation -lobjc
+endif
+
+# flags
+
+ADDITIONAL_CPPFLAGS  += $(FND_DEFINE) $(RUNTIME_DEFINE) -DGC_DEBUG -pipe
+ADDITIONAL_OBJCFLAGS += -Wno-protocol -Wno-import -Wall -O
+ADDITIONAL_CFLAGS    += -Wall -O
+
+ifeq ($(FOUNDATION_LIB),nx)
+libOGoFoundation_LIBRARIES_DEPEND_UPON += -lFoundationExt
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif

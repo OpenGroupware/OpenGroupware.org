@@ -1,0 +1,50 @@
+{
+  requires = ( MAIN );
+
+  publicResources = (
+  );
+
+  classes = {
+    SxTaskFolder = {
+      superclass    = "SxFolder";
+      defaultAccess = "allow";
+      
+      methods = {
+      };
+      
+      defaultRoles = {
+        "WebDAV Access"           = "Authenticated";
+        "Change Images and Files" = "Owner";
+        "Delete Objects"          = "Owner";
+        "View"                    = "Owner";
+	"Add Documents, Images and Files" = "Owner";
+      };
+    };
+    SxTask = {
+      superclass  = "SxObject";
+      protectedBy = "View";
+
+      methods = {
+        "GET" = {
+          protectedBy = "View";
+        };
+        "DELETE" = {
+          protectedBy = "Delete Objects";
+        };
+      };
+      
+      defaultRoles = {
+        "WebDAV Access"           = "Authenticated";
+        "Change Images and Files" = "Owner";
+        "Delete Objects"          = "Owner";
+        "View"                    = "Owner";
+      };
+    };
+  };
+
+  factories = {
+  };
+
+  categories = {
+  };
+}

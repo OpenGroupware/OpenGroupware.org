@@ -1,0 +1,4 @@
+# $Id$
+
+NGLocalFileDocument:
+- why don't we call [super valueForKey:] ? security ? document !

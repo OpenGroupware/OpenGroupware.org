@@ -1,0 +1,28 @@
+<!-- $Id: SkyContactSubEditor.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+
+<tr>
+  <#AttributeCell>
+    <#Font><#ContactLabel/>:</#Font>
+  </#AttributeCell>
+  
+  <#ValueCell>
+    <#EditFont2>
+      <#HasContactCond>
+        <#Font>
+          <#ContactLogin/>&nbsp;
+          <#ContactName/>
+        </#Font>
+      </#HasContactCond>
+      <br />
+      <#SearchField/>
+      <#SearchSubmit/>
+      &nbsp;
+      <#IsEnterpriseEdition>
+        <#AccessLabel/>:
+        <#AccessCheckBox/>
+      </#IsEnterpriseEdition>
+      <br />
+      <#Font><#ContactResultList/></#Font>
+    </#EditFont2>
+  </#ValueCell>
+</tr>

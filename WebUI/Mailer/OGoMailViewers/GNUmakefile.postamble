@@ -1,0 +1,9 @@
+# $Id$
+
+validate-xml ::
+	xmllint --noout *.wox
+
+before-all :: $(OGoMailViewers_DERIVED_RESOURCES) validate-xml
+
+clean ::
+	rm -f $(OGoMailViewers_DERIVED_RESOURCES)

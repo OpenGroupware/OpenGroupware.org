@@ -1,0 +1,45 @@
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+  <tr><td>
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+      <#EnterpriseTitle>
+       <table  border="0" cellspacing="0" cellpadding="0">
+         <tr>
+          <td><#DeleteLink /></td>
+          <td>&nbsp;</td>
+          <td>
+            <#HasMoreEnterprises>
+              <#NotFirstEnterpriseCondElse>
+                <#FirstLinkBlind />
+                <#PreviousLinkBlind />
+              </#NotFirstEnterpriseCondElse>
+  
+              <#NotFirstEnterpriseCond>
+                <#FirstLink />
+                <#PreviousLink />
+              </#NotFirstEnterpriseCond>
+
+              <#NotLastEnterpriseCond>
+                <#NextLink />
+                <#LastLink />
+              </#NotLastEnterpriseCond>
+
+              <#NotLastEnterpriseCondElse>
+                <#NextLinkBlind />
+                <#LastLinkBlind />
+              </#NotLastEnterpriseCondElse>
+            </#HasMoreEnterprises>
+          </td>
+        </tr>
+      </table>
+     </#EnterpriseTitle>
+
+     <#EnterpriseSubViewer />
+    </table>
+  </td></tr>
+
+  <tr><td></td></tr>
+  <tr><td><#AddressesViewer /></td></tr>
+
+  <tr><td></td></tr>
+  <tr><td><#PersonList /></td></tr>
+</table>

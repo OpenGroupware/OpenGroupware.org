@@ -1,0 +1,11 @@
+# $Id$
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I. -I..	\
+	-I./Contacts/	\
+
+libZideStoreBackend_LIBRARIES_DEPEND_UPON += \
+	-lLSFoundation	\
+	-lGDLAccess	\
+	-lNGExtensions -lEOControl \
+	-lDOM

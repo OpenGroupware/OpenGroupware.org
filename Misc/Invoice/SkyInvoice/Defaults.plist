@@ -1,0 +1,562 @@
+// NSUserDefaults
+{
+
+  SkyInvoice_InvoiceList_attributes =
+    ( "stateIcon", "invoiceNr", "invoiceDate", "debitor", "kind",
+      "status", "netAmount", "grossAmount", "paid" );
+  SkyInvoice_InvoiceList_batchSize  = 30;
+  SkyInvoice_InvoiceList_sortedKey  = "invoiceNr";
+  SkyInvoice_InvoiceList_autoScroll = 500;
+
+  SkyInvoice_UnsettledInvoicesList_attributes =
+    ( "invoiceNr", "invoiceDate", "status", "monitionLevel", "toPay" );
+  
+  invoice_blocksize  = "20";
+  invoice_invoicearticles_autoscrollSize  = "200";
+  invoice_articles_autoscrollSize         = "300";
+  invoice_monitiondebitors_autoscrollSize = "300";
+  
+  invoice_no_of_cols = "2";
+  invoice_viewer_sub_view = "attributes";
+  invoice_currency = "DEM";
+
+  monition_levels = {
+    "0" = {
+      key = "05_printed";
+    };
+    "1" = {
+      key = "15_monition";
+    };
+    "2" = {
+      key = "16_monition2";
+      printout = "monition2-printout";
+    };
+    "3" = {
+      key = "17_monition3";
+      printout = "monition3-printout";
+    };
+  };
+  invoice_kinds      = {
+    "invoice_single"   = { 
+      key    = "invoice_single";
+      prefix = "R";
+      comment = 
+"Bitte begleichen Sie den Rechnungsbetrag innerhalb von 14 Tagen ohne Abzug.\n";
+    };
+    "invoice_month"    = { 
+      key      = "invoice_month";
+      printout = "month-printout";
+      prefix   = "R";
+      comment  = 
+"Bitte begleichen Sie den Rechnungsbetrag innerhalb von 14 Tagen ohne Abzug.\n";
+    };
+    "invoice_year"     = { 
+      key      = "invoice_year";
+      printout = "year-printout";
+      prefix   = "R";
+      comment  =
+"Bitte begleichen Sie den Rechnungsbetrag innerhalb von 14 Tagen ohne Abzug.\n";
+    };
+    "invoice_proforma" = { 
+      key      = "invoice_proforma";
+      printout = "proforma-printout";
+      prefix   = "R";
+      comment  = "Der Rechnungsbetrag wird von Ihrem Konto abgebucht.\n";
+    };
+    "invoice_quarter"  = { 
+      key      = "invoice_quarter";
+      printout = "quarter-printout";
+      prefix   = "R";
+      comment  =
+"Bitte begleichen Sie den Rechnungsbetrag innerhalb von 14 Tagen ohne Abzug.\n";
+    };
+    "invoice_cancel"   = { 
+      key      = "invoice_cancel";
+      printout = "cancel-printout";
+      prefix   = "S";
+      comment  = "Die Rechnung %@ vom %@ wurde gutgeschrieben.\n";
+    };
+  };
+  invoice_article_vat_groups = {
+    vat_A = { name   = "vat_A";
+              factor = 0.16;    };
+    vat_B = { name   = "vat_B";
+              factor = 0.07;    };
+    vat_C = { name   = "vat_C";
+              factor = 0.00;    };
+  };
+  invoice_overview_months = (
+          {  number   = "01";
+             labelKey = "01_january";           },
+          {  number   = "02";
+             labelKey = "02_february";          },
+          {  number   = "03";
+             labelKey = "03_march";             },
+          {  number   = "04";
+             labelKey = "04_april";             },
+          {  number   = "05";
+             labelKey = "05_may";               },
+          {  number   = "06";
+             labelKey = "06_june";              },
+          {  number   = "07";
+             labelKey = "07_july";              },
+          {  number   = "08";
+             labelKey = "08_august";            },
+          {  number   = "09";
+             labelKey = "09_september";         },
+          {  number   = "10";
+             labelKey = "10_october";           },
+          {  number   = "11";
+             labelKey = "11_november";          },
+          {  number   = "12";
+             labelKey = "12_december";          }
+  );
+  invoice_monition_interval = 14;
+  invoice_monitions = {
+    "05_printed"   = 0;
+    "15_monition"  = 1;
+    "16_monition2" = 2;
+    "17_monition3" = 3;
+  };
+  invoices_path = "Invoices";
+  invoice_format_settings = {
+    "proforma-printout" = {
+      "INVOICE_LABEL" = {
+        value = "RECHNUNG";
+      };
+    };
+    "cancel-printout" = {
+      "INVOICE_LABEL" = {
+        value = "GUTSCHRIFT";
+      };
+      "SUMMARY_ITEM" = 
+"{%80@%UNDERLINE}\
+{%65@%NET_AMOUNT_LABEL}{%11@%NET_AMOUNT} {%3@%CURRENCY}\
+{%@%VATS}{%80@%UNDERLINE}\
+{%65@%GROSS_AMOUNT_LABEL}{%11@%GROSS_AMOUNT} {%3@%CURRENCY}\
+{%@%PAID}{%@%CREDITADVISE}";
+      "PAID" = {
+        type       = "key";
+        key        = "alreadyPaid";
+        nullString = "";
+        subItem    = "PAID_ITEM";
+      };
+      "PAID_ITEM" = "{%65@%PAID_LABEL}{%11@%PAID_AMOUNT} {%3@%CURRENCY}\n";
+      "PAID_LABEL" = { value = "Bezahlt:" };
+      "PAID_AMOUNT" = {
+        type    = "key";
+        subItem = "MONEY_ITEM";
+      };
+      "CREDITADVISE" = {
+        type       = "key";
+        key        = "paid";
+        nullString = "";
+        subItem    = "ADVISE_ITEM";
+      };
+      "ADVISE_ITEM" = "{%65@%ADVISE_LABEL}{%11@%ADVISE_AMOUNT} {%3@%CURRENCY}\n";
+      "ADVISE_LABEL" = { value = "Gutschrift:"; };
+      "ADVISE_AMOUNT" = {
+        type    = "key";
+        subItem = "MONEY_ITEM";
+      };
+    };
+    "month-printout" = {
+      "INVOICE_LABEL" = {
+        value = "MONATS-RECHNUNG";
+      };
+    };
+    "year-printout" = {
+      "INVOICE_LABEL" = {
+        value = "JAHRESRECHNUNG";
+      };
+    };
+    "quarter-printout" = {
+      "INVOICE_LABEL" = {
+        value = "QUARTALSRECHNUNG";
+      };
+    };
+    "standard-printout" = {
+      "MAIN" = "{%@%HEADER}{%@%ARTICLES}{%@%FOOTER}";
+      "HEADER" = {
+        type    = "key";
+        subItem = "HEADER_ITEM";
+      };
+      "HEADER_ITEM" = 
+" \n \n \n \n \n \n \n \n{%@%ADDRESS} \n \n \n \n \n \n \n{%60@%SPACES}{%@%INVOICE_LABEL}\n{%60@%SPACES}{%-9@%INVOICE_NR_LABEL}{%@%INVOICE_NR}\n{%60@%SPACES}{%-9@%DEBITOR_NR_LABEL}{%@%DEBITOR_NR}\n{%60@%SPACES}{%-9@%DATE_LABEL}{%@%INVOICE_DATE}\n \n{%80@%ADDITIONAL_INFO}\n \n \n{%13@%COUNT_LABEL}  {%-33@%ARTICLE_LABEL}  {%-4@%VAT_LABEL}  {%-10@%SINGLE_PRICE_LABEL}  {%12@%PRICE_LABEL}\n________________________________________________________________________________\n";
+      "ADDRESS" = {
+        object  = "debitor";
+        type    = "key";
+        key     = "toAddress";
+        subItem = "ADDRESS_ITEM";
+      };
+      "ADDRESS_ITEM" = 
+"{%@%NAME1}{%@%NAME2}{%@%NAME3}{%@%STREET} \n     {%-8@%ZIP}{%@%CITY}";
+      "NAME1" = {
+        type  = "key";
+        key   = "name1";
+        subItem = "NAME";
+        nullString = " \n";
+      };
+      "NAME2" = {
+        type    = "key";
+        key     = "name2";
+        subItem = "NAME";
+        nullString = " \n";
+      };
+      "NAME3" = {
+        type    = "key";
+        key     = "name3";
+        subItem = "NAME";
+        nullString = " \n";
+      };
+      "STREET" = {
+        type = "key";
+        key  = "street";
+        subItem = "NAME";
+      };
+      "ZIP" = {
+        type = "key";
+        key  = "zip";
+      };
+      "CITY" = {
+        type = "key";
+        key   = "city";
+      };
+      "NAME" = "     {%@%}\n";
+      "SPACES" = {
+        value = " ";
+      };
+      "INVOICE_LABEL" = {
+        value = "RECHNUNG";
+      };
+      "INVOICE_NR_LABEL" = {
+        value = "R-Nr.:";
+      };
+      "INVOICE_NR" = {
+        object = "invoice";
+        key    = "invoiceNr";
+        type   = "key";
+      };
+      "DEBITOR_NR_LABEL" = {
+        value = "Kd.-Nr.:";
+      };
+      "DEBITOR_NR" = {
+        object = "debitor";
+        key    = "number";
+        type   = "key";
+      };
+      "DATE_LABEL" = {
+        value = "Datum:";
+      };
+      "INVOICE_DATE" = {
+        object     = "invoice";
+        type       = "key";
+        key        = "invoiceDate";
+        dateFormat = "%Y-%m-%d";
+      };
+      "ADDITIONAL_INFO" = {
+        value = "Bei Zahlungen bitte immer die R-Nr. angeben.";
+      };
+      "ARTICLES" = {
+        type    = "key";
+        subItem = "ARTICLES_ITEM";
+      };
+      "ARTICLES_ITEM" = 
+"{%@%ARTICLES_LIST}";
+      "COUNT_LABEL" = {
+        value = "Menge";
+      };
+      "ARTICLE_LABEL" = {
+        value = "Artikel";
+      };
+      "VAT_LABEL" = {
+        value = "MwST";
+      };
+      "SINGLE_PRICE_LABEL" = {
+        value = "EP(netto)";
+      };
+      "PRICE_LABEL" = {
+        value = "Gesamtpreis";
+      };
+      "ARTICLES_LIST" = {
+        object  = "articles";
+        type    = "list";
+        subItem = "ARTICLE";
+      };
+      "ARTICLE" = 
+" \n{%13@%ARTICLE_COUNT}  {%-33@%ARTICLE_NAME}  {%-4@%ARTICLE_VAT}  {%9@%SINGLE_PRICE} {%10@%PRICE} {%3@%CURRENCY}\n{%@%COMMENTS}{%@%ADDCOMMENTS}";
+      "ARTICLE_COUNT" = {
+        key  = "countString";
+        type = "key";
+      };
+      "ARTICLE_NAME" = {
+        key  = "articleName";
+        type = "key";
+      };
+      "ARTICLE_VAT" = {
+        key     = "vat";
+        type    = "key";
+        subItem = "VAT_ITEM";
+      };
+      "MONEY_ITEM" = "{%@%MONEY}";
+      "VAT_ITEM" = "{%@%VAT}";
+      "MONEY" = {
+        type = "key";
+        isCurrency   = YES;
+        numberFormat = ".__0,00";
+        numberFormat_tSep = ".";
+        numberFormat_dSep = ",";
+      };
+      "VAT" = {
+        type = "key";
+        numberFormat = "0,00";
+        numberFormat_tSep = ".";
+        numberFormat_dSep = ",";
+      };
+      "SINGLE_PRICE" = {
+        key     = "netAmount";
+        type    = "key";
+        subItem = "MONEY_ITEM";
+      };
+      "PRICE" = {
+        key     = "allNetAmount";
+        type    = "key";
+        subItem = "MONEY_ITEM";
+      };
+      "CURRENCY" = {
+        object = "currency";
+      };
+      "COMMENTS" = {
+        key        = "defaultComment";
+        type       = "list";
+        split      = "|";
+        subItem    = "COMMENT_ITEM";
+        nullString = "";
+      };
+      "COMMENT_ITEM" = "{%@%COMMENT}";
+      "COMMENT_ROW" = "{%13@%SPACES}  {%-33@%}\n";
+      "COMMENT" = {
+        type = "key";
+        nullString = "";
+        subItem = "COMMENT_ROW";
+      };
+      "ADDCOMMENTS" = {
+        key     = "comment";
+        type    = "list";
+        split   = "|";
+        subItem = "COMMENT_ITEM";
+        nullString = "";
+      };
+      "FOOTER" = {
+        type = "key";
+        subItem = "FOOTER_ITEM";
+      };
+      "FOOTER_ITEM" = 
+"{%@%SUMMARY} \n \n{%@%INVOICE_COMMENT}{%@%DEFAULT_COMMENT}\n";
+      "SUMMARY" = {
+        object  = "invoice";
+        type    = "key";
+        subItem = "SUMMARY_ITEM";
+      };
+      "SUMMARY_ITEM" = 
+"{%80@%UNDERLINE}\
+{%65@%NET_AMOUNT_LABEL}{%11@%NET_AMOUNT} {%3@%CURRENCY}\
+{%@%VATS}{%80@%UNDERLINE}\
+{%65@%GROSS_AMOUNT_LABEL}{%11@%GROSS_AMOUNT} {%3@%CURRENCY}\n";
+      "UNDERLINE" = {
+        value = "_______________________________";
+      };
+      "NET_AMOUNT_LABEL" = {
+        value = "Summe (netto):";
+      };
+      "NET_AMOUNT" = {
+        type    = "key";
+        key     = "netAmount";
+        subItem = "MONEY_ITEM";
+      };
+      "VATS" = {
+        type       = "list";
+        key        = "vatGroups";
+        subItem    = "VATS_ITEM";
+      };
+      "VATS_ITEM" = 
+"{%49@%SPACES}zzgl. {%2@%VAT_VALUE}% MwSt.:{%11@%VAT_AMOUNT} {%3@%CURRENCY}\n";
+      "VAT_VALUE" = {
+        type            = "key";
+        key             = "vatLabel";
+      };
+      "VAT_NET_AMOUNT" = {
+        type    = "key";
+        key     = "netAmount";
+        subItem = "MONEY_ITEM";
+      };
+      "VAT_AMOUNT" = {
+        type       = "key";
+        key        = "vatAmount";
+        subItem    = "MONEY_ITEM";
+      };
+      "GROSS_AMOUNT_LABEL" = {
+        value = "Rechnungsbetrag:";
+      };
+      "GROSS_AMOUNT" = {
+        type    = "key";
+        key     = "grossAmount";
+        subItem = "MONEY_ITEM";
+      };
+      "INVOICE_COMMENT" = {
+        object     = "invoice";
+        key        = "comment";
+        type       = "key";
+        nullString = "";
+      };
+      "DEFAULT_COMMENT" = {
+        value = "";
+      };
+    };
+    "monition-printout" = {
+      "MAIN" = "{%@%HEADER}{%@%INVOICES}{%@%FOOTER}";
+      "HEADER_ITEM" = 
+"\n \n \n \n \n \n \n \n{%@%ADDRESS} \n \n \n \n \n \n \
+{%60@%SPACES}{%@%MONITION_LABEL}\n \
+{%60@%SPACES}{%-9@%DEBITOR_NR_LABEL}{%@%DEBITOR_NR}\
+{%60@%SPACES}{%-9@%DATE_LABEL}{%@%TODAY}\n \
+{%@%ADDITIONAL_INFO}\n \n \n \n{%@%TABLEHEADER}";
+      "MONITION_LABEL" = {
+        value = "ZAHLUNGSERINNERUNG";
+      };
+      "TODAY" = {
+        object     = "now";
+        type       = "key";
+        dateFormat = "%Y-%m-%d";
+      };
+      "ADDITIONAL_INFO" = {
+        value = 
+"Sehr geehrte Damen und Herren,\n \
+nachstehend aufgefuehrte Rechnungen sind zur Zahlung faellig.\n \
+Wenn Sie die Rechnung bereits vor mehr als 4 Tagen bezahlt haben, so rufen Sie\
+bitte trotzdem an, damit wir den Vorgang klaeren koennen.";
+      };
+      "TABLEHEADER" = {
+        type    = "key";
+        subItem = "TABLEHEADER_ITEM";
+      };
+      "TABLEHEADER_ITEM" =
+"{%-15@%INVOICE_NR_LABEL}{%-14@%INVOICE_DATE_LABEL}{%17@%MUST_BE_LABEL}{%15@%IS_LABEL}{%15@%SALDO_LABEL}{%4@%MONITION_LEVEL_LABEL}\
+________________________________________________________________________________\n ";
+      "INVOICE_NR_LABEL" = {
+        value = "Beleg-Nr.";
+      };
+      "INVOICE_DATE_LABEL" = {
+        value = "Beleg-Datum";
+      };
+      "MUST_BE_LABEL" = {
+        value = "Soll";
+      };
+      "IS_LABEL" = {
+        value = "Haben";
+      };
+      "SALDO_LABEL" = {
+        value = "Saldo";
+      };
+      "MONITION_LEVEL_LABEL" = {
+        value = "MS";
+      };
+      "INVOICES" = {
+        object  = "invoices";
+        type    = "list";
+        subItem = "INVOICE_ITEM";
+      };
+      "INVOICE_ITEM" = "\n{%-15@%INVOICE_NR}{%-14@%INVOICE_DATE}{%13@%MUST_BE} {%3@%CURRENCY}{%11@%IS} {%3@%CURRENCY}{%11@%SALDO} {%3@%CURRENCY}{%4@%MONITION_LEVEL}";
+      "INVOICE_NR" = {
+        type       = "key";
+        key        = "invoiceNr";
+      };
+      "INVOICE_DATE" = {
+        type       = "key";
+        key        = "invoiceDate";
+        dateFormat = "%Y-%m-%d";
+      };
+      "MUST_BE" = {
+        type       = "key";
+        key        = "grossAmount";
+        subItem    = "MONEY_CURRENCY_ITEM";
+      };
+      "IS" = {
+        type       = "key";
+        key        = "paid";
+        nullString = "0,00";
+        subItem    = "MONEY_CURRENCY_ITEM";
+      };
+      "SALDO" = {
+        type       = "key";
+        key        = "toPay";
+        subItem    = "MONEY_CURRENCY_ITEM";
+      };
+      "MONITION_LEVEL" = {
+        type       = "key";
+        key        = "monitionLevel";
+        nullString = " ";
+      };
+      "MONEY_CURRENCY_ITEM" = "{%@%MONEY}";
+      "FOOTER" = {
+        type    = "key";
+        subItem = "FOOTER_ITEM";
+      };
+      "FOOTER_ITEM" = 
+"\n{%45@%SPACES}___________________________________\
+{%45@%SPACES}{%16@%ALL_AMOUNT_LABEL}{%11@%ALL_AMOUNT} {%3@%CURRENCY}{%4@%SPACES}\n \
+ \n{%@%MONITION_COMMENT}\n";
+      "ALL_AMOUNT_LABEL" = {
+        value = "Gesamtforderung:";
+      };
+      "ALL_AMOUNT" = {
+        object  = "debitor";
+        type    = "key";
+        key     = "allMonitionValue";
+        subItem = "MONEY_CURRENCY_ITEM";
+      };
+      "MONITION_COMMENT" = {
+        value = 
+"Sollte sich Ihre Zahlung mit dieser Mahnung ueberschnitten haben, so \
+betrachten Sie diese bitte als gegenstandslos.";
+      };
+    };
+    "monition2-printout" = {
+      "MONITION_LABEL" = {
+        value = "2. Mahnung";
+      };
+      "ADDITIONAL_INFO" = {
+        value =
+"Sehr geehrte Damen und Herren,\n \
+wir erinnerten Sie bereits an die Faelligkeit unserer Rechnungen.\
+Bis heute koennen wir jedoch den fristgemaessen Zahlungseingang\
+nicht feststellen. Bitte ueberweisen Sie nun umgehend diese ueberfaelligen\
+Betraege! Sollte diese Mahnung wiederum erfolglos sein, sehen wir uns\
+leider gezwungen, Ihnen Verzugszinsen zu berechnen.";
+      };
+      "MONITION_COMMENT" = {
+        value = "";
+      };
+    };
+    "monition3-printout" = {
+      "MONITION_LABEL" = {
+        value = "3. Mahnung";
+      };
+      "ADDITIONAL_INFO" = {
+        value = 
+"Sehr geehrte Damen und Herren,\n \
+unserer heutigen Zahlungsaufforderung sind bereits mehrere Erinnerungen\
+vorausgegangen. Ueberweisen Sie bitte den faelligen Betrag der nachstehend\
+aufgefuehrten Rechnungen spaetestens in 8 Tagen.\
+Bei Nichteinhalung dieses Zahlungstermins sehen wir uns leider gezwungen,\
+einen gerichtlichen Mahnbescheid in Hoehe unserer Forderungen gegen Sie\
+zu beantragen.\n \
+Mit freundlichen Gruessen\n \
+Dieter Festner";
+      };
+      "MONITION_COMMENT" = {
+        value = "";
+      };
+    };
+  };
+}

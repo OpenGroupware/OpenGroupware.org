@@ -1,0 +1,55 @@
+{
+  CVSID = "$Id$";
+  bundleHandler = "SkyContactsBundleManager";
+  
+  requires = {
+    bundleManagerVersion = 1;
+  };
+  
+  provides = {
+    classes = (
+      { name = SkyContactsBundleManager;      },
+      { name = SkyPersonDataSource;           },
+      { name = SkyAccountDataSource;          },
+      { name = SkyEnterpriseDataSource;       },
+      { name = SkyPersonEnterpriseDataSource; },
+      { name = SkyEnterprisePersonDataSource; },
+      { name = SkyPersonDocument;             },
+      { name = SkyEnterpriseAddressConverterDataSource; }
+    );
+    datasources = (
+      { name = SkyPersonDataSource;           },
+      { name = SkyAccountDataSource;          },
+      { name = SkyEnterpriseDataSource;       },
+      { name = SkyPersonEnterpriseDataSource; },
+      { name = SkyEnterprisePersonDataSource; },
+      { name = SkyEnterpriseAddressConverterDataSource; }
+    );
+    
+    SkyAccessHandlers = (
+      { name = "Person";     },
+      { name = "Company";    },
+      { name = "Enterprise"; },
+      { name = "Team";       }
+    );
+
+    SkyDocumentGlobalIDResolver = (
+      {
+        name          = SkyPersonDocumentGlobalIDResolver;
+        GlobalIDClass = EOKeyGlobalID;
+        qualifier     = "entityName='Person'";
+      },
+      {
+        name          = SkyEnterpriseDocumentGlobalIDResolver;
+        GlobalIDClass = EOKeyGlobalID;
+        qualifier     = "entityName='Enterprise'";
+      }
+    );
+  };
+  SkyAccessHandlers = {
+    Person         = "SkyContactsAccessHandler";
+    Enterprise     = "SkyContactsAccessHandler";
+    Company        = "SkyContactsAccessHandler";
+    Team           = "SkyContactsAccessHandler";
+  };
+}

@@ -1,0 +1,47 @@
+// $Id: OGoMailViewers.ccfg,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+{
+
+  LSWMimeBodyPartViewer = {
+          typeIcons = {
+            text = {
+              plain = "document_txt.gif";
+              html  = "document_htm.gif";
+            };
+            image = {
+              bmp   = "document_gif.gif";
+              gif   = "document_gif.gif";
+              tiff  = "document_gif.gif";
+              jpeg  = "document_gif.gif";
+            };
+            application = {
+              pdf                 = "document_pdf.gif";
+              zip                 = "document_zip.gif";
+              msword              = "document_doc.gif"; 
+              msexcel             = "document_xls.gif"; 
+              rtf                 = "document_doc.gif"; 
+              "x-tar"             = "document_zip.gif";
+              "x-gtar"            = "document_zip.gif";
+              "x-compressed"      = "document_zip.gif";
+              "x-zip-compressed"  = "document_zip.gif";
+              "x-stuffit"         = "document_sit.gif";
+              "x-excel"           = "document_xls.gif";
+              "vnd.framemaker"    = "document_frm.gif";
+              "vnd.ms-excel"      = "document_xls.gif";
+              "vnd.ms-powerpoint" = "document_ppt.gif";
+              "vnd.ms-project"    = "document_mpp.gif";
+            };
+            eo = {
+              appointment = "link_appointment.gif";
+              document    = "link_document.gif";
+              person      = "link_person.gif";
+              enterprise  = "link_enterprise.gif";
+              project     = "link_project.gif";
+              job         = "link_job.gif";
+            };
+            unknown = "document_unknown.gif";
+          };
+  };
+  LSWTextPlainBodyViewer = {
+          textWrapWidth = 80;
+  };
+}

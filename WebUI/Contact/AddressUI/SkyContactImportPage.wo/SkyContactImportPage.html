@@ -1,0 +1,66 @@
+<!-- $Id: SkyContactImportPage.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+<#Frame>
+  <#Window>
+      <table width="100%" border="0" cellpadding="4" cellspacing="0">
+
+        <#Title/>
+
+        <tr><#RecordsToProceed/></tr>
+        <#HasImportCntCond>
+          <tr><#AlreadyImportedAttr/></tr>
+        </#HasImportCntCond>
+        <#HasIgnoreCntCond>
+          <tr><#IgnoredAttr/></tr>
+        </#HasIgnoreCntCond>
+        <#HasDuplicateCntCond>
+          <tr><#MarkedDuplicateAttr/></tr>
+        </#HasDuplicateCntCond>
+
+        <#HasNextCondElse>
+          <tr><#NoMoreRecordsAttr/></tr>
+          <tr><td></td><td><#Cancel/></td></tr>
+        </#HasNextCondElse>          
+
+        <#HasNextCond>
+          <tr><td align="right"><#NextRecordLabel/></td><td></td></tr>
+
+          <#IsPersonCond>
+            <tr><#FirstnameAttr/></tr>
+            <tr><#MiddlenameAttr/></tr>
+            <tr><#NameAttr/></tr>
+            <tr><#NicknameAttr/></tr>
+            <tr><#Email1Attr/></tr>
+          </#IsPersonCond>
+
+          <#IsEnterpriseCond>
+            <tr><#NameAttr/></tr>
+            <tr><#NumberAttr/></tr>
+            <tr><#EmailAttr/></tr>
+          </#IsEnterpriseCond>
+
+          <#HasDuplicatesCond>
+            <tr><td colspan="2"></td></tr>
+            <tr>
+              <#DuplicatesAttr>
+                <#DuplicatesTable>
+                  <#AttrSwitch>
+                    <#FirstnameCase ><#FirstnameData/></#FirstnameCase>
+                    <#MiddlenameCase><#MiddlenameData/></#MiddlenameCase>
+                    <#NameCase      ><#NameData/></#NameCase>
+                    <#NicknameCase  ><#NicknameData/></#NicknameCase>
+                    <#Email1Case    ><#Email1Data/></#Email1Case>
+                    <#EmailCase     ><#EmailData/></#EmailCase>
+                    <#NumberCase    ><#NumberData/></#NumberCase>
+                    <#PrivateCase   ><#PrivateData/></#PrivateCase>
+                  </#AttrSwitch>
+                </#DuplicatesTable>
+              </#DuplicatesAttr>
+            </tr>
+          </#HasDuplicatesCond>
+
+          <tr><td colspan="2"></td></tr>
+          <tr><td></td><td><#Buttons/></td></tr>
+        </#HasNextCond>
+      </table>
+  </#Window>
+</#Frame>

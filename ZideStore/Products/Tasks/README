@@ -1,0 +1,46 @@
+# $Id$
+
+Tasks
+- mapped to SKYRiX Jobs
+- child of
+  - group-folder
+  - home-folder
+- disallow as child of account/person-folder !
+
+This is (still) special, because the SxTask objects are used as value
+containers !
+
+Job Creation:
+  cdoAction           [1280]
+  cdoIsRecurring      [eg 0]
+  cdoItemIsComplete   [eg 0]
+  date
+  davUid
+  isTeamTask
+  locationURL
+  outlookMessageClass [IPM.Task]
+  ownerName           [eg "Helge Hess"]
+  sideeffects         [272]
+  taskCompletion      [eg 0.00]
+  taskStatus          [eg 0]
+  threadTopic         [eg tst5]
+
+Sourcefiles
+===========
+
+SxTask           controller for an individual task, also used for delivery
+                 of task sets (as a wrapper for the EO)
+
+SxTaskFolder     controller for a set of tasks mapped as a folder
+
+SxDavTaskAction  a common superclass for TaskChange and TaskCreate, filters out
+                 unnecessary attributes, detects states etc
+
+SxDavTaskChange  used to change a task (moving the task between states etc)
+
+SxDavTaskCreate  used to create a task
+
+SxTaskRenderer   used to render a task in the iCalendar format
+
+SxTaskStatus     a small helper class to abstract the Outlook task status and
+                 to calculate skyrix representations

@@ -1,0 +1,24 @@
+<!-- $Id: SkyTelephoneViewer.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+
+<#TableAndTitleCond>
+  <table border="0" width="100%" cellpadding="4" cellspacing="0">
+    <#TelephoneTitle><#Buttons/></#TelephoneTitle>
+</#TableAndTitleCond>
+
+<#TelephoneRepetition>
+  <#ShowNumberCond>
+    <tr>
+      <#AttributeCell><#Font><#TypeLabel/>:</#Font></#AttributeCell>
+      <#ValueCell>
+        <#Font>
+          <#DialNumber><#Number/></#DialNumber>&nbsp;
+          <#HasInfoCond>(<#Info/>)</#HasInfoCond>
+        </#Font>
+      </#ValueCell>
+    </tr>
+  </#ShowNumberCond>
+</#TelephoneRepetition>
+
+<#TableAndTitleCond>
+  </table>
+</#TableAndTitleCond>

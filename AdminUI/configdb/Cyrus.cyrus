@@ -1,0 +1,82 @@
+{
+  // TODO: configure proper values!
+  
+  /* imapd conf */
+  configdirectory      = /var/lib/cyrus;
+  defaultpartition     = default;
+  partition-default    = /var/spool/cyrus/mail;
+  partition-news       = /var/spool/cyrus/news;
+  newsspool            = /var/spool/news;
+  altnamespace         = NO;
+  unixhierarchysep     = NO;
+  munge8bit            = NO;
+  lmtp_downcase_rcpt   = YES;
+  admins               = ( cyrus );
+  lmtp_admins          = ( postman );
+  mupdate_admins       = ( mupdateman );
+  imap_admins          = ( cyrus );
+  sieve_admins         = ( cyrus );
+  proxyservers         = ( cyrus );
+  allowanonymouslogin  = NO;
+  popminpoll           = 1;
+  autocreatequota      = -1;
+  umask                = "077";
+  sendmail             = /usr/sbin/sendmail;
+  sieveusehomedir      = false;
+  sievedir             = /var/spool/sieve;
+  mailnotifier         = zephyr;
+  sievenotifier        = zephyr;
+  dracinterval         = 0;
+  drachost             = localhost;
+  hashimapspool        = YES;
+  allowplaintext       = YES;
+  sasl_mech_list       = ( PLAIN );
+  sasl_minimum_layer   = 0;
+  sasl_maximum_layer   = 256;
+  loginrealms          = ();
+  sasl_pwcheck_method  = auxprop;
+  sasl_auxprop_plugin  = sasldb;
+  sasl_auto_transition = NO;
+  tls_ca_file          = /var/imap/server.pem;
+  tls_ca_path          = /etc/ssl/certs;
+  tls_cert_file        = /var/imap/server.pem;
+  tls_imap_cert_file   = /etc/ssl/certs/cyrus-imap.pem;
+  tls_imap_key_file    = /etc/ssl/private/cyrus-imap.key;
+  tls_key_file         = /var/imap/server.pem;
+  tls_lmtp_cert_file   = /etc/ssl/certs/cyrus-lmtp.pem;
+  tls_lmtp_key_file    = /etc/ssl/private/cyrus-lmtp.key;
+  tls_pop3_cert_file   = /etc/ssl/certs/cyrus-pop3.pem;
+  tls_pop3_key_file    = /etc/ssl/private/cyrus-pop3.key;
+  tls_session_timeout  = 1440;
+  tls_sieve_cert_file  = /etc/ssl/certs/cyrus-sieve.pem;
+  tls_sieve_key_file   = /etc/ssl/private/cyrus-sieve.key;
+  tls_cipher_list      = (
+    TLSv1, SSLv3, SSLv2, !NULL, !EXPORT, !DES, !LOW, @STRENGTH
+  );
+  tls_require_cert       = NO;
+  tls_imap_require_cert  = NO;
+  tls_pop3_require_cert  = NO;
+  tls_lmtp_require_cert  = NO;
+  tls_sieve_require_cert = NO;
+
+/*
+# Cyrus Murder cluster configuration
+#
+# Set the following options to the values needed for this server to
+# autenticate against the mupdate master server:
+# mupdate_server
+# mupdate_port
+# mupdate_username
+# mupdate_authname
+# mupdate_realm
+# mupdate_password
+# mupdate_retry_delay
+*/
+
+  /* KEEP THESE IN SYNC WITH cyrus.conf */
+  lmtpsocket    = "/var/spool/postfix/public/lmtp";
+  idlesocket    = ""; // /var/run/cyrus/socket/idle
+  notifysocket  = ""; // /var/run/cyrus/socket/notify
+  
+  debug_command = "";
+}

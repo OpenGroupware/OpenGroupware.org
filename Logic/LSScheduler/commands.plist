@@ -1,0 +1,137 @@
+// $Id$
+{
+  domainList = (
+        datecompanyassignment,
+        date,
+        appointment,
+        appointmentresource
+//        event
+  );
+
+  domains = {
+    "datecompanyassignment" = { // private
+      operations = {
+        "new"    = { 
+          class = "LSDBObjectNewCommand"; 
+          init   = { entity = "DateCompanyAssignment"; };
+        };
+        "set"    = { 
+          class  = "LSDBObjectSetCommand";  
+          init   = { entity = "DateCompanyAssignment"; };
+        };
+        "get"    = { 
+          class  = "LSDBObjectGetCommand";  
+          init   = { entity = "DateCompanyAssignment"; };
+        };
+        "delete" = { 
+          class  = "LSDBObjectDeleteCommand"; 
+          init   = { entity = "DateCompanyAssignment"; }; 
+        };
+      };
+    };
+    
+    "date" = {
+      "operations" = {
+        "delete"           = { class = "LSDeleteAppointmentCommand";};
+      };
+    };
+
+    "appointmentresource" = {
+      "operations" = {
+        "new"    = { 
+          class = "LSDBObjectNewCommand"; 
+          init   = { entity = "AppointmentResource"; }; 
+        };
+        "set"    = { 
+          class  = "LSDBObjectSetCommand";  
+          init   = { entity = "AppointmentResource"; };
+        };
+        "get"    = { 
+          class  = "LSDBObjectGetCommand";  
+          init   = { entity = "AppointmentResource"; };
+        };
+        "delete" = { 
+          class  = "LSDBObjectDeleteCommand"; 
+          init   = { entity = "AppointmentResource"; }; 
+        };
+        "set-all"= { class = "LSSetResourcesCommand"; };
+        "extended-search" = { 
+          class = "LSExtendedSearchCommand";
+          init  = { entity = "AppointmentResource"; };
+        };
+        "get-by-globalid"  = { class = "LSGetResourcesForGlobalIDs"; };
+        "categories"       = { class = "LSResourceCategories";       };
+      };
+    };
+
+    "appointment" = {
+      "operations" = {
+        "new"                  = { class = "LSNewAppointmentCommand";      };
+        "set"                  = { class = "LSSetAppointmentCommand";      };
+        "delete"               = { class = "LSDeleteAppointmentCommand";   };
+        "get"                  = { class = "LSGetAppointmentCommand";      };
+        
+        "get-by-globalid"      = { class = "LSGetAppointmentsForGlobalIDs"; };
+        "access"               = { class = "LSAptAccessCommand";           };
+        
+        "converttimezone"      = { class = "LSConvertTimeZoneCommand";     };
+        "weekdates"            = { class = "LSGetDateForAWeekCommand";     };
+        "daydates"             = { class = "LSGetDateForADayCommand";      };
+        "filter-amdates"       = { class = "LSFilterAMWeekDaysCommand";    };
+        "filter-pmdates"       = { class = "LSFilterPMWeekDaysCommand";    };
+        "filter-several-days"  = { class = "LSFilterSeveralDaysCommand";   };
+        "filter-absence"       = { class = "LSFilterAbsenceCommand";       };
+        "filter-dates"         = { class = "LSFilterWeekDaysCommand";      };
+        "filter-staff"         = { class = "LSFilterStaffCommand";         };
+        "mondaysofyear"        = { class = "LSMondaysOfYearCommand";       };
+        "conflicts"            = { class = "LSGetDateWithConflictCommand"; };
+        "new-cyclic"           = { class = "LSCyclicAppointmentsCommand";  };
+        "months"               = { class = "LSMonthCommand";               };
+        "set-participants"     = { class = "LSDateAssignmentCommand";      };
+        "list-participants"    = { class = "LSListParticipantsCommand";    };
+        "get-participants"     = { class = "LSGetCompanyForDateCommand";   };
+
+        "get-appointments"     = { class = "LSGetAppointmentsOfAccountCommand"; };
+        "intersection"         = { class = "LSParticipantsIntersectionCommand"; };
+        "get-cyclic"           = { class = "LSFetchCyclicAppointmentCommand";   };
+        "proposal"             = { class = "LSAppointmentProposalCommand";      };
+        "get-access-team-info" = { class = "LSGetAccessTeamInfoCommand";        };
+        "get-comments"         = { class = "LSGetCommentForAppointmentsCommand";};
+
+        
+        "get-comment" = { 
+          class  = "LSDBFetchRelationCommand"; 
+          init   = { 
+                entity                = "Date"; 
+                destinationEntityName = "DateInfo"; 
+                sourceKey             = "dateId"; 
+                destinationKey        = "dateId";
+                isToMany              = NO; 
+          };
+        }; 
+
+        "query" = { class = "LSQueryAppointments"; };
+
+        // old mappings
+        "filteramdates"     = { class = "LSFilterAMWeekDaysCommand";    };
+        "filterpmdates"     = { class = "LSFilterPMWeekDaysCommand";    };
+        "filterdates"       = { class = "LSFilterWeekDaysCommand";      };
+        "filterstaff"       = { class = "LSFilterStaffCommand";         };
+        "assigncompanydate" = { class = "LSDateAssignmentCommand";      };
+        "getparticipants"   = { class = "LSGetCompanyForDateCommand";   };
+        "filter-attendance" = { class = "LSFilterAttendanceCommand";    };
+        "used-resources"    = { class = "LSUsedResourcesCommand";       };
+        "move"              = { class = "LSMoveAppointmentCommand";     };
+        "update-with-vevent"={class="LSUpdateAppointmentWithVEventCommand";};
+        "get-by-sourceurl"  = { class="LSGetAppointmentsForSourceUrls"; };
+        "new-with-vevent"   = { class="LSNewAppointmentFromVEventCommand"; };
+        "get-ical"          = { class = "LSGetICalForAppointmentsCommand"; };
+      };
+    };
+//    "event" = {
+//      "operations" = {
+//        "new"           = { class = "LSNewEventCommand";        };
+//      };
+//    };
+  };
+}

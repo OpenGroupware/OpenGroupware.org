@@ -1,0 +1,390 @@
+// $Id: LSWAppointmentViewer.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = labels.AppointmentViewerTitle;
+  onClose = session.navigation.leavePage;
+}
+
+IsLicensed: SkyLicenseConditional {
+  modules  = ( Scheduler,Scheduler2 );
+  ormode   = YES;
+}
+
+IsProjectLicensed: SkyLicenseConditional {
+  modules = ( Project );
+  showInfo = NO;
+}
+
+ViewerTitle: LSWViewerTitle {
+  title     = startDate;
+}
+
+Buttons: SkyButtonRow {
+   ordering  = ( clip, mail, delete, move, edit, print );
+   
+   /* methods */
+   onMail    = mailObject;
+   urlMail   = objectUrl;
+   onEdit    = edit;
+   hasEdit   = hasLoginEditAccess;
+   onMove    = move;
+   hasMove   = hasLoginEditAccess;
+   onDelete  = delete;
+   hasDelete = hasLoginDeleteAccess;
+   onClip    = placeInClipboard;
+   
+   hasPrint    = YES;
+   onPrint     = printApt;
+   targetPrint = "printApt";
+   
+   /*labels */
+   clip   = labels.clip;
+   mail   = labels.send;
+   edit   = labels.edit;
+   move   = labels.move;
+   delete = labels.deleteButtonLabel;
+   print  = labels.printButtonLabel;
+}
+
+// new tab:
+
+Tab: SkyTabView {
+  selection = session.userDefaults.scheduler_appointment_view;
+}
+AptAttrsTab: SkySimpleTabItem {
+  key       = "attributes";
+  label     = labels.attributes;
+  //icon      = "attributes";
+  //isScript  = YES;
+}
+AptParticipantsTab: SkySimpleTabItem {
+  key       = "participants";
+  label     = labels.participants;
+  //icon      = "participants";
+  //isScript  = YES;
+}
+AptNotesTab: SkySimpleTabItem {
+  key       = "notes";
+  label     = labels.notes;
+  //icon      = "notes";
+  //isScript  = YES;
+}
+LogsTab: SkySimpleTabItem {
+  key       = "log";
+  label     = labels.logsLabel;
+  //icon      = "log";
+  //isScript  = YES;
+}
+
+DayLink: WOHyperlink {
+  href   = mailTo;
+  filename = "mail_url.gif";
+  border   = 0;
+  ALT      = "mail_url.gif";
+  ALIGN    = "TOP";
+}
+
+IsUserOwner: WOConditional {
+  condition = isUserOwner;
+}
+
+IsUserOwnerElse: WOConditional {
+  condition = isUserOwner;
+  negate    = YES;
+}
+
+EditLink: WOHyperlink {
+  action   = edit;
+  filename = "edit.gif";
+  BORDER   = 0;
+  ALT      = labels.edit;
+  ALIGN  = "TOP";
+}
+
+EditLinkInactive: WOImage {
+  filename = "edit_inactive.gif";
+  BORDER   = 0;
+  ALT      = labels.gotoEditLabel_inactiv;
+  ALIGN  = "TOP";
+}
+
+TitleAttr: SkyAttribute {
+  label      = labels.title;
+  string     = appointment.title;
+}
+LocationAttr: SkyAttribute {
+  label      = labels.location;
+  string     = appointment.location;
+}
+
+StartTimeAttr: SkyAttribute {
+  label      = labels.startTime;
+  string     = startDate;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+EndTimeAttr: SkyAttribute {
+  label  = labels.endTime;
+  string = endDate;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+
+NotificationTimeAttr: SkyAttribute {
+  label  = labels.notificationTime;
+  string = notificationTime;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+
+CreatorAttr: SkyAttribute {
+  label  = labels.creator;
+  string = appointment.owner.login;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+ArchivedCreatorAttr: SkyAttribute {
+  label  = labels.creator;
+  string = appointment.owner.login;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+  valueFontColor = "colors_deleted_object";
+}
+
+ReadPermissionAttr: SkyAttribute {
+  label     = labels.accessTeamLabel;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+AccessTeam: WOString {
+  value     = accessTeamLabel;
+  nilString = labels.private;
+}
+
+CommentAttr: SkyAttribute {
+  label      = labels.comment;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+Comment: WOString {
+  value      = appointment.comment;
+  insertBR   = YES;
+  nilString  = "";
+}
+
+IgnoreConflictsAttr: SkyAttribute {
+  label      = labels.ignoreConflictsLabel;
+  string     = ignoreConflicts;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+ObjectVersionAttr: SkyAttribute {
+  label      = labels.objectVersionLabel;
+  string     = appointment.objectVersion;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+
+CycleAttr: SkyAttribute {
+  label      = labels.cycle;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+
+ResourceAttr: SkyAttribute {
+  label      = labels.resource;
+  string     = object.resourceNames;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+AptTypeAttr: SkySubAttribute {
+  label  = labels.attribute_aptType;
+  string = aptTypeLabel;
+}
+WriteAccessAttr: SkyAttribute {
+  label      = labels.writeAccess;
+  string     = writeAccessList;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+AbsenceAttr: SkyAttribute {
+  label      = labels.absence;
+  string     = object.absence;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+
+// participants
+
+ParticipantsList: SkyAptParticipantsList {
+  appointment = appointment;
+}
+
+// clipboard
+
+MainButtonRow: WOGenericContainer {
+  elementName = "TR";
+  BGCOLOR     = config.colors_mainButtonRow;
+}
+
+MainTitle: WOString {
+  value = appointment.title;
+}
+
+Notes: SkyNoteList {
+  title       = appointment.title;
+  appointment = appointment;
+}
+
+StartDayAttribute : WOString {
+  value   = labels.startDay;
+}
+
+StartTimeAttribute : WOString {
+  value   = labels.startTime;
+}
+
+EndTimeAttribute : WOString {
+  value   = labels.endTime;
+}
+
+CreatorAttribute : WOString {
+  value   = labels.creator;
+}
+
+AccessTeamAttribute : WOString {
+  value   = labels.accessTeamLabel;
+}
+
+CommentAttribute : WOString {
+  value   = labels.comment;
+}
+
+Font: SkyConfigFont {}
+
+Font2: WOGenericContainer {
+  elementName   = "FONT";
+  COLOR         = config.font_color;
+  SIZE          = 1;
+  FACE          = config.font_face;
+}
+
+EditFont: SkyConfigEditFont {}
+
+TableHeaderRow: WOGenericContainer {
+  elementName = "TR";
+  BGCOLOR     = config.colors_tableHeaderRow;
+}
+
+NameLabel : WOString {
+  value   = labels.nameLabel;
+};
+FNameLabel : WOString {
+  value   = labels.fNameLabel;
+};
+FunctionLabel : WOString {
+  value   = labels.functionLabel;
+};
+DegreeLabel : WOString {
+  value   = labels.degreeLabel;
+};
+EmailLabel : WOString {
+        value   = labels.emailLabel;
+};
+TelLabel : WOString {
+        value   = labels.telLabel;
+};
+EpLabel : WOString {
+        value   = labels.epLabel;
+};
+TeamLabel : WOString {
+        value   = labels.teamLabel;
+};
+PrivateLabel : WOString {
+        value   = labels.accessTeam;
+};
+Link : WOHyperlink {
+        href    = mailTo;
+        string  = appointmentUrl;
+};
+
+ObjectMailCondition : WOConditional {
+  condition = isExternalMailer;
+  negate    = YES;
+}
+ObjectMailConditionElse : WOConditional {
+  condition = isExternalMailer;
+}
+
+ObjectLink: WOHyperlink {
+  href     = objectUrl;
+}
+ObjectMail : WOHyperlink {
+  action   = mailObject;
+}
+SendIcon: WOImage {
+  filename = "send_small.gif";
+  BORDER   = 0;
+  ALT      = labels.send;
+  ALIGN    = "TOP";
+}
+
+Cycle: WOString {
+        value      = cycleType;
+        escapeHTML = NO;
+}
+CycleEndDateString: WOString {
+        value     = cycleEndDateString;
+}
+UntilLabel: WOString {
+        value     = labels.until;
+}
+
+IsCyclic: WOConditional {
+        condition = isCyclic;
+};
+
+IsNotNewConditional: WOConditional {
+        condition = isInNewMode;
+        negate    = YES;
+};
+
+ReachableLabel : WOString {
+        value = labels.reachable;
+};
+
+IsAbsence : WOString {
+        value = labels.yes;
+};
+
+IsAbsenceCond : WOConditional {
+        condition = object.isAbsence.boolValue;
+};
+
+NotificationTimeLabel: WOString {
+    value = labels.notificationTime;
+}
+
+NotificationTime: WOString {
+    value = notificationTime;
+}
+
+LogList: SkyObjectLogList {
+  object = appointment;
+}
+
+IsOwnerArchivedCondElse : WOConditional {
+  condition = isOwnerArchived;
+  negate    = YES;
+}
+
+IsOwnerArchivedCond : WOConditional {
+  condition = isOwnerArchived;  
+}
+
+IsLogTabEnabled: WOConditional {
+  condition = isLogTabEnabled;
+}
+

@@ -1,0 +1,112 @@
+<#Form>
+  <#FromLabel />:
+  <#From />
+  <#ToLabel />:
+  <#To />
+  <#Show />
+  
+  <#SalesTable>
+    <#TitleMode>
+      <#ShowDetailsCond>
+        <#HideDetails>
+          <#DownIcon /></#HideDetails>
+      </#ShowDetailsCond><!-- ShowDetailsCond -->
+      <#ShowDetailsCondElse>
+        <#ShowDetails>
+          <#RightIcon /></#ShowDetails>
+      </#ShowDetailsCondElse>
+      <#ShowSkyrixCond>
+        <#SkyrixLabel />
+      </#ShowSkyrixCond><!-- ShowSkyrixCond -->
+      <#ShowMDLinkCond>
+        <#MDLinkLabel />
+      </#ShowMDLinkCond><!-- ShowMDLinkCond -->
+      <#SalesLabel />(<#SalesAdditionalLabel />)
+    </#TitleMode><!-- TitleMode -->
+
+    <#ButtonMode>
+      <#Buttons />
+    </#ButtonMode><!-- ButtonMode -->
+
+    <#KindData>
+      <#IsKindCond>
+        <nobr>
+          <#Kind />
+        </nobr>
+      </#IsKindCond><!-- IsKindCond -->
+    </#KindData><!-- KindData -->
+    
+    <#NetData>
+      <#IsKindCond>
+        <nobr>
+          <#Net />
+        </nobr>
+      </#IsKindCond><!-- IsKindCond -->
+    </#NetData><!-- NetData -->
+    
+    <#GrossData>
+      <#IsKindCond>
+        <nobr>
+          <#Gross />
+        </nobr>
+      </#IsKindCond><!-- IsKindCond -->
+    </#GrossData><!-- GrossData -->
+
+    <#ShowDetailsCond>
+      
+      <#NameData>
+        <#IsDetailCond>
+          <nobr>
+            <#Name />
+          </nobr>
+        </#IsDetailCond><!-- IsDetailCond -->
+      </#NameData><!-- NameData -->
+
+      <#NrData>
+        <#IsDetailCond>
+          <nobr>
+            <#Nr />
+          </nobr>
+        </#IsDetailCond><!-- IsDetailCond -->
+      </#NrData><!-- NrData -->
+
+      <#ArticleSingleNetData>
+        <#IsDetailCond>
+          <nobr>
+            <#ArticleSingleNet />
+          </nobr>
+        </#IsDetailCond><!-- IsDetailCond -->
+      </#ArticleSingleNetData><!-- ArticleSingleNetData -->
+      
+      <#VatData>
+        <#IsDetailCond>
+          <nobr>
+            <#Vat />
+          </nobr>
+        </#IsDetailCond><!-- IsDetailCond -->
+      </#VatData><!-- VatData -->
+      
+      <#CountData>
+        <#IsDetailCond>
+          <nobr>
+            <#Count />
+          </nobr>
+        </#IsDetailCond><!-- IsDetailCond -->
+      </#CountData><!-- CountData -->
+      
+      <#ArticleAllNetData>
+        <#IsDetailCond>
+          <nobr>
+            <#ArticleAllNet />
+          </nobr>
+        </#IsDetailCond><!-- IsDetailCond -->
+      </#ArticleAllNetData><!-- ArticleAllNetData -->
+      
+    </#ShowDetailsCond><!-- ShowDetailsCond -->
+
+  </#SalesTable><!-- SalesTable -->
+  <#AllNetLabel />
+  <#AllNetAmount /><br>
+  <#AllGrossLabel />
+  <#AllGrossAmount />
+</#Form><!-- Form -->

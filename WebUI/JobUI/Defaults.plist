@@ -1,0 +1,57 @@
+{
+  __JobsUI_CVS_ID__ = "$Id$";
+  
+  joblist_view   = "toDoList";
+  job_view       = "jobHistoryList";
+  job_blocksize  = "10";
+  job_no_of_cols = "2";
+
+  JobImportFormat = {
+    Seperator  = ";";
+    Format     = ("HierachieNumber", "name", "startDate",
+                  "endDate", "ExecutantToken");
+  };
+
+  job_defaultDuration       = "7"; // days
+  job_editor_account_format = "$name$, $firstname$ ($login$)";
+  "job_viewer_expand_Attributes" = 1;
+  "jobs_view_attributes" = {
+      Attributes = (
+          accountingInfo,
+          actualWork,
+          associatedCompanies,
+          keywords,
+          category,
+          comment,
+          completionDate,
+          executant,
+          kind,
+          notify,
+          owner,
+          percentComplete,
+          priority,
+          project,
+          sensitivity,
+          jobStatus,
+          totalWork,
+          kilometers,
+          objectVersion,
+          nonEmptyOnly
+      );
+  };
+
+  JobListIconMap = {
+    "00_created"    = "led_red.gif";
+    "20_processing" = "led_yellow.gif";
+    "25_done"       = "led_green.gif";
+    "02_rejected"   = "led_red.gif";
+    "30_archived"   = "led_dark.gif";
+  };
+  
+  /* those values are also used by LSWJobEditor */
+  JobAttrsEditor_sensitivities = ( 1, 2, 3, 4 );
+  JobAttrsEditor_percentages = ( 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 );
+  JobAttrsEditor_priorities  = ( 1, 2, 3, 4, 5 );
+  
+  OGoTaskLinksEnabled = YES;
+}

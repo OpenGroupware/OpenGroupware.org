@@ -1,0 +1,65 @@
+<#Frame>
+  <!-- $Id: SkyProject4Viewer.html,v 1.3 2004/05/07 17:08:33 helge Exp $ -->
+  <#Window>
+
+    <#ShowOnlyForm><#IndexForm/></#ShowOnlyForm>
+    
+    <#ShowNotOnlyForm>
+      <#Title><#Buttons/></#Title>
+
+      <table width="100%" border="0" cellpadding="4" cellspacing="0">
+        <tr>
+          <#AttributeCell><#Font><#ProjectLabel/>:</#Font></#AttributeCell>
+          <#ValueCell    ><#Font><b><#ProjectName/></b></#Font></#ValueCell>
+        </tr>
+      </table>
+      
+      <p>
+        <#TabView>
+          <#FSInfoTab><#FSInfo/></#FSInfoTab>
+
+          <#ShowForm>
+            <#FormsTab>
+              <#IsDesigner>
+                <small>
+                  <i>Current Account is FormEditor</i><hr size="1" />
+                </small>
+              </#IsDesigner>
+              <#IndexPreview/>
+            </#FormsTab>
+          </#ShowForm>
+        
+          <#DocumentsTab>
+            <#HasHeadForm><#HeadForm/></#HasHeadForm>
+
+            <#Form>
+              <#ShowTree>
+                <table border="0" width="100%">
+                  <tr>
+                    <td valign='top' width='15%'>
+                      <#FileManagerTree/>
+                    </td>
+                    <td width='10'></td>
+                    <td id="cdlistcell" valign='top' width='85%'>
+                    <#DoHideTree/>
+              </#ShowTree>
+            
+              <#DontShowTree><#DoShowTree/></#DontShowTree>
+            
+              <#ShowFolderForm   ><#FolderForm/></#ShowFolderForm>
+              <#ShowFolderContent><#FolderView/></#ShowFolderContent>
+            
+              <#ShowTree></td></tr></table></#ShowTree>
+
+            </#Form>
+            <#HasTailForm><#TailForm/></#HasTailForm>
+          </#DocumentsTab>
+        
+          <#SearchTab><#Search           /></#SearchTab>
+          <#JobsTab  ><#ProjectJobListAct/></#JobsTab>
+          <#NotesTab ><#Notes            /></#NotesTab>
+          <#LinkTab  ><#RelatedLinks     /></#LinkTab>
+        </#TabView>
+    </#ShowNotOnlyForm>
+  </#Window>
+</#Frame>

@@ -1,0 +1,114 @@
+2004-08-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAccountDataSource.m: more code cleanups (v5.0.17)
+
+	* SkyAccountDataSource.m: minor code cleanups (v5.0.16)
+
+2004-03-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAccountDataSource.m: fixed a minor warning when compiling with
+	  gstep-base (v5.0.15)
+
+2004-01-06  Helge Hess  <helge@groove.local>
+
+	* minor tweaks for compilation on MacOSX (v5.0.14)
+
+2004-01-05  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyTeamDocument.m: minor cleanups, fixed a compile warning (v5.0.13)
+
+2003-11-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: do not define install-dir, but rather user the value
+	  set in common.make (v5.0.12)
+
+Tue Nov 25 20:11:05 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* v5.0.11
+
+	* SkyAccountDataSource.m: added -updateObject(). (solves ogo bug 388)
+
+	* SkyAccountDocument.m: added -save() (solves ogo bug 388)
+
+Tue Nov 25 18:21:14 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyTeamDocument.m: add companyId method (v5.0.10)
+
+Sat Sep 27 02:03:58 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyTeamDocument: add email field (v5.0.9)
+
+Thu Sep 25 13:50:54 2003  Sky41 Developer  <mh@skyrix.com>
+
+	*  SkyAccountDataSource.m: fixed accountsForGIDQualifier fetching
+         (v5.0.8)
+
+Wed Sep 24 12:32:39 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyAccountDataSource: code cleanups (v5.0.7)
+
+Mon Jul  7 16:03:24 2003  Jan Reichmann  <jan@skyrix.com>
+
+	*  fixed OGo import (v5.0.6)
+
+Mon Jul  7 12:17:21 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.5)
+
+Wed Jun 11 11:48:02 2003  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyAccountDocument.m: added -asDict method (v4.1.4)
+
+2003-01-16  Helge Hess  <helge.hess@skyrix.com>
+	
+	* fixed some warnings with gcc 3.2 (v4.1.3)
+	
+Mon Dec  2 17:23:28 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyTeamDocument.m: added -(BOOL)isTeam accessor (bug 742) (v4.1.2)
+
+Mon Jul 29 11:44:16 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyAccountDocument.m: added virtual document initializer
+
+Fri Jan 18 17:17:09 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyTeamDataSource.m:  fixed fetch by globalID BUG 
+	(eos2docs called twice)
+
+Thu Nov 29 16:11:32 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAccountDocument.m: added isLocked and isExtraAccount attributes
+
+Tue Nov 20 16:22:25 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* SkyAccountDocument.m: added firstName, middleName, name, nickname
+
+Mon Oct 22 19:40:12 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyTeamDataSource.m: fixed fetching by globalIDs
+
+Fri Oct 12 12:41:43 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyTeamDataSource.m: added -updateObject:
+
+Fri Oct 12 12:41:22 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyTeamDocument.m: added -save
+
+Mon Sep  3 17:29:00 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAccountTeamsDataSource.m: fixed call of command
+
+Fri Aug 31 11:49:55 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAccountTeamsDataSource.[m,h]: added
+
+Fri Aug 31 11:49:40 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyMemberDataSource.[m,h]: added
+
+Fri Aug 24 11:32:35 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* ChangeLog: created
+

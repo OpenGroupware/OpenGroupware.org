@@ -1,0 +1,6 @@
+# $Id$
+
+before-all :: $(PreferencesUI_DERIVED_RESOURCES)
+
+clean ::
+	rm -f $(PreferencesUI_DERIVED_RESOURCES)

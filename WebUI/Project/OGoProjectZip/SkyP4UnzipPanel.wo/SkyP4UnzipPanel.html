@@ -1,0 +1,49 @@
+<!-- $Id: SkyP4UnzipPanel.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+<#Frame>
+  <#Window>
+    <#Form>
+      <table border='0' width="100%"> 
+        <tr>
+          <td valign="top" align="left">
+            <#TabView>
+              <#UnzipTab>
+                <table border="0">
+                  <tr>
+                    <td align="right"><#LabelOverwrite/>:</td>
+                    <td><W#Overwrite/></td>
+                  </tr>
+                  <tr>
+                    <td align="right"><#LabelRemove/>:</td>
+                    <td><#Remove/></td>
+                  </tr>
+                </table>
+
+                <#UnzipButton/>
+                <#CancelButton/>
+
+                <hr size="1" />
+                <table width="100%">
+                  <tr>
+                    <td width="20%" valign="top">
+                      <nobr><#LabelTargetDirectory/></nobr>
+                      <#UnzipFileManagerTree/>
+                    </td>
+                    <td valign="top">
+                      <#LabelContent/><br />
+                      <#ZipTable>
+                        <#PathTD/>
+                        <#SizeTD/>
+                        <#DateTD/>
+                        <#ExcludeTD><#Exclude/></#ExcludeTD>
+                      </#ZipTable>
+                    </td>
+                  </tr>
+                </table>
+              </#UnzipTab>
+            </#TabView>
+          </td>
+        </tr>
+      </table>
+    </#Form>
+  </#Window>
+</#Frame>

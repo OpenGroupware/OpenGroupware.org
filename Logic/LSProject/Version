@@ -1,0 +1,7 @@
+# $Id$
+
+SUBMINOR_VERSION:=27
+
+# v5.0.27 requires LSTasks     v5.0.2
+# v5.0.27 requires LSDocuments v5.0.2
+

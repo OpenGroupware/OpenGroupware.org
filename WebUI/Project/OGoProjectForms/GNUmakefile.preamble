@@ -1,0 +1,15 @@
+# $Id$
+
+ADDITIONAL_BUNDLE_LIBS += 	\
+	-lOGoDocuments		\
+	-lOGoForms		\
+	-lOGoProject		\
+	-lOGoRawDatabase	\
+	-lNGObjDOM -lNGJavaScript -lNGScripting	-ljs\
+	-lGDLAccess		\
+	-lEOControl
+
+ADDITIONAL_INCLUDE_DIRS += -I..
+
+ADDITIONAL_LIB_DIRS  += \
+	-L../../OGoForms/$(GNUSTEP_OBJ_DIR) 

@@ -1,0 +1,30 @@
+// $Id: LSWProjectTextMailPage.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+Name : WOString {
+  value = object.name;
+};
+
+NameLabel : WOString {
+        value = labels.name;
+};
+
+CodeLabel : WOString {
+        value = labels.code;
+};
+
+Code : WOString {
+        value = object.number;
+};
+
+Link : WOString {
+  value = objectUrl;
+  escapeHTML=NO;
+};
+
+LinkLabel: WOString {
+  value = labels.link;
+};
+
+ProjectViewerLabel : WOString {
+  value = labels.projectViewer;
+};

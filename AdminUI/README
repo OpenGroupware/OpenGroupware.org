@@ -1,0 +1,23 @@
+# $Id$
+
+AdminUI
+=======
+[optional]
+
+The AdminUI contains generators for various standard Unix files, like
+Postfix virtual files. The generation is (usually) done based on the
+OGo account database.
+
+
+libOGoConfigGen
+===============
+The config generation framework.
+
+CfgAdminUI
+==========
+OGo WebUI application for working on the config database.
+
+CyrusAdminUI
+============
+[empty!]
+Will be a web-wrapper for the Cyrus cyradm tool.

@@ -1,0 +1,31 @@
+<!-- $Id: SkyMailingListViewer.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+
+<#SpamTableView>
+  <#ButtonMode><#Buttons/></#ButtonMode>
+
+  <#TitleMode>
+    <#Font><b><#MailingListManagerLabel/></b></#Font>
+  </#TitleMode>
+
+  <#Switcher>
+    <#NameCase>
+      <#NameData>
+        <nobr>
+          <#Font><#EditSpamAction><#SpamName/></#EditSpamAction></#Font>
+        </nobr>
+      </#NameData>
+    </#NameCase>
+
+    <#DescCase>
+      <#DescData>
+        <#Font><#Desc/></#Font>
+      </#DescData>
+    </#DescCase>
+
+    <#EmailCase>
+      <#EmailData>
+        <#Font><#EmailCount/></#Font>
+      </#EmailData>
+    </#EmailCase>
+  </#Switcher>
+</#SpamTableView>

@@ -1,0 +1,52 @@
+{
+  requires = ( MAIN );
+
+  publicResources = (
+  );
+
+  classes = {
+    SxAddressFolder = {
+      superclass    = "SxFolder";
+      defaultAccess = "allow";
+      
+      methods = {
+      };
+      
+      defaultRoles = {
+        /* this is more open than necessary :-(, because we have no obj-sec */
+        "WebDAV Access"               = "Authenticated";
+        "Access Contents Information" = "Authenticated";
+        "Change Images and Files"     = "Authenticated";
+        "Delete Objects"              = "Authenticated";
+        "View"                        = "Authenticated";
+	"Add Documents, Images and Files" = "Authenticated";
+      };
+    };
+    SxAddress = {
+      superclass  = "SxObject";
+      protectedBy = "View";
+
+      methods = {
+        "GET" = {
+          protectedBy = "View";
+        };
+        "DELETE" = {
+          protectedBy = "Delete Objects";
+        };
+      };
+      
+      defaultRoles = {
+        "WebDAV Access"           = "Authenticated";
+        "Change Images and Files" = "Owner";
+        "Delete Objects"          = "Owner";
+        "View"                    = "Owner";
+      };
+    };
+  };
+  
+  factories = {
+  };
+
+  categories = {
+  };
+}

@@ -1,0 +1,70 @@
+<!-- $Id: SkyTextEditor.html,v 1.2 2003/10/22 16:33:15 helge Exp $ -->
+
+<#WithControls>
+  <table border='0' cellpadding='0' cellspacing='0'>
+    
+    <#DidValidateXML>
+      <tr>
+        <td colspan='2'>
+          <#IsValidXML>valid XML</#IsValidXML>
+          <#IsNotValidXML>
+            <#XMLErrorText /></#IsNotValidXML>
+          <hr />
+        </td>
+        <td></td>
+      </tr>
+    </#DidValidateXML>
+    
+    <#DidValidateHTML>
+      <tr>
+        <td colspan='2'>
+          <#IsValidHTML>valid HTML</#IsValidHTML>
+          <#IsNotValidHTML>
+            <#HTMLErrorText /></#IsNotValidHTML>
+          <hr />
+        </td>
+        <td></td>
+      </tr>
+    </#DidValidateHTML>
+    
+    <tr>
+      <td rowspan='2' colspan='2'>
+        <#HasNameElse>
+          <#TextEditor />
+        </#HasNameElse>  
+        <#HasName>
+          <#DoNotUseEpoz><#TextEditorName /></#DoNotUseEpoz>
+          <#UseEpoz     ><#EpozEditorName /></#UseEpoz>
+        </#HasName>  
+      </td>
+      <td></td>
+    </tr>
+    
+    <tr>
+      <td align='left' valign='bottom'>
+        <#DecreaseYButton /><br />
+        <#IncreaseYButton />
+      </td>
+    </tr>
+    
+    <tr>
+      <td align='left' valign='bottom'>
+        <#ShowValidateXML>
+          <#ValidateXMLButton /></#ShowValidateXML>
+        <#ShowValidateHTML>
+          <#ValidateHTMLButton /></#ShowValidateHTML>
+      </td>
+      
+      <td align='right' valign='top'>
+        <font size='-4'><#Dimension /></font>
+        <#DecreaseXButton />
+        <#IncreaseXButton />
+      </td>
+      <td></td>
+    </tr>
+  </table>
+</#WithControls>
+
+<#WithoutControls>
+  <#TextEditor />
+</#WithoutControls>

@@ -1,0 +1,11 @@
+OpenGroupware.woa
+nohup.out
+shared_debug_obj
+trace.log
+cachegrind.out.*
+ktrace.out
+runfb2.sh
+.gdb_history
+sx.make-copy
+*_orange.lproj
+core.*

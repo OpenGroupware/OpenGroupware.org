@@ -1,0 +1,16 @@
+# $Id$
+
+ZIDESTORE=../..
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I. \
+	-I$(ZIDESTORE)/Products	\
+	-I$(ZIDESTORE)/Frontend	\
+	-I$(ZIDESTORE)/Backend	\
+	-I$(ZIDESTORE)
+
+# explicit dependencies for Mach linker
+ProjectsUI_BUNDLE_LIBS += \
+	-lNGObjWeb -lNGScripting \
+	-lNGMime -lNGStreams -lNGExtensions -lEOControl	\
+	-lXmlRpc -lDOM -lSaxObjC

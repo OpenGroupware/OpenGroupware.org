@@ -1,0 +1,58 @@
+// $Id: SkyPalmPage.wod,v 1.2 2004/05/09 18:25:02 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.SkyPalmPage;
+  onClose = session.navigation.leavePage;
+}
+
+Form: WOForm {
+  name = "editform";
+}
+
+// tab configuration
+Tab: SkyTabView {
+  selection = selectedTab;
+}
+AddressTab: SkySimpleTabItem {
+  key    = "address";
+  label  = labels.tab_addressBook;
+  action = addressTabClicked;
+}
+DateTab: SkySimpleTabItem {
+  key   = "date";
+  label = labels.tab_dateBook;
+  action = dateTabClicked;
+}
+MemoTab: SkySimpleTabItem {
+  key   = "memo";
+  label = labels.tab_memoPad;
+  action = memoTabClicked;
+}
+TodoTab: SkySimpleTabItem {
+  key   = "todo";
+  label = labels.tab_todoList;
+  action = todoTabClicked;
+}
+
+// address lists
+AddressList: SkyPalmAddressList {
+  address    = item;
+  dataSource = addressDataSource;
+}
+// date list
+DateList: SkyPalmDateList {
+  date       = item;
+  dataSource = dateDataSource;
+}
+// memo list
+MemoList: SkyPalmMemoList {
+  memo       = item;
+  dataSource = memoDataSource;
+}
+// job list
+JobList: SkyPalmJobList {
+  job        = item;
+  dataSource = jobDataSource;
+}

@@ -1,0 +1,121 @@
+// $Id: SkyAppointmentList.wod,v 1.2 2004/03/21 14:21:15 helge Exp $
+
+AptTableView: SkyTableView {
+  dataSource   = dataSource;
+  batchSize    = blockSize;
+  currentBatch = currentBatch;
+
+  item         = appointment;
+  index        = index;
+  sortedKey    = sortedKey;
+  isDescending = isDescending;
+
+  CELLSPACING  = "2";
+}
+
+// modes
+
+TitleMode:  WETableViewTitleMode  {}
+ButtonMode: WETableViewButtonMode {}
+FooterMode: WETableViewFooterMode {}
+
+// buttons
+NewAptLink: WOHyperlink {
+  directActionName = "newApt";
+  ?tz     = session.timeZone.abbreviation;
+  ?ctx    = context.contextID;
+}
+NewAptButton: SkyButtonRow {
+  ordering = ( new );
+  onNew    = newAppointment;
+  new      = labels.new;
+  tipNew   = labels.new;
+}
+
+NewLabel: WOString {
+  value = labels.new;
+}
+
+// switcher
+
+Switcher: WESwitch {
+  selections = ( "startDate", "endDate", "title", "location", 
+                 "resources", "participants" );
+}
+StartDateCase:    WECase { key = "startDate";    };
+EndDateCase:      WECase { key = "endDate";      };
+TitleCase:        WECase { key = "title";        };
+LocationCase:     WECase { key = "location";     };
+ResourcesCase:    WECase { key = "resources";    };
+ParticipantsCase: WECase { key = "participants"; };
+
+// title
+
+DetailAptsLabel: WOString {
+  value = detailAptsLabel;
+}
+
+// datas
+
+StartDateData: WETableData {
+  title   = labels.startDate;
+  sortKey = "startDate";
+}
+EndDateData: WETableData {
+  title   = labels.endDate;
+  sortKey = "endDate";
+}
+TitleData: WETableData {
+  title   = labels.title;
+  sortKey = "title";
+}
+LocationData: WETableData {
+  title   = labels.location;
+  sortKey = "location";
+}
+ResourcesData: WETableData {
+  title   = labels.resources;
+}
+ParticipantsData: WETableData {
+  title   = labels.participants;
+}
+
+// table content
+
+Font: SkyConfigFont {}
+
+StartDate: WOString {
+  value     = appointment.startDate;
+  formatter = session.formatDateTime;
+}
+EndDate: WOString {
+  value     = appointment.endDate;
+  formatter = session.formatDateTime;
+}
+ViewApt: WOHyperlink {
+  directActionName = "viewApt";
+  ?oid    = appointmentOID;
+  ?entity = appointmentEntity;
+  ?tz  = appointment.startDate.timeZone.abbreviation;
+  ?ctx = context.contextID;
+//  TITLE = shortTextForApt;
+}
+Title: WOString {
+  value     = appointment.title;
+}
+Location: WOString {
+  value     = appointment.location;
+}
+Resources: WOString {
+  value     = appointment.resourceNames;
+}
+Participants: WOString {
+  value     = appointment;
+  formatter = participantFormatter;
+}
+
+// footer
+
+AptsLabel: WOString {
+  value = labels.appointments;
+}

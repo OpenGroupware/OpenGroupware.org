@@ -1,0 +1,288 @@
+// $Id: SkySchedulerSelectPanel.wod,v 1.6 2004/05/01 13:33:23 helge Exp $
+
+// Style
+
+Font: SkyConfigFont {}
+
+// Conditional
+
+ExtendedCond:     WOConditional { condition = isExtended; }
+ExtendedCondElse: WOConditional { condition = isExtended; negate = YES; }
+
+IsDayModeCond:   WOConditional { condition = mode; value = "dayoverview";   }
+IsWeekModeCond:  WOConditional { condition = mode; value = "weekoverview";  }
+IsMonthModeCond: WOConditional { condition = mode; value = "monthoverview"; }
+IsYearModeCond:  WOConditional { condition = mode; value = "yearoverview";  }
+
+HasAccountsCond:  WOConditional { condition = hasAccounts; }
+HasPersonsCond:   WOConditional { condition = hasPersons;  }
+HasTeamsCond:     WOConditional { condition = hasTeams;    }
+HasResourcesCond: WOConditional { condition = hasResources; }
+
+ShowAptTypesCond: WOConditional {
+  condition = session.userDefaults.scheduler_selectPanel_showAptTypes;
+}
+
+// Form
+
+Form: WOForm {
+  name   = "windowform";
+  action = show;
+}
+
+CompanyFilterPopUp: SkySchedulerSelectPopUp {
+  onChange     = "document.windowform.submit(); return true";
+  selectedItem = selectedCompany;
+  meToo        = fetchMeToo;
+}
+
+BigSearchField: WOTextField {
+  value = searchString;
+  size  = 20;
+}
+
+TimeZonePopUp: SkyTimeZonePopUp {
+  onChange = "document.windowform.submit(); return true";
+  timeZone = realTimeZone;
+  referenceDate = timeZoneReferenceDate;
+}
+
+MonthPopUp: WOPopUpButton {
+  onChange        = "document.windowform.submit(); return true";
+  list            = ( 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 );
+  item            = item;
+  string          = monthLabel;
+  selection       = selMonth;
+  singleSelection = YES;
+}
+
+WeekPopUp: SkyWeekOfYearPopUp {
+  onChange  = "document.windowform.submit(); return true";
+  timeZone  = timeZone;
+  weekStart = weekStart;
+  month     = month;
+  year      = year;
+}
+
+YearTextField: WOTextField {
+  value     = year;
+  size      = 4;
+}
+AptTypeSelection: WOPopUpButton {
+  onChange        = "document.windowform.submit(); return true";
+  list            = aptTypes;
+  item            = item;
+  string          = aptTypeLabel;
+  selection       = selectedAptType;
+  singleSelection = YES;
+}
+
+ExtendLink: WOHyperlink {
+  action = extend;
+}
+
+ExtendImg: WOImage {
+  filename = extendButtonImg;
+  ALT      = extendButtonLabel;
+  title    = extendButtonLabel;
+  BORDER   = 0;
+}
+
+Submit: WOSubmitButton {
+  action      = reallyShow;
+  value       = labels.showButtonLabel;
+  class       = "button_narrow";
+}
+
+// directAction stuff
+
+NextDay: WOHyperlink {
+  directActionName = "viewDay";
+  ?day             = nextDayNumber;
+  ?month           = nextDayMonth;
+  ?year            = nextDayYear;
+  ?tz              = day.timeZone.abbreviation;
+}
+LastDay: WOHyperlink {
+  directActionName = "viewDay";
+  ?day             = lastDayNumber;
+  ?month           = lastDayMonth;
+  ?year            = lastDayYear;
+  ?tz              = day.timeZone.abbreviation;
+}
+ThisDay: WOHyperlink {
+  directActionName = "viewDay";
+  ?day             = thisDayNumber;
+  ?month           = thisDayMonth;
+  ?year            = thisDayYear;
+  ?tz              = day.timeZone.abbreviation;
+  class            = "button_auto";
+  string           = labels.this_day;
+}
+
+NextDayImg: WOImage {
+  filename = "next_week.gif";
+  ALT      = labels.next_day;
+  BORDER   = 0;
+}
+LastDayImg: WOImage {
+  filename = "previous_week.gif";
+  ALT      = labels.previous_day;
+  BORDER   = 0;
+}
+
+// week navigation
+
+NextWeek: WOHyperlink {
+  directActionName = "viewWeek";
+  ?week            = nextWeekNumber;
+  ?year            = nextWeekYear;
+  ?month           = nextWeekMonth;
+  ?tz              = weekStart.timeZone.abbreviation;
+  ?o               = serial;
+}
+LastWeek: WOHyperlink {
+  directActionName = "viewWeek";
+  ?week            = lastWeekNumber;
+  ?year            = lastWeekYear;
+  ?month           = lastWeekMonth;
+  ?tz              = weekStart.timeZone.abbreviation;
+  ?o               = serial;
+}
+ThisWeek: WOHyperlink {
+  directActionName = "viewWeek";
+  ?week            = thisWeekNumber;
+  ?year            = thisWeekYear;
+  ?month           = thisWeekMonth;
+  ?tz              = weekStart.timeZone.abbreviation;
+  ?o               = serial;
+  class            = "button_auto";
+  string           = labels.this_week;
+}
+
+NextWeekImg: WOImage {
+  filename = "next_week.gif";
+  ALT      = labels.next_week;
+  BORDER   = 0;
+}
+LastWeekImg: WOImage {
+  filename = "previous_week.gif";
+  ALT      = labels.previous_week;
+  BORDER   = 0;
+}
+
+// month navigation
+
+NextMonth: WOHyperlink {
+  directActionName = "viewMonth";
+  ?year            = nextMonthYear;
+  ?tz              = timeZone.abbreviation;
+  ?month           = nextMonthNumber;
+  ?ctx             = context.contextID;
+}
+LastMonth: WOHyperlink {
+  directActionName = "viewMonth";
+  ?year            = lastMonthYear;
+  ?tz              = timeZone.abbreviation;
+  ?month           = lastMonthNumber;
+  ?ctx             = context.contextID;
+}
+ThisMonth: WOHyperlink {
+  directActionName = "viewMonth";
+  ?year            = thisMonthYear;
+  ?tz              = timeZone.abbreviation;
+  ?month           = thisMonthNumber;
+  ?ctx             = context.contextID;
+  class            = "button_auto";
+  string           = labels.this_month;
+}
+
+NextMonthImg: WOImage {
+  filename = "next_week.gif";
+  ALT      = labels.next_month;
+  BORDER   = 0;
+}
+LastMonthImg: WOImage {
+  filename = "previous_week.gif";
+  ALT      = labels.previous_month;
+  BORDER   = 0;
+}
+
+NextYear: WOHyperlink {
+  directActionName = "viewYear";
+  ?year            = nextYearNumber;
+  ?tz              = timeZone.abbreviation;
+  ?ctx             = context.contextID;
+}
+LastYear: WOHyperlink {
+  directActionName = "viewYear";
+  ?year            = lastYearNumber;
+  ?tz              = timeZone.abbreviation;
+  ?ctx             = context.contextID;
+}
+ThisYear: WOHyperlink {
+  directActionName = "viewYear";
+  ?year            = thisYearNumber;
+  ?tz              = timeZone.abbreviation;
+  ?ctx             = context.contextID;
+  class            = "button_auto";
+  string           = labels.this_year;
+}
+
+NextYearImg: WOImage {
+  filename = "next_week.gif";
+  ALT      = labels.next_year;
+  BORDER   = 0;
+}
+LastYearImg: WOImage {
+  filename = "previous_week.gif";
+  ALT      = labels.previous_year;
+  BORDER   = 0;
+}
+
+/* labels */
+
+AccountsLabel:  WOString { value = labels.accounts;  }
+PersonsLabel:   WOString { value = labels.persons;   }
+TeamsLabel:     WOString { value = labels.teams;     }
+ResourcesLabel: WOString { value = labels.resources; }
+
+/* result lists */
+
+AccountsList: SkyListView {
+  list          = accounts;
+  item          = item;
+  columns       = 6;
+  selectedItems = selectedAccounts;
+  showTableTag  = NO;
+  attributes    = (
+    {  key = "name,firstname"; separator = ", "; }
+  );
+}
+PersonsList: SkyListView {
+  list          = persons;
+  item          = item;
+  columns       = 6;
+  selectedItems = selectedPersons;
+  showTableTag  = NO;
+  attributes    = (
+    {  key = "name,firstname"; separator = ", "; }
+  );
+}
+TeamsList: SkyListView {
+  list          = teams;
+  item          = item;
+  columns       = 6;
+  selectedItems = selectedTeams;
+  showTableTag  = NO;
+  attributes    = ( { key = "description"; } );
+}
+
+ResourcesList: SkyListView {
+  list          = resources;
+  item          = item;
+  columns       = 6;
+  selectedItems = selectedResources;
+  showTableTag  = NO;
+  attributes    = ( { key = "name"; } );
+}

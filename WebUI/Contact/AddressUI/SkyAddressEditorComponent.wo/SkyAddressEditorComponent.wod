@@ -1,0 +1,38 @@
+// $Id: SkyAddressEditorComponent.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+AddressEditor: LSWObjectEditor {
+  labels     = labels;
+  object     = address;
+  attributes = (
+    { key = "name1";   },
+    { key = "name2";   },
+    { key = "name3";   },
+    { key = "street";  },
+    { key = "city";    },
+    { key = "zip";     },
+    { key = "state";   },
+    { key = "country"; }
+  );
+}
+
+AttributeCell: SkyAttributeCell {};
+
+ValueCell: WOGenericContainer {
+  elementName = "td";
+  align       = "left";
+  valign      = "top";
+  bgcolor     = config.colors_valueCell;
+};
+
+AddressTypeLabel: WOString {
+  value      = labels.addressType;
+  escapeHTML = NO;
+}
+
+AddressType: WOString {
+  value = typeLabel;
+}
+
+Font: SkyConfigFont {}
+
+EditFont: SkyConfigEditFont {}

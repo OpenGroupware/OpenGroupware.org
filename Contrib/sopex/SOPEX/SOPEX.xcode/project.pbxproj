@@ -1,0 +1,1536 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 39;
+	objects = {
+		014CEA440018CDF011CA2923 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OPTIMIZATION_CFLAGS = "-O0";
+				ZERO_LINK = YES;
+			};
+			isa = PBXBuildStyle;
+			name = Development;
+		};
+		014CEA450018CDF011CA2923 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				ZERO_LINK = NO;
+			};
+			isa = PBXBuildStyle;
+			name = Deployment;
+		};
+//010
+//011
+//012
+//013
+//014
+//030
+//031
+//032
+//033
+//034
+		034768DFFF38A50411DB9C8B = {
+			children = (
+				8DC2EF5B0486A6940098B216,
+			);
+			isa = PBXGroup;
+			name = Products;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+//030
+//031
+//032
+//033
+//034
+//080
+//081
+//082
+//083
+//084
+		0867D690FE84028FC02AAC07 = {
+			buildSettings = {
+			};
+			buildStyles = (
+				014CEA440018CDF011CA2923,
+				014CEA450018CDF011CA2923,
+			);
+			hasScannedForEncodings = 1;
+			isa = PBXProject;
+			mainGroup = 0867D691FE84028FC02AAC07;
+			productRefGroup = 034768DFFF38A50411DB9C8B;
+			projectDirPath = "";
+			targets = (
+				8DC2EF4F0486A6940098B216,
+			);
+		};
+		0867D691FE84028FC02AAC07 = {
+			children = (
+				ADDFB3F305DC513A005FB28D,
+				ADDFB3FB05DC51F6005FB28D,
+				ADDFB3FD05DC521A005FB28D,
+				ADDFB3F505DC517A005FB28D,
+				ADDFB3F705DC51A0005FB28D,
+				ADDFB3F905DC51BD005FB28D,
+				ADEE3D9505DCF8EC00F523DB,
+				ADFA08B10614634400E216F9,
+				AD3FED21060F558A00A90173,
+				AD3FED1B060F556400A90173,
+				AD3FED1E060F556C00A90173,
+				08FB77AEFE84172EC02AAC07,
+				32C88DFF0371C24200C91783,
+				089C1665FE841158C02AAC07,
+				0867D69AFE84028FC02AAC07,
+				034768DFFF38A50411DB9C8B,
+			);
+			isa = PBXGroup;
+			name = SOPEX;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		0867D69AFE84028FC02AAC07 = {
+			children = (
+				1058C7B1FEA5585E11CA2CBB,
+				ADDFB3D305DC50BD005FB28D,
+				ADDFB3D405DC50BD005FB28D,
+				ADDFB3D205DC50BD005FB28D,
+				ADDFB3B205DC508E005FB28D,
+			);
+			isa = PBXGroup;
+			name = Frameworks;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		089C1665FE841158C02AAC07 = {
+			children = (
+				ADDFB41D05DC532D005FB28D,
+				ADDFB41B05DC532D005FB28D,
+				ADDFB42105DC532D005FB28D,
+				8DC2EF5A0486A6940098B216,
+				ADDFB41F05DC532D005FB28D,
+				089C1666FE841158C02AAC07,
+				ADDFB42705DC534C005FB28D,
+				AD0A625905FE1D5F0067C575,
+				AD5C3D2506454EFD00E9BFC5,
+				ADDFB35605DC4D7B005FB28D,
+				ADDFB35705DC4D7B005FB28D,
+				AD0A625B05FE20950067C575,
+			);
+			isa = PBXGroup;
+			name = Resources;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		089C1666FE841158C02AAC07 = {
+			children = (
+				089C1667FE841158C02AAC07,
+			);
+			isa = PBXVariantGroup;
+			name = InfoPlist.strings;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		089C1667FE841158C02AAC07 = {
+			fileEncoding = 10;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.strings;
+			name = English;
+			path = English.lproj/InfoPlist.strings;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		08FB77AEFE84172EC02AAC07 = {
+			children = (
+				ADDFB35C05DC4D7B005FB28D,
+				ADDFB35D05DC4D7B005FB28D,
+				ADDFB37405DC4E58005FB28D,
+				ADDFB37505DC4E58005FB28D,
+			);
+			isa = PBXGroup;
+			name = "Misc Debris";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+//080
+//081
+//082
+//083
+//084
+//100
+//101
+//102
+//103
+//104
+		1058C7B1FEA5585E11CA2CBB = {
+			fallbackIsa = PBXFileReference;
+			isa = PBXFrameworkReference;
+			lastKnownFileType = wrapper.framework;
+			name = Cocoa.framework;
+			path = /System/Library/Frameworks/Cocoa.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+//100
+//101
+//102
+//103
+//104
+//320
+//321
+//322
+//323
+//324
+		32C88DFF0371C24200C91783 = {
+			children = (
+				ADEE3DAB05DCFD0800F523DB,
+				ADEE3D8705DCF8C800F523DB,
+			);
+			isa = PBXGroup;
+			name = "Other Sources";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		32DBCF5E0370ADEE00C91783 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEX_Prefix.pch;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+//320
+//321
+//322
+//323
+//324
+//8D0
+//8D1
+//8D2
+//8D3
+//8D4
+		8DC2EF4F0486A6940098B216 = {
+			buildPhases = (
+				8DC2EF500486A6940098B216,
+				8DC2EF520486A6940098B216,
+				8DC2EF540486A6940098B216,
+				8DC2EF560486A6940098B216,
+				8DC2EF580486A6940098B216,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1.0.9;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1.0.9;
+				FRAMEWORK_SEARCH_PATHS = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_TRIGRAPHS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = SOPEX_Prefix.pch;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = Dynamic;
+				OTHER_LDFLAGS = "-seg1addr 0xC6FF0000 -sub_umbrella SxCore -sub_umbrella SxXML -sub_umbrella SOPE -headerpad_max_install_names";
+				PRODUCT_NAME = SOPEX;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+				WRAPPER_EXTENSION = framework;
+			};
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = "SOPEX (Umbrella)";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = SOPEX;
+			productReference = 8DC2EF5B0486A6940098B216;
+			productType = "com.apple.product-type.framework";
+		};
+		8DC2EF500486A6940098B216 = {
+			buildActionMask = 2147483647;
+			files = (
+				8DC2EF510486A6940098B216,
+				ADDFB36105DC4D7B005FB28D,
+				ADDFB36305DC4D7B005FB28D,
+				ADDFB36705DC4D7B005FB28D,
+				ADDFB36905DC4D7B005FB28D,
+				ADDFB36B05DC4D7B005FB28D,
+				ADDFB36D05DC4D7B005FB28D,
+				ADDFB37605DC4E58005FB28D,
+				ADDFB37805DC4E58005FB28D,
+				ADDFB45305DC5555005FB28D,
+				ADDFB49105DC5A05005FB28D,
+				ADEE3DAD05DCFD0800F523DB,
+				ADEE3DB105DCFE0600F523DB,
+				AD92104C060F3A01001C0B56,
+				AD3FED13060F53C200A90173,
+				AD3FED17060F554300A90173,
+				AD1800BB0610B3A800ED723F,
+				ADFA08B40614635A00E216F9,
+				ADFA08BC0614771F00E216F9,
+				ADFA08C0061482D800E216F9,
+				ADDCA0CB0618850C00DEBECD,
+				ADB592E8061C598E0094D980,
+				AD81AD030621878E00550A49,
+				ADD5D7C606453B3400CCCB8C,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DC2EF510486A6940098B216 = {
+			fileRef = 32DBCF5E0370ADEE00C91783;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8DC2EF520486A6940098B216 = {
+			buildActionMask = 2147483647;
+			files = (
+				8DC2EF530486A6940098B216,
+				ADDFB36505DC4D7B005FB28D,
+				ADDFB36605DC4D7B005FB28D,
+				ADDFB42805DC534C005FB28D,
+				ADDFB3F405DC513A005FB28D,
+				ADDFB3F605DC517A005FB28D,
+				ADDFB3F805DC51A0005FB28D,
+				ADDFB3FA05DC51BD005FB28D,
+				ADDFB3FC05DC51F6005FB28D,
+				ADDFB3FE05DC521A005FB28D,
+				ADDFB42305DC532D005FB28D,
+				ADDFB42405DC532D005FB28D,
+				ADDFB42505DC532D005FB28D,
+				ADDFB42605DC532D005FB28D,
+				AD0A625A05FE1D5F0067C575,
+				AD0A625C05FE20950067C575,
+				AD5C3D2606454EFD00E9BFC5,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DC2EF530486A6940098B216 = {
+			fileRef = 089C1666FE841158C02AAC07;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8DC2EF540486A6940098B216 = {
+			buildActionMask = 2147483647;
+			files = (
+				ADDFB36205DC4D7B005FB28D,
+				ADDFB36405DC4D7B005FB28D,
+				ADDFB36805DC4D7B005FB28D,
+				ADDFB36A05DC4D7B005FB28D,
+				ADDFB36C05DC4D7B005FB28D,
+				ADDFB36E05DC4D7B005FB28D,
+				ADDFB37705DC4E58005FB28D,
+				ADDFB37905DC4E58005FB28D,
+				ADDFB45405DC5555005FB28D,
+				ADEE3D8805DCF8C800F523DB,
+				ADEE3DB205DCFE0600F523DB,
+				AD92104D060F3A02001C0B56,
+				AD3FED14060F53C200A90173,
+				AD3FED18060F554300A90173,
+				AD1800BC0610B3A800ED723F,
+				ADFA08B50614635A00E216F9,
+				ADFA08BD0614771F00E216F9,
+				ADFA08C1061482D800E216F9,
+				ADDCA0CC0618850C00DEBECD,
+				ADB592E9061C598E0094D980,
+				AD81AD040621878E00550A49,
+				ADD5D7C706453B3400CCCB8C,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DC2EF560486A6940098B216 = {
+			buildActionMask = 2147483647;
+			files = (
+				8DC2EF570486A6940098B216,
+				ADDFB3B305DC508E005FB28D,
+				ADDFB3D505DC50BD005FB28D,
+				ADDFB3D605DC50BD005FB28D,
+				ADDFB3D705DC50BD005FB28D,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DC2EF570486A6940098B216 = {
+			fileRef = 1058C7B1FEA5585E11CA2CBB;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8DC2EF580486A6940098B216 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DC2EF5A0486A6940098B216 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			path = Info.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		8DC2EF5B0486A6940098B216 = {
+			explicitFileType = wrapper.framework;
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = SOPEX.framework;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+//8D0
+//8D1
+//8D2
+//8D3
+//8D4
+//AD0
+//AD1
+//AD2
+//AD3
+//AD4
+		AD0A625705FE1D410067C575 = {
+			explicitFileType = text.plist;
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			name = English;
+			path = English.lproj/SOPEXConsole.toolbar;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD0A625905FE1D5F0067C575 = {
+			children = (
+				AD0A625705FE1D410067C575,
+			);
+			isa = PBXVariantGroup;
+			name = SOPEXConsole.toolbar;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD0A625A05FE1D5F0067C575 = {
+			fileRef = AD0A625905FE1D5F0067C575;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		AD0A625B05FE20950067C575 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.tiff;
+			path = Clean.tiff;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD0A625C05FE20950067C575 = {
+			fileRef = AD0A625B05FE20950067C575;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		AD1800B90610B3A800ED723F = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXRangeUtilities.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD1800BA0610B3A800ED723F = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXRangeUtilities.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD1800BB0610B3A800ED723F = {
+			fileRef = AD1800B90610B3A800ED723F;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		AD1800BC0610B3A800ED723F = {
+			fileRef = AD1800BA0610B3A800ED723F;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		AD3FED11060F53C200A90173 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = "WebView+Ext.h";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD3FED12060F53C200A90173 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = "WebView+Ext.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD3FED13060F53C200A90173 = {
+			fileRef = AD3FED11060F53C200A90173;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+				);
+			};
+		};
+		AD3FED14060F53C200A90173 = {
+			fileRef = AD3FED12060F53C200A90173;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		AD3FED15060F554300A90173 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXBrowserWindow.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD3FED16060F554300A90173 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXBrowserWindow.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD3FED17060F554300A90173 = {
+			fileRef = AD3FED15060F554300A90173;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		AD3FED18060F554300A90173 = {
+			fileRef = AD3FED16060F554300A90173;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		AD3FED1B060F556400A90173 = {
+			children = (
+				AD3FED15060F554300A90173,
+				AD3FED16060F554300A90173,
+				ADB592E6061C598E0094D980,
+				ADB592E7061C598E0094D980,
+			);
+			isa = PBXGroup;
+			name = Widgets;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD3FED1E060F556C00A90173 = {
+			children = (
+				AD92104A060F3A01001C0B56,
+				AD92104B060F3A01001C0B56,
+				AD3FED11060F53C200A90173,
+				AD3FED12060F53C200A90173,
+				ADD5D7C406453B3400CCCB8C,
+				ADD5D7C506453B3400CCCB8C,
+				AD1800B90610B3A800ED723F,
+				AD1800BA0610B3A800ED723F,
+			);
+			isa = PBXGroup;
+			name = Extensions;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD3FED21060F558A00A90173 = {
+			children = (
+				ADEE3DAF05DCFE0600F523DB,
+				ADEE3DB005DCFE0600F523DB,
+				ADDFB35405DC4D7B005FB28D,
+				ADDFB35505DC4D7B005FB28D,
+				ADDFB35205DC4D7B005FB28D,
+				ADDFB35305DC4D7B005FB28D,
+				ADDFB35805DC4D7B005FB28D,
+				ADDFB35905DC4D7B005FB28D,
+				ADDFB35A05DC4D7B005FB28D,
+				ADDFB35B05DC4D7B005FB28D,
+				ADDFB35E05DC4D7B005FB28D,
+				ADDFB35F05DC4D7B005FB28D,
+				ADDFB37205DC4E58005FB28D,
+				ADDFB37305DC4E58005FB28D,
+				ADDCA0C90618850C00DEBECD,
+				ADDCA0CA0618850C00DEBECD,
+			);
+			isa = PBXGroup;
+			name = Controllers;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD5C3D2306454EBE00E9BFC5 = {
+			fileEncoding = 10;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.strings;
+			name = English;
+			path = English.lproj/Localizable.strings;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD5C3D2506454EFD00E9BFC5 = {
+			children = (
+				AD5C3D2306454EBE00E9BFC5,
+			);
+			isa = PBXVariantGroup;
+			name = Localizable.strings;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD5C3D2606454EFD00E9BFC5 = {
+			fileRef = AD5C3D2506454EFD00E9BFC5;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		AD81AD010621878E00550A49 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXContentValidator.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD81AD020621878E00550A49 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXContentValidator.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD81AD030621878E00550A49 = {
+			fileRef = AD81AD010621878E00550A49;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		AD81AD040621878E00550A49 = {
+			fileRef = AD81AD020621878E00550A49;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		AD92104A060F3A01001C0B56 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = "NSString+Ext.h";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD92104B060F3A01001C0B56 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = "NSString+Ext.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		AD92104C060F3A01001C0B56 = {
+			fileRef = AD92104A060F3A01001C0B56;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		AD92104D060F3A02001C0B56 = {
+			fileRef = AD92104B060F3A01001C0B56;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADB592E6061C598E0094D980 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXTextView.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADB592E7061C598E0094D980 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXTextView.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADB592E8061C598E0094D980 = {
+			fileRef = ADB592E6061C598E0094D980;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADB592E9061C598E0094D980 = {
+			fileRef = ADB592E7061C598E0094D980;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADD5D7C406453B3400CCCB8C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = "NSBundle+Ext.h";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADD5D7C506453B3400CCCB8C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = "NSBundle+Ext.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADD5D7C606453B3400CCCB8C = {
+			fileRef = ADD5D7C406453B3400CCCB8C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADD5D7C706453B3400CCCB8C = {
+			fileRef = ADD5D7C506453B3400CCCB8C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDCA0C90618850C00DEBECD = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXSheetRunner.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDCA0CA0618850C00DEBECD = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXSheetRunner.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDCA0CB0618850C00DEBECD = {
+			fileRef = ADDCA0C90618850C00DEBECD;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADDCA0CC0618850C00DEBECD = {
+			fileRef = ADDCA0CA0618850C00DEBECD;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB35205DC4D7B005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXConsole.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB35305DC4D7B005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXConsole.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB35405DC4D7B005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXAppController.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB35505DC4D7B005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXAppController.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB35605DC4D7B005FB28D = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.icns;
+			path = Lori.icns;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB35705DC4D7B005FB28D = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.tiff;
+			path = Reload.tiff;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB35805DC4D7B005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXSNSController.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB35905DC4D7B005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXSNSController.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB35A05DC4D7B005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXStatisticsController.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB35B05DC4D7B005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXStatisticsController.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB35C05DC4D7B005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXAuthPanel.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB35D05DC4D7B005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXAuthPanel.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB35E05DC4D7B005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXToolbarController.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB35F05DC4D7B005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXToolbarController.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB36005DC4D7B005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = English;
+			path = English.lproj/SOPEXWebUI.toolbar;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB36105DC4D7B005FB28D = {
+			fileRef = ADDFB35205DC4D7B005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADDFB36205DC4D7B005FB28D = {
+			fileRef = ADDFB35305DC4D7B005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB36305DC4D7B005FB28D = {
+			fileRef = ADDFB35405DC4D7B005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADDFB36405DC4D7B005FB28D = {
+			fileRef = ADDFB35505DC4D7B005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB36505DC4D7B005FB28D = {
+			fileRef = ADDFB35605DC4D7B005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB36605DC4D7B005FB28D = {
+			fileRef = ADDFB35705DC4D7B005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB36705DC4D7B005FB28D = {
+			fileRef = ADDFB35805DC4D7B005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADDFB36805DC4D7B005FB28D = {
+			fileRef = ADDFB35905DC4D7B005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB36905DC4D7B005FB28D = {
+			fileRef = ADDFB35A05DC4D7B005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADDFB36A05DC4D7B005FB28D = {
+			fileRef = ADDFB35B05DC4D7B005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB36B05DC4D7B005FB28D = {
+			fileRef = ADDFB35C05DC4D7B005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADDFB36C05DC4D7B005FB28D = {
+			fileRef = ADDFB35D05DC4D7B005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB36D05DC4D7B005FB28D = {
+			fileRef = ADDFB35E05DC4D7B005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADDFB36E05DC4D7B005FB28D = {
+			fileRef = ADDFB35F05DC4D7B005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB37205DC4E58005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXWebConnection.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB37305DC4E58005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXWebConnection.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB37405DC4E58005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXWebMetaParser.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB37505DC4E58005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXWebMetaParser.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB37605DC4E58005FB28D = {
+			fileRef = ADDFB37205DC4E58005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADDFB37705DC4E58005FB28D = {
+			fileRef = ADDFB37305DC4E58005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB37805DC4E58005FB28D = {
+			fileRef = ADDFB37405DC4E58005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADDFB37905DC4E58005FB28D = {
+			fileRef = ADDFB37505DC4E58005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB3B205DC508E005FB28D = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = WebKit.framework;
+			path = /System/Library/Frameworks/WebKit.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		ADDFB3B305DC508E005FB28D = {
+			fileRef = ADDFB3B205DC508E005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB3D205DC50BD005FB28D = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = SOPE.framework;
+			path = /Library/Frameworks/SOPE.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		ADDFB3D305DC50BD005FB28D = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = SxCore.framework;
+			path = /Library/Frameworks/SxCore.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		ADDFB3D405DC50BD005FB28D = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = SxXML.framework;
+			path = /Library/Frameworks/SxXML.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		ADDFB3D505DC50BD005FB28D = {
+			fileRef = ADDFB3D205DC50BD005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB3D605DC50BD005FB28D = {
+			fileRef = ADDFB3D305DC50BD005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB3D705DC50BD005FB28D = {
+			fileRef = ADDFB3D405DC50BD005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB3F305DC513A005FB28D = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			path = README;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB3F405DC513A005FB28D = {
+			fileRef = ADDFB3F305DC513A005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB3F505DC517A005FB28D = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			path = PROJECTLEAD;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB3F605DC517A005FB28D = {
+			fileRef = ADDFB3F505DC517A005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB3F705DC51A0005FB28D = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			path = ChangeLog;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB3F805DC51A0005FB28D = {
+			fileRef = ADDFB3F705DC51A0005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB3F905DC51BD005FB28D = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			path = Version;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB3FA05DC51BD005FB28D = {
+			fileRef = ADDFB3F905DC51BD005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB3FB05DC51F6005FB28D = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			path = COPYING;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB3FC05DC51F6005FB28D = {
+			fileRef = ADDFB3FB05DC51F6005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB3FD05DC521A005FB28D = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			path = COPYRIGHT;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB3FE05DC521A005FB28D = {
+			fileRef = ADDFB3FD05DC521A005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB41B05DC532D005FB28D = {
+			children = (
+				ADDFB41C05DC532D005FB28D,
+			);
+			isa = PBXVariantGroup;
+			name = SOPEXConsole.nib;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB41C05DC532D005FB28D = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
+			name = English;
+			path = English.lproj/SOPEXConsole.nib;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB41D05DC532D005FB28D = {
+			children = (
+				ADDFB41E05DC532D005FB28D,
+			);
+			isa = PBXVariantGroup;
+			name = SOPEXMainMenu.nib;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB41E05DC532D005FB28D = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
+			name = English;
+			path = English.lproj/SOPEXMainMenu.nib;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB41F05DC532D005FB28D = {
+			children = (
+				ADDFB42005DC532D005FB28D,
+			);
+			isa = PBXVariantGroup;
+			name = SOPEXStatisticsNatLang.plist;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB42005DC532D005FB28D = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			name = English;
+			path = English.lproj/SOPEXStatisticsNatLang.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB42105DC532D005FB28D = {
+			children = (
+				ADDFB42205DC532D005FB28D,
+			);
+			isa = PBXVariantGroup;
+			name = SOPEXStats.nib;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB42205DC532D005FB28D = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
+			name = English;
+			path = English.lproj/SOPEXStats.nib;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB42305DC532D005FB28D = {
+			fileRef = ADDFB41B05DC532D005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB42405DC532D005FB28D = {
+			fileRef = ADDFB41D05DC532D005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB42505DC532D005FB28D = {
+			fileRef = ADDFB41F05DC532D005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB42605DC532D005FB28D = {
+			fileRef = ADDFB42105DC532D005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB42705DC534C005FB28D = {
+			children = (
+				ADDFB36005DC4D7B005FB28D,
+			);
+			isa = PBXVariantGroup;
+			name = SOPEXWebUI.toolbar;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB42805DC534C005FB28D = {
+			fileRef = ADDFB42705DC534C005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB45105DC5555005FB28D = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXConstants.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB45205DC5555005FB28D = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXConstants.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB45305DC5555005FB28D = {
+			fileRef = ADDFB45105DC5555005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADDFB45405DC5555005FB28D = {
+			fileRef = ADDFB45205DC5555005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADDFB48F05DC5A05005FB28D = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEX.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADDFB49105DC5A05005FB28D = {
+			fileRef = ADDFB48F05DC5A05005FB28D;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADEE3D8705DCF8C800F523DB = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXMain.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADEE3D8805DCF8C800F523DB = {
+			fileRef = ADEE3D8705DCF8C800F523DB;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADEE3D9505DCF8EC00F523DB = {
+			children = (
+				32DBCF5E0370ADEE00C91783,
+				ADDFB48F05DC5A05005FB28D,
+				ADDFB45105DC5555005FB28D,
+				ADDFB45205DC5555005FB28D,
+			);
+			isa = PBXGroup;
+			name = Global;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADEE3DAB05DCFD0800F523DB = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXMain.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADEE3DAD05DCFD0800F523DB = {
+			fileRef = ADEE3DAB05DCFD0800F523DB;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADEE3DAF05DCFE0600F523DB = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXApplication.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADEE3DB005DCFE0600F523DB = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXApplication.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADEE3DB105DCFE0600F523DB = {
+			fileRef = ADEE3DAF05DCFE0600F523DB;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADEE3DB205DCFE0600F523DB = {
+			fileRef = ADEE3DB005DCFE0600F523DB;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADFA08B10614634400E216F9 = {
+			children = (
+				ADFA08B20614635A00E216F9,
+				ADFA08B30614635A00E216F9,
+				ADFA08BE061482D800E216F9,
+				ADFA08BF061482D800E216F9,
+				ADFA08BA0614771F00E216F9,
+				ADFA08BB0614771F00E216F9,
+				AD81AD010621878E00550A49,
+				AD81AD020621878E00550A49,
+			);
+			isa = PBXGroup;
+			name = Model;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADFA08B20614635A00E216F9 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADFA08B30614635A00E216F9 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADFA08B40614635A00E216F9 = {
+			fileRef = ADFA08B20614635A00E216F9;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADFA08B50614635A00E216F9 = {
+			fileRef = ADFA08B30614635A00E216F9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADFA08BA0614771F00E216F9 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXWODocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADFA08BB0614771F00E216F9 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXWODocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADFA08BC0614771F00E216F9 = {
+			fileRef = ADFA08BA0614771F00E216F9;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADFA08BD0614771F00E216F9 = {
+			fileRef = ADFA08BB0614771F00E216F9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		ADFA08BE061482D800E216F9 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SOPEXWOXDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADFA08BF061482D800E216F9 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SOPEXWOXDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		ADFA08C0061482D800E216F9 = {
+			fileRef = ADFA08BE061482D800E216F9;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		ADFA08C1061482D800E216F9 = {
+			fileRef = ADFA08BF061482D800E216F9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+	};
+	rootObject = 0867D690FE84028FC02AAC07;
+}

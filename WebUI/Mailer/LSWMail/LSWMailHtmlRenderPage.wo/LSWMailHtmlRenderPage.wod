@@ -1,0 +1,83 @@
+// $Id: LSWMailHtmlRenderPage.wod,v 1.2 2003/10/29 13:13:20 jan Exp $
+
+Window: LSWWindowFrame {
+  title = subject;
+}
+
+Title: LSWViewerTitle {
+  title = labels.mailLabel;
+}
+
+Subject: WOString {
+  value = subject;
+};
+
+SenderLabel: WOString {
+  value = labels.sender;
+};
+
+Sender: WOString {
+  value = sender;
+};
+
+DateLabel: WOString {
+  value = labels.date;
+};
+
+Date: WOString {
+  value = dateString;
+};
+
+Content: WOString {
+  value    = content;
+  insertBR = YES; 
+};
+
+ContentLabel: WOString {
+  value = labels.content;
+};
+
+AttachmentRep: WORepetition {
+  list = attachments;
+  item = attachment;
+};
+
+Attachment: WOComponentReference {
+  component = currentAttachmentComponent;
+};
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+Version: WOString {
+  value = application.version;
+};
+
+FooterCell: WOGenericContainer {
+  elementName = "td";
+  colspan     = "2";
+  align       = "left";
+  bgcolor     = config.colors_footerCell;
+};
+
+FooterRowLabel1: WOString {
+  value = labels.footerRowLabel1;
+};
+
+FooterRowLabel2: WOString {
+  value = labels.footerRowLabel2;
+};
+
+Font: SkyConfigFont {}
+
+AttachCond: WOConditional {
+  condition = attachCond;
+};
+
+EscapeHTML : WOConditional {
+  condition = escapeHTML;
+}
+EscapeHTMLElse : WOConditional {
+  condition = escapeHTML;
+  negate    = YES;
+}

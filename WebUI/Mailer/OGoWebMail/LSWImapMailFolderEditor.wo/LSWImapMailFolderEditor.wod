@@ -1,0 +1,57 @@
+// $Id: LSWImapMailFolderEditor.wod,v 1.3 2003/12/22 17:07:06 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.FolderEditorTitle;
+  onClose = cancel;
+}
+
+Form: WOForm {
+  name   = "editform";
+  action = save;
+}
+
+SaveSubmit: WOSubmitButton {
+  action   = save;
+  value    = labels.saveButtonLabel;
+  disabled = isSaveDisabled;
+  class    = "button_narrow";
+}
+SaveSubmitDA: WOSubmitButton {
+  action           = save;
+  value            = labels.saveButtonLabel;
+  disabled         = isSaveDisabled;
+  class            = "button_narrow_da";
+}
+IsSaveEnabled: WOConditional {
+  condition  = isSaveDisabled;
+  negate     = YES;
+}
+IsSaveDisabled: WOConditional {
+  condition  = isSaveDisabled;
+}
+
+CancelSubmit: WOHyperlink {
+  action = cancel;
+  string = labels.cancelButtonLabel;
+  class  = "button_narrow";
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+FolderNameLabel: WOString {
+  value = labels.folderName;
+}
+
+FolderName: WOTextField {
+  name      = "foldername";
+  value     = folderName;
+  size      = 40;
+  formatter = session.formatString;
+  maxlength = "255";
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}

@@ -1,0 +1,62 @@
+// $Id: LSWFolderEditor.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.folderEditorTitle;
+  onClose = cancel;
+}
+
+Form : WOForm {
+  name    = "folderEditor";
+}
+
+Editor : LSWObjectEditor {
+  labels     = labels;
+  object     = folder;
+  attributes = (
+    { key = "title"; label = "name"; },
+    { key = "abstract"; }
+  );
+}
+
+EditorWithContact : LSWObjectEditor {
+  labels     = labels;
+  object     = folder;
+  attributes = (
+    { key  = "title"; label = "name"; },
+    { key  = "abstract"; },
+    { key  = "contact"; }
+  );
+}
+
+NewModeCond : WOConditional {
+        condition = isInNewMode;
+        negate    = YES;
+}
+
+SaveSubmit: WOImageButton {
+        action           = save;
+        filename         = "save.gif";
+        name             = labels.saveButton;
+        ALT              = labels.saveButton;
+        disabledFilename = "save_inactive.gif";
+        disabled         = isSaveDisabled;
+        BORDER           = 0;
+};
+CancelSubmit: WOHyperlink {
+        action           = cancel;
+        filename         = "cancel.gif";
+        ALT              = labels.cancelButton;
+        BORDER           = 0;
+};
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+IsContactAttrEnabled: WOConditional {
+  condition = isContactAttrEnabled;
+}
+IsContactAttrDisabled: WOConditional {
+  condition = isContactAttrEnabled;
+  negate    = YES;
+}

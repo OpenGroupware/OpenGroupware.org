@@ -1,0 +1,10 @@
+// $Id: SkyDayOfMonthPopUp.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+PopUp: WOPopUpButton {
+  list            = self;
+  item            = item;
+  string          = itemLabel;
+  selection       = day;
+  onChange        = ^onChange;
+  singleSelection = YES;
+}

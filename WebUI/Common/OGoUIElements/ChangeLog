@@ -1,0 +1,143 @@
+2004-07-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAccessList.m: do not call [session teams], fixed a bug introduced
+	  in v5.0.26 (team members were not displayed in ACL list) (v5.0.27)
+
+2004-07-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyAccessList.m(-_addObj:toCompanies:): fixed a bug (object was not
+	  properly add to the companies array), major code cleanups (this was
+	  a HUGE mess), fixed a memory leak (v5.0.26)
+
+2004-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyCalendarScript.m: minor code cleanups (v5.0.25)
+
+2004-05-06  Helge Hess  <helge.hess@skyrix.com>
+	
+	* v5.0.24
+	
+	* GNUmakefile: added postamble which validates WOx files prior building
+
+	* SkyCalendarScript.wox: fixed OGo bug #744
+
+	* SkyCollapsibleContent.wo/SkyCollapsibleContent.wod: minor improvement
+	  to XHTML compatibility
+
+2004-05-05  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyTableView.m: various cleanups, fixed handling of checkbox 
+	  generation to check for the "selections" binding instead of checking
+	  whether a selections array is set (which can fail if the array is
+	  empty at the beginning) (v5.0.23)
+
+2004-05-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.22
+
+	* removed unused SkyBundleTab component
+
+	* SkyCalendarScript.wo, SkyCalendarPopUp.wo: changed to WOx template
+	
+	* SkyAccessList.wo: template cleanups, improved XHTML compatibility
+
+	* OGoUIElementsBuilder.m: added building of tableview tags
+	
+	* added OGoUIElementsBuilder for XML tag building
+
+2004-05-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyCollapsibleContent.m: fixed a warning with an unused return value
+	  (v5.0.21)
+
+2004-04-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyCollapsibleContent.m: added 'visibilityDefault' binding to bind
+	  a collapsible state directly to a default value, minor optimizations
+	  (v5.0.20)
+
+2004-04-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyCalendarPopUp.m: minor code cleanups (v5.0.19)
+
+2004-04-02  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyTableView.m: major code cleanups, moved JavaScript functions to
+	  resource files (v5.0.18)
+
+2004-03-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyFileManagerTreeView.m: fixed OGo bug #678 (memory management 
+	  issue, probably introduced in v5.0.16) (v5.0.17)
+
+2004-03-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyFileManagerTreeView.m: minor cleanups, do not use deprecated
+	  EOControl API (v5.0.16)
+
+2004-02-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* started OGoPageButton dynamic element (for save, cancel, delete style
+	  links) (v5.0.15)
+
+2004-01-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyExternalLink.m: fixed OGo bug #15, some cleanups (v5.0.14)
+
+2004-01-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.13
+	
+	* SkyDialNumber.m: fixed a compilation warning
+	
+	* SkyProfileTemplate.m: ported to MacOSX
+
+	* GNUmakefile.preamble: fixed for MacOSX compilation
+
+2003-12-28  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* SkyTabView.m: moved SkyTabAssociation, SkyTabFontAssociation and
+	  SkyTabItem to separate files (v5.0.12)
+	
+2003-12-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyDialNumber.m: some code cleanups (v5.0.11)
+
+2003-12-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* bundle-info.plist: removed dependency on model bundle (v5.0.10)
+
+2003-10-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyTextEditor.m: added ability to trigger Epoz (v5.0.9)
+
+2003-10-06  Thomas Schild  <ts@skyrix.com>
+
+	* SkyTextEditor.wo: imageButton --> css submitButton
+
+2003-10-01  Thomas Schild  <ts@skyrix.com>
+
+	* SkyAccessList.wo: imageButton --> css submitButton
+
+Thu Aug  7 19:48:54 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyCalendarPopUp.m: localized some default date fields 
+	  ('startDate', 'endDate', etc.) (solves bug 1374) (v5.0.8)
+
+Wed Jul 16 16:18:34 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* Defaults.plist: rename Skyrix to OpenGroupware (v5.0.7)
+
+Fri Jul 11 15:55:24 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* bundle-info.plist: rename LSModel->OGo (v5.0.6)
+
+Mon Jul  7 16:53:46 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.4)
+
+	* removed historic ChangeLog's
+
+Wed Jan 10 12:08:44 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* ChangeLog created

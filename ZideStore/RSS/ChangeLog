@@ -1,0 +1,13 @@
+2004-03-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* some cleanups, properly register 'rss' method in product.plist
+	  (v1.2.3)
+
+2003-11-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* adjusted for new "product-rich" ZideStore 1.2, now installs in 
+	  Library/ZideStore12 (v1.2.2)
+
+2003-11-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* created ChangeLog and RSS ZideStore bundle

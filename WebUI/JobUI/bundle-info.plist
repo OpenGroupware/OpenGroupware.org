@@ -1,0 +1,179 @@
+{
+  bundleHandler = JobUIModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = LSProject;     type = cmd; },
+    );
+    classes = (
+      { name = NSObject;          },
+      { name = LSWModuleManager;  exact-version = 2; },
+      { name = LSWComponent;      exact-version = 2; },
+      { name = LSWContentPage;    exact-version = 3; },
+      { name = LSWObjectMailPage; exact-version = 2; } ,
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     },
+    );
+  };
+  
+  provides = {
+    classes = (
+        { name = JobUIModule;        },
+        { name = LSWJobViewer;       },
+        { name = LSWJobs;            },
+        { name = LSWJobEditor;       },
+	{ name = LSWJobAction;       },
+	{ name = LSWJobImport;       },
+        { name = LSWJobMailPage;     },
+        { name = LSWJobHtmlMailPage; },
+        { name = LSWJobTextMailPage; },
+        { name = LSWJobPreferences;  },
+        { name = SkyJobList;         },
+	{ name = SkyAssignProjectToJobEditor; },
+	{ name = SkyJobAttributesEditor; },
+    );
+    
+    DockablePages = (
+      {   
+        name      = "Jobs";
+        component = "LSWJobs";
+        labelKey  = "Jobs";
+        image     = "menu_jobs_labeled.gif";
+        listicon  = "icon_jobs_26x21.gif";
+      }
+    );
+    
+    WOComponents = (
+        { name = LSWJobViewer; },
+        { name = LSWJobs;      },
+        { name = LSWJobEditor; },
+        { name = LSWJobAction; },
+        { name = LSWJobImport; },
+        { name = LSWJobHtmlMailPage; },
+        { name = LSWJobTextMailPage; },
+        { name = LSWJobPreferences; },
+        { name = SkyJobList;        },
+	{ name = SkyAssignProjectToJobEditor; },
+	{ name = SkyJobAttributesEditor; },
+    );
+    
+    PreferencePages = (
+       {
+        name      = "Job";
+        component = "LSWJobPreferences";
+        labelKey  = "Job";
+        icon      = "icon_jobs_26x21.gif";
+      }  
+    );
+
+    LSWCommands = (
+      { 
+        verb      = view;
+        type      = "eo-gid/job";
+        component = LSWJobViewer; 
+      },
+      { 
+        verb      = view;
+        type      = "objc/SkyJobDocument";
+        component = LSWJobViewer; 
+      },
+      { 
+        verb      = view;
+        type      = "objc/SkySchedulerJobDocument";
+        component = LSWJobViewer; 
+      },
+      { 
+        verb      = editAttributes;
+        type      = "objc/SkyJobDocument";
+        component = SkyJobAttributesEditor; 
+      },
+      { 
+        verb      = editAttributes;
+        type      = "eo/job";
+        component = SkyJobAttributesEditor; 
+      },
+      { 
+        verb      = view;     
+        type      = "eo/job";      
+        component = LSWJobViewer; 
+      },
+      { 
+        verb      = edit;     
+        type      = "eo/job";      
+        component = LSWJobEditor; 
+      },
+      { 
+        verb      = assign-project; 
+        type      = "eo/job";
+        component = SkyAssignProjectToJobEditor; 
+      },
+      { 
+        verb      = edit;     
+        type      = "dict/job";    
+        component = LSWJobEditor; 
+      },
+      { 
+        verb      = new;      
+        type      = "eo/job";      
+        component = LSWJobEditor; 
+      },
+      { 
+        verb      = new;      
+        type      = "eo/project-job";  
+        component = LSWJobEditor; 
+      },
+      { 
+        verb      = new;      
+        type      = "eo/enterprise-job";  
+        component = LSWJobEditor; 
+      },
+      { 
+        verb      = annotate; 
+        type      = "eo/job";      
+        component = LSWJobAction; 
+      },
+      { 
+        verb      = done;     
+        type      = "eo/job";      
+        component = LSWJobAction; 
+      },
+      { 
+        verb      = archive;  
+        type      = "eo/job";      
+        component = LSWJobAction; 
+      },
+      { 
+        verb      = accept;   
+        type      = "eo/job";      
+        component = LSWJobAction; 
+      },
+      { 
+        verb      = reject;   
+        type      = "eo/job";      
+        component = LSWJobAction; 
+      },
+      { 
+        verb      = import;   
+        type      = "eo/project";  
+        component = LSWJobImport; 
+      },
+      { 
+        verb      = mailview; 
+        type      = "eo-pkey/job"; 
+        component = LSWJobHtmlMailPage; 
+      },
+      { 
+        verb      = htmlMail; 
+        type      = "eo/job"; 
+        component = LSWJobHtmlMailPage; 
+      },
+      { 
+        verb      = textMail; 
+        type      = "eo/job"; 
+        component = LSWJobTextMailPage; 
+      }
+    );
+  };
+}

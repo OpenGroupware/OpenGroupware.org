@@ -1,0 +1,135 @@
+2004-07-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyDefaultsEditor.m: fixed for new SOPE WOPopUpButton behaviour
+	  (wrt selection/singleSelection) (v5.0.29)
+
+2004-06-20  Olivier Hallot  <olivier@ig.com.br>
+
+	* Resources/*.plist: added Portuguese-Brazil translations of the
+	  defaults (fixes OGo bug #718, #361) (v5.0.28)
+	
+2004-06-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.27
+
+	* LSWTeamViewer.m: minor code cleanups
+
+	* LSWAccountViewer.m: removed some extra account processing
+
+	* LSWPasswordEditor.m: fixed a release bug in the logging code, minor
+	  cleanups
+
+	* LSWPasswordEditor.wo: some template cleanups
+
+	* LSWAccountViewer.wo: removed "extra account" UI
+
+2004-03-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWPasswordEditor.m: fixed a minor warning when compiling with
+	  gstep-base (v5.0.26)
+
+2004-02-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWStaff.wo: added "search all" button to search for "*" with a 
+	  single click (v5.0.25)
+
+2004-01-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* removed some unnecessary mail defaults (v5.0.24)
+
+	* v5.0.23
+
+	* LSWTeamEditor, LSWTeamViewer: added capability to specify whether a
+	  team should be exported
+
+	* v5.0.22
+
+	* LSWTeamEditor, LSWTeamViewer: added support for specifying the Cyrus
+	  mailbox associated with the team
+
+	* LSWTeamEditor.m: major cleanups
+
+2004-01-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWTeamViewer.m: minor code cleanups (v5.0.21)
+
+2004-01-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWStaff.wo: minor template cleanups (v5.0.20)
+
+2004-01-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWAccountViewer.m, LSWStaff.m, LSWTeamViewer: use -activateObject: 
+	  instead of executePasteboardCommand:, minor cleanups (v5.0.19)
+
+2003-12-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWPasswordEditor, LSWTeamEditor: fixed CSS 'id' vs 'class' issue
+	  (v5.0.18)
+
+2003-12-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: install in local root per default (v5.0.17)
+
+Tue Nov 25 16:23:16 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* v5.0.16
+	
+	* SkyDefaultsViewer: add Imap configuration
+	
+	* SkyDefaultsDomain/Viewer: remove persistent domains only if their 
+	  exists
+
+Mon Nov 24 18:29:35 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWPasswordEditor.m: code cleanups (v5.0.15)
+
+Mon Nov 24 14:43:29 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyDefaultsDomain.m: allow empty value fields (save an empty string 
+	  to in the defaults file) (v5.0.14)
+
+Fri Nov 21 00:00:01 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* v5.0.13
+	
+	* LSWTeam: add vaddress userdefault field for teams 
+	
+	* SkyDefaults: code cleanups, improve configurations of default editor
+
+2003-11-06  Thomas Schild  <ts@skyrix.com>
+
+	* LSWPasswordEditor.wo, LSWStaff.wo, LSWTeamEditor.wo:
+	  imageButton --> css submitButton (v5.0.11)
+
+Wed Nov  5 11:34:21 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWStaff.m: fixed typo (v5.0.10)
+
+Mon Sep 29 13:45:19 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* v5.0.9
+	
+	* SkyDefaultsViewer: make the displayed defaults configurable 
+	  ( viewer: SkyDefaultsViewer { domains = ("domain1", "domain2"); } )
+
+	* SkyDefaultsDomain: add localization, fixed refresh defaults bug 
+	  (-[NSUserDefaults removePersistentDomainForName] was not called)
+
+Thu Sep 18 15:24:46 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyDefaults*: Some code cleanups (v5.0.8)
+
+Fri Jul 11 15:05:41 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* Resources/NSGlobalDomain.plist: fixed database names (v5.0.7)
+
+Mon Jul  7 19:59:36 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.6)
+
+	* removed historic ChangeLogs
+
+Thu Dec 17 11:58:26 1998  Joerg Grimm  <joerg@trex2>
+
+	* added ChangeLog

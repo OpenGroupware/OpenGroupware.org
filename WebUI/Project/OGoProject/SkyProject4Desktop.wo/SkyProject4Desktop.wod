@@ -1,0 +1,249 @@
+// $Id: SkyProject4Desktop.wod,v 1.5 2004/05/05 13:00:12 helge Exp $
+
+Frame: LSWSkyrixFrame {
+}
+Window: LSWWindowFrame {
+  title = labels.projects;
+  onClose = session.navigation.leavePage;
+}
+
+Buttons: SkyButtonRow {
+  ordering = ( wizard, update );
+  onUpdate = refetch;
+  onWizard = newWizard;
+  update   = labels.update;
+  wizard   = labels.new;
+}
+
+/* tabs */
+
+TabView: SkyTabView {
+  selection = session.userDefaults.skyp4_desktop_tab;
+}
+
+FavoritesTab: SkySimpleTabItem {
+  key       = "favorites";
+  label     = labels.favorites;
+}
+SearchTab: SkySimpleTabItem {
+  key       = "search";
+  label     = labels.search;
+}
+CommonTab: SkySimpleTabItem {
+  key       = "common";
+  label     = labels.common;
+}
+PrivateTab: SkySimpleTabItem {
+  key       = "private";
+  label     = labels.private;
+}
+ArchivedTab: SkySimpleTabItem {
+  key       = "archived";
+  label     = labels.archived;
+}
+
+DocumentsTab : SkySimpleTabItem {
+  key       = "documents";
+  label     = labels.documents;
+}
+
+HasNoProjectLite : WOConditional {
+  condition = session.hasProjectLite;
+  negate    = YES;
+}
+
+FavoriteProjects: SkyP4ProjectTableView { dataSource = favoriteDataSource; }
+SearchProjects:   SkyP4ProjectTableView { dataSource = searchDataSource;   }
+PublicProjects:   SkyP4ProjectTableView { dataSource = publicDataSource;   }
+PrivateProjects:  SkyP4ProjectTableView { dataSource = privateDataSource;  }
+ArchivedProjects: SkyP4ProjectTableView { dataSource = archivedDataSource; }
+
+/* Selected Projects */
+
+Name: SkyRichString {
+  value = labels.name;
+}
+
+SearchField: WOTextField {
+  value = searchString;
+  size  = 60;
+//  style = textFieldStyle;
+}
+SearchButton: WOSubmitButton {
+  action   = searchProjects;
+  name     = labels.search;
+  value    = labels.search;
+  class    = "button_narrow";
+}
+
+SearchForm: WOForm {
+  action  = searchProjects;
+  name    = "searchform";
+}
+
+
+ExtendedSearchComponent : WOCollapsibleComponentContent {
+  condition   = NO;
+  visibility  = firstVisibility;
+  openedLabel = labels.extendedSearch;
+  closedLabel = labels.extendedSearch;
+  openedImageFileName = "expanded.gif";
+  closedImageFileName = "collapsed.gif";
+  //  submitActionName = clearClicks;
+}
+
+IsCloseCondition : WOConditional {
+  condition = firstVisibility;
+}
+
+Title : WOString {
+  value = labels.subject;
+}
+FileName : WOString {
+  value = labels.fileName;
+}
+Extension : WOString {
+  value = labels.extension;
+}
+
+TitleField : WOTextField {
+  value = title;
+  size  = 60;
+//  style = textFieldStyle;
+}
+
+FileNameField : WOTextField {
+  value = fileName;
+  size  = 60;
+//  style = textFieldStyle;
+}
+
+ExtensionField : WOTextField {
+  value = extension;
+  size  = 60;
+//  style = textFieldStyle;
+}
+
+IsExtendedSearchElse : WOConditional {
+  condition = isExtendetSearch;
+  negate    = YES;
+}
+IsExtendedSearch : WOConditional {
+  condition = isExtendetSearch;
+}
+
+ExtendedSearchTableView : SkyTableView {
+  //  list           = searchProjectArray;
+  dataSource     = documentDS;
+  item           = item;
+  previousItem   = prevItem;
+  showGroup      = showGroup;
+  groups         = item.project;
+  cacheTimeout   = 60;  
+  showGroupTitle = YES;
+  
+}
+
+TitleMode:  WETableViewTitleMode  {}
+FooterMode: WETableViewFooterMode {}
+ButtonMode: WETableViewButtonMode {}
+
+GroupMode:  WETableViewGroupMode  {
+  didMatch = didMatch;
+}
+
+ProjectsLabel: WOString {
+  value = labels.projects;
+}
+GroupName: WERichString {
+  value    = item.projectName;
+  isItalic = YES;
+}
+GroupNumber: WERichString {
+  value    = item.projectNumber;
+  //  isItalic = YES;
+}
+
+
+
+PCode: WETableData {
+  title   = labels.code;
+  sortKey = "number";
+  string  = item.project.number;
+  isGroup = isGroup;
+}
+PName: WETableData {
+  title   = labels.name;
+  sortKey = "name";
+  //  isGroup = isGroup;
+}
+Font:     SkyConfigFont {};
+
+NameLink: WOHyperlink {
+  action = clickedProject;
+  string = item.project.name;
+}
+
+
+
+
+
+FileSizeTD: WETableData {
+  title   = labels.size;
+  sortKey = "NSFileSize";
+  string  = item.NSFileSize;
+}
+
+FileOwnerTD: WETableData {
+  title   = labels.currentOwner;
+  sortKey = "NSFileOwnerAccountName";
+  //string  = currentFile.color;
+  string  = item.NSFileOwnerAccountName;
+}
+
+FileModDateTD: WETableData {
+  title   = labels.modified;
+  sortKey = "NSFileModificationDate";
+}
+
+ModDateField: SkyDateField {
+  date    = item.NSFileModificationDate;
+}
+
+FileTitleTD: WETableData {
+  title   = labels.subject;
+  sortKey = "NSFileSubject";
+  string  = item.NSFileSubject;
+}
+
+
+IsFileNotDir: WOConditional {
+  condition = item.NSFileType;
+  value     = "NSFileTypeRegular";
+}
+
+IsFileDir: WOConditional {
+  condition = item.NSFileType;
+  value     = "NSFileTypeDirectory";
+}
+
+FileDownload: SkyP4DownloadLink {
+  projectId    = item.NSFileSystemNumber;
+  documentPath = item.NSFilePath;
+}
+
+FileIcon: SkyP4DocumentIcon {
+  projectName  = item.NSFileSystemName;
+  documentPath = item.NSFilePath;
+  mimeType     = item.NSFileMimeType;
+}
+
+FileNameLink: WOHyperlink {
+  action  = clickedFile;
+  string  = item.NSFileName;
+}
+
+FileNameTD: WETableData {
+  title   = labels.fileName;
+  sortKey = "NSFileName";
+}

@@ -1,0 +1,7 @@
+// $Id: LSWMultipartAlternativeBodyViewer.wod,v 1.2 2004/06/17 16:38:45 helge Exp $
+
+CompRef: WOComponentReference {
+  component  = partViewerComponent;
+  part       = part;
+  printMode  = printMode;
+}

@@ -1,0 +1,90 @@
+// NSUserDefaults
+{
+  scheduler_time_input_type            = "PopUp";
+  scheduler_apttype_input_type         = "Icons";
+  scheduler_appointment_view           = "attributes";  
+  scheduler_blocksize                  = 20;
+  scheduler_view                       = "overview";
+  absence_mode                         = "withAbsence";
+  scheduler_start_hour                 = "11";
+  scheduler_end_hour                   = "12";
+  scheduler_no_of_cols                 = "2";
+  scheduler_hide_ignore_conflicts      = 0;
+  //
+  "scheduler_editor_expand_attributes"   = 1;
+  "scheduler_editor_expand_participants" = 1;
+  "scheduler_editor_expand_resources"    = 0;
+  "scheduler_editor_expand_access"       = 0;
+  "scheduler_editor_expand_move"         = 0;
+  "scheduler_editor_comment_rows"        = 8;
+  "scheduler_editor_comment_columns"     = 80;
+  //
+  "scheduler_pref_expand_editor"         = 0;
+  "scheduler_pref_expand_overview"       = 0;
+  "scheduler_pref_expand_dayOverview"    = 0;
+  "scheduler_pref_expand_weekOverview"   = 0;
+  "scheduler_pref_expand_holidays"       = 0;
+  "scheduler_pref_expand_access"         = 0;
+  "scheduler_mail_binding_values"        = ("startDate", "endDate", "title",
+                                          "location", "creator",
+                                          "participants", "comment",
+                                          "resourceNames");
+
+  scheduler_mail_template             = "";
+  //scheduler_mail_template             = "Appointment data:\n\nTitle: $title$\nLocation: $location$\nStart: $startDate$\nEnd: $endDate$\nCreator: $creator$\nParticipants: $participants$\nResources: $resourceNames$\nComment: $comment$\n\n";
+  scheduler_mail_template_date_format = "%Y-%m-%d %H:%M %Z";
+
+  rootAccessSkyAptNotifyDevices     = YES;
+  scheduler_editor_canResolveTeams  = NO;
+  scheduler_participantRolesEnabled = NO;
+  scheduler_attach_apts_to_mails    = NO;
+
+  scheduler_participantStatus_colors = {
+    "NEEDS-ACTION" = "black";
+    "ACCEPTED"     = "green";
+    "DECLINED"     = "grey";
+    "TENTATIVE"    = "black";
+    "DELEGATED"    = "grey";
+  };
+
+  scheduler_editor_hourdelimiters = (
+    ";", ".", ":", ",", "\\", "/", "-", "|"
+  );
+
+  scheduler_viewer_fetchattrnames = (
+    globalID, startDate, endDate, title, aptType, location,
+    resourceNames, comment, ownerId, accessTeamId,
+    objectVersion, isConflictDisabled, cycleEndDate,
+    isAttendance, isAbsence, isViewAllowed,
+    type, writeAccessList, notificationTime, dbStatus
+  );
+  scheduler_viewer_teamattrnames   = ( globalID, description );
+  scheduler_viewer_personattrnames = ( globalID, name, firstname, login );
+
+  scheduler_participantlist_attrnames = (
+    // person stuff
+    "person.companyId",  "person.globalID", "person.firstname",
+    "person.salutation", "person.degree",   "person.name",
+    "person.isPrivate",  "person.ownerId",
+    // team stuff
+    "team.globalID", "team.companyId", "team.description", "team.isTeam",
+    // assignment stuff
+    "companyId"
+  );
+  scheduler_participantlist_roleattrnames = ( partStatus, role, rsvp );
+  scheduler_participantlist_detailattrnames = (
+    "person.enterprises", "person.extendedAttributes", "person.telephones",
+    "enterprises.description", "enterprises.companyId", "enterprises.globalID",
+    // assignment comment
+    "comment"
+  );
+
+  scheduler_minutepopup_fields = (
+    "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
+    "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
+    "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
+    "30", "31", "32", "33", "34", "35", "36", "37", "38", "39",
+    "40", "41", "42", "43", "44", "45", "46", "47", "48", "49",
+    "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"
+  );
+}

@@ -1,0 +1,105 @@
+{
+  bundleHandler = SkySchedulerModule;
+  
+  requires = {
+    bundleManagerVersion = 1;
+
+    bundles = (
+      { name = LSScheduler; type = cmd; },
+    );
+    classes = (
+      { name = LSWComponent;     exact-version = 2; },
+      { name = LSWContentPage;   exact-version = 3; },
+      { name = LSWModuleManager; exact-version = 2; },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     },
+      { name = SkyAttribute;     },
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = SkySchedulerModule;         },
+      { name = SkySchedulerPage;           },
+      { name = SkyAptResourceEditor;       },
+      { name = SkySchedulerSelectPopUp;    },
+      { name = SkyAptResourceViewer;       },
+      { name = SkySchedulerSelectPanel;    },
+      { name = SkySchedulerConflictPage;   },
+      { name = SkyAptDeletePanel;          },
+    );
+    
+    DockablePages = (
+      {
+        name      = "Scheduler2";
+        component = "SkySchedulerPage";
+        labelKey  = "Scheduler";
+        miniView  = "SkySchedulerDockView";
+        image     = "menu_scheduler_labeled.gif";
+        listicon  = "icon_scheduler_26x21.gif";
+      },
+    );
+    WOComponents = (
+      { name = SkySchedulerPage;           },
+      { name = SkyAptResourceEditor;       },
+      { name = SkySchedulerSelectPopUp;    },      
+      { name = SkyAptResourceViewer;       },
+      { name = SkySchedulerSelectPanel;    },
+      { name = SkySchedulerConflictPage;   },
+      { name = SkyAptDeletePanel;          },
+    );
+    LSWCommands = (
+      {
+        verb      = delete; 
+        type      = "eo/date"; 
+        component = SkyAptDeletePanel; 
+      },
+      { 
+        verb      = delete; 
+        type      = "eo-gid/date"; 
+        component = SkyAptDeletePanel; 
+      },
+      { 
+        verb      = delete; 
+        type      = "eo/appointment"; 
+        component = SkyAptDeletePanel; 
+      },
+      { 
+        verb      = delete; 
+        type      = "eo-gid/appointment"; 
+        component = SkyAptDeletePanel; 
+      },
+      
+      { 
+        verb      = edit; 
+        type      = "eo/appointmentresource"; 
+        component = SkyAptResourceEditor; 
+      },
+      { 
+        verb      = new; 
+        type      = "eo/appointmentresource"; 
+        component = SkyAptResourceEditor; 
+      },
+      { 
+        verb      = view; 
+        type      = "eo/appointmentresource"; 
+        component = SkyAptResourceViewer; 
+      },
+      { 
+        verb      = view;
+        type      = "eo-gid/appointmentresource";
+        component = SkyAptResourceViewer; 
+      },
+//      { 
+//        verb      = new; 
+//        type      = "eo/event"; 
+//        component = SkyEventEditor; 
+//      },
+//      { 
+//        verb      = edit; 
+//        type      = "eo/event"; 
+//        component = SkyEventEditor; 
+//      },
+    );
+  };
+}

@@ -1,0 +1,10 @@
+# $Id$
+
+Appointments Backend for ZideStore
+==================================
+
+Defaults
+========
+ZLAptLogChanges              - BOOL
+SxAptFolder_MonthsIntoPast   - int (2)
+SxAptFolder_MonthsIntoFuture - int (12)

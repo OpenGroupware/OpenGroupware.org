@@ -1,0 +1,37 @@
+// $Id: OGoHelpViewer.wod,v 1.1 2004/02/01 23:42:48 helge Exp $
+
+Stylesheet: WOGenericElement {
+  elementName = "link";
+  rel         = "stylesheet";
+  type        = "text/css";
+  href        = stylesheetURL;
+}
+
+ShortcutIcon: WOString {
+  value      = shortcutLink;
+  escapeHTML = NO;
+}
+
+OGoLink: WOHyperlink {
+  target   = "OGo";
+  href     = "http://www.opengroupware.org";
+}
+OGoLogo: WOImage {
+  filename         = "menu_logo_top.gif";
+  ALIGN            = "center";
+  VALIGN           = "middle";
+  BORDER           = 0;
+  ALT              = "";
+}
+
+LinePix:   WOImage { filename = "line_stretch.gif"; }
+LineLeft:  WOImage { filename = "line_left.gif";    }
+LineRight: WOImage { filename = "line_right.gif";   }
+
+FooterRowLabel2a: WOHyperlink {
+  string = "SKYRIX Software AG";
+  href   = "http://www.skyrix.com/knoppix/skyrix/";
+  TARGET = "SKYRIX";
+}
+
+PathInfo: WOString { value = context.pathInfo; }

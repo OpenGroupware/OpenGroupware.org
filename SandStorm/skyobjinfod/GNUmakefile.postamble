@@ -1,0 +1,7 @@
+# $Id$
+
+after-install ::
+	$(MKDIRS) $(TEMPLATE_INSTALL_DIR)/ $(INSTANCE_INSTALL_DIR)/
+	cp skyobjinfod.xml $(TEMPLATE_INSTALL_DIR)/
+	if ! test -f $(INSTANCE_INSTALL_DIR)/iObjectInfo.xml; then\
+	  cp iObjectInfo.xml $(INSTANCE_INSTALL_DIR)/; fi

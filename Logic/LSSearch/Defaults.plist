@@ -1,0 +1,14 @@
+// NSUserDefaults
+{
+  LSMaxSearchCount   = 100;
+  LSFullSearchConfig = {
+    Person = {
+      single   = ( "Address", "Telephone", "CompanyInfo" );
+      compound = ( );
+    };
+    Enterprise = {
+      single   = ( "Address", "Telephone", "CompanyInfo" );
+      compound = ( );
+    };
+  };
+}

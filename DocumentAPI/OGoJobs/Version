@@ -1,0 +1,5 @@
+# $Id$
+
+SUBMINOR_VERSION:=22
+
+# v5.0.21 requires libOGoDocuments v5.0.20

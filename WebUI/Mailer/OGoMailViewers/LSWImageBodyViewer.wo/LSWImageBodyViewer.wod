@@ -1,0 +1,26 @@
+// $Id: LSWImageBodyViewer.wod,v 1.2 2004/06/17 19:45:20 helge Exp $
+
+Image: WOImage {
+  value = mimeContent;
+}
+BodyIsURL : WOConditional {
+  condition = hasUrl;
+}
+BodyIsURLElse : WOConditional {
+  condition = hasUrl;
+  negate    = YES;
+}
+
+
+IsImage : WOConditional {
+  condition = session.userDefaults.mail_viewImagesInline.boolValue;
+}
+
+ActionUrl : WOActionURL {
+  directActionName = downloadPartActionName;
+  actionClass      = "SkyImapDownloadAction";
+  ?url             = url;
+  ?mimeType        = mimeTypeString;
+  ?encoding        = encoding;
+  target           = documentAttachmentTarget;
+}

@@ -1,0 +1,53 @@
+// $Id$
+{
+  bundleHandler = LSAccountCommands;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = LSAddress; type = cmd; }      
+    );
+    
+    classes = (
+      { name = NSObject;              },
+      { name = LSBaseCommand;            exact-version = 1; },
+      { name = LSDBObjectBaseCommand;    exact-version = 1; },
+      { name = LSDBObjectDeleteCommand;  exact-version = 1; },
+      { name = LSDBObjectSetCommand;     exact-version = 2; },
+      { name = LSDBObjectGetCommand;     exact-version = 3; },
+      { name = LSDBFetchRelationCommand; exact-version = 1; },
+      { name = LSExtendedSearchCommand;  exact-version = 2; },
+      { name = LSGetObjectForGlobalIDs;  exact-version = 1; },            
+    );
+  };
+  
+  provides = {
+    LSCommands = (
+        { name = "account::new";               },
+        { name = "account::delete";            },
+        { name = "account::set";               },
+        { name = "account::get";               },
+        { name = "account::get-by-login";      },
+        { name = "account::teams";             },
+        { name = "account::setgroups";         },
+        { name = "account::login";             },
+        { name = "account::extended-search";   },
+        { name = "account::change-password";   },
+        { name = "account::toperson";          },
+    );
+    classes = (
+      { name = LSAccountCommands;                },
+      { name = LSNewAccountCommand;              },
+      { name = LSSetAccountCommand;              },
+      { name = LSGetAccountByLoginCommand;       },
+      { name = LSGetTeamForAccountCommand;       },
+      { name = LSLoginAccountCommand;            },
+      { name = LSGetAccountCommand;              },
+      { name = LSExtendedSearchAccountCommand;   },
+      { name = LSDeleteAccountCommand;           },
+      { name = LSChangePasswordCommand;          },
+      { name = LSAccountToPersonCommand;         },
+    );
+  };
+}

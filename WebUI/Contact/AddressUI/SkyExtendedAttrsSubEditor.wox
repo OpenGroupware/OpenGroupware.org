@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<var:component className="LSWObjectEditor" 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:var="http://www.skyrix.com/od/binding"
+    xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+
+    labels        = "labels"
+    object        = "document"
+    attributeKeys = "document.extendedKeys"
+    map           = "document.attributeMap"
+    showOnly      = "showOnly"
+>
+<!-- $Id: SkyExtendedAttrsSubEditor.wox,v 1.1 2004/04/27 15:45:19 helge Exp $ -->
+</var:component>

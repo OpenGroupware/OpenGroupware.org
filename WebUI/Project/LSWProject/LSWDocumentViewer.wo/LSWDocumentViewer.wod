@@ -1,0 +1,504 @@
+// $Id: LSWDocumentViewer.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.windowTitleDocumentViewer;
+  onClose = session.navigation.leavePage;
+}
+
+TabView: SkyTabView {
+  selection = tabKey;
+}
+
+VersionsTab: SkyTabItem {
+  key       = "versions";
+  action    = tabClicked;
+  label     = labels.version;
+  icon      = "versions";
+}
+
+ContentsTab: SkyTabItem {
+  key       = "contents";
+  action    = tabClicked;
+  label     = labels.toDoList;
+  icon      = "contents";
+}
+
+AttributesTab: SkyTabItem {
+  key       = "attributes";
+  action    = tabClicked;
+  label     = labels.attributes;
+  icon      = "attributes";
+}
+
+MainButtonRow : WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_mainButtonRow;
+};
+
+TitleLeftCell : WOGenericContainer {
+  elementName = "td";
+  align	      = "left";
+  valign      = "top";
+};
+TitleRightCell : WOGenericContainer {
+  elementName = "td";
+  align       = "right";
+  valign      = "top";
+  //width       = "1";
+};
+
+TitleFont: SkyConfigFont {}
+
+ViewerTitle: LSWViewerTitle {
+  title = documentPath;
+}
+
+DocumentViewer : LSWObjectViewer {
+  labels        = labels;
+  object        = editing;
+  dateFormatter = session.formatDateTime;
+  attributes    = (
+    { key = "abstract";     },
+    { key = "fileSize";     },
+    { key = "version";      label = "basedOnVersion";   },
+    { key = "checkoutDate"; }
+  );
+}
+DocumentViewerWithContact : LSWObjectViewer {
+  labels        = labels;
+  object        = editing;
+  dateFormatter = session.formatDateTime;
+  attributes    = (
+    { key = "abstract";     },
+    { key = "contact";      },
+    { key = "fileSize";     },
+    { key = "version";      label = "basedOnVersion";   },
+    { key = "checkoutDate"; }
+  );
+}
+
+VersionsRep: WORepetition {
+  list = versions;
+  item = version;
+}
+
+DocumentTitle: WOString {
+  value = docTitle;        
+}
+
+DocumentPath: WOString {
+  value = documentPath;        
+}
+
+VersionTitle: WOString {
+  value = versionTitle;        
+}
+
+ArchiveDate: WOString {
+  value = version.archiveDate;      
+  formatter = session.formatDateTime;  
+}
+
+CheckoutDate: WOString {
+  value     = checkoutDate;      
+  formatter = session.formatDateTime;  
+}
+
+VersionNumber: WOString {
+  value = version.version;        
+}
+
+VersionSize: WOString {
+  value = version.fileSize;        
+}
+
+VersionType: WOString {
+  value = version.fileType;        
+}
+VersionAbstract: WOString {
+  value = version.abstract;        
+}
+
+IsDocumentDownloadEnabled : WOConditional {
+  condition = isDocumentDownloadEnabled;
+}
+
+VersionCheckoutLink: WOHyperlink {
+  filename = "project_status_sleeping.gif";
+  action   = checkoutVersion;
+  ALT      = labels.checkout;
+  BORDER   = 0;
+}
+
+VersionCheckedOutLink: WOHyperlink {
+  filename = "project_status_processing.gif";
+  action   = checkoutVersion;
+  ALT      = labels.checkedOut;
+  BORDER   = 0;
+}
+
+IsVersionCheckedOut : WOConditional {
+  condition = isVersionCheckedOut;
+}
+
+IsVersionCheckedOutElse : WOConditional {
+  condition = isVersionCheckedOut;
+  negate    = YES;
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     { alignTop=YES; }
+
+IsCheckoutEnabledCond : WOConditional {
+  condition = isCheckoutEnabled;
+}
+IsCheckedoutElse : WOConditional {
+  condition = document.status;
+  value     = "edited";
+}
+
+IsEditDisabledCond : WOConditional {
+  condition = isEditDisabled;
+}
+
+IsEditEnabled : WOConditional {
+  condition = isEditDisabled;
+  negate   = YES;
+}
+
+IsReleasedCondElse : WOConditional {
+  condition = isReleased;
+  negate    = YES;
+}
+
+Status : WOString {
+  value = document.status;        
+}
+
+FirstOwnerAttribute: WOString {
+  value = labels.firstOwner;
+};
+
+TitleLabel: WOString {
+  value = labels.titleLabel;
+};
+
+CurrentOwnerAttribute: WOString {
+  value = labels.currentOwner;
+};
+
+CurrentEditorAttribute: WOString {
+  value = labels.currentEditor;
+};
+
+EditingDownloadLabel : WOString {
+  value = labels.editingDownloadLabel;
+};
+
+Version: WOString {
+  value = labels.version;
+};
+
+Abstract: WOString {
+  value = labels.abstract;
+};
+
+LockedLabel: WOString {
+  value = labels.lockedLabel;
+};
+
+SinceLabel: WOString {
+  value = labels.sinceLabel;
+};
+
+Title: WOString {
+  value = labels.title;
+};
+
+ReleaseDate: WOString {
+  value = labels.releaseDate;
+};
+
+Type: WOString {
+  value = labels.type;
+};
+
+Size: WOString {
+  value = labels.size;
+  escapeHTML = NO;
+};
+
+Owner: WOString {
+  value = labels.owner;
+};
+
+Download: WOString {
+  value = labels.download;
+};
+
+Checkout: WOString {
+  value = labels.checkout;
+};
+
+ContentCell: WOGenericContainer {
+  elementName = "TD";
+  COLSPAN     = "2";
+  BGCOLOR     = config.colors_tabLeaf;
+}
+
+TableHeaderRow: WOGenericContainer {
+  elementName = "TR";
+  BGCOLOR     = config.colors_tableHeaderRow;
+}
+
+Font: SkyConfigFont {}
+ArchivedObjectFont: WOGenericContainer {
+  elementName = "FONT";
+  COLOR = config.colors_deleted_object;
+  Size  = config.font_size;
+  FACE  = config.font_face;
+}
+
+EditingDownloadLink: WOHyperlink {
+  directActionName = downloadEditingDirectActionName;
+  actionClass      = "LSWDocumentDownloadAction";
+  ?pkey            = editing.documentEditingId;
+  filename         = gifForEditingType;
+  ALT              = labelForEditingType;
+  BORDER           = 0;
+  target           = attachmentTarget;
+}
+
+DocDownloadLink: WOHyperlink {
+  directActionName = downloadDirectActionName;
+  actionClass      = "LSWDocumentDownloadAction";
+  ?pkey            = document.documentId;
+  target           = attachmentTarget;
+}
+DocDownloadIcon: WOImage {
+  filename         = gifForEditingType;
+  ALT              = labelForEditingType;
+  BORDER           = 0;
+}
+
+VersionDownloadLink: WOHyperlink {
+  directActionName = downloadVersionDirectActionName;
+  actionClass      = "LSWDocumentDownloadAction";
+  ?pkey            = version.documentVersionId;
+  filename         = gifForVersionType;
+  ALT              = labelForVersionType;
+  BORDER           = 0;
+  target           = versionAttachmentTarget;
+};
+
+WarningModeCond : WOConditional {
+  condition = isInWarningMode;
+}
+
+WarningModeCondElse : WOConditional {
+  condition = isInWarningMode;
+  negate    = YES;
+}
+
+Warning : LSWWarningPanel {
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
+}
+
+DocumentUrl : WOHyperlink {
+  href   = documentUrl;
+  string = documentUrl;
+}
+
+IsTxtDoc : WOConditional {
+        condition = document.fileType;
+        value     = "txt";
+};
+
+IsTxtDocElse : WOConditional {
+        condition = document.fileType;
+        value     = "txt";
+        negate    = YES;
+};
+
+SubAttributeCell : WOGenericContainer {
+  elementName = "td";
+  align       = "right";
+  valign      = "top";
+  bgcolor     = config.colors_subAttributeCell;
+  width       = "15%";
+};
+
+SubValueCell : WOGenericContainer {
+  elementName = "td";
+  align	      = "left";
+  bgcolor     = config.colors_subValueCell;
+};
+
+TxtDocContent : WOString {
+  value    = txtDocContent;
+  //insertBR = YES;
+}
+
+ClipLink: WOHyperlink {
+  action   = placeInClipboard;
+  filename = "clip.gif";
+  border   = 0;
+  alt      = labels.clipboard;
+  align    = "top";
+};
+
+FolderRep : WORepetition {
+  list  = folders;
+  item  = item;
+  index = folderIndex;
+}
+
+FolderLink : WOHyperlink {
+  action = folderLink;
+  string = itemTitle;
+}
+
+FileName : WOString {
+  value = fileName;
+}
+
+ShowInline: WOConditional {
+  condition = showContentInline;
+}
+ShowAsImage: WOConditional {
+  condition = showAsImage;
+}
+ShowAsEmbeddedObject: WOConditional {
+  condition = showAsEmbeddedObject;
+}
+
+InlineContent: WOEmbeddedObject {
+  src    = inlineContentUrl;
+  HREF   = inlineContentUrl;
+  WIDTH  = "100%";
+  HEIGHT = "500";
+}
+
+MimeTypeLabel: WOString {
+  value      = "MIME Type";
+  escapeHTML = NO;
+}
+MimeType: WOString {
+  value = inlineObjectMimeType;
+}
+SizeLabel: WOString {
+  value      = labels.size;
+  escapeHTML = NO;
+}
+DataSize: WOString {
+  value = object.fileSize;
+}
+
+HasInlineViewer: WOConditional {
+  condition = isInlineViewerAvailable;
+}
+InlineViewer: WOComponentReference {
+  component = inlineObjectViewer;
+}
+
+/* buttons */
+
+Buttons: SkyButtonRow {
+  oid          = object.documentId;
+
+  /* default buttons */
+  onClip       = placeInClipboard;
+  onMail       = mailObject;
+  urlMail      = objectUrl;
+  hasMove      = isMoveEnabled;
+  onMove       = moveDocument;
+  hasDelete    = isDeleteEnabled;
+  onDelete     = delete;
+  hasEdit      = isEditEnabled;
+  onEdit       = edit;
+
+  /* custom buttons */
+  ordering     = ( checkout, refresh, reject, release, editattrs, textedit );
+  hasCheckout  = isReleased;
+  onCheckout   = checkout;
+  onRefresh    = refresh;
+  hasEditattrs = isEditEnabled;
+  onEditattrs  = editAttributes;
+  hasTextedit  = isTextEditEnabled;
+  onTextedit   = editTextDocument;
+  hasRelease   = isReleaseEnabled;
+  onRelease    = releaseDocument;
+  hasReject    = isRejectEnabled;
+  onReject     = rejectDocument;
+  
+  /* labels */
+  clip         = labels.clip;
+  mail         = labels.send;
+  move         = labels.move;
+  checkout     = labels.action_checkout;
+  refresh      = labels.refresh;
+  delete       = labels.delete;
+  edit         = labels.edit;
+  editattrs    = labels.editattrs;
+  textedit     = labels.textedit;
+  reject       = labels.reject;
+  release      = labels.release;
+}
+
+CurrentOwner : SkyObjectValue {
+  object = document.currentOwner;
+  value  = document.currentOwner.login;
+}
+
+CurrentEditor : SkyObjectValue {
+  object = editing.currentOwner;
+  value  = currentEditor;        
+}
+
+FirstOwner : SkyObjectValue {
+  object = document.firstOwner;
+  value  = document.firstOwner.login;
+}
+
+VersionOwner : SkyObjectValue {
+  object = version.lastOwner;
+  value  = version.lastOwner.login;
+}
+
+PropertyRep : WORepetition {
+  list = properties;
+  item = propertyItem;
+}
+
+PropertyName : WOString {
+  value = propertyName;
+}
+
+PropertyValue : WOString {
+  value = propertyValue;
+}
+
+PropButtons: SkyButtonRow {
+  onEdit = editProperties;
+  edit   = "edit";
+}
+
+PropertyLink : WOHyperlink {
+  action = "editProperty";
+}
+Contact: WOString {
+  value = labels.contact;        
+}
+VersionContact: WOString {
+  value = version.contact;        
+}
+IsContactAttrEnabled: WOConditional {
+  condition = isContactAttrEnabled;
+}
+IsContactAttrDisabled: WOConditional {
+  condition = isContactAttrEnabled;
+  negate    = YES;
+}

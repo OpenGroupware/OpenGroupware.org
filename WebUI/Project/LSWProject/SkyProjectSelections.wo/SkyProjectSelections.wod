@@ -1,0 +1,64 @@
+// $Id: SkyProjectSelections.wod,v 1.4 2003/10/01 17:44:58 thomas Exp $
+
+AttributeCell: SkyAttributeCell  {};
+ValueCell:     SkyValueCell      {};
+
+Font:          SkyConfigFont     {};
+EditFont:      SkyConfigEditFont {};
+
+ProjectSearchLabel: WOString {
+  value = labels.searchProject;
+}
+EnterpriseSearchLabel: WOString {
+  value = labels.Enterprise;
+}
+
+ProjectSearchField: WOTextField {
+  name     = "projectSearch";
+  value    = searchProjectText;
+}
+EnterpriseSearchField: WOTextField {
+  name     = "enterpriseSearch";
+  value    = searchEnterpriseText;
+}
+
+ProjectSearchSubmit: WOSubmitButton {
+  action   = projectSearch;
+  name     = "projectSearchSelection";
+  value    = labels.searchButton;
+  class    = "button_narrow";
+}
+EnterpriseSearchSubmit: WOSubmitButton {
+  action   = enterpriseSearch;
+  name     = "enterpriseSearchSelection";
+  value    = labels.Enterprise;
+  class    = "button_auto";
+};
+
+ProjectsLabel: WOString {
+  value = labels.chooseProject;
+  escapeHTML = NO;
+};
+
+ProjectList: SkyListView {
+  list            = projects;
+  columns         = 4;
+  selectedItems   = selectedProjects;
+  attributes      = ( 
+  { 
+    key = "skyProjectSelectionLabel"; 
+  } 
+  );
+};
+
+SearchEnterprisesCond: WOConditional {
+  condition = searchEnterprises;
+}
+
+WithTitles: WOConditional {
+  condition = withoutTitles;
+  negate    = YES;
+}
+WithoutTitles: WOConditional {
+  condition = withoutTitles;
+}

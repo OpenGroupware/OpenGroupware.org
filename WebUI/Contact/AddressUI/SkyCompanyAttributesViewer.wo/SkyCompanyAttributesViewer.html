@@ -1,0 +1,45 @@
+<!-- $Id: SkyCompanyAttributesViewer.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+
+  <#CompanyAttrRep>
+    <#HideIfEmptyCond>
+      <#IsNotEmpty>
+        <#CurrentAttr><#CurrentAttrValue/> <#AttrSuffix/></#CurrentAttr>
+      </#IsNotEmpty>
+    </#HideIfEmptyCond>
+    
+    <#DontHideIfEmptyCond>
+      <#CurrentAttr><#CurrentAttrValue/> <#AttrSuffix/></#CurrentAttr>
+    </#DontHideIfEmptyCond>
+  </#CompanyAttrRep>
+  
+  <#PublicExtAttrRep>
+    <#HideIfEmptyCond>
+      <#IsNotEmpty>
+        <#CurrentAttr><#CurrentAttrValue/> <#AttrSuffix/></#CurrentAttr>
+      </#IsNotEmpty>
+    </#HideIfEmptyCond>
+
+    <#DontHideIfEmptyCond>
+      <#CurrentAttr><#CurrentAttrValue/> <#AttrSuffix/></#CurrentAttr>
+    </#DontHideIfEmptyCond>
+  </#PublicExtAttrRep>
+
+  <#PrivateExtAttrRep>
+    <#IsCurrentVisible>
+      <#CurrentAttr><#CurrentAttrValue/> <#AttrSuffix/></#CurrentAttr>
+    </#IsCurrentVisible>
+  </#PrivateExtAttrRep>
+
+  <#IsNotJobViewer>
+    <#TelephoneViewer/>
+
+    <#AddressTypeRepetition> 
+      <#ShowAddressTypeCond>
+        <tr>
+          <td>&nbsp;</td>
+          <#TypeCell><#AddressType/></#TypeCell>
+        </tr>
+        <#AddressViewer/>
+      </#ShowAddressTypeCond>
+    </#AddressTypeRepetition>
+  </#IsNotJobViewer>

@@ -1,0 +1,5 @@
+# $Id$
+
+SUBMINOR_VERSION:=29
+
+# v5.0.29 requires libNGExtensions v4.2.402

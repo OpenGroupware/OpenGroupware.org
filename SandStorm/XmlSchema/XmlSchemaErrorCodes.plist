@@ -1,0 +1,9 @@
+// $id: $
+
+{
+  101 = "Could not instantiate complex object";
+  102 = "Could not instantiate simple object";
+  103 = "Could not find element or schema";
+  104 = "Schema not found";
+  105 = "Element not found";
+}

@@ -1,0 +1,19 @@
+# $Id$
+
+Scripts to Generate Linux Daemon Configurations
+===============================================
+
+All this needs a lot of cleanup.
+
+And documentation.
+
+
+
+ReadDefault.py
+==============
+
+Export the required variables:
+
+export xmlrpcd_url="http://localhost:23040/RPC2"
+export xmlrpcd_login="root"
+export xmlrpcd_pwd="XXX"

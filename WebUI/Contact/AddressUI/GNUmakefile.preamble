@@ -1,0 +1,10 @@
+# $Id$
+
+ADDITIONAL_WOBUNDLE_LIBS += \
+	-lOGoContacts -lOGoJobs \
+	-lOGoDocuments	\
+	-lGDLAccess	\
+	-lNGScripting	\
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(ADDITIONAL_WOBUNDLE_LIBS)

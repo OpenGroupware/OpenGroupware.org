@@ -1,0 +1,8 @@
+ZideStore.woa
+shared_debug_obj
+ZLConnect
+ZLConnect.make
+NOTES.hh
+*.log
+nohup.out
+.gdb_history

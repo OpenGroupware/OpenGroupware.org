@@ -1,0 +1,31 @@
+<#CollapsibleComponentContent>
+  <#TitleMode>
+    <#TitleRow>
+      <#TitleTD>
+        <#StructuredModeCond>
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tr>
+              <td>
+                <nobr>
+                  <#CollapsibleAction />
+                  <#IsTitleCond><b><#Font><#Title /></#Font></b></#IsTitleCond>
+                  <#ContextKeyTitle><#ComponentContent /></#ContextKeyTitle>
+                </nobr>
+              </td>
+              <td align="right">
+                <#ContextKeyButton><#ComponentContent /></#ContextKeyButton>
+               </td>
+             </tr>
+          </table>
+        </#StructuredModeCond>
+
+        <#StructuredModeCondElse>
+          <#CollapsibleAction />
+          <b><#Font><#Title /></#Font></b>
+        </#StructuredModeCondElse>
+      </#TitleTD>
+    </#TitleRow>
+  </#TitleMode>
+
+  <#ContentMode><#ComponentContent /></#ContentMode>
+</#CollapsibleComponentContent>

@@ -1,0 +1,17 @@
+{
+  "__cvs__" = "$Id$";
+
+  requires = {
+    bundleManagerVersion = 1;
+    classes = (
+      { name = NSObject;    }
+    );
+  };
+
+  provides = {
+    classes = (
+      { name = "SkyMasterApplication"; },
+      { name = "SkyMasterAction";      },
+    );
+  };
+}

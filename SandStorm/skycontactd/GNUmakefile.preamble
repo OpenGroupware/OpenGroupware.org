@@ -1,0 +1,7 @@
+# $Id$
+
+skycontactd_TOOL_LIBS += \
+	-lOGoDaemon -lXmlSchema	\
+	-lOGoContacts		\
+	-lSxComponents -lNGObjWeb	\
+	-lEOControl

@@ -1,0 +1,22 @@
+EXPORTS
+	__objc_class_name_LSArrayFilterCommand;
+	__objc_class_name_LSBaseCommand;
+	__objc_class_name_LSCommandContext;
+	__objc_class_name_LSDBArrayFilterCommand;
+	__objc_class_name_LSDBFetchRelationCommand;
+	__objc_class_name_LSDBObjectBaseCommand;
+	__objc_class_name_LSDBObjectCommandException;
+	__objc_class_name_LSDBObjectDeleteCommand;
+	__objc_class_name_LSDBObjectGetCommand;
+	__objc_class_name_LSDBObjectNewCommand;
+	__objc_class_name_LSDBObjectNewKeyCommand;
+	__objc_class_name_LSDBObjectSetCommand;
+	__objc_class_name_LSDBObjectTransactionCommand;
+	__objc_class_name_LSGetObjectForGlobalIDs;
+	__objc_class_name_LSDBTransaction;
+	__objc_class_name_LSMail;
+	__objc_class_name_LSModuleManager;
+	__objc_class_name_LSSort;
+	__objc_class_name_LSSortCommand;
+	LSCommandLookupV
+	LSCommandRunV

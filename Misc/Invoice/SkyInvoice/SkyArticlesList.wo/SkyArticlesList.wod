@@ -1,0 +1,68 @@
+// $Id: SkyArticlesList.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+TableView: SkyTableView {
+  dataSource = dataSource;
+  item       = item;
+
+  batchSize    = session.userDefaults.invoice_blocksize;
+  isDescending = session.userDefaults.invoice_articles_isDescending;
+  //  autoScroll   = session.userDefaults.invoice_articles_autoscrollSize;
+}
+
+TitleMode:  WETableViewTitleMode  {}
+ButtonMode: WETableViewButtonMode {}
+
+Title: SkyRichString {
+  value = labels.articles;
+}
+Content: WOComponentContent {}
+
+// Datas
+ArticleNrData: WETableData {
+  title   = labels.articleNr;
+  sortKey = "sArticleNr";
+}
+HasActionCond: WOConditional {
+  condition = hasAction;
+}
+HasActionCondElse: WOConditional {
+  condition = hasAction;
+  negate    = YES;
+}
+ViewArticleAssignment: WOHyperlink {
+  action = viewArticle;
+}
+ArticleNr: SkyRichString {
+  value = item.sArticleNr;
+}
+
+ArticleNameData: WETableData {
+  title   = labels.articleName;
+  sortKey = "articleName";
+  value   = item.articleName;
+}
+CategoryData: WETableData {
+  title   = labels.articleCategory;
+  value   = item.articleCategory.categoryName;
+}
+UnitData: WETableData {
+  title   = labels.articleUnit;
+  value   = item.articleUnit.description;
+}
+VATData: WETableData {
+  title     = labels.articleVat;
+  sortKey   = "vat";
+  value     = item.vat;
+  formatter = numberFormatter;
+}
+CommentData: WETableData {
+  title   = labels.comment;
+  value   = item.comment;
+}
+PriceData: WETableData {
+  title     = labels.price;
+  sortKey   = "price";
+  value     = item.price;
+  formatter = currencyFormatter;
+  align     = "RIGHT";
+}

@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<var:foreach 
+  list="attributes" item="attributeConfig"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+>
+  <!-- $Id: LSWObjectViewer.wox,v 1.2 2004/05/01 17:57:46 helge Exp $ -->
+<!-- TODO: would need to wrap "LSWTableViewCell" dynelement -->
+  
+  <var:if condition="isAttributeVisible">
+    <tr>
+      <td align="right" valign="top" width="15%" var:bgcolor="attributeColor">
+        <OGo:font>
+          <var:string value="attributeLabel" const:escapeHTML="NO" />:
+        </OGo:font>
+      </td>
+      
+      <td align="left" valign="top" var:bgcolor="valueColor"><OGo:font>
+
+        <var:if condition="isArrayAttribute">
+          <var:foreach list="arrayAttrList" item="relatedObject" 
+                       const:separator=", ">
+            <var:if condition="isDeletedObject" const:negate="YES">
+<!-- TODO -->
+            </var:if>
+
+            <var:if condition="isDeletedObject">
+<!-- TODO -->
+            </var:if>
+          </var:foreach>
+        </var:if>
+
+        <var:if condition="isArrayAttribute" const:negate="YES">
+          <var:if condition="isDeletedObject" const:negate="YES">
+<!-- TODO -->
+          </var:if>
+
+          <var:if condition="isDeletedObject">
+<!-- TODO -->
+          </var:if>
+        </var:if>
+
+      </OGo:font></td>
+    </tr>
+  </var:if>
+</var:foreach>

@@ -1,0 +1,34 @@
+# $Id$
+
+ADDITIONAL_CPPFLAGS += -Wall
+
+load-LSModel_LIB_DIRS  += -L./$(GNUSTEP_OBJ_DIR)
+load-LSModel_TOOL_LIBS += \
+	-lLSFoundation -lGDLAccess -lGDLExtensions \
+	-lNGLdap -lNGMime \
+	-lEOControl -lNGExtensions -lNGStreams \
+	-lDOM -lSaxObjC
+
+ifeq ($(GNUSTEP_TARGET_OS),darwin1.1)
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif
+
+#libLSFoundation_LIB_DIRS += 
+libLSFoundation_LIBRARIES_DEPEND_UPON += \
+	-lNGStreams -lNGExtensions -lEOControl	\
+	-lGDLExtensions -lGDLAccess -lNGLdap -lNGMime
+
+ifneq ($(GNUSTEP_TARGET_OS),darwin1.1)
+libLSFoundation_LIBRARIES_DEPEND_UPON += 
+endif
+
+ifeq ($(GNUSTEP_TARGET_OS),mingw32)
+libLSFoundation_LIBRARIES_DEPEND_UPON += -lFoundation -lobjc
+endif
+ifeq ($(GNUSTEP_TARGET_OS),cygwin32)
+libLSFoundation_LIBRARIES_DEPEND_UPON += -lFoundation -lobjc
+endif
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_LDFLAGS      += -framework Foundation
+endif

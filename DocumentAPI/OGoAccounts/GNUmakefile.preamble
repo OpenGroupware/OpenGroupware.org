@@ -1,0 +1,17 @@
+# $Id$
+
+ADDITIONAL_LIB_DIRS += \
+	-L./$(GNUSTEP_OBJ_DIR) \
+	-L../OGoDocuments/$(GNUSTEP_OBJ_DIR) \
+	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
+
+libOGoAccounts_LIBRARIES_DEPEND_UPON += \
+	-lOGoDocuments			\
+	-lLSFoundation -lGDLAccess	\
+	-lNGStreams -lNGExtensions -lEOControl
+
+ADDITIONAL_CPP_FLAGS += -Wall
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif

@@ -1,0 +1,334 @@
+// $Id: SkyInlineDayOverview.wod,v 1.3 2004/05/09 18:23:28 helge Exp $
+
+IsViewAccessAllowed: WOConditional {
+  condition = appointmentViewAccessAllowed;
+}
+IsViewAccessNotAllowed: WOConditional {
+  condition = appointmentViewAccessAllowed;
+  negate    = YES;
+}
+
+IsResCategorySelected: WOConditional {
+  condition = isResCategorySelected;
+  negate    = YES;
+}
+
+// Style
+
+Font: SkyConfigFont {}
+
+NewString: WOString {
+  value = labels.new;
+}
+
+// HeaderCell
+
+HeaderCell: WOGenericContainer {
+  elementName = "td";
+  COLSPAN     = "2";
+  ALIGN       = "center";
+  VALIGN      = "top";
+  BGCOLOR     = config.colors_dayHeaderCell;
+}
+
+DayTitle: WOString {
+  value       = day;
+  formatter   = session.formatDate;
+}
+
+CompanyName: WOString {
+  value = companyName;
+}
+
+// CurrentDayInfo
+
+HasCurrentDayInfo: WOConditional {
+  condition = hasHolidays;
+}
+
+DayInfoCell: WOGenericContainer {
+  elementName = "td";
+  
+  COLSPAN     = "2";
+  ALIGN       = "left";
+  BGCOLOR     = config.colors_dayHeaderCell;
+}
+
+CurrentDayInfo: WOString {
+  value = currentDayInfo;
+}
+
+// Drag'n'Drop
+
+DropSpace: WEDropContainer {
+  tags          = ( appointment, person );
+  droppedObject = appointment;
+  action        = droppedAppointment;
+}
+DragApt: WEDragContainer {
+  tag            = "appointment";
+  object         = appointment;
+  isDraggable    = isAppointmentDraggable;
+}
+
+// MoreDayAptRep
+
+MoreDayLabelCell: WOGenericContainer {
+  elementName = "td";
+  ALIGN       = "center";
+  WIDTH       = "10%";
+  VALIGN      = "top";
+  ROWSPAN     = rowspanForMoreDayApts;
+  BGCOLOR     = config.colors_dayHeaderCell;
+}
+MoreDayLabelPrintCell: WOGenericContainer {
+  elementName = "td";
+  ROWSPAN     = rowspanForMoreDayApts;
+}
+
+MoreDayAptsRep: WORepetition {
+  list      = moreDayApts;
+  item      = appointment;
+  index     = index;
+}
+
+// TimeIntervallRepetition
+
+TimeIntervallRepetition: WORepetition {
+  list = listOfTimes;
+  item = currentTime;
+}
+
+// new apts
+
+NewAppointment: WOHyperlink {
+  directActionName = "newApt";
+  ?year   = day.yearOfCommonEra;
+  ?month  = day.monthOfYear;
+  ?day    = day.dayOfMonth;
+  ?hour   = currentTime.hourOfDay;
+  ?minute = currentTime.minuteOfHour;
+  ?tz     = day.timeZone.abbreviation;
+  ?ctx    = context.contextID;
+  //action = newAppointment;
+}
+
+// LabelCell
+
+LabelCell: WEDropContainer {
+  tags          = ( appointment, person );
+  droppedObject = appointment;
+  action        = droppedAppointment;
+
+  elementName = "td";
+  ALIGN       = "center";
+  WIDTH       = "10%";
+  VALIGN      = "top";
+  ROWSPAN     = rowspanForCurrentTime;
+  BGCOLOR     = config.colors_dayHeaderCell;
+}
+
+PrintLabelCell: WOGenericContainer {
+  elementName = "td";
+  ALIGN       = "center";
+  WIDTH       = "10%";
+  VALIGN      = "top";
+  ROWSPAN     = rowspanForCurrentTime;
+}
+
+Time: WOString {
+  value = labelOfCurrentTime;
+}
+
+// AppointmentsRep
+
+AppointmentsRep: WORepetition {
+  list  = currentAppointments;
+  item  = appointment;
+  index = index;
+}
+
+TextCell: WOGenericContainer {
+  elementName = "td";
+  ALIGN       = "left";
+  VALIGN      = "top";
+  BGCOLOR     = config.colors_dayCell;
+}
+TextDropCell: WEDropContainer {
+  tags          = ( appointment, person );
+  droppedObject = appointment;
+  action        = droppedAppointment;
+  
+  elementName = "td";
+  ALIGN       = "left";
+  VALIGN      = "top";
+  BGCOLOR     = config.colors_dayCell;
+}
+
+ViewAptLink: WOHyperlink {
+  directActionName = "viewApt";
+  ?oid    = appointmentOID;
+  ?entity = appointmentEntity;
+  ?tz     = appointment.startDate.timeZone.abbreviation;
+  ?ctx    = context.contextID;
+  title   = shortTextForApt;
+  class   = "skydatecell_link";
+}
+ViewAptAction: WOHyperlink {
+  action = viewAppointment;
+  title  = shortTextForApt;
+  class  = "skydatecell_link";
+}
+AptInfoIcon: WOImage {
+  filename = dateCellIcon;
+  border   = "0";
+  valign   = "top";
+  alt      = shortTextForApt;
+  title    = shortTextForApt;
+}
+
+UseDACond: WOConditional {
+  condition = useDirectActionForView;
+}
+UseDACondElse: WOConditional {
+  condition = useDirectActionForView;
+  negate    = YES;
+}
+
+AptTimeInfo: WOString {
+  value     = appointment;
+  formatter = aptTimeFormatter;
+}
+
+AptTitleSpan: WOGenericContainer {
+  elementName = "span";
+  class       = aptTitleCellClass;
+}
+
+AptTitle: WOString {
+  value     = appointment;
+  formatter = aptTitleFormatter;
+}
+
+AptContentText: WOString {
+  value     = appointment;
+  formatter = aptContentFormatter;
+}
+
+FullAptInfo: WOString {
+  value     = appointment;
+  formatter = aptFullInfoFormatter;
+}
+
+//Conditional
+
+HasAppointmentsCond: WOConditional {
+  condition = hasCurrentAppointments;
+}
+
+IsNotFirstAppointmentCond: WOConditional {
+  condition = index;
+  value     = 0;
+  negate    = YES;
+}
+
+HasNoAppointmentsCond: WOConditional {
+  condition = hasCurrentAppointments;
+  negate    = YES;
+}
+
+HasMoreDayAptsCond: WOConditional {
+  condition = hasMoreDayApts;
+}
+HasAllDayAptsCond: WOConditional {
+  condition = hasAllDayApts;
+}
+AllDayAptsLabelCell: WOGenericContainer {
+  elementName = "td";
+  ALIGN       = "center";
+  WIDTH       = "10%";
+  VALIGN      = "top";
+  ROWSPAN     = rowspanForAllDayApts;
+  BGCOLOR     = config.colors_dayHeaderCell;
+}
+AllDayAptsRep: WORepetition {
+  list      = allDayApts;
+  item      = appointment;
+  index     = index;
+}
+
+
+PrintModeCond: WOConditional {
+  condition = printMode;
+}
+PrintModeCondElse: WOConditional {
+  condition = printMode;
+  negate    = YES;
+}
+
+ViewAccessAllowedCond: WOConditional {
+  condition = appointmentViewAccessAllowed;
+}
+ViewAccessAllowedCondElse: WOConditional {
+  condition = appointmentViewAccessAllowed;
+  negate    = YES;
+}
+
+TitleFont : WOGenericContainer {
+  elementName = "FONT";
+  COLOR       = config.colors_titleColor;
+}
+
+ContentTextFont : WOGenericContainer {
+  elementName = "FONT";
+  COLOR       = config.colors_contentText;
+}
+
+AppointmentLinkFont : WOGenericContainer {
+  elementName = "FONT";
+  COLOR       = config.colors_appointmentLink;
+}
+NewAppointmentLinkFont : WOGenericContainer {
+  elementName = "FONT";
+  COLOR       = config.colors_newAppointmentLink;
+  SIZE         = "-4";
+}
+
+// Month-Browser
+
+Browser: SkyMonthBrowser {
+  month    = day.monthOfYear;
+  year     = day.yearOfCommonEra;
+  months   = 2;
+  timeZone = day.timeZone;
+
+  date      = browserDate;
+  isInMonth = browserDateInMonth;
+}
+
+BrowserDayLabel: WOString {
+  value = browserDayLabel;
+}
+
+IsInMonthCond: WOConditional {
+  condition = browserDateInMonth;
+}
+
+IsInMonthCondElse: WOConditional {
+  condition = browserDateInMonth;
+  negate    = YES;
+}
+
+ViewDay: WOHyperlink {
+  disabled         = isDayDirectActionDisabled;
+  directActionName = dayDirectActionName;
+  ?year            = browserDate.yearOfCommonEra;
+  ?month           = browserDate.monthOfYear;
+  ?day             = browserDate.dayOfMonth;
+  ?tz              = day.timeZone.abbreviation;
+}
+
+TextColor: WOGenericContainer {
+  elementName = "font";
+  COLOR       = browserFontColor;
+}

@@ -1,0 +1,140 @@
+<#Frame>
+  <!-- $Id: SkyProject4DocumentViewer.html,v 1.4 2004/07/09 11:21:57 helge Exp $ -->
+  <#Window>
+    <#ShowOnlyForm>
+      <#IsNotForm><#Form       /></#IsNotForm>
+      <#IsForm   ><#FormPreview/></#IsForm>
+    </#ShowOnlyForm>
+    
+    <#ShowNotOnlyForm>
+      <table width="100%" border="0" cellpadding="4" cellspacing="0">
+        <#MainButtonRow>
+          <td colspan="2">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="left" valign="middle" width="19">
+                  <#DownloadLink><#DocIcon/></#DownloadLink>
+                </td>
+                <td align="left" valign="top">
+                  <#TitleFont>
+                    <#DocPath/>
+                    <#IfLocked>(<#LockedBy/> <#LockUser/>)</#IfLocked>
+                  </#TitleFont>
+                </td>
+                <td align="right" valign="top"><#Buttons/></td>
+              </tr>
+            </table>
+          </td>
+        </#MainButtonRow>
+      </table>
+      
+      <br />
+      
+      <#TabView>
+        <#IsNotAVersion>
+          <#AttributesTab>
+            <#HasDocAttributesForm>
+              <#DocAttributesForm/>
+            </#HasDocAttributesForm>
+            
+            <#StandardAttrsTitle><#AttrsButtons/></#StandardAttrsTitle>
+            
+            <table border="0" cellspacing="0" cellpadding="1" width="100%">
+              <#AttrViewer>
+                <tr><#AttrKey><#AttrItem/></#AttrKey></tr>
+              </#AttrViewer>
+            </table>
+            
+            <#SupportsProperties>
+              <br />
+              <#PropertiesTitle><#PropButtons/></#PropertiesTitle>
+              <#PropViewer/>
+            </#SupportsProperties>
+          </#AttributesTab>
+        </#IsNotAVersion>
+        
+        <#HasForm>
+          <#FormTab>
+            <#IsDesigner>
+              <small><i>Current Account is FormEditor</i><hr size="1" /></small>
+            </#IsDesigner>
+            <#Form/>
+          </#FormTab>
+        </#HasForm> 
+
+        <#ContentsTab>
+          <#HasDocContentForm><#DocContentForm/></#HasDocContentForm>
+            
+          <#ContentsTabTitle/>
+            
+          <table border="0" cellspacing="0" cellpadding="1" width="100%">
+            <#HasReadAccess>
+              <tr>
+                <#DownloadAttr>
+                  <#DownloadLink><#FileName/></#DownloadLink>
+                  <#VersionString/>
+                </#DownloadAttr>
+              </tr>
+            </#HasReadAccess>
+            <tr><#MimeTypeAttr/></tr>
+            <tr><#SizeAttr/></tr>
+          </table>
+             
+          <#HasReadAccess> 
+            <#BLOBContentViewer/>
+          </#HasReadAccess>
+          <#HasReadAccessElse>
+            <hr size="1" />
+            <#NoReadAccessWarning/>
+          </#HasReadAccessElse>
+        </#ContentsTab>
+          
+        <#IsForm>
+          <#PreviewTab>
+            <#PreviewTabTitle/>
+            <#FormPreview/>
+            
+            <#HasLog>
+              <br />
+              <#PreviewLogTitle><#ClearLog/></#PreviewLogTitle>
+              <small><#Log/></small>
+            </#HasLog>
+          </#PreviewTab>
+        </#IsForm>
+        
+        <#HasPublisher>
+          <#PubShowPreview>
+            <#PubPreviewTab><#PubPartPreview/></#PubPreviewTab>
+          </#PubShowPreview>
+          
+          <#PubShowLinks>
+            <#PubLinksTab><#PubLinks/></#PubLinksTab>
+          </#PubShowLinks>
+            
+          <#PubShowSource>
+            <#PubSourceTab><#PubSource/></#PubSourceTab>
+          </#PubShowSource>
+        </#HasPublisher>
+        
+        <#SupportsAccess>
+          <#IsNotAVersion>
+
+            <#VersionsTab>
+              <#HasDocVersionsForm><#DocVersionsForm/></#HasDocVersionsForm>
+              <#VersionList/>
+            </#VersionsTab>
+            
+            <#AccessTab>
+              <#AccessTitle><#AccessButtons/></#AccessTitle>
+              <#AccessList/>
+            </#AccessTab>
+            
+            <#ShowDownloadLogsCond>
+              <#DownloadLogTab><#DownloadLogList/></#DownloadLogTab>
+            </#ShowDownloadLogsCond>
+          </#IsNotAVersion>
+        </#SupportsAccess>
+      </#TabView>
+    </#ShowNotOnlyForm>
+  </#Window>
+</#Frame>

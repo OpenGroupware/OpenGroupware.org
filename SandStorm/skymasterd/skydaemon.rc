@@ -1,0 +1,244 @@
+#!/bin/bash
+
+# $Id: skydaemon.rc,v 1.1.1.1 2003/07/09 22:57:27 cvs Exp $
+
+# skydaemon.rc - control the tasks managed by the skymasterd
+
+PREFIX=`Defaults read NSGlobalDomain SxDefaultNamespacePrefix`
+NAMESPACE="$PREFIX.master"
+
+if [ -n "$2" ]
+then
+  case $2 in
+  'start')
+    sh -c "sxc_call $NAMESPACE tasks 1>/dev/null 2>&1"
+    if [ $? -eq 2 ]
+    then
+      echo "no matching component found (can't connect to registry)"
+      exit
+    fi
+
+    printf "%-50s\n" "Starting task $1"
+    echo -n "login   : "
+    TMPPID=`sh -c "sxc_call $NAMESPACE start $1" 2>/dev/null`
+    RESULT=$?
+    PID=`echo $TMPPID | sed s/login:// -`
+    if [ "x$RESULT" = "x3" ]; then
+      echo "Invalid credentials." 
+      exit 
+    else if [ $PID == "0" ]
+      then
+        echo "FAILED"
+      else
+        echo "started (pid: $PID)"
+        fi  
+    fi
+    ;;
+  
+  'stop')
+    sh -c "sxc_call $NAMESPACE tasks 1>/dev/null 2>&1"
+    if [ $? -eq 2 ]
+    then
+      echo "no matching component found (can't connect to registry)"
+      exit
+    fi
+
+    printf "%-50s\n" "Stopping task $1"
+    echo -n "login   : "
+    sh -c "sxc_call $NAMESPACE stop $1 1>/dev/null 2>&1"
+    RESULT=$?
+    if [ "x$RESULT" = "x3" ]; then
+      echo "Invalid credentials." 
+      exit 
+    else if [ $RESULT == 0 ]
+      then
+        echo "OK"
+      else
+        echo "FAILED"
+      fi  
+    fi
+    ;;
+
+  'restart')
+    sh -c "sxc_call $NAMESPACE tasks 1>/dev/null 2>&1"
+    if [ $? -eq 2 ]
+    then
+      echo "no matching component found (can't connect to registry)"
+      exit
+    fi
+
+    printf "%-50s\n" "Restarting task $1"
+    echo -n "login   : "
+    TMPPID=`sh -c "sxc_call $NAMESPACE restart $1" 2>/dev/null`
+    if [ "x$?" = "x3" ]; then
+      echo "Invalid credentials."
+      exit
+    fi
+
+    PID=`echo $TMPPID | sed s/login:// -`
+    if [ $PID == 0 ]; then
+      echo "FAILED"
+    else
+      echo "started (pid: $PID)"
+    fi
+    ;;
+
+  'instances')
+    sh -c "sxc_call $NAMESPACE tasks 1>/dev/null 2>&1"
+    if [ $? -eq 2 ]
+    then
+      echo "no matching component found (can't connect to registry)"
+      exit
+    fi
+
+    echo -n "login   : "
+    INSTANCES=`sh -c "sxc_call $NAMESPACE instances $1"`
+    INSTANCES=`echo $INSTANCES | sed s/login:// -`
+    for instance in $INSTANCES
+    do
+      echo $instance
+    done
+    ;;
+
+  'reload')
+    echo "This command isn't yet supported"
+    exit
+    printf "%-50s\n" "Reloading config of task $1"
+    echo -n "login   : "
+    TMPPID=`sh -c "sxc_call $NAMESPACE reload $1"`
+    PID=`echo $TMPPID | sed s/login:// -`
+    if [ $PID == "0" ]
+    then
+      echo "FAILED"
+    else
+      echo "OK"
+    fi
+    ;;
+
+  'status')
+    sh -c "sxc_call $NAMESPACE tasks 1>/dev/null 2>&1"
+    if [ $? -eq 2 ]
+    then
+      echo "no matching component found (can't connect to registry)"
+      exit
+    fi
+
+    printf "%-50s" "Status of task $1"
+    STATUS=`sh -c "sxc_call $NAMESPACE isRunning $1"`
+    if [ $STATUS == "0" ]
+    then
+      echo "not running"
+    else
+      echo "running"
+    fi
+    ;;
+
+  *)
+    echo
+    echo "SKYRiX masterd task control .rc script"
+    echo
+    echo "usage: $0 <template/pid> (start|stop|restart|reload|status|help)"  
+    echo
+    echo "start      - start template/pid"
+    echo "stop       - stop template/pid by sending SIGINT"
+    echo "restart    - restart template/pid if running, start if not running"
+    echo "reload     - reload template/pid config by sending SIGHUP"
+    echo "status     - show the status of the template/pid"
+    echo "help       - this screen"
+    echo
+    echo "Meta-commands (not template/task specific)"
+    echo
+    echo "templates  - show templates"
+    echo "status     - show pid's and their template classes"
+    echo
+    ;;
+  esac
+else
+  case $1 in
+  'templates')
+    sh -c "sxc_call $NAMESPACE tasks 1>/dev/null 2>&1"
+    if [ $? -eq 2 ]
+    then
+      echo "no matching component found (can't connect to registry)"
+      exit
+    fi
+    TEMPLATES=`sxc_call $NAMESPACE templates 2>/dev/null` 
+    for template in $TEMPLATES
+    do
+      echo $template
+    done
+    ;;
+
+  'instances')
+    sh -c "sxc_call $NAMESPACE tasks 1>/dev/null 2>&1"
+    if [ $? -eq 2 ]
+    then
+      echo "no matching component found (can't connect to registry)"
+      exit
+    fi
+    INSTANCES=`sxc_call $NAMESPACE instances 2>/dev/null` 
+    for instance in $INSTANCES
+    do
+      echo $instance
+    done
+    ;;
+
+  'status')
+    sh -c "sxc_call $NAMESPACE tasks 1>/dev/null 2>&1"
+    if [ $? -eq 2 ]
+    then
+      echo "no matching component found (can't connect to registry)"
+      exit
+    fi
+
+    TASKLIST=`sh -c "sxc_call $NAMESPACE tasks"`
+
+    for task in $TASKLIST
+    do
+      TEMPLATE=`sh -c "sxc_call $NAMESPACE status $task"`
+      for line in $TEMPLATE
+      do
+        sh -c "echo $line | grep template - 1>/dev/null 2>&1"
+        if [ $? -eq 1 ]
+        then
+          uid=`echo $line | sed s/uid=// -`
+        fi
+        sh -c "echo $line | grep uid - 1>/dev/null 2>&1"
+        if [ $? -eq 1 ]
+        then
+          templ=`echo $line | sed s/template=// -`
+        fi
+      done
+      printf "%-30s %-20s(%s)\n" $task $uid $templ
+    done
+    ;;
+  'restart' | 'start' | 'stop' | 'reload')
+   echo "error: this command requires a PID as the first parameter"
+   ;;
+  *)
+    echo
+    echo "SKYRiX masterd task control .rc script"
+    echo
+    echo "usage: $0 <template/pid> (start|stop|restart|reload|status|help)"  
+    echo
+    echo "start      - start template/instance"
+    echo "stop       - stop template/instance/pid by sending SIGINT"
+    echo "restart    - restart template/instance/pid if running, "
+    echo "             start if not running"
+    echo "reload     - reload template/instance/pid config by sending SIGHUP"
+    echo "status     - show the status of the instance/pid"
+    echo "instances  - shows the running instances of a template"
+    echo "help       - this screen"
+    echo
+    echo "Meta-commands (not template/task specific)"
+    echo
+    echo "templates  - show available templates"
+    echo "instances  - show available instances"
+    echo "status     - show pid's and their template classes"
+    echo
+    ;;
+  esac
+fi
+ 
+
+

@@ -1,0 +1,29 @@
+<#Frame>
+  <!-- $Id: SkyProject4NewLink.html,v 1.2 2004/04/11 18:07:17 helge Exp $ -->
+  <#Window>
+    <#Form>
+
+      <table border="0" cellspacing="0" cellpadding="3" width="100%">
+        <tr><#FolderAttr/></tr>
+        <tr><#FilenameAttr><#Filename/></#FilenameAttr></tr>
+        <tr><#SubjectAttr><#Subject/></#SubjectAttr></tr>
+        
+        <tr>
+          <#LinkAttr>
+            <#Link/>
+            <#HasFavorites><#PastePopUp /></#HasFavorites>
+          </#LinkAttr>
+        </tr>
+        
+        <tr>
+          <td></td>
+          <td>
+            <#SaveButton/>
+            <#CancelButton/>
+          </td>
+        </tr>
+      </table>
+
+    </#Form>
+  </#Window>
+</#Frame>

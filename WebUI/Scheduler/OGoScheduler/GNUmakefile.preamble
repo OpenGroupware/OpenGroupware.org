@@ -1,0 +1,25 @@
+# $Id$
+
+OGoScheduler_WOBUNDLE_LIBS += \
+	-lOGoFoundation	\
+	-lNGObjWeb -lNGScripting \
+	-lOGoScheduler -lOGoDocuments \
+	-lGDLAccess \
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(OGoScheduler_WOBUNDLE_LIBS)
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I../..
+
+ADDITIONAL_LIB_DIRS += \
+	-L../../OGoFoundation/$(GNUSTEP_OBJ_DIR)
+
+ifeq ($(GNUSTEP_TARGET_OS),mingw32)
+SkyScheduler_WOBUNDLE_LIBS += \
+	-lNGMime \
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lFoundation -lobjc
+endif
+
+ADDITIONAL_CPPFLAGS += -Wno-protocol -Wall

@@ -1,0 +1,37 @@
+// $Id: OGoMailInfo.strings,v 1.4 2004/06/21 23:22:55 helge Exp $
+
+DefaultAccessPreferences    = "Zugriffsrechte auf Mail Präferenzen";
+Imap                        = "Mails";
+LSWMailPreferences          = "Mail Präferenzen";
+NO                          = "Nein";
+YES                         = "Ja";
+action_closeWindow          = "Fenster schliessen";
+action_refresh              = "aktualisieren";
+action_viewMail             = "Mails lesen";
+activeMail                  = "Email";
+asIcon                      = "als Icon";
+cancelButtonLabel           = "abbrechen";
+external                    = "Extern";
+html                        = "Html";
+imapHost                    = "Imap host";
+imapPasswd1                 = "Imap Passwort";
+imapPasswd2                 = "Imap Passwort Wiederholung";
+imapUser                    = "Imap login";
+inactiveMail                = "Email (inaktiv)";
+internal                    = "Intern";
+label_newMail_multi         = "Sie haben %i neue Nachrichten!";
+label_newMail_no            = "Sie haben keine neuen Nachrichten!";
+label_newMail_single        = "Sie haben eine neue Nachricht!";
+login                       = "Login";
+mail_editor_type            = "Maileditor";
+mail_send_type              = "Mail versenden als";
+newMail                     = "Email (ungelesen)";
+plain                       = "Text";
+saveButtonLabel             = "speichern";
+senderLength                = "Absender Länge";
+signature                   = "Signatur";
+subjectLength               = "Betreff Länge";
+viewAttachmentBodysInEditor = "Zeige die Bodys der Attachments im Editor";
+viewAttachmentsInline       = "Zeige Attachments inline an";
+viewImagesInline            = "Zeige Images inline an";
+viewStatus                  = "Zeige Mail Status";

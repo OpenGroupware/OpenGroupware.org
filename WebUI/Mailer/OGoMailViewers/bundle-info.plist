@@ -1,0 +1,155 @@
+// $Id$
+{
+  bundleHandler = SkyMailViewersModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = LSMail; type = cmd; } 
+    );
+    classes = (
+      { name = NSObject;          },
+      { name = LSWModuleManager;  exact-version = 2; },
+      { name = LSWComponent;      exact-version = 2; },
+      { name = LSWContentPage;    exact-version = 3; },
+      { name = LSWObjectMailPage; exact-version = 2; },
+      { name = LSWSession;        version = 9;       },
+      { name = WOHyperlink;       version = 4;       }
+    );
+  };
+  
+  provides = {
+    classes = (
+        { name = SkyMailViewersModule;              },
+        { name = LSWMimeBodyPartViewer;             },
+        { name = LSWMimeMessageViewer;              },
+        { name = LSWMimePartViewer;                 },
+        { name = LSWPartBodyViewer;                 },
+        { name = LSWTextPlainBodyViewer;            },
+        { name = LSWAppOctetBodyViewer;             },
+        { name = LSWMultipartBodyViewer;            },
+        { name = LSWMultipartMixedBodyViewer;       },
+        { name = LSWMultipartAlternativeBodyViewer; },
+        { name = LSWMessageRfc822BodyViewer;        },
+        { name = LSWInlineBodyViewer;               },
+        { name = SkyMessageRfc822Viewer;            },
+        { name = SkyImapDownloadAction;             },
+        { name = OGoMailDownloadAction;             },
+        { name = SkyMailIcon;                       },
+    );
+    
+    WOComponents = (
+        { name = LSWAppOctetBodyViewer;             },
+        { name = LSWMessageRfc822BodyViewer;        },
+        { name = LSWMimeBodyPartViewer;             },
+        { name = LSWMimeMessageViewer;              },
+        { name = LSWMultipartAlternativeBodyViewer; },
+        { name = LSWMultipartMixedBodyViewer;       },
+        { name = LSWImageBodyViewer;                },
+        { name = LSWInlineBodyViewer;               },
+        { name = LSWTextPlainBodyViewer;            },
+        { name = SkyMessageRfc822Viewer;            },
+    );
+
+    LSWCommands = (
+      { 
+        verb = mailview; type = "application/pdf";
+        component = LSWInlineBodyViewer;
+      },
+      { 
+        verb = mailview; type = "application/msword";
+        component = LSWInlineBodyViewer;
+      },
+      { 
+        verb = mailview; type = "application/vnd.ms-excel";
+        component = LSWInlineBodyViewer;
+      },
+      { 
+        verb = mailview; type = "application/vnd.ms-word";
+        component = LSWInlineBodyViewer;
+      },
+      { 
+        verb = mailview; type = "application/msexcel";
+        component = LSWInlineBodyViewer;
+      },
+      { 
+        verb = mailview; type = "application/vnd.ms-powerpoint";
+        component = LSWInlineBodyViewer;
+      },
+      { 
+        verb = mailview; type = "application/mspowerpoint";
+        component = LSWInlineBodyViewer;
+      },
+      {
+        verb = mailview; type = "text/plain";
+        component = LSWTextPlainBodyViewer;
+      },
+      {
+        verb = mailview; type = "text/html";
+        component = LSWInlineBodyViewer;
+      },
+      {
+        verb = mailview; type = "text/x-vcard";
+        component = LSWTextPlainBodyViewer;
+      },
+      {
+        verb = mailview; type = "text/enriched";
+        component = LSWTextPlainBodyViewer;
+      },
+
+      {
+        verb = mailview; type = "application/octet-stream";
+        component = LSWAppOctetBodyViewer;
+      },
+      {
+        verb = mailview; type = "message/rfc822";
+        component = LSWMessageRfc822BodyViewer; 
+      },
+      {
+        verb = mailview; type = "multipart/alternative";
+        component = LSWMultipartAlternativeBodyViewer;
+      },
+      {
+        verb = mailview; type = "multipart/skyrix";
+        component = LSWMultipartMixedBodyViewer;
+      },
+      {
+        verb = mailview; type = "multipart/appledouble";
+        component = LSWMultipartMixedBodyViewer;
+      },
+      {
+        verb = mailview; type = "multipart/mixed";
+        component = LSWMultipartMixedBodyViewer;
+      },
+      {
+        verb = mailview; type = "multipart/digest";
+        component = LSWMultipartMixedBodyViewer;
+      },
+      {
+        verb = mailview; type = "multipart/report";
+        component = LSWMultipartMixedBodyViewer;
+      },
+      {
+        verb = mailview; type = "multipart/related";
+        component = LSWMultipartMixedBodyViewer;
+      },
+      {
+        verb = mailview; type = "multipart/signed";
+        component = LSWMultipartMixedBodyViewer;
+      },
+      {
+        verb = mailview; type = "image/jpeg";
+        component = LSWImageBodyViewer;
+      },
+      {
+        verb = mailview; type = "image/gif";
+        component = LSWImageBodyViewer;
+      },
+      {
+        verb = mailview; type = "image/png";
+        component = LSWImageBodyViewer;
+      }
+    );
+  };
+}

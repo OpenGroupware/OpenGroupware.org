@@ -1,0 +1,54 @@
+2004-02-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* created ChangeLog - please update when doing modifications!
+
+
+2004-03-10  Luca Buzzoni  <luca@opengroupware.org>
+
+	* substituted quoted keys with regular ones
+	  added missing keys
+	  substituted 'lavoro' with 'compito' for 'job'
+	  changed label for 'docked project' table
+
+2004-03-11  Luca Buzzoni  <luca@opengroupware.org>
+
+	* fixed wrong key in PreferencesUI.strings
+
+2004-03-11  Luca Buzzoni  <luca@opengroupware.org>
+
+	* changed keys in PreferencesUI.strings to better explain actions
+
+2004-03-12  Luca Buzzoni  <luca@opengroupware.org>
+
+	* Restored 'Predefiniti' to 'Defaults' when referring to Defaults tool
+
+2004-03-12  Luca Buzzoni  <luca@opengroupware.org>
+
+	* fixed error in OGoNote.strings now file loads correctly
+
+2004-03-15  Luca Buzzoni  <luca@opengroupware.org>
+
+	* Fixed firstname-lastname inversion in PreferencesUI.strings
+
+2004-03-15  Luca Buzzoni  <luca@opengroupware.org>
+
+	* Changed 'abbandona' in 'elimina assegnazione' in PersonsUI.strings
+	to better explain action
+
+2004-03-22  Luca Buzzoni  <luca@opengroupware.org>
+
+	* Changed 'Getile' to 'Gentile' in PersonsUI.strings - typo fixed
+
+2004-04-12  Luca Buzzoni  <luca@opengroupware.org>
+
+	* Removed duplicate key SkyPalmPreferences_palmSync in OGoPalm.strings
+
+2004-04-30  Luca Buzzoni  <luca@opengroupware.org>
+
+	* Added keys for AND & OR operators in fulltext searches in
+	AddressUI.stings
+
+2004-05-13  Luca Buzzoni  <luca@opengroupware.org>
+
+	* Added missing keys for Related links and Quick notes in files
+	PersonsUI.strings and RelatedLinksUI.strings

@@ -1,0 +1,27 @@
+# $Id$
+
+ADDITIONAL_CPPFLAGS += -Wall
+
+OGoUIElements_INCLUDE_DIRS += -I../../../Logic/LSFoundation -I..
+
+OGoUIElements_LIB_DIRS     += \
+        -L../../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR) \
+        -L../../OGoFoundation/$(GNUSTEP_OBJ_DIR)
+
+ADDITIONAL_WOBUNDLE_LIBS += \
+        -lOGoFoundation \
+        -lLSFoundation  \
+        -lWEExtensions -lNGObjWeb -lNGScripting \
+        -lNGMime -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(ADDITIONAL_WOBUNDLE_LIBS)
+
+ifeq ($(GNUSTEP_TARGET_OS),mingw32)
+ADDITIONAL_WOBUNDLE_LIBS += -lobjc
+endif
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_BUNDLE_LIBS += -lFoundationExt
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif

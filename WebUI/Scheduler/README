@@ -1,0 +1,29 @@
+# $Id$
+
+This directory contains the OpenGroupware.org bundles which implement the 
+OGo web interface for the scheduler application.
+
+Bundles
+=======
+
+LSWScheduler
+- originally contained the SKYRiX 3.x scheduling application and is now
+  reduced to the components still used in OpenGroupware.org, like the appointment
+  editor
+  TODO: move everything required to OGoScheduler
+
+OGoScheduler
+- the "new" components for the SKYRiX 4.x scheduling application. quite
+  a lot of components are still contained in LSWScheduler
+
+OGoResourceScheduler
+- this contains the "resource scheduler" application which provides some
+  resource centric views on the scheduling database
+
+OGoSchedulerViews
+- all the reusable scheduler views/components
+- used by both, OGoScheduler and OGoResourceScheduler
+
+OGoSchedulerDock
+- contains the component for the scheduler IE drop-area in the dock, you
+  can drop person and appointment records on the dock to view/create meetings

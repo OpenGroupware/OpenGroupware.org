@@ -1,0 +1,98 @@
+// $Id: SkyPersonList.wod,v 1.3 2004/04/19 11:10:11 helge Exp $
+
+ButtonContent: WOComponentContent {};
+
+TableView: SkyTableView {
+  dataSource     = dataSource;
+  item           = person;
+  batchSize      = session.userDefaults.address_blocksize;
+
+  sortedKey      = "name";
+
+  titleString    = labels.personList;
+  footerString   = labels.personList;
+}
+
+ButtonMode: WETableViewButtonMode {}
+Font: SkyConfigFont {}
+
+NameTD: WETableData {
+  title   = labels.name;
+  sortKey = "name";
+}
+ViewAction: WOHyperlink {
+  directActionName = "activate";
+  ?oid             = person.companyId;
+  string           = personName;
+}
+
+NickNameTD: WETableData {
+  title   = labels.nickname;
+  string  = person.nickname;
+  sortKey = "nickname";
+}
+
+FirstNameTD: WETableData {
+  title   = labels.firstname;
+  string  = person.firstname;
+  sortKey = "firstname";
+}
+
+DegreeTD: WETableData {
+  title   = labels.degree;
+  string  = person.degree;
+}
+
+JobTitleTD: WETableData {
+  title   = labels.job_title;
+  string  = person.job_title;
+}
+
+Email1TD: WETableData {
+  title   = labels.email1;
+  sortKey = "email1";
+}
+
+Phone1TD: WETableData {
+  title   = labels.01_tel;
+  sortKey = "01_tel";
+}
+PhoneDial: SkyDialNumber { number = person.01_tel; }
+PhoneNum:  WOString      { value  = person.01_tel; }
+
+MailLink: SkyObjectField {
+  object     = person;
+  attributes = { key = "email1"; type="3"; /* email */ };
+}
+
+/* favorites */
+
+PFavoritesHeader: WETableHeader { width = 20; }
+PFavorites:       WETableData   { width = 20; }
+
+IsInFavoritesCond: WOConditional {
+  condition = isInFavorites;
+}
+
+IsInFavoritesCondElse: WOConditional {
+  condition = isInFavorites;
+  negate    = YES;
+}
+
+AddToFavorites: WOHyperlink {
+  filename = "favorite_plus.gif";
+  action   = addToFavorites;
+  name     = labels.addToFavorites;
+  ALT      = labels.addToFavorites;
+  BORDER   = 0;
+  VALIGN   = "bottom";
+}
+
+RemoveFromFavorites: WOHyperlink {
+  filename = "favorite_minus.gif";
+  action   = removeFromFavorites;
+  name     = labels.removeFromFavorites;
+  ALT      = labels.removeFromFavorites;
+  BORDER   = 0;
+  VALIGN   = "bottom";
+}

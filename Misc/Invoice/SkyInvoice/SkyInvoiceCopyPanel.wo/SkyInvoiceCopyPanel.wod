@@ -1,0 +1,129 @@
+// $Id: SkyInvoiceCopyPanel.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+Frame: LSWSkyrixFrame { }
+
+Window: LSWWindowFrame {
+  title   = windowTitle;
+  onClose = session.navigation.leavePage;
+}
+
+ToggleAttr: SkyAttribute {
+  label = labels.currency;
+}
+TogglePanel: SkyInlineCurrencyToggle {
+  currency = session.userDefaults.invoice_currency;
+}
+
+Content: WOGenericContainer {
+  elementName = "TD";
+  colspan     = "2";
+}
+
+Form: WOForm {
+  name = "CopyInvoicesForm";
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+ValueCell: WOGenericContainer {
+  elementName = "TD";
+  ALIGN       = "LEFT";
+  VALIGN      = "TOP";
+  WIDTH       = "200";
+  BGCOLOR     = "E0E0E0";
+}
+
+ValueCell2: WOGenericContainer {
+  elementName = "TD";
+  ALIGN       = "LEFT";
+  VALIGN      = "TOP";
+  BGCOLOR     = "E0E0E0";
+}
+
+//Conditional
+
+IsInCopyMode: WOConditional {
+  condition = isInCopyMode;
+}
+IsInMoveMode: WOConditional {
+  condition = isInMoveMode;
+}
+
+CopyToLabel: WOString {
+  value = labels.copyInvoiceTo;
+}
+
+MoveToLabel: WOString {
+  value = labels.moveInvoiceTo;
+}
+
+YYYYMMDDLabel: WOString {
+  value = labels.invoiceCopyPanel_yyyymmdd;
+}
+
+YearsPopup: WOPopUpButton {
+  list            = years;
+  item            = item;
+  string          = item;
+  selection       = selectedYear;
+  singleSelection = YES;
+}
+
+MonthsPopup: WOPopUpButton {
+  list            = months;
+  item            = item;
+  string          = monthName;
+  selection       = selectedMonth;
+  singleSelection = YES;
+}
+
+CopyToTextField: WOTextField {
+  value = copyTo;
+  size  = 10;
+}
+
+CopyButton: WOImageButton {
+  action   = copyInvoices;
+  filename = "copy_small.gif";
+  name     = labels.copyInvoices;
+  ALT      = labels.copyInvoices;
+  BORDER   = 0;
+}
+
+ManualCopyButton: WOImageButton {
+  action   = manualCopyInvoices;
+  filename = "copy_small.gif";
+  ALT      = labels.copyInvoices;
+  BORDER   = 0;
+}
+
+MoveButton: WOImageButton {
+  action   = moveInvoices;
+  filename = "move_small.gif";
+  name     = labels.moveInvoices;
+  ALT      = labels.moveInvoices;
+  BORDER   = 0;
+}
+
+ManualMoveButton: WOImageButton {
+  action   = manualMoveInvoices;
+  filename = "move_small.gif";
+  ALT      = labels.moveInvoices;
+  BORDER   = 0;
+}
+
+CopyInvoiceList: SkyInvoiceList {
+  invoices   = invoices;
+  selected   = selected;
+  formName   = "CopyInvoicesForm";
+  attributes = session.userDefaults.SkyInvoice_InvoiceList_attributes;
+}
+
+MoveInvoiceList: SkyInvoiceList {
+  invoices   = invoices;
+  formName   = "CopyInvoicesForm";
+  selected   = selected;
+  attributes = session.userDefaults.SkyInvoice_InvoiceList_attributes;
+}
+

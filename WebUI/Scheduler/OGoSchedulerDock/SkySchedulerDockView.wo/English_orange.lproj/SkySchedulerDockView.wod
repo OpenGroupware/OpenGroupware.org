@@ -1,0 +1,34 @@
+// generated from SkySchedulerDockView.wo/English_orange.lproj/SkySchedulerDockView.wod, do not modify ! 
+// $Id: SkySchedulerDockView.wod,v 1.1 2004/08/06 16:20:40 helge Exp $
+
+SchedulerLink: WOHyperlink {
+  directActionName = "dock";
+  ?page            = "SkySchedulerPage";
+  ?cid             = context.contextID;
+}
+SchedulerImage: WOImage {
+  filename = "menu_scheduler_labeled.gif";
+  ALT      = labels.dockTitle;
+  BORDER   = 0;
+}
+
+SchedulerDrop: WEDropContainer {
+  tags          = ( 
+        person, 
+        team, 
+        date, 
+        appointment, 
+        am_appointment, 
+        pm_appointment 
+  );
+  droppedObject = droppedObject;
+  action        = objectDropped;
+}
+
+WithLink: WOConditional {
+  condition = hideLink;
+  negate    = YES;
+}
+WithoutLink: WOConditional {
+  condition = hideLink;
+}

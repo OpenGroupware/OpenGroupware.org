@@ -1,0 +1,89 @@
+// $Id: SkyMonthBrowser.wod,v 1.1.1.1 2003/07/09 22:57:45 cvs Exp $
+
+// Style
+
+Font: SkyConfigFont {
+  SIZE = "-1";
+}
+
+// Reps:
+
+MonthsRep: WORepetition {
+  list  = monthsArray;
+  index = monthOffset;
+  item  = item;
+}
+
+SingleMonthRep: SkyMonthRepetition {
+  year      = currentYear;
+  month     = currentMonth;
+  timeZone  = timeZone;
+  firstDay  = 1; // monday
+  tableTags = NO;
+
+  startDate = date;
+  isInMonth = isInMonth;
+}
+
+// Conds:
+
+ShowTitleCond: WOConditional {
+  condition = showTitle;
+}
+
+ShowWeekOfYearCond: WOConditional {
+  condition = showWeekOfYear;
+}
+
+// Cells:
+
+HeaderCell: SkyMonthLabel {
+  orientation = "header";
+
+  ALIGN       = "CENTER";
+  BGCOLOR     = config.colors_headerCell;
+}
+TopCell: SkyMonthLabel {
+  orientation = "top";
+  dayOfWeek   = dayOfWeek;
+
+  ALIGN       = "CENTER";
+  BGCOLOR     = config.colors_weekDayCell;
+}
+WeekOfYearCell: SkyMonthLabel {
+  orientation = "left";
+  weekOfYear  = weekOfYear;
+  
+  ALIGN       = "CENTER";
+  BGCOLOR     = config.colors_weekOfYearCell;
+}
+ContentCell: SkyMonthCell {
+  ALIGN       = "CENTER";
+  BGCOLOR     = cellColor;
+}
+
+// Labels:
+
+MonthLabel: WOString {
+  value = monthLabel;
+}
+WeekdayTitle: WOString {
+  value = weekdayTitle;
+}
+WeekOfYear: WOString {
+  value = weekOfYear;
+}
+
+// Links:
+
+ShowWeekLink: WOHyperlink {
+  directActionName = "viewWeek";
+  ?year            = yearForViewWeek;
+  ?month           = monthForViewWeek;
+  ?week            = weekForViewWeek;
+  ?tz              = timeZone.abbreviation;
+}
+
+// Content
+
+Content: WOComponentContent {}

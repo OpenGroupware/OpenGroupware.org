@@ -1,0 +1,13 @@
+2004-05-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed some preprocessor warnings
+
+2004-05-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* imported into OGo Misc tree as an example
+
+	* updated templates and makefiles for OpenGroupware.org
+
+Mon Aug 13 20:28:18 2001  Gerrit Albrecht  <ga@skyrix.com>
+
+	* created changelog

@@ -1,0 +1,207 @@
+2004-06-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.0.9
+
+	* SOPEX.h: exports nearly all headers now, suitable for real AppKit
+	  apps constructed from a SOPE:X app that need to subclass from
+	  SOPE:X classes
+
+	* SOPEXAppController.[hm]: exposed -(BOOL)isInRADMode and added
+	  - (void)appendToDaemonLaunchArguments:(NSMutableArray *)_args; for
+	  subclassers to append custom launch arguments to the daemon
+	  process.
+
+	* SOPEX.xcode: modified visibility of most headers to be public instead
+	  of project.
+
+2004-05-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.0.8
+
+	* Version: changed to 1.0.8. Added comment for MacOSX explaining
+	  /Developer/Tools/agvtool to set version on MacOSX properly.
+
+	* *.[hm]: changed all relevant #include statements into #import
+	  statements, as #import now officially has been undeprecated from
+	  FSF gcc.
+
+	* NSBundle+Ext.[hm]: New category on NSBundle to ease resource lookup
+	  in SOPE:X.
+
+	* English.lproj/Localizable.strings: English localization template,
+	  sporting fancy unicode characters.
+
+	* SOPEXAppController.m: rewrote some document management code which now
+	  defaults to better integration with SoApplication based apps. Also
+	  rewrote bundle handling - properly works now in development and
+	  deployment modes.
+
+	* SOPEXWebConnection.m: fixed resource lookup. Uses NSBundle+Ext now.
+
+	* SOPEX_Prefix.pch: redefined NSLocalizedString macro in a way it works
+	  with SOPE:X out of the box.
+
+	* SOPEXBrowserWindow.m: experimental support for setting the favicon
+	  in the window's title bar similar to NSDocumentController managed
+	  applications. However, this support is questionable in itself and
+	  I'm probably dropping it altogether in an upcoming release. The code
+	  is currently left as an exercise only.
+
+2004-04-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.0.7
+
+	* SOPEXContentValidator.[hm]: New (concrete) class implementing all
+	  necessary validation for SOPE:X. The WOHTML validation could be a
+	  bit smarter, though.
+
+	* SOPEXWODocument.m: Implemented validation.
+
+	* SOPEXWOXDocument.m: Implemented validation.
+
+	* SOPEXDocument.[hm]: Removed SOPEXDocumentErrorDomain declaration.
+
+	* SOPEXTextView.m: Fixed -adjustStatusField.
+
+	* README: Updated TODO section
+
+2004-04-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.0.6
+
+	* SOPEXSheetRunner.[hm]: Cover for running sheets in a synchronous way,
+	  similar to NSRunAlertPanel() - but only for sheets.
+
+	* SOPEXTextView.[hm]: Subclass of NSTextView being able to indicate
+	  errors via auxiliary NSTextField.
+
+	* SOPEXDocument.[hm]: Documents are now the delegates of the TextViews
+	  representing the documents, thus appropriate functionality is
+	  provided by SOPEXDocument as of now (selection management,
+	  undoManager, etc.). Also, implemented the validation API.
+
+	* SOPEXWODocument.m: Added code for selection management.
+
+	* SOPEXWOXDocument.[hm]: Added code for selection management, also
+	  added some validation code (just for testing purposes).sudo 
+
+	* SOPEXAppController.[hm]: Added code for properly discovering RAD
+	  mode - will now remove certain functionality when in deployment.
+	  Removed code dealing with change management (now in SOPEXDocument),
+	  implemented new validation API. Also, added alert sheets when
+	  unsaved changes are about to be discarded. This does work correctly
+	  now.
+
+	* README: Updated TODO section
+
+2004-03-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.0.5
+
+	* Introduced a new document architecture. Instead of subclassing from
+	  NSDocument, this is written from scratch. The NSDocument
+	  architecture does something different (though not completely) than
+	  what we needed here, so this is pretty much specialised on our
+	  needs. I felt that NSDocument didn't fit in too well - also, it
+	  felt rather oversized for our purpose. I didn't want to introduce
+	  window controllers since we really don't have a need for that.
+
+	* SOPEXDocument.[hm]: Abstract superclass for documents in SOPEX.
+
+	* SOPEXWOXDocument.[hm]: A .wox document wrapper. Please note that
+	  encoding is done wrong here! This needs to be addressed in a later
+	  version. For the time being, NSUTF8StringEncoding is assumed as
+	  the default encoding.
+
+	* SOPEXWODocument.[hm]: A .wo document wrapper. Encoding is also
+	  broken, see SOPEXWOXDocument comment.
+
+	* SOPEXRangeUtilities.[hm]: Functions for intelligently handling
+	  selections in NSTextViews. Intelligently for the time being means
+	  selecting to matching HTML tags (yes!). However, this is still
+	  incomplete and the algorithm is more or less optimized for speed
+	  than for formal correctness - however it works pretty well in
+	  real life szenarios (famous last words ;-).
+
+	* SOPEXBrowserWindow.[hm]: Toyed a bit with setting the favIcon into
+	  the window's title bar, but haven't found out how to do that
+	  correctly, yet.
+
+	* SOPEXAppController.[hm]: Changed to use the new document
+	  architecture.
+	  Added revertDocumentToSaved: and editInXcode:
+	  Added delegate code for proper selection handling, uses
+	  SOPEXRangeUtilities (no surprise here).
+
+2004-03-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.0.4
+
+	* README: Explained some debugging issues.
+
+	* SOPEXWebConnection.[hm]: Fixed resource loading issue. Images are
+	  now (correctly) loaded by the wrapper app. This directly results in
+	  much better throughput/performance.
+
+	* SOPEXAppController.[hm]: Added WOPort default, see README for usage.
+	  Added several new views. User visible changes are a new HTTP header
+	  view and source views for .wox and .wo components. The source
+	  views aren't complete, yet.
+
+	* SOPEXSNSController.m: Added SNSPort default, see README for usage.
+
+	* SOPEXBrowserWindow.[hm]: New NSWindow subclass, SHOULD add some
+	  fancy extensions in the near future.
+
+	* NSString+Ext.[hm]: Extensions that later might go into SxCore.
+
+	* WebView+Ext.[hm]: Extensions to WebView from WebKit.
+
+
+2004-03-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.0.3
+
+	* SOPEXAppController.[hm]: added Source view. Fast switching
+	  between application and source view possible via Apple-1 and Apple-2.
+
+2004-03-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.0.2
+
+	* SOPEXAppController.[hm]: added status bar with some nifty infos,
+	  removed toolbar due to some very strange problems (toggle toolbar
+	  in "Tools" menu to see what I mean). Added "Navigation" menu for
+	  browser navigation support. Also added "View" menu which is intended
+	  for switching between different views (source code, structure, etc.).
+	  The general idea is to have an integrated editor somewhen.
+
+	* SOPEXToolbarController.[hm]: added caching of items as proposed in
+	  Apple's dox and implemented selectableItems.
+
+	* SOPEXApplication.m: moved loading of Main NIB from -(id)init
+	  to -(void)finishLaunching in order to avoid problems with certain
+	  widgets' initialization methods.
+
+2004-03-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v1.0.1
+
+	* SOPEXAppController.[hm]: Cosmetic changes, clear: console support
+
+	* SOPEXConsole.toolbar: Toolbar definition for console
+
+	* SOPEXConsole.[hm]: Added clear: functionality, utilizes toolbar
+
+2004-02-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOPEXAppController.m: disabled some logs
+
+	* SOPEXMain.m: properly use ".sopex" instead of "sopex" in the
+	  bundle suffix
+
+	* SOPEXWebUI.toolbar: removed some unnecessary things
+
+2004-02-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* ChangeLog: created.

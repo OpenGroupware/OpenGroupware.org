@@ -1,0 +1,8 @@
+# $Id$
+
+ADDITIONAL_BUNDLE_LIBS += \
+	-lOGoSchedulerTools	\
+	-lNGScripting		\
+	-lGDLAccess		\
+	-lDOM -lSaxObjC
+

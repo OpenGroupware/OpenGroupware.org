@@ -1,0 +1,20 @@
+# $Id$
+
+TODO: write much more
+
+General Works
+=============
+
+All methods are attached to a single direct action object. Most of them use
+DocumentAPI internally to execute operations and directly encode/decode
+document objects in XML-RPC.
+
+Available Fault Codes
+=====================
+
+XMLRPC_FAULT_INVALID_PARAMETER 1
+XMLRPC_FAULT_MISSING_PARAMETER 2
+XMLRPC_FAULT_MISSING_CONTEXT   3
+XMLRPC_FAULT_INVALID_RESULT    4
+XMLRPC_FAULT_INTERNAL_ERROR    5
+XMLRPC_FAULT_LOCK_ERROR        6

@@ -1,0 +1,13 @@
+# $Id$
+
+Scripts to Write Postfix Configurations
+=======================================
+
+... document ...
+
+Example Crontab Entry
+=====================
+---snip---
+2-29,32-59/1 * * * * /usr/lib/skyrix/scripts/write_postfix_imm.sh > /dev/null 2>&1
+*/30 * * * * /usr/lib/skyrix/scripts/write_postfix.sh > /dev/null 2>&1
+---snap---

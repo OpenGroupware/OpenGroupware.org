@@ -1,0 +1,123 @@
+$Id$
+
+Defaults
+========
+
+  SkyProjectFileManagerErrorLogEnabled - BOOL
+  SkyProjectFileManagerAbortOnErrors   - BOOL
+  SkyProjectFileManagerUseSessionCache - BOOL
+  SkyProjectFileManagerFlushTimeout    - seconds
+  SkyProjectFileManagerClickTimeout    - seconds
+  
+  SkyProjectFileManager_show_unknown_files  - BOOL
+
+  SkyProjectDocumentDebug              - BOOL
+
+Supported Default-Attributes on Documents:
+==========================================
+
+  NSFileType
+    Folder-Dokumente     -> NSFileTypeDirectory
+    ObjectLink-Dokumente -> NSFileTypeSymbolicLink
+    Dokumente            -> NSFileTypeRegular
+
+  NSFileSize
+  
+  NSFileAccountNumber    -> Primary-Key of 'current-owner'
+  NSFileOwnerAccountName -> 'login' of 'current-owner'
+  NSFileModificationDate, SkyLastModifiedDate
+  
+  SkyFirstOwnerId        -> Global-Id of 'first-owner'
+  SkyOwnerId             -> Global-Id of 'current-owner'
+  
+  SkyIsRootDirectory [bool]
+  SkyTitle
+  SkyCreationDate
+  SkyStatus
+  SkyVersionCount
+
+
+SkyProjectFileManager Cache Config (TODO: translate to English)
+==================================
+JR:
+
+Defaults fuer die SkyProjectFileManager Cache Verwaltung
+
+Nach jeder Schreiboperation oder wenn ein Fehler aufgetreten ist, wird 
+der Cache geleert.
+
++ SkyProjectFileManagerUseSessionCache (BOOL YES/NO Default YES)
+
+Wenn diese Option gesetzt ist, wird der Cache mit dem Cache des 
+Commandcontextes syncronisiert. D.h. jedesmal wenn der Commandcontextcache 
+geleert wird, wird auch der Filemanagercache gegeleert. 
+Der Commandcontextcache wird bei einer Webapplikation nach jedem Request 
+geleert.
+Das heist, dass pro Request alle FileManagerdaten _einmal_ komplett gefetcht 
+werden.
+Das hat zwar einen gewissen Overhead, aber Inkonsistenzen werden dadurch 
+weitestgehend vermieden.
+
+Falls SkyProjectFileManagerUseSessionCache auf NO gesetzt ist, werden die 
+folgenden Defaults ausgewertet.
+
++ SkyProjectFileManagerFlushTimeout (int Default 0)
+
+Alle n Sekunden wird der Cache geleert.
+
++ SkyProjectFileManagerClickTimeout (int Default 0)
+
+Alle n Sekunden nach der letzten Akitvitaet (LSWSessionAwake/Sleep 
+Notification) wird der Cache geleert.
+
++ SkyProjectFileManagerCacheTimeout (int Default 0)
+
+n Sekunden nachdem der letzte FileManager released wurde, wird der Cache 
+geleert.
+(Pro Projekt gibt es instanzweit einen FileManagerCache auf dem die 
+ entsprechenden Filemanager zugreifen)
+
++ MaxInQualifierCount
+
+ Max number of entries in 'IN'-Qualifier
+
+
+Basic Example
+=============
+(pasted from sample.m, by JR)
+
+    self->fm =
+      [[SkyProjectFileManager alloc]
+                              initWithContext:[[self session] commandContext]
+                              projectGlobalID:[project globalID]];
+    NSLog(@"filemanager: %@", fm);
+    NSLog(@" dir-contents at '/': %@", [fm directoryContentsAtPath:@"/"]);
+    NSLog(@" dir-contents at '.': %@", [fm directoryContentsAtPath:@"."]);
+    NSLog(@" dir-contents at '/types': %@",
+          [fm directoryContentsAtPath:@"/types"]);
+    NSLog(@" attrs at '/types': %@",
+          [fm fileAttributesAtPath:@"/types" traverseLink:NO]);
+    
+    NSLog(@" contents at '/types/text.txt': %@",
+          [[NSString alloc] initWithData:[fm contentsAtPath:@"/types/text.txt"]
+                            encoding:[NSString defaultCStringEncoding]]);
+    NSLog(@" attrs at '/types/text.txt': %@",
+          [fm fileAttributesAtPath:@"/types/text.txt" traverseLink:NO]);
+    NSLog(@" fs-attrs at '/types/text.txt': %@",
+          [fm fileSystemAttributesAtPath:@"/types/text.txt"]);
+    {
+      // new link
+      NSString *path;
+      
+      path = [NSString stringWithFormat:@"%d", (unsigned)time(NULL)];
+
+#if 0
+      if (![fm createSymbolicLinkAtPath:path pathContent:@"/types/text.txt"]) {
+        NSLog(@"couldn't create link '%@'", path);
+      }
+#endif
+#if 0
+      if (![fm createDirectoryAtPath:path attributes:nil]) {
+        NSLog(@"couldn't create directory '%@'", path);
+      }
+#endif

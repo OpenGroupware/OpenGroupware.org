@@ -1,0 +1,23 @@
+# $Id$
+
+xmlrpcd_TOOL_LIBS += \
+	-lOGoContacts -lOGoScheduler -lOGoJobs -lOGoAccounts -lOGoProject \
+	-lOGoSchedulerTools \
+	-lOGoDocuments	\
+	-lLSFoundation	\
+	-lGDLAccess	\
+	-lNGObjWeb -lNGScripting	\
+	-lNGLdap -lNGMime -lNGStreams -lNGExtensions -lEOControl	\
+	-lXmlRpc -lDOM -lSaxObjC
+
+addressd_TOOL_LIBS += \
+	-lOGoContacts -lOGoAccounts	\
+	-lLSFoundation			\
+	-lNGObjWeb			\
+	-lNGExtensions			\
+	-lXmlRpc
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_TOOL_LIBS += -lFoundationExt
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif

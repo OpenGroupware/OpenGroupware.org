@@ -1,0 +1,55 @@
+// $Id$
+
+{
+    // contacts
+
+    "contacts.search" = {
+      ( array, string, int ) = "contactsSearchAction::";
+      ( array, string )      = "contactsSearchAction::";
+    };
+
+    "contacts.fulltextSearch" = {
+      ( array, string, int ) = "contactsFulltextSearchAction::";
+      ( array, string )      = "contactsFulltextSearchAction::";
+    };
+
+    "contacts.advancedSearch" = {
+      ( array, struct )              = "contactsAdvancedSearchAction::";
+      ( array, struct, struct )      = "contactsAdvancedSearchAction:::";
+      ( array, struct, int )         = "contactsAdvancedSearchAction::";
+      ( array, struct, struct, int ) = "contactsAdvancedSearchAction:::";
+    };
+
+    "contacts.getContact" = {
+      ( struct, string ) = "getContactAction:";
+    };
+    "contacts.getContacts" = {
+      ( array, array ) = "getContactsAction:";
+    };
+
+    // enterprises
+
+    "enterprises.search" = {
+      ( array, string, int ) = "enterprisesSearchAction::";
+      ( array, string )      = "enterprisesSearchAction::";
+    };
+
+    "enterprises.fulltextSearch" = {
+      ( array, string, int ) = "enterprisesFulltextSearchAction::";
+      ( array, string )      = "enterprisesFulltextSearchAction::";
+    };
+
+    "enterprises.advancedSearch" = {
+      ( array, struct)               = "enterprisesAdvancedSearchAction::";
+      ( array, struct, struct )      = "enterprisesAdvancedSearchAction:::";
+      ( array, struct, int )         = "enterprisesAdvancedSearchAction::";
+      ( array, struct, struct, int ) = "enterprisesAdvancedSearchAction:::";
+    };
+
+    "enterprises.getEnterprise" = {
+      ( struct, string ) = "getEnterpriseAction:";
+    };
+    "enterprises.getEnterprises" = {
+      ( array, array ) = "getEnterprisesAction:";
+    };
+}

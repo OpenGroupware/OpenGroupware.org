@@ -1,0 +1,41 @@
+// $Id: SkyObjectLogList.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+LogList: LSWTableView {
+  labels            = labels;
+  title             = labels.logsTitle;
+  start             = start;
+  label             = labels.logsLabel;
+  list              = logs;
+  item              = log;
+  selectedAttribute = selectedAttribute;
+  blockSize         = session.userDefaults.address_blocksize;
+  sorter            = session.eoSorter;
+  dateFormatter     = session.formatDateTime;
+  isDescending      = isDescending;
+  attributes        = (
+  { 
+    key      = "creationDate"; 
+    labelKey = "creationDate"; 
+    sort     = YES; 
+  },
+  { 
+    key                      = "actor"; 
+    relKey                   = "login";
+    labelKey                 = "actor";
+    sort                     = NO;
+    changeFontColorCondition = isActorArchived;
+    electFontColor           = "colors_deleted_object";
+    fontColor                = "font_color"; 
+  },
+  { 
+    key         = "action";
+    labelKey    = "action";
+    sort        = NO;
+    isLocalized = YES;
+  },
+  { 
+    key       = "logText";
+    labelKey  = "logText";
+    sort      = NO;
+  },);
+}

@@ -1,0 +1,28 @@
+# $Id$
+
+Mailer
+======
+
+This directory contains the packages which form the OpenGroupware.org
+IMAP4 based webmail application.
+
+OGoWebMail
+==========
+- IMAP4 based web mailer, uses the NGMime library from SOPE/skyrix-core
+
+OGoMailViewers
+==============
+- OGoWebMail uses a component based system to display MIME mails, the
+  OGoMailViewers bundle contains the basic ones for displaying MIME
+  parts, text-parts etc
+
+OGoMailInfo
+===========
+- separate bundle for the mail dock-icon (so that we don't need to load
+  the full mailer if it isn't used)
+
+LSWMail
+=======
+- this contained the old RDBMS based application, OGoWebMail still uses
+  some components from this
+=> TODO: move all required things to OGoWebMail (or a new bundle)

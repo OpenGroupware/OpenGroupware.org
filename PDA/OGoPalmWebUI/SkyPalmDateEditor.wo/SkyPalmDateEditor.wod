@@ -1,0 +1,301 @@
+// $Id: SkyPalmDateEditor.wod,v 1.1 2003/07/14 16:18:25 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+Window: LSWWindowFrame {
+  title   = labels.SkyPalmDateEditor;
+  onClose = cancel;
+}
+//Calendar: WOJavaScript {
+//  scriptFile = "calendar.js";
+//}
+Calendar: SkyCalendarScript {}
+Font: SkyConfigFont {}
+
+// conditionals
+IsJavaScriptEnabled: WOConditional {
+  condition = session.isJavaScriptEnabled;
+}
+IsNewCond: WOConditional {
+  condition = isInNewMode;
+}
+IsNotNewCond: WOConditional {
+  condition = isInNewMode;
+  negate    = YES;
+}
+HasExceptions: WOConditional {
+  condition = hasExceptions;
+}
+
+// collapsibles
+PalmDateCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.SkyPalmDateEditor_expand_attributes;
+  submitActionName = "";
+  structuredMode   = YES;
+}
+RepeatCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.SkyPalmDateEditor_expand_repeat;
+  submitActionName = "";
+  title            = labels.label_repetition;
+}
+CollTitleMode:   SkyCollapsibleTitleMode   {};
+CollContentMode: SkyCollapsibleContentMode {};
+
+// label
+NewDateLabel:       WOString { value = labels.new_date;                   }
+StartdateAttr:      WOString { value = labels.attribute_startdate;        }
+EnddateAttr:        WOString { value = labels.attribute_enddate;          }
+DescriptionAttr:    WOString { value = labels.attribute_description;      }
+AlarmAttr:          WOString { value = labels.attribute_alarm;            }
+NoteAttr:           WOString { value = labels.attribute_note;             }
+DeviceAttr:         WOString { value = labels.attribute_deviceId;         }
+RepeatAttr:         WOString { value = labels.label_repetition;           }
+RepeatEnddateAttr:  WOString { value = labels.attribute_repeatEnddate;    }
+DeleteExceptionAttr: WOString { value = labels.label_removeException;     }
+NoneLabel:          SkyRichString { value = labels.label_repeatNone;      }
+DailyLabel:         SkyRichString { value = labels.label_repeatDaily;     }
+WeeklyLabel:        SkyRichString { value = labels.label_repeatWeekly;    }
+MonthlyByDayLabel:  SkyRichString { value = labels.label_repeatMonthlyByDay; }
+MonthlyByDateLabel: SkyRichString { value = labels.label_repeatMonthlyByDate; }
+YearlyLabel:        SkyRichString { value = labels.label_repeatYearly;    }
+EveryLabel:         WOString { value = labels.label_every;                }
+DaysLabel:          WOString { value = labels.label_repeat_days;          }
+WeeksLabel:         WOString { value = labels.label_repeat_weeks;         }
+MonthsLabel:        WOString { value = labels.label_repeat_months;        }
+YearsLabel:         WOString { value = labels.label_repeat_years;         }
+
+// values
+DateTitle: WOString {
+  value = date.description;
+}
+
+// form
+EditorForm: WOForm {
+  name = "editform";
+}
+AttributeCell: SkyAttributeCell {};
+ValueCell:     SkyValueCell     {};
+
+// startdate
+StartHour: WOPopUpButton {
+  list            = ( -1,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 
+                          12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 );
+  item            = item;
+  string          = hourItemLabel;
+  selection       = startHour;
+  singleSelection = YES;
+}
+StartMinute: WOPopUpButton {
+  list = ( -1,  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
+               10,11,12,13,14,15,16,17,18,19,
+               20,21,22,23,24,25,26,27,28,29,
+               30,31,32,33,34,35,36,37,38,39,
+               40,41,42,43,44,45,46,47,48,49,
+               50,51,52,53,54,55,56,57,58,59 );
+  item            = item;
+  string          = minuteItemLabel;
+  selection       = startMinute;
+  singleSelection = YES;
+}
+Startdate: WOTextField {
+  name  = "startdate";
+  value = startdate;
+  size  = 12;
+}
+//StartdateCalendarLink: WOHyperlink {
+//  filename = "icon_popupcalendar.gif";
+//  href     = "javascript:doNothing()";
+//  ALT      = labels.calendarPopupStartdateLabel; 
+//  BORDER   = 0;
+//  onclick  = startdateOnClickEvent;
+//  onMouseOver = "window.status='browse startdate'; return true";
+//  onMouseOut  = "window.status='SKYRIX'; return true";
+//}
+StartdateCalendarLink: SkyCalendarPopUp {
+  elementName = "startdate";
+  formName    = "editform";
+}
+
+// enddate
+EndHour: WOPopUpButton {
+  list            = ( -1,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 
+                          12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 );
+  item            = item;
+  string          = hourItemLabel;
+  selection       = endHour;
+  singleSelection = YES;
+}
+EndMinute: WOPopUpButton {
+  list = ( -1,  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
+               10,11,12,13,14,15,16,17,18,19,
+               20,21,22,23,24,25,26,27,28,29,
+               30,31,32,33,34,35,36,37,38,39,
+               40,41,42,43,44,45,46,47,48,49,
+               50,51,52,53,54,55,56,57,58,59 );
+  item            = item;
+  string          = minuteItemLabel;
+  selection       = endMinute;
+  singleSelection = YES;
+}
+
+// description
+Description: WOTextField {
+  value = date.description;
+  size  = 40;
+}
+
+// alarm
+IsAlarmed: WOCheckBox {
+  checked = date.isAlarmed;
+}
+AlarmUnit: WOTextField {
+  value   = alarmUnit;
+  size    = 4;
+}
+AlarmTimePopUp: WOPopUpButton {
+  list            = ( 0, 1, 2 );
+  item            = item;
+  string          = labels.$alarmItemLabel;
+  selection       = date.alarmAdvanceTime;
+  singleSelection = YES;
+}
+
+// note
+Note: SkyTextEditor {
+  text    = date.note;
+  rows    = session.userDefaults.SkyPalmDateEditor_note_rows;
+  columns = session.userDefaults.SkyPalmDateEditor_note_cols;
+}
+
+// device
+Device: WOPopUpButton {
+  list            = devices;
+  item            = item;
+  selection       = date.deviceId;
+  singleSelection = YES;
+}
+
+// repetition radio buttons
+RepeatNone: WORadioButton {
+  name      = "repeatType";
+  value     = 0;
+  selection = date.repeatType;
+}
+RepeatDaily: WORadioButton {
+  name      = "repeatType";
+  value     = 1;
+  selection = date.repeatType;
+}
+RepeatWeekly: WORadioButton {
+  name      = "repeatType";
+  value     = 2;
+  selection = date.repeatType;
+}
+RepeatMonthlyByDay: WORadioButton {
+  name      = "repeatType";
+  value     = 3;
+  selection = date.repeatType;
+}
+RepeatMonthlyByDate: WORadioButton {
+  name      = "repeatType";
+  value     = 4;
+  selection = date.repeatType;
+}
+RepeatYearly: WORadioButton {
+  name      = "repeatType";
+  value     = 5;
+  selection = date.repeatType;
+}
+
+// repeat daily
+DayRepeatFrequency: WOTextField {
+  value = repeatFrequency1;
+  size  = 4;
+}
+
+// repeat weekly
+WeekRepeatFrequency: WOTextField {
+  value = repeatFrequency2;
+  size  = 4;
+}
+WeekdaysRep: WORepetition {
+  list = ( 1, 2, 3, 4, 5, 6, 0 );
+  item = item;
+}
+WeekdayCheckBox: WOCheckBox {
+  checked = weekdayChecked;
+}
+WeekdayLabel: WOString {
+  value = labels.$weekdayItemLabel;
+}
+
+// repeat monthly by day
+MonthByDayRepeatFrequency: WOTextField {
+  value = repeatFrequency3;
+  size  = 4;
+}
+// repeat monthly by date
+MonthByDateRepeatFrequency: WOTextField {
+  value = repeatFrequency4;
+  size  = 4;
+}
+
+// repeat yearly
+YearRepeatFrequency: WOTextField {
+  value = repeatFrequency5;
+  size  = 4;
+}
+
+// repeat enddate
+HasRepeatEnddate: WOCheckBox {
+  checked = hasRepeatEnddate;
+}
+RepeatEnddate: WOTextField {
+  name  = "repeatEnddate";
+  value = repeatEnddate;
+  size  = 12;
+}
+//RepeatEnddateCalendarLink: WOHyperlink {
+//  filename = "icon_popupcalendar.gif";
+//  href     = "javascript:doNothing()";
+//  ALT      = labels.calendarPopupEnddateLabel; 
+//  BORDER   = 0;
+//  onclick  = repeatEnddateOnClickEvent;
+//  onMouseOver = "window.status='browse enddate'; return true";
+//  onMouseOut  = "window.status='SKYRIX'; return true";
+//}
+RepeatEnddateCalendarLink: SkyCalendarPopUp {
+  elementName = "repeatEnddate";
+  formName    = "editform";
+}
+
+// exceptions
+ExceptionsRep: WORepetition {
+  list = date.exceptions;
+  item = item;
+}
+RemoveException: WOHyperlink {
+  action = removeException;
+}
+Exception: SkyRichString {
+  value     = item;
+  formatter = session.formatDate;
+}
+
+// submits
+SaveSubmit: WOImageButton {
+  action   = save;
+  filename = "save.gif";
+  name     = labels.action_save;
+  ALT      = labels.action_save;
+  title    = labels.action_save;
+  BORDER   = 0;
+}
+CancelSubmit: WOImageButton {
+  action   = cancel;
+  filename = "cancel.gif";
+  name     = labels.cancelButtonLabel;
+  ALT      = labels.cancelButtonLabel;
+  title    = labels.cancelButtonLabel;
+  BORDER   = 0;
+}
+

@@ -1,0 +1,82 @@
+// $Id: BaseUI.strings,v 1.4 2003/10/01 14:31:20 thomas Exp $
+
+"Really Delete"         = "¿Realmente quiere borrar este registro?"
+00_created              = "creado"
+05_changed              = "cambiado"
+10_archived             = "archivado"
+LastError               = "Ultimo error:"
+SkyErrorPanel           = "Ver error"
+SkyRequestViewer        = "Ver petición del navegador"
+// TODO
+SkyWizardChoicePage     = "Choice Page (wizard mode)"
+SkyWizardResultList     = "Página de resultado (modo wizard)"
+action                  = "Acción"
+actor                   = "Actor"
+bookmarks               = "Favoritos"
+calendarPopupBirthday   = "consultar por fecha de nacimiento"
+// TODO
+calendarPopupEndDate    = "consultar por endDate"
+// TODO
+calendarPopupStartDate  = "consultar por startDate"
+cancel                  = "cancelar"
+clearErrorString        = "limpiar"
+creationDate            = "Fecha"
+delete                  = "borrar";
+desktop                 = "Escritorio"
+deselectAll             = "quitar todas las selecciones"
+fastSearch              = "Búsqueda rápida"
+first                   = "primero"
+footer_logstate         = "identificado, la sesión expira en"
+footer_skyrixag         = "SKYRIX Software AG"
+footer_skyrix           = "SKYRiX"
+footer_user             = "Usuario"
+gotoEditLabel           = "modificar"
+gotoFirstLabel          = "primero"
+// TODO
+gotoImportLabel         = "importar nuevos datasets"
+gotoLastLabel           = "last"
+// TODO
+gotoNewLabel            = "nuevo dataset"
+gotoNewLinkLabel        = "nuevo"
+gotoNextLabel           = "siguiente"
+gotoPreviousLabel       = "anterior"
+last                    = "último"
+// TODO
+logText                 = "Log Text"
+logout                  = "salir"
+// TODO
+logsLabel               = "Logs"
+logsTitle               = "Logs"
+mdnReturnReceiptQuestion = "El remitente del mensaje solicitó acuse de recibo. ¿Desea enviarlo?";
+navposition             = "Usted está aquí:"
+next                    = "siguiente";
+noCopyToSentFolder      = "Se puede enviar, ¡pero no podré copiar el mensaje a la carpeta de enviados! ¿Lo envío?";
+of                      = "de";
+ofLabel                 = "de";
+ok                      = "    Ok    ";
+page                    = "Página";
+pageLabel               = "Página";
+preferences             = "Preferencias"
+previous                = "previo";
+reallyDeleteMail        = "¿Está seguro de enviar los mensajes escogidos a la papelera?";
+reallyEmptyTrash        = "¿Está seguro de querer vaciar la papelera?";
+reallyRemoveFolder      = "¿Está seguro de enviar la carpeta escogida a la papelra?";
+reallyImmRemoveFolder   = "¿Está seguro deque quiere eliminar la papelera escogida?";
+save                    = "guardar";
+selectAll               = "escoger todo"
+sortColumn              = "ordenar Columna";
+sortColumnLabel         = "ordenar Columna";
+tableview_importLinkLabel  = "importar";
+tableview_newLinkLabel     = "nuevo";
+tableview_refreshLinkLabel = "refrescar";
+// TODO
+to                      = "to";
+toLabel                 = "to";
+week                    = "Semana"
+wizardBack              = "Atrás"
+wizardCancel            = "Cancelar"
+// TODO
+wizardChoiceTitle       = "Choice Page (wizard mode)"
+wizardFinish            = "Terminar"
+wizardResultListTitle   = "Página de resultado (modo wizard)"
+wizardSave              = "Guardar"

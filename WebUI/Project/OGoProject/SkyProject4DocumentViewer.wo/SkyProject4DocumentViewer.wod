@@ -1,0 +1,488 @@
+// $Id: SkyProject4DocumentViewer.wod,v 1.3 2004/04/20 12:19:49 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = label;
+  onClose = closeWindow;
+  hasTest = isTestMode;
+  onTest  = disableTest;
+}
+
+Buttons: SkyButtonRow {
+  oid         = documentId;
+  ordering    = ( pubpreview, editasnew, delete, rename,
+                  checkout, reject, release, 
+                  lock, unlock, mail,
+                  upload, edit, test, refresh, unzip, saveas);
+  
+  /* default buttons */
+  onClip      = placeInClipboard;
+  onEdit      = edit;
+  onMail      = mailObject;
+  onDelete    = deleteDocument;
+  onRename    = renameDocument;
+  onTest      = testDocument;
+  
+  onEditasnew = editAsNew;
+  onCheckout  = checkoutDocument;
+  onReject    = rejectDocument;
+  onRelease   = releaseDocument;
+  onLock      = lockDocument;
+  onUnlock    = unlockDocument;
+  onUpload    = upload;
+  onRefresh   = refresh;
+  onUnzip     = unzipDocument;
+  onSaveas    = saveAs;
+
+  urlMail     = objectUrl;
+
+  hasMail     = hasMail;
+  hasClip     = hasClip;
+  hasEditAsNew= hasEditAsNew;
+  hasTest     = canTestDocument;
+  hasCheckout = hasCheckout;
+  hasReject   = hasReject;
+  hasRelease  = hasRelease;
+  hasLock     = hasLock;
+  hasUnlock   = hasUnlock;
+  hasUpload   = hasUpload;
+  hasEdit     = hasTypeEdit;
+  hasDelete   = hasDelete;
+  hasRename   = hasRename;
+  hasUnzip    = hasUnzip;
+  hasSaveAs   = hasSaveAs;
+  
+  hasPubPreview    = hasPubPreview;
+  targetPubPreview = "pubPreviewTarget";
+  urlPubPreview    = pubPreviewURL;
+  
+  /* labels */
+  checkout    = labels.checkout;
+  reject      = labels.reject;
+  release     = labels.release;
+  lock        = labels.lock;
+  unlock      = labels.unlock;
+  upload      = labels.upload;
+  edit        = labels.edit;
+  delete      = labels.delete;
+  rename      = labels.rename;
+  mail        = labels.send;
+  editasnew   = labels.editAsNew;
+  test        = labels.test;
+  refresh     = labels.refresh;
+  unzip       = labels.unzip;
+  saveas      = labels.saveAs;
+  pubpreview = labels.pubPreview;
+}
+
+ShowOnlyForm: WOConditional {
+  condition = showOnlyForm;
+}
+ShowNotOnlyForm: WOConditional {
+  condition = showOnlyForm;
+  negate    = YES;
+}
+HasForm: WOConditional {
+  condition = hasForm;
+}
+UseStdViewer: WOConditional {
+  condition = YES;
+}
+IsDesigner: WOConditional {
+  condition = isAccountDesigner;
+}
+
+Form: WOComponentReference { // the form which replaces the std viewer
+  component   = formComponent;
+  
+  /* pass-through vars */
+  document     = document;
+  formDocument = formDocument;
+  fileManager  = fileManager;
+  preview      = NO;
+}
+
+/* standard viewer */
+
+MainButtonRow: WOGenericContainer {
+  elementName = "tr";
+  BGCOLOR     = config.colors_mainButtonRow;
+}
+
+DocIcon: SkyP4DocumentIcon {
+  projectName  = fileSystemInfo.NSFileSystemName;
+  documentPath = _documentPath;
+  mimeType     = documentAttributes.NSFileMimeType;
+}
+
+DocPath: SkyP4DocumentPath {
+  fileManager = fileManager;
+  documentId  = documentId;
+  currentPath = folderPath;
+  document    = document;
+  action      = folderClicked;
+}
+
+TitleFont: SkyConfigFont {}
+
+FileName: WOString {
+  value  = documentName;
+}
+
+TabView: SkyTabView {
+  selection = session.userDefaults.skyp4_documentviewer_tab;
+}
+
+FormTab: SkySimpleTabItem {
+  key      = "form";
+  label    = labels.form;
+  //action   = reloadForm;
+}
+
+VersionsTab: SkySimpleTabItem {
+  key       = "versions";
+  label     = labels.versions;
+}
+
+ContentsTab: SkySimpleTabItem {
+  key       = "contents";
+  label     = labels.contents;
+}
+
+AttributesTab: SkySimpleTabItem {
+  key       = "attributes";
+  label     = labels.attributes;
+}
+
+LogTab: SkySimpleTabItem {
+  key       = "log";
+  label     = labels.logsLabel;
+}
+
+/* versions */
+
+VersionList: SkyProject4VersionList {
+  fileManager = fileManager;
+  dataSource  = historyDataSource;
+  documentId  = documentId;
+}
+
+/* locking */
+
+IfLocked: WOConditional {
+  condition = isDocumentLocked;
+}
+LockUser: SkyRichString {
+  color = "red";
+  value = documentAttributes.NSFileOwnerAccountName;
+}
+
+LockedBy: WOString {
+  value = labels.lockedLabel;
+}
+
+/* content */
+
+DownloadAttr: SkySubAttribute {
+  label  = labels.download;
+}
+DownloadLink: SkyP4DownloadLink {
+  projectId    = fileSystemInfo.NSFileSystemNumber;
+  documentPath = _documentPath;
+  versionTag   = versionToView;
+}
+VersionString: WOString {
+  value = versionString;
+}
+MimeTypeAttr: SkySubAttribute {
+  label  = labels.mimetype;
+  string = documentMimeType;
+}
+SizeAttr: SkySubAttribute {
+  label  = labels.size;
+  string = documentAttributes.NSFileSize;
+}
+
+BLOBContentViewer: SkyProject4BLOBViewer {
+  fileManager   = fileManager;
+  documentId    = documentId;
+  document      = document;
+  mimeType      = documentMimeType;
+}
+
+/* log */
+
+/* props */
+
+PropViewer: SkyObjectPropertyViewer {
+  globalID         = documentGlobalID;
+  defaultNamespace = defaultPropertyNamespace;
+}
+
+PropButtons: SkyButtonRow {
+  ordering = ( edit );
+  onEdit   = editProperties;
+  edit     = labels.edit;
+  hasEdit  = hasEditAttrs;
+}
+
+/* form preview tab */
+
+IsForm: WOConditional {
+  condition = isSkyrixForm;
+}
+IsNotForm: WOConditional {
+  condition = isSkyrixForm;
+  negate    = YES;
+}
+
+PreviewTab: SkySimpleTabItem {
+  key       = "form";
+  action    = formTabClicked;
+  label     = labels.form;
+}
+
+PreviewTabTitle: LSWViewerTitle {
+  title    = labels.formPreview;
+  gentable = YES;
+}
+
+FormPreview: WOComponentReference { // form preview in the std viewer
+  component = previewFormComponent;
+  
+  /* pass-through vars */
+  preview      = YES;
+  formDocument = document;
+  fileManager  = fileManager;
+}
+
+HasLog: WOConditional {
+  condition = hasJavaScriptLog;
+}
+Log: WOString {
+  value    = session.javaScriptLog;
+  insertBR = YES;
+}
+ClearLog: WOHyperlink {
+  action   = clearJavaScriptLog;
+  string   = labels.clear;
+}
+PreviewLogTitle: LSWViewerTitle {
+  title    = labels.javaScriptLog;
+  gentable = YES;
+}
+
+/* access */
+
+AccessTab : SkySimpleTabItem {
+  key       = "access";
+  action    = accessTabClicked;
+  label     = labels.access;
+}
+AccessTitle: LSWViewerTitle {
+  title    = labels.access;
+  gentable = YES;
+}
+
+AccessButtons: SkyButtonRow {
+  onEdit   = editAccess;
+  ordering = ( edit );
+  edit     = labels.edit;
+}
+
+TeamRep: WODictionaryRepetition {
+  dictionary = teamList;
+  key        = currentAccessCompany;
+  item       = currentAccess;
+}
+
+AccountRep: WODictionaryRepetition {
+  dictionary = accountList;
+  key        = currentAccessCompany;
+  item       = currentAccess;
+}
+
+CompanyName: SkySubAttribute {
+  label      = currentAccessCompanyName;
+  width      = "30%";
+}
+
+AccessRight: WOString {
+  value = currentAccess;
+}
+
+ContentsTabTitle: LSWViewerTitle {
+  title    = labels.contents;
+  gentable = YES;
+}
+
+PropertiesTitle: LSWViewerTitle {
+  title    = labels.attributes;
+  gentable = YES;
+}
+Properties: WOString {
+  value = labels.attributes;
+}
+
+StandardAttrsTitle: LSWViewerTitle {
+  title    = labels.standardAttributes;
+  gentable = YES;
+}
+
+AttrsButtons: SkyButtonRow {
+  ordering = ( edit );
+  onEdit   = editStandardAttrs;
+  edit     = labels.edit;
+  hasEdit  = hasEditAttrs;
+}
+
+AccessList : SkyAccessList {
+  accessList   = accessIds;
+  isInTable    = NO;
+  accessChecks = accessChecks;
+  labels       = labels;
+  isViewerMode = YES;
+}
+
+AttrViewer : WODictionaryRepetition {
+  dictionary = docStandardAttrs;
+  key        = key;
+  item       = item;
+}
+
+AttrKey : SkySubAttribute {
+  label = labels.$key;
+  width = "15%";
+}
+AttrItem : WOString {
+  value = item;
+}
+
+/* SkyPublisher */
+
+HasPublisher: WOConditional {
+  condition = hasPublisher;
+}
+/*
+PublisherTabs: SkyPubDocViewTabs {
+  fileManager = fileManager;
+  document    = document;
+}
+*/
+
+PubPreviewTab: SkySimpleTabItem {
+  key      = "pub_preview";
+  label    = labels.preview;
+  icon     = "preview";
+}
+PubLinksTab: SkySimpleTabItem {
+  key      = "pub_links";
+  label    = labels.links;
+  icon     = "links";
+}
+PubSourceTab: SkySimpleTabItem {
+  key      = "pub_source";
+  label    = labels.source;
+  icon     = "source";
+}
+
+PubShowPreview: WOConditional {
+  condition = showPubPreview;
+}
+PubShowSource: WOConditional {
+  condition = showPubSource;
+}
+PubShowLinks: WOConditional {
+  condition = showPubLinks;
+}
+
+PubPartPreview: SkyPubPartPreview {
+  fileManager = fileManager;
+  document    = document;
+}
+PubSource: SkyPubPartSourceViewer {
+  fileManager = fileManager;
+  document    = document;
+}
+PubLinks: SkyPubLinks {
+  fileManager = fileManager;
+  document    = document;
+}
+
+IsNotAVersion: WOConditional {
+  condition = isVersion;
+  negate    = YES;
+}
+
+/* Form customizing stuff */
+
+HasDocContentForm: WOConditional {
+  condition = hasDocContentForm;
+}
+DocContentForm: WOComponentReference {
+  component  = docContentForm;
+  preview    = NO;
+  document   = document;
+}
+
+HasDocAttributesForm: WOConditional {
+  condition = hasDocAttributesForm;
+}
+DocAttributesForm: WOComponentReference {
+  component  = docAttributesForm;
+  preview    = NO;
+  document   = document;
+}
+
+HasDocVersionsForm: WOConditional {
+  condition = hasDocVersionsForm;
+}
+DocVersionsForm: WOComponentReference {
+  component  = docVersionsForm;
+  preview    = NO;
+  document   = document;
+}
+
+// download log
+
+
+ShowDownloadLogsCond: WOConditional {
+  condition = session.userDefaults.skyp4_log_documentdownload;
+}
+DownloadLogTab: SkySimpleTabItem {
+  key       = "log";
+  label     = labels.logsLabel;
+}
+DownloadLogList: SkyP4DocumentDownloadLogList {
+  document = document;
+}
+
+IsEnterpriseEdition: WOConditional {
+  condition = application.isEnterpriseEdition.boolValue;
+}
+
+NoReadAccessWarning : SkyRichString {
+  color="red";
+  value = labels.noReadAccessWarning;
+}
+
+HasReadAccessElse : WOConditional {
+  condition = canReadFile;
+  negate    = YES;
+}
+HasReadAccess : WOConditional {
+  condition = canReadFile;
+}
+
+SupportsProperties : WOConditional {
+  condition = supportsProperties;
+}
+SupportsAccess : WOConditional {
+  condition = fileManager.supportAccessRights;
+}
+
+HasNoProjectLite : WOConditional {
+  condition = session.hasProjectLite;
+  negate    = YES;
+}

@@ -1,0 +1,11 @@
+// $Id: OGoMailViewers.strings,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+subject           = "Betreff";
+to                = "An"
+cc                = "CC";
+bcc               = "Bcc"
+sender            = "Absender";
+date              = "Datum";
+toDoc             = "Mail zum Dokument"
+download          = "Mail herunterladen"
+contentLength     = "Größe";

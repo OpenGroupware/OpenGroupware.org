@@ -1,0 +1,474 @@
+// $Id: OGoPalm.strings,v 1.9 2004/04/11 22:58:42 luca Exp $
+
+SkyPalmAssignAddress = "Assegna contatto OGo"
+SkyPalmAssignDate    = "Assegna appuntamento OGo"
+SkyPalmAssignJob     = "Assegna attivita' OGo"
+SkyPalmAssignMemo    = "Assegna documento OGo"
+
+SkyPalmAddressEditor = "Modifica contatti palmare"
+SkyPalmDateEditor    = "Modifica impegni palmare"
+SkyPalmMemoEditor    = "Modifica memo palmare"
+SkyPalmJobEditor     = "Modifica attivita' palmare"
+
+SkyPalmAddressViewer                = "Vista contatti palmare"
+SkyPalmDateViewer                   = "Vista impegni palmare"
+SkyPalmDateCopyViewer               = "Vista palmdate"
+SkyPalmMemoViewer                   = "Vista memo palmare"
+SkyPalmJobViewer                    = "Vista attivita' palmare"
+
+SkyPalmPage                          = "Sincronizzazione Palmare"
+SkyPalmPref_postSyncMustBeActivated  = "(PostSync dev'essere attivato)";
+SkyPalmPref_preSyncMustBeActivated   = "(PreSync dev'essere attivato)";
+SkyPalmPreferences                   = "Impostazioni di sincronizzazione Palmare"
+SkyPalmPreferences_address           = "Indirizzi"
+SkyPalmPreferences_addressAttributes = "Colonne"
+SkyPalmPreferences_dateAttributes    = "Colonne"
+SkyPalmPreferences_datebook          = "Agenda"
+SkyPalmPreferences_importOGoContacts = "importa i contatti OGo nel Palmare"
+SkyPalmPreferences_importOGoDates    = "importa gli appuntamenti OGo Palmare"
+SkyPalmPreferences_importOGoDatesFrom = "tra"
+SkyPalmPreferences_importOGoDatesTo   = "e"
+SkyPalmPreferences_importPalmContacts = "importa i contatti Palmare in OGo"
+SkyPalmPreferences_importPalmDates    = "importa gli appuntamenti Palmare in OGo"
+SkyPalmPreferences_job                = "Lista Impegni"
+SkyPalmPreferences_jobAttributes      = "Colonne"
+SkyPalmPreferences_memo               = "Blocco Appunti"
+SkyPalmPreferences_memoAttributes     = "Colonne"
+SkyPalmPreferences_ogoDateDefaultReadAccess  = "accesso in lettura date OGo predefinito";
+SkyPalmPreferences_ogoDateDefaultWriteAccess = "accesso in scrittura date OGo predefinito";
+SkyPalmPreferences_ogoTwoWaySync     = "OGo 2Way-Sync"
+SkyPalmPreferences_postSync          = "attiva PostSync"
+SkyPalmPreferences_postSyncHelp      = "sincronizza con OGo dopo HotSync"
+SkyPalmPreferences_preSync           = "attiva PreSync"
+SkyPalmPreferences_preSyncHelp       = "sincronizza con OGo prima di HotSync"
+SkyPalmPreferences_private           = "- privato -"
+SkyPalmPreferences_palmSync          = "HotSync"
+SkyPalmPreferences_skyrixAddressType = "Tipo indirizzo OGo"
+SkyPalmPreferences_skyrixAddressAttributeMapping = "Rappresentazione indirizzi OGo"
+SkyPalmPreferences_skyrixPersonSync  = "Sincronizzazione contatto OGo"
+SkyPalmPreferences_skyrixPersonSyncAttributes = "Rappresentazione attributi"
+SkyPalmPreferences_webui             = "Web UI";
+SkyPalmPreferences_skyrixEnterpriseSync = "Sincronizzazione azienda OGo"
+SkyPalmPreferences_skyrixEnterpriseSyncAttributes = "Rappresentazione attributi"
+
+action_assignSkyrixAddress = "Assegnazione ad una tabella di indirizzi OGo"
+action_assignSkyrixAppointment = "Assegnazione ad un appuntamento OGo"
+action_assignSkyrixJob     = "Assegna ad attivita' OGo"
+action_assignSkyrixMemo    = "Assegna ad un documento OGo"
+action_changeAddress       = "cambia indirizzo"
+action_changeAddresses     = "cambia indirizzi"
+action_changeAppointment   = "cambia appuntamento"
+action_changeFile          = "cambia file"
+action_changeFolder        = "cambia cartella"
+action_changeJobAssignment = "cambia assegnazione"
+action_changeProject       = "cambia progetto"
+action_complete            = "fine"
+action_createEnterprises   = "crea azienda OGo"
+action_createNewFile       = "crea nuovo file"
+action_createNewSkyrixRecord = "Crea annotazione OGo"
+action_createPersons       = "crea contatto OGo"
+action_createSkyrixRecords = "crea un record OGo"
+action_delete              = "cancella"
+action_deleteDates         = "cancella appuntamenti"
+action_detachDates         = "scollega appuntamenti"
+action_detachDate          = "scollega appuntamento"
+action_detachSkyrixEntry   = "scollega annotazione OGo"
+action_edit                = "modifica"
+action_forcePalmOverOGo    = "sovrascrivi le modifiche in OGo"
+action_forceOGoOverPalm    = "sovrascrivi le modifiche in Palm"
+action_hidedeleted         = "nascondi elementi cancellati"
+action_markAsNew           = "segna come nuovo"
+action_refresh             = "ricarica"
+action_save                = "salva"
+action_searchAddress       = "cerca indirizzi"
+action_searchCategories    = "cerca categorie"
+action_select              = "seleziona"
+action_select_category_device = "cerca categoria/periferica"
+action_showAppointments    = "mostra appuntamenti"
+action_syncWithSkyrixEntry = "sincronizza con record OGo"
+action_uncomplete          = "non terminato"
+action_undelete            = "recupera"
+action_unhidedeleted       = "mostra elementi cancellati"
+
+// generated keys
+alarmUnit_0        = "Minuto(i)";
+alarmUnit_01       = "Minuto";
+alarmUnit_0n       = "Minuti";
+alarmUnit_1        = "Ora(e)";
+alarmUnit_11       = "Ora";
+alarmUnit_1n       = "Ore";
+alarmUnit_2        = "Giorno(i)";
+alarmUnit_21       = "Giorno";
+alarmUnit_2n       = "Giorni";
+
+// generated keys
+and                = "e"
+
+aptType_none       = "- non specificato -"
+aptType_meeting    = "riunione"
+aptType_holiday    = "vacanza"
+aptType_duedate    = "giorno di nascita"
+aptType_outward    = "appuntamento esterno"
+aptType_birthday   = "compleanno"
+aptType_tradeshow  = "fiera"
+aptType_home       = "a casa"
+aptType_call       = "chiamata telefonica"
+aptType_ill        = "malattia"
+
+// generated keys
+assign-skyrix-record = "Assegnazione a un valore OGo"
+
+// attributes of palm-records
+attribute_00nothing      = "--";
+attribute_access         = "accesso"
+attribute_address        = "indirizzo"
+attribute_alarm          = "allarme"
+attribute_aptType        = "tipo"
+attribute_categoryName   = "categoria"
+attribute_city           = "citta'"
+attribute_company        = "ditta"
+attribute_country        = "stato"
+attribute_custom0        = "Campo Personalizzato 0"
+attribute_custom1        = "Campo Personalizzato 1"
+attribute_custom2        = "Campo Personalizzato 2"
+attribute_custom3        = "Campo Personalizzato 3"
+attribute_custom4        = "Campo Personalizzato 4"
+attribute_date           = "data"
+attribute_dateExceptions = "Eccezioni"
+attribute_description    = "descrizione";
+attribute_deviceId       = "periferica"
+attribute_duedate        = "termine previsto"
+attribute_email          = "e-mail"
+attribute_enddate        = "data finale"
+attribute_fax            = "fax"
+attribute_filename       = "nome file"
+attribute_firstname      = "nome"
+attribute_home           = "casa"
+attribute_isCompleted    = "completo"
+attribute_jobStatus      = "stato"
+attribute_lastname       = "cognome"
+attribute_location       = "localita'"
+attribute_main           = "principale"
+attribute_memo           = "memo"
+attribute_mobile         = "cellulare"
+attribute_name           = "nome"
+attribute_nickname       = "nome breve"
+attribute_note           = "note"
+attribute_number         = "numero"
+attribute_other          = "altro"
+attribute_owner          = "proprietario"
+attribute_pager          = "numeratore"
+attribute_palmSync       = "Sincronizzazione Palmare"
+attribute_priority       = "priorita'"
+attribute_projectCode    = "codice progetto"
+attribute_projectLeader  = "manager progetto"
+attribute_repeat         = "ripeti tipo"
+attribute_repeatEnddate  = "ripeti data fine"
+attribute_size           = "dimensione"
+attribute_skyrixRecord   = "valore OGo"
+attribute_skyrixSync     = "sincronizzazione OGo"
+attribute_skyrixSyncType = "tipo sincronizzazione OGo"
+attribute_startdate      = "data iniziale"
+attribute_state          = "stato"
+attribute_title          = "titolo"
+attribute_work           = "lavoro"
+attribute_zipcode        = "codice postale"
+
+autoScrollSize_0    = "disabled";
+autoScrollSize_200  = "200 pixel";
+autoScrollSize_250  = "250 pixel";
+autoScrollSize_300  = "300 pixel";
+autoScrollSize_400  = "400 pixel";
+autoScrollSize_500  = "500 pixel";
+autoScrollSize_600  = "600 pixel";
+autoScrollSize_700  = "700 pixel";
+autoScrollSize_800  = "800 pixel";
+autoScrollSize_1000 = "1000 pixel";
+
+// generated keys
+bool_no            = "No"
+bool_yes           = "Si"
+
+calendarPopupDuedateLabel   = "cerca data di nascita"
+calendarPopupEnddateLabel   = "cerca data finale"
+calendarPopupStartdateLabel = "cerca data iniziale"
+cancelButtonLabel  = "annulla"
+
+// generated keys
+complete           = "completo"
+complete_archived  = "completo (archiviato)";
+
+conflict_handling_0 = "non sinconizzare";
+conflict_handling_1 = "crea nuovo valore OGo";
+conflict_handling_2 = "sovrascrivi le modifiche nei valori OGo";
+conflict_handling_3 = "sovrascrivi le modifiche nei valori Palm";
+
+conflict_notification_0 = "non notificare";
+conflict_notification_5 = "crea un'attivita'";
+
+// generated keys
+create-skyrix-record  = "crea un record OGo"
+
+// generated keys
+enterprise         = "azienda"
+
+error_nodeviceentry = "Nessuna periferica trovata nel database. Prego, sincronizzate prima con il PDA!"
+
+forTheNext         = "per il prossimo"
+
+// generated keys
+frequencyFirst     = "";
+frequencyLast      = "ultimo";
+frequencyND        = "nd";
+frequencyRD        = "rd";
+frequencySecond    = "altro";
+frequencyST        = "st";
+frequencyTH        = "th";
+
+from               = "da"
+import_ogo_contacts_sync_favorites      = "importa i contatti preferiti"
+import_ogo_contacts_sync_nothing        = "non importare nulla"
+import_ogo_contacts_sync_owned_contacts = "importa i contatti posseduti"
+import_palm_contacts_sync_all           = "importa tutti i contatti palmare"
+import_palm_contacts_sync_non_private   = "importa i contatti palmare non privati"
+import_palm_contacts_sync_nothing       = "non importare nulla"
+import_palm_dates_sync_all              = "importa tutte gli impegni palmare"
+import_palm_dates_sync_non_private      = "importa gli impegni palmare non privati"
+import_palm_dates_sync_nothing          = "non importare nulla"
+
+// generated keys
+incomplete         = "incompleto"
+incomplete_archived = "incompleto (archiviato)"
+
+// generated keys
+is_archived        = "Archiviato"
+is_deleted         = "Cancellato"
+is_modified        = "Modificato"
+is_new             = "Nuovo"
+is_untouched       = ""
+
+label_addressType     = "Tipo indirizzo"
+label_autoScrollSize  = "auto scroll size (solo per alcuni browsers)"
+label_batchSize       = "valori per pagina"
+label_conflict_handling     = "gestione conflitti"
+label_conflict_notification = "notifiche conflitti"
+label_days            = "giorni"
+label_every           = "ogni"
+label_file            = "file"
+label_files           = "file"
+label_filename        = "nome file"
+label_folder          = "directory"
+label_hotsync_conduits    = "HotSync conduits"
+label_newFile             = "nuovo file"
+label_non_selection_title = "non selezionato"
+label_onlyMyAppointments  = "solo miei appuntamenti";
+label_palmAddress     = "indirizzo palmare"
+label_palmAddresses   = "indirizzi palmare"
+label_palmDate        = "impegno palmare"
+label_palmJob         = "attivita' palm"
+label_palmMemo        = "memo palm"
+label_pda_timezone    = "fuso locale palm"
+label_popup_all       = "tutto"
+label_privateProjects = "progetti privati"
+label_project         = "progetti"
+label_publicProjects  = "progetti pubblici"
+label_readAccess      = "lettura"
+label_removeException = "togli eccezione"
+label_repeat_days     = "Giorno(i)"
+label_repeat_months   = "Mese(i)"
+label_repeat_weeks    = "Settimana(e)"
+label_repeat_years    = "Anno(i)"
+label_repeatDaily     = "giornaliero"
+label_repeatMonthlyByDate = "per data mensile"
+label_repeatMonthlyByDay  = "mensile per giorno della settimana"
+label_repeatNone      = "nessuno"
+label_repeatSkyrix14Daily = "bisettimanale"
+label_repeatSkyrixMonthly = "mensile"
+label_repeatSkyrixWeekday = "giorni della settimana"
+label_repeatWeekly    = "settimanale"
+label_repeatYearly    = "annuale"
+label_repetition      = "ripetizione"
+label_repetitions     = "ripetizioni"
+label_searchResult    = "risultati ricerca"
+label_selection_title = "selezionato"
+label_showAppointments = "mostra appuntamenti"
+label_skyrixAddress   = "indirizzo OGo"
+label_skyrixAddresses = "indirizzi OGo"
+label_skyrixAppointment  = "appuntamento OGo"
+label_skyrixAppointments = "appuntamenti OGo"
+label_skyrixDocument  = "documento OGo"
+label_skyrixJob       = "attivita' OGo"
+label_skyrixJobs      = "attivita' OGo"
+label_toDoJobs        = "lista attivita'"
+label_validFiles      = "file validi"
+label_writeAccess     = "scrittura"
+
+// generated keys
+list_title_address = "Indirizzi Palmare"
+list_title_date    = "Impegni Palmare"
+list_title_job     = "Attivita' Palmare"
+list_title_memo    = "Memo Palmare"
+
+// generated keys
+month_1            = "gennaio"
+month_10           = "ottobre"
+month_11           = "novembre"
+month_12           = "dicembre"
+month_2            = "febbraio"
+month_3            = "marzo"
+month_4            = "aprile"
+month_5            = "maggio"
+month_6            = "giugno"
+month_7            = "luglio"
+month_8            = "agosto"
+month_9            = "settembre"
+
+// generated keys
+new_address_from_skyrix = "nuovo da contatto OGo"
+new_date_from_skyrix    = "nuovo da appuntamento OGo"
+new_job_from_skyrix     = "nuovo da attivita' OGo"
+new_memo_from_skyrix    = "nuovo da documento"
+new-from-skyrix-record  = "nuovo da record OGo"
+
+new_address             = "nuovo indirizzo palmare"
+new_date                = "nuovo impegno palmare"
+new_memo                = "nuovo memo palmare"
+new_job                 = "nuova attivita' palmare"
+
+// generated keys
+person             = "persona"
+
+// generated keys
+pri_very_high      = "Molto alto"
+pri_high           = "Alto"
+pri_normal         = "Normale"
+pri_low            = "Basso"
+pri_very_low       = "Molto bassl"
+
+// generated keys
+record_is_archived = "Record cancellato sul Palmare"
+record_is_modified = "Record modificato"
+record_is_new      = "Record nuovo"
+record_is_untouched  = "Record invariato"
+record_id_deleted  = "Cancellazione record tramite sync"
+
+// generated keys
+repeatDailyFormat  = "Ogni %@ giorno"
+repeatMonthlyByDateFormat = "Il %@ di ogni %@ mese"
+repeatMonthlyByDayFormat  = "Il %@ %@ di ogni %@ mese"
+repeatNoneFormat          = ""
+repeatWeeklyFormat        = "Ogni %@ settimane su %@"
+repeatYearlyFormat        = "%@ di %@ ogni %@ anno"
+
+showButtonLabel    = "mostra"
+showRepeatings     = "mostra ripetizioni"
+
+// generated keys
+skyrixAddressType_         = "--"
+skyrixAddressType_bill     = "Indirizzo fiscale"
+skyrixAddressType_location = "Localita'"
+skyrixAddressType_mailing  = "Indirizzo postale"
+skyrixAddressType_private  = "Indirizzo privato"
+skyrixAddressType_ship     = "Indirizzo di spedizione"
+
+// generated keys
+skyrixAttribute_00nothing     = "--"
+skyrixAttribute_01_tel        = "Telefono 1"
+skyrixAttribute_02_tel        = "Telefono 2"
+skyrixAttribute_03_tel_funk   = "Telefono cellulare"
+skyrixAttribute_05_tel_private = "Telefono privato"
+skyrixAttribute_10_fax        = "Fax"
+skyrixAttribute_15_fax_private = "Fax privato"
+skyrixAttribute_account       = "Conto"
+skyrixAttribute_assistantName = "Nome referente";
+skyrixAttribute_associatedCompany = "Azienda associata";
+skyrixAttribute_bank          = "Banca"
+skyrixAttribute_bankCode      = "Codice bancario"
+skyrixAttribute_birthday      = "Compleanno"
+skyrixAttribute_bossName      = "Nome responsabile";
+skyrixAttribute_comment       = "Commento"
+skyrixAttribute_degree        = "Titolo"
+skyrixAttribute_department    = "Dipartimento";
+skyrixAttribute_email         = "Email"
+skyrixAttribute_email1        = "Email 1"
+skyrixAttribute_email2        = "Email 2"
+skyrixAttribute_email3        = "Email 3";
+skyrixAttribute_firstname     = "Nome"
+skyrixAttribute_gender        = "Genere"
+skyrixAttribute_imAddress     = "Indirizzo Instant Messenger";
+skyrixAttribute_job_title     = "Funzione"
+skyrixAttribute_keywords      = "Categorie"
+skyrixAttribute_login         = "Login"
+skyrixAttribute_middlename    = "Secondo nome"
+skyrixAttribute_name          = "Nome"
+skyrixAttribute_name1         = "Nome 1"
+skyrixAttribute_name2         = "Nome 2"
+skyrixAttribute_name3         = "Nome 3"
+skyrixAttribute_nickname      = "Nome breve"
+skyrixAttribute_number        = "Numero"
+skyrixAttribute_occupation    = "occupazione";
+skyrixAttribute_office        = "ufficio";
+skyrixAttribute_other_title1  = "Altra Funzione 1"
+skyrixAttribute_other_title2  = "Altra Funzione 2"
+skyrixAttribute_palmCategory  = "Categoria Palmare"
+skyrixAttribute_partnerName   = "nome partner";
+skyrixAttribute_salutation    = "Formula di saluto"
+skyrixAttribute_url           = "Url"
+
+// generated keys
+skyrixjob_state_00_created    = "creato"
+skyrixjob_state_02_rejected   = "respinto"
+skyrixjob_state_05_accepted   = "accettato"
+skyrixjob_state_20_processing = "elaborazione in corso"
+skyrixjob_state_25_done       = "eseguito"
+skyrixjob_state_30_archived   = "archiviato"
+
+// generated keys
+sync_state_100     = "Record OGo e Palmare non modificati"
+sync_state_101     = "Record Palmare modificati"
+sync_state_102     = "Record OGo modificati"
+sync_state_103       = "record OGo e Palmare modificati"
+sync_state_short_100     = ""
+sync_state_short_101     = "Record Palmare modificati"
+sync_state_short_102     = "Record OGo modificati"
+sync_state_short_103     = "Entrambi i record modificati"
+
+// generated keys
+sync_type_0        = "Non eseguire operazioni"
+sync_type_1        = "Record OGo sovrascrive record Palm"
+sync_type_2        = "Record Palmare sovrascrive record OGo"
+sync_type_3        = "i record modificati sovrascrivono quelli non modificati"
+sync_type_short_0  = "OGo || Palm"
+sync_type_short_1  = "OGo ==> Palm"
+sync_type_short_2  = "OGo <== Palm"
+sync_type_short_3  = "OGo <=> Palm"
+
+tab_address        = "indirizzo"
+tab_addressBook    = "indirizzi"
+tab_attributes     = "attributi"
+tab_dateBook       = "agenda impegni"
+tab_memo           = "memo"
+tab_memoPad        = "blocco memo"
+tab_origin         = "origine"
+tab_palmSync       = "sincronizzazione Palmare"
+tab_repetitions    = "ripetizioni"
+tab_skyrixSync     = "sincronizzazione OGo"
+tab_todoList       = "lista impegni"
+
+to                 = "a"
+
+// generated keys
+weekday_long_0     = "domenica"
+weekday_long_1     = "lunedi'"
+weekday_long_2     = "martedi'"
+weekday_long_3     = "mercoledi'"
+weekday_long_4     = "giovedi'"
+weekday_long_5     = "venerdi'"
+weekday_long_6     = "sabato"
+weekday_short_0    = "dom"
+weekday_short_1    = "lun"
+weekday_short_2    = "mar"
+weekday_short_3    = "mer"
+weekday_short_4    = "gio"
+weekday_short_5    = "ven"
+weekday_short_6    = "sab"

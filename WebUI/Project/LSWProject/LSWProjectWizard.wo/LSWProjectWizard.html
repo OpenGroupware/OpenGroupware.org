@@ -1,0 +1,152 @@
+<#Frame>
+  <!--$Id: LSWProjectWizard.html,v 1.2 2004/08/09 23:40:32 helge Exp $ -->
+  <#Calendar />
+
+<script language="JavaScript">
+<!-- hide
+var editorIsCancel = false;
+var editorIsSearch = false;
+
+function validateEditorContent() {
+  var errorString = "";
+
+  if (editorIsCancel) return true;
+  if (editorIsSearch) return true;
+
+  editorIsCancel = false;
+  editorIsSearch = false;
+
+  if (document.editform.startTimePopUp.selectedIndex > 
+      document.editform.endTimePopUp.selectedIndex)
+    errorString = errorString + " => End time before start time.\n";
+
+  if (document.editform.title.value.length == 0)
+    errorString = errorString + " => No title set.\n";
+
+  if (errorString.length > 0) {
+    alert("invalid input:\n" + errorString);
+    return false;
+  }
+  else
+    return true;
+}
+
+function searchFieldChanged() {
+  editorIsSearch = true;
+  document.editform.submit();
+  return true;
+}
+// -->
+</script>
+
+<#Window>
+ <#WarningModeCondElse>
+
+  <table border="0" cellspacing="0" cellpadding=4 width="100%">
+   <#ProjectForm>
+     <#MainAttributesModeCond>
+        <#MainAttributesEditor />
+        <tr>
+          <#AttributeCell><#Font><#AnnotationLabel />:</#Font></#AttributeCell>
+          <#ValueCell><#Font><#Comment /></#Font></#ValueCell>
+        </tr>
+     </#MainAttributesModeCond>
+
+     <#AccessListModeCond>
+       <#IsRootCond>
+          <tr>
+            <#AttributeCell><#Font><#TeamLabel />:</#Font></#AttributeCell>
+            <#ValueCell><#EditFont><#TeamPopup /></#EditFont></#ValueCell>
+          </tr>
+       </#IsRootCond>
+
+        <tr>
+          <#AttributeCell><#Font><#SearchAccountsLabel />:</#Font></#AttributeCell>
+          <#ValueCell><#EditFont>
+            <#TeamsPopUp />
+            <#AccountSearchField />
+            <#AccountSearchSubmit />
+            <table border="0" bordercolordark="black" bordercolorlight="white"
+                   cellpadding="0" cellspacing="0">
+              <tr><td nowrap="nowrap">
+                <small><#Font><#ExtendedCheckBox /><#ExtendedString />&nbsp;</#Font></small>
+              </td></tr>
+            </table>
+            <hr size="1" noshade="noshade" />
+          </#EditFont></#ValueCell>
+        </tr>
+
+        <#ShowAccountListCond>
+        <tr>
+          <#AttributeCell><#Font><#AccountsLabel />:</#Font></#AttributeCell>
+          <#ValueCell><#Font>
+            <#SelectedAccounts />
+            <#AccountList />
+          </#Font></#ValueCell>
+        </tr>
+        </#ShowAccountListCond>
+     </#AccessListModeCond>
+
+     <#ProjectLeaderAssignmentModeCond>
+        <tr>
+          <#AttributeCell><#Font><#OwnerLabel />:</#Font></#AttributeCell>
+          <#ValueCell><#EditFont><#Owner /></#EditFont></#ValueCell>
+        </tr>
+     </#ProjectLeaderAssignmentModeCond>
+
+     <#CompanyAssignmentModeCond>
+        <tr>
+          <#AttributeCell><#Font><#SearchCompaniesLabel />:</#Font></#AttributeCell>
+          <#ValueCell><#EditFont>
+            <#CompanyTypePopup />
+            <#CompanySearchField />
+            <#CompanySearchSubmit />
+            <table border="0" bordercolordark="black" bordercolorlight="white"
+                   cellpadding="0" cellspacing="0">
+              <tr><td nowrap="nowrap">
+                <small><#Font><#ExtendedCheckBox /><#ExtendedString />&nbsp;</#Font></small>
+              </td></tr>
+            </table>
+            <hr size="1" noshade="noshade" />
+          </#EditFont></#ValueCell>
+        </tr>
+
+        <#ShowEnterpriseListCond>
+        <tr>
+          <#AttributeCell><#Font><#EnterprisesLabel />:</#Font></#AttributeCell>
+          <#ValueCell><#Font>
+            <#SelectedEnterpriseList />
+            <#EnterpriseList />
+          </#Font></#ValueCell>
+        </tr>
+        </#ShowEnterpriseListCond>
+
+        <#ShowPersonListCond>
+        <tr>
+          <#AttributeCell><#Font><#PersonsLabel />:</#Font></#AttributeCell>
+          <#ValueCell><#Font>
+             <#SelectedPersonList />
+             <#PersonList />
+          </#Font></#ValueCell>
+        </tr>
+        </#ShowPersonListCond>
+
+     </#CompanyAssignmentModeCond>
+
+     <#ProjectPlanModeCond><#DateEditor /></#ProjectPlanModeCond>
+
+     <tr>
+        <td>&nbsp;</td>
+        <td>
+          <#BackSubmit   />
+          <#FinishSubmit />
+          <#CancelSubmit />
+          <#NextSubmit   />
+        </td>
+     </tr>
+  </#ProjectForm>
+  </table>
+ </#WarningModeCondElse>
+ <#WarningModeCond><#Warning />  </#WarningModeCond>
+</#Window>
+</#Frame>

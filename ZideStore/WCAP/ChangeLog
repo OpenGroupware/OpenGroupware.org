@@ -1,0 +1,15 @@
+2004-03-10  Donald Duck  <helge.hess@opengroupware.org>
+
+	* WCAPResultSet.h: properly declare NSEnumerator in header file 
+	  (v1.2.3)
+
+2003-11-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxUserFolder+WCAP.m: added wcap-store dummy method (v1.2.2)
+
+2003-11-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* now installs in Library/ZideStore12 (v1.2.1)
+
+	* created ChangeLog
+

@@ -1,0 +1,11 @@
+# $Id$
+
+TODOs for LSProject
+===================
+
+- move out documents and tasks sections to separate command bundles!
+
+- check for duplicate code in LSFetchPersonRelationCommand and
+  LSFetchEnterpriseRelationCommand
+
+- there is no command for getting the notes attached to a project?

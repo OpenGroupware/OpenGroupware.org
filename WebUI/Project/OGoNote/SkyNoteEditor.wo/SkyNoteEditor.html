@@ -1,0 +1,63 @@
+<#Frame>
+ <!--$Id: SkyNoteEditor.html,v 1.4 2004/03/15 16:15:47 helge Exp $ -->
+ <#Window>
+  <#WarningModeCondElse>
+
+  <table border="0" cellspacing="0" cellpadding="3" width="100%">
+    <#NoteForm>
+      <#IsProjectEnabled>
+        <#HasProject>
+          <tr>
+            <#AttributeCell><#Font><#ProjectLabel/>:</#Font></#AttributeCell>
+            <#ValueCell><#Font>
+              <#ProjectName/> (<#ProjectNumber/>)
+            </#Font></#ValueCell>
+          </tr>
+        </#HasProject>
+
+        <#NewModeCond>
+          <#HasNoProject><#ProjectSelection/></#HasNoProject>          
+        </#NewModeCond>
+      </#IsProjectEnabled>
+      
+      <#HasAppointment>
+        <#AttributeCell><#Font><#AppointmentLabel/>:</#Font></#AttributeCell>
+        <#ValueCell><#Font><#AppointmentTitle/></#Font></#ValueCell>
+      </#HasAppointment>
+
+      <#NoteEditor/>
+
+      <tr>
+        <#AttributeCell><#Font><#Text/>:</#Font></#AttributeCell>
+        <#ValueCell><#EditFont><#TextInput/></#EditFont></#ValueCell>
+      </tr>
+      <tr> 
+        <td>&nbsp;</td>
+        <td>
+          <#IsSaveEnabled><#SaveSubmit /></#IsSaveEnabled>
+          <#IsSaveDisabled><#SaveSubmitDA /></#IsSaveDisabled>
+          <#CancelSubmit />
+          <#NewModeCondElse>
+            <#IsDeleteEnabled ><#DeleteSubmit   /></#IsDeleteEnabled>
+            <#IsDeleteDisabled><#DeleteSubmitDA /></#IsDeleteDisabled>
+          </#NewModeCondElse>
+        </td>
+      </tr>
+    </#NoteForm>
+  </table>
+ </#WarningModeCondElse>
+
+ <#WarningModeCond><#Warning/></#WarningModeCond>
+</#Window>
+
+<script language="JavaScript">
+<!-- hide
+if (document.editForm) {
+  if (document.editForm.search) {
+    document.editForm.search.focus();
+  }
+}
+// -->
+</script>
+
+</#Frame>

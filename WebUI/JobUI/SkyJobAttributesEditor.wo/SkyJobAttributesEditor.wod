@@ -1,0 +1,112 @@
+// $Id: SkyJobAttributesEditor.wod,v 1.3 2004/07/19 00:22:28 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.jobeditor_title;
+  onClose = cancel;
+}
+
+JobForm: WOForm {
+  name    = "jobEditor";
+  enctype = "multipart/form-data";
+}
+
+CommonAttributes: LSWObjectEditor {
+  labels     = labels;
+  object     = job;
+  attributes = (
+  { 
+    key   = "name";
+    label = "jobName";
+  },
+  { 
+    key            = "startDate";  
+    label          = "startDate";
+    calendarFormat = "%Y-%m-%d";
+  },
+  { 
+    key            = "endDate";
+    label          = "endDate";
+    calendarFormat = "%Y-%m-%d";
+  },
+  { 
+    key            = "completionDate";
+    label          = "completionDate";
+    calendarFormat = "%Y-%m-%d";
+  },
+  { 
+    key   = "category";
+    label = "category";
+  },
+  { 
+    key   = "keywords";
+    label = "keywords";
+  },
+  { 
+    key   = "actualWork";
+    label = "actualWork";
+  },
+  { 
+    key   = "totalWork";
+    label = "totalWork";
+  },
+  { 
+    key   = "kilometers";
+    label = "kilometers";
+  },
+  { 
+    key   = "accountingInfo";
+    label = "accountingInfo";
+  },
+  );
+  showOnly = attributes;
+}
+
+ExtendedAttributes: SkyExtendedAttrsSubEditor {
+  document = job;
+  showOnly = attributes;
+}
+
+EditorButtons: SkyEditorButtons {}
+
+// Popups
+
+ShowPercentCompleteCond: WOConditional { condition = showPercentComplete; }
+ShowPriorityCond:        WOConditional { condition = showPriority;        }
+ShowSensitivityCond:     WOConditional { condition = showSensitivity;     }
+
+PercentCompleteAttr: SkyAttribute {
+  label = labels.percentComplete;
+}
+PercentCompletePopup: WOPopUpButton {
+  name            = "taskpercentcomplete";
+  list            = percentList;
+  item            = item;
+  selection       = job.percentComplete;
+  singleSelection = YES;
+}
+
+PriorityAttr: SkyAttribute {
+  label = labels.priorityLabel;
+}
+PriorityPopup: WOPopUpButton {
+  name            = "taskpriority";
+  list            = priorities;
+  item            = item;
+  string          = priorityName;
+  selection       = job.priority;
+  singleSelection = YES;
+}
+
+SensitivityAttr: SkyAttribute {
+  label = labels.sensitivity;
+}
+SensitivityPopup: WOPopUpButton {
+  name            = "tasksensitivity";
+  list            = sensitivities;
+  item            = item;
+  string          = sensitivity;
+  selection       = job.sensitivity;
+  singleSelection = YES;
+}

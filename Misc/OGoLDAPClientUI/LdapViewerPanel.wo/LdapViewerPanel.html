@@ -1,0 +1,47 @@
+<#Frame>
+  <!-- $Id: LdapViewerPanel.html,v 1.1 2004/05/21 12:23:59 helge Exp $ -->
+  <#Window>
+
+    <#MainTabs>
+      <#MainTabNormalSearch>
+        <#SearchForm>
+          <#SearchInput />
+          <#SearchButton/>
+        </#SearchForm>
+
+        <#AddressTable/>
+      </#MainTabNormalSearch>
+
+      <#MainTabAdvancedSearch>
+        <#SearchForm>
+          First name:<#SearchFirstNameInput/>
+          Last name:<#SearchLastNameInput/>
+          <#SearchButton/>
+        </#SearchForm>
+
+        <#AddressTable/>
+      </#MainTabAdvancedSearch>
+
+      <#MainTabFileManager>
+        <#FileManagerForm>
+          <#ShowTree>
+            <table border="0" width="100%">
+              <tr>
+                <td valign="top" width="15%"><#FileManager/></td>
+                <td width="10"></td>
+                <td id="cdlistcell" valign="top" width="85%">
+                <#DoHideTree />
+          </#ShowTree>
+            
+          <#DontShowTree><#DoShowTree/></#DontShowTree>
+
+          <#ShowFolderForm   ><#FolderForm  /></#ShowFolderForm>
+          <#ShowFolderContent><#AddressTable/></#ShowFolderContent>
+
+          <#ShowTree></td></tr></table></#ShowTree>
+        </#FileManagerForm>
+      </#MainTabFileManager>
+
+    </#MainTabs>
+  </#Window>
+</#Frame>

@@ -1,0 +1,31 @@
+<table width="100%" border="0" cellpadding="4" cellspacing="0">
+  <!-- $Id: LSWPersonHtmlMailPage.html,v 1.2 2003/12/03 15:44:40 helge Exp $ -->
+  <#MainButtonRow>
+    <td colspan="2">
+      <#Font><b><#PersonViewerLabel />&nbsp;</b></#Font>
+    </td>
+  </#MainButtonRow>
+
+  <tr><td colspan="2"></td></tr>
+  <tr>
+    <#AttributeCell>
+      <#Font><#NameLabel />:</#Font>
+    </#AttributeCell>
+    <#ValueCell>
+      <#Font>
+        <#FirstName /> 
+        <#InlineLinkCond    ><#NameAction   /></#InlineLinkCond>
+        <#InlineLinkCondElse><#NameExternal /></#InlineLinkCondElse>
+      </#Font>
+    </#ValueCell>
+  </tr>
+  
+  <!--tr>
+    <#AttributeCell><#Font><#LinkLabel/>:</#Font></#AttributeCell>
+    <#ValueCell>
+      <#Font><#Link/>&nbsp;</#Font>
+    </#ValueCell>
+  </tr-->
+
+  <tr><td colspan="2"></td></tr>
+</table>

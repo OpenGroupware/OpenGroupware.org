@@ -1,0 +1,35 @@
+// $Id: SkyImapMailListConfigPanel.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+Panel: SkyPanel {
+  panelName = panelName;
+  isVisible = isVisible;
+  string    = string;
+  filename  = filename;
+}
+
+AttributeSorter: SkyListSorter {
+  selectionTitle    = "selection title";
+  nonSelectionTitle = "non selection title";
+  selection         = state.attributes;
+  item              = item;
+  list              = ( "isNew", "sender", "sendDate", "subject", "to", "folder",
+                        "contentLen", "isFlagged" );
+}
+
+AttributeLabel: WOString {
+  value = attributeLabel;
+}
+
+Icon: WOImage {
+  filename = attributeIcon;
+  alt      = attriubteLabel;
+  border   = "0";
+}
+
+IsIcon: WOConditional {
+  condition = isIcon;
+}
+
+IsAttribute: WOConditional {
+  condition = isAttribute;
+}

@@ -1,0 +1,32 @@
+# $Id$
+
+
+ifneq ($(PYTHON),)
+
+OpenGroupware.org_FrontBase2.eomodel : OGoModel.py
+	$(PYTHON) genmodel.py $< FrontBase >$@
+
+OpenGroupware.org_PostgreSQL.eomodel : OGoModel.py
+	$(PYTHON) genmodel.py $< PostgreSQL >$@
+
+endif
+
+
+ifneq ($(PYTHON),)
+
+before-all :: $(MODELS)
+
+clean ::
+	rm -f $(MODELS)
+
+endif
+
+ifeq ($(GNUSTEP_TARGET_OS),mingw32)
+after-all ::
+	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
+	  cp ../bundle-info.plist .)
+else
+after-all ::
+	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
+	  cp ../bundle-info.plist .)
+endif

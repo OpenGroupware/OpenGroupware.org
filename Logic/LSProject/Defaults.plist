@@ -1,0 +1,17 @@
+// NSUserDefaults
+{
+  LSAttachmentPath                   = "/home/siteadm/attachments";
+  UseFlatDocumentFileStructureStatus = NO;
+  LSJobImportFormat = {
+    Seperator = ";";
+    Format = (
+      "HierachieNumber",
+      "name",
+      "startDate",
+      "endDate",
+      "ExecutantToken"
+    );
+  };
+  skyp4_log_documentdownload = YES;
+  UseFoldersForIDRanges = YES;
+}

@@ -1,0 +1,30 @@
+// $Id: LSWEnterpriseTextMailPage.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+Name : WOString {
+  value = object.name;
+};
+
+NameLabel : WOString {
+  value = labels.nameHtmlMailPage;
+};
+
+Number : WOString {
+  value = object.number;
+};
+
+NumberLabel : WOString {
+  value = labels.number;
+};
+
+Link : WOString {
+  value = objectUrl;
+};
+
+LinkLabel: WOString {
+  value = labels.link;
+};
+
+EnterpriseViewerLabel : WOString {
+  value = labels.enterpriseViewer;
+};
+

@@ -1,0 +1,18 @@
+// $Id: SkyPhoneEditor.wod,v 1.2 2004/04/27 15:45:20 helge Exp $
+
+PhonesRep: WORepetition {
+  list = phoneTypes;
+  item = phoneType;
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+PhoneLabel:     WOString { value = labels.$phoneType; }
+PhoneInfoLabel: WOString { value = labels.info;       }
+
+PhoneValue:     WOTextField { value = phoneValue;     }
+PhoneInfoValue: WOTextField { value = phoneInfoValue; }

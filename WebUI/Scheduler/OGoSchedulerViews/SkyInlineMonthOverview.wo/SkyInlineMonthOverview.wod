@@ -1,0 +1,212 @@
+// $Id: SkyInlineMonthOverview.wod,v 1.2 2004/05/09 18:23:28 helge Exp $
+
+IsResCategorySelected: WOConditional {
+  condition = isResCategorySelected;
+  negate    = YES;
+}
+
+/* Style */
+
+Font: SkyConfigFont {}
+
+NewString: WOString {
+  value = labels.new;
+}
+
+/* WeekdayHeader */
+
+HeaderCell: SkyMonthLabel {
+  orientation = "top";
+  dayOfWeek   = dayOfWeek;
+
+  ALIGN       = "center";
+  WIDTH       = "14%";
+  BGCOLOR     = headerCellBGColor;
+}
+
+WeekdayTitle: WOString {
+  value     = labels.$weekDayString;
+}
+
+DragApt: WEDragContainer {
+  tag            = "appointment";
+  object         = appointment;
+  isDraggable    = isAppointmentDraggable;
+}
+DropDay: WEDropContainer {
+  tags          = ( appointment, person );
+  droppedObject = appointment;
+  action        = droppedAppointment;
+}
+
+// Week
+
+LeftBorderCell: SkyMonthLabel {
+  orientation = "left";
+  weekOfYear  = weekOfYear;
+
+  ALIGN       = "center";
+  VALIGN      = "middle";
+  BGCOLOR     = colorOfWeekCell;
+  WIDTH       = "2%";
+}
+
+SwitchToWeekView: WOHyperlink {
+  disabled         = isWeekDirectActionDisabled;
+  directActionName = weekDirectActionName;
+  ?year            = yearForViewWeek;
+  ?week            = weekOfYear;
+  ?tz              = dataSource.timeZone.abbreviation;
+}
+
+WeekOfYearLabel: WOString {
+  value = weekOfYear;
+}
+
+IsMonth: WOConditional {
+  condition = isInMonth;
+}
+IsNotMonth: WOConditional {
+  condition = isInMonth;
+  negate    = YES;
+}
+
+IsToday: WOConditional {
+  condition = isToday;
+}
+IsNotToday: WOConditional {
+  condition = isToday;
+  negate    = YES;
+}
+
+// DaysRep
+
+MonthRep: SkyMonthRepetition {
+  year     = year;
+  month    = month;
+  timeZone = timeZone;
+  firstDay = 1; // monday
+  tableTags = NO;
+  
+  startDate = startDate;
+  isInMonth = isInMonth;
+}
+
+ContentCell: SkyMonthCell {
+  ALIGN       = "left";
+  VALIGN      = "top";
+  BGCOLOR     = colorOfDayCell;
+  HEIGHT      = 60;
+}
+
+ViewDay: WOHyperlink {
+  disabled         = isDayDirectActionDisabled;
+  directActionName = dayDirectActionName;
+  ?year            = startDate.yearOfCommonEra;
+  ?month           = startDate.monthOfYear;
+  ?day             = startDate.dayOfMonth;
+  ?tz              = dataSource.timeZone.abbreviation;
+}
+
+DayLabel: WOString {
+  value = startDate.dayOfMonth;
+}
+
+NewAppointment: WOHyperlink {
+  directActionName = "newApt";
+  ?year  = startDate.yearOfCommonEra;
+  ?month = startDate.monthOfYear;
+  ?day   = startDate.dayOfMonth;
+  ?hour  = 11;
+  ?tz    = startDate.timeZone.abbreviation;
+  ?ctx   = context.contextID;
+}
+
+// DayInfo
+
+HasCurrentDayInfo: WOConditional {
+  condition = hasCurrentDayInfo;
+}
+
+CurrentDayInfo: WOString {
+  value = currentDayInfo;
+}
+
+// Appointments
+
+AppointmentsRep: WORepetition {
+  list  = appointmentsForDay;
+  item  = appointment;
+  index = index;
+  count = maxAptCount;
+}
+
+ViewAptLink: WOHyperlink {
+  directActionName = "viewApt";
+  ?oid    = appointmentOID;
+  ?entity = appointmentEntity;
+  ?tz     = appointment.startDate.timeZone.abbreviation;
+  ?ctx    = context.contextID;
+  TITLE   = shortTextForApt;
+}
+ViewAptAction: WOHyperlink {
+  action = viewAppointment;
+  TITLE  = shortTextForApt;
+}
+
+UseDACond: WOConditional {
+  condition = useDirectActionForView;
+}
+UseDACondElse: WOConditional {
+  condition = useDirectActionForView;
+  negate    = YES;
+}
+
+AptInfoIcon: WOImage {
+  filename = dateCellIcon;
+  BORDER   = "0";
+  VALIGN   = "top";
+  ALT      = shortTextForApt;
+  TITLE    = shortTextForApt;
+}
+
+AptInfo: WOString {
+  value     = appointment;
+  formatter = aptInfoFormatter;
+}
+
+AptLongInfo: WOString {
+  value     = appointment;
+  formatter = aptLongInfoFormatter;
+}
+
+HasNoAppointmentsCond: WOConditional {
+  condition = hasDayApts;
+  negate    = YES;
+}
+
+HasMoreThanMaxAppointments: WOConditional {
+  condition = hasMoreThanMaxApts;
+}
+
+IsViewAccessAllowed: WOConditional {
+  condition = appointmentViewAccessAllowed;
+}
+
+IsViewAccessAllowedElse: WOConditional {
+  condition = appointmentViewAccessAllowed;
+  negate    = YES;
+}
+
+TitleFont : WOGenericContainer {
+  elementName = "font";
+  COLOR       = config.colors_titleColor;
+}
+ShowDayLinkFont : WOGenericContainer {
+  elementName = "font";
+  COLOR       = config.colors_showDayLink;
+}
+NewAppointmentLinkFont : WOGenericContainer {
+  elementName = "font";
+  COLOR       = config.colors_newAppointmentLink;
+}

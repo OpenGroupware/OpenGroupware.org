@@ -1,0 +1,160 @@
+// $Id$
+{
+  bundleHandler = OGoWebMailModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = LSMail;         type = cmd; },
+      { name = OGoMailViewers; type = lso; },
+      { name = OGoUIElements;  type = lso; },
+    );
+    classes = (
+      { name = NSObject;          },
+      { name = LSWModuleManager;  exact-version = 2; },
+      { name = LSWComponent;      exact-version = 2; },
+      { name = LSWContentPage;    exact-version = 3; },
+      { name = LSWObjectMailPage; exact-version = 2; },
+      { name = LSWSession;        version = 9;       },
+      { name = WOHyperlink;       version = 4;       },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     }
+
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = OGoWebMailModule;        },
+      { name = LSWImapMailEditor;       },
+      { name = LSWImapMails;            },
+      { name = LSWImapMailFolderTree;   },
+      { name = LSWImapMailViewer;       },
+      { name = LSWImapMailFolderEditor; },
+      { name = LSWImapMailFolderMove;   },
+      { name = LSWImapMailMove;         },
+      { name = LSWImapMailSearch;       },
+      { name = LSWImapMailFilterEditor; },
+      { name = LSWImapMailLogin;        },
+      { name = SkyImapMailFolderTree;   },
+      { name = LSWImapMail2Project;     },
+      { name = LSWMailPreferences;      },
+      { name = SkyImapMailList;         },
+      { name = SkyImapMailListState;    },
+      { name = SkyImapMailListPanel;    },
+      { name = SkyImapMailListConfigPanel; },
+      { name = SkyImapMailListHeader;   },
+      { name = SkyImapMailListFooter;   },
+      { name = LSWImapMailDeletePage;   },
+      { name = SkyImapMailRestrictions; },
+      { name = SkyVacationViewer; },
+      { name = SkyVacationEditor; },
+      { name = SkyImapMailPrintViewer; },
+      { name = SkyMailingListDataSource; },
+      { name = SkyMailingListViewer; },    
+      { name = SkyMailingListEditor; },
+    );
+          
+    PreferencePages = (
+      { 
+        name      = "Mails";
+        component = "LSWMailPreferences";
+        labelKey  = "Mails";
+        icon      = "icon_email_26x21.gif";
+      }
+    );
+    
+    DockablePages = (
+      { 
+        name         = "Imap";
+        component    = "LSWImapMails";
+        labelKey     = "Imap";
+        miniView     = "LSWImapDockView";
+        miniTextView = "LSWImapTextDockView";
+        image        = "menu_imap_labeled.gif";
+        listicon     = "icon_email_26x21.gif";
+      }
+    );
+    
+    WOComponents = (
+      { name = LSWImapMailEditor;       },
+      { name = LSWImapMails;            },
+      { name = LSWImapMailFolderTree;   },
+      { name = LSWImapMailViewer;       },
+      { name = LSWImapMailFolderEditor; },
+      { name = LSWImapMailFolderMove;   },
+      { name = LSWImapMailMove;         },
+      { name = LSWImapMailSearch;       },
+      { name = LSWImapMailLogin;        },
+      { name = LSWImapMailFilterEditor; },
+      { name = SkyImapMailFolderTree;   },
+      { name = LSWImapMail2Project;     },
+      { name = LSWMailPreferences;      },
+      { name = SkyImapMailList;         },
+      { name = SkyImapMailListPanel;    },
+      { name = SkyImapMailListConfigPanel;  },
+      { name = SkyImapMailListHeader;  },
+      { name = SkyImapMailListFooter;  },
+      { name = SkyVacationViewer; },
+      { name = SkyVacationEditor; },
+      { name = SkyImapMailPrintViewer; },
+      { name = SkyMailingListViewer; },
+      { name = SkyMailingListEditor; },
+    );
+
+    LSWCommands = (
+      { verb = view;      type = "objc/NGImap4Message";
+        component = LSWImapMailViewer; },
+      { verb = edit;      type = "objc/NGImap4Message";
+        component = LSWImapMailEditor; },
+      { verb = new;        type = "objc/NGImap4Message";
+        component = LSWImapMailEditor; },
+      { verb = reply;     type = "objc/NGImap4Message";
+        component = LSWImapMailEditor; },
+      { verb = reply-all; type = "objc/NGImap4Message";
+        component = LSWImapMailEditor; },
+      { verb = forward;   type = "objc/NGImap4Message";
+        component = LSWImapMailEditor; },
+      { verb = edit-as-new;   type = "objc/NGImap4Message";
+        component = LSWImapMailEditor; },
+
+      { verb = new;    type = "objc/imap-filter";
+        component = LSWImapMailFilterEditor;},
+      { verb = edit;    type = "objc/imap-filter";
+        component = LSWImapMailFilterEditor;},      
+
+      { verb = new;    type = "objc/imap-vacation";
+        component = SkyVacationEditor;},
+      { verb = edit;    type = "objc/imap-vacation";
+        component = SkyVacationEditor;},
+      
+      { 
+        verb = edit; type = "objc/NGImap4Folder";
+        component = LSWImapMailFolderEditor;
+      },
+      { 
+        verb = new; type = "objc/NGImap4Folder";
+        component = LSWImapMailFolderEditor;
+      },
+      { 
+        verb = new; type = "objc/NGImap4ServerRoot";
+        component = LSWImapMailFolderEditor;
+      },
+      { 
+        verb = mailview; type = "eo/deleted";
+        component = LSWDeletedObjectViewer;
+      },
+      { 
+        verb      = delete;
+        type      = "objc/NGImap4Message";
+        component = LSWImapMailDeletePage;
+      },
+      { 
+        verb      = delete;
+        type      = "objc/NGImap4Folder";
+        component = LSWImapMailDeletePage;
+      }
+    );
+  };
+}

@@ -1,0 +1,11 @@
+# $Id$
+
+ADDITIONAL_WOBUNDLE_LIBS += \
+	-lOGoJobs -lOGoDocuments\
+	-lNGScripting	\
+	-lGDLAccess	\
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(ADDITIONAL_WOBUNDLE_LIBS)
+
+JobUI_INCLUDE_DIRS += -IHeaders

@@ -1,0 +1,16 @@
+// $Id$
+{
+  domainList = (
+        search
+  );
+
+  domains = {
+    "search" = {
+      operations = {
+        "newrecord"      = { class = "LSNewSearchRecordCommand"; };
+        "extendedsearch" = { class = "LSExtendedSearchCommand";  };
+        "fullsearch"     = { class = "LSFullSearchCommand";      };
+      };
+    };
+  };
+}

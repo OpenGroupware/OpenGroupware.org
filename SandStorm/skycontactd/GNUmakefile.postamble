@@ -1,0 +1,7 @@
+# $Id$
+
+after-install ::
+	$(MKDIRS) $(TEMPLATE_INSTALL_DIR)/ $(INSTANCE_INSTALL_DIR)
+	cp skycontactd.xml $(TEMPLATE_INSTALL_DIR)/
+	if ! test -f $(INSTANCE_INSTALL_DIR)/iContacts.xml; then\
+	  cp iContacts.xml   $(INSTANCE_INSTALL_DIR)/; fi

@@ -1,0 +1,11 @@
+{
+  div_cvsid = "$Id$";
+
+  sky_embed_inline_viewer_ie5_width    = "100%";
+  sky_embed_inline_viewer_other_width  = "600";
+  sky_embed_inline_viewer_video_width  = "240";
+  sky_embed_inline_viewer_ie5_height   = "500";
+  sky_embed_inline_viewer_other_height = "500";
+  sky_embed_inline_viewer_video_height = "240";
+  sky_embed_inline_viewer_audio_height = "42";
+}

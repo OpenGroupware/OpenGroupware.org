@@ -1,0 +1,9 @@
+# $Id$
+
+validate-xml ::
+	xmllint --noout *.wox
+
+before-all :: $(BaseUI_DERIVED_RESOURCES) validate-xml
+
+clean ::
+	rm -f $(BaseUI_DERIVED_RESOURCES)

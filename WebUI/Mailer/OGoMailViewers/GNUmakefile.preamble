@@ -1,0 +1,9 @@
+# $Id$
+
+OGoMailViewers_WOBUNDLE_LIBS += \
+	-lOGoFoundation		\
+	-lNGScripting		\
+	-lNGMime -lEOControl	\
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(OGoMailViewers_WOBUNDLE_LIBS)

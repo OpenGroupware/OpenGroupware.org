@@ -1,0 +1,6 @@
+# $Id$
+
+- implement the Journal component
+- replace IsEnterpriseEdition in SkyProject4DocumentViewer.html
+
+- fix -indexOfString: methods for non-libFoundation environments

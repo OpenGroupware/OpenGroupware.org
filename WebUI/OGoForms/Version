@@ -1,0 +1,6 @@
+# $Id$
+
+SUBMINOR_VERSION:=12
+
+# Requirements:
+#   v5.0.6 => OGoFoundation v5.0.17

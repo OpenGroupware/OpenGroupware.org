@@ -1,0 +1,48 @@
+{
+  CVSID = "$Id$";
+  bundleHandler = "SkyDBProjectBundleManager";
+
+  requires = {
+    bundleManagerVersion = 1;
+  };
+  
+  provides = {
+    classes = (
+      { name = SkyProjectFileManager;              },
+      { name = SkyDocumentHistoryDataSource;       },
+      { name = SkyProjectFolderDataSource;         },
+      { name = SkyDocumentDataSource;              },
+      { name = SkyProjectDocumentGlobalIDResolver; },
+      { name = SkyDocumentAccessHandler;           },
+    );
+    datasources = (
+      { name = "SkyDocumentDataSource";         },
+    );
+    
+    SkyDocumentGlobalIDResolver = (
+      {
+        name          = SkyProjectDocumentGlobalIDResolver;
+        GlobalIDClass = EOKeyGlobalID;
+        qualifier     = "entityName='Project'";
+      },
+    );
+    SkyAccessHandlers = (
+      { name = "Doc"; },
+      { name = "DocumentEditing"; },
+      { name = "DocumentVersion"; },
+    );
+
+    OGoProjectBases = (
+      { 
+        name             = "Skyrix";
+        fileManagerClass = SkyProjectFileManager;
+      }
+    );
+  };
+  
+  SkyAccessHandlers = {
+    Doc             = "SkyDocumentAccessHandler";
+    DocumentEditing = "SkyDocumentAccessHandler";
+    DocumentVersion = "SkyDocumentAccessHandler";
+  };
+}

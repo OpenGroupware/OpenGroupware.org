@@ -1,0 +1,5 @@
+# $Id$
+
+SUBMINOR_VERSION:=32
+
+# v5.0.24 requires libEOControl v4.2.39

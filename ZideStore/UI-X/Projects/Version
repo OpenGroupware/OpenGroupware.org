@@ -1,0 +1,5 @@
+# $Id$
+
+SUBMINOR_VERSION:=1
+
+# 1.1.0 requires NGObjWeb 4.2.202

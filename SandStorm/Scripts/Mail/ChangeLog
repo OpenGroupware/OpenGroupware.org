@@ -1,0 +1,16 @@
+Tue Mar 12 13:08:13 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* xmlrpcdeliver: changed return code for socket error
+	                 to use the deferring feature of the MTA
+
+	* DeliverToProject.py: complete rewrite of the mail parser
+
+Wed Feb 27 23:56:45 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* DeliverToProject.py: fixed handling of unrecognized
+	                        multipart mails
+
+Wed Feb 27 23:56:30 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* created ChangeLog
+

@@ -1,0 +1,45 @@
+<!-- $Id: SkyDefaultsEditor.html,v 1.2 2003/11/13 13:35:06 jan Exp $ -->
+
+<#Frame>
+  <#Window>
+    <#Form>
+      <table width="100%" border="0" cellpadding="2" cellspacing="0">
+        <#Elements>
+          <tr>
+            <#AttributeCell>
+              <#IsCriticalValue>
+                <font color="FF0000"><#AttributeName/>:</font>
+              </#IsCriticalValue>
+              <#IsCriticalValueElse>
+                <#AttributeName/>:
+              </#IsCriticalValueElse>
+            </#AttributeCell>
+
+            <#ValueCell>
+              <#HasPredefinedValues>
+                <#SelectionList/>
+              </#HasPredefinedValues>
+              <#HasPredefinedValuesElse>
+                <#IsPasswordValue>
+                  <#PasswordField/>
+                </#IsPasswordValue>
+                <#IsTextArea>
+                  <#TextArea />
+                </#IsTextArea>
+                <#IsTextField>
+                  <#EditField/>
+                </#IsTextField>
+              </#HasPredefinedValuesElse>
+              <br />
+              <#Description/>
+            </#ValueCell>
+          </tr>
+        </#Elements>
+
+        <tr>
+          <td><#EditorButtons/></td>
+        </tr>
+      </table>
+    </#Form>
+  </#Window>
+</#Frame>

@@ -1,0 +1,5 @@
+# $Id$
+
+ADDITIONAL_BUNDLE_LIBS += \
+	-lNGScripting	\
+	-lDOM -lSaxObjC

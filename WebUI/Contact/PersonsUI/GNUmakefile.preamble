@@ -1,0 +1,12 @@
+# $Id$
+
+ADDITIONAL_WOBUNDLE_LIBS += \
+	-lNGScripting	\
+	-lOGoDocuments	\
+	-lOGoScheduler -lOGoSchedulerTools	\
+	-lOGoContacts -lOGoAccounts \
+	-lGDLAccess	\
+	-lNGLdap	\
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(ADDITIONAL_WOBUNDLE_LIBS)

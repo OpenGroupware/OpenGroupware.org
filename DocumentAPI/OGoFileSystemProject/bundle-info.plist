@@ -1,0 +1,22 @@
+{
+  CVSID = "$Id$";
+
+  bundleHandler = "SkyFSProjectModule";
+
+  requires = {
+    bundleManagerVersion = 1;
+  };
+  
+  provides = {
+    classes = (
+      { name = "SkyFSFileManager"; },
+    );
+
+    OGoProjectBases = (
+      { 
+        name             = "FileSystem";
+        fileManagerClass = SkyFSFileManager;
+      }
+    );
+  };
+}

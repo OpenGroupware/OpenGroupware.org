@@ -1,0 +1,30 @@
+<!-- $Id: SkyResourceSelection.html,v 1.2 2004/08/09 23:14:38 helge Exp $ -->
+<#ViewHeadLineCond>
+  <#MainButtonRow>
+    <td colspan="2"><#Font><b><#SearchLabel /></b></#Font></td>
+  </#MainButtonRow>
+  <tr><td colspan="2"></td></tr>
+</#ViewHeadLineCond>
+<tr>
+  <#AttributeCell><#Font><#ResourcesLabel />:</#Font></#AttributeCell>
+  <#ValueCell>
+    <#EditFont>
+      <#CategoriesPopup      />
+      <#ResourcesSearchField />
+      <#ResourceSearchButton />
+    </#EditFont>
+   <hr size="1" noshade="noshade" />
+  </#ValueCell>
+</tr>
+<#ResourceCond>
+  <tr>
+    <#AttributeCell><#Font><#ChooseResourceLabel />:</#Font></#AttributeCell>
+    <#ValueCell>
+      <#Font>
+        <#ResourceList />
+        <#ResultList   />
+      </#Font>
+      <hr size="1" noshade="noshade" />
+    </#ValueCell>
+  </tr>
+</#ResourceCond>

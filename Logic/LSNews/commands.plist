@@ -1,0 +1,35 @@
+// $Id$
+{
+  domainList = (
+    newsarticle,
+    newsarticlelink
+  );
+
+  domains = {
+    "newsarticle" = {
+      "operations" = {
+        "new"           = { class = "LSNewNewsArticleCommand";      };
+        "set"           = { class = "LSSetNewsArticleCommand";      };
+        "delete"        = { class = "LSDeleteNewsArticleCommand";   };
+        "get"           = { 
+          class = "LSDBObjectGetCommand"; 
+          init  = { entity = "NewsArticle"; }; 
+        };
+        "get-related-articles" = { class  = "LSGetRelatedArticlesCommand"; };
+        "set-related-articles" = { class  = "LSSetRelatedArticlesCommand"; };
+      };
+    };
+    "newsarticlelink" = {
+      "operations" = {
+        "new"    = { 
+          class = "LSDBObjectNewCommand"; 
+          init   = { entity = "NewsArticleLink"; };
+        };
+        "delete" = { 
+          class  = "LSDBObjectDeleteCommand"; 
+          init   = { entity = "NewsArticleLink"; }; 
+        };
+      };
+    };
+  };
+}

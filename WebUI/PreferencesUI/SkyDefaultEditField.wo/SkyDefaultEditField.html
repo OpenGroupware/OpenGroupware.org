@@ -1,0 +1,27 @@
+<!-- $Id: SkyDefaultEditField.html,v 1.2 2004/08/04 22:32:40 helge Exp $ -->
+<tr>
+  <#AttributeCell><#Font><#DefaultLabel />:</#Font></#AttributeCell>
+
+  <#ValueCell>
+    <#IsDefaultEditable>
+      <#EditFont>
+        <#IsPopUp><#DefaultPopUp /></#IsPopUp>
+        <#IsText>
+          <table>
+            <tr><td><#DefaultText /></td>
+            <td valign="top"><#Content /></td></tr>
+          </table>
+        </#IsText>
+        <#IsString  ><#DefaultString   /></#IsString>
+        <#IsPasswd  ><#DefaultPasswd   /></#IsPasswd>
+        <#IsCheckBox><#DefaultCheckBox /></#IsCheckBox>
+      </#EditFont>
+    </#IsDefaultEditable>
+
+    <#IsDefaultReadOnly>
+      <#IsText   ><pre  ><#DefaultValue /></pre></#IsText>
+      <#IsNotText><#Font><#DefaultValue /></#Font></#IsNotText>
+    </#IsDefaultReadOnly>
+    <#IsNotText><#Content /></#IsNotText>
+  </#ValueCell>
+</tr>

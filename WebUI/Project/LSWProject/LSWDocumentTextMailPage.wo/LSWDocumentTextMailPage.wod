@@ -1,0 +1,63 @@
+// $Id: LSWDocumentTextMailPage.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+Title : WOString {
+  value = objectTitle;
+};
+
+Abstract : WOString {
+  value = object.abstract;
+};
+
+Link : WOString {
+  value = objectUrl;
+};
+
+LinkLabel: WOString {
+  value = labels.link;
+};
+
+TitleLabel : WOString {
+  value = labels.title;
+};
+
+FolderLabel : WOString {
+  value = labels.folder;
+};
+
+AbstractLabel : WOString {
+  value = labels.abstract;
+};
+
+DocumentViewerLabel : WOString {
+  value = labels.documentViewer;
+};
+
+FolderViewerLabel : WOString {
+  value = labels.folderViewer;
+};
+
+IsFolder : WOConditional {
+  condition = object.isFolder.boolValue;
+};
+
+IsNotFolder : WOConditional {
+  condition = object.isFolder.boolValue;
+  negate    = YES;
+};
+
+ShowDirectActionLink : WOConditional {
+  condition = showDirectActionLink;
+};
+Contact : WOString {
+  value = object.contact;
+};
+ContactLabel : WOString {
+  value = labels.contact;
+};
+IsContactAttrEnabled: WOConditional {
+  condition = isContactAttrEnabled;
+}
+IsContactAttrDisabled: WOConditional {
+  condition = isContactAttrEnabled;
+  negate    = YES;
+}

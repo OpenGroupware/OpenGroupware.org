@@ -1,0 +1,195 @@
+// $Id: SkyBusinessCardGathering.wod,v 1.8 2003/12/22 17:04:53 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = labels.gathering;
+  onClose = cancel;
+}
+
+PersonTitle: LSWViewerTitle {
+  title     = labels.person_gathering_title;
+  // hh: colors where not set here ??
+}
+
+CompanyTitleSearch: LSWViewerTitle {
+  title     = labels.company_gathering_title_search;
+  // hh: colors where not set here ??
+}
+
+CompanyTitleNew: LSWViewerTitle {
+  title     = labels.company_gathering_title_new;
+  // hh: colors where not set here ??
+}
+
+GatheringForm: WOForm {
+  name    = "gathering";
+  enctype = "multipart/form-data";  
+}
+
+GatheringCompanyEditor: LSWObjectEditor {
+  labels     = labels;
+  object     = gatheringCompany;
+  attributes = (
+    { key = "description";  label="name"; },
+    { key = "name1";   },
+    { key = "name2";   },
+    { key = "name3";   },
+    { key = "street";  },
+    { key = "city";    },
+    { key = "zip";     },
+    { key = "state";   },
+    { key = "country"; }
+  );
+}
+
+GatheringPersonEditor: LSWObjectEditor {
+  labels     = labels;
+  object     = gatheringPerson;
+  attributes = (
+    { key = "name";                           },
+    { key = "nickname" },
+    { key = "firstname";                      },
+    { key = "middlename";                     },    
+    { key = "degree";                         },    
+    { key    = "salutation";                     
+      values = {
+        "01_dear_ms"   = "Dear Ms.";
+        "02_dear_mrs"  = "Dear Mrs.";
+        "03_dear_mr"   = "Dear Mr.";
+        "04_dear_prof" = "Dear Prof.";
+        "05_dear_dr"   = "Dear Dr.";
+        "06_geehrt_herr"      = "Sehr geehrter Herr";
+        "07_geehrt_frau"      = "Sehr geehrte Frau";
+        "08_geehrt_herr_prof" = "Sehr geehrter Herr Prof.";
+        "09_geehrt_herr_dr"   = "Sehr geehrter Herr Dr.";
+        "10_geehrt_frau_prof" = "Sehr geehrte Frau Prof.";
+        "11_geehrt_frau_dr"   = "Sehr geehrte Frau Dr.";
+      };      
+    }, 
+    { key = "email1";                         },
+    { key = "url";                            },
+    { key = "job_title"                       },
+  );
+}
+
+SaveSubmit: WOSubmitButton {
+  action   = save;
+  name     = labels.saveButtonLabel;
+  value    = labels.saveButtonLabel;
+  class    = "button_narrow";
+}
+
+CancelSubmit: WOHyperlink {
+  action = cancel;
+  string = labels.cancelButtonLabel;
+  class  = "button_narrow";
+}
+
+AttributeCell: SkyAttributeCell {}
+
+ValueCell: SkyValueCell { 
+  alignTop = YES; 
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+SearchLabel: WOString {
+  value = labels.enterpriseSearch;
+}
+
+SearchCompanyField: WOTextField {
+  value = searchCompanyField;
+}
+
+SearchCompanySubmit: WOSubmitButton {
+  action    = companySearch;
+  value     = labels.searchCompanyButtonLabel;
+  class     = "button_narrow";
+}
+
+CompanyResultList: SkyListView {
+  list           = companySearchList;
+  item           = item;
+  selectedItems  = addedCompanies;
+  columns        = 3;
+  useRadioButtons= NO;
+  nilString      = "";
+  attributes     = ( { key = "description"; },
+                     { key = "number"; prefix = " ("; suffix = ")"; },
+                   );
+}
+
+CommonTitle: LSWViewerTitle {
+  title     = labels.common_gathering_title;
+  // hh: colors were not set here
+}
+
+CommentLabel: WOString {
+  value = labels.comment;
+}
+
+CommentArea: WOText {
+  value     = gatheringPerson.comment;
+  formatter = session.formatString;
+  wrap      = "physical";
+  rows      = "5";
+  cols      = "80";
+}
+
+PhoneRep: WORepetition {
+  list = phones;
+  item = item;
+}
+
+InfoLabel:   WOString    { value = labels.info; }
+PhoneLabel:  WOString    { value = phoneLabel;  }
+PhoneNumber: WOTextField { value = phoneNumber; } //item.number
+PhoneInfo:   WOTextField { value = phoneInfo;   } //item.info;
+
+CategoryRep: WORepetition {
+  list  = categories;
+  item  = item;
+  //count = categoryCount;
+  index = categoryIndex;
+}
+
+CategoryAttr: SkyAttribute {
+  label = labels.personeditor_categoryLabel;
+}
+
+CategoryPopUp: WOPopUpButton {
+  list            = session.categoryNames;
+  selection       = category;
+  singleSelection = YES;
+  nilString       = "-";
+}
+
+LastCategoryCond: WOConditional {
+  condition = isLastCategory;
+}
+
+MoreThan1CategoryCond: WOConditional {
+  condition = moreThan1Category;
+}
+
+HasMoreCategoriesCond: WOConditional {
+  condition = hasMoreCategories;
+}
+
+DecreaseButton: WOImageButton {
+  filename = "minus.gif";
+  action   = decreaseCategories;
+  alt      = labels.minus;
+  title    = labels.minus;
+  border   = "0";
+}
+
+IncreaseButton: WOImageButton {
+  filename = "plus.gif";
+  action   = increaseCategories;
+  alt      = labels.plus;
+  title    = labels.plus;
+  border   = "0";
+}

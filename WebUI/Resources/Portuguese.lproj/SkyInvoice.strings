@@ -1,0 +1,215 @@
+// v1.1 - Francisco Azevedo <francisco@OpenGroupware.org>
+
+00_accounting                   = "Accounting"
+00_created                      = "created";
+01_03_quarter                   = "1st Quarter"
+01_january                      = "January"
+02_february                     = "February"
+03_march                        = "March"
+04_06_quarter                   = "2nd Quarter"
+04_april                        = "April"
+05_may                          = "May"
+05_monition_printout            = "Monition Printout"
+05_printed                      = "printed";
+06_june                         = "June"
+07_09_quarter                   = "3rd Quarter"
+07_july                         = "July"
+08_august                       = "August"
+09_september                    = "September"
+10_12_quarter                   = "4th Quarter"
+10_canceled                     = "canceled";
+10_invoice_printout             = "Invoice Printout"
+10_october                      = "October"
+11_november                     = "November"
+12_december                     = "December"
+15_canceling                    = "Cancel"
+15_monition                     = "Monition";
+16_monition2                    = "2nd Monition";
+17_monition3                    = "3rd Monition";
+20_done                         = "done";
+20_settling                     = "Settled";
+
+Faktura                         = "Faktura"
+
+Invoice                         = "invoices"
+
+SkyArticleAssignmentEditor      = "Invoice Article Editor"
+SkyArticleAssignmentViewer      = "Invoice Article Viewer"
+SkyArticleCategoryEditor        = "Category Editor"
+SkyArticleCategoryViewer        = "Category Viewer"
+SkyArticleUnitEditor            = "Unit Editor"
+SkyArticleUnitViewer            = "Unit Viewer"
+SkyInvoiceAccounting            = "New Accounting"
+SkyInvoiceAccountViewer         = "Invoice Account Viewer"
+SkyInvoiceArticleEditor         = "Article Editor"
+SkyInvoiceArticleViewer         = "Article Viewer"
+SkyInvoiceCopyPanel             = "Copy Invoices"
+SkyInvoiceEditor                = "Invoice Editor"
+SkyInvoicePreferences           = "Invoice Preferences"
+SkyInvoiceViewer                = "Invoice Viewer"
+SkyInvoices                     = "Invoices"
+SkyUnsettledInvoicesViewer      = "Unsettled Invoices Viewer"
+
+accountings                     = "Accountings"
+accountNr                       = "AccountNr"
+action                          = "Action"
+actionsTitle                    = "Actions"
+actionsLabel                    = "Actions"
+additionalComment               = "Additional Comment"
+advancedSearch                  = "advanced search"
+allKindsSelected                = "All Invoices"
+allMonitionValue                = "Arrears";
+articleAssignmentEditorWindowTitle = "Invoice Article Assignment Editor"
+articleAssignmentViewerWindowTitle = "Invoice Article Assignment Viewer"
+articleCategories               = "Article Categories"
+articleCategory                 = "Category"
+articleCategoryEditorWindowTitle = "Category Editor"
+articleCategoryViewerWindowTitle = "Category Viewer"
+articleCount                    = "Count"
+articleName                     = "Name"
+articleNr                       = "ArticleNr"
+articleUnit                     = "Unit"
+articleUnitEditorWindowTitle    = "Unit Editor"
+articleUnitViewerWindowTitle    = "Unit Viewer"
+articleVat                      = "VAT"
+articles                        = "Articles"
+assignmentviewer_article        = "Article"
+assignmentviewer_invoice        = "Invoice"
+attributes                      = "Attributes";
+
+back                            = "Back"
+balance                         = "Balance"
+blockSize                       = "Number of List items"
+
+cancelButtonLabel               = "cancel"
+cancelInvoice                   = "Cancel Invoice"
+categoryName                    = "Description"
+categoryAbbrev                  = "Abbreviation"
+certifyMonitionPrintout         = "Certify Monition Printout"
+certifyPrintout                 = "Certify Printout"
+changeToMDLink                  = "Change to MDLink online service center GmbH"
+changeToSkyrix                  = "Change to SKYRIX Software AG"
+checkButtonLabel                = "check"
+clip                            = "clip"
+comment                         = "Comment"
+copyInvoice                     = "Copy Invoice"
+copyInvoiceTo                   = "Copy invoices to:";
+copyInvoices                    = "Copy Invoices"
+currency                        = "currency";
+
+date                            = "Date"
+debit                           = "Debit"
+debitor                         = "Debitor"
+deleteArticle                   = "Delete Article"
+deleteAssignment                = "Delete Assignment"
+deleteCategory                  = "Delete Category"
+deleteInvoice                   = "Delete Invoice"
+deleteInvoices                  = "Delete Invoices"
+deleteUnit                      = "Delete Unit"
+description                     = "Description"
+document                        = "Document"
+
+editAccount                     = "Edit InvoiceAccount"
+editArticle                     = "Edit Article"
+editAssignment                  = "Edit Assignment"
+editCategory                    = "Edit Category"
+editInvoice                     = "Edit Invoice"
+editUnit                        = "Edit Unit"
+
+finishInvoice                   = "Invoice Done"
+format                          = "Format"
+
+grossAmount                     = "Gross Amount"
+
+highestMonitionLevel            = "Monition Level"
+
+invoice                         = "Invoice"
+invoiceAccounting               = "Invoice Accounting"
+invoiceAccount                  = "Invoice Account"
+invoiceAccountingWindowTitle    = "New Accounting"
+invoiceAccountViewerWindowTitle = "Invoice Account Viewer"
+invoiceAccounts                 = "Invoice Accounts"
+invoiceArticleEditorWindowTitle = "Article Editor"
+invoiceArticleViewerWindowTitle = "Article Viewer"
+invoiceCopyPanelWindowTitle     = "Copy Invoices";
+invoiceCopyPanel_yyyymmdd       = "YYYY-MM-DD:";
+invoiceDate                     = "Date"
+invoiceEditorWindowTitle        = "Invoice Editor"
+invoiceMonition                 = "Increase Reminder Level"
+invoiceMovePanelWindowTitle     = "Move Invoices";
+invoiceNr                       = "Invoice"
+invoicePreferencesLabel         = "Invoice Preferences"
+invoiceViewerWindowTitle        = "Invoice Viewer"
+invoice_cancel                  = "Credit Advice"
+invoice_month                   = "Monthly Invoices"
+invoice_proforma                = "Proforma Invoices"
+invoice_quarter                 = "Quarter Invoices"
+invoice_single                  = "Single Invoices"
+invoice_viewer_subview          = "Invoice Viewer Subview"
+invoice_year                    = "Yearly Invoices"
+invoiceeditor_action            = "action"
+invoiceeditor_addArticle        = "Add Articles"
+invoiceeditor_addArticlesError  = "Syntaxerror"
+invoiceeditor_articleNr         = "Nr"
+invoiceeditor_count             = "count"
+invoiceeditor_netAmount         = "price"
+invoiceeditor_searchDebitor     = "Search Debitor"
+invoiceeditor_singlePrice       = "single price"
+invoices                        = "Invoices"
+invoices_listLabel              = "Invoices"
+invoices_listTitle              = "Invoices"
+invoices_windowLabel            = "Invoices"
+invoiceviewer_articleList       = "Articles"
+
+kind                            = "Kind"
+
+logsLabel                       = "Logs"
+logsTitle                       = "Invoice Logs"
+logText                         = "Log Text"
+
+monitionLevel                   = "Monition Level";
+monitions                       = "Monitions"
+moveInvoiceTo                   = "Move invoices to:";
+moveInvoices                    = "Move Invoices"
+
+netAmount                       = "Net Amount"
+new                             = "new"
+noOfCols                        = "Number of columns"
+number                          = "Number"
+
+oldestUnsettledInvoiceDate      = "Oldest Unsettled Invoice"
+overview_monthly                = "Monthly Overview"
+overview_quarter                = "Quarter Overview"
+
+paid                            = "Paid"
+pluralUnit                      = "Plural Unit"
+preview                         = "Preview";
+price                           = "Price"
+printInvoice                    = "Print Invoice"
+printIvnoices                   = "Print Invoices"
+printMonition                   = "Print Monition";
+
+removeButtonLabel               = "remove"
+
+sales                           = "sales"
+sales_all_but_created           = "all but created invoices heeded"
+saveButtonLabel                 = "save"
+showButtonLabel                 = "show"
+search                          = "search"
+searchArticles                  = "Search Articles"
+searchButtonLabel               = "search"
+searchResult                    = "records found"
+show                            = "show"
+singlePrice                     = "Single Price"
+singularUnit                    = "Singular Unit"
+status                          = "Status"
+
+toPay                           = "To Pay"
+
+unit                            = "Unit"
+units                           = "Units"
+unsettledInvoices               = "Unsettled Invoices";
+unsettledInvoicesCount          = "Unsettled Invoices"
+unsettledInvoicesFor            = "Unsettled Invoices for: ";
+unsettled_invoices_windowLabel  = "Unsettled Invoices Viewer";
+updateButtonLabel               = "update"

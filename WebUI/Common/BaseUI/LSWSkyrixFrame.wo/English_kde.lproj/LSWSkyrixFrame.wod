@@ -1,0 +1,279 @@
+// $Id: LSWSkyrixFrame.wod,v 1.1 2004/03/15 14:44:36 helge Exp $
+
+Content: WOComponentContent {}
+
+Stylesheet: WOGenericElement {
+  elementName = "link";
+  rel         = "stylesheet";
+  type        = "text/css";
+  href        = stylesheetURL;
+}
+
+ShortcutIcon: WOString {
+  value      = shortcutLink;
+  escapeHTML = NO;
+}
+
+ColoredScrollBars: WOString {
+  value      = coloredScrollBars;
+  escapeHTML = NO;
+}
+
+IsJavaScript: WOConditional {
+  condition = session.isJavaScriptEnabled;
+}
+
+IsNotJavaScript: WOConditional {
+  condition = session.isJavaScriptEnabled;
+  negate    = YES;
+}
+
+DropScript: WEDropScript {}
+DragScript: WEDragScript {}
+
+Font: WOGenericContainer {
+  elementName   = "font";
+  color         = config.font_color;
+  size          = config.font_size;
+  face          = config.font_face;
+}
+
+// active page type
+
+ActivePageIsEditor: WOConditional {
+  condition = session.navigation.activePage.isEditorPage;
+}
+
+ActivePageIsNotEditor: WOConditional {
+  condition = session.navigation.activePage.isEditorPage;
+  negate    = YES;
+}
+
+// expiration
+
+PageIsExpirable: WOConditional {
+  condition = pageIsExpirable;
+}
+
+ExpirePage: WOMetaRefresh {
+  action  = expirePage;
+  timeout = pageExpireTimeout;
+}
+
+// the navigation
+
+Navigation: SkyNavigation {
+  linksDisabled = session.navigation.activePage.isEditorPage;
+  pages         = session.navigation.pageStack;
+}
+
+ClipboardHasContents: WOConditional {
+  condition = session.clipboardContainsObject;
+}
+
+ClipboardContentLink: WOHyperlink {
+  action    = context.page.showClipboardContent;
+  string    = session.labelForObjectInClipboard;
+}
+
+Favorites: SkyFavorites {
+  linksDisabled = session.navigation.activePage.isEditorPage;
+}
+
+HasFavorites: WOConditional {
+  condition = session.containsFavorites;
+};
+
+IsFirstFavElse: WOConditional {
+  condition = idx;
+  value     = 0;
+  negate    = YES;
+};
+
+FavoritesRep: WORepetition {
+  list  = session.favorites;
+  item  = session.choosenFavorite;
+  index = idx;
+};
+
+FavoriteContentLink: WOHyperlink {
+  action = context.page.showChoosenFavorite;
+}
+
+FavoriteLabel: WOString {
+  value  = session.labelForChoosenFavorite;
+}
+
+LastErrorLabel: WOString {
+  value = labels.lastError;
+}
+
+HasErrorString: WOConditional {
+  condition = showErrorBar;
+}
+
+ErrorString: WOString {
+  value    = context.page.errorString;
+  insertBR = YES;
+}
+
+PanelErrorString: WOString {
+  value = panelErrorString;
+}
+
+ClearErrorLink: WOHyperlink {
+  action   = clearErrorString;
+}
+
+ClearErrorText: WOString {
+  value    = labels.clearErrorString;
+}
+
+ConfirmPanel: JSConfirmPanel {
+  action         = confirmAction;
+  confirmMessage = panelConfirmString;
+  showPanel      = pageHasConfirmToShow;
+}
+
+YouAreHereLabel: WOString {
+  value = labels.navposition;
+}
+
+LeftHeaderCell: WOGenericContainer {
+  elementName   = "td";
+  align         = "left";
+  bgcolor       = config.colors_headerCell;
+}
+RightHeaderCell: WEDropContainer {
+  action        = newFavoriteDropped;
+  droppedObject = newFavoriteObject;
+  tags          = ( "*" );
+  elementName   = "td";
+  align         = "right";
+  bgcolor       = config.colors_headerCell;
+  colspan       = colspanDependingOnTrash;
+}
+
+Dock: SkyDock {}
+
+// the footer
+
+Version: WOString {
+  value = application.version;
+}
+
+ActiveUser: WOString {
+  value = session.activeLogin;
+}
+
+SessionExpireDate: WOString {
+  value      = sessionExpireInfo;
+}
+
+LeftFooterCell: WOGenericContainer {
+  elementName   = "td";
+  align         = "left";
+  bgcolor       = config.colors_footerCell;
+}
+
+RightFooterCell: WOGenericContainer {
+  elementName   = "td";
+  align         = "right";
+  width         = "10%";
+  bgcolor       = config.colors_footerCell;
+}
+
+Logout: SkyButtonRow {
+  ordering = ( logout );
+  onLogout = logout;
+  logout   = labels.logout;
+}
+
+FtLabelSkyrixLink: WOHyperlink {
+  string = labels.footer_skyrixag;
+  href   = "http://www.skyrix.com";
+  target = "SKYRIX";
+}
+
+FtLabelUser: WOString {
+  value = labels.footer_user;
+  escapeHTML = NO;
+}
+
+FtLabelLogState: WOString {
+  value = labels.footer_logstate;
+  escapeHTML = NO;
+}
+
+Langs: WOString {
+  value = session.languages;
+}
+
+IsInternetExplorer: WOConditional {
+  condition = isInternetExplorer;
+}
+
+SearchPanel: SkySearchPanel {
+  panelName = "SkySearchPanel";
+  filename    = "zoom.gif";
+}
+
+// text mode support
+
+IsTextMode: WOConditional {
+  condition = session.isTextModeBrowser;
+}
+
+IsNotTextMode: WOConditional {
+  condition = session.isTextModeBrowser;
+  negate    = YES;
+}
+
+Small: WOConditional {
+  condition = smallFont;
+}
+
+// timing
+
+Timings: WOString {
+  value = timingsString;
+}
+
+// trash
+
+ShowTrashCond: WOConditional {
+  condition = showTrash;
+}
+
+TrashCell: WEDropContainer {
+  tags          = ( "*" );
+  action        = deleteDroppedObject;
+  droppedObject = droppedObject;
+  elementName   = "td";
+  width         = "20";
+  align         = "center";
+  bgcolor       = config.colors_headerCell;
+}
+
+TrashIcon: WOImage {
+  filename         = "icon_trash.gif";
+  align            = "center";
+  valign           = "middle";
+  border           = "0";
+  alt              = "Trash";
+};
+
+// clip
+
+ClipIcon: WOImage {
+  filename         = "icon_clip.gif";
+  align            = "center";
+  valign           = "middle";
+  border           = "0";
+  alt              = "Clip";
+};
+MetaSessionID: WOGenericElement {
+  elementName = "meta";
+  name        = "OGoSessionID";
+  content     = existingSession.sessionID;
+}

@@ -1,0 +1,12 @@
+# $Id$
+
+ADDITIONAL_INCLUDE_DIRS += -I.. -I../NGObjWeb
+
+libNGXmlRpc_LIBRARIES_DEPEND_UPON += 	\
+	-lSOAP 				\
+	-lNGObjWeb			\
+	-lNGStreams			\
+	-lNGMime			\
+	-lSaxObjC -lDOM			\
+	-lNGExtensions			\
+	-lEOControl			\

@@ -1,0 +1,253 @@
+// $Id: LSWPersonAdvancedSearch.wod,v 1.3 2003/09/30 17:18:52 thomas Exp $
+
+Label: WOString {
+    value = labels.LSWPersonAdvancedSearch;
+};
+
+Form: WOForm {
+    name = "searchform";
+};
+
+Zip: WOString {
+    value = labels.zip;
+};
+
+ZipField: WOTextField {
+    value = person.address#zip;
+    size  = 30;
+};
+
+LastName: WOString {
+    value = labels.lastName;
+};
+LastNameField: WOTextField {
+    name  = "focusField";
+    value = person.name;
+    size  = 30;
+};
+
+CategoryPopUp : WOPopUpButton {
+        list            = session.categoryNames;
+        item            = item;
+        string          = item;
+        selection       = person.keywords;
+        singleSelection = YES;
+        nilString       = "-";
+};
+
+ExtendedAttrs : WOPopUpButton {
+        list            = currentValues;
+        item            = item;
+        string          = currentLabel;
+        selection       = companyValueAttribute;
+        singleSelection = YES;
+        nilString       = "-";
+};
+
+TeleTypes : WOPopUpButton {
+        list            = session.userDefaults.LSTeleType.Person;
+        item            = currentTeleType;
+        string          = currentTeleTypeLabel;
+        selection       = person.phone#type;
+        singleSelection = YES;
+        nilString       = labels.allPhones;
+};
+ExtendedValue: WOTextField {
+    value = companyValueValue;
+    size  = 30;
+};
+
+CategoryLabel : WOString {
+        value = labels.categoryLabel;
+};
+
+FirstName: WOString {
+    value = labels.firstName;
+};
+FirstNameField: WOTextField {
+    value = person.firstname;
+    size  = 30;
+};
+
+City: WOString {
+    value = labels.city;
+};
+
+CityField: WOTextField {
+    value = person.address#city;
+    size  = 30;
+};
+
+StreetLabel: WOString {
+    value = labels.street;
+    escapeHTML = NO;
+};
+Street: WOTextField {
+    value = person.address#street;
+    size  = 30;
+};
+
+CommentLabel: WOString {
+    value = labels.comment;
+};
+Comment: WOTextField {
+    value = person.comment;
+    size  = 30;
+};
+
+TelephoneLabel: WOString {
+    value = labels.telephoneLabel;
+};
+Telephone: WOTextField {
+    value = person.phone#number;
+    size  = 30;
+};
+
+EmailLabel: WOString {
+    value = labels.email;
+};
+Email: WOTextField {
+    value = person.email1;
+    size  = 30;
+};
+
+UrlLabel: WOString {
+    value = labels.url;
+};
+Url: WOTextField {
+    value = person.url;
+    size  = 30;
+};
+
+SearchSubmit: WOSubmitButton {
+        action   = search;
+        name     = labels.searchButtonLabel;
+        value    = labels.searchButtonLabel;
+        class    = "button_narrow";
+};
+
+FormLetterSubmit: WOSubmitButton {
+        action   = formletter;
+        name     = labels.formletterButtonLabel;
+        value    = labels.formletterButtonLabel;
+        class    = "button_wide";
+};
+
+ClearSubmit: WOSubmitButton {
+        action   = clearForm;
+        name     = labels.clearButtonLabel;
+        value    = labels.clearButtonLabel;
+        class    = "button_wide";
+};
+
+HasSearchedCond: WOConditional {
+  condition = hasSearched;
+};
+HasSearchedCondElse: WOConditional {
+  condition = hasSearched;
+  negate    = YES;
+};
+
+AttributeCell: SkyAttributeCell {
+  keyColor = "subAttributeCell"; 
+}
+ValueCell:     SkyValueCell     {
+  valueColor = "subValueCell"; 
+}
+
+MainButtonRow: WOGenericContainer {
+        elementName = "TR";
+        BGCOLOR     = config.colors_mainButtonRow;
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+MaxSearchCountPopUp: WOPopUpButton {
+  list            = ( "100", "200", "500", "600", "1000" );
+  item            = item;
+  string          = item;
+  selection       = maxSearchCount;
+  singleSelection = YES;
+};
+
+MaxSearchCountLabel: WOString {
+    value = labels.maxResults;
+};
+
+HasFormletterCond : WOConditional {
+  condition = hasFormletter;
+};
+
+Formletter : LSWFormLetterComponent {
+  data = formletterData;
+};
+
+// Saved Searches
+
+SaveSearchLabel: WOString {
+  value = labels.saveSearch;
+}
+
+SaveSearchAttr: SkySubAttribute {
+  label = labels.saveSearch;
+  width = "30%";
+}
+SaveTitle: WOTextField {
+  value = saveTitle;
+  size  = 30;
+}
+CreateTabAttr: SkySubAttribute {  
+  label = labels.createTab;
+  width = "30%";
+}
+CreateTabCheckBox: WOCheckBox {
+  checked = showTab;
+}
+
+SaveSearchSubmit: WOSubmitButton {
+  action   = saveSearch;
+  name     = labels.saveButtonLabel;
+  value    = labels.saveButtonLabel;
+  class    = "button_narrow";
+}
+
+
+HasSearchesToLoadCondElse: WOConditional {
+  condition = hasSavedSearches;
+  negate    = YES;
+}
+HasSearchesToLoadCond: WOConditional {
+  condition = hasSavedSearches;
+}
+LoadSearchLabel: WOString {
+  value = labels.loadSearch;
+}
+LoadSearchForm: WOForm {
+  name   = "savedSearch";
+  action = loadSavedSearch;
+}
+
+LoadSearchAttr: SkySubAttribute {
+  label = labels.loadSearch;
+  width = "30%";
+}
+LoadSearchPopUp: WOPopUpButton {
+  list      = savedSearches;
+  nilString = "--";
+  selection = searchTitle;
+  singleSelection = YES;
+  onChange  = "document.savedSearch.submit(); return true";
+}
+
+HasNoJavaScriptCond: WOConditional {
+  condition = session.isJavaScriptEnabled;
+  negate    = YES;
+}
+LoadSearchSubmit: WOSubmitButton {
+  action   = loadSavedSearch;
+  name     = "savedSearchLoadButton";
+  value    = labels.savedSearchesLoad;
+  class    = "button_wide";
+}
+

@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='iso-8859-1' standalone='yes'?>
+<var:component className="Frame" const:title="Run Method"
+               xmlns="http://www.w3.org/1999/xhtml"
+               xmlns:var="http://www.skyrix.com/od/binding"
+               xmlns:const="http://www.skyrix.com/od/constant">
+  <table width="100%">
+    <tr>
+      <td align="left" valign="center">
+        <h2>
+          <a var:action="backToMain">
+            <var:string value="component.componentName" /></a>:
+          <var:string value="methodName" />
+        </h2>
+      </td>
+      
+      <td align="right" valign="top">
+        <a var:action="backToMain">
+          <img filename="skyrix_logo.gif"
+          const:alt="Back to MainPage" border="0" />
+        </a>
+      </td>
+    </tr>
+  </table>
+
+  <hr />
+
+  <table width="100%" cellspacing="0">
+    <tr>
+      <td bgcolor="#FFDAAA">Method Help</td>
+
+      <td>
+        <var:string value="help" const:escapeHTML="NO" />
+      </td>
+    </tr>
+  </table>
+
+  <var:if condition="hasSignatures" const:negate="YES">
+    <font color="red">Error:</font>
+    Something is wrong, no signatures could be found for
+    method <var:string value="methodName"/> of component
+    <var:string value="component.componentName"/> !
+  </var:if>
+  
+  <var:if condition="hasSignatures">
+    <br />
+  
+    <table width="100%" cellspacing="0">
+      <tr bgcolor="#FFDAAA">
+        <th width="20%" valign="top" align="left">Signatures</th>
+        <th width="30%" valign="top" align="left">Variables</th>
+        <th valign="top" align="left">Result</th>
+      </tr>
+
+      <tr>
+        <td valign="top">
+          <var:foreach list="invocations" item="item">
+            <a var:action="selectInvocation">
+              <var:string value="item.methodSignature.xmlRpcTypes" /></a>
+            <br />
+          </var:foreach>
+        </td>
+        
+        <td valign="top">
+          <form var:action="run">
+            <table border="0" width="100%">
+              <thead>
+                <tr>
+                  <th align="center">Type</th>
+                  <th align="center">Your Input</th>
+                </tr>
+              </thead>
+  
+              <var:foreach count="invocation.methodSignature.numberOfArguments"
+                           index="index">
+                <tr align="center">
+                  <td align="center">
+                    <var:string value="currentType" />
+                  </td>
+                  <td align="center">
+                    <var:component className="EnterValue"
+                                   value="currentElement" />
+                  </td>
+                </tr>
+              </var:foreach>
+  
+              <tr>
+                <td align="right" colspan="2">
+                  <input type="submit" var:action="run"
+                         var:value="methodName" />
+                </td>
+              </tr>
+            </table>
+          </form>
+        </td>
+  
+        <td valign="top">
+          <var:if condition="hasResult">
+              <var:component className="ShowValue" value="result" 
+                             sxComponent="component" />
+          </var:if>
+        </td>
+      </tr>
+    </table>
+  </var:if>
+</var:component>
+

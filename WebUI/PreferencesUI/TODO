@@ -1,0 +1,5 @@
+# $Id$
+
+OGoDefaultEditField.m
+- check whether isEditableDef and isEditable are supposed to be the same
+  binding

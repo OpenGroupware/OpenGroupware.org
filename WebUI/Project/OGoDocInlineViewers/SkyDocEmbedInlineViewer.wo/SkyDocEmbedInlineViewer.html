@@ -1,0 +1,25 @@
+<#UseIFrame>
+  <#UseData>
+    <#IFrame>
+      no iframe support in this browser, can't display document.
+    </#IFrame>
+  </#UseData>
+  
+  <#UseURI>
+    <#IFrameURI>
+      no iframe support in this browser, can't display document.
+    </#IFrameURI>
+  </#UseURI>
+</#UseIFrame>
+
+<#DontUseIFrame>
+  <#UseEmbed>
+    <#UseURI ><#EmbedURI /></#UseURI>
+    <#UseData><#EmbedData/></#UseData>
+  
+    <noembed>
+      Can't provide an inline viewer,
+      your browser does not support the EMBED HTML tag.
+    </noembed>
+  </#UseEmbed>
+</#DontUseIFrame>

@@ -1,0 +1,35 @@
+// $Id: OGoLogoutPage.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+SessionId: WOString {
+  value = session.sessionID;
+}
+
+UserId: WOString {
+  value   = session.activeLogin;
+}
+
+Version: WOString {
+  value   = application.version;
+}
+
+Body: WOBody {
+  COLOR         = config.colors_textColor;
+  LINK          = config.colors_linkColor;
+  VLINK         = config.colors_vlinkColor;
+  BGCOLOR       = config.colors_bgColor;
+  filename      = "background.jpg";
+}
+
+Image: WOHyperlink {
+  href        = restartUrl;
+  filename    = "homepage.jpg";
+  BORDER      = "0";
+}
+
+TheUser: WOString {
+        value   = "User";
+};
+
+LoggedOutFromSession: WOString {
+        value   = "logged out from session";
+};

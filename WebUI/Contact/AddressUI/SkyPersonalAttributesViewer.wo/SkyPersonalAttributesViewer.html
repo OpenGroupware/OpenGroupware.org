@@ -1,0 +1,20 @@
+<!-- $Id: SkyPersonalAttributesViewer.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+
+<#IsInConfigMode>
+  <table border="0" cellspacing="0" cellpadding="2" width="100%">
+    <#ConfigTitle/> 
+    <#ViewerConfig/>
+  </table>
+</#IsInConfigMode>
+
+<#IsNotInConfigMode>
+  <#PatternsRep>
+    <table border="0" cellspacing="0" cellpadding="2" width="100%">
+      <tr><td colspan="2"></td></tr>
+      <#PatternTitle>
+        <#CollapsibleButtonMode ><#ConfButtons     /></#CollapsibleButtonMode>
+        <#CollapsibleContentMode><#AttributesViewer/></#CollapsibleContentMode>
+      </#PatternTitle>
+    </table>
+  </#PatternsRep>
+</#IsNotInConfigMode>

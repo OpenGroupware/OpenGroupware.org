@@ -1,0 +1,17 @@
+# $Id$
+
+ADDITIONAL_INCLUDE_DIRS += \
+
+ADDITIONAL_LIB_DIRS += \
+
+$(WOAPP_NAME)_TOOL_LIBS += \
+	-lLSFoundation		\
+	-lGDLExtensions		\
+	-lGDLAccess		\
+	-lEOControl		\
+	-lOGoProject		\
+	-lOGoScheduler		\
+	-lDOM			\
+	-lSaxObjC		\
+
+#$(WOAPP_NAME)_TOOL_LIBS += -lWOJavaScript -lNGJavaScript -ljs

@@ -1,0 +1,49 @@
+{
+  requires = ( MAIN );
+
+  publicResources = (
+  );
+
+  classes = {
+    SxProjectsFolder = {
+      superclass    = "SxFolder";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+    };
+
+    SxProjectFolder = {
+      superclass    = "SxFolder";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+    };
+
+    SxDocumentFolder = {
+      superclass    = "SxFolder";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+    };
+
+    SxDocument = {
+      superclass    = "SxObject";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+    };
+
+    SxProjectNotesFolder = {
+      superclass    = "SxFolder";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+    };
+    SxNote = {
+      superclass    = "SxObject";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+    };
+  };
+
+  factories = {
+  };
+
+  categories = {
+  };
+}

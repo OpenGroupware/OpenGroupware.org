@@ -1,0 +1,39 @@
+{
+  requires = ( MAIN );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+
+  categories = {
+    SxUserFolder = {
+      methods = {
+        "settings" = { 
+          protectedBy = "View";
+          pageName    = "SxUserSettingsPage"; 
+        };
+        "install" = { 
+          protectedBy = "View";
+          pageName    = "SxInstallInfoPage"; 
+        };
+        "saveSettings" = { 
+          protectedBy = "View";
+          pageName    = "SxUserSettingsPage"; 
+          actionName  = "saveSettings";
+        };
+        "setPassword" = { 
+          protectedBy = "View";
+          pageName    = "SxUserSettingsPage"; 
+          actionName  = "setPassword";
+        };
+        "saveGroups" = { 
+          protectedBy = "View";
+          pageName    = "SxUserSettingsPage"; 
+          actionName  = "saveGroups";
+        };
+      };
+    };
+  };
+}

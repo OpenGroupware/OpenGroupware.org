@@ -1,0 +1,2752 @@
+<?xml version="1.0"?>
+<!-- $Id: INTERFACE.xml,v 1.1.1.1 2003/07/09 22:57:27 cvs Exp $ -->
+
+<interface name="com.skyrix.jobs" 
+           xmlns="http://www.skyrix.com/skyrix-idl"
+           xmlns:xrt="http://www.skyrix.com/od/xmlrpc-types"
+           xmlns:xsd="urn://example-namespace">
+
+  <documentation lang="en">
+    This interface provides access to the job functions provided by the SKYRiX
+    system. It has functions to access all types of jobs (listTodos,
+    listPrivateJobs, listArchivedJobs etc.), create new jobs (createJob),
+    get single job entries (getJob) and change the status of jobs (markJobDone,
+    archiveJob, rejectJob ...).
+  </documentation>
+  <documentation lang="de">
+    Dieses Interface stellt Methoden zum Zugriff auf die Job-Funktionalit'at
+    des SKYRiX Systems bereit. Es ist m'oglich, auf alle Arten von Jobs
+    zuzugreifen (listTodos, listPrivateJobs, listArchivedJobs usw.), neue Jobs
+    anzulegen (createJob), einzelne Jobs zu fetchen (getJob) und den Status
+    einzelner Jobs zu 'andern (markJobDone, archiveJob, rejectJob...)
+  </documentation>
+
+  <method name="markJobDone">
+    <signature>
+      <input name="id" type="xsd:string">
+        <documentation lang="en">
+          job ID
+        </documentation>
+        <documentation lang="de">
+          Job-ID
+        </documentation>
+      </input>
+      <input name="comment" type="xsd:string">
+        <documentation lang="en">
+          comment
+        </documentation>
+        <documentation lang="de">
+          Kommentar
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="id" type="xsd:string">
+         <documentation lang="en">
+          job ID
+        </documentation>
+        <documentation lang="de">
+          Job-ID
+        </documentation>
+      </input>
+     <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.markJobDone("10231","Completed")
+       ]]>
+      <documentation lang="en">
+        Sets the status of the job with the SKYRiX ID "10231" to "done"
+        and adds the comment "Completed" to this action.
+      </documentation>
+      <documentation lang="de">
+        Setzt den Status des Jobs mit der SKYRiX ID "10231" auf "erledigt" und
+        f'ugt den Kommentar "Completed" zu dieser Aktion hinzu.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "markJobDone" sets the status of the job with the given
+      SKYRiX ID to "done" and adds and optional comment to this action.
+      The ID can be either in the URL format (skyrix://host.name/123456)
+      or just the job ID (e.g. 123456).
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "markJobDone" setzt den Status des Jobs mit der 'ubergebenen
+      SKYRiX ID auf "erledigt" und f'ugt einen optionalen Kommentar zu dieser
+      Aktion hinzu.
+      Die ID kann dabei sowohl im URL-Format (z.B. skyrix://host.name/123456) 
+      als auch als normale Job-ID (z.B. 123456) vorliegen.
+    </documentation>
+  </method>  
+
+  <method name="archiveJob">
+    <signature>
+      <input name="id" type="xsd:string">
+        <documentation lang="en">
+          job ID
+        </documentation>
+        <documentation lang="de">
+          Job-ID
+        </documentation>
+      </input>
+      <input name="comment" type="xsd:string">
+        <documentation lang="en">
+          comment
+        </documentation>
+        <documentation lang="de">
+          Kommentar
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="id" type="xsd:string">
+        <documentation lang="en">
+          job ID
+        </documentation>
+        <documentation lang="de">
+          Job-ID
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.archiveJob("10231","Archived")
+       ]]>
+      <documentation lang="en">
+        Sets the status of the job with the SKYRiX ID "10231" to "archived"
+        and adds the comment "Archived" to this action.
+      </documentation>
+      <documentation lang="de">
+        Setzt den Status des Jobs mit der SKYRiX ID "10231" auf "archiviert" 
+        und f'ugt den Kommentar "Archived" zu dieser Aktion hinzu.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "archiveJob" sets the status of the job with the given
+      SKYRiX ID to "archived" and adds and optional comment to this action.
+      The ID can be either in the URL format (skyrix://host.name/123456)
+      or just the job ID (e.g. 123456).
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "archiveJob" setzt den Status des Jobs mit der 'ubergebenen
+      SKYRiX ID auf "archiviert" und f'ugt einen optionalen Kommentar zu dieser
+      Aktion hinzu.
+      Die ID kann dabei sowohl im URL-Format (z.B. skyrix://host.name/123456) 
+      als auch als normale Job-ID (z.B. 123456) vorliegen.
+    </documentation>
+  </method>  
+
+  <method name="acceptJob">
+    <signature>
+      <input name="id" type="xsd:string">
+        <documentation lang="en">
+          job ID
+        </documentation>
+        <documentation lang="de">
+          Job-ID
+        </documentation>
+      </input>
+      <input name="comment" type="xsd:string">
+        <documentation lang="en">
+          comment
+        </documentation>
+        <documentation lang="de">
+          Kommentar
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="id" type="xsd:string">
+        <documentation lang="en">
+          job ID
+        </documentation>
+        <documentation lang="de">
+          Job-ID
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.acceptJob("10231","Accepted")
+       ]]>
+      <documentation lang="en">
+        Sets the status of the job with the SKYRiX ID "10231" to "accepted"
+        and adds the comment "Accepted" to this action.
+      </documentation>
+      <documentation lang="de">
+        Setzt den Status des Jobs mit der SKYRiX ID "10231" auf "angenommen" 
+        und f'ugt den Kommentar "Accepted" zu dieser Aktion hinzu.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "acceptJob" sets the status of the job with the given
+      SKYRiX ID to "accepted" and adds and optional comment to this action.
+      The ID can be either in the URL format (skyrix://host.name/123456)
+      or just the job ID (e.g. 123456).
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "acceptJob" setzt den Status des Jobs mit der 'ubergebenen
+      SKYRiX ID auf "angenommen" und f'ugt einen optionalen Kommentar zu dieser
+      Aktion hinzu.
+      Die ID kann dabei sowohl im URL-Format (z.B. skyrix://host.name/123456) 
+      als auch als normale Job-ID (z.B. 123456) vorliegen.
+    </documentation>
+  </method>  
+
+  <method name="annotateJob">
+    <signature>
+      <input name="id" type="xsd:string">
+        <documentation lang="en">
+          job ID
+        </documentation>
+        <documentation lang="de">
+          Job-ID
+        </documentation>
+      </input>
+      <input name="comment" type="xsd:string">
+        <documentation lang="en">
+          comment
+        </documentation>
+        <documentation lang="de">
+          Kommentar
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.annotateJob("10231","Comment")
+       ]]>
+      <documentation lang="en">
+        Adds a note with the text "Comment" to the job with the SKYRiX ID
+        "10231".
+      </documentation>
+      <documentation lang="de">
+        F'ugt einen Kommentar mit dem Text "Comment" zum Job mit der SKYRiX 
+        ID "10231" hinzu.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "annotateJob" adds a note with the given text to the job
+      with the given  SKYRiX ID.
+      The ID can be either in the URL format (skyrix://host.name/123456)
+      or just the job ID (e.g. 123456).
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "annotateJob" f'ugt einen Kommentar mit dem 'ubergebenen
+      Text zum Job mit der 'ubergebenen SKYRiX ID hinzu.
+      Die ID kann dabei sowohl im URL-Format (z.B. skyrix://host.name/123456) 
+      als auch als normale Job-ID (z.B. 123456) vorliegen.
+    </documentation>
+  </method> 
+
+  <method name="reactivateJob">
+    <signature>
+      <input name="id" type="xsd:string">
+        <documentation lang="en">
+          job ID
+        </documentation>
+        <documentation lang="de">
+          Job-ID
+        </documentation>
+      </input>
+      <input name="comment" type="xsd:string">
+        <documentation lang="en">
+          comment
+        </documentation>
+        <documentation lang="de">
+          Kommentar
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="id" type="xsd:string">
+        <documentation lang="en">
+          job ID
+        </documentation>
+        <documentation lang="de">
+          Job-ID
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.reactivateJob("10231","Reactivated")
+       ]]>
+      <documentation lang="en">
+        Reactivates the job with the job with the SKYRiX ID "10231"
+        and adds the comment "Reactivated" to this action.
+      </documentation>
+      <documentation lang="de">
+        Reaktiviert den Job mit der SKYRiX ID "10231"
+        und f'ugt den Kommentar "Reactivated" zu dieser Aktion hinzu.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "reactivateJob" reactivates the job with the given
+      SKYRiX ID and adds and optional comment to this action.
+      The ID can be either in the URL format (skyrix://host.name/123456)
+      or just the job ID (e.g. 123456).
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "reactivateJob" reaktiviert den Job mit der 'ubergebenen
+      SKYRiX ID und f'ugt einen optionalen Kommentar zu dieser Aktion hinzu.
+      Die ID kann dabei sowohl im URL-Format (z.B. skyrix://host.name/123456) 
+      als auch als normale Job-ID (z.B. 123456) vorliegen.
+    </documentation>
+  </method>  
+
+  <method name="rejectJob">
+    <signature>
+      <input name="id" type="xsd:string">
+        <documentation lang="en">
+          job ID
+        </documentation>
+        <documentation lang="de">
+          Job-ID
+        </documentation>
+      </input>
+      <input name="comment" type="xsd:string">
+        <documentation lang="en">
+          comment
+        </documentation>
+        <documentation lang="de">
+          Kommentar
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="id" type="xsd:string">
+        <documentation lang="en">
+          job ID
+        </documentation>
+        <documentation lang="de">
+          Job-ID
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.rejectJob("10231","Rejected")
+       ]]>
+      <documentation lang="en">
+        Sets the status of the job with the SKYRiX ID "10231" to "rejected"
+        and adds the comment "Rejected" to this action.
+      </documentation>
+      <documentation lang="de">
+        Setzt den Status des Jobs mit der SKYRiX ID "10231" auf "abgewiesen" 
+        und f'ugt den Kommentar "Rejected" zu dieser Aktion hinzu.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "rejectJob" sets the status of the job with the given
+      SKYRiX ID to "rejected" and adds and optional comment to this action.
+      The ID can be either in the URL format (skyrix://host.name/123456)
+      or just the job ID (e.g. 123456).
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "rejectJob" setzt den Status des Jobs mit der 'ubergebenen
+      SKYRiX ID auf "abgewiesen" und f'ugt einen optionalen Kommentar zu dieser
+      Aktion hinzu.
+      Die ID kann dabei sowohl im URL-Format (z.B. skyrix://host.name/123456) 
+      als auch als normale Job-ID (z.B. 123456) vorliegen.
+    </documentation>
+  </method> 
+
+  <method name="listTodosInTimeRange">
+    <signature>
+      <input name="timeRange" type="xsd:int">
+        <documentation lang="en">
+          time range
+        </documentation>
+        <documentation lang="de">
+          Tage
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.listTodosInTimeRange(24)
+       ]]>
+      <documentation lang="en">
+        Lists the todo jobs for the next 24 days.
+      </documentation>
+      <documentation lang="de">
+        Gibt die Todo-Jobs der n'achsten 24 Tage zur'uck.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "listTodosInTimeRange" returns the todo jobs in the given
+      time range (starts today).
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "listTodosInTimeRange" gibt die Todo-Jobs innerhalb des
+      uebergebenen Zeitraums beginnend mit dem aktuellen Tag zurueck.
+    </documentation>
+  </method>
+
+  <method name="listTodos">
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          filter for keywords
+        </documentation>
+        <documentation lang="de">
+          Filtern nach Schl'usselw'ortern
+        </documentation>
+      </input>
+      <input name="timeselection" type="xsd:string">
+        <documentation lang="en">
+          time interval
+        </documentation>
+        <documentation lang="de">
+          Zeitintervall
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          filter for keywords
+        </documentation>
+        <documentation lang="de">
+          Filtern nach Schl'usselw'ortern
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.listTodos("10111")
+       ]]>
+      <documentation lang="en">
+        Lists the todos of the account with the SKYRiX ID "10111".
+      </documentation>
+      <documentation lang="de">
+        Listet alle ToDo-Jobs des Accounts mit der SKYRiX ID "10111" auf.
+      </documentation>
+    </example>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.listTodos()
+       ]]>
+      <documentation lang="en">
+        List all jobs of the user which are neither "done" nor "archived".
+      </documentation>
+      <documentation lang="de">
+        Listet alle momentanen ToDo-Jobs des Nutzers auf, welche weder den
+        Status "erledigt" noch den Status "archiviert" besitzen.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "listTodos" lists todo jobs. If teamId is provided, the jobs
+      of the team with this ID are returned, otherwise the jobs of the current
+      user are returned (if the showgroups flag is used, you get both). 
+      You can narrow the result set by filtering for
+      keywords or by providing a timeselection to get only jobs within a
+      special interval.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "listTodos" gibt ToDo-Jobs zur'uck. Wenn das teamId-Argument
+      'ubergeben wird, werden die Jobs des Teams mit der entsprechenden
+      SKYRiX ID zur'uckgegeben, anderenfalls werden nur die Jobs des jeweiligen
+      Nutzers zur'uckgegeben. Das Suchresultat kann durch Angabe von
+      Schl'usselw'ortern oder durch Angabe einer Zeitschranke eingeschr'ankt
+      werden.
+    </documentation>
+  </method>  
+
+  <method name="listPrivateJobs">
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          filter for keywords
+        </documentation>
+        <documentation lang="de">
+          Filtern nach Schl'usselw'ortern
+        </documentation>
+      </input>
+      <input name="timeselection" type="xsd:string">
+        <documentation lang="en">
+          time interval
+        </documentation>
+        <documentation lang="de">
+          Zeitintervall
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          filter for keywords
+        </documentation>
+        <documentation lang="de">
+          Filtern nach Schl'usselw'ortern
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.listPrivateJobs("10111")
+       ]]>
+      <documentation lang="en">
+        Lists the private jobs of the account with the SKYRiX ID "10111".
+      </documentation>
+      <documentation lang="de">
+        Listet alle privaten Jobs des Accounts mit der SKYRiX ID "10111" auf.
+      </documentation>
+    </example>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.listPrivateJobs()
+       ]]>
+      <documentation lang="en">
+        List all private jobs of the current user.
+      </documentation>
+      <documentation lang="de">
+        Listet alle privaten Jobs des Nutzers.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "listPrivateJobs" lists private jobs. 
+      If teamId is provided, the jobs
+      of the team with this ID are returned, otherwise the jobs of the current
+      user are returned (if the showgroups flag is used, you get both). 
+      You can narrow the result set by filtering for
+      keywords or by providing a timeselection to get only jobs within a
+      special interval.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "listPrivateJobs" gibt private Jobs zur'uck. 
+      Wenn das teamId-Argument
+      'ubergeben wird, werden die Jobs des Teams mit der entsprechenden
+      SKYRiX ID zur'uckgegeben, anderenfalls werden nur die Jobs des jeweiligen
+      Nutzers zur'uckgegeben. Das Suchresultat kann durch Angabe von
+      Schl'usselw'ortern oder durch Angabe einer Zeitschranke eingeschr'ankt
+      werden.
+    </documentation>
+  </method> 
+
+  <method name="listArchivedJobs">
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          filter for keywords
+        </documentation>
+        <documentation lang="de">
+          Filtern nach Schl'usselw'ortern
+        </documentation>
+      </input>
+      <input name="timeselection" type="xsd:string">
+        <documentation lang="en">
+          time interval
+        </documentation>
+        <documentation lang="de">
+          Zeitintervall
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          filter for keywords
+        </documentation>
+        <documentation lang="de">
+          Filtern nach Schl'usselw'ortern
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.listArchivedJobs("10111")
+       ]]>
+      <documentation lang="en">
+        Lists the archived jobs of the account with the SKYRiX ID "10111".
+      </documentation>
+      <documentation lang="de">
+        Listet alle archivierten Jobs des Accounts mit der SKYRiX ID "10111" 
+        auf.
+      </documentation>
+    </example>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.listArchivedJobs()
+       ]]>
+      <documentation lang="en">
+        List all archived jobs of the current user.
+      </documentation>
+      <documentation lang="de">
+        Listet alle archivierten Jobs des Nutzers.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "listArchivedJobs" lists archived jobs. 
+      If teamId is provided, the jobs
+      of the team with this ID are returned, otherwise the jobs of the current
+      user are returned (if the showgroups flag is used, you get both). 
+      You can narrow the result set by filtering for
+      keywords or by providing a timeselection to get only jobs within a
+      special interval.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "listArchivedJobs" gibt archivierte Jobs zur'uck. 
+      Wenn das teamId-Argument
+      'ubergeben wird, werden die Jobs des Teams mit der entsprechenden
+      SKYRiX ID zur'uckgegeben, anderenfalls werden nur die Jobs des jeweiligen
+      Nutzers zur'uckgegeben. Das Suchresultat kann durch Angabe von
+      Schl'usselw'ortern oder durch Angabe einer Zeitschranke eingeschr'ankt
+      werden.
+    </documentation>
+  </method> 
+
+  <method name="listControlJobs">
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          filter for keywords
+        </documentation>
+        <documentation lang="de">
+          Filtern nach Schl'usselw'ortern
+        </documentation>
+      </input>
+      <input name="timeselection" type="xsd:string">
+        <documentation lang="en">
+          time interval
+        </documentation>
+        <documentation lang="de">
+          Zeitintervall
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          filter for keywords
+        </documentation>
+        <documentation lang="de">
+          Filtern nach Schl'usselw'ortern
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.listControlJobs("10111")
+       ]]>
+      <documentation lang="en">
+        Lists the control jobs of the account with the SKYRiX ID "10111". 
+      </documentation>
+      <documentation lang="de">
+        Listet alle Kontoll-Jobs des Accounts mit der SKYRiX ID "10111" auf.
+      </documentation>
+    </example>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.listControlJobs()
+       ]]>
+      <documentation lang="en">
+        List all control jobs of the current user.
+      </documentation>
+      <documentation lang="de">
+        Listet alle Kontroll-Jobs des Nutzers.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "listControlJobs" lists control jobs. 
+      If teamId is provided, the jobs
+      of the team with this ID are returned, otherwise the jobs of the current
+      user are returned (if the showgroups flag is used, you get both). 
+      You can narrow the result set by filtering for
+      keywords or by providing a timeselection to get only jobs within a
+      special interval.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "listControlJobs" gibt Kontroll-Jobs zur'uck. 
+      Wenn das teamId-Argument
+      'ubergeben wird, werden die Jobs des Teams mit der entsprechenden
+      SKYRiX ID zur'uckgegeben, anderenfalls werden nur die Jobs des jeweiligen
+      Nutzers zur'uckgegeben. Das Suchresultat kann durch Angabe von
+      Schl'usselw'ortern oder durch Angabe einer Zeitschranke eingeschr'ankt
+      werden.
+    </documentation>
+  </method> 
+
+  <method name="listDelegatedJobs">
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          filter for keywords
+        </documentation>
+        <documentation lang="de">
+          Filtern nach Schl'usselw'ortern
+        </documentation>
+      </input>
+      <input name="timeselection" type="xsd:string">
+        <documentation lang="en">
+          time interval
+        </documentation>
+        <documentation lang="de">
+          Zeitintervall
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          filter for keywords
+        </documentation>
+        <documentation lang="de">
+          Filtern nach Schl'usselw'ortern
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <input name="showgroups" type="xsd:boolean">
+        <documentation lang="en">
+          show jobs for user's groups
+        </documentation>
+        <documentation lang="de">
+          Jobs der Gruppen des Nutzers anzeigen
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <input name="teamId" type="xsd:string">
+        <documentation lang="en">
+          team ID
+        </documentation>
+        <documentation lang="de">
+          Team-ID
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="personId" type="xsd:string">
+        <documentation lang="en">
+          person ID
+        </documentation>
+        <documentation lang="de">
+          Personen-ID
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.listDelegatedJobs("10111")
+       ]]>
+      <documentation lang="en">
+        Lists the delegated jobs of the account with the SKYRiX ID "10111".
+      </documentation>
+      <documentation lang="de">
+        Listet alle delegierten Jobs des Accounts mit der SKYRiX ID "10111" 
+        auf.
+      </documentation>
+    </example>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.listDelegatedJobs()
+       ]]>
+      <documentation lang="en">
+        Lists all delegated jobs of the current user.
+      </documentation>
+      <documentation lang="de">
+        Listet alle delegierten Jobs des Nutzers.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "listDelegatedJobs" lists delegated jobs. 
+      If teamId is provided, the jobs
+      of the team with this ID are returned, otherwise the jobs of the current
+      user are returned (if the showgroups flag is used, you get both). 
+      You can narrow the result set by filtering for
+      keywords or by providing a timeselection to get only jobs within a
+      special interval.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "listDelegatedJobs" gibt delegierte Jobs zur'uck. 
+      Wenn das teamId-Argument
+      'ubergeben wird, werden die Jobs des Teams mit der entsprechenden
+      SKYRiX ID zur'uckgegeben, anderenfalls werden nur die Jobs des jeweiligen
+      Nutzers zur'uckgegeben. Das Suchresultat kann durch Angabe von
+      Schl'usselw'ortern oder durch Angabe einer Zeitschranke eingeschr'ankt
+      werden.
+    </documentation>
+  </method> 
+
+  <method name="listProjectJobs">
+    <signature>
+      <input name="projectId" type="xsd:string">
+        <documentation lang="en">
+          project ID
+        </documentation>
+        <documentation lang="de">
+          Projekt-ID
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of job documents
+        </documentation>
+        <documentation lang="de">
+          Array von Job-Dokumenten
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.listProjectJobs("10248")
+       ]]>
+      <documentation lang="en">
+        Lists the jobs for the project with the SKYRiX ID "10248".
+      </documentation>
+      <documentation lang="de">
+        Listet alle Jobs des Projektes mit der SKYRiX ID "10248" auf.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "listProjectJobs" lists all project jobs for the given
+      project ID. 
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "listProjectJobs" gibt alle Projekt-Jobs f'ur das
+      Projekt mit der 'ubergebenen ID zur'uck. 
+    </documentation>
+  </method> 
+
+  <method name="deleteJob">
+    <signature>
+      <input name="id" type="xsd:string">
+        <documentation lang="en">
+          job ID
+        </documentation>
+        <documentation lang="de">
+          job-ID
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.deleteJob("10234")
+       ]]>
+      <documentation lang="en">
+        Deletes the job with the SKYRiX ID "10234".
+      </documentation>
+      <documentation lang="de">
+        L'oscht den Job mit der SKYRiX ID "10234".
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "deleteJob" deletes the job with the given SKYRiX ID.
+      The ID can be either in the URL format (skyrix://host.name/123456)
+      or just the job ID (e.g. 123456).
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "deleteJob" l'oscht den Job mit der 'ubergebenen SKYRiX ID.
+      Die ID kann dabei sowohl im URL-Format (z.B. skyrix://host.name/123456) 
+      als auch als normale Job-ID (z.B. 123456) vorliegen.
+    </documentation>
+  </method> 
+
+  <method name="getJob">
+    <signature>
+      <input name="id" type="xsd:string">
+        <documentation lang="en">
+          job ID
+        </documentation>
+        <documentation lang="de">
+          job-ID
+        </documentation>
+      </input>
+      <output type="xsd:struct">
+        <documentation lang="en">
+          job document
+        </documentation>
+        <documentation lang="de">
+          Job-Dokument
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.getJob("10231")
+       ]]>
+      <documentation lang="en">
+        Fetches the job with the SKYRiX ID "10231".
+      </documentation>
+      <documentation lang="de">
+        Fordern den Job mit der SKYRiX ID "10231" an.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "getJob" fetches the job with the given SKYRiX ID.
+      The ID can be either in the URL format (skyrix://host.name/123456)
+      or just the job ID (e.g. 123456).
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "getJob" fordert den Job mit der 'ubergebenen SKYRiX ID an.
+      Die ID kann dabei sowohl im URL-Format (z.B. skyrix://host.name/123456) 
+      als auch als normale Job-ID (z.B. 123456) vorliegen.
+    </documentation>
+  </method> 
+
+  <method name="createJob">
+    <signature>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <input name="projectId" type="xsd:string">
+        <documentation lang="en">
+          project ID
+        </documentation>
+        <documentation lang="de">
+          ID des assoziierten Projektes
+        </documentation>
+      </input>
+      <input name="startDate" type="xsd:date">
+        <documentation lang="en">
+          start date
+        </documentation>
+        <documentation lang="de">
+          Startdatum
+        </documentation>
+      </input>
+      <input name="endDate" type="xsd:date">
+        <documentation lang="en">
+          end date
+        </documentation>
+        <documentation lang="de">
+          Enddatum
+        </documentation>
+      </input>
+      <input name="priority" type="xsd:int">
+        <documentation lang="en">
+          priority
+        </documentation>
+        <documentation lang="de">
+          Priorit'at
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          keywords
+        </documentation>
+        <documentation lang="de">
+          Schl'usselworte
+        </documentation>
+      </input>
+      <input name="category" type="xsd:string">
+        <documentation lang="en">
+          category
+        </documentation>
+        <documentation lang="de">
+          Kategorie
+        </documentation>
+      </input>
+      <input name="comment" type="xsd:string">
+        <documentation lang="en">
+          comment
+        </documentation>
+        <documentation lang="de">
+          Kommentar
+        </documentation>
+      </input>
+      <input name="notify" type="xsd:int">
+        <documentation lang="en">
+          notify creation
+        </documentation>
+        <documentation lang="de">
+          Benachrichtigung
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <input name="projectId" type="xsd:string">
+        <documentation lang="en">
+          project ID
+        </documentation>
+        <documentation lang="de">
+          ID des assoziierten Projektes
+        </documentation>
+      </input>
+      <input name="startDate" type="xsd:date">
+        <documentation lang="en">
+          start date
+        </documentation>
+        <documentation lang="de">
+          Startdatum
+        </documentation>
+      </input>
+      <input name="endDate" type="xsd:date">
+        <documentation lang="en">
+          end date
+        </documentation>
+        <documentation lang="de">
+          Enddatum
+        </documentation>
+      </input>
+      <input name="priority" type="xsd:int">
+        <documentation lang="en">
+          priority
+        </documentation>
+        <documentation lang="de">
+          Priorit'at
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          keywords
+        </documentation>
+        <documentation lang="de">
+          Schl'usselworte
+        </documentation>
+      </input>
+      <input name="category" type="xsd:string">
+        <documentation lang="en">
+          category
+        </documentation>
+        <documentation lang="de">
+          Kategorie
+        </documentation>
+      </input>
+      <input name="comment" type="xsd:string">
+        <documentation lang="en">
+          comment
+        </documentation>
+        <documentation lang="de">
+          Kommentar
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <input name="projectId" type="xsd:string">
+        <documentation lang="en">
+          project ID
+        </documentation>
+        <documentation lang="de">
+          ID des assoziierten Projektes
+        </documentation>
+      </input>
+      <input name="startDate" type="xsd:date">
+        <documentation lang="en">
+          start date
+        </documentation>
+        <documentation lang="de">
+          Startdatum
+        </documentation>
+      </input>
+      <input name="endDate" type="xsd:date">
+        <documentation lang="en">
+          end date
+        </documentation>
+        <documentation lang="de">
+          Enddatum
+        </documentation>
+      </input>
+      <input name="priority" type="xsd:int">
+        <documentation lang="en">
+          priority
+        </documentation>
+        <documentation lang="de">
+          Priorit'at
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          keywords
+        </documentation>
+        <documentation lang="de">
+          Schl'usselworte
+        </documentation>
+      </input>
+      <input name="category" type="xsd:string">
+        <documentation lang="en">
+          category
+        </documentation>
+        <documentation lang="de">
+          Kategorie
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <input name="projectId" type="xsd:string">
+        <documentation lang="en">
+          project ID
+        </documentation>
+        <documentation lang="de">
+          ID des assoziierten Projektes
+        </documentation>
+      </input>
+      <input name="startDate" type="xsd:date">
+        <documentation lang="en">
+          start date
+        </documentation>
+        <documentation lang="de">
+          Startdatum
+        </documentation>
+      </input>
+      <input name="endDate" type="xsd:date">
+        <documentation lang="en">
+          end date
+        </documentation>
+        <documentation lang="de">
+          Enddatum
+        </documentation>
+      </input>
+      <input name="priority" type="xsd:int">
+        <documentation lang="en">
+          priority
+        </documentation>
+        <documentation lang="de">
+          Priorit'at
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          keywords
+        </documentation>
+        <documentation lang="de">
+          Schl'usselworte
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <input name="projectId" type="xsd:string">
+        <documentation lang="en">
+          project ID
+        </documentation>
+        <documentation lang="de">
+          ID des assoziierten Projektes
+        </documentation>
+      </input>
+      <input name="startDate" type="xsd:date">
+        <documentation lang="en">
+          start date
+        </documentation>
+        <documentation lang="de">
+          Startdatum
+        </documentation>
+      </input>
+      <input name="endDate" type="xsd:date">
+        <documentation lang="en">
+          end date
+        </documentation>
+        <documentation lang="de">
+          Enddatum
+        </documentation>
+      </input>
+      <input name="priority" type="xsd:int">
+        <documentation lang="en">
+          priority
+        </documentation>
+        <documentation lang="de">
+          Priorit'at
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <input name="projectId" type="xsd:string">
+        <documentation lang="en">
+          project ID
+        </documentation>
+        <documentation lang="de">
+          ID des assoziierten Projektes
+        </documentation>
+      </input>
+      <input name="startDate" type="xsd:date">
+        <documentation lang="en">
+          start date
+        </documentation>
+        <documentation lang="de">
+          Startdatum
+        </documentation>
+      </input>
+      <input name="endDate" type="xsd:date">
+        <documentation lang="en">
+          end date
+        </documentation>
+        <documentation lang="de">
+          Enddatum
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <input name="projectId" type="xsd:string">
+        <documentation lang="en">
+          project ID
+        </documentation>
+        <documentation lang="de">
+          ID des assoziierten Projektes
+        </documentation>
+      </input>
+      <input name="startDate" type="xsd:date">
+        <documentation lang="en">
+          start date
+        </documentation>
+        <documentation lang="de">
+          Startdatum
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <input name="projectId" type="xsd:string">
+        <documentation lang="en">
+          project ID
+        </documentation>
+        <documentation lang="de">
+          ID des assoziierten Projektes
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.createJob("Test")
+       ]]>
+      <documentation lang="en">
+        Creates a new job named "Test".
+      </documentation>
+      <documentation lang="de">
+        Legt einen neuen Job mit dem Namen "Test" an.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "createJob" creates a new job entry. It's possible to provide
+      the executant ID (if it's omitted, the creator gets the executant),
+      a project ID if the job is associated with a project, the start and
+      end date, a priority.
+      The IDs can be either in the URL format (skyrix://host.name/123456)
+      or just the ID without any prefixes (e.g. 123456).
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "createJob" erstellt einen neuen Job-Eintrag. Es ist
+      m'oglich, die ID der Person zu 'ubergeben, die den Job ausf'uhren soll
+      (wird dies weggelassen, wird der Ersteller zu dieser Person). Weiterhin
+      kann eine Projekt-ID, Start- und Enddatum sowie eine Priorit'at 
+      'ubergeben werden.
+      Die IDs k'onnen dabei sowohl im URL-Format 
+      (z.B. skyrix://host.name/123456) 
+      als auch als normale ID (z.B. 123456) vorliegen.
+    </documentation>
+  </method> 
+
+  <method name="updateJob">
+    <signature>
+      <input name="url" type="xsd:string">
+        <documentation lang="en">
+          job url
+        </documentation>
+        <documentation lang="de">
+          Job-URL
+        </documentation>
+      </input>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <input name="startDate" type="xsd:date">
+        <documentation lang="en">
+          start date
+        </documentation>
+        <documentation lang="de">
+          Startdatum
+        </documentation>
+      </input>
+      <input name="endDate" type="xsd:date">
+        <documentation lang="en">
+          end date
+        </documentation>
+        <documentation lang="de">
+          Enddatum
+        </documentation>
+      </input>
+      <input name="priority" type="xsd:int">
+        <documentation lang="en">
+          priority
+        </documentation>
+        <documentation lang="de">
+          Priorit'at
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          keywords
+        </documentation>
+        <documentation lang="de">
+          Schl'usselworte
+        </documentation>
+      </input>
+      <input name="category" type="xsd:string">
+        <documentation lang="en">
+          category
+        </documentation>
+        <documentation lang="de">
+          Kategorie
+        </documentation>
+      </input>
+      <input name="notify" type="xsd:int">
+        <documentation lang="en">
+          notify creation
+        </documentation>
+        <documentation lang="de">
+          Benachrichtigung
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="url" type="xsd:string">
+        <documentation lang="en">
+          job url
+        </documentation>
+        <documentation lang="de">
+          Job-URL
+        </documentation>
+      </input>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <input name="startDate" type="xsd:date">
+        <documentation lang="en">
+          start date
+        </documentation>
+        <documentation lang="de">
+          Startdatum
+        </documentation>
+      </input>
+      <input name="endDate" type="xsd:date">
+        <documentation lang="en">
+          end date
+        </documentation>
+        <documentation lang="de">
+          Enddatum
+        </documentation>
+      </input>
+      <input name="priority" type="xsd:int">
+        <documentation lang="en">
+          priority
+        </documentation>
+        <documentation lang="de">
+          Priorit'at
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          keywords
+        </documentation>
+        <documentation lang="de">
+          Schl'usselworte
+        </documentation>
+      </input>
+      <input name="category" type="xsd:string">
+        <documentation lang="en">
+          category
+        </documentation>
+        <documentation lang="de">
+          Kategorie
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="url" type="xsd:string">
+        <documentation lang="en">
+          job url
+        </documentation>
+        <documentation lang="de">
+          Job-URL
+        </documentation>
+      </input>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <input name="startDate" type="xsd:date">
+        <documentation lang="en">
+          start date
+        </documentation>
+        <documentation lang="de">
+          Startdatum
+        </documentation>
+      </input>
+      <input name="endDate" type="xsd:date">
+        <documentation lang="en">
+          end date
+        </documentation>
+        <documentation lang="de">
+          Enddatum
+        </documentation>
+      </input>
+      <input name="priority" type="xsd:int">
+        <documentation lang="en">
+          priority
+        </documentation>
+        <documentation lang="de">
+          Priorit'at
+        </documentation>
+      </input>
+      <input name="keywords" type="xsd:string">
+        <documentation lang="en">
+          keywords
+        </documentation>
+        <documentation lang="de">
+          Schl'usselworte
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="url" type="xsd:string">
+        <documentation lang="en">
+          job url
+        </documentation>
+        <documentation lang="de">
+          Job-URL
+        </documentation>
+      </input>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <input name="startDate" type="xsd:date">
+        <documentation lang="en">
+          start date
+        </documentation>
+        <documentation lang="de">
+          Startdatum
+        </documentation>
+      </input>
+      <input name="endDate" type="xsd:date">
+        <documentation lang="en">
+          end date
+        </documentation>
+        <documentation lang="de">
+          Enddatum
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="url" type="xsd:string">
+        <documentation lang="en">
+          job url
+        </documentation>
+        <documentation lang="de">
+          Job-URL
+        </documentation>
+      </input>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <input name="startDate" type="xsd:date">
+        <documentation lang="en">
+          start date
+        </documentation>
+        <documentation lang="de">
+          Startdatum
+        </documentation>
+      </input>
+      <input name="endDate" type="xsd:date">
+        <documentation lang="en">
+          end date
+        </documentation>
+        <documentation lang="de">
+          Enddatum
+        </documentation>
+      </input>
+      <input name="priority" type="xsd:int">
+        <documentation lang="en">
+          priority
+        </documentation>
+        <documentation lang="de">
+          Priorit'at
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="url" type="xsd:string">
+        <documentation lang="en">
+          job url
+        </documentation>
+        <documentation lang="de">
+          Job-URL
+        </documentation>
+      </input>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="url" type="xsd:string">
+        <documentation lang="en">
+          job url
+        </documentation>
+        <documentation lang="de">
+          Job-URL
+        </documentation>
+      </input>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <input name="executantId" type="xsd:string">
+        <documentation lang="en">
+          executant ID
+        </documentation>
+        <documentation lang="de">
+          ID der ausf'uhrenden Person
+        </documentation>
+      </input>
+      <input name="startDate" type="xsd:date">
+        <documentation lang="en">
+          start date
+        </documentation>
+        <documentation lang="de">
+          Startdatum
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <signature>
+      <input name="url" type="xsd:string">
+        <documentation lang="en">
+          job url
+        </documentation>
+        <documentation lang="de">
+          Job-URL
+        </documentation>
+      </input>
+      <input name="title" type="xsd:string">
+        <documentation lang="en">
+          job name
+        </documentation>
+        <documentation lang="de">
+          Name des Jobs
+        </documentation>
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.updateJob("10231","Test")
+       ]]>
+      <documentation lang="en">
+        Changes the title of the job with the SKYRiX ID "10231" to "Test".
+      </documentation>
+      <documentation lang="de">
+        'Andert den Titel des Jobs mit der SKYRiX ID "10231" auf "Test".
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "updateJob" updates the job with the given SKYRiX ID.
+      It replaces the given attributes if their are set and preserves all
+      others.
+      The IDs can be either in the URL format (skyrix://host.name/123456)
+      or just the ID without any prefixes (e.g. 123456).
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "updateJob" 'andert die 'ubergebenen Attribute im Job mit
+      der 'ubergebenen Job-ID. Nicht gesetzte Attribute werden beibehalten.
+      Die IDs kann dabei sowohl im URL-Format (z.B. skyrix://host.name/123456) 
+      als auch als normale ID (z.B. 123456) vorliegen.
+    </documentation>
+  </method> 
+</interface>

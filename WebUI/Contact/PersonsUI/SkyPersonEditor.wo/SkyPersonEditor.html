@@ -1,0 +1,90 @@
+<#Frame>
+  <!--$Id: SkyPersonEditor.html,v 1.3 2004/05/04 23:31:10 helge Exp $ -->
+  <#Calendar/>
+
+  <#Window>
+    <#WarningMode>
+      <#PersonForm>
+          <table border="0" cellspacing="0" cellpadding="2" width="100%">     
+            <#CommonCollapsible><#PersonEditor/></#CommonCollapsible>
+            <tr><td colspan="2"></td></tr>
+
+            <#TelephoneCollapsible><#PhoneEditor/></#TelephoneCollapsible>
+            <tr><td colspan="2"></td></tr>
+
+            <#ExtendedCollapsible><#ExtendedAttrEditor/></#ExtendedCollapsible>
+            <tr><td colspan="2"></td></tr>
+
+            <#AddressCollapsible>
+              <tr>
+                <td colspan="2">
+                  <#AddressTypes><#AddressEditor/></#AddressTypes>
+                </td>
+              </tr>
+            </#AddressCollapsible>
+            <tr><td colspan="2"></td></tr>
+
+            <#CategoryCollapsible><#CategoryEditor/></#CategoryCollapsible>
+            <tr><td colspan="2"></td></tr>
+
+            <#CommentCollapsible><#CommentEditor/></#CommentCollapsible>
+            <tr><td colspan="2"></td></tr>
+
+            <#ContactCollapsible><#ContactEditor/></#ContactCollapsible>
+            <tr><td colspan="2"></td></tr>
+
+            <#PictureCollapsible>
+              <tr>
+                <#AttributeCell>
+                  <#Font><#PictureUploadLabel/>:</#Font>
+                </#AttributeCell>
+                <#ValueCell>
+                  <#EditFont><#PictureUpload/></#EditFont>
+                </#ValueCell>
+              </tr>
+        
+              <#DeleteImageCond>
+                <tr>
+                  <#AttributeCell>
+                    <#Font><#DeleteImageLabel/>:</#Font>
+                  </#AttributeCell>
+                  <#ValueCell>
+                    <#EditFont><#DeleteImageCheckBox/></#EditFont>
+                  </#ValueCell>
+                </tr>
+              </#DeleteImageCond>
+            </#PictureCollapsible>
+
+            <#IsOwnerLoggedInOrNewCond>
+              <tr><td colspan="2"></td></tr>
+ 
+              <#PrivateCollapsible>
+                <#CompanyFlagEditor/>
+                <#HasAccessRightsCond>
+                  <#IsInNewModeCond>
+                    <#CreateLimitedAttr>
+                      <#CreateLimitedCheckBox/>
+                    </#CreateLimitedAttr>
+                  </#IsInNewModeCond>
+                </#HasAccessRightsCond>
+              </#PrivateCollapsible>
+            </#IsOwnerLoggedInOrNewCond>
+
+            <#EditorButtons/>
+          </table>
+
+      </#PersonForm>
+    </#WarningMode>
+  </#Window>
+
+<script language="JavaScript">
+<!--
+if (document.personEditor) {
+  if (document.personEditor.elements[0]) {
+    document.personEditor.elements[0].focus();
+  }
+}
+// -->
+</script>
+
+</#Frame>

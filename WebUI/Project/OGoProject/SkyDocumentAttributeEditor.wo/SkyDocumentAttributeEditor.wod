@@ -1,0 +1,34 @@
+// $Id: SkyDocumentAttributeEditor.wod,v 1.4 2003/12/22 16:58:03 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.standardAttributeEdit;
+  onClose = cancel;
+}
+
+Form: WOForm {
+  action  = renameFile;
+  name    = "saveForm";
+}
+
+
+SubjectAttr: SkyAttribute {
+  label = labels.subject;
+}
+
+Subject: WOTextField {
+  value    = doc.NSFileSubject;
+  size     = config.textField_size2;
+}
+
+SaveButton: WOSubmitButton {
+  action = save;
+  value  = labels.save;
+  class  = "button_narrow";
+}
+CancelButton: WOHyperlink {
+  action = cancel;
+  string = labels.cancel;
+  class  = "button_narrow";
+}

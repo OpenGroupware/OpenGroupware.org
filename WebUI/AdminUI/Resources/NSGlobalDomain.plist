@@ -1,0 +1,145 @@
+{
+  "Global Settings" = (
+     {
+     name = skyrix_id;
+     English = {
+       title = "Unique string to identify different SKYRiX installations";
+       info = "This string differs SKYRiX installations from each other";
+     };
+     German = {
+       title = "Eindeutige Zeichenkette zur Identifikation verschiedener SKYRiX-Installationen";
+       info = "Diese eindeutige Zeichenkette unterscheidet verschiedene SKYRiX-Installationen voneinander.";
+       };
+     ptBR = {
+       title = "String identificador da instalação OpenGroupware";
+       info = "Este string permite diferenciar uma instalação OpenGroupware de outra";
+     };
+     },
+     {
+     name = LSAttachmentPath;
+     critical = YES;
+     English = {
+       title = "Directory for saving SKYRiX documents";
+       info = "All documents created by SKYRiX are saved in this path. The default for this path is <i>~skyrix41/documents</i>";
+     };
+     German = {
+       title = "Verzeichnis zur Ablage von SKYRiX-Dokumenten";
+       info = "Alle von SKYRiX erstellten Dokumente werden in diesem Pfad gespeichert. Im Normalfall sollte dieser Wert auf <i>~skyrix41/documents</i> zeigen.";
+       };
+     ptBR = {
+       title = "Diretório para salvar os documentos dos usuários do OpenGroupware";
+       info = "Todos os documentos criados pelo OpenGroupware serão salvos neste caminho. O valor padrão para este caminho é <i>~opengroupware/documents</i>";
+     };
+     },
+     {
+     name = LSAdaptor;
+     critical = YES;
+     values = ("FrontBase2", "PostgreSQL", "PostgreSQL72", "Sybase10", "Oracle7");
+     English = {
+       title = "Used database adaptor to connect to the database";
+       info = "Select the database adaptor that matches your installed database. Be sure to know what you are doing, selecting the wrong adapter will break SKYRiX. If everything works right now, there's no point changing this setting.";
+     };
+     German = {
+       title = "Verwendeter Datenbank-Adapter";
+       info = "Hier kann der Datenbank-Adapter ausgew&auml;hlt werden, welcher fuer die Verbindung des SKYRiX Systems mit einer installierten Datenbank zust&auml;ndig sein soll. <br/><b>Behandeln Sie diese Option mit Vorsicht, aus der falschen Auswahl des Datenbank-Adapters resultiert ein Nichtfunktionieren des SKYRiX-Systems.</b> <br/>Wenn Ihr System zur Zeit funktioniert, gibt es keinen Grund, diese Option zu &auml;ndern.";
+       };
+     ptBR = {
+       title = "Adaptador para conectar o OpenGroupware ao banco de dados"; 
+       info = "Selecione o adaptador adequado ao seu banco de dados. <b>Cuidado: Um valor errado danificará o OpenGroupware e seus dados.</b> Se o OpenGroupware estiver funcionando no momento, não há necessidade de alterar este parâmetro.";
+     };
+     },
+     {
+     name = LSModelName;
+     critical = YES;
+     values = ("OpenGroupware.org_FrontBase2", "OpenGroupware.org_PostgreSQL", "sybase_sky41", "oracle_sky41");
+     English = {
+       title = "Used database model";
+       info = "Choose a database model that matches your chosen database from <i>LSAdaptor</i>. <b>Selecting the wrong model will break your SKYRiX system.</b>";
+     };
+     German = {
+       title = "Verwendetes Datenbank-Modell";
+       info = "W&auml;hlen Sie ein Datenbankmodell, welches der unter <i>LSAdaptor</i> festgelegten Datenbank entspricht. <br/> <b>Die Auswahl eines falschen Datenbankmodells wird zum Nichtfunktionieren des SKYRiX-Systems f&uuml;hren.";
+       };
+     ptBR = {
+       title = "Modelo de banco de dados a ser usado";
+       info = "Escolha o modelo de banco de dados que combina com seu banco de dados, dado por <i>LSAdaptor</i> acima. <b>Cuidado: Se um modelo errado for selecionado, o OpenGroupware será danificado.</b>";
+     };
+     },
+     {
+     name = LSMaxSearchCount;
+     English = {
+       title = "Maximum result count for search operations";
+       info = "This parameter specifies how many results are returned when performing search operations.";
+     };
+     German = {
+       title = "Maximale Ergebnisanzahl f&uuml;r Suchanfragen";
+       info = "Mit diesem Parameter wird festgelegt, wie viele Ergebnisse maximal bei einer Suchanfragen zur&uuml;ckgegeben werden.";
+       };
+     ptBR = {
+       title = "Número máximo de resultados nas operações de pesquisa de dados";
+       info = "Este parâmetro especifica quantos resultados devem ser apresentados ao se executar pesquisas no banco de dados.";
+     };
+     },
+     {
+     name = LSNewsImagesPath;
+     English = {
+       title = "Path to store news images";
+       info = "News images are stored within this path. The default path is <i>~skyrix41/news</i>.";
+     };
+     German = {
+       title = "Pfad zur Speicherung der News-Bilder";
+       info = "In diesem Pfad werden die Bilder der News-Anwendung gespeichert. Der Default-Pfad f&uuml;r diese Option ist <i>~skyrix41/news</i>.";
+       };
+     ptBR = {
+       title = "Caminho para armazenar as imagens da aplicação <b>Notícias</b>";
+       info = "As imagens das notícias serão armazenadas neste caminho. O caminho padrão é <i>~opengroupware/news</i>.";
+     };
+     },
+     {
+     name = LSNewsImagesUrl;
+     English = {
+       title = "URL under which the webserver provides the news images";
+       info = "The webserver publishes the news images under this URL. Note that there has to be a corresponding alias entry in the webserver configfile located at <i>~skyrix41/Library/WebServer/httpd.conf</i>. The default value is  <i>ArticleImages</i>.";
+     };
+     German = {
+       title = "URL, unter der der Webserver die News-Bilder bereitstellt";
+       info = "Unter dieser URL stellt der Webserver die News-Bilder bereit. Ein entsprechender Alias-Eintrag zu diesem Parameter muss in der Webserver-Konfigurationsdatei <i>~skyrix41/Library/WebServer/httpd.conf</i> gesetzt sein. Der Default-Wert f&uuml; diesen Parameter ist <i>/ArticleImages</i>.";
+       };
+     ptBR = {
+       title = "URL para o servidor web servir as imagens das notícias";
+       info = "O servidor web publicará as imagens das notícias sob este URL. Note que deverá existir uma entrada de <b>alias</b> apropriada no arquivo de configuração do servidor web (em geral localizado em /etc/httpd/...). O valor padrão é <i> ArticleImages</i>."; 
+     };
+     },
+     {
+     name = NGBundlePath;
+     critical = YES;
+     English = {
+       title = "Where to find the SKYRiX bundles";
+       info = "The SKYRiX bundles (the several parts of the application) are searched in this path. The default is <i>~skyrix41/Library/Skyrix</i>. Setting this parameter to an invalid path will render your SKYRiX system useless.";
+     };
+     German = {
+       title = "Verzeichnis, in dem die SKYRiX-Bundles gesucht werden";
+       info = "Die SKYRiX Bundles (die einzelnen Teile der Applikation) werden in diesem Pfad gesucht. Der Standardpfad ist <i>~skyrix41/Library/Skyrix</i>. Wenn Sie diesen Parameter auf einen falschen Pfad setzen, wird Ihre SKYRiX-Applikation nicht mehr funktionieren.";
+       };
+     ptBR = {
+       title = "Onde encontrar os <i>bundles</i> OpenGroupware";
+       info = "Os <i>bundles</i> OpenGroupware (i.e. as partes que compôem a aplicação) serão pesquisadas neste caminho. O valor padrão é <i>~opengroupware/Library/OpenGroupware.org </i>. <b>Cuidado:</b> Ao definir um caminho errado, o OpenGroupware não mais terá suas aplicações, tornando-se um sistema inútil.";
+     };
+     },
+     {
+     name = TimeZoneName;
+     English = {
+       title = "SKYRiX time zone";
+       info = "This specifies the SKYRiX timezone.";
+     };
+     German = {
+       title = "SKYRiX Zeitzone";
+       info = "Dieser Parameter legt die SKYRiX Zeitzone fest.";
+       };
+     ptBR = {
+       title = "Fuso horário de referência interna do OpenGroupware";
+       info = "Especifica o fuso horário interno de referência do sistema OpenGroupware, a partir do qual o fuso horário do usuário é calculado. É recomendado manter sempre o valor padrão GMT.";
+     };
+     },
+  );
+};

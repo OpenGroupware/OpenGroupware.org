@@ -1,0 +1,6 @@
+# $Id$
+
+before-all :: $(LSWProject_DERIVED_RESOURCES)
+
+clean :: 
+	rm -f $(LSWProject_DERIVED_RESOURCES)

@@ -1,0 +1,8 @@
+# $Id$
+
+$(BUNDLE_NAME)$(BUNDLE_EXTENSION)/bundle-info.plist:
+	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
+	  $(LN_S) -f ../bundle-info.plist .)
+
+after-all :: $(BUNDLE_NAME)$(BUNDLE_EXTENSION)/bundle-info.plist
+

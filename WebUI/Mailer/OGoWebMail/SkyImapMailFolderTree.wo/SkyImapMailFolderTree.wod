@@ -1,0 +1,131 @@
+// $Id: SkyImapMailFolderTree.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+// tree structure
+
+FolderTree: SkyTreeView {
+  list    = rootFolders;
+  item    = folder;
+  sublist = folder.subFolders;
+  zoom    = treeState.isExpanded;
+};
+
+FolderViewCell: WETreeData {
+  isTreeElement = YES;
+  icon          = folderIcon;
+  cornerIcon    = cornerFolderIcon;
+  bgcolor       = folderBGColor;
+};
+
+FolderDataCell: WETreeData {
+  isTreeElement = NO;
+  align         = "right";
+  bgcolor       = folderBGColor;
+};
+
+FolderLink: WOHyperlink {
+  action = folderClicked;
+};
+
+FolderName: SkyRichString {
+  value   = folder.name;
+  isSmall = YES;
+  isBold  = hasNewOrUnseenMails;
+  size    = "1";
+}
+
+IsSelectedFolder: WOConditional {
+  condition = isSelectedFolder;
+};
+
+IsNotSelectedFolder: WOConditional {
+  condition = isSelectedFolder;
+  negate    = YES;
+};
+
+ImapHost: WOString {
+  value =  session.userDefaults.imap_host;
+};
+
+UnseenCount: WOString {
+  value = folder.unseen;
+};
+
+AllCount: WOString {
+  value = folder.exists;
+};
+
+UnreadIcon: WOImage {
+  filename = "icon_unread.gif";
+  alt      = labels.unread;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+};
+
+TotalIcon: WOImage {
+  filename = "icon_read.gif";
+  alt      = "Total";
+  align    = "center";
+  valign   = "middle";
+  border   = "0";    
+}
+
+HasParent: WOConditional {
+  condition = hasParent;
+};
+
+HasNoParent : WOConditional {
+  condition = hasParent;
+  negate    = YES;
+};
+
+ShowAllUnreadCond: WOConditional {
+  condition = showAllUnreadIcons;
+};
+
+ShowAllLink: WOHyperlink {
+  action = showAllMessagesAction;
+  alt    = labels.showAllMessages;
+};
+
+ShowUnreadLink: WOHyperlink {
+  action = showUnreadMessagesAction;
+  alt    = labels.showUnreadMessages;
+};
+
+ShowUnreadIcon: WOImage {
+  filename = "icon_unread.gif";
+  alt      = labels.showUnreadMessages;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+};
+
+ShowAllIcon: WOImage {
+  filename = "icon_read.gif";
+  alt      = labels.showAllMessages;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";    
+}
+
+Font: SkyConfigFont {}
+
+// DnD support
+
+DropZone: WEDropContainer {
+  elementName   = "tr";
+  isAttached    = YES;
+  tags          = ( "mail" );
+  droppedObject = droppedMail;
+  action        = droppedMailOnFolder;
+  bgcolor       = folderBGColor;
+  activeColor   = "lightblue";
+}
+
+FolderDragZone: WEDragContainer {
+  tag            = "mailFolder";
+  object         = message;
+  effectsAllowed = "move";
+  isDraggable    = YES;
+}

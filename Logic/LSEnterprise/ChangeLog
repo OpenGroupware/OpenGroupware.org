@@ -1,0 +1,87 @@
+2004-04-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSFullSearchEnterpriseCommand.m: updated for new LSFullSearchCommand
+	  version (v5.0.10)
+
+2004-01-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* common.h, LSExtendedSearchEnterpriseCommand.m: minor tweaks for 
+	  MacOSX (v5.0.9)
+
+Fri Nov 28 19:09:19 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* LSExtendedSearchEnterpriseCommand.m: fixed additional keyword
+	  qualifier (a 'lower' was missing) (in conexion with ogo bug 118)
+	  (v5.0.8)
+
+2003-08-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.7
+
+	* LSGetFakeProjectForEnterpriseCommand.m: don't throw an exception if
+	  we find no fake-project, but rather print a warning on the shell and
+	  return nil
+
+	* LSExtendedSearchEnterpriseCommand.m: cleanups
+
+Wed Aug 13 16:44:45 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* LSExtendedSearchEnterpriseCommand.m: fixed keyword query again 
+	  (now supports OR qualifier and case insensitive search) (v5.0.6)
+
+Tue Aug  5 17:28:10 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSExtendedSearchEnterpriseCommand.m: fixed keyword query
+	  (v5.0.5)
+
+Wed Jul 30 13:31:49 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSExtendedSearchEnterpriseCommand.m: added detailed keywords search
+	  (fixes bug 671) (v5.0.4)
+
+Mon Jul  7 17:49:54 2003  Jan Reichmann  <jan@skyrix.com>
+
+	*  fixed OGo import (v5.0.3)
+
+Mon Jul  7 14:07:31 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.2)
+
+2003-04-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added a Version file
+
+2003-01-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* fixed some compilation warnings, fixed compilation OSX
+
+Thu Nov 22 10:43:20 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSNewEnterpriseCommand.m: set end-date of created projects
+	  to 2032 instead of 2100 ... (broke some Unix code)
+
+Fri Oct  5 12:55:17 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* LSGetEnterprisesForGlobalIDs.m: configure the additional infos
+
+Mon Jun 18 16:57:35 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* bundle-info.plist: increased version of LSFullSearchCommand
+
+Mon Jul 10 17:45:02 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* added licensing
+
+Fri Jun 23 19:34:32 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSGetProjectForEnterpriseCommand.m: col db_status is used for
+ 	  archived instead of status
+
+Thu Jun 22 19:42:02 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSGetProjectForEnterpriseCommand.m: archived are not fetched
+
+Tue May 23 14:44:59 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* created LSEnterprise bundle
+

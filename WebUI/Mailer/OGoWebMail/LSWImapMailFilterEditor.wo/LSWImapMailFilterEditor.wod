@@ -1,0 +1,224 @@
+// $Id: LSWImapMailFilterEditor.wod,v 1.7 2004/04/26 10:34:23 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.LSWMailFilterEditor_windowTitle;
+  onClose = cancel;
+}
+
+Form: WOForm {
+  name   = "filtereditor";
+  action = save;
+}
+
+WarningModeCond: WOConditional { 
+  condition = isInWarningMode; 
+}
+
+WarningModeCondElse: WOConditional {
+  condition = isInWarningMode;
+  negate    = YES;
+}
+
+Warning: LSWWarningPanel {
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
+}
+
+IsDeleteDisabledCondElse: WOConditional {
+  condition = isDeleteDisabled;
+  negate    = YES;
+}
+
+SaveSubmit: WOSubmitButton {
+  action   = save;
+  value    = labels.saveButtonLabel;
+  class    = "button_narrow";
+}
+
+// Note: this must be a submit button because the panel can contain a
+//       password field!
+DeleteSubmit: WOSubmitButton {
+  action   = delete;
+  value    = labels.deleteButtonLabel;
+  class    = "button_narrow";
+}
+
+CancelSubmit: WOHyperlink {
+  action = cancel;
+  string = labels.cancelButtonLabel;
+  class  = "button_narrow";
+}
+
+AttributeCell: WOGenericContainer {
+  elementName = "td";
+  align       = "right";
+//valign      = "top";
+  bgcolor     = config.colors_attributeCell;
+  width       = "15%";
+}
+
+AttributeCellTwo: WOGenericContainer {
+  elementName = "td";
+  align       = "right";
+  colspan     = "2";
+//valign      = "top";
+  bgcolor     = config.colors_attributeCell;
+  width       = "15%";
+}
+
+AttributeCellAction: WOGenericContainer {
+  elementName = "td";
+  align       = "right";
+  valign      = "top";
+  bgcolor     = config.colors_attributeCell;
+  width       = "15%";
+}
+
+ValueCell: WOGenericContainer {
+  elementName = "td";
+  align       = "left";
+  bgcolor     = config.colors_valueCell;
+}
+
+// searching for persons
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+FilterRep: WORepetition {
+  list  = filter.entries;
+  index = index;
+  item  = entry;
+}
+
+FilterNameLabel: WOString {
+  value = labels.filterName;
+}
+
+FilterName: WOTextField {
+  name      = "filtername";
+  value     = filter.name;
+  formatter = session.formatString;
+  size      = 40;
+}
+
+FilterPosLabel: WOString {
+  value = labels.filterPos;
+}
+
+FilterPos: WOPopUpButton {
+  list            = filterPos;
+  selection       = filter.filterPos;
+  item            = item;
+  singleSelection = YES;
+}
+
+TheLabel: WOString {
+  value = theLabel;
+}
+
+OfTheMessage: WOString {
+  value = labels.ofTheMessage;
+}
+
+FieldPopup: WOPopUpButton {
+//list            = config.MailHeaderFields;
+  list            = ("from", "to", "cc", "to:cc", "subject" );
+  string          = mailHeaderLabel;
+  item            = item;
+  selection       = entry.headerField;
+  singleSelection = YES;
+}
+
+FilterKindPopup: WOPopUpButton {
+//list            = config.FilterKinds;
+  list            = ("contains", "doesn't contain", "is", "isn't", 
+                     "begins with", "ends with" );
+  string          = filterKindLabel;
+  item            = item;
+  selection       = entry.filterKind;
+  singleSelection = YES;
+}
+
+SearchStringField: WOTextField {
+  value     = entry.string;
+  formatter = session.formatString;
+  size      = 40;
+}
+
+MoreSubmit: WOSubmitButton {
+  action           = more;
+  value            = labels.moreButtonLabel;
+  class            = "button_narrow";
+}
+
+FewerSubmit: WOSubmitButton {
+  action   = fewer;
+  value    = labels.fewerButtonLabel;
+  disabled = forbidfewer;
+  class    = "button_narrow";
+}
+IsFewerSubmitEnabled: WOConditional {
+  condition = forbidfewer;
+  negate    = YES;
+}
+
+ActionLabel: WOString {
+  value = labels.action;
+}
+
+MatchLabel: WOString {
+  value      = labels.match;
+  escapeHTML = NO;
+}
+
+MatchRadioList: WORadioButtonList {
+  list      = matchList;
+  item      = item;
+  selection = filter.match;
+  suffix    = matchSuffix;
+}
+
+FolderPopUpButton: WOPopUpButton {
+  list            = folderList;
+  item            = item;
+  string          = folderString;
+  singleSelection = YES;
+  selection       = filterFolder;
+}
+
+ThenMoveToFolder: WOString {
+  value = labels.thenMoveToFolder;
+}
+
+HasPasswordCond: WOConditional {
+  condition = hasPassword;
+  negate    = YES;
+}
+
+PasswordTextField: WOPasswordField {
+  value = password;
+}
+
+PasswordLabel: WOString {
+  value = labels.password;
+}
+
+SelectionMove : WORadioButton {
+  name    = "filter";
+  checked = selectionMove;
+}
+SelectionForward : WORadioButton {
+  name    = "filter";
+  checked = selectionForward;
+}
+
+ForwardAddressLabel : WOString {
+  value = labels.thenRedirectTo;
+}
+
+ForwardAddress : WOTextField {
+  value = filter.forwardAddress;
+}

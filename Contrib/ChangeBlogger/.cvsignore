@@ -1,0 +1,4 @@
+*.pyc
+index.py
+clprinter.py
+create_archive.sh

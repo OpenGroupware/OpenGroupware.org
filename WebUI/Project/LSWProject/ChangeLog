@@ -1,0 +1,197 @@
+2004-08-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWFolderEditor.wo, LSWProjectWizard.wo, LSWTextDocumentEditor.wo,
+	  SkyProjectAssignment.wo, SkyPropertiesEditor.wo, 
+	  SkyPropertyEditor.wo, LSWDocumentEditor.wo: fixed some XHTML issues 
+	  (v5.0.36)
+
+2004-07-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyProjectSelections.m: minor code cleanups (v5.0.35)
+
+2004-07-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWProjectEditor.m: fixed URL input field, use new 
+	  OGoFileManagerFactory API (v5.0.34)
+
+	* v5.0.33
+	
+	* LSWProjectEditor.m: use new OGoFileManagerFactory API
+
+	* LSWProjectEditor.m: detect available project bases dynamically using
+	  the OGoProjectBases bundle manager key, major code cleanups
+
+	* removed unused LSWDocumentEditor.m
+
+	* common.h: removed some unused includes
+
+	* LSWProjects.m, SkyProjectAssignment.m: minor code cleanups
+
+2004-07-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyProjectInlineViewer.wo/SkyProjectInlineViewer.html: added some
+	  nobr tags to avoid wrapping of labels (should be done by CSS in a
+	  later version) (v5.0.32)
+
+2004-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyProjectInlineViewer.wo: minor template cleanups (v5.0.31)
+
+2004-07-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* Defaults.plist: set LSPluginViewerEnabled to YES (v5.0.30)
+
+2004-05-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.29
+
+	* SkyProjectAssignment.m: minor code cleanups
+
+	* LSWDocumentViewer.m, LSWProjectEditor.m, LSWProjectWizard.m,
+	  SkyProjectInlineViewer.m, SkyPropertiesEditor.m, SkyPropertyEditor.m:
+	  major code cleanups
+
+2004-05-07  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWProjectJobList.wo/LSWProjectJobList.html: major fixes to the
+	  generated HTML tables (v5.0.28)
+
+2004-04-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.27
+	
+	* removed unused components: LSWDocumentAdvancedSearch, 
+	  LSWProjectViewer, LSWDocumentList, LSWFolderTree, 
+	  LSWObjectLinkEditor, LSWObjectLinkViewer
+
+	* bundle-info.plist: removed mappings of eo/doc editObjectLink,
+	  viewObjectLink and newObjectLink, removed LSWObjectLinkEditor and
+	  LSWObjectLinkViewer
+
+2004-03-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyProjectSelection.m: minor code cleanups, moved label category on
+	  NSObject to a separate file (v5.0.26)
+
+2004-03-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.25
+
+	* removed SkyJobResourceEditor (unused and deprecated)
+
+	* SkyProjectSelection.m: subminor code cleanups
+	
+	* LSWProjectEditor.m: code cleanups, use a radio button for the storage
+	  list, require the user to select a storage (all this should improve
+	  the situation where users are selecting an incorrect project storage
+	  by just clicking OK) (v5.0.25)
+	
+2004-03-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWProjectEditor.m, LSWProjects.m: do not use deprecated EOControl
+	  API (v5.0.24)
+
+2004-02-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.23
+
+	* LSWDocumentDownloadAction.m, SkyProjectAssignment.m, 
+	  SkyProjectInlineViewer.m: replaced -indexOfString: with 
+	  -rangeOfString:
+
+	* GNUmakefile: fixed for MacOSX
+
+2004-01-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyProjectSelection.m: code cleanups (v5.0.22)
+
+2004-01-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWProjectViewer.m, LSWProjects.m: major cleanups (v5.0.21)
+
+2003-12-22  Helge Hess  <helge.hess@skyrix.com>
+	
+	* fixed CSS 'id' vs 'class' issue (v5.0.20)
+	
+2003-12-03  Helge Hess  <helge.hess@skyrix.com>
+	
+	* v5.0.19
+
+	* LSWDocumentHtmlMailPage.wo: template cleanups, use "activate"
+	  direct-action instead of "viewDocument" (needs to be tested ...)
+
+	* LSWProjectHtmlMailPage.wo: template cleanups, still uses 
+	  LSWViewAction since "activate" doesn't allow to focus on a document
+
+2003-12-02  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.18
+
+	* LSWProjectEditor.m: code cleanups
+
+	* LSWProjectEditor.wo/LSWProjectEditor.html: cleanups, fixed some
+	  XHTML bugs
+
+2003-11-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: use WOBUNDLE_EXTENSION and WOBUNDLE_INSTALL_DIR defined
+	  in ../common.make (v5.0.17)
+
+Fri Nov 28 19:32:51 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyProjectAssignment.m: post SkyProjectDidChangeNotification 
+	  (ogo bug 172) (v5.0.16)
+
+2003-11-25  Thomas Schild  <ts@skyrix.com>
+
+	* SkyEnterpriseEditor.wo/SkyEnterpriseEditor.html: moved
+	  formelementname 'name' in javascript to 'elements[0]'
+	  (fixed OGo bug 436) (v5.0.15)
+
+2003-11-06  Thomas Schild  <ts@skyrix.com>
+
+	* SkyProjectAssignment.wo: image button --> css button
+	  (v5.0.14)
+
+2003-10-27  Thomas Schild  <ts@skyrix.com>
+
+	* LSWProjectEditor.wo, LSWProjectPreferences.wo:
+	  delete/cancelButton --> WOHyperlink css button
+	  (v5.0.13)
+
+Wed Oct  8 19:52:45 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* NSString+Perm.m: fixed bug regarding cleanups (use of uninitialized
+	  variable in -splitAccessPermissionString) (v5.0.12) 
+	  (fixed ogo bug 242)
+
+2003-10-08  Thomas Schild  <ts@skyrix.com>
+
+	* LSWDocumentAdvancedSearch.wo: imageButton --> css submitButton
+
+Thu Oct  2 13:01:11 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWProjectEditor.wo/LSWProjectEditor.wod: only value attr. allowed 
+	  for submit-buttons (remove there)
+
+2003-10-01  Thomas Schild  <ts@skyrix.com>
+
+	* SkyProjectSelection.wo: imageButton --> css submitButton
+	* LSWProjectEditor.wo: imageButton --> css submitButton
+	* LSWProjectPreferences.wo: imageButton --> css submitButton
+	* SkyProjectSelections.wo: imageButton --> css submitButton
+
+2003-08-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* various cleanups in most components, compiles without warnings now
+	  (v5.0.11)
+
+Mon Jul  7 18:33:07 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.10)
+
+	* removed historic ChangeLogs
+
+Thu Dec 10 12:14:18 1998  Joerg Grimm  <joerg@trex2>
+
+	* added ChangeLog

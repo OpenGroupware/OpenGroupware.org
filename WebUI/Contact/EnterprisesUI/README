@@ -1,0 +1,10 @@
+# $Id$
+
+EnterprisesUI
+=============
+
+
+SkyAssignPersonEditor
+=====================
+- just a small wrapper around SkyAssignPersonSubEditor to show it as a
+  regular content page

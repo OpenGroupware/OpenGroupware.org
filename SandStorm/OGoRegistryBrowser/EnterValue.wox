@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='iso-8859-1' standalone='yes'?>
+<span xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant">
+
+  <var:switch selection="valueType">
+    <var:case const:key="string">
+      <input type="text" var:value="value" />
+    </var:case>
+
+    <var:case const:key="i4">
+      <input type="text" var:value="value" />
+    </var:case>
+
+    <var:case const:key="float">
+      <input type="text" var:value="value" />
+    </var:case>
+
+    <var:case const:key="dateTime.iso8601">
+      <var:cal-field date="value" />
+    </var:case>
+
+    <var:case const:key="array">
+      <textarea var:value="value" cols="40" rows="5" />
+    </var:case>
+
+    <var:case const:key="struct">
+      <textarea var:value="value" cols="40" rows="5" />
+    </var:case>
+
+    <var:default>
+      <input type="text" var:value="value" />
+    </var:default>
+  </var:switch>
+</span>
+

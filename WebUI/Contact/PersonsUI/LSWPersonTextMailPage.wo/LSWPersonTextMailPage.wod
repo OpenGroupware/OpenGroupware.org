@@ -1,0 +1,11 @@
+// $Id: LSWPersonTextMailPage.wod,v 1.2 2004/04/19 11:07:03 helge Exp $
+
+NameLabel: WOString { value = labels.name;      }
+FirstName: WOString { value = object.firstname; }
+Name:      WOString { value = object.name;      }
+Link:      WOString { value = objectUrl;        }
+LinkLabel: WOString { value = labels.link;      }
+
+PersonViewerLabel: WOString {
+  value = labels.personViewer;
+}

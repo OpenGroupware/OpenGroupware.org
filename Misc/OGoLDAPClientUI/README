@@ -1,0 +1,28 @@
+# $Id$
+
+OGoLDAPClientUI
+===============
+
+This was done as a small example for LDAP integration back in summer 2001.
+It basically seems to be a ripoff of the project viewer panel.
+
+Might be interesting for some people, maybe it inspires somewhat to write a
+more complete and working LDAP frontend for OGo.
+
+Beware: the coding style is pretty much mixed up, do not use as an example
+        for that.
+
+Bugs
+====
+- apparently the tree is broken?
+- searching for firstname doesn't work?
+probably a lot more ;-)
+
+Configuration
+=============
+
+You need to set two defaults:
+  LdapViewer_Host     (eg ldap.skyrix.com)
+  LdapViewer_Base     (eg dc=skyrix,dc=com)
+  LdapViewer_User     (eg 'donald')
+  LdapViewer_Password (eg 'duck')

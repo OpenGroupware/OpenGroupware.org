@@ -1,0 +1,10 @@
+# $Id$
+
+LSWMail_INCLUDE_DIRS += -IHeaders -I../.. 
+
+ADDITIONAL_BUNDLE_LIBS += \
+	-lOGoFoundation	\
+	-lNGScripting	\
+	-lEOControl	\
+	-lDOM -lSaxObjC
+

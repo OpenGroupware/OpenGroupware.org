@@ -1,0 +1,27 @@
+// $Id: SkyAptResourceGroupsList.wod,v 1.1.1.1 2003/07/09 22:57:45 cvs Exp $
+
+AptResourceGroupList: LSWTableView {
+  labels            = labels;
+  title             = labels.aptResourceGroups;
+  start             = start;
+  label             = labels.aptResourceGroups;
+  list              = aptResourceGroups;
+  item              = aptResourceGroup;
+  selectedAttribute = selectedAttribute;
+  blockSize         = 50;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+  attributes        = (
+        { 
+                action   = "viewAptResourceGroup";
+                key      = "name"; 
+                labelKey = "name";
+                sort     = YES;
+        },
+  );
+};
+
+AptResourceGroupButtons: SkyButtonRow {
+  onNew      = newAptResourceGroup;
+  new        = labels.new;
+}

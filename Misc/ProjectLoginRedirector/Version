@@ -1,0 +1,7 @@
+# $Id$
+
+MAJOR_VERSION=1
+MINOR_VERSION=0
+SUBMINOR_VERSION:=1
+
+# v1.0.0 requires libNGObjWeb  v4.2.290

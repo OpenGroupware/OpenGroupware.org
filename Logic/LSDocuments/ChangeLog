@@ -1,0 +1,10 @@
+2004-07-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added missing library dependency for MacOSX (v5.0.3)
+
+2004-07-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* added document commands from LSProject v5.0.26 (v5.0.2)
+
+	* created ChangeLog
+

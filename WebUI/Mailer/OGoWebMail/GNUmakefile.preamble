@@ -1,0 +1,14 @@
+# $Id$
+
+OGoWebMail_WOBUNDLE_LIBS += \
+	-lOGoFoundation	\
+	-lNGScripting	\
+	-lNGMime -lEOControl \
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(OGoWebMail_WOBUNDLE_LIBS)
+
+OGoWebMail_INCLUDE_DIRS += \
+	-IHeaders	\
+	-I../..		\
+	-I../../../cyruslib

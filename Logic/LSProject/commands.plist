@@ -1,0 +1,130 @@
+// $Id$
+{
+  domainList = ( project, note, projectcompanyassignment );
+
+  domains = {
+    project = {
+      operations = {
+        new               = { class = "LSNewProjectCommand";            };
+        set               = { class = "LSSetProjectCommand";            };
+        get               = { class = "LSGetProjectCommand";            };
+        delete            = { class = "LSDeleteProjectCommand";         };
+        archive           = { class = "LSArchiveProjectCommand";        };
+        assignpartners    = { class = "LSProjectAssignmentCommand";     };
+        "assign-accounts" = { class = "LSProjectAssignmentCommand";     };
+        "get-status"      = { class = "LSProjectStatusCommand";         };
+        "get-owner" = { 
+          class  = "LSDBFetchRelationCommand"; 
+          init   = { 
+                entity                = "Project"; 
+                destinationEntityName = "Person"; 
+                sourceKey             = "ownerId"; 
+                destinationKey        = "companyId";
+                isToMany              = NO; 
+          }; 
+        };
+        "get-team" = { 
+          class  = "LSDBFetchRelationCommand"; 
+          init   = { 
+                entity                = "Project"; 
+                destinationEntityName = "Team"; 
+                sourceKey             = "teamId"; 
+                destinationKey        = "companyId";
+                isToMany              = NO; 
+          }; 
+        };
+        "get-company-assignments" = { 
+          class  = "LSDBFetchRelationCommand"; 
+          init   = { 
+                entity                = "Project"; 
+                destinationEntityName = "ProjectCompanyAssignment"; 
+                sourceKey             = "projectId"; 
+                destinationKey        = "projectId";
+                isToMany              = YES; 
+          }; 
+        };
+        "get-persons"        = { class = "LSFetchPersonRelationCommand";   };
+        "get-jobs"           = { class = "LSFetchProjectToJobCommand";     };
+        "get-root-process"   = { class = "LSFetchProjectToRootJobCommand"; };
+        "get-root-document"  = { class = "LSFetchRootDocumentCommand";     };
+        "get-index-document" = { class = "LSFetchIndexDocumentCommand";     };
+        "check-permission"   = { class = "LSCheckPermissionProjectCommand";};
+        "check-get-permission" ={ class = "LSCheckGetPermissionProjectCommand";};
+        "check-write-permission"={class= "LSCheckWritePermissionProjectCommand";};
+        "get-enterprises"    = { class = "LSFetchEnterpriseRelationCommand"; };
+        "get-accounts"       = { class = "LSFetchAccountRelationCommand";   };
+        "get-teams"          = { class = "LSFetchTeamRelationCommand";   };
+        "get-by-globalid"    = { class = "LSGetProjectForGlobalIDs";  };
+
+        "get-comment" = { 
+          class  = "LSDBFetchRelationCommand"; 
+          init   = { 
+                entity                = "Project"; 
+                destinationEntityName = "ProjectInfo"; 
+                sourceKey             = "projectId"; 
+                destinationKey        = "projectId";
+                isToMany              = NO; 
+          };
+        };
+
+// old mappings
+        "setstatus"      = { class = "LSProjectStatusCommand";       };
+        "setpersons"     = { class = "LSFetchPersonRelationCommand"; };
+        "extended-search"  = { 
+          class            = "LSExtendedSearchCommand";
+          init             = { entity = "Project"; };
+        };
+        "get-favorite-ids" = { class = "LSGetFavoriteProjectIdsCommand"; };
+        "add-favorite"    = { class = "LSAddProjectToFavoritesCommand"; };
+        "remove-favorite" = { class = "LSRemoveProjectFromFavoritesCommand"; };
+      };
+    };
+
+    "note" = {
+      operations = {
+        "new"                 = { class = "LSNewNoteCommand";           };
+        "set"                 = { class = "LSSetNoteCommand";           };
+        "get-attachment-name" = { class = "LSGetAttachmentNameCommand"; };
+        "get-current-owner" = { 
+          class  = "LSDBFetchRelationCommand"; 
+          init   = { 
+                entity                = "Note"; 
+                destinationEntityName = "Person"; 
+                sourceKey             = "currentOwnerId"; 
+                destinationKey        = "companyId";
+                isToMany              = NO; 
+          }; 
+        };
+        "get"    = { 
+          class  = "LSDBObjectGetCommand";
+          init   = { entity = "Note"; };
+        };
+        "delete" = { 
+          class  = "LSDBObjectDeleteCommand";
+          init   = { entity = "Note"; };
+        };
+      };
+    };
+
+    "projectcompanyassignment" = { // private
+      operations = {
+        "new"    = { 
+          class  = "LSDBObjectNewCommand"; 
+          init   = { entity = "ProjectCompanyAssignment"; };
+        };
+        "set"    = { 
+          class  = "LSDBObjectSetCommand";  
+          init   = { entity = "ProjectCompanyAssignment"; };
+        };
+        "get"    = { 
+          class  = "LSDBObjectGetCommand";  
+          init   = { entity = "ProjectCompanyAssignment"; };
+        };
+        "delete" = { 
+          class  = "LSDBObjectDeleteCommand"; 
+          init   = { entity = "ProjectCompanyAssignment"; }; 
+        };
+      };
+    };
+  };
+}

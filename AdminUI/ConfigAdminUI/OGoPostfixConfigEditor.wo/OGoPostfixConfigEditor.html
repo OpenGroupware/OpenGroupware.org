@@ -1,0 +1,32 @@
+<#Frame>
+  <!-- $Id: OGoPostfixConfigEditor.html,v 1.1 2004/01/30 12:03:10 helge Exp $ -->
+  <#Window>
+
+   <#Form>
+    <#TabView>
+      <#ConfigTab>
+        <p style="border: 1px solid black; padding: 8px;">
+          <#Font>
+            <b>Note:</b> Beware! You should not consume too much glue prior
+            saving any of the options, it may well break your mail setup!
+          </#Font>
+        </p>
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+          <tr>
+            <#ACell><#Font></#Font></#ACell>
+            <#VCell><#EditFont>
+            </#EditFont></#VCell>
+          </tr>
+
+        </table>
+      </#ConfigTab>
+      
+      <#PreviewTab>
+        Complete: render content.
+      </#PreviewTab>
+
+      <#DebugTab><#Obj/></#DebugTab>
+    </#TabView>
+   </#Form>
+  </#Window>
+</#Frame>

@@ -1,0 +1,9 @@
+# $Id$
+
+ADDITIONAL_BUNDLE_LIBS += \
+	-lOGoFoundation		\
+	-lNGScripting		\
+	-lNGMime -lEOControl	\
+	-lDOM -lSaxObjC
+
+OGoMailInfo_INCLUDE_DIRS += -I../.. 

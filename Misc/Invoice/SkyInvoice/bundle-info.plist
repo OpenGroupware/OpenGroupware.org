@@ -1,0 +1,138 @@
+{
+  cvsid         = "$Id$";
+  bundleHandler = SkyInvoiceModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+
+    bundles = (
+      { name = LSInvoice; type = cmd; },
+    );
+    classes = (
+      { name = LSWComponent;     exact-version = 2; },
+      { name = LSWContentPage;   exact-version = 3; },
+      { name = LSWModuleManager; exact-version = 2; },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     },
+      { name = SkyAttribute;     }
+    );
+  };
+  
+  provides = {
+    classes = (
+        { name = SkyInvoiceModule;              },
+        { name = SkyInvoices;                   },
+        { name = SkyInvoiceEditor;              },
+        { name = SkyInvoiceViewer;              },
+        { name = SkyInvoiceArticleEditor;       },
+        { name = SkyInvoiceArticleViewer;       },
+        { name = SkyInvoicePreferences;         },
+        { name = SkyArticleCategoryEditor;      },
+        { name = SkyArticleUnitEditor;          },
+        { name = SkyArticleUnitViewer;          },
+        { name = SkyInvoicePrintout;            },
+        { name = SkyArticleAssignmentViewer;    },
+        { name = SkyArticleAssignmentEditor;    },
+        { name = SkyInvoiceList;                },
+        { name = SkyInvoiceCopyPanel;           },
+        { name = SkyUnsettledInvoicesViewer;    },
+        { name = SkyUnsettledInvoicesList;      },
+        { name = SkyInvoicePrintoutFormatter;   },
+        { name = SkyMonitionPrintout;           },
+        { name = SkyInvoiceAccountViewer;       },
+        { name = SkyInvoiceAccounting;          },
+        { name = SkyInvoiceInlineSalesViewer;   },
+	{ name = SkyInlineCurrencyToggle;       },
+	{ name = SkyInvoiceArticlesList;        },
+	{ name = SkyArticlesList;               },
+	{ name = SkyMonitionDebitorsList;       },
+        
+	{ name = SkyCurrencyFormatter;          },
+    );
+
+    DockablePages = (
+      {  
+        name         = "Invoice";
+        component    = "SkyInvoices";
+        labelKey     = "Faktura";
+        image        = "menu_invoices_labeled.gif";
+        listicon     = "icon_invoices_26x21.gif";
+      }
+    );
+    
+    PreferencePages = (
+      {
+        name      = "Invoice";
+        component = "SkyInvoicePreferences";
+        labelKey  = "Invoice";
+        icon      = "icon_invoices_26x21.gif";
+      }
+      );
+    
+    WOComponents = (
+        { name = SkyInvoices;                   },
+        { name = SkyInvoiceEditor;              },
+        { name = SkyInvoiceViewer;              },
+        { name = SkyInvoiceArticleEditor;       },
+        { name = SkyInvoicePreferences;         },
+        { name = SkyInvoiceArticleViewer;       },
+        { name = SkyArticleCategoryEditor;      },
+        { name = SkyArticleCategoryViewer;      },
+        { name = SkyArticleUnitEditor;          },
+        { name = SkyArticleUnitViewer;          },
+        { name = SkyInvoicePrintout;            },
+        { name = SkyArticleAssignmentViewer;    },
+        { name = SkyArticleAssignmentEditor;    },
+        { name = SkyInvoiceList;                },
+        { name = SkyInvoiceCopyPanel;           },
+        { name = SkyUnsettledInvoicesViewer;    },
+        { name = SkyUnsettledInvoicesList;      },
+        { name = SkyMonitionPrintout;           },
+        { name = SkyInvoiceAccountViewer;       },
+        { name = SkyInvoiceAccounting;          },
+        { name = SkyInvoiceInlineSalesViewer;   },
+	{ name = SkyInlineCurrencyToggle;       },
+	{ name = SkyInvoiceArticlesList;        },
+	{ name = SkyArticlesList;               },
+	{ name = SkyMonitionDebitorsList;       },
+    );
+
+    LSWCommands = (
+      { verb = new;   type = "eo/invoice";    component = SkyInvoiceEditor; },
+      { verb = view;  type = "eo/invoice";    component = SkyInvoiceViewer; },
+      { verb = edit;  type = "eo/invoice";    component = SkyInvoiceEditor; },
+      { verb = new;   type = "eo/article"; 
+        component = SkyInvoiceArticleEditor;    },
+      { verb = edit;  type = "eo/article";
+        component = SkyInvoiceArticleEditor;    },
+      { verb = view;  type = "eo/article";
+        component = SkyInvoiceArticleViewer;    },
+      { verb = new;   type = "eo/articlecategory";
+        component = SkyArticleCategoryEditor;   },
+      { verb = edit;  type = "eo/articlecategory";
+        component = SkyArticleCategoryEditor;   },
+      { verb = view;  type = "eo/articlecategory";
+        component = SkyArticleCategoryViewer;   },
+      { verb = new;   type = "eo/articleunit";
+        component = SkyArticleUnitEditor;       },
+      { verb = edit;  type = "eo/articleunit";
+        component = SkyArticleUnitEditor;       },
+      { verb = view;  type = "eo/articleunit";
+        component = SkyArticleUnitViewer;       },
+      { verb = view;  type = "eo/invoicearticleassignment";
+        component = SkyArticleAssignmentViewer; },
+      { verb = edit;  type = "eo/invoicearticleassignment";
+        component = SkyArticleAssignmentEditor; },
+      { verb = new;   type = "eo/invoicearticleassignment";
+        component = SkyArticleAssignmentEditor; },
+      { verb = viewUnsettledInvoices;
+        type = "eo/enterprise";
+        component = SkyUnsettledInvoicesViewer;
+      },
+      { verb = view;    type = "eo/invoiceaccount";
+        component = SkyInvoiceAccountViewer;    },
+      { verb = new;     type = "eo/invoiceaccounting";
+        component = SkyInvoiceAccounting;       }
+    );
+  };
+}

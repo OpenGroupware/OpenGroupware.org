@@ -1,0 +1,52 @@
+# $Id$
+
+Invoice
+=======
+[EXPERIMENTAL]
+
+The developer mailinglist asked for the Invoice application (someone discovered
+the invoice database tables and wondered what they are good for ;-)
+
+So here it is, it's not a very good example and not very good for managing
+invoices, but have fun nevertheless !
+Not all features might work with OGo, since Invoice was written for SKYRiX 3
+and is pretty old.
+
+If you need help on that, contact Martin at mh@opengroupware.org.
+
+==============================================================================
+What is OGo Invoices?
+
+OGo Invoices is a software-bundle for managing articles, invoices, 
+monitions and debitor-accounts in a company. It's based upon the 
+OpenGroupware.org framework.
+It has a web-interface, which is accessable from the OGo WebUI.
+
+WARNING: The code is old and not used for a while. There might be some 
+problems which issue from the integration of the bundle into the OGo 
+environment.
+
+Installation
+
+After installing LSInvoice, SkyInvoice and SkyInvoiceLib you need to create
+a team for all that should have access to your invoices. Manually the login 
+of that team has to be changed to 'invoices' in the database. This isn't 
+possible via the WebUI.
+
+How to start?
+
+To create invoices you need articles. To create articles you need 
+article-categories and article-units. To create those click on the 'new'-button
+in the 'articles' or the 'units'-tab in the invoice app. After creating
+an article you can start creating invoices. Debitor can be any enterprise
+in your OGo. The syntax for the article area is: 
+
+articleRow:   <articleNr> ":" <articleCount> 
+              [ ":" <additionalComment> [":" <alternativePrice> ] ]
+
+
+Bugs/Problems
+
+- The dock-icon is missing.
+- There seems to be a problem with the postgreSQL adaptor when there are NULL 
+  values in the double/float fields.

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!-- $Id: INTERFACE.xml,v 1.1.1.1 2003/07/09 22:57:27 cvs Exp $ -->
+
+<interface name="com.skyrix.greeting" 
+           xmlns="http://www.skyrix.com/skyrix-idl"
+           xmlns:xrt="http://www.skyrix.com/od/xmlrpc-types"
+           xmlns:xsd="urn://example-namespace">
+
+  <documentation lang="en">
+    A daemon to send greeting cards.
+  </documentation>
+  <documentation lang="de">
+    Ein Daemon, um Grusskarten zu verschicken.
+  </documentation>
+
+  <method name="listTemplates">
+    <signature>
+      <output type="xsd:array">
+        <documentation lang="en">
+          list of template names
+        </documentation>
+        <documentation lang="de">
+          Liste von Template-Namen
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.listTemplates()
+       ]]>
+      <documentation lang="en">
+        Returns a list of all available templates.
+      </documentation>
+      <documentation lang="de">
+        Gibt eine Liste aller verf'ugbarer Templates zur'uck.
+      </documentation>
+    </example>
+  </method>  
+
+  <method name="sendGreetingCard">
+    <signature>
+      <input name="template" type="xsd:string">
+      </input>
+      <input name="sender" type="xsd:string">
+      </input>
+      <input name="recipients" type="xsd:array">
+      </input>
+      <input name="text" type="xsd:string">
+      </input>
+      <output type="xsd:boolean">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.sendGreetingCard("foo","bs@opengroupware.org",
+                                         ["bs@opengroupware.org",],"Foo")
+       ]]>
+    </example>
+  </method>  
+
+</interface>

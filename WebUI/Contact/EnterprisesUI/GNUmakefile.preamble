@@ -1,0 +1,13 @@
+# $Id$
+
+EnterprisesUI_RESOURCE_FILES += Defaults.plist Version
+
+ADDITIONAL_WOBUNDLE_LIBS += \
+	-lOGoFoundation \
+	-lNGScripting \
+	-lOGoDocuments -lOGoContacts -lLSFoundation \
+	-lGDLAccess \
+	-lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(ADDITIONAL_WOBUNDLE_LIBS)

@@ -1,0 +1,112 @@
+<!-- $Id: SkyDock.html,v 1.3 2004/08/05 23:01:09 helge Exp $ -->
+
+<#IsNotTextMode>
+  <td valign="top">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" height="52"
+           background="<#DockBackgroundURL/>">
+      <tr>
+        <td width="10"> &nbsp;</td>
+        <#DockEntries>
+          <td valign="middle" align="center" width="48">
+            <#HasMiniView  ><#MiniView /></#HasMiniView>
+            <#LacksMiniView>
+              <#ActivePageIsNotEditor>
+                <#DockLink><#DockImage /></#DockLink>
+              </#ActivePageIsNotEditor>
+              <#ActivePageIsEditor><#DockImage /></#ActivePageIsEditor>
+            </#LacksMiniView>
+          </td>
+
+          <td valign="middle" align="center" width="4">&nbsp;</td>
+        </#DockEntries>
+
+        <td width="32"> &nbsp;</td>
+        <td align="left" valign="top" width="35%">
+          <#DockedProjects />
+        </td>
+
+        <td align="center" valign="middle" width="48">
+          <#ActivePageIsNotEditor><#PrefsLink><#PrefsImage /></#PrefsLink></#ActivePageIsNotEditor><#ActivePageIsEditor><#PrefsImage /></#ActivePageIsEditor>
+        </td>
+        <td width="10"> &nbsp;</td>
+      </tr>
+      <tr>
+        <td> &nbsp;</td>
+        <#DockEntries>
+          <td valign="middle" align="center"
+              style="font-size: 9px;"><#DockLabel /></td>
+
+          <td valign="middle" align="center" width="4">&nbsp;</td>
+        </#DockEntries>
+
+        <td> &nbsp;</td>
+        <td> &nbsp;</td>
+
+        <td valign="middle" align="center"
+            style="font-size: 9px;"><#PrefsLabel /></td>
+        <td width="10"> &nbsp;</td>
+      </tr>
+      
+      <tr><td height="4"> </td></tr>
+    </table>
+  </td>
+  
+</#IsNotTextMode>
+
+<#IsTextMode>
+  <#TextDockCell>
+    <#Font>
+      <#ActivePageIsNotEditor>
+        <#TextDockEntries>
+          <#HasMiniTextView><#MiniTextView /></#HasMiniTextView>
+          <#LacksMiniTextView>
+            <#DockLink><#DockLabel /></#DockLink>
+          </#LacksMiniTextView>
+        </#TextDockEntries>
+      </#ActivePageIsNotEditor>
+          
+      <#ActivePageIsEditor>
+        <#TextDockEntries>
+          <#HasMiniTextView  ><#MiniTextView /></#HasMiniTextView>
+          <#LacksMiniTextView><#DockLabel    /></#LacksMiniTextView>
+        </#TextDockEntries>
+      </#ActivePageIsEditor>
+      
+      <#DockedProjects />
+    </#Font>
+  </#TextDockCell>
+      
+  <td align="right" valign="top" nowrap="nowrap">
+    <#Font>
+      &nbsp;|&nbsp;
+      <#ActivePageIsNotEditor>
+        <#PrefsLink><b><#PrefsLabel /></b></#PrefsLink>
+      </#ActivePageIsNotEditor>
+      <#ActivePageIsEditor><#PrefsLabel /></#ActivePageIsEditor>    
+    </#Font>
+  </td>
+</#IsTextMode>
+
+<#IsTextModeBrowser>
+<#Font>
+  <#TextDockEntries>
+    <#ActivePageIsNotEditor>
+      <#HasMiniTextView><#MiniTextView /></#HasMiniTextView>
+      <#LacksMiniTextView>
+        <#DockLink><#DockLabel /></#DockLink>
+      </#LacksMiniTextView>
+    </#ActivePageIsNotEditor>
+
+    <#ActivePageIsEditor>
+      <#HasMiniTextView  ><#MiniTextView /></#HasMiniTextView>
+      <#LacksMiniTextView><#DockLabel    /></#LacksMiniTextView>
+    </#ActivePageIsEditor>
+  </#TextDockEntries>
+      <#DockedProjects />
+  -
+  <#ActivePageIsNotEditor>
+    <#PrefsLink><i><#PrefsLabel /></i></#PrefsLink>
+  </#ActivePageIsNotEditor>
+  <#ActivePageIsEditor><#PrefsLabel /></#ActivePageIsEditor>
+</#Font>
+</#IsTextModeBrowser>

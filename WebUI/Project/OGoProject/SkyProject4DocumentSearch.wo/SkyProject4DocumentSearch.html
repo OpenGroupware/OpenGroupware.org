@@ -1,0 +1,49 @@
+<!-- $Id: SkyProject4DocumentSearch.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+
+<#Form>
+  <table border='0' width='100%' cellspacing='0' cellpadding='2'>
+    <tr>
+      <td align="right"><#Font><#Title/>:</#Font></td>
+      <td><#TitleField/></td>
+    </tr>
+    <tr>
+      <td align="right"><#Font><#Filename/>:</#Font></td>
+      <td><#FileNameField/></td>
+    </tr>
+    
+    <tr>
+      <td align="right"><#Font><#Extension/>:</#Font></td>
+      <td><#ExtensionField/></td>
+    </tr>
+    
+    <tr>
+      <td></td>
+      <td><#SearchSubmit/></td>
+    </tr>
+  </table>
+  
+  <hr size="1" />
+  
+  <#ResultList>
+    <#TitleMode><b><#Results/></b></#TitleMode>
+              
+    <#FileName>
+      <#FileDownload><#FileIcon/></#FileDownload>
+
+      <#IsExternalLinkCondElse><#FileNameLink    /></#IsExternalLinkCondElse>
+      <#IsExternalLinkCond    ><#ExternalFileLink/></#IsExternalLinkCond>
+
+      <#IsFileNotDir>
+        <#IsFileLocked    >(<#Locked/>)</#IsFileLocked>
+        <#IsFileCheckedOut>(<#CheckedOut/>)</#IsFileCheckedOut>
+      </#IsFileNotDir>
+    </#FileName>
+    
+    <#FileSize/>
+    <#FileOwner/>
+    <#ParentFolder><#ParentFolderLink/></#ParentFolder>
+    <#FileSubject/>
+                
+    <#FooterMode><#Files/>:</#FooterMode>
+  </#ResultList>
+</#Form>

@@ -1,0 +1,36 @@
+{
+  CVS = "$Id$";
+
+  requires = {
+    bundleManagerVersion = 1;
+    classes = (
+      { name = NSObject;    }
+    );
+  };
+
+  provides = {
+    LSCommands = (
+        { name = "job::new";                                 },
+        { name = "job::delete";                              },
+        { name = "job::jobaction";                           },
+        { name = "job::get-todo-jobs";                       },
+        { name = "job::get-private-jobs";                    },        
+        { name = "job::get-archived-jobs";                   },
+        { name = "job::get-control-jobs";                    },
+        { name = "job::get-delegated-jobs";                  },
+        { name = "job::get-by-globalid";                     },
+    );
+    classes = (
+        { name = LSDeleteJobCommand;                         },
+        { name = LSFetchArchivedJobsCommand;                 },
+        { name = LSFetchControlJobsCommand;                  },
+        { name = LSFetchDelegatedJobsCommand;                },
+        { name = LSFetchToDoJobsCommand;                     },
+        { name = LSJobActionCommand;                         },
+        { name = LSNewJobCommand;                            },
+        { name = LSFetchPrivateJobsCommand;                  },
+        { name = LSGetJobsForGlobalIDs;                      },
+        { name = SkyJobAction;                               },
+    );
+  };
+}

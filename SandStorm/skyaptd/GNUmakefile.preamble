@@ -1,0 +1,15 @@
+# $Id$
+
+skyaptd_TOOL_LIBS += \
+	-lOGoDaemon -lXmlSchema	\
+	-lOGoScheduler		\
+	-lSxComponents -lNGObjWeb	\
+	-lEOControl	\
+	-lical          \
+	-lICal2
+
+ical_TOOL_LIBS += \
+	-lXmlSchema	\
+	-lSxComponents	\
+	-lical	\
+	-lICal2

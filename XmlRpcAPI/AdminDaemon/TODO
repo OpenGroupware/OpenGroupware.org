@@ -1,0 +1,10 @@
+# $Id$
+
+TODOs for the Admin-Daemon
+==========================
+
+Add per-task/role logins. Only "postfix" should be able to retrieve 
+postfix-like configurations and only "cyrus" should be able to retrieve Cyrus 
+info.
+
+Perform a general audit.

@@ -1,0 +1,191 @@
+body {
+  color:            #000000;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        10pt;
+  background-color: #FCF8DF;
+  margin:           5px;
+}
+
+td.headerLCell {
+  letter-spacing:   0pt;
+  background-color: #FFDAAA;
+  color:            #000000;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        10pt;
+  font-weight:      bold;
+  text-align:       left;
+}
+
+td.headerRCell {
+  letter-spacing:   0pt;
+  background-color: #FFDAAA;
+  color:            #000000;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        08pt;
+  font-weight:      ;
+  text-align:       right;
+}
+
+td.footerLCell {
+  letter-spacing:   0pt;
+  background-color: #FFDAAA;
+  color:            #000000;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        08pt;
+  font-weight:      ;
+  text-align:       left;
+}
+
+td.sectionCell {
+  letter-spacing:   0pt;
+  background-color: #FAE8B8;
+  color:            #000000;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        10pt;
+  font-weight:      bold;
+  text-align:       left;
+}
+
+td.titleCell {
+  letter-spacing:   0pt;
+  background-color: #FFDAAA;
+  color:            #000000;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        10pt;
+  font-weight:      bold;
+  text-align:       left;
+}
+
+td.headerCell {
+  letter-spacing:   0pt;
+  background-color: #FAE8B8;
+  color:            #000000;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        10pt;
+  font-weight:      bold;
+  text-align:       left;
+  vertical-align:   top;
+}
+
+td.attrCell {
+  letter-spacing:   0pt;
+  background-color: #FCF8DF;
+  color:            #000000;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        8pt;
+  font-weight:      ;
+  text-align:       right;
+  vertical-align:   top;
+  width:            30%;
+}
+
+td.valueCell {
+  letter-spacing:   0pt;
+  background-color: #FFFFF0;
+  color:            #000000;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        8pt;
+  font-weight:      ;
+  text-align:       left;
+  vertical-align:   top;
+}
+
+
+font.header {
+  letter-spacing:   0pt;
+  color:            #034EA2;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        12pt;
+  font-weight:      bold;
+}
+tablink {
+  letter-spacing:   0pt;
+  font-color:       #000000;
+  color:            #000000;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        9pt;
+  font-weight:      bold;
+  text-decoration:  none;
+}
+
+a:link {
+  color:       #C97138;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  letter-spacing:   0pt;
+  text-decoration: none;
+}
+
+a:visited {
+  color:       #C97138;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  letter-spacing:   0pt;
+  text-decoration: none;
+}
+
+a:hover {
+  color:       #6F1537;
+  font-family: Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  letter-spacing:   0pt;
+  text-decoration: underline;
+}
+
+ul {
+  list-style-type:  disc;
+}
+
+pre {
+  letter-spacing:   0;
+  font-family:      monospace;
+  font-size:        7.5pt;
+  line-height:      10pt;
+  text-align:       left;
+  color:            #000000;
+}
+
+.default {
+  letter-spacing:   0pt;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        8pt;
+  color:            #000000;
+}
+
+.small {
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        8pt;
+  color:            #000000;
+  text-decoration: none;
+}
+
+.big {
+  letter-spacing:   0pt;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        10pt;
+  line-height:      12pt;
+  color:            #000000;
+}
+
+.alert {
+  letter-spacing:   0pt;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  font-size:        10pt;
+  font-weight:      bold;
+  color:            red;
+}
+
+.button {
+  background-color:#FAE8B8;
+  color:#6F1537;
+  border:1px
+  solid #6F1537;
+}
+
+input, select, textarea
+   { font-size:10px; font-family:Verdana,sans-serif; }
+input, select, textarea
+   { color:#C97138; }
+.area, .field
+   { background-color:#FFFFFF; width:300px; border:1px solid #6F1537; }
+.popup
+   { background-color:#FFFFFF; width:300px; border:1px solid #6F1537; }
+.check, .radio
+   { background-color:#FFFFFF; border:1px solid #FFDAAA; }

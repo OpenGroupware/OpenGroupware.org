@@ -1,0 +1,61 @@
+{
+  requires = ( MAIN );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+
+  classes = {
+    SxAppointmentFolder = {
+      superclass    = "SxFolder";
+      defaultAccess = "allow";
+      
+      methods = {
+      };
+      
+      defaultRoles = {
+        /* this is more open than necessary :-(, because we have no obj-sec */
+        "WebDAV Access"           = "Authenticated";
+        "Access Contents Information" = "Authenticated";
+        "Change Images and Files" = "Authenticated";
+        "Delete Objects"          = "Authenticated";
+        "View"                    = "Authenticated";
+	"Add Documents, Images and Files" = "Authenticated";
+      };
+    };
+
+    SxAppointment = {
+      superclass  = "SxObject";
+      
+      defaultRoles = {
+        "WebDAV Access"           = "Authenticated";
+        "Change Images and Files" = "Owner";
+        "Delete Objects"          = "Owner";
+        "View"                    = "Owner";
+      };
+    };
+
+    SxFreeBusy = {
+      defaultAccess = "allow";
+      protectedBy   = "<public>";
+      
+      //defaultAccess = "allow";
+      //protectedBy   = "View";
+      
+      //defaultRoles = {
+      /* this is more open than necessary :-(, because we have no obj-sec */
+      //  "WebDAV Access"           = "Authenticated";
+      //  "Access Contents Information" = "Authenticated";
+      //  "Change Images and Files" = "Authenticated";
+      //  "Delete Objects"          = "Authenticated";
+      //  "View"                    = "Authenticated";
+      //  "Add Documents, Images and Files" = "Authenticated";
+      //};      
+    };
+  };
+  
+  categories = {
+  };
+}

@@ -1,0 +1,28 @@
+<!-- $Id: LSWInlineBodyViewer.html,v 1.2 2004/06/17 19:45:20 helge Exp $ -->
+<#ViewEmbeddedObject>
+  <#UseIFrame>
+    <#HasUrlBodyElse>
+      <#IFrame />
+    </#HasUrlBodyElse>
+    <#HasUrlBody>
+      <iframe src="<#ActionUrl />" 
+              width="<#IFrameWidth />" height="<#IFrameHeight />"  
+              scale="exactfit" menu="true">
+        no iframe support in this browser, cannot display document.
+      </iframe>
+    </#HasUrlBody>
+  </#UseIFrame>
+
+  <#DontUseIFrame>
+      <#HasUrlBody>
+        <embed src="<#ActionUrl />" type="<#MimeTyp />" 
+               width="600" height="800" />
+      </#HasUrlBody>
+      <#HasUrlBodyElse><#EmbeddedObject /></#HasUrlBodyElse>
+  
+      <noembed>
+        Cannot provide an inline viewer,
+        your browser does not support the EMBED HTML tag.
+      </noembed>
+  </#DontUseIFrame>
+</#ViewEmbeddedObject>

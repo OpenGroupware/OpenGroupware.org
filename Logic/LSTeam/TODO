@@ -1,0 +1,23 @@
+# $Id$
+
+TODO
+====
+
+LSGetTeamsForGlobalIDsCommand.m
+- contains *two* variants of the command? Who did that and what is it good 
+  for? Moved the "old" variant to a separate file which may be deleted if it 
+  isn't required anymore.
+
+  - [jr]: don`t now, whether the code was commented out instead of deleting it,
+          but I think the old version can be deleted
+
+LSCheckPermissionCompanyCommand.m
+- this is basically commented out. Why? Who did that? (last committer is Jan)
+  
+  - [jr]: very old code ;) -  the access handling will be done by access 
+          handler (implemented in DocumentAPI)
+
+LSResolveAccountsCommand
+- mapped to two commands:
+  team::resolveaccounts
+  team::expand

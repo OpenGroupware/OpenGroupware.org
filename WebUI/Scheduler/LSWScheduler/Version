@@ -1,0 +1,5 @@
+# $Id$
+
+SUBMINOR_VERSION:=53
+
+# v5.0.52 requires libNGObjWeb v4.2.402

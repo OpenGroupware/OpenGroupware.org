@@ -1,0 +1,179 @@
+2004-06-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSMailDeliverCommand.m: minor code cleanups, some fixes to gcc 3.4
+	  warnings (v5.0.9)
+
+2004-05-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSMailDeliverCommand.m: minor code cleanups (v5.0.8)
+	  [where is the ChangeLog for v5.0.7?]
+
+2004-01-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSMailDeliverCommand.m: fixed a small memory leak, major cleanups
+	  (v5.0.6)
+
+2004-01-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSMailDeliverCommand.m: replaced -indexOfString: with -rangeOfString:
+	  (v5.0.5)
+
+Mon Jul  7 18:01:34 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* fixed OGo import (v5.0.4)
+
+Mon Jul  7 13:52:32 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.3)
+
+Fri Jun 20 12:06:58 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSMailDeliverCommand.m: cleanups, call fork to avoid zombie processes 
+	  (4.1.2) (bug 1779)
+
+2003-04-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile (LSMail_RESOURCE_FILES): added a Version file
+
+Thu Mar  6 16:49:30 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSMailDeliverCommand.m: add a default to use mailbox names as 
+	  arguments to sendmail only (UseOnlyMailboxNameForSendmail)
+
+Tue Feb  4 09:24:11 2003    <jan@skyrix.com>
+
+	* LSMailDeliverCommand: seperate team addresses
+
+Thu Jan 30 15:47:37 2003    <jan@skyrix.com>
+
+	* LSMailDeliverCommand: support "fname name" <xx@ss.se> emails
+
+Tue Jan 28 11:43:19 2003    <jan@skyrix.com>
+
+	* LSMailDeliverCommand.m: use new Mime methods to store mime 
+	  content on disk
+
+2003-01-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* fixed OSX compilation
+
+	* LSMailFolderRemoveCommand.m, LSMailRemoveCommand.m: replaced a
+	  LSRunCommandV with a LSCommandRunV (macros problems on OSX ?)
+
+Thu Jan  9 10:34:50 2003    <jan@skyrix.com>
+
+	* LSMailDeliverCommand.m: improve debug output 
+
+Fri Dec 20 17:09:13 2002    <jan@skyrix.com>
+
+	* LSMailDeliverCommand.m: status mail to sender
+
+Thu Dec 19 23:22:00 2002    <jan@skyrix.com>
+
+	* LSMailDeliverCommand.*: add mailing list support
+
+Wed Dec 18 20:08:30 2002    <jan@skyrix.com>
+
+	* SkyMailingListManager.m: add
+
+Mon Dec 16 19:41:26 2002    <jan@skyrix.com>
+
+	* LSMailDeliverCommand.m: build better error messages (sendmail not found/message to big)
+
+Mon Dec 16 16:51:58 2002    <jan@skyrix.com>
+
+	* LSMailDeliverCommand.m: fixed error logs
+
+Fri Nov 22 11:52:41 2002    <jan@skyrix.com>
+
+	* LSMailDeliverCommand.m: -ImapDebugEnabled print also sendmail command
+				  -seperate emails per ','
+	  
+
+Tue Jan 29 19:49:19 2002  Joerg Grimm  <joerg@trex2>
+
+	* LSMailDeliverCommand.m: sendmail is called with
+	  -f option to ser sender
+
+2001-06-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSMailDeliverCommand.m, LSFetchMailContentCommand.m: replaced NGNil
+	  with NSNull
+
+	* moved to SkyDev41
+
+Thu May 10 15:04:30 2001  Jan Reichmann  <jan@skyrix.com>
+
+	* LSMailDeliverCommand.m: check length of search string
+
+Tue Dec 19 20:41:16 2000  Jan Reichmann  <jan@skyrix.com>
+
+	* LSMailDeliverCommand.m: remove asserts
+
+Wed May 31 18:00:55 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSMailDeliverCommand.m: check pclose for sendmail pipe
+
+Tue May 30 16:06:44 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSMailFilterCommand.m: gets userdefaults via context
+
+Tue May 23 13:53:21 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSExtendedSearchEmailCommand.m: added version-check
+
+Wed May  3 23:02:15 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSMailDeliverCommand.m: insert imap mode
+
+Mon Jan 17 14:01:44 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSMailDeliverCommand.m: speed improvements for send mail to account 
+	and to team but only for a small number of mail-receivers, 
+	need to be improved (build a qualifier for getting all accounts)
+
+Tue Nov  2 19:15:28 1999  Jan Reichmann  <jan@mdlink.de>
+
+	* LSFetchMailFolderContentCommand.m: insert fetchUnread Flag
+
+Mon Oct 25 20:18:03 1999  Helge Hess  <helge.hess@mdlink.de>
+
+	* fixed bugs in evaluateExpression handling
+
+Wed Oct  6 16:34:07 1999  Jan Reichmann  <jan@mdlink.de>
+
+	* speed improvments in email::move
+
+Tue Oct  5 14:25:44 1999  Jan Reichmann  <jan@mdlink.de>
+
+	* LSMoveMailCommand.m: set isNew to NO if mail was moved
+
+Mon Oct  4 21:13:47 1999  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSCountUnreadedMessagesCommand.m: added support for counting
+	  all unread messages
+
+Mon Sep  6 16:09:47 1999  Helge Hess  <helge@trex.mdlink.de>
+
+	* replaced EOQualifier with EOSQLQualifier
+
+Mon Aug 30 16:48:50 1999  Joerg Grimm  <joerg@trex2>
+
+	* LSExtendedSearchEmailCommand.[hm]: added
+
+Thu Aug 12 20:48:07 1999  Joerg Grimm  <joerg@trex2>
+
+	* LSMailDeliverCommand.m: default for copyToSentFolder in NO
+
+Tue Apr  6 18:14:30 1999  Joerg Grimm  <joerg@trex2>
+
+	* LSGetRootFolderCommand.m: debug disabled
+
+Thu Mar 11 18:49:17 1999  Jan Reichmann  <jan@mdlink.de>
+
+	* create LSNewFolderCommand
+
+Tue Mar  9 14:53:29 1999  Jan Reichmann  <jan@mdlink.de>
+
+	* $Id: ChangeLog,v 1.5 2004/06/17 14:15:08 helge Exp $ 
+	create LSGetRootFolderCommand

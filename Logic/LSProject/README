@@ -1,0 +1,20 @@
+# $Id$
+
+LSProject
+=========
+
+LSProject is a pretty large command bundle and should be really split into
+separate ones.
+
+Besides the management of the "project" entity, it contains the commands used
+to handle:
+- (DB) documents
+- jobs
+- notes
+- associations to contacts
+
+
+project::get-comment is called in:
+WebUI/Project/LSWProject/LSWProjectViewer.m
+WebUI/Project/LSWProject/LSWProjectEditor.m
+WebUI/Project/LSWProject/SkyProjectInlineViewer.m

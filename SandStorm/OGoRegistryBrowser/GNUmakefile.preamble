@@ -1,0 +1,9 @@
+# $Id$
+
+SkyRegistryBrowser_TOOL_LIBS += \
+	-lOGoIDL -lXmlSchema	\
+	-lSxComponents
+
+ADDITIONAL_LIB_DIRS += \
+	-L../OGoIDL/$(GNUSTEP_OBJ_DIR)	\
+	-L../XmlSchema/$(GNUSTEP_OBJ_DIR)

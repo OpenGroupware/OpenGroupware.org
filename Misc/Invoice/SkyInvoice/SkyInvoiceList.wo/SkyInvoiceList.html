@@ -1,0 +1,69 @@
+<!-- $Id: SkyInvoiceList.html,v 1.1 2003/07/15 15:31:07 helge Exp $ -->
+
+<#TableView>
+  <#TitleMode>
+    <#Content />
+  </#TitleMode>
+
+  <#ButtonMode>
+    <#Buttons />
+  </#ButtonMode>
+
+  <#AttributeSwitch>
+
+    <#IconCase>
+      <#IconData>
+        <#Icon />
+      </#IconData>
+    </#IconCase>
+
+    <#InvoiceNrCase>
+      <#InvoiceNrData>
+        <#HasViewActionCond>
+          <#ViewInvoice><#InvoiceNr /></#ViewInvoice>
+        </#HasViewActionCond><!-- HasViewActionCond -->
+        <#HasViewActionCondElse>
+          <#InvoiceNr />
+        </#HasViewActionCondElse><!-- HasViewActionCondElse -->
+      </#InvoiceNrData>
+    </#InvoiceNrCase><!-- InvoiceNrCase -->
+
+    <#DateCase>
+      <#DateData />
+    </#DateCase>
+
+    <#DebitorCase>
+      <#DebitorData />
+    </#DebitorCase>
+
+    <#KindCase>
+      <#KindData />
+    </#KindCase>
+
+    <#StateCase>
+      <#StateData />
+    </#StateCase>
+
+    <#NetAmountCase>
+      <#NetAmountData />
+    </#NetAmountCase>
+
+    <#GrossAmountCase>
+      <#GrossAmountData />
+    </#GrossAmountCase>
+
+    <#PaidCase>
+      <#PaidData />
+    </#PaidCase>
+
+    <#MonitionLevelCase>
+      <#MonitionLevelData />
+    </#MonitionLevelCase>
+
+    <#ToPayCase>
+      <#ToPayData />
+    </#ToPayCase>
+
+  </#AttributeSwitch><!-- AttributeSwitch -->
+
+</#TableView>

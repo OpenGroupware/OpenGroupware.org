@@ -1,0 +1,6 @@
+*.html
+.memdump
+Publisher.lso
+home-dump
+nohup.out
+shared_debug_obj

@@ -1,0 +1,26 @@
+# $Id$
+
+# libs
+
+ADDITIONAL_WOBUNDLE_LIBS += \
+	-lOGoFoundation -lOGoDocuments	\
+	-lLSFoundation		\
+	-lNGObjWeb -lNGScripting\
+	-lGDLAccess		\
+	-lNGLdap -lEOControl	\
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(ADDITIONAL_WOBUNDLE_LIBS)
+
+# cflags
+
+ADDITIONAL_CPPFLAGS += -Wno-protocol -Wall
+
+
+ADDITIONAL_INCLUDE_DIRS += -I..
+ADDITIONAL_LIB_DIRS += -L../../OGoFoundation/$(GNUSTEP_OBJ_DIR)
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_BUNDLE_LIBS += -lFoundationExt
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif

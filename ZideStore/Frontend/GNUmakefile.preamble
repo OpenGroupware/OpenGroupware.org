@@ -1,0 +1,13 @@
+# $Id$
+
+ADDITIONAL_INCLUDE_DIRS += -I. -I.. -I./Contacts/ -I../Backend/
+
+libZideStoreFrontend_LIBRARIES_DEPEND_UPON += \
+        -lZideStoreBackend      \
+	-lLSFoundation	        \
+	-lNGObjWeb -lNGScripting\
+	-lNGiCal -lNGMime -lNGStreams -lNGExtensions -lEOControl	\
+	-lXmlRpc -lDOM -lSaxObjC
+
+libZideStoreFrontend_LIB_DIRS += \
+	-L../Backend/$(GNUSTEP_OBJ_DIR)

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- skymasterd-autostart.xml -->
+<!-- tasks that should be started on skymasterd startup -->
+
+<autostart xmlns="http://www.skyrix.com/od/skymasterd-config">
+
+  <!-- start snsd -->
+  <instance templateclass="snsd">
+    <priority>30</priority>
+  </instance>
+
+  <instance templateclass="nhsd">
+    <priority>30</priority>
+  </instance>
+
+  <instance templateclass="skyregistryd">
+    <priority>20</priority>
+    <parameter name="WOPort">
+      <value>21000</value>
+    </parameter>
+ </instance>
+
+  <instance templateclass="httpd">
+    <priority>10</priority>
+ </instance>  
+
+  <instance templateclass="slapd">
+    <priority>10</priority>
+    <parameter name="ip">
+      <value>0.0.0.10</value>
+    </parameter>
+    <parameter name="port">
+      <value>9000</value>
+    </parameter>
+ </instance>
+
+
+</autostart>

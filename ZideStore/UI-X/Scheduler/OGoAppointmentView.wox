@@ -1,0 +1,29 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component className="OGoPageFrame" title="name"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+  <a href="../weekoverview" >week</a>
+  <a href="../monthoverview">month</a>
+  <br />
+    <h4>Appointment Viewer</h4>
+    OGo ZideStore Server - <var:string value="name"/>
+    <br />
+    Client: <var:string value="clientObject"/>
+    <br />
+    Group:      <var:string value="clientObject.group"/><br />
+    Deletable:  <var:string value="clientObject.isDeletionAllowed"/><br />
+    Generation: <var:string value="clientObject.zlGenerationCount"/><br />
+    MsgClass:   <var:string value="clientObject.outlookMessageClass"/><br />
+    
+    <hr />
+    
+    As iCal:<br />
+    <pre><var:string value="clientObject.iCalString"/></pre>
+
+    <hr />
+
+    As Mail:<br />
+    <pre><var:string value="clientObject.iCalMailString"/></pre>
+</var:component>

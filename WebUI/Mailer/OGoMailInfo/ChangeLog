@@ -1,0 +1,135 @@
+2004-08-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWImapDockView.wo: fixed an HTML syntax bug in blue, kde and orange
+	  theems (v5.0.7)
+
+2004-08-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added orange theme (v5.0.6)
+
+2004-08-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.5
+
+	* added LSWImapDockView.wo/English_kde.lproj to reference the Nuvola
+	  PNG icons
+	
+	* LSWMailsDockView.wo: template cleanups
+
+	* added blue theme (v5.0.4)
+
+2004-05-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWImapDockView.wo, LSWImapTextDockView.wo: fixed a bug in HTML code
+	  (broken <script> tag) (v5.0.3)
+
+2004-01-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWImapDockView.m: replace -indexOfString: with -rangeOfString:
+	  (v5.0.2)
+
+2003-08-04  Thomas Schild <ts@skyrix.com>
+
+	* GNUmakefile: OGoMailInfo_LANGUAGES added (OOo Theme)
+	               OGoMailInfo_DERIVED_RESOURCES added (OOo Theme)
+	* MailerDerived.make: added (OOo Theme)
+	
+2003-07-29 Thomas Schild <ts@skyrix.com>
+	
+	* LSWImapDockView.wo: added changes for real OGo Theme
+	
+	* GNUmakefile: OGoMailInfo_LANGUAGES added
+
+Mon Jul  7 19:55:48 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.1)
+
+Fri May  6 13:46:45 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSWImapDockView: remove wosid from MailLink
+
+Fri May  2 13:46:45 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* SkyImapMailPopUp.m: add session id to show new mail link
+
+	* LSWImapDockView.m: fixed warning
+
+Wed Apr 30 18:26:11 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSWImapDockView.m: add sessionID to mailpopup url (bug 1142)
+
+Thu Mar 20 18:59:03 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSWImapDockView.m: initialize mail context with 
+	  ImapMails-Defaults (BUG 1279)
+
+Wed Feb 26 13:54:21 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSWImapDockView: use SkyImapContextHandler instead of LSWImapMails
+
+2002-12-20 Thomas Schild <ts@skyrix.com>
+
+        * LSWImapTextDockView.*: CSS added
+
+Wed Nov 27 16:53:44 2002  Martin Hoerning  <mh@skyrix.com>
+
+	*  SkyImapMailPopUp: fixed links
+
+	* WODirectAction+SkyMailInfo.m: set content-type to text/html for popup
+          (BUG 709)
+
+Wed Nov 13 17:12:47 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* LSWImapDockView.m: added hideAll attribute for EMS SkyDock
+	
+	* SkyImapMailPopUp.[wod|html]: take bgColor from config
+
+Thu Nov  7 12:47:25 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* LSWImapTextDockView.wo/LSWImapTextDockView.wod: fixed missing popup
+
+Wed Nov  6 16:54:45 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyImapMailPopUp.m: added
+
+Tue Aug 27 19:34:19 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* LSWImapDockView.m: fixed popup appearance
+
+Thu Aug 22 17:20:10 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* LSWImapTextDockView.m: added, to support new-mail-popups in text dock
+
+Fri Aug 16 11:57:59 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* LSWImapDockView.m: added popup on new mail
+
+Thu Dec  7 12:08:15 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSWImapDockView.wo/LSWImapDockView.wod: added ctx-id to DA URL
+
+Fri May 26 20:41:52 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSWMailPreferences.html: imap configurations removed
+
+Thu May 18 11:43:38 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSWMailPreferences.wod: set signature text field to 80x6
+
+Wed May 10 19:20:25 2000    <spindler@mdlink.de>
+
+	* LSWMailPreferences.m: inserted subjectLength and senderLength
+
+Tue Feb 22 15:25:16 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSWMailPreferences.m: insert imap configuration
+
+Wed Oct 13 12:19:27 1999  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSWMailsDockView.m: commit running tx before/after mail check
+ 	  to reduce deadlock probability.
+
+Sat Oct  9 14:23:37 1999  Helge Hess  <helge.hess@mdlink.de>
+
+	* created SkyMailInfo out of parts of LSWMail
+

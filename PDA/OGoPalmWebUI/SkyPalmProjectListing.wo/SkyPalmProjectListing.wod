@@ -1,0 +1,43 @@
+// $Id: SkyPalmProjectListing.wod,v 1.1 2003/07/14 16:18:25 helge Exp $
+
+ProjectTable: SkyTableView {
+  list  = projects;
+  item  = project;
+
+  batchSize  = 30;
+  autoScroll = 150;
+}
+
+// title
+TitleMode: WETableViewTitleMode {}
+Title: SkyRichString {
+  value  = title;
+  isBold = YES;
+}
+
+// data
+NameData: WETableData {
+  title   = labels.attribute_name;
+}
+CodeData: WETableData {
+  title = labels.attribute_projectCode;
+}
+OwnerData: WETableData {
+  title = labels.attribute_projectLeader;
+}
+
+// link
+ChooseProject: WOHyperlink {
+  action = chooseProject;
+}
+
+// values
+Name: SkyRichString {
+  value = project.name;
+}
+Code: SkyRichString {
+  value = project.number;
+}
+Owner: SkyRichString {
+  value = project.leader.login;
+}

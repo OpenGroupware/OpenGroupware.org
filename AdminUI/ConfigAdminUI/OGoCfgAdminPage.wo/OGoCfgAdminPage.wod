@@ -1,0 +1,60 @@
+// $Id: OGoCfgAdminPage.wod,v 1.2 2004/01/30 16:10:56 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.OGoCfgAdminPage;
+  onClose = session.navigation.leavePage;
+}
+
+TabView: SkyTabView {
+  selection = tabKey;
+}
+
+ConfigsTab: SkyTabItem {
+  key    = "configs";
+  action = tabClicked;
+  label  = labels.tab_configs;
+}
+
+Configs: SkyTableView {
+  dataSource   = configDataSource;
+  item         = configEntry;
+  sortedKey    = sortedKey;
+  isDescending = isDescending;
+  titleString  = labels.tv_config_database;
+}
+TitleMode:  WETableViewTitleMode  {}
+ButtonMode: WETableViewButtonMode {}
+FooterMode: WETableViewFooterMode {}
+
+ConfigButtons: SkyButtonRow {
+  ordering    = ( export );
+  onExport    = exportAll;
+  export      = labels.export;
+  tipExport   = labels.export;
+}
+
+ConfigNameTD: WETableData {
+  title   = labels.name;
+  //sortKey = "name";
+}
+ConfigType: WETableData {
+  title   = labels.type;
+  string  = configEntryTypeLabel;
+}
+
+ConfigEntryLink: WOHyperlink {
+  action = configEntryClicked;
+  string = configEntry.name;
+}
+
+// Export Info
+
+HasExportInfo:  WOConditional { condition = hasLastExport; }
+LastExportDate: WOString      { value = lastExportDate;    }
+ExportTarget:   WOString      { value = exportTarget;      }
+
+// fields
+
+Font: SkyConfigFont {}

@@ -1,0 +1,43 @@
+// $Id: OGoPostfixConfigEditor.wod,v 1.1 2004/01/30 12:03:10 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.OGoPostfixConfigEditor;
+  onClose = session.navigation.leavePage;
+}
+
+Form: WOForm {
+}
+
+TabView: SkyTabView {
+  selection = tabKey;
+}
+
+ConfigTab: SkyTabItem {
+  key    = "config";
+  action = tabClicked;
+  label  = labels.tab_config;
+}
+
+DebugTab: SkyTabItem {
+  key    = "debug";
+  action = tabClicked;
+  label  = labels.tab_debug;
+}
+PreviewTab: SkyTabItem {
+  key    = "preview";
+  action = tabClicked;
+  label  = labels.tab_preview;
+}
+
+Obj: WOString { value = object; }
+
+// config
+
+// fields
+
+ACell:    SkyAttributeCell  {}
+VCell:    SkyValueCell      {}
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigFont     {} // SkyConfigEditFont {}

@@ -1,0 +1,37 @@
+// $Id: OGoMailInfo.strings,v 1.4 2004/08/02 02:48:55 olivier Exp $
+
+LSWMailPreferences      = "Preferências de mensagens";
+DefaultAccessPreferences= "Preferência de acesso padrão";
+Imap                    = "Mensagens";
+saveButtonLabel         = "Salvar";
+cancelButtonLabel       = "Cancelar";
+"mail_editor_type"      = "Tipo de editor de mensagens";
+internal                = "do OpenGroupware.org";
+external                = "Externo";
+"mail_send_type"        = "Enviar mensagem como";
+html                    = "HTML";
+plain                   = "Texto";
+signature               = "Assinatura";
+senderLength            = "Comprimento do rementente";
+subjectLength           = "Comprimento do assunto";
+viewImagesInline        = "Ver imagens na mensagem";
+viewAttachmentsInline   = "Ver anexos na mensagem";
+viewAttachmentBodysInEditor = "Ver o corpo dos anexos no editor";
+YES                     = "Sim";
+NO                      = "Não";
+login                   = "Login";
+imapPasswd1             = "Senha";
+imapPasswd2             = "Repetir a senha";
+imapUser                = "Usuário";
+imapHost                = "Servidor";
+viewStatus              = "Ver status das mensagens";
+asIcon                  = "como ícone";
+label_newMail_single    = "Você tem uma nova mensagem!";
+label_newMail_multi     = "Você tem %i novas mensagens!";
+label_newMail_no        = "Não há novas mensagens!";
+action_viewMail         = "Ver mensagem"
+action_refresh          = "Atualizar";
+action_closeWindow      = "Fechar janela";
+activeMail              = "Correio";
+inactiveMail            = "Correio (inativo)";
+newMail                 = "Correio (Novo)";

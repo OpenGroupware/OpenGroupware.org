@@ -1,0 +1,19 @@
+<!-- $Id: SkyFavorites.html,v 1.1 2004/03/15 14:44:36 helge Exp $ -->
+
+<#HasFavorites>
+  <#FavoritesRep>
+    <small>
+      <#IsFirstFavElse> / </#IsFirstFavElse>
+
+      <#IsClickable>
+        <#DragLink>
+          <#FavoriteContentLink><#FavoriteLabel/></#FavoriteContentLink>
+        </#DragLink>
+      </#IsClickable>
+
+      <#IsNotClickable>
+        <#FavoriteLabel/>
+      </#IsNotClickable>
+    </small>
+  </#FavoritesRep>
+</#HasFavorites>

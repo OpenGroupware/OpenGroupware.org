@@ -1,0 +1,45 @@
+./AddressUI.strings
+./AdminUI.strings - Revision acs: 
+./BaseUI.strings - Revision acs: 
+./EnterprisesUI.strings - Revision acs: 
+./JobUI.strings - Revision acs: 
+./LDAPAccounts.strings - Revision acs: 
+./LSWMail.strings - Revision acs: 
+./LSWProject.strings - Revision acs: 
+./LSWScheduler.strings - Revision acs: 
+./NewsUI.strings - Revision acs: 
+./OGoMailInfo.strings - Revision acs: 
+./OGoMailViewers.strings - Revision acs: 
+./OGoNote.strings - Revision acs: 
+./OGoPalm.strings - Revision acs: 
+./OGoProject.strings - Revision acs: 
+./OGoProjectZip.strings - Revision acs: 
+./OGoResourceScheduler.strings - Revision acs: 
+./OGoSchedulerDock.strings - Revision acs: 
+./OGoScheduler.strings - Revision acs: 
+./OGoSchedulerViews.strings - Revision acs: 
+./OGoUIElements.strings - Revision acs: 
+./OGoWebMail.strings - Revision acs: 
+./PersonsUI.strings - Revision acs: Bastantes cambios
+
+Frases en alemán
+Gathering: Recolección
+Middlename: 
+Mailing
+Wizard: Druida
+Turnover: Vuelco
+Prognosed: pronosticado
+
+./PreferencesUI.strings - Revision acs: 100% OK (pequeños cambios)
+
+traduccion de dockable: 
+
+./SkyInvoice.strings - Revision acs: 100% OK a falta de lo siguiente (pequeños cambios)
+
+Monition: Advertencia
+VAT: IVA ??
+
+./SkyLDAP.strings - Revision acs: 100% OK
+./SkyProject4.strings - Revision acs: 100% OK (pequeños cambios)
+./SkyResource.strings - Revision acs:  100% OK (costo: coste)
+./SkySchedulerClassic.strings - Revision acs: 100% OK

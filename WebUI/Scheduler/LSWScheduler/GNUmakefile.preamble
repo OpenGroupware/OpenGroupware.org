@@ -1,0 +1,9 @@
+# $Id$
+
+LSWScheduler_WOBUNDLE_LIBS += \
+	-lOGoScheduler -lOGoSchedulerTools -lOGoDocuments \
+	-lNGScripting	\
+	-lGDLAccess	\
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(LSWScheduler_WOBUNDLE_LIBS)

@@ -1,0 +1,83 @@
+<?xml version='1.0' standalone='yes'?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+>
+  <head>
+    <title><var:string value="pageTitle"/>'s Projects</title>
+    
+    <meta name="description" content="ZideStore Web Interface" />
+    <meta name="author"      content="SKYRIX Software AG" />
+    <meta name="robots"      content="stop" />
+    
+    <link type="text/css" rel="stylesheet" rsrc:href="blog.css" />
+    <link href="mailto:hh@skyrix.com" rev="made" />
+  </head>
+  
+  <body>
+    <div id="header">
+      <table border="0" width="100%">
+        <tr>
+          <td>
+      <h1><a href=".."><var:string value="pageTitle"/>'s</a> 
+        Projects</h1>
+      <span class="description"></span>
+          </td>
+          <td align="right">
+            <img src="/zidestore/so/ControlPanel/Products/CommonUI/Resources/OGoLogo.gif" 
+                 alt="Logo" />
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="content">
+      <div class="cards">
+
+        <var:foreach list="rawContentDataSource.fetchObjects" item="project">
+      
+          <h2 class="projecttitle"><a var:href="projectViewURL"><var:string value="project.name" /></a></h2>
+          <div class="cardbody">
+            <h3 class="title">
+              Code: <var:string value="project.number" /> |
+              Due: 
+              <var:string value="project.endDate" dateformat="datefmt"/>.
+            </h3>
+            <p><var:string value="project.comment" /></p>
+            <table border="0" class="projectfields">
+              <tr>
+                <td>Type:</td>
+                <td><var:string value="project.type" /></td>
+              </tr>
+              <tr>
+                <td>ID:</td>
+                <td><var:string value="project.projectId" /></td>
+              </tr>
+              <tr>
+                <td>Status:</td>
+                <td><var:string value="project.status" /></td>
+              </tr>
+              <tr>
+                <td>URL:</td>
+                <td><var:string value="project.url" /></td>
+              </tr>
+            </table>
+            <br />
+            <div class="projectowner">
+              Projectlead is 
+              <a href="#"><var:string value="project.leaderName"/></a>
+              (<var:string value="project.leader.email1" />)
+              , 
+              started at 
+              <var:string value="project.startDate" dateformat="datefmt"/>.
+            </div>
+          </div>
+          
+          <br />
+        </var:foreach>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+<#Frame>
+<!--$Id: LSWTextDocumentEditor.html,v 1.2 2004/08/09 23:40:32 helge Exp $ -->
+<#Window>
+ <#WarningModeCondElse>
+  <table border="0" cellspacing="0" cellpadding="3" width="100%">
+    <#TextDocumentForm>
+      <tr>
+        <#AttributeCell><#Font><#FileNameLabel />:</#Font></#AttributeCell>
+        <#ValueCell><#EditFont><#FileName /><#NewModeCondElse>.<#FileType /></#NewModeCondElse></#EditFont></#ValueCell>
+      </tr>
+      <#IsContactAttrDisabled><#DocumentEditor /></#IsContactAttrDisabled>
+      <#IsContactAttrEnabled>
+        <#DocumentEditorWithContact />
+      </#IsContactAttrEnabled>
+       <tr>
+        <#AttributeCell><#Font><#Text />:</#Font></#AttributeCell>
+        <#ValueCell><#EditFont><#TextInput /></#EditFont></#ValueCell>
+      </tr>
+      <tr>
+        <#AttributeCell><#Font><#AutoReleaseLabel />:</#Font></#AttributeCell>
+        <#ValueCell><#Font><#AutoReleaseCheckbox /></#Font></#ValueCell>
+      </tr>
+      <tr> 
+        <td>&nbsp;</td>
+        <td>
+          <#SaveSubmit />
+          <#CancelSubmit />
+          <#NewModeCondElse><#DeleteSubmit /></#NewModeCondElse>
+        </td>
+      </tr>
+    </#TextDocumentForm>
+  </table>
+ </#WarningModeCondElse>
+
+ <#WarningModeCond><#Warning /></#WarningModeCond>
+</#Window>
+
+<script language="JavaScript">
+<!-- hide
+if (document.textDocumentEditor) {
+  if (document.textDocumentEditor.focusField) {
+    document.textDocumentEditor.focusField.focus();
+   /* document.textDocumentEditor.focusField.select();*/
+  }
+}
+// -->
+</script>
+</#Frame>

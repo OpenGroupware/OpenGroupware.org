@@ -1,0 +1,532 @@
+// $Id: LSWSchedulerPreferences.wod,v 1.6 2004/05/04 23:16:17 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = labels.SchedulerPreferences;
+  onClose = session.navigation.leavePage;
+}
+
+EditorTitle: SkyCollapsibleContent {
+  visibility       = session.userDefaults.scheduler_pref_expand_editor;
+  submitActionName = "";
+  title            = labels.EditorDefaults;
+}
+
+AccessWindowTitle: SkyCollapsibleContent {
+  visibility       = session.userDefaults.scheduler_pref_expand_access;
+  submitActionName = "";
+  title            = labels.DefaultAccessPreferences;
+}
+
+OverviewTitle: SkyCollapsibleContent {
+  visibility       = session.userDefaults.scheduler_pref_expand_overview;
+  submitActionName = "";
+  title            = labels.DefaultOverview;
+}
+
+PreferencesForm: WOForm {
+  name = "editform";
+}
+
+CancelButton: WOHyperlink {
+  action = cancel;
+  string = labels.cancel;
+  class  = "button_narrow";
+}
+
+SaveSubmit: WOSubmitButton {
+  action = save;
+  value  = labels.save;
+  class  = "button_narrow";
+}
+
+AttributeCell: SkyAttributeCell { 
+  width = "15%"; 
+}
+ValueCell: SkyValueCell {}
+
+IsRoot: WOConditional {
+  condition = isRoot;
+}
+
+IsSchedulerViewEditable: WOConditional {
+  condition = isSchedulerViewEditable;
+}
+IsSchedulerViewReadOnly: WOConditional {
+  condition = isSchedulerViewEditable;
+  negate    = YES;
+}
+
+IsSchedulerTimeInputTypeEditable: WOConditional {
+  condition = isSchedulerTimeInputTypeEditable;
+}
+IsSchedulerTimeInputTypeReadOnly: WOConditional {
+  condition = isSchedulerTimeInputTypeEditable;
+  negate    = YES;
+}
+IsSchedulerAptTypeInputTypeEditable: WOConditional {
+  condition = isSchedulerAptTypeInputTypeEditable;
+}
+IsSchedulerAptTypeInputTypeReadOnly: WOConditional {
+  condition = isSchedulerAptTypeInputTypeEditable;
+  negate    = YES;
+}
+
+IsSchedulerStartHourEditable: WOConditional {
+  condition = isSchedulerStartHourEditable;
+}
+IsSchedulerStartHourReadOnly: WOConditional {
+  condition = isSchedulerStartHourEditable;
+  negate    = YES;
+}
+
+IsSchedulerEndHourEditable: WOConditional {
+  condition = isSchedulerEndHourEditable;
+}
+IsSchedulerEndHourReadOnly: WOConditional {
+  condition = isSchedulerEndHourEditable;
+  negate    = YES;
+}
+
+SchedulerViewField: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.scheduler_view;
+  isEditable = isSchedulerViewEditable;
+  valueType  = "popup";
+  value      = schedulerView;
+  valueList  = ( "overview", "chart", "day" );
+}
+
+AppointmentViewField: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.appointment_view;
+  isEditable = isAppointmentViewEditable;
+  valueType  = "popup";
+  value      = appointmentView;
+  valueList  = ( "participants", "notes", "attributes" );
+}
+
+AbsenceField: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.absenceMode;
+  isEditable = isAbsenceModeEditable;
+  valueType  = "popup";
+  value      = absenceMode;
+  valueList  = ( "withAbsence", "withoutAbsence" );
+}
+
+TimeInputTypeField: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.scheduler_time_input_type;
+  isEditable = isSchedulerTimeInputTypeEditable;
+  valueType  = "popup";
+  value      = schedulerTimeInputType;
+  valueList  = ( "PopUp", "TextField" );
+}
+AptTypeInputTypeField: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.scheduler_apttype_input_type;
+  isEditable = isSchedulerAptTypeInputTypeEditable;
+  valueType  = "popup";
+  value      = schedulerAptTypeInputType;
+  valueList  = ( "PopUp", "Icons" );
+}
+
+StartHourField: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.scheduler_start_hour;
+  isEditable = isSchedulerStartHourEditable;
+  valueType  = "popup";
+  value      = startHour;
+  valueList  = (
+    "00", "01", "02", "03", "04", "05", "06", "07", "08",
+    "09", "10", "11", "12", "13", "14", "15", "16", "17",
+    "18", "19", "20", "21", "22", "23"
+  );
+}
+EndHourField: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.scheduler_end_hour;
+  isEditable = isSchedulerEndHourEditable;
+  valueType  = "popup";
+  value      = endHour;
+  valueList  = (
+    "00", "01", "02", "03", "04", "05", "06", "07", "08",
+    "09", "10", "11", "12", "13", "14", "15", "16", "17",
+    "18", "19", "20", "21", "22", "23"
+  );
+}
+
+SchedulerViewAccess: WOCheckBox {
+  checked = isSchedulerViewEditableRoot;
+}
+SchedulerTimeInputTypeAccess: WOCheckBox {
+  checked = isSchedulerTimeInputTypeEditableRoot;
+}
+SchedulerAptTypeInputTypeAccess: WOCheckBox {
+  checked = isSchedulerAptTypeInputTypeEditableRoot;
+}
+SchedulerStartHourAccess: WOCheckBox {
+  checked = isSchedulerStartHourEditableRoot;
+}
+SchedulerEndHourAccess: WOCheckBox {
+  checked = isSchedulerEndHourEditableRoot;
+}
+
+ColumnSizeAccess: WOCheckBox {
+  checked = isColumnSizeEditableRoot;
+}
+ColumnLabel: WOString {
+  value = labels.columnSize;
+}
+
+SchedulerViewLabel: WOString {
+  value = labels.scheduler_view;
+}
+SchedulerTimeInputTypeLabel: WOString {
+  value = labels.scheduler_time_input_type;
+}
+SchedulerAptTypeInputTypeLabel: WOString {
+  value = labels.scheduler_apttype_input_type;
+}
+SchedulerStartHourLabel: WOString {
+  value = labels.scheduler_start_hour;
+}
+SchedulerEndHourLabel: WOString {
+  value = labels.scheduler_end_hour;
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+ColumnSizeField: SkyDefaultEditField {
+  label      = labels.noOfCols;
+  isEditable = isNoOfColsEditable;
+  valueType  = "popup";
+  value      = noOfCols;
+  valueList  = ( "1", "2", "3", "4", "5" );
+}
+
+SchedulerPageTab: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.schedulerPageTab;
+  isEditable = YES;
+  valueType  = "popup";
+  value      = schedulerPageTab;
+  valueList  = ( "dayoverview", "weekoverview",
+                 "monthoverview", "yearoverview" );
+}
+SchedulerPageWeekView: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.schedulerPageWeekView;
+  isEditable = YES;
+  valueType  = "popup";
+  value      = schedulerPageWeekViewPopUp;
+  valueList  = ( "week_overview", "week_vchart",
+                 "week_hchart",   "week_columnview" );
+}
+SchedulerPageDayView: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.schedulerPageDayView;
+  isEditable = YES;
+  valueType  = "popup";
+  value      = schedulerPageDayViewPopUp;
+  valueList  = ( "day_overview", "day_vchart",
+                 "day_hchart" );
+}
+ShowJobs: SkyDefaultEditField {
+  label      = labels.showJobsInScheduler;
+  isEditable = YES;
+  valueType  = "checkbox";
+  value      = showTodos;
+}
+ShowPalmDates: SkyDefaultEditField {
+  label      = labels.showPalmDatesInScheduler;
+  isEditable = YES;
+  valueType  = "checkbox";
+  value      = showPalmDates;
+}
+ShowFullNames: SkyDefaultEditField {
+  label      = labels.showFullNamesInScheduler;
+  isEditable = YES;
+  valueType  = "checkbox";
+  value      = showFullNames;
+}
+
+DefaultCCForNotificationMails: SkyDefaultEditField {
+  label      = labels.defaultCCForNotificationMails;
+  value      = defaultCCForNotificationMails;
+  valueType  = "string";
+  isEditable = YES;
+  formatter   = session.formatString;  
+}
+ShowNotificationDevicesCond: WOConditional {
+  condition = showNotificationDevices;
+}
+NotificationDevicesAttr: SkyAttribute {
+  label = labels.notificationDevices;
+}
+NotificationDevices: WOCheckBoxList {
+  list       = availableNotificationDevices;
+  item       = item;
+  selections = notificationDevices;
+  value      = notificationDeviceLabel;
+}
+ShowNotificationDevicesRootCond: WOConditional {
+  condition = showNotificationDevicesRoot;
+}
+NotificationDevicesAccessAttr: SkyAttribute {
+  label = labels.notificationDevices;
+}
+NotificationDevicesAccess: WOCheckBox {
+  checked = isNotificationDevicesEditableRoot;
+}
+
+HideIgnoreConflictsInEditor: SkyDefaultEditField {
+  label      = labels.hideIgnoreConflicts;
+  value      = hideIgnoreConflicts;
+  valueType  = "checkbox";
+  isEditable = isRoot;
+}
+
+OnlyIfResourcesAreSet: WOString {
+  value = labels.onlyIfResourcesAreSet;
+}
+
+ViewPopupNumber: SkyDefaultEditField {
+  label      = labels.additionalPopupEntries;
+  isEditable = YES;
+  valueType  = "popup";
+  value      = additionalPopupEntries;
+  valueList  = ( "10", "20", "30", "50", "70", "100" );
+}
+
+ResourceSelection: SkyResourceSelection {
+  resources     = resourceNames;
+  viewHeadLine  = NO;  
+  onlyResources = NO;
+}
+
+AccountSelection: SkyParticipantsSelection {
+  participants         = participants;
+  selectedParticipants = selectedParticipants;
+  onlyAccounts         = NO;
+  viewHeadLine         = NO;
+  headLineLabel        = "searchPopupEntries";
+  searchLabel          = "searchPopupEntries";
+  selectionLabel       = "choosePopupEntries";
+}
+
+AccountSelectionWriteAccess: SkyParticipantsSelection {
+  participants         = writeAccess;
+  selectedParticipants = selectedWriteAccess;
+  onlyAccounts         = YES;
+  viewHeadLine         = NO;
+  headLineLabel        = "searchPopupEntries";
+  searchLabel          = "searchWriteAccess";
+  selectionLabel       = "setWriteAccess";
+}
+
+AccessTitle: SkyCollapsibleContent {
+  visibility = session.userDefaults.scheduler_pref_expand_access;
+  title      = labels.writeAccess;
+}
+
+// Day Overview
+
+DayOverviewTitle: SkyCollapsibleContent {
+  visibility = session.userDefaults.scheduler_pref_expand_dayOverview;
+  title      = labels.DayOverview;
+}
+
+DayOverviewStart: SkyDefaultEditField {
+  labels     = labelsForMinutes;
+  label      = labels.scheduler_dayoverview_start_hour;
+  isEditable = isDayOverviewStartHourEditable;
+  valueType  = "popup";
+  value      = dayOverviewStartHour;
+  valueList  = minutes;
+}
+DayOverviewEnd: SkyDefaultEditField {
+  labels     = labelsForMinutes;
+  label      = labels.scheduler_dayoverview_end_hour;
+  isEditable = isDayOverviewEndHourEditable;
+  valueType  = "popup";
+  value      = dayOverviewEndHour;
+  valueList  = minutes;
+}
+DayOverviewInterval: SkyDefaultEditField {
+  labels     = {
+    7200 = "120";
+    3600 = "60";
+    1800 = "30";
+     900 = "15";
+  };
+  label      = labels.scheduler_dayoverview_interval;
+  isEditable = isDayOverviewIntervalEditable;
+  valueType  = "popup";
+  value      = dayOverviewInterval;
+  valueList  = (7200, 3600, 1800, 900);
+}
+
+ColumnsPerDayDayView: SkyDefaultEditField {
+  labels      = {
+   "12" = "120";
+   "24" = "60";
+   "48" = "30";
+   "96" = "15";
+  };
+  label       = labels.minutesPerColumn;
+  isEditable  = isDayChartColumnsPerDayEditable;
+  valueType   = "popup";
+  value       = columnsPerDayDayView;
+  valueList   = ( "12", "24", "48", "96" );
+}
+
+// Holidays
+
+HolidaysTitle: SkyCollapsibleContent {
+  visibility = session.userDefaults.scheduler_pref_expand_holidays;
+  title      = labels.holidays;
+}
+
+HolidayGroupsLabel: WOString {
+  value = labels.holidaygroups;
+}
+
+HolidayGroupRepetition: WORepetition {
+  list = holidayGroupsKeys;
+  item = holiday;
+}
+
+HolidayEditable: WOConditional {
+  condition = isHolidayEditable;
+}
+ShowHolidayCB: WOCheckBox {
+  checked = holidaySelected;
+}
+ShowHolidayLabel: WOString {
+  value = holidayLabel;
+}
+MakeBR: WOConditional {
+  condition = makeBR;
+}
+
+RestHolidayLabel: WOString {
+  value = labels.holidayrest;
+}
+RestHolidaysRepetition: WORepetition {
+  list = restHolidaysKeys;
+  item = holiday;
+}
+
+SchoolHolidayLabel: WOString {
+  value = labels.schoolHolidays;
+}
+SchoolHolidaysRepetition: WORepetition {
+  list = schoolHolidayKeys;
+  item = holiday;
+}
+
+CustomHolidaysLabel: WOString {
+  value = labels.holidaygroup_custom_private;
+}
+CustomHolidays: WOText {
+  value = customHolidays;
+  COLS  = 40;
+  ROWS  = 8;
+}
+
+FormatExample: WOString {
+  value = labels.holidaysFormatExample;
+}
+FormatExample2: WOString {
+  value = labels.holidaysFormatExample2;
+}
+
+IsSchedulerClassicEnabled: WOConditional {
+  condition = isSchedulerClassicEnabled;
+}
+
+// WeekOverview
+WeekOverviewTitle: SkyCollapsibleContent {
+  visibility = session.userDefaults.scheduler_pref_expand_weekOverview;
+  title      = labels.WeekOverview;
+}
+
+ShortInfo: SkyDefaultEditField {
+  labels      = labels;
+  label       = labels.shortInfo;
+  isEditable  = YES;
+  valueType   = "checkbox";
+  value       = shortInfo;
+}
+WithResources: SkyDefaultEditField {
+  labels      = labels;
+  label       = labels.withResources;
+  isEditable  = YES;
+  valueType   = "checkbox";
+  value       = withResources;
+}
+ColumnsPerDay: SkyDefaultEditField {
+  labels      = {
+    "1" = "1";
+    "2" = "2";
+    "3" = "3";
+    "4" = "4";
+    "6" = "6";
+    "8" = "8";
+   "12" = "12";
+   "24" = "24";
+   "48" = "48";
+  };
+  label       = labels.columnsPerDay;
+  isEditable  = isWeekChartColumnsPerDayEditable;
+  valueType   = "popup";
+  value       = columnsPerDayWeekView;
+  valueList   = ( "1", "2", "3", "4", "6", "8", "12", "24", "48" );
+}
+
+BindingRep: WORepetition {
+  list = bindingValues;
+  item = binding;
+}
+BLabel: WOString {
+  value = bindingLabel;
+}
+BValue: WOString {
+  value = binding;
+}
+
+EditorMailTemplate: SkyDefaultEditField {
+  labels      = labels;
+  label       = labels.mailTemplate;
+  isEditable  = isMailTemplateEditable;
+  valueType   = "text";
+  value       = mailTemplate;
+  textRows    = 10;
+  textColumns = 80;
+}
+
+MailTemplateTitle: SkyCollapsibleContent {
+  visibility       = session.userDefaults.scheduler_pref_template_editor;
+  submitActionName = "";
+  title            = labels.TemplateDefault;
+}
+
+TemplateDateFormat: SkyDefaultEditField {
+  labels      = labels;
+  label       = labels.templateDateFormat;
+  isEditable  = isTemplateDateFormatEditable;
+  valueType   = "string";
+  formatter   = session.formatString;    
+  value       = templateDateFormat;
+}
+
+AttachAppointmentsToMail: SkyDefaultEditField {
+  label      = labels.attachAppointmentsToMails;
+  isEditable = YES;
+  valueType  = "checkbox";
+  value      = attachAppointments;
+}

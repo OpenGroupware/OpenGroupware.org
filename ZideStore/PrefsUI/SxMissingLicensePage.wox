@@ -1,0 +1,10 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component className="SxFrame" 
+               const:title="Your OpenGroupware.org ZideStore HomePage"
+               xmlns="http://www.w3.org/1999/xhtml"
+               xmlns:var="http://www.skyrix.com/od/binding"
+               xmlns:const="http://www.skyrix.com/od/constant">
+    
+  Your license key could not be found, did expire or doesn't contain
+  a license for ZideStore !
+</var:component>

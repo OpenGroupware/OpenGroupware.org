@@ -1,0 +1,44 @@
+2004-03-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile (BUNDLE_INSTALL_DIR): install into local root (v5.0.7)
+
+2004-02-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* common.h, GNUmakefile.preamble: fixed for MacOSX (v5.0.6)
+
+Fri Dec  5 17:25:06 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* OGoModel.py: added columns 'object_version', 'skyrix_palm_version'
+	  to palm tables (v5.0.5)
+
+2003-11-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added Nicola's patch so that just "make" works. Also
+	  moved the postamble rules to GNUmakefile.postamble ... (v5.0.4)
+
+2003-11-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoModel.py: mark "password" attribute as being up to 255 chars
+	  long instead of a 50 char limitation (related to OGo bug 364)
+	  (v5.0.3)
+
+Fri Jul 11 15:00:11 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* GNUmakefile.preamble: fixed bundle name (v4.1.2)
+
+Fri Jul  4 15:35:51 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* first OpenGroupware.org version. based on SKYRiX 4.1 version,
+	  last changed Wed May 28 15:42:55 2003 (v4.1.1)
+
+	* SKYRiX ChangeLog entries cut out, being irrelevant for first
+	  OGo release
+
+Mon Nov  1 16:05:56 1999  Helge Hess  <helge.hess@mdlink.de>
+
+	* sybase_lso31.eomodel: removed some attributes-used-for-locking of
+	  the email entity since email is practically write-once.
+
+Wed Oct  6 16:05:41 1999  Helge Hess  <helge.hess@mdlink.de>
+
+	* GNUmakefile: added required bundle libs

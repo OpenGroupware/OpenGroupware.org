@@ -1,0 +1,175 @@
+2004-07-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyProjectFileManager.m: minor code cleanups, implement class 
+	  specific base URL generation (used by OGoFileManagerFactory) 
+	  (v5.0.32)
+
+	* bundle-info.plist: declare OGoProjectBases (v5.0.31)
+
+2004-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyProjectFileManagerCache+Internals.m: improved error handling
+	  (v5.0.30)
+
+2004-05-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: fixed makefile for current OSX compiler 
+	  (v5.0.29)
+
+2004-04-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyDocumentAccessHandler.m: minor code cleanups (v5.0.28)
+
+2004-04-28 Jan Reichmann <jan.reichmann@igosys.de>
+ 	
+   	* SkyDocumentAccessHandler.m: fixed an access check bug (team are 
+          not considered), introduced in 5.0.21
+ 	
+2004-04-13  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* SkyProjectFileManager.m: minor code cleanups (v5.0.27)
+	
+2004-03-16  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* SkyProjectDocument+DOM.m: fixed parser type map, specify systemId
+	  when parsing XML (v5.0.26)
+	
+2004-03-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.25
+
+	* all files: removed warning with gstep-base, minor cleanups, 
+	  replaced "== YES" and "== NO" comparisons
+	
+	* SkyProjectFileManager+Extensions.m: removed unused code, removed
+	  some warnings with gstep-base
+
+2004-03-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyProjectFileManager.m, SkyProjectFolderDataSource.m: do not use 
+	  deprecated EOControl API (v5.0.24)
+
+2004-02-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyProjectFileManager+Extensions.m: fixed a warning on OSX (v5.0.23)
+
+2004-02-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyProjectFileManagerCache+Internals.m, 
+	  SkyProjectFileManager+Internals.m: improved check for NSNull 
+	  arguments which make problems with Cocoa (v5.0.22)
+
+2004-01-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyDocumentAccessHandler.m: minor cleanups, replaced -indexOfString:
+	  with -rangeOfString: (v5.0.21)
+
+2004-01-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.20
+
+	* SkyProjectFileManagerCache.m: do not use ASSIGNCOPY on command object
+	  (introduced in v5.0.19)
+
+2004-01-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.19
+
+	* SkyProjectDocumentDataSource.m: moved 'FMContext' class to separate
+	  file
+
+	* SkyProjectFileManager+FileAttributes.m, SkyProjectFileManagerCache.m:
+	  various cleanups for MacOSX compilation
+
+	* SkyProjectFileManager+Internals.m: rewrote not to use -indexOfString:
+
+	* SkyProjectFileManager+Extensions.m: fixed a compilation warning
+
+	* common.h: minor tweaks for compilation on MacOSX
+
+2003-12-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.18
+
+	* SkyDocumentIdHandler.m: minor cleanups
+
+	* SkyProjectFileManager.m: major cleanups
+
+2003-11-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.17
+
+	* SkyProjectFolderDataSource.m: removed a dependency on FoundationExt
+	  (replaced an InvalidArgumentException)
+
+	* SkyProjectFileManagerCache.m, SkyProjectFileManager+FileAttributes.m:
+	  a minor tweak for gstep-base
+
+2003-11-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyProjectDocument.m: fixed a bug with the retrieval of extended
+	  attributes, subminor code cleanups (v5.0.16)
+
+2003-10-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyProjectDocument.m, SkyProjectDocument+DOM.m: minor cleanups
+	  (v5.0.15)
+
+Fri Oct 10 11:39:52 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyDocumentIdHandler.m: fixed initialization of self->itemCnt, is
+	  has to be -1 to reloading (or initialize loading) of 
+	  document_id -> project_id mapping (v5.0.14)
+
+Thu Oct  2 12:23:10 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyProjectFileManager+Extensions: fixed documentid=>projectid 
+	  handling (wrong document id was used) (v5.0.13)
+
+Mon Jul  7 19:15:44 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* SkyProjectFileManager: remove license (v5.0.12)
+
+Mon Jul  7 16:52:41 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* fixed OGo import (v5.0.11)
+
+Mon Jul  7 12:30:20 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.10)
+
+2003-06-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyProjectDocument+DOM.m: improved SAX parser selection, required
+	  for SkyPublisher (to normalize skyrix/xtmpl into text/xml). Added
+	  a mapping table default SkyXmlParserTypeMap. (v4.1.9)
+
+Fri May 16 17:21:20 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* v4.1.8
+	
+	* SkyProjectFileManagerCache+Internals.m: code cleanups
+	
+	* SkyProjectFileManager.m: allow extensions for sym-links (bug 92)
+	
+	* SkyProjectFileManager+FileAttributes.m: code cleanups
+
+Fri Apr 11 10:44:31 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* v4.1.7
+	
+	* SkyProjectFileManager.m: code cleanups
+	
+	* SkyProjectFileManager+FileAttributes.m: use lowercase extension to
+	  determine mime-type
+
+2003-03-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyDBProject/SkyProjectDocument.h: added prototypes for -logDownload
+	  and -logDownloadOfVersion: methods
+
+2003-03-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* created ChangeLog
+
+

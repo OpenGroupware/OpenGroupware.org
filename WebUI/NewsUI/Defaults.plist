@@ -1,0 +1,8 @@
+// NSUserDefaults
+{
+  news_showNewsOnTop = YES;
+  news_blockSize     = 20;
+  news_filterDays    = 7;
+
+  news_showOverdueJobs = YES;
+}

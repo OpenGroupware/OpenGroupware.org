@@ -1,0 +1,55 @@
+<!-- $Id: LSWProjectJobList.html,v 1.2 2004/05/07 17:18:38 helge Exp $ -->
+<table width="100%" border="0" cellpadding="4" cellspacing="0">
+  <#ReportCollapsible>
+    <tr>
+      <#AttributeCell><#Font><#ActualWorkSumLabel/>:</#Font></#AttributeCell>
+      <#ValueCell>
+        <#Font><#ActualWorkSum/><#JobLink><#JobString/></#JobLink></#Font>
+      </#ValueCell>
+    </tr>
+
+    <tr>
+      <#AttributeCell><#Font><#TotalWorkSumLabel/>:</#Font></#AttributeCell>
+      <#ValueCell>
+        <#Font><#TotalWorkSum/><#JobLink><#JobString/></#JobLink></#Font>
+      </#ValueCell>
+    </tr>
+
+    <tr>
+      <#AttributeCell><#Font><#KilometersSumLabel/>:</#Font></#AttributeCell>
+      <#ValueCell>
+        <#Font><#KilometersSum/><#JobLink><#JobString/></#JobLink></#Font>
+      </#ValueCell>
+    </tr>
+    <tr>
+      <#AttributeCell><#Font><#PercentSumLabel/>:</#Font></#AttributeCell>
+      <#ValueCell>
+        <#Font><#PercentSum/><#JobLink><#JobString/></#JobLink></#Font>
+      </#ValueCell>
+    </tr>
+  </#ReportCollapsible>
+</table>
+
+<br />
+
+<#ProjectJobList>
+  <#ButtonMode><#Buttons/></#ButtonMode>
+
+  <#StatusData><#StatusIcon/><#Status/></#StatusData>
+  <#NameData/>
+    
+  <#EnddateData><#Enddate/></#EnddateData>
+    
+  <#CreatorData>
+    <#IsCreatorVisibleCond><#Creator/></#IsCreatorVisibleCond>
+    <#IsCreatorVisibleCondElse>*</#IsCreatorVisibleCondElse>
+  </#CreatorData>
+
+  <#ExecutantData>
+    <#IsExecutantVisibleCond><#Executant/></#IsExecutantVisibleCond>
+    <#IsExecutantVisibleCondElse>*</#IsExecutantVisibleCondElse>
+  </#ExecutantData>
+
+  <#CategoryData><#Category/></#CategoryData>
+  <#PriorityData><#Priority/></#PriorityData>
+</#ProjectJobList>

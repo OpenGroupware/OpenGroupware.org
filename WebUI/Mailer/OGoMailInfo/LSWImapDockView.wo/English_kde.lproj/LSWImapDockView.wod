@@ -1,0 +1,47 @@
+// $Id: LSWImapDockView.wod,v 1.1 2004/08/05 18:21:26 helge Exp $
+
+MailImage: WOImage {
+  filename = "menu_email_labeled.png";
+  border   = "0";
+}
+
+NewMailImage: WOImage {
+  filename = "menu_email_new_labeled.png";
+  border   = "0";
+}
+
+InactiveMailImage : WOImage {
+  filename = "menu_email_labeled_inactive.png";
+  border   = "0";
+}
+
+ShowPanelCond: WOConditional {
+  condition = showPanel;
+}
+
+ShowLink:    WOConditional { condition = hideLink; negate = YES; }
+HideLink:    WOConditional { condition = hideLink; }
+DontHideAll: WOConditional { condition = hideAll;  negate = YES; }
+
+MailLink: WOHyperlink {
+  directActionName = "dock";
+  ?page            = "LSWImapMails";
+  ?cid             = context.contextID;
+}
+
+HasUnreadMessages: WOConditional { condition = hasNewMessages; }
+NoUnreadMessages:  WOConditional { condition = hasNewMessages; negate = YES; }
+IsInactiveCond:    WOConditional { condition = isInactive; }
+IsActiveCond:      WOConditional { condition = isInactive; negate = YES; }
+
+MailPanel: SkyImapMailListPanel {
+  dataSource = dataSource;
+  state      = state;
+  isVisible  = showPanel;
+}
+
+ShowPopUp:   WOConditional { condition = showPopUp;   }
+PopUpAction: WOString {
+  escapeHTML = NO;
+  value      = popupLink;
+}

@@ -1,0 +1,46 @@
+<#Frame>
+  <!-- $Id: SkySchedulerConflictPage.html,v 1.2 2004/05/06 21:15:35 helge Exp $ -->
+  <#Window>
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+        <!-- ParticipantConflicts -->
+        <#HasParticipantConflictCond>
+          <#ParticipantConflictTitle/>
+          <tr>
+            <#ParticipantAppointmentCell>
+              <#ParticipantAppointment/>
+            </#ParticipantAppointmentCell>
+
+            <#ParticipantConflictRep>
+              <#ValueCell><#ParticipantConflict/></#ValueCell>
+              <#IsNotLastParticipantConflictCond>
+                </tr><tr>
+              </#IsNotLastParticipantConflictCond>
+            </#ParticipantConflictRep>
+          </tr>
+        </#HasParticipantConflictCond>
+        
+        <!-- ResourceConflicts -->
+        <#HasResourceConflictCond>
+          <#ResourceConflictTitle/>
+          <tr>
+            <#ResourceAppointmentCell>
+              <#ResourceAppointment/>
+            </#ResourceAppointmentCell>
+            <#ResourceConflictRep>
+              <#ValueCell><#ResourceConflict/></#ValueCell>
+              <#IsNotLastResourceConflictCond>
+                </tr><tr>
+              </#IsNotLastResourceConflictCond>
+            </#ResourceConflictRep>
+          </tr>
+        </#HasResourceConflictCond>
+
+        <tr>
+          <td colspan="2" align="center">
+            <#HideIgnoreButtons><#ButtonsWithoutIgnore/></#HideIgnoreButtons>
+            <#ShowIgnoreButtons><#Buttons/></#ShowIgnoreButtons>
+          </td>
+        </tr>
+    </table>
+  </#Window>
+</#Frame>

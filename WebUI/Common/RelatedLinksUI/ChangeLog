@@ -1,0 +1,54 @@
+2004-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.9
+
+	* OGoObjectLinkList.wox: added wosid as a hidden parameter, this is
+	  required for Firefox 0.9.1, which looses URL query parameters in
+	  form submits
+
+	* OGoObjectLinkList.m: fixed for new WONoSelectionString (the code
+	  checked for "$" values)
+
+2004-05-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: updated for lastest MacOSX compiler (v5.0.7)
+
+2004-05-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added postamble which validates WOx files prior building
+	  (v5.0.8)
+
+	* OGoObjectLinkList: display source object entity type
+
+2004-05-05  Helge Hess  <helge.hess@skyrix.com>
+	
+	* OGoObjectLinkList.m: implement link change notifications, added
+	  ability to delete links (v5.0.6)
+	
+2004-05-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoObjectLinkList.m: clear cache on component sleep (and therefore
+	  reread data on activation) (v5.0.5)
+
+2004-05-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.4
+
+	* OGoObjectLinkList: added ability to trigger "link editors" based on
+	  a linktype map configured using the "OGoObjectLinkTypeMap" default
+	  (keys are the link types, values are the names of the appropriate
+	  components)
+
+	* OGoObjectLinkList.wo: changed to WOx template
+
+2004-01-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: various fixes for MacOSX compilation (v5.0.3)
+
+Wed Dec 10 20:38:30 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* OGoObjectLinkList.m: made linkType localizable (v5.0.2)
+
+2003-12-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* created ChangeLog

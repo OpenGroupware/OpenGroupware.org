@@ -1,0 +1,20 @@
+// $Id: RelatedLinksUI.strings,v 1.2 2004/05/13 16:49:51 luca Exp $
+
+button_linkadd                      = "aggiungi";
+linkType_pda_conflicting_palm_entry = "valore Palm in conflitto";
+linkType_pda_conflicting_ogo_entry  = "valore OGo in conflitto";
+linkType_pda_new_ogo_entry          = "nuovo valore OGo";
+linksToObject                       = "Collegamento a questo oggetto";
+note_nolinksconfigured              = "Nota: nessun linktype configurato per la creazione manuale del collegamento.";
+popup_createLink                    = "[crea collegamento]"
+tableview_footertitle               = "Collegamenti"
+tableview_linkstitle                = "Collegamenti correlati"
+tableview_linktype                  = "tipo"
+tableview_linklabel                 = "collegamento"
+linkentity_external                 = "esterno"
+linkentity_Person                   = "Contatto"
+linkentity_Enterprise               = "Azienda"
+linkentity_Team                     = "Gruppo"
+linkentity_Date                     = "Appuntamento"
+linkentity_Project                  = "Progetto"
+linkentity_Job                      = "Attivita'"

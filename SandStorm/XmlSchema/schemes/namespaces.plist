@@ -1,0 +1,14 @@
+// $Id$
+
+{
+  // "http://www.w3.org/1999/XMLSchema"           = "XMLSchema-1999.xsd";
+  "http://www.w3.org/1999/XMLSchema-datatypes" = "XMLSchema-1999-datatypes.xsd";
+  "http://www.w3.org/1999/XMLSchema-instance"  = "XMLSchema-1999-instance.xsd";
+  //  "http://www.w3.org/2001/XMLSchema"           = "XMLSchema-2001.xsd";
+  "http://www.w3.org/2001/XMLSchema-datatypes" = "XMLSchema-2001-datatypes.xsd";
+  "http://www.w3.org/2001/XMLSchema-instance"  = "XMLSchema-2001-instance.xsd";
+
+  "http://www.w3.org/1999/XMLSchema"           ="XMLSchema-1999-datatypes.xsd";
+
+  "http://www.w3.org/2001/XMLSchema"           ="XMLSchema-2001-datatypes.xsd";
+}

@@ -1,0 +1,22 @@
+2003-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+        * renamed skyimport.m to skyimportmain.m because of the HFS
+          nameclash with SkyImport.m (v5.0.6)
+
+2003-08-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyImport.m: fixed some warnings (v5.0.5)
+
+2003-07-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGo import (v5.0.4)
+
+Thu Apr 10 10:10:05 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* SkyResourceImport: improve object insert behavior (continue import 
+	  if a resource failed)
+	  -insert resources with no categories (v4.1.3)
+
+Wed Apr  9 19:19:22 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* SkyImport.m: write already exists uids to uid-mapping file

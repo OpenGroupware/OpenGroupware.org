@@ -1,0 +1,24 @@
+// $Id: CfgAdminUI.strings,v 1.8 2004/02/13 01:14:42 helge Exp $
+
+// Note: work in progress, no need for translation yet
+
+OGoAccountsVirtualConfigFile = "Postfix Virtual: OGo Accounts";
+OGoCfgAdminPage              = "Config Administration";
+OGoCyrusConfigFile           = "Cyrus Configuration";
+OGoPostfixConfigFile         = "Postfix Main Configuration";
+OGoTeamsVirtualConfigFile    = "Postfix Virtual: OGo Teams";
+OGoCyrusConfigEditor         = "Cyrus Configuration Editor";
+OGoPostfixConfigEditor       = "Postfix Configuration Editor";
+OGoAccountsVirtualEditor     = "Accounts Virtual Editor";
+OGoTeamsVirtualEditor        = "Teams Virtual Editor";
+OGoQuotaTabConfigFile        = "Cyrus Quota and Mailbox Configuration";
+OGoQuotaTabEditor            = "Cyrus Mailboxes and Quota Configuration";
+dock_cfgadminapp             = "Config Administration";
+tab_config                   = "configuration";
+tab_configs                  = "Configurations";
+tab_debug                    = "debug";
+tab_pathconfig               = "pathes";
+tab_preview		     = "preview";
+tab_saslconfig               = "SASL";
+tab_tlsconfig                = "TLS";
+tv_config_database           = "Configuration Database";

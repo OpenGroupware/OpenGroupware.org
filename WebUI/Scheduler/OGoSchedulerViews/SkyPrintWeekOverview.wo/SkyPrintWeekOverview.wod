@@ -1,0 +1,49 @@
+// $Id: SkyPrintWeekOverview.wod,v 1.2 2004/05/09 18:23:28 helge Exp $
+
+WeekName:    WOString { value = weekName;    }
+CompanyName: WOString { value = companyName; }
+
+// new weekOverview
+
+TitleMode:   WEWeekOverviewTitleMode   {};
+InfoMode:    WEWeekOverviewInfoMode    {};
+PMInfoMode:  WEWeekOverviewPMInfoMode  {};
+ContentMode: WEWeekOverviewContentMode {};
+
+WeekOverview: WEWeekOverview {
+  list        = dataSource.fetchObjects;
+  item        = appointment;
+  weekStart   = weekStart;
+  dayIndex    = dayIndex;
+  border      = "1";
+  cellpadding = "0";
+  cellspacing = "0";
+}
+
+DayTitle: LSWSchedulerDateTitle {
+  title            = labels.$currentDate;
+  newLabel         = labels.new;
+  highlight        = currentDate.isToday;
+  date             = currentDate;
+  disableNew       = YES;
+  disableAction    = YES;
+}
+
+DayInfo: SkyRichString {
+  value   = currentDayInfo;
+  size    = "-2";
+  isBold  = YES;
+}
+
+HasDayInfo: WOConditional {
+  condition = hasCurrentDayInfo;
+}
+
+Font: SkyConfigFont {}
+
+Appointment: WOString {
+  value      = appointment;
+  formatter  = appointmentFormatter;
+  insertBR   = YES;
+  escapeHTML = NO;
+}

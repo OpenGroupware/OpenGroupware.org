@@ -1,0 +1,17 @@
+# $Id$
+
+static EOQualifier *evoPersonContactQual = nil;
+
+static EOQualifier *_evoPersonContactQual(void) {
+  NSString *q;
+  
+  if (evoPersonContactQual)
+    return evoPersonContactQual;
+  
+  q = 
+    @"davContentClass = 'urn:content-classes:person' OR "
+    @"davContentClass = 'urn:content-classes:contact'";
+  evoPersonContactQual = 
+    [[EOQualifier qualifierWithQualifierFormat:q] retain];
+  return evoPersonContactQual;
+}

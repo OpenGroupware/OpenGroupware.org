@@ -1,0 +1,281 @@
+// $Id: LSWPreferencesEditor.wod,v 1.2 2004/06/20 19:16:02 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = windowTitle;
+  onClose = cancel;
+}
+
+Form: WOForm {
+  name    = "editform";
+  enctype = "multipart/form-data";
+}
+
+BackLink: WOHyperlink {
+  action = "back";
+  string = "back";
+}
+
+NewModeCond: WOConditional {
+  condition = isInNewMode;
+}
+
+AttributeCell: SkyAttributeCell { width="15%"; colspan=2;}
+ValueCell:     SkyValueCell     {}
+
+SaveSubmit: WOSubmitButton {
+  action   = save;
+  value    = labels.saveButtonLabel;
+  disabled = isSaveDisabled;
+  class    = "button_narrow";
+}
+SaveSubmitDA: WOSubmitButton {
+  action   = save;
+  value    = labels.saveButtonLabel;
+  disabled = isSaveDisabled;
+  class    = "button_narrow_da";
+}
+IsSaveEnabled:  WOConditional { condition = isSaveDisabled; negate = YES; }
+IsSaveDisabled: WOConditional { condition = isSaveDisabled; }
+
+ShowDeleteButton: WOConditional {
+  condition = showDeleteButton;
+}
+
+// TODO: I don't understand that "DA" code
+DeleteSubmit: WOHyperlink {
+  action   = delete;
+  string   = labels.deleteButtonLabel;
+  disabled = isDeleteDisabled;
+  class    = "button_narrow";
+}
+DeleteSubmitDA: WOHyperlink {
+  action   = delete; // TODO: a DA has no action?
+  string   = labels.deleteButtonLabel;
+  disabled = isDeleteDisabled;
+  class    = "button_narrow_da";
+}
+IsDeleteEnabled:  WOConditional { condition = isDeleteDisabled; negate = YES; }
+IsDeleteDisabled: WOConditional { condition = isDeleteDisabled; }
+
+DontUseLDAP: WOConditional {
+  condition = useLDAPAuthorization;
+  negate    = YES;
+}
+ChangePasswordSubmit: WOSubmitButton {
+  action = changePassword;
+  value  = labels.passwordButtonLabel;
+  class  = "button_wide";
+}
+
+CancelSubmit: WOHyperlink {
+  action = cancel;
+  string = labels.cancelButtonLabel;
+  class  = "button_narrow";
+}
+
+FileUploadLabel: WOString {
+  value = labels.fileUploadLabel;
+}
+
+FileUpload: WOFileUpload {
+  data     = data;
+  filePath = filePath;
+  size     = 40;
+}
+
+IsRootCond: WOConditional {
+  condition = session.activeAccountIsRoot;
+}
+
+IsNotInNewMode:    WOConditional { condition = isInNewMode;  negate = YES; }
+IsRootEdited:      WOConditional { condition = isRootEdited;      }
+IsAccountLoggedIn: WOConditional { condition = isAccountLoggedIn; }
+IsRootNotEdited:   WOConditional { condition = isRootEdited; negate = YES; }
+IsLoginEditable:   WOConditional { condition = isLoginEditable;   }
+IsAccountErasable: WOConditional { condition = isAccountErasable; }
+
+IsNotTemplateUser: WOConditional {
+  condition = account.isTemplateUser.boolValue;
+  negate    = YES;
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+CategoryLabel: WOString { value = labels.categories; }
+LoginLabel:    WOString { value = labels.login;      }
+
+CategoryArea: WOText {
+  value     = categoryList;
+  formatter = session.formatString;
+  WRAP      = "physical";
+  ROWS      = 5;
+  COLS      = 80;
+}
+
+Login: WOTextField {
+  name  = "login"; 
+  value = account.login;
+  size  = 40;
+}
+
+AccountEditor: LSWObjectEditor {
+  colVal  = 2;
+  colAttr = 2;
+  labels        = labels;
+  object        = account;
+  attributes = (
+    { key = "name";        },
+    { key = "firstname";   },
+    { key = "description"; label = "nickname" },
+    { key = "email1"; }, );
+}
+
+WindowTitle: LSWViewerTitle {
+  title     = loginName;
+  colspan   = 4;
+}
+
+ConfigTitle: LSWViewerTitle {
+  title     = labels.configLabel;
+}
+
+LockedLabel: WOString {
+  value = labels.locked;
+}
+
+LockedCheckBox: WOCheckBox {
+  checked = isLocked;
+}
+
+IsTemplateUserLabel:        WOString { value = labels.isTemplateUser;    }
+LocationTeamLabel:          WOString { value = labels.locationTeamLabel; }
+TemplateUserSelectionLabel: WOString { value = labels.templateUser;      }
+
+IsTemplateUserCheckBox: WOCheckBox {
+  checked = isTemplateUser;
+}
+
+TeamPopUp: WOPopUpButton {
+  list            = session.locationTeams;
+  item            = item;
+  selection       = locationTeam;
+  singleSelection = YES;
+  string          = item.description;
+  nilString       = labels.noLocationLabel;
+}
+
+TemplateUserPopup: WOPopUpButton {
+  list            = templateUserNames;
+  selection       = templateUserId;
+  singleSelection = YES;
+}
+
+TeamLabel: WOString {
+  value = labels.teamLabel;
+  escapeHTML = NO;        
+}
+
+TeamRep: WORepetition {
+  list = session.teams;
+  item = item;
+}
+
+IsLocationTeamCondElse: WOConditional {
+  condition = item.isLocationTeam;
+  negate    = YES;
+}
+
+TeamCheckBox: WOCheckBox {
+  checked = isInGroup;
+}
+
+Team: WOString {
+  value = item.description;
+}
+
+WarningModeCond:     WOConditional { condition = isInWarningMode; }
+WarningModeCondElse: WOConditional { condition = isInWarningMode; negate=YES;}
+
+Warning: LSWWarningPanel {
+  onOk      = warningOkAction;
+  phrase    = warningPhrase;
+}
+
+BlockSizeField: OGoDefaultEditField {
+  componentLabels = labels;
+  defaults        = defaults;
+  isEditable      = NO;
+  key             = "usermanager_blocksize";
+  valueType       = "popup";
+  valueList       = ( 
+    "10", "20", "30", "40", "50", "60", "70", "80", "90", "100" 
+  );
+}
+
+TeamsList: SkyListView {
+  list           = teams;
+  item           = item;
+  selectedItems  = selectedTeams;
+  columns        = 4;
+  attributes     = ( { key = "description"; }, );
+}
+
+MailQuota: OGoDefaultEditField {
+  componentLabels = labels;
+  defaults        = defaults;
+  key             = "admin_mailquota";
+  valueType       = "string";
+  rows            = 8;
+  componentLabels = labels;
+  isEditableDef   = NO;
+}
+
+InMBLabel: WOString {
+  value = labels.inMB;
+}
+
+VAddresses: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "admin_vaddresses";
+  valueType       = "text";
+  useFormatter    = "stringField";
+  isEditableDef   = NO;
+  rows            = 6;
+  cols            = 60;
+}
+
+ExportAccount: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "admin_exportAddresses";
+  valueType       = "checkbox";
+  useFormatter    = "bool";
+  isEditableDef   = NO;
+}
+
+LocalDomainAliasesFrame: OGoDefaultEditFrame {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "admin_LocalDomainAliases";
+  isEditableDef   = NO;
+  useFormatter    = "array";
+}
+
+LocalDomainAliases: SkyListSorter {
+  selectionTitle    = labels.selected_local_addesses_title;
+  nonSelectionTitle = labels.non_selected_local_addesses_title;
+  selection         = defaults.admin_LocalDomainAliases;
+  item              = item;
+  list              = localDomains;
+}
+Item: WOString {
+  value = item;
+}
+
+IsMailConfigEnabled: WOConditional {
+  condition = isMailConfigEnabled;
+}

@@ -1,0 +1,127 @@
+// $Id: LSWJobHtmlMailPage.wod,v 1.2 2003/12/03 15:34:15 helge Exp $
+
+TitleLabel: WOString {
+  value = labels.titleLabel;
+}
+
+TitleExternal: WOHyperlink {
+  string           = object.name;
+  directActionName = "activate";
+  ?wosid           = NO;
+  ?oid             = object.jobId;
+}
+
+TitleAction: WOHyperlink {
+  action = viewObject;
+  string = object.name;
+}
+
+InlineLinkCond: WOConditional {
+  condition = inlineLink;
+}
+
+InlineLinkCondElse: WOConditional {
+  condition = inlineLink;
+  negate     = YES;
+}
+
+CreatorLabel: WOString {
+  value = labels.creator;
+}
+
+CreatorName: WOString {
+  value = object.creator.name;
+}
+
+ExecutantLabel: WOString {
+  value = labels.executant;
+}
+ExecutantName: WOString {
+  value = object.executant.name;
+}
+ExecutantTeamName: WOString {
+  value = object.executant.description;
+}
+
+CommentLabel: WOString {
+  value = labels.Comment;
+}
+
+LastComment: WOString {
+  value = object.jobHistory.lastObject.toJobHistoryInfo.lastObject.comment;
+  insertBR = YES;
+}
+
+IsTeamJobElse : WOConditional {
+  condition = object.isTeamJob;
+  negate    = YES;
+}
+
+IsTeamJob : WOConditional {
+  condition = object.isTeamJob;
+}
+
+ActionLabel : WOString {
+  value = labels.action;
+}
+
+Action : WOString {
+  value = action;
+}
+
+CreatorFirstName : WOString {
+  value = object.creator.firstname;
+}
+
+ExecutantFirstName : WOString {
+  value = object.executant.firstname;
+}
+
+ProjectLabel : WOString {
+  value = labels.project;
+}
+
+ProjectName : WOString {
+  value = object.toProject.name;
+}
+
+StartLabel : WOString {
+  value = labels.startDateLabel;
+}
+
+Start : WOString {
+  value = object.startDate;
+  formatter = session.formatDate;
+}
+
+EndLabel : WOString {
+  value = labels.endDateLabel;
+}
+
+End : WOString {
+  value = object.endDate;
+  formatter = session.formatDate;  
+}
+
+LinkLabel : WOString {
+  value = labels.linkLabel;
+}
+
+Link : WOHyperlink {
+  href   = objectUrl;
+  string = objectUrl;
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+MainButtonRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_mainButtonRow;
+}
+
+Font: SkyConfigFont {}
+
+JobViewerLabel : WOString {
+  value = labels.jobViewer;
+}

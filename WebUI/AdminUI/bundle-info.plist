@@ -1,0 +1,76 @@
+{
+  bundleHandler = LSWUserManagerModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+
+    bundles = ( 
+      { name = LSAddress;     type = cmd; },
+      { name = BaseUI;        type = lso; },
+      { name = OGoUIElements; type = lso; },
+    );
+    classes = (
+      { name = LSWComponent;   exact-version = 2; },
+      { name = LSWContentPage; exact-version = 3; },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     }
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = LSWUserManagerModule;     },
+      { name = LSWStaff;                 },
+      { name = LSWAccountViewer;         },
+      { name = LSWTeamViewer;            },
+      { name = LSWTeamEditor;            },
+      { name = LSWPasswordEditor;        },
+      { name = SkyDefaultsViewer;        },
+      { name = SkyDefaultsEditor;        },
+      { name = SkyDefaultsElementViewer; },
+    );
+
+    DockablePages = (
+      { 
+        name      = "UserManager";
+        component = "LSWStaff";
+        labelKey  = "UserManager";
+        image     = "menu_usermanager_labeled.gif";
+        listicon  = "icon_usermanager_26x21.gif";
+        onlyRoot  = YES;
+      }
+    );
+    
+    WOComponents = (
+      { name = LSWStaff;                 },
+      { name = LSWAccountViewer;         },
+      { name = LSWTeamViewer;            },
+      { name = LSWTeamEditor;            },
+      { name = LSWPasswordEditor;        },
+      { name = SkyDefaultsViewer;        },
+      { name = SkyDefaultsEditor;        },
+      { name = SkyDefaultsElementViewer; },
+    );
+    
+    LSWCommands = (
+      {
+        verb = viewAccount;
+        type = "eo/person";
+        component = LSWAccountViewer;
+      },
+      { 
+        verb = editAccountPassword;
+        type = "eo/person"; 
+        component = LSWPasswordEditor; 
+      },
+      { 
+        verb      = view; 
+        type      = "eo-gid/team"; 
+        component = LSWTeamViewer; 
+      },
+      { verb = view; type = "eo/team"; component = LSWTeamViewer; },
+      { verb = edit; type = "eo/team"; component = LSWTeamEditor; },
+      { verb = new;  type = "eo/team"; component = LSWTeamEditor; },
+    );
+  };
+}

@@ -1,0 +1,207 @@
+2004-08-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.32
+
+	* SkyDisplayPreferences.wo/English_orange.lproj: fixed theme selection
+
+	* OGo.make: properly generate derived sources
+
+	* LSWPreferencesEditor+AccountLog.m: fixed a compiler warning
+
+2004-08-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoDefaultEditField.wo, OGoDefaultEditFrame.wo: template cleanups, 
+	  fixed some XHTML incompatibilities, removed deprecated
+	  singleSelection bindings (v5.0.31)
+
+2004-08-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* added "orange" theme (v5.0.30)
+
+2004-08-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.29
+
+	* SkyDisplayPreferences: removed extra account processing, added
+	  separate popups for theme and language selection (fixes OGo bug #579)
+
+	* LSWPreferencesEditor.m: sort config editor pages based on the
+	  edit name (was arbitary before)
+
+	* v5.0.28
+
+	* SkyDisplayPreferences.m: major code cleanups
+	
+	* SkyDefaultEditField.m: some code cleanups
+
+	* SkyDefaultEditField.wo: template cleanups, do not use deprecated
+	  singleSelection binding
+
+	* OGo.make: added blue theme
+
+2004-06-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWPreferencesEditor.wo, LSWPreferencesViewer.wo, 
+	  LSWPreferencesViewer.m: removed extra account code (v5.0.27)
+
+2004-06-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.26
+
+	* LSWPreferencesEditor.wo/English.lproj/LSWPreferencesEditor.html:
+	  template cleanups
+
+	* SkyDisplayPreferences.m: some code cleanups
+
+	* SkyDisplayPreferences.wo/English.lproj/SkyDisplayPreferences.html:
+	  template cleanups
+
+2004-03-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWPreferencesEditor+AccountLog.m: fixed a minor warning when
+	  compiling with gstep-base (v5.0.25)
+
+2004-02-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWPreferencesEditor.m: moved templates to English.lproj because 
+	  those are themed on SKYRiX 5 (v5.0.24)
+
+2004-01-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWPreferencesViewer.m: fixed OGo bug #597 (clicking on a team did
+	  not lead to the team viewer) (v5.0.23)
+
+	* LSWPreferencesEditor: major template cleanups (v5.0.22)
+
+2004-01-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWPreferencesEditor+AccountLog.m: fixed a compilation warning 
+	  (v5.0.21)
+
+2004-01-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.20
+
+	* OGoDefaultEditField.m: major cleanups, added ivar/accessor for
+	  'isEditable' binding (there already is a binding 'isEditableDef' -
+	  duplicate API?
+
+	* LSWPreferencesViewer.m: added ivar/accessor for 'category' (avoids a
+	  warning log on that
+	
+	* LSWPreferencesViewer.wo: major template cleanups
+
+2004-01-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: fixed makefile for compilation on MacOSX (v5.0.19)
+
+2004-01-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWPreferencesEditor.m, LSWPreferencesViewer.m: major cleanups, moved
+	  AccountLog category to separate file (v5.0.18)
+
+2003-12-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWPreferencesEditor, SkyDisplayPreferences: fixed CSS 'id' vs 
+	  'class' issue (v5.0.17)
+
+2003-12-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: install into local root per default (v5.0.16)
+
+Mon Nov 24 20:54:41 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWPreferencesEditor.m: copy defaults for new template user from
+	  master template user (uid=9999), enable edit defaults during
+	  creation of accounts (v5.0.15)
+
+Fri Nov 21 00:02:20 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWPreferencesEditor.m: add local domain selection (v5.0.14)
+
+Wed Nov 19 16:55:03 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* v5.0.13
+	
+	* OGoDefaultEditField.m: code cleanups
+
+	* LSWPreferencesViewer: reset defaults to get the new edited values
+
+Wed Nov 19 14:52:24 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* OGoDefaultEditFrame.m: localize bool values (v5.0.12)
+
+Wed Nov 19 14:23:30 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWPreferences*:  code cleanups (v5.0.11)
+
+Tue Nov 18 19:29:50 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* v5.0.10
+	
+	* OGoDefaultViewField: add
+	 
+	* LSWPreferences: code cleanups, use OGoDefault*Fields to display 
+	  defaults
+
+Tue Nov 18 18:33:07 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* OGoDefaultEditField.m: fix a compare old and new values bug (v5.0.9)
+
+Mon Nov 17 19:52:54 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* OGoDefaultEdit*: add the new EditDefaults component 
+	  (defaults setting, access handling, reset values) 
+	  (currently used in mail preferences) (v5.0.8)
+
+Thu Nov 13 11:41:03 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* v5.0.7
+	
+	* LSWPreferencesFunctions.m: removed (obsoleted)
+
+	* LSWPreferencesViewer, LSWPreferencesEditor: removed configurabele 
+	  userpreferences (obsoleted), code cleanups
+
+2003-11-06  Thomas Schild  <ts@skyrix.com>
+
+	* LSWPreferencesEditor.wo, SkyDisplayPreferences.wo:
+	  imageButton --> css submitButton (v5.0.6)
+
+Thu Nov  6 14:07:05 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* GNUmakefile: fixed WOBUNDLE_INSTALL_DIR 
+	  (Skyrix5 => OpenGroupware.org) (occures during v5.0.4) (v5.0.5)
+
+2003-11-04  Thomas Schild  <ts@skyrix.com>
+
+	* GNUmakefile: include SKYRIX.make, OGo.make
+	* OGo.make: added (v5.0.4)
+
+Mon Oct 27 19:38:41 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWPreferencesViewer.m: check whether edit permissions are 
+	  granted (v5.0.3)
+
+Wed Sep  3 16:22:39 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyDisplayPreferences.[m|wod|html]: added am/pm format checkbox
+	  (ogo bug 14) (v5.0.2)
+
+2003-08-04  Thomas Schild <ts@skyrix.com>
+
+	* LSWPreferencesEditor.wo: *.lproj cleanups (OOo Theme)
+	
+	* SkyDisplayPreferences.wo: *.lproj cleanups (OOo Theme)
+
+Mon Jul  7 20:09:09 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.1)
+
+	* removed historic ChangeLogs
+
+Fri Jan 29 17:32:52 1999  Joerg Grimm  <joerg@trex2>
+
+	* LSWPreferencesEditor.wo/LSWPreferencesEditor.wod:  cancel button
+	  became a link	
+	* LSWPreferencesEditor.m: changed to use LSWEditorPage

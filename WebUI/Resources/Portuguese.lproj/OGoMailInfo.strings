@@ -1,0 +1,49 @@
+// v1.1 - Francisco Azevedo <francisco@OpenGroupware.org>
+
+LSWMailPreferences 	= "Preferências de emails"
+DefaultAccessPreferences= "Preferência de acesso padrão"
+Imap                  	= "Imap";
+
+saveButtonLabel       	= "Guardar"
+cancelButtonLabel     	= "Cancelar"
+
+"mail_editor_type"    	= "Tipo de editor de emails"
+internal              	= "Interno"
+external              	= "Externo"
+
+"mail_send_type"      	= "Enviar mensagem como"
+html                  	= "HTML"
+plain                 	= "Texto"
+signature             	= "Assinatura"
+
+senderLength          	= "Comprimento do rementente"
+subjectLength         	= "Comprimento do assunto"
+
+viewImagesInline      	= "Ver imagens na mensagem"
+viewAttachmentsInline 	= "Ver anexos na mensagem"
+viewAttachmentBodysInEditor = "Ver o corpo dos anexos no editor"
+
+YES                   	= "Sim"
+NO                    	= "Não"
+login                 	= "Login"
+
+imapPasswd1 		= "Password"
+imapPasswd2 		= "Repetir a password"
+imapUser    		= "Utilizador"
+imapHost    		= "Servidor"
+
+viewStatus 		= "Ver estado dos emails"
+asIcon     		= "como ícone"
+
+label_newMail_single 	= "Você tem um novo email!";
+label_newMail_multi  	= "Você tem %i novos emails!";
+label_newMail_no     	= "Não há emails novos!";
+
+action_viewMail    	= "Ver email"
+action_refresh     	= "Actualizar";
+action_closeWindow 	= "Fechar janela";
+
+activeMail              = "Email"
+inactiveMail            = "Email (inactivo)"
+newMail                 = "Email (por lêr)"
+

@@ -1,0 +1,19 @@
+# $Id$
+
+ADDITIONAL_INCLUDE_DIRS += -I. -I../../Frontend -I.. -I../..
+
+BUNDLE_EXTENSION   = .zsp
+BUNDLE_INSTALL_DIR = $(GNUSTEP_USER_ROOT)/Library/ZideStore12
+
+Projects_BUNDLE_LIBS += \
+        -lZideStoreFrontend     	\
+        -lOGoProject -lOGoDocuments	\
+	-lLSFoundation			\
+	-lGDLAccess			\
+        -lNGObjWeb -lNGScripting	\
+	-lNGLdap -lNGMime -lNGStreams -lNGExtensions -lEOControl	\
+	-lXmlRpc -lDOM -lSaxObjC
+
+ADDITIONAL_LIB_DIRS += \
+	-L../../Frontend/$(GNUSTEP_OBJ_DIR)	\
+	-L../../Backend/$(GNUSTEP_OBJ_DIR)

@@ -1,0 +1,61 @@
+// $Id$
+{
+  domainList = (
+        resource,
+        resourceassignment
+  );
+
+  domains = {
+     "resource" = {
+         operations = {
+            "new"    = { class = "LSNewResourceCommand"; };
+            "set"    = { class = "LSSetResourceCommand"; };
+            "get"    = {
+                class = "LSDBObjectGetCommand";
+                init  = { entity = "Resource"; };
+             };
+            "delete"    = { class = "LSDeleteResourceCommand"; };
+            "extended-search" = {
+               class = "LSExtendedSearchSingleResourceCommand";
+             };
+            "get-contact" = {
+                class = "LSDBFetchRelationCommand";
+                init  = {
+                  entity                = "Resource";
+                  destinationEntityName = "Person";
+                  sourceKey             = "objectId";
+                  destinationKey        = "companyId";
+                  isToMany              = NO;
+                };
+            };
+            "set-subresources" = { class = "LSSetResourceAssignmentCommand"; };
+            "get-subresources" = { class = "LSGetSubResourcesCommand";       };
+            "get-superresources" = { class = "LSGetSuperResourcesCommand";   };
+            "delete" = {
+                class = "LSDBObjectDeleteCommand";
+                init  = { entity = "Resource";        };
+            };
+         };
+     };
+    "resourceassignment" = {
+      operations = {
+        "new" = {
+          class = "LSDBObjectNewCommand";
+          init  = { entity = "ResourceAssignment";        };
+        };
+        "set" = {
+          class = "LSDBObjectSetCommand";
+          init  = { entity = "ResourceAssignment";        };
+        };
+        "get" = {
+          class = "LSDBObjectGetCommand";
+          init  = { entity = "ResourceAssignment";        };
+        };
+        "delete" = {
+          class = "LSDBObjectDeleteCommand";
+          init  = { entity = "ResourceAssignment";        };
+        };
+      };
+    };
+  };
+}

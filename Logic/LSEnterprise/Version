@@ -1,0 +1,5 @@
+# $Id$
+
+SUBMINOR_VERSION:=10
+
+# v5.0.10 requires LSSearch v5.0.13

@@ -1,0 +1,182 @@
+# $Id: INSTALL,v 1.1.1.1 2003/07/09 22:57:27 cvs Exp $
+
+SKYRiX Master Daemon
+Installation Guide
+
+1.   Installation
+1.1  How do I install skymasterd ?
+1.2. Which Defaults are supported ?
+1.3. How do I configure templates ?
+1.4. How do I configure autostart instances ?
+
+1.   Installation
+=================
+
+1.1  How do I install skymasterd ?
+==================================
+Get the sources, compile the daemon. Proceed to 1.2. to setup the
+required Defaults.
+
+1.2. Which Defaults are supported ?
+===================================
+skymasterd supports the following Defaults :
+
+SMPerformCheck           - enable task check (check if tasks with the 
+                           'runcheck = YES' flag are still running, 
+                           start them up if not)
+                           Default : YES
+SMPerformAutostart       - enable autostart of tasks with 'autostart = YES'
+                           Default : YES
+SMCheckInterval          - the interval for this check 
+                           Default: 30s
+SMPriority               - which priority should be used if no 'priority' 
+                           argument  is present 
+                           Default: 50
+SMRestartDelay           - default restart delay for entries with 
+                           'autorestart = YES'
+                           Default : 1s
+SMStartCount             - how many times a task can be started before it gets
+                           disabled
+                           Default : 5
+SMStartInterval          - the interval before the start count is resetted
+                           Default : 20s
+                           (i.e. a task can be started 5 times in 20 seconds
+                            before it gets disabled)
+
+These don't need to be setup if you want to use the default values.
+However, the defaults for authentication have to be set up in order to
+use all XML-RPC command the daemon provides.
+
+SMAuthenticationUser     - authentication username
+SMAuthenticationPassword - crypted authentication password
+                           create it with 'htpasswd -nb <user> <password>
+
+1.3. How do I configure templates ?
+===================================
+
+The template configuration is handled by the file located at 
+$GNUSTEP_USER_ROOT/config/skymasterd.xml. A sample for this config file is 
+included in this directory. 
+
+You can put seperate template files in $GNUSTEP_USER_ROOT/config/skymasterd/,
+these are treated the same as entries in the 'instances' dictionary in the
+main config file (means they are loaded on startup and merged with the 
+entries of the main config). If the main config file already has a
+defined template of the same name, it gets overwritten.
+
+It is also possible to supply a alternative config file at the command line
+using the switch '-f'. With supplying an alternative config file, loading
+of the single template files is disabled.
+
+Available Template Options
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+One of :
+
+app           - the GNUStep application to be started
+tool          - the GNUStep tool to be started
+executable    - the executable file to be started (environment variables can be
+                used here)
+
+See below for further explanation.
+
+singleton     - can the template be started more than once ?
+taskclass     - class of the current task
+                available choices : MasterTask       - common task class
+                                    ApacheTask       - handles Apache httpd
+                                    RegistryTask     - handles skyregistryd
+                                    (registers there after starting them up)
+                 if this parameter is omitted, MasterTask is used
+runcheck      - should the check if the task is always running be performed ?
+cmdline       - the arguments for the executable (variables can be used here)
+parameter     - repetition of tags with a 'name' attribute and a 'value'
+                element - if cmdline is supplied, the parameters get used
+                as bindings for the variables used therein, if not, a cmdline
+                is build by prefixing the 'name' elements with '-' and 
+                appending the values
+autorestart   - restart the process after termination
+restartdelay  - delay before autorestarting the process
+zombieable    - process becomes zombie on termination (only working if
+                autorestart = NO)
+pidfile       - pidfile location (default : $GNUSTEP_USER_ROOT/run/<task>.pid)
+startcount    - how many times a task can be started in a given interval
+                before it gets disabled
+startinterval - the interval for startcount
+startdelay    - wait the delay after the task got started
+
+App/Tool/Executable
+~~~~~~~~~~~~~~~~~~~
+There are 3 ways to set the program which is started when the template is
+instanced. 
+
+app  - searchpath : - $GNUSTEP_LOCAL_ROOT/WOApps/<app>/$GNUSTEP_HOST_CPU/ \
+                      $GNUSTEP_HOST_OS/$LIBRARY_COMBO/<app without path ext.>
+
+                    - Example : <app>Skyrix42.woa</app> resolves to:
+                      
+                      /LOCAL/home/bjoern/dev/SkyrixRoot/WOApps/Skyrix42.woa\
+                      ix86/linux-gnu/gnu-fd-nil/Skyrix42
+ 
+tool - searchpath : - (1) $GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_CPU/ \
+                          $GNUSTEP_HOST_OS/$LIBRARY_COMBO/<tool>
+                      (2) $GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_CPU/ \
+                          $GNUSTEP_HOST_OS/<tool>
+                      (3) $GNUSTEP_LOCAL_ROOT/Tools/<tool>
+
+                    - Example : <tool>skyregistryd</tool> resolves to:
+                     
+                      /LOCAL/home/bjoern/dev/SkyrixRoot/Tools/\
+                      ix86/linux-gnu/gnu-fd-nil/skyregistryd
+                      (if this path doesn't exist, the 2 other possible paths
+                       are evaluated)               
+
+executable        : here you can provide an absolute path in the file system
+                    (with environment variables and ~ as abbrevation for a
+                     users home directory)
+
+If you provide more than one of these tags in a template, the valid tag is
+chosen in the order app, tool, executable, i.e. if your template has both
+<app> and <tool> tags, the <app> tag is used.
+
+Sample
+~~~~~~
+<config xmlns="http://www.skyrix.com/od/skymasterd-config">
+  <template templateclass="skyaccountd">
+    <singleton>true</singleton>
+    <runcheck>true</runcheck>
+    <tool>skyaccountd</tool>
+    <cmdline>-WOPort $port$</cmdline>
+    <parameter name="port">
+      <value>21060</value>
+    </parameter>
+  </template>
+</config>
+
+
+1.4. How do I configure autostart instances ?
+=============================================
+The autostart configuration is handled by the file located at 
+$GNUSTEP_USER_ROOT/config/skymasterd-instances.xml. 
+A sample for this config file is  included in this directory aswell.
+
+You can put seperate files in $GNUSTEP_USER_ROOT/config/skymasterd-instances/,
+these are treated the same as entries in the config file mentioned above.
+
+Available Autostart Options
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+required      - startup of this task is required, shutdown the server if 
+                this task didn't start up
+priority      - start priority of this task (rc.d-alike)
+parameter     - see description above, if parameters are supplied here, they
+                are merged with the template's default parameters
+
+Sample
+~~~~~~
+<autostart xmlns="http://www.skyrix.com/od/skymasterd-config">
+  <instance templateclass="skyregistryd">
+    <required>true</required>
+    <priority>20</priority>
+    <parameter name="port">
+      <value>21060</value>
+    </parameter>
+  </instance>
+</autostart>

@@ -1,0 +1,9 @@
+# $Id$
+
+LSAddress TODO
+==============
+
+- remove that LSUserDefaultsFunctions junk and replace it with a proper
+  object
+- clean up API for user defaults on MacOSX (which misses the search list
+  functionality?)

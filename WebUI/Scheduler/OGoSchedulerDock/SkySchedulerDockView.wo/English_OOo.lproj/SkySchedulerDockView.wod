@@ -1,0 +1,33 @@
+// $Id: SkySchedulerDockView.wod,v 1.1 2003/08/04 16:00:01 thomas Exp $
+
+SchedulerLink: WOHyperlink {
+  directActionName = "dock";
+  ?page            = "SkySchedulerPage";
+  ?cid             = context.contextID;
+}
+SchedulerImage: WOImage {
+  filename = "menu_scheduler_labeled.gif";
+  ALT      = labels.dockTitle;
+  BORDER   = 0;
+}
+
+SchedulerDrop: WEDropContainer {
+  tags          = ( 
+        person, 
+        team, 
+        date, 
+        appointment, 
+        am_appointment, 
+        pm_appointment 
+  );
+  droppedObject = droppedObject;
+  action        = objectDropped;
+}
+
+WithLink: WOConditional {
+  condition = hideLink;
+  negate    = YES;
+}
+WithoutLink: WOConditional {
+  condition = hideLink;
+}

@@ -1,0 +1,17 @@
+# $Id$
+
+# Libraries
+
+SkyMaster_BUNDLE_LIBS += \
+	-lOGoIDL -lXmlSchema		\
+	-lSxComponents -lNGObjWeb	\
+
+ADDITIONAL_TOOL_LIBS += \
+	-lXmlSchema	\
+	-lSxComponents
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_TOOL_LIBS   += -lFoundationExt
+ADDITIONAL_BUNDLE_LIBS += -lFoundationExt
+ADDITIONAL_LDFLAGS     += -framework Foundation
+endif

@@ -1,0 +1,492 @@
+// $Id: LSWMailPreferences.wod,v 1.8 2004/06/08 15:43:55 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.LSWMailPreferences;
+  onClose = session.navigation.leavePage;
+}
+
+PreferencesForm: WOForm {
+}
+
+CancelButton: WOHyperlink {
+  action = cancel;
+  string = labels.cancelButtonLabel;
+  class  = "button_narrow";
+}
+
+SaveSubmit: WOSubmitButton {
+  action   = save;
+  value    = labels.saveButtonLabel;
+  class    = "button_narrow";
+}
+
+SorterItem: WOString {
+  value = labels.$item;
+}
+
+IsRoot: WOConditional {
+  condition = isRoot;
+}
+
+/* collapsible */
+
+MDNTitle: SkyCollapsibleContent {
+  titleColspan = 4;
+  visibility = session.userDefaults.mail_pref_expand_MDN;
+  title      = labels.DefaultsMDN;
+  submitActionName = "";
+}
+
+MailListTitle: SkyCollapsibleContent {
+  titleColspan = 4;
+  visibility = session.userDefaults.mail_pref_expand_mailList;
+  title      = labels.DefaultsMailList;
+  submitActionName = "";
+}
+
+SearchMailListTitle: SkyCollapsibleContent {
+  titleColspan = 4;
+  visibility = session.userDefaults.mail_pref_expand_searchMailList;
+  title      = labels.DefaultsSearchMailList;
+  submitActionName = "";
+}
+GeneralDefaultsTitle: SkyCollapsibleContent {
+  titleColspan = 4;
+  visibility = session.userDefaults.mail_pref_expand_generalDefaults;
+  title      = labels.GeneralDefaults;
+}
+OnlyRootVisiblePreferences: SkyCollapsibleContent {
+  titleColspan = 4;
+  visibility = session.userDefaults.mail_pref_expand_onlyRooVisiblePreferences;
+  title      = labels.OnlyRootVisiblePreferences;
+}
+FromPopupValuesTitle: SkyCollapsibleContent {
+  titleColspan = 4;
+  visibility = session.userDefaults.mail_pref_expand_fromPopupValues;
+  title      = labels.FromPopupValues;
+}
+GeneralMailListTitle: SkyCollapsibleContent {
+  titleColspan = 4;
+  visibility = session.userDefaults.mail_pref_expand_generalMailList;
+  title      = labels.GeneralMailListDefaults;
+}
+SignatureTitle: SkyCollapsibleContent {
+  visibility = session.userDefaults.mail_pref_expand_signature;
+  titleColspan = 4;
+  title      = labels.signature;
+}
+SpecialFolderTitle: SkyCollapsibleContent {
+  titleColspan = 4;
+  visibility = session.userDefaults.mail_pref_expand_specialFolder;
+  title      = labels.DefaultsSpecialFolder;
+}
+AccessTitle: SkyCollapsibleContent {
+  titleColspan = 4;
+  visibility = session.userDefaults.mail_pref_expand_access;
+  title      = labels.DefaultAccessPreferences;
+}
+
+/* edit fields */
+
+MailEditorType: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  valueType       = "popup";
+  valueList       = ( internal, external );
+  key             = "mail_editor_type";
+  isEditableDef   = YES;
+}
+
+MailSendType: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "mail_send_type";
+  valueType       = "popup";
+  valueList       = ( html, plain );
+  isEditableDef   = YES;
+}
+
+UseEpozMailEditor: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "mail_useEpozMailEditor";
+  useFormatter    = "bool";
+  valueType       = "checkbox";
+  isEditableDef   = useEpozMailEditorEnabled;
+}
+
+ShowHtmlMailTextInline: OGoDefaultEditField {
+  componentLabels = labels;
+  defaults        = defaults;
+  isEditableDef   = YES;
+  useFormatter    = "bool";
+  valueType       = "checkbox";
+  key             = "mail_showHtmlMailTextInline";
+}
+
+ViewImagesInline: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  isEditableDef   = YES;
+  useFormatter    = "bool";
+  valueType       = "checkbox";
+  key             = "mail_viewImagesInline";
+}
+ViewAttachmentsInline: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  isEditableDef   = YES;
+  useFormatter    = "bool";
+  valueType       = "checkbox";
+  key             = "mail_viewAttachmentsInline";
+}
+ViewAttachmentBodysInEditor: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  isEditableDef   = YES;
+  useFormatter    = "bool";
+  valueType       = "checkbox";
+  key             = "mail_viewAttachmentBodysInEditor";
+}
+
+ShowAllUnreadLinks: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  isEditableDef   = YES;
+  useFormatter    = "bool";
+  valueType       = "checkbox";
+  key             = "mail_show_all_unread_links";
+}
+
+ShowTargetInFilterList: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  isEditableDef   = YES;
+  useFormatter    = "bool";
+  valueType       = "checkbox";
+  key             = "mail_show_target_folder";
+}
+WrapLongLines: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  isEditableDef   = YES;
+  useFormatter    = "bool";
+  valueType       = "checkbox";
+  key             = "mail_wrapLongLines";
+}
+
+ShowPopupOnNewMails: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  isEditableDef   = YES;
+  useFormatter    = "bool";
+  valueType       = "checkbox";
+  key             = "popupIfNewMails";
+}
+ShowUnreadMesgAsNext: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  isEditableDef   = YES;
+  useFormatter    = "bool";
+  valueType       = "checkbox";
+  key             = "mail_showUnreadMesgAsNext";
+}
+NextMesgAfterDelete: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  isEditableDef   = YES;
+  useFormatter    = "bool";
+  valueType       = "checkbox";
+  key             = "mail_nextMesgAfterDelete";
+}
+
+ReplyToField: OGoDefaultEditField {
+  formatter       = session.formatString;
+  defaults        = defaults;
+  componentLabels = labels;
+  isEditableDef   = YES;
+  valueType       = "string";
+  key             = "mail_reply-to";
+}
+
+OrganizationField: OGoDefaultEditField {
+  formatter       = session.formatString;
+  defaults        = defaults;
+  componentLabels = labels;
+  isEditableDef   = YES;
+  valueType       = "string";
+  key             = "mail_organization";
+}
+
+MailFromTypeEnabled: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  isEditableDef   = NO;
+  valueType       = "checkbox";
+  useFormatter    = "bool";
+  key             = "mail_from_type_enabled";
+}
+ShowUnsubscribedFolder: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  isEditableDef   = NO;
+  valueType       = "checkbox";
+  useFormatter    = "bool";
+  key             = "mail_show_unsubscribed_folder";
+}
+ShowUnsubscribedFolderInRootFolder: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  isEditableDef   = NO;
+  valueType       = "checkbox";
+  useFormatter    = "bool";
+  key             = "mail_show_unsubscribed_folder_in_root";
+}
+NumberOfUploadFieldInMailEditor: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "mail_numberOfUploadFields";
+  valueType       = "popup";
+  valueList       = numberOfUploadFieldsValues;
+  isEditableDef   = YES;
+}
+
+MDNType: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "mail_MDN_type";
+  valueType       = "popup";
+  valueList       = ( "ask", "automatic", "never" );
+  isEditableDef   = YES;
+}
+
+MDNText: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "mail_MDN_text";
+  valueType       = "text";
+  formatter       = session.formatString;
+  isEditableDef   = YES;
+  rows            = 6;
+  cols            = 60;
+}
+
+MDNTextHelp: SkyRichString {
+  value    = labels.mdnTextHelp;
+  insertBR = YES;
+}
+
+MDNSubject: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "mail_MDN_subject";
+  valueType       = "string";
+  formatter       = session.formatString;
+  isEditableDef   = YES;
+}
+MDNSubjectHelp: SkyRichString {
+  value = labels.mdnSubjectHelp;
+}
+
+SenderLengthField : OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "mail_senderLength";
+  valueType       = "popup";
+  formatter       = session.formatString;
+  isEditableDef   = YES;
+  valueList   = ( "10", "15", "20", "25", "30", "35", "40", "45", "50" );
+}
+
+SubjectLengthField : OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "mail_subjectLength";
+  valueType       = "popup";
+  formatter       = session.formatString;
+  valueList   = ( "10", "15", "20", "25", "30", "35", "40", "45", "50" );
+  isEditableDef   = YES;
+}
+
+MailListBlockSize: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "MailListBlockSize";
+  valueType       = "popup";
+  formatter       = session.formatString;
+  valueList       = mailListBlockSizeFields;
+  isEditableDef   = YES;
+}
+
+MailListAttributesFrame: OGoDefaultEditFrame {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "MailListAttributes";
+  isEditableDef   = YES;
+}
+
+SentMailListAttributesFrame: OGoDefaultEditFrame {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "SentMailListAttributes";
+  isEditableDef   = YES;
+}
+
+SearchMailListBlockSize: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "SearchMailListBlockSize";
+  valueType       = "popup";
+  formatter       = session.formatString;
+  valueList       = sortedMailListBlockSizeFields;
+  isEditableDef   = YES;
+}
+
+SearchMailListAttrsFrame: OGoDefaultEditFrame {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "SearchMailListAttributes";
+  isEditableDef   = YES;
+}
+
+SearchMailListAttributes: SkyListSorter {
+  selectionTitle    = labels.selection_title;
+  nonSelectionTitle = labels.non_selection_title;
+  selection = defaults.SearchMailListAttributes;
+  item      = item;
+  list      = ( "isNew", "sender", "sendDate", "subject", "to", "folder",
+                "contentLen", "isFlagged" );
+}
+SignatureField: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "signature";
+  valueType       = "text";
+  formatter       = session.formatString;
+  valueList       = sortedMailListBlockSizeFields;
+  isEditableDef   = YES;
+  rows            = 6;
+  cols            = 80;
+}
+
+TrashFolderFrame: OGoDefaultEditFrame {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "mail_trashFolderName";
+  isEditableDef   = YES;
+}
+TrashFolderPopup : WOPopUpButton {
+  list            = folderList;
+  item            = item;
+  string          = folder;
+  singleSelection = YES;
+  selection       = trashFolder;
+}
+
+SentFolderFrame: OGoDefaultEditFrame {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "mail_sentFolderName";
+  isEditableDef   = YES;
+}
+SentFolderPopup : WOPopUpButton {
+  list            = folderList;
+  item            = item;
+  string          = folder;
+  singleSelection = YES;
+  selection       = sentFolder;
+}
+
+DraftsFolderFrame: OGoDefaultEditFrame {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "mail_draftsFolderName";
+  isEditableDef   = YES;
+}
+
+DraftsFolderPopup : WOPopUpButton {
+  list            = folderList;
+  item            = item;
+  string          = folder;
+  singleSelection = YES;
+  selection       = draftsFolder;
+}
+
+FromPopupListLabel : WOString {
+  value = labels.fromPopupList;
+}
+
+FromPopupFrame: OGoDefaultEditFrame {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "mail_fromPopupList";
+  isEditableDef   = NO;
+}
+FromPopupList: SkyListSorter {
+  selectionTitle    = labels.selection_title;
+  nonSelectionTitle = labels.non_selection_title;
+  selection         = defaults.mail_fromPopupList;
+  item              = item;
+  list              = fromPopupValues;
+}
+
+FromPopupItem : WOString {
+  value = item;
+}
+
+EnableFromPopup: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "mail_enableFromPopup";
+  valueType       = "checkbox";
+  useFormatter    = "bool";
+  isEditableDef   = NO;
+}
+
+FromPopupInitialValues: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "mail_fromPopupInitialValues";
+  valueType       = "text";
+  isEditableDef   = NO;
+  rows            = 20;
+  cols            = 60;
+  useFormatter    = "stringField";
+}
+
+MailListAttributes: SkyListSorter {
+  selectionTitle    = labels.selection_title;
+  nonSelectionTitle = labels.non_selection_title;
+  selection = defaults.MailListAttributes;
+  item      = item;
+  list      = ( "isNew", "sender", "sendDate", "subject", "to", "folder",
+                "contentLen", "isFlagged" );
+}
+
+SentMailListAttributes: SkyListSorter {
+  selectionTitle    = labels.selection_title;
+  nonSelectionTitle = labels.non_selection_title;
+  selection = defaults.SentMailListAttributes;
+  item      = item;
+  list      = ( "isNew", "sender", "sendDate", "subject", "to", "folder",
+                "contentLen", "isFlagged" );
+}
+
+IsFromPopupEnabled : WOConditional {
+  condition = isFromPopupEnabled;
+}
+
+/* style stuff */
+
+AttributeCell: SkyAttributeCell { width="20%"; align="middle"; }
+ValueCell:     SkyValueCell     {}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+EditSpezialFolderCond : WOConditional {
+  condition = isEditSpezialFolderEnabled;
+}
+

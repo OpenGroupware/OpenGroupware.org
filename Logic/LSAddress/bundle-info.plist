@@ -1,0 +1,97 @@
+// $Id$
+{
+  bundleHandler = LSAddressCommands;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = LSSearch; type = cmd; }
+    );
+    
+    classes = (
+      { name = NSObject;              },
+      { name = LSBaseCommand;            exact-version = 1; },
+      { name = LSDBObjectBaseCommand;    exact-version = 1; },
+      { name = LSDBObjectDeleteCommand;  exact-version = 1; },
+      { name = LSDBObjectSetCommand;     exact-version = 2; },
+      { name = LSDBObjectGetCommand;     exact-version = 3; },
+      { name = LSDBFetchRelationCommand; exact-version = 1; },
+      { name = LSExtendedSearchCommand;  exact-version = 2; }
+    );
+  };
+  
+  provides = {
+    LSCommands = (
+        { name = "login::check-login";         },
+        { name = "address::new";               },
+        { name = "address::set";               },
+        { name = "address::get";               },
+        { name = "address::delete";            },
+        { name = "address::fetchAttributes";   },
+        { name = "address::fetchRelations";    },
+        { name = "address::convert";           },
+        { name = "address::build-converter-data"; },
+        { name = "telephone::new";             },
+        { name = "telephone::set";             },
+        { name = "telephone::get";             },
+        { name = "telephone::delete";          },
+        { name = "staff::get";                 },
+        { name = "staff::delete";              },
+        { name = "companyassignment::new";     },
+        { name = "companyassignment::set";     },
+        { name = "companyassignment::get";     },
+        { name = "companyassignment::delete";  },
+        { name = "staff::get-by-globalid";       },
+        { name = "companyvalue::new";            },
+        { name = "companyvalue::set";            },
+        { name = "companyvalue::get";            },
+        { name = "companyvalue::delete";         },
+        { name = "companyvalue::get-by-globalid";  },
+        { name = "companyvalue::query";          },
+        { name = "companycategory::set-all";     },
+        { name = "companycategory::new";         },
+        { name = "companycategory::set";         },
+        { name = "companycategory::get";         },
+        { name = "companycategory::delete";      },
+        { name = "bookmark::new";                },
+        { name = "bookmark::get";                },
+        { name = "userdefaults::register";       },
+        { name = "userdefaults::write";          },
+        { name = "userdefaults::delete";         },
+        { name = "userdefaults::get";            },        
+        { name = "company::get";                 },
+        { name = "company::get-vcard";           }
+    );
+    classes = (
+        { name = LSAddressCommands;                   },
+        { name = LSCheckLoginCommand;                 },
+        { name = LSDeleteCompanyCommand;              },
+        { name = LSGetBookmarkCommand;                },
+        { name = LSGetCompanyForMemberCommand;        },
+        { name = LSGetMemberForCompanyCommand;        },
+        { name = LSGetStaffForGlobalIDsCommand;       },
+        { name = LSGroupToMemberAssignmentCommand;    },
+        { name = LSNewBookmarkCommand;                },
+        { name = LSNewCompanyCommand;                 },
+        { name = LSSetCategoriesCommand;              },
+        { name = LSSetCompanyCommand;                 },
+        { name = LSRegisterUserDefaultsCommand;       },
+        { name = LSGetUserDefaultsCommand;            },        
+        { name = LSWriteUserDefaultsCommand;          },
+        { name = LSSetResourcesCommand;               },
+        { name = LSProjectsToCompanyAssignmentCommand;},
+        { name = LSChangeLoginStatus;                 },
+        { name = LSFetchExtendedAttributesCommand;    },
+        { name = LSGetCompanyCommand;                 },
+        { name = LSAddressFetchAttributesCommand;     },        
+        { name = LSAddressConverterCommand;           },
+        { name = LSBuildConverterDataCommand;         },
+        { name = LSGroupToMemberAssignmentCommand;    },
+        { name = LSMemberToGroupAssignmentCommand;    },
+        { name = LSNewTelephoneCommand;               },
+        { name = LSSetTelephoneCommand;               },
+        { name = LSGetVCardForGlobalIDsCommand;       }
+    );
+  };
+}

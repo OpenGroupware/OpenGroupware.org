@@ -1,0 +1,20 @@
+{
+  requires = ( MAIN, Tasks );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+
+  categories = {
+    SxTaskFolder = {
+      methods = {
+        "rss" = {
+          protectedBy = "View";
+          selector    = "rssInContext:";
+        };
+      };
+    };
+  };
+}

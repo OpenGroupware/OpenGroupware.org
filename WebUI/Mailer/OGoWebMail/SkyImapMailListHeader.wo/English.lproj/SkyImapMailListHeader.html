@@ -1,0 +1,34 @@
+<!-- $Id: SkyImapMailListHeader.html,v 1.2 2004/08/09 22:52:51 helge Exp $ -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <#TableHeaderRow>
+    <td>
+      <#ShowTreeCond><#DoHideTree /></#ShowTreeCond>
+      <#HideTreeCond><#DoShowTree /></#HideTreeCond>
+      <b><#Font><#FolderRep> /<#FolderAction /></#FolderRep></#Font></b>
+    </td>
+    <td align="right" nowrap="nowrap">
+      <#ShowQuotaQuotaInformation>
+        <#IsOverQuota><#RedFont><#QuotaUseString /></#RedFont></#IsOverQuota>
+        <#IsOverQuotaElse><#Font><#QuotaUseString /></#Font></#IsOverQuotaElse>
+        &nbsp;
+      </#ShowQuotaQuotaInformation>
+      <#HasNewFolder   ><#NewFolder    />&nbsp;</#HasNewFolder>
+      <#HasEditFolder  ><#EditFolder   />&nbsp;</#HasEditFolder>
+      <#HasMoveFolder  ><#MoveFolder   />&nbsp;</#HasMoveFolder>
+      <#HasDeleteFolder><#DeleteFolder />&nbsp;</#HasDeleteFolder>
+      <#FilterCond>
+        <#HasNewFilter><#NewFilter />&nbsp;</#HasNewFilter>
+      </#FilterCond>
+      <#EmptyTrash />&nbsp;
+      <#NewMail />&nbsp;
+    </td>
+  </#TableHeaderRow>
+  <#HideTreeCond>
+    <tr>
+      <td colspan="2"><#Font>
+         <#SubFolderRep><#FolderAction />, </#SubFolderRep>
+      </#Font></td>
+    </tr>
+  </#HideTreeCond>
+  <tr><td colspan="2"></td></tr>
+</table>

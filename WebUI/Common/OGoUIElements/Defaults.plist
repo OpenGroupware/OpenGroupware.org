@@ -1,0 +1,8 @@
+// NSUserDefaults
+{
+  cvsid = "$Id$";
+
+  SkyExternalLinkAction       = "/OpenGroupware/wa/viewExternalLink";
+  SkyExternalLinkCheckInvalid = YES;
+  SkyExternalLinkHideInvalid  = NO;
+}

@@ -1,0 +1,200 @@
+<#PrintModeCond>
+  <html>
+    <!-- $Id: SkyInlineDayOverview.html,v 1.3 2004/05/09 18:23:28 helge Exp $ -->
+    <head><title><#DayTitle /></title></head>
+
+    <body bgcolor="white" text="black">
+      <table border="1" cellpadding="5" width="100%" cellspacing="0">
+        <tr>
+          <td align="center" colspan="2">
+             <#Font><b>
+               <font size="+1"><i><#DayTitle /></i></font><br />
+               <#CompanyName />
+             </b></#Font>
+          </td>
+        </tr>
+        <#HasCurrentDayInfo>
+          <tr><td colspan="2" align="left">
+            <font size="+1"><b><#Font>
+              <#CurrentDayInfo />
+            </#Font></b></font>
+          </td></tr>
+        </#HasCurrentDayInfo>
+
+        <#HasMoreDayAptsCond>
+          <tr>
+            <#MoreDayLabelPrintCell>&nbsp;</#MoreDayLabelPrintCell>
+
+            <#MoreDayAptsRep>
+              <#IsNotFirstAppointmentCond>
+                </tr><tr>
+              </#IsNotFirstAppointmentCond>
+              <td align="left" valign="top">
+                <#Font><#FullAptInfo /></#Font>
+              </td>
+            </#MoreDayAptsRep>
+          </tr>
+        </#HasMoreDayAptsCond>
+        
+        <#TimeIntervallRepetition>
+          <tr>
+            <#PrintLabelCell><#Font><b><#Time /></b></#Font></#PrintLabelCell>
+            
+            <#HasAppointmentsCond>
+              <#AppointmentsRep>              
+                <#IsNotFirstAppointmentCond>
+                  </tr><tr>
+                </#IsNotFirstAppointmentCond>
+                <td align="left" valign="top">
+                  <#Font><#FullAptInfo /></#Font>
+                </td>
+              </#AppointmentsRep><!-- AppointmentsRep -->
+            </#HasAppointmentsCond><!-- HasAppointmentsCond -->
+        
+            <#HasNoAppointmentsCond><td>&nbsp;</td></#HasNoAppointmentsCond>
+          </tr>
+        </#TimeIntervallRepetition>
+      </table>
+      </body>
+    </html>
+</#PrintModeCond>
+
+<#PrintModeCondElse>
+  <table border="0" cellpadding="0" width="100%" cellspacing="1">
+      <tr>
+        <td width="2" valign="top">
+          <#Browser>
+            <#ViewDay>
+              <#Font><#TextColor><#BrowserDayLabel /></#TextColor></#Font>
+            </#ViewDay>
+          </#Browser>
+        </td>
+        <td width="100%" valign="top">
+          <table border="0" cellpadding="2" width="100%" cellspacing="2">
+
+      <#HasCurrentDayInfo>
+        <tr><#DayInfoCell>
+          <font size="+1"><b><#Font><#CurrentDayInfo /></#Font></b></font>
+        </#DayInfoCell></tr>
+      </#HasCurrentDayInfo>
+
+      <#HasAllDayAptsCond>
+        <tr>
+          <#AllDayAptsLabelCell>&nbsp;</#AllDayAptsLabelCell>
+          <#AllDayAptsRep>
+            <#IsNotFirstAppointmentCond></tr><tr></#IsNotFirstAppointmentCond>
+             
+            <#TextCell><#Font>
+              <#ViewAccessAllowedCond
+
+                ><#UseDACond><#ViewAptLink
+                  ><#AptInfoIcon/><#AptTitleSpan><#AptTitle/></#AptTitleSpan
+                ></#ViewAptLink></#UseDACond
+
+                ><#UseDACondElse><#ViewAptAction
+                  ><#AptInfoIcon/><#AptTitleSpan><#AptTitle/></#AptTitleSpan
+                ></#ViewAptAction></#UseDACondElse
+
+              ></#ViewAccessAllowedCond
+              ><#ViewAccessAllowedCondElse
+                 ><#AptInfoIcon/><#AptTitleSpan><#AptTitle/></#AptTitleSpan
+              ></#ViewAccessAllowedCondElse
+
+              ><#ContentTextFont><#AptContentText /></#ContentTextFont
+
+            ></#Font></#TextCell><!-- TextCell -->
+
+          </#AllDayAptsRep>
+        </tr>
+      </#HasAllDayAptsCond>
+
+      <#HasMoreDayAptsCond>
+        <tr>
+          <#MoreDayLabelCell>&nbsp;</#MoreDayLabelCell>
+          <#MoreDayAptsRep>
+            <#IsNotFirstAppointmentCond></tr><tr></#IsNotFirstAppointmentCond>
+             
+            <#TextCell><#Font
+              ><#ViewAccessAllowedCond
+
+                ><#UseDACond><#ViewAptLink
+                  ><#AptInfoIcon/><#AptTimeInfo/><#AptTitleSpan
+                  ><#AptTitle/></#AptTitleSpan
+                ></#ViewAptLink></#UseDACond
+
+                ><#UseDACondElse><#ViewAptAction
+                  ><#AptInfoIcon /><#AptTimeInfo /><#AptTitleSpan
+                  ><#AptTitle/></#AptTitleSpan
+                ></#ViewAptAction></#UseDACondElse
+
+              ></#ViewAccessAllowedCond
+              
+              ><#ViewAccessAllowedCondElse
+                ><#AptInfoIcon /><#AppointmentLinkFont
+                ><#AptTimeInfo /></#AppointmentLinkFont
+              ></#ViewAccessAllowedCondElse
+
+              ><#ContentTextFont><#AptContentText /></#ContentTextFont
+
+            ></#Font></#TextCell><!-- TextCell -->
+
+          </#MoreDayAptsRep>
+        </TR>
+      </#HasMoreDayAptsCond>
+
+      <#TimeIntervallRepetition>
+        <tr>
+          <#LabelCell>
+            <#Font><#Time /></#Font>
+            <#IsResCategorySelected>
+              <#NewAppointmentLinkFont>
+                [<#NewAppointment><#NewString /></#NewAppointment>]
+              </#NewAppointmentLinkFont>
+            </#IsResCategorySelected>
+          </#LabelCell>
+        
+          <#HasAppointmentsCond>
+            <#AppointmentsRep>
+              <#IsNotFirstAppointmentCond>
+                </tr><tr>
+              </#IsNotFirstAppointmentCond>
+
+              <#TextDropCell>
+                <#DragApt><#Font
+
+                  ><#ViewAccessAllowedCond
+
+                    ><#UseDACond><#ViewAptLink
+                      ><#AptInfoIcon /><#AptTimeInfo /><#AptTitleSpan
+                      ><#AptTitle/></#AptTitleSpan
+                    ></#ViewAptLink></#UseDACond
+                    ><#UseDACondElse><#ViewAptAction
+                      ><#AptInfoIcon /><#AptTimeInfo /><#AptTitleSpan
+                      ><#AptTitle/></#AptTitleSpan
+                    ></#ViewAptAction></#UseDACondElse
+
+                  ></#ViewAccessAllowedCond
+
+                  ><#ViewAccessAllowedCondElse
+                    ><#AptInfoIcon /><#AppointmentLinkFont
+                    ><#AptTimeInfo /></#AppointmentLinkFont
+                  ></#ViewAccessAllowedCondElse
+
+                  ><#ContentTextFont><#AptContentText /></#ContentTextFont
+
+                ></#Font></#DragApt><!-- DragApt -->
+              </#TextDropCell>
+
+            </#AppointmentsRep><!-- AppointmentsRep -->
+          </#HasAppointmentsCond><!-- HasAppointmentsCond -->
+        
+              <#HasNoAppointmentsCond>
+                <#TextDropCell>&nbsp;</#TextDropCell>
+              </#HasNoAppointmentsCond>
+            </tr>
+      </#TimeIntervallRepetition>
+          </table>
+        </td>
+      </tr>
+  </table>
+</#PrintModeCondElse>

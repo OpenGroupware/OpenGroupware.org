@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template templateclass="httpd" 
+          xmlns="http://www.skyrix.com/od/skymasterd-config">
+  <taskclass>ApacheTask</taskclass>
+  <tool     >httpd</tool>
+</template>

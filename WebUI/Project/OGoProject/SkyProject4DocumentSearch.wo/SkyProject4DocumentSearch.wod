@@ -1,0 +1,146 @@
+// $Id: SkyProject4DocumentSearch.wod,v 1.3 2003/12/22 16:58:03 helge Exp $
+
+Form: WOForm {
+  name   = "searchform";
+  action = search;
+}
+
+SearchSubmit: WOSubmitButton {
+  action = search;
+  value  = labels.search;
+  class  = "button_narrow";
+}
+
+TitleField: WOTextField {
+  value = bindings.title;
+  size  = "40";
+}
+
+FileNameField: WOTextField {
+  value = bindings.filename;
+  size  = "40";
+}
+
+ExtensionField: WOTextField {
+  value = bindings.extension;
+  size  = "40";
+}
+
+ResultList: SkyTableView {
+  dataSource   = dataSource;
+  item         = currentFile;
+  batchSize    = 10;
+  sortedKey    = "NSFileName";
+  cacheTimeout = session.userDefaults.skyp4_searchlist_cachetimeout;
+}
+
+TitleMode:  WETableViewTitleMode  {}
+FooterMode: WETableViewFooterMode {}
+ButtonMode: WETableViewButtonMode {}
+
+FileDownload: SkyP4DownloadLink {
+  projectId    = fileSystemNumber;
+  documentPath = currentFile.NSFilePath;
+}
+
+FileIcon: SkyP4DocumentIcon {
+  projectName  = fileSystemName;
+  documentPath = currentFile.NSFilePath;
+  mimeType     = currentFile.NSFileMimeType;
+}
+
+FileName: WETableData {
+  title   =  labels.fileName;
+  sortKey = "NSFileName";
+}
+
+FileNameLink: WOHyperlink {
+  action  = clickedFile;
+  string  = fileLinkName; // currentFile.NSFileName;
+}
+
+FileSize: WETableData {
+  title   = labels.size;
+  sortKey = "NSFileSize";
+  string  = currentFile.NSFileSize;
+}
+
+FileOwner: WETableData {
+  title   = labels.currentOwner;
+  sortKey = "NSFileOwnerAccountName";
+  string  = currentFile.NSFileOwnerAccountName;
+}
+
+FileSubject: WETableData {
+  title   = labels.subject;
+  sortKey = "NSFileSubject";
+  string  = currentFile.NSFileSubject;
+}
+
+ParentFolder: WETableData {
+  title   = labels.folder;
+}
+
+ParentFolderLink: WOString {
+  value = currentFileParentFolder;
+}
+
+Results: WOString {
+  value = labels.results;
+}
+
+Files: WOString {
+  value = labels.results;
+}
+
+Filename: WOString {
+  value = labels.fileName;
+}
+
+Extension: WOString {
+  value = labels.extension;
+}
+
+/* checkin/checkout */
+
+IsFileNotDir: WOConditional {
+  condition = currentFile.NSFileType;
+  value     = "NSFileTypeRegular";
+}
+
+IsFileLocked: WOConditional {
+  condition = currentFileIsLocked;
+}
+
+IsFileCheckedOut: WOConditional {
+  condition = currentFileIsCheckedOut;
+}
+
+IsExternalLinkCondElse: WOConditional {
+  negate = YES;
+  condition = isExternalLink;
+}
+
+IsExternalLinkCond: WOConditional {
+  condition = isExternalLink;
+}
+
+ExternalFileLink: SkyExternalLink {
+  href   = linkHref;
+  target = "externalLink";
+  string = currentFile.NSFileName;
+}
+
+Locked: WOString {
+  value = labels.locked;
+}
+
+CheckedOut: WOString {
+  value = labels.locked;
+}
+
+Title: WOString {
+  value = labels.subject;
+}
+
+Font: SkyConfigFont {}

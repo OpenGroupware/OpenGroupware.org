@@ -1,0 +1,26 @@
+# $Id$
+
+ADDITIONAL_CPPFLAGS  += $(FND_DEFINE) $(RUNTIME_DEFINE) -pipe -Wall
+ADDITIONAL_OBJCFLAGS += -Wno-protocol
+
+ifeq ($(GNUSTEP_TARGET_OS),mingw32)
+
+PYTHON = /Programme/Python/python.exe
+OGo_BUNDLE_LIBS += \
+	-lNGStreams -lNGNet -lNGExtensions -lEOControl	\
+	-lGDLExtensions -lGDLAccess -lFoundation \
+	-lobjc
+
+else
+
+PYTHON = python
+OGo_BUNDLE_LIBS += -lGDLAccess -lGDLExtensions -lEOControl
+
+endif
+
+ifeq ($(FOUNDATION_LIB),nx)
+
+OGo_BUNDLE_LIBS += -lLSFoundation -lEOControl
+OGo_LDFLAGS     += -framework Foundation
+
+endif

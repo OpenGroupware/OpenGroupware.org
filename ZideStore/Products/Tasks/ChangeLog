@@ -1,0 +1,11 @@
+2004-07-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxTask.m: fixed zone arguments from nil to NULL (v1.2.70)
+
+2004-02-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: fixed library dependencies for OSX (v1.2.69)
+
+2003-11-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* moved Frontend/Tasks subproject into a separate ZSP product (v1.2.68)

@@ -1,0 +1,21 @@
+# $Id$
+
+#LSBase_BUNDLE_LIBS += -lcrypt
+
+ifeq ($(GNUSTEP_HOST_OS),linux-gnu)
+LSBase_BUNDLE_LIBS += -lcrypt
+endif
+
+LSBase_INCLUDE_DIRS += -I../LSFoundation
+LSBase_LIB_DIRS     += -L../LSFoundation/$(GNUSTEP_OBJ_DIR)
+
+ADDITIONAL_CPPFLAGS  += $(FND_DEFINE) $(RUNTIME_DEFINE) -pipe -Wall
+ADDITIONAL_OBJCFLAGS += -Wno-protocol
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif
+
+ifeq ($(FOUNDATION_LIB),apple)
+LSBase_BUNDLE_LIBS += -lNGLdap -lNGMime -lDOM -lSaxObjC
+endif

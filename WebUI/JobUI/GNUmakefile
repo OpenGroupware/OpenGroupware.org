@@ -1,0 +1,42 @@
+# $Id$
+
+include ../common.make
+
+WOBUNDLE_NAME        = JobUI
+WOBUNDLE_EXTENSION   = .lso
+WOBUNDLE_INSTALL_DIR = $(GNUSTEP_LOCAL_ROOT)/Library/OpenGroupware.org
+
+JobUI_PRINCIPAL_CLASS = JobUIModule
+
+JobUI_OBJC_FILES = \
+	JobUIModule.m	 		\
+	LSWJobViewer.m	 		\
+	LSWJobs.m	 		\
+	LSWJobEditor.m	 		\
+	LSWJobAction.m	 		\
+	LSWJobImport.m	 		\
+	LSWJobMailPage.m 		\
+	LSWJobPreferences.m 		\
+	SkyJobList.m        		\
+	SkyAssignProjectToJobEditor.m	\
+	SkyJobAttributesEditor.m	\
+	OGoJobStatus.m			\
+
+JobUI_COMPONENTS = \
+	LSWJobViewer.wo			\
+	LSWJobs.wo			\
+	LSWJobEditor.wo			\
+	LSWJobAction.wo			\
+	LSWJobImport.wo			\
+	LSWJobHtmlMailPage.wo		\
+	LSWJobTextMailPage.wo		\
+	LSWJobPreferences.wo    	\
+	SkyJobList.wo           	\
+	SkyAssignProjectToJobEditor.wo	\
+	SkyJobAttributesEditor.wo	\
+
+JobUI_RESOURCE_FILES += Defaults.plist Version
+
+-include GNUmakefile.preamble
+include $(GNUSTEP_MAKEFILES)/wobundle.make
+-include GNUmakefile.postamble

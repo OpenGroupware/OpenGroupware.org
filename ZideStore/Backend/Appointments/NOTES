@@ -1,0 +1,6 @@
+# $Id$
+
+Why is the appointment ical renderer located in the *backend* ???
+- because the backend is responsible for managing the cache and the frontend
+  asking for the iCalendar of an appointment is quite usual - so we should
+  cache the whole iCal

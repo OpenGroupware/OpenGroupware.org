@@ -1,0 +1,44 @@
+{ // $Id$
+  bundleHandler = SkyP4ZipModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = (
+    );
+    classes = (
+      { name = LSWComponent;     exact-version = 2; },
+      { name = LSWContentPage;   exact-version = 3; },
+      { name = LSWModuleManager; exact-version = 2; },
+    );
+  };
+
+  provides = {
+    classes = (
+      { name = SkyP4ZipModule;            },
+      { name = SkyP4ZipPanel;             },
+      { name = SkyP4UnzipPanel;           },
+      { name = SkyDocZipInlineViewer;     },
+      { name = SkyDocTarInlineViewer;     },
+    );
+    WOComponents = (
+      { name = SkyP4ZipPanel;             },
+      { name = SkyP4UnzipPanel;           },
+      { name = SkyDocZipInlineViewer;     },
+      { name = SkyDocTarInlineViewer;     },
+    );
+
+    LSWCommands = (
+      {
+        verb      = "docview-inline";
+        type      = "application/zip";
+        component = SkyDocZipInlineViewer;
+      },
+      {
+        verb      = "docview-inline";
+        type      = "application/x-tar";
+        component = SkyDocTarInlineViewer;
+      },
+    );
+  };
+}

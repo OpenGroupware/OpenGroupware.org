@@ -1,0 +1,57 @@
+<table width="100%" border="0" cellpadding="4" cellspacing="0">
+  <#MainButtonRow>
+   <td colspan="2">  
+    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="left">
+          <#Font>
+            <#IsFolder   ><b><#FolderViewerLabel   /></b></#IsFolder>
+            <#IsNotFolder><b><#DocumentViewerLabel /></b></#IsNotFolder>
+          </#Font>
+        </td>
+        <td align="right">
+          &nbsp; 
+          <#IsInFormCondition>
+            <#IsNotFolder><#Font>
+              <#SendContentLabel />: <#SendContentCheckbox />
+            </#Font></#IsNotFolder>
+          </#IsInFormCondition> 
+        </td>
+      </tr>
+    </table> 
+   </td>
+  </#MainButtonRow>
+  <tr><td colspan="2"></td></tr>
+  <tr>
+    <#AttributeCell>
+      <#Font>
+        <#IsFolder   ><#FolderLabel />:</#IsFolder>
+        <#IsNotFolder><#TitleLabel  />:</#IsNotFolder>
+      </#Font>
+    </#AttributeCell>
+    <#ValueCell>
+      <#Font>
+         <#InlineLinkCond><#TitleAction /></#InlineLinkCond>
+         <#InlineLinkCondElse>
+           <#ShowDirectActionLink>
+             <#TitleExternalLink />
+           </#ShowDirectActionLink>
+           <#ShowDirectActionLinkElse>
+             <#TitleExternal />
+           </#ShowDirectActionLinkElse>
+         </#InlineLinkCondElse>
+      </#Font>
+    </#ValueCell>
+  </tr>
+  <tr>
+    <#AttributeCell><#Font><#AbstractLabel />:</#Font></#AttributeCell>
+    <#ValueCell    ><#Font><#Abstract      /></#Font></#ValueCell>
+  </tr>
+  <#IsContactAttrEnabled>
+    <tr>
+      <#AttributeCell><#Font><#ContactLabel />:</#Font></#AttributeCell>
+      <#ValueCell><#Font><#Contact /></#Font></#ValueCell>
+    </tr>
+  </#IsContactAttrEnabled>
+  <tr><td colspan="2"></td></tr>
+</table>

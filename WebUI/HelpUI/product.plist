@@ -1,0 +1,43 @@
+{
+  requires = ( MAIN );
+  
+  publicResources = (
+  );
+  
+  factories = {
+  };
+  
+  classes = {
+    OGoHelpDatabase = {
+      protectedBy   = "View";
+      defaultAccess = "allow";
+    };
+    OGoHelpSection = {
+      protectedBy   = "View";
+      defaultAccess = "allow";
+    };
+    OGoHelpPage = {
+      protectedBy   = "View";
+      defaultAccess = "allow";
+      methods = {
+        "view" = {
+          protectedBy = "<public>";
+	  pageName    = "OGoHelpViewer";
+          actionName  = "showHelp";
+        };
+      };
+    };
+  };
+  
+  categories = {
+    OpenGroupware = {
+      slots = {
+        "Documentation" = {
+          protectedBy = "<public>";
+          valueClass  = OGoHelpDatabase;
+          value       = "Documentation/OpenGroupware.org";
+        };
+      };
+    };
+  };
+}

@@ -1,0 +1,25 @@
+<?xml version='1.0' standalone='yes'?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant">
+
+  <head>
+    <title>OGo ZideStore Server - <var:string value="title"/></title>
+  </head>
+  
+  <body bgcolor="#FFEBD2">
+    <table width="100%" cellpadding="2" cellspacing="2" border="0">
+      <tr>
+        <td align="center">
+          <a href="/zidestore/weblogin">
+            <img src="/images/homepage.jpg" border="0"/></a><br/>
+          <a href="/zidestore/weblogin">
+            Login to the ZideStore Web Interface
+          </a><br/>
+         If you don't have a login yet, contact your system administator.
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

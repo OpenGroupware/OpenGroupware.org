@@ -1,0 +1,351 @@
+// $Id: LSWImapMails.wod,v 1.3 2003/12/11 14:07:49 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.lswmails_windowtitle;
+  onClose = session.navigation.leavePage;
+}
+
+FolderLabel: WOString {
+  value = labels.folder;
+}
+
+ShowTree: WOConditional {
+  condition = showTree;
+}
+
+HideTree: WOConditional {
+  condition = showTree;
+  negate    = YES;
+}
+
+// --- end buttons ---
+
+MailFolderTree: SkyImapMailFolderTree {
+  rootFolder      = rootFolder;
+  selectedFolder  = selectedFolder;
+  onClick         = "folderClicked";
+  showAllMessages = mailListState.showAllMessages; // without writing defaults
+}
+
+MailListHeader: SkyImapMailListHeader {
+  showTree        = showTree;
+  
+  canNewFolder    = canNewFolder; 
+  canEditFolder   = canEditFolder;
+  canMoveFolder   = canMoveFolder;
+  canDeleteFolder = canDeleteFolder;
+  allowNewFilter  = allowNewFilter;
+  serverHasFilter = serverHasFilter;
+  isTrashEmpty    = isTrashEmpty;
+
+  selectedFolder = selectedFolder;
+}
+
+MailList: SkyImapMailList {
+  dataSource = mailDataSource;
+  state      = mailListState;
+}
+
+MailSearch : LSWImapMailSearch {
+  rootFolder = rootFolder;
+}
+
+Login : LSWImapMailLogin {
+  password     = password;
+  login        = login;
+  host         = host;
+  savePassword = savePassword;
+}
+
+Tab: SkyTabView {
+  selection = tabKey;
+}
+
+MailTabItem: SkySimpleTabItem {
+  key       = "mail";
+  label     = labels.Mail;
+  action    = folderClicked;
+}
+
+SearchTabItem: SkySimpleTabItem {
+  key       = "search";
+  label     = labels.searchTab;
+}
+
+FilterTabItem: SkySimpleTabItem {
+  key       = "filter";
+  label     = labels.MailFilterList;
+  action    = tabClicked;
+}
+
+LoginTabItem: SkySimpleTabItem {
+  key       = "login";
+  label     = labels.login;
+}
+
+Form: WOForm {}
+
+WarningModeCond: WOConditional {
+  condition = isInWarningMode;
+}
+
+WarningModeCondElse: WOConditional {
+  condition = isInWarningMode;
+  negate    = YES;
+}
+
+Warning: LSWWarningPanel {
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
+}
+
+Buttons: SkyButtonRow {
+  ordering = ( );
+  onNew    = newFilter;
+  new      = labels.newFilter;
+  tipNew   = labels.newFilter;
+}
+
+MailFilterList: LSWTableView {
+  labels            = labels;
+  title             = labels.MailFilterList;
+  start             = start;
+  label             = labels.MailFilterList;
+  list              = filterList;
+  item              = filter;
+  selectedAttribute = selectedAttribute;
+  blockSize         = 50;
+  sorter            = session.eoSorter;
+  isDescending      = isDescendingForFilterList;
+  attributes        =  (
+  { 
+    key      = "filterPos";
+    labelKey = "filterPos"; 
+     sort     = YES; 
+  },
+  { 
+    key      = "name";
+    labelKey = "name"; 
+    sort     = YES; 
+    action   = "editFilter";
+  },);
+}
+
+MailFilterTargetList: LSWTableView {
+  labels            = labels;
+  title             = labels.MailFilterList;
+  start             = start;
+  label             = labels.MailFilterList;
+  list              = filterList;
+  item              = filter;
+  selectedAttribute = selectedAttribute;
+  blockSize         = 50;
+  sorter            = session.eoSorter;
+  isDescending      = isDescendingForFilterList;
+  attributes        =  (
+  { 
+    key      = "filterPos";
+    labelKey = "filterPos"; 
+    sort     = YES; 
+  },
+  { 
+    key      = "name";
+    labelKey = "name"; 
+    sort     = YES; 
+    action   = "editFilter";
+  },
+  { 
+    key      = "folder";
+    labelKey = "targetFolder"; 
+    sort     = YES; 
+  },
+  { 
+    key      = "forwardAddress";
+    labelKey = "forwardAddress"; 
+    sort     = YES; 
+  },
+  );
+}
+
+ShowTargetFolderCondElse: WOConditional {
+  negate    = YES;
+  condition = session.userDefaults.mail_show_target_folder;
+}
+
+ShowTargetFolderCond: WOConditional {
+  condition = session.userDefaults.mail_show_target_folder;
+}
+
+IsLoginCond: WOConditional {
+  condition = isLogin;
+}
+
+FilterCond: WOConditional {
+  condition = serverHasFilter;
+}
+
+FilterCondElse: WOConditional {
+  condition = serverHasFilter;
+  negate    = YES;
+}
+
+WrongImapServer: WOString {
+  value = labels.wrongImapServer;
+}
+
+ServerName: WOString {
+  value = serverName;
+}
+
+TableHeaderRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_tableHeaderRow;
+}
+
+Font: SkyConfigFont {}
+
+CurrentFolderPath: WOString {
+  value = selectedFolder.absoluteName;
+}
+
+HasNewFolder: WOConditional {
+  condition = canNewFolder;
+}
+
+HasEditFolder: WOConditional {
+  condition = canEditFolder;
+}
+
+HasMoveFolder: WOConditional {
+  condition = canMoveFolder;
+}
+
+HasDeleteFolder: WOConditional {
+  condition = canDeleteFolder;
+}
+
+HasNewFilter: WOConditional {
+  condition = allowNewFilter;
+}
+
+// --- buttons ---
+
+NewFolder: WOImageButton {
+  filename = "icon_new_folder.gif";
+  action   = newFolder;
+  alt      = labels.newFolder;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+}
+
+EditFolder: WOImageButton {
+  filename = "icon_edit_folder.gif";
+  action   = editFolder;
+  alt      = labels.editFolder;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+}
+
+MoveFolder: WOHyperlink {
+  filename = "icon_move_folder.gif";
+  action   = moveFolder;
+  alt      = labels.moveFolder;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+}
+
+DeleteFolder: WOHyperlink {
+  filename = "icon_delete_folder.gif";
+  action   = deleteFolder;
+  alt      = labels.deleteFolder;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+}
+
+NewFilter:  WOHyperlink {
+  filename = "icon_new_filter.gif";
+  action   = newFilterForFolder;
+  alt      = labels.newFilter;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+}
+
+EmptyTrash: WOHyperlink {
+  filename         = "icon_full_trash.gif";
+  disabledFilename = "icon_empty_trash.gif";
+  action           = emptyTrash;
+  alt              = labels.emptyTrash;
+  align            = "center";
+  valign           = "middle";
+  border           = "0";
+  disabled         = isTrashEmpty;
+}
+
+NewMail: WOHyperlink {
+  filename = "icon_new_mail.gif";
+  action   = newMail;
+  alt      = labels.newMail;
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+}
+
+ShowLogin : WOConditional {
+  condition = showLoginPanel;
+}
+
+VacationViewer : SkyVacationViewer {}
+
+VacationTabItem: SkySimpleTabItem {
+  key       = "vacation";
+  label     = labels.VacationViewer;
+  action    = tabClicked;
+}
+
+ErrorCond : WOConditional {
+  condition = serverError;
+}
+
+CouldntLogin : WOString {
+  value = labels.couldntLoginToHost;
+}
+Host : WOString {
+  value = host;
+}
+
+ShowVacationPanel : WOConditional {
+  condition = showVacationPanel;
+}
+
+ImapServerDoesNotSupportVacation : WOString {
+  value = labels.imapServerDoesNotSupportVacation;
+}
+
+VacationCond : WOConditional {
+  condition = serverHasVacation;
+}
+
+VacationCondElse : WOConditional {
+  condition = serverHasVacation;
+  negate = YES;
+}
+
+ShowMailingListManager : WOConditional {
+  condition = showMailingListManager;
+}
+
+MailingListManager : SkyMailingListViewer {
+}
+
+MailingListManagerTabItem: SkySimpleTabItem {
+  key       = "mailingListManager";
+  label     = labels.MailingListManager;
+  action    = tabClicked;
+}

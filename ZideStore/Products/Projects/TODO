@@ -1,0 +1,62 @@
+# $Id$
+
+- can't we use SOPE OFS for doing most of this?!
+  - currently we have quite some code duplication because we inherit from
+    ZideStore core objects (SxObject and SxFolder). For "usual" ZideStore
+    objects those are really separate entities, but in the case of projects
+    documents and folders are pretty similiar ...
+
+- check whether everything is properly committed!
+  - the OGo database based filemanager backend is transactional! which 
+    implies that if you do not commit, you won't get your changes applied ...
+
+- the ProjectsFolder should be able to create new, private projects using
+  "mkcol"!
+
+- moved on Finder:
+  - need to implement move for that ...
+  MKCOL    blah/untitled%20folder   201
+  PROPFIND blah/untitled%20folder   207
+  PROPFIND blah/._untitled%20folder 404 (resource forks)
+  PROPFIND blah/._untitled%20folder 404 
+  PROPFIND blah/myfolder            404
+  PROPFIND blah/myfolder            404
+  MOVE     blah/untitled%20folder   403
+  - why doesn't OSX store resource forks in WebDAV properties?
+
+- only show "favorite" projects at root level
+  - too many projects at the root
+
+- support for:
+  - DELETE
+  - PUT
+  - PROPPATCH
+
+- MKCOL does not work yet
+
+- locking
+  - lock/unlock WebDAV methods
+  - lock tokens?
+  - maybe even support WebDAV checkin/checkout?
+  - add a workaround for not-checkin aware clients (eg a "checkin" folder)
+  - Remember: we need to work around the issue that most Windows apps have an 
+    "autosave" feature which will PUT a file every x minutes - so we cannot
+    create a new version on each save!
+  - Method: "davLockManagerInContext:" - concrete implementation should use
+    the backend's method of locking
+
+- support for attributes
+  - project attributes
+  - document attributes
+
+- speed
+  - tune the caching mechanisms
+  - implement the UA specialized methods for fetches
+    - projects-folder
+  - maybe use datasources for fetching collections
+
+- DASL
+  - implement DASL, should be possible to some degree in DB projects
+    - even flat searches on a project are possible
+
+- how do WebDAV ACLs work? implement if appropriate

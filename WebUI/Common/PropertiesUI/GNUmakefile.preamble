@@ -1,0 +1,20 @@
+# $Id$
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I..			\
+	-I../OGoFoundation	\
+
+ADDITIONAL_WOBUNDLE_LIBS += \
+	-lOGoFoundation	\
+	-lLSSearch -lLSFoundation \
+	-lNGObjWeb -lNGScripting \
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(ADDITIONAL_WOBUNDLE_LIBS)
+
+ADDITIONAL_LIB_DIRS += -L../../OGoFoundation/$(GNUSTEP_OBJ_DIR)
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_BUNDLE_LIBS += -lFoundationExt
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif

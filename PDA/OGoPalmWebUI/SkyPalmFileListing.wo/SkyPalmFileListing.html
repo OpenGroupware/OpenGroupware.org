@@ -1,0 +1,46 @@
+<#FileTable>
+
+  <#TitleMode>
+    <#Title />
+  </#TitleMode>
+
+  <#ButtonMode>
+    <#CanSelectMultipleCond>
+      <#ChooseFiles />
+    </#CanSelectMultipleCond>
+  </#ButtonMode>
+
+  <#FileData>
+    <nobr>
+      <#CanChooseFileCond>
+        <#ChooseFile>
+          <#FileIcon /><#File />
+        </#ChooseFile><!-- ChooseFile -->
+      </#CanChooseFileCond><!-- CanChooseFileCond -->
+      <#CanChooseFileCondElse>
+        <#FileIcon /><#File />
+      </#CanChooseFileCondElse><!-- CanChooseFileCondElse -->
+    </nobr>
+  </#FileData><!-- FileData -->
+
+  <#SizeData>
+    <nobr>
+      <#Size />
+    </nobr>
+  </#SizeData><!-- SizeData -->
+
+  <#OwnerData>
+    <nobr>
+      <#Owner />
+    </nobr>
+  </#OwnerData><!-- OwnerData -->
+
+  <#AccessData>
+    <nobr>
+      <#HasReadAccessCond>
+        <#ReadAccess /></#HasReadAccessCond><#HasWriteAccessCond><#WriteAccess />
+      </#HasWriteAccessCond>
+    </nobr>
+  </#AccessData><!-- AccessData -->
+
+</#FileTable><!-- FileTable -->

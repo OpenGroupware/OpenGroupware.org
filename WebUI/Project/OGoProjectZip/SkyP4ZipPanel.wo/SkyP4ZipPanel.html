@@ -1,0 +1,55 @@
+<!-- $Id: SkyP4ZipPanel.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+<#Frame>
+  <#Window>
+   <#Form>
+    <table border='0' width="100%">
+      <tr>
+        <td valign="top" align="left">
+          <#TabView>
+            <#ZipTab>
+              <table border='0' width='100%'>
+                <tr>
+                  <td valign='top' width='20%'>
+                    <nobr><#LabelTargetDirectory/>:</nobr>
+                    <#MoveFileManagerTree/>
+                  </td>
+                  <td valign='top'>
+                    <table border="0">
+                      <tr>
+                        <td align="right"><#LabelArchiveFormat/>:</td>
+                        <td><#FormatSelect/></td>
+                      </tr>
+                      <tr>
+                        <td align="right"><#LabelTargetFile/>:</td>
+                        <td><#ZipFilePath/></td>
+                      </tr>
+                      <tr>
+                        <td align="right"><#LabelCompressionLevel/>:</td>
+                        <td><#CompressionLevel/></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td>
+                          <#ZipButton/>
+                          <#CancelButton/>
+                        </td>
+                      </tr>
+                    </table>
+                    <#SelectedFileList>
+                      <#FileNameTD><#FileIcon/>&nbsp;<#FileName/></#FileNameTD>
+                      <#FileSize/>
+                      <#FileOwner/>
+                      <#FileSubject/>
+                      <#FileExcludeTD><#FileExclude/></#FileExcludeTD>
+                    </#SelectedFileList>
+                  </td>
+                </tr>
+              </table>
+            </#ZipTab>
+          </#TabView>
+        </td>
+      </tr>
+    </table>
+   </#Form>
+  </#Window>
+</#Frame>

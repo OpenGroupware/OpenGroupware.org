@@ -1,0 +1,115 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <!-- $Id: LSWSkyrixFrame.html,v 1.2 2004/08/05 22:17:40 helge Exp $ -->
+    <title>OpenGroupware.org</title>
+
+    <#Stylesheet/>
+
+    <meta name="keywords"    content="OpenGroupware.org, SKYRiX" />
+    <meta name="description" content="OpenGroupware.org Web Interface" />
+    <meta name="author"      content="SKYRIX Software AG" />
+    <meta name="generator"   content="SOPE Application Server" />
+    <meta rev="made"         href="http://www.skyrix.com/" />
+
+    <#MetaSessionID/>
+    
+    <#ShortcutIcon/>
+    <#PageIsExpirable><#ExpirePage/></#PageIsExpirable>
+  </head>
+
+  <body>  
+    <#DropScript/>
+    <#DragScript/>
+
+    <#Dock/>
+    
+    <!-- the navigation -->
+
+    <#IsTextMode>
+      <#Navigation/><br />
+      <#Favorites/>
+      <hr />
+    </#IsTextMode>
+
+    <#IsNotTextMode>
+      <table cellpadding="1" cellspacing="0" border="0" width="100%">
+        <tr>
+          <#LeftHeaderCell>
+            <#Font>&nbsp;<#Navigation/></#Font>
+          </#LeftHeaderCell>
+          
+          <#RightHeaderCell>
+            <#Font>
+              <#Favorites/>
+              <#IsInternetExplorer><#ClipIcon/></#IsInternetExplorer>
+            </#Font>
+<!--  
+            <#IsInternetExplorer><#SearchPanel/></#IsInternetExplorer>
+-->
+          </#RightHeaderCell>
+          <#ShowTrashCond>
+            <#TrashCell><#Font><#TrashIcon/></#Font></#TrashCell>
+          </#ShowTrashCond>
+        </tr>
+        <tr>
+          <td colspan="3"></td>
+        </tr>
+        
+        <#IsNotJavaScript>
+          <#HasErrorString>
+            <tr bgcolor="red">
+              <td colspan="2">
+                <#Font>
+                  <small><b><#LastErrorLabel/></b><#ErrorString/></small>
+                </#Font>
+              </td>
+              <td align="right">
+                <#ClearErrorLink>
+                  <small><b><#ClearErrorText/></b></small>
+                </#ClearErrorLink>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3"></td>
+            </tr>
+          </#HasErrorString>
+        </#IsNotJavaScript>
+      </table>
+    
+    </#IsNotTextMode>
+    
+    <!-- the content -->
+    
+    <#Content/>
+
+    <!-- The footer table -->
+    
+    <table cellpadding="4" cellspacing="0" border="0" width="100%">
+      <tr>
+        <td colspan="2"></td>
+      </tr>
+      <tr>
+        <#LeftFooterCell>
+          <#Font>
+            <#Small><small></#Small>
+          &copy; 2000-2004
+          <#FtLabelSkyrixLink/>. 
+          
+          <#FtLabelUser/> 
+          <b><#ActiveUser/></b> 
+          <#FtLabelLogState/> 
+          <#SessionExpireDate/><#Timings/>.
+          <#Small></small></#Small></#Font></#LeftFooterCell>
+
+        <#RightFooterCell><#Font><#Logout/></#Font></#RightFooterCell>
+      </tr>
+    </table>
+    
+    <#IsJavaScript>
+      <#HasErrorString>
+        <script>alert("OGo:\n<#PanelErrorString/>");</script>
+      </#HasErrorString>
+      <#ConfirmPanel/>
+    </#IsJavaScript>
+  </body>
+</html>

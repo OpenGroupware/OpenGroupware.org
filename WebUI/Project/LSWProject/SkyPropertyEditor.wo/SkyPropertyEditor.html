@@ -1,0 +1,40 @@
+<#Frame>
+  <!-- $Id: SkyPropertyEditor.html,v 1.2 2004/08/09 23:40:32 helge Exp $-->
+  <#Window>
+    <#Form>
+      <table border="0" cellspacing="0" cellpadding="3" width="100%">
+        <tr>
+          <#AttributeCell>
+            <#Font><#PropertyNameLabel />:</#Font>
+          </#AttributeCell>
+          <#ValueCell>
+            <#EditFont>
+              <#IsNewCond    ><#PropertyNameField /></#IsNewCond>
+              <#IsNewCondElse><#PropertyName      /></#IsNewCondElse>
+            </#EditFont>
+          </#ValueCell>
+        </tr>
+        
+        <tr>
+          <#AttributeCell>
+            <#Font><#PropertyValueLabel />:</#Font>
+          </#AttributeCell>
+          <#ValueCell><#EditFont><#PropertyValue /></#EditFont></#ValueCell>
+        </tr>
+        <tr>
+          <#AttributeCell>
+            <#Font><#PropertyTypeLabel />:</#Font>
+          </#AttributeCell>
+          <#ValueCell>
+            <#EditFont><#PropertyTypePopup /></#EditFont>
+          </#ValueCell>
+        </tr>
+        
+        <tr>
+          <td></td>
+          <td><#SaveSubmit /><#CancelSubmit /></td>
+        </tr>
+      </table>
+    </#Form>
+  </#Window>
+</#Frame>

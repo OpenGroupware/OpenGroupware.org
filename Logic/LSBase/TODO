@@ -1,0 +1,4 @@
+# $Id$
+
+LSGetSessionLogsForGlobalIDs.m:
+- split up _executeInContext: method

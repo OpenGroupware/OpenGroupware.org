@@ -1,0 +1,26 @@
+# $Id$
+
+libOGoJobs_LIBRARIES_DEPEND_UPON += \
+	-lOGoDocuments		   \
+	-lLSFoundation -lGDLAccess \
+	-lNGStreams -lNGExtensions -lEOControl
+
+OGoJobs_BUNDLE_LIBS += \
+	-lOGoJobs -lOGoDocuments   \
+	-lLSFoundation -lGDLAccess \
+	-lNGLdap -lNGMime -lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
+
+OGoJobs_LIB_DIRS    += -L./$(GNUSTEP_OBJ_DIR)
+
+ADDITIONAL_CPP_FLAGS += -Wall
+
+ADDITIONAL_INCLUDE_DIRS += -I..  -I../../Logic/LSFoundation
+
+ADDITIONAL_LIB_DIRS += \
+	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR) \
+	-L../OGoDocuments/$(GNUSTEP_OBJ_DIR) \
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif

@@ -1,0 +1,572 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 38;
+	objects = {
+		691F9C310243653D00A8007E = {
+			children = (
+				69502F9C024FBA1300378A26,
+				69502F9D024FBA1300378A26,
+				691F9C3B0243660400A8007E,
+				691F9C3C0243660400A8007E,
+				69386057020C5A0700A8007E,
+				69386058020C5A0700A8007E,
+				691F9C3D0243660400A8007E,
+				691F9C3E0243660400A8007E,
+				69FE8E8E020D8DE10078F1DF,
+				69FE8E8F020D8DE10078F1DF,
+				69386059020C5A0700A8007E,
+				6938605A020C5A0700A8007E,
+			);
+			isa = PBXGroup;
+			name = Bundle;
+			refType = 4;
+		};
+		691F9C320243653D00A8007E = {
+			children = (
+				6938605C020D845200A8007E,
+				69502FAE024FBB1A00378A26,
+				69FC7A48029858E90083626D,
+				69FC7A4E0298E3720083626D,
+				69FC7A7F0298E3B50083626D,
+			);
+			isa = PBXGroup;
+			name = "Linked Frameworks";
+			path = "";
+			refType = 4;
+		};
+		691F9C330243653D00A8007E = {
+			children = (
+				691F9C340243653D00A8007E,
+				691F9C3F0243660400A8007E,
+			);
+			isa = PBXGroup;
+			name = Products;
+			refType = 4;
+		};
+		691F9C340243653D00A8007E = {
+			isa = PBXBundleReference;
+			path = SkySystem.rpcd;
+			refType = 3;
+		};
+		691F9C350243653D00A8007E = {
+			buildPhases = (
+				691F9C360243653D00A8007E,
+				691F9C370243653D00A8007E,
+				691F9C380243653D00A8007E,
+				691F9C390243653D00A8007E,
+				691F9C3A0243653D00A8007E,
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /Users/helge/build;
+				OTHER_CFLAGS = "-DCOCOA_Foundation_LIBRARY=1 -DNeXT_Foundation_LIBRARY=1 -DNeXT_RUNTIME=1";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = SkySystem;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+				WRAPPER_EXTENSION = rpcd;
+			};
+			dependencies = (
+			);
+			isa = PBXBundleTarget;
+			name = SkySystem;
+			productInstallPath = "$(USER_LIBRARY_DIR)/Bundles";
+			productName = SkySystem;
+			productReference = 691F9C340243653D00A8007E;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist SYSTEM \"file://localhost/System/Library/DTDs/PropertyList.dtd\">
+<plist version=\"0.9\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string></string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>com.skyrix.daemons.SkySystem</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string></string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>4.2</string>
+</dict>
+</plist>
+";
+			shouldUseHeadermap = 0;
+		};
+		691F9C360243653D00A8007E = {
+			buildActionMask = 2147483647;
+			files = (
+				691F9C400243660400A8007E,
+				691F9C410243660400A8007E,
+				691F9C420243660400A8007E,
+				691F9C440243660400A8007E,
+				691F9C450243660400A8007E,
+				691F9C460243660400A8007E,
+				69502F9E024FBA1300378A26,
+			);
+			isa = PBXHeadersBuildPhase;
+		};
+		691F9C370243653D00A8007E = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXResourcesBuildPhase;
+		};
+		691F9C380243653D00A8007E = {
+			buildActionMask = 2147483647;
+			files = (
+				691F9C470243660400A8007E,
+				691F9C480243660400A8007E,
+				691F9C490243660400A8007E,
+				691F9C4B0243660400A8007E,
+				691F9C4C0243660400A8007E,
+				69502F9F024FBA1300378A26,
+			);
+			isa = PBXSourcesBuildPhase;
+		};
+		691F9C390243653D00A8007E = {
+			buildActionMask = 2147483647;
+			files = (
+				691F9C4D0243660400A8007E,
+				69502FAF024FBB1A00378A26,
+				69FC7A4A029858E90083626D,
+				69FC7A7E0298E3880083626D,
+				69FC7A8C0298E3B50083626D,
+			);
+			isa = PBXFrameworksBuildPhase;
+		};
+		691F9C3A0243653D00A8007E = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+		};
+		691F9C3B0243660400A8007E = {
+			isa = PBXFileReference;
+			path = SkySystemAction.h;
+			refType = 4;
+		};
+		691F9C3C0243660400A8007E = {
+			isa = PBXFileReference;
+			path = SkySystemAction.m;
+			refType = 4;
+		};
+		691F9C3D0243660400A8007E = {
+			isa = PBXFileReference;
+			path = TaskMethodInvocation.h;
+			refType = 4;
+		};
+		691F9C3E0243660400A8007E = {
+			isa = PBXFileReference;
+			path = TaskMethodInvocation.m;
+			refType = 4;
+		};
+		691F9C3F0243660400A8007E = {
+			isa = PBXExecutableFileReference;
+			path = skysystemd;
+			refType = 3;
+		};
+		691F9C400243660400A8007E = {
+			fileRef = 69386057020C5A0700A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C410243660400A8007E = {
+			fileRef = 69FE8E8E020D8DE10078F1DF;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C420243660400A8007E = {
+			fileRef = 69386059020C5A0700A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C440243660400A8007E = {
+			fileRef = 69386046020C128D00A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C450243660400A8007E = {
+			fileRef = 691F9C3B0243660400A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C460243660400A8007E = {
+			fileRef = 691F9C3D0243660400A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C470243660400A8007E = {
+			fileRef = 69386058020C5A0700A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C480243660400A8007E = {
+			fileRef = 69FE8E8F020D8DE10078F1DF;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C490243660400A8007E = {
+			fileRef = 6938605A020C5A0700A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C4B0243660400A8007E = {
+			fileRef = 691F9C3C0243660400A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C4C0243660400A8007E = {
+			fileRef = 691F9C3E0243660400A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C4D0243660400A8007E = {
+			fileRef = 6938605C020D845200A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C4E0243660400A8007E = {
+			buildPhases = (
+				691F9C4F0243660400A8007E,
+				691F9C500243660400A8007E,
+				691F9C510243660400A8007E,
+				691F9C520243660400A8007E,
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /Users/helge/build;
+				OTHER_CFLAGS = "-DCOCOA_Foundation_LIBRARY=1 -DNeXT_Foundation_LIBRARY=1 -DNeXT_RUNTIME=1";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = skysystemd;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+				69502FB5024FC04C00378A26,
+			);
+			isa = PBXToolTarget;
+			name = skysystemd;
+			productInstallPath = /usr/local/bin;
+			productName = skysystemd;
+			productReference = 691F9C3F0243660400A8007E;
+			shouldUseHeadermap = 0;
+		};
+		691F9C4F0243660400A8007E = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXHeadersBuildPhase;
+		};
+		691F9C500243660400A8007E = {
+			buildActionMask = 2147483647;
+			files = (
+				69502FB0024FBB3600378A26,
+			);
+			isa = PBXSourcesBuildPhase;
+		};
+		691F9C510243660400A8007E = {
+			buildActionMask = 2147483647;
+			files = (
+				69502FB1024FBB3F00378A26,
+				69502FB2024FBB5200378A26,
+				69FC7A4C029858EF0083626D,
+				69FC7A7D0298E3750083626D,
+			);
+			isa = PBXFrameworksBuildPhase;
+		};
+		691F9C520243660400A8007E = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+		};
+		69386040020C121600A8007E = {
+			buildStyles = (
+				69386042020C121600A8007E,
+				69386043020C121600A8007E,
+			);
+			isa = PBXProject;
+			mainGroup = 69386041020C121600A8007E;
+			productRefGroup = 691F9C330243653D00A8007E;
+			projectDirPath = "";
+			targets = (
+				6938604C020C128D00A8007E,
+				691F9C350243653D00A8007E,
+				691F9C4E0243660400A8007E,
+			);
+		};
+		69386041020C121600A8007E = {
+			children = (
+				69386051020C4A8A00A8007E,
+				69386052020C4E8400A8007E,
+				69386049020C128D00A8007E,
+				6938604B020C128D00A8007E,
+				69386046020C128D00A8007E,
+				6938604F020C49FE00A8007E,
+				691F9C310243653D00A8007E,
+				691F9C320243653D00A8007E,
+				691F9C330243653D00A8007E,
+			);
+			isa = PBXGroup;
+			refType = 4;
+		};
+		69386042020C121600A8007E = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				debug = yes;
+				shared = yes;
+			};
+			isa = PBXBuildStyle;
+			name = Development;
+		};
+		69386043020C121600A8007E = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			isa = PBXBuildStyle;
+			name = Deployment;
+		};
+		69386046020C128D00A8007E = {
+			isa = PBXFileReference;
+			path = common.h;
+			refType = 4;
+		};
+		69386049020C128D00A8007E = {
+			isa = PBXFileReference;
+			path = GNUmakefile;
+			refType = 4;
+		};
+		6938604B020C128D00A8007E = {
+			isa = PBXFileReference;
+			path = skysystemd.m;
+			refType = 4;
+		};
+		6938604C020C128D00A8007E = {
+			buildArgumentsString = $ACTION;
+			buildPhases = (
+			);
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "gs-skysystemd";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			buildToolPath = /usr/bin/gnumake;
+			dependencies = (
+			);
+			isa = PBXLegacyTarget;
+			name = "gs-skysystemd";
+			productName = "gs-skysystemd";
+			settingsToExpand = 6;
+			settingsToPassInEnvironment = 287;
+			settingsToPassOnCommandLine = 280;
+			shouldUseHeadermap = 0;
+		};
+		6938604F020C49FE00A8007E = {
+			children = (
+				6938605B020D744E00A8007E,
+				69FE8E92020D95810078F1DF,
+			);
+			isa = PBXGroup;
+			name = "Python Scripts";
+			refType = 4;
+		};
+		69386051020C4A8A00A8007E = {
+			isa = PBXFileReference;
+			path = README;
+			refType = 4;
+		};
+		69386052020C4E8400A8007E = {
+			isa = PBXFileReference;
+			path = config.plist;
+			refType = 4;
+		};
+		69386057020C5A0700A8007E = {
+			isa = PBXFileReference;
+			path = TaskMethod.h;
+			refType = 4;
+		};
+		69386058020C5A0700A8007E = {
+			isa = PBXFileReference;
+			path = TaskMethod.m;
+			refType = 4;
+		};
+		69386059020C5A0700A8007E = {
+			isa = PBXFileReference;
+			path = TaskComponent.h;
+			refType = 4;
+		};
+		6938605A020C5A0700A8007E = {
+			isa = PBXFileReference;
+			path = TaskComponent.m;
+			refType = 4;
+		};
+		6938605B020D744E00A8007E = {
+			isa = PBXExecutableFileReference;
+			name = bc1.py;
+			path = py/bc1.py;
+			refType = 4;
+		};
+		6938605C020D845200A8007E = {
+			isa = PBXFrameworkReference;
+			name = Foundation.framework;
+			path = /System/Library/Frameworks/Foundation.framework;
+			refType = 0;
+		};
+		69502F9C024FBA1300378A26 = {
+			isa = PBXFileReference;
+			path = SkySystemApplication.h;
+			refType = 2;
+		};
+		69502F9D024FBA1300378A26 = {
+			isa = PBXFileReference;
+			path = SkySystemApplication.m;
+			refType = 2;
+		};
+		69502F9E024FBA1300378A26 = {
+			fileRef = 69502F9C024FBA1300378A26;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69502F9F024FBA1300378A26 = {
+			fileRef = 69502F9D024FBA1300378A26;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69502FAE024FBB1A00378A26 = {
+			isa = PBXFrameworkReference;
+			name = NGObjWeb.framework;
+			path = ../../../../build/NGObjWeb.framework;
+			refType = 2;
+		};
+		69502FAF024FBB1A00378A26 = {
+			fileRef = 69502FAE024FBB1A00378A26;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69502FB0024FBB3600378A26 = {
+			fileRef = 6938604B020C128D00A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69502FB1024FBB3F00378A26 = {
+			fileRef = 69502FAE024FBB1A00378A26;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69502FB2024FBB5200378A26 = {
+			fileRef = 6938605C020D845200A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69502FB5024FC04C00378A26 = {
+			isa = PBXTargetDependency;
+			target = 691F9C350243653D00A8007E;
+		};
+		69FC7A48029858E90083626D = {
+			isa = PBXFrameworkReference;
+			name = NGXmlRpc.framework;
+			path = /Users/helge/Library/Frameworks/NGXmlRpc.framework;
+			refType = 0;
+		};
+		69FC7A4A029858E90083626D = {
+			fileRef = 69FC7A48029858E90083626D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69FC7A4C029858EF0083626D = {
+			fileRef = 69FC7A48029858E90083626D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69FC7A4E0298E3720083626D = {
+			isa = PBXFrameworkReference;
+			name = NGStreams.framework;
+			path = /Users/helge/Library/Frameworks/NGStreams.framework;
+			refType = 0;
+		};
+		69FC7A7D0298E3750083626D = {
+			fileRef = 69FC7A4E0298E3720083626D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69FC7A7E0298E3880083626D = {
+			fileRef = 69FC7A4E0298E3720083626D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69FC7A7F0298E3B50083626D = {
+			isa = PBXFrameworkReference;
+			name = SxComponents.framework;
+			path = /Users/helge/Library/Frameworks/SxComponents.framework;
+			refType = 0;
+		};
+		69FC7A8C0298E3B50083626D = {
+			fileRef = 69FC7A7F0298E3B50083626D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69FE8E8E020D8DE10078F1DF = {
+			isa = PBXFileReference;
+			path = TaskMethodSignature.h;
+			refType = 4;
+		};
+		69FE8E8F020D8DE10078F1DF = {
+			isa = PBXFileReference;
+			path = TaskMethodSignature.m;
+			refType = 4;
+		};
+		69FE8E92020D95810078F1DF = {
+			isa = PBXExecutableFileReference;
+			name = find1.py;
+			path = py/find1.py;
+			refType = 4;
+		};
+	};
+	rootObject = 69386040020C121600A8007E;
+}

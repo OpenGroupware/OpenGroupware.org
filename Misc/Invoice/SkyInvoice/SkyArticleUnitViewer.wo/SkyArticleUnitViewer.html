@@ -1,0 +1,28 @@
+<!-- $Id: SkyArticleUnitViewer.html,v 1.1 2003/07/15 15:31:07 helge Exp $ -->
+
+<#Frame>
+  <#Window>
+    <#WarningCondElse>
+    <TABLE WIDTH="100%" BORDER="0" CELLPADDING="4" CELLSPACING="0">
+      <#UnitTitle>
+        <#Buttons />
+      </#UnitTitle>
+    </TABLE>
+
+
+    <P>
+      <#TabView>
+        <#AttributesTab>
+          <TABLE WIDTH="100%" BORDER="0" CELLPADDING="4" CELLSPACING="0">
+             <#Title />
+             <#UnitSubViewer />
+          </TABLE>
+        </#AttributesTab>
+     </#TabView><!-- TabView -->
+    </P>
+    </#WarningCondElse><!-- WarningCondElse -->
+    <#WarningCond>
+      <#Warning />
+    </#WarningCond>
+  </#Window>
+</#Frame>

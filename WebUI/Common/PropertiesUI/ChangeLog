@@ -1,0 +1,43 @@
+2004-05-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: updated for lastest MacOSX compiler (v5.0.7)
+
+2004-01-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* some fixed for MacOSX compilation (v5.0.6)
+
+2003-12-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyObjectPropertyEditor.wo/SkyObjectPropertyEditor.wod: fixed CSS 
+	  'id' vs 'class' issue (v5.0.5)
+
+2003-12-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* major cleanups (v5.0.4)
+
+2003-10-27  Thomas Schild  <ts@skyrix.com>
+
+	* SkyObjectPropertyEditor.wo: cancelButton --> css WOHyperlink button
+	  (v5.0.3)
+
+2003-09-30  Thomas Schild  <ts@skyrix.com>
+
+	* SkyObjectPropertyEditor.wo: imageButton --> css submitButton
+
+Mon Aug  4 11:54:04 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyObjectPropertyEditor.m: 
+	* SkyObjectPropertyViewer.m:
+	* SkyPropertiesModule.m: LSWFoundation => OGoFoundation
+	* GNUmakefile: SkyProperties => PropertiesUI
+	(thanks to ezanardi@conysis.com)
+
+Mon Jul  7 17:26:31 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.2)
+
+	* removed history ChangeLog's
+
+Fri Jun 15 10:48:36 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyObjectPropertyViewer.m: added -defaultNamespace binding

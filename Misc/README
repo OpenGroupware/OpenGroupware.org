@@ -1,0 +1,10 @@
+# $Id$
+
+Misc
+====
+
+This directory contains primarily experimental or outdated source code
+sections which were not active anymore in the SKYRiX 4.1 codebase.
+Most code should work, but some may be seriously broken.
+
+It's intended for developers to look at, not for users.

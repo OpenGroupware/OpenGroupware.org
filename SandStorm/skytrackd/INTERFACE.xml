@@ -1,0 +1,205 @@
+<?xml version="1.0"?>
+<!-- $Id: INTERFACE.xml,v 1.1.1.1 2003/07/09 22:57:27 cvs Exp $ -->
+
+<interface name="com.skyrix.track" 
+           xmlns="http://www.skyrix.com/skyrix-idl"
+           xmlns:xrt="http://www.skyrix.com/od/xmlrpc-types"
+           xmlns:xsd="urn://example-namespace">
+
+  <documentation lang="en">
+    The functions of the SKYRiX track daemon make it possible to track changes
+    on projects. One can register for projects to track changes of (register)
+    and query for changes within that timeframe later using getChanges.
+    It's also possible to query for informations about the registered channels
+    (getChannels, getInfo) and reset the change information using resetChanges.
+  </documentation>
+  <documentation lang="de">
+    Die Funktionen des SKYRiX Track Daemons erm'oglichen es, 'Anderungen in
+    Projekten zu tracken. Man kann sich f'ur 'Anderungen in bestimmten
+    Projekten registrieren (register) und sp'ater die 'Anderungen an diesem
+    Projekt in der Zwischenzeit mit getChanges abfragen. Ausserdem ist es
+    m'oglich, sich Informationen 'uber die Channels ausgeben zu lassen
+    (getChannels, getInfo) und die Track-Informationen mit resetChanges zu
+    l'oschen.
+  </documentation>
+
+  <method name="trackObjects">
+    <signature>
+      <output type="xsd:boolean"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.trackObjects()
+       ]]>
+      <documentation lang="en">
+        Tracks a manual update.
+      </documentation>
+      <documentation lang="de">
+        F'uhrt ein manuelles Update aus.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Triggers a manual update. This command is only available for user
+      "root".
+    </documentation>
+    <documentation lang="de">
+      F'uhrt ein manuelles Update aus. Dieses Kommando ist nur f'ur den
+      User "root" verf'ugbar.      
+    </documentation>
+  </method>
+
+  <method name="getChannels">
+    <signature>
+      <output type="xsd:array"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.getChannels()
+       ]]>
+      <documentation lang="en">
+        Gets all registered channels for the current user.
+      </documentation>
+      <documentation lang="de">
+        Gibt alle registrierten Channels des momentanen Nutzers zur'uck.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Triggers a manual update. This command is only available for user
+      "root".
+    </documentation>
+    <documentation lang="de">
+      F'uhrt ein manuelles Update aus. Dieses Kommando ist nur f'ur den
+      User "root" verf'ugbar.      
+    </documentation>
+  </method>
+
+  <method name="register">
+    <signature>
+      <input name="name"      type="xsd:string"/>
+      <input name="type"      type="xsd:string"/>
+      <input name="arguments" type="xsd:struct"/>
+      <output type="xsd:boolean"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.register('Foobar','xmlrpc',
+                                 {'server' : 'http://localhost:80/RPC2'})
+       ]]>
+      <documentation lang="en">
+        Registers a channel named 'Foobar' of type 'xmlrpc' with
+        the server argument set to the project daemon's location.
+      </documentation>
+      <documentation lang="de">
+        Registriert einen Channel namens 'Foobar' vom Typ 'xmlrpc'. Als
+        zus'atzliches Argument wird die Adresse des Project Daemons im
+        Attribut 'server' 'ubergeben.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Registers for a channel. A user supplied name is set for this channel,
+      which is used later for querying changes. The only supported type at
+      the moment is 'xmlrpc', which is used in conjunction with a SKYRiX
+      Project Daemon. Supported arguments are 'project_id', 'server' and
+      'credentials'.
+    </documentation>
+    <documentation lang="de">
+      Registriert einen Channel. Der 'ubergebene Name wird sp'ater zur
+      Abfrage der 'Anderungsinformationen genutzt. Der einzige im Moment
+      unterst'utzte Channeltyp ist 'xmlrpc', welcher im Zusammenhang mit
+      dem SKYRiX Project Daemon genutzt wird. Unterst'utze zus'atzliche
+      Argumente sind 'project_id', 'server' und 'credentials'.  
+    </documentation>
+  </method>
+
+  <method name="getInfo">
+    <signature>
+      <input name="channel"   type="xsd:string"/>
+      <output type="xsd:struct"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.getInfo('Foobar')
+       ]]>
+      <documentation lang="en">
+        Gets information for the channel 'Foobar'.
+      </documentation>
+      <documentation lang="de">
+        Fordert Informationen zum Channel 'Foobar' an. 
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Gets information for the channel with the given name. Returns
+      the project ID the channel is assigned to (projectID), the unique
+      channel ID (channelID) and the date the project was last modified
+      (lastModified).
+    </documentation>
+    <documentation lang="de">
+      Gibt Informationen 'uber den Channel mit dem 'ubergebenen Namen zur'uck.
+      Diese Informationen beinhalten die mit dem Channel assoziierte Projekt-
+      ID (projectID), die Channel-ID (channelID) und den Zeitpunkt, an dem
+      die letzte 'Anderung innerhalb des Projektes stattfand (lastModified).
+    </documentation>
+  </method>
+
+  <method name="getChanges">
+    <signature>
+      <input name="channel"   type="xsd:string"/>
+      <output type="xsd:struct"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.getChanges('Foobar')
+       ]]>
+      <documentation lang="en">
+        Get changes for channel 'Foobar'.
+      </documentation>
+      <documentation lang="de">
+        Fordert die 'Anderungen des Channels 'Foobar' an. 
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Gets the change information for the channel with the given name.
+      The returned dictionary is keyed by the filenames of the changed files
+      and contains infos when the file was changed (lastModified).
+    </documentation>
+    <documentation lang="de">
+      Gibt die 'Anderungsinformationen des Channels mit dem 'ubergebenen
+      Namen zur'uck. Das zur'uckgegebene Dictionary beinhaltet als Keys
+      die Filenamen der ge'anderten Files, als Attribut wird das Datum
+      der letzten 'Anderung (lastModified) zur'uckgegeben.
+    </documentation>
+  </method>
+
+  <method name="resetChanges">
+    <signature>
+      <input name="channel"   type="xsd:string"/>
+      <input name="object"    type="xsd:string"/>
+      <output type="xsd:boolean"/>
+    </signature>
+    <signature>
+      <input name="channel"   type="xsd:string"/>
+      <output type="xsd:boolean"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.resetChanges('Foobar')
+       ]]>
+      <documentation lang="en">
+        Resets the changes for channel 'Foobar'.
+      </documentation>
+      <documentation lang="de">
+        Setzt die 'Anderungsinformationen des Channels 'Foobar' zur'uck. 
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Resets the change information for the given object in the given channel.
+      If object is omitted, the change informations for the whole channel
+      are resetted.
+    </documentation>
+    <documentation lang="de">
+      Setzt die 'Anderungsinformationen des 'ubergebenen Objektes im
+      'ubergebenen Channel zur'uck. Wenn kein Objekt angegeben wird, werden
+      die 'Anderungsinformationen des ganzen Channels zur'uckgesetzt.
+    </documentation>
+  </method>
+</interface>
