@@ -30,22 +30,16 @@
 {
   NSMutableDictionary *gatheringPerson;
   NSMutableDictionary *gatheringCompany;
-
   id             item;
-
   NSArray        *phones;
   NSMutableArray *otherPhones;
-  
   NSMutableArray *companySearchList;
   NSMutableArray *addedCompanies;
-
-  NSString *searchCompanyField;
-
-  int             categoryIndex;
-  NSMutableArray  *categories;
+  NSString       *searchCompanyField;
+  int            categoryIndex;
+  NSMutableArray *categories;
 }
 
 @end
 
-#endif
-
+#endif /* __AddressUI_SkyBusinessCardGathering_H__*/

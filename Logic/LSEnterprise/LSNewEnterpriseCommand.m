@@ -127,7 +127,7 @@ static NSNumber *noNum  = nil;
   }
   
   
-  if (self->persons != nil) { 
+  if ([self->persons isNotNull]) { 
     LSRunCommandV(_context, @"enterprise", @"set-persons",
                   @"group",   [self object],
                   @"members", self->persons, nil);

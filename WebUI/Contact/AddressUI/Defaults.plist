@@ -1,4 +1,3 @@
-// NSUserDefaults
 {
   enterprise_sub_view = "attributes";
   persons_sub_view    = "attributes";
@@ -573,4 +572,6 @@
   contactimport_upload_addressattrs = (
     name1, name2, name3, street, zip, city, country, state
   );
+
+  OGoCardGatheringDebugEnabled = NO;
 }
