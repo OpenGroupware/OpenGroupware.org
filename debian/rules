@@ -114,6 +114,7 @@ install: build controlfiles
 
 	mkdir -p $(CURDIR)/debian/opengroupware.org-environment/usr/sbin
 	install -m755 $(CURDIR)/debian/ogo-create-instance $(CURDIR)/debian/opengroupware.org-environment/usr/sbin
+	install -m755 $(CURDIR)/debian/ogo-remove-instance $(CURDIR)/debian/opengroupware.org-environment/usr/sbin
 
 	mkdir -p $(CURDIR)/debian/tmp/etc/apache/conf.d/
 	mkdir -p $(CURDIR)/debian/tmp/etc/apache2/conf.d/
