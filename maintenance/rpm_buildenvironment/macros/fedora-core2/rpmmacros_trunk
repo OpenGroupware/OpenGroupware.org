@@ -61,6 +61,7 @@
 %sope_makeflags debug=yes
 %sope_source sope-trunk-latest.tar.gz
 %sope_prefix /usr/local
+%sope_libversion 
 ###
 %mod_ngobjweb_version 2.0.51
 %mod_ngobjweb_release trunk_r315
