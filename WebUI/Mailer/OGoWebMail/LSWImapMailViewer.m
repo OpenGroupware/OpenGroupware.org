@@ -129,12 +129,16 @@ static NSString   *sendDateDateFmt = @"%Y-%m-%d %H:%M";
   NSMutableString *receiver;
   NSString        *str;
   NSEnumerator    *enumerator;
-
-  receiver   =  [NSMutableString stringWithCapacity:32];
+  
+  receiver   = [NSMutableString stringWithCapacity:32];
   enumerator = [self->emailContent valuesOfHeaderFieldWithName:_fieldName];
-  [receiver setString:[enumerator nextObject]];
-
-  while ((str = [enumerator nextObject])) {
+  
+  if ((str = [enumerator nextObject]) != nil)
+    [receiver setString:str];
+  else
+    return nil;
+  
+  while ((str = [enumerator nextObject]) != nil) {
     [receiver appendString:@", "];
     [receiver appendString:str];
   }

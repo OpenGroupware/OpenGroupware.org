@@ -1,3 +1,8 @@
+2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWImapMailViewer.m: fixed an edge case with a missing header field
+	  and Dovecot (v5.1.102)
+
 2004-11-26  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.1.101

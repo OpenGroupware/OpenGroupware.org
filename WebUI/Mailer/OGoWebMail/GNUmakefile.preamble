@@ -1,16 +1,18 @@
-# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
+# compilation settings
 
 OGoWebMail_INCLUDE_DIRS += -I. -I.. -I../..
 
 OGoWebMail_WOBUNDLE_LIBS += \
 	-lOGoWebMail	\
 	-lOGoFoundation	\
-	-lNGMime -lEOControl \
+	-lNGMime	\
+	-lNGExtensions -lEOControl \
 	-lDOM -lSaxObjC
 
 libOGoWebMail_LIBRARIES_DEPEND_UPON += \
 	-lOGoFoundation	\
-	-lNGMime -lEOControl \
+	-lNGMime	\
+	-lNGStreams -lNGExtensions -lEOControl \
 	-lDOM -lSaxObjC
 
 ADDITIONAL_BUNDLE_LIBS += $(OGoWebMail_WOBUNDLE_LIBS)
