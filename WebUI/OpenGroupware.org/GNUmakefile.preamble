@@ -15,7 +15,7 @@ ADDITIONAL_LIB_DIRS += \
 	-L/usr/local/lib -L/usr/local/apr/lib \
 	-L/usr/local/BerkeleyDB.4.0/lib/	\
 
-OpenGroupware_TOOL_LIBS += \
+OpenGroupware10a_TOOL_LIBS += \
 	-lOGoFoundation -lOGoDocuments	\
 	-lWEExtensions -lWOExtensions -lNGScripting \
 	-lNGObjWeb	\
@@ -25,5 +25,5 @@ OpenGroupware_TOOL_LIBS += \
 	-lEOControl	\
 	-lXmlRpc -lDOM -lSaxObjC
 
-OpenGroupware_TOOL_LIBS += \
+OpenGroupware10a_TOOL_LIBS += \
 	-lldap

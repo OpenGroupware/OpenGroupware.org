@@ -2,13 +2,13 @@
 
 include $(GNUSTEP_MAKEFILES)/common.make
 
-WOAPP_NAME = OpenGroupware
+WOAPP_NAME = OpenGroupware10a
 
 # Resources
 
-#OpenGroupware_WEBSERVER_RESOURCE_FILES += menu.js WOStats.xsl
+#OpenGroupware10a_WEBSERVER_RESOURCE_FILES += menu.js WOStats.xsl
 
-OpenGroupware_RESOURCE_FILES += \
+OpenGroupware10a_RESOURCE_FILES += \
 	Defaults.plist	\
 	calendar.js 	\
 	product.plist	\
@@ -16,11 +16,11 @@ OpenGroupware_RESOURCE_FILES += \
 
 # Components
 
-OpenGroupware_COMPONENTS += Main.wo OGoLogoutPage.wo
+OpenGroupware10a_COMPONENTS += Main.wo OGoLogoutPage.wo
 
 # Sources
 
-OpenGroupware_OBJC_FILES = \
+OpenGroupware10a_OBJC_FILES = \
 	OpenGroupware.m			\
 	OpenGroupware+CTI.m		\
 	OGoLogoutPage.m			\
