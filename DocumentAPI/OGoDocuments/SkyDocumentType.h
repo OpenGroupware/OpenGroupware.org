@@ -24,6 +24,15 @@
 
 #import <Foundation/NSObject.h>
 
+/*
+  SkyDocumentType
+  
+  More or less the 'EOClassDescription' of a document. It is supposed to 
+  describe the 'schema' of a document.
+  
+  Note: not really used a lot. Conceptual placeholder.
+*/
+
 @interface SkyDocumentType : NSObject
 @end
 
