@@ -3,9 +3,13 @@
 OGoRecipientLists_INCLUDE_DIRS += -I. -I.. -I../..
 
 OGoRecipientLists_WOBUNDLE_LIBS += \
+	-lOGoWebMail	\
 	-lOGoFoundation	\
 	-lNGScripting	\
 	-lNGMime -lEOControl \
 	-lDOM -lSaxObjC
+
+ADDITIONAL_LIB_DIRS += \
+	-L../OGoWebMail/$(GNUSTEP_OBJ_DIR)
 
 ADDITIONAL_BUNDLE_LIBS += $(OGoRecipientLists_WOBUNDLE_LIBS)

@@ -1,8 +1,24 @@
 # GNUstep makefile
 
 include ../common.make
+include ../../Version
+include ./Version
 
 WOBUNDLE_NAME = OGoWebMail
+LIBRARY_NAME  = libOGoWebMail
+
+libOGoWebMail_HEADER_FILES_DIR         = .
+libOGoWebMail_HEADER_FILES_INSTALL_DIR = /OGoWebMail
+
+libOGoWebMail_HEADER_FILES += \
+	LSWImapBuildFolderDict.h	\
+	SkyImapContextHandler.h		\
+	SkyImapMailRestrictions.h	\
+
+libOGoWebMail_OBJC_FILES += \
+	LSWImapBuildFolderDict.m	\
+	SkyImapContextHandler.m		\
+	SkyImapMailRestrictions.m	\
 
 OGoWebMail_PRINCIPAL_CLASS = OGoWebMailModule
 
@@ -29,12 +45,8 @@ OGoWebMail_OBJC_FILES = \
 	SkyImapMailListFooter.m   	\
 	LSWImapMailDeletePage.m		\
 	\
-	SkyImapMailRestrictions.m	\
 	SkyImapMailPrintViewer.m	\
-	SkyImapContextHandler.m		\
 	SkyImapMailActions.m		\
-	\
-	LSWImapBuildFolderDict.m	\
 
 OGoWebMail_COMPONENTS = \
         LSWImapMails.wo			\
@@ -71,5 +83,6 @@ German.lproj/OGoWebMail.ccfg : English.lproj/OGoWebMail.ccfg
 include GNUmakefile.components
 
 -include GNUmakefile.preamble
+include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble

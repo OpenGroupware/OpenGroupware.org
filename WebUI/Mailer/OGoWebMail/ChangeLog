@@ -1,5 +1,9 @@
 2004-08-22  Helge Hess  <helge.hess@opengroupware.org>
 
+	* added library libOGoWebMail for things shared between all bundles
+	  (must be a library so that it can be properly linked on MacOSX)
+	  (v5.1.95)
+
 	* moved mailing list to separate bundle OGoRecipientLists (v5.1.94)
 
 	* moved filter/vacation components to separate bundle OGoMailFilter
