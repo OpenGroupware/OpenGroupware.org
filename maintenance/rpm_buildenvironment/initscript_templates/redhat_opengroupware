@@ -1,0 +1,124 @@
+#!/bin/sh
+# initscript for OGO_INIT_VERSION
+# <frank@opengroupware.org>
+# 
+# chkconfig: 2345 99 99
+# description: OpenGroupware Application Server - OGO_INIT_VERSION
+#
+# processname: OGO_INIT_VERSION
+# pidfile: /var/run/OGO_INIT_VERSION.pid
+#
+# source function library
+. /etc/rc.d/init.d/functions
+
+RETVAL=0
+PROG="OGO_INIT_VERSION"
+USER="ogo"
+DIR="OGO_INIT_PREFIX"
+BIN="OGO_INIT_PREFIX/sbin/OGO_INIT_VERSION"
+PID_FILE="/var/run/OGO_INIT_VERSION.pid"
+LOG="/var/log/opengroupware/OGO_INIT_VERSION.log"
+PLIST="NSGlobalDomain"
+
+# pull in sysconfig settings
+# 
+[ -f /etc/sysconfig/OGO_INIT_VERSION ] && . /etc/sysconfig/OGO_INIT_VERSION
+
+start()
+{
+  PID=`/sbin/pidof "${BIN}"`
+  if [ -n "${PID}" ]; then
+    echo -en "${PROG} already runs!" && failure
+    echo -en "\n"
+  else
+    echo -en $"Starting ${PROG}:"
+    su - ${USER} -s /bin/bash -c "exec ${BIN}" >> ${LOG} 2>&1 &
+    echo $! > ${PID_FILE}
+    PID=`/sbin/pidof "${BIN}"`
+    if [ -n ${PID} ]; then
+      touch /var/lock/subsys/${PROG} && success
+    else
+      rm -f ${PID_FILE}
+      rm -f /var/lock/subsys/${PROG} && failure
+    fi
+    echo
+  fi
+}
+
+status()
+{
+  PID=`/sbin/pidof "${BIN}"`
+  if [ -n "${PID}" ]; then
+    echo -en "${PROG} is running -> ${PID}" && success
+    echo -en "\n"
+  else
+    echo -en "${PROG} isn't running." && failure
+    echo -en "\n"
+  fi
+}
+
+stop()
+{
+  echo -en $"Stopping ${PROG}:"
+  if [ -f "${PID_FILE}" ] ; then
+    PID=`cat ${PID_FILE}`
+    if [ "`kill ${PID} >> ${LOG} 2>&1`" ] ; then
+      success
+      rm -f ${PID_FILE}
+      rm -f /var/lock/subsys/${PROG}
+    else
+      PID="`pgrep -f ${BIN}`"
+      kill -9 ${PID} && success || failure
+      rm -f ${PID_FILE}
+    fi
+  else
+    killproc ${PROG}
+    RETVAL=$?
+    echo -en "\n"
+    if [ ${RETVAL} -eq 0 ];then
+      rm -f /var/lock/subsys/${PROG}
+      rm -f ${PID_FILE}
+    fi
+  return ${RETVAL}
+  fi
+  echo
+}
+
+showdefaults()
+{
+  su - ${USER} -s /bin/bash -c "exec Defaults read ${PLIST}"
+}
+  
+
+
+restart()
+{
+        stop
+        start
+}
+
+[ -x ${BIN} ] || exit 0
+
+# See how we were called.
+case "$1" in
+  start)
+  start
+  ;;
+  stop)
+  stop
+  ;;
+  restart)
+  restart
+  ;;
+  status)
+  status
+  ;;
+  showdefaults)
+  showdefaults
+  ;;
+  *)
+  echo $"Usage: $0 {start|stop|restart|showdefaults|status}"
+  exit 1
+esac
+
+exit 0

@@ -1,0 +1,15 @@
+INITSCRIPT TEMPLATES
+====================
+
+These are the initscript templates for the
+various RPM based buildhosts.
+We distinguish between:
+
+  redhat_* -> initscripts which should work
+              fine on `redhat` based distributions
+              (Fedora/RedHat/Mandrake/Conectiva)
+
+  suse_*   -> initscripts with extra requirements
+              seen in SUSE initscripts
+
+

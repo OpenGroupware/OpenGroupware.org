@@ -511,7 +511,87 @@ rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations/GNU
 rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www/GNUmakefile"
 rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www/tools"
 
+INITSCRIPTS_TMP_DIR_OGO="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/initscript_templates"
+INITSCRIPTS_TMP_DIR_ZIDE="${RPM_BUILD_ROOT}%{prefix}/share/zidestore-1.3/initscript_templates"
+mkdir -p ${INITSCRIPTS_TMP_DIR_OGO}
+mkdir -p ${INITSCRIPTS_TMP_DIR_ZIDE}
+cp %{_specdir}/initscript_templates/redhat_nhsd ${INITSCRIPTS_TMP_DIR_OGO}/
+cp %{_specdir}/initscript_templates/redhat_xmlrpcd ${INITSCRIPTS_TMP_DIR_OGO}/
+cp %{_specdir}/initscript_templates/redhat_opengroupware ${INITSCRIPTS_TMP_DIR_OGO}/
+cp %{_specdir}/initscript_templates/redhat_zidestore ${INITSCRIPTS_TMP_DIR_ZIDE}/
+cp %{_specdir}/initscript_templates/suse_nhsd ${INITSCRIPTS_TMP_DIR_OGO}/
+cp %{_specdir}/initscript_templates/suse_xmlrpcd ${INITSCRIPTS_TMP_DIR_OGO}/
+cp %{_specdir}/initscript_templates/suse_opengroupware ${INITSCRIPTS_TMP_DIR_OGO}/
+cp %{_specdir}/initscript_templates/suse_zidestore ${INITSCRIPTS_TMP_DIR_ZIDE}/
+
 # ****************************** post *********************************
+%post pda
+if [ $1 = 1 ]; then
+  NHSD_INIT_VERSION="ogo-nhsd-1.0a"
+  NHSD_INIT_PREFIX="%{prefix}"
+  if [-f "/etc/SuSE-release"]; then
+    sed "s^NHSD_INIT_VERSION^${NHSD_INIT_VERSION}^g; \
+         s^NHSD_INIT_PREFIX^${NHSD_INIT_PREFIX}^g" \
+         "%{prefix}/share/opengroupware.org-1.0a/initscript_templates/suse_nhsd" \
+         >%{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
+  else
+    sed "s^NHSD_INIT_VERSION^${NHSD_INIT_VERSION}^g; \
+         s^NHSD_INIT_PREFIX^${NHSD_INIT_PREFIX}^g" \
+         "%{prefix}/share/opengroupware.org-1.0a/initscript_templates/redhat_nhsd" \
+         >%{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
+  fi
+fi
+
+%post webui-app
+if [ $1 = 1 ]; then
+  OGO_INIT_VERSION="ogo-webui-1.0a"
+  OGO_INIT_PREFIX="%{prefix}"
+  if [-f "/etc/SuSE-release"]; then
+    sed "s^OGO_INIT_VERSION^${OGO_INIT_VERSION}^g; \
+         s^OGO_INIT_PREFIX^${OGO_INIT_PREFIX}^g" \
+         "%{prefix}/share/opengroupware.org-1.0a/initscript_templates/suse_opengroupware" \
+         >%{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
+  else
+    sed "s^OGO_INIT_VERSION^${OGO_INIT_VERSION}^g; \
+         s^OGO_INIT_PREFIX^${OGO_INIT_PREFIX}^g" \
+         "%{prefix}/share/opengroupware.org-1.0a/initscript_templates/redhat_opengroupware" \
+         >%{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
+  fi
+fi
+
+%post xmlrpcd
+if [ $1 = 1 ]; then
+  XMLRPCD_INIT_VERSION="ogo-xmlrpcd-1.0a"
+  XMLRPCD_INIT_PREFIX="%{prefix}"
+  if [-f "/etc/SuSE-release"]; then
+    sed "s^XMLRPCD_INIT_VERSION^${XMLRPCD_INIT_VERSION}^g; \
+         s^XMLRPCD_INIT_PREFIX^${XMLRPCD_INIT_PREFIX}^g" \
+         "%{prefix}/share/opengroupware.org-1.0a/initscript_templates/suse_xmlrpcd" \
+         >%{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
+  else
+    sed "s^XMLRPCD_INIT_VERSION^${XMLRPCD_INIT_VERSION}^g; \
+         s^XMLRPCD_INIT_PREFIX^${XMLRPCD_INIT_PREFIX}^g" \
+         "%{prefix}/share/opengroupware.org-1.0a/initscript_templates/redhat_xmlrpcd" \
+         >%{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
+  fi
+fi
+
+%post zidestore
+if [ $1 = 1 ]; then
+  ZIDESTORE_INIT_VERSION="ogo-zidestore-1.3"
+  ZIDESTORE_INIT_PREFIX="%{prefix}"
+  if [-f "/etc/SuSE-release"]; then
+    sed "s^ZIDESTORE_INIT_VERSION^${ZIDESTORE_INIT_VERSION}^g; \
+         s^ZIDESTORE_INIT_PREFIX^${ZIDESTORE_INIT_PREFIX}^g" \
+         "%{prefix}/share/zidestore-1.3/initscript_templates/suse_zidestore" \
+         >%{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
+  else
+    sed "s^ZIDESTORE_INIT_VERSION^${ZIDESTORE_INIT_VERSION}^g; \
+         s^ZIDESTORE_INIT_PREFIX^${ZIDESTORE_INIT_PREFIX}^g" \
+         "%{prefix}/share/zidestore-1.3/initscript_templates/redhat_zidestore" \
+         >%{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
+  fi
+fi
 
 # ****************************** postun *********************************
 
@@ -629,6 +709,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/lib/opengroupware.org-1.0a/datasources/OGoPalmDS.ds/bundle-info.plist
 %{prefix}/lib/opengroupware.org-1.0a/datasources/OGoPalmDS.ds/stamp.make
 %{prefix}/lib/opengroupware.org-1.0a/webui/OGoPalm.lso
+%{prefix}/share/opengroupware.org-1.0a/initscript_templates/*nhsd
 
 %files pda-devel
 %defattr(-,root,root,-)
@@ -698,6 +779,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/sbin/ogo-webui-1.0a
 %{prefix}/lib/opengroupware.org-1.0a/webui
 %{prefix}/share/opengroupware.org-1.0a/templates
+%{prefix}/share/opengroupware.org-1.0a/initscript_templates/*opengroupware
 
 %files webui-core
 %defattr(-,root,root,-)
@@ -850,10 +932,6 @@ rm -fr ${RPM_BUILD_ROOT}
 %defattr(-,root,root,-)
 %{prefix}/share/opengroupware.org-1.0a/translations/Spanish.lproj
 
-#%files webui-resource-se
-#%defattr(-,root,root,-)
-#%{prefix}/share/opengroupware.org-1.0a/translations/Swedish.lproj
-
 %files webui-resource-ptbr
 %defattr(-,root,root,-)
 %{prefix}/share/opengroupware.org-1.0a/translations/ptBR.lproj
@@ -861,6 +939,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %files xmlrpcd
 %defattr(-,root,root,-)
 %{prefix}/sbin/ogo-xmlrpcd-1.0a
+%{prefix}/share/opengroupware.org-1.0a/initscript_templates/*xmlrpcd
 
 %files zidestore
 %defattr(-,root,root,-)
@@ -895,6 +974,12 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Tue Jan 18 2005 Frank Reppin <frank@opengroupware.org>
+- began to include more or less generic initscripts which
+  should work on both SUSE and RedHat `based` distributions;
+  and thus I distinguish between redhat_ and suse_ based initscripts
+  for now...
+  (I define Conectiva, Mandrake and Fedora as RedHat based)
 * Fri Jan 14 2005 Frank Reppin <frank@opengroupware.org>
 -'#UseSOPE: <foo>' acts as a hint for `purveyor_of_rpms.pl`
   and will trigger the installation of the named SOPE release
