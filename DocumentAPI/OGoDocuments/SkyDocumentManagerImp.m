@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyDocumentManagerImp.h"
 #include <LSFoundation/LSTypeManager.h>
@@ -390,6 +389,7 @@
 /* GID/URL mappings */
 
 - (NSArray *)globalIDsForURLs:(NSArray *)_urls {
+  // TODO: can we improve speed using bulk ops?
   NSMutableArray *ma;
   unsigned i, count;
   
@@ -465,18 +465,32 @@
       return gid;
   }
   
-  NSLog(@"WARNING(%s): can't convert relative URL '%@' to gid ..",
-        __PRETTY_FUNCTION__, _path);
-  
+  [self logWithFormat:@"WARNING(%s): cannot convert relative URL to gid: '%@'",
+          __PRETTY_FUNCTION__, _path];
   return nil;
 }
 
+- (BOOL)isInvalidURLParameter:(id)_url {
+  if (_url == nil) return YES;
+  if ([_url isKindOfClass:[NSDictionary class]]) return YES;
+  if ([_url isKindOfClass:[NSArray class]])      return YES;
+  return NO;
+}
+
 - (EOGlobalID *)globalIDForURL:(id)_url {
+  // TODO: split up method
   NSURL    *url;
   NSString *baseURLString;
   EOGlobalID *gid;
   
-  if (_url == nil) return nil;
+  if (_url == nil) 
+    return nil;
+  if ([self isInvalidURLParameter:_url]) {
+    [self logWithFormat:
+	    @"ERROR(%s): got an invalid object as the URL parameter: %@",
+	    __PRETTY_FUNCTION__, _url];
+    return nil;
+  }
   
   if ([_url isKindOfClass:[NSURL class]]) {
     url = _url;
@@ -491,10 +505,10 @@
     if ([s length] == 0)
       return nil;
 
-    if ((gid = [self->urlToGID objectForKey:s]))
+    if ((gid = [self->urlToGID objectForKey:s]) != nil)
       return gid;
     
-    if ((pkey = [self _pkeyFromString:s])) {
+    if ((pkey = [self _pkeyFromString:s]) != nil) {
       /* ok, URL begins with a digit, considered a primary key ... */
       EOGlobalID        *gid;
       id<LSTypeManager> tm;

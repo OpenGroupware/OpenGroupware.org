@@ -1,3 +1,8 @@
+2004-12-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyDocumentManagerImp.m: minor improvement to url=>gid input
+	  parameter processing (v5.1.23)
+
 2004-09-24  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyDocumentManagerImp.m: do not throw exception in case the
