@@ -755,6 +755,7 @@ static BOOL embedViewURL             = NO;
   
   rq = [(WOContext *)_ctx request];
   r  = [(WOContext *)_ctx response];
+  [r setContentEncoding:NSUTF8StringEncoding];
   if ([[rq uri] hasSuffix:@".ics"] || 
       [[rq headerForKey:@"accept"] hasPrefix:@"text/calendar"]) {
     NSString *ical;
@@ -765,7 +766,7 @@ static BOOL embedViewURL             = NO;
                           reason:@"could not render EO as iCalendar"];
     }
     
-    [r setHeader:@"text/calendar" forKey:@"content-type"];
+    [r setHeader:@"text/calendar; charset=utf-8" forKey:@"content-type"];
     [r appendContentString:ical];
   }
   else {
@@ -777,7 +778,7 @@ static BOOL embedViewURL             = NO;
                           reason:@"could not render EO as MIME"];
     }
     
-    [r setHeader:@"message/rfc822" forKey:@"content-type"];
+    [r setHeader:@"message/rfc822; charset=utf-8" forKey:@"content-type"];
     [r appendContentString:mime];
   }
   

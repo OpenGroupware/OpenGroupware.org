@@ -1,3 +1,8 @@
+2005-03-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxICalendar.m, SxAppointment.m: generate iCal data as UTF-8,
+	  properly tag it as such with the charset parameter (v1.3.96)
+
 2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAppointment.m: fixed a warning, changed generation of baseURL

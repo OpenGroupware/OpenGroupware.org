@@ -121,7 +121,8 @@ static BOOL debugZSICal = NO;
                         reason:@"could not fetch iCals"];
   }
   
-  [r setHeader:@"text/calendar" forKey:@"content-type"];
+  [r setContentEncoding:NSUTF8StringEncoding];
+  [r setHeader:@"text/calendar; charset=utf-8" forKey:@"content-type"];
   [r appendContentString:@"BEGIN:VCALENDAR\r\nMETHOD:REQUEST\r\nPRODID:"];
   [r appendContentString:OGo_ZS_PRODID];
   [r appendContentString:@"\r\nVERSION:2.0\r\n"];
@@ -134,7 +135,7 @@ static BOOL debugZSICal = NO;
   }
   
   [r appendContentString:@"END:VCALENDAR"];
-
+  
   return r;
 }
 
@@ -350,8 +351,9 @@ static SaxObjectDecoder          *sax   = nil;
                         reason:@"could not fetch iCals"];
   }
   r = [(WOContext *)_ctx response];
-      
-  [r setHeader:@"text/calendar" forKey:@"content-type"];
+  [r setContentEncoding:NSUTF8StringEncoding];
+  
+  [r setHeader:@"text/calendar; charset=utf-8" forKey:@"content-type"];
   [r appendContentString:@"BEGIN:VCALENDAR\r\nMETHOD:REQUEST\r\nPRODID:"];
   [r appendContentString:OGo_ZS_PRODID];
   [r appendContentString:@"\r\nVERSION:2.0\r\n"];
