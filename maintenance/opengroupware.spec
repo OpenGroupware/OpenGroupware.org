@@ -529,16 +529,21 @@ cp %{_specdir}/initscript_templates/suse_zidestore ${INITSCRIPTS_TMP_DIR_ZIDE}/
 if [ $1 = 1 ]; then
   NHSD_INIT_VERSION="ogo-nhsd-1.0a"
   NHSD_INIT_PREFIX="%{prefix}"
-  if [-f "/etc/SuSE-release"]; then
+  if [ -f "/etc/SuSE-release" ]; then
     sed "s^NHSD_INIT_VERSION^${NHSD_INIT_VERSION}^g; \
          s^NHSD_INIT_PREFIX^${NHSD_INIT_PREFIX}^g" \
          "%{prefix}/share/opengroupware.org-1.0a/initscript_templates/suse_nhsd" \
          >%{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
+    chown root:root %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
+    chmod 755 %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
   else
     sed "s^NHSD_INIT_VERSION^${NHSD_INIT_VERSION}^g; \
          s^NHSD_INIT_PREFIX^${NHSD_INIT_PREFIX}^g" \
          "%{prefix}/share/opengroupware.org-1.0a/initscript_templates/redhat_nhsd" \
          >%{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
+    chown root:root %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
+    chmod 755 %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
+    chkconfig --add "${NHSD_INIT_VERSION}"
   fi
 fi
 
@@ -546,33 +551,51 @@ fi
 if [ $1 = 1 ]; then
   OGO_INIT_VERSION="ogo-webui-1.0a"
   OGO_INIT_PREFIX="%{prefix}"
-  if [-f "/etc/SuSE-release"]; then
+  if [ -f "/etc/SuSE-release" ]; then
     sed "s^OGO_INIT_VERSION^${OGO_INIT_VERSION}^g; \
          s^OGO_INIT_PREFIX^${OGO_INIT_PREFIX}^g" \
          "%{prefix}/share/opengroupware.org-1.0a/initscript_templates/suse_opengroupware" \
          >%{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
+    chown root:root %{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
+    chmod 755 %{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
   else
     sed "s^OGO_INIT_VERSION^${OGO_INIT_VERSION}^g; \
          s^OGO_INIT_PREFIX^${OGO_INIT_PREFIX}^g" \
          "%{prefix}/share/opengroupware.org-1.0a/initscript_templates/redhat_opengroupware" \
          >%{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
+    chown root:root %{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
+    chmod 755 %{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
+    chkconfig --add "${OGO_INIT_VERSION}"
+    chkconfig "${OGO_INIT_VERSION}" on
   fi
+  ##
+  if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
+    echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/ogo.conf
+  elif [ ! "`grep '%{prefix}/lib' %{_sysconfdir}/ld.so.conf`" ]; then
+    echo "%{prefix}/lib" >> %{_sysconfdir}/ld.so.conf
+  fi
+  /sbin/ldconfig
 fi
 
 %post xmlrpcd
 if [ $1 = 1 ]; then
   XMLRPCD_INIT_VERSION="ogo-xmlrpcd-1.0a"
   XMLRPCD_INIT_PREFIX="%{prefix}"
-  if [-f "/etc/SuSE-release"]; then
+  if [ -f "/etc/SuSE-release" ]; then
     sed "s^XMLRPCD_INIT_VERSION^${XMLRPCD_INIT_VERSION}^g; \
          s^XMLRPCD_INIT_PREFIX^${XMLRPCD_INIT_PREFIX}^g" \
          "%{prefix}/share/opengroupware.org-1.0a/initscript_templates/suse_xmlrpcd" \
          >%{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
+    chown root:root %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
+    chmod 755 %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
   else
     sed "s^XMLRPCD_INIT_VERSION^${XMLRPCD_INIT_VERSION}^g; \
          s^XMLRPCD_INIT_PREFIX^${XMLRPCD_INIT_PREFIX}^g" \
          "%{prefix}/share/opengroupware.org-1.0a/initscript_templates/redhat_xmlrpcd" \
          >%{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
+    chown root:root %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
+    chmod 755 %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
+    chkconfig --add "${XMLRPCD_INIT_VERSION}"
   fi
 fi
 
@@ -580,20 +603,97 @@ fi
 if [ $1 = 1 ]; then
   ZIDESTORE_INIT_VERSION="ogo-zidestore-1.3"
   ZIDESTORE_INIT_PREFIX="%{prefix}"
-  if [-f "/etc/SuSE-release"]; then
+  if [ -f "/etc/SuSE-release" ]; then
     sed "s^ZIDESTORE_INIT_VERSION^${ZIDESTORE_INIT_VERSION}^g; \
          s^ZIDESTORE_INIT_PREFIX^${ZIDESTORE_INIT_PREFIX}^g" \
          "%{prefix}/share/zidestore-1.3/initscript_templates/suse_zidestore" \
          >%{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
+    chown root:root %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
+    chmod 755 %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
   else
     sed "s^ZIDESTORE_INIT_VERSION^${ZIDESTORE_INIT_VERSION}^g; \
          s^ZIDESTORE_INIT_PREFIX^${ZIDESTORE_INIT_PREFIX}^g" \
          "%{prefix}/share/zidestore-1.3/initscript_templates/redhat_zidestore" \
          >%{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
+    chown root:root %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
+    chmod 755 %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
+    chkconfig --add "${ZIDESTORE_INIT_VERSION}"
   fi
 fi
 
-# ****************************** postun *********************************
+# ****************************** preun *********************************
+%preun pda
+if [ $1 = 0 ]; then
+  NHSD_INIT_VERSION="ogo-nhsd-1.0a"
+  NHSD_INIT_PREFIX="%{prefix}"
+  if [ -f "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}" stop
+      rm -f "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}"
+    else
+      service "${NHSD_INIT_VERSION}" stop
+      chkconfig "${NHSD_INIT_VERSION}" off
+      chkconfig --del "${NHSD_INIT_VERSION}"
+      rm -f "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}"
+    fi
+  fi
+fi
+
+%preun webui-app
+if [ $1 = 0 ]; then
+  OGO_INIT_VERSION="ogo-webui-1.0a"
+  OGO_INIT_PREFIX="%{prefix}"
+  if [ -f "%{_sysconfdir}/init.d/${OGO_INIT_VERSION}" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      "%{_sysconfdir}/init.d/${OGO_INIT_VERSION}" stop
+      rm -f "%{_sysconfdir}/init.d/${OGO_INIT_VERSION}"
+    else
+      service "${OGO_INIT_VERSION}" stop
+      chkconfig "${OGO_INIT_VERSION}" off
+      chkconfig --del "${OGO_INIT_VERSION}"
+      rm -f "%{_sysconfdir}/init.d/${OGO_INIT_VERSION}"
+    fi 
+  fi
+  ##
+  if [ -e %{_sysconfdir}/ld.so.conf.d/ogo.conf ]; then
+    rm -f %{_sysconfdir}/ld.so.conf.d/ogo.conf
+  fi
+  /sbin/ldconfig
+fi
+
+%preun xmlrpcd
+if [ $1 = 0 ]; then
+  XMLRPCD_INIT_VERSION="ogo-xmlrpcd-1.0a"
+  XMLRPCD_INIT_PREFIX="%{prefix}"
+  if [ -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}" stop
+      rm -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}"
+    else
+      service "${XMLRPCD_INIT_VERSION}" stop
+      chkconfig "${XMLRPCD_INIT_VERSION}" off
+      chkconfig --del "${XMLRPCD_INIT_VERSION}"
+      rm -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}"
+    fi 
+  fi
+fi
+
+%preun zidestore
+if [ $1 = 0 ]; then
+  ZIDESTORE_INIT_VERSION="ogo-zidestore-1.3"
+  ZIDESTORE_INIT_PREFIX="%{prefix}"
+  if [ -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}" stop
+      rm -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}"
+    else
+      service "${ZIDESTORE_INIT_VERSION}" stop
+      chkconfig "${ZIDESTORE_INIT_VERSION}" off
+      chkconfig --del "${ZIDESTORE_INIT_VERSION}"
+      rm -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}"
+    fi
+  fi
+fi
 
 # ****************************** clean ********************************
 %clean
@@ -974,6 +1074,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Wed Jan 19 2005 Frank Reppin <frank@opengroupware.org>
+- added 'preun' stages for the initscripts
 * Tue Jan 18 2005 Frank Reppin <frank@opengroupware.org>
 - began to include more or less generic initscripts which
   should work on both SUSE and RedHat `based` distributions;
