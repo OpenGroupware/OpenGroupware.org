@@ -20,21 +20,8 @@
 */
 
 #include "OGoResourceManager.h"
+#include "OGoStringTable.h"
 #include "common.h"
-
-@interface _OGoStringTable : NSObject
-{
-@protected
-  NSString     *path;
-  NSDictionary *data;
-  NSDate       *lastRead;
-}
-
-+ (id)stringTableWithPath:(NSString *)_path;
-- (id)initWithPath:(NSString *)_path;
-- (NSString *)stringForKey:(NSString *)_key withDefaultValue:(NSString *)_def;
-
-@end
 
 @interface OWResourceManager(UsedPrivates)
 - (NSString *)pathToComponentNamed:(NSString *)_name
@@ -43,10 +30,10 @@
 
 @implementation OGoResourceManager
 
-static BOOL debugOn = NO;
+static BOOL     debugOn   = NO;
 static NSArray  *wsPathes = nil;
-static NSString *suffix = nil;
-static NSString *prefix = nil;
+static NSString *suffix   = nil;
+static NSString *prefix   = nil;
 
 /* locate resource directories */
 
@@ -182,6 +169,157 @@ static NSString *prefix = nil;
       return path;
   }
   return nil;
+}
+
+/* locate Resources */
+
+- (NSString *)_pathForOGoResourceNamed:(NSString *)_name
+  inFramework:(NSString *)_frameworkName
+  language:(NSString *)_language
+{
+  // TODO: a lot of DUP code with _urlForResourceNamed, needs some refacturing
+  NSString      *key;
+  NSString      *rpath;
+  NSEnumerator  *e;
+  NSString      *path;
+  NSFileManager *fm;
+  
+  key = [NSString stringWithFormat:@"%@++%@++%@",
+                    _frameworkName?_frameworkName:@"-",
+                    _name,
+		  _language?_language:@"-"];
+  
+  if ((rpath = [self->keyToPath objectForKey:key]) != nil) {
+    if (![rpath isNotNull])
+      return nil;
+    return rpath;
+  }
+  
+  if (debugOn) [self logWithFormat:@"LOOKUP '%@'", _name];
+  
+  fm  = [NSFileManager defaultManager];
+  
+  /* check for framework resources */
+  
+  if ([_frameworkName length] > 0) {
+    if (debugOn) 
+      [self debugWithFormat:@"  check framework: '%@'", _frameworkName];
+    e = [wsPathes objectEnumerator];
+    while ((path = [e nextObject])) {
+      path = [path stringByAppendingPathComponent:_frameworkName];
+      
+      /* check language */
+      if (_language) {
+        path = [path stringByAppendingString:_language];
+        path = [path stringByAppendingPathExtension:@"lproj"];
+      }
+      
+      path = [path stringByAppendingPathComponent:_name];
+      if (debugOn) [self debugWithFormat:@"  check path: '%@'", path];
+      
+      if (![fm fileExistsAtPath:path])
+	continue;
+      
+      rpath = [path copy];
+      if (debugOn) [self debugWithFormat:@"FOUND: '%@'", rpath];
+      goto done;
+    }
+  }
+  
+  /* check for global resources */
+  
+  if (debugOn) [self debugWithFormat:@"check global WebServerResources ..."];
+  e = [wsPathes objectEnumerator];
+  while ((path = [e nextObject])) {
+    NSString *fpath, *basepath;
+    
+    /* check language */
+    if (_language) {
+      basepath = [path stringByAppendingString:_language];
+      basepath = [basepath stringByAppendingPathExtension:@"lproj"];
+    }
+    else
+      basepath = path;
+    
+    fpath = [basepath stringByAppendingPathComponent:_name];
+    if (debugOn) {
+      [self debugWithFormat:
+	      @"  check path: '%@'\n base: %@\n name: %@\n "
+	      @" path: %@\n lang: %@", 
+	      fpath, basepath, _name, path, _language];
+    }
+    
+    if (![fm fileExistsAtPath:fpath])
+      continue;
+    
+    rpath = [fpath copy];
+    if (debugOn) [self debugWithFormat:@"FOUND: '%@'", rpath];
+    goto done;
+  }
+  
+  /* finished processing */
+  if (debugOn) [self debugWithFormat:@"NOT FOUND: %@", _name];
+  
+ done:
+  if (self->keyToPath == nil)
+    self->keyToPath = [[NSMutableDictionary alloc] initWithCapacity:1024];
+  
+  if (rpath) 
+    [self->keyToPath setObject:rpath forKey:key];
+  else
+    [self->keyToPath setObject:[NSNull null] forKey:key];
+  
+  return rpath;
+}
+
+- (NSString *)pathForResourceNamed:(NSString *)_name
+  inFramework:(NSString *)_frameworkName
+  languages:(NSArray *)_languages
+{
+  NSEnumerator *e;
+  NSString     *language;
+  NSString     *rpath;
+  
+  if ([_name length] == 0) {
+    if (debugOn) [self logWithFormat:@"got no name for resource lookup?!"];
+    return nil;
+  }
+  
+  if (debugOn) {
+    [self debugWithFormat:@"pathForResourceNamed: %@ (languages: %@)",
+	    _name, [_languages componentsJoinedByString:@","]];
+  }
+  
+  /* check languages */
+  
+  e = [_languages objectEnumerator];
+  while ((language = [e nextObject])) {
+    NSString *rpath;
+    
+    if (debugOn) [self logWithFormat:@"  check language: '%@'", language];
+    rpath = [self _pathForOGoResourceNamed:_name inFramework:_frameworkName
+                language:language];
+    if (rpath != nil) {
+      if (debugOn) [self logWithFormat:@"  FOUND: %@", rpath];
+      return rpath;
+    }
+  }
+  
+  /* check without language */
+  
+  rpath = [self _pathForOGoResourceNamed:_name inFramework:_frameworkName
+              language:nil];
+  if (rpath != nil)
+    return rpath;
+
+  if (debugOn) {
+    [self debugWithFormat:
+	    @"did not find resource in OGo, try SOPE lookup: %@", _name];
+  }
+  
+  rpath = [super pathForResourceNamed:_name inFramework:_frameworkName
+		 languages:_languages];
+  return rpath;
 }
 
 /* locate WebServerResources */
@@ -330,9 +468,11 @@ static NSString *prefix = nil;
   NSString     *url;
   NSString     *appName;
   
-  if ([_name length] == 0)
+  if ([_name length] == 0) {
+    if (debugOn) [self logWithFormat:@"got no name for resource URL lookup?!"];
     return nil;
-
+  }
+  
   if (debugOn) [self debugWithFormat:@"urlForResourceNamed: %@", _name];
   
   if (_languages == nil) {
@@ -372,8 +512,13 @@ static NSString *prefix = nil;
               inFramework:_frameworkName
               language:nil
               applicationName:appName];
-  if (url)
+  if (url != nil)
     return url;
+
+  if (debugOn) {
+    [self debugWithFormat:
+	    @"did not find resource in OGo, try SOPE lookup: %@", _name];
+  }
   
   url = [super urlForResourceNamed:_name
                inFramework:_frameworkName
@@ -601,7 +746,7 @@ static NSNull *null = nil;
       tname = [language stringByAppendingString:@"+++"];
       tname = [tname stringByAppendingString:_tableName];
         
-      table = [_OGoStringTable stringTableWithPath:path];
+      table = [OGoStringTable stringTableWithPath:path];
       [self->nameToTable setObject:table forKey:tname];
       
       return [table stringForKey:_key withDefaultValue:_default];
@@ -613,9 +758,9 @@ static NSNull *null = nil;
                  languages:nil];
     
   if (path) {
-    _OGoStringTable *table;
+    OGoStringTable *table;
     
-    table = [_OGoStringTable stringTableWithPath:path];
+    table = [OGoStringTable stringTableWithPath:path];
     if (self->nameToTable == nil)
       self->nameToTable = [[NSMutableDictionary alloc] initWithCapacity:16];
     
@@ -654,7 +799,7 @@ static NSNull *null = nil;
   
   e = [_languages objectEnumerator];
   while ((language = [e nextObject])) {
-    _OGoStringTable *table;
+    OGoStringTable *table;
     NSArray  *ls;
     NSRange  r;
     NSString *tname;
@@ -676,7 +821,7 @@ static NSNull *null = nil;
     tname = [language stringByAppendingString:@"+++"];
     tname = [tname stringByAppendingString:_tableName];
     
-    table = [_OGoStringTable stringTableWithPath:path];
+    table = [OGoStringTable stringTableWithPath:path];
     [self->nameToTable setObject:table forKey:tname];
     
     return [table stringForKey:_key withDefaultValue:_default];
@@ -688,9 +833,9 @@ static NSNull *null = nil;
   path = [rpath stringByAppendingPathComponent:path];
 
   if ([fm fileExistsAtPath:path]) {
-    _OGoStringTable *table;
+    OGoStringTable *table;
     
-    table = [_OGoStringTable stringTableWithPath:path];
+    table = [OGoStringTable stringTableWithPath:path];
     if (self->nameToTable == nil)
       self->nameToTable = [[NSMutableDictionary alloc] initWithCapacity:16];
     
@@ -726,7 +871,7 @@ static NSNull *null = nil;
     self->nameToTable = [[NSMutableDictionary alloc] initWithCapacity:16];
   
   /* search for string */
-
+  
   s = [self _resourceStringForKey:_key
             inTableNamed:_tableName
             withDefaultValue:nil
@@ -753,73 +898,3 @@ static NSNull *null = nil;
 }
 
 @end /* OGoResourceManager */
-
-@implementation _OGoStringTable
-
-+ (id)stringTableWithPath:(NSString *)_path {
-  return [[(_OGoStringTable *)[self alloc] initWithPath:_path] autorelease];
-}
-
-- (id)initWithPath:(NSString *)_path {
-  self->path = [_path copyWithZone:[self zone]];
-  return self;
-}
-
-- (void)dealloc {
-  [self->path     release];
-  [self->lastRead release];
-  [self->data     release];
-  [super dealloc];
-}
-
-/* loading */
-
-- (NSException *)reportParsingError:(NSException *)_error {
-  NSLog(@"%s: could not load strings file '%@': %@", 
-        __PRETTY_FUNCTION__, self->path, _error);
-  return nil;
-}
-
-- (void)checkState {
-  NSString     *tmp;
-  NSDictionary *plist;
-  
-  if (self->data)
-    return;
-  
-  if ((tmp = [NSString stringWithContentsOfFile:self->path]) == nil) {
-    self->data = nil;
-    return;
-  }
-  
-  self->data = nil;
-  NS_DURING {
-    if ((plist = [tmp propertyListFromStringsFileFormat]) == nil) {
-      NSLog(@"%s: could not load strings file '%@'",
-            __PRETTY_FUNCTION__,
-            self->path);
-    }
-    self->data = [plist copy];
-    self->lastRead = [[NSDate date] retain];
-  }
-  NS_HANDLER
-    [[self reportParsingError:localException] raise];
-  NS_ENDHANDLER;
-}
-
-/* access */
-
-- (NSString *)stringForKey:(NSString *)_key withDefaultValue:(NSString *)_def {
-  NSString *value;
-  [self checkState];
-  value = [self->data objectForKey:_key];
-  return value ? value : _def;
-}
-
-/* debugging */
-
-- (BOOL)isDebuggingEnabled {
-  return debugOn;
-}
-
-@end /* _OGoStringTable */

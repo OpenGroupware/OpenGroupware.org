@@ -99,6 +99,7 @@ libOGoFoundation_OBJC_FILES = \
 	OGoSession+JS.m			\
 	OGoHelpManager.m		\
 	OGoEditorPage.m			\
+	OGoStringTable.m		\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make

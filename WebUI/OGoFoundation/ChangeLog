@@ -1,4 +1,15 @@
+2004-09-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoResourceManager.m: added own implementation of
+	  -pathForResourceNamed:inFramework:languages: which checks in all
+	  webserver resources search directories for resources before resorting
+	  to the OWResourceManager implementation. This way the
+	  WOResourceRequestHandler works as expected (can find the resources)
+	  (v5.1.64)
+
 2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoResourceManager.m: moved OGoStringTable to an own file (v5.1.63)
 
 	* OGoResourceManager.m: look for WebServerResources in the
 	  "opengroupware.org-1.0a/share/www/" subdir of /usr/local and /usr
