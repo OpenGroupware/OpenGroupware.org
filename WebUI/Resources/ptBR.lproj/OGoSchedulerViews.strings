@@ -83,7 +83,7 @@ christmasEve               = "VÃ©spera do Natal";
 corpusChristi              = "Corpus Christi";
 cycle                      = "RepetiÃ§Ã£o";
 cycleEndDate               = "Fim da repetiÃ§Ã£o";
-dayOfPrayerAndRepetance    = "Dia do Perdão";
+dayOfPrayerAndRepetance    = "Dia do Perdï¿½";
 deathsSunday               = "Finados";
 delete                     = "Excluir";
 easter                     = "Domingo de PÃ¡scoa";
@@ -363,49 +363,49 @@ wnext_day                  = "dia seguinte";
 // Added Olivier Hallot 
 // Collaboration of Bruno Limmer
 //Feriados Nacionais
-independencia                  = "Independência do Brasil";
-republica                      = "Proclamação da República";
-nsaparecida                    = "Nª Sª de Aparecida";
+independencia                  = "IndependÃªncia do Brasil";
+republica                      = "ProclamaÃ§Ã£o da RepÃºblica";
+nsaparecida                    = "NÂª SÂª de Aparecida";
 finados                        = "Finados";
-tiradentes                     = "Tiradentes"
-NSConceicao                    = "Nª Sª da Conceição";
+tiradentes                     = "Tiradentes";
+NSConceicao                    = "NÂª SÂª da ConceiÃ§Ã£o";
 //RJ
-SaoSebastiaoRJ_RJ              = "São Sebastião (Capital-RJ)";
-SaoJorgeRJ_RJ                  = "São Jorge (Capital-RJ)";
-SaoBeneditoAR_RJ               = "São Benedito (Angra dos Reis-RJ)";
-ConcienciaNegra_RJ             = "Dia da Conciência Negra (RJ)";
+SaoSebastiaoRJ_RJ              = "SÃ£o SebastiÃ£o (Capital-RJ)";
+SaoJorgeRJ_RJ                  = "SÃ£o Jorge (Capital-RJ)";
+SaoBeneditoAR_RJ               = "SÃ£o Benedito (Angra dos Reis-RJ)";
+ConcienciaNegra_RJ             = "Dia da ConciÃªncia Negra (RJ)";
 //SP
-SaoPauloSP_SP                  = "São Paulo (Capital-SP)";
-RevolucaoConstitucionalista_SP = "Revolução Constitucionalista (SP)";
+SaoPauloSP_SP                  = "SÃ£o Paulo (Capital-SP)";
+RevolucaoConstitucionalista_SP = "RevoluÃ§Ã£o Constitucionalista (SP)";
 //RS
-NSNavegantes_RS                = "Nª Sª dos Navegantes (Capital-RS)";
-Farroupilha_RS                 = "Revolução Farroupilha (RS)";
+NSNavegantes_RS                = "NÂª SÂª dos Navegantes (Capital-RS)";
+Farroupilha_RS                 = "RevoluÃ§Ã£o Farroupilha (RS)";
 //MG
-NSdasDores_MG                  = "Nª Sª das Dores (MG)";
+NSdasDores_MG                  = "NÂª SÂª das Dores (MG)";
 //PE
-AnivRecife_PE                  = "Aniversário do Recife (PE)"; 
-NSCarmo_PE                     = "Nª Sª do Carmo (PE)";
+AnivRecife_PE                  = "AniversÃ¡rio do Recife (PE)"; 
+NSCarmo_PE                     = "NÂª SÂª do Carmo (PE)";
 //SE
-MudancaCapital_SE              = "Mudança da Capital (SE)";
-indSergipe_SE                  = "Independência de Sergipe";
+MudancaCapital_SE              = "MudanÃ§a da Capital (SE)";
+indSergipe_SE                  = "IndependÃªncia de Sergipe";
 //CE
-SaoJose_CE                     = "São José (CE)";
-NascPeCicero_CE                = "Nascimento de Pe. Cícecro (CE)";
+SaoJose_CE                     = "SÃ£o JosÃ© (CE)";
+NascPeCicero_CE                = "Nascimento de Pe. CÃ­cero (CE)";
 //PR
-AnivCuritba_PR                 = "Aniversário de Curitiba (PR)";
-NSdaLuz_PR                     = "Nª Sª da Luz (PR)";
+AnivCuritiba_PR                = "AniversÃ¡rio de Curitiba (PR)";
+NSdaLuz_PR                     = "NÂª SÂª da Luz (PR)";
 //PB
-SaoJoao_PB                     = "São João (PB)";
-AnivJoaoPess_PB                = "Aniversário de Joâo Pessoa (PB)";
+SaoJoao_PB                     = "SÃ£o JosÃ© (PB)";
+AnivJoaoPess_PB                = "AniversÃ¡rio de JoÃ£o Pessoa (PB)";
 //BA
-SaoJoao_BA                     = "São João (BA)";
-indBahia_BA                    = "Independência da Bahia";
-NSSantana_BA                   = "Nª Sª de Santana (BA)";
+SaoJoao_BA                     = "SÃ£o JosÃ© (BA)";
+indBahia_BA                    = "IndependÃªncia da Bahia";
+NSSantana_BA                   = "NÂª SÂª de Santana (BA)";
 //PI
-AnivTere_PI                    = "Aniversáro de Teresina (PI)";
+AnivTere_PI                    = "AniversÃ¡rio de Teresina (PI)";
 //AL
-PadroMaceio_AL                 = "Padroeira de Maceió (AL)";
-EmanAlagoas_AL                 = "Emancipação de Alagoas (AL)";
+PadroMaceio_AL                 = "Padroeira de MaceiÃ³ (AL)";
+EmanAlagoas_AL                 = "EmancipaÃ§Ã£o de Alagoas (AL)";
 //MA
 //AM
 //RN
