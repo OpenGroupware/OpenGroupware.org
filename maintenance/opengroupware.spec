@@ -541,6 +541,14 @@ cp %{_specdir}/initscript_templates/suse_xmlrpcd ${INITSCRIPTS_TMP_DIR_OGO}/
 cp %{_specdir}/initscript_templates/suse_opengroupware ${INITSCRIPTS_TMP_DIR_OGO}/
 cp %{_specdir}/initscript_templates/suse_zidestore ${INITSCRIPTS_TMP_DIR_ZIDE}/
 
+#ghost initscripts
+INITSCRIPT_DST="${RPM_BUILD_ROOT}%{_sysconfdir}/init.d"
+mkdir -p ${INITSCRIPT_DST}
+touch ${INITSCRIPT_DST}/ogo-nhsd-1.0a
+touch ${INITSCRIPT_DST}/ogo-webui-1.0a
+touch ${INITSCRIPT_DST}/ogo-xmlrpcd-1.0a
+touch ${INITSCRIPT_DST}/ogo-zidestore-1.3
+
 #template for ogo-aptnotify
 APTNOTIFY_TMP_DIR="${SHAREDIR}/aptnotify_template"
 mkdir -p ${APTNOTIFY_TMP_DIR}
@@ -914,6 +922,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/lib/opengroupware.org-1.0a/webui/OGoPalm.lso
 %{prefix}/share/opengroupware.org-1.0a/initscript_templates/*nhsd
 %attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-nhsd-1.0a
+%ghost %attr(0755,root,root) %config %{_sysconfdir}/init.d/ogo-nhsd-1.0a
 
 %files pda-devel
 %defattr(-,root,root,-)
@@ -985,6 +994,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/share/opengroupware.org-1.0a/templates/ogo-webui-1.0a
 %{prefix}/share/opengroupware.org-1.0a/initscript_templates/*opengroupware
 %attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-webui-1.0a
+%ghost %attr(0755,root,root) %config %{_sysconfdir}/init.d/ogo-webui-1.0a
 
 %files webui-core
 %defattr(-,root,root,-)
@@ -1147,6 +1157,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/sbin/ogo-xmlrpcd-1.0a
 %{prefix}/share/opengroupware.org-1.0a/initscript_templates/*xmlrpcd
 %attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-xmlrpcd-1.0a
+%ghost %attr(0755,root,root) %{_sysconfdir}/init.d/ogo-xmlrpcd-1.0a
 
 %files zidestore
 %defattr(-,root,root,-)
@@ -1160,6 +1171,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/lib/zidestore-1.3
 %{prefix}/share/zidestore-1.3
 %attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-zidestore-1.3
+%ghost %attr(0755,root,root) %{_sysconfdir}/init.d/ogo-zidestore-1.3
 
 %files zidestore-devel
 %defattr(-,root,root,-)
@@ -1174,6 +1186,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Wed Mar 16 2005 Frank Reppin <frank@opengroupware.org>
+- added initscripts as ghosts.
 * Tue Mar 15 2005 Frank Reppin <frank@opengroupware.org>
 - added sysconfigs to packages xmlrpcd/zidestore/pda
 * Mon Mar 14 2005 Frank Reppin <frank@opengroupware.org>
