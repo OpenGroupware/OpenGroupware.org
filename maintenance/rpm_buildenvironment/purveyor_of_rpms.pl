@@ -25,7 +25,7 @@ my $dl_host = "download.opengroupware.org";
 # this are the packages I can deal with
 # every package given here should have its own specfile...
 # adding new packages is more or less a copy'n'paste job of code snippets below
-my @poss_packages = qw( ogo-gnustep_make libobjc-lf2 libfoundation libical-sope-devel opengroupware-pilot-link opengroupware-nhsc sope opengroupware mod_ngobjweb_slss8 mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment epoz );
+my @poss_packages = qw( ogo-gnustep_make libobjc-lf2 libfoundation libical-sope-devel opengroupware-pilot-link opengroupware-nhsc sope opengroupware mod_ngobjweb_slss8 mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment epoz ogo-database-setup );
 my $flavour_we_build_upon;
 my $distrib_define;
 my $memyself = basename($0);
@@ -37,8 +37,8 @@ my $rpm;
 my @rpms_build;
 #package_wo_source contains packages wo source at all or where i refuse to download
 #the source (source should be already in \$sources_dir)
-my @package_wo_source = qw( ogo-gnustep_make ogo-environment );
-my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment opengroupware-pilot-link opengroupware-nhsc );
+my @package_wo_source = qw( ogo-gnustep_make ogo-environment ogo-database-setup );
+my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment opengroupware-pilot-link opengroupware-nhsc ogo-database-setup );
 my $release_codename;
 my $remote_release_dirname;
 my $libversion;
@@ -285,6 +285,13 @@ sub pre_patch_rpmmacros {
       $line = "\%epoz_buildcount $new_buildcount" if ($line =~ m/^\%epoz_buildcount/);
       $line = "\%epoz_source $release_tarballname" if (($line =~ m/^\%epoz_source/) and ($build_type eq "release"));
     }
+    #ogo-database-setup...
+    if ($package eq "ogo-database-setup") {
+      $line = "\%ogo_dbsetup_version $new_version" if ($line =~ m/^\%ogo_dbsetup_version/);
+      $line = "\%ogo_dbsetup_release trunk_r$new_svnrev" if (($line =~ m/^\%ogo_dbsetup_release/) and ($build_type eq "trunk"));
+      $line = "\%ogo_dbsetup_release r$new_svnrev" if (($line =~ m/^\%ogo_dbsetup_release/) and ($build_type eq "release"));
+      $line = "\%ogo_dbsetup_buildcount $new_buildcount" if ($line =~ m/^\%ogo_dbsetup_buildcount/);
+    }
     #see flavour detector...
     $line = "\%distribution $distrib_define" if ($line =~ m/^\%distribution/);
     print RPMMACROS_OUT "$line\n";
@@ -365,6 +372,12 @@ sub get_current_from_rpmmacro {
       $cur_version = $cline if ($cline =~ s/^\%epoz_version\s+//);
       $cur_svnrev = $cline if ($cline =~ s/^\%epoz_release\s+//);
       $cur_buildcount = $cline if ($cline =~ s/^\%epoz_buildcount\s+//);
+    }
+    #ogo-database-setup
+    if ($package eq "ogo-database-setup") {
+      $cur_version = $cline if ($cline =~ s/^\%ogo_dbsetup_version\s+//);
+      $cur_svnrev = $cline if ($cline =~ s/^\%ogo_dbsetup_release\s+//);
+      $cur_buildcount = $cline if ($cline =~ s/^\%ogo_dbsetup_buildcount\s+//);
     }
   }
   #wipe out prefix to svn revision used in rpmmacros_trunk/rpmmacros_release before comparision...
@@ -606,6 +619,14 @@ sub collect_patchinfo {
     $new_version = "$new_major.$new_minor.$new_sminor";
     $remote_release_dirname = "ThirdParty" if($build_type eq "release");
   }
+  ###########################################################################
+  if ($package eq "ogo-database-setup") {
+    $new_major = "1.0a";
+    $new_minor = "0";
+    $new_svnrev = "0";
+    $new_version = "$new_major";
+  }
+  ####
   print "[CURRENT SOURCE]    - $package VERSION:$new_version SVNREV:$new_svnrev\n" if ($verbose eq "yes");
 }
 
