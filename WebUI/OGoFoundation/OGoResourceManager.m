@@ -158,6 +158,10 @@ static NSString *templatesSubPath =
   }
   return self;
 }
+- (id)init {
+  // TODO: maybe search and set some 'share/ogo' path?
+  return [self initWithPath:nil];
+}
 
 - (void)dealloc {
   [self->cachedKey          release];
@@ -401,8 +405,8 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
     if (rpath != nil)
       return rpath;
     
-    [self logWithFormat:@"Note: did not find components.cfg for theme: %@",
-	    (theme != nil ? theme : @"default-theme")];
+    [self logWithFormat:@"Note: did not find components.cfg(%@) for theme: %@",
+            _fwName, (theme != nil ? theme : @"default-theme")];
   }
   
   /* look using OWResourceManager */
@@ -445,8 +449,8 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
     return [self lookupComponentsConfigInFramework:_fwName languages:_langs];
   
   if (debugOn) {
-    [self debugWithFormat:@"pathForResourceNamed: %@ (languages: %@)",
-	    _name, [_langs componentsJoinedByString:@","]];
+    [self debugWithFormat:@"pathForResourceNamed: %@/%@ (languages: %@)",
+            _name, _fwName, [_langs componentsJoinedByString:@","]];
   }
   
   /* check languages */
@@ -494,6 +498,10 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   NSString     *url;
   NSEnumerator *e;
   NSString     *path;
+  
+  // TODO: some kind of hack ... - need to decide how we want to deal with
+  //       the bundle less main component
+  _appName = @"OpenGroupware10a";
   
   if (debugOn) {
     [self logWithFormat:@"lookup URL of resource: '%@'/%@/%@", 

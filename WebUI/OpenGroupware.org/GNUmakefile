@@ -1,18 +1,21 @@
 # GNUstep Makefile
 
 include $(GNUSTEP_MAKEFILES)/common.make
+include ../Version
+include ./Version
 
-WOAPP_NAME = OpenGroupware10a
+WEBUID_NAME = ogo-webui-$(MAJOR_VERSION)$(MINOR_VERSION)
 
-OpenGroupware10a_OBJC_FILES = \
+TOOL_NAME = $(WEBUID_NAME)
+
+$(WEBUID_NAME)_OBJC_FILES = \
 	OpenGroupware.m			\
 	OpenGroupware+CTI.m		\
-	OGoLogoutPage.m			\
-	Main.m				\
 	DirectAction.m			\
 	WODirectAction+LoginAction.m	\
 	SoOGoAuthenticator.m
 
 -include GNUmakefile.preamble
-include $(GNUSTEP_MAKEFILES)/woapp.make
+include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
+-include fhs.make

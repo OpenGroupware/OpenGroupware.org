@@ -18,9 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include "Main.h"
 #include "OpenGroupware.h"
 #include <LSFoundation/OGoContextManager.h>
 #include <LSFoundation/OGoContextSession.h>
@@ -34,6 +32,11 @@
 
 @interface OGoSession(ConfigLogin)
 - (BOOL)configureForLSOfficeSession:(OGoContextSession *)_sn;
+@end
+
+@protocol WOComponentRestore
+- (void)initRestoreWithRequest:(WORequest *)_req;
+- (void)setIsLoginNotAuthorized:(BOOL)_flag;
 @end
 
 @interface NSObject(RestorePageDefinitions)
@@ -66,11 +69,10 @@ static int LSAllowSpacesInLogin = -1;
 
   pageName  = [req formValueForKey:@"restorePageName"];
   loginName = [req formValueForKey:@"loginName"];
-    
-  if (pageName && loginName) {
+  
+  if (pageName != nil && loginName != nil) {
     /* activate main page with the given hiden parameters */
     [_page initRestoreWithRequest:req];
-
   }
 }
 
@@ -279,7 +281,7 @@ static int LSAllowSpacesInLogin = -1;
   
   lso = [(OpenGroupware *)[WOApplication application] lsoServer];
   if (lso == nil) {
-    [self logWithFormat:@"did not find Skyrix server .."];
+    [self logWithFormat:@"did not find OpenGroupware.org server .."];
     return [self pageWithName:@"Main"];
   }
 

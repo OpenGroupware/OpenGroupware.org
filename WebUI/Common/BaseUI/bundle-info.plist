@@ -61,6 +61,8 @@
         { name = SkyObjectField;               },
         { name = SkyEditorButtons;             },
         { name = SkyWarningMode;               },
+        { name = Main;                         },
+        { name = OGoLogoutPage;                },
     );
     WODynamicElements = (
         { name = LSWWindowFrame;           },
@@ -109,6 +111,8 @@
         { name = SkyEditorButtons;    },
         { name = SkyWarningMode;      },
         { name = OGoMenuBox;          },
+        { name = Main;                },
+        { name = OGoLogoutPage;       },
     );
     
     WOxElemBuilder = (

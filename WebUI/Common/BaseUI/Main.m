@@ -18,10 +18,8 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "Main.h"
-#include "OpenGroupware.h"
 #include "common.h"
 #include <LSFoundation/OGoContextSession.h>
 #include <LSFoundation/OGoContextManager.h>
@@ -34,6 +32,10 @@
 - (void)setUser:(NSString *)_user;
 - (NSString *)user;
 - (void)setPassword:(NSString *)_pwd;
+@end
+
+@interface WOApplication(OGoApp)
+- (id)lsoServer; // TODO: proper return type
 @end
 
 @implementation Main 
@@ -88,7 +90,9 @@ static BOOL LSUseBasicAuth           = NO;
 - (NSString *)rootLogin {
   static NSString *rootLogin = nil;
   if (rootLogin == nil) {
-    id lso = [(OpenGroupware *)[WOApplication application] lsoServer];
+    id lso;
+
+    lso = [[WOApplication application] lsoServer];
     rootLogin = [lso loginOfRoot];
     if (rootLogin == nil) rootLogin = @"root";
     rootLogin = [rootLogin retain];
@@ -106,7 +110,7 @@ static BOOL LSUseBasicAuth           = NO;
 {
   id lso;
 
-  lso  = [(OpenGroupware *)[WOApplication application] lsoServer];
+  lso  = [[WOApplication application] lsoServer];
   
   if ([lso isLoginAuthorized:[self rootLogin] password:@""])
     return [self login];
@@ -119,11 +123,11 @@ static BOOL LSUseBasicAuth           = NO;
 {
   id lso;
 
-  lso  = [(OpenGroupware *)[WOApplication application] lsoServer];
-
-  if ([lso isLoginAuthorized:[self rootLogin] password:@""]) {
+  lso  = [[WOApplication application] lsoServer];
+  
+  if ([lso isLoginAuthorized:[self rootLogin] password:@""])
     return  [[[self session] navigation] activePage];
-  }
+  
   return nil;
 }
 
@@ -174,7 +178,7 @@ static BOOL LSUseBasicAuth           = NO;
         if ([auth length] > 0) {
           id lso;
           
-          lso = [(OpenGroupware *)[WOApplication application] lsoServer];
+          lso = [[WOApplication application] lsoServer];
           
           if ([lso isLoginAuthorized:[self user] password:auth]) {
             [self setPassword:auth];

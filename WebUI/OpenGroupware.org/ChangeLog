@@ -1,5 +1,11 @@
 2004-09-22  Helge Hess  <helge.hess@skyrix.com>
 
+	* v5.1.58
+
+	* moved Main and OGoLogoutPage components to Common/BaseUI
+
+	* main executable is now a tool called ogo-webui-51
+
 	* v5.1.57
 	
 	* moved Defaults.plist contents to OpenGroupware.m, so that

@@ -1,5 +1,8 @@
 2004-09-22  Helge Hess  <helge.hess@skyrix.com>
 
+	* added Main and OGoLogoutPage components from main application
+	  (v5.1.92)
+
 	* moved LSWBaseModule.h into .m file (v5.1.91)
 
 2004-09-12  Helge Hess  <helge.hess@opengroupware.org>

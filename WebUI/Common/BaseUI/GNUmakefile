@@ -54,13 +54,9 @@ BaseUI_OBJC_FILES = 			\
 	WODirectAction+SkyDock.m	\
 	WODirectAction+Misc.m		\
 	WODirectAction+activate.m	\
-
-BaseUI_LANGUAGES = \
-	English		\
-	English_orange  \
-	English_blue   	\
-	English_OOo     \
-	English_kde
+	\
+	OGoLogoutPage.m			\
+	Main.m				\
 
 BaseUI_RESOURCE_FILES += Defaults.plist Version
 
