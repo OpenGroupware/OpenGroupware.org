@@ -18,16 +18,24 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __OGoFoundation_OGoEditorPage_H__
 #define __OGoFoundation_OGoEditorPage_H__
 
 #include <OGoFoundation/LSWContentPage.h>
 
+/*
+  OGoEditorPage
+  
+  A page which shows an object for editing (that is, in a form). Editor pages
+  disable other links to ensure that the user doesn't click them and looses
+  form content (don't ask ;-).
+*/
+
 @class NSMutableDictionary, NSDictionary, NSString;
 @class NGMimeType;
 
+// TODO: remove wizard nonsense once sure it isn't used
 // TODO: replace LSWContentPage with OGoContentPage in the long run
 @interface OGoEditorPage : LSWContentPage
 {
