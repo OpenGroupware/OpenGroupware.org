@@ -18,15 +18,15 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "OGoViewerPage.h"
+#include "OGoClipboard.h"
 #include "WOSession+LSO.h"
 #include "WOComponent+config.h"
 #include "WOComponent+Commands.h"
 #include "LSWMailEditorComponent.h"
 #include "common.h"
-#import <EOControl/EOGlobalID.h>
+#include <EOControl/EOGlobalID.h>
 
 @interface NSObject(GlobalID)
 - (EOGlobalID *)globalID;
@@ -135,13 +135,13 @@
 #endif
   if (favorite == nil)
     favorite = [self object];
-
+  
   if (favorite == nil) {
     [self setErrorString:@"No object to place in clipboard !"];
     return nil;
   }
   
-  [[self session] addFavorite:favorite];
+  [[[self session] favorites] addObject:favorite];
   return nil;
 }
 

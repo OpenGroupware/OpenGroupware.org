@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2004 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -19,11 +19,36 @@
   02111-1307, USA.
 */
 
-#ifndef __OGoFoundation_LSWViewerPage_H__
-#define __OGoFoundation_LSWViewerPage_H__
+#ifndef __OGoFoundation_OGoClipboard_H__
+#define __OGoFoundation_OGoClipboard_H__
 
-/* DEPRECATED: this file is deprecated and should not be used */
+#import <Foundation/NSObject.h>
 
-#include <OGoFoundation/OGoViewerPage.h>
+/*
+  OGoClipboard
+  
+  Maintains a LIFO list of clipped items.
+*/
 
-#endif /* __OGoFoundation_LSWViewerPage_H__ */
+@class NSUserDefaults, NSMutableArray;
+
+@interface OGoClipboard : NSObject
+{
+  NSUserDefaults *defaults;
+  NSMutableArray *favorites;
+}
+
+- (id)initWithUserDefaults:(NSUserDefaults *)_ud;
+
+/* accessors */
+
+- (BOOL)containsObjects;
+
+/* operations */
+
+- (void)addObject:(id)_fav;
+- (void)removeObject:(id)_fav;
+
+@end
+
+#endif /* __OGoFoundation_OGoClipboard_H__ */

@@ -1,5 +1,11 @@
 2004-11-13  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v5.1.97
+
+	* updated for new OGoClipboard API
+
+	* SkyFavorites.m: cleaned up drag type processing
+
 	* Main.m: improved -appendToResponse: auth processing, small code
 	  cleanups, return an error HTML if the template of the Main page
 	  could not be found (v5.1.96)

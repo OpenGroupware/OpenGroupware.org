@@ -52,6 +52,7 @@ libOGoFoundation_HEADER_FILES = \
 	OGoHelpManager.h		\
 	OGoEditorPage.h			\
 	OGoConfigHandler.h		\
+	OGoClipboard.h			\
 
 libOGoFoundation_OBJC_FILES = \
 	OWPasteboard.m			\
@@ -98,6 +99,7 @@ libOGoFoundation_OBJC_FILES = \
 	OGoStringTable.m		\
 	OGoStringTableManager.m		\
 	OGoResourceKey.m		\
+	OGoClipboard.m			\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make

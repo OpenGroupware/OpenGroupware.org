@@ -1,3 +1,7 @@
+2004-11-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* removed old LSWAppointmentViewer.wo directory (v5.1.57)
+
 2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* removed deprecated 'singleSelection' bindings from components

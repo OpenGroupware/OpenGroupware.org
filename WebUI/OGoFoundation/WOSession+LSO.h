@@ -30,7 +30,7 @@
 @class NGMimeType;
 @class WOComponent;
 @class OWPasteboard;
-@class OGoNavigation;
+@class OGoNavigation, OGoClipboard;
 
 @interface WOSession(LSOffice)
 
@@ -54,7 +54,8 @@
 - (BOOL)clipboardContainsObject;
 
 /* favorites */
-- (void)addFavorite:(id)_fav;
+
+- (OGoClipboard *)favorites;
 - (id)chosenFavorite;
 
 /* object labels */

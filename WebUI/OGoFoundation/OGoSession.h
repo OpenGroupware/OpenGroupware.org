@@ -34,7 +34,7 @@
 @class WOComponent;
 @class OWPasteboard;
 @class LSCommandContext, OGoContextSession;
-@class OGoNavigation;
+@class OGoNavigation, OGoClipboard;
 
 @interface OGoSession : WOSession
 {
@@ -71,8 +71,8 @@
   NSArray              *categoryNames;
   NSArray              *dockedProjectInfos;
 
-  // favorites
-  NSMutableArray       *favorites;
+  // favorites (TODO: what is choosenFavorite?)
+  OGoClipboard         *favorites;
   id                   choosenFavorite;
 
   // userDefaults
@@ -97,6 +97,7 @@
 - (NSArray *)timeZones;
 
 - (OGoNavigation *)navigation;
+- (OGoClipboard *)favorites;
 
 /* defaults */
 
@@ -213,14 +214,6 @@
 - (void)removeObserver:(id)observer 
   name:(NSString*)notificationName object:(id)object;
 - (void)removeObserver:(id)observer;
-
-@end
-
-@interface WOSession(Favorites)
-
-- (void)addFavorite:(id)_fav;
-- (void)removeFavorite:(id)_fav;
-- (NSArray *)favorites;
 
 @end
 

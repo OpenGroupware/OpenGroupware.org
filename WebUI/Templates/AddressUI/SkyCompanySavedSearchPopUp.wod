@@ -1,4 +1,4 @@
-// bind to class
+// bind template to class
 
 LoadForm: WOForm {
   name   = "loadform";

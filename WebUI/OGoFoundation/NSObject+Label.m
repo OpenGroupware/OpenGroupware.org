@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,10 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "common.h"
 #include <EOControl/EOKeyGlobalID.h>
+
+@interface NSObject(OGoSessionLabel)
+- (NSString *)labelForObjectInSession:(id)_sn;
+@end
 
 @implementation NSObject(OGoSessionLabel)
 
@@ -114,13 +117,18 @@
 @implementation NSDictionary(OGoSessionLabel)
 
 - (NSString *)labelForObjectInSession:(id)_sn {
+  EOGlobalID *gid;
+  
   if ([self valueForKey:@"articleNr"] != nil)
     return [self valueForKey:@"articleNr"];
   
   if ([self valueForKey:@"name"] != nil)
     return [self valueForKey:@"name"];
+
+  if ((gid = [self valueForKey:@"globalID"]) != nil)
+    return [gid labelForObjectInSession:_sn];
   
-  return @"";
+  return @"[unknown dict]";
 }
 
 @end /* NSDictionary(OGoSessionLabel) */

@@ -1,4 +1,4 @@
-// $Id: SkyBusinessCardGathering.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller class
 
 Frame: LSWSkyrixFrame {}
 
@@ -110,19 +110,19 @@ SearchCompanySubmit: WOSubmitButton {
 }
 
 CompanyResultList: SkyListView {
-  list           = companySearchList;
-  item           = item;
-  selectedItems  = addedCompanies;
-  columns        = 3;
-  useRadioButtons= NO;
-  nilString      = "";
-  attributes     = ( { key = "description"; },
-                     { key = "number"; prefix = " ("; suffix = ")"; },
-                   );
+  list            = companySearchList;
+  item            = item;
+  selectedItems   = addedCompanies;
+  columns         = 3;
+  useRadioButtons = NO;
+  nilString       = "";
+  attributes      = ( { key = "description"; },
+                      { key = "number"; prefix = " ("; suffix = ")"; },
+                    );
 }
 
 CommonTitle: LSWViewerTitle {
-  title     = labels.common_gathering_title;
+  title = labels.common_gathering_title;
   // hh: colors were not set here
 }
 
@@ -165,17 +165,9 @@ CategoryPopUp: WOPopUpButton {
   nilString = "-";
 }
 
-LastCategoryCond: WOConditional {
-  condition = isLastCategory;
-}
-
-MoreThan1CategoryCond: WOConditional {
-  condition = moreThan1Category;
-}
-
-HasMoreCategoriesCond: WOConditional {
-  condition = hasMoreCategories;
-}
+LastCategoryCond:      WOConditional { condition = isLastCategory;    }
+MoreThan1CategoryCond: WOConditional { condition = moreThan1Category; }
+HasMoreCategoriesCond: WOConditional { condition = hasMoreCategories; }
 
 DecreaseButton: WOImageButton {
   filename = "minus.gif";

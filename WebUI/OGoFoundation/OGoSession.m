@@ -20,12 +20,13 @@
 */
 
 #include "OGoSession.h"
+#include "OGoClipboard.h"
+#include "OGoNavigation.h"
 #include "LSWMasterComponent.h"
 #include "LSStringFormatter.h"
 #include "LSWNotifications.h"
 #include "WOComponent+config.h"
 #include "NSObject+LSWPasteboard.h"
-#include "OGoNavigation.h"
 #include "LSWMimeContent.h"
 #include "common.h"
 #include <LSFoundation/OGoContextSession.h>
@@ -282,7 +283,6 @@ static NSString *OGoDateTimeTZFormat     = nil;
       NSCreateMapTable(NSObjectMapKeyCallBacks,
                        NSObjectMapValueCallBacks,
                        120);
-    self->favorites = [[NSMutableArray alloc] initWithCapacity:10];
   }
   return self;
 }
@@ -884,6 +884,13 @@ static NSString *OGoDateTimeTZFormat     = nil;
   NSAssert(self->navigation, @"no navigation object is set !");
   return self->navigation;
 }
+- (OGoClipboard *)favorites {
+  if (self->favorites == nil) {
+    self->favorites =
+      [[OGoClipboard alloc] initWithUserDefaults:[self userDefaults]];
+  }
+  return self->favorites;
+}
 
 /* defaults */
 
@@ -1237,87 +1244,28 @@ static NSString *OGoDateTimeTZFormat     = nil;
 @implementation OGoSession(Favorites)
 
 - (void)addFavorite:(id)_fav {
-  int i, count;
-  id  favGid;
-
-  favGid = ([_fav respondsToSelector:@selector(globalID)])
-         ? [_fav globalID]
-         : nil;
-  
-  [[_fav retain] autorelease];
-#if 0
-  NSLog(@"favorite gid is %@, fav %@", favGid, _fav);
-#endif
-
-  for (i = 0, count = [self->favorites count]; i < count; i++) {
-    id efav;
-
-    efav = [self->favorites objectAtIndex:i];
-    
-    if (efav == _fav) {
-      /* already contains the object */
-      return;
-    }
-    else if (favGid) {
-      if ([favGid isEqual:[efav valueForKey:@"globalID"]]) {
-        /* already contains an object with the same gid */
-        [self debugWithFormat:@"favorite %@ is already clipped !", favGid];
-        return;
-      }
-    }
-  }
-  
-  if (count >=
-      [[[self userDefaults] objectForKey:@"SkyMaxFavoritesCount"] intValue])
-    [self->favorites removeLastObject];
-  
-  [self->favorites insertObject:_fav atIndex:0];
+  // DEPRECATED
+  [[self favorites] addObject:_fav];
 }
-
 - (void)removeFavorite:(id)_fav {
-  NSMutableArray *newFavs;
-  int            i, count;
-  id             favGid;
-
-  count   = [self->favorites count];
-  favGid  = ([_fav valueForKey:@"globalID"]);
-  newFavs = [[NSMutableArray alloc] initWithCapacity:count];
-  
-  for (i = 0; i < count; i++) {
-    id efav;
-
-    efav = [self->favorites objectAtIndex:i];
-    
-    if (efav == _fav) continue;
-    if ([favGid isNotNull] && 
-	[favGid isEqual:[efav valueForKey:@"globalID"]])
-      continue;
-
-    [newFavs addObject:efav];
-  }
-  ASSIGN(self->favorites, newFavs);
-  [newFavs release];
+  // DEPRECATED
+  [[self favorites] removeObject:_fav];
 }
-
-- (NSArray *)favorites {
-  return self->favorites;
-}
-
 - (BOOL)containsFavorites {
-  return ([self->favorites count] > 0) ? YES : NO;
+  // DEPRECATED
+  return [self->favorites containsObjects];
 }
 
+- (void)setChoosenFavorite:(id)_fav { // TODO: what does that do?
+  ASSIGN(self->choosenFavorite, _fav);
+}
 - (id)choosenFavorite {
   return self->choosenFavorite;
-}
-- (void)setChoosenFavorite:(id)_fav {
-  ASSIGN(self->choosenFavorite, _fav);
 }
 
 - (NSString *)labelForChoosenFavorite {
   return [self labelForObject:self->choosenFavorite];
 }
-
 
 @end /* OGoSession(Favorites) */
 

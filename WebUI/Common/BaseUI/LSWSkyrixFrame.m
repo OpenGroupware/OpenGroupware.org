@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: LSWSkyrixFrame.m 1 2004-08-20 11:17:52Z znek $
 
 #include <OGoFoundation/OGoComponent.h>
 
@@ -44,6 +43,7 @@
 
 #include <WEExtensions/WEClientCapabilities.h>
 #include <OGoFoundation/LSWEditorPage.h>
+#include <OGoFoundation/OGoClipboard.h>
 #include "common.h"
 
 #define LSWSkyrixFrame_CtxKey @"__LSWSkyrixFrame"
@@ -350,7 +350,7 @@ static BOOL debugPageRefresh = NO;
   if (object == nil)
     return nil;
   
-  [[self session] addFavorite:object];
+  [[[self session] favorites] addObject:object];
   return nil;
 }
 

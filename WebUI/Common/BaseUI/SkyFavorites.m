@@ -38,6 +38,7 @@
 
 #include <OGoFoundation/OGoSession.h>
 #include <OGoFoundation/OGoNavigation.h>
+#include <OGoFoundation/OGoClipboard.h>
 #include <OGoFoundation/WOComponent+Commands.h>
 #include <NGObjWeb/NGObjWeb.h>
 #import <EOControl/EOControl.h>
@@ -45,6 +46,7 @@
 
 @interface NSObject(gid)
 - (EOGlobalID *)globalID;
+- (NSString *)favoriteDragType;
 @end
 
 @implementation SkyFavorites
@@ -83,9 +85,10 @@
 
 - (int)maxDockLabelWidth {
   if (self->maxDockWidth == 0) {
-    self->maxDockWidth = 
-      [[[[self session] userDefaults] objectForKey:@"OGoDockLabelWidth"]
-        intValue];
+    NSUserDefaults *ud;
+    
+    ud = [[self session] userDefaults];
+    self->maxDockWidth = [[ud objectForKey:@"OGoDockLabelWidth"] intValue];
     if (self->maxDockWidth < 8) self->maxDockWidth = 16;
   }
   return self->maxDockWidth;
@@ -96,36 +99,31 @@
   int max;
   
   s = [(OGoSession *)[self session] labelForObject:[self favorite]];
+  if ([s length] == 0)
+    return @"[ERROR: got no label for favorite from session]";
+  
   max = [self maxDockLabelWidth];
   if ([s length] > max) {
     s = [s substringToIndex:(max - 3)];
     s = [s stringByAppendingString:@"..."];
   }
+  if ([s length] == 0)
+    s = @"[ERROR: could not determine label of favorite]";
   return s;
 }
 
 - (NSString *)favoriteDragType {
-  id obj = [self favorite];
+  id obj;
   NSString *dragType;
   
-  dragType = @"unknown";
+  obj = [self favorite];
+  dragType = ([obj isKindOfClass:NSClassFromString(@"NGImap4Message")])
+    ? @"mail" // TODO: fix me
+    : (id)[obj favoriteDragType];
   
-  if ([obj isKindOfClass:[EOGenericRecord class]])
-    dragType = [[obj entity] name];
-  else if ([obj isKindOfClass:[EOKeyGlobalID class]])
-    dragType = [obj entityName];
-  else if ([obj isKindOfClass:NSClassFromString(@"NGImap4Message")])
-    dragType = @"mail";
-  else if ([obj respondsToSelector:@selector(globalID)])
-    dragType = [[obj globalID] entityName];
-  else if ((obj = [obj valueForKey:@"globalID"]))
-    dragType = [obj entityName];
-
-  dragType = [dragType lowercaseString];
-
   if ([dragType isEqualToString:@"date"])
     dragType = @"appointment";
-
+  
   return dragType;
 }
 
@@ -152,12 +150,12 @@
     gid = [obj valueForKey:@"globalID"];
 
   // test, whether the favorite is an valid object???
-  if (gid) {
+  if (gid != nil) {
     NSArray *objs;
     
     objs = [self runCommand:@"object::get-by-globalid", @"gid", gid, nil];
     if ([objs count] == 0) {
-      [[self session] removeFavorite:obj];
+      [[[self session] favorites] removeObject:obj];
       [[[self context] page] takeValue:@"Object is invalid!"
                              forKey:@"errorString"];
       return nil;
@@ -170,3 +168,35 @@
 }
 
 @end /* SkyFavorites */
+
+@implementation NSObject(DragTypes)
+
+- (NSString *)favoriteDragType {
+  EOGlobalID *gid;
+  
+  if ([self respondsToSelector:@selector(globalID)])
+    return [[self globalID] favoriteDragType];
+  
+  if ((gid = [self valueForKey:@"globalID"]) != nil)
+    return [gid favoriteDragType];
+  
+  return @"unknown";
+}
+
+@end /* NSObject(DragTypes) */
+
+@implementation EOGenericRecord(DragTypes)
+
+- (NSString *)favoriteDragType {
+  return [[[self entity] name] lowercaseString];
+}
+
+@end /* EOGenericRecord(DragTypes) */
+
+@implementation EOKeyGlobalID(DragTypes)
+
+- (NSString *)favoriteDragType {
+  return [[self entityName] lowercaseString];
+}
+
+@end /* EOKeyGlobalID(DragTypes) */
