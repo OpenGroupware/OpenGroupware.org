@@ -6,4 +6,11 @@
 # stuff.
 #
 
+ADDITIONAL_BUNDLE_LIBS += \
+	-lOGoFoundation	\
+	-lOGoDocuments	\
+	-lLSFoundation	\
+	-lGDLAccess	\
+	-lNGLdap	\
+
 ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib
