@@ -1,3 +1,7 @@
+2004-12-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* German.lproj/OGoProjectZip.strings: added missing semicolons
+
 2004-12-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* German.lproj/AdminUI.strings: added missing semicolons
