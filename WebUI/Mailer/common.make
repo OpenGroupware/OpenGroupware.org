@@ -33,4 +33,4 @@ ADDITIONAL_BUNDLE_LIBS += $(BUNDLE_LIBS)
 
 ADDITIONAL_CPPFLAGS += -Wall
 
-ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

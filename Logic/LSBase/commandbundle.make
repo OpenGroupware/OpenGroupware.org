@@ -26,10 +26,7 @@ endif
 
 # set compile flags and go
 
-ADDITIONAL_INCLUDE_DIRS += \
-	-I../.. -I.. \
-	-I/usr/local/sybase/include \
-	-I/usr/local/include
+ADDITIONAL_INCLUDE_DIRS += -I../.. -I.. -I/usr/local/include
 
 # System files
 

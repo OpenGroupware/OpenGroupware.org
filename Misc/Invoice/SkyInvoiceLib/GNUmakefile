@@ -31,7 +31,7 @@ SkyInvoiceDS_BUNDLE_LIBS += -lSkyInvoice
 
 ADDITIONAL_CPP_FLAGS    += -Wall
 ADDITIONAL_INCLUDE_DIRS += -I..
-ADDITIONAL_LIB_DIRS     += -L/usr/local/lib
+SYSTEM_LIB_DIR          += -L/usr/local/lib
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make

@@ -85,7 +85,7 @@ clean ::
 
 SkyInvoice_INCLUDE_DIRS += -IHeaders -I../SkyInvoiceLib
 
-ADDITIONAL_LIB_DIRS += -L/usr/local/lib
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make

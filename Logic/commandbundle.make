@@ -39,9 +39,9 @@ $(COMMAND_BUNDLE)_LIB_DIRS += -L../LSFoundation/$(GNUSTEP_OBJ_DIR)
 # set compile flags and go
 
 ADDITIONAL_INCLUDE_DIRS += \
-	-I../.. -I.. -I../LSFoundation \
-	-I/usr/local/sybase/include \
-	-I/usr/local/include
+	-I../.. -I.. -I../LSFoundation
+
+SYSTEM_LIB_DIR += -I/usr/local/include
 
 ADDITIONAL_CPPFLAGS += -Wall
 
@@ -86,4 +86,4 @@ after-install :: move-to-fhs
 
 endif
 
-ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

@@ -22,4 +22,4 @@ ADDITIONAL_LIB_DIRS += \
 	-L../LSSearch/$(GNUSTEP_OBJ_DIR) -L./$(GNUSTEP_OBJ_DIR)
 
 # The BSD's definitely need this
-ADDITIONAL_LIB_DIRS += -L/usr/local/lib
+SYSTEM_LIB_DIR += -L/usr/local/lib

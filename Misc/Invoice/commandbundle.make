@@ -14,16 +14,14 @@ $(COMMAND_BUNDLE)_BUNDLE_LIBS += \
 	-lGDLAccess	\
 	-lNGStreams -lNGExtensions -lEOControl
 
-$(COMMAND_BUNDLE)_LIB_DIRS += \
-	-L../LSFoundation/$(GNUSTEP_OBJ_DIR)	\
-	-L/usr/local/lib	\
-	-L/usr/lib
+$(COMMAND_BUNDLE)_LIB_DIRS += -L../LSFoundation/$(GNUSTEP_OBJ_DIR)
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
 
 # set compile flags and go
 
 ADDITIONAL_INCLUDE_DIRS += \
 	-I../.. -I.. -I../LSFoundation \
-	-I/usr/local/sybase/include \
 	-I/usr/local/include
 
 ADDITIONAL_CPPFLAGS += -Wall

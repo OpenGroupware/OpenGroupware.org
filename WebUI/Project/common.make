@@ -46,4 +46,4 @@ BUNDLE_LIBS += -lFoundationExt
 ADDITIONAL_LDFLAGS += -framework Foundation
 endif
 
-ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
