@@ -1,7 +1,6 @@
 #!/usr/bin/perl -w
 # 2004-12-30 <frank@opengroupware.org>
 # removes outdated trunk/ packages
-# but keeps at least $keep_revisions package sets foreach @group available
 
 use strict;
 
@@ -39,8 +38,8 @@ my @groups = qw( epoz
   sope45
 );
 
-print "Not enough revisions to keep...\nYou asked me to keep $keep_revisions \$keep_revisions but I think this will most likely trash the repo.\n" and exit 1 if($keep_revisions <= 0);
-#write output into file which can then be executed on the commandline after review... for now (bc of testing.)
+print "Not enough revisions to keep...\nYou asked me to keep $keep_revisions \$keep_revisions and I think this will most likely trash the repo.\n" and exit 1 if($keep_revisions <= 1);
+#write output into file which can then be executed on the commandline after rewview... for now (bc of testing.)
 open(OUT, ">rm_candidates.out");
 foreach $current_distri(@distris) {
   print "checking in $current_distri\n";
