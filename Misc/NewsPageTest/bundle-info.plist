@@ -20,7 +20,7 @@
       { 
         name      = "MyNews";
         component = "MyNewsPage";
-        labelKey  = "MyNews";
+        labelKey  = "dilbert";
       }
     );
     
