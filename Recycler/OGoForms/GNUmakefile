@@ -1,6 +1,8 @@
-# $Id$
+# GNUstep makefile
 
-include ../common.make
+-include ../../config.make
+include $(GNUSTEP_MAKEFILES)/common.make
+-include ../../Version
 include ./Version
 
 LIBRARY_NAME = libOGoForms

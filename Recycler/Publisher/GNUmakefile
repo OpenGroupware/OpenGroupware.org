@@ -1,6 +1,9 @@
-# $Id$
+# GNUstep makefile
 
+-include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
+-include ../../Version
+-include ./Version
 
 WOBUNDLE_NAME        = Publisher
 WOBUNDLE_EXTENSION   = .lso

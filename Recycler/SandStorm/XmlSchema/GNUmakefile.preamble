@@ -1,4 +1,4 @@
-# $Id$
+# compilation settings
 
 ADDITIONAL_INCLUDE_DIRS += -I.. -I../..
 
@@ -10,3 +10,5 @@ libXmlSchema_LIBRARIES_DEPEND_UPON += -lSaxObjC
 createSchemaClasses_TOOL_LIBS += -lXmlSchema -lSaxObjC
 
 xschema_TOOL_LIBS += -lSaxObjC -lXmlSchema
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

@@ -1,4 +1,4 @@
-# $Id$
+# compilation settings
 
 # libs
 
@@ -32,3 +32,5 @@ endif
 # cflags
 
 ADDITIONAL_CPPFLAGS += -Wno-protocol -Wall
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

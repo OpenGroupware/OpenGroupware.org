@@ -1,4 +1,4 @@
-# $Id$
+# compilation settings
 
 libOGoDaemon_INCLUDE_DIRS += -I. -I.. -I../LSFoundation
 
@@ -20,3 +20,5 @@ ADDITIONAL_LIB_DIRS += \
 	-L../OGoIDL/$(GNUSTEP_OBJ_DIR)		\
 	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)	\
 	-L../../Logic/SkyAccounts/$(GNUSTEP_OBJ_DIR)
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

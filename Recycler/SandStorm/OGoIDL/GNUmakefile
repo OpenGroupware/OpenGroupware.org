@@ -62,6 +62,8 @@ ADDITIONAL_TOOL_LIBS := -lSaxObjC -lSkyIDL
 
 ADDITIONAL_INCLUDE_DIRS += -I.. -I../..
 
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+
 include $(GNUSTEP_MAKEFILES)/library.make
 
 ifeq ($(tests),yes)

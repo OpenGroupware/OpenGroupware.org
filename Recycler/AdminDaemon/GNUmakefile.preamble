@@ -1,4 +1,4 @@
-# $Id$
+# compilation settings
 
 adminxmlrpcd_TOOL_LIBS += 			\
 	-lOGoContacts				\
@@ -26,3 +26,5 @@ ifeq ($(FOUNDATION_LIB),nx)
 ADDITIONAL_TOOL_LIBS += -lFoundationExt
 ADDITIONAL_LDFLAGS += -framework Foundation
 endif
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

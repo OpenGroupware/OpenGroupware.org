@@ -29,3 +29,5 @@ endif
 ADDITIONAL_CPPFLAGS  += $(FND_DEFINE) $(RUNTIME_DEFINE) -DGC_DEBUG -pipe
 ADDITIONAL_OBJCFLAGS += -Wno-protocol -Wno-import -Wall -O
 ADDITIONAL_CFLAGS    += -Wall -O
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
