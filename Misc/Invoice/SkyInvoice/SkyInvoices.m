@@ -62,7 +62,7 @@
 - (void)_resetSelected;
 @end
 
-#include <SkyInvoice/SkyInvoiceDocument.h>
+#include "SkyInvoiceDocument.h"
 
 @implementation SkyInvoices
 

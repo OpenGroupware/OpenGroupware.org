@@ -33,7 +33,7 @@
 #include <LSFoundation/LSCommandKeys.h>
 #import <Foundation/Foundation.h>
 #import <EOControl/EOControl.h>
-#import <EOAccess/EOAccess.h>
+#import <GDLAccess/GDLAccess.h>
 
 @implementation LSGetInvoicesForGlobalIDs
 

@@ -36,8 +36,7 @@
 #import <NGExtensions/NGExtensions.h>
 #import <NGStreams/NGStreams.h>
 
-#import <EOAccess/EOAccess.h>
-#import <GDLExtensions/GDLExtensions.h>
+#import <GDLAccess/GDLAccess.h>
 
 #include <LSFoundation/LSFoundation.h>
 

@@ -9,20 +9,15 @@ BUNDLE_INSTALL_DIR = $(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org
 $(COMMAND_BUNDLE)_RESOURCE_FILES  += commands.plist
 $(COMMAND_BUNDLE)_PRINCIPAL_CLASS = $(COMMAND_BUNDLE)Commands
 
-ifeq ($(GNUSTEP_TARGET_OS),mingw32)
 $(COMMAND_BUNDLE)_BUNDLE_LIBS += \
 	-lLSFoundation	\
-	-lGDLAccess -lGDLExtensions	\
-	-lNGStreams -lNGExtensions -lEOControl \
-	-lFoundation -lobjc
-else
-$(COMMAND_BUNDLE)_BUNDLE_LIBS += \
-	-lLSFoundation	\
-	-lGDLAccess -lGDLExtensions	\
+	-lGDLAccess	\
 	-lNGStreams -lNGExtensions -lEOControl
-endif
 
-$(COMMAND_BUNDLE)_LIB_DIRS += -L../LSFoundation/$(GNUSTEP_OBJ_DIR)
+$(COMMAND_BUNDLE)_LIB_DIRS += \
+	-L../LSFoundation/$(GNUSTEP_OBJ_DIR)	\
+	-L/usr/local/lib	\
+	-L/usr/lib
 
 # set compile flags and go
 

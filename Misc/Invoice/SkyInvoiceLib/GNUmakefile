@@ -22,8 +22,8 @@ libSkyInvoice_HEADER_FILES_DIR		= .
 libSkyInvoice_HEADER_FILES_INSTALL_DIR	= /SkyInvoice
 
 libSkyInvoice_LIBRARIES_DEPEND_UPON += \
-	-lNGExtensions		\
 	-lOGoDocuments		\
+	-lNGExtensions
 
 SkyInvoiceDS_OBJC_FILES = dummy.m
 SkyInvoiceDS_LIB_DIRS    += -L./$(GNUSTEP_OBJ_DIR)
@@ -31,6 +31,7 @@ SkyInvoiceDS_BUNDLE_LIBS += -lSkyInvoice
 
 ADDITIONAL_CPP_FLAGS    += -Wall
 ADDITIONAL_INCLUDE_DIRS += -I..
+ADDITIONAL_LIB_DIRS     += -L/usr/local/lib
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make

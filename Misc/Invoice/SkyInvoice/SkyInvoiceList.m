@@ -26,8 +26,8 @@
 #include "SkyCurrencyFormatter.h"
 
 #include <EOControl/EOArrayDataSource.h>
-#include <SkyInvoice/SkyInvoiceDataSource.h>
-#include <SkyInvoice/SkyInvoiceDocument.h>
+#include "SkyInvoiceDataSource.h"
+#include "SkyInvoiceDocument.h"
 #include <NGExtensions/EOCacheDataSource.h>
 #include <EOControl/EOKeyGlobalID.h>
 

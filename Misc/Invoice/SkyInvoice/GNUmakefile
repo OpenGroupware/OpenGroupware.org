@@ -83,7 +83,9 @@ before-all :: $(SkyInvoice_DERIVED_RESOURCES)
 clean :: 
 	rm -f $(SkyInvoice_DERIVED_RESOURCES)
 
-SkyInvoice_INCLUDE_DIRS += -IHeaders
+SkyInvoice_INCLUDE_DIRS += -IHeaders -I../SkyInvoiceLib
+
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
