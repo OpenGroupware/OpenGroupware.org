@@ -31,7 +31,7 @@
 # ./purveyor_of_rpms.pl -p opengroupware -t release -v yes -u yes -d yes -c <see below> -c spec_tmp/<see below>
 
 use strict;
-die "WARNING: not yet configured!\n";
+#die "WARNING: not yet configured!\n";
 my $host_i_runon = "fedora-core3";
 #my $host_i_runon = "fedora-core2";
 #my $host_i_runon = "suse92";
@@ -86,14 +86,17 @@ foreach $orel (@ogo_releases) {
     $i_really_had_sth_todo = "yes";
     print "Retrieving: http://$dl_host/sources/releases/$orel\n";
     system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$orel http://$dl_host/sources/releases/$orel");
-    #since we build the OGo release using a specific SOPE release... we must clean
-    #cleanup prior OGo *and* SOPE builds
+    #since we build the OGo release using a specific SOPE release... we must
+    #cleanup everything prior the actual wanted OGo *and* SOPE builds
+    #I don't use apt-get here bc not every RPM based distri provides a package (apt-get).
     print "cleaning up previous SOPE build...\n";
     system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
     print "cleaning up previous OGo build...\n";
     system("sudo rpm -e `rpm -qa|grep -i ^ogo-|grep -vi gnustep` --nodeps");
     print "extracting specfile from $orel into $ENV{HOME}/spec_tmp/\n";
     system("mkdir $ENV{HOME}/spec_tmp/") unless (-e "$ENV{HOME}/spec_tmp/");
+    #extract the specfile coming with the release tarball into a temporary location and keep it there
+    #in order to build using exactly this specfile...
     system("tar xfzO $ENV{HOME}/rpm/SOURCES/$orel opengroupware.org/maintenance/opengroupware.spec >$ENV{HOME}/spec_tmp/$buildtarget.spec");
     open(SOPEHINTS, "$ENV{HOME}/spec_tmp/$buildtarget.spec");
     @ogo_spec = <SOPEHINTS>;
@@ -103,6 +106,7 @@ foreach $orel (@ogo_releases) {
       $sope_src = $line if ($line =~ s/^#UseSOPEsrc:\s+//g);
       $sope_spec = $line if ($line =~ s/^#UseSOPEspec:\s+//g);
     }
+    #we should've already build this SOPE release at least once in an earlier run
     print "preparing SOPE...\n";
     print "calling `purveyor_of_rpms.pl -p sope -v yes -t release -u no -d no -f yes -b no -c $sope_src -s spec_tmp/$sope_spec`\n";
     system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -t release -u no -d no -f yes -b no -c $sope_src -s spec_tmp/$sope_spec");
@@ -112,7 +116,11 @@ foreach $orel (@ogo_releases) {
     print KNOWN_OGo_RELEASES "$orel\n";
     print "recreating apt-repository for: $host_i_runon >>> $buildtarget\n";
     open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
-    #these differ... 
+    #these differ...
+    #TODO: we're not done yet... rpmbuild ogo-environment (and some other packages) and upload
+    #      them into the same(?) directory
+    #      requires new switch in purveyor_of_rpms.pl in order to upload packages into a given
+    #      directory (which should be \$apttarget)
     $apttarget = $buildtarget;
     $apttarget =~ s/^opengroupware\.org/opengroupware/g;
     print "thus calling: /home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $apttarget\n";
