@@ -13,7 +13,8 @@ OGoSoProject_OBJC_FILES = \
 	\
 	OGoSoIdObject.m		\
 	OGoSoProjects.m		\
-	OGoSoProject.m
+	OGoSoProject.m		\
+	OGoSoDocFolder.m	\
 
 OGoSoProject_RESOURCE_FILES += \
 	Defaults.plist	\

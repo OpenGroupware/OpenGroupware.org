@@ -19,33 +19,33 @@
   02111-1307, USA.
 */
 
-#ifndef __OGoSoProject_OGoSoIdObject_H__
-#define __OGoSoProject_OGoSoIdObject_H__
+#ifndef __OGoSoProject_OGoSoDocFolder_H__
+#define __OGoSoProject_OGoSoDocFolder_H__
 
 #import <Foundation/NSObject.h>
 
 /*
-  OGoSoIdProject
+  OGoSoDocFolder
   
-  Represents an OGo project object.
+  Represents a document folder inside a project.
 */
 
 @class NSString;
-@class EOGlobalID;
 
-@interface OGoSoIdObject : NSObject
+@interface OGoSoDocFolder : NSObject
 {
   NSString *name;
+  id       container;
+  id       fileManager;
+  NSString *projectPath;
 }
 
 - (id)initWithName:(NSString *)_key inContainer:(id)_folder;
 
 /* accessors */
 
-- (NSString *)nameInContainer;
-- (NSString *)entityName;
-- (EOGlobalID *)globalID;
+- (NSString *)storagePath;
 
 @end
 
-#endif /* __OGoSoProject_OGoSoIdObject_H__ */
+#endif /* __OGoSoProject_OGoSoDocFolder_H__ */

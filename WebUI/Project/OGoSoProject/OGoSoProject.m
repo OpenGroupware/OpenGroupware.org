@@ -30,6 +30,15 @@
   return @"Project";
 }
 
+- (EOGlobalID *)projectGlobalIDInContext:(id)_ctx {
+  return [self globalID];
+}
+
+- (id)fileManagerInContext:(id)_ctx {
+  [self logWithFormat:@"TODO: return filemanager for project!"];
+  return nil;
+}
+
 /* name lookup */
 
 - (id)lookupName:(NSString *)_name inContext:(id)_ctx acquire:(BOOL)_ac {

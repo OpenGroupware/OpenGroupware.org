@@ -14,9 +14,10 @@
   
   provides = {
     classes = (
-      { name = OGoSoProjectModule;  },
-      { name = OGoSoProjects; },
-      { name = OGoSoProject;  },
+      { name = OGoSoProjectModule; },
+      { name = OGoSoProjects;      },
+      { name = OGoSoProject;       },
+      { name = OGoSoDocFolder;     },
     );
     
     WOComponents = (

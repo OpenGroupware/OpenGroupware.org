@@ -42,6 +42,17 @@
         };
       };
     };
+    
+    OGoSoDocFolder = {
+      superclass    = "NSObject";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+      defaultRoles  = {
+        "View" = "Authenticated";
+      };
+      methods = { /* mapping to a page does not work with SOPE 4.4 */
+      };
+    };
   };
 
   categories = {
