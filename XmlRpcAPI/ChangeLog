@@ -1,5 +1,13 @@
 2004-12-30  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v5.1.53
+	
+	* Documentation/README.appointment: fixed doc for SetParticipants
+	  (requires an array of URLs, not an array of part documents)
+	
+	* Actions.subproj/DirectAction+Appointment.m: improved error handling
+	  for invalid participant parameters
+
 	* v5.1.52
 
 	* Actions.subproj/DirectAction.m: code cleanups, improved handling of

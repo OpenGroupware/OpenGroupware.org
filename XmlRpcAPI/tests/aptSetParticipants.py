@@ -28,20 +28,33 @@ except TypeError, e:
     sys.exit(1)
 print "Server:", server
 
+# ********** printing
+
+def printApt(apt):
+    print "Appointment: %(title)s (%(id)s)" % apt
+    print "  owner: %(login)s" % apt['owner']
+    for part in apt['participants']:
+        print "  participant: %(login)s" % part
+
+# ********** fetching
+
+def fetchApt(ID):
+    try:
+        apt = server.appointment.getById(ID)
+    except Exception, e:
+        print "Catched:", e, "\n"
+        apt = None
+    if apt is None:
+        print "found no appointment with ID:", ID
+        sys.exit(2)
+    return apt
+
 # ********** run
 
 print "======================================================================"
 print "fetching appointment ..."
-try:
-    apt = server.appointment.getById(APTID)
-except Exception, e:
-    print "Catched:", e, "\n"
-    apt = None
-if apt is None:
-    print "found no appointment with ID:", APTID
-    sys.exit(2)
-print "  got: %s" % ( apt, )
-print "t", type(apt)
+apt = fetchApt(APTID)
+printApt(apt)
 
 print "======================================================================"
 print "fetching person ..."
@@ -50,12 +63,14 @@ p = server.person.fetch( { 'qualifier': q } )
 if len(p) == 0:
     print "found no account with login: '%s'" % ( OTHERLOGIN, )
     sys.exit(3)
-print "  got: %(login)s (%(id)s)" % ( p, p, )
+p = p[0]
+print "  got: %(login)s (%(id)s)" % p
 
 print "======================================================================"
 print "setting participant ..."
-server.appointment.setParticipants( {'id': APTID }, [p,])
+server.appointment.setParticipants( {'id': APTID }, [p['id'], ])
 
 print "======================================================================"
 print "refetching appointment ..."
-print server.appointment.getById(APTID)
+apt = fetchApt(APTID)
+printApt(apt)

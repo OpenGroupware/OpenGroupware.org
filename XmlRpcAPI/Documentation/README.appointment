@@ -7,7 +7,7 @@ Package appointment
 
   Method appointment.setParticipants(arg1, arg2)
     Parameters: arg1: AppointmentDocument
-                arg2: Array of Person- or TeamDocuments
+                arg2: Array of Person- or Team IDs or URLs (not documents!)
         Result: AppointmentDocument
 
   Method appointment.getById(_url,_attrs)

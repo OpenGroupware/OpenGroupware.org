@@ -389,7 +389,7 @@
   return [NSNumber numberWithBool:YES];
 }
 
-- (id)appointment_setParticipantsAction:(id)_app :(id)_parts {
+- (id)appointment_setParticipantsAction:(id)_app:(id)_parts {
   SkyAppointmentDocument *app;
   NSArray                *gids;
   NSMutableArray         *parts;
@@ -401,12 +401,17 @@
     return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_RESULT
                  reason:@"No appointment for argument found"];
   }
-
-  gids  = [[[self commandContext] documentManager] globalIDsForURLs:_parts];
-
+  
+  gids = [[[self commandContext] documentManager] globalIDsForURLs:_parts];
   if ([gids count] == 0) {
     return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
-                 reason:@"Invalid participants supplied"];
+                 reason:@"No participants supplied"];
+  }
+  if ([gids containsObject:[NSNull null]]) {
+    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+                 reason:
+		   @"Invalid participant IDs supplied or participant "
+		   @"parameter is not a valid URL/ID"];
   }
   
   cnt   = [gids count];
@@ -415,7 +420,7 @@
   for (i = 0; i < cnt; i++) {
     NSDictionary *part;
     NSString     *cid;
-
+    
     cid  = [[[gids objectAtIndex:i] keyValuesArray] lastObject];
     if (![cid isNotNull]) continue;
     
