@@ -1,4 +1,4 @@
-// $Id: SkyEnterpriseViewer.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
@@ -16,51 +16,44 @@ TabBody: SkyTabView {
   selection = tabKey;
 }
 
-PersonsTab: SkyTabItem {
-  key       = "persons";
-  icon      = "persons";
-  label     = labels.enterpriseviewer_tab_persons;
+PersonsTab: SkySimpleTabItem {
+  key   = "persons";
+  icon  = "persons";
+  label = labels.enterpriseviewer_tab_persons;
 }
-DocumentsTab: SkyTabItem {
-  key       = "documents";
-  icon      = "documents";
-  label     = labels.enterpriseviewer_tab_documents;
-  action    = viewDocuments;
+DocumentsTab: SkySimpleTabItem {
+  key    = "documents";
+  label  = labels.enterpriseviewer_tab_documents;
+  action = viewDocuments;
 }
-ProjectsTab: SkyTabItem {
-  key       = "projects";
-  icon      = "projects";
-  label     = labels.enterpriseviewer_tab_projects;
+ProjectsTab: SkySimpleTabItem {
+  key   = "projects";
+  label = labels.enterpriseviewer_tab_projects;
 }
-OverviewTab: SkyTabItem {
-  key       = "overview";
-  icon      = "overview";
-  label     = labels.enterpriseviewer_tab_overview;
-  action    = viewOverview;
-  isScript  = YES;
+OverviewTab: SkySimpleTabItem {
+  key      = "overview";
+  label    = labels.enterpriseviewer_tab_overview;
+  action   = viewOverview;
+  isScript = YES;
 }
-AddressTab: SkyTabItem {
-  key       = "address";
-  icon      = "address";
-  label     = labels.enterpriseviewer_tab_address;
-  isScript  = YES;
+AddressTab: SkySimpleTabItem {
+  key      = "address";
+  label    = labels.enterpriseviewer_tab_address;
+  isScript = YES;
 }
-AttributesTab: SkyTabItem {
-  key       = "attributes";
-  icon      = "attributes";
-  label     = labels.enterpriseviewer_tab_attributes;
-  isScript  = YES;
+AttributesTab: SkySimpleTabItem {
+  key      = "attributes";
+  label    = labels.enterpriseviewer_tab_attributes;
+  isScript = YES;
 }
-LogTab: SkyTabItem {
-  key       = "log";
-  label     = labels.enterpriseviewer_tab_log;
-  icon      = "log";
+LogTab: SkySimpleTabItem {
+  key   = "log";
+  label = labels.enterpriseviewer_tab_log;
 }
 
-LinkTab: SkyTabItem {
-  key       = "links";
-  label     = labels.enterpriseviewer_tab_links;
-  icon      = "links";
+LinkTab: SkySimpleTabItem {
+  key   = "links";
+  label = labels.enterpriseviewer_tab_links;
 }
 
 // content
@@ -83,14 +76,8 @@ ProjectList: SkyEnterpriseProjectList {
   isEditEnabled = isEditEnabled;
 }
 
-LogList: SkyObjectLogList {
-  object = enterprise;
-}
-
-RelatedLinks: OGoObjectLinkList {
-  object = enterprise;
-}
-
+LogList:      SkyObjectLogList  { object = enterprise; }
+RelatedLinks: OGoObjectLinkList { object = enterprise; }
 
 PersonButtons: SkyButtonRow {
   ordering  = ( assign );
@@ -194,13 +181,9 @@ FormLetterLink: WOHyperlink {
   action = downloadFormLetter;
   STYLE  = "text-decoration:none";
 }
-FormLetterName: WOString {
-  value = labels.FormLetterLink;
-}
 
-DownloadLabel: WOString {
-  value = labels.download;
-}
+FormLetterName: WOString { value = labels.FormLetterLink; }
+DownloadLabel:  WOString { value = labels.download;       }
 
 VCardLink: WOHyperlink {
   target   = formLetterTarget;
@@ -238,31 +221,14 @@ AccessButtons: SkyButtonRow {
   hasEdit  = isEditEnabled;
 }
 
-IsEditAllowed: WOConditional {
-  condition = isEditEnabled;
-}
-
-IsEditAllowedElse: WOConditional {
-  condition = isEditEnabled;
-  negate    = YES;
-}
+IsEditAllowed:     WOConditional { condition = isEditEnabled; }
+IsEditAllowedElse: WOConditional { condition = isEditEnabled; negate = YES; }
 
 DocumentTitle: WOString {
   value = indexDocTitle;
 }
 
-IsProjectEnabled: WOConditional {
-  condition = isProjectEnabled;
-}
-
-IsLogTabEnabled: WOConditional {
-  condition = isLogTabEnabled;
-}
-
-IsAccessRightEnabled: WOConditional {
-  condition = isAccessRightEnabled;
-}
-
-IsLinkTabEnabled: WOConditional {
-  condition = isLinkTabEnabled;
-}
+IsProjectEnabled:     WOConditional { condition = isProjectEnabled;     }
+IsLogTabEnabled:      WOConditional { condition = isLogTabEnabled;      }
+IsAccessRightEnabled: WOConditional { condition = isAccessRightEnabled; }
+IsLinkTabEnabled:     WOConditional { condition = isLinkTabEnabled;     }

@@ -11,21 +11,19 @@ TabView: SkyTabView {
   selection = tabKey;
 }
 
-NewsTab: SkyTabItem {
+NewsTab: SkySimpleTabItem {
   key    = "news";
   action = tabClicked;
   label  = labels.news;
-  icon   = "news";
   // enable after 1.0 branch (requires SOPE 4.5)
   // actionClass      = "SkyNews";
   // directActionName = "showNewsTab";
 }
 
-EditorsTab: SkyTabItem {
+EditorsTab: SkySimpleTabItem {
   key    = "editors";
   action = tabClicked;
   label  = labels.news_editors;
-  icon   = "news_editors";
   // enable after 1.0 branch (requires SOPE 4.5)
   // actionClass      = "SkyNews";
   // directActionName = "showNewsEditorTab";

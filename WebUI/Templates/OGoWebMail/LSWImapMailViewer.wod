@@ -1,4 +1,4 @@
-// $Id: LSWImapMailViewer.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
@@ -18,14 +18,13 @@ TabView: SkyTabView {
   selection = tabKey;
 }
 
-MailTab: SkyTabItem {
+MailTab: SkySimpleTabItem {
   key    = "mail";
   label  = labels.Mail;
-  icon   = "mail";
   action = tabClicked;
 }
 
-SourceTab: SkyTabItem {
+SourceTab: SkySimpleTabItem {
   key    = "source";
   label  = labels.MailSource;
   icon   = "mailsource";

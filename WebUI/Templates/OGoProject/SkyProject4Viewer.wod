@@ -30,7 +30,7 @@ FSInfoTab:    SkySimpleTabItem { key = "attributes";label = labels.attributes;}
 NotesTab:     SkySimpleTabItem { key = "notes";   label = labels.notes;       }
 JournalTab:   SkySimpleTabItem { key = "journal"; label = labels.journal;     }
 JobsTab:      SkySimpleTabItem { key = "jobs";    label = labels.jobsSubview; }
-LinkTab:      SkyTabItem       { key = "links";   label = labels.links;       }
+LinkTab:      SkySimpleTabItem { key = "links";   label = labels.links;       }
 
 Buttons: SkyButtonRow {
   ordering    = ( pubpreview, publisher, mail, test, refresh, clip );

@@ -1,4 +1,4 @@
-// $Id: LSWEnterprises.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
@@ -7,20 +7,16 @@ Window: LSWWindowFrame {
   onClose = session.navigation.leavePage;
 }
 
-IsLicensed: SkyLicenseConditional {
-  modules = ( Enterprises );
-}
-
 Form: WOForm {
   name   = "searchform";
   action = enterpriseSearch;
-};
+}
 
 Font: SkyConfigFont {}
 
 EnterpriseSearchField: WOTextField {
   value  = searchText;
-};
+}
 
 NewEnterpriseLink: WOHyperlink {
   action = newEnterprise;
@@ -37,13 +33,13 @@ AdvancedSearch: LSWEnterpriseAdvancedSearch {
   qualifier      = qualifier;
   maxSearchCount = maxSearchCount;
   userDefaultKey = "enterprise_custom_qualifiers";
-};
+}
 
 FullSearch: LSWFullSearch {
   searchString  = searchText;
   isSearchLimited = isSearchLimited;
   limitedString = limitedSearchLabel;
-};
+}
 
 Buttons: SkyButtonRow {
   ordering = ( new, import );
@@ -74,13 +70,13 @@ CustomButtons: SkyButtonRow {
 SearchField: WOTextField {
   name  = "search";
   value = searchText;
-};
+}
 
 SearchSubmit: WOSubmitButton {
   action   = enterpriseSearch;
   value    = labels.searchButtonLabel;
   class    = "button_narrow";
-};
+}
 
 IsSearchLimited: WOConditional {
   condition = isSearchLimited;
@@ -92,30 +88,27 @@ LimitedLabel: WOString {
 
 TabBody: SkyTabView {
   selection = tabKey;
-};
+}
 
-SearchTab: SkyTabItem {
+SearchTab: SkySimpleTabItem {
   key    = "enterpriseSearch";
-  icon   = "search";
   action = tabClicked;
   label  = labels.searchEnterpriseTabLabel;
 }
 
-AdvSearchTab: SkyTabItem {
+AdvSearchTab: SkySimpleTabItem {
   key    = "advancedSearch";
-  icon   = advTabIcon;
   action = tabClicked;
   label  = labels.advancedSearchTab;
 }
 
-FullSearchTab: SkyTabItem {
+FullSearchTab: SkySimpleTabItem {
   key    = "search";
-  icon   = fullTabIcon;
   action = tabClicked;
   label  = labels.fullSearchTab;
 }
 
-FavoritesTab: SkyTabItem {
+FavoritesTab: SkySimpleTabItem {
   key    = "_favorites_";
   label  = labels.favorites;
   action = viewFavorites;
@@ -126,7 +119,7 @@ CustomTabs: WORepetition {
   item  = item;
   index = itemIndex;
 }
-CustomTab: SkyTabItem {
+CustomTab: SkySimpleTabItem {
   key    = itemIndex;
   label  = customTabLabel;
   action = customTabClicked;
@@ -155,18 +148,17 @@ SavedSearchPopUp: SkyCompanySavedSearchPopUp {
   searchTitle      = searchTitle;
 }
 
-LetterTab: SkyTabItem {
+LetterTab: SkySimpleTabItem {
   key    = item;
-  icon   = iconForTab;
   action = letterClicked;
   label  = item;
-};
+}
 
 LetterRepetition: WORepetition {
   item = item;
   list = ( "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
            "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" );
-};
+}
 
 IsNotTextMode: WOConditional {
   condition = session.isTextModeBrowser;

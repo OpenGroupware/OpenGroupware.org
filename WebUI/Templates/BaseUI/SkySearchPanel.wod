@@ -1,4 +1,4 @@
-// $Id: SkySearchPanel.wod,v 1.2 2004/05/01 13:55:46 helge Exp $
+// bind template to controller
 
 Panel: SkyPanel {
   string    = string;
@@ -7,7 +7,7 @@ Panel: SkyPanel {
   panelName = panelName;
   title     = labels.fastSearch;
   //  doActionOnCancel = YES;
-};
+}
 
 TabRepetition: WORepetition {
   list = panels;
@@ -18,9 +18,8 @@ TabView: SkyTabView {
   selection = tabKey;
 }
 
-TabItem: SkyTabItem {
+TabItem: SkySimpleTabItem {
   key      = item.name;
-  icon     = item.icon;
   label    = item.label;
   isScript = YES;
 }

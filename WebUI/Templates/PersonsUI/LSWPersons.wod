@@ -135,25 +135,25 @@ TabBody: SkyTabView {
   selection = tabKey;
 }
 
-SearchTab: SkyTabItem {
-  key       = "personSearch";
-  action    = tabClicked;
-  label     = labels.searchPersonTabLabel;
+SearchTab: SkySimpleTabItem {
+  key    = "personSearch";
+  action = tabClicked;
+  label  = labels.searchPersonTabLabel;
 }
 
-AdvSearchTab: SkyTabItem {
-  key       = "advancedSearch";
-  action    = tabClicked;
-  label     = labels.advancedSearchTab;
+AdvSearchTab: SkySimpleTabItem {
+  key    = "advancedSearch";
+  action = tabClicked;
+  label  = labels.advancedSearchTab;
 }
 
-FullSearchTab: SkyTabItem {
-  key       = "search";
-  action    = tabClicked;
-  label     = labels.fullSearchTab;
+FullSearchTab: SkySimpleTabItem {
+  key    = "search";
+  action = tabClicked;
+  label  = labels.fullSearchTab;
 }
 
-FavoritesTab: SkyTabItem {
+FavoritesTab: SkySimpleTabItem {
   key    = "_favorites_";
   label  = labels.favorites;
   action = viewFavorites;
@@ -164,7 +164,7 @@ CustomTabs: WORepetition {
   item  = item;
   index = itemIndex;
 }
-CustomTab: SkyTabItem {
+CustomTab: SkySimpleTabItem {
   key    = itemIndex;
   label  = customTabLabel;
   action = customTabClicked;
@@ -193,7 +193,7 @@ SavedSearchPopUp: SkyCompanySavedSearchPopUp {
   searchTitle      = searchTitle;
 }
 
-LetterTab: SkyTabItem {
+LetterTab: SkySimpleTabItem {
   key    = item;
   action = letterClicked;
   label  = item;

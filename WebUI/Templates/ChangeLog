@@ -1,3 +1,10 @@
+2005-03-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* various templates got changed to use SkySimpleTabItem
+
+	* AdminUI/LSWStaff.html: removed defaults tab as requested in OGo bug
+	  #1187, use SkySimpleTabItem
+
 2005-02-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed Copyright information

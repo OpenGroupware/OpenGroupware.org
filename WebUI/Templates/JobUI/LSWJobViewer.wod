@@ -15,16 +15,13 @@ TabView: SkyTabView {
   selection = tabKey;
 }
 
-JobHistoryTab: SkyTabItem {
+JobHistoryTab: SkySimpleTabItem {
   key   = "jobHistoryList";
   label = labels.jobHistoryList;
-  icon  = "history";
 }
-
-LogTab: SkyTabItem {
+LogTab: SkySimpleTabItem {
   key   = "log";
   label = labels.logsTitle;
-  icon  = "log";
 }
 
 AttributeCell: WOGenericContainer {
@@ -302,10 +299,9 @@ LogList: SkyObjectLogList {
 IsLogTabEnabled:  WOConditional { condition = isLogTabEnabled;  }
 IsLinkTabEnabled: WOConditional { condition = isLinkTabEnabled; }
 
-LinkTab: SkyTabItem {
-  key       = "links";
-  label     = labels.jobviewer_tab_links;
-  icon      = "links";
+LinkTab: SkySimpleTabItem {
+  key   = "links";
+  label = labels.jobviewer_tab_links;
 }
 RelatedLinks: OGoObjectLinkList {
   object = job;
@@ -327,11 +323,10 @@ ViewerConfig: SkyPersonalViewerConfig {
   isInConfigMode = viewerConfigMode;
 }
 
-AttributesTab: SkyTabItem {
-  key       = "attributes";
-  label     = labels.attributesTab;
-  icon      = "attributes";
-  isScript  = YES;
+AttributesTab: SkySimpleTabItem {
+  key      = "attributes";
+  label    = labels.attributesTab;
+  isScript = YES;
 }
 
 PersonalAttributes: SkyPersonalAttributesViewer {

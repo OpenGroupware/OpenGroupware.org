@@ -44,24 +44,24 @@ Tab: SkyTabView {
   selection = session.userDefaults.scheduler_appointment_view;
 }
 AptAttrsTab: SkySimpleTabItem {
-  key       = "attributes";
-  label     = labels.attributes;
+  key   = "attributes";
+  label = labels.attributes;
 }
 AptParticipantsTab: SkySimpleTabItem {
-  key       = "participants";
-  label     = labels.participants;
+  key   = "participants";
+  label = labels.participants;
 }
 AptNotesTab: SkySimpleTabItem {
-  key       = "notes";
-  label     = labels.notes;
+  key   = "notes";
+  label = labels.notes;
 }
-LinkTab: SkyTabItem {
-  key       = "links";
-  label     = labels.links;
+LinkTab: SkySimpleTabItem {
+  key   = "links";
+  label = labels.links;
 }
 LogsTab: SkySimpleTabItem {
-  key       = "log";
-  label     = labels.logsLabel;
+  key   = "log";
+  label = labels.logsLabel;
 }
 
 DayLink: WOHyperlink {

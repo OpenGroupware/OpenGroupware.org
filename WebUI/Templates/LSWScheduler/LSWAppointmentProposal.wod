@@ -308,11 +308,10 @@ NewImage: WOImage {
 
 TabView: SkyTabView { selection = tabKey; }
 
-SearchTab: SkyTabItem {
-  key       = "search";
-  action    = tabClicked;
-  label     = labels.tabLabel;
-  icon      = "search_full";
+SearchTab: SkySimpleTabItem {
+  key    = "search";
+  action = tabClicked;
+  label  = labels.tabLabel;
 }
 
 HasSearched: WOConditional { condition = hasSearched; }

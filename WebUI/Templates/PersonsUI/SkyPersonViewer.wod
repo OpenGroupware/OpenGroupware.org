@@ -17,54 +17,46 @@ TabBody: SkyTabView {
   selection = tabKey;
 }
 
-AttributesTab: SkyTabItem {
-  key       = "attributes";
-  label     = labels.personviewer_tab_person;
-  icon      = "attributes";
-  isScript  = YES;
+AttributesTab: SkySimpleTabItem {
+  key      = "attributes";
+  label    = labels.personviewer_tab_person;
+  isScript = YES;
 }
 
-ProjectsTab: SkyTabItem {
-  key       = "projects";
-  label     = labels.personviewer_tab_projects;
-  icon      = "projects";
+ProjectsTab: SkySimpleTabItem {
+  key   = "projects";
+  label = labels.personviewer_tab_projects;
 }
 
-EnterpriseTab: SkyTabItem {
-  key       = "enterprises";
-  label     = labels.personviewer_tab_enterprises;
-  icon      = "enterprise";
+EnterpriseTab: SkySimpleTabItem {
+  key   = "enterprises";
+  label = labels.personviewer_tab_enterprises;
 }
 
-AddressTab: SkyTabItem {
-  key       = "address";
-  label     = labels.personviewer_tab_address;
-  icon      = "address";
-  isScript  = YES;
+AddressTab: SkySimpleTabItem {
+  key      = "address";
+  label    = labels.personviewer_tab_address;
+  isScript = YES;
 }
 
-PictureTab: SkyTabItem {
-  key       = "picture";
-  label     = labels.personviewer_tab_picture;
-  icon      = "picture";
+PictureTab: SkySimpleTabItem {
+  key   = "picture";
+  label = labels.personviewer_tab_picture;
 }
 
-AppointmentsTab: SkyTabItem {
-  key       = "appointments";
-  label     = labels.personviewer_tab_appointments;
-  icon      = "appointments";
+AppointmentsTab: SkySimpleTabItem {
+  key   = "appointments";
+  label = labels.personviewer_tab_appointments;
 }
 
-LogTab: SkyTabItem {
-  key       = "log";
-  label     = labels.personviewer_tab_log;
-  icon      = "log";
+LogTab: SkySimpleTabItem {
+  key   = "log";
+  label = labels.personviewer_tab_log;
 }
 
-LinkTab: SkyTabItem {
-  key       = "links";
-  label     = labels.personviewer_tab_links;
-  icon      = "links";
+LinkTab: SkySimpleTabItem {
+  key   = "links";
+  label = labels.personviewer_tab_links;
 }
 
 IsInEnterpriseCond: WOConditional {
@@ -257,7 +249,7 @@ LDAPInfoViewer: SkyPersonLDAPViewer {
   skyrixLogin = person.login;
 }
 
-LDAPTab: SkyTabItem {
+LDAPTab: SkySimpleTabItem {
   key      = "ldap";
   label    = labels.personviewer_tab_ldap;
   icon     = "ldap";

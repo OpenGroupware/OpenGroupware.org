@@ -1,4 +1,4 @@
-// $Id: LSWStaff.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
@@ -11,54 +11,51 @@ TabBody: SkyTabView {
   selection = tabKey;
 }
 
-AccountsTab: SkyTabItem {
+AccountsTab: SkySimpleTabItem {
   key    = "accounts";
   action = tabClicked;
   label  = labels.accountsSubview;
-  icon   = "accounts";
 }
 
-TeamsTab: SkyTabItem {
+TeamsTab: SkySimpleTabItem {
   key    = "teams";
   action = tabClicked;
   label  = labels.teamsSubview;
-  icon   = "teams";
 }
 
-IsSchedulerLicensed: SkyLicenseConditional {
-  modules  = ( Scheduler2 );
-  showInfo = NO;
-}
-ResourcesTab: SkyTabItem {
+ResourcesTab: SkySimpleTabItem {
   key    = "resources";
   action = tabClicked;
   label  = labels.aptResources;
-  icon   = "resources";
 }
 
-LicenseTab: SkyTabItem {
+LicenseTab: SkySimpleTabItem {
   key    = "licenses";
   action = tabClicked;
   label  = labels.licensesTab;
-  icon   = "licenses";
 }
 
-DefaultsTab: SkyTabItem {
+DefaultsTab: SkySimpleTabItem {
   key    = "defaults";
   action = tabClicked;
   label  = labels.Defaults;
-  icon   = "defaults";
 }
 
+// TODO: this is currently disabled and seems to be broken
 DefaultsView: SkyDefaultsViewer {
-  domains = ("Skyrix", "NSGlobalDomain", "skyxmlrpcd", "snsd", "skyaptnotify");
+  domains = (
+    "ogo-webui-1.0a", 
+    "NSGlobalDomain", 
+    "ogo-xmlrpcd-1.0a", 
+    "ogo-snsd-1.0a", 
+    "skyaptnotify"
+  );
 }
 
-SessionLogTab: SkyTabItem {
+SessionLogTab: SkySimpleTabItem {
   key    = "sessionlogs";
   action = tabClicked;
   label  = labels.sessionLogTab;
-  icon   = "log";
 }
 
 // TODO: replace with WETableView
@@ -300,11 +297,10 @@ IsMailConfigEnabled : WOConditional {
   condition = isMailConfigEnabled;
 }
 
-MailConfigTab : SkyTabItem {
+MailConfigTab : SkySimpleTabItem {
   key    = "mailConfig";
   action = tabClicked;
   label  = labels.mailConfig;
-  icon   = "mailConfig";
 }
 
 MailConfigView : SkyDefaultsViewer {

@@ -1,33 +1,21 @@
-// $Id: LSWJobImport.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
-Window: LSWWindowFrame {
-  title = labels.jobImportWindowTitle;
-}
+Window: LSWWindowFrame { title = labels.jobImportWindowTitle; }
 
 TabView: SkyTabView {
   selection = tabKey;
 }
 
-JobTab: SkyTabItem {
+JobTab: SkySimpleTabItem {
   key   = "jobs";
   label = labels.subview;
-  icon  = "jobs";
 }
 
-FieldCond: WOConditional {
-  condition = importField;
-}
-
-ImportFieldCond: WOConditional {
-  condition = importField;
-}
-
-ImportFieldCondElse: WOConditional {
-  condition = importField;
-  negate = YES;
-}
+FieldCond:           WOConditional { condition = importField; }
+ImportFieldCond:     WOConditional { condition = importField; }
+ImportFieldCondElse: WOConditional { condition = importField; negate = YES; }
 
 ProjectName: WOString {
   value = project.name;
