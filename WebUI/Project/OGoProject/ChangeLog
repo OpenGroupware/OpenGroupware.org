@@ -1,5 +1,7 @@
 2004-08-23  Helge Hess  <helge.hess@skyrix.com>
 
+	* GNUmakefile.preamble: fixed a linking path (v5.1.46)
+
 	* SkyProject4DocumentViewer.wo: removed forms (v5.1.45)
 
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
