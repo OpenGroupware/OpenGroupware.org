@@ -669,7 +669,9 @@ static BOOL embedViewURL             = NO;
   [s appendString:@";FMTTYPE=text/html;X-CONTENT-DISPOSITION=inline"];
   [s appendString:@";X-LABEL=OGo"];
   [s appendString:@":"];
-  [s appendString:[[self baseURL] stringByAppendingString:@"/view"]];
+  [s appendString:
+       [[self baseURLInContext:[[WOApplication application] context]]
+	      stringByAppendingString:@"/view"]];
   [s appendString:@"\r\n"];
   
   /* footer */

@@ -1,8 +1,9 @@
-# $Id$
+# GNUstep makefile
 
 OGoROOT   =../../..
 WebUIROOT =../..
 
+-include $(OGoROOT)/config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include $(WebUIROOT)/Version
 

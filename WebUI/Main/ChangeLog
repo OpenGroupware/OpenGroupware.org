@@ -1,3 +1,7 @@
+2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: properly include config.make (v5.1.72)
+
 2004-12-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OpenGroupware.m: removed SkyLanguages default (not required anymore)

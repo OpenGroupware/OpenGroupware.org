@@ -1,3 +1,8 @@
+2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAppointment.m: fixed a warning, changed generation of baseURL
+	  (v1.3.95)
+
 2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAppointmentFolder.m: fixed GroupDAV namespace to current draft

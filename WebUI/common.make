@@ -1,7 +1,8 @@
-# $Id$
+# GNUstep makefile
 
-OGoROOT=..
+OGoROOT=../..
 
+-include $(OGoROOT)/config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 
@@ -9,13 +10,13 @@ GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
 
 ADDITIONAL_INCLUDE_DIRS += \
 	-I.. 			\
-	-I../../Logic		\
-	-I../../DocumentAPI
+	-I$(OGoROOT)/Logic		\
+	-I$(OGoROOT)/DocumentAPI
 
 ADDITIONAL_LIB_DIRS += \
 	-L../OGoFoundation/$(GNUSTEP_OBJ_DIR)			\
-	-L../../DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR)	\
-	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
+	-L$(OGoROOT)/DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR)\
+	-L$(OGoROOT)/Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
 
 SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
 

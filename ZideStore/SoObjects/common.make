@@ -1,11 +1,11 @@
 # common makefile for bundles
 
+OGoROOT=../../..
+
+-include $(OGoROOT)/config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ./Version
 include ../../Version
-
-OGoROOT=../../..
-
 
 BUNDLE_EXTENSION   = .zsp
 BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/ZideStore-$(MAJOR_VERSION).$(MINOR_VERSION)/

@@ -1,5 +1,6 @@
 # ZideStore makefile
 
+-include ../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 
 # aggregate

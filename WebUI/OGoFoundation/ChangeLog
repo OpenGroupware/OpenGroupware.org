@@ -1,3 +1,7 @@
+2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: properly include config.make (v5.1.84)
+
 2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.83
