@@ -135,6 +135,7 @@ static BOOL createNewAptWhenNotFound = YES;
 }
 - (NSNumber *)pkeyOfGroupInContext:(id)_ctx {
   EOKeyGlobalID *gid;
+  
   if ((gid = [self globalIDOfGroupInContext:_ctx]) == nil)
     return nil;
   return [gid keyValues][0];
@@ -142,34 +143,39 @@ static BOOL createNewAptWhenNotFound = YES;
 - (id)groupInContext:(id)_ctx {
   id team;
 
-  team = [self pkeyOfGroupInContext:_ctx];
-  if (team)
-    team = [[[self commandContextInContext:_ctx]
-                   runCommand:@"team::get",
-                   @"companyId", team, nil] lastObject];
+  if ((team = [self pkeyOfGroupInContext:_ctx]) == nil)
+    return nil;
+  
+  team = [[[self commandContextInContext:_ctx]
+	         runCommand:@"team::get", @"companyId", team, nil] lastObject];
   return team;
 }
 - (BOOL)isInOverviewFolder {
   return [[self container] isOverview];
 }
 
-- (NSArray *)davQueryOnSelf:(EOFetchSpecification *)_fs inContext:(id)_ctx {
-  /* Note: this is also called for bulk fetches */
-  NSDictionary *res;
-  id           renderer;
-  static Class RendererClass = NULL;
-
-  if (RendererClass == NULL) {
-    RendererClass = NSClassFromString(@"SxZLFullAptRenderer");
+- (Class)selfRendererClass {
+  /* class to render self propfinds on self */
+  static Class RendererClass = Nil;
+  static BOOL  didInit = NO;
+  
+  if (!didInit) {
+    didInit = YES;
     
-    if (RendererClass == NULL) {
+    if ((RendererClass = NSClassFromString(@"SxZLFullAptRenderer")) == Nil) {
       // TODO: fall back to a default renderer?!
       [self logWithFormat:
               @"Note: did not find 'SxZLFullAptRenderer' class, cannot "
               @"render <allprop/>."];
-      return nil;
     }
   }
+  return RendererClass;
+}
+
+- (NSArray *)davQueryOnSelf:(EOFetchSpecification *)_fs inContext:(id)_ctx {
+  /* Note: this is also called for bulk fetches */
+  NSDictionary *res;
+  id           renderer;
   
   // TODO: check whether are attributes are really requested !!
   
@@ -185,12 +191,17 @@ static BOOL createNewAptWhenNotFound = YES;
     return [NSException exceptionWithHTTPStatus:404 /* not found */
                         reason:@"tried to lookup invalid appointment key"];
   }
-  renderer = [RendererClass rendererWithFolder:[self container]
-			    inContext:_ctx ];
-  if ((res = [renderer renderEntry:res]))
-    return [NSArray arrayWithObject:res];
   
-  return nil;
+  /* try to render using renderer */
+  
+  if ((renderer = [self selfRendererClass]) != Nil) {
+    renderer = [renderer rendererWithFolder:[self container] inContext:_ctx ];
+    if ((res = [renderer renderEntry:res]) != nil)
+      return [NSArray arrayWithObject:res];
+  }
+  
+  /* fallback, return SoObject to SOPE WebDAV layer */
+  return [NSArray arrayWithObject:self];
 }
 
 #define SX_NEWKEY(__key__) \
@@ -611,9 +622,7 @@ static BOOL createNewAptWhenNotFound = YES;
     return nil;
   
   m = [NSMutableString stringWithCapacity:[ical length] + 256];
-  [m appendString:@"BEGIN:VCALENDAR\r\n"];
-  [m appendString:@"METHOD:REQUEST\r\n"];
-  [m appendString:@"PRODID:"];
+  [m appendString:@"BEGIN:VCALENDAR\r\nMETHOD:REQUEST\r\nPRODID:"];
   [m appendString:OGo_ZS_PRODID];
   [m appendString:@"\r\nVERSION:2.0\r\n"];
   [m appendString:ical];

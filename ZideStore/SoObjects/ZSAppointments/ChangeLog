@@ -1,5 +1,11 @@
 2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v1.3.84
+
+	* SxAppointment.m: if SxZLFullAptRenderer is not available, return the
+	  object itself to the SOPE WebDAV layer (avoids 500 if a propfind is
+	  done on the appointment)
+
 	* v1.3.83
 
 	* SxICalendar.m: use ical product-id from common.h
