@@ -1,5 +1,7 @@
 2004-11-28  Helge Hess  <helge.hess@opengroupware.org>
 
+	* German.lproj/LSWProject.strings: added missing semicolons for Cocoa
+
 	* fixed UTF-8 encoding in German strings files
 
 2004-11-26  Helge Hess  <helge.hess@opengroupware.org>

@@ -1,5 +1,3 @@
-// $Id: OGoProject.strings,v 1.10 2004/06/22 15:48:19 helge Exp $
-
 "Couldn`t lock project, project already locked" = "Das Projekt kann nicht beschrieben werden, da es von einem anderern Anwender gesperrt wurde.";
 "Path already exists"   = "Verzeichnis existiert bereits";
 "missing filename"      = "Es wurde kein Dateiname angegeben.";
