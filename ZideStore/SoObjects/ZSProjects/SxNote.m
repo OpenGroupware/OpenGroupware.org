@@ -121,13 +121,20 @@ static BOOL debugOn = NO;
 - (BOOL)isDeletionAllowed {
   /* only owner may delete notes */
   LSCommandContext *cmdctx;
-  NSNumber *accountId;
-  id neo;
+  WOContext *ctx;
+  NSNumber  *accountId;
+  id        neo;
+
+  ctx = [[WOApplication application] context];
   
-  if ((cmdctx = [self commandContextInContext:nil]) == nil)
+  if ((cmdctx = [self commandContextInContext:ctx]) == nil) {
+    [self logWithFormat:@"ERROR: missing command context!"];
     return NO;
-  if ((neo = [self _fetchNoteEOInContext:nil]) == nil)
+  }
+  if ((neo = [self _fetchNoteEOInContext:ctx]) == nil) {
+    [self logWithFormat:@"ERROR: missing EO!"];
     return NO;
+  }
   
   accountId = [[cmdctx valueForKey:LSAccountKey] valueForKey:@"companyId"];
   if ([accountId isEqual:[neo valueForKey:@"currentOwnerId"]])
@@ -135,6 +142,9 @@ static BOOL debugOn = NO;
   if ([accountId isEqual:[neo valueForKey:@"firstOwnerId"]])
     return YES;
   
+  [self logWithFormat:
+	  @"Note: delete denied, account id does not match: %@ vs %@",
+	  accountId, [neo valueForKey:@"currentOwnerId"]];
   return NO;
 }
 
@@ -283,25 +293,33 @@ static BOOL debugOn = NO;
 }
 
 - (id)DELETEAction:(WOContext *)_ctx {
+  LSCommandContext *cmdctx;
+  id neo;
+  
+  if ((cmdctx = [self commandContextInContext:_ctx]) == nil) {
+    [self logWithFormat:@"ERROR: got no command context ..."];
+    return [NSException exceptionWithHTTPStatus:500 /* Internal Error */
+			reason:@"got no command context"];
+  }
+  if ((neo = [self _fetchNoteEOInContext:_ctx]) == nil) {
+    return [NSException exceptionWithHTTPStatus:404 /* Not Found */
+			reason:@"did not find note!"];
+  }
+  
   if (![self isDeletionAllowed]) {
     return [NSException exceptionWithHTTPStatus:403 /* forbidden */
 			reason:@"note deletion is not allowed"];
   }
   
-  return [NSException exceptionWithHTTPStatus:501 /* not implemented */
-		      reason:@"note deletion is not implemented yet"];
-  
-  // TODO: insert note delete code here
-  
-#if 0
-  cmdctx = [self commandContextInContext:_ctx];
-  if ([cmdctx isTransactionInProgress]) {
-    if (![cmdctx commit])
-      return [self internalError:@"could not commit transaction!"];
+  [cmdctx runCommand:@"note::delete",
+	    @"object",       neo,
+	    @"reallyDelete", [NSNumber numberWithBool:YES],
+	  nil];
+  if (![cmdctx commit]) {
+    return [NSException exceptionWithHTTPStatus:500 /* internal error */
+			reason:@"could not commit transaction!"];
   }
-#endif
-
-  return [NSNumber numberWithBool:NO];
+  return [NSNumber numberWithBool:YES];
 }
 
 /* WebDAV */

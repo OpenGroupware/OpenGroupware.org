@@ -1,5 +1,12 @@
 2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v1.3.91
+
+	* SxNote.m: implemented object deletion
+
+	* SxProjectsFolder.m: improved object lookup (use SxFolder framework),
+	  added default to enable debug logs (SxProjectsFolderDebugEnabled)
+
 	* v1.3.90
 
 	* SxProjectFolder.m: implemented -isNewKey:inContext:

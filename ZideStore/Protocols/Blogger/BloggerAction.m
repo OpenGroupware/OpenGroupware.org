@@ -71,6 +71,13 @@
   return self->password;
 }
 
+- (void)setDoPublish:(BOOL)_flag {
+  self->doPublish = _flag;
+}
+- (BOOL)doPublish {
+  return self->doPublish;
+}
+
 /* blogs relative to clientObject */
 
 - (id)blog {
@@ -101,6 +108,25 @@
 - (id)defaultAction {
   [self logWithFormat:@"called unimplemented Blogger API call ..."];
   return nil;
+}
+
+- (id)deletePostAction {
+  id post, result;
+  
+  if ((post = [self post]) == nil) {
+    return [NSException exceptionWithName:@"DidNotFindPost"
+			reason:@"did not find specified posting"
+			userInfo:nil];
+  }
+  if ([post isKindOfClass:[NSException class]])
+    return post;
+  
+  result = [post lookupName:@"DELETE" inContext:[self context] acquire:NO];
+  result = [result callOnObject:post inContext:[self context]];
+  if ([result isKindOfClass:[NSException class]])
+    return result;
+  
+  return result;
 }
 
 @end /* BloggerAction */

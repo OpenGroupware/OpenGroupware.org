@@ -1,5 +1,12 @@
 2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v1.3.3
+
+	* BloggerAction.m: implemented deletePost method
+
+	* BloggerAction.m, MetaWeblogPost.m: moved doPublish ivar/accessors to
+	  base class
+
 	* v1.3.2
 
 	* BloggerAction.[hm]: added 'postID' variable and -post method

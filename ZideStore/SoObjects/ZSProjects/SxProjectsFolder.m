@@ -28,7 +28,12 @@
 
 @implementation SxProjectsFolder
 
-static BOOL debugOn = YES;
+static BOOL debugOn = NO;
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  debugOn = [ud boolForKey:@"SxProjectsFolderDebugEnabled"];
+}
 
 - (void)dealloc {
   [self->projectNames release];
@@ -95,30 +100,16 @@ static BOOL debugOn = YES;
   return [self isProjectName:_key inContext:_ctx] ? NO : YES;
 }
 
-- (id)projectFolder:(NSString *)_name inContext:(id)_ctx {
-  id folder;
-  
-  folder = [[NSClassFromString(@"SxProjectFolder") alloc] 
-             initWithName:_name inContainer:self];
-  return [folder autorelease];
+- (Class)recordClassForKey:(NSString *)_key {
+  /* triggered by SxFolder lookup */
+  return NSClassFromString(@"SxProjectFolder");
 }
 
 - (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
-  id o;
-  
-  if ([_key length] == 0) return nil;
-  
   if ([_key isEqualToString:@"getIDsAndVersions"])
     return [self getIDsAndVersionsAction:_ctx];
-
-  /* this is placed above isProjectName to avoid fetching of the names */
-  if ((o = [super lookupName:_key inContext:_ctx acquire:_flag]))
-    return o;
   
-  if ([self isProjectName:_key inContext:_ctx])
-    return [self projectFolder:_key inContext:_ctx];
-  
-  return nil;
+  return [super lookupName:_key inContext:_ctx acquire:_flag];
 }
 
 /* actions */

@@ -3,10 +3,15 @@ Blogger
 
 Attempt to implement the Blogger XML-RPC API for ZideStore.
 
-Note: this is far from being complete! It currently can list project notes in
-      Ecto. Use a URL like:
-        http://localhost/zidestore/so/donald/Projects/DBTEST/
-      this will show the "Documents" and "Notes" BLOGs.
+Note: this is far from being complete!
+It is currently tested with project notes in Echo and allows:
+- list notes as posts
+- post new notes (with HTML marker in the note)
+- delete notes
+
+Use a URL like:
+  http://localhost/zidestore/so/donald/Projects/DBTEST/
+this will show the "Documents" and "Notes" subfolders as BLOGs.
 
 
 Root Methods vs Context Methods

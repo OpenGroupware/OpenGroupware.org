@@ -46,6 +46,8 @@
           };
         };
         "blogger.deletePost" = { /* TODO: implement me */
+          actionClass = "BloggerAction";
+          actionName  = "deletePost";
           arguments   = {
             positionalKeys = ( appID, postID, login, password, doPublish );
           };

@@ -544,7 +544,11 @@ static NSString *cachePath  = nil;
     return [self childForNewKey:nkey inContext:_ctx];
   
   recClass = [self recordClassForKey:nkey];
-  value = [[recClass alloc] initWithName:nkey inFolder:self];
+  if ([recClass instancesRespondToSelector:@selector(initWithName:inFolder:)])
+    value = [[recClass alloc] initWithName:nkey inFolder:self];
+  else
+    value = [[recClass alloc] initWithName:nkey inContainer:self];
+  
   if (value == nil) {
     [self logWithFormat:@"ERROR(%s): got no record for key %@", 
 	    __PRETTY_FUNCTION__, nkey];

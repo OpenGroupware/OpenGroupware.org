@@ -1,5 +1,8 @@
 2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SxFolder.m: only call -initWithName:inFolder: when available
+	  (otherwise use the standard -initWithName:inContainer:) (v1.3.101)
+
 	* SxFolder.m: print a log if record factory methods are not overridden
 	  by subclass (v1.3.100)
 

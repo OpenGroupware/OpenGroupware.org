@@ -26,7 +26,6 @@
 @interface MetaWeblogPost : MetaWeblogAction
 {
   NSDictionary *entry;
-  BOOL         doPublish;
 }
 
 @end
@@ -37,7 +36,7 @@
 @implementation MetaWeblogPost
 
 - (void)dealloc {
-  [self->entry  release];
+  [self->entry release];
   [super dealloc];
 }
 
@@ -48,13 +47,6 @@
 }
 - (NSDictionary *)entry {
   return self->entry;
-}
-
-- (void)setDoPublish:(BOOL)_flag {
-  self->doPublish = _flag;
-}
-- (int)doPublish {
-  return self->doPublish;
 }
 
 /* actions */

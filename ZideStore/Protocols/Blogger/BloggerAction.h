@@ -37,6 +37,7 @@
   NSString *password;
   NSString *blogID;
   NSString *postID;
+  BOOL     doPublish;
 }
 
 /* accessors */
@@ -46,6 +47,7 @@
 - (NSString *)postID;
 - (NSString *)login;
 - (NSString *)password;
+- (BOOL)doPublish;
 
 /* blogs relative to clientObject */
 
