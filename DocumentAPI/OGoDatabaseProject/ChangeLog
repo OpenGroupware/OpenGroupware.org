@@ -1,5 +1,7 @@
 2004-12-06  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SkyProjectFileManager+Documents.m: minor code cleanups (v5.1.39)
+
 	* v5.1.38
 
 	* SkyProjectFolderDataSource.m: code cleanups, moved

@@ -36,6 +36,8 @@
 
     onlySubFolderNames[BOOL] : returns an array with subfolder names (use
                                cache; for TreeView)
+
+    fetchKeys [NSArray]      : set of properties to fetch
 */
 
 @interface SkyProjectFolderDataSource : EODataSource

@@ -246,7 +246,7 @@ static inline BOOL _showUnknownFiles(id self) {
 - (NSArray *)_fetchDocumentsForObjects:(NSArray *)dsAttrs {
   NSArray *fetchKeys;
   NSArray *ns;
-    
+  
   fetchKeys = [[self->fetchSpecification hints] objectForKey:@"fetchKeys"];
   if (fetchKeys != nil) {
     return [self->fileManager documentsForObjects:dsAttrs
