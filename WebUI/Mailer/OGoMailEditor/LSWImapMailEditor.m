@@ -318,15 +318,22 @@ static Class      StrClass        = nil;
 	         @"messageTmpFile",   _path,
 	       nil];
 }
-- (void)_deliverMailTo:(NSArray *)_addrs messageFilePath:(NSString *)_path
+- (NSException *)_deliverMailTo:(NSArray *)_addrs
+  messageFilePath:(NSString *)_path
   mailingLists:(NSArray *)_lists
 {
-  [self runCommand:@"email::deliver",
+  NSException *e;
+  
+  e = [self runCommand:@"email::deliver",
 	  @"copyToSentFolder", [NSNumber numberWithBool:NO],
 	  @"addresses",        _addrs,
 	  @"messageTmpFile",   _path,
 	  @"mailingLists",     _lists,
 	nil];
+  if ([e isKindOfClass:[NSException class]])
+    return e;
+  
+  return nil;
 }
 
 /* page restoration (used to save the mail if the sessions was killed) */
@@ -944,6 +951,7 @@ static Class      StrClass        = nil;
   if ([mailingLists count] > 0) {
     // TODO: explain this code
     // TODO: do we really need the emailAddrs here?
+    // TODO: error handling!
     [self _deliverMailTo:emailAddrs messageFilePath:messageFileName
 	  mailingLists:[self _collectMailingLists:mailingLists]];
   }
@@ -959,7 +967,7 @@ static Class      StrClass        = nil;
     if ((reason = [exc reason])) {
       reason = [l valueForKey:reason];
     }
-    wp = [StrClass stringWithFormat:@"%@: '%@'.", wp, reason];
+    wp = [wp stringByAppendingFormat:@": '%@'.", reason];
     [self _purgeMessageFile:messageFileName andSetError:wp];
     return NO;
   }
@@ -967,45 +975,54 @@ static Class      StrClass        = nil;
   return YES;
 }
 
-- (NGMimeBodyPart *)newBodyPartForAttachmentObject:(id)obj {
+- (NGMimeBodyPart *)newBodyPartForAttachmentObject:(id)_attachInfo {
   /* 
      Create a body part object for an attachment object as stored in the
      self->attachments array.
      
      Note: returns a _retained_ body part object!
+     
+     The _attachInfo contains the following keys:
+     - attachData     [yes/no]
+     - sendObject     [yes/no]
+     - mimeType       [eg eo/date]
+     - object         [EO object]
+     - objectData     [NSData]
+     - objectDataContentDisposition
+     - objectDataType [eg application/octet-stream]
   */
   NGMimeBodyPart   *bp;
   NGMutableHashMap *h;
   
-  if (![[obj objectForKey:@"attachData"] boolValue])
+  if (![[_attachInfo valueForKey:@"attachData"] boolValue])
     return nil;
-
+  
   h = [[NGMutableHashMap alloc] initWithCapacity:4];
 
-  [h setObject:[obj valueForKey:@"objectDataType"]
+  [h setObject:[_attachInfo valueForKey:@"objectDataType"]
      forKey:@"content-type"];
-  [h setObject:[obj valueForKey:@"objectDataContentDisposition"]
+  [h setObject:[_attachInfo valueForKey:@"objectDataContentDisposition"]
      forKey:@"content-disposition"];
     
   bp = [[NGMimeBodyPart alloc] initWithHeader:h];
   
-  if ([(NGMimeType *)[obj valueForKey:@"objectDataType"] isTextType]) {
+  if ([(NGMimeType *)[_attachInfo valueForKey:@"objectDataType"] isTextType]) {
     // TODO: is this really necessary?
     NSString *s;
     
     s = [[StrClass alloc]
-	    initWithData:[obj valueForKey:@"objectData"]
+	    initWithData:[_attachInfo valueForKey:@"objectData"]
 	    encoding:[StrClass defaultCStringEncoding]];
     [bp setBody:s];
     [s release]; s = nil;
   }
   else
-    [bp setBody:[obj valueForKey:@"objectData"]];
+    [bp setBody:[_attachInfo valueForKey:@"objectData"]];
   [h release];
   return bp;
 }
 
-- (void)_checkAttachmentsToSend:(NSMutableArray *)atts {
+- (BOOL)_checkAttachmentsToSend:(NSMutableArray *)atts_ {
   /*
     Adds attachment objects to 'atts' array.
     
@@ -1018,15 +1035,24 @@ static Class      StrClass        = nil;
   NSDictionary   *obj;
   
   enumerator = [self->attachments objectEnumerator];
-  while ((obj = [enumerator nextObject])) {
-    bodyPart = [self newBodyPartForAttachmentObject:obj];
-    [atts addObject:bodyPart];
+  while ((obj = [enumerator nextObject]) != nil) {
+    if ((bodyPart = [self newBodyPartForAttachmentObject:obj]) == nil) {
+      /* this happens if attachData in the dict is set to 0 */
+      // TODO: what about 'sendObject' objects?
+      if ([[obj valueForKey:@"sendObject"] boolValue])
+	[self logWithFormat:@"WARNING: not attaching: %@", obj];
+      continue;
+    }
+    
+    [atts_ addObject:bodyPart];
     [bodyPart release];
   }
   
   enumerator = [self->mimeParts objectEnumerator];
   while ((bodyPart = [enumerator nextObject]) != nil)
-    [atts addObject:bodyPart];
+    [atts_ addObject:bodyPart];
+  
+  return YES;
 }
 
 - (void)_processSenderAddressesInMap:(NGMutableHashMap *)map {
@@ -1159,7 +1185,8 @@ static Class      StrClass        = nil;
   /* check whether to attach data */
   
   atts = [NSMutableArray arrayWithCapacity:16];
-  [self _checkAttachmentsToSend:atts];
+  if (![self _checkAttachmentsToSend:atts])
+    return nil;
   
   // TODO: this seems to setup sender addresses
   [self _processSenderAddressesInMap:map];
