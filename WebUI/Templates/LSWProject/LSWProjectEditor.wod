@@ -372,10 +372,10 @@ DesignerAccessIcon: WOImage {
 }
 
 ProjectEditorPublicExtAttrs: LSWObjectEditor {
-  labels       = labels;
-  object       = project;
-  attributes   = publicExtendedProjectAttributes;
-  map          = propMap;
+  labels     = labels;
+  object     = project;
+  attributes = publicExtendedProjectAttributes;
+  map        = propMap;
 }
 ProjectEditorPrivateExtAttrs: LSWObjectEditor {
   labels       = labels;
