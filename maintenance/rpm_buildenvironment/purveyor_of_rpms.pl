@@ -422,9 +422,9 @@ sub get_current_from_rpmmacro {
     print "[DOBUILD LOGIC]     - $package rebuild not necessary but I was called with force rebuild bumping from: $cur_buildcount to: $new_buildcount\n" if ($verbose eq "yes");
     $do_build = "yes";
   }
-  #don't waste time rebuilding mod_ngobjweb, epoz, libfoundation with every svn revision change...
+  #don't waste time rebuilding mod_ngobjweb, epoz, libfoundation or libobjc-lf2 with every svn revision change...
   #we only want to rebuild this package if we see the version has changed.
-  if (($package =~ m/^(mod_ngobjweb_|^epoz|^libfoundation)/) and ($force_rebuild eq "no") and ("$cur_version" eq "$new_version")) {
+  if (($package =~ m/^(mod_ngobjweb_|^epoz|^libfoundation|^libobjc-lf2)/) and ($force_rebuild eq "no") and ("$cur_version" eq "$new_version")) {
     $do_build = "no";
     print "[DOBUILD LOGIC]     - $package prevented rebuild of $package because old: $cur_version new: $new_version are the same.\n" if ($verbose eq "yes");
   }
