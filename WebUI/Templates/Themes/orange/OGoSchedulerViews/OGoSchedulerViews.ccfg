@@ -1,0 +1,117 @@
+// generated from English_orange.lproj/OGoSchedulerViews.ccfg, do not modify !
+// $Id: OGoSchedulerViews.ccfg,v 1.3 2003/11/05 10:23:43 thomas Exp $
+{
+  SkyInlineWeekOverview = {
+    colors_contentCell         = "#FAE8B8";
+    colors_selectedContentCell = "#FFDAAA";
+    colors_appointmentLink     = "#A00000";
+    colors_contentText         = "black";
+    colors_ownerColor          = "green";
+    colors_titleColor          = "blue";
+    colors_locationColor       = "#000000";
+    colors_sundayHeaderCell    = "#CD9787";
+    colors_weekdayHeaderCell   = "#FFDAAA";
+    colors_saturdayHeaderCell  = "#FFDAAA";
+    colors_deletedParticipants = "red";    
+  };
+
+  SkyInlineWeekChart = {
+    colors_headerLabelCell     = "#FFDAAA";
+    colors_leftLabelCell       = "#FFDAAA";
+    colors_contentCell         = "#FFDAAA";
+    colors_emptyCell           = "#FAE8B8";
+    colors_titleColor          = "blue";
+  };
+
+  SkyPrintWeekOverview = {
+    colors_contentCell         = "white";
+    colors_selectedContentCell = "white";
+    colors_showDayLink         = "black";
+    colors_newAppointmentLink  = "black";
+    colors_appointmentLink     = "black";
+    colors_contentText         = "black";
+    colors_ownerColor          = "green";
+    colors_titleColor          = "blue";
+    colors_locationColor       = "black";
+    colors_sundayHeaderCell    = "white";
+    colors_weekdayHeaderCell   = "white";
+    colors_saturdayHeaderCell  = "white";
+    colors_deletedParticipants = "red";
+  }; // SkyPrintWeekOverview
+
+  SkyInlineMonthOverview = {
+    colors_weekdayHeaderCell   = "#FFDAAA";
+    colors_weekCell            = "#FFDAAA";
+    colors_currentWeekCell     = "#FFFFF0";
+
+//    colors_weekCell            = "#FCF8DF";
+//    colors_currentWeekCell     = "#FFDAAA";
+
+    colors_monthDayCell        = "#FAE8B8";
+    colors_todayCell           = "#FFFFF0";
+    colors_noMonthDayCell      = "#FFDAAA";
+
+//    colors_todayCell           = "#FFDAAA";
+//    colors_noMonthDayCell      = "#FCF8DF";
+    colors_titleColor          = "blue";
+  }; // SkyInlineMonthOverview
+
+  SkyInlineYearOverview = {
+    colors_weekdayHeaderCell   = "#FFDAAA";
+    colors_weekCell            = "#FFDAAA";
+    colors_currentWeekCell     = "#FFFFF0";
+    colors_monthDayCell        = "#FAE8B8";
+    colors_todayCell           = "#FFFFF0";
+    colors_noMonthDayCell      = "#FFDAAA";
+  }; // SkyInlineYearOverview
+
+  SkyInlineDayOverview = {
+    colors_dayHeaderCell       = "#FFDAAA"; 
+    colors_dayCell             = "#FAE8B8";
+    colors_contentText         = "black";
+    colors_titleColor          = "blue";
+    colors_appointmentLink     = "#A00000";
+  }; // SkyInlineDayOverview
+
+  SkyInlineDayChart = {
+    colors_contentCell         = "#FFDAAA";
+    colors_emptyCell           = "#FAE8B8";
+    colors_titleColor          = "blue";
+    colors_leftLabelCell       = "#FFDAAA";
+  };
+  SkyInlineWeekHChart = {
+    colors_headerLabelCell     = "#FFDAAA";
+    colors_leftLabelCell       = "#FFDAAA";
+    colors_contentCell         = "#FFDAAA";
+    colors_emptyCell           = "#FAE8B8";
+    colors_titleColor          = "blue";
+  };
+  SkyInlineDayHChart = {
+    colors_headerLabelCell     = "#FFDAAA";
+    colors_leftLabelCell       = "#FFDAAA";
+    colors_contentCell         = "#FFDAAA";
+    colors_emptyCell           = "#FAE8B8";
+    colors_titleColor          = "blue";
+  };
+  SkyMonthBrowser = {
+    colors_headerCell          = "#FFDAAA";
+    colors_dayCell             = "#FAE8B8";
+    colors_todayCell           = "#FFFFF0";
+    colors_noMonthDayCell      = "#FFDAAA";
+    colors_weekDayCell         = "#FFDAAA";
+    colors_weekOfYearCell      = "#FFDAAA";
+  };
+  SkyInlineWeekColumnView = {
+    colors_contentCell         = "#FAE8B8";
+    colors_selectedContentCell = "#FFFFF0";
+    colors_appointmentLink     = "#A00000";
+    colors_contentText         = "black";
+    colors_ownerColor          = "green";
+    colors_titleColor          = "blue";
+    colors_locationColor       = "#000000";
+    colors_sundayHeaderCell    = "#CD9787";
+    colors_weekdayHeaderCell   = "#FFDAAA";
+    colors_saturdayHeaderCell  = "#FFDAAA";
+    colors_deletedParticipants = "red";    
+  };
+}
