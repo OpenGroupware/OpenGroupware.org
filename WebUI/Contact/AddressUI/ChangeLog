@@ -1,3 +1,8 @@
+2004-09-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyContactImportPage.m: added -setContactType: accessor method, this
+	  should fix OGo bug #489 (v5.1.46)
+
 2004-09-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWAddressEditor.m, SkyTelephoneEditor.m: fixed a compilation warning
