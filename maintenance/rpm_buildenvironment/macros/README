@@ -1,0 +1,38 @@
+# by frank reppin <frank@opengroupware.org>
+
+This directory contains all the necessary
+
+ rpmmacros_trunk
+ rpmmacros_release
+
+files.
+
+I've split them up - each buildhost gets
+it's own set of macros.
+
+'purveyor_of_rpms.pl' will link to these
+files (depending on the type of build) and
+the script will also update the information
+provided within the rpmmacros during each
+build. Thus I can use the same specfile
+for different distributions (might not work
+with quite old rpm based distributions).
+
+The toplevel dir contains a template of both
+files - keep it up2date everytime you add
+another package or add sth new to the rpmmacros.
+
+Don't bother if the template or even the buildhost
+specific rpmmacros show a different
+
+ %distribution
+
+value - 'purveyor_of_rpms.pl' will fix this during
+the actual build.
+
+It's also safe to `reset` the rpmmacros. Simply
+overwrite the current 'macros/${buildhost}/rpmmacros*'
+file with the template (see above) or edit the
+version, buildcount, release macros - 'purveyor_of_rpms.pl'
+will fill in the proper values during the next build.
+
