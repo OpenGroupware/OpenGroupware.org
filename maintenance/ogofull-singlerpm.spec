@@ -1,4 +1,4 @@
-%define ogoall_version                  1.0a
+%define ogoall_version                  1.0alpha10
 %define ogoall_release                  0
 %define ogoall_buildcount               0
 %define ogoall_prefix                   /usr/local
@@ -11,7 +11,7 @@
 %define ogoall_libfoundation_major      1
 %define ogoall_libfoundation_minor      0
 %define ogoall_libfoundation_makeflags  debug=yes
-%define ogoall_sope_source              sope-4.4beta.2-voyager-r527.tar.gz
+%define ogoall_sope_source              sope-4.4beta.3-voyager-r602.tar.gz
 %define ogoall_sope_major               4
 %define ogoall_sope_minor               4
 %define ogoall_sope_makeflags           debug=yes
@@ -193,8 +193,13 @@ UPDATE_SCHEMA=\"YES\"                 # will attempt to update the database sche
 OGO_USER=\"ogo\"                      # default username (unix) of your OGo install - might vary
 " >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-webui-1.0a
 
-#cleanout file we don't want to appear in the ogoall package:
-rm -f ${RPM_BUILD_ROOT}%{prefix}/.GNUsteprc
+mkdir -p ${RPM_BUILD_ROOT}/var/lib/opengroupware.org/.libFoundation/Defaults
+mkdir -p ${RPM_BUILD_ROOT}/var/lib/opengroupware.org/documents
+mkdir -p ${RPM_BUILD_ROOT}/var/lib/opengroupware.org/news
+mkdir -p ${RPM_BUILD_ROOT}/var/log/opengroupware
+
+#cleanout files we don't want to appear in the ogoall package:
+rm -fr ${RPM_BUILD_ROOT}%{prefix}/.GNUsteprc
 rm -fr ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep
 rm -fr ${RPM_BUILD_ROOT}%{prefix}/bin/domxml
 rm -fr ${RPM_BUILD_ROOT}%{prefix}/bin/ldap2dsml
@@ -206,9 +211,23 @@ rm -fr ${RPM_BUILD_ROOT}%{prefix}/bin/xmln
 rm -fr ${RPM_BUILD_ROOT}%{prefix}/include
 
 #hm... how dost thou get there?
-rm -f ${RPM_BUILD_ROOT}%{_tmppath}/ogoall-1.0a-0.0-root/usr/local/OGo-GNUstep/Library/Makefiles/Additional/ngobjweb.make
-rm -f ${RPM_BUILD_ROOT}%{_tmppath}/ogoall-1.0a-0.0-root/usr/local/OGo-GNUstep/Library/Makefiles/woapp.make
-rm -f ${RPM_BUILD_ROOT}%{_tmppath}/ogoall-1.0a-0.0-root/usr/local/OGo-GNUstep/Library/Makefiles/wobundle.make
+rm -f ${RPM_BUILD_ROOT}${RPM_BUILD_ROOT}/usr/local/OGo-GNUstep/Library/Makefiles/Additional/ngobjweb.make
+rm -f ${RPM_BUILD_ROOT}${RPM_BUILD_ROOT}/usr/local/OGo-GNUstep/Library/Makefiles/woapp.make
+rm -f ${RPM_BUILD_ROOT}${RPM_BUILD_ROOT}/usr/local/OGo-GNUstep/Library/Makefiles/wobundle.make
+
+# ****************************** pre **********************************
+%pre
+if [ $1 = 1 ]; then
+  OGO_USER="ogo"
+  OGO_GROUP="skyrix"
+  OGO_SHELL="/bin/bash"
+  OGO_HOME="/var/lib/opengroupware.org"
+  echo -en "adding group ${OGO_GROUP}.\n"
+  /usr/sbin/groupadd "${OGO_GROUP}" 2>/dev/null || :
+  echo -en "adding user ${OGO_USER}.\n"
+  /usr/sbin/useradd -c "OpenGroupware.org User" \
+                    -s "${OGO_SHELL}" -d "${OGO_HOME}" -g "${OGO_GROUP}" "${OGO_USER}" 2>/dev/null || :
+fi
 
 # ****************************** post *********************************
 %post
@@ -306,6 +325,24 @@ if [ $1 = 1 ]; then
     chkconfig --add "${ZIDESTORE_INIT_VERSION}"
     /sbin/ldconfig
   fi
+  ## link in /etc
+  cd %{_sysconfdir}
+  ln -s %{_var}/lib/opengroupware.org/.libFoundation opengroupware.org
+  ## some defaults
+  OGO_USER="ogo"
+  OGO_HOME="/var/lib/opengroupware.org"
+  export PATH=$PATH:%{prefix}/bin
+  su - ${OGO_USER} -c "
+  Defaults write NSGlobalDomain LSConnectionDictionary '{hostName=localhost; userName=OGo; password=\"\"; port=5432; databaseName=OGo}'
+  Defaults write NSGlobalDomain LSNewsImagesPath '/var/lib/opengroupware.org/news'
+  Defaults write NSGlobalDomain LSNewsImagesUrl '/ArticleImages'
+  Defaults write NSGlobalDomain skyrix_id `hostname`
+  Defaults write NSGlobalDomain TimeZoneName GMT
+  Defaults write NSGlobalDomain WOHttpAllowHost '( localhost, 127.0.0.1, localhost.localdomain)'
+  Defaults write ogo-nhsd-1.0a NGBundlePath '%{prefix}/lib/opengroupware.org-1.0a/conduits'
+  "
+  ##
+  chmod 755 ${OGO_HOME}
 fi
 
 # ****************************** postun *********************************
@@ -314,8 +351,23 @@ if [ $1 = 0 ]; then
   if [ -e %{_sysconfdir}/ld.so.conf.d/ogoall.conf ]; then
     rm -f %{_sysconfdir}/ld.so.conf.d/ogoall.conf
   fi
+  ##
   if [ -L %{prefix}/OGo-GNUstep/Makefiles ]; then
     rm -f %{prefix}/OGo-GNUstep/Makefiles
+  fi
+  ##
+  OGO_USER="ogo"
+  OGO_GROUP="skyrix"
+  if [ "`getent passwd ${OGO_USER}`" ]; then
+    echo -en "removing user ${OGO_USER}.\n"
+    /usr/sbin/userdel "${OGO_USER}" 2>/dev/null || :
+  fi
+  if [ "`getent group ${OGO_GROUP}`" ]; then
+    echo -en "removing group ${OGO_GROUP}.\n"
+    /usr/sbin/groupdel "${OGO_GROUP}" 2>/dev/null || :
+  fi
+  if [ -h "/etc/opengroupware.org" ]; then
+    rm /etc/opengroupware.org
   fi
   /sbin/ldconfig
 fi
@@ -630,9 +682,18 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/share/opengroupware.org-1.0a/translations/Spanish.lproj
 %{prefix}/share/opengroupware.org-1.0a/translations/ptBR.lproj
 
+# environment
+%dir %attr(700,ogo,skyrix) %{_var}/lib/opengroupware.org/.libFoundation
+%dir %attr(700,ogo,skyrix) %{_var}/lib/opengroupware.org/.libFoundation/Defaults
+%dir %attr(700,ogo,skyrix) %{_var}/lib/opengroupware.org/documents
+%dir %attr(755,ogo,skyrix) %{_var}/lib/opengroupware.org/news
+%dir %attr(700,ogo,skyrix) %{_var}/log/opengroupware
 
 # ********************************* changelog *************************
 %changelog
+* Tue Mar 01 2005 Frank Reppin <frank@opengroupware.org>
+- refix fix.
+- added stuff from ogo-environment package
 * Sat Feb 26 2005 Frank Reppin <frank@opengroupware.org>
 - fixed what could be fixed (remains still broken by design due to
   install stages in build)
