@@ -24,7 +24,7 @@ fi
 #mkdir -p ${HOME}/tmp/
 #mv /var/virtual_hosts/download/packages/debian/dists/${FLAVOUR}/trunk/binary-i386/*-latest* ${HOME}/tmp/
 cd /var/virtual_hosts/download/packages/debian/dists/${FLAVOUR}/releases/${RELEASE}
-dpkg-scanpackages binary-i386 /dev/null dists/${FLAVOUR}/releases/${RELEASE} > binary-i386/Packages
+dpkg-scanpackages binary-i386 /dev/null dists/${FLAVOUR}/releases/${RELEASE}/ > binary-i386/Packages
 cd /var/virtual_hosts/download/packages/debian/dists/${FLAVOUR}/releases/${RELEASE}/binary-i386/
 gzip -c Packages > Packages.gz
 #mv ${HOME}/tmp/* /var/virtual_hosts/download/packages/debian/dists/${FLAVOUR}/trunk/binary-i386/
