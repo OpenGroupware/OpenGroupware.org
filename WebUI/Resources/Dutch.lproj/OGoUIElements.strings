@@ -10,6 +10,7 @@
 "cal_repeatEnddate" = "Cyclus-einde"
 "cal_startDate" = "Start"
 "cal_startdate" = "Start"
+"cal_taskcompletiondate" = "datum afrondig taak"
 "cal_to" = "Einde"
 "deselectAll" = "Deselecteer alles"
 "first" = "Eerste"
@@ -21,3 +22,5 @@
 "selectAll" = "Markeer alles"
 "sortColumn" = "Kolommen sorteren"
 "to" = "tot"
+"validateHTML" = "valideer HTML"
+"validateXML" = "valideer XML"

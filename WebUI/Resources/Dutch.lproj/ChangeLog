@@ -1,3 +1,11 @@
 2004-02-12  Helge Hess  <helge.hess@skyrix.com>
 
 	* created ChangeLog - please update when doing modifications!
+
+2004-09-29  Jorrit Jorritsma  <jjorritsma@aboveit.nl>
+
+	* added keys needed for queensday (dutch holiday)
+	* added dutch holidaygroups nlnorth, nlmid and nlsouth
+	* added start and end keys for dutch holidaygroups
+	* imported missing strings from English.lproj
+	* made some corrections
