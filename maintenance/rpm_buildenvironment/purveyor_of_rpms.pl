@@ -4,23 +4,15 @@
 use strict;
 use Getopt::Std;
 use File::Basename;
-die "PLEASE MAKE SURE TO EDIT \$host_i_runon\n";
 
 # must be the same as the dest dir on the \$remote_host
 # I'll also create a directory like \$ENV{'HOME'}/macros/\$host_i_runon
 # where I *expect* the rpmmacros to be present!
 # The purveyor will fail royally if it's not there.
-my $host_i_runon = "fedora-core3";
-#my $host_i_runon = "fedora-core2";
-#my $host_i_runon = "suse92";
-#my $host_i_runon = "suse91";
-#my $host_i_runon = "suse82";
-#my $host_i_runon = "mdk-10.1";
-#my $host_i_runon = "mdk-10.0";
-#my $host_i_runon = "sles9";
-#my $host_i_runon = "slss8";
-#my $host_i_runon = "rhel3";
-#my $host_i_runon = "redhat9";
+# NEW >  moved this variable into an external configfile called
+#        $ENV{'HOME'}/purveyor_of_rpms.conf
+my $host_i_runon;
+eval getconf("$ENV{'HOME'}/purveyor_of_rpms.conf") or die "FATAL: $@\n";
 
 my $time_we_started = `date +"%Y%m%d-%H%M%S"`;
 chomp $time_we_started;
@@ -53,11 +45,11 @@ my $release_codename;
 my $remote_release_dirname;
 my $libversion;
 
-die "Please make sure that everything is in place!\n";
 prepare_build_env();
 get_commandline_options();
 my $logerr = "$logs_dir/$package-$time_we_started.err";
 my $logout = "$logs_dir/$package-$time_we_started.out";
+exit 0;
 get_latest_sources();
 link_rpmmacros();
 collect_patchinfo();
@@ -816,6 +808,7 @@ sub get_commandline_options {
   }
   if ($verbose eq "yes") {
     print "########################################\n"; 
+    print "[COMMANDLINE]       - host I run on             <-p $host_i_runon>\n";
     print "[COMMANDLINE]       - package to build          <-p $package>\n";
     print "[COMMANDLINE]       - force_rebuild             <-f $force_rebuild>\n";
     print "[COMMANDLINE]       - type of build             <-t $build_type>\n";
@@ -868,4 +861,21 @@ sub prepare_build_env {
     $distrib_define = `head -n1 /etc/redhat-release`;
     chomp $distrib_define;
   }
+}
+
+#eval getconf("$ENV{'HOME'}/purveyor_of_rpms.conf") or die "FATAL: $@\n";
+sub getconf {
+  my $conffile = shift;
+  local *F;
+  open F, "< $conffile" or die "Error opening '$conffile' for read: $!";
+  if(not wantarray){
+    local $/ = undef;
+    my $string = <F>;
+    close F;
+    return $string;
+  }
+  local $/ = "";
+  my @a = <F>;
+  close F;
+  return @a;
 }

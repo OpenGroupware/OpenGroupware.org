@@ -31,18 +31,7 @@
 # ./purveyor_of_rpms.pl -p opengroupware -t release -v yes -u yes -d yes -c <see below> -c spec_tmp/<see below>
 
 use strict;
-die "WARNING: not yet configured!\n";
-my $host_i_runon = "fedora-core3";
-#my $host_i_runon = "fedora-core2";
-#my $host_i_runon = "suse92";
-#my $host_i_runon = "suse91";
-#my $host_i_runon = "suse82";
-#my $host_i_runon = "mdk-10.1";
-#my $host_i_runon = "mdk-10.0";
-#my $host_i_runon = "sles9";
-#my $host_i_runon = "slss8";
-#my $host_i_runon = "rhel3";
-#my $host_i_runon = "redhat9";
+my $host_i_runon;
 my $svn_host = 'svn.opengroupware.org';
 my $svn = '/usr/bin/svn';
 my $dl_host = "download.opengroupware.org";
@@ -71,6 +60,23 @@ my @ogo_spec;
 my $line;
 my $sope_spec;
 my $sope_src;
+eval getconf("$ENV{'HOME'}/purveyor_of_rpms.conf") or die "FATAL: $@\n";
+
+sub getconf {
+  my $conffile = shift;
+  local *F;
+  open F, "< $conffile" or die "Error opening '$conffile' for read: $!";
+  if(not wantarray){
+    local $/ = undef;
+    my $string = <F>;
+    close F;
+    return $string;
+  }
+  local $/ = "";
+  my @a = <F>;
+  close F;
+  return @a;
+}
 
 @ogo_releases = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
 open(KNOWN_OGo_RELEASES, ">> $hpath/OGo.known.rel");

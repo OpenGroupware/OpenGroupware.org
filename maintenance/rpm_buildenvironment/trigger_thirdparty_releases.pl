@@ -2,18 +2,7 @@
 #frank reppin <frank@opengroupware.org> 2004
 
 use strict;
-die "WARNING: not yet configured!\n";
-my $host_i_runon = "fedora-core3";
-#my $host_i_runon = "fedora-core2";
-#my $host_i_runon = "suse92";
-#my $host_i_runon = "suse91";
-#my $host_i_runon = "suse82";
-#my $host_i_runon = "mdk-10.1";
-#my $host_i_runon = "mdk-10.0";
-#my $host_i_runon = "sles9";
-#my $host_i_runon = "slss8";
-#my $host_i_runon = "rhel3";
-#my $host_i_runon = "redhat9";
+my $host_i_runon;
 my $svn_host = 'svn.opengroupware.org';
 my $svn = '/usr/bin/svn';
 my $dl_host = "download.opengroupware.org";
@@ -30,6 +19,23 @@ my @skip_list = qw( );
 
 my $build_opts = "-v yes -u yes -t release -d yes -f yes";
 my @tp_releases;
+eval getconf("$ENV{'HOME'}/purveyor_of_rpms.conf") or die "FATAL: $@\n";
+
+sub getconf {
+  my $conffile = shift;
+  local *F;
+  open F, "< $conffile" or die "Error opening '$conffile' for read: $!";
+  if(not wantarray){
+    local $/ = undef;
+    my $string = <F>;
+    close F;
+    return $string;
+  }
+  local $/ = "";
+  my @a = <F>;
+  close F;
+  return @a;
+}
 
 @tp_releases = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
 open(KNOWN_TP_RELEASES, ">> $hpath/ThirdParty.known.rel");
