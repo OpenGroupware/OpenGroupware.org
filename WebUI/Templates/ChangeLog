@@ -1,3 +1,8 @@
+2005-04-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoWebMail/LSWImapMailViewer.wod: disabled download-all to fix OGo
+	  bug #1290
+
 2005-03-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* BaseUI/Main.wod: fixed login actions (properly keep the session id in

@@ -165,7 +165,7 @@ PartHeaderRow: WOGenericContainer {
   bgcolor     = config.colors_partHeader;
 }
 
-HasProject : WOConditional {
+HasProject: WOConditional {
   condition = projectAllowed;
 }
 
@@ -175,7 +175,7 @@ ToDoc: WOHyperlink {
   alt      = labels.toDoc;
   title    = labels.toDoc;
   border   = 0;
-};
+}
 
 Download: WOHyperlink {
   action   = downloadSource;
@@ -184,13 +184,13 @@ Download: WOHyperlink {
   TITLE    = labels.download;
   TARGET   = downloadTarget;
   BORDER   = 0;
-};
+}
 
 ProjectSelection: SkyProjectSelection {
   project = project;        // returns the selected project
   title   = labels.project; // (optional)
   searchEnterprises = YES;  // search for enterpriseProjects 
-};
+}
 
 // to and cc collapsing
 
@@ -213,13 +213,8 @@ ToExpander: WOHyperlink {
   BORDER   = "0";
 }
 
-CcCollapserCond: WOConditional {
-  condition = showCcCollapser;
-}
-
-CcExpanderCond: WOConditional {
-  condition = showCcExpander;
-}
+CcCollapserCond: WOConditional { condition = showCcCollapser; }
+CcExpanderCond:  WOConditional { condition = showCcExpander;  }
 
 CcCollapser: WOHyperlink {
   action   = collapseCc;
@@ -246,43 +241,38 @@ ReceiptQuestion: LSWWarningPanel {
   phrase   = "mdnReturnReceiptQuestion";
 }
 
-SourceIsOpen : WOConditional {
-  condition = viewSourceEnabled;
-}
-SourceIsOpenElse : WOConditional {
-  condition = viewSourceEnabled;
-  negate    = YES;
-}
-ExpandedSourceLink : WOHyperlink {
+SourceIsOpen:     WOConditional { condition = viewSourceEnabled; }
+SourceIsOpenElse: WOConditional { condition = viewSourceEnabled; negate = YES;}
+
+ExpandedSourceLink: WOHyperlink {
   action = alternateShowSource;
   filename = "collapsed.gif";
   BORDER   = 0;
 }
-CollapsedSourceLink : WOHyperlink {
+CollapsedSourceLink: WOHyperlink {
   action = alternateShowSource;
   filename = "expanded.gif";
   BORDER   = 0;
 }
-WarningModeCond : WOConditional {
-        condition = isInWarningMode;
+
+/* warnings */
+
+WarningModeCond:     WOConditional { condition = isInWarningMode; }
+WarningModeCondElse: WOConditional { condition = isInWarningMode; negate=YES; }
+
+Warning: LSWWarningPanel {
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
 }
 
-WarningModeCondElse : WOConditional {
-        condition = isInWarningMode;
-        negate    = YES;
-}
-
-Warning : LSWWarningPanel {
-        onOk      = warningOkAction;
-        phrase    = warningPhrase;
-}
+/* downloads */
 
 DownLoadRow: WOGenericContainer {
   elementName = "tr";
   bgcolor     = config.colors_partHeader;
 }
 
-DownloadAllLabel : WOString {
+DownloadAllLabel: WOString {
   value = labels.downloadAll;
 }
 
@@ -294,20 +284,24 @@ DownloadAll: WOHyperlink {
   BORDER   = 0;
 }
 
-DownloadIcon : SkyP4MailIcon {
+DownloadIcon: SkyP4MailIcon {
   mimeType     = contentType;
   //  documentPath = doof;
 }
 
-DownloadAllCond : WOConditional {
-  condition = downloadAllEnabled;
+// TODO: whats the difference?
+// TODO: enable if it works
+DownloadAllCond: WOConditional {
+  //condition = downloadAllEnabled;
+  condition = NO;
+}
+IsDownloadAllEnabled: WOConditional {
+  //condition = isDownloadAllEnabled;
+  condition = NO;
 }
 
-DownloadAllString : WOString {
+// TODO: this is the JS code?
+DownloadAllString: WOString {
   value = downloadAllString;
   escapeHTML = NO;  
-}
-
-IsDownloadAllEnabled : WOConditional {
-  condition = isDownloadAllEnabled;
 }
