@@ -85,4 +85,9 @@ if($i_really_had_sth_todo eq "yes") {
   #the most current sope trunk built/installed
   print "restoring latest build state...\n";
   system("$ENV{HOME}/purveyor_of_debs.pl -p sope -v yes -u no -d no -f yes -b no");
+} else {
+  print "Seems as if there's nothing to do.\n";
+  print "SOPE.known.rel told me, that we've alread build every single release\n";
+  print "If you think that I'm wrong - you can either delete SOPE.known.rel completely\n";
+  print "or only parts of it and I'll happily rebuild each release I don't know.\n";
 }
