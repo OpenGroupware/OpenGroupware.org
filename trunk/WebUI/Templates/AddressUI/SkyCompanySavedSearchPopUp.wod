@@ -1,0 +1,78 @@
+// bind template to class
+
+LoadForm: WOForm {
+  name   = "loadform";
+  action = loadSearch;
+}
+
+SearchTitlePopUp: WOPopUpButton {
+  list      = listKeys;
+  selection = searchTitle;
+  onChange  = "document.loadform.submit(); return true";
+  nilString = labels.savedSearches;
+}
+
+SearchLoadSubmit: WOSubmitButton {
+  action = loadSearch;
+  name   = "savedSearchLoadButton";
+  value  = labels.savedSearchesShow;
+  title  = labels.savedSearchesShow;
+  class  = "button_narrow";
+}
+
+ShowRemoveButtonCond: WOConditional {
+  condition = hasSearchSelected;
+}
+
+SearchRemoveSubmit: WOSubmitButton {
+  action   = removeSearch;
+  value    = labels.savedSearchesDelete;
+  title    = labels.savedSearchesDelete;
+  class    = "button_auto";
+}
+
+ShowPopUpCond: WOConditional {
+  condition = hidePopUp;
+  negate    = YES;
+}
+
+ShowLoadButtonCond: WOConditional {
+  condition = session.isJavaScriptEnabled;
+  negate    = YES;
+}
+
+ShowSaveFormCond: WOConditional {
+  condition = showSaveForm;
+}
+
+ShowLoadFormCond: WOConditional {
+  condition = showLoadForm;
+}
+
+SaveForm: WOForm {
+  name   = "saveform";
+  action = saveSearch;
+}
+
+SearchTitleField: WOTextField {
+  name  = "saveTitle";
+  value = saveTitle;
+  size  = 10;
+}
+
+TabCheckBox: WOCheckBox {
+  checked = showTab;
+}
+
+TabLabel: SkyRichString {
+  value = "Tab";
+}
+
+SearchSaveSubmit: WOSubmitButton {
+  action   = saveSearch;
+  name     = "savedSearchSaveButton";
+  value    = labels.savedSearchesAdd;
+  title    = labels.savedSearchesAdd;
+  class    = "button_wide";
+}
+

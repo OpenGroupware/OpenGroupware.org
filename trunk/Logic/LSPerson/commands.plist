@@ -1,0 +1,70 @@
+// $Id$
+{
+  domainList = (
+        person,
+  );
+
+  domains = {
+    "person" = {
+      operations = {
+        "change-login-status" = { class = "LSChangeLoginStatusCommand";   };
+        "new"              = { class =  "LSNewPersonCommand";             };
+        "set"              = { class  = "LSSetPersonCommand";             };
+        "get"              = { class  = "LSGetPersonCommand";             };
+        "delete"           = { 
+                class  = "LSDeleteCompanyCommand";
+                init   = { entity = "Person"; };
+         };
+        "get-comment" = { 
+          class  = "LSDBFetchRelationCommand"; 
+          init   = { 
+                entity                = "Person"; 
+                destinationEntityName = "CompanyInfo"; 
+                sourceKey             = "companyId"; 
+                destinationKey        = "companyId";
+                isToMany              = NO; 
+          };
+        }; 
+        
+        "get-by-globalid"  = { class = "LSGetPersonsForGlobalIDs"; };
+        
+        "enterprises"      = { class = "LSGetEnterpriseForPersonCommand";  };
+        "check-permission" = { class = "LSCheckPermissionCompanyCommand";  };
+        "get-extattrs"     = { class = "LSFetchExtendedAttributesCommand"; };
+        "get-telephones"   = { class = "LSFetchTelsForPersonCommand";      };
+        "full-search"      = { class = "LSFullSearchPersonCommand";        };
+        "extended-search"  = { class = "LSExtendedSearchPersonCommand";    };
+        "get-projects"     = { class = "LSGetProjectForPersonCommand";     };
+        "get-assigned-projects" = { 
+          class = "LSGetProjectForPersonCommand";
+          init   = { 
+                onlyAssigned = YES; 
+          };
+        };
+        "get-assigned-project-ids" = { 
+           class = "LSGetAssignedProjectIdsForPersonCommand";
+        };
+        "get-project-assignments" = { 
+          class  = "LSDBFetchRelationCommand"; 
+          init   = { 
+                entity                = "Person"; 
+                destinationEntityName = "ProjectCompanyAssignment"; 
+                sourceKey             = "companyId"; 
+                destinationKey        = "companyId";
+                isToMany              = YES; 
+          }; 
+        };
+        "set-enterprise"   = { class = "LSGroupToMemberAssignmentCommand"; };
+        "assign-projects"  = { 
+          class = "LSProjectsToCompanyAssignmentCommand"; 
+          init  = {
+            entity = "Person";
+          };
+        };
+        //old mappings
+        "setprojects"      = { class = "LSGetProjectForPersonCommand";     };
+        "toaccount"        = { class = "LSPersonToAccountCommand";         };
+      };
+    };
+  };
+}

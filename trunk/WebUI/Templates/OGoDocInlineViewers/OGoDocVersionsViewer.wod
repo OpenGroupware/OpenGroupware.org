@@ -1,0 +1,7 @@
+// bind template to controller
+
+VersionList: SkyProject4VersionList {
+  fileManager = fileManager;
+  dataSource  = historyDataSource;
+  documentId  = documentGlobalID;
+}

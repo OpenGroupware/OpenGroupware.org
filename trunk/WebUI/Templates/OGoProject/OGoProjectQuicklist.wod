@@ -1,0 +1,54 @@
+// bind template to controller class
+
+NoProjectsLabel: WOString {
+  value = labels.label_no_projects_matching_category;
+}
+
+HasProjects:   WOConditional { condition = hasProjects;               }
+HasNoProjects: WOConditional { condition = hasProjects; negate = YES; }
+
+ProjectRepetition: WORepetition {
+  list = projects;
+  item = project;
+}
+
+SelectLink: WOHyperlink {
+  action = selectProject;
+}
+
+ProjectLink: WOHyperlink {
+  directActionName = "activate";
+  ?oid             = project.projectId;
+}
+
+ProjectName: WOString { value = project.name;       }
+ProjectCode: WOString { value = project.number;     }
+ProjectLead: WOString { value = project.leaderName; }
+
+ProjectLeadLink: WOHyperlink {
+  directActionName = "activate";
+  ?oid             = project.leader.companyId;
+}
+
+/* selected project */
+
+SelProjectLink: WOHyperlink {
+  directActionName = "activate";
+  ?oid             = project.projectId;
+}
+
+SelProjectName: WOString { value = selectedProject.name; }
+
+SelProjectContent: WOString {
+  value = selectedProject.comment;
+}
+
+FSInfo: SkyProjectInlineViewer {
+  project  = selectedProjectEO;
+  showClip = NO;
+  showSend = NO;
+}
+
+/* styles */
+
+Font: SkyConfigFont {}

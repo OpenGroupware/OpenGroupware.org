@@ -1,0 +1,14 @@
+// $Id$
+
+Frame: LSWSkyrixFrame {
+}
+Window: LSWWindowFrame {
+  title   = label;
+  onClose = session.navigation.leavePage;
+}
+
+Form: WOComponentReference {
+  component   = currentForm;
+  fileManager = fileManager;
+  preview     = NO;
+}

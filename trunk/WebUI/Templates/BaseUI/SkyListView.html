@@ -1,0 +1,68 @@
+<!-- $Id: SkyListView.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+
+<#ShowTableTag>
+  <table width="0" border="0">
+</#ShowTableTag>
+
+<#UseRadioButtonsCond>
+  <#WithNil>
+    <tr>   
+      <td><#EmptyRadioButton/></td>
+      <#NilCell><#Font><#NilString/></#Font></#NilCell>
+    </tr>
+   </#WithNil>
+</#UseRadioButtonsCond>
+
+<#RowRep>
+  <tr>
+    <#ColumnRep>
+      <#ShowCheckerCond>
+        <#UseCheckBoxesCond>
+          <td><#Checker/></td>
+        </#UseCheckBoxesCond>
+
+        <#UseRadioButtonsCond>
+          <td><#RadioButton/></td>
+        </#UseRadioButtonsCond>
+
+        <#UsePopUpCond>
+          <td><#CheckerPopUp/></td>
+        </#UsePopUpCond>
+      </#ShowCheckerCond>
+
+      <#ShowCheckerCondElse><td></td></#ShowCheckerCondElse>
+        
+      <#HasTemplateCond>
+        <#Cell><#Font><#TemplateValue/></#Font></#Cell>
+      </#HasTemplateCond>
+       
+      <#HasTemplateCondElse>
+          <#HasAttributesCond>
+            <#AttributeRep>
+              <#Cell>
+                <#Font>
+                  <#IsItalicStyle><i></#IsItalicStyle>
+                  <#Value/>
+                  <#IsItalicStyle></i></#IsItalicStyle>
+                </#Font>
+              </#Cell>
+            </#AttributeRep>
+          </#HasAttributesCond>
+
+          <#HasAttributesCondElse>
+            <#Cell>
+              <#Font>
+                <#IsItalicStyle><i></#IsItalicStyle>
+                <#Value/>
+                <#IsItalicStyle></i></#IsItalicStyle>
+              </#Font>
+            </#Cell>
+          </#HasAttributesCondElse>
+      </#HasTemplateCondElse>
+    </#ColumnRep>
+  </tr>
+</#RowRep>
+
+<#ShowTableTag>
+  </table>
+</#ShowTableTag>

@@ -1,0 +1,3 @@
+# $Id$
+
+ADDITIONAL_BUNDLE_LIBS += -lGDLAccess

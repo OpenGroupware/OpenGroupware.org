@@ -1,0 +1,76 @@
+2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetTeamForAccountCommand.m: minor code cleanups (v5.1.16)
+
+2004-01-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.15
+
+	* LSDeleteAccountCommand.m: when an account is deleted, the is_account
+	  flag is removed and the is_locked flag is set (various other things
+	  too) - related to OGo bug #201
+
+	* LSExtendedSearchAccountCommand.m: minor cleanups
+
+2004-01-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetAccountsForGlobalIDsCommand.m: minor cleanups (v5.0.14)
+
+2004-01-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSChangePasswordCommand.m: fixed a compile warning (v5.0.13)
+
+2004-01-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.12
+
+	* LSGetTeamForAccountCommand.m: fixed a compile warning
+
+	* common.h: minor tweaks for MacOSX
+
+Wed Dec 10 20:34:27 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* LSLoginAccountCommand.m: added login with super-user-context 
+	  (v5.0.11)
+
+2003-12-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSGetAccountByLoginCommand.m: minor cleanups (v5.0.10)
+
+Mon Nov 24 17:01:14 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSLoginAccountCommand.m: store root password in memory to authorize
+	  root to the LDAP server to enable password modifications (v5.0.9)
+
+Mon Nov 24 13:15:57 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSChangePasswordCommand.m: add the posibility to configure a seperate
+	  LDAP server for writing passwords 
+	  (Defaults: LSAuthLDAP* => LSWriteLDAP*) (5.0.8)
+
+Fri Nov 21 00:12:56 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSChangePasswordCommand.m: enable writing password modifications
+	  to LDAP without LDAP authorization (WritePasswordToLDAP) (5.0.7)
+
+Thu Nov  6 10:19:31 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSChangePasswordCommand.m: suppress general access check 
+	  for changing passwords, only root and owner allowd to change the 
+	  password (v5.0.6)
+
+Mon Jul  7 18:39:18 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSNewAccountCommand.m: remove license manager (v5.0.5)
+
+Mon Jul  7 13:08:24 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.4)
+
+	* removed old ChangeLog
+
+2001-06-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSLoginAccountCommand.m: replaced NGNil with NSNull
+
+	* moved to SkyDev41

@@ -1,0 +1,9 @@
+# version file
+
+MAJOR_VERSION=5
+MINOR_VERSION=1
+SUBMINOR_VERSION:=58
+
+# v5.1.46 requires libNGObjWeb     v4.3.41
+# v5.0.16 requires libEOControl    v4.2.39
+# v5.0.7  requires libOGoScheduler v5.0.14

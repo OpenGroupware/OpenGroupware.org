@@ -1,0 +1,46 @@
+// $Id: SkyNewsAppointmentList.wod 2 2004-08-20 11:37:44Z znek $
+
+AppointmentList: SkyTableView {
+  dataSource   = dataSource;
+  item         = appointment;
+  batchSize    = session.userDefaults.news_blocksize;
+  currentBatch = start;
+  titleString  = title;
+  footerString = labels.appointments;
+  isDescending = isDescending;
+  sortedKey    = sortedKey;
+}
+
+StartDateData: WETableData {
+  sortKey = "startDate";
+  title   = labels.startDate;
+}
+
+StartDate: WOString {
+  value     = appointment.startDate;
+  formatter = session.formatDateTime;
+}
+
+TitleData: WETableData {
+  sortKey = "title";
+  title   = labels.title;
+  string  = appointment.title;
+  action  = viewAppointment;
+}
+
+LocationData: WETableData {
+  sortKey = "location";
+  title   = labels.location;
+}
+
+Location: WOString {
+  value = appointment.location;
+}
+
+ParticipantsData: WETableData {
+  title = labels.participants;
+}
+
+Participants: WOString {
+  value = appointment.participantsLabel;
+}

@@ -1,0 +1,231 @@
+// bind template to controller class
+
+Frame:  LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = monthLabel;
+  onClose = session.navigation.leavePage;
+}
+
+SelectPanel: SkySchedulerSelectPanel {
+  timeZone           = timeZone;
+  year               = year;
+  month              = month;
+  weekStart          = weekStart;
+  day                = day;
+  fetchSpecification = fetchSpecification;
+  mode               = selectedTab;
+  isResCategorySelected = isResCategorySelected;
+}
+
+// DayOverview
+DayOverview: SkyInlineDayOverview {
+  dataSource = dataSource;
+  holidays   = holidays;
+  day        = day;
+}
+DayVChart: SkyInlineDayChart {
+  dataSource = dataSource;
+  holidays   = holidays;
+  day        = day;
+}
+DayHChart: SkyInlineDayHChart {
+  dataSource = dataSource;
+  holidays   = holidays;
+  day        = day;
+}
+
+DayOverviewLink: WOHyperlink { action = switchToDayOverview; }
+DayHChartLink:   WOHyperlink { action = switchToDayHChart;   }
+DayVChartLink:   WOHyperlink { action = switchToDayVChart;   }
+
+DayHChartActive: WOConditional { condition = dayViewKey; value = "hchart"; }
+DayVChartActive: WOConditional { condition = dayViewKey; value = "vchart"; }
+DayOverviewActive: WOConditional {
+  condition = dayViewKey;
+  value     = "overview";
+}
+
+// WeekOverview
+WeekColumnView: SkyInlineWeekColumnView {
+  dataSource = dataSource;
+  holidays   = holidays;
+  weekStart  = weekStart;
+}
+WeekOverview: SkyInlineWeekOverview {
+  dataSource = dataSource;
+  holidays   = holidays;
+  weekStart  = weekStart;
+}
+WeekVChart: SkyInlineWeekChart {
+  dataSource = dataSource;
+  holidays   = holidays;
+  weekStart  = weekStart;
+}
+WeekHChart: SkyInlineWeekHChart {
+  dataSource = dataSource;
+  holidays   = holidays;
+  weekStart  = weekStart;
+}
+
+/* ??? new */
+
+WeekColumnViewLink: WOHyperlink { action = switchToWeekColumnView; }
+WeekOverviewLink:   WOHyperlink { action = switchToWeekOverview;   }
+WeekHChartLink:     WOHyperlink { action = switchToWeekHChart;     }
+WeekVChartLink:     WOHyperlink { action = switchToWeekVChart;     }
+
+WeekHChartActive: WOConditional { condition = weekViewKey; value = "hchart"; }
+WeekVChartActive: WOConditional { condition = weekViewKey; value = "vchart"; }
+WeekOverviewActive: WOConditional {
+  condition = weekViewKey;
+  value     = "overview";
+}
+WeekColumnViewActive: WOConditional {
+  condition = weekViewKey;
+  value     = "columnview";
+}
+
+
+// WOConditionals
+IsDayOverview: WOConditional {
+  condition = selectedTab;
+  value     = "dayoverview";
+}
+IsWeekOverview: WOConditional {
+  condition = selectedTab;
+  value     = "weekoverview";
+}
+IsMonthOverview: WOConditional {
+  condition = selectedTab;
+  value     = "monthoverview";
+}
+IsYearOverview: WOConditional {
+  condition = selectedTab;
+  value     = "yearoverview";
+}
+
+// MonthOverview
+MonthOverview: SkyInlineMonthOverview {
+  dataSource = dataSource;
+  holidays   = holidays;
+  year       = year;
+  month      = month;
+}
+
+// YearOverview
+YearOverview: SkyInlineYearOverview {
+  year     = year;
+  timeZone = timeZone;
+}
+
+// tabs
+Tab: SkyTabView {
+  selection = selectedTab;
+}
+DayOverviewTab: SkySimpleTabItem {
+  key   = "dayoverview";
+  //  label = dayTabLabel;
+  //icon  = dayIcon;
+  label = day.dayOfMonth;
+}
+WeekOverviewTab: SkySimpleTabItem {
+  key   = "weekoverview";
+  // label = weekStart.weekOfYear;
+  //icon  = weekIcon;
+  label = weekTabLabel;
+}
+MonthOverviewTab: SkySimpleTabItem {
+  key    = "monthoverview";
+  label  = monthTabLabel;
+  //icon   = monthIcon;
+}
+YearOverviewTab: SkySimpleTabItem {
+  key    = "yearoverview";
+  label  = year;
+  //icon   = yearIcon;
+}
+
+// buttons
+ToggleCell: WOGenericContainer {
+  elementName = "td";
+  ALIGN       = "left";
+  VALIGN      = "middle";
+  BGCOLOR     = config.colors_mainButtonRow;
+  WIDTH       = "1%";
+}
+ButtonCell: WOGenericContainer {
+  elementName = "td";
+  //COLSPAN   = "2";
+  ALIGN       = "right";
+  BGCOLOR     = config.colors_mainButtonRow;
+}
+Buttons: SkyButtonRow {
+  ordering    = (print, proposal );
+  onProposal  = appointmentProposal;
+  onPrint     = overviewPrint;
+  targetPrint = "SkyrixPrintView";
+  proposal    = labels.proposal;
+  hasProposal = isNotResCategorySelected;
+  print       = labels.print_view;
+}
+
+//Icons
+HChartIcon: WOImage {
+  filename = "icon_apt_list.gif";
+  BORDER   = "0";
+  VALIGN   = "TOP";
+  ALT      = labels.hchart;
+  title    = labels.hchart;
+}
+HChartIconInactive: WOImage {
+  filename = "icon_apt_list_inactive.gif";
+  BORDER   = "0";
+  VALIGN   = "TOP";
+  ALT      = labels.hchart;
+  title    = labels.hchart;
+}
+VChartIcon: WOImage {
+  filename = "icon_apt_chart.gif";
+  BORDER   = "0";
+  VALIGN   = "TOP";
+  ALT      = labels.vchart;
+  title    = labels.vchart;
+}
+VChartIconInactive: WOImage {
+  filename = "icon_apt_chart_inactive.gif";
+  BORDER   = "0";
+  VALIGN   = "TOP";
+  ALT      = labels.vchart;
+  title    = labels.vchart;
+}
+OverviewIcon: WOImage {
+  filename = "icon_apt_overview.gif";
+  BORDER   = "0";
+  VALIGN   = "TOP";
+  ALT      = labels.overview;
+  title    = labels.overview;
+}
+OverviewIconInactive: WOImage {
+  filename = "icon_apt_overview_inactive.gif";
+  BORDER   = "0";
+  VALIGN   = "TOP";
+  ALT      = labels.overview;
+  title    = labels.overview;
+}
+
+ColumnViewIcon: WOImage {
+  filename = "icon_apt_column_view.gif";
+  BORDER   = "0";
+  VALIGN   = "TOP";
+  ALT      = labels.columnView;
+  title    = labels.columnView;
+}
+
+ColumnViewIconInactive: WOImage {
+  filename = "icon_apt_inactive_column_view.gif";
+  BORDER   = "0";
+  VALIGN   = "TOP";
+  ALT      = labels.columnView;
+  title    = labels.columnView;
+}

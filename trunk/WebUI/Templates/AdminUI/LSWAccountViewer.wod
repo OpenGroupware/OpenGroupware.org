@@ -1,0 +1,82 @@
+// $Id: LSWAccountViewer.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = labels.accountViewerTitle;
+  onClose = session.navigation.leavePage;
+}
+
+Title: LSWViewerTitle {
+  title     = account.login;
+}
+
+// TODO: replace with something else
+AccountViewer : LSWObjectViewer {
+  labels        = labels;
+  object        = account;
+  relatedObject = item;
+  attributes    = (
+    { key = "login";       },
+    { key = "name";        } ,
+    { key = "firstname";   },
+    { key = "description"; label = "nickname"; },
+    { key = "email1";      href = "mailto:";   },
+    { key = "groups";      relKey = "description"; action = "viewItem"; },
+    { key = "language";    localizeValue = YES; },
+    { key = "timezone";    },
+    { 
+      key    = "scheduler_view";  
+      valueKeys = {
+        overview = scheduler_overview;
+        chart    = scheduler_chart;
+        day      = scheduler_day;
+      };
+    },
+    { 
+      key    = "scheduler_start_hour";  
+      values = {
+        "00"="00:00"; "01"="01:00"; "02"="02:00"; "03"="03:00";
+        "04"="04:00"; "05"="05:00"; "06"="06:00"; "07"="07:00";
+        "08"="08:00"; "09"="09:00"; "10"="10:00"; "11"="11:00";
+        "12"="12:00"; "13"="13:00"; "14"="14:00"; "15"="15:00";
+        "16"="16:00"; "17"="17:00"; "18"="18:00"; "19"="19:00";
+        "20"="20:00"; "21"="21:00"; "22"="22:00"; "23"="23:00";
+      };
+    },
+    { 
+      key    = "scheduler_end_hour";  
+      values = {
+        "00"="00:00"; "01"="01:00"; "02"="02:00"; "03"="03:00";
+        "04"="04:00"; "05"="05:00"; "06"="06:00"; "07"="07:00";
+        "08"="08:00"; "09"="09:00"; "10"="10:00"; "11"="11:00";
+        "12"="12:00"; "13"="13:00"; "14"="14:00"; "15"="15:00";
+        "16"="16:00"; "17"="17:00"; "18"="18:00"; "19"="19:00";
+        "20"="20:00"; "21"="21:00"; "22"="22:00"; "23"="23:00";
+      };
+    },
+    { key = "enterprise_sub_view"; localizeValue = YES; },
+    { key = "mail_editor_type";    localizeValue = YES; },
+    { key = "mail_send_type";      localizeValue = YES; },
+    { key = "job_import_name"; }
+  );
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+Font: SkyConfigFont {}
+
+Buttons: SkyButtonRow {
+  ordering = ( edit );
+  /* default buttons */
+  onEdit       = edit;
+
+  /* custom buttons */
+  ordering     = ( edit_preferences );
+  onEdit_preferences = preferences;
+
+  /* labels */
+  edit             = labels.edit;
+  edit_preferences = labels.editPreferences;
+}

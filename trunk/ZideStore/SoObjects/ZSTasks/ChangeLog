@@ -1,0 +1,37 @@
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxTaskFolder.m: fixed GroupDAV namespace to current draft (v1.3.76)
+
+2004-11-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxTask.m: fixed a MacOSX warning (v1.3.75)
+
+2004-11-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxTaskFolder.m: added custom resource type tag for folders 
+	  ({GROUPWARE:}vtodo-collection) (v1.3.74)
+
+2004-10-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxTask.m: fixed a warning on MacOSX (v1.3.73)
+
+2004-10-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxTask.m: properly tag keywords property as a multivalue string
+	  (v1.3.72)
+
+2004-08-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* added a library, so that linking on MacOSX works (v1.3.71)
+
+2004-07-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxTask.m: fixed zone arguments from nil to NULL (v1.2.70)
+
+2004-02-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: fixed library dependencies for OSX (v1.2.69)
+
+2003-11-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* moved Frontend/Tasks subproject into a separate ZSP product (v1.2.68)

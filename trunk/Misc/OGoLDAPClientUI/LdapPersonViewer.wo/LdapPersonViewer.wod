@@ -1,0 +1,64 @@
+// $Id: LdapPersonViewer.wod,v 1.1 2004/05/21 12:23:59 helge Exp $
+
+Frame: LSWSkyrixFrame {
+}
+
+Window: LSWWindowFrame {
+  title   = "LDAP-Viewer: Person View";
+  onClose = session.navigation.leavePage;
+}
+
+Title: LSWViewerTitle {
+  title = viewerTitle;
+}
+
+Font: SkyConfigFont {}
+
+Buttons: SkyButtonRow {
+  ordering = ( );
+
+  hasEdit  = isEditEnabled;
+  onEdit   = edit;
+
+  edit     = labels.edit;
+}
+
+SearchForm: WOForm {
+  name   = "searchForm";
+  action = searchAction;
+}
+
+FirstName: WOString {
+  value = person.givenName;
+}
+LastName: WOString {
+  value = person.sn;
+}
+Email: WOString {
+  value = person.mail;
+}
+Street: WOString {
+  value = person.street;
+}
+
+// Tabs.
+
+ViewerTabs: SkyTabView {
+  selection = tabKey;
+}
+
+ViewerTabPerson: SkyTabItem {
+  key   = "attributes";
+  label = labels.Person;
+  icon  = "attributes";
+}
+ViewerTabLog: SkyTabItem {
+  key   = "log";
+  label = labels.Log;
+  icon  = "log";
+}
+ViewerTabAddresses: SkyTabItem {
+  key   = "address";
+  label = labels.Address;
+  icon  = "address";
+}

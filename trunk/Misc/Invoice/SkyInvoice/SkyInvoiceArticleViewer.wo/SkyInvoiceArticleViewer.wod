@@ -1,0 +1,109 @@
+// $Id: SkyInvoiceArticleViewer.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+//Style
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.invoiceArticleViewerWindowTitle;
+  onClose = session.navigation.leavePage;
+}
+
+ArticleTitle: LSWViewerTitle {
+  title     = article.articleNr;
+}
+
+Buttons: SkyButtonRow {
+  ordering = ( edit, delete );
+  /* defaultButtons */
+  hasEdit   = isEditEnabled;
+  hasDelete = isDeleteEnabled;
+  onEdit    = edit;
+  onDelete  = delete;
+  /* labels */
+  edit          = labels.editArticle;
+  delete        = labels.deleteArticle;
+}
+
+ToggleAttr: SkyAttribute {
+  label = labels.currency;
+}
+TogglePanel: SkyInlineCurrencyToggle {
+  currency = session.userDefaults.invoice_currency;
+}
+
+//Tabs
+
+TabView: SkyTabView {
+  selection = tabKey;
+}
+
+AttributesTab: SkyTabItem {
+  key       = "attributes";
+  action    = tabClicked;
+  label     = labels.attributes;
+  icon      = "attributes";
+}
+SalesTab: SkyTabItem {
+  key       = "sales";
+  action    = tabClicked;
+  label     = labels.sales;
+  icon      = "sales";
+}
+
+//Attributes
+
+Title: LSWViewerTitle {
+  title   = article.articleNr;
+}
+
+ArticleSubViewer: LSWObjectViewer {
+  labels         = labels;
+  object         = article;
+  valueColor     = config.colors_subValueCell;
+  attributeColor = config.colors_subAttributeCell;
+  numberFormatter= currencyFormatter;
+  attributes     = (
+    {   key     = "articleNr";          },
+    {   key     = "articleName";        },
+    {   key     = "price";              },
+    {   key     = "comment";            },
+    {   key     = "articleCategory";
+        relKey  = "categoryName";       },
+    {   key     = "articleUnit";
+        relKey  = "description";        }
+  );
+}
+ArticleSubViewer2 : LSWObjectViewer {
+  labels         = labels;
+  object         = article;
+  valueColor     = config.colors_subValueCell;
+  attributeColor = config.colors_subAttributeCell;
+  numberFormatter= numberFormatter;
+  attributes     = (
+    {   key     = "vat";
+        label   = "articleVat";
+    }
+  );
+}
+
+//delete-warning
+
+WarningCond : WOConditional {
+  condition = isInWarningMode;
+}
+
+WarningCondElse : WOConditional {
+  condition = isInWarningMode;
+  negate    = YES;
+}
+
+Warning : LSWWarningPanel {
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
+}
+
+// sales
+Sales: SkyInvoiceInlineSalesViewer {
+  validArticleIds = articleIds;
+}

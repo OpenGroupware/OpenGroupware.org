@@ -1,0 +1,5 @@
+// NSUserDefaults
+{
+  /* time interval in which the mail-dock-item checks for new mail */
+  SkyMailCheckInterval = 120; /* 120s = 2min */
+}

@@ -1,0 +1,112 @@
+{
+  cvsid         = "$Id$";
+  bundleHandler = LSWAddressModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = LSAddress;     type = cmd;   },
+      { name = BaseUI;       type = lso;   },
+      { name = LSScheduler;   type = cmd;   },
+      { name = OGoUIElements; type = lso;   },
+    );
+    classes = (
+      { name = NSObject;          },
+      { name = LSWObjectMailPage; },
+      { name = LSWTabHead;        },
+      { name = LSWTabContent;     },
+      { name = LSWTabItem;        },
+      { name = LSWModuleManager; exact-version = 2; },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     }
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = LSWAddressModule;            },
+      { name = LSWFullSearch;               },
+      { name = LSWAddressViewer;            },
+      { name = LSWAddressEditor;            },
+      { name = LSWAddressPreferences;       },
+      { name = SkyWizardAddressViewer;      },
+      { name = SkyBusinessCardGathering;    },
+      { name = LSWFormLetterComponent;      },
+      { name = SkyAddressesViewer;          },
+      { name = SkyTelephoneViewer;          },
+      { name = SkyTelephoneEditor;          },
+      { name = SkyCompanyAttributesViewer;  },
+      { name = SkyPersonalAttributesViewer; },
+      { name = SkyPersonalViewerConfig;     },
+      { name = SkyAddressEditor;            },
+      { name = SkyAddressSubEditor;         },
+      { name = SkyPhoneSubEditor;           },
+      { name = SkyExtendedAttrsSubEditor;   },
+      { name = SkyContactSubEditor;         },
+      { name = SkyCategorySubEditor;        },
+      { name = SkyCommentSubEditor;         },
+      { name = SkyCompanyFlagSubEditor;     },
+      { name = SkyContactImportUploadPage;  },
+      { name = SkyContactImportPage;        },
+      { name = SkyCompanySavedSearchPopUp;  },
+    );
+
+    PreferencePages = (
+      {
+        name      = "Address";
+        component = "LSWAddressPreferences";
+        labelKey  = "Address";
+        icon      = "icon_enterprises_26x21.gif";
+      }
+      );
+
+    WOComponents = (
+      { name = LSWFullSearch;               },
+      { name = LSWAddressViewer;            },
+      { name = LSWAddressEditor;            },
+      { name = LSWAddressPreferences;       },
+      { name = SkyWizardAddressViewer;      },
+      { name = SkyBusinessCardGathering;    },
+      { name = LSWFormLetterComponent;      },
+      { name = SkyAddressesViewer;          },
+      { name = SkyTelephoneViewer;          },
+      { name = SkyTelephoneEditor;          },
+      { name = SkyCompanyAttributesViewer;  },
+      { name = SkyPersonalAttributesViewer; },
+      { name = SkyPersonalViewerConfig;     },
+      { name = SkyAddressEditor;            },
+      { name = SkyAddressSubEditor;         },
+      { name = SkyPhoneSubEditor;           },
+      { name = SkyExtendedAttrsSubEditor;   },
+      { name = SkyContactSubEditor;         },
+      { name = SkyCategorySubEditor;        },
+      { name = SkyCommentSubEditor;         },
+      { name = SkyCompanyFlagSubEditor;     },
+      { name = SkyContactImportUploadPage;  },
+      { name = SkyContactImportPage;        },
+      { name = SkyCompanySavedSearchPopUp;  },
+    );
+    
+    LSWCommands = (
+      {
+        verb      = edit;
+        type      = "objc/SkyAddressDocument";
+        component = SkyAddressEditor;
+      },
+      {
+        verb      = view;
+        type      = "objc/SkyAddressDocument";
+        component = LSWAddressViewer;
+      },
+      { verb = view;    type = "eo/address"; component = LSWAddressViewer; },
+      { verb = edit;    type = "eo/address"; component = LSWAddressEditor; },
+      { verb = new;     type = "eo/address"; component = LSWAddressEditor; },
+      { verb = wizard;  type = "eo/address"; component = LSWAddressEditor; },
+      {
+        verb = wizard-view;  type = "eo/address";
+        component = SkyWizardAddressViewer;
+      }
+    );
+  };
+}

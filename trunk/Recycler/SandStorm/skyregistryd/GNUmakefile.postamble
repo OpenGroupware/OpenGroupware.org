@@ -1,0 +1,9 @@
+# $Id$
+
+after-install ::
+	cp skyreginfo.sh $(GNUSTEP_INSTALLATION_DIR)/Tools
+	cp startregd.sh  $(GNUSTEP_INSTALLATION_DIR)/Tools
+	$(MKDIRS) $(TEMPLATE_INSTALL_DIR)/ $(INSTANCE_INSTALL_DIR)
+	cp skyregistryd.xml $(TEMPLATE_INSTALL_DIR)/
+	if ! test -f $(INSTANCE_INSTALL_DIR)/iRegistry.xml; then\
+	  cp iRegistry.xml    $(INSTANCE_INSTALL_DIR)/; fi

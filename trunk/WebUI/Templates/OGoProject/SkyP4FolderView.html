@@ -1,0 +1,50 @@
+<#ChangeDirField/>
+<#HasGoUp><#GoUp/></#HasGoUp>
+
+<#ChangeDirButton/>
+<#RenameCurrentFolderButton/>
+<#CreateNewFolderButton/>
+<#DeleteFolderButton/>
+<#SupportAccessRights><#EditAccessButton/></#SupportAccessRights>
+<#EmptyTrashLink/>
+
+<hr size="1" />
+
+<#FileList>
+  <#TitleMode><#MoveButton/><#CopyButton/><#DoesZipExist><#ZipButton/></#DoesZipExist><#DeleteButton/><#SupportsVersioning><#ReleaseButton/></#SupportsVersioning></#TitleMode>
+  
+  <#ButtonMode><#FileListButtons/></#ButtonMode>
+  
+  <#FileNameTD>
+   <#Font>
+    <#DragFile>
+      <#IsFileNotDir>
+        <#FileDownload><#FileIcon/></#FileDownload>
+      </#IsFileNotDir>
+      <#IsFileDir>
+        <#FileIcon/>
+      </#IsFileDir>
+      
+      <#IsExternalLinkCondElse>
+        <#FileNameLink><#FileName/></#FileNameLink>
+      </#IsExternalLinkCondElse>
+      <#IsExternalLinkCond>
+        <#ExternalFileLink/>
+      </#IsExternalLinkCond>
+
+      <#IsFileNotDir>
+        <#IsFileLocked    >(<#Locked/>)</#IsFileLocked>
+        <#IsFileCheckedOut>(<#CheckedOut/>)</#IsFileCheckedOut>
+      </#IsFileNotDir>
+    </#DragFile>
+   </#Font>
+  </#FileNameTD>
+                  
+  <#FileSizeTD/>
+  <#FileOwnerTD/>
+  <#FileModDateTD><nobr><#Font><#ModDateField/></#Font></nobr></#FileModDateTD>
+  
+  <#FileTitleTD/>
+
+  <#FooterMode>Files:</#FooterMode>
+</#FileList>

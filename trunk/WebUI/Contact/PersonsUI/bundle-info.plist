@@ -1,0 +1,139 @@
+{
+  cvsid         = "$Id$";
+  bundleHandler = SkyPersonsModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = LSAddress;     type = cmd; },
+      { name = BaseUI;        type = lso; },
+      { name = OGoUIElements; type = lso; },
+      { name = OGoProject;    type = ds; },
+      { name = OGoContacts;   type = ds; },
+    );
+    classes = (
+      { name = NSObject;          },
+      { name = LSWObjectMailPage; },
+      { name = LSWTabHead;        },
+      { name = LSWTabContent;     },
+      { name = LSWTabItem;        },
+      { name = LSWModuleManager; exact-version = 2; },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     },
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = SkyPersonsModule;             },
+      { name = LSWPersons;                   },
+      { name = LSWPersonAdvancedSearch;      },
+      { name = LSWPersonMailPage;            },
+      { name = LSWPersonHtmlMailPage;        },
+      { name = LSWPersonTextMailPage;        },
+      { name = SkyWizardPersonViewer;        },
+      { name = SkyPersonSelectPopUp;         },
+      { name = SkyPersonProjectList;         },
+      { name = SkyPersonEnterpriseSetViewer; },
+      { name = SkyPersonList;                },
+      { name = SkyPersonSearchPanel;         },
+      { name = SkyPersonLDAPViewer;          },
+      { name = SkyPersonEditor;              },
+      { name = SkyPersonAttributesEditor;    },
+      { name = SkyPersonViewer;              },
+      { name = OGoPersonLinkEditor;          },
+    );
+
+    DockablePages = (
+      { 
+        name      = "Persons";
+        component = "LSWPersons";
+        labelKey  = "Contacts";
+        image     = "menu_persons_labeled.gif";
+        listicon  = "icon_persons_26x21.gif";
+      }
+    );
+
+    WOComponents = (
+      { name = LSWPersons;                   },
+      { name = LSWPersonAdvancedSearch;      },
+      { name = LSWPersonHtmlMailPage;        },
+      { name = LSWPersonTextMailPage;        },
+      { name = SkyWizardPersonViewer;        },
+      { name = SkyPersonSelectPopUp;         },
+      { name = SkyPersonProjectList;         },
+      { name = SkyPersonEnterpriseSetViewer; },
+      { name = SkyPersonList;                },
+      { name = SkyPersonSearchPanel;         }, 
+      { name = SkyPersonLDAPViewer;          },
+      { name = SkyPersonEditor;              },
+      { name = SkyPersonAttributesEditor;    },
+      { name = SkyPersonViewer;              },
+      { name = OGoPersonLinkEditor;          },
+   );
+    
+    LSWCommands = (
+      {
+        verb      = edit;
+        type      = "objc/SkyPersonDocument";
+        component = SkyPersonEditor;
+      },
+      {
+        verb      = new;
+        type      = "objc/SkyPersonDocument";
+        component = SkyPersonEditor;
+      },
+      {
+        verb      = view;
+        type      = "objc/SkyPersonDocument";
+        component = SkyPersonViewer;
+      },
+      { 
+        verb      = editAttributes; 
+        type      = "objc/SkyPersonDocument";
+        component = SkyPersonAttributesEditor;
+      },
+      {
+        verb      = view;
+        type      = "eo-gid/person"; 
+        component = SkyPersonViewer;
+      },
+      
+      { verb = view; type = "eo/person";     component = SkyPersonViewer;  },
+      { verb = edit; type = "eo/person";     component = SkyPersonEditor;  },
+      { verb = new;  type = "eo/person";     component = SkyPersonEditor;  },
+      {
+        verb = wizard-view;  type = "eo/person";
+        component = SkyWizardPersonViewer;
+      },
+
+      {
+        verb      = link-inline-preview;
+        type      = "eo-gid/person";
+        component = LSWPersonHtmlMailPage;
+      },
+      { 
+        verb = mailview; type = "eo-pkey/person";
+        component = LSWPersonHtmlMailPage; 
+      },
+      { 
+        verb = htmlMail; type = "eo/person";
+        component = LSWPersonHtmlMailPage; 
+      },
+      { 
+        verb = textMail; type = "eo/person";
+        component = LSWPersonTextMailPage; 
+      },
+    );
+    
+    SkySearchPanels = (
+        {
+          name      = "persons";
+          component = SkyPersonSearchPanel;
+          labelKey  = searchPersonsLabel;
+          icon      = "panel_contacts";
+        }
+    );
+  };
+}

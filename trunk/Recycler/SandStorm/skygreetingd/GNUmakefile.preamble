@@ -1,0 +1,11 @@
+# $Id$
+
+SkyGreetingCard_BUNDLE_LIBS = 		\
+	-lgd				\
+	-ljpeg				\
+	-lfreetype			\
+
+skygreetingd_TOOL_LIBS += 		\
+	-lOGoDaemon			\
+	-lNGObjWeb			\
+	-lEOControl			\

@@ -1,0 +1,112 @@
+// bind template to controller class
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = labels.NewsWindowTitle;
+  onClose = session.navigation.leavePage;
+}
+
+TabView: SkyTabView {
+  selection = tabKey;
+}
+
+NewsTab: SkySimpleTabItem {
+  key    = "news";
+  action = tabClicked;
+  label  = labels.news;
+  // enable after 1.0 branch (requires SOPE 4.5)
+  // actionClass      = "SkyNews";
+  // directActionName = "showNewsTab";
+}
+
+EditorsTab: SkySimpleTabItem {
+  key    = "editors";
+  action = tabClicked;
+  label  = labels.news_editors;
+  // enable after 1.0 branch (requires SOPE 4.5)
+  // actionClass      = "SkyNews";
+  // directActionName = "showNewsEditorTab";
+}
+
+JobList: SkyJobList {}
+
+AppointmentList: SkyNewsAppointmentList {}
+
+News: LSWNewsArticleViewer {
+  isInline = YES;
+}
+
+ShowNewsOnTopCond: WOConditional {
+  condition = session.userDefaults.news_showNewsOnTop;
+}
+
+ShowNewsNotOnTopCond: WOConditional {
+  condition = session.userDefaults.news_showNewsOnTop;
+  negate    = YES;
+}
+
+ButtonMode: WETableViewButtonMode {}
+
+Buttons: SkyButtonRow {
+  ordering = ( new );
+  onNew    = newNewsArticle;
+  new      = labels.new;
+  tipNew   = labels.new;
+}
+
+NewsArticleList: SkyTableView {
+  dataSource   = dataSource;
+  item         = article;
+  batchSize    = 50;
+  currentBatch = start;
+  isDescending = isDescending;
+  sortedKey    = sortedKey;  
+  titleString  = labels.NewsArticleList_title;
+  footerString = labels.NewsArticleList_label;
+}
+
+NameData: WETableData {
+  sortKey = "name";
+  title   = labels.name;
+  string  = article.name;
+  action  = viewNewsArticle;
+}
+
+CaptionData: WETableData {
+  sortKey = "caption";
+  title   = labels.articleCaptionLabel;
+}
+
+Caption: WOString {
+  value = article.caption;
+}
+
+IsIndexArticleData: WETableData {
+  sortKey = "indexArticle";
+  title   = labels.indexArticle;
+}
+
+IsIndexArticle: WOString {
+  value = isIndexArticle;
+}
+
+IsAccountNewsEditor: WOConditional {
+  condition = isAccountNewsEditor;
+}
+
+/* tabs loaded from bundles */
+
+ExtTabs: WORepetition {
+  list = bundleTabs;
+  item = currentTab;
+}
+
+ExtTab: SkySimpleTabItem {
+  key   = currentTab.name;
+  label = currentTab.labelKey;
+}
+
+ExtContent: WOComponentReference {
+  component = tabComponent;
+}

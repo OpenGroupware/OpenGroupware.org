@@ -1,0 +1,1530 @@
+compare /home/helge/wdev/complete/OpenGroupware.org/releases/1.0alpha1-shapeshifter with /home/helge/wdev/OGo-1.0
+added:   maintenance
+changed: PDA/OGoPalmUI/
+     2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+     	* added FHS installation (v5.1.5)
+changed: PDA/OGoNHSSync/
+     2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+     	* added FHS install (conduits are installed in
+     	  /usr/local/lib/opengroupware.org-1.0a/conduits/) (v5.1.11)
+     2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* TestConduit.m: fixed some warnings (v5.1.10)
+     2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.9)
+     2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+     	* install into Library/OpenGroupware.org-1.0a (v5.1.8)
+added:   PDA/OGoNHSSync/OpenGroupwareNHS.conduit
+added:   PDA/OGoNHSSync/fhs.make
+changed: PDA/OGoPalmWebUI/
+     2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile: added FHS installation (v5.1.24)
+     2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.23)
+     2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+     	* install into Library/OpenGroupware.org-1.0a/WebUI (v5.1.22)
+added:   PDA/OGoPalmWebUI/OGoPalm.lso
+added:   PDA/OGoPalmWebUI/GNUmakefile.preamble
+changed: PDA/OGoPalm/
+     2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+     	* added FHS installation (v5.1.28)
+     2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+     	* install datasources into Library/OpenGroupware.org-1.0a/DataSources/
+     	  (v5.1.27)
+added:   PDA/OGoPalm/OGoPalmDS.ds
+changed: PDA/PPSync/
+     2004-09-14  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile: fixed library version, added versioning to tools (nhsd
+     	  is now called ogo-nhsd-51) (v5.1.9)
+     2004-09-09  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile.preamble (xxx_TOOL_LIBS): added libEOControl as a
+     	  dependency for the tools (seems to be a problem on Solaris) (v5.1.8)
+     2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+     	* added FHS installation (v5.1.7)
+     2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.1.6
+     	* NHSNameServiceDaemon.m, PPSyncContext.m: fixed some warnings
+     	* PPClassDescription.h: added prototype for
+     	  +classDescriptionForEntityName:
+added:   PDA/PPSync/fhs.make
+changed: Tools/
+     2004-09-10  Helge Hess  <helge.hess@opengroupware.org>
+     	* skyaptnotify.m: message template texts are now configurable using
+     	  the AptNotifyMessageFormat default (fixes OGo bug #828)
+     2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile: added FHS installation support for tools
+     2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.preamble: added library lookup pathes for FHS
+added:   Tools/fhs.make
+added:   WebUI/fhsbundle.make
+added:   WebUI/Templates
+added:   WebUI/fhstemplates.make
+removed: WebUI/SxWebUI.pbproj
+changed: WebUI/AdminUI/
+     2004-08-27  Helge Hess  <helge@dogbert.in.skyrix.com>
+     	* Resources/NSGlobalDomain.plist: removed PostgreSQL72 (is now named
+     	  PostgreSQL) (v5.1.30)
+added:   WebUI/AdminUI/AdminUI.lso
+removed: WebUI/AdminUI/LSWTeamViewer.wo
+removed: WebUI/AdminUI/LSWEnterLicenseEditor.wo
+removed: WebUI/AdminUI/LSWPasswordEditor.wo
+removed: WebUI/AdminUI/LSWTeamEditor.wo
+removed: WebUI/AdminUI/LSWAccountViewer.wo
+removed: WebUI/AdminUI/SkyDefaultsEditor.wo
+removed: WebUI/AdminUI/SkyDefaultsViewer.wo
+removed: WebUI/AdminUI/LSWStaff.wo
+removed: WebUI/AdminUI/SkyDefaultsElementViewer.wo
+changed: WebUI/PreferencesUI/
+     2004-09-07  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.1.34
+     	* LSWPreferencesEditor.wo/English.lproj/LSWPreferencesEditor.html:
+     	  removed bookmark upload field, removed singleSelection bindings
+     	* do not generate German templates and English themes as derived
+     	  resources (not necessary anymore with the fixed OGoResourceManager)
+added:   WebUI/PreferencesUI/PreferencesUI.lso
+removed: WebUI/PreferencesUI/LSWPreferencesEditor.wo
+removed: WebUI/PreferencesUI/OGoDefaultEditField.wo
+removed: WebUI/PreferencesUI/LSWPreferencesViewer.wo
+removed: WebUI/PreferencesUI/OGoDefaultEditFrame.wo
+removed: WebUI/PreferencesUI/OGo.make
+removed: WebUI/PreferencesUI/SkyDisplayPreferences.wo
+removed: WebUI/PreferencesUI/SkyDefaultEditField.wo
+removed: WebUI/PreferencesUI/OGoDefaultViewField.wo
+changed: WebUI/Scheduler/OGoSchedulerViews/
+     2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* removed creation of derived resources in German.lproj and
+     	  German_blue.lproj (not required anymore with fixed
+     	  OGoResourceManager) (v5.1.39)
+added:   WebUI/Scheduler/OGoSchedulerViews/GNUmakefile.postamble
+added:   WebUI/Scheduler/OGoSchedulerViews/OGoSchedulerViews.lso
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyInlineDayHChart.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/German.lproj
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyInlineMonthOverview.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyInlineWeekChart.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyInlineWeekHChart.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/OGo.make
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyInlineYearOverview.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyPrintWeekOverview.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/SkySchedulerConflictCell.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyInlineDayOverview.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyInlineWeekColumnView.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyInlineWeekOverview.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyAptResourceList.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyNewsAppointmentList.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyAptResourceGroupsList.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyMonthBrowser.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyPrintMonthOverview.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/German_blue.lproj
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyAppointmentList.wo
+removed: WebUI/Scheduler/OGoSchedulerViews/SkyInlineDayChart.wo
+changed: WebUI/Scheduler/OGoResourceScheduler/
+     2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyResourceSchedulerPage.wo: removed German.lproj and
+     	  German_orange.lproj (not required anymore with fixed
+     	  OGoResourceManager) (v5.1.9)
+added:   WebUI/Scheduler/OGoResourceScheduler/OGoResourceScheduler.lso
+removed: WebUI/Scheduler/OGoResourceScheduler/SkySchedulerResourcePanel.wo
+removed: WebUI/Scheduler/OGoResourceScheduler/SkyResourceSchedulerPage.wo/German_orange.lproj
+removed: WebUI/Scheduler/OGoResourceScheduler/SkyResourceSchedulerPage.wo/German.lproj
+changed: WebUI/Scheduler/OGoScheduler/
+     2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkySchedulerSelectPanel.wo, SkyAptResourceEditor.wo: removed
+     	  'singleSelection' bindings (v5.1.29)
+added:   WebUI/Scheduler/OGoScheduler/OGoScheduler.lso
+removed: WebUI/Scheduler/OGoScheduler/SkySchedulerPage.wo
+removed: WebUI/Scheduler/OGoScheduler/SkyAptResourceViewer.wo
+removed: WebUI/Scheduler/OGoScheduler/SkyAptDeletePanel.wo
+removed: WebUI/Scheduler/OGoScheduler/SkyAptDeletePanel.wox
+removed: WebUI/Scheduler/OGoScheduler/SkySchedulerConflictPage.wo
+removed: WebUI/Scheduler/OGoScheduler/SkySchedulerSelectPopUp.wox
+removed: WebUI/Scheduler/OGoScheduler/SkySchedulerSelectPanel.wo
+removed: WebUI/Scheduler/OGoScheduler/SkySchedulerSelectPopUp.wo
+removed: WebUI/Scheduler/OGoScheduler/SkyAptResourceEditor.wo
+changed: WebUI/Scheduler/OGoSchedulerDock/
+     2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.1.7
+     	* removed empty English/German.lproj in main dir
+     	* SkySchedulerDockView.wo: removed GermanXX.lproj's as derived
+     	  resources, not necessary anymore with the fixed OGoResourceManager
+added:   WebUI/Scheduler/OGoSchedulerDock/GNUmakefile.postamble
+added:   WebUI/Scheduler/OGoSchedulerDock/OGoSchedulerDock.lso
+removed: WebUI/Scheduler/OGoSchedulerDock/OGo.make
+removed: WebUI/Scheduler/OGoSchedulerDock/SkySchedulerDockView.wo
+removed: WebUI/Scheduler/OGoSchedulerDock/German.lproj
+removed: WebUI/Scheduler/OGoSchedulerDock/English.lproj
+changed: WebUI/Scheduler/LSWScheduler/
+     2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* removed deprecated 'singleSelection' bindings from components
+     	  (v5.1.56)
+     2004-09-09  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWSchedulerPreferences.m: fixed OGo bug #908 (calendar preferences
+     	  crashed with resource categories) (v5.1.55)
+     2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWAppointmentViewer.wo: removed German.lproj and German_orange.lproj
+     	  (not required with fixed OGoResourceManager) (v5.1.54)
+added:   WebUI/Scheduler/LSWScheduler/LSWScheduler.lso
+removed: WebUI/Scheduler/LSWScheduler/LSWAppointmentMove.wo
+removed: WebUI/Scheduler/LSWScheduler/SkyAptDateSelection.wo
+removed: WebUI/Scheduler/LSWScheduler/SkyAppointmentPrintViewer.wo
+removed: WebUI/Scheduler/LSWScheduler/SkyAptParticipantsList.wo
+removed: WebUI/Scheduler/LSWScheduler/LSWAppointmentTextMailPage.wo
+removed: WebUI/Scheduler/LSWScheduler/LSWAppointmentEditor.wo
+removed: WebUI/Scheduler/LSWScheduler/SkyParticipantsSelection.wo
+removed: WebUI/Scheduler/LSWScheduler/LSWAppointmentProposal.wo
+removed: WebUI/Scheduler/LSWScheduler/LSWAppointmentHtmlMailPage.wo
+removed: WebUI/Scheduler/LSWScheduler/SkyAptTypeSelection.wo
+removed: WebUI/Scheduler/LSWScheduler/SkyResourceSelection.wo
+removed: WebUI/Scheduler/LSWScheduler/LSWSchedulerPreferences.wo
+removed: WebUI/Scheduler/LSWScheduler/LSWAppointmentViewer.wo/German_orange.lproj
+removed: WebUI/Scheduler/LSWScheduler/LSWAppointmentViewer.wo/German.lproj
+removed: WebUI/Scheduler/LSWScheduler/LSWAppointmentViewer.wo/English.lproj/LSWAppointmentViewer.html
+removed: WebUI/Scheduler/LSWScheduler/LSWAppointmentViewer.wo/English.lproj/LSWAppointmentViewer.wod
+changed: WebUI/OpenGroupware.org/
+     2004-09-20  Helge Hess  <helge.hess@opengroupware.org>
+     	* moved Main.wo and OGoLogoutPage.wo to WebUI/Themes (this may require
+     	  some translation work on both since template specific language
+     	  subprojects are not available in Templates) (v5.1.55)
+     2004-09-07  Helge Hess  <helge.hess@skyrix.com>
+     	* OpenGroupware.m: add a slash to the default redirect URL (v5.1.54)
+     2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* OpenGroupware.m: also load bundles from FHS locations (v5.1.53)
+     2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* OpenGroupware.m: temporarily patch bundlepath for preloading of
+     	  bundles (to make it work without an NGBundle being configured)
+     	  (v5.1.52)
+     2004-08-30  Helge Hess  <helge.hess@opengroupware.org>
+     	* OpenGroupware.m: look for bundles in
+     	  /usr/local/lib/opengroupware.org and /usr/lib/opengroupware.org
+     	  (v5.1.51)
+     2004-08-23  Helge Hess  <helge.hess@skyrix.com>
+     	* renamed OpenGroupware.woa to OpenGroupware10a.woa (v5.1.50)
+removed: WebUI/OpenGroupware.org/Main.wo
+removed: WebUI/OpenGroupware.org/OGoLogoutPage.wo
+added:   WebUI/OpenGroupware.org/English_OOo.lproj/components.cfg
+added:   WebUI/OpenGroupware.org/Italian.lproj/components.cfg
+added:   WebUI/OpenGroupware.org/German_OOo.lproj/components.cfg
+added:   WebUI/OpenGroupware.org/German_blue.lproj/components.cfg
+added:   WebUI/OpenGroupware.org/German.lproj/components.cfg
+added:   WebUI/OpenGroupware.org/Polish.lproj/components.cfg
+added:   WebUI/OpenGroupware.org/Spanish.lproj/components.cfg
+added:   WebUI/OpenGroupware.org/ptBR.lproj/components.cfg
+added:   WebUI/OpenGroupware.org/Dutch.lproj/components.cfg
+added:   WebUI/OpenGroupware.org/English_blue.lproj/components.cfg
+added:   WebUI/OpenGroupware.org/English_kde.lproj/components.cfg
+added:   WebUI/OpenGroupware.org/Danish.lproj/components.cfg
+added:   WebUI/OpenGroupware.org/French.lproj/components.cfg
+added:   WebUI/Mailer/OGoRecipientLists
+added:   WebUI/Mailer/OGoMailFilter
+added:   WebUI/Mailer/OGoMailEditor
+changed: WebUI/Mailer/LSWMail/
+     2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.1.8
+     	* LSWMailFilterEditor.wo/LSWMailFilterEditor.wod: template cleanups
+added:   WebUI/Mailer/LSWMail/GNUmakefile.postamble
+added:   WebUI/Mailer/LSWMail/LSWMail.lso
+removed: WebUI/Mailer/LSWMail/LSWObjectTextMailPage.wo
+removed: WebUI/Mailer/LSWMail/LSWDeletedObjectViewer.wo
+removed: WebUI/Mailer/LSWMail/LSWMailTextRenderPage.wo
+removed: WebUI/Mailer/LSWMail/LSWObjectHtmlMailPage.wo
+removed: WebUI/Mailer/LSWMail/LSWMailFilterEditor.wo
+removed: WebUI/Mailer/LSWMail/LSWMailHtmlRenderPage.wo
+added:   WebUI/Mailer/LSWMail/German.lproj/LSWMail.ccfg
+added:   WebUI/Mailer/OGoMailViewers/OGoMailViewers.lso
+removed: WebUI/Mailer/OGoMailViewers/LSWTextPlainBodyViewer.wo
+removed: WebUI/Mailer/OGoMailViewers/LSWEnterpriseObjectBodyViewer.wo
+removed: WebUI/Mailer/OGoMailViewers/LSWMimeBodyPartViewer.wo
+removed: WebUI/Mailer/OGoMailViewers/LSWMultipartMixedBodyViewer.wo
+removed: WebUI/Mailer/OGoMailViewers/LSWMessageRfc822BodyViewer.wo
+removed: WebUI/Mailer/OGoMailViewers/LSWMultipartAlternativeBodyViewer.wox
+removed: WebUI/Mailer/OGoMailViewers/LSWMimeMessageViewer.wo
+removed: WebUI/Mailer/OGoMailViewers/LSWAppOctetBodyViewer.wo
+removed: WebUI/Mailer/OGoMailViewers/LSWImageBodyViewer.wo
+removed: WebUI/Mailer/OGoMailViewers/LSWTextPlainBodyViewer.wox
+removed: WebUI/Mailer/OGoMailViewers/LSWInlineBodyViewer.wo
+removed: WebUI/Mailer/OGoMailViewers/LSWMultipartAlternativeBodyViewer.wo
+removed: WebUI/Mailer/OGoMailViewers/SkyMessageRfc822Viewer.wo
+added:   WebUI/Mailer/OGoMailViewers/German.lproj/OGoMailViewers.ccfg
+added:   WebUI/Mailer/OGoMailInfo/GNUmakefile.postamble
+added:   WebUI/Mailer/OGoMailInfo/OGoMailInfo.lso
+removed: WebUI/Mailer/OGoMailInfo/SkyImapMailPopUp.wo
+removed: WebUI/Mailer/OGoMailInfo/LSWImapDockView.wo
+removed: WebUI/Mailer/OGoMailInfo/LSWImapTextDockView.wo
+removed: WebUI/Mailer/OGoMailInfo/LSWMailsDockView.wo
+changed: WebUI/Mailer/OGoWebMail/
+     2004-09-13  Helge Hess  <helge.hess@opengroupware.org>
+     	* removed some unnecessarily derived templates for German, moved
+     	  templates to Templates (v5.1.99)
+     2004-09-10  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile: do not generate the components.ccfg as a drived
+     	  resource for German.lproj, should not be necessary anymore, removed
+     	  German.lproj (v5.1.98)
+     2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile: fixed version of libOGoWebMail, added FHS install of
+     	  library (v5.1.97)
+     2004-09-07  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyImapMailActions.m: redirect to main page if the session expired
+     	  (v5.1.96)
+     2004-08-22  Helge Hess  <helge.hess@opengroupware.org>
+     	* added library libOGoWebMail for things shared between all bundles
+     	  (must be a library so that it can be properly linked on MacOSX)
+     	  (v5.1.95)
+     	* moved mailing list to separate bundle OGoRecipientLists (v5.1.94)
+     	* moved filter/vacation components to separate bundle OGoMailFilter
+     	  (v5.1.93)
+     	* v5.1.92
+     	* moved mail editor to separate bundle OGoMailEditor
+     	* moved header files out of Headers into main directory
+added:   WebUI/Mailer/OGoWebMail/SkyImapMailDataSource.h
+added:   WebUI/Mailer/OGoWebMail/LSWImapBuildFolderDict.h
+added:   WebUI/Mailer/OGoWebMail/SkyImapMailListState.h
+added:   WebUI/Mailer/OGoWebMail/GNUmakefile.postamble
+added:   WebUI/Mailer/OGoWebMail/fhs.make
+added:   WebUI/Mailer/OGoWebMail/SkyImapMailRestrictions.h
+added:   WebUI/Mailer/OGoWebMail/LSWImapMailFolderTree.h
+added:   WebUI/Mailer/OGoWebMail/LSWImapMailViewer.h
+added:   WebUI/Mailer/OGoWebMail/LSWImapMails.h
+added:   WebUI/Mailer/OGoWebMail/LSWImapMailFolderMove.h
+added:   WebUI/Mailer/OGoWebMail/LSWImapMailSearch.h
+added:   WebUI/Mailer/OGoWebMail/LSWImapMailMove.h
+added:   WebUI/Mailer/OGoWebMail/LSWImapMailLogin.h
+added:   WebUI/Mailer/OGoWebMail/LSWImapMailList.h
+added:   WebUI/Mailer/OGoWebMail/LSWImapMailFolderEditor.h
+added:   WebUI/Mailer/OGoWebMail/OGoWebMail.lso
+removed: WebUI/Mailer/OGoWebMail/SkyImapMailListPanel.wo
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailViewer.wo
+removed: WebUI/Mailer/OGoWebMail/NSString+MailEditor.h
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailFilterEditor.m
+removed: WebUI/Mailer/OGoWebMail/NSString+MailEditor.m
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailSearch.wo
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailList.wo
+removed: WebUI/Mailer/OGoWebMail/LSWImapMail2Project.wo
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailEditor.wox
+removed: WebUI/Mailer/OGoWebMail/OGoComplexMailAddressSearch.m
+removed: WebUI/Mailer/OGoWebMail/OGoMailAddressSearch.h
+removed: WebUI/Mailer/OGoWebMail/OGoMailAddressSearch.m
+removed: WebUI/Mailer/OGoWebMail/LSWMailPreferences.wo
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailFolderMove.wo
+removed: WebUI/Mailer/OGoWebMail/SkyMailingListViewer.m
+removed: WebUI/Mailer/OGoWebMail/OGoMailAddressRecord.h
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailLogin.wo
+removed: WebUI/Mailer/OGoWebMail/OGoMailAddressRecord.m
+removed: WebUI/Mailer/OGoWebMail/SkyMailingListEditor.wo
+removed: WebUI/Mailer/OGoWebMail/SkyVacationViewer.wo
+removed: WebUI/Mailer/OGoWebMail/SkyImapMailPrintViewer.wo
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailEditor.wo
+removed: WebUI/Mailer/OGoWebMail/SkyMailingListDataSource.h
+removed: WebUI/Mailer/OGoWebMail/SkyMailingListEditor.m
+removed: WebUI/Mailer/OGoWebMail/SkyMailingListDataSource.m
+removed: WebUI/Mailer/OGoWebMail/SkyImapMailListFooter.wo
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailFolderTree.wo
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailFilterEditor.wo
+removed: WebUI/Mailer/OGoWebMail/SkyMailingListManager.h
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailEditor.m
+removed: WebUI/Mailer/OGoWebMail/German.lproj
+removed: WebUI/Mailer/OGoWebMail/OGoMailAddressRecordResult.h
+removed: WebUI/Mailer/OGoWebMail/OGoMailAddressRecordResult.m
+removed: WebUI/Mailer/OGoWebMail/OGoSimpleMailAddressSearch.m
+removed: WebUI/Mailer/OGoWebMail/SkyImapMailListHeader.wo
+removed: WebUI/Mailer/OGoWebMail/SkyMailingListManager.m
+removed: WebUI/Mailer/OGoWebMail/SkyImapMailListConfigPanel.wo
+removed: WebUI/Mailer/OGoWebMail/SkyVacationViewer.m
+removed: WebUI/Mailer/OGoWebMail/Headers
+removed: WebUI/Mailer/OGoWebMail/NGMimeType+Mailer.h
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailFilterManager.m
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailEditor+Activation.m
+removed: WebUI/Mailer/OGoWebMail/SkyImapMailFolderTree.wo
+removed: WebUI/Mailer/OGoWebMail/NGMimeType+Mailer.m
+removed: WebUI/Mailer/OGoWebMail/OGoMailFilterManager.m
+removed: WebUI/Mailer/OGoWebMail/LSWImapMails.wo
+removed: WebUI/Mailer/OGoWebMail/SkyVacationEditor.wo
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailMove.wo
+removed: WebUI/Mailer/OGoWebMail/SkyImapMailList.wo
+removed: WebUI/Mailer/OGoWebMail/SkyVacationEditor.m
+removed: WebUI/Mailer/OGoWebMail/SkyMailingListViewer.wo
+removed: WebUI/Mailer/OGoWebMail/LSWImapMailFolderEditor.wo
+changed: WebUI/OGoFoundation/
+     2004-09-14  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoSession.m: removed a debug log (v5.1.71)
+     	* OGoStringTableManager.h: fixed a missing declaration for Cocoa
+     	  Foundation (v5.1.70)
+     2004-09-14  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoResourceManager.m: removed some superflous debug logs (v5.1.69)
+     2004-09-13  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoResourceManager.m: made template lookup language/theme specific
+     	  (v5.1.68)
+     	* OGoResourceManager.m: print a warning if no template directory is
+     	  configured (v5.1.67)
+     2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.1.66
+     	* OGoResourceManager.m: moved label lookup code to own
+     	  OGoStringTableManager class, major internal cleanups, improved
+     	  caching system (introduced OGoResourceKey class), does not look for
+     	  (.wo/.wox) templates in WebServerResources
+     2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.1.65
+     	* WOSession+LSO.h: do not include LSBaseCommand.h
+     	* WOSession+LSO.h: do not include NSLock.h
+     	* OGoContentPage.h: do not include LSCommand.h
+     	* OGoSession.h: does not include LSCommandFactory.h
+     2004-09-06  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoResourceManager.m: added own implementation of
+     	  -pathForResourceNamed:inFramework:languages: which checks in all
+     	  webserver resources search directories for resources before resorting
+     	  to the OWResourceManager implementation. This way the
+     	  WOResourceRequestHandler works as expected (can find the resources)
+     	  (v5.1.64)
+     2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoResourceManager.m: moved OGoStringTable to an own file (v5.1.63)
+     	* OGoResourceManager.m: look for WebServerResources in the
+     	  "opengroupware.org-1.0a/share/www/" subdir of /usr/local and /usr
+     	  and Resources (.strings) in the 
+     	  "opengroupware.org-1.0a/share/translations/" subdir (v5.1.62)
+     2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.61)
+     2004-08-28  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoResourceManager.m: look for 'Resources' directory in
+     	  GNUSTEP_PATHPREFIX_LIST and GNUSTEP_PATHLIST, look for 
+     	  'WebServerResources' directories in the same list (fixes OGo bug
+     	  #587) (v5.1.60)
+     2004-08-25  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoSession.m: removed dependency on NGScripting (v5.1.59)
+added:   WebUI/OGoFoundation/OGoStringTable.h
+added:   WebUI/OGoFoundation/OGoStringTable.m
+added:   WebUI/OGoFoundation/OGoStringTableManager.h
+added:   WebUI/OGoFoundation/fhs.make
+added:   WebUI/OGoFoundation/OGoStringTableManager.m
+added:   WebUI/OGoFoundation/OGoResourceKey.h
+added:   WebUI/OGoFoundation/OGoResourceKey.m
+changed: WebUI/Common/PropertiesUI/
+     2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+     	* removed usage of deprecated singleSelection binding (v5.1.8)
+added:   WebUI/Common/PropertiesUI/PropertiesUI.lso
+removed: WebUI/Common/PropertiesUI/SkyObjectPropertyViewer.wo
+removed: WebUI/Common/PropertiesUI/SkyObjectPropertyEditor.wo
+changed: WebUI/Common/OGoUIElements/
+     2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyTableView.wo: moved template files from English.lproj to main .wo
+     	  and deleted the German ones (v5.1.29)
+     2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+     	* removed usage of deprecated singleSelection binding (v5.1.28)
+added:   WebUI/Common/OGoUIElements/OGoUIElements.lso
+removed: WebUI/Common/OGoUIElements/SkyFileManagerTreeView.wo
+removed: WebUI/Common/OGoUIElements/SkyTextEditor.wo
+removed: WebUI/Common/OGoUIElements/SkyAccessList.wo
+removed: WebUI/Common/OGoUIElements/SkyCalendarPopUp.wo
+removed: WebUI/Common/OGoUIElements/SkyTableView.wo
+removed: WebUI/Common/OGoUIElements/SkyCalendarPopUp.wox
+removed: WebUI/Common/OGoUIElements/SkyCollapsibleContent.wo
+removed: WebUI/Common/OGoUIElements/SkyCalendarScript.wo
+removed: WebUI/Common/OGoUIElements/SkyCalendarScript.wox
+removed: WebUI/Common/OGoUIElements/SkyBundleTab.wo
+added:   WebUI/Common/RelatedLinksUI/RelatedLinksUI.lso
+removed: WebUI/Common/RelatedLinksUI/OGoObjectLinkList.wox
+removed: WebUI/Common/RelatedLinksUI/OGoObjectLinkList.wo
+changed: WebUI/Common/BaseUI/
+     2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWSkyrixFrame.m: fixed timing calculation for new SOPE 4.3 API
+     	  (use -startDate) (v5.1.90)
+     2004-09-07  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.1.89
+     	* do not generate German templates as derived resources (not necessary
+     	  anymore with the fixed OGoResourceManager)
+     	* LSWSkyrixFrame.wo/English.lproj/LSWSkyrixFrame.html: removed home and
+     	  desktop links
+     2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+     	* removed use of deprecated singleSelection binding (v5.0.88)
+added:   WebUI/Common/BaseUI/BaseUI.lso
+removed: WebUI/Common/BaseUI/SkyTimeZonePopUp.wox
+removed: WebUI/Common/BaseUI/SkyListView.wo
+removed: WebUI/Common/BaseUI/LSWObjectViewer.wox
+removed: WebUI/Common/BaseUI/OGo.make
+removed: WebUI/Common/BaseUI/SkyWizardResultList.wo
+removed: WebUI/Common/BaseUI/SkyDayOfMonthPopUp.wo
+removed: WebUI/Common/BaseUI/SkyEditorButtons.wox
+removed: WebUI/Common/BaseUI/SkyObjectLogList.wo
+removed: WebUI/Common/BaseUI/SkyWizardChoicePage.wo
+removed: WebUI/Common/BaseUI/SkyRequestViewer.wo
+removed: WebUI/Common/BaseUI/LSWObjectViewer.wo
+removed: WebUI/Common/BaseUI/SkyPanel.wo
+removed: WebUI/Common/BaseUI/SkyListSorter.wo
+removed: WebUI/Common/BaseUI/SkyWeekOfYearPopUp.wox
+removed: WebUI/Common/BaseUI/SkyWarningPanel.wo
+removed: WebUI/Common/BaseUI/OGoMenuBox.wox
+removed: WebUI/Common/BaseUI/SkyFavorites.wo
+removed: WebUI/Common/BaseUI/LSWSkyrixFrame.wo
+removed: WebUI/Common/BaseUI/LSWObjectEditor.wox
+removed: WebUI/Common/BaseUI/SkyDock.wo
+removed: WebUI/Common/BaseUI/LSWTableView.wo
+removed: WebUI/Common/BaseUI/LSWWarningPanel.wo
+removed: WebUI/Common/BaseUI/SkySearchPanel.wo
+removed: WebUI/Common/BaseUI/SkyNavigation.wo
+removed: WebUI/Common/BaseUI/SkyWarningMode.wox
+added:   WebUI/NewsUI/NewsUI.lso
+removed: WebUI/NewsUI/SkyNews.wo
+removed: WebUI/NewsUI/LSWNewsArticleEditor.wo
+removed: WebUI/NewsUI/SkyNewsPreferences.wo
+removed: WebUI/NewsUI/LSWNewsArticleViewer.wo
+changed: WebUI/Project/LSWProject/
+     2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.1.40
+     	* removed deprecated 'singleSelection' binding
+     	* LSWProjectWizard.wo/LSWProjectWizard.wod: template cleanups
+     2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWProjectEditor.m, DateIntervalFormatter.m: fixed compile warnings
+     	  (v5.1.39)
+     2004-08-23  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.preamble: fixed a linking path (v5.1.38)
+     	* DateIntervalFormatter.m: minor code cleanup (v5.1.37)
+added:   WebUI/Project/LSWProject/LSWProject.lso
+removed: WebUI/Project/LSWProject/LSWDocumentMove.wo
+removed: WebUI/Project/LSWProject/LSWObjectLinkViewer.wo
+removed: WebUI/Project/LSWProject/LSWProjectTextMailPage.wo
+removed: WebUI/Project/LSWProject/LSWProjectEditor.wo
+removed: WebUI/Project/LSWProject/LSWDocumentEditor.wo
+removed: WebUI/Project/LSWProject/LSWDocumentTextMailPage.wo
+removed: WebUI/Project/LSWProject/LSWProjectWizard.wo
+removed: WebUI/Project/LSWProject/LSWProjects.wo
+removed: WebUI/Project/LSWProject/LSWProjectPreferences.wo
+removed: WebUI/Project/LSWProject/LSWTextDocumentEditor.wo
+removed: WebUI/Project/LSWProject/LSWProjectJobList.wo
+removed: WebUI/Project/LSWProject/LSWDocumentList.wo
+removed: WebUI/Project/LSWProject/LSWFolderEditor.wo
+removed: WebUI/Project/LSWProject/LSWObjectLinkEditor.wo
+removed: WebUI/Project/LSWProject/SkyProjectInlineViewer.wo
+removed: WebUI/Project/LSWProject/SkyPropertiesEditor.wo
+removed: WebUI/Project/LSWProject/LSWProjectViewer.wo
+removed: WebUI/Project/LSWProject/LSWProjectHtmlMailPage.wo
+removed: WebUI/Project/LSWProject/SkyPropertyEditor.wo
+removed: WebUI/Project/LSWProject/LSWDocumentViewer.wo
+removed: WebUI/Project/LSWProject/SkyProjectAssignment.wo
+removed: WebUI/Project/LSWProject/SkyProjectList.wo
+removed: WebUI/Project/LSWProject/LSWDocumentHtmlMailPage.wo
+removed: WebUI/Project/LSWProject/SkyProjectSelection.wo
+removed: WebUI/Project/LSWProject/SkyJobResourceEditor.wo
+removed: WebUI/Project/LSWProject/LSWDocumentAdvancedSearch.wo
+removed: WebUI/Project/LSWProject/LSWFolderTree.wo
+removed: WebUI/Project/LSWProject/SkyProjectSelections.wo
+added:   WebUI/Project/LSWProject/German.lproj/LSWProject.ccfg
+added:   WebUI/Project/OGoDocInlineViewers/OGoDocInlineViewers.lso
+removed: WebUI/Project/OGoDocInlineViewers/SkyDocImageInlineViewer.wo
+removed: WebUI/Project/OGoDocInlineViewers/SkyDocEmbedInlineViewer.wox
+removed: WebUI/Project/OGoDocInlineViewers/SkyDocEmbedInlineViewer.wo
+added:   WebUI/Project/OGoNote/OGoNote.lso
+removed: WebUI/Project/OGoNote/SkyNoteList.wox
+removed: WebUI/Project/OGoNote/SkyNoteEditor.wo
+removed: WebUI/Project/OGoNote/SkyNoteList.wo
+added:   WebUI/Project/OGoProjectInfo/OGoProjectInfo.lso
+removed: WebUI/Project/OGoProjectInfo/SkyDockedProjects.wo
+changed: WebUI/Project/OGoProjectZip/
+     2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyP4ZipPanel.wo: removed deprecated 'singleSelection' binding
+     	  (v5.1.11)
+added:   WebUI/Project/OGoProjectZip/OGoProjectZip.lso
+removed: WebUI/Project/OGoProjectZip/SkyDocZipInlineViewer.wo
+removed: WebUI/Project/OGoProjectZip/SkyP4ZipInfo.wo
+removed: WebUI/Project/OGoProjectZip/SkyP4ZipPanel.wo
+removed: WebUI/Project/OGoProjectZip/SkyP4UnzipPanel.wo
+removed: WebUI/Project/OGoProjectZip/SkyDocTarInlineViewer.wo
+changed: WebUI/Project/OGoProject/
+     2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyProject4NewLink.wo: removed deprecated 'singleSelection' binding
+     	  (v5.1.47)
+     2004-08-23  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.preamble: fixed a linking path (v5.1.46)
+     	* SkyProject4DocumentViewer.wo: removed forms (v5.1.45)
+added:   WebUI/Project/OGoProject/OGoProject.lso
+removed: WebUI/Project/OGoProject/SkyP4FolderView.wo
+removed: WebUI/Project/OGoProject/SkyP4DocumentDownloadLogList.wo
+removed: WebUI/Project/OGoProject/SkyProject4Desktop.wo
+removed: WebUI/Project/OGoProject/SkyProject4VersionList.wo
+removed: WebUI/Project/OGoProject/SkyProject4DocumentEditor.wo
+removed: WebUI/Project/OGoProject/SkyP4DocJournal.wo
+removed: WebUI/Project/OGoProject/SkyProject4DocumentVersionSave.wo
+removed: WebUI/Project/OGoProject/SkyProject4NewLink.wo
+removed: WebUI/Project/OGoProject/SkyProject4MovePanel.wo
+removed: WebUI/Project/OGoProject/SkyProject4Viewer.wo
+removed: WebUI/Project/OGoProject/SkyProject4DocumentViewer.wox
+removed: WebUI/Project/OGoProject/SkyP4ProjectTableView.wo
+removed: WebUI/Project/OGoProject/SkyCompanyAccessEditor.wox
+removed: WebUI/Project/OGoProject/SkyDocumentAttributeEditor.wo
+removed: WebUI/Project/OGoProject/SkyProject4DocumentViewer.wo
+removed: WebUI/Project/OGoProject/SkyProject4BLOBViewer.wo
+removed: WebUI/Project/OGoProject/SkyProject4DocumentSearch.wo
+removed: WebUI/Project/OGoProject/SkyProject4DocumentRename.wo
+removed: WebUI/Project/OGoProject/SkyProject4DocumentUpload.wo
+removed: WebUI/Project/OGoProject/SkyCompanyAccessEditor.wo
+changed: WebUI/Contact/PersonsUI/
+     2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.1.48
+     	* LSWPersonAdvancedSearch.wo/LSWPersonAdvancedSearch.wod: major 
+     	  template cleanups
+     	* LSWPersonAdvancedSearch.wo, SkyPersonSelectPopUp.wo: removed
+     	  deprecated 'singleSelection' binding
+added:   WebUI/Contact/PersonsUI/PersonsUI.lso
+removed: WebUI/Contact/PersonsUI/SkyWizardPersonViewer.wo
+removed: WebUI/Contact/PersonsUI/SkyPersonSearchPanel.wox
+removed: WebUI/Contact/PersonsUI/SkyPersonEnterpriseSetViewer.wo
+removed: WebUI/Contact/PersonsUI/SkyPersonEditor.wo
+removed: WebUI/Contact/PersonsUI/SkyPersonSearchPanel.wo
+removed: WebUI/Contact/PersonsUI/LSWPersonAdvancedSearch.wo
+removed: WebUI/Contact/PersonsUI/SkyPersonViewer.wox
+removed: WebUI/Contact/PersonsUI/SkyPersonProjectList.wox
+removed: WebUI/Contact/PersonsUI/SkyPersonAttributesEditor.wo
+removed: WebUI/Contact/PersonsUI/SkyPersonViewer.wo
+removed: WebUI/Contact/PersonsUI/SkyPersonList.wo
+removed: WebUI/Contact/PersonsUI/LSWPersonTextMailPage.wo
+removed: WebUI/Contact/PersonsUI/LSWPersons.wo
+removed: WebUI/Contact/PersonsUI/SkyPersonProjectList.wo
+removed: WebUI/Contact/PersonsUI/SkyPersonLDAPViewer.wo
+removed: WebUI/Contact/PersonsUI/SkyPersonSelectPopUp.wo
+removed: WebUI/Contact/PersonsUI/LSWPersonHtmlMailPage.wo
+removed: WebUI/Contact/PersonsUI/OGoPersonLinkEditor.wox
+changed: WebUI/Contact/EnterprisesUI/
+     2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWEnterpriseAdvancedSearch.wo: removed deprecated 'singleSelection'
+     	  binding (v5.1.32)
+added:   WebUI/Contact/EnterprisesUI/EnterprisesUI.lso
+removed: WebUI/Contact/EnterprisesUI/LSWEnterpriseHtmlMailPage.wo
+removed: WebUI/Contact/EnterprisesUI/SkyWizardEnterpriseViewer.wo
+removed: WebUI/Contact/EnterprisesUI/SkyEnterpriseEditor.wo
+removed: WebUI/Contact/EnterprisesUI/LSWEnterpriseAdvancedSearch.wo
+removed: WebUI/Contact/EnterprisesUI/SkyAssignPersonSubEditor.wo
+removed: WebUI/Contact/EnterprisesUI/SkyEnterpriseViewer.wo
+removed: WebUI/Contact/EnterprisesUI/SkyEnterpriseAttributesEditor.wo
+removed: WebUI/Contact/EnterprisesUI/SkyAssignPersonEditor.wox
+removed: WebUI/Contact/EnterprisesUI/SkyEnterpriseList.wo
+removed: WebUI/Contact/EnterprisesUI/SkyAssignPersonEditor.wo
+removed: WebUI/Contact/EnterprisesUI/LSWEnterpriseTextMailPage.wo
+removed: WebUI/Contact/EnterprisesUI/LSWEnterpriseSearchPage.wo
+removed: WebUI/Contact/EnterprisesUI/LSWEnterprises.wo
+removed: WebUI/Contact/EnterprisesUI/SkyEnterpriseProjectList.wo
+changed: WebUI/Contact/AddressUI/
+     2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* removed deprecated 'singleSelection' binding from templates (v5.1.47)
+     2004-09-09  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyContactImportPage.m: added -setContactType: accessor method, this
+     	  should fix OGo bug #489 (v5.1.46)
+     2004-09-01  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWAddressEditor.m, SkyTelephoneEditor.m: fixed a compilation warning
+     	  (v5.0.45)
+added:   WebUI/Contact/AddressUI/AddressUI.lso
+removed: WebUI/Contact/AddressUI/SkyAddressSubEditor.wo
+removed: WebUI/Contact/AddressUI/SkyBusinessCardGathering.wo
+removed: WebUI/Contact/AddressUI/SkyContactImportPage.wo
+removed: WebUI/Contact/AddressUI/LSWFullSearch.wox
+removed: WebUI/Contact/AddressUI/SkyTelephoneEditor.wo
+removed: WebUI/Contact/AddressUI/SkyCompanyAttributesViewer.wo
+removed: WebUI/Contact/AddressUI/SkyExtendedAttrsSubEditor.wox
+removed: WebUI/Contact/AddressUI/LSWAddressViewer.wo
+removed: WebUI/Contact/AddressUI/SkyContactSubEditor.wo
+removed: WebUI/Contact/AddressUI/SkyPhoneEditor.wo
+removed: WebUI/Contact/AddressUI/SkyCategorySubEditor.wo
+removed: WebUI/Contact/AddressUI/LSWAddressPreferences.wo
+removed: WebUI/Contact/AddressUI/LSWFormLetterComponent.wox
+removed: WebUI/Contact/AddressUI/SkyPhoneSubEditor.wo
+removed: WebUI/Contact/AddressUI/SkyAddressEditorComponent.wo
+removed: WebUI/Contact/AddressUI/SkyContactImportUploadPage.wo
+removed: WebUI/Contact/AddressUI/LSWAddressEditor.wo
+removed: WebUI/Contact/AddressUI/SkyAddressEditor.wo
+removed: WebUI/Contact/AddressUI/SkyAddressesViewer.wo
+removed: WebUI/Contact/AddressUI/SkyTelephoneViewer.wo
+removed: WebUI/Contact/AddressUI/SkyPersonalAttributesViewer.wo
+removed: WebUI/Contact/AddressUI/SkyCompanyFlagSubEditor.wo
+removed: WebUI/Contact/AddressUI/SkyCommentSubEditor.wo
+removed: WebUI/Contact/AddressUI/SkyWizardAddressViewer.wo
+removed: WebUI/Contact/AddressUI/SkyPersonalViewerConfig.wo
+removed: WebUI/Contact/AddressUI/SkyCompanySavedSearchPopUp.wo
+added:   WebUI/Contact/LDAPAccounts/LDAPAccounts.lso
+removed: WebUI/Contact/LDAPAccounts/WelcomeNewLDAPAccount.wo/English.lproj/WelcomeNewLDAPAccount.html
+removed: WebUI/Contact/LDAPAccounts/WelcomeNewLDAPAccount.wo/English.lproj/WelcomeNewLDAPAccount.wod
+removed: WebUI/Contact/LDAPAccounts/WelcomeNewLDAPAccount.wo/English_orange.lproj/WelcomeNewLDAPAccount.html
+removed: WebUI/Contact/LDAPAccounts/WelcomeNewLDAPAccount.wo/English_orange.lproj/WelcomeNewLDAPAccount.wod
+changed: WebUI/JobUI/
+     2004-09-09  Olivier Hallot  <olivier@ig.com.br>
+     	* SkyJobList.wo/SkyJobList.wod (JobList): added title and footer line
+     	  to tasks (OGo bug #837) (v5.1.47)
+     2004-08-23  Helge Hess  <helge.hess@skyrix.com>
+     	* removed usage of deprecated singleSelection binding (v5.1.46)
+added:   WebUI/JobUI/JobUI.lso
+removed: WebUI/JobUI/LSWJobAction.wo
+removed: WebUI/JobUI/LSWJobEditor.wo
+removed: WebUI/JobUI/LSWJobTextMailPage.wo
+removed: WebUI/JobUI/SkyAssignProjectToJobEditor.wo
+removed: WebUI/JobUI/LSWJobPreferences.wo
+removed: WebUI/JobUI/SkyJobAttributesEditor.wo
+removed: WebUI/JobUI/LSWJobViewer.wo
+removed: WebUI/JobUI/LSWJobs.wo
+removed: WebUI/JobUI/LSWJobHtmlMailPage.wo
+removed: WebUI/JobUI/LSWJobImport.wo
+removed: WebUI/JobUI/SkyJobList.wo
+removed: WebUI/HelpUI/OGoHelpViewer.wo
+changed: XmlRpcAPI/Daemon/
+     2004-09-14  Helge Hess  <helge.hess@skyrix.com>
+     	* get versioned daemon name from Version file (v5.1.43)
+     2004-09-10  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile: renamed xmlrpcd binary to ogo-xmlrpcd-51 to allow multi
+     	  version packaging (v5.1.42)
+     2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+     	* Actions.subproj/DirectAction+Person.m: fixed an out of bounds
+     	  exception (v5.1.41)
+     	* GNUmakefile: added FHS installation of xmlrpcd (v5.1.40)
+     2004-09-08  Helge Hess  <helge.hess@opengroupware.org>
+     	* Application.m: override WOHttpTransactionUseSimpleParser default and
+     	  always use the simple parser (v5.1.39)
+     	* XmlRpcCoding.subproj/SkyPersonDocument+XmlRpcCoding.m: removed
+     	  duplicate generation of 'firstname', should fix OGo bug #911
+     	  (v5.1.38)
+     2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* updated common.h files for new LSFoundation header files location
+     	  (v5.1.37)
+     2004-09-03  Helge Hess  <helge.hess@opengroupware.org>
+     	* Actions.subproj/DirectAction+Defaults.m: use the login user's
+     	  defaults object instead of the system one (allows you to retrieve
+     	  configurations of the user, not just the NSGlobalDomain defaults)
+     	  (v5.1.36)
+     2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.35)
+     2004-08-25  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.preamble (xmlrpcd_TOOL_LIBS): removed dependency on
+     	  NGScripting (v5.1.34)
+     2004-08-23  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.preamble: link against libNGXmlRpc in SOPE 4.3 (v5.1.33)
+     	* Actions.subproj/DirectAction+Job.m(jobs.deleteJob): fixed an issue 
+     	  with the ID not being a string object (v5.1.32)
+added:   XmlRpcAPI/Daemon/fhs.make
+added:   XmlRpcAPI/Daemon/tests/personGetTest.py
+added:   Contrib/check-fhs.sh
+added:   Contrib/ls-ogo-releases.sh
+added:   Contrib/svn-rm-empty-wo.sh
+added:   Contrib/svn-mv-wo-themes.sh
+added:   Contrib/ls-sope-releases.sh
+added:   Contrib/compare-releases.py
+changed: Contrib/ChangeBlogger/
+     2004-09-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+     	* changelogparser.py: bugfix
+     2004-09-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+     	* clhtml_current_yearmonth.py, find-changelogs.sh: two new helper
+     	  scripts to ease setup
+added:   Contrib/ChangeBlogger/find-changelogs.sh
+added:   Contrib/ChangeBlogger/clhtml_current_yearmonth.py
+added:   Logic/ChangeLog
+added:   Logic/LSTasks/LSTasks.cmd
+added:   Logic/LSResource/LSResource.cmd
+added:   Logic/LSDocuments/LSDocuments.cmd
+changed: Logic/LSMail/
+     2004-06-
+added:   Logic/LSMail/LSMail.cmd
+added:   Logic/LSAccount/LSAccount.cmd
+added:   Logic/LSNews/LSNews.cmd
+changed: Logic/LSProject/
+     2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* Defaults.plist: changed attachment path to
+     	  /var/lib/opengroupware.org/documents as requested by Sebastian
+     	  (v5.1.29)
+     	* Defaults.plist: changed default attachment path from /home/siteadm
+     	  to /var/opengroupware.org/attachments (v5.1.28)
+added:   Logic/LSProject/LSProject.cmd
+added:   Logic/LSPerson/LSPerson.cmd
+added:   Logic/LSTeam/LSTeam.cmd
+added:   Logic/LSScheduler/LSScheduler.cmd
+added:   Logic/LSScheduler/fhs.make
+added:   Logic/LSEnterprise/LSEnterprise.cmd
+changed: Logic/LSFoundation/
+     2004-09-10  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoContextManager+LDAP.m: removed a log if an empty password is being
+     	  passed in for login (v5.1.88)
+     2004-09-06  Helge Hess  <helge.hess@opengroupware.org>
+     	* changed all sources to use new DB API for exception less selects,
+     	  various minor code cleanups - this improves behaviour in error
+     	  conditions like an unconfigured LSConnectionDictionary, some sanity
+     	  checks in model loading code (v5.1.87)
+     2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoContextManager.m: removed code to fetch modelname from the
+     	  database, temporarily patch bundlepath for preloading of bundles (to
+     	  make it work without an NGBundle being configured), added a default
+     	  LSConnectionDictionary (DB: OGo, user: OGo, port: 5432, 
+     	  host: localhost, no password) (v5.1.86)
+     2004-09-03  Helge Hess  <helge.hess@opengroupware.org>
+     	* moved header files into main directory (was in the LSFoundation
+     	  subdirectory before) (v5.1.85)
+     2004-08-30  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoContextManager.m: fixed lookup to opengroupware.org-1.0a
+     	* OGoContextManager.m: look for bundles in
+     	  /usr/local/lib/opengroupware.org and /usr/lib/opengroupware.org
+     	  (v5.1.84)
+     2004-08-27  Helge Hess  <helge@dogbert.in.skyrix.com>
+     	* OGoContextManager.m: use PostgreSQL instead of PostgreSQL72 as the
+     	  default adaptor (was renamed in SOPE) (v5.1.83)
+     2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+     	* OGoContextManager.m: preload bundles from 
+     	  Library/OpenGroupware.org-1.0a (v5.1.82)
+added:   Logic/LSFoundation/EODatabaseChannel+LSAdditions.h
+added:   Logic/LSFoundation/fhs.make
+added:   Logic/LSFoundation/LSDBFetchRelationCommand.h
+added:   Logic/LSFoundation/LSArrayFilterCommand.h
+added:   Logic/LSFoundation/LSBaseCommand.h
+added:   Logic/LSFoundation/LSBundleCmdFactory.h
+added:   Logic/LSFoundation/LSCommand.h
+added:   Logic/LSFoundation/LSCommandContext.h
+added:   Logic/LSFoundation/LSCommandFactory.h
+added:   Logic/LSFoundation/LSCommandKeys.h
+added:   Logic/LSFoundation/LSCreateCommand.h
+added:   Logic/LSFoundation/LSDBArrayFilterCommand.h
+added:   Logic/LSFoundation/LSDBObjectCommandException.h
+added:   Logic/LSFoundation/LSDBObjectBaseCommand.h
+added:   Logic/LSFoundation/LSDBObjectTransactionCommand.h
+added:   Logic/LSFoundation/LSDBObjectDeleteCommand.h
+added:   Logic/LSFoundation/LSDBObjectGetCommand.h
+added:   Logic/LSFoundation/LSDBObjectNewCommand.h
+added:   Logic/LSFoundation/LSDBObjectNewKeyCommand.h
+added:   Logic/LSFoundation/LSDBObjectSetCommand.h
+added:   Logic/LSFoundation/OGoObjectLinkManager.h
+added:   Logic/LSFoundation/LSDBTransaction.h
+added:   Logic/LSFoundation/LSFoundation.h
+added:   Logic/LSFoundation/LSLoginCommand.h
+added:   Logic/LSFoundation/LSMail.h
+added:   Logic/LSFoundation/LSGetObjectForGlobalIDs.h
+added:   Logic/LSFoundation/LSModuleManager.h
+added:   Logic/LSFoundation/LSSort.h
+added:   Logic/LSFoundation/LSSortCommand.h
+added:   Logic/LSFoundation/LSTypeManager.h
+added:   Logic/LSFoundation/NSObject+Commands.h
+added:   Logic/LSFoundation/OGoContextManager.h
+added:   Logic/LSFoundation/OGoContextSession.h
+added:   Logic/LSFoundation/OGoObjectLink.h
+added:   Logic/LSFoundation/SkyAttributeDataSource.h
+added:   Logic/LSFoundation/SkyAccessHandler.h
+added:   Logic/LSFoundation/SkyAccessManager.h
+added:   Logic/LSFoundation/NGBundleManager+OGo.h
+added:   Logic/LSFoundation/SkyObjectPropertyManager.h
+added:   Logic/LSFoundation/NGBundleManager+OGo.m
+removed: Logic/LSFoundation/LSFoundation/LSDBObjectTransactionCommand.h
+removed: Logic/LSFoundation/LSFoundation/LSDBFetchRelationCommand.h
+removed: Logic/LSFoundation/LSFoundation/LSDBObjectNewKeyCommand.h
+removed: Logic/LSFoundation/LSFoundation/LSDBObjectDeleteCommand.h
+removed: Logic/LSFoundation/LSFoundation/NSObject+Commands.h
+removed: Logic/LSFoundation/LSFoundation/LSFoundation.h
+removed: Logic/LSFoundation/LSFoundation/LSCommandFactory.h
+removed: Logic/LSFoundation/LSFoundation/LSDBObjectBaseCommand.h
+removed: Logic/LSFoundation/LSFoundation/SkyAttributeDataSource.h
+removed: Logic/LSFoundation/LSFoundation/LSLoginCommand.h
+removed: Logic/LSFoundation/LSFoundation/LSBaseCommand.h
+removed: Logic/LSFoundation/LSFoundation/LSDBObjectGetCommand.h
+removed: Logic/LSFoundation/LSFoundation/LSTypeManager.h
+removed: Logic/LSFoundation/LSFoundation/LSCommand.h
+removed: Logic/LSFoundation/LSFoundation/LSDBObjectNewCommand.h
+removed: Logic/LSFoundation/LSFoundation/LSCommandContext.h
+removed: Logic/LSFoundation/LSFoundation/SkyAccessManager.h
+removed: Logic/LSFoundation/LSFoundation/LSDBTransaction.h
+removed: Logic/LSFoundation/LSFoundation/LSSortCommand.h
+removed: Logic/LSFoundation/LSFoundation/LSDBObjectCommandException.h
+removed: Logic/LSFoundation/LSFoundation/LSDBObjectSetCommand.h
+removed: Logic/LSFoundation/LSFoundation/OGoObjectLink.h
+removed: Logic/LSFoundation/LSFoundation/LSMail.h
+removed: Logic/LSFoundation/LSFoundation/EODatabaseChannel+LSAdditions.h
+removed: Logic/LSFoundation/LSFoundation/SkyObjectPropertyManager.h
+removed: Logic/LSFoundation/LSFoundation/OGoContextSession.h
+removed: Logic/LSFoundation/LSFoundation/LSGetObjectForGlobalIDs.h
+removed: Logic/LSFoundation/LSFoundation/LSCreateCommand.h
+removed: Logic/LSFoundation/LSFoundation/LSCommandKeys.h
+removed: Logic/LSFoundation/LSFoundation/LSModuleManager.h
+removed: Logic/LSFoundation/LSFoundation/LSSort.h
+removed: Logic/LSFoundation/LSFoundation/LSArrayFilterCommand.h
+removed: Logic/LSFoundation/LSFoundation/OGoObjectLinkManager.h
+removed: Logic/LSFoundation/LSFoundation/OGoContextManager.h
+removed: Logic/LSFoundation/LSFoundation/LSBundleCmdFactory.h
+removed: Logic/LSFoundation/LSFoundation/SkyAccessHandler.h
+removed: Logic/LSFoundation/LSFoundation/LSDBArrayFilterCommand.h
+changed: Logic/LSBase/
+     2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.18)
+added:   Logic/LSBase/LSBase.cmd
+changed: Logic/LSAddress/
+     2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWriteUserDefaultsCommand.m: minor code cleanups, attempt to
+     	  autocreate LSAttachmentPath if it doesn't exist (v5.1.43)
+     2004-09-01  Helge Hess  <helge.hess@opengroupware.org>
+     	* added makefile for FHS install (v5.1.42)
+added:   Logic/LSAddress/LSAddress.cmd
+added:   Logic/LSAddress/fhs.make
+changed: Logic/LSSearch/
+     2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.18)
+added:   Logic/LSSearch/LSSearch.cmd
+added:   Logic/LSSearch/fhs.make
+changed: Themes/
+     2004-09-07  Helge Hess  <helge.hess@skyrix.com>
+     	* English.lproj: added mimeicon_application_mac_binhex40_16x19.gif
+     	  (as a copy of mimeicon_application_zip_16x19.gif)
+     2004-08-22  Helge Hess  <helge.hess@opengroupware.org>
+     	* removed duplicate icons in German variants of the themes
+added:   Themes/WebServerResources/tools
+added:   Themes/WebServerResources/English.lproj/mimeicon_application_mac_binhex40_16x19.gif
+removed: Themes/WebServerResources/English.lproj/benhur_background.gif
+removed: Themes/WebServerResources/English.lproj/homepage_benhur2.gif
+removed: Themes/WebServerResources/English.lproj/homepage_benhur3.gif
+removed: Themes/WebServerResources/German_OOo.lproj/menu_line.gif
+removed: Themes/WebServerResources/German_OOo.lproj/menu_email_labeled.gif
+removed: Themes/WebServerResources/German_OOo.lproj/menu_static_desk.gif
+removed: Themes/WebServerResources/German_OOo.lproj/menu_static_home.gif
+removed: Themes/WebServerResources/German_OOo.lproj/menu_email_labeled_inactive.gif
+removed: Themes/WebServerResources/German_OOo.lproj/menu_bookmarks_labeled.gif
+removed: Themes/WebServerResources/German_OOo.lproj/menu_palm_labeled.gif
+removed: Themes/WebServerResources/German_OOo.lproj/menu_static_dummy.gif
+removed: Themes/WebServerResources/German_OOo.lproj/menu_email_new_labeled.gif
+removed: Themes/WebServerResources/German_OOo.lproj/menu_logo_top.gif
+removed: Themes/WebServerResources/German_OOo.lproj/menu_news_labeled.gif
+removed: Themes/WebServerResources/German_OOo.lproj/menu_static_inbox.gif
+added:   Themes/WebServerResources/German_blue.lproj/COPYRIGHT
+removed: Themes/WebServerResources/German_blue.lproj/icon_enterprises.gif
+removed: Themes/WebServerResources/German_blue.lproj/move_icon.gif
+removed: Themes/WebServerResources/German_blue.lproj/tab_.gif
+removed: Themes/WebServerResources/German_blue.lproj/project_status_archived.gif
+removed: Themes/WebServerResources/German_blue.lproj/browse_inactive.gif
+removed: Themes/WebServerResources/German_blue.lproj/link_person.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_mail.gif
+removed: Themes/WebServerResources/German_blue.lproj/project_status_processing.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_catalog.gif
+removed: Themes/WebServerResources/German_blue.lproj/project_status_sleeping.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_new.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_projects.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_scheduler.gif
+removed: Themes/WebServerResources/German_blue.lproj/link_appointment.gif
+removed: Themes/WebServerResources/German_blue.lproj/smallprev.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_static_custom.gif
+removed: Themes/WebServerResources/German_blue.lproj/project.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_popupcalendar.gif
+removed: Themes/WebServerResources/German_blue.lproj/up_icon.gif
+removed: Themes/WebServerResources/German_blue.lproj/invisible_space_2.gif
+removed: Themes/WebServerResources/German_blue.lproj/invisible_space_6.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_desktop.gif
+removed: Themes/WebServerResources/German_blue.lproj/first_blind.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_desktop.gif
+removed: Themes/WebServerResources/German_blue.lproj/mail_url.gif
+removed: Themes/WebServerResources/German_blue.lproj/next.gif
+removed: Themes/WebServerResources/German_blue.lproj/mail_folder_closed.gif
+removed: Themes/WebServerResources/German_blue.lproj/treeview_minus_13.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_appointmentlink.gif
+removed: Themes/WebServerResources/German_blue.lproj/point_inactive.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_answered.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_projectlink_inactive.gif
+removed: Themes/WebServerResources/German_blue.lproj/link_doc.gif
+removed: Themes/WebServerResources/German_blue.lproj/link_project.gif
+removed: Themes/WebServerResources/German_blue.lproj/link_job.gif
+removed: Themes/WebServerResources/German_blue.lproj/email.gif
+removed: Themes/WebServerResources/German_blue.lproj/point.gif
+removed: Themes/WebServerResources/German_blue.lproj/document_unknown.gif
+removed: Themes/WebServerResources/German_blue.lproj/last.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_participants.gif
+removed: Themes/WebServerResources/German_blue.lproj/folder_opened.gif
+removed: Themes/WebServerResources/German_blue.lproj/downward_sorted.gif
+removed: Themes/WebServerResources/German_blue.lproj/clip.gif
+removed: Themes/WebServerResources/German_blue.lproj/project_status_processing_anim.gif
+removed: Themes/WebServerResources/German_blue.lproj/bottom_icon.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_persons.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_ls_office.gif
+removed: Themes/WebServerResources/German_blue.lproj/edit_txt_document.gif
+removed: Themes/WebServerResources/German_blue.lproj/upward_sorted.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_read.gif
+removed: Themes/WebServerResources/German_blue.lproj/led_dark_2.gif
+removed: Themes/WebServerResources/German_blue.lproj/button_ne.gif
+removed: Themes/WebServerResources/German_blue.lproj/led_yellow.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_email.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_persons.gif
+removed: Themes/WebServerResources/German_blue.lproj/english.gif
+removed: Themes/WebServerResources/German_blue.lproj/edit_txt_document_inactive.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_jobs.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_editnote.gif
+removed: Themes/WebServerResources/German_blue.lproj/led_green.gif
+removed: Themes/WebServerResources/German_blue.lproj/previous_week.gif
+removed: Themes/WebServerResources/German_blue.lproj/job_status_sleeping.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_resources.gif
+removed: Themes/WebServerResources/German_blue.lproj/last_blind.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_desktop_labeled.gif
+removed: Themes/WebServerResources/German_blue.lproj/top_icon.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_appointmentlink_inactive.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_calendar.gif
+removed: Themes/WebServerResources/German_blue.lproj/sequential_icon.gif
+removed: Themes/WebServerResources/German_blue.lproj/button_sw.gif
+removed: Themes/WebServerResources/German_blue.lproj/document_htm.gif
+removed: Themes/WebServerResources/German_blue.lproj/led_red.gif
+removed: Themes/WebServerResources/German_blue.lproj/delete.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_email_new_labeled.gif
+removed: Themes/WebServerResources/German_blue.lproj/document_xls.gif
+removed: Themes/WebServerResources/German_blue.lproj/led_green_2.gif
+removed: Themes/WebServerResources/German_blue.lproj/invisible_space_46.gif
+removed: Themes/WebServerResources/German_blue.lproj/plus.gif
+removed: Themes/WebServerResources/German_blue.lproj/document_fax.gif
+removed: Themes/WebServerResources/German_blue.lproj/tab_left.gif
+removed: Themes/WebServerResources/German_blue.lproj/treeview_leaf_13.gif
+removed: Themes/WebServerResources/German_blue.lproj/next_blind.gif
+removed: Themes/WebServerResources/German_blue.lproj/link_enterprise.gif
+removed: Themes/WebServerResources/German_blue.lproj/document_zip.gif
+removed: Themes/WebServerResources/German_blue.lproj/treeview_plus_corner_13.gif
+removed: Themes/WebServerResources/German_blue.lproj/invisible_space_94.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_bookmarks.gif
+removed: Themes/WebServerResources/German_blue.lproj/previous.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_lsoffice.gif
+removed: Themes/WebServerResources/German_blue.lproj/treeview_minus_corner_13.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_unread.gif
+removed: Themes/WebServerResources/German_blue.lproj/first.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_jobs_labeled.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_projectlink.gif
+removed: Themes/WebServerResources/German_blue.lproj/browse.gif
+removed: Themes/WebServerResources/German_blue.lproj/tab_selected.gif
+removed: Themes/WebServerResources/German_blue.lproj/corner_right.gif
+removed: Themes/WebServerResources/German_blue.lproj/invisible_space_30.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_projects_26x21.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_jobs.gif
+removed: Themes/WebServerResources/German_blue.lproj/document_pdf.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_news_labeled.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_static_desk.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_scheduler.gif
+removed: Themes/WebServerResources/German_blue.lproj/next_week.gif
+removed: Themes/WebServerResources/German_blue.lproj/ok_inactive.gif
+removed: Themes/WebServerResources/German_blue.lproj/mail_folder_opened.gif
+removed: Themes/WebServerResources/German_blue.lproj/treeview_plus_13.gif
+removed: Themes/WebServerResources/German_blue.lproj/link_email.gif
+removed: Themes/WebServerResources/German_blue.lproj/ok.gif
+removed: Themes/WebServerResources/German_blue.lproj/non_sorted.gif
+removed: Themes/WebServerResources/German_blue.lproj/folder_closed.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_people.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_edit.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_imap_labeled.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_email.gif
+removed: Themes/WebServerResources/German_blue.lproj/led_red_2.gif
+removed: Themes/WebServerResources/German_blue.lproj/led_yellow_2.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_resources_26x21.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_static_home.gif
+removed: Themes/WebServerResources/German_blue.lproj/project_status_outofdate.gif
+removed: Themes/WebServerResources/German_blue.lproj/document_mpp.gif
+removed: Themes/WebServerResources/German_blue.lproj/corner_left.gif
+removed: Themes/WebServerResources/German_blue.lproj/invisible_space_22.gif
+removed: Themes/WebServerResources/German_blue.lproj/document_doc.gif
+removed: Themes/WebServerResources/German_blue.lproj/document_gif.gif
+removed: Themes/WebServerResources/German_blue.lproj/treeview_corner_13.gif
+removed: Themes/WebServerResources/German_blue.lproj/smallnext.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_projects.gif
+removed: Themes/WebServerResources/German_blue.lproj/button_nw.gif
+removed: Themes/WebServerResources/German_blue.lproj/document_sit.gif
+removed: Themes/WebServerResources/German_blue.lproj/button_se.gif
+removed: Themes/WebServerResources/German_blue.lproj/parallel_icon.gif
+removed: Themes/WebServerResources/German_blue.lproj/job_status_processing.gif
+removed: Themes/WebServerResources/German_blue.lproj/upstairs.gif
+removed: Themes/WebServerResources/German_blue.lproj/button_pixel.gif
+removed: Themes/WebServerResources/German_blue.lproj/invisible_space_1.gif
+removed: Themes/WebServerResources/German_blue.lproj/job_status_done.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_resources.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_static_skyrix.gif
+removed: Themes/WebServerResources/German_blue.lproj/link_any_object.gif
+removed: Themes/WebServerResources/German_blue.lproj/minus.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_usermanager.gif
+removed: Themes/WebServerResources/German_blue.lproj/downstairs.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_usermanager.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_news.gif
+removed: Themes/WebServerResources/German_blue.lproj/preferences.gif
+removed: Themes/WebServerResources/German_blue.lproj/new_icon.gif
+removed: Themes/WebServerResources/German_blue.lproj/document_ppt.gif
+removed: Themes/WebServerResources/German_blue.lproj/import.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_editnote_inactive.gif
+removed: Themes/WebServerResources/German_blue.lproj/document_txt.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_preferences.gif
+removed: Themes/WebServerResources/German_blue.lproj/link_extern.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_imap_new_labeled.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_email_labeled.gif
+removed: Themes/WebServerResources/German_blue.lproj/view.gif
+removed: Themes/WebServerResources/German_blue.lproj/invisible_space_10.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_invoices.gif
+removed: Themes/WebServerResources/German_blue.lproj/invisible_space_14.gif
+removed: Themes/WebServerResources/German_blue.lproj/treeview_junction_13.gif
+removed: Themes/WebServerResources/German_blue.lproj/smallscheduler.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_preferences.gif
+removed: Themes/WebServerResources/German_blue.lproj/down_icon.gif
+removed: Themes/WebServerResources/German_blue.lproj/document_frm.gif
+removed: Themes/WebServerResources/German_blue.lproj/previous_blind.gif
+removed: Themes/WebServerResources/German_blue.lproj/add.gif
+removed: Themes/WebServerResources/German_blue.lproj/treeview_vertical_13.gif
+removed: Themes/WebServerResources/German_blue.lproj/menu_enterprises.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_invoices_26x21.gif
+removed: Themes/WebServerResources/German_blue.lproj/treeview_leaf_corner_13.gif
+removed: Themes/WebServerResources/German_blue.lproj/icon_bookmarks.gif
+removed: Themes/WebServerResources/German_blue.lproj/led_dark.gif
+removed: Themes/WebServerResources/German_blue.lproj/email_inactive.gif
+removed: Themes/WebServerResources/German_blue.lproj/german.gif
+added:   Themes/WebServerResources/English_orange.lproj/COPYRIGHT
+removed: Themes/WebServerResources/English_orange.lproj/benhur_background.gif
+removed: Themes/WebServerResources/English_orange.lproj/homepage_benhur2.gif
+removed: Themes/WebServerResources/English_orange.lproj/homepage_benhur3.gif
+removed: Themes/WebServerResources/German.lproj/project.gif
+removed: Themes/WebServerResources/German.lproj/move_icon.gif
+removed: Themes/WebServerResources/German.lproj/tab_selected.gif
+removed: Themes/WebServerResources/German.lproj/benhur_background.gif
+removed: Themes/WebServerResources/German.lproj/browse_inactive.gif
+removed: Themes/WebServerResources/German.lproj/corner_right.gif
+removed: Themes/WebServerResources/German.lproj/browse.gif
+removed: Themes/WebServerResources/German.lproj/tab_.gif
+removed: Themes/WebServerResources/German.lproj/edc_mypatients.gif
+removed: Themes/WebServerResources/German.lproj/homepage_benhur3.gif
+removed: Themes/WebServerResources/German.lproj/up_icon.gif
+removed: Themes/WebServerResources/German.lproj/line_stretch.gif
+removed: Themes/WebServerResources/German.lproj/line_right.gif
+removed: Themes/WebServerResources/German.lproj/next_week.gif
+removed: Themes/WebServerResources/German.lproj/ok_inactive.gif
+removed: Themes/WebServerResources/German.lproj/first_blind.gif
+removed: Themes/WebServerResources/German.lproj/mail_url.gif
+removed: Themes/WebServerResources/German.lproj/ok.gif
+removed: Themes/WebServerResources/German.lproj/mail_folder_closed.gif
+removed: Themes/WebServerResources/German.lproj/homepage1.gif
+removed: Themes/WebServerResources/German.lproj/mail_folder_opened.gif
+removed: Themes/WebServerResources/German.lproj/point_inactive.gif
+removed: Themes/WebServerResources/German.lproj/non_sorted.gif
+removed: Themes/WebServerResources/German.lproj/next.gif
+removed: Themes/WebServerResources/German.lproj/email.gif
+removed: Themes/WebServerResources/German.lproj/point.gif
+removed: Themes/WebServerResources/German.lproj/folder_closed.gif
+removed: Themes/WebServerResources/German.lproj/last.gif
+removed: Themes/WebServerResources/German.lproj/edit_txt_document.gif
+removed: Themes/WebServerResources/German.lproj/downward_sorted.gif
+removed: Themes/WebServerResources/German.lproj/folder_opened.gif
+removed: Themes/WebServerResources/German.lproj/bottom_icon.gif
+removed: Themes/WebServerResources/German.lproj/upward_sorted.gif
+removed: Themes/WebServerResources/German.lproj/clip.gif
+removed: Themes/WebServerResources/German.lproj/edc_allpatients.gif
+removed: Themes/WebServerResources/German.lproj/corner_left.gif
+removed: Themes/WebServerResources/German.lproj/edit_txt_document_inactive.gif
+removed: Themes/WebServerResources/German.lproj/previous_week.gif
+removed: Themes/WebServerResources/German.lproj/parallel_icon.gif
+removed: Themes/WebServerResources/German.lproj/last_blind.gif
+removed: Themes/WebServerResources/German.lproj/upstairs.gif
+removed: Themes/WebServerResources/German.lproj/top_icon.gif
+removed: Themes/WebServerResources/German.lproj/homepage_benhur2.gif
+removed: Themes/WebServerResources/German.lproj/edc_allpatients_inactive.gif
+removed: Themes/WebServerResources/German.lproj/sequential_icon.gif
+removed: Themes/WebServerResources/German.lproj/minus.gif
+removed: Themes/WebServerResources/German.lproj/downstairs.gif
+removed: Themes/WebServerResources/German.lproj/glm_logo.gif
+removed: Themes/WebServerResources/German.lproj/line_left.gif
+removed: Themes/WebServerResources/German.lproj/delete.gif
+removed: Themes/WebServerResources/German.lproj/view.gif
+removed: Themes/WebServerResources/German.lproj/homepage2.gif
+removed: Themes/WebServerResources/German.lproj/plus.gif
+removed: Themes/WebServerResources/German.lproj/import.gif
+removed: Themes/WebServerResources/German.lproj/add.gif
+removed: Themes/WebServerResources/German.lproj/tab_left.gif
+removed: Themes/WebServerResources/German.lproj/next_blind.gif
+removed: Themes/WebServerResources/German.lproj/down_icon.gif
+removed: Themes/WebServerResources/German.lproj/previous.gif
+removed: Themes/WebServerResources/German.lproj/glm_background.gif
+removed: Themes/WebServerResources/German.lproj/previous_blind.gif
+removed: Themes/WebServerResources/German.lproj/first.gif
+removed: Themes/WebServerResources/German.lproj/edc_mypatients_inactive.gif
+removed: Themes/WebServerResources/German.lproj/email_inactive.gif
+added:   Themes/WebServerResources/German_orange.lproj/COPYRIGHT
+removed: Themes/WebServerResources/German_orange.lproj/apt_icon_tradeshow.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_enterprises.gif
+removed: Themes/WebServerResources/German_orange.lproj/project.gif
+removed: Themes/WebServerResources/German_orange.lproj/move_icon.gif
+removed: Themes/WebServerResources/German_orange.lproj/project_status_archived.gif
+removed: Themes/WebServerResources/German_orange.lproj/benhur_background.gif
+removed: Themes/WebServerResources/German_orange.lproj/link_person.gif
+removed: Themes/WebServerResources/German_orange.lproj/browse_inactive.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_mail.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_catalog.gif
+removed: Themes/WebServerResources/German_orange.lproj/project_status_sleeping.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_new.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_projects.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_scheduler.gif
+removed: Themes/WebServerResources/German_orange.lproj/smallprev.gif
+removed: Themes/WebServerResources/German_orange.lproj/tab_.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_static_custom.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_popupcalendar.gif
+removed: Themes/WebServerResources/German_orange.lproj/edc_mypatients.gif
+removed: Themes/WebServerResources/German_orange.lproj/project_status_processing.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_delete_license.gif
+removed: Themes/WebServerResources/German_orange.lproj/apt_icon_jobs.gif
+removed: Themes/WebServerResources/German_orange.lproj/link_appointment.gif
+removed: Themes/WebServerResources/German_orange.lproj/up_icon.gif
+removed: Themes/WebServerResources/German_orange.lproj/invisible_space_2.gif
+removed: Themes/WebServerResources/German_orange.lproj/invisible_space_6.gif
+removed: Themes/WebServerResources/German_orange.lproj/apt_icon_call.gif
+removed: Themes/WebServerResources/German_orange.lproj/mail_url.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_desktop.gif
+removed: Themes/WebServerResources/German_orange.lproj/first_blind.gif
+removed: Themes/WebServerResources/German_orange.lproj/mail_folder_closed.gif
+removed: Themes/WebServerResources/German_orange.lproj/apt_icon_home.gif
+removed: Themes/WebServerResources/German_orange.lproj/link_project.gif
+removed: Themes/WebServerResources/German_orange.lproj/next.gif
+removed: Themes/WebServerResources/German_orange.lproj/treeview_minus_13.gif
+removed: Themes/WebServerResources/German_orange.lproj/link_doc.gif
+removed: Themes/WebServerResources/German_orange.lproj/point_inactive.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_answered.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_projectlink_inactive.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_appointmentlink.gif
+removed: Themes/WebServerResources/German_orange.lproj/link_job.gif
+removed: Themes/WebServerResources/German_orange.lproj/email.gif
+removed: Themes/WebServerResources/German_orange.lproj/point.gif
+removed: Themes/WebServerResources/German_orange.lproj/document_unknown.gif
+removed: Themes/WebServerResources/German_orange.lproj/last.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_participants.gif
+removed: Themes/WebServerResources/German_orange.lproj/folder_opened.gif
+removed: Themes/WebServerResources/German_orange.lproj/downward_sorted.gif
+removed: Themes/WebServerResources/German_orange.lproj/clip.gif
+removed: Themes/WebServerResources/German_orange.lproj/project_status_processing_anim.gif
+removed: Themes/WebServerResources/German_orange.lproj/bottom_icon.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_ls_office.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_persons.gif
+removed: Themes/WebServerResources/German_orange.lproj/edit_txt_document.gif
+removed: Themes/WebServerResources/German_orange.lproj/upward_sorted.gif
+removed: Themes/WebServerResources/German_orange.lproj/apt_icon_birthday.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_read.gif
+removed: Themes/WebServerResources/German_orange.lproj/led_dark_2.gif
+removed: Themes/WebServerResources/German_orange.lproj/edc_allpatients.gif
+removed: Themes/WebServerResources/German_orange.lproj/led_yellow.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_persons.gif
+removed: Themes/WebServerResources/German_orange.lproj/english.gif
+removed: Themes/WebServerResources/German_orange.lproj/apt_icon_meeting.gif
+removed: Themes/WebServerResources/German_orange.lproj/edit_txt_document_inactive.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_jobs.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_editnote.gif
+removed: Themes/WebServerResources/German_orange.lproj/led_green.gif
+removed: Themes/WebServerResources/German_orange.lproj/job_status_sleeping.gif
+removed: Themes/WebServerResources/German_orange.lproj/previous_week.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_resources.gif
+removed: Themes/WebServerResources/German_orange.lproj/edc_allpatients_inactive.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_desktop_labeled.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_appointmentlink_inactive.gif
+removed: Themes/WebServerResources/German_orange.lproj/top_icon.gif
+removed: Themes/WebServerResources/German_orange.lproj/last_blind.gif
+removed: Themes/WebServerResources/German_orange.lproj/homepage_benhur2.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_calendar.gif
+removed: Themes/WebServerResources/German_orange.lproj/sequential_icon.gif
+removed: Themes/WebServerResources/German_orange.lproj/button_sw.gif
+removed: Themes/WebServerResources/German_orange.lproj/document_htm.gif
+removed: Themes/WebServerResources/German_orange.lproj/led_red.gif
+removed: Themes/WebServerResources/German_orange.lproj/delete.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_email_new_labeled.gif
+removed: Themes/WebServerResources/German_orange.lproj/document_xls.gif
+removed: Themes/WebServerResources/German_orange.lproj/led_green_2.gif
+removed: Themes/WebServerResources/German_orange.lproj/invisible_space_46.gif
+removed: Themes/WebServerResources/German_orange.lproj/document_fax.gif
+removed: Themes/WebServerResources/German_orange.lproj/tab_left.gif
+removed: Themes/WebServerResources/German_orange.lproj/treeview_leaf_13.gif
+removed: Themes/WebServerResources/German_orange.lproj/next_blind.gif
+removed: Themes/WebServerResources/German_orange.lproj/link_enterprise.gif
+removed: Themes/WebServerResources/German_orange.lproj/document_zip.gif
+removed: Themes/WebServerResources/German_orange.lproj/first.gif
+removed: Themes/WebServerResources/German_orange.lproj/plus.gif
+removed: Themes/WebServerResources/German_orange.lproj/treeview_plus_corner_13.gif
+removed: Themes/WebServerResources/German_orange.lproj/invisible_space_94.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_bookmarks.gif
+removed: Themes/WebServerResources/German_orange.lproj/previous.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_lsoffice.gif
+removed: Themes/WebServerResources/German_orange.lproj/treeview_minus_corner_13.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_unread.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_jobs_labeled.gif
+removed: Themes/WebServerResources/German_orange.lproj/edc_mypatients_inactive.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_projectlink.gif
+removed: Themes/WebServerResources/German_orange.lproj/browse.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_email_labeled_inactive.gif
+removed: Themes/WebServerResources/German_orange.lproj/tab_selected.gif
+removed: Themes/WebServerResources/German_orange.lproj/corner_right.gif
+removed: Themes/WebServerResources/German_orange.lproj/invisible_space_30.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_projects_26x21.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_jobs.gif
+removed: Themes/WebServerResources/German_orange.lproj/document_pdf.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_news_labeled.gif
+removed: Themes/WebServerResources/German_orange.lproj/homepage_benhur3.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_static_desk.gif
+removed: Themes/WebServerResources/German_orange.lproj/ok.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_scheduler.gif
+removed: Themes/WebServerResources/German_orange.lproj/next_week.gif
+removed: Themes/WebServerResources/German_orange.lproj/ok_inactive.gif
+removed: Themes/WebServerResources/German_orange.lproj/treeview_plus_13.gif
+removed: Themes/WebServerResources/German_orange.lproj/link_email.gif
+removed: Themes/WebServerResources/German_orange.lproj/mail_folder_opened.gif
+removed: Themes/WebServerResources/German_orange.lproj/non_sorted.gif
+removed: Themes/WebServerResources/German_orange.lproj/folder_closed.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_people.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_edit.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_email.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_static_home.gif
+removed: Themes/WebServerResources/German_orange.lproj/led_red_2.gif
+removed: Themes/WebServerResources/German_orange.lproj/led_yellow_2.gif
+removed: Themes/WebServerResources/German_orange.lproj/apt_icon_private.gif
+removed: Themes/WebServerResources/German_orange.lproj/detes_logo.gif
+removed: Themes/WebServerResources/German_orange.lproj/project_status_outofdate.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_projects.gif
+removed: Themes/WebServerResources/German_orange.lproj/document_mpp.gif
+removed: Themes/WebServerResources/German_orange.lproj/corner_left.gif
+removed: Themes/WebServerResources/German_orange.lproj/document_gif.gif
+removed: Themes/WebServerResources/German_orange.lproj/invisible_space_22.gif
+removed: Themes/WebServerResources/German_orange.lproj/document_doc.gif
+removed: Themes/WebServerResources/German_orange.lproj/smallnext.gif
+removed: Themes/WebServerResources/German_orange.lproj/treeview_corner_13.gif
+removed: Themes/WebServerResources/German_orange.lproj/button_nw.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_email_inactive.gif
+removed: Themes/WebServerResources/German_orange.lproj/document_sit.gif
+removed: Themes/WebServerResources/German_orange.lproj/button_se.gif
+removed: Themes/WebServerResources/German_orange.lproj/button_pixel.gif
+removed: Themes/WebServerResources/German_orange.lproj/parallel_icon.gif
+removed: Themes/WebServerResources/German_orange.lproj/job_status_processing.gif
+removed: Themes/WebServerResources/German_orange.lproj/upstairs.gif
+removed: Themes/WebServerResources/German_orange.lproj/apt_icon_ill.gif
+removed: Themes/WebServerResources/German_orange.lproj/minus.gif
+removed: Themes/WebServerResources/German_orange.lproj/view.gif
+removed: Themes/WebServerResources/German_orange.lproj/invisible_space_1.gif
+removed: Themes/WebServerResources/German_orange.lproj/job_status_done.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_static_skyrix.gif
+removed: Themes/WebServerResources/German_orange.lproj/link_any_object.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_email_labeled.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_usermanager.gif
+removed: Themes/WebServerResources/German_orange.lproj/downstairs.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_news.gif
+removed: Themes/WebServerResources/German_orange.lproj/new_icon.gif
+removed: Themes/WebServerResources/German_orange.lproj/document_ppt.gif
+removed: Themes/WebServerResources/German_orange.lproj/preferences.gif
+removed: Themes/WebServerResources/German_orange.lproj/add.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_editnote_inactive.gif
+removed: Themes/WebServerResources/German_orange.lproj/import.gif
+removed: Themes/WebServerResources/German_orange.lproj/document_txt.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_usermanager.gif
+removed: Themes/WebServerResources/German_orange.lproj/link_extern.gif
+removed: Themes/WebServerResources/German_orange.lproj/invisible_space_10.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_preferences.gif
+removed: Themes/WebServerResources/German_orange.lproj/apt_icon_default.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_invoices.gif
+removed: Themes/WebServerResources/German_orange.lproj/invisible_space_14.gif
+removed: Themes/WebServerResources/German_orange.lproj/treeview_junction_13.gif
+removed: Themes/WebServerResources/German_orange.lproj/smallscheduler.gif
+removed: Themes/WebServerResources/German_orange.lproj/down_icon.gif
+removed: Themes/WebServerResources/German_orange.lproj/document_frm.gif
+removed: Themes/WebServerResources/German_orange.lproj/previous_blind.gif
+removed: Themes/WebServerResources/German_orange.lproj/apt_icon_outwards.gif
+removed: Themes/WebServerResources/German_orange.lproj/treeview_vertical_13.gif
+removed: Themes/WebServerResources/German_orange.lproj/menu_enterprises.gif
+removed: Themes/WebServerResources/German_orange.lproj/apt_icon_duedate.gif
+removed: Themes/WebServerResources/German_orange.lproj/treeview_leaf_corner_13.gif
+removed: Themes/WebServerResources/German_orange.lproj/icon_invoices_26x21.gif
+removed: Themes/WebServerResources/German_orange.lproj/led_dark.gif
+removed: Themes/WebServerResources/German_orange.lproj/german.gif
+removed: Themes/WebServerResources/German_orange.lproj/apt_icon_holiday.gif
+removed: Themes/WebServerResources/German_orange.lproj/email_inactive.gif
+added:   Themes/WebServerResources/English_blue.lproj/COPYRIGHT
+added:   DocumentAPI/ChangeLog
+added:   DocumentAPI/fhslib.make
+added:   DocumentAPI/OGoFileSystemProject/OGoFileSystemProject.ds
+added:   DocumentAPI/OGoFileSystemProject/GNUmakefile.postamble
+added:   DocumentAPI/OGoJobs/OGoJobs.ds
+added:   DocumentAPI/OGoJobs/GNUmakefile.postamble
+added:   DocumentAPI/OGoBase/OGoBase.ds
+changed: DocumentAPI/OGoScheduler/
+     2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyHolidayCalculator.m: lookup Holidays.plist in FHS locations
+     	  (/usr/local/, /usr/ in share/opengroupware.org-1.0a/), some code
+     	  cleanups (v5.1.28)
+     2004-09-01  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile (RESOURCES_DIR): when compiling for FHS install
+     	  resources in share/opengroupware.org-1.0a/
+added:   DocumentAPI/OGoScheduler/OGoScheduler.ds
+changed: DocumentAPI/OGoProject/
+     2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyContentHandler.h: added prototype for +emptyBlobHandler (v5.1.30)
+added:   DocumentAPI/OGoProject/OGoProject.ds
+added:   DocumentAPI/OGoProject/GNUmakefile.postamble
+added:   DocumentAPI/OGoAccounts/OGoAccounts.ds
+added:   DocumentAPI/OGoAccounts/GNUmakefile.postamble
+added:   DocumentAPI/OGoContacts/OGoContacts.ds
+added:   DocumentAPI/OGoContacts/GNUmakefile.postamble
+added:   DocumentAPI/OGoRawDatabase/OGoRawDatabase.ds
+changed: DocumentAPI/OGoDatabaseProject/
+     2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.1.33
+     	* SkyProjectFileManagerCache.m: moved SkyProjectFileManagerContext
+     	  protocol method to main class, same refactoring of that method
+     	* SkyProjectFolderDataSource.m: minor code cleanups, fixed a warning
+added:   DocumentAPI/OGoDatabaseProject/OGoDatabaseProject.ds
+added:   DocumentAPI/OGoDatabaseProject/GNUmakefile.postamble
+removed: Database/LSModel
+changed: Database/OGoModel/
+     2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.postamble: do not delete models in distclean (v5.1.12)
+     	* v5.1.11
+     	* GNUmakefile: include PostgreSQL SQL create/update scripts in bundle
+     	* GNUmakefile.postamble: do not autogenerate the EOModels
+     2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.10)
+     2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+     	* install bundle into Library/OpenGroupware.org-1.0a/ (v5.1.9)
+added:   Database/OGoModel/OGo.model
+added:   Database/OGoModel/fhs.make
+changed: ZideStore/
+     2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+     	* started reorganization for OGo 1.0 (v1.3.75)
+     2004-07-30  Helge Hess  <helge@dogbert.in.skyrix.com>
+     	* Maps/DAVPropSets.plist(CadaverListSet): added properties requested
+     	  by Konqueror in WebDAV mode (davLockDiscovery, davSourceURL,
+     	  davSupportedLock) (v1.2.74)
+     2004-06-16  Helge Hess  <helge.hess@skyrix.com>
+     	* ZideStore.m ([ZideStore -handleException:inContext:]): fixed a 
+     	  gcc 3.4 warning (v1.2.73)
+     2004-06-08  Helge Hess  <helge.hess@opengroupware.org>
+     	* ZideStore.m: check the 'GNUSTEP_PATHLIST' envvar in case the 
+     	  GNUSTEP_PATHPREFIX_LIST is not set (v1.2.72)
+     	* GNUmakefile (SUBPROJECTS): do not compile EvoConnect, RSS and 
+     	  WCAP products on MacOSX (v1.2.71)
+     2004-05-18  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile: fixed OGo bug #766 (build ZideStore main executable
+     	  after the libraries) (v1.2.70)
+     2004-05-10  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile.preamble (ADDITIONAL_TOOL_LIBS): fixed dependencies for
+     	  current MacOSX gcc (v1.2.69)
+     2004-04-05  Helge Hess  <helge.hess@skyrix.com>
+     	* SxAuthenticator.m: changed auth realm from SKYRiX to 
+     	  OpenGroupware.org (v1.2.68)
+     2004-03-06  Helge Hess  <helge.hess@opengroupware.org>
+     	* v1.2.67
+     	* Maps/E2KAttrMap.plist: added various properties as used by the
+     	  Kontact Exchange resource
+     	* Maps/DAVPropSets.plist: added KOrgExInitialAptQuerySet as used by
+     	  Kontact
+     2003-12-22  Helge Hess  <helge.hess@skyrix.com>
+     	* Maps/E2KAttrMap.plist: added two new Office related namespaces 
+     	  (v1.2.66)
+     2003-12-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* Maps/E2KAttrMap.plist: added attributes necessary for iSync AB sync
+     	  (v1.2.65)
+     2003-12-10  Helge Hess  <helge.hess@opengroupware.org>
+     	* ZideStore.m: fixed some issue with a cmdctx not being available prior
+     	  login (v1.2.64)
+     2003-12-10  Helge Hess  <helge.hess@skyrix.com>
+     	* ZideStore.m: properly check whether a login exists prior creating a
+     	  SxUserFolder object (v1.2.63)
+     2003-11-24  Helge Hess  <helge.hess@opengroupware.org>
+     	* Maps/PersonalFolderInfo.plist: added proper mapping for Projects
+     	  folder creation (v1.2.62)
+     2003-11-21  Helge Hess  <helge.hess@opengroupware.org>
+     	* Maps/DAVPropSets.plist: added IE 6 WebFolders tags to Cadaver query
+     	  set
+     2003-11-19  Thomas Schild  <ts@skyrix.com>
+     	* Maps/PersonalFolderInfo.plist: add SxSearchFolder key
+     	  for danish language v1.2.61
+     2003-11-17  Thomas Schild  <ts@skyrix.com>
+     	* Maps/PersonalFolderInfo.plist: add SxSearchFolder key
+     	  for dutch language v1.2.60
+     2003-11-14  Helge Hess  <helge.hess@skyrix.com>
+     	* v1.2.59
+     	* product.plist: moved the SoClass definitions to the appropriate
+     	  product bundles
+     	* major reworks of internal structure, folder specific Frontend 
+     	  functionality is now provided by separate ZideStore product bundles
+     	  instead of being linked into a monolithic libZideStoreFrontend 
+     	  library
+     	* ZideStore.m: look for products in Library/ZideStore12 instead of
+     	  Library/ZideStore, to avoid clashes with ZideStore 1.1
+     2003-11-13  Helge Hess  <helge.hess@skyrix.com>
+     	* product.plist: added SxOptionsForm protection settings (v1.2.58)
+     2003-11-13  Thomas Schild  <ts@skyrix.com>
+     	* Maps/PersonalFolderInfo.plist: add SxSearchFolder key
+     	  for italian/french language v1.2.57
+     2003-11-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* v1.2.56
+     	* Maps/PersonalFolderInfo.plist: added new flatRootKeys entry for
+     	  a "flattened" tree structure (does not work yet)
+     	* Maps/DAVPropSets.plist: added appleDoubleHeader as a set key to the
+     	  Cadaver query set
+     2003-10-13  Helge Hess  <helge.hess@skyrix.com>
+     	* bumped version to v1.2.55 because of the new library architecture
+     	  (this ZideStore is currently not in sync with the SKYRiX 5 
+     	  ZideStore which is based on 1.1.51)
+     2003-09-04  Helge Hess  <helge.hess@skyrix.com>
+     	* v1.1.54
+     	* Frontend, Backend: made the frontend a shared library
+     2003-09-03  Helge Hess  <helge.hess@skyrix.com>
+     	* v1.1.53
+     	* Frontend/SxFolder.m: only warn once if a set could not be found
+     	* Frontend: moved Evo specific things to EvoConnect bundle
+     2003-08-26  Helge Hess  <helge.hess@skyrix.com>
+     	* v1.1.52
+     	* Frontend/SxFolder.m: only log missing ZideLook support once
+     	* Frontend/Appointments/SxAppointmentMessageParser.m: added a hack
+     	  for parsing broken iCal entities which do not properly close the
+     	  VTIMEZONE tag (eg Entourage ;-)
+     2003-08-19  Helge Hess  <helge.hess@skyrix.com>
+     	* Maps/E2KAttrMap.plist: added Entourage resource tag (v1.1.51)
+     Thu Aug 14 15:16:22 2003  Martin Hoerning  <mh@skyrix.com>
+     	* Backend/SxFreeBusyManager.m: added support for pKey-Emails
+     	  (fixes sx bug 1558) (v1.1.50)
+     Thu Aug 14 13:37:44 2003  Martin Hoerning  <mh@skyrix.com>
+     	* Frontend/Appointments/SxAppointment+Participants.m: check
+     	  for pkey-emails anyway (sx bug 1737) (v1.1.49)
+     2003-08-07  Helge Hess  <helge.hess@skyrix.com>
+     	* Maps/DAVPropSets.plist: fixed EvolutionSubFolderSet for Evo 1.4.4
+     	  (v1.1.48)
+     	* Frontend/Contacts/SxEvoContactQueryInfo.m: added a new Evo 1.4.4
+     	  search qualifier pattern (davIsCollection=0) (v1.1.47)
+     	* ZideStore.m: reqister "dateTime" class as value object for both,
+     	  "dateTime" and "dateTime.tz" - required for Evo 1.4.4 (v1.1.46)
+     	* Maps/MAPIPropMap.plist: also map 3A1D001F and 3A1A001F (unicode
+     	  variants of 3A1D001E/radioTelephoneNumber and 
+     	  3A1A001E/primaryTelephoneNumber which were already mapped) - send
+     	  by Evolution 1.4.4
+     	  (v1.1.45)
+     Fri Jul 25 14:16:32 2003  Jan Reichmann  <jr@skyrix.com>
+     	* Frontend/Persons/SxVCardPersonRenderer.m: check whether bday is a
+     	  String or Date object (v1.1.44);
+     Thu Jul 24 16:34:13 2003  Jan Reichmann  <jr@skyrix.com>
+     	* Frontend/SxFolder.m: ZL patches (v1.1.43)
+     2003-07-24  Helge Hess  <helge.hess@skyrix.com>
+     	* patches for ZideLook support (v1.1.42)
+     Thu Jul 24 14:04:52 2003  Jan Reichmann  <jr@skyrix.com>
+     	* SxAuthenticator.m: remove unnessary code (v1.1.41)
+     Wed Jul 23 19:28:36 2003  Jan Reichmann  <jr@skyrix.com>
+     	* SxAuthenticator: add managerStore (v1.1.40)
+     Tue Jul 22 22:14:26 2003  Jan Reichmann  <jr@skyrix.com>
+     	* Frontend/SxUserFolder.m: add methods to determine accountRootURL 
+     	  and tasksFolderURL (v1.1.39)
+     Tue Jul 22 21:01:21 2003  Jan Reichmann  <jr@skyrix.com>
+     	* Frontend/SxFolder: check bundles to load property maps (v1.1.38)
+     Tue Jul 22 18:42:07 2003  Jan Reichmann  <jr@skyrix.com>
+     	* OLDavPropMapper.m: use lowercase string to compare xml-tag 
+     	  prefix (v1.1.37)
+     Mon Jul 21 19:38:46 2003  Jan Reichmann  <jr@skyrix.com>
+     	* add license to *.[mhc] (v1.1.36)
+     2003-07-21  Helge Hess  <helge.hess@skyrix.
+added:   ZideStore/fhsbundle.make
+added:   ZideStore/fhslib.make
+changed: ZideStore/PrefsUI/
+     2004-09-10  Helge Hess  <helge.hess@skyrix.com>
+     	* added image and CSS resources to the bundle (previously located in
+     	  main .woa), fixed templates to use rsrc: lookups for images/CSS
+     	  (v1.3.9)
+     2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.preamble: added library lookup pathes for FHS (v1.3.8)
+added:   ZideStore/SoObjects/ZSTasks
+added:   ZideStore/SoObjects/ZSProjects
+added:   ZideStore/SoObjects/ZSContacts
+added:   ZideStore/SoObjects/ZSAppointments
+removed: ZideStore/SoObjects/Appointments
+removed: ZideStore/SoObjects/Tasks
+removed: ZideStore/SoObjects/Projects
+removed: ZideStore/SoObjects/Contacts
+changed: ZideStore/ZSFrontend/
+     2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* SxFolder.h: fixed a compile warning (v1.3.88)
+     2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile.preamble: added path to libLSFoundation, added FHS pathes
+     	  (v1.3.87)
+added:   ZideStore/Main/ChangeLog
+added:   ZideStore/Main/Version
+added:   ZideStore/Main/GNUmakefile.postamble
+changed: ZideStore/ZSBackend/
+     2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* v1.3.77
+     	* SxFreeBusyManager.m: fixed a warning
+     	* SxAptManager.h: removed prototype for -pkeysAndVersionsForGlobalIDs:
+     	  (which is disabled in the .m)
+changed: ZideStore/Protocols/EvoConnect/
+     2004-08-24  Helge Hess  <helge@dogbert.in.skyrix.com>
+     	* fixed for new ZS libraries in SoObjects (v1.3.3)
+changed: ZideStore/Protocols/RSS/
+     2004-08-24  Helge Hess  <helge@dogbert.in.skyrix.com>
+     	* fixed for new ZS libraries in SoObjects (v1.3.4)

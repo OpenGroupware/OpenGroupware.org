@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<OGo:container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+>
+  <form name="linkform" method="GET"
+        actionClass="OGoObjectLinkList" directActionName="createLink"
+        var:_o="context.contextID">
+    <html:input type="hidden" name="sourceId" var:value="sourcePrimaryKey"/>
+    <html:input type="hidden" name="sourceEntity" var:value="sourceEntity"/>
+
+    <!-- this is required for Firefox 0.9.1, which doesn't submit query
+	 parameters?! -->
+    <html:input type="hidden" name="wosid" var:value="session.sessionID"/>
+
+    <var:if condition="hasConfiguredLinkTypes" const:negate="YES">
+      <OGo:font><i><OGo:label key="note_nolinksconfigured" /></i></OGo:font>
+      <br />
+      <br />
+    </var:if>
+    
+    <var:if condition="hasGID">
+      <tableview xmlns="http://www.opengroupware.org/ns/wox/ogo"
+                 var:list="attachedLinks" var:item="currentLink"
+                 var:titleString="labels.tableview_linkstitle" 
+                 var:footerString="labels.tableview_footertitle"
+      >
+        <tbutton>
+          <var:if condition="hasConfiguredLinkTypes">
+            <var:popup const:name="linktype" 
+                       list="linkTypeNames" item="linkType" 
+                       value="linkType"
+                       string="labels.$linkType" 
+                       var:noSelectionString="labels.popup_createLink"
+                       html:onChange="this.form.submit(); return true" />
+            
+            <var:if condition="session.isJavaScriptEnabled" const:negate="YES">
+              <html:input type="submit" name="submit" 
+                          var:value="labels.button_linkadd" />
+            </var:if>
+          </var:if>
+        </tbutton>
+        
+        <td var:title="labels.tableview_linklabel">
+          <!-- TODO: add support for "regular" URL links -->
+          <html:a directActionName="activate" var:_oid="currentLink.targetId"
+            ><var:string value="currentLink.label" /></html:a>
+          <html:i>(<var:string value="currentLinkEntityLabel"/>)</html:i>
+        </td>
+        
+        <td var:title="labels.tableview_linktype" width="18%">
+          <var:string value="linkTypeLabel" />
+        </td>
+
+        <td width="2%">
+          <html:a var:action="deleteLink"><html:img 
+             filename="icon_full_trash.gif" 
+             border="0" 
+             var:alt="labels.delete" var:title="labels.delete" /></html:a>
+        </td>
+      </tableview>
+    </var:if>
+    
+    <var:if condition="linksPointingToObject.count.stringValue" const:value="0"
+            const:negate="YES">
+  
+      <hr height="1" width="100%" />
+  
+      <OGo:font>
+        <b><OGo:label key="linksToObject" />:</b>
+  
+        <var:foreach list="linksPointingToObject" item="currentLink" 
+                     const:separator=", ">
+          <nobr>
+            <a directActionName="activate" var:_oid="currentLink.sourceId"
+              ><var:string value="sourceObjectLabel" /></a>
+            <i>(<var:string value="currentLinkSourceEntityLabel"/>, 
+                <var:string value="linkTypeLabel" />)</i>
+          </nobr>
+        </var:foreach>
+      </OGo:font>
+    </var:if>
+  </form>
+</OGo:container>

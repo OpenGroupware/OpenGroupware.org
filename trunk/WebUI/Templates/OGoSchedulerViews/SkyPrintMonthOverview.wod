@@ -1,0 +1,86 @@
+// $Id: SkyPrintMonthOverview.wod 2 2004-08-20 11:37:44Z znek $
+
+IsInMonth: WOConditional {
+  condition = isInMonth;
+}
+
+/* MonthOverview structure */
+
+MonthOverview: WEMonthOverview {
+  list = dataSource.fetchObjects;
+  item = appointment;
+  
+  year     = year;
+  month    = month;
+  timeZone = timeZone;
+
+  currentDay = currentDate;
+  tableTags  = NO;
+
+  firstDay = 1; // monday
+}
+
+InfoMode:    WEMonthOverviewInfoMode    {};
+ContentMode: WEMonthOverviewContentMode {};
+
+Headline: WEMonthLabel {
+  orientation = "header";
+
+  ALIGN       = "center";
+  WIDTH       = "100%";
+}
+
+WeekdayCell: WEMonthLabel {
+  orientation = "top";
+  dayOfWeek   = dayOfWeek;
+
+  ALIGN       = "center";
+  WIDTH       = "14%";
+}
+
+WeekCell: WEMonthLabel {
+  orientation = "left";
+  weekOfYear  = weekOfYear;
+
+  ALIGN       = "center";
+  VALIGN      = "middle";
+  WIDTH       = "2%";
+}
+
+DayCell: WEMonthTitle {
+  ALIGN       = "left";
+  VALIGN      = "top";
+  HEIGHT      = 60;
+  WIDTH       = "2%";
+}
+
+// DayInfo
+
+HasCurrentDayInfo: WOConditional {
+  condition = hasCurrentDayInfo;
+}
+
+CurrentDayInfo: WOString {
+  value = currentDayInfo;
+}
+
+Appointment: WOString {
+  value     = appointment;
+  formatter = aptFormatter;
+  insertBR  = YES;
+  escapeHTML = NO;
+}
+
+Font: SkyConfigFont {}
+
+TitleFont : WOGenericContainer {
+  elementName = "FONT";
+  COLOR       = config.colors_titleColor;
+}
+
+DayTitle:        WOString { value = currentDate.dayOfMonth; }
+WeekdayTitle:    WOString { value = labels.$weekDayString;  }
+WeekOfYearTitle: WOString { value = weekOfYear;             }
+MonthTitle:      WOString { value = labels.$monthString;    }
+YearTitle:       WOString { value = year;                   }
+CompanyName:     WOString { value = companyName;            }

@@ -1,0 +1,11 @@
+// v1.1 - Francisco Azevedo <francisco@OpenGroupware.org>
+
+subject          = "Assunto"
+to               = "Para";
+cc               = "Cc";
+bcc              = "Bcc"
+sender           = "Remetente";
+date             = "Data";
+toDoc            = "Tornar um documento"
+download         = "Download"
+contentLength    = "Tamanho";

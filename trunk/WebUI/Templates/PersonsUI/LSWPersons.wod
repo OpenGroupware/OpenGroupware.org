@@ -1,0 +1,210 @@
+// binds template to controller class
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.persons_window_title;
+  onClose = session.navigation.leavePage;
+}
+
+Form: WOForm {
+  name   = "searchform";
+  action = personSearch;
+}
+
+Font: SkyConfigFont {}
+
+PersonList: SkyPersonList {
+  dataSource        = dataSource;
+  favoritesKey      = "person_favorites";
+  onFavoritesChange = updateFavorites;
+}
+
+Buttons: SkyButtonRow {
+  ordering    = ( gathering, import );
+  onNew       = newPerson;
+  onGathering = gathering;
+  new         = labels.new;
+  tipNew      = labels.new;
+  gathering   = labels.gathering;
+
+  hasImport = YES;
+  import    = labels.import;
+  onImport  = import;
+}
+
+ButtonsWithInfoline: SkyButtonRow {
+  ordering            = ( gathering, infolinegathering, import );
+  onNew               = newPerson;
+  onGathering         = gathering;
+  onInfolinegathering = infolineGathering;
+  new                 = labels.new;
+  tipNew              = labels.new;
+  gathering           = labels.gathering;
+  infolinegathering   = labels.infolineGathering;
+
+  hasImport = YES;
+  import    = labels.import;
+  onImport  = import;
+}
+
+CustomButtons: SkyButtonRow {
+  ordering    = ( gathering, import, removetab );
+  onNew       = newPerson;
+  onGathering = gathering;
+  new         = labels.new;
+  tipNew      = labels.new;
+  gathering   = labels.gathering;
+
+  hasImport = YES;
+  import    = labels.import;
+  onImport  = import;
+
+  hasRemovetab = YES;
+  removetab    = labels.removeTab;
+  onRemovetab  = removeTab;
+}
+
+CustomButtonsWithInfoline: SkyButtonRow {
+  ordering            = ( gathering, infolinegathering, import, removetab );
+  onNew               = newPerson;
+  onGathering         = gathering;
+  onInfolinegathering = infolineGathering;
+  new                 = labels.new;
+  tipNew              = labels.new;
+  gathering           = labels.gathering;
+  infolinegathering   = labels.infolineGathering;
+
+  hasImport = YES;
+  import    = labels.import;
+  onImport  = import;
+
+  hasRemovetab = YES;
+  removetab    = labels.removeTab;
+  onRemovetab  = removeTab;
+}
+
+HasSearchedCond: WOConditional {
+  condition = hasSearched;
+}
+
+IsInfolineEnabled: WOConditional {
+  condition = isInfolineEnabled;
+}
+IsInfolineDisabled: WOConditional {
+  condition = isInfolineEnabled;
+  negate    = YES;
+}
+
+AdvancedSearch: LSWPersonAdvancedSearch {
+  hasSearched    = hasSearched;
+  qualifier      = qualifier;
+  maxSearchCount = maxSearchCount;
+  userDefaultKey = "person_custom_qualifiers";
+}
+
+FullSearch: LSWFullSearch {
+  searchString    = searchText;
+  qualifier       = qualifier;
+  isSearchLimited = isSearchLimited;
+  limitedString   = limitedSearchLabel;
+}
+
+SearchField: WOTextField {
+  name  = "search";
+  value = searchText;
+}
+
+SearchSubmit: WOSubmitButton {
+  action = personSearch;
+  value  = labels.searchButtonLabel;
+  class  = "button_narrow";
+}
+
+IsSearchLimited: WOConditional {
+  condition = isSearchLimited;
+}
+
+LimitedLabel: WOString {
+  value = limitedSearchLabel;
+}
+
+/* tabs */
+
+TabBody: SkyTabView {
+  selection = tabKey;
+}
+
+SearchTab: SkySimpleTabItem {
+  key    = "personSearch";
+  action = tabClicked;
+  label  = labels.searchPersonTabLabel;
+}
+
+AdvSearchTab: SkySimpleTabItem {
+  key    = "advancedSearch";
+  action = tabClicked;
+  label  = labels.advancedSearchTab;
+}
+
+FullSearchTab: SkySimpleTabItem {
+  key    = "search";
+  action = tabClicked;
+  label  = labels.fullSearchTab;
+}
+
+FavoritesTab: SkySimpleTabItem {
+  key    = "_favorites_";
+  label  = labels.favorites;
+  action = viewFavorites;
+}
+
+CustomTabs: WORepetition {
+  list  = savedSearches;
+  item  = item;
+  index = itemIndex;
+}
+CustomTab: SkySimpleTabItem {
+  key    = itemIndex;
+  label  = customTabLabel;
+  action = customTabClicked;
+}
+CustomLabel: SkyRichString {
+  value = searchTitle;
+}
+
+CustomSavedSearchPopUp: SkyCompanySavedSearchPopUp {
+  qualifier        = qualifier;
+  maxSearchCount   = maxSearchCount;
+  userDefaultKey   = "person_custom_qualifiers";
+  searchSelected   = searchSelected;
+  searchTitle      = searchTitle;
+  updateQualifier  = YES;
+}
+
+// load/save search
+SavedSearchPopUp: SkyCompanySavedSearchPopUp {
+  qualifier        = qualifier;
+  maxSearchCount   = maxSearchCount;
+  hasSearched      = hasSearched;
+  recommendedTitle = searchText;
+  userDefaultKey   = "person_custom_qualifiers";
+  searchSelected   = searchSelected;
+  searchTitle      = searchTitle;
+}
+
+LetterTab: SkySimpleTabItem {
+  key    = item;
+  action = letterClicked;
+  label  = item;
+}
+
+LetterRepetition: WORepetition {
+  item = item;
+  list = ("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+          "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+}
+
+ShowLetterButtons: WOConditional {
+  condition = shouldShowLetterButtons;
+}

@@ -1,0 +1,12 @@
+// $Id$
+
+URLs
+====
+
+/zidestore/ControlPanel/			=> SoControlPanel
+/zidestore/ControlPanel/Products		=> SoProductRegistry
+/zidestore/ControlPanel/Products/ZideStoreUI	=> SoProduct
+/zidestore/ControlPanel/Products/ZideStoreUI/Resources/
+=> SoProductResourceManager
+/zidestore/ControlPanel/Products/ZideStoreUI/Resources/calendar.css
+=> resource

@@ -1,0 +1,72 @@
+// $Id: SkyArticleUnitViewer.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+//Style
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.articleUnitViewerWindowTitle;
+  onClose = session.navigation.leavePage;
+}
+
+UnitTitle: LSWViewerTitle {
+  title     = unit.unit;
+}
+
+Buttons: SkyButtonRow {
+  /* defaultButtons */
+  hasEdit   = isEditEnabled;
+  hasDelete = isDeleteEnabled;
+  onEdit    = edit;
+  onDelete  = delete;
+  /* labels */
+  edit          = labels.editUnit;
+  delete        = labels.deleteUnit;
+}
+
+//Tabs
+
+TabView: SkyTabView {
+  selection = tabKey;
+}
+
+AttributesTab: SkyTabItem {
+  key       = "attributes";
+  action    = tabClicked;
+  label     = labels.attributes;
+  icon      = "attributes";
+}
+
+//Attributes
+
+Title: LSWViewerTitle {
+  title     = unit.unit;
+}
+
+UnitSubViewer: LSWObjectViewer {
+  labels         = labels;
+  object         = unit;
+  valueColor     = config.colors_subValueCell;
+  attributeColor = config.colors_subAttributeCell;
+  attributes     = (
+    {   key     = "singularUnit";       },
+    {   key     = "pluralUnit";         },
+    {   key     = "description";        }
+  );
+}
+
+//delete-warning
+
+WarningCond : WOConditional {
+  condition = isInWarningMode;
+}
+
+WarningCondElse : WOConditional {
+  condition = isInWarningMode;
+  negate    = YES;
+}
+
+Warning : LSWWarningPanel {
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
+}

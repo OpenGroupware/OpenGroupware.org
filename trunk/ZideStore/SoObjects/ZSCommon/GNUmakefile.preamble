@@ -1,0 +1,11 @@
+# compilation settings
+
+USED_LIBS = \
+        -lZSFrontend -lZSBackend\
+	-lGDLAccess		\
+        -lNGObjWeb		\
+	-lNGMime	        \
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lXmlRpc -lDOM -lSaxObjC
+
+ZSCommon_BUNDLE_LIBS += $(USED_LIBS)

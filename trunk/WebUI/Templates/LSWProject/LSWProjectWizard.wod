@@ -1,0 +1,246 @@
+// $Id: LSWProjectWizard.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = wizardWindowTitle;
+}
+
+ProjectForm: WOForm {
+  name   = "editform";
+  action = search;
+}
+
+// --- Labels -------------------------------------------
+
+AnnotationLabel:      WOString { value = labels.annotation;          }
+OwnerLabel:           WOString { value = labels.projectLeader;       }
+SearchAccountsLabel:  WOString { value = labels.searchAccounts;      }
+EnterprisesLabel:     WOString { value = labels.assignedEnterprises; }
+PersonsLabel:         WOString { value = labels.assignedPersons;     }
+SearchCompaniesLabel: WOString { value = labels.searchCompanies;     }
+TeamLabel:            WOString { value = labels.accessTeam;          }
+ExtendedString:       WOString { value = labels.ExtendedView;        }
+AccountsLabel: WOString { value = labels.accessAccounts; escapeHTML = NO; }
+
+// --- input elements  ---------------------------------------
+
+MainAttributesEditor: LSWObjectEditor {
+        labels      = labels;
+        object      = project;
+        attributes  = (
+          { key = "name"; },
+          { key = "number"; label = "code"; },
+        );
+}
+Comment: WOText {
+  value = project.comment;
+  rows  = 20;
+  cols  = 80;
+  WRAP  = "physical";
+}
+TeamPopup: WOPopUpButton {
+  list      = session.teams;
+  item      = item;
+  string    = item.description;
+  selection = teamSelection;
+}
+TeamsPopUp: WOPopUpButton {
+  list      = session.teams;
+  item      = item;
+  string    = item.description;
+  selection = searchTeam;
+  nilString = labels.searchAccountsOption;
+}
+AccountSearchField: WOTextField {
+  name     = "accountSearch";
+  value    = searchText;
+}
+
+AccountSearchSubmit: WOImageButton {
+  action   = accountSearch;
+  filename = "search.gif";
+  name     = labels.searchButton;
+  ALT      = labels.searchButton;
+  BORDER   = 0;
+}
+Owner: SkyListView {
+    list            = accessList;
+    item            = item;
+    columns         = 4;
+    useRadioButtons = YES;
+    selectedItems   = selectedOwner;
+    attributes      = ( { key="name"; }, { key="firstname"; } );
+}
+SelectedAccounts: SkyListView {
+  list          = accountList;
+  item          = item;
+  selectedItems = accounts;
+  columns       = 3;
+  attributes    = attributesList;
+}
+AccountList: SkyListView {
+  list          = accountResultList;
+  item          = item;
+  selectedItems = newAccounts;
+  columns       = 3;
+  attributes    = attributesList;
+}
+CompanyTypePopup: WOPopUpButton {
+  list      = ( "enterpriseType", "personType" );
+  item      = item;
+  string    = companyTypeLabel;
+  selection = companyTypeSelection;
+}
+CompanySearchField: WOTextField {
+  name  = "companySearch";
+  value = searchText;
+}
+
+ExtendedCheckBox: WOCheckBox {
+  checked = showExtended;
+  onClick = "document.editform.submit(); return true";
+}
+
+SelectedPersonList: SkyListView {
+  list          = personList;
+  item          = item;
+  selectedItems = persons;
+  columns       = 3;
+  attributes    = attributesList;
+}
+
+PersonList: SkyListView {
+  list          = personResultList;
+  item          = item;
+  selectedItems = newPersons;
+  columns       = 3;
+  attributes    = attributesList;
+}
+
+SelectedEnterpriseList: SkyListView {
+  list          = enterpriseList;
+  item          = item;
+  selectedItems = enterprises;
+  columns       = 3;
+  attributes    = ( { key = "description"; } );
+}
+
+EnterpriseList: SkyListView {
+  list          = enterpriseResultList;
+  item          = item;
+  selectedItems = newEnterprises;
+  columns       = 3;
+  attributes    = ( { key = "description"; } );
+}
+
+DateEditor: LSWObjectEditor {
+  labels      = labels;
+  object      = project;
+  attributes  = (
+    { key = "startDate"; calendarFormat = "%Y-%m-%d"; time = "00:00:00"; },
+    { key = "endDate";   calendarFormat = "%Y-%m-%d"; time = "23:59:59"; }
+  );
+}
+
+// --- conditionals ------------------------------------------------
+
+ShowAccountListCond:    WOConditional { condition = isShowAccountList;    }
+ShowEnterpriseListCond: WOConditional { condition = isShowEnterpriseList; }
+ShowPersonListCond:     WOConditional { condition = isShowPersonList;     }
+
+IsRootCond: WOConditional {
+  condition = session.activeAccountIsRoot;
+}
+IsRootCondElse: WOConditional {
+  condition = session.activeAccountIsRoot;
+  negate    = YES;
+}
+
+// --- mode conditions ---------------------------------------------
+
+MainAttributesModeCond: WOConditional { condition = mode; value = "mode_0"; }
+AccessListModeCond:     WOConditional { condition = mode; value = "mode_1"; }
+CompanyAssignmentModeCond: WOConditional { condition = mode; value = "mode_3";}
+ProjectPlanModeCond:       WOConditional { condition = mode; value = "mode_4";}
+
+ProjectLeaderAssignmentModeCond: WOConditional {
+  condition = mode;
+  value     = "mode_2";
+}
+
+// --- buttons ------------------------------------------------------
+
+NextSubmit: WOImageButton {
+  action           = next;
+  filename         = "go_forward.gif";
+  disabledFilename = "go_forward_inactive.gif";
+  disabled         = isNextDisabled;
+  name             = labels.nextButton;
+  ALT              = labels.nextButton;
+  BORDER           = 0;
+}
+
+BackSubmit: WOImageButton {
+  action           = previous;
+  filename         = "back.gif";
+  disabledFilename = "back_inactive.gif";
+  disabled         = isBackDisabled;  
+  name             = labels.backButton;
+  ALT              = labels.backButton;
+  BORDER           = 0;
+}
+
+FinishSubmit: WOImageButton {
+  action           = save;
+  filename         = "finish.gif";
+  name             = labels.finishButton;
+  ALT              = labels.finishButton;
+  disabledFilename = "finish_inactive.gif";
+  disabled         = isFinishDisabled;
+  BORDER           = 0;
+}
+DeleteSubmit: WOHyperlink {
+  action           = delete;
+  filename         = "remove.gif";
+  ALT              = labels.deleteButton;
+  disabledFilename = "remove_inactive.gif";
+  disabled         = isDeleteDisabled;
+  BORDER           = 0;
+}
+CancelSubmit: WOHyperlink {
+  action   = cancel;
+  filename = "cancel.gif";
+  ALT      = labels.cancelButton;
+  BORDER   = 0;
+}
+
+CompanySearchSubmit: WOImageButton {
+  action   = companySearch;
+  filename = "search.gif";
+  name     = labels.searchButton;
+  ALT      = labels.searchButton;
+  BORDER   = 0;
+}
+
+// --- design -------------------------------------------
+
+WarningModeCond: WOConditional {
+        condition = isInWarningMode;
+}
+
+WarningModeCondElse: WOConditional { 
+  condition = isInWarningMode;
+  negate    = YES;
+}
+Warning: LSWWarningPanel {
+  onOk      = warningOkAction;
+  phrase    = warningPhrase;
+}
+
+AttributeCell: SkyAttributeCell  {}
+ValueCell:     SkyValueCell      {}
+Font:          SkyConfigFont     {}
+EditFont:      SkyConfigEditFont {}
+
+Calendar: SkyCalendarScript {}

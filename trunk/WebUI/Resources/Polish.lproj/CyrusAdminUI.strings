@@ -1,0 +1,9 @@
+// $Id: CyrusAdminUI.strings,v 1.2 2004/11/17 21:20:27 wolvverine Exp $
+
+// Note: work in progress, no need for translation yet
+
+dock_cyrusadminapp = "Administracja - Cyrus";
+OGoCyrusAdminPage  = "Administracja - Cyrus";
+tab_mailboxes      = "Skrzynki pocztowe";
+tab_info           = "Serwer Info";
+tab_ogo            = "OGo";

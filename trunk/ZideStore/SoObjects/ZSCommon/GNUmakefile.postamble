@@ -1,0 +1,5 @@
+# postprocessing
+
+after-all ::
+	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
+	  cp ../bundle-info.plist .)

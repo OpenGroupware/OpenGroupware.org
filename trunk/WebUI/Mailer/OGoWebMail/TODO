@@ -1,0 +1,16 @@
+# $Id: TODO 1 2004-08-20 11:17:52Z znek $
+
+- split this bundle!
+  - it contains *24* components, should be about 3 bundles
+    - filtering/vacation support could go into an own bundle [done]
+    - mailing lists could go into an own bundle
+    - printing could go into an own bundle
+
+- replace the component confict (ccfg in English.lproj) with
+  something better if possible (eg CSS, defaults, ...)
+
+- find out difference between SkyImapMailDataSource and NGImap4DataSource?
+
+- SkyImapContextHandler
+  - replace login and host data with NSURL objects!
+    - need to fix libFoundation's NSURL first ... (doesn't accept login data)

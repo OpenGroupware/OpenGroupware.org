@@ -1,0 +1,15 @@
+{
+  CVSID = "$Id$";
+
+  requires = {
+    bundleManagerVersion = 1;
+  };
+  
+  provides = {
+    classes = (
+      { name = "SkyInvoiceDocument";               },
+      { name = "SkyInvoiceDataSource";             },
+    );
+
+  };
+}

@@ -1,0 +1,107 @@
+// $Id: SkyInvoiceAccounting.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+// Style
+Frame: LSWSkyrixFrame {}
+Window: LSWWindowFrame {
+  title   = labels.invoiceAccountingWindowTitle;
+  onClose = cancel;
+}
+Font: SkyConfigFont {}
+EditFont: SkyConfigEditFont {}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell: SkyValueCell {}
+
+ToggleAttr: SkyAttribute {
+  label = labels.currency;
+}
+TogglePanel: SkyInlineCurrencyToggle {
+  currency = session.userDefaults.invoice_currency;
+}
+
+//Form
+
+Form: WOForm {}
+
+AccountLabel: WOString {
+  value = labels.accountNr;
+}
+InvoiceLabel: WOString {
+  value = labels.invoiceNr;
+}
+GrossAmountLabel: WOString {
+  value     = labels.grossAmount;
+}
+PaidLabel: WOString {
+  value     = labels.paid;
+}
+DebitLabel: WOString {
+  value = labels.debit;
+}
+BalanceLabel: WOString {
+  value = labels.balance;
+}
+LogTextLabel: WOString {
+  value = labels.logText;
+}
+AccountNr: WOString {
+  value = account.accountNr;
+}
+InvoiceNr: WOString {
+  value = invoice.invoiceNr;
+}
+GrossAmount: WOString {
+  value     = invoice.grossAmount;
+  formatter = currencyFormatter;
+}
+Paid: WOString {
+  value     = invoice.paid;
+  formatter = currencyFormatter;
+}
+
+CurLabel: WOString {
+  value = session.userDefaults.invoice_currency;
+}
+
+DebitTF: WOTextField {
+  value     = debit;
+  size      = 10;
+  formatter = currencyFormatter;
+}
+BalanceTF: WOTextField {
+  value     = balance;
+  size      = 10;
+  formatter = currencyFormatter;
+}
+LogTextTF: WOText {
+  value = logText;
+  cols  = 80;
+  rows  = 04;
+  WRAP  = "off";
+}
+
+SaveButton: WOImageButton {
+  action   = save;
+  filename = "save.gif";
+  name     = labels.saveButtonLabel;
+  ALT      = labels.saveButtonLabel;
+  BORDER   = 0;
+}
+
+CancelButton: WOHyperlink {
+  action   = cancel;
+  filename = "cancel.gif";
+  ALT      = labels.cancelButtonLabel;
+  BORDER   = 0;
+}
+
+//Conditional
+
+HasInvoiceCond: WOConditional {
+  condition = hasInvoice;
+}
+
+HasInvoiceCondElse: WOConditional {
+  condition = hasInvoice;
+  negate    = YES;
+}

@@ -1,0 +1,9 @@
+{ // $Id$
+  // TODO: those are registered too late, see OGoProjects defaults
+  zip     = "/usr/bin/zip";
+  unzip   = "/usr/bin/unzip";
+  zipinfo = "/usr/bin/zipinfo";
+  rm      = "/bin/rm";
+  diff    = "/usr/bin/diff";
+  tar     = "/bin/tar";
+}

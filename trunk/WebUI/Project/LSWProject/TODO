@@ -1,0 +1,26 @@
+TODO LSWProject
+===============
+
+- LSWProjectEditor
+  - currently doesn't use a component for projectlead and access list selection
+    functionality (which s***s big time)
+  - SkyParticipantsSelection in LSWScheduler might be a replacement?
+
+- SkyProjectSelection
+  - should list favorite projects!
+
+- remove unused components, most (all?) things are covered by OGoProject now !
+  - "LSWProjects"       used by SkyNote
+  - "LSWProjectJobList" used by SkyProject4Viewer, LSWProjectViewer
+
+- still used fully by OGoProject:
+  - LSWProjectEditor !
+
+- LSWDocumentViewer
+  - used by: ???
+  - still bound to 'eo/doc' 'view'
+
+- LSWProjectWizard
+  - needs cleanup
+  - use by: ???
+  - bound to: 'eo/project' newWizard and editWizard

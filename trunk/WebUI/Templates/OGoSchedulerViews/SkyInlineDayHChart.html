@@ -1,0 +1,43 @@
+<!-- $Id: SkyInlineDayHChart.html 2 2004-08-20 11:37:44Z znek $ -->
+<#HasRows>
+  <#DragScript/><#DropScript/>
+
+  <#ChartMatrix>
+      <#ChartTitle>
+        <font size="-4">
+          <#HourLabel/>
+             <#IsResCategorySelected>
+              <#NewAppointmentLinkFont>
+                [<#NewAppointment><#NewString/></#NewAppointment>]
+              </#NewAppointmentLinkFont>
+             </#IsResCategorySelected>
+        </font>
+      </#ChartTitle>
+      
+      <#ChartRowTitle>
+        <font size="-4"><#RowInfo/></font>
+      </#ChartRowTitle>
+
+      <#EmptyCell>&nbsp;</#EmptyCell>
+
+      <#ChartCell>
+        <#AptDrag>
+          <font size="-4">
+            <#IsViewAccessAllowed>
+              <#UseDACond>
+                <#AptLink><#AptInfoIcon/><#TitleFont><#AptInfo/></#TitleFont></#AptLink>
+              </#UseDACond>
+              <#UseDACondElse>
+                <#ViewAptAction><#AptInfoIcon/><#TitleFont><#AptInfo/></#TitleFont></#ViewAptAction>
+              </#UseDACondElse>
+            </#IsViewAccessAllowed>
+
+            <#IsViewAccessAllowedElse>
+              <#AptInfoIcon/><#TitleFont><#AptInfo/></#TitleFont>
+            </#IsViewAccessAllowedElse>
+          </font>
+        </#AptDrag>
+      </#ChartCell>
+
+  </#ChartMatrix>
+</#HasRows>

@@ -1,0 +1,70 @@
+<!-- $Id: SkyInvoiceArticleEditor.html,v 1.1 2003/07/15 15:31:07 helge Exp $ -->
+
+<#Frame>
+  <#Window>
+    <#Form>
+
+      <TABLE border="0" cellspacing="0" cellpadding="4" width="100%">
+        
+        <tr><#ToggleAttr>
+          <#TogglePanel />
+        </#ToggleAttr></tr>
+
+        <#IsInEditModeCond>
+          <TR>
+            <#AttributeCell><#Font>
+              <#ArticleNrLabel />
+            </#Font></#AttributeCell>
+            <#ValueCell><#EditFont>
+              <#ArticleNrTF />
+            </#EditFont></#ValueCell>
+          </TR>
+        </#IsInEditModeCond><!-- IsInEditModeCond -->
+
+        <#ArticleEditor />
+     
+        <tr>
+          <#AttributeCell><#PriceLabel /></#AttributeCell>
+          <#ValueCell>
+            <#Price /><#CurLabel />
+          </#ValueCell>
+        </tr>
+
+        <TR>
+          <#AttributeCell><#Font>
+            <#CategoryLabel />
+          </#Font></#AttributeCell>
+          <#ValueCell><#EditFont>
+            <#CategoryPopup />
+          </#EditFont></#ValueCell>
+        </TR>
+
+        <TR>
+          <#AttributeCell><#Font>
+            <#UnitLabel />
+          </#Font></#AttributeCell>
+          <#ValueCell><#EditFont>
+            <#UnitPopup />
+          </#EditFont></#ValueCell>
+        </TR>
+
+        <TR>
+          <#AttributeCell><#Font>
+            <#VatLabel />
+          </#Font></#AttributeCell>
+          <#ValueCell><#EditFont>
+            <#VatPopup />
+          </#EditFont></#ValueCell>
+        </TR>
+
+        <TR>
+          <TD>&nbsp;</TD>
+          <TD>
+            <#SaveSubmit />
+            <#CancelSubmit />
+          </TD>
+        </TR>
+      </TABLE>
+    </#Form><!-- Form -->
+  </#Window>
+</#Frame>

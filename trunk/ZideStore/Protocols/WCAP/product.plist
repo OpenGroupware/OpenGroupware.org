@@ -1,0 +1,180 @@
+{
+  requires = ( ZSCommon );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+
+  categories = {
+    SxUserFolder = {
+      defaultRoles = {
+        "WCAP Access"                 = "Owner";
+        "WCAP Export"                 = "Owner";
+        "WCAP Import"                 = "Owner";
+        "WCAP Calendar Creation"      = "Manager";
+      };
+
+      methods = {
+        "addlink.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapAddLinkInContext::"; 
+        };
+        "change_password.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapChangePasswordInContext:"; 
+        };
+        "createcalendar.wcap" = {
+          protectedBy = "WCAP Calendar Creation";
+          selector    = "wcapCreateCalendarInContext:"; 
+        };
+        "deletecalendar.wcap" = {
+          protectedBy = "WCAP Calendar Creation";
+          selector    = "wcapDeleteCalendarInContext:"; 
+        };
+        "deletecomponents_by_range.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapDeleteByRangeInContext:"; 
+        };
+        "deleteevents_by_id.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapDeleteEventsInContext:"; 
+        };
+        "deleteevents_by_range.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapDeleteEventsByRangeInContext:"; 
+        };
+        "deletetodos_by_id.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapDeleteTodosInContext:"; 
+        };
+        "deletetodos_by_range.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapDeleteTodosByRangeInContext:"; 
+        };
+
+        "fetchcomponents_by_alarmrange.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapFetchByAlarmRangeInContext:"; 
+        };
+        "fetchcomponents_by_attendee_error.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapFetchByAttendeeErrorInContext:"; 
+        };
+        "fetchcomponents_by_lastmod.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapFetchByLastModInContext:"; 
+        };
+        "fetchcomponents_by_range.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapFetchByRangeInContext:"; 
+        };
+        
+        "fetchevents_by_id.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapFetchEventsInContext:"; 
+        };
+        "fetchtodos_by_id.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapFetchTodosInContext:"; 
+        };
+        
+        "get_all_timezones.wcap" = { 
+          protectedBy = "WCAP Access";
+          selector    = "wcapGetTimezonesInContext:"; 
+        };
+        "get_freebusy.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapGetFreeBusyInContext:"; 
+        };
+        "get_userprefs.wcap" = { 
+          protectedBy = "WCAP Access";
+          selector    = "wcapUserPrefsInContext:"; 
+        };
+        "set_userprefs.wcap" = { 
+          protectedBy = "WCAP Access";
+          selector    = "wcapSetUserPrefsInContext:"; 
+        };
+
+        "import.wcap" = {
+          protectedBy = "WCAP Import";
+          selector    = "wcapImportInContext:"; 
+        };
+        "export.wcap" = {
+          protectedBy = "WCAP Export";
+          selector    = "wcapExportInContext:"; 
+        };
+        "logout.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapLogoutInContext:"; 
+        };
+        "upload_file.wcap" = {
+          protectedBy = "WCAP Import";
+          selector    = "wcapUploadFileInContext:"; 
+        };
+        "write_file.wcap" = {
+          protectedBy = "WCAP Import";
+          selector    = "wcapWriteFileInContext:"; 
+        };
+        
+        "search_calprops.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapFindCalendarInContext:"; 
+        };
+        "get_calprops.wcap" = { 
+          protectedBy = "WCAP Access";
+          selector    = "wcapCalendarPropertiesInContext:"; 
+        };
+        "set_calprops.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapSetCalendarPropertiesInContext:"; 
+        };
+        
+        "storeevents.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapStoreEventsInContext:"; 
+        };
+        "storetodos.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapStoreTodosInContext:"; 
+        };
+        "verifyevents_by_ids.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapVerifyEventsInContext:"; 
+        };
+        "verifytodos_by_ids.wcap" = {
+          protectedBy = "WCAP Access";
+          selector    = "wcapVerifyTodosInContext:"; 
+        };
+      };
+    };
+
+    SoApplication = {
+      defaultRoles = {
+        "WCAP Admin Access"  = "Manager";
+        "WCAP Login"         = "Anonymous";
+        "WCAP ID Generation" = "Anonymous";
+      };
+      
+      methods = {
+        "ping.wcap" = { 
+          protectedBy = "WCAP Admin Access";
+          selector    = "wcapPingInContext:"; 
+        };
+        "login.wcap" = { 
+          protectedBy = "WCAP Login";
+          selector    = "wcapLoginInContext:"; 
+        };
+        "get_guids.wcap" = { 
+          protectedBy = "WCAP ID Generation";
+          selector    = "wcapGenIDsInContext:"; 
+        };
+        "version.wcap" = { 
+          protectedBy = "WCAP Login";
+          selector    = "wcapVersionInContext:"; 
+        };
+      };
+    }
+  };
+}

@@ -1,0 +1,80 @@
+<#Frame>
+  <#Window>
+    <#TabBody>
+      <#FavoritesTab>
+        <#PersonList>
+          <#IsInfolineEnabled><#ButtonsWithInfoline/></#IsInfolineEnabled>
+          <#IsInfolineDisabled><#Buttons/></#IsInfolineDisabled>
+        </#PersonList>
+      </#FavoritesTab>
+      
+      <#SearchTab>
+        <table width="100%" cellpadding="0" sellspacing="0" border="0">
+          <tr><td align="left">
+          <#Form>
+            <#SearchField/><#SearchSubmit/>
+            <#IsSearchLimited>
+              <#Font>&nbsp;&nbsp;<#LimitedLabel/></#Font>
+            </#IsSearchLimited>
+          </#Form>
+          </td>
+          <td align="right"><#SavedSearchPopUp/></td></tr>
+        </table>
+        
+        <#PersonList>
+          <#IsInfolineEnabled><#ButtonsWithInfoline/></#IsInfolineEnabled>
+          <#IsInfolineDisabled><#Buttons/></#IsInfolineDisabled>
+        </#PersonList>
+      </#SearchTab>
+
+      <#AdvSearchTab><#AdvancedSearch/></#AdvSearchTab>
+
+      <#FullSearchTab>
+        <#FullSearch/>
+        <#PersonList>
+          <#IsInfolineEnabled><#ButtonsWithInfoline/></#IsInfolineEnabled>
+          <#IsInfolineDisabled><#Buttons/></#IsInfolineDisabled>
+        </#PersonList>
+      </#FullSearchTab>
+
+      <#CustomTabs>
+        <#CustomTab>
+            <#CustomLabel />
+            <div align="right"><#CustomSavedSearchPopUp/></div>
+            <#PersonList>
+              <#IsInfolineEnabled><#CustomButtonsWithInfoline/></#IsInfolineEnabled>
+              <#IsInfolineDisabled><#CustomButtons/></#IsInfolineDisabled>
+            </#PersonList>
+        </#CustomTab>
+      </#CustomTabs>
+
+      <#ShowLetterButtons>
+        <#LetterRepetition>
+          <#LetterTab>
+            <#PersonList>
+              <#IsInfolineEnabled><#ButtonsWithInfoline/></#IsInfolineEnabled>
+              <#IsInfolineDisabled><#Buttons/></#IsInfolineDisabled>
+            </#PersonList>
+          </#LetterTab>
+        </#LetterRepetition>
+      </#ShowLetterButtons>
+    </#TabBody>
+  </#Window>
+
+
+<script language="JavaScript">
+<!-- hide
+if (document.searchform) {
+  if (document.searchform.search) {
+    document.searchform.search.focus();
+    document.searchform.search.select();
+  }
+  if (document.searchform.focusField) {
+    document.searchform.focusField.focus();
+    document.searchform.focusField.select();
+  }
+}
+// -->
+</script>
+
+</#Frame>

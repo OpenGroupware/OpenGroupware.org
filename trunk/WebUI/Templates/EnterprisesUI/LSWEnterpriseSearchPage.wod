@@ -1,0 +1,127 @@
+// bind template to controller class
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.EnterpriseSearchPageTitle;
+  onClose = session.navigation.leavePage;
+}
+
+Form: WOForm {}
+
+AttributeCell: SkyAttributeCell {}
+
+ValueCell: SkyValueCell { 
+  alignTop = YES; 
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+EditFont2: WOGenericContainer { // TODO: replace with CSS
+  elementName = "font";
+  color       = config.editFont2.color;
+  size        = config.editFont2.size;
+  face        = config.editFont2.face;
+}
+
+IsWizardMode: WOConditional {
+  condition = isInWizardMode;
+}
+
+IsWizardModeElse: WOConditional {
+  condition = isInWizardMode;
+  negate    = YES;
+}
+
+IsForward: WOConditional {
+  condition = isWizardForward;
+}
+
+Forward: WOImageButton {
+  action   = wizardForward;
+  filename = "save.gif";
+  name     = labels.wizardForward;
+  alt      = labels.wizardForward;
+  border   = "0";
+}
+
+IsBack: WOConditional {
+  condition = isWizardBack;
+}
+
+Back: WOImageButton {
+  action   = wizardBack;
+  filename = "back.gif";
+  name     = labels.wizardBack;
+  alt      = labels.wizardBack;
+  border   = "0";
+}
+
+IsFinish: WOConditional {
+  condition = isWizardFinish;
+}
+
+Finish: WOImageButton {
+  action   = wizardFinish;
+  filename = "finish.gif";
+  name     = labels.wizardFinish;
+  alt      = labels.wizardFinish;
+  border   = "0";
+}
+
+Cancel: WOImageButton {
+  action   = wizardCancel;
+  filename = "cancel.gif";
+  name     = labels.wizardCancel;
+  alt      = labels.wizardCancel;
+  border   = "0";
+}
+
+SearchField: WOTextField {
+  value = searchString;
+}
+
+SearchEnterprise: WOString {
+  value = labels.searchEnterprise;
+}
+
+SearchSubmit: WOSubmitButton {
+  action   = search;
+  value    = labels.search;
+  class    = "button_narrow";
+}
+
+EnterpriseCond: WOConditional {
+  condition = hasEnterprises;
+}
+
+EnterpriseRep: WORepetition {
+  list = searchResult;
+  item = item;
+}
+
+ChooseIcon: WOHyperlink {
+  action   = choose;
+  filename = "icon_read.gif";
+  name     = labels.choose;
+  alt      = labels.choose;
+  border   = "0";
+}
+
+
+ChooseEnterprise: WOString {
+  value = labels.chooseEnterprise;
+}
+
+EnterpriseLabel: WOString {
+  value = item.description;
+}
+
+EnterpriseRadioButtonList: WORadioButtonList {
+  list      = searchResult;
+  item      = item;
+  selection = snapshot;
+  prefix    = "<tr><td>";
+  suffix    = enterpriseName;
+}

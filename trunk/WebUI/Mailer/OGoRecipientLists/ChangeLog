@@ -1,0 +1,11 @@
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* bundle-info.plist: moved in mailing-list registry entries from
+	  OGoWebMail bundle (v5.1.3)
+
+2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* SkyMailingListDataSource.m: minor code cleanups, check for success
+	  when writing a mailing list file (v5.1.2)
+	
+	* created ChangeLog

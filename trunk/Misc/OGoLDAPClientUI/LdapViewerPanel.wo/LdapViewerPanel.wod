@@ -1,0 +1,138 @@
+// $Id: LdapViewerPanel.wod,v 1.1 2004/05/21 12:23:59 helge Exp $
+
+Frame: LSWSkyrixFrame {
+}
+
+Window: LSWWindowFrame {
+  title   = "LDAP-Viewer";
+  onClose = session.navigation.leavePage;
+}
+
+AddressTable: AddressList {
+  dataSource = dataSource;
+}
+
+CancelButton: WOHyperlink {
+  action   = back;
+  filename = "cancel.gif";
+  border   = 0;
+  alt      = labels.cancel;
+}
+
+// Search panel above the list.
+
+MainTabs: SkyTabView {
+  selection = tabKey;
+}
+
+MainTabNormalSearch: SkyTabItem {
+  key    = "personSearch";
+  icon   = "search";
+  action = mainTabClicked;
+  label  = labels.AddressSearch;
+}
+
+MainTabAdvancedSearch: SkyTabItem {
+  key    = "advancedSearch";
+  icon   = mainTabAdvancedSearchIcon;
+  action = mainTabClicked;
+  label  = labels.AdvancedSearch;
+}
+
+MainTabFileManager: SkyTabItem {
+  key    = "fileManager";
+  icon   = mainTabFileManagerIcon;
+  action = mainTabClicked;
+  label  = labels.FileManager;
+}
+
+SearchForm: WOForm {
+  name   = "searchForm";
+  action = searchAction;
+}
+
+FileManagerForm: WOForm {
+  name   = "fileManagerForm";
+  action = fileManagerSelectAction;
+}
+
+SearchInput: WOTextField {
+  name  = "searchInput";
+  value = searchInput;
+}
+
+SearchFirstNameInput: WOTextField {
+  name  = "searchFirstNameInput";
+  value = searchFirstNameInput;
+}
+
+SearchLastNameInput: WOTextField {
+  name  = "searchLastNameInput";
+  value = searchLastNameInput;
+}
+
+SearchButton: WOImageButton {
+  action   = searchAction;
+  filename = "search.gif";
+  name     = labels.searchButtonLabel;
+  alt      = labels.searchButtonLabel;
+  border   = 0;
+}
+
+// FileManagerTab content
+
+FileManager: SkyFileManagerTreeView {
+  fileManager    = fileManager;
+  title          = shortTitle;
+  zoomDefault    = "skyp4_projectviewer_zoom";
+  //onDrop         = "droppedOnFolder";
+  //droppedObject  = droppedFile;
+  fileSystemPath = folderDropPath;
+  dropTags       = ( projectfile );
+}
+
+FolderForm: WOComponentReference {
+  component   = folderForm;
+  fileManager = fileManager;
+  preview     = NO;
+  dataSource  = selectedDataSource;
+  folderPath  = fileManager.currentDirectoryPath;
+}
+
+ShowFolderContent: WOConditional {
+  condition = showFolderContent;
+}
+
+ShowFolderForm: WOConditional {
+  condition = showFolderForm;
+}
+
+//FolderView: SkyP4FolderView {
+//  fileManager   = fileManager;
+//  dataSource    = selectedDataSource;
+//}
+
+// Show/Hide tree view functions.
+
+ShowTree: WOConditional {
+  condition = hideTree;
+  negate    = YES;
+}
+
+DontShowTree: WOConditional {
+  condition = hideTree;
+}
+
+DoShowTree: WOHyperlink {
+  action   = doShowTree;
+  filename = "tree_show.gif";
+  border   = "0";
+  alt      = "Show Folder Tree"; //labels.showFolderTree;
+}
+DoHideTree: WOHyperlink {
+  action   = doHideTree;
+  filename = "tree_hide.gif";
+  border   = "0";
+  align    = "bottom";
+  alt      = "Hide Folder Tree"; //labels.hideFolderTree;
+}

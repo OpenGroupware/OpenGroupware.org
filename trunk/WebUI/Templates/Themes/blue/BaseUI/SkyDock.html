@@ -1,0 +1,101 @@
+<#IsNotTextMode>
+  <td valign="top">
+    <#ActivePageIsNotEditor>
+      <#DockEntries>
+        <#HasMiniView  ><#MiniView /></#HasMiniView>
+        <#LacksMiniView><#DockLink><#DockImage /></#DockLink></#LacksMiniView>
+      </#DockEntries>
+    </#ActivePageIsNotEditor>
+
+    <#ActivePageIsEditor>
+      <#DockEntries>
+        <#HasMiniView  ><#MiniView  /></#HasMiniView>
+        <#LacksMiniView><#DockImage /></#LacksMiniView>
+      </#DockEntries>
+    </#ActivePageIsEditor>
+
+    <#DockedProjects />
+  </td>
+
+  <td align="right" valign="top">
+    <table cellpadding="0" cellspacing="0" border="0">
+      <#IsLogoMenuBottomAligned>
+        <tr>
+          <td align="center" valign="bottom"><#LogoImageLink><#LogoImage /></#LogoImageLink></td>
+        </tr>
+        <tr>
+          <td align="center" valign="top"><#ActivePageIsNotEditor><#PrefsLink><#PrefsImage /></#PrefsLink></#ActivePageIsNotEditor><#ActivePageIsEditor><#PrefsImage /></#ActivePageIsEditor></td>
+        </tr>
+      </#IsLogoMenuBottomAligned>
+        
+      <#IsLogoMenuRightAligned>
+        <tr>
+          <td align="right"><#LogoImageLink><#LogoImage /></#LogoImageLink></td>
+              
+          <td align="left"><#ActivePageIsNotEditor><#PrefsLink><#PrefsImageRight /></#PrefsLink></#ActivePageIsNotEditor><#ActivePageIsEditor><#PrefsImageRight /></#ActivePageIsEditor><br /><br /></td>
+
+        </tr>
+      </#IsLogoMenuRightAligned>
+    </table>    
+  </td>
+</#IsNotTextMode>
+
+<#IsTextMode>
+  <#TextDockCell>
+    <#Font>
+      <#ActivePageIsNotEditor>
+        <#TextDockEntries>
+          <#HasMiniTextView><#MiniTextView /></#HasMiniTextView>
+          <#LacksMiniTextView>
+            <#DockLink><#DockLabel /></#DockLink>
+          </#LacksMiniTextView>
+        </#TextDockEntries>
+      </#ActivePageIsNotEditor>
+          
+      <#ActivePageIsEditor>
+        <#TextDockEntries>
+          <#HasMiniTextView  ><#MiniTextView /></#HasMiniTextView>
+          <#LacksMiniTextView><#DockLabel    /></#LacksMiniTextView>
+        </#TextDockEntries>
+      </#ActivePageIsEditor>
+      
+      <#DockedProjects />
+    </#Font>
+  </#TextDockCell>
+      
+  <td align="right" valign="top" nowrap="nowrap">
+    <#Font>
+      &nbsp;|&nbsp;
+      <#ActivePageIsNotEditor>
+        <#PrefsLink><b><#PrefsLabel /></b></#PrefsLink>
+      </#ActivePageIsNotEditor>
+      <#ActivePageIsEditor><#PrefsLabel /></#ActivePageIsEditor>    
+    </#Font>
+  </td>
+</#IsTextMode>
+
+<#IsTextModeBrowser>
+<#Font>
+  <#TextDockEntries>
+    <#ActivePageIsNotEditor>
+      <#HasMiniTextView><#MiniTextView /></#HasMiniTextView>
+      <#LacksMiniTextView>
+        <#DockLink><#DockLabel /></#DockLink>
+      </#LacksMiniTextView>
+    </#ActivePageIsNotEditor>
+
+    <#ActivePageIsEditor>
+      <#HasMiniTextView  ><#MiniTextView /></#HasMiniTextView>
+      <#LacksMiniTextView><#DockLabel    /></#LacksMiniTextView>
+    </#ActivePageIsEditor>
+  </#TextDockEntries>
+      <#DockedProjects />
+
+  -
+
+  <#ActivePageIsNotEditor>
+    <#PrefsLink><i><#PrefsLabel /></i></#PrefsLink>
+  </#ActivePageIsNotEditor>
+  <#ActivePageIsEditor><#PrefsLabel /></#ActivePageIsEditor>
+</#Font>
+</#IsTextModeBrowser>

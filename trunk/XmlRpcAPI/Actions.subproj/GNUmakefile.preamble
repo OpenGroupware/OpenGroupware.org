@@ -1,0 +1,9 @@
+# compilation flags
+
+OGoROOT=../..
+
+ADDITIONAL_INCLUDE_DIRS += -I.. 
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I$(OGoROOT)/Logic      \
+	-I$(OGoROOT)/DocumentAPI

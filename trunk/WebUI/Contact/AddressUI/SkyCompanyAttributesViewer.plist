@@ -1,0 +1,53 @@
+{
+  EnterpriseAttributes = (
+    { key = "name";                                               }, 
+    { key = "url";         href   = ""; target = "enterpriseUrl"; },
+    { key = "email";       type = 3;                              },
+    { key = "bank";                                               },       
+    { key = "bankCode";                                           },       
+    { key = "account";                                            },       
+    { key = "keywords";                                           },
+    { key = "number";                                             },
+    { key = "owner";       relKey = "login";                      },
+    { key = "contact";     relKey = "login";                      },
+    { key = "comment";                                            },
+    { key = "objectVersion";                                      },
+  );
+  PersonAttributes = (
+    { key = "name";                                         },
+    { key = "firstname";                                    },
+    { key = "middlename";                                   },
+    { key = "nickname";                                     },
+    { key = "degree";                                       },
+    { key = "salutation";  localizeValue = YES;             },
+    { key = "sex";         localizeValue = YES;             },
+    { key = "url";         href = ""; target = "personUrl"; },
+    { key = "birthday";    calendarFormat = "%Y-%m-%d";     },
+    { key = "keywords";                                     },
+    { key = "owner";       relKey = "login";                },
+    { key = "contact";     relKey = "login";                },
+    { key = "comment";                                      },
+    { key = "objectVersion";                                },
+  );
+  JobAttributes = (
+    { key = "completionDate"; calendarFormat = "%Y-%m-%d";     },
+    { key = "jobStatus";      localizeValue = YES;             },
+    { key = "sensitivity";    localizeKey = YES;               },
+    { key = "priority";       localizeKey = YES;               },
+    { key = "percentComplete"; suffixLabel = "percentLabel";   },
+    { key = "actualWork";     suffixLabel = "minutesLabel";    },
+    { key = "totalWork";      suffixLabel = "minutesLabel";    },
+    { key = "kilometers";     suffixLabel = "kilometersLabel"; },
+    { key = "keywords";                                        },
+    { key = "category";                                        },
+    { key = "kind";                                            },
+    { key = "owner";         relKey = "login";                 },
+    { key = "accountingInfo";                                  },
+    { key = "associatedCompanies";                             },
+    { key = "associatedContacts";                              },
+    { key = "comment";                                         },
+    { key = "notify";                                          },
+    { key = "objectVersion";                                   },
+  );
+}
+

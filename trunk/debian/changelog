@@ -1,0 +1,33 @@
+opengroupware.org (1.0a.13-0) UNRELEASED; urgency=low
+
+  * debian/ogo-create-instance: Add a Default for skyaptnotify logging.
+  * Added README.Debian for skyaptnotify, informing the user about the need to
+    set up a crontab entry
+
+ -- Sebastian Ley <ley@debian.org>  Fri, 25 Mar 2005 18:15:26 +0100
+
+opengroupware.org (1.0a.10-0) experimental; urgency=low
+
+  * New upstream release.
+
+ -- Sebastian Ley <ley@debian.org>  Sat, 22 Jan 2005 13:46:02 +0100
+
+opengroupware.org (1.0a.9-0) experimental; urgency=low
+
+  * New upstream release.
+  * Replaced previous autoconfiguration stuff with new ogo-create-instance
+    script (in opengroupware.org-environment). This script enables
+    administrators to set up multiple instances of OpenGroupware.org possibly
+    even running different versions (if installed).
+  * New init script handles now all daemons and is able to start multiple
+    instances of OpenGroupware.org.
+
+ -- Sebastian Ley <ley@debian.org>  Sat, 22 Jan 2005 13:45:19 +0100
+
+opengroupware.org (1.0a.8-1) experimental; urgency=low
+
+  * Initial Release of converted sources. Upstream has done heavy
+    restructuring of the sources, see also the SOPE changelog for details.
+
+ -- Sebastian Ley <ley@debian.org>  Sun,  3 Oct 2004 00:13:39 +0200
+

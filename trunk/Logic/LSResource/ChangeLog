@@ -1,0 +1,23 @@
+2004-07-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* all files: code cleanups, moved in and deleted header files (v5.0.2)
+
+Mon Jul  7 13:48:48 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.1)
+
+2003-01-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* common.h: does not include GDLExtensions
+
+Mon Jun 18 16:45:51 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* bundle-info.plist: bundle does not require LSFullSearchCommand
+
+Mon Mar 26 14:35:23 2001  Helge Hess  <helge.hess@mdlink.de>
+
+	* changed to use -isNotNull
+
+Tue Jan  4 16:59:52 2000  Martin Spindler   <spindler@mdlink.de>
+
+	* bundle created 

@@ -1,0 +1,215 @@
+// $Id: SkyInvoice.strings,v 1.3 2004/08/10 22:30:14 helge Exp $
+
+00_accounting                   = "comptabilisé";
+00_created                      = "créé";
+01_03_quarter                   = "1er trimestre";
+01_january                      = "janvier";
+02_february                     = "février";
+03_march                        = "mars";
+04_06_quarter                   = "2ème trimestre";
+04_april                        = "avril";
+05_may                          = "mai";
+05_monition_printout            = "Affichage d'avertissement";
+05_printed                      = "imprimé";
+06_june                         = "juin";
+07_09_quarter                   = "3ème trimestre";
+07_july                         = "juillet";
+08_august                       = "août";
+09_september                    = "septembre";
+10_12_quarter                   = "4ème trimestre";
+10_canceled                     = "annulé";
+10_invoice_printout             = "imprimer la facture";
+10_october                      = "octobre";
+11_november                     = "novembre";
+12_december                     = "décembre";
+15_canceling                    = "Annulé";
+15_monition = "Rappel";
+16_monition2 = "2ème rappel";
+17_monition3 = "3ème rappel";
+20_done                         = "effectué";
+20_settling                     = "établi";
+
+Faktura                         = "Facture";
+
+Invoice                         = "Facture";
+
+SkyArticleAssignmentEditor      = "Éditeur d'article-facture";
+SkyArticleAssignmentViewer      = "Visualisation d'article-facture";
+SkyArticleCategoryEditor        = "Éditeur de catégorie";
+SkyArticleCategoryViewer        = "Visualisation de catégorie";
+SkyArticleUnitEditor            = "Éditeur d'unité";
+SkyArticleUnitViewer            = "Visualisation d'unité";
+SkyInvoiceAccounting            = "Nouveau compte";
+SkyInvoiceAccountViewer         = "Visualisation de compte-facture";
+SkyInvoiceArticleEditor         = "Éditeur d'article";
+SkyInvoiceArticleViewer         = "Visualisation d'article";
+SkyInvoiceCopyPanel             = "Copie de factures";
+SkyInvoiceEditor                = "Éditeur de facture";
+SkyInvoicePreferences           = "Préférences de facture";
+SkyInvoiceViewer                = "Visualisation de facture";
+SkyInvoices                     = "facture";
+SkyUnsettledInvoicesViewer      = "Visualisation des factures non rangées";
+
+accountings                     = "comptabilisés";
+accountNr                       = "CompteNo";
+action                          = "Action";
+actionsTitle                    = "Actions";
+actionsLabel                    = "Actions";
+additionalComment               = "Commentaire additionnel";
+advancedSearch                  = "recherche avancée";
+allKindsSelected                = "toutes les factures";
+allMonitionValue = "Arriérés";
+articleAssignmentEditorWindowTitle = "Éditeur d'affectation d'article-facture";
+articleAssignmentViewerWindowTitle = "Visualisation d'affectation d'article-facture";
+articleCategories               = "Catégories d'article";
+articleCategory                 = "Catégories";
+articleCategoryEditorWindowTitle = "Éditeur de catégorie";
+articleCategoryViewerWindowTitle = "Visualisation de catégorie";
+articleCount                    = "Compte";
+articleName                     = "Nom";
+articleNr = "No d'article";
+articleUnit                     = "Unité";
+articleUnitEditorWindowTitle    = "Éditeur d'unité";
+articleUnitViewerWindowTitle    = "Visualisation d'unité";
+articleVat                      = "TVA";
+articles                        = "Articles";
+assignmentviewer_article        = "Article";
+assignmentviewer_invoice        = "Facture";
+attributes                      = "Attributs";
+
+back                            = "Retour";
+balance                         = "Balance";
+blockSize                       = "Nombre d'entrée de liste";
+
+cancelButtonLabel               = "Annuler";
+cancelInvoice                   = "Annuler facture";
+categoryName                    = "Description";
+categoryAbbrev                  = "Abréviation";
+certifyMonitionPrintout         = "Certify Monition Printout";
+certifyPrintout                 = "Certify Printout";
+changeToMDLink                  = "Change to MDLink online service center GmbH";
+changeToSkyrix                  = "Change to SKYRIX Software AG";
+checkButtonLabel = "chèque";
+clip                            = "Presse-papier";
+comment                         = "Commentaire";
+copyInvoice                     = "Copie facture";
+copyInvoiceTo                   = "Copie facture à:";
+copyInvoices                    = "Copie factures";
+currency                        = "unité monétaire";
+
+date                            = "Date";
+debit                           = "Débit";
+debitor                         = "Débiteur";
+deleteArticle                   = "Supprimer l'article";
+deleteAssignment                = "Supprimer affectation";
+deleteCategory                  = "Supprimer une catégorie";
+deleteInvoice                   = "Supprimer la facture";
+deleteInvoices                  = "Supprimer les factures";
+deleteUnit                      = "Supprimer une unité";
+description                     = "Description";
+document                        = "Document";
+
+editAccount                     = "Éditer compte facture";
+editArticle                     = "Éditer un article";
+editAssignment                  = "Éditer une mission";
+editCategory                    = "Éditer une catégorie";
+editInvoice                     = "Éditer une facture";
+editUnit                        = "Éditer l'unité";
+
+finishInvoice                   = "Facture établie";
+format                          = "Formater";
+
+grossAmount = "Montant brut";
+
+highestMonitionLevel = "Niveau de rappel";
+
+invoice                         = "Facture";
+invoiceAccounting               = "Facture comptabilisé";
+invoiceAccount                  = "Numéro de la facture";
+invoiceAccountingWindowTitle    = "New Compteing";
+invoiceAccountViewerWindowTitle = "Invoice Compte Viewer";
+invoiceAccounts                 = "Invoice Comptes";
+invoiceArticleEditorWindowTitle = "Éditeur d'article";
+invoiceArticleViewerWindowTitle = "Afficheur d'article";
+invoiceCopyPanelWindowTitle     = "Copier Invoices";
+invoiceCopyPanel_yyyymmdd       = "YYYY-MM-DD:";
+invoiceDate                     = "Date";
+invoiceEditorWindowTitle        = "Invoice éditeur";
+invoiceMonition = "Augmenter le niveau de rappel";
+invoiceMovePanelWindowTitle = "Déplacement de factures";
+invoiceNr                       = "Facture";
+invoicePreferencesLabel = "Préférences de factures";
+invoiceViewerWindowTitle = "Afficheur de facture";
+invoice_cancel = "Avis de crédit";
+invoice_month = "Factures mensuelles";
+invoice_proforma = "Factures proforma";
+invoice_quarter = "Factures trimestrielles";
+invoice_single = "Factures uniques";
+invoice_viewer_subview = "Afficheur de sous-vue de factures";
+invoice_year = "Factures annuelles";
+invoiceeditor_action            = "action";
+invoiceeditor_addArticle        = "Ajouter des articles";
+invoiceeditor_addArticlesError = "Erreur de syntaxe";
+invoiceeditor_articleNr = "No";
+invoiceeditor_count             = "compter";
+invoiceeditor_netAmount         = "prix";
+invoiceeditor_searchDebitor     = "Rechercher le  Débiteur";
+invoiceeditor_singlePrice = "prix unique";
+invoices = "Factures";
+invoices_listLabel = "Factures";
+invoices_listTitle = "Factures";
+invoices_windowLabel = "Factures";
+invoiceviewer_articleList       = "Articles";
+
+kind = "Type";
+
+logsLabel                       = "Journaux";
+logsTitle = "Registre des factures";
+logText                         = "Journaux texte";
+
+monitionLevel = "Niveau de rappel";
+monitions = "Rappels";
+moveInvoiceTo                   = "Déplacer les factures vers :";
+moveInvoices                    = "Déplacer les factures";
+
+netAmount                       = "Montant net";
+new                             = "nouveau";
+noOfCols                        = "Nombre de colonnes";
+number                          = "Nombre";
+
+oldestUnsettledInvoiceDate = "Factures non réglées les plus anciennes";
+overview_monthly                = "vue d'ensemble mensuel";
+overview_quarter                = "vue d'ensemble trimestrielle";
+
+paid = "Payée";
+pluralUnit = "Unité plurielle";
+preview                         = "Afficheur";
+price                           = "Prix";
+printInvoice                    = "Imprimer la facture";
+printIvnoices                   = "Imprimer les factures";
+printMonition                   = "Imprimer Monition";
+
+removeButtonLabel               = "supprimer";
+
+sales                           = "ventes";
+sales_all_but_created = "toutes sauf les factures surveillées";
+saveButtonLabel                 = "sauvegarder";
+showButtonLabel                 = "afficher";
+search                          = "rechercher";
+searchArticles                  = "Rechercher les articles";
+searchButtonLabel               = "recherche";
+searchResult                    = "records trouvés";
+show                            = "afficher";
+singlePrice = "Prix unique";
+singularUnit = "Unité singulière";
+status                          = "Statut";
+
+toPay                           = "à payer";
+
+unit                            = "Unité";
+units                           = "Unités";
+unsettledInvoices = "Factures non réglées";
+unsettledInvoicesCount = "Factures non réglées";
+unsettledInvoicesFor = "Factures non réglées pour :";
+unsettled_invoices_windowLabel = "Afficheur des factures non réglées";
+updateButtonLabel               = "mise à jour";

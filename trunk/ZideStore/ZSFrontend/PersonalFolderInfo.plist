@@ -1,0 +1,62 @@
+{ 
+  CVSID = "$Id$";
+  storeRootKeys = (
+    "IPM",
+    "Search Root",
+    "IPM_VIEWS",
+    "IPM_COMMON_VIEWS"
+  );
+  folderRootKeys = (
+    Calendar,
+    Overview,
+    Tasks,
+    Contacts,
+    Enterprises,
+    Groups,
+    Projects,
+    public,
+    Trash
+  );
+  flatRootKeys = (
+    Calendar.ics,
+    Overview.ics,
+    Tasks,
+    Contacts,
+    Enterprises,
+    Groups,
+    Projects,
+    public
+  );
+  keymap = {
+    freebusy = { class = SxFreeBusy; config = { format = vfb; }; };
+    
+    Calendar = { class = SxAppointmentFolder; };
+    Kalender = { class = SxAppointmentFolder; };
+    Overview = { class = SxAppointmentFolder; config = { isOverview = YES;}; };
+    
+    Tasks       = { class = SxTaskFolder; };
+    Aufgaben    = { class = SxTaskFolder; };
+    
+    Contacts    = { class = SxPersonFolder;     config = { type = private;}; };
+    Enterprises = { class = SxEnterpriseFolder; config = { type = private;}; };
+    Groups      = { class = SxGroupsFolder;     config = { type = private;}; };
+
+    Projects    = { class = SxProjectsFolder;   config = { }; };
+    
+    Trash               = { class = SxTrashFolder;  };
+    IPM_VIEWS           = { class = SxViewsFolder;       };
+    IPM_COMMON_VIEWS    = { class = SxCommonViewsFolder; };
+    
+    "Search Root"                      = { class = SxSearchFolder; };
+    "Search%20Root"                    = { class = SxSearchFolder; };
+    Suchpfad                           = { class = SxSearchFolder; };
+    "Racine (pour la recherche)"       = { class = SxSearchFolder; };
+    "Racine%20(pour%20la%20recherche)" = { class = SxSearchFolder; };
+    "Cerca nella radice"               = { class = SxSearchFolder; };
+    "Cerca%20nella%20radice"           = { class = SxSearchFolder; };
+    "Hoofdmap voor zoeken"             = { class = SxSearchFolder; };
+    "Hoofdmap%20voor%20zoeken"         = { class = SxSearchFolder; };
+    "Søgerod"       		       = { class = SxSearchFolder; };
+    "S%f8gerod"                        = { class = SxSearchFolder; };
+  };
+}

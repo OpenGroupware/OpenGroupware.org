@@ -1,0 +1,14 @@
+# compilation settings
+
+USED_LIBS = \
+        -lZSFrontend -lZSBackend\
+	-lLSFoundation		\
+	-lGDLAccess		\
+        -lNGObjWeb		\
+	-lNGMime		\
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lXmlRpc -lDOM -lSaxObjC
+
+libZSResources_LIBRARIES_DEPEND_UPON += $(USED_LIBS)
+
+AptResources_BUNDLE_LIBS += $(USED_LIBS) -lZSResources

@@ -1,0 +1,116 @@
+<!-- $Id: SkyInvoiceAccounting.html,v 1.1 2003/07/15 15:31:07 helge Exp $ -->
+
+<#Frame>
+  <#Window>
+    <#Form>
+      <TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="4" BORDER="0">
+
+        <tr><#ToggleAttr>
+          <#TogglePanel />
+        </#ToggleAttr></tr>
+
+        <TR>
+          <#AttributeCell>
+            <#Font>
+              <#AccountLabel />:
+            </#Font>
+          </#AttributeCell>
+          <#ValueCell>
+            <#Font>
+              <#AccountNr />
+            </#Font>
+          </#ValueCell>
+        </TR>
+
+        <#HasInvoiceCond>
+          <TR>
+            <#AttributeCell>
+              <#Font>
+                <#InvoiceLabel />:
+              </#Font>
+            </#AttributeCell>
+            <#ValueCell>
+              <#Font>
+                <#InvoiceNr />
+              </#Font>
+            </#ValueCell>
+          </TR>
+          <TR>
+            <#AttributeCell>
+              <#Font>
+                <#GrossAmountLabel />:
+              </#Font>
+            </#AttributeCell>
+            <#ValueCell>
+              <#Font>
+                <#GrossAmount />&nbsp;<#CurLabel />
+              </#Font>
+            </#ValueCell>
+          </TR>
+          <TR>
+            <#AttributeCell>
+              <#Font>
+                <#PaidLabel />:
+              </#Font>
+            </#AttributeCell>
+            <#ValueCell>
+              <#Font>
+                <#Paid />&nbsp;<#CurLabel />
+              </#Font>
+            </#ValueCell>
+          </TR>
+          <TR>
+            <#AttributeCell>
+              <#Font>
+                <#DebitLabel />:
+              </#Font>
+            </#AttributeCell>
+            <#ValueCell>
+              <#EditFont>
+                <#DebitTF /><#CurLabel />
+              </#EditFont>
+            </#ValueCell>
+          </TR>
+        </#HasInvoiceCond><!-- HasInvoiceCond -->
+
+        
+        <TR>
+          <#AttributeCell>
+            <#Font>
+              <#BalanceLabel />:
+            </#Font>
+          </#AttributeCell>
+          <#ValueCell>
+            <#EditFont>
+              <#BalanceTF /><#CurLabel />
+            </#EditFont>
+          </#ValueCell>
+        </TR>
+
+        <#HasInvoiceCondElse>
+          <TR>
+            <#AttributeCell>
+              <#Font>
+                <#LogTextLabel />:
+              </#Font>
+            </#AttributeCell>
+            <#ValueCell>
+              <#Font>
+                <#LogTextTF />
+              </#Font>
+            </#ValueCell>
+          </TR>
+        </#HasInvoiceCondElse><!-- HasInvoiceCondElse -->
+
+        <TR>
+          <TD>&nbsp;</TD>
+          <TD>
+            <#SaveButton />
+            <#CancelButton />
+          </TD>
+        </TR>
+
+      </TABLE>
+    </#Form>
+  </#Window>
+</#Frame>

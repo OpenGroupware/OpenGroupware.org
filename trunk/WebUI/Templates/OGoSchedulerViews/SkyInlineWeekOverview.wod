@@ -1,0 +1,135 @@
+// used components.cfg config key:
+//   colors_titleColor
+//   colors_contentText
+//   colors_sundayHeaderCell    (titleColor)
+//   colors_saturdayHeaderCell  (titleColor)
+//   colors_weekdayHeaderCell   (titleColor)
+//   colors_selectedContentCell (contentColor)
+//   colors_contentCell         (contentColor)
+
+DragScript: WEDragScript {}
+DropScript: WEDropScript {}
+
+Font: SkyConfigFont {}
+
+// new weekOverview
+
+TitleMode:   WEWeekOverviewTitleMode   {};
+InfoMode:    WEWeekOverviewInfoMode    {};
+PMInfoMode:  WEWeekOverviewPMInfoMode  {};
+ContentMode: WEWeekOverviewContentMode {};
+
+WeekOverview: WEWeekOverview {
+  list       = cacheDataSource.fetchObjects;
+  item       = appointment;
+  weekStart  = weekStart;
+  dayIndex   = dayIndex;
+  isInfoItem = isAllDayApt;
+  infoItems  = allDayApts;
+  
+  titleColor   = titleColor;   // "#FFDAAA";
+  contentColor = contentColor; // "#FAE8B8";
+}
+
+Appointment: SkySchedulerDateCell {
+  appointment  = appointment;
+  weekday      = currentDate;
+  participants = appointment.participants;
+  isClickable  = appointmentViewAccessAllowed;
+  isPrivate    = isPrivateAppointment;
+  action       = viewAppointment;
+  privateLabel = labels.private;
+  icon         = dateCellIcon;
+  aptTypeLabel = aptTypeLabel;
+}
+
+DayTitle: LSWSchedulerDateTitle {
+  title            = labels.$currentDate;
+  newLabel         = labels.new;
+  highlight        = currentDate.isToday;
+  date             = currentDate;
+  disableNew       = isResCategorySelected;
+  directActionName = dayDirectActionName
+}
+
+HolidayInfo: SkyRichString {
+  value   = holidayInfo;
+  size    = "-2";
+  isBold  = YES;
+}
+
+HasDayInfoCond: WOConditional { condition = hasCurrentDayInfo; }
+HasHolidayInfo: WOConditional { condition = hasHolidays;       }
+HasAllDayApts:  WOConditional { condition = hasAllDayApts;     }
+
+AllDayApts: WORepetition {
+  list = allDayApts;
+  item = appointment;
+}
+UseDACond: WOConditional {
+  condition = useDirectActionForView;
+}
+UseDACondElse: WOConditional {
+  condition = useDirectActionForView;
+  negate    = YES;
+}
+ViewAptLink: WOHyperlink {
+  directActionName = "viewApt";
+  ?oid    = appointmentOID;
+  ?entity = appointmentEntity;
+  ?tz     = appointment.startDate.timeZone.abbreviation;
+  ?ctx    = context.contextID;
+  title   = shortTextForApt;
+  class   = "skydatecell_link";
+}
+ViewAptAction: WOHyperlink {
+  action = viewAppointment;
+  title  = shortTextForApt;
+  class  = "skydatecell_link";
+}
+AptInfoIcon: WOImage {
+  filename = dateCellIcon;
+  border   = "0";
+  valign   = "top";
+  alt      = shortTextForApt;
+  title    = shortTextForApt;
+}
+AptTitleSpan: WOGenericContainer {
+  elementName = "span";
+  class     = aptTitleCellClass;
+}
+AptTitle: WOString {
+  value     = appointment;
+  formatter = aptTitleFormatter;
+  //color     = config.colors_titleColor;
+}
+AptContentText: SkyRichString {
+  value     = appointment;
+  formatter = aptContentFormatter;
+  color     = config.colors_contentText;
+}
+
+IsListOnlyApt: WOConditional {
+  condition = appointment.permissions;
+  value     = "l";
+}
+IsViewableApt: WOConditional {
+  condition = appointment.permissions;
+  value     = "l";
+  negate    = YES;
+}
+
+DropZone: WEDropContainer {
+  tags          = ( appointment );
+  action        = droppedAppointment;
+  droppedObject = appointment;
+  elementName   = "td";
+  isAttached    = YES;
+  VALIGN        = "top";
+}
+
+DragZone: WEDragContainer {
+  tag         = "appointment";
+  object      = appointment;
+  isDraggable = isAppointmentDraggable;
+}

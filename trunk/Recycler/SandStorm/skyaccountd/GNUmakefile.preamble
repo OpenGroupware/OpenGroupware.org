@@ -1,0 +1,19 @@
+# $Id$
+
+SkyAccount_BUNDLE_LIBS += \
+	-lOGoDaemon	\
+	-lNGObjWeb	\
+	-lOGoDocuments	\
+	-lOGoAccounts	\
+	-lOGoContacts	\
+        -lEOControl	\
+
+ADDITIONAL_TOOL_LIBS += \
+	-lXmlSchema	\
+	-lSxComponents
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_TOOL_LIBS   += -lFoundationExt
+ADDITIONAL_BUNDLE_LIBS += -lFoundationExt
+ADDITIONAL_LDFLAGS     += -framework Foundation
+endif

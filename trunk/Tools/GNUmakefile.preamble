@@ -1,0 +1,66 @@
+# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I../Logic/		\
+	-I../Logic/LSFoundation/\
+	-I../DocumentAPI
+
+ADDITIONAL_LIB_DIRS += \
+	-L../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)		\
+	-L../Logic/LSScheduler/$(GNUSTEP_OBJ_DIR)		\
+	-L../DocumentAPI/OGoRawDatabase/$(GNUSTEP_OBJ_DIR)	\
+	-L../DocumentAPI/OGoFileSystemProject/$(GNUSTEP_OBJ_DIR)\
+	-L../DocumentAPI/OGoDatabaseProject/$(GNUSTEP_OBJ_DIR)	\
+	-L../DocumentAPI/OGoProject/$(GNUSTEP_OBJ_DIR)		\
+	-L../DocumentAPI/OGoScheduler/$(GNUSTEP_OBJ_DIR)	\
+	-L../DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR)	\
+
+LSFoundationLIBS = \
+	-lLSFoundation	\
+	-lGDLAccess	\
+	-lNGMime -lNGLdap
+
+skyprojectimporter_TOOL_LIBS += \
+	-lGDLAccess 		\
+	-lLSFoundation 		\
+	-lOGoRawDatabase 	\
+	-lOGoFileSystemProject	\
+	-lOGoDatabaseProject	\
+	-lOGoProject		\
+	-lOGoDocuments		\
+	-lNGMime -lNGLdap
+
+skyprojectexporter_TOOL_LIBS += $(skyprojectimporter_TOOL_LIBS)
+skylistprojects_TOOL_LIBS    += $(skyprojectimporter_TOOL_LIBS)
+
+skyaptnotify_TOOL_LIBS += \
+	-lLSFoundation		\
+	-lOGoScheduler		\
+	-lOGoSchedulerTools	\
+	-lOGoDocuments		\
+	-lGDLAccess		\
+	-lNGMime -lNGLdap	\
+
+
+sky_add_account_TOOL_LIBS     += $(LSFoundationLIBS)
+sky_get_login_names_TOOL_LIBS += $(LSFoundationLIBS)
+sky_del_account_TOOL_LIBS     += $(LSFoundationLIBS)
+sky_license_info_TOOL_LIBS    += $(LSFoundationLIBS)
+
+skydefaults_TOOL_LIBS  += $(LSFoundationLIBS)
+skyruncmd_TOOL_LIBS    += $(LSFoundationLIBS)
+skyjobs2ical_TOOL_LIBS += $(LSFoundationLIBS)
+skylistacls_TOOL_LIBS  += $(LSFoundationLIBS)
+skycheckperm_TOOL_LIBS += $(LSFoundationLIBS)
+
+sky_install_sieve_TOOL_LIBS      += -lNGMime
+sky_install_procmail_TOOL_LIBS   += -lNGMime
+sky_send_bulk_messages_TOOL_LIBS += -lNGMime
+
+# libs for all tools
+
+ADDITIONAL_TOOL_LIBS += \
+	-lNGStreams -lNGExtensions -lEOControl	\
+	-lDOM -lSaxObjC
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

@@ -1,0 +1,147 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component
+  className="SxFrame" 
+  title="title"
+  settings="settings"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+  <br/>
+
+  <table style="border:thin solid FAE8B8" 
+         width="100%" cellpadding="2" cellspacing="0" border="0" 
+         class="default">    
+    <tr>
+      <td class="sectionCell">
+        Subscription URLs
+      </td>
+    </tr>
+    <tr><td height="3"></td></tr>
+    <tr> 
+      <td>
+        <table width="100%" cellpadding="2" cellspacing="0" border="0">
+          <tr>
+            <td class="headerCell" colspan="2">
+              Apple iCal.app
+            </td>
+          </tr>
+          <tr bgcolor="#D9D0D0">
+            <td class="attrCell">Personal Calendar:</td>
+            <td class="valueCell">
+              <a var:href="pCalURLiCal"><var:string value="pCalURLiCal"/></a>
+            </td>
+          </tr>
+	
+          <tr bgcolor="#D9D0D0">
+            <td class="attrCell">Team Calendars:</td>
+            <td class="valueCell">
+              <var:foreach list="teamsForCurrentAccount" item="team" 
+                const:separator=", ">
+                <a var:href="teamURLiCal"
+		   ><var:string value="team.description"/></a>
+              </var:foreach>
+            </td>
+          </tr>
+        </table> 
+      </td>
+    </tr>
+
+    <tr><td height="10"></td></tr>
+
+    <tr>
+      <td>
+        <table width="100%" cellpadding="2" cellspacing="0" border="0">
+          <tr>
+            <td class="headerCell" colspan="2">
+              KOrganizer/Mozilla Calendar
+            </td>
+          </tr>
+          <tr bgcolor="#D9D0D0">
+            <td class="attrCell">Personal Calendar</td>
+            <td class="valueCell">
+              <a var:href="pCalURLHTTP"><var:string value="pCalURLHTTP"/></a>
+            </td>
+          </tr>
+
+          <tr bgcolor="#D9D0D0">
+            <td class="attrCell">Team Calendars</td>
+            <td class="valueCell">
+              <var:foreach list="teamsForCurrentAccount" item="team" 
+                const:separator=", ">
+                <a var:href="teamURLHTTP"
+                   ><var:string value="team.description"/></a>
+              </var:foreach>
+            </td>
+          </tr>
+        </table> 
+      </td>
+    </tr>
+  </table>
+
+  <br/>
+
+  <table style="border:thin solid FAE8B8" 
+         width="100%" cellpadding="2" cellspacing="0" border="0" 
+         class="default">
+    <tr>
+      <td class="sectionCell">
+        Installation Instructions
+      </td>
+    </tr>
+    <tr><td height="3"></td></tr>
+    <tr> 
+      <td colspan="2">
+        <b>Outlook</b>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        Download the ZideLook Plugin for Outlook and install it.<br/>
+        Add it to your mail services and enter the server information, 
+        your login and your password.
+      </td>
+    </tr>     
+    <tr><td height="3"></td></tr>
+    <tr> 
+      <td colspan="2">
+        <b>Evolution</b>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        Download, install and register the Ximian Connector plugin. Add
+        a new mail account, enter your credentials and choose plain password
+        authentication.
+      </td>
+    </tr>     
+    <tr><td height="3"></td></tr>
+    <tr> 
+      <td colspan="2">
+        <b>iCal</b>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        Simply click on of the iCal URLs shown above to subscribe to
+        the respective service. <br/>Enter your credentials and press 
+        <i>Subscribe</i>.
+      </td>
+    </tr>     
+    <tr><td height="3"></td></tr>
+    <tr> 
+      <td colspan="2">
+        <b>KOrganizer/Mozilla Calendar</b>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        Open one of the URLs shown above in the app, you will be asked for
+        your credentials afterwards.
+        <br/>
+      </td>
+    </tr>     
+  </table>
+  <br/>
+</var:component>

@@ -1,0 +1,47 @@
+ZSAppointments
+==============
+
+A set of SOPE objects for exposing OGo appointments to the web.
+
+Sourcefiles
+===========
+
+SxAppointment               controller for an individual appointment
+
+SxAppointmentFolder         controller for a set of appointments mapped as a
+                            folder
+
+SxAppointmentMessageParser  parses the Evolution PUT for iCalendar appointment
+                            messages, streamlines the iCalendar properties
+
+SxEvoAptQueryInfo           used to parse Evolution appointment qualifiers
+
+SxFreeBusy                  a controller that returns freebusy information in
+                            the Exchange freebusy format
+
+SxICalendar                 a controller to return the folder appointment
+                            information in the iCalendar format
+
+Hierarchy
+=========
+
+  [NSObject]
+    [SxObject]
+      SxAppointment
+      SxFreeBusy
+      SxICalendar
+    [SxFolder]
+      SxAppointmentFolder
+    [SxDavAction]
+      SxDavAptAction
+        SxDavAptChange
+        SxDavAptCreate
+    SxAppointmentMessageParser
+
+Defaults
+========
+
+ZLDebugICal
+ZLCreateGroupAppointmentsInGroupFolders YES|NO     [SxAppointment]
+ZLAptLogChanges                         YES|NO     [SxAppointment]
+ZLApt404OnMissingPUTTargets             YES|NO     [SxAppointment]

@@ -1,0 +1,9 @@
+2003-12-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* XmlRpcdClient.py (XmlRpcdClient.server): fixed the argument and 
+	  error handling of the server() method
+	
+	* added proper interpreter for shell execution, added x-flag on 
+	  executable files
+
+	* created ChangeLog

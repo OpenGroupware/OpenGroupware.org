@@ -1,0 +1,90 @@
+<#Frame>
+  <#Window>
+      <#SearchForm>
+        <#TabView>
+          <#FavoritesTab><#FavoriteProjects/></#FavoritesTab>
+	  
+          <#SearchTab><!-- TODO: move to own component -->
+            <table>
+              <tr>
+                <td><#Name/>:</td>
+                <td><#SearchField/> <#SearchButton/></td>
+              </tr>
+            </table>
+            <hr size="1" />
+
+            <#SearchProjects/>
+          </#SearchTab>
+
+          <#DocumentsTab>
+            <!-- TODO: move to own component -->
+            <table>
+              <tr>
+                <td><#Title/>:</td>
+                <td><#TitleField/> <#SearchButton/></td>
+              </tr>
+              <tr>
+                <td><#FileName/>:</td>
+                <td><#FileNameField/><br /></td>
+              </tr>
+              <tr>
+                <td><#Extension/>:</td>
+                <td><#ExtensionField/><br /></td>
+              </tr>
+            </table>
+            <hr size="1" />
+            
+            <#ExtendedSearchTableView>
+              <#TitleMode ><b><#ProjectsLabel/></b></#TitleMode>
+              <#ButtonMode><#Buttons/></#ButtonMode>
+              <#GroupMode ><#GroupName/>&nbsp;(<#GroupNumber/>)</#GroupMode>
+              <#FileNameTD><#Font><#FileNameLink/></#Font></#FileNameTD>
+              <#FileSizeTD/>
+              <#FileOwnerTD/>
+              <#FileModDateTD><nobr><#Font><#ModDateField/></#Font></nobr>
+                </#FileModDateTD>
+              <#FileTitleTD/>
+            </#ExtendedSearchTableView>   
+          </#DocumentsTab>
+
+          <#ExtTabs><#ExtTab><#ExtContent/></#ExtTab></#ExtTabs>
+
+          <#Tabs>
+            <#Tab>
+              <table border="0" cellpadding="4" width="100%" cellspacing="0">
+                <tr>
+                  <#ToggleCell>
+                    <table border='0' cellpadding='0' cellspacing='0'>
+                      <tr>
+                        <#IsQuickViewActive>
+                          <td><#QuickViewIcon /></td>
+                          <td><#LSelLink><#ListViewIcon  /></#LSelLink></td>
+                        </#IsQuickViewActive>
+                        <#IsListViewActive>
+                          <td><#QSelLink><#QuickViewIcon /></#QSelLink></td>
+                          <td><#ListViewIcon /></td>
+                        </#IsListViewActive>
+                      </tr>
+                    </table>
+                  </#ToggleCell>
+
+                  <!-- #SearchCell>
+                  </#SearchCell -->
+                  
+                  <#ButtonCell>
+                    <#IsQuickViewActive><#Buttons /></#IsQuickViewActive>
+                  </#ButtonCell>
+                </tr>
+                <tr>
+                  <td style="height: 2px;"><div style="height: 2px;" /></td>
+                </tr>
+              </table>
+              
+              <#IsQuickViewActive><#TabQuickList /></#IsQuickViewActive>
+              <#IsListViewActive ><#TabTableView /></#IsListViewActive>
+            </#Tab>
+          </#Tabs>
+        </#TabView>
+      </#SearchForm>
+  </#Window>
+</#Frame>

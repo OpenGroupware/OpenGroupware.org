@@ -1,0 +1,94 @@
+// $Id: SkyArticleAssignmentViewer.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+//Style
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.articleAssignmentViewerWindowTitle;
+  onClose = session.navigation.leavePage;
+}
+
+ArticleTitle: LSWViewerTitle {
+  title     = assignment.toArticle.articleName;
+}
+
+Buttons: SkyButtonRow {
+  ordering = ( delete, edit );
+  /* defaultButtons */
+  hasEdit   = isEditEnabled;
+  hasDelete = isDeleteEnabled;
+  onEdit    = edit;
+  onDelete  = delete;
+  /* labels */
+  edit          = labels.editAssignment;
+  delete        = labels.deleteAssignment;
+}
+
+ToggleAttr: SkyAttribute {
+  label = labels.currency;
+}
+TogglePanel: SkyInlineCurrencyToggle {
+  currency = session.userDefaults.invoice_currency;
+}
+
+//Tabs
+
+TabView: SkyTabView {
+  selection  = tabKey;
+}
+
+AttributesTab: SkyTabItem {
+  key       = "attributes";
+  action    = tabClicked;
+  label     = labels.attributes;
+  icon      = "attributes";
+}
+
+//Attributes
+
+Title: LSWViewerTitle {
+  title     = assignment.toArticle.articleName;
+}
+
+AssignmentSubViewer: LSWObjectViewer {
+  labels         = labels;
+  object         = assignment;
+  valueColor     = config.colors_subValueCell;
+  attributeColor = config.colors_subAttributeCell;
+  attributes     = (
+    {   key     = "toInvoice";          
+        relKey  = "invoiceNr";          
+        label   = "assignmentviewer_invoice";   },
+    {   key     = "toArticle";          
+        relKey  = "articleNr";          
+        label   = "assignmentviewer_article";   },
+    {   key     = "articleCount";               },
+    {   key     = "comment";            
+        label   = "additionalComment";          }
+  );
+}
+
+SinglePriceSubAttribute: SkySubAttribute {
+  label = labels.singlePrice;
+}
+SinglePrice: WOString {
+  value     = assignment.netAmount;
+  formatter = currencyFormatter;
+}
+
+//delete-warning
+
+WarningCond : WOConditional {
+  condition = isInWarningMode;
+}
+
+WarningCondElse : WOConditional {
+  condition = isInWarningMode;
+  negate    = YES;
+}
+
+Warning : LSWWarningPanel {
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
+}

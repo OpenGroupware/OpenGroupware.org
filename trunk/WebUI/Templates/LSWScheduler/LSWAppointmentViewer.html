@@ -1,0 +1,56 @@
+<#Frame>
+  <#Window>
+    <table width="100%" border="0" cellpadding="4" cellspacing="0">
+      <!-- general appointment info -->
+      <#ViewerTitle><#Buttons /></#ViewerTitle>
+      <tr><#TitleAttr    /></tr>
+      <tr><#LocationAttr /></tr>
+    </table>
+    
+    <p>
+      <#Tab>
+        <#AptAttrsTab>
+          <table width="100%" bgcolor="#FAE8B8" border="0" 
+                 cellpadding="4" cellspacing="0">
+            <tr><#StartTimeAttr /></tr>
+            <tr><#EndTimeAttr   /></tr>
+            <tr><#NotificationTimeAttr /></tr>
+    
+            <#IsCyclic>
+              <tr>
+                <#CycleAttr>
+                  <#Cycle />&nbsp;
+                  <#UntilLabel />&nbsp;<#CycleEndDateString /></#CycleAttr>
+              </tr>
+            </#IsCyclic>
+    
+            <tr><#ResourceAttr /></tr>
+            <tr><#AptTypeAttr /></tr>
+    
+            <#IsAbsenceCond><tr><#AbsenceAttr /></tr></#IsAbsenceCond> 
+    
+            <tr>
+              <#IsOwnerArchivedCondElse>
+                <#CreatorAttr />
+              </#IsOwnerArchivedCondElse>
+              <#IsOwnerArchivedCond>
+                <#ArchivedCreatorAttr />
+              </#IsOwnerArchivedCond>
+            </tr>
+            <tr><#ReadPermissionAttr><#AccessTeam /></#ReadPermissionAttr></tr>
+            <tr><#WriteAccessAttr /></tr>
+            <tr><#CommentAttr><#Comment /></#CommentAttr></tr>
+            <tr><#IgnoreConflictsAttr /></tr>
+            <tr><#ObjectVersionAttr   /></tr>
+          </table>
+        </#AptAttrsTab>
+
+        <#AptParticipantsTab><#ParticipantsList /></#AptParticipantsTab>
+        <#AptNotesTab       ><#Notes            /></#AptNotesTab>
+        <#LinkTab           ><#RelatedLinks     /></#LinkTab>
+        
+        <#LogsTab><#LogList /></#LogsTab>
+      </#Tab>
+    </p>
+  </#Window>
+</#Frame>

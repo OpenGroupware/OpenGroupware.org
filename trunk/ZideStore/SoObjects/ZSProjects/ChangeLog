@@ -1,0 +1,162 @@
+2005-01-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxDocument.m: added generation of etag, fixed generation of content
+	  type, added support for HEAD (v1.3.93)
+
+2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.3.92
+
+	* SxDocumentFolder.m: override some SxFolder methods which are not
+	  used in the SxDocumentFolder, added support for Blogger post's
+
+	* SxDocument.m: added -contentAsString method, added special method for
+	  Blogger content
+
+	* v1.3.91
+
+	* SxNote.m: implemented object deletion
+
+	* SxProjectsFolder.m: improved object lookup (use SxFolder framework),
+	  added default to enable debug logs (SxProjectsFolderDebugEnabled)
+
+	* v1.3.90
+
+	* SxProjectFolder.m: implemented -isNewKey:inContext:
+	
+	* SxNote.m: properly return 404 if note could not be found, added
+	  support for note creation using HTTP PUT, added logging prefix,
+	  implemented -isDeletionAllowed
+
+	* SxProjectNotesFolder.m: changed note object lookup, added method to
+	  create new notes, added special blogger support
+
+2004-09-26  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* v1.3.89
+	
+	* SxProjectFolder.m: added methods to fetch the abstract of a project,
+	  added special RSS support for using that abstract as the RSS
+	  description
+
+	* SxProjectsFolder.m: added special RSS channel title
+	
+	* SxNote.m: use 'title' as the davDisplayName (used in the RSS
+	  generator)
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.3.88
+	
+	* SxNote.m: added asBrHTML and asPreHTML actions, use creationDate as
+	  the davLastModified date (should be changed!)
+	
+	* added RSS support for project notes. The RSS is exposed as
+	  "Notes.rss" in the project folder.
+	
+	* SxNote.m: catch exceptions when attempting to write notes, fixes OGo
+	  bug #923, minor improvements to WebDAV interface, fixes writing of
+	  notes (v1.3.87)
+
+2004-08-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* added a library, so that linking on MacOSX works (v1.3.86)
+
+2004-07-30  Helge Hess  <helge@dogbert.in.skyrix.com>
+	
+	* SxDocumentFolder+Perf.m: include the folder itself in WebDAV result
+	  sets if Konqueror is the user agent (a hack to work around the hack
+	  for IE ...) (should fix OGo bug 857) (v1.2.85)
+	
+	* SxDocumentFolder.m, SxProjectFolder.m: fixed some issues with 
+	  filesystem projects (should fix OGo bug 852) (v1.2.84)
+
+2004-07-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxDocument.m: fixed a bug with object deletion (v1.2.83)
+
+2004-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxDocumentFolder.m: improvements to debug logs, changed the lookup
+	  for PUT operations (v1.2.82)
+
+2004-07-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxProjectsFolder.m, SxDocumentFolder.m, SxDocument.m, SxNote.m: 
+	  fixed a warning with newer gcc's (v1.2.81)
+
+2004-04-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.2.80
+
+	* SxProjectsFolder.m: debugging can be enabled using the 
+	  SxProjectFolderDebugEnabled default
+
+	* SxDocumentFolder.m: fixed a bug in storage path construction, 
+	  debugging can be enabled using the SxDocumentFolderDebugEnabled
+	  default
+
+2004-03-22  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* added SkyProjectNotesFolder for mapping "notes" to WebDAV (v1.2.79)
+	
+2004-02-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.2.78
+
+	* GNUmakefile.preamble: fixed library dependencies for OSX
+
+	* SxDocument.m, SxDocumentFolder.m, SxDocumentFolder+Perf.m: fixed some
+	  compilation warnings on OSX (v1.2.78)
+
+2003-12-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxDocumentFolder.m: minor fixes and cleanups (v1.2.77)
+
+2003-12-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxProjectsFolder.m: check parent-names prior fetching project names
+	  (v1.2.76)
+
+2003-11-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxDocumentFolder+Perf.m: properly escape filenames used to construct
+	  URL (relates to bug 456) (v1.2.75)
+
+	* SxDocumentFolder+Perf.m: added a hack to make the document folders
+	  work with Nautilus (v1.2.74)
+
+2003-11-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxProjectsFolder.m: fixed include (v1.2.73)
+
+2003-11-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxProjectsFolder.m: added method to return "rawDataSource" 
+	  (SkyProjectDataSource) (v1.2.72)
+
+2003-11-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.2.71
+
+	* SxDocumentFolder.m: implemented toOneRelationshipKeys and 
+	  toManyRelationshipKeys
+
+	* SxProjectsFolder.m: check in name lookup whether a name is really
+	  an existing project (otherwise continue lookup in SoClass)
+
+2003-11-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* MOVE/COPY seem to work now for most cases
+
+2003-11-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxDocument, SxDocumentFolder: prepared for implementation of MOVE
+	  and COPY
+
+	* added descriptions (v1.2.70)
+
+2003-11-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved the Frontend Projects subproject into this separate 
+	  Projects.zsp product (v1.2.68)

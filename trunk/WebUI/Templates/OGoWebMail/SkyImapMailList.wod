@@ -1,0 +1,439 @@
+// $Id: SkyImapMailList.wod 2 2004-08-20 11:37:44Z znek $
+
+
+// --- table view structure ---------------------------------------------------
+
+MailTableView: SkyTableView {
+  dataSource     = dataSource;
+  batchSize      = state.blockSize;
+  selections     = selections;
+  currentBatch   = state.currentBatch;
+  
+  item           = message;
+  index          = index;
+  identifier     = messageIdentifier;
+  count          = mailCount;
+  
+  sortedKey      = state.sortedKey;
+  isDescending   = state.isDescending;
+  //scrollOnClient = scrollOnClientSide;
+  scrollOnClient = NO;
+  autoScroll     = NO;
+};
+
+IsNewHeader: WETableHeader {
+  sortKey          = "seen";
+  nonSortIcon      = "icon_unread.gif";
+  downwardSortIcon = "icon_unread.gif";
+  upwardSortIcon   = "icon_unread.gif";
+  width            = 15;
+  align            = "center";
+};
+IsNewData: WETableData {
+  width = 15;
+  align = "center";
+};
+
+IsFlaggedHeader: WETableHeader {
+  sortKey          = "flagged";
+  nonSortIcon      = "icon_flagged.gif";
+  downwardSortIcon = "icon_flagged.gif";
+  upwardSortIcon   = "icon_flagged.gif";
+  width = 15;
+  align = "center";
+  negateSortDir = YES;
+};
+IsFlaggedData: WETableData {
+  width = 15;
+  align = "center";
+};
+
+SubjectData: WETableData {
+  title   = labels.subject;
+  sortKey = "subject";
+};
+
+SenderData: WETableData {
+  title   = labels.sender;
+  sortKey = "sender";
+}
+
+SendDateData: WETableData {
+  title   = labels.sendDate;
+  sortKey = "sendDate";
+  negateSortDir = YES;
+};
+
+ContentLenData: WETableData {
+  title = labels.contentLen;
+  align = "right";
+  sortKey = "contentLen";
+  negateSortDir = YES;
+};
+
+ToData: WETableData {
+  title = labels.to;
+  sortKey = "to";
+}
+
+FolderData: WETableData {
+  title = labels.emailFolderName;
+  sortKey = "emailFolderName";
+}
+
+TitleMode:  WETableViewTitleMode  {};
+ButtonMode: WETableViewButtonMode {};
+FooterMode: WETableViewFooterMode {};
+
+// --- switching -------------------------------------------------------------
+
+Switcher: WESwitch {
+  selections = state.attributes;
+};
+
+IsNewCase:      WECase { key = "isNew";      };
+IsFlaggedCase:  WECase { key = "isFlagged";  };
+SubjectCase:    WECase { key = "subject";    };
+SenderCase:     WECase { key = "sender";     };
+SendDateCase:   WECase { key = "sendDate";   };
+ContentLenCase: WECase { key = "contentLen"; };
+ToCase:         WECase { key = "to";         };
+FolderCase:     WECase { key = "folder";     };
+
+// --- table view content -----------------------------------------------------
+
+ViewMailAction: WOHyperlink {
+  directActionName  = "viewImapMail";
+  actionClass       = "SkyImapMailActions";
+  ?url              = message.url.stringValue;
+  ?cid              = context.contextID;
+  ?listName         = state.name;
+};
+
+// ViewMailAction: WOHyperlink {
+//   action = viewMail;
+//   title  = longSubject;
+// };
+
+Subject: WOString {
+  value     = message.subject;
+  formatter = subjectFormatter;
+}
+
+Sender: WOString {
+  value     = message.sender;
+  formatter = senderFormatter;
+};
+
+ContentLen: WOString {
+  value = message.contentLen;
+};
+
+SendDate: WOString {
+  value     = sendDate;
+  formatter = session.formatDateTime;
+};
+
+To: WOString {
+  value     = message.to;
+  formatter = senderFormatter;
+};
+
+Folder: WOString {
+  value     = message.emailFolderName;
+};
+
+NewIcon: WOImageButton {
+  filename = "icon_new.gif";
+  action   = markMessageRead;
+  alt      = longSubject;
+  title    = longSubject;
+  align    = "center";
+  valign   = "middle";
+  border   = 0;
+};
+
+ReadIcon: WOImageButton {
+  filename = "icon_read.gif";
+  alt      = longSubject;
+  title    = longSubject;
+  action   = markMessageUnread;
+  align    = "center";
+  valign   = "middle";
+  border   = 0;
+};
+
+AnsweredIcon: WOImageButton {
+  filename = "icon_answered.gif";
+  alt      = longSubject;
+  title    = longSubject;
+  action   = markMessageNotAnswered;
+  align    = "center";
+  valign   = "middle";
+  border   = 0;
+};
+
+UnreadIcon: WOImageButton {
+  filename = "icon_unread.gif";
+  alt      = longSubject;
+  title    = longSubject;
+  align    = "center";
+  valign   = "middle";
+  action   = markMessageRead;
+  border   = 0;
+};
+
+FlaggedIcon: WOImageButton {
+  filename = "icon_flagged.gif";
+  action   = markMessageUnflagged;
+  align    = "center";
+  valign   = "middle";
+  border   = 0;    
+  alt      = labels.markUnflagged;
+  title    = labels.markUnflagged;
+}
+
+UnflaggedIcon: WOImageButton {
+  filename = "icon_read.gif";
+  action   = markMessageFlagged;
+  align    = "center";
+  valign   = "middle";
+  border   = 0;
+  alt      = labels.markFlagged;
+  title    = labels.markFlagged;
+}
+
+FolderIcon: WOImage {
+  filename = "icon_folder.gif";
+  alt      = message.folder.absoluteName;
+  title    = message.folder.absoluteName;
+  align    = "center";
+  valign   = "middle";
+  border   = 0;
+}
+
+// --- show actions ----------------------------------------------------
+
+ShowAllLink: WOHyperlink {
+  action   = showAll;
+  filename = "icon_view_all_inactive.gif";
+  alt      = labels.showAll;
+  title    = labels.showAll;
+  align    = "center";
+  valign   = "middle";
+  border   = 0;
+};
+
+ShowUnreadLink: WOHyperlink {
+  action   = showUnread;
+  filename = "icon_view_unread_inactive.gif";
+  alt      = labels.showUnread;
+  title    = labels.showUnread;
+  align    = "center";
+  valign   = "middle";
+  border   = 0;
+};
+
+ShowFlaggedLink: WOHyperlink {
+  action = showFlagged;
+  filename = "icon_view_flagged_inactive.gif";
+  alt      = labels.showFlagged;
+  title    = labels.showFlagged;
+  align    = "center";
+  valign   = "middle";
+  border   = 0;
+};
+
+ShowAllIcon: WOImage {
+  filename = "icon_view_all.gif";
+  alt      = labels.showAll;
+  title    = labels.showAll;
+  align    = "center";
+  valign   = "middle";
+  border   = 0;
+};
+
+ShowUnreadIcon: WOImage {
+  filename = "icon_view_unread.gif";
+  alt      = labels.showUnread;
+  title    = labels.showUnread;
+  align    = "center";
+  valign   = "middle";
+  border   = 0;
+};
+
+ShowFlaggedIcon: WOImage {
+  filename = "icon_view_flagged.gif";
+  alt      = labels.showFlagged;
+  title    = labels.showFlagged;
+  align    = "center";
+  valign   = "middle";
+  border   = 0;
+};
+
+ShowAllCond: WOConditional {
+  condition = state.showAll;
+};
+ShowAllCondElse: WOConditional {
+  condition = state.showAll;
+  negate    = YES;
+};
+
+ShowUnreadCond: WOConditional {
+  condition = state.showUnread;
+};
+ShowUnreadCondElse: WOConditional {
+  condition = state.showUnread;
+  negate    = YES;
+};
+
+ShowFlaggedCond: WOConditional {
+  condition = state.showFlagged;
+};
+ShowFlaggedCondElse: WOConditional {
+  condition = state.showFlagged;
+  negate    = YES;
+};
+
+
+MessagesLabel: WOString {
+  value = labels.messages;
+};
+
+// --- button list -----------------------------------------------------
+
+MarkRead: WOImageButton {
+  action   = markRead;
+  filename = "icon_mark_read.gif";
+  border   = 0;
+  //  name     = labels.markRead;
+  alt      = labels.markRead;
+  title    = labels.markRead;
+  align   = "middle";
+}
+
+MarkUnread: WOImageButton {
+  action   = markUnread;
+  filename = "icon_mark_unread.gif";
+  border   = 0;
+  //  name     = labels.markUnread;
+  alt      = labels.markUnread;
+  title    = labels.markUnread;
+  align    = "middle";
+}
+
+MarkFlagged: WOImageButton {
+  action   = markFlagged;
+  filename = "icon_mark_flagged.gif";
+  border   = 0;
+  //  name     = labels.markFlagged;
+  alt      = labels.markFlagged;
+  title    = labels.markFlagged;
+  align    = "middle";
+}
+
+MarkUnFlagged: WOImageButton {
+  action   = markUnFlagged;
+  filename = "icon_mark_unflagged.gif";
+  border   = 0;
+  //  name     = labels.markUnflagged;
+  alt      = labels.markUnflagged;
+  title    = labels.markUnflagged;
+  align    = "middle";
+}
+
+MoveMail: WOImageButton {
+  action   = moveMail;
+  filename = "icon_move_mail.gif";
+  border   = 0;
+  //  name     = labels.moveMail;
+  alt      = labels.moveMail;
+  title    = labels.moveMail;
+  align    = "middle";
+}
+
+CopyMail: WOImageButton {
+  action   = copyMail;
+  filename = "icon_copy_mail.gif";
+  border   = 0;
+  //  name     = labels.copyMail;
+  alt      = labels.copyMail;
+  title    = labels.copyMail;
+  align    = "middle";
+}
+
+DeleteMail: WOImageButton {
+  action   = deleteMail;
+  filename = "icon_delete_mail.gif";
+  border   = 0;
+  //  name     = labels.deleteMail;
+  alt      = labels.deleteMail;
+  title    = labels.deleteMail;
+  align    = "middle";
+}
+
+// --- conditions ------------------------------------------------------
+
+IsNew: WOConditional {
+  condition = isNew;
+};
+
+IsUnread: WOConditional {
+  condition = isUnread;
+};
+
+IsRead: WOConditional {
+  condition = isRead;
+};
+
+IsAnswered: WOConditional {
+  condition = isAnswered;
+};
+IsNotAnswered: WOConditional {
+  condition = isAnswered;
+  negate    = YES;
+};
+
+IsFlagged: WOConditional {
+  condition = message.isFlagged;
+};
+IsUnflagged: WOConditional {
+  condition = message.isFlagged;
+  negate    = YES;
+};
+
+IsBold: WOConditional {
+  condition = isRead;
+  negate    = YES;
+};
+
+IsShowFilterButtons: WOConditional {
+  condition = state.isShowFilterButtons;
+}
+
+IsShowMailButtons: WOConditional {
+  condition = state.isShowMailButtons;
+}
+
+
+// --- style ------------------------------------------------------
+
+Font: SkyConfigFont {}
+
+// --- config panel ----------------------------------------------
+
+ConfigPanel: SkyImapMailListConfigPanel {
+  state     = state;
+  string    = "config";
+  filename  = "icon_unread.gif";
+  isVisible = isConfigPanelVisible;
+}
+
+// ----------------------------------------------------------------
+
+DragMail: WEDragContainer {
+  tag            = "mail";
+  object         = message;
+  effectsAllowed = "move";
+  isDraggable    = YES;
+}

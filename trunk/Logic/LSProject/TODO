@@ -1,0 +1,10 @@
+TODOs for LSProject
+===================
+
+- check for duplicate code in LSFetchPersonRelationCommand and
+  LSFetchEnterpriseRelationCommand
+
+- there is no command for getting the notes attached to a project?
+
+- 'projectcompanyassignment::' commands should be removed!
+  (this is project::add-person etc)

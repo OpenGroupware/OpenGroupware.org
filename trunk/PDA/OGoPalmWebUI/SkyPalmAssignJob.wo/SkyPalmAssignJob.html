@@ -1,0 +1,118 @@
+<!-- $Id: SkyPalmAssignJob.html,v 1.1 2003/07/14 16:18:25 helge Exp $ -->
+<#Frame>
+  <#Window>
+    <#Form>
+
+      <table width="100%" border="0" cellpadding="4" cellspacing="0">
+
+      <#Title />
+
+      <#HasSinglePalmJob>
+        <tr>
+        <#AttributeCell>
+          <#PalmJobLabel />:
+        </#AttributeCell><!-- AttributeCell -->
+        <#ValueCell>
+          <#PalmJob />
+        </#ValueCell>
+        </tr>
+      </#HasSinglePalmJob>
+
+      <#CreateNewJobCondElse>
+        <tr>
+        <#HasJobOrJobsCond>
+          <#AttributeCell>
+            <#HasJobsCondElse>
+              <#ChangeJob>
+                <#JobLabel /></#ChangeJob>:
+            </#HasJobsCondElse><!-- HasJobsCondElse -->
+            <#HasJobsCond>
+              <#ChangeJob>
+                <#JobsLabel /></#ChangeJob>:
+            </#HasJobsCond><!-- HasJobsCond -->
+          </#AttributeCell><!-- AttributeCell -->
+          <#ValueCell>
+            <#HasJobsCondElse>
+              <#Job />
+            </#HasJobsCondElse><!-- HasJobsCondElse -->
+            <#HasJobsCond>
+              <table cellpadding="0" cellspacing="0" border="0">
+              <#JobsRep /><!-- JobsRep -->
+            </table>
+            </#HasJobsCond><!-- HasJobCond -->
+          </#ValueCell><!-- ValueCell -->
+        </#HasJobOrJobsCond><!-- HasJobOrJobsCond -->
+        
+        <#HasJobOrJobsCondElse>
+          <#AttributeCell>
+            <#JobLabel />:
+          </#AttributeCell><!-- AttributeCell -->
+          <#ValueCell>
+            <#JobList />
+          </#ValueCell><!-- ValueCell -->
+          </tr><tr>
+          <#DeviceAttr>
+            <#Device />
+            <#Search />
+          </#DeviceAttr>
+        </#HasJobOrJobsCondElse><!-- HasJobOrJobsCondElse -->
+      </tr>        
+      </#CreateNewJobCondElse><!-- CreateNewJobCondElse -->
+
+      <#HasJobOrJobsCond>
+        <tr>
+        <#AttributeCell>
+          <#SyncTypeLabel />:
+        </#AttributeCell><!-- AttributeCell -->
+        <#ValueCell>
+          <#CreateNewJobCond>
+            <#PalmOverSkyLabel />
+          </#CreateNewJobCond><!-- CreateNewJobCond -->
+          <#NewFromJobCond>
+            <#SkyOverPalmLabel />
+          </#NewFromJobCond><!-- NewFromJobCond -->
+          <#AssignJobCond>
+            <#SyncType />
+          </#AssignJobCond><!-- AssignJobCond -->
+        </#ValueCell><!-- ValueCell -->
+        </tr>
+        <#NewFromJobCond>
+          <tr>
+          <#DeviceAttr>
+            <#Device />
+          </#DeviceAttr>
+        </tr>
+        </#NewFromJobCond><!-- NewFromJobCond -->
+      </#HasJobOrJobsCond><!-- HasJobOrJobsCond -->
+
+      <#HasJobOrJobsCondElse>
+        <#CreateNewJobCond>
+          <tr>
+          <#AttributeCell>
+            <#SyncTypeLabel />:
+          </#AttributeCell><!-- AttributeCell -->
+          <#ValueCell>
+            <#PalmOverSkyLabel />
+          </#ValueCell><!-- ValueCell -->
+        </#CreateNewJobCond>
+      </#HasJobOrJobsCondElse><!-- HasJobOrJobsCondElse -->
+
+      <tr>
+        <td></td>
+
+        <td>
+          <#CanSaveCond>
+            <#Save />
+          </#CanSaveCond><!-- CanSaveCond -->
+          <#CanSaveCondElse>
+            <#SaveDisabled />
+          </#CanSaveCondElse><!-- CanSaveCondElse -->
+          <#Cancel />
+        </td>
+      </tr>
+
+    </table>
+
+    </#Form><!-- Form -->
+  </#Window><!-- Window -->
+</#Frame><!-- Frame -->

@@ -1,0 +1,20 @@
+// bind template to controller
+
+AccessTitle: LSWViewerTitle {
+  title    = labels.access;
+  gentable = YES;
+}
+
+AccessButtons: SkyButtonRow {
+  onEdit   = editAccess;
+  ordering = ( edit );
+  edit     = labels.edit;
+}
+
+AccessList: SkyAccessList {
+  accessList   = accessIds;
+  isInTable    = NO;
+  accessChecks = accessChecks;
+  labels       = labels;
+  isViewerMode = YES;
+}

@@ -1,0 +1,19 @@
+<#ContentsTabTitle/>
+            
+<#HasReadAccess>
+  <table border="0" cellspacing="0" cellpadding="1" width="100%">
+    <tr>
+      <#DownloadAttr>
+        <#DownloadLink><#FileName/></#DownloadLink>
+        <#VersionString/>
+      </#DownloadAttr>
+    </tr>
+  
+    <tr><#MimeTypeAttr/></tr>
+    <tr><#SizeAttr/></tr>
+  </table>
+  
+  <#BLOBContentViewer/>
+</#HasReadAccess>
+             
+<#HasReadAccessElse><hr size="1" /><#NoReadAccessWarning/></#HasReadAccessElse>

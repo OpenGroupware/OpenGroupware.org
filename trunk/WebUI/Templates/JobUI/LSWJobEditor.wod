@@ -1,0 +1,332 @@
+// bind template to controller
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.jobEditorWindowTitle;
+  onClose = cancel;
+}
+
+Form: WOForm {
+  name   = "editform";
+  action = search;
+}
+
+JobEditor: LSWObjectEditor {
+  labels     = labels;
+  object     = job;
+  attributes = (
+    { key = "name";      label = "taskName"; },
+    { key = "startDate"; calendarFormat = "%Y-%m-%d"; time = "00:00:00"; },
+    { key = "endDate";   calendarFormat = "%Y-%m-%d"; time = "23:59:59"; }
+  );
+}
+
+ProjectLabel:             WOString { value = labels.projectLabel;     }
+ProjectName:              WOString { value = project.name;            }
+ProjectNumber:            WOString { value = project.number;          }
+CategoryLabel:            WOString { value = labels.categoryLabel;    }
+KeywordsLabel:            WOString { value = labels.keywords;         }
+PriorityLabel:            WOString { value = labels.priorityLabel;    }
+NotifyCreator:            WOString { value = labels.notifyCreator;    }
+DescriptionLabel:         WOString { value = labels.descriptionLabel; }
+Notify:                   WOString { value = labels.notify;           }
+SearchLabel:              WOString { value = labels.searchExecutants; }
+ReferredPersonLabel:      WOString { value = labels.referredPerson;   }
+ActualWorkLabel:          WOString { value = labels.actualWork;       }
+TotalWorkLabel:           WOString { value = labels.totalWork;        }
+MinutesLabel:             WOString { value = labels.minutes;          }
+KilometersSuffixLabel:    WOString { value = labels.kilometersLabel;  }
+KilometersLabel:          WOString { value = labels.kilometers;       }
+SensitivityLabel:         WOString { value = labels.sensitivity;      }
+CompletionDateLabel:      WOString { value = labels.completionDate;   }
+PercentCompleteLabel:     WOString { value = labels.percentComplete;  }
+AccountingInfoLabel:      WOString { value = labels.accountingInfo;   }
+AssociatedCompaniesLabel: WOString { value = labels.associatedCompanies; }
+AssociatedContactsLabel:  WOString { value = labels.associatedContacts;  }
+ExecutantSelectionLabel:  WOString { value = labels.executantSelection;  }
+PrefAccountSelLabel:      WOString { value = labels.preferredAccounts;   }
+
+/*
+CategoryPopup: WOPopUpButton {
+  list            = session.userDefaults.JobCategories;
+  item            = item;
+  string          = item;
+  selection       = job.category;
+}
+*/
+
+CategoryPopup: WOTextField {
+  name  = "taskcategory";
+  value = job.category;
+  size  = "40";
+}
+
+Keywords: WOTextField {
+  name  = "taskkeywords";
+  value = job.keywords;
+  size  = "40";
+}
+
+PriorityPopup: WOPopUpButton {
+  name      = "taskpriority";
+  list      = priorities;
+  item      = item;
+  string    = priorityName;
+  selection = job.priority;
+}
+
+NotifyPopup: WOPopUpButton {
+  name            = "tasknotify";
+  list            = notifyList;
+  item            = item;
+  string          = notifyItem;
+  selection       = job.notify;
+}
+
+Description: WOText {
+  name  = "taskcomment";
+  value = job.comment;
+  rows  = 6;
+  cols  = 40;
+  wrap  = "physical";  
+}
+
+NewModeCond:         WOConditional { condition = isInNewMode;   }
+CommentModeCond:     WOConditional { condition = isCommentMode; }
+CommentModeCondElse: WOConditional { condition = isCommentMode; negate = YES; }
+
+SaveSubmit: WOSubmitButton {
+  action           = save;
+  value            = labels.save;
+  class            = "button_narrow";
+}
+SaveSubmitDA: WOHyperlink {
+  action   = "blah";
+  string   = labels.save;
+  class    = "button_narrow_da";
+}
+
+IsSaveEnabled:  WOConditional { condition = isSaveDisabled; negate = YES; }
+IsSaveDisabled: WOConditional { condition = isSaveDisabled; }
+
+CancelSubmit: WOHyperlink {
+  action   = cancel;
+  string   = labels.cancel;
+  class    = "button_narrow";
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+NotifyCheckBox: WOCheckBox {
+  name    = "taskdonotify";
+  checked = notifyExecutant;
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+ShowExecutantSelectionCond: WOConditional {
+  condition = showExecutantSelection;
+}
+
+GroupsPopup: WOPopUpButton {
+  name            = "taskgroups";
+  list            = teams;
+  item            = item;
+  string          = teamName;
+  selection       = team;
+  nilString       = labels.takeSearchField;
+  onChange        = "document.editform.submit(); return true";    
+}
+
+SearchAccountsField: WOTextField {
+  name  = "taskdosearchaccounts";
+  value = searchAccount;
+}
+
+SearchAccountsSubmit: WOSubmitButton {
+  action   = search;
+  value    = labels.searchButtonLabel;
+  class    = "button_narrow";
+}
+
+HasExecutantsCond: WOConditional { condition = hasExecutants; }
+
+Calendar: SkyCalendarScript {}
+
+ResultRep: WORepetition {
+  list  = resultList;
+  item  = item;
+  index = idx;
+}
+
+StartNewLineCond: WOConditional {
+  condition = startNewLine;
+}
+
+ItemButton: WORadioButton {
+  name    = "lswjobeditorexecutantlist";
+  checked = isSelected;
+}
+
+IsTeamCond:           WOConditional { condition = item.isTeam;          }
+IsTeamCondElse:       WOConditional { condition = item.isTeam; negate = YES; }
+ShowProjectName:      WOConditional { condition = showProjectName;      }
+ShowProjectSelection: WOConditional { condition = showProjectSelection; }
+IsProjectEnabled:     WOConditional { condition = isProjectEnabled;     }
+
+TeamDescription: SkyRichString { value = teamDescription;  }
+ItemDescription: SkyRichString { value = accountDescription; }
+
+ProjectSelection: SkyProjectSelection {
+  project   = project;
+  nilString = noProjectLabel;
+}
+
+AttributesCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.job_editor_attributesVisibility;
+  submitActionName = "";
+  title            = labels.attributes; 
+}
+
+HasAttributesCollapsible: WOConditional {
+  condition = hasJobAttributes;
+}
+
+
+ReferredPerson: WOString {
+  value = referredPersonLabel;
+}
+
+CommonCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.job_editor_commonVisibility;
+  submitActionName = "";
+  title            = labels.commonAttributes; 
+}
+
+ExtendedCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.job_editor_extendedVisibility;
+  submitActionName = "";
+  title            = labels.extendedAttributes; 
+}
+
+ProjectCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.job_editor_projectVisibility;
+  submitActionName = "";
+  title            = labels.projectAttributes; 
+}
+
+ExecutantCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.job_editor_executantVisibility;
+  submitActionName = "";
+  title            = labels.executantAttributes; 
+}
+
+CommentCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.job_editor_commentVisibility;
+  submitActionName = "";
+  title            = labels.commentAttributes; 
+}
+
+ActualWork: WOTextField {
+  name  = "taskactualwork";
+  value = job.actualWork;
+  size  = "5";
+}
+TotalWork: WOTextField {
+  name  = "tasktotalwork";
+  value = job.totalWork;
+  size  = "5";
+}
+Kilometers: WOTextField {
+  name  = "taskkilometers";
+  value = job.kilometers;
+  size  = "5";
+}
+
+SensitivityPopup: WOPopUpButton {
+  name            = "tasksensitivity";
+  list            = sensitivities;
+  item            = item;
+  string          = sensitivity;
+  selection       = job.sensitivity;
+}
+
+CompletionDate: WOTextField {
+  name      = "taskcompletiondate";
+  value     = job.completionDate;
+  size      = "40";
+  formatter = session.formatString;
+  maxlength = "255";
+}
+
+PercentComplete: WOPopUpButton {
+  name            = "taskpercentcomplete";
+  list            = percentList;
+  item            = item;
+  selection       = job.percentComplete;
+}
+
+AccountingInfo: WOTextField {
+  name  = "taskaccountinfo";
+  value = job.accountingInfo;
+  size  = "40";
+}
+
+AssociatedCompanies: WOTextField {
+  name  = "taskassociatedcompanies";
+  value = job.associatedCompanies;
+  size  = "40";
+}
+
+AssociatedContacts: WOTextField {
+  name  = "taskassociatedcontacts";
+  value = job.associatedContacts;
+  size  = "40";
+}
+
+IsJavaScriptEnabled: WOConditional {
+  condition = session.isJavaScriptEnabled;
+}
+
+CalendarPopupCompDateLink: SkyCalendarPopUp {
+  elementName = "taskcompletiondate";
+  formName    = "editform";
+}
+
+WarningModeCond: WOConditional {
+  condition = isInWarningMode;
+}
+
+WarningModeCondElse: WOConditional {
+  condition = isInWarningMode;
+  negate    = YES;
+}
+
+Warning: LSWWarningPanel {
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
+}
+
+ShowPreferredAccounts: WOConditional { condition = preferredExecutantsEnabled;}
+
+PreferredAccountsTitle:  SkyCollapsibleContent {
+  visibility = session.userDefaults.job_editor_prefExecutantVisibility;
+  title      = searchPreferredAccountsLabel;
+  submitActionName = "";
+  isClicked = isParticipantsClicked;
+}
+
+PrefAccountList: SkyListView {
+  list          = prefAccountList;
+  item          = item;
+  columns       = 2;
+  selectedItems = selPrefAccounts;
+  attributes    = (
+    { key = "name"; suffix = "," },
+    { key = "firstname";},
+    { key = "login"; prefix = "("; suffix = ")" }
+  );
+}

@@ -1,0 +1,19 @@
+2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: properly include config.make
+
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* common.make (ADDITIONAL_INCLUDE_DIRS): updated for new location of
+	  LSFoundation header files
+
+2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* common.make: added library lookup pathes for FHS
+
+2004-08-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* datasource bundles now install into 
+	  Library/OpenGroupware-1.0a/DataSources
+
+	* created project level makefile

@@ -1,0 +1,9 @@
+subject           = "Betreff";
+to                = "An";
+cc                = "CC";
+bcc               = "Bcc";
+sender            = "Absender";
+date              = "Datum";
+toDoc             = "Mail zum Dokument";
+download          = "Mail herunterladen";
+contentLength     = "Größe";

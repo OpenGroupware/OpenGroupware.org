@@ -1,0 +1,78 @@
+Blogger
+=======
+
+Attempt to implement the Blogger XML-RPC API for ZideStore.
+
+Note: this is far from being complete!
+It is currently tested with project notes in Echo and allows:
+- list notes as posts
+- post new notes (with HTML marker in the note)
+- delete notes
+
+Use a URL like:
+  http://localhost/zidestore/so/donald/Projects/DBTEST/
+this will show the "Documents" and "Notes" subfolders as BLOGs.
+
+
+Root Methods vs Context Methods
+===============================
+
+Note that we could define the methods on the application object, because the
+API has no concept of object traversal.
+All the methods get a parameter specifing the blog and user in question.
+
+Currently this isn't done because there can be quite a lot of blogs in OGo for
+one user (especially in project contexts).
+
+
+NOTES
+=====
+- blogger.deletePost does not specify the blog, only the post id
+
+
+TODO
+====
+- authentication should be done via XML-RPC, not via basic auth
+
+
+Links
+=====
+
+http://www.movabletype.org/docs/mtmanual_programmatic.html
+
+
+What Ecto Does
+==============
+
+MovableType Mode
+1. XML-RPC: bloggers.getUsersBlogs
+2. on each blog URL: GET
+3. metaWeblog.getRecentPosts
+4. mt.supportedTextFilters
+5. mt.getCategoryList
+
+Note: Ecto does not escape '>':
+---snip---
+	<member>
+		<name>description</name>
+		<value><string>&lt;p>
+mein &lt;strong>content&lt;/strong> 1
+&lt;/p></string></value>
+	</member>
+---snap---
+
+Ecto currently throws exceptions:
+---snip---
+---snap---
+
+
+Atom
+====
+
+Not currently implemented. First we need "X-Wsse" authentication:
+---snip---
+X-Wsse: UsernameToken Username="helge", 
+        PasswordDigest="lmay9ZhN0/RmchYJhuf1jQT3E50=", 
+        Nonce="ZWN0by0zNzI3", 
+        Created="2004-10-24T14:37:27Z"
+---snap---

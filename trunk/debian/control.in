@@ -1,0 +1,534 @@
+Source: opengroupware.org
+Section: web
+Priority: extra
+Maintainer: Sebastian Ley <ley@debian.org>
+Build-Depends: debhelper (>= 4.0.0), dpatch, gnustep-make-ogo, libfoundation-dev, libobjc-lf-dev, libsope-core-dev, libsope-appserver-dev, libsope-xml-dev, libsope-gdl1-dev, libsope-mime-dev, libsope-ldap-dev, libldap-dev, libsope-ical-dev, gobjc | objc-compiler, libpisock-dev, po-debconf
+Standards-Version: 3.6.1
+
+Package: opengroupware.org
+Section: web
+Architecture: all
+Depends: opengroupware.org_OGOVER_
+Description: A free and open groupware suite
+ OpenGroupware.org aims at being an open source groupware server which
+ integrates with the leading open source office suite products and all
+ the leading groupware clients running across all major platforms, and
+ to provide access to all functionality and data through open XML-based
+ interfaces and APIs. Additionally it has a web User Interface for
+ platform independent usage. OpenGroupware.org is built on top of the
+ SOPE application server.
+ .
+ This package depends on all necessary components needed to run the
+ recent version of OpenGroupware.org.
+
+Package: opengroupware.org_OGOVER_
+Section: web
+Architecture: all
+Depends: opengroupware.org_OGOVER_-webui, opengroupware.org_OGOVER_-xmlrpcd, opengroupware.org-zidestore_ZSVER_
+Description: A free and open groupware suite
+ OpenGroupware.org aims at being an open source groupware server which
+ integrates with the leading open source office suite products and all
+ the leading groupware clients running across all major platforms, and
+ to provide access to all functionality and data through open XML-based
+ interfaces and APIs. Additionally it has a web User Interface for
+ platform independent usage. OpenGroupware.org is built on top of the
+ SOPE application server.
+ .
+ This package depends on all necessary components needed to run
+ OpenGroupware.org, version _OGOVER_.
+
+Package: opengroupware.org_OGOVER_-webui
+Section: web
+Architecture: all
+Depends: opengroupware.org_OGOVER_-webui-app, opengroupware.org_OGOVER_-webui-contact, opengroupware.org_OGOVER_-webui-job, opengroupware.org_OGOVER_-webui-mailer, opengroupware.org_OGOVER_-webui-news, opengroupware.org_OGOVER_-webui-project, opengroupware.org_OGOVER_-webui-scheduler
+Description: Web UI for OpenGroupware.org
+ This package depends on all packages that are part of
+ OpenGroupware.org's web user interface.
+
+Package: opengroupware.org-environment
+Section: web
+Architecture: all
+Depends: daemon, opengroupware.org-database-scripts, libfoundation-tools
+Description: Useful tools for an OpenGroupware.org runtime environment
+ This package contains an init script for OpenGroupware.org as well as 
+ a configurator, which allows for automatic instance creation.
+
+Package: libopengroupware.org-logic_OGOSONAME_-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-logic-dev
+Conflicts: libopengroupware.org-logic-dev
+Depends: libopengroupware.org-logic_OGOSONAME_ (= ${Source-Version})
+Description: Development files for opengroupware.org-logic
+ This package contains the header files for the libraries contained in
+ the libopengroupware.org-logic_OGOSONAME_ package.
+
+Package: libopengroupware.org-logic_OGOSONAME_
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Shared libraries of the OpenGroupware.org application logic
+ This package contains OpenGroupware.org's application logic.
+
+Package: libopengroupware.org-docapi_OGOSONAME_-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-docapi-dev
+Conflicts: libopengroupware.org-docapi-dev
+Depends: libopengroupware.org-docapi_OGOSONAME_ (= ${Source-Version})
+Description: Development files for opengroupware.org-docapi
+ The Document API is a set of Objective-C libraries wrapping the SOPE
+ logic in a "document" API.
+ .
+ This package contains the development files for the libraries contained in
+ the libopengroupware.org-docapi_OGOSONAME_ package.
+
+Package: libopengroupware.org-docapi_OGOSONAME_
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopengroupware.org-db-project_OGOSONAME_ | opengroupware.org_OGOSONAME_-project-storage
+Description: OpenGroupware.org document API
+ The Document API is a set of Objective-C libraries wrapping the SOPE
+ logic in a "document" API.
+ .
+ This package contains the shared libraries as well as modules containing
+ the actual wrappers.
+
+Package: libopengroupware.org-db-project_OGOSONAME_-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-db-project-dev
+Conflicts: libopengroupware.org-db-project-dev
+Depends: libopengroupware.org-db-project_OGOSONAME_ (= ${Source-Version})
+Description: Development files for OpenGroupware.org's database storage
+ This package contains the development files for the shared library in the
+ libopengroupware.org-db-project_OGOSONAME_ package.
+
+Package: libopengroupware.org-db-project_OGOSONAME_
+Section: libs
+Architecture: any
+Provides: opengroupware.org_OGOSONAME_-project-storage
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Database storage for OpenGroupware.org projects
+ Files associated to OpenGroupware.org projects can be stored through different
+ storage backends. This package contains the database storage backend, which
+ stores all files in a database.
+
+Package: libopengroupware.org-fs-project_OGOSONAME_-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-fs-project-dev
+Conflicts: libopengroupware.org-fs-project-dev
+Depends: libopengroupware.org-fs-project_OGOSONAME_ (= ${Source-Version})
+Description: Development files for OpenGroupware.org's filesystem storage
+ This package contains the development files for the shared library in the
+ libopengroupware.org-fs-project_OGOSONAME_ package.
+
+Package: libopengroupware.org-fs-project_OGOSONAME_
+Section: libs
+Architecture: any
+Provides: opengroupware.org_OGOSONAME_-project-storage
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Filesystem storage for OpenGroupware.org projects
+ Files associated to OpenGroupware.org projects can be stored through different
+ storage backends. This package contains the filesystem storage backend, which
+ stores all files plainly on the hosts filesystem.
+
+Package: libopengroupware.org-webmail_OGOSONAME_-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-webmail-dev
+Conflicts: libopengroupware.org-webmail-dev
+Depends: libopengroupware.org-webmail_OGOSONAME_ (= ${Source-Version})
+Description: Webmail functions common for some OpenGroupware.org components
+ This library contains webmail functions to be shared among several
+ OpenGroupware.org components.
+ .
+ This package contains the development files for the libraries contained in
+ the libopengroupware.org-webmail_OGOSONAME_ package.
+
+Package: libopengroupware.org-webmail_OGOSONAME_
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Webmail functions common for some OpenGroupware.org components
+ This library contains webmail functions to be shared among several
+ OpenGroupware.org components.
+
+Package: libopengroupware.org-pda_OGOSONAME_-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-pda-dev
+Conflicts: libopengroupware.org-pda-dev
+Depends: libopengroupware.org-pda_OGOSONAME_ (= ${Source-Version})
+Description: Development files for OpenGroupware.org's PDA libraries
+ This package contains the development files for the libraries contained in
+ the libopengroupware.org-pda_OGOSONAME_ package.
+
+Package: libopengroupware.org-pda_OGOSONAME_
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: PDA syncing libraries for OpenGroupware.org
+ This package contains the PDA syncing framework for OpenGroupware.org. To
+ enable PDA syncing support on a OpenGroupware.org installation, install the
+ network hotsyncing daemon, available in the opengroupware.org-nhsd package.
+
+Package: opengroupware.org_OGOVER_-nhsd
+Section: web
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Network hotsync daemon for OpenGroupware.org
+ The network hotsync daemon enables users to sync their PDA with their
+ OpenGroupware.org calendars, contacts and tasks. The PDA needs support
+ for the hotsync protocol over TCP/IP in order to use this feature.
+
+Package: libopengroupware.org-webui-foundation_OGOSONAME_-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-webui-foundation-dev
+Conflicts: libopengroupware.org-webui-foundation-dev
+Depends: libopengroupware.org-webui-foundation_OGOSONAME_ (= ${Source-Version})
+Description: Library of common Web UI elements
+ This library contains common elements of OpenGroupware.org's Web UI.
+
+Package: libopengroupware.org-webui-foundation_OGOSONAME_
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Library of common Web UI elements
+ This library contains common elements of OpenGroupware.org's Web UI.
+
+Package: opengroupware.org_OGOVER_-database
+Section: web
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org-database-scripts, sope_SOPEVER_-gdl1-postgresql
+Description: Database models for OpenGroupware.org
+ This package contains the database models for OpenGroupware.org.
+
+Package: opengroupware.org-database-scripts
+Section: web
+Architecture: any
+Replaces: opengroupware.org_OGOVER_-database
+Description: Scripts to set up a database for OpenGroupware.org
+ This package contains the necessary SQL scripts to set up a database for
+ OpenGroupware.org.  
+
+Package: opengroupware.org_OGOVER_-webui-app
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org_OGOVER_-database, sope_SOPEVER_-libxmlsaxdriver, opengroupware.org_OGOVER_-webui-core, opengroupware.org_OGOVER_-webui-i18n-en | opengroupware.org_OGOVER_-webui-i18n, opengroupware.org_OGOVER_-webui-theme-default | opengroupware.org_OGOVER_-webui-theme
+Recommends: libapache-mod-ngobjweb, apache, opengroupware.org-environment
+Description: Web UI application of OpenGroupware.org
+ This package contains the executable and resources of
+ OpenGroupware.org's web application server.
+
+Package: opengroupware.org_OGOVER_-webui-core
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Core elements for OpenGroupware.org's Web UI
+ This package contains UI elements that are used in various components
+ of OpenGroupware.org's web frontend.
+
+Package: opengroupware.org_OGOVER_-webui-contact
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Contact component of OpenGroupware.org's Web UI
+ The contact component lets users add and manage contacts of individuals
+ or companies. Export of vcf files is supported.
+
+Package: opengroupware.org_OGOVER_-webui-job
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Job component of OpenGroupware.org's Web UI
+ The job component enables users to assign and manage tasks
+ related to projects.
+
+Package: opengroupware.org_OGOVER_-webui-mailer
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: opengroupware.org-webmail-tools
+Description: Mailing component of OpenGroupware.org's Web UI
+ This package contains a webmail application for OpenGroupware.org's
+ web UI. It needs an IMAP server for the mail feed and and SMTP server
+ to enable the users to send mail.
+
+Package: opengroupware.org_OGOVER_-webui-news
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: News component of OpenGroupware.org's Web UI
+ The news component shows recent appointments tasks for each user.
+ Additionally it supports the creation and display of simple news items.
+
+Package: opengroupware.org_OGOVER_-webui-project
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Project component of OpenGroupware.org's Web UI
+ The project component adds project management capabilities to
+ OpenGroupware.org's web UI. It allows to assign and track a
+ project's status, add documents and links and interworks nicely
+ with the jobs component to assign specific tasks within a project.
+
+Package: opengroupware.org_OGOVER_-webui-scheduler
+Architecture: any
+Recommends: opengroupware.org-skyaptnotify
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Scheduler component of OpenGroupware.org's Web UI
+ The scheduler component provides personal and shared calendars for
+ OpenGroupware.org's web UI. It allows to create and manage appointments
+ for individuals and groups and can also detect collisions when creating
+ new appointments.
+
+Package: libopengroupware.org-zidestore_ZSVER_
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: libapache-mod-ngobjweb, apache
+Description: Shared libraries of the OpenGroupware.org zidestore server
+ The ZideStore Server provides WebDAV access to the OpenGroupware.org
+ data. It can be used to cennect native groupware clients with
+ OpenGroupware.org. Currently supported are calendaring clients that use
+ iCal subscriptions, an Ximian Evolution plugin is under development.
+ .
+ This package contains the shared libraries of the ZideStore server and some
+ common modules.
+
+Package: libopengroupware.org-zidestore_ZSVER_-dev
+Section: libdevel
+Architecture: any
+Provides: libopengroupware.org-zidestore-dev
+Conflicts: libopengroupware.org-zidestore-dev
+Depends: libopengroupware.org-zidestore_ZSVER_ (= ${Source-Version})
+Description: Development Files for the ZideStore server
+ The ZideStore Server provides WebDAV access to the OpenGroupware.org
+ data. It can be used to cennect native groupware clients with
+ OpenGroupware.org. Currently supported are calendaring clients that use
+ iCal subscriptions, an Ximian Evolution plugin is under development.
+ .
+ This package contains development files for the libraries of the ZideStore
+ server.
+
+Package: opengroupware.org-zidestore_ZSVER_
+Section: web
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org_OGOVER_-database, sope_SOPEVER_-libxmlsaxdriver, sope_SOPEVER_-versitsaxdriver
+Recommends: libapache-mod-ngobjweb, apache, opengroupware.org-environment
+Description: WebDAV Server for OpenGroupware.org
+ The ZideStore Server provides WebDAV access to the OpenGroupware.org
+ data. It can be used to cennect native groupware clients with
+ OpenGroupware.org. Currently supported are calendaring clients that use
+ iCal subscriptions, an Ximian Evolution plugin is under development.
+ .
+ This package contains the server executable.
+
+Package: opengroupware.org_OGOVER_-xmlrpcd
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org_OGOVER_-database, sope_SOPEVER_-libxmlsaxdriver
+Recommends: libapache-mod-ngobjweb, apache, opengroupware.org-environment
+Description: XMLRPC daemon for OpenGroupware.org
+ The XMLRPC daemon allows to execute groupware functions over the standardized
+ XMLRPC API. This is especially useful within scripts or custom applications.
+ .
+ This package contains the daemon which accepts and processes the XML commands.
+
+Package: opengroupware.org-misc-tools
+Section: misc
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Various commandline tools for OpenGroupware.org
+ This package contains some commandline tools for OpenGroupware.org, which are
+ mostly useful for development and debugging.
+
+Package: opengroupware.org-webmail-tools
+Section: web
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Enhances: opengroupware.org-webui-mailer
+Description: Tools for the webmailing component of OpenGroupware.org
+ This package contains some tools that enhance the webmailing
+ component of OpenGroupware.org. In particular, the following tools
+ are part of the package:
+ .
+  * sky_send_bulk_messages:
+    Required for mailing lists in the OpenGroupware.org webmailer.
+  * sky_install_sieve:
+    Required for installing Sieve filters from the OpenGroupware.org webmailer.
+    The filters are stored in an internal format in OpenGroupware.org and
+    sky_install_sieve is invoked to convert that into Sieve and transfer it to
+    the server.
+  * sky_install_procmail:
+    Same as sky_install_sieve but for procmail.
+
+Package: opengroupware.org-skyaptnotify
+Section: web
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, exim4 | mail-transport-agent
+Description: Send mail notifications for appointments to OpenGroupware.org users
+ Skyaptnotify is a little program which reminds OpenGroupware.org users via
+ mail of upcoming appointments.
+
+Package: opengroupware.org_OGOVER_-webui-i18n-de
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: German translation for OpenGroupware.org's web UI
+ This package contains the German translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+
+Package: opengroupware.org_OGOVER_-webui-i18n-dk
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: Danish translation for OpenGroupware.org's web UI
+ This package contains the Danish translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+  
+Package: opengroupware.org_OGOVER_-webui-i18n-en
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: English translation for OpenGroupware.org's web UI
+ This package contains the English translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+  
+Package: opengroupware.org_OGOVER_-webui-i18n-es
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: Spanish translation for OpenGroupware.org's web UI
+ This package contains the Spanish translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+
+Package: opengroupware.org_OGOVER_-webui-i18n-eu
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: Basque translation for OpenGroupware.org's web UI
+ This package contains the Basque translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+
+Package: opengroupware.org_OGOVER_-webui-i18n-fr
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: French translation for OpenGroupware.org's web UI
+ This package contains the French translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+
+Package: opengroupware.org_OGOVER_-webui-i18n-hu
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: Hungarian translation for OpenGroupware.org's web UI
+ This package contains the Hungarian translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+
+Package: opengroupware.org_OGOVER_-webui-i18n-it
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: Italian translation for OpenGroupware.org's web UI
+ This package contains the Italian translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+
+Package: opengroupware.org_OGOVER_-webui-i18n-jp
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: Japanese translation for OpenGroupware.org's web UI
+ This package contains the Japanese translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+  
+Package: opengroupware.org_OGOVER_-webui-i18n-nl
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: Dutch translation for OpenGroupware.org's web UI
+ This package contains the Dutch translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+  
+Package: opengroupware.org_OGOVER_-webui-i18n-no
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: Norwegian translation for OpenGroupware.org's web UI
+ This package contains the Norwegian translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+
+Package: opengroupware.org_OGOVER_-webui-i18n-pl
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: Polish translation for OpenGroupware.org's web UI
+ This package contains the Polish translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+
+Package: opengroupware.org_OGOVER_-webui-i18n-pt
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: Portuguese translation for OpenGroupware.org's web UI
+ This package contains the Portuguese translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+
+Package: opengroupware.org_OGOVER_-webui-i18n-ptbr
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: Portuguese (Brazilian) translation for OpenGroupware.org's web UI
+ This package contains the Portuguese (Brazil) translations for OpenGroupware.org's
+ web UI.  You need to have at last one translation package installed.
+  
+Package: opengroupware.org_OGOVER_-webui-i18n-se
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: Swedish translation for OpenGroupware.org's web UI
+ This package contains the Swedish translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+
+Package: opengroupware.org_OGOVER_-webui-i18n-sv
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-i18n
+Description: Slovak translation for OpenGroupware.org's web UI
+ This package contains the Slovak translations for OpenGroupware.org's web UI.
+ You need to have at last one translation package installed.
+
+Package: opengroupware.org_OGOVER_-webui-theme-blue
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-theme
+Description: Blue theme for OpenGroupware.org's web UI
+ The appearance of OpenGroupware.org's web UI can be customized with themes.
+
+Package: opengroupware.org_OGOVER_-webui-theme-default
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-theme
+Description: Default theme for OpenGroupware.org's web UI
+ The appearance of OpenGroupware.org's web UI can be customized with themes.
+  This package contains the default theme.
+  
+Package: opengroupware.org_OGOVER_-webui-theme-kde
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-theme
+Description: Default theme for OpenGroupware.org's web UI
+ The appearance of OpenGroupware.org's web UI can be customized with themes.
+ This package contains the default theme.
+  
+Package: opengroupware.org_OGOVER_-webui-theme-ooo
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-theme
+Description: Default theme for OpenGroupware.org's web UI
+ The appearance of OpenGroupware.org's web UI can be customized with themes.
+ This package contains the default theme.
+  
+Package: opengroupware.org_OGOVER_-webui-theme-orange
+Section: web
+Architecture: all
+Provides: opengroupware.org_OGOVER_-webui-theme
+Description: Default theme for OpenGroupware.org's web UI
+ The appearance of OpenGroupware.org's web UI can be customized with themes.
+ This package contains the default theme.

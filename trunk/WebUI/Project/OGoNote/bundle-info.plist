@@ -1,0 +1,35 @@
+{
+  bundleHandler = SkyNoteModule;
+  
+  requires = {
+    bundleManagerVersion = 1;
+
+    bundles = ( 
+      { name = LSProject; type = cmd; }
+    );
+    classes = (
+      { name = LSWModuleManager;  exact-version = 2; },
+      { name = LSWViewAction;     version = 1; },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     }
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = SkyNoteModule; },
+      { name = SkyNoteList;   },
+      { name = SkyNoteEditor; },
+    );
+
+    WOComponents = (
+      { name = SkyNoteList;   },
+      { name = SkyNoteEditor; },
+    );
+
+    LSWCommands = (
+      { verb = edit; type = "eo/note";    component = SkyNoteEditor; },
+      { verb = new;  type = "eo/note";    component = SkyNoteEditor; },
+    );
+  };
+}

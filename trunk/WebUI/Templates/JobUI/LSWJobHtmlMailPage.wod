@@ -1,0 +1,62 @@
+// bind template to class
+
+TitleLabel:     WOString { value = labels.titleLabel; }
+CreatorLabel:   WOString { value = labels.creator; }
+ExecutantLabel: WOString { value = labels.executant; }
+CommentLabel:   WOString { value = labels.Comment; }
+ActionLabel:    WOString { value = labels.action; }
+ProjectLabel:   WOString { value = labels.project; }
+StartLabel:     WOString { value = labels.startDateLabel; }
+EndLabel:       WOString { value = labels.endDateLabel; }
+LinkLabel:      WOString { value = labels.linkLabel; }
+JobViewerLabel: WOString { value = labels.jobViewer; }
+
+TitleExternal: WOHyperlink {
+  string           = object.name;
+  directActionName = "activate";
+  ?wosid           = NO;
+  ?oid             = object.jobId;
+}
+
+TitleAction: WOHyperlink {
+  action = viewObject;
+  string = object.name;
+}
+
+InlineLinkCond:     WOConditional { condition = inlineLink; }
+InlineLinkCondElse: WOConditional { condition = inlineLink; negate = YES; }
+IsTeamJob:          WOConditional { condition = isTeamJob;  }
+IsTeamJobElse:      WOConditional { condition = isTeamJob;  negate = YES; }
+
+CreatorName:        WOString { value = object.creator.name;          }
+ExecutantName:      WOString { value = object.executant.name;        }
+ExecutantTeamName:  WOString { value = object.executant.description; }
+LastComment:        WOString { value = lastComment; insertBR = YES;  }
+Action:             WOString { value = action;                       }
+CreatorFirstName:   WOString { value = object.creator.firstname;     }
+ExecutantFirstName: WOString { value = object.executant.firstname;   }
+ProjectName:        WOString { value = object.toProject.name;        }
+
+Start: WOString {
+  value     = object.startDate;
+  formatter = session.formatDate;
+}
+End: WOString {
+  value     = object.endDate;
+  formatter = session.formatDate;  
+}
+
+Link: WOHyperlink {
+  href   = objectUrl;
+  string = objectUrl;
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+MainButtonRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_mainButtonRow;
+}
+
+Font: SkyConfigFont {}

@@ -1,0 +1,88 @@
+// $Id: SkyPalmMemoEditor.wod,v 1.1 2003/07/14 16:18:25 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.SkyPalmMemoEditor;
+  onClose = cancel;
+}
+
+Font: SkyConfigFont {};
+
+// conditionals
+IsNewCond: WOConditional {
+  condition = isInNewMode;
+}
+IsNotNewCond: WOConditional {
+  condition = isInNewMode;
+  negate    = YES;
+}
+
+// labels
+MemoTitle:      WOString { value = memo.attribute_description;        }
+NewMemoLabel:   WOString { value = labels.new_memo;                   }
+MemoAttr:       WOString { value = labels.attribute_memo;             }
+DeviceAttr:     WOString { value = labels.attribute_deviceId;         }
+CategoryAttr:   WOString { value = labels.attribute_categoryName;     }
+
+// collapsibles
+PalmMemoCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.SkyPalmMemoEditor_expand_attributes;
+  submitActionName = "";
+  structuredMode   = YES;
+}
+CollTitleMode:   SkyCollapsibleTitleMode   {};
+CollContentMode: SkyCollapsibleContentMode {};
+
+// form
+EditorForm: WOForm {
+  name = "editform";
+}
+
+AttributeCell: SkyAttributeCell {};
+ValueCell:     SkyValueCell     {};
+
+// form values
+Memo: SkyTextEditor {
+  text    = memo.memo;
+  rows    = session.userDefaults.SkyPalmMemoEditor_memo_rows;
+  columns = session.userDefaults.SkyPalmMemoEditor_memo_cols;
+}
+Device: WOPopUpButton {
+  list            = devices;
+  item            = item;
+  selection       = memo.deviceId;
+  singleSelection = YES;
+}
+DeviceSubmit: WOImageButton {
+  action   = searchCategories;
+  filename = "search.gif";
+  name     = labels.action_searchCategories;
+  ALT      = labels.action_searchCategories;
+  title    = labels.action_searchCategories;
+  BORDER   = 0;
+}
+Category: WOPopUpButton {
+  list            = categories;
+  item            = item;
+  string          = item.categoryName;
+  selection       = memo.category;
+  singleSelection = YES;
+}
+
+SaveSubmit: WOImageButton {
+  action   = save;
+  filename = "save.gif";
+  name     = labels.action_save;
+  ALT      = labels.action_save;
+  title    = labels.action_save;
+  BORDER   = 0;
+}
+CancelSubmit: WOImageButton {
+  action   = cancel;
+  filename = "cancel.gif";
+  name     = labels.cancelButtonLabel;
+  ALT      = labels.cancelButtonLabel;
+  title    = labels.cancelButtonLabel;
+  BORDER   = 0;
+}

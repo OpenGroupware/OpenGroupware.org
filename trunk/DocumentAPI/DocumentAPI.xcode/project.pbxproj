@@ -1,0 +1,7114 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 39;
+	objects = {
+		E81F643C05B5AB8A00748844 = {
+			children = (
+				E897AD6E05B6496E001225B4,
+				E897AD6F05B6496E001225B4,
+				E897AD7005B6496E001225B4,
+				E897AD7105B6496E001225B4,
+				E897AD7205B6496E001225B4,
+				E81F644505B5ABAE00748844,
+				E81F645105B5ABD600748844,
+				E81F644805B5ABB800748844,
+				E81F644B05B5ABBF00748844,
+				E81F644E05B5ABD000748844,
+				E81F645D05B5ABE900748844,
+				E81F645405B5ABDA00748844,
+				E81F645705B5ABDE00748844,
+				E81F645A05B5ABE300748844,
+				E81F646005B5ABEB00748844,
+				E81F646105B5AC2F00748844,
+				E81F646405B5AC3300748844,
+			);
+			isa = PBXGroup;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F643E05B5AB8A00748844 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				OTHER_CFLAGS = "-DAPPLE_RUNTIME=1 -DNeXT_RUNTIME=1 -DCOCOA_Foundation_LIBRARY=1 -DNeXT_Foundation_LIBRARY=1 -DCOMPILE_AS_FRAMEWORK=1";
+			};
+			isa = PBXBuildStyle;
+			name = Development;
+		};
+		E81F643F05B5AB8A00748844 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				OTHER_CFLAGS = "-DAPPLE_RUNTIME=1 -DNeXT_RUNTIME=1 -DCOCOA_Foundation_LIBRARY=1 -DNeXT_Foundation_LIBRARY=1 -DCOMPILE_AS_FRAMEWORK=1";
+			};
+			isa = PBXBuildStyle;
+			name = Deployment;
+		};
+		E81F644005B5AB8A00748844 = {
+			buildSettings = {
+			};
+			buildStyles = (
+				E81F643E05B5AB8A00748844,
+				E81F643F05B5AB8A00748844,
+			);
+			hasScannedForEncodings = 1;
+			isa = PBXProject;
+			mainGroup = E81F643C05B5AB8A00748844;
+			projectDirPath = "";
+			targets = (
+				E81F646905B5AD3500748844,
+				E81F648505B5AD9E00748844,
+				E81F647005B5AD6A00748844,
+				E81F647705B5AD8400748844,
+				E81F647E05B5AD9100748844,
+				E81F64A105B5ADD300748844,
+				E81F648C05B5ADAD00748844,
+				E81F649305B5ADBD00748844,
+				E81F649A05B5ADC800748844,
+				E81F64A805B5ADE100748844,
+				E81F64AB05B5AE0F00748844,
+				E81F64C005B5AE1F00748844,
+				E81F64C105B5AE2700748844,
+			);
+		};
+		E81F644505B5ABAE00748844 = {
+			children = (
+				E81F64CA05B5AE5F00748844,
+				E81F64ED05B5AE5F00748844,
+				E81F64DD05B5AE5F00748844,
+				E81F646B05B5AD3500748844,
+				E81F64CC05B5AE5F00748844,
+				E81F64CD05B5AE5F00748844,
+				E81F651B05B5AE8100748844,
+				E81F651A05B5AE7B00748844,
+				E81F651C05B5AE9B00748844,
+			);
+			isa = PBXGroup;
+			name = OGoDocuments;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F644805B5ABB800748844 = {
+			children = (
+				E88983D605B63D9B00EB804C,
+				E88983E605B63D9B00EB804C,
+				E88983D805B63D9B00EB804C,
+				E88983D905B63D9B00EB804C,
+				E88983D505B63D9B00EB804C,
+				E81F647205B5AD6A00748844,
+				E88983DA05B63D9B00EB804C,
+				E88983FB05B63DD600EB804C,
+				E88983F905B63DA500EB804C,
+				E88983FA05B63DB200EB804C,
+				E88983FC05B63DE100EB804C,
+			);
+			isa = PBXGroup;
+			name = OGoRawDatabase;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F644B05B5ABBF00748844 = {
+			children = (
+				E889840A05B63E8600EB804C,
+				E889841E05B63E8600EB804C,
+				E889840C05B63E8600EB804C,
+				E889840D05B63E8600EB804C,
+				E889840905B63E8600EB804C,
+				E81F647905B5AD8400748844,
+				E889840E05B63E8600EB804C,
+				E889840B05B63E8600EB804C,
+				E889843505B63E9F00EB804C,
+				E889843605B63EAA00EB804C,
+				E889843705B63EB200EB804C,
+			);
+			isa = PBXGroup;
+			name = OGoAccounts;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F644E05B5ABD000748844 = {
+			children = (
+				E889843A05B63F7000EB804C,
+				E889847D05B63FB500EB804C,
+				E889845005B63FB500EB804C,
+				E889847C05B63FB500EB804C,
+				E889843C05B63F7000EB804C,
+				E889843D05B63F7000EB804C,
+				E889844F05B63FB500EB804C,
+				E889843905B63F7000EB804C,
+				E889843E05B63F7000EB804C,
+				E81F648005B5AD9100748844,
+				E889843F05B63F7000EB804C,
+				E889843B05B63F7000EB804C,
+				E889844B05B63F7E00EB804C,
+				E88984AD05B6400200EB804C,
+				E889844E05B63F9600EB804C,
+			);
+			isa = PBXGroup;
+			name = OGoContacts;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F645105B5ABD600748844 = {
+			children = (
+				E88984B105B6407E00EB804C,
+				E88984BC05B6407F00EB804C,
+				E88984B305B6407F00EB804C,
+				E88984B405B6407F00EB804C,
+				E88984B005B6407E00EB804C,
+				E81F648705B5AD9E00748844,
+				E88984CA05B6409800EB804C,
+				E88984CB05B640C200EB804C,
+				E88984CC05B640D100EB804C,
+			);
+			isa = PBXGroup;
+			name = OGoBase;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F645405B5ABDA00748844 = {
+			children = (
+				E889850805B6434500EB804C,
+				E889852B05B6434700EB804C,
+				E889851705B6434600EB804C,
+				E889851805B6434600EB804C,
+				E889852505B6434700EB804C,
+				E81F648E05B5ADAD00748844,
+				E889850705B6434500EB804C,
+				E889850A05B6434500EB804C,
+				E889850B05B6434500EB804C,
+				E889850C05B6434500EB804C,
+				E889855105B6437B00EB804C,
+				E889855205B6439400EB804C,
+				E889855305B643B200EB804C,
+			);
+			isa = PBXGroup;
+			name = OGoProject;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F645705B5ABDE00748844 = {
+			children = (
+				E88985CD05B6453600EB804C,
+				E88985FA05B6453700EB804C,
+				E88985F905B6453700EB804C,
+				E88985CF05B6453600EB804C,
+				E88985D005B6453600EB804C,
+				E88985D605B6453700EB804C,
+				E88985CC05B6453600EB804C,
+				E897ACEF05B6462F001225B4,
+				E889862C05B6455400EB804C,
+				E889862D05B6455E00EB804C,
+				E889862F05B645A000EB804C,
+			);
+			isa = PBXGroup;
+			name = OGoDatabaseProject;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F645A05B5ABE300748844 = {
+			children = (
+				E897ACF705B64709001225B4,
+				E897AD0D05B6470A001225B4,
+				E897ACFD05B64709001225B4,
+				E897ACF905B64709001225B4,
+				E897ACFA05B64709001225B4,
+				E81F649C05B5ADC800748844,
+				E897ACF605B64709001225B4,
+				E897AD2605B64716001225B4,
+				E897AD2705B64727001225B4,
+				E897AD2805B6473C001225B4,
+			);
+			isa = PBXGroup;
+			name = OGoFileSystemProject;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F645D05B5ABE900748844 = {
+			children = (
+				E88984CF05B6417600EB804C,
+				E88984E705B6417600EB804C,
+				E88984D105B6417600EB804C,
+				E88984D205B6417600EB804C,
+				E88984D605B6417600EB804C,
+				E88984CE05B6417600EB804C,
+				E81F64A305B5ADD300748844,
+				E88984D005B6417600EB804C,
+				E88984D305B6417600EB804C,
+				E889850205B641B400EB804C,
+				E889850305B641BF00EB804C,
+				E889850405B641D700EB804C,
+			);
+			isa = PBXGroup;
+			name = OGoJobs;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F646005B5ABEB00748844 = {
+			children = (
+				E897AD2A05B64806001225B4,
+				E897AD4405B64806001225B4,
+				E897AD3305B64806001225B4,
+				E897AD2C05B64806001225B4,
+				E897AD2D05B64806001225B4,
+				E897AD2905B64806001225B4,
+				E897AD2E05B64806001225B4,
+				E897AD3205B64806001225B4,
+				E81F64AA05B5ADE100748844,
+				E897AD6205B6481A001225B4,
+				E897AD6105B64813001225B4,
+				E897AD6305B64838001225B4,
+			);
+			isa = PBXGroup;
+			name = OGoScheduler;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F646105B5AC2F00748844 = {
+			children = (
+				E81F646A05B5AD3500748844,
+				E81F647105B5AD6A00748844,
+				E81F647805B5AD8400748844,
+				E81F647F05B5AD9100748844,
+				E81F648605B5AD9E00748844,
+				E81F648D05B5ADAD00748844,
+				E81F649405B5ADBD00748844,
+				E81F649B05B5ADC800748844,
+				E81F64A205B5ADD300748844,
+				E81F64A905B5ADE100748844,
+			);
+			isa = PBXGroup;
+			name = Products;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F646405B5AC3300748844 = {
+			children = (
+				E897AD6705B648DF001225B4,
+			);
+			isa = PBXGroup;
+			name = "Linked Frameworks";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F646505B5AD3500748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E81F64EF05B5AE5F00748844,
+				E81F64F405B5AE5F00748844,
+				E81F64F805B5AE5F00748844,
+				E81F64FA05B5AE5F00748844,
+				E81F64FD05B5AE5F00748844,
+				E81F64FF05B5AE5F00748844,
+				E81F650205B5AE5F00748844,
+				E81F650305B5AE5F00748844,
+				E81F650505B5AE5F00748844,
+				E81F650805B5AE5F00748844,
+				E81F650905B5AE5F00748844,
+				E81F650A05B5AE5F00748844,
+				E81F650D05B5AE5F00748844,
+				E81F650E05B5AE5F00748844,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F646605B5AD3500748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E81F64EE05B5AE5F00748844,
+				E81F64F005B5AE5F00748844,
+				E81F64F105B5AE5F00748844,
+				E81F64F205B5AE5F00748844,
+				E81F64F305B5AE5F00748844,
+				E81F650105B5AE5F00748844,
+				E81F651105B5AE5F00748844,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F646705B5AD3500748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E81F64F505B5AE5F00748844,
+				E81F64F605B5AE5F00748844,
+				E81F64F705B5AE5F00748844,
+				E81F64F905B5AE5F00748844,
+				E81F64FB05B5AE5F00748844,
+				E81F64FC05B5AE5F00748844,
+				E81F64FE05B5AE5F00748844,
+				E81F650005B5AE5F00748844,
+				E81F650405B5AE5F00748844,
+				E81F650605B5AE5F00748844,
+				E81F650705B5AE5F00748844,
+				E81F650B05B5AE5F00748844,
+				E81F650C05B5AE5F00748844,
+				E81F650F05B5AE5F00748844,
+				E81F651005B5AE5F00748844,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F646805B5AD3500748844 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F646905B5AD3500748844 = {
+			buildPhases = (
+				E81F646505B5AD3500748844,
+				E81F646605B5AD3500748844,
+				E81F646705B5AD3500748844,
+				E81F646805B5AD3500748844,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 5;
+				DYLIB_CURRENT_VERSION = 5;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "OGoDocuments/OGoDocuments-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-framework LSFoundation -framework GDLAccess -framework NGStreams -framework NGExtensions -framework EOControl -framework DOM -framework SaxObjC -framework Foundation";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = OGoDocuments;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = OGoDocuments;
+			productName = OGoDocuments;
+			productReference = E81F646A05B5AD3500748844;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>OGoDocuments</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>org.opengroupware.docapi.OGoDocuments</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>5.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
+		E81F646A05B5AD3500748844 = {
+			explicitFileType = wrapper.framework;
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = OGoDocuments.framework;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E81F646B05B5AD3500748844 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "OGoDocuments-Info.plist";
+			path = "/Volumes/Users/helge/OGo/OpenGroupware.org/DocumentAPI/OGoDocuments/OGoDocuments-Info.plist";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E81F646C05B5AD6A00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E88983E905B63D9B00EB804C,
+				E88983EE05B63D9B00EB804C,
+				E88983F005B63D9B00EB804C,
+				E88983F205B63D9B00EB804C,
+				E88983F505B63D9B00EB804C,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F646D05B5AD6A00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E88983E805B63D9B00EB804C,
+				E88983EA05B63D9B00EB804C,
+				E88983EB05B63D9B00EB804C,
+				E88983F805B63D9B00EB804C,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F646E05B5AD6A00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E88983EF05B63D9B00EB804C,
+				E88983F105B63D9B00EB804C,
+				E88983F305B63D9B00EB804C,
+				E88983F405B63D9B00EB804C,
+				E88983F605B63D9B00EB804C,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F646F05B5AD6A00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889840805B63E5700EB804C,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F647005B5AD6A00748844 = {
+			buildPhases = (
+				E81F646C05B5AD6A00748844,
+				E81F646D05B5AD6A00748844,
+				E81F646E05B5AD6A00748844,
+				E81F646F05B5AD6A00748844,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 5;
+				DYLIB_CURRENT_VERSION = 5;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "OGoRawDatabase/OGoRawDatabase-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-framework LSFoundation -framework GDLAccess -framework NGStreams -framework NGExtensions -framework EOControl -framework DOM -framework SaxObjC -framework Foundation";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = OGoRawDatabase;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = OGoRawDatabase;
+			productName = OGoRawDatabase;
+			productReference = E81F647105B5AD6A00748844;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>OGoRawDatabase</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>org.opengroupware.docapi.OGoRawDatabase</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>5.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
+		E81F647105B5AD6A00748844 = {
+			explicitFileType = wrapper.framework;
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = OGoRawDatabase.framework;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E81F647205B5AD6A00748844 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "OGoRawDatabase-Info.plist";
+			path = "/Volumes/Users/helge/OGo/OpenGroupware.org/DocumentAPI/OGoRawDatabase/OGoRawDatabase-Info.plist";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E81F647305B5AD8400748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889842105B63E8700EB804C,
+				E889842705B63E8700EB804C,
+				E889842905B63E8700EB804C,
+				E889842C05B63E8700EB804C,
+				E889842E05B63E8700EB804C,
+				E889843005B63E8700EB804C,
+				E889843205B63E8700EB804C,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F647405B5AD8400748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889842005B63E8700EB804C,
+				E889842205B63E8700EB804C,
+				E889842305B63E8700EB804C,
+				E889843405B63E8700EB804C,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F647505B5AD8400748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889842805B63E8700EB804C,
+				E889842A05B63E8700EB804C,
+				E889842B05B63E8700EB804C,
+				E889842D05B63E8700EB804C,
+				E889842F05B63E8700EB804C,
+				E889843105B63E8700EB804C,
+				E889843305B63E8700EB804C,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F647605B5AD8400748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889843805B63F3800EB804C,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F647705B5AD8400748844 = {
+			buildPhases = (
+				E81F647305B5AD8400748844,
+				E81F647405B5AD8400748844,
+				E81F647505B5AD8400748844,
+				E81F647605B5AD8400748844,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 5;
+				DYLIB_CURRENT_VERSION = 5;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "OGoAccounts/OGoAccounts-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-framework LSFoundation -framework GDLAccess -framework NGStreams -framework NGExtensions -framework EOControl -framework DOM -framework SaxObjC -framework Foundation";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = OGoAccounts;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = OGoAccounts;
+			productName = OGoAccounts;
+			productReference = E81F647805B5AD8400748844;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>OGoAccounts</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>org.opengroupware.docapi.OGoAccounts</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>5.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
+		E81F647805B5AD8400748844 = {
+			explicitFileType = wrapper.framework;
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = OGoAccounts.framework;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E81F647905B5AD8400748844 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "OGoAccounts-Info.plist";
+			path = "/Volumes/Users/helge/OGo/OpenGroupware.org/DocumentAPI/OGoAccounts/OGoAccounts-Info.plist";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E81F647A05B5AD9100748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889844405B63F7100EB804C,
+				E889848005B63FB500EB804C,
+				E889848205B63FB500EB804C,
+				E889848505B63FB500EB804C,
+				E889848705B63FB500EB804C,
+				E889848905B63FB500EB804C,
+				E889848C05B63FB500EB804C,
+				E889848E05B63FB500EB804C,
+				E889849205B63FB500EB804C,
+				E889849405B63FB500EB804C,
+				E889849605B63FB500EB804C,
+				E889849805B63FB500EB804C,
+				E889849B05B63FB500EB804C,
+				E889849D05B63FB500EB804C,
+				E889849F05B63FB500EB804C,
+				E88984A105B63FB500EB804C,
+				E88984A305B63FB500EB804C,
+				E88984A705B63FB500EB804C,
+				E88984A905B63FB500EB804C,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F647B05B5AD9100748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889844305B63F7100EB804C,
+				E889844505B63F7100EB804C,
+				E889844605B63F7100EB804C,
+				E889847E05B63FB500EB804C,
+				E889847F05B63FB500EB804C,
+				E88984AB05B63FB500EB804C,
+				E88984AC05B63FB500EB804C,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F647C05B5AD9100748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889848105B63FB500EB804C,
+				E889848305B63FB500EB804C,
+				E889848405B63FB500EB804C,
+				E889848605B63FB500EB804C,
+				E889848805B63FB500EB804C,
+				E889848A05B63FB500EB804C,
+				E889848B05B63FB500EB804C,
+				E889848D05B63FB500EB804C,
+				E889848F05B63FB500EB804C,
+				E889849005B63FB500EB804C,
+				E889849105B63FB500EB804C,
+				E889849305B63FB500EB804C,
+				E889849505B63FB500EB804C,
+				E889849705B63FB500EB804C,
+				E889849905B63FB500EB804C,
+				E889849A05B63FB500EB804C,
+				E889849C05B63FB500EB804C,
+				E889849E05B63FB500EB804C,
+				E88984A005B63FB500EB804C,
+				E88984A205B63FB500EB804C,
+				E88984A405B63FB500EB804C,
+				E88984A505B63FB500EB804C,
+				E88984A605B63FB500EB804C,
+				E88984A805B63FB500EB804C,
+				E88984AA05B63FB500EB804C,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F647D05B5AD9100748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889850605B6428B00EB804C,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F647E05B5AD9100748844 = {
+			buildPhases = (
+				E81F647A05B5AD9100748844,
+				E81F647B05B5AD9100748844,
+				E81F647C05B5AD9100748844,
+				E81F647D05B5AD9100748844,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 5;
+				DYLIB_CURRENT_VERSION = 5;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "OGoContacts/OGoContacts-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "-I$(PROJECT_DIR)/..";
+				OTHER_LDFLAGS = "-framework LSFoundation -framework GDLAccess -framework NGStreams -framework NGExtensions -framework EOControl -framework DOM -framework SaxObjC -framework Foundation";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = OGoContacts;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = OGoContacts;
+			productName = OGoContacts;
+			productReference = E81F647F05B5AD9100748844;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>OGoContacts</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>org.opengroupware.docapi.OGoContacts</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>5.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
+		E81F647F05B5AD9100748844 = {
+			explicitFileType = wrapper.framework;
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = OGoContacts.framework;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E81F648005B5AD9100748844 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "OGoContacts-Info.plist";
+			path = "/Volumes/Users/helge/OGo/OpenGroupware.org/DocumentAPI/OGoContacts/OGoContacts-Info.plist";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E81F648105B5AD9E00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E88984BF05B6407F00EB804C,
+				E88984C305B6407F00EB804C,
+				E88984C505B6407F00EB804C,
+				E88984C705B6407F00EB804C,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F648205B5AD9E00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E88984BE05B6407F00EB804C,
+				E88984C005B6407F00EB804C,
+				E88984C105B6407F00EB804C,
+				E88984C905B6407F00EB804C,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F648305B5AD9E00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E88984C405B6407F00EB804C,
+				E88984C605B6407F00EB804C,
+				E88984C805B6407F00EB804C,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F648405B5AD9E00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E88984CD05B6413200EB804C,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F648505B5AD9E00748844 = {
+			buildPhases = (
+				E81F648105B5AD9E00748844,
+				E81F648205B5AD9E00748844,
+				E81F648305B5AD9E00748844,
+				E81F648405B5AD9E00748844,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 5;
+				DYLIB_CURRENT_VERSION = 5;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "OGoBase/OGoBase-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-framework LSFoundation -framework GDLAccess -framework NGStreams -framework NGExtensions -framework EOControl -framework DOM -framework SaxObjC -framework Foundation";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = OGoBase;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = OGoBase;
+			productName = OGoBase;
+			productReference = E81F648605B5AD9E00748844;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>OGoBase</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>org.opengroupware.docapi.OGoBase</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>5.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
+		E81F648605B5AD9E00748844 = {
+			explicitFileType = wrapper.framework;
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = OGoBase.framework;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E81F648705B5AD9E00748844 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "OGoBase-Info.plist";
+			path = "/Volumes/Users/helge/OGo/OpenGroupware.org/DocumentAPI/OGoBase/OGoBase-Info.plist";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E81F648805B5ADAD00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889852E05B6434700EB804C,
+				E889853405B6434700EB804C,
+				E889853605B6434700EB804C,
+				E889853805B6434700EB804C,
+				E889853A05B6434700EB804C,
+				E889853E05B6434700EB804C,
+				E889854005B6434700EB804C,
+				E889854105B6434700EB804C,
+				E889854705B6434800EB804C,
+				E889854B05B6434800EB804C,
+				E889854D05B6434800EB804C,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F648905B5ADAD00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889852D05B6434700EB804C,
+				E889852F05B6434700EB804C,
+				E889853005B6434700EB804C,
+				E889853C05B6434700EB804C,
+				E889853D05B6434700EB804C,
+				E889854A05B6434800EB804C,
+				E889855005B6434800EB804C,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F648A05B5ADAD00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889853505B6434700EB804C,
+				E889853705B6434700EB804C,
+				E889853905B6434700EB804C,
+				E889853B05B6434700EB804C,
+				E889853F05B6434700EB804C,
+				E889854205B6434700EB804C,
+				E889854305B6434800EB804C,
+				E889854405B6434800EB804C,
+				E889854505B6434800EB804C,
+				E889854605B6434800EB804C,
+				E889854805B6434800EB804C,
+				E889854905B6434800EB804C,
+				E889854C05B6434800EB804C,
+				E889854E05B6434800EB804C,
+				E889854F05B6434800EB804C,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F648B05B5ADAD00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889855605B643E100EB804C,
+				E889855705B6440A00EB804C,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F648C05B5ADAD00748844 = {
+			buildPhases = (
+				E81F648805B5ADAD00748844,
+				E81F648905B5ADAD00748844,
+				E81F648A05B5ADAD00748844,
+				E81F648B05B5ADAD00748844,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 5;
+				DYLIB_CURRENT_VERSION = 5;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "OGoProject/OGoProject-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-framework LSFoundation -framework GDLAccess -framework NGStreams -framework NGExtensions -framework EOControl -framework DOM -framework SaxObjC -framework Foundation";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = OGoProject;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = OGoProject;
+			productName = OGoProject;
+			productReference = E81F648D05B5ADAD00748844;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>OGoProject</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>org.opengroupware.docapi.OGoProject</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>5.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
+		E81F648D05B5ADAD00748844 = {
+			explicitFileType = wrapper.framework;
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = OGoProject.framework;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E81F648E05B5ADAD00748844 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "OGoProject-Info.plist";
+			path = "/Volumes/Users/helge/OGo/OpenGroupware.org/DocumentAPI/OGoProject/OGoProject-Info.plist";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E81F648F05B5ADBD00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E88985FD05B6453700EB804C,
+				E889860005B6453700EB804C,
+				E889860805B6453700EB804C,
+				E889860A05B6453700EB804C,
+				E889860C05B6453700EB804C,
+				E889860E05B6453700EB804C,
+				E889861405B6453700EB804C,
+				E889861605B6453700EB804C,
+				E889862105B6453700EB804C,
+				E889862605B6453700EB804C,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F649005B5ADBD00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E88985FC05B6453700EB804C,
+				E88985FE05B6453700EB804C,
+				E88985FF05B6453700EB804C,
+				E889860505B6453700EB804C,
+				E889862805B6453700EB804C,
+				E889862905B6453700EB804C,
+				E897ACF005B6462F001225B4,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F649105B5ADBD00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889860105B6453700EB804C,
+				E889860605B6453700EB804C,
+				E889860705B6453700EB804C,
+				E889860905B6453700EB804C,
+				E889860B05B6453700EB804C,
+				E889860D05B6453700EB804C,
+				E889860F05B6453700EB804C,
+				E889861005B6453700EB804C,
+				E889861105B6453700EB804C,
+				E889861205B6453700EB804C,
+				E889861305B6453700EB804C,
+				E889861505B6453700EB804C,
+				E889861705B6453700EB804C,
+				E889861805B6453700EB804C,
+				E889861905B6453700EB804C,
+				E889861A05B6453700EB804C,
+				E889861B05B6453700EB804C,
+				E889861C05B6453700EB804C,
+				E889861D05B6453700EB804C,
+				E889861E05B6453700EB804C,
+				E889861F05B6453700EB804C,
+				E889862005B6453700EB804C,
+				E889862205B6453700EB804C,
+				E889862305B6453700EB804C,
+				E889862405B6453700EB804C,
+				E889862505B6453700EB804C,
+				E889862705B6453700EB804C,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F649205B5ADBD00748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889862B05B6454300EB804C,
+				E897ACF105B64642001225B4,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F649305B5ADBD00748844 = {
+			buildPhases = (
+				E81F648F05B5ADBD00748844,
+				E81F649005B5ADBD00748844,
+				E81F649105B5ADBD00748844,
+				E81F649205B5ADBD00748844,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 5;
+				DYLIB_CURRENT_VERSION = 5;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "OGoDatabaseProject/OGoDatabaseProject-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-framework LSFoundation -framework GDLAccess -framework NGStreams -framework NGExtensions -framework EOControl -framework DOM -framework SaxObjC -framework Foundation";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = OGoDatabaseProject;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = OGoDatabaseProject;
+			productName = OGoDatabaseProject;
+			productReference = E81F649405B5ADBD00748844;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>OGoDatabaseProject</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>org.opengroupware.docapi.OGoDatabaseProject</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>5.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
+		E81F649405B5ADBD00748844 = {
+			explicitFileType = wrapper.framework;
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = OGoDatabaseProject.framework;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E81F649605B5ADC800748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E897AD1005B6470A001225B4,
+				E897AD1605B6470A001225B4,
+				E897AD1805B6470A001225B4,
+				E897AD1C05B6470A001225B4,
+				E897AD1E05B6470A001225B4,
+				E897AD2005B6470A001225B4,
+				E897AD2205B6470A001225B4,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F649705B5ADC800748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E897AD0F05B6470A001225B4,
+				E897AD1105B6470A001225B4,
+				E897AD1205B6470A001225B4,
+				E897AD1505B6470A001225B4,
+				E897AD2505B6470A001225B4,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F649805B5ADC800748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E897AD1705B6470A001225B4,
+				E897AD1905B6470A001225B4,
+				E897AD1A05B6470A001225B4,
+				E897AD1B05B6470A001225B4,
+				E897AD1D05B6470A001225B4,
+				E897AD1F05B6470A001225B4,
+				E897AD2105B6470A001225B4,
+				E897AD2305B6470A001225B4,
+				E897AD2405B6470A001225B4,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F649905B5ADC800748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E897ACF305B646D7001225B4,
+				E897ACF405B646DA001225B4,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F649A05B5ADC800748844 = {
+			buildPhases = (
+				E81F649605B5ADC800748844,
+				E81F649705B5ADC800748844,
+				E81F649805B5ADC800748844,
+				E81F649905B5ADC800748844,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 5;
+				DYLIB_CURRENT_VERSION = 5;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "OGoFileSystemProject/OGoFileSystemProject-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-framework LSFoundation -framework GDLAccess -framework NGStreams -framework NGExtensions -framework EOControl -framework DOM -framework SaxObjC -framework Foundation";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = OGoFileSystemProject;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = OGoFileSystemProject;
+			productName = OGoFileSystemProject;
+			productReference = E81F649B05B5ADC800748844;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>OGoFileSystemProject</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>org.opengroupware.docapi.OGoFileSystemProject</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>5.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
+		E81F649B05B5ADC800748844 = {
+			explicitFileType = wrapper.framework;
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = OGoFileSystemProject.framework;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E81F649C05B5ADC800748844 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "OGoFileSystemProject-Info.plist";
+			path = "/Volumes/Users/helge/OGo/OpenGroupware.org/DocumentAPI/OGoFileSystemProject/OGoFileSystemProject-Info.plist";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E81F649D05B5ADD300748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E88984EA05B6417600EB804C,
+				E88984F105B6417600EB804C,
+				E88984F505B6417600EB804C,
+				E88984F705B6417600EB804C,
+				E88984FB05B6417600EB804C,
+				E88984FD05B6417600EB804C,
+				E88984FF05B6417600EB804C,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F649E05B5ADD300748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E88984E805B6417600EB804C,
+				E88984E905B6417600EB804C,
+				E88984EB05B6417600EB804C,
+				E88984EC05B6417600EB804C,
+				E88984EE05B6417600EB804C,
+				E88984EF05B6417600EB804C,
+				E88984F005B6417600EB804C,
+				E889850105B6417600EB804C,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F649F05B5ADD300748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E88984ED05B6417600EB804C,
+				E88984F205B6417600EB804C,
+				E88984F305B6417600EB804C,
+				E88984F405B6417600EB804C,
+				E88984F605B6417600EB804C,
+				E88984F805B6417600EB804C,
+				E88984F905B6417600EB804C,
+				E88984FA05B6417600EB804C,
+				E88984FC05B6417600EB804C,
+				E88984FE05B6417600EB804C,
+				E889850005B6417600EB804C,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F64A005B5ADD300748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E889850505B641E900EB804C,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F64A105B5ADD300748844 = {
+			buildPhases = (
+				E81F649D05B5ADD300748844,
+				E81F649E05B5ADD300748844,
+				E81F649F05B5ADD300748844,
+				E81F64A005B5ADD300748844,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 5;
+				DYLIB_CURRENT_VERSION = 5;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "OGoJobs/OGoJobs-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-framework LSFoundation -framework GDLAccess -framework NGStreams -framework NGExtensions -framework EOControl -framework DOM -framework SaxObjC -framework Foundation";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = OGoJobs;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = OGoJobs;
+			productName = OGoJobs;
+			productReference = E81F64A205B5ADD300748844;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>OGoJobs</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>org.opengroupware.docapi.OGoJobs</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>5.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
+		E81F64A205B5ADD300748844 = {
+			explicitFileType = wrapper.framework;
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = OGoJobs.framework;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E81F64A305B5ADD300748844 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "OGoJobs-Info.plist";
+			path = "/Volumes/Users/helge/OGo/OpenGroupware.org/DocumentAPI/OGoJobs/OGoJobs-Info.plist";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E81F64A405B5ADE100748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E897AD4705B64806001225B4,
+				E897AD5005B64806001225B4,
+				E897AD5205B64806001225B4,
+				E897AD5505B64806001225B4,
+				E897AD5705B64806001225B4,
+				E897AD5905B64806001225B4,
+				E897AD5B05B64806001225B4,
+				E897AD5E05B64806001225B4,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F64A505B5ADE100748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E897AD4605B64806001225B4,
+				E897AD4805B64806001225B4,
+				E897AD4905B64806001225B4,
+				E897AD4E05B64806001225B4,
+				E897AD4F05B64806001225B4,
+				E897AD6005B64806001225B4,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F64A605B5ADE100748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E897AD5105B64806001225B4,
+				E897AD5305B64806001225B4,
+				E897AD5405B64806001225B4,
+				E897AD5605B64806001225B4,
+				E897AD5805B64806001225B4,
+				E897AD5A05B64806001225B4,
+				E897AD5C05B64806001225B4,
+				E897AD5D05B64806001225B4,
+				E897AD5F05B64806001225B4,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F64A705B5ADE100748844 = {
+			buildActionMask = 2147483647;
+			files = (
+				E897ACF505B646DF001225B4,
+				E897AD6605B64866001225B4,
+				E897AD6805B648DF001225B4,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E81F64A805B5ADE100748844 = {
+			buildPhases = (
+				E81F64A405B5ADE100748844,
+				E81F64A505B5ADE100748844,
+				E81F64A605B5ADE100748844,
+				E81F64A705B5ADE100748844,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 5;
+				DYLIB_CURRENT_VERSION = 5;
+				FRAMEWORK_SEARCH_PATHS = /Volumes/Users/helge/build;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "OGoScheduler/OGoScheduler-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-framework LSFoundation -framework GDLAccess -framework NGStreams -framework NGExtensions -framework EOControl -framework DOM -framework SaxObjC -framework Foundation";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = OGoScheduler;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = OGoScheduler;
+			productName = OGoScheduler;
+			productReference = E81F64A905B5ADE100748844;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>OGoScheduler</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>org.opengroupware.docapi.OGoScheduler</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>5.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
+		E81F64A905B5ADE100748844 = {
+			explicitFileType = wrapper.framework;
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = OGoScheduler.framework;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E81F64AA05B5ADE100748844 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "OGoScheduler-Info.plist";
+			path = "/Volumes/Users/helge/OGo/OpenGroupware.org/DocumentAPI/OGoScheduler/OGoScheduler-Info.plist";
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E81F64AB05B5AE0F00748844 = {
+			buildPhases = (
+			);
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "all frameworks";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+				E81F64AD05B5AE1400748844,
+				E81F64AF05B5AE1400748844,
+				E81F64B105B5AE1400748844,
+				E81F64B305B5AE1400748844,
+				E81F64B505B5AE1400748844,
+				E81F64B705B5AE1400748844,
+				E81F64B905B5AE1400748844,
+				E81F64BB05B5AE1400748844,
+				E81F64BD05B5AE1400748844,
+				E81F64BF05B5AE1400748844,
+			);
+			isa = PBXAggregateTarget;
+			name = "all frameworks";
+			productName = "all frameworks";
+		};
+		E81F64AC05B5AE1400748844 = {
+			containerPortal = E81F644005B5AB8A00748844;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E81F646905B5AD3500748844;
+			remoteInfo = OGoDocuments;
+		};
+		E81F64AD05B5AE1400748844 = {
+			isa = PBXTargetDependency;
+			target = E81F646905B5AD3500748844;
+			targetProxy = E81F64AC05B5AE1400748844;
+		};
+		E81F64AE05B5AE1400748844 = {
+			containerPortal = E81F644005B5AB8A00748844;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E81F647005B5AD6A00748844;
+			remoteInfo = OGoRawDatabase;
+		};
+		E81F64AF05B5AE1400748844 = {
+			isa = PBXTargetDependency;
+			target = E81F647005B5AD6A00748844;
+			targetProxy = E81F64AE05B5AE1400748844;
+		};
+		E81F64B005B5AE1400748844 = {
+			containerPortal = E81F644005B5AB8A00748844;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E81F647705B5AD8400748844;
+			remoteInfo = OGoAccounts;
+		};
+		E81F64B105B5AE1400748844 = {
+			isa = PBXTargetDependency;
+			target = E81F647705B5AD8400748844;
+			targetProxy = E81F64B005B5AE1400748844;
+		};
+		E81F64B205B5AE1400748844 = {
+			containerPortal = E81F644005B5AB8A00748844;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E81F647E05B5AD9100748844;
+			remoteInfo = OGoContacts;
+		};
+		E81F64B305B5AE1400748844 = {
+			isa = PBXTargetDependency;
+			target = E81F647E05B5AD9100748844;
+			targetProxy = E81F64B205B5AE1400748844;
+		};
+		E81F64B405B5AE1400748844 = {
+			containerPortal = E81F644005B5AB8A00748844;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E81F648505B5AD9E00748844;
+			remoteInfo = OGoBase;
+		};
+		E81F64B505B5AE1400748844 = {
+			isa = PBXTargetDependency;
+			target = E81F648505B5AD9E00748844;
+			targetProxy = E81F64B405B5AE1400748844;
+		};
+		E81F64B605B5AE1400748844 = {
+			containerPortal = E81F644005B5AB8A00748844;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E81F648C05B5ADAD00748844;
+			remoteInfo = OGoProject;
+		};
+		E81F64B705B5AE1400748844 = {
+			isa = PBXTargetDependency;
+			target = E81F648C05B5ADAD00748844;
+			targetProxy = E81F64B605B5AE1400748844;
+		};
+		E81F64B805B5AE1400748844 = {
+			containerPortal = E81F644005B5AB8A00748844;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E81F649305B5ADBD00748844;
+			remoteInfo = OGoDatabaseProject;
+		};
+		E81F64B905B5AE1400748844 = {
+			isa = PBXTargetDependency;
+			target = E81F649305B5ADBD00748844;
+			targetProxy = E81F64B805B5AE1400748844;
+		};
+		E81F64BA05B5AE1400748844 = {
+			containerPortal = E81F644005B5AB8A00748844;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E81F649A05B5ADC800748844;
+			remoteInfo = OGoFileSystemProject;
+		};
+		E81F64BB05B5AE1400748844 = {
+			isa = PBXTargetDependency;
+			target = E81F649A05B5ADC800748844;
+			targetProxy = E81F64BA05B5AE1400748844;
+		};
+		E81F64BC05B5AE1400748844 = {
+			containerPortal = E81F644005B5AB8A00748844;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E81F64A105B5ADD300748844;
+			remoteInfo = OGoJobs;
+		};
+		E81F64BD05B5AE1400748844 = {
+			isa = PBXTargetDependency;
+			target = E81F64A105B5ADD300748844;
+			targetProxy = E81F64BC05B5AE1400748844;
+		};
+		E81F64BE05B5AE1400748844 = {
+			containerPortal = E81F644005B5AB8A00748844;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E81F64A805B5ADE100748844;
+			remoteInfo = OGoScheduler;
+		};
+		E81F64BF05B5AE1400748844 = {
+			isa = PBXTargetDependency;
+			target = E81F64A805B5ADE100748844;
+			targetProxy = E81F64BE05B5AE1400748844;
+		};
+		E81F64C005B5AE1F00748844 = {
+			buildPhases = (
+			);
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "all datasources";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+			);
+			isa = PBXAggregateTarget;
+			name = "all datasources";
+			productName = "all datasources";
+		};
+		E81F64C105B5AE2700748844 = {
+			buildPhases = (
+			);
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = all;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+				E81F64C305B5AE2C00748844,
+				E81F64C505B5AE2C00748844,
+			);
+			isa = PBXAggregateTarget;
+			name = all;
+			productName = all;
+		};
+		E81F64C205B5AE2C00748844 = {
+			containerPortal = E81F644005B5AB8A00748844;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E81F64AB05B5AE0F00748844;
+			remoteInfo = "all frameworks";
+		};
+		E81F64C305B5AE2C00748844 = {
+			isa = PBXTargetDependency;
+			target = E81F64AB05B5AE0F00748844;
+			targetProxy = E81F64C205B5AE2C00748844;
+		};
+		E81F64C405B5AE2C00748844 = {
+			containerPortal = E81F644005B5AB8A00748844;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E81F64C005B5AE1F00748844;
+			remoteInfo = "all datasources";
+		};
+		E81F64C505B5AE2C00748844 = {
+			isa = PBXTargetDependency;
+			target = E81F64C005B5AE1F00748844;
+			targetProxy = E81F64C405B5AE2C00748844;
+		};
+		E81F64CA05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = ChangeLog;
+			path = OGoDocuments/ChangeLog;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64CB05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = common.h;
+			path = OGoDocuments/common.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64CC05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYING.LIB;
+			path = OGoDocuments/COPYING.LIB;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64CD05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYRIGHT;
+			path = OGoDocuments/COPYRIGHT;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64CE05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile;
+			path = OGoDocuments/GNUmakefile;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64CF05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile.preamble;
+			path = OGoDocuments/GNUmakefile.preamble;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64D005B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = "LSCommandContext+Doc.h";
+			path = "OGoDocuments/LSCommandContext+Doc.h";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64D105B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "LSCommandContext+Doc.m";
+			path = "OGoDocuments/LSCommandContext+Doc.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64D205B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "NGCustomFileManager+Docs.m";
+			path = "OGoDocuments/NGCustomFileManager+Docs.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64D305B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "NGFileManager+DocJS.m";
+			path = "OGoDocuments/NGFileManager+DocJS.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64D405B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = NGLocalFileDataSource.h;
+			path = OGoDocuments/NGLocalFileDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64D505B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = NGLocalFileDataSource.m;
+			path = OGoDocuments/NGLocalFileDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64D605B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = NGLocalFileDocument.h;
+			path = OGoDocuments/NGLocalFileDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64D705B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = NGLocalFileDocument.m;
+			path = OGoDocuments/NGLocalFileDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64D805B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "NGLocalFileDocument+DOM.m";
+			path = "OGoDocuments/NGLocalFileDocument+DOM.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64D905B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = NGLocalFileGlobalID.h;
+			path = OGoDocuments/NGLocalFileGlobalID.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64DA05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = NGLocalFileGlobalID.m;
+			path = OGoDocuments/NGLocalFileGlobalID.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64DB05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = NGLocalFileManager.h;
+			path = OGoDocuments/NGLocalFileManager.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64DC05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = NGLocalFileManager.m;
+			path = OGoDocuments/NGLocalFileManager.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64DD05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = NOTES;
+			path = OGoDocuments/NOTES;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64DE05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyContext.h;
+			path = OGoDocuments/SkyContext.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64DF05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyDocument.h;
+			path = OGoDocuments/SkyDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64E005B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyDocument.m;
+			path = OGoDocuments/SkyDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64E105B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = "SkyDocument+JS.h";
+			path = "OGoDocuments/SkyDocument+JS.h";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64E205B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyDocument+JS.m";
+			path = "OGoDocuments/SkyDocument+JS.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64E305B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyDocument+XmlRpcCoding.m";
+			path = "OGoDocuments/SkyDocument+XmlRpcCoding.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64E405B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyDocumentFileManager.h;
+			path = OGoDocuments/SkyDocumentFileManager.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64E505B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyDocumentManager.h;
+			path = OGoDocuments/SkyDocumentManager.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64E605B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyDocumentManagerImp.h;
+			path = OGoDocuments/SkyDocumentManagerImp.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64E705B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyDocumentManagerImp.m;
+			path = OGoDocuments/SkyDocumentManagerImp.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64E805B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyDocumentManagerImp+JS.m";
+			path = "OGoDocuments/SkyDocumentManagerImp+JS.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64E905B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyDocuments.h;
+			path = OGoDocuments/SkyDocuments.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64EA05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyDocumentType.h;
+			path = OGoDocuments/SkyDocumentType.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64EB05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyDocumentType.m;
+			path = OGoDocuments/SkyDocumentType.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64EC05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyURLHandle.m;
+			path = OGoDocuments/SkyURLHandle.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64ED05B5AE5F00748844 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = Version;
+			path = OGoDocuments/Version;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F64EE05B5AE5F00748844 = {
+			fileRef = E81F64CA05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F64EF05B5AE5F00748844 = {
+			fileRef = E81F64CB05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F64F005B5AE5F00748844 = {
+			fileRef = E81F64CC05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F64F105B5AE5F00748844 = {
+			fileRef = E81F64CD05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F64F205B5AE5F00748844 = {
+			fileRef = E81F64CE05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F64F305B5AE5F00748844 = {
+			fileRef = E81F64CF05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F64F405B5AE5F00748844 = {
+			fileRef = E81F64D005B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E81F64F505B5AE5F00748844 = {
+			fileRef = E81F64D105B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F64F605B5AE5F00748844 = {
+			fileRef = E81F64D205B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F64F705B5AE5F00748844 = {
+			fileRef = E81F64D305B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F64F805B5AE5F00748844 = {
+			fileRef = E81F64D405B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E81F64F905B5AE5F00748844 = {
+			fileRef = E81F64D505B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F64FA05B5AE5F00748844 = {
+			fileRef = E81F64D605B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E81F64FB05B5AE5F00748844 = {
+			fileRef = E81F64D705B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F64FC05B5AE5F00748844 = {
+			fileRef = E81F64D805B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F64FD05B5AE5F00748844 = {
+			fileRef = E81F64D905B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E81F64FE05B5AE5F00748844 = {
+			fileRef = E81F64DA05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F64FF05B5AE5F00748844 = {
+			fileRef = E81F64DB05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E81F650005B5AE5F00748844 = {
+			fileRef = E81F64DC05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F650105B5AE5F00748844 = {
+			fileRef = E81F64DD05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F650205B5AE5F00748844 = {
+			fileRef = E81F64DE05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E81F650305B5AE5F00748844 = {
+			fileRef = E81F64DF05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E81F650405B5AE5F00748844 = {
+			fileRef = E81F64E005B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F650505B5AE5F00748844 = {
+			fileRef = E81F64E105B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E81F650605B5AE5F00748844 = {
+			fileRef = E81F64E205B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F650705B5AE5F00748844 = {
+			fileRef = E81F64E305B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F650805B5AE5F00748844 = {
+			fileRef = E81F64E405B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E81F650905B5AE5F00748844 = {
+			fileRef = E81F64E505B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E81F650A05B5AE5F00748844 = {
+			fileRef = E81F64E605B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E81F650B05B5AE5F00748844 = {
+			fileRef = E81F64E705B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F650C05B5AE5F00748844 = {
+			fileRef = E81F64E805B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F650D05B5AE5F00748844 = {
+			fileRef = E81F64E905B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E81F650E05B5AE5F00748844 = {
+			fileRef = E81F64EA05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E81F650F05B5AE5F00748844 = {
+			fileRef = E81F64EB05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F651005B5AE5F00748844 = {
+			fileRef = E81F64EC05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F651105B5AE5F00748844 = {
+			fileRef = E81F64ED05B5AE5F00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E81F651A05B5AE7B00748844 = {
+			children = (
+				E81F64D005B5AE5F00748844,
+				E81F64D405B5AE5F00748844,
+				E81F64D605B5AE5F00748844,
+				E81F64D905B5AE5F00748844,
+				E81F64DB05B5AE5F00748844,
+				E81F64DE05B5AE5F00748844,
+				E81F64DF05B5AE5F00748844,
+				E81F64E105B5AE5F00748844,
+				E81F64E405B5AE5F00748844,
+				E81F64E505B5AE5F00748844,
+				E81F64E605B5AE5F00748844,
+				E81F64E905B5AE5F00748844,
+				E81F64EA05B5AE5F00748844,
+			);
+			isa = PBXGroup;
+			name = Headers;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F651B05B5AE8100748844 = {
+			children = (
+				E81F64CE05B5AE5F00748844,
+				E81F64CF05B5AE5F00748844,
+			);
+			isa = PBXGroup;
+			name = Makefiles;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F651C05B5AE9B00748844 = {
+			children = (
+				E81F64CB05B5AE5F00748844,
+				E81F64D105B5AE5F00748844,
+				E81F64D205B5AE5F00748844,
+				E81F64D305B5AE5F00748844,
+				E81F652705B5AEED00748844,
+				E81F64E005B5AE5F00748844,
+				E81F64E205B5AE5F00748844,
+				E81F64E305B5AE5F00748844,
+				E81F64E705B5AE5F00748844,
+				E81F64E805B5AE5F00748844,
+				E81F64EB05B5AE5F00748844,
+				E81F64EC05B5AE5F00748844,
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E81F652705B5AEED00748844 = {
+			children = (
+				E81F64D505B5AE5F00748844,
+				E81F64D705B5AE5F00748844,
+				E81F64D805B5AE5F00748844,
+				E81F64DA05B5AE5F00748844,
+				E81F64DC05B5AE5F00748844,
+			);
+			isa = PBXGroup;
+			name = "Local File Documents";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983D505B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			name = "bundle-info.plist";
+			path = "OGoRawDatabase/bundle-info.plist";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983D605B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = ChangeLog;
+			path = OGoRawDatabase/ChangeLog;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983D705B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = common.h;
+			path = OGoRawDatabase/common.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983D805B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYING.LIB;
+			path = OGoRawDatabase/COPYING.LIB;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983D905B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYRIGHT;
+			path = OGoRawDatabase/COPYRIGHT;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983DA05B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = dummy.m;
+			path = OGoRawDatabase/dummy.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983DB05B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile;
+			path = OGoRawDatabase/GNUmakefile;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983DC05B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyAdaptorDataSource.h;
+			path = OGoRawDatabase/SkyAdaptorDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983DD05B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyAdaptorDataSource.m;
+			path = OGoRawDatabase/SkyAdaptorDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983DE05B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyDBDataSource.h;
+			path = OGoRawDatabase/SkyDBDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983DF05B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyDBDataSource.m;
+			path = OGoRawDatabase/SkyDBDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983E005B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyDBDocument.h;
+			path = OGoRawDatabase/SkyDBDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983E105B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyDBDocument.m;
+			path = OGoRawDatabase/SkyDBDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983E205B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyDBDocument+JS.m";
+			path = "OGoRawDatabase/SkyDBDocument+JS.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983E305B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyDBDocumentType.h;
+			path = OGoRawDatabase/SkyDBDocumentType.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983E405B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyDBDocumentType.m;
+			path = OGoRawDatabase/SkyDBDocumentType.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983E505B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = testdb.m;
+			path = OGoRawDatabase/testdb.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983E605B63D9B00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = Version;
+			path = OGoRawDatabase/Version;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983E805B63D9B00EB804C = {
+			fileRef = E88983D605B63D9B00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88983E905B63D9B00EB804C = {
+			fileRef = E88983D705B63D9B00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88983EA05B63D9B00EB804C = {
+			fileRef = E88983D805B63D9B00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88983EB05B63D9B00EB804C = {
+			fileRef = E88983D905B63D9B00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88983EE05B63D9B00EB804C = {
+			fileRef = E88983DC05B63D9B00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88983EF05B63D9B00EB804C = {
+			fileRef = E88983DD05B63D9B00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88983F005B63D9B00EB804C = {
+			fileRef = E88983DE05B63D9B00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88983F105B63D9B00EB804C = {
+			fileRef = E88983DF05B63D9B00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88983F205B63D9B00EB804C = {
+			fileRef = E88983E005B63D9B00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88983F305B63D9B00EB804C = {
+			fileRef = E88983E105B63D9B00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88983F405B63D9B00EB804C = {
+			fileRef = E88983E205B63D9B00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88983F505B63D9B00EB804C = {
+			fileRef = E88983E305B63D9B00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88983F605B63D9B00EB804C = {
+			fileRef = E88983E405B63D9B00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88983F805B63D9B00EB804C = {
+			fileRef = E88983E605B63D9B00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88983F905B63DA500EB804C = {
+			children = (
+				E88983DC05B63D9B00EB804C,
+				E88983DE05B63D9B00EB804C,
+				E88983E005B63D9B00EB804C,
+				E88983E305B63D9B00EB804C,
+			);
+			isa = PBXGroup;
+			name = Headers;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983FA05B63DB200EB804C = {
+			children = (
+				E88983D705B63D9B00EB804C,
+				E88983DD05B63D9B00EB804C,
+				E88983DF05B63D9B00EB804C,
+				E88983E105B63D9B00EB804C,
+				E88983E205B63D9B00EB804C,
+				E88983E405B63D9B00EB804C,
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983FB05B63DD600EB804C = {
+			children = (
+				E88983DB05B63D9B00EB804C,
+			);
+			isa = PBXGroup;
+			name = Makefiles;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88983FC05B63DE100EB804C = {
+			children = (
+				E88983E505B63D9B00EB804C,
+			);
+			isa = PBXGroup;
+			name = Tests;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889840805B63E5700EB804C = {
+			fileRef = E81F646A05B5AD3500748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889840905B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			name = "bundle-info.plist";
+			path = "OGoAccounts/bundle-info.plist";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889840A05B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = ChangeLog;
+			path = OGoAccounts/ChangeLog;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889840B05B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = common.h;
+			path = OGoAccounts/common.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889840C05B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYING.LIB;
+			path = OGoAccounts/COPYING.LIB;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889840D05B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYRIGHT;
+			path = OGoAccounts/COPYRIGHT;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889840E05B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			name = Defaults.plist;
+			path = OGoAccounts/Defaults.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889840F05B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile;
+			path = OGoAccounts/GNUmakefile;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841005B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile.preamble;
+			path = OGoAccounts/GNUmakefile.preamble;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841105B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyAccountDataSource.h;
+			path = OGoAccounts/SkyAccountDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841205B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyAccountDataSource.m;
+			path = OGoAccounts/SkyAccountDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841305B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyAccountDocument.h;
+			path = OGoAccounts/SkyAccountDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841405B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyAccountDocument.m;
+			path = OGoAccounts/SkyAccountDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841505B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyAccountsBundleManager.m;
+			path = OGoAccounts/SkyAccountsBundleManager.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841605B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyAccountTeamsDataSource.h;
+			path = OGoAccounts/SkyAccountTeamsDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841705B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyAccountTeamsDataSource.m;
+			path = OGoAccounts/SkyAccountTeamsDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841805B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyMemberDataSource.h;
+			path = OGoAccounts/SkyMemberDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841905B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyMemberDataSource.m;
+			path = OGoAccounts/SkyMemberDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841A05B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyTeamDataSource.h;
+			path = OGoAccounts/SkyTeamDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841B05B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyTeamDataSource.m;
+			path = OGoAccounts/SkyTeamDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841C05B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyTeamDocument.h;
+			path = OGoAccounts/SkyTeamDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841D05B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyTeamDocument.m;
+			path = OGoAccounts/SkyTeamDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889841E05B63E8600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = Version;
+			path = OGoAccounts/Version;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889842005B63E8700EB804C = {
+			fileRef = E889840A05B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889842105B63E8700EB804C = {
+			fileRef = E889840B05B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889842205B63E8700EB804C = {
+			fileRef = E889840C05B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889842305B63E8700EB804C = {
+			fileRef = E889840D05B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889842705B63E8700EB804C = {
+			fileRef = E889841105B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889842805B63E8700EB804C = {
+			fileRef = E889841205B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889842905B63E8700EB804C = {
+			fileRef = E889841305B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889842A05B63E8700EB804C = {
+			fileRef = E889841405B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889842B05B63E8700EB804C = {
+			fileRef = E889841505B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889842C05B63E8700EB804C = {
+			fileRef = E889841605B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889842D05B63E8700EB804C = {
+			fileRef = E889841705B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889842E05B63E8700EB804C = {
+			fileRef = E889841805B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889842F05B63E8700EB804C = {
+			fileRef = E889841905B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889843005B63E8700EB804C = {
+			fileRef = E889841A05B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889843105B63E8700EB804C = {
+			fileRef = E889841B05B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889843205B63E8700EB804C = {
+			fileRef = E889841C05B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889843305B63E8700EB804C = {
+			fileRef = E889841D05B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889843405B63E8700EB804C = {
+			fileRef = E889841E05B63E8600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889843505B63E9F00EB804C = {
+			children = (
+				E889840F05B63E8600EB804C,
+				E889841005B63E8600EB804C,
+			);
+			isa = PBXGroup;
+			name = Makefiles;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889843605B63EAA00EB804C = {
+			children = (
+				E889841105B63E8600EB804C,
+				E889841305B63E8600EB804C,
+				E889841605B63E8600EB804C,
+				E889841805B63E8600EB804C,
+				E889841A05B63E8600EB804C,
+				E889841C05B63E8600EB804C,
+			);
+			isa = PBXGroup;
+			name = Headers;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889843705B63EB200EB804C = {
+			children = (
+				E889841205B63E8600EB804C,
+				E889841405B63E8600EB804C,
+				E889841505B63E8600EB804C,
+				E889841705B63E8600EB804C,
+				E889841905B63E8600EB804C,
+				E889841B05B63E8600EB804C,
+				E889841D05B63E8600EB804C,
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889843805B63F3800EB804C = {
+			fileRef = E81F646A05B5AD3500748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889843905B63F7000EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			name = "bundle-info.plist";
+			path = "OGoContacts/bundle-info.plist";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889843A05B63F7000EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = ChangeLog;
+			path = OGoContacts/ChangeLog;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889843B05B63F7000EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = common.h;
+			path = OGoContacts/common.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889843C05B63F7000EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYING.LIB;
+			path = OGoContacts/COPYING.LIB;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889843D05B63F7000EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYRIGHT;
+			path = OGoContacts/COPYRIGHT;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889843E05B63F7000EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			name = Defaults.plist;
+			path = OGoContacts/Defaults.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889843F05B63F7000EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = dummy.m;
+			path = OGoContacts/dummy.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889844005B63F7000EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile;
+			path = OGoContacts/GNUmakefile;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889844105B63F7100EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile.preamble;
+			path = OGoContacts/GNUmakefile.preamble;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889844305B63F7100EB804C = {
+			fileRef = E889843A05B63F7000EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889844405B63F7100EB804C = {
+			fileRef = E889843B05B63F7000EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889844505B63F7100EB804C = {
+			fileRef = E889843C05B63F7000EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889844605B63F7100EB804C = {
+			fileRef = E889843D05B63F7000EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889844B05B63F7E00EB804C = {
+			children = (
+				E889844005B63F7000EB804C,
+				E889844105B63F7100EB804C,
+			);
+			isa = PBXGroup;
+			name = Makefiles;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889844E05B63F9600EB804C = {
+			children = (
+				E889845205B63FB500EB804C,
+				E889845405B63FB500EB804C,
+				E889845505B63FB500EB804C,
+				E889845705B63FB500EB804C,
+				E889845905B63FB500EB804C,
+				E889845B05B63FB500EB804C,
+				E889845C05B63FB500EB804C,
+				E889845E05B63FB500EB804C,
+				E889846005B63FB500EB804C,
+				E889846105B63FB500EB804C,
+				E889846205B63FB500EB804C,
+				E88984AE05B6401500EB804C,
+				E88984AF05B6402200EB804C,
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889844F05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = PROJECTLEAD;
+			path = OGoContacts/PROJECTLEAD;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845005B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = README;
+			path = OGoContacts/README;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845105B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyAddressConverterDataSource.h;
+			path = OGoContacts/SkyAddressConverterDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845205B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyAddressConverterDataSource.m;
+			path = OGoContacts/SkyAddressConverterDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845305B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyAddressDocument.h;
+			path = OGoContacts/SkyAddressDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845405B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyAddressDocument.m;
+			path = OGoContacts/SkyAddressDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845505B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyAddressDocument+JS.m";
+			path = "OGoContacts/SkyAddressDocument+JS.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845605B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyCompanyCompanyDataSource.h;
+			path = OGoContacts/SkyCompanyCompanyDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845705B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyCompanyCompanyDataSource.m;
+			path = OGoContacts/SkyCompanyCompanyDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845805B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyCompanyDataSource.h;
+			path = OGoContacts/SkyCompanyDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845905B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyCompanyDataSource.m;
+			path = OGoContacts/SkyCompanyDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845A05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyCompanyDocument.h;
+			path = OGoContacts/SkyCompanyDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845B05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyCompanyDocument.m;
+			path = OGoContacts/SkyCompanyDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845C05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyCompanyDocument+JS.m";
+			path = "OGoContacts/SkyCompanyDocument+JS.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845D05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyCompanyProjectDataSource.h;
+			path = OGoContacts/SkyCompanyProjectDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845E05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyCompanyProjectDataSource.m;
+			path = OGoContacts/SkyCompanyProjectDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889845F05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyContactAddressDataSource.h;
+			path = OGoContacts/SkyContactAddressDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846005B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyContactAddressDataSource.m;
+			path = OGoContacts/SkyContactAddressDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846105B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyContactsAccessHandler.m;
+			path = OGoContacts/SkyContactsAccessHandler.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846205B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyContactsBundleManager.m;
+			path = OGoContacts/SkyContactsBundleManager.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846305B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyEnterpriseAddressConverterDataSource.h;
+			path = OGoContacts/SkyEnterpriseAddressConverterDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846405B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyEnterpriseAddressConverterDataSource.m;
+			path = OGoContacts/SkyEnterpriseAddressConverterDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846505B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyEnterpriseAllProjectsDataSource.h;
+			path = OGoContacts/SkyEnterpriseAllProjectsDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846605B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyEnterpriseAllProjectsDataSource.m;
+			path = OGoContacts/SkyEnterpriseAllProjectsDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846705B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyEnterpriseDataSource.h;
+			path = OGoContacts/SkyEnterpriseDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846805B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyEnterpriseDataSource.m;
+			path = OGoContacts/SkyEnterpriseDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846905B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyEnterpriseDocument.h;
+			path = OGoContacts/SkyEnterpriseDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846A05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyEnterpriseDocument.m;
+			path = OGoContacts/SkyEnterpriseDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846B05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyEnterpriseDocument+JS.m";
+			path = "OGoContacts/SkyEnterpriseDocument+JS.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846C05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyEnterprisePersonDataSource.h;
+			path = OGoContacts/SkyEnterprisePersonDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846D05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyEnterprisePersonDataSource.m;
+			path = OGoContacts/SkyEnterprisePersonDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846E05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyEnterpriseProjectDataSource.h;
+			path = OGoContacts/SkyEnterpriseProjectDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889846F05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyEnterpriseProjectDataSource.m;
+			path = OGoContacts/SkyEnterpriseProjectDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847005B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyPersonAddressConverterDataSource.h;
+			path = OGoContacts/SkyPersonAddressConverterDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847105B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyPersonAddressConverterDataSource.m;
+			path = OGoContacts/SkyPersonAddressConverterDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847205B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyPersonDataSource.h;
+			path = OGoContacts/SkyPersonDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847305B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyPersonDataSource.m;
+			path = OGoContacts/SkyPersonDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847405B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyPersonDocument.h;
+			path = OGoContacts/SkyPersonDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847505B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyPersonDocument.m;
+			path = OGoContacts/SkyPersonDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847605B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyPersonDocument+JobDS.m";
+			path = "OGoContacts/SkyPersonDocument+JobDS.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847705B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyPersonDocument+JS.m";
+			path = "OGoContacts/SkyPersonDocument+JS.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847805B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyPersonEnterpriseDataSource.h;
+			path = OGoContacts/SkyPersonEnterpriseDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847905B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyPersonEnterpriseDataSource.m;
+			path = OGoContacts/SkyPersonEnterpriseDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847A05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyPersonProjectDataSource.h;
+			path = OGoContacts/SkyPersonProjectDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847B05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyPersonProjectDataSource.m;
+			path = OGoContacts/SkyPersonProjectDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847C05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = TODO;
+			path = OGoContacts/TODO;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847D05B63FB500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = Version;
+			path = OGoContacts/Version;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889847E05B63FB500EB804C = {
+			fileRef = E889844F05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889847F05B63FB500EB804C = {
+			fileRef = E889845005B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889848005B63FB500EB804C = {
+			fileRef = E889845105B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889848105B63FB500EB804C = {
+			fileRef = E889845205B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889848205B63FB500EB804C = {
+			fileRef = E889845305B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889848305B63FB500EB804C = {
+			fileRef = E889845405B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889848405B63FB500EB804C = {
+			fileRef = E889845505B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889848505B63FB500EB804C = {
+			fileRef = E889845605B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889848605B63FB500EB804C = {
+			fileRef = E889845705B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889848705B63FB500EB804C = {
+			fileRef = E889845805B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889848805B63FB500EB804C = {
+			fileRef = E889845905B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889848905B63FB500EB804C = {
+			fileRef = E889845A05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889848A05B63FB500EB804C = {
+			fileRef = E889845B05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889848B05B63FB500EB804C = {
+			fileRef = E889845C05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889848C05B63FB500EB804C = {
+			fileRef = E889845D05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889848D05B63FB500EB804C = {
+			fileRef = E889845E05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889848E05B63FB500EB804C = {
+			fileRef = E889845F05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889848F05B63FB500EB804C = {
+			fileRef = E889846005B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889849005B63FB500EB804C = {
+			fileRef = E889846105B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889849105B63FB500EB804C = {
+			fileRef = E889846205B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889849205B63FB500EB804C = {
+			fileRef = E889846305B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889849305B63FB500EB804C = {
+			fileRef = E889846405B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889849405B63FB500EB804C = {
+			fileRef = E889846505B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889849505B63FB500EB804C = {
+			fileRef = E889846605B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889849605B63FB500EB804C = {
+			fileRef = E889846705B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889849705B63FB500EB804C = {
+			fileRef = E889846805B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889849805B63FB500EB804C = {
+			fileRef = E889846905B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889849905B63FB500EB804C = {
+			fileRef = E889846A05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889849A05B63FB500EB804C = {
+			fileRef = E889846B05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889849B05B63FB500EB804C = {
+			fileRef = E889846C05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889849C05B63FB500EB804C = {
+			fileRef = E889846D05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889849D05B63FB500EB804C = {
+			fileRef = E889846E05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889849E05B63FB500EB804C = {
+			fileRef = E889846F05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889849F05B63FB500EB804C = {
+			fileRef = E889847005B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E88984A005B63FB500EB804C = {
+			fileRef = E889847105B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984A105B63FB500EB804C = {
+			fileRef = E889847205B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E88984A205B63FB500EB804C = {
+			fileRef = E889847305B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984A305B63FB500EB804C = {
+			fileRef = E889847405B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E88984A405B63FB500EB804C = {
+			fileRef = E889847505B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984A505B63FB500EB804C = {
+			fileRef = E889847605B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984A605B63FB500EB804C = {
+			fileRef = E889847705B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984A705B63FB500EB804C = {
+			fileRef = E889847805B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E88984A805B63FB500EB804C = {
+			fileRef = E889847905B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984A905B63FB500EB804C = {
+			fileRef = E889847A05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E88984AA05B63FB500EB804C = {
+			fileRef = E889847B05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984AB05B63FB500EB804C = {
+			fileRef = E889847C05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984AC05B63FB500EB804C = {
+			fileRef = E889847D05B63FB500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984AD05B6400200EB804C = {
+			children = (
+				E889845105B63FB500EB804C,
+				E889845305B63FB500EB804C,
+				E889845605B63FB500EB804C,
+				E889845805B63FB500EB804C,
+				E889845A05B63FB500EB804C,
+				E889845D05B63FB500EB804C,
+				E889845F05B63FB500EB804C,
+				E889846305B63FB500EB804C,
+				E889846505B63FB500EB804C,
+				E889846705B63FB500EB804C,
+				E889846905B63FB500EB804C,
+				E889846C05B63FB500EB804C,
+				E889846E05B63FB500EB804C,
+				E889847005B63FB500EB804C,
+				E889847205B63FB500EB804C,
+				E889847405B63FB500EB804C,
+				E889847805B63FB500EB804C,
+				E889847A05B63FB500EB804C,
+			);
+			isa = PBXGroup;
+			name = Headers;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984AE05B6401500EB804C = {
+			children = (
+				E889846405B63FB500EB804C,
+				E889846605B63FB500EB804C,
+				E889846805B63FB500EB804C,
+				E889846A05B63FB500EB804C,
+				E889846B05B63FB500EB804C,
+				E889846D05B63FB500EB804C,
+				E889846F05B63FB500EB804C,
+			);
+			isa = PBXGroup;
+			name = Enterprises;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984AF05B6402200EB804C = {
+			children = (
+				E889847105B63FB500EB804C,
+				E889847305B63FB500EB804C,
+				E889847505B63FB500EB804C,
+				E889847605B63FB500EB804C,
+				E889847705B63FB500EB804C,
+				E889847905B63FB500EB804C,
+				E889847B05B63FB500EB804C,
+			);
+			isa = PBXGroup;
+			name = Persons;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984B005B6407E00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			name = "bundle-info.plist";
+			path = "OGoBase/bundle-info.plist";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984B105B6407E00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = ChangeLog;
+			path = OGoBase/ChangeLog;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984B205B6407F00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = common.h;
+			path = OGoBase/common.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984B305B6407F00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYING.LIB;
+			path = OGoBase/COPYING.LIB;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984B405B6407F00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYRIGHT;
+			path = OGoBase/COPYRIGHT;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984B505B6407F00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile;
+			path = OGoBase/GNUmakefile;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984B605B6407F00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = "LSCommandContext+Doc.h";
+			path = "OGoBase/LSCommandContext+Doc.h";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984B705B6407F00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyBaseBundleManager.m;
+			path = OGoBase/SkyBaseBundleManager.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984B805B6407F00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyLogDataSource.h;
+			path = OGoBase/SkyLogDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984B905B6407F00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyLogDataSource.m;
+			path = OGoBase/SkyLogDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984BA05B6407F00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyLogDocument.h;
+			path = OGoBase/SkyLogDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984BB05B6407F00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyLogDocument.m;
+			path = OGoBase/SkyLogDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984BC05B6407F00EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = Version;
+			path = OGoBase/Version;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984BE05B6407F00EB804C = {
+			fileRef = E88984B105B6407E00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984BF05B6407F00EB804C = {
+			fileRef = E88984B205B6407F00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984C005B6407F00EB804C = {
+			fileRef = E88984B305B6407F00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984C105B6407F00EB804C = {
+			fileRef = E88984B405B6407F00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984C305B6407F00EB804C = {
+			fileRef = E88984B605B6407F00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E88984C405B6407F00EB804C = {
+			fileRef = E88984B705B6407F00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984C505B6407F00EB804C = {
+			fileRef = E88984B805B6407F00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E88984C605B6407F00EB804C = {
+			fileRef = E88984B905B6407F00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984C705B6407F00EB804C = {
+			fileRef = E88984BA05B6407F00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E88984C805B6407F00EB804C = {
+			fileRef = E88984BB05B6407F00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984C905B6407F00EB804C = {
+			fileRef = E88984BC05B6407F00EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984CA05B6409800EB804C = {
+			children = (
+				E88984B505B6407F00EB804C,
+			);
+			isa = PBXGroup;
+			name = Makefiles;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984CB05B640C200EB804C = {
+			children = (
+				E88984B605B6407F00EB804C,
+				E88984B805B6407F00EB804C,
+				E88984BA05B6407F00EB804C,
+			);
+			isa = PBXGroup;
+			name = Headers;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984CC05B640D100EB804C = {
+			children = (
+				E88984B205B6407F00EB804C,
+				E88984B705B6407F00EB804C,
+				E88984B905B6407F00EB804C,
+				E88984BB05B6407F00EB804C,
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984CD05B6413200EB804C = {
+			fileRef = E81F646A05B5AD3500748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984CE05B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			name = "bundle-info.plist";
+			path = "OGoJobs/bundle-info.plist";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984CF05B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = ChangeLog;
+			path = OGoJobs/ChangeLog;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984D005B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = common.h;
+			path = OGoJobs/common.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984D105B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYING.LIB;
+			path = OGoJobs/COPYING.LIB;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984D205B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYRIGHT;
+			path = OGoJobs/COPYRIGHT;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984D305B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = dummy.m;
+			path = OGoJobs/dummy.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984D405B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile;
+			path = OGoJobs/GNUmakefile;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984D505B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile.preamble;
+			path = OGoJobs/GNUmakefile.preamble;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984D605B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = PROJECTLEAD;
+			path = OGoJobs/PROJECTLEAD;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984D705B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyJobDocument.h;
+			path = OGoJobs/SkyJobDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984D805B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyJobDocument.m;
+			path = OGoJobs/SkyJobDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984D905B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyJobDocument+JS.m";
+			path = "OGoJobs/SkyJobDocument+JS.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984DA05B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyJobGlobalIDResolver.m;
+			path = OGoJobs/SkyJobGlobalIDResolver.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984DB05B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyJobHistoryDataSource.h;
+			path = OGoJobs/SkyJobHistoryDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984DC05B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyJobHistoryDataSource.m;
+			path = OGoJobs/SkyJobHistoryDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984DD05B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyJobHistoryDocument.h;
+			path = OGoJobs/SkyJobHistoryDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984DE05B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyJobHistoryDocument.m;
+			path = OGoJobs/SkyJobHistoryDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984DF05B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyJobHistoryDocument+JS.m";
+			path = "OGoJobs/SkyJobHistoryDocument+JS.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984E005B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyJobsBundleManager.m;
+			path = OGoJobs/SkyJobsBundleManager.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984E105B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyPersonJobDataSource.h;
+			path = OGoJobs/SkyPersonJobDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984E205B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyPersonJobDataSource.m;
+			path = OGoJobs/SkyPersonJobDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984E305B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyProjectJobDataSource.h;
+			path = OGoJobs/SkyProjectJobDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984E405B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProjectJobDataSource.m;
+			path = OGoJobs/SkyProjectJobDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984E505B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkySchedulerJobDataSource.h;
+			path = OGoJobs/SkySchedulerJobDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984E605B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkySchedulerJobDataSource.m;
+			path = OGoJobs/SkySchedulerJobDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984E705B6417600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = Version;
+			path = OGoJobs/Version;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88984E805B6417600EB804C = {
+			fileRef = E88984CE05B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984E905B6417600EB804C = {
+			fileRef = E88984CF05B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984EA05B6417600EB804C = {
+			fileRef = E88984D005B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984EB05B6417600EB804C = {
+			fileRef = E88984D105B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984EC05B6417600EB804C = {
+			fileRef = E88984D205B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984ED05B6417600EB804C = {
+			fileRef = E88984D305B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984EE05B6417600EB804C = {
+			fileRef = E88984D405B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984EF05B6417600EB804C = {
+			fileRef = E88984D505B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984F005B6417600EB804C = {
+			fileRef = E88984D605B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984F105B6417600EB804C = {
+			fileRef = E88984D705B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E88984F205B6417600EB804C = {
+			fileRef = E88984D805B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984F305B6417600EB804C = {
+			fileRef = E88984D905B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984F405B6417600EB804C = {
+			fileRef = E88984DA05B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984F505B6417600EB804C = {
+			fileRef = E88984DB05B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E88984F605B6417600EB804C = {
+			fileRef = E88984DC05B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984F705B6417600EB804C = {
+			fileRef = E88984DD05B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E88984F805B6417600EB804C = {
+			fileRef = E88984DE05B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984F905B6417600EB804C = {
+			fileRef = E88984DF05B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984FA05B6417600EB804C = {
+			fileRef = E88984E005B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984FB05B6417600EB804C = {
+			fileRef = E88984E105B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E88984FC05B6417600EB804C = {
+			fileRef = E88984E205B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984FD05B6417600EB804C = {
+			fileRef = E88984E305B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E88984FE05B6417600EB804C = {
+			fileRef = E88984E405B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88984FF05B6417600EB804C = {
+			fileRef = E88984E505B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889850005B6417600EB804C = {
+			fileRef = E88984E605B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889850105B6417600EB804C = {
+			fileRef = E88984E705B6417600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889850205B641B400EB804C = {
+			children = (
+				E88984D405B6417600EB804C,
+				E88984D505B6417600EB804C,
+			);
+			isa = PBXGroup;
+			name = Makefiles;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889850305B641BF00EB804C = {
+			children = (
+				E88984D705B6417600EB804C,
+				E88984DB05B6417600EB804C,
+				E88984DD05B6417600EB804C,
+				E88984E105B6417600EB804C,
+				E88984E305B6417600EB804C,
+				E88984E505B6417600EB804C,
+			);
+			isa = PBXGroup;
+			name = Headers;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889850405B641D700EB804C = {
+			children = (
+				E88984D805B6417600EB804C,
+				E88984D905B6417600EB804C,
+				E88984DA05B6417600EB804C,
+				E88984DC05B6417600EB804C,
+				E88984DE05B6417600EB804C,
+				E88984DF05B6417600EB804C,
+				E88984E005B6417600EB804C,
+				E88984E205B6417600EB804C,
+				E88984E405B6417600EB804C,
+				E88984E605B6417600EB804C,
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889850505B641E900EB804C = {
+			fileRef = E81F646A05B5AD3500748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889850605B6428B00EB804C = {
+			fileRef = E81F646A05B5AD3500748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889850705B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			name = "bundle-info.plist";
+			path = "OGoProject/bundle-info.plist";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889850805B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = ChangeLog;
+			path = OGoProject/ChangeLog;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889850905B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = common.h;
+			path = OGoProject/common.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889850A05B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYING.LIB;
+			path = OGoProject/COPYING.LIB;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889850B05B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYRIGHT;
+			path = OGoProject/COPYRIGHT;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889850C05B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = dummy.m;
+			path = OGoProject/dummy.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889850D05B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile;
+			path = OGoProject/GNUmakefile;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889850E05B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile.preamble;
+			path = OGoProject/GNUmakefile.preamble;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889850F05B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = NGFileManagerCopyTool.h;
+			path = OGoProject/NGFileManagerCopyTool.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851005B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = NGFileManagerCopyTool.m;
+			path = OGoProject/NGFileManagerCopyTool.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851105B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = NGFileManagerProcessingTool.h;
+			path = OGoProject/NGFileManagerProcessingTool.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851205B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = NGFileManagerProcessingTool.m;
+			path = OGoProject/NGFileManagerProcessingTool.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851305B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = "NSString+XMLNamespaces.h";
+			path = "OGoProject/NSString+XMLNamespaces.h";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851405B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "NSString+XMLNamespaces.m";
+			path = "OGoProject/NSString+XMLNamespaces.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851505B6434500EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = OGoFileManagerFactory.h;
+			path = OGoProject/OGoFileManagerFactory.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851605B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = OGoFileManagerFactory.m;
+			path = OGoProject/OGoFileManagerFactory.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851705B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = PROJECTLEAD;
+			path = OGoProject/PROJECTLEAD;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851805B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = README;
+			path = OGoProject/README;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851905B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyContentHandler.h;
+			path = OGoProject/SkyContentHandler.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851A05B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyContentHandler.m;
+			path = OGoProject/SkyContentHandler.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851B05B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyFileManagerFactory.h;
+			path = OGoProject/SkyFileManagerFactory.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851C05B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyProject.h;
+			path = OGoProject/SkyProject.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851D05B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProject.m;
+			path = OGoProject/SkyProject.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851E05B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProject+JobDS.m";
+			path = "OGoProject/SkyProject+JobDS.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889851F05B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProject+JS.m";
+			path = "OGoProject/SkyProject+JS.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889852005B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProjectAccessHandler.m;
+			path = OGoProject/SkyProjectAccessHandler.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889852105B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProjectBundleManager.m;
+			path = OGoProject/SkyProjectBundleManager.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889852205B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyProjectDataSource.h;
+			path = OGoProject/SkyProjectDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889852305B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProjectDataSource.m;
+			path = OGoProject/SkyProjectDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889852405B6434600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProjectDocumentGlobalIDResolver.m;
+			path = OGoProject/SkyProjectDocumentGlobalIDResolver.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889852505B6434700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = SkyProjectDOM.txt;
+			path = OGoProject/SkyProjectDOM.txt;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889852605B6434700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyProjectHistoryDocument.h;
+			path = OGoProject/SkyProjectHistoryDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889852705B6434700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProjectHistoryDocument.m;
+			path = OGoProject/SkyProjectHistoryDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889852805B6434700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyProjectTeamDataSource.h;
+			path = OGoProject/SkyProjectTeamDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889852905B6434700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProjectTeamDataSource.m;
+			path = OGoProject/SkyProjectTeamDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889852A05B6434700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProjectURLHandle.m;
+			path = OGoProject/SkyProjectURLHandle.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889852B05B6434700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = Version;
+			path = OGoProject/Version;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889852D05B6434700EB804C = {
+			fileRef = E889850805B6434500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889852E05B6434700EB804C = {
+			fileRef = E889850905B6434500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889852F05B6434700EB804C = {
+			fileRef = E889850A05B6434500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889853005B6434700EB804C = {
+			fileRef = E889850B05B6434500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889853405B6434700EB804C = {
+			fileRef = E889850F05B6434500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889853505B6434700EB804C = {
+			fileRef = E889851005B6434500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889853605B6434700EB804C = {
+			fileRef = E889851105B6434500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889853705B6434700EB804C = {
+			fileRef = E889851205B6434500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889853805B6434700EB804C = {
+			fileRef = E889851305B6434500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889853905B6434700EB804C = {
+			fileRef = E889851405B6434500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889853A05B6434700EB804C = {
+			fileRef = E889851505B6434500EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889853B05B6434700EB804C = {
+			fileRef = E889851605B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889853C05B6434700EB804C = {
+			fileRef = E889851705B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889853D05B6434700EB804C = {
+			fileRef = E889851805B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889853E05B6434700EB804C = {
+			fileRef = E889851905B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889853F05B6434700EB804C = {
+			fileRef = E889851A05B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889854005B6434700EB804C = {
+			fileRef = E889851B05B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889854105B6434700EB804C = {
+			fileRef = E889851C05B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889854205B6434700EB804C = {
+			fileRef = E889851D05B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889854305B6434800EB804C = {
+			fileRef = E889851E05B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889854405B6434800EB804C = {
+			fileRef = E889851F05B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889854505B6434800EB804C = {
+			fileRef = E889852005B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889854605B6434800EB804C = {
+			fileRef = E889852105B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889854705B6434800EB804C = {
+			fileRef = E889852205B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889854805B6434800EB804C = {
+			fileRef = E889852305B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889854905B6434800EB804C = {
+			fileRef = E889852405B6434600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889854A05B6434800EB804C = {
+			fileRef = E889852505B6434700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889854B05B6434800EB804C = {
+			fileRef = E889852605B6434700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889854C05B6434800EB804C = {
+			fileRef = E889852705B6434700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889854D05B6434800EB804C = {
+			fileRef = E889852805B6434700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889854E05B6434800EB804C = {
+			fileRef = E889852905B6434700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889854F05B6434800EB804C = {
+			fileRef = E889852A05B6434700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889855005B6434800EB804C = {
+			fileRef = E889852B05B6434700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889855105B6437B00EB804C = {
+			children = (
+				E889850D05B6434500EB804C,
+				E889850E05B6434500EB804C,
+			);
+			isa = PBXGroup;
+			name = Makefiles;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889855205B6439400EB804C = {
+			children = (
+				E889850F05B6434500EB804C,
+				E889851105B6434500EB804C,
+				E889851305B6434500EB804C,
+				E889851505B6434500EB804C,
+				E889851905B6434600EB804C,
+				E889851B05B6434600EB804C,
+				E889851C05B6434600EB804C,
+				E889852205B6434600EB804C,
+				E889852605B6434700EB804C,
+				E889852805B6434700EB804C,
+			);
+			isa = PBXGroup;
+			name = Headers;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889855305B643B200EB804C = {
+			children = (
+				E889850905B6434500EB804C,
+				E889851005B6434500EB804C,
+				E889851205B6434500EB804C,
+				E889851405B6434500EB804C,
+				E889851605B6434600EB804C,
+				E889851A05B6434600EB804C,
+				E889851D05B6434600EB804C,
+				E889851E05B6434600EB804C,
+				E889851F05B6434600EB804C,
+				E889852005B6434600EB804C,
+				E889852105B6434600EB804C,
+				E889852305B6434600EB804C,
+				E889852405B6434600EB804C,
+				E889852705B6434700EB804C,
+				E889852905B6434700EB804C,
+				E889852A05B6434700EB804C,
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889855605B643E100EB804C = {
+			fileRef = E81F646A05B5AD3500748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889855705B6440A00EB804C = {
+			fileRef = E81F647805B5AD8400748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88985CC05B6453600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			name = "bundle-info.plist";
+			path = "OGoDatabaseProject/bundle-info.plist";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985CD05B6453600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = ChangeLog;
+			path = OGoDatabaseProject/ChangeLog;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985CE05B6453600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = common.h;
+			path = OGoDatabaseProject/common.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985CF05B6453600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYING.LIB;
+			path = OGoDatabaseProject/COPYING.LIB;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985D005B6453600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYRIGHT;
+			path = OGoDatabaseProject/COPYRIGHT;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985D105B6453600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = FMContext.h;
+			path = OGoDatabaseProject/FMContext.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985D205B6453600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = FMContext.m;
+			path = OGoDatabaseProject/FMContext.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985D305B6453600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile;
+			path = OGoDatabaseProject/GNUmakefile;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985D405B6453600EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile.preamble;
+			path = OGoDatabaseProject/GNUmakefile.preamble;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985D605B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = PROJECTLEAD;
+			path = OGoDatabaseProject/PROJECTLEAD;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985D705B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyDBProjectBundleManager.m;
+			path = OGoDatabaseProject/SkyDBProjectBundleManager.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985D805B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyDocumentAccessHandler.m;
+			path = OGoDatabaseProject/SkyDocumentAccessHandler.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985D905B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyDocumentDataSource.h;
+			path = OGoDatabaseProject/SkyDocumentDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985DA05B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyDocumentDataSource.m;
+			path = OGoDatabaseProject/SkyDocumentDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985DB05B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyDocumentHistoryDataSource.h;
+			path = OGoDatabaseProject/SkyDocumentHistoryDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985DC05B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyDocumentHistoryDataSource.m;
+			path = OGoDatabaseProject/SkyDocumentHistoryDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985DD05B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyDocumentIdHandler.h;
+			path = OGoDatabaseProject/SkyDocumentIdHandler.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985DE05B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyDocumentIdHandler.m;
+			path = OGoDatabaseProject/SkyDocumentIdHandler.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985DF05B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyProjectDocument.h;
+			path = OGoDatabaseProject/SkyProjectDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985E005B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProjectDocument.m;
+			path = OGoDatabaseProject/SkyProjectDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985E105B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectDocument+DOM.m";
+			path = "OGoDatabaseProject/SkyProjectDocument+DOM.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985E205B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectDocument+JS.m";
+			path = "OGoDatabaseProject/SkyProjectDocument+JS.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985E305B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectDocument+Log.m";
+			path = "OGoDatabaseProject/SkyProjectDocument+Log.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985E405B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProjectDocumentBundleManager.m;
+			path = OGoDatabaseProject/SkyProjectDocumentBundleManager.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985E505B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyProjectDocumentDataSource.h;
+			path = OGoDatabaseProject/SkyProjectDocumentDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985E605B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProjectDocumentDataSource.m;
+			path = OGoDatabaseProject/SkyProjectDocumentDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985E705B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyProjectFileManager.h;
+			path = OGoDatabaseProject/SkyProjectFileManager.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985E805B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProjectFileManager.m;
+			path = OGoDatabaseProject/SkyProjectFileManager.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985E905B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectFileManager+ContentHandler.m";
+			path = "OGoDatabaseProject/SkyProjectFileManager+ContentHandler.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985EA05B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectFileManager+DeleteDocument.m";
+			path = "OGoDatabaseProject/SkyProjectFileManager+DeleteDocument.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985EB05B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectFileManager+Documents.m";
+			path = "OGoDatabaseProject/SkyProjectFileManager+Documents.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985EC05B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectFileManager+Extensions.m";
+			path = "OGoDatabaseProject/SkyProjectFileManager+Extensions.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985ED05B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectFileManager+FileAttributes.m";
+			path = "OGoDatabaseProject/SkyProjectFileManager+FileAttributes.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985EE05B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectFileManager+Internals.m";
+			path = "OGoDatabaseProject/SkyProjectFileManager+Internals.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985EF05B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectFileManager+Locking.m";
+			path = "OGoDatabaseProject/SkyProjectFileManager+Locking.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985F005B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectFileManager+Notifications.m";
+			path = "OGoDatabaseProject/SkyProjectFileManager+Notifications.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985F105B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectFileManager+Qualifier.m";
+			path = "OGoDatabaseProject/SkyProjectFileManager+Qualifier.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985F205B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyProjectFileManagerCache.h;
+			path = OGoDatabaseProject/SkyProjectFileManagerCache.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985F305B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProjectFileManagerCache.m;
+			path = OGoDatabaseProject/SkyProjectFileManagerCache.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985F405B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectFileManagerCache+Caching.m";
+			path = "OGoDatabaseProject/SkyProjectFileManagerCache+Caching.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985F505B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectFileManagerCache+Internals.m";
+			path = "OGoDatabaseProject/SkyProjectFileManagerCache+Internals.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985F605B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyProjectFileManagerCache+Settings.m";
+			path = "OGoDatabaseProject/SkyProjectFileManagerCache+Settings.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985F705B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyProjectFolderDataSource.h;
+			path = OGoDatabaseProject/SkyProjectFolderDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985F805B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyProjectFolderDataSource.m;
+			path = OGoDatabaseProject/SkyProjectFolderDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985F905B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = TODO;
+			path = OGoDatabaseProject/TODO;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985FA05B6453700EB804C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = Version;
+			path = OGoDatabaseProject/Version;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E88985FC05B6453700EB804C = {
+			fileRef = E88985CD05B6453600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88985FD05B6453700EB804C = {
+			fileRef = E88985CE05B6453600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88985FE05B6453700EB804C = {
+			fileRef = E88985CF05B6453600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E88985FF05B6453700EB804C = {
+			fileRef = E88985D005B6453600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889860005B6453700EB804C = {
+			fileRef = E88985D105B6453600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889860105B6453700EB804C = {
+			fileRef = E88985D205B6453600EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889860505B6453700EB804C = {
+			fileRef = E88985D605B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889860605B6453700EB804C = {
+			fileRef = E88985D705B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889860705B6453700EB804C = {
+			fileRef = E88985D805B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889860805B6453700EB804C = {
+			fileRef = E88985D905B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889860905B6453700EB804C = {
+			fileRef = E88985DA05B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889860A05B6453700EB804C = {
+			fileRef = E88985DB05B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889860B05B6453700EB804C = {
+			fileRef = E88985DC05B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889860C05B6453700EB804C = {
+			fileRef = E88985DD05B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889860D05B6453700EB804C = {
+			fileRef = E88985DE05B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889860E05B6453700EB804C = {
+			fileRef = E88985DF05B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889860F05B6453700EB804C = {
+			fileRef = E88985E005B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889861005B6453700EB804C = {
+			fileRef = E88985E105B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889861105B6453700EB804C = {
+			fileRef = E88985E205B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889861205B6453700EB804C = {
+			fileRef = E88985E305B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889861305B6453700EB804C = {
+			fileRef = E88985E405B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889861405B6453700EB804C = {
+			fileRef = E88985E505B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889861505B6453700EB804C = {
+			fileRef = E88985E605B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889861605B6453700EB804C = {
+			fileRef = E88985E705B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889861705B6453700EB804C = {
+			fileRef = E88985E805B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889861805B6453700EB804C = {
+			fileRef = E88985E905B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889861905B6453700EB804C = {
+			fileRef = E88985EA05B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889861A05B6453700EB804C = {
+			fileRef = E88985EB05B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889861B05B6453700EB804C = {
+			fileRef = E88985EC05B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889861C05B6453700EB804C = {
+			fileRef = E88985ED05B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889861D05B6453700EB804C = {
+			fileRef = E88985EE05B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889861E05B6453700EB804C = {
+			fileRef = E88985EF05B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889861F05B6453700EB804C = {
+			fileRef = E88985F005B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889862005B6453700EB804C = {
+			fileRef = E88985F105B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889862105B6453700EB804C = {
+			fileRef = E88985F205B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889862205B6453700EB804C = {
+			fileRef = E88985F305B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889862305B6453700EB804C = {
+			fileRef = E88985F405B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889862405B6453700EB804C = {
+			fileRef = E88985F505B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889862505B6453700EB804C = {
+			fileRef = E88985F605B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889862605B6453700EB804C = {
+			fileRef = E88985F705B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E889862705B6453700EB804C = {
+			fileRef = E88985F805B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889862805B6453700EB804C = {
+			fileRef = E88985F905B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889862905B6453700EB804C = {
+			fileRef = E88985FA05B6453700EB804C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889862B05B6454300EB804C = {
+			fileRef = E81F646A05B5AD3500748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E889862C05B6455400EB804C = {
+			children = (
+				E88985D105B6453600EB804C,
+				E88985D905B6453700EB804C,
+				E88985DB05B6453700EB804C,
+				E88985DD05B6453700EB804C,
+				E88985DF05B6453700EB804C,
+				E88985E505B6453700EB804C,
+				E88985E705B6453700EB804C,
+				E88985F205B6453700EB804C,
+				E88985F705B6453700EB804C,
+			);
+			isa = PBXGroup;
+			name = Headers;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889862D05B6455E00EB804C = {
+			children = (
+				E88985D305B6453600EB804C,
+				E88985D405B6453600EB804C,
+			);
+			isa = PBXGroup;
+			name = Makefiles;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889862E05B6457100EB804C = {
+			children = (
+				E88985E805B6453700EB804C,
+				E88985E905B6453700EB804C,
+				E88985EA05B6453700EB804C,
+				E88985EB05B6453700EB804C,
+				E88985EC05B6453700EB804C,
+				E88985ED05B6453700EB804C,
+				E88985EE05B6453700EB804C,
+				E88985EF05B6453700EB804C,
+				E88985F005B6453700EB804C,
+				E88985F105B6453700EB804C,
+				E88985D205B6453600EB804C,
+				E88985F305B6453700EB804C,
+				E88985F405B6453700EB804C,
+				E88985F505B6453700EB804C,
+				E88985F605B6453700EB804C,
+			);
+			isa = PBXGroup;
+			name = FileManager;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E889862F05B645A000EB804C = {
+			children = (
+				E88985CE05B6453600EB804C,
+				E88985D705B6453700EB804C,
+				E88985D805B6453700EB804C,
+				E88985DA05B6453700EB804C,
+				E88985DC05B6453700EB804C,
+				E88985DE05B6453700EB804C,
+				E88985E005B6453700EB804C,
+				E88985E105B6453700EB804C,
+				E88985E205B6453700EB804C,
+				E88985E305B6453700EB804C,
+				E88985E405B6453700EB804C,
+				E88985E605B6453700EB804C,
+				E889862E05B6457100EB804C,
+				E88985F805B6453700EB804C,
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897ACEF05B6462F001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "OGoDatabaseProject-Info.plist";
+			path = "OGoDatabaseProject/OGoDatabaseProject-Info.plist";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897ACF005B6462F001225B4 = {
+			fileRef = E897ACEF05B6462F001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897ACF105B64642001225B4 = {
+			fileRef = E81F648D05B5ADAD00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897ACF305B646D7001225B4 = {
+			fileRef = E81F648D05B5ADAD00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897ACF405B646DA001225B4 = {
+			fileRef = E81F646A05B5AD3500748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897ACF505B646DF001225B4 = {
+			fileRef = E81F646A05B5AD3500748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897ACF605B64709001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			name = "bundle-info.plist";
+			path = "OGoFileSystemProject/bundle-info.plist";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897ACF705B64709001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = ChangeLog;
+			path = OGoFileSystemProject/ChangeLog;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897ACF805B64709001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = common.h;
+			path = OGoFileSystemProject/common.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897ACF905B64709001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYING.LIB;
+			path = OGoFileSystemProject/COPYING.LIB;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897ACFA05B64709001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYRIGHT;
+			path = OGoFileSystemProject/COPYRIGHT;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897ACFB05B64709001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile;
+			path = OGoFileSystemProject/GNUmakefile;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897ACFC05B64709001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile.preamble;
+			path = OGoFileSystemProject/GNUmakefile.preamble;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897ACFD05B64709001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = PROJECTLEAD;
+			path = OGoFileSystemProject/PROJECTLEAD;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897ACFE05B64709001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyFSDataSource.h;
+			path = OGoFileSystemProject/SkyFSDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897ACFF05B64709001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyFSDataSource.m;
+			path = OGoFileSystemProject/SkyFSDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0005B6470A001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyFSDocument.h;
+			path = OGoFileSystemProject/SkyFSDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0105B6470A001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyFSDocument.m;
+			path = OGoFileSystemProject/SkyFSDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0205B6470A001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyFSDocument+DOM.m";
+			path = "OGoFileSystemProject/SkyFSDocument+DOM.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0305B6470A001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyFSException.m;
+			path = OGoFileSystemProject/SkyFSException.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0405B6470A001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyFSFileManager.h;
+			path = OGoFileSystemProject/SkyFSFileManager.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0505B6470A001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyFSFileManager.m;
+			path = OGoFileSystemProject/SkyFSFileManager.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0605B6470A001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = "SkyFSFileManager+Internals.h";
+			path = "OGoFileSystemProject/SkyFSFileManager+Internals.h";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0705B6470A001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = "SkyFSFileManager+Internals.m";
+			path = "OGoFileSystemProject/SkyFSFileManager+Internals.m";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0805B6470A001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyFSFolderDataSource.h;
+			path = OGoFileSystemProject/SkyFSFolderDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0905B6470A001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyFSFolderDataSource.m;
+			path = OGoFileSystemProject/SkyFSFolderDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0A05B6470A001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyFSGlobalID.h;
+			path = OGoFileSystemProject/SkyFSGlobalID.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0B05B6470A001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyFSGlobalID.m;
+			path = OGoFileSystemProject/SkyFSGlobalID.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0C05B6470A001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyFSProjectModule.m;
+			path = OGoFileSystemProject/SkyFSProjectModule.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0D05B6470A001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = Version;
+			path = OGoFileSystemProject/Version;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD0F05B6470A001225B4 = {
+			fileRef = E897ACF705B64709001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD1005B6470A001225B4 = {
+			fileRef = E897ACF805B64709001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD1105B6470A001225B4 = {
+			fileRef = E897ACF905B64709001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD1205B6470A001225B4 = {
+			fileRef = E897ACFA05B64709001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD1505B6470A001225B4 = {
+			fileRef = E897ACFD05B64709001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD1605B6470A001225B4 = {
+			fileRef = E897ACFE05B64709001225B4;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E897AD1705B6470A001225B4 = {
+			fileRef = E897ACFF05B64709001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD1805B6470A001225B4 = {
+			fileRef = E897AD0005B6470A001225B4;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E897AD1905B6470A001225B4 = {
+			fileRef = E897AD0105B6470A001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD1A05B6470A001225B4 = {
+			fileRef = E897AD0205B6470A001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD1B05B6470A001225B4 = {
+			fileRef = E897AD0305B6470A001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD1C05B6470A001225B4 = {
+			fileRef = E897AD0405B6470A001225B4;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E897AD1D05B6470A001225B4 = {
+			fileRef = E897AD0505B6470A001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD1E05B6470A001225B4 = {
+			fileRef = E897AD0605B6470A001225B4;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E897AD1F05B6470A001225B4 = {
+			fileRef = E897AD0705B6470A001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD2005B6470A001225B4 = {
+			fileRef = E897AD0805B6470A001225B4;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E897AD2105B6470A001225B4 = {
+			fileRef = E897AD0905B6470A001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD2205B6470A001225B4 = {
+			fileRef = E897AD0A05B6470A001225B4;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E897AD2305B6470A001225B4 = {
+			fileRef = E897AD0B05B6470A001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD2405B6470A001225B4 = {
+			fileRef = E897AD0C05B6470A001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD2505B6470A001225B4 = {
+			fileRef = E897AD0D05B6470A001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD2605B64716001225B4 = {
+			children = (
+				E897ACFB05B64709001225B4,
+				E897ACFC05B64709001225B4,
+			);
+			isa = PBXGroup;
+			name = Makefiles;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD2705B64727001225B4 = {
+			children = (
+				E897ACFE05B64709001225B4,
+				E897AD0005B6470A001225B4,
+				E897AD0405B6470A001225B4,
+				E897AD0605B6470A001225B4,
+				E897AD0805B6470A001225B4,
+				E897AD0A05B6470A001225B4,
+			);
+			isa = PBXGroup;
+			name = Headers;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD2805B6473C001225B4 = {
+			children = (
+				E897ACF805B64709001225B4,
+				E897ACFF05B64709001225B4,
+				E897AD0105B6470A001225B4,
+				E897AD0205B6470A001225B4,
+				E897AD0305B6470A001225B4,
+				E897AD0505B6470A001225B4,
+				E897AD0705B6470A001225B4,
+				E897AD0905B6470A001225B4,
+				E897AD0B05B6470A001225B4,
+				E897AD0C05B6470A001225B4,
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD2905B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			name = "bundle-info.plist";
+			path = "OGoScheduler/bundle-info.plist";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD2A05B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = ChangeLog;
+			path = OGoScheduler/ChangeLog;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD2B05B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = common.h;
+			path = OGoScheduler/common.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD2C05B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYING.LIB;
+			path = OGoScheduler/COPYING.LIB;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD2D05B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = COPYRIGHT;
+			path = OGoScheduler/COPYRIGHT;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD2E05B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			name = Defaults.plist;
+			path = OGoScheduler/Defaults.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD2F05B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile;
+			path = OGoScheduler/GNUmakefile;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3005B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile.postamble;
+			path = OGoScheduler/GNUmakefile.postamble;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3105B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = GNUmakefile.preamble;
+			path = OGoScheduler/GNUmakefile.preamble;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3205B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
+			name = Holidays.plist;
+			path = OGoScheduler/Holidays.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3305B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = PROJECTLEAD;
+			path = OGoScheduler/PROJECTLEAD;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3405B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyAppointmentDataSource.h;
+			path = OGoScheduler/SkyAppointmentDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3505B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyAppointmentDataSource.m;
+			path = OGoScheduler/SkyAppointmentDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3605B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyAppointmentDocument.h;
+			path = OGoScheduler/SkyAppointmentDocument.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3705B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyAppointmentDocument.m;
+			path = OGoScheduler/SkyAppointmentDocument.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3805B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyAppointmentDocumentGlobalIDResolver.m;
+			path = OGoScheduler/SkyAppointmentDocumentGlobalIDResolver.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3905B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyAppointmentQualifier.h;
+			path = OGoScheduler/SkyAppointmentQualifier.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3A05B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyAppointmentQualifier.m;
+			path = OGoScheduler/SkyAppointmentQualifier.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3B05B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyAptCompoundDataSource.h;
+			path = OGoScheduler/SkyAptCompoundDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3C05B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyAptCompoundDataSource.m;
+			path = OGoScheduler/SkyAptCompoundDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3D05B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyAptDataSource.h;
+			path = OGoScheduler/SkyAptDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3E05B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyAptDataSource.m;
+			path = OGoScheduler/SkyAptDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD3F05B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkyHolidayCalculator.h;
+			path = OGoScheduler/SkyHolidayCalculator.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD4005B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkyHolidayCalculator.m;
+			path = OGoScheduler/SkyHolidayCalculator.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD4105B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkySchedulerBundleManager.m;
+			path = OGoScheduler/SkySchedulerBundleManager.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD4205B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SkySchedulerConflictDataSource.h;
+			path = OGoScheduler/SkySchedulerConflictDataSource.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD4305B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SkySchedulerConflictDataSource.m;
+			path = OGoScheduler/SkySchedulerConflictDataSource.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD4405B64806001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			name = Version;
+			path = OGoScheduler/Version;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD4605B64806001225B4 = {
+			fileRef = E897AD2A05B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD4705B64806001225B4 = {
+			fileRef = E897AD2B05B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD4805B64806001225B4 = {
+			fileRef = E897AD2C05B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD4905B64806001225B4 = {
+			fileRef = E897AD2D05B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD4E05B64806001225B4 = {
+			fileRef = E897AD3205B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD4F05B64806001225B4 = {
+			fileRef = E897AD3305B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5005B64806001225B4 = {
+			fileRef = E897AD3405B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5105B64806001225B4 = {
+			fileRef = E897AD3505B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5205B64806001225B4 = {
+			fileRef = E897AD3605B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5305B64806001225B4 = {
+			fileRef = E897AD3705B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5405B64806001225B4 = {
+			fileRef = E897AD3805B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5505B64806001225B4 = {
+			fileRef = E897AD3905B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5605B64806001225B4 = {
+			fileRef = E897AD3A05B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5705B64806001225B4 = {
+			fileRef = E897AD3B05B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5805B64806001225B4 = {
+			fileRef = E897AD3C05B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5905B64806001225B4 = {
+			fileRef = E897AD3D05B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5A05B64806001225B4 = {
+			fileRef = E897AD3E05B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5B05B64806001225B4 = {
+			fileRef = E897AD3F05B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5C05B64806001225B4 = {
+			fileRef = E897AD4005B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5D05B64806001225B4 = {
+			fileRef = E897AD4105B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5E05B64806001225B4 = {
+			fileRef = E897AD4205B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD5F05B64806001225B4 = {
+			fileRef = E897AD4305B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD6005B64806001225B4 = {
+			fileRef = E897AD4405B64806001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD6105B64813001225B4 = {
+			children = (
+				E897AD3405B64806001225B4,
+				E897AD3605B64806001225B4,
+				E897AD3905B64806001225B4,
+				E897AD3B05B64806001225B4,
+				E897AD3D05B64806001225B4,
+				E897AD3F05B64806001225B4,
+				E897AD4205B64806001225B4,
+			);
+			isa = PBXGroup;
+			name = Headers;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD6205B6481A001225B4 = {
+			children = (
+				E897AD2F05B64806001225B4,
+				E897AD3005B64806001225B4,
+				E897AD3105B64806001225B4,
+			);
+			isa = PBXGroup;
+			name = Makefiles;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD6305B64838001225B4 = {
+			children = (
+				E897AD2B05B64806001225B4,
+				E897AD3505B64806001225B4,
+				E897AD3705B64806001225B4,
+				E897AD3805B64806001225B4,
+				E897AD3A05B64806001225B4,
+				E897AD3C05B64806001225B4,
+				E897AD3E05B64806001225B4,
+				E897AD4005B64806001225B4,
+				E897AD4105B64806001225B4,
+				E897AD4305B64806001225B4,
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD6605B64866001225B4 = {
+			fileRef = E81F648605B5AD9E00748844;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD6705B648DF001225B4 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = OGoSchedulerTools.framework;
+			path = /Users/helge/Library/Frameworks/OGoSchedulerTools.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E897AD6805B648DF001225B4 = {
+			fileRef = E897AD6705B648DF001225B4;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E897AD6E05B6496E001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			path = COPYING.LIB;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD6F05B6496E001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			path = COPYRIGHT;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD7005B6496E001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			path = PROJECTLEAD;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD7105B6496E001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			path = README;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E897AD7205B6496E001225B4 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text;
+			path = Version;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+	};
+	rootObject = E81F644005B5AB8A00748844;
+}

@@ -1,0 +1,426 @@
+2005-03-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.76
+
+	* DirectAction.m: allow 'activate' method without session info
+
+	* WODirectAction+LoginAction.m: added some debug logs
+
+2005-03-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.75
+	
+	* OpenGroupware.m: keep 'so' URLs on login redirect
+	
+	* WODirectAction+LoginAction.m: removed support for deprecated
+	  'loginName' form parameter (use 'login' instead!), added support for
+	  login-redirect URLs (url query parameter)
+	  
+	* SoOGoAuthenticator.m: remove wosid from auth-redirect URLs, set sid
+	  expire cookie
+	
+	* v5.1.74
+	
+	* OpenGroupware.m: removed response stack (should not be necessary
+	  anymore)
+	
+	* SoOGoAuthenticator.m: when redirecting unauthorized requests to the
+	  login page, the URL will be included
+	
+2005-03-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SoOGoAuthenticator.m: redirect to login page if no session is
+	  available (v5.1.73)
+
+2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: properly include config.make (v5.1.72)
+
+2004-12-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OpenGroupware.m: removed SkyLanguages default (not required anymore)
+	  (v5.1.71)
+
+2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* OpenGroupware.m: removed some deprecated scripting code, do not
+	  check for explicit /etc defaults (not in available in SOPE 4.4),
+	  moved main() to own file, moved bundle loading code to own file,
+	  removed reload config option, added 'OGoLogNotifications' default
+	  to log all notifications in the system (v5.1.70)
+
+	* OpenGroupware.m: minor code cleanups (v5.1.69)
+
+2004-11-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* common.h: fixed compatibility issue with SOPE 4.5 (v5.1.68)
+
+2004-11-19  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* OpenGroupware.m: fixed cookie handling to be compatible with
+	  libNGObjWeb v4.5.89, should be compatible with older versions.
+	  This prohibited login when an expired session cookie is set.
+	  Improved handling of expiration cookies. (v5.1.67)
+
+2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* DirectAction.m: removed deprecated downloadBookmark action (v5.1.66)
+
+2004-09-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* fhs.make: install daemon into $FHS_ROOT/sbin (v5.1.65)
+
+2004-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OpenGroupware.m: fixed name of the application (was the full path
+	  instead of just the basename of the executable) (v5.1.64)
+
+	* OpenGroupware.m: fixed incompatibility with MacOSX gcc (v5.1.63)
+
+2004-09-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: added /usr/lib to library search path (v5.1.62)
+
+	* OpenGroupware.m: changed (runtime) application name to match the
+	  process name (to avoid clashes with . processing in the standard
+	  method) (v5.1.61)
+
+	* GNUmakefile: renamed executable to ogo-webui-1.0a as requested by 
+	  sley (v5.1.60)
+
+2004-09-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: added explicit library dependencies for MacOSX
+	  compilation (v5.1.59)
+
+2004-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.58
+
+	* moved Main and OGoLogoutPage components to Common/BaseUI
+
+	* main executable is now a tool called ogo-webui-51
+
+	* v5.1.57
+	
+	* moved Defaults.plist contents to OpenGroupware.m, so that
+	  the app can become a tool
+
+	* removed superflous OGo.make
+	
+	* moved WOStats.xsl, calendar.js to Themes (is calendar.js still used?)
+	
+	* removed unused menu.js
+	
+	* moved product.plist to own OGo WebUI bundle (SoOGo) 
+
+2004-09-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.56
+	
+	* moved components.cfg files to WebUI/Templates (might need to fix
+	  resource manager for that!)
+	
+	* OpenGroupware.m: removed deprecated SkyPreloadBundles support
+
+	* removed skymasterd config file (OpenGroupware.xml)
+
+2004-09-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved Main.wo and OGoLogoutPage.wo to WebUI/Themes (this may require
+	  some translation work on both since template specific language
+	  subprojects are not available in Templates) (v5.1.55)
+
+2004-09-07  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.m: add a slash to the default redirect URL (v5.1.54)
+
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.m: also load bundles from FHS locations (v5.1.53)
+
+2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OpenGroupware.m: temporarily patch bundlepath for preloading of
+	  bundles (to make it work without an NGBundle being configured)
+	  (v5.1.52)
+
+2004-08-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OpenGroupware.m: look for bundles in
+	  /usr/local/lib/opengroupware.org and /usr/lib/opengroupware.org
+	  (v5.1.51)
+
+2004-08-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* renamed OpenGroupware.woa to OpenGroupware10a.woa (v5.1.50)
+
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* remove dependency on NGJavaScript (v5.1.49)
+
+2004-08-11  Helge Hess  <helge@dogbert.in.skyrix.com>
+
+	* Main.wo/English.lproj/Main.html: fixed a missing </tr> close tag
+	  (v5.0.48)
+
+2004-08-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Defaults.plist, OGo.make: added orange theme (v5.0.47)
+
+2004-08-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Defaults.plist, OGo.make: added blue theme (v5.0.46)
+
+2004-08-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OpenGroupware.m: use OGoResourceManager instead of LSWResourceManager
+	  (v5.0.45)
+
+2004-07-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* Main.m, WODirectAction+LoginAction.m: fixed gcc 3.4 warnings 
+	  (v5.0.44)
+
+2004-07-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.m: added method to hide some 'expected' output 
+	  validation issues (v5.0.43)
+
+2004-04-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.42
+
+	* SoOGoAuthenticator.m: minor code cleanup
+
+	* OpenGroupware.m: use WOContext -applicationURL instead of 
+	  WOApplication -baseURL for constructing the session redirect 
+	  location, should fix OGo bug #701
+
+2004-03-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* started KDE theme, added SkyLanguages default to Defaults.plist
+	  (v5.0.41)
+
+2004-03-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.40
+
+	* explicitly link against NGObjWeb and NGObjDOM, this resolves a
+	  linking issue with gstep-base
+
+	* OpenGroupware.m: added "OGoLogBundleLoading" default for enabling
+	  bundle loading debug output
+
+2004-03-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* WODirectAction+LoginAction.m: fixed OGo bug #680 (runaway on link
+	  activation) (v5.0.39)
+
+2004-03-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoLogoutPage.m, WODirectAction+LoginAction.m: fixed some compilation
+	  warnings with gstep-base (v5.0.38)
+
+2004-03-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.m: terminate a session if the application server 
+	  catched an exception - this resolves the problem with not being able
+	  to continue if an exception occurred (v5.0.37)
+
+2004-02-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OpenGroupware.m: explicitly set the content-type for exception
+	  responses (so that Safari doesn't treat such as a download entity)
+	  (v5.0.36)
+
+2004-02-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.m: made bundle lookup path configurable using the
+	  OGoBundlePathSpecifier default (defaults to OpenGroupware.org), this
+	  is required so that we don't need to patch sources for different OGo
+	  versions (v5.0.35)
+	  
+2004-02-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.34
+
+	* Main.m: generate stylesheet URL dynamically on MacOSX
+
+	* WODirectAction+LoginAction.m: fixed a compilation warning on OSX
+
+2004-02-11  Helge Hess  <helge@mac.in.skyrix.com>
+
+	* GNUmakefile.preamble: link tool against libXmlRpc, required for 
+	  MacOSX (v5.0.33)
+
+2004-02-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.32
+
+	* added SOPE authenticator that uses OGoSession to check whether a
+	  context is authenticated
+	
+	* OpenGroupware.m|h: now registeres SOPE object request handler for 
+	  URL based access, is now a subclass of SoApplication
+	
+2004-01-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* minor patches to templates (v5.0.31)
+
+2004-01-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* changed license from GPL to LGPL, so that we can link in proprietary
+	  extensions
+
+2004-01-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* Defaults.plist: list SkyLogoutURL default (empty) (v5.0.30)
+
+2004-01-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble (OpenGroupware_TOOL_LIBS): fixed for MacOSX
+	  compilation (v5.0.29)
+
+2004-01-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.m: added capability to keep direct action URLs intact
+	  after a session failure. This will remove the wosid and woinst and
+	  redirect to the direct action. Note: the capability to trigger such
+	  "pending" DAs seems to be broken (v5.0.28)
+
+2003-12-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OpenGroupware.m: preload WebUI bundles on startup, force an initial
+	  login (v5.0.27)
+
+2003-12-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware+CTI.m: subminor cleanups (v5.0.26)
+
+2003-12-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* Main.wo/German.lproj/Main.wod: fixed CSS 'id' vs 'class' issue 
+	  (v5.0.25)
+	
+2003-12-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.24
+
+	* WODirectAction+LoginAction.m: code cleanups
+
+	* OpenGroupware.m: minor code cleanups
+
+2003-12-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OpenGroupware.m: minor code cleanups (v5.0.23)
+
+2003-12-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.22
+
+	* common.make: include common.make from GNUSTEP_MAKEFILES
+
+	* common.h: removed includes from FoundationExt
+
+2003-11-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: applied Nicola's fix to move rules to the postamble
+	  section (also moved the postamble rules into GNUmakefile.postamble)
+	  (v5.0.21)
+
+2003-11-25  Helge Hess  <helge.hess@skyrix.com>
+
+	* Main.wo: fixed new header HTML for IE (v5.0.20)
+
+2003-11-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.19
+
+	* OGoLogoutPage.wo: only display "why" image on logout page
+
+	* Main.wo: added the standard OGo header and some links to the login
+	  page
+
+	* Main.wo/German.lproj/Main.wod (Stylesheet): use the same CSS like the
+	  English.lproj - the CSS should not be different between English and
+	  German ...
+
+	* WODirectAction+LoginAction.m: fixed a major bug in processing login
+	  actions (an uninitialized variable was accessed), part of fix for
+	  OGo bug 420 (v5.0.18)
+
+Wed Nov 19 11:33:02 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* WODirectAction+LoginAction: remove spaces form the login if 
+	  it is not explicit allowed (AllowSpacesInLogin) (v5.0.17)
+
+2003-11-05  Helge Hess  <helge.hess@skyrix.com>
+
+	* WODirectAction+LoginAction.m: code cleanups, fixed a bug in the
+	  failure logging code (v5.0.16)
+
+2003-10-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* WODirectAction+LoginAction.m, Main.m: replaced indexOfString: with 
+	  rangeOfString: (v5.0.15)
+
+2002-11-03  Thomas Schild  <ts@skyrix.com>
+
+	* OpenGroupware.m: changed version 4.1e --> 5 (v5.0.14)
+
+2003-10-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* Main.wo: gave the submit button a name, so that no component ID is 
+	  generated as the submit button name - this also removes the 
+	  generation of a session if the login page is entered (v5.0.13)
+
+2003-10-27  Thomas Schild  <ts@skyrix.com>
+
+        * added Dutch.lproj (v5.0.12)
+
+2003-10-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* minor cleanups (requires OGoFoundation v5.0.17) (v5.0.11)
+
+2003-10-20  Thomas Schild  <ts@skyrix.com>
+
+	* added ptBR.lproj
+
+2003-10-07  Helge Hess  <helge.hess@skyrix.com>
+
+	* added Polish.lproj
+
+2003-09-30  Thomas Schild <ts@skyrix.com>
+
+	* Main.wo: ImageButton --> css SubmitButton
+
+2003-08-04  Thomas Schild <ts@skyrix.com>
+
+	* GNUmakefile: OpenGroupware_DERIVED_RESOURCES added (OOo Theme)
+
+2003-07-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* added components.cfg creation for some additional languages (v5.0.10)
+
+Mon Jul 14 22:09:01 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* Main.wo/German.lproj/Main.html: remove no longer required 
+	  #CanLogin tag (v5.0.9)
+
+Fri Jul 11 16:12:35 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* OpenGroupware.m: add a Default to set the minimum active session 
+	  count (OGoMinimumActiveSessionCount) (Default: 1). If it will be set 
+	  to 0, the application will not terminate after the last session 
+	  expired. (v5.0.8)
+
+Mon Jul  7 16:16:32 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.7)
+
+	* deleted old ChangeLog entries
+
+Fri Jun 18 17:50:43 1999  Helge Hess  <helge@trex.mdlink.de>
+
+	* activation.cfg: added 'forward' command for mails

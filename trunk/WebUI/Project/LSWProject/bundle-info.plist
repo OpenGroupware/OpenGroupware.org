@@ -1,0 +1,142 @@
+{
+  bundleHandler = LSWProjectModule;
+  
+  requires = {
+    bundleManagerVersion = 1;
+
+    bundles = ( 
+      { name = LSProject;     type = cmd; },
+      { name = OGoProject;    type = ds;  },
+      { name = OGoUIElements; type = lso; },
+    );
+    classes = (
+      { name = LSWModuleManager;  exact-version = 2; },
+      { name = LSWViewAction;     version = 1; },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     },
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = SkyProjectInlineViewer;    },
+      { name = LSWProjectModule;          },
+      { name = LSWProjects;               },
+      { name = LSWProjectEditor;          },
+      { name = LSWDocumentViewer;         },
+      { name = LSWDocumentMailPage;       },
+      { name = LSWDocumentHtmlMailPage;   },
+      { name = LSWDocumentTextMailPage;   },
+      { name = LSWProjectMailPage;        },
+      { name = LSWProjectHtmlMailPage;    },
+      { name = LSWProjectTextMailPage;    },
+      { name = LSWDocumentDownloadAction; },
+      { name = LSWProjectJobList;         },
+      { name = LSWProjectPreferences;     },
+      { name = SkyProjectAssignment;      },
+      { name = LSWProjectWizard;          },
+      { name = DateIntervalFormatter;     },
+      { name = SkyProjectSelection;       },
+      { name = SkyProjectList;            },
+      { name = SkyPropertyEditor;         },
+      { name = SkyPropertiesEditor;       },
+      { name = SkyProjectSelections;      },
+    );
+
+    WOComponents = (
+      { name = SkyProjectInlineViewer;    },
+      { name = LSWProjects;               },
+      { name = LSWProjectEditor;          },
+      { name = LSWDocumentViewer;         },
+      { name = LSWDocumentHtmlMailPage;   },
+      { name = LSWDocumentTextMailPage;   },
+      { name = LSWProjectHtmlMailPage;    },
+      { name = LSWProjectTextMailPage;    },
+      { name = LSWProjectJobList;         },
+      { name = LSWProjectPreferences;     },
+      { name = SkyProjectAssignment;      },
+      { name = LSWProjectWizard;          },
+      { name = SkyProjectSelection;       },
+      { name = SkyProjectList;            },
+      { name = SkyPropertyEditor;         },
+      { name = SkyPropertiesEditor;       },
+      { name = SkyProjectSelections;      },
+    );
+
+    PreferencePages = (
+      {
+        name      = "Project";
+        component = "LSWProjectPreferences";
+        labelKey  = "Project";
+        icon      = "icon_projects_26x21.gif";
+      }
+    );
+
+    LSWCommands = (
+      {
+        verb      = edit; 
+        type      = "gid/property";
+        component = SkyPropertiesEditor;
+      },
+      {
+        verb      = new; 
+        type      = "gid/property";
+        component = SkyPropertyEditor;
+      },
+      
+      { verb = edit;   type = "eo-gid/project"; component=LSWProjectEditor;},
+      { verb = delete; type = "eo-gid/project"; component=LSWProjectEditor;},
+      { verb = new;    type = "eo/project";  component = LSWProjectEditor; },
+      { verb = edit;   type = "eo/project";  component = LSWProjectEditor; },
+      { verb = delete; type = "eo/project";  component = LSWProjectEditor; },
+      { verb = view;   type = "eo/doc";      component = LSWDocumentViewer; },
+
+      {
+        verb      = "view-jobs-inline";
+        type      = "eo/project";
+        component = LSWProjectJobList;
+      },
+
+      {
+        verb = mailview; type = "eo-pkey/doc";
+        component = LSWDocumentHtmlMailPage;
+      },
+      {
+        verb = htmlMail; type = "eo/doc";
+        component = LSWDocumentHtmlMailPage;
+      },
+      {
+        verb = textMail; type = "eo/doc";
+        component = LSWDocumentTextMailPage;
+      },
+      {
+        verb = mailview; type = "eo-pkey/project";
+        component = LSWProjectHtmlMailPage;
+      },
+      {
+        verb = htmlMail; type = "eo/project";
+        component = LSWProjectHtmlMailPage;
+      },
+      {
+        verb = textMail; type = "eo/project";
+        component = LSWProjectTextMailPage;
+      },
+      {
+        verb = assignPersonProjects;  type = "eo/person";
+        component = SkyProjectAssignment;
+      },
+      {
+        verb = assignEnterpriseProjects;  type = "eo/enterprise";
+        component = SkyProjectAssignment;
+      },
+      {
+        verb = newWizard;     type = "eo/project";
+        component = LSWProjectWizard;
+      },
+      {
+        verb = editWizard;     type = "eo/project";
+        component = LSWProjectWizard;
+      },
+    );
+  };
+}

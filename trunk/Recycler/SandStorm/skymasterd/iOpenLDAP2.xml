@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<instance uid="openldap" templateclass="slapd"
+          xmlns="http://www.skyrix.com/od/skymasterd-config">
+  <priority>80</priority>
+  <parameter name="ip">
+    <value>0.0.0.0</value>
+  </parameter>
+  <parameter name="port">
+    <value>12080</value>
+  </parameter>
+</instance>

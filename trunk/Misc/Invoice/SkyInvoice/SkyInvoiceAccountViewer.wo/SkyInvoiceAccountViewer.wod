@@ -1,0 +1,116 @@
+// $Id: SkyInvoiceAccountViewer.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+//Style
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.invoiceAccountViewerWindowTitle;
+  onClose = session.navigation.leavePage;
+}
+
+InvoiceAccountTitle: LSWViewerTitle {
+  title     = account.accountNr;
+}
+
+UpperButtons: SkyButtonRow {
+  ordering = ( edit, clip );
+  /* defaultButtons */
+  hasEdit   = isEditEnabled;
+  onClip    = placeInClipboard;
+  onEdit    = edit;
+  edit      = labels.editAccount;
+  clip      = labels.clip;
+}
+
+ToggleAttr: SkyAttribute {
+  label = labels.currency;
+}
+TogglePanel: SkyInlineCurrencyToggle {
+  currency = session.userDefaults.invoice_currency;
+}
+
+//Tabs
+
+Tab: SkyTabView {
+  selection = tabKey;
+}
+
+AttributesTab: SkyTabItem {
+  key   = "attributes";
+  icon  = "attributes";
+  label = labels.attributes;
+}
+
+AccountingsTab: SkyTabItem {
+  key   = "accountings";
+  icon  = "history";
+  label = labels.accountings;
+}
+
+AccountViewer: LSWObjectViewer {
+  labels          = labels;
+  object          = account;
+  valueColor      = "subValueCell";
+  attributeColor  = "subAttributeCell";
+  numberFormatter = currencyFormatter;
+  attributes      = (
+    {   key     = "accountNr";  },
+    {   key     = "debitor";
+        relKey  = "description";
+        action  = "viewDebitor";
+    },
+    {   key     = "balance";    }
+  );
+}
+
+Buttons: SkyButtonRow {
+  ordering = ( new );
+
+  onNew       = newAccounting;
+  new         = labels.new;
+  tipNew      = labels.new;
+}
+
+AccountingList: LSWTableView {
+  labels          = labels;
+  title           = labels.accountings;
+  label           = labels.accountings;
+  list            = accountings;
+  item            = item;
+  sorter          = session.eoSorter;
+  dateFormatter   = session.formatDateTime;
+  numberFormatter = currencyFormatter;
+  selectedAttribute = selectedAttribute;
+  start           = start;
+  blockSize       = session.userDefaults.invoice_blocksize;
+  isDescending    = isDescending;
+  attributes      = (
+    {   key      = "toInvoiceAction";
+        relKey   = "actionDate";
+        labelKey = "date";
+        sort     = YES;
+    },
+    {   key      = "invoice";
+        relKey   = "invoiceNr";
+        labelKey = "invoice";
+        action   = "viewInvoice";
+        sort     = YES;
+    },
+    {   key      = "debit";
+        labelKey = "debit";
+        sort     = YES;
+        align    = "RIGHT";
+    },
+    {   key      = "balance";
+        labelKey = "balance";
+        sort     = YES;
+        align    = "RIGHT";
+    },
+    {   key      = "toInvoiceAction";
+        labelKey = "logText";
+        relKey   = "logText";
+        sort     = NO;
+    }
+  );
+}

@@ -1,0 +1,774 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 38;
+	objects = {
+		E87F48F303D4C0BB00A865E9 = {
+			children = (
+				E87F49E203D4C37700A865E9,
+				E87F49ED03D4C38400A865E9,
+				E87F49EC03D4C37F00A865E9,
+				E87F49EE03D4C38E00A865E9,
+				E8EFFF6D03D4DDAC00A865E9,
+			);
+			isa = PBXGroup;
+			refType = 4;
+		};
+		E87F48F503D4C0BB00A865E9 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUG = yes;
+				OTHER_CFLAGS = "\U0001-DUSE_VA_LIST_PTR=1 -DDEBUG=1 -DCOCOA_Foundation_LIBRARY=1 -DNeXT_Foundation_LIBRARY=1 -DNeXT_RUNTIME=1 -DAPPLE_RUNTIME=1";
+			};
+			isa = PBXBuildStyle;
+			name = Development;
+		};
+		E87F48F603D4C0BB00A865E9 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			isa = PBXBuildStyle;
+			name = Deployment;
+		};
+		E87F48F703D4C0BB00A865E9 = {
+			buildStyles = (
+				E87F48F503D4C0BB00A865E9,
+				E87F48F603D4C0BB00A865E9,
+			);
+			hasScannedForEncodings = 1;
+			isa = PBXProject;
+			mainGroup = E87F48F303D4C0BB00A865E9;
+			productRefGroup = E8EFFF6D03D4DDAC00A865E9;
+			projectDirPath = "";
+			targets = (
+				E8EFFF6B03D4DDAC00A865E9,
+				E8EFFF7903D4DDCF00A865E9,
+				E8EFFFA803D4DF0E00A865E9,
+				E8C3DA9703D4F05C00A865E9,
+				E8C3DB1303D4F06600A865E9,
+				E8EFFFAB03D4DF1400A865E9,
+			);
+		};
+		E87F49E203D4C37700A865E9 = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			path = ChangeLog;
+			refType = 4;
+		};
+		E87F49E303D4C37700A865E9 = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			path = common.h;
+			refType = 4;
+		};
+		E87F49E403D4C37700A865E9 = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			path = GNUmakefile;
+			refType = 4;
+		};
+		E87F49E503D4C37700A865E9 = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			path = NGUnixTool.h;
+			refType = 4;
+		};
+		E87F49E603D4C37700A865E9 = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			path = NGUnixTool.m;
+			refType = 4;
+		};
+		E87F49E703D4C37700A865E9 = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			path = sky_install_sieve.m;
+			refType = 4;
+		};
+		E87F49E803D4C37700A865E9 = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			path = sky_send_bulk_messages.m;
+			refType = 4;
+		};
+		E87F49E903D4C37700A865E9 = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			path = skyaptnotify.m;
+			refType = 4;
+		};
+		E87F49EA03D4C37700A865E9 = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			path = skyprojectexporter.m;
+			refType = 4;
+		};
+		E87F49EB03D4C37700A865E9 = {
+			fileEncoding = 5;
+			isa = PBXFileReference;
+			path = skyprojectimporter.m;
+			refType = 4;
+		};
+		E87F49EC03D4C37F00A865E9 = {
+			children = (
+				E87F49E303D4C37700A865E9,
+				E87F49E503D4C37700A865E9,
+				E87F49E603D4C37700A865E9,
+				E87F49E703D4C37700A865E9,
+				E87F49E803D4C37700A865E9,
+				E87F49E903D4C37700A865E9,
+				E87F49EA03D4C37700A865E9,
+				E87F49EB03D4C37700A865E9,
+			);
+			isa = PBXGroup;
+			name = Sources;
+			refType = 4;
+		};
+		E87F49ED03D4C38400A865E9 = {
+			children = (
+				E87F49E403D4C37700A865E9,
+			);
+			isa = PBXGroup;
+			name = Makefiles;
+			refType = 4;
+		};
+		E87F49EE03D4C38E00A865E9 = {
+			children = (
+				E8EFFF5E03D4DD5D00A865E9,
+				E8EFFF5F03D4DD9300A865E9,
+				E8EFFF6203D4DD9300A865E9,
+				E8EFFF6103D4DD9300A865E9,
+				E8EFFF6003D4DD9300A865E9,
+				E8EF013D03D4E42E00A865E9,
+				E8C3DB1C03D4F0AE00A865E9,
+			);
+			isa = PBXGroup;
+			name = "Linked Frameworks";
+			refType = 4;
+		};
+		E8C3DA9303D4F05C00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8C3DB1703D4F07000A865E9,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8C3DA9403D4F05C00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8C3DB1603D4F06F00A865E9,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8C3DA9503D4F05C00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8C3DB1D03D4F0AE00A865E9,
+				E8C3DB2403D4F0FF00A865E9,
+				E8C3DB2503D4F0FF00A865E9,
+				E8C3DB2603D4F10000A865E9,
+				E8C3DB2703D4F10000A865E9,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8C3DA9603D4F05C00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8C3DA9703D4F05C00A865E9 = {
+			buildPhases = (
+				E8C3DA9303D4F05C00A865E9,
+				E8C3DA9403D4F05C00A865E9,
+				E8C3DA9503D4F05C00A865E9,
+				E8C3DA9603D4F05C00A865E9,
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /Volumes/Users/helge/build;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = skyprojectexporter;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+			);
+			isa = PBXToolTarget;
+			name = skyprojectexporter;
+			productInstallPath = /usr/local/bin;
+			productName = skyprojectexporter;
+			productReference = E8C3DA9803D4F05C00A865E9;
+		};
+		E8C3DA9803D4F05C00A865E9 = {
+			isa = PBXExecutableFileReference;
+			path = skyprojectexporter;
+			refType = 3;
+		};
+		E8C3DB0F03D4F06600A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8C3DB1903D4F07400A865E9,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8C3DB1003D4F06600A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8C3DB1803D4F07300A865E9,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8C3DB1103D4F06600A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8C3DB1A03D4F08200A865E9,
+				E8C3DB1B03D4F08200A865E9,
+				E8C3DB1E03D4F0AE00A865E9,
+				E8C3DB2203D4F0F400A865E9,
+				E8C3DB2303D4F0F800A865E9,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8C3DB1203D4F06600A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8C3DB1303D4F06600A865E9 = {
+			buildPhases = (
+				E8C3DB0F03D4F06600A865E9,
+				E8C3DB1003D4F06600A865E9,
+				E8C3DB1103D4F06600A865E9,
+				E8C3DB1203D4F06600A865E9,
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /Volumes/Users/helge/build;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = skyprojectimporter;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+			);
+			isa = PBXToolTarget;
+			name = skyprojectimporter;
+			productInstallPath = /usr/local/bin;
+			productName = skyprojectimporter;
+			productReference = E8C3DB1403D4F06600A865E9;
+		};
+		E8C3DB1403D4F06600A865E9 = {
+			isa = PBXExecutableFileReference;
+			path = skyprojectimporter;
+			refType = 3;
+		};
+		E8C3DB1603D4F06F00A865E9 = {
+			fileRef = E87F49EA03D4C37700A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8C3DB1703D4F07000A865E9 = {
+			fileRef = E87F49E303D4C37700A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8C3DB1803D4F07300A865E9 = {
+			fileRef = E87F49EA03D4C37700A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8C3DB1903D4F07400A865E9 = {
+			fileRef = E87F49E303D4C37700A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8C3DB1A03D4F08200A865E9 = {
+			fileRef = E8EFFF5E03D4DD5D00A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8C3DB1B03D4F08200A865E9 = {
+			fileRef = E8EFFF5F03D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8C3DB1C03D4F0AE00A865E9 = {
+			isa = PBXFrameworkReference;
+			name = SkyProject.framework;
+			path = /Volumes/Users/helge/Library/Frameworks/SkyProject.framework;
+			refType = 0;
+		};
+		E8C3DB1D03D4F0AE00A865E9 = {
+			fileRef = E8C3DB1C03D4F0AE00A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8C3DB1E03D4F0AE00A865E9 = {
+			fileRef = E8C3DB1C03D4F0AE00A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8C3DB2203D4F0F400A865E9 = {
+			fileRef = E8EFFF6103D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8C3DB2303D4F0F800A865E9 = {
+			fileRef = E8EFFF6003D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8C3DB2403D4F0FF00A865E9 = {
+			fileRef = E8EFFF6103D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8C3DB2503D4F0FF00A865E9 = {
+			fileRef = E8EFFF6003D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8C3DB2603D4F10000A865E9 = {
+			fileRef = E8EFFF5E03D4DD5D00A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8C3DB2703D4F10000A865E9 = {
+			fileRef = E8EFFF5F03D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8C3DB2803D4F11F00A865E9 = {
+			isa = PBXTargetDependency;
+			target = E8C3DA9703D4F05C00A865E9;
+		};
+		E8C3DB2903D4F11F00A865E9 = {
+			isa = PBXTargetDependency;
+			target = E8C3DB1303D4F06600A865E9;
+		};
+		E8EF013D03D4E42E00A865E9 = {
+			isa = PBXFrameworkReference;
+			name = SkyScheduler.framework;
+			path = /Volumes/Users/helge/Library/Frameworks/SkyScheduler.framework;
+			refType = 0;
+		};
+		E8EF013E03D4E42E00A865E9 = {
+			fileRef = E8EF013D03D4E42E00A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EF013F03D4E50000A865E9 = {
+			isa = PBXTargetDependency;
+			target = E8EFFF6B03D4DDAC00A865E9;
+		};
+		E8EFFF5E03D4DD5D00A865E9 = {
+			isa = PBXFrameworkReference;
+			name = Foundation.framework;
+			path = /System/Library/Frameworks/Foundation.framework;
+			refType = 0;
+		};
+		E8EFFF5F03D4DD9300A865E9 = {
+			isa = PBXFrameworkReference;
+			name = FoundationExt.framework;
+			path = /Volumes/Users/helge/Library/Frameworks/FoundationExt.framework;
+			refType = 0;
+		};
+		E8EFFF6003D4DD9300A865E9 = {
+			isa = PBXFrameworkReference;
+			name = LSFoundation.framework;
+			path = /Volumes/Users/helge/Library/Frameworks/LSFoundation.framework;
+			refType = 0;
+		};
+		E8EFFF6103D4DD9300A865E9 = {
+			isa = PBXFrameworkReference;
+			name = SxCore.framework;
+			path = /Volumes/Users/helge/Library/Frameworks/SxCore.framework;
+			refType = 0;
+		};
+		E8EFFF6203D4DD9300A865E9 = {
+			isa = PBXFrameworkReference;
+			name = SxXML.framework;
+			path = /Volumes/Users/helge/Library/Frameworks/SxXML.framework;
+			refType = 0;
+		};
+		E8EFFF6703D4DDAC00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8EFFF7003D4DDB400A865E9,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8EFFF6803D4DDAC00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8EFFF6F03D4DDB300A865E9,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8EFFF6903D4DDAC00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8EFFF7103D4DDB800A865E9,
+				E8EFFF7203D4DDBA00A865E9,
+				E8EFFF7303D4DDBB00A865E9,
+				E8EFFF7403D4DDBC00A865E9,
+				E8EF013E03D4E42E00A865E9,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8EFFF6A03D4DDAC00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8EFFF6B03D4DDAC00A865E9 = {
+			buildPhases = (
+				E8EFFF6703D4DDAC00A865E9,
+				E8EFFF6803D4DDAC00A865E9,
+				E8EFFF6903D4DDAC00A865E9,
+				E8EFFF6A03D4DDAC00A865E9,
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /Volumes/Users/helge/build;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = skyaptnotify;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+			);
+			isa = PBXToolTarget;
+			name = skyaptnotify;
+			productInstallPath = /usr/local/bin;
+			productName = skyaptnotify;
+			productReference = E8EFFF6C03D4DDAC00A865E9;
+		};
+		E8EFFF6C03D4DDAC00A865E9 = {
+			isa = PBXExecutableFileReference;
+			path = skyaptnotify;
+			refType = 3;
+		};
+		E8EFFF6D03D4DDAC00A865E9 = {
+			children = (
+				E8EFFF6C03D4DDAC00A865E9,
+				E8EFFF7A03D4DDCF00A865E9,
+				E8EFFFA903D4DF0E00A865E9,
+				E8C3DA9803D4F05C00A865E9,
+				E8C3DB1403D4F06600A865E9,
+			);
+			isa = PBXGroup;
+			name = Products;
+			refType = 4;
+		};
+		E8EFFF6F03D4DDB300A865E9 = {
+			fileRef = E87F49E903D4C37700A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFF7003D4DDB400A865E9 = {
+			fileRef = E87F49E303D4C37700A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFF7103D4DDB800A865E9 = {
+			fileRef = E8EFFF5E03D4DD5D00A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFF7203D4DDBA00A865E9 = {
+			fileRef = E8EFFF5F03D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFF7303D4DDBB00A865E9 = {
+			fileRef = E8EFFF6003D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFF7403D4DDBC00A865E9 = {
+			fileRef = E8EFFF6103D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFF7503D4DDCF00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8EFFF7D03D4DDDE00A865E9,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8EFFF7603D4DDCF00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8EFFF7C03D4DDDD00A865E9,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8EFFF7703D4DDCF00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8EFFF7E03D4DDDF00A865E9,
+				E8EFFF7F03D4DDE000A865E9,
+				E8EFFF8003D4DDE000A865E9,
+				E8EFFF8103D4DDE100A865E9,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8EFFF7803D4DDCF00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8EFFF7903D4DDCF00A865E9 = {
+			buildPhases = (
+				E8EFFF7503D4DDCF00A865E9,
+				E8EFFF7603D4DDCF00A865E9,
+				E8EFFF7703D4DDCF00A865E9,
+				E8EFFF7803D4DDCF00A865E9,
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /Volumes/Users/helge/build;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = sky_install_sieve;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+			);
+			isa = PBXToolTarget;
+			name = sky_install_sieve;
+			productInstallPath = /usr/local/bin;
+			productName = sky_install_sieve;
+			productReference = E8EFFF7A03D4DDCF00A865E9;
+		};
+		E8EFFF7A03D4DDCF00A865E9 = {
+			isa = PBXExecutableFileReference;
+			path = sky_install_sieve;
+			refType = 3;
+		};
+		E8EFFF7C03D4DDDD00A865E9 = {
+			fileRef = E87F49E703D4C37700A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFF7D03D4DDDE00A865E9 = {
+			fileRef = E87F49E303D4C37700A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFF7E03D4DDDF00A865E9 = {
+			fileRef = E8EFFF5E03D4DD5D00A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFF7F03D4DDE000A865E9 = {
+			fileRef = E8EFFF5F03D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFF8003D4DDE000A865E9 = {
+			fileRef = E8EFFF6203D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFF8103D4DDE100A865E9 = {
+			fileRef = E8EFFF6103D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFFA403D4DF0E00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8EFFFAF03D4DF2000A865E9,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8EFFFA503D4DF0E00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8EFFFAE03D4DF1F00A865E9,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8EFFFA603D4DF0E00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+				E8EFFFB003D4DF2100A865E9,
+				E8EFFFB103D4DF2200A865E9,
+				E8EFFFB203D4DF2200A865E9,
+				E8EFFFB303D4DF2300A865E9,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8EFFFA703D4DF0E00A865E9 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8EFFFA803D4DF0E00A865E9 = {
+			buildPhases = (
+				E8EFFFA403D4DF0E00A865E9,
+				E8EFFFA503D4DF0E00A865E9,
+				E8EFFFA603D4DF0E00A865E9,
+				E8EFFFA703D4DF0E00A865E9,
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /Volumes/Users/helge/build;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = sky_send_bulk_messages;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+			);
+			isa = PBXToolTarget;
+			name = sky_send_bulk_messages;
+			productInstallPath = /usr/local/bin;
+			productName = sky_send_bulk_messages;
+			productReference = E8EFFFA903D4DF0E00A865E9;
+		};
+		E8EFFFA903D4DF0E00A865E9 = {
+			isa = PBXExecutableFileReference;
+			path = sky_send_bulk_messages;
+			refType = 3;
+		};
+		E8EFFFAB03D4DF1400A865E9 = {
+			buildPhases = (
+			);
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = all;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+				E8EF013F03D4E50000A865E9,
+				E8EFFFAC03D4DF1900A865E9,
+				E8EFFFAD03D4DF1B00A865E9,
+				E8C3DB2803D4F11F00A865E9,
+				E8C3DB2903D4F11F00A865E9,
+			);
+			isa = PBXAggregateTarget;
+			name = all;
+			productName = all;
+		};
+		E8EFFFAC03D4DF1900A865E9 = {
+			isa = PBXTargetDependency;
+			target = E8EFFF7903D4DDCF00A865E9;
+		};
+		E8EFFFAD03D4DF1B00A865E9 = {
+			isa = PBXTargetDependency;
+			target = E8EFFFA803D4DF0E00A865E9;
+		};
+		E8EFFFAE03D4DF1F00A865E9 = {
+			fileRef = E87F49E803D4C37700A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFFAF03D4DF2000A865E9 = {
+			fileRef = E87F49E303D4C37700A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFFB003D4DF2100A865E9 = {
+			fileRef = E8EFFF5E03D4DD5D00A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFFB103D4DF2200A865E9 = {
+			fileRef = E8EFFF5F03D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFFB203D4DF2200A865E9 = {
+			fileRef = E8EFFF6203D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E8EFFFB303D4DF2300A865E9 = {
+			fileRef = E8EFFF6103D4DD9300A865E9;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+	};
+	rootObject = E87F48F703D4C0BB00A865E9;
+}

@@ -1,0 +1,176 @@
+2005-01-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkySchedulerSelectPanel.m: moved some plist statics to Defaults, some
+	  code cleanups (v5.1.32)
+
+2005-01-03  Helge Hess <helge.hess@opengroupware.org>
+
+	* SkySchedulerPage.m: code cleanups, fixed OGo bug #1132 (v5.1.31)
+
+2004-11-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* WODirectAction+SchedulerViews.m: code cleanups (v5.1.30)
+
+2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkySchedulerSelectPanel.wo, SkyAptResourceEditor.wo: removed
+	  'singleSelection' bindings (v5.1.29)
+
+2004-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkySchedulerSelectPanel.m: major code cleanups (v5.0.28)
+
+2004-06-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkySchedulerSelectPanel.m: minor code cleanups (v5.0.27)
+
+2004-06-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.26
+
+	* SkySchedulerSelectPopUp.m: major code cleanups
+
+	* SkySchedulerSelectPopUp.wo: changed to WOx template
+
+2004-05-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyAptDeletePanel.wox: do not escape label of viewer (fixes a bug in
+	  the German translation, &ouml; was displayed) (v5.0.25)
+
+2004-05-14  Bjoern Stierand  <bjoern@opengroupware.org>
+
+	* SkySchedulerPage.wo/SkySchedulerPage.wod (Buttons): fixed a missing
+	  semicolon (v5.0.24)
+
+2004-05-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.23
+
+	* SkyAptResourceViewer.wo: minor template cleanups
+
+	* SkySchedulerSelectPanel.wo: fixed HTML generation (superflous </td>
+	  tag)
+
+	* SkySchedulerPage.wo: some template cleanups
+
+2004-05-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.22
+
+	* minor cleanups to templates
+
+	* SkyAptDeletePanel.wo: changed to WOx template
+
+	* GNUmakefile: added postamble which validates WOx files prior building
+
+2004-05-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkySchedulerSelectPanel.wo: various template cleanups (v5.0.21)
+
+2004-03-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkySchedulerPage.m: minor code cleanups (v5.0.20)
+
+2004-03-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.19
+
+	* SkyAptResourceViewer.m: properly include common.h, minor cleanups
+
+	* SkySchedulerSelectPanel.m: various code cleanups, properly include
+	  time.h
+
+	* WODirectAction+SchedulerViews.m: fixed a warning when compiling with
+	  gstep-base
+
+2004-02-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyAptDeletePanel.m: fixed a log to be a debug log (v5.0.18)
+
+2004-01-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.17
+
+	* WODirectAction+SchedulerViews.m: subminor code cleanups
+
+	* SkyAptResourceEditor.m: various code cleanups
+
+	* SkyAptDeletePanel.m: changed to use -rangeOfString: instead of 
+	  -indexOfString:
+
+	* GNUmakefile.preamble: fixed for MacOSX compilation
+
+2003-12-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyAptResourceEditor, SkySchedulerSelectPanel: fixed CSS 'id' vs 
+	  'class' issue (v5.0.16)
+
+2003-11-27  Thomas Schild  <ts@skyrix.com>
+
+	* SkySchedulerPage.wo: removed *.lproj (v5.0.15)
+
+2003-11-06  Thomas Schild  <ts@skyrix.com>
+
+	* SkyAptResourceEditor.wo: imageButton --> css submitButton (v5.0.14)
+
+2003-11-05  Thomas Schild  <ts@skyrix.com>
+
+        * SkySchedulerSelectPanel.wo: thisDay/Week/Month/Year Button
+	  --> css WOHyperlink Button (v5.0.13)
+
+Tue Oct 28 19:26:45 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* v5.0.12	
+	
+	* WODirectAction+SchedulerViews.m: added warning, 
+	  requires libFoundation v1.0.21
+	
+	* SkySchedulerPage.m: (monthOverviewPrint) 
+	  convey timeZone to printViewer (solves ogo bug 110)
+
+2003-10-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.11
+
+	* SkySchedulerPage.m: code cleanups
+
+	* requires OGoFoundation v5.0.17
+
+	* SkySchedulerConflictPage.m: code cleanups
+
+2003-10-08  Thomas Schild  <ts@skyrix.com>
+
+	* SkySchedulerSelectPanel.wo: imageButton --> css submitButton
+
+Wed Sep  3 13:45:06 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyAptDeletePanel.m: code cleanups (v5.0.10)
+
+Tue Aug  5 16:45:15 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* WODirectAction+SchedulerViews.m: fixed weekStart (solves bug 1833)
+	  (v5.0.9)
+
+Mon Jul 21 14:27:21 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkySchedulerSelectPanel.m: timeZone description now refering to
+	  selected date (i.e. switches from MET DST to MET when watched 
+	  period reaches wintertime) (v5.0.8) (solves bug 1140)
+
+Tue Jul 15 18:19:46 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkySchedulerPage.m: fixed Palm/Job bundle search (v5.0.7)
+
+Mon Jul  7 20:05:45 2003  Jan Reichmann  <jan@skyrix.com>
+
+	*  fixed OGo import (v5.0.6)
+
+Mon Jul  7 18:00:20 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.5)
+
+	* removed historic ChangeLog's
+
+Mon May 22 17:20:13 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* created ChangeLog

@@ -1,0 +1,32 @@
+ <!--$Id: LSWImapMailMove.html 2 2004-08-20 11:37:44Z znek $ -->
+<#Frame>
+ <#Window>
+  <#Form>
+    <table border="0" cellspacing="0" cellpadding="3" width="100%">
+      <#Title />
+      <tr>
+        <#AttributeCell>
+           <#FolderTree>
+             <#FolderTreeCell><#Font>
+               <small>&nbsp;<#CurrentFolderLink /></small>
+             </#Font></#FolderTreeCell>
+          </#FolderTree>
+        </#AttributeCell>
+
+        <#ValueCell>
+          <#MailTableView>
+            <#Switcher>
+              <#SubjectCase>
+                <#SubjectData><#Subject /></#SubjectData>
+              </#SubjectCase>
+              <#SenderCase>
+                <#SenderData><#Sender /></#SenderData>
+              </#SenderCase>
+            </#Switcher>
+          </#MailTableView>
+        </#ValueCell>
+      </tr>
+    </table>
+  </#Form>
+ </#Window>
+</#Frame>

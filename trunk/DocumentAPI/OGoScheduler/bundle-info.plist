@@ -1,0 +1,28 @@
+{
+  CVSID = "$Id$";
+  bundleHandler = "SkySchedulerBundleManager";
+  
+  requires = {
+    bundleManagerVersion = 1;
+  };
+  
+  provides = {
+    classes = (
+      { name = SkySchedulerBundleManager;      },
+      { name = SkyAppointmentDataSource;       },
+      { name = SkyAppointmentDocument;         },
+      { name = SkyAppointmentQualifier;        },      
+    );
+    datasources = (
+      { name = SkyAppointmentDataSource;       },
+    );
+    
+    SkyDocumentGlobalIDResolver = (
+      {
+        name          = SkyAppointmentDocumentGlobalIDResolver;
+        GlobalIDClass = EOKeyGlobalID;
+        qualifier     = "entityName='Date'";
+      }
+    );
+  };
+}

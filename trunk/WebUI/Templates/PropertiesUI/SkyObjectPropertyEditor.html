@@ -1,0 +1,61 @@
+<#Frame>
+  <!-- $Id: SkyObjectPropertyEditor.html 2 2004-08-20 11:37:44Z znek $ -->
+  <#Window>
+    <#Form>
+      <#HasNoProps>
+        <table border='0' cellspacing='0' cellpadding='3'>
+          <tr>
+            <td></td>
+            <#ValueCell>
+              <#Font>no properties defined on object</#Font>
+            </#ValueCell>
+          </tr>
+          
+          <tr>
+            <td></td>
+            <td>
+              <#SaveSubmit/>    
+              <#CancelSubmit/>
+            </td>
+          </tr>
+        </table>
+      </#HasNoProps>
+      
+      <#HasProps>
+        <table border='0' cellspacing='0' cellpadding='3'>
+          <#PropertyRep>
+            <tr>
+              <#AttributeCell><#PropertyNamespace/>:</#AttributeCell>
+              <#AttributeCell><#PropertyName     />:</#AttributeCell>
+              
+              <#ValueCell>
+                <#EditFont><#PropertyValue/></#EditFont>
+              </#ValueCell>
+              
+              <#ValueCell>
+                <#EditFont><#DeleteBox/></#EditFont>
+              </#ValueCell>
+            </tr>
+          </#PropertyRep>
+        
+          <tr>
+            <td></td>
+            <td></td>
+            <td>
+              <#SaveSubmit/>    
+              <#CancelSubmit/>
+            </td>
+            <td><#DeleteSubmit/></td>
+          </tr>
+        </table>
+      </#HasProps>
+      
+      <hr />
+      
+      <#NewNamespace/><#NewName/>:
+      <#NewType/><#NewValue/>
+      <#NewSubmit/>    
+
+    </#Form>
+  </#Window>
+</#Frame>

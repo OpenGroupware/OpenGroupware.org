@@ -1,0 +1,29 @@
+{
+  requires = ( ZSCommon, Tasks );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+
+  categories = {
+    SxFolder = {
+      methods = {
+        "rss" = {
+          protectedBy = "View";
+          pageName    = "SxFolderRSS"; 
+        };
+      };
+    };
+
+    SxTaskFolder = {
+      methods = {
+        "rss" = {
+          protectedBy = "View";
+          selector    = "rssInContext:";
+        };
+      };
+    };
+  };
+}

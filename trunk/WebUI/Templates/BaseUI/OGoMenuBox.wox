@@ -1,0 +1,55 @@
+<?xml version='1.0' standalone='yes'?>
+<span xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+>
+  <var:if condition="session.isTextModeBrowser">
+    *<var:string value="title" />* <br />
+    <var:component-content/>
+  </var:if>
+  
+  <var:if condition="session.isTextModeBrowser" const:negate="YES">
+    <table border="0" cellspacing="0" cellpadding="0" class="leftmenu">
+      <tr>
+        <td><img filename="box_topleft.gif" /></td>
+        <td rsrc:background="box_top.gif"><img filename="box_top.gif" /></td>
+        <td><img filename="box_topright.gif" /></td>
+      </tr>
+      <tr valign="top">
+        <td rsrc:background="box_left.gif"><img filename="box_left.gif"/></td>
+        <td width="100%">
+          <table width="100%" border="0" cellspacing="2" cellpadding="" 
+                 class="leftmenu">
+            <tr>
+              <td><font class="skydockfont"
+                    ><var:string value="title" /></font></td>
+            </tr>
+            <tr><td colspan="2">
+              <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                  <td class="linecolor"><img filename="line_left.gif" /></td>
+                  <td class="linecolor" width="100%"
+                      ><img filename="line_stretch.gif" /></td>
+                  <td class="linecolor"><img filename="line_right.gif" /></td>
+                </tr>
+              </table></td>
+            </tr>
+            <tr><td height="3" /></tr>
+            
+            <!-- so the content must be a set of tr tags -->
+            <var:component-content/>
+          </table>
+        </td>
+        <td rsrc:background="box_right.gif"
+            ><img filename="box_right.gif"/></td>
+      </tr>
+      <tr>
+        <td><img filename="box_botleft.gif" /></td>
+        <td rsrc:background="box_bottom.gif"
+            ><img filename="box_bottom.gif" /></td>
+        <td><img filename="box_botright.gif" /></td>
+      </tr>
+    </table>
+  </var:if>
+</span>

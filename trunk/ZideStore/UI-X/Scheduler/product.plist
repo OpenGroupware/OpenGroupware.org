@@ -1,0 +1,35 @@
+{
+  requires = ( MAIN, CommonUI );
+
+  publicResources = (
+    previous_week.gif,
+    next_week.gif
+  );
+
+  factories = {
+  };
+
+  categories = {
+    SxAppointmentFolder = {
+      methods = {
+        "weekoverview" = { 
+          protectedBy = "View";
+          pageName    = "OGoCalWeekOverview"; 
+        };
+        "monthoverview" = { 
+          protectedBy = "View";
+          pageName    = "OGoCalMonthOverview"; 
+        };
+      };
+    };
+
+    SxAppointment = {
+      methods = {
+        "view" = { 
+          protectedBy = "View";
+          pageName    = "OGoAppointmentView"; 
+        };
+      };
+    };
+  };
+}

@@ -1,0 +1,34 @@
+// $Id: SkyWarningPanel.wod,v 1.2 2004/05/04 14:48:11 helge Exp $
+
+Panel: SkyPanel {
+  panelName = panelName;
+  isVisible = isVisible;
+  string    = string;
+  filename  = filename;
+}
+
+PanelContent: WOComponentContent {}
+
+PanelCancel: SkyPanelLink {
+  panelName = panelName;
+  filename  = "delete.gif";
+  verb      = "hide";
+  isVisible = isVisible;
+  // alt  = labels.cancel; // not yet implemented
+}
+
+LeftCorner: WOImage {
+  filename = "panel_upper_left_corner.gif";
+  border   = "0";
+}
+
+RightCorner: WOImage {
+  filename = "panel_upper_right_corner.gif";
+  border   = "0";
+}
+
+UpperMiddleCell: WOGenericContainer {
+  elementName = "td";
+  background  = panelTopBackground;
+  align       = "right";
+}

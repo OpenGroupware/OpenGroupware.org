@@ -1,0 +1,6 @@
+# postprocessing
+
+before-all :: $(OGoMailViewers_DERIVED_RESOURCES)
+
+clean ::
+	rm -f $(OGoMailViewers_DERIVED_RESOURCES)

@@ -1,0 +1,640 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 38;
+	objects = {
+		691F9C540243666A00A8007E = {
+			children = (
+				6976FE9402030A4B00A8007E,
+				6976FE9502030A4B00A8007E,
+				6976FE9602030A4B00A8007E,
+				6976FE9702030A4B00A8007E,
+				6976FE9902030A4B00A8007E,
+				6976FE9A02030A4B00A8007E,
+				69492FB40349028E0054F61D,
+				69492FB50349028E0054F61D,
+				69492FB60349028E0054F61D,
+				69492FB70349028E0054F61D,
+				69492FB80349028E0054F61D,
+				69492FB90349028E0054F61D,
+				69492FBA0349028E0054F61D,
+				69492FBD0349028E0054F61D,
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+		};
+		691F9C550243666A00A8007E = {
+			children = (
+				691F9C56024366E100A8007E,
+				69492F3F0348FBAA0054F61D,
+				69492F400348FBAA0054F61D,
+				69492F88034902500054F61D,
+			);
+			isa = PBXGroup;
+			name = "Linked Frameworks";
+			refType = 4;
+		};
+		691F9C56024366E100A8007E = {
+			isa = PBXFrameworkReference;
+			name = Foundation.framework;
+			path = /System/Library/Frameworks/Foundation.framework;
+			refType = 0;
+		};
+		691F9C57024366E100A8007E = {
+			children = (
+				691F9C58024366E100A8007E,
+				69492FCF034902C00054F61D,
+			);
+			isa = PBXGroup;
+			name = Products;
+			refType = 4;
+		};
+		691F9C58024366E100A8007E = {
+			isa = PBXFrameworkReference;
+			path = SkyDaemon.framework;
+			refType = 3;
+		};
+		691F9C59024366E100A8007E = {
+			buildPhases = (
+				691F9C5A024366E100A8007E,
+				691F9C60024366E100A8007E,
+				691F9C61024366E100A8007E,
+				691F9C65024366E100A8007E,
+				691F9C67024366E100A8007E,
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = /Users/helge/build;
+				FRAMEWORK_VERSION = A;
+				OTHER_CFLAGS = "-DCOMPILE_AS_FRAMEWORK=1 -DCOCOA_Foundation_LIBRARY=1 -DNeXT_Foundation_LIBRARY=1 -DNeXT_RUNTIME=1";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOL_FLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRINCIPAL_CLASS = "";
+				PRODUCT_NAME = SkyDaemon;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+				WRAPPER_EXTENSION = framework;
+			};
+			dependencies = (
+			);
+			isa = PBXFrameworkTarget;
+			name = SkyDaemon;
+			productInstallPath = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+			productName = SkyDaemon;
+			productReference = 691F9C58024366E100A8007E;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string></string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>com.skyrix.daemons.SkyDaemon</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string></string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>4.2</string>
+</dict>
+</plist>
+";
+			shouldUseHeadermap = 0;
+		};
+		691F9C5A024366E100A8007E = {
+			buildActionMask = 2147483647;
+			files = (
+				691F9C5B024366E100A8007E,
+				691F9C5C024366E100A8007E,
+				691F9C5D024366E100A8007E,
+				691F9C5E024366E100A8007E,
+				691F9C5F024366E100A8007E,
+				69492FBF0349028E0054F61D,
+				69492FC00349028E0054F61D,
+				69492FC20349028E0054F61D,
+				69492FC40349028E0054F61D,
+				69492FC80349028E0054F61D,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		691F9C5B024366E100A8007E = {
+			fileRef = 6976FE9402030A4B00A8007E;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		691F9C5C024366E100A8007E = {
+			fileRef = 6976FE9602030A4B00A8007E;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		691F9C5D024366E100A8007E = {
+			fileRef = 6976FE9902030A4B00A8007E;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		691F9C5E024366E100A8007E = {
+			fileRef = 6976FE9302030A4B00A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C5F024366E100A8007E = {
+			fileRef = 6976FE9802030A4B00A8007E;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		691F9C60024366E100A8007E = {
+			buildActionMask = 2147483647;
+			files = (
+				69492FC90349029F0054F61D,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		691F9C61024366E100A8007E = {
+			buildActionMask = 2147483647;
+			files = (
+				691F9C62024366E100A8007E,
+				691F9C63024366E100A8007E,
+				691F9C64024366E100A8007E,
+				69492FC10349028E0054F61D,
+				69492FC30349028E0054F61D,
+				69492FC50349028E0054F61D,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		691F9C62024366E100A8007E = {
+			fileRef = 6976FE9502030A4B00A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C63024366E100A8007E = {
+			fileRef = 6976FE9702030A4B00A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C64024366E100A8007E = {
+			fileRef = 6976FE9A02030A4B00A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C65024366E100A8007E = {
+			buildActionMask = 2147483647;
+			files = (
+				691F9C66024366E100A8007E,
+				69492F430348FBAA0054F61D,
+				69492F440348FBAA0054F61D,
+				69492FB2034902500054F61D,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		691F9C66024366E100A8007E = {
+			fileRef = 691F9C56024366E100A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		691F9C67024366E100A8007E = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		69492F3F0348FBAA0054F61D = {
+			isa = PBXFrameworkReference;
+			name = SkyCore.framework;
+			path = /Users/helge/Library/Frameworks/SkyCore.framework;
+			refType = 0;
+		};
+		69492F400348FBAA0054F61D = {
+			isa = PBXFrameworkReference;
+			name = SxCore.framework;
+			path = /Users/helge/Library/Frameworks/SxCore.framework;
+			refType = 0;
+		};
+		69492F430348FBAA0054F61D = {
+			fileRef = 69492F3F0348FBAA0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492F440348FBAA0054F61D = {
+			fileRef = 69492F400348FBAA0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492F88034902500054F61D = {
+			isa = PBXFrameworkReference;
+			name = LSFoundation.framework;
+			path = /Users/helge/Library/Frameworks/LSFoundation.framework;
+			refType = 0;
+		};
+		69492FB2034902500054F61D = {
+			fileRef = 69492F88034902500054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FB30349028E0054F61D = {
+			isa = PBXFileReference;
+			path = ChangeLog;
+			refType = 4;
+		};
+		69492FB40349028E0054F61D = {
+			isa = PBXFileReference;
+			path = SDAsyncResultProxy.h;
+			refType = 4;
+		};
+		69492FB50349028E0054F61D = {
+			isa = PBXFileReference;
+			path = SDXmlRpcFault.h;
+			refType = 4;
+		};
+		69492FB60349028E0054F61D = {
+			isa = PBXFileReference;
+			path = SDXmlRpcFault.m;
+			refType = 4;
+		};
+		69492FB70349028E0054F61D = {
+			isa = PBXFileReference;
+			path = SkyCacheManager.h;
+			refType = 4;
+		};
+		69492FB80349028E0054F61D = {
+			isa = PBXFileReference;
+			path = SkyCacheManager.m;
+			refType = 4;
+		};
+		69492FB90349028E0054F61D = {
+			isa = PBXFileReference;
+			path = SkyCacheResult.h;
+			refType = 4;
+		};
+		69492FBA0349028E0054F61D = {
+			isa = PBXFileReference;
+			path = SkyCacheResult.m;
+			refType = 4;
+		};
+		69492FBB0349028E0054F61D = {
+			isa = PBXFileReference;
+			path = skyrund.m;
+			refType = 4;
+		};
+		69492FBC0349028E0054F61D = {
+			isa = PBXFileReference;
+			path = Version;
+			refType = 4;
+		};
+		69492FBD0349028E0054F61D = {
+			isa = PBXFileReference;
+			path = XmlRpcRequestHandler.h;
+			refType = 4;
+		};
+		69492FBF0349028E0054F61D = {
+			fileRef = 69492FB40349028E0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FC00349028E0054F61D = {
+			fileRef = 69492FB50349028E0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FC10349028E0054F61D = {
+			fileRef = 69492FB60349028E0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FC20349028E0054F61D = {
+			fileRef = 69492FB70349028E0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FC30349028E0054F61D = {
+			fileRef = 69492FB80349028E0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FC40349028E0054F61D = {
+			fileRef = 69492FB90349028E0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FC50349028E0054F61D = {
+			fileRef = 69492FBA0349028E0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FC80349028E0054F61D = {
+			fileRef = 69492FBD0349028E0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FC90349029F0054F61D = {
+			fileRef = 69492FBC0349028E0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FCA034902C00054F61D = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		69492FCB034902C00054F61D = {
+			buildActionMask = 2147483647;
+			files = (
+				69492FD7034902FC0054F61D,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		69492FCC034902C00054F61D = {
+			buildActionMask = 2147483647;
+			files = (
+				69492FD1034902CA0054F61D,
+				69492FD2034902D20054F61D,
+				69492FD3034902D50054F61D,
+				69492FD4034902D60054F61D,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		69492FCD034902C00054F61D = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		69492FCE034902C00054F61D = {
+			buildPhases = (
+				69492FCA034902C00054F61D,
+				69492FCB034902C00054F61D,
+				69492FCC034902C00054F61D,
+				69492FCD034902C00054F61D,
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /Users/helge/build;
+				OPTIMIZATION_CFLAGS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = skyrund;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+			);
+			isa = PBXToolTarget;
+			name = skyrund;
+			productInstallPath = /usr/local/bin;
+			productName = skyrund;
+			productReference = 69492FCF034902C00054F61D;
+			shouldUseHeadermap = 0;
+		};
+		69492FCF034902C00054F61D = {
+			isa = PBXExecutableFileReference;
+			path = skyrund;
+			refType = 3;
+		};
+		69492FD1034902CA0054F61D = {
+			fileRef = 691F9C56024366E100A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FD2034902D20054F61D = {
+			fileRef = 691F9C58024366E100A8007E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FD3034902D50054F61D = {
+			fileRef = 69492F3F0348FBAA0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FD4034902D60054F61D = {
+			fileRef = 69492F400348FBAA0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FD5034902E10054F61D = {
+			buildPhases = (
+			);
+			buildSettings = {
+				OPTIMIZATION_CFLAGS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = all;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+				69492FD6034902E60054F61D,
+				69492FDD034903A30054F61D,
+			);
+			isa = PBXAggregateTarget;
+			name = all;
+			productName = all;
+			shouldUseHeadermap = 0;
+		};
+		69492FD6034902E60054F61D = {
+			isa = PBXTargetDependency;
+			target = 691F9C59024366E100A8007E;
+		};
+		69492FD7034902FC0054F61D = {
+			fileRef = 69492FBB0349028E0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FDD034903A30054F61D = {
+			isa = PBXTargetDependency;
+			target = 69492FCE034902C00054F61D;
+		};
+		6976FE8D020309F900A8007E = {
+			buildStyles = (
+				6976FE8F020309F900A8007E,
+				6976FE90020309F900A8007E,
+			);
+			isa = PBXProject;
+			mainGroup = 6976FE8E020309F900A8007E;
+			productRefGroup = 691F9C57024366E100A8007E;
+			projectDirPath = "";
+			targets = (
+				6976FE9B02030A4B00A8007E,
+				691F9C59024366E100A8007E,
+				69492FCE034902C00054F61D,
+				69492FD5034902E10054F61D,
+			);
+		};
+		6976FE8E020309F900A8007E = {
+			children = (
+				6976FE9102030A4B00A8007E,
+				69492FB30349028E0054F61D,
+				69492FBC0349028E0054F61D,
+				6976FE9202030A4B00A8007E,
+				6976FE9302030A4B00A8007E,
+				6976FE9802030A4B00A8007E,
+				69492FBB0349028E0054F61D,
+				691F9C540243666A00A8007E,
+				691F9C550243666A00A8007E,
+				691F9C57024366E100A8007E,
+			);
+			isa = PBXGroup;
+			refType = 4;
+		};
+		6976FE8F020309F900A8007E = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				OTHER_CFLAGS = "\U0001-DXP_UNIX=1 -DDEBUG=1 -DCOMPILE_AS_FRAMEWORK=1 -DCOCOA_FRAMEWORK=1 -DNeXT_Foundation_LIBRARY=1 -DCOCOA_Foundation_LIBRARY=1 -DNeXT_RUNTIME=1 -DAPPLE_RUNTIME=1";
+				debug = yes;
+				shared = yes;
+			};
+			isa = PBXBuildStyle;
+			name = Development;
+		};
+		6976FE90020309F900A8007E = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			isa = PBXBuildStyle;
+			name = Deployment;
+		};
+		6976FE9102030A4B00A8007E = {
+			isa = PBXFileReference;
+			path = README;
+			refType = 4;
+		};
+		6976FE9202030A4B00A8007E = {
+			isa = PBXFileReference;
+			path = GNUmakefile;
+			refType = 4;
+		};
+		6976FE9302030A4B00A8007E = {
+			isa = PBXFileReference;
+			path = common.h;
+			refType = 4;
+		};
+		6976FE9402030A4B00A8007E = {
+			isa = PBXFileReference;
+			path = SDApplication.h;
+			refType = 4;
+		};
+		6976FE9502030A4B00A8007E = {
+			isa = PBXFileReference;
+			path = SDApplication.m;
+			refType = 4;
+		};
+		6976FE9602030A4B00A8007E = {
+			isa = PBXFileReference;
+			path = SDXmlRpcAction.h;
+			refType = 4;
+		};
+		6976FE9702030A4B00A8007E = {
+			isa = PBXFileReference;
+			path = SDXmlRpcAction.m;
+			refType = 4;
+		};
+		6976FE9802030A4B00A8007E = {
+			isa = PBXFileReference;
+			path = SkyDaemon.h;
+			refType = 4;
+		};
+		6976FE9902030A4B00A8007E = {
+			isa = PBXFileReference;
+			path = "WODirectAction+SkyDaemon.h";
+			refType = 4;
+		};
+		6976FE9A02030A4B00A8007E = {
+			isa = PBXFileReference;
+			path = "WODirectAction+SkyDaemon.m";
+			refType = 4;
+		};
+		6976FE9B02030A4B00A8007E = {
+			buildArgumentsString = "$ACTION install";
+			buildPhases = (
+			);
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "gs-SkyDaemon";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			buildToolPath = /usr/bin/gnumake;
+			dependencies = (
+			);
+			isa = PBXLegacyTarget;
+			name = "gs-SkyDaemon";
+			productName = "gs-SkyDaemon";
+			settingsToExpand = 6;
+			settingsToPassInEnvironment = 287;
+			settingsToPassOnCommandLine = 280;
+			shouldUseHeadermap = 0;
+		};
+	};
+	rootObject = 6976FE8D020309F900A8007E;
+}

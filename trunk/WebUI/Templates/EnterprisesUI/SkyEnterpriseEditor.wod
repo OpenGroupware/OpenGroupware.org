@@ -1,0 +1,162 @@
+// $Id: SkyEnterpriseEditor.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.enterpriseeditor_title;
+  onClose = cancel;
+}
+
+IsLicensed: SkyLicenseConditional {
+  modules = ( Enterprises );
+}
+
+WarningMode: SkyWarningMode {
+  isInWarningMode = isInWarningMode;
+  onOk            = warningOkAction;
+  phrase          = warningPhrase;
+}
+
+EnterpriseForm: WOForm {
+  action  = search;
+  name    = "enterpriseEditor";
+}
+
+EnterpriseEditor: LSWObjectEditor {
+  labels     = labels;
+  object     = enterprise;
+  attributes = (
+  { 
+    key   = "name";
+    label = "enterprise_name";   
+  },
+  { 
+    key   = "number";      
+    label = "enterprise_number";
+  }, 
+  { 
+    key       = "url";
+    nilString = "http://";       
+  },
+  { 
+    key = "email";                                    
+  },
+  { 
+    key = "bank";                                     
+  }, 
+  { 
+    key   = "bankCode";
+    label = "bank_code";         
+  }, 
+  { 
+    key = "account";                                  
+  });
+}
+
+PhoneEditor: SkyPhoneSubEditor {
+  document = enterprise;
+}
+
+AddressTypes: WOTable {
+  list       = enterprise.addressTypes;
+  item       = addressType;
+  maxColumns = session.userDefaults.company_editor_address_columns;
+  width      = "100%";
+}
+
+AddressEditor: SkyAddressSubEditor {
+  document = addressDocument;
+}
+
+ExtendedAttrEditor: SkyExtendedAttrsSubEditor {
+  document = enterprise;
+}
+
+CategoryEditor: SkyCategorySubEditor {
+  document = enterprise;
+}
+
+CommentEditor: SkyCommentSubEditor {
+  document = enterprise;
+}
+
+ContactEditor: SkyContactSubEditor {
+  document = enterprise;
+}
+
+CompanyFlagEditor: SkyCompanyFlagSubEditor {
+  document = enterprise;
+}
+
+EditorButtons: SkyEditorButtons {
+  isDeleteEnabled = isDeleteEnabled;
+}
+
+CommonCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.enterprise_editor_commonVisibility;
+  submitActionName = "";
+  title            = labels.commonAttributes; 
+}
+
+ExtendedCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.enterprise_editor_extendedVisibility;
+  submitActionName = "";
+  title            = labels.extendedAttributes; 
+}
+
+CommentCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.enterprise_editor_commentVisibility;
+  submitActionName = "";
+  title            = labels.comment; 
+}
+
+ContactCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.enterprise_editor_contactVisibility;
+  submitActionName = "";
+  title            = labels.contact; 
+}
+
+CategoryCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.enterprise_editor_categoryVisibility;
+  submitActionName = "";
+  title            = labels.categories; 
+}
+
+AddressCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.enterprise_editor_addressVisibility;
+  submitActionName = "";
+  title            = labels.addresses;
+}
+
+PrivateCollapsible: SkyCollapsibleContent {
+  visibility       = session.userDefaults.enterprise_editor_privateVisibility;
+  submitActionName = "";
+  title            = labels.privateAttributes; 
+}
+
+TelephoneCollapsible: SkyCollapsibleContent {
+  visibility      = session.userDefaults.enterprise_editor_telephoneVisibility;
+  submitActionName = "";
+  title            = labels.telephones;
+}
+
+IsOwnerLoggedInOrNewCond: WOConditional {
+  condition = isOwnerLoggedInOrNew;
+}
+
+/* limited access at creation */
+HasAccessRightsCond: WOConditional {
+  condition = isAccessRightEnabled;
+}
+
+IsInNewModeCond: WOConditional {
+  condition = isInNewMode;
+}
+
+CreateLimitedAttr: SkyAttribute {
+  label = labels.createWithAccessOnlyForMe;
+}
+
+CreateLimitedCheckBox: WOCheckBox {
+  checked = limitAccessToCreator;
+}

@@ -1,0 +1,12 @@
+{
+  bundleHandler = SoOGoModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+  };
+  provides = {
+    classes = (
+      { name = SoOGoModule; }
+    );
+  };
+}

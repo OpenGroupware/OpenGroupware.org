@@ -1,0 +1,6 @@
+# $Id$
+
+skysoapproxyd_TOOL_LIBS += \
+	-lNGObjWeb	\
+	-lSOAP		\
+	-lNGSoap	\

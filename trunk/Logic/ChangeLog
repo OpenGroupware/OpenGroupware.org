@@ -1,0 +1,18 @@
+2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: properly include config.make
+
+2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* commandbundle.make: added library lookup pathes for FHS
+
+2004-08-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* commandbundle.make: if FHS_INSTALL_ROOT is defined, install bundles
+	  in $(FHS_INSTALL_ROOT)/lib/opengroupware.org-1.0/commands/
+
+2004-08-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* command bundles now install into Library/OpenGroupware-1.0a/Commands
+
+	* created project level makefile

@@ -1,0 +1,189 @@
+<html>
+  <head>
+    <title>OpenGroupware.org</title>
+  </head>
+
+  <#Body>
+    <#SkyrixIsDown>
+      <center>
+        <table border='0'>
+          <tr>
+            <td>
+              <b>
+                The OpenGroupware.org server could not connect to the
+                database server !<br />
+                <br />
+                Please ensure that your database server is running
+                and that the LSConnectionDictionary default is
+                correctly set.<br />
+                <br />
+              </b>
+                
+              <hr size='1' noshade="noshade" />
+              
+              <b>Current database configuration:</b>
+              
+              <table border='0'>
+                <tr>
+                  <td><i>database:</i></td>
+                  <td><#Database/></td>
+                </tr>
+                <tr>
+                  <td><i>server:</i></td>
+                  <td><#DBServer/></td>
+                </tr>
+                <tr>
+                  <td><i>user:</i></td>
+                  <td><#DBUser/></td>
+                </tr>
+              </table>
+            </td>
+
+            <td><#Image/></td>
+          </tr>
+        </table>
+      </center>
+    </#SkyrixIsDown>
+
+    <#SkyrixIsUp>
+      <center>
+        <table border='0'>
+          <tr>
+            <td>
+              <#CannotLogin>
+                <#MissingLicense/>
+              </#CannotLogin>
+
+<#CanLogin>
+  <#HasNoKey><#MissingLicense/></#HasNoKey>
+  <#Form>
+      <#RestorePageCond> 
+        <#RestorePageName/>
+        <#LoginNameField/>
+        <#RestorePageLabelField/>
+        <#RestorePageParas>
+          <#Parameter/>
+        </#RestorePageParas>
+      </#RestorePageCond>
+      <#BrowserConfigDetect/>
+
+              <table border='0'>
+                
+                <#IsLoginNotAuthorizedCond>
+                  <tr>
+                    <td align="middle" colspan="2"><#Font><b><#LoginIsNotAuthorizedLabel/></b></#Font></td>
+                  </tr>
+                  <tr><td colspan="2"></td></tr>
+                </#IsLoginNotAuthorized>
+                
+                <tr>
+                  <td align='right'><#Font><#LoginLabel/>:</#Font></td>
+                  <#RestorePageCondElse>
+                    <td><#EditFont><#Login/></#EditFont></td>
+                  </#RestorePageCondElse>
+                  <#RestorePageCond>
+                    <td><#Font><#LoginName/></#Font></td>
+                  </#RestorePageCond>
+                  
+                </tr>
+                <tr>
+                  <td align='right'><#Font><#PasswordLabel/>:</#Font></td>
+                  <td><#EditFont><#Password/></#EditFont></td>
+                </tr>
+                <#RestorePageCond>
+                  <tr>
+                    <td valign='top' align='right'><#Font>Restore:</#Font></td>
+                    <td>
+                      <#Font><#RestorePageLabel/></#Font>
+                    </td>
+                  </tr>
+                </#RestorePageCond>
+
+                <#DirectActionIsSet>
+                 <tr>
+                    <td valign='top' align='right'><#Font>Execute:</#Font></td>
+                    <td>
+                      <#Font>
+                      <i><b><#DAName/><br /><#DAClass/></b></i>
+                      </#Font>
+                    </td>
+                  </tr>
+                </#DirectActionIsSet>
+
+                <tr>
+                  <td></td>
+                  <td><#Go/>
+                    <#IsAutoLogin>
+                      <script language="JavaScript">
+                      <!-- hide from older browsers
+                       if (document.loginform) {
+                          document.loginform.submit();
+                       }
+                       // -->
+                      </script>
+                     </#IsAutoLogin>
+                  </td>
+                </tr>
+                
+                <#RestorePageCond>
+                  <tr><td colspan="2">&nbsp;</td></tr>
+                  <tr>
+                    <td colspan="2" valign='top' align='middle'><#Font>If you don`t want to continue with the last operation, click here to get the original login page: <a href="<#LoginLink/>">Skyrix Login</a></#Font>.</td>
+                  </tr>
+                </#RestorePageCond>
+
+                <tr><td colspan='2'><hr size="1" noshade="noshade" /></td></tr>
+                
+                <tr>
+                    <td align='right' valign='top'><#Font><#LicensedTo/>:</#Font></td>
+                    <td valign='middle'><#Font>
+                      <#LicensedToUser/><br />
+                      <#LicensedToCompany/><br />
+                      <#LicensedNU/><br />
+                      <!--#LicensedCU/><br /-->
+                    </#Font></td>
+                </tr>
+
+                <#IsRestricted>
+                  <tr>
+                    <td align='right' valign='middle'><#Font><#LicenseLabel/>:</#Font></td>
+                    <td valign='middle'><#Font><#DaysLeft/> <#DaysLeftLabel/></#Font></td>
+                  </tr>
+                </#IsRestricted>
+                
+              </table>
+  </#Form>
+</#CanLogin>
+            </td>
+
+            <td><#Image/></td>
+          </tr>
+        </table>
+
+      </center>
+
+      <p align="center">&nbsp;</p>
+
+      <p align="center"><font size="1" face="Arial">SKYRiX <#Version/>  
+        &copy; 2000-2005
+        <a href="http://www.skyrix.com" target="SKYRIX">SKYRIX Software AG</a></font></p>
+    
+    </#SkyrixIsUp>
+  </#Body>
+
+  <#CanLogin>
+    <#SkyrixIsUp>
+      <script language="JavaScript">
+      <!-- hide from older browsers
+        if (document.loginform.browserconfig) {
+          document.loginform.browserconfig.value="{isJavaScriptEnabled=YES;}";
+        }
+        if (document.loginform.login) {
+          document.loginform.login.focus();
+          document.loginform.login.select();
+        }
+      // -->
+      </script>
+    </#SkyrixIsUp>
+  </#CanLogin>
+</html>

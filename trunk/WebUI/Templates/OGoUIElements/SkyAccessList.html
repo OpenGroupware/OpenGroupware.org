@@ -1,0 +1,113 @@
+<!-- $Id: SkyAccessList.html 2 2004-08-20 11:37:44Z znek $ -->
+
+<#IsInTableCondElse>
+  <table>
+</#IsInTableCondElse>
+    <#ViewerModeCondElse>
+      <tr>
+        <#AttributeCell>
+          <#Font><#SearchLabel />:</#Font>
+        </#AttributeCell>
+        <#ValueCell>
+          <#EditFont>
+            <#TeamsPopUp />
+            <#AccountSearchField />
+            <#SearchSubmit />
+            <hr size="1" noshade="noshade" />
+          </#EditFont>
+        </#ValueCell>
+      </tr>
+    </#ViewerModeCondElse>
+
+    <#HasAccountsConditional>
+      <tr>
+        <#ViewerModeCondElse>
+          <#AttributeCell>
+            <#Font><#AccessListLabel />:</#Font>
+          </#AttributeCell>
+        </#ViewerModeCondElse>
+        <#ViewerModeCondElse>
+          <#ValueCell>
+            <#Font>
+              <#AccountsList>
+                <#TableContent>
+                  <td>
+                    <#IsTeamCond>
+                      <b><#TeamString />:&nbsp;</b>
+                      <#Description />
+                    </#IsTeamCond>
+                    <#IsTeamCondElse>
+                      <#Login />;&nbsp;
+                      <#FirstName />&nbsp;
+                      <#LastName />
+                    </#IsTeamCondElse>
+                  </td>
+                  <#AccessCheckRepetition>
+                    <td align="center"><#AccessCheck /></td>
+                  </#AccessCheckRepetition>
+                   <td>&nbsp;</td>
+                </#TableContent>
+
+                <#TableHeader>
+                  <#ViewerModeCondElse>
+                    <#AttributeCellTableLeft>
+                      <#AccountName />
+                    </#AttributeCellTableLeft>
+                    <#AccessCheckRepetition>
+                      <#AttributeCellTable>
+                        <#AccessCheckIcon />
+                      </#AttributeCellTable>
+                    </#AccessCheckRepetition>
+                  </#ViewerModeCondElse>
+                  <td>&nbsp;</td>
+                </#TableHeader>
+              </#AccountsList>
+            </#Font>
+          </#ValueCell>
+        </#ViewerModeCondElse>
+
+        <#ViewerModeCond>
+          <td>
+              <#AccountsList>
+                <#TableContent>
+                  <td>
+                    <#IsTeamCond>
+                      <b><#TeamString />:&nbsp;</b>
+                      <#Description />
+                    </#IsTeamCond>
+                    <#IsTeamCondElse>
+                      <#Login />;&nbsp;
+                      <#FirstName />&nbsp;
+                      <#LastName />
+                    </#IsTeamCondElse>
+                  </td>
+                  <#AccessCheckRepetition>
+                    <td>
+                      <#IsCheckedCond    ><#CheckedIcon /></#IsCheckedCond>
+                      <#IsCheckedCondElse>&nbsp;</#IsCheckedCondElse>
+                    </td>
+                  </#AccessCheckRepetition>
+                   <td>&nbsp;</td>
+                </#TableContent>
+
+                <#TableHeader>
+                    <#HeaderCellLeft>
+                      <#AccountName />
+                    </#HeaderCellLeft>
+
+                    <#AccessCheckRepetition>
+                      <#HeaderCellMiddle>
+                        <#AccessCheckIcon />
+                      </#HeaderCellMiddle>
+                    </#AccessCheckRepetition>
+
+                    <td>&nbsp;</td>
+                </#TableHeader>
+              </#AccountsList>
+          </td>
+        </#ViewerModeCond>
+      </tr>
+    </#HasAccountsConditional>
+<#IsInTableCondElse>
+  </table>
+</#IsInTableCondElse>

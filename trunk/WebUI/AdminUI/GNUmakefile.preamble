@@ -1,0 +1,11 @@
+# $Id$
+
+OGoROOT   =../..
+WebUIROOT =..
+
+ADDITIONAL_BUNDLE_LIBS += \
+	-lGDLAccess	\
+	-lDOM -lSaxObjC
+
+ADDITIONAL_LIB_DIRS += \
+	-L$(OGoROOT)/DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR)

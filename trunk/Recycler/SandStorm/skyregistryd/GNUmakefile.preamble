@@ -1,0 +1,5 @@
+# $Id$
+
+skyregistryd_TOOL_LIBS += \
+	-lOGoIDL -lXmlSchema	\
+	-lSxComponents -lNGObjWeb

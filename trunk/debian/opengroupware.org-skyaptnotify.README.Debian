@@ -1,0 +1,16 @@
+skyaptnotify is a little program which sends mail to OpenGroupware.org
+users to notify them for upcoming appointments (if they selected to be
+notified).
+
+skyaptnotify must be called regularily by cron to work. It is suggested
+to add an entry into the crontab of the user which runs the
+OpenGroupware.org daemon (usually user ogo):
+
+Become root
+$ su - ogo
+$ crontab -e
+Add the following to the opening crontab file:
+0-59/5 * * * * /usr/bin/skyaptnotify >/dev/null 2> /var/log/opengroupware.org/ogo/skyaptnotify.log
+
+That will check for upcoming appointments every five minutes and send
+out he appropriate emails.

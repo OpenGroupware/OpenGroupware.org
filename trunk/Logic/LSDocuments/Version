@@ -1,0 +1,5 @@
+# Version file
+
+SUBMINOR_VERSION:=4
+
+# v5.0.2 requires LSProject v5.0.27

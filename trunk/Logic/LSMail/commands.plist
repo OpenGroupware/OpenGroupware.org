@@ -1,0 +1,11 @@
+{
+  domainList = ( email );
+
+  domains = {
+    "email" = {
+      operations = {
+        "deliver" = { class = "LSMailDeliverCommand"; };
+      };
+    };
+  };
+}

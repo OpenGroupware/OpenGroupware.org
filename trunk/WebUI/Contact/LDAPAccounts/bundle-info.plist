@@ -1,0 +1,32 @@
+{ // $Id$
+  bundleHandler = LDAPAccountsModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = (
+    );
+    classes = (
+      { name = LSWModuleManager; exact-version = 2; },
+    );
+  };
+
+  provides = {
+    classes = (
+      { name = LDAPAccountsModule;    },
+      { name = WelcomeNewLDAPAccount; },
+      { name = SkyGenericLDAPViewer;  },
+    );
+
+    DockablePages = (
+    );
+    
+    WOComponents = (
+      { name = WelcomeNewLDAPAccount; },
+      { name = SkyGenericLDAPViewer;  },
+    );
+
+    LSWCommands = (
+    );
+  };
+}

@@ -1,0 +1,46 @@
+# $Id: README 1 2004-08-20 11:17:52Z znek $
+
+ZideStore Backend
+=================
+
+Wrapper library around OGo database and commands. Notably ZideStore backend
+sometimes uses direct SQL access to tables for faster operation.
+This should be moved to real commands in the future.
+
+A lot of the queries operate in the context of a "set". A set is basically
+a qualifier which restricts the operations on a certain subset of an OGo
+table.
+
+TODO: write much more
+
+Class Hierarchy
+===============
+
+  [NSObject]
+    SxAptSetIdentifier
+    SxBackendManager
+      SxAptManager
+      SxContactManager
+      SxTaskManager
+    SxBackendMaster
+    SxContactSetIdentifier
+    SxFreeBusyManager
+    SxRecordCacheManager
+    SxSQLQuery
+      SxContactSQLQuery
+        SxContactEmailSQLQuery
+        SxEvoContactSQLQuery
+        SxListContactSQLQuery
+        SxZLContactSQLQuery
+    [NSEnumerator]
+      SxSQLQueryResultEnumerator
+    SxSetCacheManager : NSObject
+    SxUpdateContact
+      SxUpdateEnterprise
+      SxUpdatePerson
+    SxAppointmentRenderer
+    SxAptSetHandler
+    SxFetchContact
+      SxFetchEnterprise
+      SxFetchGroup
+      SxFetchPerson

@@ -1,0 +1,12 @@
+# $Id$
+
+after-install ::
+	$(MKDIRS) $(TEMPLATE_INSTALL_DIR)/ $(INSTANCE_INSTALL_DIR)
+	cp SKYRiXgreen.xml frontbase.xml httpd.xml openldap2.xml \
+	  $(TEMPLATE_INSTALL_DIR)/
+
+before-all :: $(GENFILES)
+
+after-clean ::
+	rm $(GENFILES)
+

@@ -1,0 +1,16 @@
+2005-03-22  Sebastien Ducoulombier  <sebastien.ducoulombier@lesdeveloppementsdurables.com>
+
+	* added missing semicolons, added OGoDocInlineViewers, OGoMailFilter
+	  and OGoMailEditor files, fixed some translations
+
+2004-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoProject.strings: Travails => Travaux as suggested in OGo bug 687
+
+2004-03-10  Fabien Vallon  <fabien.vallon@fr.alcove.com>
+
+	* Updated
+
+2004-02-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* created ChangeLog - please update when doing modifications!

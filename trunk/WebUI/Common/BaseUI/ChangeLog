@@ -1,0 +1,576 @@
+2005-03-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* bundle-info.plist: removed SkyTableView (class is implemented in a
+	  different bundle) (v5.1.104)
+
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* bundle-info.plist: removed deprecated LSWTab* classes from registry
+	  (v5.1.103)
+
+2005-03-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Main.m: added auth-url field (v5.1.102)
+
+2005-02-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyObjectField.m: if a link value contains no "://", add "http://" 
+	  as a prefix (v5.1.101)
+
+2005-01-13  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* SkyObjectField.m: enhanced field with a 'key' attribute to avoid the
+	  requirement for a full 'attribute' dictionary specification
+	  (v5.1.100)
+	
+2004-11-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* fixed include of WEClientCapabilities.h for SOPE 4.5 (v5.1.99)
+
+2004-11-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyButtonRow.m: code cleanups (v5.1.98)
+
+2004-11-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.97
+
+	* updated for new OGoClipboard API
+
+	* SkyFavorites.m: cleaned up drag type processing
+
+	* Main.m: improved -appendToResponse: auth processing, small code
+	  cleanups, return an error HTML if the template of the Main page
+	  could not be found (v5.1.96)
+
+2004-10-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyObjectField.m: minor change to link generation (v5.1.95)
+
+	* SkyObjectField.m: code cleanups (v5.1.94)
+
+2004-09-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Main.m: be a bit more tolerant when being invoked in an incorrect
+	  context (v5.1.93)
+
+2004-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* added Main and OGoLogoutPage components from main application
+	  (v5.1.92)
+
+	* moved LSWBaseModule.h into .m file (v5.1.91)
+
+2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWSkyrixFrame.m: fixed timing calculation for new SOPE 4.3 API
+	  (use -startDate) (v5.1.90)
+
+2004-09-07  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.89
+
+	* do not generate German templates as derived resources (not necessary
+	  anymore with the fixed OGoResourceManager)
+
+	* LSWSkyrixFrame.wo/English.lproj/LSWSkyrixFrame.html: removed home and
+	  desktop links
+
+2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+
+	* removed use of deprecated singleSelection binding (v5.0.88)
+
+2004-08-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyDock.wo: fixed an XHTML incompatibility in blue and orange theme
+	  (v5.0.87)
+
+2004-08-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added orange theme (v5.0.86)
+
+	* finished first version of "KDE" theme (v5.0.85)
+
+2004-08-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyDock.m: added dockImageNameAsPNG which allows us to use PNG images
+	  for dock icons in theme templates (see KDE theme for an example)
+	  (v5.0.84)
+
+	* added blue theme (v5.0.83)
+
+2004-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyValueCell.m: added support for extra attributes (v5.0.83)
+
+	* v5.0.82
+
+	* OGoElemBuilder.m: use OGoWindowFrame instead of LSWWindowFrame
+
+	* OGoWindowFrame.m: added ability to generate a small JavaScript to
+	  focus and select a field (the script can be configured using the
+	  OGoWindowFrameFocusScriptTemplate default)
+
+	* LSWWindowFrame.m, GNUmakefile: renamed LSWWindowFrame to 
+	  OGoWindowFrame (old element name is kept for backwards compatibility)
+
+2004-07-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWSkyrixFrame.m: do no escape JavaScript error content with Mozilla
+	  (v5.0.81)
+
+2004-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoElemBuilder.m: properly fall back to the builder queue if the
+	  builder did not handle the element. This makes the links tab work on
+	  MacOSX (v5.0.80)
+
+	* v5.0.79
+
+	* LSSort+TableView.m: minor cleanups, fixes a warning on MacOSX
+
+	* GNUmakefile.preamble: fixed a small typo
+
+	* LSWTableView.m: minor cleanups and improvements
+
+2004-06-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWTableViewHeader.m: improved XHTML compatibility, fixed gcc 3.4
+	  warnings (v5.0.78)
+
+2004-05-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.postamble: added postamble which validates WOx files 
+	  prior building (v5.0.77)
+
+2004-05-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.76
+	
+	* OGoElemBuilder.m: map SkyValueCell to <OGo:td-value> and 
+	  SkyAttributeCell to <OGo:td-attr>, made OGoElemBuilder a subclass
+	  of WOxClassElemBuilder to reuse some default functionality
+	
+	* SkyValueCell.m, SkyAttributeCell.m: minor cleanups
+
+2004-05-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.75
+	
+	* SkyObjectField.m: major code cleanups, does not display ZideLook
+	  compressed fields anymore
+	
+	* SkyEditorButtons.m: minor code cleanups
+
+	* SkyWarningPanel.wod: minor template cleanups
+
+	* SkyWarningMode.m: minor code cleanups
+
+2004-05-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyWarningMode.wox: fixed XML syntax error (v5.0.74)
+
+	* v5.0.73
+
+	* OGoElemBuilder.m: added support for SkyObjectValue as <objectvalue/>
+	  tag, added the <label/> tag
+
+	* SkyObjectValue.m: some code cleanups
+
+	* v5.0.72
+
+	* OGoMenuBox.wo, SkyEditorButtons.wo, SkyTimeZonePopUp.wo,
+	  SkyWarningMode.wo, SkyWeekOfYearPopUp.wo: changed to WOx template
+
+	* SkyPanel.m: some code cleanups
+
+	* removed SkyDayOfMonthPopUp component, which is not used anywhere
+
+	* removed SkyInlineViewer which is not used anywhere
+
+2004-04-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWObjectEditor.wox: do not pass 'escapeHTML' binding to popup or
+	  multiselects (so all values will be escaped) (v5.0.71)
+
+2004-04-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.70
+	
+	* LSWObjectEditor: added support for multiselect attributes
+	
+	* LSWObjectEditor.wox: use var:switch instead of nested var:if's
+
+	* LSWObjectEditor.m: code cleanups (v5.0.70)
+
+2004-04-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.69
+
+	* LSWTableViewCell.m: code cleanups, minor improvement to XHTML
+	  compatibility, marked this element as deprecated
+
+	* LSWObjectEditor.wo: changed to WOx template
+
+	* OGoElemBuilder.m: added new 'container' tag (useful as a template
+	  root tag which only generates its children), added 'calendarpopup'
+	  tag for generating the SkyCalendarPopUp component
+
+2004-04-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoElemBuilder.m: added support for 'editfont' tag (v5.0.68)
+
+2004-04-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.67
+
+	* OGoElemBuilder.m: embed tabitem and page body content in 
+	  SkyConfigFont element, added <font> tag (SkyConfigFont)
+
+	* SkyConfigFont.m: minor code cleanups
+
+2004-04-19  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoElemBuilder.m: support 'enabled' attribute on tabs, attributes and
+	  buttons (v5.0.66)
+
+2004-04-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoElemBuilder.m: added support for tabs (v5.0.65)
+
+2004-04-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.64
+	
+	* OGoElemBuilder.m: added button-row support, added attributes
+	
+	* SkyAttribute.m: minor code cleanups
+
+2004-04-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* started OGoElemBuilder for using .wox templates in OGo (v5.0.63)
+
+2004-03-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyNavigation.m: minor code cleanups (v5.0.62)
+
+2004-03-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* started KDE theme (v5.0.61)
+
+2004-02-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.60
+
+	* LSWObjectViewer.m, LSWTableView.m: ensure that no 'nil' is passed to 
+	  -stringByAppendingString (breaks on Cocoa)
+
+	* LSWSkyrixFrame.m: subminor code cleanup
+
+2004-02-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyListView.m: ensure that 'nil' is not passed to -appendString:,
+	  breaks Panther Cocoa (v5.0.59)
+
+	* v5.0.58
+
+	* SkyDock.wo/English.lproj, LSWSkyrixFrame.wo/English_OOo.lproj: use 
+	  dynamic image links for background
+	
+	* OGoMenuBox.wo: minor cleanups, generate box background images 
+	  dynamically
+
+2004-02-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.57
+
+	* LSWSkyrixFrame.wo/English.lproj/LSWSkyrixFrame.html: replaced dynamic
+	  #Font/#MenuFont tags with stylesheet font tags
+
+	* LSWWindowFrame.m: various cleanups
+
+2004-01-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.56
+
+	* SkyDock.wo: minor cleanups
+
+	* LSWSkyrixFrame.wo/English.lproj/LSWSkyrixFrame.html: fixed OGo bug 
+	  591 - thanks Olivier!, minor other cleanups
+
+2004-01-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.55
+
+	* SkyButton: various cleanups, fixed some XHTML incompatibility
+
+	* GNUmakefile.preamble: fixed for MacOSX
+
+	* LSWObjectEditor.m, LSWSkyrixFrame.m, SkyListView.m: replaced usage 
+	  of -indexOfString: with -rangeOfString:
+
+2003-12-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWSkyrixFrame.wo/English.lproj/LSWSkyrixFrame.html: minor cleanups,
+	  renamed SkyDebugDnD to OGoDebugDnD and SkyDebugPageRefresh to 
+	  OGoDebugPageRefresh (v5.0.54)
+
+2003-12-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyEditorButtons.wo/SkyEditorButtons.wod: fixed CSS 'id' vs 'class' 
+	  issue (v5.0.53)
+
+2003-12-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* bundle-info.plist: removed dependency on model bundle (v5.0.52)
+
+2003-12-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyAttributeCell.m: generate a "nobr" tag around the cell content,
+	  so that it doesn't wrap, minor cleanups (v5.0.51)
+
+2003-12-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyAttribute.m: minor cleanups, added a nobr, so that labels do not
+	  wrap (v5.0.50)
+
+	* v5.0.49
+
+	* WODirectAction+activate.m: if the session is missing, return a
+	  login page and attach the directaction for deferred execution
+
+	* LSWViewAction.m: moved the activate action to a separate file
+	  (WODirectAction+activate), moved the new "misc" actions from
+	  v5.0.47 to a separate file (those actions did not work before since
+	  they were defined as categories on WOContext!)
+	
+2003-12-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyObjectLogList.m: now inherits from OGoComponent (instead of
+	  LSWComponent) (v5.0.48)
+
+Tue Nov 25 19:48:41 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSWViewAction.m: added direct actions: newTask, newNewsArticle
+	  newPerson, newCompany (solves ogo bug 429) (v5.0.47)
+
+Tue Nov 18 19:20:55 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWObjectEditor.m: add configuration of attr- and valuecell colspan
+	  (v5.0.46)
+
+Mon Nov 17 15:37:04 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyListSorter.m: major code cleanups (reset the non-selection field 
+	  befor  -appendToResponse, improve selection settings) (v5.0.45)
+
+Fri Nov  7 14:16:33 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* WODirectAction+Mails.m: the mail edit doesn`t need an imap context
+	  to send a mail (v5.0.44)
+
+2003-11-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyConfigFont.m, SkyConfigEditFont.m: generate lowercase <font> tags
+	  for XHTML compatibility (v5.0.43)
+
+Wed Nov  5 11:46:28 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* WODirectAction+Mails.m: always set the mail text to ensure that the 
+	  signatue will be attached (v5.0.42)
+
+2003-11-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* WODirectAction+SkyDock.m: ensure that pages returned by the direct
+	  action are awake in their context (this removes some "missing context
+	  in component" warnings) (v5.0.41)
+
+2003-10-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.40 (requires libNGObjWeb v4.2.143)
+
+	* LSWSkyrixFrame: use the new direct action for page expiry
+
+	* WODirectAction+SkyDock.m: added "activePage" and "leavePage" direct 
+	  actions for working on the internal OGo navigation
+
+Wed Oct 29 19:45:22 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* WODirectAction+Mails.m: iterate over formValueKeys to get the 
+	  attachments (needed to get the attachment name) (v5.0.39)
+
+2003-10-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.38
+
+	* SkyFavorites: some template cleanups
+
+	* WODirectAction+Mails.m: use dataByDecodingBase64 even on strings!
+	  The base64 encoded in a string can of course contain 0 bytes in
+	  a decoded string!
+	
+	* SkyDock.m: moved out direct action categories to separate files
+	  (what has the mail-action to do with SkyDock?!)
+
+Tue Oct 28 19:03:20 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyDock.m: extend mail-editor direct action (subject, mailtext, 
+	  attachments can be set) !currently experimental! (v5.0.37)
+
+2003-10-28  Thomas Schild  <ts@skyrix.com>
+
+	* LSWViewerTitle.m: added valignment in title cell
+	  (v5.0.36)
+
+2003-10-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWSkyrixFrame: added a meta tag which contains the OGo session id
+	  (name=OGoSessionID), this is required for the OGo "native" browser of
+	  Burkhard (v5.0.35)
+
+Mon Oct 27 16:10:22 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyListSorter.m: create a new mutable (selection) array if given 
+	  selection-list is nil (v5.0.34)
+
+2003-10-27  Thomas Schild  <ts@skyrix.com>
+
+	* SkyEditorButtons.wo: cancel/deleteButton --> css Hyperlink
+	  v5.0.33
+
+2002-10-24  Thomas Schild  <ts@skyrix.com>
+
+
+	* SkyDock.m: skytextdocktable style added
+	  v5.0.32
+
+2003-10-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.31
+
+	* SkyFavorites.wo, LSWSkyrixFrame.wo: use new OGoMenuBox
+
+	* added OGoMenuBox component to streamline the creation of those 
+	  boxes ...
+
+2003-10-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyButtonRow.m: code cleanups (v5.0.30)
+
+2003-10-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* all files: minor cleanups, requires OGoFoundation v5.0.17
+	  (v5.0.29)
+
+2003-10-09  Thomas Schild <ts@skyrix.com>
+
+	* SkyDock.m: fixed text dock mode (not deprecated
+	  in div. classic modes)
+
+2003-10-01  Thomas Schild  <ts@skyrix.com>
+
+	* LSWWarningPanel.wo: imageButton --> SkyButtonRow
+
+2003-09-30  Thomas Schild  <ts@skyrix.com>
+
+	* SkyEditorButtons.wo: imageButton --> css sumbmitButton
+
+Wed Sep  3 15:45:25 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSWSkyrixFrame.m: added AMPM handling for expiration date 
+	(OGo Bug 14) (v5.0.28)
+
+Fri Aug  8 17:50:56 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyEditorButtons.wo/SkyEditorButtons.wod: added button titles 
+	(v5.0.27)
+
+2003-08-04  Thomas Schild <ts@skyrix.com>
+
+	* GNUmakefile: BaseUI_LANGUAGES added (OOo Theme)
+								 BaseUI_DERIVED_RESOURCES added (OOo Theme)
+	* BaseDerived.make: OOo Themes added 
+
+2003-08-04  Thomas Schild <ts@skyrix.com>
+
+	* LSWSkyrixFrame.wo: feedback url fixed
+
+2003-07-31  Thomas Schild <ts@skyrix.com>
+
+	* LSWSkyrixFrame.wo,SkyDock.wo,SkyFavorites.wo:
+	  uniform leftmenubox width=100
+
+2003-07-30  Thomas Schild <ts@skyrix.com>
+
+	* LSWWindowFrame.m: window title alignment adjusted (v5.0.26)
+
+2003-07-30  Thomas Schild <ts@skyrix.com>
+
+	* LSWSkyrixFrame.wo: Header/Footer cleanups
+
+2003-07-30  Thomas Schild <ts@skyrix.com>
+
+	* SkyDock.wo: separate box for docked projects
+
+2003-07-30  Helge Hess  <helge.hess@skyrix.com>
+	
+	* SkyDock.m: removed text mode (dock is always in text mode) (5.0.25)
+	
+2003-07-29  Thomas Schild <ts@skyrix.com>
+
+	* LSWSkyrixFrame.wo: some fixes for new OGo Theme
+	
+	* SkyDock.wo: some fixes for new OGo Theme
+
+2003-07-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.24
+
+	* SkyFavorites.m: use OGoDockLabelWidth to limit width of clipboard
+	  labels
+
+	* Defaults.plist: added OGoDockLabelWidth to configure the width of
+	  textual dock labels (eg for docked projects)
+
+Mon Jul 28 14:18:05 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSWSkyrixFrame.html: JScriptErrorPanel: SKYRIX -> OpenGroupware.org
+
+2003-07-23 Thomas Schild <ts@opengroupware.org>
+
+	* LSWSkyrixFrame.m: skyrix.css --> OGo.css
+
+2003-07-21 Thomas Schild <ts@opengroupware.org>
+
+	* LSWSkyrixFrame.wo: fixed pathprefix (*.org --> *.woa)
+	  in td background parameter
+
+Mon Jul 21 14:25:17 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyTimeZonePopUp.m: added referenceDate to alter timeZone description
+	  (MET <-> MET DST) (v5.0.23)
+
+2003-07-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* Defaults.plist: fixed dockable page name "Mail" to be "Imap" (the
+	  mailer is called Imap, not Mail), this bug resulted in a warning on 
+	  each startup (v5.0.22)
+
+Fri Jul 11 15:47:56 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* v5.0.21
+	
+	* bundle-info.plist: rename LSModel -> OGo
+	
+	* SkyDock.m, LSWSkyrixFrame.m: fixed logout page name 
+	  (LSWLogoutPage -> OGoLogoutPage)
+
+Mon Jul  7 17:02:36 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.20)
+
+	* deleted historic ChangeLog entries
+
+Tue Jul 27 14:00:17 1999  Helge Hess  <helge@trex.mdlink.de>
+
+	* created ChangeLog

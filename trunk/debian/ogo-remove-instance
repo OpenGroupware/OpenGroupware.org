@@ -1,0 +1,166 @@
+#!/bin/bash
+
+# ogo-remove-instance
+# Author: Sebastian Ley <ley@debian.org>
+# 
+# This script removes OpenGroupware.org instances, that were registered
+# with ogo-create-instance.
+# This script is free software, you are allowed to do with it whatever
+# you want.
+
+# Defaults
+INSTANCE=
+REMOVE_ALL=no
+PURGE=no
+
+# Subroutines
+test_root () {
+	if [ ${UID} != "0" ]; then
+		return 1
+	fi
+	return 0
+}
+
+get_input () {
+	if [ -z ${INSTANCE} ]; then
+		cat << EOF
+
+This script removes OpenGroupware instances that have been created by
+ogo-create-instance or during the Debian installation of OpenGroupware.org.
+The following instances seem to be present on your system:
+EOF
+		find /etc/opengroupware.org/ -name init.conf | awk -F '/' '{print $4}'
+		echo
+		echo -n "Instance to be removed: "
+		read
+		INSTANCE=${REPLY}
+	fi
+	
+	if [ "${PURGE}" = "no" ]; then 
+		cat << EOF
+
+A database user and database is associated with an OpenGroupware.org instance.
+If the databaseserver isntalled on this machine, the database and the user can
+be removed as well.
+
+EOF
+		echo -n "Remove database and databse user? (${PURGE}): "
+		read
+		if [ "${REPLY}" != "" ]; then
+			PURGE=${REPLY}
+		fi
+	fi
+
+	return 0
+}
+
+check_instance_available () {
+	echo -n "Check if instance ${INSTANCE} is available... "
+	if ! ls /etc/opengroupware.org/${INSTANCE}/init.conf >/dev/null 2>&1; then
+		echo "failed"
+		echo "Instance ${INSTANCE} does not exist."
+		return 1
+	fi
+	echo "done."
+	return 0
+}
+
+gather_instance_data () {
+	 USER=`grep ^USER /etc/opengroupware.org/${INSTANCE}/init.conf | awk -F'=' '{print $2}'`
+	 HOMEDIR=`getent passwd ${USER} | awk -F':' '{print $6}'`
+	 DB_NAME=`su - -c "Defaults read NSGlobalDomain LSConnectionDictionary | grep databaseName | cut -d'=' -f 2 | sed -e s/^\ *// -e s/\;.*//" ${USER}`
+	 DB_USER=`su - -c "Defaults read NSGlobalDomain LSConnectionDictionary | grep userName | cut -d'=' -f 2 | sed -e s/^\ *// -e s/\;.*//" ${USER}`
+}
+
+remove_user () {
+	echo -n "Remove user and group ${USER}... "
+	delgroup ${USER} &>/dev/null
+	deluser ${USER} &>/dev/null
+	rm -rf ${HOMEDIR}
+	echo "done."
+	return 0
+}
+
+remove_database () {
+	echo -n "Removing local database... "
+	su - -c "dropdb ${DB_NAME} &>/dev/null || true" postgres
+	su - -c "dropuser ${DB_USER} &>/dev/null || true" postgres
+	echo "done."
+	return 0
+}
+
+remove_config () {
+	echo -n "Remove instance from the startup system... "
+	rm -rf /etc/opengroupware.org/${INSTANCE}
+	rm -rf /var/log/opengroupware.org/${INSTANCE}
+	
+	rm -f /etc/apache/conf.d/mod_ngobjweb-${INSTANCE}.conf
+	rm -f /etc/apache2/conf.d/mod_ngobjweb-${INSTANCE}.conf
+	echo "done."
+	return 0
+}
+
+reload_apache () {
+	echo -n "Reload apache... "
+	if [ -x /usr/sbin/invoke-rc.d ]; then
+		invoke-rc.d apache reload &> /dev/null
+		invoke-rc.d apache-ssl reload &> /dev/null
+		invoke-rc.d apache-perl reload &> /dev/null
+		invoke-rc.d apache2 reload &> /dev/null
+	else
+		/etc/init.d/apache reload &> /dev/null
+		/etc/init.d/apache-ssl reload &> /dev/null
+		/etc/init.d/apache-perl reload &> /dev/null
+		/etc/init.d/apache2 reload &> /dev/null
+	fi
+	echo "done."
+	return 0
+}
+
+### Execution starts here ###
+
+while getopts "i:ap" option ; do
+	case "$option" in
+		a) REMOVE_ALL=yes;;
+		p) PURGE=yes;;
+		i) INSTANCE="$OPTARG"
+	esac
+done
+
+if ! test_root; then
+	echo "This script must be run as root. Exiting..."
+	exit 1
+fi
+
+#if [ "$DEBCONF" = "no" ]; then
+	if ! get_input; then
+		echo "Could not gather user input. Exiting..."
+		exit 1
+	fi
+#fi
+
+gather_instance_data
+
+if ! check_instance_available; then
+	exit 1
+fi
+
+if ! remove_user; then
+	echo "Adding user ${USER} failed. Exiting..."
+	exit 1
+fi
+
+if [ ${PURGE} == "yes" ]; then
+	if ! remove_database; then
+		echo "Could remove the database. Skipping."
+	fi
+else
+	echo "Skipping removal of database"
+fi
+
+if ! remove_config; then
+	echo "Could not remove the OpenGroupware.org instance from the startup system."
+fi
+
+reload_apache
+

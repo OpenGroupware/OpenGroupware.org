@@ -1,0 +1,218 @@
+2005-03-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.8
+
+	* LSWImapMailEditor.m: code cleanups
+
+	* LSWImapMailEditor.m, NSString+MailEditor.m: moved method to append
+	  a signature to mail content to the NSString category
+
+2005-03-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWImapMailEditor.m: generate proper 'charset' parameter in content
+	  types to fix OGo bug #797 (v5.1.7)
+
+2004-12-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWImapMailEditor.m: fixed OGo bug #855 (incorrect escaping of from
+	  address) (v5.1.6)
+
+2004-12-16  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* LSWImapMailEditor.m: added a fix for OGo bug #1086 (appointment send
+	  crashed the server) (v5.1.5)
+	
+2004-10-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWImapMailEditor.m: major code cleanups (v5.1.4)
+
+2004-09-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.3
+
+	* LSWImapMailEditor.m: lookup header fields for from/to/cc popup in
+	  userdefaults instead of component config
+
+	* Defaults.plist: added MailHeaderFields and
+	  MailHeaderFieldsWithoutFrom defaults (where component config fields
+	  before)
+
+	* LSWImapMailEditor.wo/LSWImapMailEditor.wod: removed uses of
+	  singleSelection
+
+2004-08-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* removed dependency on SkyMailingListDataSource header (v5.1.2)
+
+	* moved mail editor to separate bundle OGoMailEditor (v5.1.1)
+
+2004-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWImapMailEditor.m: major code cleanups, fixed a minor memory leak
+	  (v5.0.88)
+
+2004-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWImapMailEditor.wo/LSWImapMailEditor.wod: minor template cleanups
+	  (v5.0.87)
+
+	* LSWImapMailEditor.wo: use new OGoWindowFrame focus capability 
+	  (v5.0.86)
+
+2004-07-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWImapMailEditor.m, LSWImapMailEditor+Activation.m: code cleanups
+
+2004-07-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWImapMailEditor.m, LSWImapMailEditor+Activation.m: some code 
+	  cleanups (v5.0.84)
+
+	* LSWImapMailEditor.m: minor code cleanups, fixed a bug with sending
+	  appointments or other objects (used wrong MIME type field) (v5.0.82)
+
+	* LSWImapMailEditor.m: major code cleanups, cache several MIME type
+	  objects and NSData/NSString classes
+
+2004-07-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWImapMailEditor.m: minor code cleanups
+
+2004-06-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWImapMailEditor.m: fixed gstep-base warnings
+
+2004-05-07  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoComplexMailAddressSearch.m: code cleanups
+
+2004-02-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWImapMailFilterEditor.m: major code cleanups
+
+2004-02-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWImapMailEditor+Activation.m: code cleanups (v5.0.61)
+
+2004-02-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoMailAddressSearch: changed not to search for strings looking like
+	  emails addresses with a proper domain (eg "hh@skyrix.com"), can be
+	  configured using the "mail_search_for_atstrings" default
+	
+	* NSString+MailEditor.m: added method 
+	  -doesLookLikeMailAddressWithDomain method to check whether a string
+	  looks like an email address
+
+	* LSWImapMailEditor.m: code cleanups
+
+	* started new OGoSimpleMailAddressSearch for fast recipient searches
+
+	* SkyMailingListEditor.wo/SkyMailingListEditor.html: minor cleanups
+
+2004-02-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoMailAddressSearch.m: fixed SX bug #1960, exception when resolving
+	  the "label_prohibited" key (v5.0.58)
+
+2004-02-11  Helge Hess  <helge@mac.in.skyrix.com>
+
+	* OGoMailAddressRecordResult.h: fixed header file for MacOSX 
+	  compilation (v5.0.57)
+
+2004-01-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWImapMailEditor.m: use new search API
+
+	* OGoMailAddressSearch.m: added capability to limit search result
+	  (OGoMailAddressSearch_MaxSearchCount default)
+
+	* OGoMailAddressSearch.m: added profiling logs, minor changes to API,
+	  added a specialized result object for email records and lists
+
+2004-01-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWImapMailEditor.m: moved processing of recipient searches 
+	  (addAddress action) to a new, separate object (OGoMailAddressSearch)
+	  (v5.0.53)
+	
+2004-01-20  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* LSWImapMailEditor.m: subminor cleanups, use -rangeOfString:
+
+2004-01-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* Headers/LSWImapMailEditor.h: removed dead code, do not declare
+	  activation method (should lead to warnings with "improper" code)
+
+	* LSWImapMailEditor.wo: minor fix to reduce the width of the editor
+
+	* LSWImapMailEditor.m: major cleanups, moved NSString(MailEditor) to
+	  separate file, moved activation code to separate file, fixed some 
+	  memory leaks
+	
+	* LSWImapMailEditor.m, Defaults.plist: added new defaults: 
+	  'mail_editor_htmlmail_header' and 'mail_editor_htmlmail_footer'
+
+2004-01-15  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* LSWImapMailEditor.m: cleanups, use new SkyImapContextHandler methods
+
+2003-12-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWImapMailEditor.wo: major cleanups (v5.0.43)
+
+Wed Nov 19 10:48:05 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWImapMailEditor.m: code cleanups, fixed a bug regarding login 
+	  during send mail (after login  instead of sending the mail the
+	  mail editor was displayed) (v5.0.40)
+
+Mon Nov 10 18:45:05 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWImapMailEditor: improve login during send/save behavior (v5.0.36)
+
+Wed Nov  5 14:06:48 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWImapMailEditor.m: fixed type (evoz => Epoz), fixed signature 
+	  handling if Epoz is used (v5.0.30)
+
+Wed Oct 29 18:24:28 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWImapMailEditor.m: fixed bug regarding 4.0.20 (v4.0.22)
+
+Wed Oct 29 13:14:49 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWImapMailEditor: add Epoz support in editor (v4.0.20)
+
+Tue Oct 28 14:22:55 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWImapMailEditor.m: append signature only if it contains text,
+	  add default to hide 'Send as plain text' checkbox (v4.0.17)
+
+Tue Oct 28 11:32:29 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWImapMailEditor.m: use login as email if no email-address is set
+	  (v4.0.15)
+
+Mon Oct 27 18:54:24 2003  Jan Reichmann  <jr@skyrix.com>
+	
+	* LSWImapMailEditor.m: add configurable sender popup
+	  The root user can fill a textfield (preferences->mail) for a user 
+	  (or a group of users using the template user) with email adresses.
+	  The accounts have a new preferences pannel to configure their 
+	  sender address-popup. The sender address-popup will be displayed in 
+	  the maileditor.
+
+Thu Oct 23 15:36:54 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWImapMailEditor.m: -addMimePart check whether mime type is set,
+	  if it is nil use application/octet (v5.0.11)
+
+Fri Oct 17 16:29:54 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSWImapMailEditor: add variable number of attachment upload fields
+
+Tue Jul 15 14:14:49 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWImapMailEditor.m: rename x-mailer to OpenGroupware.org (v5.0.3)

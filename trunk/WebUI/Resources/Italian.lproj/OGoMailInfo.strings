@@ -1,0 +1,48 @@
+// $Id: OGoMailInfo.strings,v 1.9 2004/03/10 13:11:24 luca Exp $
+
+LSWMailPreferences = "Preferenze Posta"
+DefaultAccessPreferences= "Preferenze Accesso Predefinite"
+Imap                  = "Messaggi";
+
+saveButtonLabel       = "salva"
+cancelButtonLabel     = "cancella"
+
+mail_editor_type    = "Tipo Editor Posta"
+internal              = "Interno"
+external              = "Esterno"
+
+mail_send_type      = "Invia Posta come"
+html                  = "Html"
+plain                 = "Testo"
+signature             = "Firma"
+
+senderLength          = "Lunghezza Mittente"
+subjectLength         = "Lunghezza Oggetto"
+
+viewImagesInline      = "Vedi immagini in linea"
+viewAttachmentsInline = "Vedi allegati in linea"
+viewAttachmentBodysInEditor = "Vedi corpo degli allegati nell'editor"
+
+YES                   = "Si"
+NO                    = "No"
+login                 = "Login"
+
+imapPasswd1 = "password imap "
+imapPasswd2 = "ripeti password imap"
+imapUser    = "nome utente imap"
+imapHost    = "server imap"
+
+viewStatus = "Vedi stato posta"
+asIcon     = "come icona"
+
+label_newMail_single = "Hai  un nuovo messaggio!";
+label_newMail_multi  = "Hai %i nuovi messaggi!";
+label_newMail_no     = "Nessun nuovo messaggio!";
+
+action_viewMail    = "vedi posta";
+action_refresh     = "aggiorna";
+action_closeWindow = "chiudi finestra";
+
+activeMail              = "Email"
+inactiveMail            = "Email (inattiva)"
+newMail                 = "Email (non letta)"

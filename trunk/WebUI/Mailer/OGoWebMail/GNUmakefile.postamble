@@ -1,0 +1,7 @@
+# post processing
+
+before-all :: \
+	$(OGoWebMail_DERIVED_RESOURCES)	\
+
+clean ::
+	rm -f $(OGoWebMail_DERIVED_RESOURCES)

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+<!-- $Id: SkyCompanyAccessEditor.wox,v 1.1 2004/07/26 19:04:21 helge Exp $ -->
+<OGo:page var:title="labels.edit_access"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+  <form name="editform">
+    <table border="0" cellspacing="0" cellpadding="3">
+      <var:component className="SkyAccessList"
+         accessList="accessIds" accessChecks="accessChecks"
+         const:isInTable="YES" const:isViewerMode="NO"
+         labels="labels" />
+      
+      <tr>
+        <td></td>
+        <td>
+          <input type="submit" var:action="save" var:value="labels.save"
+                 class="button_narrow" />
+          <a var:action="cancel" class="button_narrow"
+             ><OGo:label key="cancel"/></a>
+        </td>
+      </tr>
+    </table>
+  </form>
+</OGo:page>

@@ -1,0 +1,184 @@
+2004-12-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyDocumentManagerImp.m: minor improvement to url=>gid input
+	  parameter processing (v5.1.23)
+
+2004-09-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyDocumentManagerImp.m: do not throw exception in case the
+	  "skyrix_id" default is not configured (just prints a warning)
+	  (v5.1.22)
+
+2004-07-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.21
+
+	* NGLocalFileDocument.m: some code cleanups
+
+	* NGLocalFileManager.m: fixed a gcc 3.4 warning
+
+2004-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyDocument.m: added a default description (logs gid and context) 
+	  (v5.0.20)
+
+2004-06-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.19
+
+	* NGLocalFileDataSource.m, NGLocalFileManager.m: use 
+	  +skyDictionaryWithContentsOfFile: to parse property files to ensure
+	  plist compatibility on OSX/gstep-base
+
+	* GNUmakefile.preamble: added static dependencies for OSX
+
+2004-03-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* NGLocalFileDocument.m: added support for -objectForKey: in
+	  addition to -valueForKey: (v5.0.18)
+
+2004-03-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* NGLocalFileDataSource.m: improved debugging facilities, added
+	  -description method (v5.0.17)
+
+2004-03-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyDocument.m, SkyURLHandle.m: fixed to compile with gstep-base
+	  (v5.0.16)
+
+2004-01-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* minor tweaks for compilation on MacOSX (v5.0.15)
+
+2003-11-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: do not define install-dir, but rather user the value
+	  set in common.make (v5.0.14)
+
+2003-08-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* moved in some stuff from OGoBase (document-manager, command context
+	  category), fixes OGo Bug 102 (v5.0.13)
+
+Mon Jul  7 15:42:38 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* fixed OGo import (SkyDocuments/ ==> OGoDocuments/) (v4.1.12)
+
+Mon Jul  7 12:31:22 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v4.1.11)
+
+2003-07-02  Helge Hess  <helge.hess@skyrix.com>
+
+	* NGLocalFileDocument+DOM.m: pass document path as system-id to XML
+	  parser (v4.1.10)
+
+2003-06-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* NGLocalFileDocument.m: added content-caches (V4.1.9)
+
+2003-06-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* NGLocalFileDocument+DOM.m: fixed some warnings, cleanups (v4.1.8)
+
+	* NGLocalFileManager.m: cleanups, added ability to log path 
+	  translations (v4.1.7)
+
+2003-06-20  Helge Hess  <helge.hess@skyrix.com>
+	
+	* NGLocalFileDocument.m: improved detection of file MIME-type
+	  (eg can query LSMimeTypes and has some builtin types) (v4.1.6)
+	
+	* small cleanups (v4.1.5)
+
+2003-06-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* NGLocalFileDocument.m: added support for "self" key (v4.1.4)
+
+	* v4.1.3
+
+	* SkyDocument+JS.m: added debug log
+
+	* NGLocalFileDocument.m: fixed memory-leak, -dealloc did not call
+	  dealloc of super, cleanups, added some logs
+
+2003-02-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyDocument.m: added -handleQueryForUnboundKey: for MacOSX (v4.1.2)
+
+2003-01-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* common.h: fixed OSX define (left at v4.1.1)
+
+Mon Jan 28 14:39:39 2002  Helge Hess  <helge.hess@skyrix.com>
+
+	* added XML-RPC coding ...
+
+Fri Sep 28 14:39:28 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyDocument+JS.m: added content JS bindings
+
+	* SkyDocument+JS.m: cache bool numbers
+
+Wed Sep 26 14:12:09 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* NGLocalFileDocument.m: fixed KVC/JS for path/NSFilePath
+
+Tue Sep 25 13:08:08 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* added NGFileManager JavaScript bindings for documents
+
+Mon Sep 24 12:00:45 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* NGLocalFileDocument.m: added some JavaScript wrappers
+
+Sat Sep  1 19:31:31 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* NGLocalFileManager.m: added document cache if modifications are 
+	  turned off
+
+	* NGLocalFileDataSource.m: fixed bugs, added autorelease-pool
+
+Fri Aug 31 13:20:51 2001  Sascha Schimke  <sascha@skyrix.com>
+
+	* hh, added local file document stuff
+
+Wed Aug  8 19:14:55 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyDocumentFileManager.h: added define for document-feature
+
+Fri Jun 22 15:52:17 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* SkyDocument+JS.h added
+
+	* SkyDocument+JS.m: added is* properties, attribute methodes 
+	                    and editing actions
+
+	* SkyDocument.[h|m]: added protocol SkyDocumentEditing + implemenation
+	                     of these methodes in SkyDocument.m
+
+Thu Jun 14 12:44:26 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyDocument+JS.m: added JS docu
+
+Tue Jun 12 19:06:34 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyDocument.h: changed BLOB protocols
+
+Wed Jun  6 20:07:18 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyDocument: added -supportsFeature functionality
+
+Sat May  5 18:00:02 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyDocumentManager.m: cached URL->GID mappings
+
+Fri Apr  6 18:02:43 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* SkyDocument.[h|m] changed -isCompleteDocument into -isComplete
+
+Fri Apr  6 18:02:31 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* ChangeLog: created
+

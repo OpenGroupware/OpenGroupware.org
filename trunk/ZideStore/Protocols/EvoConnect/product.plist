@@ -1,0 +1,19 @@
+{
+  requires = ( ZSCommon, Contacts, Tasks, Appointments );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+
+  classes = {
+    SxOptionsForm = {
+      defaultAccess = "allow";
+      protectedBy   = "<public>";
+    };
+  };
+
+  categories = {
+  };
+}

@@ -1,0 +1,20 @@
+// localized link types
+
+button_linkadd                      = "Adicionar";
+linkentity_Date                     = "Compromisso";
+linkentity_Enterprise               = "Empresa";
+linkentity_external                 = "Externo";
+linkentity_Job                      = "Tarefa";
+linkentity_Person                   = "Contato";
+linkentity_Project                  = "Projeto";
+linkentity_Team                     = "Equipe";
+linksToObject                       = "Vínculo apontando para este objeto";
+linkType_pda_conflicting_ogo_entry  = "Entrada OGo conflitante";
+linkType_pda_conflicting_palm_entry = "Entrada Palm conflitante";
+linkType_pda_new_ogo_entry          = "Nova entrada OGo";
+note_nolinksconfigured              = "Nota: Não há tipos configurados para criar o vínculo manual.";
+popup_createLink                    = "[Criar um vínculo]";
+tableview_footertitle               = "Vínculos";
+tableview_linklabel                 = "Vínculo";
+tableview_linkstitle                = "Relação de vínculos";
+tableview_linktype                  = "Tipo";

@@ -1,0 +1,5 @@
+// bind template to controller
+
+InlineViewer: WOComponentReference {
+  component = viewerComponent;
+}

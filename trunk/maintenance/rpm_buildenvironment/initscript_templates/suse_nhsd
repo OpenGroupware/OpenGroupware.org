@@ -1,0 +1,138 @@
+#!/bin/sh
+# initscript for NHSD_INIT_VERSION
+# <frank@opengroupware.org>
+#
+### BEGIN INIT INFO
+# Provides: NHSD_INIT_VERSION
+# Required-Start: $network postgresql apache2 
+# Required-Stop: 
+# Default-Start: 3 5
+# Default-Stop: 0 1 2 6
+# Description: Network hotsync daemon - NHSD_INIT_VERSION
+### END INIT INFO
+
+# Shell functions sourced from /etc/rc.status:
+#      rc_check         check and set local and overall rc status
+#      rc_status        check and set local and overall rc status
+#      rc_status -v     ditto but be verbose in local rc status
+#      rc_status -v -r  ditto and clear the local rc status
+#      rc_failed        set local and overall rc status to failed
+#      rc_reset         clear local rc status (overall remains)
+#      rc_exit          exit appropriate to overall rc status
+. /etc/rc.status
+
+#reset at first...
+rc_reset
+
+RETVAL=0
+PROG="NHSD_INIT_VERSION"
+USER="ogo"
+DIR="NHSD_INIT_PREFIX"
+BIN="NHSD_INIT_PREFIX/sbin/NHSD_INIT_VERSION"
+PID_FILE="/var/run/NHSD_INIT_VERSION.pid"
+LOGERR="/var/log/opengroupware/NHSD_INIT_VERSION-err.log"
+LOGOUT="/var/log/opengroupware/NHSD_INIT_VERSION-out.log"
+PLIST="nhsd"
+SLEEP=3
+
+# pull in sysconfig settings
+# 
+[ -f /etc/sysconfig/NHSD_INIT_VERSION ] && . /etc/sysconfig/NHSD_INIT_VERSION
+
+start()
+{
+  PID=`/sbin/pidof "${BIN}"`
+  if [ -n "${PID}" ]; then
+    echo -en "${PROG} already runs!"
+  else
+    echo -en $"Starting ${PROG}:"
+    su - ${USER} -s /bin/bash -c "export PGCLIENTENCODING=${PGCLIENTENCODING}; exec ${BIN} 2>>${LOGERR} 1>>${LOGOUT} &"
+    sleep ${SLEEP}
+    echo $! > ${PID_FILE}
+    PID=`/sbin/pidof "${BIN}"`
+    if [ -n "${PID}" ]; then
+      touch /var/lock/subsys/${PROG}
+    else
+      rm -f ${PID_FILE}
+      rm -f /var/lock/subsys/${PROG}
+    fi
+  fi
+}
+
+status()
+{
+  echo -en $"Checking for: ${PROG}"
+  checkproc -p ${PID_FILE} ${BIN}
+}
+
+stop()
+{
+  echo -en $"Stopping ${PROG}:"
+  if [ -f "${PID_FILE}" ] ; then
+    PID=`cat ${PID_FILE}`
+    if [ "`kill ${PID} 2>>${LOGERR} 1>>${LOGOUT}`" ] ; then
+      rm -f ${PID_FILE}
+      rm -f /var/lock/subsys/${PROG}
+    else
+      PID="`pgrep -f ${BIN}`"
+      kill -9 ${PID}
+      rm -f ${PID_FILE}
+      rm -f /var/lock/subsys/${PROG}
+    fi
+  else
+    killproc ${PROG}
+    RETVAL=$?
+    if [ ${RETVAL} -eq 0 ]; then
+      rm -f /var/lock/subsys/${PROG}
+      rm -f ${PID_FILE}
+    fi
+  return ${RETVAL}
+  fi
+}
+
+showdefaults()
+{
+  su - ${USER} -s /bin/bash -c "exec Defaults read ${PLIST}"
+}
+  
+
+
+restart()
+{
+  stop
+  sleep ${SLEEP}
+  rc_status -v
+  start
+}
+
+[ -x ${BIN} ] || exit 0
+
+# See how we were called.
+case "$1" in
+  start)
+  start
+  rc_status -v
+  ;;
+  stop)
+  stop
+  sleep ${SLEEP}
+  rc_status -v
+  ;;
+  restart)
+  restart
+  rc_status -v
+  ;;
+  status)
+  status
+  rc_status -v
+  ;;
+  showdefaults)
+  showdefaults
+  rc_status -v
+  ;;
+  *)
+  echo $"Usage: $0 {start|stop|restart|showdefaults|status}"
+  exit 1
+esac
+
+exit 0

@@ -1,0 +1,113 @@
+# $Id$
+
+SKYRiX Master Daemon
+Troubleshooting Guide
+
+1.   Required Tools
+
+2.   Startup
+2.1. The masterd starts up, but it doesn't load any templates.
+2.2. The masterd starts up, but no tasks get autostarted.
+2.3. The masterd won't register at the started registry at startup.
+
+3.   Working With The Daemon
+3.1. I can't perform XML-RPC calls which require authentication.
+3.2. The script skydaemon.rc doesn't seem to work, what's wrong ?
+
+4.   Misc
+4.1. Where is the README for this daemon ?
+4.2. Where is the installation guide for this daemon ?
+4.3. Where is the troubleshooting guide for this daemon ?
+
+1.   Required Tools
+===================
+Before you try to find errors in your configuration, check that you
+have installed the latest version of the daemon itself and the tools
+used for controlling the daemon.
+So go, check out and build
+
+  - Daemons/SkyIDL
+  - Daemons/skymasterd
+  - Core/NGXmlRpc
+  - Core/SxComponents
+  - install/
+
+2.   Startup
+============
+
+2.1. The masterd starts up, but it doesn't load any templates.
+==============================================================
+Have you already set any templates ? Check $GNUSTEP_USER_ROOT/skymasterd.xml
+if you want to define all the templates in one file or
+$GNUSTEP_USER_ROOT/skymasterd/ if you use single files for every template.
+
+2.2. The masterd starts up, but no tasks get autostarted.
+=========================================================
+Check $GNUSTEP_USER_ROOT/skymasterd-instances.xml if you defined any instances
+that should be autostarted. If there are any, check if the Default
+SMPerformAutostart is set to NO, set it to YES to enable the autostart feature
+(it's set to YES by default, so normally you don't need to set anything here).
+If you don't use skymasterd-instances.xml but seperate instance config files,
+be sure they reside in $GNUSTEP_USER_ROOT/config/skymasterd-instances, 
+otherwise the daemon won't find them.
+
+2.3. The masterd won't register at the started registry at startup.
+===================================================================
+In most cases this problem is caused by a wrong WOPort setting in the registry
+instance file $GNUSTEP_USER_ROOT/config/skymasterd-instances/iRegistry.xml.
+
+Change the WOPort section to match at least the port setting of your
+SxComponentRegistryURL default (e.g. if your registry port is 21000, it should
+look like the example below).
+
+--snip--
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<instance uid="registryd" templateclass="skyregistryd"
+          xmlns="http://www.skyrix.com/od/skymasterd-config">
+  <priority>10</priority>
+  <parameter name="WOPort">
+    <value>*:21000</value>
+  </parameter>
+</instance>
+
+--snap--
+
+3.   Working With The Daemon
+============================
+
+3.1. I can't perform XML-RPC calls which require authentication.
+================================================================
+Obviously you didn't set the defaults SMAuthenticationUser and
+SMAuthenticationPassword, which are required to process the authentication.
+Choose a username/password combination, create a crypted password with:
+
+  htpasswd -nb <user> <password>
+
+and set the Defaults with
+
+  Defaults write skymasterd SMAuthenticationUser <username>
+  Defaults write skymasterd SMAuthenticationPassword <crypted-password>
+
+3.2. The script skydaemon.rc doesn't seem to work, what's wrong ?
+=================================================================
+In most cases your skyregistryd daemon setup has errors, cause skydaemon.rc
+uses the SandStorm component API to query for the status of the daemons.
+Check the settings of your registry (ports, hosts, namespaces) in 
+$GNUSTEP_USER_ROOT/config/skyregistryd.plist.
+
+4.   Misc
+=========
+
+4.1. Where is the README for this daemon ?
+==========================================
+It resides in Daemons/skymasterd/README or in the SKYRiX intranet.
+
+4.2. Where is the installation guide for this daemon ?
+======================================================
+It resides in Daemons/skymasterd/INSTALL or in the SKYRiX intranet.
+
+4.3. Where is the troubleshooting guide for this daemon ?
+=========================================================
+*slap* Guess what you're reading right now.

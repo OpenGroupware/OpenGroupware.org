@@ -1,0 +1,28 @@
+// bind template to controller class
+
+LDAPTitle: LSWViewerTitle {
+  title = viewerTitle;
+}
+
+DNAttr: SkyAttribute {
+  label  = "DN";
+  string = dn;
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+
+URLAttr: SkyAttribute {
+  label      = "URL";
+  keyColor   = "subAttributeCell";
+  valueColor = "subValueCell";
+}
+
+URL: SkyExternalLink {
+  href   = ldapURLString;
+  string = ldapURLString;
+  target = "LDAPURLView";
+}
+
+LDAPViewer: SkyGenericLDAPViewer {
+  ldapURL = ldapURL;
+}

@@ -1,0 +1,23 @@
+{
+  "__cvs__" = "$Id$";
+
+  requires = {
+    bundleManagerVersion = 1;
+    classes = (
+      { name = NSObject;    }
+    );
+  };
+
+  provides = {
+    ZideStoreProducts = ( { name = CommonUIProduct; } );
+    
+    classes = (
+      { name = CommonUIProduct;       },
+      { name = OGoPageFrame;          },
+    );
+
+    WOComponents = (
+      { name = OGoPageFrame; }
+    );
+  };
+}

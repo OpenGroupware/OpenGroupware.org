@@ -1,0 +1,125 @@
+2005-03-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* BaseUI/Main.wod: fixed login actions (properly keep the session id in
+	  the form), fixes OGo bug #1325
+
+2005-03-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoProject/SkyProject4DocumentViewer.wod: removed unused element
+	  declarations
+
+2005-03-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoProject/SkyP4FolderView.html: some template cleanups
+
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWProject: removed unused LSWTextDocumentEditor, LSWFolderEditor,
+	  LSWDocumentMove, LSWDocumentAdvancedSearch
+
+	* LSWMail: removed unused LSWMailFilterEditor templates
+
+2005-03-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoDocInlineViewers: prepared componentenized document viewer
+
+2005-03-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* BaseUI/Main.html: template cleanups
+
+2005-03-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* ogo-webui-1.0a/components.cfg: removed a duplicate LSWObjectMailPage
+	  key
+
+	* various templates got changed to use SkySimpleTabItem
+
+	* AdminUI/LSWStaff.html: removed defaults tab as requested in OGo bug
+	  #1187, use SkySimpleTabItem
+
+2005-02-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed Copyright information
+
+2005-01-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* ogo-webui-1.0a/components.cfg: removed textWrapWidth setting (move to
+	  a default)
+
+	* OGoMailViewers/LSWTextPlainBodyViewer.html: added overflow-x tag
+	  style to <pre> tag (only supported in IE?)
+
+2004-12-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoProject/SkyProject4DocumentViewer: removed elements for Publisher
+
+2004-12-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWProject/SkyProjectInlineViewer.html: fixed output of extended
+	  project attributes (OGo bug #1123)
+
+2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWScheduler/LSWAppointmentViewer: removed log-tab condition
+
+2004-12-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoMailViewers/LSWMimeBodyPartViewer.wod: fixed OGo bug #1091
+	  (some template element was missing)
+
+2004-12-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoProject/SkyProject4Desktop.wod: added support for bundle tabs
+
+	* OGoProject/SkyProject4Desktop.html: added buttons to tab lists
+
+	* LSWProject/SkyProjectInlineViewer.html: join number and name in
+	  one line
+
+	* OGoProject/SkyProject4Viewer.html: removed deprecated forms tags
+
+2004-11-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoProject/SkyProject4MovePanel.wod: added different label for 
+	  document creation tab as used by mail import
+
+	* OGoProject: added templates for document import
+
+2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoMailViewers/LSWMimeBodyPartViewer.html: fixed a table nesting
+
+2004-11-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSchedulerViews/SkyInlineWeekOverview.html,
+	  OGoSchedulerViews/SkyInlineWeekColumnView.html: do not show link for
+	  private appointments (fix OGo bug #556)
+
+2004-11-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed some issue with RelatedLinksUI
+
+2004-11-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoProject/SkyProject4Desktop.html|.wod: use repetion to generate
+	  'common' tabs
+
+	* OGoProject/SkyProject4Desktop.wod: do not call newWizard (use
+	  newProject instead)
+
+2004-11-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* BaseUI/Main.wod (Form): properly specify that the form is not
+	  supposed to generate a session (?wosid=NO)
+
+2004-11-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* fixed some theme templates which broke to the missing elements for
+	  bookmarks
+
+2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* removed bookmark stuff in all .wod files (might give missing elements
+	  in the UI)
+
+	* created global Templates ChangeLog

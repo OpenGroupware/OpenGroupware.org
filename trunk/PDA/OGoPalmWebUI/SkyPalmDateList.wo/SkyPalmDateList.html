@@ -1,0 +1,113 @@
+<#ShowTitleCond>
+  <#DateTableHeader />
+</#ShowTitleCond>
+<#DateTableView>
+
+  <#IsInForm>
+    <#TitleMode>        
+      <#ShowButtonsCond>
+        <#Delete />
+        <#Undelete />
+        <#MarkAsNew />
+        <#DetachSkyrixEntry />
+        <#SyncWithSkyrixEntry />
+        <#CreateSkyrixEntry />
+      </#ShowButtonsCond>
+      <#Content />
+    </#TitleMode><!-- TitleMode -->
+  </#IsInForm><!-- IsInForm -->
+
+  <#ShowButtonsCond>
+    <#ButtonMode>
+      <table border="0" cellspacing="0" cellpadding="0"><tr><td nobr align="right"><#IsInForm><#CategoryPopUp /><#Update /></#IsInForm></td><td nobr><#FilterButtons /></td></tr></table>
+    </#ButtonMode><!-- ButtonMode -->
+  </#ShowButtonsCond><!-- ShowButtonsCond -->
+
+  <#AttributeSwitcher>
+
+    <#StartdateCase>
+      <#StartdateData>
+        <NOBR>
+          <#Startdate />
+        </NOBR>
+      </#StartdateData>
+    </#StartdateCase><!-- StartdateCase -->
+
+    <#EnddateCase>
+      <#EnddateData>
+        <NOBR>
+          <#Enddate />
+        </NOBR>
+      </#EnddateData>
+    </#EnddateCase><!-- EnddateCase -->
+
+    <#DateCase>
+      <#DateData>
+        <nobr>
+          <#Date />
+        </nobr>
+      </#DateData>
+    </#DateCase><!-- DateCase -->
+
+    <#TitleCase>
+      <#TitleData>
+        <#HasActionCond>
+          <#ViewDate>
+            <#Title /></#ViewDate>
+        </#HasActionCond><!-- HasActionCond -->
+        <#HasActionCondElse>
+          <#ViewDateDA>
+            <#Title /></#ViewDateDA>
+        </#HasActionCondElse><!-- HasActionCondElse -->
+      </#TitleData>
+    </#TitleCase><!-- EnddateCase -->
+
+    <#DeviceCase>
+      <#DeviceData>
+        <NOBR>
+          <#Device />
+        </NOBR>
+      </#DeviceData>
+    </#DeviceCase><!-- DeviceCase -->
+
+    <#SyncCase>
+      <#SyncData>
+        <NOBR>
+          <#Sync />
+        </NOBR>
+      </#SyncData>
+    </#SyncCase><!-- SyncCase -->
+
+    <#RepeatCase>
+      <#RepeatData>
+        <NOBR>
+          <#Repeat />
+        </NOBR>
+      </#RepeatData>
+    </#RepeatCase>
+
+    <#SkyrixRecordCase>
+      <#SkyrixRecordData>
+        <#HasSkyrixRecord>
+          <#ViewSkyrixRecord><#SkyrixRecordIcon /><#SkyrixRecord /></#ViewSkyrixRecord>
+        </#HasSkyrixRecord>
+      </#SkyrixRecordData>
+    </#SkyrixRecordCase><!-- SkyrixRecord -->
+
+    <#SkyrixSyncCase>
+      <#SkyrixSyncHeader>
+        <#SkyrixSyncIcon />
+      </#SkyrixSyncHeader>
+      <#SkyrixSyncData>
+        <#HasSkyrixRecord>
+          <nobr><#SkyrixSyncType /><#RecordsNotSynchroneCond><#SkyrixSync
+          /><#SkyrixSyncBothChangedCond
+            ><#ForcePalmOverOGoIcon/><#ForceOGoOverPalmIcon 
+          /></#SkyrixSyncBothChangedCond></#RecordsNotSynchroneCond></nobr>
+        </#HasSkyrixRecord>
+      </#SkyrixSyncData>
+    </#SkyrixSyncCase>
+
+  </#AttributeSwitcher><!-- AttributeSwitcher -->
+
+</#DateTableView><!-- DateTableView -->

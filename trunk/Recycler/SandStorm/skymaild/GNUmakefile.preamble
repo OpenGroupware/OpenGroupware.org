@@ -1,0 +1,20 @@
+# $Id$
+
+skymaild_TOOL_LIBS += \
+	-lOGoDaemon -lXmlSchema	\
+	-lLSFoundation		\
+	-lGDLAccess		\
+	-lSxComponents -lNGObjWeb		\
+        -lNGMime -lNGExtensions -lEOControl	\
+	-lDOM -lSaxObjC
+
+ADDITIONAL_TOOL_LIBS += \
+	-lSaxObjC		\
+	-lNGObjWeb		\
+	-lNGStreams		\
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_TOOL_LIBS += -lFoundationExt
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif
+

@@ -1,0 +1,7 @@
+# compilation settings
+
+ADDITIONAL_BUNDLE_LIBS += \
+	-lOGoScheduler -lOGoDocuments \
+	-lGDLAccess	\
+	-lDOM -lSaxObjC
+

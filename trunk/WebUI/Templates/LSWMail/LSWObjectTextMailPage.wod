@@ -1,0 +1,5 @@
+// $Id: LSWObjectTextMailPage.wod 2 2004-08-20 11:37:44Z znek $
+
+ObjectLabel: WOString { value = labels.objectLabel; }
+NameLabel:   WOString { value = labels.name;        }
+Name:        WOString { value = objectName;         }

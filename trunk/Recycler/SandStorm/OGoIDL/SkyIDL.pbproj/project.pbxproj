@@ -1,0 +1,921 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 38;
+	objects = {
+		014CEA440018CDF011CA2923 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				OPTIMIZATION_CFLAGS = "-O0";
+				OTHER_CFLAGS = "\U0001-DXP_UNIX=1 -DDEBUG=1 -DCOMPILE_AS_FRAMEWORK=1 -DCOCOA_FRAMEWORK=1 -DNeXT_Foundation_LIBRARY=1 -DCOCOA_Foundation_LIBRARY=1 -DNeXT_RUNTIME=1 -DAPPLE_RUNTIME=1 -DNGOBJWEB_AS_FRAMEWORK=1";
+			};
+			isa = PBXBuildStyle;
+			name = Development;
+		};
+		014CEA450018CDF011CA2923 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			isa = PBXBuildStyle;
+			name = Deployment;
+		};
+//010
+//011
+//012
+//013
+//014
+//030
+//031
+//032
+//033
+//034
+		034768DFFF38A50411DB9C8B = {
+			children = (
+				034768E0FF38A50411DB9C8B,
+				694931BB034907C90054F61D,
+			);
+			isa = PBXGroup;
+			name = Products;
+			refType = 4;
+		};
+		034768E0FF38A50411DB9C8B = {
+			isa = PBXFrameworkReference;
+			path = SkyIDL.framework;
+			refType = 3;
+		};
+//030
+//031
+//032
+//033
+//034
+//080
+//081
+//082
+//083
+//084
+		0867D690FE84028FC02AAC07 = {
+			buildStyles = (
+				014CEA440018CDF011CA2923,
+				014CEA450018CDF011CA2923,
+			);
+			isa = PBXProject;
+			mainGroup = 0867D691FE84028FC02AAC07;
+			productRefGroup = 034768DFFF38A50411DB9C8B;
+			projectDirPath = "";
+			targets = (
+				0867D69CFE84028FC02AAC07,
+				6949301C034904330054F61D,
+				694931BA034907C90054F61D,
+			);
+		};
+		0867D691FE84028FC02AAC07 = {
+			children = (
+				69E36EE202CB842B00A800C6,
+				69E36F0402CB842B00A800C6,
+				69E36EE402CB842B00A800C6,
+				69E36EE502CB842B00A800C6,
+				69E36EE902CB842B00A800C6,
+				69E36F2802CB844300A800C6,
+				08FB77AEFE84172EC02AAC07,
+				089C1665FE841158C02AAC07,
+				1058C7B0FEA5585E11CA2CBB,
+				034768DFFF38A50411DB9C8B,
+			);
+			isa = PBXGroup;
+			name = SkyIDL;
+			refType = 4;
+		};
+		0867D69BFE84028FC02AAC07 = {
+			isa = PBXFrameworkReference;
+			name = Foundation.framework;
+			path = /System/Library/Frameworks/Foundation.framework;
+			refType = 0;
+		};
+		0867D69CFE84028FC02AAC07 = {
+			buildPhases = (
+				0867D69DFE84028FC02AAC07,
+				0867D69EFE84028FC02AAC07,
+				0867D69FFE84028FC02AAC07,
+				0867D6A0FE84028FC02AAC07,
+				0867D6A2FE84028FC02AAC07,
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = /Users/helge/build;
+				FRAMEWORK_VERSION = A;
+				HEADER_SEARCH_PATHS = "";
+				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "-DNeXT_Foundation_LIBRARY=1 -DCOCOA_Foundation_LIBRARY=1 -DNeXT_RUNTIME=1 -DAPPLE_RUNTIME=1";
+				PRODUCT_NAME = SkyIDL;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+				WRAPPER_EXTENSION = framework;
+			};
+			dependencies = (
+			);
+			isa = PBXFrameworkTarget;
+			name = SkyIDL;
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = SkyIDL;
+			productReference = 034768E0FF38A50411DB9C8B;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>SkyIDL</string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>com.skyrix.daemons.idl</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>4.2</string>
+	<key>NSPrincipalClass</key>
+	<string></string>
+</dict>
+</plist>
+";
+			shouldUseHeadermap = 1;
+		};
+		0867D69DFE84028FC02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+				69E36F0602CB842B00A800C6,
+				69E36F0902CB842B00A800C6,
+				69E36F0B02CB842B00A800C6,
+				69E36F0D02CB842B00A800C6,
+				69E36F0F02CB842B00A800C6,
+				69E36F1102CB842B00A800C6,
+				69E36F1302CB842B00A800C6,
+				69E36F1502CB842B00A800C6,
+				69E36F1702CB842B00A800C6,
+				69E36F1902CB842B00A800C6,
+				69E36F1B02CB842B00A800C6,
+				69E36F1D02CB842B00A800C6,
+				69E36F1F02CB842B00A800C6,
+				69E36F2102CB842B00A800C6,
+				69E36F2302CB842B00A800C6,
+				69E36F2502CB842B00A800C6,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0867D69EFE84028FC02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+				089C1668FE841158C02AAC07,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0867D69FFE84028FC02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+				69E36F0A02CB842B00A800C6,
+				69E36F0E02CB842B00A800C6,
+				69E36F1002CB842B00A800C6,
+				69E36F1202CB842B00A800C6,
+				69E36F1402CB842B00A800C6,
+				69E36F1602CB842B00A800C6,
+				69E36F1802CB842B00A800C6,
+				69E36F1A02CB842B00A800C6,
+				69E36F1C02CB842B00A800C6,
+				69E36F1E02CB842B00A800C6,
+				69E36F2002CB842B00A800C6,
+				69E36F2202CB842B00A800C6,
+				69E36F2402CB842B00A800C6,
+				69E36F2602CB842B00A800C6,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0867D6A0FE84028FC02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+				69E36EE102CB83DA00A800C6,
+				691B411E02CB962F00340F6D,
+				69492F4A0348FC1A0054F61D,
+				69492F4B0348FC1A0054F61D,
+				69492F4C0348FC1A0054F61D,
+				6949301B034904270054F61D,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0867D6A2FE84028FC02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		089C1665FE841158C02AAC07 = {
+			children = (
+				089C1666FE841158C02AAC07,
+			);
+			isa = PBXGroup;
+			name = Resources;
+			refType = 4;
+		};
+		089C1666FE841158C02AAC07 = {
+			children = (
+				089C1667FE841158C02AAC07,
+			);
+			isa = PBXVariantGroup;
+			name = InfoPlist.strings;
+			refType = 4;
+		};
+		089C1667FE841158C02AAC07 = {
+			fileEncoding = 10;
+			isa = PBXFileReference;
+			name = English;
+			path = English.lproj/InfoPlist.strings;
+			refType = 4;
+		};
+		089C1668FE841158C02AAC07 = {
+			fileRef = 089C1666FE841158C02AAC07;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		08FB77AEFE84172EC02AAC07 = {
+			children = (
+				69E36EE702CB842B00A800C6,
+				69E36EEB02CB842B00A800C6,
+				69E36EED02CB842B00A800C6,
+				69E36EEF02CB842B00A800C6,
+				69E36EF102CB842B00A800C6,
+				69E36EF302CB842B00A800C6,
+				69E36EF502CB842B00A800C6,
+				69E36EF702CB842B00A800C6,
+				69E36EF902CB842B00A800C6,
+				69E36EFB02CB842B00A800C6,
+				69E36EFD02CB842B00A800C6,
+				69E36EFF02CB842B00A800C6,
+				69E36F0102CB842B00A800C6,
+				69E36F0302CB842B00A800C6,
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+		};
+//080
+//081
+//082
+//083
+//084
+//100
+//101
+//102
+//103
+//104
+		1058C7B0FEA5585E11CA2CBB = {
+			children = (
+				0867D69BFE84028FC02AAC07,
+				691B40EB02CB962E00340F6D,
+				69492F460348FC1A0054F61D,
+				69492F470348FC1A0054F61D,
+				69492F480348FC1A0054F61D,
+				69492FF3034904260054F61D,
+			);
+			isa = PBXGroup;
+			name = "Linked Frameworks";
+			path = "";
+			refType = 4;
+		};
+//100
+//101
+//102
+//103
+//104
+//690
+//691
+//692
+//693
+//694
+		691B40EB02CB962E00340F6D = {
+			isa = PBXFrameworkReference;
+			path = FoundationExt.framework;
+			refType = 3;
+		};
+		691B411E02CB962F00340F6D = {
+			fileRef = 691B40EB02CB962E00340F6D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492F460348FC1A0054F61D = {
+			isa = PBXFrameworkReference;
+			name = SkyCore.framework;
+			path = /Users/helge/Library/Frameworks/SkyCore.framework;
+			refType = 0;
+		};
+		69492F470348FC1A0054F61D = {
+			isa = PBXFrameworkReference;
+			name = SxCore.framework;
+			path = /Users/helge/Library/Frameworks/SxCore.framework;
+			refType = 0;
+		};
+		69492F480348FC1A0054F61D = {
+			isa = PBXFrameworkReference;
+			name = SxXML.framework;
+			path = /Users/helge/Library/Frameworks/SxXML.framework;
+			refType = 0;
+		};
+		69492F4A0348FC1A0054F61D = {
+			fileRef = 69492F460348FC1A0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492F4B0348FC1A0054F61D = {
+			fileRef = 69492F470348FC1A0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492F4C0348FC1A0054F61D = {
+			fileRef = 69492F480348FC1A0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69492FF3034904260054F61D = {
+			isa = PBXFrameworkReference;
+			name = XmlSchema.framework;
+			path = /Users/helge/Library/Frameworks/XmlSchema.framework;
+			refType = 0;
+		};
+		6949301B034904270054F61D = {
+			fileRef = 69492FF3034904260054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		6949301C034904330054F61D = {
+			buildPhases = (
+			);
+			buildSettings = {
+				OPTIMIZATION_CFLAGS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = all;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+				6949301D034904370054F61D,
+			);
+			isa = PBXAggregateTarget;
+			name = all;
+			productName = all;
+			shouldUseHeadermap = 0;
+		};
+		6949301D034904370054F61D = {
+			isa = PBXTargetDependency;
+			target = 0867D69CFE84028FC02AAC07;
+		};
+		694931B6034907C90054F61D = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		694931B7034907C90054F61D = {
+			buildActionMask = 2147483647;
+			files = (
+				694931BD034907D10054F61D,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		694931B8034907C90054F61D = {
+			buildActionMask = 2147483647;
+			files = (
+				694931BE034907D40054F61D,
+				694931BF034907DF0054F61D,
+				694931C0034907E00054F61D,
+				694931C1034907E70054F61D,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		694931B9034907C90054F61D = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		694931BA034907C90054F61D = {
+			buildPhases = (
+				694931B6034907C90054F61D,
+				694931B7034907C90054F61D,
+				694931B8034907C90054F61D,
+				694931B9034907C90054F61D,
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /Users/helge/build;
+				OPTIMIZATION_CFLAGS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = skyidl;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+			);
+			isa = PBXToolTarget;
+			name = skyidl;
+			productInstallPath = /usr/local/bin;
+			productName = skyidl;
+			productReference = 694931BB034907C90054F61D;
+			shouldUseHeadermap = 0;
+		};
+		694931BB034907C90054F61D = {
+			isa = PBXExecutableFileReference;
+			path = skyidl;
+			refType = 3;
+		};
+		694931BD034907D10054F61D = {
+			fileRef = 69E36EE902CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		694931BE034907D40054F61D = {
+			fileRef = 034768E0FF38A50411DB9C8B;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		694931BF034907DF0054F61D = {
+			fileRef = 0867D69BFE84028FC02AAC07;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		694931C0034907E00054F61D = {
+			fileRef = 691B40EB02CB962E00340F6D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		694931C1034907E70054F61D = {
+			fileRef = 69492F470348FC1A0054F61D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36EE102CB83DA00A800C6 = {
+			fileRef = 0867D69BFE84028FC02AAC07;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36EE202CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = ChangeLog;
+			refType = 4;
+		};
+		69E36EE302CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = common.h;
+			refType = 4;
+		};
+		69E36EE402CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = GNUmakefile;
+			refType = 4;
+		};
+		69E36EE502CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = "interface-structure.xsd";
+			refType = 4;
+		};
+		69E36EE602CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = "NGXmlRpcAction+Introspection.h";
+			refType = 4;
+		};
+		69E36EE702CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = "NGXmlRpcAction+Introspection.m";
+			refType = 4;
+		};
+		69E36EE802CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDL.h;
+			refType = 4;
+		};
+		69E36EE902CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = skyidl.m;
+			refType = 4;
+		};
+		69E36EEA02CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLDocumentation.h;
+			refType = 4;
+		};
+		69E36EEB02CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLDocumentation.m;
+			refType = 4;
+		};
+		69E36EEC02CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLExample.h;
+			refType = 4;
+		};
+		69E36EED02CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLExample.m;
+			refType = 4;
+		};
+		69E36EEE02CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLFault.h;
+			refType = 4;
+		};
+		69E36EEF02CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLFault.m;
+			refType = 4;
+		};
+		69E36EF002CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLImport.h;
+			refType = 4;
+		};
+		69E36EF102CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLImport.m;
+			refType = 4;
+		};
+		69E36EF202CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLInput.h;
+			refType = 4;
+		};
+		69E36EF302CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLInput.m;
+			refType = 4;
+		};
+		69E36EF402CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLInterface.h;
+			refType = 4;
+		};
+		69E36EF502CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLInterface.m;
+			refType = 4;
+		};
+		69E36EF602CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLMethod.h;
+			refType = 4;
+		};
+		69E36EF702CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLMethod.m;
+			refType = 4;
+		};
+		69E36EF802CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLOutput.h;
+			refType = 4;
+		};
+		69E36EF902CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLOutput.m;
+			refType = 4;
+		};
+		69E36EFA02CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLSaxBuilder.h;
+			refType = 4;
+		};
+		69E36EFB02CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLSaxBuilder.m;
+			refType = 4;
+		};
+		69E36EFC02CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLSignature.h;
+			refType = 4;
+		};
+		69E36EFD02CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLSignature.m;
+			refType = 4;
+		};
+		69E36EFE02CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLTag.h;
+			refType = 4;
+		};
+		69E36EFF02CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLTag.m;
+			refType = 4;
+		};
+		69E36F0002CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLThrow.h;
+			refType = 4;
+		};
+		69E36F0102CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SkyIDLThrow.m;
+			refType = 4;
+		};
+		69E36F0202CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SOAPWSDLEncoder.h;
+			refType = 4;
+		};
+		69E36F0302CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = SOAPWSDLEncoder.m;
+			refType = 4;
+		};
+		69E36F0402CB842B00A800C6 = {
+			isa = PBXFileReference;
+			path = Version;
+			refType = 4;
+		};
+		69E36F0602CB842B00A800C6 = {
+			fileRef = 69E36EE302CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F0902CB842B00A800C6 = {
+			fileRef = 69E36EE602CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F0A02CB842B00A800C6 = {
+			fileRef = 69E36EE702CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F0B02CB842B00A800C6 = {
+			fileRef = 69E36EE802CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F0D02CB842B00A800C6 = {
+			fileRef = 69E36EEA02CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F0E02CB842B00A800C6 = {
+			fileRef = 69E36EEB02CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F0F02CB842B00A800C6 = {
+			fileRef = 69E36EEC02CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F1002CB842B00A800C6 = {
+			fileRef = 69E36EED02CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F1102CB842B00A800C6 = {
+			fileRef = 69E36EEE02CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F1202CB842B00A800C6 = {
+			fileRef = 69E36EEF02CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F1302CB842B00A800C6 = {
+			fileRef = 69E36EF002CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F1402CB842B00A800C6 = {
+			fileRef = 69E36EF102CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F1502CB842B00A800C6 = {
+			fileRef = 69E36EF202CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F1602CB842B00A800C6 = {
+			fileRef = 69E36EF302CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F1702CB842B00A800C6 = {
+			fileRef = 69E36EF402CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F1802CB842B00A800C6 = {
+			fileRef = 69E36EF502CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F1902CB842B00A800C6 = {
+			fileRef = 69E36EF602CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F1A02CB842B00A800C6 = {
+			fileRef = 69E36EF702CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F1B02CB842B00A800C6 = {
+			fileRef = 69E36EF802CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F1C02CB842B00A800C6 = {
+			fileRef = 69E36EF902CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F1D02CB842B00A800C6 = {
+			fileRef = 69E36EFA02CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F1E02CB842B00A800C6 = {
+			fileRef = 69E36EFB02CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F1F02CB842B00A800C6 = {
+			fileRef = 69E36EFC02CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F2002CB842B00A800C6 = {
+			fileRef = 69E36EFD02CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F2102CB842B00A800C6 = {
+			fileRef = 69E36EFE02CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F2202CB842B00A800C6 = {
+			fileRef = 69E36EFF02CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F2302CB842B00A800C6 = {
+			fileRef = 69E36F0002CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F2402CB842B00A800C6 = {
+			fileRef = 69E36F0102CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F2502CB842B00A800C6 = {
+			fileRef = 69E36F0202CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		69E36F2602CB842B00A800C6 = {
+			fileRef = 69E36F0302CB842B00A800C6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		69E36F2802CB844300A800C6 = {
+			children = (
+				69E36EE802CB842B00A800C6,
+				69E36EE302CB842B00A800C6,
+				69E36EE602CB842B00A800C6,
+				69E36EEA02CB842B00A800C6,
+				69E36EEC02CB842B00A800C6,
+				69E36EEE02CB842B00A800C6,
+				69E36EF002CB842B00A800C6,
+				69E36EF202CB842B00A800C6,
+				69E36EF402CB842B00A800C6,
+				69E36EF602CB842B00A800C6,
+				69E36EF802CB842B00A800C6,
+				69E36EFA02CB842B00A800C6,
+				69E36EFC02CB842B00A800C6,
+				69E36EFE02CB842B00A800C6,
+				69E36F0002CB842B00A800C6,
+				69E36F0202CB842B00A800C6,
+			);
+			isa = PBXGroup;
+			name = Headers;
+			refType = 4;
+		};
+	};
+	rootObject = 0867D690FE84028FC02AAC07;
+}

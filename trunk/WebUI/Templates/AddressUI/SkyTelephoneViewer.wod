@@ -1,0 +1,52 @@
+// bind template to controller
+
+TelephoneRepetition: WORepetition {
+  list = telephoneTypes;
+  item = telephoneType;
+}
+
+TableAndTitleCond : WOConditional {
+  condition = noTableAndTitle;
+  negate    = YES;
+}
+
+AttributeCell : WOGenericContainer {
+  elementName = "td";
+  align       = "right";
+  valign      = "top";
+  bgcolor     = config.colors_subAttributeCell;
+  width       = "15%";
+}
+
+ValueCell : WOGenericContainer {
+  elementName = "td";
+  align       = "left";
+  valign      = "top";
+  bgcolor     = config.colors_subValueCell;
+}
+
+TypeLabel: WOString { value = labels.$telephoneType; }
+
+DialNumber: SkyDialNumber {
+  number = telephoneNumber;
+}
+
+HasInfoCond:    WOConditional { condition = hasInfo;    }
+ShowNumberCond: WOConditional { condition = showNumber; }
+
+Number: WOString { value = telephoneNumber; }
+Info:   WOString { value = telephoneInfo;   }
+
+Font: SkyConfigFont {}
+
+TelephoneTitle: LSWViewerTitle {
+  title     = labels.telephoneLabel;
+  colspan   = "2";
+}
+
+Buttons: SkyButtonRow {
+  ordering = ( "edit" );
+  hasEdit  = isEditEnabled;
+  onEdit   = edit;
+  edit     = labels.edit;
+}

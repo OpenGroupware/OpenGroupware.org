@@ -1,0 +1,52 @@
+// bind template to controller
+
+// TODO: replace LSWTableView with WETableView
+
+AptResourceList: LSWTableView {
+  labels            = labels;
+  title             = labels.aptResources;
+  start             = start;
+  label             = labels.aptResources;
+  list              = aptResources;
+  item              = aptResource;
+  selectedAttribute = selectedAttribute;
+  blockSize         = 50;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+  attributes        = (
+        { 
+                action   = "viewAptResource";
+                key      = "name"; 
+                labelKey = "resourceName";
+                sort     = YES;
+        },
+        { 
+                key      = "email"; 
+                labelKey = "resourceEmail";
+                sort     = YES;
+        },
+        { 
+                key      = "emailSubject"; 
+                labelKey = "resourceEmailSubject";
+                sort     = NO;
+        },
+        { 
+                key         = "notificationTime"; 
+                labelKey    = "notificationTime"; 
+                sort        = NO;
+                isLocalized = YES;
+        },
+        { 
+                key         = "category"; 
+                labelKey    = "category"; 
+                sort        = YES;
+                isLocalized = NO;
+        },
+  );
+}
+
+AptResourceButtons: SkyButtonRow {
+  ordering = ( new );
+  onNew    = newAptResource;
+  new      = labels.new;
+}

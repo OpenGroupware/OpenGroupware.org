@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<!-- $Id: SkySchedulerSelectPopUp.wox 2 2004-08-20 11:37:44Z znek $ -->
+<OGo:container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+><var:popup list="possibleItems" item="item" string="itemLabel"
+             selection="selectedItem"
+	     onChange="^onChange" 
+  /><input type="text" var:value="searchText" size="10"
+  /><var:if condition="meTooCond"
+    ><input type="checkbox" var:checked="meToo" var:onClick="^onChange"
+    /><OGo:font><OGo:label key="meToo"/></OGo:font>
+  </var:if>
+</OGo:container>

@@ -1,0 +1,92 @@
+// $Id: SkyParticipantsSelection.wod 2 2004-08-20 11:37:44Z znek $
+
+MainButtonRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_mainButtonRow;
+}
+
+Font:          SkyConfigFont     {}
+EditFont:      SkyConfigEditFont {}
+AttributeCell: SkyAttributeCell  {}
+ValueCell:     SkyValueCell      {}
+ValueCell2:    SkyValueCell      { alignTop = YES; }
+
+SearchLabel: WOString {
+  value = labels.$headLineLabel;
+}
+SearchParticipantsAttribute : WOString {
+  value = labels.$searchLabel;
+}
+AddParticipantsAttribute : WOString {
+  value = labels.$selectionLabel;
+}
+
+TeamsPopUp: WOPopUpButton {
+  list              = session.teams;
+  item              = item;
+  string            = item.description;
+  selection         = searchTeam;
+  noSelectionString = noSelectionString;
+  onChange          = "document.editform.submit();";
+}
+SearchField: WOTextField {
+  value    = searchParticipantText;
+  //onChange = "document.editform.submit();";
+}
+SearchSubmit: WOSubmitButton {
+  action = searchAction;
+  value  = labels.searchButtonLabel;
+  class  = "button_narrow";
+}
+
+ExtendedCheckBox: WOCheckBox {
+  checked = showExtended;
+  onClick = "document.editform.submit(); return true";
+}
+ExtendedString: WOString {
+  value = labels.ExtendedView;
+}
+
+ParticipantsConditional: WOConditional {
+  condition = hasParticipantSelection;
+  negate    = NO;
+}
+
+WithAnyCheckBoxCond: WOConditional {
+  condition = showAnyCheckBox;
+}
+WithEnterpriseCheckBox: WOConditional {
+  condition = showExtendEnterprisesCheckBox;
+}
+WithResolveTeamsCheckBox: WOConditional {
+  condition = showResolveTeamsCheckBox;
+}
+
+ResolveTeamsCheckBox: WOCheckBox {
+  checked = resolveTeams;
+  //  onClick = "document.editform.submit(); return true";
+}
+ResolveTeamsString: WOString {
+  value = labels.resolveTeams;
+}
+
+ParticipantList: SkyListView {
+  list          = participants;
+  item          = item;
+  columns       = noOfCols;
+  selectInverse = YES;
+  selectedItems = removedParticipants;
+  attributes    = attributesList;
+}
+
+ResultList: SkyListView {
+  list          = resultList;
+  item          = item;
+  columns       = noOfCols;
+  selectedItems = addedParticipants;
+  attributes    = attributesList;
+}
+
+ViewHeadLineCond: WOConditional {
+  condition = viewHeadLine;
+}

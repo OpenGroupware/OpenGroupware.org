@@ -1,0 +1,36 @@
+2004-04-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* updated for OGoIDL directory path (v5.0.6)
+
+Tue Jul  8 13:08:28 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.5)
+
+Sat Aug 31 13:48:01 2002  Helge Hess <hh@skyrix.com>
+
+	* some cleanups for MacOSX (v4.2.4)
+
+Tue Aug 13 14:10:01 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* NGXmlRpcAction+Introspection.m: added method to register
+	  an interface for a given component name
+
+Mon Jul  8 16:59:45 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* NGXmlRpcAction+Introspection.m: added ability to register more
+	  then one interface file for a DirectAction class
+
+Wed May  8 13:44:19 2002  Helge Hess  <helge.hess@skyrix.com>
+
+	* NGXmlRpcAction+Introspection.m: do not call 
+	  [super methodSignatureAction:]
+
+Wed Mar 20 11:11:34 2002  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyIDLInterface.m: does not reference XmlSchema anymore
+
+Thu Feb 28 16:09:28 2002  Helge Hess  <helge.hess@skyrix.com>
+
+	* created ChangeLog
+	
+

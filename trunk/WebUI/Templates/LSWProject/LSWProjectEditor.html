@@ -1,0 +1,228 @@
+<#Frame>
+  <#Calendar />
+
+<script language="JavaScript">
+<!-- hide
+
+var editorIsCancel = false;
+var editorIsSearch = false;
+
+function validateEditorContent() {
+  var errorString = "";
+
+  if (editorIsCancel) return true;
+  if (editorIsSearch) return true;
+
+  editorIsCancel = false;
+  editorIsSearch = false;
+
+  if (document.editform.startTimePopUp.selectedIndex > 
+      document.editform.endTimePopUp.selectedIndex)
+    errorString = errorString + " => End time before start time.\n";
+
+  if (document.editform.title.value.length == 0)
+    errorString = errorString + " => No title set.\n";
+
+  if (errorString.length > 0) {
+    alert("invalid input:\n" + errorString);
+    return false;
+  }
+  else
+    return true;
+}
+
+function searchFieldChanged() {
+  editorIsSearch = true;
+  document.editform.submit();
+  return true;
+}
+
+// -->
+</script>
+
+<#Window>
+ <#WarningModeCondElse>
+
+  <table border="0" cellspacing="0" cellpadding="4" width="100%">
+  <#ProjectForm>
+  <#CommonCollapsible>
+    <#ProjectEditor />
+
+    <#IsRootOrNewCond>
+      <tr>
+        <#AttributeCell><#Font><#LeaderLabel />:</#Font></#AttributeCell>
+        <#ValueCell><#Font>
+          <#IsOwnerAssigned>
+            <#LeaderLogin />&nbsp;
+            <#LeaderString />
+          </#IsOwnerAssigned>
+          <br />
+          <#SearchOwnerField />
+          <#SearchOwnerSubmit /><br />
+          <#OwnerResultList />
+        </#Font></#ValueCell>
+      </tr>
+    </#IsRootOrNewCond>
+    <#IsInNewMode>
+      <#HasMoreThanOneProjectBases>
+        <tr>
+          <#AttributeCell><#Font><#ProjectBase />:</#Font></#AttributeCell>
+          <#ValueCell    ><#Font><#BaseRadios  /></#Font></#ValueCell>
+        </tr>
+      </#HasMoreThanOneProjectBases>
+    </#IsInNewMode>
+    
+    <#ShowProjectUrl>
+      <tr>
+        <#AttributeCell><#Font><#ProjectUrlString />:</#Font></#AttributeCell>
+        <#ValueCell><#EditFont><#ProjectUrl /></#EditFont></#ValueCell>
+      </tr>
+    </#ShowProjectUrl>
+
+    <#IsRootCond>
+     <#HasOldCommonProjectCompatibility>
+      <tr>
+        <#AttributeCell><#Font    ><#TeamString />:</#Font></#AttributeCell>
+        <#ValueCell    ><#EditFont><#TeamPopup /></#EditFont></#ValueCell>
+      </tr>
+     </#HasOldCommonProjectCompatibility>
+    </#IsRootCond>
+    
+    <tr>
+      <#AttributeCell>&nbsp;</#AttributeCell>
+      <#ValueCell><hr size="1" noshade="noshade" /></#ValueCell>
+    </tr>
+    
+    <tr>
+      <#AttributeCell><#Font><#SearchAccounts />:</#Font></#AttributeCell>
+      <#ValueCell><#EditFont>
+        <#TeamsPopUp />
+        <#AccountSearchField />
+        <#SearchSubmit />
+      </#EditFont></#ValueCell>
+    </tr>
+    <#AccountsConditional>
+      <tr>
+        <#AttributeCell><#Font><#AddAccounts />:</#Font></#AttributeCell>
+        <#ValueCell><#Font>
+          <#AccountsList>
+            <#TableContent>
+              <td align="left">
+                <#IsTeamCond>
+                  <b><#TeamString />:&nbsp;</b>
+                  <#Description />
+                </#IsTeamCond>
+                <#IsTeamCondElse>
+                  <#Login     />;&nbsp;
+                  <#FirstName />&nbsp;
+                  <#LastName  />
+                </#IsTeamCondElse>
+              </td>
+              <td align="center"><#ManagerAccessCheck  /></td>
+              <td align="center"><#ReadAccessCheck     /></td>
+              <td align="center"><#WriteAccessCheck    /></td>
+              <td align="center"><#InsertAccessCheck   /></td>
+              <td align="center"><#DeleteAccessCheck   /></td>
+              <td align="center"><#DesignerAccessCheck /></td>
+              <td>&nbsp;</td>
+            </#TableContent>
+            <#TableHeader>
+              <#AttrTableCellLeft><#AccountName /></#AttrTableCellLeft>
+              <#AttrTableCell><#ManagerAccessIcon  /></#AttrTableCell>
+              <#AttrTableCell><#ReadAccessIcon     /></#AttrTableCell>
+              <#AttrTableCell><#WriteAccessIcon    /></#AttrTableCell>
+              <#AttrTableCell><#InsertAccessIcon   /></#AttrTableCell>
+              <#AttrTableCell><#DeleteAccessIcon   /></#AttrTableCell>
+              <#AttrTableCell><#DesignerAccessIcon /></#AttrTableCell>
+              <td>&nbsp;</td>
+            </#TableHeader>
+          </#AccountsList>
+        </#Font></#ValueCell>
+      </tr>
+    </#AccountsConditional>
+    <tr>
+      <#AttributeCell>&nbsp;</#AttributeCell>
+      <#ValueCell><hr size="1" noshade="noshade" /></#ValueCell>
+    </tr>
+
+    <tr>
+       <#AttributeCell><#Font><#SearchCompaniesLabel />:</#Font></#AttributeCell>
+       <#ValueCell><#EditFont>
+          <#CompanyTypePopup />
+          <#CompanySearchField />
+          <#CompanySearchSubmit />
+          <table border="0" cellpadding="0" cellspacing="0">
+            <tr><td nowrap="nowrap">
+              <small><#Font><#ExtendedCheckBox /><#ExtendedString />&nbsp;</#Font></small>
+            </td></tr>
+          </table>
+          <hr size="1" noshade="noshade">
+       </#EditFont></#ValueCell>
+    </tr>
+
+    <#ShowEnterpriseListCond>
+      <tr>
+        <#AttributeCell><#Font><#EnterprisesLabel />:</#Font></#AttributeCell>
+        <#ValueCell><#Font>
+          <#SelectedEnterpriseList />
+          <#EnterpriseList />
+        </#Font></#ValueCell>
+      </tr>
+    </#ShowEnterpriseListCond>
+
+    <#ShowPersonListCond>
+      <tr>
+        <#AttributeCell><#Font><#PersonsLabel />:</#Font></#AttributeCell>
+        <#ValueCell><#Font>
+           <#SelectedPersonList />
+           <#PersonList />
+        </#Font></#ValueCell>
+      </tr>
+    </#ShowPersonListCond>
+  </#CommonCollapsible>
+
+  <#HasExtendedAttrs>
+    <#ExtendedCollapsible>
+      <#ProjectEditorPublicExtAttrs  />
+      <#ProjectEditorPrivateExtAttrs />
+    </#ExtendedCollapsible>
+  </#HasExtendedAttrs>
+    
+  <#CommentCollapsible>
+    <tr>
+      <#AttributeCell><#Font><#CommentString />:</#Font></#AttributeCell>
+      <#ValueCell><#EditFont><#Comment /></#EditFont></#ValueCell>
+    </tr>
+  </#CommentCollapsible>
+    
+  <tr>
+    <td>&nbsp;</td>
+    <td>
+        <#IsSaveEnabled ><#SaveSubmit   /></#IsSaveEnabled>
+        <#IsSaveDisabled><#SaveSubmitDA /></#IsSaveDisabled>
+        
+        <#CancelSubmit />
+        <#IsInNewModeElse><#ArchiveSubmit /></#IsInNewModeElse>
+        <#IsDeleteEnabled><#DeleteSubmit /></#IsDeleteEnabled>
+    </td>
+  </tr>
+  </#ProjectForm>
+  </table>
+ </#WarningModeCondElse>
+
+  <#WarningModeCond>
+    <#Warning />  
+  </#WarningModeCond>
+</#Window>
+
+<script language="JavaScript">
+<!-- hide
+if (document.editform) {
+  if (document.editform.name) {
+    document.editform.elements[0].focus();
+   /* document.editform.elements[0].select();*/
+  }
+}
+// -->
+</script>
+</#Frame>

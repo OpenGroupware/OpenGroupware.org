@@ -1,0 +1,89 @@
+2005-03-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.3.81
+
+	* SxAddress.m, SxPerson.m, SxEnterprise, SxGroup.m: moved GETAction to
+	  SxAddress
+	
+	* SxAddress.m: cleaned up vcard generation code, fixed handling of
+	  content-type, properly deliver vcard in UTF-8
+
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAddressFolder.m: fixed GroupDAV namespace to current draft 
+	  (v1.3.80)
+
+2004-12-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxEnterpriseFolder.m, SxAddressFolder.m, SxGroupsFolder.m: added
+	  generation of etag on list queries (v1.3.79)
+
+	* SxPersonFolder.m: properly render etag for list queries, moved list
+	  query rendering to separate object (fixed GroupDAV compatibility)
+	  (v1.3.78)
+
+2004-11-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxVCardContactRenderer.m, SxAddressFolder.m, SxGroupsFolder.m,
+	  SxGroupFolder.m: fixed a warning on MacOSX (v1.3.77)
+
+2004-11-01  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* SxAddressFolder.m: added custom resource type tag for folders
+	  ({GROUPWARE:}vcard-collection) (v1.3.76)
+	
+2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.3.75
+
+	* improved handling of external ZLConnect renderer classes (to avoid a
+	  500 on a PROPFIND-0), removed some deprecated code
+
+	* SxVCardPersonRenderer.m: major code cleanups (needs more)
+
+	* SxVCardContactRenderer.m: render vCards in UTF-8, set proper content
+	  type, minor code cleanups
+	
+2004-08-24  Helge Hess  <helge.hess@skyrix.com>
+	
+	* added a library, so that linking on MacOSX works (v1.3.74)
+	
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* expanded subprojects, ZS 1.3 fixes (v1.3.73)
+	
+2004-05-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble (Contacts_BUNDLE_LIBS): fixed dependencies for
+	  recent MacOSX gcc (v1.2.72)
+
+2004-03-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxGroupsFolder, SxGroupFolder: added URL shortcuts for retrieving the
+	  iCalendar representations of groups (v1.2.71)
+
+2004-03-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.2.70
+
+	* SxAddressFolder.h: properly declare NSEnumerator
+
+	* SxEnterprise.m, SxGroup.m, SxPerson.m: fixed some compile warnings
+	  with gstep-base
+
+2003-12-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.2.69
+
+	* Persons/SxPersonFolder.m: only created SxPerson objects for "number"
+	  names (eg 28371.EML, but not for "Donald%20Duck.EML"). In case of a
+	  non-numeric name, the lookup should perform a query on the source_url
+	  table!
+
+	* SxAddressFolder.m: added a -description method
+
+2003-11-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved the Frontend Contacts, Enterprises, Groups and Person 
+	  subprojects into this separate Contact.zsp product
+	  (v1.2.68)

@@ -1,0 +1,73 @@
+// $Id: SkyAssignPersonSubEditor.wod 2 2004-08-20 11:37:44Z znek $
+
+AttributeCell: SkyAttributeCell {}
+
+ValueCell: SkyValueCell { 
+  alignTop = YES; 
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+SearchPersons: WOString {
+  value   = labels.searchPersonsLabel;
+};
+
+SearchField: WOTextField {
+  value = searchText;
+};
+
+SearchSubmit: WOSubmitButton {
+  action   = search;
+  value    = labels.searchButtonLabel;
+  class    = "button_narrow";
+};
+
+NewSubmit: WOSubmitButton {
+  action   = newPerson;
+  value    = labels.newButtonLabel;
+  class    = "button_narrow";
+};
+
+ExtendedCheckBox: WOCheckBox {
+  checked = showExtended;
+  onClick = "document.enterpriseEditor.submit(); return true";
+};
+
+ExtendedString: WOString {
+  value = labels.ExtendedView;
+}
+
+PersonsConditional: WOConditional {
+  condition = hasPersonSelection;
+  negate    = NO;
+};
+
+AddPersons: WOString {
+  value      = labels.addPersonsLabel;
+  escapeHTML = NO;
+};
+
+PersonsList: SkyListView {
+  list          = persons;
+  item          = item;
+  selectInverse = YES;
+  selectedItems = removedPersons;
+  columns       = session.userDefaults.address_no_of_cols;
+  attributes    = (
+                   { binding = "fullNameString";        },
+                   { binding = "enterprisesNameString"; }
+                   );
+}
+
+ResultList: SkyListView {
+  list          = resultList;
+  item          = item;
+  selectedItems = addedPersons;
+  columns       = session.userDefaults.address_no_of_cols;
+  attributes    = (
+                   { binding = "fullNameString";        },
+                   { binding = "enterprisesNameString"; }
+                  );
+};
+

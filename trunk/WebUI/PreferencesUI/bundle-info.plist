@@ -1,0 +1,63 @@
+{
+  bundleHandler = LSWPreferencesModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+
+    bundles = ( 
+      { name = LSAddress; type = cmd; } 
+    );
+    classes = (
+      { name = LSWObjectViewer; version = 3; },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     }
+    );
+  };
+  
+  provides = {
+    classes = (
+	{ name = LSWPreferencesModule;  },
+	{ name = LSWPreferencesViewer;  },
+	{ name = LSWPreferencesEditor;  },
+        { name = SkyDefaultEditField;   },
+        { name = SkyDisplayPreferences; },
+        { name = OGoDefaultEditField;   },
+        { name = OGoDefaultEditFrame;   },
+        { name = OGoDefaultViewField;   }
+    );
+
+    WOComponents = (
+	{ name = LSWPreferencesViewer;  },
+	{ name = LSWPreferencesEditor;  },
+        { name = SkyDefaultEditField;   },
+        { name = SkyDisplayPreferences; },
+        { name = OGoDefaultEditField;   },
+        { name = OGoDefaultEditFrame;   },
+        { name = OGoDefaultViewField;   }
+    );
+
+    PreferencePages = (
+      { 
+        name      = "Display";
+        component = "SkyDisplayPreferences";
+        labelKey  = "Display";
+        icon      = "icon_desktop_26x21.gif";
+      }
+    );
+
+    LSWCommands = (
+      { 
+        verb = newAccount;  type = "eo/person";
+        component = LSWPreferencesEditor;
+      },
+      { 
+        verb = editPreferences; type = "eo/person";
+        component = LSWPreferencesEditor;
+      },
+      { 
+        verb = viewPreferences; type = "eo/person";
+        component = LSWPreferencesViewer;
+      }
+    );
+  };
+}

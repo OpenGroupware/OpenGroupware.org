@@ -1,0 +1,31 @@
+<!-- $Id: SkyMailingListViewer.html 2 2004-08-20 11:37:44Z znek $ -->
+
+<#SpamTableView>
+  <#ButtonMode><#Buttons/></#ButtonMode>
+
+  <#TitleMode>
+    <#Font><b><#MailingListManagerLabel/></b></#Font>
+  </#TitleMode>
+
+  <#Switcher>
+    <#NameCase>
+      <#NameData>
+        <nobr>
+          <#Font><#EditSpamAction><#SpamName/></#EditSpamAction></#Font>
+        </nobr>
+      </#NameData>
+    </#NameCase>
+
+    <#DescCase>
+      <#DescData>
+        <#Font><#Desc/></#Font>
+      </#DescData>
+    </#DescCase>
+
+    <#EmailCase>
+      <#EmailData>
+        <#Font><#EmailCount/></#Font>
+      </#EmailData>
+    </#EmailCase>
+  </#Switcher>
+</#SpamTableView>

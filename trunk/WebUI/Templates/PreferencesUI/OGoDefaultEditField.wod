@@ -1,0 +1,50 @@
+// $Id: OGoDefaultEditField.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: OGoDefaultEditFrame {
+  componentLabels = componentLabels;
+  key             = key;
+  defaults        = defaults;
+  formatter       = formatter;
+  isEditableDef   = isEditableDef;
+  localizeValue   = localizeValue;
+  useFormatter    = useFormatter;
+}
+
+DefaultPopUp: WOPopUpButton {
+  list      = valueList;
+  item      = item;
+  string    = popupLabel;
+  selection = value;
+}
+
+DefaultText: WOText {
+  value = value;
+  wrap  = "physical";
+  rows  = rows;
+  cols  = cols;
+}
+
+DefaultString:   WOTextField     { value = value; size  = rows; }
+DefaultPasswd:   WOPasswordField { value = value;   }
+DefaultCheckBox: WOCheckBox      { checked = value; }
+
+DefaultValue: WOString {
+  value     = readOnlyValue;
+  formatter = formatter;
+}
+
+IsPopUp:    WOConditional { condition = isPopUp;    }
+IsText:     WOConditional { condition = isText;     }
+IsNotText:  WOConditional { condition = isText; negate = YES; }
+IsString:   WOConditional { condition = isString;   }
+IsPasswd:   WOConditional { condition = isPasswd;   }
+IsCheckBox: WOConditional { condition = isCheckBox; }
+
+/* style stuff */
+
+AttributeCell: SkyAttributeCell { width="15%"; }
+ValueCell:     SkyValueCell     {}
+
+Font:     SkyConfigFont      {}
+EditFont: SkyConfigEditFont  {}
+Content:  WOComponentContent {}

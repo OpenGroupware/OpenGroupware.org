@@ -1,0 +1,251 @@
+{
+  bundleHandler = SkyProject4Module;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = OGoProject;       type = ds; },
+    );
+
+    classes = (
+      { name = OGoModuleManager; exact-version = 2; },
+    );
+  };
+
+  provides = {
+    classes = (
+      { name = SkyProject4Module;              },
+      { name = SkyProject4Desktop;             },
+      { name = SkyProject4Viewer;              },
+      { name = SkyProject4DocumentSearch;      },
+      { name = SkyProject4DocumentViewer;      },
+      { name = SkyProject4DocumentEditor;      },
+      { name = SkyProject4DocumentUpload;      },
+      { name = SkyProject4BLOBViewer;          },
+      { name = SkyProject4VersionList;         },
+      { name = SkyProject4MovePanel;           },
+      { name = SkyProject4NewLink;             },
+      { name = SkyProject4DocumentRename;      },
+      { name = SkyCompanyAccessEditor;         },
+      { name = SkyDocumentAttributeEditor;     },
+      { name = SkyProject4DocumentVersionSave; },
+      { name = SkyProject4DocumentDeletePage;  },
+      { name = SkyP4FolderView;                },
+      { name = SkyP4ProjectTableView;          },
+      { name = SkyP4DocumentIcon;              },
+      { name = SkyP4DocumentPath;              },
+      { name = SkyP4DownloadLink;              },
+      { name = SkyP4DocJournal;                },
+      { name = SkyP4DocumentDownloadLogList;   },
+      { name = SkyP4DocumentRequestHandler;    },
+      { name = NGUnixTool;                     },
+      { name = OGoDocumentImport;              },
+      { name = OGoProjectQuicklist;            },
+      { name = OGoProjectDocView;              },
+    );
+    WOComponents = (
+      { name = SkyProject4Desktop;             },
+      { name = SkyProject4Viewer;              },
+      { name = SkyProject4DocumentViewer;      },
+      { name = SkyProject4DocumentEditor;      },
+      { name = SkyProject4DocumentSearch;      },
+      { name = SkyProject4DocumentUpload;      },
+      { name = SkyProject4BLOBViewer;          },
+      { name = SkyProject4VersionList;         },
+      { name = SkyProject4MovePanel;           },
+      { name = SkyProject4NewLink;             },
+      { name = SkyProject4DocumentRename;      },
+      { name = SkyCompanyAccessEditor;         },
+      { name = SkyDocumentAttributeEditor;     },
+      { name = SkyProject4DocumentVersionSave; },
+      { name = SkyP4FolderView;                },
+      { name = SkyP4ProjectTableView;          },
+      { name = SkyProject4DocumentVersionSave; },
+      { name = SkyP4DocJournal;                },
+      { name = SkyP4DocumentDownloadLogList;   },
+      { name = OGoDocumentImport;              },
+      { name = OGoProjectQuicklist;            },
+      { name = OGoProjectDocView;              },
+    );
+    
+    DockablePages = (
+      {
+        name      = Projects;
+        component = SkyProject4Desktop;
+        labelKey  = Projects;
+        image     = menu_projects_labeled.gif;
+        listicon  = icon_projects_26x21.gif;
+        allowedForExtraAccounts = YES;
+      },
+    );
+    
+    LSWCommands = (
+      {
+        verb      = view; 
+        type      = "eo-gid/doc";
+        component = SkyProject4DocumentViewer;
+      },
+      {
+        verb      = edit; 
+        type      = "eo-gid/doc";
+        component = SkyProject4DocumentEditor;
+      },
+      {
+        verb      = editAsNew; 
+        type      = "eo-gid/doc";
+        component = SkyProject4DocumentEditor;
+      },
+      
+      {
+        verb      = view; 
+        type      = "objc/SkySvnDocument";
+        component = SkyProject4DocumentViewer;
+      },
+      {
+        verb      = view; 
+        type      = "objc/SkyFSDocument";
+        component = SkyProject4DocumentViewer;
+      },
+      {
+        verb      = view; 
+        type      = "objc/SkyFSGlobalID";
+        component = SkyProject4DocumentViewer;
+      },
+      {
+        verb      = mail; 
+        type      = "objc/SkyFSGlobalID";
+        component = SkyProject4DocumentViewer;
+      },
+      {
+        verb      = edit; 
+        type      = "objc/SkyFSGlobalID";
+        component = SkyProject4DocumentViewer;
+      },
+      {
+        verb      = edit; 
+        type      = "objc/SkySvnDocument";
+        component = SkyProject4DocumentEditor;
+      },
+      {
+        verb      = edit; 
+        type      = "objc/SkyFSDocument";
+        component = SkyProject4DocumentEditor;
+      },
+      {
+        verb      = editAsNew; 
+        type      = "objc/SkySvnDocument";
+        component = SkyProject4DocumentEditor;
+      },
+      {
+        verb      = editAsNew; 
+        type      = "objc/SkyFSDocument";
+        component = SkyProject4DocumentEditor;
+      },
+      
+      {
+        verb      = upload;
+        type      = "objc/SkySvnDocument";
+        component = SkyProject4DocumentUpload;
+      },
+      {
+        verb      = upload;
+        type      = "objc/SkyFSDocument";
+        component = SkyProject4DocumentUpload;
+      },
+      {
+        verb      = rename;
+        type      = "objc/SkySvnDocument";
+        component = SkyProject4DocumentRename;
+      },
+      {
+        verb      = rename;
+        type      = "objc/SkyFSDocument";
+        component = SkyProject4DocumentRename;
+      },
+      
+      {
+        verb      = view;
+        type      = "objc/SkyProjectDocument";
+        component = SkyProject4DocumentViewer;
+      },
+      {
+        verb      = view;
+        type      = "objc/SkyProjectHistoryDocument";
+        component = SkyProject4DocumentViewer;
+      },
+      {
+        verb      = edit;
+        type      = "objc/SkyProjectDocument";
+        component = SkyProject4DocumentEditor;
+      },
+      {
+        verb      = editAsNew;
+        type      = "objc/SkyProjectDocument";
+        component = SkyProject4DocumentEditor;
+      },
+      {
+        verb      = upload;
+        type      = "objc/SkyProjectDocument";
+        component = SkyProject4DocumentUpload;
+      },
+      {
+        verb      = rename;
+        type      = "objc/SkyProjectDocument";
+        component = SkyProject4DocumentRename;
+      },
+      
+      {
+        verb      = view; 
+        type      = "eo-gid/documentediting";
+        component = SkyProject4DocumentViewer;
+      },
+        
+      {
+        verb      = mail; 
+        type      = "eo-gid/doc";
+        component = SkyProject4DocumentViewer;
+      },
+      {
+        verb      = mail; 
+        type      = "eo-gid/doc";
+        component = SkyProject4DocumentViewer;
+      },
+      {
+        verb      = mail; 
+        type      = "objc/SkySvnDocument";
+        component = SkyProject4DocumentViewer;
+      },
+      {
+        verb      = mail; 
+        type      = "objc/SkyFSDocument";
+        component = SkyProject4DocumentViewer;
+      },
+      {
+        verb      = view; 
+        type      = "eo-gid/project";
+        component = SkyProject4Viewer;
+      },
+      {
+        verb      = view; 
+        type      = "eo/project";
+        component = SkyProject4Viewer;
+      },
+      {
+        verb      = view; 
+        type      = "objc/SkyProjectFileManager";
+        component = SkyProject4Viewer;
+      },
+      {
+        verb      = view; 
+        type      = "objc/SkyFSFileManager";
+        component = SkyProject4Viewer;
+      },
+      {
+        verb      = delete;
+        type      = "objc/SkyProjectDocument";
+        component = SkyProject4DocumentDeletePage;
+      }
+    );
+  };
+}

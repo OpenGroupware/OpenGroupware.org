@@ -1,0 +1,15 @@
+# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I..			\
+	-I../OGoFoundation	\
+
+ADDITIONAL_WOBUNDLE_LIBS += \
+	-lOGoFoundation	\
+	-lLSFoundation -lLSSearch \
+	-lNGObjWeb \
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(ADDITIONAL_WOBUNDLE_LIBS)
+
+ADDITIONAL_LIB_DIRS += -L../../OGoFoundation/$(GNUSTEP_OBJ_DIR)

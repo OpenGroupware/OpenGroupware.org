@@ -1,0 +1,60 @@
+2005-03-21 Olivier Hallot <olivier@ig.com.br>
+
+	* added OGoDocInlineViewers.strings translated
+
+2005-02-28 Olivier Hallot <olivier@ig.com.br>
+
+	* Modified string in EnterpriseUI.strings
+
+2005-02-16 Olivier Hallot <olivier@ig.com.br>
+
+	* Added string "fewerButtonLabel" in OGoMailFilter.strings need by OOo
+	theme
+
+2005-02-12 Olivier Hallot <olivier@ig.com.br>
+
+	* Minor UTF-8 translation correction in OGoScheduler.strings 
+	* Added string "cancelButtonLabel" in OGoProject.strings need by OOo
+	theme.
+
+2005-01-02 Olivier Hallot <olivier@ig.com.br>
+
+	* Minor translation correction in OGoScheduler.strings 
+	* Added missing semicolons
+
+2004-12-31 Olivier Hallot <olivier@ig.com.br>
+
+	* Solved bug 1127, on OGoScheduler 
+	* Improvemenst in translations of LSWProjects, OGoProjects and
+CfgAdminUI
+
+2004-12-22 Olivier Hallot  <olivier@ig.com.br>
+
+	* Added OGoMailFilter.srtings
+	* Removed strings from OGoWebMail, now in OGoMailFilter
+
+2004-09-20  Olivier Hallot  <olivier@ig.com.br>
+
+.	* Created OGoMailEditor.strings to solve bug 830
+
+2004-05-15  Olivier Hallot  <olivier@ig.com.br>
+
+	* Several improvements in translation, missing strings in English original.
+
+2004-05-06  Olivier Hallot  <olivier@ig.com.br>
+
+	* Correction for Mailing list
+	* Correction for mail editor
+	* correction for Contacts
+
+2004-04-28  Olivier Hallot  <olivier@ig.com.br>
+
+	* Minor updates in OGoProjects and AddressUI
+
+2004-02-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* created ChangeLog - please update when doing modifications!
+
+2004-02-24  Olivier Hallot <olivier@ig.com.br>
+	* String files updated to be in synch with English.lproj as of 2004-02-24
+	* Added CfgAdminUI.strings and CyrusAdminUI.string to CVS but no traslation yet.

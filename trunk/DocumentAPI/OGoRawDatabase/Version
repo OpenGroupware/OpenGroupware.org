@@ -1,0 +1,3 @@
+# shared library version
+
+SUBMINOR_VERSION:=11

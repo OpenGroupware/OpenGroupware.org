@@ -1,0 +1,50 @@
+// bind template to class
+
+// TODO: this uses EO relationships which is discouraged! fixit!
+
+// Note: this uses a lot of escapeHTML because it generates plain text
+
+CreatorLabel:   WOString { value = labels.creator;        escapeHTML = NO; }
+ExecutantLabel: WOString { value = labels.executant;      escapeHTML = NO; }
+ActionLabel:    WOString { value = labels.action;         escapeHTML = NO; }
+ProjectLabel:   WOString { value = labels.project;        escapeHTML = NO; }
+StartLabel:     WOString { value = labels.startDateLabel; escapeHTML = NO; }
+EndLabel:       WOString { value = labels.endDateLabel;   escapeHTML = NO; }
+LinkLabel:      WOString { value = labels.linkLabel;      escapeHTML = NO; }
+JobViewerLabel: WOString { value = labels.jobViewer;      escapeHTML = NO; }
+CommentLabel:   WOString { value = labels.Comment;        escapeHTML = NO; }
+
+JobName:        WOString { value = object.name;           escapeHTML = NO; }
+CreatorName:    WOString { value = object.creator.name;   escapeHTML = NO; }
+ExecutantName:  WOString { value = object.executant.name; escapeHTML = NO; }
+Action:         WOString { value = action;                escapeHTML = NO; }
+ProjectName:    WOString { value = object.toProject.name; escapeHTML = NO; }
+Link:           WOString { value = objectUrl;             escapeHTML = NO; }
+LastComment:    WOString { value = lastComment;           escapeHTML = NO; }
+
+CreatorFirstName: WOString {
+  value = object.creator.firstname;
+  escapeHTML = NO;
+}
+ExecutantFirstName: WOString {
+  value = object.executant.firstname;
+  escapeHTML = NO;
+}
+
+Start: WOString { 
+  value     = object.startDate; 
+  formatter = session.formatDate;
+}
+End: WOString {
+  value      = object.endDate;
+  formatter  = session.formatDate;  
+  escapeHTML = NO;
+}
+
+ExecutantTeamName: WOString {
+  value      = object.executant.description;
+  escapeHTML = NO;
+}
+
+IsTeamJobElse: WOConditional { condition = isTeamJob; negate = YES; }
+IsTeamJob:     WOConditional { condition = isTeamJob; }

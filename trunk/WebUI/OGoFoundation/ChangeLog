@@ -1,0 +1,481 @@
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoModuleManager.m: changed behaviour to +initialize all classes on
+	  bundle loading. This ensures all initialization is done prior the
+	  app runs. (v5.1.85)
+	  
+2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: properly include config.make (v5.1.84)
+
+2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.83
+
+	* LSWClipboardOwner.m: some code cleanups
+
+	* GNUmakefile.preamble: fixed linking on MacOSX
+
+2005-02-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.82
+
+	* removed unused LSWMasterComponent file/protocol
+
+	* OGoContentPage.m: some code cleanups, removed -setErrorCString:
+
+2004-12-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.81
+
+	* OGoSession.m: locate translations and resources by performing a
+	  directory scan. This should fix OGo bug #1120 and #1112
+
+	* OGoStringTableManager.m: use OGoResourceManager methods to locate
+	  search directories, added method to detect available OGo translations
+	  (+availableOGoTranslations)
+
+	* OGoResourceManager.m: added method to detect available OGo themes
+	  (+availableOGoThemes)
+
+2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSession.m: removed config reload code (v5.1.80)
+
+2004-12-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoClipboard.h: added -objectEnumerator prototype (fixes a warning)
+	  (v5.1.79)
+
+2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoClipboard.m: properly deal with global-id favorites (v5.1.78)
+
+2004-11-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoStringTable.m: improved debugging facilities (can be enabled using
+	  OGoStringTableDebugEnabled default) (v5.1.77)
+
+2004-11-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoStringTable.m: treat string tables as UTF-8 per default now, you
+	  can still enable the old Latin-1 escaping using the 
+	  'OGoStringTableUseLatin1' default (v5.1.76)
+
+2004-11-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.75
+	
+	* NSObject+Label.m: improved label processing for dictionaries. In case
+	  the dictionary contains a global-id, ask the global-id for the label
+	  (fixes OGo bug #803)
+	
+	* OGoViewerPage.m: use new OGoClipboard object for -placeInClipboard
+	
+	* OGoSession.m: moved clipping functionality to a new 'OGoClipboard'
+	  object, deprecated -addFavorite, -removeFavorite etc
+
+2004-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.74
+	
+	* OGoSession.m: do not lookup config values in OGoModuleManager but
+	  only in the main components.cfg
+
+	* OGoModuleManager.m: removed support for per-bundle components.cfg
+	  files (bundlename.ccfg), all config things now need to be placed in
+	  the master components.cfg file (Note: components.cfg is considered
+	  deprecated and should not be used!)
+	
+	* removed LSWNavigation.h (use OGoNavigation.h)
+
+	* renamed LSWModuleManager.h to OGoModuleManager.h
+	
+	* OGoContentPage.m: removed ability to acquire page labels from the
+	  components config (use the labels facility instead!)
+
+2004-09-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoResourceManager.m: fixed to properly lookup components.cfg in
+	  the Templates directories (v5.1.73)
+
+2004-09-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.72
+
+	* OGoResourceManager.m: prepared to lookup components.cfg files in
+	  the Templates directory. Needs to be completed.
+
+	* OGoContentPage.h: removed deprecated LSWContentPage protocol (use
+	  OGoContentPage instead)
+
+	* removed deprecated LSWComponent, LSWSession
+
+	* renamed LSWObjectMailPage to OGoObjectMailPage
+
+2004-09-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSession.m: removed a debug log (v5.1.71)
+
+	* OGoStringTableManager.h: fixed a missing declaration for Cocoa
+	  Foundation (v5.1.70)
+
+2004-09-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoResourceManager.m: removed some superflous debug logs (v5.1.69)
+
+2004-09-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoResourceManager.m: made template lookup language/theme specific
+	  (v5.1.68)
+
+	* OGoResourceManager.m: print a warning if no template directory is
+	  configured (v5.1.67)
+
+2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.66
+
+	* OGoResourceManager.m: moved label lookup code to own
+	  OGoStringTableManager class, major internal cleanups, improved
+	  caching system (introduced OGoResourceKey class), does not look for
+	  (.wo/.wox) templates in WebServerResources
+
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.65
+
+	* WOSession+LSO.h: do not include LSBaseCommand.h
+
+	* WOSession+LSO.h: do not include NSLock.h
+
+	* OGoContentPage.h: do not include LSCommand.h
+
+	* OGoSession.h: does not include LSCommandFactory.h
+
+2004-09-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoResourceManager.m: added own implementation of
+	  -pathForResourceNamed:inFramework:languages: which checks in all
+	  webserver resources search directories for resources before resorting
+	  to the OWResourceManager implementation. This way the
+	  WOResourceRequestHandler works as expected (can find the resources)
+	  (v5.1.64)
+
+2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoResourceManager.m: moved OGoStringTable to an own file (v5.1.63)
+
+	* OGoResourceManager.m: look for WebServerResources in the
+	  "opengroupware.org-1.0a/share/www/" subdir of /usr/local and /usr
+	  and Resources (.strings) in the 
+	  "opengroupware.org-1.0a/share/translations/" subdir (v5.1.62)
+
+2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.61)
+
+2004-08-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoResourceManager.m: look for 'Resources' directory in
+	  GNUSTEP_PATHPREFIX_LIST and GNUSTEP_PATHLIST, look for 
+	  'WebServerResources' directories in the same list (fixes OGo bug
+	  #587) (v5.1.60)
+
+2004-08-25  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoSession.m: removed dependency on NGScripting (v5.1.59)
+
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.58
+
+	* OGoEditorPage.m: minor code cleanups, fixed a SOPE 4.3 issue
+
+	* OGoSession.m: removed dependency on NGJavaScript
+
+2004-08-09  Helge Hess  <helge@dogbert.in.skyrix.com>
+
+	* OGoSession+UserManagement.m: fixed a warning (v5.0.57)
+
+2004-08-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSession.m: fixed an issue with the components.cfg lookup and
+	  themes without languages (v5.0.56)
+
+	* OGoSession.m: changed languages array generation to use English_theme
+	  as a fallback right after the native language. This should fix OGo
+	  bug #694 (and should make creating themes easier ;-) Several 
+	  makefiles make language specific copies of resources, this should not
+	  be required anymore (v5.0.55)
+
+2004-08-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWResourceManager.m: renamed to OGoResourceManager, now inherits
+	  from OWResourceManager to avoid compatibility issues with upcoming
+	  WOResourceManager patches (v5.0.54)
+
+2004-07-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.53
+
+	* OGoSession.m: minor rewrite for pasteboard
+
+	* OWPasteboard.m: removed unused convenience methods, removed an 
+	  incorrect warn-log (changed to a debug log)
+
+2004-07-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSession+UserManagement.m: minor code cleanup (v5.0.52)
+
+2004-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoModuleManager.m: removed unused Python bundle support, improved
+	  logging facilities (v5.0.51)
+
+2004-07-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWObjectMailPage.m: minor code cleanups, avoid -entity call on non
+	  EO objects (related to OGo bug #620) (v5.0.50)
+
+2004-07-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoSession.m (-instantiateComponentForCommand:type:object:): 
+	  activation can now return NSException objects to signal errors. The
+	  NSExceptions will be signaled to the user as error strings.
+	  (v5.0.49)
+
+2004-07-05  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.48
+
+	* OGoComponent.h: removed declaration of -parent method (already 
+	  declared in WOComponent.h with a different signature)
+
+	* LSWResourceManager.m, OGoSession.m, SkyWizard.m: fixed some gcc 3.4
+	  warnings
+
+2004-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSession.m: minor improvement to logging of user defaults errors
+	  (v5.0.47)
+
+2004-06-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSession.h: minor cleanups (v5.0.46)
+
+2004-06-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSession+UserManagement.m, SkyEditorPage.m: fixed a gstep-base 
+	  warning (v5.0.45)
+
+2004-06-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* WOComponent+Navigation.m: fixed API to match that of OGoNavigation
+	  (v5.0.44)
+
+2004-05-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* EOGlobalID+Label.m: added label generation for appointment, team
+	  and task IDs, cleaned up label generation code (v5.0.43)
+
+2004-05-05  Helge Hess  <helge.hess@skyrix.com>
+
+	* EOGlobalID+Label.m: fixed labels for person global ids which are not
+	  accounts (returned the person 'login' code before) (v5.0.42)
+
+2004-04-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.41
+
+	* OGoModuleManager.m: fixed some bug in an edge condition when loading
+	  the component config
+
+	* WOComponent+config.m, OGoComponent.m: use OGoConfigHandler
+	
+	* renamed LSWConfigHandler to OGoConfigHandler (old class kept as a
+	  subclass for compatibility)
+
+2004-04-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSession.m: updated for API changes in WOSession, requires
+	  libNGObjWeb v4.2.341 (v5.0.40)
+
+2004-03-30  Helge Hess  <helge.hess@skyrix.com>
+	
+	* OGoViewerPage.m: improved label generation code (v5.0.39)
+	
+	* OGoSession+UserManagement.m: improved logging of the usage of
+	  deprecated methods (v5.0.38)
+
+2004-03-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWLabelHandler.m: added -copyWithZone: method, fixes OGo bug #690
+	  (v5.0.37)
+
+2004-03-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.36
+
+	* OGoSession.m: do not preregister a value for SkyLanguages
+
+	* various files: deprecated LSWEditorPage, use OGoEditorPage instead
+
+2004-03-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWConfigHandler.m, LSWLabelHandler.m, LSWResourceManager.m,
+          OGoNavigation.m, OGoSession.m, OGoViewerPage.m: fixed warnings when 
+	  compiling with gstep-base (v5.0.35)
+
+2004-02-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoNavigation.m: some improvement on edge conditions (v5.0.34)
+
+2004-02-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoModuleManager.m: fixed a typo (v5.0.33)
+
+2004-02-24  Helge Hess  <helge@mac.in.skyrix.com>
+
+	* OGoModuleManager.m: minor code cleanups, use NGPropertyListParser
+	  for parsing Defaults.plist files on Cocoa/gstep-base (v5.0.32)
+
+2004-02-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoSession.m: improved error logging related to missing 
+	  components.cfg files (v5.0.31)
+
+2004-02-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.30
+	
+	* OGoSession.m: fixed default user timezone for MacOSX
+
+	* OGoSession.m: improved error detection
+
+2004-02-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWResourceManager.m: added new debug logging default 
+	  "LSWResourceManagerDebugEnabled", fixed a double-slash-URL generation
+	  problem (v5.0.29)
+
+2004-02-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWResourceManager.m: ported path handling to MacOSX (different 
+	  semantics in NSPathUtilities), added optimization to 
+	  WebServerResources path lookup, added debug-logs (v5.0.28)
+
+2004-02-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.27
+
+	* added OGoHelpManager object
+
+	* OGoSession: minor cleanups
+
+	* OGoNavigation.m: cannot leave the first page anymore
+
+2004-01-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoSession.m: fixed a compilation warning (v5.0.26)
+
+2004-01-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.25
+
+	* OGoSession.m: use -pageWithName:inContext: instead of -pageWithName: 
+	  to create components, major cleanups
+
+	* LSWEditorPage.m, SkyEditorComponent.m, OGoNavigation.m, 
+	  SkyEditorComponent.m: minor cleanups
+
+2004-01-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.24
+
+	* OGoSession.m: removed deprecated -masterPageWithName: method, removed
+	  unused pasteboardWithUniqueName method, moved JavaScript mapping
+	  category to separate file
+
+	* OGoSession.m: moved object label code to various object categories in
+	  new files (eg NSObject+Labels.m) - requires testing (eg clipping
+	  various objects)
+
+2004-01-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* OWPasteboard.m: minor improvement to error logging (v5.0.23)
+
+2004-01-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.22
+
+	* LSWEditorPage.m, LSWEditorPage+Wizard.m, LSWObjectMailPage.m,
+	  OGoViewerPage.m, SkyWizard.m: various cleanups and fixes for MacOSX
+	  compilation
+
+	* SkyWizard.h: fixed header file
+
+	* OGoSession+Clipboard.m: fixed a compilation warning
+
+2003-12-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWConfigHandler.m: check whether there is key specified (do not pass
+	  nil keys to NSDictionary lookups) (v5.0.21)
+
+2003-12-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWObjectMailPage.m: avoid generation of double-slashes, minor
+	  cleanups (v5.0.20)
+
+Mon Oct 27 19:30:24 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWMimeContent.m: add download content method (v5.0.19)
+
+2003-10-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoSession.m ([OGoSession -configValueForKey:inComponent:]): fixed
+	  a bug with component bundles not being found introduced in the last
+	  cleanup (ups, sorry ...) (v5.0.18)
+
+2003-10-21  Helge Hess  <helge.hess@skyrix.com>
+	
+	* v5.0.17
+		
+	* OGoSession.m: turned the various dateformats into defaults
+	
+	* OGoSession.m: major cleanups, added debugging/profiling defaults:
+	  OGoProfileSleep, OGoDebugConfig, OGoDebugPageCache
+
+	* major cleanups, renamed various LSWxxx classes to OGoxxx, but kept
+	  LSWxxx as subclasses for compatibility - but those should be 
+	  removed in the long run
+	  renamed classes include: OGoSession, OGoNavigation, OGoViewerPage,
+	  OGoContentPage
+
+Fri Sep 12 14:41:27 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWObjectMailPage.m: use [context serverURL] do determine the 
+	  server url (v5.0.16)
+
+Wed Sep  3 16:20:18 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSWSession.m: added am/pm time formatting (ogo bug 14) (v5.0.15)
+
+Thu Jul 17 17:13:39 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSWSession: improve SkyDoc label handling, return entityName or 'new'
+	  for new Documents (v5.0.14)
+
+Mon Jul  7 19:46:42 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* fixed OGo import (v5.0.13)
+
+Mon Jul  7 16:43:23 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.12)
+
+	* deleted old ChangeLogs
+
+Thu Jun 10 12:25:10 1999  Helge Hess  <helge@trex.mdlink.de>
+
+	* created ChangeLog

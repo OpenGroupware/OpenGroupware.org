@@ -1,0 +1,22 @@
+2005-03-22  Stefan Huehner  <stefan@huehner.org>
+	
+	* pg-build-schema.psql.constraints: removed all table creation and
+	  DML statements to use the script as an addon to pg-build-schema.psql
+	
+Fri Dec  5 17:18:44 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* pg-build-schema.psql, pg-update-schema.psql: added columns
+	  'object_version', 'skyrix_palm_version' to palm tables.
+	  palm table version increased to 43.
+
+2003-11-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* pg-build-schema.psql, pg-build-schema.psql.constraints: increased 
+	  length of person.password field to 255 chars (related to OGo bug 364)
+	  Note: the constraints schema is not in sync with 
+	  pg-build-schema.psql? (eg obj_link table)
+
+Wed Oct  8 17:55:17 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* pg-build-schema.psql: add obj_link table (a table to store links 
+	  between objects or urls and objects) 

@@ -1,0 +1,9 @@
+# $Id$
+
+       Name: skyjobd
+Description: provides group todo list functionality
+             (all job related SKYRiX functions)
+
+  Namespace: <prefix>.jobs
+       Docs: Intranet: http://home.in.skyrix.com/development/HowTo/
+                       SandStorm/Documentation/skyjobd.html

@@ -1,0 +1,93 @@
+2004-11-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: do not predefine GNUSTEP_INSTALLATION_DIR (v5.1.12)
+
+2004-09-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile (libOGoNHS_VERSION): fixed version to include subminor
+
+2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* added FHS install (conduits are installed in
+	  /usr/local/lib/opengroupware.org-1.0a/conduits/) (v5.1.11)
+
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* TestConduit.m: fixed some warnings (v5.1.10)
+
+2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.9)
+
+2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+
+	* install into Library/OpenGroupware.org-1.0a (v5.1.8)
+
+2004-02-12  Martin Hoerning  <mh@skyrix.com>
+
+	* OGoNHSConduit.m: enhanced postsync behaviour to handle ogo-entries
+	  of deleted palm records (v4.1.7)
+
+Fri Dec 19 18:57:26 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* OGoNHSConduit.m: register palm-postsync requests (v4.1.6)
+
+Mon Jul 28 17:52:13 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* OGoNHSConduit.m: fixed userdefaults keys Sky*->OGo* (v4.1.5)
+
+Mon Jul  7 11:56:46 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v4.1.4)
+
+Thu Feb 20 16:40:29 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* v4.1.3
+	
+	* SkyNHSDeviceDataSource.m: fixed open connections
+	
+	* SkyNHSConduit.m: fixed sync-log
+
+Thu Jan 16 14:04:24 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyNHSConduit.m: updated debugging/logging (v.4.1.2)
+
+2002-12-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added libSkyNHS_SOVERSION, to produce a .4.1 version
+	  binary (instead of .4)
+
+2002-11-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: fixed include-path
+
+Mon Oct 21 11:54:25 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyNHSDeviceDataSource.m: looks in bundles for unknwon sync 
+		                    datasources
+
+Fri Aug  2 13:24:40 2002  Jan41 Reichmann  <jan@skyrix.com>
+
+	* SkyNHSDeviceDataSource.m: seperate ids in OR-Qualifier
+
+Thu Aug  1 19:16:10 2002  Jan41 Reichmann  <jan@skyrix.com>
+
+	* SkyNHSDeviceDataSource.m: seperate ids in OR-Qualifier
+
+Mon May 13 13:30:32 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyNHSConduit.m: fixed empty-deviceId-BUG
+
+Mon Apr 15 20:27:06 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* took over changes from 4.2dev (timout prevention)
+
+Tue Jun 19 17:35:10 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyNHSDeviceDataSource.m: 
+	    SkyNHSDateDataSource: alarm formatting fixed
+
+Tue Jun 19 17:34:49 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* ChangLog created
+

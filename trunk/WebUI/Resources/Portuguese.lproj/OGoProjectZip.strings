@@ -1,0 +1,22 @@
+// v1.1 - Francisco Azevedo <francisco@OpenGroupware.org>
+
+archiveFormat        = "Formato do arquivo"
+targetFile           = "Ficheiro de destino"
+compressionLevel     = "Nível de compressão"
+saveAttributes       = "Guardar atributos"
+targetDir            = "Pasta de destino"
+fileName             = "Nome do ficheiro";
+size                 = "Tamanho";
+owner                = "Proprietário actual";
+subject              = "Título";
+releaseDate          = "Modificado em";
+exclude              = "Excluir"
+filePath             = "Caminho do ficheiro"
+date                 = "Data"
+remove               = "Eliminar ficheiro arquivado"
+overwrite            = "Sobrescrever ficheiros existentes"
+restoreAttributes    = "Tentar restaurar os ficheiros do arquivo"
+archiveContent       = "Conteúdo do ficheiro arquivado"
+cancel               = "Cancelar"
+unzip                = "Unzip"
+zip                  = "Zip"

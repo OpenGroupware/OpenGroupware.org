@@ -1,0 +1,91 @@
+{
+  "Appointment Notification" = (
+     {
+     name = AptNotifyBeVerbose;
+     values = (NO, YES);
+     English = {
+       title = "Verbose Logging";
+       info = "The logging of the skyaptnotify tool is somewhat more verbose.";
+     };
+     German = {
+       title = "Erweitertes Logging";
+       info = "Wenn diese Option aktiviert ist, werden mehr Informationen
+               &uuml;ber den Ablauf des skyaptnotify Programmes in das Logfile
+               geschrieben.";
+       };
+     ptBR = {
+       title = "Registro verboso";
+       info = "O registro da ferramenta skyaptnotify será mais detalhado.";
+     };
+     },
+     {
+     name = AptNotifyFromAddress;
+     English = {
+       title = "Sender address of the appointment notification";
+       info = "This specifies the From: address shown in mails sent by the
+               appointment notification system.";
+     };
+     German = {
+       title = "Absenderadresse des Appointment-Notification Dienstes";
+       info = "Dieser Parameter spezifiziert die E-Mail-Adresse, welche im
+               From: Headerfeld der E-Mails erscheint, die durch den SKYRiX
+               Appointment Notification Dienst versendet werden.";
+       };
+     ptBR = {
+       title = "Remetente da notificação de compromisso";
+       info = "Especifica o remetente ( De: ) mostrado nos e-mails enviados pelo sistema de notificações.";
+     };
+     },
+     {
+     name = AptNotifySkyrixUser;
+     critical = YES;
+     English = {
+       title = "SKYRiX user used by the Appointment Notification Service";
+       info = "This specifies the user used by the Appointment Notification 
+               service to connect to the SKYRiX system. In normal cases this 
+               should be <i>root</i>. Be aware of the fact that changing this 
+               user can break your Appointment Notification Service.";
+     };
+     German = {
+       title = "SKYRiX Nutzer, welcher vom Appointment Notification Dienst genutzt wird";
+       info = "Hier wird festgelegt, welchen Nutzernamen der Appointment 
+               Notification Dienst zur Verbindung mit SKYRiX nutzen soll. 
+               Gew&ouml;hnlich sollte dies der Superuser <i>root</i> sein. 
+               Wenn diese Einstellung auf einen anderen Nutzer ge&auml;ndert 
+               wird, kann die korrekte Funktion des Appointment Notification 
+               Dienstes nicht mehr gew&auml;hrleistet werden.";
+       };
+     ptBR = {
+       title = "Nome do usuário OpenGroupware usado pelo serviço de notificação de compromissos";
+       info = "Especifica o nome do usuário OpenGroupware usado pelo serviço de notificação de compromissos. Nos casos normais usa-se o <i>root</i>. Cuidado com o fato de que ao mudar este usuário, seu sistema de notificação poderá não mais funcionar.";
+     };
+     },
+     {
+     name = AptNotifySkyrixPassword;
+     critical = YES;
+     password = YES;
+     English = {
+       title = "Password for the user specified above.";
+       info = "Enter here the password of the user specified in 
+               <i>AptNotifySkyrixUser</i>. Be sure that the password is 
+               correct, otherwise the Appointment Notification Service won't 
+               work. If the <i>root</i> user changes its password, this 
+               parameter has to be changed, too.";
+     };
+     German = {
+       title = "Passwort fuer den oben definierten Nutzer.";
+       info = "Dies legt das Passwort des unter <i>AptNotifySkyrixUser</i> 
+               festgelegten Nutzers fest. Stellen Sie sicher, dass es sich 
+               hierbei um das korrekte Passwort dieses Accounts handelt, 
+               andererseits kann die Funktion des Appointment Notification 
+               Dienstes nicht gew&auml;hrleistet werden. Wenn der Superuser 
+               <i>root</i> sein Passwort &auml;ndert, muss auch diese 
+               Einstellung angepasst werden";
+       };
+     ptBR = {
+       title = "Senha do usuário especificado acima";
+       info = "Digite a senha do usuário especificado em <i>AptNotifySkyrixUser</i>. Certifique-se que a senha está correta, senão o serviço de notificação de compromissos não funcionará. Se o usuário <i>root</i> mudar sua senha, este parâmetro deverá mudar de acordo.";
+     };
+     },
+  );
+};

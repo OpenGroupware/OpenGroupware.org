@@ -1,0 +1,58 @@
+// bind template to controller class
+
+VersionList: SkyTableView {
+  dataSource   = dataSource;
+  item         = currentVersionItem;
+  batchSize    = 10;
+  sortedKey    = "SkyVersionName";
+  cacheTimeout = 30;
+}
+
+VFileName: WETableData {
+  title   = labels.fileName;
+}
+VFileLink: SkyP4DownloadLink {
+  projectId    = fileSystemInfo.NSFileSystemNumber;
+  documentPath = documentPath;
+  versionTag   = currentVersionItem.SkyVersionName;
+}
+VDocIcon: SkyP4DocumentIcon {
+  projectName  = fileSystemInfo.NSFileSystemName;
+  documentPath = documentPath;
+  mimeType     = currentVersionItem.NSFileMimeType;
+}
+//VFileNameString: WOString {
+//  value = currentVersionItem.NSFileName;
+//}
+VFileNameString: WOHyperlink {
+  string = currentVersionItem.NSFileName;
+  action = clickedVersion;
+}
+
+VVersionTag: WETableData {
+  title   = labels.version;
+  sortKey = "SkyVersionNumber";
+  string  = currentVersionItem.SkyVersionNumber;
+}
+VFileSize: WETableData {
+  title   = labels.size;
+  sortKey = "NSFileSize";
+  string  = currentVersionItem.NSFileSize;
+}
+VFileOwner: WETableData {
+  title   = labels.owner;
+  sortKey = "NSFileOwnerAccountName";
+  string  = currentVersionItem.NSFileOwnerAccountName;
+}
+VFileModDate: WETableData {
+  title   = labels.releaseDate;
+  sortKey = "NSFileModificationDate";
+}
+ModDateField: SkyDateField {
+  date    = currentVersionItem.NSFileModificationDate;
+}
+VFileSubject: WETableData {
+  title   = labels.subject;
+  sortKey = "NSFileSubject";
+  string  = currentVersionItem.NSFileSubject;
+}

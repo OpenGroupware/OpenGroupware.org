@@ -1,0 +1,290 @@
+2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.3.106
+	
+	* SxUserFolder.m: mapped "Mail" to OGoMailAccount
+	
+	* SxObject.m: added -initWithName:inContainer: for SOGo compatibility
+
+2004-12-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxFolder+DAV.m: detect davURL and etag queries and call some standard
+	  method in case it is implemented by the folder subclass (v1.3.105)
+
+2004-11-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxObject.m: fixed a warning on MacOSX (v1.3.104)
+
+2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* SxObject.m: added -davEntityTag method which constructs an entity
+	  tag based on the 'objectVersion' of the EO, added methods to check
+	  HTTP etag condition headers (v1.3.103)
+	
+	* SxFolder.m, DAVPropSets.plist: added support for a WebDAV query
+	  containing just the etag (v1.3.102)
+	
+2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxFolder.m: only call -initWithName:inFolder: when available
+	  (otherwise use the standard -initWithName:inContainer:) (v1.3.101)
+
+	* SxFolder.m: print a log if record factory methods are not overridden
+	  by subclass (v1.3.100)
+
+	* SxFolder.m: minor improvement to PUT log (v1.3.99)
+
+	* SxMsgRootFolder.m, SxUserFolder.m, SxPublicFolder.m, 
+	  SxStoreInfoFolder.m: deliver folder keys as toManyRelationshipKeys, 
+	  not as toOneRelationshipKeys (v1.3.98)
+
+2004-10-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* NSObject+ExValues.m: added -exDavStringArrayValue method to return
+	  a value properly tagged as mv.string (required by Connector 2.0.2)
+	  (v1.3.97)
+
+2004-10-19  Helge Hess  <helge.hess@skyrix.com>
+
+	* NGResourceLocator+ZSF.m: look for resources in GNUstep tree at
+	  Library/Libraries/Resources/ZideStore-1.3/ (thanks go to Michael for
+	  pointing that out) (v1.3.96)
+
+2004-10-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* v1.3.95
+
+	* E2KAttrMap.plist: added mapping for oof-state
+
+	* v1.3.94
+
+	* added SxStoreInfoFolder for NON_IPM_SUBTREE queries
+
+	* DAVPropSets.plist: added exPermanentURL, davIsCollection,
+	  davIsHidden to Evo subfolder query
+
+	* E2KAttrMap.plist: added "permanenturl" Exchange property
+
+	* SxUserFolder.m: when being accessed with Connector 2.x, sends a
+	  <base> response for the initial request (thanks Erik), also fake
+	  being Ex 2003 using a proper header (v1.3.93)
+
+2004-10-07  Helge Hess  <helge.hess@skyrix.com>
+
+	* OLDavPropMapper.m: map out some problematic keys (v1.3.92)
+
+	* OLDavPropMapper.m: fixed processing of Cadaver property keys 
+	  (v1.3.91)
+
+2004-09-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* v1.3.90
+	
+	* SxFolder.m: use NGResourceLocator to find DAVPropSets.plist
+
+	* SxMsgRootFolder.m: lookup PersonalFolderInfo.plist using
+	  NGResourceLocator
+
+	* GNUmakefile: added PersonalFolderInfo.plist and DAVPropSets.plist
+	  (where application resources before)
+
+	* OLDavPropMapper.m: moved resource-locator code to a new category,
+	  NGResourceLocator+ZSF.m
+
+2004-09-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* v1.3.89
+
+	* OLDavPropMapper.m: locate mapping files using NGResourceLocator
+
+	* moved in mapping lists from main executable, install them in share
+	  locations
+
+2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxFolder.h: fixed a compile warning (v1.3.88)
+
+2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: added path to libLSFoundation, added FHS pathes
+	  (v1.3.87)
+
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* renamed to ZSFrontend (v1.3.86)
+
+2004-07-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* NSObject+ExValues.h: fixed includes for gstep-base (v1.2.85)
+
+2004-06-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.2.84
+
+	* SxUserFolder.m, SxMsgRootFolder.m: fixed resource loading on MacOSX
+
+	* GNUmakefile.preamble: fixed explicit dependency for MacOSX
+
+2004-05-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* NSObject+ExValues.h: do not include NSTimeZone.h with libFoundation
+	  library (v1.2.83)
+
+2004-05-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* NSObject+ExValues.h: properly include NSTimeZone.h (v1.2.82)
+
+2004-04-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: install header files in ZideStore12/Frontend instead
+	  of ZideStoreFrontend, fixes OGo bug #458 (v1.2.81)
+
+2004-04-05  Helge Hess  <helge.hess@skyrix.com>
+
+	* replaced some "SKYRiX" labels and logs with OGo ones (v1.2.80)
+
+2004-03-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxObject.m, SxFolder.m: added -valueForUndefinedKey: method to 
+	  support Panther (just returns nil instead of throwing an exception)
+	  (v1.2.79)
+
+2004-03-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxFolder.m, SxObject.m: folders and objects now retain their parent,
+	  unless the folder specifies otherwise. This way we avoid loosing
+	  parent objects ... (v1.2.78)
+
+2004-03-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* NSObject+ExValues.m: added method to calculate timezone id code for
+	  KOrganizer (v1.2.77)
+
+2004-03-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* NSString+csv.m, OLDavPropMapper.m, SxFolder.m: fixed compilation on
+	  gstep-base (v1.2.76)
+
+2004-03-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxUserFolder.m: do not use separate message folder root with 
+	  KOrganizer (v1.2.75)
+
+2004-02-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* various files: fixed for MacOSX compilation (v1.2.74)
+
+2003-12-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxFolder+DAV.m: return 501 instead of 500 in case someone attempts
+	  to use PROPPATCH for object creation on a folder which doesn't
+	  support that (v1.2.73)
+
+2003-11-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxFolder.m: improve support for GET methods, now checks for a
+	  default method name and redirects to its location if available
+	  (v1.2.72)
+
+2003-11-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxFolder: properly detect WebDAV list queries (v1.2.71)
+
+2003-11-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxFolder+DAV.m: properly URL escape entry names (should never contain
+	  invalid URL chars, but who knows ...) (v1.2.70)
+
+2003-11-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxFolder+DAV.m: small fix to reduce logs in deployments (v1.2.69)
+
+2003-11-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* v1.2.68
+
+	* moved Tasks subproject to Tasks.zsp in Products
+
+	* moved Contacts, Persons, Enterprises, Groups subprojects into 
+	  Contacts.zsp in Products
+
+	* moved Appointments subproject into Appointments.zsp in Products
+
+	* moved SxOptionsForm to EvoConnect
+
+2003-11-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved RSS support to a separate ZSP bundle, enabled RSS lookup (if
+	  installed) for any SxFolder subclass (v1.2.67)
+
+2003-11-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxUserFolder.m: moved "options" form to a separate file (v1.2.66)
+
+Tue Nov 11 18:17:15 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* Appointments/SxDavAptAction.m: added changing of participant info
+	  even if you don't own the appointment (fixes sx bug 1898) (v1.2.65)
+
+2003-11-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.2.64
+
+	* SxUserFolder.m: activate flatRootKeys when being accessed by
+	  Finder (not yet completed)
+
+	* SxFolder+DAV.m: small cleanups, a bit better logging
+
+	* SxFolder.m: immediatly reject queries on ".hidden". key (issues by
+	  the Finder)
+
+Wed Oct 29 22:01:54 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* Appointments/SxICalendar.m: deliver user timeZone to iCal objects
+	  (solves ogo bug 257) (v1.2.63)
+
+2003-10-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* bumped Version to v1.2.62
+
+Fri Sep 19 18:34:24 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* Appointments/SxICalendar.m: fixed mapping core dump (v1.1.61)
+
+Thu Sep 18 17:12:26 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* v1.1.60
+	
+	* Groups/SxGroup.m: added vCard support for teams
+	
+	* Persons/SxPerson.m, Enterprise/SxEnterprise.m: use new vCard 
+	  rendering from SxContactManager
+
+Thu Sep 18 13:53:28 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* Appointments/SxICalendar.m: added missing mapping warning (v1.1.59)
+
+Wed Sep 17 16:11:05 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* v1.1.58
+	
+	* Appointments/SxAppointment.m: fixed iCal rendering
+	
+	* Appointments/SxICalendar.m: added debugFlag (ZLDebugICal)
+
+Tue Sep 16 16:35:25 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* Appointments/SxICalendar.m: added iCal bulk query support (v1.1.57)
+
+Wed Sep 10 18:11:30 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* Appointments/SxICalendar.m: added PUT action (v1.1.56)
+
+2003-09-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* Appointments/SxAppointment.m: added iCal/MIME generation properties
+	  (v1.1.55)
+
+	* now a separate library (v1.1.54)
+
+	* created ChangeLog

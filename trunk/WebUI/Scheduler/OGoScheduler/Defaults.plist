@@ -1,0 +1,151 @@
+{
+  scheduler_hide_new_proposal_on_rescat    = YES;
+  scheduler_selectPanel_showAptTypes       = YES;
+
+
+  scheduler_daychart_maxaptinfolength      = 14;
+  scheduler_weekchart_maxaptinfolength     = 7;
+  scheduler_weekchart_starthour            = 8;
+  scheduler_weekchart_endhour              = 21;
+  scheduler_weekchart_columnsperday        = 24;
+  scheduler_daychart_columnsperday         = 60;
+  scheduler_first_day_of_week              = 1; // monday
+  scheduler_monthoverview_maxaptperday     = 20;
+  scheduler_monthoverview_maxaptinfolength = 14;
+  scheduler_dayoverview_timeinterval       = 3600; // in seconds
+  scheduler_dayoverview_daystart           = 480;  // minutes after 0:00
+  scheduler_dayoverview_dayend             = 1080; // minutes after 0:00
+  scheduler_additional_popup_entries       = 20;
+  scheduler_overview_short_info            = YES;
+  scheduler_overview_with_resources        = YES;
+
+  // holidays
+  scheduler_show_holiday_shrovetide       = NO;  // Fastnacht
+  scheduler_show_holiday_ascension        = YES;  // Christi Himmelfahrt
+  scheduler_show_holiday_mothersDay       = NO;  // Muttertag
+  scheduler_show_holiday_corpusChristi    = NO;  // Fronleichnam
+  scheduler_show_holiday_summertimeChange = YES; // Sommerzeitumstellung
+  scheduler_show_holiday_wintertimeChange = YES; // Winterzeitumstellung
+  scheduler_show_holiday_christmasEve     = YES; // Weihnachtsabend
+  scheduler_show_holiday_newYearsEve      = YES; // Silvester
+  scheduler_show_holiday_deathsSunday     = NO;  // Totensonntag
+  scheduler_show_holiday_newYear          = YES;
+  scheduler_show_holiday_holyThreeKings   = YES;  
+  scheduler_show_holiday_goodFriday       = YES;
+  scheduler_show_holiday_easter           = YES;
+  scheduler_show_holiday_firstMay         = YES;
+  scheduler_show_holiday_whitsun          = YES;
+  scheduler_show_holiday_germanUnityDay   = YES;
+  scheduler_show_holiday_reformationsDay  = YES;
+  scheduler_show_holiday_allSaintsDay     = YES;
+  scheduler_show_holiday_christmasDay     = YES;
+  scheduler_show_holiday_boxingDay        = YES;
+  scheduler_show_holiday_firstAdvent      = NO;
+  scheduler_show_holiday_secondAdvent     = NO;
+  scheduler_show_holiday_thirdAdvent      = NO;
+  scheduler_show_holiday_fourthAdvent     = NO;
+  scheduler_show_holiday_dayOfPrayerAndRepetance = YES;
+
+
+  scheduler_show_holiday_holidaygroup_bay    = NO;  // Bayern
+  scheduler_show_holiday_holidaygroup_ber    = NO;  // Berlin
+  scheduler_show_holiday_holidaygroup_bra    = NO;  // Brandenburg
+  scheduler_show_holiday_holidaygroup_bre    = NO;  // Bremen
+  scheduler_show_holiday_holidaygroup_bwb    = NO;  // Baden-Wuertt.
+  scheduler_show_holiday_holidaygroup_hes    = NO;  // Hessen
+  scheduler_show_holiday_holidaygroup_hh     = NO;  // Hamburg
+  scheduler_show_holiday_holidaygroup_mvp    = NO;  // Meck.-P.
+  scheduler_show_holiday_holidaygroup_nrw    = NO;  // Nordrein-W.
+  scheduler_show_holiday_holidaygroup_nsa    = NO;  // Niedersachsen
+  scheduler_show_holiday_holidaygroup_rpf    = NO;  // Rheinland-Pf.
+  scheduler_show_holiday_holidaygroup_saa    = NO;  // Saarland
+  scheduler_show_holiday_holidaygroup_sac    = NO;  // Sachsen
+  scheduler_show_holiday_holidaygroup_sah    = YES; // Sachsen-Anhalt
+  scheduler_show_holiday_holidaygroup_thu    = NO;  // Thueringen
+  scheduler_show_holiday_holidaygroup_slh    = NO;  // Schleswig H.
+  scheduler_show_holiday_holidaygroup_bylaw  = YES; // Gesetzl. Feiert.
+  scheduler_show_holiday_holidaygroup_advent = NO;  // Advent
+
+  scheduler_show_holiday_holidaygroup_custom_all = YES; // benutzerdefinierte
+  scheduler_show_holiday_holidaygroup_custom_private = YES; // Ereignisse
+
+  // holidays not bound in groups
+  scheduler_available_holidays = (
+    "shrovetide", "mothersDay", 
+    "summertimeChange", "wintertimeChange", "christmasEve",
+    "deathsSunday", "newYearsEve"
+  );
+
+  // school holidays
+  scheduler_school_holidays = {
+    // Bayern
+    holidaygroup_bay = "";
+    // Berlin
+    holidaygroup_ber = "";
+    // Brandenburg 
+    holidaygroup_bra = "";
+    // Bremen 
+    holidaygroup_bre = "";
+    // Baden-Wuerttemberg 
+    holidaygroup_bwb = "";
+    // Hessen 
+    holidaygroup_hes = "";
+    // Hamburg 
+    holidaygroup_hh = "";
+    // Meckl. V.
+    holidaygroup_mvp = "";
+    // Nordrein-W.
+    holidaygroup_nrw = "";
+    // Rheinland-Pf.
+    holidaygroup_rpf = "";
+    // Saarland
+    holidaygroup_saa = "";
+    // Sachsen
+    holidaygroup_sac = "";
+    // Niedersachsen
+    holidaygroup_nsa = "";
+    // Sachsen-Anhalt
+    holidaygroup_sah = "";
+    // Thueringen
+    holidaygroup_thu = "";
+    // Schleswig-H.
+    holidaygroup_slh = "";
+  }; 
+ 
+  // grouped holidays
+  scheduler_holiday_groups = {
+    // Advent-Feiertage
+    holidaygroup_advent = "";
+    // Gesetzliche Feiertage
+    holidaygroup_bylaw = "";
+    // Benutzerdefinierte Feiertage
+    holidaygroup_custom_all = "";
+    // Privat Feiertage
+    holidaygroup_custom_private = "";
+  };
+
+  schedulerpage_tab      = "weekoverview";
+  schedulerpage_weekview = "overview";
+  schedulerpage_dayview  = "overview";
+
+  scheduler_show_jobs       = NO;
+  scheduler_show_palm_dates = YES;
+  scheduler_popup_maxlength = 25;
+
+  schedulerselect_fetchkeys = (
+    title, location, aptType, startDate, endDate, globalID, ownerId, 
+    accessTeamId, permissions, resourceNames,
+    "participants.companyId", "participants.globalID",
+    "participants.login",     "participants.firstname",
+    "participants.name",      "participants.description",
+    "participants.isTeam",    "participants.isAccount"
+  );
+  schedulerselect_teamfetchkeys   = ( description );
+  schedulerselect_personfetchkeys = ( 
+    name, firstname, isAccount, login, companyId, globalID
+  );
+  schedulerselect_months = (
+    January, February, March, April, May, June, July, August, September, 
+    October, November, December
+  );
+}

@@ -1,0 +1,56 @@
+// $Id: SkyDockedProjects.wod,v 1.1 2003/08/04 15:21:35 thomas Exp $
+
+DockedProjectRep: WORepetition {
+  list = session.dockedProjectInfos;
+  item = dockInfo;
+}
+
+Title: WOString {
+  value = dockInfo.title;
+}
+
+HasIconData: WOConditional {
+  condition = dockInfo.hasIconData;
+}
+
+HasIconDataElse: WOConditional {
+  condition = dockInfo.hasIconData;
+  negate    = YES;
+}
+
+IsInTextMode: WOConditional {
+  condition = isInTextMode;
+}
+
+IsNotInTextMode: WOConditional {
+  condition = isInTextMode;
+  negate    = YES;
+}
+
+IconWithData: WOImage {
+  data     = dockInfo.iconData;
+  alt      = dockInfo.title;
+  title    = dockInfo.title;
+  border   = "0";
+}
+
+IconWithFilename: WOImage {
+  filename = "menu_bookmarks_labeled.gif";
+  alt      = dockInfo.title;
+  title    = dockInfo.title;
+  border   = "0";
+}
+
+ViewProject: WOHyperlink {
+  action = viewProject;
+  class  = "skydockfont";
+}
+
+ActivePageIsEditor: WOConditional {
+  condition = disableLinks;
+}
+
+ActivePageIsNotEditor: WOConditional {
+  condition = disableLinks;
+  negate    = YES;
+}

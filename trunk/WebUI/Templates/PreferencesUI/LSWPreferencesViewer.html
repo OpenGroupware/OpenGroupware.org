@@ -1,0 +1,77 @@
+<#Frame>
+  <!-- $Id: LSWPreferencesViewer.html 2 2004-08-20 11:37:44Z znek $ -->
+  <#Window>
+    <table width="100%" border="0" cellpadding="4" cellspacing="0">
+      <#Title><#EditLink/></#Title>
+
+      <#IsRootCond>
+        <#IsTemplateUserCondElse>
+          <#AccountViewerRoot/>
+        </#IsTemplateUserCondElse>
+
+        <#IsTemplateUserCond>
+          <#AccountViewerRootTemplate/>
+        </#IsTemplateUserCond>
+
+        <#IsTemplateUserCondElse>
+          <tr>
+            <#AttributeCell><#Font><#LockedLabel/>:</#Font></#AttributeCell>
+            <#ValueCell    ><#Font><#IsLocked   /></#Font></#ValueCell>
+          </tr>
+        </#IsTemplateUserCondElse>
+        <tr>
+          <#AttributeCell>
+            <#Font><#TemplateUserLabel/>:</#Font>
+          </#AttributeCell>
+          <#ValueCell><#Font><#IsTemplateUser/></#Font></#ValueCell>
+        </tr>
+      </#IsRootCond>
+
+      <#IsRootCondElse><#AccountViewer/></#IsRootCondElse>
+      <#IsMailConfigEnabled>
+        <#MailQuota><#InMBLabel /> </#MailQuota>
+        <#ExportAccount />
+        <#VAddresses />
+        <#DomainAliases />
+      </#IsMailConfigEnabled>
+
+      <#IsRootViewed> 
+        <tr><td colspan="2"></td></tr>
+        <#RootTitle/>
+        <tr>
+          <#AttributeCell><#Font><#CategoryLabel/>:</#Font></#AttributeCell>
+          <#ValueCell>
+            <#Font><#CategoryRep><#Category/></#CategoryRep></#Font>
+          </#ValueCell>
+        </tr>
+      </#IsRootViewed>
+
+      <#HasEditors>
+        <tr><td colspan="2"></td></tr>
+        <#EditorsTitle/>
+  
+        <tr>
+          <#AttributeCell><#Font><#EditorsLabel/>:</#Font></#AttributeCell>
+  
+          <#ValueCell>
+            <#Font>
+              <table border="0" cellspacing="1" cellpadding="0">
+                <#EditorRepetition>
+                  <tr>
+                    <td align="right" valign="center">
+                      <#HasEditorIcon><#EditorIcon/></#HasEditorIcon>
+                    </td>
+                    
+                    <td align="left" valign="center">
+                      <#EditorLink><#Font><#EditorName/></#Font></#EditorLink>
+                    </td>
+                  </tr>
+                </#EditorRepetition>
+              </table>
+            </#Font>
+          </#ValueCell>
+        </tr>
+      </#HasEditors>
+    </table>
+  </#Window>
+</#Frame>

@@ -1,0 +1,6 @@
+# $Id$
+
+SkyResourceSchedulerPage.wo
+- check localizations!
+  - dupcode in English and German, use derived template?
+    - no. it has root templates, so are the language subprojects actually used?

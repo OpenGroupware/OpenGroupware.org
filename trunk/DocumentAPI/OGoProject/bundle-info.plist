@@ -1,0 +1,32 @@
+{
+  CVSID = "$Id$";
+  bundleHandler = "SkyProjectBundleManager";
+
+  requires = {
+    bundleManagerVersion = 1;
+  };
+  
+  provides = {
+    classes = (
+      { name = "SkyProjectBundleManager";            },
+      { name = "SkyProjectDataSource";               },
+      { name = "SkyProjectFileManager";              },
+      { name = "SkyProjectURLHandle";                },
+      { name = SkyProjectAccessHandler;              },
+      { name = SkyDocumentAccessHandler;             },
+      { name = SkyProjectTeamDataSource;             },
+      { name = OGoFileManagerFactory;                },
+    );
+    datasources = (
+      { name = "SkyProjectDataSource";         },
+    );
+    
+    SkyAccessHandlers = (
+      { name = "Project"; },
+    );
+  };
+  
+  SkyAccessHandlers = {
+    Project         = "SkyProjectAccessHandler";
+  };
+}

@@ -1,0 +1,29 @@
+# compilation settings
+
+libOGoFoundation_INCLUDE_DIRS += -I..
+
+libOGoFoundation_LIB_DIRS += \
+	-L../../DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR)
+
+libOGoFoundation_LIBRARIES_DEPEND_UPON += \
+	-lOGoDocuments	\
+	-lLSFoundation	\
+	-lGDLAccess	\
+	-lNGObjWeb	\
+	-lNGMime	\
+	-lNGLdap	\
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lXmlRpc -lDOM -lSaxObjC
+
+# flags
+
+ADDITIONAL_CPPFLAGS  += $(FND_DEFINE) $(RUNTIME_DEFINE) -DGC_DEBUG -pipe
+ADDITIONAL_OBJCFLAGS += -Wno-protocol -Wno-import -Wall -O
+ADDITIONAL_CFLAGS    += -Wall -O
+
+ifeq ($(FOUNDATION_LIB),nx)
+libOGoFoundation_LIBRARIES_DEPEND_UPON += -lFoundationExt
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

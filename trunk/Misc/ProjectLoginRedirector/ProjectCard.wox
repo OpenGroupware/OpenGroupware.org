@@ -1,0 +1,58 @@
+<?xml version='1.0' standalone='yes'?>
+<span xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+  <h2 class="projecttitle">
+    <a directActionName="viewProject" 
+       var:_oid="project.id.lastPathComponent"
+       var:_url="instanceURL"
+       ><var:string value="project.name" 
+                    const:formatterClass="EllipsisFormatter" 
+                    const:format="32"/></a>
+  </h2>
+  
+  <div class="cardbody">
+    <h3 class="title">
+      Code: <var:string value="project.number"
+                    const:formatterClass="EllipsisFormatter" 
+                    const:format="32" />
+    </h3>
+    
+    <p><var:string value="project.comment" /></p>
+    <!-- pre><var:string value="project" /></pre -->
+    
+    <table border="0" class="projectfields">
+      <tr>
+        <td>Due:</td>
+        <td><var:string value="project.endDate" dateformat="datefmt"/></td>
+      </tr>
+      <tr>
+        <td>Started:</td>
+        <td><var:string value="project.startDate" dateformat="datefmt"/></td>
+      </tr>
+      <tr>
+        <td>Type:</td>
+        <td><var:string value="project.type" /></td>
+      </tr>
+      <tr>
+        <td>ID:</td>
+        <td><var:string value="project.id.lastPathComponent" /></td>
+      </tr>
+      <tr>
+        <td>URL:</td>
+        <td><var:string value="project.id.lastPathComponent" /></td>
+      </tr>
+    </table>
+    
+    <br />
+    <var:if condition="hasProjectLead">
+      <div class="projectowner">
+        Projectlead is 
+        <var:string value="project.leader.login.capitalizedString"/>
+        (<a var:href="projectLeadLink"
+           ><var:string value="project.leader.extendedAttrs.email1" /></a>)
+      </div>
+    </var:if>
+  </div>
+</span>

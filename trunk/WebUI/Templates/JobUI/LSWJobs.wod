@@ -1,0 +1,434 @@
+// bind template to controller
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.jobsWindowLabel;
+  onClose = session.navigation.leavePage;
+}
+
+Form: WOForm {
+  name   = "filterform";
+  action = filter;
+}
+
+TabView: SkyTabView {
+  selection = tabKey;
+}
+
+TodoTab: SkySimpleTabItem {
+  key    = "toDoList";
+  action = tabClicked;
+  label  = labels.toDoList;
+}
+
+DelegateTab: SkySimpleTabItem {
+  key    = "delegatedJobs";
+  action = tabClicked;
+  label  = labels.delegatedJobs;
+}
+
+ArchivedTab: SkySimpleTabItem {
+  key    = "archivedJobs";
+  action = tabClicked;
+  label  = labels.archivedJobs;
+}
+PalmJobTab: SkySimpleTabItem {
+  key    = "palmJobs";
+  action = tabClicked;
+  label  = labels.palmJobs;
+}
+
+// TODO: convert to WETableView!
+
+ToDoList: LSWTableView {
+  labels            = labels;
+  title             = labels.jobListTitle;
+  start             = start;
+  label             = labels.jobListLabel;
+  list              = filteredJobList;
+  item              = job;
+  relatedObject     = subJob;
+  selectedAttribute = selectedAttribute;
+  blockSize         = blockSize;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+  attributes        = (
+  { 
+    key   = "jobStatus";
+    sort  = YES;
+    label = "";
+    alt   = "jobStatus";
+    image = {
+              "00_created"    = "led_red.gif";
+              "02_rejected"   = "led_red.gif";
+              "20_processing" = "led_yellow.gif";
+              "25_done"       = "led_green.gif";
+              "30_archived"   = "led_dark.gif";
+    };
+    isAltLocalized = YES;
+  },
+  { 
+    key         = "jobStatus";
+    labelKey    = "jobStatus";
+    sort        = NO;
+    isLocalized = YES;
+  },
+  { 
+    key      = "name"; 
+    labelKey = "taskName"; 
+    sort     = YES; 
+    action   = "viewJob"; 
+  },
+  { 
+    key      = "endDate";   
+    labelKey = "due";  
+    sort = YES;
+    changeFontColorCondition = "endDateOutOfTime";
+    fontColor                = "#000000";
+    electFontColor           = "#FF0000";
+  },
+  {
+    key                      = "creator";
+    relKey                   = "login";
+    labelKey                 = "creator";
+    sort                     = NO;
+    changeFontColorCondition = isCreatorArchived;
+    electFontColor           = "colors_deleted_object";
+    fontColor                = "font_color";
+  },
+  {
+    key                      = "__executant_name__";
+    labelKey                 = "executant";
+    sort                     = NO;
+    changeFontColorCondition = isExecutantArchived;
+    electFontColor           = "colors_deleted_object";
+    fontColor                = "font_color"; 
+  },
+  { 
+    key      = "toProject";
+    relKey   = "name";
+    labelKey = "projectLabel";
+    sort   = NO;
+  },
+  {
+    key      = "category";
+    labelKey = "categoryLabel";
+    sort     = YES;
+  },
+  {
+    key      = "keywords";
+    labelKey = "keywords";
+    sort     = YES;
+  },
+  {
+    key         = "priority";
+    labelKey    = "priorityLabel";
+    sort        = YES;
+    isLocalized = YES;
+  },);
+}
+
+ArchivedJobList: LSWTableView {
+  labels            = labels;
+  title             = labels.jobListTitle;
+  start             = start;
+  label             = labels.jobListLabel;
+  list              = filteredJobList;
+  item              = job;
+  relatedObject     = subJob;
+  selectedAttribute = selectedAttribute;
+  blockSize         = blockSize;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+  attributes        = (
+  { 
+    key      = "name"; 
+    labelKey = "taskName"; 
+    sort     = YES; 
+    action   = "viewJob"; 
+  },
+  { 
+    key      = "endDate";   
+    labelKey = "due";  
+    sort     = YES; 
+  },
+  {
+    key                      = "__executant_name__";
+    labelKey                 = "executant";
+    sort                     = NO;
+    changeFontColorCondition = isExecutantArchived;
+    electFontColor           = "colors_deleted_object";
+    fontColor                = "font_color"; 
+  },
+  { 
+    key      = "toProject";
+    relKey   = "name";
+    labelKey = "projectLabel";
+    sort     = NO;
+  },
+  {
+    key      = "category";
+    labelKey = "categoryLabel";
+    sort     = YES;
+  },
+  {
+    key      = "keywords";
+    labelKey = "keywords";
+    sort     = YES;
+  },);
+}
+
+DelegatedJobList: LSWTableView {
+  labels            = labels;
+  title             = labels.jobListTitle;
+  start             = start;
+  label             = labels.jobListLabel;
+  list              = filteredJobList;
+  item              = job;
+  relatedObject     = subJob;
+  selectedAttribute = selectedAttribute;
+  blockSize         = blockSize;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+  attributes        = (
+  { 
+    key   = "jobStatus";
+    sort  = YES;
+    label = "";
+    alt   = "jobStatus";
+    image = {
+              "00_created"    = "led_red.gif";
+              "02_rejected"   = "led_red.gif";
+              "20_processing" = "led_yellow.gif";
+              "25_done"       = "led_green.gif";
+              "30_archived"   = "led_dark.gif";
+    };
+    isAltLocalized = YES;
+  },
+  { 
+    key         = "jobStatus";
+    labelKey    = "jobStatus";
+    sort        = NO;
+    isLocalized = YES;
+  },
+  { 
+    key      = "name"; 
+    labelKey = "taskName"; 
+    sort     = YES; 
+    action   = "viewJob"; 
+  },
+  { 
+    key                      = "endDate";   
+    labelKey                 = "due";  
+    sort                     = YES;
+    changeFontColorCondition = "endDateOutOfTime";
+    fontColor                = "#000000";
+    electFontColor           = "#FF0000";
+  },
+  {
+    key                      = "__executant_name__";
+    labelKey                 = "executant";
+    sort                     = NO;
+    changeFontColorCondition = isExecutantArchived;
+    electFontColor           = "colors_deleted_object";
+    fontColor                = "font_color"; 
+  },
+  { 
+    key      = "toProject";
+    relKey   = "name";
+    labelKey = "projectLabel";
+    sort     = NO;
+  },
+  {
+    key      = "category";
+    labelKey = "categoryLabel";
+    sort     = YES;
+  },
+  {
+    key      = "keywords";
+    labelKey = "keywords";
+    sort     = YES;
+  },
+  {
+    key         = "priority";
+    labelKey    = "priorityLabel";
+    sort        = YES;
+    isLocalized = YES;
+  },);
+}
+
+PalmJobList: SkyPalmJobList {
+  subKey = "LSWJobs";
+  action = "viewPalmJob";
+  job    = job;
+}
+
+Buttons: SkyButtonRow {
+  ordering = ( );
+  onNew    = newJob;
+  new      = labels.new;
+  tipNew   = labels.new;
+}
+
+TeamPopup: WOPopUpButton {
+  list      = teams;
+  item      = item;
+  string    = item.description;
+  selection = selectedTeam;
+  nilString = labels.privateLabel;  
+  onChange  = "document.filterform.submit(); return true";  
+}
+
+TimePopup: WOPopUpButton {
+  list      = timeList;
+  item      = item;
+  string    = timeLabel;
+  selection = timeSelection;
+  onChange  = "document.filterform.submit(); return true";    
+}
+
+FilterSubmit: WOSubmitButton {
+  action = filter;
+  value  = labels.show;
+  class  = "button_narrow";
+}
+
+IsToDoList: WOConditional {
+  condition = tabKey;
+  value     = "toDoList";
+}
+
+IsNotArchivedJobs: WOConditional {
+  condition = tabKey;
+  value     = "archivedJobs";
+  negate    = YES;
+}
+
+IsNotPalmJobs: WOConditional {
+  condition = tabKey;
+  value     = "palmJobs";
+  negate    = YES;
+}
+
+NeedGroupCheckBoxCond: WOConditional {
+  condition = needGroupCheckBox;
+}
+
+GroupCheckBox: WOCheckBox {
+  checked = showMyGroups;
+  onClick = "document.filterform.submit(); return true";
+}
+
+MeTooString: WOString {
+  value = labels.GroupLabel;
+}
+
+Font: SkyConfigFont {}
+
+KeywordsLabel: WOString {
+  value = labels.keywords;
+}
+
+KeywordsSearchField: WOTextField {
+  value     = keywordsString;
+  size      = 20;
+}
+
+
+IsPreferredExecutantEnabled : WOConditional {
+  condition = preferredExecutantsEnabled;
+}
+
+PreferredExecutantTab :  SkySimpleTabItem {
+  key    = "prefExeJobs";
+  action = tabClicked;
+  label  = labels.prefExeJobs;
+}
+
+PreferredExecutantList : LSWTableView {
+  labels            = labels;
+  title             = labels.prefExeJobs;
+  start             = start;
+  label             = labels.jobListLabel;
+  list              = filteredJobList;
+  item              = job;
+  selectedAttribute = selectedAttribute;
+  blockSize         = blockSize;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+  attributes        = (
+  { 
+    key   = "jobStatus";
+    sort  = YES;
+    label = "";
+    alt   = "jobStatus";
+    image = {
+              "00_created"    = "led_red.gif";
+              "02_rejected"   = "led_red.gif";
+              "20_processing" = "led_yellow.gif";
+              "25_done"       = "led_green.gif";
+              "30_archived"   = "led_dark.gif";
+    };
+    isAltLocalized = YES;
+  },
+  { 
+    key         = "jobStatus";
+    labelKey    = "jobStatus";
+    sort        = NO;
+    isLocalized = YES;
+  },
+  { 
+    key      = "name"; 
+    labelKey = "taskName"; 
+    sort     = YES; 
+    action   = "viewJob"; 
+  },
+  { 
+    key      = "endDate";   
+    labelKey = "due";  
+    sort = YES;
+    changeFontColorCondition = "endDateOutOfTime";
+    fontColor                = "#000000";
+    electFontColor           = "#FF0000";
+  },
+  {
+    key                      = "creator";
+    relKey                   = "login";
+    labelKey                 = "creator";
+    sort                     = NO;
+    changeFontColorCondition = isCreatorArchived;
+    electFontColor           = "colors_deleted_object";
+    fontColor                = "font_color";
+  },
+  {
+    key                      = "__executant_name__";
+    labelKey                 = "executant";
+    sort                     = NO;
+    changeFontColorCondition = isExecutantArchived;
+    electFontColor           = "colors_deleted_object";
+    fontColor                = "font_color"; 
+  },
+  { 
+    key      = "toProject";
+    relKey   = "name";
+    labelKey = "projectLabel";
+    sort   = NO;
+  },
+  {
+    key      = "category";
+    labelKey = "categoryLabel";
+    sort     = YES;
+  },
+  {
+    key      = "keywords";
+    labelKey = "keywords";
+    sort     = YES;
+  },
+  {
+    key         = "priority";
+    labelKey    = "priorityLabel";
+    sort        = YES;
+    isLocalized = YES;
+  },);
+}

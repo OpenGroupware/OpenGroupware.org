@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<span>
+  Header of <var:string value="NSFileSubject"/> 
+  (Last Change:
+  <var:string value="NSFileModificationDate" 
+              const:dateformat="%Y-%m-%d %H:%M %Z" />)
+</span>

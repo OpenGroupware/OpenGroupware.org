@@ -1,0 +1,18 @@
+{
+  bundleHandler = SkySchedulerDockModule;
+  
+  requires = {
+    bundleManagerVersion = 1;
+  };
+
+  provides = {
+    classes = (
+      { name = SkySchedulerDockModule; },
+      { name = SkySchedulerDockView;   },
+    );
+        
+    WOComponents = (
+      { name = SkySchedulerDockView; },
+    );
+  };
+}

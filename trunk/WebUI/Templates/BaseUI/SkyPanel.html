@@ -1,0 +1,43 @@
+<!-- $Id: SkyPanel.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+
+<#IsActivationLink><#ActivationLink/></#IsActivationLink>
+
+<#IsScriptCond>
+  <#IsExplorerScriptCond><#ExplorerScript/></#IsExplorerScriptCond>
+  <#IsNetscapeScriptCond><#NetscapeScript/></#IsNetscapeScriptCond>
+</#IsScriptCond>
+
+<#PanelLayer>
+  <table border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <td height="1" width="1"><#ClearPixel/></td>
+      <td width="18"><#LineHorizontalLeft/></td>
+      <#PanelWidth/><#ClearPixel/></td>
+      <td width="18"><#LineHorizontalRight/></td>
+      <td width="1"><#ClearPixel/></td>
+    </tr>
+    <tr>
+      <td><#LineVerticalTop/></td>
+      <td><#LeftCorner/></td>
+
+      <#PanelDragArea>
+        <#Font><b><#Title/></b></#Font>
+      </#PanelDragArea>
+
+      <td><#PanelCancel/></td>
+      <td><#LineVerticalTop/></td>
+    </tr>
+    <tr>
+      <td bgcolor="#000000"><#ClearPixel/></td>
+      <#ContentCell>
+        <table border="0" cellpadding="4" width="100%">
+          <tr><td><#PanelContent/></td></tr>
+        </table>
+      </#ContentCell>
+      <td bgcolor="#000000"><#ClearPixel/></td>
+    </tr>
+    <tr>
+      <td colspan="5" height="1" bgcolor="#000000"><#ClearPixel/></td>
+    </tr>
+  </table>
+</#PanelLayer>

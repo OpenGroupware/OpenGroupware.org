@@ -1,0 +1,7 @@
+# compile flags
+
+MailerUI_BUNDLE_LIBS += \
+	-lSOGoUI
+
+ADDITIONAL_LIB_DIRS += \
+	-L../SOGoUI/$(GNUSTEP_OBJ_DIR)

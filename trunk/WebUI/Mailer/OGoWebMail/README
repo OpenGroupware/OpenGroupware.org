@@ -1,0 +1,56 @@
+# $Id$
+
+OGoWebMail
+==========
+IMAP4 based web mailer, uses the NGMime library from SOPE/skyrix-core.
+
+Notifications
+=============
+
+Class-Hierachy
+==============
+[hh: probably outdated]
+  NSObject
+    WOComponent
+      OGoComponent
+        OGoContentPage
+          LSWMailEditor
+          LSWEditorPage
+            LSWMailFolderEditor
+          LSWMailFolderTree
+          LSWMailMove
+          LSWMails
+          LSWMailViewer
+        LSWPartBodyViewer
+          LSWTextPlainBodyViewer
+          LSWAppOctetBodyViewer
+          LSWMessageRfc822BodyViewer
+          LSWMultipartBodyViewer
+            LSWMultipartMixedBodyViewer
+            LSWMultipartAlternativeBodyViewer
+        LSWMimePartViewer
+          LSWMimeMessageViewer
+          LSWMimeBodyPartViewer
+
+NOTES
+=====
+
+- addresses in the mail editor are stored in some weird NSDictionary format
+  - TODO: make objects for all that
+
+What happens if I press 'reply' in the mail viewer?
+===
+- [self activateObject:[self object] withVerb:@"reply"]
+  - the object always seems to be an NGImap4Message
+  - the activated object is the LSWImapMailEditor
+- prepareForActivationCommand: runs on LSWImapMailEditor
+  - calls _prepareForReply
+    - sets editor flag isReply
+    - fetches transfer object from pasteboard
+    - fetches 'reply-to' or 'sender' from message
+    - calls _buildReplyHeader:msg to:from h:nil
+    - calls _setBodyForReply:msg from:from part:nil
+- _buildReplyHeader:msg to:from h:nil
+  - calls -_buildReplyHeader:msg toOne:from h:_h emptyEntry:
+  - set the editor 'mailSubject' using -_processReplyMailSubject:
+- _setBodyForReply:msg from:from part:nil

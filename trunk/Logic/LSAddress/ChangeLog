@@ -1,0 +1,592 @@
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.51
+
+	* LSGetVCardForGlobalIDsCommand.m: print a warning if the
+	  LSAttachmentPath could not be resolved
+
+	* Defaults.plist: moved in 'LSAttachmentPath' default from LSProject
+
+	* bundle-info.plist: removed superflous bookmark-command registrations,
+	  fixed entry for LSChangeLoginStatusCommand (v5.1.50)
+
+2004-12-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSNewCompanyCommand.m: minor code cleanups (v5.1.49)
+
+2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.48
+
+	* NSString+VCard.m: properly escape backslashes
+
+	* LSGetVCardForGlobalIDsCommand.m: move vCard escaping code to own
+	  file
+
+2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetCompanyForMemberCommand.m: code cleanups, do not use IN
+	  qualifier for single object fetches (v5.1.47)
+
+2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* commands.plist, GNUmakefile: removed deprecated bookmark commands
+	  (v5.1.46)
+
+	* LSGetVCardForGlobalIDsCommand.m: some code cleanups, encode response
+	  contents in UTF-8 and report that in the MIME type, print a warning
+	  if the response generation is used (v5.1.45)
+	
+2004-10-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSSetCompanyCommand.m: removed some code which was commented out
+	  (relationship is fetched explicitly instead of using a fault)
+	  (v5.1.44)
+
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+	
+	* LSWriteUserDefaultsCommand.m: minor code cleanups, attempt to
+	  autocreate LSAttachmentPath if it doesn't exist (v5.1.43)
+	
+2004-09-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added makefile for FHS install (v5.1.42)
+
+2004-06-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSSetCompanyCommand.m: fixed a warning with gstep-base (v5.0.41)
+
+2004-06-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSAddressFetchAttributesCommand.m, LSBuildConverterDataCommand.m,
+	  LSFetchExtendedAttributesCommand.m, LSAddressConverterCommand.m: 
+	  some code cleanups, fixed some more gcc 3.4 warnings (v5.0.40)
+
+	* v5.0.39
+
+	* LSFetchExtendedAttributesCommand.m, LSGetStaffForGlobalIDsCommand.m,
+	  LSGetVCardForGlobalIDsCommand.m, LSNewCompanyCommand.m,
+	  LSSetCompanyCommand.m: fixed gcc 3.4 warnings
+
+	* GNUmakefile.preamble: fixed a compilation problem
+
+2004-06-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.38
+
+	* LSGetMemberForCompanyCommand.m: minor code cleanups
+
+	* GNUmakefile, GNUmakefile.preamble: fixed some warnings with the Mach
+	  linker
+
+2004-05-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSUserDefaultsFunctions.m: minor cleanups (v5.0.37)
+
+2004-04-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* Defaults.plist: fixed a plist syntax error ... (v5.0.36)
+
+2004-04-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSNewCompanyCommand.m: major code cleanups, can now configure the
+	  automatic person/company login and prefix to use something else but
+	  "SKY" using the 'LSAutoCompanyLoginPrefix' and 
+	  'LSAutoCompanyNumberPrefix' defaults (v5.0.35)
+
+2004-03-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.34
+
+	* LSBuildConverterDataCommand.m, LSGetCompanyForMemberCommand.m,
+          LSGetUserDefaultsCommand.m, LSRegisterUserDefaultsCommand.m,
+          LSWriteUserDefaultsCommand.m: replaced some explicit ==YES|NO 
+	  comparisons
+
+	* LSAddressConverterCommand.m: do not copy labels object, related to 
+	  OGo bug #690
+
+2004-03-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSAddressConverterCommand.m: code cleanup (v5.0.33)
+
+2004-03-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSSetCompanyCommand.m, LSAddressFetchAttributesCommand.m: code 
+	  cleanups, fixed some warnings when compiling with gstep-base 
+	  (v5.0.32)
+
+2004-01-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetUserDefaultsCommand.m: minor cleanups (v5.0.31)
+
+2004-01-05  Helge Hess  <helge@groove.local>
+
+	* _NSUserDefaults.m: removed dependency on FoundationExt, some fixes
+	  for MacOSX (v5.0.30)
+
+2003-12-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.29
+
+	* LSGetCompanyForMemberCommand.m, LSGetMemberForCompanyCommand.m:
+	  subminor cleanups
+
+	* LSAddressConverterCommand.m: minor cleanups
+
+2003-12-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSUserDefaults.m: minor cleanups, reduced loglevel (v5.0.28)
+
+Fri Sep 19 18:09:53 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSGetVCardForGlobalIDsCommand.m: fixed vCard rendering
+
+2003-11-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* _NSUserDefaults.m, common.h: cleaned up dependencies to 
+	  FoundationExt, compiles with gstep-base (v5.0.27)
+
+Mon Nov 24 20:20:09 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSGetUserDefaultsCommand.m: do not load defaults of 9999 as defaults 
+	  of other template users (v5.0.26)
+
+Mon Nov 24 19:31:01 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* v5.0.25
+	
+	* LSUserDefaults.m: code cleanups, check whether -setObject got mutable 
+	  objects
+
+	* LSGetUserDefaultsCommand.m: code cleanups
+
+2003-11-19  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSGetMemberForCompanyCommand.m: fixed a small memory leak (qualifier
+	  was not released), minor cleanup, be more tolerant when being called
+	  with a "nil" group parameter (do not throw an exeception but only
+	  log the issue) (v5.0.24)
+	
+Thu Sep 18 17:10:14 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSGetVCardForGlobalIDsCommand.m: added support for teams (v5.0.23)
+
+Thu Sep 18 16:38:34 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSGetVCardForGlobalIDsCommand.m: added attributes, groupBy;
+	  added NAME, SOURCE and PROFILE to vCard attributes (v5.0.22)
+
+Fri Sep 12 15:35:48 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSGetVCardForGlobalIDsCommand.m: added buildResponse flag (v5.0.21)
+
+Wed Sep 10 18:08:17 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSGetVCardForGlobalIDsCommand.m: use skyrix_id for UID (v5.0.20)
+
+Sun Sep  7 00:01:43 2003  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Added /usr/local/lib to the required libraries path
+
+Fri Sep  5 13:45:16 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSGetVCardForGlobalIDsCommand.m: added (v5.0.19)
+
+Mon Jul  7 17:38:38 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* fixed OGo import (v5.0.18)
+
+Mon Jul  7 14:03:02 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.17)
+
+Tue Jun 17 18:35:45 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* v4.1.16
+	
+	* LSUserDefaults.m: add new ivar account to handle different accounts 
+	  than the current login, cleanups (bug 1768)
+
+	* LSRegisterUserDefaultsCommand.m: add new ivar account to register 
+	  different accounts than the current login
+
+	* LSGetUserDefaultsCommand.m: set to be edited account in LSUserDefaults
+
+	* LSWriteUserDefaultsCommand.m: code cleanups
+
+	* LSUserDefaultsFunctions.m: make sure that defaults dict will not be 
+	  released, code cleanups
+
+Fri Jun  6 16:29:11 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSAddressConverterCommand.m: fixed getting of entityName v4.1.15
+
+2003-05-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* v4.1.14
+
+	* smaller cleanups in various classes
+
+	* _NSUserDefaults.m ([_NSUserDefaults -setVolatileDomain:forName:]): 
+	  fix a small memory leak
+
+	* LSBuildConverterDataCommand.m: fixed missing semicolon (source could
+	  not be compiled ...)
+
+Wed May 28 16:12:36 2003  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* code cleanups, added missing release calls in -dealloc (v4.1.13)
+
+Mon May 12 11:11:28 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSDeleteCompanyCommand.m: fixed retain bugs (v4.1.12)
+
+2003-04-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile (LSAddress_RESOURCE_FILES): copy Version file into bundle
+
+Wed Apr  9 19:20:30 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSNewCompanyCommand.m: check whether owner id is already 
+	  set (bug 1365) (v4.1.11)
+
+Mon Apr  7 11:49:51 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* Defaults.plist: add email2/3 for person and enterprise 
+   	  SkyPublicExtended*Attributes
+
+Fri Mar 21 15:13:29 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSSetCompanyCommand.m: check whether access should be checked
+
+Thu Feb 27 15:18:11 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSNewTelephoneCommand.m: added (bug 865) (v4.1.10)
+
+Wed Feb 26 16:46:51 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSChangeLoginStatusCommand.m: modify login on remove of account 
+	                                state and restore it on restore of
+	                                account state (bug 1080)
+
+Tue Feb 25 17:17:42 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSAddressFetchAttributesCommand.m: fixed possibility of 
+	  setObject:nil forKey: in dictionary (bug 670) (v4.1.9)
+
+Wed Feb 12 17:27:41 2003    <jan@skyrix.com>
+
+	* LSSetCompanyCommand.m, LSNewCompanyCommand.m: check whether unique numer
+	  is set (v4.1.8)
+
+Mon Feb  3 18:04:09 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSNewCompanyCommand.m: ownerId is always set (bug 729) (v4.1.7)
+
+2003-01-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* bundle-info.plist, commands.plist: fixed some syntax bugs in plist 
+	  (for the picky OSX plist parser)
+
+2003-01-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* v4.1.6
+
+	* LSAddressConverterCommand.m: removed compile-time-dependency on
+	  WOResponse, TODO: move code using NGObjWeb to WebUI !
+	
+	* LSGetCompanyCommand.m: fixed an incorrect return
+
+	* fixed some OSX compilation things
+
+Thu Dec 12 17:27:43 2002    <jan@skyrix.com>
+
+	* LSUserDefaults.m remove logs, remove key from mutable dict during 
+	  enumeration (v4.1.5)
+
+Thu Dec 12 13:28:20 2002    <jan@skyrix.com>
+
+	* LSUserDefaults.m: debug logs
+
+Wed Dec 11 17:22:41 2002    <jan@skyrix.com>
+
+	* LSUserDefaults.m: register user-defaults after writing 
+	  (and deleting) them (v4.1.4)
+
+Tue Dec 10 10:36:38 2002    <jan@skyrix.com>
+
+	* LSSetCompanyCommand.m: (bug 647) workaround while saving 
+	  companyInfo (toCompanyInfo does not work in all cases) (v*3)
+
+Tue Dec  3 11:40:03 2002    <jan@skyrix.com>
+
+	* GNUmakefile: remove LDAP Flag (v*2)
+
+Wed Oct 23 16:35:01 2002  Joerg Grimm  <joerg@trex2>
+
+	* LSGroupToMemberAssignmentCommand.m: no access check
+ 	  in get commands in _executeInContext
+
+2002-08-30  Bjoern Stierand  <bjoern@skyrix.com> (jr)
+
+	* LSSetCompanyCommand.m: added check if primaryKeyValue is set
+
+Thu Aug 29 18:05:08 2002  Jan Reichmann  <jan@skyrix.com>
+
+	* LSFetchExtendedAttributesCommand.m: fixed extend. attr. config bug
+
+Thu Jul 25 17:00:02 2002  Jan Reichmann  <jan@skyrix.com>
+
+	* LSSetCompanyCommand.m: handle empty comments (Bug 480)
+
+Wed Jun 12 15:07:51 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* LSAddressFetchAttributesCommand.m 
+	(-fetchRequiredAttributesForKeys:entity:keyAttribute:context:): 
+	   now mutable dicts are created (EORecordDictionary isn't mutable)
+	   (BUG 449)	  
+
+Tue Nov  6 15:51:31 2001  Jan Reichmann  <jan@skyrix.com>
+
+	* LSDeleteCompanyCommand.m: add access rights
+
+Sun Oct 28 22:19:14 2001  Jan Reichmann  <jan@skyrix.com>
+
+	* LSGetCompanyCommand.m: access
+
+Fri Oct  5 18:08:26 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* LSFetchExtendedAttributesCommand.m: added assert in -entityName:
+
+Mon Mar  5 12:19:35 2001  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSUserDefaults.m: do compare objects based on their description
+
+	* LSUserDefaultsFunctions.m: write userdefaults using 'atomically'
+
+Wed Feb  7 21:02:12 2001  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetMemberForCompanyCommand.m: modified -group behaviour, added
+	  NSNull asserts
+
+Wed Feb  7 17:57:51 2001  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetMemberForCompanyCommand.m: added some nil checks
+
+Mon Feb  5 19:09:54 2001  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSFetchExtendedAttributesCommand.m: fixed 'nil' behaviour
+
+Wed Jan 31 19:04:06 2001  Helge Hess  <helge.hess@mdlink.de>
+
+	* user-defaults commands do not auto-open channel
+
+Wed Jan 31 16:05:55 2001  Joerg Grimm  <joerg@trex2>
+
+	* LSGetUserDefaultsCommand.m: fixed wrong statement
+	  to check for uid 10000
+
+Tue Jan 16 13:31:38 2001  Helge Hess  <helge.hess@mdlink.de>
+
+	* _NSUserDefaults.m: added key-value coding
+
+Fri Jan 12 11:17:35 2001  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSUserDefaults.m: fixed typo
+
+Fri Dec 22 12:39:13 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSChangeLoginStatusCommand.m: added check for nu
+
+Mon Dec 18 18:05:03 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSFetchExtendedAttributesCommand.m: use -standardUserDefaults if no
+	  account is logged in
+
+Mon Dec 18 18:00:47 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSNewCompanyCommand.m: use -standardUserDefaults, if no account is
+	  logged in
+
+Wed Nov 22 09:36:47 2000  Martin Hoerning  <mh@skyrix.com>
+
+	* LSUserDefaults.m: objectForKey returns only immutable objects
+			    --> save bug fixed
+
+Wed Sep 27 22:32:18 2000  Martin Spindler  <spindler@mdlink.de>
+
+	* added LSQueryCompanyValues.m
+
+	* commands.plist: added "companyvalue::query" and 
+	                        "companyvalue::get-by-globalid"
+
+Fri Sep 22 16:05:49 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSGetUserDefaultsCommand.m: defaults were not
+	  properly get if an user is set (root user gets defaults of other 
+	  accounts)
+
+Wed Sep 13 15:23:43 2000  Martin Spindler  <spindler@mdlink.de>
+
+	* LSUserDefaults.m: fixed bug in setObject:ForKey:
+	                    (check object == nil and key == nil)
+
+Fri Sep  8 15:49:01 2000  Martin Spindler  <spindler@mdlink.de>
+
+	* LSUserDefaults.m: added -set...  methodes
+	                    added instance variable context
+                            added syncronization, by using userdefaults::write
+
+Wed Jun 28 14:43:52 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSGetAccountByLoginCommand.m: return nil if no account was found
+
+Wed Jun 28 12:56:28 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetCompanyForMemberCommand.m, LSGetMemberForCompanyCommand.m:
+	  fixed bug in IN-query generation
+
+Wed Jun 28 12:41:29 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetCompanyForMemberCommand.m: made IN batch-ready
+
+Tue Jun 27 18:08:50 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetMemberForCompanyCommand.m: start to make IN batch-ready
+
+Fri Jun 16 15:40:42 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSExtendedSearchAccountCommand.m: fixed bug for fetchGlobalIds
+
+Wed Jun 14 19:49:18 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSGetMemberForTeamCommand.m: added fetch of extended Attrs, Telephones
+
+Wed Jun 14 14:25:47 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSGetCompanyForMemberCommand.m: fixed members==0 bug
+
+Fri Jun  9 14:16:53 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* added staff::get-by-globalid
+
+Tue May 30 16:02:07 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* removed LSUserDefaultCommand
+
+	* LSNewCompanyCommand.m: get defaults from ctx->defaults
+
+	* added LSUserDefaults class
+
+	* LSAddressFetchAttributesCommand.m: get defaults from ctx->defaults
+
+	* various commands: get defaults from ctx->defaults
+
+	* LSLoginAccountCommand.m: added loading of userdefaults
+
+	* LSLoginAccountCommand.m: does not fetch telephones and teams of
+	  account anymore
+
+Mon May 29 17:04:39 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSLoginAccountCommand.m: fixed FB related bug
+
+	* LSLoginAccountCommand.m: don't allow template user to login
+
+Fri May 26 19:00:17 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSAddressFetchAttributesCommand.m: replaced 'a <> NULL' with 
+	  'a IS NOT NULL'
+
+	* LSAddressFetchAttributesCommand.m: replaced double quotes with single
+	  quotes
+
+Wed May 24 16:55:55 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetTeamsForGlobalIDsCommand.m: added 'groupBy' parameter
+
+Tue May 23 21:29:45 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetTeamsForGlobalIDsCommand.m: recognizes special 'globalID' key
+
+	* added LSGetAllTeamsCommand
+
+	* added LSGetTeamsForGlobalIDs command
+
+	* LSFetchExtendedAttributesCommand.m: removed .h file
+
+	* moved enterprise commands to LSEnterprise
+
+	* moved person commands to LSPerson
+
+	* LSExtendedSearchEnterpriseCommand.m, LSExtendedSearchPersonCommand.m,
+	  LSExtendedSearchAccountCommand.m:
+ 	  added superclass version check
+
+	* removed .h files
+
+Mon May 22 21:59:21 2000  Martin Spindler <spindler@mdlink.de>
+
+	* LSAddressFetchAttributesCommand.m:
+	  added Log, Owner, and Comment as fetchable Entities
+
+	* LSBuildConverterDataCommand.m:
+	  removed objects related stuff, objects are replaced by global-ids
+
+Mon May 15 12:40:07 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* moved LSFetchUnsettledInvoicesCommand.m to LSInvoice
+
+	* LSFetchUnsettledInvoicesCommand.m: removed .h file
+
+Fri May 12 11:35:47 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetMemberForTeamCommand.m: use enumerator instead of -objectAtIndex:
+
+Thu May 11 18:29:03 2000  Martin Spindler  <spindler@mdlink.de>
+
+	* LSSetAddressCommand.m: fixed increase objectVersion
+
+Thu May 11 16:49:06 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetCompanyForMemberCommand.m: changed to support EOGlobalIDs
+
+	* LSGetCompanyForMemberCommand.m: uses NSDictionary for join table
+
+Wed May 10 22:07:19 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetMemberForCompanyCommand.m: uses the new -globalIDsForSQLQualifier:
+	  method
+
+	* LSResolveAccountsCommand.m: changed to support EOGlobalIDs
+
+Tue May  9 12:45:08 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetMemberForCompanyCommand.m: the join-table is now fetched as a
+	  dictionary, not as an EO
+
+	* LSGetMemberForCompanyCommand.m: can return global-ids now
+
+	* removed some .h files
+
+Fri May  5 16:08:31 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetPersonCommand, LSGetEnterpriseCommand: removed .h file and
+	  extended to support global-ID fetches
+
+Fri Apr 28 15:01:46 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSLoginAccountCommand.m: set crypted password in command-context
+
+Fri Apr 28 18:42:05 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSSetAddressCommand.m: improved constraint check
+
+Wed Apr 26 16:01:31 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSExtendedSearchEnterpriseCommand.m: check fetchIds
+
+Wed Apr 26 14:03:53 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* removed 'no permission check' log output

@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<!-- $Id: SkyPersonSearchPanel.wox,v 1.1 2004/05/04 14:51:33 helge Exp $ -->
+<form var:action="personSearchSubmit"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+>
+  <OGo:font>
+    <b><OGo:label key="searchPersonsLabel" /></b>
+    <br />
+    <input type="text"   var:value="searchString"  size="20" />
+    <input type="submit" var:value="labels.search" class="button_narrow" />
+    <br />
+    <hr size="1" />
+  </OGo:font>
+
+  <var:if condition="searchDone">
+    <table border="0" cellpadding="1" cellspacing="0" width="100%">
+      <tr var:bgcolor="config.colors_headerCell">
+        <td colspan="2">
+          <OGo:font><b><OGo:label key="recordsLabel"/></b></OGo:font>
+        </td>
+      </tr>
+
+      <var:foreach list="searchResults" item="searchRow" index="searchIdx">
+        <tr var:bgcolor="rowColor">
+          <td align="left">
+            <OGo:font>
+              <a directActionName="activate" var:_oid="searchRow.companyId"
+                 ><var:string value="searchRow.name" /></a>
+            </OGo:font>
+          </td>
+          
+          <td align="left">
+            <OGo:font><var:string value="searchRow.firstname"/></OGo:font>
+          </td>
+        </tr>
+      </var:foreach>
+    </table>
+  </var:if>
+</form>

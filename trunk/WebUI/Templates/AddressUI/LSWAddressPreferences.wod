@@ -1,0 +1,142 @@
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = labels.AddressPreferences;
+  onClose = session.navigation.leavePage;
+}
+
+WindowTitle: LSWViewerTitle {
+  title     = accountLabel;
+}
+AccessWindowTitle: LSWViewerTitle {
+  title     = labels.AddressAccessPreferences;
+}
+
+PreferencesForm: WOForm{
+}
+
+FormletterKindField: SkyDefaultEditField {
+  label      = labels.formletter_kind;
+  isEditable = isFormletterKindEditable;
+  valueType  = "popup";
+  value      = formletterKind;
+  valueList  = session.userDefaults.formletter_kinds;
+}
+
+EnterpriseSubviewField: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.enterprise_sub_view;
+  isEditable = isEnterpriseSubviewEditable;
+  valueType  = "popup";
+  value      = enterprise_sub_view;
+  valueList  = ( "attributes", "persons", "documents", "projects", "overview",
+                 "address" );
+}
+
+PersonsSubviewField: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.persons_sub_view;
+  isEditable = isPersonsSubviewEditable;
+  valueType  = "popup";
+  value      = persons_sub_view;
+  valueList  = ( "attributes", "enterprises", "projects", "address", "picture" );
+}
+
+BlockSizeField: SkyDefaultEditField {
+  label      = labels.blockSize;
+  isEditable = isBlockSizeEditable;
+  valueType  = "popup";
+  value      = blockSize;
+  valueList  = ( "10", "20", "30", "40", "50", "60", "70", "80", "90", "100" );
+}
+
+HasClipboardCond: WOConditional {
+  condition = hasClipboard;
+}
+
+ClipboardFormat: SkyDefaultEditField {
+  labels      = labels;
+  isEditable  = isClipboardFormatEditable;
+  label       = labels.addressClipboardFormat;
+  valueType   = "text";
+  value       = clipboardFormat;
+  formatter   = session.formatString;
+  textRows    = 6;
+  textColumns = 40;
+}
+ClipboardFormatHelp: SkyRichString {
+  value = labels.addressClipboardFormatHelp;
+}
+
+SaveSubmit: WOSubmitButton {
+  action   = save;
+  name     = labels.saveButtonLabel;
+  value    = labels.saveButtonLabel;
+  class    = "button_narrow";
+}
+
+CancelButton: WOHyperlink {
+  action = cancel;
+  string = labels.cancelButtonLabel;
+  class  = "button_narrow";
+}
+
+/*  access */
+
+IsRoot: WOConditional {
+  condition = isRoot;
+}
+
+FormletterKindAccess: WOCheckBox {
+  checked = isFormletterKindEditableRoot;
+}
+
+/* labels */
+
+FormletterKindLabel: WOString {
+  value = labels.formletter_kind;
+}
+
+/* style stuff */
+
+AttributeCell: SkyAttributeCell { width = "15%"; }
+ValueCell:     SkyValueCell {}
+
+Font:     SkyConfigFont {}
+EditFont: SkyConfigFont {} // <-- was *no* edit font before, hh
+
+EditorAddressColumnSizeField: SkyDefaultEditField {
+  label      = labels.noOfCols;
+  isEditable = YES;
+  valueType  = "popup";
+  value      = session.userDefaults.company_editor_address_columns;
+  valueList  = ( "1", "2", "3", "4", "5" );
+}
+
+EditorSearchResultColumnSizeField: SkyDefaultEditField {
+  label      = labels.noOfCols;
+  isEditable = YES;
+  valueType  = "popup";
+  value      = session.userDefaults.address_no_of_cols;
+  valueList  = ( "1", "2", "3", "4", "5" );
+}
+
+AttributesColumnSizeField: SkyDefaultEditField {
+  label      = labels.noOfCols;
+  isEditable = YES;
+  valueType  = "popup";
+  value      = session.userDefaults.attributes_no_of_cols;
+  valueList  = ( "1", "2", "3", "4", "5" );
+}
+
+AddressesInCompanyEditorLabel: WOString {
+  value = labels.addressesInCompanyEditor;
+}
+EditorSearchResultLabel: WOString {
+  value = labels.editorSearchResult;
+}
+AttributesSubViewLabel: WOString {
+  value = labels.inAttributesSubView;
+}
+

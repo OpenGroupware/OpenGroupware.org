@@ -1,0 +1,244 @@
+// $Id: LSWImapMailList.wod 2 2004-08-20 11:37:44Z znek $
+
+DragMail: WEDragContainer {
+  tag    = "mail";
+  object = message;
+}
+
+TitleContent: WOComponentContent {}
+
+MainButtonRow: WOGenericContainer {
+  elementName = "tr";
+  BGCOLOR     = config.colors_mainButtonRow;
+}
+
+Font: SkyConfigFont {}
+
+SelectAllCheckboxesScript: WOJavaScript {
+  scriptString  = selectAllCheckboxesScript;
+  hideInComment = YES;
+}
+
+TableHeaderRow: WOGenericContainer {
+  elementName = "tr";
+  BGCOLOR     = config.colors_tableHeaderRow;
+}
+
+MailCell: WOGenericContainer {
+  elementName = "td";
+  ALIGN       = align;
+  VALIGN      = "top";
+  NOWRAP      = YES;
+}
+
+Checker: WOCheckBox {
+  checked = isChecked;
+  //name    = uniqueIdentifier;
+  onClick = shiftClick;
+  name    = checkBoxName;
+  value   = identifierForCheckBox;
+}
+
+TableHeaderRep: WORepetition {
+  list = mailListHeaders;
+  item = mailListHeader;
+}
+
+HeaderName: WOString {
+  value = headerName;
+  escapeHTML  = NO;
+}
+
+TableHeaderEntryRep: WORepetition {
+  list = mailListHeaders;
+  item = mailListEntry;
+}
+
+MailRepetition: WORepetition {
+  list        = messages; //mails;
+  item        = message;
+  index       = index;
+  identifier  = uniqueIdentifier;
+}
+
+EntryLink: WOHyperlink {
+  filename    = mailListEntry.image;
+  string      = entryString;
+  action      = entryAction;
+  BORDER      = "0";
+}
+
+EntryString: WOString {
+  value       = entryString;
+  formatter   = entryFormatter;
+}
+
+Subject: WOString {
+  value     = labels.subject;
+  formatter = stringChopper;
+}
+
+Sender: WOString {
+    value = labels.sender;
+}
+
+IsAction:   WOConditional { condition = isAction; }
+IsNoAction: WOConditional { condition = isAction; negate = YES; }
+IsRead:     WOConditional { condition = isRead;   }
+IsNotRead:  WOConditional { condition = isRead;   negate = YES; }
+
+// End Mail List
+
+IsShowMail:         WOConditional { condition = isShowMail; }
+IsShowAllButton:    WOConditional { condition = isShowAll; negate = YES; }
+IsShowUnreadButton: WOConditional { condition = isShowAll;  }
+
+ObjectRow: WOGenericContainer {
+  elementName = "tr";
+  BGCOLOR     = rowColor; // either even or odd
+}
+
+Form: WOForm {}
+
+DeleteMailLink: WOImageButton {
+  action   = deleteMail;
+  filename = "delete_mail.gif";
+  BORDER   = 0;
+  name     = labels.deleteMail;
+  ALT      = labels.deleteMail;
+  ALIGN    = "TOP";
+}
+
+MarkAllCheckbox: WOCheckBox {
+  onClick     = "allselect()";
+  name        = "markAllCheckbox";
+}
+
+MoveMailLink: WOImageButton {
+  action   = moveMail;
+  filename = "move_mail.gif";
+  BORDER   = 0;
+  name     = labels.moveMail;
+  ALT      = labels.moveMail;
+  ALIGN    = "TOP";
+}
+
+CopyMailLink: WOImageButton {
+  action   = copyMail;
+  filename = "copy_small.gif";
+  BORDER   = 0;
+  name     = labels.copyMail;
+  ALT      = labels.copyMail;
+  ALIGN    = "TOP";
+}
+
+MarkRead: WOImageButton {
+  action   = markRead;
+  filename = "read.gif";
+  BORDER   = 0;
+  name     = labels.markRead;
+  ALT      = labels.markRead;
+  ALIGN    = "TOP";
+}
+
+OrderingImage:  WOHyperlink {
+        filename    = currentOrderingString;
+        action      = sort;
+        BORDER      = 0;
+        ALIGN       = "top";
+        ALT         = labels.sortColumnLabel;
+        onMouseOver = "window.status='sort column'; return true";
+        onMouseOut  = "window.status='MDlink Object Framework 3'; return true";
+}
+
+IsNew:    WOConditional { condition = isNew; }
+IsNotNew: WOConditional { condition = isNew; negate    = YES; }
+
+IsNewIcon: WOImage {
+      filename = "icon_new.gif";
+      ALT      = longSubject;
+      ALIGN    = "CENTER";
+      VALIGN   = "MIDDLE";
+      BORDER   = 0;    
+}
+
+IsReadIcon: WOHyperlink {
+      filename = "icon_read.gif";
+      ALT      = longSubject;
+      action   = markMessageUnread;
+      ALIGN    = "CENTER";
+      VALIGN   = "MIDDLE";
+      BORDER   = 0;    
+}
+
+IsUnreadIcon: WOHyperlink {
+      filename = "icon_unread.gif";
+      ALT      = longSubject;
+      ALIGN    = "CENTER";
+      VALIGN   = "MIDDLE";
+      action   = markMessageRead;
+      BORDER   = 0;
+}
+
+IsOrderingEnabled: WOConditional {
+      condition = mailListHeader.sort.boolValue;
+}
+
+MarkUnread: WOImageButton {
+  action   = markUnread;
+  filename = "unread.gif";
+  BORDER   = 0;
+  name     = labels.markUnread;
+  ALT      = labels.markUnread;
+  ALIGN    = "TOP";
+}
+
+IsFlagged:    WOConditional { condition = message.isFlagged; }
+IsNotFlagged: WOConditional { condition = message.isFlagged; negate = YES; }
+
+IsFlaggedIcon: WOHyperlink {
+      filename = "icon_flagged.gif";
+      action   = markMessageUnflagged;
+      ALIGN    = "CENTER";
+      VALIGN   = "MIDDLE";
+      BORDER   = 0;    
+}
+
+IsUnFlaggedIcon: WOHyperlink {
+      filename = "icon_read.gif";
+      action   = markMessageFlagged;
+      ALIGN    = "CENTER";
+      VALIGN   = "MIDDLE";
+      BORDER   = 0;    
+}
+
+FlagIcon: WOImage { filename = "icon_flagged.gif"; }
+
+StatusLabel: WOString {
+  value = labels.status;
+}
+
+ViewStatusCond: WOConditional {
+  condition = session.userDefaults.mail_viewStatus;
+}
+
+StatusAsTextCond: WOConditional {
+  condition = session.userDefaults.mail_viewStatusAsIcon;
+  negate    = YES;
+}
+
+StatusAsIconCond: WOConditional {
+  condition = session.userDefaults.mail_viewStatusAsIcon;
+}
+
+StatusText: WOString {
+  value = messageStatusLabel;
+}
+
+StatusIcon: WOImage {
+  filename = "icon_read.gif";
+  ALT      = messageStatusLabel;
+  ALIGN    = "CENTER";
+  VALIGN   = "MIDDLE";
+  BORDER   = 0;    
+}

@@ -1,0 +1,975 @@
+2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.56
+
+	* NSString+ICal.m: fixed OGo bugs #1101 and #1102 (incorrect ical
+	  escaping)
+
+	* LSGetICalForAppointmentsCommand.m: move iCal escaping code to own
+	  file
+
+2004-11-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetAppointmentsForGlobalIDs.m: major code cleanups (needs more)
+	  (v5.1.55)
+
+2004-11-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSAptAccessCommand.m: properly include common.h (v5.1.54)
+
+2004-11-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.53
+
+	* LSAptAccessCommand.m: code cleanups, needs more
+
+	* common.h: fixed -timeZoneDetail warnings on MacOSX
+
+2004-06-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetAppointmentCommand.m: minor code cleanups, fixed an RC issue 
+	  which becomes visible on Panther Foundation (v5.0.52)
+
+2004-06-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSListParticipantsCommand.m, LSGetCompanyForDateCommand.m, 
+	  LSNewAppointmentFromVEventCommand.m, LSDateAssignmentCommand.m,
+	  LSGetICalForAppointmentsCommand.m, LSGetAppointmentsForGlobalIDs.m,
+	  LSSetAppointmentCommand.m, LSUpdateAppointmentWithVEventCommand.m:
+	  fixed gcc 3.4 warnings (v5.0.51)
+
+2004-06-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* LSAppointmentProposalCommand.m: fixed gcc 2.x compile (v5.0.50)
+
+2004-06-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSAppointmentProposalCommand.m: fixed some gcc 3.4 warnings (v5.0.49)
+
+2004-06-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.48
+
+	* LSDeleteAppointmentCommand.m, OGoCycleDateCalculator.m: replaced 
+	  some '== YES' style comparisons
+
+	* LSGetDateForAWeekCommand.m: some code cleanups
+
+	* LSQueryAppointments.m, LSAppointmentProposalCommand.m: removed 
+	  special support for PostgreSQL 6.5 (was used on Cobalt Qube, now 
+	  completely outdated cruft)
+
+2004-05-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.47
+
+	* LSSetAppointmentCommand.m: some code cleanups
+
+	* LSMondaysOfYearCommand.m: minor cleanups, replaced use of non
+	  standard -addYear:month:day:hour:minute:second: method with
+	  -dateByAddingYears:months:days:hours:minutes:seconds: (this avoids
+	  a warning on Cocoa Foundation
+
+2004-03-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSResourceCategories.m: fixed OGo bug #696, introduced in v5.0.45
+	  (v5.0.46)
+
+2004-03-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.45
+
+	* LSGetAppointmentCommand.m, LSAppointmentProposalCommand.m,
+	  LSGetAppointmentsOfAccountCommand.m, LSResourceCategories.m,
+	  LSUsedResourcesCommand.m, LSGetAppointmentsForSourceUrls: fixed 
+	  warnings with gstep-base, some code cleanups
+	
+	* LSGetAppointmentsForGlobalIDs.m: major code cleanups (needs more)
+
+2004-03-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSNewAppointmentFromVEventCommand.m: set a default title in case no
+	  iCalendar summary is provided, should fix OGo bug #595 (v5.0.44)
+
+	* LSNewAppointmentCommand.m: subminor improvement when checking for
+	  missing startDate/endDate keys (v5.0.43)
+
+2004-01-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSAppointmentProposalCommand.m: fixed OGo bug 534 (v5.0.42)
+
+2004-01-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.41
+	
+	* tweaks for MacOSX compilation in various files
+	
+	* OGoCycleDateCalculator.h: fixed header file (did not declare NSArray)
+
+2003-12-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* use new LSDBObjectBaseCommand -joinPrimaryKeysFromArrayForIN: instead
+	  of a simple -componentsJoinedByString: in various classes to avoid
+	  generation of "IN (<null>,1234)" like malformed SQL (usually due to
+	  broken constraints) (v5.0.40)
+	
+2003-12-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSListParticipantsCommand.m: fixed a variable scoping bug introduced
+	  into v5.0.38 (v5.0.39)
+
+	* v5.0.38
+	
+	* LSAppointmentProposalCommand.m: major cleanups - could be broken now
+	  (or could have been broken before, see compile-time warnings)
+
+	* LSSetAppointmentCommand.m: same compare: fix as in 
+	  LSNewAppointmentCommand
+
+	* LSListParticipantsCommand.m: minor cleanups, fixed a type in a
+	  method name, fixed some minor memory leaks
+
+	* LSNewAppointmentCommand.m: major cleanups. ensure that date objects
+	  are not nil prior using compare: (which forbids nil arguments)
+
+2003-12-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSListParticipantsCommand.m: cleanups, fixed a compile warning 
+	  (v5.0.37)
+
+2003-11-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: install in local-root per default (v5.0.36)
+
+Thu Nov 20 16:44:23 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSGetICalForAppointmentsCommand.m: added handling of allday apts.
+	  if appointment is allday, dates are rendered without time (yyyymmdd)
+	  (v5.0.35)
+
+Thu Nov 20 16:32:42 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSNewAppointmentFromVEventCommand.m,
+	  LSUpdateAppointmentWithVEventCommand: added handling of allday apts.
+	  if dates go from 00:00 to 00:00 of a different day, an allday apt
+	  is assumed (solves ogo bug 424) (v5.0.34)
+
+Wed Nov  5 20:26:25 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* v5.0.33
+	
+	* LSDateAssignmentCommand.m: removed deprecated 
+	  'toDateCompanyAssignment' eo-binding. now uses 
+	  "appointment::list-particpants" to fetch current assignments
+
+	* LSListParticipantsCommand.m: added fetching of assignemnt-attributes
+	  only (needed by LSDateAssigmentCommand.m)
+
+2003-11-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSGetICalForAppointmentsCommand.m: be more tolerant about input
+	  parameters (broke with Evolution 1.4.5 iCal PUTs) (v5.0.32)
+
+2003-10-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSSetAppointmentCommand.m: code cleanups (v5.0.31)
+
+	* v5.0.30
+
+	* LSGetCompanyForDateCommand.m: fixed a bug introduced in .29 ...
+
+	* v5.0.29
+
+	* LSCyclicAppointmentsCommand.m: minor cleanups, needs more work
+
+	* LSGetCompanyForDateCommand.m: code cleanups, requires testing ...
+
+	* LSGetCommentForAppointmentsCommand.m: ensure that the comment is
+	  always a string, do not add null values
+
+Mon Oct 27 08:37:43 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSSetAppointmentCommand.m: check whether start- and enddate are set
+	  (v5.0.28)
+
+Mon Sep 15 13:34:01 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* v5.0.26
+	
+	* LSNewAppointmentFromVEventCommand.m, 
+	  LSUpdateAppointmentWithVEventCommand.m: added attendee/alarm 
+	  rendering
+	
+	* LSGetICalForAppointmentsCommand.m: added appointment::get-ical
+	
+	* LSListParticipantsCommand.m: added team.email to allowed attributes
+
+2003-09-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: fixed library versioning
+
+	* OGoCycleDateCalculator.h: small cleanups to header files, the
+	  API needs *significant* cleanup, very bad OO style (v5.0.25)
+
+Thu Sep 11 14:22:08 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* v5.0.24
+	
+	* LSNewAppointmentCommand.h: extracted from .m file
+	
+	* LSNewAppointmentFromVEventCommand.m: added
+	  appointment::new-with-vevent
+	
+	* LSUpdateAppointmentWithVEventCommand.m: added logText 
+	  'changed with VEvent'
+
+Wed Sep 10 18:09:57 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* v5.0.23
+	
+	* LSUpdateAppointmentWithVEventCommand.m: added 
+	  appointment::update-with-vevent
+	
+	* LSGetAppointmentsForSourceUrls.m: added 
+	  appointment::get-by-sourceurl
+
+2003-09-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSDeleteAppointmentCommand.m: split up the executeInContext: method
+	  into smaller ones (v5.0.22)
+
+Tue Sep  2 18:09:29 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSDeleteAppointmentCommand.m: fixed delete bug which occured during 
+	  v5.0.20
+	  (-_executeInContext: remove wrong return statement) (v5.0.21)
+
+2003-08-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.20
+
+	* LSDeleteAppointmentCommand.m: fixed OGo Bug 199. Permission handling
+	  was broken - it isn't possible the check "[self object]" in 
+	  -prepareForExecution, since the object may not be an EO
+
+	* LSDeleteAppointmentCommand.m: added assertions for checking whether
+	  the appointment/object parameter was properly filled and whether it
+	  contains a global-id (also relates to OGo Bug 199)
+
+	* LSAptAccessCommand.m: check for "nil" global-ids being passed in
+	  (relates to OGo Bug 199)
+
+Tue Aug 12 18:26:19 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSMoveAppointmentCommand.m: added "appointment::move" command
+	  for special logText (solves sx bug 1589) (v5.0.19)
+
+2003-08-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSNewAppointmentCommand.m, LSSetAppointmentCommand.m: check whether
+	  the startdate and enddate are really NSCalendarDate objects after
+	  validation. Some cleanups. Created OGo Bug 107. (v5.0.18)
+
+Tue Aug  5 11:53:52 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* OGoCycleDateCalculator.m, OGoCycleDateDelegate.m: added 
+	  functionality to compute all date repetitions of ogo 
+	  (scheduler/palm/...) (v5.0.17)
+
+Tue Jul 22 18:10:56 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* LSListParticipantsCommand: remove unnecessary logs (v5.0.16)
+
+Mon Jul 21 10:57:42 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* GNUmakefile: add missing library path (v5.0.15)
+
+Fri Jul 18 16:35:17 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* v5.0.14
+	* OGoCycleDateCalculator.m: added in libOGoSchedulerTools
+	* LSCyclicAppointmentsCommand.m: uses OGoCycleDateCalculator to 
+	  compute repetitions
+
+Mon Jul  7 19:24:41 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSGetDateWithConflictCommand.m: remove license check (v5.0.13)
+
+Mon Jul  7 18:42:39 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* fixed OGo import (v5.0.12)
+
+Mon Jul  7 13:41:39 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.11)
+
+Fri May 23 14:04:39 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSDeleteAppointmentCommand.m: 
+	  initForOperation:inDomain:initDictionary: was never called
+	  -> now init with initForOperation:inDomain: (bug 1682) (v4.1.10)
+
+Tue May 13 14:40:53 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSGetCompanyForDateCommand.m: fixed a code cleanup bug (v4.1.9)
+
+Tue May 13 12:01:03 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSGetCompanyForDateCommand.m: code cleanups (v4.1.8)
+
+Thu May  8 17:06:06 2003  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* LSNewAppointmentCommand.m: added assert for missing title
+	  attribute (closes #927)
+
+Wed May  7 15:04:59 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSDateAssignmentCommand.m: code cleanups, 
+	  do not remove entries with no changes from participant-list 
+	  (bug 1590) (v4.1.7)
+
+Mon May  5 15:36:01 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* v4.1.6
+	
+	* LSQueryAppointments.m, LSGetDateWithConflictCommand.m: fixed format
+	  attributes bug (exception if resourcename contains "'") 
+	
+	* LSQueryAppointments.m: code cleanups
+
+Fri May  2 18:03:06 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSAppointmentProposalCommand.m: check whether time-interval 
+	  contains the current day (v4.1.5) (bug 1567)
+
+2003-04-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSListParticipantsCommand.m: fixed a gcc 3.3 signed/unsigned warning
+	  (v4.1.4)
+
+Fri Apr 25 14:29:12 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSListParticipantsCommand.m: don't assert on missing participant, 
+	  which may be deleted, without being removed from 
+	  date_company_assignment (v4.1.3)
+
+Fri Apr 25 13:51:14 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSDateAssignmentCommand.m: redid participant syncronizing (v4.1.2)
+
+2003-04-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added a Version file (embedded as a resource)
+
+	* LSCyclicAppointmentsCommand.m: added LSMaxAptCycles default (to
+	  configure the maximum number of individual appointments associated
+	  with a cyclic appointment) (fixes bug 1493)
+
+Mon Apr 14 13:42:48 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSDateAssignmentCommand.m, LSListParticipantsCommand.m: remove 
+	  outlookKey again (since it doesn't belong into the association)
+
+Fri Apr 11 14:44:50 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSListParticipantsCommand.m: 
+	
+	* LSDateAssignmentCommand.m: added outlookKey handling
+
+Thu Apr 10 15:37:52 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSGetAppointmentsForGlobalIDs.m: added fbtype and busyType to 
+	  AllListAttrs
+
+Wed Apr  9 12:20:36 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSGetAppointmentsForGlobalIDs.m: AllListAttrs was allways nil,
+	  therefore all apppointments with no read access got no 
+	  startdate-enddate attributes (bug 1444)
+
+	* LSGetAppointmentsForGlobalIDs.m: cleanups
+
+Mon Mar 17 11:22:29 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSAptAccessCommand.m: Check whether gid was used for 'IN' 
+	  qualifier (Bug 1234)
+
+2003-03-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSGetAppointmentsForGlobalIDs.m, LSAptAccessCommand.m: better 
+	  protection for invalid GIDs
+
+Wed Mar 12 18:30:49 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSSetAppointmentCommand.m: added lastModified
+
+	* LSListParticipantsCommand.m: fixed grouping
+
+Mon Mar 10 18:00:52 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSDateAssignmentCommand.m: added participant attributes 
+
+	* LSListParticipantsCommand.m: fixed handling of empty dateIds list
+
+Fri Mar  7 13:13:48 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSListParticipantsCommand.m: added multi dates support, groupBy
+
+	* LSQueryAppointments.m: added filter for ownerId, when private
+	                         apppointments are queried
+
+2003-03-01  Helge Hess  <helge.hess@skyrix.com>
+	
+	* LSSetAppointmentCommand.m: allow to call appointment::set without
+	  participants (this won't perform conflict detection and doesn't
+	  set the participants)
+	
+Mon Feb 24 16:19:21 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSQueryAppointments.m: accepts NSNull for accessTeam for private 
+	  dates (bug 1101)
+
+2003-02-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSGetAppointmentsForGlobalIDs.m: fixed an invalid assertion
+
+Fri Feb 21 14:14:26 2003  Martin Hoerning  <mh@skyrix.com>
+	
+	* LSGetAppointmentsForGlobalIDs.m: fixed closing paren (syntax error)
+	
+2003-02-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSGetAppointmentsForGlobalIDs.m: fixed calloc() argument ordering,
+	  fixed a bug in an assert format string (the argument was missing)
+
+Fri Feb 21 17:14:43 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSGetAppointmentsForGlobalIDs.m: fixed wrong assert 
+	                                   (must be 'Date' gids)
+
+2003-02-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSGetAppointmentsForGlobalIDs.m: fixed calloc() argument ordering,
+	  fixed a bug in an assert format string (the argument was missing)
+
+Thu Feb 20 17:26:42 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSQueryAppointments.m: added accessTeam query
+
+Thu Jan 30 13:24:03 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSGetAppointmentsForGlobalIDs.m: added 'resourceNames' to 
+	                                   listAttributes (bug 868)
+
+2003-01-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* OSX compilation fixes
+
+Thu Jan  9 15:25:15 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSListParticipantsCommand.m: fixed core-bug (bug 829)
+
+Mon Dec 23 14:51:47 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* LSGetDateWithConflictCommand.m: removed log (bug 806)
+
+Fri Dec 20 17:43:16 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* LSListParticipantsCommand.m: added, special for SkyAptParticipantList
+
+Tue Dec 10 16:11:38 2002    <jan@skyrix.com>
+
+	* LSAppointmentProposalCommand.m: fixed empty resource bug (bug 760)
+
+Wed Dec  4 15:29:32 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* LSDeleteAppointmentCommand.m: fixed detaching/deleting of notes 
+	  (bug 560)
+
+Tue Dec  3 13:56:40 2002    <jan@skyrix.com>
+
+	* LSAppointmentProposalCommand.m, LSQueryAppointments.m, GNUmakefile: 
+	  substitude -DPOSTGRES_6_5=1 with POSTGRES_6_5 Default
+
+2002-12-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: removed LSNewEventCommand and now unused EDITION flags,
+	  left to remove: POSTGRES_65 define, should be a default
+
+	* LSGetDateWithConflictCommand.m: removed special variants of methods
+	  for "#if PROFESSIONAL_EDITION" - the difference were the *two lines*
+	  to check the license. Sigh.
+
+Mon Dec  2 17:56:11 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* LSCyclicAppointmentsCommand.m: fixed max cyclic appointments count 
+	  (100) (bug 616)
+
+Mon Nov 11 16:12:15 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* added Appointment Type
+
+Thu Oct 17 15:00:26 2002  Joerg Grimm  <joerg@trex2>
+
+	* LSDateAssignmentCommand.m: disabled owner check
+	  to allow add/remove me feature
+
+	* LSAptAccessCommand.m: fixed add nil object bug (add in writeAccess)
+	  added check for write access op particip. of private appts
+
+Tue Oct  1 12:23:03 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* LSAptAccessCommand.m: fixed writeAccess;
+	  participants or member of teams which participated with read access
+	  didn't have the chance to get writeAccess thou they are in the 
+	  writeAccessList
+
+Tue Aug  6 11:45:52 2002  Joerg Grimm  <joerg@trex2>
+
+	* LSQueryAppointments.m  
+	  -_buildQualifierInContext: fixed build of qualifier 
+	   for POSTGRES_65 hack
+ 	  if resNames were not set, no apmts. were fetched 
+	   
+Fri Jul 19 16:59:03 2002  Joerg Grimm  <joerg@trex2>
+
+        * LSQueryAppointments.m, LSAppointmentProposalCommand.m: 
+	  add POSTGRES_65 hack
+
+Tue Nov 27 13:17:22 2001  Jan41 Reichmann  <jan@skyrix.com>
+
+	* LSAppointmentProposalCommand.m: improve memory handling
+
+Mon Jun 18 11:54:59 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* LSGetAppointmentsForGlobalIDs.m: repaired use of -isNotNull
+
+Mon Mar 26 14:01:58 2001  Helge Hess  <helge.hess@mdlink.de>
+
+	* removed some -call: invocations
+
+	* changed to use -isNotNull
+
+Mon Feb  5 19:55:00 2001  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetDateWithConflictCommand.m: made NSNull safe
+
+Thu Jan 25 17:39:59 2001  Joerg Grimm  <joerg@trex2>
+
+	* LSCyclicAppointmentsCommand.m: isWarningIgnored was not set
+          in appointment::new and appointment::set  
+	
+Thu Sep 28 12:50:30 2000  Jan Reichmann  <jan@skyrix.com>
+
+	* LSDeleteAppointmentCommand.m: test dateInfo
+
+	* LSAppointmentProposalCommand.m: disconjoin -> conjoin
+
+Wed Sep 27 15:58:45 2000  Jan Reichmann  <jan@skyrix.com>
+
+	* LSQueryAppointments.m: build NSCalendarDate if from or to date are 
+	NSString
+
+Tue Sep 26 19:09:25 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSDeleteAppointmentCommand.m: added commit while 
+	  deleting cyclic appointments, otherwise FrontBase 
+	  has Exception: Integrity constraint violation
+
+Mon Sep 25 16:26:36 2000  Jan Reichmann  <jan@skyrix.com>
+
+	* LSDeleteAppointmentCommand.m: insert check-permissions flag
+
+Tue Sep 19 22:29:09 2000  Jan Reichmann  <jan@skyrix.com>
+
+	* LSAppointmentProposalCommand.m: fixed team fetch bug
+
+Tue Sep  5 17:36:05 2000  Jan Reichmann  <jan@skyrix.com>
+
+	* sky_get_appointment.m: add appointment_id flag
+
+Tue Aug 22 16:26:40 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSGetDateWithConflictCommand.m: fixed bug: there was no
+	  batch fetching for company ids (staffList)
+
+Tue Aug 22 12:55:51 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSNewAppointmentCommand.m: ownerId is set from parent appointment
+	  for cyclic appointments
+
+	* LSCyclicAppointmentsCommand.m: isConflictDisabled was not inherited
+
+Mon Aug 21 18:32:52 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSAptAccessCommand.m: Team IDs in writeAccessList were
+ 	  not considered for edit permission
+
+Fri Aug 11 17:11:11 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSCyclicAppointmentsCommand.m: writeAccessList and notificationTime
+ 	  were not inherited
+
+Wed Aug  9 12:32:49 2000  Martin Hoerning  <mh@mdlink.de>
+
+	* LSGetAppointmentsForGlobalIDs.m: attributes filtered for permissions
+	  at _fetchAttributesInContext
+
+Mon Aug  7 15:23:30 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSGetDateWithConflictCommand.m: timeZone is set for conflicting
+	  appointments
+
+Fri Aug  4 15:12:14 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSAptAccessCommand.m: writeAccessList is considered for
+	  edit permission
+
+Fri Aug  4 12:55:42 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSDeleteAppointmentCommand.m, LSSetAppointmentCommand.m:
+	  check edit/delete permission
+
+Wed Aug  2 18:31:43 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSResourceCategories.m : created
+
+	* LSAppointmentProposalCommand.m: available categories
+
+	* LSAvailableResourcesCommand.m: created
+
+Tue Aug  1 13:04:25 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSSetAppointmentCommand.m: fixed bug with non-conflicting apts
+
+Thu Jul 13 17:04:59 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSSetAppointmentCommand.m: added check for participants array
+
+	* LSGetDateWithConflictCommand.m: cleanups
+
+Mon Jul 10 19:47:56 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* sky_get_appointment.m: add error codes
+
+Mon Jul 10 17:23:28 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* added licensing checks
+
+Mon Jul  3 14:24:07 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSGetCompanyForDateCommand.m: split fetch for participants
+
+Fri Jun 30 19:14:23 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSNewCyclicDatesCommand.m: added rollback if conflicts happened
+	  (necessary for cyclic appointments)
+
+Wed Jun 28 13:48:21 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSQueryAppointments.m: fixed bug in resource fetch
+
+Wed Jun 28 13:26:14 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSQueryAppointments.m: fixed bug in batch-construction
+
+Wed Jun 28 11:58:00 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSAptAccessCommand.m: root has full access to everything
+
+Tue Jun 27 19:07:21 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSQueryAppointments.m: support IN-batches
+
+Tue Jun 20 15:50:31 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSGetDateForAWeekCommand.m: [fromDate beginOfDay]
+
+Mon Jun 19 11:58:06 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSSetAppointmentCommand.m: writeAccessLists
+
+Fri Jun 16 21:00:57 2000  Martin Spindler  <spindler@mdlink.de>
+
+	* LSGetAppointmentsOfAccountCommand.m: supports fetchGlobalIDs
+
+Wed May 31 13:30:41 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetAppointmentsForGlobalIDs.m: supports singleFetch and groupBy
+
+Tue May 30 20:46:21 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetCompanyForDateCommand.m: fixed handling of 'single-fetches'
+
+Tue May 30 11:48:01 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSQueryAppointments.m: fixed query (appointments over more days
+	  were not correctly fetched)
+
+Fri May 26 21:14:47 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetAppointmentsForGlobalIDs.m: supports participant keys, supports
+	  sorting during attribute-fetching
+
+Fri May 26 13:58:22 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSQueryAppointments.m: disabled ordering 
+
+Tue May 23 22:37:25 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetCompanyForDateCommand.m: fetch assignments as dictionaries
+
+	* LSGetDateForAWeekCommand.m: fixed to sort by start-date
+
+	* LSQueryAppointments.m: sort resulting gids by start-date
+
+Tue May 16 18:24:47 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetAppointmentsOfAccountCommand.m: fixed -dealloc bug
+
+	* LSGetDateForAWeekCommand.m: changed to use appointment::query and
+	  appointment::get-by-globalid
+	
+	* LSGetAppointmentsForGlobalIDs.m: added ability to sort and correct
+	  timezone
+
+Thu May 11 18:04:38 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* removed LSGetFilteredAppointmentsCommand.m
+
+Wed May 10 22:13:45 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetCompanyForDateCommand.m, LSGetDateForAWeekCommand.m: uses new 
+	  -globalIDsForSQLQualifier: method
+
+	* LSGetAppointmentsOfAccountCommand.m: can set the timezone of the dates
+	  in the appointments
+
+	* LSGetAppointmentsOfAccountCommand.m: can fetch appointments in ranges
+
+	* LSGetFilteredAppointmentsCommand.m: set startDate and endDate to
+	  default values if these are not set
+
+Tue May  9 14:26:53 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetCompanyForDateCommand.m: changed to use dictionaries, not EOs,
+	  for the assignment-table fetch
+
+Fri May  5 18:54:33 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetAppointmentCommand.m: extended to allow queries for EOGlobalID
+
+Fri Mar 31 18:51:40 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSSetAppointmentCommand.m: fixed bug in command preparation
+
+Fri Jan 14 18:03:08 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSGetAppointmentsOfAccountCommand.m: the company can be set 
+	the access rights are implemented
+
+Mon Jan 10 17:49:38 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSNewAppointmentCommand.m: changed to ensure that participants are
+	  passed in
+
+Wed Jan  5 21:59:42 2000  Jan Reichmann  <jan@mdlink.de>
+
+	* LSGetAppointmentsOfAccountCommand.m: build appointment::get-appointments
+  	command (get all appointments for the login)
+
+Mon Dec 27 16:26:49 1999  Helge Hess  <helge.hess@mdlink.de>
+
+	* moved 'fetchComments' method into separate command
+
+	* moved 'buildAccessTeamInfo' method into separate command
+
+	* rewrote some filter commands as 'filter' methods applicable with
+	  EOQualifier
+
+	* changed to object-call based command invocation
+
+	* GNUmakefile: LSScheduler links against LSAccess now
+
+	* LSAppointmentProposalCommand.m: translated from C to Objective-C
+
+	* LSDeleteAppointmentCommand.m ([LSDeleteAppointmentCommand -initForOperation:inDomain:initDictionary:]): fixed bug: did not return self
+
+	* moved some @interface's to .m files
+
+Wed Dec  8 15:28:39 1999  Martin Spindler  <spindler@mdlink.de>
+
+	* LSSetAppoinment, LSNewAppointment, LSDeleteAppointment:
+	  include logging ("object::add-log", "object::remove-logs")
+	
+	* LSSetAppoinment, LSNewAppointment: added attribute objectVersion
+
+Tue Nov 16 11:50:24 1999  Joerg Grimm  <joerg@trex2>
+
+	* LSSetAppointmentCommand.m, LSDateAssignmentCommand.m:
+	  root is allowed to edit appointments of other accounts
+
+Wed Nov 10 18:59:25 1999  Martin Spindler  <spindler@mdlink.de>
+
+	* LSFilterAMWeekDaysCommand: added attribute withAttendance
+	
+	* LSFilterPMWeekDaysCommand: added attribute withAttendance	
+
+Wed Nov 10 15:12:26 1999  Martin Spindler  <spindler@mdlink.de>
+
+	* LSFilterAttendanceCommand: added
+
+Mon Sep  6 16:15:40 1999  Helge Hess  <helge@trex.mdlink.de>
+
+	* replaced EOQualifier with EOSQLQualifier
+
+Mon Aug 30 12:20:54 1999  Joerg Grimm  <joerg@trex2>
+
+	* commands.plist: added appointment::get-comment
+
+Wed Jul 21 12:23:41 1999  Helge Hess  <helge@trex.mdlink.de>
+
+	* LSNewCyclicDatesCommand.m: fixed typo
+
+Fri Jul  9 13:03:46 1999  Joerg Grimm  <joerg@trex2>
+
+	* LSGetAppointmentCommand.[hm] added
+
+Tue Jul  6 10:57:01 1999  Joerg Grimm  <joerg@trex2>
+
+	* LSFilterAMWeekDaysCommand.m, LSFilterPMWeekDaysCommand.m:
+ 	  can handle appointments which last beyond midnight
+
+Wed Mar 24 18:01:45 1999  Helge Hess  <helge@trex.mdlink.de>
+
+	* moved LSTimeSlice.[hm] to LSWScheduler
+
+	* use #include instead of #import
+
+Wed Feb 24 16:50:29 1999  Helge Hess  <helge@trex.mdlink.de>
+
+	* GNUmakefile: uses commandbundle.make
+
+Fri Feb 19 10:56:43 1999  Joerg Grimm  <joerg@trex2>
+
+	* LSGetDateWithConflictCommand.m: timeZone is set for conflict in 
+	  appointments from compared begin date 
+
+Tue Feb 16 13:13:29 1999  Joerg Grimm  <joerg@trex2>
+
+	* LSGetCompanyForDateCommand.m: batchfetching of participants implemented
+
+Tue Feb  9 16:13:06 1999  Joerg Grimm  <joerg@trex2>
+
+	* LSDeleteDateCommand.m: sets dateIds from related notes to EONull 
+
+Wed Jan 27 14:39:21 1999  Helge Hess  <helge@trex.mdlink.de>
+
+	* LSGetDateWithConflictCommand.m: cleanups
+
+Wed Jan 20 13:01:34 1999  Helge Hess  <helge@trex.mdlink.de>
+
+	* LSGetDateForAWeekCommand.m: don't abort command if no participants
+	  are available for appointment (prints warning).
+
+	* LSNewDateCommand.m: handle 'dateId' as primary key (as required by
+	  toOne relationship 'toDateInfo')
+
+	* LSDeleteDateCommand.m: use -assert:reason: instead of NSAssert
+
+	* LSGetDateForAWeekCommand.m: fixed RC bug, EOQualifier was not released
+
+Fri Jan  8 14:49:22 1999  Helge Hess  <helge@trex.mdlink.de>
+
+	* LSGetDateForAWeekCommand.m: implemented 'team' key (filtering)
+
+Mon Jan  4 15:52:38 1999  Joerg Grimm  <joerg@trex2>
+
+	* LSParticipantsIntersectionCommand.[mh]: added 
+
+Wed Dec 23 12:06:32 1998  Helge Hess  <helge@trex.mdlink.de>
+
+	* LSGetDateForAWeekCommand.m: participants are always fetched since they
+	  are required to determine the 'view' rights. The 'view' right algorithm
+	  is changed (participants can also view the appointment).
+
+Mon Dec 21 15:46:12 1998  Helge Hess  <helge@trex.mdlink.de>
+
+	* LSGetDateForAWeekCommand.m: also fetches DateInfo record belonging
+	  to appointment
+
+Fri Dec 18 18:28:53 1998  Helge Hess  <helge@trex.mdlink.de>
+
+	* LSDateAssignmentCommand.m: fixed bug in owner check
+
+	* LSGetDateForAWeekCommand.m: qualifier uses distinct
+
+	* LSGetDateForAWeekCommand.m: added 'team' and 'withoutPrivate' keys. 'team'
+	  can filter out appointments for a specific team and 'withoutPrivate'
+	  enables/disables inclusion of appointments of the current user.
+
+Thu Dec 17 16:37:19 1998  Helge Hess  <helge@trex.mdlink.de>
+
+	* LSSetDateCommand.m, LSDateAssignmentCommand.m: ensures that only the owner
+ 	  of the appointment can update the record
+
+Wed Dec 16 18:12:04 1998  Helge Hess  <helge@trex.mdlink.de>
+
+	* LSGetDateForAWeekCommand.m: added 'timeZone' parameter to apply a timezone
+	  on all dates in the resulting appointments.
+
+	* LSGetCompanyForDateCommand.m: replaced 'date' ivar with 'object'
+
+Mon Dec 14 19:51:09 1998  Helge Hess  <helge@trex.mdlink.de>
+
+	* LSNewDateCommand.m: can assign participants to a new date. The previous
+	  version used the participants only to check for conflicts.
+
+	* changed command names
+
+	* LSDateAssignmentCommand.m: cleaned up
+
+	* LSSetDateCommand.m: cleaned up, renamed to LSSetAppointmentCommand
+
+	* LSNewDateCommand.m: cleaned up, renamed to LSNewAppointmentCommand
+
+	* LSMondaysOfYearCommand.m: fixed timezone handling
+
+	* LSGetDateForAWeekCommand.m: is now able to fetch the participants
+	  belonging to the appointment
+
+	* LSFilterStaffCommand.m: cleaned up
+
+	* LSNewDateCommand.m: set owner correctly
+
+Fri Dec 11 20:36:10 1998  Helge Hess  <helge@trex.mdlink.de>
+
+	* LSNewDateCommand.m: throw exception if someone tries to set set it
+
+	* LSNewDateCommand.m: retrieves 'ownerId' from context (set by login)
+
+Thu Dec 10 14:48:09 1998  Helge Hess  <helge@trex.mdlink.de>
+
+	* LSFilterStaffCommand.m, LSFilterWeekDaysCommand.m: 
+	  inherit from LSArrayFilterCommand now
+
+	* LSFilterAMWeekDaysCommand.m, LSFilterPMWeekDaysCommand:
+	  inherit from LSArrayFilterCommand now
+
+Tue Dec  8 11:12:21 1998  Helge Hess  <helge@trex.mdlink.de>
+
+	* moved NSCalendarDate+misc to NGExtensions
+
+	* LSDateAssignmentCommand.m: removed reference to 'Company' entity
+
+	* LSGetCompanyForDateCommand.m: replaced fetch on 'Company' entity with fetch
+	  on 'Team' and 'Person'
+
+	* LSGetCompanyForDateCommand.m, LSDateAssignmentCommand.m: 
+	  added 'appointment' accessors for 'date' field
+
+Thu Dec  3 17:00:04 1998  Helge Hess  <helge@trex.mdlink.de>
+
+	* updated to use 'setReturnValue:'
+
+	* created ChangeLog

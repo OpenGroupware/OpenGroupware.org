@@ -1,0 +1,22 @@
+Package system
+
+  Method startProjectDaemon
+    Parameters: project code (String)
+        Result: port of the launched daemon (Int)
+       Example: system.startProjectDaemon('P12345')
+
+  Method getHostName
+    Parameters: none
+        Result: the hostname of the server
+      Examples: system.getHostName()
+  
+  Method getTimeZone
+    Parameters: none
+        Result: server timezone as string
+      Examples: system.getTimeZone()
+
+  Method getTime
+    Parameters: none
+        Result: date&time of the server
+      Examples: system.getTime()
+

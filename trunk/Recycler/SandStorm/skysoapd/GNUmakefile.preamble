@@ -1,0 +1,29 @@
+# $Id$
+
+ADDITIONAL_TOOL_LIBS += -lFoundation	\
+			-lSOAP		\
+			-lOGoContacts	\
+			-lNGObjWeb	\
+			-lOGoIDL	\
+			-lNGSoap	\
+			-lXmlSchema     \
+
+skysoapd_LIB_DIRS     += \
+	-L../SOAP/$(GNUSTEP_OBJ_DIR) \
+	-L../SaxObjC/$(GNUSTEP_OBJ_DIR) \
+	-L../NGExtensions/$(GNUSTEP_OBJ_DIR) \
+	-L./$(GNUSTEP_OBJ_DIR)
+
+
+
+soapclient_LIB_DIRS   += \
+	-L../SOAP/$(GNUSTEP_OBJ_DIR) \
+	-L../SaxObjC/$(GNUSTEP_OBJ_DIR) \
+	-L../NGExtensions/$(GNUSTEP_OBJ_DIR) \
+	-L./$(GNUSTEP_OBJ_DIR)
+
+soapTest_LIB_DIRS   += \
+	-L../SOAP/$(GNUSTEP_OBJ_DIR) \
+	-L../SaxObjC/$(GNUSTEP_OBJ_DIR) \
+	-L../NGExtensions/$(GNUSTEP_OBJ_DIR) \
+	-L./$(GNUSTEP_OBJ_DIR)

@@ -1,0 +1,97 @@
+// $Id: Main.wod,v 1.1 2003/10/27 19:27:33 helge Exp $
+
+Frame: Frame {
+}
+
+IsLoggedIn: WOConditional {
+  condition = session.isLoggedIn;
+}
+NeedsLogin: WOConditional {
+  condition = session.isLoggedIn;
+  negate    = YES;
+}
+
+Form: WOForm {
+}
+
+UserName: WOTextField {
+  value = userName;
+}
+Password: WOPasswordField {
+  value = password;
+}
+
+Login: WOSubmitButton {
+  action = login;
+  value  = "login";
+}
+
+// WETableView
+
+AptTable: WETableView {
+  list           = dataSource.fetchObjects;
+  item           = apt;
+
+  titleColor     = "#7799FF";
+  headerColor    = "#5577FF";
+  footerColor    = "#5577FF";
+}
+
+StartDateTD: WETableData {
+  sortKey = "startDate";
+  title   = "startDate";
+}
+EndDateTD: WETableData {
+  sortKey = "endDate";
+  title   = "endDate";
+}
+TitleTD: WETableData {
+  sortKey = "title";
+  title   = "title";
+}
+
+StartDate: WOString {
+  value = apt.startDate;
+}
+EndDate: WOString {
+  value = apt.endDate;
+}
+Title: WOString {
+  value = apt.title;
+}
+
+// WeekRep
+
+WeekRep: WEWeekOverview {
+  list         = dataSource.fetchObjects;
+  item         = apt;
+
+  weekStart    = weekStart;
+
+  startDateKey = "startDate";
+  endDateKey   = "endDate";
+  titleColor   = "#7799FF";
+  contentColor = "#5577FF";
+}
+
+WeekRepContent: WEWeekOverviewContentMode {}
+
+Apt: WOString {
+  value     = aptInfo;
+  insertBR  = YES;
+}
+
+// Form2
+
+Form2: WOForm {}
+
+Year: WOTextField {
+  value = year;
+}
+Week: WOTextField {
+  value = week;
+}
+Fetch: WOSubmitButton {
+  action = showApts;
+  value  = "fetch";
+}

@@ -1,0 +1,53 @@
+<!-- $Id: SkyProject4DocumentUpload.html 2 2004-08-20 11:37:44Z znek $ -->
+
+<#Frame>
+  <#Window>
+    <#Form>
+      <table border='0' cellspacing='0' cellpadding='3' width='100%'>
+        <#ShowFilename>
+          <tr><#FolderAttr/></tr>
+          <tr><#FilenameAttr><#Filename/></#FilenameAttr></tr>
+          <tr><#SubjectAttr><#Subject/></#SubjectAttr></tr>
+        </#ShowFilename>
+        <#NoShowFilename>
+          <tr><#FilePathAttr/></tr>
+        </#NoShowFilename>
+        
+        <tr><#UploadAttr><#Upload/></#UploadAttr></tr>
+
+        <tr>
+          <td></td>
+          <td>
+            <#UploadButton/>
+            <#HasUploadAndRelease><#UploadAndReleaseButton/></#HasUploadAndRelease>
+            <#HasUploadAndUnlock><#UploadAndUnlockButton/></#HasUploadAndUnlock>
+            <#UploadAndTextEditButton/>
+            <#CancelButton/>
+          </td>
+        </tr>
+        
+        <!-- additional upload fields -->
+        <#ShowFilename>
+          <tr><td><br /></td></tr>
+          <#MoreTitle/>
+          
+          <tr><#FilenameAttr><#Filename2/></#FilenameAttr></tr>
+          <tr><#SubjectAttr ><#Subject2 /></#SubjectAttr></tr>
+          <tr><#UploadAttr  ><#Upload2  /></#UploadAttr></tr>
+          <tr><#FilenameAttr><#Filename3/></#FilenameAttr></tr>
+          <tr><#SubjectAttr ><#Subject3 /></#SubjectAttr></tr>
+          <tr><#UploadAttr  ><#Upload3  /></#UploadAttr></tr>
+          <tr>
+            <td></td>
+            <td>
+              <#UploadButton/>
+              <#HasUploadAndRelease><#UploadAndReleaseButton/></#HasUploadAndRelease>
+              <#HasUploadAndUnlock><#UploadAndUnlockButton/></#HasUploadAndUnlock>
+              <#CancelButton/>
+            </td>
+          </tr>
+        </#ShowFilename>
+      </table>
+    </#Form>
+  </#Window>
+</#Frame>

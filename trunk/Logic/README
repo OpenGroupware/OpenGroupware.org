@@ -1,0 +1,13 @@
+# $Id$
+
+Logic
+=====
+[STABLE]
+[REQUIRES: SOPE, GDL]
+
+This directory contains the OpenGroupware.org business logic. The logic is
+provided in terms of so called "command" objects which are packaged in
+"command bundles". Command bundles have the ".cmd" extension and are installed
+into "$GNUSTEP_ROOT/Library/OpenOffice.org/".
+
+[TODO: explain more]

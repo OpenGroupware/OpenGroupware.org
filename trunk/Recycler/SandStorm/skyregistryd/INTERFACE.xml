@@ -1,0 +1,417 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+
+<interface name="active.registry" 
+           xmlns="http://www.skyrix.com/skyrix-idl"
+           xmlns:xrt="http://www.skyrix.com/od/xmlrpc-types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <documentation lang="en">
+    This interface declares the methods to access the SKYRiX SandStorm
+    registry. This software component makes it possible to store the location
+    information for all daemons used within the SKYRiX environment, and
+    makes it therefore easy to access the daemons you want by asking this
+    central registry for their connection information. It's possible to
+    set-up a master registry to provide core services everyone needs and
+    to overload them on the local registry for e.g. testing purposes.
+  </documentation>
+  <documentation lang="de">
+    Dieses Interface beschreibt die Methoden zum Zugriff auf den SKYRiX
+    Sandstorm Registry Daemon. Diese Softwarekomponente erm'oglicht die
+    Speicherung der Lokalisierungsinformationen aller in der SKYRiX Umgebung
+    genutzten Daemons und macht somit das Auffinden der Daemons durch
+    eine zentrale Anfrageinstanz einfach. Es ist auch m'oglich, eine Master
+    Registry zu installieren, welche zentrale Dienste bereitstellt, diese
+    k'onnen dann bei Bedarf, bspw. f'ur Testzwecke, auf der lokalen Registry
+    'uberladen werden.
+  </documentation>
+
+  <method name="setComponent">
+    <signature>
+      <input name="namespace" type="xsd:string">
+        <documentation lang="en">
+          namespace to set
+        </documentation>
+        <documentation lang="de">
+          zu setzender Namespace
+        </documentation>
+      </input>
+      <input name="uri" type="xsd:string">
+        <documentation lang="en">
+          target URI
+        </documentation>
+        <documentation lang="de">
+          Ziel-URI
+        </documentation>
+      </input>
+      <input name="host" type="xsd:string">
+        <documentation lang="en">
+          target host
+        </documentation>
+        <documentation lang="de">
+          Zielhost
+        </documentation>
+      </input>
+      <input name="port" type="xsd:string">
+        <documentation lang="en">
+          target port
+        </documentation>
+        <documentation lang="de">
+          Zielport
+        </documentation>
+      </input>
+      <output type="xsd:bool">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>      
+      </output>
+    </signature>
+    <signature>
+      <input name="namespace" type="xsd:string">
+        <documentation lang="en">
+          namespace to set
+        </documentation>
+        <documentation lang="de">
+          zu setzender Namespace
+        </documentation>
+      </input>
+      <input name="uri" type="xsd:string">
+        <documentation lang="en">
+          target URI
+        </documentation>
+        <documentation lang="de">
+          Ziel-URI
+        </documentation>
+      </input>
+      <input name="host" type="xsd:string">
+        <documentation lang="en">
+          target host
+        </documentation>
+        <documentation lang="de">
+          Zielhost
+        </documentation>
+      </input>
+      <input name="port" type="xsd:string">
+        <documentation lang="en">
+          target port
+        </documentation>
+        <documentation lang="de">
+          Zielport
+        </documentation>
+      </input>
+      <input name="timeout" type="xsd:boolean">
+        <documentation lang="en">
+          send timeout information
+        </documentation>
+        <documentation lang="de">
+          Flag zum Senden von Timeoutinformationen
+        </documentation>
+      </input>
+      <output type="xsd:bool">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>      
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.setComponent("test","/RPC2",
+                                     "localhost","20000")
+       ]]>
+      <documentation lang="en">
+        Adds a new component named 'test' with the target
+        URL 'http://localhost:20000/RPC2'.
+      </documentation>
+      <documentation lang="de">
+        F'ugt einen neuen Komponent namens 'test' mit der
+        Zieladresse 'http://localhost:20000/RPC2' hinzu.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "setComponent" sets a new component for the given
+      namespace with the given URL attributes. With the optional 'timeout'
+      argument it is possibe to get the server timeout scan interval and
+      re-register in this interval to avoid being automatically removed by
+      the registry scan.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "setComponent" f'ugt einen neuen Komponenten unter dem
+      angegebenen Namen mit den 'ubergebenen URL-Parametern hinzu. Mit dem
+      optionalen 'timeout' Parameter ist es m'oglich, im R'uckgabewert
+      Informationen 'uber den Timeout-Scan-Intervall des Servers zu erhalten.
+      Mit der wiederholten Registrierung innerhalb dieses Intervalls kann
+      man der automatischen Entfernung des Komponenten aus der Registry
+    </documentation>
+  </method>
+
+  <method name="removeComponent">
+    <signature>
+      <input name="namespace" type="xsd:string">
+        <documentation lang="en">
+          namespace to remove
+        </documentation>
+        <documentation lang="de">
+          zu entfernender Namespace
+        </documentation>
+      </input>
+      <output type="xsd:bool">
+        <documentation lang="en">
+          success indicator
+        </documentation>
+        <documentation lang="de">
+          Flag
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        server.setComponent("test","/RPC2", "localhost","20000")
+        result = server.removeComponent("test")
+       ]]>
+      <documentation lang="en">
+        Removes the component named 'test' from the registry.
+      </documentation>
+      <documentation lang="de">
+        Entfernt den Komponenten namens 'test' aus der Registry.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "removeComponent" removes the component with the given
+      name from the registry database. It should be called on server shutdown.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "removeComponent" entfernt den Komponenten mit dem 
+      'ubergebenen Namen aus der Registry-Datenbank. Dieser Befehl sollte beim
+      Herunterfahren eines Daemons aufgerufen werden.
+    </documentation>
+  </method>
+
+  <method name="getComponents">
+    <signature>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of component names
+        </documentation>
+        <documentation lang="de">
+          Array von Komponentennamen
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.getComponents()
+       ]]>
+      <documentation lang="en">
+        List the names of all components on the server.
+      </documentation>
+      <documentation lang="de">
+        Gibt die Namen aller registrierten Komponenten des Servers zur'uck.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "getComponents" returns the names of all available
+      components on the server. This includes the component names from the
+      master registry, if one is set.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "getComponents" gibt die Namen aller registrierten Komponenten
+      des Servers zur'uck. Wenn eine Master-Registry gesetzt ist, werden
+      auch die Komponentennamen dieser zur'uckgegeben.
+    </documentation>
+  </method>
+
+  <method name="getComponent">
+    <signature>
+      <input name="namespace" type="xsd:string">
+        <documentation lang="en">
+          namespace
+        </documentation>
+        <documentation lang="de">
+          Namespace
+        </documentation>
+      </input>
+      <output type="xsd:struct">
+        <documentation lang="en">
+          dictionary containing URL elements
+        </documentation>
+        <documentation lang="de">
+          Dictionary mit URL-Elementen
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.getComponent('marvin.skytest.master')
+       ]]>
+      <documentation lang="en">
+        Gets the connection information for the component named
+        "marvin.skytest.master".
+      </documentation>
+      <documentation lang="de">
+        Gibt die Verbindungsinformationen f'ur den Komponenten mit dem
+        Namen "marvin.skytest.master" zur'uck.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "getComponent" returns the connection information for
+      the component with the given namespace. These informations can be used
+      to build an URL and connect to the server directly.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "getComponent" gibt die Verbindungsinformationen f'ur den
+      Komponenten mit dem 'ubergebenen Namespace zur'uck. Aus diesen
+      Informationen kann eine URL zum direkten Zugriff auf den Server erstellt
+      werden.
+    </documentation>
+  </method>
+
+  <method name="listComponentMethods">
+    <signature>
+      <input name="namespace" type="xsd:string">
+        <documentation lang="en">
+          namespace
+        </documentation>
+        <documentation lang="de">
+          Namespace
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of method names
+        </documentation>
+        <documentation lang="de">
+          Array von Methodennamen
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.listComponentMethods('marvin.skytest.master')
+       ]]>
+      <documentation lang="en">
+        Returns the names of all methods provided by the component named
+        "marvin.skytest.master".
+      </documentation>
+      <documentation lang="de">
+        Gibt die Namen aller Methoden zur'uck, die der Komponent mit dem
+        Namen "marvin.skytest.master" zur Verf'ugung stellt.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "listComponentMethods" returns the names of all methods
+      provided by the component with the given name.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "listComponentMethods" gibt die Namen aller Methoden zur'uck,
+      die der Komponent mit dem 'ubergebenen Namen bereitstellt.
+    </documentation>
+  </method>
+
+  <method name="componentMethodSignatures">
+    <signature>
+      <input name="namespace" type="xsd:string">
+        <documentation lang="en">
+          namespace
+        </documentation>
+        <documentation lang="de">
+          Namespace
+        </documentation>
+      </input>
+      <input name="methodname" type="xsd:string">
+        <documentation lang="en">
+          method name
+        </documentation>
+        <documentation lang="de">
+          Methodename
+        </documentation>
+      </input>
+      <output type="xsd:array">
+        <documentation lang="en">
+          array of method signatures
+        </documentation>
+        <documentation lang="de">
+          Array von Methodensignaturen
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.componentMethodSignatures('marvin.skytest.master',
+                                                  'start')
+       ]]>
+      <documentation lang="en">
+        Returns all signatures for the method "getContact" of the component
+        "marvin.skytest.master".
+      </documentation>
+      <documentation lang="de">
+        Gibt alle Signaturen f'r die Methode "getContact" des Komponenten
+        "marvin.skytest.master" zur'uck.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "componentMethodSignatures" returns all signatures for the
+      given method name of the given component.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "componentMethodSignatures" gibt alle Signaturen der Methode
+      mit dem 'ubergebenen Namen f'ur den angegebenen Komponenten zur'uck.
+    </documentation>
+  </method>
+
+  <method name="componentMethodHelp">
+    <signature>
+      <input name="namespace" type="xsd:string">
+        <documentation lang="en">
+          namespace
+        </documentation>
+        <documentation lang="de">
+          Namespace
+        </documentation>
+      </input>
+      <input name="methodname" type="xsd:string">
+        <documentation lang="en">
+          method name
+        </documentation>
+        <documentation lang="de">
+          Methodename
+        </documentation>
+      </input>
+      <output type="xsd:string">
+        <documentation lang="en">
+          method help text
+        </documentation>
+        <documentation lang="de">
+          Hilfetext der Methode
+        </documentation>
+      </output>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.componentMethodHelp('marvin.skytest.master',
+                                            'start')
+       ]]>
+      <documentation lang="en">
+        Returns the method help text for the method "getContact" 
+        of the component "marvin.skytest.master".
+      </documentation>
+      <documentation lang="de">
+        Gibt den Hilfetext der Methode "getContact" des Komponenten
+        "marvin.skytest.master" zur'uck.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "componentMethodHelp" returns the method help text for the
+      given method name of the given component.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "componentMethodHelp" gibt den Hilfetext der Methode
+      mit dem 'ubergebenen Namen f'ur den angegebenen Komponenten zur'uck.
+    </documentation>
+  </method>
+</interface>

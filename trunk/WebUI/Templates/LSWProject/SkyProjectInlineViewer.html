@@ -1,0 +1,119 @@
+<table width="100%" border="0" cellpadding="4" cellspacing="0">
+  <#Title><#Buttons /></#Title>
+  
+  <tr>
+    <#SubAttributeCell>
+      <#Font><#NameLabel/> (<#NumberLabel/>):</#Font>
+    </#SubAttributeCell>
+    <#SubValueCell>
+      <#Font>
+        <#ProjectLink><#ProjectName/></#ProjectLink>
+        (<#ProjectNumber/>)
+      </#Font>
+    </#SubValueCell>
+  </tr>
+  <tr>
+    <#SubAttributeCell><#Font><#StartDateLabel/>:</#Font></#SubAttributeCell>
+    <#SubValueCell><#Font>
+      <#ProjectStartDate/> <!-- - <#ProjectEndDate/> -->
+    </#Font></#SubValueCell>
+  </tr>
+
+  <#ProjectViewer />
+
+  <#ShowProjectUrl>
+    <tr>
+      <#SubAttributeCell><#Font><#ProjectUrlKey />:</#Font></#SubAttributeCell>
+      <#SubValueCell>
+        <#ProjectUrl />
+      </#SubValueCell>
+    </tr>
+  </#ShowProjectUrl>
+
+  <#HasAccessTeam>
+    <tr>
+      <#SubAttributeCell><#Font><nobr><#AccessTeamLabel />:</nobr></#Font></#SubAttributeCell>
+      <#SubValueCell>
+        <#AccessTeam />
+      </#SubValueCell>
+    </tr>
+  </#HasAccessTeam>
+
+  <tr>
+    <#SubAttributeCell><#Font><nobr><#AccessAccountsLabel />:</nobr></#Font></#SubAttributeCell>
+    <#SubValueCell>
+       <#Font>
+         <#AccessAccountRep>
+           <#IsItemViewableCond>
+             <#IsPersonArchivedCondElse>
+               <#PersonFirstname />
+               <#PersonName />
+             </#IsPersonArchivedCondElse>
+             <#IsPersonArchivedCond>
+               <#ArchivedFont>
+                 <#PersonFirstname />
+                 <#PersonNameArchived />
+               </#ArchivedFont>
+             </#IsPersonArchivedCond>
+           </#IsItemViewableCond><#IsItemViewableCondElse>*</#IsItemViewableCondElse>
+         </#AccessAccountRep>
+       </#Font>
+    </#SubValueCell>
+  </tr>
+
+
+  <tr>
+    <#SubAttributeCell><#Font><nobr><#AccessTeamsLabel />:</nobr></#Font></#SubAttributeCell>
+    <#SubValueCell>
+       <#Font>
+         <#AccessTeamRep><#TeamDescription /></#AccessTeamRep>
+       </#Font>
+    </#SubValueCell>
+  </tr>
+
+
+
+  <tr>
+     <#SubAttributeCell><#Font><nobr><#PersonProjectAssociatesLabel />:</nobr></#Font></#SubAttributeCell>
+     <#SubValueCell>
+       <#Font>
+         <#PersonRep>
+           <#IsItemViewableCond>
+             <#IsPersonArchivedCondElse>
+               <#PersonFirstname />
+               <#PersonName />
+             </#IsPersonArchivedCondElse>
+             <#IsPersonArchivedCond>
+               <#ArchivedFont>
+                 <#PersonFirstname />
+                 <#PersonNameArchived />
+               </#ArchivedFont>
+             </#IsPersonArchivedCond>
+           </#IsItemViewableCond><#IsItemViewableCondElse>*</#IsItemViewableCondElse>
+         </#PersonRep>
+       </#Font>
+       &nbsp;
+     </#SubValueCell>
+  </tr>
+
+  <tr>
+     <#SubAttributeCell><#Font><nobr><#EnterpriseProjectAssociatesLabel />:</nobr></#Font></#SubAttributeCell>
+     <#SubValueCell>
+       <#Font>
+         <#EnterpriseRep>
+           <#IsItemViewableCond>
+             <#EnterpriseName />
+           </#IsItemViewableCond><#IsItemViewableCondElse>*</#IsItemViewableCondElse>
+         </#EnterpriseRep>
+       </#Font>&nbsp;
+     </#SubValueCell>
+  </tr>
+
+  <#PublicExtAttrRep>
+    <#CurrentAttr><#CurrentAttrValue/></#CurrentAttr>
+  </#PublicExtAttrRep>
+  <#PrivateExtAttrRep>
+    <#CurrentAttr><#CurrentAttrValue/></#CurrentAttr>
+  </#PrivateExtAttrRep>
+  <#ProjectCommentViewer />
+</table>

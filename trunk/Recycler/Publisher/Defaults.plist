@@ -1,0 +1,9 @@
+{ // $Id$
+  skypub_sites_batchsize          = 200;
+  skypub_sites_autoscrollsize     = 250;
+  skypub_sites_sortfield          = "name";
+  skypub_sites_cachetimeout       = 30; // seconds
+  
+  skypub_textedit_rows            = 20;
+  skypub_textedit_columns         = 80;
+}

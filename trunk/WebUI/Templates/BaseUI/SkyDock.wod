@@ -1,0 +1,156 @@
+// bind template to component class
+
+IsTextMode: WOConditional {
+  // tables, but no imgs
+  condition = isInTextMode;
+}
+IsNotTextMode: WOConditional {
+  // tables+imgs
+  condition = isInGfxMode;
+}
+IsTextModeBrowser: WOConditional {
+  // no tables, no imgs
+  condition = isTextModeBrowser;
+}
+
+DockEntries: WORepetition {
+  list      = pages;
+  index     = index;
+  separator = "";
+  item      = item;
+}
+TextDockEntries: WORepetition {
+  list      = pages;
+  index     = index;
+  separator = " | ";
+  item      = item;
+}
+
+DockLink: WOHyperlink {
+  directActionName = "dock";
+  ?page            = dockComponent;
+  ?cid             = context.contextID;
+  CLASS            = "skydockfont";
+}
+DockImage: WOImage {
+  filename = dockImageName;
+  ALT      = dockLabel;
+  BORDER   = 0;
+}
+DockLabel: WOString {
+  value    = dockLabel;
+}
+
+TextDockCell: WOGenericContainer {
+  elementName   = "td";
+  align         = "left";
+  valign        = "middle";
+  rowspan       = "2";
+  //  BGCOLOR       = config.colors_headerCell;
+}
+
+HasMiniView: WOConditional {
+  condition = hasDockMiniView;
+}
+LacksMiniView: WOConditional {
+  condition = hasDockMiniView;
+  negate    = YES;
+}
+
+MiniView: WOComponentReference {
+  component = dockMiniView;
+  hideLink  = disableLinks;
+}
+
+// prefs
+
+PrefsLabel: WOString {
+  value      = labels.preferences;
+  escapeHTML = NO;
+}
+
+// active page type
+
+ActivePageIsEditor: WOConditional {
+  condition = disableLinks;
+}
+ActivePageIsNotEditor: WOConditional {
+  condition = disableLinks;
+  negate    = YES;
+}
+
+Font: WOGenericContainer {
+  elementName = "font";
+  CLASS       = "skydockfont";
+}
+
+PrefsLink: WOHyperlink {
+  directActionName = "dock";
+  ?page            = "LSWPreferencesViewer";
+  ?cid             = context.contextID;
+  CLASS            = "skydockfont";
+}
+
+StaticDockEntries: WORepetition {
+  list      = pages;
+  //  index     = index;
+  identifier = Peferences;
+  item      = dockComponent
+  //count     = 1;
+}
+
+PrefsCond: WOConditional {
+  condition = Preferences;
+  negate    = YES;
+}
+
+DockedProjects: SkyDockedProjects {
+  isInTextMode = isInTextMode;
+}
+
+DockedProjectsCond: WOConditional {
+  condition = isProject;
+}
+
+HasMiniTextView: WOConditional {
+  condition = hasDockMiniTextView;
+}
+LacksMiniTextView: WOConditional {
+  condition = hasDockMiniTextView;
+  negate    = YES;
+}
+MiniTextView: WOComponentReference {
+  component = dockMiniTextView;
+  hideLink  = disableLinks;
+}
+Banner10Icon: WOImage {
+  filename         = "menu_logo_bottom.gif";
+  ALIGN            = "center";
+  VALIGN           = "middle";
+  BORDER           = 0;
+  ALT              = "";
+}
+MenuFont: WOGenericContainer {
+  elementName   = "font";
+  CLASS         = "skydockfont";
+}
+OGoLabel: WOString { value = labels.OGo; }
+
+BoxTRef: WOResourceURL { filename = "box_top.gif";    }
+BoxBRef: WOResourceURL { filename = "box_bottom.gif"; }
+BoxLRef: WOResourceURL { filename = "box_left.gif";   }
+BoxRRef: WOResourceURL { filename = "box_right.gif";  }
+
+LinePix:   WOImage { filename = "line_stretch.gif"; }
+LineLeft:  WOImage { filename = "line_left.gif";    }
+LineRight: WOImage { filename = "line_right.gif";   }
+BoxTL:     WOImage { filename = "box_topleft.gif";  }
+BoxTR:     WOImage { filename = "box_topright.gif"; }
+BoxBL:     WOImage { filename = "box_botleft.gif";  }
+BoxBR:     WOImage { filename = "box_botright.gif"; }
+BoxL:      WOImage { filename = "box_left.gif";     }
+BoxR:      WOImage { filename = "box_right.gif";    }
+BoxT:      WOImage { filename = "box_top.gif";      }
+BoxB:      WOImage { filename = "box_bottom.gif";   }
+
+ActiveUser: WOString { value = session.activeLogin; }

@@ -1,0 +1,217 @@
+// $Id: SkyPalmMemoList.wod,v 1.2 2003/07/22 14:54:32 martin Exp $
+
+// --------- table structure ----------
+
+MemoTableView: SkyTableView {
+  dataSource    = dataSource;
+  batchSize     = state.batchSize;
+  item          = record;
+  selections    = selections;
+  
+  sortedKey     = state.sortedKey;
+  isDescending  = state.isDescending;
+  autoScroll    = state.autoscrollSize;
+}
+TitleMode:  WETableViewTitleMode {};
+ButtonMode: WETableViewButtonMode {};
+FooterMode: WETableViewFooterMode {};
+
+// title
+MemoTableHeader: SkyPalmEntryListHeader {
+  type       = "memo";
+  dataSource = dataSource;
+}
+
+// buttons
+Content: WOComponentContent {}
+CategoryPopUp: SkyPalmCategoryPopUp {
+  selectedCategory = state.selectedCategory;
+  selectedDevice   = state.selectedDevice;
+  palmDataSource   = palmDataSource;
+  onChange         = "document.editform.submit(); return true";
+}
+Update: WOImageButton {
+  name     = "updateAction";
+  filename = "icon_view_all.gif";
+  ALT      = labels.action_select_category_device;
+  title    = labels.action_select_category_device;
+  action   = updateSelection;
+  BORDER   = 0;
+}
+FilterButtons: SkyButtonRow {
+  ordering = ( hidedeleted, unhidedeleted );
+
+  hasRefresh = YES;
+  onRefresh  = refresh;
+  refresh    = labels.action_refresh;
+
+  hasHidedeleted = canHideDeleted;
+  onHidedeleted  = hideDeleted;
+  hidedeleted    = labels.action_hidedeleted;
+
+  hasUnhidedeleted = canUnhideDeleted;
+  onUnhidedeleted  = unhideDeleted;
+  unhidedeleted    = labels.action_unhidedeleted;
+}
+
+IsInForm: WOConditional {
+  condition = context.isInForm;
+}
+
+//IsNotStandardVersion: WOConditional {
+//  condition = application.isProfessionalEdition.boolValue;
+//}
+
+DetachSkyrixEntry: WOImageButton {
+  filename = "icon_palm_detach_entry.gif";
+    
+  action   = selectionDetachSkyrixEntry;
+  name     = labels.action_detachSkyrixEntry;
+  ALT      = labels.action_detachSkyrixEntry;
+  title    = labels.action_detachSkyrixEntry;
+  BORDER   = 0;
+}
+
+Delete: WOImageButton {
+  filename = "icon_palm_delete_entry.gif";
+    
+  action   = selectionDelete;
+  name     = labels.action_delete;
+  ALT      = labels.action_delete;
+  title    = labels.action_delete;
+  BORDER   = 0;
+}
+
+Undelete: WOImageButton {
+  filename = "icon_palm_undelete_entry.gif";
+    
+  action   = selectionUndelete;
+  name     = labels.action_undelete;
+  ALT      = labels.action_undelete;
+  title    = labels.action_undelete;
+  BORDER   = 0;
+}
+
+MarkAsNew: WOImageButton {
+  filename = "icon_palm_new_entry.gif";
+    
+  action   = selectionMarkAsNew;
+  name     = labels.action_markAsNew;
+  ALT      = labels.action_markAsNew;
+  title    = labels.action_markAsNew;
+  BORDER   = 0;
+}
+
+SyncWithSkyrixEntry: WOImageButton {
+  filename = "icon_palm_sync_entry.gif";
+    
+  action   = selectionSyncWithSkyrixEntry;
+  name     = labels.action_syncWithSkyrixEntry;
+  ALT      = labels.action_syncWithSkyrixEntry;
+  title    = labels.action_syncWithSkyrixEntry;
+  BORDER   = 0;
+}
+
+CreateSkyrixEntry: WOImageButton {
+  filename = "icon_palm_palmoverskyrix.gif";
+
+  action   = selectionCreateSkyrixRecord;
+  name     = labels.action_createSkyrixRecords;
+  ALT      = labels.action_createSkyrixRecords;
+  title    = labels.action_createSkyrixRecords;
+  BORDER   = 0;
+}
+
+// switcher
+AttributeSwitcher: WESwitch {
+  selections = state.attributes;
+}
+MemoCase:           WECase { key = "attribute_memo";           };
+CategoryCase:       WECase { key = "attribute_categoryName";   };
+DeviceCase:         WECase { key = "attribute_deviceId";       };
+SyncCase:           WECase { key = "attribute_palmSync";       };
+SkyrixRecordCase:   WECase { key = "attribute_skyrixRecord";   };
+SkyrixSyncCase:     WECase { key = "attribute_skyrixSync";     };
+
+// table data
+MemoData: WETableData {
+  title   = labels.attribute_memo;
+  sortKey = "memo";
+}
+CategoryData: WETableData {
+  title   = labels.attribute_categoryName;
+  sortKey = "categoryName";
+}
+DeviceData: WETableData {
+  title   = labels.attribute_deviceId;
+  sortKey = "deviceId";
+}
+SyncData: WETableData {
+  title   = labels.attribute_palmSync;
+  sortKey = "syncState";
+}
+SkyrixRecordData: WETableData {
+  title   = labels.attribute_skyrixRecord;
+  sortKey = "skyrixId";
+}
+SkyrixSyncHeader: WETableHeader {
+  sortKey = "skyrixSyncState";
+}
+SkyrixSyncData: WETableData {}
+
+// link
+HasActionCond: WOConditional {
+  condition = hasNoAction;
+  negate    = YES;
+}
+HasActionCondElse: WOConditional {
+  condition = hasNoAction;
+}
+ViewMemo: WOHyperlink {
+  disabled = hasNoAction;
+  action   = viewAction;
+}
+ViewMemoDA: WOHyperlink {
+  href = viewDirectActionURL;
+}
+
+// values
+Memo:     SkyRichString { value = record.description;   };
+Category: SkyRichString { value = record.categoryName;  };
+Device:   SkyRichString { value = record.deviceId;      };
+Sync:     SkyRichString { value = labels.$syncState;    };
+
+// skyrix record
+HasSkyrixRecord: WOConditional {
+  condition = record.hasSkyrixRecord;
+}
+ViewSkyrixRecord: WOHyperlink {
+  action = viewSkyrixRecord;
+}
+SkyrixRecordIcon: SkyP4DocumentIcon {
+  documentPath = record.skyrixRecord.NSFilePath;
+  mimeType     = record.skyrixRecord.NSFileMimeType;
+}
+
+SkyrixRecord: SkyRichString {
+  value = record.skyrixRecord.NSFileName;
+}
+SkyrixSyncIcon: WOImage {
+  filename = "icon_palm_sync_entry.gif";
+  ALT      = labels.attribute_skyrixSync;
+  title    = labels.attribute_skyrixSync;
+  BORDER   = 0;
+}
+SkyrixSync:     SkyRichString { value = labels.$skyrixSyncStateShortKey;  }
+SkyrixSyncType: WOImage {
+  filename = skyrixSyncTypeIcon;
+  ALT      = skyrixSyncTypeString;
+  title    = skyrixSyncTypeString;
+  BORDER   = 0;
+}
+
+RecordsNotSynchroneCond: WOConditional {
+  condition = record.skyrixSyncState;
+  value     = 100;
+  negate    = YES;
+}

@@ -1,0 +1,19 @@
+// $Id: LSWMailTextRenderPage.wod 2 2004-08-20 11:37:44Z znek $
+
+Content: WOString {
+  value      = content;
+  escapeHTML = NO;
+}
+
+AttachmentRep: WORepetition {
+  list = attachments;
+  item = attachment;
+}
+
+Attachment: WOComponentReference {
+  component = currentAttachmentComponent;
+}
+
+AttachCond: WOConditional {
+  condition = attachCond;
+}

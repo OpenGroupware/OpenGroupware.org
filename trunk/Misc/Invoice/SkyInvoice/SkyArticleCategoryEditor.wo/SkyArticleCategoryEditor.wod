@@ -1,0 +1,46 @@
+// $Id: SkyArticleCategoryEditor.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.articleCategoryEditorWindowTitle;
+  onClose = cancel;
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+//Labels
+
+//Form
+
+Form: WOForm {
+  name    = "editor";
+};
+
+CategoryEditor: LSWObjectEditor {
+  object      = category;
+  labels      = labels;
+  attributes  = (
+        { key = "categoryName"; },
+        { key = "categoryAbbrev";   }
+  );
+}
+
+SaveSubmit: WOImageButton {
+        action           = save;
+        filename         = "save.gif";
+        name             = labels.saveButtonLabel;
+        ALT              = labels.saveButtonLabel;
+        BORDER           = 0;
+};
+
+CancelSubmit: WOHyperlink {
+        action           = cancel;
+        filename         = "cancel.gif";
+        ALT              = labels.cancelButtonLabel;
+        BORDER           = 0;
+};

@@ -1,0 +1,211 @@
+// $Id: SkyPalmAssignAddress.wod,v 1.2 2003/12/10 18:27:05 martin Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.SkyPalmAssignAddress;
+  onClose = cancel;
+}
+
+// default
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell {}
+
+Title: LSWViewerTitle {
+  title = labels.$titleKey;
+}
+
+// labels
+AddressTypeLabel: WOString {
+  value = labels.label_addressType;
+}
+AddressLabel: SkyRichString {
+  value = labels.label_skyrixAddress;
+}
+AddressesLabel: SkyRichString {
+  value = labels.label_skyrixAddresses;
+}
+SyncTypeLabel: WOString {
+  value = labels.attribute_skyrixSyncType;
+}
+SearchAddressLabel: WOString {
+  value = labels.action_searchAddress;
+}
+PalmOverSkyLabel: SkyRichString {
+  value = labels.sync_type_2;
+}
+SkyOverPalmLabel: SkyRichString {
+  value = labels.sync_type_1;
+}
+PalmAddressLabel: WOString {
+  value = labels.label_palmAddress;
+}
+PalmAddressesLabel: SkyRichString {
+  value = labels.label_palmAddresses;
+}
+
+// conditionals
+SelectTypeCond: WOConditional {
+  condition = selectTypeCond;
+}
+SelectTypeCondElse: WOConditional {
+  condition = selectTypeCond;
+  negate    = YES;
+}
+
+HasAddressCond: WOConditional {
+  condition = hasAddress;
+}
+HasAddressOrAddressesCond: WOConditional {
+  condition = hasAddressOrAddresses;
+}
+HasAddressCondElse: WOConditional {
+  condition = hasAddress;
+  negate    = YES;
+}
+HasAddressesCond: WOConditional {
+  condition = hasAddresses;
+}
+HasAddressesCondElse: WOConditional {
+  condition = hasAddresses;
+  negate    = YES;
+}
+
+CreateNewAddressCond: WOConditional {
+  condition = createNewRecord;
+}
+CreateNewAddressCondElse: WOConditional {
+  condition = createNewRecord;
+  negate    = YES;
+}
+NewFromAddressCond: WOConditional {
+  condition = createFromRecord;
+}
+AssignAddressCond: WOConditional {
+  condition = assignToRecord;
+}
+
+HasSearchResults: WOConditional {
+  condition = hasSearchResult;
+}
+HasSinglePalmAddress: WOConditional {
+  condition = hasSinglePalmDoc;
+}
+
+// values
+ChangeAddress: WOHyperlink {
+  action = changeAddress;
+  TITLE  = labels.action_changeAddress;
+}
+ChangeAddresses: WOHyperlink {
+  action = changeAddresses;
+  TITLE  = labels.action_changeAddresses;
+}
+AddressType: SkyRichString {
+  value = labels.$addressType;
+}
+Address: SkyRichString {
+  value = address.name;
+}
+ResultList: SkyPalmCompanyListing {
+  list        = addresses;
+  item        = item;
+  selectItem  = selectAddress;
+  
+  companyType = addressType;
+}
+PalmAddress: SkyRichString {
+  value = doc.description;
+}
+
+// reps
+PalmRecRep: WORepetition {
+  list  = palmRecords;
+  item  = item;
+}
+SkyrixRecRep: WORepetition {
+  list  = skyrixRecords;
+  item  = item;
+}
+
+
+// form
+Form: WOForm {
+  name   = "editform";
+  action = searchAddresses;
+}
+
+SelectAddressType: WOPopUpButton {
+  list            = ( "person", "enterprise" );
+  item            = item;
+  singleSelection = YES;
+  selection       = addressType;
+  string          = labels.$item;
+  onChange        = "document.editform.submit(); return true";
+}
+NameField: WOTextField {
+  value = searchString;
+  size  = 40;
+}
+ItemDescription: SkyRichString {
+  value = item.description;
+}
+ItemAddress: SkyRichString {
+  value = item.name;
+}
+
+SyncType: WOPopUpButton {
+  list            = ( 0, 1, 2, 3 );
+  //  list            = ( 0, 1 );
+  item            = item;
+  singleSelection = YES;
+  selection       = syncType;
+  string          = labels.$syncTypeKey;
+}
+
+DeviceAttr: SkyAttribute {
+  label = labels.attribute_deviceId;
+}
+Device: WOPopUpButton {
+  list            = devices;
+  item            = item;
+  selection       = deviceId;
+  singleSelection = YES;
+}
+
+SearchField: WOTextField {
+  value = searchString;
+  size  = 40;
+}
+SearchAddresses: WOImageButton {
+  action   = searchAddresses;
+  filename = "search.gif";
+  name     = labels.action_searchAddress;
+  ALT      = labels.action_searchAddress;
+  title    = labels.action_searchAddress;
+  BORDER   = 0;
+}
+
+Save: WOImageButton {
+  action   = save;
+  filename = "save.gif";
+  name     = labels.action_save;
+  ALT      = labels.action_save;
+  title    = labels.action_save;
+  BORDER   = 0;
+}
+SaveDisabled: WOImage {
+  filename = "save_inactive.gif";
+  ALT      = labels.action_save;
+  title    = labels.action_save;
+  BORDER   = 0;
+}
+
+Cancel: WOImageButton {
+  action   = cancel;
+  filename = "cancel.gif";
+  name     = labels.cancelButtonLabel;
+  ALT      = labels.cancelButtonLabel;
+  title    = labels.cancelButtonLabel;
+  BORDER   = 0;
+}

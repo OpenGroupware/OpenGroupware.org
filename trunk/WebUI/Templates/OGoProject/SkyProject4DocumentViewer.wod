@@ -1,0 +1,145 @@
+// bind template to controller class
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = label;
+  onClose = closeWindow;
+  hasTest = isTestMode;
+  onTest  = disableTest;
+}
+
+Buttons: SkyButtonRow {
+  oid         = documentId;
+  ordering    = ( editasnew, delete, rename,
+                  checkout, reject, release, 
+                  lock, unlock, mail,
+                  upload, edit, test, refresh, unzip, saveas);
+  
+  /* default buttons */
+  onClip      = placeInClipboard;
+  onEdit      = edit;
+  onMail      = mailObject;
+  onDelete    = deleteDocument;
+  onRename    = renameDocument;
+  onTest      = testDocument;
+  
+  onEditasnew = editAsNew;
+  onCheckout  = checkoutDocument;
+  onReject    = rejectDocument;
+  onRelease   = releaseDocument;
+  onLock      = lockDocument;
+  onUnlock    = unlockDocument;
+  onUpload    = upload;
+  onRefresh   = refresh;
+  onUnzip     = unzipDocument;
+  onSaveas    = saveAs;
+
+  urlMail     = objectUrl;
+
+  hasMail     = hasMail;
+  hasClip     = hasClip;
+  hasEditAsNew= hasEditAsNew;
+  hasTest     = canTestDocument;
+  hasCheckout = hasCheckout;
+  hasReject   = hasReject;
+  hasRelease  = hasRelease;
+  hasLock     = hasLock;
+  hasUnlock   = hasUnlock;
+  hasUpload   = hasUpload;
+  hasEdit     = hasTypeEdit;
+  hasDelete   = hasDelete;
+  hasRename   = hasRename;
+  hasUnzip    = hasUnzip;
+  hasSaveAs   = hasSaveAs;
+  
+  /* labels */
+  checkout    = labels.checkout;
+  reject      = labels.reject;
+  release     = labels.release;
+  lock        = labels.lock;
+  unlock      = labels.unlock;
+  upload      = labels.upload;
+  edit        = labels.edit;
+  delete      = labels.delete;
+  rename      = labels.rename;
+  mail        = labels.send;
+  editasnew   = labels.editAsNew;
+  test        = labels.test;
+  refresh     = labels.refresh;
+  unzip       = labels.unzip;
+  saveas      = labels.saveAs;
+}
+
+/* standard viewer */
+
+MainButtonRow: WOGenericContainer {
+  elementName = "tr";
+  BGCOLOR     = config.colors_mainButtonRow;
+}
+
+DocIcon: SkyP4DocumentIcon {
+  projectName  = fileSystemInfo.NSFileSystemName;
+  documentPath = _documentPath;
+  mimeType     = documentAttributes.NSFileMimeType;
+}
+
+DocPath: SkyP4DocumentPath {
+  fileManager = fileManager;
+  documentId  = documentId;
+  currentPath = folderPath;
+  document    = document;
+  action      = folderClicked;
+}
+
+TitleFont: SkyConfigFont {}
+
+TabView: SkyTabView {
+  selection = session.userDefaults.skyp4_documentviewer_tab;
+}
+
+/* locking */
+
+IfLocked: WOConditional {
+  condition = isDocumentLocked;
+}
+LockUser: SkyRichString {
+  color = "red";
+  value = documentAttributes.NSFileOwnerAccountName;
+}
+
+LockedBy: WOString {
+  value = labels.lockedLabel;
+}
+
+/* content */
+
+DownloadLink: SkyP4DownloadLink {
+  projectId    = fileSystemInfo.NSFileSystemNumber;
+  documentPath = _documentPath;
+  versionTag   = versionToView;
+}
+
+/* dynamic tabs */
+
+ActiveTabKeys: WORepetition {
+  list = tabKeys;
+  item = activeTabKey;
+}
+
+ShowActiveTabKey: WOConditional {
+  condition = showActiveTabKey;
+}
+
+ActiveTabComponent: WOComponentReference {
+  component        = componentForActiveTab;
+  fileManager      = fileManager;
+  document         = document;
+  documentGlobalID = documentGlobalID;
+  documentPath     = documentPath;
+}
+
+ActiveTab: SkySimpleTabItem {
+  key   = activeTabKey;
+  label = labels.$activeTabKey;
+}

@@ -1,0 +1,7 @@
+# TODO list
+
+- check whether SkyMailList is still used somewhere!
+
+- LSWMailRenderPage
+  - check config key for calformat
+  - use a formatter for sender string creation

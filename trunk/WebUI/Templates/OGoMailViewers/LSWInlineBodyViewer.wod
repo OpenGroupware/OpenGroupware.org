@@ -1,0 +1,40 @@
+// $Id: LSWInlineBodyViewer.wod 2 2004-08-20 11:37:44Z znek $
+
+EmbeddedObject: WOEmbeddedObject {
+  data     = data;
+  TYPE     = mimeType;
+  WIDTH    = "100%";
+  HEIGHT   = "400";
+};
+
+ViewEmbeddedObject: WOConditional {
+  condition = showInline;
+}
+
+ActionUrl: WOActionURL {
+  directActionName = downloadPartActionName;
+  actionClass      = "SkyImapDownloadAction";
+  ?url             = url;
+  ?mimeType        = mimeTypeString;
+  ?encoding        = encoding;
+  target           = documentAttachmentTarget;
+  BORDER   = 0;
+}
+
+HasUrlBody:     WOConditional { condition = hasUrl; }
+HasUrlBodyElse: WOConditional { condition = hasUrl; negate = YES; }
+
+MimeTyp: WOString { value = mimeType; }
+
+IFrame: WOIFrame {
+  value    = mimeContent;
+  filename = fileName;
+  WIDTH    = width;
+  HEIGHT   = height;
+}
+
+IFrameHeight: WOString { value = height; }
+IFrameWidth:  WOString { value = width;  }
+
+UseIFrame:     WOConditional { condition = useIFrame; }
+DontUseIFrame: WOConditional { condition = useIFrame; negate = YES; }

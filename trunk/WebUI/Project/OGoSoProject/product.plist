@@ -1,0 +1,68 @@
+{
+  requires = ( MAIN );
+  
+  publicResources = (
+  );
+  
+  factories = {
+  };
+  
+  classes = {
+    OGoSoProjects = {
+      protectedBy   = "View";
+      defaultAccess = "allow";
+      defaultRoles  = {
+        "View" = "Authenticated";
+      };
+
+      methods = { /* mapping to a page does not work with SOPE 4.4 */
+      };
+    };
+    
+    OGoSoIdObject = {
+      protectedBy   = "View";
+      defaultAccess = "allow";
+      defaultRoles  = {
+        "View" = "Authenticated";
+      };
+      methods = { /* mapping to a page does not work with SOPE 4.4 */
+      };
+    };
+    
+    OGoSoProject = {
+      superclass    = "OGoSoIdObject";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+      defaultRoles  = {
+        "View" = "Authenticated";
+      };
+      methods = { /* mapping to a page does not work with SOPE 4.4 */
+        "view" = {
+           selector = "defaultAction:";
+        };
+      };
+    };
+    
+    OGoSoDocFolder = {
+      superclass    = "NSObject";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+      defaultRoles  = {
+        "View" = "Authenticated";
+      };
+      methods = { /* mapping to a page does not work with SOPE 4.4 */
+      };
+    };
+  };
+
+  categories = {
+    OpenGroupware = {
+      slots = { /* register the root slot at the app object */
+        projects = {
+          protectedBy = "<public>";
+          valueClass  = OGoSoProjects;
+        };
+      };
+    };
+  };
+}

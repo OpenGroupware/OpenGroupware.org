@@ -1,0 +1,20 @@
+// $Id$
+
+{
+    "objectinfo.listObjectLog" = {
+      ( array, string ) = "objectLogAction:";
+    };
+    "objectinfo.addObjectLogEntry" = {
+      ( boolean, string, string, string ) = "addObjectLogAction:::";
+      ( boolean, string, string )         = "addObjectLogAction:::";
+    };
+    "objectinfo.removeObjectLogs" = {
+      ( boolean, string ) = "removeObjectLogAction:";
+    };
+    "objectinfo.getEntityForPrimaryKey" = {
+      ( string, int ) = "getEntityForPrimaryKeyAction:";
+    };
+    "objectinfo.getEntitiesForPrimaryKeys" = {
+      ( array, array ) = "getEntitiesForPrimaryKeysAction:";
+    };
+}

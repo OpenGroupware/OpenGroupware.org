@@ -1,0 +1,6 @@
+{
+  __OGoLDAPClientUI_CVS_ID__ = "$Id$";
+  
+  LdapViewer_Host = "ldap.skyrix.com";
+  LdapViewer_Base = "dc=skyrix,dc=com";
+}

@@ -1,0 +1,117 @@
+Viewer Lookup
+=============
+
+Inline viewers are handled by the SkyProject4BLOBViewer component which is a
+shell for additional, embedded viewers.
+
+To lookup an embedded viewer, the component uses an NGBundleManager query with
+the document MIME-type on the 'docview-inline' verb. If no component was found,
+the 'mailview' verb is tried (which uses the components intended for the web
+mailer).
+If all this fails, the BLOB viewer finally checks whether the content is plain
+text content and tries to find a plaintext viewer.
+
+Some products which provide docview inline viewers:
+  OGoDocInlineViewers
+  OGoProjectZip
+Products which provide mailview inline viewers:
+  PersonsUI, EnterprisesUI
+  JobUI
+  LSWProject
+  LSWMail, OGoWebMail, OGoMailViewers
+  LSWScheduler
+Note that most of the mail viewers are for displaying eo-pkey MIME types 
+(referred objects) which do not occure in project documents.
+
+After activation docview inline viewers get the following information set via
+KVC (if available):
+  'filename'    - the path to the document (relative to the filemanager)
+  'fileManager' - the NSFileManager object providing access to the file
+  'uri'         - a URL to retrieve the BLOB of the document
+If mail viewers are used for displaying document content, this information is
+not passed to the viewer.
+
+
+Configurable Desktop Tabs
+=========================
+
+Desktop tabs are configurable using the 'skyp4_desktop_tabs' default, see the
+Defaults.plist. Eg to display all projects of kind 'ABC' in a new tab, but NOT
+in common, use this:
+---snip---
+  (
+    { key = ppublic;   labelKey = common;   
+      qualifier = "type='common' AND NOT kind='ABC'";   },
+    { key = pprivate;  labelKey = private;  qualifier = "type='private'";  },
+    { key = parchived; labelKey = archived; qualifier = "type='archived'"; },
+
+    { key = ABC; labelKey = ABC; 
+      qualifier = "kind='ABC'"; },
+  )
+---snap---
+
+
+DocViewer Rules
+===============
+
+The document viewer looks up the available tabs using the NGBundleManager. From
+that set of tabs you can select those which are to be displayed for a given
+file using NGRule's.
+
+For example to show only the tab with the content for text documents, you can
+use:
+  Defaults write ogo-webui-1.0a OGoDocViewerRules \
+    '( "document.NSFileName.pathExtension = \"txt\" => tabkeys = (contents)" )'
+
+
+Special Form-Files
+==================
+
+NOTE: forms are removed in OGo 1.0a
+
+All forms are reloaded when you press the button 'refresh'
+
+ProjectViewer
+  
+  /project.sfm
+    Parameter: 
+      fileManager
+      preview
+  
+  /.project_head.sfm
+  /.project_tail.sfm
+    Parameter: 
+      fileManager
+      formDocument
+      preview
+      dataSource
+      folderPath
+
+  .index.sfm in Foldern
+    Parameter: 
+      fileManager
+      formDocument
+      preview
+      document
+      dataSource
+      folderPath
+
+DocumentViewer
+
+  /.doc_content.sfm
+  /.doc_attrs.sfm
+  /.doc_versions.sfm
+    Parameter:
+      fileManager
+      formDocument
+      preview
+      document
+
+DocumentEditor
+
+  /.doc_editor.sfm
+    Parameter:
+      fileManager
+      formDocument
+      preview
+      document

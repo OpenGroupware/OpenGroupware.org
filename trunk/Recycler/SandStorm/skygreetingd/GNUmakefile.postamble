@@ -1,0 +1,9 @@
+# $Id$
+
+after-install ::
+	$(MKDIRS) $(TEMPLATE_INSTALL_DIR)/ $(INSTANCE_INSTALL_DIR)
+	cp skygreetingd.xml $(TEMPLATE_INSTALL_DIR)/
+	cp iGreeting.xml    $(INSTANCE_INSTALL_DIR)/
+
+after-all ::
+	(cd SkyGreetingCard.rpcd ; $(LN_S) -f ../Cards .)

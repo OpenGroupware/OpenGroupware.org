@@ -1,0 +1,142 @@
+// $Id: %
+
+// conditions
+
+IsLicensedCond: SkyLicenseConditional {
+  modules  = ( Scheduler,Scheduler2 );
+  ormode   = YES;
+}
+IsProjectLicensedCond: SkyLicenseConditional {
+  modules = ( Project );
+  showInfo = NO;
+}
+IsAbsenceCond : WOConditional {
+  condition = appointment.isAbsence.boolValue;
+};
+IsCyclicCond: WOConditional {
+  condition = isCyclic;
+};
+IsOwnerArchivedCondElse : WOConditional {
+  condition = isOwnerArchived;
+  negate    = YES;
+}
+IsOwnerArchivedCond : WOConditional {
+  condition = isOwnerArchived;  
+}
+IsLogTabEnabled: WOConditional {
+  condition = isLogTabEnabled;
+}
+
+// content
+AptTitle: WOString {
+  value = aptTitle;
+}
+
+ViewerTitle: LSWViewerTitle {
+  title     = aptTitle;
+}
+
+// Attributes
+TitleAttr: SkyAttribute {
+  label      = labels.title;
+  string     = appointment.title;
+}
+LocationAttr: SkyAttribute {
+  label      = labels.location;
+  string     = appointment.location;
+}
+StartTimeAttr: SkySubAttribute {
+  label      = labels.startTime;
+  string     = startDate;
+}
+EndTimeAttr: SkySubAttribute {
+  label  = labels.endTime;
+  string = endDate;
+}
+
+NotificationTimeAttr: SkySubAttribute {
+  label  = labels.notificationTime;
+  string = notificationTime;
+}
+
+CreatorAttr: SkySubAttribute {
+  label  = labels.creator;
+  string = appointment.owner.login;
+}
+ArchivedCreatorAttr: SkySubAttribute {
+  label  = labels.creator;
+  string = appointment.owner.login;
+  valueFontColor = "colors_deleted_object";
+}
+
+ReadPermissionAttr: SkySubAttribute {
+  label     = labels.accessTeamLabel;
+}
+AccessTeam: WOString {
+  value     = accessTeamLabel;
+  nilString = labels.private;
+}
+
+CommentAttr: SkySubAttribute {
+  label      = labels.comment;
+}
+Comment: WOString {
+  value      = appointment.comment;
+  insertBR   = YES;
+  nilString  = "";
+}
+
+IgnoreConflictsAttr: SkySubAttribute {
+  label      = labels.ignoreConflictsLabel;
+  string     = ignoreConflicts;
+}
+ObjectVersionAttr: SkySubAttribute {
+  label      = labels.objectVersionLabel;
+  string     = appointment.objectVersion;
+}
+
+CycleAttr: SkySubAttribute {
+  label      = labels.cycle;
+}
+Cycle: WOString {
+  value      = cycleType;
+  escapeHTML = NO;
+}
+UntilLabel: WOString {
+  value     = labels.until;
+}
+CycleEndDateString: WOString {
+  value     = cycleEndDateString;
+}
+
+
+ResourceAttr: SkySubAttribute {
+  label      = labels.resource;
+  string     = appointment.resourceNames;
+}
+AptTypeAttr: SkySubAttribute {
+  label  = labels.attribute_aptType;
+  string = aptTypeLabel;
+}
+WriteAccessAttr: SkySubAttribute {
+  label      = labels.writeAccess;
+  string     = writeAccessList;
+}
+AbsenceAttr: SkySubAttribute {
+  label      = labels.absence;
+  string     = appointment.absence;
+}
+
+
+// lists
+Notes: SkyNoteList {
+  title       = appointment.title;
+  appointment = appointment;
+}
+ParticipantsList: SkyAptParticipantsList {
+  appointment = appointment;
+  printMode   = YES;
+}
+LogList: SkyObjectLogList {
+  object = appointment;
+}

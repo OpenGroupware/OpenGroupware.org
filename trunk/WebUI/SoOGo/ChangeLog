@@ -1,0 +1,9 @@
+2004-09-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: fixed principal class (v5.1.2)
+
+2004-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* moved in product.plist from main executable
+
+	* started SoOGo product bundle

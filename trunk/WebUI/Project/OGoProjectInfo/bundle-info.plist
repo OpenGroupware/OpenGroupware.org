@@ -1,0 +1,21 @@
+{
+  bundleHandler = SkyP4InfoModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    classes = (
+      { name = LSWModuleManager; exact-version = 2; },
+    );
+  };
+
+  provides = {
+    classes = (
+      { name = SkyP4InfoModule;           },
+      { name = SkyDockedProjects;         },
+    );
+    WOComponents = (
+      { name = SkyDockedProjects;         },
+    );
+  };
+}

@@ -1,0 +1,44 @@
+// $Id$
+
+{
+  /* sandstorm API */
+ 
+  setComponent = {
+    ( bool, string, string, string, string ) 
+      = "setComponentAction::::::";
+    ( bool, string, string, string, string, int ) 
+      = "setComponentAction::::::";
+    ( bool, string, string, string, string, int, string ) 
+      = "setComponentAction::::::";
+  };
+
+  removeComponent = { 
+    ( bool, string ) = "removeComponentAction:"; 
+  };
+
+  getComponents = { 
+    ( array ) = "getComponentsAction";    
+  };
+  
+  getComponent = { 
+    ( struct, string ) = "getComponentAction:";    
+  };
+
+  getComponentAndNamespace  = { 
+    ( struct, string ) = "getComponentAndNamespaceAction:";    
+  };
+  
+  /* introspection */
+
+  listComponentMethods = { 
+    ( array, string ) = "listComponentMethodsAction:";  
+  };
+
+  componentMethodSignatures = {
+    ( array, string, string ) = "listMethodSignaturesAction::";  
+  };
+
+  componentMethodHelp = {
+    ( string, string, string ) = "listMethodHelpAction::";  
+  };
+}

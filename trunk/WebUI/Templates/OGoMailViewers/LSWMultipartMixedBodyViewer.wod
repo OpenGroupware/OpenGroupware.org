@@ -1,0 +1,18 @@
+// $Id: LSWMultipartMixedBodyViewer.wod 2 2004-08-20 11:37:44Z znek $
+
+PartRepetition: WORepetition {
+  list      = parts;
+  item      = currentPart;
+  separator = "<hr size='1' />";
+}
+
+PartViewer: WOComponentReference {
+  component    = currentPartViewerComponent;
+  part         = currentPart;
+  nestingDepth = nextNestingDepth;
+  printMode    = printMode;
+}
+
+HasDepth: WOConditional {
+  condition = nestingDepth;
+}

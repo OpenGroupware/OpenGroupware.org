@@ -1,0 +1,126 @@
+2004-04-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* updated for OGo environment (v5.0.2)
+
+Tue Oct 15 14:11:56 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* INTERFACE.xml: updated for new test database
+	
+	* JobPool.m: fixed wrong return value, fixed broken format string
+
+Mon Oct  7 11:08:35 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* GNUmakefile: added check if skyjobd instance file already
+	  exists
+
+Wed Sep 25 12:09:40 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* Job.m: removed debug output, fixed updateJob method
+	* JobPool.m: fixed broken deleteJob method, some code
+	  cleanups
+
+Tue Sep 24 11:26:24 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* INTERFACE.xml: changed job id's to ones which are valid
+	  for the test database (needed for unit testing)
+
+	* SkyJobAction.m: fixed broken createJob caused by a wrong
+	  command, some fixes still to do which require
+	  addional methods in JobPool/Job classes
+
+Thu Sep 19 17:02:35 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* nearly complete rewrite of the daemon, splitting it up in
+	  several classes, introduction of 'pools' to handle job
+	  functions and many more...
+
+Mon Aug 19 14:44:57 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyJobAction.m: fixed bug when executant ID was an empty string
+
+Tue Aug 13 15:58:50 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyJobAction.m: register the interface for the namespace "jobs"
+
+Tue Aug  6 16:49:32 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyJobAction.m: set userIsExecutant if executant is a team
+	  and user is in that team (Bug # 558)
+	* added used commands from LSProject bundle
+
+	* SkyJobAction.m: fixed broken team job fetching (Bug # 547)
+
+Fri Aug  2 11:32:08 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyJobAction.m: fixed missing executant in joblist (Bug # 548)
+
+Tue Jul 23 10:43:17 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyJobAction.m: query functions API changed, cause
+	  SkyPersonJobDataSource needed some additional functionality
+
+Fri Jul 19 15:05:02 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* INTERFACE.xml: added some more documentation
+	* SkyJobAction.m: added reactiveJob method, added notify creator
+	  setting
+
+Thu Jul 18 18:43:54 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyJobAction.m: added method to list todo jobs in a given time
+	  range, various fixes and cleanups
+
+Wed Jul 17 23:52:03 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyJobAction.m: fixed invalid executant ID when createJob was
+	  called with only the title parameter, executant ID can now be
+    either a company ID, a SKYRiX URL or a login
+
+Mon Jul 15 18:09:26 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyJobAction.m: added support for project jobs
+
+Tue Jul  9 17:16:04 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyJobAction.m: fixed broken getDelegatedJobs,
+	  speed optimization
+
+Mon Jul  8 14:19:35 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyJobAction.m: corrected team job handling
+
+Thu Jul  4 17:15:08 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyJobActionMap.plist: fixed syntax error
+
+2002-07-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyJobActionMap.plist: added additional signature mappings for
+	  createJob
+
+Tue Jul  2 17:37:11 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyJobAction.m: fixed auth failed exception problems
+
+	* SkyJobAction.m: introspection methods don't require
+	  authorization anymore
+
+Tue Jun 18 16:35:43 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyJobAction.m: fixed userIsCreator/userIsExecutant
+	  handling
+
+Thu May 30 17:01:31 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* SkyJobAction.m: fixed createJobAction when no project
+	  was set
+
+Tue May 21 18:25:28 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* moved namespace registration to SDApplication, removed
+	  SkyJobApplication class, added some more methods
+
+Mon Jan 28 16:55:06 2002  Helge Hess  <helge.hess@skyrix.com>
+
+	* created ChangeLog
+

@@ -1,0 +1,36 @@
+// $Id: LSWTextPlainBodyViewer.wod 2 2004-08-20 11:37:44Z znek $
+
+ContentRep : WORepetition {
+  list = contentString;
+  item = item;
+}
+
+IsText: WOConditional {
+  condition = item.kind;
+  value     = "text";
+}
+Text : WOString {
+  value = item.value;
+}
+
+IsLink: WOConditional {
+  condition = item.kind;
+  value     = "url";
+}
+Link: SkyExternalLink {
+  string = item.value;
+  href   = item.value;
+  target = "link";
+}
+
+IsActionLink: WOConditional {
+  condition = isActionLink;
+}
+IsActionLinkElse: WOConditional {
+  condition = isActionLink;
+  negate    = YES;
+}
+ActionLink : WOHyperlink {
+  action = sendMail;
+  string = item.value;
+}

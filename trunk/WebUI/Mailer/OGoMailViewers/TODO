@@ -1,0 +1,11 @@
+# $Id$
+
+TODOs for OGoMailViewers
+========================
+
+- remove the component.cfg!
+
+- convert to .wox templates
+  - not too easy, as several elements use inline-URLs
+
+- fix weird use of "config.labels.attributeCell" in LSWMimeMessageViewer

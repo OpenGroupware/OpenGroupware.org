@@ -1,0 +1,349 @@
+2005-02-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* Actions.subproj/DirectAction+Project.m:
+	  - allow a non-array argument for project.fileAttributesAtDirectory 
+	    and project.attr functions (will create a single item array)
+	  - improved faults,
+	  - added various functions to access versioning information:
+	    project.checkoutFileAtPath, project.releaseFileAtPath,
+	    project.rejectFileAtPath, project.getVersionsAtPath,
+	    project.getLastVersionAtPath
+	  - added a method to retrieve the file content as an NSData object:
+	    project.getFileContent (also supports versioning)
+	  (v5.1.58)
+
+2005-02-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* XmlRpcCoding.subproj/SkyPersonDocument+XmlRpcCoding.m: avoid
+	  duplicate generation of 'keywords' field (should fix OGo bug #1162)
+	  (v5.1.57)
+
+2005-01-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* EOControl+XmlRpcDirectAction.m, 
+	  Actions.subproj/DirectAction+Account.m: minor code cleanups (v5.1.56)
+
+2005-01-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* XmlRpcCoding.subproj/SkyEnterpriseDocument+XmlRpcCoding.m: removed
+	  generation of 'keywords' field (already done by the superclass),
+	  should remove OGo bug #1152 (v5.1.55)
+
+2005-01-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed makefiles for project relocation (v5.1.54)
+
+2004-12-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.53
+	
+	* Documentation/README.appointment: fixed doc for SetParticipants
+	  (requires an array of URLs, not an array of part documents)
+	
+	* Actions.subproj/DirectAction+Appointment.m: improved error handling
+	  for invalid participant parameters
+
+	* v5.1.52
+
+	* Actions.subproj/DirectAction.m: code cleanups, improved handling of
+	  invalid ids
+
+	* Actions.subproj/DirectAction+Appointment.m: fixed a small memory
+	  leak, returns faultcode 404 if the appointment for 'getById' could
+	  not be found
+
+2004-12-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Person.m: copy 'isPrivate' value from
+	  dictionary to document (v5.1.51)
+
+2004-12-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Project.m: project.exists and
+	  project.isdir now accept non-array path parameter (v5.1.50)
+
+2004-09-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* fhs.make: install daemon into $FHS_ROOT/sbin (v5.1.49)
+
+2004-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* XmlRpcCoding.subproj/SkyDocument+XmlRpcCoding.[hm]: added proper
+	  header include protection, made category name unique (fixes a
+	  warning on MacOSX) (v5.1.48)
+
+2004-09-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: renamed executable to ogo-xmlrpcd-1.0a as requested by 
+	  sley (v5.1.47)
+
+2004-09-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* xmlrpcd.m: prepared to use defaults in /etc/ (v5.1.46)
+
+	* XmlRpcApplication.m: added a default port (22000) so that we don't
+	  clash without configuration (v5.1.45)
+
+2004-09-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Mails.m: minor code cleanups, fixed a
+	  warning on MacOSX (v5.1.44)
+
+2004-09-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* get versioned daemon name from Version file (v5.1.43)
+
+2004-09-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: renamed xmlrpcd binary to ogo-xmlrpcd-51 to allow multi
+	  version packaging (v5.1.42)
+
+2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* Actions.subproj/DirectAction+Person.m: fixed an out of bounds
+	  exception (v5.1.41)
+
+	* GNUmakefile: added FHS installation of xmlrpcd (v5.1.40)
+
+2004-09-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Application.m: override WOHttpTransactionUseSimpleParser default and
+	  always use the simple parser (v5.1.39)
+
+	* XmlRpcCoding.subproj/SkyPersonDocument+XmlRpcCoding.m: removed
+	  duplicate generation of 'firstname', should fix OGo bug #911
+	  (v5.1.38)
+
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* updated common.h files for new LSFoundation header files location
+	  (v5.1.37)
+
+2004-09-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Defaults.m: use the login user's
+	  defaults object instead of the system one (allows you to retrieve
+	  configurations of the user, not just the NSGlobalDomain defaults)
+	  (v5.1.36)
+
+2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.35)
+
+2004-08-25  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble (xmlrpcd_TOOL_LIBS): removed dependency on
+	  NGScripting (v5.1.34)
+
+2004-08-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: link against libNGXmlRpc in SOPE 4.3 (v5.1.33)
+
+	* Actions.subproj/DirectAction+Job.m(jobs.deleteJob): fixed an issue 
+	  with the ID not being a string object (v5.1.32)
+
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.31
+	
+	* fixes for inline compilation
+	
+	* Actions.subproj, XmlRpcCoding.subproj: added GNUmakefile.preamble
+
+2004-08-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Job.m: added new action "jobs.deleteJob"
+	  to delete tasks. The old actions "person.deleteJob" and 
+	  "project.deleteJob" did not work before (because delete wasn't
+	  implemented in the datasource) and are now implemented using the new
+	  method (v5.0.30)
+
+2004-07-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble (xmlrpcd_TOOL_LIBS): added missing library
+	  dependencies for MacOSX (v5.0.29)
+
+2004-07-28  Frank Reppin  <frank@opengroupware.org>
+
+	* Session.m: replaced deprecated SkyFileManagerFactory with
+	  OGoFileManagerFactory (v5.0.28)
+
+2004-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Project.m: added support for newDocument
+	  with filesystem projects, should fix OGo bug #683 (v5.0.27)
+
+2004-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Job.m: code cleanups, major fixes in
+	  error processing, which was quite broken, fixed a bug in task 
+	  document creation (used wrong datasource) (v5.0.26)
+
+	* Actions.subproj/DirectAction+Generic.m: code cleanups, allow a string
+	  as the 'objects' parameter in 
+	  access.operationAllowedOnObjectsForAccess (contents will be split
+	  by ',') (v5.0.25)
+
+2004-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Enterprise.m: minor cleanups (v5.0.24)
+
+2004-04-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* Actions.subproj/DirectAction+Person.m: print a log if fullsearch
+	  limit-marker is set in context, person.fullsearchIds can now issue
+	  AND fulltext searches (v5.0.23)
+
+2004-04-23  Helge Hess  <helge.hess@skyrix.com>
+	
+	* v5.0.22
+	
+	* Actions.subproj/DirectAction+Person.m: added new method
+	  'fullsearchIds(txt[,limit])' for doing a fulltext search (a search 
+	  in all fields). The method returns the objects primary keys
+
+	* Actions.subproj/DirectAction+Person.m: major improvements to error
+	  handling which now returns more descriptive faults instead of a NO 
+	  boolean
+
+2004-04-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Project.m: improved processing of
+	  invalid project-ids in method invocations, improved handling of
+	  content passed into saveDocument and newDocument (v5.0.21)
+
+2004-04-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.20
+
+	* Actions.subproj/SkyAppointmentQualifier+XmlRpc.m: updated for
+	  plist coding API
+
+	* Actions.subproj/DirectAction+Project.m: minor code cleanups
+
+2004-03-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* Actions.subproj/DirectAction+Project.m: subminor code cleanups
+
+2004-03-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* Actions.subproj/DirectAction+Project.m: fixed mapping of XML-RPC
+	  record attributes to SkyProjectDocument, might need some more work
+	  (v5.0.19)
+
+2004-03-10  Donald Duck  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Account.m, DirectAction+Job.m,
+	  DirectAction+Mails: fixed compilation warnings with gstep-base 
+	  (v5.0.18)
+
+2004-03-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.17
+
+	* EOControl+XmlRpcDirectAction.m: properly include header files, fixed
+	  a bug introduced in v5.0.15
+
+	* Session.m: code cleanups, do not use deprecated EOControl API 
+
+2004-03-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.16
+
+	* DirectAction+Project.m: do not use deprecated EOControl API
+
+	* DirectAction+Enterprise.m: minor cleanups
+
+	* EOControl+XmlRpcDirectAction: minor cleanups
+
+2004-02-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: fixed dependencies for MacOSX (v5.0.15)
+
+2004-01-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.14
+
+	* Actions.subproj/DirectAction+Project.m: various cleanups
+
+	* Actions.subproj/DirectAction+Appointment.m: added fix on the 
+	  creation of cyclic appointments as suggested in OGo bug #539 (thanks
+	  Franz!)
+
+Tue Nov 25 14:48:09 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* Actions.subproj/DirectAction+Project.m: add -subPathsAtPath and 
+	  -fileAttributesAtDirectory action (v5.0.13)
+
+Fri Nov 14 19:09:57 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* Actions.subproj/DirectAction+Appointment.m: added fetchOverview with
+	  up to 3 arguments: startDate (required, date or formated string),
+	  endDate (optional, default: startDate + 1day, date or formated 
+	  string), participant (optional, default: active user, url / primary 
+	  key / group name / account login)
+	  (fixes ogo bug 299, sx bug 1888) (v5.0.12)
+
+Wed Oct 29 13:30:12 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* Actions.subproj/DirectAction+Generic: add xmlrpcd support for 
+	  access operations (v5.0.11)
+
+Tue Oct 28 10:45:37 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* Actions.subproj/DirectAction+Link.m : add a xml-rpcd interface to 
+	  object links (v5.0.10)
+
+Tue Oct 14 17:42:57 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* Actions.subproj/DirectAction+Project.m: -loadDocuments returns 
+  	  NSString with base64 encoded file content (v5.0.9)
+
+Fri Oct 10 18:12:16 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* Session.m: fixed FileManager creation 
+	  (use of SkyFileManagerFactory) (v5.0.8)
+
+2003-09-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* Actions.subproj/DirectAction+Appointment.m: smaller cleanups - 
+	  now depends on libOGoScheduler v5.0.14.
+
+2003-08-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* Actions.subproj/DirectAction+Appointment.m: improved input parameter
+	  validation in appointment.insert() (v5.0.6)
+
+	* v5.0.5
+
+	* Actions.subproj/DirectAction+Job.m: removed warnings and moved 
+	  "issues" to TODO document
+
+	* GNUmakefile: added EOControl+XmlRpcDirectAction.m and NSObject+EKVC.m
+	  to makefile for compilation, fixes OGo Bug 103
+
+Wed Jul 16 17:00:00 2003  Bjoern Stierand  <bjoern@opengroupware.org>
+
+	* fixed OGo import but in GNUmakefile (v5.0.4)
+
+Wed Jul 16 14:00:05 2003  Bjoern Stierand  <bjoern@opengroupware.org>
+
+	* fixed OGo import bug in GNUmakefile.preamble (v5.0.3)
+
+Tue Jul 15 22:17:05 2003  Bjoern Stierand  <bjoern@opengroupware.org>
+
+	* fixed some SKYRiX=>OGo conversion bugs (v5.0.2)
+
+Mon Jul  7 19:38:05 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* fixed OGo import (v5.0.1)
+
+Mon Jul  7 15:43:54 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.0)
+
+	* removed old ChangeLogs
+
+Fri Aug 17 14:51:39 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* added this file

@@ -1,0 +1,200 @@
+// $Id: SkyInvoiceEditor.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+//Style
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.invoiceEditorWindowTitle;
+  onClose = cancel;
+}
+
+ToggleAttr: SkyAttribute {
+  label = labels.currency;
+}
+CurLabel: WOString {
+  value = session.userDefaults.invoice_currency;
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+ErrorFont: WOGenericContainer {
+        elementName = "FONT";
+        COLOR       = config.font_alertColor;
+        SIZE        = config.font_size;
+        FACE        = config.font_face;
+}
+
+//Labels
+
+InvoiceDateLabel: WOString {
+  value = labels.invoiceDate;
+}
+
+InvoiceNrLabel: WOString {
+  value = labels.invoiceNr;
+}
+
+InvoiceKindLabel: WOString {
+  value = labels.kind;
+}
+
+SearchLabel: WOString {
+  value = labels.invoiceeditor_searchDebitor;
+}
+
+DebitorLabel: WOString {
+  value = labels.debitor;
+}
+
+CommentLabel: WOString {
+  value = labels.comment;
+}
+
+AddArticleLabel: WOString {
+  value = labels.articles;
+}
+
+SearchArticlesErrorLabel: WOString {
+  value = labels.invoiceeditor_addArticlesError;
+}
+
+//Form
+
+Form : WOForm {}
+
+InvoiceDate: WOTextField {
+  value     = invoiceDate;
+}
+
+InvoiceNr: WOTextField {
+  value = invoice.invoiceNr;
+}
+
+InvoiceKindPopup: WOPopUpButton {
+  list                  = invoiceKinds;
+  item                  = item;
+  string                = kindName;
+  selection             = invoice.kind;
+  singleSelection       = YES;
+}
+
+UpdateKindSubmit: WOImageButton {
+  action           = updateKind;
+  filename         = "search.gif";
+  name             = labels.updateButtonLabel;
+  ALT              = labels.updateButtonLabel;
+  BORDER           = 0;
+}
+
+Debitor: SkyListView {
+  list                  = resultList;
+  item                  = item;
+  columns               = noOfCols;
+  useRadioButtons       = YES;
+  selectedItems         = selectedDebitor;
+  attributes = (
+        { key = "description";  }
+  );
+}
+
+CommentText: WOText {
+  value = invoice.comment;
+  rows  = 04;
+  cols  = 80;
+  WRAP  = "physical";
+}
+
+AddArticlesArea: WOText {
+  value = articlesText;
+  rows  = 18;
+  cols  = 80;
+  WRAP  = "off";
+}
+
+Articles: WOString {
+  value = articlesText;
+}
+
+SaveSubmit: WOImageButton {
+        action           = save;
+        filename         = "save.gif";
+        name             = labels.saveButtonLabel;
+        ALT              = labels.saveButtonLabel;
+        BORDER           = 0;
+}
+
+CheckSubmit: WOImageButton {
+        action           = check;
+        filename         = "search.gif";
+        name             = labels.checkButtonLabel;
+        ALT              = labels.checkButtonLabel;
+        BORDER           = 0;
+}
+
+RemoveArticle: WOHyperlink {
+        action          = removeArticle;
+        filename        = "remove.gif";
+        name            = labels.removeButtonLabel;
+        ALT             = labels.removeButtonLabel;
+        BORDER          = 0;
+};
+
+CancelSubmit: WOHyperlink {
+        action           = cancel;
+        filename         = "cancel.gif";
+        ALT              = labels.cancelButtonLabel;
+        BORDER           = 0;
+};
+
+//Errors:
+
+ErrorString: WOString {
+  value = errors;
+  insertBR = YES;
+}
+
+//Debitor-Search
+
+SearchDebitorField: WOTextField {
+  value = searchString;
+}
+
+SearchDebitorSubmit: WOImageButton {
+  action        = searchDebitor;
+  filename      = "search.gif";
+  name          = labels.searchButtonLabel;
+  ALT           = labels.searchButtonLabel;
+  BORDER        = 0;
+}
+
+//Conditional
+
+IsInEditMode: WOConditional {
+  condition = isInNewMode;
+  negate    = YES;
+}
+
+HasDebitorCond: WOConditional {
+  condition = hasDebitor;
+}
+
+SearchArticlesErrorCond: WOConditional {
+  condition = hasAddErrors;
+}
+
+IsTypeEditableCond: WOConditional {
+  condition = isTypeEditable;
+}
+
+ArticlesEditableCond: WOConditional {
+  condition = areArticlesEditable;
+}
+ArticlesEditableCondElse: WOConditional {
+  condition = areArticlesEditable;
+  negate    = YES;
+}

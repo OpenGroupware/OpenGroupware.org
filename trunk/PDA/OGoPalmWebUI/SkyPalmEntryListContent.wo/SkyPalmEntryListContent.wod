@@ -1,0 +1,34 @@
+// $Id: SkyPalmEntryListContent.wod,v 1.1 2003/07/14 16:18:25 helge Exp $
+
+// conditions
+
+ClickCond: WOConditional {
+  condition = click;
+}
+ClickCondElse: WOConditional {
+  condition = click;
+  negate    = YES;
+}
+
+HasActionCond: WOConditional {
+  condition = hasAction;
+}
+HasDirectActionCond: WOConditional {
+  condition = hasDirectAction;
+}
+HasNoActionCond: WOConditional {
+  condition = hasNoAction;
+}
+
+// action
+Action: WOHyperlink {
+  action = entryAction;
+}
+DirectAction: WOHyperlink {
+  href = entryActionURL;
+}
+
+// entry
+Entry: SkyRichString {
+  value = value;
+}

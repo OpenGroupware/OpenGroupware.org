@@ -1,0 +1,64 @@
+// $Id: SkyInvoicePreferences.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = labels.invoicePreferencesLabel;
+}
+
+WindowTitle: LSWViewerTitle {
+  title     = accountLabel;
+}
+
+PreferencesForm: WOForm {
+}
+
+CancelButton: WOHyperlink {
+  action = cancel;
+}
+CancelImage: WOImage {
+  filename = "cancel.gif";
+  ALT      = labels.cancel;
+  BORDER   = 0;
+}
+
+SaveSubmit: WOImageButton {
+  action   = save;
+  filename = "save.gif";
+  name     = labels.save;
+  ALT      = labels.save;
+  BORDER   = 0;
+}
+
+AttributeCell: SkyAttributeCell { width = "15%"; }
+ValueCell:     SkyValueCell     {}
+
+IsRoot: WOConditional {
+  condition = isRoot;
+}
+
+
+BlockSizeField: SkyDefaultEditField {
+  label      = labels.blockSize;
+  isEditable = isBlockSizeEditable;
+  valueType  = "popup";
+  value      = blockSize;
+  valueList  = ( "10", "20", "50", "100", "200" );
+}
+
+ColumnSizeField: SkyDefaultEditField {
+  label      = labels.noOfCols;
+  isEditable = isNoOfColsEditable;
+  valueType  = "popup";
+  value      = noOfCols;
+  valueList  = ( "1", "2", "3", "4", "5" );
+}
+
+InvoiceViewerSubviewField: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.invoice_viewer_subview;
+  isEditable = isInvoiceViewerSubviewEditable;
+  valueType  = "popup";
+  value      = invoiceViewerSubview;
+  valueList  = ( "articles", "attributes", "preview" );
+}

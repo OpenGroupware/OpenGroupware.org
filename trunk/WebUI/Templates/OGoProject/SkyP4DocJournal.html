@@ -1,0 +1,52 @@
+<!-- $Id: SkyP4DocJournal.html 2 2004-08-20 11:37:44Z znek $ -->
+
+<i>hier brauch gar keine Matrix hin ...</i>
+
+<#ChartMatrix>
+  <#ChartTitle><#ColumnTitle /></#ChartTitle>
+
+  <#ChartRowTitle>
+    <#FileDownload>
+      <#FileIcon />
+    </#FileDownload>
+    <#FileNameLink />
+  </#ChartRowTitle>
+
+  <#EmptyCell>&nbsp;</#EmptyCell>
+
+  <#Bottom>&nbsp;</#Bottom>
+  
+  <#ChartCell>
+    cell
+  </#ChartCell>
+</#ChartMatrix>
+
+<hr size="1" />
+  <#ResultList>
+    <#TitleMode><b><#Results /></b></#TitleMode>
+              
+    <#FileName>
+      <#FileDownload>
+        <#FileIcon />
+      </#FileDownload>
+
+      <#IsExternalLinkCondElse>
+        <#FileNameLink />
+      </#IsExternalLinkCondElse>
+      <#IsExternalLinkCond>
+        <#ExternalFileLink />
+      </#IsExternalLinkCond>
+
+      <#IsFileNotDir>
+        <#IsFileLocked>(<#Locked />)</#IsFileLocked>
+        <#IsFileCheckedOut>(<#CheckedOut />)</#IsFileCheckedOut>
+      </#IsFileNotDir>
+
+    </#FileName>
+    <#FileSize />
+    <#FileOwner />
+    <#ParentFolder><#ParentFolderLink /></#ParentFolder>
+    <#FileSubject />
+                
+    <#FooterMode><#Files />:</#FooterMode>
+  </#ResultList>

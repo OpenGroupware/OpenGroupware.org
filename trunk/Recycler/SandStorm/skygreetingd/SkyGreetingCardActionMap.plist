@@ -1,0 +1,11 @@
+// $Id$
+
+{
+    "greeting.listTemplates" = {
+      ( array ) = "listTemplatesAction";
+    };
+
+    "greeting.sendGreetingCard" = {
+      ( boolean, string, string, array, string ) = "sendCardAction::::";
+    };
+}

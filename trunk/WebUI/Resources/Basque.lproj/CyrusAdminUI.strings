@@ -1,0 +1,7 @@
+// Note: work in progress, no need for translation yet
+
+dock_cyrusadminapp = "Cyrus Kudeaketa";
+OGoCyrusAdminPage  = "Cyrus Kudeaketa";
+tab_mailboxes      = "postontziak";
+tab_info           = "zerbitzarinfo";
+tab_ogo            = "OGo";

@@ -1,0 +1,111 @@
+// bind template to controller class
+
+// -- header
+
+PartHeaderRow: WOGenericContainer { // TODO: use CSS
+  elementName = "tr";
+  BGCOLOR     = config.colors_partHeader;
+}
+
+ContentType:        WOString { value = contentType;        }
+ContentLength:      WOString { value = contentLength;      }
+ContentDisposition: WOString { value = contentDisposition; }
+
+HasContentLength:      WOConditional { condition = contentLength;      }
+HasContentDisposition: WOConditional { condition = contentDisposition; }
+HasProjectCond:        WOConditional { condition = YES;       };
+IsPrintModeCondElse:   WOConditional { condition = printMode; negate = YES; }
+IsPrintModeCond:       WOConditional { condition = printMode; }
+
+DownloadIcon: SkyP4MailIcon {
+  mimeType     = contentType;
+  // documentPath = thepath;
+}
+
+Download: WOHyperlink {
+  action   = downloadPart;
+  //  filename = downloadIconName;
+  ALT      = labels.download;
+  TITLE    = labels.download;
+  TARGET   = downloadTarget;
+  BORDER   = 0;
+}
+
+ToDoc: WOHyperlink {
+  action   = toDoc;
+  filename = "project.gif";
+  alt      = labels.toDoc;
+  title    = labels.toDoc;
+  border   = 0;
+}
+
+// -- body
+
+MimeBodyRow: WOGenericContainer {
+  elementName = "tr";
+  BGCOLOR     = config.colors_partBody;
+}
+
+MimeBodyViewer: WOComponentReference {
+  component    = bodyViewerComponent;
+  nestingDepth = nestingDepth;
+  printMode    = printMode;
+}
+
+IsNoComposite: WOConditional {
+  condition = isCompositeType;
+  negate    = YES;
+}
+IsNoEo:       WOConditional { condition = isEoType;  negate = YES; }
+IsNoRfc:      WOConditional { condition = isRfcType; negate = YES; }
+IsRfc:        WOConditional { condition = isRfcType; }
+ShowBodyCond: WOConditional { condition = showBody; }
+
+Font: SkyConfigFont {}
+
+HasUrlBody:     WOConditional { condition = hasUrl; }
+HasUrlBodyElse: WOConditional { condition = hasUrl; negate = YES; }
+
+ActionUrl: WOHyperlink {
+  directActionName = downloadPartActionName;
+  actionClass      = "SkyImapDownloadAction";
+  ?url             = url;
+  ?mimeType        = mimeTypeString;
+  ?encoding        = encodingString;
+  ALT      = labels.download;
+  TITLE    = labels.download;
+  TARGET   = downloadTarget;
+  BORDER   = 0;
+}
+
+ShowBodyDepSizeEnabledCond: WOConditional {
+  condition = showBodyDepSizeEnabled;
+}
+ShowBodyDepSizeEnabledCondElse: WOConditional {
+  condition = showBodyDepSizeEnabled;
+  negate    = YES;
+}
+
+ShowBodyDepSizeCond: WOConditional {
+  condition = showBodyDepSize;
+}
+ShowBodyDepSizeCondElse: WOConditional {
+  condition = showBodyDepSize;
+  negate    = YES;
+}
+
+ExpandedBodyLink: WOHyperlink {
+  action   = alternateShowBody;
+  filename = "collapsed.gif";
+  BORDER   = 0;
+}
+CollapsedBodyLink: WOHyperlink {
+  action   = alternateShowBody;
+  filename = "expanded.gif";
+  BORDER   = 0;
+}
+
+// TODO: localize!
+LengthLabel:   WOString { value = "Content Length";      }
+DispoLabel:    WOString { value = "Content Disposition"; }
+ContTypeLabel: WOString { value = "Content Type";        }

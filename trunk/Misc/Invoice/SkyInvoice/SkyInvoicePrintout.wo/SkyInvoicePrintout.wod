@@ -1,0 +1,37 @@
+// $Id: SkyInvoicePrintout.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+//WOStrings
+
+Header: WOString {
+  value    = header;
+  insertBR = YES;
+}
+
+ArticleRep: WORepetition {
+  list = articles;
+  item = article;
+}
+
+AssignmentLink: WOHyperlink {
+  action = viewAssignment;
+  style  = "text-decoration:none";
+}
+
+Article: WOString {
+  value    = articleString;
+  insertBR = YES;
+}
+
+Summary: WOString {
+  value    = summary;
+  insertBR = YES;
+}
+
+PreviewModeCond: WOConditional {
+  condition = previewMode;
+}
+
+PreviewModeCondElse: WOConditional {
+  condition = previewMode;
+  negate    = YES;
+}

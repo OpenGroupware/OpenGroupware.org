@@ -1,0 +1,126 @@
+#!/bin/sh
+#
+# Initscript for the OpenGroupware.org application server
+#
+# This init script can handle multiple instances of OpenGroupware.org.
+# Each instance needs a subdirectory in /etc/opengroupware.org with its
+# instance name. In this directory there must be an init.conf which sets
+# the following variables:
+# ------------------------------------------------------------------------
+# USER=
+# WEBUI_VERSION=
+# WEBUI_PORT=
+# ZIDESTORE_VERSION=
+# ZIDESTORE_PORT=
+# XMLRPCD_VERSION=
+# XMLRPCD_PORT=
+# NHSD_VERSION=
+# ------------------------------------------------------------------------
+# These variables specify the user that shall execute the daemons (which
+# must exist and needs the necessary application defaults set), as well
+# as versions and listening ports for the respective daemons.
+#
+# You can use the ogo-create-instance script to easily create a user with
+# all necessary defaults set, along with a proper instance entry in
+# /etc/opengroupware.org.
+
+WEBUIAPP=ogo-webui
+ZSAPP=ogo-zidestore
+XMLRPCAPP=ogo-xmlrpcd
+NHSDAPP=ogo-nhsd
+DPATH=/usr/sbin
+
+# OGo always comunicates in ISO-8859-1 with PostgreSQL
+export PGCLIENTENCODING=LATIN1
+
+clear_vars () {
+	USER=
+	WEBUI_VERSION=
+	ZIDESTORE_VERSION=
+	NHSD_VERSION=
+	XMLRPCD_VERSION=
+}
+
+should_start () {
+	if [ "$START_AT_BOOT" = "false" ]; then
+		echo "OpenGroupware.org web application server not started as requested"
+		exit 0
+	fi
+        if ! ls /etc/opengroupware.org/*/init.conf &>/dev/null; then
+		echo "Skipping OpenGroupware.org: No instances defined."
+		exit 0
+	fi
+}
+
+case "$1" in
+    start)
+        should_start
+        echo -n "Starting OpenGroupware.org server instances:"
+	for i in /etc/opengroupware.org/*/init.conf; do
+		clear_vars
+		. $i
+		USER_HOME=$(getent passwd ${USER} | awk -F: '{print $6}')
+		if [ "$WEBUI_VERSION" != "" ]; then
+			start-stop-daemon -S -u ${USER} -c ${USER} -a /usr/bin/daemon -n ${WEBUIAPP}-${WEBUI_VERSION} -- \
+				-F ${USER_HOME}/webui.pid -X "${DPATH}/${WEBUIAPP}-${WEBUI_VERSION} -WOPort ${WEBUI_PORT}" \
+				-E /var/log/opengroupware.org/${USER}/webui.log
+		fi
+		if [ "$ZIDESTORE_VERSION" != "" ]; then
+		start-stop-daemon -S -u ${USER} -c ${USER} -a /usr/bin/daemon -n ${ZSAPP}-${ZIDESTORE_VERSION} -- \
+			-F ${USER_HOME}/zidestore.pid -X "${DPATH}/${ZSAPP}-${ZIDESTORE_VERSION} -WOPort ${ZIDESTORE_PORT}" \
+			-E /var/log/opengroupware.org/${USER}/zidestore.log
+		fi
+		if [ "$XMLRPCD_VERSION" != "" ]; then
+		start-stop-daemon -S -u ${USER} -c ${USER} -a /usr/bin/daemon -n ${XMLRPCAPP}-${XMLRPCD_VERSION} -- \
+			-F ${USER_HOME}/xmlrpcd.pid -X "${DPATH}/${XMLRPCAPP}-${XMLRPCD_VERSION} -WOPort ${XMLRPCD_PORT}" \
+			-E /var/log/opengroupware.org/${USER}/xmlrpcd.log
+		fi
+		if [ "$NHSD_VERSION" != "" ]; then
+		start-stop-daemon -S -u ${USER} -c ${USER} -a /usr/bin/daemon -n ${NHSDAPP}-${NHSD_VERSION} -- \
+			-F ${USER_HOME}/nhsd.pid -X "${DPATH}/${NHSDAPP}-${NHSD_VERSION}" \
+			-E /var/log/opengroupware.org/${USER}/nhsd.log
+		fi
+	
+		echo -n " ${USER}"	
+	done
+	echo "."
+	;;
+
+    stop)
+    	should_start
+        echo -n "Stopping OpenGroupware.org web application server instances:"
+	for i in /etc/opengroupware.org/*/init.conf; do
+		clear_vars
+		. $i
+		USER_HOME=$(getent passwd ${USER} | awk -F: '{print $6}')
+		if [ -f ${USER_HOME}/webui.pid ]; then
+			start-stop-daemon -K -p ${USER_HOME}/webui.pid -o
+		fi
+		if [ -f ${USER_HOME}/zidestore.pid ]; then
+			start-stop-daemon -K -p ${USER_HOME}/zidestore.pid -o
+		fi
+		if [ -f ${USER_HOME}/xmlrpcd.pid ]; then
+			start-stop-daemon -K -p ${USER_HOME}/xmlrpcd.pid -o
+		fi
+		if [ -f ${USER_HOME}/nhsd.pid ]; then
+			start-stop-daemon -K -p ${USER_HOME}/nhsd.pid -o
+		fi
+		echo -n " ${USER}"
+	done
+	echo "."
+        ;;
+
+    restart|force-reload)
+        $0 stop
+	sleep 1
+        $0 start
+        ;;
+    reload)
+        echo "Can't reload configuration without restarting. Use /etc/init.d/opengroupware.org restart."
+        exit 0
+        ;;
+    *)
+        echo "Usage: /etc/init.d/opengroupware.org {start|stop|reload|force-reload|restart}"
+        exit 1
+        ;;
+esac

@@ -1,0 +1,64 @@
+{
+  bundleHandler = OGoModel;
+  
+  requires = {
+    bundleManagerVersion = 1;
+    
+    classes = (
+      { name = NSObject;                           },
+      { name = OGoModel; exact-version = 1;        },
+      { name = EOGenericRecord; exact-version = 2; }
+    );
+  };
+  
+  provides = {
+    EOModels = ( 
+        { name = "OpenGroupware.org_FrontBase2"; },
+        { name = "OpenGroupware.org_PostgreSQL"; }
+    );
+    
+    classes = (
+      { name = LSDatabaseObject; version = 1; },
+      { name = LSAddress;               },
+      { name = LSCompanyAssignment;     },
+      { name = LSCompanyCategory;       },
+      { name = LSCompanyInfo;           },
+      { name = LSCompanyValue;          },
+      { name = LSAppointment;           },
+      { name = LSAppointmentResource;   },
+      { name = LSDateInfo;              },
+      { name = LSDateCompanyAssignment; },
+      { name = LSDoc;                   },
+      { name = LSDocumentEditing;       },
+      { name = LSDocumentVersion;       },
+      { name = LSEmail;                 },
+      { name = LSEmailContent;          },
+      { name = LSEmailFolder;           },
+      { name = LSEnterprise;            },
+      { name = LSJob;                   },
+      { name = LSJobHistory;            },
+      { name = LSJobHistoryInfo;        },
+      { name = LSNewsArticle;           },
+      { name = LSNewsArticleLink;       },
+      { name = LSNote;                  },
+      { name = LSPerson;                },
+      { name = LSProject;               },
+      { name = LSProjectCompanyAssignment; },
+      { name = LSStaff;                 },
+      { name = LSTeam;                  },
+      { name = LSTelephone;             },
+      { name = LSTrust;                 },
+      { name = LSUrl;                   },
+      { name = LSUrlRating;             },
+      { name = LSUrlCriterion;          },
+      { name = LSLog;                   },
+      { name = LSInvoice;               },
+      { name = LSArticle;               },
+      { name = LSInvoiceArticleAssignment; },
+      { name = LSResource;              },
+      { name = LSResourceAssignment;    },
+      { name = LSJobResourceAssignment; },
+      { name = LSJobAssignment;         }
+    );
+  };
+}

@@ -1,0 +1,112 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component className="SxFrame" 
+               const:title="User Settings"
+               settings="settings"
+               xmlns="http://www.w3.org/1999/xhtml"
+               xmlns:var="http://www.skyrix.com/od/binding"
+               xmlns:const="http://www.skyrix.com/od/constant"
+>
+  <br />
+  <var:if condition="hasMessage">
+    <font class="alert"><var:string value="message"/></font>
+  </var:if>
+
+  <table width="100%" cellpadding="2" cellspacing="0" border="0">
+    <form href="saveSettings">
+      <tr>
+        <td class="headerCell" colspan="2">
+          Global Settings
+        </td>
+      </tr>
+      <tr>
+        <td class="attrCell">
+          Email
+        </td>
+        <td class="valueCell">
+          <input class="field" type="text" var:value="email" 
+                 name="email" size="30" />
+        </td>
+      </tr>
+      <tr>
+        <td class="attrCell">
+          TimeZone
+        </td>
+        <td class="valueCell">
+          <var:popup class="popup" list="timeZones"
+                     selection="selectedTimeZone" 
+                     const:name="timeZone" />
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <input class="button" type="submit" value="Save Settings"/>
+        </td>
+      </tr>
+    </form>
+  </table>
+  <br/>
+  <table width="100%" cellpadding="2" cellspacing="0" border="0">
+    <form href="setPassword">
+      <tr>
+        <td class="headerCell" colspan="2">
+          Change Password
+        </td>
+      </tr>
+      <tr>
+        <td class="attrCell">
+          Old Password
+        </td>
+        <td class="valueCell"><input class="field" type="password" 
+                                     name="oldpwd" size="40"/></td>
+      </tr>
+      <tr> 
+        <td class="attrCell">
+          New Password
+        </td>
+        <td class="valueCell"><input class="field" type="password" 
+                                     name="newpwd" size="40"/></td>
+      </tr>
+      <tr>
+        <td class="attrCell">
+          Repeat New Password
+        </td>
+        <td class="valueCell"><input class="field" type="password" 
+                                     name="newpwdrep" size="40"/></td>
+      </tr>
+      <tr>
+        <td />
+        <td>
+          <input class="button" type="submit" value="Set New Password" />
+        </td>
+      </tr>
+    </form>
+  </table>
+  <form href="saveGroups">
+    <table width="100%" cellpadding="2" cellspacing="0" border="0">
+      <tr>
+        <td class="headerCell" colspan="2">
+          Group Settings
+        </td>
+      </tr>
+      <var:foreach list="groups" item="group">
+        <tr>
+          <td class="attrCell"><var:string value="group.cn" /></td>
+          <td class="valueCell">
+            <input class       = "checkbox" 
+                   type        = "checkbox" 
+                   var:name    = "group.cn"
+                   var:checked = "group.isSelected" />
+          </td>
+        </tr>
+      </var:foreach>
+      <tr>
+        <td />
+        <td>
+          <input class="button" type="submit" value="Save Groups" />
+        </td>
+      </tr>
+    </table>
+  </form>
+  <br />
+</var:component>

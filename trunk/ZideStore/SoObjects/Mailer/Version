@@ -1,0 +1,10 @@
+# Version file
+
+SUBMINOR_VERSION:=zs75
+
+# v0.9.69 requires libNGMime       v4.5.210
+# v0.9.55 requires libNGExtensions v4.5.136
+# v0.9.44 requires libNGMime       v4.3.194
+# v0.9.41 requires libNGMime       v4.3.190
+# v0.9.35 requires libSOGoLogic    v0.9.24
+# v0.9.34 requires libSOGoLogic    v0.9.22

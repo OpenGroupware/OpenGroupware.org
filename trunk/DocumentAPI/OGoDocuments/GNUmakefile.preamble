@@ -1,0 +1,11 @@
+# $Id$
+
+libOGoDocuments_INCLUDE_DIRS += -I..
+
+libOGoDocuments_LIBRARIES_DEPEND_UPON += \
+	-lLSFoundation -lGDLAccess	\
+	-lNGLdap -lNGMime		\
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
+
+ADDITIONAL_CPP_FLAGS += -Wall

@@ -1,0 +1,117 @@
+{
+  bundleHandler = LSWBaseModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = (
+      { name = LSBase;  type = cmd;   }
+    );
+    classes = (
+      { name = WOxElemBuilder; },
+    );
+  };
+  
+  provides = {
+    classes = (
+        { name = LSWBaseModule;                },
+        { name = OGoElemBuilder;               },
+        { name = LSWObjectEditor;              },
+        { name = LSWObjectViewer;              },
+        { name = LSWTableView;                 },
+        { name = LSWWarningPanel;              },
+        { name = LSWSkyrixFrame;               },
+        { name = LSWWindowFrame;  version = 1; },
+        { name = OGoWindowFrame;  version = 1; },
+        { name = LSWTableViewHeader;           },
+        { name = LSWTableViewFooter;           },
+        { name = LSWTableViewAttributeRow;     },
+        { name = LSWTableViewCell;             },
+        { name = LSWViewerTitle;               },
+        { name = LSWViewAction;                },
+        { name = SkyFavorites;                 },
+        { name = SkyNavigation;                },
+        { name = SkyRequestViewer;             },
+        { name = SkyButtonFrame;               },
+        { name = SkyButton;                    },
+        { name = SkyDock;                      },
+        { name = SkyWizardChoicePage;          },
+        { name = SkyWizardResultList;          },
+        { name = SkyListView;                  },
+        { name = SkyAttributeCell;             },
+        { name = SkyAttribute;                 },
+        { name = SkySubAttribute;              },
+        { name = SkyValueCell;                 },
+        { name = SkyConfigFont;                },
+        { name = SkyObjectValue;               },        
+        { name = SkyConfigEditFont;            },
+        { name = SkyTimeZonePopUp;             },
+        { name = SkyWeekOfYearPopUp;           },
+        { name = SkyObjectLogList;             },
+        { name = SkyPanel;                     },
+        { name = SkyPanelLink;                 },
+        { name = SkyWarningPanel;              },
+        { name = SkySearchPanel;               },
+        { name = SkyListSorter;                },
+        { name = SkyObjectField;               },
+        { name = SkyEditorButtons;             },
+        { name = SkyWarningMode;               },
+        { name = Main;                         },
+        { name = OGoLogoutPage;                },
+    );
+    WODynamicElements = (
+        { name = LSWWindowFrame;           },
+        { name = OGoWindowFrame;           },
+        { name = LSWTabHead;               },
+        { name = LSWTabContent;            },
+        { name = LSWTabItem;               },
+        { name = LSWTabSelection;          },
+        { name = LSWActionLink;            },
+        { name = LSWTableViewHeader;       },
+        { name = LSWTableViewFooter;       },
+        { name = LSWTableViewAttributeRow; },
+        { name = LSWTableViewCell;         },
+        { name = SkyButtonFrame;           },
+        { name = SkyButton;                },
+        { name = SkyAttributeCell;         },
+        { name = SkyAttribute;             },
+        { name = SkySubAttribute;          },
+        { name = SkyValueCell;             },
+        { name = SkyConfigFont;            },
+        { name = SkyObjectValue;           },        
+        { name = SkyConfigEditFont;        },
+        { name = SkyPanelLink;             },
+        { name = SkyObjectField;           },
+    );
+    WOComponents = (
+        { name = LSWObjectEditor;     },
+        { name = LSWObjectViewer;     },
+        { name = LSWTableView;        },
+        { name = LSWWarningPanel;     },
+        { name = LSWSkyrixFrame;      },
+        { name = SkyFavorites;        },
+        { name = SkyNavigation;       },
+        { name = SkyRequestViewer;    },
+        { name = SkyDock;             },
+        { name = SkyWizardChoicePage; },
+        { name = SkyWizardResultList; },
+        { name = SkyListView;         },
+        { name = SkyTimeZonePopUp;    },
+        { name = SkyWeekOfYearPopUp;  },
+        { name = SkyObjectLogList;    },
+        { name = SkyPanel;            },
+        { name = SkyWarningPanel;     },
+        { name = SkySearchPanel;      },
+        { name = SkyListSorter;       },
+        { name = SkyEditorButtons;    },
+        { name = SkyWarningMode;      },
+        { name = OGoMenuBox;          },
+        { name = Main;                },
+        { name = OGoLogoutPage;       },
+    );
+    
+    WOxElemBuilder = (
+      { name = OGoElemBuilder; },
+    );
+  };
+}

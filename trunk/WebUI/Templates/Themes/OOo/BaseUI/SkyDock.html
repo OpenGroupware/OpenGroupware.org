@@ -1,0 +1,83 @@
+<!-- $Id: SkyDock.html,v 1.1 2003/08/04 12:51:50 thomas Exp $ -->
+
+<#IsNotTextMode>
+  <td valign="top" width="83">
+   <table cellpadding="0" cellspacing="0" border="0" width="83">
+    <#ActivePageIsNotEditor>
+      <#DockEntries>
+       <tr><td>
+        <#HasMiniView>
+          <#MiniView />
+        </#HasMiniView>
+        <#LacksMiniView>
+          <#DockLink><#DockImage /></#DockLink>
+        </#LacksMiniView>
+       </td></tr>
+      </#DockEntries>
+    </#ActivePageIsNotEditor>
+
+    <#ActivePageIsEditor>
+      <#DockEntries>
+       <tr><td>
+        <#HasMiniView  ><#MiniView  /></#HasMiniView>
+        <#LacksMiniView><#DockImage /></#LacksMiniView>
+       </td></tr>
+      </#DockEntries>
+    </#ActivePageIsEditor>
+    <#DockedProjects />
+  </table>
+  </td>
+</#IsNotTextMode>
+
+<#IsTextMode>
+  <td valign="top" width="83">
+   <table cellpadding="0" cellspacing="0" border="0" width="83">
+    <#ActivePageIsNotEditor>
+      <#DockEntries>
+       <tr><td>
+        <#HasMiniView  ><#MiniView /></#HasMiniView>
+        <#LacksMiniView><#DockLink><#DockImage /></#DockLink></#LacksMiniView>
+       </td></tr>
+      </#DockEntries>
+    </#ActivePageIsNotEditor>
+
+    <#ActivePageIsEditor>
+      <#DockEntries>
+       <tr><td>
+        <#HasMiniView  ><#MiniView  /></#HasMiniView>
+        <#LacksMiniView><#DockImage /></#LacksMiniView>
+       </td></tr>
+      </#DockEntries>
+    </#ActivePageIsEditor>
+    <#DockedProjects />
+  </table>
+  </td>
+</#IsTextMode>
+
+<#IsTextModeBrowser>
+<#Font>
+  <#TextDockEntries>
+    <#ActivePageIsNotEditor>
+      <#HasMiniTextView><#MiniTextView /></#HasMiniTextView>
+      <#LacksMiniTextView>
+        <#DockLink><#DockLabel /></#DockLink>
+      </#LacksMiniTextView>
+    </#ActivePageIsNotEditor>
+
+    <#ActivePageIsEditor>
+      <#HasMiniTextView  ><#MiniTextView /></#HasMiniTextView>
+      <#LacksMiniTextView><#DockLabel    /></#LacksMiniTextView>
+    </#ActivePageIsEditor>
+  </#TextDockEntries>
+      <#DockedProjects />
+
+  -
+
+  <#ActivePageIsNotEditor>
+    <#PrefsLink><i><#PrefsLabel /></i></#PrefsLink>
+  </#ActivePageIsNotEditor>
+  <#ActivePageIsEditor>
+    <#PrefsLabel />
+  </#ActivePageIsEditor>
+</#Font>
+</#IsTextModeBrowser>

@@ -1,0 +1,25 @@
+{
+  bundleHandler = RelatedLinksUI;
+
+  requires = {
+    bundleManagerVersion = 1;
+
+    classes = (
+      { name = NSObject;       },
+      { name = WOComponent;    },
+      { name = OGoContentPage; },
+    );
+  };
+  
+  provides = {
+    classes = (
+        { name = RelatedLinksUI;    },
+        { name = OGoObjectLinkList; },
+    );
+    WODynamicElements = (
+    );
+    WOComponents = (
+        { name = OGoObjectLinkList; },
+    );
+  };
+}

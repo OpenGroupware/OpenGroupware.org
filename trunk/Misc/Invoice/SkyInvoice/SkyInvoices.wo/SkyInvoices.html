@@ -1,0 +1,105 @@
+<!-- $Id: SkyInvoices.html,v 1.1 2003/07/15 15:31:07 helge Exp $ -->
+
+<#Frame>
+  <#Window>
+    <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+      <tr>
+        <td colspan="2">
+          <#InvoicesCond>
+            <#Form>
+              <table width="100%" cellspacing="1" cellpadding="0" border="0" bgcolor="#e0e0e0">
+                <TR>
+                  <#ListViewEnabledCond>
+                    <TD><#EditFont><#Year /></#EditFont></TD>
+                    <TD><#EditFont><#MonthPopup /></#EditFont></TD>
+                    <TD><#EditFont><#KindPopup /></#EditFont></TD><TD></TD>
+                    <TD><#SearchSubmit /></TD>
+                  </#ListViewEnabledCond>
+                  <#ListViewDisabledCond>
+                    <TD ALIGN="LEFT" WIDTH="100%">
+                      <#ResultNumber />&nbsp;<#ResultLabel />&nbsp;
+                      [<#BackToListview><#BackLabel /></#BackToListview>]
+                    </TD>
+                  </#ListViewDisabledCond>
+                  <TD WIDTH="100%">&nbsp;</TD>
+                  <TD ALIGN="RIGHT"><#EditFont><#InvoiceSearchField /></#EditFont></TD>
+                  <TD ALIGN="RIGHT"><#InvoiceSearchSubmit /></TD>
+                </TR>
+              </TABLE>
+            </#Form><!-- Form1 -->
+          </#InvoicesCond><!-- InvoicesCond -->
+
+          <#OverviewCond>
+            <#OverviewForm>
+              <table cellspacing="1" cellpadding="0" border="0" bgcolor="#e0e0e0">
+                <TR>
+                  <TD><#EditFont><#FromTF /></#EditFont></TD>
+                  <TD><#EditFont><#ToTF /></#EditFont></TD>
+                  <TD><#OverviewSubmit /></TD>
+                </TR>
+              </TABLE>
+            </#OverviewForm>
+          </#OverviewCond>
+        </td>
+      </tr>
+      <tr><#ToggleAttr>
+        <#TogglePanel />
+      </#ToggleAttr></tr>
+      <tr><td colspan="2">
+        <#TabView>
+
+          <#InvoicesTab>
+                  <#InvoiceForm>
+                    <#InvoicesList>
+                      <#CopyInvoicesButton />
+                      <#MoveInvoicesButton />
+                      <#CertifyPrintoutButton />
+                      <#InvoicesSettledButton />
+                    </#InvoicesList>
+                  </#InvoiceForm>
+          </#InvoicesTab> <!--InvoicesTab-->
+
+          <#ArticlesTab>
+                  <#ArticlesForm>
+                    <#ArticleSearchTextField />
+                    <#ArticleSearchButton />
+                  </#ArticlesForm>
+                  <P>
+                    <#ArticlesList>
+                      <#ArticleButtons />
+                    </#ArticlesList>
+                  </P>
+          </#ArticlesTab> <!--ArticelsTab-->
+
+          <#ArticleCategoriesTab>
+             <#ArticleCategoriesList>
+               <#ArticleCategoriesButtons />
+             </#ArticleCategoriesList>
+          </#ArticleCategoriesTab>
+
+          <#UnitsTab>
+             <#UnitsList>
+               <#UnitsButtons />
+             </#UnitsList>
+          </#UnitsTab>
+
+          <#MonitionsTab>
+             <#MonitionDebitorList />
+          </#MonitionsTab>
+
+          <#AccountsTab>
+             <#AccountsList />
+          </#AccountsTab>
+
+          <#OverviewTab>
+                    <TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0">
+                      <TR><TD BGCOLOR="#FFFFFF">
+                        <PRE><#OverviewOutput /></PRE>
+                      </TD></TR>
+                    </TABLE>
+          </#OverviewTab>
+        </#TabView> <!--TabView-->
+      </td></tr>
+    </table>
+  </#Window>
+</#Frame>

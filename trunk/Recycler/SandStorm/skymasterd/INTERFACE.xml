@@ -1,0 +1,338 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+
+<interface name="com.skyrix.master" 
+           xmlns="http://www.skyrix.com/skyrix-idl"
+           xmlns:xrt="http://www.skyrix.com/od/xmlrpc-types"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <documentation lang="en">
+    This interface provides methods to access the functions of the SKYRiX
+    master daemon. This daemon is responsible for managing all processes that
+    run within a SKYRiX environment, e.g. all the xml-rpc daemons, the http
+    daemon, SKYRiX itself etc. This interface provides functions modelled
+    alike those used in init scripts, so you find the typical start/stop/
+    restart commands in here. There are also commands for querying the server 
+    about the status of all the tasks.
+  </documentation>
+  <documentation lang="de">
+    Dieses Interface stellt Methoden zum Zugriff auf die Funktionen des
+    SKYRiX Master Daemons bereit. Dieser Daemon verwaltet alle in der SKYRiX
+    Umgebung laufenden Prozesse, also alle XML-RPC Daemons, den HTTP Daemon
+    und SKYRiX selbst. Die Methoden dieses Interfaces sind nach denen in
+    init-Skripten genutzten Methoden modelliert, es finden sich also die
+    typischen start/stop/restart Funktionen. Auch sind Kommandos zur
+    Statusabfrage der einzelnen Daemons vorhanden.
+  </documentation>
+
+  <method name="start">
+    <signature>
+      <input name="taskclass" type="xsd:string"/>
+      <input name="arguments" type="xsd:struct"/>
+      <output type="xsd:string"/>
+    </signature>
+    <signature>
+      <input name="taskclass" type="xsd:string"/>
+      <output type="xsd:string"/>
+    </signature>
+    <documentation>
+      starts a task identified by taskclass with arguments,
+      returns the PID of the started process or false if the start failed.
+    </documentation>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.start('trackd',{'WOPort' : 20000 })
+      ]]>
+      <documentation lang="en">
+        Starts the daemon instance "trackd" with additional parameters
+        (in this case the WOPort gets set to 20000).
+      </documentation>
+      <documentation lang="de">
+        Startet die Instanz des Daemons "trackd" mit zus'atzlichen Paremetern
+        (in diesem Fall wird der WOPort-Default auf 20000 gesetzt).
+      </documentation>
+    </example>
+    <documentation lang="en">
+      The command "start" starts a daemon with the given name, using an
+      optional parameter array if provided.
+    </documentation>
+    <documentation lang="de">
+      Der Befehl "start" startet einen Daemon-Prozess mit dem 'ubergebenen
+      Namen und optionalen Parametern.
+    </documentation>
+  </method>
+
+  <method name="stop">
+    <signature>
+      <input name="task" type="xsd:string"/>
+      <output type="xsd:int"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.stop('trackd')
+      ]]>
+      <documentation lang="en">
+        Stops all daemons of the template class 'trackd'.
+      </documentation>
+      <documentation lang="de">
+        Stoppt alle laufenden Instanzen der Template-Klasse 'trackd'.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Stops a given task or template class started by the daemon.
+      Returns the exit code for tasks or true for template classes, false
+      if the process failed.
+    </documentation>
+    <documentation lang="de">
+      Stoppt die 'ubergebene Task bzw. alle Instanzen der 'ubergebenen
+      Taskklasse. Der R'uckgabewert ist bei einer einzelnen Task der Exit-Code
+      dieser Task oder True bei einer Taskklasse, schlug der Befehl fehl, wird
+      False zur'uckgegeben. 
+    </documentation>
+  </method>
+
+  <method name="restart">
+    <signature>
+      <input name="task" type="xsd:string"/>
+      <output type="xsd:string"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.restart('trackd')
+      ]]>
+      <documentation lang="en">
+        Restarts all running instances of the template class 'trackd'.
+      </documentation>
+      <documentation lang="de">
+        Startet alle laufenden Instanzen der Templateklasse 'trackd' neu.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      If the given task is running, the daemons stops it and starts it again.
+      If it's not running yet, it gets started. Returns the PID of the
+      started task.
+    </documentation>
+    <documentation lang="de">
+      Wenn die 'ubergebene Task l'auft, wird sie vom Daemon gestoppt und
+      anschliessend neu gestartet. Sollte sie noch nicht laufen, wird sie
+      neu gestartet. In beiden F'allen wird die PID der neu gestarteten
+      Task zur'uckgegeben.
+    </documentation>
+  </method>
+
+  <method name="status">
+    <signature>
+      <input name="task" type="xsd:string"/>
+      <output type="xsd:struct"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.status('PID.12345')
+      ]]>
+      <documentation lang="en">
+        Get the status of PID 'PID.12345'.
+      </documentation>
+      <documentation lang="de">
+        Gibt den Status der PID 'PID.12345' zur'uck.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Returns the status and the taskclass for the given PID.
+    </documentation>
+    <documentation lang="de">
+      Gibt den Status und die Taskklasse f'ur die 'ubergebene PID zur'uck.
+    </documentation>
+  </method>
+
+  <method name="isRunning">
+    <signature>
+      <input name="task" type="xsd:string"/>
+      <output type="xsd:boolean"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.isRunning('trackd')
+      ]]>
+      <documentation lang="en">
+        Checks if an instance of the template class 'trackd' is running.
+      </documentation>
+      <documentation lang="de">
+        Pr'uft, ob eine Instanz der Templateklasse 'trackd' l'auft.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Checks if the given task or an instance of the given taskclass is
+      running, returns true if this is the case, false otherwise.
+    </documentation>
+    <documentation lang="de">
+      Pr'uft, ob die 'ubergebene Task bzw. eine Instanz der 'ubergebenen
+      Taskklasse aktuell l'auft. Sollte dies der Fall sein, wird True
+      zur'uckgegeben, anderenfalls False.
+    </documentation>
+  </method>
+
+  <method name="stdoutLog">
+    <signature>
+      <input name="task" type="xsd:string"/>
+      <input name="count" type="xsd:int"/>
+      <output type="xsd:array"/>
+    </signature>
+    <signature>
+      <input name="task" type="xsd:string"/>
+      <output type="xsd:array"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        pid = server.tasks()[0]
+        result = server.stdoutLog(pid)
+      ]]>
+      <documentation lang="en">
+        Returns the last 10 lines of stdout log of the first PID.
+      </documentation>
+      <documentation lang="de">
+        Gibt die letzten 10 Zeilen des stdout Logs des Jobs mit der ersten
+        PID zur'uck.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Returns the last 'count' lines of stdout for the given task. If count
+      is omitted, returns the last 10 lines of stdout. 
+    </documentation>
+    <documentation lang="de">
+      Gibt die letzten 'count' Zeilen des stdout-Log der 'ubergebenen Task
+      aus. Wenn 'count' nicht angegeben ist, werden die letzten 10 Zeilen
+      zur'uckgegeben.
+    </documentation>
+  </method>
+
+  <method name="stderrLog">
+    <signature>
+      <input name="task" type="xsd:string"/>
+      <input name="count" type="xsd:int"/>
+      <output type="xsd:array"/>
+    </signature>
+    <signature>
+      <input name="task" type="xsd:string"/>
+      <output type="xsd:array"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        pid = server.tasks()[0]
+        print pid
+        result = server.stderrLog(pid)
+        print result
+      ]]>
+      <documentation lang="en">
+        Returns the last 10 lines of stderr log of the first PID.
+      </documentation>
+      <documentation lang="de">
+        Gibt die letzten 10 Zeilen des stderr Logs des Jobs mit der ersten
+        PID zur'uck.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Returns the last 'count' lines of stderr for the given task. If count
+      is omitted, returns the last 10 lines of stdout. 
+    </documentation>
+    <documentation lang="de">
+      Gibt die letzten 'count' Zeilen des stderr-Log der 'ubergebenen Task
+      aus. Wenn 'count' nicht angegeben ist, werden die letzten 10 Zeilen
+      zur'uckgegeben.
+    </documentation>
+  </method>
+
+  <method name="templates">
+    <signature>
+      <output type="xsd:array"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.templates()
+      ]]>
+      <documentation lang="en">
+        Returns all registered templates.
+      </documentation>
+      <documentation lang="de">
+        Gibt alle registrierten Templates zur'uck.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Returns the names of all registered templates.
+    </documentation>
+    <documentation lang="de">
+      Gibt die Namen aller registrierten Templateklassen zur'uck.
+    </documentation>
+  </method>
+
+  <method name="tasks">
+    <signature>
+      <output type="xsd:array"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.tasks()
+      ]]>
+      <documentation lang="en">
+        Returns the PIDs of all running tasks.
+      </documentation>
+      <documentation lang="de">
+        Gibt die PIDs aller laufenden Tasks zur'uck.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Returns the PIDs of all currently running tasks.
+    </documentation>
+    <documentation lang="de">
+      Gibt die PIDs aller zur Zeit laufenden Tasks zur'uck.
+    </documentation>
+  </method>
+
+  <method name="reload">
+    <signature>
+      <output type="xsd:boolean"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.reload()
+      ]]>
+      <documentation lang="en">
+        Reloads the server configuration.
+      </documentation>
+      <documentation lang="de">
+        L'adt die Server-Konfiguration neu.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Reloads the server config values and all task templates,
+      return true if this was successful, false otherwise.
+    </documentation>
+    <documentation lang="de">
+      L'adt die Konfigvariablen des Servers sowie alle Tasktemplates neu
+      und gibt True zur'uck, wenn dies erfolgreich war, False im anderen Fall.
+    </documentation>
+  </method>
+
+  <method name="instances">
+    <signature>
+      <output type="xsd:array"/>
+    </signature>
+    <example language="python" prefix="pyImportServer.header">
+      <![CDATA[
+        result = server.instances()
+      ]]>
+      <documentation lang="en">
+        Returns the names of all available instances.
+      </documentation>
+      <documentation lang="de">
+        Gibt die Namen aller verf'ugbaren Instanzen zur'uck.
+      </documentation>
+    </example>
+    <documentation lang="en">
+      Returns the names of all available instances.
+    </documentation>
+    <documentation lang="de">
+      Gibt die Namen aller verf'ugbaren Instanzen zur'uck.
+    </documentation>
+  </method>
+
+</interface>

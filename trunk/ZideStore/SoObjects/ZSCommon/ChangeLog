@@ -1,0 +1,7 @@
+2004-10-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* product.plist: added SxStoreInfoFolder definition
+
+2004-09-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* created ZSCommon product for shared things

@@ -1,0 +1,49 @@
+// bind template to controller class
+
+Form: WOForm {}
+
+/* folder tree */
+
+FileManagerTree: SkyFileManagerTreeView {
+  fileManager    = fileManager;
+  title          = shortTitle;
+  zoomDefault    = "skyp4_projectviewer_zoom";
+
+  onDrop         = "droppedOnFolder";
+  droppedObject  = droppedFile;
+  fileSystemPath = folderDropPath;
+  dropTags       = ( projectfile );
+  useFileSystemCache = YES;
+}
+
+/* tree show/hide */
+
+ShowTree: WOConditional {
+  condition = hideTree;
+  negate    = YES;
+}
+
+DoHideTree: WOHyperlink {
+  action   = doHideTree;
+  filename = "tree_hide.gif";
+  border   = "0";
+  align    = "bottom";
+  alt      = labels.hideFolderTree;
+}
+
+DontShowTree: WOConditional {
+  condition = hideTree;
+}
+DoShowTree: WOHyperlink {
+  action   = doShowTree;
+  filename = "tree_show.gif";
+  border   = "0";
+  alt      = labels.showFolderTree;
+}
+
+/* folder view */
+
+FolderView: SkyP4FolderView {
+  fileManager = fileManager;
+  dataSource  = selectedDataSource;
+}

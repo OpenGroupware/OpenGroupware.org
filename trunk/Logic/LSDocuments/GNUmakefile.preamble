@@ -1,0 +1,4 @@
+# $Id$
+
+LSDocuments_BUNDLE_LIBS += -lLSSearch
+LSDocuments_LIB_DIRS    += -L../LSSearch/$(GNUSTEP_OBJ_DIR)

@@ -1,0 +1,68 @@
+// $Id: SkyFileManagerTreeView.wod 2 2004-08-20 11:37:44Z znek $
+
+FolderTree: SkyTreeView {
+  list        = rootFolderContent;
+  item        = currentPath;
+  showItem    = isCurrentPathDirectory;
+  sublist     = currentPathContent;
+  currentPath = pathStack;
+  itemIsLeaf  = currentPathIsFile;
+  zoom        = isExpand;
+}
+
+TreeHeader: WETreeHeader { 
+  isTreeElement = YES;
+  BGCOLOR       = config.colors_mainButtonRow;
+}
+Title: WOHyperlink {
+  string = title;
+  action = gotoRoot;
+}
+
+FolderCell: WETreeData {
+  isTreeElement = YES;
+  icon          = currentTreeIcon;
+  cornerIcon    = currentCornerTreeIcon;
+  BGCOLOR       = currentBGColor;
+}
+
+IsItemClickable: WOConditional {
+  condition = currentPathIsClickable;
+}
+IsItemNotClickable: WOConditional {
+  condition = currentPathIsClickable;
+  negate    = YES;
+}
+
+FolderLink: WOHyperlink {
+  action = clickedFolder;
+}
+FolderName: WOString {
+  value  = currentPathLabel;
+}
+
+NoTakeValues: SkyNoTakeValues {}
+
+DropFile: WEDropContainer {
+  tags          = dropTags;
+  swapColor     = YES;
+  action        = droppedFile;
+  droppedObject = droppedObject;
+  isAttached    = YES;
+  elementName   = "TR";
+  activeColor   = "lightblue";
+  BGCOLOR       = currentBGColor;
+}
+DropRoot: WEDropContainer {
+  tags          = dropTags;
+  swapColor     = YES;
+  action        = droppedFileAtRoot;
+  droppedObject = droppedObject;
+  isAttached    = YES;
+  elementName   = "TR";
+  activeColor   = "lightblue";
+  BGCOLOR       = config.colors_mainButtonRow; 
+}
+
+CContent: WOComponentContent {
+}

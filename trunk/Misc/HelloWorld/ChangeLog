@@ -1,0 +1,9 @@
+2005-01-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: added explicit library dependencies for MacOSX
+
+2004-11-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* updated for OGo 1.0a
+
+	* created ChangeLog

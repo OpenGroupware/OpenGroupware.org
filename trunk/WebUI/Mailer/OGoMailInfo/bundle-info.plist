@@ -1,0 +1,38 @@
+{
+  bundleHandler = SkyMailInfoModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = LSMail;       type = cmd; },
+    );
+    classes = (
+      { name = NSObject;          },
+      { name = LSWModuleManager;  exact-version = 2; },
+      { name = WOHyperlink;       version = 4;       },
+      { name = LSCountUnreadedMessagesCommand; version = 2; },
+      { name = SkyAttributeCell; },
+      { name = SkyImapMailListState; },
+      { name = SkyValueCell;     },
+
+    );
+  };
+  
+  provides = {
+    classes = (
+        { name = SkyMailInfoModule;  },
+        { name = LSWMailsDockView;   },
+        { name = LSWImapDockView;    },
+        { name = LSWImapTextDockView; },
+        { name = SkyImapMailPopUp;   },
+    );
+    
+    WOComponents = (
+        { name = LSWMailsDockView;   },
+        { name = LSWImapDockView;    },        
+        { name = LSWImapTextDockView; },
+        { name = SkyImapMailPopUp;   },
+    );
+  };
+}

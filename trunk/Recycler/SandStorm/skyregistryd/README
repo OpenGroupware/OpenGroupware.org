@@ -1,0 +1,71 @@
+# $Id$
+
+XML-RPC daemon which acts as a central SandStorm-like registry 
+
+This daemon is one of the 2 central parts of the xml-rpc daemon
+environment. Applications do only need to know the location of this
+registry daemon, it can be queried for component information which
+can be used to work with the other daemons.
+
+Namespace: active.registry
+Build    : make debug=yes install
+Start    : skyregistryd
+URL      : /RPC2
+
+Configuration
+=============
+Config   : $GNUSTEP_USER_ROOT/config/skyregistryd.plist
+           This file just maps namespaces to URLs and is loaded on 
+           startup. This is the place to be for all the namespaces
+           who should be there from the time the server started up.
+ 
+           Format :
+
+           {
+             {
+                namespace = <namespace>;
+                url       = <url>;
+                idl       = <path to idl>;
+                check     = YES/NO;
+                autostart = {
+                   startOnStartup = NO;
+                   server         = <server>;
+                   url            = <url>;
+                   arguments      = { .. }
+                };
+             };
+           }
+
+           namespace        - component namespace
+           url              - URL for this component
+           idl              - path to a SkyIDL file which should be used
+                              for introspection
+           check            - include this namespace in check interval ?
+
+           autostart :
+
+           startOnStartup   - try to start this daemon on server startup
+           server           - server type
+           url              - url of the masterd who starts <server>
+           arguments        - arguments given to the started server type
+
+           Example : ./skyregistryd.plist
+
+Defaults : SxMasterRegistryURL 
+           - URL of the master registry database
+           
+           SxRegistryCheckInterval
+           - interval to check all the registered namespaces if their
+             corresponding daemons are up
+           - interval for the cleanup of unused tokens
+
+           SRNamespaceTimeout
+           - interval in which the components should re-register, if they
+             don't re-register in time, they are removed from the registry
+             Default: 300s
+             (set check=NO to avoid this)
+
+           SRNamespaceTimeoutDiff
+           - amount of time that is substracted from SRNamespaceTimeout
+             when this information is sent to the components after registering
+             Default: 10s

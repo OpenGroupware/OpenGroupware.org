@@ -1,0 +1,76 @@
+// $Id: SkyContactSubEditor.wod 2 2004-08-20 11:37:44Z znek $
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+Font:      SkyConfigFont     {}
+EditFont:  SkyConfigEditFont {}
+
+EditFont2: WOGenericContainer {
+  elementName = "font";
+  color       = config.editFont2.color;
+  size        = config.editFont2.size;
+  face        = config.editFont2.face;
+};
+
+SearchField: WOTextField {
+  name  = "search";
+  value = searchText;
+};
+
+SearchSubmit: WOSubmitButton {
+  action   = search;
+  value    = labels.searchButtonLabel;
+  class    = "button_narrow";
+};
+
+ContactResultList: SkyListView {
+  list            = resultList;
+  item            = item;
+  selectedItems   = selectedItems;
+  columns         = session.userDefaults.address_no_of_cols; /* noOfCols */
+  useRadioButtons = YES;
+  nilString       = noContactLabel;
+  attributes      = ( 
+  { 
+    key = "login"; 
+  },
+  { 
+    prefix  = "("; 
+    binding = "fullNameString"; 
+    suffix  =  ")"; 
+  });
+};
+
+HasContactCond: WOConditional {
+  condition = isContactAssigned;
+};
+
+HasContactCondElse: WOConditional {
+  condition = isContactAssigned;
+  negation  = YES;
+};
+
+ContactLogin: WOString {
+  value = contactSelection.login;
+};
+
+ContactName: WOString {
+  value = contactSelection.fullNameLabel;
+};
+
+ContactLabel : WOString {
+  value = labels.personeditor_contactLabel;
+};
+
+AccessLabel : WOString {
+  value = labels.setAccessLabel;
+};
+
+AccessCheckBox : WOCheckBox {
+  checked = accessBox;
+}
+
+IsEnterpriseEdition: WOConditional {
+  condition = application.isEnterpriseEdition.boolValue;
+}

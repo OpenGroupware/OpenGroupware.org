@@ -1,0 +1,65 @@
+# $Id$
+
+Class Hierarchy
+===============
+
+[NSObject]
+  OGoConfigDatabase
+  OGoConfigEntryExporter
+    OGoQuotaTabExporter
+    OGoVirtualFileExporter
+  OGoConfigExporter
+  OGoConfigFile
+    OGoCyrusConfigFile
+    OGoPostfixConfigFile
+    OGoQuotaTabConfigFile
+    OGoVirtualConfigFile
+      OGoAccountsVirtualConfigFile
+      OGoTeamsVirtualConfigFile
+  OGoConfigGenTarget
+  OGoConfigGenTransaction
+  [EODataSource]
+    OGoConfigDataSource
+  [EOGlobalID]
+    OGoConfigEntryGlobalID
+
+Notes
+=====
+
+- wichtig: "YES"/"NO" kann in plists nicht fuer BOOL verwendet werden!
+  => 1 oder 0
+
+- atomic fuer schreiben nutzen!
+- Achtung: die Config-Files beinhaltet *nicht* 1:1 das Original!, sondern
+  abstrakte Dinge wie:
+  generateFirstnameLastNameAlias YES|NO
+  => donald.duck@domain.com
+  generateAliasForNickname YES|NO
+- config files koennen auch eine "pre/post" raw sektion bekommen! (oder 
+  auch komplett "raw" sein)
+- Endung sagt Datentyp an (wie bei SOPE)
+
+- OGoConfigFile?
+  - plist mapping objekt
+  - storageKeys fuer valuesForKeys/takeValues:forKeys: etc
+- OGoConfigWriter?
+
+- Projektmails generieren?
+- "passwd" Generator?
+  - eventl Kundenbasiert?
+
+- zwei Skripte:
+  postfix "collect"
+  - muss postfix reload + postmap fahren
+  cyrus "collect"
+  - verschiedene Rechte?
+
+- andere generatoren
+  - passwd
+  - htpasswd
+  - smbpasswd?
+
+OGoConfigDatabase
+=================
+- can be attached to either a backup snapshot or to a working set
+- snapshot is being used for generation?

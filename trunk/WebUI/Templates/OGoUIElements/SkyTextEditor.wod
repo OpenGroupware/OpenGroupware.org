@@ -1,0 +1,133 @@
+// $Id: SkyTextEditor.wod 2 2004-08-20 11:37:44Z znek $
+
+HasName: WOConditional {
+  condition = hasName;
+}
+HasNameElse: WOConditional {
+  condition = hasName;
+  negate    = YES;
+}
+UseEpoz: WOConditional {
+  condition = enableEpoz;
+}
+DoNotUseEpoz: WOConditional {
+  condition = enableEpoz;
+  negate    = YES;
+}
+
+TextEditorName: WOText {
+  name     = name;
+  value    = text;
+  rows     = rows;
+  cols     = columns;
+  wrap     = ^wrap;
+}
+TextEditor: WOText {
+  value    = text;
+  rows     = rows;
+  cols     = columns;
+  wrap     = ^wrap;
+}
+
+EpozEditorName: WEEpozEditor {
+  name     = name;
+  value    = text;
+  rows     = rows;
+  cols     = columns;
+}
+
+WithControls: WOConditional {
+  condition = noSizeControls;
+  negate    = YES;
+}
+WithoutControls: WOConditional {
+  condition = noSizeControls;
+}
+
+IncreaseXButton: WOImageButton {
+  filename = "plus.gif";
+  action   = increaseX;
+  name     = labels.plusx;
+  ALT      = labels.plus;
+  title    = labels.plus;
+  BORDER   = 0;
+  VALIGN   = "top";
+}
+DecreaseXButton: WOImageButton {
+  filename = "minus.gif";
+  action   = decreaseX;
+  name     = labels.minusx;
+  ALT      = labels.minus;
+  title    = labels.minus;
+  BORDER   = 0;
+  VALIGN   = "top";
+}
+IncreaseYButton: WOImageButton {
+  filename = "plus.gif";
+  action   = increaseY;
+  name     = labels.plusy;
+  ALT      = labels.plus;
+  title    = labels.plus;
+  BORDER   = 0;
+}
+DecreaseYButton: WOImageButton {
+  filename = "minus.gif";
+  action   = decreaseY;
+  name     = labels.minusy;
+  ALT      = labels.minus;
+  title    = labels.minus;
+  BORDER   = 0;
+}
+
+Dimension: WOString {
+  value = dimensionString;
+}
+
+ShowValidateXML: WOConditional {
+  condition = showValidateXML;
+}
+ValidateXMLButton: WOSubmitButton {
+  action   = validateXML;
+  value    = labels.validateXML;
+  class    = "button_wide";
+}
+
+ShowValidateHTML: WOConditional {
+  condition = showValidateHTML;
+}
+ValidateHTMLButton: WOSubmitButton {
+  action   = validateHTML;
+  value    = labels.validateHTML;
+  class    = "button_wide";
+}
+
+DidValidateXML: WOConditional {
+  condition = didValidateXML;
+}
+DidValidateHTML: WOConditional {
+  condition = didValidateHTML;
+}
+
+IsValidXML: WOConditional {
+  condition = isValidXML;
+}
+IsNotValidXML: WOConditional {
+  condition = isValidXML;
+  negate    = YES;
+}
+XMLErrorText: WOString {
+  value    = xmlErrorString;
+  insertBR = YES;
+}
+
+IsValidHTML: WOConditional {
+  condition = isValidHTML;
+}
+IsNotValidHTML: WOConditional {
+  condition = isValidHTML;
+  negate    = YES;
+}
+HTMLErrorText: WOString {
+  value    = htmlErrorString;
+  insertBR = YES;
+}

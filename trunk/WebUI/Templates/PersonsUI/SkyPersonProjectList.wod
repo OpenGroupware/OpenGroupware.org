@@ -1,0 +1,12 @@
+// bind template to class
+
+ProjectList: SkyProjectList {
+  projects = person.projectDataSource.fetchObjects;
+}
+
+Buttons: SkyButtonRow {
+  ordering = ( new );
+  onNew  = assignProject;
+  new    = labels.new;
+  hasNew = isNewAllowed;
+}

@@ -1,0 +1,25 @@
+# $Id$
+
+ADDITIONAL_INCLUDE_DIRS += \
+        -I./Headers     \
+        -I../LSFoundation/
+
+LSAddress_BUNDLE_LIBS += \
+	-lLSSearch	\
+	-lLSAddress	\
+	-lNGObjWeb	\
+	-lNGLdap -lNGMime -lNGExtensions \
+	-lldap		\
+
+libLSAddress_LIBRARIES_DEPEND_UPON += \
+	-lLSFoundation	\
+	-lGDLAccess	\
+	-lNGMime -lNGLdap -lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
+
+ADDITIONAL_LIB_DIRS += \
+	-L../LSFoundation/$(GNUSTEP_OBJ_DIR) \
+	-L../LSSearch/$(GNUSTEP_OBJ_DIR) -L./$(GNUSTEP_OBJ_DIR)
+
+# The BSD's definitely need this
+SYSTEM_LIB_DIR += -L/usr/local/lib

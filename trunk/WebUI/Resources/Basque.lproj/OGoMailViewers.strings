@@ -1,0 +1,11 @@
+// $Id: OGoMailViewers.strings,v 1.1 2004/09/03 09:10:01 cvsuser Exp $
+
+bcc              = "Bcc";
+cc               = "Cc";
+contentLength    = "Tamaina";
+date             = "Data";
+download         = "Posta jaitsi";
+sender           = "Bidaltzailea";
+subject          = "Gaia";
+to               = "Nori";
+toDoc            = "Dokumentu bihurtu";

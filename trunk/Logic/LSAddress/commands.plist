@@ -1,0 +1,169 @@
+{
+  domainList = (
+        address,
+        telephone,
+        staff,
+        companyassignment,
+        companyvalue,
+        companycategory,
+        userdefaults,
+        company
+  );
+
+  domains = {
+    "company" = {
+      operations = {
+        "get"       = { class = "LSGetCompanyCommand"; };
+        "get-vcard" = { class = "LSGetVCardForGlobalIDsCommand"; };
+      };
+    };
+    "login" = {
+      operations = {
+        "check-login" = { class = "LSCheckLoginCommand"; };
+      };
+    };
+
+    "address" = {
+      operations = {
+        "new"    = { 
+          class = "LSDBObjectNewCommand"; 
+          init   = { entity = "Address"; }; 
+        };
+        "set" = { class = "LSSetAddressCommand"; };
+        "get"    = { 
+          class  = "LSDBObjectGetCommand"; 
+          init   = { entity = "Address"; }; 
+        };
+        "delete" = { 
+          class  = "LSDBObjectDeleteCommand"; 
+          init   = { entity = "Address"; }; 
+        };
+        "fetchAttributes" = {
+          class  = "LSAddressFetchAttributesCommand";
+        };
+        "convert" = {
+          class   = "LSAddressConverterCommand";
+        };
+        "build-converter-data" = {
+          class   = "LSBuildConverterDataCommand";
+        };
+      };
+    };
+
+    "telephone" = {
+      operations = {
+        "new"    = { 
+          class = "LSNewTelephoneCommand"; 
+          //init   = { entity = "Telephone"; }; 
+        };
+        "set"    = { 
+          class  = "LSSetTelephoneCommand"; 
+          //init   = { entity = "Telephone"; }; 
+        };
+        "get"    = { 
+          class  = "LSDBObjectGetCommand"; 
+          init   = { entity = "Telephone"; }; 
+        };
+        "delete" = { 
+          class  = "LSDBObjectDeleteCommand"; 
+          init   = { entity = "Telephone"; }; 
+        };
+      };
+    };
+
+    "staff" = { 
+      operations = {
+        "get-by-globalid" = { class = "LSGetStaffForGlobalIDsCommand"; };
+
+        "get"    = { 
+          class  = "LSDBObjectGetCommand"; 
+          init   = { entity = "Staff"; }; 
+        };
+        "delete"    = { 
+          class  = "LSDBObjectDeleteCommand"; 
+          init   = { entity = "Staff"; }; 
+        };
+      };
+    };
+
+    "companyassignment" = { // private
+      operations = {
+        "new"    = { 
+          class = "LSDBObjectNewCommand"; 
+          init   = { entity = "CompanyAssignment"; };
+        };
+        "set"    = { 
+          class  = "LSDBObjectSetCommand";  
+          init   = { entity = "CompanyAssignment"; };
+        };
+        "get"    = { 
+          class  = "LSDBObjectGetCommand";  
+          init   = { entity = "CompanyAssignment"; };
+        };
+        "delete" = { 
+          class  = "LSDBObjectDeleteCommand"; 
+          init   = { entity = "CompanyAssignment"; }; 
+        };
+      };
+    };
+
+    "companyvalue" = { // private
+      operations = {
+        "new"    = { 
+          class = "LSDBObjectNewCommand"; 
+          init   = { entity = "CompanyValue"; }; 
+        };
+        "set"    = { 
+          class  = "LSDBObjectSetCommand";  
+          init   = { entity = "CompanyValue"; };
+        };
+        "get"    = { 
+          class  = "LSDBObjectGetCommand";  
+          init   = { entity = "CompanyValue"; };
+        };
+        "delete" = { 
+          class  = "LSDBObjectDeleteCommand"; 
+          init   = { entity = "CompanyValue"; }; 
+        };
+        "get-by-globalid" = {
+          class  = "LSGetObjectForGlobalIDs";
+          init   = { entity = "CompanyValue"; };
+        };
+        "query"  = {
+          class  = "LSQueryCompanyValues";
+        };
+      };
+    };
+
+    "companycategory" = {
+      operations = {
+        "set-all"= { class = "LSSetCategoriesCommand"; };
+        "new"    = { 
+          class = "LSDBObjectNewCommand"; 
+          init   = { entity = "CompanyCategory"; }; 
+        };
+        "set"    = { 
+          class = "LSDBObjectSetCommand"; 
+          init   = { entity = "CompanyCategory"; }; 
+        };
+        "get"    = { 
+          class  = "LSDBObjectGetCommand"; 
+          init   = { entity = "CompanyCategory"; }; 
+        };
+        "delete" = { 
+          class  = "LSDBObjectDeleteCommand"; 
+          init   = { entity = "CompanyCategory"; }; 
+        };
+      };
+    };
+
+    "userdefaults" = {
+      operations = {
+        "write"    = { class = "LSWriteUserDefaultsCommand";    };
+        "delete"   = { class = "LSWriteUserDefaultsCommand";    };
+        "register" = { class = "LSRegisterUserDefaultsCommand"; };
+        "get"      = { class = "LSGetUserDefaultsCommand";      };        
+      };
+    };
+  };
+}

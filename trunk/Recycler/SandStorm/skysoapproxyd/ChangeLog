@@ -1,0 +1,11 @@
+2004-04-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* some updates for OGo environment - does not compile yet (v5.0.2)
+
+Mon Oct  7 11:09:13 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* GNUmakefile: added check if skymasterd instance file already
+	  exists
+	
+	* created ChangeLog
+

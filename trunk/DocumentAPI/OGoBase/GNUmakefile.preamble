@@ -1,0 +1,14 @@
+# compilation settings
+
+ADDITIONAL_CPP_FLAGS += -Wall
+
+ADDITIONAL_INCLUDE_DIRS += -I..	-I../OGoDocuments/
+
+ADDITIONAL_LIB_DIRS += -L../OGoDocuments/$(GNUSTEP_OBJ_DIR) \
+
+OGoBase_LIB_DIRS    += -L./$(GNUSTEP_OBJ_DIR)
+OGoBase_BUNDLE_LIBS += -lOGoBase
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif

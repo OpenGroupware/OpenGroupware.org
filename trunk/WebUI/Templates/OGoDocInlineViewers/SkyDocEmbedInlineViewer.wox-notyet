@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<!-- $Id: SkyDocEmbedInlineViewer.wox,v 1.1 2004/07/27 19:03:30 helge Exp $ -->
+<!--
+  TODO: this needs to be checked for proper function and can then be enabled.
+  -->
+<span
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+>
+  <var:if condition="useIFrame">
+    <var:if condition="useURI">
+      <iframe var:src="uri" var:width="width" var:height="height">
+        No iframe support in this browser, cannot display document.
+      </iframe>
+    </var:if>
+
+    <var:if condition="useURI" const:negate="YES">
+      <iframe var:value="mimeContent" var:filename="fileName"
+              var:width="width" var:height="height">
+        No iframe support in this browser, cannot display document.
+      </iframe>
+    </var:if>
+  </var:if>
+  
+  <var:if condition="useIFrame" const:negate="YES">
+    <var:if condition="useURI">
+      <embed var:src="uri" var:HREF="uri" 
+             var:width="width" var:height="height" />
+    </var:if>
+    <var:if condition="useURI" const:negate="YES">
+      <embed var:data="object" var:filename="fileName"
+             var:mimeType="contentType.stringValue"
+             var:width="width" var:height="height" />
+    </var:if>
+    
+    <noembed>
+      Can't provide an inline viewer,
+      your browser does not support the EMBED HTML tag.
+    </noembed>
+  </var:if>
+</span>

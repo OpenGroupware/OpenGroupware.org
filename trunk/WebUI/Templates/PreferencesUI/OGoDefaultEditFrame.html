@@ -1,0 +1,27 @@
+<!-- $Id: OGoDefaultEditFrame.html 2 2004-08-20 11:37:44Z znek $ -->
+<tr>
+  <#IsInViewerModeElse>
+    <#AttributeCellLeft>
+      &nbsp;<#IsDefaultEditable><#ResetToDefaultButton /></#IsDefaultEditable>
+    </#AttributeCellLeft>  
+  </#IsInViewerModeElse>
+  <#AttributeCell><#DefaultLabel />:</#AttributeCell>
+  <#ValueCell>
+    <#IsDefaultEditable><#Content /></#IsDefaultEditable>
+    <#IsDefaultReadOnly>
+      <#IsText><pre><#DefaultValue /></pre></#IsText>
+      <#IsNotText><#Font><#DefaultValue /></#Font></#IsNotText>
+    </#IsDefaultReadOnly>
+    <#IsInViewerMode>&nbsp;<#Content /></#IsInViewerMode>
+  </#ValueCell>
+  <#IsInViewerModeElse>
+    <td align="right" valign="top">
+      <#Font>
+        &nbsp;
+        <#IsRootCond>
+          <#EditableCheckbox /><#EditableLabel />&nbsp;<#ResetEditable />
+        </#IsRootCond>
+      </#Font>
+    </td>
+  </#IsInViewerModeElse>
+</tr>

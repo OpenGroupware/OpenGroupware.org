@@ -1,0 +1,49 @@
+// $Id: OGoMailInfo.strings,v 1.1 2004/01/20 21:16:12 helge Exp $
+
+LSWMailPreferences = "Mail Preferences"
+DefaultAccessPreferences= "Default Access Preferences"
+Imap                  = "Mails";
+
+saveButtonLabel       = "save"
+cancelButtonLabel     = "cancel"
+
+"mail_editor_type"    = "Type of Maileditor"
+internal              = "Internal"
+external              = "External"
+
+"mail_send_type"      = "Send Mail as"
+html                  = "Html"
+plain                 = "Text"
+signature             = "Signature"
+
+senderLength          = "Sender Length"
+subjectLength         = "Subject Length"
+
+viewImagesInline      = "View images inline"
+viewAttachmentsInline = "View attachments inline"
+viewAttachmentBodysInEditor = "View attachment bodys in editor"
+
+YES                   = "Yes"
+NO                    = "No"
+login                 = "Login"
+
+imapPasswd1 = "imap password"
+imapPasswd2 = "repeat imap password"
+imapUser    = "imap user name"
+imapHost    = "imap host"
+
+viewStatus = "View mail status"
+asIcon     = "as icon"
+
+label_newMail_single = "You have one new mail!";
+label_newMail_multi  = "You have %i new mails!";
+label_newMail_no     = "You have no new mails!";
+
+action_viewMail    = "view mail";
+action_refresh     = "refresh";
+action_closeWindow = "close window";
+
+activeMail              = "Email"
+inactiveMail            = "Email (inaktív)"
+newMail                 = "Email (olvasatlan)"
+

@@ -1,0 +1,172 @@
+// $Id: SkyListSorter.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+
+ItemContent: WOComponentContent {};
+
+// list repetition
+
+ListRep: WORepetition {
+  list = nonSelection;
+  item = item;
+}
+
+ListRepDrag: WEDragContainer {
+  tag            = "sortPanelAdd";
+  object         = item;
+  effectsAllowed = "move";
+}
+
+ListRepDrop: WEDropContainer {
+  elementName    = "td";
+  tags           = ( "sortPanelRemove" );
+  action         = removeObject;
+  droppedObject  = droppedObject;
+  width          = "50%";
+  align          = "left";
+  valign         = "top";
+}
+
+// condition: selection empty or not
+
+IsSelectionEmpty: WOConditional {
+  condition = isSelectionEmpty;
+}
+
+IsSelectionNotEmpty: WOConditional {
+  condition = isSelectionEmpty;
+  negate    = YES;
+}
+
+// selection repetition
+
+SelectionRep: WORepetition {
+  list  = selection;
+  item  = item;
+  index = sortIdx;
+}
+
+SelectionRepDrag: WEDragContainer {
+  tag            = "sortPanelRemove";
+  object         = item;
+  effectsAllowed = "move";
+}
+
+SelectionRepDrop: WEDropContainer {
+  elementName   = "td";
+  tags          = ( "sortPanelAdd", "sortPanelRemove" );
+  action        = addObject;
+  droppedObject = droppedObject;
+  align         = "left";
+  valign        = "top";
+}
+
+// labels
+
+Font: WOGenericContainer {
+  elementName   = "font";
+  color         = config.font_color;
+  size          = config.font_size;
+  face          = config.font_face;
+}
+
+SelectionTitle: WOString {
+  value = selectionTitle;
+}
+NonSelectionTitle: WOString {
+  value = nonSelectionTitle;
+}
+
+// non-javascript design
+
+IsJS: WOConditional {
+  condition = isNonJS;
+  negate    = YES;
+}
+
+IsNonJS: WOConditional {
+  condition = isNonJS;
+}
+
+IsFirst: WOConditional {
+  condition = isFirstElementInSelection;
+}
+
+IsNotFirst: WOConditional {
+  condition = isFirstElementInSelection;
+  negate    = YES;
+}
+
+IsLast: WOConditional {
+  condition = isLastElementInSelection;
+}
+
+IsNotLast: WOConditional {
+  condition = isLastElementInSelection;
+  negate    = YES;
+}
+
+ImgUpButton: WOImageButton {
+  action   = nonJSSortUp;
+  filename = "narrow_up_icon.gif";
+  border   = "0";
+}
+
+ImgUpLink: WOHyperlink {
+  action   = nonJSSortUp;
+  filename = "narrow_up_icon.gif";
+  border   = "0";
+}
+
+ImgUpBlind: WOImage {
+  filename = "narrow_up_icon.gif";
+  border   = "0";
+}
+
+ImgDownButton: WOImageButton {
+  action   = nonJSSortDown;
+  filename = "narrow_down_icon.gif";
+  border   = "0";
+}
+
+ImgDownLink: WOHyperlink {
+  action   = nonJSSortDown;
+  filename = "narrow_down_icon.gif";
+  border   = "0";
+}
+
+ImgDownBlind: WOImage {
+  filename = "narrow_down_icon.gif";
+  border   = "0";
+}
+
+ImgAddButton: WOImageButton {
+  action   = nonJSAdd;
+  filename = "sort_add.gif";
+  border   = "0";
+}
+
+ImgAddLink: WOHyperlink {
+  action   = nonJSAdd;
+  filename = "sort_add.gif";
+  border   = "0";
+}
+
+ImgRemoveButton: WOImageButton {
+  action   = nonJSRemove;
+  filename = "sort_remove.gif";
+  border   = "0";
+}
+
+ImgRemoveLink: WOHyperlink {
+  action   = nonJSRemove;
+  filename = "sort_remove.gif";
+  border   = "0";
+}
+
+IsInFormCond: WOConditional {
+  condition  = context.isInForm;
+}
+
+IsInFormCondElse: WOConditional {
+  condition = context.isInForm;
+  negate    = YES;
+}

@@ -1,0 +1,92 @@
+<#Frame>
+  <#Window>
+    <table width="100%" border="0" cellpadding="4" cellspacing="0">
+      <#Title><#Buttons/></#Title>
+    
+      <tr>
+        <#AttributeCell><#Font><#DownloadLabel/>:</#Font></#AttributeCell>
+        <#ValueCell>
+          <#Font>
+            <#FormLetterLink><#FormLetterName/></#FormLetterLink>,
+            <#VCardLink><#VCardName/></#VCardLink>
+          </#Font>
+        </#ValueCell>
+      </tr>
+
+      <#IsAccountCond>
+        <tr>
+          <#AttributeCell><#Font><#LoginLabel/>:</#Font></#AttributeCell>
+          <#ValueCell    ><#Font><#Login     /></#Font></#ValueCell>
+        </tr>
+      </#IsAccountCond>
+    </table>
+  
+    <p>
+      <#TabBody>
+          <#AttributesTab><#PersonalAttributes/></#AttributesTab>
+
+          <#IsRootCondElse>
+            <#IsProjectEnabled>
+              <#ProjectsTab><#ProjectList/></#ProjectsTab>
+            </#IsProjectEnabled>
+
+            <#IsInEnterpriseCond>
+              <#EnterpriseTab><#EnterpriseSetViewer/></#EnterpriseTab>
+            </#IsInEnterpriseCond>
+          </#IsRootCondElse>
+
+          <#ShowLDAPInfo>
+            <#LDAPTab><#LDAPInfoViewer/></#LDAPTab>
+          </#ShowLDAPInfo>
+
+          <#IsRootCondElse>
+            <#AddressTab><#AddressesViewer/></#AddressTab>
+          </#IsRootCondElse>
+
+          <#HasImage>
+            <#PictureTab><#Picture/></#PictureTab>
+          </#HasImage>
+       
+          <#AppointmentsTab>
+              <table border="0" cellpadding="4" width="100%" cellspacing="2">
+                <tr>
+                  <#AptToggleCell>
+                    <table border="0" cellpadding="0" cellspacing="0">
+                      <tr> 
+                        <#ShowAptListCond>
+                          <td><#SwitchToView><#ViewIcon/></#SwitchToView></td>
+                          <td><#ListIconInactive/></td> 
+                        </#ShowAptListCond>
+                        <#ShowAptViewCond>
+                          <td><#ViewIconInactive/></td> 
+                          <td><#SwitchToList><#ListIcon/></#SwitchToList></td>
+                        </#ShowAptViewCond>
+                      </tr>
+                    </table>  
+                  </#AptToggleCell>
+                </tr>
+                <tr><td></td></tr>
+              </table>
+          
+            <#ShowAptListCond><#AppointmentList/></#ShowAptListCond>
+            <#ShowAptViewCond><#AppointmentView/></#ShowAptViewCond>
+          </#AppointmentsTab>
+
+          <#IsAccessRightEnabled>
+            <#AccessTab>
+              <#AccessTitle><#AccessButtons/></#AccessTitle>
+              <#AccessList/>
+            </#AccessTab>
+          </#IsAccessRightEnabled>
+
+          <#IsLinkTabEnabled>
+            <#LinkTab><#RelatedLinks/></#LinkTab>
+          </#IsLinkTabEnabled>
+
+          <#IsLogTabEnabled>
+            <#LogTab><#LogList/></#LogTab>
+          </#IsLogTabEnabled>
+      </#TabBody>
+    </p>
+  </#Window>
+</#Frame>

@@ -1,0 +1,9 @@
+# $Id: TODO 1 2004-08-20 11:17:52Z znek $
+
+Todo for Appointments Product
+=============================
+
+- SxICalendar
+  - change to use the folder for fetching!
+
+- SxDavAptChange.m:110: warning: `NSString' does not respond to `plainTextStringByDecodingRTF'

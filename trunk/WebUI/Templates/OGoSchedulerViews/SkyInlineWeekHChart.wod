@@ -1,0 +1,159 @@
+// $Id: SkyInlineWeekHChart.wod 2 2004-08-20 11:37:44Z znek $
+
+DragScript: WEDragScript {}
+DropScript: WEDropScript {}
+
+IsResCategorySelected: WOConditional {
+  condition = isResCategorySelected;
+  negate    = YES;
+}
+
+// hori - matrix
+
+HasRows: WOConditional {
+  condition = hasRows;
+}
+
+ChartMatrix: WEHSpanTableMatrix {
+  list        = cacheDataSource.fetchObjects;
+  item        = appointment;
+  columns     = columns;
+  rows        = rows;
+  column      = column;
+  row         = row;
+  itemActive  = isAppointmentInCell;
+  isRowActive = isAppointmentInRow;
+
+//  rowHeight   = 8;
+  WIDTH       = "100%";
+  BORDER      = 0;
+  CELLPADDING = 0;
+  CELLSPACING = 2;
+}
+
+ChartTitle: WETableMatrixLabel {
+  position    = "top";
+  elementName = "td";
+  BGCOLOR     = config.colors_headerLabelCell;
+  ALIGN       = "CENTER";
+  span        = columnsPerDay;
+//  WIDTH       = "80";
+}
+WeekdayTitle: LSWSchedulerDateTitle {
+  title       = labels.$weekday;
+  newLabel    = labels.new;
+  highlight   = weekday.isToday;
+  date        = weekday;
+  disableNew    = isResCategorySelected;
+  directActionName = dayDirectActionName;
+}
+
+ChartRowTitle: WETableMatrixLabel {
+  position    = "left";
+  elementName = "td";
+  BGCOLOR     = config.colors_leftLabelCell;
+//  WIDTH       = 2;
+}
+ShowLinkCond: WOConditional {
+  condition = session.userDefaults.scheduler_weekchart_showrowlink;
+}
+ShowLinkCondElse: WOConditional {
+  condition = session.userDefaults.scheduler_weekchart_showrowlink;
+  negate    = YES;
+}
+RowLink: WOHyperlink {
+  disabled         = isWeekDirectActionDisabled;
+  directActionName = weekDirectActionName;
+  ?year            = weekStart.yearOfCommonEra;
+  ?week            = weekStart.weekOfYear;
+  ?month           = weekStart.monthOfYear;
+  ?tz              = dataSource.timeZone.abbreviation;
+  ?selection       = rowSelection;
+  //STYLE            = "text-decoration:none";
+}
+RowInfo: WOString {
+  value = currentRowLabel;
+}
+
+EmptyCell: WETableMatrixNoContent {
+  elementName = "td";
+  BGCOLOR     = config.colors_emptyCell;
+}
+
+Bottom: WETableMatrixLabel {
+  position    = "bottom";
+  elementName = "td";
+}
+Space: WOImage {
+  filename = spaceImg;
+}
+
+ChartCell: WETableMatrixContent {
+  elementName = "td";
+  BGCOLOR     = config.colors_contentCell;
+  ALIGN       = "top";
+}
+// matrix content
+
+AptLink: WOHyperlink {
+  directActionName = "viewApt";
+  ?oid    = appointmentOID;
+  ?entity = appointmentEntity;
+  ?tz  = appointment.startDate.timeZone.abbreviation;
+  ?ctx = context.contextID;
+  
+  TITLE  = shortTextForApt;
+}
+ViewAptAction: WOHyperlink {
+  action = viewAppointment;
+  TITLE  = shortTextForApt;
+}
+UseDACond: WOConditional {
+  condition = useDirectActionForView;
+}
+UseDACondElse: WOConditional {
+  condition = useDirectActionForView;
+  negate    = YES;
+}
+
+/* appointments */
+
+IsViewAccessAllowed: WOConditional {
+  condition = appointmentViewAccessAllowed;
+}
+IsViewAccessAllowedElse: WOConditional {
+  condition = appointmentViewAccessAllowed;
+  negate    = YES;
+}
+
+AptDrag: WEDragContainer {
+  tag         = "appointment";
+  object      = appointment;
+  isDraggable = isAppointmentDraggable;
+}
+
+AptInfoIcon: WOImage {
+  filename = dateCellIcon;
+  BORDER   = "0";
+  VALIGN   = "top";
+  ALT      = shortTextForApt;
+  TITLE    = shortTextForApt;
+}
+
+AptInfo: WOString {
+  value     = appointment;
+  formatter = aptInfoFormatter;
+}
+
+TitleFont : WOGenericContainer {
+  elementName = "font";
+  COLOR       = config.colors_titleColor;
+}
+
+IsRowLinkEnabled: WOConditional {
+  condition = isRowLinkEnabled;
+}
+IsRowLinkDisabled: WOConditional {
+  condition = isRowLinkEnabled;
+  negate    = YES;
+}

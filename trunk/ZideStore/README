@@ -1,0 +1,52 @@
+# $Id$
+
+OGo WebDAV Daemon for ZideLook and Evolution
+============================================
+
+Frontend
+- the WebDAV frontend handlers written in SOPE
+
+Backend
+- backend storage classes which encapsulate the SKYRiX commands, datasources
+  or raw SQL functions
+- also contains a SQLQuery class for easier generation of custom SQL queries
+  (eg used when fetching contacts)
+
+
+iCalendar Support
+- iCalendars are available under:
+  - "CalendarFolder/calendar.ics"
+  - "CalendarFolder/ics"
+- the Users Default-Calendar under:
+  - /skyrix/so/user/calendar.ics
+
+Defaults
+- SxAptFolder_MonthsIntoFuture (default: 12)
+- SxAptFolder_MonthsIntoPast   (default: 2)
+- SxDebugAuthenticator
+- SxVMemLimit
+- SxDebugCache
+- SxCachePath  (/var/cache/zidestore)
+- SxDebugSQL
+- ZLFolderRefresh
+- SxExplain
+- SxSkyrixLinkPrefix
+- ZLRefreshInterval (2 [minutes])
+- SxEnableAptCoreCache
+- ZLCreateGroupAppointmentsInGroupFolders
+- ZLShowGroupOverviewCalendars
+- SxDebugTaskPatch
+- SxDebugAptHandler
+- SxFolderDebugEnabled
+
+Useful Defaults from Other Modules
+- WOHttpAdaptor_LogStream
+- SkyCommandProfileEnabled
+- SoDebugKeyLookup
+- SoDebugObjectTraversal
+- SoObjectRequestHandlerDebugEnabled
+- SoObjectDAVDispatcherDebugEnabled
+- SoRendererDebugEnabled
+- SoSecurityManagerDebugEnabled
+- WOHttpTransactionUseSimpleParser
+- WOPort

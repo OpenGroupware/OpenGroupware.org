@@ -1,0 +1,120 @@
+<#Frame>
+  <!-- $Id: LSWPreferencesEditor.html,v 1.3 2004/06/20 19:16:02 helge Exp $ -->
+  <#Window>
+   <#WarningModeCondElse>
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+      <#Form>
+        <#WindowTitle />
+
+        <#IsRootCond>
+           <#IsLoginEditable>
+             <tr>
+               <#AttributeCell><#LoginLabel />:</#AttributeCell>
+               <#ValueCell><#Login /></#ValueCell>
+             </tr>
+           </#IsLoginEditable>
+        </#IsRootCond>
+
+        <#IsNotTemplateUser>
+          <#AccountEditor />
+          <#IsRootCond>
+            <#IsRootNotEdited>
+              <tr>
+                <#AttributeCell>
+                  <#Font><#LockedLabel />:</#Font></#AttributeCell>
+                <#ValueCell><#Font><#LockedCheckBox /></#Font></#ValueCell>
+              </tr>
+            </#IsRootNotEdited>
+
+            <!-- Template user selection -->
+            <tr>
+              <#AttributeCell><#Font
+                  ><#TemplateUserSelectionLabel />:</#Font></#AttributeCell>
+              <#ValueCell><#EditFont
+                  ><#TemplateUserPopup /></#EditFont></#ValueCell>
+            </tr
+>
+            <!-- Location Team Selection -->
+            <tr>
+              <#AttributeCell><#Font
+                  ><#LocationTeamLabel />:</#Font></#AttributeCell>
+              <#ValueCell><#EditFont><#TeamPopUp /></#EditFont></#ValueCell>
+            </tr>
+            <tr>
+              <#AttributeCell><#Font><#TeamLabel />:</#Font></#AttributeCell>
+              <#ValueCell><#Font><#TeamsList /></#Font></#ValueCell>
+            </tr>
+         <!-- Usermanager: Number of Listitems  -->
+            <#IsRootEdited><#BlockSizeField /></#IsRootEdited>
+          </#IsRootCond>
+        </#IsNotTemplateUser>
+
+        <tr><td colspan="4"></td></tr>
+
+        <#IsRootEdited>
+        <tr><td colspan="4"></td></tr>
+        <#ConfigTitle />
+          <tr>
+            <#AttributeCell><#Font><#CategoryLabel />:</#Font>
+            </#AttributeCell>
+            <#ValueCell><#Font><#CategoryArea /></#Font></#ValueCell>
+          </tr>
+        </#IsRootEdited>
+      <tr>
+
+      <#IsMailConfigEnabled>
+        <#ExportAccount />
+        <#MailQuota><#InMBLabel /></#MailQuota>
+        <#VAddresses />
+        <#LocalDomainAliasesFrame>
+          <#LocalDomainAliases><#Item /></#LocalDomainAliases>
+        </#LocalDomainAliasesFrame>
+      </#IsMailConfigEnabled>
+
+      <td colspan=4 align="center">
+        <#IsSaveEnabled><#SaveSubmit /></#IsSaveEnabled>
+        <#IsSaveDisabled><#SaveSubmitDA /></#IsSaveDisabled>
+        <#CancelSubmit />
+        <#ShowDeleteButton>
+          <#IsDeleteEnabled><#DeleteSubmit /></#IsDeleteEnabled>
+          <#IsDeleteDisabled><#DeleteSubmitDA /></#IsDeleteDisabled>
+        </#ShowDeleteButton>
+        <#IsNotTemplateUser>
+          <#DontUseLDAP><#ChangePasswordSubmit /></#DontUseLDAP>
+        </#IsNotTemplateUser>
+      </td>
+    </tr>
+  </#Form>
+</table>
+ </#WarningModeCondElse>
+ <#WarningModeCond>
+   <#Warning />  
+ </#WarningModeCond>
+
+</#Window>
+
+<script language="JavaScript">
+<!-- hide
+if (document.editform) {
+  if (document.editform.name) {
+    document.editform.name.focus();
+  }
+}
+// -->
+</script>
+
+<#IsRootCond>
+<#IsLoginEditable>
+<script language="JavaScript">
+<!-- hide
+if (document.editform) {
+  if (document.editform.login) {
+    document.editform.login.focus();
+  }
+}
+// -->
+</script>
+</#IsLoginEditable>
+</#IsRootCond>
+
+</#Frame>

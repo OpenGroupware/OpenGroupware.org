@@ -1,0 +1,133 @@
+2004-11-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.33
+
+	* SkyAssignPersonSubEditor.m: code cleanups, moved SkyPersonFormatter
+	  class to own file
+
+	* LSWEnterpriseAdvancedSearch.m, LSWEnterpriseSearchPage.m: minor code
+	  cleanups
+
+2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWEnterpriseAdvancedSearch.wo: removed deprecated 'singleSelection'
+	  binding (v5.1.32)
+
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWEnterpriseAdvancedSearch.m: fixed a MacOSX warning (v5.1.31)
+
+2004-06-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWEnterprises.m, SkyAssignPersonSubEditor.m: various code cleanups
+	  (v5.0.30)
+
+2004-05-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added postamble which validates WOx files prior building
+	  (v5.0.29)
+
+2004-05-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyAssignPersonEditor.wo: changed to WOx template (v5.0.28)
+
+2004-04-19  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyEnterpriseEditor.m: minor code cleanups (v5.0.27)
+
+2004-04-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.26
+	
+	* SkyEnterpriseViewer.m: removed a lot of unused methods related to
+	  projects, files and folders (managed by a separate subcomponent for
+	  quite some time now)
+	
+	* SkyEnterpriseViewer.wo: template cleanups
+
+2004-01-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWEnterpriseAdvancedSearch.m: replaced -indexOfString: with
+	  -rangeOfString: (v5.0.25)
+
+2004-01-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWEnterprises.m, SkyEnterpriseList.m, SkyEnterpriseProjectList.m,
+	  SkyEnterpriseViewer.m: various code cleanups (v5.0.24)
+
+2003-12-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWEnterpriseAdvancedSearch.wo/LSWEnterpriseAdvancedSearch.wod: fixed
+	  CSS 'id' vs 'class' issue (v5.0.23)
+
+2003-12-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyEnterpriseViewer: use "activate" direct action in URL generation,
+          added related link tab, major cleanups, removed dead code (v5.0.22)
+	
+	* LSWEnterpriseHtmlMailPage.wo: minor template cleanups, now uses
+	  "activate" direct-action instead of "viewEnterprise" (v5.0.21)
+
+Fri Nov 28 19:13:34 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSWEnterpriseAdvancedSearch.m: fixed use of '%' wildcard 
+	  (ogo bug 118) (v5.0.20)
+
+2003-11-27  Thomas Schild  <ts@skyrix.com>
+
+	* GNUmakefile: removed DERIVED_RESOURCES
+	* EnterprisesDerived.make: removed
+	* SkyEnterpriseViewer.wo, SkyEnterpriseEditor.wo,
+	  SkyEnterpriseList: removed *.lproj
+	  (v5.0.19)
+
+2003-11-25  Thomas Schild  <ts@skyrix.com>
+
+	* SkyEnterpriseEditor.wo/SkyEnterpriseEditor.html: moved
+	  formelementname 'description' in javascript to 'elements[0]'
+	  (fixed OGo bug 436) (v5.0.18)
+
+Tue Nov 18 17:51:33 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSWEnterprises.m, SkyEnterpriseList.m: fixed removing of favorites.
+	  moved favorites tab to the left (solves ogo bug 176) (v5.0.17)
+
+2003-09-30  Thomas Schild  <ts@skyrix.com>
+
+	* LSWEnterprises.wo: imageButton --> css submitButton
+	* LSWEnterpriseAdvancedSearch.wo: imageButton --> css submitButton
+	* SkyAssignPersonSubEditor.wo: imageButton --> css submitButton
+	* LSWEnterpriseSearchPage.wo: imageButton --> css submitButton
+	* GNUmakefile: some clean ups in EnterpriseDerived.make
+
+Tue Aug 12 17:57:00 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSWEnterprises.m: added customTabLabel, 
+	  new default: contacts_maxTabTitleLength
+	  (fixes sx bug 1794) (v5.0.16)
+
+Mon Aug 11 16:59:12 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSWEnterpriseAdvancedSearch.m: sort saved searches popup
+	  (fixed sx bug 1732) (v5.0.15)	
+
+Thu Jul 31 11:03:11 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* LSWEnterpriseAdvancedSearch.m: fixed keywords query (for new 
+	  LSExtendedSearchEnterpriseCommand (LSEnterprise v5.0.4))
+	  (fixes bug 671) (v5.0.14)
+
+Mon Jul 21 14:37:00 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* bundle-info.plist: add OGoProject as required bundle (needed for 
+	  SkyAccessEditor) (v5.0.13)
+
+Mon Jul  7 17:31:56 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.12)
+
+	* removed historic changelogs
+
+Wed May 24 17:39:11 2000  Martin Spindler  <spindler@mdlink.de>
+
+	* ChangeLog created

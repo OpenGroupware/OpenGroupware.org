@@ -1,0 +1,58 @@
+<#Frame>
+  <!-- $Id: LdapPersonViewer.html,v 1.1 2004/05/21 12:23:59 helge Exp $ -->
+  <#Window>
+    <table border="0" cellspacing="0" cellpadding="2" width="100%">
+      <#Title><#Buttons/></#Title>
+    </table>
+
+    <#ViewerTabs>
+      <#ViewerTabPerson>
+        <table border="0" cellspacing="0" cellpadding="2" width="100%">
+          <tr>
+            <td align="right"><#Font>First Name:</#Font></td>
+            <td align="left"><#Font><#FirstName/></#Font></td>
+          </tr>
+          <tr>
+            <td align="right"><#Font>Last Name:</#Font></td>
+            <td align="left" ><#Font><#LastName/></#Font></td>
+          </tr>
+          <tr>
+            <td align="right"><#Font>E-Mail:</#Font></td>
+            <td align="left" ><#Font><#Email/></#Font></td>
+          </tr>
+        </table>
+      </#ViewerTabPerson>
+
+      <#ViewerTabAddresses>
+        <table border="0" cellspacing="0" cellpadding="2" width="100%">
+          <tr>
+            <td align="left" width="50%">
+              <b>Private Address:</b>
+            </td>
+            <td align="left" width="50%">
+              <b>Business Address:</b>
+            </td>
+          </tr>
+          <tr>
+            <td align="left" width="50%"> <!-- left side: private address -->
+
+              <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                <tr>
+                  <td align="right"><#Font>Street:</#Font></td>
+                  <td align="left" ><#Font><#Street/></#Font></td>
+                </tr>
+              </table>
+
+            </td>
+            <td align="left" width="50%"> <!-- right side: business address -->
+XXX
+            </td>
+          </tr>
+        </table>
+      </#ViewerTabAddresses>
+
+      <#ViewerTabLog />
+    </#ViewerTabs>
+
+  </#Window>
+</#Frame>

@@ -1,0 +1,138 @@
+// $Id: SkyMailingListEditor.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.MailingListManagerLabel;
+  onClose = cancel;
+}
+
+Form: WOForm {
+  name    = "listeditor";
+  enctype = "multipart/form-data";  
+  action  = save;
+}
+
+IsDeleteEnabled: WOConditional {
+  condition = isNew;
+  negate    = YES;
+}
+
+SaveSubmit: WOSubmitButton {
+  action   = save;
+  value    = labels.saveButtonLabel;
+  class    = "button_narrow";
+}
+
+DeleteSubmit: WOSubmitButton {
+  action   = delete;
+  value    = labels.deleteButtonLabel;
+  class    = "button_narrow";
+}
+
+CancelSubmit: WOHyperlink {
+  action = cancel;
+  string = labels.cancelButtonLabel;
+  class  = "button_narrow";
+}
+
+AttributeCell: WOGenericContainer {
+  elementName = "td";
+  align       = "right";
+//valign      = "top";
+  bgcolor     = config.colors_attributeCell;
+  width       = "15%";
+}
+
+AttributeCell1: WOGenericContainer {
+  elementName = "td";
+  align       = "right";
+  valign      = "top";
+  bgcolor     = config.colors_attributeCell;
+  width       = "15%";
+}
+
+ValueCell: WOGenericContainer {
+  elementName = "td";
+  align       = "left";
+  valign      = "top";
+  bgcolor     = config.colors_valueCell;
+}
+
+WarningModeCond: WOConditional { 
+  condition = isInWarningMode; 
+}
+
+WarningModeCondElse: WOConditional {
+  condition = isInWarningMode;
+  negate    = YES;
+}
+
+Warning: LSWWarningPanel {
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
+}
+
+// searching for persons
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+ListNameLabel: WOString { 
+  value = labels.ListName; 
+}
+
+DescriptionLabel: WOString { 
+  value = labels.ListDescription; 
+}
+
+EmailsLabel: WOString { 
+  value = labels.ListEmails; 
+}
+
+ListName: WOTextField {
+  name  = "listname";
+  value = entry.name;
+  size  = 40;
+}
+
+Description: WOText {
+  value = entry.description;
+  wrap  = "physical";
+  rows  = "5";
+  cols  = "80";
+}
+
+Emails: WOText {
+  value = emails;
+  wrap  = "physical";
+  rows  = "10";
+  cols  = "80";
+}
+
+IsNew: WOConditional {
+  condition = isNew;
+}
+
+IsNewElse: WOConditional {
+  condition = isNew;
+  negate    = YES;
+}
+
+ListNameView: WOString {
+  value = entry.name;
+}
+
+UploadField: WOFileUpload {
+  data = data;
+}
+
+UploadString: WOString {
+  value = labels.ListUpload;
+}
+
+UploadConfirm: WOSubmitButton {
+  action   = confirmUpload;
+  value    = labels.upload;
+  class    = "button_auto";
+}

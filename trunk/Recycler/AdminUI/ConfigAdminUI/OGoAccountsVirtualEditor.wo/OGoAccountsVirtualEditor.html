@@ -1,0 +1,59 @@
+<#Frame>
+  <!-- $Id$ -->
+  <#Window>
+   <#Form>
+    <#TabView>
+      <#ConfigTab>
+        <p style="border: 1px solid black; padding: 8px;">
+          <#Font>
+            This configuration creates a Postfix virtual file containing the
+            email mappings specified in the account records.
+          </#Font>
+        </p>
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+          <tr>
+            <#ACell><#Font>Settings:</#Font></#ACell>
+            <#VCell><#EditFont>
+              <#IgnoreExport/> Ignore during export.<br />
+              <#IgnoreVAddrs/> Ignore virtual addresses attached to account.<br/>
+            </#EditFont></#VCell>
+          </tr>
+
+          <tr>
+            <#ACell><#Font>Local Domains:</#Font></#ACell>
+            <#VCell><#EditFont>
+              <#IgnoreLocalDomains/> Ignore local domains.<br />
+              <#DomainPatternArea />
+            </#EditFont></#VCell>
+          </tr>
+	  
+          <tr>
+            <#ACell><#Font>EMails:</#Font></#ACell>
+            <#VCell><#EditFont>
+              <#GenEMail1/> generate valias for account email address.<br />
+              <#GenEMail2/> generate valias for second email address.<br />
+              <#GenEMail3/> generate valias for third email address.<br />
+            </#EditFont></#VCell>
+          </tr>
+
+          <tr>
+            <#ACell><#Font>Raw Prefix:</#Font></#ACell>
+            <#VCell><#EditFont><#RawPrefix/></#EditFont></#VCell>
+          </tr>
+          <tr>
+            <#ACell><#Font>Raw Suffix:</#Font></#ACell>
+            <#VCell><#EditFont><#RawSuffix/></#EditFont></#VCell>
+          </tr>
+        </table>
+      </#ConfigTab>
+
+      <#PreviewTab>
+        <pre style="border: 1px solid black; padding: 8px;"
+            ><#PreviewContent/></pre>
+      </#PreviewTab>
+
+      <#DebugTab><#Obj/></#DebugTab>
+    </#TabView>
+   </#Form>
+  </#Window>
+</#Frame>

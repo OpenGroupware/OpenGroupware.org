@@ -1,0 +1,12 @@
+<?xml version='1.0' standalone='yes'?>
+<!-- $Id: SkyTimeZonePopUp.wox 2 2004-08-20 11:37:44Z znek $ -->
+<var:popup
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  list            = "timeZones"
+  item            = "item"
+  string          = "itemAbbreviation"
+  selection       = "timeZone"
+  onChange        = "^onChange"
+></var:popup>

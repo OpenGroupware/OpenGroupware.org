@@ -1,0 +1,4 @@
+# version file
+
+include ../Version
+SUBMINOR_VERSION:=82

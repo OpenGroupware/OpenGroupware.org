@@ -1,0 +1,378 @@
+// $Id: SkyInvoiceViewer.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+//Style
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.invoiceViewerWindowTitle;
+  onClose = session.navigation.leavePage;
+}
+
+InvoiceTitle: LSWViewerTitle {
+  title     = invoice.invoiceNr;
+}
+
+Buttons: SkyButtonRow {
+  /* defaultButtons */
+  onClip    = placeInClipboard;
+  hasEdit   = isEditEnabled;
+  hasDelete = isDeleteEnabled;
+  onEdit    = edit;
+  onDelete  = delete;
+  /* custom */
+  ordering    = ( print, certifyprintout, monition, cancel, copy, done, accounting, delete, edit, clip );
+  hasPrint    = isPrintEnabled;
+  hasMonition = isMonitionEnabled;
+  hasCancel   = isCancelEnabled;
+  hasCertifyprintout = isInvoiceNotPrinted;
+  hasCopy     = isCopyEnabled;
+  hasDone     = isFinishEnabled;
+  hasAccounting = isAccountingEnabled;
+  onPrint     = printInvoice;
+  onMonition  = monition;
+  onCancel    = cancelInvoice;
+  onCertifyprintout  = certifyPrintout;
+  onCopy      = copyInvoice;
+  onDone      = finishInvoice;
+  onAccounting = accounting;
+  targetPrint = "printout";
+  /* labels */
+  clip          = labels.clip;
+  edit          = labels.editInvoice;
+  delete        = labels.deleteInvoice;
+  print         = labels.printInvoice;
+  certifyprintout = labels.certifyPrintout;
+  monition      = labels.invoiceMonition;
+  cancel        = labels.cancelInvoice;
+  copy          = labels.copyInvoice;
+  done          = labels.finishInvoice;
+  accounting    = labels.invoiceAccounting;
+}
+
+ArticleButtons: SkyButtonRow {
+  ordering = ( new );
+  /* defaultButtons */
+  hasNew   = isNewArticleEnabled;
+  onNew    = "newArticleAssignment";
+  new      = labels.new;
+}
+
+CurrencyAttribute: SkyAttribute {
+  label = labels.currency;
+}
+CurrencyToggle: SkyInlineCurrencyToggle {
+  currency = currency;
+}
+
+//Tabs
+
+TabView: SkyTabView {
+  selection = tabKey;
+}
+
+ArticlesTab: SkyTabItem {
+  key       = "articles";
+  action    = tabClicked;
+  label     = labels.articles;
+  icon      = "items";
+}
+
+AttributesTab: SkyTabItem {
+  key       = "attributes";
+  action    = tabClicked;
+  label     = labels.attributes;
+  icon      = "attributes";
+}
+
+PreviewTab: SkyTabItem {
+  key       = "preview";
+  action    = tabClicked;
+  label     = labels.preview;
+  icon      = "preview";
+}
+
+LogTab: SkyTabItem {
+  key       = "log";
+  action    = tabClicked;
+  label     = labels.logsLabel;
+  icon      = "log";
+}
+
+ActionsTab: SkyTabItem {
+  key       = "actions";
+  action    = tabClicked;
+  label     = labels.actionsLabel;
+  icon      = "history";
+}
+
+//Conditional
+
+IsEditEnabled: WOConditional {
+  condition = isEditEnabled;
+}
+
+IsEditEnabledElse: WOConditional {
+  condition = isEditEnabled;
+  negate    = YES;
+}
+
+IsNotPrintedCond: WOConditional {
+  condition = isInvoiceNotPrinted;
+}
+
+//Articles
+
+ArticlesList: SkyInvoiceArticlesList {
+  articles = articles;
+  item     = article;
+  action   = "viewArticle";
+}
+ArticlesListElse: SkyInvoiceArticlesList {
+  articles = articles;
+  item     = article;
+}
+
+/*
+ArticlesList: LSWTableView {
+  labels            = labels;
+  title             = labels.invoiceviewer_articleList;
+  start             = start;
+  label             = labels.invoiceviewer_articleList;
+  list              = articles;
+  item              = article;
+  selectedAttribute = selectedAttribute;
+  blocksize         = session.userDefaults.invoice_blocksize;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+  //  numberFormatter   = numberFormatter;
+  attributes        = (
+    {
+      key      = "articleNr";
+      labelKey = "articleNr";
+      sort     = YES;
+      action   = "viewArticle";
+    },
+    {
+      key      = "articleName";
+      labelKey = "articleName";
+      sort  = YES;
+    },
+    {
+      key       = "defaultComment";
+      labelKey  = "comment";
+      sort      = NO;
+    },
+    {
+      key      = "comment";
+      labelKey = "additionalComment";
+      sort     = NO;
+    },
+    {
+      key      = "countString";
+      labelKey = "articleCount";
+      sort     = YES;
+    },
+    {
+      key      = "netAmount";
+      labelKey = "singlePrice";
+      sort     = YES;
+      align    = "RIGHT";
+    },
+    {
+      key      = "vat";
+      labelKey = "articleVat";
+      sort     = YES;
+    },
+    {
+      key      = "allNetAmount";
+      labelKey = "netAmount";
+      sort     = YES;
+      align    = "RIGHT";
+    }
+  );
+}
+
+ArticlesListElse: LSWTableView {
+  labels            = labels;
+  title             = labels.invoiceviewer_articleList;
+  start             = start;
+  label             = labels.invoiceviewer_articleList;
+  list              = articles;
+  item              = article;
+  selectedAttribute = selectedAttribute;
+  blocksize         = session.userDefaults.invoice_blocksize;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+  //  numberFormatter   = numberFormatter;
+  attributes        = (
+    {
+      key      = "articleNr";
+      labelKey = "articleNr";
+      sort     = YES;
+    },
+    {
+      key      = "articleName";
+      labelKey = "articleName";
+      sort  = YES;
+    },
+    {
+      key       = "defaultComment";
+      labelKey  = "comment";
+      sort      = NO;
+    },
+    {
+      key      = "comment";
+      labelKey = "additionalComment";
+      sort     = NO;
+    },
+    {
+      key      = "countString";
+      labelKey = "articleCount";
+      sort     = YES;
+    },
+    {
+      key      = "netAmount";
+      labelKey = "singlePrice";
+      sort     = YES;
+      align    = "RIGHT";
+    },
+    {
+      key      = "vat";
+      labelKey = "articleVat";
+      sort     = YES;
+    },
+    {
+      key      = "allNetAmount";
+      labelKey = "netAmount";
+      sort     = YES;
+      align    = "RIGHT";
+    }
+  );
+}
+*/
+
+//Attributes
+
+Title: LSWViewerTitle {
+  title   = invoice.invoiceNr;
+}
+
+InvoiceSubViewer: LSWObjectViewer {
+  labels         = labels;
+  object         = invoice;
+  dateFormatter  = session.formatDate;
+  numberFormatter= currencyFormatter;
+  valueColor     = "subValueCell";
+  attributeColor = "subAttributeCell";
+  attributes     = (
+    {   key     = "invoiceNr";          },
+    {   key     = "invoiceDate";        },
+    {   key     = "debitor";          
+        relKey  = "description";
+        action  = "viewDebitor";
+    },
+    {   key         = "kind";               
+        isLocalized = YES;              },
+    {   key     = "status";             
+        valueKeys = {
+                00_created      = 00_created;
+                05_printed      = 05_printed;
+                10_canceled     = 10_canceled;
+                15_monition     = 15_monition;
+                20_done         = 20_done;
+        };
+    },
+    {   key     = "netAmount";          },
+    {   key     = "grossAmount";        },
+    {   key     = "paid";               },
+    {   key     = "comment";            }
+  );
+}
+
+//preview
+
+PrintoutPreview: SkyInvoicePrintout {
+  invoice     = invoice;
+  articles    = articles;
+  debitor     = invoice.debitor;
+  previewMode = isPrintEnabled;
+  currency    = currency;
+}
+
+//delete-warning
+
+WarningCond : WOConditional {
+  condition = isInWarningMode;
+}
+
+WarningCondElse : WOConditional {
+  condition = isInWarningMode;
+  negate    = YES;
+}
+
+Warning : LSWWarningPanel {
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
+}
+
+//Actions
+
+ActionList: LSWTableView {
+    labels            = labels;
+    title             = labels.actionsTitle;
+    start             = start;
+    label             = labels.actionsLabel;
+    list              = actions;
+    item              = action;
+    selectedAttribute = selectedAttribute;
+    sorter            = session.eoSorter;
+    dateFormatter     = session.formatDateTime;
+    numberFormatter   = currencyFormatter;
+    isDescending      = isDescending;
+    attributes        = (
+      { key      = "actionDate"; 
+        labelKey = "date"; 
+        sort     = YES; 
+      },
+      { key       = "account"; 
+        relKey    = "accountNr";
+        labelKey  = "invoiceAccount";
+        sort      = NO;
+        action    = viewAccount;
+      },
+      { key       = "kind";
+        labelKey  = "action";
+        sort      = YES;
+        isLocalized = YES;
+      },
+      { key       = "logText";
+        labelKey  = "logText";
+        sort      = NO;
+      },
+      { key       = "document";
+        relKey    = "title";
+        labelKey  = "document";
+        sort      = NO;
+        action    = viewDocument;
+      },
+      { key       = "accounting";
+        relKey    = "debit";
+        labelKey  = "debit";
+        sort      = YES;
+        align     = "RIGHT";
+      },
+      { key       = "accounting";
+        relKey    = "balance";
+        labelKey  = "balance";
+        sort      = YES;
+        align     = "RIGHT";
+      }
+  );
+}
+
+//Log
+
+LogList: SkyObjectLogList {
+  object = invoice;
+}

@@ -1,0 +1,36 @@
+# compilation settings
+
+# libs
+
+Publisher_WOBUNDLE_LIBS += \
+	-lOGoForms -lOGoFoundation	\
+	-lOGoProject -lOGoDocuments	\
+	-lLSFoundation -lLSSearch -lGDLAccess	\
+	-lNGObjDOM -lWEExtensions -lNGObjWeb -lNGJavaScript -lNGScripting \
+	-lNGLdap -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(Publisher_WOBUNDLE_LIBS)
+
+ADDITIONAL_TOOL_LIBS += \
+	-lOGoForms -lOGoFoundation \
+	-lOGoProject -lOGoDocuments\
+	-lLSFoundation -lLSSearch -lGDLAccess \
+	-lNGObjDOM -lWEExtensions -lNGObjWeb -lNGJavaScript -lNGScripting \
+	-lNGLdap -lNGMime -lNGStreams -lNGExtensions -lEOControl \
+	-lXmlRpc -lDOM -lSaxObjC
+
+ifeq ($(FOUNDATION_LIB),apple)
+ADDITIONAL_BUNDLE_LIBS += -ljs
+ADDITIONAL_TOOL_LIBS   += -ljs
+endif
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif
+
+# cflags
+
+ADDITIONAL_CPPFLAGS += -Wno-protocol -Wall
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

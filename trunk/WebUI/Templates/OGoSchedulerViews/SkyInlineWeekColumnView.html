@@ -1,0 +1,77 @@
+<table border="0" cellpadding="0" width="100%" cellspacing="1">
+  <tr>
+    <td width="2" valign="top">
+      <#Browser><#BrowserDayLabel/></#Browser>
+    </td>
+    <td width="100%" valign="top">
+      <#WeekColumnView>
+        <#TitleMode><#WeekdayTitle/></#TitleMode>
+        
+        <#InfoMode>
+          <#DropZone/>
+          <#HasDayInfoCond>
+            <#HasHolidayInfo>
+              <#HolidayInfo/>
+              <br />
+            </#HasHolidayInfo>
+            
+            <#HasAllDayApts>
+              <#AllDayApts>
+                <#IsListOnlyApt>
+                  <#Font>
+                   <#AptInfoIcon/>
+                   <#AptContentText/>
+                  </#Font>
+                </#IsListOnlyApt>
+
+                <#IsViewableApt>
+                <#DragZone><#Font>
+                 <#UseDACond>
+                  <#ViewAptLink
+                  ><#AptInfoIcon/><#AptTitleSpan><#AptTitle/></#AptTitleSpan
+                  ></#ViewAptLink>
+                 </#UseDACond>
+                 <#UseDACondElse>
+                  <#ViewAptAction
+                  ><#AptInfoIcon/><#AptTitleSpan><#AptTitle/></#AptTitleSpan
+                  ></#ViewAptAction>
+                 </#UseDACondElse>
+                 <#Semicolon/>
+                 <#AptContentText/>
+                 <br />
+                </#Font></#DragZone>
+                </#IsViewableApt>
+              </#AllDayApts>
+            </#HasAllDayApts>
+            <hr />
+          </#HasDayInfoCond>
+        </#InfoMode>
+        
+        <#ContentMode><#Font
+          ><#ViewAccessAllowedCond
+            ><#DragZone
+              ><#UseDACond
+                ><#ViewAptLink
+                  ><#AptInfoIcon/><#StartTime/><#AptTitleSpan
+                  ><#AptTitle/></#AptTitleSpan
+                ></#ViewAptLink
+              ></#UseDACond
+              ><#UseDACondElse
+                ><#ViewAptAction
+                  ><#AptInfoIcon/><#StartTime/><#AptTitleSpan
+                  ><#AptTitle/></#AptTitleSpan
+                ></#ViewAptAction
+              ></#UseDACondElse
+            ></#DragZone
+          ></#ViewAccessAllowedCond
+          ><#ViewAccessAllowedCondElse
+            ><#AptInfoIcon/><#StartTime/><#AptTitleSpan
+            ><#AptTitle/></#AptTitleSpan
+          ></#ViewAccessAllowedCondElse
+        ><#Semicolon/><#AptContentText/>
+        <br />
+        </#Font></#ContentMode>
+      </#WeekColumnView>
+    </td>
+  </tr>
+</table>

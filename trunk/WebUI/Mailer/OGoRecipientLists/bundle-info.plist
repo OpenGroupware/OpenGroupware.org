@@ -1,0 +1,37 @@
+{
+  bundleHandler = OGoRecipientListsModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = LSMail;         type = cmd; },
+      { name = OGoMailViewers; type = lso; },
+      { name = OGoUIElements;  type = lso; },
+    );
+    classes = (
+      { name = NSObject;          },
+      { name = LSWModuleManager;  exact-version = 2; },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     }
+
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = OGoRecipientListsModule;  },
+      { name = SkyMailingListDataSource; },
+      { name = SkyMailingListViewer;     },
+      { name = SkyMailingListEditor;     },
+    );
+    
+    WOComponents = (
+      { name = SkyMailingListViewer; },
+      { name = SkyMailingListEditor; },
+    );
+
+    LSWCommands = (
+    );
+  };
+}

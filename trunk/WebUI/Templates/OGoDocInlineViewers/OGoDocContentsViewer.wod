@@ -1,0 +1,51 @@
+// bind template to controller
+
+ContentsTabTitle: LSWViewerTitle {
+  title    = labels.contents;
+  gentable = YES;
+}
+
+DownloadAttr: SkySubAttribute {
+  label  = labels.download;
+}
+DownloadLink: SkyP4DownloadLink {
+  projectId    = fileSystemInfo.NSFileSystemNumber;
+  documentPath = _documentPath;
+  versionTag   = versionToView;
+}
+
+FileName: WOString {
+  value  = documentName;
+}
+VersionString: WOString {
+  value = versionString; // TODO: apparently bound to no value!
+}
+
+MimeTypeAttr: SkySubAttribute {
+  label  = labels.mimetype;
+  string = documentMimeType;
+}
+SizeAttr: SkySubAttribute {
+  label  = labels.size;
+  string = documentAttributes.NSFileSize;
+}
+
+HasReadAccessElse: WOConditional {
+  condition = canReadFile;
+  negate    = YES;
+}
+HasReadAccess: WOConditional {
+  condition = canReadFile;
+}
+
+BLOBContentViewer: SkyProject4BLOBViewer {
+  fileManager = fileManager;
+  documentId  = documentGlobalID;
+  document    = document;
+  mimeType    = documentMimeType;
+}
+
+NoReadAccessWarning: SkyRichString {
+  color = "red";
+  value = labels.noReadAccessWarning;
+}

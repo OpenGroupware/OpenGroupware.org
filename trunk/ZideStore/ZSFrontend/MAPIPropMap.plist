@@ -1,0 +1,11 @@
+{
+  /* used by OLDavPropMapper.m */
+  0FFB0102 = mapiStoreEntryID;     /* called by Evo on root */
+  0FF40003 = cdoAccess;            /* PR_ACCESS - PT_LONG, Evo 1.2 */
+  66590102 = exMIMERepresentation; /* apt as iCal ? */
+  3A1D001E = radioTelephoneNumber;
+  3A1A001E = primaryTelephoneNumber;
+  3A1D001F = radioTelephoneNumber;
+  3A1A001F = primaryTelephoneNumber;
+  10800003 = cdoAction;
+}

@@ -1,0 +1,13 @@
+# $Id$
+
+LSDocuments
+===========
+
+This bundle contains commands which operate on the database tables storing
+document and versioning information.
+
+Defaults
+========
+
+UseFlatDocumentFileStructure - BOOL
+UseFoldersForIDRanges        - BOOL

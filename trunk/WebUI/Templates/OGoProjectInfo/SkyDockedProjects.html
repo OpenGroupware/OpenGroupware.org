@@ -1,0 +1,58 @@
+<!-- $Id: SkyDockedProjects.html,v 1.10 2004/05/07 16:05:03 helge Exp $ -->
+<#HasDockedProjects>
+  <br />
+  <table border="0" cellspacing="0" cellpadding="0" class="leftmenu">
+    <tr>
+      <td><#BoxTL /></td>
+      <td background="<#BoxTRef/>"><#BoxT/></td>
+      <td><#BoxTR /></td>
+     </tr>
+     <tr valign="top">
+      <td background="<#BoxLRef/>"><#BoxL/></td>
+      <td width="100%">
+        <table width="100%" border="0" 
+               cellspacing="2" cellpadding="" class="leftmenu">
+          <tr>
+            <td><#MenuFont>
+              <#ActivePageIsNotEditor>
+                <#DockedProjectsLink><#DockedProjectsLabel /></#DockedProjectsLink>
+              </#ActivePageIsNotEditor>
+              <#ActivePageIsEditor>
+                <#MenuFont><#DockedProjectsLabel /></#MenuFont>
+              </#ActivePageIsEditor>
+            </#MenuFont></td>
+          </tr>
+          <tr><td colspan="2">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td class="linecolor"><#LineLeft /></td>
+                <td class="linecolor" width="100%"><#LinePix /></td>
+                <td class="linecolor"><#LineRight /></td>
+              </tr>
+            </table></td>
+          </tr>
+          <tr><td height="3" /></tr>
+
+          <#DockedProjectRep>
+            <tr>
+              <td valign="middle"><#MenuFont>
+                <#ActivePageIsNotEditor>
+                  <#ViewProject><#Title/></#ViewProject>
+                </#ActivePageIsNotEditor>
+                <#ActivePageIsEditor>
+                  <#MenuFont><#Title /></#MenuFont>
+                </#ActivePageIsEditor>
+              </#MenuFont></td>
+            </tr>
+          </#DockedProjectRep>
+        </table>
+     </td>
+     <td background="<#BoxRRef/>"><#BoxR/></td>
+   </tr>
+   <tr>
+    <td><#BoxBL /></td>
+    <td background="<#BoxBRef/>"><#BoxB/></td>
+    <td><#BoxBR /></td>
+   </tr>
+  </table>
+</#HasDockedProjects>

@@ -1,0 +1,45 @@
+{
+  bundleHandler = LSWMailModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = LSMail; type = cmd; } 
+    );
+    classes = (
+      { name = NSObject;          },
+      { name = LSWModuleManager;  exact-version = 2; },
+      { name = WOHyperlink;       version = 4;       },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     }
+    );
+  };
+  
+  provides = {
+    classes = (
+        { name = LSWMailModule;               },
+        { name = LSWMailRenderPage;           },
+        { name = LSWMailHtmlRenderPage;       },
+        { name = LSWMailTextRenderPage;       },
+        { name = LSWObjectHtmlMailPage;       },
+        { name = LSWObjectTextMailPage;       },
+        { name = LSWDeletedObjectViewer;      },
+    );
+    
+    WOComponents = (
+        { name = LSWMailHtmlRenderPage;         },
+        { name = LSWMailTextRenderPage;         },
+        { name = LSWObjectHtmlMailPage;         },
+        { name = LSWObjectTextMailPage;         },
+        { name = LSWDeletedObjectViewer;        },
+    );
+
+    LSWCommands = (
+      { 
+        verb = mailview; type = "eo/deleted";
+        component = LSWDeletedObjectViewer;
+      }
+    );
+  };
+}

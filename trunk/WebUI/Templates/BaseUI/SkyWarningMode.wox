@@ -1,0 +1,17 @@
+<?xml version='1.0' standalone='yes'?>
+<!-- $Id: SkyWarningMode.wox,v 1.2 2004/05/01 17:57:46 helge Exp $ -->
+<span
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+  <var:if condition="isInWarningMode">
+    <var:component className="LSWWarningPanel" 
+                   phrase="phrase"
+                   const:onOk="ok" const:onCancel="cancel" />
+  </var:if>
+  
+  <var:if condition="isInWarningMode" const:negate="YES">
+    <var:component-content />
+  </var:if>
+</span>

@@ -1,0 +1,8 @@
+# $Id$
+
+skygreetingd
+============
+
+The most important XML-RPC Daemon ever ;-)
+
+It uses libgd to render and deliver the famous greeting cards.

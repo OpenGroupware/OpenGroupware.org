@@ -1,0 +1,49 @@
+// $Id: OGoMailInfo.strings,v 1.2 2004/01/05 12:54:23 helge Exp $
+
+LSWMailPreferences = "Epostinstillinger"
+DefaultAccessPreferences= "Standard tillgangsinstillinger"
+Imap                  = "Epost"
+
+saveButtonLabel       = "lagre"
+cancelButtonLabel     = "avbryt"
+
+"mail_editor_type"    = "Tyope epostverktøy"
+internal              = "Intern"
+external              = "Ekstern"
+
+"mail_send_type"      = "Send epost som"
+html                  = "Html"
+plain                 = "Tekst"
+signature             = "Signatur"
+
+senderLength          = "Avsenderlengde"
+subjectLength         = "Tittellengde"
+
+viewImagesInline      = "Vis bilde i epost"
+viewAttachmentsInline = "Vis vedlegg i epost"
+viewAttachmentBodysInEditor = "Se vedlegg i redigeringsverktøy"
+
+YES                   = "Ja"
+NO                    = "Nei"
+login                 = "Brukernavn"
+
+imapPasswd1 = "imappassord"
+imapPasswd2 = "gjenta imappassord"
+imapUser    = "imapbrukernavn"
+imapHost    = "imaptjener"
+
+viewStatus = "Vis epoststatus"
+asIcon     = "som ikon"
+
+label_newMail_single = "Du har en ny melding!"
+label_newMail_multi  = "Du har %i nye meldinger"
+label_newMail_no     = "Du har ingen nye meldinger"
+
+action_viewMail    = "vis epost"
+action_refresh     = "oppdater"
+action_closeWindow = "lukk vinduet"
+
+activeMail              = "Epost"
+inactiveMail            = "Epost (inaktiv)"
+newMail                 = "Epost (ulest)"
+

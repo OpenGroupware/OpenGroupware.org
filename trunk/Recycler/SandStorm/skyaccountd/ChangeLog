@@ -1,0 +1,33 @@
+2004-04-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* updated for OGo build environment (v5.0.2)
+
+Fri Aug  9 15:11:45 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* added group functions to action map and interface definition,
+	  fixed some broken return codes
+
+Wed May 15 10:16:44 2002  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: removed document categories from makefile ...
+
+Fri May 10 16:56:13 2002  Helge Hess  <helge.hess@skyrix.com>
+
+	* added NGXmlRpcAction initialization
+
+	* removed document categories (not necessary, asked Jan ;-)
+
+Wed May  8 05:05:19 2002  Helge Hess  <helge.hess@skyrix.com>
+
+	* added action mapping
+
+Fri Apr 12 19:09:01 2002  Helge Hess  <helge.hess@skyrix.com>
+
+	* converted to rpcd bundle daemon
+
+	* renamed DirectAction
+
+Mon Jan 28 11:43:10 2002  Helge Hess  <helge.hess@skyrix.com>
+
+	* created ChangeLog
+

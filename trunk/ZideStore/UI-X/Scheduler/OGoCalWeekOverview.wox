@@ -1,0 +1,51 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component className="OGoPageFrame" title="name"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+  <a href="monthoverview">month</a>
+  <br />
+    OGo ZideStore Server - <var:string value="name"/>
+    <br />
+    Client: <var:string value="clientObject"/>
+    <br />
+    Appointments: #<var:string value="appointments.count"/>
+    <br />
+
+    <hr />
+
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr bgcolor="#E0E0E0">
+        <td align="left" valign="middle" width="80%">other stuff</td> <!-- 99% -->
+        <td align="right"><table border="0"><tr>
+        <td align="right" valign="middle"><a var:href="prevWeekURL"><img rsrc:src="previous_week.gif" alt="previous week" border="0" /></a></td>
+        <td align="right" valign="middle"><a var:href="thisWeekURL" class="button_auto">this<var:entity const:name="nbsp" />week</a></td>
+        <td align="right" valign="middle"><a var:href="nextWeekURL"><img rsrc:src="next_week.gif" alt="next week" border="0" /></a></td>
+        </tr></table></td>
+      </tr>
+    </table>
+    <br />
+    <var:week-overview
+      list="appointments"
+      item="appointment"
+      weekStart="startDate"
+      const:startDateKey = "startDate"
+      const:endDateKey   = "endDate"
+      const:titleStyle   = "weekoverview_title"
+      const:contentStyle = "weekoverview_content"
+    >
+      <var:week>
+	<a var:href="appointmentViewURL"
+          ><var:string value="appointment.title" /></a>
+      </var:week>
+    </var:week-overview>
+
+    <hr />
+    
+    Appointments: 
+    <var:component className="OGoAptTableView" appointments="appointments"/>
+    
+    <!-- pre><var:string value="appointments" const:insertBR="YES"/></pre -->
+</var:component>

@@ -1,0 +1,14 @@
+# compilation settings
+
+ADDITIONAL_INCLUDE_DIRS += -I.. -I../NGObjWeb
+
+libNGXmlRpc_LIBRARIES_DEPEND_UPON += 	\
+	-lSOAP 				\
+	-lNGObjWeb			\
+	-lNGStreams			\
+	-lNGMime			\
+	-lSaxObjC -lDOM			\
+	-lNGExtensions			\
+	-lEOControl			\
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

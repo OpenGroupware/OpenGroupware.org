@@ -1,0 +1,49 @@
+// $Id: OGoMailInfo.strings,v 1.3 2004/08/10 22:30:14 helge Exp $
+
+LSWMailPreferences = "Préférences du courrier";
+DefaultAccessPreferences= "Préférences d'accès par défaut";
+Imap                  = "Courriers";
+
+saveButtonLabel       = "Sauvegarder";
+cancelButtonLabel     = "Annuler";
+
+mail_editor_type      = "Type d'éditeur de courrier";
+internal              = "Interne";
+external              = "Externe";
+
+mail_send_type        = "Envoyer le courrier en tant que";
+html = "HTML";
+plain                 = "Texte";
+signature             = "Signature";
+
+senderLength          = "Longueur de l'expéditeur";
+subjectLength         = "Longueur du sujet";
+
+viewImagesInline      = "Voir les images dans le corps";
+viewAttachmentsInline = "Visualiser les attachements dans le corps";
+viewAttachmentBodysInEditor = "Visualiser le corps des attachements dans l'éditeur";
+
+YES                   = "Oui";
+NO                    = "Non";
+login                 = "Identification";
+
+imapPasswd1 = "mot de passe IMAP";
+imapPasswd2 = "répéter le mot de passe IMAP";
+imapUser    = "identification IMAP";
+imapHost    = "nom de la machine IMAP";
+
+viewStatus = "Voir l'état du courier";
+asIcon     = "en tant qu'icône";
+
+label_newMail_single = "Vous avez un nouveau message!";
+label_newMail_multi  = "Vous avez %i nouveaux messages!";
+label_newMail_no     = "Vous n'avez pas de nouveau message!";
+
+action_viewMail    = "Voir le message";
+action_refresh     = "Rafraîchir";
+action_closeWindow = "Fermer la fenêtre";
+
+activeMail              = "Courrier";
+inactiveMail            = "Courrier (inactif)";
+newMail                 = "Courrier (non lu)";
+

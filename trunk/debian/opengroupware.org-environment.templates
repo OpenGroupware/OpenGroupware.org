@@ -1,0 +1,31 @@
+Template: opengroupware.org/autoconfigure
+Type: boolean
+Default: true
+_Description: Automatically create an OpenGroupware.org instance?
+ In order to get a working installation of OpenGroupware.org an instance
+ has to be created and configured. This setup involves creating
+ configuration files, database creation and adding apache configuration to
+ integrate the OpenGroupware.org application server with your webserver.
+ .
+ The setup of an initial instance can be done automatically with some
+ reasonable defaults. If you say "Yes" to the following question this setup
+ program will try to configure everything for you including database
+ creation if you have a local PostgreSQL installation.
+ .
+ If you want more control over the instance creation or if you want to
+ create additional instances later, you can use the ogo-create-instance
+ script (as root) to do so. It will lead you through a more detailed
+ process.
+
+Template: opengroupware.org/configure_note
+Type: note
+_Description: Important information
+ After the installation is finished, you have to manually start the
+ OpenGroupware.org application server with
+  /etc/init.d/opengroupware.org start
+ .
+ The web interface will then be accessible from the URL
+  http://$YOURHOST/OpenGroupware
+ .
+ You will be logged in as OpenGroupware.org supersuer "root" automatically,
+ and the first thing you should do is to set up a password for this user.

@@ -1,0 +1,72 @@
+<!-- $Id: SkyPalmJobEditor.html,v 1.1 2003/07/14 16:18:25 helge Exp $ -->
+<#Frame>
+
+  <#IsJavaScriptEnabled>
+    <#Calendar />
+  </#IsJavaScriptEnabled><!-- IsJavaScriptEnabled -->
+
+  <#Window>
+    <#EditorForm>
+      
+      <TABLE WIDTH="100%" BORDER="0" CELLPADDING="4" CELLSPACING="0">
+      <#PalmJobCollapsible>
+
+        <B><#Font>
+          <#CollTitleMode>
+            <#IsNewCond>
+              <#NewJobLabel />
+            </#IsNewCond><!-- IsNewCond -->
+            <#IsNotNewCond>
+              <#JobTitle />
+            </#IsNotNewCond><!-- IsNotNewCond -->
+          </#CollTitleMode>
+        </#Font></B>
+
+        <#CollContentMode>
+
+          <TR><TD COLSPAN="2"></TD></TR>
+
+          <TR>
+          <#AttributeCell><#TitleAttr />:</#AttributeCell>
+          <#ValueCell><#TitleValue /></#ValueCell>
+          </TR>
+          <TR>
+          <#AttributeCell><#DuedateAttr />:</#AttributeCell>
+          <#ValueCell><#HasDuedateValue /><#DuedateValue /><#DuedateCalendarLink /></#ValueCell>
+          </TR>
+          <TR>
+          <#AttributeCell><#PriorityAttr />:</#AttributeCell>
+          <#ValueCell><#PriorityValue /></#ValueCell>
+          </TR>
+          <TR>
+          <#AttributeCell><#NoteAttr />:</#AttributeCell>
+          <#ValueCell><#NoteValue /></#ValueCell>
+          </TR>
+          
+          <TR>
+          <#AttributeCell><#DeviceAttr />:</#AttributeCell>
+          <#ValueCell><#DeviceValue /><#DeviceSubmit /></#ValueCell>
+          </TR>
+          <TR>
+          <#AttributeCell><#CategoryAttr />:</#AttributeCell>
+          <#ValueCell><#CategoryValue /></#ValueCell>
+        </TR>
+
+        </#CollContentMode><!-- CollContentMode -->
+
+      </#PalmJobCollapsible><!-- PalmJobCollapsible -->
+
+
+      <TR>
+        <TD></TD>
+        <TD>
+          <#SaveSubmit />
+          <#CancelSubmit />
+        </TD>
+      </TR>
+      
+    </TABLE>
+    
+    </#EditorForm><!-- EditorForm -->
+  </#Window><!-- Window -->
+</#Frame><!-- Frame -->

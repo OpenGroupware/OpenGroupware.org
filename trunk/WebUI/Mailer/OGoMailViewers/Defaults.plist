@@ -1,0 +1,10 @@
+{
+  SkyMailViewer_multipartAlternativePreferences = (
+    "multipart/opengroupware",
+    "multipart/skyrix",
+    "text/plain",
+    "text/html" 
+  );
+  
+  MailerPlainTextWrapWidth = 80;
+}

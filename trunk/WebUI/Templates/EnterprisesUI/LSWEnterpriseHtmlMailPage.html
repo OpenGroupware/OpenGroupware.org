@@ -1,0 +1,24 @@
+<table width="100%" border="0" cellpadding="4" cellspacing="0">
+  <!-- $Id: LSWEnterpriseHtmlMailPage.html 2 2004-08-20 11:37:44Z znek $-->
+  <#MainButtonRow>
+    <td colspan="2">
+      <#Font><b><#EnterpriseViewerLabel/>&nbsp;</b></#Font>
+    </td>
+  </#MainButtonRow>
+  <tr><td colspan="2"></td></tr>
+
+  <tr>
+    <#AttributeCell><#Font><#NameLabel/>:</#Font></#AttributeCell>
+    <#ValueCell>
+      <#Font>
+         <#InlineLinkCond    ><#NameAction  /></#InlineLinkCond>
+         <#InlineLinkCondElse><#NameExternal/></#InlineLinkCondElse>
+      </#Font>
+    </#ValueCell>
+  </tr>
+  <tr>
+    <#AttributeCell><#Font><#NumberLabel/>:</#Font></#AttributeCell>
+    <#ValueCell    ><#Font><#Number     /></#Font></#ValueCell>
+  </tr>
+  <tr><td colspan="2"></td></tr>
+</table>

@@ -1,0 +1,117 @@
+<#Frame>
+  <!-- $Id: LSWImapMailViewer.html 2 2004-08-20 11:37:44Z znek $ -->
+  <#Window>
+    <#WarningModeCondElse>
+      <#AskToReturnReceiptCondElse>
+   
+        <#DownloadAllCond><#DownloadAllString /></#DownloadAllCond>
+        
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+          <#MainButtonRow>
+            <td colspan="2">
+              <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                <#Title><#Buttons /><#Buttons2 /></#Title>
+              </table>
+            </td>
+          </#MainButtonRow>
+
+          <tr><td colspan="2"> </td></tr>
+
+          <tr>
+            <#AttributeCell><#Font><#SubjectLabel />:</#Font></#AttributeCell>
+            <#ValueCell><#Font><#Subject /></#Font></#ValueCell>
+          </tr>
+          <tr>
+            <#AttributeCell><#Font><#DateLabel />:</#Font></#AttributeCell>
+            <#ValueCell><#Font><#Date /></#Font></#ValueCell>
+          </tr>
+          <tr>
+            <#AttributeCell><#Font><#SenderLabel />:</#Font></#AttributeCell>
+            <#ValueCell><#Font><#Sender /></#Font></#ValueCell>
+          </tr>
+          <tr>
+            <#AttributeCell><#Font><#ToLabel />:</#Font></#AttributeCell>
+            <#ValueCell>
+              <#Font><#To /></#Font>
+              <#ToCollapserCond><#ToCollapser /></#ToCollapserCond>
+              <#ToExpanderCond><#ToExpander /></#ToExpanderCond>
+            </#ValueCell>
+          </tr>
+
+        <#HasCC>
+          <tr>
+            <#AttributeCell><#Font><#CCLabel />:</#Font></#AttributeCell>
+            <#ValueCell>
+              <#Font><#CC /></#Font>
+              <#CcCollapserCond><#CcCollapser /></#CcCollapserCond>
+              <#CcExpanderCond><#CcExpander /></#CcExpanderCond>
+            </#ValueCell>
+          </tr>
+        </#HasCC>
+        
+        <!-- tr>
+          <#AttributeCell><#Font><#TypeLabel/>:</#Font></#AttributeCell>
+        <#ValueCell"><#Font><#Type/></#Font></#ValueCell>
+        </tr -->
+        
+        <tr>
+          <#AttributeCell><#Font><#SizeLabel />:</#Font></#AttributeCell>
+          <#ValueCell><#Font><#Size /></#Font></#ValueCell>
+        </tr>
+
+      <!-- tr>
+        <#AttributeCell><#Font><#MsgIdLabel/>:</#Font></#AttributeCell>
+        <#ValueCell><#Font><#MsgId/></#Font></#ValueCell>
+      </tr -->
+
+        <tr>
+          <#AttributeCell><#Font><#OrganizationLabel />:</#Font></#AttributeCell>
+          <#ValueCell><#Font><#Organization /></#Font></#ValueCell>
+        </tr>
+      </table>
+
+      <p>
+        <#TabView>
+          <#MailTab>
+            <table width="100%" border="0" cellpadding="4" cellspacing="0">
+              <#MailBodyRow>
+                <td><#MessageViewer /></td>
+              </#MailBodyRow>
+              <#IsDownloadAllEnabled>
+                <#DownLoadRow>
+                  <td align="right"><#Font>[<#DownloadAll><#DownloadAllLabel /></#DownloadAll>]</#Font></td>
+                </#MailBodyRow>
+              </#IsDownloadAllEnabled>
+            </table>
+          </#MailTab>
+
+          <#SourceTab>
+            <table border="0" width="100%" cellpadding="3" cellspacing="0">
+              <#PartHeaderRow>
+                <td align="right">
+                <#SourceIsOpen    ><#CollapsedSourceLink /></#SourceIsOpen>
+                <#SourceIsOpenElse><#ExpandedSourceLink  /></#SourceIsOpenElse>
+                <#HasProject      ><#ToDoc /></#HasProject>
+                <#Download />
+              </td>
+              </#PartHeaderRow>
+                <tr>
+                  <td bgcolor="white">
+                    <#SourceIsOpenElse>&nbsp;</#SourceIsOpenElse>
+                    <#SourceIsOpen><pre><#Source /></pre></#SourceIsOpen>
+                  </td>
+                </tr>
+            </table>
+
+          </#SourceTab>
+        </#TabView>
+      </p>
+
+      </#AskToReturnReceiptCondElse>
+
+      <#AskToReturnReceiptCond><#ReceiptQuestion /></#AskToReturnReceiptCond>
+    </#WarningModeCondElse>
+
+    <#WarningModeCond><#Warning /></#WarningModeCond>
+  </#Window>
+</#Frame>

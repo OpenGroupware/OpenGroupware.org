@@ -1,0 +1,66 @@
+# $Id: HOWTO,v 1.1 2003/07/14 16:18:53 helge Exp $
+
+##################
+# 1. how to install PalmSync for OpenGroupware.org
+##################
+# 1.1. PalmSync using HotSync Deamon (recommended)
+# 1.2. PalmSync using alternativ OpenGroupware.org PDADeamon
+
+##################
+# 2. how to install OpenGroupware.org Palm App
+##################
+
+##################
+# 3. how to run HotSync Deamon
+##################
+
+##################
+# 4. how to prepare my palm
+##################
+
+#####################################################
+# 1.1. PalmSync using HotSync Deamon (recommended)
+
+cd PPSync
+make -s debug=yes install
+cd ..
+
+cd SkyPalmLib
+make -s debug=yes install
+cd ..
+
+cd SkyNHSSync
+make -s debug=yes install
+cd ..
+
+
+#####################################################
+# 2. how to install OpenGroupware.org Palm App
+
+cd SkyPalm
+make -s debug=yes install
+cd ..
+
+
+#####################################################
+# 3. how to run HotSync Deamon
+
+# set enviroment var PILOTPORT to 'net:any:14238'
+# and call
+nhsd
+
+
+#####################################################
+# 4. how to prepare my palm
+
+# to prepare your palm for OpenGroupware.org HotSync create a memo with the following
+# content:
+
+# 1: OGo\n
+# 2: <login>\n
+# 3: <password>\n
+
+# the digits only mark the lines, don't paste them into the memo
+# <login> stands for your OpenGroupware.org login
+# <password> stands for your OpenGroupware.org password
+# this memo should be marked as private

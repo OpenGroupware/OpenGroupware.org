@@ -1,0 +1,5 @@
+# version file
+
+SUBMINOR_VERSION:=96
+
+# v1.3.86 requires libNGObjWeb v4.3.80

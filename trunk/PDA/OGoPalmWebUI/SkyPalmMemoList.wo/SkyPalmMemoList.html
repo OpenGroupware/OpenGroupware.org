@@ -1,0 +1,86 @@
+<#MemoTableHeader />
+<#MemoTableView>
+
+  <#IsInForm>
+    <#TitleMode>
+      <#Delete />
+      <#Undelete />
+      <#MarkAsNew />
+      <#DetachSkyrixEntry />
+      <#SyncWithSkyrixEntry />
+      <#CreateSkyrixEntry />
+      <#Content />
+    </#TitleMode><!-- TitleMode -->
+  </#IsInForm>
+
+  <#ButtonMode>
+    <table border="0" cellspacing="0" cellpadding="0"><tr><td nobr align="right"><#IsInForm><#CategoryPopUp /><#Update /></#IsInForm></td><td nobr><#FilterButtons /></td></tr></table>
+  </#ButtonMode><!-- ButtonMode -->
+
+  <#AttributeSwitcher>
+
+    <#MemoCase>
+      <#MemoData>
+        <NOBR>
+          <#HasActionCond>
+            <#ViewMemo>
+              <#Memo /></#ViewMemo>
+          </#HasActionCond><!-- HasActionCond -->
+          <#HasActionCondElse>
+            <#ViewMemoDA>
+              <#Memo /></#ViewMemoDA>
+          </#HasActionCondElse><!-- HasActionCondElse -->
+        </NOBR>
+      </#MemoData>
+    </#MemoCase><!-- MemoCase -->
+
+    <#CategoryCase>
+      <#CategoryData>
+        <NOBR>
+          <#Category />
+        </NOBR>
+      </#CategoryData>
+    </#CategoryCase><!-- CategoryCase -->
+
+    <#DeviceCase>
+      <#DeviceData>
+        <NOBR>
+          <#Device />
+        </NOBR>
+      </#DeviceData>
+    </#DeviceCase><!-- DeviceCase -->
+
+    <#SyncCase>
+      <#SyncData>
+        <NOBR>
+          <#Sync />
+        </NOBR>
+      </#SyncData>
+    </#SyncCase><!-- SyncCase -->
+
+    <#SkyrixRecordCase>
+      <#SkyrixRecordData>
+        <#HasSkyrixRecord>
+          <NOBR>
+            <#ViewSkyrixRecord><#SkyrixRecordIcon /><#SkyrixRecord /></#ViewSkyrixRecord>
+          </NOBR>
+        </#HasSkyrixRecord>
+      </#SkyrixRecordData>
+    </#SkyrixRecordCase><!-- SkyrixRecord -->
+
+    <#SkyrixSyncCase>
+      <#SkyrixSyncHeader>
+        <#SkyrixSyncIcon />
+      </#SkyrixSyncHeader>
+      <#SkyrixSyncData>
+        <#HasSkyrixRecord>
+          <NOBR>
+            <#SkyrixSyncType /><#RecordsNotSynchroneCond><#SkyrixSync /></#RecordsNotSynchroneCond>
+          </NOBR>
+        </#HasSkyrixRecord>
+      </#SkyrixSyncData>
+    </#SkyrixSyncCase>
+
+  </#AttributeSwitcher><!-- AttributeSwitcher -->
+
+</#MemoTableView><!-- MemoTableView -->

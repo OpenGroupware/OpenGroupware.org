@@ -1,0 +1,55 @@
+// $Id: AddressList.wod,v 1.1 2004/05/21 12:23:59 helge Exp $
+
+// Table.
+
+AddressTableView: SkyTableView {
+  dataSource     = dataSource;
+  item           = address;
+  batchSize      = 50;
+  sortedKey      = "sn";
+  titleString    = "LDAP Addresses"; //labels.personList;
+  footerString   = "LDAP Addresses"; //labels.personList;
+}
+
+LdapTableFirstNameTD: WETableData {
+  title   = "First Name"; //labels.firstname
+  valign  = "middle";
+  align   = "left";
+  //string  = address.givenName;
+  sortKey = "givenName";
+}
+
+LdapTableLastNameTD: WETableData {
+  title   = "Last Name";
+  valign  = "middle";
+  align   = "left";
+  //string  = address.sn;
+  sortKey = "sn";
+}
+
+LdapTableEmailTD: WETableData {
+  title   = "E-Mail";
+  valign  = "middle";
+  align   = "left";
+  //string  = address.mail;
+  sortKey = "mail";
+}
+
+OpenAddressLink: WOHyperlink {
+  action = openAddressAction;
+  alt    = "Opens the viewer";
+  title  = "Opens the viewer";
+  ?dn    = address.NSFilePath;
+}
+
+LdapTableFirstName: WOString {
+  value = address.givenName;
+}
+
+LdapTableLastName: WOString {
+  value = address.sn;
+}
+
+LdapTableEmail: WOString {
+  value = address.mail;
+}

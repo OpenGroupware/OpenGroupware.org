@@ -1,0 +1,47 @@
+<!-- $Id: LSWTableView.html,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $ -->
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+  <!-- row for title and navigation -->
+  <tr>
+    <td colspan="3"><#Header><#TableViewContent/></#Header></td>
+  </tr>
+  <tr>
+    <td colspan="3"> </td>
+  </tr>
+
+  <!-- row with label and content -->
+  <tr>
+    <#ContentCell>
+      <table border="0" cellspacing="0" cellpadding="1" width="100%">
+
+        <!-- attribute cell row --> 
+        <#Attributes/>
+
+        <!-- content with cells -->
+        <#ObjectRep>
+          <#ObjectRow>
+            <#AttributeRepetition>
+              <#AttributeCell>
+                <#Font>
+                  <#ArrayAttrCond>
+                    <#RelatedObjectRep>
+                      <#Cell/>
+                    </#RelatedObjectRep>
+                  </#ArrayAttrCond>
+                  
+                  <#ArrayAttrCondElse><#Cell/></#ArrayAttrCondElse>
+                  &nbsp;
+                </#Font>
+              </#AttributeCell>
+            </#AttributeRepetition>
+          </#ObjectRow>
+        </#ObjectRep>
+      </table>
+    </#ContentCell>
+  </tr>
+  
+  <!-- footer: row for page info (current page, number of pages ...) -->
+  <tr>
+    <td colspan="3"><#Footer/></td>
+  </tr>
+</table>

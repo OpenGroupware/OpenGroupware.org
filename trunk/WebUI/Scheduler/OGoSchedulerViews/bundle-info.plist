@@ -1,0 +1,101 @@
+{
+  bundleHandler = SkySchedulerViewsModule;
+  
+  requires = {
+    bundleManagerVersion = 1;
+
+    bundles = (
+      { name = LSScheduler;  type = cmd; },
+      { name = OGoScheduler; type = lso; },
+    );
+    classes = (
+      { name = LSWModuleManager; exact-version = 2; },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     },
+      { name = SkyAttribute;     }
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = SkySchedulerViewsModule;    },
+      //
+      { name = SkyAppointmentFormatter;    },
+      { name = SkyInlineAptDataSourceView; },
+      { name = SkySchedulerDateCell;       },
+      { name = SkyMonthRepetition;         },
+      { name = SkyMonthBrowser;            },
+      { name = SkySchedulerConflictCell;   },
+      //
+      { name = SkyInlineDayOverview;       },
+      { name = SkyInlineWeekOverview;      },
+      { name = SkyInlineMonthOverview;     },
+      { name = SkyInlineYearOverview;      },
+      { name = SkyInlineDayChart;          },
+      { name = SkyInlineWeekChart;         },
+      { name = SkyInlineDayHChart;         },
+      { name = SkyInlineWeekHChart;        },
+      { name = SkyPrintWeekOverview;       },
+      { name = SkyPrintMonthOverview;      },
+      //
+      { name = SkyNewsAppointmentList;     },
+      { name = SkyAppointmentList;         },
+      { name = SkyAptResourceList;         },
+      { name = SkyAptResourceGroupsList;   },
+      { name = SkyInlineWeekColumnView;    },
+    );
+    WOComponents = (
+      { name = SkySchedulerConflictCell;   },
+      { name = SkyMonthBrowser;            },
+      //
+      { name = SkyInlineDayOverview;       },
+      { name = SkyInlineWeekOverview;      },
+      { name = SkyInlineMonthOverview;     },
+      { name = SkyInlineYearOverview;      },
+      { name = SkyInlineDayChart;          },
+      { name = SkyInlineWeekChart;         },
+      { name = SkyInlineDayHChart;         },
+      { name = SkyInlineWeekHChart;        },
+      { name = SkyPrintWeekOverview;       },
+      { name = SkyPrintMonthOverview;      },
+      { name = SkyInlineWeekColumnView;    },
+      //
+      { name = SkyNewsAppointmentList;     },
+      { name = SkyAppointmentList;         },
+      { name = SkyAptResourceList;         },
+      { name = SkyAptResourceGroupsList;   },
+    );
+    LSWCommands = (
+      { 
+        verb      = edit; 
+        type      = "eo/appointmentresource"; 
+        component = SkyAptResourceEditor; 
+      },
+      { 
+        verb      = new; 
+        type      = "eo/appointmentresource"; 
+        component = SkyAptResourceEditor; 
+      },
+      { 
+        verb      = view; 
+        type      = "eo/appointmentresource"; 
+        component = SkyAptResourceViewer; 
+      },
+      { 
+        verb      = view;
+        type      = "eo-gid/appointmentresource";
+        component = SkyAptResourceViewer; 
+      },
+//      { 
+//        verb      = new; 
+//        type      = "eo/event"; 
+//        component = SkyEventEditor; 
+//      },
+//      { 
+//        verb      = edit; 
+//        type      = "eo/event"; 
+//        component = SkyEventEditor; 
+//      },
+    );
+  };
+}

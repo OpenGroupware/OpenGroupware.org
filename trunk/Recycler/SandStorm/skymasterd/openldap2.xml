@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template templateclass="slapd" 
+          xmlns="http://www.skyrix.com/od/skymasterd-config">
+  <taskclass>DaemonTask</taskclass>
+  <tool     >slapd</tool>
+  <cmdline  >-h ldap://$ip$:$port$</cmdline>
+</template>

@@ -1,0 +1,27 @@
+# $Id$
+
+libOGoScheduler_INCLUDE_DIRS += \
+	-I..	\
+	-I../../Logic/LSFoundation	\
+	-I../../Logic/LSScheduler
+
+libOGoScheduler_LIBRARIES_DEPEND_UPON += \
+	-lOGoSchedulerTools \
+	-lOGoDocuments	\
+	-lLSFoundation -lGDLAccess \
+	-lNGStreams -lNGExtensions -lEOControl
+
+OGoScheduler_BUNDLE_LIBS += \
+	-lOGoScheduler	\
+	-lLSFoundation
+
+ADDITIONAL_LIB_DIRS += 					\
+	-L../OGoDocuments/$(GNUSTEP_OBJ_DIR)		\
+	-L../../Logic/LSScheduler/$(GNUSTEP_OBJ_DIR)	\
+	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
+
+OGoScheduler_LIB_DIRS += -L./$(GNUSTEP_OBJ_DIR)
+
+ifeq ($(FOUNDATION_LIB),nx)
+ADDITIONAL_LDFLAGS += -framework Foundation
+endif

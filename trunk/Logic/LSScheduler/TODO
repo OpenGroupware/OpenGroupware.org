@@ -1,0 +1,22 @@
+# $Id$
+
+TODO
+====
+
+- timeZoneDetail is not available on Cocoa Foundation - find a proper 
+  replacement to avoid compilation warnings (and ensure proper function)
+
+- cleanup LSGetAppointmentsForGlobalIDs, contains HUGE methods which need to
+  be split up
+
+- cleanup cycle date calculator API, see header
+
+- rewrite LSGetCommentForAppointmentsCommand.m to use the adaptor and IDs
+  to fetch the comments instead of the dateInfo relation
+
+- duplicate conflict code in LSSetAppointmentCommand and 
+  LSNewAppointmentCommand!
+
+- LSAppointmentProposalCommand needs a LOT of cleanup
+
+- LSQueryAppointments needs more cleanup

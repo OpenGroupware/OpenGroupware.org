@@ -1,0 +1,42 @@
+Package job
+
+  Method person.fetchJobs(arg1, arg2)
+    Parameters: arg1: unique number of a person (String or Number)
+                arg2: FetchSpecification
+        Result: Array of JobDocuments
+      Examples: person.fetchJobs("12345", "type='toDoJob'")
+
+  Method person.insertJob(arg1, arg2)
+    Parameters: arg1: unique number of a person (String or Number)
+                arg2: Dictionary
+        Result: the new JobDocument
+      Examples: person.insertJob("12345", 
+                               {    
+                                 name  = "first job";
+                                 startDate = "2001-10-11";
+                                 endDate   = "2001-10-14";
+                               }
+                             )
+
+  Method person.updateJob(arg1, arg2)
+    Parameters: arg1: unique number of a person (String or Number)
+                arg2: JobDocument
+        Result: the new JobDocument
+      Examples: person.updateJob("12345", 
+                               {    
+                                 id        = "___ the document id ___";
+                                 name      = "first job";
+                                 startDate = "2001-10-12";
+                                 endDate   = "2001-10-13";
+                               }
+                             )
+
+  Method person.deleteJob(arg1, arg2)
+    Parameters: arg1: unique number of a person (String or Number)
+                arg2: JobDocument
+        Result: the new JobDocument
+      Examples: person.deleteJob("12345", 
+                               {    
+                                 id        = "___ the document id ___";
+                               }
+                             )

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template templateclass="skyregistryd" 
+          xmlns="http://www.skyrix.com/od/skymasterd-config">
+  <taskclass>RegistryTask</taskclass>
+  <singleton>true</singleton>
+  <required >true</required>
+  <tool     >skyregistryd</tool>
+</template>

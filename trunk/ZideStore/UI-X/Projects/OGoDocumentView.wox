@@ -1,0 +1,13 @@
+<?xml version='1.0' standalone='yes'?>
+<var:component className="OGoPageFrame" 
+  var:title="clientObject.nameInContainer"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+
+  <h4>File: <var:string value="clientObject.nameInContainer"/></h4>
+
+  (<var:string value="clientObject.soClassName"/>)
+
+</var:component>

@@ -1,0 +1,171 @@
+// bind template to controller class
+
+IsTextMode: WOConditional {
+  // tables, but no imgs
+  condition = isInTextMode;
+}
+IsNotTextMode: WOConditional {
+  // tables+imgs
+  condition = isInGfxMode;
+}
+IsTextModeBrowser: WOConditional {
+  // no tables, no imgs
+  condition = isTextModeBrowser;
+}
+
+DockEntries: WORepetition {
+  list      = pages;
+  index     = index;
+  separator = "";
+  item      = item;
+}
+TextDockEntries: WORepetition {
+  list      = pages;
+  index     = index;
+  separator = " | ";
+  item      = item;
+}
+
+DockLink: WOHyperlink {
+  directActionName = "dock";
+  ?page            = dockComponent;
+  ?cid             = context.contextID;
+  CLASS            = "skydockfont";
+}
+DockImage: WOImage {
+  filename = dockImageName;
+  ALT      = dockLabel;
+  BORDER   = 0;
+}
+DockLabel: WOString {
+  value    = dockLabel;
+}
+
+TextDockCell: WOGenericContainer {
+  elementName   = "td";
+  align         = "left";
+  valign        = "middle";
+  rowspan       = "2";
+  //  BGCOLOR       = config.colors_headerCell;
+}
+
+HasMiniView: WOConditional {
+  condition = hasDockMiniView;
+}
+LacksMiniView: WOConditional {
+  condition = hasDockMiniView;
+  negate    = YES;
+}
+
+MiniView: WOComponentReference {
+  component = dockMiniView;
+  hideLink  = disableLinks;
+}
+
+// prefs
+
+PrefsLabel: WOString {
+  value      = labels.preferences;
+  escapeHTML = NO;
+}
+
+// active page type
+
+ActivePageIsEditor: WOConditional {
+  condition = disableLinks;
+}
+ActivePageIsNotEditor: WOConditional {
+  condition = disableLinks;
+  negate    = YES;
+}
+
+Font: WOGenericContainer {
+  elementName = "font";
+  CLASS       = "skydockfont";
+};
+
+//LogoImageLink: WOHyperlink {
+LogoImageLink: SkyExternalLink {
+  target   = "custom";
+  href     = logoImageLink;
+}
+
+LogoImage: WOImage {
+  filename = logoImageName;
+  ALT      = logoImageLink;
+  BORDER   = 0;
+}
+
+IsLogoMenuRightAligned: WOConditional {
+  condition = logoMenuAlignment;
+  value     = "right";
+}
+
+IsLogoMenuBottomAligned: WOConditional {
+  condition = logoMenuAlignment;
+  value     = "bottom";
+}
+
+PrefsLink: WOHyperlink {
+  directActionName = "dock";
+  ?page            = "LSWPreferencesViewer";
+  ?cid             = context.contextID;
+  CLASS            = "skydockfont";
+}
+
+HomeLink: WOHyperlink {
+  directActionName = "downloadBookmark";
+  actionClass      = "DirectAction";
+  ?pkey            = session.activeAccount.companyId.stringValue;
+  target           = "private_desktop";
+  CLASS            = "skydockfont";
+}
+
+DeskLink: WOHyperlink {
+   directActionName = "downloadBookmark";
+   actionClass      = "DirectAction";
+   ?pkey            = "10000";
+   target           = "public_desktop";
+   CLASS            = "skydockfont";
+}
+
+PrefsImage: WOImage {
+  filename = "menu_static_prefs.gif";
+  alt      = labels.preferences;
+  border   = 0;
+}
+
+PrefsImageRight: WOImage {
+  filename = "menu_static_prefs_right.gif";
+  alt      = labels.preferences;
+  border   = 0;
+}
+
+StaticDockEntries: WORepetition {
+  list      = pages;
+  //  index     = index;
+  identifier = Peferences;
+  item      = dockComponent
+  //count     = 1;
+}
+
+PrefsCond: WOConditional {
+  condition = Preferences;
+  negate    = YES;
+}
+
+DockedProjects: SkyDockedProjects {
+  isInTextMode = isInTextMode;
+}
+
+HasMiniTextView: WOConditional {
+  condition = hasDockMiniTextView;
+}
+LacksMiniTextView: WOConditional {
+  condition = hasDockMiniTextView;
+  negate    = YES;
+}
+MiniTextView: WOComponentReference {
+  component = dockMiniTextView;
+  hideLink  = disableLinks;
+}

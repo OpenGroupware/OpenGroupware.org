@@ -1,0 +1,63 @@
+{
+  "Session Name Service Daemon" = (
+     {
+     name = port;
+     critical = YES;
+     English = {
+       title = "Port on which the snsd listens";
+       info = "The snsd will listen on this port. <br/>
+               <b>This may possibly break your SKYRiX installation</b>.";
+     };
+     German = {
+       title = "Port, auf dem der snsd lauscht";
+       info = "Setzen Sie die Portnummer, auf der der snsd lauschen soll. 
+               <br/> <b>Achtung: Eine &Auml;nderung dieser Einstellung kann 
+               die Funktion Ihres SKYRiX-System zerst&ouml;ren.";
+       };
+     ptBR = {
+       title = "Porta de escuta do serviço snsd";
+       info = "O serviço snsd escutará por esta porta. <br/>
+               <b>Este parâmetro pode danificar sua instalação OpenGroupware</b>.";
+     };
+     },
+     {
+     name = SNSLogDirectory;
+     English = {
+       title = "Logfile path for the snsd";
+       info = "This specifies the logfile path used by the snsd. <br/>
+               It defaults to <i>/var/log/skyrix41/skyrix-snsd.log</i>.";
+     };
+     German = {
+       title = "Verzeichnis der Logdateien des snsd";
+       info = "Dieser Parameter legt den Logdatei-Pfad fest, welchen der snsd 
+               verwendet. <br/>Der Default-Parameter ist 
+               <i>/var/log/skyrix41/skyrix-snsd.log</i>.";
+       };
+     ptBR = {
+       title = "Caminho do arquivo de registro do serviço snsd";
+       info = "Especifica o caminho do arquivo de registro usado pelo serviço snsd. <br/>
+               O valor padrão é <i>/var/log/skyrix41/skyrix-snsd.log</i>.";
+     };
+     },
+     {
+     name = verbose;
+     values = (NO, YES);
+     English = {
+       title = "More verbose logging of the session server";
+       info = "If you encounter problems with the snsd, you can enable this 
+               parameter to let the snsd be more verbose.";
+     };
+     German = {
+       title = "Erweiterte Logausgabe des Session-Servers";
+       info = "Wenn Sie Probleme mit dem snsd feststellen, k&ouml;nnen sie 
+               diesen Parameter verwenden, um erweiterte Log-Ausgaben des 
+               Session-Servers zu erhalten.";
+       };
+     ptBR = {
+       title = "Registro verboso do servidor snsd";
+       info = "Ao encontrar dificuldadees com o serviço snsd, você pode ativar este parâmetro para conseguir mais detalhes do serviço snsd.";
+     };
+     },
+
+  );
+};

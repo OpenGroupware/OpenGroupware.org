@@ -1,0 +1,5 @@
+// this is for a tool in Misc
+LDAPQuery         = "LDAP Query";
+SkyLDAPQueryPage  = "Internet Directory Query";
+ldap_window_title = "Internet Directory Query";
+search            = "suchen";

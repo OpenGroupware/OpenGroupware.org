@@ -1,0 +1,73 @@
+<?xml version='1.0' standalone='yes'?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+>
+  <head>
+    <title>Project: <var:string value="clientObject.nameInContainer"/></title>
+    
+    <meta name="description" content="ZideStore Web Interface" />
+    <meta name="author"      content="SKYRIX Software AG" />
+    <meta name="robots"      content="stop" />
+    
+    <link type="text/css" rel="stylesheet" rsrc:href="blog.css" />
+    <link href="mailto:hh@skyrix.com" rev="made" />
+  </head>
+
+  <body>
+    <div id="header">
+      <table border="0" width="100%">
+        <tr>
+          <td>
+            <h1><a href="..">Projects</a> ::
+              <var:string value="clientObject.nameInContainer"/>
+            </h1>
+            <span class="description"></span>
+          </td>
+          <td align="right">
+            <img src="/zidestore/so/ControlPanel/Products/CommonUI/Resources/OGoLogo.gif" 
+                 alt="Logo" />
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="content">
+      <div class="cards">
+        <h2 class="projecttitle">Subfolders</h2>
+        <div class="cardbody">
+          <h3 class="title">Path</h3>
+          <var:foreach list="documentFolder.toManyRelationshipKeys" item="item">
+            <a var:href="docItemLink"><var:string value="item" /></a>
+            <br />
+          </var:foreach>
+        </div>
+
+        <br />
+
+        <h2 class="projecttitle">Files</h2>
+        <div class="cardbody">
+          <h3 class="title">Path</h3>
+          <var:foreach list="documentFolder.toOneRelationshipKeys" item="item">
+            <a var:href="docItemLink"><var:string value="item" /></a>
+            <br />
+           </var:foreach>
+        </div>
+
+        <br />
+
+        <h2 class="projecttitle">Related Objects</h2>
+        <div class="cardbody">
+          <h3 class="title">Linked ...</h3>
+          <var:foreach list="clientObject.toManyRelationshipKeys" item="item">
+            <a var:href="item"><var:string value="item" /></a>
+            <br />
+          </var:foreach>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,43 @@
+<#Frame>
+  <!-- $Id: SkyJobAttributesEditor.html 2 2004-08-20 11:37:44Z znek $ -->
+  <#Window>
+    <#JobForm>
+      <table width="100%" border="0" cellspacing="0">
+        <#CommonAttributes/>
+
+        <#ShowPercentCompleteCond>
+          <tr>
+            <#PercentCompleteAttr
+               ><#PercentCompletePopup/></#PercentCompleteAttr>
+          </tr>
+        </#ShowPercentCompleteCond>
+ 
+        <#ShowPriorityCond>
+          <tr>
+            <#PriorityAttr><#PriorityPopup/></#PriorityAttr>
+          </tr>
+        </#ShowPriorityCond>
+ 
+        <#ShowSensitivityCond>
+          <tr>
+            <#SensitivityAttr><#SensitivityPopup/></#SensitivityAttr>
+          </tr>
+        </#ShowSensitivityCond>
+
+        <#ExtendedAttributes/>
+
+        <#EditorButtons/>
+      </table>
+    </#JobForm>
+  </#Window>
+
+<script language="JavaScript">
+<!--
+if (document.jobEditor) {
+  if (document.jobEditor.elements[0]) {
+    document.jobEditor.elements[0].focus();
+  }
+}
+// -->
+</script>
+</#Frame>

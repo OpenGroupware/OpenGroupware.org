@@ -1,0 +1,60 @@
+// $Id: SkyAptTypeSelection.wod 2 2004-08-20 11:37:44Z znek $
+
+/* conditions */
+PopUpCond: WOConditional {
+  condition = inputType;
+  value     = "PopUp";
+}
+ButtonListCond: WOConditional {
+  condition = inputType;
+  value     = "Icons";  
+}
+HasJScriptCond: WOConditional {
+  condition = context.request.clientCapabilities.isJavaScriptBrowser;
+}
+HasJScriptCondElse: WOConditional {
+  condition = context.request.clientCapabilities.isJavaScriptBrowser;
+  negate    = YES;
+}
+
+/* popup */
+AptTypePopUp: WOPopUpButton { /* todo: there is a dynamic element for that? */
+  list      = aptTypes;
+  item      = item;
+  string    = aptTypeLabel;
+  selection = aptTypeSelection;
+}
+
+/* buttons */
+TypeRepetition: WORepetition {
+  list  = aptTypes;
+  item  = item;
+  index = itemIndex;
+}
+
+SelectSpan: WOGenericContainer {
+  elementName = "span";
+  onClick     = jsScriptOnClick;
+}
+
+SelectRadioButton: WORadioButton {
+  name      = "aptTypeSelection";
+  value     = buttonValue;
+  selection = selectedButton;
+}
+
+JSTypeImage: WOImage {
+  onClick  = jsScriptOnClick;
+  filename = aptTypeImageFilename;
+  alt      = aptTypeLabel;
+  title    = aptTypeLabel;
+  border   = 0;
+}
+
+
+TypeImage: WOImage {
+  filename = aptTypeImageFilename;
+  alt      = aptTypeLabel;
+  title    = aptTypeLabel;
+  border   = 0;
+}

@@ -1,0 +1,15 @@
+# $Id: TODO 1 2004-08-20 11:17:52Z znek $
+
+issues to resolve ...
+
+DirectAction+Appointment, DirectAction+Project:
+- require a lot of cleanup
+
+Jobs
+====
+DirectAction+Job.m: search for TODO
+
+- the project jobs are apparently not implemented and have some weird
+  parameters (person)
+
+- support encoding/decoding of Outlook attributes in the SkyJobDocument

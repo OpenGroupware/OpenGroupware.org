@@ -1,0 +1,112 @@
+<#AddressTableHeader />
+<#AddressTableView>
+
+  <#IsInForm>
+    <#TitleMode>
+      <#Delete />
+      <#Undelete />
+      <#MarkAsNew />
+      <#DetachSkyrixEntry />
+      <#SyncWithSkyrixEntry />
+      <#CreateSkyrixEntry />
+      <#Content />
+    </#TitleMode><!-- TitleMode -->
+  </#IsInForm>
+
+  <#ButtonMode>
+    <table border="0" cellspacing="0" cellpadding="0"><tr><td nobr align="right"><#IsInForm><#CategoryPopUp /><#Update /></#IsInForm></td><td nobr><#FilterButtons /></td></tr></table>
+  </#ButtonMode><!-- ButtonMode -->
+
+  <#AttributeSwitcher>
+
+    <#DescriptionCase>
+      <#DescriptionData>
+        <nobr><#Description /></nobr>
+      </#DescriptionData>
+    </#DescriptionCase><!-- DescriptionCase -->
+
+    <#LastnameCase>
+      <#LastnameData>
+        <nobr><#Lastname /></nobr>
+      </#LastnameData>
+    </#LastnameCase><!-- LastnameCase -->
+
+    <#FirstnameCase>
+      <#FirstnameData>
+        <nobr><#Firstname /></nobr>
+      </#FirstnameData>
+    </#FirstnameCase><!-- FirstnameCase -->
+
+    <#CompanyCase>
+      <#CompanyData>
+        <nobr><#Company /></nobr>
+      </#CompanyData>
+    </#CompanyCase>
+
+    <#MainPhoneCase>
+      <#MainPhoneData>
+        <nobr><#MainPhone /></nobr>
+      </#MainPhoneData>
+    </#MainPhoneCase><!-- MainPhoneCase -->
+
+    <#WorkPhoneCase>
+      <#WorkPhoneData>
+        <nobr><#WorkPhone /></nobr>
+      </#WorkPhoneData>
+    </#WorkPhoneCase><!-- WorkPhoneCase -->
+
+    <#MobilePhoneCase>
+      <#MobilePhoneData>
+        <nobr><#MobilePhone /></nobr>
+      </#MobilePhoneData>
+    </#MobilePhoneCase><!-- MobilePhoneCase -->
+
+    <#EmailCase>
+      <#EmailData>
+        <nobr><#Email /></nobr>
+      </#EmailData>
+    </#EmailCase><!-- EmailCase -->
+
+    <#DeviceCase>
+      <#DeviceData>
+        <nobr><#Device /></nobr>
+      </#DeviceData>
+    </#DeviceCase><!-- DeviceCase -->
+
+    <#PalmSyncCase>
+      <#PalmSyncData>
+        <nobr><#PalmSync /></nobr>
+      </#PalmSyncData>
+    </#PalmSyncCase><!-- SyncCase -->
+
+    <#CategoryCase>
+      <#CategoryData>
+        <nobr><#Category /></nobr>
+      </#CategoryData>
+    </#CategoryCase><!-- CategoryCase -->
+
+    <#SkyrixRecordCase>
+      <#SkyrixRecordData>
+        <#HasSkyrixRecord>
+          <nobr><#ViewSkyrixRecord><#SkyrixRecordIcon /><#SkyrixRecord /></#ViewSkyrixRecord></nobr>
+        </#HasSkyrixRecord>
+      </#SkyrixRecordData>
+    </#SkyrixRecordCase><!-- SkyrixRecord -->
+
+    <#SkyrixSyncCase>
+      <#SkyrixSyncHeader>
+        <#SkyrixSyncIcon />
+      </#SkyrixSyncHeader>
+      <#SkyrixSyncData>
+        <#HasSkyrixRecord>
+          <nobr><#SkyrixSyncType /><#RecordsNotSynchroneCond><#SkyrixSync
+          /><#SkyrixSyncBothChangedCond
+            ><#ForcePalmOverOGoIcon/><#ForceOGoOverPalmIcon 
+          /></#SkyrixSyncBothChangedCond></#RecordsNotSynchroneCond></nobr>
+        </#HasSkyrixRecord>
+      </#SkyrixSyncData>
+    </#SkyrixSyncCase>
+
+  </#AttributeSwitcher><!-- AttributeSwitcher -->
+
+</#AddressTableView><!-- AddressTableView -->

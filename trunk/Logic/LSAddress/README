@@ -1,0 +1,68 @@
+LSAddress
+=========
+
+LSAddress contains the base classes for the various "company" objects, like
+LSEnterprise, LSPerson, LSTeam and LSTrust.
+
+Class Hierachy
+==============
+  <NSObject>
+    <LSModuleManager>
+      LSAddressCommands
+    <LSBaseCommand>
+      LSCheckLoginCommand
+      LSCheckPermissionCompanyCommand
+      LSGetUserDefaultsCommand
+      LSRegisterUserDefaultsCommand
+      LSUserDefaultCommand
+      LSWriteUserDefaultsCommand
+      <LSDBObjectBaseCommand>
+        LSGetAccountByLoginCommand
+        LSGetCompanyCommand
+        LSGetCompanyCommand
+        LSGetCompanyForMemberCommand
+          LSGetEnterpriseForPersonCommand
+          LSGetTeamForAccountCommand
+        LSGetFakeProjectForEnterpriseCommand
+        LSGetMemberForCompanyCommand
+          LSGetMemberForEnterpriseCommand
+          LSGetMemberForTeamCommand
+        LSGetProjectForEnterpriseCommand
+        LSGetProjectForPersonCommand
+        LSGroupToMemberAssignmentCommand
+        LSMemberToGroupAssignmentCommand
+        LSProjectsToCompanyAssignmentCommand
+        LSResolveAccountsCommand
+        LSSetCategoriesCommand
+        LSSetResourcesCommand
+        <LSDBObjectGetCommand>
+          LSGetAccountCommand
+            LSLoginAccountCommand
+          LSGetEnterpriseCommand
+          LSGetPersonCommand
+        <LSDBObjectSetCommand>
+          LSChangeLoginStatusCommand
+          LSSetCompanyCommand
+            LSSetAccountCommand
+            LSSetEnterpriseCommand
+            LSSetTeamCommand
+          LSSetAddressCommand
+        <LSDBObjectNewCommand>
+          LSNewCompanyCommand
+            LSNewAccountCommand
+            LSNewEnterpriseCommand
+            LSNewPersonCommand
+            LSNewTeamCommand
+        <LSDBObjectDeleteCommand>
+          LSDeleteCompanyCommand
+        <LSExtendedSearchCommand>
+          LSExtendedSearchEnterpriseCommand
+          LSExtendedSearchPersonCommand
+        <LSFullSearchCommand>
+          LSFullSearchEnterpriseCommand
+          LSFullSearchPersonCommand
+        <LSDBFetchRelationCommand>
+          LSFetchExtendedAttributesCommand
+          LSFetchTelsForPersonCommand
+    _LSGetMembersForCompany_Cache
+    _LSResolveAccountsCommand_Cache

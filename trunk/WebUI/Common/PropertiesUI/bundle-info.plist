@@ -1,0 +1,27 @@
+{
+  bundleHandler = PropertiesUI;
+
+  requires = {
+    bundleManagerVersion = 1;
+
+    classes = (
+      { name = NSObject;       },
+      { name = WOComponent;    },
+      { name = OGoContentPage; },
+    );
+  };
+  
+  provides = {
+    classes = (
+        { name = PropertiesUI;     },
+        { name = SkyObjectPropertyViewer; },
+        { name = SkyObjectPropertyEditor; },
+    );
+    WODynamicElements = (
+    );
+    WOComponents = (
+        { name = SkyObjectPropertyViewer; },
+        { name = SkyObjectPropertyEditor; },
+    );
+  };
+}

@@ -1,0 +1,72 @@
+<#Frame>
+  <!-- $Id: LSWImapMails.html 2 2004-08-20 11:37:44Z znek $ -->
+  <#Window>
+
+  <#WarningModeCondElse>
+    <#ErrorCond><#CouldntLogin />:&nbsp;<#Host /></#ErrorCond>
+
+    <#Tab>
+      <#IsLoginCond>
+        <#MailTabItem>
+          <#Form>
+            <#ShowTree>
+              <table cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td valign="top" width="15%"><#MailFolderTree /></td>
+                  <td valign="top" width="3"></td>
+                  <td valign="top">
+                    <#MailListHeader />
+                    <#MailList />
+                  </td>
+                </tr>
+              </table>
+            </#ShowTree>
+            <#HideTree>
+              <#MailListHeader />
+              <#MailList />
+            </#HideTree>
+          </#Form>
+        </#MailTabItem>
+         
+        <#SearchTabItem><#MailSearch /></#SearchTabItem>
+
+        <#FilterTabItem>
+          <#FilterCond>
+            <#ShowTargetFolderCondElse>
+              <#MailFilterList><#Buttons /></#MailFilterList>
+            </#ShowTargetFolderCondElse>
+            <#ShowTargetFolderCond>
+              <#MailFilterTargetList><#Buttons /></#MailFilterTargetList>
+            </#ShowTargetFolderCond>
+          </#FilterCond>
+          <#FilterCondElse>
+            <#WrongImapServer /> (<#ServerName />)
+          </#FilterCondElse>
+        </#FilterTabItem>
+
+        <#ShowVacationPanel>
+          <#VacationTabItem>
+            <#VacationCond><#VacationViewer /></#VacationCond>
+            <#VacationCondElse>
+              <#ImapServerDoesNotSupportVacation /> (<#ServerName />)
+            </#VacationCondElse>
+          </#VacationTabItem>
+        </#ShowVacationPanel>
+      </#IsLoginCond>
+
+      <#ShowMailingListManager>
+        <#MailingListManagerTabItem>
+          <#MailingListManager />
+        </#MailingListManagerTabItem>                
+      </#ShowMailingListManager>
+
+      <#ShowLogin>
+        <#LoginTabItem><#Login /></#LoginTabItem>
+      </#ShowLogin>
+    </#Tab>
+
+   </#WarningModeCondElse>
+
+     <#WarningModeCond><#Warning /></#WarningModeCond>
+  </#Window>
+</#Frame>

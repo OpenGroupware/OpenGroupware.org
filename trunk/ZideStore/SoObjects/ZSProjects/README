@@ -1,0 +1,43 @@
+# $Id: README 1 2004-08-20 11:17:52Z znek $
+
+ZideStore Support for OGo Projects
+==================================
+
+STATUS: in active development, versioning/changelog not yet active!
+
+Intended Hierarchy:
+
+donald
+\- Projects		SxProjectsFolder (maybe contain SxProject's as contacts?)
+  \- MyProject		SxProjectFolder
+  |  +- Tasks		SxTaskFolder
+  |  +- Notes		?
+  |  +- Participants	SxContactFolder (accounts + teams)
+  |  +- Contacts	SxContactFolder (related contacts)
+  |  \- Documents	SxDocumentFolder
+  |     +- SubFolder	SxDocumentFolder
+  |     \- MyImage.gif	SxDocument
+  \ MyOtherProject
+
+We'll try to start out with raw document access.
+
+Which projects are visible? For now, all projects, but this *MUST* be limited, 
+eg the dock and/or favorite projects might be a useful subset.
+
+And how do we reach projects associated with a company record?
+
+
+Defaults
+========
+
+SxDocumentFolderDebugEnabled
+SxProjectFolderDebugEnabled
+SxProjectsFolderDebugEnabled
+
+
+RSS
+===
+
+You can now retrieve project notes using RSS, the popular news format. The URL
+for doing that is:
+  http://[yourhost]/zidestore/so/[yourlogin]/Projects/[project]/Notes.rss

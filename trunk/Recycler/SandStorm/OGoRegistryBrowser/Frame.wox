@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='iso-8859-1' standalone='yes'?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant">
+  
+  <head>
+    <title><var:string value="title"/></title>
+  </head>
+  
+  <body bgcolor="#FFECD0" link="#6F1537" vlink="#C97138">
+    
+    <var:component-content/>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+# $Id$
+
+libOGoDaemon
+============
+
+A library to make writing OpenGroupware based NGObjWeb daemons (eg XML-RPC) 
+easier.

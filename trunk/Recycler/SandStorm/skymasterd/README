@@ -1,0 +1,24 @@
+# $Id$
+
+One daemon to rule them all...
+
+This daemon controls all the other programs used within a SKYRiX environment.
+After being properly configured, it is the only daemon that has to be started
+in order to get a working SKYRiX/SandStorm environment.
+It automagically registers at a started registry if this registry has the
+taskclass 'RegistryTask'. Re-registering at the given interval is done, too.
+
+See INSTALL for installation instructions and TROUBLESHOOTING for help
+if something doesn't work the way it is intented to do.
+
+Access Control
+==============
+The following methods don't require authentication:
+  - tasks
+  - templates
+  - isRunning
+  - status
+  - all introspection API methods
+
+All other functions require valid credentials, check the INSTALL document
+for setting them up.

@@ -1,0 +1,52 @@
+// $Id: SkyImapMailPopUp.wod 2 2004-08-20 11:37:44Z znek $
+
+Title: WOString {
+  value = "SKYRiX Mails";
+}
+
+BodyTag: WOGenericContainer {
+  elementName = "body";
+  bgcolor     = config.colors_bgColor;
+  font        = "#000000";
+  link        = "#000000";
+  vlink       = "#000000";
+}
+
+NewMessagesString: WOString {
+  value = newMessagesString;
+}
+HasNewMessagesCond: WOConditional {
+  condition = hasNewMessages;
+}
+
+//Refresh: WOHyperlink {
+//  href   = refreshLink;
+//  string = labels.action_refresh;
+//  style  = "text-decoration:none";
+//}
+MailDockLinkLabel: WOString {
+  //  href   = "javascript:showNewMails()";
+  value = labels.action_viewMail;
+  //  style  = "text-decoration:none";
+}
+CloseWindowLinkLabel: WOString {
+  //href   = "javascript:closeWindow()";
+  value = labels.action_closeWindow;
+  //style  = "text-decoration:none";
+}
+Font: WOGenericContainer {
+  elementName = "font";
+  size        = "-2";
+}
+
+MailDockLinkStr: WOString {
+  escapeHTML = NO;
+  value      = mailDockLink;
+}
+SkyrixFrameName: WOString {
+  escapeHTML = NO;
+  value      = parentWindowName;
+}
+HasTargetWindowName: WOConditional {
+  condition = parentWindowName.length;
+}

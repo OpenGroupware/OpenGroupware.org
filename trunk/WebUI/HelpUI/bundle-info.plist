@@ -1,0 +1,26 @@
+{
+  bundleHandler = HelpUIModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+    );
+    classes = (
+      { name = NSObject;          },
+      { name = LSWModuleManager;  exact-version = 2; },
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = HelpUIModule;  },
+      { name = OGoHelpViewer; },
+      { name = OGoHelpAction; },
+    );
+    
+    WOComponents = (
+      { name = OGoHelpViewer; }
+    );
+  };
+}

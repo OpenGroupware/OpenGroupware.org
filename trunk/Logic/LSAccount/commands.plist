@@ -1,0 +1,26 @@
+// $Id$
+{
+  domainList = (
+        account,
+  );
+
+  domains = {
+    "account" = {
+      operations = {
+        "new"             = { class = "LSNewAccountCommand";              };
+        "delete"          = { class = "LSDeleteAccountCommand";           };
+        "set"             = { class = "LSSetAccountCommand";              };
+        "get"             = { class = "LSGetAccountCommand";              };
+        "get-by-login"    = { class = "LSGetAccountByLoginCommand";       };
+        "teams"           = { class = "LSGetTeamForAccountCommand";       };
+        "setgroups"       = { class = "LSGroupToMemberAssignmentCommand"; };
+        "login"           = { class = "LSLoginAccountCommand";            };
+        "extended-search" = { class = "LSExtendedSearchAccountCommand";   };
+        "add-session-log" = { class = "LSAddSessionLogCommand";           };
+        "get-by-globalid" = { class = "LSGetAccountsForGlobalIDsCommand"; };
+        "change-password" = { class = "LSChangePasswordCommand";          };
+        "toperson"        = { class = "LSAccountToPersonCommand";         };
+      };
+    };
+  };
+}

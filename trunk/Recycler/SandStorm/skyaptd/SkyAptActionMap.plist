@@ -1,0 +1,190 @@
+// $Id$
+
+{
+
+  // appointments
+
+  "appointments.createAppointment" = {
+    ( string, struct, array, array, array, struct, string ) = "createAppointmentAction::::::";
+    ( string, struct, array, array, array, struct ) = "createAppointmentAction::::::";
+    ( string, struct, array, array, array ) = "createAppointmentAction::::::";
+    ( string, struct, array, array )        = "createAppointmentAction::::::";
+    ( string, struct, array )               = "createAppointmentAction::::::";
+    ( string, struct )                      = "createAppointmentAction::::::";
+  };
+
+  "appointments.createAppointmentDict" = {
+    ( string, struct ) = "createAppointmentDictAction:";
+  };
+
+  "appointments.listAppointments" = {
+    ( array, date, date, array, array, array, struct ) = "listAppointmentsAction::::::";
+    ( array, date, date, array, array, array ) = "listAppointmentsAction::::::";
+    ( array, date, date, array, array ) = "listAppointmentsAction::::::";
+    ( array, date, date, array )        = "listAppointmentsAction::::::";
+    ( array, date, date  )              = "listAppointmentsAction::::::";
+    ( array, date  )                    = "listAppointmentsAction::::::";
+    ( array )                           = "listAppointmentsAction::::::";
+  };
+
+  "appointments.getAppointment" = {
+    ( struct, string ) = "getAppointmentAction:";
+  };
+
+  "appointments.moveAppointment" = {
+    ( number, string, number, string, number ) = "moveAppointmentAction::::";
+    ( number, string, number, string )         = "moveAppointmentAction::::";
+    ( number, string, number )                 = "moveAppointmentAction::::";
+    ( number, string )                         = "moveAppointmentAction::::";
+  };
+
+  "appointments.setAppointmentParticipants" = {
+    ( number, string, array, number ) = "setAppointmentParticipantsAction:::";
+    ( number, string, array )         = "setAppointmentParticipantsAction:::";
+  };
+  "appointments.setAppointmentResources" = {
+    ( number, string, array, number ) = "setAppointmentResourcesAction:::";
+    ( number, string, array )         = "setAppointmentResourcesAction:::";
+  };
+
+  "appointments.setAppointmentWriteAccessList" = {
+    ( number, string, array, number ) = "setAppointmentWriteAccessListAction:::";
+    ( number, string, array ) = "setAppointmentWriteAccessListAction:::";
+  };
+
+  "appointments.setAppointmentNotification" = {
+    ( number, string, string, number ) = "setAppointmentNotificationAction:::";
+    ( number, string, string )         = "setAppointmentNotificationAction:::";
+  };
+
+  "appointments.setAppointmentType" = {
+    ( number, string, string, number ) = "setAppointmentTypeAction:::";
+    ( number, string, string )         = "setAppointmentTypeAction:::";
+  };
+
+  "appointments.setAppointmentIgnoreConflicts" = {
+    ( number, string, string, number ) = "setAppointmentIgnoreConflictAction:::";
+    ( number, string, string ) = "setAppointmentIgnoreConflictAction:::";
+    ( number, string )         = "setAppointmentIgnoreConflictAction:::";
+  };
+
+  "appointments.setAppointmentViewAccessTeam" = {
+    ( number, string, string, number ) = "setAppointmentViewAccessTeamAction:::";
+    ( number, string, string ) = "setAppointmentViewAccessTeamAction:::";
+  };
+
+  "appointments.setAppointmentRepetition" = {
+    ( number, string, string, date, number ) = "setAppointmentRepetitionAction::::";
+    ( number, string, string, date ) = "setAppointmentRepetitionAction::::";
+  };
+
+  "appointments.setAppointmentComment" = {
+    ( number, string, string, number ) = "setAppointmentCommentAction:::";
+    ( number, string, string )         = "setAppointmentCommentAction:::";
+  };
+
+  "appointments.addAppointmentLog" = {
+    ( number, string, string, string, number ) = "addAppointmentLogAction::::";
+    ( number, string, string, string )         = "addAppointmentLogAction::::";
+    ( number, string, string )                 = "addAppointmentLogAction::::";
+  };
+
+  "appointments.addMeToAppointment" = {
+    ( number, string, number ) = "addMeToAppointmentAction::";
+    ( number, string )         = "addMeToAppointmentAction::";
+  };
+  "appointments.removeMeFromAppointment" = {
+    ( number, string, number ) = "removeMeFromAppointmentAction::";
+    ( number, string )         = "removeMeFromAppointmentAction::";
+  };
+
+  "appointments.editAppointment" = {
+    ( number, string, date, date, string, string, number, number )
+      = "editAppointmentLightAction:::::::";
+    ( number, string, date, date, string, string, number )
+      = "editAppointmentLightAction:::::::";
+    ( number, string, date, date, string, string )
+      = "editAppointmentLightAction:::::::";
+    ( number, string, date, date, string )
+      = "editAppointmentLightAction:::::::";
+
+    ( number, string, struct, array, array, array, struct, string, number, number ) =
+      "editAppointmentAction:::::::::";
+    ( number, string, struct, array, array, array, struct, string, number ) =
+      "editAppointmentAction:::::::::";
+
+  };
+  "appointments.editAppointmentDict" = {
+    ( number, struct ) = "editAppointmentDictAction:";
+  };
+  
+  "appointments.deleteAppointment" = {
+    ( number, string, number, number ) = "deleteAppointmentAction:::";
+    ( number, string, number )         = "deleteAppointmentAction:::";
+    ( number, string )                 = "deleteAppointmentAction:::";
+  };
+
+  "appointments.getAppointmentPermissions" = {
+    ( string, string )         = "getAppointmentPermissionsAction:";
+  };
+  "appointments.getAppointmentComment" = {
+    ( string, string )         = "getAppointmentCommentAction:";
+  };
+  "appointments.listAppointmentParticipants" = {
+    ( array, string, string )  = "listAppointmentParticipantsAction::";
+    ( array, string )          = "listAppointmentParticipantsAction::";
+  };
+
+  "appointments.listConflictingAppointments" = {
+    ( array, date, date, array, array, struct, array, string, struct ) = "listConflictingAppointmentsAction::::::::";
+    ( array, date, date, array, array, struct, array, string ) = "listConflictingAppointmentsAction::::::::";
+    ( array, date, date, array, array, struct, array ) = "listConflictingAppointmentsAction::::::::";
+    ( array, date, date, array, array, struct ) = "listConflictingAppointmentsAction::::::::";
+    ( array, date, date, array, array ) = "listConflictingAppointmentsAction::::::::";
+    ( array, date, date, array ) = "listConflictingAppointmentsAction::::::::";
+    ( array, date, date )        = "listConflictingAppointmentsAction::::::::";
+    ( array, date )              = "listConflictingAppointmentsAction::::::::";
+  };
+
+  "appointments.listAppointmentProposals" = {
+    ( array, struct, array, array, array ) = "listAppointmentProposalsAction::::";
+    ( array, struct, array, array ) = "listAppointmentProposalsAction::::";
+    ( array, struct, array )        = "listAppointmentProposalsAction::::";
+    ( array, struct )               = "listAppointmentProposalsAction::::";
+  };
+
+  "appointments.getFilledAppointmentMailBody" = {
+    ( string, struct ) = "getFilledAppointmentMailBodyAction:";
+  };
+  "appointments.getFilledAppointmentMailBodyById" = {
+    ( string, string ) = "getFilledAppointmentMailBodyByIdAction:";
+  };
+
+  // appointment types
+
+  "appointments.listAppointmentTypes" = {
+    ( array ) = "listAppointmentTypesAction";
+  };
+  
+  
+  // appointment resources
+
+  "appointments.listAppointmentResources" = {
+    ( array, string ) = "listAppointmentResourcesAction:";
+    ( array )         = "listAppointmentResourcesAction:";
+  };
+  "appointments.listAppointmentResourceNames" = {
+    ( array, string ) = "listAppointmentResourceNamesAction:";
+    ( array )         = "listAppointmentResourceNamesAction:";
+  };
+
+  "appointments.listAppointmentResourceCategories" = {
+    ( array ) = "listAppointmentResourceCategoriesAction";
+  };
+
+  "appointments.listUsedResourceNames" = {
+    ( array, date, date, string ) = "listUsedResourceNamesAction:::";
+    ( array, date, date )         = "listUsedResourceNamesAction:::";
+  }
+
+}

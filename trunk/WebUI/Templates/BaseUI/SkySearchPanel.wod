@@ -1,0 +1,33 @@
+// bind template to controller
+
+Panel: SkyPanel {
+  string    = string;
+  filename  = filename;
+  isVisible = isVisible;
+  panelName = panelName;
+  title     = labels.fastSearch;
+  //  doActionOnCancel = YES;
+}
+
+TabRepetition: WORepetition {
+  list = panels;
+  item = item;
+}
+
+TabView: SkyTabView {
+  selection = tabKey;
+}
+
+TabItem: SkySimpleTabItem {
+  key      = item.name;
+  label    = item.label;
+  isScript = YES;
+}
+
+/* search form */
+
+TabContent: WOComponentReference {
+  component    = item.component;
+  displayPanel = isVisible;
+  //  bindings      = dictionary;
+}

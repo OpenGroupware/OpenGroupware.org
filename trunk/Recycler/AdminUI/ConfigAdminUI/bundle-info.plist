@@ -1,0 +1,73 @@
+{
+  bundleHandler = OGoCfgAdminUIModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+
+    bundles = ( 
+      { name = LSAddress;     type = cmd; },
+      { name = BaseUI;        type = lso; },
+      { name = OGoUIElements; type = lso; },
+    );
+    classes = (
+      { name = LSWComponent;   exact-version = 2; },
+      { name = LSWContentPage; exact-version = 3; },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     }
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = OGoCfgAdminUIModule; },
+      { name = OGoCfgAdminPage;     },
+    );
+
+    DockablePages = (
+      { 
+        name      = "Config Admin";
+        component = "OGoCfgAdminPage";
+        labelKey  = "dock_cfgadminapp";
+        listicon  = "icon_usermanager_26x21.gif";
+        onlyRoot  = YES;
+      }
+    );
+    
+    WOComponents = (
+      { name = OGoCfgAdminPage;          },
+      { name = OGoAccountsVirtualEditor; },
+      { name = OGoTeamsVirtualEditor;    },
+      { name = OGoCyrusConfigEditor;     },
+      { name = OGoPostfixConfigEditor;   },
+      { name = OGoQuotaTabEditor;        }
+    );
+    
+    LSWCommands = (
+      {
+        verb      = view;
+        type      = "objc/OGoAccountsVirtualConfigFile";
+        component = OGoAccountsVirtualEditor;
+      },
+      {
+        verb      = view;
+        type      = "objc/OGoTeamsVirtualConfigFile";
+        component = OGoTeamsVirtualEditor;
+      },
+      {
+        verb      = view;
+        type      = "objc/OGoCyrusConfigFile";
+        component = OGoCyrusConfigEditor;
+      },
+      {
+        verb      = view;
+        type      = "objc/OGoPostfixConfigFile";
+        component = OGoPostfixConfigEditor;
+      },
+      {
+        verb      = view;
+        type      = "objc/OGoQuotaTabConfigFile";
+        component = OGoQuotaTabEditor;
+      },
+    );
+  };
+}

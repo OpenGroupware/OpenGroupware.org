@@ -1,0 +1,74 @@
+# $Id$
+
+XML-RPC Daemon which provides authentication data.
+
+Namespace:
+  
+  com.skyrix.accounts [stripped]
+  
+XML-RPC API:
+
+======================================================================
+
+  Method getByNumber
+    Parameters: unique number of an account (String or Number)
+        Result: AccountDocument
+       Example: getByNumber(10000)
+
+  Method getAccountByLogin
+    Parameters: unique login of an account (String)
+        Result: AccountDocument
+       Example: getAccountByLogin("root")
+
+  Method deleteByNumber
+    Parameters: unique number of an account (String or Number)
+        Result: ???
+       Example: deleteByNumber(10000)
+
+  Method deleteByLogin
+    Parameters: unique login of an account (String)
+        Result: ???
+       Example: deleteByLogin("root")
+  
+  Method fetch
+    Parameters: FetchSpecification
+        Result: Array of AccountDocuments
+       Example: fetch(
+                               { 
+                                 qualifier    = "login = 'root'";
+                                 sortOrderings = ( "login" );
+                               }
+                              )
+
+  Method insert
+    Parameters: Dictionary
+        Result: the new AccountDocument (including the account number)
+       Example: insert(
+                               {    
+                                 firstname  = "Donald";
+                                 middlename = "Die Ente";
+                                      name  = "Duck";
+                               }
+                             )
+  Method update
+    Parameters: AccountDocument (*MUST* contain the account number)
+        Result: the updated AccountDocument
+       Example: update(
+                               {    
+                                    number  = "12345"; // absolute necessary!!!
+                                 firstname  = "Donaldo";
+                                 middlename = "The Scar";
+                                      name  = "Duckfonzo";
+                               }
+                             )
+
+  Method delete
+    Parameters: AccountDocument (*MUST* contain the account number)
+        Result: ???
+       Example: delete(
+                                {    
+                                     number = "12345"; // absolute necessary!!!
+                                       name = "Duck";
+                                  firstname = "Donald";
+                                }
+                              )

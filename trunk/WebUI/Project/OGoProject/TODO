@@ -1,0 +1,10 @@
+TODO OGoProject
+===============
+
+- implement the Journal component
+- replace IsEnterpriseEdition in SkyProject4DocumentViewer.html
+
+- fix -indexOfString: methods for non-libFoundation environments
+
+SkyProject4Desktop:
+- move search and documents sections to own components!

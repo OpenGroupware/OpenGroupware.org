@@ -1,0 +1,79 @@
+<!-- $Id: SkyPalmAddressViewer.html,v 1.2 2003/12/10 18:27:04 martin Exp $ -->
+<#Frame>
+  <#Window>
+
+    <table width="100%" border="0" cellpadding="4" cellspacing="0">
+
+    <#ViewerTitle>
+      <#Buttons />
+    </#ViewerTitle><!-- ViewerTitle -->
+
+    <tr><#PalmAddress /></tr>
+    </table>
+    
+    <p>
+    <#TabView>
+      <#AttributesTab>
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+        <#LastnameAttr />
+        <#FirstnameAttr />
+        <#TitleAttr />
+        <#CompanyAttr />
+        <#Custom1Attr />
+        <#Custom2Attr />
+        <#Custom3Attr />
+        <#Custom4Attr />
+        <#NoteAttr />
+        <!-- /table -->
+      <!-- /WEBOBJECT -->
+
+      <!-- WEBOBJECT NAME="AddressTab" -->
+        <!-- table width="100%" border="0" cellpadding="4" cellspacing="0" -->
+        <#AddressAttr />
+        <#CityAttr />
+        <#StateAttr />
+        <#ZipcodeAttr />
+        <#CountryAttr />
+
+        <#WorkAttr />
+        <#HomeAttr />
+        <#FaxAttr />
+        <#OtherAttr />
+        <#EmailAttr />
+        <#MainAttr />
+        <#PagerAttr />
+        <#MobileAttr />
+      </table>
+      </#AttributesTab>
+
+      <#PalmSyncTab>
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+        <#CategoryAttr />
+        <#DeviceAttr />
+        <#SyncAttr />
+      </table>
+      </#PalmSyncTab>
+
+      <#HasSkyrixRecord>
+        <#SkyrixSyncTab>
+          <table width="100%" border="0" cellpadding="4" cellspacing="0">
+            <tr>
+          <#SkyCompanyAttr>
+            <#ViewCompany>
+              <#Icon /><#Company /></#ViewCompany><!-- ViewCompany -->
+          </#SkyCompanyAttr><!-- CompanyAttr -->
+        </tr>
+          <#SkyrixSyncAttr />
+          <#SkyrixSyncStateAttr><#BothChangedCond><br />
+            <#ForcePalmOverOGoIcon/><#ForcePalmOverOGoLink/><br />
+            <#ForceOGoOverPalmIcon/><#ForceOGoOverPalmLink/>
+          </#BothChangedCond></#SkyrixSyncStateAttr>
+        </table>
+        </#SkyrixSyncTab><!-- SkyrixSyncTab -->
+      </#HasSkyrixRecord><!-- HasSkyrixRecord -->
+
+    </#TabView>
+  </p>
+
+  </#Window><!-- Window -->
+</#Frame><!-- Frame -->

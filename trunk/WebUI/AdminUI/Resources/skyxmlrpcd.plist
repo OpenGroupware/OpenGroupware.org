@@ -1,0 +1,21 @@
+{
+  "XML-RPC Server" = (
+     {
+     name = WOPort;
+     English = {
+       title = "Listen port for the SKYRiX XML-RPC daemon";
+       info = "Set the port number on which the SKYRiX XML-RPC daemon should
+               listen.";
+     };
+     German = {
+       title = "Port f&uuml;r den SKYRiX XML-RPC Server";
+       info = "Setzen Sie hier die Portnummer, auf der der SKYRiX
+               XML-RPC Server lauschen soll.";
+       };
+     ptBR = {
+       title = "Porta de escuta do serviço OpenGroupware XML-RPC";
+       info = "Define a porta que o serviço OpenGroupware XML-RPC deve escutar.";
+     };
+     },
+  );
+};

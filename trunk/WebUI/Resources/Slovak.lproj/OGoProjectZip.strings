@@ -1,0 +1,22 @@
+// $Id: OGoProjectZip.strings,v 1.3 2004/02/13 01:14:42 helge Exp $
+
+archiveFormat        = "archive format";
+targetFile           = "target file";
+compressionLevel     = "compression level";
+saveAttributes       = "save attributes";
+targetDir            = "target directory";
+fileName             = "Filename";
+size                 = "Size";
+owner                = "Current Owner";
+subject              = "Title";
+releaseDate          = "Modified";
+exclude              = "exclude";
+filePath             = "Filepath";
+date                 = "Date";
+remove               = "remove archive file";
+overwrite            = "overwrite existing files";
+restoreAttributes    = "try to restore file attributes";
+archiveContent       = "contents of archive file";
+cancel               = "cancel";
+unzip                = "unzip";
+zip                  = "zip";

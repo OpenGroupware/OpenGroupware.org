@@ -1,0 +1,16 @@
+// $Id: SkyEnterpriseProjectList.wod 2 2004-08-20 11:37:44Z znek $
+
+IsLicensed: SkyLicenseConditional {
+  modules = ( Project, Enterprises );
+}
+
+ProjectList: SkyProjectList {
+  projects = enterprise.allProjectsDataSource.fetchObjects;
+};
+
+Buttons: SkyButtonRow {
+  ordering = ( new );
+  onNew    = assignProject;
+  new      = labels.assignProject;
+  hasNew   = isEditEnabled;
+}

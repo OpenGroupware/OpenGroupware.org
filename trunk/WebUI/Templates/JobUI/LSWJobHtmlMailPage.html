@@ -1,0 +1,54 @@
+<table width="100%" border="0" cellpadding="4" cellspacing="0">
+  <#MainButtonRow>
+    <td colspan="2">
+      <#Font><b><#JobViewerLabel/></b></#Font>
+    </td>
+  </#MainButtonRow>
+  <tr><td colspan="2"></td></tr>
+
+  <tr>
+    <#AttributeCell><#Font><#TitleLabel/>:</#Font></#AttributeCell>
+    <#ValueCell>
+      <#Font>
+        <#InlineLinkCond    ><#TitleAction  /></#InlineLinkCond>
+        <#InlineLinkCondElse><#TitleExternal/></#InlineLinkCondElse>
+      </#Font>
+    </#ValueCell>
+  </tr>
+  <tr>
+    <#AttributeCell><#Font><#CreatorLabel/>:</#Font></#AttributeCell>
+    <#ValueCell>
+      <#Font>
+        <#CreatorFirstName/>&nbsp;
+        <#CreatorName/>
+      </#Font>
+    </#ValueCell>
+  </tr>
+  <tr>
+    <#AttributeCell><#Font><#ExecutantLabel/>:</#Font></#AttributeCell>
+    <#ValueCell>
+      <#Font>
+        <#IsTeamJobElse>
+          <#ExecutantFirstName/>&nbsp; <#ExecutantName/>
+        </#IsTeamJobElse>
+        <#IsTeamJob><#ExecutantTeamName/></#IsTeamJob>
+      </#Font>
+    </#ValueCell>
+  </tr>
+  <tr>
+    <#AttributeCell><#Font><#ProjectLabel/>:</#Font></#AttributeCell>
+    <#ValueCell    ><#Font><#ProjectName/></#Font></#ValueCell>
+  </tr>
+  <tr>
+    <#AttributeCell><#Font><#StartLabel/>:</#Font></#AttributeCell>
+    <#ValueCell    ><#Font><#Start/></#Font></#ValueCell>
+  </tr>
+  <tr>
+    <#AttributeCell><#Font><#EndLabel/>:</#Font></#AttributeCell>
+    <#ValueCell    ><#Font><#End/></#Font></#ValueCell>
+  </tr>
+  <tr>
+    <#AttributeCell><#Font><#CommentLabel/>:</#Font></#AttributeCell>
+    <#ValueCell    ><#Font><#LastComment/></#Font></#ValueCell>
+  </tr>
+</table>

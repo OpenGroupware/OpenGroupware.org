@@ -1,0 +1,112 @@
+#%_unpackaged_files_terminate_build 0
+#%_missing_doc_files_terminate_build 0
+%debug_package %{nil}
+%_topdir /home/build/rpm
+%_tmppath %{_topdir}/tmp
+%distribution %{nil}
+# common dist suffixes are
+#   cl  - used by Conectiva
+#   mdk - used by Mandrake
+#   (set to nil if not needed)
+%dist_suffix cl
+# the next macro determines if the postgresql-server
+# is provided by the postgresql package itself
+# (which is true for at least Conectiva 10)
+# don't even use this macro rather than setting it to false!!!
+%_postgresql_server_is_within_postgresql true
+
+###
+%libf_objc_version 0
+%libf_objc_release trunk_r0
+%libf_objc_buildcount 0
+%libf_objc_makeflags debug=yes
+%libf_objc_source libobjc-lf2-trunk-latest.tar.gz
+%libf_objc_prefix /usr/local
+###
+%libf_version 0
+%libf_major_version 0
+%libf_minor_version 0
+%libf_libversion %{nil}
+%libf_release trunk_r0
+%libf_buildcount 0
+%libf_makeflags debug=yes
+%libf_source libfoundation-trunk-latest.tar.gz
+%libf_prefix /usr/local
+###
+%ogo_gnustep_make_version 0
+%ogo_gnustep_make_release 0
+%ogo_gnustep_make_buildcount 0
+%ogo_gnustep_make_makeflags debug=yes
+%ogo_gnustep_make_source gnustep-make-1.10.0.tar.gz
+%ogo_gnustep_make_prefix /usr/local
+###
+%ogo_version 0
+%ogo_release trunk_r0
+%ogo_buildcount 0
+%ogo_makeflags debug=yes
+%ogo_source opengroupware.org-trunk-latest.tar.gz
+%ogo_prefix /usr/local
+#this fixes the complaints about 'file listed twice'
+#and allows a successful build on older rpm releases
+%ogo_libogopalmui libOGoPalmUI_d
+%ogo_libogopalm libOGoPalm_d
+###
+%ogo_env_version 0
+%ogo_env_release 0
+%ogo_env_buildcount 0
+%ogo_env_makeflags debug=yes
+%ogo_env_source %{nil}
+%ogo_env_prefix /usr/local
+###
+%libical_version 0
+%libical_release trunk_r0
+%libical_buildcount 0
+%libical_makeflags debug=yes
+%libical_source libical-sope-trunk-latest.tar.gz
+%libical_prefix /usr/local
+###
+%sope_version 0
+%sope_major_version 0
+%sope_minor_version 0
+%sope_release trunk_r0
+%sope_buildcount 0
+%sope_makeflags debug=yes
+%sope_source sope-trunk-latest.tar.gz
+%sope_prefix /usr/local
+%sope_libversion %{nil}
+###
+%mod_ngobjweb_version 0
+%mod_ngobjweb_release trunk_r0
+%mod_ngobjweb_buildcount 0
+%mod_ngobjweb_makeflags debug=yes
+%mod_ngobjweb_source sope-mod_ngobjweb-trunk-latest.tar.gz
+%mod_ngobjweb_prefix /usr/local
+###
+%ogo_pilotlink_version 0
+%ogo_pilotlink_release 0
+%ogo_pilotlink_buildcount 0
+%ogo_pilotlink_makeflags debug=yes
+%ogo_pilotlink_source opengroupware.org-pilot-link-trunk-latest.tar.gz
+%ogo_pilotlink_prefix /usr/local
+###
+%ogo_nhsc_version 0
+%ogo_nhsc_release 0
+%ogo_nhsc_buildcount 0
+%ogo_nhsc_makeflags debug=yes
+%ogo_nhsc_source opengroupware.org-nhsc-trunk-latest.tar.gz
+%ogo_nhsc_prefix /usr/local
+###
+%epoz_version 0
+%epoz_release 0
+%epoz_buildcount 0
+%epoz_makeflags %{nil}
+%epoz_source sope-epoz-trunk-latest.tar.gz
+%epoz_prefix /usr/local
+###
+%ogo_dbsetup_version 0
+%ogo_dbsetup_release trunk_r0
+%ogo_dbsetup_buildcount 0
+%ogo_dbsetup_makeflags debug=yes
+%ogo_dbsetup_source opengroupware.org-trunk-latest.tar.gz
+%ogo_dbsetup_prefix /usr/local
+

@@ -1,0 +1,79 @@
+<#Frame>
+  <#Window>
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+      <#GatheringForm>
+        <#PersonTitle/>
+        <#GatheringPersonEditor/>
+  
+        <#PhoneRep>
+          <tr> 
+            <#AttributeCell><#Font><#PhoneLabel/>:</#Font></#AttributeCell>
+            <#ValueCell>
+              <#PhoneNumber/>
+              <#Font><#InfoLabel/>:</#Font>
+              <#PhoneInfo/>
+            </#ValueCell>
+          </tr>
+        </#PhoneRep>
+
+        <tr><td colspan="2"></td></tr>
+        
+        <#CompanyTitleSearch/>
+        
+        <tr> 
+          <#AttributeCell><#Font><#SearchLabel/>:</#Font></#AttributeCell>
+          <#ValueCell>
+            <#SearchCompanyField/>
+            <#SearchCompanySubmit/><br />
+            <#CompanyResultList/>
+          </#ValueCell>
+        </tr>
+        
+        <tr><td colspan="2"></td></tr>
+
+        <#CompanyTitleNew/>
+        <#GatheringCompanyEditor/>
+
+        <tr><td colspan="2"></td></tr>
+
+        <#CommonTitle/>  
+
+        <tr>
+          <#AttributeCell><#Font><#CommentLabel/>:</#Font></#AttributeCell>
+          <#ValueCell><#EditFont><#CommentArea/></#EditFont></#ValueCell>
+        </tr>
+
+        <#CategoryRep>
+          <tr>
+            <#CategoryAttr>
+              <#CategoryPopUp/>
+              <#LastCategoryCond>
+                <br />
+                <#MoreThan1CategoryCond><#DecreaseButton/></#MoreThan1CategoryCond>
+                <#HasMoreCategoriesCond><#IncreaseButton/></#HasMoreCategoriesCond>
+              </#LastCategoryCond>
+            </#CategoryAttr>
+          </tr>
+        </#CategoryRep>
+
+        <tr>
+          <td>&nbsp;</td>
+          <td>            
+            <#SaveSubmit/>
+            <#CancelSubmit/>
+          </td>
+        </tr>
+      </#GatheringForm>
+    </table>
+  </#Window>
+
+<script language="JavaScript">
+<!-- hide
+if (document.gathering) {
+  if (document.gathering.name) {
+    document.gathering.name.focus();
+  }
+}
+-->
+</script>
+</#Frame>

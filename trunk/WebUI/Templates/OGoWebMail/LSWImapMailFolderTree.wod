@@ -1,0 +1,155 @@
+// $Id: LSWImapMailFolderTree.wod 2 2004-08-20 11:37:44Z znek $
+
+IsLastNavLink: WOConditional { 
+  condition = isLastNavLink; 
+};
+
+IsNotLastNavLink: WOConditional { 
+  condition = isLastNavLink; 
+  negate    = YES;
+};
+
+FolderCond: WOConditional { 
+  condition = subFolder.isFolder.boolValue;
+};
+
+ShowRootFolderCond: WOConditional {
+  condition = showRootFolder;
+};
+
+RootFolderCond: WOConditional { 
+  condition = navItemIndex;
+  value     = 0;
+};
+
+FolderOpenCond: WOConditional { 
+  condition = isFolderOpen;
+};
+
+FolderOpenCondElse: WOConditional { 
+  condition = isFolderOpen;
+  negate    = YES;
+};
+
+DocFolderNavRep: WORepetition {
+  list  = folderStack;
+  item  = folder;
+  index = navItemIndex;        
+};
+
+DocFolderNavRep2: WORepetition {
+  list      = folderStack;
+  item      = folder;
+  index     = navItemIndex;
+//separator = config.navigation.separator;        
+  separator = labels.navigation_separator;
+};
+
+DocFolderTitle: WOString {
+  value     = folderTitle;
+  nilString = "untitled";         
+}
+
+HasIdCond: WOConditional {
+  condition = folderId.length;
+}
+
+DocFolderId: WOString {
+  value     = folderId;
+  nilString = "";         
+}
+
+FolderLink: WOHyperlink {
+  action = subFolderClicked;
+  string = subFolderTitle;        
+}
+
+RootFolderLink: WOHyperlink {
+  action = rootFolderClicked;
+  string = rootFolderTitle;        
+}
+
+RootFolderIconImage: WOHyperlink {
+  action   = rootFolderClicked;
+  filename = rootFolderIcon;
+  alt      = rootFolderTitle;
+  border   = "0";
+};
+
+FolderIconImage: WOHyperlink {
+  action   = subFolderClicked;
+  filename = folderIcon;
+  alt      = subFolderTitle;
+  border   = "0";
+};
+
+FolderOpenImageLink: WOHyperlink {
+  action   = subFolderClicked;
+//filename = config.icons.openedFolder;
+  filename = "folder_opened.gif";
+  border   = "0";
+}
+
+FolderCloseImageLink: WOHyperlink {
+  action = subFolderClicked;
+//filename = config.icons.closedFolder;
+  filename = "folder_closed.gif";
+  border   = "0";
+}
+
+DocsRep: WORepetition {
+  list = folders;
+  item = subFolder;
+};
+
+NavCell: WOGenericContainer {
+  elementName = "td";
+  align	      = "left";
+  colspan     = folderStack.@count;
+};
+
+PathLabel: WOString {
+//value = config.navigation.startLabel;
+  value = labels.navigation_startLabel;
+}
+
+Font: SkyConfigFont {}
+
+RootFolderMoreInfos: WOString {
+  value = rootFolderMoreInfos;
+};
+
+MoreInfos: WOString {
+  value = moreInfos;
+};
+                      
+FolderHasUnseenMailsCond: WOConditional {
+  condition = subFolder.hasUnseenMessages;
+}
+
+FolderHasUnseenMailsCondElse: WOConditional {
+  condition = subFolder.hasUnseenMessages;
+  negate = YES;
+}
+
+RootFolderHasUnseenMailsCond: WOConditional {
+  condition = rootFolder.hasUnseenMessages;
+}
+
+RootFolderHasUnseenMailsCondElse: WOConditional {
+  condition = rootFolder.hasUnseenMessages;
+  negate = YES;
+}
+
+TDElement: WOGenericContainer {
+  elementName = "td";
+  valign      = "top";
+  bgcolor     = bgColorForFolder; 
+};
+
+TDRootElement: WOGenericContainer {
+  elementName = "td";
+  valign      = "top";
+  bgcolor     = selectedFolderColor; 
+};
+

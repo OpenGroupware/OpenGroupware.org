@@ -1,0 +1,135 @@
+{
+  CVSID = "$Id: Holidays.plist,v 1.1.1.1 2003/07/09 22:57:26 cvs Exp $";
+  
+  scheduler_everyyear_holidays = {
+    "bylaw" = {
+      "01-01" = "newYear";         // Neujahr
+      "04-30" = "queensday";
+      "12-25" = "christmasDay";    // 1. Weihnachtsfeiertag
+      "12-26" = "boxingDay";       // 2. Weihnachtsfeiertag
+    };
+    "12-31" = "newYearsEve";     // Silvester
+    "custom_all" = {
+      // Here add custom entries
+    };
+  };
+
+
+//-------------------------------------------------------------------
+  scheduler_2004_holidays = {
+    nlnorth = {
+      "01-04" = "end_christmas_holiday";   // Kerstvakantie
+      "02-28" = "start_winter_holiday";    // krokusvakantie
+      "03-07" = "end_winter_holiday";      //
+      "03-30" = "start_spring_holiday";    // voorjaarsvakantie
+      "03-09" = "end_spring_holiday";      //
+      "07-10" = "start_summer_holiday";    // Zomervakantie
+      "08-22" = "end_summer_holiday";      //
+      "10-16" = "start_autum_holiday";     // Herfstvakantie
+      "10-24" = "end_autum_holiday";       //
+      "12-25" = "start_christmas_holiday"; // Kerstvakantie
+    };
+    nlmid = {
+      "01-04" = "end_christmas_holiday";   // Kerstvakantie
+      "02-21" = "start_winter_holiday";    // krokusvakantie
+      "02-29" = "end_winter_holiday";      //
+      "04-30" = "start_spring_holiday";    // voorjaarsvakantie
+      "05-09" = "end_spring_holiday";      //
+      "07-03" = "start_summer_holiday";    // Zomervakantie
+      "08-15" = "end_summer_holiday";      //
+      "10-16" = "start_autum_holiday";     // Herfstvakantie
+      "10-24" = "end_autum_holiday";       //
+      "12-25" = "start_christmas_holiday"; // Kerstvakantie
+    };
+    nlsouth = {
+      "01-04" = "end_christmas_holiday";   // Kerstvakantie
+      "02-21" = "start_winter_holiday";    // krokusvakantie
+      "02-29" = "end_winter_holiday";      //
+      "04-30" = "start_spring_holiday";    // voorjaarsvakantie
+      "05-09" = "end_spring_holiday";      //
+      "07-24" = "start_summer_holiday";    // Zomervakantie
+      "09-05" = "end_summer_holiday";      //
+      "10-23" = "start_autum_holiday";     // Herfstvakantie
+      "10-31" = "end_autum_holiday";       //
+      "12-25" = "start_christmas_holiday"; // Kerstvakantie
+    };
+
+  };
+  scheduler_2005_holidays = {
+    nlnorth = {
+      "01-09" = "end_christmas_holiday";   // Kerstvakantie
+      "02-12" = "start_winter_holiday";    // krokusvakantie
+      "02-20" = "end_winter_holiday";      //
+      "04-30" = "start_spring_holiday";    // voorjaarsvakantie
+      "05-08" = "end_spring_holiday";      //
+      "07-23" = "start_summer_holiday";    // Zomervakantie
+      "09-05" = "end_summer_holiday";      //
+      "10-22" = "start_autum_holiday";     // Herfstvakantie
+      "10-30" = "end_autum_holiday";       //
+      "12-24" = "start_christmas_holiday"; // Kerstvakantie
+    };
+    nlmid = {
+      "01-09" = "end_christmas_holiday";   // Kerstvakantie
+      "02-05" = "start_winter_holiday";    // krokusvakantie
+      "02-13" = "end_winter_holiday";      //
+      "04-30" = "start_spring_holiday";    // voorjaarsvakantie
+      "05-08" = "end_spring_holiday";      //
+      "07-02" = "start_summer_holiday";    // Zomervakantie
+      "08-21" = "end_summer_holiday";      //
+      "10-15" = "start_autum_holiday";     // Herfstvakantie
+      "10-23" = "end_autum_holiday";       //
+      "12-24" = "start_christmas_holiday"; // Kerstvakantie
+    };
+    nlsouth = {
+      "01-09" = "end_christmas_holiday";   // Kerstvakantie
+      "02-05" = "start_winter_holiday";    // krokusvakantie
+      "02-13" = "end_winter_holiday";      //
+      "04-30" = "start_spring_holiday";    // voorjaarsvakantie
+      "05-09" = "end_spring_holiday";      //
+      "07-09" = "start_summer_holiday";    // Zomervakantie
+      "08-21" = "end_summer_holiday";      //
+      "10-15" = "start_autum_holiday";     // Herfstvakantie
+      "10-23" = "end_autum_holiday";       //
+      "12-24" = "start_christmas_holiday"; // Kerstvakantie
+    };
+  };
+  scheduler_2006_holidays = {
+    nlnorth = {
+      "01-08" = "end_christmas_holiday";   // Kerstvakantie
+      "02-18" = "start_winter_holiday";    // krokusvakantie
+      "02-26" = "end_winter_holiday";      //
+      "04-29" = "start_spring_holiday";    // voorjaarsvakantie
+      "05-07" = "end_spring_holiday";      //
+      "07-22" = "start_summer_holiday";    // Zomervakantie
+      "09-03" = "end_summer_holiday";      //
+      "10-21" = "start_autum_holiday";     // Herfstvakantie
+      "10-29" = "end_autum_holiday";       //
+      "12-23" = "start_christmas_holiday"; // Kerstvakantie
+    };
+    nlmid = {
+      "01-08" = "end_christmas_holiday";   // Kerstvakantie
+      "02-18" = "start_winter_holiday";    // krokusvakantie
+      "02-26" = "end_winter_holiday";      //
+      "04-29" = "start_spring_holiday";    // voorjaarsvakantie
+      "05-07" = "end_spring_holiday";      //
+      "07-08" = "start_summer_holiday";    // Zomervakantie
+      "08-20" = "end_summer_holiday";      //
+      "10-21" = "start_autum_holiday";     // Herfstvakantie
+      "10-29" = "end_autum_holiday";       //
+      "12-23" = "start_christmas_holiday"; // Kerstvakantie
+    };
+    nlsouth = {
+      "01-08" = "end_christmas_holiday";   // Kerstvakantie
+      "02-25" = "start_winter_holiday";    // krokusvakantie
+      "02-05" = "end_winter_holiday";      //
+      "04-29" = "start_spring_holiday";    // voorjaarsvakantie
+      "05-07" = "end_spring_holiday";      //
+      "07-01" = "start_summer_holiday";    // Zomervakantie
+      "08-13" = "end_summer_holiday";      //
+      "10-14" = "start_autum_holiday";     // Herfstvakantie
+      "10-22" = "end_autum_holiday";       //
+      "12-23" = "start_christmas_holiday"; // Kerstvakantie
+    };
+  };
+
+};

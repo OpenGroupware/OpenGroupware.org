@@ -1,0 +1,266 @@
+// $Id: SkyPalmJobList.wod,v 1.1 2003/07/14 16:18:25 helge Exp $
+
+// table structure -------------------------------------------
+
+JobTableView: SkyTableView {
+  dataSource   = dataSource;
+  batchSize    = state.batchSize;
+  currentBatch = state.currentBatch;
+  item         = record;
+  selections   = selections;
+
+  sortedKey    = state.sortedKey;
+  isDescending = state.isDescending;
+  autoScroll   = state.autoscrollSize;
+}
+
+TitleMode:  WETableViewTitleMode {};
+ButtonMode: WETableViewButtonMode {};
+FooterMode: WETableViewFooterMode {};
+
+// content
+
+Content: WOComponentContent {};
+CategoryPopUp: SkyPalmCategoryPopUp {
+  selectedCategory = state.selectedCategory;
+  selectedDevice   = state.selectedDevice;
+  palmDataSource   = palmDataSource;
+  onChange         = "document.editform.submit(); return true";
+}
+Update: WOImageButton {
+  name     = "updateAction";
+  filename = "icon_view_all.gif";
+  ALT      = labels.action_select_category_device;
+  title    = labels.action_select_category_device;
+  action   = updateSelection;
+  BORDER   = 0;
+}
+
+// Title
+JobTableHeader: SkyPalmEntryListHeader {
+  type              = "job";
+  dataSource        = dataSource;
+}
+
+// Buttons
+
+FilterButtons: SkyButtonRow {
+  ordering = ( hidedeleted, unhidedeleted );
+
+  hasRefresh = YES;
+  onRefresh  = refresh;
+  refresh    = labels.action_refresh;
+
+  hasHidedeleted = canHideDeleted;
+  onHidedeleted  = hideDeleted;
+  hidedeleted    = labels.action_hidedeleted;
+
+  hasUnhidedeleted = canUnhideDeleted;
+  onUnhidedeleted  = unhideDeleted;
+  unhidedeleted    = labels.action_unhidedeleted;  
+}
+
+IsInForm: WOConditional {
+  condition = context.isInForm;
+}
+
+DetachSkyrixEntry: WOImageButton {
+  filename = "icon_palm_detach_entry.gif";
+    
+  action   = selectionDetachSkyrixEntry;
+  name     = labels.action_detachSkyrixEntry;
+  ALT      = labels.action_detachSkyrixEntry;
+  title    = labels.action_detachSkyrixEntry;
+  BORDER   = 0;
+}
+
+Delete: WOImageButton {
+  filename = "icon_palm_delete_entry.gif";
+    
+  action   = selectionDelete;
+  name     = labels.action_delete;
+  ALT      = labels.action_delete;
+  title    = labels.action_delete;
+  BORDER   = 0;
+}
+
+Undelete: WOImageButton {
+  filename = "icon_palm_undelete_entry.gif";
+    
+  action   = selectionUndelete;
+  name     = labels.action_undelete;
+  ALT      = labels.action_undelete;
+  title    = labels.action_undelete;
+  BORDER   = 0;
+}
+
+MarkAsNew: WOImageButton {
+  filename = "icon_palm_new_entry.gif";
+    
+  action   = selectionMarkAsNew;
+  name     = labels.action_markAsNew;
+  ALT      = labels.action_markAsNew;
+  title    = labels.action_markAsNew;
+  BORDER   = 0;
+}
+
+SyncWithSkyrixEntry: WOImageButton {
+  filename = "icon_palm_sync_entry.gif";
+    
+  action   = selectionSyncWithSkyrixEntry;
+  name     = labels.action_syncWithSkyrixEntry;
+  ALT      = labels.action_syncWithSkyrixEntry;
+  title    = labels.action_syncWithSkyrixEntry;
+  BORDER   = 0;
+}
+
+CreateSkyrixEntry: WOImageButton {
+  filename = "icon_palm_palmoverskyrix.gif";
+
+  action   = selectionCreateSkyrixRecord;
+  name     = labels.action_createSkyrixRecords;
+  ALT      = labels.action_createSkyrixRecords;
+  title    = labels.action_createSkyrixRecords;
+  BORDER   = 0;
+}
+
+// Switcher
+
+AttributeSwitcher: WESwitch {
+  selections = state.attributes;
+}
+CompletedCase:      WECase { key = "attribute_jobStatus";      }
+DescriptionCase:    WECase { key = "attribute_description";    }
+DuedateCase:        WECase { key = "attribute_duedate";        }
+CategoryCase:       WECase { key = "attribute_categoryName";   }
+PriorityCase:       WECase { key = "attribute_priority";       }
+DeviceCase:         WECase { key = "attribute_deviceId";       }
+SyncCase:           WECase { key = "attribute_palmSync";       }
+SkyrixRecordCase:   WECase { key = "attribute_skyrixRecord";   }
+SkyrixSyncCase:     WECase { key = "attribute_skyrixSync";     }
+
+// table data
+
+CompletedData: WETableData {
+  title   = labels.attribute_jobStatus;
+  sortKey = "isCompleted";
+}
+DescriptionData: WETableData {
+  title   = labels.attribute_description;
+  sortKey = "description";
+}
+DuedateData: WETableData {
+  title   = labels.attribute_duedate;
+  sortKey = "duedate";
+}
+CategoryData: WETableData {
+  title   = labels.attribute_categoryName;
+  sortKey = "categoryId";
+}
+PriorityData: WETableData {
+  title   = labels.attribute_priority;
+  sortKey = "priority";
+}
+DeviceData: WETableData {
+  title   = labels.attribute_deviceId;
+  sortKey = "deviceId";
+}
+SyncData: WETableData {
+  title   = labels.attribute_palmSync;
+  sortKey = "syncState";
+}
+SkyrixRecordData: WETableData {
+  title   = labels.attribute_skyrixRecord;
+  sortKey = "skyrixId";
+}
+SkyrixSyncHeader: WETableHeader {
+  sortKey = "skyrixSyncState";
+}
+SkyrixSyncData: WETableData {}
+
+// values
+
+StateIcon: WOImage {
+  filename = stateIcon;
+  ALT      = labels.$completed;
+  title    = labels.$completed;
+}
+Completed: SkyRichString {
+  value = labels.$completed;
+}
+
+HasActionCond: WOConditional {
+  condition = hasNoAction;
+  negate    = YES;
+}
+HasActionCondElse: WOConditional {
+  condition = hasNoAction;
+}
+ViewJob: WOHyperlink {
+  disabled = hasNoAction;
+  action   = viewAction;
+}
+ViewJobDA: WOHyperlink {
+  href = viewDirectActionURL;
+}
+Description: SkyRichString {
+  value = record.description;
+}
+
+Duedate: SkyRichString {
+  value     = record.duedate;
+  formatter = session.formatDate;
+  color     = duedateColor;
+}
+
+Category: SkyRichString {
+  value = record.categoryName;
+}
+
+Priority: SkyRichString {
+  value = labels.$priority;
+}
+
+Device: SkyRichString {
+  value = record.deviceId;
+}
+
+Sync: SkyRichString {
+  value = labels.$syncState;
+}
+
+// skyrix record
+HasSkyrixRecord: WOConditional {
+  condition = record.hasSkyrixRecord;
+}
+ViewSkyrixRecord: WOHyperlink {
+  action = viewSkyrixRecordComponentAction;
+}
+SkyrixRecordIcon: WOImage {
+  filename = "icon_jobs_26x21.gif";
+  ALT      = record.skyrixRecord.name;
+  title    = record.skyrixRecord.name;
+  BORDER   = 0;
+}
+SkyrixRecord: SkyRichString {
+  value = record.skyrixRecord.name;
+}
+SkyrixSyncIcon: WOImage {
+  filename = "icon_palm_sync_entry.gif";
+  ALT      = labels.attribute_skyrixSync;
+  title    = labels.attribute_skyrixSync;
+  BORDER   = 0;
+}
+SkyrixSync:     SkyRichString { value = labels.$skyrixSyncStateShortKey;  }
+SkyrixSyncType: WOImage {
+  filename = skyrixSyncTypeIcon;
+  ALT      = skyrixSyncTypeString;
+  title    = skyrixSyncTypeString;
+  BORDER   = 0;
+}
+
+RecordsNotSynchroneCond: WOConditional {
+  condition = record.skyrixSyncState;
+  value     = 100;
+  negate    = YES;
+}

@@ -1,0 +1,213 @@
+// bind template to controller class
+
+Title: LSWViewerTitle {
+  title = project.name;
+}
+
+Buttons: SkyButtonRow {
+  /* default buttons */
+  onClip  = placeInClipboard;
+  hasEdit = isEditEnabled;
+  onEdit  = edit;
+  onMail  = mailObject;
+  urlMail = objectUrl;
+  hasClip = showClip;
+  hasMail = showSend;
+
+  /* labels */
+  clip   = labels.clip;
+  edit   = labels.edit;
+  mail   = labels.send;
+
+  ordering = ();
+}
+
+NameLabel:      WOString { value = labels.name;      }
+NumberLabel:    WOString { value = labels.number;    }
+StartDateLabel: WOString { value = labels.startDate; }
+
+ProjectName:   WOString { value = project.name;   }
+ProjectNumber: WOString { value = project.number; }
+
+ProjectStartDate: WOString {
+  value     = project.startDate;
+  formatter = session.formatDate;
+}
+ProjectEndDate: WOString {
+  value     = project.endDate;
+  formatter = session.formatDate;
+}
+
+ProjectLink: WOHyperlink {
+  directActionName = "activate";
+  ?oid             = project.projectId;
+}
+
+// TODO: replace with tags (notice 'markArchivedObjects')
+ProjectViewer: LSWObjectViewer {
+  labels              = labels;
+  object              = project;
+  valueColor          = "subValueCell";
+  attributeColor      = "subAttributeCell";
+  markArchivedObjects = YES;
+  attributes     = (
+    { 
+      key    = "owner"; 
+      relKey = "login"; 
+      label  = "projectLeader"; 
+      action = "viewOwner"; 
+    }
+  );
+}
+
+HasAccessTeam: WOConditional {
+  condition = hasAccessTeam;
+}
+
+AccessTeam: SkyObjectValue {
+  value  = project.team.description;
+  object = project.team;
+  action = viewTeam;
+}
+
+AccessAccountRep: WORepetition {
+  list      = accounts;
+  item      = item;
+  separator = ", ";
+}
+AccessTeamRep: WORepetition {
+  list      = teams;
+  item      = item;
+  separator = ", ";
+}
+PersonRep: WORepetition {
+  list      = persons;
+  item      = item;
+  separator = ", ";
+}
+IsItemViewableCond: WOConditional {
+  condition = itemIsViewable;
+}
+IsItemViewableCondElse: WOConditional {
+  condition = itemIsViewable;
+  negate    = YES;
+}
+IsPersonArchivedCondElse: WOConditional {
+  condition = itemIsArchived;
+  negate    = YES;
+}
+IsPersonArchivedCond: WOConditional {
+  condition = itemIsArchived;
+}
+PersonName: WOHyperlink {
+  string    = item.name;
+  action    = viewItem;
+}
+PersonNameArchived: WOString {
+  value    = item.name;
+}
+PersonFirstname: WOString {
+  value    = item.firstname;
+}
+TeamDescription: WOString {
+  value = item.description;
+}
+
+EnterpriseRep: WORepetition {
+  list      = enterprises;
+  item      = item;
+  separator = ", ";
+}
+EnterpriseName: WOHyperlink { 
+  string = item.description;
+  action = viewItem;   
+}
+
+ProjectCommentViewer: LSWObjectViewer {
+  object         = project.comment;
+  labels         = labels;
+  valueColor     = "subValueCell";
+  attributeColor = "subAttributeCell";
+  attributes     = ( { key = "comment"; } );
+}
+
+/* labels */
+
+AccessTeamLabel: WOString  {
+  value = labels.accessTeam;
+}
+AccessAccountsLabel: WOString {
+  value = labels.accessAccounts;
+}
+
+AccessTeamsLabel: WOString {
+  value = labels.accessTeams;
+}
+
+PersonProjectAssociatesLabel: WOString {
+  value = labels.personProjectAssociates;
+}
+
+EnterpriseProjectAssociatesLabel: WOString {
+  value = labels.enterpriseProjectAssociates;
+}
+
+/* styles */
+
+SubAttributeCell: WOGenericContainer {
+  elementName = "td";
+  ALIGN       = "right";
+  VALIGN      = "top";
+  BGCOLOR     = config.colors_subAttributeCell;
+  WIDTH       = "15%";
+}
+
+SubValueCell: WOGenericContainer {
+  elementName = "td";
+  ALIGN       = "left";
+  VALIGN      = "top";
+  BGCOLOR     = config.colors_subValueCell;
+}
+
+Font: SkyConfigFont {}
+
+ArchivedFont: WOGenericContainer {
+  elementName = "font";
+  color       = config.colors_deleted_object;
+  size        = config.font_size;
+  face        = config.font_face;
+}
+
+CurrentAttr: SkyAttribute {
+  label       = currentAttrLabel;
+  doTR        = YES;
+  keyColor    = "subAttributeCell";
+  valueColor  = "subValueCell";
+}
+
+CurrentAttrValue: SkyObjectField {
+  object       = props;
+  attributes   = currentAttr;
+  labels       = labels;
+  privateLabel = privateLabel;
+}
+
+PublicExtAttrRep: WORepetition {
+  list = publicExtendedProjectAttributes;
+  item = currentAttr;
+}
+
+PrivateExtAttrRep: WORepetition {
+  list = privateExtendedProjectAttributes;
+  item = currentAttr;
+}
+
+ProjectUrlKey: WOString  {
+  value = labels.projectUrl;
+}
+ShowProjectUrl: WOConditional {
+  condition = showProjectURL;
+}
+ProjectUrl: WOString {
+  value  = project.url;
+}

@@ -1,0 +1,147 @@
+2004-04-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyP4AppFormComponent.m: fixed class version check of superclass
+	  SkyP4ViewerFormComponent (v5.0.10)
+
+2004-03-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyP4ViewerFormComponent.m: fixed a warning with gstep-base
+	  compilation (v5.0.9)
+
+2004-02-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: fixed makefile for MacOSX (v5.0.8)
+
+2004-01-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyP4ViewerFormComponent.m: fixed a compilation warning (v5.0.7)
+
+2003-12-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.6
+
+	* SkyFormComponent+P4.m: fixed a compile warning
+
+	* SkyP4FormsModule.m ([SkyP -bundleManager:didLoadBundle:]): reduced
+	  logging
+
+2003-12-26  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* bundle-info.plist: use libxmlSAXDriver for "skyrix/form" MIME type
+	  (v5.0.5)
+	
+Mon Jul  7 19:16:08 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.4)
+
+2003-06-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* v4.1.3
+
+	* SkyP4ViewerFormComponent.m: added 'preview' ivar (used in 
+	  preview-mode)
+
+	* SkyP4ViewerFormComponent.m: minor cleanups, implement 'formDocument'
+	  JavaScript property (was documented, but not implemented ...)
+
+2003-06-19  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyFormComponent+P4.m: minimal cleanups (v4.1.2)
+
+2003-06-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* fixed some warnings, added Version file (v4.1.1)
+
+Mon Sep 10 17:16:20 2001  Jan Reichmann  <jan@skyrix.com>
+
+	* SkyJSFileManager.m: add error descriptions
+
+Tue Sep 25 15:21:37 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyFormComponent+P4.m: moved some bindings to WOComponent
+
+	* removed SkyProjectDocument+JS.m
+
+	* removed SkyJSFileManager completly
+
+	* SkyJSFileManager.m: moved most bindings to NGFileManager ...
+
+Thu Aug 16 18:19:20 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyP4ViewerFormComponent.m: use SkyDocumentFileManager ..., make
+	  relative page names absolute
+
+	* SkyP4ViewerFormComponent.m: make relative page names absolute
+
+	* SkyP4ProjectResourceManager.m: auto-append 'sfm' to page names,
+	  warn if name is a relative path
+
+Tue Jul 17 14:51:22 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyJSFileManager.m: check whether destination of mv/cp is a directory
+
+Mon Jul  9 20:04:19 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyP4ProjectResourceManager.m: caches name->URL mappings, look for 
+	  resources in the WOResourceManager first
+
+Tue May 15 16:32:49 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyFormComponent+P4.m: alert adds a message
+
+	* SkyFormComponent+P4.m: added -parseDate,-parseNumber,-formatDate,
+	  -formatNumber
+
+Mon May 14 15:46:42 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyP4ViewerFormComponent.m: output more log information
+
+	* ODR_sky_selectproject.m: fixed sorting
+
+Thu May 10 14:57:59 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyP4ViewerFormComponent.m: added -getProject
+
+Tue May  8 16:21:57 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* ODR_sky_selectenterprise.m: added attribute 'namequery'
+	
+Mon May  7 16:39:59 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* added support for frameless forms
+
+Sat May  5 15:51:45 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyP4ViewerFormComponent.m: added relative data retrievel method
+
+Tue May  1 21:01:33 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyP4ViewerFormComponent.m: support for relative paths in loadScript
+	  (relative to form-path)
+
+Mon Apr 30 17:09:42 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyFormComponent+P4.m: added getDocumentManager()
+
+Fri Apr 27 17:43:37 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyP4ViewerFormComponent.m: changed to use component activate:withVerb:
+
+Fri Apr 20 14:27:03 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyP4ViewerFormComponent.m: changed API
+
+Mon Apr  9 14:29:31 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyFormComponent+P4.m: added alert(), marked showError() as deprecated
+
+	* created own ChangeLog
+
+Mon Apr  9 13:50:41 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* Project/SkyP4Forms/SkyP4ViewerFormComponent.m: added class version
+
+Fri Mar 30 18:28:15 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* Project/SkyP4Forms/SkyP4ViewerFormComponent.m: added positional
+	  parameters

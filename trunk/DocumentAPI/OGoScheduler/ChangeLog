@@ -1,0 +1,270 @@
+2004-12-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added Holidays-dutch.plist as provided by Jorrit Jorittsma (v5.1.30)
+
+2004-11-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAppointmentDocumentGlobalIDResolver.m: minor code cleanups
+	  (v5.1.29)
+
+2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyHolidayCalculator.m: lookup Holidays.plist in FHS locations
+	  (/usr/local/, /usr/ in share/opengroupware.org-1.0a/), some code
+	  cleanups (v5.1.28)
+
+2004-09-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile (RESOURCES_DIR): when compiling for FHS install
+	  resources in share/opengroupware.org-1.0a/
+
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: directly include OGoCycleDateCalculator header
+	  from Logic, directly link scheduler tools in Logic (v5.1.27)
+
+2004-08-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyHolidayCalculator.m: major code cleanups, locate Holidays.plist in
+	  all GNUstep root directories (should fix OGo bug #822) (v5.0.26)
+
+2004-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAptDataSource.m: code cleanups (v5.0.25)
+
+2004-03-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkySchedulerConflictDataSource.m: properly deal with an NSNull value,
+	  as returned by Cocoa NSDictionary (v5.0.24)
+
+2004-03-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.0.23
+
+	* SkyAppointmentDataSource.m: replaced "== YES" comparison
+
+	* SkyAppointmentQualifier.m, SkyAppointmentDocument.m: fixed warning 
+	  when compiling with gstep-base
+
+2004-02-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkySchedulerConflictDataSource.m: major code cleanups (v5.0.22)
+
+2004-01-06  Helge Hess  <helge@groove.local>
+
+	* v5.0.21
+
+	* SkyAppointmentDocument.m: various optimizations and cleanups
+
+	* common.h: minor tweaks for MacOSX compilation
+
+Mon Dec 22 14:27:34 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* SkyAppointmentDocument.h: added -dataSource accessor (needed by palm
+	  app) (v5.0.20)
+
+Wed Dec  3 19:30:52 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAppointmentDocument.m: added -accessTeamId accessors (v5.0.19)
+	  (needed by recent palm changes)
+
+2003-11-30  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* GNUmakefile: added a resource relocation fix provided by 
+	  chunsj@embian.com (v5.0.18)
+	
+Thu Nov 27 16:29:48 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkySchedulerConflictDataSource.m: start and endDate lost timeZone
+	  after cycle calculation. fixed. (ogo bug 2) (v5.0.17)
+
+Fri Oct 24 17:02:16 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyAppointmentQualifier.m: fixed license spelling mistake
+
+Mon Oct 20 14:34:08 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* SkyAppointmentQualifier/DataSource.m: add setPersonIds:, enable 
+	  person fetch qualifier for xmlrpcd (v5.0.16)
+
+Thu Oct 16 16:58:57 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyAppointmentDocument.m: hide title, location, comment, 
+	  resourcenames and participants if no view access is granted (v5.0.15)
+
+2003-09-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyAppointmentQualifier.m: cleanups. added -initWithDictionary:,
+	  -initWithArray: and -initWithString: methods (v5.0.14)
+
+2003-08-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyAppointmentDataSource.m(deleteObject:): check, whether the 
+	  parameter passed to deleteObject is a proper object for deletion,
+	  moved gid-resolver class to separate source file, cleanups (v5.0.13)
+
+Wed Aug 13 17:57:51 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkySchedulerConflictDataSource.m: fixed appointment dates generation
+	  (v5.0.12)
+
+2003-08-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyAppointmentDocument.m: ensure that the startDate, endDate and
+	  cycleEndDate are NSCalendarDate objects or nil (v5.0.11)
+
+Mon Jul 21 18:58:23 2003  Jan Reichmann  <jr@skyrix.com>
+
+	* SkySchedulerConflictDataSource: fixed broken NSLog's (v4.1.10)
+
+Fri Jul 18 16:32:02 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* v4.1.9
+	
+	* GNUmakefile
+	
+	* SkySchedulerConflictDataSource.m: added OGoSchedulerTools to compute
+	  repetition dates
+
+Mon Jul  7 17:08:33 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* fixed OGo import (v4.1.8)
+
+Mon Jul  7 12:49:00 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v4.1.7)
+
+Thu Jun 26 15:56:32 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAppointmentDocument.[m|h]: added saveCycles-Flag (default: YES)
+	  (bug 1807) (v4.1.6)
+
+Tue Jan 21 13:33:33 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAppointmentDocument.m: fixed -takeValue:forKey: (v4.1.5)
+
+2003-01-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyAppointmentDocument.m, SkySchedulerConflictDataSource.m: fixed two
+	  uninitialized local variables (v4.1.4)
+
+Thu Dec 12 21:18:17 2002    <jan@skyrix.com>
+
+	* SkySchedulerConflictDataSource.m: fixed date modify-tz bug (v4.1.3)
+
+Fri Nov 29 15:33:23 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkySchedulerConflictDataSource.m: 
+	  added additionalDataSource support for adding other sources 
+          (ie. palm) to check for conflicts (BUG 713) (v4.1.2)
+
+Mon Nov 11 16:12:34 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* added Appointment Type
+
+Tue Nov  5 16:24:47 2002  Bjoern Stierand  <bjoern@skyrix.com>
+
+	* added access to writeAccessList
+
+Mon Aug 12 12:22:02 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAppointmentDocument.m: fixed save of cyclic appointments
+
+Mon Jul 22 15:38:20 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAppointmentDocument.[m|h]: added permissions attribute
+
+Thu May 16 15:43:54 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAppointmentDocument.[m|h]: added ownerGID accessor
+
+Tue Feb  5 19:22:19 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAppointmentDocument.[m|h]: added resourceNames and
+	                                notificationTime instance variables
+
+Tue Feb  5 19:20:48 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAppointmentDataSource.m: - added ability to qualify notified apts
+ 	                            and apts with resources (for skyaptnotify)
+	                              - fixed updateObject conflict bug
+
+Tue Feb  5 19:19:58 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAppointmentQualifier.[m|h]: added onlyNotified and 
+	                                 onlyResourceApts flag
+
+Wed Oct 17 15:43:52 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* SkyAppointmentDocument.m: removed self->eo instance varibale
+
+Tue Oct 16 20:17:44 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* GNUmakefile: added SkySchedulerDS (for DocumentGlobalIDResolver)
+
+Tue Oct 16 18:49:46 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* SkyAppointmentQualifier.m: added -isEqualToQualifier:
+
+Wed Oct 10 12:43:24 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAppointmentDataSource.m (-fetchObjects): 
+	                  fixed initializing of args
+
+Mon Oct  8 15:33:59 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* SkyAppointmentDataSource.m: added 
+	  (no caching, no additional accessor methods, conforms to the DS api)
+
+Thu Jul  5 14:25:29 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* GNUmakefile (libSkyScheduler_INCLUDE_DIRS): removed WebUI
+
+Thu Jul  5 14:22:30 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAptDataSource.m: fixed notification handling
+
+Tue Jul  3 17:36:35 2001  Jan Reichmann  <sascha@skyrix.com>
+
+	* GNUmakefile (libSkyScheduler_INCLUDE_DIRS): include WebUI
+
+Mon Jul  2 10:33:25 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAptCompoundDataSource.[m,h]: added
+
+Wed Jun 20 13:06:05 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAppointmentDocument.[m,h]: 
+	    accessing parentDate functionality added
+
+Wed Jun 20 09:03:07 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAppointmentDocument.m: added objectVersion
+
+Fri Jun 15 10:43:11 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyAptDataSource.[h,m]: added fetching for single id
+
+Tue May 22 14:22:47 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* SkyAppointmentDocument.[h,m]: added
+
+Mon Mar 19 20:38:05 2001  Joerg Grimm  <joerg@trex2>
+
+	* SkyHolidayCalculator.m: added easter,whitsun holidays
+
+Fri Mar 16 11:09:20 2001  Helge Hess  <helge.hess@mdlink.de>
+
+	* updated to use LSCommandContext instead of LSOffice3Session
+
+Tue Jan 30 18:43:10 2001  Joerg Grimm  <joerg@trex2>
+
+	* SkySchedulerConflictDataSource.m: fetch conflicts for
+	  all cyclic appointments if a cycle is set
+
+Tue Nov 21 18:36:21 2000  Joerg Grimm  <joerg@trex2>
+
+	* SkySchedulerConflictDataSource.m: timeZone of appointment was reset
+	  after call of conflict command
+
+

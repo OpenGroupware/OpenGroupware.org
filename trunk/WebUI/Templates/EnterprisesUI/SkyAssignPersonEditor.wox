@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<!-- $Id: SkyAssignPersonEditor.wox,v 1.1 2004/05/04 15:08:42 helge Exp $ -->
+<page var:title="windowTitleLabel" var:onClose="cancel"
+      xmlns="http://www.opengroupware.org/ns/wox/ogo"
+      xmlns:html="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+>
+  <var:component className="SkyWarningMode" isInWarningMode="isInWarningMode"
+                 onOk="warningOkAction" phrase="warningPhrase"
+  >
+    <html:form name="enterpriseEditor" var:action="search">
+      <html:table border="0" cellspacing="0" cellpadding="4" width="100%">
+        <var:component className="SkyAssignPersonSubEditor" document="object"/>
+
+        <var:component className="SkyEditorButtons" 
+                       const:isDeleteEnabled="NO" />
+      </html:table>
+    </html:form>
+  </var:component>
+</page>

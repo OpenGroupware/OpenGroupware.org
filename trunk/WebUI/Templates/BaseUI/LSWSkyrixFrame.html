@@ -1,0 +1,155 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>OpenGroupware.org</title>
+
+    <#Stylesheet />
+
+    <meta name="keywords"    content="SKYRiX, OpenGroupware.org" />
+    <meta name="description" content="OpenGroupware.org Web Interface" />
+    <meta name="author"      content="SKYRIX Software AG" />
+    <meta name="generator"   content="SKYRiX Object Publishing System" />
+    <meta rev="made"         href="http://www.opengroupware.org/" />
+    
+    <#MetaSessionID/>
+    
+    <#ShortcutIcon />
+    <#PageIsExpirable><#ExpirePage /></#PageIsExpirable>
+  </head>
+
+  <body>  
+    <#DropScript />
+    <#DragScript />
+
+    <!-- the navigation -->
+
+    <#IsTextMode>
+      <#Navigation /><br />
+      <#Favorites />
+      <hr />
+    </#IsTextMode>
+
+    <#IsNotTextMode>
+
+<table cellpadding="5" cellspacing="0" border="0" width="100%">
+ <tr>
+  <td colspan="2">
+   <table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr>
+     <td valign="bottom"><font class="defaultfont"><#Navigation /></font></td>
+      <td align="right">
+       <#OGoLink><#OGoLogo /></#OGoLink>
+      </td>
+     </tr>
+    </table>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+     <tr>
+      <td class="linecolor"><#LineLeft /></td>
+      <td class="linecolor" width="100%"><#LinePix /></td>
+      <td class="linecolor"><#LineRight /></td>
+     </tr>
+    </table>
+   </td>
+ </tr>
+
+  <#IsNotJavaScript>
+    <#HasErrorString>
+      <tr>
+        <td colspan="2">
+         <table cellpadding="2" cellspacing="0" border="0" width="100%">
+          <tr bgcolor="red">
+           <td>
+            <font class="defaultfont"><b><#LastErrorLabel /></b><#ErrorString /></font>
+           </td>
+           <td align='right'>
+             <font class="defaultfont">
+               <#ClearErrorLink><b><#ClearErrorText /></b></#ClearErrorLink>
+             </font>
+           </td>
+          </tr>
+         </table>
+        </td>
+       </tr>
+    </#HasErrorString>
+  </#IsNotJavaScript>
+  
+  <tr>
+    <td valign="top">
+      <#Dock />
+      <br />
+      <#Favorites />
+      
+      <!-- the misc box -->
+      <#MiscBox>
+        <tr>
+          <td valign="middle">
+            <#ActivePageIsNotEditor><#MailLink><#MailLabel
+      /></#MailLink></#ActivePageIsNotEditor><#ActivePageIsEditor><font class="skydockfont"><#MailLabel
+      /></font></#ActivePageIsEditor></td>
+        </tr>
+        <tr>
+          <td valign="middle">
+            <#ActivePageIsNotEditor><#InboxLink><#InboxLabel
+      /></#InboxLink></#ActivePageIsNotEditor><#ActivePageIsEditor><font class="skydockfont"><#InboxLabel
+      /></font></#ActivePageIsEditor></td>
+        </tr>
+        <tr>
+          <td valign="middle">
+            <#ActivePageIsNotEditor><#PrefsLink><#PrefsLabel
+      /></#PrefsLink></#ActivePageIsNotEditor><#ActivePageIsEditor><font class="skydockfont"><#PrefsLabel
+      /></font></#ActivePageIsEditor></td>
+        </tr>
+        <tr>
+          <td valign="middle"><#LogoutLink><#LogoutLabel /></#LogoutLink></td>
+        </tr>
+      </#MiscBox>
+    </td>
+    <td valign="top" width="100%">
+  </#IsNotTextMode>
+    
+  <!-- the content -->
+  <#Content />
+
+  </td>
+ </tr>
+ <tr>
+  <td width="100%" colspan="2" valign="top">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+      <tr>
+        <td class="linecolor"><#LineLeft /></td>
+        <td class="linecolor" width="100%"><#LinePix /></td>
+        <td class="linecolor"><#LineRight /></td>
+      </tr>
+      <tr>
+       <td colspan="3"></td>
+      <tr>
+    </table>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+      <tr>
+        <td valign="top" align="left"><font class="defaultfont">
+      &copy;
+      2000-2005 <#FooterRowLabel2a />.
+      We welcome your
+      <a href="http://www.opengroupware.org/en/feedback.html"
+         target="feedback">feedback</a>.
+        </font></td>
+        <td valign="top" align="right"><font class="defaultfont">
+          <#ExpireLabel /> <#SessionExpireDate />.
+          <#Timings />
+        </font></td>
+      </tr>
+    </table>
+  </td>
+ </tr>
+</table>
+
+    
+    <#IsJavaScript>
+      <#HasErrorString>
+        <script>
+          alert("SKYRIX:\n<#PanelErrorString />");
+        </script>
+      </#HasErrorString>
+      <#ConfirmPanel />
+    </#IsJavaScript>
+  </body>
+</html>

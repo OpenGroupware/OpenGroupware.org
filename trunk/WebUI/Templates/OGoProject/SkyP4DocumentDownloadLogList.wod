@@ -1,0 +1,5 @@
+// bind template to controller
+
+LogList: SkyObjectLogList {
+  dataSource = dataSource;
+}

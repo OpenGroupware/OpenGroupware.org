@@ -1,0 +1,174 @@
+- bug ids touched by ChangeLog:
+  #1187, #1183, #797
+- added configure script and support for GNUstep.sh-less compilation
+  - added support for code stripping
+  - check whether libpisock is available
+  - check whether SOPE libraries are installed
+- started support for resources folder in ZideStore (incomplete)
+- properly generate ZideStore iCal and vCard objects in UTF-8
+- added support for signed RPMs
+- fixed a bug with saving short custom property values (Rafel Amer)
+- use 127.0.0.1 as default database host to avoid /etc/hosts issues
+- moved some templates to their correct location
+- some work on SOPE URL support in WebUI
+- prepared componentenized document viewer
+- changed some templates to use SkySimpleTabItem instead of SkyTabItem
+- removed defaults tab in admin application (OGo bug #1187)
+- changed default MDN to English
+- fixed some Dovecot issue
+- generate proper charset header for text mailparts (OGo bug #797)
+- various code cleanups
+
+===========================================================================
+r827
+compare ../releases/1.0alpha11-ultra with .
+changed: 
+     2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* configure: check for required and optional linking dependencies, eg
+     	  disable PDA if libpisock could not be found
+     	* added configure script
+added:   configure
+changed: Database/OGoModel/
+     2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* Classes/GNUmakefile: properly include config.make (v5.1.14)
+changed: DocumentAPI/
+     2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile: properly include config.make
+changed: DocumentAPI/OGoContacts/
+     2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile.preamble: cleaned up linking on MacOSX (v5.1.41)
+added:   ZideStore/SoObjects/ZSResources
+changed: ZideStore/SoObjects/ZSAppointments/
+     2005-03-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* SxICalendar.m, SxAppointment.m: generate iCal data as UTF-8,
+     	  properly tag it as such with the charset parameter (v1.3.96)
+     2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* SxAppointment.m: fixed a warning, changed generation of baseURL
+     	  (v1.3.95)
+changed: ZideStore/SoObjects/ZSContacts/
+     2005-03-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* v1.3.81
+     	* SxAddress.m, SxPerson.m, SxEnterprise, SxGroup.m: moved GETAction to
+     	  SxAddress
+     	* SxAddress.m: cleaned up vcard generation code, fixed handling of
+     	  content-type, properly deliver vcard in UTF-8
+changed: Logic/
+     2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile: properly include config.make
+changed: Logic/LSFoundation/
+     2005-03-14  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyPropertyValues.m: fixed a bug when saving short property strings
+     	  to blob values (as reported by Rafel Amer) (v5.1.94)
+     2005-03-14  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoContextManager.m: use 127.0.0.1 as default database host to avoid
+     	  issues with broken /etc/hosts files (v5.1.93)
+changed: Tools/
+     2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* skyaptnotify.m: minor code cleanups
+changed: WebUI/HelpUI/
+     2005-03-11  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile (HelpUI_PRINCIPAL_CLASS): fixed principal class (v5.1.2)
+changed: WebUI/Contact/LDAPAccounts/
+     2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* moved templates to Templates directory (OGo bug #1284) (v5.1.7)
+removed: WebUI/Contact/LDAPAccounts/WelcomeNewLDAPAccount.wo
+removed: WebUI/Contact/LDAPAccounts/SkyGenericLDAPViewer.wo
+changed: WebUI/Contact/PersonsUI/
+     2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWPersons.m, EOQualifier+PersonUI.m: fixed a warning on MacOSX
+     	  (v5.1.52)
+changed: WebUI/Scheduler/OGoSchedulerViews/
+     2005-03-09  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyAptResourceList.m, SkyAptResourceGroupsList.m: minor code
+     	  cleanups (v5.1.43)
+changed: WebUI/Scheduler/OGoResourceScheduler/
+     2005-03-06  Helge Hess  <helge.hess@opengroupware.org>
+     	* moved template of SkyResourceSchedulerPage to templates directory
+     	  (v5.1.10)
+removed: WebUI/Scheduler/OGoResourceScheduler/SkyResourceSchedulerPage.wo
+changed: WebUI/Main/
+     2005-03-13  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.1.75
+     	* OpenGroupware.m: keep 'so' URLs on login redirect
+     	* WODirectAction+LoginAction.m: removed support for deprecated
+     	  'loginName' form parameter (use 'login' instead!), added support for
+     	  login-redirect URLs (url query parameter)
+     	* SoOGoAuthenticator.m: remove wosid from auth-redirect URLs, set sid
+     	  expire cookie
+     	* v5.1.74
+     	* OpenGroupware.m: removed response stack (should not be necessary
+     	  anymore)
+     	* SoOGoAuthenticator.m: when redirecting unauthorized requests to the
+     	  login page, the URL will be included
+     2005-03-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* SoOGoAuthenticator.m: redirect to login page if no session is
+     	  available (v5.1.73)
+     2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile: properly include config.make (v5.1.72)
+changed: WebUI/Templates/
+     2005-03-15  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoDocInlineViewers: prepared componentenized document viewer
+     2005-03-13  Helge Hess  <helge.hess@opengroupware.org>
+     	* BaseUI/Main.html: template cleanups
+     2005-03-06  Helge Hess  <helge.hess@opengroupware.org>
+     	* ogo-webui-1.0a/components.cfg: removed a duplicate LSWObjectMailPage
+     	  key
+     	* various templates got changed to use SkySimpleTabItem
+     	* AdminUI/LSWStaff.html: removed defaults tab as requested in OGo bug
+     	  #1187, use SkySimpleTabItem
+added:   WebUI/Templates/OGoResourceScheduler/SkyResourceSchedulerPage.html
+added:   WebUI/Templates/OGoResourceScheduler/SkyResourceSchedulerPage.wod
+added:   WebUI/Templates/OGoDocInlineViewers/OGoDocContentsViewer.html
+added:   WebUI/Templates/OGoDocInlineViewers/OGoDocVersionsViewer.html
+added:   WebUI/Templates/OGoDocInlineViewers/OGoDocContentsViewer.wod
+added:   WebUI/Templates/OGoDocInlineViewers/OGoDocLogsViewer.wod
+added:   WebUI/Templates/OGoDocInlineViewers/OGoDocAttrsViewer.html
+added:   WebUI/Templates/OGoDocInlineViewers/OGoDocVersionsViewer.wod
+added:   WebUI/Templates/OGoDocInlineViewers/OGoDocLogsViewer.html
+added:   WebUI/Templates/OGoDocInlineViewers/OGoDocAccessViewer.html
+added:   WebUI/Templates/OGoDocInlineViewers/OGoDocAttrsViewer.wod
+added:   WebUI/Templates/OGoDocInlineViewers/OGoDocAccessViewer.wod
+added:   WebUI/Templates/LDAPAccounts/SkyGenericLDAPViewer.wod
+added:   WebUI/Templates/LDAPAccounts/SkyGenericLDAPViewer.html
+changed: WebUI/Mailer/OGoWebMail/
+     2005-03-06  Helge Hess  <helge.hess@opengroupware.org>
+     	* Defaults.plist: changed default MDN text to English as requested in
+     	  OGo bug #1283 (v5.1.103)
+     2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWImapMailViewer.m: fixed an edge case with a missing header field
+     	  and Dovecot (v5.1.102)
+changed: WebUI/Mailer/LSWMail/
+     2005-03-16  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWMailRenderPage.m: minor code cleanups (v5.1.11)
+changed: WebUI/Mailer/OGoMailEditor/
+     2005-03-16  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWImapMailEditor.m: generate proper 'charset' parameter in content
+     	  types to fix OGo bug #797 (v5.1.7)
+changed: WebUI/Common/BaseUI/
+     2005-03-13  Helge Hess  <helge.hess@opengroupware.org>
+     	* Main.m: added auth-url field (v5.1.102)
+changed: WebUI/OGoFoundation/
+     2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile: properly include config.make (v5.1.84)
+     2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.1.83
+     	* LSWClipboardOwner.m: some code cleanups
+     	* GNUmakefile.preamble: fixed linking on MacOSX
+changed: WebUI/AdminUI/
+     2005-03-09  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWStaff.m: minor code cleanups (v5.1.33)
+added:   WebUI/Project/OGoSoProject
+changed: WebUI/Project/OGoDocInlineViewers/
+     2005-03-15  Helge Hess  <helge.hess@opengroupware.org>
+     	* started to prepare componentenized document viewer (v5.1.4)
+added:   WebUI/Project/OGoDocInlineViewers/OGoDocPartViewer.h
+added:   WebUI/Project/OGoDocInlineViewers/OGoDocPartViewer.m
+added:   WebUI/Project/OGoDocInlineViewers/OGoDocLogsViewer.m
+added:   WebUI/Project/OGoDocInlineViewers/OGoDocAccessViewer.m
+added:   WebUI/Project/OGoDocInlineViewers/OGoDocAttrsViewer.m
+added:   WebUI/Project/OGoDocInlineViewers/OGoDocContentsViewer.m
+added:   WebUI/Project/OGoDocInlineViewers/OGoDocVersionsViewer.m
+removed: WebUI/Project/OGoDocInlineViewers/GNUmakefile.postamble
+changed: WebUI/Project/OGoProject/
+     2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+     	* minor code cleanups (v5.1.63)

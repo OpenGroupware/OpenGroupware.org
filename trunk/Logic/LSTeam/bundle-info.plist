@@ -1,0 +1,55 @@
+// $Id$
+{
+  bundleHandler = LSTeamCommands;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = LSAddress; type = cmd; },
+    );
+    
+    classes = (
+      { name = NSObject;              },
+      { name = LSBaseCommand;            exact-version = 1; },
+      { name = LSDBObjectBaseCommand;    exact-version = 1; },
+      { name = LSDBObjectDeleteCommand;  exact-version = 1; },
+      { name = LSDBObjectSetCommand;     exact-version = 2; },
+      { name = LSDBObjectGetCommand;     exact-version = 3; },
+      { name = LSDBFetchRelationCommand; exact-version = 1; },
+      { name = LSExtendedSearchCommand;  exact-version = 2; },
+    );
+  };
+  
+  provides = {
+    LSCommands = (
+        { name = "team::new";                    },
+        { name = "team::delete";                 },
+        { name = "team::set";                    },
+        { name = "team::get";                    },
+        { name = "team::check-permission";       },
+        { name = "team::members";                },
+        { name = "team::setmembers";             },
+        { name = "team::expand";                 },
+        { name = "team::resolveaccounts";        },
+        { name = "team::extended-search";        },
+        { name = "team::get-by-globalid";        },
+        { name = "team::get-all";                },
+        { name = "team::get-by-login";           },
+    );
+    classes = (
+      { name = LSTeamCommands;                      },
+      { name = LSNewTeamCommand;                    },
+      { name = LSSetTeamCommand;                    },
+      { name = LSGetTeamByLoginCommand;             },
+      { name = LSGetMemberForTeamCommand;           },
+      { name = LSResolveAccountsCommand;            },
+      { name = LSCheckPermissionCompanyCommand;     },
+      { name = LSGetTeamsForGlobalIDsCommand;       },
+      { name = LSGetAllTeamsCommand;                },
+      { name = LSDeleteTeamCommand;                 },
+      { name = LSExtendedSearchTeamCommand;         },
+      { name = LSGetTeamCommand;                    },
+    );
+  };
+}

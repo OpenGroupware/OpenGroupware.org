@@ -1,0 +1,211 @@
+// $Id: LSWPreferencesViewer.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = windowTitle;
+  onClose = session.navigation.leavePage;
+}
+
+Title:     LSWViewerTitle { title = userName;           }
+RootTitle: LSWViewerTitle { title = labels.configLabel; }
+
+PreferencesTitle: LSWViewerTitle {
+  title = labels.Preferences;
+}
+
+RootPreferencesViewer: LSWObjectViewer {
+  object        = login;
+  relatedObject = item;
+  labels        = labels;
+  
+  attributes    = (
+    { key = "login";     },
+    { key = "name";      },    
+    { key = "firstname"; },
+    { key  = "email1"; href = "mailto:"; },
+  );
+}
+
+EditLink: SkyButtonRow {
+  ordering    = ( toperson, viewlogs, password, edit );
+
+  hasToPerson = canMakePerson;
+  hasViewlogs = showAccountLogs;
+  hasPassword = canChangePassword;
+  hasEdit     = hasEdit;
+
+  onToperson  = accountToPerson;
+  onViewlogs  = viewAccountLogs;
+  onEdit      = edit;
+  onPassword  = editPassword;  
+
+  toperson    = labels.action_toPerson;
+  viewlogs    = labels.action_viewAccountLogs;
+  edit        = labels.gotoEditLabel;
+  password    = labels.editPassword;
+}
+
+IsRootCond: WOConditional {
+  condition = self.session.activeAccountIsRoot;
+}
+IsRootCondElse: WOConditional {
+  condition = self.session.activeAccountIsRoot;
+  negate = YES;
+}
+
+IsRootViewed: WOConditional {
+  condition = isRootViewed;
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell { alignTop = YES; }
+
+LockedLabel: WOString {
+  value   = labels.locked;
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+CategoryRep: WORepetition {
+  list      = session.categories;
+  item      = category;
+  separator = ", ";
+}
+
+CategoryLabel: WOString {
+  value = labels.categories;
+}
+
+Category: WOString {
+  value = category.category;
+}
+
+IsRoot: WOConditional {
+  condition = isRoot;
+}
+
+AccountViewerRoot: LSWObjectViewer {
+  labels        = labels;
+  object        = object;
+  relatedObject = item;
+  attributes    = (
+    { key = "login";     },
+    { key = "name";      },
+    { key = "firstname"; },
+    { key = "description"; label = "nickname"; },
+    { key = "email1";      href = "mailto:";   },
+    { key = "groups"; relKey = "description"; action = "viewItem"; }
+  );
+}
+
+AccountViewerRootTemplate: LSWObjectViewer {
+  labels        = labels;
+  object        = object;
+  relatedObject = item;
+  attributes    = ( { key = "login"; } );
+}
+
+AccountViewer: LSWObjectViewer {
+  labels        = labels;
+  object        = object;
+  relatedObject = item;
+  attributes    = (
+    { key = "name";      },
+    { key = "firstname"; },
+    { key  = "description"; label = "nickname"; },
+    { key  = "email1"; href = "mailto:"; }
+  );
+}
+
+IsLocked: WOString {
+  value = isLocked;
+}
+
+/* bundle editors */
+
+EditorsTitle: LSWViewerTitle {
+  title = labels.appPreferences;
+}
+
+EditorsLabel: WOString {
+  value = labels.ModuleEditors;
+}
+
+EditorRepetition: WORepetition {
+  list = editors;
+  item = editor;
+}
+
+HasEditors: WOConditional {
+  condition = hasEditors;
+}
+
+HasEditorIcon: WOConditional {
+  condition = hasIcon;
+}
+
+EditorIcon: WOImage {
+  filename = editorIcon;
+  alt      = editorLabel;
+  border   = "0";
+  align    = "bottom";
+}
+
+EditorLink: WOHyperlink {
+  action = showEditor;
+}
+
+EditorName: WOString {
+  value = editorLabel;
+}
+
+TemplateUserLabel: WOString {
+  value = labels.templateUser;
+}
+
+IsTemplateUserCond:     WOConditional { condition = isTemplateUserCond; }
+IsTemplateUserCondElse: WOConditional {
+  condition = isTemplateUserCond;
+  negate    = YES;
+}
+
+IsTemplateUser: WOString {
+  value = isTemplateUser;
+}
+
+MailQuota: OGoDefaultViewField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "admin_mailquota";
+}
+
+InMBLabel: WOString {
+  value = labels.inMB;
+}
+
+VAddresses: OGoDefaultViewField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "admin_vaddresses";
+  useFormatter    = "stringField";
+}
+
+IsMailConfigEnabled: WOConditional {
+  condition = isMailConfigEnabled;
+}
+
+DomainAliases: OGoDefaultViewField {
+  defaults            = defaults;
+  componentLabels     = labels;
+  key                 = "admin_LocalDomainAliases";
+  useFormatter        = "array";
+}
+
+ExportAccount: OGoDefaultViewField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "admin_exportAddresses";
+  useFormatter    = "bool";
+}

@@ -1,0 +1,12 @@
+# $Id$
+
+- needs a lot of cleanup work
+
+SkyCompanyDataSource
+- this class should be removed, it only has two subclasses and is nevertheless
+  completely customizable spaghetti code
+  Used by:
+  ./DocumentAPI/OGoContacts/SkyPersonDataSource.h
+  ./DocumentAPI/OGoContacts/SkyEnterpriseDataSource.h
+  ./DocumentAPI/OGoContacts/SkyCompanyDataSource.h
+  ./DocumentAPI/OGoContacts/SkyCompanyDataSource.m

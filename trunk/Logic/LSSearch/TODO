@@ -1,0 +1,4 @@
+# $Id$
+
+- the search limit processing needs to be improved. it currently cannot
+  reliably report a limitation!

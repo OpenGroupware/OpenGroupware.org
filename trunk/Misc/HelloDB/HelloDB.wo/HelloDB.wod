@@ -1,0 +1,54 @@
+// bind template to controller class
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  // the string appearing in the title bar
+  title   = "Say Hello to the Database";
+  // what todo when the cross in that bar is clicked
+  onClose = session.navigation.leavePage;
+}
+
+// the tables configured in the defaults
+TablesRep: WORepetition {
+  list = session.userDefaults.HelloDBTables;
+  item = currentTableName;
+}
+
+TabView: SkyTabView {
+  selection = selectedTableName;
+}
+TabItem: SkySimpleTabItem {
+  key   = currentTableName;
+  label = currentTableName;
+}
+
+// tableview
+
+TableView: SkyTableView {
+  dataSource = dataSource;
+  item       = document;
+  batchSize  = session.userDefaults.HelloDBListSize;
+}
+
+ColumnsRep: WORepetition {
+  // TODO: supportedKeys is not filled for empty tables and only after the
+  //       first fetch
+  list = document.supportedKeys;
+  item = currentColumnName;
+}
+
+Column: WETableData {
+  title   = currentColumnName;
+  sortKey = currentColumnName;
+}
+
+ColumnHeader: WETableHeader {
+}
+
+ColumnField: SkyObjectField {
+  object = document;
+  key    = currentColumnName;
+}
+
+ButtonMode: WETableViewButtonMode {}

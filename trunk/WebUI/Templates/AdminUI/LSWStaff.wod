@@ -1,0 +1,308 @@
+// bind template to controller
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.staffTitle;
+  onClose = session.navigation.leavePage;
+}
+
+TabBody: SkyTabView {
+  selection = tabKey;
+}
+
+AccountsTab: SkySimpleTabItem {
+  key    = "accounts";
+  action = tabClicked;
+  label  = labels.accountsSubview;
+}
+
+TeamsTab: SkySimpleTabItem {
+  key    = "teams";
+  action = tabClicked;
+  label  = labels.teamsSubview;
+}
+
+ResourcesTab: SkySimpleTabItem {
+  key    = "resources";
+  action = tabClicked;
+  label  = labels.aptResources;
+}
+
+LicenseTab: SkySimpleTabItem {
+  key    = "licenses";
+  action = tabClicked;
+  label  = labels.licensesTab;
+}
+
+DefaultsTab: SkySimpleTabItem {
+  key    = "defaults";
+  action = tabClicked;
+  label  = labels.Defaults;
+}
+
+// TODO: this is currently disabled and seems to be broken
+DefaultsView: SkyDefaultsViewer {
+  domains = (
+    "ogo-webui-1.0a", 
+    "NSGlobalDomain", 
+    "ogo-xmlrpcd-1.0a", 
+    "ogo-snsd-1.0a", 
+    "skyaptnotify"
+  );
+}
+
+SessionLogTab: SkySimpleTabItem {
+  key    = "sessionlogs";
+  action = tabClicked;
+  label  = labels.sessionLogTab;
+}
+
+// TODO: replace with WETableView
+AccountList: LSWTableView {
+  labels            = labels;
+  title             = labels.accountList;
+  start             = start;
+  label             = labels.accounts;
+  list              = accounts;
+  item              = account;
+  selectedAttribute = selectedAttribute;
+  blockSize         = blockSize;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+  attributes        = (
+    { key = "login"; label = "Login"; sort = YES; action = "viewAccount"; },
+    { key = "description"; label = "Nickname"; sort = YES;                },
+    { key = "email1"; label = "Email 1";  sort = YES; href = "mailto:";   },
+    { 
+                key       = "groups"; 
+                labelKey  = "teamLabel";
+                sort      = NO; 
+                relKey    = "description";
+    },
+    {       key       = "isLocked"; 
+                labelKey  = "locked" ;
+                sort      = NO;
+                isLocalized = YES;
+                nilString = "0";
+    } 
+  );
+}
+
+AccountButtons: SkyButtonRow {
+  ordering   = ( template, new );
+  hasNew     = canCreateAccounts;
+  onTemplate = newTemplate;
+  onNew      = newAccount;
+  template   = labels.newTemplate;
+  new        = labels.new;
+}
+
+// TODO: replace with WETableView
+TeamList: LSWTableView {
+  labels            = labels;
+  title             = labels.teamList;
+  start             = start;
+  label             = labels.teams;
+  list              = teams;
+  item              = team;
+  selectedAttribute = selectedAttribute;
+  blockSize         = blockSize;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+
+        attributes        =  (
+        { 
+                key      = "description"; 
+                labelKey = "name"; 
+                sort     = YES; 
+                action   = "viewTeam"; 
+        },
+        { key = "email"; labelKey = "email"; sort = YES; href = "mailto:";   },
+        {      
+                key      = "members";
+                labelKey = "members";
+                relKey   = "login";
+                sort     = NO;
+        }
+        );
+}
+
+TeamButtons: SkyButtonRow {
+  ordering   = ( new );
+  
+  onNew      = newTeam;
+  new        = labels.new;
+}
+
+LicenseButtons: SkyButtonRow {
+  ordering   = ( new, shutdown );
+  onNew      = onNew;
+  onShutdown = onShutdown;
+  new        = labels.new;
+  shutdown   = labels.shutdown;
+}
+
+AptResourceList: SkyAptResourceList {
+  aptResources = aptResources;
+}
+
+NoLicenseInstalled: WOConditional {
+  condition = isLicenseInstalled;
+  negate    = NO;
+}
+EnterLicense: WOTextField {
+  value = licenseValue;
+  size  = "50";
+}
+
+LicenseList: LSWTableView {
+  labels            = labels;
+  title             = labels.Licenses;
+  start             = start;
+  label             = labels.Licenses;
+  list              = application.licenseManager.licenses;
+  item              = license;
+  selectedAttribute = selectedAttribute;
+  blockSize         = blockSize;
+  sorter            = session.eoSorter;
+  isDescending      = isDescending;
+  attributes        =  (
+    { 
+      key      = "filename"; 
+      labelKey = "license_file"; 
+      sort     = YES;
+      changeFontColorCondition = "isLicenseValid";
+      fontColor       = "#000000";
+      electFontColor  = "#FF0000";
+    },
+    { 
+      key      = "ownerCompany"; 
+      labelKey = "license_company"; 
+    },
+    { 
+      key      = "ownerUser"; 
+      labelKey = "license_user"; 
+    },
+    { 
+      key      = "licensedHost"; 
+      labelKey = "license_host"; 
+      changeFontColorCondition = "isLicenseValidOnHost";
+      fontColor       = "#000000";
+      electFontColor  = "#FF0000";
+    },
+    { 
+      key      = "expireDate"; 
+      labelKey = "license_expire"; 
+      changeFontColorCondition = "isLicenseExpired";
+      fontColor       = "#000000";
+      electFontColor  = "#FF0000";
+    },
+    {
+      key      = "nuString"; 
+      labelKey = "nu"; 
+    },
+    {
+      key      = "cuString"; 
+      labelKey = "zidestore"; 
+    },
+    {
+      key      = "modules";
+      relKey   = "stringValue";
+      labelKey = "license_modules"; 
+    },
+    {      
+      key      = "isValidString";
+      labelKey = "isValid";
+      sort     = YES; 
+      changeFontColorCondition = "isLicenseValid";
+      fontColor      = "#000000";
+      electFontColor = "#FF0000";
+      isLocalized    = YES;
+      nilString      = "0";
+    },
+    {
+      key     = "delete";
+      image    = "icon_delete_license.gif"; 
+      labelKey = "delete";
+      action   = "delete";
+    }
+  );
+}
+
+SessionLogList: LSWTableView {
+  labels            = labels;
+  title             = labels.sessionLogs;
+  start             = start;
+  label             = labels.sessionLogs;
+  list              = sessionLogs;
+  item              = sessionLog;
+  selectedAttribute = selectedAttribute;
+  blockSize         = 100;
+  sorter            = session.eoSorter;
+  isDescending      = isLogDescending;
+  dateFormatter     = session.formatDateTime;
+  attributes        =  (
+    { key = "logDate"; labelKey = "date";    sort = YES; },
+    { key = "account"; labelKey = "account"; sort = YES; relKey = "login"; },
+    { key = "action";  labelKey = "action";  sort = YES; }
+  );
+}
+
+// account/team search
+
+Form: WOForm {
+  name   = "searchform";
+  action = search;
+}
+
+SearchTextField: WOTextField {
+  name  = "focusField";
+  value = searchString;
+  size  = 20;
+}
+
+SearchSubmit: WOSubmitButton {
+  value    = labels.search;
+  class    = "button_narrow";
+}
+SearchAllSubmit: WOSubmitButton {
+  action   = searchAll;
+  value    = labels.searchall;
+  class    = "button_narrow";
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+IsLogTabEnabled: WOConditional {
+  condition = isLogTabEnabled;
+}
+
+IsDeleteLicenseWarning : WOConditional {
+  condition = licenseWarningMode;
+}
+
+IsDeleteLicenseWarningElse : WOConditional {
+  condition = licenseWarningMode;
+  negate    = YES;
+}
+
+Warning: LSWWarningPanel {
+  onOk      = "reallyDeleteLicense";
+  phrase    = warningPhrase;
+}
+
+IsMailConfigEnabled : WOConditional {
+  condition = isMailConfigEnabled;
+}
+
+MailConfigTab : SkySimpleTabItem {
+  key    = "mailConfig";
+  action = tabClicked;
+  label  = labels.mailConfig;
+}
+
+MailConfigView : SkyDefaultsViewer {
+  domains = ("MTA");
+}

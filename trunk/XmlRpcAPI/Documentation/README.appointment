@@ -1,0 +1,40 @@
+Package appointment
+
+  Method appointment.fetch
+    Parameters:
+        Result:
+       Example:
+
+  Method appointment.setParticipants(arg1, arg2)
+    Parameters: arg1: AppointmentDocument
+                arg2: Array of Person- or Team IDs or URLs (not documents!)
+        Result: AppointmentDocument
+
+  Method appointment.getById(_url,_attrs)
+    Parameters: _url:  appointment id or URL
+                attrs: document attributes to fetch
+        Result: AppointmentDocument
+
+  Method appointment.fetchIds(_fetchSpec)
+    Parameters: _fetchSpec: qualifier
+        Result: array of URLs
+
+  Method appointment.fetchOverview(startDate, endDate, company)
+    Parameters:
+        Result:
+       Example:
+
+  Method appointment.insertAction(dictionary)
+    Parameters:
+        Result:
+       Example:
+
+  Method appointment.updateAction(dictionary)
+    Parameters:
+        Result:
+       Example:
+
+  Method appointment.deleteAction(apt)
+    Parameters:
+        Result: returns XMLRPC_FAULT_INVALID_PARAMETER if apt could not be
+                found

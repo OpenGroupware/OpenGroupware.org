@@ -1,0 +1,230 @@
+2004-12-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.30
+
+	* SkyPalmEntryDataSource.m: fixed some logs, minor code cleanups
+
+	* SkyPalmCategoryDocument.m: minor code cleanups
+
+2004-10-01  Tiny Toon  <tiny@tinytoon.de>
+
+	* v5.1.29
+
+	* SkyPalmDateDocument.m: improved support for allday appointments
+
+	* SkyPalmPreSync.m, SkyPalmDateDataSource.m, SkyPalmDateDocument.m:
+	  added 'location' to fetch attributes
+
+2004-09-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: added proper library version for gstep-make 1.10
+
+2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* added FHS installation (v5.1.28)
+
+2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
+
+	* install datasources into Library/OpenGroupware.org-1.0a/DataSources/
+	  (v5.1.27)
+
+2004-04-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.0.26
+
+	* SkyPalmDateDataSource.m: some code cleanups
+
+	* SkyPalmSyncMachine.m: major code cleanups
+
+	* SkyPalmAddressDocument+SkyrixSync.m, SkyPalmEntryDataSource.m: 
+	  removed dependency on SkyCompanyDataSource, minor improvement in 
+	  memory management to avoid premature deallocation in some edge 
+	  condition, minor code cleanups
+	
+	* added common.h file
+
+Tue Mar  9 19:43:58 2004  Martin Hoerning  <martin@igosys.de>
+
+	* SkyPalmDateDocument.m: fixed md5hash generation (v5.0.25)
+
+2004-03-09  Martin Hoerning  <martin@igosys.de>
+
+	* SkyPalmAddressDocument.m: excluded displayPhone from md5hash
+	  generation (v5.0.24)
+
+2004-03-04  Martin Hoerning  <martin@igosys.de>
+
+	* SkyPalmDocument.m: fixed conflict handling with both, pre- and
+	  postsync enabled (v5.0.23)
+
+2004-02-12  Martin Hoerning  <martin@igosys.de> 
+
+	* v5.0.22 (OGo Bug 533)
+
+	* SkyPalmEntryDataSource.m: added handling of dangling Palm entries
+	  of deleted OGo entries which were bound to those entries
+
+	* SkyPalmPostSync.[h|m]: added handling of dangling OGo entries of
+	  deleted palm records
+
+Tue Jan 27 13:09:38 2004  Martin Hoerning  <martin@opengroupware.org>
+
+	* SkyPalmPreSync.m: fixed companies in SkyAppointmentQualifier 
+	  (v5.0.21)
+
+2004-01-07  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyPalmPreSync.m: fixed a typo (-filterCycleDatesi: instead of
+	  -filterCycleDates:) (v5.0.20)
+
+2004-01-06  Martin Hoerning  <martin@opengroupware.org>
+
+	* SkyPalmPreSync.m: filtering cycle dates (ogo bug 515) (v5.0.19)
+	  (UNTESTED)
+
+2004-01-05  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: moved some stuff to GNUmakefile.preamble, correctly
+	  link against libOGoScheduler (eg for SkyAppointmentQualifier)
+	  (v5.0.18)
+
+Tue Dec 23 17:24:20 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* SkyPalmPreSync.m: added timeout checkout (v5.0.17)
+
+Mon Dec 22 15:50:31 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* SkyPalmEntryDataSource.m: added skyrix-record bulk fetch (v5.0.16)
+
+Fri Dec 19 18:55:09 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* SkyPalmPostSync.m, SkyPalmPreSync.m: pre/post sync added (v5.0.15)
+
+Wed Dec 10 20:27:11 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* SkyPalmDocument.m: added 2way sync (v5.0.14)
+
+Wed Nov 19 20:58:16 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* SkyPalmAddressDocument+SkyrixSync.m: don't allow to overwrite
+	  the name of a ogo-record wih an empty string (person or
+	  enterprise won't get an empty string as name)
+	  (fixes ogo bug 303) (v5.0.13)
+
+Wed Aug 13 16:00:29 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* SkyPalmDateDataSource.m: fixed qualifier (caused exception in 
+	  Oracle adaptor) (introduced with query enhancments 2003-07-21)
+	  (v4.1.12)
+
+Fri Aug  8 16:22:26 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* SkyPalmEntryDataSource.m: fixed debug log (fixes bug 1413) (v4.1.11)
+
+Tue Aug  5 16:34:20 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmDateDocument.m: 
+	* SkyPalmDateDataSource.m: changed to cycle creation using
+	  OGoSchedulerTools
+	* SkyPalmDateDocumentCopy.m: added repetitionIndex as second
+	  primaryKey (4.1.10)
+
+Mon Jul 28 17:53:21 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmSyncMachine.m: 
+	* SkyPalmAddressDocument+SkyrixSync.m: fixed ud-keys Sky*->OGo*
+	  (v4.1.9)
+
+Mon Jul 21 14:56:52 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmDateDataSource.m: enhanced database queries for cycle-dates
+	  (v4.1.8) (bug 1837)
+
+Mon Jul  7 12:11:28 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v4.1.7)
+
+Fri May 23 15:15:12 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmDateDocument.m: fixed permission check for new 
+	  skyrix documents (v4.1.6)
+
+Mon Feb 24 14:42:13 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmEntryDataSource.m: added global-id resolver (v4.1.5)
+
+Thu Jan 16 14:03:39 2003  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmSyncMachine.m: fixed debugging/logging (v4.1.4)
+
+Wed Dec 11 16:51:53 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmAddressDocument+SkyrixSync.m: don't take empty phones from 
+	  skyrix records (bug 596) (v4.1.3)
+
+Mon Dec  2 17:37:43 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmDateDocument.m: set timezone in weekly and monthly copies 
+          (bug 595) (v4.1.2)
+
+2002-11-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyPalmMemoDocument.m: removed dependency on SkyProject (v4.1.1)
+
+Mon Nov  4 19:39:54 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmDateDocument.m: added nonEmptyDescription
+
+Mon Oct 21 11:52:49 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmEntryDataSources: searches in bundles for unknown PalmTables
+
+Wed Aug 14 16:58:42 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmDateDocumentCopy.m: fixed isEqual bug (added -isEqual:)
+
+Fri Aug  2 13:27:07 2002  Jan Reichmann  <jan@skyrix.com>
+
+	* SkyPalmEntryDataSource.m: cache devices
+
+Thu Aug  1 17:23:25 2002  Jan Reichmann  <jan@skyrix.com>
+
+	* SkyPalmSyncMachine.m: seperate ids in sync.
+
+Mon May 13 13:19:47 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmAddressDocument+SkyrixSync.m: 
+	        - added 03_tel_funk to person attributes
+	        - Skyrix Address Attribute Mapping added (SkyPalm<>Skyrix Sync)
+
+Mon Apr 15 20:28:54 2002  Martin Hoerning  <mh@skyrix.com>
+
+	* took over changes from 4.2dev
+	   - 30sec timeout prevention
+	   - added autorelease pools to sync engine
+	   - fixed memory leaks
+
+Thu Nov 29 10:38:50 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* fixed makefiles and package setup ...
+
+Wed Nov  7 18:21:19 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmAddressDocument+SkyrixSync.m: fixed sec-bug (changing of own login)
+
+Wed Nov  7 17:02:08 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* GNUmakefile: fixed dependences (SkyDB)
+
+Wed Jul  4 16:28:43 2001  Jan Reichmann  <jr@skyrix.com>
+
+	* SkyPalmDateDocument.m: fixed include bug (try to include <SkyPalm/SkyPalmConstants.h>)
+
+Tue Jun 19 17:37:27 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* SkyPalmSyncMachine.m: skyrix-assignment bug fixed
+
+Tue Jun 19 17:37:06 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* ChangeLog created
+

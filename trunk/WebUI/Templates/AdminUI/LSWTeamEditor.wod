@@ -1,0 +1,171 @@
+// $Id: LSWTeamEditor.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title                   = labels.teamTitle;
+  onClose = cancel;
+}
+
+TeamEditor : LSWObjectEditor {
+  labels     = labels;
+  object     = team;
+  attributes = (
+    { key = "description"; label = "name"; },
+    { key = "email";                       }
+  );
+  colAttr = 2;
+  colVal  = 2;
+  
+}
+
+WarningModeCond:     WOConditional { condition = isInWarningMode; }
+WarningModeCondElse: WOConditional { condition = isInWarningMode; negate=YES; }
+IsDeleteEnabled:     WOConditional { condition = isDeleteEnabled; }
+
+IsNotAllIntranetTeam : WOConditional {
+        condition = isAllIntranetTeam;
+        negate    = YES;
+}
+
+Warning : LSWWarningPanel {
+        onOk      = warningOkAction;
+        phrase    = warningPhrase;
+}
+
+TeamForm: WOForm { name = "teamEditor"; }
+
+Account:      WOString { value = account.login;  }
+AccountLabel: WOString { value = labels.members; }
+
+NewModeCond : WOConditional {
+        condition = isInNewMode;
+        negate    = YES;
+}
+
+SaveSubmit: WOSubmitButton {
+        action           = save;
+        value            = labels.saveButtonLabel;
+        disabled         = isSaveDisabled;
+        class            = "button_narrow";
+}
+SaveSubmitDA: WOSubmitButton {
+        action           = save;
+        value            = labels.saveButtonLabel;
+        disabled         = isSaveDisabled;
+        class            = "button_narrow_da";
+}
+IsSaveEnabled: WOConditional {
+        condition        = isSaveDisabled;
+        negate           = YES;
+}
+IsSaveDisabled: WOConditional {
+        condition        = isSaveDisabled;
+}
+DeleteSubmit: WOHyperlink {
+        action           = delete;
+        string           = labels.deleteButtonLabel;
+        disabled         = isDeleteDisabled;
+        class            = "button_narrow";
+}
+CancelSubmit: WOHyperlink {
+        action           = cancel;
+        string           = labels.cancelButtonLabel;
+        class            = "button_narrow";
+}
+
+AttributeCell: SkyAttributeCell { colspan=2;}
+ValueCell:     SkyValueCell     { colspan=2;}
+
+LocationTeamCheckBox : WOCheckBox {
+        checked = isLocationTeam;
+}
+
+LocationTeamLabel : WOString {
+        value = labels.locationTeamLabel;
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+AccountList: SkyListView {
+    list          = assignedAccounts;
+    item          = item;
+    columns       = 4;
+    selectInverse = YES;
+    selectedItems = removedAccounts;
+    attributes    = ( { key="login"; },
+                      { key="fullNameLabel"; } );
+}
+
+ResultList: SkyListView {
+    list          = resultList;
+    item          = item;
+    columns       = 4;
+    selectedItems = addedAccounts;
+    attributes    = ( { key="login"; },
+                      { key="fullNameLabel"; } );
+}
+
+HasSelectedAccounts: WOConditional {
+  condition  = hasSelectedAccounts;
+}
+HasSearchResult: WOConditional {
+  condition  = hasSearchResult;
+}
+
+SearchAccounts: WOString {
+  value = labels.searchAccounts;
+}
+
+SearchField: WOTextField {
+  value = searchText;
+}
+
+SearchSubmit: WOSubmitButton {
+  action    = search;
+  value     = labels.search;
+  class     = "button_narrow";
+}
+
+AccountsConditional: WOConditional {
+  condition = hasAccountSelection;
+  negate    = NO;
+}
+AddAccountsAttribute : WOString {
+  value = labels.addAccounts;
+}
+
+IsMailConfigEnabled: WOConditional {
+  condition = isMailConfigEnabled;
+}
+
+VAddresses: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "admin_vaddresses";
+  valueType       = "text";
+  useFormatter    = "stringField";
+  isEditableDef   = NO;
+  rows            = 6;
+  cols            = 60;
+}
+
+MailboxName: OGoDefaultEditField {
+  componentLabels = labels;
+  defaults        = defaults;
+  key             = "admin_team_mailbox";
+  valueType       = "string";
+  rows            = 20;
+  componentLabels = labels;
+  isEditableDef   = NO;
+}
+
+ExportTeam: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "admin_team_doexport";
+  valueType       = "checkbox";
+  useFormatter    = "bool";
+  isEditableDef   = NO;
+}

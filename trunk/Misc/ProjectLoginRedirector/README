@@ -1,0 +1,22 @@
+# $Id$
+
+Project Login Redirector
+========================
+
+This is a simple application which sits in front of a set of OGo instances. It
+displays a login window and if that is successful a set of all projects from
+all instances. A click on a project leads the user to the appropriate instance
+without and additional login.
+
+Login are checked and projects are retrieved using the XML-RPC daemon.
+
+
+Configuration
+=============
+
+You need to map the XML-RPC server to the WebUI application URL.
+
+PLRClientMap = {
+  "http://skyrix.in.skyrix.com/RPC2" = "https://skyrix.in.skyrix.com/Skyrix5";
+  "http://localhost:23000/RPC2"      = "http://move:9000/OpenGroupware";
+}

@@ -1,0 +1,15 @@
+# $Id$
+
+Migration / SLEMS3
+==================
+
+Scripts which allow you to migrate the contacts, scheduler and tasks
+databases of an SuSE Linux Email Server 3.x to the OpenGroupware.org
+database.
+
+NOTE: This cannot be used to migrate a SLOX installation to OGo since
+      SLOX - unlike SLEMS - uses an obfuscated and undocumentated
+      database scheme - and isn't OpenSource either.
+
+The export scripts dump out the information contained in SLEMS 3 into
+the filesystem while the import scripts load that info into OGo.

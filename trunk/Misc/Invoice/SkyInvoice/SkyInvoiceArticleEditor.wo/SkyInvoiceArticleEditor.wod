@@ -1,0 +1,117 @@
+// $Id: SkyInvoiceArticleEditor.wod,v 1.1 2003/07/15 15:31:07 helge Exp $
+
+//Style
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.invoiceArticleEditorWindowTitle;
+  onClose = cancel;
+}
+
+ToggleAttr: SkyAttribute {
+  label = labels.currency;
+}
+TogglePanel: SkyInlineCurrencyToggle {
+  currency = session.userDefaults.invoice_currency;
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+//Labels
+
+ArticleNrLabel: WOString {
+  value = labels.articleNr;
+}
+
+UnitLabel: WOString {
+  value = labels.articleUnit;
+}
+
+CategoryLabel: WOString {
+  value = labels.articleCategory;
+}
+
+VatLabel: WOString {
+  value = labels.articleVat;
+}
+
+//Form
+
+Form: WOForm {};
+
+ArticleEditor: LSWObjectEditor {
+  object      = article;
+  labels      = labels;
+  attributes  = (
+        { key = "articleName";          },
+        { key = "comment"               }
+  );
+}
+
+PriceLabel: WOString {
+  value = labels.price;
+}
+Price: WOTextField {
+  value     = article.price;
+  formatter = currencyFormatter;
+  size      = 40;
+}
+CurLabel: WOString {
+  value = session.userDefaults.invoice_currency;
+}
+
+ArticleNrTF: WOTextField {
+  value = article.articleNr;
+  size  = 40;
+}
+
+UnitPopup: WOPopUpButton {
+  list            = units;
+  item            = item;
+  string          = item.description;
+  selection       = article.articleUnit;
+  singleSelection = YES;
+}
+
+CategoryPopup: WOPopUpButton {
+  list            = categories;
+  item            = item;
+  string          = item.categoryName;
+  selection       = article.articleCategory;
+  singleSelection = YES;
+}
+
+VatPopup: WOPopUpButton {
+  list            = vatGroups;
+  item            = item;
+  string          = vatValue;
+  selection       = article.vatGroup;
+  singleSelection = YES;
+}
+
+SaveSubmit: WOImageButton {
+        action           = save;
+        filename         = "save.gif";
+        name             = labels.saveButtonLabel;
+        ALT              = labels.saveButtonLabel;
+        BORDER           = 0;
+};
+
+CancelSubmit: WOHyperlink {
+        action           = cancel;
+        filename         = "cancel.gif";
+        ALT              = labels.cancelButtonLabel;
+        BORDER           = 0;
+};
+
+//conditional
+
+IsInEditModeCond: WOConditional {
+  condition = isInNewMode;
+  negate    = YES;
+}

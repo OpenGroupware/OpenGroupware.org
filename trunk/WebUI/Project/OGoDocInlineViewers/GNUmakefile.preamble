@@ -1,0 +1,10 @@
+# compilation settings
+
+ADDITIONAL_BUNDLE_LIBS += \
+	-lOGoProject -lOGoDocuments -lOGoBase \
+	-lNGExtensions
+
+ADDITIONAL_LIB_DIRS += \
+	-L../../../DocumentAPI/OGoBase/$(GNUSTEP_OBJ_DIR)
+
+ADDITIONAL_CFLAGS += -Wall

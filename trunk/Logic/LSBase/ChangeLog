@@ -1,0 +1,212 @@
+2005-03-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Defaults.plist: map .sed extension to application/x-sedscript
+	  (v5.1.21)
+
+2005-03-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Defaults.plist: added extension/MIME-type mappings for Oasis
+	  documents (OOo 2.0) (v5.1.20)
+
+2005-01-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* Defaults.plist: mapped .sql and .psql to text/plain (v5.1.19)
+
+2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.18)
+
+2004-06-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetObjectTypeCommand.m (-_typeOfManyOidsInContext:cache:): 
+	  be more tolerant about empty input, this should fix OGo bug #728
+	  (v5.0.17)
+
+2004-06-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSGetObjectTypeCommand.m: some code cleanups (v5.0.16)
+
+2004-05-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble (LSBase_BUNDLE_LIBS): added required 
+	  dependencies for new Panther gcc (v5.0.15)
+
+2004-02-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Defaults.plist: mapped .stx to "text/structured" MIME type (v5.0.14)
+
+2004-02-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetSessionLogsForGlobalIDs.m: fixed a warning on MacOSX (v5.0.13)
+
+2004-01-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Defaults.plist: fixed syntax error introduced in v5.0.11, sigh 
+	  (v5.0.12)
+
+2004-01-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* Defaults.plist: added MIME type mappings for OpenOffice.org template
+	  extensions: stc, std, sti and stw (v5.0.11)
+
+2004-01-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* common.h: minor tweaks to compile on MacOSX (v5.0.10)
+
+2003-12-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSGetObjectByGlobalID.m: fixed a compile warning (v5.0.9)
+
+Wed Dec 10 20:35:10 2003  Martin Hoerning  <martin@opengroupware.org>
+
+	* LSSuperUserCommand.m: added (v5.0.8)
+
+2003-12-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetLogsCommand.m: removed some dead code, code cleanups (v5.0.7)
+
+2003-11-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* commandbundle.make: install into local-root per default (v5.0.6)
+
+2003-10-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* added "LSDisableSessionLog" default for, well, disabling session
+	  logs (v5.0.5)
+
+Mon Jul  7 19:23:04 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* remove license checks (v5.0.4)
+
+Mon Jul  7 14:00:20 2003  Helge Hess  <helge.hess@skyrix.com>
+
+	* OpenGroupware.org import (v5.0.3)
+
+2003-06-04  Thomas Schild  <ts@skyrix.com>
+
+	* Defaults.plist: OpenOffice mimetypes added
+
+2003-05-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSCryptCommand.m: fixed a memory bug (v4.1.2)
+
+2003-04-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile (LSBase_RESOURCE_FILES): added a Version file
+
+Fri Mar 21 15:14:34 2003  Jan Reichmann  <jan@skyrix.com>
+
+	* LSAddSessionLogCommand.m: instead of account accountId can be used
+
+2003-01-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSDeleteSessionLogsCommand.m, LSGetSessionLogsForGlobalIDs.m,
+	  LSQuerySessionLogs.m: fixed a bugs with severial uninitialized 
+	  local variables
+
+	* OSX compilation fixes
+
+Tue Dec 10 16:39:19 2002    <jan@skyrix.com>
+
+	* LSGetObjectTypeCommand.m: fixed nil object bug
+
+Tue Jul 16 16:14:01 2002  Jan41 Reichmann  <jan@skyrix.com>
+
+	* LSGetLogsCommand.m: fixed log/actor bug
+
+Wed Nov 21 18:09:08 2001  Martin Hoerning  <mh@skyrix.com>
+
+	* LSGetSessionLogsForGlobalIDs.m: fixed fetching of account attributes
+
+Wed Nov  7 21:50:56 2001  Joerg Grimm  <joerg@trex2>
+
+	* LSGetObjectTypeCommand.m: fixed bug _typeOfManyOidsInContext
+	  inString was not reset
+
+Tue Nov  6 16:36:37 2001  Jan41 Reichmann  <jan@skyrix.com>
+
+	* LSGetLogsCommand.m: fixed NULL bug
+
+Mon Oct  1 17:17:22 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* Defaults.plist: added .plist extension
+
+Fri Sep 28 11:29:10 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* Defaults.plist: added DTD
+
+Thu Sep 20 14:27:42 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* Defaults.plist: changed MIME type of xtmpl from text/xhtml to
+	  skyrix/xtmpl
+
+Fri Sep 14 17:04:02 2001  Martin Spindler  <spindler@mdlink.de>
+
+	* LSGetObjectByGlobalID.m: added (-> "object::get-by-globalid")
+
+Mon Aug 20 16:28:20 2001  Joerg Grimm  <joerg@trex2>
+
+	* LSRemoveLogsCommand.m: no assert if deleteRowsDescribedByQualifier
+	  fails 
+
+Fri Jul  6 12:38:05 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* Defaults.plist: added mapping of .mail to message/rfc822
+
+Mon Jun 11 15:25:17 2001  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added Defaults for LSMimeTypes (ext->type mappings)
+
+Tue Apr 24 19:17:41 2001  Joerg Grimm  <joerg@trex2>
+
+	* LSCryptCommand.m: fixed creation of salt
+
+Mon Mar 26 13:07:19 2001  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSCryptCommand.m: changed to use -isNotNull
+
+Fri Jan 19 15:23:11 2001  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetLogsCommand.m: modified to support EOKeyGlobalID queries
+
+Mon Dec 18 18:02:40 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSAddLogCommand.m: use root as owner if no one is logged in
+
+Tue Dec  5 16:57:21 2000  Jan Reichmann  <jan@skyrix.com>
+
+	* LSGetObjectTypeCommand.m: remove unnecessary variables
+
+Tue Aug 15 19:20:54 2000  Joerg Grimm  <joerg@trex2>
+
+	* LSAddSessionLogCommand.m, LSQuerySessionLogs.m, 
+	  LSGetSessionLogsForGlobalIDs.m added
+
+Mon May 29 16:58:59 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetObjectTypeCommand.m: can query types for multiple oids
+
+Thu May 11 18:24:03 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSIncreaseVersionCommand.m: fixed bug
+
+Fri May  5 15:44:32 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetObjectTypeCommand.m: correct's pkey of company-info
+
+Fri Apr 28 18:53:57 2000  Helge Hess  <helge.hess@mdlink.de>
+
+	* LSGetLogsCommand.m: added adaptor-based fetch (no EO objects are
+	  created anymore ..)
+
+Thu Dec  9 17:24:02 1999  Martin Spindler  <spindler@mdlink.de>
+
+	* added LSGetCurrentLogCommand class
+
+Wed Dec  8 13:33:21 1999  Martin Spindler  <spindler@mdlink.de>
+
+	* added LSIncreaseVersionCommand class
+
+Mon Sep  6 14:50:11 1999  Helge Hess  <helge@trex.mdlink.de>
+
+	* added LSGetObjectTypeCommand class
