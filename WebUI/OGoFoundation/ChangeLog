@@ -1,3 +1,7 @@
+2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.61)
+
 2004-08-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoResourceManager.m: look for 'Resources' directory in

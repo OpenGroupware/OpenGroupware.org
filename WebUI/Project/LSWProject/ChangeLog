@@ -1,3 +1,8 @@
+2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWProjectEditor.m, DateIntervalFormatter.m: fixed compile warnings
+	  (v5.1.39)
+
 2004-08-23  Helge Hess  <helge.hess@skyrix.com>
 
 	* GNUmakefile.preamble: fixed a linking path (v5.1.38)

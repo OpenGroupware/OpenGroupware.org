@@ -63,3 +63,4 @@ ADDITIONAL_TOOL_LIBS += \
 	-lNGStreams -lNGExtensions -lEOControl	\
 	-lDOM -lSaxObjC
 
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib

@@ -1,6 +1,6 @@
 # $Id$
 
-SUBMINOR_VERSION:=60
+SUBMINOR_VERSION:=61
 
 # v5.0.54 requires libNGObjWeb v4.2.427
 # v5.0.40 requires libNGObjWeb v4.2.341

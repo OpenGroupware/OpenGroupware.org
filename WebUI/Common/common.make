@@ -22,6 +22,8 @@ ADDITIONAL_LIB_DIRS     += \
 	-L../../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)	\
 	-L../../../Logic/LSSearch/$(GNUSTEP_OBJ_DIR)
 
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib
+
 ADDITIONAL_BUNDLE_LIBS += \
 	-lOGoFoundation -lOGoDocuments \
 	-lGDLAccess		\

@@ -18,3 +18,5 @@ ADDITIONAL_INCLUDE_DIRS += \
 
 ADDITIONAL_LIB_DIRS += \
 	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
+
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib

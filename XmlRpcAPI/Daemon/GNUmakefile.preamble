@@ -29,3 +29,5 @@ ADDITIONAL_LIB_DIRS += \
 ADDITIONAL_INCLUDE_DIRS += \
 	-I$(OGoROOT)/Logic/LSFoundation/\
 	-I$(OGoROOT)/DocumentAPI
+
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib

@@ -75,6 +75,7 @@
 @end
 
 #include "NSString+Perm.h"
+#include <GDLAccess/EOEntity+Factory.h>
 #include "common.h"
 
 @interface NSObject(GlobalID)

@@ -23,3 +23,5 @@ ifeq ($(FOUNDATION_LIB),nx)
 libOGoFoundation_LIBRARIES_DEPEND_UPON += -lFoundationExt
 ADDITIONAL_LDFLAGS += -framework Foundation
 endif
+
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib

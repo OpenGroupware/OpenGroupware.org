@@ -78,7 +78,7 @@
     else
       *error  =  @"Choose '1d' = 1 day, '1h' = 1 hour";
   }
-  else if (error != nil)
+  else if (error != NULL)
     *error = @"Could not convert to int";
   
   return result;
