@@ -43,10 +43,10 @@ should_start () {
 		echo "OpenGroupware.org web application server not started as requested"
 		exit 0
 	fi
-        ls /etc/opengroupware.org/*/init.conf &> /dev/null || 
-		echo "Skipping OpenGroupware.org: No instances defined." &&
+        if ! ls /etc/opengroupware.org/*/init.conf &>/dev/null; then
+		echo "Skipping OpenGroupware.org: No instances defined."
 		exit 0
-
+	fi
 }
 
 case "$1" in
