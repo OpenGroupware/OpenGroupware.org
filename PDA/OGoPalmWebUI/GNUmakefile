@@ -1,5 +1,6 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
+-include ../../config.make
 OGoROOT=../..
 
 include $(GNUSTEP_MAKEFILES)/common.make

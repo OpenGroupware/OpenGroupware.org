@@ -1,6 +1,7 @@
 # GNUstep makefile
 
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/common.make
+-include ../../config.make
+include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 include ./Version
 

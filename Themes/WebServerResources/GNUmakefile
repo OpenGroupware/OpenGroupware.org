@@ -1,4 +1,6 @@
-# $Id$
+# GNUstep makefile
+
+-include ../../config.make
 
 WEBSERVER_RESOURCES_INSTALLATION_DIR = \
 		$(GNUSTEP_INSTALLATION_DIR)/WebServerResources

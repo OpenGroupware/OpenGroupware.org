@@ -1,5 +1,6 @@
 # GNUstep makefile
 
+-include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
 include ../Version

@@ -1,5 +1,6 @@
 # global makefile for OGo
 
+-include ./config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 
 SUBPROJECTS += \

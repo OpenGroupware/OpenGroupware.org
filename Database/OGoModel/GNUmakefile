@@ -1,5 +1,6 @@
 # GNUstep makefile
 
+-include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 
 BUNDLE_NAME        = OGo
