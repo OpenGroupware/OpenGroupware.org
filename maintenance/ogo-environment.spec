@@ -10,7 +10,7 @@ Group:        Development/Libraries
 AutoReqProv:  off
 #Source:      %{ogo_env_source}
 Prefix:       %{ogo_env_prefix}
-#Requires:    
+Requires:     ogo-webui-app
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
