@@ -1,3 +1,7 @@
+2005-03-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added GNUmakefile.preamble for MacOSX (v5.1.7)
+
 2005-03-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* added "show" constraints to docviewer plugin bundles (v5.1.6)
