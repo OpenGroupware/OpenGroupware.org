@@ -1,4 +1,3 @@
-// NSUserDefaults
 {
   scheduler_hide_new_proposal_on_rescat    = YES;
   scheduler_selectPanel_showAptTypes       = YES;
@@ -132,4 +131,21 @@
   scheduler_show_jobs       = NO;
   scheduler_show_palm_dates = YES;
   scheduler_popup_maxlength = 25;
+
+  schedulerselect_fetchkeys = (
+    title, location, aptType, startDate, endDate, globalID, ownerId, 
+    accessTeamId, permissions, resourceNames,
+    "participants.companyId", "participants.globalID",
+    "participants.login",     "participants.firstname",
+    "participants.name",      "participants.description",
+    "participants.isTeam",    "participants.isAccount"
+  );
+  schedulerselect_teamfetchkeys   = ( description );
+  schedulerselect_personfetchkeys = ( 
+    name, firstname, isAccount, login, companyId, globalID
+  );
+  schedulerselect_months = (
+    January, February, March, April, May, June, July, August, September, 
+    October, November, December
+  );
 }

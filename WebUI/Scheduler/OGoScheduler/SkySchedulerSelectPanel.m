@@ -22,9 +22,8 @@
 #include <OGoFoundation/OGoComponent.h>
 
 /*
-  a component to generate a fetchSpecification for a SkyAptDataSource
-  includes input fields for all needed data
-  used in scheduler page. (soon)
+  A component to generate a fetchSpecification for a SkyAptDataSource
+  includes input fields for all needed data used in scheduler page. (soon)
 
   Parameters:
   <>  timeZone    - timeZone
@@ -110,11 +109,14 @@ static NSNumber     *yesNum = nil;
 
 + (void)initialize {
   static BOOL didInit = NO;
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   EOSortOrdering *so, *so2;
   if (didInit) return;
   didInit = YES;
 
   yesNum = [[NSNumber numberWithBool:YES] retain];
+
+  /* setup sort orderings */
   
   so = [EOSortOrdering sortOrderingWithKey:@"startDate"
 		       selector:EOCompareAscending];
@@ -134,32 +136,16 @@ static NSNumber     *yesNum = nil;
 		       selector:EOCompareAscending];
   nameSortOrderings = [[NSArray alloc] initWithObjects:&so count:1];
 
-  aptFetchAttrNames = 
-      [[NSArray alloc] initWithObjects:
-                       @"title", @"location", @"aptType", 
-		       @"startDate", @"endDate",
-                       @"globalID", @"ownerId", @"accessTeamId",
-                       @"permissions", @"resourceNames",
-                       @"participants.companyId", @"participants.globalID",
-                       @"participants.login",     @"participants.firstname",
-                       @"participants.name",      @"participants.description",
-                       @"participants.isTeam",    @"participants.isAccount",
-                       nil];
+  aptFetchAttrNames = [[ud arrayForKey:@"schedulerselect_fetchkeys"] copy];
   aptFetchAttrHints =
     [[NSDictionary alloc] initWithObjectsAndKeys:
 			    aptFetchAttrNames, @"attributeKeys", nil];
   
-  teamInfoAttrNames = [[NSArray alloc] initWithObjects:@"description", nil];
-
-  personInfoAttrNames = [[NSArray alloc] initWithObjects:
-					   @"name", @"firstname", 
-					   @"isAccount", @"login", nil];
-
-  monthNames = 
-    [[NSArray alloc] initWithObjects:
-		       @"January", @"February", @"March", @"April",
-		       @"May", @"June", @"July", @"August", @"September", 
-		       @"October", @"November", @"December", nil];
+  teamInfoAttrNames = [[ud arrayForKey:@"schedulerselect_teamfetchkeys"] copy];
+  personInfoAttrNames = 
+    [[ud arrayForKey:@"schedulerselect_personfetchkeys"] copy];
+  
+  monthNames = [[ud arrayForKey:@"schedulerselect_months"] copy];
 }
 
 + (int)version {
@@ -179,20 +165,14 @@ static NSNumber     *yesNum = nil;
     self->reconfigure    = YES;
       
     me = [[self session] activeAccount];
-    ASSIGN(self->activeAccount, me);
+    self->activeAccount = [me retain];
       
     gid = [me valueForKey:@"globalID"];
-#if DEBUG
-    NSAssert1(me,  @"missing active account in session %@", [self session]);
-    NSAssert1(gid, @"missing global-id in active account %@", me);
-#endif
-      
+    
     me = [[self runCommand:@"person::get-by-globalID",
-                  @"gids",       [NSArray arrayWithObject:gid],
-                  @"attributes",
-                  [NSArray arrayWithObjects:@"companyId", @"name", @"firstname",
-                           @"isAccount", @"login", @"globalID", nil],
-                  nil] lastObject];
+                  @"gids",       gid ? [NSArray arrayWithObject:gid] : nil,
+		  @"attributes", personInfoAttrNames,
+		nil] lastObject];
     [self setSelectedCompany:me];
 
     ud = [self runCommand:@"userdefaults::get", @"user", me, nil];
@@ -203,22 +183,22 @@ static NSNumber     *yesNum = nil;
 
 - (void)dealloc {
   [self->activeAccount    release];
-  [self->defaults         release];
-  [self->searchString     release];
-  [self->accounts         release];
-  [self->selectedAccounts release];
-  [self->selAcCache       release];
-  [self->persons          release];
-  [self->selectedPersons  release];
-  [self->selPerCache      release];
-  [self->teams            release];
-  [self->selectedTeams    release];
-  [self->selTmCache       release];
-  [self->resources        release];
+  [self->defaults          release];
+  [self->searchString      release];
+  [self->accounts          release];
+  [self->selectedAccounts  release];
+  [self->selAcCache        release];
+  [self->persons           release];
+  [self->selectedPersons   release];
+  [self->selPerCache       release];
+  [self->teams             release];
+  [self->selectedTeams     release];
+  [self->selTmCache        release];
+  [self->resources         release];
   [self->selectedResources release];
   [self->selResCache      release];
-  [self->selectedAptTypes release];
-  [self->aptTypes         release];
+  [self->selectedAptTypes  release];
+  [self->aptTypes          release];
 
   [self->item            release];
   [self->selectedCompany release];
@@ -814,7 +794,8 @@ static NSNumber     *yesNum = nil;
   l = [NSString stringWithFormat:@"(%@)", l];
 
   [self setIsResCategorySelected:NO];
-  
+
+  // TODO: split into methods
   if (!self->isExtended) {
     if ([self->selectedCompany isKindOfClass:[NSString class]]) {
       id s = self->selectedCompany;
@@ -867,8 +848,12 @@ static NSNumber     *yesNum = nil;
 - (void)_getStartDate:(NSCalendarDate **)_sd andEndDate:(NSCalendarDate **)_ed
   forMode:(NSString *)m
 {
+  // TODO: can we improve that section? Eg some object representing a given
+  //       view?
   NSCalendarDate *sD = nil, *eD = nil;
-
+  
+  if (![m isNotNull]) m = @"yearoverview";
+  
   if ([m isEqualToString:@"dayoverview"]) {
     NSCalendarDate *d = [self day];
     sD = [d beginOfDay];
