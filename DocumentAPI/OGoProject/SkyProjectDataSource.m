@@ -180,7 +180,7 @@ static NSNumber *yesNum = nil;
 	       isEqualToString:@"archived"]) {
       type = @"archived";
     }
-    if (type)
+    if ([type isNotNull])
       [obj takeValue:type forKey:@"type"];
   }
 }
@@ -190,9 +190,8 @@ static NSNumber *yesNum = nil;
   
   if ((qualifier = [self->fetchSpecification qualifier]) == nil)
     return _projects;
-
-  [self logWithFormat:@"filter: %@", qualifier];
   
+  [self debugWithFormat:@"filter: %@", qualifier];
   return [_projects filteredArrayUsingQualifier:qualifier];
 }
 

@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __SkyProjectDoc_H__
 #define __SkyProjectDoc_H__
@@ -27,6 +26,8 @@
   SkyProject
   
   A document object representing an OGo project.
+
+  TODO: comment?
 
   Keys:
     type        project-type

@@ -1,3 +1,8 @@
+2004-12-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyProjectDataSource.m, SkyProject.[hm]: minor code cleanups
+	  (v5.1.34)
+
 2004-11-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoFileManagerFactory.m: improved behaviour in some edge condition

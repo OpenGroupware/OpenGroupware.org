@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyProject.h"
 #include "SkyProjectDataSource.h"
@@ -344,18 +343,20 @@ static NSNull   *null  = nil;
 }
 
 - (EODataSource *)teamDataSource {
-  EODataSource *tds =
-    [[SkyProjectTeamDataSource alloc] initWithProject:self
-                                      context:[self context]];
-  return AUTORELEASE(tds);
+  EODataSource *tds;
+  
+  tds = [[SkyProjectTeamDataSource alloc] initWithProject:self
+					  context:[self context]];
+  return [tds autorelease];
 }
 
 - (id)fileManager {
   Class class;
-
-  NSLog(@"WARNING[%s] depricated ...", __PRETTY_FUNCTION__);
-
-  if (!(class = NSClassFromString(@"SkyProjectFileManager")))
+  
+  // TODO: hh asks: what am I supposed to use?
+  [self logWithFormat:@"WARNING(%s): deprecated ...", __PRETTY_FUNCTION__];
+  
+  if ((class = NSClassFromString(@"SkyProjectFileManager")) == Nil)
     class = NSClassFromString(@"SkyFSFileManager");
   
   return [[[class alloc] initWithContext:[self context]
