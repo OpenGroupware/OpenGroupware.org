@@ -1,6 +1,5 @@
 #!/usr/bin/perl -w
 # omg... porting purveyor_of_rpms.pl to deal with debs!
-# by <frank@opengroupware.org> 2004
 
 use strict;
 use Getopt::Std;
@@ -48,16 +47,17 @@ sub move_to_dest {
   my $remote_host = "download.opengroupware.org";
   my $remote_dir;
   my $remote_trunk_dir = "/var/virtual_hosts/download/packages/debian/dists/$host_i_runon/trunk/binary-i386";
-  my $remote_rel_dir = "/var/virtual_hosts/download/packages/debian/dists/$host_i_runon/releases/binary-i386";
+  #my $remote_rel_dir = "/var/virtual_hosts/download/packages/debian/dists/$host_i_runon/releases/binary-i386";
+  my $remote_rel_dir = "/var/virtual_hosts/download/packages/debian/dists/$host_i_runon/releases/";
   my $do_link = "yes";
   if (($do_upload eq "yes") and ($build_type eq "release")) {
     $remote_dir = $remote_rel_dir;
     print "[MOVETODEST]        - going to create directory for release on remote side.\n";
-    print "[MOVETODEST]        - name -> $remote_dir/$remote_release_dirname.\n";
+    print "[MOVETODEST]        - name -> $remote_dir/$remote_release_dirname/binary-i386.\n";
     open(SSH, "|/usr/bin/ssh $remote_user\@$remote_host");
     print SSH "mkdir -p $remote_rel_dir\n";
     print SSH "cd $remote_dir\n";
-    print SSH "mkdir -p $remote_release_dirname\n";
+    print SSH "mkdir -p $remote_release_dirname/binary-i386\n";
     close(SSH);
   }
   foreach $deb (@debs_build) {
@@ -70,7 +70,7 @@ sub move_to_dest {
     print "[MOVETODEST]        - $package rolling out '$deb_basename' to $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "yes"));
     print "[MOVETODEST]        - $package won't copy '$deb_basename' to $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "no"));
     system("/usr/bin/scp $build_results/$deb_basename $remote_user\@$remote_host:$remote_trunk_dir/ 1>>$logout 2>>$logerr") if (($build_type eq "trunk") and ($do_upload eq "yes"));
-    system("/usr/bin/scp $build_results/$deb_basename $remote_user\@$remote_host:$remote_rel_dir/$remote_release_dirname/ 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes"));
+    system("/usr/bin/scp $build_results/$deb_basename $remote_user\@$remote_host:$remote_rel_dir/$remote_release_dirname/binary-i386/ 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes"));
     $remote_dir = $remote_trunk_dir if ($build_type eq "trunk");
     $remote_dir = $remote_rel_dir if ($build_type eq "release");
     print "[LINKATDEST]        - will not really link $ln_name <- $deb_basename at $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "no") and ($build_type eq "trunk"));

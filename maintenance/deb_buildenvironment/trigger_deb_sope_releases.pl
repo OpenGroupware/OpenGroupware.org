@@ -2,9 +2,19 @@
 #frank reppin <frank@opengroupware.org> 2004
 
 use strict;
-die "WARNING: not yet configured!\n";
+#die "WARNING: not yet configured!\n";
 my $host_i_runon = "sarge";
-#my $host_i_runon = "sid";
+#my $host_i_runon = "fedora-core3";
+#my $host_i_runon = "fedora-core2";
+#my $host_i_runon = "suse92";
+#my $host_i_runon = "suse91";
+#my $host_i_runon = "suse82";
+#my $host_i_runon = "mdk-10.1";
+#my $host_i_runon = "mdk-10.0";
+#my $host_i_runon = "sles9";
+#my $host_i_runon = "slss8";
+#my $host_i_runon = "rhel3";
+#my $host_i_runon = "redhat9";
 my $svn_host = 'svn.opengroupware.org';
 my $svn = '/usr/bin/svn';
 my $dl_host = "download.opengroupware.org";
@@ -51,10 +61,10 @@ foreach $srel (@sope_releases) {
     print "calling `purveyor_of_debs.pl -p sope $build_opts -c $srel\n";
     system("$ENV{HOME}/purveyor_of_debs.pl -p sope $build_opts -c $srel");
     print KNOWN_SOPE_RELEASES "$srel\n";
-    #print "recreating apt-repository for: $host_i_runon\n";
-    #open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
-    #print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $buildtarget\n";
-    #close(SSH);
+    print "recreating apt-repository for: $host_i_runon - $buildtarget\n";
+    open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
+    print SSH "/home/www/scripts/release_debian_apt.sh $host_i_runon $buildtarget\n";
+    close(SSH);
   }
 }
 close(KNOWN_SOPE_RELEASES);
