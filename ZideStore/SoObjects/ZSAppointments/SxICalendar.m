@@ -126,8 +126,12 @@ static BOOL debugZSICal = NO;
   [r appendContentString:OGo_ZS_PRODID];
   [r appendContentString:@"\r\nVERSION:2.0\r\n"];
   
-  while ((date = [dateEnum nextObject]))
-    [r appendContentString:[date objectForKey:@"iCalData"]];
+  while ((date = [dateEnum nextObject]) != nil) {
+    NSString *ical;
+    
+    ical = [date objectForKey:@"iCalData"];
+    [r appendContentString:ical];
+  }
   
   [r appendContentString:@"END:VCALENDAR"];
 

@@ -44,6 +44,7 @@ static NSNumber *yesNum = nil;
 static BOOL createGroupAptsInGroupFolder = NO;
 static BOOL logAptChange             = NO;
 static BOOL createNewAptWhenNotFound = YES;
+static BOOL embedViewURL             = NO;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -651,9 +652,35 @@ static BOOL createNewAptWhenNotFound = YES;
   return [[WOApplication application] context];
 }
 
+- (NSString *)hackVEvent:(NSString *)_vevent {
+  NSString *hackSig = @"END:VEVENT\r\n";
+  NSMutableString *s;
+  
+  if (!embedViewURL || ![_vevent hasSuffix:hackSig])
+    return _vevent;
+  
+  /* header */
+  s = [[_vevent substringToIndex:[_vevent length] - [hackSig length]] 
+        mutableCopy];
+  s = [s autorelease];
+  
+  /* hack */
+  [s appendString:@"ATTACH"];
+  [s appendString:@";FMTTYPE=text/html;X-CONTENT-DISPOSITION=inline"];
+  [s appendString:@";X-LABEL=OGo"];
+  [s appendString:@":"];
+  [s appendString:[[self baseURL] stringByAppendingString:@"/view"]];
+  [s appendString:@"\r\n"];
+  
+  /* footer */
+  [s appendString:hackSig];
+  return s;
+}
+
 - (NSString *)iCalVEventString {
   // deprecated
   //SxAppointmentRenderer *renderer = [SxAppointmentRenderer renderer];
+  NSString *ical;
   id obj;
   id am;
 
@@ -662,8 +689,12 @@ static BOOL createNewAptWhenNotFound = YES;
   if ((obj = [self objectInContext:[self context]]) == nil)
     return nil;
   
-  //return [renderer renderAppointmentAsICal:obj timezone:nil];
-  return [am renderAppointmentAsICal:obj timezone:nil];
+#if 0
+  return [renderer renderAppointmentAsICal:obj timezone:nil];
+#else
+  ical = [am renderAppointmentAsICal:obj timezone:nil];
+  return [self hackVEvent:ical];
+#endif
 }
 - (NSString *)iCalString {
   NSMutableString *m;

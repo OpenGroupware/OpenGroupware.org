@@ -1,3 +1,7 @@
+2005-01-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxAppointment.m: added a prototype to use KDE #96758 (v1.3.93)
+
 2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAppointment.m: fixed generation of 'location' header (v1.3.92)
