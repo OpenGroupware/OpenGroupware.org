@@ -1911,6 +1911,63 @@ static NSArray  *personAttrNames = nil;
   [tIds release]; tIds = nil;
 }
 
+//#######READ######
+- (void)readParticipants:(NSArray *)_objects 
+  toPersonsDefault:(NSString *)_pdef andTeamsDefault:(NSString *)_tdef
+{
+  NSMutableArray *personIds;
+  NSMutableArray *teamIds;
+  NSNumber       *uid;
+
+  personIds = [[NSMutableArray alloc] init];
+  teamIds = [[NSMutableArray alloc] init];
+  
+  [self addIDsOfObjects:_objects toPersonIdArray:personIds andTeamIdArray:teamIds];
+  
+  uid = [self accountId];
+  [self runCommand:@"userdefaults::read",
+	@"key",          _pdef,
+	@"value",        personIds,
+	@"userdefaults", self->defaults,
+	@"userId",       uid, nil];
+  [self runCommand:@"userdefaults::read",
+	@"key",          _tdef,
+	@"value",        teamIds,
+	@"userdefaults", self->defaults,
+	@"userId",       uid, nil];
+  [personIds release]; personIds = nil;
+  [teamIds release]; teamIds = nil;
+}
+//##################
+//#######DELEGATION######
+- (void)delegRdvPrivParticipants:(NSArray *)_objects 
+  toPersonsDefault:(NSString *)_pdef andTeamsDefault:(NSString *)_tdef
+{
+  NSMutableArray *personIds;
+  NSMutableArray *teamIds;
+  NSNumber       *uid;
+
+  personIds = [[NSMutableArray alloc] init];
+  teamIds = [[NSMutableArray alloc] init];
+  
+  [self addIDsOfObjects:_objects toPersonIdArray:personIds andTeamIdArray:teamIds];
+  
+  uid = [self accountId];
+  [self runCommand:@"userdefaults::delegRdvPriv",
+	@"key",          _pdef,
+	@"value",        personIds,
+	@"userdefaults", self->defaults,
+	@"userId",       uid, nil];
+  [self runCommand:@"userdefaults::delegRdvPriv",
+	@"key",          _tdef,
+	@"value",        teamIds,
+	@"userdefaults", self->defaults,
+	@"userId",       uid, nil];
+  [personIds release]; personIds = nil;
+  [teamIds release]; teamIds = nil;
+}
+//##################
+//
 - (void)_saveRootDefaults {
   NSNumber *uid;
   

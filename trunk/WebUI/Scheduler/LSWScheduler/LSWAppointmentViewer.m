@@ -189,7 +189,7 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   NSCalendarDate      *sd       = nil;
   NSCalendarDate      *ed       = nil;
   //###ADDED BY AO ###
-  //NSString            *rdvType  = nil;
+  NSString            *rdvType  = nil;
   // TODO: a formatter would be better
   format = [self defaultSchedulerMailTemplateDateFormat];
   sd = [obj valueForKey:@"startDate"];
@@ -209,7 +209,10 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
     [bindings setObject:location forKey:@"location"];
   if ((resNames = [obj valueForKey:@"resourceNames"]))
     [bindings setObject:resNames forKey:@"resourceNames"];        
-
+ //###ADDED BY AO### 
+  if ((rdvType= [obj valueForKey:@"rdvType"]))	  
+   [bindings setObject:rdvType forKey:@"rdvType"];        
+  
   if ((c = [obj valueForKey:@"comment"]))
     [bindings setObject:c forKey:@"comment"];
   else
