@@ -671,18 +671,18 @@ nbuckets, nindices, narrays, idxsize);
   WOCookie   *cookie;
   NSString   *jumpTo;
   
-  if ((response = [self _checkForMailPopup:_ctx]))
+  if ((response = [self _checkForMailPopup:_ctx]) != nil)
     return response;
   
-  if ((response = [self sxRestorePageInContext:_ctx]))
+  if ((response = [self sxRestorePageInContext:_ctx]) != nil)
     return response;
   
   jumpTo = [self locationForSessionRedirectInContext:_ctx];
   [self logWithFormat:
-          @"%@ failed to restore session %@:\n"
-          @"  ctx:            %@\n",
+          @"failed to restore session %@:\n"
+          @"  ctx:            %@\n"
           @"  redirecting to: %@",
-          self, [[_ctx request] sessionID], _ctx, jumpTo];
+          [[_ctx request] sessionID], _ctx, jumpTo];
   
   if ((response = [_ctx response]) == nil)
     response = [WOResponse responseWithRequest:[_ctx request]];
