@@ -466,7 +466,8 @@ sub collect_patchinfo {
   }
   ###########################################################################
   if ($package eq "libfoundation") {
-    open(LIBF, "tar xfzO $sources_dir/libfoundation-trunk-latest.tar.gz libfoundation/Version libfoundation/REVISION.svn|");
+    open(LIBF, "tar xfzO $sources_dir/libfoundation-trunk-latest.tar.gz libfoundation/Version libfoundation/REVISION.svn|") if ($build_type eq "trunk");
+    open(LIBF, "tar xfzO $sources_dir/$release_tarballname libfoundation/Version libfoundation/REVISION.svn|") if ($build_type eq "release");
     while(<LIBF>) {
       chomp;
       $new_major = $_ if ($_ =~ s/^MAJOR_VERSION:=//);
