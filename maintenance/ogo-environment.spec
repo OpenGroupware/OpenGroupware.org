@@ -58,21 +58,6 @@ if [ $1 = 1 ]; then
   Defaults write NSGlobalDomain NGBundlePath '%{prefix}/lib/opengroupware.org-1.0a/conduits'
   "
   ##
-  if [ -f %{_var}/lib/pgsql/data/pg_hba.conf ]; then
-    if [ "`grep -iE '^host.*all.*all.*127.0.0.1.*trust$' /var/lib/pgsql/data/pg_hba.conf`" ]; then
-      echo -en "pg_hba.conf seems to be OK.\n"
-    else
-      echo -en "pg_hba.conf needs to be edited - please refer to our FAQ\n"
-    fi
-  fi
-  if [ -f %{_var}/lib/pgsql/data/postgresql.conf ]; then
-    if [ "`grep -iE '^tcpip_socket.*=.*true$' /var/lib/pgsql/data/postgresql.conf`" ]; then
-      echo -en "postgresql.conf seems to be OK.\n"
-    else
-      echo -en "postgresql.conf needs to be edited - please refer to our FAQ\n"
-    fi
-  fi
-  ##
   if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
     echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/opengroupware.conf
   elif [ ! "`grep '%{prefix}/lib' %{_sysconfdir}/ld.so.conf`" ]; then
@@ -118,6 +103,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Sat Jan 29 2005 Frank Reppin <frank@opengroupware.org>
+- removed obsolete DB config checks (obsoleted by ogo-database-setup)
 * Tue Jan 18 2005 Frank Reppin <frank@opengroupware.org>
 - add logdir (/var/log/opengroupware)
 * Wed Sep 09 2004 Frank Reppin <frank@opengroupware.org>
