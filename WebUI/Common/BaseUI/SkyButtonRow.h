@@ -61,12 +61,13 @@
   NSDictionary  *labels;        /* the rest is considered a label   */
   BOOL          isMailAvailable;
   struct {
-    BOOL hasClip:1;
-    BOOL hasMail:1;
-    BOOL hasEdit:1;
-    BOOL hasDelete:1;
-    BOOL hasMove:1;
-    BOOL hasNew:1;
+    int hasClip:1;
+    int hasMail:1;
+    int hasEdit:1;
+    int hasDelete:1;
+    int hasMove:1;
+    int hasNew:1;
+    int reserved:26;
   } defaultButtons;
 }
 

@@ -1,3 +1,8 @@
+2005-04-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyButtonRow.[hm]: fixed std-button bitfield, minor code cleanups
+	  (v5.1.105)
+
 2005-03-23  Helge Hess  <helge.hess@skyrix.com>
 
 	* bundle-info.plist: removed SkyTableView (class is implemented in a

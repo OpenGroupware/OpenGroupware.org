@@ -86,7 +86,7 @@ static NSString *SkyExternalLinkAction = nil;
     /* dynamic associations */
     
     e = [_config keyEnumerator];
-    while ((key = [e nextObject])) {
+    while ((key = [e nextObject]) != nil) {
       WOAssociation *a;
       
       if ([key hasPrefix:@"on"]) {
@@ -184,12 +184,12 @@ static NSString *SkyExternalLinkAction = nil;
     self->activeButtons = [buttons copyWithZone:z];
     
     /* check for default buttons */
-    self->defaultButtons.hasEdit   = [buttons containsObject:@"edit"]   ? 1 : 0;
-    self->defaultButtons.hasDelete = [buttons containsObject:@"delete"] ? 1 : 0;
-    self->defaultButtons.hasMove   = [buttons containsObject:@"move"]   ? 1 : 0;
-    self->defaultButtons.hasNew    = [buttons containsObject:@"new"]    ? 1 : 0;
-    self->defaultButtons.hasMail   = [buttons containsObject:@"mail"]   ? 1 : 0;
-    self->defaultButtons.hasClip   = [buttons containsObject:@"clip"]   ? 1 : 0;
+    self->defaultButtons.hasEdit   = [buttons containsObject:@"edit"]   ? 1:0;
+    self->defaultButtons.hasDelete = [buttons containsObject:@"delete"] ? 1:0;
+    self->defaultButtons.hasMove   = [buttons containsObject:@"move"]   ? 1:0;
+    self->defaultButtons.hasNew    = [buttons containsObject:@"new"]    ? 1:0;
+    self->defaultButtons.hasMail   = [buttons containsObject:@"mail"]   ? 1:0;
+    self->defaultButtons.hasClip   = [buttons containsObject:@"clip"]   ? 1:0;
     
     /* remove all objects .. */
     [(NSMutableDictionary *)_config removeAllObjects];
@@ -233,27 +233,23 @@ static NSString *SkyExternalLinkAction = nil;
 - (id)invokeActionForRequest:(WORequest *)_request
   inContext:(WOContext *)_ctx
 {
+  WOAssociation *action;
   id buttonKey;
-  id result = nil;
+  id result;
 
-  if ((buttonKey = [[_ctx currentElementID] stringValue])) {
-    WOAssociation *action;
+  if ((buttonKey = [[_ctx currentElementID] stringValue]) == nil)
+    return [self->template invokeActionForRequest:_request inContext:_ctx];
 
-    [_ctx appendElementIDComponent:buttonKey];
+  [_ctx appendElementIDComponent:buttonKey];
   
-    if ((action = [self->eventHandlers objectForKey:buttonKey]))
-      result = [action valueInComponent:[_ctx component]];
-    else {
-      NSLog(@"no matching event handler for button %@", buttonKey);
-      result = [self->template invokeActionForRequest:_request inContext:_ctx];
-    }
-
-    [_ctx deleteLastElementIDComponent];
-  }
+  if ((action = [self->eventHandlers objectForKey:buttonKey]) != nil)
+    result = [action valueInComponent:[_ctx component]];
   else {
+    [self logWithFormat:@"no matching event handler for button %@", buttonKey];
     result = [self->template invokeActionForRequest:_request inContext:_ctx];
   }
   
+  [_ctx deleteLastElementIDComponent];
   return result;
 }
 
@@ -819,9 +815,7 @@ static NSString *SkyExternalLinkAction = nil;
   }
 }
 
-- (void)appendToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx {
-  OGoSession *sn;
-  BOOL       textMode;
+- (BOOL)hasMailComponent {
   static int hasMail = -1;
 
   if (hasMail == -1) {
@@ -835,8 +829,14 @@ static NSString *SkyExternalLinkAction = nil;
     else
       hasMail = 0;
   }
+  return hasMail ? YES : NO;
+}
+
+- (void)appendToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx {
+  OGoSession *sn;
+  BOOL       textMode;
   
-  self->isMailAvailable = hasMail;
+  self->isMailAvailable = [self hasMailComponent];
   
   sn       = [_ctx session];
   textMode = [[sn userDefaults] boolForKey:@"SkyButtonTextMode"];
