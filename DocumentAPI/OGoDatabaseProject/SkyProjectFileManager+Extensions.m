@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoDatabaseProject/SkyProjectFileManager.h>
 
@@ -82,14 +81,90 @@
 
 @implementation SkyProjectFileManager(ExtendedFileManagerImp)
 
+// TODO: this stuff belongs into a separate class ...
+
++ (EOKeyGlobalID *)baseGlobalIDForEditingGlobalID:(EOKeyGlobalID *)dgid 
+  context:(LSCommandContext *)_ctx
+{
+  // TODO: move to SkyDocumentIdHandler?
+  EOKeyGlobalID *gid;
+  id did;
+    
+  did = [_ctx runCommand:@"documentediting::get-by-globalid",
+		@"noAccessCheck", [NSNumber numberWithBool:YES],
+                @"gid", dgid,
+                @"attributes", [NSArray arrayWithObject:@"documentId"], nil];
+    
+  if ([did isKindOfClass:[NSArray class]])
+    did = [did count] > 0 ? [did lastObject] : nil;
+    
+  if (![(did = [did valueForKey:@"documentId"]) isNotNull]) {
+      NSLog(@"ERROR[%s]: missing documentId for documentEditingId %@",
+            __PRETTY_FUNCTION__, dgid);
+      return nil;
+  }
+  gid = [EOKeyGlobalID globalIDWithEntityName:@"Doc"
+		       keys:&did keyCount:1 zone:NULL];
+  return gid;
+}
+
++ (EOKeyGlobalID *)baseGlobalIDForVersionGlobalID:(EOKeyGlobalID *)dgid 
+  context:(LSCommandContext *)_ctx
+{
+  // TODO: move to SkyDocumentIdHandler?
+  EOKeyGlobalID *gid;
+  NSNumber      *key;
+  id            doc;
+  
+  doc = [_ctx runCommand:@"documentversion::get",
+                @"documentVersionId", [dgid keyValues][0], nil];
+  key = [doc valueForKey:@"documentId"];
+  if (![key isNotNull])
+    return nil;
+    
+  gid = [EOKeyGlobalID globalIDWithEntityName:@"Doc"
+		       keys:&key keyCount:1 zone:NULL];
+  return gid;
+}
+
++ (EOKeyGlobalID *)baseGlobalIDForDocumentGlobalID:(EOGlobalID *)_dgid 
+  context:(LSCommandContext *)_ctx
+{
+  // TODO: move to SkyDocumentIdHandler?
+  EOKeyGlobalID *dgid;
+  
+  /* ensure a EOKeyGlobalID */
+  
+  if (![_dgid isKindOfClass:[EOKeyGlobalID class]]) {
+    NSLog(@"WARNING(%s): wrong global id for method", __PRETTY_FUNCTION__, 
+	  _dgid);
+    return nil;
+  }
+  dgid = (EOKeyGlobalID *)_dgid;
+
+  if ([[dgid entityName] isEqualToString:@"Doc"])
+    return dgid;
+  
+  if ([[dgid entityName] isEqualToString:@"DocumentEditing"])
+    return [self baseGlobalIDForEditingGlobalID:dgid context:_ctx];
+  
+  if ([[dgid entityName] isEqualToString:@"DocumentVersion"])
+    return [self baseGlobalIDForVersionGlobalID:dgid context:_ctx];
+  
+  [self logWithFormat:@"WARNING: unknown document GID: %@", dgid];
+  return nil;
+}
+
 + (EOGlobalID *)projectGlobalIDForDocumentGlobalID:(EOGlobalID *)_dgid
   context:(id)_ctx
 {
   // TODO: cleanup code
   NSNumber      *pid;
-  EOKeyGlobalID *dgid, *gid = nil;
-
-  if (_dgid == nil || _ctx == nil) {
+  EOKeyGlobalID *dgid;
+  EOGlobalID    *gid;
+  id  handler;
+  
+  if (![_dgid isNotNull] || _ctx == nil) {
     NSLog(@"ERROR[%s]: missing globalID or context", __PRETTY_FUNCTION__);
     return nil;
   }
@@ -102,59 +177,21 @@
   
   pid = (id)[SkyProjectFileManager pidForDocId:[(id)_dgid keyValues][0]
 				   context:_ctx];
-  if (pid) {
+  if ([pid isNotNull]) {
     gid = [EOKeyGlobalID globalIDWithEntityName:@"Project"
 			 keys:&pid keyCount:1 zone:NULL];
     return gid;
   }
   
-  dgid = (id)_dgid;
+  dgid = [self baseGlobalIDForDocumentGlobalID:_dgid context:_ctx];
   
-  if ([[dgid entityName] isEqualToString:@"Doc"]) {
-    gid = dgid;
-  }
-  else if ([[dgid entityName] isEqualToString:@"DocumentEditing"]) {
-    id did;
-    
-    did = [_ctx runCommand:@"documentediting::get-by-globalid",
-              @"noAccessCheck", [NSNumber numberWithBool:YES],
-                @"gid", dgid,
-                @"attributes", [NSArray arrayWithObject:@"documentId"], nil];
-
-    if ([did isKindOfClass:[NSArray class]])
-      did = [did lastObject];
-    
-    if ((did = [did valueForKey:@"documentId"]) == nil) {
-      NSLog(@"ERROR[%s]: missing documentId for documentEditingId %@",
-            __PRETTY_FUNCTION__, dgid);
-      return nil;
-    }
-    gid = [EOKeyGlobalID globalIDWithEntityName:@"Doc"
-                         keys:&did keyCount:1 zone:NULL];
-  }
-  else if ([[dgid entityName] isEqualToString:@"DocumentVersion"]) {
-    id doc, key;
-
-    doc = [_ctx runCommand:@"documentversion::get",
-                @"documentVersionId", [dgid keyValues][0], nil];
-    key = [doc valueForKey:@"documentId"];
-    gid = [EOKeyGlobalID globalIDWithEntityName:@"Doc"
-                         keys:&key keyCount:1 zone:NULL];
-  }
+  handler = [SkyDocumentIdHandler handlerWithContext:_ctx];
   
-  {
-    int pint;
-    
-    pint = [[SkyDocumentIdHandler handlerWithContext:_ctx]
-                                  projectIdForDocumentId:
-                                    [[(id)gid keyValues][0] intValue]
-                                  context:_ctx];
-    pid = [NSNumber numberWithInt:pint];
-  }
+  if ((gid = [handler projectGIDForDocumentGID:dgid context:_ctx]) == nil)
+    return nil;
   
-  gid = [EOKeyGlobalID globalIDWithEntityName:@"Project"
-                       keys:&pid keyCount:1 zone:NULL];
-  [SkyProjectFileManager setProjectID:pid forDocID:[(id)gid keyValues][0]
+  [SkyProjectFileManager setProjectID:[(EOKeyGlobalID *)gid keyValues][0]
+			 forDocID:[(EOKeyGlobalID *)dgid keyValues][0]
                          context:_ctx];
   return gid;
 }

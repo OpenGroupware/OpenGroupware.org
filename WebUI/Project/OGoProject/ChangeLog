@@ -1,3 +1,9 @@
+2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyProject4DocumentViewer.m: code cleanups, improved behaviour in an
+	  edge condition (should fix OGo bug #1047), fixed Epoz lookup
+	  (v5.1.53)
+
 2004-11-26  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.1.52

@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyDocumentIdHandler.h"
 #include <OGoDatabaseProject/SkyProjectFileManager.h>
@@ -62,11 +61,23 @@ static EOSQLQualifier *trueQualifier = nil;
   int pid;
   NSNumber *nr;
 
-  pid = [self projectIdForDocumentId:[[(id)_gid keyValues][0] intValue]
+  if (_gid == nil)
+    return nil;
+  
+  pid = [self projectIdForDocumentId:
+		[[(EOKeyGlobalID *)_gid keyValues][0] intValue]
               context:_ctx];
-  nr = [NSNumber numberWithInt:pid];
+  nr = pid > 0 ? [NSNumber numberWithInt:pid] : nil;
+  
+  if (![nr isNotNull]) {
+    // TODO: we might want to invalidate and refetch?
+    [self logWithFormat:@"WARNING(%s): got no project GID for document: %@",
+	  __PRETTY_FUNCTION__, _gid];
+    return nil;
+  }
+  
   return [EOKeyGlobalID globalIDWithEntityName:@"Project"
-                        keys:&nr keyCount:1 zone:NULL];
+			keys:&nr keyCount:1 zone:NULL];
 }
 
 - (int)projectIdForDocumentId:(int)_i context:(id)_ctx {
@@ -88,19 +99,18 @@ static EOSQLQualifier *trueQualifier = nil;
   self->itemCnt  = -1;
   self->itemSize = -1;
   
-  if (self->documents) free(self->documents);
-  self->documents = NULL;
-  if (self->projects) free(self->projects);
-  self->projects = NULL;
+  if (self->documents != NULL) free(self->documents); self->documents = NULL;
+  if (self->projects  != NULL) free(self->projects);  self->projects = NULL;
 }
 
 - (void)resizeBuffers {
   self->itemSize += ChunkSize;
-  self->documents = realloc(self->documents, self->itemSize*sizeof(int));
-  self->projects  = realloc(self->projects,  self->itemSize*sizeof(int));
+  self->documents = realloc(self->documents, self->itemSize * sizeof(int));
+  self->projects  = realloc(self->projects,  self->itemSize * sizeof(int));
 }
 
 - (void)_fetchDataInContext:(id)_ctx {
+  // TODO: split method
   EOEntity         *doc;
   EOAttribute      *pAttr, *dAttr;
   BOOL             closeTrans;

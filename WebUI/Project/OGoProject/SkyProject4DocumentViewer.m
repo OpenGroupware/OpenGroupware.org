@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWViewerPage.h>
 
@@ -62,8 +61,10 @@
 #include "NGUnixTool.h"
 #include "NSData+SkyTextEditable.h"
 #include "NSString+P4.h"
+#include <OGoFoundation/OGoClipboard.h>
 #include <NGMime/NGMimeType.h>
 #include <LSFoundation/SkyAccessManager.h>
+#include <NGExtensions/NGResourceLocator.h>
 #include <OGoDatabaseProject/SkyDocumentHistoryDataSource.h>
 #include "common.h"
 
@@ -92,12 +93,24 @@ static Class SkySvnDocumentClass = NULL;
 static Class SkyFSGlobalIDClass  = NULL;
 static int   LoadClass           = -1;
 static BOOL  debugOn             = NO;
+static BOOL  hasEpoz             = NO;
 
 + (void)initialize {
+  NGResourceLocator *locator;
+  NSFileManager     *fm = [NSFileManager defaultManager];
+  NSString          *p;
+  
   if (LoadClass == 1) return;
   SkyFSDocumentClass  = NSClassFromString(@"SkyFSDocument");
   SkyFSGlobalIDClass  = NSClassFromString(@"SkyFSGlobalID");
   SkySvnDocumentClass = NSClassFromString(@"SkySvnDocument");
+
+  locator = [NGResourceLocator resourceLocatorForGNUstepPath:
+                                 @"WebServerResources"
+                               fhsPath:@"share/opengroupware.org-1.0a/www"];
+  p = [locator lookupFileWithName:@"epoz_script_main.js"];
+  hasEpoz = [fm fileExistsAtPath:p];
+  if (!hasEpoz) NSLog(@"Note: did not find Epoz.");
 }
 
 - (void)dealloc {
@@ -765,6 +778,22 @@ static BOOL  debugOn             = NO;
   return [[[self session] objectForKey:@"SkyP4FormTestMode"] boolValue];
 }
 
+- (void)setDefaultProjectViewerTabKey:(NSString *)_key {
+  [[[self session] userDefaults] setObject:_key 
+				 forKey:@"skyp4_projectviewer_tab"];
+}
+
+- (Class)dbFileManagerClass {
+  return NSClassFromString(@"SkyProjectFileManager");
+}
+- (BOOL)isDocumentInDBProject {
+  Class clazz;
+  
+  if ((clazz = [self dbFileManagerClass]) == nil)
+    return NO;
+  return [[self fileManager] isKindOfClass:clazz];
+}
+
 /* actions */
 
 - (id)clearJavaScriptLog {
@@ -772,80 +801,95 @@ static BOOL  debugOn             = NO;
   return nil;
 }
 
+- (OGoContentPage *)newPageForClickedFolder {
+  OGoContentPage   *page;
+  LSCommandContext *ctx;
+  EOGlobalID       *pgid1;
+  Class class;
+  id pgid2;
+  id fm;
+  
+  page = [[(OGoSession *)[self session] navigation] activePage];
+
+  /* activate the filemanager for non-DB projects */
+  
+  if (![self isDocumentInDBProject]) {
+    if (![[page name] isEqual:@"SkyProject4Viewer"])
+      /* if the previous page on the stack is not the project viewer */
+      return [self activateObject:[self fileManager] withVerb:@"view"];
+    
+    return page;
+  }
+
+  /* more complex processing for DB ones */
+
+  class = [self dbFileManagerClass];
+  ctx   = [(OGoSession *)[self session] commandContext];
+      
+  pgid1 = [class projectGlobalIDForDocumentGlobalID:
+		       [self documentId] context:ctx];
+  
+  if (![[page name] isEqual:@"SkyProject4Viewer"]) {
+    /* if the previous page on the stack is not the project viewer */
+    return [self activateObject:pgid1 withVerb:@"view"];
+  }
+  
+  if ((fm = [(id)page fileManager]) == nil) {
+    // TODO: replace with a proper label
+    [self setErrorString:
+	    @"could not change current folder in last page.."];
+    return self;
+  }
+  pgid2 = [[fm fileSystemAttributesAtPath:@"/"]
+               objectForKey:NSFileSystemNumber];
+  
+  // TODO: this is kind of a hack, pgid SHOULD never be nil, but sometimes it
+  //       is (probably because SkyDocumentIdHandler is not properly refreshed)
+  if (pgid1 != nil && ![pgid1 isEqual:pgid2])
+    page = [self activateObject:pgid1 withVerb:@"view"];
+  
+  return page;
+}
+
 - (id)folderClicked {
-  NSString *newpath;
-  id       aFM;
+  NSString       *newpath;
+  OGoContentPage *page;
+  id fm;
   
   newpath = [self valueForKey:@"folderPath"];
   [self debugWithFormat:@"clicked on folder: %@", newpath];
   
-  aFM = [self fileManager];
-  
-  if ([aFM changeCurrentDirectoryPath:newpath]) {
-    LSCommandContext *ctx;
-    LSWContentPage   *page;
-    OGoNavigation    *nav;
-    EOGlobalID       *pgid1;
-    Class class;
-    id fm;
-
-    class = NSClassFromString(@"SkyProjectFileManager");
-    ctx   = [(OGoSession *)[self session] commandContext];
-    nav   = [(OGoSession *)[self session] navigation];
-    [nav leavePage];
-    page  = [nav activePage];
-
-    if (class && [aFM isKindOfClass:class]) {
-      pgid1 = [class projectGlobalIDForDocumentGlobalID:
-		       [self documentId] context:ctx];
-      
-      if (![[page name] isEqual:@"SkyProject4Viewer"]) {
-        page  = [self activateObject:pgid1 withVerb:@"view"];
-      }
-      else {
-        id pgid2;
-      
-        if ((fm = [(id)page fileManager]) == nil) {
-	  // TODO: replace with a proper label
-          [self setErrorString:
-		  @"could not change current folder in last page.."];
-          return self;
-        }
-        pgid2 = [[fm fileSystemAttributesAtPath:@"/"]
-                     objectForKey:NSFileSystemNumber];
-	
-        if (![pgid1 isEqual:pgid2])
-          page = [self activateObject:pgid1 withVerb:@"view"];
-      }
-    }
-    else {
-      if (![[page name] isEqual:@"SkyProject4Viewer"])
-        page  = [self activateObject:aFM withVerb:@"view"];
-    }
-    if ((fm = [(id)page fileManager]) == nil) {
-      [self setErrorString:@"couldn't change current folder in last page .."];
-      return self;
-    }
-    if (![fm changeCurrentDirectoryPath:newpath]) {
-      [self setErrorString:@"couldn't change current folder in last page .."];
-      return self;
-    }
-      
-    [[[self session] userDefaults] setObject:@"documents"
-                                   forKey:@"skyp4_projectviewer_tab"];
-    return page;
-  }
-  else
+  if (![[self fileManager] changeCurrentDirectoryPath:newpath]) {
     [self setErrorString:@"couldn't change current folder .."];
+    return nil;
+  }
   
-  return nil;
+  [[(OGoSession *)[self session] navigation] leavePage];
+  
+  /* determine new page to show */
+  
+  page = [self newPageForClickedFolder];
+  
+  /* fill new page with filemanager context */
+  
+  if ((fm = [(id)page fileManager]) == nil) {
+    [self setErrorString:@"couldn't change current folder in last page .."];
+    return self;
+  }
+  if (![fm changeCurrentDirectoryPath:newpath]) {
+    [self setErrorString:@"couldn't change current folder in last page .."];
+    return self;
+  }
+  
+  [self setDefaultProjectViewerTabKey:@"documents"];
+  return page;
 }
 
 - (id)placeInClipboard {
   EOGlobalID *gid;
   
   gid = [self documentGlobalID];
-  [(OGoSession *)[self session] addFavorite:gid];
+  [[(OGoSession *)[self session] favorites] addObject:gid];
   return nil;
 }
 
@@ -855,8 +899,10 @@ static BOOL  debugOn             = NO;
   if (_reason == nil)
     _reason = @"Error in filemanager processing";
   
-  if ((e = [[self fileManager] lastException]))
-    _reason = [_reason stringByAppendingFormat:@": %@", [e description]];
+  if ((e = [[self fileManager] lastException]) != nil) {
+    _reason = [_reason stringByAppendingString:@": "];
+    _reason = [_reason stringByAppendingString:[e description]];
+  }
   
   [self setErrorString:_reason];
   return nil;
@@ -925,27 +971,12 @@ static BOOL  debugOn             = NO;
 }
 
 - (BOOL)isEpozEnabled {
-  static int haveEpoz = -1;
-  WEClientCapabilities *cc = [[[self context] request] clientCapabilities];
+  WEClientCapabilities *cc;
   
-  if (haveEpoz == -1) {
-    /* TODO: thats more or less a hack, but works ;-) */
-    /* TODO: this is lame, its a copy/paste from SkyP4FolderView ... */
-    NSString *p;
-    
-    p = [[[NSProcessInfo processInfo] environment] 
-                         objectForKey:@"GNUSTEP_USER_ROOT"];
-    p = [p stringByAppendingPathComponent:@"WebServerResources"];
-    haveEpoz = [[NSFileManager defaultManager] fileExistsAtPath:p] ? 1 : 0;
-    
-    if (haveEpoz)
-      [self logWithFormat:@"Epoz enabled."];
-    else
-      [self logWithFormat:@"Epoz disabled (Epoz not installed)."];
-  }
-  if (!haveEpoz)
+  if (!hasEpoz)
     return NO;
   
+  cc = [[[self context] request] clientCapabilities];
   if ([cc isInternetExplorer]) {
     if ([cc majorVersion] <= 4) {
       [self debugWithFormat:@"disable Epoz with IE <5"];
