@@ -11,7 +11,7 @@ die "PLEASE MAKE SURE TO EDIT \$host_i_runon\n";
 # where I *expect* the rpmmacros to be present!
 # The purveyor will fail royally if it's not there.
 #my $host_i_runon = "fedora-core3";
-my $host_i_runon = "fedora-core2";
+#my $host_i_runon = "fedora-core2";
 #my $host_i_runon = "suse92";
 #my $host_i_runon = "suse91";
 #my $host_i_runon = "suse82";
@@ -343,7 +343,7 @@ sub get_current_from_rpmmacro {
   }
   #don't waste time rebuilding mod_ngobjweb with every svn revision change...
   #we only want to rebuild this package if the apache version has changed.
-  if (($package =~ m/^mod_ngobjweb_/) and ($force_rebuild eq "no") and ("$cur_version" eq "$new_version")) {
+  if (($package =~ m/^(mod_ngobjweb_|^epoz)/) and ($force_rebuild eq "no") and ("$cur_version" eq "$new_version")) {
     $do_build = "no";
     print "[DOBUILD LOGIC]     - $package prevented rebuild of $package because old: $cur_version new: $new_version are the same.\n" if ($verbose eq "yes");
   }
