@@ -1,3 +1,8 @@
+2005-01-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* English.lproj/OGoScheduler.strings: added extend/unextend labels as
+	  requested by Olivier (fixes OGo bug #1127)
+
 2004-12-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* German.lproj/OGoPalm.strings: sorted, fixed missing semicolons
