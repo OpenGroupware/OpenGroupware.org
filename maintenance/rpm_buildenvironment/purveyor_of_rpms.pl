@@ -520,7 +520,7 @@ sub collect_patchinfo {
       $new_version = `/bin/rpm --qf '%{version}' -q httpd-devel`;
       print "Senseless to continue... got no version for mod_ngobjweb\n" and exit 1 if ($?);
     }
-    if ((($flavour_we_build_upon eq "suse") or ($flavour_we_build_upon eq "mandrake")) and ($distrib_define !~ m/^suse sles-8/i)) {
+    if ((($flavour_we_build_upon eq "suse") or ($flavour_we_build_upon eq "mandrake")) and ($distrib_define !~ m/^suse sles-8/i) or ($distrib_define !~ m/^conectiva linux 10/i)) {
       $new_version = `/bin/rpm --qf '%{version}' -q apache2-devel`;
       print "Sensesless to continue... got no version for mod_ngobjweb\n" and exit 1 if ($?);
     }
@@ -864,7 +864,7 @@ sub prepare_build_env {
     $distrib_define = `head -n1 /etc/redhat-release`;
     chomp $distrib_define;
   } elsif ( -f "/etc/conectiva-release") {
-    $flavour_we_build_upon = "fedora";
+    $flavour_we_build_upon = "conectiva";
     $distrib_define = `head -n1 /etc/conectiva-release`;
     chomp $distrib_define;
   }
