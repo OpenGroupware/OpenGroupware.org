@@ -26,8 +26,8 @@ my @skip_list = qw( libical-sope1-r30.tar.gz
   gnustep-objc-lf2.95.3-r85.tar.gz
 );
 
-#my $build_opts = "-v yes -u yes -t release -d yes -f yes";
-my $build_opts = "-v yes -u no -t release -d yes -f yes";
+my $build_opts = "-v yes -u yes -t release -d yes -f yes";
+#my $build_opts = "-v yes -u no -t release -d yes -f yes";
 my @tp_releases;
 
 mkdir("$ENV{HOME}/deb_store", 0755) unless -e ("$ENV{HOME}/deb_store");
@@ -63,20 +63,18 @@ foreach $tprel (@tp_releases) {
     ###
     print "cleaning up/purging $cleanup prior actual build...\n";
     system("sudo dpkg --purge --force-all `dpkg -l | awk '{print \$2}' | grep -iE '(^$cleanup)'`");
-    if($package_to_build eq "libobjc-lf2") {
+    if($package_to_build eq "libfoundation") {
       my $dep;
       my @prereq;
-      print "cleaning up/purging libfoundation as well...\n";
-      system("sudo dpkg --purge --force-all `dpkg -l | awk '{print \$2}' | grep -i 'libfoundation'`");
-      open(LIBOBJC_LF2_DEPS, "$ENV{HOME}/sarge_thirdparty_libobjclf2_release.hints") || die "Arrr: $!\n";
-      @prereq = <LIBOBJC_LF2_DEPS>;
-      close(LIBOBJC_LF2_DEPS);
+      print "cleaning up/purging libobjc-lf2 as well...\n";
+      system("sudo dpkg --purge --force-all `dpkg -l | awk '{print \$2}' | grep -i 'libobjc-lf2'`");
+      open(LIBFOUNDATION_DEPS, "$ENV{HOME}/sarge_thirdparty_libfoundation_release.hints") || die "Arrr: $!\n";
+      @prereq = <LIBFOUNDATION_DEPS>;
+      close(LIBFOUNDATION_DEPS);
       print "installing prequired packages to satisfy automatic dependency generator...\n";
       foreach $dep(@prereq) {
         chomp $dep;
-        print "Retrieving: $dep\n";
-        system("wget --proxy=off -q -O $ENV{HOME}/deb_store/$dep http://$dl_host/packages/debian/dists/$host_i_runon/releases/ThirdParty/binary-i386/$dep");
-        system("sudo dpkg -i --force-all $ENV{HOME}/deb_store/$dep");
+        system("$ENV{HOME}/purveyor_of_debs.pl -p libobjc-lf2 -t release -v yes -u no -d yes -c $dep") if($dep =~ m/gnustep-objc/i);
       } 
     }
     print "ThirdParty_REL: building debs for ThirdParty $tprel\n";

@@ -85,17 +85,22 @@ foreach $orel (@ogo_releases) {
       system("$ENV{HOME}/purveyor_of_debs.pl -p sope -v yes -t release -u no -d yes -f yes -c $srel");
     }
     if ($orel =~ m/alpha11/i) {
-      #major hack... bc I didn't saw the builddeps file.
-      my $srel = "XXXXXXXXXXXXXXsope-4.4beta.2-voyager-r527.tar.gz";
-      my $libf_rel = "";
-      my $libobjc_lf2_rel = "";
-      #warn "This will fetch the most recent 4.3 ... but what to do\n"
-      #warn "if we want to use a specific 4.3 (ie 4.3.9 vs 4.3.10)??\n"
-      #system("sudo apt-get install libsope-core4.4-dev --assume-yes");
+      my $dep;
+      my @prereq;
+      #major pain.... this hack makes my dog cry :/
       warn "HACK? isn't it better to do it my way (that is rebuilding from source\n";
       warn "without doing an apt-get install <wanted_sope_release>:\n";
-      print "calling `purveyor_of_debs.pl -p sope -v yes -t release -u no -d yes -f yes -c $srel`\n";
-      system("$ENV{HOME}/purveyor_of_debs.pl -p sope -v yes -t release -u no -d yes -f yes -c $srel");
+      open(OGO_DEPS, "$ENV{HOME}/sarge_opengroupware_release.hints") || die "Arrr: $!\n";
+      @prereq = <OGO_DEPS>;
+      close(OGO_DEPS);
+      print "installing prequired packages to satisfy automatic dependency generator...\n";
+      foreach $dep(@prereq) {
+        chomp $dep;
+        #keep order in file...
+        system("$ENV{HOME}/purveyor_of_debs.pl -p libobjc-lf2 -t release -v yes -u no -d yes -c $dep") if($dep =~ m/gnustep-objc-lf2/i);
+        system("$ENV{HOME}/purveyor_of_debs.pl -p libfoundation -t release -v yes -u no -d yes -c $dep") if($dep =~ m/libfoundation/i);
+        system("$ENV{HOME}/purveyor_of_debs.pl -p sope -v yes -t release -u no -d yes -f yes -c $dep") if($dep =~ m/sope/i);
+      }
     }
     print "OGo_REL: building debs for OGo $orel\n";
     print "calling `purveyor_of_debs.pl -p opengroupware $build_opts -c $orel\n";

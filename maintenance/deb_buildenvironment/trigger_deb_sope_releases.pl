@@ -49,15 +49,15 @@ foreach $srel (@sope_releases) {
     print "preparing...\n";
     print "cleaning up/purging libfoundation/libobjc-lf2 prior actual build...\n";
     system("sudo dpkg --purge --force-all `dpkg -l | awk '{print \$2}' | grep -iE '(libfoundation|libobjc-lf2)'`");
-    open(SOPE_DEPS, "$ENV{HOME}/sarge_thirdparty_sope_release.hints") || die "Arrr: $!\n";
+    open(SOPE_DEPS, "$ENV{HOME}/sarge_sope_release.hints") || die "Arrr: $!\n";
     @prereq = <SOPE_DEPS>;
     close(SOPE_DEPS);
     print "installing prequired packages to satisfy automatic dependency generator...\n";
     foreach $dep(@prereq) {
       chomp $dep;
-      print "Retrieving: $dep\n";
-      system("wget --proxy=off -q -O $ENV{HOME}/deb_store/$dep http://$dl_host/packages/debian/dists/$host_i_runon/releases/ThirdParty/binary-i386/$dep");
-      system("sudo dpkg -i --force-all $ENV{HOME}/deb_store/$dep");
+      #keep order in file...
+      system("$ENV{HOME}/purveyor_of_debs.pl -p libobjc-lf2 -t release -v yes -u no -d yes -c $dep") if($dep =~ m/gnustep-objc-lf2/i);
+      system("$ENV{HOME}/purveyor_of_debs.pl -p libfoundation -t release -v yes -u no -d yes -c $dep") if($dep =~ m/libfoundation/i);
     }
     print "Retrieving: http://$dl_host/sources/releases/$srel\n";
     system("wget -q --proxy=off -O $ENV{HOME}/sources/$srel http://$dl_host/sources/releases/$srel");
