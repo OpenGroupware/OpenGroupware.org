@@ -1,3 +1,8 @@
+2005-02-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailTree.m: use SOGoMailAccount instead of SOGoMailAccounts as
+	  the root object (v0.9.zs101)
+
 2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v0.9.zs100
