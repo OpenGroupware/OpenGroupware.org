@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -150,6 +150,12 @@
 - (id)performBulkQuery:(EOFetchSpecification *)_fs
   onGlobalIDs:(NSArray *)_gids
   inContext:(id)_ctx;
+
+/* query for just the 'davURL' */
+- (id)performDavURLQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx;
+
+/* query for just 'DAV:getetag' */
+- (id)performETagsQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx;
 
 @end
 

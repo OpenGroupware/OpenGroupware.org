@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxFolder+DAV.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxFolder.h"
 #include "SxObject.h"
@@ -287,14 +286,58 @@
 }
 
 - (SEL)fetchSelectorForQuery:(EOFetchSpecification *)_fs
+  onSingleAttribute:(NSString *)_prop
+  inContext:(id)_ctx
+{
+  if ([_prop isEqualToString:@"davURL"]) {
+    if ([self respondsToSelector:@selector(performDavURLQuery:inContext:)]) {
+      if ([self doExplainQueries])
+	[self logWithFormat:@"EXPLAIN: selected dav-url query due to attr"];
+      return @selector(performDavURLQuery:inContext:);
+    }
+    else if ([self doExplainQueries])
+      [self logWithFormat:@"EXPLAIN: not selected unsupported URL query"];
+  }
+  if ([_prop isEqualToString:@"davEntityTag"]) {
+    if ([self respondsToSelector:@selector(performETagsQuery:inContext:)]) {
+      if ([self doExplainQueries])
+	[self logWithFormat:@"EXPLAIN: selected dav-etag query due to attr"];
+      return @selector(performETagsQuery:inContext:);
+    }
+    else if ([self doExplainQueries])
+      [self logWithFormat:@"EXPLAIN: not selected unsupported etag query"];
+  }
+  return NULL;
+}
+
+- (SEL)fetchSelectorForQuery:(EOFetchSpecification *)_fs
   onAttributeSet:(NSSet *)_attrSet
   inContext:(id)_ctx
 {
+  // TODO: document who calls this
+  /*
+    This method is often overridden by subclasses but usually called as
+    super for fallback. It returns a selector which should be used to execute
+    the WebDAV query.
+    
+    TODO: it would be better to let SOPE/product.plist map queries to
+          selectors using some rule.
+  */
+  
   /* ZideLook Folder */
+  
   if ([self isMsgInfoQuery:_fs])
     return @selector(performMsgInfoQuery:inContext:);
   if ([self isSubFolderQuery:_fs])
     return @selector(performSubFolderQuery:inContext:);
+
+  /* check some standard methods */
+  
+  if ([_attrSet count] == 1) {
+    return [self fetchSelectorForQuery:_fs 
+		 onSingleAttribute:[_attrSet anyObject]
+		 inContext:_ctx];
+  }
   
   return NULL;
 }
