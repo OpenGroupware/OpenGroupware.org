@@ -2223,6 +2223,8 @@ static Class      StrClass        = nil;
 - (void)_processReplyMessageString:(NSString *)messageString 
   from:(NSString *)from
 {
+  /* called by _setBodyForReply:from:part: */
+  static NSString *QuoteString = @"> ";
   NSArray         *array;
   NSMutableString *mString;
   NSEnumerator    *enumerator;
@@ -2233,25 +2235,25 @@ static Class      StrClass        = nil;
       
   array   = [messageString componentsSeparatedByString:@"\n"];
 
-  [mString appendString:(from != nil)
-	   ? [from stringByEscapingHTMLAttributeValue] :
-	     [@"<no sender>" stringByEscapingHTMLAttributeValue]];
-
+  if (from == nil) from = @"<no sender>";
+  
   if ([self useEpoz]) {
     /* Note: do not use XHTML/XML, might confuse Epoz */
+    [mString appendString:[from stringByEscapingHTMLAttributeValue]];
     [mString appendString:@" wrote: <br>\n"];
     enumerator = [array objectEnumerator];
-    while ((tmp = [enumerator nextObject])) {
-      [mString appendString:@"> "];
+    while ((tmp = [enumerator nextObject]) != nil) {
+      [mString appendString:QuoteString];
       [mString appendString:[tmp stringByEscapingHTMLAttributeValue]];
       [mString appendString:@"<br>\n"];
     }
   }
   else {
+    [mString appendString:from];
     [mString appendString:@" wrote: \n"];
     enumerator = [array objectEnumerator];
-    while ((tmp = [enumerator nextObject])) {
-      [mString appendString:@"> "];
+    while ((tmp = [enumerator nextObject]) != nil) {
+      [mString appendString:QuoteString];
       [mString appendString:tmp];
       [mString appendString:@"\n"];
     }
@@ -2263,7 +2265,7 @@ static Class      StrClass        = nil;
 }
 - (void)_setBodyForReply:(id)_obj from:(NSString *)_from part:(id)_part {
   // TODO: split up
-  NSString *messageString = nil;
+  NSString   *messageString;
   NSString   *from;
   NGMimeType *type;
   id         part;
@@ -2285,17 +2287,15 @@ static Class      StrClass        = nil;
   if (messageString != nil) {
     [self _processReplyMessageString:messageString from:from];
   }
-  else {
-    if ([type hasSameType:TextHtmlType]) {
-      if ([self useEpoz]) {
-	NSString *t;
+  else if ([type hasSameType:TextHtmlType]) {
+    if ([self useEpoz]) {
+      NSString *t;
 	
-	t = [self _checkTxtBody:[part body]];
-	ASSIGNCOPY(self->mailText, t);
-      }
-      else
-	[self addAttachment:[part body] type:TextHtmlType];
+      t = [self _checkTxtBody:[part body]];
+      ASSIGNCOPY(self->mailText, t);
     }
+    else
+      [self addAttachment:[part body] type:TextHtmlType];
   }
 }
 

@@ -1,3 +1,8 @@
+2004-12-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWImapMailEditor.m: fixed OGo bug #855 (incorrect escaping of from
+	  address) (v5.1.6)
+
 2004-12-16  Helge Hess  <helge.hess@opengroupware.org>
 	
 	* LSWImapMailEditor.m: added a fix for OGo bug #1086 (appointment send
