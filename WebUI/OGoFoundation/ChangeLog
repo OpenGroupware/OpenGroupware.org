@@ -1,3 +1,8 @@
+2004-11-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoStringTable.m: improved debugging facilities (can be enabled using
+	  OGoStringTableDebugEnabled default) (v5.1.77)
+
 2004-11-26  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoStringTable.m: treat string tables as UTF-8 per default now, you

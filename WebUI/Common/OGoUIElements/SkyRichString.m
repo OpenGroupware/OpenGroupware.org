@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,23 +18,21 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "common.h"
 
 /*
   renders this:
 
-    <B><I><U><SMALL>
-    <FONT COLOR=config.font_color
-          SIZE=config.font_size
-          FACE=config.font_face>
+    <b><i><u><small>
+    <font color=config.font_color
+          size=config.font_size
+          face=config.font_face>
       $content
-    </FONT>
-    </SMALL></U></I></B>
+    </font>
+    </small></u></i></b>
   
   Config Attributes:
-
     config.font_color
     config.font_size
     config.font_face
@@ -57,10 +55,10 @@
 
   if ((c = NSClassFromString(@"WERichString")) == Nil) {
     NSLog(@"%s: missing WERichString class", __PRETTY_FUNCTION__);
-    RELEASE(self);
+    [self release];
     return nil;
   }
-
+  
 #define SetAssociationValue(_key_, _value_)                                 \
              if ([_config objectForKey:_key_] == nil) {                     \
                a = [WOAssociation associationWithValue:_value_];            \
@@ -87,9 +85,11 @@
 }
 
 - (void)dealloc {
-  RELEASE(self->template);
+  [self->template release];
   [super dealloc];
 }
+
+/* handle requests (TODO: is a forward really necessary?) */
 
 - (void)takeValuesFromRequest:(WORequest *)_req inContext:(WOContext *)_ctx {
   [self->template takeValuesFromRequest:_req inContext:_ctx];
@@ -98,6 +98,8 @@
 - (id)invokeActionForRequest:(WORequest *)_req inContext:(WOContext *)_ctx {
   return [self->template invokeActionForRequest:_req inContext:_ctx];
 }
+
+/* generate response */
 
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
   [self->template appendToResponse:_response inContext:_ctx];

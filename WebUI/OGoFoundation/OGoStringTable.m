@@ -76,6 +76,11 @@ static BOOL useLatin1Strings = NO;
     return;
   }
   
+  if (debugOn) {
+    [self debugWithFormat:@"read strings file %@, len: %d", 
+	  self->path, [rawData length]];
+  }
+  
   plistString = [[NSString alloc] initWithData:rawData 
 				  encoding:[self stringsFileEncoding]];
   [rawData release]; rawData = nil;
@@ -83,6 +88,11 @@ static BOOL useLatin1Strings = NO;
     [self logWithFormat:@"ERROR: could not decode strings file charset: %@", 
 	    self->path];
     return;
+  }
+  
+  if (debugOn) {
+    [self debugWithFormat:@"  string len %d, class %@", 
+	  [plistString length], NSStringFromClass([plistString class])];
   }
   
   NS_DURING {
@@ -97,6 +107,9 @@ static BOOL useLatin1Strings = NO;
   NS_HANDLER
     [[self reportParsingError:localException] raise];
   NS_ENDHANDLER;
+
+  if (debugOn)
+    [self debugWithFormat:@"  parsed entries: %d", [self->data count]];
   
   [plistString release];
 }
