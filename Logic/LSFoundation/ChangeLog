@@ -1,3 +1,9 @@
+2004-08-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoContextManager.m: look for bundles in
+	  /usr/local/lib/opengroupware.org and /usr/lib/opengroupware.org
+	  (v5.1.84)
+
 2004-08-27  Helge Hess  <helge@dogbert.in.skyrix.com>
 
 	* OGoContextManager.m: use PostgreSQL instead of PostgreSQL72 as the

@@ -1,3 +1,9 @@
+2004-08-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OpenGroupware.m: look for bundles in
+	  /usr/local/lib/opengroupware.org and /usr/lib/opengroupware.org
+	  (v5.1.51)
+
 2004-08-23  Helge Hess  <helge.hess@skyrix.com>
 
 	* renamed OpenGroupware.woa to OpenGroupware10a.woa (v5.1.50)

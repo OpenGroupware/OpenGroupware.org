@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: OpenGroupware.m 11 2004-08-21 02:07:00Z helge $
 
 #if GNU_RUNTIME
 #  include <objc/sarray.h>
@@ -139,12 +139,15 @@ static BOOL loadWebUIBundlesOnStartup = YES;
   NSArray       *pathes;
   NSString      *OGoBundlePathSpecifier;
 
-  OGoBundlePathSpecifier = [[NSUserDefaults standardUserDefaults] 
-                             stringForKey:@"OGoBundlePathSpecifier"];
+  OGoBundlePathSpecifier = [[NSUserDefaults standardUserDefaults]
+			     stringForKey:@"OGoBundlePathSpecifier"];
   
   pathes = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,
 					       NSAllDomainsMask,
 					       YES);
+  pathes = [pathes arrayByAddingObject:@"/usr/local/lib/opengroupware.org/"];
+  pathes = [pathes arrayByAddingObject:@"/usr/lib/opengroupware.org/"];
+  
   // TODO: use "Skyrix5" for Skyrix5 (patch in migration script)
   
   if (loadWebUIBundlesOnStartup) {

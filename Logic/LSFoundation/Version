@@ -1,5 +1,5 @@
 # $Id: Version 10 2004-08-21 01:23:23Z helge $
 
-SUBMINOR_VERSION:=83
+SUBMINOR_VERSION:=84
 
 # v5.0.66 requires libEOControl v4.2.39
