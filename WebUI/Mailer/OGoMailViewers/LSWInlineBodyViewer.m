@@ -42,18 +42,20 @@
   t    = [type type];
   st   = [type subType];
   
-  if (type)
-    return [NSString stringWithFormat:@"%@/%@", t ? t : @"*", st ? st : @"*"];
+  if (type == nil)
+    return nil;
   
-  return nil;
+  if (t  == nil) t  = @"*";
+  if (st == nil) st = @"*";
+  return [[t stringByAppendingString:@"/"] stringByAppendingString:st];
 }
 
 - (id)mimeContent {
+  // Note: its not always ensured that the viewer has a part
   return [LSWMimeContent mimeContent:[self data]
                          ofType:[self->partOfBody contentType]
                          inContext:[self context]];
 }
-
 
 - (NSString *)fileName {
   NSString                            *fn;
@@ -61,7 +63,7 @@
   NGMimeContentDispositionHeaderField *disp;
   
   type = [self->partOfBody contentType];
-
+  
   if ((fn = [[type parametersAsDictionary] objectForKey:@"name"]))
     return fn;
 
@@ -91,7 +93,7 @@
 }
 
 - (id)width {
-  id ud;
+  NSUserDefaults *ud;
   NSString *str;
 
   ud = [[self session] userDefaults];
@@ -102,8 +104,8 @@
     str = [ud stringForKey:@"sky_embed_inline_viewer_ie5_width"];
   else
     str = [ud stringForKey:@"sky_embed_inline_viewer_other_width"];
-
-  if (![str length])
+  
+  if ([str length] == 0)
     str = @"100%";
 
   return str;

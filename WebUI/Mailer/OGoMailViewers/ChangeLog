@@ -1,3 +1,7 @@
+2005-04-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWInlineBodyViewer.m: minor code cleanups (v5.1.25)
+
 2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
 
 	* bundle-info.plist: fixed registry entry for SkyMailIcon (actually the

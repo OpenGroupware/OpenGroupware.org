@@ -1,11 +1,11 @@
-// $Id: LSWInlineBodyViewer.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 EmbeddedObject: WOEmbeddedObject {
-  data     = data;
-  TYPE     = mimeType;
-  WIDTH    = "100%";
-  HEIGHT   = "400";
-};
+  data   = data;
+  TYPE   = mimeType;
+  WIDTH  = "100%";
+  HEIGHT = "400";
+}
 
 ViewEmbeddedObject: WOConditional {
   condition = showInline;
@@ -18,7 +18,7 @@ ActionUrl: WOActionURL {
   ?mimeType        = mimeTypeString;
   ?encoding        = encoding;
   target           = documentAttachmentTarget;
-  BORDER   = 0;
+  BORDER           = 0;
 }
 
 HasUrlBody:     WOConditional { condition = hasUrl; }
