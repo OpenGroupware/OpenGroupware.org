@@ -1,3 +1,7 @@
+2005-04-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* added Defaults.plist as a resource (to fix OGo bug #1268) (v5.1.47)
+
 2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
 	
 	* removed unused LSWTextDocumentEditor, LSWFolderEditor,

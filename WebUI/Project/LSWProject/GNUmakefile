@@ -48,7 +48,7 @@ LSWProject_COMPONENTS = \
 	SkyPropertyEditor.wo		\
 	LSWProjectEditor.wo		\
 
-LSWProject_RESOURCE_FILES += Version
+LSWProject_RESOURCE_FILES += Version Defaults.plist
 
 LSWProject_LANGUAGES = English German
 
