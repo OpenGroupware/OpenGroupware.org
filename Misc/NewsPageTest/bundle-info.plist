@@ -1,0 +1,31 @@
+{
+  bundleHandler = OGoModuleManager;
+  
+  requires = {
+    bundleManagerVersion = 1;
+
+    bundles = (
+    );
+    classes = (
+      { name = OGoComponent;  exact-version = 2; },
+    );
+  };
+  
+  provides = {
+    classes = (
+      { name = MyNewsPage; },
+    );
+
+    NewsPages = ( /* this declaration makes the news app find the page */
+      { 
+        name      = "MyNews";
+        component = "MyNewsPage";
+        labelKey  = "MyNews";
+      }
+    );
+    
+    WOComponents = (
+      { name = MyNewsPage; },
+    );
+  };
+}

@@ -1,5 +1,5 @@
 {
-  bundleHandler = HelloWorldModule;
+  bundleHandler = OGoModuleManager;
   
   requires = {
     bundleManagerVersion = 1;
@@ -8,9 +8,9 @@
 	// this bundle doesn't need any special bundles
     );
     classes = (
-        // need the bundles providing LSWContentPage, LSWModuleManager
+        // need the bundles providing OGoContentPage, OGoModuleManager
         // and SkyRichString to be loaded
-      { name = LSWContentPage;   exact-version = 3; },
+      { name = OGoContentPage;   exact-version = 3; },
       { name = SkyRichString; },
     );
   };
