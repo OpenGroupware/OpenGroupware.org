@@ -13,6 +13,9 @@ SOPE 4.3
 - libical (eg ThirdParty/libical)
 - postgresql-dev
 
+PDA
+- libpisock (eg ThirdParty/pilot-link or pisock-dev on Debian)
+
 Dependencies
 ============
 
@@ -36,3 +39,7 @@ XmlRpcAPI
 
 ZideStore
 - Logic
+
+PDA
+- Logic
+- DocumentAPI

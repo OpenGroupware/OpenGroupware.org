@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 OGoROOT=../..
 
@@ -11,11 +11,6 @@ WOBUNDLE_EXTENSION   = .lso
 WOBUNDLE_INSTALL_DIR = $(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org
 
 OGoPalm_PRINCIPAL_CLASS = SkyPalmModule
-ADDITIONAL_WOBUNDLE_LIBS += 		\
-	-lOGoFoundation -lNGObjWeb  	\
-	-lOGoScheduler 			\
-	-lOGoRawDatabase		\
-	-lOGoProject			\
 
 OGoPalm_OBJC_FILES = \
 	SkyPalmModule.m			\
@@ -99,12 +94,7 @@ OGoPalm_COMPONENTS = \
 
 OGoPalm_LANGUAGES = English German
 
-ADDITIONAL_INCLUDE_DIRS += -I../OGoPalm/ -I..
-ADDITIONAL_LIB_DIRS += -L../OGoPalm/$(GNUSTEP_OBJ_DIR)
-ADDITIONAL_LIB_DIRS += -L../OGoPalmUI/$(GNUSTEP_OBJ_DIR)
-ADDITIONAL_WOBUNDLE_LIBS += -lOGoPalm -lOGoPalmUI
-
-OGoPalm_RESOURCE_FILES += Defaults.plist	\
+OGoPalm_RESOURCE_FILES += Defaults.plist
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make

@@ -1,0 +1,18 @@
+# compilation flags
+
+OGoROOT=../..
+
+
+ADDITIONAL_OBJCFLAGS += -Wall
+
+libOGoPalmUI_INCLUDE_DIRS += -I../OGoPalm/ -I..
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I$(OGoROOT)/WebUI/		\
+	-I$(OGoROOT)/DocumentAPI/	\
+	-I$(OGoROOT)/Logic/LSFoundation/
+
+
+ADDITIONAL_LIB_DIRS += \
+	-L$(OGoROOT)/WebUI/OGoFoundation/$(GNUSTEP_OBJ_DIR)/	\
+	-L$(OGoROOT)/Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)/

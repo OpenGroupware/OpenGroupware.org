@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
@@ -32,9 +32,6 @@ libOGoPalmUI_OBJC_FILES = \
 libOGoPalmUI_HEADER_FILES_DIR         = .
 libOGoPalmUI_HEADER_FILES_INSTALL_DIR = /OGoPalmUI
 
-libOGoPalmUI_INCLUDE_DIRS += -I../OGoPalm/ -I..
-
-ADDITIONAL_OBJCFLAGS += -Wall
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make
