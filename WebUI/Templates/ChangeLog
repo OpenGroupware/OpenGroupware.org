@@ -1,3 +1,8 @@
+2004-12-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoMailViewers/LSWMimeBodyPartViewer.wod: fixed OGo bug #1091
+	  (some template element was missing)
+
 2004-12-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoProject/SkyProject4Desktop.wod: added support for bundle tabs

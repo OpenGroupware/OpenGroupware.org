@@ -13,6 +13,7 @@ ContentDisposition: WOString { value = contentDisposition; }
 
 HasContentLength:      WOConditional { condition = contentLength;      }
 HasContentDisposition: WOConditional { condition = contentDisposition; }
+HasProjectCond:        WOConditional { condition = YES;       };
 IsPrintModeCondElse:   WOConditional { condition = printMode; negate = YES; }
 IsPrintModeCond:       WOConditional { condition = printMode; }
 
