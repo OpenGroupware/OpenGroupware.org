@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "DirectAction.h"
 #include <EOControl/EOControl.h>
@@ -93,13 +92,14 @@
 }
 
 - (NSArray *)_fetchPersonsWithDict:(NSDictionary *)_arg {
-  EODataSource         *personDS = [self personDataSource];
+  EODataSource         *personDS;
   NSMutableDictionary  *dict     = nil;
   EOFetchSpecification *fspec    = nil;
   EOQualifier          *qual     = nil;
-
+  
+  // TODO: this doesn't seem to make a lot of sense?
   dict = [NSMutableDictionary dictionaryWithCapacity:8];
-  [dict takeValuesFromObject:_arg keys:@"number",nil];
+  [dict takeValuesFromObject:_arg keys:@"number", nil];
   [dict removeAllNulls];
   
   qual = [EOQualifier qualifierToMatchAllValues:dict
@@ -109,6 +109,7 @@
                                 qualifier:qual
                                 sortOrderings:nil];
   
+  personDS = [self personDataSource];
   [personDS setFetchSpecification:fspec];
   return [personDS fetchObjects];
 }
@@ -136,11 +137,14 @@
 }
 
 - (NSArray *)person_getAction:(id)_arg {
-  if ([_arg respondsToSelector:@selector(stringValue)])
-    return [NSArray arrayWithObject:
-                    [self _getPersonByArgument:_arg]];
-  else
+  id person;
+  
+  if ([_arg isKindOfClass:[NSDictionary class]])
+    // TODO: this doesn't seem to make a lot of sense?
     return [self _fetchPersonsWithDict:_arg];
+
+  person = [self _getPersonByArgument:_arg];
+  return [person isNotNull] ? [NSArray arrayWithObject:person] : nil;
 }
 
 - (id)person_getByNumberAction:(NSString *)_number {
@@ -290,7 +294,7 @@
   SkyPersonDocument *person;
   EODataSource      *projectDS;
   NSArray           *projects;
-
+  
   if ((person = [self _getPersonByArgument:_arg]) == nil) {
     return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
                  reason:@"got no person for argument"];
