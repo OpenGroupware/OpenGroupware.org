@@ -1,3 +1,9 @@
+2004-09-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyDocumentManagerImp.m: do not throw exception in case the
+	  "skyrix_id" default is not configured (just prints a warning)
+	  (v5.1.22)
+
 2004-07-22  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.0.21

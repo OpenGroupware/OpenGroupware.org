@@ -191,24 +191,26 @@
 
 - (NSURL *)skyrixBaseURL {
   static NSURL *skybase = nil;
+  NSString *skyid;
+  NSString *urlstr;
 
-  if (skybase == nil) {
-    NSString *skyid;
-    NSString *urlstr;
-    
-    skyid = [[NSUserDefaults standardUserDefaults] stringForKey:@"skyrix_id"];
-    
-    NSAssert([skyid length] > 0,
-             @"missing SKYRiX ID (skyrix_id default) !");
-    
-    urlstr  = [NSString stringWithFormat:@"skyrix://%@/%@/",
+  if (skybase != nil)
+    return skybase;
+  
+  skyid = [[NSUserDefaults standardUserDefaults] stringForKey:@"skyrix_id"];
+  if ([skyid length] == 0) {
+    skyid = @"default";
+    [self logWithFormat:
+            @"WARNING: missing OGo database ID (skyrix_id default), "
+            @"using: '%@'", skyid];
+  }
+
+  urlstr  = [NSString stringWithFormat:@"skyrix://%@/%@/",
                           [[NSHost currentHost] name],
                           skyid];
     
-    skybase = [[NSURL alloc] initWithString:urlstr relativeToURL:nil];
-
-    NSLog(@"SKYRiX BaseURL: '%@'", skybase);
-  }
+  skybase = [[NSURL alloc] initWithString:urlstr relativeToURL:nil];
+  NSLog(@"OGo BaseURL: '%@'", skybase);
   return skybase;
 }
 
