@@ -1,12 +1,7 @@
-// $Id: SkyFavorites.wod,v 1.5 2003/10/29 18:06:00 helge Exp $
+// bind template to controller
 
-IsNotClickable: WOConditional {
-  condition = linksDisabled;
-}
-IsClickable: WOConditional {
-  condition = linksDisabled;
-  negate    = YES;
-}
+IsNotClickable: WOConditional { condition = linksDisabled; }
+IsClickable:    WOConditional { condition = linksDisabled; negate = YES; }
 
 HasFavorites: WOConditional {
   condition = session.favorites.count;
@@ -43,6 +38,6 @@ DragLink: WEDragContainer {
   object = favorite;
 }
 MenuFont: WOGenericContainer {
-  elementName   = "font";
-  CLASS         = "skydockfont";
+  elementName = "font";
+  CLASS       = "skydockfont";
 }

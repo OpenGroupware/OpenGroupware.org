@@ -1,4 +1,4 @@
-// $Id: LSWSkyrixFrame.wod,v 1.10 2004/07/09 13:46:01 helge Exp $
+// bind template to controller
 
 Content: WOComponentContent {
 }

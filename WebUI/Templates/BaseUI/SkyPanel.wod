@@ -1,8 +1,8 @@
-// $Id: SkyPanel.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+// bind template to controller
 
 IsActivationLink: WOConditional {
   condition = isActivationLink;
-};
+}
 
 ActivationLink: SkyPanelLink {
   panelName = panelName;
@@ -10,22 +10,22 @@ ActivationLink: SkyPanelLink {
   string    = string;
   verb      = "view";
   isVisible = isVisible;
-};
+}
 
-PanelContent: WOComponentContent {};
+PanelContent: WOComponentContent {}
 
 IsScriptCond: WOConditional {
   condition = isPanelManagerScript;
-};
+}
 
 IsExplorerScriptCond: WOConditional {
   condition = isNetscape;
   negate    = YES;
-};
+}
 
 IsNetscapeScriptCond: WOConditional {
   condition = isNetscape;
-};
+}
 
 ExplorerScript: WOJavaScript {
   hideInComment = YES;
@@ -64,7 +64,7 @@ ExplorerScript: WOJavaScript {
        document.onmouseup   = null;
      }
      ";
-};
+}
 
 NetscapeScript: WOJavaScript {
   hideInComment = YES;
@@ -84,7 +84,7 @@ NetscapeScript: WOJavaScript {
        return false;
      }
      ";
-};
+}
 
 PanelLayer: WOGenericContainer {
   elementName = layerElementName;
@@ -92,7 +92,7 @@ PanelLayer: WOGenericContainer {
   style       = style;       // used by explorer
   visibility  = visibility;  // used by netscape
   align       = "left";
-};
+}
 
 PanelDragArea: WOGenericContainer {
   elementName = "td";
@@ -123,27 +123,27 @@ PanelCancel: SkyPanelLink {
   width     = "12";
   doAction  = doActionOnCancel;
   isVisible = isVisible;
-};
+}
 
 LeftCorner: WOImage {
   filename = "panel_grey_top_left.gif";
   border   = "0";
-};
+}
 
 RightCorner: WOImage {
   filename = "panel_grey_top_right.gif";
   border   = "0";
-};
+}
 
 LeftBottomCorner: WOImage {
   filename = "panel_grey_bottom_left.gif";
   border   = "0";
-};
+}
 
 RightBottomCorner: WOImage {
   filename = "panel_grey_bottom_right.gif";
   border   = "0";
-};
+}
 
 LineHorizontalLeft: WOImage {
   filename = "panel_grey_horizontal_left.gif";
@@ -169,14 +169,14 @@ ContentCell: WOGenericContainer {
   elementName = "td";
   bgcolor     = config.colors_panelContent;
   colspan     = "3";
-};
+}
 
 Font: WOGenericContainer {
   elementName = "font";
   color       = config.panelFont_color;
   face        = config.panelFont_color;
   size        = config.panelFont_size;
-};
+}
 
 Title: WOString {
   value = title;

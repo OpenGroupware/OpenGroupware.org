@@ -1,19 +1,19 @@
-// $Id: LSWWarningPanel.wod,v 1.3 2003/10/01 14:25:07 thomas Exp $
+// bind template to controller
 
 Phrase: WOString {
   value      = localPhrase;
   escapeHTML = NO;
-};
+}
 
 Font: WOGenericContainer {
   elementName = "font";
   color       = "red";
   size        = config.editFont_size;
   face        = config.font_face;
-};
+}
 
 Buttons: SkyButtonRow {
-  ordering          = ( ok, cancel );
+  ordering = ( ok, cancel );
   onOk     = ok;
   ok       = labels.ok;
   onCancel = cancel;

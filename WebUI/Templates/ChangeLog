@@ -1,5 +1,7 @@
 2005-04-04  Helge Hess  <helge.hess@skyrix.com>
 
+	* BaseUI: removed CVS ID comments, minor template cleanups
+
 	* OGoProject/SkyProject4DocumentEditor: minor template cleanups
 
 	* OGoUIElements/SkyTextEditor: minor template cleanups

@@ -1,4 +1,4 @@
-// $Id: SkyWizardChoicePage.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
@@ -9,14 +9,14 @@ Window: LSWWindowFrame {
   titleFont            = config.Window.titleFont;
   titleBackgroundColor = config.Window.titleBackgroundColor;
   contentColor         = config.Window.contentColor;
-};
+}
 
-Form: WOForm {};
+Form: WOForm {}
 
 ChoiceRep: WORepetition {
   list = posibilities;
   item = item;
-};
+}
 
 ChooseLink: WOHyperlink {
   action = choose;
@@ -24,51 +24,52 @@ ChooseLink: WOHyperlink {
 
 ChooseLabel: WOString {
   value = chooseLabel;
-};
+}
 
 IsBack: WOConditional {
   condition = isBack;
-};
+}
 
 Back: WOImageButton {
-  action           = back;
-  filename         = "back.gif";
-  name             = labels.wizardBack;
-  alt              = labels.wizardback;
-  border           = "0";
-};
+  action   = back;
+  filename = "back.gif";
+  name     = labels.wizardBack;
+  alt      = labels.wizardback;
+  border   = "0";
+}
 
 Forward: WOImageButton {
-  action           = forward;
-  filename         = "go_forward.gif";
-  name             = labels.wizardForward;
-  alt              = labels.wizardForward;
-  border           = "0";
-};
+  action   = forward;
+  filename = "go_forward.gif";
+  name     = labels.wizardForward;
+  alt      = labels.wizardForward;
+  border   = "0";
+}
 
 IsFinish: WOConditional {
   condition = isFinish;
-};
+}
 
 Finish: WOImageButton {
-  action           = finish;
-  filename         = "finish.gif";
-  name             = labels.wizardFinish;
-  alt              = labels.wizardFinish;
-  border           = "0";
-};
+  action   = finish;
+  filename = "finish.gif";
+  name     = labels.wizardFinish;
+  alt      = labels.wizardFinish;
+  border   = "0";
+}
 
 Cancel: WOHyperlink {
-  action           = cancel;
-  filename         = "cancel.gif";
-  name             = labels.wizardCancel;
-  alt              = labels.wizardCancel;
-  border           = "0";
-};
+  action   = cancel;
+  filename = "cancel.gif";
+  name     = labels.wizardCancel;
+  alt      = labels.wizardCancel;
+  border   = "0";
+}
 
+// TODO: use CSS
 Font: WOGenericContainer {
-  elementName   = "font";
-};
+  elementName = "font";
+}
 
 ChooseRadioButtonList: WORadioButtonList {
   list      = posibilities;
@@ -76,4 +77,4 @@ ChooseRadioButtonList: WORadioButtonList {
   selection = posibility;
   prefix    = "<tr><td></td><td bgcolor=\"#E0E0E0\"><font color=\"black\" size=\"2\" face=\"Arial,Helvetica,Verdana,Geneva,Tahoma\">";
   suffix    = chooseLabel;
-};
+}

@@ -1,4 +1,4 @@
-// $Id: SkyNavigation.wod,v 1.1 2003/08/04 14:53:35 thomas Exp $
+// bind template to controller
 
 YouAreHereLabel : WOString {
   value = labels.navposition;

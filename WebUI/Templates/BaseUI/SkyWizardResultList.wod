@@ -1,4 +1,4 @@
-// $Id: SkyWizardResultList.wod,v 1.1.1.1 2003/07/09 22:57:44 cvs Exp $
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
@@ -9,11 +9,11 @@ Window: LSWWindowFrame {
   titleFont            = config.Window.titleFont;
   titleBackgroundColor = config.Window.titleBackgroundColor;
   contentColor         = config.Window.contentColor;
-};
+}
 
 IsBack: WOConditional {
   condition = isBack;
-};
+}
 
 Back: WOHyperlink {
   action   = back;
@@ -21,7 +21,7 @@ Back: WOHyperlink {
   name     = labels.wizardBack;
   alt      = labels.wizardBack;
   border   = "0";
-};
+}
 
 Cancel: WOHyperlink {
   action   = cancel;
@@ -29,7 +29,7 @@ Cancel: WOHyperlink {
   name     = labels.wizardCancel;
   alt      = labels.wizardCancel;
   border   = "0";
-};
+}
 
 Save: WOHyperlink {
   action   = save;
@@ -37,18 +37,18 @@ Save: WOHyperlink {
   name     = labels.wizardSave;
   alt      = labels.wizardSave;
   border   = "0";
-};
+}
 
 ResultRep: WORepetition {
   list  = resultList;
   item  = item;
-};
+}
 
 ResultViewer: WOComponentReference {
   component = resultViewer;
   object    = item.object;
-};
+}
 
 HasViewer: WOConditional {
   condition = hasViewer;
-};
+}
