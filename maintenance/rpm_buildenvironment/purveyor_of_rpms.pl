@@ -105,14 +105,18 @@ sub move_to_dest {
 }
 
 sub build_rpm {
+  my $rc;
   my $specfile = "$package.spec";
   my @tmp_spec;
   my $tmp_spec_line;
-  my $tmp_sope_src;
-  my $tmp_sope_spec;
+  my $use_sope;
   my @outlog;
   my $logline;
   if(($package eq "opengroupware") and ($build_type eq "trunk")) {
+    my @t_sope;
+    my @sope;
+    my $sope_rpm;
+    my $line;
     print "[RPMBUILD]          - checking which SOPE version we want for this OGo trunk\n" if ($verbose eq "yes");
     open(SOPEHINTS, "$specs_dir/$specfile") if($use_specdir_specfile eq "yes");
     open(SOPEHINTS, "$use_specfile") if($use_specdir_specfile eq "no");
@@ -120,23 +124,36 @@ sub build_rpm {
     close(SOPEHINTS);
     foreach $tmp_spec_line(@tmp_spec) {
       chomp $tmp_spec_line;
-      $tmp_sope_src = $tmp_spec_line if ($tmp_spec_line =~ s/^#UseSOPEsrc:\s+//g);
-      $tmp_sope_spec = $tmp_spec_line if ($tmp_spec_line =~ s/^#UseSOPEspec:\s+//g);
+      $use_sope = $tmp_spec_line if ($tmp_spec_line =~ s/^#UseSOPE:\s+//g);
     }
-    print "[RPMBUILD]          - didn't found either UseSOPEsrc or UseSOPEspec in specfile.\n" and exit 1 if (($verbose eq "yes") and (!$tmp_sope_src) or (!$tmp_sope_spec));
-    print "[RPMBUILD]          - building $package using: SOPE SRC  $tmp_sope_src\n" if ($verbose eq "yes");
-    print "[RPMBUILD]          - building $package using: SOPE SPEC $tmp_sope_spec (included in the tarball)\n" if ($verbose eq "yes");
-    print "[RPMBUILD]          - downloading SOPE sourcetarball: $tmp_sope_src\n" if ($verbose eq "yes");
-    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$tmp_sope_src http://$dl_host/sources/releases/$tmp_sope_src");
-    print "[RPMBUILD]          - extracting sope.spec as $tmp_sope_spec from sourcetarball to $ENV{HOME}/spec_tmp/$tmp_sope_spec\n" if ($verbose eq "yes");
-    system("tar xfzO $ENV{HOME}/rpm/SOURCES/$tmp_sope_src sope/maintenance/sope.spec >$ENV{HOME}/spec_tmp/$tmp_sope_spec");
-    #use always the one present in $ENV{HOME}/$spec_tmp (it's most likely already there from a prior sope release build, but we extract it anyway)
-    system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -t release -u no -d yes -b no -f yes -v yes -c $ENV{HOME}/rpm/SOURCES/$tmp_sope_src -s $ENV{HOME}/spec_tmp/$tmp_sope_spec");
-    print "[RPMBUILD]          - ... returned from building $tmp_sope_spec\n" if ($verbose eq "yes");
-    print "[RPMBUILD]          - relinking for $build_type build.\n" if ($verbose eq "yes");
-    unlink "$hpath/.rpmmacros" if ( -l "$hpath/.rpmmacros");
-    symlink "$hpath/macros/$host_i_runon/rpmmacros_trunk", "$hpath/.rpmmacros" || die "Arrr!: $!";
-    print "[RPMBUILD]          - continue to build $package $build_type...\n" if ($verbose eq "yes");
+    print "[RPMBUILD]          - didn't found UseSOPE hint in specfile.\n" and exit 1 if (($verbose eq "yes") and (!$use_sope));
+    print "[RPMBUILD]          - building $package using: SOPE release  $use_sope\n" if ($verbose eq "yes");
+    print "[RPMBUILD]          - getting MD5_INDEX for $use_sope prior installation...\n" if ($verbose eq "yes");
+    @t_sope = `wget -q --proxy=off -O - http://$dl_host/packages/$host_i_runon/releases/$use_sope/MD5_INDEX` or die "I DIE: couldn't fetch MD5_INDEX (http://$dl_host/packages/$host_i_runon/releases/$use_sope/MD5_INDEX)\n";
+    #parse through MD5_INDEX and generate a list of all sope RPMS... additionally download 'em into install_tmp/
+    foreach $line (@t_sope) {
+      chomp $line;
+      next unless($line =~ m/\.rpm$/i);
+      $line =~ s/^.*\s+//g;
+      $sope_rpm = $line;
+      print "[RPMBUILD]          - loading $sope_rpm into install_tmp/" if ($verbose eq "yes");
+      $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$sope_rpm http://$dl_host/packages/$host_i_runon/releases/$use_sope/$sope_rpm");
+      print " ...success!\n" if($rc == 0);
+      print "\nFATAL: system call (wget) returned $rc whilst downloading $sope_rpm into install_tmp/\n" and exit 1 unless($rc == 0);
+      push(@sope, $sope_rpm);
+    }
+    print "[RPMBUILD]          - removing the currently installed SOPE\n" if ($verbose eq "yes");
+    system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps --noscripts");
+    system("sudo /sbin/ldconfig");
+    my $sope_rpm_count = @sope;
+    print "[RPMBUILD]          - must install $sope_rpm_count RPMS ($use_sope) from install_tmp/ ... this may take some seconds\n";
+    foreach $line(@sope) {
+      $rc = system("sudo rpm -U --force --noscripts $ENV{HOME}/install_tmp/$line");
+      print "[RPMBUILD]          - $line ($rc)...ok, done!\n" if($rc == 0);
+      print "\n[RPMBUILD]          - FATAL: system call (rpm) returned $rc whilst installing required RPMS from install_tmp/\n" and exit 1 unless($rc == 0);
+    }
+    system("sudo /sbin/ldconfig");
+    print "[RPMBUILD]          - finished to prepare SOPE $use_sope... continue to build $package $build_type...\n" if ($verbose eq "yes");
 
   }
   system("/usr/bin/rpmbuild -bb $specs_dir/$specfile 1>>$logout 2>>$logerr") if ($build_type eq "trunk");

@@ -52,14 +52,19 @@ opengroupware.org-1.0alpha4-shapeshifter-r84.tar.gz
 opengroupware.org-1.0alpha5-shapeshifter-r86.tar.gz
 opengroupware.org-1.0alpha6-shapeshifter-r89.tar.gz
 opengroupware.org-1.0alpha7-shapeshifter-r158.tar.gz
+opengroupware.org-1.0alpha8-shapeshifter-r452.tar.gz
 );
 
 my $build_opts = "-v yes -u yes -t release -d yes -f yes";
 my @ogo_releases;
 my @ogo_spec;
+my $rc;
 my $line;
+my $use_sope;
+my @t_sope;
+my $sope_rpm;
 my $sope_spec;
-my $sope_src;
+#my $sope_src;
 eval getconf("$ENV{'HOME'}/purveyor_of_rpms.conf") or die "FATAL: $@\n";
 
 sub getconf {
@@ -81,6 +86,8 @@ sub getconf {
 @ogo_releases = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
 open(KNOWN_OGo_RELEASES, ">> $hpath/OGo.known.rel");
 foreach $orel (@ogo_releases) {
+  my @sope;
+  my @t_sope;
   chomp $orel;
   $orel =~ s/^.*\s+//g;
   next unless($orel =~ m/^opengroupware.org/i);
@@ -101,6 +108,7 @@ foreach $orel (@ogo_releases) {
     system("sudo rpm -e `rpm -qa|grep -i ^ogo-|grep -vi gnustep` --nodeps");
     print "extracting specfile from $orel into $ENV{HOME}/spec_tmp/\n";
     system("mkdir $ENV{HOME}/spec_tmp/") unless (-e "$ENV{HOME}/spec_tmp/");
+    system("mkdir $ENV{HOME}/install_tmp/") unless (-e "$ENV{HOME}/install_tmp/");
     #extract the specfile coming with the release tarball into a temporary location and keep it there
     #in order to build using exactly this specfile...
     system("tar xfzO $ENV{HOME}/rpm/SOURCES/$orel opengroupware.org/maintenance/opengroupware.spec >$ENV{HOME}/spec_tmp/$buildtarget.spec");
@@ -109,14 +117,36 @@ foreach $orel (@ogo_releases) {
     close(SOPEHINTS);
     foreach $line(@ogo_spec) {
       chomp $line;
-      $sope_src = $line if ($line =~ s/^#UseSOPEsrc:\s+//g);
-      $sope_spec = $line if ($line =~ s/^#UseSOPEspec:\s+//g);
+      $use_sope = $line if ($line =~ s/^#UseSOPE:\s+//g);
+      #$sope_src = $line if ($line =~ s/^#UseSOPEsrc:\s+//g);
+      #$sope_spec = $line if ($line =~ s/^#UseSOPEspec:\s+//g);
     }
     #we should've already build this SOPE release at least once in an earlier run
-    print "preparing SOPE...\n";
-    print "calling `purveyor_of_rpms.pl -p sope -v yes -t release -u no -d no -f yes -b no -c $sope_src -s $ENV{HOME}/spec_tmp/$sope_spec`\n";
-    system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -t release -u no -d no -f yes -b no -c $sope_src -s $ENV{HOME}/spec_tmp/$sope_spec");
-    print "OGo_REL: building RPMS for OGo $orel using $sope_src with $sope_spec\n";
+    print "preparing SOPE... $use_sope\n";
+    @t_sope = `wget -q --proxy=off -O - http://$dl_host/packages/$host_i_runon/releases/$use_sope/MD5_INDEX` or die "I DIE: couldn't fetch MD5_INDEX (http://$dl_host/packages/$host_i_runon/releases/$use_sope/MD5_INDEX)\n";
+    foreach $line (@t_sope) {
+      chomp $line;
+      next unless($line =~ m/\.rpm$/i);
+      $line =~ s/^.*\s+//g;
+      $sope_rpm = $line;
+      print "downloading: $sope_rpm into install_tmp/";
+      $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$sope_rpm http://$dl_host/packages/$host_i_runon/releases/$use_sope/$sope_rpm");
+      print " ...success!\n" if($rc == 0);
+      print "\nFATAL: system call (wget) returned $rc whilst downloading $sope_rpm into install_tmp/\n" and exit 1 unless($rc == 0);
+      push(@sope, $sope_rpm);
+    }
+    print "DEBUGGGER: @sope\n";
+    my $rpm_count = @sope;
+    print "must install $rpm_count RPMS ($use_sope) from install_tmp/ ... this may take some seconds\n";
+    foreach $line(@sope) {
+      $rc = system("sudo rpm -U --force --noscripts $ENV{HOME}/install_tmp/$line");
+      print "$line ($rc)...ok, done!\n" if($rc == 0);
+      print "\nFATAL: system call (rpm) returned $rc whilst installing required RPMS from install_tmp/\n" and exit 1 unless($rc == 0);
+    }
+    #print "calling `purveyor_of_rpms.pl -p sope -v yes -t release -u no -d no -f yes -b no -c $sope_src -s $ENV{HOME}/spec_tmp/$sope_spec`\n";
+    #system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -t release -u no -d no -f yes -b no -c $sope_src -s $ENV{HOME}/spec_tmp/$sope_spec");
+    #print "OGo_REL: building RPMS for OGo $orel using $sope_src with $sope_spec\n";
+    print "OGo_REL: building RPMS for OGo $orel using $use_sope\n";
     print "calling `purveyor_of_rpms.pl -p opengroupware $build_opts -c $orel -s $ENV{HOME}/spec_tmp/$buildtarget.spec\n";
     system("$ENV{HOME}/purveyor_of_rpms.pl -p opengroupware $build_opts -c $orel -s $ENV{HOME}/spec_tmp/$buildtarget.spec");
     print KNOWN_OGo_RELEASES "$orel\n";
@@ -132,6 +162,7 @@ foreach $orel (@ogo_releases) {
     print "thus calling: /home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $apttarget\n";
     print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $apttarget\n";
     print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/packages/$host_i_runon/releases/$apttarget/\n";
+    print SSH "echo \"This OGo release was built using $use_sope\" >/var/virtual_hosts/download/packages/$host_i_runon/releases/$apttarget/SOPE.INFO\n";
     close(SSH);
   }
 }
@@ -148,10 +179,10 @@ if($i_really_had_sth_todo eq "yes") {
   }
   #polish buildenv after we're done...
   print "we're almost at the end... cleaning up what we've done so far...\n";
-  system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
+  #system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
   #go back to latest trunk build - that is, before we grabbed a new release we had
   #the most current sope trunk built/installed
   print "restoring latest build state...\n";
-  system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -u no -d no -f yes -b no");
-  system("$ENV{HOME}/purveyor_of_rpms.pl -p opengroupware -v yes -u no -d no -f yes -b no");
+  #system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -u no -d no -f yes -b no");
+  #system("$ENV{HOME}/purveyor_of_rpms.pl -p opengroupware -v yes -u no -d no -f yes -b no");
 }
