@@ -1,9 +1,0 @@
-# $Id$
-
-LSWMail
-=======
-
-This bundle contained the old RDBMS based application, OGoWebMail still uses
-some components from this ...
-
-=> TODO: move all required things to OGoWebMail (better: in a new bundle)

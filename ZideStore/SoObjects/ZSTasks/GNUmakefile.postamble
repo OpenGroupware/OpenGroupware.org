@@ -1,5 +1,0 @@
-# $Id: GNUmakefile.postamble 1 2004-08-20 11:17:52Z znek $
-
-after-all ::
-	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
-	  cp ../bundle-info.plist .)

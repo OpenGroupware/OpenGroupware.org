@@ -1,7 +1,0 @@
-2004-09-27  Helge Hess  <helge.hess@skyrix.com>
-
-	* LSWJobHtmlMailPage.wod, LSWJobTextMailPage.wod: major template
-	  cleanups, use new -lastComment accessor in JobUI
-
-	* created ChangeLog
-

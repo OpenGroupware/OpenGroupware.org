@@ -1,7 +1,0 @@
-usr/lib/libOGoNHS.so.*
-usr/lib/libOGoPalmUI.so.*
-usr/lib/libOGoPalm.so.*
-usr/lib/libPPSync.so.*
-usr/lib/opengroupware.org-*/conduits
-usr/lib/opengroupware.org-*/datasources/OGoPalmDS.ds
-usr/lib/opengroupware.org-*/webui/OGoPalm.lso

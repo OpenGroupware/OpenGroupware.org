@@ -1,7 +1,0 @@
-# $Id$
-
-OGoProjectZip_WOBUNDLE_LIBS += \
-	-lOGoProject	\
-	-lNGExtensions
-
-ADDITIONAL_BUNDLE_LIBS += $(OGoProjectZip_WOBUNDLE_LIBS)

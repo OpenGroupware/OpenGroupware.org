@@ -1,9 +1,0 @@
-# $Id$
-
-TODO for OGoUIElements
-======================
-
-SkyTableView
-- only generate ShiftClick with InternetExplorer?
-  - apparently doesn't work with Safari or Firefox
-- does select-all checkbox work with anything else but IE?

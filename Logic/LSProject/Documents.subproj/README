@@ -1,9 +1,0 @@
-# $Id$
-
-DEPRECATED: was moved to LSDocument
-
-Defaults
-========
-
-UseFlatDocumentFileStructure - bool
-UseFoldersForIDRanges        - bool

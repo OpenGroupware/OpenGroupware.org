@@ -1,8 +1,0 @@
-{
-  __OGoMailViewers_CVSID__ = "$Id$";
-  SkyMailViewer_multipartAlternativePreferences = (
-    "multipart/skyrix",
-    "text/plain",
-    "text/html" 
-  );
-}

@@ -1,8 +1,0 @@
-EXPORTS
-	__objc_class_name_LSBaseSearch;
-	__objc_class_name_LSExtendedSearch;
-	__objc_class_name_LSExtendedSearchCommand;
-	__objc_class_name_LSFullSearch;
-	__objc_class_name_LSFullSearchCommand;
-	__objc_class_name_LSGenericSearchRecord;
-	__objc_class_name_LSNewSearchRecordCommand;

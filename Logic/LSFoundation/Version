@@ -1,6 +1,0 @@
-# version file
-
-SUBMINOR_VERSION:=89
-
-# v5.1.87 requires libGDLAccess v1.1.38
-# v5.0.66 requires libEOControl v4.2.39

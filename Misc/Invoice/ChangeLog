@@ -1,7 +1,0 @@
-2004-09-21  Helge Hess  <helge.hess@skyrix.com>
-
-	* fixed sources to compile with OGo 1.0a / SOPE 4.3 (didn't try whether
-	  it actually works)
-
-	* created ChangeLog
-

@@ -1,6 +1,0 @@
-# postprocessing
-
-before-all :: $(LSWMail_DERIVED_RESOURCES)
-
-clean ::
-	rm -f $(LSWMail_DERIVED_RESOURCES)

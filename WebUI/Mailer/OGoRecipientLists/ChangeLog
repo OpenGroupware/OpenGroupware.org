@@ -1,6 +1,0 @@
-2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
-	
-	* SkyMailingListDataSource.m: minor code cleanups, check for success
-	  when writing a mailing list file (v5.1.2)
-	
-	* created ChangeLog

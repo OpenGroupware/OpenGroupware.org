@@ -1,9 +1,0 @@
-
-Content: WOComponentContent {}
-
-IsLoggedIn: WOConditional {
-  condition = session.isLoggedIn;
-}
-Logout: WOHyperlink {
-  action = logout;
-}

@@ -1,9 +1,0 @@
-# version file
-
-SUBMINOR_VERSION:=48
-
-# Requirements:
-#   v5.1.48 requires libOGoProject    v5.1.31
-#   v5.0.42 requires libOGoProject    v5.0.28
-#   v5.0.25 requires libEOControl     v4.2.39
-#   v5.0.12 requires libOGoFoundation v5.0.17

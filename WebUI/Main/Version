@@ -1,7 +1,0 @@
-# NOTE: This is just the version of the OpenGroupware.org executable,
-#       it's *NOT* the version of the whole OpenGroupware.org environment !!!
-#       (each OpenGroupware.org component has it's own version)
-
-SUBMINOR_VERSION:=67
-
-# v5.1.56 requires libNGObjWeb v4.3.41

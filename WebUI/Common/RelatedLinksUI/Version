@@ -1,8 +1,0 @@
-# $Id$
-
-SUBMINOR_VERSION:=9
-
-# Requirements:
-#   v5.0.9 => libNGObjWeb   v4.2.386
-#   v5.0.4 => OGoUIElements v5.0.22
-#   v5.0.4 => BaseUI        v5.0.74

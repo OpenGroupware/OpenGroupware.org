@@ -1,8 +1,0 @@
-# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
-
-ADDITIONAL_BUNDLE_LIBS += \
-	-lOGoFoundation		\
-	-lNGMime -lEOControl	\
-	-lDOM -lSaxObjC
-
-OGoMailInfo_INCLUDE_DIRS += -I../.. 

@@ -1,5 +1,0 @@
-# build post processing
-
-after-OGoBase-all ::
-	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
-	  $(LN_S) -f ../bundle-info.plist .)

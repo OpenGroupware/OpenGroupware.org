@@ -1,5 +1,0 @@
-ZideStore/SoObjects
-===================
-
-The "SoObjects" are the SOPE controller objects which mediate between the
-business logic backend and the frontend protocols.

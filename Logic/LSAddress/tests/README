@@ -1,4 +1,0 @@
-# $Id$
-
-Contains some old Python test programs. Probably don't work anymore since they
-require the Python/ObjC bridge.

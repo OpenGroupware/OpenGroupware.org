@@ -1,6 +1,0 @@
-# $Id$
-
-before-all :: $(BaseUI_DERIVED_RESOURCES)
-
-clean ::
-	rm -f $(BaseUI_DERIVED_RESOURCES)

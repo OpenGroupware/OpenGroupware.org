@@ -1,9 +1,0 @@
-// template bindings
-
-PopUp: WOPopUpButton {
-  list            = self;
-  item            = item;
-  string          = itemLabel;
-  selection       = day;
-  onChange        = ^onChange;
-}

@@ -1,6 +1,0 @@
-// $Id: RelatedLinksUI.strings,v 1.1 2004/09/03 09:10:01 cvsuser Exp $
-
-// localized link types
-linkType_pda_conflicting_palm_entry = "conflicting Palm entry";
-linkType_pda_conflicting_ogo_entry  = "conflicting OGo entry";
-linkType_pda_new_ogo_entry          = "new OGo entry";

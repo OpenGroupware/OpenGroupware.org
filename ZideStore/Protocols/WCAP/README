@@ -1,9 +1,0 @@
-# $Id: README 1 2004-08-20 11:17:52Z znek $
-
-WCAP
-====
-
-A ZideStore product bundle to add support for the Web CAlendaring Protocol
-(WCAP).
-
-Currently it provides read-only access to private appointments and todos.

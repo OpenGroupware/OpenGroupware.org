@@ -1,8 +1,0 @@
-# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
-
-LSWScheduler_WOBUNDLE_LIBS += \
-	-lOGoScheduler -lOGoSchedulerTools -lOGoDocuments \
-	-lGDLAccess	\
-	-lDOM -lSaxObjC
-
-ADDITIONAL_BUNDLE_LIBS += $(LSWScheduler_WOBUNDLE_LIBS)

@@ -1,8 +1,0 @@
-usr/lib/opengroupware.org-*/webui/EnterprisesUI.lso
-usr/lib/opengroupware.org-*/webui/PersonsUI.lso
-usr/lib/opengroupware.org-*/webui/LDAPAccounts.lso
-usr/lib/opengroupware.org-*/webui/AddressUI.lso
-usr/share/opengroupware.org-*/templates/EnterprisesUI
-usr/share/opengroupware.org-*/templates/PersonsUI
-usr/share/opengroupware.org-*/templates/LDAPAccounts
-usr/share/opengroupware.org-*/templates/AddressUI

@@ -1,6 +1,0 @@
-# postprocessing
-
-before-all :: $(OGoSchedulerDock_DERIVED_RESOURCES)
-
-clean ::
-	rm -f $(OGoSchedulerDock_DERIVED_RESOURCES)

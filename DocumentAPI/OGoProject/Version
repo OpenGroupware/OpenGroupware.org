@@ -1,5 +1,0 @@
-# version file
-
-SUBMINOR_VERSION:=31
-
-# v5.0.25 requires libEOControl v4.2.39

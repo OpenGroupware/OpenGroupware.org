@@ -1,8 +1,0 @@
-# $Id$
-
-UI-X
-====
-
-SOPE methods which implement a stateless UI based on ZideStore.
-
-*very* experimental.

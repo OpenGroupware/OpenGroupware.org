@@ -1,4 +1,0 @@
-{
-  MailHeaderFields            = ("to", "cc", "bcc", "reply-to", "from");
-  MailHeaderFieldsWithoutFrom = ("to", "cc", "bcc");
-}

@@ -1,5 +1,0 @@
-# postprocessing
-
-after-OGoPalmDS-all ::
-	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
-	  $(LN_S) -f ../bundle-info.plist .)
