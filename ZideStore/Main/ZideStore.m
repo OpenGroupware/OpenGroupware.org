@@ -29,6 +29,7 @@
 #include <NGObjWeb/SoProductRegistry.h>
 #include <NGObjWeb/SoObjectRequestHandler.h>
 #include <EOControl/EOQualifier.h>
+#include <NGExtensions/NGResourceLocator.h>
 #include "common.h"
 
 @interface ZideStore(WCAP)
@@ -37,6 +38,34 @@
 @end
 
 @implementation ZideStore
+
++ (NSNumber *)port {
+  NSNumber *p;
+  
+  p = [super port];
+  if ([p intValue] != 20000)
+    return p;
+  
+  NSLog(@"Note: using default ZideStore port, 21000");
+  return [NSNumber numberWithInt:21000];
+}
+
++ (int)zsMajorVersion {
+  return ZS_MAJOR_VERSION;
+}
++ (int)zsMinorVersion {
+  return ZS_MINOR_VERSION;
+}
++ (NSString *)zsGNUstepBundlePath {
+  NSString *relName;
+#if COCOA_Foundation_LIBRARY
+  relName = @"";
+#else
+  relName = @"Library/";
+#endif
+  return [NSString stringWithFormat:@"%@ZideStore-%i.%i", relName,
+                      [self zsMajorVersion], [self zsMinorVersion]];
+}
 
 - (NSArray *)zsProductSearchPathes {
   static NSArray *searchPathes = nil;
@@ -50,15 +79,8 @@
   
   env = [[NSProcessInfo processInfo] environment];
   ma  = [NSMutableArray arrayWithCapacity:6];
-
-#if COCOA_Foundation_LIBRARY
-  relName = @"";
-#else
-  relName = @"Library/";
-#endif
-  relName = [NSString stringWithFormat:@"%@ZideStore-%i.%i", relName,
-                      ZS_MAJOR_VERSION, ZS_MINOR_VERSION];
-
+  
+  relName = [[self class] zsGNUstepBundlePath];
 #if COCOA_Foundation_LIBRARY
   tmp = NSSearchPathForDirectoriesInDomains(NSAllLibrariesDirectory,
                                             NSAllDomainsMask,
@@ -116,7 +138,7 @@
   while ((lpath = [pathes nextObject])) {
     NSEnumerator *productNames;
     NSString *productName;
-
+    
     productNames = [[fm directoryContentsAtPath:lpath] objectEnumerator];
     
     while ((productName = [productNames nextObject])) {

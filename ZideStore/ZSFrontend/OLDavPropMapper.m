@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,9 +18,9 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: OLDavPropMapper.m 1 2004-08-20 11:17:52Z znek $
 
 #include "OLDavPropMapper.h"
+#include <NGExtensions/NGResourceLocator.h>
 #include "common.h"
 
 @interface NSObject(Map)
@@ -31,6 +31,26 @@
 
 + (int)version {
   return 3;
+}
+
++ (int)zsfMajorVersion {
+  return ZSF_MAJOR_VERSION;
+}
++ (int)zsfMinorVersion {
+  return ZSF_MINOR_VERSION;
+}
++ (NSString *)zsfShareDirectorySubPath {
+  return [NSString stringWithFormat:@"share/zidestore-%i.%i/",
+                     [self zsfMajorVersion], [self zsfMinorVersion]];
+}
+
++ (NGResourceLocator *)zsfResourceLocator {
+  NGResourceLocator *loc = nil;
+  
+  loc = [NGResourceLocator resourceLocatorForGNUstepPath:
+                             @"Library/Libraries/Resources/ZSFrontend"
+                           fhsPath:[self zsfShareDirectorySubPath]];
+  return loc;
 }
 
 - (void)loadSubPropMapperWithDict:(NSDictionary *)_dict {
@@ -49,40 +69,40 @@
 }
 
 - (id)initWithDictionary:(NSDictionary *)_dict {
+  NGResourceLocator *locator;
   NSString *p;
-  NSBundle *b;
+  
+  locator = [[self class] zsfResourceLocator];
 
-  b = [NSBundle mainBundle];
-
-  self->map =  (_dict != nil)
+  self->map = (_dict != nil)
     ? [_dict mutableCopy] : [[NSMutableDictionary alloc] init];
   
-  if ((p = [b pathForResource:@"E2KAttrMap" ofType:@"plist"]) != nil) {
+  if ((p = [locator lookupFileWithName:@"E2KAttrMap.plist"]) != nil) {
     NSDictionary *tmp;
-
+    
     if ((tmp = [NSDictionary dictionaryWithContentsOfFile:p]) != nil)
       [self->map addEntriesFromDictionary:tmp];
     else
-      [self logWithFormat:@"Couldn't load DAV map .."];
+      [self logWithFormat:@"ERROR: could not load DAV map .."];
   }
   
-  if ((p = [b pathForResource:@"MAPIPropMap" ofType:@"plist"]) != nil) {
+  if ((p = [locator lookupFileWithName:@"MAPIPropMap.plist"]) != nil) {
     NSDictionary *tmp;
     
     if ((tmp = [NSDictionary dictionaryWithContentsOfFile:p]) != nil)
       self->mapiTags = [tmp copy];
     else
-      [self logWithFormat:@"Couldn't load MAPIPropMap property string "
+      [self logWithFormat:@"ERROR: could not load MAPIPropMap property string "
             @"map .."];
   }
 
-  if ((p = [b pathForResource:@"MAPIPropIDMap" ofType:@"plist"]) != nil) {
+  if ((p = [locator lookupFileWithName:@"MAPIPropIDMap.plist"]) != nil) {
     NSDictionary *tmp;
     
     if ((tmp = [NSDictionary dictionaryWithContentsOfFile:p]) != nil)
       self->mapiIDs = [tmp copy];
     else
-      [self logWithFormat:@"Couldn't load MAPIPropMap property string "
+      [self logWithFormat:@"ERROR: could not load MAPIPropMap property string "
             @"map .."];
     [self loadSubPropMapperWithDict:_dict];
   }

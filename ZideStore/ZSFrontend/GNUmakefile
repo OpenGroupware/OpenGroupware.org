@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include $(GNUSTEP_MAKEFILES)/common.make
 include ./Version
@@ -52,6 +52,11 @@ libZSFrontend_OBJC_FILES = \
 	OLDavPropMapper.m	\
 	SxMapEnumerator.m	\
 	EOQualifier+Additions.m	\
+
+libZSFrontend_RESOURCES += \
+	E2KAttrMap.plist	\
+	MAPIPropIDMap.plist	\
+	MAPIPropMap.plist	\
 
 libZSFrontend_SUBPROJECTS = Mails
 

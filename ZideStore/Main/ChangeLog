@@ -1,3 +1,9 @@
+2004-09-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* ZideStore.m: moved some mappings to ZSFrontend, rewrite startup on
+	  default port 20000 to port 21000 to avoid clashes with no WOPort
+	  being configured (v1.3.83)
+
 2004-09-14  Helge Hess  <helge.hess@skyrix.com>
 
 	* ZideStore.m: use ZS version from makefile to build bundle lookup

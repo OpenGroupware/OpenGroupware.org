@@ -1,3 +1,12 @@
+2004-09-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* v1.3.89
+
+	* OLDavPropMapper.m: locate mapping files using NGResourceLocator
+
+	* moved in mapping lists from main executable, install them in share
+	  locations
+
 2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxFolder.h: fixed a compile warning (v1.3.88)
