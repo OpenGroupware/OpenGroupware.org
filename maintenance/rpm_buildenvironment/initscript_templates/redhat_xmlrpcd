@@ -19,10 +19,19 @@ BIN="XMLRPCD_INIT_PREFIX/sbin/XMLRPCD_INIT_VERSION"
 PID_FILE="/var/run/XMLRPCD_INIT_VERSION.pid"
 LOG="/var/log/opengroupware/XMLRPCD_INIT_VERSION.log"
 PLIST="xmlrpcd"
+SLEEP=3
 
 # pull in sysconfig settings
 # 
 [ -f /etc/sysconfig/XMLRPCD_INIT_VERSION ] && . /etc/sysconfig/XMLRPCD_INIT_VERSION
+
+sleep_dots()
+{
+  for (( s=1; s<=${SLEEP}; s++ )); do
+    sleep 1
+    echo -en "."
+  done
+}
 
 start()
 {
@@ -31,8 +40,10 @@ start()
     echo -en "${PROG} already runs!" && failure
     echo -en "\n"
   else
-    echo -en $"Starting ${PROG}:"
+    echo -en $"Starting ${PROG} "
     su - ${USER} -s /bin/bash -c "exec ${BIN}" >> ${LOG} 2>&1 &
+    sleep_dots
+    echo -en ":"
     echo $! > ${PID_FILE}
     PID=`/sbin/pidof "${BIN}"`
     if [ -n "${PID}" ]; then
@@ -59,16 +70,18 @@ status()
 
 stop()
 {
-  echo -en $"Stopping ${PROG}:"
+  echo -en $"Stopping ${PROG} "
   if [ -f "${PID_FILE}" ] ; then
     PID=`cat ${PID_FILE}`
     if [ "`kill ${PID} >> ${LOG} 2>&1`" ] ; then
+      sleep_dots
+      echo -en ":"
       success
       rm -f ${PID_FILE}
       rm -f /var/lock/subsys/${PROG}
     else
       PID="`pgrep -f ${BIN}`"
-      kill -9 ${PID} && success || failure
+      kill -9 ${PID} 2>/dev/null && sleep_dots && echo -en ":" && success || failure
       rm -f ${PID_FILE}
       rm -f /var/lock/subsys/${PROG}
     fi
@@ -76,7 +89,7 @@ stop()
     killproc ${PROG}
     RETVAL=$?
     echo -en "\n"
-    if [ ${RETVAL} -eq 0 ];then
+    if [ ${RETVAL} -eq 0 ]; then
       rm -f /var/lock/subsys/${PROG}
       rm -f ${PID_FILE}
     fi
@@ -89,13 +102,11 @@ showdefaults()
 {
   su - ${USER} -s /bin/bash -c "exec Defaults read ${PLIST}"
 }
-  
-
 
 restart()
 {
-        stop
-        start
+  stop
+  start
 }
 
 [ -x ${BIN} ] || exit 0
