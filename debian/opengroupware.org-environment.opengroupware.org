@@ -1,7 +1,28 @@
 #!/bin/sh
 #
-# Initscript for the Openroupware.org application server
+# Initscript for the OpenGroupware.org application server
 #
+# This init script can handle multiple instances of OpenGroupware.org.
+# Each instance needs a subdirectory in /etc/opengroupware.org with its
+# instance name. In this directory there must be an init.conf which sets
+# the following variables:
+# ------------------------------------------------------------------------
+# USER=
+# WEBUI_VERSION=
+# WEBUI_PORT=
+# ZIDESTORE_VERSION=
+# ZIDESTORE_PORT=
+# XMLRPCD_VERSION=
+# XMLRPCD_PORT=
+# NHSD_VERSION=
+# ------------------------------------------------------------------------
+# These variables specify the user that shall execute the daemons (which
+# must exist and needs the necessary application defaults set), as well
+# as versions and listening ports for the respective daemons.
+#
+# You can use the ogo-create-instance script to easily create a user with
+# all necessary defaults set, along with a proper instance entry in
+# /etc/opengroupware.org.
 
 WEBUIAPP=ogo-webui
 ZSAPP=ogo-zidestore
