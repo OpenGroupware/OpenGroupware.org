@@ -1,3 +1,7 @@
+2004-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* commandbundle.make: added library lookup pathes for FHS
+
 2004-08-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* commandbundle.make: if FHS_INSTALL_ROOT is defined, install bundles

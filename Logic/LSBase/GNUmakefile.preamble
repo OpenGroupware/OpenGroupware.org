@@ -19,3 +19,5 @@ endif
 ifeq ($(FOUNDATION_LIB),apple)
 LSBase_BUNDLE_LIBS += -lNGLdap -lNGMime -lDOM -lSaxObjC
 endif
+
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib

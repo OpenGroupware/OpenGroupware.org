@@ -85,3 +85,5 @@ move-to-fhs :: move-bundles-to-fhs
 after-install :: move-to-fhs
 
 endif
+
+ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib
