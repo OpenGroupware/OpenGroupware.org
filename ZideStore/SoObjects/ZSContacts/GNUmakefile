@@ -2,12 +2,13 @@
 
 include ../common.make
 
-BUNDLE_NAME = Contacts
+BUNDLE_NAME  = Contacts
+LIBRARY_NAME = libZSContacts
 
 Contacts_PRINCIPAL_CLASS = ContactsProduct
+Contacts_OBJC_FILES      = Product.m
 
-Contacts_OBJC_FILES = \
-	Product.m		\
+libZSContacts_OBJC_FILES = \
 	SxAddress.m		\
 	SxAddressFolder.m	\
 	SxVCardContactRenderer.m\
@@ -31,5 +32,6 @@ Contacts_RESOURCE_FILES += 	\
 	product.plist
 
 -include GNUmakefile.preamble
+include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble

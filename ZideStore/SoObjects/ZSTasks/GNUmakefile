@@ -2,12 +2,13 @@
 
 include ../common.make
 
-BUNDLE_NAME = Tasks
+BUNDLE_NAME  = Tasks
+LIBRARY_NAME = libZSTasks
 
 Tasks_PRINCIPAL_CLASS = TasksProduct
+Tasks_OBJC_FILES      = Product.m
 
-Tasks_OBJC_FILES = \
-	Product.m		\
+libZSTasks_OBJC_FILES = \
 	SxTask.m		\
 	SxTaskStatus.m		\
 	SxTaskFolder.m		\
@@ -17,13 +18,12 @@ Tasks_OBJC_FILES = \
 	SxDavTaskCreate.m	\
 	SxDavTaskChange.m	\
 
-Tasks_BUNDLE_LIBS += -lNGObjWeb
-
 Tasks_RESOURCE_FILES += \
 	bundle-info.plist	\
 	Version			\
 	product.plist
 
 -include GNUmakefile.preamble
+include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble

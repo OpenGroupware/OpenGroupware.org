@@ -1,3 +1,7 @@
+2004-08-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* added a library, so that linking on MacOSX works (v1.3.78)
+
 2004-07-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAppointment.m, SxAppointment+Participants.m, SxAppointmentFolder.m:

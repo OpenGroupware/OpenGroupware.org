@@ -1,6 +1,8 @@
 # common makefile for bundles
 
 include $(GNUSTEP_MAKEFILES)/common.make
+include ./Version
+include ../../Version
 
 OGoROOT=../../..
 
@@ -17,4 +19,5 @@ ADDITIONAL_INCLUDE_DIRS += \
 
 ADDITIONAL_LIB_DIRS += \
 	-L../../ZSFrontend/$(GNUSTEP_OBJ_DIR)	\
-	-L../../ZSBackend/$(GNUSTEP_OBJ_DIR)
+	-L../../ZSBackend/$(GNUSTEP_OBJ_DIR)	\
+	-L./$(GNUSTEP_OBJ_DIR)

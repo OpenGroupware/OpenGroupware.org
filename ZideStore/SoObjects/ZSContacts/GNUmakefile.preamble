@@ -1,8 +1,12 @@
 # $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
 
-Contacts_BUNDLE_LIBS += \
+USED_LIBS = \
         -lZSFrontend -lZSBackend \
 	-lGDLAccess \
         -lNGObjWeb -lNGScripting \
 	-lNGMime -lNGStreams -lNGExtensions -lEOControl \
 	-lXmlRpc -lDOM -lSaxObjC
+
+libZSContacts_LIBRARIES_DEPEND_UPON += $(USED_LIBS)
+
+Contacts_BUNDLE_LIBS += $(USED_LIBS) -lZSContacts
