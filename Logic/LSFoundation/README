@@ -1,4 +1,4 @@
-# $Id$
+# $Id: README 1 2004-08-20 11:17:52Z znek $
 
 LSFoundation
 ============
@@ -29,7 +29,7 @@ LSAuthLDAPServerPort           389
 LSUseLowercaseLogin            NO
 AllowSpacesInLogin             NO
 
-LSAdaptor                      PostgreSQL72
+LSAdaptor                      PostgreSQL
 LSConnectionDictionary         
 LSModelName                    
 

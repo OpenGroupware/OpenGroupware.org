@@ -282,7 +282,7 @@ static NSString *OGoBundlePathSpecifier        = nil;
   
   adaptorName = [defs stringForKey:@"LSAdaptor"];
   if (adaptorName == nil)
-    adaptorName = @"PostgreSQL72";
+    adaptorName = @"PostgreSQL";
   
   self->adaptor = [[EOAdaptor adaptorWithName:adaptorName] retain];
   

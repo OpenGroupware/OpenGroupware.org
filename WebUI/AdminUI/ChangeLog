@@ -1,3 +1,8 @@
+2004-08-27  Helge Hess  <helge@dogbert.in.skyrix.com>
+
+	* Resources/NSGlobalDomain.plist: removed PostgreSQL72 (is now named
+	  PostgreSQL) (v5.1.30)
+
 2004-07-26  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyDefaultsEditor.m: fixed for new SOPE WOPopUpButton behaviour

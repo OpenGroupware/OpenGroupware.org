@@ -34,7 +34,7 @@
      {
      name = LSAdaptor;
      critical = YES;
-     values = ("FrontBase2", "PostgreSQL", "PostgreSQL72", "Sybase10", "Oracle7");
+     values = ("FrontBase2", "PostgreSQL", "Sybase10", "Oracle7");
      English = {
        title = "Used database adaptor to connect to the database";
        info = "Select the database adaptor that matches your installed database. Be sure to know what you are doing, selecting the wrong adapter will break SKYRiX. If everything works right now, there's no point changing this setting.";
