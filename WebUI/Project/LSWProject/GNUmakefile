@@ -52,13 +52,6 @@ LSWProject_RESOURCE_FILES += Version
 
 LSWProject_LANGUAGES = English German
 
-LSWProject_LOCALIZED_RESOURCE_FILES = LSWProject.ccfg
-LSWProject_DERIVED_RESOURCES        = German.lproj/LSWProject.ccfg
-
-German.lproj/LSWProject.ccfg : English.lproj/LSWProject.ccfg
-	echo "// generated from $(<), do not modify !" >$@
-	cat $< >>$@
-
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble

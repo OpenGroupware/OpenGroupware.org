@@ -39,18 +39,9 @@ OGoMailViewers_COMPONENTS = \
 
 OGoMailViewers_LANGUAGES = English German
 
-OGoMailViewers_LOCALIZED_RESOURCE_FILES = OGoMailViewers.ccfg
-
 OGoMailViewers_RESOURCE_FILES += \
 	Defaults.plist	\
 	Version		\
-
-OGoMailViewers_DERIVED_RESOURCES += \
-	German.lproj/OGoMailViewers.ccfg
-
-German.lproj/OGoMailViewers.ccfg : English.lproj/OGoMailViewers.ccfg
-	echo "// generated from $(<), do not modify !" >$@
-	cat $< >>$@
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make

@@ -21,16 +21,8 @@ LSWMail_COMPONENTS = \
         LSWDeletedObjectViewer.wo	\
 
 LSWMail_LANGUAGES = English German 
-LSWMail_LOCALIZED_RESOURCE_FILES = LSWMail.ccfg
 
 LSWMail_RESOURCE_FILES += Version
-
-LSWMail_DERIVED_RESOURCES = \
-	German.lproj/LSWMail.ccfg	\
-
-German.lproj/LSWMail.ccfg : English.lproj/LSWMail.ccfg
-	echo "// generated from $(<), do not modify !" >$@
-	cat $< >>$@
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make

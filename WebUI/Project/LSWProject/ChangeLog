@@ -1,3 +1,7 @@
+2004-09-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: moved component config to Templates (v5.1.41)
+
 2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.40

@@ -1,3 +1,7 @@
+2004-09-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: moved components config to Templates (v5.1.19)
+
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyMailIcon.m: fixed a MacOSX warning (v5.1.18)
