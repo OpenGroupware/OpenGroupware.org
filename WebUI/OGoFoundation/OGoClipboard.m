@@ -150,6 +150,7 @@ static BOOL debugFavorites = YES;
   return [self->favorites objectAtIndex:_idx];
 }
 - (NSEnumerator *)objectEnumerator {
+  /* used by SkyProject4NewLink */
   return [self->favorites objectEnumerator];
 }
 

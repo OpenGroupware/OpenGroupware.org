@@ -43,6 +43,7 @@
 
 @end
 
+#include <OGoFoundation/OGoClipboard.h>
 #include <NGExtensions/NSString+Ext.h>
 #include "common.h"
 
@@ -154,7 +155,7 @@ static BOOL debugOn = NO;
   if (self->favorites)
     return self->favorites;
 
-  of = [[[self session] favorites] objectEnumerator];
+  of = [[(OGoSession *)[self session] favorites] objectEnumerator];
   t  = [NSMutableArray arrayWithCapacity:8];
   while ((f = [of nextObject])) {
     id gid;

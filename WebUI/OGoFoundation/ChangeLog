@@ -1,3 +1,8 @@
+2004-12-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoClipboard.h: added -objectEnumerator prototype (fixes a warning)
+	  (v5.1.79)
+
 2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoClipboard.m: properly deal with global-id favorites (v5.1.78)

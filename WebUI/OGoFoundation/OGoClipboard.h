@@ -30,7 +30,7 @@
   Maintains a LIFO list of clipped items.
 */
 
-@class NSUserDefaults, NSMutableArray;
+@class NSUserDefaults, NSMutableArray, NSEnumerator;
 
 @interface OGoClipboard : NSObject
 {
@@ -48,6 +48,7 @@
 
 - (void)addObject:(id)_fav;
 - (void)removeObject:(id)_fav;
+- (NSEnumerator *)objectEnumerator;
 
 @end
 

@@ -1,6 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=59
+SUBMINOR_VERSION:=60
 
 # Requirements:
 #   v5.1.48 requires libOGoProject    v5.1.31
