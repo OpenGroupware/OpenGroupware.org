@@ -117,16 +117,15 @@ static BOOL debugZSICal = NO;
   r        = [(WOContext *)_ctx response];
 
   if (dateEnum == nil) {
-    return [NSException exceptionWithHTTPStatus:500
+    return [NSException exceptionWithHTTPStatus:500 /* server error */
                         reason:@"could not fetch iCals"];
   }
-
+  
   [r setHeader:@"text/calendar" forKey:@"content-type"];
-  [r appendContentString:@"BEGIN:VCALENDAR\r\n"];
-  [r appendContentString:@"METHOD:REQUEST\r\n"];
-  [r appendContentString:@"PRODID:OpenGroupware.org ZideStore 1.2\r\n"];
-  [r appendContentString:@"VERSION:2.0\r\n"];
-
+  [r appendContentString:@"BEGIN:VCALENDAR\r\nMETHOD:REQUEST\r\nPRODID:"];
+  [r appendContentString:OGo_ZS_PRODID];
+  [r appendContentString:@"\r\nVERSION:2.0\r\n"];
+  
   while ((date = [dateEnum nextObject]))
     [r appendContentString:[date objectForKey:@"iCalData"]];
   
@@ -136,8 +135,10 @@ static BOOL debugZSICal = NO;
 }
 
 /* PUT */
+
 static id<NSObject,SaxXMLReader> parser = nil;
 static SaxObjectDecoder          *sax   = nil;
+
 - (id)parseICalDataInContext:(id)_ctx {
   id request;
   id content;
@@ -347,15 +348,13 @@ static SaxObjectDecoder          *sax   = nil;
   r = [(WOContext *)_ctx response];
       
   [r setHeader:@"text/calendar" forKey:@"content-type"];
-  [r appendContentString:@"BEGIN:VCALENDAR\r\n"];
-  [r appendContentString:@"METHOD:REQUEST\r\n"];
-  [r appendContentString:@"PRODID:OpenGroupware.org ZideStore 1.2\r\n"];
-  [r appendContentString:@"VERSION:2.0\r\n"];
+  [r appendContentString:@"BEGIN:VCALENDAR\r\nMETHOD:REQUEST\r\nPRODID:"];
+  [r appendContentString:OGo_ZS_PRODID];
+  [r appendContentString:@"\r\nVERSION:2.0\r\n"];
   
-  while ((iCal = [e nextObject])) {
+  while ((iCal = [e nextObject]) != nil)
     [r appendContentString:[iCal objectForKey:@"iCalData"]];
-  }
-
+  
   [r appendContentString:@"END:VCALENDAR"];
 
   return r;

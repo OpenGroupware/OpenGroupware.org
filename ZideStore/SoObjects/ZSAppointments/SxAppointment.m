@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -202,6 +202,7 @@ static BOOL createNewAptWhenNotFound = YES;
 - (id)createAptWithInfo:(NSDictionary *)_info inContext:(id)_ctx {
   // TODO: should we make a redirect to the created file? probably confuses
   //       clients but is likely to be the correct thing to do.
+  // TODO: added 
   NSMutableArray      *keys;
   NSMutableDictionary *changeSet;
   NSException    *error;
@@ -252,6 +253,7 @@ static BOOL createNewAptWhenNotFound = YES;
     }
     else {
       id account;
+      
       account = [[self commandContextInContext:_ctx] valueForKey:LSAccountKey];
       participants = [NSArray arrayWithObject:account];
     }
@@ -536,7 +538,7 @@ static BOOL createNewAptWhenNotFound = YES;
   if ([ctype hasPrefix:@"message/rfc822"])
     return [self putMessageAction:_ctx];
   
-  if ([ctype hasPrefix:@"text/vcalendar"])
+  if ([ctype hasPrefix:@"text/calendar"])
     return [self putICalendarAction:_ctx];
   
   if ([ctype length] == 0) {
@@ -611,8 +613,9 @@ static BOOL createNewAptWhenNotFound = YES;
   m = [NSMutableString stringWithCapacity:[ical length] + 256];
   [m appendString:@"BEGIN:VCALENDAR\r\n"];
   [m appendString:@"METHOD:REQUEST\r\n"];
-  [m appendString:@"PRODID:OpenGroupware.org ZideStore 1.2\r\n"];
-  [m appendString:@"VERSION:2.0\r\n"];
+  [m appendString:@"PRODID:"];
+  [m appendString:OGo_ZS_PRODID];
+  [m appendString:@"\r\nVERSION:2.0\r\n"];
   [m appendString:ical];
   [m appendString:@"END:VCALENDAR"];
   return m;

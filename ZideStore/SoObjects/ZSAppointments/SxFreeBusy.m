@@ -237,12 +237,12 @@ static NSArray *startDateOrdering = nil;
 {
   [_response appendContentString:
              @"BEGIN:VCALENDAR\r\n"
-             @"VERSION:2.0\r\n"
-             @"PRODID:-//OpenGroupware.org/ZideStore/appointments v.1.2//\r\n"
-             @"BEGIN:VFREEBUSY\r\n"];
+             @"VERSION:2.0\r\nPRODID:"];
+  [_response appendContentString:OGo_ZS_PRODID];
+  [_response appendContentString:@"\r\nBEGIN:VFREEBUSY\r\n"];
   
   [self _appendICalOrganizerAttribute:_email
-        toResponse:_response inContext:_ctx];
+	toResponse:_response inContext:_ctx];
   [self _appendICalAttendeeAttribute:_email
         toResponse:_response inContext:_ctx];
   [self _appendICalTimestampAttributeToResponse:_response
@@ -265,36 +265,36 @@ static NSArray *startDateOrdering = nil;
   options:(NSDictionary *)_opts
   toResponse:(id)_response inContext:(id)_ctx
 {
-  NSMutableSet *activeDates = [NSMutableSet setWithCapacity:8];
-  int interval;
-
-  unsigned max, i;
-  id date;
+  NSMutableSet   *activeDates;
   NSCalendarDate *start, *end, *cur, *curEnd;
-
+  unsigned max, i;
+  int      interval;
+  id       date;
+  
+  activeDates = [NSMutableSet setWithCapacity:8];
   interval = [[_opts objectForKey:@"interval"] intValue];
   if (interval < 10) interval = 30; // minutes
 
 #if 0
-  if (![_dates count]) {
+  if ([_dates count] == 0) {
     [_response appendContentString:@"c"];
     return;
   }
 #endif
 
-  max    = [_dates count];
-  cur    = _start;
-  i      = 0;
-
+  max = [_dates count];
+  cur = _start;
+  i   = 0;
+  
   while (([_end earlierDate:cur] == cur) && (![_end isEqual:cur])) {
     // end of period
     curEnd = [cur dateByAddingYears:0 months:0 days:0
                   hours:0 minutes:interval seconds:0];
-    // check active dates
-    if ([activeDates count]) {
+    /* check active dates */
+    if ([activeDates count] > 0) {
       NSEnumerator *e = [[activeDates allObjects] objectEnumerator];
 
-      while ((date = [e nextObject])) {
+      while ((date = [e nextObject]) != nil) {
         start = [date objectForKey:@"startDate"];
         end   = [date objectForKey:@"endDate"];
 
@@ -334,12 +334,11 @@ static NSArray *startDateOrdering = nil;
       // here do more stuff for other busy types
       [_response appendContentString:busyType]; 
     }
-    else {
+    else
       [_response appendContentString:@"0"]; // FREE
-    }
-
-    // next date
-    cur    = curEnd;
+    
+    /* next date */
+    cur = curEnd;
   }
 }
   
@@ -350,9 +349,9 @@ static NSArray *startDateOrdering = nil;
   toResponse:(id)_response inContext:(id)_ctx
 {
 
-  if ([_email hasPrefix:@"SMPT:"])
+  if ([_email hasPrefix:@"SMTP:"])
     _email = [_email substringFromIndex:5];
-
+  
   [_response appendContentString:
              @"<a:response xmlns:a=\"WM\">\r\n"
              @"  <a:recipient>\r\n"

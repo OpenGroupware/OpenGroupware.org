@@ -1,3 +1,18 @@
+2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.3.83
+
+	* SxICalendar.m: use ical product-id from common.h
+	
+	* SxFreeBusy.m: use ical product-id from common.h, fixed a typo in an
+	  email address check (SMTP vs SMPT), minor code cleanups
+	
+	* SxAppointment.m: check for text/calendar instead of text/vcalendar 
+	  in PUT actions, use ical product-id from common.h
+	
+	* common.h: define a string to be used as the ZideStore product id in
+	  iCal files
+	
 2004-10-21  Helge Hess  <helge.hess@skyrix.com>
 
 	* SxAppointment.m: return HTTP status 201 (Created) after successful 

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -38,3 +38,5 @@
 
 #include <LSFoundation/LSFoundation.h>
 #include <LSFoundation/LSCommandContext.h>
+
+#define OGo_ZS_PRODID @"-//OpenGroupware.org/ZideStore 1.3//"
