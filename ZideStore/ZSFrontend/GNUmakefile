@@ -3,14 +3,14 @@
 include $(GNUSTEP_MAKEFILES)/common.make
 include ./Version
 
-LIBRARY_NAME = libZideStoreFrontend
+LIBRARY_NAME = libZSFrontend
 
-libZideStoreFrontend_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libZSFrontend_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 
-libZideStoreFrontend_HEADER_FILES_DIR         = .
-libZideStoreFrontend_HEADER_FILES_INSTALL_DIR = /ZideStore12/Frontend
+libZSFrontend_HEADER_FILES_DIR         = .
+libZSFrontend_HEADER_FILES_INSTALL_DIR = /ZSFrontend
 
-libZideStoreFrontend_HEADER_FILES = \
+libZSFrontend_HEADER_FILES = \
 	ExStoreEntryID.h	\
 	NSObject+ExValues.h	\
 	NSString+csv.h		\
@@ -29,7 +29,7 @@ libZideStoreFrontend_HEADER_FILES = \
 	SxMapEnumerator.h	\
 	EOQualifier+Additions.h	\
 
-libZideStoreFrontend_OBJC_FILES = \
+libZSFrontend_OBJC_FILES = \
 	SxFolder.m		\
 	SxFolder+DAV.m		\
 	SxObject.m		\
@@ -51,7 +51,7 @@ libZideStoreFrontend_OBJC_FILES = \
 	SxMapEnumerator.m	\
 	EOQualifier+Additions.m	\
 
-libZideStoreFrontend_SUBPROJECTS = Mails
+libZSFrontend_SUBPROJECTS = Mails
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make

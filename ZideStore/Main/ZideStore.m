@@ -23,8 +23,8 @@
 #include "ZideStore.h"
 #include "SxAuthenticator.h"
 
-#include "Frontend/SxUserFolder.h"
-#include "Frontend/SxPublicFolder.h"
+#include <ZSFrontend/SxUserFolder.h>
+#include <ZSFrontend/SxPublicFolder.h>
 
 #include <LSFoundation/OGoContextManager.h>
 #include <NGObjWeb/SoProductRegistry.h>

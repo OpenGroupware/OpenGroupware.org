@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# ZideStore makefile
 
 include $(GNUSTEP_MAKEFILES)/common.make
 
@@ -25,35 +25,11 @@ ZideStore_RESOURCE_FILES += \
 	Maps/PersonalFolderInfo.plist	\
 
 ZideStore_WEBSERVER_RESOURCE_FILES += \
-	PrefsUI/English.lproj/*.gif 	\
-	PrefsUI/English.lproj/*.jpg 	\
-	PrefsUI/English.lproj/*.ico	\
-	PrefsUI/English.lproj/*.css	\
-
-# aggregate
-
-SUBPROJECTS = \
-	Backend		\
-	Frontend	\
-	Products	\
-	\
-	PrefsUI		\
-
-# some products do not yet compile with Cocoa Foundation
-ifneq ($(FOUNDATION_LIB),apple)
-
-SUBPROJECTS += \
-	EvoConnect	\
-	WCAP		\
-	RSS		\
-
-endif
-
-# make
-
--include ZLConnect.make
+	../PrefsUI/English.lproj/*.gif 	\
+	../PrefsUI/English.lproj/*.jpg 	\
+	../PrefsUI/English.lproj/*.ico	\
+	../PrefsUI/English.lproj/*.css	\
 
 -include GNUmakefile.preamble
-include $(GNUSTEP_MAKEFILES)/aggregate.make
 include $(GNUSTEP_MAKEFILES)/woapp.make
 -include GNUmakefile.postamble

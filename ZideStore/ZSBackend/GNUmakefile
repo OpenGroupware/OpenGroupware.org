@@ -3,14 +3,14 @@
 include $(GNUSTEP_MAKEFILES)/common.make
 include ./Version
 
-LIBRARY_NAME = libZideStoreBackend
+LIBRARY_NAME = libZSBackend
 
-libZideStoreBackend_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libZSBackend_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 
-libZideStoreBackend_HEADER_FILES_DIR         = .
-libZideStoreBackend_HEADER_FILES_INSTALL_DIR = /ZideStore12/Backend
+libZSBackend_HEADER_FILES_DIR         = .
+libZSBackend_HEADER_FILES_INSTALL_DIR = /ZSBackend
 
-libZideStoreBackend_HEADER_FILES = \
+libZSBackend_HEADER_FILES = \
 	NSObject+DBColumns.h		\
 	NSString+DBName.h		\
 	NSString+rtf.h			\
@@ -28,7 +28,7 @@ libZideStoreBackend_HEADER_FILES = \
 	SxUpdateEnterprise.h		\
 	SxUpdatePerson.h
 
-libZideStoreBackend_OBJC_FILES = \
+libZSBackend_OBJC_FILES = \
 	SxBackendMaster.m		\
 	SxBackendManager.m		\
 	SxSetCacheManager.m		\
@@ -44,7 +44,7 @@ libZideStoreBackend_OBJC_FILES = \
 	\
 	NSObject+DBColumns.m
 
-libZideStoreBackend_SUBPROJECTS = Contacts Appointments
+libZSBackend_SUBPROJECTS = Contacts Appointments
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make
