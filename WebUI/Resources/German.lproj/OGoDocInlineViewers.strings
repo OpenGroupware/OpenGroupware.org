@@ -1,0 +1,10 @@
+access             = "Zugriffsrechte";
+accountName        = "Account";
+attributes         = "Attribute";
+contents           = "Inhalt";
+download           = "Laden";
+edit               = "bearbeiten";
+mimetype           = "MIME Typ";
+size               = "Größe";
+standardAttributes = "Standard Attribute";
+subject            = "Titel";
