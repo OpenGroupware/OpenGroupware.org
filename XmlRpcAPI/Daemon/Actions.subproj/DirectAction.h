@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: DirectAction.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __SkyXmlRpcServer__DirectAction_H__
 #define __SkyXmlRpcServer__DirectAction_H__
@@ -35,6 +35,7 @@
 #define XMLRPC_FAULT_INTERNAL_ERROR    5
 #define XMLRPC_FAULT_LOCK_ERROR        6
 #define XMLRPC_MISSING_PERMISSIONS     7
+#define XMLRPC_FAULT_NOT_FOUND         404
 
 @interface DirectAction : WODirectAction
 

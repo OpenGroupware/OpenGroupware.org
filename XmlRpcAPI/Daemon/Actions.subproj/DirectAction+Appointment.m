@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "DirectAction.h"
 #include "common.h"
@@ -201,9 +200,9 @@
   */  
   EOFetchSpecification *fSpec;
   
-  fSpec = [[EOFetchSpecification alloc] initWithBaseValue:_arg];
+  fSpec = [[[EOFetchSpecification alloc] initWithBaseValue:_arg] autorelease];
   [fSpec setEntityName:@"Date"];
-
+  
   if ([_arg respondsToSelector:@selector(objectForKey:)]) {
     SkyAppointmentQualifier *qual;
     id                      tmp;
@@ -213,7 +212,7 @@
     [fSpec setQualifier:qual];
     [qual release]; qual = nil;
   }
-  return [fSpec autorelease];
+  return fSpec;
 }
 
 - (NSArray *)appointment_fetchAction:(id)_arg {
@@ -274,10 +273,17 @@
 }
 
 - (id)appointment_getByIdAction:(id)_arg:(NSArray *)_attributes {
-  return [self getDocumentById:_arg
-               dataSource:[self appointmentDataSource]
-               entityName:@"Date"
-               attributes:_attributes];
+  id result;
+
+  result = [self getDocumentById:_arg
+		 dataSource:[self appointmentDataSource]
+		 entityName:@"Date"
+		 attributes:_attributes];
+  if (result == nil) {
+    return [self faultWithFaultCode:XMLRPC_FAULT_NOT_FOUND
+		 reason:@"did not find appointment with given id"];
+  }
+  return result;
 }
 
 - (NSArray *)appointment_fetchIdsAction:(id)_arg {
@@ -374,34 +380,37 @@
 
   appointment = (SkyAppointmentDocument *)[self getDocumentByArgument:_arg];
 
-  if (appointment == nil)
+  if (appointment == nil) {
     return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_RESULT
                  reason:@"No appointment for argument found"];
+  }
   
   [[self appointmentDataSource] deleteObject:appointment];
   return [NSNumber numberWithBool:YES];
 }
 
 - (id)appointment_setParticipantsAction:(id)_app :(id)_parts {
-  SkyAppointmentDocument *app   = nil;
-  NSArray                *gids  = nil;
-  NSMutableArray         *parts = nil;
+  SkyAppointmentDocument *app;
+  NSArray                *gids;
+  NSMutableArray         *parts;
   int                    i, cnt;
+  
+  app = (SkyAppointmentDocument *)[self getDocumentByArgument:_app];
 
-  app   = (SkyAppointmentDocument *)[self getDocumentByArgument:_app];
-
-  if (app == nil)
+  if (app == nil) {
     return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_RESULT
                  reason:@"No appointment for argument found"];
+  }
 
   gids  = [[[self commandContext] documentManager] globalIDsForURLs:_parts];
 
-  if ([gids count] == 0)
+  if ([gids count] == 0) {
     return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
                  reason:@"Invalid participants supplied"];
-
+  }
+  
   cnt   = [gids count];
-  parts = [[NSMutableArray alloc] initWithCapacity:cnt];
+  parts = [NSMutableArray arrayWithCapacity:cnt];
   
   for (i = 0; i < cnt; i++) {
     NSDictionary *part;
@@ -412,7 +421,7 @@
     
     part = [[NSDictionary alloc] initWithObjectsAndKeys:cid,@"companyId", nil];
     [parts addObject:part];
-    [part release];
+    [part release]; part = nil;
   }
   [app setParticipants:parts];
   [app save];

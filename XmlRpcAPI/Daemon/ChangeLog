@@ -1,3 +1,14 @@
+2004-12-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.52
+
+	* Actions.subproj/DirectAction.m: code cleanups, improved handling of
+	  invalid ids
+
+	* Actions.subproj/DirectAction+Appointment.m: fixed a small memory
+	  leak, returns faultcode 404 if the appointment for 'getById' could
+	  not be found
+
 2004-12-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Actions.subproj/DirectAction+Person.m: copy 'isPrivate' value from

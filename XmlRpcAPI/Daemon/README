@@ -1,6 +1,9 @@
-# $Id$
+XML-RPC Daemon
+==============
 
 TODO: write much more
+
+Note: there is an API PDF document available on the docs website.
 
 General Works
 =============
@@ -18,3 +21,5 @@ XMLRPC_FAULT_MISSING_CONTEXT   3
 XMLRPC_FAULT_INVALID_RESULT    4
 XMLRPC_FAULT_INTERNAL_ERROR    5
 XMLRPC_FAULT_LOCK_ERROR        6
+XMLRPC_MISSING_PERMISSIONS     7
+XMLRPC_FAULT_NOT_FOUND         404

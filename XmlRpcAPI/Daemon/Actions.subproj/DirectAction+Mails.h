@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: DirectAction+Mails.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __DirectAction_Mails_H__
 #define __DirectAction_Mails_H__
@@ -108,7 +108,7 @@ static inline BOOL tryLock(id self) {
           @"Locked since:%@ now:%@.", __PRETTY_FUNCTION__, self, ld,
           [NSDate date]);
     [[self faultWithFaultCode:XMLRPC_FAULT_LOCK_ERROR
-           format:@"Couldn`t lock mail tmp directory. locked since %@",
+           format:@"Could not lock mail tmp directory. locked since %@",
            ld] raise];
   }
   return YES;

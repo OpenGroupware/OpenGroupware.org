@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "DirectAction.h"
 #include "common.h"
@@ -77,9 +76,9 @@
 }
 
 - (id)getDocumentById:(id)_arg
-    dataSource:(EODataSource *)_dataSource
-    entityName:(NSString *)_entityName
-    attributes:(NSArray *)_attributes
+  dataSource:(EODataSource *)_dataSource
+  entityName:(NSString *)_entityName
+  attributes:(NSArray *)_attributes
 {
   id                   gids          = nil;
   EOQualifier          *qual         = nil;
@@ -88,99 +87,105 @@
   NSArray              *returnElements;
   id                   object;
   NSEnumerator         *enumerator;
+  EOGlobalID           *gid;
 
   if (_arg == nil) return nil;
 
   doReturnArray = [_arg isKindOfClass:[NSArray class]];
-
+  
   gids = (doReturnArray)
     ? _arg
     : [NSArray arrayWithObject:_arg];
   
-  if ([gids containsObject:@""]) {
+  while ([gids containsObject:@""]) {
     gids = [[gids mutableCopy] autorelease];
     [gids removeObject:@""];
   }
 
-  gids = [[[self commandContext] documentManager] globalIDsForURLs:gids];
+  /* fetch GIDs for URLs */
   
-  if ([gids count] > 0) {
-    EOGlobalID *gid;
+  gids = [[[self commandContext] documentManager] globalIDsForURLs:gids];
 
-    gid = [gids objectAtIndex:0];
-    
-    if (![[gid entityName] isEqualToString:_entityName]) {
-      [self logWithFormat:
-            @"ERROR: gid entity '%@' doesn't match given entity '%@'",
-            [gid entityName], _entityName];
-      return nil;
+  /* check GID validity */
+  
+  if ([gids count] == 0) {
+    [self logWithFormat:@"Invalid URLs given, could not resolve globalIDs"];
+    return nil;
+  }
+  if ([gids containsObject:[NSNull null]]) {
+    [self logWithFormat:@"some URLs could not be resolved to globalIDs."];
+    return nil;
+  }
+  
+  gid = [gids objectAtIndex:0];
+  if (![[gid entityName] isEqualToString:_entityName]) {
+    [self logWithFormat:
+            @"ERROR: gid entity '%@' does not match given entity '%@': %@",
+            [gid entityName], _entityName, gid];
+    return nil;
+  }
+  
+  if (![gid isKindOfClass:[EOGlobalID class]]) {
+    [self logWithFormat:@"Invalid URLs given, could not resolve globalIDs: %@",
+	    gid];
+    return nil;
+  }
+  
+  /* setup fetch specification */
+
+  qual  = [[EOKeyValueQualifier alloc]
+                                initWithKey:@"globalID"
+                                operatorSelector:EOQualifierOperatorContains
+                                value:gids];
+  fSpec = [EOFetchSpecification fetchSpecificationWithEntityName:_entityName
+				qualifier:qual sortOrderings:nil];
+  [qual release]; qual = nil;
+      
+  if ([_attributes isKindOfClass:[NSArray class]]) {
+    NSMutableDictionary *hints;
+
+    hints = [NSMutableDictionary dictionaryWithDictionary:[fSpec hints]];
+    [hints setObject:_attributes forKey:@"attributes"];
+    [fSpec setHints:hints];
+  }
+      
+  {
+    NSMutableDictionary *hints;
+
+    hints = [[NSMutableDictionary alloc] initWithDictionary:[fSpec hints]];
+    if ([hints objectForKey:@"addDocumentsAsObserver"] == nil) {
+      [hints setObject:[NSNumber numberWithBool:NO]
+	     forKey:@"addDocumentsAsObserver"];
+      [fSpec setHints:hints];
     }
-    
-    if ([gid isKindOfClass:[EOGlobalID class]]) {
-      qual  = [[EOKeyValueQualifier alloc]
-                                    initWithKey:@"globalID"
-                                    operatorSelector:
-                                    EOQualifierOperatorContains
-                                    value:gids];
-      
-      fSpec = [EOFetchSpecification fetchSpecificationWithEntityName:
-                                    _entityName
-                                    qualifier:qual
-                                    sortOrderings:nil];
-      RELEASE(qual);
-      
-      if ([_attributes isKindOfClass:[NSArray class]]) {
-        NSMutableDictionary *hints;
+    [hints release]; hints = nil;
+  }
+  
+  [_dataSource setFetchSpecification:fSpec];
 
-        hints = [NSMutableDictionary dictionaryWithDictionary:[fSpec hints]];
-        [hints setObject:_attributes forKey:@"attributes"];
-        [fSpec setHints:hints];
-      }
-      
-      {
-        NSMutableDictionary *hints;
+  /* perform fetch */
+  
+  returnElements = [_dataSource fetchObjects];
+  
+  enumerator = [returnElements objectEnumerator];
+  while ((object = [enumerator nextObject]) != nil) {
+    NSDictionary *logEntry;
 
-        hints = [[NSMutableDictionary alloc] initWithDictionary:[fSpec hints]];
-        if ([hints objectForKey:@"addDocumentsAsObserver"] == nil) {
-          [hints setObject:[NSNumber numberWithBool:NO]
-                 forKey:@"addDocumentsAsObserver"];
-          [fSpec setHints:hints];
-        }
-        RELEASE(hints);
-      }
+    logEntry = [[self commandContext] runCommand:
+					@"object::get-current-log",
+                                        @"object", [object globalID], nil];
 
-      [_dataSource setFetchSpecification:fSpec];
-
-      returnElements = [_dataSource fetchObjects];
-
-      enumerator = [returnElements objectEnumerator];
-      
-      while ((object = [enumerator nextObject])) {
-        NSDictionary *logEntry;
-
-        logEntry = [[self commandContext] runCommand:
-                                          @"object::get-current-log",
-                                          @"object", [object globalID], nil];
-
-        if ([object respondsToSelector:
-                    @selector(setExtendedAttribute:forKey:)]) {
-          id creationDate;
+    if ([object respondsToSelector:@selector(setExtendedAttribute:forKey:)]) {
+      NSCalendarDate *creationDate;
           
-          if ((creationDate = [logEntry valueForKey:@"creationDate"]) != nil) {
-            [(SkyCompanyDocument *)object setExtendedAttribute:creationDate
-                                   forKey:@"lastChanged"];
-          }
-        }
+      if ((creationDate = [logEntry valueForKey:@"creationDate"]) != nil) {
+	[(SkyCompanyDocument *)object setExtendedAttribute:creationDate
+			       forKey:@"lastChanged"];
       }
-
-      if (doReturnArray)
-        return returnElements;
-      else
-        return [returnElements lastObject];
     }
   }
-  [self logWithFormat:@"Invalid URLs given, couldn't resolve globalIDs"];
-  return nil;
+  
+  return (doReturnArray) ? returnElements : [returnElements lastObject];
 }
 
 - (LSCommandContext *)_commandContextForAuth:(NSString *)_cred
