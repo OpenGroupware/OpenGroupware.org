@@ -1,10 +1,11 @@
 # translation of AdminUI.po to 
+# translation of AdminUI.po to
 # translation of AddressUI.po to Slovenský
 # Branislav Klocok <branislav.klocok@ofz.sk>, 2004, 2005.
 msgid ""
 msgstr ""
 "Last-Translator: Branislav Klocok <branislav.klocok@ofz.sk>\n"
-"PO-Revision-Date: 2005-01-01 23:17+0100\n"
+"PO-Revision-Date: 2005-01-06 09:50+0100\n"
 "Project-Id-Version: AdminUI\n"
 "Language-Team:  <sk@li.org>\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,430 +15,364 @@ msgstr ""
 
 # // $Id: AddressUI.strings,v 1.15 2004/08/16 14:48:47 frank Exp $
 #"Password check failed" =
-#, fuzzy
 msgid "Password check failed"
-msgstr "Heslo"
+msgstr "Overenie hesla zlyhalo"
 
 #"Password too short - must be at least 6 characters" =
-#, fuzzy
 msgid "Password too short - must be at least 6 characters"
-msgstr "Heslo na"
+msgstr "Heslo je príliš krátke - musí obsahovať aspoň 6 znakov"
 
 #"Repeated input failed" =
 msgid "Repeated input failed"
-msgstr ""
+msgstr "Opakované zadanie zlyhalo"
 
 #"0" =
-#, fuzzy
 msgid "No"
 msgstr "Nie"
 
 #"1" =
-#, fuzzy
 msgid "Yes"
 msgstr "Áno"
 
 #"Action" =
-#, fuzzy
 msgid "Action"
 msgstr "Činnosť"
 
 #"AdditionalPackages" =
 msgid "Additional packages"
-msgstr ""
+msgstr "Ďalšie balíčky"
 
 #"AvailableUpdates" =
-#, fuzzy
 msgid "Available updates"
-msgstr "Dostupné"
+msgstr "Dostupné aktualizácie"
 
 #"Category" =
-#, fuzzy
 msgid "Category"
 msgstr "Kategória"
 
 #"Confirmation" =
 msgid "Confirmation"
-msgstr ""
+msgstr "Potvrdenie"
 
 #"CurrentTransaction" =
 msgid "Current transaction"
-msgstr ""
+msgstr "Aktuálna transakcia"
 
 #"Date" =
-#, fuzzy
 msgid "Date"
 msgstr "Dátum"
 
 #"Defaults" =
 msgid "defaults"
-msgstr ""
+msgstr "Východzie nastavenie"
 
 #"Description" =
-#, fuzzy
 msgid "Description"
 msgstr "Popis"
 
 #"DoYouReallyWantToDeleteLicense" =
-#, fuzzy
 msgid "Do you really want to delete this license file?"
-msgstr "na zmazať súbor?"
+msgstr "Určite chcete zmazať tento licenčný súbor?"
 
 #"Download" =
-#, fuzzy
 msgid "Download"
 msgstr "Stiahnuť"
 
 #"English" =
-#, fuzzy
 msgid "English"
 msgstr "Anglicky"
 
 #"English_OGo" =
-#, fuzzy
 msgid "English (OGo)"
-msgstr "Anglicky"
+msgstr "Anglicky (OGo)"
 
 #"English_OOo" =
-#, fuzzy
 msgid "English (OOo)"
-msgstr "Anglicky"
+msgstr "Anglicky (OOo)"
 
 #"English_benhur" =
-#, fuzzy
 msgid "English (BenHur)"
-msgstr "Anglicky"
+msgstr "Anglicky (BenHur)"
 
 #"English_blue" =
-#, fuzzy
 msgid "English (Blue)"
-msgstr "Anglicky Modrá"
+msgstr "Anglicky (Modrá)"
 
 #"English_kde" =
-#, fuzzy
 msgid "English (KDE)"
-msgstr "Anglicky"
+msgstr "Anglicky (KDE)"
 
 #"English_cobalt" =
-#, fuzzy
 msgid "English (Cobalt)"
-msgstr "Anglicky"
+msgstr "Anglicky (Kobalt)"
 
 #"English_ems" =
-#, fuzzy
 msgid "English (EMS)"
-msgstr "Anglicky"
+msgstr "Anglicky (EMS)"
 
 #"English_glm" =
-#, fuzzy
 msgid "English (Greenlight Media)"
-msgstr "Anglicky"
+msgstr "Anglicky (Greenlight Media)"
 
 #"English_orange" =
-#, fuzzy
 msgid "English (classic)"
-msgstr "Anglicky"
+msgstr "Anglicky (klasicky)"
 
 #"Errors" =
 msgid "Errors"
-msgstr ""
+msgstr "Chyby"
 
 #"General" =
-#, fuzzy
 msgid "General"
 msgstr "Všeobecné"
 
 #"GeneralPackageInformations" =
-#, fuzzy
 msgid "General package informations"
-msgstr "Všeobecné"
+msgstr "Všeobecné informácie o balíčkoch"
 
 #"German" =
-#, fuzzy
 msgid "German"
 msgstr "Nemecky"
 
 #"German_OGo" =
-#, fuzzy
 msgid "German (OGo)"
-msgstr "Nemecky"
+msgstr "Nemecky (OGo)"
 
 #"German_OOo" =
-#, fuzzy
 msgid "German (OOo)"
-msgstr "Nemecky"
+msgstr "Nemecky (OOo)"
 
 #"German_benhur" =
-#, fuzzy
 msgid "German (BenHur)"
-msgstr "Nemecky"
+msgstr "Nemecky (BenHur)"
 
 #"German_blue" =
-#, fuzzy
 msgid "German (Blue)"
-msgstr "Nemecky Modrá"
+msgstr "Nemecky (Modrá)"
 
 #"German_kde" =
-#, fuzzy
 msgid "German (KDE)"
-msgstr "Nemecky"
+msgstr "Nemecky (KDE)"
 
 #"German_cobalt" =
-#, fuzzy
 msgid "German (Cobalt)"
-msgstr "Nemecky"
+msgstr "Nemecky (Kobalt)"
 
 #"German_ems" =
-#, fuzzy
 msgid "German (EMS)"
-msgstr "Nemecky"
+msgstr "Nemecky (EMS)"
 
 #"German_glm" =
-#, fuzzy
 msgid "German (Greenlight Media)"
-msgstr "Nemecky"
+msgstr "Nemecky (Greenlight Media)"
 
 #"German_orange" =
-#, fuzzy
 msgid "German (classic)"
-msgstr "Nemecky"
+msgstr "Nemecky (klasicky)"
 
 #"History" =
 msgid "History"
-msgstr ""
+msgstr "História"
 
 #"Host" =
-#, fuzzy
 msgid "Host"
 msgstr "Hostiteľ"
 
 #"Importance" =
 msgid "Importance"
-msgstr ""
+msgstr "Dôležitosť"
 
 #"Install" =
-#, fuzzy
 msgid "Install"
 msgstr "Inštalovať"
 
 #"InstallInProgress" =
-#, fuzzy
 msgid "Installation is in progress..."
-msgstr "Inštalácia in."
+msgstr "Vykonáva sa inštalácia..."
 
 #"Installation" =
-#, fuzzy
 msgid "Installation"
 msgstr "Inštalácia"
 
 #"Installed" =
 msgid "Installed"
-msgstr ""
+msgstr "Nainštalované"
 
 #"InstalledPackages" =
 msgid "Installed packages"
-msgstr ""
+msgstr "Nainštalované balíčky"
 
 #"Key" =
-#, fuzzy
 msgid "Key"
 msgstr "Kľúč"
 
 #"LSWAccountViewer" =
-#, fuzzy
 msgid "View Account"
-msgstr "Zobraziť Účet"
+msgstr "Zobraziť účet"
 
 #"LSWEnterpriseLicenseEditor" =
 msgid "Enter license"
-msgstr ""
+msgstr "Zadať licenciu"
 
 #"LSWPasswordEditor" =
-#, fuzzy
 msgid "Edit Password"
-msgstr "Upraviť Heslo"
+msgstr "Upraviť heslo"
 
 #"LSWStaff" =
-#, fuzzy
 msgid "Administration"
 msgstr "Administrácia"
 
 #"LSWTeamEditor" =
-#, fuzzy
 msgid "Edit Team"
-msgstr "Upraviť"
+msgstr "Upraviť skupinu"
 
 #"LSWTeamViewer" =
-#, fuzzy
 msgid "View Team"
-msgstr "Zobraziť"
+msgstr "Zobraziť skupinu"
 
 #"Licenses" =
 msgid "Licenses"
-msgstr ""
+msgstr "Licencie"
 
 #"ManagePackages" =
 msgid "manage packages"
-msgstr ""
+msgstr "Spravovať balíčky"
 
 #"Messages" =
-#, fuzzy
 msgid "Messages"
 msgstr "Správy"
 
 #"NO" =
-#, fuzzy
 msgid "No"
 msgstr "Nie"
 
 #"Package" =
-#, fuzzy
 msgid "Package"
 msgstr "Balíček"
 
 #"PackageHistory" =
-#, fuzzy
 msgid "Transaction history of this package"
-msgstr "z"
+msgstr "História transakcií pre tento balíček"
 
 #"PackageInformations" =
-#, fuzzy
 msgid "Package informations"
-msgstr "Balíček"
+msgstr "Informácie o balíčku"
 
 #"PackageName" =
-#, fuzzy
 msgid "Package name"
-msgstr "Balíček"
+msgstr "Názov balíčku"
 
 #"PackageProvides" =
 msgid "This package provides the following packages"
-msgstr ""
+msgstr "Tento balíček poskytuje nasledujúce balíčky"
 
 #"PackageRequires" =
 msgid "This package requires the following packages"
-msgstr ""
+msgstr "Tento balíček vyžaduje nasledujúce balíčky"
 
 #"Packages" =
 msgid "Packages"
-msgstr ""
+msgstr "Balíčky"
 
 #"PackagesToRemove" =
-#, fuzzy
 msgid "Packages to remove"
-msgstr "na odstrániť"
+msgstr "Balíčky na odstránenie"
 
 #"Progress" =
-#, fuzzy
 msgid "Progress"
 msgstr "Priebeh"
 
 #"Provides" =
 msgid "Provides"
-msgstr ""
+msgstr "Poskytuje"
 
 #"RCConnectError" =
-#, fuzzy
 msgid "Unable to connect to red carpet deamon"
-msgstr "na na"
+msgstr "Spojenie s red carpet deamon nebolo možné"
 
 #"Release" =
 msgid "Release"
-msgstr ""
+msgstr "Vydanie"
 
 #"Remove" =
-#, fuzzy
 msgid "Remove"
 msgstr "Odstrániť"
 
 #"RequestedPackages" =
 msgid "Requested packages"
-msgstr ""
+msgstr "Vyžadované balíčky"
 
 #"Requires" =
 msgid "Requires"
-msgstr ""
+msgstr "Vyzaduje"
 
 #"Size" =
-#, fuzzy
 msgid "Size"
 msgstr "Veľkosť"
 
 #"SkyDefaultsEditor" =
-#, fuzzy
 msgid "Defaults Editor"
-msgstr "Redaktor"
+msgstr "Východzie nastavenie editora"
 
 #"SkyPackageManager" =
-#, fuzzy
 msgid "Package manager"
-msgstr "Balíček"
+msgstr "Správca balíčkov"
 
 #"State" =
-#, fuzzy
 msgid "State"
 msgstr "Štát"
 
 #"Step" =
-#, fuzzy
 msgid "Step"
 msgstr "Krok"
 
 #"Summary" =
-#, fuzzy
 msgid "Summary"
 msgstr "Súhrn"
 
 #"SyncFailedError" =
 msgid "Defaults Synchronization failed."
-msgstr ""
+msgstr "Synchronizácia východzích nastavení zlyhala."
 
 #"TimeElapsed" =
-#, fuzzy
 msgid "Time elapsed"
-msgstr "Čas"
+msgstr "Uplynutý čas"
 
 #"TimeExpected" =
-#, fuzzy
 msgid "Time expected"
-msgstr "Čas"
+msgstr "Očakávaný čas"
 
 #"TimeRemaining" =
-#, fuzzy
 msgid "Time remaining"
-msgstr "Čas"
+msgstr "Zostávajúci čas"
 
 #"Transactions" =
-#, fuzzy
 msgid "Transactions"
-msgstr "Transakcia"
+msgstr "Transakcie"
 
 #"Uninstalled" =
 msgid "Uninstalled"
-msgstr ""
+msgstr "Odinštalované"
 
 #"UninstalledPackages" =
 msgid "Uninstalled packages"
-msgstr ""
+msgstr "Odinštalované balíčky"
 
 #"Update" =
-#, fuzzy
 msgid "Update"
 msgstr "Aktualizácia"
 
 #"Updates" =
 msgid "Updates"
-msgstr ""
+msgstr "Aktualizácie"
 
 #"User" =
-#, fuzzy
 msgid "User"
 msgstr "Užívateľ"
 
 #"UserManager" =
-#, fuzzy
 msgid "User Manager"
-msgstr "Užívateľ Správca"
+msgstr "Správca užívateľov"
 
 #"ValuesDontMatchError" =
 #, fuzzy
