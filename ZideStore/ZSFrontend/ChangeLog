@@ -1,5 +1,14 @@
 2004-10-18  Helge Hess  <helge.hess@skyrix.com>
 
+	* v1.3.94
+
+	* added SxStoreInfoFolder for NON_IPM_SUBTREE queries
+
+	* DAVPropSets.plist: added exPermanentURL, davIsCollection,
+	  davIsHidden to Evo subfolder query
+
+	* E2KAttrMap.plist: added "permanenturl" Exchange property
+
 	* SxUserFolder.m: when being accessed with Connector 2.x, sends a
 	  <base> response for the initial request (thanks Erik), also fake
 	  being Ex 2003 using a proper header (v1.3.93)

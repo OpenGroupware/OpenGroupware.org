@@ -35,7 +35,11 @@
   if (startDate == nil || endDate == nil) {
     /* could not process qualifier */
     [self logWithFormat:@"UNKNOWN QUAL: %@", [_fs qualifier]];
+#if 0
     return nil;
+#else
+    // TODO: see SxEvoAptQueryInfo, there is a new query without dates in 2.0
+#endif
   }
   
   /* start query */

@@ -31,6 +31,7 @@ libZSFrontend_HEADER_FILES = \
 	SxMapEnumerator.h	\
 	EOQualifier+Additions.h	\
 	NGResourceLocator+ZSF.h	\
+	SxStoreInfoFolder.h	\
 
 libZSFrontend_OBJC_FILES = \
 	SxFolder.m		\
@@ -54,6 +55,7 @@ libZSFrontend_OBJC_FILES = \
 	SxMapEnumerator.m	\
 	EOQualifier+Additions.m	\
 	NGResourceLocator+ZSF.m	\
+	SxStoreInfoFolder.m	\
 
 libZSFrontend_RESOURCES += \
 	E2KAttrMap.plist	\

@@ -92,7 +92,9 @@ static BOOL sqlDebugOn = NO;
   static NSString *modelName = nil;
   if (modelName == nil) {
     modelName = [[[NSUserDefaults standardUserDefaults]
-		   stringForKey:@"LSModelName"] copy];
+		                  stringForKey:@"LSModelName"] copy];
+    if ([modelName length] == 0)
+      modelName = @"PostgreSQL";
   }
   return modelName;
 }

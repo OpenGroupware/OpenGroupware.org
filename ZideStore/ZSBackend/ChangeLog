@@ -1,3 +1,12 @@
+2004-10-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* v1.3.80
+
+	* SxSQLQuery.m, SxBackendManager.m: use 'PostgreSQL' as default model
+	  name
+
+	* Contacts/SxContactManager+evo.m: minor code cleanup
+
 2004-09-28  Helge Hess  <helge.hess@skyrix.com>
 
 	* GNUmakefile.preamble: fixed library search path (v1.3.79)

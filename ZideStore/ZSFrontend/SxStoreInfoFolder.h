@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2002-2004 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -19,37 +19,22 @@
   02111-1307, USA.
 */
 
-#ifndef __Appointments_SxEvoAptQueryInfo_H__
-#define __Appointments_SxEvoAptQueryInfo_H__
+#ifndef __Frontend_SxStoreInfoFolder_H__
+#define __Frontend_SxStoreInfoFolder_H__
 
-#import <Foundation/NSObject.h>
+#include <ZSFrontend/SxMailFolder.h>
 
 /*
-  SxEvoAptQueryInfo
-  
-  Parse Evolution appointment queries.
+  SxStoreInfoFolder
+
+  ZideLook needs an intermediate folder between root and the personal
+  folders. This class is used for that ...
 */
 
-@class NSCalendarDate;
-@class EOFetchSpecification;
-
-@interface SxEvoAptQueryInfo : NSObject
+@interface SxStoreInfoFolder : SxMailFolder
 {
-  BOOL isNoColl;
-  BOOL isApt;
-  BOOL isInst012;
-  
-  NSCalendarDate *startDate;
-  NSCalendarDate *endDate;
 }
-
-- (id)initWithFetchSpecification:(EOFetchSpecification *)_fs;
-
-/* results */
-
-- (NSCalendarDate *)startDate;
-- (NSCalendarDate *)endDate;
 
 @end
 
-#endif /* __Appointments_SxEvoAptQueryInfo_H__ */
+#endif /* __Frontend_SxStoreInfoFolder_H__ */

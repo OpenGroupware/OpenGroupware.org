@@ -190,4 +190,7 @@
   "{urn:schemas-microsoft-com:office:office}save-view-location"
     = officeSaveViewLocation;
   "{urn:schemas-microsoft-com:office:office}Keywords" = keywords;
+  
+  /* Evo Connector 2.x */
+  "{http://schemas.microsoft.com/exchange/}permanenturl" = exPermanentURL;
 }

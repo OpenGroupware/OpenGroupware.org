@@ -34,6 +34,13 @@
      davContentClass = 'urn:content-classes:appointment' AND 
      endDate > 2003-02-19T23:00:00Z AND startDate < 2003-02-20T23:00:00Z AND 
      (exInstanceType = 0 OR exInstanceType = 1 OR exInstanceType = 2)) 
+   
+   TODO: (new in Connector 2.0.x)
+     SELECT "urn:schemas:calendar:uid", "DAV:getlastmodified"
+     FROM ""
+     WHERE "DAV:contentclass" = 'urn:content-classes:appointment' AND 
+           ("urn:schemas:calendar:instancetype" = 0 OR 
+            "urn:schemas:calendar:instancetype" = 1)
 */
 
 @implementation SxEvoAptQueryInfo

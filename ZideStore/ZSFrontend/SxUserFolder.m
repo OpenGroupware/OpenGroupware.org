@@ -186,6 +186,12 @@ static NSDictionary *personalFolderMap = nil;
     return [folder autorelease];
   }
 }
+- (id)storeInfoFolder:(NSString *)_key inContext:(id)_ctx {
+  id folder; // TODO: folder-class
+  folder = [[NSClassFromString(@"SxStoreInfoFolder") alloc] 
+             initWithName:_key inContainer:self];
+  return [folder autorelease];
+}
 
 - (id)_checkLicenseInContext:(id)_ctx {
 #if 0
@@ -267,9 +273,8 @@ static NSDictionary *personalFolderMap = nil;
   ua = [[[(WOContext *)_ctx request] clientCapabilities] userAgentType];
   if ([ua isEqualToString:@"AppleDAVAccess"]) {
     [self logWithFormat:@"UA: %@ - probably iCalendar", ua];
-    if ([_key isEqualToString:@".ics"]) {
+    if ([_key isEqualToString:@".ics"])
       return [self iCalendarForName:@"calendar.ics" inContext:_ctx];
-    }
   }
   
   if ([_key isEqualToString:@"IPM"])
@@ -278,6 +283,9 @@ static NSDictionary *personalFolderMap = nil;
     [self logWithFormat:@"catched zidelook 'h-ebene-query' ..."];
     return [self msgRootFolder:_key inContext:_ctx];
   }
+
+  if ([_key isEqualToString:@"NON_IPM_SUBTREE"])
+    return [self storeInfoFolder:_key inContext:_ctx];
   
 #if 1
   if ([_key isEqualToString:@"Public"] || [_key isEqualToString:@"public"]) {
@@ -289,7 +297,7 @@ static NSDictionary *personalFolderMap = nil;
   }
   
 #endif /* SAME_AS_ROOT */
-
+  
   if ([_key isEqualToString:@"calendar.ics"] || [_key isEqualToString:@"ics"])
     return [self iCalendarForName:_key inContext:_ctx];
   
@@ -506,11 +514,7 @@ static NSDictionary *personalFolderMap = nil;
   
   [r setHeader:@"text/html" forKey:@"content-type"];
   [r appendContentString:@"<BASE href=\""];
-#if 1
-  [r appendContentHTMLAttributeValue:@"http://blaat/"];
-#else
   [r appendContentHTMLAttributeValue:[self baseURLInContext:_ctx]];
-#endif
   [r appendContentString:@"\">"];
   return r;
 }

@@ -45,9 +45,12 @@
   EvolutionSubFolderSet = (
     outlookFolderClass,
     unreadcount,
-    unreadCount, /* this is used by Evo 1.4.4 */
+    unreadCount,     /* this is used by Evo 1.4.4 */
     davDisplayName,
-    davHasSubFolders
+    davHasSubFolders,
+    exPermanentURL,  /* new in Connector 2.0.x */
+    davIsCollection, /* new in Connector 2.0.x */
+    davIsHidden,     /* new in Connector 2.0.x */
   );
   
   EvolutionQuerySet = (

@@ -86,6 +86,19 @@
 	"Add Documents, Images, and Files" = "Authenticated";
       };
     };
+    SxStoreInfoFolder = {
+      superclass    = "SxMailFolder";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+      defaultRoles = {
+        "View"                             = "Authenticated";
+        "Access Contents Information"      = "Authenticated";
+        "Change Images and Files"          = "Authenticated";
+        "Delete Objects"                   = "Authenticated";
+        "Add Folders"                      = "Authenticated";
+	"Add Documents, Images, and Files" = "Authenticated";
+      };
+    };
     
     ZideStore = {
       superclass    = "SoApplication";
