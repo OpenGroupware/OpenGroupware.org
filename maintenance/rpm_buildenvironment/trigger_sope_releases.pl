@@ -69,6 +69,7 @@ foreach $srel (@sope_releases) {
     system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$srel http://$dl_host/sources/releases/$srel");
     print "cleaning up prior actual build...\n";
     system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
+    system("sudo /sbin/ldconfig");
     print "extracting specfile from $srel\n";
     system("mkdir $ENV{HOME}/spec_tmp/") unless (-e "$ENV{HOME}/spec_tmp/");
     system("tar xfzO $ENV{HOME}/rpm/SOURCES/$srel sope/maintenance/sope.spec >$ENV{HOME}/spec_tmp/$buildtarget.spec");
@@ -136,10 +137,11 @@ foreach $srel (@sope_releases) {
         print "downloading $libobjc_install_candidate_devel to install_tmp/\n";
         $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libobjc_install_candidate_devel http://$dl_host/packages/$host_i_runon/releases/ThirdParty/$libobjc_install_candidate_devel");
         print "FATAL: system call (wget) returned $rc whilst downloading $libobjc_install_candidate_devel into install_tmp/\n" and exit 1 unless($rc == 0);
-        #wipe out old
+        #wipe out old and install the chosen one.
         system("sudo rpm -e `rpm -qa|grep -i '^libobjc-lf2'` --nodeps --noscripts");
         system("/usr/bin/sudo /bin/rpm -Uvh --force --noscripts $ENV{HOME}/install_tmp/$libobjc_install_candidate");
         system("/usr/bin/sudo /bin/rpm -Uvh --force --noscripts $ENV{HOME}/install_tmp/$libobjc_install_candidate_devel");
+        system("sudo /sbin/ldconfig");
       }
       if($libfoundation_install_candidate) {
         print "downloading $libfoundation_install_candidate to install_tmp/\n";
@@ -157,6 +159,7 @@ foreach $srel (@sope_releases) {
         system("sudo rpm -e `rpm -qa|grep -i '^libfoundation'` --nodeps --noscripts");
         system("/usr/bin/sudo /bin/rpm -Uvh --force --noscripts $ENV{HOME}/install_tmp/$libfoundation_install_candidate");
         system("/usr/bin/sudo /bin/rpm -Uvh --force --noscripts $ENV{HOME}/install_tmp/$libfoundation_install_candidate_devel");
+        system("sudo /sbin/ldconfig");
       }
     } else {
       print "building $buildtarget.spec comes with no certain requirements (regarding TP packages).\n";
@@ -188,8 +191,12 @@ if($i_really_had_sth_todo eq "yes") {
   #polish buildenv after we're done...
   print "we're almost at the end... cleaning up what we've done so far...\n";
   system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
+  system("sudo rpm -e `rpm -qa|grep -i ^libobjc-lf2` --nodeps");
+  system("sudo rpm -e `rpm -qa|grep -i ^libfoundation` --nodeps");
   #go back to latest trunk build - that is, before we grabbed a new release we had
   #the most current sope trunk built/installed
   print "restoring latest build state...\n";
-  #system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -u no -d no -f yes -b no");
+  system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -v yes -u no -d no -f yes -b no");
+  system("$ENV{HOME}/purveyor_of_rpms.pl -p libfoundation -v yes -u no -d no -f yes -b no");
+  system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -u no -d no -f yes -b no");
 }

@@ -107,6 +107,7 @@ foreach $orel (@ogo_releases) {
     system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
     print "cleaning up previous OGo build...\n";
     system("sudo rpm -e `rpm -qa|grep -i ^ogo-|grep -vi gnustep` --nodeps");
+    system("sudo /sbin/ldconfig");
     print "extracting specfile from $orel into $ENV{HOME}/spec_tmp/\n";
     system("mkdir $ENV{HOME}/spec_tmp/") unless (-e "$ENV{HOME}/spec_tmp/");
     system("mkdir $ENV{HOME}/install_tmp/") unless (-e "$ENV{HOME}/install_tmp/");
@@ -119,8 +120,6 @@ foreach $orel (@ogo_releases) {
     foreach $line(@ogo_spec) {
       chomp $line;
       $use_sope = $line if ($line =~ s/^#UseSOPE:\s+//g);
-      #$sope_src = $line if ($line =~ s/^#UseSOPEsrc:\s+//g);
-      #$sope_spec = $line if ($line =~ s/^#UseSOPEspec:\s+//g);
     }
     #we should've already build this SOPE release at least once in an earlier run
     print "preparing SOPE... $use_sope\n";
@@ -136,7 +135,6 @@ foreach $orel (@ogo_releases) {
       print "\nFATAL: system call (wget) returned $rc whilst downloading $sope_rpm into install_tmp/\n" and exit 1 unless($rc == 0);
       push(@sope, $sope_rpm);
     }
-    print "DEBUGGGER: @sope\n";
     my $rpm_count = @sope;
     print "must install $rpm_count RPMS ($use_sope) from install_tmp/ ... this may take some seconds\n";
     foreach $line(@sope) {
@@ -144,9 +142,7 @@ foreach $orel (@ogo_releases) {
       print "$line ($rc)...ok, done!\n" if($rc == 0);
       print "\nFATAL: system call (rpm) returned $rc whilst installing required RPMS from install_tmp/\n" and exit 1 unless($rc == 0);
     }
-    #print "calling `purveyor_of_rpms.pl -p sope -v yes -t release -u no -d no -f yes -b no -c $sope_src -s $ENV{HOME}/spec_tmp/$sope_spec`\n";
-    #system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -t release -u no -d no -f yes -b no -c $sope_src -s $ENV{HOME}/spec_tmp/$sope_spec");
-    #print "OGo_REL: building RPMS for OGo $orel using $sope_src with $sope_spec\n";
+    system("sudo /sbin/ldconfig");
     print "OGo_REL: building RPMS for OGo $orel using $use_sope\n";
     print "calling `purveyor_of_rpms.pl -p opengroupware $build_opts -c $orel -s $ENV{HOME}/spec_tmp/$buildtarget.spec\n";
     system("$ENV{HOME}/purveyor_of_rpms.pl -p opengroupware $build_opts -c $orel -s $ENV{HOME}/spec_tmp/$buildtarget.spec");
@@ -154,10 +150,6 @@ foreach $orel (@ogo_releases) {
     print "recreating apt-repository for: $host_i_runon >>> $buildtarget\n";
     open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
     #these differ...
-    #TODO: we're not done yet... rpmbuild ogo-environment (and some other packages) and upload
-    #      them into the same(?) directory
-    #      requires new switch in purveyor_of_rpms.pl in order to upload packages into a given
-    #      directory (which should be \$apttarget)
     $apttarget = $buildtarget;
     $apttarget =~ s/^opengroupware\.org/opengroupware/g;
     system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-environment $build_opts -r $apttarget");
@@ -183,10 +175,13 @@ if($i_really_had_sth_todo eq "yes") {
   }
   #polish buildenv after we're done...
   print "we're almost at the end... cleaning up what we've done so far...\n";
-  #system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
+  system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
+  system("sudo rpm -e `rpm -qa|grep -i ^ogo-|grep -vi gnustep` --nodeps"); 
+  system("sudo /sbin/ldconfig");
   #go back to latest trunk build - that is, before we grabbed a new release we had
   #the most current sope trunk built/installed
   print "restoring latest build state...\n";
-  #system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -u no -d no -f yes -b no");
-  #system("$ENV{HOME}/purveyor_of_rpms.pl -p opengroupware -v yes -u no -d no -f yes -b no");
+  system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -u no -d no -f yes -b no");
+  system("$ENV{HOME}/purveyor_of_rpms.pl -p opengroupware -v yes -u no -d no -f yes -b no");
+  system("sudo /sbin/ldconfig");
 }

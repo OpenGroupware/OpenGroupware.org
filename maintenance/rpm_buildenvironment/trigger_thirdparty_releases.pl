@@ -85,6 +85,7 @@ foreach $tprel (@tp_releases) {
     ##
     print "cleaning up prior actual build... going to remove rpms for: $cleanup\n";
     system("sudo rpm -e `rpm -qa|grep -i ^$cleanup` --nodeps");
+    system("sudo /sbin/ldconfig");
     print "extracting specfile ($mapped_temp_specfilename) from $tprel into spec_tmp/ dir\n";
     system("mkdir $ENV{HOME}/spec_tmp/") unless (-e "$ENV{HOME}/spec_tmp/");
     system("tar xfzO $ENV{HOME}/rpm/SOURCES/$tprel $tardirname/$mapped_temp_specfilename >$ENV{HOME}/spec_tmp/$buildtarget.spec");
@@ -100,14 +101,13 @@ foreach $tprel (@tp_releases) {
     print "TP_REL: building release RPMS for ThirdParty $tprel\n";
     print "calling `purveyor_of_rpms.pl -p $package_to_build $build_opts -c $tprel -s $ENV{HOME}/spec_tmp/$buildtarget.spec\n";
     system("$ENV{HOME}/purveyor_of_rpms.pl -p $package_to_build $build_opts -c $tprel -s $ENV{HOME}/spec_tmp/$buildtarget.spec");
+    system("sudo /sbin/ldconfig");
     print KNOWN_TP_RELEASES "$tprel\n";
     print "recreating apt-repository for: $host_i_runon\n";
     open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
     print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n ThirdParty\n";
     print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/packages/$host_i_runon/releases/ThirdParty/\n";
     close(SSH);
-    #warn "WARNING: emergency exit\n";
-    #exit 0;
   }
 }
 close(KNOWN_TP_RELEASES);
@@ -115,17 +115,19 @@ close(KNOWN_TP_RELEASES);
 if($i_really_had_sth_todo eq "yes") { 
   if($host_i_runon eq "fedora-core2") {
     print "building yum-repo for $host_i_runon\n";
-    #system("sh $ENV{HOME}/prepare_yum_fcore2.sh");
+    system("sh $ENV{HOME}/prepare_yum_fcore2.sh");
   }
   if($host_i_runon eq "fedora-core3") {
     print "building yum-repo for $host_i_runon\n";
-    #system("sh $ENV{HOME}/prepare_yum_fcore3.sh");
+    system("sh $ENV{HOME}/prepare_yum_fcore3.sh");
   }
   #polish buildenv after we're done...
   print "we're almost at the end... cleaning up what we've done so far...\n";
-  #system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
+  system("sudo rpm -e `rpm -qa|grep -i ^libobjc-lf2` --nodeps");
+  system("sudo rpm -e `rpm -qa|grep -i ^libfoundation` --nodeps");
   #go back to latest trunk build - that is, before we grabbed a new release we had
-  #the most current sope trunk built/installed
+  #the most current trunk built/installed
   print "restoring latest build state...\n";
-  #system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -u no -d no -f yes -b no");
+  system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -v yes -u no -d no -f yes -b no");
+  system("$ENV{HOME}/purveyor_of_rpms.pl -p libfoundation -v yes -u no -d no -f yes -b no");
 }
