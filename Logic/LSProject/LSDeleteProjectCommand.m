@@ -19,12 +19,12 @@
   02111-1307, USA.
 */
 
-#import <LSFoundation/LSDBObjectDeleteCommand.h>
+#include <LSFoundation/LSDBObjectDeleteCommand.h>
 
 @interface LSDeleteProjectCommand : LSDBObjectDeleteCommand
 @end
 
-#import "common.h"
+#include "common.h"
  
 @implementation LSDeleteProjectCommand
 
@@ -47,6 +47,7 @@
 }
 
 - (BOOL)_deleteProjectInfo {
+  // Note: project-info should be the comment of the project
   BOOL isOk        = NO; 
   id   projectInfo = nil;
 
@@ -65,6 +66,10 @@
   return YES;
 }
 
+- (BOOL)isRootPrimaryKey:(id)_key inContext:(id)_context {
+  return [_key intValue] == 10000 ? YES : NO;
+}
+
 - (void)_prepareForExecutionInContext:(id)_context {
   id       obj;
   id       account;
@@ -77,13 +82,13 @@
 
   if ([self reallyDelete]) {
     obj = [self object];
-
+    
     [self assert:(([accountId isEqual:[obj valueForKey:@"ownerId"]]) ||
-                  ([accountId intValue] == 10000))
+                  [self isRootPrimaryKey:accountId inContext:_context])
           reason:@"only project manager can delete this project!"];
     
     [self assert:(([obj valueForKey:@"teamId"] == nil) ||
-                  ([accountId intValue] == 10000))
+                  [self isRootPrimaryKey:accountId inContext:_context])
           reason:@"project manager can only delete private projects!"];
   }
 }
@@ -91,20 +96,38 @@
 - (void)_executeInContext:(id)_context {
   [self _deleteProjectInfo];
 
+  /* delete properties */
+
+  if ([self reallyDelete]) {
+    [[_context propertyManager] removeAllPropertiesForGlobalID:
+                                  [[self object] globalID]];
+  }
+  
+  /* delete documents */
+  
   if ([[[self object] valueForKey:@"toDocument"] count] <= 1
       && [self reallyDelete]) {
     [self _deleteRootDocumentInContext:_context];
-  } else {
+  } 
+  else {
     [[self object] takeValue:@"30_archived" forKey:@"status"];
   }
-  [[NSNotificationCenter defaultCenter]
-                         postNotificationName:@"SkyProjectDidChangeNotification"
-                         object:nil];
+  
+  /* delete primary object */
+  
   [super _executeInContext:_context];
+  
+  /* notify others */
+
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:@"SkyProjectDidChangeNotification"
+    object:nil];
 }
+
+/* reflection for super class */
 
 - (NSString *)entityName {
   return @"Project";
 }
 
-@end
+@end /* LSDeleteProjectCommand */
