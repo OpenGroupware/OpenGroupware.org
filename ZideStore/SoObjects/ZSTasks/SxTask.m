@@ -449,7 +449,7 @@ static BOOL debugParser = YES;
   /* 
      After Evo did a PROPPATCH, it does a PUT with content-type
      message/rfc822. The message has the comment as the body and 
-     these relevant headers:
+     these relevant (mail) headers:
        content-class: urn:content-classes:task
        Subject:       test 3
        Thread-Topic:  test 3
@@ -458,10 +458,11 @@ static BOOL debugParser = YES;
        From:          "Helge Hess" <hh@skyrix.com>
   */
   NGMimeMessageParser *mimeParser;
-  WOResponse *r = [_ctx response];
+  WOResponse *r;
   id part;
   NSString *comment;
   
+  r    = [(WOContext *)_ctx response];
   part = [[_ctx request] content];
   if (debugParser)
     [self logWithFormat:@"should parse %i bytes ..", [part length]];
@@ -477,7 +478,7 @@ static BOOL debugParser = YES;
   mimeParser = [[NGMimeMessageParser alloc] init];
   [mimeParser setDelegate:self];
   part = [mimeParser parsePartFromData:part];
-  [mimeParser release];
+  [mimeParser release]; mimeParser = nil;
   
   if (part == nil) {
     [self logWithFormat:@"could not parse MIME structure for task comment."];

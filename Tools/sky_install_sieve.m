@@ -21,11 +21,16 @@
 
 #import <Foundation/NSObject.h>
 
-@class NSString;
+@class NSString, NSArray;
 
 @interface InstallSieve : NSObject
 {
-  NSString *login, *password, *server, *port, *dictName, *sievName;
+  NSString *login;
+  NSString *password;
+  NSString *server;
+  NSString *port;
+  NSString *dictName;
+  NSString *sievName;
 }
 
 + (int)runWithArguments:(NSArray *)_args;
