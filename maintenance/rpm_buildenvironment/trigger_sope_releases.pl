@@ -2,9 +2,20 @@
 #frank reppin <frank@opengroupware.org> 2004
 
 use strict;
+#my $host_i_runon = "fedora-core3";
+my $host_i_runon = "fedora-core2";
+#my $host_i_runon = "suse92";
+#my $host_i_runon = "suse91";
+#my $host_i_runon = "suse82";
+#my $host_i_runon = "mdk-10.1";
+#my $host_i_runon = "mdk-10.0";
+#my $host_i_runon = "sles9";
+#my $host_i_runon = "slss8";
 my $svn_host = 'svn.opengroupware.org';
 my $svn = '/usr/bin/svn';
 my $dl_host = "download.opengroupware.org";
+my $www_user = "www";
+my $www_host = "download.opengroupware.org";
 my @latest;
 my $tarball_name;
 my $srel;
@@ -34,6 +45,8 @@ foreach $srel (@sope_releases) {
   $buildtarget = $srel;
   $buildtarget =~ s/-r\d+.*$//g;
   unless(grep /\b$srel\b/, @already_known_sope_rel) {
+    print "Retrieving: http://$dl_host/sources/releases/$srel\n";
+    system("wget -q -O $ENV{HOME}/rpm/SOURCES/$srel http://$dl_host/sources/releases/$srel");
     print "cleaning up prior actual build...\n";
     system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
     print "extracting specfile from $srel\n";
@@ -43,7 +56,20 @@ foreach $srel (@sope_releases) {
     print "calling `purveyor_of_rpms.pl -p sope $build_opts -c $srel -s spec_tmp/$buildtarget.spec\n";
     system("$ENV{HOME}/purveyor_of_rpms.pl -p sope $build_opts -c $srel -s spec_tmp/$buildtarget.spec");
     print KNOWN_SOPE_RELEASES "$srel\n";
+    print "recreating apt-repository for: $host_i_runon\n";
+    open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
+    print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $buildtarget\n";
+    close(SSH);
   }
 }
 close(KNOWN_SOPE_RELEASES);
 
+if($host_i_runon eq "fedora-core2") {
+  print "building yum-repo for $host_i_runon\n";
+  system("sh $ENV{HOME}/prepare_yum_fcore2.sh");
+}
+
+if($host_i_runon eq "fedora-core3") {
+  print "building yum-repo for $host_i_runon\n";
+  system("sh $ENV{HOME}/prepare_yum_fcore3.sh");
+}
