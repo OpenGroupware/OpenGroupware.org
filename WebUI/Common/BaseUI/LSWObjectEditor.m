@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "LSWObjectEditor.h"
 #include "common.h"
@@ -187,10 +186,10 @@
     return nil;
   
   result = [NSMutableArray arrayWithCapacity:16];
-  while ((attr = [attrs nextObject])) {
+  while ((attr = [attrs nextObject]) != nil) {
     id value;
-
-    if ((value = [attr valueForKey:@"key"]))
+    
+    if ((value = [attr valueForKey:@"key"]) != nil)
       [result addObject:value];
   }
   return result;
@@ -248,7 +247,7 @@
   
   if (valueKeys != nil) {
     BOOL isLocalized;
-
+    
     isLocalized = [[dict valueForKey:@"isLocalized"] boolValue];
 
     if (isLocalized && (self->labels != nil))
@@ -461,7 +460,7 @@
   case ATTR_TYPECODE_CHECKBOX: return @"checkbox";
   case ATTR_TYPECODE_MULTI:    return @"multi";
   }
-
+  
   if ([self isEnumAttribute])
     return @"enum";
   

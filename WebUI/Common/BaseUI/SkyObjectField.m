@@ -268,13 +268,13 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
   // external link
   NSString *tmp;
   NSString *link;
-
+  
   tmp  = [self hrefAttributeInContext:_ctx];
   link = SkyExternalLinkAction;
   tmp  = ([tmp isEqualToString:@""]) ? data : tmp;
-  tmp  = [NSString stringWithFormat:@"%@?url=%@", link,
-                   [tmp stringByEscapingURL]];
-
+  tmp  = [[[link stringValue] stringByAppendingString:@"?url="]
+                 stringByAppendingString:[tmp stringByEscapingURL]];
+  
   // TODO: the following looks weird! Use the proper NSString method
   tmp = [WOResponse stringByEscapingHTMLAttributeValue:tmp];
   tmp = [NSString stringWithFormat:tlink,tmp];

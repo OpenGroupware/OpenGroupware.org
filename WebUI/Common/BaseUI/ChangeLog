@@ -1,5 +1,7 @@
 2004-10-01  Helge Hess  <helge.hess@skyrix.com>
 
+	* SkyObjectField.m: minor change to link generation (v5.1.95)
+
 	* SkyObjectField.m: code cleanups (v5.1.94)
 
 2004-09-28  Helge Hess  <helge.hess@opengroupware.org>
