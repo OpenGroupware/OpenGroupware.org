@@ -1,3 +1,9 @@
+2004-12-31 Olivier Hallot <olivier@ig.com.br>
+
+	* Solved bug 1127, on OGoScheduler 
+	* Improvemenst in translations of LSWProjects, OGoProjects and
+CfgAdminUI
+
 2004-12-22 Olivier Hallot  <olivier@ig.com.br>
 
 	* Added OGoMailFilter.srtings
