@@ -1,19 +1,19 @@
-Summary:		OGo environment
-Name:			ogo-environment
-Version:		%{ogo_env_version}
-Release:		%{ogo_env_buildcount}%{dist_suffix}
-Vendor:			http://www.opengroupware.org
-Packager:		Frank Reppin <frank@opengroupware.org>	
-License:		LGPL
-URL:			http://www.gnustep.org
-Group:			Development/Libraries
-AutoReqProv:	off
-#Source:			%{ogo_env_source}
-Prefix:			%{ogo_env_prefix}
+Summary:      OGo environment
+Name:         ogo-environment
+Version:      %{ogo_env_version}
+Release:      %{ogo_env_buildcount}%{dist_suffix}
+Vendor:       http://www.opengroupware.org
+Packager:     Frank Reppin <frank@opengroupware.org>  
+License:      LGPL
+URL:          http://www.gnustep.org
+Group:        Development/Libraries
+AutoReqProv:  off
+#Source:      %{ogo_env_source}
+Prefix:       %{ogo_env_prefix}
 #Patch:
-#Requires:		
-#BuildPreReq:	
-BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root
+#Requires:    
+#BuildPreReq: 
+BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 Adds the required user and some configurations.
