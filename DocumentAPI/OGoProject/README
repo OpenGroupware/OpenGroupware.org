@@ -1,4 +1,11 @@
-$Id$
+OGoProject
+==========
+
+  This library wraps project commands and associated functionality. It provides
+  a datasource to fetch project 'documents'. Note that the document object
+  representing the project itself is termed 'SkyProject' while the
+  'SkyProjectDocument' is a document (BLOB) stored inside the project document
+  storage.
 
 Defaults
 ========
@@ -35,6 +42,34 @@ Supported Default-Attributes on Documents:
   SkyCreationDate
   SkyStatus
   SkyVersionCount
+
+
+Classes
+=======
+  <NSObject>
+    NGFileManagerProcessingTool
+      NGFileManagerCopyTool
+    NGFileManagerCopyToolHandler
+    OGoFileManagerFactory
+    NSFileManagerBlobHandler      <SkyBlobHandler> 
+    NSEmptyFileManagerBlobHandler <SkyBlobHandler>
+    <SkyDocument>
+      SkyProject
+      SkyProjectHistoryDocument
+    <SkyDocumentType>
+      SkyProjectDocType
+    <SkyAccessHandler>
+      SkyProjectAccessHandler
+    <EODataSource>
+      SkyProjectDataSource
+      SkyProjectTeamDataSource
+    SkyProjectDocumentGlobalIDResolver
+    <NSURLHandle>
+      SkyProjectURLHandle
+
+Categories
+==========
+  NSString(XMLNamespaces)
 
 
 SkyProjectFileManager Cache Config (TODO: translate to English)

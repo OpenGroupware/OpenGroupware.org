@@ -18,10 +18,10 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyProjectDataSource.h"
 #include "SkyProject.h"
+#include "EOQualifier+Project.h"
 #include "common.h"
 #include <OGoContacts/SkyPersonDataSource.h>
 #include <OGoAccounts/SkyTeamDataSource.h>
@@ -44,7 +44,7 @@ static NSNumber *yesNum = nil;
 
 + (void)initialize {
   if (yesNum == nil) yesNum = [[NSNumber numberWithBool:YES] retain];
-
+  
   if (hiddenProjectTypes == nil) {
     hiddenProjectTypes = 
       [[NSArray alloc] initWithObjects:
@@ -423,56 +423,21 @@ static NSNumber *yesNum = nil;
 }
 
 /*
- * if special kind (00_invoiceProject, 
- *                  05_historyProject,
- *                  10_edcProject,
- *                  15_accountLog) 
- * appears in qualifier, eos are fetched,
- * if not, these kinds are ignored
- */
+  if special kind (00_invoiceProject, 
+                   05_historyProject,
+                   10_edcProject,
+                   15_accountLog) 
+   appears in qualifier, eos are fetched,
+   if not, these kinds are ignored
+*/
 - (NSArray *)_kindsNotToFetch {
-  id             qual;
-  NSMutableArray *quals = nil;
-  NSMutableArray *all;
-  NSEnumerator *e;
-  id           one;
+  /* extracts a set of project kinds (strings) from a qualifier */
+  EOQualifier *qual;
   
   if ((qual = [[self fetchSpecification] qualifier]) == nil)
-    return hiddenProjectTypes;
+    return hiddenProjectTypes; /* no qualifer => hide all */
   
-  quals = [NSMutableArray array];
-  if ([qual respondsToSelector:@selector(qualifiers)])
-    [quals addObjectsFromArray:[qual qualifiers]];
-  else if ([qual respondsToSelector:@selector(qualifier)]) {
-    id tmp = [(EONotQualifier *)qual qualifier];
-    if ([tmp respondsToSelector:@selector(qualifiers)])
-      [quals addObjectsFromArray:[tmp qualifiers]];
-    else
-      [quals addObject:tmp];
-  }
-  else
-    [quals addObject:qual];
-  // dont check qualifiers deeper for now
-
-  all = [[hiddenProjectTypes mutableCopy] autorelease];
-
-  e  = [quals objectEnumerator];
-  while ((one = [e nextObject])) {
-    if (![one isKindOfClass:[EOKeyValueQualifier class]])
-      continue;
-    
-    if (![[one key] isEqualToString:@"kind"])
-      continue;
-    
-    // TODO: replace with proper sel_eq! (GNU/Apple runtime)
-    if ([NSStringFromSelector([one selector]) isEqualToString:@"isEqualTo:"]) {
-      id val = [one value];
-      if ([all containsObject:val])
-	[all removeObject:val];
-    }
-  }
-
-  return all;
+  return [qual reduceProjectKindRestrictionByUsedNames:hiddenProjectTypes];
 }
 
 /* operations which modify the database */

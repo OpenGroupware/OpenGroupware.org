@@ -1,3 +1,13 @@
+2004-11-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.31
+
+	* EOQualifier+Project.[hm]: moved in some generic qualifier methods
+	  from user interface
+
+	* SkyProjectDataSource.m: cleaned up project kind processing, moved
+	  qualifier code to new file (EOQualifier+Project.[hm]) (v5.1.31)
+	
 2004-09-06  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyContentHandler.h: added prototype for +emptyBlobHandler (v5.1.30)

@@ -1,18 +1,18 @@
-// $Id$
 {
   domainList = ( project, note, projectcompanyassignment );
 
   domains = {
     project = {
       operations = {
-        new               = { class = "LSNewProjectCommand";            };
-        set               = { class = "LSSetProjectCommand";            };
-        get               = { class = "LSGetProjectCommand";            };
-        delete            = { class = "LSDeleteProjectCommand";         };
-        archive           = { class = "LSArchiveProjectCommand";        };
-        assignpartners    = { class = "LSProjectAssignmentCommand";     };
-        "assign-accounts" = { class = "LSProjectAssignmentCommand";     };
-        "get-status"      = { class = "LSProjectStatusCommand";         };
+        new               = { class = "LSNewProjectCommand";        };
+        set               = { class = "LSSetProjectCommand";        };
+        get               = { class = "LSGetProjectCommand";        };
+        delete            = { class = "LSDeleteProjectCommand";     };
+        archive           = { class = "LSArchiveProjectCommand";    };
+        assignpartners    = { class = "LSProjectAssignmentCommand"; };
+        "assign-accounts" = { class = "LSProjectAssignmentCommand"; };
+        "get-status"      = { class = "LSProjectStatusCommand";     };
+        
         "get-owner" = { 
           class  = "LSDBFetchRelationCommand"; 
           init   = { 
@@ -43,18 +43,27 @@
                 isToMany              = YES; 
           }; 
         };
+        
         "get-persons"        = { class = "LSFetchPersonRelationCommand";   };
         "get-jobs"           = { class = "LSFetchProjectToJobCommand";     };
         "get-root-process"   = { class = "LSFetchProjectToRootJobCommand"; };
         "get-root-document"  = { class = "LSFetchRootDocumentCommand";     };
-        "get-index-document" = { class = "LSFetchIndexDocumentCommand";     };
-        "check-permission"   = { class = "LSCheckPermissionProjectCommand";};
-        "check-get-permission" ={ class = "LSCheckGetPermissionProjectCommand";};
-        "check-write-permission"={class= "LSCheckWritePermissionProjectCommand";};
-        "get-enterprises"    = { class = "LSFetchEnterpriseRelationCommand"; };
-        "get-accounts"       = { class = "LSFetchAccountRelationCommand";   };
-        "get-teams"          = { class = "LSFetchTeamRelationCommand";   };
-        "get-by-globalid"    = { class = "LSGetProjectForGlobalIDs";  };
+        "get-index-document" = { class = "LSFetchIndexDocumentCommand";    };
+
+        "check-permission" = { 
+          class = "LSCheckPermissionProjectCommand";
+        };
+        "check-get-permission" = { 
+          class = "LSCheckGetPermissionProjectCommand";
+        };
+        "check-write-permission" = {
+          class= "LSCheckWritePermissionProjectCommand";
+        };
+        
+        "get-enterprises" = { class = "LSFetchEnterpriseRelationCommand"; };
+        "get-accounts"    = { class = "LSFetchAccountRelationCommand";    };
+        "get-teams"       = { class = "LSFetchTeamRelationCommand";       };
+        "get-by-globalid" = { class = "LSGetProjectForGlobalIDs";         };
 
         "get-comment" = { 
           class  = "LSDBFetchRelationCommand"; 
@@ -67,7 +76,7 @@
           };
         };
 
-// old mappings
+// old mappings (hh asks: why old?)
         "setstatus"      = { class = "LSProjectStatusCommand";       };
         "setpersons"     = { class = "LSFetchPersonRelationCommand"; };
         "extended-search"  = { 

@@ -1,3 +1,9 @@
+2004-11-23  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyProject4Desktop.m: major code cleanups, completed incomplete 
+	  search code in -searchProjects (did not use the 
+	  EOFetchSpecification?) (v5.1.48)
+
 2004-09-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyProject4NewLink.wo: removed deprecated 'singleSelection' binding

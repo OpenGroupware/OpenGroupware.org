@@ -16,6 +16,7 @@ libOGoProject_HEADER_FILES = \
 	SkyProjectHistoryDocument.h		\
 	SkyProjectTeamDataSource.h		\
 	NSString+XMLNamespaces.h		\
+	EOQualifier+Project.h			\
 	NGFileManagerCopyTool.h			\
 	NGFileManagerProcessingTool.h		\
 	OGoFileManagerFactory.h			\
@@ -25,6 +26,7 @@ libOGoProject_OBJC_FILES = \
 	NGFileManagerCopyTool.m			\
 	NGFileManagerProcessingTool.m		\
 	NSString+XMLNamespaces.m		\
+	EOQualifier+Project.m			\
 	OGoFileManagerFactory.m			\
 	SkyContentHandler.m			\
 	SkyProject+JS.m				\

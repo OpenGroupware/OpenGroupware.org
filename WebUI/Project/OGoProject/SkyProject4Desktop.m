@@ -18,9 +18,14 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWContentPage.h>
+
+/*
+  SkyProject4Desktop
+  
+  This is the main entry page of the projects application.
+*/
 
 @class NSString;
 @class EOFetchSpecification, EOQualifier;
@@ -56,6 +61,7 @@
 
 @end
 
+#include <OGoProject/EOQualifier+Project.h>
 #include <NGMime/NGMimeType.h>
 #include "common.h"
 
@@ -75,15 +81,14 @@ static EOQualifier *trueQualifier     = nil;
   static BOOL didInit = NO;
   if (didInit) return;
   didInit = YES;
+
+  trueQualifier = [[EOQualifier qualifierWithQualifierFormat:@"1=1"] retain];
   
   archivedQualifier =
-    [[EOQualifier qualifierWithQualifierFormat:@"type='archived'"] retain];
-  trueQualifier = [[EOQualifier qualifierWithQualifierFormat:@"1=1"] retain];
-  publicQualifier =
-    [[EOQualifier qualifierWithQualifierFormat:@"type='common'"] retain];
-  privateQualifier =
-    [[EOQualifier qualifierWithQualifierFormat:@"type='private'"] retain];
-
+    [[EOQualifier qualifierForProjectType:@"archived"] retain];
+  publicQualifier  = [[EOQualifier qualifierForProjectType:@"common"] retain];
+  privateQualifier = [[EOQualifier qualifierForProjectType:@"private"] retain];
+  
   /* the following triggers the loading of the bundles */
   [OGoFileManagerFactory sharedFileManagerFactory];
 }
@@ -156,8 +161,16 @@ static EOQualifier *trueQualifier     = nil;
 
 /* accessors */
 
-- (id)dataSource {
+- (NSArray *)searchProjectArray {
+  return self->searchProjects;
+}
+
+- (EODataSource *)dataSource {
   return self->ds;
+}
+
+- (EODataSource *)documentDS {
+  return self->documentDS;
 }
 
 - (EOFetchSpecification *)_fetchSpecification {
@@ -203,34 +216,18 @@ static EOQualifier *trueQualifier     = nil;
 }
 
 - (EOQualifier *)_buildFavoriteProjectsQualifier {
-  NSUserDefaults *ud         = nil;
-  EOQualifier    *result     = nil;
-  NSMutableArray *qualArray  = nil;
-  NSArray        *projectIds = nil;
-  int            cnt, i;
+  NSUserDefaults *ud;
+  NSArray        *projectIds;
   
   ud         = [(OGoSession *)[self session] userDefaults];
   projectIds = [ud arrayForKey:@"skyp4_desktop_selected_projects"];
-  qualArray  = [[NSMutableArray alloc] initWithCapacity:[projectIds count]];
-
-  for (cnt = [projectIds count], i=0; i<cnt; i++) {
-    NSNumber    *projectId = [projectIds objectAtIndex:i];
-    EOQualifier *qual;
-
-    qual=[EOQualifier qualifierWithQualifierFormat:
-                      [NSString stringWithFormat:@"projectId=%@", projectId]];
-    [qualArray addObject:qual];
-  }
-  result = [[EOOrQualifier alloc] initWithQualifierArray:qualArray];
-  [qualArray release];
   
-  return [result autorelease];
+  return [EOQualifier qualifierForProjectIDs:projectIds];
 }
 
 - (id)favoriteDataSource {
   [self->ds setAuxiliaryQualifier:[self _buildFavoriteProjectsQualifier]];
   [self->ds setGroupings:nil];
-  
   return self->ds;
 }
 
@@ -248,37 +245,34 @@ static EOQualifier *trueQualifier     = nil;
   return self->currentBatch;
 }
 
+- (NSArray *)defaultProjectGroupings {
+  /* contains an array of arrays, entry idx 0 is groupname, idx 1 is qual */
+  return [[(OGoSession *)[self session] userDefaults]
+           arrayForKey:@"skyp4_project_groupings"];
+}
 - (NSArray *)groupings {
   EOGrouping     *grouping;
   NSMutableArray *groupings;
+  NSEnumerator *e;
+  NSArray *entry;
   
   groupings = [NSMutableArray arrayWithCapacity:64];
 
   /* read defaults */
-  {
-    NSEnumerator *e;
-    NSArray *entry;
+  e = [[self defaultProjectGroupings] objectEnumerator];
+  while ((entry = [e nextObject]) != nil) {
+    NSString    *groupName;
+    EOQualifier *q;
     
-    e = [[[(OGoSession *)[self session]
-                 userDefaults]
-                 arrayForKey:@"skyp4_project_groupings"]
-                 objectEnumerator];
+    groupName = [entry objectAtIndex:0];
+    q = [EOQualifier qualifierWithQualifierFormat:[entry objectAtIndex:1]];
 
-    while ((entry = [e nextObject])) {
-      NSString    *groupName;
-      EOQualifier *q;
-      
-      groupName = [entry objectAtIndex:0];
-      q = [EOQualifier qualifierWithQualifierFormat:
-                         [entry objectAtIndex:1]];
-
-      grouping =
-        [[EOQualifierGrouping alloc] initWithQualifier:q name:groupName];
-      [groupings addObject:grouping];
-      [grouping release];
-    }
+    grouping =
+      [[EOQualifierGrouping alloc] initWithQualifier:q name:groupName];
+    [groupings addObject:grouping];
+    [grouping release];
   }
-
+  
   /* check whether we have groupings ... */
 
   if ([groupings count] == 0)
@@ -349,6 +343,105 @@ static EOQualifier *trueQualifier     = nil;
   [[sn userDefaults] setObject:mids forKey:@"clipped_projects"];
 }
 
+/* qualifiers */
+
+- (BOOL)isAndSearch {
+  return YES;
+}
+
+- (NSString *)likeWrapString:(NSString *)_s {
+  if ([_s rangeOfString:@"*"].length == 0)
+    _s  = [[@"*" stringByAppendingString:_s] stringByAppendingString:@"*"];
+  return _s;
+}
+
+- (EOQualifier *)_newICaseLikeQualifierOnKey:(NSString *)_k value:(id)_value {
+  return [[EOKeyValueQualifier alloc]
+           initWithKey:_k
+           operatorSelector:EOQualifierOperatorCaseInsensitiveLike
+           value:_value];
+}
+
+- (EOQualifier *)qualifier {
+  EOQualifier *q;
+  NSString *s;
+  SEL      op;
+  NSMutableArray *qualifiers;
+  
+  qualifiers = [NSMutableArray arrayWithCapacity:4];
+  op         = EOQualifierOperatorCaseInsensitiveLike;
+
+  s = self->title;
+  if ([s length] > 0) {
+    q = [self _newICaseLikeQualifierOnKey:@"NSFileSubject" 
+              value:[self likeWrapString:s]];
+    [qualifiers addObject:q];
+    [q release];
+  }
+
+  s = self->fileName;
+  if ([s length] > 0) {
+    s = [self likeWrapString:s];
+    
+    if ([s rangeOfString:@"."].length == 0)
+      s  = [s stringByAppendingString:@".*"];
+    
+    q = [self _newICaseLikeQualifierOnKey:@"NSFileName" value:s];
+    [qualifiers addObject:q];
+    [q release];
+  }
+  
+  s = self->extension;
+  if ([s length] > 0) {
+    s = [@"*." stringByAppendingString:s];
+    q = [self _newICaseLikeQualifierOnKey:@"NSFileName" value:s];
+    [qualifiers addObject:q];
+    [q release];
+  }
+
+  if ([qualifiers count] == 0)
+    return nil;
+  
+  if ([qualifiers count] == 1)
+    return [qualifiers objectAtIndex:0];
+  
+  q = [self isAndSearch]
+    ? [[EOAndQualifier alloc] initWithQualifierArray:qualifiers]
+    : [[EOOrQualifier  alloc] initWithQualifierArray:qualifiers];
+  
+  return [q autorelease];
+}
+
+- (EOQualifier *)_newNameOrNumberICaseContainsQualifier:(id)_value {
+  EOQualifier *nameQual, *numberQual, *result;
+  NSString *str;
+  
+  str = [NSString stringWithFormat:@"*%@*", _value];
+  nameQual   = [self _newICaseLikeQualifierOnKey:@"name"   value:str];
+  numberQual = [self _newICaseLikeQualifierOnKey:@"number" value:str];
+  result = [[EOOrQualifier alloc] initWithQualifiers:
+                                    nameQual, numberQual, nil];
+  [nameQual   release];
+  [numberQual release];
+  return result;
+}
+
+/* datasources */
+
+- (Class)projectDocumentDataSourceClass {
+  /* for project-wide searches */
+  return NSClassFromString(@"SkyProjectDocumentDataSource");
+}
+- (EODataSource *)projectDocumentDataSource {
+  Class        class;
+  EODataSource *pds;
+  
+  class = [self projectDocumentDataSourceClass];
+  pds   = [[class alloc] initWithContext:(id)
+                           [(OGoSession *)[self session] commandContext]];
+  return [pds autorelease];
+}
+
 /* actions */
 
 - (id)refetch {
@@ -367,152 +460,52 @@ static EOQualifier *trueQualifier     = nil;
   return [[self session] instantiateComponentForCommand:@"new" type:mt];
 }
 
-- (BOOL)isAndSearch {
-  return YES;
-}
-
-- (EOQualifier *)qualifier {
-  NSString *s;
-  SEL      op;
-  NSMutableArray *qualifiers;
-  
-  qualifiers = [NSMutableArray arrayWithCapacity:4];
-  op         = EOQualifierOperatorCaseInsensitiveLike;
-
-  
-  if ([(s = self->title) length] > 0) {
-    EOQualifier *q;
-    
-    if ([s rangeOfString:@"*"].length == 0)
-      s  = [[@"*" stringByAppendingString:s] stringByAppendingString:@"*"];
-
-    q = [[EOKeyValueQualifier alloc]
-                              initWithKey:@"NSFileSubject"
-                              operatorSelector:op
-                              value:s];
-    [qualifiers addObject:q];
-    [q release];
-  }
-  if ([(s = self->fileName) length] > 0) {
-    EOQualifier *q;
-
-    if ([s rangeOfString:@"*"].length == 0)
-      s = [[@"*" stringByAppendingString:s] stringByAppendingString:@"*"];
-   
-    if ([s rangeOfString:@"."].length == 0)
-      s  = [s stringByAppendingString:@".*"];
-    
-    q = [[EOKeyValueQualifier alloc]
-                              initWithKey:@"NSFileName"
-                              operatorSelector:op
-                              value:s];
-    [qualifiers addObject:q];
-    [q release];
-  }
-  if ([(s = self->extension) length] > 0) {
-    EOQualifier *q;
-
-    s = [@"*." stringByAppendingString:s];
-    
-    q = [[EOKeyValueQualifier alloc]
-                              initWithKey:@"NSFileName"
-                              operatorSelector:op
-                              value:s];
-    [qualifiers addObject:q];
-    [q release];
-  }
-
-  if ([qualifiers count] == 0) {
-    return nil;
-  }
-  else if ([qualifiers count] == 1) {
-    return [qualifiers objectAtIndex:0];
-  }
-  else {
-    EOQualifier *q;
-    
-    q = [self isAndSearch]
-      ? [[EOAndQualifier alloc] initWithQualifierArray:qualifiers]
-      : [[EOOrQualifier alloc] initWithQualifierArray:qualifiers];
-    
-    return [q autorelease];
-  }
-}
-
-- (id)searchProjectArray {
-  return self->searchProjects;
-}
-
 - (id)searchProjects {
-  EOKeyValueQualifier *nameQual, *numberQual;
-  EOQualifier         *qual;
-  NSString            *str;
-
-  str                    = nil;
+  EOQualifier *qual;
+  
   self->isExtendetSearch = NO;
   
   if ([self->searchString length] > 0) {
-    str = [NSString stringWithFormat:@"*%@*", self->searchString];
-    
     [self->searchQualifier release]; self->searchQualifier = nil;
-    nameQual =
-      [[EOKeyValueQualifier alloc]
-        initWithKey:@"name"
-        operatorSelector:EOQualifierOperatorCaseInsensitiveLike
-        value:str];
-    numberQual =
-      [[EOKeyValueQualifier alloc]
-        initWithKey:@"number"
-        operatorSelector:EOQualifierOperatorCaseInsensitiveLike
-        value:str];
-
     self->searchQualifier =
-      [[EOOrQualifier alloc] initWithQualifiers:nameQual, numberQual, nil];
-
-    [nameQual   release];
-    [numberQual release];
-
+      [self _newNameOrNumberICaseContainsQualifier:self->searchString];
+    
     ASSIGN(self->searchString, @"");
   }
-  if ((qual = [self qualifier])) {
-    Class                class;
-    id                   pds;
+  
+  if ((qual = [self qualifier]) != nil) {
+    EODataSource         *pds;
     EOFetchSpecification *fs;
-
-    class = NSClassFromString(@"SkyProjectDocumentDataSource");
-    pds = [[[class alloc] initWithContext:(id)[[self session] commandContext]]
-                   autorelease];
-    if (pds) {
-      fs = [[EOFetchSpecification alloc] init];
-
-      [fs setQualifier:qual];
-      {
-        EOKeyGrouping *grp;
-
-        grp = [[[EOKeyGrouping alloc]
-                               initWithKey:@"projectName"]
-                               autorelease];
-        [fs setGroupings:[NSArray arrayWithObject:grp]];
+    EOKeyGrouping *grp;
     
-        [pds setFetchSpecification:fs];
-    
-        self->isExtendetSearch = YES;
-
-#if 0
-        [self->searchProjects release];
-        self->searchProjects = [[pds fetchObjects] retain];
-#else
-        ASSIGN(self->documentDS, pds);
-#endif
-      }
+    if ((pds = [self projectDocumentDataSource]) == nil) {
+      [self setErrorString:@"did not find project document datasource!"];
+      return nil;
     }
+    
+    fs = [[EOFetchSpecification alloc] init];
+    [fs setQualifier:qual];
+
+    grp = [[[EOKeyGrouping alloc] initWithKey:@"projectName"] autorelease];
+    [fs setGroupings:[NSArray arrayWithObject:grp]];
+    
+    [pds setFetchSpecification:fs];
+    
+    self->isExtendetSearch = YES;
+    
+#if 0
+    [self->searchProjects release]; self->searchProjects = nil;
+    self->searchProjects = [[pds fetchObjects] retain];
+#else
+    ASSIGN(self->documentDS, pds);
+#endif
+    [pds setFetchSpecification:fs];
+    [fs release]; fs = nil;
   }
   return nil;
 }
 
-- (id)documentDS {
-  return self->documentDS;
-}
+/* accessors */
 
 - (NSString *)textFieldStyle {
   return [NSString stringWithFormat:
@@ -520,36 +513,36 @@ static EOQualifier *trueQualifier     = nil;
                      [[self config] valueForKey:@"colors_mainButtonRow"]];
 }
 
-- (BOOL)extendedSearch {
-  return self->extendedSearch;
-}
 - (void)setExtendedSearch:(BOOL)_ext {
   self->extendedSearch = _ext;
 }
+- (BOOL)extendedSearch {
+  return self->extendedSearch;
+}
 
+- (void)setFileName:(NSString *)_str {
+  ASSIGNCOPY(self->fileName, _str);;
+}
 - (NSString *)fileName {
   return self->fileName;
 }
-- (void)setFileName:(NSString *)_str {
-  ASSIGN(self->fileName, _str);;
+- (void)setTitle:(NSString *)_str {
+  ASSIGNCOPY(self->title, _str);;
 }
 - (NSString *)title {
   return self->title;
 }
-- (void)setTitle:(NSString *)_str {
-  ASSIGN(self->title, _str);;
+- (void)setExtension:(NSString *)_str {
+  ASSIGNCOPY(self->extension, _str);;
 }
 - (NSString *)extension {
   return self->extension;
 }
-- (void)setExtension:(NSString *)_str {
-  ASSIGN(self->extension, _str);;
+- (void)setSearchString:(NSString *)_str {
+  ASSIGNCOPY(self->searchString, _str);;
 }
 - (NSString *)searchString {
   return self->searchString;
-}
-- (void)setSearchString:(NSString *)_str {
-  ASSIGN(self->searchString, _str);;
 }
 
 - (BOOL)isExtendetSearch {
@@ -571,17 +564,22 @@ static EOQualifier *trueQualifier     = nil;
 }
 
 - (BOOL)isGroup {
+  NSString *projectNum, *prevProjectNum;
+  
   if (self->prevItem == nil)
     return NO;
-
-  return [[[self->prevItem valueForKey:@"project"] valueForKey:@"number"]
-                           isEqual:[[self->item valueForKey:@"project"]
-                                                valueForKey:@"number"]];
+  
+  prevProjectNum = 
+    [[self->prevItem valueForKey:@"project"] valueForKey:@"number"];
+  projectNum = [[self->item valueForKey:@"project"] valueForKey:@"number"];
+  return [prevProjectNum isEqual:projectNum];
 }
 
-- (id)showGroup {
-  return [NSNumber numberWithBool:YES];
+- (BOOL)showGroup {
+  return YES;
 }
+
+/* actions */
 
 - (id)clickedFile {
   return [self activateObject:[item objectForKey:@"globalID"]
