@@ -149,7 +149,10 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
   NSEnumerator *addenum;
   id           addr;
   BOOL         isFirst;
-    
+
+  if (vacation == nil)
+    return;
+  
   [sieveFilter appendString:@"require [\"vacation\"];\n\n"];
 
   [sieveFilter appendFormat:@"vacation :days %@ :addresses [",
@@ -159,7 +162,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
     
   isFirst = YES;
     
-  while ((addr = [addenum nextObject])) {
+  while ((addr = [addenum nextObject]) != nil) {
     if (isFirst)
       isFirst = NO;
     else
@@ -276,30 +279,28 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
   
   f = [[NSArray alloc] initWithContentsOfFile:_fileName];
 
-  if (![f count])
+  if ([f count] == 0)
     return nil;
   
-  enumerator  = [f objectEnumerator];
-
   vacation = nil;
-  forward   = nil;
+  forward  = nil;
   
+  enumerator = [f objectEnumerator];
   while ((aFilter = [enumerator nextObject]) != nil) {
     if ([[aFilter objectForKey:@"kind"] isEqualToString:@"vacation"])
       vacation = aFilter;
     else if ([[aFilter objectForKey:@"kind"] isEqualToString:@"forward"])
       forward = aFilter;
-
-    if (forward && vacation) {
+    
+    if (forward != nil && vacation != nil)
       break;
-    }
   }
   sieveFilter = [NSMutableString stringWithCapacity:4096];
   [sieveFilter appendString:@"require [\"fileinto\"];\n"];
   
   if (forward)
     [sieveFilter appendString:@"require [\"reject\"];\n"];
-
+  
   [self appendVacation:vacation toFilterString:sieveFilter];
   
   if (forward) {
@@ -516,7 +517,9 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
   }
   
   NS_DURING {
+    NGSieveClient *client;
     NSString *filter, *scriptName;
+    id result;
     
     if (![self _extractParameters])
       return 1;
@@ -527,24 +530,32 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
     if ((filter = [self _extractFilter]) == nil)
       return 1;
     
-    {
-      NGSieveClient *client;
+    if ((client = [self openConnection]) == nil) {
+      NSLog(@"ERROR: could not connect to Sieve server!");
+      exit(3);
+    }
       
-      if ((client = [self openConnection]) == nil) {
-        NSLog(@"ERROR: could not connect to Sieve server!");
-        exit(3);
-      }
-      
-      if ([filter length] > 0) {
-        [client putScript:scriptName script:filter]; 
-        [client setActiveScript:scriptName]; 
-        [client closeConnection];
+    if ([filter length] > 0) {
+      result = [client putScript:scriptName script:filter]; 
+      if (![[result valueForKey:@"result"] boolValue]) {
+        [self logWithFormat:@"ERROR: could not upload script '%@': %@",
+                scriptName, result];
       }
       else {
-        [client deleteScript:scriptName]; 
-        [client closeConnection];
+        result = [client setActiveScript:scriptName];
+        if (![[result valueForKey:@"result"] boolValue]) {
+          [self logWithFormat:@"ERROR: could not active script '%@': %@",
+                  scriptName, result];
+        }
       }
     }
+    else {
+      result = [client deleteScript:scriptName]; 
+      if (![[result valueForKey:@"result"] boolValue])
+        [self logWithFormat:@"ERROR: could not delete script '%@': %@",
+                scriptName, result];
+    }
+    [client closeConnection];
   }
   NS_HANDLER
     [self handleException:localException];
