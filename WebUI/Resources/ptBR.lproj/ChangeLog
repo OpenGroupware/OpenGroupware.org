@@ -1,4 +1,8 @@
 
+2005-02-28 Olivier Hallot <olivier@ig.com.br>
+
+	* Modified string in EnterpriseUI.strings
+
 2005-02-16 Olivier Hallot <olivier@ig.com.br>
 
 	* Added string "fewerButtonLabel" in OGoMailFilter.strings need by OOo
