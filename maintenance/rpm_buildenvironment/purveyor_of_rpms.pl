@@ -485,7 +485,6 @@ sub collect_patchinfo {
     }
     if ((($flavour_we_build_upon eq "suse") or ($flavour_we_build_upon eq "mandrake")) and ($distrib_define !~ m/^suse sles-8/i)) {
       $new_version = `/bin/rpm --qf '%{version}' -q apache2-devel`;
-      print "We're on $distrib_define\n";
       print "Sensesless to continue... got no version for mod_ngobjweb\n" and exit 1 if ($?);
     }
     if ($distrib_define =~ m/^suse sles-8/i) {
@@ -774,33 +773,15 @@ sub prepare_build_env {
     $flavour_we_build_upon = "fedora";
     $distrib_define = `head -n1 /etc/fedora-release`;
     chomp $distrib_define;
-  }
-  if ( -f "/etc/SuSE-release") {
+  } elsif ( -f "/etc/SuSE-release") {
     $flavour_we_build_upon = "suse";
     $distrib_define = `head -n1 /etc/SuSE-release`;
     chomp $distrib_define;
-  }
-  if ( -f "/etc/mandrake-release" ) {
+  } elsif ( -f "/etc/mandrake-release" ) {
     $flavour_we_build_upon = "mandrake";
     $distrib_define = `head -n1 /etc/mandrake-release`;
     chomp $distrib_define;
-  }
-  #if ( -e "/usr/share/doc/redhat-release-3ES") {
-  #  $flavour_we_build_upon = "fedora";
-  #  $distrib_define = `head -n1 /etc/redhat-release`;
-  #  chomp $distrib_define;
-  #}
-  #if ( -e "/usr/share/doc/redhat-release-3AS") {
-  #  $flavour_we_build_upon = "fedora";
-  #  $distrib_define = `head -n1 /etc/redhat-release`;
-  #  chomp $distrib_define;
-  #}
-  #if ( -e "/usr/share/doc/redhat-release-3WS") {
-  #  $flavour_we_build_upon = "fedora";
-  #  $distrib_define = `head -n1 /etc/redhat-release`;
-  #  chomp $distrib_define;
-  #}
-  if ( -f "/etc/redhat-release") {
+  } elsif ( -f "/etc/redhat-release") {
     $flavour_we_build_upon = "fedora";
     $distrib_define = `head -n1 /etc/redhat-release`;
     chomp $distrib_define;
