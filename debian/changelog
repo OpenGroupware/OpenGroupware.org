@@ -2,8 +2,6 @@ opengroupware.org (1.0a.8-1) experimental; urgency=low
 
   * Initial Release of converted sources. Upstream has done heavy
     restructuring of the sources, see also the SOPE changelog for details.
-  * All OpenGroupware.org servers now log to syslog. This also works around
-    the former incapability to rotate logs. 
 
  -- Sebastian Ley <ley@debian.org>  Sun,  3 Oct 2004 00:13:39 +0200
 

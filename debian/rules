@@ -128,10 +128,6 @@ binary-arch: build install
 #	dh_installemacsen
 #	dh_installpam
 #	dh_installmime
-	dh_installinit -popengroupware.org$(OGOVER)-webui-app --init-script=opengroupware.org-webui$(OGOVER) -- defaults 80
-	dh_installinit -popengroupware.org$(OGOVER)-xmlrpcd --init-script=opengroupware.org-xmlrpcd$(OGOVER) -- defaults 80
-	dh_installinit -popengroupware.org-zidestore$(ZSVER) --init-script=opengroupware.org-zidestore$(ZSVER) -- defaults 80
-	dh_installcron -popengroupware.org-skyaptnotify --name=skyaptnotify
 #	dh_installinfo
 	dh_installman
 	dh_link -popengroupware.org$(OGOVER)-webui-app usr/share/man/man7/undocumented.7.gz usr/share/man/man8/ogo-webui-$(OGOVER).8.gz
