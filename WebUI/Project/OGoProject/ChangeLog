@@ -1,3 +1,8 @@
+2005-04-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyP4FolderView.m: minor code improvements, fixed a small memleak
+	  (v5.1.67)
+
 2005-03-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyProject4DocumentViewer.m: major changes to make tab selection

@@ -328,8 +328,8 @@ static inline BOOL _showUnknownFiles(id self) {
     return showFoldersQ;
 
   if (!_showUnknownFiles(self)) {
-          q = [EOQualifier qualifierWithQualifierFormat:
-                           @"(NSFileType != 'NSFileTypeUnknown')", nil];
+    q = [EOQualifier qualifierWithQualifierFormat:
+		       @"(NSFileType != 'NSFileTypeUnknown')", nil];
   }
   else
     q = nil;

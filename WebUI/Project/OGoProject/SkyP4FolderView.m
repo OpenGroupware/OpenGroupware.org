@@ -58,13 +58,15 @@
 static BOOL    debugOn = NO;
 static BOOL    hasZip  = NO;
 static BOOL    hasEpoz = NO;
-static NSArray *accessCheckFlags = nil;
+static NSArray *accessCheckFlags  = nil;
+static NSArray *fileTypeGroupings = nil;
 
 + (void)initialize {
   static BOOL didInit = NO;
   NGResourceLocator *locator;
   NSFileManager     *fm = [NSFileManager defaultManager];
   NSString          *p;
+  id tmp;
 
   if (didInit) return;
   didInit = YES;
@@ -85,6 +87,10 @@ static NSArray *accessCheckFlags = nil;
   
   accessCheckFlags = 
     [[NSArray alloc] initWithObjects:@"d", @"i", @"r", @"w", nil];
+
+  tmp = [[EOKeyGrouping alloc] initWithKey:NSFileType];
+  fileTypeGroupings = [[NSArray alloc] initWithObjects:&tmp count:1];
+  [tmp release]; tmp = nil;
 }
 
 - (id)init {
@@ -266,16 +272,16 @@ static NSArray *accessCheckFlags = nil;
   if ((fspec = [self->dataSource fetchSpecification]) == nil)
     fspec = [[[EOFetchSpecification alloc] init] autorelease];
   
-  [fspec setGroupings:
-           [NSArray arrayWithObject:
-                    [[EOKeyGrouping alloc] initWithKey:NSFileType]]];
+  [fspec setGroupings:fileTypeGroupings];
   [self->dataSource setFetchSpecification:fspec];
 }
 
 - (id)dataSource {
-  if (self->dataSource == nil)
+  if (self->dataSource == nil) {
+    // TODO: can this happen? (if yes, explain and disable log)
+    [self logWithFormat:@"Note: autocreated datasource for cwd!"];
     self->dataSource = [[[self fileManager] dataSourceAtPath:@"."] retain];
-  
+  }
   return self->dataSource;
 }
 
