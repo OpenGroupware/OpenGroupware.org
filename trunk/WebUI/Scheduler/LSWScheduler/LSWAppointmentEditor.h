@@ -32,6 +32,12 @@
   id             item;       // non-retained
   id             enterprise; // non-retained
   NSArray        *accessTeams;
+  //ADDED BY AO
+  //########READ####@####
+  NSArray        *readAccessTeams;
+  id             selectedReadAccessTeam;
+  NSMutableArray *creator;
+  // ################
   id             selectedAccessTeam;
   id             searchTeam;
   NSString       *searchText;
@@ -45,7 +51,12 @@
 
   NSMutableArray *accessMembers;
   NSArray        *selectedAccessMembers;
-
+  //###ADDED BY AO###
+  //#######READ#####
+  NSMutableArray *readAccessMembers;
+  NSArray        *selectedReadAccessMembers;
+  NSString	 *rdvButton;
+  
   NSUserDefaults *defaults;
   
   NSTimeZone     *timeZone;
@@ -98,12 +109,20 @@
 - (void)setResourceStrings:(id)_id;
 - (void)setSelectedParticipants:(NSArray *)_array;
 - (void)setSelectedAccessMembers:(NSArray *)_array;
-
+//####ADDED BY AO###
+//#######READ#####
+- (void)setSelectedReadAccessMembers:(NSArray *)_array;
+//RdvType
 /* defaults */
 
 - (NSArray *)defaultWriteAccessAccounts;
 - (NSArray *)defaultWriteAccessTeams;
 
+
+- (NSArray *)defaultReadAccessAccounts;
+- (NSArray *)defaultReadAccessTeams;
+
+//- (void)setRdvButtonSelection:(NSString *)_rdvButton;
 @end /* LSWAppointmentEditor */
 
 #endif /* __LSWScheduler_LSWAppointmentEditor_Fetches_H__ */

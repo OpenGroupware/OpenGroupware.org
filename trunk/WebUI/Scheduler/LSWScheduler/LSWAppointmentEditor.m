@@ -90,6 +90,7 @@ static NSArray    *idxArray3 = nil;
 static NSArray    *Delimiter = nil;
 static NSNull     *null      = nil;
 static NGMimeType *eoDateType= nil;
+static NSArray  *personAttrNames = nil;
 
 // TODO: document those formats
 static NSString *DateParseFmt      = @"%Y-%m-%d %H:%M:%S %Z";
@@ -107,6 +108,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   num1   = [[NSNumber numberWithInt:1]    retain];
   num10  = [[NSNumber numberWithInt:10]   retain];
   null   = [[NSNull null] retain];
+  
+  personAttrNames = [[ud arrayForKey:@"schedulerselect_personfetchkeys"] copy];
   
   if (idxArray2 == nil)
     idxArray2 = [[NSArray alloc] initWithObjects:num0, num1, nil];
@@ -134,6 +137,10 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     self->resources     = [[NSMutableArray alloc] initWithCapacity:4];
     self->participants  = [[NSMutableArray alloc] initWithCapacity:16];
     self->accessMembers = [[NSMutableArray alloc] initWithCapacity:4];
+    //###ADDED BY AO###
+    self->creator 	= [[NSMutableArray alloc] initWithCapacity:16];
+    //####READ####
+    self->readAccessMembers = [[NSMutableArray alloc] initWithCapacity:4];
     self->timeInputType = 
       [[self->defaults stringForKey:@"scheduler_time_input_type"] copy];
     self->moreResources = [[NSMutableArray alloc] initWithCapacity:16];
@@ -173,6 +180,12 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   [self->accessMembers         release];
   [self->selectedAccessMembers release];
   [self->defaults              release];
+  //###ADDED BY AO###
+  [self->creator	       release];
+  //#####READ#####@
+  [self->readAccessMembers 	   release];
+  [self->selectedReadAccessMembers release];
+  //##########
   //[self->aptTypes              release];
   [super dealloc];
 }
@@ -223,7 +236,9 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   NSArray        *addParticipants;
 
   addParticipants = nil;
-    
+  //####ADDED BY AO###
+  NSArray	*dicoCreator;
+  dicoCreator = nil;
   if ((tobj = [[self session] getTransferObject]) == nil) {
     /* no object in pasteboard */
     date = nil;
@@ -232,6 +247,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     /* dictionary in pasteboard */
     date            = [(NSDictionary *)tobj objectForKey:@"startDate"];
     addParticipants = [(NSDictionary *)tobj objectForKey:@"participants"];
+    dicoCreator     = [(NSDictionary *)tobj objectForKey:@"creator"];
     [[self session] removeTransferObject];
    }
   else if ([tobj isKindOfClass:[NSCalendarDate class]]) {
@@ -251,6 +267,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   
   [self->timeZone release]; self->timeZone = nil;
   self->timeZone = [[date timeZone] retain];
+  //###ADDED BY AO###
+  [[self snapshot] takeValue:dicoCreator forKey:@"creatorId"];
   
   NSAssert(self->participants, @"participants array is not setup !");
 
@@ -395,6 +413,43 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   }
 }
 
+//###ADDED BY AO###
+//##################READ#################
+- (NSString *)defaultReadAccessList {
+  NSMutableArray *ra;
+  NSString *list;
+  
+  ra = [[self defaultReadAccessAccounts] mutableCopy];
+  [ra addObjectsFromArray:[self defaultReadAccessTeams]];
+  list = [ra componentsJoinedByString:@","];
+  [ra release];
+  ra = nil;
+  [self logWithFormat:@"Liste readAccess dans l'editeur %@",list]; 
+  return list;
+}
+- (BOOL)isFilledReadAccessList:(NSString *)_list {
+  if (![_list isNotNull])  return NO;
+  if ([_list length] == 0) return NO;
+  if ([_list isEqualToString:@" "]) return NO;
+  return YES;
+}
+
+- (void)fillAccessMembersFromReadAccessList:(NSString *)_list {
+  NSEnumerator *enumerator;
+  id objId;
+  
+  if (![self isFilledReadAccessList:_list]) return;
+  
+  enumerator = [[_list componentsSeparatedByString:@","] objectEnumerator];
+  while ((objId = [enumerator nextObject])) {
+    id res;
+    
+    if ((res = [self _fetchAccountOrTeamForPrimaryKey:objId]))
+      [self->readAccessMembers addObject:res];
+  }
+}
+//########################
+
 - (void)_setSelectedAccessTeamToAllIntranetInArray:(NSArray *)_teams {
   /* 
      searches the accessTeams array for all-intranet and sets that as the 
@@ -484,6 +539,17 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
       
   [self fillAccessMembersFromWriteAccessList:list];
   [self setSelectedAccessMembers:self->accessMembers];
+
+//###ADDED BY AO###
+  /* read access accounts */
+    
+  [self->readAccessMembers removeAllObjects];
+  list = [self isInNewMode]
+    ? [self defaultReadAccessList]
+    : [appointment valueForKey:@"readAccessList"];
+      
+  [self fillAccessMembersFromReadAccessList:list];
+  [self setSelectedReadAccessMembers:self->readAccessMembers];
 
   return YES;
 }
@@ -618,6 +684,17 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return [self->defaults arrayForKey:@"scheduler_write_access_teams"];
 }
 
+//###ADDED BY AO###
+//#######READ######
+- (NSArray *)defaultReadAccessAccounts {
+  return [self->defaults arrayForKey:@"scheduler_read_access_accounts"];
+}
+- (NSArray *)defaultReadAccessTeams {
+  return [self->defaults arrayForKey:@"scheduler_read_access_teams"];
+}
+//################
+
+
 - (BOOL)shouldShowPalmDates {
   return [[self->defaults valueForKey:@"scheduler_show_palm_dates"] boolValue];
 }
@@ -665,6 +742,63 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   selection = [self ignoreConflictsSelection];
   return (selection == nil) ? (NSString *)@"dontIgnore" : selection;
 }
+
+//----------- ADDED BY ML
+- (NSString *)RdvButtonSelection {
+   NSString *selection;
+   NSLog(@"DEBUG VIEWER[RdvButtonSelection]");
+   selection = @"Private";
+   return selection;
+}
+- (NSArray *)rdvList{
+   NSString			*typeRdv;
+   NSString			*returnString;
+   id				selectInScheduler;
+   NSMutableArray	*list=[[NSMutableArray alloc]init]; 
+   
+   selectInScheduler = [[[self session] getActiveAccountInSchedulerViews] retain]; 
+   [self logWithFormat:@"###selectInScheduler de AppointmentEditor : %@", selectInScheduler];
+   
+   if ((selectInScheduler == nil))
+   {
+	list = [NSMutableArray arrayWithArray:[self->defaults arrayForKey:@"scheduler_rdvpopup"]];
+ 	[self logWithFormat:@"###listbox avec type de rdv  :%@",list]; 
+   }
+   else
+   { 
+   	typeRdv = [selectInScheduler valueForKey:@"rdvType"];
+   	
+	if ([typeRdv isEqualToString:@"idNormal"] == YES)
+		returnString = @"Normal";
+	else if ([typeRdv isEqualToString:@"idConfidential"] == YES)
+		returnString  = @"Confidential";
+	else if ([typeRdv isEqualToString:@"idPrivate"] == YES)
+		returnString  = @"Private";
+	else if ([typeRdv isEqualToString:@"idPublic"] == YES)
+		returnString  = @"Public";
+	
+	
+	[self logWithFormat:@"###typeRdv  de AppointmentEditor : %@",returnString];
+	[list addObject:returnString];
+    }
+   [selectInScheduler release];
+   [self logWithFormat:@"###Liste des rdv :%@###",list];
+   return list;
+}
+
+- (NSString *)RdvLabel {
+   NSLog(@"DEBUG VIEWER[RdvLabel]");
+   return [[self labels] valueForKey:self->item];
+}
+//----------- ADDED BY ML
+//###ADDED BY AO####
+- (void) setCreator:(NSArray *)_creator {
+  ASSIGN(self->creator,creator);
+}
+- (NSArray *) creator {
+ return self->creator;
+}
+//################	
 
 - (void)setComment:(NSString *)_comment {
   ASSIGNCOPY(self->comment, _comment);
@@ -760,6 +894,10 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (NSString *)ignoreConflictsLabel {
+  return [[self labels] valueForKey:self->item];
+}
+/*** ADDED BY ML ***/
+- (NSString *)rdvLabel {
   return [[self labels] valueForKey:self->item];
 }
 
@@ -963,6 +1101,23 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 - (void)setSelectedAccessMembers:(NSArray *)_array {
   ASSIGN(self->selectedAccessMembers, _array);
 }
+
+//###ADED BY AO########
+//########READ#########
+- (void)setReadAccessMembers:(id)_part {
+  ASSIGN(self->readAccessMembers, _part);
+}
+- (NSArray *)readAccessMembers {
+  return self->readAccessMembers;
+}
+
+- (id)selectedReadAccessMembers {
+  return self->selectedReadAccessMembers;
+}
+- (void)setSelectedReadAccessMembers:(NSArray *)_array {
+  ASSIGN(self->selectedReadAccessMembers, _array);
+}
+//##########################
 
 - (BOOL)hasParent {
   return ([[[self snapshot] valueForKey:@"parentDateId"] isNotNull])
@@ -1628,16 +1783,94 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return accessList;
 }
 
+//###ADDED BY AO###
+//######READ#######
+- (NSString *)_readAccessList {
+  NSMutableString *readAccessList;
+  NSEnumerator    *enumerator;
+  id              obj;
+  BOOL            isFirst;
+  
+  if ([self->selectedReadAccessMembers count] == 0)
+    return nil;
+
+  isFirst    = YES;
+  readAccessList = [NSMutableString stringWithCapacity:128];
+  enumerator = [self->selectedReadAccessMembers objectEnumerator];
+
+  while ((obj = [enumerator nextObject])) {
+    if (isFirst)
+      isFirst = NO;
+    else
+      [readAccessList appendString:@","];
+    [readAccessList appendString:[[obj valueForKey:@"companyId"] stringValue]];
+  }
+  return readAccessList;
+}
+
+- (id) _rdvOwner
+{
+  id account;
+  id myCompanyID;
+  id rdvOwner;
+
+  account = [[self session] getActiveAccountInSchedulerViews];
+
+  if ((account == nil))
+  {
+	rdvOwner  = [[[self session]activeAccount]valueForKey:@"companyId"];
+	[self logWithFormat:@"_rdvOwner : PAS DE DELEGATION donc rdvOwner = %@",rdvOwner];
+  }	
+  else 
+  {
+  	myCompanyID = [account valueForKey:@"companyId"];
+	rdvOwner = myCompanyID;
+	[self logWithFormat:@"_rdvOwner : DELEGATION DE %@ donc rdvOwner = %@",account,rdvOwner];
+  } 
+ 
+  return rdvOwner;
+}
+
+- (id) _rdvCreator
+{
+  id rdvCreator;
+
+  rdvCreator  = [[[self session]activeAccount]valueForKey:@"companyId"];
+ 
+  return rdvCreator;
+}
+//#######################
+
 - (void)parseSnapshotValues {
   NSString *accessList;
   id       apmt;
-
+  //ADDED BY AO
+  NSString *readAccessList;
+  id rdvCreator;
+  id rdvOwner;
+	  
   apmt       = [self snapshot];
   accessList = [self _accessList];
-
+  
+//###ADDED BY AO###
+  readAccessList = [self _readAccessList];
+  rdvCreator     = [self _rdvCreator];
+  rdvOwner       = [self _rdvOwner];
+  //######## 
   if (accessList)
     [apmt takeValue:accessList forKey:@"writeAccessList"];
+ 
+//###ADDED BY AO###
+//  #####READ#####
+  if (readAccessList)
+    [apmt takeValue:readAccessList forKey:@"readAccessList"];
   
+  [apmt takeValue:rdvCreator forKey:@"creatorId"];
+  [apmt takeValue:rdvOwner forKey:@"ownerId"];
+
+  [self logWithFormat:@"######## apmt apres takeValue rdvCreator %@",apmt];
+  
+//##############
   [apmt takeValue:self->selectedParticipants forKey:@"participants"];  
   [apmt takeValue:(self->ignoreConflicts ? yesNum : noNum)
         forKey:@"isWarningIgnored"];
@@ -2314,6 +2547,12 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   /* set creator */
   
   c = [self _fetchAccountForPrimaryKey:[obj valueForKey:@"ownerId"]];
+  [bindings setObject:[self _personName:c] forKey:@"owner"];
+
+  
+  //###ADDED BY AO###
+  /* set owner du rendez-vous  */
+  c = [self _fetchAccountForPrimaryKey:[obj valueForKey:@"creatorId"]];
   [bindings setObject:[self _personName:c] forKey:@"creator"];
   
   { /* set participants */

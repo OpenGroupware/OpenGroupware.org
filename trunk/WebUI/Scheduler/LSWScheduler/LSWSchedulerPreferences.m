@@ -20,7 +20,7 @@
 */
 
 #include <OGoFoundation/OGoContentPage.h>
-
+#include <LSFoundation/LSCommandContext.h>
 // TODO: this component s**** big time. We should have at least an object
 //       representing the defaults to separate that from the controller
 // TODO: split up in sections?!
@@ -37,6 +37,8 @@
   NSString       *appointmentView;
   NSString       *timeInputType;
   NSString       *aptTypeInputType;
+//###ADDED BY AO###
+  NSString       *rdvTypeInputType;
   NSString       *absenceMode;
   NSString       *noOfCols;
   int            startHour;
@@ -73,6 +75,21 @@
   NSArray        *selectedParticipants;
   NSMutableArray *writeAccess;
   NSArray        *selectedWriteAccess;
+  //######READ#####
+//###ADDED BY AO###
+  NSMutableArray *readAccess;
+  NSArray        *selectedReadAccess;
+  //#####DELEGATION#######
+  NSMutableArray *delegRdvPriv;
+  NSArray        *selectedDelegRdvPriv;
+  NSMutableArray *delegRdvConf;
+  NSArray        *selectedDelegRdvConf;
+  NSMutableArray *delegRdvPubli;
+  NSArray        *selectedDelegRdvPubli;
+  NSMutableArray *delegRdvNorm;
+  NSArray        *selectedDelegRdvNorm;
+  
+  //#####################
   NSArray        *resourceNames;
   NSArray        *minutes;
   NSDictionary   *labelsForMinutes;
@@ -120,7 +137,11 @@
 static BOOL     hasLSWSchedulerPage = NO;
 static NSNumber *noNum = nil;
 
+//###ADDED BY AO###
+static NSArray  *personAttrNames = nil;
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  personAttrNames = [[ud arrayForKey:@"schedulerselect_personfetchkeys"] copy];
   NGBundleManager *bm = [NGBundleManager defaultBundleManager];
 
   hasLSWSchedulerPage = [bm bundleProvidingResource:@"LSWSchedulerPage"
@@ -179,6 +200,18 @@ static NSNumber *noNum = nil;
   [self->selectedParticipants          release];
   [self->writeAccess                   release];
   [self->selectedWriteAccess           release];
+//###ADDED BY AO###
+  [self->readAccess		       release];
+  [self->selectedReadAccess            release];
+  [self->delegRdvPriv		       release];
+  [self->selectedDelegRdvPriv          release];
+  [self->delegRdvPubli		       release];
+  [self->selectedDelegRdvPubli         release];
+  [self->delegRdvConf		       release];
+  [self->selectedDelegRdvConf          release];
+  [self->delegRdvNorm		       release];
+  [self->selectedDelegRdvNorm          release];
+//###############
   [self->resourceNames                 release];
   [self->minutes                       release];
   [self->labelsForMinutes              release];
@@ -479,15 +512,183 @@ static NSNumber *noNum = nil;
 }
 
 - (void)_processWriteAccess {
-  self->writeAccess = [[self _getGlobalIDsDefault:
-			       @"scheduler_write_access_accounts"
-			     entityName:@"Person"] mutableCopy];
-  [self->writeAccess addObjectsFromArray:
-	 [self _getGlobalIDsDefault:@"scheduler_write_access_teams"
-	       entityName:@"Team"]];
-  self->selectedWriteAccess =
-    [[NSArray alloc] initWithArray:self->writeAccess];
+  self->writeAccess = [[self _getGlobalIDsDefault: @"scheduler_write_access_accounts"
+			               entityName:@"Person"] mutableCopy];
+  [self->writeAccess addObjectsFromArray : [self _getGlobalIDsDefault:@"scheduler_write_access_teams"
+	                 				   entityName:@"Team"]];
+  self->selectedWriteAccess = [[NSArray alloc] initWithArray:self->writeAccess];
 }
+//###ADDED BY AO###
+//######READ#######
+- (void)_processReadAccess {
+  self->readAccess = [[self _getGlobalIDsDefault:@"scheduler_read_access_accounts"
+			              entityName:@"Person"] 
+				      mutableCopy];
+  [self->readAccess addObjectsFromArray:
+	     [self _getGlobalIDsDefault:@"scheduler_read_access_teams"
+	                     entityName:@"Team"]];
+  self->selectedReadAccess = [[NSArray alloc] initWithArray:self->readAccess];
+}
+
+
+
+
+
+
+
+//###############
+//######DELEGATION#######
+- (void)_processDelegRdvPriv 
+{
+   id resultDictionary;
+   int i = 0;
+   NSArray * arrayOfID = nil;
+   
+   resultDictionary = [self runCommand:@"appointment::get-delegation",nil];
+   
+   arrayOfID = [[resultDictionary valueForKey:@"idPrivate"] retain ];
+
+   NSArray * objects  = [[self _getGIDSforIds:arrayOfID entityName:@"Person"] retain];
+   // Pour g√rer les ID de Team : pas sure que ca marche !!!!!!
+   // [objects addObjectsFromArray:[self _getGIDSforIds:arrayOfID entityName:@"Team"]];
+
+   //[arrayOfID release];
+   
+   NSMutableArray * gids = [ NSMutableArray arrayWithCapacity:[objects count]];
+
+   for(i = 0 ; i < [objects count]; i++)
+   {
+	   [gids addObject:[(NSDictionary *)[objects objectAtIndex:i] valueForKey:@"globalID"] ];
+   }
+   self->delegRdvPriv = [[self runCommand:@"person::get-by-globalid", @"gids" ,gids, @"attributes" ,personAttrNames, nil] mutableCopy];
+//   [self->delegRdvPriv addObjectsFromArray: [self _getGlobalIDsDefault:@"scheduler_deleg_rdv_priv_teams" entityName:@"Team"]];
+   self->selectedDelegRdvPriv = [[NSArray alloc] initWithArray:self->delegRdvPriv];
+   [self logWithFormat:@"### selectedDelegPriv :%@",self->selectedDelegRdvPriv];
+
+}
+
+
+
+
+
+
+
+- (void)_processDelegRdvPubli 
+{
+
+   id resultDictionary;
+   int i = 0;
+   NSArray * arrayOfID = nil;
+   
+   resultDictionary = [self runCommand:@"appointment::get-delegation",nil];
+   
+   arrayOfID = [[resultDictionary valueForKey:@"idPublic"] retain ];
+
+   NSArray * objects  = [[self _getGIDSforIds:arrayOfID entityName:@"Person"]retain];
+   // Pour g√rer les ID de Team : pas sure que ca marche !!!!!!
+   // [objects addObjectsFromArray:[self _getGIDSforIds:arrayOfID entityName:@"Team"]];
+
+   //[arrayOfID release];
+
+   NSMutableArray * gids = [ NSMutableArray arrayWithCapacity:[objects count]];
+
+   for(i = 0 ; i < [objects count]; i++)
+   {
+	   [gids addObject:[(NSDictionary *)[objects objectAtIndex:i] valueForKey:@"globalID"] ];
+   }
+    
+   self->delegRdvPubli = [[self runCommand:@"person::get-by-globalid", @"gids" ,gids, @"attributes" ,personAttrNames, nil] mutableCopy]; 
+//   [self->delegRdvPubli addObjectsFromArray: [self _getGlobalIDsDefault:@"scheduler_deleg_rdv_publi_teams" entityName:@"Team"]];
+   self->selectedDelegRdvPubli = [[NSArray alloc] initWithArray:self->delegRdvPubli];
+   [self logWithFormat:@"### selectedDelegPubli :%@",self->selectedDelegRdvPubli];
+
+}
+
+/*
+  self->delegRdvPubli = [[self _getGlobalIDsDefault:@"scheduler_deleg_rdv_publi_accounts"
+			                entityName:@"Person"] 
+			                mutableCopy];
+  [self->delegRdvPubli addObjectsFromArray:
+	     [self _getGlobalIDsDefault:@"scheduler_deleg_rdv_publi_teams"
+	                     entityName:@"Team"]];
+  self->selectedDelegRdvPubli = [[NSArray alloc] initWithArray:self->delegRdvPubli];
+
+ }
+*/
+
+- (void)_processDelegRdvConf {
+   id resultDictionary;
+   int i = 0;
+   NSArray * arrayOfID = nil;
+   
+   resultDictionary = [self runCommand:@"appointment::get-delegation",nil];
+   
+   arrayOfID = [[resultDictionary valueForKey:@"idConfidential"] retain ];
+
+   NSArray * objects  = [[self _getGIDSforIds:arrayOfID entityName:@"Person"] retain];
+   // Pour g√rer les ID de Team : pas sure que ca marche !!!!!!
+   // [objects addObjectsFromArray:[self _getGIDSforIds:arrayOfID entityName:@"Team"]];
+
+   //[arrayOfID release];
+
+   NSMutableArray * gids = [ NSMutableArray arrayWithCapacity:[objects count]];
+
+   for(i = 0 ; i < [objects count]; i++)
+   {
+	   [gids addObject:[(NSDictionary *)[objects objectAtIndex:i] valueForKey:@"globalID"] ];
+   }
+    
+   self->delegRdvConf = [[self runCommand:@"person::get-by-globalid", @"gids" ,gids, @"attributes" ,personAttrNames, nil] mutableCopy];
+  // [self->delegRdvConf addObjectsFromArray: [self _getGlobalIDsDefault:@"scheduler_deleg_rdv_conf_teams" entityName:@"Team"]];
+   self->selectedDelegRdvConf = [[NSArray alloc] initWithArray:self->delegRdvConf];
+   [self logWithFormat:@"### selectedDelegConf :%@",self->selectedDelegRdvConf];
+
+}
+  /*self->delegRdvConf = [[self _getGlobalIDsDefault:@"scheduler_deleg_rdv_conf_accounts"
+			                entityName:@"Person"] 
+			                mutableCopy];
+  [self->delegRdvConf addObjectsFromArray:
+	     [self _getGlobalIDsDefault:@"scheduler_deleg_rdv_conf_teams"
+	                     entityName:@"Team"]];
+  self->selectedDelegRdvConf = [[NSArray alloc] initWithArray:self->delegRdvConf];
+}*/
+- (void)_processDelegRdvNorm {
+   id resultDictionary;
+   int i = 0;
+   NSArray * arrayOfID = nil;
+   
+   resultDictionary = [self runCommand:@"appointment::get-delegation",nil];
+   
+   arrayOfID = [[resultDictionary valueForKey:@"idNormal"] retain ];
+
+   NSArray * objects  = [[self _getGIDSforIds:arrayOfID entityName:@"Person"]retain];
+   // Pour g√rer les ID de Team : pas sure que ca marche !!!!!!
+   // [objects addObjectsFromArray:[self _getGIDSforIds:arrayOfID entityName:@"Team"]];
+
+   //[arrayOfID release];
+
+   NSMutableArray * gids = [ NSMutableArray arrayWithCapacity:[objects count]];
+
+   for(i = 0 ; i < [objects count]; i++)
+   {
+	   [gids addObject:[(NSDictionary *)[objects objectAtIndex:i] valueForKey:@"globalID"] ];
+   }
+   
+   self->delegRdvNorm = [[self runCommand:@"person::get-by-globalid", @"gids" ,gids, @"attributes" ,personAttrNames, nil] mutableCopy];
+  // [self->delegRdvNorm addObjectsFromArray: [self _getGlobalIDsDefault:@"scheduler_deleg_rdv_norm_teams" entityName:@"Team"]];
+   self->selectedDelegRdvNorm = [[NSArray alloc] initWithArray:self->delegRdvNorm];
+   [self logWithFormat:@"### selectedDelegNorm :%@",self->selectedDelegRdvNorm];
+
+}
+ /* self->delegRdvNorm = [[self _getGlobalIDsDefault:@"scheduler_deleg_rdv_norm_accounts"
+			                entityName:@"Person"] 
+			                mutableCopy];
+  [self->delegRdvNorm addObjectsFromArray:
+	     [self _getGlobalIDsDefault:@"scheduler_deleg_rdv_norm_teams"
+	                     entityName:@"Team"]];
+  self->selectedDelegRdvNorm = [[NSArray alloc] initWithArray:self->delegRdvNorm];
+}*/
+//###############
 
 - (void)setAccount:(id)_account {
   // TODO: split up this huge method!
@@ -501,6 +702,7 @@ static NSNumber *noNum = nil;
   RELEASE(self->appointmentView);       self->appointmentView    = nil;
   RELEASE(self->timeInputType);         self->timeInputType      = nil;
   RELEASE(self->aptTypeInputType);      self->aptTypeInputType   = nil;
+  RELEASE(self->rdvTypeInputType);      self->rdvTypeInputType   = nil;
   RELEASE(self->absenceMode);           self->absenceMode        = nil;
   RELEASE(self->noOfCols);              self->noOfCols           = nil;
   RELEASE(self->resourceNames);         self->resourceNames      = nil;
@@ -508,6 +710,18 @@ static NSNumber *noNum = nil;
   RELEASE(self->selectedParticipants);  self->selectedParticipants = nil;
   RELEASE(self->writeAccess);           self->writeAccess          = nil;
   RELEASE(self->selectedWriteAccess);   self->selectedWriteAccess  = nil;
+//###ADDED BY AO###
+  RELEASE(self->readAccess);            self->readAccess           = nil;
+  RELEASE(self->selectedReadAccess);    self->selectedReadAccess   = nil;
+  RELEASE(self->delegRdvPriv);          self->delegRdvPriv         = nil;
+  RELEASE(self->selectedDelegRdvPriv);  self->selectedDelegRdvPriv = nil;
+  RELEASE(self->delegRdvPubli);         self->delegRdvPubli         = nil;
+  RELEASE(self->selectedDelegRdvPubli); self->selectedDelegRdvPubli = nil;
+  RELEASE(self->delegRdvConf);          self->delegRdvConf         = nil;
+  RELEASE(self->selectedDelegRdvConf);  self->selectedDelegRdvConf = nil;
+  RELEASE(self->delegRdvNorm);          self->delegRdvNorm         = nil;
+  RELEASE(self->selectedDelegRdvNorm);  self->selectedDelegRdvNorm = nil;
+//################
   RELEASE(self->holidayGroups);         self->holidayGroups     = nil;
   RELEASE(self->holidayGroupsKeys);     self->holidayGroupsKeys = nil;
   RELEASE(self->restHolidays);          self->restHolidays      = nil;
@@ -632,7 +846,14 @@ static NSNumber *noNum = nil;
   [self _processPopUpResourceNames];
   [self _processParticipants];
   [self _processWriteAccess];
-  
+//###ADDED BY AO###
+//  ######READ######
+  [self _processReadAccess];
+ //####DELEGATION#######
+  [self _processDelegRdvPriv];
+  [self _processDelegRdvConf];
+  [self _processDelegRdvPubli];
+  [self _processDelegRdvNorm];
   self->shortInfo =
     [[self->defaults objectForKey:@"scheduler_overview_short_info"] boolValue];
 
@@ -988,7 +1209,12 @@ static NSNumber *noNum = nil;
 - (NSString *)schedulerAptTypeInputType {
   return self->aptTypeInputType;
 }
- 
+- (void)setSchedulerRdvTypeInputType:(NSString *)_value {
+  ASSIGN(self->rdvTypeInputType, _value);
+}
+- (NSString *)schedulerRdvTypeInputType {
+  return self->rdvTypeInputType;
+} 
 
 - (void)setAppointmentView:(NSString *)_view {
   ASSIGN(self->appointmentView,_view);
@@ -1112,7 +1338,79 @@ static NSNumber *noNum = nil;
 - (void)setSelectedWriteAccess:(NSArray *)_s {
   ASSIGN(self->selectedWriteAccess, _s);
 }
+//###ADDED BY AO###
+//#####READ####
+- (NSArray *)readAccess {
+  return self->readAccess;
+}
+- (void)setReadAccess:(NSArray *)_p {
+  ASSIGN(self->readAccess, _p);
+}
 
+- (NSArray *)selectedReadAccess {
+  return self->selectedReadAccess;
+}
+- (void)setSelectedReadAccess:(NSArray *)_s {
+  ASSIGN(self->selectedReadAccess, _s);
+}
+//################
+//#####DELEGATION####
+- (NSArray *)delegRdvPriv {
+  return self->delegRdvPriv;
+}
+- (void)setDelegRdvPriv:(NSArray *)_p {
+  ASSIGN(self->delegRdvPriv, _p);
+}
+
+- (NSArray *)selectedDelegRdvPriv {
+  return self->selectedDelegRdvPriv;
+}
+- (void)setSelectedDelegRdvPriv:(NSArray *)_s {
+  ASSIGN(self->selectedDelegRdvPriv, _s);
+}
+//#####NORMAL###
+- (NSArray *)delegRdvNorm {
+  return self->delegRdvNorm;
+}
+- (void)setDelegRdvNorm:(NSArray *)_p {
+  ASSIGN(self->delegRdvNorm, _p);
+}
+
+- (NSArray *)selectedDelegRdvNorm {
+  return self->selectedDelegRdvNorm;
+}
+- (void)setSelectedDelegRdvNorm:(NSArray *)_s {
+  ASSIGN(self->selectedDelegRdvNorm, _s);
+}
+//######PUBLIC####
+- (NSArray *)delegRdvPubli {
+  return self->delegRdvPubli;
+}
+- (void)setDelegRdvPubli:(NSArray *)_p {
+  ASSIGN(self->delegRdvPubli, _p);
+}
+
+- (NSArray *)selectedDelegRdvPubli {
+  return self->selectedDelegRdvPubli;
+}
+- (void)setSelectedDelegRdvPubli:(NSArray *)_s {
+  ASSIGN(self->selectedDelegRdvPubli, _s);
+}
+//######CONFIDENTIEL#####
+- (NSArray *)delegRdvConf {
+  return self->delegRdvConf;
+}
+- (void)setDelegRdvConf:(NSArray *)_p {
+  ASSIGN(self->delegRdvConf, _p);
+}
+
+- (NSArray *)selectedDelegRdvConf{
+  return self->selectedDelegRdvConf;
+}
+- (void)setSelectedDelegRdvConf:(NSArray *)_s {
+  ASSIGN(self->selectedDelegRdvConf, _s);
+}
+//##############
 - (NSString *)additionalPopupEntries {
   return [NSString stringWithFormat:@"%d", self->additionalPopupEntries];
 }
@@ -1324,6 +1622,246 @@ static NSNumber *noNum = nil;
           @"userId",   uid,
 	nil];
 }
+
+//######READ#####
+- (void)_readDefault:(NSString *)_key value:(id)_value ifTrue:(BOOL)_flag {
+  NSNumber *uid;
+
+  if (!_flag) return;
+  
+  uid = [self accountId];
+  [self runCommand:@"userdefaults::read",
+	  @"key",      _key,
+	  @"value",    _value,
+          @"defaults", self->defaults,
+          @"userId",   uid,
+	nil];
+}
+//##############
+//#########DELEGATION#####
+//PRIVE
+- (void)_delegRdvPrivDefault:(NSString *)_key value:(id)_value ifTrue:(BOOL)_flag {
+  NSNumber *uid;
+
+  if (!_flag) return;
+  
+  uid = [self accountId];
+  [self runCommand:@"userdefaults::delegRdvPriv",
+	  @"key",      _key,
+	  @"value",    _value,
+          @"defaults", self->defaults,
+          @"userId",   uid,
+	nil];
+  //[self runCommand:@"appointment::get-delegation",nil];
+}
+
+//CONFIDENTIEL
+- (void)_delegRdvConfDefault:(NSString *)_key value:(id)_value ifTrue:(BOOL)_flag {
+  NSNumber *uid;
+
+  if (!_flag) return;
+  
+  uid = [self accountId];
+  [self runCommand:@"userdefaults::delegRdvConf",
+	  @"key",      _key,
+	  @"value",    _value,
+          @"defaults", self->defaults,
+          @"userId",   uid,
+	nil];
+}
+
+//NORMAL
+- (void)_delegRdvNormDefault:(NSString *)_key value:(id)_value ifTrue:(BOOL)_flag {
+  NSNumber *uid;
+
+  if (!_flag) return;
+  
+  uid = [self accountId];
+  [self runCommand:@"userdefaults::delegRdvNorm",
+	  @"key",      _key,
+	  @"value",    _value,
+          @"defaults", self->defaults,
+          @"userId",   uid,
+	nil];
+}
+
+//PUBLIC
+- (void)_delegRdvPubliDefault:(NSString *)_key value:(id)_value ifTrue:(BOOL)_flag {
+  NSNumber *uid;
+
+  if (!_flag) return;
+  
+  uid = [self accountId];
+  [self runCommand:@"userdefaults::delegRdvPubli",
+	  @"key",      _key,
+	  @"value",    _value,
+          @"defaults", self->defaults,
+          @"userId",   uid,
+	nil];
+}
+/*################### COMMENTS BY TD ########################################
+** AJout des Id de la delegation dans la table schedulerDelegation
+** recupere la valeur du formulaire et le met dans un tableau 
+
+- (void) DelegDansTableau {
+      id pref;
+      pref = [self snapshot];
+      //idNormal = [[NSArray] alloc initWithObject :@"delegate_companyId"];
+      [self logWithFormat:@"###snapshot avec les prÈfÈrences :%@",pref];
+      [pref  takeValue:self->delegRdvNorm forKey:@"idNormal"];
+      [pref  takeValue:self->delegRdvPriv forKey:@"idPrivate"];
+      [pref  takeValue:self->delegRdvPubli forKey:@"idPublic"];
+      [pref  takeValue:self->delegRdvConf forKey:@"idConfidential"];
+}
+################### COMMENTS BY TD ########################################*/
+
+- (void) saveDelegation
+{
+	//id anObject = nil;
+	id aValue = nil;
+
+	NSMutableArray    * result   = [[NSMutableArray alloc]initWithCapacity:16];
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	NSMutableDictionary   * dico = [[NSMutableDictionary alloc] init];
+	NSMutableArray * idPrivate = [[NSMutableArray alloc] initWithCapacity:[self->selectedDelegRdvPriv count]];
+	NSMutableArray * idConfidential = [[NSMutableArray alloc] initWithCapacity:[self->selectedDelegRdvConf count]];
+	NSMutableArray * idNormal = [[NSMutableArray alloc] initWithCapacity:[self->selectedDelegRdvNorm count]];
+	NSMutableArray * idPublic = [[NSMutableArray alloc] initWithCapacity:[self->selectedDelegRdvPubli count]];
+
+	[self logWithFormat:@"########### sauvegarde des delegations (DEBUT) #################"];
+
+	//**********************
+	// process Private array
+	//**********************
+	
+	NSEnumerator * enumerator = [self->selectedDelegRdvPriv objectEnumerator];
+
+	while( (aValue = [enumerator nextObject]) )
+	{
+		[self logWithFormat:@"### PRIVATE : aValue = %@",aValue];
+		if (aValue !=nil)
+		    [idPrivate addObject:[aValue valueForKey:@"companyId"]];
+	        
+	}
+
+	[dico setObject:idPrivate     forKey:@"idPrivate"];
+	// never do this things with the OGo libFoundation !!!!!!
+	// [enumerator release];
+
+	//**********************
+	// process Confidential array
+	//**********************
+	
+	enumerator = [selectedDelegRdvConf objectEnumerator];
+
+	while( (aValue = [enumerator nextObject]) )
+	{
+		[self logWithFormat:@"### CONFIDENTIAL : aValue = %@",aValue];
+		if (aValue !=nil)
+		    [idConfidential addObject:[aValue valueForKey:@"companyId"]];
+		
+	}
+
+	[dico setObject:idConfidential forKey:@"idConfidential"];
+
+	//**********************
+	// process Normal array
+	//**********************
+	
+	enumerator = [selectedDelegRdvNorm objectEnumerator];
+
+	while( (aValue = [enumerator nextObject]) )
+	{
+		[self logWithFormat:@"### NORMAL : aValue = %@",aValue];
+		if (aValue !=nil)
+		    [idNormal addObject:[aValue valueForKey:@"companyId"]];
+	
+		
+	}
+
+	[dico setObject:idNormal forKey:@"idNormal"];
+
+	//**********************
+	// process Public array
+	//**********************
+	
+	enumerator = [selectedDelegRdvPubli objectEnumerator];
+
+	while( (aValue = [enumerator nextObject]) )
+	{
+		[self logWithFormat:@"### PUBLIC : aValue = %@",aValue];
+		if (aValue !=nil)
+		    [idPublic addObject:[aValue valueForKey:@"companyId"]];
+		
+	}
+
+
+	[dico setObject:idPublic forKey:@"idPublic"];
+	
+	[self logWithFormat:@"###dico pour la delegation: %@",dico];
+	result = [self runCommand:@"appointment::set-delegation",@"dictDelegation",dico,nil];
+
+	[idPrivate release];
+	[idConfidential release];
+	[idNormal release];
+	[idPublic release];
+
+	idPrivate 	 =nil;
+	idConfidential   =nil;
+	idNormal 	 =nil;
+	idPublic 	 =nil;
+	[pool release];
+
+	[self logWithFormat:@"########### sauvegarde des delegations (FIN) #################"];
+}
+
+- (void) getIdDelegation
+{
+	NSMutableArray  *result;
+	NSEnumerator 	*enumerator;	
+	NSMutableString *descriptionIdNormal = nil;
+	id  		personDeleg 	     = nil; 
+	id 		attribut	     = nil;
+        NSDictionary   *dico;
+	result   = [[NSMutableArray alloc]initWithCapacity:16];
+        	
+	[self logWithFormat:@"########### getId dans LSWPreferences des delegations (DEBUT) #################"];
+	
+	//RÈcuparation les valeurs du et on stock les donnÈes dans un tableau 
+	result = [self runCommand:@"appointment::get-delegation",nil];
+	enumerator = [result objectEnumerator];
+	
+	if (result !=nil){
+		//traitement des donnÈes afin d'obtenir la description  du compte grace au companyId
+		while ((personDeleg = [enumerator nextObject])){
+		        attribut = [personDeleg valueForKey:@"idNormal"];
+			attribut = [self runCommand:@"person::get",@"companyId",descriptionIdNormal,nil];				
+			attribut = [attribut valueForKey:@"description"];
+			[self logWithFormat:@"dans LSWSchedulerPreferences description de la personne :%@",descriptionIdNormal];
+		}
+	}
+	[self logWithFormat:@"########### getId dans LSWPreferences des delegations (FIN) #################"];
+	
+	//RÈcuparation les valeurs du et on stock les donnÈes dans un tableau
+        dico= [[NSMutableDictionary alloc]init];
+	dico= [self runCommand:@"appointment::get-delegation",nil];
+	//result = [self runCommand:@"appointment::set-delegation",@"dictDelegation",dico,nil];
+	
+	//enumerator = [result objectEnumerator];
+	
+	/*if (result !=nil){
+		//traitement des donnÈes afin d'obtenir la description  du compte grace au companyId
+		while ((personDeleg = [enumerator nextObject])){
+		        attribut = [personDeleg valueForKey:@"idNormal"];
+			attribut = [self runCommand:@"person::get",@"companyId",descriptionIdNormal,nil];				
+			attribut = [attribut valueForKey:@"description"];
+			[self logWithFormat:@"dans LSWSchedulerPreferences description de la personne :%@",descriptionIdNormal];
+		}
+	}*/
+	[self logWithFormat:@"########### setId dans LSWPreferences des delegations (FIN) #################"];
+}
+
+//#############
 
 - (void)addIDsOfObjects:(NSArray *)_objects 
   toPersonIdArray:(NSMutableArray *)pIds
@@ -1766,6 +2304,28 @@ static NSNumber *noNum = nil;
   [self writeParticipants:self->selectedWriteAccess
 	toPersonsDefault:@"scheduler_write_access_accounts"
 	andTeamsDefault:@"scheduler_write_access_teams"];
+//###ADDED BY AO###
+ //####ajout dans le fichier user.default##### 
+  [self writeParticipants:self->selectedReadAccess
+	toPersonsDefault:@"scheduler_read_access_accounts"
+	andTeamsDefault:@"scheduler_read_access_teams"];
+  
+  [self writeParticipants:self->selectedDelegRdvPriv
+	toPersonsDefault:@"scheduler_deleg_rdv_priv_accounts"
+	andTeamsDefault:@"scheduler_deleg_rdv_priv_teams"];
+  
+  [self writeParticipants:self->selectedDelegRdvPubli
+	toPersonsDefault:@"scheduler_deleg_rdv_publi_accounts"
+	andTeamsDefault:@"scheduler_deleg_rdv_publi_teams"];
+  
+  [self writeParticipants:self->selectedDelegRdvConf
+	toPersonsDefault:@"scheduler_deleg_rdv_conf_accounts"
+	andTeamsDefault:@"scheduler_deleg_rdv_conf_teams"];
+  
+  [self writeParticipants:self->selectedDelegRdvNorm
+	toPersonsDefault:@"scheduler_deleg_rdv_norm_accounts"
+	andTeamsDefault:@"scheduler_deleg_rdv_norm_teams"];
+  
   
   if (self->isRoot) [self _saveRootDefaults];
   
@@ -1774,8 +2334,13 @@ static NSNumber *noNum = nil;
   
   /* custom holidays */
   [self _saveCustomHolidayDefaults];
-  
+
   [self postChange:LSWUpdatedAccountNotificationName onObject:[self account]];
+
+  //Ajout de la delegation
+  [self getIdDelegation];
+  [self saveDelegation];
+  
   return [self leavePage];
 }
 

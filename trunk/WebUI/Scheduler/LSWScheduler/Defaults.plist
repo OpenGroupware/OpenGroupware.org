@@ -51,11 +51,11 @@
   );
 
   scheduler_viewer_fetchattrnames = (
-    globalID, startDate, endDate, title, aptType, location,
-    resourceNames, comment, ownerId, accessTeamId,
+    globalID, startDate, endDate, title, aptType, rdvType,location,
+    resourceNames, comment, ownerId, creatorId,accessTeamId,
     objectVersion, isConflictDisabled, cycleEndDate,
     isAttendance, isAbsence, isViewAllowed,
-    type, writeAccessList, notificationTime, dbStatus
+    type, writeAccessList, readAccessList,notificationTime, dbStatus
   );
   scheduler_viewer_teamattrnames   = ( globalID, description );
   scheduler_viewer_personattrnames = ( globalID, name, firstname, login );
@@ -85,5 +85,8 @@
     "30", "31", "32", "33", "34", "35", "36", "37", "38", "39",
     "40", "41", "42", "43", "44", "45", "46", "47", "48", "49",
     "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"
+  );
+  scheduler_rdvpopup = (
+   "Normal","Public","Private","Confidential"
   );
 }

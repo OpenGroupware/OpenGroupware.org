@@ -28,6 +28,10 @@
 @private
   id              item;
   NSMutableString *writeAccessList;
+  //ADDED BY AO###
+  //######READ#####
+  NSMutableString *readAccessList;
+  //#############
   NSTimeZone      *timeZone;
   BOOL            fetchComment;
   NSArray         *aptTypes;
@@ -57,6 +61,7 @@
 @interface LSWAppointmentViewer(PrivateMethodes)
 - (id)_getOwnerOf:(id)_app;
 - (id)_getAccessTeamOf:(id)_app;
+- (id)_getCreatorOf:(id)_app;
 - (id)_getAppointmentByGlobalID:(id)_gid;
 - (id)_appointmentAsEO;
 @end /* LSWAppointmentViewer(PrivateMethodes) */
@@ -97,6 +102,9 @@ static NSNumber *noNum  = nil;
 - (id)init {
   if ((self = [super init])) {
     self->writeAccessList = [[NSMutableString alloc] init];
+	//###ADDED BY AO###
+	//############READ##########
+    self->readAccessList = [[NSMutableString alloc] init];
     [self registerForNotificationNamed:@"LSWNewNote"];
     [self registerForNotificationNamed:@"LSWDeletedNote"];
     [self registerForNotificationNamed:LSWDeletedAppointmentNotificationName];
@@ -112,6 +120,10 @@ static NSNumber *noNum  = nil;
   [self->timeZone        release];
   [self->item            release];
   [self->writeAccessList release];
+   //###ADDED BY AO###
+  //#####READ#####
+  [self->readAccessList release];
+  //##############
   [self->aptTypes        release];
   [self->aptType         release];
   [super dealloc];
@@ -176,7 +188,8 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   NSString            *resNames = nil;
   NSCalendarDate      *sd       = nil;
   NSCalendarDate      *ed       = nil;
-  
+  //###ADDED BY AO ###
+  //NSString            *rdvType  = nil;
   // TODO: a formatter would be better
   format = [self defaultSchedulerMailTemplateDateFormat];
   sd = [obj valueForKey:@"startDate"];
@@ -202,13 +215,26 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   else
     [bindings setObject:@"" forKey:@"comment"];
           
-  { /* set creator */
+  { /* set owner */
     id cId = [obj valueForKey:@"ownerId"];
     if (cId != nil) {
       id c = [self runCommand:@"account::get", @"companyId", cId, nil];
       if ([c isKindOfClass:[NSArray class]])
         c = [c lastObject];
-      [bindings setObject:_personName(self, c) forKey:@"creator"];
+      //[bindings setObject:_personName(self, c) forKey:@"creator"];
+      [bindings setObject:_personName(self, c) forKey:@"owner"];
+    }
+  }
+  { /* set creator */
+    //###ADDED BY AO###
+    id crId = [obj valueForKey:@"creator"];
+    NSLog(@"identifiant du createur crId :%@",crId);
+    if (crId != nil) {
+      id cr = [self runCommand:@"account::get", @"companyId", crId, nil];
+      if ([cr isKindOfClass:[NSArray class]])
+        cr = [cr lastObject];
+      NSLog(@"valeur du dictonnaire de donnees : %@",bindings);
+      [bindings setObject:_personName(self, cr) forKey:@"creator"];
     }
   }
   { /* set participants */
@@ -381,6 +407,39 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   }
 }
 
+//#####ADDED BY AO####
+//#######READ########
+- (void)_processReadAccessString:(NSString *)_acl 
+  andAddTeamGIDsToArray:(NSMutableArray *)_teamIds
+  andAddPersonGIDsToArray:(NSMutableArray *)_personIds
+{
+  NSEnumerator *enumerator;
+  id objId;
+  
+  if (![_acl isNotNull])
+    return;
+  if ([_acl isEqualToString:@" "]) // hack for Sybase (empty string is ' ')
+    return;
+  
+  enumerator = [[_acl componentsSeparatedByString:@","] objectEnumerator];
+
+  while ((objId = [enumerator nextObject])) {
+    // TODO: this is somewhat weird - constructs two GIDs for one pkey
+    NSNumber      *pkey;
+    EOKeyGlobalID *oid;
+    
+    pkey = [NSNumber numberWithInt:[objId intValue]];
+    
+    oid  = [EOKeyGlobalID globalIDWithEntityName:@"Person" 
+			  keys:&pkey keyCount:1 zone:NULL];
+    if (oid) [_personIds addObject:oid];
+    
+    oid  = [EOKeyGlobalID globalIDWithEntityName:@"Team" 
+			  keys:&pkey keyCount:1 zone:NULL];
+    if (oid) [_teamIds addObject:oid];
+  }
+}
+//###################
 - (NSArray *)_fetchPersonGIDs:(NSArray *)_gids {
   NSArray *tmp;
 
@@ -436,13 +495,18 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   NSMutableArray *personIds;
   NSMutableArray *teamIds;
   NSMutableArray *result;
-
-
+  //###ADDED BY AO###
+  NSNumber	 *crkey = nil;
+  
   personIds = [[NSMutableArray alloc] init];
   teamIds   = [[NSMutableArray alloc] init];
   result    = [[NSMutableArray alloc] init];
 
   pkey = [[self object] valueForKey:@"ownerId"];
+  [self logWithFormat:@"GLC write Owner: %@", pkey];
+  //###ADDED BY AO###
+  crkey = [[self object] valueForKey:@"creatorId"];
+  [self logWithFormat:@"GLC write Creator: %@", crkey];
   oid  = [EOKeyGlobalID globalIDWithEntityName:@"Person" 
                           keys:&pkey keyCount:1 zone:NULL];
   [personIds addObject:oid];
@@ -462,6 +526,66 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   [result    release]; result    = nil;
 }
 
+//#######ADDED BY AO##
+//########READ########
+
+- (void)_setReadACLStringUsingRecords:(NSArray *)_records {
+  int i, cnt;
+  
+  [self->readAccessList setString:@""];
+    
+  for (i = 0, cnt = [_records count]; i < cnt; i++) {
+    NSDictionary *o;
+    NSString     *eName;
+
+    o      = [_records objectAtIndex:i];
+    eName = [[o valueForKey:@"globalID"] entityName];
+
+    if (i > 0)
+      [self->readAccessList appendString:@", "];
+
+    if ([eName isEqualToString:@"Person"])
+      [self->readAccessList appendString:[o valueForKey:@"login"]];
+    else
+      [self->readAccessList appendString:[o valueForKey:@"description"]];
+  }
+}
+
+- (void)_fetchReadAccessList {
+  NSString       *list = nil;
+  EOGlobalID     *oid  = nil;
+  NSNumber       *pkey = nil;
+  NSMutableArray *personIds;
+  NSMutableArray *teamIds;
+  NSMutableArray *result;
+  
+  personIds = [[NSMutableArray alloc] init];
+  teamIds   = [[NSMutableArray alloc] init];
+  result    = [[NSMutableArray alloc] init];
+  pkey = [[self object] valueForKey:@"ownerId"];
+  [self logWithFormat:@"###GLC read Owner: %@", pkey];
+  oid  = [EOKeyGlobalID globalIDWithEntityName:@"Person"
+	  		   keys:&pkey keyCount:1 zone:NULL];		
+   	  [personIds addObject:oid];
+  list = [[self object] valueForKey:@ "readAccessList"];
+  
+  [self _processReadAccessString:list
+        andAddTeamGIDsToArray:teamIds
+	andAddPersonGIDsToArray:personIds];
+  
+  [result addObjectsFromArray:[self _fetchPersonGIDs:personIds]];
+  [result addObjectsFromArray:[self _fetchTeamGIDs:teamIds]];
+  
+  
+  [self _setReadACLStringUsingRecords:result]; 
+  [self logWithFormat:@"###GLC read list: %@", list];
+  [self logWithFormat:@"###GLC result list: %@", result];
+  [personIds release]; personIds = nil;
+  [teamIds   release]; teamIds   = nil;
+  [result    release]; result    = nil;
+ }
+
+///####################
 - (void)_fillCommentIntoAptEO:(id)appointment {
   id tmp;
   
@@ -535,10 +659,22 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
     id owner;
     
     if ((owner = [self _getOwnerOf:appointment]) != nil)
-      [appointment takeValue:owner forKey:@"owner"];
+      //voir pour changer la valeur du bind
+	    [appointment takeValue:owner forKey:@"owner"];
+  }
+ //#####ADDED BY AO###
+  /* refetch creator créateur*/
+  
+  if (![[appointment valueForKey:@"creator"] isNotNull]) {
+    id creator;
+    
+    if ((creator = [self _getCreatorOf:appointment]) != nil)
+      [appointment takeValue:creator forKey:@"creator"];
   }
   [self _fetchWriteAccessList];
-  
+ //ADDED BY AO#######
+  // ######READ######
+ [self _fetchReadAccessList];
   return YES;
 }
 
@@ -550,6 +686,9 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   if (self->fetchComment) {
     [self _fetchComment];
     [self _fetchWriteAccessList];
+    //####ADDED BY AO##	
+    //#######READ#####
+    [self _fetchReadAccessList];
     self->fetchComment = NO;
   }
   
@@ -582,6 +721,15 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
         owner = [self _getOwnerOf:app];
         if (owner)
           [app takeValue:owner forKey:@"owner"];
+      }
+      //####ADDED BY AO######
+	 // ##########CREATOR#####
+      if ([app valueForKey:@"creator"] == nil) {
+        id creator;
+
+        creator = [self _getCreatorOf:app];
+        if (creator)
+          [app takeValue:creator forKey:@"creator"];
       }
     }
     self->fetchComment = YES;
@@ -636,6 +784,11 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
 }
 
 - (BOOL)isUserOwner {
+  return [self hasLoginEditAccess];
+}
+
+//####CREATOR#####
+- (BOOL)isUserCreator {
   return [self hasLoginEditAccess];
 }
 
@@ -757,6 +910,14 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   return [[self labels] valueForKey:label];
 }
 
+//###ADDED BY AO###
+//#######RDV_TYPE######
+//Recherche de l'objet rdvType dans le dictionnaire
+- (NSString *) rdvTypeLabel{
+	return [[self object] valueForKey:@"rdvType"];
+}
+//#####################
+
 - (NSString *)accessTeamLabel {
   id accessTeam;
 
@@ -806,12 +967,25 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
 - (NSString *)writeAccessList {
   return self->writeAccessList;
 }
-
+//####ADDED BY AO##
+//######READ#####@
+- (NSString *)readAccessList {
+  return self->readAccessList;
+}
+//###########
 - (BOOL)isOwnerArchived {
   return [[[self->object valueForKey:@"owner"]
                          valueForKey:@"dbStatus"]
                          isEqualToString:@"archived"];
 }
+//###ADDED BY AO##
+//######CREATOR####
+- (BOOL)isCreatorArchived {
+  return [[[self->object valueForKey:@"creator"]
+                         valueForKey:@"dbStatus"]
+                         isEqualToString:@"archived"];
+}
+//#################
 
 /* label generation */
 
@@ -881,6 +1055,33 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
                 lastObject];
 }
 
+//###ADDED BY AO###
+//#####CREATOR#####
+- (id)_getCreatorOf:(id)_app {
+  NSString *creatorId;
+  id theCreator;
+  
+  theCreator = [_app valueForKey:@"toCreator"];
+  if (theCreator && ![EOFault isFault:theCreator])
+    return [theCreator valueForKey:@"toPerson"];
+  
+#if DEBUG && 0 /* a fault is passed in when a mail-DA is activated! */
+  if ([EOFault isFault:theCreator]) {
+    [self logWithFormat:
+	    @"WARNING: the creator of appointment %@ is a fault for class %@",
+	    _app, NSStringFromClass([EOFault targetClassForFault:theCreator])];
+  }
+#endif
+  
+  creatorId = [_app valueForKey:@"creatorId"];
+  if (![creatorId isNotNull])
+    return nil;
+  
+  return [[self runCommand:@"person::get", @"companyId", creatorId, nil]
+                lastObject];
+}
+
+//#################
 - (id)_getAccessTeamOf:(id)_app {
   NSString *accessTeamId;
   id theAccessTeam;
