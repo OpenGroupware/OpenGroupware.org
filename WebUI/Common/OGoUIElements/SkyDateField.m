@@ -63,9 +63,9 @@
 
 - (id)initWithName:(NSString *)_name
   associations:(NSDictionary *)_config
-  template:(WOElement *)_templ
+  template:(WOElement *)_t
 {
-  if ((self = [super initWithName:_name associations:_config template:_templ])) {
+  if ((self = [super initWithName:_name associations:_config template:_t])) {
     self->date       = [[_config objectForKey:@"date"] copy];
     self->spanId     = [[_config objectForKey:@"spanId"] copy];
     self->formatter  = [[_config objectForKey:@"formatter"] copy];

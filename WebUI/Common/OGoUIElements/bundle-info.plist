@@ -36,6 +36,7 @@
         { name = SkyCalendarScript;            },
         { name = SkyCalendarPopUp;             },
         { name = OGoPageButton;                },
+        { name = OGoEmbedExternalLink;         },
     );
     WODynamicElements = (
         { name = SkySimpleTabItem;             },
@@ -54,6 +55,7 @@
         { name = SkyDialNumber;                },
         { name = SkyExternalLink;              },
         { name = OGoPageButton;                },
+        { name = OGoEmbedExternalLink;         },
     );
     WOComponents = (
         { name = SkyFileManagerTreeView;       },

@@ -32,6 +32,7 @@ OGoUIElements_OBJC_FILES = 		\
 	SkyExternalLink.m		\
 	OGoPageButton.m			\
 	OGoUIElementsBuilder.m		\
+	OGoEmbedExternalLink.m		\
 
 OGoUIElements_LANGUAGES = English German
 
