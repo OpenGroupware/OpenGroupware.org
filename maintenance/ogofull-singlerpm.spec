@@ -149,28 +149,29 @@ make %{ogoall_ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}
                              WOBUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
                              install
 
-rm -f "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates"
-rm -f "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations"
-rm -f "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www"
-cp -Rp WebUI/Templates "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates"
-cp -Rp WebUI/Resources "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations"
-cp -Rp Themes/WebServerResources "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates/ChangeLog"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates/GNUmakefile"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates/HelpUI"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations/COPYRIGHT"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations/ChangeLog"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations/GNUmakefile"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www/GNUmakefile"
-rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www/tools"
+SHAREDIR="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a"
+rm -f "${SHAREDIR}/templates"
+rm -f "${SHAREDIR}/translations"
+rm -f "${SHAREDIR}/www"
+cp -Rp WebUI/Templates "${SHAREDIR}/templates"
+cp -Rp WebUI/Resources "${SHAREDIR}/translations"
+cp -Rp Themes/WebServerResources "${SHAREDIR}/www"
+rm -fr "${SHAREDIR}/templates/ChangeLog"
+rm -fr "${SHAREDIR}/templates/GNUmakefile"
+rm -fr "${SHAREDIR}/templates/HelpUI"
+rm -fr "${SHAREDIR}/translations/COPYRIGHT"
+rm -fr "${SHAREDIR}/translations/ChangeLog"
+rm -fr "${SHAREDIR}/translations/GNUmakefile"
+rm -fr "${SHAREDIR}/www/GNUmakefile"
+rm -fr "${SHAREDIR}/www/tools"
 
 #one lonely file for full package...
 echo "You've installed OGo %{ogoall_version} using the monolithic mega package!" \
-     >"${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/INSTALLED.USING.OGOFULLPACKAGE"
+     >"${SHAREDIR}/INSTALLED.USING.OGOFULLPACKAGE"
 cd ..
 
 #prepare initscript templates
-INITSCRIPTS_TMP_DIR_OGO="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/initscript_templates"
+INITSCRIPTS_TMP_DIR_OGO="${SHAREDIR}/initscript_templates"
 INITSCRIPTS_TMP_DIR_ZIDE="${RPM_BUILD_ROOT}%{prefix}/share/zidestore-1.3/initscript_templates"
 mkdir -p ${INITSCRIPTS_TMP_DIR_OGO}
 mkdir -p ${INITSCRIPTS_TMP_DIR_ZIDE}
@@ -769,6 +770,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Thu Mar 17 2005 Frank Reppin <frank@opengroupware.org>
+- MFC (SHAREDIR wasn't even known yet...)
 * Wed Mar 16 2005 Frank Reppin <frank@opengroupware.org>
 - MFC
 * Tue Mar 15 2005 Frank Reppin <frank@opengroupware.org>
