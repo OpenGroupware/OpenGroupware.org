@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include ../common.make
 
@@ -6,7 +6,7 @@ WOBUNDLE_NAME        = HelpUI
 WOBUNDLE_EXTENSION   = .lso
 WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.0a/WebUI/
 
-HelpUI_PRINCIPAL_CLASS = LSWJobModule
+HelpUI_PRINCIPAL_CLASS = HelpUIModule
 
 HelpUI_OBJC_FILES = \
 	HelpUIModule.m		\
@@ -22,10 +22,11 @@ HelpUI_COMPONENTS = \
 	OGoHelpViewer.wo
 
 HelpUI_RESOURCE_FILES += \
-	Defaults.plist Version	\
+	Defaults.plist	\
+	Version		\
 	product.plist
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
--include ../fhsbundle.make
+include ../fhsbundle.make
