@@ -107,60 +107,65 @@ static NGMimeType *textHtmlType  = nil;
 - (id<WOActionResults>)defaultAction {
   WOSession *session;
   
-  if ((session = [self existingSession])) {
-    id page;
-
-    NSLog(@"session available ..");
-
+  if ((session = [self existingSession]) != nil) {
+    WOComponent *page;
+    
+    [self logWithFormat:@"triggered default action, session available .."];
+    
     if ((page = [[session navigation] activePage]))
       return page;
+    
+    [self logWithFormat:@"  no active page, jump to Main."];
   }
-
-  NSLog(@"default direct action (return Main ..) ..");
+  
   [self logWithFormat:@"default direct action (return Main ..) .."];
   
   return [self pageWithName:@"Main"];
 }
 
 - (id<WOActionResults>)performActionNamed:(NSString *)_actionName {
-  id<WOActionResults> result;
+  /* this one basically ensures that access to da's is protected */
+  OGoContextManager   *lso;
   WOSession *sn;
-
+  
 #if 0 /* enable this if you want to logout even if no session was active */
   if ([_actionName isEqualToString:@"logout"])
     return [self logoutAction];
 #endif
-
-#if 0
+  
   [self debugWithFormat:@"perform action: %@", _actionName];
-#endif
+  
+  /* run all actions if we have a session */
   
   if ((sn = [self existingSession]) != nil) {
+    id<WOActionResults> result;
+    
     if ((result = [super performActionNamed:_actionName]) == nil)
       result = [self defaultAction];
-  }
-  else if ([_actionName isEqualToString:@"login"]) {
-    result = [super performActionNamed:@"login"];
-  }
-  else if ([_actionName isEqualToString:@"_vti_rpc"]) {
-    result = [super performActionNamed:@"_vti_rpc"];
-  }
-  else {
-    id lso;
-    
-    lso  = [(OpenGroupware *)[WOApplication application] lsoServer];
-    
-    if ([lso isLoginAuthorized:[self rootLogin] password:@""]) {
-      result = [self loginActionWithLogin:[self rootLogin]
-                     password:@""
-                     request:[self request]];
-    }
-    else {
-      result = [self pageWithName:@"Main"];
-    }
+
+    return result;
   }
   
-  return result;
+  /* some actions with special treatment */
+  
+  if ([_actionName isEqualToString:@"login"]) 
+    return [super performActionNamed:@"login"];
+  
+  if ([_actionName isEqualToString:@"_vti_rpc"])
+    return [super performActionNamed:@"_vti_rpc"];
+  
+  /* automatic login if 'root' has no password */
+  
+  lso  = [(OpenGroupware *)[WOApplication application] lsoServer];
+  if ([lso isLoginAuthorized:[self rootLogin] password:@""]) {
+    return [self loginActionWithLogin:[self rootLogin] password:@""
+		 request:[self request]];
+  }
+  
+  /* show main page when we have no session */
+  
+  // TODO: should perform redirect?
+  return [self pageWithName:@"Main"];
 }
 
 @end /* DirectAction */

@@ -1,3 +1,18 @@
+2005-03-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.74
+	
+	* OpenGroupware.m: removed response stack (should not be necessary
+	  anymore)
+	
+	* SoOGoAuthenticator.m: when redirecting unauthorized requests to the
+	  login page, the URL will be included
+	
+2005-03-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SoOGoAuthenticator.m: redirect to login page if no session is
+	  available (v5.1.73)
+
 2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile: properly include config.make (v5.1.72)

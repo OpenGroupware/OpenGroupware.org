@@ -19,10 +19,6 @@
   02111-1307, USA.
 */
 
-#if GNU_RUNTIME
-#  include <objc/sarray.h>
-#endif
-
 #include "OpenGroupware.h"
 #include "OGoWebBundleLoader.h"
 #include "SoOGoAuthenticator.h"
@@ -34,7 +30,6 @@
 
 @interface NSObject(OpenGroupware)
 - (void)registerDefaults;
-+ (void)printStatistics;
 @end
 
 @interface OpenGroupware(CTI)
@@ -221,22 +216,18 @@ static BOOL logBundleLoading          = NO;
 
 - (void)_setupRequestHandlers {
   WORequestHandler *rh;
+  NSString *k;
   
   /* use WODirectActionRequestHandler as default request handler */
   
-  rh = [self requestHandlerForKey:
-	       [WOApplication directActionRequestHandlerKey]];
+  k  = [WOApplication directActionRequestHandlerKey];
+  rh = [self requestHandlerForKey:k];
   [self setDefaultRequestHandler:rh];
   
+  k  = [WOApplication componentRequestHandlerKey];
   rh = [[NSClassFromString(@"OWViewRequestHandler") alloc] init];
-  [self registerRequestHandler:rh
-	forKey:[WOApplication componentRequestHandlerKey]];
+  [self registerRequestHandler:rh forKey:k];
   [rh release]; rh = nil;
-  
-  if ((rh = [[NSClassFromString(@"SoObjectRequestHandler") alloc] init])) {
-    [self registerRequestHandler:rh forKey:@"so"];
-    [self registerRequestHandler:rh forKey:@"dav"];
-  }
 }
 
 - (void)_setupResourceManager {
@@ -292,7 +283,7 @@ static BOOL logBundleLoading          = NO;
     /* load WebUI bundles */
     [[OGoWebBundleLoader bundleLoader] loadBundles];
     
-    /* force initial connect */
+    /* force initial database connect */
     if ([self->lso isLoginAuthorized:@"root" password:@""])
       [self logWithFormat:@"root has no password, you need to assign one!"];
     
@@ -303,30 +294,12 @@ static BOOL logBundleLoading          = NO;
 
 - (void)dealloc {
   [[self notificationCenter] removeObserver:self];
-  [self->requestDict  release];
-  [self->requestStack release];
-  [self->version      release];
-  [self->lso          release];
+  [self->version release];
+  [self->lso     release];
   [super dealloc];
 }
 
 /* notifications */
-
-- (void)sleep {
-#if DEBUG && PRINT_NSSTRING_STATISTICS
-  if ([NSString respondsToSelector:@selector(printStatistics)])
-    [NSString printStatistics];
-#endif
-  
-#if DEBUG && PRINT_OBJC_STATISTICS
-extern int __objc_selector_max_index;
-  printf("nbuckets=%i, nindices=%i, narrays=%i, idxsize=%i\n",
-nbuckets, nindices, narrays, idxsize);
-  printf("maxsel=%i\n", __objc_selector_max_index);
-#endif
-  
-  [super sleep];
-}
 
 - (void)logNotification:(NSNotification *)_notification {
   NSString *d;
@@ -798,7 +771,7 @@ nbuckets, nindices, narrays, idxsize);
 
   url  = [_request formValueForKey:@"url"];
   resp = [WOResponse responseWithRequest:_request];
-
+  
   if (UseRefreshPageForExternalLink) {
       [resp appendContentString:
             @"<html><head><title>OpenGroupware.org External Link</title>"];
@@ -815,7 +788,7 @@ nbuckets, nindices, narrays, idxsize);
       [resp appendContentString:@"</a>"];
       [resp appendContentString:@"</body></html>"];
 
-      [resp setHeader:@"text/html; charset=iso-8859-1"
+      [resp setHeader:@"text/html; charset=\"iso-8859-1\""
             forKey:@"content-type"];
   }
   else {
@@ -839,63 +812,11 @@ nbuckets, nindices, narrays, idxsize);
 
 - (WOResponse *)dispatchRequest:(WORequest *)_request {
   WOResponse *response;
-  NSString   *uri = nil;
-  BOOL       doCheck;
-
-  if ((response = [self _checkForExternalLinkRedirect:_request]))
+  
+  if ((response = [self _checkForExternalLinkRedirect:_request]) != nil)
     return response;
   
-  doCheck = NO;
-  {
-    NSString             *ua;
-    WEClientCapabilities *cb;
-    
-    cb = [_request clientCapabilities];
-    ua = [cb userAgentType];
-    
-    if ([ua isEqualToString:@"Konqueror"])
-      doCheck = YES;
-    else if ([ua isEqualToString:@"IE"])
-      doCheck = [[cb os] isEqualToString:@"MacOS"];
-    else
-      doCheck = NO;
-  }
-#if 0
-  if (doCheck) {
-    uri = [_request uri];
-    if (uri) {
-      if ((response = [self->requestDict objectForKey:uri])) {
-        NSLog(@"%s: take response from stack ...", __PRETTY_FUNCTION__);
-        return response;
-      }
-    }
-  }
-#endif
-  response = [super dispatchRequest:_request];
-  
-  if (response == nil)
-    return nil;
-  if (!(doCheck && ([uri length] > 0)))
-    return response;
-  
-  /* missing FiFo stack */
-  if (self->requestStack == nil)
-    self->requestStack = [[NSMutableArray alloc] initWithCapacity:10];
-  if (self->requestDict == nil)
-    self->requestDict = [[NSMutableDictionary alloc] initWithCapacity:10];
-      
-  if ([requestDict count] >= 10) {
-    id obj;
-
-    obj = [self->requestStack objectAtIndex:0];
-    [self->requestDict removeObjectForKey:obj];
-    [self->requestStack removeObjectAtIndex:0];
-  }
-  if (![self->requestDict objectForKey:uri]) {
-    [self->requestStack addObject:uri];
-    [self->requestDict setObject:response forKey:uri];
-  }
-  return response;
+  return [super dispatchRequest:_request];
 }
 
 @end /* OpenGroupware */

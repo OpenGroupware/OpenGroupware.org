@@ -1,3 +1,7 @@
+2005-03-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Main.m: added auth-url field (v5.1.102)
+
 2005-02-11  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyObjectField.m: if a link value contains no "://", add "http://" 

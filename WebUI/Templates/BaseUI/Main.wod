@@ -33,6 +33,10 @@ BrowserConfigDetect: WOHiddenField {
   name  = "browserconfig";
   value = "browserConfig";
 }
+AuthURLField: WOHiddenField {
+  name  = "url";
+  value = authURL;
+}
 
 LoginLabel: WOString {
   value = "Username"; // config.labels.user

@@ -52,6 +52,7 @@ static BOOL LSUseBasicAuth           = NO;
 }
 
 - (void)dealloc {
+  [self->authURL            release];
   [self->directAction       release];
   [self->directActionObject release];
   [self->user               release];
@@ -284,6 +285,7 @@ static BOOL LSUseBasicAuth           = NO;
 
 - (void)setDirectAction:(NSString *)_da {
   id tmp;
+  
   if (self->directAction == _da)
     return;
   
@@ -310,57 +312,67 @@ static BOOL LSUseBasicAuth           = NO;
   return self->directActionObject;
 }
 
-- (void)setUser:(NSString *)_user {
-  ASSIGNCOPY(self->user, _user);
+- (void)setUser:(NSString *)_value {
+  ASSIGNCOPY(self->user, _value);
 }
 - (NSString *)user {
   return self->user;
 }
 
-- (void)setPassword:(NSString *)_password {
-  ASSIGNCOPY(self->password, _password);
+- (void)setPassword:(NSString *)_value {
+  ASSIGNCOPY(self->password, _value);
 }
 - (NSString *)password {
   return self->password ? self->password : @"";
+}
+
+- (void)setAuthURL:(NSString *)_value {
+  ASSIGNCOPY(self->authURL, _value);
+}
+- (NSString *)authURL {
+  if (self->authURL == nil)
+    self->authURL = [[[[self context] request] formValueForKey:@"url"] copy];
+  return self->authURL;
 }
 
 - (int)pageExpireTimeout {
   return LSLoginPageExpireTimeout;
 }
 
-- (NSDictionary *)restoreParameters {
-  return self->restoreParameters;
-}
 - (void)setRestoreParameters:(NSDictionary *)_para {
   ASSIGN(self->restoreParameters, _para);
 }
+- (NSDictionary *)restoreParameters {
+  return self->restoreParameters;
+}
 
+- (void)setRestorePageName:(NSString *)_pn {
+  ASSIGNCOPY(self->restorePageName, _pn);
+}
 - (NSString *)restorePageName {
   return self->restorePageName;
 }
-- (void)setRestorePageName:(NSString *)_pn {
-  ASSIGN(self->restorePageName, _pn);
-}
 
+- (void)setLoginName:(NSString *)_ln {
+  ASSIGNCOPY(self->loginName, _ln);
+}
 - (NSString *)loginName {
   return self->loginName;
 }
-- (void)setLoginName:(NSString *)_ln {
-  ASSIGN(self->loginName, _ln);
-}
 
-- (id)item {
-  return self->item;
-}
 - (void)setItem:(id)_i {
   ASSIGN(self->item, _i);
+}
+- (id)item {
+  return self->item;
 }
 
 /* server is down */
 
 - (NSDictionary *)connectionDictionary {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSUserDefaults *ud;
   
+  ud = [NSUserDefaults standardUserDefaults];
   return [ud dictionaryForKey:@"LSConnectionDictionary"];
 }
 

@@ -42,9 +42,6 @@
   
 @private
   int sessionCount; // # of sessions created
-  
-  NSMutableDictionary *requestDict;
-  NSMutableArray      *requestStack;
 
 }
 

@@ -91,6 +91,34 @@ static SoUser *anonymous = nil;
   return uroles;
 }
 
+- (WOResponse *)unauthorized:(NSString *)_reason inContext:(WOContext *)_ctx {
+  /* Note: not setting expire-cookie, should not be required */
+  WOApplication *app;
+  WOResponse *response;
+  NSString   *jumpTo;
+  
+  app    = [WOApplication application];
+  jumpTo = [app locationForSessionRedirectInContext:_ctx];
+  
+  /* add URL which triggered the issue */
+  
+  jumpTo = [jumpTo stringByAppendingString:
+		     ([jumpTo rangeOfString:@"?"].length == 0) 
+		     ? @"?url=" : @"&url="];
+  jumpTo = [jumpTo stringByAppendingString:
+		     [[[_ctx request] uri] stringByEscapingURL]];
+
+  /* generate response */
+  
+  if ((response = [_ctx response]) == nil)
+    response = [WOResponse responseWithRequest:[_ctx request]];
+  
+  [response setStatus:302];
+  [response setHeader:jumpTo forKey:@"location"];
+  [response appendContentString:@"redirecting to login page ..."];
+  return response;
+}
+
 - (WOResponse *)preprocessCredentialsInContext:(WOContext *)_ctx {
   [self debugWithFormat:@"preprocess credentials in context ..."];
   
@@ -101,7 +129,10 @@ static SoUser *anonymous = nil;
       anon = [[NSArray alloc] initWithObjects:SoRole_Anonymous, nil];
     
     [_ctx setObject:anon forKey:@"SoAuthenticatedRoles"];
-    return nil;
+    [self debugWithFormat:
+	    @"Login not yet authorized, session is missing in context: %@", 
+	    _ctx];
+    return [self unauthorized:@"missing session" inContext:_ctx];
   }
   
   return nil;

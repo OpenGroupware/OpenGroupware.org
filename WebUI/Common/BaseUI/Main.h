@@ -35,7 +35,8 @@
   
   NSString       *directAction;
   WODirectAction *directActionObject;
-  BOOL            isLoginNotAuthorized;
+  BOOL           isLoginNotAuthorized;
+  NSString       *authURL;
 
   id           item;
 
@@ -47,6 +48,7 @@
 
 - (void)setIsLoginNotAuthorized:(BOOL)_flag;
 - (void)initRestoreWithRequest:(WORequest *)_req;
+
 @end
 
 #endif /* __OGo_Main_H__ */
