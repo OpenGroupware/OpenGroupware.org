@@ -1,5 +1,8 @@
 # $Id$
 
+OGoROOT   =../..
+WebUIROOT =..
+
 ADDITIONAL_WOBUNDLE_LIBS += \
 	-lOGoJobs -lOGoDocuments\
 	-lNGScripting	\
@@ -9,3 +12,7 @@ ADDITIONAL_WOBUNDLE_LIBS += \
 ADDITIONAL_BUNDLE_LIBS += $(ADDITIONAL_WOBUNDLE_LIBS)
 
 JobUI_INCLUDE_DIRS += -IHeaders
+
+ADDITIONAL_LIB_DIRS += \
+	-L$(OGoROOT)/DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR)	\
+	-L$(OGoROOT)/DocumentAPI/OGoJobs/$(GNUSTEP_OBJ_DIR)

@@ -509,9 +509,13 @@ static inline NSNumber *Int2Number(int _nr) {
   self->isImportMode         = [[_type type] isEqualToString:@"dict"];
 
   if (self->teams == nil) {
-    // TODO: use commands!
-#warning uses [session teams]
-    self->teams = [[sn teams] retain];
+    NSArray *a;
+    
+    // TODO: was sorted before
+    a = [self runCommand:@"team::get",
+	        @"returnType", intObj(LSDBReturnType_ManyObjects), 
+	      nil];
+    self->teams = [a retain];
   }
   
   if (self->isImportMode)
