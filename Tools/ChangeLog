@@ -1,5 +1,8 @@
 2005-01-24  Helge Hess  <helge.hess@skyrix.com>
 
+	* sky_install_sieve.m: fixed deletion of scripts (should fix OGo bug
+	  #1148)
+
 	* sky_install_sieve.m: improved error logs if a script upload or
 	  activation failed, only generate Sieve code for vacation if one is
 	  available, should fix OGo bug #1148

@@ -159,7 +159,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
                [vacation objectForKey:@"repeatInterval"]];
 
   addenum = [[vacation objectForKey:@"emails"] objectEnumerator];
-    
+  
   isFirst = YES;
     
   while ((addr = [addenum nextObject]) != nil) {
@@ -278,9 +278,11 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
   NSDictionary    *vacation, *forward;
   
   f = [[NSArray alloc] initWithContentsOfFile:_fileName];
-
-  if ([f count] == 0)
+  
+  if (f == nil)
     return nil;
+  if ([f count] == 0) /* we may not return nil! */
+    return @"";
   
   vacation = nil;
   forward  = nil;
@@ -463,7 +465,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
 - (NSString *)_extractFilter {
   NSString *filter;
   
-  if (dictName != nil) {
+  if (self->dictName != nil) {
     if (![[NSFileManager defaultManager] fileExistsAtPath:dictName]) {
       NSLog(@"missing file at path %@", dictName);
       return nil;
@@ -527,8 +529,10 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
     filter     = nil;
     scriptName = [self sieveScriptName];
     
-    if ((filter = [self _extractFilter]) == nil)
+    if ((filter = [self _extractFilter]) == nil) {
+      NSLog(@"ERROR: got no filter, exiting (dict: %@).", self->dictName);
       return 1;
+    }
     
     if ((client = [self openConnection]) == nil) {
       NSLog(@"ERROR: could not connect to Sieve server!");
