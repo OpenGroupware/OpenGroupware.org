@@ -202,7 +202,7 @@ Description: Library of common Web UI elements
 Package: opengroupware.org1.0a-database
 Section: web
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org-database-scripts, sope-db-connector
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org-database-scripts, sope4.5-gdl1-postgresql
 Description: Database models for OpenGroupware.org
  This package contains the database models for OpenGroupware.org.
 
@@ -216,7 +216,7 @@ Description: Scripts to set up a database for OpenGroupware.org
 
 Package: opengroupware.org1.0a-webui-app
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org1.0a-database, sope-libxmlsaxdriver, opengroupware.org1.0a-webui-core, opengroupware.org1.0a-webui-i18n-en | opengroupware.org1.0a-webui-i18n, opengroupware.org1.0a-webui-theme-default | opengroupware.org1.0a-webui-theme
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org1.0a-database, sope4.5-libxmlsaxdriver, opengroupware.org1.0a-webui-core, opengroupware.org1.0a-webui-i18n-en | opengroupware.org1.0a-webui-i18n, opengroupware.org1.0a-webui-theme-default | opengroupware.org1.0a-webui-theme
 Recommends: libapache-mod-ngobjweb, apache, opengroupware.org-environment
 Description: Web UI application of OpenGroupware.org
  This package contains the executable and resources of
@@ -309,7 +309,7 @@ Description: Development Files for the ZideStore server
 Package: opengroupware.org-zidestore1.3
 Section: web
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org1.0a-database, sope-libxmlsaxdriver, sope-versitsaxdriver
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org1.0a-database, sope4.5-libxmlsaxdriver, sope4.5-versitsaxdriver
 Recommends: libapache-mod-ngobjweb, apache, opengroupware.org-environment
 Description: WebDAV Server for OpenGroupware.org
  The ZideStore Server provides WebDAV access to the OpenGroupware.org
@@ -321,7 +321,7 @@ Description: WebDAV Server for OpenGroupware.org
 
 Package: opengroupware.org1.0a-xmlrpcd
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org1.0a-database, sope-libxmlsaxdriver
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org1.0a-database, sope4.5-libxmlsaxdriver
 Recommends: libapache-mod-ngobjweb, apache, opengroupware.org-environment
 Description: XMLRPC daemon for OpenGroupware.org
  The XMLRPC daemon allows to execute groupware functions over the standardized
