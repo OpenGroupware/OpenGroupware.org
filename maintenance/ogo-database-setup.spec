@@ -36,18 +36,14 @@ mkdir -p ${DBSETUP_DEST}
 cp -Rp Database/SQLite ${DBSETUP_DEST}/
 cp -Rp Database/PostgreSQL ${DBSETUP_DEST}/
 cp -Rp Database/FrontBase ${DBSETUP_DEST}/
+cp %{_specdir}/db_setup_template/database_setup_psql.sh ${DBSETUP_DEST}/
 
 # ****************************** post ********************************
 %post
 if [ $1 = 1 ]; then
-  OGO_DB_NAME="OGo"
-  OGO_DB_USER="OGo"
-  PG_USER="postgres"
-  echo -en "adding PostgreSQL User: ${OGO_DB_USER}.\n"
-  su - "${PG_USER}" -c "createdb \"${OGO_DB_NAME}\"; createuser -A -D \"${OGO_DB_USER}\"" 2>/dev/null || :
-  echo -en "creating database ${OGO_DB_NAME}\n"
-  su - "${PG_USER}" -c "/usr/bin/psql -U ${OGO_DB_USER} -d ${OGO_DB_NAME} \
-        -f %{prefix}/share/opengroupware.org-1.0a/dbsetup/PostgreSQL/pg-build-schema.psql" 2>/dev/null || :
+  if [ -f "%{prefix}/share/opengroupware.org-1.0a/dbsetup/database_setup_psql.sh" ]; then
+    %{prefix}/share/opengroupware.org-1.0a/dbsetup/database_setup_psql.sh initial
+  fi
 fi
 
 # ****************************** postun *******************************
@@ -63,6 +59,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Sat Jan 29 2005 Frank Reppin <frank@opengroupware.org>
+- run 'database_setup_psql.sh initial' in post (if 1)
+  (execution can be fully disabled by editing sysconfig/ogo-webui-1.0a)
 * Tue Jan 25 2005 Frank Reppin <frank@opengroupware.org>
 - fix for OGo Bug #1192
 * Sun Jan 16 2005 Frank Reppin <frank@opengroupware.org>
