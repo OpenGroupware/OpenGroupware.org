@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: skypubexport.m 1 2004-08-20 11:17:52Z znek $
 
 #import <Foundation/NSDate.h>
 #include <NGObjWeb/WOApplication.h>
@@ -279,22 +279,6 @@ static BOOL printTimings = NO;
 
 - (WORequest *)prototypeRequest {
   if (self->prototypeRequest == nil) {
-    NSMutableDictionary *headers;
-    
-    headers = [NSMutableDictionary dictionaryWithCapacity:16];
-    
-    [headers setObject:
-               @"Mozilla/4.0 "
-               @"(compatible; MSIE 5.5, SKYRiX-Export; Windows NT 4.0)"
-             forKey:@"user-agent"];
-    [headers setObject:@"*"   forKey:@"accept-language"];
-    [headers setObject:@"*/*" forKey:@"accept"];
-    
-    self->prototypeRequest =
-      [[WORequest alloc]
-                  initWithMethod:@"GET" uri:@"/" httpVersion:@"HTTP/1.0"
-                  headers:headers content:nil
-                  userInfo:nil];
   }
   return self->prototypeRequest;
 }
@@ -571,7 +555,8 @@ static BOOL printTimings = NO;
     }
   }
   
-  if (!didExportDir && [self shouldExportEmptyDirectory:[_doc valueForKey:@"NSFilePath"]]) {
+  if (!didExportDir && [self shouldExportEmptyDirectory:
+			       [_doc valueForKey:@"NSFilePath"]]) {
     didExportDir = [[self targetFileManager]
                           createDirectoryAtPath:_dpath
                           attributes:
@@ -579,7 +564,7 @@ static BOOL printTimings = NO;
                                     [_doc valueForKey:@"NSFilePath"]]];
   }
 
-  RELEASE(pool);
+  [pool release];
   
   if ([errors count] == 0)
     return nil;
