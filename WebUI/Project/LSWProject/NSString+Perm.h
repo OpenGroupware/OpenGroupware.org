@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __LSWProject_NSString_Perm_H__
 #define __LSWProject_NSString_Perm_H__

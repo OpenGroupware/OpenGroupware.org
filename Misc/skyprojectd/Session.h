@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __SkyProjectServer__Session_H__
 #define __SkyProjectServer__Session_H__

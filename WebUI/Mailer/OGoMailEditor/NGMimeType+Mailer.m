@@ -1,4 +1,3 @@
-// $Id: NGMimeType+Mailer.m 1 2004-08-20 11:17:52Z znek $
 
 #include <NGMime/NGMimeType.h>
 #include "common.h"

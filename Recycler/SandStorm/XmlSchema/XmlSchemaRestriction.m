@@ -1,4 +1,3 @@
-// $Id$
 
 #include "XmlSchemaRestriction.h"
 #include "XmlSchemaAttribute.h"

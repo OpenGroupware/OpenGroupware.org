@@ -1,4 +1,3 @@
-// $Id$
 
 #include "NSString+Perm.h"
 #include "common.h"

@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __XmlSchema_NSObject_XmlSchemaCoding_H__
 #define __XmlSchema_NSObject_XmlSchemaCoding_H__

@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __XmlSchema_XmlSchemaSaxBuilder_H__
 #define __XmlSchema_XmlSchemaSaxBuilder_H__

@@ -1,4 +1,3 @@
-// $Id$
 
 #include "NSString+XML.h"
 #include "common.h"

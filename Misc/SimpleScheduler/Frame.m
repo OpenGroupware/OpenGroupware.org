@@ -1,4 +1,3 @@
-// $Id$
 
 #import <WebObjects/WOComponent.h>
 

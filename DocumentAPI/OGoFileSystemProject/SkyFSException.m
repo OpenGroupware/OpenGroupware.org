@@ -1,4 +1,3 @@
-// $Id$
 
 #include "SkyFSFileManager.h"
 #include "common.h"

@@ -1,4 +1,3 @@
-// $Id$
 
 #include "XmlSchemaUnion.h"
 #include "common.h"

@@ -1,4 +1,3 @@
-// $Id$
 
 #include <OGoFoundation/OGoContentPage.h>
 #include <NGLdap/NGLdap.h>

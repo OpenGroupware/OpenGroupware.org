@@ -1,4 +1,3 @@
-// $Id$
 
 
 #ifndef __XmlSchema_XmlClassGenerator_H__

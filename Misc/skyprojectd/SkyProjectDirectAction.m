@@ -1,4 +1,3 @@
-// $Id$
 
 #include "WORequest+WebDAV.h"
 #include "common.h"

@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __XmlSchema_NSMutableString_EscStr_H__
 #define __XmlSchema_NSMutableString_EscStr_H__

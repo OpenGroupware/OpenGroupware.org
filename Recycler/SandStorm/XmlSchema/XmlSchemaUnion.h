@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __XmlSchema_Union_H__
 #define __XmlSchema_Union_H__

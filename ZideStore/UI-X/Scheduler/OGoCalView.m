@@ -1,4 +1,3 @@
-// $Id$
 
 #include "OGoCalView.h"
 #include "common.h"

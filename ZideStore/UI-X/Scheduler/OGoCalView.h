@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __ZideStoreUI_OGoCalView_H__
 #define __ZideStoreUI_OGoCalView_H__

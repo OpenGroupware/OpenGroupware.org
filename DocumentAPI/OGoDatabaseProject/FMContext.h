@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __OGoDatabaseProject_FMContext_H__
 #define __OGoDatabaseProject_FMContext_H__

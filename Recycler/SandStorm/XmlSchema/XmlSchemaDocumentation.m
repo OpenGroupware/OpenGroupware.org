@@ -1,4 +1,3 @@
-// $Id$
 
 #include "XmlSchemaDocumentation.h"
 #include "common.h"

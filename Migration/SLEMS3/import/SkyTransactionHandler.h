@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __SkyTransactionHandler_H__
 #define __SkyTransactionHandler_H__

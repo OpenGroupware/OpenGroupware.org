@@ -1,4 +1,3 @@
-// $Id$
 
 #include "SkyProjectDocumentDataSource.h"
 #include "SkyProjectFileManager.h"

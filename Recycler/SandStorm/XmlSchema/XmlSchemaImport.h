@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __XmlSchema_XmlSchemaImport_H__
 #define __XmlSchema_XmlSchemaImport_H__

@@ -1,4 +1,3 @@
-// $Id$
 
 #include <Foundation/Foundation.h>
 #include "Person.h"

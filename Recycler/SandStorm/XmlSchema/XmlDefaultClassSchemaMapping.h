@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __XmlSchema_XmlDefaultClassSchemaMapping_H__
 #define __XmlSchema_XmlDefaultClassSchemaMapping_H__

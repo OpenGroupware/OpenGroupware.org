@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __WORequest_WebDAV_H__
 #define __WORequest_WebDAV_H__

@@ -1,4 +1,3 @@
-// $Id$
 
 #include "SkyFSDocument.h"
 #include <DOM/EDOM.h>

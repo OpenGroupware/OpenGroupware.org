@@ -1,4 +1,3 @@
-// $Id$
 
 #include "XmlClassGenerator.h"
 #include "common.h"

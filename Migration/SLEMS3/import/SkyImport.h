@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __SkyImport_H__
 #define __SkyImport_H__

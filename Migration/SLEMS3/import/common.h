@@ -1,4 +1,3 @@
-// $Id$
 
 #import <Foundation/Foundation.h>
 #import <EOControl/EOControl.h>

@@ -1,4 +1,3 @@
-// $Id$
 
 #include "XmlDefaultClassSchemaMapping.h"
 #include "XmlSchemaType.h"

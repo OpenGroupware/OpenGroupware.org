@@ -1,4 +1,3 @@
-// $Id$
 
 #import "common.h"
 #import "NGFileManager+DAV.h"

@@ -1,4 +1,3 @@
-// $Id: SxRendererFactory.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __ZideStore_SxRendererFactory_H__
 #define __ZideStore_SxRendererFactory_H__

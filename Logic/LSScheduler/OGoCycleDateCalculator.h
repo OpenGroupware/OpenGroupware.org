@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __OGoSchedulerTools_OGoCycleDateCalculator_H__
 #define __OGoSchedulerTools_OGoCycleDateCalculator_H__

@@ -1,4 +1,3 @@
-// $Id$
 
 #include "XmlSchemaInclude.h"
 #include "XmlSchema.h"

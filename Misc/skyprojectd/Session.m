@@ -1,4 +1,3 @@
-// $Id$
 
 #include "Session.h"
 #include "common.h"

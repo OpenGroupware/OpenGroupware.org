@@ -1,4 +1,3 @@
-// $Id$
 
 #include <OGoFoundation/LSWModuleManager.h>
 

@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __SkyAccountExport_H__
 #define __SkyAccountExport_H__

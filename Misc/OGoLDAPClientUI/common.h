@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __OGo_OGoLDAP_COMMON_H__
 #define __OGo_OGoLDAP_COMMON_H__

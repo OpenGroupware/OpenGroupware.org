@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __XmlSchema_Derivator_H__
 #define __XmlSchema_Derivator_H__

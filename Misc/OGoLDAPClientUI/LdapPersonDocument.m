@@ -1,4 +1,3 @@
-// $Id$
 
 #include <NGLdap/NGLdap.h>
 #include "common.h"

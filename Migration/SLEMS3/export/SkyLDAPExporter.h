@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __SkyLDAPExporter_H__
 #define __SkyLDAPExporter_H__

@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __SkyAppExport_H__
 #define __SkyAppExport_H__

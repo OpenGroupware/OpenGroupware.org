@@ -1,4 +1,3 @@
-// $Id$
 
 #include "NSMutableString+EscStr.h"
 #include "common.h"

@@ -1,4 +1,3 @@
-// $Id$
 
 #include "OGoCycleDateCalculator.h"
 #include <NGExtensions/NSCalendarDate+misc.h>

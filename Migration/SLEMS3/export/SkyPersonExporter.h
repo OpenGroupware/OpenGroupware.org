@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __SkyPersonExport_H__
 #define __SkyPersonExport_H__

@@ -1,4 +1,3 @@
-// $Id$
 
 #if GNU_RUNTIME
 #  include <objc/sarray.h>

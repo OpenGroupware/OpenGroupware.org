@@ -1,4 +1,3 @@
-// $Id$
 
 #include <OGoDocuments/SkyDocument.h>
 #include <NGLdap/NGLdap.h>

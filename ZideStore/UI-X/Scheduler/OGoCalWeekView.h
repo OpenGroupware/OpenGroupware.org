@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __ZideStoreUI_OGoCalWeekView_H__
 #define __ZideStoreUI_OGoCalWeekView_H__

@@ -1,4 +1,3 @@
-// $Id: SxTaskFolder+RSS.m 1 2004-08-20 11:17:52Z znek $
 
 #include <ZSTasks/SxTaskFolder.h>
 #include "SxRSSTaskRenderer.h"

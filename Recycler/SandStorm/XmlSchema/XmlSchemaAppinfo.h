@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __XmlSchema_XmlSchemaAppinfo_H__
 #define __XmlSchema_XmlSchemaAppinfo_H__

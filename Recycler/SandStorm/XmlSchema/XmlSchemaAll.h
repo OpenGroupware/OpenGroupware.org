@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __XmlSchemaAll_H__
 #define __XmlSchemaAll_H__

@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __SkyJobUidHandler_H__
 #define __SkyJobUidHandler_H__

@@ -1,4 +1,3 @@
-// $Id$
 
 #include "OGoCycleDateCalculator.h"
 #import  <Foundation/Foundation.h>

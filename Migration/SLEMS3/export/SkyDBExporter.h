@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __SkyDBExporter_H__
 #define __SkyDBExporter_H__

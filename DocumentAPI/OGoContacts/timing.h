@@ -1,4 +1,3 @@
-// $Id$
 
 #if 0
 #define TIME_START(_timeDescription) { struct timeval tv; double ti; NSString *timeDescription = nil; *(&ti) = 0; *(&timeDescription) = nil;timeDescription = [_timeDescription copy]; gettimeofday(&tv, NULL); ti =  (double)tv.tv_sec + ((double)tv.tv_usec / 1000000.0); printf("{\n");

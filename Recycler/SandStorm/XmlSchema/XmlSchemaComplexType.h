@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __XmlSchema_ComplexType_H__
 #define __XmlSchema_ComplexType_H__

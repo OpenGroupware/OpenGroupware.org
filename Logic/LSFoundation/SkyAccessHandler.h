@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2000-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SkyAccessHandler.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __OGo_LSFoundation_SkyAccessHandler__
 #define __OGo_LSFoundation_SkyAccessHandler__

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2002-2004 SKYRIX Software AG
+  Copyright (C) 2002-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org
 

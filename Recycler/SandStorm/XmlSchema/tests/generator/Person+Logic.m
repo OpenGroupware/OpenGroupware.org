@@ -1,4 +1,3 @@
-// $Id$
 
 #import <Foundation/Foundation.h>
 #include <XmlSchema/XmlSchema.h>

@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __SkyPersonUidHandler_H__
 #define __SkyPersonUidHandler_H__

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2005 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -22,7 +22,6 @@
    This code is:
     "derived from the RSA Data Security, Inc. MD5 Message-Digest Algorithm"
 */
-// $Id$
 
 #import <Foundation/Foundation.h>
 #include <OGoPalm/NGMD5Generator.h>

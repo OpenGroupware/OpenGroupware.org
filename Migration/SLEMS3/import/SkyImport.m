@@ -1,4 +1,3 @@
-// $Id$
 
 #include "SkyImport.h"
 #include "SkyTransactionHandler.h"

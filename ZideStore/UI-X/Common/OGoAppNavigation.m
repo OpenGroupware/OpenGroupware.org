@@ -1,4 +1,3 @@
-// $Id$
 
 #include <NGObjWeb/SoComponent.h>
 

@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __SkyProjectServer__SkyProjectRequestHandler_H__
 #define __SkyProjectServer__SkyProjectRequestHandler_H__

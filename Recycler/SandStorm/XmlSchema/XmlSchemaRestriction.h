@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __XmlSchemaRestriction_H__
 #define __XmlSchemaRestriction_H__

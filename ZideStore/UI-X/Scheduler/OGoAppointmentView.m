@@ -1,4 +1,3 @@
-// $Id$
 
 #include "OGoAppointmentView.h"
 #include "common.h"

@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __XmlSchema_Choice_H__
 #define __XmlSchema_Choice_H__

@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __SkyResourceUidHandler_H__
 #define __SkyResourceUidHandler_H__

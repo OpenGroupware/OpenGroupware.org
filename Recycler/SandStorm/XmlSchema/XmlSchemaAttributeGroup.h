@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __XmlSchema_XmlSchemaAttributeGroup_H__
 #define __XmlSchema_XmlSchemaAttributeGroup_H__

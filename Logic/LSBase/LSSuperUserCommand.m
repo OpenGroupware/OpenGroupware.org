@@ -1,4 +1,3 @@
-// $Id$
 
 #include <LSFoundation/LSBaseCommand.h>
 

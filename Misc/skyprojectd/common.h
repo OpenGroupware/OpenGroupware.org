@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __skyprojectd_common_H__
 #define __skyprojectd_common_H__

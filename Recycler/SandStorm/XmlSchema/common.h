@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __XSchema_common_H__
 #define __XSchema_common_H__

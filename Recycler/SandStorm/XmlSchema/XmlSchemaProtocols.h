@@ -1,4 +1,3 @@
-// $Id$
 
 
 #ifndef __XmlSchema_XmlSchemaSchemaProtocols_H__

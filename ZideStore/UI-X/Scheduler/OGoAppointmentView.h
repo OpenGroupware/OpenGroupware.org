@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __ZideStoreUI_OGoAppointmentView_H__
 #define __ZideStoreUI_OGoAppointmentView_H__

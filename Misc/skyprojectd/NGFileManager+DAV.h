@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef __SkyProjectServer__SkyProjectFileManager_WebDAV_H__
 #define __SkyProjectServer__SkyProjectFileManager_WebDAV_H__
