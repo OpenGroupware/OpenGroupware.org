@@ -1,0 +1,6 @@
+2004-12-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Database/SQLite/build-schema.sqlite: tweaked to load successfully
+	  into a SQlite 3 database
+
+	* created ChangeLog

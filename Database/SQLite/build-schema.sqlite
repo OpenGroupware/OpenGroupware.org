@@ -1,8 +1,10 @@
-/* */ 
-/* OpenGroupware.org database schema creation script */
-/* (C) 2000-2003 SKYRIX Software AG */
-/* $Id: build-schema.sqlite,v 1.4 2003/08/20 14:13:53 helge Exp $ */
-/* */ 
+/*
+  OpenGroupware.org database schema creation script
+  (C) 2000-2004 SKYRIX Software AG
+
+  Creating a DB:
+    sqlite3 ogo.db <build-schema.sqlite
+*/
 
 /* Sybase emulation types */
 /* CREATE DOMAIN text            AS VARCHAR(2000000000); */ /* 2GB */
@@ -45,13 +47,12 @@ CREATE TABLE session_log (
   log_date                TIMESTAMP /* t_datetime */,
   faction                 VARCHAR(255) /* t_string */
   ,
+  PRIMARY KEY(session_log_id),
   CHECK(session_log_id IS NOT NULL),
   CHECK(account_id     IS NOT NULL),
   CHECK(log_date       IS NOT NULL),
   CHECK(faction        IS NOT NULL)
 );
-ALTER TABLE session_log ADD CONSTRAINT pk_session_log 
-  PRIMARY KEY (session_log_id);
 CREATE INDEX account_id_idx ON session_log(account_id);
 CREATE INDEX log_date_idx ON session_log(log_date);
 CREATE INDEX session_log_action_idx ON session_log(faction);
@@ -60,10 +61,10 @@ CREATE TABLE table_version (
   table_version INTEGER      /* t_int */,
   fname         VARCHAR(255) /* t_string */
   ,
+  PRIMARY KEY(fname),
   CHECK(fname         IS NOT NULL),
   CHECK(table_version IS NOT NULL)
 );
-ALTER TABLE table_version ADD CONSTRAINT pk_table_version PRIMARY KEY (fname);
 
 CREATE TABLE staff (
   staff_id      INTEGER /* t_id */,
@@ -74,12 +75,11 @@ CREATE TABLE staff (
   is_account    BOOLEAN /* t_bool */,
   db_status     VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY(staff_id),
   CHECK(staff_id   IS NOT NULL),
   CHECK(company_id IS NOT NULL)
 );
-ALTER TABLE staff ADD CONSTRAINT pk_staff PRIMARY KEY (staff_id);
-ALTER TABLE staff ADD CONSTRAINT unique_company_id UNIQUE (company_id);
-
+CREATE UNIQUE INDEX unique_company_id ON staff(company_id);
 CREATE INDEX staff__is_team    ON staff(is_team);
 CREATE INDEX staff__is_account ON staff(is_account);
 
@@ -169,15 +169,16 @@ CREATE TABLE company (
   show_email2_as      VARCHAR(255) /* t_string */,   /* email 2 show as attr */
   show_email3_as      VARCHAR(255) /* t_string */    /* email 3 show as attr */
   ,
-  CHECK(company_id IS NOT NULL)
+  PRIMARY KEY(company_id),
+  CHECK (company_id IS NOT NULL),
+  CHECK (NOT(is_person IS NULL AND is_enterprise IS NULL AND 
+             is_trust IS NULL AND is_team IS NULL))
 );
 
-ALTER TABLE company ADD CONSTRAINT pk_company PRIMARY KEY (company_id);
-ALTER TABLE company ADD CONSTRAINT unique_company_number UNIQUE (fnumber);
-ALTER TABLE company ADD CONSTRAINT unique_company_login  UNIQUE (login);
-ALTER TABLE company ADD CONSTRAINT check_company_type
-  CHECK (NOT(is_person IS NULL AND is_enterprise IS NULL AND 
-             is_trust IS NULL AND is_team IS NULL));
+CREATE UNIQUE INDEX unique_company_number ON company(fnumber);
+CREATE UNIQUE INDEX unique_company_login  ON company(login);
+
+/* TODO: constraints
 ALTER TABLE company ADD CONSTRAINT company2owner
         FOREIGN KEY (owner_id) REFERENCES staff(company_id);
 ALTER TABLE company ADD CONSTRAINT company2contact 
@@ -185,6 +186,7 @@ ALTER TABLE company ADD CONSTRAINT company2contact
 
 ALTER TABLE staff ADD CONSTRAINT staff2company 
         FOREIGN KEY (company_id) REFERENCES company(company_id);
+*/
 
 CREATE INDEX company__is_team       ON company(is_team);
 CREATE INDEX company__is_enterprise ON company(is_enterprise);
@@ -208,13 +210,14 @@ CREATE TABLE company_info (
   comment         VARCHAR(2000000000) /* t_text */,
   db_status       VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY(company_info_id),
   CHECK(company_id      IS NOT NULL),
   CHECK(company_info_id IS NOT NULL)
 );
-ALTER TABLE company_info ADD CONSTRAINT pk_company_info 
-        PRIMARY KEY (company_info_id);
+/* TODO: constraints
 ALTER TABLE company_info ADD CONSTRAINT company_info2company 
         FOREIGN KEY (company_id) REFERENCES company(company_id);
+*/
 
 CREATE TABLE company_value (
   company_value_id   INTEGER       /* t_id */,
@@ -232,12 +235,13 @@ CREATE TABLE company_value (
   is_label_localized BOOLEAN       /* t_bool */,
   db_status          VARCHAR(50)   /* t_tinystring */
   ,
+  PRIMARY KEY(company_value_id),
   CHECK(company_value_id IS NOT NULL)
 );
-ALTER TABLE company_value ADD CONSTRAINT pk_company_value
-        PRIMARY KEY (company_value_id);
+/* TODO: constraints
 ALTER TABLE company_value ADD CONSTRAINT company_value 
         FOREIGN KEY (company_id) REFERENCES company(company_id);
+*/
 CREATE INDEX attribute_idx ON company_value(attribute);
 CREATE INDEX company_value_type_idx      ON company_value(ftype);
 
@@ -247,10 +251,9 @@ CREATE TABLE company_category (
   category            VARCHAR(255) /* t_string */,
   db_status           VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY(company_category_id),
   CHECK(company_category_id IS NOT NULL)
 );
-ALTER TABLE company_category ADD CONSTRAINT pk_company_category
-        PRIMARY KEY (company_category_id);
 
 CREATE TABLE company_assignment (
   company_assignment_id INTEGER      /* t_id */,
@@ -261,14 +264,15 @@ CREATE TABLE company_assignment (
   ffunction             VARCHAR(255) /* t_string */, /* sybase: function */
   db_status             VARCHAR(50)  /* t_tinystring */
   ,
+  PRIMARY KEY(company_assignment_id),
   CHECK(company_assignment_id IS NOT NULL)
 );
-ALTER TABLE company_assignment ADD CONSTRAINT pk_company_assignment
-        PRIMARY KEY (company_assignment_id);
+/* TODO: add constraints
 ALTER TABLE company_assignment ADD CONSTRAINT company_assignment2company
         FOREIGN KEY (company_id) REFERENCES company(company_id);         
 ALTER TABLE company_assignment ADD CONSTRAINT company_assignment2sub_company
-        FOREIGN KEY (sub_company_id) REFERENCES company(company_id);         
+        FOREIGN KEY (sub_company_id) REFERENCES company(company_id);
+*/
 
 /* -------------------- appointments -------------------- */
 
@@ -282,13 +286,11 @@ CREATE TABLE appointment_resource (
   notification_time       INTEGER /* t_int */,
   db_status               VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY(appointment_resource_id),
   CHECK(appointment_resource_id IS NOT NULL),
   CHECK(fname IS NOT NULL)
 );
-ALTER TABLE appointment_resource ADD CONSTRAINT pk_appointment_resource
-        PRIMARY KEY (appointment_resource_id);
-ALTER TABLE appointment_resource 
-  ADD CONSTRAINT unique_aptresname_idx UNIQUE(fname);
+CREATE UNIQUE INDEX unique_aptresname_idx ON appointment_resource(fname);
 
 CREATE TABLE appointment ( /* Sybase: date */
   date_id                INTEGER /* t_id */, /* primary key */
@@ -328,19 +330,20 @@ CREATE TABLE appointment ( /* Sybase: date */
   associated_contacts    VARCHAR(255) /* t_string */,   /* Outlook associated contacts */
   keywords               VARCHAR(255) /* t_string */    /* Outlook keywords */
   ,
+  PRIMARY KEY(date_id),
   CHECK(date_id    IS NOT NULL),
   CHECK(start_date IS NOT NULL),
   CHECK(end_date   IS NOT NULL),
   CHECK(title      IS NOT NULL)
 );
-
-ALTER TABLE appointment ADD CONSTRAINT pk_date PRIMARY KEY (date_id);
+/* TODO: constraints
 ALTER TABLE appointment ADD CONSTRAINT date2date 
         FOREIGN KEY (parent_date_id) REFERENCES appointment(date_id);
 ALTER TABLE appointment ADD CONSTRAINT date2owner 
         FOREIGN KEY (owner_id) REFERENCES staff(company_id);
 ALTER TABLE appointment ADD CONSTRAINT date2access_team 
         FOREIGN KEY (access_team_id) REFERENCES staff(company_id);
+*/
 CREATE INDEX is_absence_idx           ON appointment(is_absence);
 CREATE INDEX is_attendance_idx        ON appointment(is_attendance);
 CREATE INDEX is_conflict_disabled_idx ON appointment(is_conflict_disabled);
@@ -354,12 +357,14 @@ CREATE TABLE date_info (
   comment      VARCHAR(100000), /* Sybase: TEXT */
   db_status    VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY(date_info_id),
   CHECK(date_id      IS NOT NULL),
   CHECK(date_info_id IS NOT NULL)
 );
-ALTER TABLE date_info ADD CONSTRAINT pk_date_info PRIMARY KEY (date_info_id);
+/* TODO: contraints
 ALTER TABLE date_info ADD CONSTRAINT date_info2date 
         FOREIGN KEY (date_id) REFERENCES appointment(date_id);
+*/
 
 CREATE TABLE date_company_assignment (
   date_company_assignment_id INTEGER      /* t_id */,
@@ -374,14 +379,15 @@ CREATE TABLE date_company_assignment (
   db_status                  VARCHAR(50)  /* t_tinystring */,
   outlook_key                VARCHAR(255) /* t_string */
   ,
+  PRIMARY KEY(date_company_assignment_id),
   CHECK(date_company_assignment_id IS NOT NULL)
 );
-ALTER TABLE date_company_assignment ADD CONSTRAINT pk_date_company_assignment 
-  PRIMARY KEY (date_company_assignment_id);
+/* TODO: constraints
 ALTER TABLE date_company_assignment ADD CONSTRAINT date_company_assign2company 
   FOREIGN KEY (company_id) REFERENCES company(company_id);
 ALTER TABLE date_company_assignment ADD CONSTRAINT date_company_assign2date 
   FOREIGN KEY (date_id) REFERENCES appointment(date_id);
+*/
 
 /* -------------------- projects -------------------- */
 
@@ -400,15 +406,17 @@ CREATE TABLE project (
   kind           VARCHAR(50) /* t_tinystring */,
   url            VARCHAR(50) /* t_smallstring */
   ,
+  PRIMARY KEY(project_id),
   CHECK(project_id IS NOT NULL),
   CHECK(owner_id   IS NOT NULL)
 );
-ALTER TABLE project ADD CONSTRAINT pk_project PRIMARY KEY (project_id);
+/* TODO: constraints
 ALTER TABLE project ADD CONSTRAINT project2owner FOREIGN KEY (owner_id)
   REFERENCES staff(company_id);
 ALTER TABLE project ADD CONSTRAINT project2team FOREIGN KEY (team_id)
   REFERENCES staff(company_id);
-ALTER TABLE project ADD CONSTRAINT unique_project_number UNIQUE (fnumber);
+*/
+CREATE UNIQUE INDEX unique_project_number ON project(fnumber);
 CREATE INDEX is_fake_idx           ON project(is_fake);
 CREATE INDEX project_kind_idx      ON project(kind);
 CREATE INDEX project_status_idx    ON project(status);
@@ -423,15 +431,17 @@ CREATE TABLE project_company_assignment (
   access_right                  VARCHAR(50) /* t_tinystring */,
   db_status                     VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY(project_company_assignment_id),
   CHECK(project_company_assignment_id IS NOT NULL)
 );
-
-ALTER TABLE project_company_assignment ADD CONSTRAINT pk_project_company_assignment
-  PRIMARY KEY (project_company_assignment_id);
-ALTER TABLE project_company_assignment ADD CONSTRAINT project_company_assign2company
+/* TODO: constraints
+ALTER TABLE project_company_assignment 
+  ADD CONSTRAINT project_company_assign2company
   FOREIGN KEY (company_id) REFERENCES company(company_id);
-ALTER TABLE project_company_assignment ADD CONSTRAINT project_company_assign2project
+ALTER TABLE project_company_assignment 
+  ADD CONSTRAINT project_company_assign2project
   FOREIGN KEY (project_id) REFERENCES project(project_id);
+*/
 CREATE INDEX has_access_idx   ON project_company_assignment(has_access);
 CREATE INDEX access_right_idx ON project_company_assignment(access_right);
 
@@ -459,19 +469,22 @@ CREATE TABLE document (
   db_status          VARCHAR(50)  /* t_tinystring */,
   contact            VARCHAR(255) /* t_string */
   ,
+  PRIMARY KEY(document_id),
   CHECK(document_id IS NOT NULL)
 );
-ALTER TABLE document ADD CONSTRAINT pk_document PRIMARY KEY (document_id);
+/* TODO: constraints
 ALTER TABLE document ADD CONSTRAINT document2document 
   FOREIGN KEY (parent_document_id) REFERENCES document(document_id);
 ALTER TABLE document ADD CONSTRAINT document2project FOREIGN KEY (project_id)
   REFERENCES project(project_id);
 ALTER TABLE document ADD CONSTRAINT document2date FOREIGN KEY (date_id)
   REFERENCES appointment(date_id);
-ALTER TABLE document ADD CONSTRAINT document2first_owner FOREIGN KEY (first_owner_id)
+ALTER TABLE document ADD CONSTRAINT document2first_owner 
+  FOREIGN KEY (first_owner_id)
   REFERENCES staff(company_id);
 ALTER TABLE document ADD CONSTRAINT document2current_owner 
   FOREIGN KEY (current_owner_id) REFERENCES staff(company_id);
+*/
 CREATE INDEX is_note_idx        ON document(is_note);
 CREATE INDEX is_folder_idx      ON document(is_folder);
 CREATE INDEX is_object_link_idx ON document(is_object_link);
@@ -498,14 +511,15 @@ CREATE TABLE document_version (
   db_status           VARCHAR(50)  /* t_tinystring */,
   contact             VARCHAR(255) /* t_string */
   ,
+  PRIMARY KEY(document_version_id),
   CHECK(document_version_id IS NOT NULL)
 );
-ALTER TABLE document_version ADD CONSTRAINT pk_document_version 
-  PRIMARY KEY (document_version_id);
+/* TODO: constraints
 ALTER TABLE document_version ADD CONSTRAINT document_version2document
   FOREIGN KEY (document_id) REFERENCES document(document_id);
 ALTER TABLE document_version ADD CONSTRAINT document_version2last_owner
   FOREIGN KEY (last_owner_id) REFERENCES staff(company_id);
+*/
 CREATE INDEX doc_v_obj_version_idx    ON document_version(object_version);
 
 
@@ -525,14 +539,15 @@ CREATE TABLE document_editing (
   db_status           VARCHAR(50)  /* t_tinystring */,
   contact             VARCHAR(255) /* t_string */
   ,
+  PRIMARY KEY(document_editing_id),
   CHECK(document_editing_id IS NOT NULL)
 );
-ALTER TABLE document_editing ADD CONSTRAINT pk_document_editing 
-  PRIMARY KEY (document_editing_id);
+/* TODO: constraints
 ALTER TABLE document_editing ADD CONSTRAINT document_editing2current_owner
   FOREIGN KEY (current_owner_id) REFERENCES staff(company_id);
 ALTER TABLE document_editing ADD CONSTRAINT document_editing2document 
   FOREIGN KEY (document_id) REFERENCES document(document_id);
+*/
 CREATE INDEX document_editing_status_idx ON document_editing(status);
 
 
@@ -554,13 +569,14 @@ CREATE TABLE address (
   db_status         VARCHAR(50) /* t_tinystring */,
   source_url        VARCHAR(255) /* t_string */
   ,
+  PRIMARY KEY(address_id),
   CHECK(address_id IS NOT NULL),
   CHECK(ftype      IS NOT NULL)
 );
-ALTER TABLE address ADD CONSTRAINT pk_address PRIMARY KEY (address_id);
+/* TODO: constraints
 ALTER TABLE address ADD CONSTRAINT address2company FOREIGN KEY (company_id)
   REFERENCES company(company_id);
-
+*/
 CREATE INDEX address__name1      ON address(name1);
 CREATE INDEX address__name2      ON address(name2);
 CREATE INDEX address__name3      ON address(name3);
@@ -580,12 +596,14 @@ CREATE TABLE telephone (
   url               VARCHAR(255) /* t_string */,
   db_status         VARCHAR(50)  /* t_tinystring */
   ,
+  PRIMARY KEY(telephone_id),
   CHECK(telephone_id IS NOT NULL)
   CHECK(ftype IS NOT NULL)
 );
-ALTER TABLE telephone ADD CONSTRAINT pk_telephone PRIMARY KEY (telephone_id);
+/* TODO: constraints
 ALTER TABLE telephone ADD CONSTRAINT telephone2company FOREIGN KEY (company_id)
  REFERENCES company(company_id);
+*/
 
 CREATE INDEX telephone__fnumber     ON telephone(fnumber);
 CREATE INDEX telephone__ftype       ON telephone(ftype);
@@ -627,13 +645,14 @@ CREATE TABLE job (
   associated_contacts  VARCHAR(255) /* t_string */,
   timer_date           TIMESTAMP /* t_datetime */
   ,
+  PRIMARY KEY(job_id),
   CHECK(job_id     IS NOT NULL),
   CHECK(fname      IS NOT NULL),
   CHECK(start_date IS NOT NULL),
   CHECK(end_date   IS NOT NULL)
 );
 
-ALTER TABLE job ADD CONSTRAINT pk_job PRIMARY KEY (job_id);
+/* TODO: constraints
 ALTER TABLE job ADD CONSTRAINT job2project FOREIGN KEY (project_id)
   REFERENCES project(project_id);
 ALTER TABLE job ADD CONSTRAINT job2creator FOREIGN KEY (creator_id)
@@ -642,6 +661,7 @@ ALTER TABLE job ADD CONSTRAINT job2executant FOREIGN KEY (executant_id)
   REFERENCES staff(company_id);
 ALTER TABLE job ADD CONSTRAINT job2job FOREIGN KEY (parent_job_id)
   REFERENCES job(job_id);
+*/
 CREATE INDEX job__keywords      ON job(keywords);
 CREATE INDEX is_control_job_idx ON job(is_control_job);
 CREATE INDEX is_team_job_idx    ON job(is_team_job);
@@ -661,14 +681,16 @@ CREATE TABLE job_history (
   job_status     VARCHAR(50) /* t_tinystring */,
   db_status      VARCHAR(50) /* t_tinystring */ 
   ,
+  PRIMARY KEY(job_history_id),
   CHECK(job_history_id IS NOT NULL),
   CHECK(job_id         IS NOT NULL)
 );
-ALTER TABLE job_history ADD CONSTRAINT pk_job_history PRIMARY KEY (job_history_id);
+/* TODO: constraints
 ALTER TABLE job_history ADD CONSTRAINT job_history2job FOREIGN KEY (job_id)
   REFERENCES job(job_id);
 ALTER TABLE job_history ADD CONSTRAINT job_history2actor FOREIGN KEY (actor_id)
   REFERENCES staff(company_id);
+*/
 
 CREATE TABLE job_history_info (
   job_history_info_id INTEGER /* t_id */,
@@ -676,13 +698,14 @@ CREATE TABLE job_history_info (
   comment             VARCHAR(1000000), /* Sybase: TEXT */
   db_status           VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY(job_history_info_id),
   CHECK(job_history_info_id IS NOT NULL),
   CHECK(job_history_id      IS NOT NULL)
 );
-ALTER TABLE job_history_info ADD CONSTRAINT pk_job_hinstory_info 
-  PRIMARY KEY (job_history_info_id);
+/* TODO: constraints
 ALTER TABLE job_history_info ADD CONSTRAINT job_history_info2job_history
   FOREIGN KEY (job_history_id) REFERENCES job_history(job_history_id);
+*/
 
 /* -------------------- job_resource_assignment ------------------------- */
 
@@ -693,12 +716,13 @@ CREATE TABLE job_resource_assignment (
   operative_part             INTEGER /* t_int */,
   db_status                  VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY(job_resource_assignment_id),
   CHECK(job_resource_assignment_id IS NOT NULL)
 );
-ALTER TABLE job_resource_assignment ADD CONSTRAINT pk_job_resource_assignment_id
-               PRIMARY KEY (job_resource_assignment_id);
+/* TODO: constraints
 ALTER TABLE job_resource_assignment ADD CONSTRAINT job_resource2job
                FOREIGN KEY (job_id) REFERENCES job(job_id);
+*/
 
 /* -------------------- news -------------------- */
 
@@ -710,10 +734,9 @@ CREATE TABLE news_article (
   is_index_article      BOOLEAN /* t_bool */,
   db_status             VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY(news_article_id),
   CHECK(news_article_id IS NOT NULL)
 );
-ALTER TABLE news_article ADD CONSTRAINT pk_news_article 
-  PRIMARY KEY (news_article_id);
 CREATE INDEX is_index_article_idx ON news_article(is_index_article);
 
 CREATE TABLE news_article_link (
@@ -722,14 +745,15 @@ CREATE TABLE news_article_link (
   news_article_id       INTEGER /* t_id */,
   sub_news_article_id   INTEGER /* t_id */
   ,
+  PRIMARY KEY(news_article_link_id),
   CHECK(news_article_link_id IS NOT NULL)
 );
-ALTER TABLE news_article_link ADD CONSTRAINT pk_article_link 
-  PRIMARY KEY (news_article_link_id);
+/* TODO: constraints
 ALTER TABLE news_article_link ADD CONSTRAINT n_article_link2news_article 
   FOREIGN KEY (news_article_id) REFERENCES news_article(news_article_id);
 ALTER TABLE news_article_link ADD CONSTRAINT n_article_link2news_article2
   FOREIGN KEY (sub_news_article_id) REFERENCES news_article(news_article_id);
+*/
 
 -- --------------------------- invoice  -----------------------------
 
@@ -748,13 +772,12 @@ CREATE TABLE invoice (
   comment            VARCHAR(2000000000) /* t_text */,
   db_status          VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY(invoice_id),
   CHECK(invoice_id IS NOT NULL),
   CHECK(debitor_id IS NOT NULL),
   CHECK(invoice_nr IS NOT NULL),
   CHECK(status     IS NOT NULL)
 );
-ALTER TABLE invoice ADD CONSTRAINT pk_url_invoice
-  PRIMARY KEY (invoice_id);
 CREATE INDEX invoice_kind_idx   ON invoice(kind);
 CREATE INDEX invoice_status_idx ON invoice(status);
 CREATE INDEX invoice_date_idx   ON invoice(invoice_date);
@@ -767,15 +790,16 @@ CREATE TABLE invoice_account (
   object_version        INTEGER       /* t_int */,
   db_status             VARCHAR(50)   /* t_tinystring */
   ,
+  PRIMARY KEY(invoice_account_id),
   CHECK(invoice_account_id IS NOT NULL),
   CHECK(enterprise_id IS NOT NULL),
   CHECK(account_nr IS NOT NULL)
 );
-ALTER TABLE invoice_account ADD CONSTRAINT pk_invoice_account 
-  PRIMARY KEY (invoice_account_id);
+/* TODO: constraints
 ALTER TABLE invoice_account ADD CONSTRAINT invoice_account2company 
   FOREIGN KEY (enterprise_id)
   REFERENCES company(company_id);
+*/
 
 CREATE TABLE invoice_action (
   invoice_action_id     INTEGER /* t_id */,
@@ -788,19 +812,20 @@ CREATE TABLE invoice_action (
   object_version        INTEGER /* t_int */,
   db_status             VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY (invoice_action_id),
   CHECK(invoice_action_id IS NOT NULL),
   CHECK(account_id IS NOT NULL),
   CHECK(action_kind IS NOT NULL)
 );
-ALTER TABLE invoice_action ADD CONSTRAINT pk_invoice_action 
-  PRIMARY KEY (invoice_action_id);
-CREATE INDEX action_kind_idx on invoice_action(action_kind);
+/* TODO: constraints
 ALTER TABLE invoice_action ADD CONSTRAINT invoice_action2invoice_account 
   FOREIGN KEY (account_id)
   REFERENCES invoice_account(invoice_account_id);
 ALTER TABLE invoice_action ADD CONSTRAINT invoice_action2invoice 
   FOREIGN KEY (invoice_id)
   REFERENCES invoice(invoice_id);
+*/
+CREATE INDEX action_kind_idx on invoice_action(action_kind);
 
 CREATE TABLE invoice_accounting (
   invoice_accounting_id         INTEGER /* t_id */,
@@ -810,27 +835,29 @@ CREATE TABLE invoice_accounting (
   object_version                INTEGER /* t_int */,
   db_status                     VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY(invoice_accounting_id),
   CHECK(invoice_accounting_id IS NOT NULL),
   CHECK(action_id IS NOT NULL)
 );
-ALTER TABLE invoice_accounting ADD CONSTRAINT pk_invoice_accounting 
-  PRIMARY KEY (invoice_accounting_id);
+/* TODO: constraints
 ALTER TABLE invoice_accounting ADD CONSTRAINT invoice_acc2invoice_action 
   FOREIGN KEY (action_id)
   REFERENCES invoice_action(invoice_action_id);
+*/
 
 CREATE TABLE article_category (
   article_category_id INTEGER      /* t_id */,
   category_name       VARCHAR(255) /* t_string */,
   category_abbrev     VARCHAR(255) /* t_string */
   ,
+  PRIMARY KEY(article_category_id),
   CHECK(article_category_id IS NOT NULL),
   CHECK(category_name       IS NOT NULL)
 );
-ALTER TABLE article_category ADD CONSTRAINT pk_article_category
-  PRIMARY KEY (article_category_id);
+/* TODO: constraints
 ALTER TABLE article_category 
   ADD CONSTRAINT unique_category_abbrev UNIQUE(category_abbrev);
+*/
 
 CREATE TABLE article_unit (
   article_unit_id    INTEGER /* t_id */,        
@@ -838,10 +865,9 @@ CREATE TABLE article_unit (
   singular_unit      VARCHAR(255) /* t_string */,
   plural_unit        VARCHAR(255) /* t_string */
   ,
-  ADD CHECK(article_unit_id IS NOT NULL)
+  PRIMARY KEY(article_unit_id),
+  CHECK(article_unit_id IS NOT NULL)
 );
-ALTER TABLE article_unit ADD CONSTRAINT pk_article_unit
-  PRIMARY KEY (article_unit_id);
 
 CREATE TABLE article (
   article_id          INTEGER /* t_id */,
@@ -857,19 +883,19 @@ CREATE TABLE article (
   vat_group           VARCHAR(50) /* t_tinystring */,
   db_status           VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY(article_id),
   CHECK(article_id   IS NOT NULL),
   CHECK(article_name IS NOT NULL),
   CHECK(article_nr   IS NOT NULL)
 );
-ALTER TABLE article ADD CONSTRAINT pk_article
-  PRIMARY KEY (article_id);
-
+/* TODO: constraints
 ALTER TABLE article ADD
   CONSTRAINT article2article_unit FOREIGN KEY (article_unit_id) 
-    REFERENCES article_unit(article_unit_id);
+  REFERENCES article_unit(article_unit_id);
 ALTER TABLE article ADD
   CONSTRAINT article2article_category FOREIGN KEY (article_category_id) 
-    REFERENCES article_category(article_category_id);
+  REFERENCES article_category(article_category_id);
+*/
 CREATE INDEX article_status_idx ON article(status);
 
 CREATE TABLE invoice_article_assignment (
@@ -883,17 +909,17 @@ CREATE TABLE invoice_article_assignment (
   comment                       VARCHAR(2000000000) /* t_text */,
   db_status                     VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY(invoice_article_assignment_id),
   CHECK(invoice_article_assignment_id IS NOT NULL)
 );
-ALTER TABLE invoice_article_assignment 
-  ADD CONSTRAINT pk_invoice_article_assignment
-  PRIMARY KEY (invoice_article_assignment_id);
+/* TODO: constraints
 ALTER TABLE invoice_article_assignment 
   ADD CONSTRAINT invoice_article_assign2article FOREIGN KEY (article_id) 
   REFERENCES article(article_id);
 ALTER TABLE invoice_article_assignment      
   ADD CONSTRAINT invoice_article_assign2invoice FOREIGN KEY (invoice_id) 
   REFERENCES invoice(invoice_id);                 
+*/
 
 /* -------------------- resource ------------------------- */
 
@@ -909,14 +935,15 @@ CREATE TABLE resource (
   db_status           VARCHAR(50) /* t_tinystring */,
   object_version      INTEGER /* t_int */
   ,
+  PRIMARY KEY(resource_id),
   CHECK(resource_id IS NOT NULL),
   CHECK(resource_name IS NOT NULL),
   CHECK(ftype IS NOT NULL)
 );
-ALTER TABLE resource ADD CONSTRAINT pk_resource PRIMARY KEY (resource_id);
-
+/* TODO: constraints
 ALTER TABLE job_resource_assignment ADD CONSTRAINT job_resource2resource
                FOREIGN KEY (resource_id) REFERENCES resource(resource_id);
+*/
 
 CREATE TABLE resource_assignment (
   resource_assignment_id INTEGER     /* t_id */,
@@ -924,14 +951,15 @@ CREATE TABLE resource_assignment (
   sub_resource_id        INTEGER     /* t_id */,
   db_status              VARCHAR(50) /* t_tinystring */
   ,
+  PRIMARY KEY (resource_assignment_id),
   CHECK(resource_assignment_id IS NOT NULL)
 );
-ALTER TABLE resource_assignment ADD CONSTRAINT pk_resource_assignment_id
-               PRIMARY KEY (resource_assignment_id);
+/* TODO: constraints
 ALTER TABLE resource_assignment ADD CONSTRAINT resource2super_resource
                FOREIGN KEY (super_resource_id) REFERENCES resource(resource_id);
 ALTER TABLE resource_assignment ADD CONSTRAINT resource2sub_resource
                FOREIGN KEY (sub_resource_id) REFERENCES resource(resource_id);
+*/
 
 
 /* --- job_assignment: used as milestone dependencies */
@@ -944,16 +972,17 @@ CREATE TABLE job_assignment (
   assignment_kind       VARCHAR(50) /* t_tinystring */,
   fposition             INTEGER     /* t_int */
   ,
+  PRIMARY KEY(job_assignment_id),
   CHECK(job_assignment_id IS NOT NULL),
   CHECK(parent_job_id     IS NOT NULL),
   CHECK(child_job_id      IS NOT NULL)
 );
-ALTER TABLE job_assignment ADD CONSTRAINT pk_job_assignment
-        PRIMARY KEY (job_assignment_id);
+/* TODO: constraints
 ALTER TABLE job_assignment ADD CONSTRAINT parent_job_assignment2job
         FOREIGN KEY (parent_job_id) REFERENCES job(job_id);         
 ALTER TABLE job_assignment ADD CONSTRAINT child_job_assignment2job
         FOREIGN KEY (child_job_id) REFERENCES job(job_id);         
+*/
 CREATE INDEX assignment_kind_idx ON job_assignment(assignment_kind);
 
 CREATE TABLE project_info (
@@ -962,13 +991,14 @@ CREATE TABLE project_info (
   comment         VARCHAR(2000000000) /* t_text */,
   db_status       VARCHAR(50)         /* t_tinystring */
   ,
+  PRIMARY KEY(project_info_id),
   CHECK(project_id IS NOT NULL),
   CHECK(project_info_id IS NOT NULL)
 );
-ALTER TABLE project_info ADD CONSTRAINT pk_project_info 
-        PRIMARY KEY (project_info_id);
+/* TODO: constraints
 ALTER TABLE project_info ADD CONSTRAINT project_info2company 
         FOREIGN KEY (project_id) REFERENCES project(project_id);
+*/
 
 /* -------------------- ObjectProperties -------------------- */
 
@@ -988,13 +1018,12 @@ CREATE TABLE obj_property (
   blob_size          INTEGER       /* t_int */,
   value_blob         BLOB          /* t_image */
   ,
+  PRIMARY KEY (obj_property_id),
   CHECK(obj_property_id IS NOT NULL),
   CHECK(obj_id          IS NOT NULL),
   CHECK(value_key       IS NOT NULL),
   CHECK(preferred_type  IS NOT NULL)
 );
-ALTER TABLE obj_property ADD CONSTRAINT pk_obj_property 
-        PRIMARY KEY (obj_property_id);
 /*ALTER TABLE obj_property */
 /*  ADD CONSTRAINT unique_key_prefix_obj  */
 /*        UNIQUE(value_key, namespace_prefix, obj_id); */
@@ -1136,6 +1165,7 @@ CREATE TABLE palm_date (
   skyrix_sync                   INTEGER /* t_int */,
   skyrix_version                INTEGER /* t_int */
   ,
+  PRIMARY KEY(palm_date_id),
   CHECK(company_id              IS NOT NULL),
   CHECK(device_id               IS NOT NULL),
   CHECK(palm_date_id            IS NOT NULL),
@@ -1151,9 +1181,6 @@ CREATE TABLE palm_date (
   CHECK(is_alarmed              IS NOT NULL),
   CHECK(is_untimed              IS NOT NULL)
 );
-
-ALTER TABLE palm_date ADD CONSTRAINT pk_palm_date
-  PRIMARY KEY (palm_date_id);
 
 
 /* palm_memo table */
@@ -1175,6 +1202,7 @@ CREATE TABLE palm_memo (
   skyrix_sync                   INTEGER /* t_int */,
   skyrix_version                INTEGER /* t_int */
   ,
+  PRIMARY KEY(palm_memo_id),
   CHECK(company_id              IS NOT NULL),
   CHECK(device_id               IS NOT NULL),
   CHECK(palm_memo_id            IS NOT NULL),
@@ -1186,9 +1214,6 @@ CREATE TABLE palm_memo (
   CHECK(md5hash                 IS NOT NULL),
   CHECK(memo                    IS NOT NULL)
 );
-ALTER TABLE palm_memo ADD CONSTRAINT pk_palm_memo
-  PRIMARY KEY (palm_memo_id);
-
 
 /* palm_todo table */
 
@@ -1213,6 +1238,7 @@ CREATE TABLE palm_todo (
   skyrix_sync                   INTEGER /* t_int */,
   skyrix_version                INTEGER /* t_int */
   ,
+  PRIMARY KEY(palm_todo_id),
   CHECK(company_id              IS NOT NULL),
   CHECK(device_id               IS NOT NULL),
   CHECK(palm_todo_id            IS NOT NULL),
@@ -1226,9 +1252,6 @@ CREATE TABLE palm_todo (
   CHECK(priority                IS NOT NULL),
   CHECK(is_completed            IS NOT NULL)
 );
-ALTER TABLE palm_todo ADD CONSTRAINT pk_palm_todo
-  PRIMARY KEY (palm_todo_id);
-
 
 /* palm_category table */
 
@@ -1243,6 +1266,7 @@ CREATE TABLE palm_category (
   category_index                INTEGER      /* t_int */,
   category_name                 VARCHAR(255) /* t_string */
   ,
+  PRIMARY KEY(palm_category_id),
   CHECK(company_id          IS NOT NULL),
   CHECK(palm_category_id    IS NOT NULL),
   CHECK(palm_table          IS NOT NULL),
@@ -1251,63 +1275,62 @@ CREATE TABLE palm_category (
   CHECK(category_index      IS NOT NULL),
   CHECK(category_name       IS NOT NULL)
 );
-ALTER TABLE palm_category ADD CONSTRAINT pk_palm_category
-  PRIMARY KEY (palm_category_id);
 
 CREATE INDEX palmaddr_company_idx ON palm_address (company_id);
-CREATE INDEX palmaddr_device_idx ON palm_address (device_id);
-CREATE INDEX palmaddr_palm_idx ON palm_address (palm_id);
+CREATE INDEX palmaddr_device_idx  ON palm_address (device_id);
+CREATE INDEX palmaddr_palm_idx    ON palm_address (palm_id);
 CREATE INDEX palmaddr_md5hash_idx ON palm_address (md5hash);
-CREATE INDEX palmaddr_skyrix_idx ON palm_address (skyrix_id);
-CREATE INDEX palmaddr_caINTEGER /* t_id */x ON palm_address(category_index);
-CREATE INDEX palmaddr_is_del_idx ON palm_address(is_deleted);
-CREATE INDEX palmaddr_is_mod_idx ON palm_address(is_modified);
+CREATE INDEX palmaddr_skyrix_idx  ON palm_address (skyrix_id);
+CREATE INDEX palmaddr_cat_idxx    ON palm_address(category_index);
+CREATE INDEX palmaddr_is_del_idx  ON palm_address(is_deleted);
+CREATE INDEX palmaddr_is_mod_idx  ON palm_address(is_modified);
 CREATE INDEX palmaddr_is_arch_idx ON palm_address(is_archived);
-CREATE INDEX palmaddr_is_new_idx ON palm_address(is_new);
+CREATE INDEX palmaddr_is_new_idx  ON palm_address(is_new);
 CREATE INDEX palmaddr_is_priv_idx ON palm_address(is_private);
 CREATE INDEX palmaddr_sky_sync_idx ON palm_address(skyrix_sync);
 CREATE INDEX palmaddr_sky_vers_idx ON palm_address(skyrix_version);
 CREATE INDEX palmaddr_sky_type_idx ON palm_address(skyrix_type);
 
 CREATE INDEX palmmemo_company_idx ON palm_memo (company_id);
-CREATE INDEX palmmemo_device_idx ON palm_memo (device_id);
-CREATE INDEX palmmemo_palm_idx ON palm_memo (palm_id);
+CREATE INDEX palmmemo_device_idx  ON palm_memo (device_id);
+CREATE INDEX palmmemo_palm_idx    ON palm_memo (palm_id);
 CREATE INDEX palmmemo_md5hash_idx ON palm_memo (md5hash);
-CREATE INDEX palmmemo_skyrix_idx ON palm_memo (skyrix_id);
+CREATE INDEX palmmemo_skyrix_idx  ON palm_memo (skyrix_id);
 
 CREATE INDEX palmcat_company_idx ON palm_category (company_id);
-CREATE INDEX palmcat_device_idx ON palm_category (device_id);
-CREATE INDEX palmcat_palm_idx ON palm_category (palm_id);
+CREATE INDEX palmcat_device_idx  ON palm_category (device_id);
+CREATE INDEX palmcat_palm_idx    ON palm_category (palm_id);
 CREATE INDEX palmcat_md5hash_idx ON palm_category (md5hash);
-CREATE INDEX palmcat_table_idx ON palm_category (palm_table);
+CREATE INDEX palmcat_table_idx   ON palm_category (palm_table);
 
-CREATE INDEX palmdate_company_idx ON palm_date (company_id);
-CREATE INDEX palmdate_device_idx ON palm_date (device_id);
-CREATE INDEX palmdate_palm_idx ON palm_date (palm_id);
-CREATE INDEX palmdate_md5hash_idx ON palm_date (md5hash);
-CREATE INDEX palmdate_skyrix_idx ON palm_date (skyrix_id);
+CREATE INDEX palmdate_company_idx   ON palm_date (company_id);
+CREATE INDEX palmdate_device_idx    ON palm_date (device_id);
+CREATE INDEX palmdate_palm_idx      ON palm_date (palm_id);
+CREATE INDEX palmdate_md5hash_idx   ON palm_date (md5hash);
+CREATE INDEX palmdate_skyrix_idx    ON palm_date (skyrix_id);
 CREATE INDEX palmdate_startdate_idx ON palm_date (startdate);
-CREATE INDEX palmdate_enddate_idx ON palm_date (enddate);
+CREATE INDEX palmdate_enddate_idx   ON palm_date (enddate);
 
 CREATE INDEX palmtodo_company_idx ON palm_todo (company_id);
-CREATE INDEX palmtodo_device_idx ON palm_todo (device_id);
-CREATE INDEX palmtodo_palm_idx ON palm_todo (palm_id);
+CREATE INDEX palmtodo_device_idx  ON palm_todo (device_id);
+CREATE INDEX palmtodo_palm_idx    ON palm_todo (palm_id);
 CREATE INDEX palmtodo_md5hash_idx ON palm_todo (md5hash);
-CREATE INDEX palmtodo_skyrix_idx ON palm_todo (skyrix_id);
+CREATE INDEX palmtodo_skyrix_idx  ON palm_todo (skyrix_id);
 
 
 /* PDA end */
 
 /* -------------------- key generation -------------------- */
-/* */
-/* In FrontBase using 'SELECT UNIQUE FROM key_generator' */
-/* */
-
+/*
+   In FrontBase using 'SELECT UNIQUE FROM key_generator'
+*/
+/* TODO: need a solution for the key generator
 CREATE TABLE key_generator ( key_generator_id int );
 ALTER TABLE key_generator ADD CHECK(key_generator_id IS NOT NULL);
 ALTER TABLE key_generator ADD CONSTRAINT pk_key_generator
   PRIMARY KEY (key_generator_id);
 SET UNIQUE = 10100 FOR key_generator;
+*/
 
 CREATE VIEW person AS 
   SELECT company_id, owner_id, contact_id, template_user_id, 
@@ -1372,24 +1395,24 @@ CREATE VIEW note AS SELECT * FROM document WHERE is_note = 1;
 CREATE VIEW doc  AS SELECT * FROM document WHERE is_note = 0;
 
 
-INSERT INTO person (company_id, login, fname, description, is_account, 
+INSERT INTO company (company_id, login, fname, description, is_account, 
                     is_intra_account, is_extra_account, is_person, fnumber, 
                     is_private, is_readonly, db_status, object_version) 
   VALUES (10000, 'root', 'root', 'Administrator', 1, 1, 0, 1, 'LS10000', 0, 1,
          'inserted', 1);
 
-SELECT UNIQUE FROM key_generator;
+/* TODO: keygen SELECT UNIQUE FROM key_generator; */
 
 INSERT INTO staff (staff_id, company_id, is_account) VALUES (10001, 10000, 1);
-SELECT UNIQUE FROM key_generator;
+/* TODO: keygen SELECT UNIQUE FROM key_generator; */
 
 INSERT INTO company_info (company_info_id, company_id)
   VALUES (10002, 10000);
-SELECT UNIQUE FROM key_generator;
+/* TODO: keygen SELECT UNIQUE FROM key_generator; */
 
 /* insert template account */
 
-INSERT INTO person (company_id, owner_id, login, fname, description, 
+INSERT INTO company (company_id, owner_id, login, fname, description, 
                     is_account, is_intra_account, is_extra_account, 
                     is_person, fnumber, is_private, is_readonly, is_locked, 
                     is_template_user, db_status, object_version)
@@ -1400,32 +1423,32 @@ INSERT INTO staff (staff_id, company_id, is_account) VALUES (9998, 9999, 1);
 
 INSERT INTO company_info (company_info_id, company_id) VALUES (9997, 9999);
 
-INSERT INTO team (company_id, description, is_team, fnumber, login, db_status,
-                  object_version) 
+INSERT INTO company (company_id, description, is_team, fnumber, login, 
+ 		     db_status, object_version) 
   VALUES (10003, 'all intranet', 1, 'LS10003', 'all intranet', 'inserted', 1);
-SELECT UNIQUE FROM key_generator;
+/* TODO: keygen SELECT UNIQUE FROM key_generator; */
 
 INSERT INTO staff (staff_id, company_id, is_team) VALUES (10004, 10003, 1);
-SELECT UNIQUE FROM key_generator;
+/* TODO: keygen SELECT UNIQUE FROM key_generator; */
 
 INSERT INTO company_info (company_info_id, company_id)  VALUES (10005, 10003);
-SELECT UNIQUE FROM key_generator;
+/* TODO: keygen SELECT UNIQUE FROM key_generator; */
 
-INSERT INTO team (company_id, description, is_team, fnumber, login, db_status,
-                  object_version) 
+INSERT INTO company (company_id, description, is_team, fnumber, login, 
+                     db_status, object_version) 
   VALUES (9991, 'news editors', 1, 'LS9991', 'newseditors', 'inserted', 1);
-SELECT UNIQUE FROM key_generator;
+/* TODO: keygen SELECT UNIQUE FROM key_generator; */
 
 INSERT INTO staff (staff_id, company_id, is_team) VALUES (9992, 9991, 1);
-SELECT UNIQUE FROM key_generator;
+/* TODO: keygen SELECT UNIQUE FROM key_generator; */
 
 INSERT INTO company_info (company_info_id, company_id)  VALUES (9993, 9991);
-SELECT UNIQUE FROM key_generator;
+/* TODO: keygen SELECT UNIQUE FROM key_generator; */
 
 INSERT INTO news_article (news_article_id, fname, caption, is_index_article,
                           object_version)
   VALUES (10006, 'index', 'Index', 1, 1);
-SELECT UNIQUE FROM key_generator;
+/* TODO: keygen SELECT UNIQUE FROM key_generator; */
 
 UPDATE project_company_assignment SET access_right = 'r' 
   WHERE has_access = 1 AND access_right IS NULL;

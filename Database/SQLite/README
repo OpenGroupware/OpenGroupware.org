@@ -1,5 +1,3 @@
-# $Id$
-
 SQLite
 ======
 
@@ -7,7 +5,7 @@ WORK IN PROGRESS
 
 Database schema for SQLite database:
 
-  http://www.hwaci.com/sw/sqlite/
+  http://www.sqlite.org/
 
 Would be quite useful for extremely rapid setup, without the requirement
 for an external database server.
@@ -24,6 +22,7 @@ domains (custom types):
 
 views:
 - SQLite doesn't support writable views - what to do about that?
+  - mostly affects company table
 - either we create separate tables (probably problematic, even though
   SQLite has no constraints anyway)
 - or we make all writes go directly to the company table
