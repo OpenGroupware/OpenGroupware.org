@@ -8,7 +8,7 @@ License:		GPL
 URL:			http://www.opengroupware.org
 Group:			Development/Libraries
 AutoReqProv:	off
-Source:			opengroupware.org-trunk-latest.tar.gz
+Source:			%{ogo_source}
 Prefix:			/usr/local
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildPreReq:	ogo-gnustep_make
@@ -16,6 +16,15 @@ BuildPreReq:	ogo-gnustep_make
 %description
 OGo.
 
+#########################################
+%package dbsetup
+Summary:		docapi
+Group:			Development/Libraries
+Requires:		ogo-gnustep_make
+AutoReqProv:	off
+
+%description dbsetup
+database setup.
 #########################################
 %package docapi
 Summary:		docapi
@@ -421,7 +430,7 @@ rm -fr ${RPM_BUILD_ROOT}
 # ****************************** build ********************************
 %build
 source %{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
-make debug=yes
+make %{ogo_makeflags}
 
 
 # ****************************** install ******************************
@@ -429,11 +438,11 @@ make debug=yes
 source %{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
 mkdir -p GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep
 
-make debug=yes GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep \
-               FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
-               BUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
-               WOBUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
-               install
+make %{ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep \
+                      FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
+                      BUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
+                      WOBUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
+                     install
 
 cp -Rp WebUI/Templates "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates"
 cp -Rp WebUI/Resources "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations"
