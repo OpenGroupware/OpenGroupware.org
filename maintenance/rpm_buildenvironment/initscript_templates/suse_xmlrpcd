@@ -74,6 +74,7 @@ stop()
       PID="`pgrep -f ${BIN}`"
       kill -9 ${PID}
       rm -f ${PID_FILE}
+      rm -f /var/lock/subsys/${PROG}
     fi
   else
     killproc ${PROG}
