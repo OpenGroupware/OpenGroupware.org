@@ -690,11 +690,11 @@ sub get_commandline_options {
   #the following might be handy to debug build issues
   #without raising the buildcount on subsequent build attempts
   #thus - we safe our .rpmmacros buildcount settings
-  #default >> yes - always bump buildcount (if needed, which isn't always the case... see code)
-  if (!$opt_b or ($opt_b !~ m/^no$/i)) {
-    $bump_buildcount = "yes";
-  } else {
+  #default >> no - don't bump buildcount
+  if (!$opt_b or ($opt_b !~ m/^yes$/i)) {
     $bump_buildcount = "no";
+  } else {
+    $bump_buildcount = "yes";
   }
   #do_download decides whether we should attempt to download
   #current sources from MASTER_SITE_OPENGROUPWARE or if we
