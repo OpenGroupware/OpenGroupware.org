@@ -71,7 +71,7 @@ my @apt_items = `/bin/ls -laA /var/virtual_hosts/download/packages/$distri/$type
 #redirect apt_items into either sope,ogo or tp rpms for the different repos
 foreach $item (@apt_items) {
   chomp $item;
-  push @tp_rpms, $item if ($item =~ m/^libfoundation.*$|^libobjc.*$|^ogo-gnustep.*$/i);
+  push @tp_rpms, $item if ($item =~ m/^libfoundation.*$|^libobjc.*$|^ogo-gnustep.*$|^epoz.*$/i);
   push @ogo_rpms, $item if (($item =~ m/^ogo-.*$/i) and ($item !~ m/^ogo-gnustep_make.*/i));
   push @sope_rpms, $item if ($item =~ m/^sope.*$|^libical-sope.*$|^mod_ngobjweb.*$/i);
 }
