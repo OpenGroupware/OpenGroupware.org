@@ -18,9 +18,38 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include "LSWJobViewer.h"
+#include <OGoFoundation/LSWViewerPage.h>
+
+@class NSString, NSArray, NSNumber, NSDictionary;
+@class OGoJobStatus;
+
+@interface LSWJobViewer : LSWViewerPage
+{
+@private
+  NSNumber       *jobId;
+  NSNumber       *userId;         
+  NSDictionary   *selectedAttribute;  
+  NSString       *tabKey;
+  id             item;
+  id             job;
+  id             jobHistory;
+  id             project;
+  int            startIndex;
+  int            cntJobHirarchie;
+  int            repIdx;
+  BOOL           fetch;
+  BOOL           isDescending;
+  BOOL           isProjectEnabled;
+  NSArray        *groups;
+  OGoJobStatus   *status;
+  NSString       *newComment;
+}
+
+- (void)_fetchJob;
+
+@end
+
 #include "common.h"
 #include <OGoFoundation/LSWNotifications.h>
 #include <OGoFoundation/LSWMailEditorComponent.h>
@@ -44,10 +73,6 @@
 - (void)_getJobExecutants;
 
 @end /* PrivateMethods */
-
-@interface WOApplication(LSWJobViewer)
-- (BOOL)hasLogTab;
-@end /* WOApplication(LSWJobViewer) */
 
 @implementation LSWJobViewer
 
@@ -144,9 +169,8 @@ static BOOL     PreferredAccountsEnabled = NO;
       [self _getJobExecutants];
       [self _getExtendedAttributes];
     }
-    NS_HANDLER {
+    NS_HANDLER
       didRollback = [self rollback];
-    }
     NS_ENDHANDLER;
     
     if (didRollback)
@@ -673,7 +697,7 @@ static BOOL     PreferredAccountsEnabled = NO;
 }
 
 - (BOOL)isLogTabEnabled {
-  return [[self application] hasLogTab];
+  return YES;
 }
 - (BOOL)isLinkTabEnabled {
   return isLinkEnabled;

@@ -21,6 +21,7 @@ JobUI_OBJC_FILES = \
 	SkyAssignProjectToJobEditor.m	\
 	SkyJobAttributesEditor.m	\
 	OGoJobStatus.m			\
+	NSArray+JobIntNums.m		\
 
 JobUI_COMPONENTS = \
 	LSWJobViewer.wo			\

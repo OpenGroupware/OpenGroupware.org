@@ -1039,8 +1039,11 @@ static Class      StrClass        = nil;
     if ((bodyPart = [self newBodyPartForAttachmentObject:obj]) == nil) {
       /* this happens if attachData in the dict is set to 0 */
       // TODO: what about 'sendObject' objects?
-      if ([[obj valueForKey:@"sendObject"] boolValue])
-	[self logWithFormat:@"WARNING: not attaching: %@", obj];
+      if ([[obj valueForKey:@"sendObject"] boolValue]) {
+	[self logWithFormat:@"WARNING: not attaching: %@/%@/0x%08X", 
+	      [obj valueForKey:@"mimeType"],
+	      NSStringFromClass([obj class]), obj];
+      }
       continue;
     }
     

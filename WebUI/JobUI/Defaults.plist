@@ -1,6 +1,4 @@
 {
-  __JobsUI_CVS_ID__ = "$Id$";
-  
   joblist_view   = "toDoList";
   job_view       = "jobHistoryList";
   job_blocksize  = "10";

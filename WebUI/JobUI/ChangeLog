@@ -1,3 +1,11 @@
+2004-12-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.50
+
+	* LSWJobViewer.m: moved in header, do not call deprecated hasLogTabs
+
+	* LSWJobEditor.m: major code cleanups, moved header file into .m
+
 2004-12-22  Michael Koetter  <m.koetter@oraise.de>
 
 	* LSWJobMailPage.m: send proper comment in task mails (fixes OGo bug

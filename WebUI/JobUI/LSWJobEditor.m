@@ -18,10 +18,51 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include "LSWJobEditor.h"
+#include <OGoFoundation/LSWEditorPage.h>
+
+@class NSString, NSArray, NSMutableArray, NSDictionary;
+
+@interface LSWJobEditor : LSWEditorPage
+{
+@protected
+  id             item;
+  int            idx;
+  id             parentJob;
+  id             project;
+  BOOL           notifyExecutant;
+  BOOL           isImportMode;
+  BOOL           isProjectLinkMode;
+  BOOL           isEnterpriseLinkMode;  
+  NSArray        *notifyList;
+  NSArray        *teams;
+
+  id             team;
+  id             executantSelection;
+  
+  NSMutableArray *resultList;
+
+  NSString       *searchAccount;
+
+  NSDictionary   *snapshotCopy;
+  NSArray        *notifyLabels;
+
+  BOOL           isProjectEnabled;
+  NSString       *accountLabelFormat;
+  int            noOfCols;
+
+  id             referredPerson;
+
+  NSArray        *selPrefAccounts;
+}
+
+- (void)setProject:(id)_project;
+- (id)project;
+
+@end
+
 #include "LSWJobMailPage.h"
+#include "NSArray+JobIntNums.h"
 #include "common.h"
 #include <NGObjWeb/WOMailDelivery.h>
 #include <OGoFoundation/LSWNotifications.h>
@@ -55,42 +96,20 @@ static int compareAccounts(id e1, id e2, void* context) {
 - (BOOL)preferredExecutantsEnabled;
 @end /* LSWJobEditor(Private) */
 
-@interface NSArray(IntNumArray)
-- (NSArray *)arrayByConvertingValuesToIntNumbers;
-@end
-
-@implementation NSArray(IntNumArray)
-
-- (NSArray *)arrayByConvertingValuesToIntNumbers {
-  unsigned i, count;
-  NSMutableArray *a;
-
-  count = [self count];
-  a = [NSMutableArray arrayWithCapacity:count];
-  for (i = 0; i < count; i++)
-    [a addObject:[NSNumber numberWithInt:[[self objectAtIndex:i] intValue]]];
-  return a;
-}
-
-@end /* NSArray(IntNumArray) */
-
 @implementation LSWJobEditor
 
-static NSArray *JobAttrsEditor_percentages = nil;
-static NSArray *JobAttrsEditor_priorities  = nil;
-static NSArray *defNotifyList   = nil;
-static NSArray *defNotifyLabels = nil;
+static NSArray  *JobAttrsEditor_percentages = nil;
+static NSArray  *JobAttrsEditor_priorities  = nil;
+static NSArray  *defNotifyList   = nil;
+static NSArray  *defNotifyLabels = nil;
+static NSString *preferredJobExecutantLinkType = @"Preferred Job Executant";
 
 static BOOL JobAttributesCollapsible = NO;
 static BOOL PreferredAccountsEnabled = NO;
 static BOOL HasSkyProject4Desktop    = NO;
 
-static inline NSNumber *Int2Number(int _nr) {
-  return [NSNumber numberWithInt:_nr];
-}
-
 + (int)version {
-  return [super version] + 1;
+  return [super version] + 1 /* v4 */;
 }
 + (void)initialize {
   // TODO: check superclass version
@@ -114,9 +133,9 @@ static inline NSNumber *Int2Number(int _nr) {
           arrayByConvertingValuesToIntNumbers] copy];
 
   defNotifyList = [[NSArray alloc] initWithObjects:
-				     Int2Number(0),
-				     Int2Number(1),
-				     Int2Number(2),
+				     [NSNumber numberWithInt:0],
+				     [NSNumber numberWithInt:1],
+				     [NSNumber numberWithInt:2],
 				   nil];
   defNotifyLabels = [[NSArray alloc] initWithObjects:@"Never", @"Always",
 				       @"OnAcceptDone", nil];
@@ -125,9 +144,9 @@ static inline NSNumber *Int2Number(int _nr) {
 - (id)init {
   if ((self == [super init])) {
     self->isProjectEnabled = HasSkyProject4Desktop;
+    self->noOfCols         = -1;
     
-    self->resultList = [[NSMutableArray alloc] initWithCapacity:16];
-    self->noOfCols   = -1;
+    self->resultList      = [[NSMutableArray alloc] initWithCapacity:16];
     self->selPrefAccounts = [[NSMutableArray alloc] initWithCapacity:16];
   }
   return self;
@@ -154,6 +173,8 @@ static inline NSNumber *Int2Number(int _nr) {
 /* accessors */
 
 - (NSArray *)sensitivities {
+  // TODO: is it important to have numbers? otherwise we have 
+  //       JobAttrsEditor_sensitivities
   return [NSArray arrayWithObjects:
                   [NSNumber numberWithInt:1],
                   [NSNumber numberWithInt:2],
@@ -205,9 +226,8 @@ static inline NSNumber *Int2Number(int _nr) {
 }
 
 - (void)setIsSelected:(BOOL)_flag {
-  if (_flag) {
+  if (_flag)
     [self setExecutantSelection:self->item];
-  }
 }
 - (BOOL)isSelected {
   return [self->item isEqual:self->executantSelection];
@@ -221,7 +241,7 @@ static inline NSNumber *Int2Number(int _nr) {
 }
 
 - (void)setSearchAccount:(NSString *)_str {
-  ASSIGN(self->searchAccount, _str);
+  ASSIGNCOPY(self->searchAccount, _str);
 }
 - (NSString *)searchAccount {
   return self->searchAccount;
@@ -236,9 +256,10 @@ static inline NSNumber *Int2Number(int _nr) {
 
 - (NSString *)priorityName {
   NSString *pri;
-
-  pri = [@"priority_" stringByAppendingFormat:@"%d", [self->item intValue]];
-  pri = [[self labels] valueForKey:pri];
+  unsigned char buf[64];
+  
+  sprintf(buf, "priority_%d", [self->item intValue]);
+  pri = [[self labels] valueForKey:[NSString stringWithCString:buf]];
   
   if (pri == nil)
     pri = [self->item stringValue];
@@ -795,34 +816,44 @@ static inline NSNumber *Int2Number(int _nr) {
   return nil;
 }
 
-- (id)sendMessage {
-  id<LSWMailEditorComponent,OGoContentPage> editor;
-  NSString *subject = nil;
-  id       obj;
+- (NSString *)emailSubjectForJobEO:(id)_job {
+  NSString *subject;
   
-  obj      = [self object];
-  if ([obj isKindOfClass:[NSArray class]]) {
-    if ([(NSArray *)obj count] > 0) {
-      obj = [obj objectAtIndex:0];
-    }
-    else {
-      [self logWithFormat:@"WARNING: No job found"];
-      return nil;
-    }
-  }
-
-  editor = (id)[self pageWithName:@"LSWImapMailEditor"];
-  [self enterPage:editor];
-
   subject = [NSString stringWithFormat:@"%@: '%@' %@ %@",
                       [[self labels] valueForKey:@"job"],
-                      [obj valueForKey:@"name"],
+                      [_job valueForKey:@"name"],
                       [[self labels] valueForKey:@"createLabel"],
                       [[[self session] activeAccount] valueForKey:@"login"]];
+  return subject;
+}
+- (id)jobObjectForSend {
+  id obj;
+  
+  obj = [self object];
+  if (![obj isKindOfClass:[NSArray class]])
+    return obj;
+  
+  return ([(NSArray *)obj count] > 0) ? [obj objectAtIndex:0] : nil;
+}
 
-  [editor setSubject:subject];
+- (id)sendMessage {
+  id<LSWMailEditorComponent,OGoContentPage> editor;
+  id obj;
+  
+  if ((obj = [self jobObjectForSend]) == nil) {
+    [self setErrorString:@"No job found for email send!"];
+    return nil;
+  }
+  
+  /* setup email editor */
+  
+  editor = (id)[self pageWithName:@"LSWImapMailEditor"];
+  [self enterPage:editor];
+  [editor setSubject:[self emailSubjectForJobEO:obj]];
   [editor setContentWithoutSign:@""];
-
+  
+  /* add recipients */
+  
   if ([self isTeamSelected]) {
     NSArray *m = [self->executantSelection valueForKey:@"members"];
     int     i, cnt = 0;
@@ -836,91 +867,74 @@ static inline NSNumber *Int2Number(int _nr) {
   else 
     [editor addReceiver:self->executantSelection type:@"to"];
 
+  /* add attachments */
+
   [editor addAttachment:obj type:[NGMimeType mimeType:@"eo" subType:@"job"]];
 
   return [editor send];
+}
+
+- (void)_applyPreferredExecutantsOnJobEO:(id)job {
+  NSEnumerator         *enumerator;
+  id                   account, l;
+  OGoObjectLinkManager *lm;
+  EOKeyGlobalID        *gid;
+  NSString             *teamLabel;
+  
+  enumerator = [self->selPrefAccounts objectEnumerator];
+  lm         = [[[self session] commandContext] linkManager];
+  gid        = (EOKeyGlobalID *)[job globalID];
+  l          = [self labels];
+  teamLabel  = [self labelForAccount:self->executantSelection];
+
+  while ((account = [enumerator nextObject]) != nil) {
+    OGoObjectLink *link;
+    EOKeyGlobalID *targetGID;
+    NSString      *label, *comment;
+    
+    /* create object link */
+    
+    label     = [self labelForAccount:account];
+    targetGID = (EOKeyGlobalID *)[account globalID];
+    link      = [[OGoObjectLink alloc] initWithSource:gid target:targetGID
+				       type:preferredJobExecutantLinkType
+				       label:label];
+    [lm createLink:link];
+    [link release]; link = nil;
+    
+    /* add an object log */
+    
+    comment = [l valueForKey:@"Add job link to %@ [team:%@]."];
+    comment = [NSString stringWithFormat:comment, label, teamLabel];
+    [self _addLogForGlobalID:gid action:@"created" comment:comment];
+  }
+}
+
+- (void)_applyValuesOnSnapshot:(id)job {
+  [job takeValue:[NSNumber numberWithBool:[self isTeamSelected]]
+       forKey:@"isTeamJob"];
+  [job takeValue:[self->executantSelection valueForKey:@"companyId"]
+       forKey:@"executantId"];
+  if ([self->project isNotNull]) {
+    [job takeValue:[self->project valueForKey:@"projectId"]
+         forKey:@"projectId"];
+  }
+  else {
+    [job takeValue:[NSNull null] forKey:@"projectId"];
+  }
 }
 
 - (id)insertObject {
   id job;
 
   job = [self snapshot];
+  [self _applyValuesOnSnapshot:job];
   
-  if ([self isTeamSelected]) { /* a team is the executant */
-    [job takeValue:[self->executantSelection valueForKey:@"companyId"]
-         forKey:@"executantId"];
-    [job takeValue:[NSNumber numberWithBool:YES] forKey:@"isTeamJob"];
-
-    if (([job valueForKey:@"parentJobId"] != nil) &&
-        [[job valueForKey:@"parentJobId"] isNotNull]) {
-      NSString *dComment = nil;
-
-      dComment = [NSString stringWithFormat:@"%@ %@: %@",
-                           [[self labels] valueForKey:@"subJobLabel"],
-                           [self->team valueForKey:@"description"],
-                           [job valueForKey:@"name"]];
-
-      [job takeValue:dComment forKey:@"divideComment"];
-    }
-    if ([self->project isNotNull]) {
-      [job takeValue:self->project forKey:@"project"];
-    }
-  }
-  else { /* only one executant */
-    id ex  = self->executantSelection;
-    
-    [job takeValue:[ex valueForKey:@"companyId"] forKey:@"executantId"];
-    [job takeValue:[NSNumber numberWithBool:NO] forKey:@"isTeamJob"];
-
-    if (([job valueForKey:@"parentJobId"] != nil) &&
-        [[job valueForKey:@"parentJobId"] isNotNull]) {
-      NSString *dComment = nil;
-
-      dComment = [NSString stringWithFormat:@"%@ %@: %@",
-                           [[self labels] valueForKey:@"subJobLabel"],
-                           [ex valueForKey:@"login"],
-                           [job valueForKey:@"name"]];
-
-      [job takeValue:dComment forKey:@"divideComment"];
-    }
-    if (self->project) {
-      [job takeValue:self->project forKey:@"project"];
-    }
-  }
   job = [self _createJobWithArguments:job];
   
-  if ([self preferredExecutantsEnabled]) {
-    NSEnumerator         *enumerator;
-    id                   obj, l;
-    OGoObjectLinkManager *lm;
-    EOGlobalID           *gid;
-    NSString             *teamLabel;
-    
-    enumerator = [self->selPrefAccounts objectEnumerator];
-    lm         = [[[self session] commandContext] linkManager];
-    gid        = [job globalID];
-    l          = [self labels];
-    teamLabel  = [self labelForAccount:self->executantSelection];
-
-    while ((obj = [enumerator nextObject])) {
-      OGoObjectLink *link;
-      NSString      *label;
-
-      label = [self labelForAccount:obj];
-      link  = [[OGoObjectLink alloc] initWithSource:(EOKeyGlobalID *)gid
-                                     target:(EOKeyGlobalID *)[obj globalID]
-                                     type:@"Preferred Job Executant"
-                                     label:label];
-      [lm createLink:link];
-      [link release]; link = nil;
-      
-      [self _addLogForGlobalID:(EOKeyGlobalID *)gid action:@"created"
-	    comment:[NSString stringWithFormat:
-				[l valueForKey:
-				     @"Add job link to  %@ [team:%@]."],
-			      label, teamLabel]];
-    }
-  }
+  if ([self preferredExecutantsEnabled])
+    [self _applyPreferredExecutantsOnJobEO:job];
+  
   return job;
 }
 
@@ -931,60 +945,50 @@ static inline NSNumber *Int2Number(int _nr) {
   [job removeObjectForKey:@"executant"];
   [job removeObjectForKey:@"object"];
   
-  [job takeValue:[self->executantSelection valueForKey:@"companyId"]
-       forKey:@"executantId"];
-
-  if ([self isTeamSelected])
-    [job takeValue:[NSNumber numberWithBool:YES] forKey:@"isTeamJob"];
-  else
-    [job takeValue:[NSNumber numberWithBool:NO] forKey:@"isTeamJob"];
-
-  if ([self->project isNotNull]) {
-    [job takeValue:[self->project valueForKey:@"projectId"]
-         forKey:@"projectId"];
-  }
-  else {
-    [job takeValue:[NSNull null] forKey:@"projectId"];
-  }
-
+  [self _applyValuesOnSnapshot:job];
+  
   return [self runCommand:@"job::set" arguments:job];
 }
 
 - (id)deleteObject {
   return [self runCommand:@"job::delete", 
-	         @"object", [self object],
+	         @"object",       [self object],
 		 @"reallyDelete", [NSNumber numberWithBool:NO],
 	       nil];
 }
 
-- (id)save {
-  if ([self isInNewMode]) {
-    // TODO: move to own method?
-    if (![self->executantSelection isNotNull]) {
-      [self setErrorString:
+- (id)_saveExistingJob {
+  BOOL access;
+  id   acManager;
+  
+  if (![self->executantSelection isNotNull]) {
+    [self setErrorString:
             [[self labels] valueForKey:@"NoTeamAndExecutantsWasSelected"]];
-      return nil;
-    }
+    return nil;
+  }
 
-    if (self->referredPerson != nil) {
-      BOOL access;
-      id   acManager;
-
-      acManager = [[[self session] commandContext] accessManager];
-      access    = [acManager operation:@"rw"
-                             allowedOnObjectID:
+  // TODO: document, what is referredPerson?
+  
+  if (self->referredPerson == nil)
+    return [self _save];
+  
+  acManager = [[[self session] commandContext] accessManager];
+  access    = [acManager operation:@"rw"
+			 allowedOnObjectID:
                              [self->referredPerson globalID]
-                             forAccessGlobalID:
+			 forAccessGlobalID:
                              [self->executantSelection globalID]];
-      if (!access) {
-        [self setWarningOkAction:@"editAccessAndSave"];
-        [self setWarningPhrase:[[self labels] valueForKey:@"AccessWarning"]];
-        [self setIsInWarningMode:YES];
-        return nil;
-      }
-    }
+  if (!access) {
+    [self setWarningOkAction:@"editAccessAndSave"];
+    [self setWarningPhrase:[[self labels] valueForKey:@"AccessWarning"]];
+    [self setIsInWarningMode:YES];
+    return nil;
   }
   return [self _save];
+}
+
+- (id)save {
+  return [self isInNewMode] ? [self _save] : [self _saveExistingJob];
 }
 
 - (BOOL)hasJobAttributes {
@@ -1006,15 +1010,13 @@ static inline NSNumber *Int2Number(int _nr) {
   id              eo;
   NSString        *fn;
 
-  eo     = [self referredPerson];
-
-  if (eo == nil)
+  if ((eo = [self referredPerson]) == nil)
     return nil;
   
-  str    = [[[NSMutableString alloc] initWithCapacity:30] autorelease];
-
+  str = [NSMutableString stringWithCapacity:30];
+  
   [str appendString:[[eo valueForKey:@"name"] stringValue]];
-
+  
   fn = [eo valueForKey:@"firstname"];
   
   if ([fn isNotNull] && [[fn stringValue] length] > 0) {
@@ -1029,7 +1031,7 @@ static inline NSNumber *Int2Number(int _nr) {
 
   if (self->referredPerson == nil)
     return nil;
-
+  
   dict = [NSDictionary dictionaryWithObjectsAndKeys:
                        [self->referredPerson valueForKey:@"companyId"],
                        @"companyId",
@@ -1091,225 +1093,199 @@ static inline NSNumber *Int2Number(int _nr) {
   [pm takeProperties:dic namespace:nil globalID:[[self object] globalID]];
 }
 
+- (void)_postLinkSaveNotificationsOnJobEO:(id)obj {
+  NSEnumerator *enumerator;
+  
+  if (!((self->isProjectLinkMode) || (self->isEnterpriseLinkMode)))
+    return;
+  
+  if (![obj isKindOfClass:[NSArray class]])
+    obj = [NSArray arrayWithObject:obj];
+  
+  enumerator = [obj objectEnumerator];
+  while ((obj = [enumerator nextObject]) != nil) {
+    NSDictionary *dict;
+    
+    dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                               [self jobUrl:obj], @"LinkUrl",
+                               [obj valueForKey:@"name"],
+                               @"LinkTitle",
+                               @"job", @"fileType", nil];
+    
+    if (self->isProjectLinkMode) {
+      [self postChange:LSWNewObjectLinkProjectNotificationName onObject:dict];
+    }
+    else if (self->isEnterpriseLinkMode) {
+      [self postChange:LSWNewObjectLinkEnterpriseNotificationName
+	    onObject:dict];
+    }
+  }
+}
+
+static BOOL _isIntKeyEq(id a, id b, NSString *key) {
+  a = [a valueForKey:key];
+  b = [b valueForKey:key];
+  if (a == b) return YES;
+  return [a intValue] == [b intValue] ? YES : NO;
+}
+
+- (NSString *)_buildCommentWithOldSnapshot:(id)sc andNewSnapshot:(id)s{
+  // TODO: clean up this mess!
+  NSMutableString *comment;
+  NSFormatter     *form    = nil;
+  BOOL nameChanged, startDateChanged, endDateChanged, notifyChanged;
+  BOOL projectChanged, executantChanged;
+  id   l, tmp;
+
+  /* detect changes */
+
+  nameChanged = ![[sc valueForKey:@"name"] isEqual:[s valueForKey:@"name"]];
+  startDateChanged = ![[sc valueForKey:@"startDate"]
+                           isEqual:[s valueForKey:@"startDate"]];
+  endDateChanged = ![[sc valueForKey:@"endDate"]
+                           isEqual:[s valueForKey:@"endDate"]];
+
+  notifyChanged  = !_isIntKeyEq(sc, s, @"notify");
+  projectChanged = !_isIntKeyEq(sc, s, @"projectId");
+  
+  executantChanged = ![[sc valueForKey:@"executantId"]
+                           isEqual:[s valueForKey:@"executantId"]];
+
+
+  form = [[self session] formatDate];
+  l    = [self labels];
+
+  comment = [NSMutableString stringWithCapacity:256];
+  [comment appendString:[l valueForKey:@"oldJob"]];
+  [comment appendString:@"\n"];
+  
+  tmp = [sc valueForKey:@"name"];
+  tmp = [self changeStringForLabel:@"jobName" withValue:tmp];
+  [comment appendString:tmp];
+  
+  if (startDateChanged) {
+    tmp = [form stringForObjectValue:[sc valueForKey:@"startDate"]];
+    tmp = [self changeStringForLabel:@"startDate" withValue:tmp];
+    [comment appendString:tmp];
+  }
+  if (endDateChanged) {
+    tmp = [form stringForObjectValue:[sc valueForKey:@"endDate"]];
+    tmp = [self changeStringForLabel:@"endDate" withValue:tmp];
+    [comment appendString:tmp];
+  }
+  
+  if (notifyChanged) {
+    tmp = [sc valueForKey:@"notify"];
+    tmp = [self->notifyLabels objectAtIndex:[tmp intValue]];
+    tmp = [l valueForKey:tmp];
+    tmp = [self changeStringForLabel:@"notifyCreator" withValue:tmp];
+    [comment appendString:tmp];
+  }
+
+  if (projectChanged) {
+    tmp = [self _fetchProject:[sc valueForKey:@"projectId"]];
+    tmp = [tmp valueForKey:@"name"];
+    tmp = [self changeStringForLabel:@"projectLabel" withValue:tmp];
+    [comment appendString:tmp];
+  }
+
+  if (executantChanged) {
+    tmp = [self labelForAccount:[sc valueForKey:@"executant"]];
+    tmp = [self changeStringForLabel:@"executant" withValue:tmp];
+    [comment appendString:tmp];
+    
+    // TODO: weird side effect, why is that?
+    [[self object] takeValue:[EONull null] forKey:@"executant"];
+  }
+  [comment appendString:@"\n"];
+        
+  [comment appendString:[l valueForKey:@"newJob"]];
+  [comment appendString:@"\n"];
+  
+  tmp = [s valueForKey:@"name"];
+  tmp = [self changeStringForLabel:@"jobName" withValue:tmp];
+  [comment appendString:tmp];
+  
+  if (startDateChanged) {
+    tmp = [form stringForObjectValue:[s valueForKey:@"startDate"]];
+    tmp = [self changeStringForLabel:@"startDate" withValue:tmp];
+    [comment appendString:tmp];
+  }
+  if (endDateChanged) {
+    tmp = [form stringForObjectValue:[s valueForKey:@"endDate"]];
+    tmp = [self changeStringForLabel:@"endDate" withValue:tmp];
+    [comment appendString:tmp];
+  }
+
+  if (notifyChanged) {
+    tmp = [s valueForKey:@"notify"];
+    tmp = [self->notifyLabels objectAtIndex:[tmp intValue]];
+    tmp = [l valueForKey:tmp];
+    tmp = [self changeStringForLabel:@"notifyCreator" withValue:tmp];
+    [comment appendString:tmp];
+  }
+  
+  if (projectChanged) {
+    tmp = [self->project valueForKey:@"name"];
+    tmp = [self changeStringForLabel:@"projectLabel" withValue:tmp];
+    [comment appendString:tmp];
+  }
+  
+  if (executantChanged) {
+    tmp = [self labelForAccount:self->executantSelection];
+    tmp = [self changeStringForLabel:@"executant" withValue:tmp];
+    [comment appendString:tmp];
+  }
+  return comment;
+}
+
+- (BOOL)shouldSendMessage {
+  // kinda hack
+  return [[self navigation] activePage] != self ? YES : NO;
+}
+
 - (id)_save {
-  // TODO: split up this huge method
-  id s;
-  
-  s = [self snapshot];
-  
   if (self->isImportMode)
-    return [self _saveInImportModeWithSnapshot:s];
+    return [self _saveInImportModeWithSnapshot:[self snapshot]];
   
   [self setErrorString:nil];
   [self saveAndGoBackWithCount:1];
 
   if ([[self errorString] length] > 0)
     return nil;
-
-  if ([[self navigation] activePage] != self) {
-      id notifyValue;
-
-      notifyValue = [s objectForKey:@"notify"];
-
-      if (self->notifyExecutant ||
-          ([notifyValue isNotNull] && [notifyValue intValue] == 1)) {
-
-        if (![self isInNewMode]) 
-          [self setExecutantSelection:
-                [[self object] valueForKey:@"executant"]];
-        [self sendMessage];
-      }
-
+  
+  if ([self shouldSendMessage]) {
+    id notifyValue;
+    
+    notifyValue = [[self snapshot] objectForKey:@"notify"];
+    
+    if (self->notifyExecutant ||
+	([notifyValue isNotNull] && [notifyValue intValue] == 1)) {
+      
       if (![self isInNewMode]) {
-	// TODO: clean up this mess!
-        NSMutableString *comment = nil;
-        id              l        = nil;
-        id              form     = nil;
-        id              sc       = nil;
-        BOOL nameChanged;
-        BOOL startDateChanged;
-        BOOL endDateChanged;
-        BOOL notifyChanged;
-        BOOL projectChanged;
-        BOOL executantChanged;
+	[self setExecutantSelection:
+                [[self object] valueForKey:@"executant"]];
+      }
+      [self sendMessage];
+    }
 
-        sc = self->snapshotCopy;
-        
-        nameChanged = ![[sc valueForKey:@"name"]
-                            isEqual:[s valueForKey:@"name"]];
-
-        startDateChanged = ![[sc valueForKey:@"startDate"]
-                                 isEqual:[s valueForKey:@"startDate"]];
-
-        endDateChanged = ![[sc valueForKey:@"endDate"]
-                               isEqual:[s valueForKey:@"endDate"]];
-
-        notifyChanged = [[sc valueForKey:@"notify"] intValue] !=
-                        [[s valueForKey:@"notify"] intValue];
-
-        projectChanged = [[sc valueForKey:@"projectId"] intValue] !=
-                         [[s valueForKey:@"projectId"] intValue];
-
-        executantChanged = ![[sc valueForKey:@"executantId"]
-                                 isEqual:[s valueForKey:@"executantId"]];
-
-        form = [[self session] formatDate];
-        l = [self labels];
-
-        comment = [NSMutableString stringWithCapacity:256];
-
-        [comment appendString:[l valueForKey:@"oldJob"]];
-        [comment appendString:@"\n"];
-
-        [comment appendString:
-                 [self changeStringForLabel:@"jobName"
-                       withValue:[sc valueForKey:@"name"]]];
-
-        if (startDateChanged) {
-          id sDate;
-
-          sDate = [form stringForObjectValue:[sc valueForKey:@"startDate"]];
-          
-          [comment appendString:[self changeStringForLabel:@"startDate"
-                                      withValue:sDate]];
-        }
-
-        if (endDateChanged) {
-          id endDate;
-
-          endDate = [form stringForObjectValue:[sc valueForKey:@"endDate"]];
-          
-          [comment appendString:[self changeStringForLabel:@"endDate"
-                                      withValue:endDate]];
-        }
-
-        if (notifyChanged) {
-          id notify;
-
-          notify = [l valueForKey:
-                      [self->notifyLabels objectAtIndex:
-                           [[sc valueForKey:@"notify"] intValue]]];
-
-          [comment appendString:[self changeStringForLabel:@"notifyCreator"
-                                      withValue:notify]];
-        }
-
-        if (projectChanged) {
-          id chProject;
-
-          chProject = [[self _fetchProject:[sc valueForKey:@"projectId"]]
-                           valueForKey:@"name"];
-
-          [comment appendString:[self changeStringForLabel:@"projectLabel"
-                                      withValue:chProject]];
-        }
-
-        if (executantChanged) {
-          id executant;
-
-          executant = [self labelForAccount:[sc valueForKey:@"executant"]];
-
-          [comment appendString:[self changeStringForLabel:@"executant"
-                                      withValue:executant]];
-
-          [[self object] takeValue:[EONull null] forKey:@"executant"];
-        }
-        [comment appendString:@"\n"];
-        
-        [comment appendString:[l valueForKey:@"newJob"]];
-        [comment appendString:@"\n"];
-
-        [comment appendString:[self changeStringForLabel:@"jobName"
-                                    withValue:[s valueForKey:@"name"]]];
-        
-        if (startDateChanged) {
-          id sDate;
-
-          sDate = [form stringForObjectValue:[s valueForKey:@"startDate"]];
-          
-          [comment appendString:[self changeStringForLabel:@"startDate"
-                                      withValue:sDate]];
-        }
-
-        if (endDateChanged) {
-          id endDate;
-
-          endDate = [form stringForObjectValue:[s valueForKey:@"endDate"]];
-          
-          [comment appendString:[self changeStringForLabel:@"endDate"
-                                      withValue:endDate]];
-        }
-
-        if (notifyChanged) {
-          id notify;
-
-          notify = [l valueForKey:
-                      [self->notifyLabels objectAtIndex:
-                           [[s valueForKey:@"notify"] intValue]]];
-
-          [comment appendString:[self changeStringForLabel:@"notifyCreator"
-                                      withValue:notify]];
-        }
-
-        if (projectChanged) {
-          id chProject;
-
-          chProject = [self->project valueForKey:@"name"];
-
-          [comment appendString:[self changeStringForLabel:@"projectLabel"
-                                      withValue:chProject]];
-        }
-
-        if (executantChanged) {
-          id executant;
-
-          executant = [self labelForAccount:self->executantSelection];
-
-          [comment appendString:[self changeStringForLabel:@"executant"
-                                      withValue:executant]];
-        }
-        
-	[self _commentJobEO:[self object] comment:comment];
+    if (![self isInNewMode]) {
+      // TODO: clean up this mess!
+      NSString *comment;
 	
-        if (![self commit]) {
-          [self setErrorString:@"Couldn't commit jobaction command "
-                @"(rolled back) !"];
-          [self rollback];
-          return nil;
-        }
+      comment = [self _buildCommentWithOldSnapshot:self->snapshotCopy
+		      andNewSnapshot:[self snapshot]];
+      [self _commentJobEO:[self object] comment:comment];
+	
+      if (![self commit]) {
+	[self setErrorString:@"Could not commit jobaction command "
+	      @"(rolled back) !"];
+	[self rollback];
+	return nil;
       }
-
-      if ((self->isProjectLinkMode) || (self->isEnterpriseLinkMode)) {
-        NSEnumerator *enumerator = nil;
-        id           obj         = nil;
-
-        obj = [self object];
-
-        if (![obj isKindOfClass:[NSArray class]]) {
-          [self logWithFormat:@"WARNING: object is no array"];
-          obj = [NSArray arrayWithObject:obj];
-        }
-
-        enumerator = [obj objectEnumerator];
-
-        while ((obj = [enumerator nextObject])) {
-          NSDictionary *dict;
-          
-          dict = [NSDictionary dictionaryWithObjectsAndKeys:
-                               [self jobUrl:obj], @"LinkUrl",
-                               [obj valueForKey:@"name"],
-                               @"LinkTitle",
-                               @"job", @"fileType", nil];
-
-          if (self->isProjectLinkMode)
-            [self postChange:LSWNewObjectLinkProjectNotificationName
-                  onObject:dict];
-          else
-            if (self->isEnterpriseLinkMode)
-              [self postChange:LSWNewObjectLinkEnterpriseNotificationName
-                    onObject:dict];
-        }
-      }
+    }
+      
+    [self _postLinkSaveNotificationsOnJobEO:[self object]];
   }
   
   if ([self isInNewMode] && [[self object] globalID] != nil)
