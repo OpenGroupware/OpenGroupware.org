@@ -15,16 +15,22 @@
   
   <#ButtonMode><#FileListButtons/></#ButtonMode>
   
-  <#FileName>
+  <#FileNameTD>
    <#Font>
     <#DragFile>
       <#IsFileNotDir>
         <#FileDownload><#FileIcon/></#FileDownload>
       </#IsFileNotDir>
-      <#IsFileDir><#FileIcon/></#IsFileDir>
+      <#IsFileDir>
+        <#FileIcon/>
+      </#IsFileDir>
       
-      <#IsExternalLinkCondElse><#FileNameLink    /></#IsExternalLinkCondElse>
-      <#IsExternalLinkCond    ><#ExternalFileLink/></#IsExternalLinkCond>
+      <#IsExternalLinkCondElse>
+        <#FileNameLink><#FileName/></#FileNameLink>
+      </#IsExternalLinkCondElse>
+      <#IsExternalLinkCond>
+        <#ExternalFileLink/>
+      </#IsExternalLinkCond>
 
       <#IsFileNotDir>
         <#IsFileLocked    >(<#Locked/>)</#IsFileLocked>
@@ -32,7 +38,7 @@
       </#IsFileNotDir>
     </#DragFile>
    </#Font>
-  </#FileName>
+  </#FileNameTD>
                   
   <#FileSizeTD/>
   <#FileOwnerTD/>

@@ -126,7 +126,7 @@ DoesZipExist: WOConditional {
   condition = doesZipExist;
 }
 
-FileName: WETableData {
+FileNameTD: WETableData {
   title   = labels.fileName;
   sortKey = "NSFileName";
 }
@@ -151,9 +151,10 @@ FileIcon: SkyP4DocumentIcon {
 }
 
 FileNameLink: WOHyperlink {
-  action  = clickedFile;
-  //  string  = fileLinkName; //
-  string = currentFile.NSFileName;
+  action = clickedFile;
+}
+FileName: WOString {
+  value = currentFile.NSFileName;
 }
 
 DragFile: WEDragContainer {

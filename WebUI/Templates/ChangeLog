@@ -1,3 +1,7 @@
+2005-03-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoProject/SkyP4FolderView.html: some template cleanups
+
 2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWProject: removed unused LSWTextDocumentEditor, LSWFolderEditor,
