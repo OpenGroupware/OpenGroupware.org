@@ -1,3 +1,7 @@
+2004-11-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* common.h: fixed compatibility issue with SOPE 4.5 (v5.1.68)
+
 2004-11-19  Helge Hess  <helge.hess@opengroupware.org>
 	
 	* OpenGroupware.m: fixed cookie handling to be compatible with
