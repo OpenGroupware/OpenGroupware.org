@@ -124,9 +124,10 @@
 - (id)account_setPasswordAction:(id)_uid:(NSString *)_newPwd
   :(NSNumber *)_isCrypted
 {
-  if ([_newPwd length] == 0)
+  if ([_newPwd length] == 0) {
     return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
                  reason:@"Invalid new password supplied"];
+  }
 
   if ([self isCurrentUserRoot]) {
     LSCommandContext *ctx;

@@ -6,7 +6,7 @@ WOBUNDLE_NAME        = SoOGo
 WOBUNDLE_EXTENSION   = .lso
 WOBUNDLE_INSTALL_DIR = $(GNUSTEP_LOCAL_ROOT)/Library/OpenGroupware.org-1.0a/WebUI/
 
-SoOGo_PRINCIPAL_CLASS = LSWPreferencesModule
+SoOGo_PRINCIPAL_CLASS = SoOGoModule
 
 SoOGo_OBJC_FILES += \
 	SoOGoModule.m

@@ -13,8 +13,9 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-I../../DocumentAPI
 
 ADDITIONAL_LIB_DIRS += \
-	-L../OGoFoundation/$(GNUSTEP_OBJ_DIR)		\
-	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)	\
+	-L../OGoFoundation/$(GNUSTEP_OBJ_DIR)			\
+	-L../../DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR)	\
+	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)		\
 	-L/usr/local/lib -L/usr/lib
 
 ADDITIONAL_BUNDLE_LIBS += \
