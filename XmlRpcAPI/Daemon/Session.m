@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: Session.m 1 2004-08-20 11:17:52Z znek $
 
 #include "Session.h"
 #include "common.h"
@@ -77,7 +77,9 @@
     return nil;
   }
   
-  ds = [[clazz alloc] initWithContext:[self commandContext]];
+  // TODO: fix prototype
+  ds = [(SkyAccessManager *)[clazz alloc]
+			    initWithContext:[self commandContext]];
   [self debugWithFormat:@"instantiated new datasource '%@' ...", _dsName];
   return [ds autorelease];
 }

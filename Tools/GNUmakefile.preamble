@@ -1,33 +1,38 @@
-# $Id$
+# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
 
-ADDITIONAL_INCLUDE_DIRS = -I../Logic/ -I../Logic/LSFoundation/
+ADDITIONAL_INCLUDE_DIRS += \
+	-I../Logic/		\
+	-I../Logic/LSFoundation/\
+	-I../DocumentAPI
 
 ADDITIONAL_LIB_DIRS += \
-	-L../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)	\
-	-L../DocumentAPI/OGoRawDatabase/$(GNUSTEP_OBJ_DIR)		\
-	-L../DocumentAPI/OGoFileSystemProject/$(GNUSTEP_OBJ_DIR)	\
+	-L../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)		\
+	-L../Logic/LSScheduler/$(GNUSTEP_OBJ_DIR)		\
+	-L../DocumentAPI/OGoRawDatabase/$(GNUSTEP_OBJ_DIR)	\
+	-L../DocumentAPI/OGoFileSystemProject/$(GNUSTEP_OBJ_DIR)\
 	-L../DocumentAPI/OGoDatabaseProject/$(GNUSTEP_OBJ_DIR)	\
-	-L../DocumentAPI/OGoProject/$(GNUSTEP_OBJ_DIR)	\
+	-L../DocumentAPI/OGoProject/$(GNUSTEP_OBJ_DIR)		\
 	-L../DocumentAPI/OGoScheduler/$(GNUSTEP_OBJ_DIR)	\
 	-L../DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR)	\
 
 skyprojectimporter_TOOL_LIBS += \
-	-lGDLAccess \
-	-lLSFoundation \
-	-lOGoRawDatabase \
+	-lGDLAccess 		\
+	-lLSFoundation 		\
+	-lOGoRawDatabase 	\
 	-lOGoFileSystemProject	\
 	-lOGoDatabaseProject	\
-	-lOGoProject	\
-	-lOGoDocuments	\
-	-lNGMime	\
+	-lOGoProject		\
+	-lOGoDocuments		\
+	-lNGMime
 
 skyprojectexporter_TOOL_LIBS += $(skyprojectimporter_TOOL_LIBS)
 skylistprojects_TOOL_LIBS    += $(skyprojectimporter_TOOL_LIBS)
 
 skyaptnotify_TOOL_LIBS += \
-	-lLSFoundation	\
-	-lOGoScheduler	\
-	-lOGoDocuments	\
+	-lLSFoundation		\
+	-lOGoScheduler		\
+	-lOGoSchedulerTools	\
+	-lOGoDocuments		\
 	-lNGMime
 
 skydefaults_TOOL_LIBS += -lLSFoundation -lNGMime

@@ -1,4 +1,0 @@
-# $Id$
-
-The ZideStore methods used to connect Evolution using the Ximian
-Connector should be moved in here.

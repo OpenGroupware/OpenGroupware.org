@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
 
 ADDITIONAL_CPPFLAGS  += $(FND_DEFINE) $(RUNTIME_DEFINE) -pipe -Wall
 ADDITIONAL_OBJCFLAGS += -Wno-protocol
@@ -14,7 +14,7 @@ OGo_BUNDLE_LIBS += \
 else
 
 PYTHON = python
-OGo_BUNDLE_LIBS += -lGDLAccess -lGDLExtensions -lEOControl
+OGo_BUNDLE_LIBS += -lGDLAccess -lEOControl
 
 endif
 

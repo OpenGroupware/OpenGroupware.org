@@ -1,0 +1,65 @@
+# $Id: WCAP.txt 2 2004-08-20 11:37:44Z znek $
+
+WCAP:
+- is "session based". in this product it uses the regular NGObjWeb sessions
+- because it is session based, we need to store the password in the session
+  => not really true, we could also use a different authenticator
+- map WCAP "Calendar" to user or group-folder
+
+Note: Usage of "calid" in WCAP is weird. Sometimes it is document as a single
+      calendar and sometimes as a calendar list. Are lists really allowed in
+      this context? (could be a query on the groups?)
+      - because of that its hard to forward methods to the proper folders
+
+Implementation
+==============
+
+- sessions are stored in WOSession's
+
+- in the ZideStore application object all lookups on keys with a ".wcap"
+  suffix and an "id" parameter are catched. In this case the users is located
+  in the session and the lookup is forwarded to the matching SxUserFolder
+
+- WCAP methods are mapped to selectors in the product.plist
+  - for "components" methods the "components" is removed in the selector
+    (eg deleteByRange for deletecomponents_by_range)
+  - for "...ID" queries the "ID" is removed in the selector
+    (eg verifyEvents for verifyevents_by_ids)
+
+WCAP                              Object
+=============================================================================
+addlink                           SxUserFolder (may map to other folder  ...)
+change_password                   SxUserFolder
+createcalendar                    SxUserFolder
+deletecalendar                    SxUserFolder (may map to other folder  ...)
+deletecomponents_by_range         SxUserFolder (may map to other folder  ...)
+deleteevents_by_id                SxUserFolder (should move to target folder)
+deleteevents_by_range             SxUserFolder
+deletetodos_by_id                 SxUserFolder (should move to target folder)
+deletetodos_by_range              SxUserFolder
+export                            SxUserFolder
+fetchcomponents_by_alarmrange     SxUserFolder
+fetchcomponents_by_attendee_error SxUserFolder
+fetchcomponents_by_lastmod        SxUserFolder
+fetchcomponents_by_range          SxUserFolder
+fetchevents_by_id                 SxUserFolder
+fetchtodos_by_id                  SxUserFolder
+get_all_timezones                 SxUserFolder
+get_calprops                      SxUserFolder
+get_freebusy                      SxUserFolder
+get_guids                         ZideStore
+get_userprefs                     SxUserFolder
+import                            SxUserFolder
+login                             ZideStore
+logout                            SxUserFolder
+ping                              ZideStore
+search_calprops                   SxUserFolder
+set_calprops                      SxUserFolder (should move to target folder)
+set_userprefs                     SxUserFolder
+storeevents                       SxUserFolder (should move to target folder)
+storetodos                        SxUserFolder (should move to target folder)
+upload_file                       SxUserFolder
+verifyevents_by_ids               SxUserFolder
+verifytodos_by_ids                SxUserFolder
+version                           ZideStore
+write_file                        SxUserFolder (should move to target folder)

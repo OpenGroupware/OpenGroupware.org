@@ -1,0 +1,23 @@
+# $Id: README 1 2004-08-20 11:17:52Z znek $
+
+Contacts Frontend
+=================
+
+WebDAV Frontend to Contact like SKYRiX data, that is, to Enterprises,
+Persons (includes Accounts) and Teams.
+
+Folders:
+  SxAddressFolder [abstract]
+    SxPersonFolder
+      SxGroupFolder
+    SxEnterpriseFolder
+    SxGroupsFolder
+
+Records:
+  SxAddress
+
+Renderer (for morphing result DB records into WebDAV records):
+  SxEvoContactRenderer
+    SxEvoPersonRenderer
+    SxEvoGroupRenderer
+    SxEvoEnterpriseRenderer

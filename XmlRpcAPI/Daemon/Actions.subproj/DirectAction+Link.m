@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: DirectAction+Link.m 1 2004-08-20 11:17:52Z znek $
 
 #include "DirectAction.h"
 #include <LSFoundation/OGoObjectLinkManager.h>
@@ -70,12 +70,14 @@
     [dict setObject:[[ctx documentManager] urlForGlobalID:[obj globalID]]
           forKey:@"id"];
 
-    if ((tmp = [obj targetGID]))
+    if ((tmp = [obj targetGID])) {
       [dict setObject:[[ctx documentManager] urlForGlobalID:tmp]
             forKey:@"target"];
-    else
-      [dict setObject:[[ctx documentManager] urlForGlobalID:[obj target]]
+    }
+    else {
+      [dict setObject:[[ctx documentManager] urlForGlobalID:(id)[obj target]]
             forKey:@"target"];
+    }
 
     if ((tmp = [obj label])) {
       [dict setObject:tmp forKey:@"label"];

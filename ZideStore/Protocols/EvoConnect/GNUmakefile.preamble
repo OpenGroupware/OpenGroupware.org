@@ -1,0 +1,13 @@
+# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
+
+ADDITIONAL_INCLUDE_DIRS += -I. -I../Frontend -I..
+
+ADDITIONAL_LIB_DIRS += \
+	-L../Frontend/$(GNUSTEP_OBJ_DIR) \
+	-L../Backend/$(GNUSTEP_OBJ_DIR)
+
+EvoConnect_BUNDLE_LIBS += \
+	-lZideStoreFrontend \
+	-lNGObjWeb -lNGScripting \
+	-lNGMime -lNGStreams -lNGExtensions -lEOControl \
+	-lXmlRpc -lDOM -lSaxObjC

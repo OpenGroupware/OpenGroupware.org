@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoProject/NGFileManagerCopyTool.h>
 #include "common.h"
@@ -30,8 +29,10 @@
   project:(NSString *)_projectKey;
 @end
 
-#import <OGoDatabaseProject/SkyProjectFileManager.h>
+#include <OGoDatabaseProject/SkyProjectFileManager.h>
 #include <LSFoundation/LSCommandContext.h>
+
+static void usage(int exitCode);
 
 @implementation SkyProjectImporter
 
@@ -79,10 +80,10 @@
   NSUserDefaults     *ud;
   NSString           *projectKey, *login, *pwd, *path, *dpath;
   NSString           *include, *exclude;
-  BOOL               attribs, overwrt, verbose;
+  BOOL               attribs, overwrt, vArg;
   SkyProjectImporter *skyProjectImporter;
-  EOQualifier        *includeQualifier = nil;
-  EOQualifier        *excludeQualifier = nil;
+  EOQualifier        *argIncQual = nil;
+  EOQualifier        *argExcQual = nil;
 
   ud = [NSUserDefaults standardUserDefaults];
 
@@ -98,26 +99,27 @@
   exclude    = [ud stringForKey:@"exclude"];
   attribs    = [ud boolForKey:  @"attributes"];
   overwrt    = [ud boolForKey:  @"overwrite"];
-  verbose    = [ud boolForKey:  @"verbose"];
+  vArg    = [ud boolForKey:  @"verbose"];
     
   if ([login      length] == 0) usage(1);
   if ([pwd        length] == 0) pwd = @"";//usage(2);
   if ([projectKey length] == 0) usage(3);
-  if ([path  length]      == 0) path  = @"*";
-  if ([dpath length]      == 0) dpath = @"/";
-  if ([include    length] != 0)
-    includeQualifier = [EOQualifier qualifierWithQualifierFormat:include];
-  if ([exclude    length] != 0)
-    excludeQualifier = [EOQualifier qualifierWithQualifierFormat:exclude];
+  if ([path       length] == 0) path  = @"*";
+  if ([dpath      length] == 0) dpath = @"/";
+  
+  if ([include length] != 0)
+    argIncQual = [EOQualifier qualifierWithQualifierFormat:include];
+  if ([exclude length] != 0)
+    argExcQual = [EOQualifier qualifierWithQualifierFormat:exclude];
 
   skyProjectImporter = [[SkyProjectImporter alloc] initWithLogin:login
 						   password:pwd
 						   project:projectKey];
   [skyProjectImporter setRestoreAttributes:attribs];
   [skyProjectImporter setOverwrite:        overwrt];
-  [skyProjectImporter setVerbose:          verbose];
-  [skyProjectImporter setIncludeQualifier:includeQualifier];
-  [skyProjectImporter setExcludeQualifier:excludeQualifier];
+  [skyProjectImporter setVerbose:          vArg];
+  [skyProjectImporter setIncludeQualifier:argIncQual];
+  [skyProjectImporter setExcludeQualifier:argExcQual];
 
   [skyProjectImporter copyPath:path toPath:dpath handler:nil];
   [[(id)[skyProjectImporter targetFileManager] context] commit];
@@ -126,8 +128,11 @@
     NSLog(@"%s: import was successful", __PRETTY_FUNCTION__);
   }
   
-  // OS will clean up for us ...
-  // [skyProjectImporter release];
+#if 0
+  /* OS will clean up for us (and do this faster ;-) ... */
+  [skyProjectImporter release];
+#endif
+  return 0;
 }
 
 @end /* SkyProjectImporter */

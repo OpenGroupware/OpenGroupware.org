@@ -1,9 +1,0 @@
-# $Id$
-
-Todo for Appointments Product
-=============================
-
-- SxICalendar
-  - change to use the folder for fetching!
-
-- SxDavAptChange.m:110: warning: `NSString' does not respond to `plainTextStringByDecodingRTF'

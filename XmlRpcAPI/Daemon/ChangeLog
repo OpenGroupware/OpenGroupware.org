@@ -1,3 +1,11 @@
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.31
+	
+	* fixes for inline compilation
+	
+	* Actions.subproj, XmlRpcCoding.subproj: added GNUmakefile.preamble
+
 2004-08-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Actions.subproj/DirectAction+Job.m: added new action "jobs.deleteJob"

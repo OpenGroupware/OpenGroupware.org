@@ -1,8 +1,8 @@
-# $Id$
+# $Id: Version 9 2004-08-21 00:42:59Z helge $
 
 MAJOR_VERSION=5
 MINOR_VERSION=1
-SUBMINOR_VERSION=30
+SUBMINOR_VERSION=31
 
 # v5.0.16 requires libEOControl    v4.2.39
 # v5.0.7  requires libOGoScheduler v5.0.14

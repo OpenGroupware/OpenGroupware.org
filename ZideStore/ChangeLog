@@ -1,3 +1,7 @@
+2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* started reorganization for OGo 1.0 (v1.3.75)
+
 2004-07-30  Helge Hess  <helge@dogbert.in.skyrix.com>
 
 	* Maps/DAVPropSets.plist(CadaverListSet): added properties requested

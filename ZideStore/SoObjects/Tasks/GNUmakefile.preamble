@@ -1,0 +1,17 @@
+# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
+
+ADDITIONAL_INCLUDE_DIRS += -I. -I../../Frontend -I.. -I../..
+
+BUNDLE_EXTENSION   = .zsp
+BUNDLE_INSTALL_DIR = $(GNUSTEP_USER_ROOT)/Library/ZideStore12
+
+Tasks_BUNDLE_LIBS += \
+        -lZideStoreFrontend -lZideStoreBackend \
+	-lGDLAccess \
+        -lNGObjWeb -lNGScripting \
+	-lNGMime -lNGStreams -lNGExtensions -lEOControl \
+	-lXmlRpc -lDOM -lSaxObjC
+
+ADDITIONAL_LIB_DIRS += \
+	-L../../Frontend/$(GNUSTEP_OBJ_DIR)	\
+	-L../../Backend/$(GNUSTEP_OBJ_DIR)

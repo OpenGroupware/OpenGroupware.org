@@ -1,0 +1,15 @@
+{
+  "__cvs__" = "$Id: bundle-info.plist 1 2004-08-20 11:17:52Z znek $";
+
+  requires = {
+    bundleManagerVersion = 1;
+    classes = (
+      { name = NSObject;    }
+    );
+  };
+
+  provides = {
+    classes = (
+    );
+  };
+}

@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include $(GNUSTEP_MAKEFILES)/common.make
 
@@ -16,6 +16,6 @@ XmlRpcCoding_OBJC_FILES = \
 	SkyProject+XmlRpcCoding.m		\
 	SkyTeamDocument+XmlRpcCoding.m
 
-ADDITIONAL_INCLUDE_DIRS += -I.. 
-
+-include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/subproject.make
+-include GNUmakefile.postamble
