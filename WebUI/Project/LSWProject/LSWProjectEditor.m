@@ -253,7 +253,7 @@ static int      OldProjectCompatiblity = -1;
   
   propKey  = @"{http://www.skyrix.com/namespaces/project}";
   extAttrs = [self defaultPublicExtendedAttributes];
-  a = [NSMutableArray array];
+  a = [NSMutableArray arrayWithCapacity:16];
   
   for (i = 0, cnt = [extAttrs count]; i < cnt; i++) {
     NSMutableDictionary *ea, *e;
@@ -296,10 +296,8 @@ static int      OldProjectCompatiblity = -1;
 - (void)_resetRightsInAccounts:(NSArray *)_accounts {
   int i, cnt;
   
-  for (i = 0, cnt = [_accounts count]; i < cnt; i++ ) {
-    [[_accounts objectAtIndex:i] takeValue:null 
-                                 forKey:@"accessRight"];
-  }
+  for (i = 0, cnt = [_accounts count]; i < cnt; i++ )
+    [[_accounts objectAtIndex:i] takeValue:null forKey:@"accessRight"];
 }
 
 - (void)_setRightsInAccounts:(NSArray *)_accounts {
@@ -310,13 +308,13 @@ static int      OldProjectCompatiblity = -1;
 
   obj     = [self object];
   assigns = [obj valueForKey:@"companyAssignments"];
-
+  
   for (i = 0, cnt = [_accounts count]; i < cnt; i++ ) {
     int j, cnt2;
     id  acc;
 
     acc = [_accounts objectAtIndex:i];
-
+    
     for (j = 0, cnt2 = [assigns count]; j < cnt2; j++) {
       id as;
 
@@ -581,7 +579,7 @@ static int      OldProjectCompatiblity = -1;
     NSDictionary *oprops;
     
     oprops = [[self propertyManager] propertiesForGlobalID:
-                                     [[self object] globalID]];
+				       [[self object] globalID]];
     [[self snapshot] takeValuesFromDictionary:oprops];
   }
   
@@ -1585,7 +1583,7 @@ static int      OldProjectCompatiblity = -1;
 
   keys = [self privateExtendedProjectAttributes];
   keys = [keys valueForKey:@"key"];
-
+  
   for (i = 0, cnt = [keys count]; i < cnt; i++) {
     id key = [keys objectAtIndex:i];
 
@@ -1600,10 +1598,10 @@ static int      OldProjectCompatiblity = -1;
   [self _setProperties];
   if (![self saveAndGoBackWithCount:1])
     return nil;
-
-  exc = [[self propertyManager]
-          takeProperties:self->props globalID:[[self object] globalID]];
-  if (exc) {
+  
+  exc = [[self propertyManager] takeProperties:self->props
+				globalID:[[self object] globalID]];
+  if (exc != nil) {
     [self setErrorString:[exc description]];
     return nil;
   }
