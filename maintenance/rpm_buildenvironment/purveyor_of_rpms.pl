@@ -30,6 +30,7 @@ my $hpath = "$ENV{'HOME'}";
 my $logs_dir = "$ENV{'HOME'}/logs";
 my $sources_dir = "$ENV{'HOME'}/rpm/SOURCES";
 my $specs_dir = "$ENV{'HOME'}/rpm/SPECS";
+my $use_specdir_specfile = "yes";
 # this are the packages I can deal with
 # every package given here should have its own specfile...
 # adding new packages is more or less a copy'n'paste job of code snippets below
@@ -76,10 +77,11 @@ sub move_to_dest {
   if (($do_upload eq "yes") and ($build_type eq "release")) {
     $remote_dir = $remote_rel_dir;
     print "[MOVETODEST]        - going to create directory for release on remote side.\n";
-    print "[MOVETODEST]        - name -> $remote_dir/$remote_release_dirname.\n";
+    print "[MOVETODEST]        - name -> $remote_dir/$remote_release_dirname.\n" if ($remote_release_dirname);
+    print "[MOVETODEST]        - name -> $remote_dir/$rdirbase.\n" if ($rdirbase);
     open(SSH, "|/usr/bin/ssh $remote_user\@$remote_host");
     print SSH "cd $remote_dir\n";
-    print SSH "mkdir -p $remote_release_dirname\n";
+    print SSH "mkdir -p $remote_release_dirname\n" if ($remote_release_dirname);
     print SSH "mkdir -p $rdirbase\n" if ($rdirbase); #didn't I mention that it's already there :)
     close(SSH);
   }
@@ -95,7 +97,7 @@ sub move_to_dest {
     print "[MOVETODEST]        - $package won't copy '$rpm_basename' to $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "no"));
     system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_trunk_dir/ 1>>$logout 2>>$logerr") if (($build_type eq "trunk") and ($do_upload eq "yes"));
     system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_rel_dir/$rdirbase/ 1>>$logout 2>>$logerr") if (($rdirbase) and ($build_type eq "release") and ($do_upload eq "yes"));
-    system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_rel_dir/$remote_release_dirname/ 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes"));
+    system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_rel_dir/$remote_release_dirname/ 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
     $remote_dir = $remote_trunk_dir if ($build_type eq "trunk");
     $remote_dir = $remote_rel_dir if ($build_type eq "release");
     print "[LINKATDEST]        - will not really link $ln_name <- $rpm_basename at $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "no") and ($build_type eq "trunk"));
@@ -115,11 +117,13 @@ sub build_rpm {
   my $specfile = "$package.spec";
   my @outlog;
   my $logline;
+  #FIXME: the next check is nonsens... at least in this specific case
   unless (-f "$specs_dir/$specfile") {
     print "[RPMBUILD]          - $package didn't found $specfile in $specs_dir\n" and exit 1 if ($verbose eq "yes");
   }
   system("/usr/bin/rpmbuild -bb $specs_dir/$specfile 1>>$logout 2>>$logerr") if ($build_type eq "trunk");
-  system("/usr/bin/rpmbuild -bb $ENV{HOME}/$use_specfile 1>>$logout 2>>$logerr") if ($build_type eq "release");
+  system("/usr/bin/rpmbuild -bb $ENV{HOME}/$use_specfile 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($use_specdir_specfile eq "no"));
+  system("/usr/bin/rpmbuild -bb $specs_dir/$specfile 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($use_specdir_specfile eq "yes"));
   open(OUTLOG, "$logout");
   @outlog = <OUTLOG>;
   close(OUTLOG);
@@ -751,10 +755,12 @@ sub get_commandline_options {
     #(I really should copy the specfile from the sourcetarball into $specs_dir
     # prior the trunk builds - TODO)
     $use_specfile = "$specs_dir/$package.spec";
+    $use_specdir_specfile = "yes";
   } else {
     chomp $opt_s;
     #should be a relative path to the specfile
     $use_specfile = $opt_s;
+    $use_specdir_specfile = "no";
   }
   #upload the package into \$rdirbase instead of the
   #automagically determined location on the \$dl_host
