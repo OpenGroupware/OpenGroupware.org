@@ -210,33 +210,50 @@ Description: Core elements for OpenGroupware.org's Web UI
 Package: opengroupware.org_OGOVER_-webui-contact
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: FIXME
+Description: Contact component of OpenGroupware.org's Web UI
+ The contact component lets users add and manage contacts of individuals
+ or companies. Import and export of vcf files is supported.
 
 Package: opengroupware.org_OGOVER_-webui-job
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: FIXME
+Description: Job component of OpenGroupware.org's Web UI
+ The job component enables users to assign and manage tasks
+ related to projects.
 
 Package: opengroupware.org_OGOVER_-webui-mailer
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: FIXME
+Description: Mailing component of OpenGroupware.org's Web UI
+ This package contains a webmail application for OpenGroupware.org's
+ web UI. It needs an IMAP server for the mail feed and and SMTP server
+ to enable the users to send mail.
 
 Package: opengroupware.org_OGOVER_-webui-news
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: FIXME
+Description: News component of OpenGroupware.org's Web UI
+ The news component shows recent appointments tasks for each user.
+ Additionally it supports the creation and display of simple news items.
 
 Package: opengroupware.org_OGOVER_-webui-project
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: FIXME
+Description: Project component of OpenGroupware.org's Web UI
+ The project component adds project management capabilities to
+ OpenGroupware.org's web UI. It allows to assign and track a
+ project's status, add documents and links and interworks nicely
+ with the jobs component to assign specific tasks within a project.
 
 Package: opengroupware.org_OGOVER_-webui-scheduler
 Architecture: any
 Recommends: opengroupware.org-skyaptnotify
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: FIXME
+Description: Scheduler component of OpenGroupware.org's Web UI
+ The scheduler component provides personal and shared calendars for
+ OpenGroupware.org's web UI. It allows to create and manage appointments
+ for individuals and groups and can also detect collisions when creating
+ new appointments.
 
 Package: libopengroupware.org-zidestore_ZSVER_
 Section: libs
