@@ -45,6 +45,7 @@
 #include "OGoComponent+FileManagerError.h"
 #include "NGUnixTool.h"
 #include "common.h"
+#include <NGExtensions/NGResourceLocator.h>
 #include <NGExtensions/NSString+Ext.h>
 
 @interface NGFileManager(SymbolicLinks)
@@ -61,8 +62,9 @@ static NSArray *accessCheckFlags = nil;
 
 + (void)initialize {
   static BOOL didInit = NO;
-  NSFileManager *fm = [NSFileManager defaultManager];
-  NSString *p;
+  NGResourceLocator *locator;
+  NSFileManager     *fm = [NSFileManager defaultManager];
+  NSString          *p;
 
   if (didInit) return;
   didInit = YES;
@@ -74,10 +76,10 @@ static NSArray *accessCheckFlags = nil;
   else
     NSLog(@"Note: no path to zip tool is configured!");
   
-  /* TODO: thats more or less a hack, but works ;-) */
-  p = [[[NSProcessInfo processInfo] environment] 
-	               objectForKey:@"GNUSTEP_USER_ROOT"];
-  p = [p stringByAppendingPathComponent:@"WebServerResources"];
+  locator = [NGResourceLocator resourceLocatorForGNUstepPath:
+                                 @"WebServerResources"
+                               fhsPath:@"share/opengroupware.org-1.0a/www"];
+  p = [locator lookupFileWithName:@"epoz_script_main.js"];
   hasEpoz = [fm fileExistsAtPath:p];
   if (!hasEpoz) NSLog(@"Note: did not find Epoz.");
   

@@ -30,11 +30,11 @@
   rm      = "/bin/rm";
   diff    = "/usr/bin/diff";
   tar     = "/bin/tar";
-
+  
   "skyp4_projectviewer_tab"  = "attributes";
   "skyp4_desktop_tab"        = "favorites";
   "skyp4_documentviewer_tab" = "attributes";
-
+  
   skyp4_desktop_tabs = (
     { key = ppublic;   labelKey = common;   qualifier = "type='common'";   },
     { key = pprivate;  labelKey = private;  qualifier = "type='private'";  },

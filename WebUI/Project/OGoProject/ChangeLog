@@ -1,3 +1,9 @@
+2004-11-24  Helge Hess  <helge.hess@skyrix.com>
+	
+	* SkyP4FolderView.m: fixed Epoz lookup, now checks epoz_script_main.js 
+	  in share/opengroupware.org-1.0a/www to determine whether Epoz is
+	  installed (fixes OGo bug #1036) (v5.1.51)
+	
 2004-11-23  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyProject4Desktop.m: made project desktop tabs configurable using
