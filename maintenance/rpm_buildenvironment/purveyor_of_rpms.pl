@@ -44,6 +44,7 @@ my @rpms_build;
 my @package_wo_source = qw( ogo-gnustep_make ogo-environment );
 my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 ogo-environment opengroupware-pilot-link opengroupware-nhsc );
 my $release_codename;
+my $remote_release_dirname;
 
 die "Please make sure that everything is in place!\n";
 prepare_build_env();
@@ -67,6 +68,15 @@ sub move_to_dest {
   my $remote_trunk_dir = "/var/virtual_hosts/download/packages/$host_i_runon/trunk";
   my $remote_rel_dir = "/var/virtual_hosts/download/packages/$host_i_runon/releases";
   my $do_link = "yes";
+  if (($do_upload eq "yes") and ($build_type eq "release")) {
+    $remote_dir = $remote_rel_dir;
+    print "[MOVETODEST]        - going to create directory for release on remote side.\n";
+    print "[MOVETODEST]        - name -> $remote_dir/$remote_release_dirname.\n";
+    open(SSH, "|/usr/bin/ssh $remote_user\@$remote_host");
+    print SSH "cd $remote_dir\n";
+    print SSH "mkdir -p $remote_release_dirname\n";
+    close(SSH);
+  }
   foreach $rpm (@rpms_build) {
     $rpm_basename = basename($rpm);
     $prep_ln_name = `/bin/rpm --qf '%{name}' -qp $rpm`;
@@ -77,7 +87,7 @@ sub move_to_dest {
     print "[MOVETODEST]        - $package rolling out '$rpm_basename' to $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "yes"));
     print "[MOVETODEST]        - $package won't copy '$rpm_basename' to $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "no"));
     system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_trunk_dir/ 1>>$logout 2>>$logerr") if (($build_type eq "trunk") and ($do_upload eq "yes"));
-    system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_rel_dir/ 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes"));
+    system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_rel_dir/$remote_release_dirname/ 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes"));
     $remote_dir = $remote_trunk_dir if ($build_type eq "trunk");
     $remote_dir = $remote_rel_dir if ($build_type eq "release");
     print "[LINKATDEST]        - will not really link $ln_name <- $rpm_basename at $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "no") and ($build_type eq "trunk"));
@@ -427,6 +437,8 @@ sub collect_patchinfo {
       $new_version = $1;
       $release_codename = $2;
       # %version cannot contain dashes... rpm will complain if it does
+      $remote_release_dirname = "$new_version-$release_codename";
+      print "DEBUGGGGGGGGGGGGGGGGGGG $remote_release_dirname\n";
     }
   }
   ###########################################################################
@@ -448,6 +460,7 @@ sub collect_patchinfo {
       $new_version = $1;
       $release_codename = $2;
       # %version cannot contain dashes... rpm will complain if it does
+      $remote_release_dirname = "$new_version-$release_codename";
     }
   }
   ###########################################################################
