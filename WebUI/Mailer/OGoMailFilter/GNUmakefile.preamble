@@ -1,4 +1,6 @@
-# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
+# compilation settings
+
+ADDITIONAL_CPPFLAGS += -Wall
 
 OGoMailFilter_INCLUDE_DIRS += -I. -I.. -I../..
 

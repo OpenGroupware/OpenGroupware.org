@@ -20,6 +20,7 @@
 */
 
 #include "OGoMailFilterManager.h"
+#include <NGExtensions/NGResourceLocator.h>
 #include "common.h"
 
 // TODO: needs a lot of cleanup
@@ -124,17 +125,15 @@ static BOOL     SieveLogPassword      = NO;
 }
 
 - (BOOL)writeAllFilters:(NSArray *)_filter forUser:(id)_user {
-  if (!_filter)
+  if (![_filter isNotNull])
     _filter = [NSArray array];
   
-  return [_filter writeToFile:
-                  [self pathToFilterForUser:_user]
-                  atomically:YES];
+  return [_filter writeToFile:[self pathToFilterForUser:_user] atomically:YES];
 }
 
 - (BOOL)writeFilter:(NSArray *)_filter forUser:(id)_user {
   NSMutableArray *vac;
-
+  
   vac = [self vacationForUser:_user];
   [vac addObjectsFromArray:_filter];
   
@@ -165,13 +164,37 @@ static BOOL     SieveLogPassword      = NO;
   return [self pathToFilterForUserWithPrimaryKey:pkey];
 }
 
+- (NGResourceLocator *)resourceLocator {
+  // TODO: maybe we should move that to a "+toolLocator" method
+  static NGResourceLocator *loc = nil;
+  NSString     *gsPath;
+  NSDictionary *env;
+  NSString     *tmp;
+  
+  env    = [[NSProcessInfo processInfo] environment];
+  gsPath = @"Tools/";
+  
+  tmp = [[env objectForKey:@"GNUSTEP_FLATTENED"] lowercaseString];
+  if (![tmp isEqualToString:@"yes"]) {
+    gsPath = [gsPath stringByAppendingFormat:@"%@/%@/%@/",
+		     [env objectForKey:@"GNUSTEP_HOST_CPU"],
+		     [env objectForKey:@"GNUSTEP_HOST_OS"],
+		     [env objectForKey:@"LIBRARY_COMBO"]];
+  }
+  
+  loc = [NGResourceLocator resourceLocatorForGNUstepPath:gsPath
+			   fhsPath:@"bin/"];
+  return loc;
+}
+
 - (NSString *)pathToFilterInstallScript {
   NSFileManager *fm;
   NSDictionary  *env;
   
   // TODO: use Foundation file-search function to locate binary
   env = [[NSProcessInfo processInfo] environment];
-
+  fm  = [self fileManager];
+  
   /* check GNUstep locations */
   
   if ([[env objectForKey:@"GNUSTEP_USER_ROOT"] length] > 0) {
@@ -190,11 +213,10 @@ static BOOL     SieveLogPassword      = NO;
     }
     sievePath = [sievePath stringByAppendingString:@"sky_install_sieve"];
     
-    fm = [self fileManager];
     if ([fm isExecutableFileAtPath:sievePath])
       return sievePath;
   }
-
+  
   /* check FHS locations */
   
   if ([fm fileExistsAtPath:@"/usr/local/bin/sky_install_sieve"])

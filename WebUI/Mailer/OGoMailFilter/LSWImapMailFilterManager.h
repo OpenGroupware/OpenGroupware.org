@@ -18,10 +18,9 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: LSWImapMailFilterManager.h 1 2004-08-20 11:17:52Z znek $
 
-#ifndef __LSWImapMail_LSWImapMailFilterManager_H__
-#define __LSWImapMail_LSWImapMailFilterManager_H__
+#ifndef __OGoMailFilter_LSWImapMailFilterManager_H__
+#define __OGoMailFilter_LSWImapMailFilterManager_H__
 
 #include "OGoMailFilterManager.h"
 
@@ -43,4 +42,4 @@
 
 @end
 
-#endif /* __LSWImapMail_LSWImapMailFilterManager_H__ */
+#endif /* __OGoMailFilter_LSWImapMailFilterManager_H__ */
