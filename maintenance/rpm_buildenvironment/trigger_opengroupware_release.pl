@@ -62,6 +62,7 @@ my $tarball_name;
 my $orel;
 my $buildtarget;
 my $apttarget;
+my $version_override;
 my $hpath = "$ENV{HOME}/";
 my @skip_list = qw( opengroupware.org-0.9pre-r4.tar.gz
 opengroupware.org-1.0alpha1-shapeshifter-r34.tar.gz
@@ -180,9 +181,12 @@ foreach $orel (@ogo_releases) {
     open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
     #these differ...
     $apttarget = $buildtarget;
+    $version_override = $buildtarget;
     $apttarget =~ s/^opengroupware\.org/opengroupware/g;
-    system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-environment $build_opts -r $apttarget");
-    system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-database-setup $build_opts -r $apttarget");
+    $version_override =~ s/opengroupware\.org-(.*)-(.*)//g;
+    $version_override = $1;
+    system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-environment $build_opts -r $apttarget -o $version_override");
+    system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-database-setup $build_opts -r $apttarget -o $version_override");
     system("$ENV{HOME}/purveyor_of_rpms.pl -p $mod_ngobjweb_to_use.spec $build_opts -c rpm/SOURCES/sope-mod_ngobjweb-trunk-latest.tar.gz -r $apttarget");
     system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-gnustep_make $build_opts -c rpm/SOURCES/gnustep-make-1.10.0.tar.gz -r $apttarget");
     print "thus calling: /home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $apttarget\n";

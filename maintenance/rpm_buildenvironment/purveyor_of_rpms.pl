@@ -15,8 +15,8 @@ my $host_i_runon;
 my $mod_ngobjweb_to_use;
 my $time_we_started = `date +"%Y%m%d-%H%M%S"`;
 chomp $time_we_started;
-our ($opt_p,$opt_f,$opt_t,$opt_b,$opt_d,$opt_c,$opt_v,$opt_u,$opt_s,$opt_r,$opt_n);
-my ($package,$force_rebuild,$build_type,$bump_buildcount,$do_download,$release_tarballname,$verbose,$do_upload,$use_specfile,$rdirbase,$fake_svn);
+our ($opt_p,$opt_f,$opt_t,$opt_b,$opt_d,$opt_c,$opt_v,$opt_u,$opt_s,$opt_r,$opt_n,$opt_o);
+my ($package,$force_rebuild,$build_type,$bump_buildcount,$do_download,$release_tarballname,$verbose,$do_upload,$use_specfile,$rdirbase,$fake_svn,$version_override);
 my $hpath = "$ENV{'HOME'}";
 my $logs_dir = "$ENV{'HOME'}/logs";
 my $sources_dir = "$ENV{'HOME'}/rpm/SOURCES";
@@ -586,7 +586,7 @@ sub collect_patchinfo {
     $new_major = "1.0a";
     $new_minor = "0";
     $new_svnrev = "0";
-    $new_version = "$new_major";
+    $new_version = (defined $version_override ? $version_override : $new_major);
   }
   ###########################################################################
   if ($package eq "opengroupware-pilot-link") {
@@ -630,7 +630,7 @@ sub collect_patchinfo {
     $new_major = "1.0a";
     $new_minor = "0";
     $new_svnrev = "0";
-    $new_version = "$new_major";
+    $new_version = (defined $version_override ? $version_override : $new_major);
   }
   ####
   print "[CURRENT SOURCE]    - $package VERSION:$new_version SVNREV:$new_svnrev\n" if ($verbose eq "yes");
@@ -749,7 +749,7 @@ sub get_latest_sources {
 }
 
 sub get_commandline_options {
-  getopt('pftbdcvusrn');
+  getopt('pftbdcvusrno');
   #self explaining...
   if (!$opt_p) {
     print "No package given!\n";
@@ -877,6 +877,17 @@ sub get_commandline_options {
   } else {
     $fake_svn = "yes";
   }
+  #Here we can override a specific version... that is - when we build release rpms we have some packages
+  #with more proper naming/versioning in the appropriate release directories
+  #(this currently makes sense for: ogo-database-setup ogo-environment)
+  if (!$opt_o) {
+    #don't mind then...
+  } else {
+    #use the given arg instead of what we've defined as \$new_version
+    chomp $opt_o;
+    $version_override = $opt_o;
+  }
+  ##
   #sanitize... weird option combinations
   if (($build_type eq "release") and ($release_tarballname eq "none") and (! grep /^$package$/, @package_wo_source)) {
     print "Check your commandline - no '-c <tarballname>' given for release build!\n";
@@ -899,7 +910,8 @@ sub get_commandline_options {
     print "[COMMANDLINE]       - uploading into directory  using default location determined by $memyself\n" if(!$opt_r);
     print "[COMMANDLINE]       - detected distribution     $distrib_define\n";
     print "[COMMANDLINE]       - flavour we build upon     $flavour_we_build_upon\n";
-    print "[COMMANDLINE]       - fake SVN revision        <-n $fake_svn>\n";
+    print "[COMMANDLINE]       - fake SVN revision         <-n $fake_svn>\n";
+    print "[COMMANDLINE]       - version override          <-o $version_override>\n" if($opt_o);
   }
 }
 
@@ -907,7 +919,7 @@ sub prepare_build_env {
   #we use rpm instead of the traditional redhat directory style
   #logs will eat the buildlogs
   my $dir;
-  my @dirs = qw( logs macros rpm rpm/BUILD rpm/RPMS rpm/RPMS/athlon rpm/RPMS/i386 rpm/RPMS/i486 rpm/RPMS/i586 rpm/RPMS/i686 rpm/RPMS/noarch rpm/SOURCES rpm/SPECS rpm/SPECS/initscript_templates rpm/SRPMS rpm/tmp spec_tmp install_tmp );
+  my @dirs = qw( logs macros rpm rpm/BUILD rpm/RPMS rpm/RPMS/athlon rpm/RPMS/i386 rpm/RPMS/i486 rpm/RPMS/i586 rpm/RPMS/i686 rpm/RPMS/noarch rpm/SOURCES rpm/SPECS rpm/SPECS/initscript_templates rpm/SPECS/db_setup_template rpm/SRPMS rpm/tmp spec_tmp install_tmp );
   if (!$ENV{'HOME'}) {
     print "[FATAL]     Oups! It seems as if there's no valid \$HOME defined.\n";
     exit 127;
