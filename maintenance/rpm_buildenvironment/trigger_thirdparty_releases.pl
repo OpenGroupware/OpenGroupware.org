@@ -22,7 +22,6 @@ my @skip_list = qw( libical-sope1-r30.tar.gz
   libFoundation-1.0.65-r63.tar.gz
 );
 
-#my $build_opts = "-v yes -u yes -t release -d yes -f yes";
 my $build_opts = "-v yes -u yes -t release -d yes -f yes";
 my @tp_releases;
 eval getconf("$ENV{'HOME'}/purveyor_of_rpms.conf") or die "FATAL: $@\n";
@@ -128,6 +127,6 @@ if($i_really_had_sth_todo eq "yes") {
   #go back to latest trunk build - that is, before we grabbed a new release we had
   #the most current trunk built/installed
   print "restoring latest build state...\n";
-  system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -v yes -u no -d no -f yes -b no");
-  system("$ENV{HOME}/purveyor_of_rpms.pl -p libfoundation -v yes -u no -d no -f yes -b no");
+  system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -v yes -u no -d yes -f yes -b no");
+  system("$ENV{HOME}/purveyor_of_rpms.pl -p libfoundation -v yes -u no -d yes -f yes -b no");
 }
