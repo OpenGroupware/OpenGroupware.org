@@ -43,13 +43,13 @@ static NSNumber *maxSearchCount = nil;
 
 + (void)initialize {
   if (sortOrderings == nil) {
-    sortOrderings = 
-      [[NSArray alloc] initWithObjects:
-                         [EOSortOrdering sortOrderingWithKey:@"name"
-                                         selector:EOCompareAscending],
-                         [EOSortOrdering sortOrderingWithKey:@"firstname"
-                                         selector:EOCompareAscending],
-                       nil];
+    EOSortOrdering *sn, *sfn;
+    
+    sn  = [EOSortOrdering sortOrderingWithKey:@"name"
+			  selector:EOCompareAscending];
+    sfn = [EOSortOrdering sortOrderingWithKey:@"firstname"
+			  selector:EOCompareAscending];
+    sortOrderings = [[NSArray alloc] initWithObjects:sn, sfn, nil];
   }
 
   if (maxSearchCount == nil)

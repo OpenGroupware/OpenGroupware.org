@@ -46,16 +46,12 @@
 
 /* accessors */
 
-- (BOOL)isLDAPLicensed {
-  // TODO: deprecated, we are OpenSource now ! :-)
-  return YES;
-}
-
 - (void)setSkyrixLogin:(NSString *)_login {
-  NSUserDefaults *ud;
-  NSString *ldapHost;
-  NSString *ldapBase;
-  int      port;
+  // TODO: cleanup method
+  NSUserDefaults   *ud;
+  NSString         *ldapHost;
+  NSString         *ldapBase;
+  int              port;
   NGLdapConnection *con;
   NSEnumerator     *e;
     
@@ -77,10 +73,10 @@
   ldapBase = [ud stringForKey:@"LSAuthLDAPServerRoot"];
     
   if ((con = [[NGLdapConnection alloc]
-	       initWithHostName:ldapHost port:port])) {
+	       initWithHostName:ldapHost port:port]) != nil) {
     NGLdapEntry *entry;
     EOQualifier *q;
-      
+    
     q = [EOQualifier qualifierWithQualifierFormat:@"uid=%@", _login];
       
     e = [con deepSearchAtBaseDN:ldapBase
@@ -93,7 +89,7 @@
     [con release];
   }
   else {
-    [self logWithFormat:@"couldn't alloc LDAP connection for host %@:%d",
+    [self logWithFormat:@"could not alloc LDAP connection for host %@:%d",
 	  ldapHost, port];
   }
     
@@ -109,6 +105,8 @@
 - (NSString *)skyrixLogin {
   return self->skyrixLogin;
 }
+
+/* regular accessors */
 
 - (NSString *)dn {
   return self->dn;

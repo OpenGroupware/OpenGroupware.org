@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/SkyEditorPage.h>
 
@@ -32,7 +31,9 @@
   BOOL     limitAccessToCreator; // only if isNew
   NSString *addressType;
 }
+
 - (id)person;
+
 @end
 
 // TODO: this code should be cleaned up !

@@ -62,19 +62,21 @@
 @implementation SkyPersonList
 
 - (void)dealloc {
-  [self->dataSource release];
-  [self->person release];
-  [self->favoritesKey release];
+  [self->dataSource         release];
+  [self->person             release];
+  [self->favoritesKey       release];
   [self->favoriteCompanyIds release];
   [super dealloc];
 }
+
+/* notifications */
 
 - (void)sleep {
   [self->favoriteCompanyIds release]; self->favoriteCompanyIds = nil;
   [super sleep];
 }
 
-//accessors  
+/* accessors */
 
 - (void)setDataSource:(EODataSource *)_dataSource {
   ASSIGN(self->dataSource, _dataSource);
@@ -87,15 +89,14 @@
   ASSIGN(self->favoritesKey,_key);
 }
 - (NSString *)favoritesKey {
-  return [self->favoritesKey length]
+  return [self->favoritesKey length] > 0
     ? self->favoritesKey : @"person_favorites";
 }
 
 - (NSArray *)favoriteCompanyIds {
   if (self->favoriteCompanyIds == nil) {
     self->favoriteCompanyIds =
-      [[[self session] userDefaults] arrayForKey:[self favoritesKey]];
-    RETAIN(self->favoriteCompanyIds);
+      [[[[self session] userDefaults] arrayForKey:[self favoritesKey]] copy];
   }
   return self->favoriteCompanyIds;
 }
@@ -156,6 +157,8 @@
   [favIds release];
   return YES;
 }
+
+/* actions */
 
 - (id)updateFavoritesAction {
   if ([self hasBinding:@"onFavoritesChange"])

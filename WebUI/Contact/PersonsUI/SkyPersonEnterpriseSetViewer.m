@@ -29,7 +29,9 @@
   id       enterprise;
   unsigned enterpriseIndex;
 }
+
 - (void)setEnterprise:(id)_enterprise;
+
 @end
 
 #include "common.h"

@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/SkyEditorPage.h>
 
@@ -85,6 +84,47 @@
   return [self linkType];
 }
 
+/* creating links */
+
+- (void)setLinkCreationError:(NSException *)error {
+  NSString *s;
+  
+  s = [@"Link creation failed: " stringByAppendingString:[error reason]];
+  [self setErrorString:s];
+}
+
+- (BOOL)createLinkForParticipant:(id)obj {
+  OGoObjectLinkManager *linkManager;
+  EOGlobalID    *targetID;
+  OGoObjectLink *link;
+  NSString      *label;
+  NSException   *error;
+  
+  linkManager = [[[self session] commandContext] linkManager];
+
+  targetID = [obj valueForKey:@"globalID"];
+  label    = [[self session] labelForObject:targetID];
+    
+  link = [[[OGoObjectLink alloc] initWithSource:[self sourceGlobalID]
+				 target:targetID
+				 type:[self linkType]
+				 label:label] autorelease];
+  [self debugWithFormat:@"create link: %@", link];
+  
+  if ((error = [linkManager createLink:link]) != nil) {
+    [self logWithFormat:@"ERROR: could not create link (type=%@): %@", 
+	    linkType, error];
+    
+    [self setLinkCreationError:error];
+    [[[self session] commandContext] rollback];
+    return NO;
+  }
+    
+  [[NSNotificationCenter defaultCenter] 
+    postNotificationName:@"OGoLinkWasCreated" object:link];
+  return YES;
+}
+
 /* actions */
 
 - (id)save {
@@ -103,35 +143,11 @@
   /* walk over each record and create a link ... */
   
   e = [self->selectedParticipants objectEnumerator];
-  while ((obj = [e nextObject])) {
-    EOGlobalID    *targetID;
-    OGoObjectLink *link;
-    NSString      *label;
-    NSException   *error;
-    
-    targetID = [obj valueForKey:@"globalID"];
-    label    = [[self session] labelForObject:targetID];
-    
-    link = [[[OGoObjectLink alloc] initWithSource:[self sourceGlobalID]
-				   target:targetID
-				   type:[self linkType]
-				   label:label] autorelease];
-    [self debugWithFormat:@"create link: %@", link];
-    
-    if ((error = [linkManager createLink:link])) {
-      [self logWithFormat:@"ERROR: could not create link (type=%@): %@", 
-	      linkType, error];
-      
-      [self setErrorString:
-	      [@"Link creation failed: " stringByAppendingString:
-		  [error reason]]];
-      [cmdctx rollback];
+  while ((obj = [e nextObject]) != nil) {
+    if (![self createLinkForParticipant:obj])
       return nil;
-    }
-    
-    [[NSNotificationCenter defaultCenter] 
-      postNotificationName:@"OGoLinkWasCreated" object:link];
   }
+  
   if ([cmdctx isTransactionInProgress] && ![cmdctx commit]) {
     [self setErrorString:@"could not commit transaction!"];
     [cmdctx rollback];

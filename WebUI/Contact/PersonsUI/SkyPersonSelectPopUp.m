@@ -55,24 +55,38 @@
 
 @end
 
-#import <EOControl/EOControl.h>
-#include <OGoFoundation/OGoFoundation.h>
 #include "common.h"
 
 static int compareParticipants(id part1, id part2, void *context);
 
 @implementation SkyPersonSelectPopUp
 
-- (BOOL)synchronizesVariablesWithBindings {
-  return NO;
+static NSArray *teamCoreAttrs = nil;
+
++ (void)initialize {
+  if (teamCoreAttrs == nil) {
+      id objs[4];
+      objs[0] = @"companyId";
+      objs[1] = @"description";
+      objs[2] = @"globalID";
+      objs[3] = @"isTeam";
+      
+      teamCoreAttrs = [[NSArray alloc] initWithObjects:objs count:4];
+  }
 }
 
 - (void)dealloc {
-  [self->searchPerson release];
-  [self->selectedCompany release];
-  [self->item release];
+  [self->searchPerson     release];
+  [self->selectedCompany  release];
+  [self->item             release];
   [self->visibleCompanies release];
   [super dealloc];
+}
+
+/* component sync */
+
+- (BOOL)synchronizesVariablesWithBindings {
+  return NO;
 }
 
 /* accessors */
@@ -94,9 +108,7 @@ static int compareParticipants(id part1, id part2, void *context);
 }
 
 - (void)setSearchPerson:(NSString *)_searchPerson {
-  id old = self->searchPerson;
-  self->searchPerson = [_searchPerson copy];
-  RELEASE(old);
+  ASSIGNCOPY(self->searchPerson, _searchPerson);
 }
 - (NSString *)searchPerson {
   return self->searchPerson;
@@ -110,21 +122,19 @@ static int compareParticipants(id part1, id part2, void *context);
 }
 
 - (NSString *)itemLabel {
+  NSString *fd;
   NSString *d;
   
   if ([[self->item valueForKey:@"isTeam"] boolValue]) 
-    d = [self->item valueForKey:@"description"];
-  else {
-    if ((d = [self->item valueForKey:@"name"]) == nil)
-      d = [self->item valueForKey:@"login"];
-    else {
-      NSString *fd;
-      
-      fd = [self->item valueForKey:@"firstname"];
-      if (fd != nil)
-        d = [NSString stringWithFormat:@"%@, %@", d, fd];
-    }
-  }
+    return [self->item valueForKey:@"description"];
+  
+  if ((d = [self->item valueForKey:@"name"]) == nil)
+    return [self->item valueForKey:@"login"];
+  
+  fd = [self->item valueForKey:@"firstname"];
+  if ([fd isNotNull])
+    d = [NSString stringWithFormat:@"%@, %@", d, fd];
+  
   return d;
 }
 
@@ -138,22 +148,10 @@ static int compareParticipants(id part1, id part2, void *context);
                   [NSNumber numberWithBool:self->fetchGlobalIDs],
                   nil];
   if (self->fetchGlobalIDs) {
-    static NSArray *attrs = nil;
-    
-    if (attrs == nil) {
-      id objs[4];
-      objs[0] = @"companyId";
-      objs[1] = @"description";
-      objs[2] = @"globalID";
-      objs[3] = @"isTeam";
-      
-      attrs = [[NSArray alloc] initWithObjects:objs count:4];
-    }
-    
     teams = [self runCommand:@"team::get-by-globalid",
                     @"gids",       teams,
-                    @"attributes", attrs,
-                    nil];
+                    @"attributes", teamCoreAttrs,
+		  nil];
   }
   return teams;
 }
@@ -176,19 +174,24 @@ static int compareParticipants(id part1, id part2, void *context);
   
   [array sortUsingFunction:compareParticipants context:self];
   
-  RELEASE(self->visibleCompanies); self->visibleCompanies = nil;
+  [self->visibleCompanies release]; self->visibleCompanies = nil;
   self->visibleCompanies = [array copy];
-  RELEASE(array); array = nil;
-
+  [array release]; array = nil;
+  
   if ([self selectedCompany] == nil)
     [self setSelectedCompany:[(id)[self session] activeAccount]];
 }
 
 - (void)personSearch {
-  if (self->searchPerson) {
-    NSArray *result;
+  NSArray      *result;
+  NSMutableSet *array;
+  BOOL showAccount;
+  BOOL showTeams;
+  
+  if (self->searchPerson == nil)
+    return;
     
-    result = [self runCommand:
+  result = [self runCommand:
                      @"person::extended-search",
                      @"operator",       @"OR",
                      @"name",           self->searchPerson,
@@ -198,35 +201,33 @@ static int compareParticipants(id part1, id part2, void *context);
                      @"maxSearchCount", [NSNumber numberWithInt:50],
                      nil];
     
-    if ([result count] > 0) {
-      NSMutableSet *array;
-      BOOL showAccount;
-      BOOL showTeams;
-      
-      RELEASE(self->visibleCompanies); self->visibleCompanies = nil;
+  if ([result count] == 0)
+    return;
 
-      showAccount = [[self valueForBinding:@"showAccount"] boolValue];
-      showTeams   = [[self valueForBinding:@"showTeams"] boolValue];
+  /* postprocess results */
+      
+  [self->visibleCompanies release]; self->visibleCompanies = nil;
+
+  showAccount = [[self valueForBinding:@"showAccount"] boolValue];
+  showTeams   = [[self valueForBinding:@"showTeams"] boolValue];
   
-      array = [[NSMutableSet alloc] init];
+  array = [[NSMutableSet alloc] initWithCapacity:16];
       
-      if (showAccount)
-        [array addObject:[(id)[self session] activeAccount]];
+  if (showAccount)
+    [array addObject:[(id)[self session] activeAccount]];
       
-      [array addObjectsFromArray:result];
+  [array addObjectsFromArray:result];
       
-      if (showTeams)
-        [array addObjectsFromArray:[self _getTeams]];
+  if (showTeams)
+    [array addObjectsFromArray:[self _getTeams]];
 
-      self->visibleCompanies =
-        [[[array allObjects]
+  self->visibleCompanies =
+    [[[array allObjects]
                  sortedArrayUsingFunction:compareParticipants context:self]
                  copy];
-      RELEASE(array); array = nil;
+  [array release]; array = nil;
 
-      [self setSelectedCompany:[result objectAtIndex:0]];
-    }
-  }
+  [self setSelectedCompany:[result objectAtIndex:0]];
 }
 
 /* notifications */
@@ -235,7 +236,7 @@ static int compareParticipants(id part1, id part2, void *context);
   id company;
   
   self->fetchGlobalIDs = [[self valueForBinding:@"fetchGlobalIDs"] boolValue];
-
+  
   if ((company = [self valueForBinding:@"selectedCompany"]))
     ASSIGN(self->selectedCompany, company);
   
@@ -249,7 +250,7 @@ static int compareParticipants(id part1, id part2, void *context);
 }
 
 - (void)sleep {
-  RELEASE(self->item);  self->item = nil;
+  [self->item release]; self->item = nil;
   [super sleep];
 }
 
@@ -270,6 +271,7 @@ static int compareParticipants(id part1, id part2, void *context);
 
 @end /* SkyPersonSelectPopUp */
 
+// TODO: move to some generic file?
 static int compareParticipants(id part1, id part2, void *context) {
   BOOL     part1IsTeam;
   BOOL     part2IsTeam;
