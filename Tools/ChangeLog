@@ -1,3 +1,8 @@
+2004-12-21  Christian Kesselheim  <ckesselh@infeurope.lu>
+
+	* sky_install_sieve.m: fixed OGo bug #698, incorrect handling of some
+	  filter kinds
+
 2004-12-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* sky_install_sieve.m: fixed OGo bug #1087, argument processing was

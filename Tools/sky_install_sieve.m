@@ -67,14 +67,17 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
 }
 
 - (NSString *)sieveQualifierPrefixForKind:(NSString *)_kind {
-  // TODO: this might conflict with UI labels?!
+  // TODO: this might conflict with UI labels?! (happened in bug 698)
   if ([_kind isEqualToString:@"contains"])
     return @"header :contains";
-  if ([_kind isEqualToString:@"doesn`t contain"])
+
+  if ([_kind isEqualToString:@"doesn`t contain"] ||
+      [_kind isEqualToString:@"doesn't contain"])
     return @"not header :contains";
+  
   if ([_kind isEqualToString:@"is"])
     return @"header :is";
-  if ([_kind isEqualToString:@"isn`t"])
+  if ([_kind isEqualToString:@"isn`t"] || [_kind isEqualToString:@"isn't"])
     return @"not header :is";
   if ([_kind isEqualToString:@"begins with"])
     return @"header :matches";
