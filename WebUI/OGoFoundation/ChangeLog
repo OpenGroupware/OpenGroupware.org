@@ -1,3 +1,11 @@
+2005-02-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.82
+
+	* removed unused LSWMasterComponent file/protocol
+
+	* OGoContentPage.m: some code cleanups, removed -setErrorCString:
+
 2004-12-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.81

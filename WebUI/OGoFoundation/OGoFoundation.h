@@ -50,7 +50,6 @@
 #include <OGoFoundation/OGoEditorPage.h>
 #include <OGoFoundation/LSWEditorPage+Wizard.h>
 #include <OGoFoundation/LSWMailEditorComponent.h>
-#include <OGoFoundation/LSWMasterComponent.h>
 #include <OGoFoundation/LSWMimeContent.h>
 #include <OGoFoundation/OGoModuleManager.h>
 #include <OGoFoundation/LSWNotifications.h>

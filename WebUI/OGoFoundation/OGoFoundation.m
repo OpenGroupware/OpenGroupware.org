@@ -29,7 +29,6 @@
 #include "OGoViewerPage.h"
 #include "OGoEditorPage.h"
 #include "LSStringFormatter.h"
-#include "LSWMasterComponent.h"
 #include "OGoComponent.h"
 #include "OGoObjectMailPage.h"
 #include "OGoFoundation.h"

@@ -20,7 +20,6 @@
 */
 
 #include "OGoContentPage.h"
-#include "LSWMasterComponent.h"
 #include "WOComponent+config.h"
 #include "WOSession+LSO.h"
 #include "LSWConfigHandler.h"
@@ -128,29 +127,12 @@
 - (id)master {
   [self logWithFormat:@"WARNING: -master was called, returning self"];
   return self;
-#if 0
-  WOContext *ctx;
-  id master;
-
-  ctx    = [self context];
-  NSAssert(ctx, @"missing context !");
-  NSAssert1([ctx respondsToSelector:@selector(page)],
-            @"invalid context %@", ctx);
-  
-  master = [ctx page];
-  NSAssert(master, @"missing master page !");
-  
-  NSAssert1([master conformsToProtocol:@protocol(LSWMasterComponent)],
-            @"invalid master page %@ !", master);
-
-  return master;
-#endif
 }
 
 - (NSString *)label {
   NSString *label;
   
-  if ((label = [[self labels] valueForKey:[self name]]))
+  if ((label = [[self labels] valueForKey:[self name]]) != nil)
     return label;
   
   return [self name];
@@ -192,16 +174,10 @@
   return YES;
 }
 
-// errors
+/* errors */
 
 - (void)setErrorString:(NSString *)_error {
-  if (self->errorString != _error) {
-    RELEASE(self->errorString);
-    self->errorString = [_error copyWithZone:[self zone]];
-  }
-}
-- (void)setErrorCString:(const char *)_error {
-  [self setErrorString:_error ? [NSString stringWithCString:_error] : nil];
+  ASSIGNCOPY(self->errorString, _error);
 }
 - (NSString *)errorString {
   return self->errorString;

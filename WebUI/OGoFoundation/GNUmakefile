@@ -40,7 +40,6 @@ libOGoFoundation_HEADER_FILES = \
 	LSWEditorPage.h			\
 	LSWLabelHandler.h		\
 	LSWMailEditorComponent.h	\
-	LSWMasterComponent.h		\
 	LSWMimeContent.h		\
 	OGoModuleManager.h		\
 	LSWNotifications.h		\

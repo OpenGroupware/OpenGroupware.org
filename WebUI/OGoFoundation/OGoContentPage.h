@@ -79,7 +79,6 @@
 /* errors */
 
 - (void)setErrorString:(NSString *)_error;
-- (void)setErrorCString:(const char *)_error;
 - (NSString *)errorString;
 - (void)resetErrorString;
 - (BOOL)hasErrorString;

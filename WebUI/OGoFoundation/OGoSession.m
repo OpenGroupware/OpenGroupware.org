@@ -22,7 +22,7 @@
 #include "OGoSession.h"
 #include "OGoClipboard.h"
 #include "OGoNavigation.h"
-#include "LSWMasterComponent.h"
+#include "OGoContentPage.h"
 #include "LSStringFormatter.h"
 #include "LSWNotifications.h"
 #include "WOComponent+config.h"
