@@ -1,0 +1,394 @@
+# translation of BaseUI.po to 
+# translation of AddressUI.po to Slovenský
+# Branislav Klocok <branislav.klocok@ofz.sk>, 2004, 2005.
+msgid ""
+msgstr ""
+"Last-Translator: Branislav Klocok <branislav.klocok@ofz.sk>\n"
+"PO-Revision-Date: 2005-01-11 14:55+0100\n"
+"Project-Id-Version: BaseUI\n"
+"Language-Team:  <sk@li.org>\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+"MIME-Version: 1.0"
+
+# // $Id: AddressUI.strings,v 1.15 2004/08/16 14:48:47 frank Exp $
+#"Really Delete" =
+#, fuzzy
+msgid "Do you really want to delete this record?"
+msgstr "na zmazať?"
+
+#"00_created" =
+#, fuzzy
+msgid "created"
+msgstr "Vytvorené"
+
+#"05_changed" =
+#, fuzzy
+msgid "changed"
+msgstr "zmenené"
+
+#"10_archived" =
+#, fuzzy
+msgid "archived"
+msgstr "archivované"
+
+#"LastError" =
+#, fuzzy
+msgid "Last Error:"
+msgstr "Chyba:"
+
+#"lastError" =
+#, fuzzy
+msgid "Last Error:"
+msgstr "Chyba:"
+
+#"SkyErrorPanel" =
+#, fuzzy
+msgid "View Error"
+msgstr "Zobraziť Chyba"
+
+#"SkyRequestViewer" =
+#, fuzzy
+msgid "View Browser Request"
+msgstr "Zobraziť Prehliadač Požiadavka"
+
+#"SkyWizardChoicePage" =
+#, fuzzy
+msgid "Choice Page (wizard mode)"
+msgstr "Stránka Sprievodca režim"
+
+#"SkyWizardResultList" =
+#, fuzzy
+msgid "Result Page (wizard mode)"
+msgstr "Výsledok Stránka Sprievodca režim"
+
+#"action" =
+#, fuzzy
+msgid "Action"
+msgstr "Činnosť"
+
+#"actor" =
+#, fuzzy
+msgid "Actor"
+msgstr "Aktér"
+
+#"bookmarks" =
+#, fuzzy
+msgid "Bookmarks"
+msgstr "Záložky"
+
+#"calendarPopupBirthday" =
+#, fuzzy
+msgid "browse for birthday"
+msgstr "pre"
+
+#"calendarPopupEndDate" =
+#, fuzzy
+msgid "browse for endDate"
+msgstr "pre"
+
+#"calendarPopupStartDate" =
+#, fuzzy
+msgid "browse for startDate"
+msgstr "pre"
+
+#"cancel" =
+#, fuzzy
+msgid "cancel"
+msgstr "zrušiť"
+
+#"clearErrorString" =
+msgid "clear"
+msgstr ""
+
+#"creationDate" =
+#, fuzzy
+msgid "Date"
+msgstr "Dátum"
+
+#"delete" =
+#, fuzzy
+msgid "delete"
+msgstr "zmazať"
+
+#"desktop" =
+#, fuzzy
+msgid "Desktop"
+msgstr "Pracovná plocha"
+
+#"deselectAll" =
+#, fuzzy
+msgid "deselect all"
+msgstr "všetko"
+
+#"fastSearch" =
+#, fuzzy
+msgid "Fast Search"
+msgstr "Rýchlo Hľadať"
+
+#"first" =
+msgid "first"
+msgstr ""
+
+#"footer_logstate" =
+msgid "Session expires"
+msgstr ""
+
+#"footer_skyrixag" =
+msgid "SKYRIX Software AG"
+msgstr ""
+
+#"footer_skyrix" =
+msgid "SKYRiX"
+msgstr ""
+
+#"footer_user" =
+#, fuzzy
+msgid "User"
+msgstr "Užívateľ"
+
+#"gotoEditLabel" =
+#, fuzzy
+msgid "edit"
+msgstr "upraviť"
+
+#"gotoFirstLabel" =
+msgid "first"
+msgstr ""
+
+#"gotoImportLabel" =
+#, fuzzy
+msgid "import new datasets"
+msgstr "import nové"
+
+#"gotoLastLabel" =
+#, fuzzy
+msgid "last"
+msgstr "posledné"
+
+#"gotoNewLabel" =
+#, fuzzy
+msgid "new dataset"
+msgstr "nové"
+
+#"gotoNewLinkLabel" =
+#, fuzzy
+msgid "new"
+msgstr "nové"
+
+#"gotoNextLabel" =
+#, fuzzy
+msgid "next"
+msgstr "ďalší"
+
+#"gotoPreviousLabel" =
+#, fuzzy
+msgid "previous"
+msgstr "predchádzajúci"
+
+#"last" =
+#, fuzzy
+msgid "last"
+msgstr "posledné"
+
+#"logText" =
+#, fuzzy
+msgid "Log Text"
+msgstr "Text"
+
+#"logout" =
+#, fuzzy
+msgid "Logout"
+msgstr "Odhlásiť sa"
+
+#"logsLabel" =
+#, fuzzy
+msgid "Logs"
+msgstr "Záznamy"
+
+#"logsTitle" =
+#, fuzzy
+msgid "Logs"
+msgstr "Záznamy"
+
+#"mdnReturnReceiptQuestion" =
+#, fuzzy
+msgid "The sender of the message requested a receipt to be returned. Do you wish to send one?"
+msgstr "z na na odoslať?"
+
+#"navposition" =
+msgid "You are here:"
+msgstr ""
+
+#"next" =
+#, fuzzy
+msgid "next"
+msgstr "ďalší"
+
+#"noCopyToSentFolder" =
+#, fuzzy
+msgid "Sending is possible, but copying the message to sent folder will fail! Send?"
+msgstr "na odoslané Odoslať?"
+
+#"of" =
+#, fuzzy
+msgid "of"
+msgstr "z"
+
+#"ofLabel" =
+#, fuzzy
+msgid "of"
+msgstr "z"
+
+#"ok" =
+msgid "    ok    "
+msgstr ""
+
+#"page" =
+#, fuzzy
+msgid "Page"
+msgstr "Stránka"
+
+#"pageLabel" =
+#, fuzzy
+msgid "Page"
+msgstr "Stránka"
+
+#"preferences" =
+msgid "Preferences"
+msgstr ""
+
+#"previous" =
+#, fuzzy
+msgid "previous"
+msgstr "predchádzajúci"
+
+#"reallyDeleteMail" =
+#, fuzzy
+msgid "Are you sure you want to move the selected messages into the trash?"
+msgstr "na Správy?"
+
+#"reallyEmptyTrash" =
+#, fuzzy
+msgid "Are you sure you want to empty the trash?"
+msgstr "na prázdny?"
+
+#"reallyRemoveFolder" =
+#, fuzzy
+msgid "Are you sure you want to move the selected folder into the trash?"
+msgstr "na?"
+
+#"reallyImmRemoveFolder" =
+#, fuzzy
+msgid "Are you sure you want to delete the selected folder?"
+msgstr "na zmazať?"
+
+#"save" =
+#, fuzzy
+msgid "save"
+msgstr "uložiť"
+
+#"selectAll" =
+#, fuzzy
+msgid "select all"
+msgstr "vybrať všetko"
+
+#"sortColumn" =
+#, fuzzy
+msgid "sort Column"
+msgstr "Stĺpec"
+
+#"sortColumnLabel" =
+#, fuzzy
+msgid "sort Column"
+msgstr "Stĺpec"
+
+#"tableview_importLinkLabel" =
+#, fuzzy
+msgid "import"
+msgstr "import"
+
+#"tableview_newLinkLabel" =
+#, fuzzy
+msgid "new"
+msgstr "nové"
+
+#"tableview_refreshLinkLabel" =
+#, fuzzy
+msgid "refresh"
+msgstr "obnoviť"
+
+#"to" =
+#, fuzzy
+msgid "to"
+msgstr "na"
+
+#"toLabel" =
+#, fuzzy
+msgid "to"
+msgstr "na"
+
+#"week" =
+#, fuzzy
+msgid "Week"
+msgstr "Týždeň"
+
+#"wizardBack" =
+#, fuzzy
+msgid "Back"
+msgstr "Späť"
+
+#"wizardCancel" =
+#, fuzzy
+msgid "Cancel"
+msgstr "Zrušiť"
+
+#"wizardChoiceTitle" =
+#, fuzzy
+msgid "Choice Page (wizard mode)"
+msgstr "Stránka Sprievodca režim"
+
+#"wizardFinish" =
+#, fuzzy
+msgid "Finish"
+msgstr "Koniec"
+
+#"wizardResultListTitle" =
+#, fuzzy
+msgid "Result Page (wizard mode)"
+msgstr "Výsledok Stránka Sprievodca režim"
+
+#"wizardSave" =
+#, fuzzy
+msgid "Save"
+msgstr "Uložiť"
+
+#"OGo" =
+msgid "OGo"
+msgstr ""
+
+#"misc" =
+msgid "Misc"
+msgstr ""
+
+#"home" =
+#, fuzzy
+msgid "Home"
+msgstr "Domov"
+
+#"desk" =
+#, fuzzy
+msgid "Desktop"
+msgstr "Pracovná plocha"
+
+#"mail" =
+#, fuzzy
+msgid "New Email"
+msgstr "Nový Email"
+
+#"inbox" =
+#, fuzzy
+msgid "Inbox"
+msgstr "Došlá pošta"
+

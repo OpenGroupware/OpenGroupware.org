@@ -1,11 +1,12 @@
 # translation of AdminUI.po to 
 # translation of AdminUI.po to
+# translation of AdminUI.po to
 # translation of AddressUI.po to Slovenský
 # Branislav Klocok <branislav.klocok@ofz.sk>, 2004, 2005.
 msgid ""
 msgstr ""
 "Last-Translator: Branislav Klocok <branislav.klocok@ofz.sk>\n"
-"PO-Revision-Date: 2005-01-06 09:50+0100\n"
+"PO-Revision-Date: 2005-01-11 14:51+0100\n"
 "Project-Id-Version: AdminUI\n"
 "Language-Team:  <sk@li.org>\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -375,487 +376,418 @@ msgid "User Manager"
 msgstr "Správca užívateľov"
 
 #"ValuesDontMatchError" =
-#, fuzzy
 msgid "Values from old[%@] and new[%@] domain don't match."
-msgstr "Hodnoty od a nové."
+msgstr "Hodnoty zo starej[%@] a novej[%@] domény sa líšia."
 
 #"Version" =
-#, fuzzy
 msgid "Version"
 msgstr "Verzia"
 
 #"YES" =
-#, fuzzy
 msgid "Yes"
 msgstr "Áno"
 
 #"account" =
-#, fuzzy
 msgid "Account"
 msgstr "Účet"
 
 #"accountList" =
-#, fuzzy
 msgid "Account List"
-msgstr "Účet Zoznam"
+msgstr "Zoznam účtov"
 
 #"accountViewerTitle" =
-#, fuzzy
 msgid "Account Viewer"
-msgstr "Účet"
+msgstr "Prehliadač účtov"
 
 #"accounts" =
 msgid "accounts"
-msgstr ""
+msgstr "účty"
 
 #"accountsSubview" =
 msgid "accounts"
-msgstr ""
+msgstr "účty"
 
 #"action" =
-#, fuzzy
 msgid "Action"
 msgstr "Činnosť"
 
 #"addAccounts" =
-#, fuzzy
 msgid "Add Accounts"
-msgstr "Pridať"
+msgstr "Pridať účty"
 
 #"admin_team_doexport" =
-#, fuzzy
 msgid "Export Team"
-msgstr "Exportovať"
+msgstr "Exportovať skupinu"
 
 #"admin_team_mailbox" =
 msgid "Team-Mailbox"
-msgstr ""
+msgstr "Skupinový mailbox"
 
 #"admin_vaddresses" =
-#, fuzzy
 msgid "Virtual Addresses"
-msgstr "Adresy"
+msgstr "Virtuálne adresy"
 
 #"aptResources" =
 msgid "appt. resources"
-msgstr ""
+msgstr "Dost. zdroje"
 
 #"bill" =
-#, fuzzy
 msgid "Bill Address"
-msgstr "Adresa"
+msgstr "Fakturačná adresa"
 
 #"cancelButtonLabel" =
-#, fuzzy
 msgid "cancel"
 msgstr "zrušiť"
 
 #"cancelDownloadButtonLabel" =
-#, fuzzy
 msgid "cancel download"
-msgstr "zrušiť"
+msgstr "zrušiť sťahovanie"
 
 #"clip" =
-#, fuzzy
 msgid "clip"
 msgstr "klip"
 
 #"closeButtonLabel" =
 msgid "close"
-msgstr ""
+msgstr "zavrieť"
 
 #"date" =
-#, fuzzy
 msgid "Date"
 msgstr "Dátum"
 
 #"delete" =
-#, fuzzy
 msgid "delete license"
-msgstr "zmazať"
+msgstr "zmazať licenciu"
 
 #"deleteButtonLabel" =
-#, fuzzy
 msgid "delete"
 msgstr "zmazať"
 
 #"download" =
 msgid "download"
-msgstr ""
+msgstr "stiahnuť"
 
 #"edit" =
-#, fuzzy
 msgid "edit"
 msgstr "upraviť"
 
 #"editLabel" =
-#, fuzzy
 msgid "edit dataset"
-msgstr "upraviť"
+msgstr "upraviť súbor dát"
 
 #"edit_preferences" =
-#, fuzzy
 msgid "edit preferences"
-msgstr "upraviť"
+msgstr "upraviť nastavenia"
 
 #"email" =
-#, fuzzy
 msgid "Email"
 msgstr "Email"
 
 #"email1" =
-#, fuzzy
 msgid "Email 1"
 msgstr "Email 1"
 
 #"enterLicenseTitle" =
 msgid "Enter a license"
-msgstr ""
+msgstr "Zadajte licenciu"
 
 #"enterprise_sub_view" =
 msgid "Enterprise Subview"
-msgstr ""
+msgstr "podzobrazenie podniku"
 
 #"external" =
-#, fuzzy
 msgid "External"
 msgstr "Externý"
 
 #"extraAccountLabel" =
-#, fuzzy
 msgid "Extra Account"
-msgstr "Účet"
+msgstr "Extra účet"
 
 #"failed" =
 msgid "failed"
-msgstr ""
+msgstr "zlyhanie"
 
 #"fileContent" =
 msgid "license"
-msgstr ""
+msgstr "licencia"
 
 #"fileName" =
 msgid "filename"
-msgstr ""
+msgstr "názov súboru"
 
 #"finished" =
 msgid "finished"
-msgstr ""
+msgstr "hotovo"
 
 #"firstname" =
-#, fuzzy
 msgid "Firstname"
 msgstr "Meno"
 
 #"groups" =
 msgid "Teams"
-msgstr ""
+msgstr "Skupiny"
 
 #"html" =
 msgid "Html"
-msgstr ""
+msgstr "Html"
 
 #"installation" =
 msgid "installation"
-msgstr ""
+msgstr "inštalácia"
 
 #"internal" =
-#, fuzzy
 msgid "Internal"
-msgstr "Interný"
+msgstr "Interné"
 
 #"isValid" =
 msgid "Valid"
-msgstr ""
+msgstr "Platné"
 
 #"job_import_name" =
-#, fuzzy
 msgid "Job Import"
-msgstr "Importovať"
+msgstr "Importovať job"
 
 #"language" =
-#, fuzzy
 msgid "Language"
 msgstr "Jazyk"
 
 #"license_company" =
-#, fuzzy
 msgid "Company"
 msgstr "Spoločnosť"
 
 #"license_expire" =
 msgid "Expiration"
-msgstr ""
+msgstr "Doba vypršania"
 
 #"license_file" =
-#, fuzzy
 msgid "File"
 msgstr "Súbor"
 
 #"license_host" =
-#, fuzzy
 msgid "Host"
 msgstr "Hostiteľ"
 
 #"license_modules" =
-#, fuzzy
 msgid "Modules"
 msgstr "Moduly"
 
 #"license_user" =
-#, fuzzy
 msgid "Contact"
 msgstr "Kontakt"
 
 #"licensesTab" =
 msgid "licenses"
-msgstr ""
+msgstr "licencie"
 
 #"locationTeamLabel" =
-#, fuzzy
 msgid "Location Team"
-msgstr "Umiestnenie"
+msgstr "Umiestnenie skupiny"
 
 #"locked" =
-#, fuzzy
 msgid "locked"
 msgstr "zamknuté"
 
 #"loginLabel" =
-#, fuzzy
 msgid "Login"
 msgstr "Prihlásenie"
 
 #"mailConfig" =
 msgid "mail"
-msgstr ""
+msgstr "pošta"
 
 #"mail_editor_type" =
-#, fuzzy
 msgid "Type of Maileditor"
-msgstr "Typ z"
+msgstr "Typ editora pošty"
 
 #"mail_send_type" =
-#, fuzzy
 msgid "Send Mail as"
-msgstr "Odoslať Pošta"
+msgstr "Odoslať poštu ako"
 
 #"members" =
 msgid "Accounts"
-msgstr ""
+msgstr "Účty"
 
 #"name" =
-#, fuzzy
 msgid "Name"
 msgstr "Názov"
 
 #"new" =
-#, fuzzy
 msgid "new"
 msgstr "nové"
 
 #"newPassword" =
-#, fuzzy
 msgid "new Password"
-msgstr "nové Heslo"
+msgstr "nové heslo"
 
 #"newTemplate" =
-#, fuzzy
 msgid "new template user"
-msgstr "nové"
+msgstr "nová šablóna užívateľa"
 
 #"nickname" =
-#, fuzzy
 msgid "Nickname"
 msgstr "Prezývka"
 
 #"noLocationLabel" =
-#, fuzzy
 msgid "- no location -"
-msgstr "nie"
+msgstr "- bez umiestnenia -"
 
 #"noValue" =
-#, fuzzy
 msgid "no"
 msgstr "nie"
 
 #"of" =
-#, fuzzy
 msgid "of"
 msgstr "z"
 
 #"oldPassword" =
-#, fuzzy
 msgid "old Password"
-msgstr "Heslo"
+msgstr "staré heslo"
 
 #"overview" =
-#, fuzzy
 msgid "Overview"
-msgstr "Obsah"
+msgstr "Prehľad"
 
 #"packages" =
 msgid "packages"
-msgstr ""
+msgstr "balíčky"
 
 #"passwordTitle" =
-#, fuzzy
 msgid "Password Editor"
-msgstr "Heslo Redaktor"
+msgstr "Editor hesiel"
 
 #"persons" =
-#, fuzzy
 msgid "Contacts"
 msgstr "Kontakty"
 
 #"plain" =
-#, fuzzy
 msgid "Text"
 msgstr "Text"
 
 #"progress" =
 msgid "progress"
-msgstr ""
+msgstr "priebeh"
 
 #"projects" =
-#, fuzzy
 msgid "Project"
 msgstr "Projekt"
 
 #"providedBy" =
-#, fuzzy
 msgid "provided by"
 msgstr "Autor"
 
 #"refresh" =
 msgid "refresh"
-msgstr ""
+msgstr "obnoviť"
 
 #"repeatPassword" =
-#, fuzzy
 msgid "Repeat Password"
-msgstr "Opakovať Heslo"
+msgstr "Opakovať heslo"
 
 #"saveButtonLabel" =
-#, fuzzy
 msgid "save"
 msgstr "uložiť"
 
 #"scheduler_chart" =
 msgid "Weekchart"
-msgstr ""
+msgstr "Týždenný graf"
 
 #"scheduler_day" =
 msgid "Dayview"
-msgstr ""
+msgstr "Denný pohľad"
 
 #"scheduler_end_hour" =
-#, fuzzy
 msgid "Calendar Endhour"
-msgstr "Kalendár"
+msgstr "Posledná hodina v kalendári"
 
 #"scheduler_overview" =
 msgid "Weekoverview"
-msgstr ""
+msgstr "Prehľad týždňa"
 
 #"scheduler_start_hour" =
-#, fuzzy
 msgid "Calendar Starthour"
-msgstr "Kalendár"
+msgstr "Prvá hodina v kalendári"
 
 #"scheduler_view" =
-#, fuzzy
 msgid "Calendar View"
-msgstr "Kalendár Zobraziť"
+msgstr "Kalendárový pohľad"
 
 #"search" =
-#, fuzzy
 msgid "search"
 msgstr "hľadať"
 
 #"searchall" =
-#, fuzzy
 msgid "list all"
-msgstr "všetko"
+msgstr "zobraziť všetko"
 
 #"searchAccounts" =
-#, fuzzy
 msgid "Search Accounts"
-msgstr "Hľadať"
+msgstr "Hľadať účty"
 
 #"sessionLogTab" =
 msgid "session logs"
-msgstr ""
+msgstr "záznamy sedenia"
 
 #"sessionLogs" =
-#, fuzzy
 msgid "Session Logs"
-msgstr "Záznamy"
+msgstr "Záznamy sedenia"
 
 #"ship" =
-#, fuzzy
 msgid "Ship Address"
-msgstr "Adresa"
+msgstr "Adresa pre doručenie"
 
 #"shutdown" =
 msgid "activate license(s)"
-msgstr ""
+msgstr "aktivovať licenciu(cie)"
 
 #"staffTitle" =
-#, fuzzy
 msgid "Administration"
 msgstr "Administrácia"
 
 #"startButtonLabel" =
-#, fuzzy
 msgid "start"
 msgstr "spustiť"
 
 #"successful" =
 msgid "successful"
-msgstr ""
+msgstr "Úspešné"
 
 #"teamLabel" =
 msgid "Teams"
-msgstr ""
+msgstr "Skupiny"
 
 #"teamList" =
-#, fuzzy
 msgid "Team List"
-msgstr "Zoznam"
+msgstr "Zoznam skupín"
 
 #"teamTitle" =
-#, fuzzy
 msgid "Team Editor"
-msgstr "Redaktor"
+msgstr "Editor skupín"
 
 #"teamViewerTitle" =
 msgid "Team Viewer"
-msgstr ""
+msgstr "Prehliadač skupín"
 
 #"teams" =
 msgid "teams"
-msgstr ""
+msgstr "skupiny"
 
 #"teamsSubview" =
 msgid "teams"
-msgstr ""
+msgstr "skupiny"
 
 #"timezone" =
 msgid "Timezone"
-msgstr ""
+msgstr "Časová zóna"
 
 #"valueNotSet" =
-#, fuzzy
 msgid "<i>(no value configured)</i>"
-msgstr "<i> nie hodnota</i>"
+msgstr "<i>(nie je nastavená hodnota)</i>"
 
 #"yesValue" =
-#, fuzzy
 msgid "yes"
 msgstr "áno"
 
 #"zidestore" =
 msgid "ZideStore"
-msgstr ""
+msgstr "ZideStore"
 
