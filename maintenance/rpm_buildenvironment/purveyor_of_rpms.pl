@@ -137,7 +137,9 @@ sub build_rpm {
     print "[RPMBUILD]          - $package whoups - build produced nothing!\n" if ($verbose eq "yes");
     print "[RPMBUILD]          - $package examine \$logerr: $logerr\n" if ($verbose eq "yes");
     print "[RPMBUILD]          - $package examine \$logout: $logout\n" if ($verbose eq "yes");
-    warn "should I exit here?\n";
+    print "[RPMBUILD]          - $memyself will quit its work for $package here.\n" if ($verbose eq "yes");
+    #TODO -> parse err/out log and mail some results to the maintainers.
+    exit 1;
   }
 }
 
