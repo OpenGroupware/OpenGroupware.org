@@ -1,3 +1,8 @@
+2004-09-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved header files into main directory (was in the LSFoundation
+	  subdirectory before) (v5.1.85)
+
 2004-08-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoContextManager.m: fixed lookup to opengroupware.org-1.0a

@@ -89,7 +89,7 @@ libLSFoundation_OBJC_FILES = \
 	OGoObjectLinkManager.m			\
 
 libLSFoundation_INCLUDE_DIRS             = -ILSFoundation
-libLSFoundation_HEADER_FILES_DIR         = LSFoundation
+libLSFoundation_HEADER_FILES_DIR         = .
 libLSFoundation_HEADER_FILES_INSTALL_DIR = /LSFoundation
 
 TOOL_NAME = load-LSModel
