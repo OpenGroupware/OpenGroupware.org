@@ -1182,8 +1182,7 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   got 2 arrays of GID lists, and copy properties from _source[n] -> _dest[n]
 */
 
-- (BOOL)copyPropertiesFrom:(NSArray *)_source to:(NSArray *)_dest
-{
+- (BOOL)copyPropertiesFrom:(NSArray *)_source to:(NSArray *)_dest {
   NSEnumerator *sourceEnum, *destEnum;
   EOGlobalID   *source, *dest;
   NSDictionary *props;
@@ -1200,7 +1199,8 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   destEnum   = [_dest objectEnumerator];
   props      = [self propertiesForGlobalIDs:_source namespace:nil];
 
-  while ((source = [sourceEnum nextObject]) && (dest = [destEnum nextObject])) {
+  while ((source = [sourceEnum nextObject]) != nil && 
+         (dest = [destEnum nextObject]) != nil) {
     NSMutableDictionary *keys;
     NGHashMap           *access;
     id                  obj;

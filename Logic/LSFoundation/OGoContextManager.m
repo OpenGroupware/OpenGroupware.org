@@ -68,7 +68,7 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
 			    @"OGo",       @"userName",
 			    @"OGo",       @"databaseName",
   			    @"5432",      @"port",
-			    @"localhost", @"hostName",
+			    @"127.0.0.1", @"hostName",
 			  nil];
   
   timeZoneNames = [NSArray arrayWithObjects:

@@ -1,3 +1,8 @@
+2005-03-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoContextManager.m: use 127.0.0.1 as default database host to avoid
+	  issues with broken /etc/hosts files (v5.1.93)
+
 2004-12-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.92
