@@ -223,7 +223,7 @@ OpenGroupware.org's web application server.
 %package webui-core
 Summary:      Core elements for OpenGroupware.org's Web UI
 Group:        Development/Libraries
-Requires:     ogo-logic ogo-logic-tools
+Requires:     sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-logic-tools libfoundation10
 AutoReqProv:  off
 
 %description webui-core
@@ -243,7 +243,7 @@ of OpenGroupware.org's Web UI
 %package webui-calendar
 Summary:      Calendar component of OpenGroupware.org's Web UI
 Group:        Development/Libraries
-Requires:     ogo-webui-app ogo-webui-core
+Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation10 libobjc-lf2
 AutoReqProv:  off
 
 %description webui-calendar
@@ -255,7 +255,7 @@ new appointments.
 %package webui-contact
 Summary:      Contact component of OpenGroupware.org's Web UI
 Group:        Development/Libraries
-Requires:     ogo-webui-app ogo-webui-core
+Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation10 libobjc-lf2
 AutoReqProv:  off
 
 %description webui-contact
@@ -266,7 +266,7 @@ importing contacts from a csv file.
 %package webui-mailer
 Summary:      Mailer component of OpenGroupware.org's Web UI
 Group:        Development/Libraries
-Requires:     ogo-webui-app ogo-tools ogo-webui-core
+Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation10 libobjc-lf2
 AutoReqProv:  off
 
 %description webui-mailer
@@ -287,7 +287,7 @@ of OpenGroupware.org's Web UI
 %package webui-news
 Summary:      News component of OpenGroupware.org's Web UI
 Group:        Development/Libraries
-Requires:     ogo-webui-app ogo-webui-core
+Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation10 libobjc-lf2
 AutoReqProv:  off
 
 %description webui-news
@@ -307,7 +307,7 @@ related to projects or standalone.
 %package webui-project
 Summary:      Project component of OpenGroupware.org's Web UI
 Group:        Development/Libraries
-Requires:     ogo-webui-app ogo-webui-core ogo-docapi ogo-docapi-fs-project ogo-docapi-db-project
+Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation10 libobjc-lf2
 AutoReqProv:  off
 
 %description webui-project
