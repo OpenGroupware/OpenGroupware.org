@@ -57,7 +57,10 @@ static EOSQLQualifier *trueQualifier = nil;
 
 /* operations */
 
-- (EOGlobalID *)projectGIDForDocumentGID:(EOGlobalID *)_gid context:(id)_ctx {
+- (EOGlobalID *)projectGIDForDocumentGID:(EOGlobalID *)_gid 
+  refreshOnFail:(BOOL)_refresh
+  context:(id)_ctx
+{
   int pid;
   NSNumber *nr;
 
@@ -70,7 +73,13 @@ static EOSQLQualifier *trueQualifier = nil;
   nr = pid > 0 ? [NSNumber numberWithInt:pid] : nil;
   
   if (![nr isNotNull]) {
-    // TODO: we might want to invalidate and refetch?
+    if (_refresh) {
+      // TODO: this is suboptimal, can't we check for the ID?
+      [self resetData];
+      return [self projectGIDForDocumentGID:_gid refreshOnFail:NO
+		   context:_ctx];
+    }
+    
     [self logWithFormat:@"WARNING(%s): got no project GID for document: %@",
 	  __PRETTY_FUNCTION__, _gid];
     return nil;
@@ -78,6 +87,9 @@ static EOSQLQualifier *trueQualifier = nil;
   
   return [EOKeyGlobalID globalIDWithEntityName:@"Project"
 			keys:&nr keyCount:1 zone:NULL];
+}
+- (EOGlobalID *)projectGIDForDocumentGID:(EOGlobalID *)_gid context:(id)_ctx {
+  return [self projectGIDForDocumentGID:_gid refreshOnFail:YES context:_ctx];
 }
 
 - (int)projectIdForDocumentId:(int)_i context:(id)_ctx {

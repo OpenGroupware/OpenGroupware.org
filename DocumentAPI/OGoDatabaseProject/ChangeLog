@@ -1,3 +1,8 @@
+2004-12-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyDocumentIdHandler.m: refresh cache data on fail, should fix OGo
+	  bug 1075 (v5.1.37)
+
 2004-12-02  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyProjectDocument.m: minor code cleanups (v5.1.36)
