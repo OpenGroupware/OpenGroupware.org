@@ -1,8 +1,8 @@
 // $Id: OGoMailInfo.strings,v 1.4 2004/06/21 23:22:55 helge Exp $
 
-DefaultAccessPreferences    = "Zugriffsrechte auf Mail PrÃ¤ferenzen";
+DefaultAccessPreferences    = "Zugriffsrechte auf Mail Präferenzen";
 Imap                        = "Mails";
-LSWMailPreferences          = "Mail PrÃ¤ferenzen";
+LSWMailPreferences          = "Mail Präferenzen";
 NO                          = "Nein";
 YES                         = "Ja";
 action_closeWindow          = "Fenster schliessen";
@@ -28,9 +28,9 @@ mail_send_type              = "Mail versenden als";
 newMail                     = "Email (ungelesen)";
 plain                       = "Text";
 saveButtonLabel             = "speichern";
-senderLength                = "Absender LÃ¤nge";
+senderLength                = "Absender Länge";
 signature                   = "Signatur";
-subjectLength               = "Betreff LÃ¤nge";
+subjectLength               = "Betreff Länge";
 viewAttachmentBodysInEditor = "Zeige die Bodys der Attachments im Editor";
 viewAttachmentsInline       = "Zeige Attachments inline an";
 viewImagesInline            = "Zeige Images inline an";
