@@ -162,14 +162,22 @@
 	NSMutableArray *confidentialIDs = nil;
 	NSMutableArray *normalIDs = nil;
 	NSMutableArray *publicIDs = nil;
+	id anAttribute = nil;
 	id anObject;
 	id login;
+	
 
 	// first we retrieve the company_id of the login person
 
 	// Entity
 
 	sqlEntity = [[self databaseModel] entityNamed:[self entityName]];
+	if(sqlEntity == nil)
+	{
+		[self logWithFormat:@"***** entity %@ is not defined in OGoModel !!!",[self entityName]];
+		[self setReturnValue:nil];
+		return;
+	}
 
 	// Channel
 
@@ -187,10 +195,23 @@
 	// Attributes
 
 	attributes = [[NSMutableArray alloc] init];
-	[attributes addObject:[sqlEntity attributeNamed:@"companyId"]];
-	[attributes addObject:[sqlEntity attributeNamed:@"rdvType"]];
-	[attributes addObject:[sqlEntity attributeNamed:@"delegateCompanyId"]];
+	
+	// here we should assume that [sqlEntity attributeNamed:x] will
+	// allways return a value (different of nil), but in case a Model problem arrive those
+	// assumptions will failed. So we handle the problem !
+	
+	anAttribute = [sqlEntity attributeNamed:@"companyId"];
+	if (anAttribute != nil)
+		[attributes addObject:anAttribute];
+	
+	anAttribute = [sqlEntity attributeNamed:@"rdvType"];
+	if (anAttribute != nil)
+		[attributes addObject:anAttribute];
 
+	anAttribute = [sqlEntity attributeNamed:@"delegateCompanyId"];
+	if (anAttribute != nil)
+		[attributes addObject:anAttribute];
+	
 	// now we play the request
 	if(![channel selectAttributes:attributes describedByQualifier:sqlQualifier fetchOrder:nil lock:NO])
 	{
