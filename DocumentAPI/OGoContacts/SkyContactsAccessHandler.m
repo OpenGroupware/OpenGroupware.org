@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <LSFoundation/SkyAccessHandler.h>
 
@@ -42,12 +41,29 @@
 
 @implementation SkyContactsAccessHandler
 
+static NSArray *entityNames = nil;
+static NSArray *contactPermAttrs = nil;
 static BOOL debugOn = YES;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   
   debugOn = [ud boolForKey:@"SkyAccessManagerDebug"];
+
+  if (contactPermAttrs == nil) {
+    contactPermAttrs = [[NSArray alloc] initWithObjects:@"ownerId",
+					@"isPrivate", @"isReadonly",
+					@"globalID", nil];
+  }
+  if (entityNames == nil) {
+    id name[4];
+
+    name[0] = @"Person";
+    name[1] = @"Enterprise";
+    name[2] = @"Team";
+    name[3] = @"Company";
+    entityNames = [[NSArray alloc] initWithObjects:name count:4];
+  }
 }
 
 /* operations */
@@ -193,18 +209,10 @@ static BOOL debugOn = YES;
     }
     str = @"";
     switch (bitmap) {
-      case 0:
-        str = @"";
-        break;
-      case 1:
-        str = @"r";
-        break;
-      case 2:
-        str = @"w";
-        break;
-      case 3:
-        str = @"rw";
-        break;
+      case 0: str = @"";   break;
+      case 1: str = @"r";  break;
+      case 2: str = @"w";  break;
+      case 3: str = @"rw"; break;
     }
     [self cacheOperation:str for:gidId];
     
@@ -230,11 +238,12 @@ static BOOL debugOn = YES;
 
   if ([[(EOKeyGlobalID *)_accessGID keyValues][0] intValue] == 10000)
     return _oids;
-
+  
+  /* make gids set distinct */
   {
     NSSet *set;
-
-    set = [NSSet setWithArray:_oids];
+    
+    set = _oids ? [NSSet setWithArray:_oids] : nil;
     _oids = [set allObjects];
   }
   
@@ -243,13 +252,15 @@ static BOOL debugOn = YES;
   enumerator = [_oids objectEnumerator];
 
   cnt  = 0;
-  objs = calloc(sizeof(id), [_oids count]);
+  objs = calloc([_oids count] + 2, sizeof(id));
 
   while ((obj = [enumerator nextObject])) {
     if ([[obj entityName] isEqualToString:@"Team"])
       [result addObject:obj];
-    else
-      objs[cnt++] = obj;
+    else {
+      objs[cnt] = obj;
+      cnt++;
+    }
   }
   _oids = [NSArray arrayWithObjects:objs count:cnt];
 
@@ -260,34 +271,23 @@ static BOOL debugOn = YES;
 
   
   {
-    NSArray              *objects, *teams;
-    NSDictionary         *accessCache;
-#if 0
-    EOFetchSpecification *fs;
-    EOQualifier          *qualifier;
-    NSMutableDictionary  *hints;
-    EODataSource         *ds;
-#endif
-    NSNumber             *ppkey;
-    id                   obj;
-    NSArray *attrs;
+    NSArray      *objects, *teams;
+    NSDictionary *accessCache;
+    NSNumber     *ppkey;
+    id           obj;
     
-    // TODO: static
-    attrs = [NSArray arrayWithObjects:@"ownerId",
-		       @"isPrivate", @"isReadonly",
-		       @"globalID", nil];
     objects = [[self context] runCommand:@"object::get-by-globalID",
                        @"gids",          _oids,
                        @"noAccessCheck", [NSNumber numberWithBool:YES],
-                       @"attributes",    attrs, nil];
+                       @"attributes",    contactPermAttrs, nil];
     TIME_END();
     
     if ([objects count] != [_oids count]) {
       [self logWithFormat:
-	      @"ERROR[%s] couldn`t fetch all persons oids[%d] objects[%d]",
+	      @"ERROR[%s] could not fetch all persons oids[%d] objects[%d]",
               __PRETTY_FUNCTION__, [_oids count], [objects count]];
     }
-    ppkey = [[(id)_accessGID keyValuesArray] lastObject];
+    ppkey = _accessGID ? [(EOKeyGlobalID *)_accessGID keyValues][0] : nil;
     teams = [self _fetchTeamsForPersonID:ppkey buildGids:YES];
     {
       NSArray *oids;
@@ -296,20 +296,21 @@ static BOOL debugOn = YES;
       accessCache = [manager allowedOperationsForObjectIds:oids
                              accessGlobalIDs:nil];
     }
+    
     enumerator = [objects objectEnumerator];
     while ((obj = [enumerator nextObject])) {
+      id cache;
+      
+      cache = [accessCache objectForKey:
+			     (EOGlobalID *)[obj valueForKey:@"globalID"]];
       if ([self _checkAccess:_operation forObj:obj
                 accessGID:(EOKeyGlobalID *)_accessGID
                 teamGIds:teams
-                cache:[accessCache objectForKey:
-                                   (EOGlobalID *)
-                                   [obj valueForKey:@"globalID"]]]) {
+                cache:cache]) {
         [result addObject:[obj valueForKey:@"globalID"]];
       }
-      else {
-        if (!_all)
-          break;
-      }
+      else if (!_all)
+	break;
     }
   }
   return result;
@@ -324,7 +325,8 @@ static BOOL debugOn = YES;
   if ([[(EOKeyGlobalID *)_accessGID keyValues][0] intValue] == 10000)
     return YES;
 
-  res = [self objects:_oids forOperation:_operation forAccessGlobalID:_accessGID
+  res = [self objects:_oids forOperation:_operation 
+	      forAccessGlobalID:_accessGID
               searchAll:NO];
 
   return (BOOL)([res count] == [_oids count]);
@@ -340,17 +342,6 @@ static BOOL debugOn = YES;
 }
 
 - (NSArray *)_entityNames {
-  static NSArray *entityNames = nil;
-  
-  if (entityNames == nil) {
-    id name[4];
-
-    name[0] = @"Person";
-    name[1] = @"Enterprise";
-    name[2] = @"Team";
-    name[3] = @"Company";
-    entityNames = [[NSArray alloc] initWithObjects:name count:4];
-  }
   return entityNames;
 }
 
