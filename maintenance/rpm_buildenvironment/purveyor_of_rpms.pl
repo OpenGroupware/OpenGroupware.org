@@ -39,7 +39,7 @@ my @rpms_build;
 #package_wo_source contains packages wo source at all or where i refuse to download
 #the source (source should be already in \$sources_dir)
 my @package_wo_source = qw( ogo-gnustep_make ogo-environment ogo-database-setup );
-my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment opengroupware-pilot-link opengroupware-nhsc ogo-database-setup );
+my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment opengroupware-pilot-link opengroupware-nhsc ogo-database-setup ogo-meta );
 my $release_codename;
 my $remote_release_dirname;
 my $libversion;
@@ -727,12 +727,15 @@ sub get_latest_sources {
     @latest = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
     chomp $release_tarballname;
     if (grep /$release_tarballname$/, @latest) {
-      print "[DOWNLOAD_SRC]      - $release_tarballname should be present for download.\n";
-      print "[DOWNLOAD_SRC]      - going to retrieve into -> $sources_dir/$release_tarballname\n";
+      print "[DOWNLOAD_SRC]      - $release_tarballname should be present for download.\n" if ($verbose eq "yes");
+      print "[DOWNLOAD_SRC]      - going to retrieve into -> $sources_dir/$release_tarballname\n" if ($verbose eq "yes");
       `wget -q --proxy=off -O "$sources_dir/$release_tarballname" http://$dl_host/sources/releases/$release_tarballname`;
+    } elsif ( -f "$sources_dir/$release_tarballname" ) {
+      print "[DOWNLOAD_SRC]      - using $sources_dir/$release_tarballname\n" if ($verbose eq "yes");
+      print "[DOWNLOAD_SRC]      - bc I had no luck downloading the sources from $dl_host\n" if ($verbose eq "yes");
     } else {
-      print "[DOWNLOAD_SRC]      - Looks like $release_tarballname isn't even present at $dl_host.\n";
-      print "[DOWNLOAD_SRC]      - Senseless to continue - goodbye!\n";
+      print "[DOWNLOAD_SRC]      - Looks like $release_tarballname isn't even present at neither $dl_host nor $sources_dir/.\n" if ($verbose eq "yes");
+      print "[DOWNLOAD_SRC]      - Senseless to continue - goodbye!\n" if ($verbose eq "yes");
       exit 1;
     }
   #</release>

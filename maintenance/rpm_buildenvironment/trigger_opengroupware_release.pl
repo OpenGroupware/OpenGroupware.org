@@ -1,34 +1,52 @@
 #!/usr/bin/perl -w
 # frank reppin <frank@opengroupware.org> 2004
 # 
-# Here we trigger OGo release builds....
+# Here we trigger OGo release builds...
+#
 # Each OGo release is built against a specific
-# SOPE release/version... and bc of this fact
-# I've commited 2 comments/hints into some prior
+# SOPE release/version.
+# I've commited comments/hints into some prior
 # opengroupware.spec release files (alpha8 and alpha9)
 # in order to know which SOPE release/version must be
 # present prior the OGo release build:
 # <opengroupware.spec_snippet>
-#   #UseSOPEsrc:   sope-4.3.9-shapeshifter-r301.tar.gz
-#   #UseSOPEspec:  sope-4.3.9-shapeshifter.spec
+#   #UseSOPE:      sope-4.4beta.1-voyager
 # </opengroupware.spec_snippet>
 # 
-# UseSOPEsrc -> ordinary tarballname...
-# UseSOPEspec -> sope-<version>-<codename>.spec
-# (sope.spec from the tarball and UseSOPEspec are
-# technically the same... only different names.)
+# UseSOPE => sope-<version>-<codename>.spec
 #
 # Normal workflow is... the SOPE version we need was
-# already built (SOPE release cron runs before OGo release).
-# Bc of this - \$ENV{HOME}/spec_tmp already contains the
-# file we name in 'UseSOPEspec'... (it gets there by trigger_sope_release.pl)
-# But since we clean up and rebuild SOPE trunk - only if trigger_sope_release.pl
-# really had sth to do - we must feed 'purveyor_of_rpms.pl' with the values
-# for a release build using 'UseSOPEsrc' and 'UseSOPEspec' before we actually
-# go on and build OGo... building OGo itself is simply another call for 'purveyor_of_rpms.pl'.
-# Said that - we call 'purveyor_of_rpms.pl' twice -:
-# ./purveyor_of_rpms.pl -p sope -t release -v yes -u no -d no -f yes -b no -c <UseSOPEsrc> -c spec_tmp/<UseSOPEspec>
-# ./purveyor_of_rpms.pl -p opengroupware -t release -v yes -u yes -d yes -c <see below> -c spec_tmp/<see below>
+# already built (SOPE release cron runs before OGo release cron)
+# and thus the release should be already present in the download area.
+#
+# * compare OGo.known.rel with current MD5_INDEX to see whether we
+#   have a new release or not ('not' will finish the script, as well as @skip_list)
+# * download new OGo release sources
+# * cleanup currently installed SOPE and OGo RPMS (rpm -e)
+# * extract specfile from 'OGo release sources' into spec_tmp/ and rename it
+#   (to sth like opengroupware-<release_we_build_for>.spec)
+# * parse through this specfile - seeking the above mentioned #UseSOPE: line
+# * download this required SOPE release (!) into install_tmp/
+# * install the required SOPE release (rpm -Uvh)
+# * run 'purveyor_of_rpms.pl' in order to build the OGo release we've downloaded
+#   using the specfile we've moved into spec_tmp/
+# * 'purveyor_of_rpms.pl' will create a new directory in the downloadarea of this buildhost
+#   on the downloadhost (in $buildhost/releases/)
+# * 'purveyor_of_rpms.pl' will upload the packages created by this OGo release build into
+#   this directory
+# * 'purveyor_of_rpms.pl' will also build 'ogo-environment', 'ogo-database-setup'
+#   and the 'mod_ngobjweb' RPMS... these packages will be uploaded into the same directory
+#   where we just uploaded the OGo release RPMS
+# * we then rebuild the apt repo and recreate the MD5_INDEX for this new directory on the
+#   downloadhost
+# * ... we also drop a 'SOPE.INFO' there (it contains an info about the SOPE release we've used
+#   building this OGo release)
+# * the just built OGo release version gets appended to 'OGo.known.rel'
+# * if we're on either fcore2 or fcore3 - we start rebuilding the yum repositories
+# * we initialize our buildenvironment:
+#     - removing the above mentioned SOPE release
+#     - removing the just built OGo release
+#     - force 'purveyor_of_rpms.pl' to build a 'opengroupware' and 'sope' trunk
 
 use strict;
 my $host_i_runon;
@@ -102,6 +120,16 @@ foreach $orel (@ogo_releases) {
     #since we build the OGo release using a specific SOPE release... we must
     #cleanup everything prior the actual wanted OGo *and* SOPE builds
     #I don't use apt-get here bc not every RPM based distri provides a package (apt-get).
+    #we must ensure that we have a debug=no libobjc-lf2 present...
+    print "ensuring that we have a debug=no libobjc-lf2 present...\n";
+    system("sudo rpm -e `rpm -qa|grep -i ^libobjc-lf2` --nodeps");
+    system("sudo /sbin/ldconfig");
+    system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -d yes -u no -t release -c libobjc-lf2-trunk-latest.tar.gz -f yes -b no");
+    #we must ensure that we have a debug=no libfoundation present...
+    print "ensuring that we have a debug=no libfoundation present...\n";
+    system("sudo rpm -e `rpm -qa|grep -i ^libfoundation` --nodeps");
+    system("sudo /sbin/ldconfig");
+    system("$ENV{HOME}/purveyor_of_rpms.pl -p libfoundation -d yes -u no -t release -c libfoundation-trunk-latest.tar.gz -f yes -b no");
     print "cleaning up previous SOPE build...\n";
     system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
     print "cleaning up previous OGo build...\n";
@@ -123,6 +151,8 @@ foreach $orel (@ogo_releases) {
     #we should've already build this SOPE release at least once in an earlier run
     print "preparing SOPE... $use_sope\n";
     @t_sope = `wget -q --proxy=off -O - http://$dl_host/packages/$host_i_runon/releases/$use_sope/MD5_INDEX` or die "I DIE: couldn't fetch MD5_INDEX (http://$dl_host/packages/$host_i_runon/releases/$use_sope/MD5_INDEX)\n";
+    warn "WARNING: the following 'foreach' loops through each and every package found...\n";
+    #rather rare case... it produces too much noise on stdout if there are re-rebuild versions of the same release (with different SVN revisions ofcourse)
     foreach $line (@t_sope) {
       chomp $line;
       next unless($line =~ m/\.rpm$/i);
@@ -174,12 +204,16 @@ if($i_really_had_sth_todo eq "yes") {
   }
   #polish buildenv after we're done...
   print "we're almost at the end... cleaning up what we've done so far...\n";
+  system("sudo rpm -e `rpm -qa|grep -i ^libobjc-lf2` --nodeps");
+  system("sudo rpm -e `rpm -qa|grep -i ^libfoundation` --nodeps");
   system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
   system("sudo rpm -e `rpm -qa|grep -i ^ogo-|grep -vi gnustep` --nodeps"); 
   system("sudo /sbin/ldconfig");
   #go back to latest trunk build - that is, before we grabbed a new release we had
-  #the most current sope trunk built/installed
+  #the most current trunk of everything built/installed
   print "restoring latest build state...\n";
+  system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -v yes -u no -d no -f yes -b no");
+  system("$ENV{HOME}/purveyor_of_rpms.pl -p libfoundation -v yes -u no -d no -f yes -b no");
   system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -u no -d no -f yes -b no");
   system("$ENV{HOME}/purveyor_of_rpms.pl -p opengroupware -v yes -u no -d no -f yes -b no");
   system("sudo /sbin/ldconfig");

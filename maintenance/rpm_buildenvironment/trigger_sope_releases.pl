@@ -24,6 +24,8 @@ my @skip_list = qw( sope-4.2pre-r3.tar.gz
   sope-4.3.6-shapeshifter-r114.tar.gz
   sope-4.3.7-shapeshifter-r142.tar.gz
   sope-4.3.8-shapeshifter-r210.tar.gz
+  sope-4.4beta.0-voyager-r512.tar.gz
+  sope-4.5alpha.0-nevermind-r514.tar.gz
 );
 
 my $build_opts = "-v yes -u yes -t release -d yes -f yes";

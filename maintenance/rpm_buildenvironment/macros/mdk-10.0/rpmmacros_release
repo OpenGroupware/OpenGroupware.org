@@ -27,14 +27,14 @@
 %ogo_gnustep_make_version 0
 %ogo_gnustep_make_release 0
 %ogo_gnustep_make_buildcount 0
-%ogo_gnustep_make_makeflags debug=no
+%ogo_gnustep_make_makeflags debug=yes
 %ogo_gnustep_make_source gnustep-make-1.10.0.tar.gz
 %ogo_gnustep_make_prefix /usr/local
 ###
 %ogo_version 0
 %ogo_release 0
 %ogo_buildcount 0
-%ogo_makeflags debug=no
+%ogo_makeflags debug=yes
 %ogo_source opengroupware.org-trunk-latest.tar.gz
 %ogo_prefix /usr/local
 #this fixes the complaints about 'file listed twice'
@@ -45,14 +45,14 @@
 %ogo_env_version 0
 %ogo_env_release 0
 %ogo_env_buildcount 0
-%ogo_env_makeflags debug=no
+%ogo_env_makeflags debug=yes
 %ogo_env_source %{nil}
 %ogo_env_prefix /usr/local
 ###
 %libical_version 0
 %libical_release 0
 %libical_buildcount 0
-%libical_makeflags debug=no
+%libical_makeflags debug=yes
 %libical_source libical-sope-trunk-latest.tar.gz
 %libical_prefix /usr/local
 ###
@@ -61,7 +61,7 @@
 %sope_minor_version 0
 %sope_release 0
 %sope_buildcount 0
-%sope_makeflags debug=no
+%sope_makeflags debug=yes
 %sope_source sope-trunk-latest.tar.gz
 %sope_prefix /usr/local
 %sope_libversion %{nil}
@@ -69,7 +69,7 @@
 %mod_ngobjweb_version 0
 %mod_ngobjweb_release 0
 %mod_ngobjweb_buildcount 0
-%mod_ngobjweb_makeflags debug=no
+%mod_ngobjweb_makeflags debug=yes
 %mod_ngobjweb_source sope-mod_ngobjweb-trunk-latest.tar.gz
 %mod_ngobjweb_prefix /usr/local
 ###
@@ -100,4 +100,3 @@
 %ogo_dbsetup_makeflags debug=yes
 %ogo_dbsetup_source opengroupware.org-trunk-latest.tar.gz
 %ogo_dbsetup_prefix /usr/local
-
