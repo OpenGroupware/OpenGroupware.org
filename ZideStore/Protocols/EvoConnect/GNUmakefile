@@ -1,10 +1,12 @@
 # $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include $(GNUSTEP_MAKEFILES)/common.make
+include ../../Version
+include ./Version
 
 BUNDLE_NAME        = EvoConnect
 BUNDLE_EXTENSION   = .zsp
-BUNDLE_INSTALL_DIR = $(GNUSTEP_USER_ROOT)/Library/ZideStore-1.3
+BUNDLE_INSTALL_DIR = $(GNUSTEP_USER_ROOT)/Library/ZideStore-$(MAJOR_VERSION).$(MINOR_VERSION)
 
 EvoConnect_PRINCIPAL_CLASS = EvoConnectProduct
 
