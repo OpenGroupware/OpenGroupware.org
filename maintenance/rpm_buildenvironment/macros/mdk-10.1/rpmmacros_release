@@ -39,8 +39,8 @@
 %ogo_prefix /usr/local
 #this fixes the complaints about 'file listed twice'
 #and allows a successful build on older rpm releases
-%ogo_libogopalmui libOGoPalmUI
-%ogo_libogopalm libOGoPalm
+%ogo_libogopalmui libOGoPalmUI_d
+%ogo_libogopalm libOGoPalm_d
 ###
 %ogo_env_version 0
 %ogo_env_release 0
