@@ -1,4 +1,10 @@
-opengroupware.org (1.0a.9-0) UNRELEASED; urgency=low
+opengroupware.org (1.0a.10-0) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Sebastian Ley <ley@debian.org>  Sat, 22 Jan 2005 13:46:02 +0100
+
+opengroupware.org (1.0a.9-0) experimental; urgency=low
 
   * New upstream release.
   * Replaced previous autoconfiguration stuff with new ogo-create-instance
@@ -8,7 +14,7 @@ opengroupware.org (1.0a.9-0) UNRELEASED; urgency=low
   * New init script handles now all daemons and is able to start multiple
     instances of OpenGroupware.org.
 
- -- Sebastian Ley <ley@debian.org>  Wed, 10 Nov 2004 02:22:33 +0100
+ -- Sebastian Ley <ley@debian.org>  Sat, 22 Jan 2005 13:45:19 +0100
 
 opengroupware.org (1.0a.8-1) experimental; urgency=low
 
