@@ -4,6 +4,7 @@
 use strict;
 #die "WARNING: not yet configured!\n";
 my $host_i_runon = "sarge";
+#my $host_i_runon = "sid";
 my $svn_host = 'svn.opengroupware.org';
 my $svn = '/usr/bin/svn';
 my $dl_host = "download.opengroupware.org";
@@ -21,12 +22,13 @@ my @skip_list = qw( libical-sope1-r30.tar.gz
   libFoundation-1.0.59-r29.tar.gz
   libFoundation-1.0.64-r61.tar.gz
   libFoundation-1.0.65-r63.tar.gz
+  gnustep-objc-lf2.95.3-r85.tar.gz
 );
 
 my $build_opts = "-v yes -u yes -t release -d yes -f yes";
 my @tp_releases;
 
-@tp_releases = `wget -q -O - http://$dl_host/sources/releases/MD5_INDEX`;
+@tp_releases = `wget --proxy=off -q -O - http://$dl_host/sources/releases/MD5_INDEX`;
 open(KNOWN_TP_RELEASES, ">> $hpath/ThirdParty.known.rel");
 foreach $tprel (@tp_releases) {
   chomp $tprel;
@@ -41,7 +43,7 @@ foreach $tprel (@tp_releases) {
     my $cleanup;
     $i_really_had_sth_todo = "yes";
     print "Retrieving: http://$dl_host/sources/releases/$tprel\n";
-    system("wget -q -O $ENV{HOME}/sources/$tprel http://$dl_host/sources/releases/$tprel");
+    system("wget --proxy=off -q -O $ENV{HOME}/sources/$tprel http://$dl_host/sources/releases/$tprel");
     ###
     $package_to_build = "sope-epoz" if ($tprel =~ m/epoz/i);
     $cleanup = "sope-epoz" if ($tprel =~ m/epoz/i);
@@ -56,7 +58,7 @@ foreach $tprel (@tp_releases) {
     $cleanup = "libical-sope" if ($tprel =~ m/libical-sope/i);
     ###
     print "cleaning up/purging $cleanup prior actual build...\n";
-    system("sudo dpkg --purge `dpkg -l | awk '{print \$2}' | grep -iE '(^$cleanup)'`");
+    system("sudo dpkg --purge --force-all `dpkg -l | awk '{print \$2}' | grep -iE '(^$cleanup)'`");
     print "ThirdParty_REL: building debs for ThirdParty $tprel\n";
     print "calling `purveyor_of_debs.pl -p $package_to_build $build_opts -c $tprel\n";
     system("$ENV{HOME}/purveyor_of_debs.pl -p $package_to_build $build_opts -c $tprel");
@@ -68,19 +70,19 @@ foreach $tprel (@tp_releases) {
   }
 }
 close(KNOWN_TP_RELEASES);
-exit 0;
 
 if($i_really_had_sth_todo eq "yes") { 
   #polish buildenv after we're done...
   print "we're almost at the end... cleaning up what we've done so far...\n";
-  system("sudo dpkg --purge `dpkg -l | awk '{print \$2}' | grep -iE '(^libsope|^sope|^libical-sope)'`");
+  system("sudo dpkg --purge --force-all `dpkg -l | awk '{print \$2}' | grep -iE '(^sope-epoz|^libobjc-lf2|^libfoundation)'`");
   #go back to latest trunk build - that is, before we grabbed a new release we had
   #the most current sope trunk built/installed
   print "restoring latest build state...\n";
-  system("$ENV{HOME}/purveyor_of_debs.pl -p sope -v yes -u no -d no -f yes -b no");
+  system("$ENV{HOME}/purveyor_of_debs.pl -p libobjc-lf2 -v yes -u no -d yes -f yes -b no");
+  system("$ENV{HOME}/purveyor_of_debs.pl -p libfoundation -v yes -u no -d yes -f yes -b no");
 } else {
   print "Seems as if there's nothing to do.\n";
-  print "SOPE.known.rel told me, that we've alread build every single release\n";
-  print "If you think that I'm wrong - you can either delete SOPE.known.rel completely\n";
+  print "ThirdParty.known.rel told me, that we've alread build every single release\n";
+  print "If you think that I'm wrong - you can either delete ThirdParty.known.rel completely\n";
   print "or only parts of it and I'll happily rebuild each release I don't know.\n";
 }

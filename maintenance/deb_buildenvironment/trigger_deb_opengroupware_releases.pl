@@ -36,7 +36,7 @@ my $line;
 my $sope_spec;
 my $sope_src;
 
-@ogo_releases = `wget -q -O - http://$dl_host/sources/releases/MD5_INDEX`;
+@ogo_releases = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
 open(KNOWN_OGo_RELEASES, ">> $hpath/OGo.known.rel");
 foreach $orel (@ogo_releases) {
   chomp $orel;
@@ -49,7 +49,7 @@ foreach $orel (@ogo_releases) {
   unless(grep /\b$orel\b/, @already_known_ogo_rel) {
     $i_really_had_sth_todo = "yes";
     print "Retrieving: http://$dl_host/sources/releases/$orel\n";
-    system("wget -q -O $ENV{HOME}/sources/$orel http://$dl_host/sources/releases/$orel");
+    system("wget -q --proxy=off -O $ENV{HOME}/sources/$orel http://$dl_host/sources/releases/$orel");
     #since we build the OGo release using a specific SOPE release... we must 
     #cleanup prior OGo *and* SOPE builds
     #I guess we don't need to do it exactly this way bc apt-get install in a later stage
@@ -116,6 +116,6 @@ if($i_really_had_sth_todo eq "yes") {
   #go back to latest trunk build - that is, before we grabbed a new release we had
   #the most current sope trunk built/installed
   print "restoring latest build state...\n";
-  system("$ENV{HOME}/purveyor_of_debs.pl -p sope -v yes -u no -d no -f yes -b no");
-  system("$ENV{HOME}/purveyor_of_debs.pl -p opengroupware.org -v yes -u no -d no -f yes -b no");
+  system("$ENV{HOME}/purveyor_of_debs.pl -p sope -v yes -u no -d yes -f yes -b no");
+  system("$ENV{HOME}/purveyor_of_debs.pl -p opengroupware.org -v yes -u no -d yes -f yes -b no");
 }

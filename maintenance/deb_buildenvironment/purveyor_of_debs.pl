@@ -139,6 +139,7 @@ sub build_package {
 }
 
 sub prep_changelog {
+  print "DEBUGGGG: $package\n";
   print "[DCH]               - calling dch with:\n" if ($verbose eq "yes");
   print "[DCH]               - dch -v $new_version".".svn"."$new_svnrev-1 -D ogo-trunk $dch_msg_trunk\n" if (($verbose eq "yes") and ($build_type eq "trunk"));
   print "[DCH]               - dch -v $new_version".".svn"."$new_svnrev-1 -D ogo-release $dch_msg_release\n" if (($verbose eq "yes") and ($build_type eq "release"));
@@ -337,7 +338,7 @@ sub get_latest_sources {
   mkdir("$sources_dir", 0755);
   if(("$do_download" eq "yes") and ("$build_type" eq "trunk")) {
     print "[DOWNLOAD_SRC]      - Download sources for a trunk build!\n" if ($verbose eq "yes");
-    @latest = `wget -q -O - http://$dl_host/sources/trunk/LATESTVERSION`;
+    @latest = `wget -q --proxy=off -O - http://$dl_host/sources/trunk/LATESTVERSION`;
     foreach $sourcefile (@latest) {
       $destfilename = shift;
       chomp $sourcefile;
@@ -346,16 +347,16 @@ sub get_latest_sources {
     $destfilename = $dl_candidate;
     $destfilename =~ s/-r\d+-\d+/-latest/g;
     print "[DOWNLOAD_SRC]      - Will download $dl_candidate and save the file as $destfilename\n" if ($verbose eq "yes");
-    `wget -q -O "$sources_dir/$destfilename" http://$dl_host/sources/trunk/$dl_candidate`;
+    `wget -q --proxy=off -O "$sources_dir/$destfilename" http://$dl_host/sources/trunk/$dl_candidate`;
     print "[DOWNLOAD_SRC]      - will quit now because you've asked me to dl only <-x yes>\n" and exit 0 if ($dl_only eq "yes");
   }
   if(("$do_download" eq "yes") and ("$build_type" eq "release")) {
     #MD5_INDEX comes in handy here, bc this file keeps track of all uploaded releases
-    @latest = `wget -q -O - http://$dl_host/sources/releases/MD5_INDEX`;
+    @latest = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
     chomp $release_tarballname;
     if (grep /$release_tarballname$/, @latest) {
       print "[DOWNLOAD_SRC]      - $release_tarballname should be present for download.\n";
-      `wget -q -O "$sources_dir/$release_tarballname" http://$dl_host/sources/releases/$release_tarballname`;
+      `wget -q --proxy=off -O "$sources_dir/$release_tarballname" http://$dl_host/sources/releases/$release_tarballname`;
       print "[DOWNLOAD_SRC]      - will quit now because you've asked me to dl only <-x yes>\n" and exit 0 if ($dl_only eq "yes");
     } else {
       print "[DOWNLOAD_SRC]      - Looks like $release_tarballname isn't even present at $dl_host.\n";
