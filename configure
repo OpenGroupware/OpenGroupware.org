@@ -18,6 +18,7 @@ ARG_GSMAKE="$GNUSTEP_MAKEFILES"
 ARG_CFGMAKE="$PWD/config.make"
 ARG_WITH_GNUSTEP=0
 ARG_WITH_DEBUG=0
+ARG_WITHOUT_LIBPISOCK=0
 
 DARG_GNUSTEP_SH="$ARG_GSMAKE/GNUstep.sh"
 DARG_IS_FHS=1
@@ -208,10 +209,10 @@ function genConfigMake() {
   cfgwrite "#         make debug=yes"
   cfgwrite ""
   
-  cfgwrite "# print on the cmdline that this file is being used"
-  cfgwrite "all :: "
-  cfgwrite "	@echo Local GNUstep config.make is active"
-  cfgwrite ""
+  #cfgwrite "# print on the cmdline that this file is being used"
+  #cfgwrite "all :: "
+  #cfgwrite "	@echo Local GNUstep config.make is active"
+  #cfgwrite ""
   
   # TODO: should be also write a GNUSTEP_INSTALLATION_DIR / BUNDLE_INSTALL_DIR?
   
@@ -246,6 +247,62 @@ function genConfigMake() {
   cfgwrite "PATH:=\$(GNUSTEP_SYSTEM_ROOT)/Tools:\$(PATH)"
 }
 
+function checkLinking() {
+  local oldpwd=$PWD
+  local tmpdir=".configure-test-$$"
+  
+  mkdir $tmpdir
+  cd $tmpdir
+  cp ../maintenance/dummytool.m .
+  
+  tmpmake="GNUmakefile"
+  echo  >$tmpmake "include ../config.make"
+  echo >>$tmpmake "include \$(GNUSTEP_MAKEFILES)/common.make"
+  echo >>$tmpmake "TOOL_NAME           := linktest"
+  echo >>$tmpmake "linktest_OBJC_FILES := dummytool.m"
+  echo >>$tmpmake "linktest_TOOL_LIBS  += -l$1"
+  echo >>$tmpmake "SYSTEM_LIB_DIR      += -L/usr/local/lib -L/usr/lib"
+  echo >>$tmpmake "include \$(GNUSTEP_MAKEFILES)/tool.make"
+  
+  make -s messages=yes -f $tmpmake linktest >out.log 2>err.log
+  LINK_RESULT=$?
+
+  if test $LINK_RESULT = 0; then
+    echo "$2 library found: $1"
+  else
+    if test "x$2" = "xrequired"; then
+      echo "failed to link $2 library: $1"
+      rm ../config.make
+      exit 1
+    else
+      echo "failed to link $2 library: $1"
+    fi
+  fi
+  
+  cd $oldpwd
+  rm -rf $tmpdir
+}
+
+function checkDependencies() {
+  checkLinking "NGLdap"    required;
+  checkLinking "NGObjWeb"  required;
+  checkLinking "GDLAccess" required;
+  
+  if test $ARG_WITHOUT_LIBPISOCK = 0; then
+    checkLinking "pisock" optional;
+    if test $LINK_RESULT != 0; then
+      ARG_WITHOUT_LIBPISOCK=1;
+    fi
+  fi
+  cfgwrite ""
+  cfgwrite "# enable PDA"
+  if test $ARG_WITHOUT_LIBPISOCK = 0; then
+    cfgwrite "libpisock = yes"
+  else
+    cfgwrite "libpisock = no"
+  fi
+}
+
 function runIt() {
   if test $ARG_BEQUIET != 1; then
     printParas;
@@ -257,6 +314,7 @@ function runIt() {
     fi
   else
     genConfigMake;
+    checkDependencies;
   fi
 }
 
@@ -291,6 +349,9 @@ function processOption() {
 	;;
     "x--enable-debug")
         ARG_WITH_DEBUG=1
+	;;
+    "x--without-pisock")
+        ARG_WITHOUT_LIBPISOCK=1
 	;;
 
     *) echo "error: cannot process argument: $1"; exit 1; ;;
