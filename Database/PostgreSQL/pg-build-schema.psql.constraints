@@ -1,852 +1,218 @@
 -- OpenGroupware.org database schema constraint creation script
--- position_x
--- date_x
-
-create table staff (
-  staff_id        int         not null,
-  company_id      int         not null,
-  description     varchar(255)     null,
-  login           varchar(255)     null,
-  is_team         smallint       null,
-  is_account      smallint       null,
-  db_status       varchar(50) null,
-  constraint pk_staff primary key (staff_id),
-  constraint unique_company_id unique(company_id));
-
-create table company (
-  company_id        int            not null,
-
-  object_version      int           null,
-  owner_id            int            null,
-  contact_id          int            null,   
-  template_user_id    int            null,   
-  is_private          smallint          null,
-  is_person           smallint          null,
-  is_readonly         smallint          null,      
-  is_enterprise       smallint          null,
-  is_account          smallint          null,
-  is_intra_account    smallint          null,
-  is_extra_account    smallint          null,
-  is_trust            smallint          null,
-  is_team             smallint          null,
-  is_location_team    smallint          null,
-  is_customer         smallint          null,
-  
-  number            varchar(100)   null,
-  description       varchar(255)        null,
-  priority          varchar(50)    null,
-  keywords          varchar(255)        null,
-
-
-  url               varchar(255)        null,
-  email             varchar(100)   null, 
-  type              varchar(50)    null,
-  bank              varchar(100)   null,
-  bank_code         varchar(50)    null,
-  account           varchar(50)    null,
-  payment           varchar(50)    null,
-
-
-
-  is_locked           smallint       null,
-  is_template_user    smallint       null,
-  can_change_password smallint       null,
-  login               varchar(50)    null,
-  password            varchar(255)   null,
-  pop3_account        varchar(50)    null,
-
-
-
-  name              varchar(50)    null,
-  middlename        varchar(50)    null, 
-  firstname         varchar(50)    null,
-  salutation        varchar(50)    null,
-  degree            varchar(50)    null,
-  birthday          timestamp with time zone      null,
-  sex               varchar(10) null,
-
-  db_status         varchar(50)    null,
-  constraint pk_company primary key (company_id),
-  constraint company2owner foreign key (owner_id) 
-        references staff(company_id),         
-  constraint company2contact foreign key (contact_id) 
-        references staff(company_id),         
-  constraint unique_company_number unique(number),
-  constraint unique_company_login unique(login)
-);
-
-create table company_info (
-  company_info_id int         not null,
-  company_id      int         not null, 
-  comment         text       null,
-  db_status       varchar(50) null,
-  constraint pk_company_info primary key (company_info_id),
-  constraint company_info2company foreign key (company_id) 
-    references company(company_id));
-
-
-create table company_value (
-  company_value_id   int         not null,
-  company_id         int         null,
-  attribute          varchar(255)     null,
-  attribute_type     varchar(50) null,
-  value_string       varchar(255)     null,
-  value_date         timestamp with time zone   null,
-  value_int          int        null,
-  is_enum            smallint       null,
-  category           varchar(255)     null,
-  uid                int         null, 
-  label              varchar(255)     null,
-  type               int        null,
-  is_label_localized smallint       null,
-  db_status          varchar(50) null,
-  constraint pk_company_value primary key (company_value_id),
-  constraint company_value2company foreign key (company_id) 
-    references company(company_id));
-
-create table company_category (
-  company_category_id int         not null,
-  object_version      int        null,
-  category            varchar(255)     null,
-  db_status           varchar(50) null,
-  constraint pk_company_category primary key (company_category_id));
-
-create table company_assignment (
-  company_assignment_id int         not null,
-  company_id            int         null,
-  sub_company_id        int         null,
-  is_headquarter        smallint       null,
-  is_chief              smallint       null,
-  function              varchar(255)     null,
-  db_status             varchar(50) null,
-  constraint pk_company_assignment primary key (company_assignment_id),
-  constraint company_assignment2company foreign key (company_id) 
-    references company(company_id),         
-  constraint company_assignment2sub_company foreign key (sub_company_id) 
-    references company(company_id));
-
-create table appointment_resource (
-  appointment_resource_id int         not null,
-  object_version          int        null,
-  name                    varchar(255)     not null,
-  email                   varchar(255)     null,
-  email_subject           varchar(255)     null,
-  category                varchar(255)     null,
-  notification_time       int        null,
-  db_status               varchar(50) null,
-  constraint pkx_company_category primary key (appointment_resource_id),
-  constraint unique_aptresname_idx unique(name));
-
-create table date_x (
-  date_id         int         not null, 
-  object_version  int        null,
-  owner_id        int         null,     
-  access_team_id  int         null,    
-  parent_date_id  int         null,     
-                                         
-  start_date      timestamp with time zone   not null,
-  end_date        timestamp with time zone   not null,
-  cycle_end_date  timestamp with time zone   null,
-  type            varchar(50) null, 
-  title           varchar(255)     null,
-  location        varchar(255)     null,
-  absence         varchar(255)     null,
-  resource_names  varchar(255)     null,
-  write_access_list varchar(255)   null,
-  is_absence      smallint       null,
-  is_attendance   smallint       null,
-  is_conflict_disabled   smallint null,
-  travel_duration_before int  null,
-  travel_duration_after  int  null,
-  notification_time      int  null,
-  db_status       varchar(50)  null,
-  constraint pk_date primary key (date_id),
-  constraint date2date foreign key (parent_date_id) references date_x(date_id),
-  constraint date2owner foreign key (owner_id) references staff(company_id),    
-  constraint date2access_team foreign key (access_team_id) 
-    references staff(company_id));
-
-create table date_info (
-  date_info_id int         not null,
-  date_id      int         not null, 
-  comment      text       null,
-  db_status    varchar(50) null,
-  constraint pk_date_info primary key (date_info_id),
-  constraint date_info2date foreign key (date_id) references date_x(date_id));
-
-create table date_company_assignment (
-  date_company_assignment_id int         not null,
-  company_id                 int         null,
-  date_id                    int         null,
-  is_staff                   smallint       null,
-  is_new                     smallint       null,
-  db_status                  varchar(50) null,
-  constraint pk_date_company_assignment primary key (date_company_assignment_id),
-  constraint date_company_assign2company foreign key (company_id) 
-    references company(company_id),         
-  constraint date_company_assign2date foreign key (date_id) 
-    references date_x(date_id));
-
-create table project (
-  project_id     int          not null,
-  object_version int         null,
-  owner_id       int          not null,
-  team_id        int          null,
-  number         varchar(100) null,
-  name           varchar(255)      null,
-  start_date     timestamp with time zone    null,
-  end_date       timestamp with time zone    null,
-  status         varchar(255)      null,
-  is_fake        smallint        null,
-  db_status      varchar(50)  null,
-  kind           varchar(50)  null,
-  constraint pk_project primary key (project_id),
-  constraint project2owner foreign key (owner_id) references staff(company_id),
-  constraint project2team foreign key (team_id) references staff(company_id),
-  constraint unique_project_number unique(number));
-
-create table object_acl (
-  object_acl_id int            not null,
-  sort_key      int           not null,
-  action        varchar(10) not null,
-  int     varchar(255)        not null,
-  auth_id       varchar(255)        null,
-  permissions   varchar(50)    null);
-
-create table project_company_assignment (
-  project_company_assignment_id int         not null,
-  company_id                    int         null,
-  project_id                    int         null,
-  info                          varchar(255)     null,
-  has_access                    smallint       null,
-  access_right                  varchar(50) null,
-  db_status                     varchar(50) null,
-  constraint pk_project_company_assignment 
-    primary key (project_company_assignment_id),
-  constraint project_company_assign2company foreign key (company_id) 
-    references company(company_id),         
-  constraint project_company_assign2project foreign key (project_id) 
-    references project(project_id));
-
-create table document (
-  document_id        int         not null,
-  object_version     int        null,
-  project_id         int         null,
-  parent_document_id int         null,
-  date_id            int         null,
-  first_owner_id     int         null,
-  current_owner_id   int         null,
-  version_count      int        null,
-  file_size          int        null,
-  is_note            smallint       null,
-  is_folder          smallint       null,
-  is_object_link     smallint       null,
-  is_index_doc       smallint       null,
-  title              varchar(255)     null,
-  abstract           varchar(255)     null,
-  file_type          varchar(255)     null,
-  object_link        varchar(255)     null,
-  creation_date      timestamp with time zone   null,
-  lastmodified_date  timestamp with time zone   null,
-  status             varchar(50) null,
-  db_status          varchar(50) null,
-  contact            varchar(255)     null,
-  constraint pk_document primary key (document_id),
-  constraint document2document foreign key (parent_document_id) 
-    references document(document_id),
-  constraint document2project foreign key (project_id) 
-    references project(project_id),         
-  constraint document2date foreign key (date_id) 
-    references date_x(date_id),                 
-  constraint document2first_owner foreign key (first_owner_id) 
-    references staff(company_id),
-  constraint document2current_owner foreign key (current_owner_id) 
-    references staff(company_id));
-
-create table document_version (
-  document_version_id int         not null,
-  object_version      int        null,
-  document_id         int         null,
-  last_owner_id       int         null,
-  title               varchar(255)     null,
-  abstract            varchar(255)     null,
-  file_type           varchar(255)     null,
-  version             int        null,
-  file_size           int        null,
-  creation_date       timestamp with time zone   null,
-  archive_date        timestamp with time zone   null,
-  is_packed           smallint       null,
-  change_text         text       null,
-  db_status           varchar(50) null,
-  contact             varchar(255)     null,
-  constraint pk_document_version primary key (document_version_id),
-  constraint document_version2document foreign key (document_id) 
-    references document(document_id),               
-  constraint document_version2last_owner foreign key (last_owner_id) 
-    references staff(company_id));
-
-create table document_editing (
-  document_editing_id int         not null,
-  object_version      int        null,
-  document_id         int         null,
-  current_owner_id    int         null,
-  title               varchar(255)     null,
-  abstract            varchar(255)     null,
-  file_type           varchar(255)     null,
-  file_size           int        null,
-  version             int        null,
-  is_attach_changed   smallint       null,
-  checkout_date       timestamp with time zone   null,
-  status              varchar(50) null,
-  db_status           varchar(50) null,
-  contact             varchar(255)     null,
-  constraint pk_document_editing primary key (document_editing_id),
-  constraint document_editing2current_owner foreign key (current_owner_id) 
-    references staff(company_id),
-  constraint document_editing2document foreign key (document_id) 
-    references document(document_id));
-
-create table address (
-  address_id        int          not null,
-  object_version    int        null,
-  company_id        int          null,
-  name1             varchar(255)      null,
-  name2             varchar(255)      null,
-  name3             varchar(255)      null,
-  street            varchar(255)      null,
-  zip               varchar(50)  null,
-  zipcity           varchar(255)      null,
-  country           varchar(100) null,
-  state             varchar(100) null,
-  type              varchar(50)  not null,
-  db_status         varchar(50)  null,
-  constraint pk_address primary key (address_id),
-  constraint address2company foreign key (company_id) 
-    references company(company_id));
-
-create table telephone (
-  telephone_id      int         not null,
-  object_version    int        null,
-  company_id        int         null,
-  number            varchar(255)     null,
-  real_number       varchar(255)     null,
-  type              varchar(50) not null,
-  info              varchar(255)     null,
-  url               varchar(255)     null,
-  db_status         varchar(50) null,
-  constraint pk_telephone primary key (telephone_id),
-  constraint telephone2company foreign key (company_id) 
-    references company(company_id));
-
-create table job (
-  job_id         int         not null,
-  object_version int        null,
-  parent_job_id  int         null,
-  project_id     int         null,
-  creator_id     int         null,
-  executant_id   int         null,
-  name           varchar(255)     not null,
-  start_date     timestamp with time zone   not null,
-  end_date       timestamp with time zone   not null,
-  notify         int        null,
-  is_control_job smallint       null,
-  is_team_job    smallint       null,
-  is_new         smallint       null,
-  job_status     varchar(255)     null,
-  category       varchar(255)     null,
-  priority       int        null,
-  db_status      varchar(50) null,
-  kind           varchar(50) null,
-  keywords       varchar(255)     null,
-  constraint pk_job primary key (job_id),
-  constraint job2project foreign key (project_id) references project(project_id),
-  constraint job2creator foreign key (creator_id) references staff(company_id),
-  constraint job2executant foreign key (executant_id) 
-    references staff(company_id),               
-  constraint job2job foreign key (parent_job_id) references job(job_id));
-
-create table job_history (
-  job_history_id int         not null,
-  object_version int        null,
-  job_id         int         not null,
-  actor_id       int         null,
-  action         varchar(50) null,
-  action_date    timestamp with time zone   null,
-  job_status     varchar(50) null,
-  db_status      varchar(50) null,
-  constraint pk_job_history primary key (job_history_id),
-  constraint job_history2job foreign key (job_id) references job(job_id),
-  constraint job_history2actor foreign key (actor_id) 
-    references staff(company_id));
-
-create table job_history_info (
-  job_history_info_id int         not null,
-  job_history_id      int         not null,
-  comment             text       null,
-  db_status           varchar(50) null,
-  constraint pk_job_history_info primary key (job_history_info_id),
-  constraint job_history_info2job_history foreign key (job_history_id) 
-    references job_history(job_history_id));
-
-create table resource (
-  resource_id         int         not null,
-  resource_name       varchar(255)     not null,
-  token               varchar(255)         null,
-  object_id           int             null,
-  quantity            int            null,
-  comment             text           null,
-  standard_costs      numeric(19,2)          null,
-  type                int        not null,
-  db_status           varchar(50)     null,
-  object_version      int            null,
-
-  constraint pk_resource_id primary key (resource_id));
-
-create table job_resource_assignment (
-  job_resource_assignment_id int      not null,
-  resource_id                int          null,
-  job_id                     int          null,
-  operative_part             int         null,
-  db_status                  varchar(50)  null,
-
-  constraint pk_job_resource_id primary key (job_resource_assignment_id),
-  constraint job_resource2resource foreign key (resource_id)
-                       references resource(resource_id),
-  constraint job_resource2job foreign key (job_id)
-                       references job(job_id));
-
-
-create table news_article (
-  news_article_id       int          not null,
-  object_version        int         null,
-  name                  varchar(255)      null,
-  caption               varchar(255)      null,
-  is_index_article      smallint        null,
-  creation_date         timestamp with time zone    null,
-  db_status             varchar(50)  null,
-  constraint pk_news_article primary key (news_article_id));
-
-create table news_article_link (
-  news_article_link_id  int          not null,
-  object_version        int         null,
-  news_article_id       int          null,
-  sub_news_article_id   int          null,
-  constraint pk_article_link primary key (news_article_link_id),
-  constraint n_article_link2news_article foreign key (news_article_id) 
-    references news_article(news_article_id),         
-  constraint n_article_link2news_article2 
-    foreign key (sub_news_article_id) 
-    references news_article(news_article_id));
-
-create table url_criterion (
-  criterion_id    int          not null,
-  object_version  int         null,
-  criterion_kind  varchar(255)      null,
-  criterion_name  varchar(255)      null,
-  rules           text        null,
-  db_status       varchar(50)  null,
-  constraint pk_criterion primary key (criterion_id));
-
-create table url (
-  url_id             int         not null,
-  int         int         not null, 
-  enterprise_id      int         null,     
-  object_version     int        null,
-  url_name           varchar(255)     null,
-  title              varchar(255)     null,
-  annotation         text       null,
-  is_ready           smallint       null,
-  creation_date      timestamp with time zone   null,
-  last_modified_date timestamp with time zone   null,       
-  db_status          varchar(50) null,
-  constraint pk_url primary key (url_id));
-/*
-create table url_rating (
-  rating_id          int         not null,
-  criterion_id       int         not null,
-  url_id             int         not null,
-  int         int         not null, 
-  object_version     int        null,
-  creation_date      timestamp with time zone   null,       
-  last_modified_date timestamp with time zone   null,         
-  rating_value       int        null,
-  db_status          varchar(50) null,
-  constraint pk_rating primary key (rating_id));
-*/
-create table invoice (
-  invoice_id         int          not null,
-  debitor_id         int          not null,
-  parent_invoice_id  int,
-  invoice_nr         varchar(255)      not null,
-  invoice_date       timestamp with time zone    null,
-  kind               varchar(100) null,    
-  status             varchar(100) not null,  
-  net_amount         numeric(19,4)       null,
-  gross_amount       numeric(19,4)       null,
-  paid               numeric(19,4)       null,
-  comment            text        null,
-  object_version     int         null,
-  db_status          varchar(50)  null,
-  constraint pk_invoice primary key (invoice_id));
-
-create table article_category (
-  article_category_id int         not null,
-  category_name       varchar(255)     not null,
-  category_abbrev     varchar(255)     null,
-  constraint pk_article_category primary key (article_category_id));
-
-create table article_unit (
-  article_unit_id    int         not null,
-  format             varchar(50) null,
-  singular_unit      varchar(255)     null,
-  plural_unit        varchar(255)     null,
-  constraint pk_url_x primary key (article_unit_id));
-
-create table article (
-  article_id          int         not null,
-  article_unit_id     int         null,
-  article_category_id int         null,
-  object_version      int        null,
-  article_name        varchar(255)     not null,
-  article_nr          varchar(255)     not null,
-  article_text        text       null,
-  status              varchar(50) null,
-  price               numeric(19,4)      null,
-  vat                 numeric(19,4)      null,
-  vat_group           varchar(50) null,
-  db_status           varchar(50) null,
-  constraint pk_article primary key (article_id));
-
-create table invoice_article_assignment (
-  invoice_article_assignment_id int         not null,
-  invoice_id                    int         not null,
-  article_id                    int         not null,
-  article_count                 numeric(19,4)      not null,
-  object_version                int        null,
-  net_amount                    numeric(19,4)      null,
-  vat                           numeric(19,8)      null,
-  comment                       text       null,
-  db_status                     varchar(50) null,
-  constraint pk_invoice_article_assignment primary key 
-    (invoice_article_assignment_id));
-
-create table invoice_account (
-  invoice_account_id    int            not null,
-  enterprise_id         int            not null,
-  account_nr            varchar(50)    not null,
-  balance               numeric(19,4)         null,
-  object_version        int           null,
-  db_status             varchar(50)    null,
-  constraint pk_invoice_account primary key (invoice_account_id));
-
-create table invoice_action (
-  invoice_action_id     int            not null,
-  account_id            int            not null,
-  invoice_id            int            null,
-  document_id           int            null,
-  action_date           timestamp with time zone      null,
-  action_kind           varchar(100)   not null,
-  log_text              text          null,
-  object_version        int           null,
-  db_status             varchar(50)    null,
-  constraint pk_invoice_action primary key (invoice_action_id));
-
-create table invoice_accounting (
-  invoice_accounting_id         int            not null,
-  action_id                     int            not null,
-  debit                         numeric(19,4)         null,
-  balance                       numeric(19,4)         null,
-  object_version                int           null,
-  db_status                     varchar(50)    null,
-  constraint pk_invoice_accounting primary key (invoice_accounting_id));
-
-create table job_assignment (
-  job_assignment_id     int         not null,
-  parent_job_id         int         not null,
-  child_job_id          int         not null,
-  position_x              int            null,
-  assignment_kind       varchar(50) null,
-  db_status             varchar(50) null,
-  constraint pk_job_assignment primary key (job_assignment_id),
-  constraint parent_job_assignment2job foreign key (parent_job_id) 
-    references job(job_id),         
-  constraint child_job_assignment2job foreign key (child_job_id)
-    references job(job_id));
-
-create table project_info (
-  project_info_id int         not null,
-  project_id      int         not null, 
-  comment         text       null,
-  db_status       varchar(50) null,
-  constraint pk_project_info primary key (project_info_id),
-  constraint project_info2project foreign key (project_id) 
-    references project(project_id));
-
-create table log (
-  log_id                  int          not null,
-  creation_date           timestamp with time zone    not null,
-  object_id               int          not null,
-  log_text                text        not null,
-  action                  varchar(100) not null,
-  account_id              int          null,
-  constraint pk_log primary key (log_id));
-
-create table session_log (
-  session_log_id          int          not null,
-  account_id              int          not null,
-  log_date                timestamp with time zone    not null,
-  action                  varchar(255)      not null,
-  constraint pk_session_log primary key (session_log_id));
-
-CREATE TABLE obj_info (
-  obj_id             int         not null,
-  obj_type           varchar(255)     not null,
-  constraint pk_obj_info primary key (obj_id));
-
-CREATE TABLE obj_property (
-  obj_property_id    int         not null,
-  obj_id             int         not null,
-  obj_type           varchar(255)     null,
-  access_key         int         null,     
-  value_key          varchar(255)     not null, 
-  namespace_prefix   varchar(255)     null,     
-  preferred_type     varchar(255)     not null, 
-  value_string       varchar(255)     null,     
-  value_int          int        null,     
-  value_float        numeric(19,8)      null,     
-  value_date         timestamp with time zone   null,     
-  value_oid          varchar(255)     null,     
-  blob_size          int        null,
-  value_blob         text      null,
-  constraint pk_obj_property primary key (obj_property_id));
-
-create table object_model (
-  db_version int    not null,
-  model_name varchar(255) not null);
-
-create table table_version (
-  table_name              varchar(255)        not null,
-  table_version           int           not null,
-  constraint pk_table_version primary key (table_name));
-
-create table key_lock (
-        key_lock_id numeric(2,0) null);
-;
-
-create table person (
-) INHERITS(company);
-/*
-  create view person as 
-  select company_id, owner_id, int, template_user_id, number, 
-         description, priority, keywords, name, middlename, firstname, 
-         salutation, degree, is_private, is_readonly,
-         birthday, url, sex, is_person, login, password, is_locked, pop3_account,
-         is_account, is_intra_account, is_extra_account, is_customer, db_status,
-         object_version, is_template_user, can_change_password
-  from company
-  where is_person = 1 and is_enterprise = null and is_trust = null and is_team = null
-;
-*/
-
-create table enterprise (
-)
-INHERITS(company);
-/*
-create view enterprise as 
-  select company_id, owner_id, int, number, 
-         description, priority, keywords, url, email, login,
-         bank, bank_code, account,
-         is_enterprise, db_status, is_customer, is_private, is_readonly,
-         object_version
-  from company 
-  where is_person = null and is_enterprise = 1 and is_trust = null and is_team = null
-;
-*/
-
-create table trust (
-)
-INHERITS(company);
-/*
-create view trust as 
-  select company_id, owner_id, int, number, is_private, is_readonly,
-         description, priority, keywords, url, email, is_trust, db_status, 
-         object_version
-  from company 
-  where is_person = null and is_enterprise = null and is_trust = 1 and is_team = null
-;
-*/
-
-create table team (
-)
-INHERITS(company);
-/*
-create view team as 
-  select company_id, owner_id, int, number, login, email,
-         description, is_team, is_location_team, db_status,
-         object_version 
-  from company 
-  where is_person = null and is_enterprise = null and is_trust = null and is_team = 1
-;
-*/
-
-create table note (
-)
-INHERITS(document);
--- create view note as select * from document where is_note = 1;
-
-create table doc (
-)
-INHERITS(document);
--- create view doc as select * from document where is_note = 0;
-
-
-INSERT INTO person (company_id, login, name, description, is_account, 
-                    is_intra_account, is_extra_account, is_person, number, 
-                    is_private, is_readonly, db_status) 
-  VALUES (10000, 'root', 'root', 'Administrator', 1, 1, 0, 1, 'LS10000', 0, 1,
-          'inserted');
-
-insert into staff (staff_id, company_id, is_account) values (10001, 10000, 1)
-;
-
-insert into company_info (company_info_id, company_id)
-  values (10002, 10000)
-;
-
-
-
-insert into person (company_id, owner_id, login, name, description, is_account, 
-               is_intra_account, is_extra_account, is_person, number, is_private,
-               is_readonly, is_locked, is_template_user, db_status) 
-  values (9999, 10000, 'template', 'template', 'Template', 1, 1, 0, 1, 
-          'LS9999', 1, 1, 1, 1, 'inserted')
-;
-
-into insert into staff (staff_id, company_id, is_account) values (9998, 9999, 1)
-;
-
-insert into company_info (company_info_id, company_id)
-  values (9997, 9999)
-;
-
-
-
-insert into team (company_id, description, is_team, number, login, db_status) 
-  values (10003, 'all intranet', 1, 'LS10003', 'all intranet', 'inserted')
-;
-
-into insert into staff (staff_id, company_id, is_team) values (10004, 10003, 1)
-;
-
-insert into company_info (company_info_id, company_id)
-  values (10005, 10003)
-;
-
-insert into team (company_id, description, is_team, number, login, db_status) 
-  values (9991, 'news editors', 1, 'LS9991', 'newseditors', 'inserted')
-;
-
-into insert into staff (staff_id, company_id, is_team) values (9992, 9991, 1)
-;
-
-insert into company_info (company_info_id, company_id)
-  values (9993, 9991)
-;
-
-insert into news_article (news_article_id, name, caption, is_index_article)
-  values (10006, 'index', 'Index', 1)
-;
-
-insert into into table_version ( table_name, table_version )
-  VALUES ( '_model', 32 )
-
-insert into into table_version ( table_name, table_version )
-  VALUES ( 'staff', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'company', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'company_info', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'company_value', 32 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'company_category', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'company_assignment', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'appointment_resource', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'date', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'date_info', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'date_company_assignment', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'project', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'project_company_assignment', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'document', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'document_version', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'document_editing', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'address', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'telephone', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'job', 32 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'job_history', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'job_history_info', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'email_folder', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'email_content', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'email', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'news_article', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'news_article_link', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'key_generator', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'key_lock', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'person', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'enterprise', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'trust', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'team', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'note', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'doc', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'url', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'url_criterion', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'url_rating', 31 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'log', 32 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'invoice', 32 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'article_category', 32 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'article_unit', 32 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'article', 32 )
-insert into into table_version ( table_name, table_version ) 
-  VALUES ( 'invoice_article_assignment', 32 )
-;
-
-
-UPDATE project_company_assignment set access_right = 'r' 
-  WHERE has_access = 1 AND access_right is null
-;
+
+-- table staff
+
+-- table company
+ALTER TABLE company ADD constraint 
+        company2owner foreign key (owner_id) 
+        references staff(company_id);
+ALTER TABLE company ADD constraint
+        company2contact foreign key (contact_id) 
+        references staff(company_id);
+
+-- table company_info
+-- problem with inheritance
+--ALTER TABLE company_info ADD constraint
+ --   company_info2company foreign key (company_id) 
+ --   references company(company_id);
+
+-- table company_value
+ALTER TABLE company_value ADD constraint
+   company_value2company foreign key (company_id) 
+    references company(company_id);
+
+-- table company_category
+
+-- table company_assignment
+ALTER TABLE company_assignment ADD constraint
+    company_assignment2company foreign key (company_id) 
+    references company(company_id);
+ALTER TABLE company_assignment ADD constraint
+    company_assignment2sub_company foreign key (sub_company_id) 
+    references company(company_id);
+
+-- table appointment_resource
+
+-- table date_x
+ALTER TABLE date_x ADD constraint 
+    date2date foreign key (parent_date_id) references date_x(date_id);
+ALTER TABLE date_x ADD constraint 
+    date2owner foreign key (owner_id) references staff(company_id);
+ALTER TABLE date_x ADD constraint
+    date2access_team foreign key (access_team_id) 
+    references staff(company_id);
+
+-- table date_info
+ALTER TABLE date_info ADD constraint
+    date_info2date foreign key (date_id) references date_x(date_id);
+
+-- table date_company_assignment
+ALTER TABLE date_company_assignment ADD constraint
+    date_company_assign2company foreign key (company_id) 
+    references company(company_id);
+ALTER TABLE date_company_assignment ADD constraint
+    date_company_assign2date foreign key (date_id) 
+    references date_x(date_id);
+
+-- table project
+ALTER TABLE project ADD constraint
+    project2owner foreign key (owner_id) references staff(company_id);
+ALTER TABLE project ADD constraint
+    project2team foreign key (team_id) references staff(company_id);
+
+-- table object_acl
+
+-- table project_company_assignment
+ALTER TABLE project_company_assignment ADD constraint
+    project_company_assign2company foreign key (company_id) 
+    references company(company_id);
+ALTER TABLE project_company_assignment ADD constraint
+    project_company_assign2project foreign key (project_id) 
+    references project(project_id);
+
+-- table document
+ALTER TABLE document ADD constraint
+    document2document foreign key (parent_document_id) 
+    references document(document_id);
+ALTER TABLE document ADD constraint
+    document2project foreign key (project_id) 
+    references project(project_id);
+ALTER TABLE document ADD constraint
+    document2date foreign key (date_id) 
+    references date_x(date_id);
+ALTER TABLE document ADD constraint
+    document2first_owner foreign key (first_owner_id) 
+    references staff(company_id);
+ALTER TABLE document ADD constraint
+    document2current_owner foreign key (current_owner_id) 
+    references staff(company_id);
+
+-- table document_version
+ALTER TABLE document_version ADD constraint
+    document_version2document foreign key (document_id) 
+    references document(document_id);
+ALTER TABLE document_version ADD constraint
+    document_version2last_owner foreign key (last_owner_id) 
+    references staff(company_id);
+
+-- table document_editing
+ALTER TABLE document_editing ADD constraint
+    document_editing2current_owner foreign key (current_owner_id) 
+    references staff(company_id);
+ALTER TABLE document_editing ADD constraint
+    document_editing2document foreign key (document_id) 
+    references document(document_id);
+
+-- table address
+ALTER TABLE address ADD constraint
+    address2company foreign key (company_id) references company(company_id);
+
+-- table telephone
+ALTER TABLE telephone ADD constraint
+    telephone2company foreign key (company_id) references company(company_id);
+
+-- table job
+ALTER TABLE job ADD constraint 
+  job2project foreign key (project_id) references project(project_id);
+ALTER TABLE job ADD constraint
+  job2creator foreign key (creator_id) references staff(company_id);
+ALTER TABLE job ADD constraint
+  job2executant foreign key (executant_id) references staff(company_id);
+ALTER TABLE job ADD constraint
+  job2job foreign key (parent_job_id) references job(job_id);
+
+-- table job_history
+ALTER TABLE job_history ADD constraint
+  job_history2job foreign key (job_id) references job(job_id);
+ALTER TABLE job_history ADD constraint
+  job_history2actor foreign key (actor_id) references staff(company_id);
+
+-- table job_history_info
+ALTER TABLE job_history_info ADD constraint
+    job_history_info2job_history foreign key (job_history_id) 
+    references job_history(job_history_id);
+
+-- table resource
+
+-- table job_resource_assignment
+ALTER TABLE job_resource_assignment ADD constraint
+  job_resource2resource foreign key (resource_id) 
+  references resource(resource_id);
+ALTER TABLE job_resource_assignment ADD constraint
+  job_resource2job foreign key (job_id) references job(job_id);
+
+-- table news_article
+
+-- table news_article_link
+ALTER TABLE news_article_link ADD constraint
+    n_article_link2news_article foreign key (news_article_id) 
+    references news_article(news_article_id);
+ALTER TABLE news_article_link ADD constraint
+    n_article_link2news_article2 foreign key (sub_news_article_id) 
+    references news_article(news_article_id);
+
+-- table invoice
+
+-- table arcticle_category
+
+-- table article_unit
+
+-- table article
+
+-- table invoice_article_assignment
+
+-- table invoice_account
+
+-- table invoice_action
+
+-- table invoice_accounting
+
+-- table job_assignment
+ALTER TABLE job_assignment ADD constraint
+    parent_job_assignment2job foreign key (parent_job_id) 
+    references job(job_id);
+ALTER TABLE job_assignment ADD constraint
+    child_job_assignment2job foreign key (child_job_id)
+    references job(job_id);
+
+-- table project_info
+ALTER TABLE project_info ADD constraint
+    project_info2project foreign key (project_id) 
+    references project(project_id);
+
+-- table log
+
+-- table session_log
+
+-- table obj_info
+
+-- table obj_property
+
+-- table obj_link
+
+-- table obj_model
+
+-- table table_version
+
+-- table person (inherits company)
+
+-- table enterprise (inherits company)
+
+-- table trust (inherits company)
+
+-- table team (inherits company)
+
+-- table note (inherits document)
+
+-- table doc (inherits document)
+
+-- table palm_address
+
+-- table palm_date
+
+-- table palm_memo
+
+-- table palm_todo
+
+-- table palm_category
+

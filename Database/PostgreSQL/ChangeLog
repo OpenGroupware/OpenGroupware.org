@@ -1,3 +1,8 @@
+2005-03-22  Stefan Huehner  <stefan@huehner.org>
+	
+	* pg-build-schema.psql.constraints: removed all table creation and
+	  DML statements to use the script as an addon to pg-build-schema.psql
+	
 Fri Dec  5 17:18:44 2003  Martin Hoerning  <mh@skyrix.com>
 
 	* pg-build-schema.psql, pg-update-schema.psql: added columns
