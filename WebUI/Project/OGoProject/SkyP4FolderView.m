@@ -942,9 +942,9 @@ static NSArray *accessCheckFlags = nil;
   }
 
   if (debugOn) [self debugWithFormat:@"clicked file '%@'", path];
-    
+  
   if ([doc isNew]) {
-      [self logWithFormat:
+    [self logWithFormat:
               @"document %@ is 'new' "
               @"(a filelist cannot contain new documents) !!!",
               doc];

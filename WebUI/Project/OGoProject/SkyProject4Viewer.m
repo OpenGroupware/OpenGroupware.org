@@ -22,9 +22,6 @@
 #include <OGoFoundation/LSWViewerPage.h>
 #include <OGoDocuments/SkyDocumentFileManager.h>
 
-@class NSString, NSMutableSet, NSArray, NSMutableArray;
-@class WOComponent;
-
 /*
   SkyProject4Viewer
 
@@ -36,6 +33,9 @@
   
   TODO: use OGoProjectDocView component for document tab
 */
+
+@class NSString, NSMutableSet, NSArray, NSMutableArray;
+@class WOComponent;
 
 @interface SkyProject4Viewer : LSWViewerPage
 {
@@ -92,6 +92,8 @@ static inline BOOL _showUnknownFiles(id self) {
     NSNotificationCenter *nc;
     
     nc = [NSNotificationCenter defaultCenter];
+    
+    // TODO: SkyNewJobNotification???
     [nc addObserver:self selector:@selector(refreshView:)
         name:@"SkyNewJobNotification" object:nil];
   }

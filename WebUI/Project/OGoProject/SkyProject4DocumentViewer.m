@@ -39,6 +39,8 @@
   id                 item;
   id                 key;
   NSString           *folderPath;
+  
+  NSString           *activeTabKey;
 }
 
 - (NSDictionary *)fileSystemInfo;
@@ -523,7 +525,7 @@ static BOOL  hasEpoz             = NO;
 }
 
 - (NSDictionary *)fileSystemInfo {
-  if (self->fsinfo)
+  if (self->fsinfo != nil)
     return self->fsinfo;
   
   self->fsinfo = [[[self fileManager]
@@ -1150,7 +1152,7 @@ static BOOL  hasEpoz             = NO;
   return page;
 }
 
-- (id)accessIds {
+- (NSDictionary *)accessIds {
   LSCommandContext *cmdctx;
 
   cmdctx = [(OGoSession *)[self session] commandContext];
@@ -1187,18 +1189,19 @@ static BOOL  hasEpoz             = NO;
   
   return [NSDictionary dictionaryWithObject:subj forKey:@"subject"];
 }
-- (id)item {
-  return self->item;
-}
+
 - (void)setItem:(id)_id {
   ASSIGN(self->item, _id);
 }
-
-- (NSString *)key {
-  return self->key;
+- (id)item {
+  return self->item;
 }
+
 - (void)setKey:(NSString *)_id {
   ASSIGNCOPY(self->key, _id);
+}
+- (NSString *)key {
+  return self->key;
 }
 
 - (NSString *)defaultPropertyNamespace {
@@ -1300,6 +1303,20 @@ static BOOL  hasEpoz             = NO;
 
 - (BOOL)supportsProperties {
   return [[self fileManager] supportsProperties];
+}
+
+/* dynamic tabs */
+
+- (void)setActiveTabKey:(NSString *)_path {
+  ASSIGNCOPY(self->activeTabKey, _path);
+}
+- (NSString *)activeTabKey {
+  return self->activeTabKey;
+}
+
+- (BOOL)showActiveTabKey {
+  // check configured permissions etc
+  return YES;
 }
 
 @end /* SkyProject4DocumentViewer */
