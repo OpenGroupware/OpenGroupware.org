@@ -122,6 +122,6 @@ teamViewerTitle        = "Team Ansicht";
 teams                  = "Teams";
 teamsSubview           = "Teams";
 timezone               = "Zeitzone";
-valueNotSet            = "<i>(kein Wert konfiguriert)</i>" ;
+valueNotSet            = "<i>(kein Wert konfiguriert)</i>";
 yesValue               = "ja";
 zidestore              = "ZideStore";
