@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #import <Foundation/NSObject.h>
 
@@ -103,7 +102,7 @@
 
 @implementation SkyAptNotify
 
-#define CALENDARFORMAT @"%Y-%m-%d %H:%M (%Z)"
+#define CALENDARFORMAT  @"%Y-%m-%d %H:%M (%Z)"
 #define CALENDARFORMAT2 @"%Y-%m-%d %H:%M"
 
 static NSString *_msgFormat  = nil;
@@ -113,9 +112,21 @@ static BOOL     coreOnException = NO;
 
 + (void)initialize {
   NSUserDefaults *udefs = [NSUserDefaults standardUserDefaults];
+  NSString *msgtemplate;
   id tmp;
 
   noNum = [[NSNumber numberWithBool:NO] retain];
+  
+  msgtemplate = 
+    @"Appointment Notification\n"
+    @"\n"
+    @"  title:        %@\n"
+    @"  start-date:   %@\n"
+    @"  end-date:     %@\n"
+    @"  location:     %@\n"
+    @"  resources:    %@\n"
+    @"  participants: %@\n"
+    @"  comment:\n%@\n";
   
   tmp =
     [NSDictionary dictionaryWithObjectsAndKeys:
@@ -136,6 +147,7 @@ static BOOL     coreOnException = NO;
                   @"mit:",                      @"AptNotifySendpageWith",
                   noNum,                        @"AptNotifySendpageToExternal",
                   noNum,                        @"AptNotifySendmailToExternal",
+		  msgtemplate,                  @"AptNotifyMessageFormat",
                   nil];
   [udefs registerDefaults:tmp];
   
@@ -180,25 +192,25 @@ static BOOL     coreOnException = NO;
 }
 
 - (void)dealloc {
-  RELEASE(self->skyrixUser);
-  RELEASE(self->skyrixPwd);
-  RELEASE(self->fromAddress);
-  RELEASE(self->sentResourcesFile);
-  RELEASE(self->defaultTimeZone);
-  RELEASE(self->sendmailPath);
-  RELEASE(self->sendpagePath);
-  RELEASE(self->pagerhost);
-  RELEASE(self->sendpageFrom);
-  RELEASE(self->sendpageTitle);
-  RELEASE(self->sendpageWith);
+  [self->skyrixUser        release];
+  [self->skyrixPwd         release];
+  [self->fromAddress       release];
+  [self->sentResourcesFile release];
+  [self->defaultTimeZone   release];
+  [self->sendmailPath      release];
+  [self->sendpagePath      release];
+  [self->pagerhost         release];
+  [self->sendpageFrom      release];
+  [self->sendpageTitle     release];
+  [self->sendpageWith      release];
 
-  RELEASE(self->ctx);
-  RELEASE(self->ud);
-  RELEASE(self->aptDataSource);
+  [self->ctx release];
+  [self->ud  release];
+  [self->aptDataSource release];
 
-  RELEASE(self->start);
-  RELEASE(self->end);
-  RELEASE(self->now);
+  [self->start release];
+  [self->end   release];
+  [self->now   release];
   [super dealloc];
 }
 
@@ -657,65 +669,29 @@ static BOOL     coreOnException = NO;
   }
 }
 - (NSString *)_messageFormat {
-  if (_msgFormat == nil) {
-    _msgFormat =
-#if 0    
-      [[NSString alloc]
-                 initWithString:
-                 @"Subject: %@\n"
-                 @"From: %@\n"
-                 @"Reply-To:%@\n"
-                 @"To: %@\n"
-                 @"Content-Type: %@\n"
-                 @"\n"
-                 @"Appointment Notification\n"
-                 @"\n"
-                 @"  title:        %@\n"
-                 @"  start-date:   %@\n"
-                 @"  end-date:     %@\n"
-                 @"  location:     %@\n"
-                 @"  resources:    %@\n"
-                 @"  participants: %@\n"
-                 @"  comment:\n%@\n"
-      ];
-#else
-      [[NSString alloc]
-                 initWithString:
-                 @"Appointment Notification\n"
-                 @"\n"
-                 @"  title:        %@\n"
-                 @"  start-date:   %@\n"
-                 @"  end-date:     %@\n"
-                 @"  location:     %@\n"
-                 @"  resources:    %@\n"
-                 @"  participants: %@\n"
-                 @"  comment:\n%@\n"
-      ];
-#endif
-  }
+  if (_msgFormat != nil)
+    return _msgFormat;
+  
+  _msgFormat = [[[NSUserDefaults standardUserDefaults] 
+		  stringForKey:@"AptNotifyMessageFormat"] copy];
   return _msgFormat;
 }
 
 - (NSString *)_messageFormat2 {
-  if (_msgFormat2 == nil) {
-    _msgFormat2 =
-      [[NSString alloc]
-                 initWithString:
-                 @"Subject: %@\n"
-                 @"From: %@\n"
-                 @"Reply-To:%@\n"
-                 @"To: %@\n"
-                 @"Content-Type: %@\n"
-                 @"\n"
-      ];
-  }
-  return _msgFormat2;
+  return
+    @"Subject: %@\n"
+    @"From: %@\n"
+    @"Reply-To:%@\n"
+    @"To: %@\n"
+    @"Content-Type: %@\n"
+    @"\n";
 }
 
 - (NSTimeZone *)_timeZoneForAccount:(id)_acc {
   id         tz       = nil;
-  NSString   *defpath = [[self userDefaults] stringForKey:@"LSAttachmentPath"];
-
+  NSString   *defpath;
+  
+  defpath = [[self userDefaults] stringForKey:@"LSAttachmentPath"];
   if (![[_acc valueForKey:@"isAccount"] boolValue])
     return [NSTimeZone timeZoneWithAbbreviation:self->defaultTimeZone];
   

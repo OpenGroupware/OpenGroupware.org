@@ -1,3 +1,8 @@
+2004-09-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* skyaptnotify.m: message template texts are now configurable using
+	  the AptNotifyMessageFormat default (fixes OGo bug #828)
+
 2004-09-09  Helge Hess  <helge.hess@skyrix.com>
 
 	* GNUmakefile: added FHS installation support for tools
