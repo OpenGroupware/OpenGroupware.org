@@ -1,14 +1,10 @@
-// $Id: LSWEnterpriseSearchPage.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller class
 
 Frame: LSWSkyrixFrame {}
 
 Window: LSWWindowFrame {
-  title = labels.EnterpriseSearchPageTitle;
+  title   = labels.EnterpriseSearchPageTitle;
   onClose = session.navigation.leavePage;
-}
-
-IsLicensed: SkyLicenseConditional {
-  modules = ( Enterprises );
 }
 
 Form: WOForm {}
@@ -22,25 +18,25 @@ ValueCell: SkyValueCell {
 Font:     SkyConfigFont     {}
 EditFont: SkyConfigEditFont {}
 
-EditFont2: WOGenericContainer {
+EditFont2: WOGenericContainer { // TODO: replace with CSS
   elementName = "font";
   color       = config.editFont2.color;
   size        = config.editFont2.size;
   face        = config.editFont2.face;
-};
+}
 
 IsWizardMode: WOConditional {
   condition = isInWizardMode;
-};
+}
 
 IsWizardModeElse: WOConditional {
   condition = isInWizardMode;
   negate    = YES;
-};
+}
 
 IsForward: WOConditional {
   condition = isWizardForward;
-};
+}
 
 Forward: WOImageButton {
   action   = wizardForward;
@@ -48,11 +44,11 @@ Forward: WOImageButton {
   name     = labels.wizardForward;
   alt      = labels.wizardForward;
   border   = "0";
-};
+}
 
 IsBack: WOConditional {
   condition = isWizardBack;
-};
+}
 
 Back: WOImageButton {
   action   = wizardBack;
@@ -60,11 +56,11 @@ Back: WOImageButton {
   name     = labels.wizardBack;
   alt      = labels.wizardBack;
   border   = "0";
-};
+}
 
 IsFinish: WOConditional {
   condition = isWizardFinish;
-};
+}
 
 Finish: WOImageButton {
   action   = wizardFinish;
@@ -72,7 +68,7 @@ Finish: WOImageButton {
   name     = labels.wizardFinish;
   alt      = labels.wizardFinish;
   border   = "0";
-};
+}
 
 Cancel: WOImageButton {
   action   = wizardCancel;
@@ -80,30 +76,30 @@ Cancel: WOImageButton {
   name     = labels.wizardCancel;
   alt      = labels.wizardCancel;
   border   = "0";
-};
+}
 
 SearchField: WOTextField {
   value = searchString;
-};
+}
 
 SearchEnterprise: WOString {
   value = labels.searchEnterprise;
-};
+}
 
 SearchSubmit: WOSubmitButton {
   action   = search;
   value    = labels.search;
   class    = "button_narrow";
-};
+}
 
 EnterpriseCond: WOConditional {
   condition = hasEnterprises;
-};
+}
 
 EnterpriseRep: WORepetition {
   list = searchResult;
   item = item;
-};
+}
 
 ChooseIcon: WOHyperlink {
   action   = choose;
@@ -111,16 +107,16 @@ ChooseIcon: WOHyperlink {
   name     = labels.choose;
   alt      = labels.choose;
   border   = "0";
-};
+}
 
 
 ChooseEnterprise: WOString {
   value = labels.chooseEnterprise;
-};
+}
 
 EnterpriseLabel: WOString {
   value = item.description;
-};
+}
 
 EnterpriseRadioButtonList: WORadioButtonList {
   list      = searchResult;
@@ -128,4 +124,4 @@ EnterpriseRadioButtonList: WORadioButtonList {
   selection = snapshot;
   prefix    = "<tr><td>";
   suffix    = enterpriseName;
-};
+}
