@@ -457,7 +457,7 @@ The XMLRPC daemon allows to execute groupware functions over the standardized
 XMLRPC API. This is especially useful within scripts or custom applications.
 #########################################
 %package zidestore
-Summary:      Shared libraries of the OpenGroupware.org zidestore server
+Summary:      ZideStore server for OpenGroupware.org
 Group:        Development/Libraries
 #Requires:    ogo-gnustep_make
 AutoReqProv:  off
@@ -475,7 +475,7 @@ Group:        Development/Libraries
 AutoReqProv:  off
 
 %description zidestore-devel
-This package contains development files for the libraries of the ZideStore
+This package contains development files for the OpenGroupware.org ZideStore
 server.
 #########################################
 %prep
