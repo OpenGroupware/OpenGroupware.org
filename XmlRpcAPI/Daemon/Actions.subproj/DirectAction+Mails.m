@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,13 +18,11 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "DirectAction.h"
 #include "DirectAction+Mails.h"
 
 @implementation DirectAction(MailMethods)
-
 
 - (id)mail_createMailAction {
   id            ctx;
@@ -57,7 +55,7 @@
   }
   if (![f createDirectoryAtPath:ctxPath attributes:nil]) {
     return [self faultWithFaultCode:XMLRPC_FAULT_INTERNAL_ERROR
-                 format:@"Couldn`t create mail transaction directory at "
+                 format:@"Could not create mail transaction directory at "
                  @"path %@", ctxPath];
   }
   return ctxId;
@@ -171,7 +169,7 @@
   if (![f fileExistsAtPath:blobDir isDirectory:&isDir]) {
     if (![f createDirectoryAtPath:blobDir attributes:nil])
       return [self faultWithFaultCode:XMLRPC_FAULT_INTERNAL_ERROR
-                   format:@"Couldn`t create path for attachments %@",
+                   format:@"Could not create path for attachments %@",
                    blobDir];
   }
   if (!isDir) {
@@ -197,7 +195,7 @@
     breakLock(self);
     if (!res) {
       return [self faultWithFaultCode:XMLRPC_FAULT_INTERNAL_ERROR
-                   format:@"Couldn`t write blob to path %@", p];
+                   format:@"Could not write blob to path %@", p];
     }
     [dict setObject:p forKey:@"AttachmentBlobPath"];
   }
@@ -244,7 +242,7 @@
 
     if (!res) {
       return [self faultWithFaultCode:XMLRPC_FAULT_INTERNAL_ERROR
-                   format:@"Couldn`t attachment config file %@", attPath];
+                   format:@"Could not attachment config file %@", attPath];
     }
   }
   return toBool(YES);
@@ -287,17 +285,16 @@
       txt = html;
       contentTyp = @"text/html";
     }
-    else {
+    else
       contentTyp = @"text/plain";
-    }
   }
   header = loadHeaders(self, path);
   rec    = [NSMutableArray arrayWithCapacity:16];
   
   objs = [header objectForKey:@"bcc"];
-  if ([objs count]) {
+  if ([objs count] > 0)
     [rec addObjectsFromArray:objs];
-  }
+  
   [header removeObjectForKey:@"bcc"];
 
   objs = [header objectForKey:@"to"];
@@ -316,7 +313,7 @@
   while ((obj = [enumerator nextObject])) {
     NGMailAddressParser *parser;
     
-    if (![obj length])
+    if ([obj length] == 0)
       continue;
     
     parser = [NGMailAddressParser mailAddressParserWithString:obj];
@@ -326,13 +323,14 @@
   objs       = [[rec copy] autorelease];
   enumerator = [objs objectEnumerator];
   [rec removeAllObjects];
-
-  while ((obj = [enumerator nextObject])) {
+  
+  while ((obj = [enumerator nextObject]) != nil) {
     NSString *mail;
+    
+    if ((mail = [(NGMailAddress *)obj address]) == nil)
+      continue;
 
-    if ((mail = [obj address])) {
-      [rec addObject:mail];
-    }
+    [rec addObject:mail];
   }
   
   attachments = loadAttachments(self, path);
