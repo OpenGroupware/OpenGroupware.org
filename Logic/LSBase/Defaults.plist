@@ -143,6 +143,7 @@
         "rtf"     = "application/rtf";
         "rtx"     = "text/richtext";
         "scd"     = "application/x-msschedule";
+        "sed"     = "application/x-sedscript";
         "ser"     = "application/java-serialized-object";
         "sfm"     = "skyrix/form";
         "sh"      = "application/x-sh";

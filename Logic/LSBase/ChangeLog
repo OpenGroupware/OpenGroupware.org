@@ -1,3 +1,8 @@
+2005-03-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Defaults.plist: map .sed extension to application/x-sedscript
+	  (v5.1.21)
+
 2005-03-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Defaults.plist: added extension/MIME-type mappings for Oasis
