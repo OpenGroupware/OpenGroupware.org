@@ -22,3 +22,4 @@ OGoRecipientLists_RESOURCE_FILES += Defaults.plist Version
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
+-include ../../fhsbundle.make

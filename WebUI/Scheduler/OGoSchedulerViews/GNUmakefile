@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 
@@ -62,8 +62,4 @@ OGoSchedulerViews_RESOURCE_FILES += Defaults.plist Version
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
-
-before-all :: $(OGoSchedulerViews_DERIVED_RESOURCES)
-
-clean ::
-	rm -f $(OGoSchedulerViews_DERIVED_RESOURCES)
+-include ../../fhsbundle.make

@@ -103,3 +103,4 @@ libOGoFoundation_OBJC_FILES = \
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make
 -include GNUmakefile.postamble
+-include fhs.make

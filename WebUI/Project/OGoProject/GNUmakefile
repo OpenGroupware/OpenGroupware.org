@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 15 2004-08-21 03:22:17Z helge $
 
 include ../common.make
 
@@ -70,3 +70,4 @@ OGoProject_RESOURCE_FILES += \
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
+-include ../../fhsbundle.make

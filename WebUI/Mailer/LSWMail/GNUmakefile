@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 
@@ -35,8 +35,4 @@ German.lproj/LSWMail.ccfg : English.lproj/LSWMail.ccfg
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
-
-before-all :: $(LSWMail_DERIVED_RESOURCES)
-
-clean ::
-	rm -f $(LSWMail_DERIVED_RESOURCES)
+-include ../../fhsbundle.make

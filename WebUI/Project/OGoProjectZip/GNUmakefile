@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 
@@ -30,3 +30,4 @@ OGoProjectZip_LANGUAGES = English German
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
+-include ../../fhsbundle.make

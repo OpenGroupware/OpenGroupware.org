@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
 include ../common.make
 
@@ -26,8 +26,4 @@ OGoMailInfo_COMPONENTS = \
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
-
-before-all :: $(OGoMailInfo_DERIVED_RESOURCES)
-
-clean ::
-	rm -f $(OGoMailInfo_DERIVED_RESOURCES)
+-include ../../fhsbundle.make

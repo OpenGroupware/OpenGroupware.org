@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/LSWEditorPage.h>
 
@@ -40,6 +39,7 @@
 
 #include "common.h"
 #include <OGoFoundation/LSWNotifications.h>
+#include <GDLAccess/EOEntity+Factory.h>
 
 @implementation SkyTelephoneEditor
 
@@ -58,8 +58,8 @@ static int cmpTypes(id t1, id t2, void* context) {
 
 - (void)dealloc {
   [self->snapshots release];
-  [self->teleType release];
-  [self->company release];
+  [self->teleType  release];
+  [self->company   release];
   [super dealloc];
 }
 
@@ -137,6 +137,8 @@ static int cmpTypes(id t1, id t2, void* context) {
   self->telephonesAreFetched = YES;
 }
 
+/* notifications */
+
 - (void)syncAwake {
   [super syncAwake];
 
@@ -144,7 +146,7 @@ static int cmpTypes(id t1, id t2, void* context) {
     [self _createNewTeleTypes];
 }
 
-// accessors
+/* accessors */
 
 - (void)setCompany:(id)_company {
   ASSIGN(self->company, _company);
@@ -159,7 +161,7 @@ static int cmpTypes(id t1, id t2, void* context) {
 }
 
 - (void)setTeleType:(NSString *)_teleType {
-  ASSIGN(self->teleType, _teleType);
+  ASSIGNCOPY(self->teleType, _teleType);
 }
 - (NSString *)teleType {
   return self->teleType;
@@ -180,25 +182,23 @@ static int cmpTypes(id t1, id t2, void* context) {
   return LSWNewAddressNotificationName;
 }
 
-// -------------------------------------------------------------
+/* teletype */
 
 - (NSString *)telephoneType {
   NSString *str;
-
-  str = [[self labels] valueForKey:self->teleType];
   
+  str = [[self labels] valueForKey:self->teleType];
   return (str == nil) ? self->teleType : str;
 }
 
 - (NSString *)textFieldNumberName {
-  return [NSString stringWithFormat:@"%@%@", self->teleType, @"number"];
+  return [[self->teleType stringValue] stringByAppendingString:@"number"];
 }
-
 - (NSString *)textFieldInfoName {
-  return [NSString stringWithFormat:@"%@%@", self->teleType, @"info"];
+  return [[self->teleType stringValue] stringByAppendingString:@"info"];
 }
 
-// actions
+/* actions */
 
 - (id)save {
   NSEnumerator *phoneEnum;
@@ -216,4 +216,4 @@ static int cmpTypes(id t1, id t2, void* context) {
   return [self backWithCount:1];
 }
 
-@end
+@end /* SkyTelephoneEditor */

@@ -1,0 +1,6 @@
+# postprocessing
+
+before-all :: $(OGoMailInfo_DERIVED_RESOURCES)
+
+clean ::
+	rm -f $(OGoMailInfo_DERIVED_RESOURCES)
