@@ -14,3 +14,5 @@ ProjectsUI_BUNDLE_LIBS += \
 	-lNGObjWeb \
 	-lNGMime -lNGStreams -lNGExtensions -lEOControl	\
 	-lXmlRpc -lDOM -lSaxObjC
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

@@ -33,7 +33,7 @@
 @end
 
 #include "common.h"
-#include <Projects/SxProjectsFolder.h>
+#include <SoObjects/ZSProjects/SxProjectsFolder.h>
 
 @implementation OGoProjectsOverview
 

@@ -1,10 +1,12 @@
-# $Id$
+# GNUstep makefile
 
 include $(GNUSTEP_MAKEFILES)/common.make
+include ../../Version
+include ./Version
 
 BUNDLE_NAME        = CommonUI
 BUNDLE_EXTENSION   = .zsp
-BUNDLE_INSTALL_DIR = $(GNUSTEP_USER_ROOT)/Library/ZideStore12
+BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/ZideStore-$(MAJOR_VERSION).$(MINOR_VERSION)
 
 CommonUI_PRINCIPAL_CLASS = CommonUIProduct
 
@@ -31,13 +33,14 @@ ZIDESTORE=../..
 
 ADDITIONAL_INCLUDE_DIRS += \
 	-I. \
-	-I$(ZIDESTORE)/Frontend -I$(ZIDESTORE)/Backend -I$(ZIDESTORE)
+	-I$(ZIDESTORE)/ZSFrontend -I$(ZIDESTORE)/ZSBackend -I$(ZIDESTORE)
 
 # make
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
+-include ../../fhsbundle.make
 
 after-all ::
 	@(cd $(BUNDLE_NAME)$(BUNDLE_EXTENSION);\
