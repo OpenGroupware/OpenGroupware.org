@@ -1,0 +1,48 @@
+// bind template to controller
+
+StandardAttrsTitle: LSWViewerTitle {
+  title    = labels.standardAttributes;
+  gentable = YES;
+}
+
+AttrsButtons: SkyButtonRow {
+  ordering = ( edit );
+  onEdit   = editStandardAttrs;
+  edit     = labels.edit;
+  hasEdit  = hasEditAttrs;
+}
+
+AttrViewer: WODictionaryRepetition {
+  dictionary = docStandardAttrs;
+  key        = key;
+  item       = item;
+}
+
+AttrKey: SkySubAttribute {
+  label = labels.$key;
+  width = "15%";
+}
+AttrItem: WOString {
+  value = item;
+}
+
+SupportsProperties: WOConditional {
+  condition = supportsProperties;
+}
+
+PropertiesTitle: LSWViewerTitle {
+  title    = labels.attributes;
+  gentable = YES;
+}
+
+PropButtons: SkyButtonRow {
+  ordering = ( edit );
+  onEdit   = editProperties;
+  edit     = labels.edit;
+  hasEdit  = hasEditAttrs;
+}
+
+PropViewer: SkyObjectPropertyViewer {
+  globalID         = documentGlobalID;
+  defaultNamespace = defaultPropertyNamespace;
+}

@@ -1,3 +1,7 @@
+2005-03-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoDocInlineViewers: prepared componentenized document viewer
+
 2005-03-13  Helge Hess  <helge.hess@opengroupware.org>
 
 	* BaseUI/Main.html: template cleanups
