@@ -1,3 +1,8 @@
+2004-08-25  Helge Hess  <helge@dogbert.in.skyrix.com>
+
+	* GNUmakefile.preamble (xmlrpcd_TOOL_LIBS): removed dependency on
+	  NGScripting (v5.1.34)
+
 2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
 
 	* GNUmakefile.preamble: link against libNGXmlRpc in SOPE 4.3 (v5.1.33)

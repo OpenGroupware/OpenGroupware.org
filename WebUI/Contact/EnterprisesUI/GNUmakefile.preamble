@@ -4,7 +4,6 @@ EnterprisesUI_RESOURCE_FILES += Defaults.plist Version
 
 ADDITIONAL_WOBUNDLE_LIBS += \
 	-lOGoFoundation \
-	-lNGScripting	\
 	-lOGoDocuments -lOGoContacts -lLSFoundation \
 	-lGDLAccess	\
 	-lNGMime	\

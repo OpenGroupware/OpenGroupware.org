@@ -10,7 +10,6 @@ ADDITIONAL_TOOL_LIBS += \
 	-lLSFoundation	\
 	-lGDLAccess	\
 	-lNGiCal	\
-	-lNGScripting	\
 	-lNGLdap -lNGMime -lNGExtensions -lEOControl	\
 	-lXmlRpc -lDOM -lSaxObjC
 

@@ -5,13 +5,11 @@ OGoWebMail_INCLUDE_DIRS += -I. -I.. -I../..
 OGoWebMail_WOBUNDLE_LIBS += \
 	-lOGoWebMail	\
 	-lOGoFoundation	\
-	-lNGScripting	\
 	-lNGMime -lEOControl \
 	-lDOM -lSaxObjC
 
 libOGoWebMail_LIBRARIES_DEPEND_UPON += \
 	-lOGoFoundation	\
-	-lNGScripting	\
 	-lNGMime -lEOControl \
 	-lDOM -lSaxObjC
 

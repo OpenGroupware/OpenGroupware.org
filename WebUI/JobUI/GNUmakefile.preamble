@@ -5,7 +5,6 @@ WebUIROOT =..
 
 ADDITIONAL_WOBUNDLE_LIBS += \
 	-lOGoJobs -lOGoDocuments\
-	-lNGScripting	\
 	-lGDLAccess	\
 	-lDOM -lSaxObjC
 

@@ -1,5 +1,4 @@
 <#Frame>
-  <!-- $Id: LSWPersons.html,v 1.6 2004/01/02 22:04:17 helge Exp $ -->
   <#Window>
     <#TabBody>
       <#FavoritesTab>
@@ -14,11 +13,12 @@
           <tr><td align="left">
           <#Form>
             <#SearchField/><#SearchSubmit/>
-            <#IsSearchLimited><#Font>&nbsp;&nbsp;
-              <#LimitedLabel/></#Font>
+            <#IsSearchLimited>
+              <#Font>&nbsp;&nbsp;<#LimitedLabel/></#Font>
             </#IsSearchLimited>
           </#Form>
-          </td><td align="right"><#SavedSearchPopUp/></td></tr>
+          </td>
+          <td align="right"><#SavedSearchPopUp/></td></tr>
         </table>
         
         <#PersonList>

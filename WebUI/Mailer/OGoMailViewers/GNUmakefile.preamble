@@ -2,7 +2,6 @@
 
 OGoMailViewers_WOBUNDLE_LIBS += \
 	-lOGoFoundation		\
-	-lNGScripting		\
 	-lNGMime		\
 	-lEOControl		\
 	-lDOM -lSaxObjC

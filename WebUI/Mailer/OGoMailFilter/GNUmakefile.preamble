@@ -5,7 +5,6 @@ OGoMailFilter_INCLUDE_DIRS += -I. -I.. -I../..
 OGoMailFilter_WOBUNDLE_LIBS += \
 	-lOGoWebMail	\
 	-lOGoFoundation	\
-	-lNGScripting	\
 	-lNGMime -lEOControl \
 	-lDOM -lSaxObjC
 

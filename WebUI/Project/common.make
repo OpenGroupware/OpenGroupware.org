@@ -22,11 +22,11 @@ ADDITIONAL_LIB_DIRS     += 					\
 	-L$(OGoROOT)/DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR) \
 	-L$(OGoROOT)/Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
 
-ADDITIONAL_BUNDLE_LIBS += 	\
+ADDITIONAL_BUNDLE_LIBS += \
 	-lOGoFoundation -lOGoDocuments \
-	-lLSFoundation		\
-	-lGDLAccess		\
-	-lNGObjWeb -lNGScripting\
+	-lLSFoundation	\
+	-lGDLAccess	\
+	-lNGObjWeb	\
 	-lNGLdap -lNGMime -lNGStreams -lNGExtensions -lEOControl \
 	-lXmlRpc -lDOM -lSaxObjC
 

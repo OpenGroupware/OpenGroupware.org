@@ -4,7 +4,6 @@ OGoROOT   =../..
 WebUIROOT =..
 
 ADDITIONAL_BUNDLE_LIBS += \
-	-lNGScripting	\
 	-lGDLAccess	\
 	-lNGMime	\
 	-lDOM -lSaxObjC

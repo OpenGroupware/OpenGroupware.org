@@ -5,8 +5,9 @@ USED_LIBS = \
         -lOGoProject -lOGoDocuments	\
 	-lLSFoundation			\
 	-lGDLAccess			\
-        -lNGObjWeb -lNGScripting	\
-	-lNGLdap -lNGMime -lNGStreams -lNGExtensions -lEOControl	\
+        -lNGObjWeb			\
+	-lNGLdap -lNGMime 		\
+	-lNGStreams -lNGExtensions -lEOControl	\
 	-lXmlRpc -lDOM -lSaxObjC
 
 libZSProjects_LIBRARIES_DEPEND_UPON += $(USED_LIBS)

@@ -2,9 +2,10 @@
 
 USED_LIBS = \
         -lZSFrontend -lZSBackend \
-	-lGDLAccess \
-        -lNGObjWeb -lNGScripting \
-	-lNGMime -lNGStreams -lNGExtensions -lEOControl \
+	-lGDLAccess	\
+        -lNGObjWeb	\
+	-lNGMime	\
+	-lNGStreams -lNGExtensions -lEOControl \
 	-lXmlRpc -lDOM -lSaxObjC
 
 libZSTasks_LIBRARIES_DEPEND_UPON += $(USED_LIBS)

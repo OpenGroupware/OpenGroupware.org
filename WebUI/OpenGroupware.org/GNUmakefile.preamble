@@ -17,7 +17,7 @@ ADDITIONAL_LIB_DIRS += \
 
 OpenGroupware10a_TOOL_LIBS += \
 	-lOGoFoundation -lOGoDocuments	\
-	-lWEExtensions -lWOExtensions -lNGScripting \
+	-lWEExtensions -lWOExtensions \
 	-lNGObjWeb	\
 	-lLSFoundation	\
 	-lGDLAccess	\

@@ -16,6 +16,6 @@ ADDITIONAL_LIB_DIRS += \
 PrefsUI_BUNDLE_LIBS += \
 	-lZSBackend \
 	-lGDLAccess \
-	-lNGObjWeb -lNGScripting \
+	-lNGObjWeb  \
 	-lNGMime -lNGStreams -lNGExtensions -lEOControl \
 	-lXmlRpc -lDOM -lSaxObjC

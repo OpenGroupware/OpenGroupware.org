@@ -30,7 +30,6 @@
 #include "LSWMimeContent.h"
 #include "LSWModuleManager.h"
 #include "common.h"
-#include <NGScripting/NGScriptLanguage.h>
 #include <LSFoundation/OGoContextSession.h>
 #include <LSFoundation/OGoContextManager.h>
 #include <NGHttp/NGHttp.h>

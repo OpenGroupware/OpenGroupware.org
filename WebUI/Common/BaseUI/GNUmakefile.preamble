@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
 
 ADDITIONAL_CPPFLAGS += -Wall
 
@@ -11,8 +11,9 @@ BaseUI_LIB_DIRS     += \
 ADDITIONAL_WOBUNDLE_LIBS += \
         -lOGoFoundation \
         -lLSFoundation  \
-        -lNGObjWeb -lNGScripting \
-        -lNGMime -lNGExtensions -lEOControl \
+        -lNGObjWeb	\
+        -lNGMime	\
+	-lNGExtensions -lEOControl \
 	-lDOM -lSaxObjC
 
 ADDITIONAL_BUNDLE_LIBS += $(ADDITIONAL_WOBUNDLE_LIBS)

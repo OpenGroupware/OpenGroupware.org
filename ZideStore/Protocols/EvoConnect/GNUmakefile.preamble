@@ -18,7 +18,8 @@ ADDITIONAL_LIB_DIRS += \
 	-L../../ZSBackend/$(GNUSTEP_OBJ_DIR)
 
 EvoConnect_BUNDLE_LIBS += \
-	-lZSFrontend \
-	-lNGObjWeb -lNGScripting \
-	-lNGMime -lNGStreams -lNGExtensions -lEOControl \
+	-lZSFrontend	\
+	-lNGObjWeb	\
+	-lNGMime	\
+	-lNGStreams -lNGExtensions -lEOControl \
 	-lXmlRpc -lDOM -lSaxObjC

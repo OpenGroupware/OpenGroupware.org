@@ -1,11 +1,11 @@
-# $Id$
+# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
 
 # libs
 
 ADDITIONAL_WOBUNDLE_LIBS += \
 	-lOGoFoundation -lOGoDocuments	\
 	-lLSFoundation		\
-	-lNGObjWeb -lNGScripting\
+	-lNGObjWeb		\
 	-lGDLAccess		\
 	-lNGLdap -lEOControl	\
 	-lDOM -lSaxObjC
