@@ -76,11 +76,13 @@ static int UseLDAPAuth = -1;
       LDAPPort = [ud integerForKey:@"LSAuthLDAPServerPort"];
     }
 
+#if 0
     if ([_pwd length] == 0) {
       [self logWithFormat:@"missing password for authorization of login '%@'",
               _login];
       return NO;
     }
+#endif
   
     if (![NGLdapConnection checkPassword:_pwd ofLogin:_login
                            atBaseDN:LDAPRoot onHost:LDAPHost port:LDAPPort]) {

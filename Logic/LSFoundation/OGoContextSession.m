@@ -283,7 +283,7 @@ static OGoContextSession *activeSession = nil;
 
 #if 0
   if ([_pwd length] == 0)
-    [self logWithFormat:@"WARNING: missing password !"];
+    [self logWithFormat:@"WARNING: missing password!"];
 #endif  
   
   self->loginAccount = [self runCommand:@"account::login",

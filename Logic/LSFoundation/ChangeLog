@@ -1,3 +1,8 @@
+2004-09-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoContextManager+LDAP.m: removed a log if an empty password is being
+	  passed in for login (v5.1.88)
+
 2004-09-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* changed all sources to use new DB API for exception less selects,
