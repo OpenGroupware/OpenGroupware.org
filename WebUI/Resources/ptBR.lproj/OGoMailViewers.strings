@@ -3,7 +3,7 @@
 subject          = "Assunto";
 to               = "Para";
 cc               = "Cc";
-bcc              = "Bcc"
+bcc              = "Bcc";
 sender           = "Remetente";
 date             = "Data";
 toDoc            = "Tornar um documento de projeto";
