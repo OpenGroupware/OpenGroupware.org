@@ -18,12 +18,11 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#import "common.h"
-#import "LSGetCompanyForMemberCommand.h"
-#import <GDLAccess/EOSQLQualifier.h>
-#import <EOControl/EOKeyGlobalID.h>
+#include "LSGetCompanyForMemberCommand.h"
+#include "common.h"
+#include <GDLAccess/EOSQLQualifier.h>
+#include <EOControl/EOKeyGlobalID.h>
 
 @implementation LSGetCompanyForMemberCommand
 
@@ -38,13 +37,6 @@ static int compareGroups(id group1, id group2, void *context) {
   if (name2 == nil) name2 = @"";
 
   return [name1 compare:name2];
-}
-
-- (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
-  if ((self = [super initForOperation:_operation inDomain:_domain])) {
-    self->fetchForOneObject = nil;
-  }
-  return self;
 }
 
 - (void)dealloc {
@@ -64,6 +56,35 @@ static int compareGroups(id group1, id group2, void *context) {
 }
 
 /* command methods */
+
+- (NSArray *)splitIntoBatches:(NSArray *)item batchSize:(int)batchSize {
+  // TODO: this should be some generic batch generation method on NSArray?
+  NSMutableArray *batches;
+  unsigned i, count, batchCount;
+    
+  count = [item count];
+  batchCount = count / batchSize + 1;
+  batches = [NSMutableArray arrayWithCapacity:batchCount];
+    
+  for (i = 0; i < count; i += batchSize) {
+    NSMutableString *batch;
+    unsigned j;
+      
+    batch = [[NSMutableString alloc] initWithCapacity:batchSize];
+    for (j = i; (j < (i + batchSize)) && (j < count); j++) {
+        NSString *ids;
+        
+        if (j != i) [batch appendString:@","];
+
+        ids = [[item objectAtIndex:j] stringValue];
+        [batch appendString:ids];
+    }
+    
+    [batches addObject:batch];
+    [batch release];
+  }
+  return batches;
+}
 
 - (NSArray *)_memberIdString {
   NSMutableSet *idSet    = nil;
@@ -90,33 +111,7 @@ static int compareGroups(id group1, id group2, void *context) {
     return [NSArray arrayWithObject:[item componentsJoinedByString:@","]];
   
   /* split into batches */
-  {
-    unsigned i, count = [item count], batchCount;
-    NSMutableArray *batches;
-    
-    batchCount = count / batchSize + 1;
-    batches = [NSMutableArray arrayWithCapacity:batchCount];
-    
-    for (i = 0; i < count; i += batchSize) {
-      NSMutableString *batch;
-      unsigned j;
-      
-      batch = [[NSMutableString alloc] initWithCapacity:batchSize];
-      
-      for (j = i; (j < (i + batchSize)) && (j < count); j++) {
-        NSString *ids;
-        
-        if (j != i) [batch appendString:@","];
-
-        ids = [[item objectAtIndex:j] stringValue];
-        [batch appendString:ids];
-      }
-      
-      [batches addObject:batch];
-      RELEASE(batch);
-    }
-    return batches;
-  }
+  return [self splitIntoBatches:item batchSize:batchSize];
 }
 
 - (EOSQLQualifier *)_qualifierForOneMember {
@@ -137,56 +132,69 @@ static int compareGroups(id group1, id group2, void *context) {
                                       pkeyValue];
   [qualifier setUsesDistinct:YES];
   
-  return AUTORELEASE(qualifier);  
+  return [qualifier autorelease];  
+}
+
+- (BOOL)isSingleKeyBatchString:(NSString *)_in {
+  return ([_in rangeOfString:@","].length > 0) ? NO : YES;
+}
+
+- (EOSQLQualifier *)falseSQLQualifierForEntity:(EOEntity *)_entity {
+  return [[[EOQualifier alloc] initWithEntity:_entity
+			       qualifierFormat:@"1=2"] autorelease];
 }
 
 - (EOSQLQualifier *)_qualifierForCompanyAssignment:(NSString *)_in {
-  EOEntity       *assignmentEntity = nil;
-  EOSQLQualifier *qualifier        = nil;
+  EOEntity       *assignmentEntity;
+  EOSQLQualifier *qualifier;
+  NSString       *qfmt;
+
+  if ([_in length] == 0)
+    return nil;
 
   assignmentEntity = [[self database] entityNamed:@"CompanyAssignment"];
   
-  if ([_in length] > 0) {
-    qualifier = [[[EOSQLQualifier alloc]
-                                  initWithEntity:assignmentEntity
-                                  qualifierFormat:@"%A IN (%@)",
-                                  @"subCompanyId", _in]
-                                  autorelease];
-    [qualifier setUsesDistinct:YES];
-  }
-  return qualifier;
+  qfmt = [self isSingleKeyBatchString:_in]
+    ? @"%A = %@"
+    : @"%A IN (%@)";
+  
+  qualifier = [[EOSQLQualifier alloc] initWithEntity:assignmentEntity
+				      qualifierFormat:qfmt, 
+				      @"subCompanyId", _in];
+  [qualifier setUsesDistinct:YES];
+  return [qualifier autorelease];
 }
 
 - (EOSQLQualifier *)_qualifierForMoreMembers:(NSString *)_in {
-  EOEntity       *memberEntity = nil;
-  EOSQLQualifier *qualifier    = nil;
-
+  EOEntity       *memberEntity;
+  EOSQLQualifier *qualifier;
+  NSString       *qfmt;
+  
   memberEntity = [[self database] entityNamed:[self groupEntityName]];
+
+  if ([_in length] == 0)
+    return [self falseSQLQualifierForEntity:memberEntity];
+
+  qfmt = [self isSingleKeyBatchString:_in]
+    ? @"%A = %@"
+    : @"%A IN (%@)";
   
-  qualifier = [EOSQLQualifier alloc];
-  if ([_in length] > 0) {
-    qualifier = [qualifier initWithEntity:memberEntity
-                           qualifierFormat:
-                             @"%A IN (%@)",
-                             @"toCompanyAssignment.subCompanyId", _in];
-  }
-  else {
-    qualifier = [qualifier initWithEntity:memberEntity
-                           qualifierFormat:@"1=2"];
-  }
-  
+  qualifier = [[EOSQLQualifier alloc] initWithEntity:memberEntity
+				      qualifierFormat:qfmt,
+				      @"toCompanyAssignment.subCompanyId", 
+				      _in];
   [qualifier setUsesDistinct:YES];
-  
   return [qualifier autorelease];
 }
 
 - (NSArray *)_fetchForOneObjectInContext:(id)_context {
   NSArray           *checkedGroups = nil;
-  NSMutableArray    *myGroups      = nil;
-  EODatabaseChannel *channel       = nil;
+  NSMutableArray    *myGroups;
+  EODatabaseChannel *channel;
   BOOL              isOk           = NO;
   id                obj            = nil;
   EOSQLQualifier    *q;
+  NSString *eName;
 
   myGroups  = [NSMutableArray arrayWithCapacity:64];
   channel   = [self databaseChannel];
@@ -198,39 +206,35 @@ static int compareGroups(id group1, id group2, void *context) {
     [self assert:(checkedGroups != nil) reason:[sybaseMessages description]];
     return checkedGroups;
   }
-  else {
-    isOk = [channel selectObjectsDescribedByQualifier:q
-                    fetchOrder:nil];
+
+  isOk = [channel selectObjectsDescribedByQualifier:q fetchOrder:nil];
+  [self assert:isOk reason:[sybaseMessages description]];
   
-    [self assert:isOk reason:[sybaseMessages description]];
-  
-    while ((obj = [channel fetchWithZone:NULL])) {
+  while ((obj = [channel fetchWithZone:NULL]) != nil) {
       [myGroups addObject:obj];
       obj = nil;
-    }
-    [myGroups sortUsingFunction:compareGroups context:self];
-    {
-      NSString *eName;
-
-      eName = [[self groupEntityName] lowercaseString];
-      
-      checkedGroups = LSRunCommandV(_context,
-                                    eName, @"check-permission",
-                                    @"object", myGroups, nil);
-    }
-    [[self member] takeValue:checkedGroups forKey:[self relationKey]];
-    return checkedGroups;
   }
+  [myGroups sortUsingFunction:compareGroups context:self];
+
+  /* filter forbidden objects */
+
+  eName = [[self groupEntityName] lowercaseString];
+  checkedGroups = LSRunCommandV(_context,
+				eName, @"check-permission",
+				@"object", myGroups, nil);
+  
+  [[self member] takeValue:checkedGroups forKey:[self relationKey]];
+  return checkedGroups;
 }
 
 - (id)_findGroupWithId:(NSNumber *)_groupId inGroups:(NSArray *)_groups  {
-  NSEnumerator *listEnum = [_groups objectEnumerator];
-  id           myGroup   = nil;
+  NSEnumerator *listEnum;
+  id           myGroup;
 
-  while ((myGroup = [listEnum nextObject])) {
-    if ([[myGroup valueForKey:@"companyId"] isEqual:_groupId]) {
+  listEnum = [_groups objectEnumerator];
+  while ((myGroup = [listEnum nextObject]) != nil) {
+    if ([[myGroup valueForKey:@"companyId"] isEqual:_groupId])
       return myGroup;
-    }
   }
   return nil;
 }
@@ -238,12 +242,13 @@ static int compareGroups(id group1, id group2, void *context) {
 - (void)_setAssignments:(NSMutableArray *)_assignments
   andGroups:(NSArray *)_groups
 {
-  NSEnumerator *listEnum = nil;
-  id           myMember  = nil;
+  NSEnumerator *listEnum;
+  id           myMember;
 
   listEnum = [self->members objectEnumerator];
 
-  while ((myMember = [listEnum nextObject])) {
+  while ((myMember = [listEnum nextObject]) != nil) {
+    // TODO: move to own method
     NSMutableArray *myGroups = nil;
     NSNumber       *memberId = nil;
     int            i, cnt    = [_assignments count];
@@ -298,6 +303,7 @@ static int compareGroups(id group1, id group2, void *context) {
     idBatches = [[self _memberIdString] objectEnumerator];
     
     while ((idBatch = [idBatches nextObject])) {
+      // TODO: move to own method
       q = [self _qualifierForCompanyAssignment:idBatch];
       if (q == nil)
         return nil;
@@ -315,7 +321,7 @@ static int compareGroups(id group1, id group2, void *context) {
                         lock:NO];
       [self assert:isOk reason:[sybaseMessages description]];
       
-      while ((row = [adChannel fetchAttributes:attrs withZone:NULL])) {
+      while ((row = [adChannel fetchAttributes:attrs withZone:NULL]) != nil) {
         NSNumber       *sourceId,  *targetId;
         EOKeyGlobalID  *sourceGid, *targetGid;
         NSMutableArray *subGids;
@@ -324,7 +330,7 @@ static int compareGroups(id group1, id group2, void *context) {
         targetId = [row objectForKey:@"companyId"];
         
         sourceGid = [EOKeyGlobalIDClass globalIDWithEntityName:
-                                        [self entityName]
+					  [self entityName]
                                         keys:&sourceId keyCount:1 zone:NULL];
 
         targetGid = [EOKeyGlobalIDClass globalIDWithEntityName:
@@ -332,9 +338,8 @@ static int compareGroups(id group1, id group2, void *context) {
                                         keys:&targetId keyCount:1 zone:NULL];
         
         if ((subGids = [gids objectForKey:sourceGid]) == nil) {
-          subGids = [[NSMutableArray alloc] init];
+          subGids = [NSMutableArray arrayWithCapacity:4];
           [gids setObject:subGids forKey:sourceGid];
-          RELEASE(subGids);
         }
         [subGids addObject:targetGid];
       }
@@ -347,9 +352,9 @@ static int compareGroups(id group1, id group2, void *context) {
 }
 
 - (NSArray *)_fetchForMoreObjectsInContext:(id)_context {
-  NSMutableArray    *myAssignments = nil;
-  NSMutableArray    *myGroups      = nil;
-  EODatabaseChannel *channel       = nil;
+  NSMutableArray    *myAssignments;
+  NSMutableArray    *myGroups;
+  EODatabaseChannel *channel;
   NSArray           *checkedGroups = nil;
   BOOL              isOk           = NO;
   id                obj            = nil;
@@ -372,7 +377,6 @@ static int compareGroups(id group1, id group2, void *context) {
       qualifier = [self _qualifierForCompanyAssignment:inBatch];
       
       if (qualifier != nil) {
-  #if 1
         EOAdaptorChannel *adChannel;
         EOEntity *entity;
         NSArray  *attributes;
@@ -391,14 +395,6 @@ static int compareGroups(id group1, id group2, void *context) {
         
         while ((obj = [adChannel fetchAttributes:attributes withZone:NULL]))
           [myAssignments addObject:obj];
-  #else
-        isOk = [channel selectObjectsDescribedByQualifier:qualifier
-                        fetchOrder:nil];
-        [self assert:isOk reason:[sybaseMessages description]];
-        while ((obj = [channel fetchWithZone:nil])) {
-          [myAssignments addObject:obj];
-        }
-#endif
       }
     }
   }
@@ -435,6 +431,8 @@ static int compareGroups(id group1, id group2, void *context) {
 
   return checkedGroups;
 }
+
+/* top level entry method */
 
 - (void)_executeInContext:(id)_context {
   if ([self->members count] == 0)
@@ -487,43 +485,45 @@ static int compareGroups(id group1, id group2, void *context) {
   return self->relationKey;
 }
 
-// key/value coding
+/* key/value coding */
 
 - (void)takeValue:(id)_value forKey:(id)_key {
   if ([_key isEqualToString:@"member"]) {
     [self setMember:_value];
     return;
   }
-  else if ([_key isEqualToString:@"members"]) {
+  if ([_key isEqualToString:@"members"]) {
     [self setMembers:_value];
     return;
   }
-  else if ([_key isEqualToString:@"relationKey"]) {
+  if ([_key isEqualToString:@"relationKey"]) {
     [self setRelationKey:_value];
     return;
   }
-  else if ([_key isEqualToString:@"fetchGlobalIDs"]) {
+  if ([_key isEqualToString:@"fetchGlobalIDs"]) {
     [self setFetchGlobalIDs:[_value boolValue]];
     return;
   }
-  else if ([_key isEqualToString:@"fetchForOneObject"]) {
+  if ([_key isEqualToString:@"fetchForOneObject"]) {
     ASSIGN(self->fetchForOneObject, _value);
     return;
   }
+  
   [super takeValue:_value forKey:_key];
 }
 
 - (id)valueForKey:(id)_key {
   if ([_key isEqualToString:@"member"])
     return [self member];
-  else if ([_key isEqualToString:@"members"])
+  if ([_key isEqualToString:@"members"])
     return [self members];
-  else if ([_key isEqualToString:@"relationKey"])
+  if ([_key isEqualToString:@"relationKey"])
     return [self relationKey];
-  else if ([_key isEqualToString:@"fetchGlobalIDs"])
+  if ([_key isEqualToString:@"fetchGlobalIDs"])
     return [NSNumber numberWithBool:[self fetchGlobalIDs]];
-  else if ([_key isEqualToString:@"fetchForOneObject"])
+  if ([_key isEqualToString:@"fetchForOneObject"])
     return self->fetchForOneObject;
+  
   return [super valueForKey:_key];
 }
 

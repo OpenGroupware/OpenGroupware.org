@@ -37,7 +37,7 @@
   qualifier =
     [[EOSQLQualifier alloc] initWithEntity:projectEntity
                             qualifierFormat:
-                              @"(%A=%)@ AND ((isFake = 0) OR (isFake IS NULL))"
+                              @"(%A=%@) AND ((isFake = 0) OR (isFake IS NULL))"
                               @" AND (dbStatus <> 'archived')",
                               @"toProjectCompanyAssignment.companyId",
                               [[self object] valueForKey:@"companyId"]];

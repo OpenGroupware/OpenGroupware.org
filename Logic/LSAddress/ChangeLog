@@ -1,3 +1,8 @@
+2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetCompanyForMemberCommand.m: code cleanups, do not use IN
+	  qualifier for single object fetches (v5.1.47)
+
 2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
 
 	* commands.plist, GNUmakefile: removed deprecated bookmark commands

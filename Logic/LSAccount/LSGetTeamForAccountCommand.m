@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <LSGetCompanyForMemberCommand.h>
 
@@ -47,11 +46,14 @@
   return @"groups";
 }
 
+/* run command */
+
 - (void)_executeInContext:(id)_context {
   NSString *cacheKey    = nil;
   NSArray  *cachedTeams = nil;
   id       companyId    = nil;
-
+  
+  // TODO: not using cache for multiple members?
   if ([[self members] count] > 1) {
     [super _executeInContext:_context];
     return;
@@ -63,10 +65,10 @@
 
   companyId = [self member];
   companyId = ([companyId isKindOfClass:[EOKeyGlobalID class]])
-    ? [[companyId keyValuesArray] lastObject]
+    ? [companyId keyValues][0]
     : [companyId valueForKey:@"companyId"];
 
-  cacheKey = [cacheKey stringByAppendingString:[companyId stringValue]];
+  cacheKey    = [cacheKey stringByAppendingString:[companyId stringValue]];
   cachedTeams = [_context valueForKey:cacheKey];
   
   if (cachedTeams) {
@@ -78,7 +80,7 @@
   }
 }
 
-// key/value coding
+/* key/value coding */
 
 - (void)takeValue:(id)_value forKey:(id)_key {
   if ([_key isEqualToString:@"account"] || [_key isEqualToString:@"object"])
@@ -92,10 +94,10 @@
 - (id)valueForKey:(id)_key {
   if ([_key isEqualToString:@"account"] || [_key isEqualToString:@"object"])
     return [self member];
-  else if ([_key isEqualToString:@"accounts"])
+  if ([_key isEqualToString:@"accounts"])
     return [self members];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
-@end
+@end /* LSGetTeamForAccountCommand */

@@ -27,7 +27,7 @@
 /*
   OGoAccessManager
   
-  This class determines whether a certain has access to some object identified
+  This class determines whether a login has access to some object identified
   by an EOKeyGlobalID. To check the access, the class relies on "access
   handler" objects which are bound by entity name and do the actual permission
   check.

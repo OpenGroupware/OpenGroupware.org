@@ -1,3 +1,8 @@
+2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetProjectForEnterpriseCommand.m: fixed a typo in SQL qualifier
+	  (fixes OGo bug #1056) (v5.1.13)
+
 2004-11-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSNewEnterpriseCommand.m: code cleanups in fake project creation

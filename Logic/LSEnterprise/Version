@@ -1,5 +1,5 @@
 # version file
 
-SUBMINOR_VERSION:=12
+SUBMINOR_VERSION:=13
 
 # v5.0.10 requires LSSearch v5.0.13

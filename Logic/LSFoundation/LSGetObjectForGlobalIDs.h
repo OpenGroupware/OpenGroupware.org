@@ -25,12 +25,10 @@
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
 /*
-  This command fetches person-objects based on a list of EOGlobalIDs.
+  LSGetObjectForGlobalIDs
 
-  Additionally it runs:
-
-    person::get-extattrs
-    person::get-telephones
+  This class is a superclass for commands which fetch objects based on a list
+  of EOGlobalIDs.
 */
 
 @class NSNumber, NSString, NSArray;

@@ -1,3 +1,12 @@
+2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.90
+
+	* LSGetObjectForGlobalIDs.m: optimized to use '=' queries instead of
+	  'IN' if only a single key is being processed
+
+	* OGoAccessManager.m: major code cleanups
+
 2004-11-13  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.89

@@ -194,24 +194,27 @@ static Class   StrClass = Nil;
     oids    = nil;
 
     enumerator = [_oids objectEnumerator];
-
-    while ((obj = [enumerator nextObject])) {
+    
+    while ((obj = [enumerator nextObject]) != nil) {
       NSString *access;
       
       if ((access = [cache objectForKey:[obj keyValues][0]])) {
         if (![self _checkAccessMask:access with:_operation])
           break;
       }
-      else
-        unknown[unCnt++] = obj;
+      else {
+        unknown[unCnt] = obj;
+	unCnt++;
+      }
     }
     if (!obj && unCnt) {
       oids = [NSArray arrayWithObjects:unknown count:unCnt];
     }
-    if (unknown) free(unknown);  unknown  = NULL;
-    if (obj) /* access was denied */
+    if (unknown != NULL) free(unknown);  unknown  = NULL;
+    if (obj != nil) /* access was denied */
       result = NO;
   }
+  
   if (result) {
     if ([oids count] > 0) {
       handler = [self _accessHandlerForObjectID:[_oids lastObject]];
@@ -236,6 +239,10 @@ static Class   StrClass = Nil;
 }
          
 - (NSArray *)objects:(NSArray *)_oids forOperation:(NSString *)_str {
+  /* 
+     filters the given OIDs for those OIDs where the login account has
+     the permissions given in _str.
+  */
   EOGlobalID *agid;
   NSArray    *oids;
 
@@ -253,18 +260,108 @@ static Class   StrClass = Nil;
   return oids;
 }
 
+- (NSArray *)_checkCachedOIDs:(NSArray *)_oids forOperation:(NSString *)_str
+  addToAllowedCArray:(id *)allowed allowedCount:(unsigned *)allowCnt
+{
+  NSDictionary  *cache;
+  EOKeyGlobalID *gid;
+  id            *unknown;
+  int           unCnt;
+  NSEnumerator  *enumerator;
+  NSArray       *oids;
+  
+  cache   = [self objectId2AccessCache];
+  unCnt   = 0;
+  unknown = calloc([_oids count] + 1, sizeof(id));
+  oids    = nil;
+  
+  enumerator = [_oids objectEnumerator];
+  while ([(gid = [enumerator nextObject]) isNotNull]) {
+    NSString *access;
+    
+    if ((access = [cache objectForKey:[gid keyValues][0]]) == nil) {
+      /* permissions not cached yet */
+      unknown[unCnt] = gid;
+      unCnt++;
+      continue;
+    }
+    
+    if (![self _checkAccessMask:access with:_str])
+      /* access denied */
+      continue;
+    
+    allowed[*allowCnt] = gid;
+    (*allowCnt)++;
+  }
+  
+  if (unCnt > 0) oids = [NSArray arrayWithObjects:unknown count:unCnt];
+  if (unknown) free(unknown);  unknown  = NULL;
+  return oids;
+}
+- (void)_checkOIDs:(NSArray *)_oids forOperation:(NSString *)_str
+  forAccessGlobalID:(EOGlobalID *)_accountID
+  addToAllowedCArray:(id *)allowed allowedCount:(unsigned *)allowCnt
+{
+  /* let handler filters OIDs and add the result set to the allowed array */
+  id<SkyAccessHandler> handler;
+  NSEnumerator  *enumerator;
+  EOKeyGlobalID *gid;
+  NSArray       *oids;
+  
+  if ([_oids count] == 0) /* nothing to check */
+    return;
+
+  if ((handler = [self _accessHandlerForObjectID:[_oids lastObject]]) == nil) {
+    [self logWithFormat:@"WARNING: found no access handler for %@",
+	    [_oids lastObject]];
+  }
+  
+  if (debugOn) {
+    [self debugWithFormat:@"  check op '%@' account %@: %@",
+	    _str, _accountID, _oids];
+  }
+  
+  /* ask handler to restrict the set of OIDs */
+  
+  oids = [handler objects:_oids forOperation:_str
+		  forAccessGlobalID:_accountID];
+  
+  // TODO: this information needs to get cached?!
+  
+  enumerator = [oids objectEnumerator];
+  while ((gid = [enumerator nextObject]) != nil) {
+    allowed[*allowCnt] = gid;
+    (*allowCnt)++;
+  }
+}
+
+- (BOOL)isRootLoginID:(id)_loginID {
+  return [_loginID intValue] == 10000 ? YES : NO;
+}
+
+- (BOOL)hasAccessHandlersForGlobalIDs:(NSArray *)_oids {
+  return [self _accessHandlerForObjectID:[_oids lastObject]] != nil ? YES : NO;
+}
+
 - (NSArray *)objects:(NSArray *)_oids
   forOperation:(NSString *)_str
   forAccessGlobalID:(EOGlobalID *)_accountID
 {
-  EOGlobalID           *loginID;
-  id                   *allowed;
-  id<SkyAccessHandler> handler;
-  int                  allowCnt, cnt;
-  NSArray              *oids;
+  /* 
+     filters the given OIDs for those OIDs where the account identified by
+     _accountID has the permissions given in _str.
+     
+     Note: only seems to work on a set of OIDs of the same entity! (the handler
+           is retrieved from the last OID's entity)
+  */
+  // TODO: this does not cache results!
+  EOGlobalID *loginID;
+  id         *allowed;
+  int        allowCnt, cnt;
+  NSArray    *oids;
   
   loginID = [[self->context valueForKey:LSAccountKey] valueForKey:@"globalID"];
-
+  
   if (debugOn) {
     [self logWithFormat:
 	    @"CHECK permission '%@' against %@ (login=%@) on IDs (%d): %@", 
@@ -296,77 +393,36 @@ static Class   StrClass = Nil;
   /* start real processing */
   
   if (![loginID isEqual:_accountID]) {
-    NSAssert([loginID intValue] == 10000,
-             @"only root can use other account-ids");
+    NSAssert([self isRootLoginID:loginID],
+             @"only root can use check access of other account-ids");
   }
   
   TIME_START(@"get access");
-  { /* check for handler */
-    if (![self _accessHandlerForObjectID:[_oids lastObject]]) {
-      [self debugWithFormat:@"  found no access handler ..."];
-      return _oids;
-    }
-  }
-  cnt      = [_oids count];
-  allowCnt = 0;
-  allowed  = calloc(cnt + 1, sizeof(id));
-  oids     = nil;
-
-  { /* use cache */
-    NSDictionary *cache;
-    id           *unknown, obj;
-    int          unCnt;
-    NSEnumerator *enumerator;
-
-    cache   = [self objectId2AccessCache];
-    unCnt   = 0;
-    unknown  = calloc(cnt + 1, sizeof(id));
-    oids    = nil;
-
-    enumerator = [_oids objectEnumerator];
-
-    while ([(obj = [enumerator nextObject]) isNotNull]) {
-      NSString *access;
-      
-      if ((access = [cache objectForKey:[[obj keyValuesArray] lastObject]])) {
-        if ([self _checkAccessMask:access with:_str]) {
-          allowed[allowCnt] = obj;
-	  allowCnt++;
-        }
-      }
-      else {
-        unknown[unCnt] = obj;
-	unCnt++;
-      }
-    }
-    if (unCnt)   oids = [NSArray arrayWithObjects:unknown count:unCnt];
-    if (unknown) free(unknown);  unknown  = NULL;
+  
+  if (![self hasAccessHandlersForGlobalIDs:_oids]) {
+    [self debugWithFormat:@"  found no access handler ..."];
+    return _oids;
   }
   
-  if (oids != nil) {
-    handler = [self _accessHandlerForObjectID:[_oids lastObject]];
-    if (handler != nil) {
-      NSEnumerator *enumerator;
-      id           obj;
-
-      if (debugOn) {
-	[self debugWithFormat:@"  check op '%@' account %@: %@",
-	        _str, _accountID, oids];
-      }
-      
-      oids = [handler objects:oids forOperation:_str
-                      forAccessGlobalID:_accountID];
-      
-      enumerator = [oids objectEnumerator];
-      while ((obj = [enumerator nextObject])) {
-        allowed[allowCnt] = obj;
-	allowCnt++;
-      }
-        
-    }
-  }
+  cnt      = [_oids count];
+  allowCnt = 0;
+  allowed  = calloc(cnt + 4, sizeof(id));
+  oids     = nil;
+  
+  /* first check cached OID permissions */
+  
+  oids = [self _checkCachedOIDs:_oids forOperation:_str
+	       addToAllowedCArray:allowed allowedCount:&allowCnt];
+  
+  /* fetch remaining OIDs */
+  
+  [self _checkOIDs:oids forOperation:_str forAccessGlobalID:_accountID
+	addToAllowedCArray:allowed allowedCount:&allowCnt];
+  
+  /* construct result set */
+  
   oids = [NSArray arrayWithObjects:allowed count:allowCnt];
-  if (allowed) free(allowed); allowed = NULL;
+  if (allowed != NULL) free(allowed); allowed = NULL;
   TIME_END();
   return oids;
 }
@@ -571,15 +627,15 @@ static Class   StrClass = Nil;
 - (NSString *)_stringGIDInQualFor:(NSArray *)_array {
   NSMutableString *str;
   NSEnumerator    *enumerator;
-  id              obj;
+  EOKeyGlobalID   *gid;
 
   if (![_array isNotNull])
     return nil;
   
   enumerator = [_array objectEnumerator];
   str        = nil;
-  while ((obj = [enumerator nextObject])) {
-    if (![obj isNotNull]) /* skip nulls */
+  while ((gid = [enumerator nextObject]) != nil) {
+    if (![gid isNotNull]) /* skip nulls */
       continue;
     
     if (str)
@@ -587,14 +643,14 @@ static Class   StrClass = Nil;
     else
       str = [NSMutableString stringWithCapacity:32];
     
-    if (![obj isKindOfClass:[EOKeyGlobalID class]]) {
+    if (![gid isKindOfClass:[EOKeyGlobalID class]]) {
       [self logWithFormat:@"WARNING: got passed a non EOKeyGlobalID gid: %@",
-	      obj];
-      [str appendFormat:@"'%@'", [obj stringValue]];
+	      gid];
+      [str appendFormat:@"'%@'", [gid stringValue]];
       continue;
     }
     
-    [str appendFormat:@"'%@'", [[obj keyValues][0] stringValue]];
+    [str appendFormat:@"'%@'", [[gid keyValues][0] stringValue]];
   }
   return str;
 }
@@ -655,7 +711,7 @@ static Class   StrClass = Nil;
       qual = [qual initWithEntity:[self aclEntity]
 		   qualifierFormat:@"(%A IN (%@)) AND (%A IN (%@))",
 		     @"objectId", [self _stringGIDInQualFor:tmp],
-		     @"authId", [self _stringGIDInQualFor:_accGids],
+		     @"authId",   [self _stringGIDInQualFor:_accGids],
 		   nil];
     }
     else {

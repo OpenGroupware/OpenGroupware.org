@@ -167,7 +167,7 @@ static BOOL doCacheGIDs = YES;
     
     /* build qualifier */
 
-    // TODO: optimize to use "=" if there is only one pkey!
+    /* build batch */
     
     in = [[NSMutableString alloc] initWithCapacity:batchSize * 4];
     [in appendString:@"%@ IN ("];
@@ -191,8 +191,20 @@ static BOOL doCacheGIDs = YES;
       
       [in appendString:[[gid keyValues][0] stringValue]];
     }
-
     [in appendString:@")"];
+
+    /* check for single key fetch */
+    
+    if ([in rangeOfString:@","].length == 0) {
+      /* optimize to use "=" if there is only one pkey */
+      EOKeyGlobalID *gid;
+      
+      gid = [_gids objectAtIndex:i];
+      [in setString:@"%@ = "];
+      [in appendString:[[gid keyValues][0] stringValue]];
+    }
+    
+    /* build qualifier */
     
     pkeyName = [[[self entity] primaryKeyAttributeNames] objectAtIndex:0];
     q = [[EOSQLQualifier alloc] initWithEntity:[self entity]
@@ -381,34 +393,46 @@ static BOOL doCacheGIDs = YES;
       NSString      *s   = nil;
       
       gid = [_gids objectAtIndex:j];
-
+      
       if ([gid isNotNull]) {
-
 #if DEBUG
         NSAssert(_gids, @"missing gids array ..");
         NSAssert5(gid,
-                  @"missing gid at index %d(i=%d) in gid-array %@ of class %@, "
-                  @"count %d", j, i, _gids, NSStringFromClass([_gids class]),
+                  @"missing gid at index %d(i=%d) in gid-array %@ of class %@"
+                  @", count %d", j, i, _gids, NSStringFromClass([_gids class]),
                   [_gids count]);
 #endif
       
-        if ([(s = [[gid keyValues][0] stringValue]) length] > 0) {
-          if (isFirst)
-            isFirst = NO;
-          else
-            [in appendString:@","];          
-          [in appendString:s];
-        }
+        if ([(s = [[gid keyValues][0] stringValue]) length] == 0)
+	  continue;
+	
+	if (isFirst) isFirst = NO;
+	else [in appendString:@","];          
+	[in appendString:s];
       }
     }
-
+    
     [in appendString:@")"];
+
+    /* check for single key fetch */
+    
+    if ([in rangeOfString:@","].length == 0) {
+      // TODO: this is DUP code
+      /* optimize to use "=" if there is only one pkey */
+      EOKeyGlobalID *gid;
+      
+      gid = [_gids objectAtIndex:i];
+      [in setString:@"%@ = "];
+      [in appendString:[[gid keyValues][0] stringValue]];
+    }
+    
+    /* build qualifier */
     
     q = [[EOSQLQualifier alloc] initWithEntity:[self entity]
                                 qualifierFormat:in, pkeyAttrName];
     [in release]; in = nil;
     
-    /* select appointment objects */
+    /* select objects */
     
     error = [adCh selectAttributesX:attrs
 		  describedByQualifier:[self validateQualifier:q]
@@ -592,12 +616,11 @@ static BOOL doCacheGIDs = YES;
   return self->sortOrderings;
 }
 
+- (void)setNoAccessCheck:(NSNumber *)_access { // TODO: why an NSNumber?
+  ASSIGN(self->noAccessCheck, _access);
+}
 - (NSNumber *)noAccessCheck {
   return self->noAccessCheck;
-}
-
-- (void)setNoAccessCheck:(NSNumber *)_access {
-  ASSIGN(self->noAccessCheck, _access);
 }
 
 /* key-value coding */
