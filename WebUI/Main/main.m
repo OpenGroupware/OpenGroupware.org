@@ -19,43 +19,16 @@
   02111-1307, USA.
 */
 
-#ifndef __OGo_OpenGroupware_H__
-#define __OGo_OpenGroupware_H__
+#include <NGObjWeb/NGObjWeb.h>
 
-#import <NGObjWeb/SoApplication.h>
-
-/*
-  OpenGroupware
-  
-  This is the main object for the application server.
-*/
-
-@class NSDictionary, NSString, NSMutableDictionary, NSMutableArray;
-@class NSCalendarDate;
-@class OGoContextManager;
-
-@interface OpenGroupware : SoApplication
-{
-@protected
-  OGoContextManager *lso;
-  NSString          *version;
-  
-@private
-  int sessionCount; // # of sessions created
-  
-  NSMutableDictionary *requestDict;
-  NSMutableArray      *requestStack;
-
+int main(int argc, const char **argv, char **env) {
+#if defined(FHS_INSTALL_ROOT) && 0
+  // not supported yet anyway (moved to OGo 1.2)
+  return WOWatchDogApplicationMainWithServerDefaults
+    (@"OpenGroupware", argc, argv,
+     @"opengroupware.org-1.0a/global.plist",
+     @"opengroupware.org-1.0a/webui.plist");
+#else
+  return WOWatchDogApplicationMain(@"OpenGroupware", argc, argv);
+#endif
 }
-
-/* accessors */
-
-- (OGoContextManager *)lsoServer;
-
-/* timeZones */
-
-- (NSArray *)allTimeZones;
-
-@end
-
-#endif /* __OGo_OpenGroupware_H__ */

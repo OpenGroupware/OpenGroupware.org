@@ -1,3 +1,7 @@
+2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSession.m: removed config reload code (v5.1.80)
+
 2004-12-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoClipboard.h: added -objectEnumerator prototype (fixes a warning)

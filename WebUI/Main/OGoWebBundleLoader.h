@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2004 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -19,43 +19,21 @@
   02111-1307, USA.
 */
 
-#ifndef __OGo_OpenGroupware_H__
-#define __OGo_OpenGroupware_H__
+#ifndef __Main_OGoWebBundleLoader_H__
+#define __Main_OGoWebBundleLoader_H__
 
-#import <NGObjWeb/SoApplication.h>
+#import <Foundation/NSObject.h>
 
-/*
-  OpenGroupware
-  
-  This is the main object for the application server.
-*/
-
-@class NSDictionary, NSString, NSMutableDictionary, NSMutableArray;
-@class NSCalendarDate;
-@class OGoContextManager;
-
-@interface OpenGroupware : SoApplication
+@interface OGoWebBundleLoader : NSObject
 {
-@protected
-  OGoContextManager *lso;
-  NSString          *version;
-  
-@private
-  int sessionCount; // # of sessions created
-  
-  NSMutableDictionary *requestDict;
-  NSMutableArray      *requestStack;
-
 }
 
-/* accessors */
++ (id)bundleLoader;
 
-- (OGoContextManager *)lsoServer;
+/* operations */
 
-/* timeZones */
-
-- (NSArray *)allTimeZones;
+- (void)loadBundles;
 
 @end
 
-#endif /* __OGo_OpenGroupware_H__ */
+#endif /* __Main_OGoWebBundleLoader_H__ */

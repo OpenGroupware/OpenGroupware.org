@@ -24,8 +24,8 @@
 #endif
 
 #include "OpenGroupware.h"
+#include "OGoWebBundleLoader.h"
 #include "SoOGoAuthenticator.h"
-#include <NGObjWeb/SoProductRegistry.h>
 #include <OGoFoundation/OGoSession.h>
 #include "common.h"
 #include <LSFoundation/OGoContextManager.h>
@@ -45,11 +45,6 @@
 + (NSDictionary *)defaultOGoDefaults;
 @end
 
-@interface WOApplication(JS)
-- (void)registerClass:(Class)_class forScriptedComponent:(NSString *)_comp;
-- (Class)classForScriptedComponent:(NSString *)_comp;
-@end
-
 @interface WOComponent(PageRestoration)
 - (void)initRestoreWithRequest:(WORequest *)_request;
 @end
@@ -59,8 +54,6 @@
 static BOOL UseRefreshPageForExternalLink = NO;
 static BOOL coreOn                    = NO;
 static BOOL logBundleLoading          = NO;
-static BOOL loadWebUIBundlesOnStartup = YES;
-static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
 
 + (NSArray *)defaultOGoAppointmentTypes {
   // labels for these defined in string files
@@ -160,7 +153,7 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
   [ud registerDefaults:[self defaultOGoDefaults]];
   
   /* load values of defaults */
-
+  
   logBundleLoading = [ud boolForKey:@"OGoLogBundleLoading"];
   coreOn           = [ud boolForKey:@"OGoCoreOnException"];
   UseRefreshPageForExternalLink =
@@ -177,119 +170,6 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
   cName = [[[[[NSProcessInfo processInfo] arguments] objectAtIndex:0] 
 	                     lastPathComponent] copy];
   return cName;
-}
-
-- (void)loadBundlesOfType:(NSString *)_type inPath:(NSString *)_p {
-  // TODO: use NGBundleManager+OGo in LSFoundation
-  //       => cannot ATM, because we also register in the product registry
-  SoProductRegistry *reg;
-  NGBundleManager *bm;
-  NSFileManager   *fm;
-  NSEnumerator *e;
-  NSString     *p;
-  
-  reg = [SoProductRegistry sharedProductRegistry];
-  
-  if (logBundleLoading)
-    NSLog(@"  load bundles of type '%@' in path: '%@'", _type, _p);
-  bm = [NGBundleManager defaultBundleManager];
-  fm = [NSFileManager defaultManager];
-  e  = [[fm directoryContentsAtPath:_p] objectEnumerator];
-  
-  while ((p = [e nextObject])) {
-    NSBundle *bundle;
-    
-    if (![[p pathExtension] isEqualToString:_type])
-      continue;
-    p = [_p stringByAppendingPathComponent:p];
-    
-    if ((bundle = [bm bundleWithPath:p]) == nil)
-      continue;
-    
-    if (![bm loadBundle:bundle]) {
-      NSLog(@"could not load bundle: %@", bundle);
-      continue;
-    }
-    
-    if (logBundleLoading) {
-      NSLog(@"    did load bundle: %@", 
-	    [[bundle bundlePath] lastPathComponent]);
-    }
-    
-    // TODO: this should happen automagically? (SoProductRegistry listens for
-    //       bundle load notifications?)
-    [reg registerProductBundle:bundle];
-  }
-}
-- (NSString *)bundlePathSpecifier {
-  return [[NSUserDefaults standardUserDefaults]
-	                  stringForKey:@"OGoBundlePathSpecifier"];
-}
-- (void)preloadBundles {
-  NGBundleManager *bm;
-  NSEnumerator *e;
-  NSString     *p;
-  NSArray      *pathes;
-  NSString     *OGoBundlePathSpecifier;
-  NSArray      *oldPathes;
-  
-  OGoBundlePathSpecifier = [self bundlePathSpecifier];
-
-  /* find pathes */
-  
-  // TODO: use "Skyrix5" for Skyrix5 (patch in migration script)
-  pathes = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,
-					       NSAllDomainsMask,
-					       YES);
-  if ([FHSOGoBundleDir length] > 0) {
-    // TODO: should be some search path, eg LD_LIBRARY_SEARCHPATH?
-    p      = [@"/usr/local/" stringByAppendingPathComponent:FHSOGoBundleDir];
-    p      = [p stringByAppendingPathComponent:@"webui/"];
-    pathes = [pathes arrayByAddingObject:p];
-    p      = [@"/usr/" stringByAppendingString:FHSOGoBundleDir];
-    p      = [p stringByAppendingPathComponent:@"webui/"];
-    pathes = [pathes arrayByAddingObject:p];
-  }
-  
-  /* temporarily patch bundle search path */
-  
-  bm = [NGBundleManager defaultBundleManager];
-  oldPathes = [[bm bundleSearchPaths] copy];
-  if ([pathes count] > 0) {
-    /* add default fallback */
-    [bm setBundleSearchPaths:[pathes arrayByAddingObjectsFromArray:oldPathes]];
-  }
-  
-  /* load WebUI bundles */
-  
-  if (loadWebUIBundlesOnStartup) {
-    if (logBundleLoading) NSLog(@"load WebUI plugins ...");
-    e = [pathes objectEnumerator];
-    while ((p = [e nextObject])) {
-
-      if ([p rangeOfString:FHSOGoBundleDir].length > 0) {
-        // this is an FHS path, use different lookup algorithm
-        // TODO: somewhat a hack ..., fix somehow
-        
-        [self loadBundlesOfType:@"lso" inPath:p];
-        continue;
-      }
-      
-      p = [p stringByAppendingPathComponent:OGoBundlePathSpecifier];
-      [self loadBundlesOfType:@"lso" inPath:p];
-      p = [p stringByAppendingPathComponent:@"WebUI"];
-      [self loadBundlesOfType:@"lso" inPath:p];
-    }
-  }
-  
-  /* unpatch bundle search path */
-  
-  [bm setBundleSearchPaths:oldPathes];
-  [oldPathes release];
-  
-  /* load SoProducts */
-  
-  [[SoProductRegistry sharedProductRegistry] loadAllProducts];
 }
 
 - (void)_setVersion {
@@ -375,22 +255,25 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
     NSUserDefaults *ud;
     
     ud = [NSUserDefaults standardUserDefaults];
+
+    if ([ud boolForKey:@"OGoLogNotifications"]) {
+      [[NSNotificationCenter defaultCenter] 
+	addObserver:self selector:@selector(logNotification:)
+	name:nil object:nil];
+      [self logWithFormat:@"Note: will log all notifications!"];
+    }
     
     if ([ud boolForKey:@"LSCoreOnCommandException"]) {
       NSLog(@"Note: LSCoreOnCommandException=YES, "
             @"OGo will dump core on uncatched exceptions!");
     }
     
-    [[self notificationCenter]
-      addObserver:self selector:@selector(scriptClassNeeded:)
-      name:@"WOScriptClassNeededForComponent" object:nil];
-    
     [self setPageRefreshOnBacktrackEnabled:
             [[ud objectForKey:@"LSPageRefreshOnBacktrack"] boolValue]];
 
     [self _applyMinimumActiveSessionCount];
-
-    /* setup LSOffice server */
+    
+    /* start OGo Logic session factory */
     
     if ((self->lso = [[OGoContextManager defaultManager] retain]) == nil) {
       [self logWithFormat:@"Could not setup OGoContextManager "
@@ -400,13 +283,6 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
     [self _setupRequestHandlers];
     [self _setupResourceManager];
     
-    /* load configuration */
-    
-    self->reloadConfig =
-      [[ud objectForKey:@"LSReloadConfiguration"] boolValue];
-    if (self->reloadConfig)
-      [self logWithFormat:@"WARNING: reload-config is turned on."];
-    
     [self _setVersion];
     
 #if DEBUG
@@ -415,7 +291,7 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
 #endif
 
     /* load WebUI bundles */
-    [self preloadBundles];
+    [[OGoWebBundleLoader bundleLoader] loadBundles];
     
     /* force initial connect */
     if ([self->lso isLoginAuthorized:@"root" password:@""])
@@ -435,6 +311,8 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
   [super dealloc];
 }
 
+/* notifications */
+
 - (void)sleep {
 #if DEBUG && PRINT_NSSTRING_STATISTICS
   if ([NSString respondsToSelector:@selector(printStatistics)])
@@ -451,24 +329,28 @@ nbuckets, nindices, narrays, idxsize);
   [super sleep];
 }
 
-- (void)scriptClassNeeded:(NSNotification *)_notification {
-  NSString *componentName;
+- (void)logNotification:(NSNotification *)_notification {
+  NSString *d;
+  id obj;
   
-  componentName = [_notification object];
-  [self logWithFormat:@"Lookup Component: %@", componentName];
+  obj = [_notification object];
+  d   = [obj description];
+
+  if ([d length] > 40)
+    d = [[d substringToIndex:28] stringByAppendingString:@".."];
   
-  [self registerClass:NSClassFromString(@"SkyJSComponent")
-        forScriptedComponent:componentName];
+  [self logWithFormat:@"notification %@ object 0x%08X(%@): %@",
+	  [_notification name], obj, NSStringFromClass([obj class]), d];
 }
 
-- (id)jsContext {
-  return nil;
-}
+/* deprecated */
 
 - (BOOL)hasLogTab {
+  // TODO: remove
+  [self logWithFormat:@"WARNING(%s): called deprecated method.",
+	__PRETTY_FUNCTION__];
   return YES;
 }
-
 
 /* sessions */
 
@@ -506,26 +388,22 @@ nbuckets, nindices, narrays, idxsize);
 
 - (WOResponse *)_checkForMailPopup:(WOContext *)_ctx {
   WORequest  *req;
+  WOResponse *resp;
 
   req = [_ctx request];
-
-  if ([[req requestHandlerPath] isEqualToString:@"viewMailsPopUp"]) {
-    WOResponse *resp;
+  if (![[req requestHandlerPath] isEqualToString:@"viewMailsPopUp"])
+    return nil;
     
-    resp = [WOResponse responseWithRequest:req];
-    [resp appendContentString:
+  resp = [WOResponse responseWithRequest:req];
+  [resp appendContentString:
           @"<html><head><title>SKYRiX Mails</title>\n"
           @"<body vlink=\"#000000\" bgcolor=\"#FFECD0\" link=\"#000000\" "
           @"font=\"#000000\">\n"
           @"<center> <b>Your session expired.</b></center>\n"
           @"</body></html>"];
-
-    [resp setHeader:@"text/html; charset=iso-8859-1"
-          forKey:@"content-type"];
-    
-    return resp;
-  }
-  return nil;
+  
+  [resp setHeader:@"text/html; charset=iso-8859-1" forKey:@"content-type"];
+  return resp;
 }
 
 - (WOCookie *)expireCookieInContext:(WOContext *)_ctx {
@@ -734,10 +612,6 @@ nbuckets, nindices, narrays, idxsize);
 
 - (WOSession *)createSessionForRequest:(WORequest *)_request {
   return [self _createSession];
-}
-
-- (BOOL)reloadConfigurations {
-  return self->reloadConfig;
 }
 
 #if WITH_URL_COMPONENTS
@@ -1026,24 +900,3 @@ nbuckets, nindices, narrays, idxsize);
 }
 
 @end /* OpenGroupware */
-
-@implementation OpenGroupware(Scripting)
-
-- (Class)classForScriptedComponent:(NSString *)_name {
-  return [super classForScriptedComponent:_name];
-}
-
-@end /* OpenGroupware(Scripting) */
-
-// ******************** main ********************
-
-int main(int argc, const char **argv, char **env) {
-#if defined(FHS_INSTALL_ROOT)
-  return WOWatchDogApplicationMainWithServerDefaults
-    (@"OpenGroupware", argc, argv,
-     @"opengroupware.org-1.0a/global.plist",
-     @"opengroupware.org-1.0a/webui.plist");
-#else
-  return WOWatchDogApplicationMain(@"OpenGroupware", argc, argv);
-#endif
-}

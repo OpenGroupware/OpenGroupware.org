@@ -2,6 +2,7 @@
 #       it's *NOT* the version of the whole OpenGroupware.org environment !!!
 #       (each OpenGroupware.org component has it's own version)
 
-SUBMINOR_VERSION:=69
+SUBMINOR_VERSION:=70
 
-# v5.1.56 requires libNGObjWeb v4.3.41
+# v5.1.70 requires libOGoFoundation v5.1.80
+# v5.1.56 requires libNGObjWeb      v4.3.41

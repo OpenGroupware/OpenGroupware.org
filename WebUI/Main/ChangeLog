@@ -1,4 +1,10 @@
 2004-12-20  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* OpenGroupware.m: removed some deprecated scripting code, do not
+	  check for explicit /etc defaults (not in available in SOPE 4.4),
+	  moved main() to own file, moved bundle loading code to own file,
+	  removed reload config option, added 'OGoLogNotifications' default
+	  to log all notifications in the system (v5.1.70)
 
 	* OpenGroupware.m: minor code cleanups (v5.1.69)
 

@@ -41,7 +41,6 @@
 @end
 
 @interface WOApplication(RequiredMethods)
-- (BOOL)reloadConfigurations;
 - (NSArray *)allTimeZones;
 @end
 
@@ -490,11 +489,6 @@ static NSString *OGoDateTimeTZFormat     = nil;
     }
   }
   
-  /* release configurations */
-  if ([[self application] reloadConfigurations]) {
-    [self->componentsConfig release];
-    self->componentsConfig = nil;
-  }
   [self->lso deactivate];
   self->isAwake = NO;
   
@@ -668,40 +662,36 @@ static NSString *OGoDateTimeTZFormat     = nil;
 - (void)loadConfigurationFiles {
   /* TODO: split up this huge method! */
   NSAutoreleasePool *pool;
-  BOOL              doReloadCfgs;
+  WOResourceManager *resMan;
+  NSArray           *langs;
+  NSString          *lang;
   
-  doReloadCfgs = [[self application] reloadConfigurations];
-  pool         = [[NSAutoreleasePool alloc] init];
-  {
-    WOResourceManager *resMan;
-    NSArray           *langs;
-    NSString          *lang;
+  pool = [[NSAutoreleasePool alloc] init];
+  resMan = [[self application] resourceManager];
     
-    resMan = [[self application] resourceManager];
+  lang = [self primaryLanguage];
+  if ([lang isEqualToString:@"English"] || [lang hasPrefix:@"English_"])
+    langs = [NSArray arrayWithObject:lang];
+  else
+    /* include fallback to "English_theme" */
+    langs = [self languages];
     
-    lang = [self primaryLanguage];
-    if ([lang isEqualToString:@"English"] || [lang hasPrefix:@"English_"])
-      langs = [NSArray arrayWithObject:lang];
-    else
-      /* include fallback to "English_theme" */
-      langs = [self languages];
-    
-    /* load LSWBase */
+  /* load LSWBase */
 
-    NSClassFromString(@"LSWBaseModule");
+  NSClassFromString(@"LSWBaseModule");
 
-    /* find startpage */
+  /* find startpage */
 
-    if (![self->navigation containsPages]) {
+  if (![self->navigation containsPages]) {
       id page;
       
       if ((page = [self _instantiateInitialPage]))
 	[self->navigation enterPage:page];
-    }
+  }
     
-    /* component configurations */
+  /* component configurations */
     
-    if (doReloadCfgs || (self->componentsConfig == nil)) {
+  if (self->componentsConfig == nil) {
       id       plist;
       NSString *path;
       
@@ -727,7 +717,6 @@ static NSString *OGoDateTimeTZFormat     = nil;
                   path];
         }
       }
-    }
   }
   [pool release]; pool = nil;
 }

@@ -18,17 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "OGoComponent.h"
 #include "OGoConfigHandler.h"
 #include "LSWLabelHandler.h"
 #include "common.h"
 #include "OGoSession.h"
-
-@interface WOApplication(Reloading)
-- (BOOL)reloadConfigurations;
-@end
 
 @implementation OGoComponent
 
