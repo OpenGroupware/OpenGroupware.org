@@ -55,7 +55,7 @@ if [ $1 = 1 ]; then
   Defaults write NSGlobalDomain skyrix_id `hostname`
   Defaults write NSGlobalDomain TimeZoneName GMT
   Defaults write NSGlobalDomain WOHttpAllowHost '( localhost, 127.0.0.1, localhost.localdomain)'
-  Defaults write NSGlobalDomain NGBundlePath '%{prefix}/lib/opengroupware.org-1.0a/conduits'
+  Defaults write ogo-nhsd-1.0a NGBundlePath '%{prefix}/lib/opengroupware.org-1.0a/conduits'
   "
   ##
   if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
@@ -103,6 +103,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Mon Jan 31 2005 Frank Reppin <frank@opengroupware.org>
+- put NGBundlePath pointing to the conduits from NSGlobalDomain.plist
+  to ogo-nhsd-1.0a.plist
 * Sat Jan 29 2005 Frank Reppin <frank@opengroupware.org>
 - removed obsolete DB config checks (obsoleted by ogo-database-setup)
 * Tue Jan 18 2005 Frank Reppin <frank@opengroupware.org>
