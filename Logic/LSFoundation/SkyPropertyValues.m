@@ -45,6 +45,7 @@
 @implementation NSString(SkyPropValues)
 
 static NSStringEncoding BlobPropStringEncoding = NSISOLatin1StringEncoding;
+static NSNull *null = nil;
 
 - (NSString *)_skyPropValueKind {
   return @"valueString";
@@ -55,27 +56,36 @@ static NSStringEncoding BlobPropStringEncoding = NSISOLatin1StringEncoding;
   int  len  = 0;
   
   if (_vals == NULL) return;
+  if (null  == nil)  null = [[EONull null] retain];
   
   _vals->pType   = @"valueString";
-  _vals->vString = [[self copy] autorelease];
   
   len = [self cStringLength];
   
-  // TODO: Unicode
-  _vals->vBlob = [self dataUsingEncoding:BlobPropStringEncoding];
-  _vals->bSize = [NSNumber numberWithInt:[_vals->vBlob length]];
-  
   if (len > 255) { /* only first part in valueString, whole string to blob */
     _vals->vString = [self substringToIndex:255];
+
+    // TODO: Unicode
+    _vals->vBlob = [self dataUsingEncoding:BlobPropStringEncoding];
+    _vals->bSize = [NSNumber numberWithInt:[_vals->vBlob length]];
   }
-  else if (len > 0) {
+  else {
+    _vals->vString = [[self copy] autorelease];
+    
+    /* reset BLOB value */
+    _vals->vBlob = (id)null;
+    _vals->bSize = (id)null;
+  }
+  
+  // Note: those values will be automatically set to null
+  if (len > 0) {
     unichar c1;
-      
+    
     c1 = [self characterAtIndex:0];
     if (isdigit(c1) || c1 == '.' || c1 == '+' || c1 == '-') {
       int   i = 0;
       float f = 0;
-        
+      
       str = malloc(sizeof(unsigned char) * len + 1);
       [self getCString:str];
       str[len] = '\0';
@@ -84,10 +94,10 @@ static NSStringEncoding BlobPropStringEncoding = NSISOLatin1StringEncoding;
       if (sscanf(str, " %f ", &f) == 1)
         _vals->vFloat = [NSNumber numberWithFloat:f];
     }
+    
+    // TODO: specify an explicit format string!
+    _vals->vDate = [NSCalendarDate dateWithString:self];
   }
-  
-  // TODO: specify an explicit format string!
-  _vals->vDate = [NSCalendarDate dateWithString:self];
 }
 
 @end /* NSString(SkyPropValues) */
