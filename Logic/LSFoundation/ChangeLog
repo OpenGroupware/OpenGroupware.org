@@ -1,3 +1,10 @@
+2004-09-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* changed all sources to use new DB API for exception less selects,
+	  various minor code cleanups - this improves behaviour in error
+	  conditions like an unconfigured LSConnectionDictionary, some sanity
+	  checks in model loading code (v5.1.87)
+
 2004-09-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoContextManager.m: removed code to fetch modelname from the

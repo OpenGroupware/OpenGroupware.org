@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,15 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <LSFoundation/EODatabaseChannel+LSAdditions.h>
-#import <Foundation/Foundation.h>
-#import <EOControl/EOKeyGlobalID.h>
-#import <GDLAccess/EOSQLQualifier.h>
-#import <GDLAccess/EOEntity.h>
-#import <GDLAccess/EOAdaptorChannel.h>
-#import <NGExtensions/NGExtensions.h>
+#include "common.h"
+#include <EOControl/EOKeyGlobalID.h>
+#include <GDLAccess/EOSQLQualifier.h>
+#include <GDLAccess/EOEntity.h>
+#include <GDLAccess/EOAdaptorChannel.h>
 
 @implementation EODatabaseChannel(LSAdditions)
 
@@ -36,10 +34,10 @@
   EOAdaptorChannel *adChannel;
   EOEntity         *entity;
   NSArray          *pkeyAttrs;
-  BOOL             isOk;
   NSDictionary     *row;
   NSMutableArray   *gids;
   NSArray          *result;
+  NSException      *error;
   
   NSAssert(_qualifier, @"missing qualifier ..");
 
@@ -55,16 +53,16 @@
   
   /* select primary key attributes */
   
-  isOk = [adChannel selectAttributes:pkeyAttrs
-                    describedByQualifier:_qualifier
-                    fetchOrder:_sortOrderings
-                    lock:NO];
-  if (!isOk)
+  error = [adChannel selectAttributesX:pkeyAttrs
+		     describedByQualifier:_qualifier
+		     fetchOrder:_sortOrderings
+		     lock:NO];
+  if (error != nil)
     return nil;
-
+  
   /* perform fetch */
-
-  gids = [[NSMutableArray alloc] init];
+  
+  gids = [[NSMutableArray alloc] initWithCapacity:16];
   while ((row = [adChannel fetchAttributes:pkeyAttrs withZone:NULL])) {
     EOGlobalID *gid;
 

@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: SkyObjectPropertyManager.m 1 2004-08-20 11:17:52Z znek $
 
 #include <LSFoundation/SkyObjectPropertyManager.h>
 #include "SkyObjectPropertyManager+Internals.h"
@@ -204,22 +204,23 @@ static NSNumber *NoNumber  = nil;
   e         = [self entity];
     
   while (gidCnt > 0) {
-    currBatch = [_gids subarrayWithRange:
-                       NSMakeRange(cnt, (gidCnt > batchSize)
-                                   ? batchSize : gidCnt)];
-    gidCnt  = gidCnt - batchSize;
-    cnt    += batchSize;
-      
-    q = (_ns == nil)
-      ? [[EOSQLQualifier alloc] initWithEntity:e
-                                qualifierFormat:@"objectId in (%@)",
-                                [self _qualifierInStringForGIDs:currBatch]]
-      : [[EOSQLQualifier alloc] initWithEntity:e
-                                qualifierFormat:@"objectId in (%@) AND "
-                                @"namespacePrefix = '%@'",
-                                [self _qualifierInStringForGIDs:currBatch],
-                                _ns];
+    NSException *error;
+    NSRange     range;
 
+    range     = NSMakeRange(cnt, (gidCnt > batchSize) ? batchSize : gidCnt);
+    currBatch = [_gids subarrayWithRange:range];
+    gidCnt    = gidCnt - batchSize;
+    cnt       += batchSize;
+
+    q = [EOSQLQualifier alloc];
+    q = (_ns == nil)
+      ? [q initWithEntity:e qualifierFormat:@"objectId IN (%@)",
+	   [self _qualifierInStringForGIDs:currBatch]]
+      : [q initWithEntity:e qualifierFormat:@"(objectId IN (%@)) AND "
+	   @"(namespacePrefix = '%@')",
+	   [self _qualifierInStringForGIDs:currBatch],
+	   _ns];
+    
     if (AttrsForProperties == nil) {
       AttrsForProperties =
         [[NSArray alloc] initWithObjects:
@@ -237,10 +238,12 @@ static NSNumber *NoNumber  = nil;
                          [e attributeNamed:@"objectId"],
                          [e attributeNamed:@"objectPropertyId"], nil];
     }
-    if (![adc selectAttributes:AttrsForProperties
-              describedByQualifier:q fetchOrder:nil lock:NO]) {
-      NSLog(@"ERROR[%s]: select for qualifier %@ failed",
-            __PRETTY_FUNCTION__, q);
+
+    error = [adc selectAttributesX:AttrsForProperties
+		 describedByQualifier:q fetchOrder:nil lock:NO];
+    if (error != nil) {
+      NSLog(@"ERROR[%s]: select for qualifier %@ failed: %@",
+            __PRETTY_FUNCTION__, q, error);
       [q release]; q = nil;
       return nil;
     }
@@ -425,6 +428,7 @@ static NSNumber *NoNumber  = nil;
   NSString         *type, *ns;
   NSMutableArray   *keys;
   NSDictionary     *fetch;
+  NSException      *error;
   id               tmp;
   
   e    = [self entity];
@@ -456,17 +460,18 @@ static NSNumber *NoNumber  = nil;
                                        [e attributeNamed:@"namespacePrefix"],
                                        nil];
   }
-  
-  if (![adc selectAttributes:AttrsForAllKeys describedByQualifier:qualifier
-            fetchOrder:nil lock:NO]) {
-    NSLog(@"ERROR[%s]: select for qualifier %@ failed", __PRETTY_FUNCTION__,
-          qualifier);
+
+  error = [adc selectAttributesX:AttrsForAllKeys describedByQualifier:qualifier
+	       fetchOrder:nil lock:NO];
+  if (error != nil) {
+    NSLog(@"ERROR[%s]: select for qualifier %@ failed: %@", 
+	  __PRETTY_FUNCTION__, qualifier, error);
     [qualifier release]; qualifier = nil;
     return [NSArray array];
   }
   [qualifier release]; qualifier = nil;
 
-  keys = [[NSMutableArray alloc] init];
+  keys = [[NSMutableArray alloc] initWithCapacity:16];
 
   if (ns != nil)
     ns = [[@"{" stringByAppendingString:ns] stringByAppendingString:@"}"];
@@ -1040,6 +1045,7 @@ static NSNumber *NoNumber  = nil;
     NSString     *qf;
     NSArray      *keysToSelect;
     NSDictionary *dict;
+    NSException  *error;
       
     keysToSelect = [_keys subarrayWithRange:
                           NSMakeRange(i, (cnt < 50) ? cnt : 50)];
@@ -1051,16 +1057,20 @@ static NSNumber *NoNumber  = nil;
 
     qualifier = [[EOSQLQualifier alloc] initWithEntity:e qualifierFormat:qf];
     [self->dbMessages removeAllObjects];
-    if (![adc selectAttributes:AccessAttributes
-              describedByQualifier:qualifier fetchOrder:nil lock:NO]) {
+
+    error = [adc selectAttributesX:AccessAttributes
+		 describedByQualifier:qualifier fetchOrder:nil lock:NO];
+    if (error != nil) {
       NSDictionary *ui;
       NSException  *exc;
       
       ui = [NSDictionary dictionaryWithObjectsAndKeys:
                            qualifier,        @"qualifier", 
-                           self->dbMessages, @"dbMessages",nil];
+                           self->dbMessages, @"dbMessages",
+			   error,            @"channelError",
+			 nil];
       exc = [NSException exceptionWithName:SkyOPMCouldntSelectExceptionName
-                         reason:@"couldn`t select row"
+                         reason:@"could not select row"
                          userInfo:ui];
       [qualifier release]; qualifier = nil;
       [exc raise];

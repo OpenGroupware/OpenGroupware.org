@@ -114,8 +114,8 @@ static NSString *LockInfoMail        = nil;
 
 - (NSDictionary *)failLogin_getAccount:(NSString *)_login uid:(NSNumber *)_uid{
   EOSQLQualifier *qualifier;
+  NSException    *error;
   id             row;
-  BOOL           isOk;
   NSArray        *attrs;
   EOAttribute    *companyIdAttr, *isLockedAttr;
   id obj;
@@ -129,10 +129,11 @@ static NSString *LockInfoMail        = nil;
     ? [self failLogin_qualifierForLogin:_login]
     : [self failLogin_qualifierForCompanyID:_uid];
   
-  isOk = [self->adChannel selectAttributes:attrs
-                describedByQualifier:qualifier fetchOrder:nil lock:NO];
-  if (!isOk) {
-    [self logWithFormat:@"ERROR: could not fetch login information .."];
+  error = [self->adChannel selectAttributesX:attrs
+	       describedByQualifier:qualifier fetchOrder:nil lock:NO];
+  if (error != nil) {
+    [self logWithFormat:@"ERROR: could not fetch login information: %@",
+	    error];
     [self->adContext rollbackTransaction];
     return nil;
   }
@@ -149,7 +150,7 @@ static NSString *LockInfoMail        = nil;
 {
   NSArray        *attrs;
   NSMutableArray *result;
-  BOOL isOk;
+  NSException    *error;
   id obj;
 
   attrs = [NSArray arrayWithObjects:
@@ -157,12 +158,12 @@ static NSString *LockInfoMail        = nil;
                    [_entity attributeNamed:@"logDate"], nil];
 
   result = [NSMutableArray arrayWithCapacity:5];
-    
-  isOk = [self->adChannel selectAttributes:attrs
-                describedByQualifier:_qual fetchOrder:nil lock:NO];
-  if (!isOk) {
+  
+  error = [self->adChannel selectAttributesX:attrs
+	       describedByQualifier:_qual fetchOrder:nil lock:NO];
+  if (error != nil) {
     [self->adContext rollbackTransaction];
-    [self logWithFormat:@"couldn't fetch session log infos .."];
+    [self logWithFormat:@"could not fetch session log infos: %@", error];
     return nil;
   }
   

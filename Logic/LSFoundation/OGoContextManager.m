@@ -80,6 +80,7 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
            [NSNumber numberWithInt:389],   @"LSAuthLDAPServerPort",
            @"uid",                         @"LSLDAPLoginField",
            @"OGoModel",                    @"LSOfficeModel",
+           @"PostgreSQL",                  @"LSAdaptor",
            timeZoneNames,                  @"LSTimeZones",
 	   condict,                        @"LSConnectionDictionary",
            @"OpenGroupware.org-1.0a",      @"OGoBundlePathSpecifier",
@@ -219,6 +220,12 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
   }
   
   self->personEntity = [[self->model entityNamed:@"Person"] retain];
+  if (self->personEntity == nil) {
+    [self logWithFormat:
+	      @"ERROR(%s): did not find 'Person' entity in model: '%@'",
+            __PRETTY_FUNCTION__, modelName];
+    return NO;
+  }
   
   self->authAttributes =
       [[NSArray arrayWithObjects:
@@ -273,15 +280,28 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
   
   /* check whether we can connect the database */
   
-  *(&modelName) = /* eg OpenGroupware.org_PostgreSQL or Skyrix5_PostgreSQL */
-    [OGoBundlePathSpecifier stringByAppendingString:@"_PostgreSQL"];
-  
   *(&modelName) = [defs stringForKey:@"LSModelName"];
-  [self debugWithFormat:@"using configured model name %@", modelName];
-  
+  if (modelName != nil) {
+    [self debugWithFormat:@"using configured model name %@", modelName];
+  }
+  else {
+    /* eg OpenGroupware.org_PostgreSQL or Skyrix5_PostgreSQL */
+    NSString *p;
+    NSRange  r;
+    
+    p = OGoBundlePathSpecifier;
+    r = [p rangeOfString:@"-"];
+    if (r.length > 0) /* strip off version, like in "OpenGroupware.org-1.0a" */
+      p = [p substringToIndex:r.location];
+    *(&modelName) = [p stringByAppendingString:@"_PostgreSQL"];
+  }
   if (modelName != nil) {
     canConnect = [self processModelWithName:modelName
 		       connectionDictionary:conDict];
+  }
+  else {
+    [self logWithFormat:@"ERROR: got no name for model?"];
+    canConnect = NO;
   }
   
   return canConnect;
@@ -400,8 +420,15 @@ static NSString *fmt = @"%@..-/.%@";
   EOSQLQualifier      *qualifier  = nil;
   BOOL                isOk        = NO;
   
+  if (self->authAttributes == nil) {
+    [self logWithFormat:@"ERROR(%s): auth attributes are not set up!",
+	    __PRETTY_FUNCTION__];
+    return NO;
+  }
+  
   if (_crypted) {
-    NSLog(@"couldn`t perform LDAP-Login with crypted password");
+    NSLog(@"ERROR(%s): cannot not perform LDAP-Login with crypted password",
+	  __PRETTY_FUNCTION__);
     return NO;
   }
   
@@ -453,13 +480,16 @@ static NSString *fmt = @"%@..-/.%@";
   }
 
   if ([self->adContext beginTransaction]) {
-    isOk = [self->adChannel selectAttributes:self->authAttributes
-                describedByQualifier:qualifier
-                fetchOrder:nil
-                lock:NO];
-    if (isOk) {
+    NSException *error;
+    
+    error = [self->adChannel selectAttributesX:self->authAttributes
+		 describedByQualifier:qualifier
+		 fetchOrder:nil
+		 lock:NO];
+    isOk = error == nil ? YES : NO;
+    if (error == nil) {
       id obj;
-
+      
       while ((obj = [self->adChannel fetchAttributes:authAttributes
                          withZone:NULL]))
         row = obj;
@@ -471,9 +501,9 @@ static NSString *fmt = @"%@..-/.%@";
       [self->adContext rollbackTransaction];
       
     [self->adChannel closeChannel];
-
+    
     if (!isOk) {
-      [self logWithFormat:@"could not fetch login information .."];
+      [self logWithFormat:@"could not fetch login information: %@", error];
       return NO;
     }
   }
@@ -635,16 +665,31 @@ static NSString *fmt = @"%@..-/.%@";
   EOSQLQualifier *qualifier;
   NSArray        *attributes;
   BOOL           isOk;
+  NSException    *error;
   
-  if (rootLogin)
+  if (rootLogin != nil)
     return rootLogin;
+
+  /* check preconditions */
+
+  if (self->adContext == nil) {
+    [self logWithFormat:@"ERROR: no adaptor context available!"];
+    return nil;
+  }
+  if (self->adChannel == nil) {
+    [self logWithFormat:@"ERROR: no adaptor channel available!"];
+    return nil;
+  }
+  if (self->personEntity == nil) {
+    [self logWithFormat:@"ERROR: no person entity available!"];
+    return nil;
+  }
   
-  NSAssert(self->adContext, @"no adaptor context available");
-  NSAssert(self->adChannel, @"no adaptor channel available");
+  /* fetch name of root */
   
   qualifier = [[EOSQLQualifier alloc]
-                                 initWithEntity:self->personEntity
-                                 qualifierFormat:@"companyId = 10000"];
+                               initWithEntity:self->personEntity
+                               qualifierFormat:@"companyId = 10000"];
   qualifier = [qualifier autorelease];
     
   attributes = [NSArray arrayWithObjects:
@@ -664,11 +709,12 @@ static NSString *fmt = @"%@..-/.%@";
     [self->adChannel closeChannel];
     return nil;
   }
-  isOk = [self->adChannel selectAttributes:attributes
-              describedByQualifier:qualifier
-              fetchOrder:nil
-              lock:NO];
-  if (isOk) {
+  error = [self->adChannel selectAttributesX:attributes
+	       describedByQualifier:qualifier
+	       fetchOrder:nil
+	       lock:NO];
+  isOk = error == nil ? YES : NO;
+  if (error == nil) {
     NSDictionary *obj;
     
     while ((obj = [self->adChannel fetchAttributes:attributes withZone:NULL]))

@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: SkyAccessManager.m 1 2004-08-20 11:17:52Z znek $
 
 #include "LSCommandContext.h"
 #include "LSCommandKeys.h"
@@ -617,7 +617,8 @@ static Class   StrClass = Nil;
   cnt      = (maxCount > 200) ? 200 : maxCount;
   
   while (cnt > 0) {
-    NSArray *tmp;
+    NSArray     *tmp;
+    NSException *error;
 
     tmp = [_objIds subarrayWithRange:NSMakeRange(idx, cnt)];
 
@@ -628,23 +629,24 @@ static Class   StrClass = Nil;
     qual = [EOSQLQualifier alloc];
     if ([_accGids count] > 0) {
       qual = [qual initWithEntity:[self aclEntity]
-		   qualifierFormat:@"%A in (%@) AND %A  in (%@)",
+		   qualifierFormat:@"(%A IN (%@)) AND (%A IN (%@))",
 		     @"objectId", [self _stringGIDInQualFor:tmp],
 		     @"authId", [self _stringGIDInQualFor:_accGids],
 		   nil];
     }
     else {
       qual = [qual initWithEntity:[self aclEntity]
-		   qualifierFormat:@"%A in (%@)",
+		   qualifierFormat:@"%A IN (%@)",
 		     @"objectId", [self _stringGIDInQualFor:tmp]];
     }
     
     channel = [self beginTransaction];
-
-    if (![channel selectAttributes:attrs describedByQualifier:qual
-                  fetchOrder:nil lock:NO]) {
-      NSLog(@"ERROR[%s]: evaluation of qualifier %@ failed",
-            __PRETTY_FUNCTION__, qual);
+    
+    error = [channel selectAttributesX:attrs describedByQualifier:qual
+		     fetchOrder:nil lock:NO];
+    if (error != nil) {
+      NSLog(@"ERROR[%s]: evaluation of qualifier %@ failed: %@",
+            __PRETTY_FUNCTION__, qual, error);
       [self rollbackTransaction];
       return nil;
     }

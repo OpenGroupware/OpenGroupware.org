@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: LSGetObjectForGlobalIDs.m 1 2004-08-20 11:17:52Z znek $
 
 #include "LSGetObjectForGlobalIDs.h"
 #include "SkyAccessManager.h"
@@ -357,10 +357,10 @@ static BOOL doCacheGIDs = YES;
   TIME_START(@"fetch zeugs");
   for (i = 0; i < gidCount; i += batchSize) {
     /* fetch in IN batches */
+    NSException     *error;
     EOSQLQualifier  *q;
     NSMutableString *in;
     unsigned     j;
-    BOOL         ok;
     BOOL         isFirst;
     NSDictionary *values;
 
@@ -411,13 +411,16 @@ static BOOL doCacheGIDs = YES;
     
     /* select appointment objects */
     
-    ok = [adCh selectAttributes:attrs
-               describedByQualifier:[self validateQualifier:q]
-               fetchOrder:nil
-               lock:NO];
+    error = [adCh selectAttributesX:attrs
+		  describedByQualifier:[self validateQualifier:q]
+		  fetchOrder:nil
+		  lock:NO];
     [q release]; q = nil;
     
-    [self assert:ok format:@"couldn't select objects by gid"];
+    if (error != nil) {
+      [self logWithFormat:@"could not select objects by gid: %@", error];
+      [error raise];
+    }
     
     if (results == nil) {
       results = self->groupBy

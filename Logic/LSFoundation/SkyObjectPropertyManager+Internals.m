@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: SkyObjectPropertyManager+Internals.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SkyObjectPropertyManager+Internals.h"
 #include <LSFoundation/SkyObjectPropertyManager.h>
@@ -282,27 +282,29 @@ extern NSString *SkyOPMWrongPropertyKeyExceptionName;
   attrs  = [e primaryKeyAttributes];
   
   BEGIN_ADAPTOR_TRANS(adc) {
+    NSException *error;
+    
     format = (_namespace == nil)
-      ? @"objectId = %@ AND key = '%@' AND namespacePrefix IS NULL"
-      : @"objectId = %@ AND key = '%@' AND namespacePrefix = '%@'";
-  
+      ? @"(objectId = %@) AND (key = '%@') AND (namespacePrefix IS NULL)"
+      : @"(objectId = %@) AND (key = '%@') AND (namespacePrefix = '%@')";
+    
     qualifier = [[EOSQLQualifier alloc]
                                  initWithEntity:e
                                  qualifierFormat:format,
                                  _oid, _key, _namespace];
     [self->dbMessages removeAllObjects];
-    if (![adc selectAttributes:attrs
-             describedByQualifier:qualifier
-             fetchOrder:nil
-             lock:NO]) {
+    error = [adc selectAttributesX:attrs describedByQualifier:qualifier
+		 fetchOrder:nil lock:NO];
+    if (error != nil) {
       NSDictionary *ui;
-
+      
       ui = [NSDictionary dictionaryWithObjectsAndKeys:
-			   qualifier, @"qualifier",
+			   qualifier,        @"qualifier",
 			   self->dbMessages, @"dbMessages",
+			   error,            @"adaptorError",
 			 nil];
       [[NSException exceptionWithName:SkyOPMCouldntSelectExceptionName
-                    reason:@"couldn`t select"
+                    reason:@"could not select"
                     userInfo:ui] raise];
     }
     [qualifier release]; qualifier = nil;
@@ -1328,22 +1330,28 @@ FREE_ARRAYS:
     
     while (gidCnt > 0) {
       EOSQLQualifier *q;
+      NSException *error;
+      NSRange     range;
       
-      currBatch = [_gids subarrayWithRange:
-                         NSMakeRange(cnt, (gidCnt > batchSize)
-                                     ? batchSize : gidCnt)];
+      range     = NSMakeRange(cnt, (gidCnt > batchSize) ? batchSize : gidCnt);
+      currBatch = [_gids subarrayWithRange:range];
       gidCnt    = gidCnt - batchSize;
       cnt      += batchSize;
       q         = [[EOSQLQualifier alloc]
                                    initWithEntity:e
-                                   qualifierFormat:@"objectId in (%@)",
+                                   qualifierFormat:@"objectId IN (%@)",
                                    [self _qualifierInStringForGIDs:currBatch]];
-      [adc selectAttributes:AttrsForAccessOIDs
-           describedByQualifier:q
-           fetchOrder:nil
-           lock:NO];
+      error = [adc selectAttributesX:AttrsForAccessOIDs
+		   describedByQualifier:q
+		   fetchOrder:nil
+		   lock:NO];
+      [q release]; q = nil;
 
-      ASSIGN(q, nil);
+      if (error != nil) {
+	[self logWithFormat:@"ERROR(%s): could not select: %@",
+	        __PRETTY_FUNCTION__, error];
+	continue;
+      }
 
       while ((fetch = [adc fetchAttributes:AttrsForAccessOIDs
                            withZone:NULL])) {

@@ -1,4 +1,4 @@
-// $Id$
+// $Id: OGoObjectLinkManager.m 1 2004-08-20 11:17:52Z znek $
 
 #include <LSFoundation/OGoObjectLinkManager.h>
 #include <LSFoundation/OGoObjectLink.h>
@@ -232,11 +232,13 @@ static NSNull   *null = nil;
                                  [e attributeNamed:@"label"], nil];
   }
   BEGIN_ADAPTOR_TRANS(adc) {
-    if (![adc selectAttributes:FetchAttr
-              describedByQualifier:qualifier fetchOrder:nil lock:NO]) {
-
+    NSException *error;
+    
+    error = [adc selectAttributesX:FetchAttr
+		 describedByQualifier:qualifier fetchOrder:nil lock:NO];
+    if (error != nil) {
       [self logWithFormat:@"selectObjectsDescribedByQualifier failed,"
-            @" attributes: %@ qualifier: %@", FetchAttr, qualifier];
+            @" attributes: %@ qualifier: %@: %@", FetchAttr, qualifier, error];
       status = NO;
     }
     [qualifier release]; qualifier = nil;
