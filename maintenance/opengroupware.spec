@@ -12,8 +12,7 @@ Source:        %{ogo_source}
 Prefix:        %{ogo_prefix}
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildPreReq:   ogo-gnustep_make
-#UseSOPEsrc:   sope-4.4beta.1-voyager-r496.tar.gz
-#UseSOPEspec:  sope-4.4beta.1-voyager.spec
+#UseSOPE:      sope-4.4beta.1-voyager
 
 %description
 OpenGroupware.org aims at being an open source groupware server which
@@ -896,6 +895,11 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Fri Jan 14 2005 Frank Reppin <frank@opengroupware.org>
+-'#UseSOPE: <foo>' acts as a hint for `purveyor_of_rpms.pl`
+  and will trigger the installation of the named SOPE release
+  prior building the OGo RPMS [replaces (UseSOPEsrc|UseSOPEspec)]!
+  (<foo> expands to 'sope-<version>-<codename>')
 * Wed Jan 05 2005 Frank Reppin <frank@opengroupware.org>
 - added buildhints (UseSOPEsrc|UseSOPEspec) - these hints get
   triggered in our buildprocess and from now on OGo will be
