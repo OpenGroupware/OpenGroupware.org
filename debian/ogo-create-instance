@@ -435,9 +435,9 @@ if [ "$DEBCONF" = "no" ]; then
 	fi
 fi
 
-if ! check_user_available; then
-	exit 1
-fi
+#if ! check_user_available; then
+#	exit 1
+#fi
 
 if ! add_user; then
 	echo "Adding user ${USER} failed. Exiting..."
