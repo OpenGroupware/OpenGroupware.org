@@ -8,6 +8,10 @@ License:       GPL
 URL:           http://www.opengroupware.org
 Group:         Development/Libraries
 AutoReqProv:   off
+%define ogo_gnustep_make_source gnustep-make-1.10.0.tar.gz
+%define libf_objc_source        gnustep-objc-lf2.95.3-r85.tar.gz
+%define libf_source             libFoundation-1.0.67-r91.tar.gz
+%define sope_source             sope-4.4beta.2-voyager-r527.tar.gz
 Source0:       %{ogo_gnustep_make_source}
 Source1:       %{libf_objc_source}
 Source2:       %{libf_source}
@@ -49,8 +53,11 @@ rm -rf tmp
 # ****************************** build ********************************
 %build
 
+cd ${RPM_BUILD_ROOT}
+
 OGO_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep
 
+cd ${RPM_BUILD_ROOT}/gnustep-make
 export CPPFLAGS=-Wno-import
 export CFLAGS=-O0
 ./configure --prefix=${OGO_INSTALL_ROOT} \
@@ -64,25 +71,23 @@ make %{ogo_gnustep_make_makeflags} install
 
 source ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
 
-cd libobjc-lf2
+cd ${RPM_BUILD_ROOT}/libobjc-lf2
 make %{libf_objc_makeflags} all
 make %{libf_objc_makeflags} install
-cd ..
 
+cd ${RPM_BUILD_ROOT}/libfoundation
 export CFLAGS="-Wno-import -O0"
 ./configure
 make %{libf_makeflags} all
 make %{libf_makeflags} install
 unset CFLAGS
 
-cd sope
+cd ${RPM_BUILD_ROOT}/sope
 make %{sope_makeflags}
 make %{sope_makeflags} install
-cd ..
 
-cd ogo
+cd ${RPM_BUILD_ROOT}/ogo
 make %{ogo_makeflags}
-cd ..
 
 # ****************************** install ******************************
 %install
@@ -91,6 +96,7 @@ mkdir -p GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep
 
 # libobjc-lf
 
+cd ${RPM_BUILD_ROOT}/libobjc-lf2
 make %{libf_objc_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep install
 
 mkdir -p ${RPM_BUILD_ROOT}%{prefix}/lib
@@ -99,6 +105,7 @@ mv ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Libraries/libobjc*.so.lf2* \
 
 # libFoundation
 
+cd ${RPM_BUILD_ROOT}/libfoundation
 mkdir -p ${RPM_BUILD_ROOT}%{prefix}/lib
 mkdir -p ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Makefiles/Additional
 
@@ -113,6 +120,7 @@ rm -f ${RPM_BUILD_ROOT}%{prefix}/Library/Headers/libFoundation/extensions/except
 
 # SOPE
 
+cd ${RPM_BUILD_ROOT}/sope
 mkdir -p ${RPM_BUILD_ROOT}%{prefix}/lib/lib
 make %{sope_makeflags} INSTALL_ROOT_DIR=${RPM_BUILD_ROOT} \
                        GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix} \
@@ -126,6 +134,7 @@ rm -f ${RPM_BUILD_ROOT}%{prefix}/bin/testqp
 
 # OGo
 
+cd ${RPM_BUILD_ROOT}/ogo
 make %{ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep \
                       FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
                       BUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
@@ -148,8 +157,8 @@ rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www/GNUmakefile"
 rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www/tools"
 
 #one lonely file for meta package...
-echo "You've installed OGo %{ogo_version}-%{ogo_release} using the meta package!" \
-     >"${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/INSTALLED.USING.METAPACKAGE"
+echo "You've installed OGo %{ogo_version}-%{ogo_release} using the monolithic mega package!" \
+     >"${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/INSTALLED.USING.MEGAPACKAGE"
 
 INITSCRIPTS_TMP_DIR_OGO="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/initscript_templates"
 INITSCRIPTS_TMP_DIR_ZIDE="${RPM_BUILD_ROOT}%{prefix}/share/zidestore-1.3/initscript_templates"
@@ -176,46 +185,15 @@ UPDATE_SCHEMA=\"YES\"                 # will attempt to update the database sche
 OGO_USER=\"ogo\"                      # default username (unix) of your OGo install - might vary
 " >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-webui-1.0a
 
-# patch GNUstep make pathes
-
-OLD=${RPM_BUILD_ROOT}%{prefix}
-NEW=%{prefix}
-%{__perl} -i.build -pe"s~${OLD}~${NEW}~g" ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.csh
-%{__perl} -i.build -pe"s~${OLD}~${NEW}~g" ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
-%{__perl} -i.build -pe"s~${OLD}~${NEW}~g" ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/.GNUsteprc
-
 # ****************************** post *********************************
 %post
-# gstep-make
-if [ $1 = 1 ]; then
-  cd %{prefix}/OGo-GNUstep
-  ln -s Library/Makefiles
-fi
-
-if [ $1 = 2 ]; then
-  #can I vanish? guess not - but who knows?
-  cd %{prefix}/OGo-GNUstep
-  if [ ! -e "Makefiles" ]; then
-    ln -s Library/Makefiles
-  fi
-fi
-
 # libobjc-lf
 if [ $1 = 1 ]; then
-  if [ -e %{prefix}/lib/libobjc_d.so.lf2 ]; then
-    cd %{prefix}/OGo-GNUstep/Library/Libraries
-    ln -s %{prefix}/lib/libobjc_d.so.lf2
-  fi
-  if [ -e %{prefix}/lib/libobjc.so.lf2 ]; then
-    cd %{prefix}/OGo-GNUstep/Library/Libraries
-    ln -s %{prefix}/lib/libobjc.so.lf2
-  fi
   if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
     echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/libobjc-lf2.conf
   elif [ ! "`grep '%{prefix}/lib' %{_sysconfdir}/ld.so.conf`" ]; then
     echo "%{prefix}/lib" >> %{_sysconfdir}/ld.so.conf
   fi
-  /sbin/ldconfig
 fi
 
 # libFoundation
@@ -226,7 +204,6 @@ if [ $1 = 1 ]; then
   elif [ ! "`grep '%{prefix}/lib' %{_sysconfdir}/ld.so.conf`" ]; then
     echo "%{prefix}/lib" >> %{_sysconfdir}/ld.so.conf
   fi
-  /sbin/ldconfig
 fi
 
 # SOPE
@@ -237,7 +214,6 @@ if [ $1 = 1 ]; then
   elif [ ! "`grep '%{prefix}/lib' %{_sysconfdir}/ld.so.conf`" ]; then
     echo "%{prefix}/lib" >> %{_sysconfdir}/ld.so.conf
   fi
-  /sbin/ldconfig
 fi
 
 # OGo
@@ -488,40 +464,6 @@ rm -fr ${RPM_BUILD_ROOT}
 # ****************************** files ********************************
 %files
 %defattr(-,root,root,-)
-
-# gstep-make
-%{prefix}/OGo-GNUstep/.GNUsteprc
-%{prefix}/OGo-GNUstep/.GNUsteprc.build
-%{prefix}/OGo-GNUstep/Library/Libraries
-%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep-reset.sh
-%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.csh
-%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.csh.build
-%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
-%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh.build
-%{prefix}/OGo-GNUstep/Library/Makefiles/clean_cpu.sh
-%{prefix}/OGo-GNUstep/Library/Makefiles/clean_os.sh
-%{prefix}/OGo-GNUstep/Library/Makefiles/clean_vendor.sh
-%{prefix}/OGo-GNUstep/Library/Makefiles/config.guess
-%{prefix}/OGo-GNUstep/Library/Makefiles/config.sub
-%{prefix}/OGo-GNUstep/Library/Makefiles/cpu.sh
-%{prefix}/OGo-GNUstep/Library/Makefiles/fixpath.sh
-%{prefix}/OGo-GNUstep/Library/Makefiles/install-sh
-%{prefix}/OGo-GNUstep/Library/Makefiles/java-executable.template
-%{prefix}/OGo-GNUstep/Library/Makefiles/ld_lib_path.csh
-%{prefix}/OGo-GNUstep/Library/Makefiles/ld_lib_path.sh
-%{prefix}/OGo-GNUstep/Library/Makefiles/mkinstalldirs
-%{prefix}/OGo-GNUstep/Library/Makefiles/os.sh
-%{prefix}/OGo-GNUstep/Library/Makefiles/relative_path.sh
-%{prefix}/OGo-GNUstep/Library/Makefiles/spec-debug-alone-rules.template
-%{prefix}/OGo-GNUstep/Library/Makefiles/spec-debug-rules.template
-%{prefix}/OGo-GNUstep/Library/Makefiles/spec-rules.template
-%{prefix}/OGo-GNUstep/Library/Makefiles/strip_makefiles.sh
-%{prefix}/OGo-GNUstep/Library/Makefiles/tar-exclude-list
-%{prefix}/OGo-GNUstep/Library/Makefiles/transform_paths.sh
-%{prefix}/OGo-GNUstep/Library/Makefiles/user_home
-%{prefix}/OGo-GNUstep/Library/Makefiles/vendor.sh
-%{prefix}/OGo-GNUstep/Library/Makefiles/which_lib
-%{prefix}/OGo-GNUstep/share/config.site
 
 # libobjc-lf
 %{prefix}/lib/libobjc*.so.lf2*
