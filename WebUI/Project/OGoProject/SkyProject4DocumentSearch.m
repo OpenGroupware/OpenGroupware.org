@@ -21,6 +21,12 @@
 
 #include <OGoFoundation/OGoComponent.h>
 
+/*
+  SkyProject4DocumentSearch
+
+  TODO: document what it does, what parameters it takes.
+*/
+
 @class NSString, NSMutableDictionary;
 @class EOGlobalID, EOFetchSpecification, EOGlobalID;
 
@@ -69,6 +75,13 @@
 }
 
 /* accessors */
+
+- (void)setFileManager:(id)_fm {
+  ASSIGN(self->fileManager, _fm);
+}
+- (id)fileManager {
+  return self->fileManager;
+}
 
 - (void)setProjectId:(EOGlobalID *)_gid {
   if (![self->projectId isEqual:_gid]) {
@@ -223,80 +236,88 @@
   return YES;
 }
 
-- (EOQualifier *)qualifier {
+- (EOKeyValueQualifier *)qualifierForTitle {
+  EOQualifier *q;
   NSString *s;
-  SEL      op;
+  NSRange  r;
+
+  if ([(s = [self->bindings objectForKey:@"title"]) length] == 0)
+    return nil;
+
+  r = [s rangeOfString:@"*"];
+  if (r.length == 0)
+    s  = [[@"*" stringByAppendingString:s] stringByAppendingString:@"*"];
+
+  q = [[EOKeyValueQualifier alloc]
+	initWithKey:@"NSFileSubject" 
+	operatorSelector:EOQualifierOperatorCaseInsensitiveLike 
+	value:s];
+  return [q autorelease];
+}
+- (EOQualifier *)qualifierForFileName {
+  EOQualifier *q;
+  NSRange  r;
+  NSString *s;
+
+  if ([(s = [self->bindings objectForKey:@"filename"]) length] == 0)
+    return nil;
+
+  r = [s rangeOfString:@"*"];
+  if (r.length == 0)
+    s = [[@"*" stringByAppendingString:s] stringByAppendingString:@"*"];
+   
+  r = [s rangeOfString:@"."];
+  if (r.length == 0)
+    s  = [s stringByAppendingString:@".*"];
+  
+  q = [[EOKeyValueQualifier alloc]
+	initWithKey:@"NSFileName"
+	operatorSelector:EOQualifierOperatorCaseInsensitiveLike
+	value:s];
+  return [q autorelease];
+}
+- (EOQualifier *)qualifierForExtension {
+  EOQualifier *q;
+  NSString *s;
+  
+  if ([(s = [self->bindings objectForKey:@"extension"]) length] == 0)
+    return nil;
+
+  s = [@"*." stringByAppendingString:s];
+  
+  q = [[EOKeyValueQualifier alloc]
+	initWithKey:@"NSFileName"
+	operatorSelector:EOQualifierOperatorCaseInsensitiveLike
+	value:s];
+  return [q autorelease];
+}
+
+- (EOQualifier *)qualifier {
+  // TODO: split up method
   NSMutableArray *qualifiers;
+  EOQualifier *q;
   
   qualifiers = [NSMutableArray arrayWithCapacity:4];
-  op         = EOQualifierOperatorCaseInsensitiveLike;
-
   
-  if ([(s = [self->bindings objectForKey:@"title"]) length] > 0) {
-    EOQualifier *q;
-    NSRange r;
-
-    r = [s rangeOfString:@"*"];
-    if (r.length == 0)
-      s  = [[@"*" stringByAppendingString:s] stringByAppendingString:@"*"];
-
-    q = [[EOKeyValueQualifier alloc]
-                              initWithKey:@"NSFileSubject"
-                              operatorSelector:op
-                              value:s];
+  if ((q = [self qualifierForTitle]) != nil)
     [qualifiers addObject:q];
-    [q release]; q = nil;
-  }
+  if ((q = [self qualifierForFileName]) != nil)
+    [qualifiers addObject:q];
+  if ((q = [self qualifierForExtension]) != nil)
+    [qualifiers addObject:q];
   
-  if ([(s = [self->bindings objectForKey:@"filename"]) length] > 0) {
-    EOQualifier *q;
-    NSRange r;
-    
-    r = [s rangeOfString:@"*"];
-    if (r.length == 0)
-      s = [[@"*" stringByAppendingString:s] stringByAppendingString:@"*"];
-   
-    r = [s rangeOfString:@"."];
-    if (r.length == 0)
-      s  = [s stringByAppendingString:@".*"];
-    
-    q = [[EOKeyValueQualifier alloc]
-                              initWithKey:@"NSFileName"
-                              operatorSelector:op
-                              value:s];
-    [qualifiers addObject:q];
-    [q release]; q = nil;
-  }
-  if ([(s = [self->bindings objectForKey:@"extension"]) length] > 0) {
-    EOQualifier *q;
-
-    s = [@"*." stringByAppendingString:s];
-    
-    q = [[EOKeyValueQualifier alloc]
-                              initWithKey:@"NSFileName"
-                              operatorSelector:op
-                              value:s];
-    [qualifiers addObject:q];
-    [q release]; q = nil;
-  }
-
-  if ([qualifiers count] == 0) {
+  if ([qualifiers count] == 0)
     return nil;
-  }
-  else if ([qualifiers count] == 1) {
+  
+  if ([qualifiers count] == 1)
     return [qualifiers objectAtIndex:0];
-  }
-  else {
-    EOQualifier *q;
-    
-    if ([self isAndSearch])
-      q = [[EOAndQualifier alloc] initWithQualifierArray:qualifiers];
-    else
-      q = [[EOOrQualifier alloc] initWithQualifierArray:qualifiers];
-    
-    return [q autorelease];
-  }
+  
+  q = ([self isAndSearch])
+    ? [[EOAndQualifier alloc] initWithQualifierArray:qualifiers]
+    : [[EOOrQualifier  alloc] initWithQualifierArray:qualifiers];
+  return [q autorelease];
 }
+
 - (EOFetchSpecification *)fetchSpecification {
   EOFetchSpecification *fspec;
   NSMutableDictionary  *hints;
@@ -306,7 +327,7 @@
                                 sortOrderings:nil];
   
   hints = [NSMutableDictionary dictionaryWithObject:
-                               [NSNumber numberWithBool:YES]
+				 [NSNumber numberWithBool:YES]
                                forKey:EONoFetchWithEmptyQualifierHint];
   [hints setObject:[NSNumber numberWithBool:YES] forKey:@"fetchDeep"];
   
@@ -321,7 +342,6 @@
   EOFetchSpecification *fspec;
   
   fspec = [self fetchSpecification];
-
   [[self dataSource] setFetchSpecification:fspec];
   return nil;
 }
@@ -330,30 +350,10 @@
   EOGlobalID *gid;
   
   gid = [[self currentFile] valueForKey:@"globalID"];
-
-  if ([gid isKindOfClass:[EOKeyGlobalID class]])
-    return [self activateObject:gid withVerb:@"view"];
-  else
-    return [self activateObject:[self currentFile] withVerb:@"view"];
-}
-
-- (id)fileManager {
-  return self->fileManager;
-}
-- (void)setFileManager:(id)_fm {
-  ASSIGN(self->fileManager, _fm);
-}
-
-#if 0
-- (id)clickedParentFolder {
-  NSString *pfolder;
   
-  pfolder = [self currentFileParentFolder];
-  
-  [[self fileManager] changeCurrentDirectoryPath:pfolder];
-  
-  return nil;
+  return [gid isKindOfClass:[EOKeyGlobalID class]]
+    ? [self activateObject:gid withVerb:@"view"]
+    : [self activateObject:[self currentFile] withVerb:@"view"];
 }
-#endif
 
 @end /* SkyProject4DocumentSearch */

@@ -113,10 +113,10 @@ SearchField: WOTextField {
 //  style = textFieldStyle;
 }
 SearchButton: WOSubmitButton {
-  action   = searchProjects;
-  name     = labels.search;
-  value    = labels.search;
-  class    = "button_narrow";
+  action = searchProjects;
+  name   = labels.search;
+  value  = labels.search;
+  class  = "button_narrow";
 }
 
 SearchForm: WOForm {

@@ -25,6 +25,8 @@
   SkyProject4Desktop
   
   This is the main entry page of the projects application.
+
+  TODO: cleanup / splitup
 */
 
 @class NSString, NSMutableDictionary;
@@ -43,7 +45,7 @@
   NSArray              *clippedGIDs;
 
   BOOL extendedSearch;
-  BOOL isExtendetSearch;
+  BOOL isExtendetSearch; // TODO: fix typo
 
   NSString *title;
   NSString *fileName;
@@ -235,7 +237,8 @@ static NSArray     *extDesktopPages   = nil;
 }
 
 - (id)searchDataSource {
-  if (self->searchQualifier == nil) return nil;
+  if (self->searchQualifier == nil) 
+    return nil;
   
   [self->ds setAuxiliaryQualifier:self->searchQualifier];
   [self->ds setGroupings:nil];
@@ -575,20 +578,15 @@ static NSArray     *extDesktopPages   = nil;
     
     fs = [[EOFetchSpecification alloc] init];
     [fs setQualifier:qual];
-
+    
     grp = [[[EOKeyGrouping alloc] initWithKey:@"projectName"] autorelease];
     [fs setGroupings:[NSArray arrayWithObject:grp]];
     
     [pds setFetchSpecification:fs];
     
-    self->isExtendetSearch = YES;
+    self->isExtendetSearch = YES; // TODO: fix typo
     
-#if 0
-    [self->searchProjects release]; self->searchProjects = nil;
-    self->searchProjects = [[pds fetchObjects] retain];
-#else
     ASSIGN(self->documentDS, pds);
-#endif
     [pds setFetchSpecification:fs];
     [fs release]; fs = nil;
   }
