@@ -25,12 +25,8 @@
   provides = {
     LSCommands = (
         { name = "email::deliver";                     },
-        { name = "mbox::import-structure";             },
-        { name = "mbox::import-file";                  }
     );
     classes = (
-        { name = LSMBoxFileImportCommand;         },
-        { name = LSMBoxStructureImportCommand;    },
         { name = LSMailDeliverCommand;            },
     );
   };

@@ -1,3 +1,12 @@
+2004-10-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.10
+
+	* moved deprecated mbox commands to Recycler
+
+	* LSMailDeliverCommand.m: major code cleanups, use fwrite instead of
+	  fprintf to write to the pipe
+
 2004-06-17  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSMailDeliverCommand.m: minor code cleanups, some fixes to gcc 3.4
@@ -175,5 +184,5 @@ Thu Mar 11 18:49:17 1999  Jan Reichmann  <jan@mdlink.de>
 
 Tue Mar  9 14:53:29 1999  Jan Reichmann  <jan@mdlink.de>
 
-	* $Id: ChangeLog,v 1.5 2004/06/17 14:15:08 helge Exp $ 
+	* $Id: ChangeLog 2 2004-08-20 11:37:44Z znek $ 
 	create LSGetRootFolderCommand

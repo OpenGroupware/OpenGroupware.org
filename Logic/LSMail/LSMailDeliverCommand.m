@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <LSMailDeliverCommand.h>
 #include <NGMail/NGMimeMessageGenerator.h>
@@ -28,6 +27,8 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+// TODO: should be changed to use the new NGSendMail object!
 
 @interface LSMailDeliverCommand(Private)
 - (NSArray *)emailForAccounts:(NSArray *)_accounts;
@@ -142,46 +143,70 @@ static EONull *null = nil;
                 nil);
 }
 
+- (BOOL)isExternalAddress:(NSString *)_address {
+  if ([_address rangeOfString:@"@"].length  > 0) return YES;
+  if ([_address rangeOfString:@"'"].length  > 0) return YES;
+  if ([_address rangeOfString:@"\""].length > 0) return YES;
+  return NO;
+}
+
 - (void)sendMailToAccounts:(NSArray *)_addrs inContext:(id)_context {
+  /*
+    turn local account/team addresses to valid email addresses, then
+    call -sendMailToExternals:
+  */
   NSEnumerator *enumerator = nil;
-  id           obj, result = nil;
-
+  NSString     *address;
+  
+  /* turn OGo internal addresses into valid emails for sendmail */
+  
   enumerator = [_addrs objectEnumerator];
-
-  while ((obj = [enumerator nextObject])) {
-    if (!([obj rangeOfString:@"@"].length == 0 &&
-	  [obj rangeOfString:@"'"].length == 0 &&
-	  [obj rangeOfString:@"\""].length == 0)) {
-      [self->externals addObject:obj];
+  while ((address = [enumerator nextObject]) != nil) {
+    NSArray *result;
+    
+    if ([self isExternalAddress:address]) {
+      [self->externals addObject:address];
       continue;
     }
     
-    result = [self getAccountsWithLogin:obj inContext:_context];
+    /* treat address as an OGo account or team */
+    
+    result = [self getAccountsWithLogin:address inContext:_context];
     if ([result count] > 0) {
       [self->externals addObjectsFromArray:[self emailForAccounts:result]];
       continue;
     }
 
-    result = [self getTeamsWithName:obj inContext:_context];
+    result = [self getTeamsWithName:address inContext:_context];
     if ([result count] > 0) {
       result = [self expandTeamEOsToAccountEOs:result inContext:_context];
       [self->externals addObjectsFromArray:[self emailForAccounts:result]];
+      continue;
     }
-    else
-      [self->externals addObject:obj];
+    
+    /* fallback, treat as a local Unix account */
+    
+    [self->externals addObject:address];
   }
+
+  /* actually deliver */
+
   [self sendMailToExternals:self->externals inContext:_context];
 }
 
 - (NSString *)sendBulkMessagesToolPath {
-  // TODO: fix this
-  NSString *toolPath;
+  // TODO: fix this junk
+  static NSString *toolPath = nil;
+  
+  if (toolPath != nil)
+    return toolPath;
   
   if ((toolPath = bulkToolPath) == nil)
     toolPath = @"GNUSTEP_USER_ROOT";
   
   toolPath =
-    [NSString stringWithFormat:@"%@/Tools/%@/%@/%@/sky_send_bulk_messages",
+    [[NSString alloc] 
+      initWithFormat:@"%@/Tools/%@/%@/%@/sky_send_bulk_messages",
               [env objectForKey:toolPath],
               [env objectForKey:@"GNUSTEP_HOST_CPU"],
               [env objectForKey:@"GNUSTEP_HOST_OS"],
@@ -319,29 +344,37 @@ static EONull *null = nil;
     *sender_ = [a valueForKey:@"login"];
 
   if (*sender_ != nil) {
+    NSString *s;
+    
+    // TODO: explain why this is done
+    s = [[*sender_ componentsSeparatedByString:@","]
+	           componentsJoinedByString:@" "];
+    
     [sendmail appendString:@"-f "];
-    [sendmail appendString:[[*sender_ componentsSeparatedByString:@","]
-                                      componentsJoinedByString:@" "]];
+    [sendmail appendString:s];
     [sendmail appendString:@" "];
   }
   return sendmail;
 }
 
-- (BOOL)_appendDataTo:(FILE *)_fd context:_context {
-  int errorCode;
-  
-  if ((errorCode = fprintf(_fd, "%s", (char *)[self->mimeData bytes])) >= 0)
+- (BOOL)_appendDataTo:(FILE *)_fd context:(id)_context {
+  int written;
+
+  if ([self->mimeData length] == 0)
     return YES;
-
-  [self logWithFormat:@"[2] Couldn`t write mail to sendmail! <%d>", errorCode];
-
-  if ([self->mimeData length] > 5000) {
-      [self logWithFormat:@"[2] message: [size: %d]", [self->mimeData length]];
-  }
-  else {
-      [self logWithFormat:@"[2] message: <%s>",
-            (char *)[self->mimeData bytes]];
-  }
+  
+  written = fwrite((char *)[self->mimeData bytes], [self->mimeData length],
+		   1, _fd);
+  if (written > 0)
+    return YES;
+  
+  [self logWithFormat:@"[2] Could not write mail to sendmail <%d>", errno];
+  
+  if ([self->mimeData length] > 5000)
+    [self logWithFormat:@"[2] message: [size: %d]", [self->mimeData length]];
+  else
+    [self logWithFormat:@"[2] message: <%s>", (char *)[self->mimeData bytes]];
+  
   return NO;
 }
 
@@ -473,19 +506,25 @@ static EONull *null = nil;
 - (void)_logMailSend:(NSString *)sendmail {
   fprintf(stderr, "%s \n", [sendmail cString]);
 
-  if (self->mimeData) {
-    if ([self->mimeData length] > 5000) {
-      fprintf(stderr, "%s...\n",
-	      (char *)[[self->mimeData subdataWithRange:
-			      NSMakeRange(0,5000)] bytes]);
-    }
-    else {
-      fprintf(stderr, "%s\n", (char *)[self->mimeData bytes]);
-    }
-  }
-  else {
+  if (self->mimeData == nil) {
     fprintf(stderr, "read data from %s\n", [self->messageTmpFile cString]);
+    return;
   }
+  
+  if ([self->mimeData length] > 5000) {
+    NSData *data;
+    
+    data = [self->mimeData subdataWithRange:NSMakeRange(0,5000)];
+    fprintf(stderr, "%s...\n", (unsigned char *)[data bytes]);
+  }
+  else
+    fprintf(stderr, "%s\n", (char *)[self->mimeData bytes]);
+}
+
+- (NSException *)_errorExceptionWithReason:(NSString *)_reason {
+  return [LSDBObjectCommandException exceptionWithStatus:NO
+				     object:self
+				     reason:_reason userInfo:nil];
 }
 
 - (void)_handleSendMailErrorCode:(int)errorCode 
@@ -500,10 +539,7 @@ static EONull *null = nil;
     [self logWithFormat:@"%@ is no executable file",
 	  sendmail];
 
-    [self setReturnValue:
-	    [LSDBObjectCommandException exceptionWithStatus:NO
-					object:self
-					reason:str userInfo:nil]];
+    [self setReturnValue:[self _errorExceptionWithReason:str]];
     return;
   }
   if (errorCode == 17664) {
@@ -515,14 +551,11 @@ static EONull *null = nil;
     str = [NSString stringWithFormat:@"MessageFileTooBig %d",
 		    [self->mimeData length]];
 
-    [self setReturnValue:
-	    [LSDBObjectCommandException exceptionWithStatus:NO
-					object:self
-					reason:str userInfo:nil]];
+    [self setReturnValue:[self _errorExceptionWithReason:str]];
     return;
   }
 
-  [self logWithFormat:@"[1] Couldn`t write mail to sendmail! <%d>",
+  [self logWithFormat:@"[1] Could not write mail to sendmail! <%d>",
 	  errorCode];
   if ([self->mimeData length] > 5000) {
 	[self logWithFormat:@"[1] message: [size: %d]",
@@ -537,7 +570,7 @@ static EONull *null = nil;
 	  sendMailPath, errorCode];
 }
 
-- (void)sendMailToExternals:(NSArray *)_externals inContext:(id)_context {
+- (void)sendMailToExternals:(NSArray *)_recipients inContext:(id)_context {
   NSString        *str          = nil;
   NSMutableString *sendmail     = nil;
   FILE            *toMail       = NULL;
@@ -548,7 +581,7 @@ static EONull *null = nil;
   int errorCode;
   
   deleteTmp = NO;
-
+  
   if (self->mimeData==nil && self->messageTmpFile==nil &&self->mimePart==nil){
     NSLog(@"ERROR[%s]: got no mime content ...",__PRETTY_FUNCTION__);
     [self assert:NO reason:@"Missing mime content"];
@@ -569,30 +602,29 @@ static EONull *null = nil;
       [self _removeMailTmpFile];
   }
 
-
-  enumerator = [_externals objectEnumerator];
+  
+  enumerator = [_recipients objectEnumerator];
   while ((str = [enumerator nextObject])) {
-    if ([str rangeOfString:@","].length > 0) {
-        NSEnumerator *e;
-        NSString     *s;
-	
-        e = [[str componentsSeparatedByString:@","] objectEnumerator];
-	
-        while ((s = [e nextObject])) {
+    NSEnumerator *e;
+    NSString     *s;
+
+    if ([str rangeOfString:@","].length == 0) {
+      [sendmail appendFormat:@"'%@' ", [self mailAddrForStr:str]];
+      continue;
+    }
+    
+    e = [[str componentsSeparatedByString:@","] objectEnumerator];
+    while ((s = [e nextObject])) {
           s = [[s componentsSeparatedByString:@"'"]
                   componentsJoinedByString:@""];
           s = [[s componentsSeparatedByString:@","]
                   componentsJoinedByString:@""];
           
           [sendmail appendFormat:@"'%@'", [self mailAddrForStr:s]];
-        }
-        [sendmail appendString:@" "];
-      }
-      else {
-        [sendmail appendFormat:@"'%@' ", [self mailAddrForStr:str]];
-      }
+    }
+    [sendmail appendString:@" "];
   }
-    
+  
   if ((toMail = popen([sendmail cString], "w")) == NULL) {
     if (deleteTmp) [self _removeMailTmpFile];
     return;
@@ -631,13 +663,13 @@ static EONull *null = nil;
 - (void)_executeInContext:(id)_context {
   [super _executeInContext:_context];  
 
-  [self->logins    release];
-  [self->groups    release];
-  [self->externals release];
+  [self->logins    release]; self->logins    = nil;
+  [self->groups    release]; self->groups    = nil;
+  [self->externals release]; self->externals = nil;
   
-  self->logins    = [[NSMutableArray alloc] init];
-  self->groups    = [[NSMutableArray alloc] init];
-  self->externals = [[NSMutableArray alloc] init];
+  self->logins    = [[NSMutableArray alloc] initWithCapacity:8];
+  self->groups    = [[NSMutableArray alloc] initWithCapacity:8];
+  self->externals = [[NSMutableArray alloc] initWithCapacity:8];
   
   [self sendMailToAccounts:self->addresses inContext:_context];
 }
@@ -651,14 +683,17 @@ static EONull *null = nil;
   return self->addresses;
 }
 - (void)addAddress:(NSString *)_addr {
-  if (self->addresses == nil)
-    self->addresses = [[NSMutableArray alloc] initWithObjects:_addr, nil];
-  else {
-    if (![self->addresses isKindOfClass:[NSMutableArray class]])
-      self->addresses = [self mutableCopy];
-    
-    [(NSMutableArray *)self->addresses addObject:_addr];
-  } 
+  if (![_addr isNotNull])
+    return;
+  
+  if (self->addresses == nil) {
+    self->addresses = [[NSMutableArray alloc] initWithObjects:&_addr count:1];
+    return;
+  }
+
+  if (![self->addresses isKindOfClass:[NSMutableArray class]])
+    self->addresses = [self mutableCopy];
+  [(NSMutableArray *)self->addresses addObject:_addr];
 }
 
 - (void)setMimeData:(NSData *)_data {
@@ -678,7 +713,7 @@ static EONull *null = nil;
 - (void)setMimePart:(id)_part {
   if (![_part conformsToProtocol:@protocol(NGMimePart)]) {
     [LSDBObjectCommandException raiseOnFail:NO object:self
-                                reason:@"mimeObject doesn`t conforms to "
+                                reason:@"mimeObject does not conform to "
                                        @"protocol <NGMimePart>"];
   }
   ASSIGN(self->mimePart, _part);
@@ -730,7 +765,7 @@ static EONull *null = nil;
   array = [NSMutableArray arrayWithCapacity:[_accounts count] + 1];
   
   enum1 = [_accounts objectEnumerator];
-  while ((obj1 = [enum1 nextObject])) {
+  while ((obj1 = [enum1 nextObject]) != nil) {
     NSString *email;
     
     email = [obj1 valueForKey:@"email1"];

@@ -1,21 +1,10 @@
-// $Id$
 {
-  domainList = (
-    email,
-    mbox
-  );
+  domainList = ( email );
 
   domains = {
     "email" = {
       operations = {
-        "deliver"         = { class = "LSMailDeliverCommand";      };      
-      };
-    };
-    
-    "mbox" = {
-      operations = {
-        "import-structure" = { class = "LSMBoxStructureImportCommand"; };
-        "import-file"      = { class = "LSMBoxFileImportCommand";      };
+        "deliver" = { class = "LSMailDeliverCommand"; };
       };
     };
   };

@@ -1,4 +1,4 @@
-# $Id$
+# GNUstep makefile
 
 include ../common.make
 
@@ -7,9 +7,6 @@ COMMAND_BUNDLE = LSMail
 LSMail_OBJC_FILES =        \
 	LSMailDeliverCommand.m      \
 	LSMailFunctions.m           \
-	\
-	LSMBoxStructureImportCommand.m \
-	LSMBoxFileImportCommand.m      \
 
 LSMail_RESOURCE_FILES += Version
 
