@@ -1,8 +1,9 @@
 # version file
 
-SUBMINOR_VERSION:=65
+SUBMINOR_VERSION:=66
 
 # Requirements:
+#   v5.1.66 requires libNGExtensions  v4.4.133
 #   v5.1.48 requires libOGoProject    v5.1.31
 #   v5.0.42 requires libOGoProject    v5.0.28
 #   v5.0.25 requires libEOControl     v4.2.39

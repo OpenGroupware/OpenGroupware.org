@@ -51,6 +51,19 @@ in common, use this:
 ---snap---
 
 
+DocViewer Rules
+===============
+
+The document viewer looks up the available tabs using the NGBundleManager. From
+that set of tabs you can select those which are to be displayed for a given
+file using NGRule's.
+
+For example to show only the tab with the content for text documents, you can
+use:
+  Defaults write ogo-webui-1.0a OGoDocViewerRules \
+    '( "document.NSFileName.pathExtension = \"txt\" => tabkeys = (contents)" )'
+
+
 Special Form-Files
 ==================
 

@@ -162,7 +162,7 @@ DownloadLink: SkyP4DownloadLink {
   versionTag   = versionToView;
 }
 VersionString: WOString {
-  value = versionString;
+  value = versionString; // TODO: apparently bound to no value!
 }
 MimeTypeAttr: SkySubAttribute {
   label  = labels.mimetype;
@@ -301,7 +301,7 @@ DownloadLogList: SkyP4DocumentDownloadLogList {
 }
 
 NoReadAccessWarning: SkyRichString {
-  color="red";
+  color = "red";
   value = labels.noReadAccessWarning;
 }
 
@@ -320,7 +320,39 @@ SupportsAccess: WOConditional {
   condition = fileManager.supportAccessRights;
 }
 
-HasNoProjectLite: WOConditional {
-  condition = session.hasProjectLite;
-  negate    = YES;
+/* dynamic tabs */
+
+ActiveTabKeys: WORepetition {
+  list = tabKeys;
+  item = activeTabKey;
+}
+
+ShowActiveTabKey: WOConditional {
+  condition = showActiveTabKey;
+}
+
+ActiveTabKey: WOString {
+  //value = activeTabKey;
+  value = infoForActiveTab;
+}
+
+ActiveTabComponent: WOComponentReference {
+  component        = componentForActiveTab;
+  fileManager      = fileManager;
+  document         = document;
+  documentGlobalID = documentGlobalID;
+  documentPath     = documentPath;
+}
+
+ActiveTabComponentX: WOSwitchComponent {
+  WOComponentName  = infoForActiveTab.component;
+  fileManager      = fileManager;
+  document         = document;
+  documentGlobalID = documentGlobalID;
+  documentPath     = documentPath;
+}
+
+ActiveTab: SkySimpleTabItem {
+  key   = activeTabKey;
+  label = labels.$activeTabKey;
 }

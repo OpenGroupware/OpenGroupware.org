@@ -602,6 +602,7 @@
       return @selector(performDavUidAndModDateQuery:inContext:);
     }
   }
+  
   if ([propNames isSubsetOfSet:korgExSet])
     return @selector(performInitialKOrgExchangeQuery:inContext:);
   if ([propNames isSubsetOfSet:cadaverSet])

@@ -40,7 +40,9 @@
   id                 key;
   NSString           *folderPath;
   
-  NSString           *activeTabKey;
+  NSString            *activeTabKey;
+  NSMutableDictionary *tabComponentCache;
+  NSArray             *tabKeys;
 }
 
 - (NSDictionary *)fileSystemInfo;
@@ -67,6 +69,7 @@
 #include <NGMime/NGMimeType.h>
 #include <LSFoundation/SkyAccessManager.h>
 #include <NGExtensions/NGResourceLocator.h>
+#include <NGExtensions/NGRuleEngine.h>
 #include <OGoDatabaseProject/SkyDocumentHistoryDataSource.h>
 #include "common.h"
 
@@ -88,36 +91,111 @@
 - (EOGlobalID *)projectGID;
 @end /* NSObject(SkyFSKey) */
 
+@interface OGoComponent(OGoDocPartViewerSelection)
++ (BOOL)canShowInDocumentViewer:(OGoComponent *)_viewer;
+@end
+
 @implementation SkyProject4DocumentViewer
 
+static NSDictionary  *docViewerPlugins = nil;
+static NSArray       *sortedViewerKeys = nil;
+static NGRuleModel   *viewerRules      = nil;
+static NGRuleContext *viewerRuleEngine = nil; // THREAD
 static Class SkyFSDocumentClass  = NULL;
 static Class SkySvnDocumentClass = NULL;
 static Class SkyFSGlobalIDClass  = NULL;
-static int   LoadClass           = -1;
 static BOOL  debugOn             = NO;
 static BOOL  hasEpoz             = NO;
 
+static int sortByIntField(id obj1, id obj2, void *ctx) {
+  int i1, i2;
+  i1 = [[obj1 valueForKey:(id)ctx] intValue];
+  i2 = [[obj2 valueForKey:(id)ctx] intValue];
+  if (i1 == i2) return NSOrderedSame;
+  if (i1 > i2)  return NSOrderedAscending;
+  return NSOrderedDescending;
+}
+
 + (void)initialize {
+  static BOOL didInit = NO;
+  NSUserDefaults      *ud;
+  NSMutableDictionary *md;
+  NGBundleManager   *bm;
   NGResourceLocator *locator;
-  NSFileManager     *fm = [NSFileManager defaultManager];
+  NSFileManager     *fm;
   NSString          *p;
+  NSArray           *viewers;
+  unsigned i, count;
   
-  if (LoadClass == 1) return;
+  if (didInit) return;
+  didInit = YES;
+  
+  bm = [NGBundleManager defaultBundleManager];
+  ud = [NSUserDefaults standardUserDefaults];
+  
   SkyFSDocumentClass  = NSClassFromString(@"SkyFSDocument");
   SkyFSGlobalIDClass  = NSClassFromString(@"SkyFSGlobalID");
   SkySvnDocumentClass = NSClassFromString(@"SkySvnDocument");
 
+  /* Epoz */
+  
+  fm = [NSFileManager defaultManager];
   locator = [NGResourceLocator resourceLocatorForGNUstepPath:
                                  @"WebServerResources"
                                fhsPath:@"share/opengroupware.org-1.0a/www"];
   p = [locator lookupFileWithName:@"epoz_script_main.js"];
   hasEpoz = [fm fileExistsAtPath:p];
-  if (!hasEpoz) NSLog(@"Note: did not find Epoz.");
+  if (!hasEpoz) NSLog(@"Note: doc-viewer did not find Epoz.");
+  
+  /* tab plugins */
+  
+  viewers = [bm providedResourcesOfType:@"OGoDocViewers"];
+  count   = [viewers count];
+  md      = [[NSMutableDictionary alloc] initWithCapacity:(count + 1)];
+  
+  for (i = 0; i < count; i++) {
+    id rec;
+
+    rec = [viewers objectAtIndex:i];
+    [md setObject:rec forKey:[rec objectForKey:@"name"]];
+  }
+  
+  viewers = [viewers sortedArrayUsingFunction:sortByIntField 
+		     context:@"sortkey"];
+  sortedViewerKeys = [[viewers valueForKey:@"name"] copy];
+  
+  docViewerPlugins = [md copy];
+  [md release]; md = nil;
+  NSLog(@"Note: found doc-viewers %@", 
+	[sortedViewerKeys componentsJoinedByString:@","]);
+  
+  /* viewer rules */
+  
+  if ([(viewers = [ud arrayForKey:@"OGoDocViewerRules"]) count] > 0) {
+    NSArray *defRules;
+    
+    NSLog(@"Note: using custom doc-viewers rules (#%i).", [viewers count]);
+    
+    if ((defRules = [ud arrayForKey:@"OGoDocViewerFallbackRules"]) != nil)
+      viewers = [viewers arrayByAddingObjectsFromArray:defRules];
+  }
+  else {
+    NSLog(@"Note: using default doc-viewer rules.");
+    viewers = [ud arrayForKey:@"OGoDocViewerFallbackRules"];;
+  }
+  
+  viewerRules      = [[NGRuleModel alloc] initWithPropertyList:viewers];
+  viewerRuleEngine = 
+    [(NGRuleContext *)[NGRuleContext alloc] initWithModel:viewerRules];
 }
 
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self->document reload];
+
+  [self->tabComponentCache release];
+  [self->activeTabKey      release];
+  [self->tabKeys           release];
   
   [self->fsinfo            release];
   [self->documentGID       release];
@@ -718,13 +796,13 @@ static BOOL  hasEpoz             = NO;
   return [[[self document] content] isSkyTextEditable];
 }
 - (BOOL)hasUpload {
-  if ([self isVersion])
+  if ([self isVersion]) // TODO: the version document should have that?
     return NO;
   
   return [[self document] isWriteable];
 }
 - (BOOL)hasDelete {
-  if ([self isVersion])
+  if ([self isVersion]) // TODO: the version document should have that?
     return NO;
   
   return [[self document] isDeletable];
@@ -732,7 +810,7 @@ static BOOL  hasEpoz             = NO;
 - (BOOL)hasMove {
   NSString *dirpath;
   
-  if ([self isVersion])
+  if ([self isVersion]) // TODO: the version document should have that
     return NO;
   
   dirpath = [[self _documentPath] stringByDeletingLastPathComponent];
@@ -1307,11 +1385,96 @@ static BOOL  hasEpoz             = NO;
 
 /* dynamic tabs */
 
+- (NSArray *)tabKeys {
+  NSMutableArray *keys;
+  NSEnumerator   *e;
+  NSString       *k;
+
+  if (self->tabKeys != nil)
+    return self->tabKeys;
+  
+  /* determine viewer keys using rule engine */
+  if (viewerRuleEngine != nil) {
+    [viewerRuleEngine reset];
+    [viewerRuleEngine takeStoredValue:self             forKey:@"page"];
+    [viewerRuleEngine takeStoredValue:[self document]  forKey:@"document"];
+    [viewerRuleEngine takeStoredValue:[self fileManager] 
+		      forKey:@"fileManager"];
+    
+    e = [[viewerRuleEngine inferredValueForKey:@"tabkeys"] objectEnumerator];
+    
+    [viewerRuleEngine reset];
+  }
+  else
+    e = [sortedViewerKeys objectEnumerator];
+  
+  keys = [[NSMutableArray alloc] initWithCapacity:8];
+  while ((k = [e nextObject]) != nil) {
+    NSDictionary *info;
+    NSString     *tmp;
+    
+    if ((info = [docViewerPlugins objectForKey:k]) == nil) {
+      /* rule selected key, but it isn't installed */
+      [self logWithFormat:@"WARNING: did not find tab key: '%@'", k];
+      continue;
+    }
+    
+    if ((tmp = [info objectForKey:@"component"]) != nil) {
+      /*
+	Note: unfortunately we can't use EOQualifier's as gates, because they
+	      do not allow for reasonable queries on boolean results.
+	      (isVersion = 1 vs isVersion = YES vs isVersion = 'true' etc)
+      */
+      Class clazz;
+      
+      if ((clazz = NSClassFromString(tmp)) != Nil) {
+	if (![clazz canShowInDocumentViewer:self])
+	  continue;
+      }
+    }
+    
+    [keys addObject:k];
+  }
+
+  self->tabKeys = [keys copy];
+  [keys release]; keys = nil;
+
+  if ([self->tabKeys count] == 0) {
+    [self logWithFormat:
+	    @"ERROR: got no tab keys from rule model: %@, rules=%@",
+	    viewerRules, [viewerRules candidateRulesForKey:@"tabkeys"]];
+    return nil;
+  }
+  return self->tabKeys;
+}
+
 - (void)setActiveTabKey:(NSString *)_path {
   ASSIGNCOPY(self->activeTabKey, _path);
 }
 - (NSString *)activeTabKey {
   return self->activeTabKey;
+}
+
+- (WOComponent *)componentForActiveTab {
+  WOComponent  *plugin;
+  NSDictionary *info;
+  NSString *s;
+
+  if ((plugin = [self->tabComponentCache objectForKey:self->activeTabKey]))
+    return plugin;
+  
+  info = [docViewerPlugins objectForKey:self->activeTabKey];
+  s    = [info objectForKey:@"component"];
+  
+  if ((plugin = [self pageWithName:s]) == nil) {
+    [self logWithFormat:@"ERROR: did not find component: '%@'", s];
+    return nil;
+  }
+  
+  if (tabComponentCache == nil)
+    tabComponentCache = [[NSMutableDictionary alloc] initWithCapacity:7];
+  [tabComponentCache setObject:plugin forKey:self->activeTabKey];
+  return plugin;
 }
 
 - (BOOL)showActiveTabKey {

@@ -24,66 +24,14 @@
       <br />
       
       <#TabView>
-        <#IsNotAVersion>
-          <#AttributesTab>
-            <#StandardAttrsTitle><#AttrsButtons/></#StandardAttrsTitle>
-            
-            <table border="0" cellspacing="0" cellpadding="1" width="100%">
-              <#AttrViewer>
-                <tr><#AttrKey><#AttrItem/></#AttrKey></tr>
-              </#AttrViewer>
-            </table>
-            
-            <#SupportsProperties>
-              <br />
-              <#PropertiesTitle><#PropButtons/></#PropertiesTitle>
-              <#PropViewer/>
-            </#SupportsProperties>
-          </#AttributesTab>
-        </#IsNotAVersion>
-        
-        <#ContentsTab>
-          <#ContentsTabTitle/>
-            
-          <table border="0" cellspacing="0" cellpadding="1" width="100%">
-            <#HasReadAccess>
-              <tr>
-                <#DownloadAttr>
-                  <#DownloadLink><#FileName/></#DownloadLink>
-                  <#VersionString/>
-                </#DownloadAttr>
-              </tr>
-            </#HasReadAccess>
-            <tr><#MimeTypeAttr/></tr>
-            <tr><#SizeAttr/></tr>
-          </table>
-             
-          <#HasReadAccess> 
-            <#BLOBContentViewer/>
-          </#HasReadAccess>
-          <#HasReadAccessElse>
-            <hr size="1" />
-            <#NoReadAccessWarning/>
-          </#HasReadAccessElse>
-        </#ContentsTab>
-          
-        <#SupportsAccess>
-          <#IsNotAVersion>
-
-            <#VersionsTab>
-              <#VersionList/>
-            </#VersionsTab>
-            
-            <#AccessTab>
-              <#AccessTitle><#AccessButtons/></#AccessTitle>
-              <#AccessList/>
-            </#AccessTab>
-            
-            <#ShowDownloadLogsCond>
-              <#DownloadLogTab><#DownloadLogList/></#DownloadLogTab>
-            </#ShowDownloadLogsCond>
-          </#IsNotAVersion>
-        </#SupportsAccess>
+        <#ActiveTabKeys>
+          <#ShowActiveTabKey>
+            <#ActiveTab>
+              <#ActiveTabKey/>
+              <#ActiveTabComponent/>
+            </#ActiveTab>
+          </#ShowActiveTabKey>
+        </#ActiveTabKeys>
       </#TabView>
   </#Window>
 </#Frame>

@@ -43,4 +43,9 @@
   
   OGoDebugBLOBViewerLookup = NO;
   LSPluginViewerEnabled    = YES;  // Note: also in LSWProject
+
+  OGoDocViewerRules = (); // use that for custom rules
+  OGoDocViewerFallbackRules = ( // you probably shouldn't change that
+    "*true* => tabkeys = (attributes,contents,access,versions,logs); fallback"
+  );
 }
