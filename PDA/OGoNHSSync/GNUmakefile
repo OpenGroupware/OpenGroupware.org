@@ -9,12 +9,14 @@ include ./Version
 LIBRARY_NAME = libOGoNHS
 
 libOGoNHS_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoNHS_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 
 libOGoNHS_HEADER_FILES = OGoNHSDeviceDataSource.h
 libOGoNHS_OBJC_FILES   = OGoNHSDeviceDataSource.m
 
 libOGoNHS_HEADER_FILES_DIR         = .
 libOGoNHS_HEADER_FILES_INSTALL_DIR = /OGoNHS
+FHS_HEADER_DIRS = OGoNHS
 
 BUNDLE_NAME        = OpenGroupwareNHS
 BUNDLE_EXTENSION   = .conduit
@@ -30,3 +32,4 @@ OpenGroupwareNHS_PRINCIPAL_CLASS = OpenGroupwareNHSConduitBundle
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUmakefile.postamble
+-include fhs.make

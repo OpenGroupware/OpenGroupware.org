@@ -9,6 +9,9 @@ LIBRARY_NAME  = libOGoWebMail
 
 libOGoWebMail_HEADER_FILES_DIR         = .
 libOGoWebMail_HEADER_FILES_INSTALL_DIR = /OGoWebMail
+libOGoWebMail_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libOGoWebMail_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+FHS_HEADER_DIRS = OGoWebMail
 
 libOGoWebMail_HEADER_FILES += \
 	LSWImapBuildFolderDict.h	\
@@ -88,3 +91,4 @@ include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble
 -include ../../fhsbundle.make
+-include fhs.make

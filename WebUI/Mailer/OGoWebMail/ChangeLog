@@ -1,3 +1,8 @@
+2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: fixed version of libOGoWebMail, added FHS install of
+	  library (v5.1.97)
+
 2004-09-07  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyImapMailActions.m: redirect to main page if the session expired

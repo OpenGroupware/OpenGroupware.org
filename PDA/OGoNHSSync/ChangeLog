@@ -1,3 +1,8 @@
+2004-09-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* added FHS install (conduits are installed in
+	  /usr/local/lib/opengroupware.org-1.0a/conduits/) (v5.1.11)
+
 2004-09-06  Helge Hess  <helge.hess@skyrix.com>
 
 	* TestConduit.m: fixed some warnings (v5.1.10)
