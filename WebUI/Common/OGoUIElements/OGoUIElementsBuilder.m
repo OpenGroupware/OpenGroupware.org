@@ -36,6 +36,8 @@
     <OGo:td        .../>    maps to WETableData
     <OGo:th        .../>    maps to WETableHeader
 
+    <OGo:collapsible .../>  maps to SkyCollapsibleContent
+
     <OGo:field     .../>    maps to OGoField
     <OGo:fieldset  .../>    maps to OGoFieldSet
 */
@@ -69,17 +71,22 @@ static BOOL  debugOn           = NO;
 - (NSString *)tableViewComponentName {
   return @"SkyTableView";
 }
+- (NSString *)collapsibleComponentName {
+  return @"SkyCollapsibleContent";
+}
 
 /* support elements */
 
 /* building specific components */
 
-- (WOElement *)buildTableView:(id<DOMElement>)_el templateBuilder:(id)_b {
+- (WOElement *)buildComponent:(NSString *)_name element:(id<DOMElement>)_el
+  templateBuilder:(id)_b
+{
   NSMutableDictionary *assocs;
   NSArray  *children;
   NSString *cid;
   
-  if (debugOn) [self debugWithFormat:@"  build OGo tableview: %@", _el];
+  if (debugOn) [self debugWithFormat:@"  build %@: %@", _name, _el];
   
   /* unique component ID */
   
@@ -90,8 +97,8 @@ static BOOL  debugOn           = NO;
   
   children = [_el hasChildNodes]
     ? [_b buildNodes:[_el childNodes] templateBuilder:_b]
-      : nil;
-
+    : nil;
+  
   /* build associations */
   
   if ((assocs = [_b associationsForAttributes:[_el attributes]]) == nil)
@@ -100,10 +107,87 @@ static BOOL  debugOn           = NO;
   /* build component reference */
   
   [_b registerSubComponentWithId:cid 
-      componentName:[self tableViewComponentName] bindings:assocs];
+      componentName:_name bindings:assocs];
   
   return [[ChildRefClass alloc]
            initWithName:cid associations:nil contentElements:children];
+}
+
+- (WOElement *)buildSimpleCollapsible:(id<DOMElement>)_el
+  templateBuilder:(id)_b
+{
+  Class               clazz;
+  NSMutableDictionary *assocs;
+  NSArray             *children;
+  WODynamicElement    *element;
+  id tmp;
+  
+  clazz    = NSClassFromString(@"WOCollapsibleComponentContent");
+  assocs   = [_b associationsForAttributes:[_el attributes]];
+  children = [_b buildNodes:[_el childNodes] templateBuilder:_b];
+
+  /* patch bindings */
+  
+  if ([assocs objectForKey:@"openedImageFileName"] == nil) {
+    tmp = [WOAssociation associationWithValue:@"expanded.gif"];
+    [assocs setObject:tmp forKey:@"openedImageFileName"];
+  }
+  if ([assocs objectForKey:@"closedImageFileName"] == nil) {
+    tmp = [WOAssociation associationWithValue:@"collapsed.gif"];
+    [assocs setObject:tmp forKey:@"closedImageFileName"];
+  }
+  
+  if ([assocs objectForKey:@"visibility"] == nil) {
+    if ((tmp = [assocs objectForKey:@"visible"]) != nil) {
+      if ([tmp isValueSettable]) {
+	[assocs setObject:tmp forKey:@"visibility"];
+	[assocs removeObjectForKey:@"visible"];
+      }
+      else if ([tmp isValueConstant]) {
+	if ([tmp boolValueInComponent:nil]) {
+	  [self logWithFormat:
+		  @"ERROR: does not support static 'visible' YES binding."];
+	}
+      }
+      else {
+	[self logWithFormat:
+		@"ERROR: does not support unsettable 'visible' binding."];
+      }
+    }
+    if ((tmp = [assocs objectForKey:@"visibility"]) == nil) {
+      NSString *v;
+      
+      v = [self uniqueIDForNode:_el];
+      v = [v stringByReplacingString:@"." withString:@"_"];
+      v = [@"cvisi_" stringByAppendingString:v];
+      tmp = [WOAssociation associationWithKeyPath:v];
+      [assocs setObject:tmp forKey:@"visibility"];
+    }
+  }
+  
+  if ((tmp = [assocs objectForKey:@"title"]) != nil) {
+    [assocs setObject:tmp forKey:@"label"];
+    [assocs removeObjectForKey:@"title"];
+  }
+  if ((tmp = [assocs objectForKey:@"label"]) != nil) {
+    if ([assocs objectForKey:@"openedLabel"] == nil)
+      [assocs setObject:tmp forKey:@"openedLabel"];
+    if ([assocs objectForKey:@"closedLabel"] == nil)
+      [assocs setObject:tmp forKey:@"closedLabel"];
+    [assocs removeObjectForKey:@"label"];
+  }
+  
+  if ([assocs objectForKey:@"submitActionName"] == nil) {
+    // Note: form submits are only generated if this is set
+  }
+  
+  /* create element */
+  
+  element = [[clazz alloc] initWithName:[_el tagName] associations:assocs 
+			   contentElements:children];
+  [element setExtraAttributes:assocs];
+  // TODO: check whether retain-counting is OK for assocs and children!
+  return element;
 }
 
 /* element class builder (direct mappings of XML tag to dynamic element) */
@@ -128,6 +212,7 @@ static BOOL  debugOn           = NO;
 	return NSClassFromString(@"OGoField");
       if (tl == 8 && [tagName isEqualToString:@"fieldset"])
 	return NSClassFromString(@"OGoFieldSet");
+      break;
     }
     case 't': { /* starting with 't' */
       unichar c2;
@@ -177,9 +262,23 @@ static BOOL  debugOn           = NO;
   if (debugOn) [self debugWithFormat:@"  try to build OGo tag: %@", tagName];
 
   switch (c1) {
-  case 't':
-    if (tl == 9 && [tagName isEqualToString:@"tableview"])
-      return [self buildTableView:_element templateBuilder:_b];
+    case 'c': { /* starting with 'c' */
+      if (tl == 11 && [tagName isEqualToString:@"collapsible"])
+	return [self buildComponent:[self collapsibleComponentName]
+		     element:_element templateBuilder:_b];
+      break;
+    }
+    case 's': { /* starting with 's' */
+      if (tl == 12 && [tagName isEqualToString:@"scollapsible"])
+	return [self buildSimpleCollapsible:_element templateBuilder:_b];
+      break;
+    }
+    case 't': {
+      if (tl == 9 && [tagName isEqualToString:@"tableview"])
+	return [self buildComponent:[self tableViewComponentName]
+		     element:_element templateBuilder:_b];
+      break;
+    }
   }
   
   /* we need to call super, so that the build queue processing continues */

@@ -1,12 +1,12 @@
-// $Id: SkyCollapsibleContent.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
-ComponentContent : WOComponentContent {};
+ComponentContent : WOComponentContent {}
 
-TitleMode:   WECollapsibleTitleMode {};
+TitleMode:   WECollapsibleTitleMode {}
 ContentMode: WEContextConditional {
   contextKey = "WECollapsible_TitleMode";
   negate     = YES;
-};
+}
 
 ContextKeyTitle: WEContextKey {
   key = "SkyCollapsible_TitleMode";
@@ -48,13 +48,13 @@ IsTitleCond: WOConditional {
 TitleRow: WOGenericContainer {
   elementName = "tr";
   BGCOLOR     = titleColor;
-};
+}
 TitleTD: WOGenericContainer {
   elementName = "td";
   COLSPAN     = titleColspan;
 }
 
-Font: SkyConfigFont {};
+Font: SkyConfigFont {}
 
 Title: WOString {
   value = title;

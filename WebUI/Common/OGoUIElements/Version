@@ -1,6 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=37
+SUBMINOR_VERSION:=39
 
 # v5.0.22 requires libNGObjWeb v4.2.361
 # v5.0.22 requires BaseUI v5.0.74

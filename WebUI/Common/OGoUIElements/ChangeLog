@@ -1,3 +1,14 @@
+2005-03-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoUIElementsBuilder.m: added new <OGo:scollapsible> element which
+	  is similiar to the previous OGo forms <var:collapsible> one (maps to
+	  WOCollapsibleComponentContent with some special bindings) (v5.1.39)
+
+2005-03-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoUIElementsBuilder.m: map <OGo:collapsible> to
+	  SkyCollapsibleContent (v5.1.38)
+
 2005-03-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoElemBuilder.m: added new styling elements, OGoField and
