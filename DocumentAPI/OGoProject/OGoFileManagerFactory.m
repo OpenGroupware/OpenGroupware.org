@@ -100,9 +100,10 @@ static NSDictionary *baseToClass  = nil;
     return nil;
   }
 
-#if 1
+#if 0
 #  warning TODO: REMOVE DEBUG ABORT
-  if ([[[(EOKeyGlobalID *)_gid keyValues][0] stringValue] isEqualToString:@"-1"])
+  if ([[[(EOKeyGlobalID *)_gid keyValues][0] stringValue] 
+	isEqualToString:@"-1"])
     abort();
 #endif
   
