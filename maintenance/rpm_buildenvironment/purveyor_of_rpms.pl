@@ -579,7 +579,7 @@ sub collect_patchinfo {
     if ($flavour_we_build_upon eq "fedora") {
       $new_version = `/bin/rpm --qf '%{version}' -q httpd-devel`;
       print "Senseless to continue... got no version for mod_ngobjweb whilst '/bin/rpm --qf '%{version}' -q httpd-devel'\n" and exit 1 if ($?);
-    } elsif ((($flavour_we_build_upon eq "suse") or ($flavour_we_build_upon eq "mandrake")) and ($distrib_define !~ m/^suse sles-8/i) or ($distrib_define !~ m/^conectiva linux 10/i)) {
+    } elsif ((($flavour_we_build_upon eq "suse") or ($flavour_we_build_upon eq "mandrake")) and (($distrib_define !~ m/^suse sles-8/i) and ($distrib_define !~ m/^conectiva linux 10/i))) {
       $new_version = `/bin/rpm --qf '%{version}' -q apache2-devel`;
       print "Sensesless to continue... got no version for mod_ngobjweb whilst '/bin/rpm --qf '%{version}' -q apache2-devel'\n" and exit 1 if ($?);
     } elsif ($distrib_define =~ m/^suse sles-8/i) {
