@@ -1,6 +1,6 @@
 # compilation flags
 
-OGoROOT=../../..
+OGoROOT=../..
 
 ADDITIONAL_INCLUDE_DIRS += -I.. 
 
