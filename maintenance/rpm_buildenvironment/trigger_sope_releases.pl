@@ -16,6 +16,7 @@ my $svn = '/usr/bin/svn';
 my $dl_host = "download.opengroupware.org";
 my $www_user = "www";
 my $www_host = "download.opengroupware.org";
+my $i_really_had_sth_todo = "no";
 my @latest;
 my $tarball_name;
 my $srel;
@@ -45,6 +46,7 @@ foreach $srel (@sope_releases) {
   $buildtarget = $srel;
   $buildtarget =~ s/-r\d+.*$//g;
   unless(grep /\b$srel\b/, @already_known_sope_rel) {
+    $i_really_had_sth_todo = "yes";
     print "Retrieving: http://$dl_host/sources/releases/$srel\n";
     system("wget -q -O $ENV{HOME}/rpm/SOURCES/$srel http://$dl_host/sources/releases/$srel");
     print "cleaning up prior actual build...\n";
@@ -64,15 +66,15 @@ foreach $srel (@sope_releases) {
 }
 close(KNOWN_SOPE_RELEASES);
 
-if($host_i_runon eq "fedora-core2") {
-  print "building yum-repo for $host_i_runon\n";
-  system("sh $ENV{HOME}/prepare_yum_fcore2.sh");
+if($i_really_had_sth_todo eq "yes") { 
+  if($host_i_runon eq "fedora-core2") {
+    print "building yum-repo for $host_i_runon\n";
+    system("sh $ENV{HOME}/prepare_yum_fcore2.sh");
+  }
+  if($host_i_runon eq "fedora-core3") {
+    print "building yum-repo for $host_i_runon\n";
+    system("sh $ENV{HOME}/prepare_yum_fcore3.sh");
+  }
+  #polish buildenv after we're done...
+  system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
 }
-
-if($host_i_runon eq "fedora-core3") {
-  print "building yum-repo for $host_i_runon\n";
-  system("sh $ENV{HOME}/prepare_yum_fcore3.sh");
-}
-
-#polish buildenv after we're done...
-system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
