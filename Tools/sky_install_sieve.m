@@ -52,18 +52,214 @@
 
 @implementation InstallSieve
 
-id _getArg(NSDictionary *_arg, NSArray *_keys) {
+static id _getArg(NSDictionary *_arg, NSArray *_keys) {
   id           obj;
   NSEnumerator *enumerator;
-
+  
   enumerator = [_keys objectEnumerator];
-  while ((obj = [enumerator nextObject])) {
+  while ((obj = [enumerator nextObject]) != nil) {
     id o;
     
     if ((o = [_arg objectForKey:obj]) != nil)
       return o;
   }
   return nil;
+}
+
+- (NSString *)sieveQualifierPrefixForKind:(NSString *)_kind {
+  // TODO: this might conflict with UI labels?!
+  if ([_kind isEqualToString:@"contains"])
+    return @"header :contains";
+  if ([_kind isEqualToString:@"doesn`t contain"])
+    return @"not header :contains";
+  if ([_kind isEqualToString:@"is"])
+    return @"header :is";
+  if ([_kind isEqualToString:@"isn`t"])
+    return @"not header :is";
+  if ([_kind isEqualToString:@"begins with"])
+    return @"header :matches";
+  if ([_kind isEqualToString:@"ends with"])
+    return @"header :matches";
+  
+  NSLog(@"ERROR: could not process filter with kind: '%@'", _kind);
+  return nil;
+}
+
+- (void)appendHeaderFields:(NSArray *)_fields
+  toFilterString:(NSMutableString *)sieveFilter
+{
+  NSEnumerator *e;
+  NSString *obj;
+  BOOL isFirst; // TODO: this was shared before - probably was a bug!
+  
+  e       = [_fields objectEnumerator];
+  isFirst = YES;
+
+  [sieveFilter appendString:@" ["];
+  while ((obj = [e nextObject]) != nil) {
+    if (isFirst)
+      isFirst = NO;
+    else
+      [sieveFilter appendString:@","];
+
+    [sieveFilter appendString:@"\""];
+    [sieveFilter appendString:obj];
+    [sieveFilter appendString:@"\""];
+  }
+  [sieveFilter appendString:@"] \""];
+}
+
+- (NSString *)sieveOperatorForMatchKey:(NSString *)_key {
+  return [_key isEqualToString:@"or"] ? @"anyof" : @"allof";
+}
+
+- (void)appendFilterEntry:(id)aEntry
+  toFilterString:(NSMutableString *)sieveFilter
+{
+  NSString *kind;
+  NSString *sqs;
+
+  kind = [aEntry objectForKey:@"filterKind"];
+        
+  if ((sqs = [self sieveQualifierPrefixForKind:kind]) != nil)
+    [sieveFilter appendString:sqs];
+        
+  [self appendHeaderFields:
+          [[aEntry objectForKey:@"headerField"]
+            componentsSeparatedByString:@":"]
+        toFilterString:sieveFilter];
+  
+  if ([kind isEqualToString:@"ends with"])
+    [sieveFilter appendString:@"*"];
+        
+  [sieveFilter appendString:[aEntry objectForKey:@"string"]];
+
+  if ([kind isEqualToString:@"begins with"])
+    [sieveFilter appendString:@"*"];
+  
+  [sieveFilter appendString:@"\""];
+}
+
+- (void)appendVacation:(id)vacation
+  toFilterString:(NSMutableString *)sieveFilter
+{
+  NSEnumerator *addenum;
+  id           addr;
+  BOOL         isFirst;
+    
+  [sieveFilter appendString:@"require [\"vacation\"];\n\n"];
+
+  [sieveFilter appendFormat:@"vacation :days %@ :addresses [",
+               [vacation objectForKey:@"repeatInterval"]];
+
+  addenum = [[vacation objectForKey:@"emails"] objectEnumerator];
+    
+  isFirst = YES;
+    
+  while ((addr = [addenum nextObject])) {
+    if (isFirst)
+      isFirst = NO;
+    else
+      [sieveFilter appendString:@", "];
+      
+    [sieveFilter appendFormat:@"\"%@\"", addr];
+  }
+  [sieveFilter appendString:@"]"];
+
+  if ([[vacation objectForKey:@"subject"] length] > 0) {
+    [sieveFilter appendFormat:@" :subject \"%@\"",
+                 [vacation objectForKey:@"subject"]];
+  }
+  [sieveFilter appendFormat:@" text:\n%@\n.\n;\n", 
+                 [vacation objectForKey:@"text"]];
+}
+
+- (NSString *)sieveFilenameForString:(NSString *)fileName {
+  if ([fileName hasPrefix:@"/"]) {
+    fileName = [fileName substringWithRange:
+                           NSMakeRange(1, [fileName length] - 1)];
+  }
+  fileName = [[fileName componentsSeparatedByString:@"/"]
+                        componentsJoinedByString:@"."];
+  return fileName;
+}
+- (NSString *)sieveRedirectAddressForString:(NSString *)fileName {
+  NGMailAddressParser *parser;
+  NSString *str;
+  
+  if ([fileName length] == 0)
+    return nil;
+  
+  parser = [NGMailAddressParser mailAddressParserWithString:fileName];
+  str    = [(NGMailAddress *)[parser parse] address];
+      
+  if ([str length] == 0) {
+    NSLog(@"ERROR: could not parse address %@", fileName);
+    return nil;
+  }
+  return str;
+}
+
+- (void)appendFilter:(id)aFilter isFirst:(BOOL)firstEntry
+  toFilterString:(NSMutableString *)sieveFilter
+{
+  BOOL         isFirst;
+  id           entries, aEntry;
+  NSEnumerator *entrEnum;
+    
+  entries = [aFilter objectForKey:@"entries"];
+  
+  if ([aFilter objectForKey:@"kind"] != nil)
+    // TODO: do we need to log an error?
+    return;
+    
+  if ([entries count] == 0)
+    return;
+
+  isFirst = YES;
+  
+  [sieveFilter appendString:firstEntry ? @"if " : @"elsif "];
+  
+  [sieveFilter appendString:[self sieveOperatorForMatchKey:
+                                    [aFilter objectForKey:@"match"]]];
+  [sieveFilter appendString:@" ("];
+      
+  entrEnum = [entries objectEnumerator];
+  while ((aEntry = [entrEnum nextObject]) != nil) {
+    if (isFirst)
+      isFirst = NO;
+    else
+      [sieveFilter appendString:@", "];
+    
+    [self appendFilterEntry:aEntry toFilterString:sieveFilter];
+  }
+      
+  [sieveFilter appendString:@")\n {\n"];
+
+  if ([[aFilter objectForKey:@"folder"] length] > 0) {
+    NSString *fileName;
+    
+    [sieveFilter appendString:@"fileinto \""];
+    
+    fileName = [self sieveFilenameForString:[aFilter objectForKey:@"folder"]];
+    [sieveFilter appendString:fileName];
+    [sieveFilter appendString:@"\";\n "];
+  }
+  else if ([[aFilter objectForKey:@"forwardAddress"] length] > 0) {
+    NSString *str;
+    
+    [sieveFilter appendString:@"redirect \""];
+
+    str = [self sieveRedirectAddressForString:
+                  [aFilter objectForKey:@"forwardAddress"]];
+    if (str == nil)
+      // TODO: shouldn't we abort in case we found an error?
+      NSLog(@"ERROR: missing/invalid forwardAddress for filter: %@", aFilter);
+    
+    [sieveFilter appendString:str != nil ? str : @""];
+    [sieveFilter appendString:@"\";\n "];
+  }
+  [sieveFilter appendString:@"}\n"];
 }
 
 - (NSString *)convertFileToSieveFormat:(NSString *)_fileName {
@@ -95,45 +291,14 @@ id _getArg(NSDictionary *_arg, NSArray *_keys) {
       break;
     }
   }
-  firstEntry  = YES;
-  sieveFilter = [[NSMutableString alloc] init];
+  sieveFilter = [NSMutableString stringWithCapacity:4096];
   [sieveFilter appendString:@"require [\"fileinto\"];\n"];
-
+  
   if (forward)
     [sieveFilter appendString:@"require [\"reject\"];\n"];
 
-  if (vacation) {
-    NSEnumerator *addenum;
-    id           addr;
-    BOOL         isFirst;
-    
-    [sieveFilter appendString:@"require [\"vacation\"];\n\n"];
-
-    [sieveFilter appendFormat:@"vacation :days %@ :addresses [",
-                 [vacation objectForKey:@"repeatInterval"]];
-
-    addenum = [[vacation objectForKey:@"emails"] objectEnumerator];
-
-    isFirst = YES;
-    
-    while ((addr = [addenum nextObject])) {
-      if (isFirst)
-        isFirst = NO;
-      else
-        [sieveFilter appendString:@", "];
-      
-      [sieveFilter appendFormat:@"\"%@\"", addr];
-    }
-    [sieveFilter appendString:@"]"];
-
-    if ([[vacation objectForKey:@"subject"] length]) {
-      [sieveFilter appendFormat:@" :subject \"%@\"",
-                   [vacation objectForKey:@"subject"]];
-    }
-    [sieveFilter appendFormat:@" text:\n%@\n.\n;\n",
-                 [vacation objectForKey:@"text"]];
-  }
-
+  [self appendVacation:vacation toFilterString:sieveFilter];
+  
   if (forward) {
     NSEnumerator *enumerator;
     NSString     *m;
@@ -147,136 +312,18 @@ id _getArg(NSDictionary *_arg, NSArray *_keys) {
   }
   
   enumerator = [f objectEnumerator];
-
-  while ((aFilter = [enumerator nextObject])) {
-    id           entries, aEntry;
-    NSEnumerator *entrEnum;
-
-    entries   = [aFilter objectForKey:@"entries"];
-    
-    if ([aFilter objectForKey:@"kind"])
-      continue;
-    
-    if ([entries count] > 0) {
-      BOOL     isFirst;
-      NSString *fileName;
-
-      isFirst   = YES;
-      
-      if (firstEntry) {
-        [sieveFilter appendString:@"if "];
-        firstEntry = NO;
-      }
-      else
-        [sieveFilter appendString:@"elsif "];
-
-      if ([[aFilter objectForKey:@"match"] isEqualToString:@"or"])
-        [sieveFilter appendString:@"anyof ("];
-      else
-        [sieveFilter appendString:@"allof ("];
-
-      entrEnum = [entries objectEnumerator];
-      while ((aEntry = [entrEnum nextObject])) {
-        NSString *kind;
-
-        kind = [aEntry objectForKey:@"filterKind"];
-        
-        if (isFirst)
-          isFirst = NO;
-        else
-          [sieveFilter appendString:@", "];
-
-        // TODO: this might conflict with UI labels?!
-        if ([kind isEqualToString:@"contains"])
-          [sieveFilter appendString:@"header :contains"];
-        else if ([kind isEqualToString:@"doesn`t contain"])
-          [sieveFilter appendString:@"not header :contains"];
-        else if ([kind isEqualToString:@"is"])
-          [sieveFilter appendString:@"header :is"];
-        else if ([kind isEqualToString:@"isn`t"])
-          [sieveFilter appendString:@"not header :is"];
-        else if ([kind isEqualToString:@"begins with"])
-          [sieveFilter appendString:@"header :matches"];
-        else if ([kind isEqualToString:@"ends with"])
-          [sieveFilter appendString:@"header :matches"];
-        else
-          NSLog(@"couldn`t use entry '%@'", aEntry);
-
-        {
-          NSEnumerator *e;
-          id           obj;
-          
-          e = [[[aEntry objectForKey:@"headerField"]
-                        componentsSeparatedByString:@":"] objectEnumerator];
-          isFirst = YES;
-
-          [sieveFilter appendString:@" ["];
-          while ((obj = [e nextObject])) {
-            if (isFirst)
-              isFirst = NO;
-            else
-              [sieveFilter appendString:@","];
-
-            [sieveFilter appendString:@"\""];
-            [sieveFilter appendString:obj];
-            [sieveFilter appendString:@"\""];
-          }
-          [sieveFilter appendString:@"] \""];
-        }
-        if ([kind isEqualToString:@"ends with"])
-          [sieveFilter appendString:@"*"];
-
-        [sieveFilter appendString:[aEntry objectForKey:@"string"]];
-
-        if ([kind isEqualToString:@"begins with"])
-          [sieveFilter appendString:@"*"];
-
-        [sieveFilter appendString:@"\""];
-      }
-      [sieveFilter appendString:@")\n {\n"];
-
-      if ([[aFilter objectForKey:@"folder"] length] > 0) {
-        [sieveFilter appendString:@"fileinto \""];
-
-        fileName = [aFilter objectForKey:@"folder"];
-        if ([fileName hasPrefix:@"/"])
-          fileName = [fileName substringWithRange:
-                               NSMakeRange(1, [fileName length] - 1)];
-
-        fileName = [[fileName componentsSeparatedByString:@"/"]
-                              componentsJoinedByString:@"."];
-        [sieveFilter appendString:fileName];
-        [sieveFilter appendString:@"\";\n "];
-      }
-      else if ([[aFilter objectForKey:@"forwardAddress"] length] > 0) {
-        NSString *str;
-        NGMailAddressParser *parser;
-        
-        [sieveFilter appendString:@"redirect \""];
-
-        fileName = [aFilter objectForKey:@"forwardAddress"];
-
-        if ([fileName length] == 0) {
-          NSLog(@"missing forwardAddress for %@", aFilter);
-          str = @"";
-        }
-        else {
-          parser = [NGMailAddressParser mailAddressParserWithString:fileName];
-          str    = [(NGMailAddress *)[parser parse] address];
-
-          if ([str length] == 0) {
-            NSLog(@"couldn`t parse address %@", fileName);
-            str = @"";
-          }
-        }
-        [sieveFilter appendString:str];
-        [sieveFilter appendString:@"\";\n "];
-      }
-      [sieveFilter appendString:@"}\n"];
-    }
+  firstEntry = YES;
+  while ((aFilter = [enumerator nextObject]) != nil) {
+    [self appendFilter:aFilter isFirst:firstEntry toFilterString:sieveFilter];
+    firstEntry = NO;
   }
-  ASSIGN(f, nil);
-  return [sieveFilter autorelease];
+  [f release]; f = nil;
+  return sieveFilter;
+}
+
+- (NSException *)handleArgumentException:(NSException *)_exception {
+  // TODO: shouldn't we log something?
+  return nil;
 }
 
 - (NSDictionary *)getArgs {
@@ -291,7 +338,7 @@ id _getArg(NSDictionary *_arg, NSArray *_keys) {
 
   for (*(&i) = 0; i < n; i++) {
     NSString *argument;
-
+    
     *(&argument) = [args objectAtIndex:i];
 
     if ([argument hasPrefix:@"-"] && [argument length] > 1) {
@@ -310,9 +357,10 @@ id _getArg(NSDictionary *_arg, NSArray *_keys) {
         NS_DURING {
           *(&value) = [value stringValue];
         }
-        NS_HANDLER {}
+        NS_HANDLER
+          [[self handleArgumentException:localException] raise];
         NS_ENDHANDLER;
-
+        
         if (value == nil) {
           fprintf(stderr,
                   "Could not process value %s "
@@ -320,9 +368,8 @@ id _getArg(NSDictionary *_arg, NSArray *_keys) {
                   [argument cString],
                   [[args objectAtIndex:(i + 1)] cString]);
         }
-        else {
+        else
           [defArgs setObject:value forKey:argument];
-        }
         i++; // skip value
       }
     }
@@ -433,6 +480,32 @@ id _getArg(NSDictionary *_arg, NSArray *_keys) {
   return filter;
 }
 
+- (NGSieveClient *)openConnection {
+  NGSieveClient           *client;
+  NGInternetSocketAddress *addr;
+  NSDictionary            *res;
+  
+  addr = [NGInternetSocketAddress addressWithPort:[self->port intValue]
+                                  onHost:self->server];
+  client = [(NGSieveClient *)[NGSieveClient alloc] initWithAddress:addr];
+  if (client == nil) {
+    [self logWithFormat:@"ERROR: could not connect create client: %@", addr];
+    return nil;
+  }
+  client = [client autorelease];
+  
+  res = [client openConnection];
+  // TODO: check return value!
+  
+  res = [client login:self->login password:self->password];
+  if (![[res objectForKey:@"result"] boolValue]) {
+    NSLog(@"ERROR: login failed for %@ user %@", client, login);
+    exit(3);
+  }
+  
+  return client;
+}
+
 - (int)runWithArguments:(NSArray *)_args {
   if ([_args count] < 2) {
     [self usage];
@@ -452,23 +525,13 @@ id _getArg(NSDictionary *_arg, NSArray *_keys) {
       return 1;
     
     {
-      NGSieveClient           *client;
-      NGInternetSocketAddress *addr;
-      NSDictionary            *res;
-
-      addr   = [NGInternetSocketAddress addressWithPort:[port intValue]
-                                        onHost:server];
-      client = [(NGSieveClient *)[NGSieveClient alloc] initWithAddress:addr];
-
-
-      [client openConnection];
+      NGSieveClient *client;
       
-      res = [client login:login password:password];
-
-      if ([[res objectForKey:@"result"] boolValue] == NO) {
-        NSLog(@"login failed for %@ user %@", client, login);
+      if ((client = [self openConnection]) == nil) {
+        NSLog(@"ERROR: could not connect to Sieve server!");
         exit(3);
       }
+      
       if ([filter length] > 0) {
         [client putScript:scriptName script:filter]; 
         [client setActiveScript:scriptName]; 

@@ -1,3 +1,7 @@
+2004-11-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* sky_install_sieve.m: major code cleanups (needs testing!)
+
 2004-10-23  Helge Hess  <helge.hess@opengroupware.org>
 
 	* sky_install_sieve.m: fixed compilation on MacOSX

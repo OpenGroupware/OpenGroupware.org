@@ -229,7 +229,6 @@ removed: debian/opengroupware.org-webui-admin_OGOVER_.install
 removed: debian/opengroupware.org-xmlrpcd_OGOVER_.default
 removed: debian/opengroupware.org-zidestore_ZSVER_.init
 added:   PDA/PPSync/ogo-nhsd.8
-added:   PDA/OGoNHSSync/OpenGroupwareNHS.conduit
 changed: WebUI/Main/
      2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
      	* DirectAction.m: removed deprecated downloadBookmark action (v5.1.66)
