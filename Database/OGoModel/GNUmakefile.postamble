@@ -19,7 +19,7 @@ ifneq ($(PYTHON),)
 before-all :: $(MODELS)
 
 clean ::
-	rm -f $(MODELS)
+	#rm -f $(MODELS)
 
 endif
 

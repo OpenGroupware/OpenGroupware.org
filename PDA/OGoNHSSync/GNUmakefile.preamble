@@ -7,7 +7,7 @@ ADDITIONAL_OBJCCFLAGS += -Wall
 libOGoNHS_INCLUDE_DIRS += -I../OGoPalm/ -I..
 
 ADDITIONAL_INCLUDE_DIRS += \
-	-I$(OGoROOT)/Logic/LSFoundation/\
+	-I$(OGoROOT)/Logic/             \
 	-I$(OGoROOT)/Logic/LSScheduler/	\
 	-I$(OGoROOT)/DocumentAPI
 

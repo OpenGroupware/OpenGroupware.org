@@ -10,8 +10,7 @@ libOGoPalmUI_INCLUDE_DIRS += -I../OGoPalm/ -I..
 ADDITIONAL_INCLUDE_DIRS += \
 	-I$(OGoROOT)/WebUI/		\
 	-I$(OGoROOT)/DocumentAPI/	\
-	-I$(OGoROOT)/Logic/LSFoundation/
-
+	-I$(OGoROOT)/Logic
 
 ADDITIONAL_LIB_DIRS += \
 	-L$(OGoROOT)/WebUI/OGoFoundation/$(GNUSTEP_OBJ_DIR)/	\

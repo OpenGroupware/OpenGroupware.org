@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __OGoFoundation_OGoSession_H__
 #define __OGoFoundation_OGoSession_H__
@@ -26,7 +25,6 @@
 #import <Foundation/NSMapTable.h>
 #include <NGObjWeb/WOSession.h>
 #include <NGObjWeb/WOComponent.h>
-#include <LSFoundation/LSCommandFactory.h>
 
 @class NSMutableDictionary, NSDictionary, NSMutableSet, NSNotificationCenter;
 @class NSTimeZone, NSFormatter, NSArray, NSUserDefaults, NSMutableArray;

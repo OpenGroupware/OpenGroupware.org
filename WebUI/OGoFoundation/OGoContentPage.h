@@ -18,20 +18,18 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __OGoFoundation_OGoContentPage_H__
 #define __OGoFoundation_OGoContentPage_H__
 
 #include <OGoFoundation/LSWComponent.h>
-#include <LSFoundation/LSCommand.h>
 
 /*
+  TODO: explain the following!
   
   KVC:
     confirmString: --> confirm message
     confirmAction: --> confirm action
-    
 */
 
 @class NSString;

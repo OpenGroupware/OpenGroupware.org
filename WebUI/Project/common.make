@@ -9,9 +9,9 @@ include $(WebUIROOT)/Version
 WOBUNDLE_EXTENSION   = .lso
 WOBUNDLE_INSTALL_DIR = $(GNUSTEP_LOCAL_ROOT)/Library/OpenGroupware.org-1.0a/WebUI/
 
-ADDITIONAL_INCLUDE_DIRS += 		\
-	-I.. -I../..			\
-	-I$(OGoROOT)/Logic/LSFoundation	\
+ADDITIONAL_INCLUDE_DIRS += \
+	-I.. -I../..		\
+	-I$(OGoROOT)/Logic	\
 	-I$(OGoROOT)/DocumentAPI
 
 ADDITIONAL_LIB_DIRS     += 					\

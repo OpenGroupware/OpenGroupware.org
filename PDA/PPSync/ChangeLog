@@ -1,3 +1,12 @@
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.6
+
+	* NHSNameServiceDaemon.m, PPSyncContext.m: fixed some warnings
+
+	* PPClassDescription.h: added prototype for
+	  +classDescriptionForEntityName:
+
 2004-08-22  Helge Hess  <helge.hess@opengroupware.org>
 	
 	* use PI_AF_SLP if PI_AF_PILOT is not defined, now compiles against

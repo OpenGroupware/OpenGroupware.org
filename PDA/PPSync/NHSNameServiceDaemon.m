@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: NHSNameServiceDaemon.m 1 2004-08-20 11:17:52Z znek $
 
 #include "NHSNameServiceDaemon.h"
 #import <Foundation/Foundation.h>
@@ -219,7 +218,8 @@ char   pilotport[255];
     else if ([_conduit respondsToSelector:@selector(sync)])
       [_conduit sync];
     else if ([_conduit respondsToSelector:@selector(run)])
-      [_conduit run];
+      // TODO: fix me (is this used at all?)
+      [(NHSNameServiceDaemon *)_conduit run];
     else {
       NSLog(@"  invalid conduit: missing a sync method !");
     }
@@ -246,7 +246,7 @@ char   pilotport[255];
   
   bm = [NGBundleManager defaultBundleManager];
   
-  ctx = [ec rootObjectStore];
+  ctx = (PPSyncContext *)[ec rootObjectStore];
 
   processedConduits = [NSMutableSet setWithCapacity:16];
 
@@ -362,7 +362,7 @@ char   pilotport[255];
   /* find out address */
 
   caddrLen = sizeof(caddr);
-  if (getpeername(pisock->sd, &caddr, &caddrLen) < 0) {
+  if (getpeername(pisock->sd, (void *)&caddr, &caddrLen) < 0) {
     NSLog(@"%@: Couldn't get peer name ..", self);
     return;
   }

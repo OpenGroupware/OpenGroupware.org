@@ -7,10 +7,10 @@ include ../Version
 
 GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
 
-ADDITIONAL_INCLUDE_DIRS += 		\
-	-I.. 				\
-	-I../../Logic/LSFoundation	\
-	-I../../DocumentAPI		\
+ADDITIONAL_INCLUDE_DIRS += \
+	-I.. 			\
+	-I../../Logic		\
+	-I../../DocumentAPI
 
 ADDITIONAL_LIB_DIRS += \
 	-L../OGoFoundation/$(GNUSTEP_OBJ_DIR)		\

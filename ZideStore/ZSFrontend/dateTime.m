@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: dateTime.m 1 2004-08-20 11:17:52Z znek $
 
 #import <Foundation/NSCalendarDate.h>
 
@@ -43,7 +42,7 @@ static NSString *mailFmt = @"%a, %d %b %Y %H:%M:%S %Z";
     return nil;
   }
   
-#warning TODO: wrong timezone ? (default-timezone instead of UTC ?)
+  // TODO: wrong timezone ? (default-timezone instead of UTC ?)
   if ((cd = [NSCalendarDate dateWithString:_s calendarFormat:defTZFmt])) {
     [self release];
     return [cd retain];

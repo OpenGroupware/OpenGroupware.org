@@ -1,3 +1,15 @@
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.65
+
+	* WOSession+LSO.h: do not include LSBaseCommand.h
+
+	* WOSession+LSO.h: do not include NSLock.h
+
+	* OGoContentPage.h: do not include LSCommand.h
+
+	* OGoSession.h: does not include LSCommandFactory.h
+
 2004-09-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoResourceManager.m: added own implementation of

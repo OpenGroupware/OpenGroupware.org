@@ -217,9 +217,9 @@
 }
 
 - (NSArray *)appointment_fetchAction:(id)_arg {
-#warning broken for company queries, see OGo bug #220
+  // TODO: broken for company queries, see OGo bug #220
   EODataSource *appointmentDS;
-
+  
   appointmentDS = [self appointmentDataSource];
   [appointmentDS setFetchSpecification:[self appointmentFSpec:_arg]];
   return [appointmentDS fetchObjects];

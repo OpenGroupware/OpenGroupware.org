@@ -8,7 +8,7 @@ ADDITIONAL_BUNDLE_LIBS += -lOGoPalm -lOGoPalmUI
 ADDITIONAL_INCLUDE_DIRS += \
 	-I$(OGoROOT)/WebUI/		\
 	-I$(OGoROOT)/DocumentAPI/	\
-	-I$(OGoROOT)/Logic/LSFoundation/
+	-I$(OGoROOT)/Logic
 
 ADDITIONAL_BUNDLE_LIBS += \
 	-lOGoFoundation	\

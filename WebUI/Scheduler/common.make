@@ -21,9 +21,9 @@ SCHEDULER_LIBS += \
 	-lNGStreams -lNGExtensions -lEOControl \
 	-lXmlRpc
 
-ADDITIONAL_INCLUDE_DIRS += 		\
-	-I.. -I../..			\
-	-I$(OGoROOT)/Logic/LSFoundation	\
+ADDITIONAL_INCLUDE_DIRS += \
+	-I.. -I../..		\
+	-I$(OGoROOT)/Logic	\
 	-I$(OGoROOT)/DocumentAPI
 
 ADDITIONAL_LIB_DIRS += \

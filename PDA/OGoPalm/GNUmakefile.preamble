@@ -7,7 +7,8 @@ ADDITIONAL_OBJCFLAGS    += -Wall
 ADDITIONAL_INCLUDE_DIRS += -I.
 
 ADDITIONAL_INCLUDE_DIRS += \
-	-I$(OGoROOT)/Logic/LSFoundation/\
+        -I..                            \
+	-I$(OGoROOT)/Logic/             \
 	-I$(OGoROOT)/Logic/LSScheduler/	\
 	-I$(OGoROOT)/DocumentAPI
 

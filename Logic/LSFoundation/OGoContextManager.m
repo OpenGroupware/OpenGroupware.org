@@ -182,8 +182,12 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
     return NO;
   }
   
-  if ((bm = [NGBundleManager defaultBundleManager]) == nil)
+  /* locate model using bundle manager */
+  
+  if ((bm = [NGBundleManager defaultBundleManager]) == nil) {
     [self logWithFormat:@"ERROR: could not instantiate bundle manager !"];
+    return NO;
+  }
   
   modelBundle = [bm bundleProvidingResource:modelName ofType:@"EOModels"];
   if (modelBundle == nil) {
@@ -193,7 +197,9 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
     modelPath = nil;
     return NO;
   }
-
+  
+  /* load model resources from bundle */
+  
   modelPath = [modelBundle pathForResource:modelName ofType:@"eomodel"];
   if (modelPath == nil) {
     NSLog(@"ERROR: did not find path for model %@ (type=eomodel) in bundle %@",

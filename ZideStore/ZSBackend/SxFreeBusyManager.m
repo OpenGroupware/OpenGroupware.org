@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -26,7 +26,9 @@
 #include <NGExtensions/NGExtensions.h>
 
 // TODO: HACK! Why is the backend calling into the frontend?!
-//#include <Frontend/Appointments/SxAppointment.h>
+@interface NSObject(SxAppointmentParticipants)
++ (EOGlobalID *)gidForPKeyEmail:(NSString *)_email;
+@end
 
 @implementation SxFreeBusyManager
 
@@ -191,8 +193,8 @@ static SxFreeBusyManager *sharedInstance = NULL;
 }
 
 - (void)appendFirst:(NSString *)_str
-                 as:(NSString *)_as
-                 to:(NSMutableString *)_ms
+  as:(NSString *)_as
+  to:(NSMutableString *)_ms
 {
   [_ms appendString:_str];
   [_ms appendString:@" AS "];
@@ -345,8 +347,7 @@ static SxFreeBusyManager *sharedInstance = NULL;
 }
 
 - (NSString *)buildExpressionForEmail:(NSString *)_email
-                                 from:(NSCalendarDate *)_from
-                                   to:(NSCalendarDate *)_to
+  from:(NSCalendarDate *)_from to:(NSCalendarDate *)_to
 {
   NSString        *emailString;
   NSString        *fromString;
@@ -377,18 +378,18 @@ static SxFreeBusyManager *sharedInstance = NULL;
   [self append:[self companyValueTableName]          as:@"cv"  to:ms];
 
   [ms appendFormat:@" WHERE "
-      @"lower(cv.value_string) = %@ AND "
-      @"lower(cv.attribute)    = 'email1' AND "
-      @"p.db_status <> 'archived' AND "
-      @"p.company_id = cv.company_id AND "
+      @"(LOWER(cv.value_string) = %@)       AND "
+      @"(LOWER(cv.attribute)    = 'email1') AND "
+      @"(p.db_status <> 'archived')         AND "
+      @"(p.company_id = cv.company_id)      AND "
       
-      @"ca.sub_company_id = p.company_id AND "
-      @"t.company_id = ca.company_id AND "
+      @"(ca.sub_company_id = p.company_id)  AND "
+      @"(t.company_id      = ca.company_id) AND "
       
       @"(dca.company_id = p.company_id OR dca.company_id = t.company_id) AND "
-      @"d.end_date > %@ AND "
-      @"d.start_date < %@ AND "
-      @"d.date_id = dca.date_id",
+      @"(d.end_date   > %@) AND "
+      @"(d.start_date < %@) AND "
+      @"(d.date_id = dca.date_id)",
       emailString, fromString, toString];
 
   return ms;
@@ -424,18 +425,19 @@ static SxFreeBusyManager *sharedInstance = NULL;
   [self append:[self personTableName]                as:@"p"   to:ms];
   [self append:[self companyAssignmentTableName]     as:@"ca"  to:ms];
   [self append:[self teamTableName]                  as:@"t"   to:ms];
-
+  
   [ms appendFormat:@" WHERE "
-      @"p.company_id = %@ AND "
-      @"p.db_status <> 'archived' AND "
+      @"(p.company_id = %@) AND "
+      @"(p.db_status <> 'archived') AND "
 
-      @"ca.sub_company_id = p.company_id AND "
-      @"t.company_id = ca.company_id AND "
+      @"(ca.sub_company_id = p.company_id) AND "
+      @"(t.company_id = ca.company_id) AND "
    
-      @"(dca.company_id = p.company_id OR dca.company_id = t.company_id) AND "
-      @"d.end_date > %@ AND "
-      @"d.start_date < %@ AND "
-      @"d.date_id = dca.date_id",
+      @"((dca.company_id = p.company_id) OR (dca.company_id = t.company_id)) "
+      @"AND "
+      @"(d.end_date > %@) AND "
+      @"(d.start_date < %@) AND "
+      @"(d.date_id = dca.date_id)",
       companyIdString, fromString, toString];
 
   return ms;

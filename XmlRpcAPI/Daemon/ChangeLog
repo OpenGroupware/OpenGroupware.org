@@ -1,3 +1,8 @@
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* updated common.h files for new LSFoundation header files location
+	  (v5.1.37)
+
 2004-09-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Actions.subproj/DirectAction+Defaults.m: use the login user's

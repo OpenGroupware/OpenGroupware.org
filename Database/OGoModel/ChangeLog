@@ -1,5 +1,7 @@
 2004-09-06  Helge Hess  <helge.hess@skyrix.com>
 
+	* GNUmakefile.postamble: do not delete models in distclean (v5.1.12)
+
 	* v5.1.11
 
 	* GNUmakefile: include PostgreSQL SQL create/update scripts in bundle

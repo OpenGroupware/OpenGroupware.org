@@ -85,9 +85,6 @@
 - (NSArray *)pkeysAndModDatesOfSet:(SxAptSetIdentifier *)_sid
   from:(NSDate *)_from to:(NSDate *)_to;
 
-// returns array of dict with "pkey" and "version"
-- (NSArray *)pkeysAndVersionsForGlobalIDs:(NSArray *)_gids;
-
 // returns: title, location, end/startdate, sensititivty
 - (NSArray *)coreInfoForAppointmentSet:(SxAptSetIdentifier *)_set;
 - (NSArray *)coreInfoOfAppointmentsWithGIDs:(NSArray *)_gids 

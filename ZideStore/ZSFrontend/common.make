@@ -5,6 +5,4 @@ include $(GNUSTEP_MAKEFILES)/common.make
 OGoROOT=../../..
 
 ADDITIONAL_INCLUDE_DIRS += -I. -I.. -I../..
-
-ADDITIONAL_INCLUDE_DIRS += \
-	-I$(OGoROOT)/Logic/LSFoundation/
+ADDITIONAL_INCLUDE_DIRS += -I$(OGoROOT)/Logic

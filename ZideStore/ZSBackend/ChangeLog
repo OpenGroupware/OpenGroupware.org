@@ -1,3 +1,12 @@
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* v1.3.77
+	
+	* SxFreeBusyManager.m: fixed a warning
+	
+	* SxAptManager.h: removed prototype for -pkeysAndVersionsForGlobalIDs:
+	  (which is disabled in the .m)
+
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* renamed to libZSBackend (v1.3.76)

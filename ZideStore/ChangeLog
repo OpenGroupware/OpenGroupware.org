@@ -1,3 +1,7 @@
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* fixed search pathes for LSFoundation
+
 2004-08-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Maps/DAVPropSets.plist: added some OOo fields to Cadaver query set

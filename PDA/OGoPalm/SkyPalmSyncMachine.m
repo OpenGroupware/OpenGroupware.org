@@ -18,14 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoPalm/SkyPalmSyncMachine.h>
 #include <OGoPalm/SkyPalmEntryDataSource.h>
 #include <OGoPalm/SkyPalmCategoryDataSource.h>
 #include <OGoPalm/SkyPalmPreSync.h>
-#include <EOControl/EOControl.h>
-#include <NGExtensions/NSNull+misc.h>
+#include <OGoNHSSync/OGoNHSDeviceDataSource.h>
+#include "common.h"
 
 @interface SkyPalmSyncMachine(PrivatMethods)
 - (void)checkForTimeout;
@@ -48,11 +47,11 @@
 }
 
 - (void)dealloc {
-  RELEASE(self->palmDS);
-  RELEASE(self->skyrixDS);
-  RELEASE(self->lastAction);
-  RELEASE(self->errorMessages);
-  RELEASE(self->logLabel);
+  [self->palmDS        release];
+  [self->skyrixDS      release];
+  [self->lastAction    release];
+  [self->errorMessages release];
+  [self->logLabel      release];
   [self->skyIdsOfDeletedPalmRecords release];
   [super dealloc];
 }
@@ -208,7 +207,7 @@
 #endif
 
 - (NSDictionary *)_comparePalmRecords:(NSArray *)_palmRecs
-                       withSkyRecords:(NSArray *)_skyRecs
+  withSkyRecords:(NSArray *)_skyRecs
 {
   // TODO: split up this huge method!
   NSMutableArray *changedInPalm     = nil;
@@ -462,8 +461,12 @@
   [newDoc saveWithoutReset];
   [self _resetLastAction];
   
-  [self->palmDS mapLastInsertedToSkyId:[[one globalID] keyValues][0]];
-  //[self _handlePostSyncOnSkyrixRecord:one];
+  [(OGoNHSDeviceDataSource *)self->palmDS 
+                             mapLastInsertedToSkyId:
+                               [[one globalID] keyValues][0]];
+#if 0
+  [self _handlePostSyncOnSkyrixRecord:one];
+#endif
 }
 
 - (void)_handleNewInSkyrix:(NSArray *)_newInSkyrix {

@@ -6,8 +6,7 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-I. -I..	\
 	-I./Contacts/	\
 
-ADDITIONAL_INCLUDE_DIRS += \
-	-I$(OGoROOT)/Logic/LSFoundation/
+ADDITIONAL_INCLUDE_DIRS += -I$(OGoROOT)/Logic
 
 libZideStoreBackend_LIBRARIES_DEPEND_UPON += \
 	-lLSFoundation	\

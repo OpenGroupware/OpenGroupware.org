@@ -27,7 +27,7 @@ ADDITIONAL_LIB_DIRS += \
 	-L$(DOCAPI_DIR)/OGoProject/$(GNUSTEP_OBJ_DIR)	\
 
 ADDITIONAL_INCLUDE_DIRS += \
-	-I$(OGoROOT)/Logic/LSFoundation/\
+	-I$(OGoROOT)/Logic      \
 	-I$(OGoROOT)/DocumentAPI
 
 ADDITIONAL_LIB_DIRS += -L/usr/local/lib -L/usr/lib

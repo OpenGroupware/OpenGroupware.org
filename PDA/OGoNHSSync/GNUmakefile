@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_USER_ROOT)
 

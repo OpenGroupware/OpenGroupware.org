@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: TestConduit.m 1 2004-08-20 11:17:52Z znek $
 
 #import <Foundation/Foundation.h>
 
@@ -37,6 +36,11 @@
 #include <LSFoundation/LSFoundation.h>
 #include <LSFoundation/OGoContextSession.h>
 #include <LSFoundation/OGoContextManager.h>
+
+@interface SkyPalmSyncMachine(UsedPrivates)
+- (NSDictionary *)_comparePalmRecords:(NSArray *)_palmRecs
+  withSkyRecords:(NSArray *)_skyRecs;
+@end
 
 @implementation TestConduit
 
@@ -88,8 +92,8 @@
 
   ppSync   = (PPSyncContext *)[_ec rootObjectStore];
   deviceId = [[ppSync valueForKey:@"userName"] copy];
-
-  palmDS = [self _dsForDevice:deviceId ec:_ec];
+  
+  palmDS = [self _dsForDevice:deviceId tx:_ec];
   skyDS  = [self _skyDs];
 
   {

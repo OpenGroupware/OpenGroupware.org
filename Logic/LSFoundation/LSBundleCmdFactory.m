@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "LSBundleCmdFactory.h"
 #include "common.h"
@@ -147,7 +146,7 @@
 - (_LSBundleCommandInfo *)lookupInfoForCommand:(NSString *)_command {
   _LSBundleCommandInfo *info;
   NGBundleManager *bm;
-
+  
   if (_command == nil) return nil;
   
   /* look into info cache */
@@ -173,7 +172,7 @@
     [self->commandsProvidedByBundles release];
     self->commandsProvidedByBundles = nil;
     
-    if ((cmds = [bm providedResourcesOfType:@"LSCommands"])) {
+    if ((cmds = [bm providedResourcesOfType:@"LSCommands"]) != nil) {
       NSMutableSet *s;
       int i, count;
       BOOL cmdAvailable = NO;
@@ -186,10 +185,11 @@
         bundleInfo = [cmds objectAtIndex:i];
         cmdName    = [bundleInfo objectForKey:@"name"];
 
-        if (cmdName) {
-          [s addObject:cmdName];
-          if (!cmdAvailable) cmdAvailable = [cmdName isEqualToString:_command];
-        }
+        if (cmdName == nil)
+          continue;
+        
+        [s addObject:cmdName];
+        if (!cmdAvailable) cmdAvailable = [cmdName isEqualToString:_command];
       }
       
       self->commandsProvidedByBundles = [s copy];

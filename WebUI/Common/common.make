@@ -12,8 +12,8 @@ WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.0
 WOBUNDLE_EXTENSION   = .lso
 
 ADDITIONAL_INCLUDE_DIRS += \
-	-I.. -I../..	\
-	-I../../../Logic/LSFoundation/	\
+	-I.. -I../..		\
+	-I../../../Logic/	\
 	-I../../../DocumentAPI/
 
 ADDITIONAL_LIB_DIRS     += \
