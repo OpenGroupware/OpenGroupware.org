@@ -40,28 +40,19 @@
   id<NSObject,SkyDocumentFileManager> fileManager;
   NSMutableDictionary *pathToDS;
   
-  WOComponent         *currentForm;
-  NSDictionary        *fsinfo;
-  WOComponent         *folderForm;
-  NSString            *folderFormDirPath;
-  WOComponent         *headForm;
-  WOComponent         *tailForm;
-  NSString            *folderDropPath;
-
-  BOOL                isFormsEnabled;
-
-  id                  project;
-  NSArray             *jobs;
+  NSDictionary *fsinfo;
+  WOComponent  *folderForm;
+  NSString     *folderFormDirPath;
+  NSString     *folderDropPath;
+  
+  id           project;
+  NSArray      *jobs;
 }
 
 - (void)setFileManager:(id)_fm;
 
-- (void)setTestMode:(BOOL)_flag;
-- (BOOL)isTestMode;
-
 @end
 
-#include "WOComponent+P4Forms.h"
 #include <NGMime/NGMimeType.h>
 #include "common.h"
 
@@ -69,10 +60,6 @@
 - (EOGlobalID *)globalID;
 - (id)dataSourceAtPath:(NSString *)_path;
 - (NSDictionary *)fileSystemAttributes;
-@end
-
-@interface SkyProject4Viewer(Forms) // TODO: find headerfile for that
-- (void)printErrorWithSource:(NSString *)_path destination:(NSString *)_dest;
 @end
 
 @implementation SkyProject4Viewer
@@ -96,18 +83,9 @@ static inline BOOL _showUnknownFiles(id self) {
 
 - (id)init {
   if ((self = [super init])) {
-    NGBundleManager *bm;
     NSNotificationCenter *nc;
-
-    bm = [NGBundleManager defaultBundleManager];
-    if ([bm bundleProvidingResource:@"SkyP4FormPage"
-            ofType:@"WOComponents"] != nil)
-      self->isFormsEnabled = YES;
-    self->project = nil;
-    self->jobs = nil;
-
+    
     nc = [NSNotificationCenter defaultCenter];
-
     [nc addObserver:self selector:@selector(refreshView:)
         name:@"SkyNewJobNotification" object:nil];
   }
@@ -122,12 +100,7 @@ static inline BOOL _showUnknownFiles(id self) {
 
 - (void)dealloc {
   [self->folderDropPath release];
-  [self->headForm release];
-  [self->tailForm release];
-  [self->folderFormDirPath release];
-  [self->folderForm  release];
   [self->fsinfo      release];
-  [self->currentForm release];
   [self->pathToDS    release];
   [self->fileManager release];
   [self->project     release];
@@ -142,22 +115,6 @@ static inline BOOL _showUnknownFiles(id self) {
   NSString *s;
   
   s = [[self fileSystemAttributes] objectForKey:@"NSFileSystemName"];
-  
-  if (self->currentForm) {
-    NSString *fm;
-    
-    fm = [self->currentForm name];
-    
-    if ((![fm isEqualToString:s]) && (![fm isEqualToString:@".index.sfm"]))
-      s = [NSString stringWithFormat:@"%@ (%@)", s, fm];
-  }
-  
-  if ([self isTestMode]) {
-    NSString *t;
-    
-    t = [[self labels] valueForKey:@"test"];
-    s = [NSString stringWithFormat:@"%@: %@", t, s];
-  }
   return s;
 }
 
@@ -173,8 +130,6 @@ static inline BOOL _showUnknownFiles(id self) {
 - (BOOL)isViewerForSameObject:(id)_object {
   id gid;
 
-  if (self->currentForm)
-    return NO;
   if ((id)_object == (id)self->fileManager)
     return YES;
   
@@ -446,143 +401,19 @@ static inline BOOL _showUnknownFiles(id self) {
   return isEnabled;
 }
 
-- (BOOL)hasIndexForm {
-  if ([[self fileManager] fileExistsAtPath:@"/project.sfm"])
-    return YES;
-  
+- (BOOL)showOnlyIndexForm {
   return NO;
 }
 
-- (BOOL)showOnlyIndexForm {
-  if (![self hasIndexForm])
-    return NO;
-  if ([self isTestMode])
-    return YES;
-  if ([self isAccountDesigner])
-    return NO;
-  return YES;
-}
-
-- (WOComponent *)indexFormComponent {
-  id formDoc;
-  
-  if (self->currentForm)
-    return self->currentForm;
-  
-  if ((formDoc = [[self fileManager] documentAtPath:@"/project.sfm"]) == nil)
-    return nil;
-  
-  self->currentForm =
-    [[self formForDocument:formDoc className:@"SkyP4AppFormComponent"] retain];
-  
-  return self->currentForm;
-}
-
-- (void)setCurrentForm:(WOComponent *)_form {
-  if (self->currentForm != _form) {
-    ASSIGN(self->currentForm, _form);
-
-    [_form takeValue:[self fileManager] forKey:@"fileManager"];
-  }
-}
-- (WOComponent *)currentForm {
-  if (self->currentForm)
-    return self->currentForm;
-  
-  return [self indexFormComponent];
-}
-
-/* folder form */
-
-- (WOComponent *)folderForm {
-  NSString *path;
-  id       formDoc;
-  
-  path = [[self fileManager] currentDirectoryPath];
-  path = [path stringByAppendingPathComponent:@".index.sfm"];
-  
-  if ([path isEqualToString:self->folderFormDirPath])
-    return self->folderForm;
-  
-  ASSIGN(self->folderForm, (id)nil);
-  ASSIGNCOPY(self->folderFormDirPath, path);
-  
-  if ((formDoc = [[self fileManager] documentAtPath:path]) == nil)
-    return nil;
-  
-  self->folderForm = [[self formForDocument:formDoc] retain];
-  [self->folderForm
-       takeValue:[[self fileManager] documentAtPath:@"."]
-       forKey:@"document"];
-  
-  return self->folderForm;
-}
-
-- (BOOL)showFolderForm {
-  return [self folderForm] != nil ? YES : NO;
-}
 - (BOOL)showFolderContent {
   return YES;
   //return ![self showFolderForm] || [self isAccountDesigner];
 }
 
-- (WOComponent *)headForm {
-  id doc;
-  
-  if (self->headForm)
-    return [self->headForm isNotNull] ? self->headForm : nil;
-  
-  if ((doc = [[self fileManager] documentAtPath:@"/.project_head.sfm"]) ==nil){
-    [self debugWithFormat:@"found no head form file ..."];
-    self->headForm = [[NSNull null] retain];
-    return nil;
-  }
-  
-  if ((self->headForm = [[self formForDocument:doc] retain]) == nil)
-    [self logWithFormat:@"couldn't create component for head form %@", doc];
-  return self->headForm;
-}
-- (WOComponent *)tailForm {
-  id doc;
-  
-  if (self->tailForm)
-    return [self->tailForm isNotNull] ? self->tailForm : nil;
-  
-  if ((doc = [[self fileManager] documentAtPath:@"/.project_tail.sfm"]) ==nil){
-    [self debugWithFormat:@"found no tail form file ..."];
-    self->tailForm = [[NSNull null] retain];
-    return nil;
-  }
-  
-  if ((self->tailForm = [[self formForDocument:doc] retain]) == nil)
-    [self logWithFormat:@"couldn't create component for tail form %@", doc];
-  
-  return self->tailForm;
-}
-
-- (BOOL)hasHeadForm {
-  return [self headForm] != nil ? YES : NO;
-}
-- (BOOL)hasTailForm {
-  return [self tailForm] != nil ? YES : NO;
-}
-
 /* test mode */
 
 - (BOOL)canTest {
-  if (![self hasIndexForm])
-    return NO;
-  if (![self isAccountDesigner])
-    return NO;
-  return self->isFormsEnabled;
-}
-
-- (void)setTestMode:(BOOL)_flag {
-  [[self session] setObject:[NSNumber numberWithBool:_flag]
-                  forKey:@"SkyP4FormTestMode"];
-}
-- (BOOL)isTestMode {
-  return [[[self session] objectForKey:@"SkyP4FormTestMode"] boolValue];
+  return NO;
 }
 
 /* operations */
@@ -691,11 +522,6 @@ static inline BOOL _showUnknownFiles(id self) {
                withVerb:@"edit"];
 }
 
-- (id)reloadIndexForm {
-  [self setCurrentForm:nil];
-  return nil;
-}
-
 - (id)droppedOnFolder {
   id         dropFile;
   EOGlobalID *dropFileGID;
@@ -726,7 +552,6 @@ static inline BOOL _showUnknownFiles(id self) {
   if (![[self fileManager] movePath:dropFilePath
                            toPath:destPath handler:nil]) {
     //[self setErrorString:@"move operation failed"];
-    [self printErrorWithSource:dropFilePath destination:destPath];
     return nil;
   }
   
@@ -740,16 +565,6 @@ static inline BOOL _showUnknownFiles(id self) {
 
 - (id)doHideTree {
   [self setHideTree:YES];
-  return nil;
-}
-
-- (id)goTestMode {
-  [self setTestMode:YES];
-  return nil;
-}
-
-- (id)disableTest {
-  [self setTestMode:NO];
   return nil;
 }
 
@@ -769,8 +584,6 @@ static inline BOOL _showUnknownFiles(id self) {
   NSAutoreleasePool *pool;
   
   pool = [[NSAutoreleasePool alloc] init];
-  ASSIGN(self->headForm, (id)nil);
-  ASSIGN(self->tailForm, (id)nil);
   [(SkyProjectFileManager *)self->fileManager flush];
   [pool release];
   

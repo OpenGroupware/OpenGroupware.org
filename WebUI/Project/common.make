@@ -1,18 +1,26 @@
 # $Id$
 
+OGoROOT  =../../..
+WebUIROOT=../..
+
 include $(GNUSTEP_MAKEFILES)/common.make
+include $(WebUIROOT)/Version
 
 WOBUNDLE_EXTENSION   = .lso
 WOBUNDLE_INSTALL_DIR = $(GNUSTEP_LOCAL_ROOT)/Library/OpenGroupware.org
 
 ADDITIONAL_INCLUDE_DIRS += 		\
 	-I.. -I../..			\
-	-I../../../Logic/LSFoundation	\
-	-I../../../DocumentAPI		\
+	-I$(OGoROOT)/Logic/LSFoundation	\
+	-I$(OGoROOT)/DocumentAPI
 
 ADDITIONAL_LIB_DIRS     += 					\
-	-L../../OGoFoundation/$(GNUSTEP_OBJ_DIR)		\
-	-L../../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)	\
+	-L$(WebUIROOT)/OGoFoundation/$(GNUSTEP_OBJ_DIR)		\
+	-L$(OGoROOT)/DocumentAPI/OGoProject/$(GNUSTEP_OBJ_DIR)   \
+	-L$(OGoROOT)/DocumentAPI/OGoAccounts/$(GNUSTEP_OBJ_DIR)  \
+	-L$(OGoROOT)/DocumentAPI/OGoBase/$(GNUSTEP_OBJ_DIR)	 \
+	-L$(OGoROOT)/DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR) \
+	-L$(OGoROOT)/Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
 
 ADDITIONAL_BUNDLE_LIBS += 	\
 	-lOGoFoundation -lOGoDocuments \

@@ -76,7 +76,6 @@
 
 #include "NSString+Perm.h"
 #include "common.h"
-#include <GDLExtensions/GDLExtensions.h>
 
 @interface NSObject(GlobalID)
 - (id)globalID;

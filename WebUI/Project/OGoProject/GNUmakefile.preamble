@@ -1,12 +1,10 @@
 # $Id$
 
 ADDITIONAL_BUNDLE_LIBS += \
-	-lOGoForms	\
 	-lOGoProject -lOGoAccounts -lOGoDocuments -lOGoBase \
 	-lNGExtensions
 
 ADDITIONAL_LIB_DIRS += 				\
-	-L../../OGoForms/$(GNUSTEP_OBJ_DIR)	\
 	-L../../OGoBase/$(GNUSTEP_OBJ_DIR)	\
 	-L../../OGoAccounts/$(GNUSTEP_OBJ_DIR)	\
 

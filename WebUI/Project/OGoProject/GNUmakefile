@@ -35,7 +35,6 @@ OGoProject_OBJC_FILES = \
 	SkyProject4MovePanel.m		\
 	SkyProject4NewLink.m		\
 	SkyProject4Viewer.m		\
-	WOComponent+P4Forms.m		\
 	SkyProject4VersionList.m	\
 	SkyProject4DocumentDeletePage.m \
 	OGoDocAction.m			\

@@ -33,23 +33,13 @@
   EODataSource       *historyDataSource;
   NSString           *documentPath;
   EOGlobalID         *documentGID;
-  id                 usedFormURL;
   WOComponent        *viewerComponent;
   
-  SkyProjectDocument *formDocument;
   SkyProjectDocument *document;
-  WOComponent        *formComponent;
-  WOComponent        *previewComponent;
   NSDictionary       *fsinfo;
   id                 item;
   id                 key;
   NSString           *folderPath;
-
-  BOOL               isFormsEnabled;
-  
-  WOComponent *docContentForm;
-  WOComponent *docAttributesForm;
-  WOComponent *docVersionsForm;
 }
 
 - (NSDictionary *)fileSystemInfo;
@@ -59,13 +49,11 @@
 - (NSString *)documentPath;
 - (NSString *)_documentPath;
 - (EOGlobalID *)documentId;
-- (id)formURL;
 
 - (void)setDocument:(id)_doc;
 - (id)document;
 
 - (BOOL)isAccountDesigner;
-- (BOOL)isSkyrixForm;
 - (void)setTestMode:(BOOL)_flag;
 - (BOOL)isTestMode;
 
@@ -73,7 +61,6 @@
 
 #include "NGUnixTool.h"
 #include "NSData+SkyTextEditable.h"
-#include "WOComponent+P4Forms.h"
 #include "NSString+P4.h"
 #include <NGMime/NGMimeType.h>
 #include <LSFoundation/SkyAccessManager.h>
@@ -105,47 +92,25 @@ static Class SkySvnDocumentClass = NULL;
 static Class SkyFSGlobalIDClass  = NULL;
 static int   LoadClass           = -1;
 static BOOL  debugOn             = NO;
-static BOOL  hasForms            = NO;
 
 + (void)initialize {
-  NGBundleManager *bm;
-  
   if (LoadClass == 1) return;
   SkyFSDocumentClass  = NSClassFromString(@"SkyFSDocument");
   SkyFSGlobalIDClass  = NSClassFromString(@"SkyFSGlobalID");
   SkySvnDocumentClass = NSClassFromString(@"SkySvnDocument");
-  
-  bm = [NGBundleManager defaultBundleManager];
-  hasForms = [bm bundleProvidingResource:@"SkyP4FormPage"
-                 ofType:@"WOComponents"] != nil ? YES : NO;
-}
-
-- (id)init {
-  if ((self = [super init])) {
-    self->isFormsEnabled = hasForms;
-  }
-  return self;
 }
 
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self->document reload];
   
-  [self->docContentForm    release];
-  [self->docAttributesForm release];
-  [self->docVersionsForm   release];
-  
-  [self->formDocument      release];
   [self->fsinfo            release];
-  [self->formComponent     release];
-  [self->previewComponent  release];
   [self->documentGID       release];
   [self->historyDataSource release];
   [self->document          release];
   [self->viewerComponent   release];
   [self->fileManager       release];
   [self->documentPath      release];
-  [self->usedFormURL       release];
   [self->item              release];
   [self->key               release];
   [self->folderPath        release];
@@ -443,40 +408,39 @@ static BOOL  hasForms            = NO;
 }
 
 - (void)setDocument:(SkyProjectDocument *)_doc {
-  if (self->document != _doc) {
-    id            fm;
-    EOKeyGlobalID *gid;
-    NSString      *path;
+  id            fm;
+  EOKeyGlobalID *gid;
+  NSString      *path;
+  
+  if (self->document == _doc)
+    return;
 
-    [_doc reload]; // clear ?
+  [_doc reload]; // clear ?
     
-    if ((fm = [_doc fileManager]) == nil) {
-      [self logWithFormat:@"missing filemanager in document %@ !!", _doc];
-      return;
-    }
+  if ((fm = [_doc fileManager]) == nil) {
+    [self logWithFormat:@"missing filemanager in document %@ !!", _doc];
+    return;
+  }
 #if 0 /* todo: can be rmeoved ?? */
-    // there are "documents" without own globalID. (SkyProjectHistoryDocument)
-    if ((gid = (id)[_doc globalID]) == nil) {
+  // there are "documents" without own globalID. (SkyProjectHistoryDocument)
+  if ((gid = (id)[_doc globalID]) == nil) {
       [self logWithFormat:@"missing global-id in document %@ !!", _doc];
       return;
-    }
+  }
 #endif
-    gid = (id)[_doc globalID];
-    if ((path = [_doc valueForKey:NSFilePath]) == nil) {
+  gid = (id)[_doc globalID];
+  if ((path = [_doc valueForKey:NSFilePath]) == nil) {
       [self logWithFormat:@"missing path in document %@ !!", _doc];
       return;
-    }
-    
-    [self setFileManager:fm];
-    [self setDocumentId:gid];
-    [self setDocumentPath:path];
-    
-    ASSIGN(self->document, _doc);
-    
-    [self->usedFormURL      release]; self->usedFormURL      = nil;
-    [self->previewComponent release]; self->previewComponent = nil;
-    [self->fsinfo           release]; self->fsinfo           = nil;
   }
+    
+  [self setFileManager:fm];
+  [self setDocumentId:gid];
+  [self setDocumentPath:path];
+    
+  ASSIGN(self->document, _doc);
+    
+  [self->fsinfo release]; self->fsinfo = nil;
 }
 - (SkyProjectDocument *)document {
   id            fm;
@@ -523,31 +487,6 @@ static BOOL  hasForms            = NO;
   return self->document;
 }
 
-- (SkyProjectDocument *)formDocument {
-  id url;
-  
-  if (self->formDocument)
-    return self->formDocument;
-  
-  if ((url = [self formURL]) == nil)
-    return nil;
-  if (![url isKindOfClass:[NSString class]]) {
-    [self logWithFormat:@"non-string form url's not supported yet: %@", url];
-    return nil;
-  }
-  if (![(NSString *)url hasPrefix:@"/"])
-    return nil;
-  
-  self->formDocument = [[(SkyProjectFileManager *)[self fileManager] 
-						  documentAtPath:url] retain];
-  if (self->formDocument == nil) {
-    [self logWithFormat:@"found no document for form '%@'", url];
-    return nil;
-  }
-  
-  return self->formDocument;
-}
-
 - (NSString *)objectUrlKey {
   EOGlobalID *gid;
 
@@ -562,65 +501,12 @@ static BOOL  hasForms            = NO;
                       stringByEscapingURL];
 }
 
-- (id)formURL {
-  NSString           *formURL;
-  SkyProjectDocument *doc;
-  
-  if (self->usedFormURL)
-    return self->usedFormURL;
-  
-  if ((doc = [self document]) == nil)
-    return nil;
-  if ((formURL = [doc valueForKey:@"form"]) == nil)
-    return nil;
-  
-  ASSIGNCOPY(self->usedFormURL, formURL);
-
-  return self->usedFormURL;
-}
-
-- (id)formComponent {
-  if (self->formComponent == nil) {
-    self->formComponent =
-      [[self formForDocument:[self formDocument]] retain];
-    RETAIN(self->formComponent);
-  }
-  return self->formComponent;
-}
-
-- (void)setPreviewFormComponent:(id)_comp {
-  ASSIGN(self->previewComponent, _comp);
-}
-- (id)previewFormComponent {
-  if (self->previewComponent == nil) {
-    self->previewComponent =
-      [[self formForDocument:[self document]] retain];
-  }
-  return self->previewComponent;
-}
-
-- (BOOL)hasForm {
-  return [self formURL] == nil ? NO : YES;
-}
-- (BOOL)hasJavaScriptLog {
-  return [[[self session] javaScriptLog] length] > 0 ? YES : NO;
-}
-
 - (BOOL)showOnlyForm {
-  if ([self isTestMode])
-    return YES;
-  if ([self isAccountDesigner])
-    return NO;
-  
-  return [self hasForm];
+  return NO;
 }
 
 - (BOOL)canTestDocument {
-  if (!([self hasForm] || [self isSkyrixForm]))
-    return NO;
-  if (![self isAccountDesigner])
-    return NO;
-  return self->isFormsEnabled;
+  return NO;
 }
 
 - (NSDictionary *)fileSystemInfo {
@@ -676,12 +562,6 @@ static BOOL  hasForms            = NO;
     return [mimeType stringValue];
 
   return @"application/octet-stream";
-}
-
-/* form */
-
-- (BOOL)isSkyrixForm {
-  return [[self documentMimeType] hasPrefix:@"skyrix/form"];
 }
 
 /* button config */
@@ -870,12 +750,6 @@ static BOOL  hasForms            = NO;
 }
 
 /* operations */
-
-- (id)formTabClicked {
-  [self debugWithFormat:@"form tab clicked, reset preview component .."];
-  RELEASE(self->previewComponent); self->previewComponent = nil;
-  return nil;
-}
 
 - (BOOL)isAccountDesigner {
   return [[self fileManager]
@@ -1307,56 +1181,7 @@ static BOOL  hasForms            = NO;
   return YES;
 }
 
-/* viewer forms */
-
-- (WOComponent *)_checkPredefinedForm:(NSString *)_name 
-  inVariable:(WOComponent **)_value 
-{
-  SkyDocument *doc;
-  SkyProjectFileManager *fm; // TODO: replace with proper protocol
-  
-  if (_value == NULL) return nil;
-  
-  if (*_value)
-    return [*_value isNotNull] ? *_value : nil;
-  
-  fm = (id)[self fileManager];
-  if ((doc = [fm documentAtPath:_name]) == nil) {
-    /* cache that this component is not available */
-    *_value = [[NSNull null] retain];
-    return nil;
-  }
-  
-  /* build WOComponent for document of form */
-  *_value = [[self formForDocument:doc] retain];
-  return *_value;
-}
-
-- (WOComponent *)docContentForm {
-  return [self _checkPredefinedForm:@"/.doc_content.sfm" 
-	       inVariable:&(self->docContentForm)];
-}
-- (WOComponent *)docAttributesForm {
-  return [self _checkPredefinedForm:@"/.doc_attrs.sfm" 
-	       inVariable:&(self->docAttributesForm)];
-}
-- (WOComponent *)docVersionsForm {
-  return [self _checkPredefinedForm:@"/.doc_versions.sfm" 
-	       inVariable:&(self->docVersionsForm)];
-}
-
-- (BOOL)hasDocContentForm {
-  return [self docContentForm] != nil ? YES : NO;
-}
-- (BOOL)hasDocAttributesForm {
-  return [self docAttributesForm] != nil ? YES : NO;
-}
-- (BOOL)hasDocVersionsForm {
-  return [self docVersionsForm] != nil ? YES : NO;
-}
-
 /* SkyPublisher */
-
 
 - (BOOL)hasPublisher {
   static int hasPub = -1;
@@ -1431,12 +1256,6 @@ static BOOL  hasForms            = NO;
   NSAutoreleasePool *pool;
   
   pool = [[NSAutoreleasePool alloc] init];
-  
-  [self->docContentForm    release]; self->docContentForm    = nil;
-  [self->docAttributesForm release]; self->docAttributesForm = nil;
-  [self->docVersionsForm   release]; self->docVersionsForm   = nil;
-  [self->formComponent     release]; self->formComponent     = nil;
-  [self->formDocument      release]; self->formDocument      = nil;
   
   [(SkyProjectFileManager *)[self fileManager] flush];
   if (![[self fileManager] fileExistsAtPath:[self _documentPath]

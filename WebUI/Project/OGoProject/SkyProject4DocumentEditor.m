@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -36,8 +36,6 @@
   
   id document;
   
-  WOComponent *docEditForm;
-
   NSString *folderPath;
   NSString *projectId;
 
@@ -68,7 +66,6 @@
 
 @end
 
-#include "WOComponent+P4Forms.h"
 #include "OGoComponent+FileManagerError.h"
 #include "common.h"
 
@@ -80,7 +77,6 @@
 
 - (void)dealloc {
   [self->subject     release];
-  [self->docEditForm release];
   [self->document    release];
   [self->fileName    release];
   [self->fileManager release];
@@ -568,23 +564,6 @@
 }
 
 /* viewer forms */
-
-- (WOComponent *)docEditForm {
-  SkyDocument *doc;
-  SkyProjectFileManager *fm;
-  
-  if (self->docEditForm)
-    return [self->docEditForm isNotNull] ? self->docEditForm : nil;
-  fm = (id)[self fileManager];
-  if ((doc = [fm documentAtPath:@"/.doc_editor.sfm"])==nil) {
-    self->docEditForm = [[NSNull null] retain];
-    return nil;
-  }
-  return ((self->docEditForm = [[self formForDocument:doc] retain]));
-}
-- (BOOL)hasDocEditForm {
-  return [self docEditForm] != nil ? YES : NO;
-}
 
 - (void)setProject:(id)_p {
   if (self->project == _p)

@@ -1,6 +1,6 @@
 # $Id$
 
-SUBMINOR_VERSION:=42
+SUBMINOR_VERSION:=43
 
 # Requirements:
 #   v5.0.42 requires libOGoProject    v5.0.28
