@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: NHSNameServiceDaemon.m 1 2004-08-20 11:17:52Z znek $
 
 #include "NHSNameServiceDaemon.h"
 #import <Foundation/Foundation.h>
@@ -106,10 +106,18 @@ char   pilotport[255];
 
 - (id)init {  
   struct pi_sockaddr addr;
-  if ((self->pisockd = pi_socket(PI_AF_PILOT, PI_SOCK_STREAM, PI_PF_NET)) <= 0) {
-    RELEASE(self); self = nil;
+
+#ifndef PI_AF_PILOT
+  // TODO: is this correct?
+  self->pisockd = pi_socket(PI_AF_SLP, PI_SOCK_STREAM, PI_AF_INETSLP);
+#else
+  self->pisockd = pi_socket(PI_AF_PILOT, PI_SOCK_STREAM, PI_PF_NET);
+#endif
+  
+  if (self->pisockd <= 0) {
+    [self release]; self = nil;
     [NSException raise:@"PPSocketException"
-                 format:@"Couldn't setup pi_socket: %s", strerror(errno)];
+                 format:@"Could not setup pi_socket: %s", strerror(errno)];
   }
   self->pisockfd = ((struct pi_socket *)find_pi_socket(self->pisockd))->sd;
 
@@ -117,8 +125,12 @@ char   pilotport[255];
   /* setup enviroment for nhsd settings:           */
   /* export PILOTPORT="net:any:<port>"             */
   /* default port is 14238                         */
+#ifndef PI_AF_PILOT
+  addr.pi_family = PI_AF_SLP;
+#else
   addr.pi_family = PI_AF_PILOT;
-  strncpy(addr.pi_device,pilotport,sizeof(addr.pi_device));
+#endif
+  strncpy(addr.pi_device, pilotport, sizeof(addr.pi_device));
 
   // binding socket with values from enviroment var PILOTPORT
   if (pi_bind(self->pisockd, (struct sockaddr*)&addr,
@@ -233,7 +245,7 @@ char   pilotport[255];
   id     conduit;
   
   bm = [NGBundleManager defaultBundleManager];
-
+  
   ctx = [ec rootObjectStore];
 
   processedConduits = [NSMutableSet setWithCapacity:16];
@@ -393,8 +405,10 @@ char   pilotport[255];
     {
       struct pi_socket *ps;
       ps = find_pi_socket(csd);
+#ifdef PI_AF_PILOT
       if (ps != NULL)
         ps->state = PI_SOCK_CLOSE;
+#endif
     }
     pi_close(csd); csd = -1;
   }

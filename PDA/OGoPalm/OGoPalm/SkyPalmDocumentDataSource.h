@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: SkyPalmDocumentDataSource.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __SkyPalmDocumentDataSource_H__
 #define __SkyPalmDocumentDataSource_H__
@@ -26,16 +26,16 @@
 // ONLY USE Superclasses !!!
 
 #import <Foundation/Foundation.h>
-#import <EOControl/EODataSource.h>
+#include <EOControl/EODataSource.h>
 #include <OGoPalm/SkyPalmDocument.h>
 #include <OGoRawDatabase/SkyAdaptorDataSource.h>
 
 @interface SkyPalmDocumentDataSource : EODataSource
 {
-  NSString *defaultDevice;    // default palm device (for new records)
+  NSString *defaultDevice; /* default palm device (for new records) */
 }
 
-// overwrite these methods in subclasses if needed
+/* overwrite these methods in subclasses if needed */
 - (NSString *)palmDb;      // AddressDB, DatebookDB, MemoDB, ToDoDB
 - (SkyPalmDocument *)allocDocument;
 - (void)insertObject:(SkyPalmDocument *)_doc;
@@ -45,23 +45,23 @@
 - (void)setDefaultDevice:(NSString *)_dev;
 - (NSString *)defaultDevice;
 - (NSArray *)devices;     // possible palm devices
-  // possible categories for device
+
+// possible categories for device
 - (NSArray *)categoriesForDevice:(NSString *)_dev;
 - (NSNumber *)companyId;  // current user's company id
 - (NSString *)primaryKey; // primaryKey of database
 - (id)currentAccount;     // current user
-- (id)fetchDictionaryForDocument:(SkyPalmDocument *)_doc; //refetch from source
-// till here
+
+- (id)fetchDictionaryForDocument:(SkyPalmDocument *)_doc;
 
 - (SkyPalmDocument *)documentForObject:(id)_obj;
 - (SkyPalmDocument *)newDocument;
 - (void)dotLog;
 
-// categories
+/* categories */
 - (NSArray *)categoriesForDevice:(NSString *)_dev;
 - (NSArray *)saveCategories:(NSArray *)_cats    // returns saved records
-                  forDevice:(NSString *)_dev;
-
+  forDevice:(NSString *)_dev;
 
 @end
 

@@ -1,0 +1,31 @@
+# compilation settings
+
+ADDITIONAL_CPPFLAGS += -Wall
+
+libPPSync_INCLUDE_DIRS += -I.. -I../libpisock
+
+nhsd_INCLUDE_DIRS += -I.. -I../NGStreams
+ppls_INCLUDE_DIRS += -I.. -I../NGStreams
+
+
+# this is Debian Woody
+ADDITIONAL_INCLUDE_DIRS += \
+	-I/usr/include/libpisock
+
+
+libPPSync_LIBRARIES_DEPEND_UPON += \
+	-lEOControl	\
+	-lpisock
+
+nhsd_TOOL_LIBS += \
+	-lGDLAccess  \
+	-lNGStreams -lNGExtensions \
+	-lPPSync -lpisock
+
+ppls_TOOL_LIBS += \
+	-lGDLAccess  \
+	-lNGStreams -lNGExtensions \
+	-lPPSync -lpisock
+
+ppls_LIB_DIRS += -L$(GNUSTEP_OBJ_DIR)
+nhsd_LIB_DIRS += -L$(GNUSTEP_OBJ_DIR)

@@ -1,3 +1,8 @@
+2004-08-22  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* use PI_AF_SLP if PI_AF_PILOT is not defined, now compiles against
+	  Debian pilot-link package (v5.1.5)
+
 Fri Dec 19 18:56:21 2003  Martin Hoerning  <martin@opengroupware.org>
 
 	* PPPostSync.h: added post sync feature to ppsync (v4.1.4)

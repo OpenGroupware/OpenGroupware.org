@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: PPSyncPort.m 1 2004-08-20 11:17:52Z znek $
 
 #include "PPSyncPort.h"
 #include "PPSyncContext.h"
@@ -39,9 +39,13 @@ static PPSyncPort *defaultPort = nil;
 - (id)init {
   struct pi_sockaddr piaddr;
   
-  //if ((self->sd = pi_socket(PI_AF_SLP, PI_SOCK_STREAM, PI_PF_PADP)) <= 0) {
-  if ((self->sd = pi_socket(PI_AF_PILOT, PI_SOCK_STREAM, PI_PF_PADP)) <= 0) {
-    RELEASE(self); self = nil;
+#ifndef PI_AF_PILOT
+  self->sd = pi_socket(PI_AF_SLP, PI_SOCK_STREAM, PI_PF_PADP);
+#else
+  self->sd = pi_socket(PI_AF_PILOT, PI_SOCK_STREAM, PI_PF_PADP);
+#endif
+  if (self->sd <= 0) {
+    [self release]; self = nil;
     [NSException raise:@"PPSocketException"
                  format:@"Couldn't setup pi_socket: %s", strerror(errno)];
   }
@@ -49,8 +53,11 @@ static PPSyncPort *defaultPort = nil;
   /* address for local IP port for Network HotSync */
   piaddr.pi_device[0] = '.';
   piaddr.pi_device[1] = '\0';
-  //piaddr.pi_family    = PI_AF_SLP;
+#ifndef PI_AF_PILOT
+  piaddr.pi_family    = PI_AF_SLP;
+#else
   piaddr.pi_family    = PI_AF_PILOT;
+#endif
 
   if (pi_bind(self->sd, (void*)&piaddr, sizeof(piaddr)) < 0) {
     RELEASE(self); self = nil;

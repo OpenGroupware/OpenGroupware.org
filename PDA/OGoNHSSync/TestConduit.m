@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: TestConduit.m 1 2004-08-20 11:17:52Z znek $
 
 #import <Foundation/Foundation.h>
 
@@ -53,7 +53,7 @@
   OGoContextManager *app = nil;
   OGoContextSession *sn  = nil;
 
-  app = [OGoContextManager defaultManager];
+  app = (id)[OGoContextManager defaultManager];
   sn  = [app login:@"mh" password:@""];
   [sn activate];
 
@@ -90,7 +90,6 @@
   deviceId = [[ppSync valueForKey:@"userName"] copy];
 
   palmDS = [self _dsForDevice:deviceId ec:_ec];
-
   skyDS  = [self _skyDs];
 
   {

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,13 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __SkyPalmCategoryDataSource_H_
 #define __SkyPalmCategoryDataSource_H_
 
 #include <OGoRawDatabase/SkyAdaptorDataSource.h>
 
+@class NSString;
 @class LSCommandContext, SkyPalmCategoryDocument;
 
 @interface SkyPalmCategoryDataSource : SkyAdaptorDataSource
@@ -37,28 +37,27 @@
 }
 
 + (SkyPalmCategoryDataSource *)dataSourceWithContext:(LSCommandContext *)_ctx
-                                        forPalmTable:(NSString *)_palmDb;
+  forPalmTable:(NSString *)_palmDb;
 
 - (NSString *)palmTable;
 - (void)setDefaultDevice:(NSString *)_devId;
 - (NSArray *)devices;
 
-// datasource
+/* datasource */
 - (void)insertObject:(SkyPalmCategoryDocument *)_doc;
 - (void)updateObject:(SkyPalmCategoryDocument *)_doc;
 - (void)deleteObject:(SkyPalmCategoryDocument *)_doc;
 
-// refetch
+/* refetch */
 - (NSDictionary *)fetchDictionaryForDocument:(SkyPalmCategoryDocument *)_doc;
 
-// category docs
+/* category docs */
 - (SkyPalmCategoryDocument *)documentForObject:(id)_obj;
 - (SkyPalmCategoryDocument *)newDocument;
 - (SkyPalmCategoryDocument *)unfiledCategory;
 
-// assigning
-- (void)assignCategoriesToDocuments:(NSArray *)_palmRecs
-                            ofTable:(NSString *)_table;
+/* assigning */
+- (void)assignCategoriesToDocuments:(NSArray *)_rec ofTable:(NSString *)_table;
 
 
 @end

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "OGoNHSConduit.h"
 #include <PPSync/PPSyncContext.h>
@@ -28,7 +27,7 @@
 #include <EOControl/EOControl.h>
 #include <PPSync/PPTransaction.h>
 #include <PPSync/PPPostSync.h>
-#import <EOAccess/EOAccess.h>
+#include <GDLAccess/GDLAccess.h>
 
 #include <OGoPalm/SkyPalmEntryDataSource.h>
 #include <OGoPalm/SkyPalmSyncMachine.h>
@@ -47,16 +46,6 @@
 @end
 
 @implementation OGoNHSConduit
-
-- (id)init {
-  if ((self = [super init])) {
-    self->companyId = nil;
-    self->deviceId  = nil;
-    self->cmdCtx    = nil;
-    self->registerPostSyncs = NO;
-  }
-  return self;
-}
 
 - (void)dealloc {
   [self->companyId release];
@@ -188,7 +177,7 @@
     OGoContextManager *app;
     OGoContextSession *sn  = nil;
     
-    if ((app = [OGoContextManager defaultManager]) == nil) {
+    if ((app = (id)[OGoContextManager defaultManager]) == nil) {
       [self logBothWithFormat:
               @"Could not start OGoContextManager. "
               @"Probably not configured yet"];

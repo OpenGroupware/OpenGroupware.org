@@ -1,4 +1,25 @@
-# $Id$
+# compilation settings
+
+OGoROOT=../..
+
+
+ADDITIONAL_OBJCFLAGS    += -Wall
+ADDITIONAL_INCLUDE_DIRS += -I.
+
+ADDITIONAL_INCLUDE_DIRS += \
+	-I$(OGoROOT)/Logic/LSFoundation/\
+	-I$(OGoROOT)/Logic/LSScheduler/	\
+	-I$(OGoROOT)/DocumentAPI
+
+
+ADDITIONAL_LIB_DIRS += \
+	-L$(OGoROOT)/DocumentAPI/OGoContacts/$(GNUSTEP_OBJ_DIR)/    \
+	-L$(OGoROOT)/DocumentAPI/OGoJobs/$(GNUSTEP_OBJ_DIR)/        \
+	-L$(OGoROOT)/DocumentAPI/OGoRawDatabase/$(GNUSTEP_OBJ_DIR)/ \
+	-L$(OGoROOT)/DocumentAPI/OGoScheduler/$(GNUSTEP_OBJ_DIR)/   \
+	-L$(OGoROOT)/DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR)/   \
+	-L$(OGoROOT)/Logic/LSScheduler/$(GNUSTEP_OBJ_DIR)/	    \
+	-L$(OGoROOT)/Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)/
 
 libOGoPalm_LIBRARIES_DEPEND_UPON += \
 	-lOGoContacts			\
@@ -9,6 +30,3 @@ libOGoPalm_LIBRARIES_DEPEND_UPON += \
 
 OGoPalmDS_LIB_DIRS    += -L./$(GNUSTEP_OBJ_DIR)
 OGoPalmDS_BUNDLE_LIBS += -lOGoPalm
-
-ADDITIONAL_OBJCFLAGS    += -Wall
-ADDITIONAL_INCLUDE_DIRS += -I.
