@@ -38,11 +38,11 @@
     );
 
     OGoDocViewers = (
-      { name = access;     component = OGoDocAccessViewer;   },
-      { name = attributes; component = OGoDocAttrsViewer;    },
-      { name = contents;   component = OGoDocContentsViewer; },
-      { name = logs;       component = OGoDocLogsViewer;     },
-      { name = versions;   component = OGoDocVersionsViewer; },
+      { name = attributes; component = OGoDocAttrsViewer;    sortkey =  10; },
+      { name = contents;   component = OGoDocContentsViewer; sortkey =   0; },
+      { name = versions;   component = OGoDocVersionsViewer; sortkey = -10; },
+      { name = access;     component = OGoDocAccessViewer;   sortkey = -20; },
+      { name = logs;       component = OGoDocLogsViewer;     sortkey = -30; },
     );
 
     LSWCommands = (

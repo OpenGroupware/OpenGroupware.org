@@ -36,12 +36,32 @@
 @implementation OGoDocLogsViewer
 
 static EOQualifier *actionDownloadQual = nil;
+static EOFetchSpecification *fspec = nil;
 
 + (void)initialize {
   if (actionDownloadQual == nil) {
     actionDownloadQual = 
       [[EOQualifier qualifierWithQualifierFormat:@"action='download'"] retain];
+
+    fspec = [[EOFetchSpecification fetchSpecificationWithEntityName:@"log"
+				   qualifier:actionDownloadQual 
+				   sortOrderings:nil] retain];
   }
+}
+
++ (BOOL)canShowInDocumentViewer:(OGoComponent *)_viewer {
+  if ([[_viewer valueForKey:@"isVersion"] boolValue])
+    return NO;
+
+  if (![[[_viewer session] userDefaults] 
+	 boolForKey:@"skyp4_log_documentdownload"])
+    return NO;
+  
+  if (![[_viewer valueForKey:@"fileManager"] supportAccessRights])
+    // TODO: bad check
+    return NO;
+
+  return [super canShowInDocumentViewer:_viewer];
 }
 
 - (void)dealloc {
@@ -52,7 +72,7 @@ static EOQualifier *actionDownloadQual = nil;
 /* notifications */
 
 - (void)reset {
-  [(EOCacheDataSource *)self->ds clear];
+  [self->ds release]; self->ds = nil;
   [super reset];
 }
 
@@ -62,11 +82,6 @@ static EOQualifier *actionDownloadQual = nil;
   return [(OGoSession *)[self session] commandContext];
 }
 
-- (EOFetchSpecification *)_fspec {
-  return [EOFetchSpecification fetchSpecificationWithEntityName:@"log"
-                               qualifier:actionDownloadQual sortOrderings:nil];
-}
-
 - (EODataSource *)logDataSource {
   SkyLogDataSource *rds;
   
@@ -74,11 +89,11 @@ static EOQualifier *actionDownloadQual = nil;
     return self->ds;
 
   rds = [[SkyLogDataSource alloc] initWithContext:[self _commandContext]
-				  globalID:[self->document globalID]];
-  [rds setFetchSpecification:[self _fspec]];
-  [rds autorelease];
+				  globalID:[self documentGlobalID]];
+  [rds setFetchSpecification:fspec];
   
   self->ds = [[EOCacheDataSource alloc] initWithDataSource:rds];
+  [rds release];
   return self->ds;
 }
 

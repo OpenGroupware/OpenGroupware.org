@@ -31,6 +31,16 @@
 
 @implementation OGoDocAccessViewer
 
++ (BOOL)canShowInDocumentViewer:(OGoComponent *)_viewer {
+  if ([[_viewer valueForKey:@"isVersion"] boolValue])
+    return NO;
+  
+  if (![[_viewer valueForKey:@"fileManager"] supportAccessRights])
+    return NO;
+  
+  return [super canShowInDocumentViewer:_viewer];
+}
+
 /* accessors */
 
 - (NSDictionary *)accessIds {

@@ -33,5 +33,11 @@
 #include <LSFoundation/LSFoundation.h>
 #include <OGoFoundation/OGoFoundation.h>
 #include <OGoDatabaseProject/SkyDocumentDataSource.h>
+#include <OGoDatabaseProject/SkyProjectFileManager.h>
+
+// TODO: annoying hack :-| (should be a proper capability)
+@interface NSObject(AccessRights)
+- (BOOL)supportAccessRights;
+@end
 
 #endif /* __OGoProject_OGoDocInlineViewers_common_H__ */

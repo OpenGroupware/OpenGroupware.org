@@ -52,6 +52,8 @@
   NSString           *path;
 }
 
++ (BOOL)canShowInDocumentViewer:(OGoComponent *)_viewer;
+
 /* notifications */
 
 - (void)reset;

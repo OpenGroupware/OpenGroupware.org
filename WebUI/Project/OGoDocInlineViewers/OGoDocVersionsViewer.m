@@ -27,4 +27,16 @@
 #include "common.h"
 
 @implementation OGoDocVersionsViewer
+
++ (BOOL)canShowInDocumentViewer:(OGoComponent *)_viewer {
+  if ([[_viewer valueForKey:@"isVersion"] boolValue])
+    return NO;
+
+  if (![[_viewer valueForKey:@"fileManager"] supportAccessRights])
+    // TODO: bad check
+    return NO;
+  
+  return [super canShowInDocumentViewer:_viewer];
+}
+
 @end /* OGoDocVersionsViewer */

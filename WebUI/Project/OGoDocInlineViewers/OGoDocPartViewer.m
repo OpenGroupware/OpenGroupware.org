@@ -46,6 +46,12 @@
   [super dealloc];
 }
 
+/* enable/disable */
+
++ (BOOL)canShowInDocumentViewer:(OGoComponent *)_viewer {
+  return YES;
+}
+
 /* notifications */
 
 - (void)resetDocCaches {

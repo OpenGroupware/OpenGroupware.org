@@ -37,6 +37,14 @@
 
 @implementation OGoDocAttrsViewer
 
++ (BOOL)canShowInDocumentViewer:(OGoComponent *)_viewer {
+  // TODO: not entirely correct, eg a Svn store has versioned properties
+  if ([[_viewer valueForKey:@"isVersion"] boolValue])
+    return NO;
+  
+  return [super canShowInDocumentViewer:_viewer];
+}
+
 - (void)dealloc {
   [self->item release];
   [self->key  release];
