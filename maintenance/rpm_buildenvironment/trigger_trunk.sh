@@ -1,9 +1,9 @@
 #!/bin/sh
 
-#DISTRI="fedora-core3"
-DISTRI="fedora-core2"
-#DISTRI="rhel3"
-#DISTRI="redhat-9"
+echo -en "WARNING: not yet configured!\n" && exit 127
+DISTRI="fedora-core3"
+#DISTRI="fedora-core2"
+#DISTRI="redhat9"
 #DISTRI="mdk-10.1"
 #DISTRI="mdk-10.0"
 #DISTRI="suse92"
@@ -11,6 +11,7 @@ DISTRI="fedora-core2"
 #DISTRI="suse82"
 #DISTRI="sles9"
 #DISTRI="slss8"
+#DISTRI="rhel3"
 
 SPECS="ogo-gnustep_make
 libobjc-lf2

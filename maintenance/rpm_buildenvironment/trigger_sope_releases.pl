@@ -2,8 +2,9 @@
 #frank reppin <frank@opengroupware.org> 2004
 
 use strict;
-#my $host_i_runon = "fedora-core3";
-my $host_i_runon = "fedora-core2";
+die "WARNING: not yet configured!\n";
+my $host_i_runon = "fedora-core3";
+#my $host_i_runon = "fedora-core2";
 #my $host_i_runon = "suse92";
 #my $host_i_runon = "suse91";
 #my $host_i_runon = "suse82";

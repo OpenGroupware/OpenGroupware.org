@@ -31,6 +31,7 @@
 # ./purveyor_of_rpms.pl -p opengroupware -t release -v yes -u yes -d yes -c <see below> -c spec_tmp/<see below>
 
 use strict;
+die "WARNING: not yet configured!\n";
 my $host_i_runon = "fedora-core3";
 #my $host_i_runon = "fedora-core2";
 #my $host_i_runon = "suse92";
@@ -40,6 +41,7 @@ my $host_i_runon = "fedora-core3";
 #my $host_i_runon = "mdk-10.0";
 #my $host_i_runon = "sles9";
 #my $host_i_runon = "slss8";
+#my $host_i_runon = "rhel3";
 my $svn_host = 'svn.opengroupware.org';
 my $svn = '/usr/bin/svn';
 my $dl_host = "download.opengroupware.org";

@@ -19,6 +19,7 @@ die "PLEASE MAKE SURE TO EDIT \$host_i_runon\n";
 #my $host_i_runon = "mdk-10.0";
 #my $host_i_runon = "sles9";
 #my $host_i_runon = "slss8";
+#my $host_i_runon = "rhel3";
 
 my $time_we_started = `date +"%Y%m%d-%H%M%S"`;
 chomp $time_we_started;
@@ -31,7 +32,7 @@ my $specs_dir = "$ENV{'HOME'}/rpm/SPECS";
 # this are the packages I can deal with
 # every package given here should have its own specfile...
 # adding new packages is more or less a copy'n'paste job of code snippets below
-my @poss_packages = qw( ogo-gnustep_make libobjc-lf2 libfoundation libical-sope-devel opengroupware-pilot-link opengroupware-nhsc sope opengroupware mod_ngobjweb_slss8 mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 ogo-environment epoz );
+my @poss_packages = qw( ogo-gnustep_make libobjc-lf2 libfoundation libical-sope-devel opengroupware-pilot-link opengroupware-nhsc sope opengroupware mod_ngobjweb_slss8 mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_mdk100 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 ogo-environment epoz );
 my $flavour_we_build_upon;
 my $distrib_define;
 my $memyself = basename($0);
@@ -44,7 +45,7 @@ my @rpms_build;
 #package_wo_source contains packages wo source at all or where i refuse to download
 #the source (source should be already in \$sources_dir)
 my @package_wo_source = qw( ogo-gnustep_make ogo-environment );
-my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 ogo-environment opengroupware-pilot-link opengroupware-nhsc );
+my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 ogo-environment opengroupware-pilot-link opengroupware-nhsc );
 my $release_codename;
 my $remote_release_dirname;
 my $libversion;
@@ -599,11 +600,12 @@ sub get_latest_sources {
     $package_mapped_tosrc = "opengroupware.org-nhsc" if ("$package" eq "opengroupware-nhsc");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_fedora");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_mdk100");
-    $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_mdk101");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_suse82");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_suse91");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_suse92");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_slss8");
+    $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_sles9");
+    $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_rhel3");
     $package_mapped_tosrc = "sope-epoz" if ("$package" eq "epoz");
     foreach $sourcefile (@latest) {
       $destfilename = shift;

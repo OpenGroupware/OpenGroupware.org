@@ -16,14 +16,14 @@ my $rel_name;
 my $type = "releases";
 my $verbose = "no";
 my @distris = qw( fedora-core3
-                  fedora-core2
-                  suse82
-                  suse91
-                  suse92
-                  mdk-10.0
-                  mdk-10.1
-                  slss8
-                  sles9
+  fedora-core2
+  suse82
+  suse91
+  suse92
+  mdk-10.0
+  slss8
+  sles9
+  rhel3
 );
 
 getopt('dtvn');
