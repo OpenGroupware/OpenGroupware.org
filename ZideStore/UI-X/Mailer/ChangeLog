@@ -1,3 +1,8 @@
+2005-03-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUmakefile, {English/French}.lproj/default.strings: renamed
+	  default.strings to Localizable.strings (v0.9.zs102)
+
 2005-02-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* UIxMailTree.m: use SOGoMailAccount instead of SOGoMailAccounts as

@@ -97,7 +97,7 @@ MailerUI_RESOURCE_FILES += \
 	Images/title_*.png	\
 
 MailerUI_LOCALIZED_RESOURCE_FILES += \
-	default.strings
+	Localizable.strings
 
 # make
 
