@@ -1,3 +1,8 @@
+2004-09-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* XmlRpcApplication.m: added a default port (22000) so that we don't
+	  clash without configuration (v5.1.45)
+
 2004-09-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Actions.subproj/DirectAction+Mails.m: minor code cleanups, fixed a

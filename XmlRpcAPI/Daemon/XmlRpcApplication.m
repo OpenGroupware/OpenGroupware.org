@@ -24,6 +24,17 @@
 
 @implementation XmlRpcApplication
 
++ (NSNumber *)port {
+  NSNumber *p;
+  
+  p = [super port];
+  if ([p intValue] != 20000)
+    return p;
+  
+  NSLog(@"Note: using default xmlrpcd port, 22000");
+  return [NSNumber numberWithInt:22000];
+}
+
 - (BOOL)isLicenseValid {
   return YES;
 }
