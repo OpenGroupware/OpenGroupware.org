@@ -1,3 +1,10 @@
+2004-08-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoResourceManager.m: look for 'Resources' directory in
+	  GNUSTEP_PATHPREFIX_LIST and GNUSTEP_PATHLIST, look for 
+	  'WebServerResources' directories in the same list (fixes OGo bug
+	  #587) (v5.1.60)
+
 2004-08-25  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoSession.m: removed dependency on NGScripting (v5.1.59)

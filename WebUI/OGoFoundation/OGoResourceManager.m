@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: OGoResourceManager.m 1 2004-08-20 11:17:52Z znek $
 
 #include "OGoResourceManager.h"
 #include "common.h"
@@ -75,6 +75,72 @@ static BOOL debugOn = NO;
   return [NGBundleManager defaultBundleManager];
 }
 
+/* locate resource directories */
+
+- (NSArray *)findResourceDirectoryPathesWithName:(NSString *)_name {
+  NSFileManager  *fm;
+  NSMutableArray *ma;
+  NSDictionary   *env;
+  NSString       *key;
+  id tmp;
+
+  fm  = [NSFileManager defaultManager];
+  ma  = [NSMutableArray arrayWithCapacity:8];
+  env = [[NSProcessInfo processInfo] environment];
+    
+  if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
+    tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
+  tmp = [tmp componentsSeparatedByString:@":"];
+  tmp = [tmp objectEnumerator];
+    
+  while ((key = [tmp nextObject])) {
+    NSString *tmp;
+    BOOL     isDir;
+      
+    if ((tmp = [env objectForKey:key]) == nil)
+      continue;
+      
+    if (![tmp hasSuffix:@"/"])
+      tmp = [tmp stringByAppendingString:@"/"];
+      
+    tmp = [tmp stringByAppendingString:_name];
+    if ([ma containsObject:tmp]) continue;
+      
+    if (![fm fileExistsAtPath:tmp isDirectory:&isDir])
+      continue;
+      
+    if (!isDir) continue;
+    
+    [ma addObject:tmp];
+  }
+  return ma;
+}
+
+- (NSString *)findResourceDirectoryNamed:(NSString *)_name {
+  static NSDictionary *env = nil;
+  NSFileManager *fm;
+  NSString      *path;
+  id tmp;
+  
+  if (env == nil) env = [[[NSProcessInfo processInfo] environment] retain];
+  fm = [NSFileManager defaultManager];
+  
+  if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
+    tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
+  tmp = [tmp componentsSeparatedByString:@":"];
+  
+  // TODO: add MacOSX support, add FHS fallback (/usr/share/)
+  
+  tmp = [tmp objectEnumerator];
+  while ((path = [tmp nextObject])) {
+    path = [path stringByAppendingPathComponent:_name];
+    
+    if ([fm fileExistsAtPath:path])
+      return path;
+  }
+  return nil;
+}
+
 /* locate WebServerResources */
 
 - (NSString *)_urlForResourceNamed:(NSString *)_name
@@ -116,47 +182,10 @@ static BOOL debugOn = NO;
   }
   
   /* setup available WebServerResources locations */
-      
+  
   if (wsPathes == nil) {
-    // TODO: replace with GNUSTEP_PATHPREFIX_LIST, GNUSTEP_PATHLIST
-    static NSString *keys[] = {
-      @"GNUSTEP_USER_ROOT",
-      @"GNUSTEP_LOCAL_ROOT",
-      @"GNUSTEP_NETWORK_ROOT",
-      @"GNUSTEP_SYSTEM_ROOT",
-      nil
-    };
-    NSMutableArray *ma;
-    NSDictionary   *env;
-    unsigned short i;
-    
-    ma  = [NSMutableArray arrayWithCapacity:8];
-    
-    /* scan in the GNUSTEP*ROOT locations */
-    
-    env = [[NSProcessInfo processInfo] environment];
-    
-    for (i = 0; keys[i] != nil; i++) {
-      NSString *tmp;
-      BOOL isDir;
-
-      if ((tmp = [env objectForKey:keys[i]]) == nil)
-        continue;
-      
-      tmp = [tmp hasSuffix:@"/"]
-	? [tmp stringByAppendingString:@"WebServerResources/"]
-	: [tmp stringByAppendingString:@"/WebServerResources/"];
-      if ([ma containsObject:tmp]) continue;
-      
-      if (![fm fileExistsAtPath:tmp isDirectory:&isDir])
-        continue;
-      
-      if (!isDir) continue;
-      
-      [ma addObject:tmp];
-    }
-    
-    wsPathes = [ma copy];
+    wsPathes = [[self findResourceDirectoryPathesWithName:
+			@"WebServerResources/"] copy];
     if (debugOn)
       [self debugWithFormat:@"WebServerResources pathes: %@", wsPathes];
   }
@@ -584,22 +613,16 @@ static NSNull *null = nil;
   withDefaultValue:(NSString *)_default
   languages:(NSArray *)_languages
 {
-  static NSDictionary *env = nil;
   NSString      *rpath, *path;
   NSEnumerator  *e;
   NSString      *language;
   NSFileManager *fm;
   
   if (_tableName == nil) _tableName = @"default";
-
-  if (env == nil) env = [[[NSProcessInfo processInfo] environment] retain];
+  
   fm = [NSFileManager defaultManager];
-  
-  rpath = [env objectForKey:@"GNUSTEP_USER_ROOT"];
-  rpath = [rpath stringByAppendingPathComponent:@"Resources"];
-  
-  if (![fm fileExistsAtPath:rpath]) {
-    NSLog(@"missing $GNUSTEP_USER_ROOT/Resources directory ...");
+  if ((rpath = [self findResourceDirectoryNamed:@"Resources"]) == nil) {
+    [self logWithFormat:@"missing $GNUSTEP_USER_ROOT/Resources directory ..."];
     return nil;
   }
 
