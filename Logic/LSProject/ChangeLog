@@ -1,5 +1,8 @@
 2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
 
+	* Defaults.plist: moved 'LSAttachmentPath' default to LSAddress
+	  (v5.1.38)
+
 	* bundle-info.plist: removed LSSetResourceCommand, this is provided by
 	  LSResource.cmd (v5.1.37)
 

@@ -67,7 +67,10 @@ static NSDictionary *telephoneMapping = nil;
   telephoneMapping = [[ud dictionaryForKey:@"LSVCard_TelephoneMapping"] copy];
   
   LSAttachmentPath = [[ud stringForKey:@"LSAttachmentPath"] copy];
-  NSLog(@"Note: storing cached vCards files in: '%@'", LSAttachmentPath);
+  if ([LSAttachmentPath length] == 0)
+    NSLog(@"ERROR: did not find 'LSAttachmentPath'!");
+  else
+    NSLog(@"Note: storing cached vCards files in: '%@'", LSAttachmentPath);
 }
 
 - (void)dealloc {

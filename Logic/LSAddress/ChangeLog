@@ -1,5 +1,12 @@
 2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v5.1.51
+
+	* LSGetVCardForGlobalIDsCommand.m: print a warning if the
+	  LSAttachmentPath could not be resolved
+
+	* Defaults.plist: moved in 'LSAttachmentPath' default from LSProject
+
 	* bundle-info.plist: removed superflous bookmark-command registrations,
 	  fixed entry for LSChangeLoginStatusCommand (v5.1.50)
 

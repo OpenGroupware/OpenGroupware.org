@@ -1,5 +1,6 @@
-// NSUserDefaults
 {
+  LSAttachmentPath    = "/var/lib/opengroupware.org/documents";
+
   BuildFormletterPath = "buildFormletter.py";
   LSAddressType = {
     Enterprise = ( "ship", "bill" );
