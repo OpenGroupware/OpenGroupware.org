@@ -1,3 +1,12 @@
+2004-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.33
+
+	* SkyProjectFileManagerCache.m: moved SkyProjectFileManagerContext
+	  protocol method to main class, same refactoring of that method
+
+	* SkyProjectFolderDataSource.m: minor code cleanups, fixed a warning
+
 2004-07-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyProjectFileManager.m: minor code cleanups, implement class 

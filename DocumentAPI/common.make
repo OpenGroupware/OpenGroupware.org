@@ -13,7 +13,7 @@ BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.0a/
 ADDITIONAL_CPPFLAGS += -pipe -Wall -Wno-protocol
 
 ADDITIONAL_INCLUDE_DIRS += \
-	-I../../Logic/LSFoundation	\
+	-I../../Logic	\
 	-I../
 
 ADDITIONAL_LIB_DIRS += \

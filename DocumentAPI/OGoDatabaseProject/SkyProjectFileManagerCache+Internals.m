@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 // TODO: needs cleanup
 
@@ -98,7 +97,6 @@
 - (NSDictionary *)fetchDocEditingsForParentId:(NSNumber *)_parentId
   siblingId:(NSNumber *)_sid
   docPKeys:(NSArray *)_pkeys;
-- (NSString *)accountLogin4PersonId:(NSNumber *)_personId;
 - (void)cacheChildsForFolder:(NSString *)_folder
   orSiblingsForId:(NSNumber *)_sid;
 - (NSDictionary *)rootFolderAttrs;
@@ -111,7 +109,6 @@
 static NSNumber *yesNum = nil, *noNum = nil;
 static NSString *Pk2FileNameCache_key         = @"pk2FileNameCache";
 static NSString *FileName2GIDCache_key        = @"fileName2GIDCache";
-static NSString *PersonId2LoginCache_key      = @"personId2LoginCache";
 static NSString *Path2FileAttributesCache_key = @"path2FileAttributesCache";
 static NSString *Pk2GenRecCache_key           = @"pk2GenRecCache";
 static NSString *FileName2ChildAttrsCache_key = @"fileNames2ChildAttrsCache";
@@ -982,73 +979,6 @@ static inline NSNumber *boolNum(BOOL value) {
   while ((row = [channel fetchAttributes:editingAttrs withZone:NULL]))
     [result setObject:row forKey:[row objectForKey:@"documentId"]];
   
-  return result;
-}
-
-/* returns an login for a person_id */
-
-- (NSString *)accountLogin4PersonId:(NSNumber *)_personId {
-  NSDictionary *dict;
-  NSString     *result;
-  
-  if (!(dict = [self cacheValueForKey:PersonId2LoginCache_key])) {
-    static NSArray *personAttrs = nil;
-
-    NSMutableDictionary *mdict;
-    EOAdaptorChannel    *channel;
-    EOSQLQualifier      *qualifier;
-    EOEntity            *entity;
-    NSDictionary        *row;
-    
-
-    entity = [[[[self->context valueForKey:LSDatabaseKey] adaptor] model]
-                               entityNamed:@"Person"];
-    if (!personAttrs) {
-      personAttrs = [[NSArray alloc]
-                              initWithObjects:
-                              [entity attributeNamed:@"companyId"],
-                              [entity attributeNamed:@"login"], nil];
-    }
-    channel = [self beginTransaction];
-
-    qualifier = [[EOSQLQualifier alloc] initWithEntity:entity
-                                        qualifierFormat:@"%A = %@",
-                                        @"isPerson", boolNum(YES),nil];
-
-    if (![channel selectAttributes:personAttrs
-                  describedByQualifier:qualifier fetchOrder:nil lock:NO]) {
-      NSLog(@"ERROR[%s]: select failed for qualifier %@ attrs %@ ",
-            __PRETTY_FUNCTION__, qualifier, personAttrs);
-      [self rollbackTransaction];
-      return nil;
-    }
-    mdict = [[NSMutableDictionary alloc] initWithCapacity:255];
-    while ((row = [channel fetchAttributes:personAttrs withZone:NULL])) {
-      NSString *l;
-      NSNumber *cid;
-
-      cid = [row valueForKey:@"companyId"];
-
-      if (![cid isNotNull]) {
-        NSLog(@"ERROR[%s]: missing companyId for account ...",
-              __PRETTY_FUNCTION__);
-        continue;
-      }
-      if (![l = [row valueForKey:@"login"] isNotNull]) {
-        l = [cid stringValue];
-      }
-      [mdict setObject:l forKey:cid];
-    }
-    dict = [mdict copy];
-    RELEASE(mdict);     mdict     = nil;
-    RELEASE(qualifier); qualifier = nil;
-    
-    [self takeCacheValue:dict forKey:PersonId2LoginCache_key];
-    AUTORELEASE(dict);
-  }
-  if (!(result = [dict objectForKey:_personId])) { /* missing login, take key */
-    result = [_personId stringValue];
-  }
   return result;
 }
 

@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyProjectFolderDataSource.h"
 #include <NGExtensions/NGExtensions.h>
@@ -29,15 +28,16 @@
 
 
 static inline BOOL _showUnknownFiles(id self) {
-
-static BOOL showUnknownFiles_value = NO;
-static BOOL showUnknownFiles_flag  = NO;
-
+  static BOOL showUnknownFiles_value = NO;
+  static BOOL showUnknownFiles_flag  = NO;
+  
  if (!showUnknownFiles_flag) {
-    showUnknownFiles_flag  = YES;
-    showUnknownFiles_value = [[NSUserDefaults standardUserDefaults]
-                                   boolForKey:@"SkyProjectFileManager_show_"
-                                              @"unknown_files"];
+   NSUserDefaults *ud;
+   
+   ud = [NSUserDefaults standardUserDefaults];
+   showUnknownFiles_flag  = YES;
+   showUnknownFiles_value = 
+     [ud boolForKey:@"SkyProjectFileManager_show_unknown_files"];
   }
   return showUnknownFiles_value;
 }
@@ -347,9 +347,9 @@ static BOOL showUnknownFiles_flag  = NO;
   
   {
     NSArray *fetchKeys = nil;
-
-    if ((fetchKeys =
-         [[self->fetchSpecification hints] objectForKey:@"fetchKeys"]) != nil) {
+    
+    fetchKeys = [[self->fetchSpecification hints] objectForKey:@"fetchKeys"];
+    if (fetchKeys != nil) {
       objects = [self->fileManager documentsForObjects:dsAttrs
                      withAttributes:fetchKeys];
     }
@@ -391,10 +391,11 @@ static BOOL showUnknownFiles_flag  = NO;
 
     enumerator = [objects objectEnumerator];
     while ((obj = [enumerator nextObject])) {
-#warning possible notification bug      
-       [nc addObserver:self
-           selector:@selector(postDataSourceChangedNotification)
-           name:attrNotify object:[obj globalID]];
+      // TODO: possibly a notification bug      
+      
+      [nc addObserver:self
+          selector:@selector(postDataSourceChangedNotification)
+          name:attrNotify object:[obj globalID]];
     }
   }
   return objects;
@@ -503,9 +504,7 @@ static BOOL showUnknownFiles_flag  = NO;
   return ms;
 }
 
-@end /* SkyProjectFolderDataSource */
-
-@implementation SkyProjectFolderDataSource(Internals)
+/* Internals */
 
 - (void)_unvalidate:(id)_obj {
   self->isValid = NO;
@@ -528,4 +527,4 @@ static BOOL showUnknownFiles_flag  = NO;
   return self->path;
 }
 
-@end /* SkyProjectFolderDataSource(Internals) */
+@end /* Internals */

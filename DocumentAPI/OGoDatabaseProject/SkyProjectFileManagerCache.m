@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-/// $Id$
 
 #define PROFILE 0
 
@@ -71,6 +70,12 @@
 @end /* SkyProjectFileManagerCache(Internals) */
 
 @implementation SkyProjectFileManagerCache
+
+static NSNumber *yesNum = nil;
+
++ (void)initialize {
+  if (yesNum == nil) yesNum = [[NSNumber numberWithBool:YES] retain];
+}
 
 + (id)cacheWithContext:(id)_context projectGlobalID:(EOGlobalID *)_gid {
   NSMutableDictionary        *dict  = nil;
@@ -487,7 +492,7 @@
   }
   readCache  = @"_FileManager_isOperationAllowed_Cache";
   
-  if (!(cache = [self cacheValueForKey:readCache])) {
+  if ((cache = [self cacheValueForKey:readCache]) == nil) {
     cache = [NSMutableDictionary dictionaryWithCapacity:256];
     [self takeCacheValue:cache forKey:readCache];
   }
@@ -495,15 +500,14 @@
   cacheKey = [[_path stringByAppendingString:@"_"]
                      stringByAppendingString:_op];
 
-  if (!(result = [cache objectForKey:cacheKey])) {
+  if ((result = [cache objectForKey:cacheKey]) == nil) {
     EOGlobalID *gid;
     
-    if ((gid = [self gidForPath:_path manager:_manager])) {
+    if ((gid = [self gidForPath:_path manager:_manager]) != nil)
       boolResult = [self->accessManager operation:_op allowedOnObjectID:gid];
-    }
     else 
       boolResult = NO;
-
+    
     [cache setObject:[NSNumber numberWithBool:boolResult] forKey:cacheKey];
   }
   else {
@@ -524,8 +528,10 @@
           __PRETTY_FUNCTION__);
     return NO;
   }
-  if (!(_path = [_manager _makeAbsolute:_path])) {
-    [_manager _buildErrorWithSource:_path dest:nil msg:20 handler:nil cmd:_cmd];
+  if ((_path = [_manager _makeAbsolute:_path]) == nil) {
+    // TODO: use a constant for error code 20!
+    [_manager _buildErrorWithSource:_path dest:nil msg:20 
+              handler:nil cmd:_cmd];
     return nil;
   }
 
@@ -535,12 +541,11 @@
     cache = [NSMutableDictionary dictionaryWithCapacity:256];
     [self takeCacheValue:cache forKey:readCache];
   }
-  if (!(result = [cache objectForKey:_path])) {
+  if ((result = [cache objectForKey:_path]) == nil) {
     EOGlobalID *gid;
     
-    if ((gid = [self gidForPath:_path manager:_manager])) {
+    if ((gid = [self gidForPath:_path manager:_manager]) != nil)
       result = [self->accessManager allowedOperationsForObjectId:gid];
-    }
     else
       result = @"";
 
@@ -561,11 +566,11 @@
 
 /*
   qualifer to evalutate in database has to be like:
-  NSFileName like 'doof.*'
+  NSFileName like 'blub.*'
   NSFileSubject = 'my subject'
-  (NSFileName like '*doof*.*') AND (NSFileName like "*.txt") 
-  (NSFileName like 'doof.*') OR (NSFileSubject like "my subject")
-                             OR (NSFileName like *.t*")
+  (NSFileName LIKE '*blub*.*') AND (NSFileName LIKE "*.txt") 
+  (NSFileName LIKE 'blub.*') OR (NSFileSubject LIKE "my subject")
+                             OR (NSFileName LIKE *.t*")
   NSFileType = 'NSFileTypeDirectory'
 */
 
@@ -581,10 +586,11 @@
   if (!_deep) {
     childs = [self childAttributesAtPath:_path manager:_manager];
 
-    if (_qualifier)
+    if (_qualifier != nil)
       childs = [childs filteredArrayUsingQualifier:_qualifier context:nil];
   }
   else if ([_path isEqualToString:@"/"]) {
+    // TODO: move to own method
     EOQualifier  *qual;
     NSArray      *docs;
     NSDictionary *docEditings;
@@ -658,6 +664,83 @@
 }
 - (id)getAttachmentNameCommand {
   return self->getAttachmentNameCommand;
+}
+
+/* returns an login for a person_id */
+
+- (NSDictionary *)_primaryFetchAccountLogin4PersonIdCache {
+  NSDictionary *dict;
+
+    static NSArray *personAttrs = nil;
+
+    NSMutableDictionary *mdict;
+    EOAdaptorChannel    *channel;
+    EOSQLQualifier      *qualifier;
+    EOEntity            *entity;
+    NSDictionary        *row;
+    
+
+    entity = [[[[self->context valueForKey:LSDatabaseKey] adaptor] model]
+                               entityNamed:@"Person"];
+    if (!personAttrs) {
+      personAttrs = [[NSArray alloc]
+                              initWithObjects:
+                              [entity attributeNamed:@"companyId"],
+                              [entity attributeNamed:@"login"], nil];
+    }
+    channel = [self beginTransaction];
+
+    qualifier = [[EOSQLQualifier alloc] initWithEntity:entity
+                                        qualifierFormat:@"%A = %@",
+                                        @"isPerson", yesNum,nil];
+
+    if (![channel selectAttributes:personAttrs
+                  describedByQualifier:qualifier fetchOrder:nil lock:NO]) {
+      NSLog(@"ERROR[%s]: select failed for qualifier %@ attrs %@ ",
+            __PRETTY_FUNCTION__, qualifier, personAttrs);
+      [self rollbackTransaction];
+      return nil;
+    }
+    
+    mdict = [[NSMutableDictionary alloc] initWithCapacity:255];
+    
+    while ((row = [channel fetchAttributes:personAttrs withZone:NULL])) {
+      NSString *l;
+      NSNumber *cid;
+
+      cid = [row valueForKey:@"companyId"];
+
+      if (![cid isNotNull]) {
+        NSLog(@"ERROR[%s]: missing companyId for account ...",
+              __PRETTY_FUNCTION__);
+        continue;
+      }
+      if (![(l = [row valueForKey:@"login"]) isNotNull])
+        l = [cid stringValue];
+      
+      [mdict setObject:l forKey:cid];
+    }
+    dict = [[mdict copy] autorelease];
+    [mdict     release]; mdict     = nil;
+    [qualifier release]; qualifier = nil;
+    return dict;
+}
+
+- (NSString *)accountLogin4PersonId:(NSNumber *)_personId {
+  static NSString *PersonId2LoginCache_key = @"personId2LoginCache";
+  NSDictionary *dict;
+  NSString     *result;
+  
+  if ((dict = [self cacheValueForKey:PersonId2LoginCache_key]) == nil) {
+    dict = [self _primaryFetchAccountLogin4PersonIdCache];
+    [self takeCacheValue:dict forKey:PersonId2LoginCache_key];
+  }
+  
+  if ((result = [dict objectForKey:_personId]) == nil) {
+    /* missing login, take key */
+    result = [_personId stringValue];
+  }
+  return result;
 }
 
 @end /* SkyProjectFileManagerCache */
