@@ -1,3 +1,13 @@
+2004-12-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.62
+
+	* Defaults.plist: added LSPluginViewerEnabled default, note that this
+	  is also defined in LSWProject but required twice due to OGo bug #318
+	
+	* SkyProject4BLOBViewer.m: added 'OGoDebugBLOBViewerLookup' default to
+	  debug the viewer selection for file contents
+
 2004-12-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.61

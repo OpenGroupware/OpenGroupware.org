@@ -40,4 +40,7 @@
     { key = pprivate;  labelKey = private;  qualifier = "type='private'";  },
     { key = parchived; labelKey = archived; qualifier = "type='archived'"; },
   );
+  
+  OGoDebugBLOBViewerLookup = NO;
+  LSPluginViewerEnabled    = YES;  // Note: also in LSWProject
 }

@@ -573,7 +573,7 @@ static BOOL  hasEpoz             = NO;
   
   if ((mimeType = [[self documentAttributes] objectForKey:@"NSFileMimeType"]))
     return [mimeType stringValue];
-
+  
   return @"application/octet-stream";
 }
 

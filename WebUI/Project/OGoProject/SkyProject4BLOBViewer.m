@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoFoundation/OGoComponent.h>
 
@@ -52,11 +51,16 @@
 
 @implementation SkyProject4BLOBViewer
 
-static NGMimeType *textPlainType = nil;
+static NGMimeType *textPlainType    = nil;
+static BOOL       debugViewerLookup = NO;
 
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
   if (textPlainType == nil)
     textPlainType = [[NGMimeType mimeType:@"text/plain"] retain];
+
+  debugViewerLookup = [ud boolForKey:@"OGoDebugBLOBViewerLookup"];
 }
 
 - (void)dealloc {
@@ -129,6 +133,7 @@ static NGMimeType *textPlainType = nil;
 /* defaults */
 
 - (BOOL)isPluginViewerEnabled {
+  // TODO: explain this section, what does 'isPluginViewerEnabled'?
   return [[[self session] userDefaults] boolForKey:@"LSPluginViewerEnabled"];
 }
 
@@ -163,23 +168,33 @@ static NGMimeType *textPlainType = nil;
   OGoSession  *sn;
 
   sn = [self session];
+
+  if (debugViewerLookup) {
+    [self logWithFormat:@"lookup viewer for type %@ data 0x%08X(%d)",
+	    _type, _data, [_data length]];
+  }
   
   v = [sn instantiateComponentForCommand:@"docview-inline"
 	  type:_type
 	  object:_data];
   if (v != nil) {
-    [self debugWithFormat:@"found doc-viewer for type %@: %@", _type, v];
+    if (debugViewerLookup) {
+      [self logWithFormat:@"  found 'docview-inline' for type %@: %@", 
+	      _type, v];
+    }
     [self _setPathAndFileManagerInViewer:v];
     return v;
   }
   
   v = [sn instantiateComponentForCommand:@"mailview" type:_type object:_data];
   if (v != nil) {
-    [self debugWithFormat:@"found mail-viewer for type %@: %@", _type, v];
+    if (debugViewerLookup)
+      [self logWithFormat:@"  found 'mailview' for type %@: %@", _type, v];
     return v;
   }
   
-  [self debugWithFormat:@"found no viewer for type %@.", _type];
+  if (debugViewerLookup)
+    [self logWithFormat:@"found no viewer for type %@.", _type];
   return nil;
 }
 
@@ -191,7 +206,7 @@ static NGMimeType *textPlainType = nil;
 - (id)viewerComponent {
   NGMimeType *mtype;
   BOOL doShow;
-
+  
   // TODO: explain this section, what does 'isPluginViewerEnabled'?
   if ((doShow = [self isPluginViewerEnabled])) {
     if (self->viewer) {
@@ -209,6 +224,10 @@ static NGMimeType *textPlainType = nil;
     [self resetViewerComponent];
   
   mtype = [NGMimeType mimeType:[self mimeType]];
+  if (debugViewerLookup) {
+    [self logWithFormat:@"asked for viewer component (doShow=%s): %@", 
+	  doShow ? "yes" : "no", mtype];
+  }
   
   /* lookup document viewer */
 
