@@ -1,4 +1,3 @@
-// $Id$
 
 // include OGoContentPage
 #include <OGoFoundation/OGoContentPage.h>
@@ -10,14 +9,14 @@
 @end 
 
 #import <Foundation/Foundation.h>
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 
 @implementation HelloWorld
 
 // a sample accessors
 - (NSString *)sayHello {
   return [NSString stringWithFormat:@"Hello %@!",
-		   [(LSWSession *)[self session] activeLogin]];
+		   [(OGoSession *)[self session] activeLogin]];
 }
 
 @end /* HelloWorld */

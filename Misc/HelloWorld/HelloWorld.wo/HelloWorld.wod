@@ -1,6 +1,7 @@
-// $Id: HelloWorld.wod,v 1.1 2003/07/24 10:54:09 helge Exp $
+// bind template to controller class
 
 Frame: LSWSkyrixFrame {}
+
 Window: LSWWindowFrame {
   // the string appearing in the title bar
   title   = "Say Hello to the world";
