@@ -1,6 +1,14 @@
 XML-RPC Daemon
 ==============
 
+The OpenGroupware.org project includes a full features XML-RPC API. This
+directory contains the XML-RPC server and will contain some wrappers for
+various languages.
+
+Note: the XML-RPC API as available will stay and not change for the foreseeable 
+future. But you may want to check out the SandStorm servers or ZideStore, which
+both provide a bit easier API (but are less stable from an API point of view).
+
 TODO: write much more
 
 Note: there is an API PDF document available on the docs website.
