@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: LSGetObjectForGlobalIDs.m 1 2004-08-20 11:17:52Z znek $
 
 #include "LSGetObjectForGlobalIDs.h"
 #include "SkyAccessManager.h"
@@ -527,7 +526,7 @@ static BOOL doCacheGIDs = YES;
   if (![self->noAccessCheck boolValue]) {
     /* check read access */
     NSArray *tmp;
-
+    
     TIME_START(@"access check");
     tmp = [[_context accessManager] objects:self->gids forOperation:@"r"];
     TIME_END();

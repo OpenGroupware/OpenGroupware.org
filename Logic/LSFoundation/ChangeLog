@@ -1,3 +1,13 @@
+2004-11-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.89
+
+	* renamed SkyAccessManager to OGoAccessManager
+
+	* SkyAccessManager.m: renamed default SkyAccessManagerDebug to
+	  OGoAccessManagerDebugEnabled, improved debug logging, use a different
+	  way to lookup access bundles which solves OGo bug #1006
+
 2004-09-10  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoContextManager+LDAP.m: removed a log if an empty password is being

@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SkyAccessManager.m 1 2004-08-20 11:17:52Z znek $
 
 #include "LSCommandContext.h"
 #include "LSCommandKeys.h"
@@ -39,7 +38,7 @@
 
 #endif
 
-@interface SkyAccessManager(PrivateInt)
+@interface OGoAccessManager(PrivateInt)
 
 - (NSNotificationCenter *)notificationCenter;
 - (void)postFlagsDidChange:(EOGlobalID *)_gid;
@@ -71,11 +70,11 @@
 - (BOOL)_checkAccessMask:(NSString *)_mask with:(NSString *)_operation;
 @end
 
-static BOOL SkyAccessManagerDebug = NO;
+static BOOL debugOn = NO;
 
 NSString *SkyAccessFlagsDidChange = @"SkyAccessFlagsDidChangeNotifikation";
 
-@implementation SkyAccessManager
+@implementation OGoAccessManager
 
 static NSString *CtxCacheID = @"_cache_SkyAccessManager_objectId2AccessCache";
 static Class   StrClass = Nil;
@@ -83,7 +82,7 @@ static Class   StrClass = Nil;
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   
-  SkyAccessManagerDebug = [ud boolForKey:@"SkyAccessManagerDebug"];
+  debugOn = [ud boolForKey:@"OGoAccessManagerDebugEnabled"];
   StrClass = [NSString class];
 }
 
@@ -222,7 +221,7 @@ static Class   StrClass = Nil;
                           allowedOnObjectIDs:oids 
 			  forAccessGlobalID:_accountID];
 	
-	if (SkyAccessManagerDebug) {
+	if (debugOn) {
 	  [self debugWithFormat:
 		  @"%s\n  operation: %@\n  allowed on: %@\n  access-gid: %@\n"
 		  @"  handler: %@\n  => %@",
@@ -238,9 +237,20 @@ static Class   StrClass = Nil;
          
 - (NSArray *)objects:(NSArray *)_oids forOperation:(NSString *)_str {
   EOGlobalID *agid;
-  
+  NSArray    *oids;
+
   agid = [[self->context valueForKey:LSAccountKey] valueForKey:@"globalID"];
-  return [self objects:_oids forOperation:_str forAccessGlobalID:agid];
+  
+  if (debugOn) {
+    [self logWithFormat:@"CHECK permission '%@' against %@ on IDs (%d): %@", 
+	  _str, agid, [_oids count], _oids];
+  }
+  
+  oids = [self objects:_oids forOperation:_str forAccessGlobalID:agid];
+  
+  if (debugOn)
+    [self logWithFormat:@"  filtered %d: %@", [oids count], oids];
+  return oids;
 }
 
 - (NSArray *)objects:(NSArray *)_oids
@@ -248,32 +258,42 @@ static Class   StrClass = Nil;
   forAccessGlobalID:(EOGlobalID *)_accountID
 {
   EOGlobalID           *loginID;
-  id                   login, *allowed;
+  id                   *allowed;
   id<SkyAccessHandler> handler;
   int                  allowCnt, cnt;
   NSArray              *oids;
   
-  login   = [self->context valueForKey:LSAccountKey];
-  loginID = [login valueForKey:@"globalID"];
+  loginID = [[self->context valueForKey:LSAccountKey] valueForKey:@"globalID"];
 
+  if (debugOn) {
+    [self logWithFormat:
+	    @"CHECK permission '%@' against %@ (login=%@) on IDs (%d): %@", 
+	  _str, _accountID, loginID, [_oids count], _oids];
+  }
+  
   if (![_oids isNotNull]) {
     [self debugWithFormat:@"WARNING[%s]: no oids passed in.",
 	    __PRETTY_FUNCTION__];
     return nil;
   }
-  if ([_oids count] == 0)
+  if ([_oids count] == 0) {
+    [self debugWithFormat:@"  no IDs to check ..."];
     return [NSArray array];
+  }
   
   if (![_str isNotNull])
     _str = nil;
-  
-  if ([_str length] == 0)
+  if ([_str length] == 0) {
+    [self debugWithFormat:@"  no permission to check ..."];
     return _oids;
-
+  }
+  
   if (![_accountID isNotNull]) {
-    NSLog(@"%s: missing access id", __PRETTY_FUNCTION__);
+    NSLog(@"ERROR(%s): missing access id", __PRETTY_FUNCTION__);
     return [NSArray array];
   }
+
+  /* start real processing */
   
   if (![loginID isEqual:_accountID]) {
     NSAssert([loginID intValue] == 10000,
@@ -283,6 +303,7 @@ static Class   StrClass = Nil;
   TIME_START(@"get access");
   { /* check for handler */
     if (![self _accessHandlerForObjectID:[_oids lastObject]]) {
+      [self debugWithFormat:@"  found no access handler ..."];
       return _oids;
     }
   }
@@ -318,27 +339,34 @@ static Class   StrClass = Nil;
 	unCnt++;
       }
     }
-    if (unCnt)oids = [NSArray arrayWithObjects:unknown count:unCnt];
+    if (unCnt)   oids = [NSArray arrayWithObjects:unknown count:unCnt];
     if (unknown) free(unknown);  unknown  = NULL;
   }
-  if (oids) {
+  
+  if (oids != nil) {
     handler = [self _accessHandlerForObjectID:[_oids lastObject]];
-    if (handler) {
+    if (handler != nil) {
       NSEnumerator *enumerator;
       id           obj;
+
+      if (debugOn) {
+	[self debugWithFormat:@"  check op '%@' account %@: %@",
+	        _str, _accountID, oids];
+      }
       
       oids = [handler objects:oids forOperation:_str
                       forAccessGlobalID:_accountID];
-
+      
       enumerator = [oids objectEnumerator];
       while ((obj = [enumerator nextObject])) {
-        allowed[allowCnt++] = obj;
+        allowed[allowCnt] = obj;
+	allowCnt++;
       }
         
     }
   }
   oids = [NSArray arrayWithObjects:allowed count:allowCnt];
-  free(allowed); allowed = NULL;
+  if (allowed) free(allowed); allowed = NULL;
   TIME_END();
   return oids;
 }
@@ -523,14 +551,10 @@ static Class   StrClass = Nil;
 /* debugging */
 
 - (BOOL)isDebuggingEnabled {
-  return SkyAccessManagerDebug;
+  return debugOn;
 }
 
-/* description */
-
-@end /* SkyAccessManager */
-
-@implementation SkyAccessManager(Private)
+/* ******************** private ******************** */
 
 /* entity */
 
@@ -727,13 +751,16 @@ static Class   StrClass = Nil;
   
   if (_bundle == nil)
     return;
+
+  if (debugOn)
+    [self debugWithFormat:@"check access handler bundle: %@", _bundle];
   
   path          = [_bundle pathForResource:@"bundle-info" ofType:@"plist"];
   handlers      = [NSDictionary dictionaryWithContentsOfFile:path];
   handlers      = [handlers objectForKey:@"SkyAccessHandlers"];
   keyEnumerator = [handlers keyEnumerator];
   
-  while ((key = [keyEnumerator nextObject])) {
+  while ((key = [keyEnumerator nextObject]) != nil) {
     Class handlerClass;
     id    handler;
     
@@ -755,47 +782,48 @@ static Class   StrClass = Nil;
       continue;
     }
     
+    if (debugOn)
+      [self debugWithFormat:@"  found handler for key '%@': %@", key, handler];
     [self->accessHandlers setObject:handler forKey:key];
   }
 }
 
-- (void)_checkForAccessHandlers {
-  NSEnumerator *loadedBundles = nil;
-  NSBundle     *bundle;
-  
-  loadedBundles = [[[NGBundleManager defaultBundleManager]
-                                    bundlesProvidingResource:nil
-                                    ofType:@"SkyAccessHandlers"]
-                                     objectEnumerator];
-  while ((bundle = [loadedBundles nextObject]))
-    [self _checkBundleForAccessHandlers:bundle];
-}
-
 - (id<SkyAccessHandler>)_accessHandlerForObjectID:(EOGlobalID *)_gid {
-  NSString             *identifier = nil;
-  id<SkyAccessHandler> handler     = nil;
+  NSString             *entityName;
+  NSBundle             *bundle;
+  id<SkyAccessHandler> handler;
 
   if (![_gid isNotNull])
      return nil;
-  
-  if (self->accessHandlers == nil) {
-    self->accessHandlers = [[NSMutableDictionary alloc] init];
-    [self _checkForAccessHandlers];
-  }
-  NSAssert1([_gid isKindOfClass:[EOKeyGlobalID class]],
-           @"_accessHandlerForObjectID expect a EOKeyGlobalID got %@", _gid);
-
-  identifier = [(EOKeyGlobalID *)_gid entityName];
-  
-  if ((handler = [self->accessHandlers objectForKey:identifier]) == nil) {
-#if 0    
-    NSLog(@"WARNING[%s]: Missing accesshandler for _gid <%@>",
-          __PRETTY_FUNCTION__, _gid);
-#endif    
+  if (![_gid isKindOfClass:[EOKeyGlobalID class]]) {
+    [self logWithFormat:@"ERROR(%s): got invalid global-id %@: %@",
+	  __PRETTY_FUNCTION__, _gid, [_gid class]];
     return nil;
   }
 
-  return handler;
+  entityName = [(EOKeyGlobalID *)_gid entityName];
+  
+  /* setup / check  cache */
+  
+  if (self->accessHandlers == nil)
+    self->accessHandlers = [[NSMutableDictionary alloc] initWithCapacity:16];
+  
+  if ((handler = [self->accessHandlers objectForKey:entityName]) != nil)
+    return handler;
+  
+  /* lookup with bundle manager */
+  
+  bundle = [[NGBundleManager defaultBundleManager] 
+	                     bundleProvidingResource:entityName
+	                     ofType:@"SkyAccessHandlers"];
+  if (bundle == nil) {
+    [self debugWithFormat:
+	    @"ERROR: found no access handler for GID %@ (entity=%@): %@", 
+	    _gid, entityName, self->accessHandlers];
+  }
+  
+  [self _checkBundleForAccessHandlers:bundle];
+  return nil;
 }
 
 - (NSMutableDictionary *)_createRowForUpdateOfPermission:(NSString *)_op {
@@ -966,7 +994,7 @@ static Class   StrClass = Nil;
   qual = [EOSQLQualifier alloc];
   if ([_accessId isNotNull]) {
     qual = [qual initWithEntity:[self aclEntity]
-		 qualifierFormat:@"%A = '%@' AND %A = '%@'",
+		 qualifierFormat:@"(%A = '%@') AND (%A = '%@')",
 		   @"authId", [[(id)_accessId keyValues][0] stringValue],
 		   @"objectId", [[(id)_objId keyValues][0] stringValue],
 		 nil];
@@ -1016,8 +1044,8 @@ static Class   StrClass = Nil;
   }
   [self commitTransaction];
   [qual release]; qual = nil;
-  [self commitTransaction];
-
+  [self commitTransaction]; // TODO: why two commits?
+  
   [self postFlagsDidChange:_objId];
   return YES;
 }
@@ -1050,4 +1078,7 @@ static Class   StrClass = Nil;
   return YES;
 }
 
-@end /* SkyObjectPropertyManager(Private) */
+@end /* OGoAccessManager */
+
+@implementation SkyAccessManager // DEPRECATED
+@end /* SkyAccessManager */
