@@ -3,18 +3,8 @@
 
 use strict;
 #die "WARNING: not yet configured!\n";
-my $host_i_runon = "sarge";
-#my $host_i_runon = "fedora-core3";
-#my $host_i_runon = "fedora-core2";
-#my $host_i_runon = "suse92";
-#my $host_i_runon = "suse91";
-#my $host_i_runon = "suse82";
-#my $host_i_runon = "mdk-10.1";
-#my $host_i_runon = "mdk-10.0";
-#my $host_i_runon = "sles9";
-#my $host_i_runon = "slss8";
-#my $host_i_runon = "rhel3";
-#my $host_i_runon = "redhat9";
+my $host_i_runon = "sid";
+#my $host_i_runon = "sarge";
 my $svn_host = 'svn.opengroupware.org';
 my $svn = '/usr/bin/svn';
 my $dl_host = "download.opengroupware.org";
