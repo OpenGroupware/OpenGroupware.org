@@ -570,13 +570,13 @@ USE_SKYAPTNOTIFY=\"YES\"              # periodically runs aptnotify - or not
 " >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-webui-1.0a
 
 echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
-" >>${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-nhsd-1.0a
+" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-nhsd-1.0a
 
 echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
-" >>${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-xmlrpcd-1.0a
+" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-xmlrpcd-1.0a
 
 echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
-" >>${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-zidestore-1.3
+" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-zidestore-1.3
 
 # ****************************** post *********************************
 %post meta

@@ -183,6 +183,14 @@ cp %{_specdir}/initscript_templates/suse_xmlrpcd ${INITSCRIPTS_TMP_DIR_OGO}/
 cp %{_specdir}/initscript_templates/suse_opengroupware ${INITSCRIPTS_TMP_DIR_OGO}/
 cp %{_specdir}/initscript_templates/suse_zidestore ${INITSCRIPTS_TMP_DIR_ZIDE}/
 
+#ghost initscripts
+INITSCRIPT_DST="${RPM_BUILD_ROOT}%{_sysconfdir}/init.d"
+mkdir -p ${INITSCRIPT_DST}
+touch ${INITSCRIPT_DST}/ogo-nhsd-1.0a
+touch ${INITSCRIPT_DST}/ogo-webui-1.0a
+touch ${INITSCRIPT_DST}/ogo-xmlrpcd-1.0a
+touch ${INITSCRIPT_DST}/ogo-zidestore-1.3
+
 #template for ogo-aptnotify
 APTNOTIFY_TMP_DIR="${SHAREDIR}/aptnotify_template"
 mkdir -p ${APTNOTIFY_TMP_DIR}
@@ -204,13 +212,13 @@ USE_SKYAPTNOTIFY=\"YES\"              # periodically runs aptnotify - or not
 " >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-webui-1.0a
 
 echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
-" >>${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-nhsd-1.0a
+" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-nhsd-1.0a
 
 echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
-" >>${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-xmlrpcd-1.0a
+" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-xmlrpcd-1.0a
 
 echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
-" >>${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-zidestore-1.3
+" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-zidestore-1.3
 
 mkdir -p ${RPM_BUILD_ROOT}/var/lib/opengroupware.org/.libFoundation/Defaults
 mkdir -p ${RPM_BUILD_ROOT}/var/lib/opengroupware.org/documents
@@ -555,6 +563,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ogo
 %attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-webui-1.0a
+%ghost %attr(0755,root,root) %config %{_sysconfdir}/init.d/ogo-webui-1.0a
 %{prefix}/bin/load-LSModel
 %{prefix}/bin/ogo-ppls-1.0a
 %{prefix}/bin/sky_add_account
@@ -666,11 +675,14 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/lib/zidestore-1.3
 %{prefix}/sbin/ogo-nhsd-1.0a
 %attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-nhsd-1.0a
+%ghost %attr(0755,root,root) %config %{_sysconfdir}/init.d/ogo-nhsd-1.0a
 %{prefix}/sbin/ogo-webui-1.0a
 %{prefix}/sbin/ogo-xmlrpcd-1.0a
 %attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-xmlrpcd-1.0a
+%ghost %attr(0755,root,root) %config %{_sysconfdir}/init.d/ogo-xmlrpcd-1.0a
 %{prefix}/sbin/ogo-zidestore-1.3
 %attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-zidestore-1.3
+%ghost %attr(0755,root,root) %config %{_sysconfdir}/init.d/ogo-zidestore-1.3
 %{prefix}/share/opengroupware.org-1.0a/initscript_templates/*xmlrpcd
 %{prefix}/share/zidestore-1.3
 %{prefix}/share/opengroupware.org-1.0a/INSTALLED.USING.OGOFULLPACKAGE
@@ -757,6 +769,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Wed Mar 16 2005 Frank Reppin <frank@opengroupware.org>
+- MFC
 * Tue Mar 15 2005 Frank Reppin <frank@opengroupware.org>
 - MFC
 * Thu Mar 10 2005 Frank Reppin <frank@opengroupware.org>
