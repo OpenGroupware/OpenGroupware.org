@@ -28,18 +28,31 @@
   Category for Blogger related API.
 */
 
-@class NSArray, NSDictionary;
+@class NSString, NSArray, NSDictionary, NSCalendarDate;
 
-@interface NSObject(Blogger)
+@interface NSObject(BlogContainer)
+
+- (NSArray *)bloggerFetchAllBlogInfosInContext:(id)_ctx;
+- (id)lookupBlogWithID:(NSString *)_blogID inContext:(id)_ctx;
+
+@end
+
+@interface NSObject(BlogObject)
 
 - (NSDictionary *)bloggerBlogInfoInContext:(id)_ctx;
-- (NSArray *)bloggerFetchAllBlogInfosInContext:(id)_ctx;
-
 - (NSArray *)bloggerPostIDsInContext:(id)_ctx;
-- (NSDictionary *)bloggerPostInfoInContext:(id)_ctx;
 
-- (id)lookupBlogWithID:(NSString *)_blogID inContext:(id)_ctx;
+- (NSString *)bloggerPostEntryWithTitle:(NSString *)_title
+  description:(NSString *)_content creationDate:(NSCalendarDate *)_date
+  inContext:(id)_ctx;
+
 - (id)lookupPostWithID:(NSString *)_postID inContext:(id)_ctx;
+
+@end
+
+@interface NSObject(PostObject)
+
+- (NSDictionary *)bloggerPostInfoInContext:(id)_ctx;
 
 @end
 

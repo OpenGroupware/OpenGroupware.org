@@ -1,6 +1,17 @@
 2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
 
-	* more Blogger API cleanups
+	* v1.3.2
+
+	* BloggerAction.[hm]: added 'postID' variable and -post method
+
+	* MetaWeblogPost.m: improved post support
+
+	* NSObject+Blogger.[hm]: added API for post creation, code cleanups
+	
+	* product.plist, MetaWeblogAction.m: added (empty) implementation for
+	  metaWeblog.getCategories
+
+	* more Blogger API cleanups (v1.3.1)
 
 2004-10-23  Helge Hess  <helge.hess@opengroupware.org>
 

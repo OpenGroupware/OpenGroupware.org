@@ -89,6 +89,12 @@
             positionalKeys = ( blogID, login, password, entry );
           };
         };
+        "metaWeblog.getCategories" = {
+          protectedBy = "View";
+          actionClass = "MetaWeblogAction";
+          actionName  = "getCategories";
+          arguments   = { positionalKeys = ( blogID, login, password ); };
+        };
 
 	/* Movable Type */
         "mt.supportedTextFilters" = {
@@ -119,17 +125,13 @@
           protectedBy = "View";
           actionClass = "MovableTypeAction";
           actionName  = "getCategoryList";
-          arguments   = {
-            positionalKeys = ( blogID, login, password );
-          };
+          arguments   = { positionalKeys = ( blogID, login, password ); };
         };
         "mt.getPostCategories" = {
           protectedBy = "View";
           actionClass = "MovableTypeAction";
           actionName  = "getPostCategories";
-          arguments   = {
-            positionalKeys = ( blogID, login, password );
-          };
+          arguments   = { positionalKeys = ( blogID, login, password ); };
         };
         "mt.setPostCategories" = {
           protectedBy = "View";

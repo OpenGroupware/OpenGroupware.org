@@ -36,12 +36,14 @@
   NSString *login;
   NSString *password;
   NSString *blogID;
+  NSString *postID;
 }
 
 /* accessors */
 
 - (NSString *)appID;
 - (NSString *)blogID;
+- (NSString *)postID;
 - (NSString *)login;
 - (NSString *)password;
 
@@ -49,6 +51,7 @@
 
 - (NSArray *)fetchAllBlogInfos;
 - (id)blog;
+- (id)post;
 
 @end
 

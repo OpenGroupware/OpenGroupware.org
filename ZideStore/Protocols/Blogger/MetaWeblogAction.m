@@ -28,4 +28,12 @@
   [super dealloc];
 }
 
+/* actions */
+
+- (id)getCategoriesAction {
+  // array of structs, keys: description, htmlUrl, rssUrl
+  // TODO: implement
+  return [NSArray array];
+}
+
 @end /* MetaWeblogAction */

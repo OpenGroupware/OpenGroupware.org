@@ -3,6 +3,11 @@ Blogger
 
 Attempt to implement the Blogger XML-RPC API for ZideStore.
 
+Note: this is far from being complete! It currently can list project notes in
+      Ecto. Use a URL like:
+        http://localhost/zidestore/so/donald/Projects/DBTEST/
+      this will show the "Documents" and "Notes" BLOGs.
+
 
 Root Methods vs Context Methods
 ===============================
@@ -34,8 +39,35 @@ http://www.movabletype.org/docs/mtmanual_programmatic.html
 What Ecto Does
 ==============
 
+MovableType Mode
 1. XML-RPC: bloggers.getUsersBlogs
 2. on each blog URL: GET
 3. metaWeblog.getRecentPosts
 4. mt.supportedTextFilters
 5. mt.getCategoryList
+
+Note: Ecto does not escape '>':
+---snip---
+	<member>
+		<name>description</name>
+		<value><string>&lt;p>
+mein &lt;strong>content&lt;/strong> 1
+&lt;/p></string></value>
+	</member>
+---snap---
+
+Ecto currently throws exceptions:
+---snip---
+---snap---
+
+
+Atom
+====
+
+Not currently implemented. First we need "X-Wsse" authentication:
+---snip---
+X-Wsse: UsernameToken Username="helge", 
+        PasswordDigest="lmay9ZhN0/RmchYJhuf1jQT3E50=", 
+        Nonce="ZWN0by0zNzI3", 
+        Created="2004-10-24T14:37:27Z"
+---snap---

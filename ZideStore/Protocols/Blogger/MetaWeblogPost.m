@@ -26,7 +26,6 @@
 @interface MetaWeblogPost : MetaWeblogAction
 {
   NSDictionary *entry;
-  NSString     *postID;
   BOOL         doPublish;
 }
 
@@ -38,19 +37,11 @@
 @implementation MetaWeblogPost
 
 - (void)dealloc {
-  [self->postID release];
   [self->entry  release];
   [super dealloc];
 }
 
 /* accessors */
-
-- (void)setPostID:(NSString *)_value {
-  ASSIGNCOPY(self->postID, _value);
-}
-- (NSString *)postID {
-  return self->postID;
-}
 
 - (void)setEntry:(NSDictionary *)_entry {
   ASSIGNCOPY(self->entry, _entry);
@@ -66,34 +57,36 @@
   return self->doPublish;
 }
 
-/* post */
-
-- (id)post {
-  NSString *pid;
-
-  if ((pid = [self postID]) == nil)
-    return nil;
-  
-  return [[self clientObject] lookupPostWithID:pid inContext:[self context]];
-}
-
 /* actions */
 
 - (id)newPostAction {
-  [self logWithFormat:@"%@ new post in blog %@: %@", 
-	  [self login], [self blogID],
-	  [self entry]];
-  /* return String postid of new post */
-  return [NSException exceptionWithName:@"NotImplemented"
-		      reason:@"Post not yet implemented!"
-		      userInfo:nil];
+  /* 
+     return String postid of new post 
+  */
+  NSDictionary *e;
+  id blog;
+
+  if ((blog = [self blog]) == nil) {
+    return [NSException exceptionWithName:@"MissingBlog"
+			reason:@"did not find specified blog!" userInfo:nil];
+  }
+  if ((e = [self entry]) == nil) {
+    return [NSException exceptionWithName:@"MissingEntry"
+			reason:@"did not specify the entry parameter?!"
+			userInfo:nil];
+  }
+  
+  return [blog bloggerPostEntryWithTitle:[e valueForKey:@"title"]
+	       description:[e valueForKey:@"description"]
+	       creationDate:[e valueForKey:@"dateCreated"]
+	       inContext:[self context]];
 }
 
 - (id)editPostAction {
   [self logWithFormat:@"%@ edit post %@: %@", 
 	  [self login], [self postID], [self entry]];
   return [NSException exceptionWithName:@"NotImplemented"
-		      reason:@"Edit not yet implemented!"
+		      reason:@"not implemented"
 		      userInfo:nil];
 }
 
@@ -103,10 +96,17 @@
           mt_excerpt, mt_text_more, mt_allow_comments, mt_allow_pings, 
           mt_convert_breaks, mt_keywords
   */
+  id p;
   
   [self logWithFormat:@"%@ get post: %@",  [self login], [self postID]];
+
+  if ((p = [self post]) == nil) {
+    return [NSException exceptionWithName:@"DidNotFindPost"
+			reason:@"did not find specified post!"
+			userInfo:nil];
+  }
   
-  return [[self post] bloggerPostInfoInContext:[self context]];
+  return [p bloggerPostInfoInContext:[self context]];
 }
 
 @end /* MetaWeblogPost */

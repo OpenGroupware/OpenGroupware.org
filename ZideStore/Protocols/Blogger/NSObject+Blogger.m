@@ -23,24 +23,9 @@
 #include "common.h"
 #include <NGObjWeb/SoObjects.h>
 
-@implementation NSObject(Blogger)
-
 static NSNumber *noNum = nil;
 
-- (NSDictionary *)bloggerBlogInfoInContext:(id)_ctx {
-  /* keys: url, blogid, blogName */
-  NSString *url, *bid, *bname;
-  
-  bname = [self davDisplayName];
-  url   = [self baseURLInContext:_ctx];
-  bid   = [self nameInContainer];
-  
-  return [NSDictionary dictionaryWithObjectsAndKeys:
-			 url,   @"url",
-		         bid,   @"blogid",
-		         bname, @"blogName",
-		       nil];
-}
+@implementation NSObject(Blogger)
 
 - (NSArray *)bloggerFetchAllBlogInfosInContext:(id)_ctx {
   NSMutableArray *infos;
@@ -78,9 +63,6 @@ static NSNumber *noNum = nil;
   return infos;
 }
 
-- (NSArray *)bloggerPostIDsInContext:(id)_ctx {
-  return [self toOneRelationshipKeys];
-}
 - (NSString *)bloggerPostIDInContext:(id)_ctx {
   /* default post ID is container name + entry name */
   NSString *tmp;
@@ -107,6 +89,7 @@ static NSNumber *noNum = nil;
       mt_keywords
   */
   NSMutableDictionary *entry;
+  NSString *str;
   id tmp;
 
   if (noNum == nil) noNum = [[NSNumber numberWithBool:NO] retain];
@@ -118,9 +101,19 @@ static NSNumber *noNum = nil;
     [entry setObject:tmp forKey:@"link"];
     [entry setObject:tmp forKey:@"permaLink"];
   }
-
-  if ((tmp = [self valueForKey:@"contentAsString"]))
-    [entry setObject:tmp forKey:@"description"];
+  
+  /* description is the first text */
+  if ((str = [self valueForKey:@"contentAsString"])) {
+    if ([str hasPrefix:OGo_HTML_MARKER])
+      str = [str substringFromIndex:[OGo_HTML_MARKER length]];
+    else {
+      str = [NSString stringWithFormat:@"<p>%@</p>", 
+		      [str stringByEscapingHTMLString]];
+    }
+    [entry setObject:str forKey:@"description"];
+  }
+  
+  /* there can be a second text in 'mt_text_more' */
   
   if ((tmp = [self davLastModified]))
     [entry setObject:tmp forKey:@"dateCreated"];
@@ -129,7 +122,9 @@ static NSNumber *noNum = nil;
   
   [entry setObject:noNum forKey:@"mt_allow_comments"];
   [entry setObject:noNum forKey:@"mt_allow_pings"];
-  [entry setObject:noNum forKey:@"mt_convert_breaks"];
+#if 0 /* This is a _string_ argument (the key of mt.supportedTextFilters) */
+  [entry setObject:myFilter forKey:@"mt_convert_breaks"];
+#endif
   
   return entry;
 }
@@ -138,27 +133,60 @@ static NSNumber *noNum = nil;
   return [self lookupName:_blogID inContext:_ctx acquire:NO];
 }
 
-- (id)lookupPostWithID:(NSString *)_postID inContext:(id)_ctx {
-  NSRange r;
-  id blog;
+@end /* NSObject(Blogger) */
 
+@implementation NSObject(BlogObject)
+
+- (NSDictionary *)bloggerBlogInfoInContext:(id)_ctx {
+  /* keys: url, blogid, blogName */
+  NSString *url, *bid, *bname;
+  
+  bname = [self davDisplayName];
+  url   = [self baseURLInContext:_ctx];
+  bid   = [self nameInContainer];
+  
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+			 url,   @"url",
+		         bid,   @"blogid",
+		         bname, @"blogName",
+		       nil];
+}
+
+- (NSArray *)bloggerPostIDsInContext:(id)_ctx {
+  return [self toOneRelationshipKeys];
+}
+
+- (NSString *)bloggerPostEntryWithTitle:(NSString *)_title
+  description:(NSString *)_content creationDate:(NSCalendarDate *)_date
+  inContext:(id)_ctx
+{
+  [self logWithFormat:@"Note: this object does not support blog posts!"];
+  return (id)[NSException exceptionWithName:@"NotImplemented"
+			  reason:@"Edit not yet implemented!"
+			  userInfo:nil];
+}
+
+- (id)lookupPostWithID:(NSString *)_postID inContext:(id)_ctx {
+  NSRange  r;
+  NSString *blogID, *postID;
+  id       blog;
+  
   if ([_postID length] == 0)
     return nil;
   
   r = [_postID rangeOfString:@"/"];
   if (r.length == 0)
     return [self lookupName:_postID inContext:_ctx acquire:NO];
+
+  blogID = [_postID substringToIndex:r.location];
+  postID = [_postID substringFromIndex:(r.location + r.length)];
   
-  blog = [self lookupBlogWithID:[_postID substringToIndex:r.location]
-	       inContext:_ctx];
-  if (blog == nil) {
+  if ((blog = [self lookupBlogWithID:blogID inContext:_ctx]) == nil) {
     [self logWithFormat:@"ERROR: did not find blog for post: %@", _postID];
     return nil;
   }
-
-  return [blog lookupBlogWithID:
-		 [_postID substringFromIndex:(r.location + r.length)]
-	       inContext:_ctx];
+  
+  return [blog lookupBlogWithID:postID inContext:_ctx];
 }
 
-@end /* NSObject(Blogger) */
+@end /* NSObject(BlogObject) */

@@ -32,3 +32,5 @@
 #include <NGObjWeb/SoObjects.h>
 #include <NGObjWeb/SoDAV.h>
 #include <NGObjWeb/SoObject+SoDAV.h>
+
+#define OGo_HTML_MARKER @"<!-- html marker -->\n"

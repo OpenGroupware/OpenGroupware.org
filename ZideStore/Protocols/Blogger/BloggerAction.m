@@ -26,6 +26,7 @@
 @implementation BloggerAction
 
 - (void)dealloc {
+  [self->postID   release];
   [self->blogID   release];
   [self->login    release];
   [self->password release];
@@ -47,6 +48,13 @@
 }
 - (NSString *)blogID {
   return self->blogID;
+}
+
+- (void)setPostID:(NSString *)_value {
+  ASSIGNCOPY(self->postID, _value);
+}
+- (NSString *)postID {
+  return self->postID;
 }
 
 - (void)setLogin:(NSString *)_value {
@@ -77,6 +85,15 @@
 - (NSArray *)fetchAllBlogInfos {
   return [[self clientObject] 
 	        bloggerFetchAllBlogInfosInContext:[self context]];
+}
+
+- (id)post {
+  NSString *pid;
+
+  if ((pid = [self postID]) == nil)
+    return nil;
+  
+  return [[self clientObject] lookupPostWithID:pid inContext:[self context]];
 }
 
 /* action */
