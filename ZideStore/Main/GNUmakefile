@@ -22,11 +22,11 @@ ZideStore13_RESOURCE_FILES += \
 	../Maps/AptBackendSets.plist	\
 	../Maps/PersonalFolderInfo.plist
 
-ZideStore13_WEBSERVER_RESOURCE_FILES += \
-	../PrefsUI/English.lproj/*.gif 	\
-	../PrefsUI/English.lproj/*.jpg 	\
-	../PrefsUI/English.lproj/*.ico	\
-	../PrefsUI/English.lproj/*.css	\
+#ZideStore13_WEBSERVER_RESOURCE_FILES += \
+#	../PrefsUI/English.lproj/*.gif 	\
+#	../PrefsUI/English.lproj/*.jpg 	\
+#	../PrefsUI/English.lproj/*.ico	\
+#	../PrefsUI/English.lproj/*.css	\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/woapp.make

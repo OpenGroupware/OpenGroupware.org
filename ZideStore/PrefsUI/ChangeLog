@@ -1,3 +1,9 @@
+2004-09-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* added image and CSS resources to the bundle (previously located in
+	  main .woa), fixed templates to use rsrc: lookups for images/CSS
+	  (v1.3.9)
+
 2004-08-31  Helge Hess  <helge.hess@skyrix.com>
 	
 	* GNUmakefile.preamble: added library lookup pathes for FHS (v1.3.8)

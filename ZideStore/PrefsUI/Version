@@ -1,5 +1,6 @@
 # $Id$
 
-SUBMINOR_VERSION:=8
+SUBMINOR_VERSION:=9
 
-# 1.1.0 requires NGObjWeb 4.2.202
+# v1.3.9 requires libNGObjWeb 4.3.34
+# v1.1.0 requires libNGObjWeb 4.2.202

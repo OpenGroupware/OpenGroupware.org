@@ -2,6 +2,12 @@
   requires = ( MAIN );
 
   publicResources = (
+    banner_back.gif,
+    banner_left.gif,
+    banner_right.gif,
+    favicon.ico,
+    homepage.jpg,
+    site.css
   );
 
   factories = {

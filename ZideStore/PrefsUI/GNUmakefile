@@ -27,6 +27,11 @@ PrefsUI_RESOURCE_FILES += \
 	SxRootPage.wox		\
 	SxUserHomePage.wox	\
 	SxUserSettingsPage.wox	\
+	\
+	English.lproj/*.gif 	\
+	English.lproj/*.jpg 	\
+	English.lproj/*.ico	\
+	English.lproj/*.css	\
 
 # make
 

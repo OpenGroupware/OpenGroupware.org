@@ -1,3 +1,8 @@
+2004-09-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: moved PrefsUI image resources to PrefsUI bundle (works
+	  now with fixed SoProductResourceManager) (v1.3.81)
+
 2004-09-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* ZideStore.m: override WOHttpTransactionUseSimpleParser default and
