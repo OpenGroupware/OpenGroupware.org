@@ -11,7 +11,7 @@
 %define ogoall_libfoundation_major      1
 %define ogoall_libfoundation_minor      0
 %define ogoall_libfoundation_makeflags  debug=yes
-%define ogoall_sope_source              sope-4.4beta.3-voyager-r602.tar.gz
+%define ogoall_sope_source              sope-4.4beta.4-voyager-r638.tar.gz
 %define ogoall_sope_major               4
 %define ogoall_sope_minor               4
 %define ogoall_sope_makeflags           debug=yes
