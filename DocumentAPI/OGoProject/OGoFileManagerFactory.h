@@ -18,12 +18,17 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __OGoProjects_OGoFileManagerFactory_H__
 #define __OGoProjects_OGoFileManagerFactory_H__
 
 #import <Foundation/NSObject.h>
+
+/*
+  OGoFileManagerFactory
+  
+  TODO: explain.
+*/
 
 @class NSURL, NSArray;
 @class EOGlobalID;

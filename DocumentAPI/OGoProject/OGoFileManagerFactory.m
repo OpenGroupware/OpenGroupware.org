@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "OGoFileManagerFactory.h"
 #include "common.h"
@@ -96,19 +95,28 @@ static NSDictionary *baseToClass  = nil;
     [self logWithFormat:@"ERROR: missing context argument!"];
     return nil;
   }
-  if (_gid == nil) {
+  if (![_gid isNotNull]) {
     [self logWithFormat:@"WARNING: no GID for filemanager construction!"];
     return nil;
   }
+
+#if 1
+#  warning TODO: REMOVE DEBUG ABORT
+  if ([[[(EOKeyGlobalID *)_gid keyValues][0] stringValue] isEqualToString:@"-1"])
+    abort();
+#endif
   
   project = [_context runCommand:@"project::get-by-globalid",
                  @"gid", _gid, nil];
-
-  if ([project isKindOfClass:[NSArray class]])
-    project = [project lastObject];
-
-  if (!project) {
-    NSLog(@"ERROR[%s] missing project for globalid %@",
+  
+  if ([project isKindOfClass:[NSArray class]]) {
+    project = ([project count] > 0)
+      ? [project lastObject]
+      : nil;
+  }
+  
+  if (project == nil) {
+    NSLog(@"ERROR(%s); missing project for gid: %@",
           __PRETTY_FUNCTION__, _gid);
     return nil;
   }
