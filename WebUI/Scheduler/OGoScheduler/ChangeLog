@@ -1,3 +1,7 @@
+2005-01-03  Helge Hess <helge.hess@opengroupware.org>
+
+	* SkySchedulerPage.m: code cleanups, fixed OGo bug #1132 (v5.1.31)
+
 2004-11-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* WODirectAction+SchedulerViews.m: code cleanups (v5.1.30)

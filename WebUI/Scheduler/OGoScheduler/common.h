@@ -19,20 +19,24 @@
   02111-1307, USA.
 */
 
-#ifndef __SkyScheduler_common_H__
-#define __SkyScheduler_common_H__
+#ifndef __OGoScheduler_common_H__
+#define __OGoScheduler_common_H__
 
 #import <Foundation/Foundation.h>
 
 #include <EOControl/EOControl.h>
 #include <NGExtensions/NGExtensions.h>
 
+#include <NGMime/NGMimeType.h>
+#include <NGObjWeb/WOResponse.h>
+#include <NGObjWeb/WOContext.h>
+
 #include <OGoFoundation/WOComponent+Commands.h>
 #include <OGoFoundation/WOComponent+Navigation.h>
-#include <NGMime/NGMimeType.h>
+#include <OGoFoundation/OGoSession.h>
 
 @interface NSObject(MiscGlobalID)
 - (EOGlobalID *)globalID;
 @end
 
-#endif /* __SkyScheduler_common_H__ */
+#endif /* __OGoScheduler_common_H__ */

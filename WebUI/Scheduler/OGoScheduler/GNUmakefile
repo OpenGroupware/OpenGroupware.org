@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include ../common.make
 
@@ -8,17 +8,17 @@ OGoScheduler_PRINCIPAL_CLASS = SkySchedulerModule
 
 OGoScheduler_OBJC_FILES = \
 	SkySchedulerModule.m		\
-	SkySchedulerPage.m		\
-	SkyAptResourceEditor.m		\
-	WODirectAction+SchedulerViews.m	\
-	SkySchedulerSelectPopUp.m	\
-	SkyAptResourceViewer.m		\
-	SkySchedulerSelectPanel.m	\
-	SkySchedulerConflictPage.m	\
+	NSCalendarDate+OGoScheduler.m	\
 	SkyAptDeletePanel.m		\
+	SkyAptResourceEditor.m		\
+	SkyAptResourceViewer.m		\
+	SkySchedulerConflictPage.m	\
+	SkySchedulerPage.m		\
+	SkySchedulerSelectPanel.m	\
+	SkySchedulerSelectPopUp.m	\
+	WODirectAction+SchedulerViews.m	\
 
 OGoScheduler_RESOURCE_FILES += Defaults.plist Version
-OGoScheduler_LANGUAGES      =  English German
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make

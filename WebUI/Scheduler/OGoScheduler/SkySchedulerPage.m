@@ -58,19 +58,87 @@
 - (void)setGoBackWithCount:(unsigned)_goBackWithCount;
 @end
 
-#import <Foundation/Foundation.h>
-#import <EOControl/EOControl.h>
-#include <NGExtensions/NGExtensions.h>
-#include <NGObjWeb/NGObjWeb.h>
-#include <NGMime/NGMime.h>
-#include <OGoFoundation/OGoSession.h>
+#include "NSCalendarDate+OGoScheduler.h"
 #include <OGoFoundation/LSWNotifications.h>
+#include "common.h"
 #include <OGoScheduler/SkyAptDataSource.h>
 #include <NGExtensions/EOCacheDataSource.h>
 
-// #define USE_CACHE 1
-
 @implementation SkySchedulerPage
+
+static NSArray* months = nil; /* label keys */
+
++ (void)initialize {
+  months = [[NSArray alloc] initWithObjects:
+                              @"January", @"February", @"March",
+                              @"April", @"May", @"June", @"July",
+                              @"August", @"September", @"October",
+                              @"November", @"December", nil];
+}
+
+- (BOOL)_loadDataSourceBundle:(NSString *)_bundleName {
+  NGBundleManager *bm;
+  NSBundle *bundle;
+  
+  bm = [NGBundleManager defaultBundleManager];
+  if ((bundle = [bm bundleWithName:_bundleName type:@"ds"]) == nil) {
+    NSLog(@"ERROR: missing bundle: %@", _bundleName);
+    return NO;
+  }
+  if (![bundle load]) {
+    NSLog(@"ERROR: failed to load bundle: %@", bundle);
+    return NO;
+  }
+  return YES;
+}
+
+- (BOOL)defaultShowPalmDates {
+  NSUserDefaults *ud = [(id)[self session] userDefaults];
+  return [[ud valueForKey:@"scheduler_show_palm_dates"] boolValue];
+}
+- (BOOL)defaultShowTasks {
+  NSUserDefaults *ud = [(id)[self session] userDefaults];
+  return [[ud valueForKey:@"scheduler_show_jobs"] boolValue];
+}
+
+- (SkyHolidayCalculator *)_newHolidaysCalculator {
+  SkyHolidayCalculator *c;
+  
+  c = [SkyHolidayCalculator calculatorWithYear:self->year
+			    timeZone:self->timeZone
+			    userDefaults:[(id)[self session] userDefaults]];
+  return [c retain];
+}
+
+- (SkyAptDataSource *)_newAptDataSource {
+  SkyAptDataSource *ds;
+  
+  // TODO: no -initWithContext:?
+  ds = [[SkyAptDataSource alloc] init];
+  [ds setContext:[(OGoSession *)[self session] commandContext]];
+  return ds;
+}
+
+- (BOOL)_addDataSource:(NSString *)_dsName fromBundle:(NSString *)_bundleName {
+  LSCommandContext *ctx;
+  EODataSource *ds;
+  Class c;
+  
+  if (![self _loadDataSourceBundle:_bundleName])
+    return NO;
+  
+  if ((c = NSClassFromString(_dsName)) == Nil) {
+    [self logWithFormat:@"ERROR: missing datasource class: %@", _dsName];
+    return NO;
+  }
+  
+  ctx = [(id)[self session] commandContext];
+  // TODO: wrong cast (was best match)
+  ds = [(SkyAccessManager *)[c alloc] initWithContext:ctx];
+  [self->dataSource addSource:ds];
+  [ds release]; ds = nil;
+  return YES;
+}
 
 - (id)init {
   id p;
@@ -85,119 +153,43 @@
     [self registerAsPersistentInstance];
 
     self->timeZone = [[(id)[self session] timeZone] copy];
-    {
-      NSCalendarDate *d;
-      d = [NSCalendarDate calendarDate];
-      [self setDay:d];
-    }
+    [self setDay:[NSCalendarDate calendarDate]];
     [self setWeekStart:[self->day mondayOfWeek]];
-    //[self setSelectedTab:@"weekoverview"];
-    self->selectedTab = nil;
-    //[self takeValue:@"overview" forKey:@"weekViewKey"];
-    self->weekViewKey = nil;
-    //[self takeValue:@"overview" forKey:@"dayViewKey"];
-    self->dayViewKey  = nil;
+    
+    if ([self defaultShowTasks] || [self defaultShowPalmDates]) {
+      self->dataSource = [[SkyAptCompoundDataSource alloc] init];
 
-    /*
-    self->dataSource = (SkyAptDataSource *)[[SkyAptDataSource alloc] init];
-    [self->dataSource setContext:[(id)[self session] skyrixContext]];
-    */
-    self->dataSource = [[SkyAptCompoundDataSource alloc] init];
-    {
-      // building needed dataSources
-      NSUserDefaults *ud = [(id)[self session] userDefaults];
-      id ctx = [(id)[self session] commandContext];
-      id ds  = nil;
-      Class c;
-      NGBundleManager *bm = [NGBundleManager defaultBundleManager];
-      NSBundle        *bundle;
-
-      ds = [[SkyAptDataSource alloc] init];
-      [ds setContext:ctx];
-      [self->dataSource addSource:ds];
-      RELEASE(ds);
-
-      if ([[ud valueForKey:@"scheduler_show_palm_dates"] boolValue]) {
-        if ((bundle = [bm bundleWithName:@"OGoPalmDS" type:@"ds"])) {
-          if (![bundle load]) {
-            [self debugWithFormat:@"failed to load bundle %@", bundle];
-          }
-          else if ((c = NSClassFromString(@"SkyPalmDateDataSource"))) {
-	    // TODO: wrong cast (was best match)
-            ds = [(SkyAccessManager *)[c alloc] initWithContext:ctx];
-            [self->dataSource addSource:ds];
-            [ds release];
-          }
-          else
-            [self debugWithFormat:@"missing SkyPalmDateDataSource class"];
-        }
-        else {
-          [self debugWithFormat:@"missing OGoPalmDS.ds bundle"];
-        }
-      }
-
-      if ([[ud valueForKey:@"scheduler_show_jobs"] boolValue]) {
-        if ((bundle = [bm bundleWithName:@"OGoJobs" type:@"ds"])) {      
-          if (![bundle load]) {
-            [self debugWithFormat:@"failed to load bundle %@", bundle];
-          }
-          if ((c = NSClassFromString(@"SkySchedulerJobDataSource"))) {
-	    // TODO: wrong cast (was best match)
-            ds = [(SkyAccessManager *)[c alloc] initWithContext:ctx];
-            [self->dataSource addSource:ds];
-            [ds release];
-          }
-          else
-            [self debugWithFormat:@"missing SkySchedulerJobDataSource class"];
-        }
-        else {
-          [self debugWithFormat:@"missing OGoJobs.ds bundle"];
-        }
+      [self->dataSource addSource:[self _newAptDataSource]];
+      
+      if ([self defaultShowPalmDates])
+	[self _addDataSource:@"SkyPalmDateDataSource" fromBundle:@"OGoPalmDS"];
+      
+      if ([self defaultShowTasks]) {
+	[self _addDataSource:@"SkySchedulerJobDataSource" 
+	      fromBundle:@"OGoJobs"];
       }
     }
+    else
+      self->dataSource = [self _newAptDataSource];
     
-
-#if USE_CACHE
-    {
-      EODataSource *ds;
-
-      ds = self->dataSource;
-      self->dataSource = [[EOCacheDataSource alloc] initWithDataSource:ds];
-      [self->dataSource setTimeout:120.0];
-      RELEASE(ds); ds = nil;
-    }
-#endif
-    
-    self->year  = [self->day yearOfCommonEra];
-    self->month = [self->day monthOfYear];
-
-    /* holiday calculator */
-    {
-      SkyHolidayCalculator *c;
-
-      c = [SkyHolidayCalculator calculatorWithYear:self->year
-                                timeZone:self->timeZone
-                                userDefaults:[(id)[self session]
-                                                  userDefaults]];
-      ASSIGN(self->holidays,c);
-    }
+    self->year     = [self->day yearOfCommonEra];
+    self->month    = [self->day monthOfYear];
+    self->holidays = [self _newHolidaysCalculator];
   }
   return self;
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->weekStart);
-  RELEASE(self->selectedTab);
-  RELEASE(self->timeZone);
-  RELEASE(self->dataSource);
-  RELEASE(self->day);
-  RELEASE(self->holidays);
-  RELEASE(self->weekViewKey);
-  RELEASE(self->dayViewKey);
+  [self->weekStart   release];
+  [self->selectedTab release];
+  [self->timeZone    release];
+  [self->dataSource  release];
+  [self->day         release];
+  [self->holidays    release];
+  [self->weekViewKey release];
+  [self->dayViewKey  release];
   [super dealloc];
 }
-#endif
 
 /* notifications */
 
@@ -226,20 +218,14 @@
 
 - (void)setIsResCategorySelected:(BOOL)_flag {
   id ds;
-#if USE_CACHE
-  ds = [self->dataSource source];
-#else
+
   ds = self->dataSource;
-#endif
   [ds setIsResCategorySelected:_flag];
 }
 - (BOOL)isResCategorySelected {
   id ds;
-#if USE_CACHE
-  ds = [self->dataSource source];
-#else
+  
   ds = self->dataSource;
-#endif
   return ([ds isResCategorySelected] && ([[ds companies] count] == 0));
 }
 - (BOOL)isNotResCategorySelected {
@@ -248,7 +234,7 @@
 
 - (void)setDay:(NSCalendarDate *)_day {
   NSCalendarDate *d;
-
+  
   d = [NSCalendarDate dateWithYear:[_day yearOfCommonEra]
                       month:[_day monthOfYear] day:[_day dayOfMonth]
                       hour:0 minute:0 second:0 timeZone:self->timeZone];
@@ -259,49 +245,66 @@
 }
 
 - (void)setTimeZone:(NSTimeZone *)_tz {
-  if (![self->timeZone isEqual:_tz]) {
-    ASSIGN(self->timeZone, _tz);
-    [self setDay:self->day];
-  }
+  if ([self->timeZone isEqual:_tz])
+    return;
+  
+  ASSIGN(self->timeZone, _tz);
+  [self setDay:self->day];
 }
 - (NSTimeZone *)timeZone {
   return self->timeZone;
 }
 
 - (void)setWeekStart:(NSCalendarDate *)_ws {
-  if (![self->weekStart isEqualToDate:_ws]) {
-    ASSIGN(self->weekStart,_ws);
-  }
+  if ([self->weekStart isEqualToDate:_ws])
+    return;
+  ASSIGN(self->weekStart,_ws);
 }
 - (NSCalendarDate *)weekStart {
   return self->weekStart;
 }
 
 - (void)setSelectedTab:(NSString *)_tab {
-  if (![_tab isEqualToString:self->selectedTab]) {
-    ASSIGNCOPY(self->selectedTab, _tab);
-    if ([self->selectedTab isEqualToString:@"weekoverview"]) {
-      int cw;
-      cw = [self currentWeek];
-      [self setMonth:(cw < 2) ? 1 : [self->weekStart monthOfYear]];
-      [self setYear:[self->weekStart yearOfCommonEra] + ((cw < 2) ? 1 : 0)];
-    }
-    if ([self->selectedTab isEqualToString:@"dayoverview"]) {
-      int cw;
-      cw = [self currentWeek];
-      [self setWeekStart:[self->day mondayOfWeek]];
-      [self setMonth:(cw < 2) ? 1 : [self->day monthOfYear]];
-      [self setYear:[self->day yearOfCommonEra] + ((cw < 2) ? 1 : 0)];
-    }
+  if ([_tab isEqualToString:self->selectedTab])
+    return;
+  
+  ASSIGNCOPY(self->selectedTab, _tab);
+  
+  // TODO: see OGo bug 1132
+#if ENABLE_OGO_BUG_1132
+  if ([self->selectedTab isEqualToString:@"weekoverview"]) {
+    NSCalendarDate *ws;
+    
+    ws = [self weekStart];
+    [self setMonth:[ws bestMonthForWeekView:ws]];
+    [self setYear:[ws bestYearForWeekView:ws]];
+  }
+#endif
+  if ([self->selectedTab isEqualToString:@"dayoverview"]) {
+    /*
+       Note: this makes the "new year" and "new month" as visible in the 
+             weekview appear in the tabs, not the month/year of the day itself.
+    */
+    NSCalendarDate *ws;
+    
+    // Note: uses a different week start for calc and set?
+    ws = [self weekStart];
+    [self setWeekStart:[self->day mondayOfWeek]]; /* set new weekstart */
+#if ENABLE_OGO_BUG_1132
+    [self setMonth:[self->day bestMonthForWeekView:ws]];
+    [self setYear:[self->day  bestYearForWeekView:ws]];
+#endif
   }
 }
 - (NSString *)selectedTab {
-  if (self->selectedTab == nil) {
-    NSString *tab = [[[self session] userDefaults]
-                            valueForKey:@"schedulerpage_tab"];
-    if (![tab length]) tab = @"weekoverview";
-    [self setSelectedTab:tab];
-  }
+  NSString *tab;
+  
+  if (self->selectedTab != nil)
+    return self->selectedTab;
+  
+  tab = [[[self session] userDefaults] valueForKey:@"schedulerpage_tab"];
+  if ([tab length] == 0) tab = @"weekoverview";
+  [self setSelectedTab:tab];
   return self->selectedTab;
 }
 
@@ -309,31 +312,35 @@
   ASSIGNCOPY(self->weekViewKey,_key);
 }
 - (NSString *)weekViewKey {
-  if (self->weekViewKey == nil) {
-    NSString *tab = [[[self session] userDefaults]
-                            valueForKey:@"schedulerpage_weekview"];
-    if (![tab length]) tab = @"overview";
-    [self setWeekViewKey:tab];
-  }
+  NSString *tab;
+  
+  if (self->weekViewKey != nil)
+    return self->weekViewKey;
+  
+  tab = [[[self session] userDefaults] valueForKey:@"schedulerpage_weekview"];
+  if ([tab length] == 0) tab = @"overview";
+  [self setWeekViewKey:tab];
   return self->weekViewKey;
 }
 - (void)setDayViewKey:(NSString *)_key {
   ASSIGNCOPY(self->dayViewKey,_key);
 }
 - (NSString *)dayViewKey {
-  if (self->dayViewKey == nil) {
-    NSString *tab = [[[self session] userDefaults]
-                            valueForKey:@"schedulerpage_dayview"];
-    if (![tab length]) tab = @"overview";
-    [self setDayViewKey:tab];
-  }
+  NSString *tab;
+  
+  if (self->dayViewKey != nil)
+    return self->dayViewKey;
+  
+  tab = [[[self session] userDefaults] valueForKey:@"schedulerpage_dayview"];
+  if ([tab length] == 0) tab = @"overview";
+  [self setDayViewKey:tab];
   return self->dayViewKey;
 }
 
 /* month labels */
 
 - (NSString *)monthLabel_weekoverview {
-  id label, month1;
+  NSString *label, *month1;
   NSCalendarDate *ws, *we;
   
   ws = [self weekStart];
@@ -347,7 +354,7 @@
 		      [ws descriptionWithCalendarFormat: @"%Y"]];
   }
   else {
-    id month2;
+    NSString *month2;
     
     month1 = [ws descriptionWithCalendarFormat:@"%B"];
     month2 = [we descriptionWithCalendarFormat:@"%B"];
@@ -383,7 +390,13 @@
   case 2003: return @"2003";
   case 2004: return @"2004";
   case 2005: return @"2005";
-  default:   return [NSString stringWithFormat:@"%d", self->year];
+  case 2006: return @"2006";
+  case 2007: return @"2007";
+  default: {
+    unsigned char buf[8];
+    sprintf(buf, "%d", self->year);
+    return [NSString stringWithCString:buf];
+  }
   }
 }
 
@@ -415,42 +428,24 @@
                        stringForObjectValue:self->day];
 }
 - (int)weekOfDate:(NSCalendarDate *)_date {
-  NSCalendarDate *d;
-  int woy, nowy;
-
-  d    = _date;
-  woy  = [d weekOfYear];
-  nowy = [d numberOfWeeksInYear];
-  if (woy > nowy) {
-    d   = [d dateByAddingYears:0 months:0 days:7
-	     hours:0 minutes:0 seconds:0];
-    woy = [d weekOfYear] - 1;
-  }
-  return woy;
+  // DEPRECATED
+  return [_date bestWeekForWeekView];
 }
 - (int)currentWeek {
-  return [self weekOfDate:[self weekStart]];
+  return [[self weekStart] bestWeekForWeekView];
 }
 - (NSString *)weekTabLabel {
   NSString *format = [[self labels] valueForKey:@"weekTabLabelFormat"];
   return [NSString stringWithFormat:format, [self currentWeek]];
 }
 - (NSString *)monthTabLabel {
-  static NSArray* months = nil;
-
-  if (months == nil)
-    months = [[NSArray alloc] initWithObjects:
-                              @"January", @"February", @"March",
-                              @"April", @"May", @"June", @"July",
-                              @"August", @"September", @"October",
-                              @"November", @"December", nil];
-
+  
   if ((self->month > 12) || (self->month < 1))
     return @"";
   return [[self labels] valueForKey:[months objectAtIndex:(self->month-1)]];
 }
 
-// month overview
+/* month overview */
 
 - (void)setMonth:(int)_month {
   self->month = _month;
@@ -481,23 +476,30 @@
   [self->dataSource setFetchSpecification:_fspec];
 }
 
+// TODO: move to icon object
 - (NSString *)monthIcon {
-  return [NSString stringWithFormat:@"month%02d", self->month];
+  unsigned char buf[16];
+  sprintf(buf, "month%02d", self->month);
+  return [NSString stringWithCString:buf];
 }
-
 - (NSString *)weekIcon {
-  return [NSString stringWithFormat:@"week%02d", [self currentWeek]];
+  unsigned char buf[16];
+  sprintf(buf, "week%02d", [self currentWeek]);
+  return [NSString stringWithCString:buf];
 }
-
 - (NSString *)yearIcon {
-  return ((self->year > 1995) && (self->year < 2016))
-    ? [NSString stringWithFormat:@"year%04d", self->year]
-    : @"year";
+  unsigned char buf[16];
+  
+  if (!(((self->year > 1995) && (self->year < 2016))))
+    return @"year";
+    
+  sprintf(buf, "year%04d", self->year);
+  return [NSString stringWithCString:buf];
 }
-
 - (NSString *)dayIcon {
-  return [NSString stringWithFormat:@"day%02d",
-                   [[self day] dayOfMonth]];
+  unsigned char buf[16];
+  sprintf(buf, "day%02d", [[self day] dayOfMonth]);
+  return [NSString stringWithCString:buf];
 }
 
 - (id)dataSource {
