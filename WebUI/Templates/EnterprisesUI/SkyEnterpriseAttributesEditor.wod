@@ -1,0 +1,80 @@
+// $Id: SkyEnterpriseAttributesEditor.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = labels.enterpriseeditor_title;
+  onClose = cancel;
+}
+
+IsLicensed: SkyLicenseConditional {
+  modules = ( Enterprises );
+}
+
+EnterpriseForm: WOForm {
+  name    = "enterpriseEditor";
+  enctype = "multipart/form-data";
+}
+
+CommonAttributes: LSWObjectEditor {
+  labels     = labels;
+  object     = enterprise;
+  attributes = (
+    { key = "name";        label = "enterprise_name";   },
+    { key = "number";      label = "enterprise_number"; }, 
+    { key = "url";         nilString = "http://";       },
+    { key = "email";                                    },
+    { key = "bank";                                     }, 
+    { key = "bankCode";    label = "bank_code";         }, 
+    { key = "account";                                  }  
+  );
+  showOnly = attributes;
+}
+
+Telephons: SkyPhoneSubEditor {
+  document = enterprise;
+  showOnly = attributes;
+}
+
+ExtendedAttributes: SkyExtendedAttrsSubEditor {
+  document = enterprise;
+  showOnly = attributes;
+}
+
+AddressTypes: WOTable {
+  list       = addressTypes;
+  item       = addressType;
+  maxColumns = "2";
+  width      = "100%";
+}
+
+Address: SkyAddressSubEditor {
+  document = addressDocument;
+  showOnly = attributes;
+}
+
+ShowCommentCond: WOConditional {
+  condition = showComment;
+}
+
+ShowContactCond: WOConditional {
+  condition = showContact;
+}
+
+ShowCategoryCond: WOConditional {
+  condition = showCategory;
+}
+
+Comment: SkyCommentSubEditor {
+  document = enterprise;
+}
+
+Contact: SkyContactSubEditor {
+  document = enterprise;
+}
+
+Category: SkyCategorySubEditor {
+  document = enterprise;
+}
+
+EditorButtons: SkyEditorButtons {}

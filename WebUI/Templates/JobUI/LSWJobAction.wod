@@ -1,0 +1,125 @@
+// $Id: LSWJobAction.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = labels.jobActionWindowTitle;
+  onClose = session.navigation.leavePage;
+}
+
+AttributeCell: WOGenericContainer {
+  elementName = "td";
+  align	      = "right";
+  bgcolor     = config.colors_attributeCell;
+  width       = "15%";
+}
+
+ValueCell: WOGenericContainer {
+  elementName = "td";
+  align	      = "left";
+  bgcolor     = config.colors_valueCell;
+}
+
+ProjectLabel:       WOString { value = labels.projectLabel;     }
+JobLabel:           WOString { value = labels.jobLabel;         }
+StatusLabel:        WOString { value = labels.statusLabel;      }
+CreatorLabel:       WOString { value = labels.creatorLabel;     }
+ExecutantLabel:     WOString { value = labels.executantLabel;   }
+StartDateLabel:     WOString { value = labels.startDateLabel;   }
+EndDateLabel:       WOString { value = labels.endDateLabel;     }
+
+Project:            WOString { value = job.project.name;        }
+JobName:            WOString { value = job.name;                }
+Status:             WOString { value = statusValue;             }
+CreatorFirstName:   WOString { value = job.creator.firstname;   }
+CreatorLastName:    WOString { value = job.creator.name;        }
+ExecutantFirstName: WOString { value = job.executant.firstname; }
+ExecutantLastName:  WOString { value = job.executant.name;      }
+
+StartDate: WOString {
+  value     = job.startDate;
+  formatter = session.formatDateTime;
+}
+EndDate: WOString {
+  value     = job.endDate;
+  formatter = session.formatDateTime;
+}
+
+OnTimeCondition:     WOConditional { condition = endDateOnTime; }
+OnTimeConditionElse: WOConditional { condition = endDateOnTime; negate = YES; }
+
+OutOffTimeFont: WOGenericContainer {
+  elementName = "font";
+  color       = config.font_alertColor;
+}
+
+UserIsCreator: WOConditional {
+  condition = userIsCreator;
+}
+
+UserIsCreatorElse: WOConditional {
+  condition = userIsCreator;
+  negate    = YES;
+}
+
+UserIsExecutant: WOConditional {
+  condition = userIsExecutant;
+}
+
+UserIsExecutantElse: WOConditional {
+  condition = userIsExecutant;
+  negate    = YES;
+}
+
+Form: WOForm {
+  name = "annotationEditor";
+}
+
+TextArea: WOText {
+  value = comment;
+  rows  = "18";
+  cols  = "80";
+  wrap  = "physical";
+  name  = "focusField";
+}
+
+SaveSubmit: WOSubmitButton {
+  action   = saveAction;
+  value    = labels.save;
+  class    = "button_narrow";
+}
+
+CancelSubmit: WOHyperlink {
+  action   = cancel;
+  string   = labels.cancel;
+  class    = "button_narrow";
+}
+
+JobAction: WOString {
+  value      = jobActionHeadLine;
+  escapeHTML = NO;
+}
+
+MainButtonRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_mainButtonRow;
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+IsTeamJob: WOConditional {
+  condition = job.isTeamJob;
+}
+IsTeamJobElse: WOConditional {
+  condition = job.isTeamJob;
+  negate    = YES;
+}
+
+ExecutantTeamName: WOHyperlink {
+  string = job.executant.description;
+  action = viewExecutant;
+}
+
+// we do not show the project info, because it is not properly fetched
+HasProject: WOConditional { condition = NO; }

@@ -1,0 +1,12 @@
+// $Id: SkyPersonProjectList.wod 2 2004-08-20 11:37:44Z znek $
+
+ProjectList: SkyProjectList {
+  projects = person.projectDataSource.fetchObjects;
+}
+
+Buttons: SkyButtonRow {
+  ordering = ( new );
+  onNew  = assignProject;
+  new    = labels.new;
+  hasNew = isNewAllowed;
+}

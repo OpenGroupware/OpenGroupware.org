@@ -1,0 +1,61 @@
+<!-- $Id: SkyContactImportUploadPage.html 2 2004-08-20 11:37:44Z znek $ -->
+<#Frame>
+  <#Window>
+     <#Form>
+      <table width="100%" border="0" cellpadding="4" cellspacing="0">
+        <#Title/>
+        
+        <#HasImportRulesCond>
+          <tr>
+            <td></td>
+            <#ValueCell>
+              <font color="red"><#HasRulesLabel/></font>
+              <#ProceedButton/>
+            </#ValueCell>
+          </tr>
+        </#HasImportRulesCond>
+        
+        <#HasDataCondElse>
+          <tr><#UploadAttr  ><#FileUpload     /></#UploadAttr></tr>
+          <tr><#FileTypeAttr><#FileTypePopUp  /></#FileTypeAttr></tr>
+          <tr><#PrivateAttr ><#PrivateCheckBox/></#PrivateAttr></tr>
+          <tr>
+            <#TolerantAttr>
+              <#TolerantCheckBox/>
+              <#TolerantDesc/>
+            </#TolerantAttr>
+          </tr>
+          <tr><td></td><td>
+            <#UploadButton/>
+            <#CancelButton/>
+          </td></tr>
+        </#HasDataCondElse>
+
+        <#HasDataCond>
+          <tr>
+            <#MappingAttr>
+              <table border="0" cellpadding="1" cellspacing="0">
+                <tr>
+                  <th><#AttributeLabel/></th>
+                  <th><#MappingLabel/></th>
+                  <th><#ExampleLabel/></th>
+                </tr>
+                <#AttributeRep>
+                  <tr>
+                    <td align="right"><#Attribute/>:</td>
+                    <td><#MappedAttributePopUp/></td>
+                    <td><#ExampleValue/></td>
+                  </tr>
+                </#AttributeRep>
+              </table>
+            </#MappingAttr>
+          </tr>
+          <tr><td></td><td>
+            <#ImportButton/>
+            <#CancelButton/>
+          </td></tr>
+        </#HasDataCond>
+      </table>
+     </#Form>
+  </#Window>
+</#Frame>

@@ -1,0 +1,155 @@
+// $Id: LSWAddressEditor.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = windowTitleLabel;
+  onClose = cancel;
+}
+
+AddressForm : WOForm {
+  name    = "addressEditor";
+}
+
+AddressEditor : LSWObjectEditor {
+  labels     = labels;
+  object     = address;
+  attributes = (
+    { key = "name1";   },
+    { key = "name2";   },
+    { key = "name3";   },
+    { key = "street";  },
+    { key = "city";    },
+    { key = "zip";     },
+    { key = "state";   },
+    { key = "country"; }
+  );
+}
+
+SaveSubmit: WOImageButton {
+  action           = save;
+  filename         = "save.gif";
+  name             = labels.addresseditor_saveButtonLabel;
+  ALT              = labels.addresseditor_saveButtonLabel;
+  disabledFilename = "save_inactive.gif";
+  disabled         = isSaveDisabled;
+  BORDER           = 0;
+};
+CancelSubmit: WOHyperlink {
+  action           = cancel;
+  filename         = "cancel.gif";
+  ALT              = labels.cancelButtonLabel;
+  BORDER           = 0;
+};
+
+AttributeCell: SkyAttributeCell {};
+ValueCell : WOGenericContainer {
+        elementName = "TD";
+    	ALIGN	    = "left";
+        VALIGN      = "top";
+    	BGCOLOR	    = config.colors_valueCell;
+};
+
+AddressTypeLabel : WOString {
+        value      = labels.addressType;
+        escapeHTML = NO;
+}
+
+AddressType : WOString {
+        value = typeLabel;
+}
+
+Font: SkyConfigFont {}
+
+TeleRep: WORepetition {
+        list = telephones;
+        item = telephone;
+};
+
+TeleLabel : WOString {
+        value = telephoneLabel;
+};
+
+InfoLabel : WOString {
+        //value = config.labels.infoLabel;
+        value = labels.info;
+};
+
+TeleContent : WOTextField {
+        value = teleContent;
+        SIZE  = 20;
+        formatter = session.formatString;
+};
+
+TeleInfo : WOTextField {
+        value = teleInfo;
+        SIZE  = 30;
+        formatter = session.formatString;
+};
+
+TelePrivateCond : WOConditional {
+        condition = isTelephonePrivate;
+};
+
+EditFont: SkyConfigEditFont {}
+
+IsWizardMode : WOConditional {
+  condition = isInWizardMode;
+};
+IsWizardModeElse : WOConditional {
+  condition = isInWizardMode;
+  negate    = YES;
+};
+
+IsForward : WOConditional {
+  condition = isWizardForward;
+};
+
+IsForwardCondElse: WOConditional {
+  condition = isWizardForward;
+  negate    = YES;
+}
+
+Forward : WOImageButton {
+  action           = wizardForward;
+  //filename         = config.icons.active.forward;
+  filename         = "go_forward.gif";
+  name             = labels.wizardForward;
+  ALT              = labels.wizardForward;
+  BORDER           = 0;
+};
+
+IsBack : WOConditional {
+  condition = isWizardBack;
+};
+
+Back : WOImageButton {
+  action           = wizardBack;
+  //filename         = config.icons.active.back;
+  filename         = "back.gif";
+  name             = labels.wizardBack;
+  ALT              = labels.wizardBack;
+  BORDER           = 0;
+};
+
+IsFinish : WOConditional {
+  condition = isWizardFinish;
+};
+
+Finish : WOImageButton {
+  action           = wizardFinish;
+  //filename         = config.icons.active.finish;
+  filename         = "finish.gif";
+  name             = labels.wizardFinish;
+  ALT              = labels.wizardFinish;
+  BORDER           = 0;
+};
+
+Cancel : WOImageButton {
+  action           = wizardCancel;
+  //filename         = config.icons.active.cancel;
+  filename         = "cancel.gif";
+  name             = labels.wizardCancel;
+  ALT              = labels.wizardCancel;
+  BORDER           = 0;
+};

@@ -1,0 +1,174 @@
+// $Id: LSWEnterprises.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = labels.EnterpriseWindowTitle;
+  onClose = session.navigation.leavePage;
+}
+
+IsLicensed: SkyLicenseConditional {
+  modules = ( Enterprises );
+}
+
+Form: WOForm {
+  name   = "searchform";
+  action = enterpriseSearch;
+};
+
+Font: SkyConfigFont {}
+
+EnterpriseSearchField: WOTextField {
+  value  = searchText;
+};
+
+NewEnterpriseLink: WOHyperlink {
+  action = newEnterprise;
+  string = "create new enterprise";
+}
+
+EnterpriseList: SkyEnterpriseList {
+  dataSource   = dataSource;
+  currentBatch = currentBatch;
+  onFavoritesChange = updateFavorites;
+}
+
+AdvancedSearch: LSWEnterpriseAdvancedSearch {
+  qualifier      = qualifier;
+  maxSearchCount = maxSearchCount;
+  userDefaultKey = "enterprise_custom_qualifiers";
+};
+
+FullSearch: LSWFullSearch {
+  searchString  = searchText;
+  isSearchLimited = isSearchLimited;
+  limitedString = limitedSearchLabel;
+};
+
+Buttons: SkyButtonRow {
+  ordering = ( new, import );
+  onNew    = newEnterprise;
+  new      = labels.new;
+  tipNew   = labels.new;
+
+  hasImport = YES;
+  import    = labels.import;
+  onImport  = import;
+}
+
+CustomButtons: SkyButtonRow {
+  ordering = ( new, import, removetab );
+  onNew    = newEnterprise;
+  new      = labels.new;
+  tipNew   = labels.new;
+
+  hasImport = YES;
+  import    = labels.import;
+  onImport  = import;
+
+  hasRemovetab = YES;
+  removetab    = labels.removeTab;
+  onRemovetab  = removeTab;
+}
+
+SearchField: WOTextField {
+  name  = "search";
+  value = searchText;
+};
+
+SearchSubmit: WOSubmitButton {
+  action   = enterpriseSearch;
+  value    = labels.searchButtonLabel;
+  class    = "button_narrow";
+};
+
+IsSearchLimited: WOConditional {
+  condition = isSearchLimited;
+}
+
+LimitedLabel: WOString {
+  value = limitedSearchLabel;
+}
+
+TabBody: SkyTabView {
+  selection = tabKey;
+};
+
+SearchTab: SkyTabItem {
+  key    = "enterpriseSearch";
+  icon   = "search";
+  action = tabClicked;
+  label  = labels.searchEnterpriseTabLabel;
+}
+
+AdvSearchTab: SkyTabItem {
+  key    = "advancedSearch";
+  icon   = advTabIcon;
+  action = tabClicked;
+  label  = labels.advancedSearchTab;
+}
+
+FullSearchTab: SkyTabItem {
+  key    = "search";
+  icon   = fullTabIcon;
+  action = tabClicked;
+  label  = labels.fullSearchTab;
+}
+
+FavoritesTab: SkyTabItem {
+  key    = "_favorites_";
+  label  = labels.favorites;
+  action = viewFavorites;
+}
+
+CustomTabs: WORepetition {
+  list  = savedSearches;
+  item  = item;
+  index = itemIndex;
+}
+CustomTab: SkyTabItem {
+  key    = itemIndex;
+  label  = customTabLabel;
+  action = customTabClicked;
+}
+CustomLabel: SkyRichString {
+  value = searchTitle;
+}
+
+CustomSavedSearchPopUp: SkyCompanySavedSearchPopUp {
+  qualifier        = qualifier;
+  maxSearchCount   = maxSearchCount;
+  userDefaultKey   = "enterprise_custom_qualifiers";
+  searchSelected   = searchSelected;
+  searchTitle      = searchTitle;
+  updateQualifier  = YES;
+}
+
+// load/save search
+SavedSearchPopUp: SkyCompanySavedSearchPopUp {
+  qualifier        = qualifier;
+  maxSearchCount   = maxSearchCount;
+  hasSearched      = hasSearched;
+  recommendedTitle = searchText;
+  userDefaultKey   = "enterprise_custom_qualifiers";
+  searchSelected   = searchSelected;
+  searchTitle      = searchTitle;
+}
+
+LetterTab: SkyTabItem {
+  key    = item;
+  icon   = iconForTab;
+  action = letterClicked;
+  label  = item;
+};
+
+LetterRepetition: WORepetition {
+  item = item;
+  list = ( "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+           "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" );
+};
+
+IsNotTextMode: WOConditional {
+  condition = session.isTextModeBrowser;
+  negate    = YES;
+}

@@ -1,0 +1,24 @@
+<!-- $Id: SkyCompanySavedSearchPopUp.html 2 2004-08-20 11:37:44Z znek $ -->
+
+<#ShowPopUpCond>
+  <table width="30%" border="0" cellpadding="0" cellspacing="2">
+    <tr>
+      <td align="right" nowrap="nowrap">
+        <#ShowLoadFormCond>
+          <#LoadForm>
+            <#SearchTitlePopUp/>
+            <#ShowLoadButtonCond><#SearchLoadSubmit/></#ShowLoadButtonCond>
+            <#ShowRemoveButtonCond><#SearchRemoveSubmit/></#ShowRemoveButtonCond>
+          </#LoadForm>
+        </#ShowLoadFormCond>
+        <!-- #ShowSaveFormCond>
+          </td><td align="right" nowrap="nowrap">
+          <#SaveForm>
+            <#SearchTitleField/><#TabCheckBox/><#TabLabel/>
+            <#SearchSaveSubmit/>
+          </#SaveForm>
+        </#ShowSaveFormCond -->
+      </td>
+    </tr>
+  </table>
+</#ShowPopUpCond>

@@ -1,0 +1,246 @@
+<#Frame>
+  <!--$Id: LSWJobEditor.html 2 2004-08-20 11:37:44Z znek $ -->
+  <#Calendar/>
+
+  <#Window>
+    <#WarningModeCondElse>
+      <#Form>
+        <table border="0" cellspacing="0" cellpadding="4" width="100%">
+          <#CommonCollapsible>
+            <#JobEditor/>
+            <tr>
+              <#AttributeCell>
+                <#Font><#CompletionDateLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#CompletionDate/></#EditFont>
+                <#IsJavaScriptEnabled>
+                  <#CalendarPopupCompDateLink/>
+                </#IsJavaScriptEnabled>
+              </#ValueCell>
+            </tr>            
+            <tr>
+              <#AttributeCell>
+                <#Font><#KeywordsLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell><#EditFont><#Keywords/></#EditFont></#ValueCell>
+            </tr>
+            <tr>
+              <#AttributeCell>
+                <#Font><#CategoryLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell><#EditFont><#CategoryPopup/></#EditFont></#ValueCell>
+            </tr>
+            <tr>
+              <#AttributeCell>
+                <#Font><#PercentCompleteLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#PercentComplete/></#EditFont>
+                <#Font>%</#Font>
+              </#ValueCell>
+            </tr>            
+            <tr>
+              <#AttributeCell>
+                <#Font><#PriorityLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell><#EditFont><#PriorityPopup/></#EditFont></#ValueCell>
+            </tr>
+          </#CommonCollapsible>
+          <#ExtendedCollapsible>
+            <tr>
+              <#AttributeCell>
+                <#Font><nobr><#AccountingInfoLabel/>:</nobr></#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#AccountingInfo/></#EditFont>
+              </#ValueCell>
+            </tr>
+            <tr>
+              <#AttributeCell>
+                <#Font><#AssociatedCompaniesLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#AssociatedCompanies/></#EditFont>
+              </#ValueCell>
+            </tr>
+            <tr>
+              <#AttributeCell>
+                <#Font><#AssociatedContactsLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#AssociatedContacts/></#EditFont>
+              </#ValueCell>
+            </tr>
+
+            <tr>
+              <#AttributeCell>
+                <#Font><#SensitivityLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#SensitivityPopup/></#EditFont>
+              </#ValueCell>
+            </tr>
+
+            <tr>
+              <#AttributeCell>
+                <#Font><#NotifyCreator/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell><#EditFont><#NotifyPopup/></#EditFont></#ValueCell>
+            </tr>
+          
+            <tr>
+              <#AttributeCell>
+                <#Font><#ActualWorkLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#ActualWork/></#EditFont>
+                <#Font><#MinutesLabel/></#Font>
+              </#ValueCell>
+            </tr>
+
+            <tr>
+              <#AttributeCell>
+                <#Font><#TotalWorkLabel/>:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#TotalWork/></#EditFont>
+                <#Font><#MinutesLabel/></#Font>
+              </#ValueCell>
+            </tr>
+
+            <tr>
+              <#AttributeCell>
+                <#Font><nobr><#KilometersLabel/>:</nobr></#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#EditFont><#Kilometers/></#EditFont>
+                <#Font><#KilometersSuffixLabel/></#Font>
+              </#ValueCell>
+            </tr>
+ 
+          </#ExtendedCollapsible>
+
+          <#HasAttributesCollapsible>
+            <#AttributesCollapsible>
+              <#AttributeCell>
+                <#Font><#ReferredPersonLabel />:</#Font>
+              </#AttributeCell>
+              <#ValueCell>
+                <#Font><#ReferredPerson /></#Font>
+              </#ValueCell>
+            </#AttributesCollapsible>
+              
+          </#HasAttributesCollapsible>
+
+          <#IsProjectEnabled>
+            <#ProjectCollapsible>
+              <#ShowProjectName>
+                <tr> 
+                  <#AttributeCell>
+                    <#Font><#ProjectLabel/>:</#Font>
+                  </#AttributeCell>
+                  <#ValueCell><#Font>
+                    <#ProjectName/> (<#ProjectNumber/>)
+                  </#Font></#ValueCell>
+                </tr>
+              </#ShowProjectName>
+            
+              <#ShowProjectSelection>
+                <#ProjectSelection/>
+              </#ShowProjectSelection>
+            </#ProjectCollapsible>
+          </#IsProjectEnabled>
+
+          <#ShowExecutantSelectionCond>
+            <#ExecutantCollapsible>
+              <tr> 
+                <#AttributeCell>
+                  <#Font><#SearchLabel/>:</#Font>
+                </#AttributeCell>
+                <#ValueCell>
+                  <#EditFont>
+                    <#GroupsPopup/>
+                    <#SearchAccountsField/>
+                    <#SearchAccountsSubmit/>
+                  </#EditFont>
+                  <#Font><#NotifyCheckBox/><#Notify/></#Font>
+                </#ValueCell>
+              </tr>
+
+              <#HasExecutantsCond>
+                <tr>
+                  <#AttributeCell>
+                    <#Font><#ExecutantSelectionLabel/>:</#Font>
+                  </#AttributeCell>
+                  <#ValueCell>
+                    <table border="0" cellpadding="2" cellspacing="2">
+                      <tr>
+                        <#ResultRep>
+                          <#StartNewLineCond></tr><tr></#StartNewLineCond>
+                          <td><#ItemButton/>
+                            <#IsTeamCond><#TeamDescription/></#IsTeamCond>
+                            <#IsTeamCondElse>
+                              <#ItemDescription/>
+                            </#IsTeamCondElse>
+                          </td>
+                        </#ResultRep>
+                      </tr>
+                    </table>
+                  </#ValueCell>
+                </tr>
+              </#HasExecutantsCond>
+            </#ExecutantCollapsible>
+            <#NewModeCond>
+              <#ShowPreferredAccounts>
+                <#PreferredAccountsTitle>
+                  <tr>
+                    <#AttributeCell><#Font>
+                      <#PrefAccountSelLabel />:
+                    </#Font></#AttributeCell>
+                    <#ValueCell><#Font>
+                      <#PrefAccountList />
+                    </#Font></#ValueCell>
+                  </tr>   
+                </#PreferredAccountsTitle>
+              </#ShowPreferredAccounts>
+            </#NewModeCond>
+          </#ShowExecutantSelectionCond>
+
+          <#CommentModeCond>
+            <#CommentCollapsible>
+              <tr>
+                <#AttributeCell>
+                  <#Font><#DescriptionLabel/>:</#Font>
+                </#AttributeCell>
+                <#ValueCell><#EditFont><#Description/></#EditFont></#ValueCell>
+              </tr>
+            </#CommentCollapsible>
+          </#CommentModeCond>
+
+          <tr> 
+            <td>&nbsp;</td>
+            <td>
+              <#IsSaveEnabled><#SaveSubmit /></#IsSaveEnabled>
+              <#IsSaveDisabled><#SaveSubmitDA /></#IsSaveDisabled>
+              <#CancelSubmit />
+            </td>
+          </tr>
+        </table>
+      </#Form>
+    </#WarningModeCondElse>
+   <#WarningModeCond>
+      <#Warning />  
+   </#WarningModeCond>
+  </#Window>
+
+<script language="JavaScript">
+<!--
+if (document.editform) {
+  if (document.editform.elements[0]) {
+    document.editform.elements[0].focus();
+  }
+}
+// -->
+</script>
+</#Frame>
