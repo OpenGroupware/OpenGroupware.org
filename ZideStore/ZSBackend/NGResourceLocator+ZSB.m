@@ -37,7 +37,7 @@
 + (NSString *)zsbGNUstepSubPath {
   return [NSString stringWithFormat:
                      @"Library/Libraries/Resources/ZideStore-%i.%i/",
-                     [self zsfMajorVersion], [self zsfMinorVersion]];
+                     [self zsbMajorVersion], [self zsbMinorVersion]];
 }
 
 + (NGResourceLocator *)zsbResourceLocator {
