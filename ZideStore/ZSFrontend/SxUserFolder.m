@@ -476,7 +476,47 @@ static NSDictionary *personalFolderMap = nil;
 
 /* actions */
 
+- (id)evoGetAction:(WOContext *)_ctx {
+  /* 
+     Evolution issues a GET on the folder to check credentials
+     
+     With the Connector 2.0 Evo expects an HTML page, Erik writes (thanks!):
+     - EXC will start with a GET request.
+     - This is used to find out whether it is connected to a proper exchange 
+       server.
+     - Things like SSL requirements are also fetched from this output.
+     - I've noticed in the source that EXC does something with the <base> but 
+       it seems what I enter has no effect.
+     - Zidestore will not provide a body for a GET, so we'll have to supply 
+       this ourselves.
+     - EXC only cares about the presence of <base>.
+		$sbody = "<BASE href=\"http://blaat/\">";
+     - We are now done with processing the GET request. 
+     
+     In Connector 2.0.2 this code is in e2k-autoconfig.c:
+       e2k_autoconfig_getcontext().
+  */
+  WOResponse *r;
+  
+  r = [_ctx response];
+  [r setStatus:200 /* OK */];
+  
+  /* fake being Exchange, checked by Connector (6.5=2003, 6.0=2000)*/
+  [r setHeader:@"6.5.zidestore" forKey:@"MS-WebStorage"];
+  
+  [r setHeader:@"text/html" forKey:@"content-type"];
+  [r appendContentString:@"<BASE href=\""];
+#if 1
+  [r appendContentHTMLAttributeValue:@"http://blaat/"];
+#else
+  [r appendContentHTMLAttributeValue:[self baseURLInContext:_ctx]];
+#endif
+  [r appendContentString:@"\">"];
+  return r;
+}
+
 - (id)GETAction:(id)_ctx {
+  NSString *ua;
   BOOL isLicensed = NO;
 
 #if 0
@@ -485,13 +525,9 @@ static NSDictionary *personalFolderMap = nil;
 #else
   isLicensed = YES;
 #endif
-  /* Evolution issues a GET on the folder to check credentials */
-  if ([[[(WOContext *)_ctx request] 
-	 headerForKey:@"user-agent"] hasPrefix:@"Evolution/"]) {
-    [[(WOContext *)_ctx response] 
-      setStatus:isLicensed ? 200 : 402 /* Payment Required */];
-    return [(WOContext *)_ctx response];
-  }
+  ua = [[[(WOContext *)_ctx request] clientCapabilities] userAgentType];
+  if ([ua isEqualToString:@"Evolution"])
+    return [self evoGetAction:_ctx];
   
   if (!isLicensed)
     return [[WOApplication application] pageWithName:@"SxMissingLicensePage"];

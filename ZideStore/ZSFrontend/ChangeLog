@@ -1,3 +1,9 @@
+2004-10-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxUserFolder.m: when being accessed with Connector 2.x, sends a
+	  <base> response for the initial request (thanks Erik), also fake
+	  being Ex 2003 using a proper header (v1.3.93)
+
 2004-10-07  Helge Hess  <helge.hess@skyrix.com>
 
 	* OLDavPropMapper.m: map out some problematic keys (v1.3.92)
