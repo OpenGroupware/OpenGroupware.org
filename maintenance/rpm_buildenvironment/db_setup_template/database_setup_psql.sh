@@ -15,6 +15,7 @@ ROLLIN_SCHEME="YES"                 # will roll'in the current base DB scheme of
 FORCE_OVERRIDE_PRESENT_SCHEME="YES" # might harm thy current scheme (or not?)
 UPDATE_SCHEMA="YES"                 # will attempt to update the database scheme - if needed
 OGO_USER="ogo"                      # default username (unix) of your OGo install - might vary
+PGCLIENTENCODING="LATIN1"           # client encoding to use
 
 # pull in sysconfig settings - if present
 # and thus override predefined vars upon request
@@ -254,7 +255,7 @@ initial()
   # create database...
   if [ "x${CREATE_DB_ITSELF}" = "xYES" ]; then
     echo -e "creating the database itself: ${OGO_DB_ITSELF}"
-    RC_CREATE_DB="`su - ${COMMON_PG_USER} -c \"createdb -O ${OGO_DB_USER} ${OGO_DB_ITSELF}\" 2>&1>/dev/null`"
+    RC_CREATE_DB="`su - ${COMMON_PG_USER} -c \"createdb -E ${PGCLIENTENCODING} -O ${OGO_DB_USER} ${OGO_DB_ITSELF}\" 2>&1>/dev/null`"
     if [ -n "${RC_CREATE_DB}" ]; then
       echo -e "  Whoups! We've encountered an error during 'createdb':"
       echo -e "  The errormessage was => ${RC_CREATE_DB}"
