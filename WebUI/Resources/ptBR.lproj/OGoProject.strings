@@ -89,6 +89,7 @@ bmp                         = "Download de imagem BMP";
 bookmarkProjects            = "Adicionar projetos selecionados aos favoritos";
 cancel                      = "Cancelar";
 cancelButton                = "Cancelar";
+cancelButtonLabel           = "Cancelar";
 category                    = "Categoria";
 cd                          = "Mudar diretório";
 changeToFolder              = "Mudar pasta";
