@@ -8,7 +8,7 @@ Standards-Version: 3.6.1
 Package: opengroupware.org_OGOVER_
 Section: web
 Architecture: all
-Depends: opengroupware.org-webui_OGOVER_, opengroupware.org-xmlrpcd_OGOVER_, opengroupware.org-zidestore_ZSVER_
+Depends: opengroupware.org_OGOVER_-webui, opengroupware.org_OGOVER_-xmlrpcd, opengroupware.org-zidestore_ZSVER_
 Description: A free and open groupware suite
  OpenGroupware.org aims at being an open source groupware server which
  integrates with the leading open source office suite products and all
@@ -21,10 +21,10 @@ Description: A free and open groupware suite
  This package depends on all necessary components needed to run
  OpenGroupware.org and it creates the necessary runtime environment.
 
-Package: opengroupware.org-webui_OGOVER_
+Package: opengroupware.org_OGOVER_-webui
 Section: web
 Architecture: all
-Depends: opengroupware.org-webui-app_OGOVER_, opengroupware.org-webui-contact_OGOVER_, opengroupware.org-webui-job_OGOVER_, opengroupware.org-webui-mailer_OGOVER_, opengroupware.org-webui-news_OGOVER_, opengroupware.org-webui-project_OGOVER_, opengroupware.org-webui-scheduler_OGOVER_
+Depends: opengroupware.org_OGOVER_-webui-app, opengroupware.org_OGOVER_-webui-contact, opengroupware.org_OGOVER_-webui-job, opengroupware.org_OGOVER_-webui-mailer, opengroupware.org_OGOVER_-webui-news, opengroupware.org_OGOVER_-webui-project, opengroupware.org_OGOVER_-webui-scheduler
 Description: Web UI for OpenGroupware.org
  This package depends on all packages that are part of
  OpenGroupware.org's web user interface.
@@ -159,7 +159,7 @@ Description: PDA syncing libraries for OpenGroupware.org
  PDA syncing support on a OpenGroupware.org installation, install the network hotsyncing
  daemon, available in the opengroupware.org-nhsd package.
 
-Package: opengroupware.org-nhsd_OGOVER_
+Package: opengroupware.org_OGOVER_-nhsd
 Section: web
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -184,7 +184,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Library of common Web UI elements
  This library contains common elements of OpenGroupware.org's Web UI.
 
-Package: opengroupware.org-database_OGOVER_
+Package: opengroupware.org_OGOVER_-database
 Section: web
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -192,47 +192,48 @@ Description: Database models for OpenGroupware.org
  This package contains the database models and scripts to setup a PostgreSQL
  database for OpenGroupware.org.
 
-Package: opengroupware.org-webui-app_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-app
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org-webui-core_OGOVER_, opengroupware.org-webui-i18n-en_OGOVER_ | opengroupware.org-webui-i18n_OGOVER_, opengroupware.org-webui-theme-default_OGOVER_ | opengroupware.org-webui-theme_OGOVER_
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org_OGOVER_-webui-core, opengroupware.org_OGOVER_-webui-i18n-en | opengroupware.org_OGOVER_-webui-i18n, opengroupware.org_OGOVER_-webui-theme-default | opengroupware.org_OGOVER_-webui-theme
 Description: Web UI application of OpenGroupware.org
  This package contains the executable and resources of
  OpenGroupware.org's web application server.
 
-Package: opengroupware.org-webui-core_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-core
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Core elements for OpenGroupware.org's Web UI
  This package contains UI elements that are used in various components
  of OpenGroupware.org's web frontend.
 
-Package: opengroupware.org-webui-contact_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-contact
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: FIXME
 
-Package: opengroupware.org-webui-job_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-job
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: FIXME
 
-Package: opengroupware.org-webui-mailer_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-mailer
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: FIXME
 
-Package: opengroupware.org-webui-news_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-news
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: FIXME
 
-Package: opengroupware.org-webui-project_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-project
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: FIXME
 
-Package: opengroupware.org-webui-scheduler_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-scheduler
 Architecture: any
+Recommends: opengroupware.org-skyaptnotify
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: FIXME
 
@@ -277,7 +278,7 @@ Description: WebDAV Server for OpenGroupware.org
  .
  This package contains the server executable.
 
-Package: opengroupware.org-xmlrpcd_OGOVER_
+Package: opengroupware.org_OGOVER_-xmlrpcd
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: libapache-mod-ngobjweb, apache
@@ -323,153 +324,153 @@ Description: Send mail notifications for appointments to OpenGroupware.org users
  Skyaptnotify is a daemon which reminds OpenGroupware.org users via mail
  of upcoming appointments.
 
-Package: opengroupware.org-webui-i18n-de_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-i18n-de
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-i18n_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: German translation for OpenGroupware.org's web UI
  This package contains the german translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
 
-Package: opengroupware.org-webui-i18n-dk_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-i18n-dk
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-i18n_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Danish translation for OpenGroupware.org's web UI
  This package contains the german translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
   
-Package: opengroupware.org-webui-i18n-en_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-i18n-en
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-i18n_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: English translation for OpenGroupware.org's web UI
  This package contains the german translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
   
-Package: opengroupware.org-webui-i18n-es_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-i18n-es
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-i18n_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Spanish translation for OpenGroupware.org's web UI
  This package contains the german translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
 
-Package: opengroupware.org-webui-i18n-fr_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-i18n-fr
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-i18n_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: French translation for OpenGroupware.org's web UI
  This package contains the german translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
 
-Package: opengroupware.org-webui-i18n-hu_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-i18n-hu
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-i18n_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Hungarian translation for OpenGroupware.org's web UI
  This package contains the german translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
 
-Package: opengroupware.org-webui-i18n-it_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-i18n-it
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-i18n_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Italian translation for OpenGroupware.org's web UI
  This package contains the german translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
 
-Package: opengroupware.org-webui-i18n-jp_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-i18n-jp
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-i18n_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Japanese translation for OpenGroupware.org's web UI
  This package contains the german translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
   
-Package: opengroupware.org-webui-i18n-nl_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-i18n-nl
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-i18n_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Dutch translation for OpenGroupware.org's web UI
  This package contains the german translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
   
-Package: opengroupware.org-webui-i18n-no_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-i18n-no
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-i18n_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Norwegian translation for OpenGroupware.org's web UI
  This package contains the german translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
 
-Package: opengroupware.org-webui-i18n-pl_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-i18n-pl
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-i18n_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Polish translation for OpenGroupware.org's web UI
  This package contains the german translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
 
-Package: opengroupware.org-webui-i18n-pt_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-i18n-pt
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-i18n_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Portuguese translation for OpenGroupware.org's web UI
  This package contains the german translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
 
-Package: opengroupware.org-webui-i18n-ptbr_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-i18n-ptbr
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-i18n_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Portuguese (Brazilian) translation for OpenGroupware.org's web UI
  This package contains the german translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
   
-Package: opengroupware.org-webui-i18n-se_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-i18n-se
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-i18n_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-i18n
 Description: Swedish translation for OpenGroupware.org's web UI
  This package contains the german translations for OpenGroupware.org's web UI.
  You need to have at last one transaltion package installed.
 
-Package: opengroupware.org-webui-theme-blue_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-theme-blue
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-theme_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-theme
 Description: Blue theme for OpenGroupware.org's web UI
  The appearance of OpenGroupware.org's web UI can be customized with themes.
 
-Package: opengroupware.org-webui-theme-default_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-theme-default
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-theme_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-theme
 Description: Default theme for OpenGroupware.org's web UI
  The appearance of OpenGroupware.org's web UI can be customized with themes.
   This package contains the default theme.
   
-Package: opengroupware.org-webui-theme-kde_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-theme-kde
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-theme_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-theme
 Description: Default theme for OpenGroupware.org's web UI
  The appearance of OpenGroupware.org's web UI can be customized with themes.
  This package contains the default theme.
   
-Package: opengroupware.org-webui-theme-ooo_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-theme-ooo
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-theme_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-theme
 Description: Default theme for OpenGroupware.org's web UI
  The appearance of OpenGroupware.org's web UI can be customized with themes.
  This package contains the default theme.
   
-Package: opengroupware.org-webui-theme-orange_OGOVER_
+Package: opengroupware.org_OGOVER_-webui-theme-orange
 Section: web
 Architecture: all
-Provides: opengroupware.org-webui-theme_OGOVER_
+Provides: opengroupware.org_OGOVER_-webui-theme
 Description: Default theme for OpenGroupware.org's web UI
  The appearance of OpenGroupware.org's web UI can be customized with themes.
  This package contains the default theme.

@@ -1,9 +1,7 @@
 usr/include/OGoAccounts
 usr/include/OGoBase
 usr/include/OGoContacts
-usr/include/OGoDatabaseProject
 usr/include/OGoDocuments
-usr/include/OGoFileSystemProject
 usr/include/OGoJobs
 usr/include/OGoProject
 usr/include/OGoRawDatabase
@@ -11,9 +9,7 @@ usr/include/OGoScheduler
 usr/lib/libOGoAccounts.so
 usr/lib/libOGoBase.so
 usr/lib/libOGoContacts.so
-usr/lib/libOGoDatabaseProject.so
 usr/lib/libOGoDocuments.so
-usr/lib/libOGoFileSystemProject.so
 usr/lib/libOGoJobs.so
 usr/lib/libOGoProject.so
 usr/lib/libOGoRawDatabase.so

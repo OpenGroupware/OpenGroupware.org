@@ -122,8 +122,8 @@ binary-arch: build install
 #	dh_installemacsen
 #	dh_installpam
 #	dh_installmime
-	dh_installinit -popengroupware.org-webui-app$(OGOVER) --init-script=opengroupware.org-webui -- defaults 80
-	dh_installinit -popengroupware.org-xmlrpcd$(OGOVER) --init-script=opengroupware.org-xmlrpcd -- defaults 80
+	dh_installinit -popengroupware.org$(OGOVER)-webui-app --init-script=opengroupware.org-webui -- defaults 80
+	dh_installinit -popengroupware.org$(OGOVER)-xmlrpcd --init-script=opengroupware.org-xmlrpcd -- defaults 80
 	dh_installinit -popengroupware.org-zidestore$(ZSVER) --init-script=opengroupware.org-zidestore -- defaults 80
 	dh_installcron -popengroupware.org-skyaptnotify --name=skyaptnotify
 #	dh_installinfo
