@@ -18,13 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxGroupsFolder.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxGroupsFolder.h"
 #include "SxGroup.h"
-#include <Frontend/SxRendererFactory.h>
-#include <Frontend/SxMapEnumerator.h>
-#include <Backend/SxContactManager.h>
+#include <ZSFrontend/SxRendererFactory.h>
+#include <ZSFrontend/SxMapEnumerator.h>
+#include <ZSBackend/SxContactManager.h>
 #include "common.h"
 
 @implementation SxGroupsFolder

@@ -18,17 +18,16 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxEnterprise.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxEnterprise.h"
 #include "SxEnterpriseFolder.h"
 #include "SxVCardEnterpriseRenderer.h"
-#include <Backend/SxContactManager.h>
-#include <Backend/SxUpdateEnterprise.h>
-#include <Frontend/SxFolder.h>
-#include <Frontend/SxRendererFactory.h>
-#include <Frontend/SxRenderer.h>
-#include <Frontend/NSObject+ExValues.h>
+#include <ZSBackend/SxContactManager.h>
+#include <ZSBackend/SxUpdateEnterprise.h>
+#include <ZSFrontend/SxFolder.h>
+#include <ZSFrontend/SxRendererFactory.h>
+#include <ZSFrontend/SxRenderer.h>
+#include <ZSFrontend/NSObject+ExValues.h>
 #include "common.h"
 
 

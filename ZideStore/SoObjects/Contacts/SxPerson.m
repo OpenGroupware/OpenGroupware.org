@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,16 +18,15 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxPerson.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxPerson.h"
 #include "SxPersonFolder.h"
 #include "SxVCardPersonRenderer.h"
-#include <Backend/SxContactManager.h>
-#include <Backend/SxUpdatePerson.h>
-#include <Frontend/SxFolder.h>
-#include <Frontend/SxRendererFactory.h>
-#include <Frontend/SxRenderer.h>
+#include <ZSBackend/SxContactManager.h>
+#include <ZSBackend/SxUpdatePerson.h>
+#include <ZSFrontend/SxFolder.h>
+#include <ZSFrontend/SxRendererFactory.h>
+#include <ZSFrontend/SxRenderer.h>
 #include "common.h"
 
 @implementation SxPerson

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2004 SKYRIX Software AG
+  Copyright (C) 2002-2004 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -18,20 +18,15 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxGroup.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxGroup.h"
 #include "SxGroupsFolder.h"
-#include <Frontend/SxRendererFactory.h>
-#include <Frontend/SxRenderer.h>
-#include <Backend/SxContactManager.h>
+#include <ZSFrontend/SxRendererFactory.h>
+#include <ZSFrontend/SxRenderer.h>
+#include <ZSBackend/SxContactManager.h>
 #include "common.h"
 
 @implementation SxGroup
-
-- (void)dealloc {
-  [super dealloc];
-}
 
 /* zl */
 

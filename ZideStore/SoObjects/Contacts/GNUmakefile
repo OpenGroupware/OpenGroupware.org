@@ -1,6 +1,6 @@
 # $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
 
-include $(GNUSTEP_MAKEFILES)/common.make
+include ../common.make
 
 BUNDLE_NAME = Contacts
 
@@ -11,11 +11,19 @@ Contacts_OBJC_FILES = \
 	SxAddress.m		\
 	SxAddressFolder.m	\
 	SxVCardContactRenderer.m\
-
-Contacts_SUBPROJECTS =	\
-	Persons		\
-	Companies	\
-	Groups
+	\
+	SxEnterpriseFolder.m	\
+	SxEnterprise.m		\
+	SxVCardEnterpriseRenderer.m \
+	\
+	SxGroupsFolder.m	\
+	SxGroup.m		\
+	\
+	SxPersonFolder.m	\
+	SxGroupFolder.m		\
+	SxPerson.m		\
+	\
+	SxVCardPersonRenderer.m	\
 
 Contacts_RESOURCE_FILES += 	\
 	bundle-info.plist	\

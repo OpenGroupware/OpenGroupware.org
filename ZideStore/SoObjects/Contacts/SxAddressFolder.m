@@ -21,16 +21,16 @@
 // $Id: SxAddressFolder.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxAddressFolder.h"
-#include "SxAuthenticator.h"
 #include "SxAddress.h"
-#include "SxMapEnumerator.h"
+#include <Main/SxAuthenticator.h>
+#include <ZSFrontend/SxMapEnumerator.h>
 #include <NGObjWeb/SoWebDAVValue.h>
 #include <NGObjWeb/WEClientCapabilities.h>
-#include "EOQualifier+Additions.h"
+#include <ZSFrontend/EOQualifier+Additions.h>
 #include <EOControl/EOControl.h>
 #include "common.h"
 
-#include <Backend/SxContactManager.h>
+#include <ZSBackend/SxContactManager.h>
 
 @interface NSObject(Renderer)
 + (id)rendererWithFolder:(SxFolder *)_folder inContext:(id)_ctx;

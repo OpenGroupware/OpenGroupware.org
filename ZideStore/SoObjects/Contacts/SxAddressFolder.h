@@ -23,7 +23,7 @@
 #ifndef __sxdavd_SxAddressFolder_H__
 #define __sxdavd_SxAddressFolder_H__
 
-#include <Frontend/SxFolder.h>
+#include <ZSFrontend/SxFolder.h>
 
 /*
   SxAddressFolder

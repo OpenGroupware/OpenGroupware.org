@@ -18,36 +18,58 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxPersonFolder.m 1 2004-08-20 11:17:52Z znek $
+// $Id: SxEnterpriseFolder.m 1 2004-08-20 11:17:52Z znek $
 
-#include "SxPersonFolder.h"
-#include "SxPerson.h"
-#include <Frontend/SxRendererFactory.h>
-#include <Frontend/SxMapEnumerator.h>
-#include <Backend/SxContactManager.h>
+#include "SxEnterpriseFolder.h"
+#include "SxEnterprise.h"
 #include "common.h"
+#include <ZSBackend/SxContactManager.h>
+#include <ZSFrontend/SxRendererFactory.h>
+#include <ZSFrontend/SxMapEnumerator.h>
 
-@implementation SxPersonFolder
+@implementation SxEnterpriseFolder
 
 /* factory */
 
 - (NSString *)entity {
-  return @"Person";
+  return @"Enterprise";
 }
-- (Class)recordClassForKey:(NSString *)_key {
-  if ([_key length] == 0)
-    return [super recordClassForKey:_key];
 
-  if (!isdigit([_key characterAtIndex:0])) {
-    // TODO: this should query the source_url! (eg "Donald%20Duck.EML")
-    [self debugWithFormat:@"tried to lookup non-pkey key '%@'", _key];
-    return [super recordClassForKey:_key];
-  }
-  
-  return [SxPerson class];
+- (Class)recordClassForKey:(NSString *)_key {
+  return [SxEnterprise class];
 }
 
 /* rendering */
+
+- (id)evoRendererInContext:(id)_ctx {
+  static Class EvoRenderer = Nil;
+  if (EvoRenderer == Nil) {
+    if ((EvoRenderer = NSClassFromString(@"SxEvoEnterpriseRenderer")) == nil) {
+      static BOOL didLog = NO;
+      if (!didLog) {
+	[self logWithFormat:@"Note: no Evolution support installed!"];
+	didLog = YES;
+      }
+    }
+  }
+  return [EvoRenderer rendererWithFolder:self inContext:_ctx];
+}
+- (id)zideLookRendererInContext:(id)_ctx {
+  /* TODO: move to ZideLook bundle */
+  static Class RendererClass = NULL;
+
+  if (RendererClass == NULL) {
+    NSString *className = @"SxZLEnterpriseRenderer";
+    
+    RendererClass = NSClassFromString(className);
+
+    if (RendererClass == NULL) {
+      [self logWithFormat:@"try to instantiate '%@'", className];
+      return nil;
+    }
+  }
+  return [RendererClass rendererWithFolder:self inContext:_ctx];
+}
 
 - (id)renderListEntry:(id)_entry {
   // contentlength,lastmodified,displayname,executable,resourcetype
@@ -58,78 +80,46 @@
     <key name="davDisplayName">$sn$, $givenname$</key>
   */
   NSMutableDictionary *record;
-  NSString *url, *dname;
-  NSString *sn, *pkey;
+  NSString *url, *cn, *pkey;
   
   if ((record = [_entry mutableCopy]) == nil)
     return nil;
   
   // getting: pkey, sn, givenname
-  sn   = [record objectForKey:@"sn"];
-  pkey = [[record objectForKey:@"pkey"] stringValue];
-  
+  if ((pkey = [[record valueForKey:@"pkey"] stringValue]) == nil)
+    return nil;
+  cn = [record valueForKey:@"cn"];
   url = [NSString stringWithFormat:@"%@%@.vcf", [self baseURL], pkey];
-  if ([sn length] > 0)
-    url = [url stringByAppendingFormat:@"?sn=%@", [sn stringByEscapingURL]];
+  if ([cn length] > 0)
+    url = [url stringByAppendingFormat:@"?cn=%@", [cn stringByEscapingURL]];
   
   [record setObject:url forKey:@"{DAV:}href"];
-
-  dname = [NSString stringWithFormat:@"%@, %@",
-                    sn,
-                    [record objectForKey:@"givenname"]];
-  [record setObject:dname forKey:@"davDisplayName"];
+  [record setObject:cn?cn:pkey forKey:@"davDisplayName"];
   return [record autorelease];
-}
-
-- (id)evoRendererInContext:(id)_ctx {
-  static Class RendererClass = NULL;
-
-  if (RendererClass == NULL) {
-    if ((RendererClass = NSClassFromString(@"SxEvoPersonRenderer")) == Nil) {
-      [self logWithFormat:@"Evolution support not installed!"];
-      return nil;
-    }
-  }
-  return [RendererClass rendererWithFolder:self inContext:_ctx];
-}
-- (id)zideLookRendererInContext:(id)_ctx {
-  static Class RendererClass = NULL;
-
-  if (RendererClass == NULL) {
-    if ((RendererClass = NSClassFromString(@"SxZLPersonRenderer")) == Nil) {
-      [self logWithFormat:@"ZideLook support not installed!"];
-      return nil;
-    }
-  }
-  return [RendererClass rendererWithFolder:self inContext:_ctx];
 }
 
 /* queries */
 
 - (SxContactSetIdentifier *)contactSetID {
-  if ([[self type] isEqualToString:@"public"])
-    return [SxContactSetIdentifier publicPersons];
-  if ([[self type] isEqualToString:@"account"])
-    return [SxContactSetIdentifier accounts];
-  
-  return [SxContactSetIdentifier privatePersons];
+  return [[self type] isEqualToString:@"public"]
+    ? [SxContactSetIdentifier publicEnterprises]
+    : [SxContactSetIdentifier privateEnterprises];
 }
 
 - (id)performWebDAVBulkQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx {
   // TODO: this method should check which attributes are actually queried!
   // TODO: would be better to implement performBulkQuery:onGlobalIDs of
-  //       SxFolder !
+  //       SxFolder!
   id       renderer;
   NSArray  *pkeys;
   NSArray  *records;
   unsigned count;
 
   /* get primary keys */
-  
   static Class RendererClass = NULL;
 
   if (RendererClass == NULL) {
-    NSString *className = @"SxZLFullPersonRenderer";
+    NSString *className = @"SxZLFullEnterpriseRenderer";
     
     RendererClass = NSClassFromString(className);
 
@@ -138,31 +128,32 @@
       return nil;
     }
   }
-
+  
   if ((pkeys = [self extractBulkPrimaryKeys:_fs]) == nil)
     return nil;
   if ((count = [pkeys count]) == 0)
     return [NSArray array];
   if ([self doExplainQueries])
-    [self logWithFormat:@"performing person bulk query on %i keys ...", count];
-  
+    [self logWithFormat:@"performing enterprise bulk query on %i keys ...",
+          count];
+
   /* fetch */
-#if 0  
-  records = [[self contactManagerInContext:_ctx]
-                   fullPersonInfosForPrimaryKeys:pkeys];
-#else
+#if 1
   records = [[self contactManagerInContext:_ctx]
                    fullObjectInfosForPrimaryKeys:pkeys
                    withSetIdentifier:[self contactSetID]];
+#else
+  records = [[self contactManagerInContext:_ctx]
+                   fullEnterpriseInfosForPrimaryKeys:pkeys];
 #endif
+
   if ((count = [records count]) == 0)
     return [NSArray array];
   
   /* render to WebDAV */
-  
 #if 1 /* enable if the full renderer is fixed regarding the URL */
-  renderer = [RendererClass rendererWithContext:_ctx
-                                     baseURL:[self baseURL]];
+  renderer = [RendererClass rendererWithContext:_ctx 
+			    baseURL:[self baseURL]];
   return [SxMapEnumerator enumeratorWithSource:[records objectEnumerator]
 			  object:renderer selector:@selector(renderEntry:)];
 #else
@@ -170,7 +161,7 @@
     NSMutableArray *davEntries;
     unsigned       i;
     
-#warning fix person full renderer to remove this junk
+#warning fix enterprise full renderer to remove this junk
     davEntries = [NSMutableArray arrayWithCapacity:count];
     for (i = 0; i < count; i++) {
       NSString *url;
@@ -186,14 +177,13 @@
     
       url = [[self baseURL] stringByAppendingString:pkey];
     
-      renderer = [[SxZLFullPersonRenderer alloc] initWithContext:_ctx
-                                                 baseURL:url];
+      renderer = [[SxZLFullEnterpriseRenderer alloc] initWithContext:_ctx
+                                                     baseURL:url];
       record = [renderer renderEntry:record];
-      [renderer release];
+      [renderer release]; renderer = nil;
     
       if (record == nil)
         continue;
-    
       [davEntries addObject:record];
     }
     return davEntries;
@@ -201,4 +191,4 @@
 #endif
 }
 
-@end /* SxPersonFolder */
+@end /* SxEnterpriseFolder */
