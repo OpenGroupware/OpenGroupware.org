@@ -39,7 +39,6 @@
     [self setUrl:       [_coder decodeStringForKey:@"url"]];
     [self setGender:    [_coder decodeStringForKey:@"gender"]];
     [self setComment:   [_coder decodeStringForKey:@"comment"]];
-    [self setKeywords:  [_coder decodeStringForKey:@"keywords"]];
     [self setLogin:     [_coder decodeStringForKey:@"login"]];
     
     [self setIsAccount: [_coder decodeBooleanForKey:@"isAccount"]];
@@ -62,7 +61,6 @@
   [_coder encodeString:[self url]        forKey:@"url"];
   [_coder encodeString:[self gender]     forKey:@"gender"];
   [_coder encodeString:[self comment]    forKey:@"comment"];
-  [_coder encodeString:[self keywords]   forKey:@"keywords"];
   [_coder encodeString:[self login]      forKey:@"login"];
   [_coder encodeBoolean:[self isAccount] forKey:@"isAccount"];
   [_coder encodeBoolean:[self isPrivate] forKey:@"isPrivate"];

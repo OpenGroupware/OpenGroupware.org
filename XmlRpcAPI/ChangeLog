@@ -1,3 +1,9 @@
+2005-02-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* XmlRpcCoding.subproj/SkyPersonDocument+XmlRpcCoding.m: avoid
+	  duplicate generation of 'keywords' field (should fix OGo bug #1162)
+	  (v5.1.57)
+
 2005-01-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* EOControl+XmlRpcDirectAction.m, 
