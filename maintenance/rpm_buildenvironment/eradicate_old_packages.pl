@@ -23,6 +23,7 @@ my @distris = qw(fedora-core2
 my $current_group;
 my @groups = qw( epoz
   libfoundation
+  libfoundation10
   libobjc-lf2
   ogo-docapi
   ogo-environment
@@ -49,7 +50,7 @@ foreach $current_distri(@distris) {
     opendir(DIR, "/var/virtual_hosts/download/packages/$current_distri/trunk");
     my @u_this_group_rpms = grep(/^$current_group.*trunk.*\.rpm$/,readdir(DIR));
     my $no_of_rpms_in_group = @u_this_group_rpms;
-    next if($no_of_rpms_in_group == 0);
+    next if($no_of_rpms_in_group == 0) and print "Skipping group $current_group bc $no_of_rpms_in_group packages found\n########################################### next one .... \n";
     print "current group ($current_group) has -> $no_of_rpms_in_group files.\n";
     my $rpm;
     my $most_recent = 0;
@@ -60,7 +61,8 @@ foreach $current_distri(@distris) {
       next if (($rpm =~ m/latest/i) or ($no_of_rpms_in_group == 0));
       my $exact_v;
       $exact_v = $rpm;
-      $exact_v =~ s/mdk//g;
+      $exact_v =~ s/mdk\.i/.i/g;
+      $exact_v =~ s/cl\.i/.i/g;
       $exact_v =~ s/^$current_group.*trunk_r(.*)\.i.*$//g;
       $exact_v = $1;
       push(@versions, $exact_v) unless(grep /$exact_v/, @versions);
@@ -71,16 +73,25 @@ foreach $current_distri(@distris) {
     if ($no_of_rpms_in_group > $keep_revisions) {
       my $i;
       my $delcount;
+      my @for_removal;
       $delcount = $no_of_versions - $keep_revisions;
       for($i=0; $i < $delcount; $i++) {
         my $dc;
         $dc = shift(@versions);
+        push(@for_removal, $dc);
         #print "     could delete files from group $current_group*trunk_r$dc*\n";
         print OUT "rm -f /var/virtual_hosts/download/packages/$current_distri/trunk/$current_group*trunk_r$dc*.rpm\n";
       }
       print "\$keep_revisions = $keep_revisions is larger/equal $no_of_versions....\n";
-      print "@versions\n";
+      print "will kick -> @for_removal\n";
+      print "will keep -> @versions\n";
       print "DEBUG >> most_recent thereof -> $most_recent\n";
+      print "########################################### next one ....\n";
+    } else {
+      print "Not enough RPMS in group $current_group\n";
+      print "Minimum required package count to be left in repo is: $keep_revisions\n";
+      print "... but I found only $no_of_versions RPMS(s) here.\n";
+      print "########################################### next one ....\n";
     }
   }
   #exit 0;
