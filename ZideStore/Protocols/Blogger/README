@@ -14,6 +14,12 @@ All the methods get a parameter specifing the blog and user in question.
 Currently this isn't done because there can be quite a lot of blogs in OGo for
 one user (especially in project contexts).
 
+
+NOTES
+=====
+- blogger.deletePost does not specify the blog, only the post id
+
+
 TODO
 ====
 - authentication should be done via XML-RPC, not via basic auth

@@ -21,11 +21,12 @@
 
 #include "MetaWeblogAction.h"
 
-@class NSDictionary;
+@class NSString, NSDictionary;
 
 @interface MetaWeblogPost : MetaWeblogAction
 {
   NSDictionary *entry;
+  NSString     *postID;
   BOOL         doPublish;
 }
 
@@ -37,11 +38,19 @@
 @implementation MetaWeblogPost
 
 - (void)dealloc {
-  [self->entry release];
+  [self->postID release];
+  [self->entry  release];
   [super dealloc];
 }
 
 /* accessors */
+
+- (void)setPostID:(NSString *)_value {
+  ASSIGNCOPY(self->postID, _value);
+}
+- (NSString *)postID {
+  return self->postID;
+}
 
 - (void)setEntry:(NSDictionary *)_entry {
   ASSIGNCOPY(self->entry, _entry);
@@ -57,6 +66,17 @@
   return self->doPublish;
 }
 
+/* post */
+
+- (id)post {
+  NSString *pid;
+
+  if ((pid = [self postID]) == nil)
+    return nil;
+  
+  return [[self clientObject] lookupPostWithID:pid inContext:[self context]];
+}
+
 /* actions */
 
 - (id)newPostAction {
@@ -67,6 +87,26 @@
   return [NSException exceptionWithName:@"NotImplemented"
 		      reason:@"Post not yet implemented!"
 		      userInfo:nil];
+}
+
+- (id)editPostAction {
+  [self logWithFormat:@"%@ edit post %@: %@", 
+	  [self login], [self postID], [self entry]];
+  return [NSException exceptionWithName:@"NotImplemented"
+		      reason:@"Edit not yet implemented!"
+		      userInfo:nil];
+}
+
+- (id)getPostAction {
+  /*
+    keys: userid, dateCreated, postid, description, title, link, permaLink,
+          mt_excerpt, mt_text_more, mt_allow_comments, mt_allow_pings, 
+          mt_convert_breaks, mt_keywords
+  */
+  
+  [self logWithFormat:@"%@ get post: %@",  [self login], [self postID]];
+  
+  return [[self post] bloggerPostInfoInContext:[self context]];
 }
 
 @end /* MetaWeblogPost */

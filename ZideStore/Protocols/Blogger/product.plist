@@ -13,18 +13,17 @@
   categories = {
     SxFolder = {
       methods = {
+	/* Blogger */
 	"blogger.getUsersBlogs" = {
           protectedBy = "View";
           actionClass = "BloggerGetUserBlogs";
           arguments   = { positionalKeys = ( appID, login, password ); };
         };
-
 	"blogger.getUserInfo" = {
           protectedBy = "View";
           actionClass = "BloggerGetUserInfo";
           arguments   = { positionalKeys = ( appID, login, password ); };
         };
-	
 	"blogger.getTemplate" = {
           protectedBy = "View";
           actionClass = "BloggerGetTemplate";
@@ -32,7 +31,30 @@
             positionalKeys = ( appID, blogID, login, password, templateType );
           };
         };
+        "blogger.newPost" = { /* TODO: implement me */
+          arguments   = {
+            positionalKeys = ( 
+              appID, blogID, login, password, entry, doPublish
+            );
+          };
+        };
+        "blogger.editPost" = { /* TODO: implement me */
+          arguments   = {
+            positionalKeys = ( 
+              appID, blogID, login, password, entry, doPublish
+            );
+          };
+        };
+        "blogger.deletePost" = { /* TODO: implement me */
+          arguments   = {
+            positionalKeys = ( appID, postID, login, password, doPublish );
+          };
+        };
+        "blogger.getRecentPosts" = { /* TODO: implement me */
+            positionalKeys = ( appID, blogID, login, password, numberOfPosts );
+        };
 
+	/* MetaWeblog */
         "metaWeblog.newPost" = {
           protectedBy = "View";
           actionClass = "MetaWeblogPost";
@@ -41,6 +63,20 @@
             positionalKeys = ( blogID, login, password, entry, doPublish );
           };
         };
+        "metaWeblog.editPost" = {
+          protectedBy = "View";
+          actionClass = "MetaWeblogPost";
+          actionName  = "editPost";
+          arguments   = {
+            positionalKeys = ( postID, login, password, entry, doPublish );
+          };
+        };
+        "metaWeblog.getPost" = {
+          protectedBy = "View";
+          actionClass = "MetaWeblogPost";
+          actionName  = "getPost";
+          arguments   = { positionalKeys = ( postID, login, password ); };
+        };
         "metaWeblog.getRecentPosts" = {
           protectedBy = "View";
           actionClass = "MetaWeblogGetRecentPosts";
@@ -48,13 +84,35 @@
             positionalKeys = ( blogID, login, password, numberOfPosts );
           };
         };
-	
+        "metaWeblog.newMediaObject" = { /* TODO: implement me */
+          arguments   = {
+            positionalKeys = ( blogID, login, password, entry );
+          };
+        };
+
+	/* Movable Type */
         "mt.supportedTextFilters" = {
           protectedBy = "View";
           actionClass = "MovableTypeAction";
           actionName  = "supportedTextFilters";
           arguments   = {
             positionalKeys = ( );
+          };
+        };
+        "mt.supportedMethods" = {
+          protectedBy = "View";
+          actionClass = "MovableTypeAction";
+          actionName  = "supportedMethods";
+          arguments   = {
+            positionalKeys = ( );
+          };
+        };
+        "mt.getRecentPostTitles" = {
+          protectedBy = "View";
+          actionClass = "MetaWeblogGetRecentPosts";
+          actionName  = "getTitles";
+          arguments   = {
+            positionalKeys = ( blogID, login, password, numberOfPosts );
           };
         };
         "mt.getCategoryList" = {
@@ -64,6 +122,34 @@
           arguments   = {
             positionalKeys = ( blogID, login, password );
           };
+        };
+        "mt.getPostCategories" = {
+          protectedBy = "View";
+          actionClass = "MovableTypeAction";
+          actionName  = "getPostCategories";
+          arguments   = {
+            positionalKeys = ( blogID, login, password );
+          };
+        };
+        "mt.setPostCategories" = {
+          protectedBy = "View";
+          actionClass = "MovableTypeAction";
+          actionName  = "setPostCategories";
+          arguments   = {
+            positionalKeys = ( blogID, login, password, categoryEntries );
+          };
+        };
+        "mt.getTrackbackPings" = {
+          protectedBy = "View";
+          actionClass = "MovableTypeAction";
+          actionName  = "getTrackbackPings";
+          arguments   = { positionalKeys = ( postID ); };
+        };
+        "mt.publishPost" = {
+          protectedBy = "View";
+          actionClass = "MovableTypeAction";
+          actionName  = "publishPost";
+          arguments   = { positionalKeys = ( postID, login, password ); };
         };
       };
     };

@@ -35,7 +35,11 @@
 - (NSDictionary *)bloggerBlogInfoInContext:(id)_ctx;
 - (NSArray *)bloggerFetchAllBlogInfosInContext:(id)_ctx;
 
+- (NSArray *)bloggerPostIDsInContext:(id)_ctx;
+- (NSDictionary *)bloggerPostInfoInContext:(id)_ctx;
+
 - (id)lookupBlogWithID:(NSString *)_blogID inContext:(id)_ctx;
+- (id)lookupPostWithID:(NSString *)_postID inContext:(id)_ctx;
 
 @end
 

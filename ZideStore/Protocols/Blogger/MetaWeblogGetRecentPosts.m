@@ -49,24 +49,38 @@
 /* fetching entries */
 
 - (NSArray *)fetchEntries {
-  /*
-    Returns array of structs containing 
-      dateCreated
-      userid
-      postid
-      description
-      title
-      link
-      permaLink
-      mt_excerpt
-      mt_text_more
-      mt_allow_comments
-      mt_allow_pings
-      mt_convert_breaks
-      mt_keywords
-  */
-  [self logWithFormat:@"TODO: fetch recent entries: %@", [self clientObject]];
-  return [NSArray array];
+  NSMutableArray *ma;
+  WOContext *ctx;
+  NSArray   *names;
+  unsigned  i, count;
+  id        blog;
+  
+  if ((blog = [self blog]) == nil)
+    return nil;
+  
+  [self logWithFormat:@"TODO: fetch recent entries: %@", blog];
+  
+  ctx   = [self context];
+  names = [blog bloggerPostIDsInContext:ctx];
+  count = [names count];
+  ma    = [NSMutableArray arrayWithCapacity:count];
+  
+  for (i = 0; i < count; i++) {
+    id entry;
+    
+    entry = [blog lookupName:[names objectAtIndex:i] inContext:ctx acquire:NO];
+    if (![entry isNotNull])
+      continue;
+    
+    entry = [entry bloggerPostInfoInContext:ctx];
+    if (![entry isNotNull])
+      continue;
+    
+    [ma addObject:entry];
+    if ([ma count] >= [self numberOfPosts]) /* limit count */
+      break;
+  }
+  return ma;
 }
 
 /* actions */

@@ -28,6 +28,19 @@
   [super dealloc];
 }
 
+/* categories */
+
+- (NSDictionary *)defaultCategoryInfo {
+  NSDictionary *defCat;
+  
+  defCat = [NSDictionary dictionaryWithObjectsAndKeys:
+			   @"default", @"categoryName",
+			   @"0",       @"categoryId",
+			   [NSNumber numberWithBool:NO], @"isPrimary",
+			 nil];
+  return defCat;
+}
+
 /* actions */
 
 - (id)supportedTextFiltersAction {
@@ -42,7 +55,13 @@
 - (id)getCategoryListAction {
   /* array of structs, keys: categoryId, categoryName */
   [self logWithFormat:@"TODO: implement get-categories action!"];
-  return [NSArray array];
+  return [NSArray arrayWithObject:[self defaultCategoryInfo]];
+}
+
+- (id)getPostCategoriesAction {
+  /* array of structs, keys: categoryName, categoryId, isPrimary */
+  [self logWithFormat:@"TODO: implement get-post-categories action!"];
+  return [NSArray arrayWithObject:[self defaultCategoryInfo]];
 }
 
 @end /* MovableTypeAction */
