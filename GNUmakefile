@@ -9,8 +9,13 @@ SUBPROJECTS += \
 	WebUI		\
 	Tools		\
 	XmlRpcAPI	\
-	ZideStore	\
+	ZideStore
+
+# compile PDA manually on OSX if you are sure that you have a working libpisock
+ifneq ($(FOUNDATION_LIB),apple)
+SUBPROJECTS += \
 	PDA
+endif
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/aggregate.make
