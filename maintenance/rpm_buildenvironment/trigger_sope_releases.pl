@@ -58,8 +58,8 @@ foreach $srel (@sope_releases) {
     system("mkdir $ENV{HOME}/spec_tmp/") unless (-e "$ENV{HOME}/spec_tmp/");
     system("tar xfzO $ENV{HOME}/rpm/SOURCES/$srel sope/maintenance/sope.spec >$ENV{HOME}/spec_tmp/$buildtarget.spec");
     print "SOPE_REL: building RPMS for SOPE $srel\n";
-    print "calling `purveyor_of_rpms.pl -p sope $build_opts -c $srel -s spec_tmp/$buildtarget.spec\n";
-    system("$ENV{HOME}/purveyor_of_rpms.pl -p sope $build_opts -c $srel -s spec_tmp/$buildtarget.spec");
+    print "calling `purveyor_of_rpms.pl -p sope $build_opts -c $srel -s $ENV{HOME}/spec_tmp/$buildtarget.spec\n";
+    system("$ENV{HOME}/purveyor_of_rpms.pl -p sope $build_opts -c $srel -s $ENV{HOME}/spec_tmp/$buildtarget.spec");
     print KNOWN_SOPE_RELEASES "$srel\n";
     print "recreating apt-repository for: $host_i_runon\n";
     open(SSH, "|/usr/bin/ssh $www_user\@$www_host");

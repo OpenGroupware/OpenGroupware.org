@@ -108,11 +108,11 @@ foreach $orel (@ogo_releases) {
     }
     #we should've already build this SOPE release at least once in an earlier run
     print "preparing SOPE...\n";
-    print "calling `purveyor_of_rpms.pl -p sope -v yes -t release -u no -d no -f yes -b no -c $sope_src -s spec_tmp/$sope_spec`\n";
-    system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -t release -u no -d no -f yes -b no -c $sope_src -s spec_tmp/$sope_spec");
+    print "calling `purveyor_of_rpms.pl -p sope -v yes -t release -u no -d no -f yes -b no -c $sope_src -s $ENV{HOME}/spec_tmp/$sope_spec`\n";
+    system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -t release -u no -d no -f yes -b no -c $sope_src -s $ENV{HOME}/spec_tmp/$sope_spec");
     print "OGo_REL: building RPMS for OGo $orel using $sope_src with $sope_spec\n";
-    print "calling `purveyor_of_rpms.pl -p opengroupware $build_opts -c $orel -s spec_tmp/$buildtarget.spec\n";
-    system("$ENV{HOME}/purveyor_of_rpms.pl -p opengroupware $build_opts -c $orel -s spec_tmp/$buildtarget.spec");
+    print "calling `purveyor_of_rpms.pl -p opengroupware $build_opts -c $orel -s $ENV{HOME}/spec_tmp/$buildtarget.spec\n";
+    system("$ENV{HOME}/purveyor_of_rpms.pl -p opengroupware $build_opts -c $orel -s $ENV{HOME}/spec_tmp/$buildtarget.spec");
     print KNOWN_OGo_RELEASES "$orel\n";
     print "recreating apt-repository for: $host_i_runon >>> $buildtarget\n";
     open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
