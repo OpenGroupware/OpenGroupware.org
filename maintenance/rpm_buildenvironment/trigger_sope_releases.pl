@@ -38,7 +38,7 @@ sope-4.3.7-shapeshifter-r142.tar.gz
 my $build_opts = "-v yes -u yes -t release -d yes -f yes";
 my @sope_releases;
 
-@sope_releases = `wget -q -O - http://$dl_host/sources/releases/MD5_INDEX`;
+@sope_releases = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
 open(KNOWN_SOPE_RELEASES, ">> $hpath/SOPE.known.rel");
 foreach $srel (@sope_releases) {
   chomp $srel;

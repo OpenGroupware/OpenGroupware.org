@@ -72,7 +72,7 @@ my $line;
 my $sope_spec;
 my $sope_src;
 
-@ogo_releases = `wget -q -O - http://$dl_host/sources/releases/MD5_INDEX`;
+@ogo_releases = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
 open(KNOWN_OGo_RELEASES, ">> $hpath/OGo.known.rel");
 foreach $orel (@ogo_releases) {
   chomp $orel;
