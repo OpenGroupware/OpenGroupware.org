@@ -2,12 +2,13 @@
 
 USED_LIBS = \
         -lZSFrontend -lZSBackend\
+	-lLSFoundation		\
 	-lGDLAccess		\
         -lNGObjWeb		\
 	-lNGMime		\
 	-lNGStreams -lNGExtensions -lEOControl \
 	-lXmlRpc -lDOM -lSaxObjC
 
-libZSContacts_LIBRARIES_DEPEND_UPON += $(USED_LIBS)
+libZSResources_LIBRARIES_DEPEND_UPON += $(USED_LIBS)
 
-Contacts_BUNDLE_LIBS += $(USED_LIBS) -lZSContacts
+AptResources_BUNDLE_LIBS += $(USED_LIBS) -lZSResources
