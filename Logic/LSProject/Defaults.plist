@@ -1,5 +1,5 @@
 {
-  LSAttachmentPath                   = "/var/opengroupware.org/attachments";
+  LSAttachmentPath                   = "/var/lib/opengroupware.org/documents";
   UseFlatDocumentFileStructureStatus = NO;
   LSJobImportFormat = {
     Seperator = ";";

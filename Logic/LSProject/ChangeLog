@@ -1,5 +1,9 @@
 2004-09-06  Helge Hess  <helge.hess@skyrix.com>
 
+	* Defaults.plist: changed attachment path to
+	  /var/lib/opengroupware.org/documents as requested by Sebastian
+	  (v5.1.29)
+
 	* Defaults.plist: changed default attachment path from /home/siteadm
 	  to /var/opengroupware.org/attachments (v5.1.28)
 
