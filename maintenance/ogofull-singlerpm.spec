@@ -15,7 +15,7 @@
 %define ogoall_sope_major               4
 %define ogoall_sope_minor               4
 %define ogoall_sope_makeflags           debug=yes
-%define ogoall_ogo_source               opengroupware.org-1.0alpha10-ultra-r695.tar.gz
+%define ogoall_ogo_source               opengroupware.org-1.0alpha11-ultra-r778.tar.gz
 %define ogoall_ogo_makeflags            debug=yes
 
 Summary:       A free and open groupware suite.
@@ -691,6 +691,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Tue Mar 08 2005 Frank Reppin <frank@opengroupware.org>
+- updated for ogo-alpha11
 * Tue Mar 01 2005 Frank Reppin <frank@opengroupware.org>
 - refix fix.
 - added stuff from ogo-environment package
