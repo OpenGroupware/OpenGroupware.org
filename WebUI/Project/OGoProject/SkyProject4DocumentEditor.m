@@ -90,6 +90,8 @@
   [super dealloc];
 }
 
+/* activation */
+
 - (id)editDocument:(SkyProjectDocument *)_object {
   [self setDocument:_object];
   return self;
@@ -162,7 +164,7 @@
   if (doc)
     return [self activateDocument:doc verb:_verb type:_type];
   
-  [self logWithFormat:@"couldn't activate object %@", _object];
+  [self logWithFormat:@"could not activate object %@", _object];
   return nil;
 }
 
@@ -612,9 +614,7 @@
   return [super valueForKey:_key];
 }
 
-@end /* SkyProject4DocumentEditor */
-
-@implementation SkyProject4DocumentEditor(Restore)
+/* page form restore */
 
 - (void)setFolderPath:(NSString *)_path {
   ASSIGN(self->folderPath, _path);
@@ -691,5 +691,4 @@
     [self->document takeValue:self->subject forKey:@"NSFileSubject"];
 }
 
-
-@end /* SkyProject4DocumentEditor(Restore) */
+@end /* SkyProject4DocumentEditor */

@@ -145,7 +145,10 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
                                fhsPath:@"share/opengroupware.org-1.0a/www"];
   p = [locator lookupFileWithName:@"epoz_script_main.js"];
   hasEpoz = [fm fileExistsAtPath:p];
-  if (!hasEpoz) NSLog(@"Note: doc-viewer did not find Epoz.");
+  if (!hasEpoz) 
+    NSLog(@"Note: doc-viewer did not find Epoz.");
+  else
+    NSLog(@"Note: Epoz support is installed.");
   
   /* tab plugins */
   
