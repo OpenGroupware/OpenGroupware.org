@@ -35,7 +35,7 @@ start()
     su - ${USER} -s /bin/bash -c "exec ${BIN}" >> ${LOG} 2>&1 &
     echo $! > ${PID_FILE}
     PID=`/sbin/pidof "${BIN}"`
-    if [ -n ${PID} ]; then
+    if [ -n "${PID}" ]; then
       touch /var/lock/subsys/${PROG} && success
     else
       rm -f ${PID_FILE}
