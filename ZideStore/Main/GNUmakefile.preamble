@@ -1,22 +1,18 @@
 # $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
 
 ADDITIONAL_LIB_DIRS += \
-	-L./Backend/$(GNUSTEP_OBJ_DIR) \
-	-L./Frontend/$(GNUSTEP_OBJ_DIR)
+	-L../ZSBackend/$(GNUSTEP_OBJ_DIR) \
+	-L../ZSFrontend/$(GNUSTEP_OBJ_DIR)
 
 ADDITIONAL_TOOL_LIBS += \
-        -lZideStoreBackend      \
-        -lZideStoreFrontend     \
-	\
+        -lZSBackend	\
+        -lZSFrontend	\
 	-lLSFoundation	\
 	-lGDLAccess	\
-        \
 	-lNGiCal	\
 	-lNGScripting	\
 	-lNGLdap -lNGMime -lNGExtensions -lEOControl	\
 	-lXmlRpc -lDOM -lSaxObjC
 
-# for osx
+# for OSX
 #	-lcrypt
-
-ADDITIONAL_INCLUDE_DIRS += -I. -I./Frontend -I./Backend

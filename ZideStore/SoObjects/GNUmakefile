@@ -3,10 +3,10 @@
 include $(GNUSTEP_MAKEFILES)/common.make
 
 SUBPROJECTS = \
-	Appointments	\
-	Contacts	\
-	Tasks		\
-	Projects	\
+	ZSAppointments	\
+	ZSContacts	\
+	ZSTasks		\
+	ZSProjects	\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/aggregate.make

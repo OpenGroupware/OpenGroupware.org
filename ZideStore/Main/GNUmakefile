@@ -2,16 +2,16 @@
 
 include $(GNUSTEP_MAKEFILES)/common.make
 
-WOAPP_NAME = ZideStore
+WOAPP_NAME = ZideStore13
 
-ZideStore_OBJC_FILES += \
+ZideStore13_OBJC_FILES += \
 	ZideStore.m		\
 	SxAuthenticator.m	\
 
-ZideStore_HEADER_FILES += \
+ZideStore13_HEADER_FILES += \
 	SxAuthenticator.h	\
 
-ZideStore_RESOURCE_FILES += \
+ZideStore13_RESOURCE_FILES += \
 	Version				\
 	product.plist			\
 	\
@@ -24,7 +24,7 @@ ZideStore_RESOURCE_FILES += \
 	\
 	Maps/PersonalFolderInfo.plist	\
 
-ZideStore_WEBSERVER_RESOURCE_FILES += \
+ZideStore13_WEBSERVER_RESOURCE_FILES += \
 	../PrefsUI/English.lproj/*.gif 	\
 	../PrefsUI/English.lproj/*.jpg 	\
 	../PrefsUI/English.lproj/*.ico	\
