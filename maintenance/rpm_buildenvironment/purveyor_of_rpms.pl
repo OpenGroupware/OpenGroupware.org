@@ -31,6 +31,7 @@ my $logs_dir = "$ENV{'HOME'}/logs";
 my $sources_dir = "$ENV{'HOME'}/rpm/SOURCES";
 my $specs_dir = "$ENV{'HOME'}/rpm/SPECS";
 my $use_specdir_specfile = "yes";
+my $dl_host = "download.opengroupware.org";
 # this are the packages I can deal with
 # every package given here should have its own specfile...
 # adding new packages is more or less a copy'n'paste job of code snippets below
@@ -115,14 +116,35 @@ sub move_to_dest {
 
 sub build_rpm {
   my $specfile = "$package.spec";
+  my @tmp_spec;
+  my $tmp_spec_line;
+  my $tmp_sope_src;
+  my $tmp_sope_spec;
   my @outlog;
   my $logline;
-  #FIXME: the next check is nonsens... at least in this specific case
-  unless (-f "$specs_dir/$specfile") {
-    print "[RPMBUILD]          - $package didn't found $specfile in $specs_dir\n" and exit 1 if ($verbose eq "yes");
+  if(($package eq "opengroupware") and ($build_type eq "trunk")) {
+    print "[RPMBUILD]          - checking which SOPE version we want for this OGo trunk\n" if ($verbose eq "yes");
+    open(SOPEHINTS, "$specs_dir/$specfile") if($use_specdir_specfile eq "yes");
+    open(SOPEHINTS, "$use_specfile") if($use_specdir_specfile eq "no");
+    @tmp_spec = <SOPEHINTS>;
+    close(SOPEHINTS);
+    foreach $tmp_spec_line(@tmp_spec) {
+      chomp $tmp_spec_line;
+      $tmp_sope_src = $tmp_spec_line if ($tmp_spec_line =~ s/^#UseSOPEsrc:\s+//g);
+      $tmp_sope_spec = $tmp_spec_line if ($tmp_spec_line =~ s/^#UseSOPEspec:\s+//g);
+    }
+    print "[RPMBUILD]          - didn't found either UseSOPEsrc or UseSOPEspec in specfile.\n" and exit 1 if (($verbose eq "yes") and (!$tmp_sope_src) or (!$tmp_sope_spec));
+    print "[RPMBUILD]          - building $package using: SOPE SRC  $tmp_sope_src\n" if ($verbose eq "yes");
+    print "[RPMBUILD]          - building $package using: SOPE SPEC $tmp_sope_spec (included in the tarball)\n" if ($verbose eq "yes");
+    print "[RPMBUILD]          - downloading SOPE sourcetarball: $tmp_sope_src\n" if ($verbose eq "yes");
+    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$tmp_sope_src http://$dl_host/sources/releases/$tmp_sope_src");
+    print "[RPMBUILD]          - extracting sope.spec as $tmp_sope_spec from sourcetarball to $ENV{HOME}/spec_tmp/$tmp_sope_spec\n" if ($verbose eq "yes");
+    system("tar xfzO $ENV{HOME}/rpm/SOURCES/$tmp_sope_src sope/maintenance/sope.spec >$ENV{HOME}/spec_tmp/$tmp_sope_spec");
+    #use always the one present in $ENV{HOME}/$spec_tmp (it's most likely already there from a prior sope release build, but we extract it anyway)
+    system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -t release -u no -d yes -b no -f yes -c $ENV{HOME}/rpm/SOURCES/$tmp_sope_src -s $ENV{HOME}/spec_tmp/$tmp_sope_spec");
   }
   system("/usr/bin/rpmbuild -bb $specs_dir/$specfile 1>>$logout 2>>$logerr") if ($build_type eq "trunk");
-  system("/usr/bin/rpmbuild -bb $ENV{HOME}/$use_specfile 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($use_specdir_specfile eq "no"));
+  system("/usr/bin/rpmbuild -bb $use_specfile 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($use_specdir_specfile eq "no"));
   system("/usr/bin/rpmbuild -bb $specs_dir/$specfile 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($use_specdir_specfile eq "yes"));
   open(OUTLOG, "$logout");
   @outlog = <OUTLOG>;
@@ -610,7 +632,6 @@ sub get_latest_sources {
   my $dl_candidate;
   my $destfilename;
   my $package_mapped_tosrc = $package;
-  my $dl_host = "download.opengroupware.org";
   #<trunk>
   if(("$do_download" eq "yes") and ("$build_type" eq "trunk")) {
     print "[DOWNLOAD_SRC]      - Download sources for a trunk build!\n" if ($verbose eq "yes");
