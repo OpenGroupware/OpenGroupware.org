@@ -16,10 +16,6 @@ if [ -z "$ARGS" ]; then
     ARGS="-WOPort 20000 -WOHttpAllowHost localhost"
 fi
 
-if [ -z "$LOGFILE" ]; then
-    LOGFILE=/var/log/opengroupware.org-webui.log
-fi
-
 should_start() {
     if [ "$START_AT_BOOT" = "false" ]; then
         echo "OpenGroupware.org web application server not started as requested"
@@ -35,11 +31,6 @@ case "$1" in
     start)
         should_start
         echo -n "Starting OpenGroupware.org web application server: $DAEMON"
-        if [ ! -f $LOGFILE ]; then
-            touch $LOGFILE
-        fi
-        chown ogo:ogo $LOGFILE
-	chmod 640 $LOGFILE
 	start-stop-daemon -S -c ogo -a /usr/bin/daemon -n $DAEMON -- -F $PIDFILE -X "$DPATH/$DAEMON $ARGS" -E daemon.info
 	echo "."
 	;;

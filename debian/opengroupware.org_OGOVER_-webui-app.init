@@ -6,7 +6,7 @@
 DAEMON=ogo-webui-1.0a
 DPATH=/usr/sbin
 DEFAULT=/etc/default/$DAEMON
-PIDFILE=/var/lib/opengroupware.org/opengroupware.org-webui.pid
+PIDFILE=/var/lib/opengroupware.org/$DAEMON.pid
 
 if [ -e $DEFAULT ]; then
     . $DEFAULT
@@ -14,10 +14,6 @@ fi
 
 if [ -z "$ARGS" ]; then
     ARGS="-WOPort 20000 -WOHttpAllowHost localhost"
-fi
-
-if [ -z "$LOGFILE" ]; then
-    LOGFILE=/var/log/opengroupware.org-webui.log
 fi
 
 should_start() {
@@ -34,18 +30,15 @@ should_start() {
 case "$1" in
     start)
         should_start
-        echo "Starting OpenGroupware.org web application server: $DAEMON."
-        if [ ! -f $LOGFILE ]; then
-            touch $LOGFILE
-        fi
-        chown ogo:ogo $LOGFILE
-	chmod 640 $LOGFILE
-	start-stop-daemon -S -b -m -p $PIDFILE -c ogo -x $DAEMON -- "$ARGS" &> "$LOGFILE"
+        echo -n "Starting OpenGroupware.org web application server: $DAEMON"
+	start-stop-daemon -S -c ogo -a /usr/bin/daemon -n $DAEMON -- -F $PIDFILE -X "$DPATH/$DAEMON $ARGS" -E daemon.info
+	echo "."
 	;;
 
     stop)
-        echo "Stopping OpenGroupware.org web application server: $DAEMON."
+        echo -n "Stopping OpenGroupware.org web application server: $DAEMON"
 	start-stop-daemon -K -p $PIDFILE -o
+	echo "."
         ;;
 
     restart|force-reload)
