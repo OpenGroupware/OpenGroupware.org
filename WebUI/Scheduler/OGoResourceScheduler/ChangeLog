@@ -1,3 +1,9 @@
+2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyResourceSchedulerPage.wo: removed German.lproj and
+	  German_orange.lproj (not required anymore with fixed
+	  OGoResourceManager) (v5.1.9)
+
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyResourceSchedulerPage.m: minor code cleanups (v5.1.8)

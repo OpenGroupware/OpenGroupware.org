@@ -1,3 +1,12 @@
+2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.7
+
+	* removed empty English/German.lproj in main dir
+
+	* SkySchedulerDockView.wo: removed GermanXX.lproj's as derived
+	  resources, not necessary anymore with the fixed OGoResourceManager
+
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* minor fixes, added a common.h (v5.1.6)

@@ -55,9 +55,14 @@ OGoSchedulerViews_COMPONENTS = \
 	SkyAptResourceGroupsList.wo	\
 
 OGoSchedulerViews_RESOURCE_FILES += Defaults.plist Version
+OGoSchedulerViews_LOCALIZED_RESOURCE_FILES += OGoSchedulerViews.ccfg
+
+OGoSchedulerViews_LANGUAGES = \
+	English		\
+	English_blue 	\
+	English_orange
 
 -include SKYRIX.make
--include OGo.make
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make

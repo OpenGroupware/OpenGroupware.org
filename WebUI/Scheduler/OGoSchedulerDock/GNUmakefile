@@ -12,8 +12,18 @@ OGoSchedulerDock_OBJC_FILES = \
 
 OGoSchedulerDock_COMPONENTS = SkySchedulerDockView.wo
 
+OGoSchedulerDock_LANGUAGES = \
+	English		\
+	English_orange	\
+	English_blue	\
+	English_kde	\
+	English_OOo
+
+# resources
+
+OGoSchedulerDock_RESOURCE_FILES += Version
+
 -include SKYRIX.make
--include OGo.make
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make

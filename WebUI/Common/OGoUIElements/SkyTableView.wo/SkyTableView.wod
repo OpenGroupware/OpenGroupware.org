@@ -1,4 +1,4 @@
-// $Id: SkyTableView.wod,v 1.2 2004/05/05 13:45:06 helge Exp $
+// $Id: SkyTableView.wod 2 2004-08-20 11:37:44Z znek $
 
 ProfB:  SkyProfileTemplate { profileId = "WETableView"; }
 

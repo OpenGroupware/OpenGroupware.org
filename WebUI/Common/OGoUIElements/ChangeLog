@@ -1,3 +1,8 @@
+2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyTableView.wo: moved template files from English.lproj to main .wo
+	  and deleted the German ones (v5.1.29)
+
 2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
 
 	* removed usage of deprecated singleSelection binding (v5.1.28)

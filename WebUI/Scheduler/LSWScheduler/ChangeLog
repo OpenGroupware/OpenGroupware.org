@@ -1,3 +1,8 @@
+2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWAppointmentViewer.wo: removed German.lproj and German_orange.lproj
+	  (not required with fixed OGoResourceManager) (v5.1.54)
+
 2004-08-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyResourceSelection.wo: fixed some XHTML issues, minor template
