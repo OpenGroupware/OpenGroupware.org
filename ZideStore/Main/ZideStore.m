@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: ZideStore.m 1 2004-08-20 11:17:52Z znek $
 
 #include "ZideStore.h"
 #include "SxAuthenticator.h"
@@ -84,7 +83,10 @@
     NSLog(@"%s: empty library search path !", __PRETTY_FUNCTION__);
   }
 #endif
-    
+  
+  [ma addObject:@"/usr/local/lib/zidestore-1.3/"];
+  [ma addObject:@"/usr/lib/zidestore-1.3/"];
+  
   searchPathes = [ma copy];
     
   if ([searchPathes count] == 0)
