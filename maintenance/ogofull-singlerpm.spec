@@ -1,25 +1,41 @@
+%define ogoall_version                  1.0a
+%define ogoall_release                  0
+%define ogoall_buildcount               0
+%define ogoall_prefix                   /usr/local
+%define ogoall_gstepmake_source         gnustep-make-1.10.0.tar.gz
+%define ogoall_gstepmake_makeflags      debug=yes
+%define ogoall_libfobjc_source          gnustep-objc-lf2.95.3-r85.tar.gz
+%define ogoall_libfobjc_makeflags       debug=yes
+%define ogoall_libfoundation_source     libFoundation-1.0.67-r91.tar.gz
+%define ogoall_libfoundation_version    1.0.67
+%define ogoall_libfoundation_major      1
+%define ogoall_libfoundation_minor      0
+%define ogoall_libfoundation_makeflags  debug=yes
+%define ogoall_sope_source              sope-4.4beta.2-voyager-r527.tar.gz
+%define ogoall_sope_major               4
+%define ogoall_sope_minor               4
+%define ogoall_sope_makeflags           debug=yes
+%define ogoall_ogo_source               opengroupware.org-1.0alpha10-ultra-r695.tar.gz
+%define ogoall_ogo_makeflags            debug=yes
+
 Summary:       A free and open groupware suite.
 Name:          ogoall
-Version:       %{ogo_version}
-Release:       %{ogo_release}.%{ogo_buildcount}%{dist_suffix}
+Version:       %{ogoall_version}
+Release:       %{ogoall_release}.%{ogoall_buildcount}%{dist_suffix}
 Vendor:        http://www.opengroupware.org
 Packager:      Frank Reppin <frank@opengroupware.org>  
 License:       GPL
 URL:           http://www.opengroupware.org
 Group:         Development/Libraries
 AutoReqProv:   off
-%define ogo_gnustep_make_source gnustep-make-1.10.0.tar.gz
-%define libf_objc_source        gnustep-objc-lf2.95.3-r85.tar.gz
-%define libf_source             libFoundation-1.0.67-r91.tar.gz
-%define sope_source             sope-4.4beta.2-voyager-r527.tar.gz
-Source0:       %{ogo_gnustep_make_source}
-Source1:       %{libf_objc_source}
-Source2:       %{libf_source}
-Source3:       %{sope_source}
-Source4:       %{ogo_source}
-Prefix:        %{ogo_prefix}
+Source0:       %{ogoall_gstepmake_source}
+Source1:       %{ogoall_libfobjc_source}
+Source2:       %{ogoall_libfoundation_source}
+Source3:       %{ogoall_sope_source}
+Source4:       %{ogoall_ogo_source}
+Prefix:        %{ogoall_prefix}
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
-#XXUseSOPE:      sope-4.4beta.2-voyager
+Conflicts:     sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml sope%{ogoall_sope_major}%{ogoall_sope_minor} sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-xml-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-core sope%{ogoall_sope_major}%{ogoall_sope_minor}-core-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-mime sope%{ogoall_sope_major}%{ogoall_sope_minor}-mime-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-appserver-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-ldap-tools sope%{ogoall_sope_major}%{ogoall_sope_minor}-ical sope%{ogoall_sope_major}%{ogoall_sope_minor}-ical-devel sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1 sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1-postgresql sope%{ogoall_sope_major}%{ogoall_sope_minor}-gdl1-devel ogo-docapi ogo-docapi-fs-project ogo-docapi-fs-project-devel ogo-docapi-db-project ogo-docapi-db-project-devel ogo-docapi-devel ogo-logic ogo-logic-tools ogo-logic-devel ogo-pda ogo-pda-devel ogo-theme-default ogo-theme-ooo ogo-theme-blue ogo-theme-kde ogo-theme-orange ogo-tools ogo-webui-app ogo-webui-core ogo-webui-core-devel ogo-webui-calendar ogo-webui-contact ogo-webui-mailer ogo-webui-mailer-devel ogo-webui-news ogo-webui-task ogo-webui-project ogo-webui-resource-basque ogo-webui-resource-dk ogo-webui-resource-nl ogo-webui-resource-en ogo-webui-resource-fr ogo-webui-resource-de ogo-webui-resource-hu ogo-webui-resource-it ogo-webui-resource-jp ogo-webui-resource-no ogo-webui-resource-pl ogo-webui-resource-pt ogo-webui-resource-es ogo-webui-resource-sk ogo-webui-resource-ptbr ogo-xmlrpcd ogo-zidestore ogo-zidestore-devel libfoundation%{ogoall_libfoundation_major}%{ogoall_libfoundation_minor} libfoundation%{ogoall_libfoundation_major}%{ogoall_libfoundation_minor}-devel libobjc-lf2 libobjc-lf2-devel
 
 %description
 OpenGroupware.org aims at being an open source groupware server which
@@ -33,31 +49,13 @@ SOPE application server.
 #########################################
 %prep
 rm -fr ${RPM_BUILD_ROOT}
-mkdir ${RPM_BUILD_ROOT}
-cd ${RPM_BUILD_ROOT}
-mkdir tmp
-
-tar zxf %{_sourcedir}/%{ogo_gnustep_make_source} -C tmp
-mv tmp/* gnustep-make
-tar zxf %{_sourcedir}/%{libf_objc_source} -C tmp
-mv tmp/* libobjc-lf2
-tar zxf %{_sourcedir}/%{libf_source} -C tmp
-mv tmp/* libfoundation
-tar zxf %{_sourcedir}/%{sope_source} -C tmp
-mv tmp/* sope
-tar zxf %{_sourcedir}/%{ogo_source} -C tmp
-mv tmp/* ogo
-
-rm -rf tmp
+%setup -T -D -c -q -b0 -b1 -b2 -b3 -b4
 
 # ****************************** build ********************************
 %build
-
-cd ${RPM_BUILD_ROOT}
-
 OGO_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep
 
-cd ${RPM_BUILD_ROOT}/gnustep-make
+cd gnustep-make-1.10.0
 export CPPFLAGS=-Wno-import
 export CFLAGS=-O0
 ./configure --prefix=${OGO_INSTALL_ROOT} \
@@ -67,79 +65,88 @@ export CFLAGS=-O0
   --with-local-root=${OGO_INSTALL_ROOT} \
   --without-system-root
 
-make %{ogo_gnustep_make_makeflags} install
+make %{ogoall_gstepmake_makeflags} install
+cd ..
 
 source ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
 
-cd ${RPM_BUILD_ROOT}/libobjc-lf2
-make %{libf_objc_makeflags} all
-make %{libf_objc_makeflags} install
+cd libobjc-lf2
+make %{ogoall_libfobjc_makeflags} all
+make %{ogoall_libfobjc_makeflags} install
+cd ..
 
-cd ${RPM_BUILD_ROOT}/libfoundation
+cd libfoundation
 export CFLAGS="-Wno-import -O0"
 ./configure
-make %{libf_makeflags} all
-make %{libf_makeflags} install
+make %{ogoall_libfoundation_makeflags} all
+mkdir -p ${RPM_BUILD_ROOT}%{prefix}/lib
+mkdir -p ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Makefiles/Additional
+make %{ogoall_libfoundation_makeflags} install
+cd ..
+
 unset CFLAGS
+cd sope
+make %{ogoall_sope_makeflags}
+make %{ogoall_sope_makeflags} install
+cd ..
 
-cd ${RPM_BUILD_ROOT}/sope
-make %{sope_makeflags}
-make %{sope_makeflags} install
-
-cd ${RPM_BUILD_ROOT}/ogo
-make %{ogo_makeflags}
+cd opengroupware.org
+make %{ogoall_ogo_makeflags}
+cd ..
 
 # ****************************** install ******************************
 %install
 source ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Makefiles/GNUstep.sh
-mkdir -p GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep
 
 # libobjc-lf
-
-cd ${RPM_BUILD_ROOT}/libobjc-lf2
-make %{libf_objc_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep install
+cd libobjc-lf2
+make %{ogoall_libfobjc_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep install
 
 mkdir -p ${RPM_BUILD_ROOT}%{prefix}/lib
 mv ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Libraries/libobjc*.so.lf2* \
    ${RPM_BUILD_ROOT}%{prefix}/lib/
+cd ..
 
 # libFoundation
-
-cd ${RPM_BUILD_ROOT}/libfoundation
+cd libfoundation
 mkdir -p ${RPM_BUILD_ROOT}%{prefix}/lib
 mkdir -p ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep/Library/Makefiles/Additional
 
-make %{libf_makeflags} INSTALL_ROOT_DIR=${RPM_BUILD_ROOT} \
-                       GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix} \
-                       FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
-                       install
+make %{ogoall_libfoundation_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix} \
+                                       FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
+                                       install
+
+#make %{ogoall_libfoundation_makeflags} INSTALL_ROOT_DIR=${RPM_BUILD_ROOT} \
+#                                       GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix} \
+#                                       FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
+#                                       install
 
 rm -f ${RPM_BUILD_ROOT}%{prefix}/Library/Headers/libFoundation/extensions/exceptions/FoundationException.h
 rm -f ${RPM_BUILD_ROOT}%{prefix}/Library/Headers/libFoundation/extensions/exceptions/GeneralExceptions.h
 rm -f ${RPM_BUILD_ROOT}%{prefix}/Library/Headers/libFoundation/extensions/exceptions/NSCoderExceptions.h
+cd ..
 
 # SOPE
-
-cd ${RPM_BUILD_ROOT}/sope
+cd sope
 mkdir -p ${RPM_BUILD_ROOT}%{prefix}/lib/lib
-make %{sope_makeflags} INSTALL_ROOT_DIR=${RPM_BUILD_ROOT} \
-                       GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix} \
-                       FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
-                       install
+make %{ogoall_sope_makeflags} INSTALL_ROOT_DIR=${RPM_BUILD_ROOT} \
+                              GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix} \
+                              FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
+                              install
 
 rm -f ${RPM_BUILD_ROOT}%{prefix}/bin/rss2plist1
 rm -f ${RPM_BUILD_ROOT}%{prefix}/bin/rss2plist2
 rm -f ${RPM_BUILD_ROOT}%{prefix}/bin/rssparse
 rm -f ${RPM_BUILD_ROOT}%{prefix}/bin/testqp
+cd ..
 
 # OGo
-
-cd ${RPM_BUILD_ROOT}/ogo
-make %{ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep \
-                      FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
-                      BUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
-                      WOBUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
-                      install
+cd opengroupware.org
+make %{ogoall_ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}/lib/OGo-GNUstep \
+                             FHS_INSTALL_ROOT=${RPM_BUILD_ROOT}%{prefix} \
+                             BUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
+                             WOBUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
+                             install
 
 rm -f "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/templates"
 rm -f "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/translations"
@@ -157,8 +164,9 @@ rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www/GNUmakefile"
 rm -fr "${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/www/tools"
 
 #one lonely file for meta package...
-echo "You've installed OGo %{ogo_version}-%{ogo_release} using the monolithic mega package!" \
-     >"${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/INSTALLED.USING.MEGAPACKAGE"
+echo "You've installed OGo %{ogoall_version} using the monolithic mega package!" \
+     >"${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/INSTALLED.USING.OGOFULLPACKAGE"
+cd ..
 
 INITSCRIPTS_TMP_DIR_OGO="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/initscript_templates"
 INITSCRIPTS_TMP_DIR_ZIDE="${RPM_BUILD_ROOT}%{prefix}/share/zidestore-1.3/initscript_templates"
@@ -185,46 +193,32 @@ UPDATE_SCHEMA=\"YES\"                 # will attempt to update the database sche
 OGO_USER=\"ogo\"                      # default username (unix) of your OGo install - might vary
 " >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-webui-1.0a
 
+#cleanout file we don't want to appear in the ogoall package:
+rm -f ${RPM_BUILD_ROOT}%{prefix}/.GNUsteprc
+rm -fr ${RPM_BUILD_ROOT}%{prefix}/OGo-GNUstep
+rm -fr ${RPM_BUILD_ROOT}%{prefix}/bin/domxml
+rm -fr ${RPM_BUILD_ROOT}%{prefix}/bin/ldap2dsml
+rm -fr ${RPM_BUILD_ROOT}%{prefix}/bin/ldapchkpwd
+rm -fr ${RPM_BUILD_ROOT}%{prefix}/bin/ldapls
+rm -fr ${RPM_BUILD_ROOT}%{prefix}/bin/saxxml
+rm -fr ${RPM_BUILD_ROOT}%{prefix}/bin/wod
+rm -fr ${RPM_BUILD_ROOT}%{prefix}/bin/xmln
+rm -fr ${RPM_BUILD_ROOT}%{prefix}/include
+
+#hm... how dost thou get there?
+rm -f ${RPM_BUILD_ROOT}%{_tmppath}/ogoall-1.0a-0.0-root/usr/local/OGo-GNUstep/Library/Makefiles/Additional/ngobjweb.make
+rm -f ${RPM_BUILD_ROOT}%{_tmppath}/ogoall-1.0a-0.0-root/usr/local/OGo-GNUstep/Library/Makefiles/woapp.make
+rm -f ${RPM_BUILD_ROOT}%{_tmppath}/ogoall-1.0a-0.0-root/usr/local/OGo-GNUstep/Library/Makefiles/wobundle.make
+
 # ****************************** post *********************************
 %post
-# libobjc-lf
 if [ $1 = 1 ]; then
   if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
-    echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/libobjc-lf2.conf
+    echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/ogoall.conf
   elif [ ! "`grep '%{prefix}/lib' %{_sysconfdir}/ld.so.conf`" ]; then
     echo "%{prefix}/lib" >> %{_sysconfdir}/ld.so.conf
   fi
-fi
-
-# libFoundation
-
-if [ $1 = 1 ]; then
-  if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
-    echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/libfoundation.conf
-  elif [ ! "`grep '%{prefix}/lib' %{_sysconfdir}/ld.so.conf`" ]; then
-    echo "%{prefix}/lib" >> %{_sysconfdir}/ld.so.conf
-  fi
-fi
-
-# SOPE
-
-if [ $1 = 1 ]; then
-  if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
-    echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/sope%{sope_major_version}%{sope_minor_version}.conf
-  elif [ ! "`grep '%{prefix}/lib' %{_sysconfdir}/ld.so.conf`" ]; then
-    echo "%{prefix}/lib" >> %{_sysconfdir}/ld.so.conf
-  fi
-fi
-
-# OGo
-
-if [ $1 = 1 ]; then
-  #must rework dependencies
-  /sbin/ldconfig
-fi
-
-# pda
-if [ $1 = 1 ]; then
+  ##
   NHSD_INIT_VERSION="ogo-nhsd-1.0a"
   NHSD_INIT_PREFIX="%{prefix}"
   if [ -f "/etc/SuSE-release" ]; then
@@ -246,10 +240,7 @@ if [ $1 = 1 ]; then
     chkconfig --add "${NHSD_INIT_VERSION}"
     /sbin/ldconfig
   fi
-fi
-
-# webui-app
-if [ $1 = 1 ]; then
+  ##
   OGO_INIT_VERSION="ogo-webui-1.0a"
   OGO_INIT_PREFIX="%{prefix}"
   if [ -f "/etc/SuSE-release" ]; then
@@ -272,16 +263,6 @@ if [ $1 = 1 ]; then
     chkconfig "${OGO_INIT_VERSION}" on
   fi
   ##
-  if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
-    echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/ogo.conf
-  elif [ ! "`grep '%{prefix}/lib' %{_sysconfdir}/ld.so.conf`" ]; then
-    echo "%{prefix}/lib" >> %{_sysconfdir}/ld.so.conf
-  fi
-  /sbin/ldconfig
-fi
-
-# xmlrpcd
-if [ $1 = 1 ]; then
   XMLRPCD_INIT_VERSION="ogo-xmlrpcd-1.0a"
   XMLRPCD_INIT_PREFIX="%{prefix}"
   if [ -f "/etc/SuSE-release" ]; then
@@ -303,10 +284,7 @@ if [ $1 = 1 ]; then
     chkconfig --add "${XMLRPCD_INIT_VERSION}"
     /sbin/ldconfig
   fi
-fi
-
-# zidestore
-if [ $1 = 1 ]; then
+  ##
   ZIDESTORE_INIT_VERSION="ogo-zidestore-1.3"
   ZIDESTORE_INIT_PREFIX="%{prefix}"
   if [ -f "/etc/SuSE-release" ]; then
@@ -332,43 +310,14 @@ fi
 
 # ****************************** postun *********************************
 %postun
-# SOPE
 if [ $1 = 0 ]; then
-  if [ -e %{_sysconfdir}/ld.so.conf.d/sope%{sope_major_version}%{sope_minor_version}.conf ]; then
-    rm -f %{_sysconfdir}/ld.so.conf.d/sope%{sope_major_version}%{sope_minor_version}.conf
+  if [ -e %{_sysconfdir}/ld.so.conf.d/ogoall.conf ]; then
+    rm -f %{_sysconfdir}/ld.so.conf.d/ogoall.conf
   fi
-fi
-
-# libFoundation
-
-if [ $1 = 0 ]; then
-  if [ -e %{_sysconfdir}/ld.so.conf.d/libfoundation.conf ]; then
-    rm -f %{_sysconfdir}/ld.so.conf.d/libfoundation.conf
+  if [ -L %{prefix}/OGo-GNUstep/Makefiles ]; then
+    rm -f %{prefix}/OGo-GNUstep/Makefiles
   fi
-fi
-
-# libobjc-lf
-if [ $1 = 0 ]; then
-  if [ -h %{prefix}/OGo-GNUstep/Library/Libraries/libobjc_d.so.lf2 ]; then
-    rm -f %{prefix}/OGo-GNUstep/Library/Libraries/libobjc_d.so.lf2
-  fi
-  if [ -h %{prefix}/OGo-GNUstep/Library/Libraries/libobjc.so.lf2 ]; then
-    rm -f %{prefix}/OGo-GNUstep/Library/Libraries/libobjc.so.lf2
-  fi
-  if [ -e %{_sysconfdir}/ld.so.conf.d/libobjc-lf2.conf ]; then
-    rm -f %{_sysconfdir}/ld.so.conf.d/libobjc-lf2.conf
-  fi
-fi
-
-# run ldconfig
-if [ $1 = 0 ]; then
   /sbin/ldconfig
-fi
-
-# gstep-make
-if [ $1 = 0 ]; then
-cd %{prefix}/OGo-GNUstep
-  rm -f Makefiles
 fi
 
 # ****************************** preun *********************************
@@ -390,11 +339,7 @@ if [ $1 = 0 ]; then
       rm -f "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}"
     fi
   fi
-  /sbin/ldconfig
-fi
-
-# webui-app
-if [ $1 = 0 ]; then
+  ##
   OGO_INIT_VERSION="ogo-webui-1.0a"
   OGO_INIT_PREFIX="%{prefix}"
   if [ -f "%{_sysconfdir}/init.d/${OGO_INIT_VERSION}" ]; then
@@ -411,14 +356,6 @@ if [ $1 = 0 ]; then
     fi 
   fi
   ##
-  if [ -e %{_sysconfdir}/ld.so.conf.d/ogo.conf ]; then
-    rm -f %{_sysconfdir}/ld.so.conf.d/ogo.conf
-  fi
-  /sbin/ldconfig
-fi
-
-# xmlrpcd
-if [ $1 = 0 ]; then
   XMLRPCD_INIT_VERSION="ogo-xmlrpcd-1.0a"
   XMLRPCD_INIT_PREFIX="%{prefix}"
   if [ -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}" ]; then
@@ -434,11 +371,7 @@ if [ $1 = 0 ]; then
       rm -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}"
     fi 
   fi
-  /sbin/ldconfig
-fi
-
-# zidestore
-if [ $1 = 0 ]; then
+  ##
   ZIDESTORE_INIT_VERSION="ogo-zidestore-1.3"
   ZIDESTORE_INIT_PREFIX="%{prefix}"
   if [ -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}" ]; then
@@ -454,7 +387,6 @@ if [ $1 = 0 ]; then
       rm -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}"
     fi
   fi
-  /sbin/ldconfig
 fi
 
 # ****************************** clean ********************************
@@ -464,15 +396,14 @@ rm -fr ${RPM_BUILD_ROOT}
 # ****************************** files ********************************
 %files
 %defattr(-,root,root,-)
-
 # libobjc-lf
 %{prefix}/lib/libobjc*.so.lf2*
 
 # libFoundation
 
 %{prefix}/bin/Defaults
-%{prefix}/lib/libFoundation*.so.%{libf_version}
-%{prefix}/lib/libFoundation*.so.%{libf_major_version}.%{libf_minor_version}
+%{prefix}/lib/libFoundation*.so.%{ogoall_libfoundation_version}
+%{prefix}/lib/libFoundation*.so.%{ogoall_libfoundation_major}.%{ogoall_libfoundation_minor}
 %{prefix}/share/libFoundation/CharacterSets
 %{prefix}/share/libFoundation/Defaults
 %{prefix}/share/libFoundation/TimeZoneInfo
@@ -481,35 +412,35 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/bin/connect-EOAdaptor
 %{prefix}/bin/load-EOAdaptor
 %{prefix}/bin/xmlrpc_call
-%{prefix}/lib/libDOM*.so.%{sope_libversion}*
-%{prefix}/lib/libEOControl*.so.%{sope_libversion}*
-%{prefix}/lib/libGDLAccess*.so.%{sope_libversion}*
-%{prefix}/lib/libNGExtensions*.so.%{sope_libversion}*
-%{prefix}/lib/libNGLdap*.so.%{sope_libversion}*
-%{prefix}/lib/libNGMime*.so.%{sope_libversion}*
-%{prefix}/lib/libNGObjWeb*.so.%{sope_libversion}*
-%{prefix}/lib/libNGStreams*.so.%{sope_libversion}*
-%{prefix}/lib/libNGXmlRpc*.so.%{sope_libversion}*
-%{prefix}/lib/libNGiCal*.so.%{sope_libversion}*
-%{prefix}/lib/libSaxObjC*.so.%{sope_libversion}*
-%{prefix}/lib/libSoOFS*.so.%{sope_libversion}*
-%{prefix}/lib/libWEExtensions*.so.%{sope_libversion}*
-%{prefix}/lib/libWOExtensions*.so.%{sope_libversion}*
-%{prefix}/lib/libWOXML*.so.%{sope_libversion}*
-%{prefix}/lib/libXmlRpc*.so.%{sope_libversion}*
-%{prefix}/lib/sope-%{sope_libversion}/dbadaptors/PostgreSQL.gdladaptor
-%{prefix}/lib/sope-%{sope_libversion}/products/SoCore.sxp
-%{prefix}/lib/sope-%{sope_libversion}/products/SoOFS.sxp
-%{prefix}/lib/sope-%{sope_libversion}/saxdrivers/STXSaxDriver.sax
-%{prefix}/lib/sope-%{sope_libversion}/saxdrivers/libxmlSAXDriver.sax
-%{prefix}/lib/sope-%{sope_libversion}/saxdrivers/versitSaxDriver.sax
-%{prefix}/lib/sope-%{sope_libversion}/wox-builders/WEExtensions.wox
-%{prefix}/lib/sope-%{sope_libversion}/wox-builders/WOExtensions.wox
-%{prefix}/sbin/sope-%{sope_major_version}.%{sope_minor_version}
-%{prefix}/share/sope-%{sope_libversion}/ngobjweb/DAVPropMap.plist
-%{prefix}/share/sope-%{sope_libversion}/ngobjweb/Defaults.plist
-%{prefix}/share/sope-%{sope_libversion}/ngobjweb/Languages.plist
-%{prefix}/share/sope-%{sope_libversion}/saxmappings/NGiCal.xmap
+%{prefix}/lib/libDOM*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libEOControl*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libGDLAccess*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libNGExtensions*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libNGLdap*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libNGMime*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libNGObjWeb*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libNGStreams*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libNGXmlRpc*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libNGiCal*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libSaxObjC*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libSoOFS*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libWEExtensions*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libWOExtensions*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libWOXML*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/libXmlRpc*.so.%{ogoall_sope_major}.%{ogoall_sope_minor}*
+%{prefix}/lib/sope-%{ogoall_sope_major}.%{ogoall_sope_minor}/dbadaptors/PostgreSQL.gdladaptor
+%{prefix}/lib/sope-%{ogoall_sope_major}.%{ogoall_sope_minor}/products/SoCore.sxp
+%{prefix}/lib/sope-%{ogoall_sope_major}.%{ogoall_sope_minor}/products/SoOFS.sxp
+%{prefix}/lib/sope-%{ogoall_sope_major}.%{ogoall_sope_minor}/saxdrivers/STXSaxDriver.sax
+%{prefix}/lib/sope-%{ogoall_sope_major}.%{ogoall_sope_minor}/saxdrivers/libxmlSAXDriver.sax
+%{prefix}/lib/sope-%{ogoall_sope_major}.%{ogoall_sope_minor}/saxdrivers/versitSaxDriver.sax
+%{prefix}/lib/sope-%{ogoall_sope_major}.%{ogoall_sope_minor}/wox-builders/WEExtensions.wox
+%{prefix}/lib/sope-%{ogoall_sope_major}.%{ogoall_sope_minor}/wox-builders/WOExtensions.wox
+%{prefix}/sbin/sope-%{ogoall_sope_major}.%{ogoall_sope_minor}
+%{prefix}/share/sope-%{ogoall_sope_major}.%{ogoall_sope_minor}/ngobjweb/DAVPropMap.plist
+%{prefix}/share/sope-%{ogoall_sope_major}.%{ogoall_sope_minor}/ngobjweb/Defaults.plist
+%{prefix}/share/sope-%{ogoall_sope_major}.%{ogoall_sope_minor}/ngobjweb/Languages.plist
+%{prefix}/share/sope-%{ogoall_sope_major}.%{ogoall_sope_minor}/saxmappings/NGiCal.xmap
 
 # ogo
 %attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-webui-1.0a
@@ -627,6 +558,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/sbin/ogo-zidestore-1.3
 %{prefix}/share/opengroupware.org-1.0a/initscript_templates/*xmlrpcd
 %{prefix}/share/zidestore-1.3
+%{prefix}/share/opengroupware.org-1.0a/INSTALLED.USING.OGOFULLPACKAGE
 %{prefix}/share/opengroupware.org-1.0a/Holidays.plist
 %{prefix}/share/opengroupware.org-1.0a/initscript_templates/*nhsd
 %{prefix}/share/opengroupware.org-1.0a/initscript_templates/*opengroupware
@@ -701,5 +633,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Sat Feb 26 2005 Frank Reppin <frank@opengroupware.org>
+- fixed what could be fixed (remains still broken by design due to
+  install stages in build)
 * Thu Feb 17 2005 Frank Reppin <frank@opengroupware.org>
 - initial build
