@@ -1,3 +1,9 @@
+2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoModuleManager.m: changed behaviour to +initialize all classes on
+	  bundle loading. This ensures all initialization is done prior the
+	  app runs. (v5.1.85)
+	  
 2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile: properly include config.make (v5.1.84)

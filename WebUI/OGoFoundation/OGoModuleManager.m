@@ -30,6 +30,13 @@
 #  include <NGExtensions/NGPropertyListParser.h>
 #endif
 
+@interface NSObject(OGoModuleManagerLoad)
+
++ (void)moduleManager:(OGoModuleManager *)_manager 
+  didLoadClassFromBundle:(NSBundle *)_bundle;
+
+@end /* NSObject(OGoModuleManagerLoad) */
+
 @implementation OGoModuleManager
 
 static BOOL debugOn = NO;
@@ -80,12 +87,41 @@ static BOOL debugOn = NO;
     [self logWithFormat:@"no Defaults.plist in bundle: %@", _bundle];
 }
 
+/* initialize bundle class */
+
+- (void)registerClassesOfBundle:(NSBundle *)_bundle {
+  /* ensure that +initialize is called right after loading the plugin */
+  NSEnumerator *classes;
+  id classDict;
+  
+  classes = [[_bundle providedResourcesOfType:@"classes"] objectEnumerator];
+  while ((classDict = [classes nextObject])) {
+    NSString *clazzName;
+    Class    clazz;
+    
+    if ((clazzName = [classDict objectForKey:@"name"]) == nil) {
+      [self logWithFormat:@"ERROR: got invalid 'classes' dict: %@", classDict];
+      continue;
+    }
+    
+    if ((clazz = NSClassFromString(clazzName)) == Nil) {
+      [self logWithFormat:
+	      @"WARNING: did not find class as registered in bundle: '%@'\n  "
+	      @"%@", clazzName, _bundle];
+      continue;
+    }
+    
+    [clazz moduleManager:self didLoadClassFromBundle:_bundle];
+  }
+}
+
 /* Bundle Load Notification */
 
 - (void)bundleManager:(NGBundleManager *)_manager
   didLoadBundle:(NSBundle *)_bundle
 {
   [self registerDefaultsOfBundle:_bundle];
+  [self registerClassesOfBundle:_bundle];
   
 #if DEBUG && 0
   NSLog(@"%s: loaded bundle: %@", __PRETTY_FUNCTION__, [_bundle bundleName]);
@@ -93,6 +129,16 @@ static BOOL debugOn = NO;
 }
 
 @end /* OGoModuleManager */
+
+@implementation NSObject(OGoModuleManagerLoad)
+
++ (void)moduleManager:(OGoModuleManager *)_manager 
+  didLoadClassFromBundle:(NSBundle *)_bundle
+{
+  // do nothing, +initialize will be called by the runtime
+}
+
+@end /* NSObject(OGoModuleManagerLoad) */
 
 /* for compatibility, to be removed */
 
