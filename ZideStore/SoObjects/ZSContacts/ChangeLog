@@ -1,3 +1,8 @@
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAddressFolder.m: fixed GroupDAV namespace to current draft 
+	  (v1.3.80)
+
 2004-12-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxEnterpriseFolder.m, SxAddressFolder.m, SxGroupsFolder.m: added

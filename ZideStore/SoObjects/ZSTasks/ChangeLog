@@ -1,3 +1,7 @@
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxTaskFolder.m: fixed GroupDAV namespace to current draft (v1.3.76)
+
 2004-11-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxTask.m: fixed a MacOSX warning (v1.3.75)

@@ -637,7 +637,9 @@
   static id coltype = nil;
   if (coltype == nil) {
     id tmp;
-    tmp = [NSArray arrayWithObjects:@"vevent-collection", @"GROUPWARE:", nil];
+    
+    tmp = [NSArray arrayWithObjects:
+		     @"vevent-collection", @"http://groupdav.org/", nil];
     coltype = [[NSArray alloc] initWithObjects:@"collection", tmp, nil];
   }
   return coltype;

@@ -277,7 +277,8 @@
   static id coltype = nil;
   if (coltype == nil) {
     id tmp;
-    tmp = [NSArray arrayWithObjects:@"vtodo-collection", @"GROUPWARE:", nil];
+    tmp = [NSArray arrayWithObjects:
+		     @"vtodo-collection", @"http://groupdav.org/", nil];
     coltype = [[NSArray alloc] initWithObjects:@"collection", tmp, nil];
   }
   return coltype;
