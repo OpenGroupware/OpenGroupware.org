@@ -1,3 +1,7 @@
+2004-08-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* removed duplicate icons in German variants of the themes
+
 2004-08-09  Frank Reppin  <frank@opengroupware.org>
 
 	* WebServerResources/GNUmakefile: added blue/orange/kde themes
