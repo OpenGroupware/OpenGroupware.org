@@ -21,23 +21,6 @@ EnterprisesUI_OBJC_FILES = 			\
 	SkyAssignPersonSubEditor.m		\
 	SkyAssignPersonEditor.m			\
 
-EnterprisesUI_COMPONENTS = \
-	LSWEnterpriseAdvancedSearch.wo		\
-	LSWEnterprises.wo			\
-	LSWEnterpriseHtmlMailPage.wo		\
-	LSWEnterpriseTextMailPage.wo		\
-	LSWEnterpriseSearchPage.wo		\
-	SkyWizardEnterpriseViewer.wo		\
-	SkyEnterpriseProjectList.wo     	\
-	SkyEnterpriseList.wo			\
-	SkyEnterpriseEditor.wo			\
-	SkyEnterpriseAttributesEditor.wo	\
-	SkyEnterpriseViewer.wo			\
-	SkyAssignPersonSubEditor.wo		\
-
-EnterprisesUI_RESOURCE_FILES += \
-	SkyAssignPersonEditor.wox
-
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
 -include GNUmakefile.postamble

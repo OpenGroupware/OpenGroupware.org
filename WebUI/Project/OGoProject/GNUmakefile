@@ -40,29 +40,7 @@ OGoProject_OBJC_FILES = \
 	OGoDocAction.m			\
 	OGoProjectAction.m		\
 
-OGoProject_COMPONENTS = \
-	SkyP4ProjectTableView.wo	\
-	SkyP4FolderView.wo		\
-	SkyP4DocumentDownloadLogList.wo	\
-	SkyP4DocJournal.wo		\
-	SkyDocumentAttributeEditor.wo	\
-	SkyProject4BLOBViewer.wo	\
-	SkyProject4Desktop.wo		\
-	SkyProject4DocumentEditor.wo	\
-	SkyProject4DocumentRename.wo	\
-	SkyProject4DocumentSearch.wo	\
-	SkyProject4DocumentUpload.wo	\
-	SkyProject4DocumentVersionSave.wo \
-	SkyProject4DocumentViewer.wo	\
-	SkyProject4MovePanel.wo		\
-	SkyProject4NewLink.wo		\
-	SkyProject4Viewer.wo		\
-	SkyProject4VersionList.wo	\
-
 # resources
-
-OGoProject_RESOURCE_FILES += \
-	SkyCompanyAccessEditor.wox
 
 OGoProject_RESOURCE_FILES += \
 	Defaults.plist Version

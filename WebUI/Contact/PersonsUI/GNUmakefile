@@ -25,33 +25,11 @@ PersonsUI_OBJC_FILES += \
 	SkyPersonWizard.m		\
 	OGoPersonLinkEditor.m		\
 
-PersonsUI_COMPONENTS += \
-	LSWPersons.wo                   \
-	LSWPersonAdvancedSearch.wo      \
-	LSWPersonHtmlMailPage.wo        \
-	LSWPersonTextMailPage.wo        \
-	SkyWizardPersonViewer.wo        \
-	SkyPersonSelectPopUp.wo         \
-	SkyPersonEnterpriseSetViewer.wo \
-	SkyPersonList.wo                \
-	SkyPersonEditor.wo		\
-	SkyPersonAttributesEditor.wo	\
-	SkyPersonLDAPViewer.wo		\
-
-PersonsUI_RESOURCE_FILES += \
-        SkyPersonSearchPanel.wox	\
-	OGoPersonLinkEditor.wox
-
 ifeq ($(wox),yes)
 
 PersonsUI_RESOURCE_FILES += \
 	SkyPersonViewer.wox	\
 	SkyPersonProjectList.wox
-else
-
-PersonsUI_COMPONENTS += \
-	SkyPersonViewer.wo	\
-	SkyPersonProjectList.wo
 
 endif
 

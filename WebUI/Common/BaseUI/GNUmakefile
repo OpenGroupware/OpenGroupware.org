@@ -55,33 +55,6 @@ BaseUI_OBJC_FILES = 			\
 	WODirectAction+Misc.m		\
 	WODirectAction+activate.m	\
 
-BaseUI_COMPONENTS = 			\
-        LSWObjectViewer.wo              \
-        LSWSkyrixFrame.wo               \
-        LSWTableView.wo                 \
-        LSWWarningPanel.wo              \
-        SkyFavorites.wo                 \
-        SkyNavigation.wo                \
-        SkyRequestViewer.wo             \
-        SkyDock.wo                      \
-        SkyWizardChoicePage.wo          \
-        SkyWizardResultList.wo          \
-        SkyListView.wo                  \
-	SkyObjectLogList.wo             \
-	SkyPanel.wo                     \
-	SkyWarningPanel.wo              \
-	SkySearchPanel.wo               \
-	SkyListSorter.wo                \
-	SkyWarningPanel.wo		\
-
-BaseUI_RESOURCE_FILES += \
-        LSWObjectEditor.wox		\
-	OGoMenuBox.wox			\
-	SkyEditorButtons.wox		\
-	SkyTimeZonePopUp.wox            \
-	SkyWarningMode.wox		\
-	SkyWeekOfYearPopUp.wox          \
-
 BaseUI_LANGUAGES = \
 	English		\
 	English_orange  \

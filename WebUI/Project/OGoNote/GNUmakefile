@@ -11,12 +11,8 @@ OGoNote_OBJC_FILES = \
 	SkyNoteList.m	\
 	SkyNoteEditor.m	\
 
-OGoNote_COMPONENTS = \
-	SkyNoteEditor.wo \
-
 OGoNote_RESOURCE_FILES += \
 	Version		\
-	SkyNoteList.wox	\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make

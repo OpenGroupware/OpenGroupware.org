@@ -1,7 +1,2 @@
 # $Id$
 
-validate-xml ::
-#	xmllint --noout *.wox
-
-before-all :: validate-xml
-

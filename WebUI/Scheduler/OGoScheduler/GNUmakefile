@@ -17,19 +17,7 @@ OGoScheduler_OBJC_FILES = \
 	SkySchedulerConflictPage.m	\
 	SkyAptDeletePanel.m		\
 
-OGoScheduler_COMPONENTS = \
-	SkySchedulerPage.wo		\
-	SkyAptResourceEditor.wo		\
-	SkyAptResourceViewer.wo		\
-	SkySchedulerSelectPanel.wo	\
-	SkySchedulerConflictPage.wo	\
-
-OGoScheduler_RESOURCE_FILES += \
-	Defaults.plist Version	\
-	\
-	SkyAptDeletePanel.wox		\
-	SkySchedulerSelectPopUp.wox	\
-
+OGoScheduler_RESOURCE_FILES += Defaults.plist Version
 OGoScheduler_LANGUAGES      =  English German
 
 -include GNUmakefile.preamble

@@ -34,34 +34,6 @@ AddressUI_OBJC_FILES = \
 	SkyContactImportPage.m		\
 	SkyCompanySavedSearchPopUp.m	\
 
-AddressUI_COMPONENTS = \
-	LSWAddressViewer.wo		\
-	LSWAddressEditor.wo		\
-	LSWAddressPreferences.wo   	\
-	SkyWizardAddressViewer.wo	\
-	SkyBusinessCardGathering.wo	\
-	SkyAddressesViewer.wo           \
-	SkyTelephoneViewer.wo           \
-	SkyTelephoneEditor.wo           \
-	SkyCompanyAttributesViewer.wo   \
-	SkyPersonalAttributesViewer.wo  \
-	SkyPersonalViewerConfig.wo      \
-	SkyAddressEditor.wo	 	\
-	SkyAddressSubEditor.wo 		\
-	SkyPhoneSubEditor.wo		\
-	SkyContactSubEditor.wo		\
-	SkyCategorySubEditor.wo		\
-	SkyCommentSubEditor.wo		\
-	SkyCompanyFlagSubEditor.wo	\
-	SkyContactImportUploadPage.wo	\
-	SkyContactImportPage.wo		\
-	SkyCompanySavedSearchPopUp.wo	\
-
-AddressUI_RESOURCE_FILES += \
-	LSWFullSearch.wox		\
-	SkyExtendedAttrsSubEditor.wox	\
-	LSWFormLetterComponent.wox	\
-
 AddressUI_LANGUAGES = English German
 
 AddressUI_RESOURCE_FILES += \

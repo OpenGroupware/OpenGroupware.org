@@ -13,8 +13,6 @@ RelatedLinksUI_OBJC_FILES = \
 RelatedLinksUI_RESOURCE_FILES += \
 	Version			\
 	Defaults.plist		\
-	\
-	OGoObjectLinkList.wox	\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make

@@ -33,13 +33,6 @@ OGoUIElements_OBJC_FILES = 		\
 	OGoPageButton.m			\
 	OGoUIElementsBuilder.m		\
 
-OGoUIElements_COMPONENTS = 		\
-	SkyFileManagerTreeView.wo	\
-	SkyTableView.wo			\
-	SkyCollapsibleContent.wo	\
-	SkyTextEditor.wo		\
-	SkyAccessList.wo		\
-
 OGoUIElements_LANGUAGES = English German
 
 OGoUIElements_RESOURCE_FILES += \
@@ -47,9 +40,6 @@ OGoUIElements_RESOURCE_FILES += \
 	\
 	SkyTableView_SelectAllCheckboxesScript.js\
 	SkyTableView_ShiftClickScript.js	\
-	\
-	SkyCalendarScript.wox			\
-	SkyCalendarPopUp.wox			\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
