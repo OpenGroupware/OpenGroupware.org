@@ -210,7 +210,7 @@ Description: Database models for OpenGroupware.org
 
 Package: opengroupware.org_OGOVER_-webui-app
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org_OGOVER_-webui-core, opengroupware.org_OGOVER_-webui-i18n-en | opengroupware.org_OGOVER_-webui-i18n, opengroupware.org_OGOVER_-webui-theme-default | opengroupware.org_OGOVER_-webui-theme
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org_OGOVER_-database, sope-libxmlsaxdriver, opengroupware.org_OGOVER_-webui-core, opengroupware.org_OGOVER_-webui-i18n-en | opengroupware.org_OGOVER_-webui-i18n, opengroupware.org_OGOVER_-webui-theme-default | opengroupware.org_OGOVER_-webui-theme
 Recommends: libapache-mod-ngobjweb, apache
 Description: Web UI application of OpenGroupware.org
  This package contains the executable and resources of
@@ -303,7 +303,7 @@ Description: Development Files for the ZideStore server
 Package: opengroupware.org-zidestore_ZSVER_
 Section: web
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org_OGOVER_-database, sope-libxmlsaxdriver, sope-icalsaxdriver
 Recommends: libapache-mod-ngobjweb, apache
 Description: WebDAV Server for OpenGroupware.org
  The ZideStore Server provides WebDAV access to the OpenGroupware.org
@@ -315,7 +315,7 @@ Description: WebDAV Server for OpenGroupware.org
 
 Package: opengroupware.org_OGOVER_-xmlrpcd
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, opengroupware.org_OGOVER_-database, sope-libxmlsaxdriver
 Recommends: libapache-mod-ngobjweb, apache
 Description: XMLRPC daemon for OpenGroupware.org
  The XMLRPC daemon allows to execute groupware functions over the standardized
