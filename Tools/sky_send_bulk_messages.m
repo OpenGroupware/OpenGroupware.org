@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,14 +18,14 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-//$Id$
 
-#import <Foundation/Foundation.h>
+#import <Foundation/NSObject.h>
+
+@class NSString, NSFileManager;
 
 @interface SkySendBulkMessagesTool : NSObject
 {
   NSFileManager  *fm;
-  
   BOOL           imapDebug;
   NSString       *mimeDataFile;
   NSString       *bulkFile;
@@ -38,6 +38,7 @@
 
 @end
 
+#import <Foundation/Foundation.h>
 #include <NGMail/NGMimeMessageGenerator.h>
 #include <NGMail/NGMailAddressParser.h>
 #include <NGMail/NGMailAddress.h>
@@ -77,15 +78,14 @@
   
   error = nil;
   res   = [NSMutableDictionary dictionaryWithCapacity:8];
+  
   gen   = [[NGMimeMessageGenerator alloc] init];
   data  = [gen generateDataForHeaderField:@"to" value:_header];
-
-  RELEASE(gen); gen = nil;
-
-  if (!data) {
+  [gen release]; gen = nil;
+  
+  if (data == nil)
     data = [NSData dataWithBytes:_to length:_len];
-  }
-
+  
   [res setObject:
        [[[NSString alloc] initWithData:data
                          encoding:[NSString defaultCStringEncoding]]
@@ -299,35 +299,32 @@ NSString *checkEmail(NSString *_email) {
                 @"Content-Type: message/rfc822\n"
                 @"\n"];
   {
-        NSString *s;
+    NSString *s;
 
-        s = [[NSString alloc] initWithData:data
-                              encoding:[NSString defaultCStringEncoding]];
-        [sendMailBlob appendString:s];
-        RELEASE(s); s = nil;
+    s = [[NSString alloc] initWithData:data
+			  encoding:[NSString defaultCStringEncoding]];
+    [sendMailBlob appendString:s];
+    [s release]; s = nil;
 
   }
   [sendMailBlob appendString:@"\n"];
   [sendMailBlob appendString:@"------------=_1040317835-14692-234_--\n"];
   {
-        NSString *em;
+    NSString *em;
+    int      cnt;
+    NSData   *infos;
+    char     *cString;
+    
+    em  = checkEmail(status);
+    cnt = [em cStringLength];
+    cString = calloc(cnt + 4, sizeof(char));
+    
+    [em getCString:cString maxLength:cnt];
+    cString[cnt] = '\0';
 
-        em = checkEmail(status);
-        
-        {
-          NSData   *infos;
-          int      cnt     = [em cStringLength];
-          char     cString[cnt + 1];
-
-          [em getCString:cString maxLength:cnt];
-          cString[cnt] = '\0';
-
-          infos = [sendMailBlob dataUsingEncoding:
-                                [NSString defaultCStringEncoding]];
-
-          [self sendMail:sendMailCall to:(char *)cString len:(cnt-1)
-		header:status data:infos];
-        }
+    infos = [sendMailBlob dataUsingEncoding:[NSString defaultCStringEncoding]];
+    [self sendMail:sendMailCall to:(char *)cString len:(cnt-1)
+	  header:status data:infos];
   }
 }
 

@@ -1,5 +1,9 @@
 2004-08-21  Helge Hess  <helge.hess@opengroupware.org>
 
+	* fixed linking on MacOSX
+
+	* sky_send_bulk_messages.m: soem code cleanups
+
 	* fixes for inline compilation of OGo 1.0
 
 	* skyprojectimporter.m: minor code cleanups, fixed a small bug (func

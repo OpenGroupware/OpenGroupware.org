@@ -18,7 +18,7 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
+// $Id: SkyTool.m 1 2004-08-20 11:17:52Z znek $
 
 #include "common.h"
 #import  "SkyTool.h"
@@ -84,7 +84,7 @@
   reason = [[[NSString alloc] initWithFormat:_format arguments:ap]
                        autorelease];
   va_end(ap);
-  return [self logString:reason];
+  [self logString:reason];
 }
 
 - (void)logString:(NSString *)_str {
@@ -96,21 +96,45 @@
   return self->verbose;
 }
 
+/* argument processing */
+
 - (NSString *)additionalSwitches {
+#if LIB_FOUNDATION_LIBRARY
   return [self subclassResponsibility:_cmd];
+#else
+  NSLog(@"ERROR(%s): method is supposed to be overridden by subclass!");
+  return nil;
+#endif
 }
 
 - (NSString *)toolName {
+#if LIB_FOUNDATION_LIBRARY
   return [self subclassResponsibility:_cmd];
+#else
+  NSLog(@"ERROR(%s): method is supposed to be overridden by subclass!");
+  return nil;
+#endif
 }
 
 - (NSString *)toolDescription {
+#if LIB_FOUNDATION_LIBRARY
   return [self subclassResponsibility:_cmd];
+#else
+  NSLog(@"ERROR(%s): method is supposed to be overridden by subclass!");
+  return nil;
+#endif
 }
 
 - (NSString *)versionInformation {
+#if LIB_FOUNDATION_LIBRARY
   return [self subclassResponsibility:_cmd];
+#else
+  NSLog(@"ERROR(%s): method is supposed to be overridden by subclass!");
+  return nil;
+#endif
 }
+
+/* usage */
 
 - (void)version {
   printf("%s version: %s\n", [[self toolName] cString],

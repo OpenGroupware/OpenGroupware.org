@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,17 +18,8 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-//$Id$
 
-#import <Foundation/Foundation.h>
-#if COCOA_Foundation_LIBRARY
-#  include <FoundationExt/NSObjectMacros.h>
-#endif
-
-#include <NGImap4/NGSieveClient.h>
-#include <NGMail/NGMail.h>
-#include <NGStreams/NGInternetSocketAddress.h>
-#include <NGStreams/NGSocketExceptions.h>
+#import <Foundation/NSObject.h>
 
 @class NSString;
 
@@ -50,7 +41,15 @@
 
 @end
 
+#if COCOA_Foundation_LIBRARY || APPLE_Foundation_LIBRARY || NeXT_Foundation_LIBRARY
+#  include <NGExtensions/NGObjectMacros.h>
+#endif
 
+#include <NGImap4/NGSieveClient.h>
+#include <NGMail/NGMail.h>
+#include <NGStreams/NGInternetSocketAddress.h>
+#include <NGStreams/NGSocketExceptions.h>
+#import <Foundation/Foundation.h>
 
 id _getArg(NSDictionary *_arg, NSArray *_keys) {
   id           obj;
@@ -260,7 +259,7 @@ NSString *convertFileToSieveFormat(NSString *_fileName) {
         }
         else {
           parser = [NGMailAddressParser mailAddressParserWithString:fileName];
-          str    = [[parser parse] address];
+          str    = [(NGMailAddress *)[parser parse] address];
 
           if ([str length] == 0) {
             NSLog(@"couldn`t parse address %@", fileName);

@@ -15,6 +15,11 @@ ADDITIONAL_LIB_DIRS += \
 	-L../DocumentAPI/OGoScheduler/$(GNUSTEP_OBJ_DIR)	\
 	-L../DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR)	\
 
+LSFoundationLIBS = \
+	-lLSFoundation	\
+	-lGDLAccess	\
+	-lNGMime -lNGLdap
+
 skyprojectimporter_TOOL_LIBS += \
 	-lGDLAccess 		\
 	-lLSFoundation 		\
@@ -23,7 +28,7 @@ skyprojectimporter_TOOL_LIBS += \
 	-lOGoDatabaseProject	\
 	-lOGoProject		\
 	-lOGoDocuments		\
-	-lNGMime
+	-lNGMime -lNGLdap
 
 skyprojectexporter_TOOL_LIBS += $(skyprojectimporter_TOOL_LIBS)
 skylistprojects_TOOL_LIBS    += $(skyprojectimporter_TOOL_LIBS)
@@ -33,22 +38,28 @@ skyaptnotify_TOOL_LIBS += \
 	-lOGoScheduler		\
 	-lOGoSchedulerTools	\
 	-lOGoDocuments		\
-	-lNGMime
+	-lGDLAccess		\
+	-lNGMime -lNGLdap	\
 
-skydefaults_TOOL_LIBS += -lLSFoundation -lNGMime
 
-sky_add_account_TOOL_LIBS     += -lLSFoundation
-sky_get_login_names_TOOL_LIBS += -lLSFoundation
-sky_del_account_TOOL_LIBS     += -lLSFoundation
-sky_license_info_TOOL_LIBS    += -lLSFoundation
+sky_add_account_TOOL_LIBS     += $(LSFoundationLIBS)
+sky_get_login_names_TOOL_LIBS += $(LSFoundationLIBS)
+sky_del_account_TOOL_LIBS     += $(LSFoundationLIBS)
+sky_license_info_TOOL_LIBS    += $(LSFoundationLIBS)
 
-skyruncmd_TOOL_LIBS    += -lLSFoundation
-
-skyjobs2ical_TOOL_LIBS += -lLSFoundation -lNGExtensions
-
-skylistacls_TOOL_LIBS  += -lLSFoundation -lNGExtensions
-skycheckperm_TOOL_LIBS += -lLSFoundation -lNGExtensions
+skydefaults_TOOL_LIBS  += $(LSFoundationLIBS)
+skyruncmd_TOOL_LIBS    += $(LSFoundationLIBS)
+skyjobs2ical_TOOL_LIBS += $(LSFoundationLIBS)
+skylistacls_TOOL_LIBS  += $(LSFoundationLIBS)
+skycheckperm_TOOL_LIBS += $(LSFoundationLIBS)
 
 sky_install_sieve_TOOL_LIBS      += -lNGMime
 sky_install_procmail_TOOL_LIBS   += -lNGMime
 sky_send_bulk_messages_TOOL_LIBS += -lNGMime
+
+# libs for all tools
+
+ADDITIONAL_TOOL_LIBS += \
+	-lNGStreams -lNGExtensions -lEOControl	\
+	-lDOM -lSaxObjC
+
