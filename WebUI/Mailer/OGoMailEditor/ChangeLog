@@ -1,3 +1,8 @@
+2005-03-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWImapMailEditor.m: generate proper 'charset' parameter in content
+	  types to fix OGo bug #797 (v5.1.7)
+
 2004-12-23  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWImapMailEditor.m: fixed OGo bug #855 (incorrect escaping of from

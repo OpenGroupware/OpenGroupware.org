@@ -48,22 +48,25 @@
 }
 
 - (void)initSender {
-  if (self->sender == nil) {
-    id       account;
-    NSString *email1, *n, *firstName;
+  id       account;
+  NSString *email1, *n, *firstName;
+  
+  if (self->sender != nil)
+    return;
+  
+  // TODO: use a formatter for the stuff below
 
-    account = [[self session] activeAccount];
+  account = [[self session] activeAccount];
 
-    if ((email1 = [account valueForKey:@"email1"]) == nil)
-      email1 = @"";
-    if ((n = [account valueForKey:@"name"]) == nil)
-      n = @"";
-    if ((firstName = [account valueForKey:@"firstname"]) == nil)
-      firstName = @"";
-
-    self->sender = [[NSString alloc] initWithFormat:@"%@ %@ <%@>", firstName,
+  if ((email1 = [account valueForKey:@"email1"]) == nil)
+    email1 = @"";
+  if ((n = [account valueForKey:@"name"]) == nil)
+    n = @"";
+  if ((firstName = [account valueForKey:@"firstname"]) == nil)
+    firstName = @"";
+  
+  self->sender = [[NSString alloc] initWithFormat:@"%@ %@ <%@>", firstName,
                                      n, email1];
-  }
 }
 
 - (void)setAttachments:(NSArray *)_att {
@@ -84,18 +87,18 @@
 }
 
 
-- (id)attachment {
-  return self->attachment;
-}
 - (void)setAttachment:(id)_attachment {
   self->attachment = _attachment;
 }
-
-- (NSString *)subject {
-  return self->subject;
+- (id)attachment {
+  return self->attachment;
 }
+
 - (void)setSubject:(NSString *)_subject {
   ASSIGNCOPY(self->subject, _subject);
+}
+- (NSString *)subject {
+  return self->subject;
 }
 
 - (void)setContent:(NSString *)_content {
@@ -106,16 +109,18 @@
 }
 
 - (void)setDate:(NSCalendarDate *)_date {
-  ASSIGN(self->date, _date);
+  ASSIGNCOPY(self->date, _date);
 }
 - (NSString *)dateString{
+  NSString *fmt;
+  
   if (self->date == nil)
     self->date = [[NSCalendarDate date] retain];
   
-  return [self->date descriptionWithCalendarFormat:
-                       [[self config]
-                              valueForKey:@"calendarFormat"]];
-};
+  // TODO: no such config key seems to be specified?
+  fmt = [[self config] valueForKey:@"calendarFormat"];
+  return [self->date descriptionWithCalendarFormat:fmt];
+}
 
 - (NSString *)sender {
   return self->sender;
@@ -142,7 +147,7 @@
   return self->escapeHTML;
 }
 
-@end
+@end /* LSWMailRenderPage */
 
 
 @implementation LSWMailHtmlRenderPage
@@ -158,14 +163,13 @@
   [viewer setObject:[self->attachment objectForKey:@"object"]];
   [viewer setInlineLink:self->inlineLink];
 
-  if (![[self->attachment objectForKey:@"attachData"] boolValue]) {
+  if (![[self->attachment objectForKey:@"attachData"] boolValue])
     [viewer setShowDirectActionLink:YES];
-  }
-
+  
   return viewer;
 }
 
-@end
+@end /* LSWMailHtmlRenderPage */
 
 @implementation LSWMailTextRenderPage
 
@@ -179,11 +183,10 @@
 
   [viewer setObject:[self->attachment objectForKey:@"object"]];
 
-  if (![[self->attachment objectForKey:@"attachData"] boolValue]) {
+  if (![[self->attachment objectForKey:@"attachData"] boolValue])
     [viewer setShowDirectActionLink:YES];
-  }
-
+  
   return viewer;
 }
 
-@end
+@end /* LSWMailTextRenderPage */

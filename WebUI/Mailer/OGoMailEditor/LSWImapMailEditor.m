@@ -1198,11 +1198,13 @@ static Class      StrClass        = nil;
   [self _addDefaultReplyToIfMissingToMap:map]; // default 'reply-to' header
   [self _addDefaultOrganizationIfMissingToMap:map]; // 'organization' header
   
-  if ([atts count] > 0) { // add attachments
+  if ([atts count] > 0) { 
+    /* add attachments */
     message = [self _buildMultiPartMessageWithHeaders:map
 		    andAttachments:atts];
   }
   else {
+    /* no explicit attachments */
     if ([self sendMailsWithoutSkyrixPart]) {
       NGMimeBodyPart *part;
       
@@ -2349,11 +2351,13 @@ static Class      StrClass        = nil;
   NSString         *st, *text;
   NGMutableHashMap *map;
   NGMimeBodyPart   *part;
+  WOResponse *response;
+  id         content;
   
-
-  map = [[NGMutableHashMap alloc] initWithCapacity:4];
-
+  /* this does some string processing when used with Epoz */
   [self _mailtext:&text subtype:&st];
+  
+  /* setup render page */
   
   if (self->flags.sendPlainText) {
     p  = [[self application] pageWithName:@"LSWMailTextRenderPage"];
@@ -2365,42 +2369,67 @@ static Class      StrClass        = nil;
     if ([self useEpoz])
       [p setEscapeHtml:NO];
   }
-  [map addObject:[NGMimeType mimeType:@"text" subType:st]
-       forKey:@"content-type"];
 
+  /* fill render page values */
+  
   [(NSObject *)p setContent:text];
 
   [p setSubject:self->mailSubject];
   [(id)p setDate:(id)[NSCalendarDate date]];
-
+  
   [p setAttachments:self->attachments];
 
   [p setInlineLink:NO];
-  part = [NGMimeBodyPart bodyPartWithHeader:map];  
-  // gen response
 
-  {
-    WOResponse *response;
-    id         content;
+  /*  gen response */
 
-    response = [p generateResponse];
-    if ([response status] != 200)
+  response = [p generateResponse];
+  if ([response status] != 200)
       /* could not generate response */
-      return nil;
-      
-    content = [response content];
-    
-    // TODO: Unicode
-    content = [StrClass stringWithCString:[content bytes]
-                        length:[content length]];
-    
-    if (!self->flags.sendPlainText) { /* Need to build additional header */
-      content = [htmlMailHeader stringByAppendingString:content];
-      content = [content stringByAppendingString:htmlMailFooter];
-    }
-    [part setBody:content];
+    return nil;
+  
+  content = [response contentAsString];
+  
+  /* fixup content */
+  
+  if (!self->flags.sendPlainText) {
+    /* wrap in HTML header and footer */
+    content = [htmlMailHeader stringByAppendingString:content];
+    content = [content stringByAppendingString:htmlMailFooter];
   }
+
+  /* determine content-type */
+  
+  st = [@"text/" stringByAppendingString:st];
+  
+  if ([content canBeConvertedToEncoding:NSASCIIStringEncoding]) {
+    st      = [st stringByAppendingString:@"; charset=US-ASCII"];
+    content = [content dataUsingEncoding:NSASCIIStringEncoding];
+  }
+  else if ([content canBeConvertedToEncoding:NSISOLatin1StringEncoding]) {
+    st      = [st stringByAppendingString:@"; charset=ISO-8859-1"];
+    content = [content dataUsingEncoding:NSISOLatin1StringEncoding];
+  }
+#if LIB_FOUNDATION_LIBRARY
+  else if ([content canBeConvertedToEncoding:NSISOLatin9StringEncoding]) {
+    st      = [st stringByAppendingString:@"; charset=ISO-8859-9"];
+    content = [content dataUsingEncoding:NSISOLatin1StringEncoding];
+  }
+#endif
+  else {
+    st      = [st stringByAppendingString:@"; charset=UTF-8"];
+    content = [content dataUsingEncoding:NSUTF8StringEncoding];
+  }
+  
+  /* setup part */
+
+  map = [[NGMutableHashMap alloc] initWithCapacity:4];
+  [map addObject:[NGMimeType mimeType:st] forKey:@"content-type"];
+  
+  part = [NGMimeBodyPart bodyPartWithHeader:map];  
+  [part setBody:content];
   [map release]; map = nil;
+  
   return part;
 }
 
