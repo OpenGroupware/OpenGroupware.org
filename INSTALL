@@ -117,3 +117,35 @@ defaults
     => Note: not required for standard locations!
     Defaults write NSGlobalDomain NGBundlePath \
       '"$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/Commands:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/DataSources:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/WebUI:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/"'
+
+
+UPGRADE NOTES
+=============
+
+.. for Users which upgrade from a CVS based "non-FHS" installation.
+
+a) note that the daemons now live in
+
+     /usr/local/sbin/ (or /usr/sbin)
+
+   and are not wrappers anymore (eg ogo-webui-1.0a instead of 
+   OpenGroupware.woa)
+
+b) the PostgreSQL adaptor was renamed from PostgreSQL72 to PostgreSQL
+   - you might need to fix your defaults for that
+
+c) the Alias for the WebServerResources now starts with
+     /OpenGroupware10a.woa/
+   instead of
+     /OpenGroupware.woa/
+
+d) the webserver resources now live in
+     /usr[/local]/share/opengroupware.org-1.0a/www
+
+e) translations (formerly the "Resources" link in $GNUSTEP_USER_ROOT) now live
+   in:
+     /usr[/local]/share/opengroupware.org-1.0a/translations/
+
+f) you might need to remove your NGBundlePath, its not required anymore (for
+   FHS installs):
+     Defaults delete NSGlobalDomain NGBundlePath
