@@ -8,8 +8,6 @@
       { name = LSAddress; type = cmd; } 
     );
     classes = (
-      { name = LSWComponent;    exact-version = 2; },
-      { name = LSWContentPage;  exact-version = 3; },
       { name = LSWObjectViewer; version = 3; },
       { name = SkyAttributeCell; },
       { name = SkyValueCell;     }

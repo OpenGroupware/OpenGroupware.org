@@ -19,11 +19,11 @@
   02111-1307, USA.
 */
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 
 @class NSString, NSNumber, NSUserDefaults;
 
-@interface LSWAddressPreferences : LSWContentPage
+@interface LSWAddressPreferences : OGoContentPage
 {
   id              account;
   NSUserDefaults* defaults;

@@ -258,25 +258,28 @@ static inline void _markFolderInDefaults(SkyMailList *self, id _folder,
 }
  
 - (id)moveMail {
-  if (([self->checkList count] > 0)) {
-    LSWContentPage *page = [self pageWithName:@"LSWMailMove"];
-   
-    [(id)page setMails:self->checkList];
-    self->shouldSyncronize = YES;
-    self->isNewSearch = YES;
-    [self enterPage:page];
-  }
-  return nil;
+  OGoContentPage *page;
+  
+  if ([self->checkList count] == 0)
+    return nil;
+
+  page = [self pageWithName:@"LSWMailMove"];
+  [(id)page setMails:self->checkList];
+  self->shouldSyncronize = YES;
+  self->isNewSearch      = YES;
+  [self enterPage:page];
+  return nil; // TODO: can't we just return the page?
 }
 
 - (id)moveFolder {
-  LSWContentPage *page = [self pageWithName:@"LSWMailFolderMove"];
-
+  OGoContentPage *page;
+  
+  page = [self pageWithName:@"LSWMailFolderMove"];
   [(id)page setFolder:self->selectedFolder];
   [(id)page setRootFolder:self->rootFolder];
   [self enterPage:page];
   self->shouldSyncronize = YES;  
-  return nil;
+  return nil; // TODO: can't we just return the page?
 }
 
 - (id)deleteMail {

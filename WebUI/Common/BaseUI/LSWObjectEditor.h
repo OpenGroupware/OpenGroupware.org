@@ -18,12 +18,11 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __BaseUI_LSWObjectEditor_H__
 #define __BaseUI_LSWObjectEditor_H__
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSArray, NSDictionary, NSString;
 
@@ -49,7 +48,7 @@
     }
 */
 
-@interface LSWObjectEditor : LSWComponent
+@interface LSWObjectEditor : OGoComponent
 {
 @protected
   id           object;        // API

@@ -226,14 +226,14 @@
     [tarTool setTargetFileManager:[self fileManager]];
     [tarTool setSaveAttributes:   [self saveAttributes]];
     [tarTool tarPaths:pathsToZip2 toPath:archiveFile];
-    RELEASE(tarTool);
+    [tarTool release];
   }
 
-  return [[(LSWSession *)[self session] navigation] leavePage];
+  return [[(OGoSession *)[self session] navigation] leavePage];
 }
 
 - (id)back {
-  return [[(LSWSession *)[self session] navigation] leavePage];
+  return [[(OGoSession *)[self session] navigation] leavePage];
 }
 
 @end /* SkyP4ZipPanel */

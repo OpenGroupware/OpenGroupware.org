@@ -19,12 +19,12 @@
   02111-1307, USA.
 */
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 
 @class NSTimeZone, NSCalendarDate, NSNumber;
 @class SkyHolidayCalculator;
 
-@interface SkyResourceSchedulerPage : LSWContentPage
+@interface SkyResourceSchedulerPage : OGoContentPage
 {
   NSTimeZone     *timeZone;
   id             dataSource;
@@ -273,7 +273,7 @@
     NSString *label;
     
     label =
-      [[(LSWSession *)[self session] formatDate] 
+      [[(OGoSession *)[self session] formatDate] 
 	stringForObjectValue:self->day];
     return label;
   }
@@ -281,7 +281,7 @@
 }
 
 - (NSString *)dayTabLabel {
-  return [[(LSWSession *)[self session] formatDate]
+  return [[(OGoSession *)[self session] formatDate]
                        stringForObjectValue:self->day];
 }
 

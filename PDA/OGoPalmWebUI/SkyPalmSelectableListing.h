@@ -22,7 +22,7 @@
 #ifndef __SkyPalmSelectableListing_H__
 #define __SkyPalmSelectableListing_H__
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 /*
  * bindings:
@@ -38,7 +38,7 @@
 
 @class NSMutableArray;
 
-@interface SkyPalmSelectableListing : LSWComponent
+@interface SkyPalmSelectableListing : OGoComponent
 {
   id item;
 }

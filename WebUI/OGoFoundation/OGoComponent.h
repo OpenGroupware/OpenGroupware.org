@@ -52,9 +52,4 @@
 
 #include <OGoFoundation/WOComponent+config.h>
 
-
-/* for compatibility, to be removed */
-@interface LSWComponent : OGoComponent
-@end
-
 #endif /* __OGoFoundation_OGoComponent_H__ */

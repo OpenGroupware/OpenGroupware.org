@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,19 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyPalmDataSourceViewer.h"
-#import <Foundation/Foundation.h>
-#include <OGoFoundation/OGoFoundation.h>
 #include <OGoPalm/SkyPalmEntryDataSource.h>
-#include <NGObjWeb/NGObjWeb.h>
 #include "SkyPalmDataSourceViewerState.h"
-#include <NGExtensions/EOCacheDataSource.h>
 #include <OGoPalm/SkyPalmDocument.h>
-#include <EOControl/EOKeyGlobalID.h>
-
 #include <OGoPalm/SkyPalmConstants.h>
+#include "common.h"
 
 @interface SkyPalmDataSourceViewer(PrivatMethods)
 - (NSString *)newNotificationName;
@@ -43,7 +37,7 @@
 - (NSString *)viewDirectActionName;
 @end
 
-@interface LSWSession(SkyPalmEntryListMethods)
+@interface OGoSession(SkyPalmEntryListMethods)
 - (NSNotificationCenter *)notificationCenter;
 @end
 

@@ -18,12 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include "common.h"
-#include <OGoFoundation/LSWNotifications.h>
+#include <OGoFoundation/OGoContentPage.h>
 
-@interface LSWImapMail2Project : LSWContentPage
+@class NSArray;
+@class NGImap4Message;
+
+@interface LSWImapMail2Project : OGoContentPage
 {
   NSArray        *messages;
   NGImap4Message *message;
@@ -31,46 +32,47 @@
 }
 @end
 
+#include "common.h"
+#include <OGoFoundation/LSWNotifications.h>
 
 @implementation LSWImapMail2Project
 
-- (id)init {
-  if ((self = [super init])) {
-  }
-  return self;
-}
-
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
+  [self->messages release];
+  [self->message  release];
+  [self->project  release];
   [super dealloc];
 }
-#endif
 
-- (NSArray *)messages {
-  return self->messages;
-}
+/* accessors */
+
 - (void)setMessages:(NSArray *)_mes {
   ASSIGN(self->messages, _mes);
 }
-
-- (id)message {
-  return self->message;
+- (NSArray *)messages {
+  return self->messages;
 }
+
 - (void)setMessage:(id)_mes {
   ASSIGN(self->message, _mes);
 }
-
-- (id)project {
-  return self->project;
+- (id)message {
+  return self->message;
 }
+
 - (void)setProject:(id)_pro {
   ASSIGN(self->project, _pro);
 }
+- (id)project {
+  return self->project;
+}
+
+/* actions */
 
 - (id)copy {
-  if ((self->project == nil) || ([EONull null] == self->project))
+  if ((self->project == nil) || ![self->project isNotNull])
     return nil;
-
+  
   [self runCommand:@"email::new",
         @"mimePart", [self->message message],
         @"projectId", [self->project valueForKey:@"projectId"],
@@ -82,8 +84,7 @@
 
 - (id)cancel {
   [self leavePage];
-  return nil;
-};
+  return nil; // TODO: shouldn't we return the result of -leavePage?
+}
 
-@end
-
+@end /* LSWImapMail2Project */

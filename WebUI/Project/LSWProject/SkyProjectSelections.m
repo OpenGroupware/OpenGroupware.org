@@ -18,9 +18,8 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 // TODO: whats the difference to SkyProjectSelection?
 /*
@@ -34,7 +33,7 @@
 
 @class NSString, NSMutableArray, NSArray;
 
-@interface SkyProjectSelections : LSWComponent
+@interface SkyProjectSelections : OGoComponent
 {
   NSString       *title;
   NSString       *searchProjectText;

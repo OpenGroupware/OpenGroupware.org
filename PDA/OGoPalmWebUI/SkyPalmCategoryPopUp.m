@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,9 +18,8 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 /*
  *  mappings:
@@ -32,9 +31,9 @@
  */
 
 @class SkyPalmDocumentDataSource;
-@class NSNumber;
+@class NSNumber, NSNumber, NSArray, NSDictionary;
 
-@interface SkyPalmCategoryPopUp : LSWComponent
+@interface SkyPalmCategoryPopUp : OGoComponent
 {
   NSArray                   *categories;
   NSDictionary              *mappedCategories;
@@ -47,24 +46,12 @@
 
 @end /* SkyPalmCategoryPopUp */
 
-#import  <Foundation/Foundation.h>
+#include "common.h"
 #include <OGoPalm/SkyPalmDocumentDataSource.h>
 #include <OGoPalm/SkyPalmCategoryDocument.h>
 
 @implementation SkyPalmCategoryPopUp
 
-- (id)init {
-  if ((self = [super init])) {
-    self->categories       = nil;
-    self->selectedCategory = nil;
-    self->selectedDevice   = nil;
-    self->item             = nil;
-    self->dataSource       = nil;
-  }
-  return self;
-}
-
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
   RELEASE(self->categories);
   RELEASE(self->mappedCategories);
@@ -75,15 +62,17 @@
   RELEASE(self->dataSource);
   [super dealloc];
 }
-#endif
+
+/* awake */
 
 - (void)sleep {
   [super sleep];
-  RELEASE(self->categories);       self->categories = nil;
-  RELEASE(self->mappedCategories); self->mappedCategories = nil;
+  [self->categories       release]; self->categories       = nil;
+  [self->mappedCategories release]; self->mappedCategories = nil;
 }
 
 /* accessors */
+
 - (void)setSelectedCategory:(NSNumber *)_cat {
   ASSIGN(self->selectedCategory,_cat);
 }
@@ -104,54 +93,78 @@
 }
 
 /* wo bindings */
-- (void)setItem:(id)_item   { ASSIGN(self->item,_item);    }
-- (id)item                  { return self;                 }
-- (void)setOnChange:(id)_oc { ASSIGN(self->onChange, _oc); }
-- (id)onChange              { return self->onChange;       }
+
+- (void)setItem:(id)_item {
+  ASSIGN(self->item, _item); 
+}
+- (id)item {
+  return self;
+}
+
+- (void)setOnChange:(id)_oc {
+  ASSIGN(self->onChange, _oc);
+}
+- (id)onChange {
+  return self->onChange;
+}
 
 - (NSArray *)categories {
-  if (self->categories == nil) {
-    SkyPalmDocumentDataSource *ds = [self palmDataSource];
-    NSEnumerator              *e  = [[ds devices] objectEnumerator];
-    id                        one = nil;
-    NSMutableArray            *ma = [NSMutableArray array];
-    while ((one = [e nextObject])) {
-      NSEnumerator *e2 = [[ds categoriesForDevice:one] objectEnumerator];
-      id           tmp = nil;
-      [ma addObject:[NSDictionary dictionaryWithObject:one
+  SkyPalmDocumentDataSource *ds;
+  NSEnumerator              *e;
+  id                        one;
+  NSMutableArray            *ma;
+  
+  if (self->categories != nil)
+    return self->categories;
+  
+  ds = [self palmDataSource];
+  e  = [[ds devices] objectEnumerator];
+  ma = [NSMutableArray array];
+  while ((one = [e nextObject]) != nil) {
+    NSEnumerator *e2;
+    id           tmp = nil;
+
+    e2 = [[ds categoriesForDevice:one] objectEnumerator];
+    [ma addObject:[NSDictionary dictionaryWithObject:one
                                   forKey:@"device_id"]];
-      while ((tmp = [e2 nextObject])) {
+    while ((tmp = [e2 nextObject]) != nil) {
         tmp = [NSDictionary dictionaryWithObjectsAndKeys:
                             one, @"device_id",
                             tmp, @"category", nil];
         [ma addObject:tmp];
-      }
     }
-    self->categories = [ma copy];
   }
+  self->categories = [ma copy];
   return self->categories;
 }
 - (NSDictionary *)mappedCategories {
-  if (self->mappedCategories == nil) {
-    NSArray             *ar = [self categories];
-    NSEnumerator        *e = [ar objectEnumerator];
-    id                  one, dev, cat;
-    NSMutableDictionary *md =
-      [NSMutableDictionary dictionaryWithCapacity:[ar count]];
-    while ((one = [e nextObject])) {
+  NSArray             *ar;
+  NSEnumerator        *e;
+  id                  one, dev, cat;
+  NSMutableDictionary *md;
+  
+  if (self->mappedCategories != nil)
+    return self->mappedCategories;
+  
+  ar = [self categories];
+  e  = [ar objectEnumerator];
+  md = [NSMutableDictionary dictionaryWithCapacity:[ar count]];
+  
+  while ((one = [e nextObject])) {
       cat = [one valueForKey:@"category"];
       dev = [one valueForKey:@"device_id"];
       cat = (cat == nil) ? dev
         : [dev stringByAppendingFormat:@"__%i", [cat categoryIndex]];
       [md setObject:one forKey:cat];
-    }
-    self->mappedCategories = [md copy];
   }
+  self->mappedCategories = [md copy];
   return self->mappedCategories;
 }
 
 - (void)setSelection:(id)_sel {
-  id cat = [_sel valueForKey:@"category"];
+  id cat;
+
+  cat = [_sel valueForKey:@"category"];
   [self setSelectedDevice:[_sel valueForKey:@"device_id"]];
   if (cat == nil)
     [self setSelectedCategory:[NSNumber numberWithInt:-1]];
@@ -159,9 +172,12 @@
     [self setSelectedCategory:[NSNumber numberWithInt:[cat categoryIndex]]];
 }
 - (id)selection {
-  NSString *key = [self selectedDevice];
-  NSNumber *cat = [self selectedCategory];
-  if (![key length]) return nil;
+  NSString *key;
+  NSNumber *cat;
+
+  key = [self selectedDevice];
+  cat = [self selectedCategory];
+  if ([key length] == 0) return nil;
   if ((cat != nil) && ([cat intValue] != -1))
     key = [key stringByAppendingFormat:@"__%@", cat];
   return [[self mappedCategories] valueForKey:key];
@@ -170,11 +186,9 @@
 - (NSString *)categoryLabel {
   static NSString *allLabel = nil;
   id cat;
-
-  if (allLabel == nil) {
-    allLabel = [[self labels] valueForKey:@"label_popup_all"];
-    RETAIN(allLabel);
-  }
+  
+  if (allLabel == nil) // ??? TODO: this is mixed up!
+    allLabel = [[[self labels] valueForKey:@"label_popup_all"] copy];
   
   if (self->item == nil)
     return allLabel;

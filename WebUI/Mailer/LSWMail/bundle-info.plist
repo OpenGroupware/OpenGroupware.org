@@ -1,4 +1,3 @@
-// $Id$
 {
   bundleHandler = LSWMailModule;
 
@@ -11,10 +10,6 @@
     classes = (
       { name = NSObject;          },
       { name = LSWModuleManager;  exact-version = 2; },
-      { name = LSWComponent;      exact-version = 2; },
-      { name = LSWContentPage;    exact-version = 3; },
-      { name = LSWObjectMailPage; exact-version = 2; },
-      { name = LSWSession;        version = 9;       },
       { name = WOHyperlink;       version = 4;       },
       { name = SkyAttributeCell; },
       { name = SkyValueCell;     }

@@ -279,7 +279,7 @@
     ASSIGN(self->upload3, (id)nil);
   }
   
-  return [[(LSWSession *)[self session] navigation] leavePage];
+  return [[(OGoSession *)[self session] navigation] leavePage];
 }
 
 - (id)upload {
@@ -339,7 +339,7 @@
 }
 
 - (id)cancel {
-  return [[(LSWSession *)[self session] navigation] leavePage];
+  return [[(OGoSession *)[self session] navigation] leavePage];
 }
 
 @end /* SkyProject4DocumentUpload */

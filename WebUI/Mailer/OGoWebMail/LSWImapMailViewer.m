@@ -551,7 +551,7 @@ static NSString   *sendDateDateFmt = @"%Y-%m-%d %H:%M";
 - (id)reallyDeleteMail {
   NSArray        *msg;
   NGImap4Folder  *folder;
-  LSWContentPage *page;
+  OGoContentPage *page;
   
   [self setIsInWarningMode:NO];
   
@@ -587,7 +587,7 @@ static NSString   *sendDateDateFmt = @"%Y-%m-%d %H:%M";
 - (id)delete {
   NSArray        *msg;
   NGImap4Folder  *folder;
-  LSWContentPage *page = nil;
+  OGoContentPage *page = nil;
   
   if ([self object] == nil) {
     [self setErrorString:@"No object available for delete operation."];
@@ -680,7 +680,7 @@ static NSString   *sendDateDateFmt = @"%Y-%m-%d %H:%M";
 }
 
 - (id)toDoc {
-  LSWContentPage *page;
+  OGoContentPage *page;
   id             nv;
 
   nv   = [[[self context] valueForKey:@"page"] navigation];  

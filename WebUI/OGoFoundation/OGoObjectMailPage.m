@@ -18,21 +18,20 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include "LSWObjectMailPage.h"
+#include "OGoObjectMailPage.h"
 #include "common.h"
 #include "LSWContentPage.h"
 #include "WOSession+LSO.h"
-#include "LSWSession.h"
+#include "OGoSession.h"
 #include "WOComponent+Commands.h"
 #include "OGoNavigation.h"
 
-@interface NSObject(LSWObjectMailPage_PRIVATE)
+@interface NSObject(OGoObjectMailPage_PRIVATE)
 - (id)lsoServer;
 @end
 
-@implementation LSWObjectMailPage
+@implementation OGoObjectMailPage
 
 static NSData     *emptyData    = nil;
 static NGMimeType *appOctetType = nil;
@@ -250,4 +249,4 @@ static NGMimeType *appOctetType = nil;
   return self->attachData;
 }
 
-@end /* LSWObjectMailPage */
+@end /* OGoObjectMailPage */

@@ -50,7 +50,7 @@
 #include "common.h"
 #include <NGMime/NGMimeType.h>
 #include <OGoFoundation/LSWNotifications.h>
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 
 @interface NSObject(LSWStaff_PRIVATE)
 - (void)setIsTemplateUser:(BOOL)_flag;

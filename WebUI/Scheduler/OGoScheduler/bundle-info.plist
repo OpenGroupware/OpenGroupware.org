@@ -8,8 +8,6 @@
       { name = LSScheduler; type = cmd; },
     );
     classes = (
-      { name = LSWComponent;     exact-version = 2; },
-      { name = LSWContentPage;   exact-version = 3; },
       { name = LSWModuleManager; exact-version = 2; },
       { name = SkyAttributeCell; },
       { name = SkyValueCell;     },

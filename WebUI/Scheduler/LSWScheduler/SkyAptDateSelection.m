@@ -18,9 +18,8 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 /*
   SkyAptDateSelection
@@ -32,7 +31,7 @@
   tags).
 */
 
-@interface SkyAptDateSelection : LSWComponent
+@interface SkyAptDateSelection : OGoComponent
 {
   // start
   NSString *startDate;

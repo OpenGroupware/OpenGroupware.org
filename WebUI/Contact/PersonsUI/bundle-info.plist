@@ -19,8 +19,6 @@
       { name = LSWTabContent;     },
       { name = LSWTabItem;        },
       { name = LSWModuleManager; exact-version = 2; },
-      { name = LSWComponent;     exact-version = 2; },
-      { name = LSWContentPage;   exact-version = 3; },
       { name = SkyAttributeCell; },
       { name = SkyValueCell;     },
     );

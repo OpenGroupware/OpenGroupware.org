@@ -19,9 +19,9 @@
   02111-1307, USA.
 */
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
-@interface SkySchedulerDockView : LSWComponent
+@interface SkySchedulerDockView : OGoComponent
 {
   BOOL hideLink;
 }

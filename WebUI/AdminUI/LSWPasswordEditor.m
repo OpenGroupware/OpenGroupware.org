@@ -41,7 +41,7 @@
 #include <OGoBase/LSCommandContext+Doc.h>
 #include "common.h"
 #include <EOControl/EOKeyGlobalID.h>
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 #include <OGoAccounts/SkyAccountDocument.h>
 
 @interface EODataSource(SkyAccountLog)

@@ -22,13 +22,13 @@
 #ifndef __WebUI_OGoWebMail_LSWImapMails_H__
 #define __WebUI_OGoWebMail_LSWImapMails_H__
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 
 @class NGImap4Folder, NGImap4Context, NSArray, NSMutableArray, NSDictionary;
 @class NSMutableDictionary, NSString;
 @class SkyImapMailDataSource, SkyImapMailListState;
 
-@interface LSWImapMails : LSWContentPage
+@interface LSWImapMails : OGoContentPage
 {
 @protected
   NGImap4Context *imapContext;

@@ -20,7 +20,7 @@
 */
 // $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSString, NSBundle;
 @class WOComponent;
@@ -40,7 +40,7 @@ struct DockInfo {
   WOComponent *miniTextViewPage;
 };
 
-@interface SkyDock : LSWComponent
+@interface SkyDock : OGoComponent
 {
   struct DockInfo *dockInfo;
   unsigned count;

@@ -108,11 +108,11 @@
     return nil;
   }
 
-  return [[(LSWSession *)[self session] navigation] leavePage];
+  return [[(OGoSession *)[self session] navigation] leavePage];
 }
 
 - (id)cancel {
-  return [[(LSWSession *)[self session] navigation] leavePage];
+  return [[(OGoSession *)[self session] navigation] leavePage];
 }
 
 @end /* SkyProject4DocumentVersionSave */

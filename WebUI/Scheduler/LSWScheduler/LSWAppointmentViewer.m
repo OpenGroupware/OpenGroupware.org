@@ -346,7 +346,8 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
     
     [mailEditor addAttachment:obj type:type sendObject:n];
   }
-  [self enterPage:(id<LSWContentPage>)mailEditor];
+  // TODO: isn't the return sufficient?
+  [self enterPage:(id<OGoContentPage>)mailEditor];
   return mailEditor;
 }
 

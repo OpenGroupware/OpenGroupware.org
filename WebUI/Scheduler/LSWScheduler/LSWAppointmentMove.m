@@ -449,7 +449,7 @@ static NSDictionary *_bindingForAppointment(id self, id obj);
   }
 
   {
-    id<LSWMailEditorComponent,LSWContentPage> mailEditor;
+    id<LSWMailEditorComponent,OGoContentPage> mailEditor;
     NSString *cc = nil;
     NSArray  *ps;
     NSString *title;

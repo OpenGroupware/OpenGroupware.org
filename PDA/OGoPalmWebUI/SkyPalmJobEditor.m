@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,15 +18,14 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include <OGoPalmUI/SkyPalmEntryEditor.h>
 
 @interface SkyPalmJobEditor : SkyPalmEntryEditor
 {
 @private
-  NSString                *duedate;            // duedate
-  BOOL                    hasDuedate;          // 
+  NSString *duedate;
+  BOOL     hasDuedate;
 }
 
 - (void)setDuedate:(NSString *)_date;
@@ -34,11 +33,7 @@
 
 @end
 
-#import <Foundation/Foundation.h>
-#include <NGExtensions/NGExtensions.h>
-#include <NGObjWeb/WOContext.h>
-#include <NGObjWeb/WOResourceManager.h>
-#include <OGoFoundation/LSWSession.h>
+#include "common.h"
 #include <OGoPalm/SkyPalmJobDocument.h>
 
 @interface NSObject(SkyPalmJobEditorMethods)
@@ -47,24 +42,14 @@
 
 @implementation SkyPalmJobEditor
 
-- (id)init {
-  if ((self = [super init])) {
-    self->duedate = nil;
-    self->hasDuedate = NO;
-  }
-  return self;
-}
-
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->duedate);
+  [self->duedate release];
   [super dealloc];
 }
-#endif
 
 - (BOOL)prepareForEditCommand:(NSString *)_command
-                        type:(NGMimeType *)_type
-               configuration:(NSDictionary *)_cmdCfg
+  type:(NGMimeType *)_type
+  configuration:(NSDictionary *)_cmdCfg
 {
   id obj;
 
@@ -77,7 +62,7 @@
   return YES;
 }
 
-// accessors
+/* accessors */
 
 - (id)job {
   return [self snapshot];

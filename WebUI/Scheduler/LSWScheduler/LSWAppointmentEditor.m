@@ -23,7 +23,7 @@
 #include "LSWAppointmentEditor.h"
 #include "LSWAppointmentEditor+Fetches.h"
 #include "OGoAppointmentDateFormatter.h"
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 #include <OGoFoundation/LSWNotifications.h>
 #include <OGoFoundation/LSWNavigation.h>
 #include <OGoFoundation/LSWMailEditorComponent.h>
@@ -1785,7 +1785,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (id)reallyDelete {
-  id<LSWMailEditorComponent,LSWContentPage> mailEditor;
+  id<LSWMailEditorComponent, OGoContentPage> mailEditor;
   NSArray      *ps;
   NSString     *title, *cc, *tmp;
   NGMimeType   *t;
@@ -2035,7 +2035,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     }
     if ([self isMailEnabled]) {
       if ([[self navigation] activePage] != self) {
-        id<LSWMailEditorComponent,LSWContentPage> mailEditor;
+        id<LSWMailEditorComponent, OGoContentPage> mailEditor;
 
         mailEditor = (id)[self pageWithName:@"LSWImapMailEditor"];
 

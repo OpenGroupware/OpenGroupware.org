@@ -1,4 +1,4 @@
-{ // $Id$
+{
   bundleHandler = SkyProject4Module;
 
   requires = {
@@ -9,8 +9,6 @@
     );
 
     classes = (
-      { name = LSWComponent;     exact-version = 2; },
-      { name = LSWContentPage;   exact-version = 3; },
       { name = OGoModuleManager; exact-version = 2; },
     );
   };

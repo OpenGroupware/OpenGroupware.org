@@ -31,11 +31,11 @@
   }
 */
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSString, NSArray, NSMutableArray, NSMutableDictionary;
 
-@interface SkyAccessList : LSWComponent
+@interface SkyAccessList : OGoComponent
 {
   id                  team;
   id                  item;

@@ -18,9 +18,8 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include "LSWObjectMailPage.h"
+#include "OGoObjectMailPage.h"
 #include "NSObject+LSWPasteboard.h"
 #include "LSWContentPage.h"
 #include "WOSession+LSO.h"
@@ -31,8 +30,8 @@
 #include "OGoEditorPage.h"
 #include "LSStringFormatter.h"
 #include "LSWMasterComponent.h"
-#include "LSWComponent.h"
-#include "LSWObjectMailPage.h"
+#include "OGoComponent.h"
+#include "OGoObjectMailPage.h"
 #include "OGoFoundation.h"
 #include "OGoSession.h"
 
@@ -49,8 +48,6 @@ extern void __link_WOComponent_Commands(void);
   [LSWViewerPage         self];
   [OGoEditorPage         self];
   [LSStringFormatter     self];
-  [LSWComponent          self];
-  [LSWObjectMailPage     self];
   [OGoSession            self];
 }
 

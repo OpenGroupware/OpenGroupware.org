@@ -18,13 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSArray;
 
-@interface SkyNavigation : LSWComponent
+@interface SkyNavigation : OGoComponent
 {
   NSArray *pages;
   BOOL    isClickable;

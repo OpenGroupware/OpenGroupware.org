@@ -454,7 +454,7 @@
 }
 
 - (id)toDoc {
-  LSWContentPage *page;
+  OGoContentPage *page;
   id             nv;
   id             body;
 

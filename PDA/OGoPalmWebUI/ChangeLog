@@ -1,3 +1,7 @@
+2004-09-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* code cleanups in all files (v5.1.25)
+
 2004-09-09  Helge Hess  <helge.hess@skyrix.com>
 
 	* GNUmakefile: added FHS installation (v5.1.24)

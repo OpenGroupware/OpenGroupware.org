@@ -337,9 +337,9 @@ static inline NSArray *createImportEntries(NSArray      *values,
   return entries;
 }
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 
-@interface SkyContactImportUploadPage : LSWContentPage
+@interface SkyContactImportUploadPage : OGoContentPage
 {
   NSString       *importType;  // file type / file format
   NSString       *contactType; // Person | Enterprise

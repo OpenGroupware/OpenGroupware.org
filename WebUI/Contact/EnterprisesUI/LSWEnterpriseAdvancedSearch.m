@@ -18,13 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: LSWEnterpriseAdvancedSearch.m 1 2004-08-20 11:17:52Z znek $
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSString, NSArray, NSMutableDictionary, EOQualifier, NSData;
 
-@interface LSWEnterpriseAdvancedSearch : LSWComponent
+@interface LSWEnterpriseAdvancedSearch : OGoComponent
 {
 @private
   NSString            *maxSearchCount;

@@ -58,11 +58,11 @@
 
 @end
 
-#import <Foundation/Foundation.h>
+#include "common.h"
 #include <NGObjWeb/WOContext.h>
 #include <NGObjWeb/WOResourceManager.h>
 #include <NGExtensions/NGExtensions.h>
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 
 @implementation SkyPalmDateEditor
 

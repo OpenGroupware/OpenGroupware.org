@@ -1,6 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=99
+SUBMINOR_VERSION:=100
 
 # v5.0.86 requires BaseUI    v5.0.82
 # v5.0.50 requires libNGMime v4.2.143

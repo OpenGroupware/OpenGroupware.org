@@ -8,10 +8,6 @@
       { name = LSBase;  type = cmd;   }
     );
     classes = (
-      { name = NSObject;       },
-      { name = WOComponent;    },
-      { name = WODirectAction; exact-version = 4; },
-      { name = LSWSession;     version = 9; },
       { name = WOxElemBuilder; },
     );
   };

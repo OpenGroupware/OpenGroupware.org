@@ -885,14 +885,14 @@ static inline id _getAttrValue(LSWTableView *self, NSString *_key) {
 }
 
 - (id)mailTo {
-  id mailEditor;
+  WOComponent *mailEditor;
 
   mailEditor = (id)[[self application] pageWithName:@"LSWImapMailEditor"];
   
   if (mailEditor != nil) {
     [(id)mailEditor addReceiver:self->item type:@"to"];
     [(id)mailEditor setContentWithoutSign:@""];
-    [[[self session] navigation] enterPage:(id<LSWContentPage>)mailEditor];
+    [[[self session] navigation] enterPage:(id<OGoContentPage>)mailEditor];
   }
   return nil;
 }

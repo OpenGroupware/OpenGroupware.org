@@ -357,7 +357,7 @@
   NSCalendarDate *date, *endDate, *now;
   NSDictionary   *d;
   id             page;
-  LSWContentPage *activePage;
+  OGoContentPage *activePage;
   
   sn = [self session];
 

@@ -18,14 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSString, NSData, NSDictionary, NSArray, NSMutableArray;
 @class NGMimeType;
 
-@interface SkyDocTarInlineViewer : LSWComponent 
+@interface SkyDocTarInlineViewer : OGoComponent 
 {
   NSString       *uri;
   NGMimeType     *contentType;

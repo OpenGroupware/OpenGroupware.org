@@ -18,15 +18,14 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 
 @class NSArray, NSString;
 @class EOQualifier;
 @class EOCacheDataSource;
 
-@interface LSWPersons : LSWContentPage
+@interface LSWPersons : OGoContentPage
 {
   EOCacheDataSource *dataSource;
   NSString          *maxSearchCount;

@@ -20,10 +20,10 @@
 */
 // $Id$
 
-#ifndef __LSWebInterface_LSWFoundation_SkyListView_H__
-#define __LSWebInterface_LSWFoundation_SkyListView_H__
+#ifndef __BaseUI_SkyListView_H__
+#define __BaseUI_SkyListView_H__
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 /*
   Usage:
@@ -59,7 +59,7 @@
 
 @class NSNumber, NSDictionary, NSString, NSArray, NSMutableArray;
 
-@interface SkyListView : LSWComponent
+@interface SkyListView : OGoComponent
 {
 @private
   NSNumber     *row;
@@ -89,4 +89,4 @@
 
 @end
 
-#endif /* __LSWebInterface_LSWFoundation_SkyListView_H__ */
+#endif /* __BaseUI_SkyListView_H__ */

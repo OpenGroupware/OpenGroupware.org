@@ -18,16 +18,15 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __BaseUI_LSWWarningPanel_H__
 #define __BaseUI_LSWWarningPanel_H__
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSString;
 
-@interface LSWWarningPanel : LSWComponent
+@interface LSWWarningPanel : OGoComponent
 {
 @private
   NSString *phrase;

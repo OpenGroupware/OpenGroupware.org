@@ -265,19 +265,10 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
 - (NSString *)_pathForOGoResourceNamed:(NSString *)_name
   inFramework:(NSString *)_fwName
   language:(NSString *)_lang
+  searchPathes:(NSArray *)_pathes
 {
   // TODO: a lot of DUP code with _urlForResourceNamed, needs some refacturing
-  /* Note: this looks only in WebServerResources! */
   NSString *path;
-  
-  if (![self shouldLookupResourceInWebServerResources:_name]) {
-    if (debugOn) {
-      [self debugWithFormat:
-	      @"  not looking for resource in WebServerResources: '%@'", 
-	      _name];
-    }
-    return nil;
-  }
   
   if (debugOn) [self debugWithFormat:@"lookup OGo resource '%@'", _name];
   
@@ -292,8 +283,8 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   /* check for framework resources (webserver resources + framework) */
 
   if (debugOn) 
-    [self debugWithFormat:@"check framework WebServerResources ..."];
-  path = [self _checkPathes:wsPathes forOGoResourceNamed:_name
+    [self debugWithFormat:@"check framework resources ..."];
+  path = [self _checkPathes:_pathes forOGoResourceNamed:_name
 	       inFramework:_fwName language:_lang];
   if (path != nil) {
     [self cacheValue:path inCache:self->keyToPath];
@@ -302,8 +293,9 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   
   /* check in basepath of webserver resources */
   
-  if (debugOn) [self debugWithFormat:@"check global WebServerResources ..."];
-  path = [self _checkPathes:wsPathes forOGoResourceNamed:_name
+  // TODO: where is the difference, same call like above?
+  if (debugOn) [self debugWithFormat:@"check global resources ..."];
+  path = [self _checkPathes:_pathes forOGoResourceNamed:_name
 	       inFramework:_fwName language:_lang];
   if (path != nil) {
     [self cacheValue:path inCache:self->keyToPath];
@@ -314,6 +306,41 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   if (debugOn) 
     [self debugWithFormat:@"NOT FOUND: %@ (%@)", _name, self->cachedKey];
   return nil;
+}
+
+- (NSString *)_pathForOGoResourceNamed:(NSString *)_name
+  inFramework:(NSString *)_fwName
+  language:(NSString *)_lang
+{
+  NSString *p;
+  
+  /* check in webserver resources */
+  
+  if ([self shouldLookupResourceInWebServerResources:_name]) {
+    p = [self _pathForOGoResourceNamed:_name inFramework:_fwName
+              language:_lang searchPathes:wsPathes];
+    if (p != nil) return p;
+  }
+  
+  return nil;
+}
+
+- (NSString *)lookupComponentsConfigInFramework:(NSString *)_fwName
+  languages:(NSArray *)_langs
+{
+  NSString *rpath;
+#warning TODO: lookup 
+
+  if (debugOn) {
+    [self debugWithFormat:@"lookup components cfg: %@/%@", _fwName,
+            [_langs componentsJoinedByString:@","]];
+  }
+  
+  /* look using OWResourceManager */
+  rpath = [super pathForResourceNamed:@"components.cfg"
+                 inFramework:_fwName
+		 languages:_langs];
+  return rpath;
 }
 
 - (NSString *)pathForResourceNamed:(NSString *)_name
@@ -334,23 +361,22 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
     return nil;
   }
   
+  /* special handling for components.cfg */
+  
+  if ([_name isEqualToString:@"components.cfg"])
+    return [self lookupComponentsConfigInFramework:_fwName languages:_langs];
+  
   if (debugOn) {
     [self debugWithFormat:@"pathForResourceNamed: %@ (languages: %@)",
 	    _name, [_langs componentsJoinedByString:@","]];
   }
   
-  if ([self shouldLookupResourceInWebServerResources:_name]) {
-    /* 
-       Note: currently the OGo lookup method only checks the webserver 
-             resources
-    */
-    
-    /* check languages */
+  /* check languages */
   
-    e = [_langs objectEnumerator];
-    while ((language = [e nextObject])) {
+  e = [_langs objectEnumerator];
+  while ((language = [e nextObject])) {
       NSString *rpath;
-    
+      
       if (debugOn) [self logWithFormat:@"  check language: '%@'", language];
       rpath = [self _pathForOGoResourceNamed:_name inFramework:_fwName
 		    language:language];
@@ -358,26 +384,20 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
 	if (debugOn) [self logWithFormat:@"  FOUND: %@", rpath];
 	return rpath;
       }
-    }
+  }
   
-    /* check without language */
+  /* check without language */
   
-    rpath = [self _pathForOGoResourceNamed:_name inFramework:_fwName
+  rpath = [self _pathForOGoResourceNamed:_name inFramework:_fwName
 		  language:nil];
-    if (rpath != nil)
-      return rpath;
+  if (rpath != nil)
+    return rpath;
   
-    if (debugOn) {
-      [self debugWithFormat:
-	      @"did not find resource in OGo, try SOPE lookup: %@", _name];
-    }
-  }
-  else if (debugOn) {
+  if (debugOn) {
     [self debugWithFormat:
-	    @"  not looking for resource in WebServerResources: '%@'", 
-	    _name];
+	      @"did not find resource in OGo, try SOPE lookup: %@", _name];
   }
-  
+    
   /* look using OWResourceManager */
   
   rpath = [super pathForResourceNamed:_name inFramework:_fwName

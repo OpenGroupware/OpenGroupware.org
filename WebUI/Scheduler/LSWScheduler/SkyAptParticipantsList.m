@@ -18,13 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 
 @class NSArray;
 
-@interface SkyAptParticipantsList : LSWContentPage
+@interface SkyAptParticipantsList : OGoContentPage
 {
   id      appointment;
   id      item;
@@ -48,7 +47,7 @@
 
 #include "common.h"
 #include <OGoFoundation/LSWMailEditorComponent.h>
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 #include <EOControl/EOKeyGlobalID.h>
 #include <NGMime/NGMimeType.h>
 
@@ -578,7 +577,7 @@ static NGMimeType   *eoDateType        = nil;
   if (mailEditor != nil) {
     [(id)mailEditor addReceiver:self->item type:@"to"];
     [(id)mailEditor setContentWithoutSign:@""];
-    [[[self session] navigation] enterPage:(id<LSWContentPage>)mailEditor];
+    [[[self session] navigation] enterPage:(id<OGoContentPage>)mailEditor];
   }
   return nil;
 }
@@ -591,7 +590,7 @@ static NGMimeType   *eoDateType        = nil;
   if (mailEditor != nil) {
     [(id)mailEditor addReceiver:self->member type:@"to"];
     [(id)mailEditor setContentWithoutSign:@""];
-    [[[self session] navigation] enterPage:(id<LSWContentPage>)mailEditor];
+    [[[self session] navigation] enterPage:(id<OGoContentPage>)mailEditor];
   }
   return nil;
 }
@@ -690,7 +689,7 @@ static NSString *_personName(id self, id _person) {
 
 - (id)sendMailWithSubject:(NSString *)_subject {
   /* TODO: this needs to be moved to a separate object! DUP CODE */
-  id<LSWMailEditorComponent,LSWContentPage> mailEditor;
+  id<LSWMailEditorComponent, OGoContentPage> mailEditor;
   id       app;
   NSArray  *ps;
   NSString *title;

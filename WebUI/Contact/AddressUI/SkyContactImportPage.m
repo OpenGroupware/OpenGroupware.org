@@ -19,11 +19,11 @@
   02111-1307, USA.
 */
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 
 @class NSMutableArray, EODataSource;
 
-@interface SkyContactImportPage : LSWContentPage
+@interface SkyContactImportPage : OGoContentPage
 {
   NSString *contactType;
   int      importCnt;

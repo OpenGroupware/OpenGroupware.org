@@ -18,18 +18,17 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSArray;
 
-@interface SkyImapMailPrintViewer : LSWComponent
+@interface SkyImapMailPrintViewer : OGoComponent
 {
-  id      emailContent;
+  id      emailContent; // TODO: improve static typing
   id      object;
   NSArray *headers;
-  id      header;
+  id      header;       // TODO: improve static typing
 }
 
 @end /* SkyImapMailPrintViewer */

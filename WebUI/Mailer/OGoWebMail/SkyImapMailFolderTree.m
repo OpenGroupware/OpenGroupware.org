@@ -18,15 +18,14 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSString;
 @class LSWTreeState;
 @class NGImap4Folder, NGImap4Message;
 
-@interface SkyImapMailFolderTree : LSWComponent
+@interface SkyImapMailFolderTree : OGoComponent
 {
 @protected
   NGImap4Folder  *folder;

@@ -18,14 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: LSWImapMailLogin.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __OGoWebMail_LSWMailImapLogin_H__
 #define __OGoWebMail_LSWMailImapLogin_H__
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
-@interface LSWImapMailLogin : LSWComponent
+@interface LSWImapMailLogin : OGoComponent
 {
   NSString *host;
   NSString *login;

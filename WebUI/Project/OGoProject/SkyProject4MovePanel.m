@@ -322,7 +322,7 @@
     if ([self->failedFiles count] == 0) {
       /* no errors, everything moved .. */
       [fm changeCurrentDirectoryPath:destination];
-      return [[(LSWSession *)[self session] navigation] leavePage];
+      return [[(OGoSession *)[self session] navigation] leavePage];
     }
 
     if ([self->failedFiles count] == [self->pathsToMove count]) {
@@ -369,7 +369,7 @@
     }
     if ([leftFiles count] == 0)
       /* no errors, everything copied .. */
-      return [[(LSWSession *)[self session] navigation] leavePage];
+      return [[(OGoSession *)[self session] navigation] leavePage];
 
     if ([leftFiles count] == [self->pathsToMove count]) {
       [self printError];

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,12 +18,10 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
-#import <Foundation/Foundation.h>
+#include <OGoFoundation/OGoComponent.h>
 
-@interface SkyPalmEntryListHeader : LSWComponent
+@interface SkyPalmEntryListHeader : OGoComponent
 {
   NSString *type;                   // address / date / memo / job
   NSString *newLabelKey;
@@ -37,28 +35,13 @@
 
 @end
 
+#include "common.h"
 #include <NGExtensions/EOCacheDataSource.h>
 #include <OGoPalm/SkyPalmEntryDataSource.h>
 #include <OGoPalm/SkyPalmDocument.h>
-#include <OGoFoundation/OGoFoundation.h>
 
 @implementation SkyPalmEntryListHeader
 
-- (id)init {
-  if ((self = [super init])) {
-    self->type                  = nil;
-    self->newLabelKey           = nil;
-    self->newFromSkyrixLabelKey = nil;
-    self->titleLabelKey         = nil;
-
-    self->newLabel              = nil;
-    self->newFromSkyrixLabel    = nil;
-    self->newLabel              = nil;
-  }
-  return self;
-}
-
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
   RELEASE(self->type);
   RELEASE(self->newLabelKey);
@@ -70,7 +53,8 @@
   RELEASE(self->newLabel);
   [super dealloc];
 }
-#endif
+
+/* notifications */
 
 - (void)syncSleep {
   RELEASE(self->type);                   self->type                  = nil;
@@ -83,32 +67,34 @@
   [super syncSleep];
 }
 
-// accessors
+/* accessors */
 
 - (BOOL)synchronizesVariablesWithBindings {
   return NO;
 }
 
 - (void)setType:(NSString *)_type {
-  ASSIGN(self->type,_type);
+  ASSIGNCOPY(self->type,_type);
+  
   RELEASE(self->newLabelKey);
   RELEASE(self->newFromSkyrixLabelKey);
   RELEASE(self->titleLabelKey);
-  self->newLabelKey =
-    [[NSString alloc] initWithFormat:@"new_%@", _type];
+  
+  self->newLabelKey   = [[@"new_" stringByAppendingString:_type] copy];
+  self->titleLabelKey = [[@"list_title_" stringByAppendingString:_type] copy];
+  
   self->newFromSkyrixLabelKey =
     [[NSString alloc] initWithFormat:@"new_%@_from_skyrix", _type];
-  self->titleLabelKey =
-    [[NSString alloc] initWithFormat:@"list_title_%@", _type];
 }
 
 - (void)loadBindings {
   id tmp;
+  
   [self setType:[self valueForBinding:@"type"]];
 
   // label keys
   tmp = [self valueForBinding:@"titleLabelKey"];
-  if ([tmp length]) {
+  if ([tmp length] > 0) {
     ASSIGN(self->titleLabelKey,tmp);
   }
   tmp = [self valueForBinding:@"newLabelKey"];

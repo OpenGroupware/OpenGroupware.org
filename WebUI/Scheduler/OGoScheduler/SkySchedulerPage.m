@@ -18,15 +18,14 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 #include <OGoScheduler/SkyHolidayCalculator.h>
 #include <OGoScheduler/SkyAptCompoundDataSource.h>
 
 @class NSTimeZone, NSCalendarDate, NSNumber;
 
-@interface SkySchedulerPage : LSWContentPage
+@interface SkySchedulerPage : OGoContentPage
 {
   NSTimeZone     *timeZone;
   id             dataSource;

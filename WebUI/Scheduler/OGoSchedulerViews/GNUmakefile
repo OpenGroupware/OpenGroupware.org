@@ -33,27 +33,6 @@ OGoSchedulerViews_OBJC_FILES = \
 	SkyAptResourceList.m		\
 	SkyAptResourceGroupsList.m	\
 
-OGoSchedulerViews_COMPONENTS = \
-	SkySchedulerConflictCell.wo	\
-	SkyMonthBrowser.wo		\
-	\
-	SkyInlineDayOverview.wo		\
-	SkyInlineWeekOverview.wo	\
-	SkyInlineMonthOverview.wo	\
-	SkyInlineYearOverview.wo	\
-	SkyInlineDayChart.wo		\
-	SkyInlineWeekChart.wo		\
-	SkyInlineDayHChart.wo		\
-	SkyInlineWeekHChart.wo		\
-	SkyPrintWeekOverview.wo		\
-	SkyPrintMonthOverview.wo    	\
-	SkyInlineWeekColumnView.wo  	\
-	\
-	SkyAppointmentList.wo      	\
-	SkyAptResourceList.wo		\
-	SkyNewsAppointmentList.wo   	\
-	SkyAptResourceGroupsList.wo	\
-
 OGoSchedulerViews_RESOURCE_FILES += Defaults.plist Version
 OGoSchedulerViews_LOCALIZED_RESOURCE_FILES += OGoSchedulerViews.ccfg
 

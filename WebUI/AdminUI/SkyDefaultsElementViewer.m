@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,18 +18,18 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class SkyDefaultsElement;
 
-@interface SkyDefaultsElementViewer : LSWComponent
+@interface SkyDefaultsElementViewer : OGoComponent
 {
   SkyDefaultsElement *element;
   BOOL                showInfo;
 }
-@end /* SkyDefaultsElementViewer */
+
+@end
 
 #include "common.h"
 #include "SkyDefaultsDomain.h"
@@ -40,26 +40,28 @@
 
 - (void)dealloc {
   [self->element release];
+  [super dealloc];
 }
 
-- (BOOL)showInfo {
-  return self->showInfo;
-}
+/* accessors */
+
 - (void)setShowInfo:(BOOL)_b {
   self->showInfo = _b;
 }
-
-- (id)element {
-  return self->element;
+- (BOOL)showInfo {
+  return self->showInfo;
 }
 
 - (void)setElement:(id)_obj {
   ASSIGN(self->element, _obj);
 }
+- (id)element {
+  return self->element;
+}
 
 - (NSString *)currentValue {
   id value;
-
+  
   if ((value = [self->element value]) != nil)
     return [value stringValue];
   return [[self labels] valueForKey:@"valueNotSet"];

@@ -655,7 +655,7 @@ static NSCharacterSet *digits = nil;
       NS_DURING {
         LSCommandContext *ctx;
         
-        if ((ctx = [(LSWSession *)session commandContext]) == nil) {
+        if ((ctx = [(OGoSession *)session commandContext]) == nil) {
           if (session) {
             NSLog(@"%s: session %@ has no command context ?",
                   __PRETTY_FUNCTION__, session);

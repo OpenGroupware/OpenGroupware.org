@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #import <Foundation/Foundation.h>
 
@@ -28,6 +27,12 @@
 #include <EOControl/EOSortOrdering.h>
 #include <EOControl/EOKeyGlobalID.h>
 
+#include <NGExtensions/NGExtensions.h>
+
+#include <NGObjWeb/WOContext.h>
+#include <NGObjWeb/WOResourceManager.h>
+
 #include <OGoDocuments/SkyDocument.h>
 
 #include <OGoFoundation/OGoFoundation.h>
+#include <OGoFoundation/OGoSession.h>

@@ -244,7 +244,7 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
   if (mailEditor != nil) {
     [(id)mailEditor addReceiver:[self->object valueInComponent:comp]type:type];
     [(id)mailEditor setContentWithoutSign:@""];
-    [[[comp session] navigation] enterPage:(id<LSWContentPage>)mailEditor];
+    [[[comp session] navigation] enterPage:(id<OGoContentPage>)mailEditor];
     // TODO: try whether we can just return 'mailEditor' instead of -enterPage:
   }
   return nil;

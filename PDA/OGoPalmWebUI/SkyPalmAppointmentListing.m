@@ -28,27 +28,20 @@
 }
 @end /* SkyPalmSelectableListing */
 
-#import <Foundation/Foundation.h>
+#include "common.h"
 #include <OGoScheduler/SkyAppointmentDocument.h>
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 
 // overwriting
 
 @implementation SkyPalmAppointmentListing
 
-- (id)init {
-  if ((self = [super init])) {
-    self->aptTypes = nil;
-  }
-  return self;
-}
-
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
   RELEASE(self->aptTypes);
   [super dealloc];
 }
-#endif
+
+/* accessors */
 
 - (NSArray *)appointments {
   return [self list];
@@ -69,8 +62,11 @@
 }
 
 - (NSString *)repeatTypeString {
-  NSString *type = [[self appointment] type];
-  if (![type length]) return (NSString *)@"";
+  NSString *type;
+  
+  type = [(SkyAppointmentDocument *)[self appointment] type];
+  
+  if ([type length] == 0) return (NSString *)@"";
   if ([type isEqualToString:@"daily"])
     return [[self labels] valueForKey:@"label_repeatDaily"];
   if ([type isEqualToString:@"weekly"])
@@ -103,37 +99,42 @@
   return configured;
 }
 - (NSArray *)aptTypes {
-  if (self->aptTypes == nil) {
-    self->aptTypes = [self configuredAptTypes];
-    RETAIN(self->aptTypes);
-  }
+  if (self->aptTypes == nil)
+    self->aptTypes = [[self configuredAptTypes] retain];
   return self->aptTypes;
 }
 
 - (id)_appointmentType {
-  NSEnumerator *e      = [[self aptTypes] objectEnumerator];
-  id           one     = nil;
-  NSString     *wanted = [[self appointment] valueForKey:@"aptType"];
-  NSString     *key    = nil;
+  NSEnumerator *e;
+  id           one;
+  NSString     *wanted;
+  
+  e      = [[self aptTypes] objectEnumerator];
+  wanted = [[self appointment] valueForKey:@"aptType"];
+  
   while ((one = [e nextObject])) {
+    NSString *key;
+    
     key = [one valueForKey:@"type"];
     if ((![wanted length]) && [key isEqualToString:@"none"])
       return one;
-    else if ([wanted isEqualToString:key])
+    if ([wanted isEqualToString:key])
       return one;
   }
   return [NSDictionary dictionaryWithObjectsAndKeys:@"none", @"type", nil];
 }
 
 - (NSString *)aptTypeLabel {
-  id       type   = [self _appointmentType];
-  NSString *label = [type valueForKey:@"label"];
+  id       type;
+  NSString *label;
+  
+  type = [self _appointmentType];
+  if ((label = [type valueForKey:@"label"]) != nil)
+    return label;
  
-  return (label != nil)
-    ? label
-    : [[self labels] valueForKey:
-                     [NSString stringWithFormat:@"aptType_%@",
-                               [type valueForKey:@"type"]]];
+  label = [@"aptType_" stringByAppendingFormat:
+              [[type valueForKey:@"type"] description]];
+  return [[self labels] valueForKey:label];
 }
 
 @end /* SkyPalmAppointmentListing */

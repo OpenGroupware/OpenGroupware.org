@@ -1,3 +1,17 @@
+2004-09-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.72
+
+	* OGoResourceManager.m: prepared to lookup components.cfg files in
+	  the Templates directory. Needs to be completed.
+
+	* OGoContentPage.h: removed deprecated LSWContentPage protocol (use
+	  OGoContentPage instead)
+
+	* removed deprecated LSWComponent, LSWSession
+
+	* renamed LSWObjectMailPage to OGoObjectMailPage
+
 2004-09-14  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoSession.m: removed a debug log (v5.1.71)

@@ -77,14 +77,13 @@ static NSMutableArray *_getGIDSforIds(SkyPalmPreferences *self,
                                       NSArray *_ids, NSString *_entityName); 
 @end /* SkyPalmPreferences */
 
-#import <Foundation/Foundation.h>
-#include <OGoFoundation/OGoFoundation.h>
+#include "common.h"
 #include <OGoPalm/SkyPalmAddressDocument.h>
 #include <NGExtensions/NGBundleManager.h>
 #include <LSFoundation/LSFoundation.h>
 #include <GDLAccess/GDLAccess.h>
 
-@interface LSWSession(SkyPalmEntryListMethods)
+@interface OGoSession(SkyPalmEntryListMethods)
 - (NSNotificationCenter *)notificationCenter;
 @end
 

@@ -23,12 +23,12 @@
 #ifndef __LSWebInterface_LSWFoundation_SkyEditorComponent_H__
 #define __LSWebInterface_LSWFoundation_SkyEditorComponent_H__
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSMutableDictionary, NSDictionary, NSString;
 @class NGMimeType, SkyDocument;
 
-@interface SkyEditorComponent : LSWComponent
+@interface SkyEditorComponent : OGoComponent
 {
 @private
   SkyDocument *document;

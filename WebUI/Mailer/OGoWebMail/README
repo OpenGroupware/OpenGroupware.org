@@ -12,8 +12,8 @@ Class-Hierachy
 [hh: probably outdated]
   NSObject
     WOComponent
-      LSWComponent
-        LSWContentPage
+      OGoComponent
+        OGoContentPage
           LSWMailEditor
           LSWEditorPage
             LSWMailFolderEditor

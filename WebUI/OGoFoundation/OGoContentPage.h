@@ -22,7 +22,7 @@
 #ifndef __OGoFoundation_OGoContentPage_H__
 #define __OGoFoundation_OGoContentPage_H__
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 /*
   TODO: explain the following!
@@ -42,12 +42,8 @@
 - (BOOL)rollbackForPage:(id<OGoContentPage>)_page;
 @end
 
-/* for compatibility, to be removed */
-@protocol LSWContentPage < OGoContentPage >
-@end
-
 /* should inherit from OGoComponent in the long run ..*/
-@interface OGoContentPage : LSWComponent < LSWContentPage >
+@interface OGoContentPage : OGoComponent < OGoContentPage >
 {
 @private
   NSString *warningOkAction;

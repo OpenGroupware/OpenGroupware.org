@@ -34,7 +34,6 @@ libOGoFoundation_HEADER_FILES = \
 	WOSession+LSO.h			\
 	\
 	LSWClipboardOwner.h		\
-	LSWComponent.h			\
 	LSWConfigHandler.h		\
 	LSWContentPage.h		\
 	LSWEditorPage+Wizard.h		\
@@ -46,9 +45,8 @@ libOGoFoundation_HEADER_FILES = \
 	LSWModuleManager.h		\
 	LSWNavigation.h			\
 	LSWNotifications.h		\
-	LSWObjectMailPage.h		\
+	OGoObjectMailPage.h		\
 	OGoResourceManager.h		\
-	LSWSession.h			\
 	LSWTreeState.h			\
 	LSWViewerPage.h			\
 	\
@@ -88,9 +86,8 @@ libOGoFoundation_OBJC_FILES = \
 	LSWLabelHandler.m		\
 	LSWMimeContent.m		\
 	LSWNotifications.m		\
-	LSWObjectMailPage.m		\
+	OGoObjectMailPage.m		\
 	OGoResourceManager.m		\
-	LSWSession.m			\
 	LSWTreeState.m		        \
 	\
 	NSObject+Label.m		\

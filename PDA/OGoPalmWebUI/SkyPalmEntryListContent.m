@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 /*
 
@@ -36,19 +35,16 @@
 
  */
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 #define ACTION_NO_ACTION        0
 #define ACTION_COMPONENT_ACTION 1
 #define ACTION_DIRECT_ACTION    2
 
-@interface SkyPalmEntryListContent : LSWComponent
-{
-}
-
+@interface SkyPalmEntryListContent : OGoComponent
 @end /* SkyPalmEntryListContent */
 
-#import <Foundation/Foundation.h>
+#include "common.h"
 
 @implementation SkyPalmEntryListContent
 

@@ -796,7 +796,7 @@ static inline NSNumber *Int2Number(int _nr) {
 }
 
 - (id)sendMessage {
-  id<LSWMailEditorComponent,LSWContentPage> editor;
+  id<LSWMailEditorComponent,OGoContentPage> editor;
   NSString *subject = nil;
   id       obj;
   

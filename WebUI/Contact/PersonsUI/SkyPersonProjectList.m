@@ -18,13 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 
 @class NSArray;
 
-@interface SkyPersonProjectList : LSWContentPage
+@interface SkyPersonProjectList : OGoContentPage
 {
 @protected
   id person;

@@ -51,7 +51,7 @@ static BOOL debugOn = NO;
   if ((self = [super init])) {
     [[self notificationCenter]
       addObserver:self selector:@selector(resetSession:)
-      name:@"LSWSessionFinalizing" object:[self session]];
+      name:@"OGoSessionFinalizing" object:[self session]];
   }
   return self;
 }
@@ -154,6 +154,3 @@ static BOOL debugOn = NO;
 }
 
 @end /* OGoComponent */
-
-@implementation LSWComponent
-@end /* LSWComponent */

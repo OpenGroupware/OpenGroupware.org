@@ -1,3 +1,7 @@
+2004-09-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyDefaultsElementViewer.m: fixed a memory leak (v5.1.31)
+
 2004-08-27  Helge Hess  <helge@dogbert.in.skyrix.com>
 
 	* Resources/NSGlobalDomain.plist: removed PostgreSQL72 (is now named

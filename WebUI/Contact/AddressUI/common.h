@@ -33,6 +33,6 @@
 #include <LSFoundation/LSFoundation.h>
 #include <OGoFoundation/OGoFoundation.h>
 #include <OGoFoundation/LSWNotifications.h>
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 
 #endif /* __WebUI_AddressUI_common_H__ */

@@ -18,15 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWContentPage.h>
-#include "common.h"
-#include <OGoFoundation/LSWNotifications.h>
-#include <OGoFoundation/LSWSession.h>
-#include <EOControl/EOArrayDataSource.h>
+#include <OGoFoundation/OGoContentPage.h>
 
-@interface SkyNews : LSWContentPage
+@class NSString, NSDictionary;
+@class EOArrayDataSource;
+
+@interface SkyNews : OGoContentPage
 {
 @protected
   EOArrayDataSource *dataSource;
@@ -40,6 +38,11 @@
   NSString          *sortedKey;
 }
 @end
+
+#include "common.h"
+#include <OGoFoundation/LSWNotifications.h>
+#include <OGoFoundation/OGoSession.h>
+#include <EOControl/EOArrayDataSource.h>
 
 @interface SkyNews(PrivateMethods)
 - (id)tabClicked;

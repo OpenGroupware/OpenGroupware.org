@@ -400,7 +400,7 @@ static NSNumber   *noNum      = nil;
 
 - (id)createMail:(id)_apt {
   /* TODO: split up into smaller methods */
-  id<LSWMailEditorComponent,LSWContentPage> mailEditor;
+  id<LSWMailEditorComponent,OGoContentPage> mailEditor;
   NSString     *str     = nil;
   NSArray      *ps      = nil;
   NSString     *title, *cc, *subject;

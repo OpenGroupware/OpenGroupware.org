@@ -10,9 +10,6 @@
     classes = (
       { name = NSObject;          },
       { name = LSWModuleManager;  exact-version = 2; },
-      { name = LSWComponent;      exact-version = 2; },
-      { name = LSWContentPage;    exact-version = 3; },
-      { name = LSWObjectMailPage; exact-version = 2; } ,
       { name = SkyAttributeCell; },
       { name = SkyValueCell;     },
     );

@@ -551,14 +551,14 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
 }
 
 - (id)mailTo {
-  id mailEditor;
+  WOComponent *mailEditor;
 
   mailEditor = [[self application] pageWithName:@"LSWImapMailEditor"];
   
   if (mailEditor != nil) {
     [(id)mailEditor addReceiver:[self cellObjectValue] type:@"to"];
     [(id)mailEditor setContentWithoutSign:@""];
-    [[[self session] navigation] enterPage:(id<LSWContentPage>)mailEditor];
+    [[[self session] navigation] enterPage:(id<OGoContentPage>)mailEditor];
   }
   return nil;
 }

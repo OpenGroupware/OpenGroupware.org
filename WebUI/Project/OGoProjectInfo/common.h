@@ -36,7 +36,7 @@
 
 #include <LSFoundation/LSCommandContext.h>
 #include <OGoFoundation/OGoFoundation.h>
-#include <OGoFoundation/LSWSession.h>
-#include <OGoFoundation/LSWNavigation.h>
+#include <OGoFoundation/OGoSession.h>
+#include <OGoFoundation/OGoNavigation.h>
 
 #endif /* __SkyProject4_common_H__ */

@@ -140,13 +140,13 @@
   doc = nil;
   if ([_object isKindOfClass:[EOGlobalID class]]) {
     id cmdctx;
-    cmdctx = [(LSWSession *)[self session] commandContext];
+    cmdctx = [(OGoSession *)[self session] commandContext];
     doc = [[cmdctx documentManager]
                    documentForGlobalID:_object];
   }
   else if ([_object isKindOfClass:[NSURL class]]) {
     id cmdctx;
-    cmdctx = [(LSWSession *)[self session] commandContext];
+    cmdctx = [(OGoSession *)[self session] commandContext];
     doc = [[cmdctx documentManager]
                    documentForURL:_object];
   }
@@ -447,7 +447,7 @@
     return [self printErrorWithSource:fname destination:nil];
   
   /* leave editor */
-  [[(LSWSession *)[self session] navigation] leavePage];
+  [[(OGoSession *)[self session] navigation] leavePage];
   [self setDocument:ldocument];
   
   /* enter viewer */
@@ -514,7 +514,7 @@
       [self setErrorString:@"couldn't unlock file after writing data .."];
   }
   
-  return [[(LSWSession *)[self session] navigation] leavePage];
+  return [[(OGoSession *)[self session] navigation] leavePage];
 }
 
 - (id)save {
@@ -528,7 +528,7 @@
 }
 
 - (id)cancel {
-  return [[(LSWSession *)[self session] navigation] leavePage];
+  return [[(OGoSession *)[self session] navigation] leavePage];
 }
 
 - (id)saveAndMove {

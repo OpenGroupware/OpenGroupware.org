@@ -8,9 +8,7 @@
       { name = LSProject; type = cmd; }
     );
     classes = (
-      { name = NSObject;          },
       { name = LSWModuleManager;  exact-version = 2; },
-      { name = LSWComponent;      exact-version = 2; },
     );
   };
   

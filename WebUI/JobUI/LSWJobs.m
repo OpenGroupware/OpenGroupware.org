@@ -53,7 +53,7 @@
 @end /* LSWJobs */
 
 #include <OGoFoundation/LSWNotifications.h>
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 #include <LSFoundation/OGoObjectLinkManager.h>
 #include <LSFoundation/OGoObjectLink.h>
 #include "common.h"

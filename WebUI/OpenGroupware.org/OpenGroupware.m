@@ -292,6 +292,11 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
     
     ud = [NSUserDefaults standardUserDefaults];
     
+    if ([ud boolForKey:@"LSCoreOnCommandException"]) {
+      NSLog(@"Note: LSCoreOnCommandException=YES, "
+            @"OGo will dump core on uncatched exceptions!");
+    }
+    
     [[self notificationCenter]
       addObserver:self selector:@selector(scriptClassNeeded:)
       name:@"WOScriptClassNeededForComponent" object:nil];
@@ -606,11 +611,7 @@ nbuckets, nindices, narrays, idxsize);
   OGoSession *session = nil;
 
   /* Note: DO NOT AUTORELEASE the session !!! */
-  /* 
-     TODO: if all references to LSWSession are removed, replace that call
-           with OGoSession.
-  */
-  if ((session = [[LSWSession alloc] init]) == nil)
+  if ((session = [[OGoSession alloc] init]) == nil)
     return nil;
   
   [self logWithFormat:@"%@: created session: %@", self, session];
@@ -924,54 +925,12 @@ nbuckets, nindices, narrays, idxsize);
 // ******************** main ********************
 
 int main(int argc, const char **argv, char **env) {
-  NSAutoreleasePool *pool;
-  NSString *s;
-  int result;
-
-  pool = [[NSAutoreleasePool alloc] init];
-#if LIB_FOUNDATION_LIBRARY
-  [NSProcessInfo initializeWithArguments:(void*)argv count:argc 
-		 environment:env];
-
-  // The following can be useful to detect memory leaks due to invalid
-  // release/autorelease calls. Enabling this options makes the application
-  // *very* slow.
-  [NSAutoreleasePool enableDoubleReleaseCheck:NO];
+#if defined(FHS_INSTALL_ROOT)
+  return WOWatchDogApplicationMainWithServerDefaults
+    (@"OpenGroupware", argc, argv,
+     @"opengroupware.org-1.0a/global.plist",
+     @"opengroupware.org-1.0a/webui.plist");
+#else
+  return WOWatchDogApplicationMain(@"OpenGroupware", argc, argv);
 #endif
-  
-  NGInitTextStdio();
-  
-  if ([[NSUserDefaults standardUserDefaults]
-                       boolForKey:@"LSCoreOnCommandException"]) {
-    NSLog(@"note: LSCoreOnCommandException=YES "
-          @"(skyrix will dump core on exception) !");
-  }
-
-  s = [[NSUserDefaults standardUserDefaults]
-                       stringForKey:@"SkyPreloadBundles"];
-
-  if ([s length] > 0) {
-    NGBundleManager *bm;
-    NSArray *a;
-    unsigned i, count;
-    
-    bm = [NGBundleManager defaultBundleManager];
-    
-    a = [s componentsSeparatedByString:@","];
-    
-    for (i = 0, count = [a count]; i < count; i++) {
-      NSString *b;
-      NSBundle *bo;
-      
-      b = [a objectAtIndex:i];
-      bo = [bm bundleWithName:b type:@"cmd"];
-      if (bo == nil) bo = [bm bundleWithName:b type:@"lso"];
-      NSLog(@"preload %@: %@", b, [bo bundlePath]);
-      [bo load];
-    }
-  }
-  result = WOWatchDogApplicationMain(@"OpenGroupware", argc, argv);
-  [pool release];
-  exit(result);
-  return result;
 }

@@ -142,21 +142,22 @@ static int UseFoundationStringEncodingForMimeText = -1;
 
 - (id)sendMail {
   id mailEditor;
+  id val;
 
   mailEditor = (id)[[self application] pageWithName:@"LSWImapMailEditor"];
+  if (mailEditor == nil)
+    return nil;
   
-  if (mailEditor != nil) {
-    id val = [self->item objectForKey:@"value"];
+  val = [self->item objectForKey:@"value"];
 
-    /* remove mailto: */    
-    if ([val length] > 7) {
+  /* remove mailto: */    
+  if ([val length] > 7)
       val = [val substringFromIndex:7];
-    }
-    [mailEditor addReceiver:val type:@"to"];
-    [mailEditor setContentWithoutSign:@""];
-    [[[self session] navigation] enterPage:(id<LSWContentPage>)mailEditor];
-  }
-  return nil;
+  
+  [mailEditor addReceiver:val type:@"to"];
+  [mailEditor setContentWithoutSign:@""];
+  [[[self session] navigation] enterPage:(id<OGoContentPage>)mailEditor];
+  return nil; // TODO: can't we just return the new page?
 }
 
 @end /* LSWTextPlainBodyViewer */

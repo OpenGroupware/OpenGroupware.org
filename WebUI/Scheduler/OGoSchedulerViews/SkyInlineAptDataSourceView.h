@@ -18,16 +18,15 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __SkyInlineAptDataSourceView__
 #define __SkyInlineAptDataSourceView__
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSCalendarDate, NSFormatter;
 
-@interface SkyInlineAptDataSourceView : LSWComponent
+@interface SkyInlineAptDataSourceView : OGoComponent
 {
 @protected
   id             dataSource;
@@ -35,10 +34,10 @@
   id             holidays;
   BOOL           printMode;
   BOOL           hidePropAndNew;
-  NSString*      yearDirectActionName;
-  NSString*      monthDirectActionName;
-  NSString*      weekDirectActionName;
-  NSString*      dayDirectActionName;
+  NSString       *yearDirectActionName;
+  NSString       *monthDirectActionName;
+  NSString       *weekDirectActionName;
+  NSString       *dayDirectActionName;
   
   // transient  
   id             appointment;
@@ -114,4 +113,4 @@
 
 @end
 
-#endif
+#endif /* __SkyInlineAptDataSourceView__ */

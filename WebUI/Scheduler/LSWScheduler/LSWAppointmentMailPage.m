@@ -18,14 +18,10 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWObjectMailPage.h>
-#include "common.h"
+#include <OGoFoundation/OGoObjectMailPage.h>
 
-@interface LSWAppointmentMailPage : LSWObjectMailPage
-{
-}
+@interface LSWAppointmentMailPage : OGoObjectMailPage
 @end
 
 @interface LSWAppointmentHtmlMailPage : LSWAppointmentMailPage
@@ -34,12 +30,14 @@
 @interface LSWAppointmentTextMailPage : LSWAppointmentMailPage
 @end
 
+#include "common.h"
+
 static int compareParticipants(id part1, id part2, void *context);
 
 @implementation LSWAppointmentMailPage
 
 + (int)version {
-  return [super version] + 0;
+  return [super version] + 0; // TODO: which version?
 }
 
 /* accessors */

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,11 +18,10 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 
-@interface SkyAppointmentList : LSWContentPage
+@interface SkyAppointmentList : OGoContentPage
 {
 @protected
   id             dataSource;
@@ -41,7 +40,7 @@
 @end
 
 #include <OGoFoundation/LSWNotifications.h>
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 #include <NGObjWeb/WOApplication.h>
 #include <EOControl/EOControl.h>
 #include <NGMime/NGMimeType.h>
@@ -192,10 +191,11 @@
 }
 
 - (id)newAppointment {
-  id ct;
-  id obj = [self->person globalID];
-  LSWSession *sn;
+  WOComponent *ct;
+  id          obj;
+  OGoSession  *sn;
 
+  obj = [self->person globalID];
   obj = [self runCommand:@"object::get-by-globalid", @"gid", obj, nil];
   obj = [obj lastObject];
   sn  = (id)[self session];
@@ -203,8 +203,7 @@
             type:[NGMimeType mimeType:@"eo/date"]];
   [(id)ct addParticipant:obj];
   [self enterPage:(id)ct];
-
-  return nil;
+  return nil; // TODO: can't we just return the component?
 }
 
 @end /* SkyAppointmentList */

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,33 +18,35 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#ifndef __LSWebInterface_LSWMail_LSWMailFolderMove_H__
-#define __LSWebInterface_LSWMail_LSWMailFolderMove_H__
+#ifndef __WebUI_LSWMail_LSWMailFolderMove_H__
+#define __WebUI_LSWMail_LSWMailFolderMove_H__
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 
-@interface LSWMailFolderMove : LSWContentPage
+@class NSString, NSArray, NSMutableDictionary;
+
+@interface LSWMailFolderMove : OGoContentPage
 {
 @protected
   NSArray             *folder;
   NSMutableDictionary *folderDict;
   NSString            *folderName;
   id                  rootFolder;
-
   BOOL                shouldSyncronize;
 }
-// accessors
+
+/* accessors */
 
 - (void)setFolder:(id)_folder;
 - (void)setRootFolder:(id)_rootFolder;
 - (void)setFolderName:(NSString *)_folderName;
 - (NSString *)folderName;
-// --------------------------------------------
+
 - (NSArray *)folderList;
 - (NSString *)folder;
 - (NSString *)nameOfFolder;
+
 @end
 
-#endif /* __LSWebInterface_LSWMail_LSWMailFolderMove_H__ */
+#endif /* __WebUI_LSWMail_LSWMailFolderMove_H__ */

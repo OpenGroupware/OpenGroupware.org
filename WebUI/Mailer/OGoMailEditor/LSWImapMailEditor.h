@@ -22,16 +22,16 @@
 #ifndef __OGoWebMail_LSWImapMailEditor_H__
 #define __OGoWebMail_LSWImapMailEditor_H__
 
-#import <OGoFoundation/LSWContentPage.h>
-#import <OGoFoundation/LSWMailEditorComponent.h>
-#import <NGMime/NGMime.h>
+#include <OGoFoundation/OGoContentPage.h>
+#include <OGoFoundation/LSWMailEditorComponent.h>
+#include <NGMime/NGMime.h>
 
 @class NSMutableArray, NSDictionary, NSString, NSArray, NSData;
 @class NSMutableDictionary;
 @class NGMimeMessage, NGImap4Context;
 @class SkyImapMailRestrictions;
 
-@interface LSWImapMailEditor : LSWContentPage < LSWMailEditorComponent >
+@interface LSWImapMailEditor : OGoContentPage < LSWMailEditorComponent >
 {
   NSMutableArray *addresses;
   NSMutableArray *mimeParts;

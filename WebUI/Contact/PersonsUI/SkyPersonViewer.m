@@ -276,7 +276,7 @@ static BOOL         hasSkyProject4Desktop   = NO;
                 nil];
       }
     }
-    ctx = [(LSWSession *)[self session] commandContext];
+    ctx = [(OGoSession *)[self session] commandContext];
     obj = [[SkyPersonDocument alloc] initWithEO:obj context:ctx];
     [self setObject:obj];
     [obj release]; obj = nil;

@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,14 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#ifndef __LSWebInterface_LSWMail_LSWJobMailPage_H__
-#define __LSWebInterface_LSWMail_LSWJobMailPage_H__
+#ifndef __JobUI_LSWJobMailPage_H__
+#define __JobUI_LSWJobMailPage_H__
 
-#include <OGoFoundation/LSWObjectMailPage.h>
+#include <OGoFoundation/OGoObjectMailPage.h>
 
-@interface LSWJobMailPage : LSWObjectMailPage
+@interface LSWJobMailPage : OGoObjectMailPage
 @end
 
 @interface LSWJobHtmlMailPage : LSWJobMailPage
@@ -34,4 +33,4 @@
 @interface LSWJobTextMailPage : LSWJobMailPage
 @end
 
-#endif /* __LSWebInterface_LSWMail_LSWJobMailPage_H__*/
+#endif /* __JobUI_LSWJobMailPage_H__*/

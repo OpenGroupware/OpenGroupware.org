@@ -185,7 +185,7 @@ static NGMimeType *eoJobType = nil;
   NSString     *subject = nil;
   id           res;
   id           creator;
-  id<LSWMailEditorComponent, LSWContentPage> editor = nil;
+  id<LSWMailEditorComponent, OGoContentPage> editor = nil;
   id l;
   
   l = [self labels];
@@ -204,7 +204,7 @@ static NGMimeType *eoJobType = nil;
 }
 
 - (id)_sendMessageToCreator {
-  id<LSWMailEditorComponent, LSWContentPage> editor = nil;
+  id<LSWMailEditorComponent, OGoContentPage> editor = nil;
   NSString *subject = nil;
   id       res;
   id       l;

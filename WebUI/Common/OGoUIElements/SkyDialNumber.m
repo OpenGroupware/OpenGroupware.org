@@ -47,7 +47,7 @@
 - (BOOL)dialNumber:(NSString *)_number fromDevice:(NSString *)_device;
 @end
 
-@interface WOSession(LSWSession)
+@interface WOSession(OGoSession)
 - (id)commandContext;
 - (NSString *)activeLogin;
 @end

@@ -40,8 +40,8 @@
 
 #include <LSFoundation/LSCommandContext.h>
 #include <OGoFoundation/OGoFoundation.h>
-#include <OGoFoundation/LSWSession.h>
-#include <OGoFoundation/LSWNavigation.h>
+#include <OGoFoundation/OGoSession.h>
+#include <OGoFoundation/OGoNavigation.h>
 #include <OGoFoundation/WOComponent+Navigation.h>
 #include <GDLAccess/GDLAccess.h>
 

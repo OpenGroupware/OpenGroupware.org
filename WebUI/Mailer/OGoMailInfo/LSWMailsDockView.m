@@ -18,12 +18,11 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 #import <Foundation/NSDate.h>
 
-@interface LSWMailsDockView : LSWComponent
+@interface LSWMailsDockView : OGoComponent
 {
   BOOL           hideLink;
   NSDate         *lastCheck;
@@ -98,7 +97,7 @@
 }
 
 - (BOOL)hasNewMessages {
-  LSWSession *sn;
+  OGoSession *sn;
   NSDate     *now;
 
   now = [NSDate date];
@@ -113,7 +112,7 @@
 
   [self->lastCheck release]; self->lastCheck = nil;
 
-  sn = (LSWSession *)[self session];
+  sn = (OGoSession *)[self session];
   
   if ([sn isTransactionInProgress]) {
     BOOL result = [sn commitTransaction];

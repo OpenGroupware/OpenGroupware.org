@@ -1,3 +1,7 @@
+2004-09-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWImapMail2Project.m: fixed a memory leak (no -dealloc!) (v5.1.100)
+
 2004-09-13  Helge Hess  <helge.hess@opengroupware.org>
 
 	* removed some unnecessarily derived templates for German, moved

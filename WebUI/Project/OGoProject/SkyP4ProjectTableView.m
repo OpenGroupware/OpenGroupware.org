@@ -93,7 +93,7 @@
 
 - (NSUserDefaults *)userDefaults {
   if (self->userDefaults == nil)
-    self->userDefaults = [[(LSWSession *)[self session] userDefaults] retain];
+    self->userDefaults = [[(OGoSession *)[self session] userDefaults] retain];
   
   return self->userDefaults;
 }

@@ -1,8 +1,4 @@
-// $Id: Defaults.plist 1 2004-08-20 11:17:52Z znek $
 {
-  "CVS-Id"  = "$Id: Defaults.plist 1 2004-08-20 11:17:52Z znek $";
-  "CVS-Tag" = "$Name:  $";
-
   LSReloadConfiguration                = NO;
   LSPageRefreshOnBacktrack             = YES;
   LSLoginPageExpireTimeout             = 1200;

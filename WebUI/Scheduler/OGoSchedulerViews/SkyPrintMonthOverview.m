@@ -38,7 +38,7 @@
 #include "SkyAppointmentFormatter.h"
 #include "common.h"
 #include <OGoScheduler/SkyAptDataSource.h>
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 
 @implementation SkyPrintMonthOverview
 

@@ -18,14 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#ifndef __LSWebInterface_LSWMail_LSWObjectTextMailPage_H__
-#define __LSWebInterface_LSWMail_LSWObjectTextMailPage_H__
+#ifndef __WebUI_LSWMail_LSWObjectTextMailPage_H__
+#define __WebUI_LSWMail_LSWObjectTextMailPage_H__
 
-#include <OGoFoundation/LSWObjectMailPage.h>
+#include <OGoFoundation/OGoObjectMailPage.h>
 
-@interface LSWObjectTextMailPage : LSWObjectMailPage
+@interface LSWObjectTextMailPage : OGoObjectMailPage
 @end
 
-#endif /* __LSWebInterface_LSWMail_LSWObjectTextMailPage_H__ */
+#endif /* __WebUI_LSWMail_LSWObjectTextMailPage_H__ */

@@ -317,7 +317,7 @@ static inline BOOL _showUnknownFiles(id self) {
     static EOQualifier *hideFoldersQ = nil;
     static EOQualifier *showFoldersQ = nil;
     
-    hideFolders = [[[(LSWSession *)[self session] userDefaults]
+    hideFolders = [[[(OGoSession *)[self session] userDefaults]
                                  objectForKey:@"skyp4_filelist_hide_folders"]
                                  boolValue];
     
@@ -510,7 +510,7 @@ static inline BOOL _showUnknownFiles(id self) {
 /* actions */
 
 - (id)placeInClipboard {
-  [(LSWSession *)[self session]
+  [(OGoSession *)[self session]
          addFavorite:
            [[self fileSystemAttributes] objectForKey:NSFileSystemNumber]];
   return nil;

@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,12 +18,13 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include "SkyImapMailListState.h"
-#import "common.h"
+#include <OGoFoundation/OGoContentPage.h>
 
-@interface SkyImapMailListPanel : LSWContentPage
+@class EODataSource;
+@class SkyImapMailListState;
+
+@interface SkyImapMailListPanel : OGoContentPage
 {
   EODataSource         *dataSource;
   SkyImapMailListState *state;
@@ -31,23 +32,18 @@
 }
 @end
 
+#include "SkyImapMailListState.h"
+#include "common.h"
+
 @implementation SkyImapMailListPanel
 
-- (id)init {
-  if ((self = [super init])) {
-    self->isVisible = NO;
-  }
-  return self;
-}
-
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->state);
-  RELEASE(self->dataSource);
-  
+  [self->state      release];
+  [self->dataSource release];
   [super dealloc];
 }
-#endif
+
+/* accessors */
 
 - (void)setDataSource:(EODataSource *)_dataSource {
   ASSIGN(self->dataSource, _dataSource);

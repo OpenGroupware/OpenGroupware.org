@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,9 +18,8 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSCalendarDate, NSTimeZone;
 
@@ -38,7 +37,7 @@
     weekStart - an NSCalendarDate of the monday of the selected week
 */
 
-@interface SkyWeekOfYearPopUp : LSWComponent
+@interface SkyWeekOfYearPopUp : OGoComponent
 {
   NSCalendarDate *firstMonday;
   short          lastWeek;
@@ -46,8 +45,7 @@
 }
 @end
 
-#import <Foundation/Foundation.h>
-#import <NGExtensions/NGExtensions.h>
+#include "common.h"
 
 @implementation SkyWeekOfYearPopUp
 

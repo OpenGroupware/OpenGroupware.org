@@ -1,3 +1,14 @@
+2004-09-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.56
+	
+	* moved components.cfg files to WebUI/Templates (might need to fix
+	  resource manager for that!)
+	
+	* OpenGroupware.m: removed deprecated SkyPreloadBundles support
+
+	* removed skymasterd config file (OpenGroupware.xml)
+
 2004-09-20  Helge Hess  <helge.hess@opengroupware.org>
 
 	* moved Main.wo and OGoLogoutPage.wo to WebUI/Themes (this may require

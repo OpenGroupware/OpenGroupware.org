@@ -20,7 +20,7 @@
 */
 // $Id$
 
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 #include <OGoFoundation/LSWTreeState.h>
 #import "common.h"
 

@@ -18,9 +18,8 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSString, NSMutableSet, NSArray;
 
@@ -49,7 +48,7 @@
     dropTags     - NSString      - in
 */
 
-@interface SkyFileManagerTreeView : LSWComponent
+@interface SkyFileManagerTreeView : OGoComponent
 {
   NSString     *title;
   id           fileManager;
@@ -75,7 +74,7 @@
 
 @end
 
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 #include <LSFoundation/LSFoundation.h>
 #include <NGObjWeb/NGObjWeb.h>
 #include "common.h"
@@ -120,7 +119,7 @@ static NSDictionary *onlySubFoldersHints = nil;
 
 - (void)sleep {
   if (self->zoomDidChange && ([self->zoomDefault length] > 0)) {
-    [[(LSWSession *)[self session] userDefaults]
+    [[(OGoSession *)[self session] userDefaults]
                   setObject:[self->zoom allObjects]
                   forKey:self->zoomDefault];
     self->zoomDidChange = NO;
@@ -209,7 +208,7 @@ static NSDictionary *onlySubFoldersHints = nil;
   if (!self->zoomDidChange && ([_def length] > 0)) {
     NSArray *defZoom;
     
-    defZoom = [[(LSWSession *)[self session] userDefaults] arrayForKey:_def];
+    defZoom = [[(OGoSession *)[self session] userDefaults] arrayForKey:_def];
     if (defZoom) {
       [self->zoom removeAllObjects];
       [self->zoom addObjectsFromArray:defZoom];

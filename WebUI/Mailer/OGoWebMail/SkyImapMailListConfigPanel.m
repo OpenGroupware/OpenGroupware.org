@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,33 +18,31 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 /*
     > isVisible
    <> state
 */
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
-@interface SkyImapMailListConfigPanel: LSWComponent
+@interface SkyImapMailListConfigPanel : OGoComponent
 {
-  id                   item;
-  BOOL                 isVisible;
+  id   item;
+  BOOL isVisible;
 }
 @end
 
-#import <NGObjWeb/NGObjWeb.h>
-#import <NGExtensions/NGExtensions.h>
+#include "common.h"
 
 @implementation SkyImapMailListConfigPanel
 
-#if LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->item);
+  [self->item release];
   [super dealloc];
 }
-#endif
+
+/* accessors */
 
 - (void)setItem:(id)_item {
   ASSIGN(self->item, _item);
@@ -79,10 +77,10 @@
 - (NSString *)attributeIcon {
   if ([self->item isEqual:@"isNew"])
     return @"icon_unread.gif";
-  else if ([self->item isEqual:@"isFlagged"])
+  if ([self->item isEqual:@"isFlagged"])
     return @"icon_flagged.gif";
-  else
-    return nil;
+
+  return nil;
 }
 
-@end
+@end /* SkyImapMailListConfigPanel */

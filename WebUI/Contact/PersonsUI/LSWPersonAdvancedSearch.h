@@ -22,11 +22,11 @@
 #ifndef __WebUI_PersonUI_LSWPersonAdvancedSearch_H__
 #define __WebUI_PersonUI_LSWPersonAdvancedSearch_H__
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSData, NSArray, NSMutableArray, NSDictionary, EOQualifier;
 
-@interface LSWPersonAdvancedSearch : LSWComponent
+@interface LSWPersonAdvancedSearch : OGoComponent
 {
 @private
   NSString            *maxSearchCount;

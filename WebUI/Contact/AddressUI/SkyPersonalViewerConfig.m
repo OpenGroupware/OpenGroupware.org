@@ -18,13 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSUserDefaults, NSString, NSArray;
 
-@interface SkyPersonalViewerConfig : LSWComponent
+@interface SkyPersonalViewerConfig : OGoComponent
 {
   // parameters
   NSString *viewerPattern;
@@ -43,7 +42,7 @@
  }
 @end
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 #include <OGoContacts/SkyPersonDocument.h>
 #include <OGoContacts/SkyEnterpriseDocument.h>
 #include <OGoJobs/SkyJobDocument.h>

@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 
 // TODO: this component s**** big time. We should have at least an object
 //       representing the defaults to separate that from the controller
@@ -28,7 +28,7 @@
 
 @class NSUserDefaults, NSString, NSArray, NSMutableArray, NSMutableDictionary;
 
-@interface LSWSchedulerPreferences : LSWContentPage
+@interface LSWSchedulerPreferences : OGoContentPage
 {
   id             account;
   id             item;

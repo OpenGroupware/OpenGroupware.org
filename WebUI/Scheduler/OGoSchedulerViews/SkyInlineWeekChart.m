@@ -43,8 +43,8 @@
 @end
 
 #include <OGoFoundation/WOComponent+config.h>
-#include <OGoFoundation/LSWSession.h>
-#include <OGoFoundation/LSWNavigation.h>
+#include <OGoFoundation/OGoSession.h>
+#include <OGoFoundation/OGoNavigation.h>
 #include <OGoFoundation/WOComponent+Commands.h>
 #include <LSFoundation/LSCommandContext.h>
 #import <NGObjWeb/NGObjWeb.h>
@@ -165,27 +165,28 @@
 /* matrix support */
 
 - (NSArray *)hoursToShow {
-  if (self->hours == nil) {
-    NSMutableArray *a;
-    int i, start, end;
-    NSUserDefaults *ud;
+  NSMutableArray *a;
+  NSUserDefaults *ud;
+  int i, start, end;
+  
+  if (self->hours != nil)
+    return self->hours;
 
-    ud = [(LSWSession *)[self session] userDefaults];
+  ud = [(OGoSession *)[self session] userDefaults];
     
-    start = [ud integerForKey:@"scheduler_weekchart_starthour"] * 2;
-    end   = [ud integerForKey:@"scheduler_weekchart_endhour"]   * 2;
+  start = [ud integerForKey:@"scheduler_weekchart_starthour"] * 2;
+  end   = [ud integerForKey:@"scheduler_weekchart_endhour"]   * 2;
     
-    if (end <= start)
-      end = start + 2;
+  if (end <= start)
+    end = start + 2;
     
-    a = [NSMutableArray arrayWithCapacity:24];
+  a = [NSMutableArray arrayWithCapacity:24];
 
-    for (i = start; i <= end; i++) {
-      [a addObject:[NSNumber numberWithInt:i]];
-    }
-    
-    self->hours = [a copy];
+  for (i = start; i <= end; i++) {
+    [a addObject:[NSNumber numberWithInt:i]];
   }
+    
+  self->hours = [a copy];
   return self->hours;
 }
 
@@ -202,9 +203,9 @@
     return YES;
   if ([self->aptEndDate monthOfYear] != [self->aptStartDate monthOfYear])
     return YES;
-  if ([self->aptEndDate yearOfCommonEra] != [self->aptStartDate yearOfCommonEra])
+  if ([self->aptEndDate yearOfCommonEra]!=[self->aptStartDate yearOfCommonEra])
     return YES;
-
+  
   mins = [self hour] * 30; // hour contains half-hours in reality
   slotEnd = mins + (unsigned)([self slotSize] / 60.0);
   

@@ -45,7 +45,7 @@
 #include <OGoFoundation/LSWLabelHandler.h>
 #include <OGoFoundation/SkyMoneyFormatter.h>
 
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 #include <OGoFoundation/LSWClipboardOwner.h>
 #include <OGoFoundation/LSWConfigHandler.h>
 #include <OGoFoundation/OGoEditorPage.h>
@@ -55,7 +55,7 @@
 #include <OGoFoundation/LSWMimeContent.h>
 #include <OGoFoundation/LSWModuleManager.h>
 #include <OGoFoundation/LSWNotifications.h>
-#include <OGoFoundation/LSWObjectMailPage.h>
+#include <OGoFoundation/OGoObjectMailPage.h>
 
 // kit class
 

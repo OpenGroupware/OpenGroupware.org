@@ -41,7 +41,7 @@
 - (void)setNilString:(NSString *)_nilString;
 @end
 
-@interface SkyImapMailList : LSWContentPage
+@interface SkyImapMailList : OGoContentPage
 {
 @protected
   EODataSource                 *dataSource;

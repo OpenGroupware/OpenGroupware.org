@@ -1,7 +1,7 @@
 /*
-  Copyright (C) 2000-2003 SKYRIX Software AG
+  Copyright (C) 2000-2004 SKYRIX Software AG
 
-  This file is part of OGo
+  This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -18,21 +18,19 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSMutableDictionary;
 
-@interface SkyPalmRecordList : LSWComponent
+@interface SkyPalmRecordList : OGoComponent
 {
   NSString            *database;
   NSMutableDictionary *lists;
 }
 @end /* SkyPalmRecordList */
 
-#import <Foundation/Foundation.h>
-#include <OGoFoundation/OGoFoundation.h>
+#include "common.h"
 #include <NGExtensions/NGBundleManager.h>
 #include <EOControl/EOQualifier.h>
 
@@ -70,12 +68,15 @@
 
 - (id)listComponent {
   id c;
-  if (![self->database length]) {
+  
+  if ([self->database length] == 0) {
     NSLog(@"WARNING[%s]: no palm db set", __PRETTY_FUNCTION__);
     return nil;
-  } else if ((c = [self->lists objectForKey:self->database]) != nil)
+  }
+  if ((c = [self->lists objectForKey:self->database]) != nil)
     return c;
-  else {
+
+  {
     NGBundleManager *bm;
     EOQualifier     *q;
     NSBundle        *bundle;

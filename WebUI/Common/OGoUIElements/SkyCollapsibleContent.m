@@ -43,7 +43,7 @@
 #include <OGoFoundation/OGoFoundation.h>
 #include <WEExtensions/WEContextConditional.h>
 
-@interface SkyCollapsibleContent : LSWComponent
+@interface SkyCollapsibleContent : OGoComponent
 {
   NSString *title;
   NSString *openedImageFileName;

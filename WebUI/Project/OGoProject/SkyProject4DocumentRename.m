@@ -163,7 +163,7 @@
   if ([newPath isEqualToString:oldPath]) {
     /* same filename */
     [self debugWithFormat:@"nothing to rename .."];
-    return [[(LSWSession *)[self session] navigation] leavePage];
+    return [[(OGoSession *)[self session] navigation] leavePage];
   }
   
   [self debugWithFormat:@"rename %@ to %@.", oldPath, newPath];
@@ -174,8 +174,8 @@
   if (![[self fileManager] supportsUniqueFileIds]) {
     id page, activePage;
 
-    page       = [[(LSWSession *)[self session] navigation] leavePage];
-    activePage = [[(LSWSession *)[self session] navigation] activePage];
+    page       = [[(OGoSession *)[self session] navigation] leavePage];
+    activePage = [[(OGoSession *)[self session] navigation] activePage];
 
 
     if ([activePage isKindOfClass:
@@ -184,11 +184,11 @@
     }
     return page;
   }
-  return [[(LSWSession *)[self session] navigation] leavePage];
+  return [[(OGoSession *)[self session] navigation] leavePage];
 }
 
 - (id)cancel {
-  return [[(LSWSession *)[self session] navigation] leavePage];
+  return [[(OGoSession *)[self session] navigation] leavePage];
 }
 
 @end /* SkyProject4DocumentRename */

@@ -82,7 +82,7 @@ static NGMimeType *gidPropType = nil;
 }
 
 - (NSTimeZone *)timeZone {
-  return [(LSWSession *)[self session] timeZone];
+  return [(OGoSession *)[self session] timeZone];
 }
 
 /* operations */
@@ -110,7 +110,7 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
   if ([self object] == nil)
     return;
 
-  tz    = [(LSWSession *)[self session] timeZone];
+  tz    = [(OGoSession *)[self session] timeZone];
   obj   = [self object];
   docId = [obj valueForKey:@"documentId"];
     

@@ -18,23 +18,17 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#ifndef __LSWebInterface_LSWFoundation_LSWObjectMailPage_H__
-#define __LSWebInterface_LSWFoundation_LSWObjectMailPage_H__
+#ifndef __OGoFoundation_OGoObjectMailPage_H__
+#define __OGoFoundation_OGoObjectMailPage_H__
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSDictionary, NSString, NSCalendarDate, NSData;
 @class NGMimeType, NGMimeContentDispositionHeaderField;
 @class EOGlobalID;
 
-/*
-  TODO: inherit from OGoComponent once it is ensured that no necessary
-        categories are defined on LSWComponent
-  TODO: rename to OGoObjectMailPage ;-)
-*/
-@interface LSWObjectMailPage : LSWComponent
+@interface OGoObjectMailPage : OGoComponent
 {
 @protected
   id   object;
@@ -69,4 +63,4 @@
 
 @end
 
-#endif /* __LSWebInterface_LSWFoundation_LSWObjectMailPage_H__ */
+#endif /* __OGoFoundation_OGoObjectMailPage_H__ */

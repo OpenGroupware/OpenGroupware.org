@@ -18,14 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class NSDictionary;
 
-@interface SkyDockedProjects : LSWComponent
+@interface SkyDockedProjects : OGoComponent
 {
   BOOL           isInTextMode;
   NSDictionary   *dockInfo;

@@ -26,7 +26,7 @@ Classes
         SkyPrintMonthOverview
         SkyPrintWeekOverview
       SkySchedulerConflictCell
-      <LSWContentPage>
+      <OGoContentPage>
         SkyAppointmentList
         SkyAptResourceGroupsList
         SkyAptResourceList

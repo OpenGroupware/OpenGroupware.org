@@ -18,9 +18,8 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 // TODO: this should list the favorite projects for fast access!
 // TODO: needs some cleanup
@@ -39,7 +38,7 @@
 
 @class NSString, NSMutableArray, NSArray;
 
-@interface SkyProjectSelection : LSWComponent
+@interface SkyProjectSelection : OGoComponent
 {
   NSString       *title;
   NSString       *searchProjectText;

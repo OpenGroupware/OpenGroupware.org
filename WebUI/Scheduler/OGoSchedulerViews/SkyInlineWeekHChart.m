@@ -52,7 +52,7 @@
 #include "common.h"
 #include <EOControl/EOControl.h>
 #include <OGoScheduler/SkyAptDataSource.h>
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 #include <OGoFoundation/WOComponent+Commands.h>
 
 @implementation SkyInlineWeekHChart

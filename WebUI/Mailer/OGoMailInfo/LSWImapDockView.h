@@ -18,16 +18,15 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #ifndef __SkyMailInfo_LSWImapDockView_H__
 #define __SkyMailInfo_LSWImapDockView_H__
 
-#include <OGoFoundation/LSWComponent.h>
+#include <OGoFoundation/OGoComponent.h>
 
 @class SkyImapMailPanelDataSource;
 
-@interface LSWImapDockView : LSWComponent
+@interface LSWImapDockView : OGoComponent
 {
   SkyImapMailPanelDataSource *dataSource;
   id /*SkyImapMailListState * */ state;

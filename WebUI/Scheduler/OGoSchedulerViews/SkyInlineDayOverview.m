@@ -47,8 +47,8 @@
 #include "SkyAppointmentFormatter.h"
 #include "common.h"
 #include <OGoFoundation/WOComponent+config.h>
-#include <OGoFoundation/LSWSession.h>
-#include <OGoFoundation/LSWNavigation.h>
+#include <OGoFoundation/OGoSession.h>
+#include <OGoFoundation/OGoNavigation.h>
 #include <OGoFoundation/WOComponent+Commands.h>
 #include <LSFoundation/LSCommandContext.h>
 #include <NGExtensions/EOFilterDataSource.h>

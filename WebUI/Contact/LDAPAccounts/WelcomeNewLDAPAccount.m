@@ -43,14 +43,14 @@
 #include <LSFoundation/LSCommandContext.h>
 #include <LSFoundation/LSCommandKeys.h>
 #include <LSFoundation/LSBaseCommand.h>
-#include <OGoFoundation/LSWSession.h>
+#include <OGoFoundation/OGoSession.h>
 #include <OGoFoundation/LSWNavigation.h>
 #include "common.h"
 #include <NGObjWeb/NGObjWeb.h>
 #include <NGLdap/NGLdap.h>
 #include "NGLdapConnection+DNSearch.h"
 
-@interface LSWSession(ConfigLogin)
+@interface OGoSession(ConfigLogin)
 - (BOOL)configureForLSOfficeSession:(OGoContextSession *)_sn;
 @end
 
@@ -426,7 +426,7 @@
 
     /* configure WO session */
     
-    if (![(LSWSession *)[self session] configureForLSOfficeSession:sn]) {
+    if (![(OGoSession *)[self session] configureForLSOfficeSession:sn]) {
       [[self session] terminate];
       [self logWithFormat:@"failed to configure session !"];
       return [self pageWithName:@"OGoLogoutPage"];
@@ -434,7 +434,7 @@
     
     /* start page */
 
-    page = [[(LSWSession *)[self session] navigation] activePage];
+    page = [[(OGoSession *)[self session] navigation] activePage];
 
     if (page == nil) {
       [self logWithFormat:@"failed to load start page !"];

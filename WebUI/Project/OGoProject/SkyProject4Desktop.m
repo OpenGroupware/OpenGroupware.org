@@ -209,7 +209,7 @@ static EOQualifier *trueQualifier     = nil;
   NSArray        *projectIds = nil;
   int            cnt, i;
   
-  ud         = [(LSWSession *)[self session] userDefaults];
+  ud         = [(OGoSession *)[self session] userDefaults];
   projectIds = [ud arrayForKey:@"skyp4_desktop_selected_projects"];
   qualArray  = [[NSMutableArray alloc] initWithCapacity:[projectIds count]];
 
@@ -259,7 +259,7 @@ static EOQualifier *trueQualifier     = nil;
     NSEnumerator *e;
     NSArray *entry;
     
-    e = [[[(LSWSession *)[self session]
+    e = [[[(OGoSession *)[self session]
                  userDefaults]
                  arrayForKey:@"skyp4_project_groupings"]
                  objectEnumerator];
@@ -306,7 +306,7 @@ static EOQualifier *trueQualifier     = nil;
 /* clipping */
 
 - (NSArray *)clippedProjectGIDs {
-  LSWSession *sn;
+  OGoSession *sn;
   NSArray *ids;
 
   if (self->clippedGIDs)
@@ -326,7 +326,7 @@ static EOQualifier *trueQualifier     = nil;
 }
 
 - (void)clipProject:(id)_project {
-  LSWSession     *sn;
+  OGoSession     *sn;
   NSArray        *ids;
   NSMutableArray *mids;
   EOGlobalID     *gid;
@@ -334,7 +334,7 @@ static EOQualifier *trueQualifier     = nil;
   if ((gid = [_project globalID]) == nil)
     return;
   
-  sn = (LSWSession *)[self session];
+  sn = (OGoSession *)[self session];
   
   ids = [[sn userDefaults] arrayForKey:@"clipped_projects"];
   if (ids) {

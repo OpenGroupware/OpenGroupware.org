@@ -298,7 +298,7 @@
             @"defaults", self->defaults,
             @"userId",   uid,
             nil];
-    [(LSWSession *)[self session] fetchDockedProjectInfos];
+    [(OGoSession *)[self session] fetchDockedProjectInfos];
   }
 
   [self postChange:LSWUpdatedAccountNotificationName onObject:[self account]];
@@ -306,4 +306,4 @@
   return [self leavePage];
 }
 
-@end
+@end /* LSWProjectPreferences */

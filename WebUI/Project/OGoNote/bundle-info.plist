@@ -8,11 +8,7 @@
       { name = LSProject; type = cmd; }
     );
     classes = (
-      { name = NSObject;          },
       { name = LSWModuleManager;  exact-version = 2; },
-      { name = LSWComponent;      exact-version = 2; },
-      { name = LSWContentPage;    exact-version = 3; },
-      { name = LSWObjectMailPage; exact-version = 2; },
       { name = LSWViewAction;     version = 1; },
       { name = SkyAttributeCell; },
       { name = SkyValueCell;     }

@@ -18,13 +18,12 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: LSWMailPreferences.m 1 2004-08-20 11:17:52Z znek $
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 
 @class NSString, NSUserDefaults, NSMutableDictionary;
 
-@interface LSWMailPreferences : LSWContentPage
+@interface LSWMailPreferences : OGoContentPage
 {
   id             account;
   id             item;

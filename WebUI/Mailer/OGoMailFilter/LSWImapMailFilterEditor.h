@@ -18,16 +18,15 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: LSWImapMailFilterEditor.h 1 2004-08-20 11:17:52Z znek $
 
 #ifndef __OGoWebMail_LSWImapMailFilterEditor_H__
 #define __OGoWebMail_LSWImapMailFilterEditor_H__
 
-#include <OGoFoundation/LSWContentPage.h>
+#include <OGoFoundation/OGoContentPage.h>
 
 @class NSMutableArray, NSMutableDictionary, NSArray, NSString, NGImap4Folder;
 
-@interface LSWImapMailFilterEditor : LSWContentPage
+@interface LSWImapMailFilterEditor : OGoContentPage
 {
 @protected
   NSMutableArray      *filters;

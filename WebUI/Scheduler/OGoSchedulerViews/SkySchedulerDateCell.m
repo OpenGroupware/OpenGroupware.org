@@ -491,7 +491,7 @@ extern unsigned getpid();
   BOOL           showAMPM = NO;
   NSUserDefaults *defaults = nil;
   
-  defaults = [(LSWSession *)[_ctx session] userDefaults];
+  defaults = [(OGoSession *)[_ctx session] userDefaults];
 
   shortInfo     = [defaults boolForKey:@"scheduler_overview_short_info"];
   withResources = [defaults boolForKey:@"scheduler_overview_with_resources"];
