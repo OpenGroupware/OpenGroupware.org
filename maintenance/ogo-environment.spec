@@ -1,4 +1,4 @@
-Summary:      OGo environment
+Summary:      OGo environment setup.
 Name:         ogo-environment
 Version:      %{ogo_env_version}
 Release:      %{ogo_env_buildcount}%{dist_suffix}
@@ -16,7 +16,7 @@ Prefix:       %{ogo_env_prefix}
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
-Adds the required user and some configurations.
+Adds the required user/group and some configurations.
 
 %prep
 rm -fr ${RPM_BUILD_ROOT}
