@@ -1,10 +1,8 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep Makefile
 
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 include ./Version
-
-GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_USER_ROOT)
 
 LIBRARY_NAME = libOGoPalmUI
 
