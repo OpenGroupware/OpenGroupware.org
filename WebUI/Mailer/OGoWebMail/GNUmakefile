@@ -14,11 +14,13 @@ libOGoWebMail_HEADER_FILES += \
 	LSWImapBuildFolderDict.h	\
 	SkyImapContextHandler.h		\
 	SkyImapMailRestrictions.h	\
+	SkyImapMailDataSource.h     	\
 
 libOGoWebMail_OBJC_FILES += \
 	LSWImapBuildFolderDict.m	\
 	SkyImapContextHandler.m		\
 	SkyImapMailRestrictions.m	\
+	SkyImapMailDataSource.m     	\
 
 OGoWebMail_PRINCIPAL_CLASS = OGoWebMailModule
 
@@ -36,7 +38,6 @@ OGoWebMail_OBJC_FILES = \
 	SkyImapMailFolderTree.m     	\
 	LSWImapMail2Project.m		\
 	LSWMailPreferences.m		\
-	SkyImapMailDataSource.m     	\
 	SkyImapMailList.m           	\
 	SkyImapMailListState.m          \
 	SkyImapMailListConfigPanel.m    \
