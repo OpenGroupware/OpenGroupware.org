@@ -1,4 +1,12 @@
-2005-03-31  Helge Hess  <helge.hess@opengroupware.org>
+2005-03-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.97
+
+	* SkyAttributeDataSource.m: properly post a datasource changed
+	  notification, added debug logs (can be enabled using the
+	  'SkyAttributeDataSourceDebugEnabled' default)
+
+	* LSCommandContext.m: minor code cleanups
 
 	* SkyObjectPropertyManager.m: fixed a bug in adaptor channel attribute
 	  array (passed strings instead of EOAttribute's to adaptor) (v5.1.96)

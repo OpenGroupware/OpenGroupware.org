@@ -82,6 +82,15 @@ static inline BOOL _showUnknownFiles(id self) {
 
 @implementation SkyProjectFolderDataSource
 
+static BOOL debugOn = NO;
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  if ((debugOn = [ud boolForKey:@"SkyProjectFolderDataSourceDebugEnabled"]))
+    NSLog(@"SkyProjectFolderDataSource debugging is enabled.");
+}
+
 - (id)init {
   NSLog(@"ERROR(%s): wrong initializer use initWithContext:"
         @"folderGID:projectGID:", __PRETTY_FUNCTION__);
@@ -138,7 +147,7 @@ static inline BOOL _showUnknownFiles(id self) {
 - (void)setFetchSpecification:(EOFetchSpecification *)_fspec {
   if ([self->fetchSpecification isEqual:_fspec])
     return;
-
+  
   ASSIGNCOPY(self->fetchSpecification, _fspec);
   [self postDataSourceChangedNotification];
 }
@@ -147,6 +156,7 @@ static inline BOOL _showUnknownFiles(id self) {
 }
 
 - (BOOL)isDeepFetchSpecification {
+  // TODO: streamline with deep-fetches in NGObjWeb WebDAV?
   return [[[[self fetchSpecification] hints] objectForKey:@"fetchDeep"] 
 	   boolValue];;
 }
@@ -154,7 +164,7 @@ static inline BOOL _showUnknownFiles(id self) {
 /* fetching */
 
 - (NSArray *)_sortObjects:(NSArray *)objects {
-  NSArray *so = nil;
+  NSArray *so;
     
   if ((so = [self->fetchSpecification sortOrderings]) == nil)
     return objects;
@@ -174,7 +184,7 @@ static inline BOOL _showUnknownFiles(id self) {
   enumerator = [objects objectEnumerator];
   while ((obj = [enumerator nextObject]) != nil) {
     // TODO: possibly a notification bug      
-      
+    
     [nc addObserver:self
 	selector:@selector(postDataSourceChangedNotification)
 	name:attrNotify object:[obj globalID]];
@@ -237,6 +247,9 @@ static inline BOOL _showUnknownFiles(id self) {
   
   qualifier = [self->fetchSpecification qualifier];
   
+  if (debugOn)
+    [self debugWithFormat:@"  fetch with simple ds: %@", qualifier];
+  
   sds = [[SkySimpleProjectFolderDataSource alloc]
 	  initWithFolderDataSource:self];
   ads = [[SkyAttributeDataSource alloc] initWithDataSource:sds
@@ -257,6 +270,9 @@ static inline BOOL _showUnknownFiles(id self) {
   */
   
   dsAttrs = [ads fetchObjects];
+  
+  if (debugOn)
+    [self debugWithFormat:@"  fetched %i entries", [dsAttrs count]];
     
   [fs  release]; fs  = nil;
   [ads release]; ads = nil;
@@ -265,19 +281,24 @@ static inline BOOL _showUnknownFiles(id self) {
   return dsAttrs;
 }
 
-- (NSArray *)_fetchDocumentsForObjects:(NSArray *)dsAttrs {
-  NSArray *fetchKeys;
-  NSArray *ns;
+- (NSArray *)_fetchDocumentsForObjects:(NSArray *)_dsAttrs {
+  NSArray *fetchKeys, *result;
+  
+  if (debugOn)
+    [self debugWithFormat:@"  turn %i objs into docs ..", [_dsAttrs count]];
   
   fetchKeys = [[self->fetchSpecification hints] objectForKey:@"fetchKeys"];
-  if (fetchKeys != nil) {
-    return [self->fileManager documentsForObjects:dsAttrs
-		withAttributes:fetchKeys];
+  if (fetchKeys == nil) {
+    NSString *ns;
+    
+    ns = [self->fileManager defaultProjectDocumentNamespace];
+    fetchKeys = [NSArray arrayWithObject:ns];
   }
+  result = [self->fileManager documentsForObjects:_dsAttrs
+                              withAttributes:fetchKeys];
   
-  ns = [NSArray arrayWithObject:
-		  [self->fileManager defaultProjectDocumentNamespace]];
-  return [self->fileManager documentsForObjects:dsAttrs withAttributes:ns];
+  if (debugOn) [self debugWithFormat:@"  got %i docs.", [result count]];
+  return result;
 }
 
 - (NSArray *)_applyFetchLimit:(NSArray *)objects {
@@ -301,7 +322,7 @@ static inline BOOL _showUnknownFiles(id self) {
   EOQualifier           *qualifier;
   NSNotificationCenter  *nc;
   BOOL                  fetchDeep;
-  
+
   fetchDeep  = [self isDeepFetchSpecification];
   nc         = [NSNotificationCenter defaultCenter];
   attrNotify = [[self->context propertyManager]
@@ -361,13 +382,18 @@ static inline BOOL _showUnknownFiles(id self) {
   
   hints = [self->fetchSpecification hints];
   
-  if ([[hints objectForKey:@"onlySubFolderNames"] boolValue])
+  if ([[hints objectForKey:@"onlySubFolderNames"] boolValue]) {
+    if (debugOn) 
+      [self debugWithFormat:@"  only fetch folder names: %@", self->path];
     return [self->fileManager subDirectoryNamesForPath:self->path];
+  }
   
-  if (![self->fileManager isReadableFileAtPath:self->path])
+  if (![self->fileManager isReadableFileAtPath:self->path]) {
+    [self debugWithFormat:@"  path is not readable: %@", self->path];
     return [NSArray array]; // TODO: return error/nil?
+  }
   
-  // [self->fileManager flush];
+  // [self->fileManager flush]; // TODO: why commented out? necessary?
   return [self _fetchObjects];
 }
 
@@ -375,6 +401,8 @@ static inline BOOL _showUnknownFiles(id self) {
   NSAutoreleasePool *pool;
   NSArray      *result, *sortOrderings;
   NSDictionary *hints;
+  
+  if (debugOn) [self debugWithFormat:@"fetch objects ..."];
   
   if (!self->isValid) {
     NSLog(@"WARNING[%s]: fetch from invalid FolderDataSource %@",
@@ -387,8 +415,10 @@ static inline BOOL _showUnknownFiles(id self) {
   /* check preconditions */
   
   if ([self->fetchSpecification qualifier] == nil) {
-    if ([[hints objectForKey:EONoFetchWithEmptyQualifierHint] boolValue])
+    if ([[hints objectForKey:EONoFetchWithEmptyQualifierHint] boolValue]) {
+      if (debugOn) [self debugWithFormat:@"no qualifier => empty result."];
       return [NSArray array];
+    }
   }
   
   /* open pool */
@@ -413,6 +443,8 @@ static inline BOOL _showUnknownFiles(id self) {
   
   result = [result shallowCopy];
   [pool release];
+  
+  if (debugOn) [self debugWithFormat:@"fetched %i objects.", [result count]];
   return [result autorelease];
 }
 
@@ -448,29 +480,9 @@ static inline BOOL _showUnknownFiles(id self) {
   [self postDataSourceChangedNotification];
 }
 
-/* description */
-
-- (void)appendAttributesToDescription:(NSMutableString *)ms {
-  if (self->context)     [ms appendFormat:@" ctx=0x%08X", self->context];
-  if (self->projectGID)  [ms appendFormat:@" pgid=%@", self->projectGID];
-  if (self->folderGID)   [ms appendFormat:@" fgid=%@", self->folderGID];
-  if (self->path)        [ms appendFormat:@" path='%@'", self->path];
-  if (!self->isValid)    [ms appendString:@" INVALID"];
-  if (self->fileManager) [ms appendFormat:@" fm=%@", self->fileManager];
-}
-- (NSString *)description {
-  NSMutableString *ms;
-  
-  ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
-  [self appendAttributesToDescription:ms];
-  [ms appendString:@">"];
-  return ms;
-}
-
 /* Internals */
 
-- (void)_unvalidate:(id)_obj {
+- (void)_unvalidate:(id)_obj { // TODO: fix name ...
   self->isValid = NO;
   [self postDataSourceChangedNotification];
 }
@@ -489,6 +501,39 @@ static inline BOOL _showUnknownFiles(id self) {
 
 - (NSString *)path {
   return self->path;
+}
+
+/* debugging */
+
+- (BOOL)isDebuggingEnabled {
+  return debugOn;
+}
+
+/* description */
+
+- (void)appendAttributesToDescription:(NSMutableString *)ms {
+  if (self->context)     [ms appendFormat:@" ctx=0x%08X", self->context];
+  if (self->projectGID)  [ms appendFormat:@" pgid=%@", self->projectGID];
+  if (self->folderGID)   [ms appendFormat:@" fgid=%@", self->folderGID];
+  if (self->path)        [ms appendFormat:@" path='%@'", self->path];
+  if (!self->isValid)    [ms appendString:@" INVALID"];
+  if (self->fileManager) [ms appendFormat:@" fm=%@", self->fileManager];
+
+  if (self->fetchSpecification == nil)
+    [ms appendString:@" NO-FSPEC"];
+  else if ([self->fetchSpecification qualifier] == nil)
+    [ms appendString:@" NO-QUAL"];
+  else
+    [ms appendFormat:@" qualifier=%@", [self->fetchSpecification qualifier]];
+}
+- (NSString *)description {
+  NSMutableString *ms;
+  
+  ms = [NSMutableString stringWithCapacity:128];
+  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+  [self appendAttributesToDescription:ms];
+  [ms appendString:@">"];
+  return ms;
 }
 
 @end /* SkyProjectFolderDataSource */

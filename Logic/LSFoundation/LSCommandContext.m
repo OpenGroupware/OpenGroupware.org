@@ -71,22 +71,21 @@ NSString *ProfileCommandsFileName = nil;
 }
 
 + (void)initialize {
+  NSUserDefaults *ns = [NSUserDefaults standardUserDefaults];
   static BOOL isInitialized = NO;
-  if (!isInitialized) {
-    NSUserDefaults *ns = [NSUserDefaults standardUserDefaults];
-    isInitialized = YES;
-    [ns registerDefaults:
+  if (isInitialized) return;
+  isInitialized = YES;
+  
+  [ns registerDefaults:
         [NSDictionary dictionaryWithObjectsAndKeys:
                       [NSNumber numberWithInt:300], @"LSSessionChannelTimeOut",
                       nil]];
-    ProfileCommands = [ns boolForKey:@"SkyCommandProfileEnabled"];
-    if ((ProfileCommandsFileName =
-         [ns stringForKey:@"SkyCommandProfileFilename"])) {
-      FILE *f = NULL;
-      if ((f = fopen([ProfileCommandsFileName cString], "a+"))) {
-        fprintf(f, "\n############################### %d\n", getpid());
-      }
-    }
+  ProfileCommands = [ns boolForKey:@"SkyCommandProfileEnabled"];
+  if ((ProfileCommandsFileName =
+       [ns stringForKey:@"SkyCommandProfileFilename"]) != nil) {
+    FILE *f = NULL;
+    if ((f = fopen([ProfileCommandsFileName cString], "a+")))
+      fprintf(f, "\n############################### %d\n", getpid());
   }
 }
 
@@ -104,8 +103,8 @@ NSString *ProfileCommandsFileName = nil;
 - (id)_init {
   if ((self = [super init])) {
     NSNotificationCenter *nc;
-    
-    nc = [self notificationCenter];
+
+    /* setup helper objects */
     
     self->typeManager = 
       [[NSClassFromString(@"LSTypeManager") alloc] initWithContext:self];
@@ -118,6 +117,17 @@ NSString *ProfileCommandsFileName = nil;
                                                    initWithContext:self];
     self->accessManager = [[SkyAccessManager alloc] initWithContext:self];
     
+    if (self->typeManager == nil)
+      [self logWithFormat:@"ERROR: LSTypeManager is missing!"];
+    if (self->objectPropertyManager == nil)
+      [self logWithFormat:@"ERROR: SkyObjectPropertyManager is missing!"];
+    if (self->linkManager == nil)
+      [self logWithFormat:@"ERROR: OGoObjectLinkManager is missing!"];
+    if (self->accessManager == nil)
+      [self logWithFormat:@"ERROR: SkyAccessManager is missing!"];
+
+    /* ivars */
+    
     self->extraVariables   = [[NSMutableDictionary alloc] initWithCapacity:32];
     self->wasLastCommandOk = YES;
 
@@ -125,6 +135,8 @@ NSString *ProfileCommandsFileName = nil;
       [[[NSUserDefaults standardUserDefaults]
                         objectForKey:@"LSSessionChannelTimeOut"]
                         doubleValue];
+    
+    nc = [self notificationCenter];
     
     [nc addObserver:self
         selector:@selector(_requireClassDescriptionForClass:)

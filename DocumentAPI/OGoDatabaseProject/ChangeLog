@@ -1,3 +1,8 @@
+2005-03-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyProjectFolderDataSource.m: added debug logging which can be
+	  enabled using 'SkyProjectFolderDataSourceDebugEnabled' (v5.1.47)
+
 2005-01-24  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyProjectFileManager+FileAttributes.m: improved log for missing

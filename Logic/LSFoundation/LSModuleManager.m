@@ -56,7 +56,7 @@
     [self registerDefaults];
     
     s = [_bundle bundlePath];
-    s = [[s lastPathComponent]stringByDeletingPathExtension];
+    s = [[s lastPathComponent] stringByDeletingPathExtension];
     self->moduleName   = [s copy];
     self->moduleBundle = [_bundle retain];
     

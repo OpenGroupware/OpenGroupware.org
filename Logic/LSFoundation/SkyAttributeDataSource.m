@@ -42,6 +42,15 @@
 
 @implementation SkyAttributeDataSource
 
+static BOOL debugOn = NO;
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  if ((debugOn = [ud boolForKey:@"SkyAttributeDataSourceDebugEnabled"]))
+    NSLog(@"SkyAttributeDataSourceDebugEnabled debugging is enabled.");
+}
+
 - (id)init {
   NSLog(@"WARNING: Wrong initializer, use 'initWithContext:'");
   [self release];
@@ -80,9 +89,12 @@
 
 /* accessors */
 
-- (void)setFetchSpecification:(EOFetchSpecification *)_fSpec {
-  /* TODO: shouldn't that post a datasource-changed notification? */
-  ASSIGN(self->fetchSpecification, _fSpec);
+- (void)setFetchSpecification:(EOFetchSpecification *)_fspec {
+  if ([self->fetchSpecification isEqual:_fspec])
+    return;
+  
+  ASSIGNCOPY(self->fetchSpecification, _fspec);
+  [self postDataSourceChangedNotification];
 }
 - (EOFetchSpecification *)fetchSpecification {
   return [[self->fetchSpecification copy] autorelease];
@@ -189,7 +201,13 @@
   ns = (self->namespaces != nil)
     ? self->namespaces
     : [[self->fetchSpecification hints] objectForKey:@"namespaces"];
-
+  
+  if (debugOn) {
+    [self debugWithFormat:@"fetch namespaces (default=%@): %@",
+          self->defaultNamespace,
+          [[ns allObjects] componentsJoinedByString:@","]];
+  }
+  
   /* check preconditions */
   
   if ((qualifier = [self->fetchSpecification qualifier]) == nil) {
@@ -197,6 +215,7 @@
 	    __PRETTY_FUNCTION__];
     return nil;
   }
+  if (debugOn) [self debugWithFormat:@"  qualifier: %@", qualifier];
   
   if (![self isNamespaceOrDbKeysValid]) {
     [self logWithFormat:
@@ -204,7 +223,7 @@
             @"or values", __PRETTY_FUNCTION__];
     return nil;
   }
-
+  
   /* setup cache */
   
   [self->_gid2ObjCache release]; self->_gid2ObjCache = nil;
@@ -212,8 +231,10 @@
 
   /* fetch GIDs and objects */
   
-  if ([self _hasAttributeKey:qualifier]) {
+  if ([self _hasAttributeKey:qualifier]) { // TODO: what does that mean?
+    if (debugOn) [self debugWithFormat:@"    has attribute key"];
     gids = [[self _evaluateQualifier:qualifier] allObjects];
+    if (debugOn) [self debugWithFormat:@"    got %i gids.", [gids count]];
     [self _freeCaches];
     objects = self->verifyIds ? [self _buildObjects:gids] : gids;
   }
@@ -223,8 +244,14 @@
     NSEnumerator *enumerator = nil;
     id           obj         = nil;
 
+    if (debugOn) 
+      [self debugWithFormat:@"    fetch source: %@", self->source];
+    
     [self->source setFetchSpecification:self->fetchSpecification];
     objects    = [self->source fetchObjects];
+    if (debugOn) 
+      [self debugWithFormat:@"    fetched %i objects.", [objects count]];
+    
     objs       = calloc([objects count] + 2, sizeof(id));
     enumerator = [objects objectEnumerator];
     while ((obj = [enumerator nextObject]) != nil) {
@@ -232,15 +259,23 @@
       objCnt++;
     }
     gids = [NSArray arrayWithObjects:objs count:objCnt];
+    if (debugOn) 
+      [self debugWithFormat:@"    made %i gids.", [gids count]];
     free(objs); objs = NULL;
   }
+  
+  if (debugOn)
+    [self debugWithFormat:@"  fetched %d gids", [gids count]];
   
   /* fetch properties */
   
   [self _fetchPropertiesInNamespaces:ns forObjects:objects withGIDs:gids];
   
   [self->_gid2ObjCache release]; self->_gid2ObjCache = nil;
-
+  
+  if (debugOn)
+    [self debugWithFormat:@"fetched %d objects.", [objects count]];
+  
   return objects;
 }
 
@@ -276,6 +311,36 @@
 }
 - (NSString *)defaultNamespace {
   return self->defaultNamespace;
+}
+
+/* debugging */
+
+- (BOOL)isDebuggingEnabled {
+  return debugOn;
+}
+
+/* description */
+
+- (void)appendAttributesToDescription:(NSMutableString *)ms {
+  if (self->context)   [ms appendFormat:@" ctx=0x%08X", self->context];
+  if (self->source)    [ms appendFormat:@" source=%@",  self->source];
+  if (self->verifyIds) [ms appendString:@" verify-ids"];
+  
+  if (self->fetchSpecification == nil)
+    [ms appendString:@" NO-FSPEC"];
+  else if ([self->fetchSpecification qualifier] == nil)
+    [ms appendString:@" NO-QUAL"];
+  else
+    [ms appendFormat:@" qualifier=%@", [self->fetchSpecification qualifier]];
+}
+- (NSString *)description {
+  NSMutableString *ms;
+  
+  ms = [NSMutableString stringWithCapacity:128];
+  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+  [self appendAttributesToDescription:ms];
+  [ms appendString:@">"];
+  return ms;
 }
 
 @end /* SkyAttributeDataSource */
