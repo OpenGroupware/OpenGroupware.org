@@ -1,3 +1,7 @@
+2004-09-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added generic RSS method which works on all folders (v1.3.5)
+
 2004-08-24  Helge Hess  <helge@dogbert.in.skyrix.com>
 
 	* fixed for new ZS libraries in SoObjects (v1.3.4)

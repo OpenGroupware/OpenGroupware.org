@@ -114,6 +114,48 @@ static BOOL    debugOn = NO;
   return self->fileManager;
 }
 
+- (id)_fetchEOInContext:(id)_ctx {
+  LSCommandContext *cmdctx;
+  EOGlobalID *gid;
+  id eo;
+  
+  cmdctx = [self commandContextInContext:_ctx];
+  if ((gid = [self projectGlobalIDInContext:_ctx]) == nil)
+    return nil;
+  
+  // TODO: command should return one record for a 'gid' query?
+  eo = [cmdctx runCommand:@"project::get-by-globalid", @"gid", gid, nil];
+  if ([eo isKindOfClass:[NSArray class]]) eo = [eo lastObject];
+  return eo;
+}
+
+- (NSString *)fetchAbstractInContext:(WOContext *)_ctx {
+  // TODO: fetch EO + abstract
+  LSCommandContext *cmdctx;
+  id eo, tmp;
+  
+  if (_ctx == nil) _ctx = [[WOApplication application] context];
+
+  /* fetch EO */
+  
+  if ((eo = [self _fetchEOInContext:_ctx]) == nil) {
+    [self logWithFormat:@"Note: did not find EO for fetching comment ..."];
+    return nil;
+  }
+  
+  /* fetch comment relation (pretty obfuscated) */
+  
+  cmdctx = [self commandContextInContext:_ctx];
+  [cmdctx runCommand:@"project::get-comment", 
+	  @"object", eo, @"relationKey", @"comment", nil];
+  tmp = [[eo valueForKey:@"comment"] valueForKey:@"comment"];
+  if (tmp != nil)
+    [eo takeValue:[[tmp copy] autorelease] forKey:@"comment"];
+  
+  /* done */
+  return [eo valueForKey:@"comment"];
+}
+
 /* child names */
 
 - (NSArray *)toManyRelationshipKeys {
@@ -290,6 +332,12 @@ static BOOL    debugOn = NO;
   return [self performCopySelector:@selector(copyPath:toPath:handler:)
 	       source:_source target:_target
 	       newName:_name inContext:_ctx];
+}
+
+/* RSS support */
+
+- (NSString *)rssDescriptionInContext:(WOContext *)_ctx {
+  return [self fetchAbstractInContext:_ctx];
 }
 
 /* description */

@@ -24,7 +24,7 @@
 
 @implementation SxProjectNotesFolder
 
-static BOOL debugOn = YES;
+static BOOL debugOn = NO;
 
 - (void)dealloc {
   [self->projectEO release];

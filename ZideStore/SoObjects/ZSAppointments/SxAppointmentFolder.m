@@ -105,7 +105,7 @@
 /* factory */
 
 - (Class)recordClassForKey:(NSString *)_key {
-  [self logWithFormat:@"record class for key: '%@'", _key];
+  [self debugWithFormat:@"record class for key: '%@'", _key];
   
   if ([_key length] == 0)
     return [super recordClassForKey:_key];
@@ -121,7 +121,7 @@
     return [SxAppointment class];
   }
   
-  [self logWithFormat:@"use SxAppointment for key: '%@'", _key];
+  [self debugWithFormat:@"use SxAppointment for key: '%@'", _key];
   return [SxAppointment class];
 }
 
@@ -192,6 +192,7 @@
 - (NSArray *)toOneRelationshipKeys {
   static NSArray *keys = nil;
   if (keys == nil)
+    // TODO: 'Overview' is a to-many key?
     keys = [[NSArray alloc] initWithObjects:@"Overview", nil];
   
   return [self canHaveOverviewSubfolder] ? keys : nil;
@@ -510,6 +511,11 @@
   }
 }
 
+- (id)renderGIDAsName:(EOKeyGlobalID *)_entry {
+  if (_entry == nil) return nil;
+  return [[_entry keyValues][0] stringValue];
+}
+
 - (id)renderListGIDEntry:(EOKeyGlobalID *)_entry {
   // contentlength,lastmodified,displayname,executable,resourcetype
   // checked-in,checked-out
@@ -526,12 +532,22 @@
   
   record = [NSMutableDictionary dictionaryWithCapacity:4];
   
-  pkey = [[_entry keyValues][0] stringValue];
-  url = [[NSString alloc] initWithFormat:@"%@%@.ics", [self baseURL], pkey];
+  pkey = [self renderGIDAsName:_entry];
+  url  = [[NSString alloc] initWithFormat:@"%@%@.ics", [self baseURL], pkey];
   [record setObject:url  forKey:@"{DAV:}href"];
-  [record setObject:pkey forKey:@"davDisplayName"];
+  [record setObject:pkey forKey:@"davDisplayName"]; // small hack, use title
   [url release];
   return record;
+}
+
+- (NSEnumerator *)davChildKeysInContext:(id)_ctx {
+  /* this is really toOneRelationshipKeys?! */
+  NSArray *gids;
+  
+  gids = [[self aptManagerInContext:_ctx] 
+                gidsOfAppointmentSet:[self aptSetID]];
+  return [SxMapEnumerator enumeratorWithSource:[gids objectEnumerator]
+			  object:self selector:@selector(renderGIDAsName:)];
 }
 
 - (id)performListQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx {
@@ -639,6 +655,17 @@
       [[[self propertySetNamed:[self entryAllPropSetName]] allObjects] copy];
   }
   return [self isBulkQueryContext:_ctx] ? defEntryNames : defFolderNames;
+}
+
+/* RSS */
+
+- (NSString *)rssChannelTitleInContext:(WOContext *)_ctx {
+  NSString *s;
+  
+  s = @"OGo Calendar '";
+  s = [s stringByAppendingString:[[self container] nameInContainer]];
+  s = [s stringByAppendingString:@"'"];
+  return s;
 }
 
 /* description */

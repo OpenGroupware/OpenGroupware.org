@@ -32,3 +32,11 @@ Defaults
 
 SxDocumentFolderDebugEnabled
 SxProjectFolderDebugEnabled
+
+
+RSS
+===
+
+You can now retrieve project notes using RSS, the popular news format. The URL
+for doing that is:
+  http://[yourhost]/zidestore/so/[yourlogin]/Projects/[project]/Notes.rss

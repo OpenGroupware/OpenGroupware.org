@@ -123,6 +123,17 @@ static BOOL debugOn = YES;
   return @"view";
 }
 
+/* RSS support */
+
+- (NSString *)rssChannelTitleInContext:(WOContext *)_ctx {
+  NSString *s;
+  
+  s = @"OGo Projects for User '";
+  s = [s stringByAppendingString:[[_ctx activeUser] login]];
+  s = [s stringByAppendingString:@"'"];
+  return s;
+}
+
 /* debugging */
 
 - (BOOL)isDebuggingEnabled {

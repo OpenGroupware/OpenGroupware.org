@@ -8,6 +8,15 @@
   };
 
   categories = {
+    SxFolder = {
+      methods = {
+        "rss" = {
+          protectedBy = "View";
+          pageName    = "SxFolderRSS"; 
+        };
+      };
+    };
+
     SxTaskFolder = {
       methods = {
         "rss" = {

@@ -22,126 +22,174 @@
 #include <NGObjWeb/WOComponent.h>
 
 /*
-  SxProjectNotesRSS
+  SxFolderRSS
   
     parent-folder: SxProjectFolder
     subjects:      -
 */
 
-@interface SxProjectNotesRSS : WOComponent
+@interface SxFolderRSS : WOComponent
 {
-  NSArray *notes;
+  NSArray *list;
+  
+  /* transient */
+  id item;
 }
 
 @end
 
-@interface SxProjectNotesRDF : WOComponent
+@interface SxFolderRDF : WOComponent
+@end
+
+@interface NSObject(SoRSSObject)
+
+- (NSString *)rssChannelTitleInContext:(WOContext *)_ctx;
+- (NSEnumerator *)rssChildKeysInContext:(WOContext *)_ctx;
+- (NSString *)rssTitleInContext:(WOContext *)_ctx;
+- (NSString *)rssLinkInContext:(WOContext *)_ctx;
+- (NSString *)rssDescriptionInContext:(WOContext *)_ctx;
+
 @end
 
 #include <SaxObjC/XMLNamespaces.h>
 #include "common.h"
 
-@implementation SxProjectNotesRSS
+@implementation SxFolderRSS
 
 static NSString *docTypeID  = @"-//Netscape Communications//DTD RSS 0.91//EN";
 static NSString *docTypeDTD = 
   @"http://my.netscape.com/publish/formats/rss-0.91.dtd";
 
+static unsigned int fetchLimit = 1000;
+
 - (void)dealloc {
-  [self->notes release];
+  [self->item release];
+  [self->list release];
   [super dealloc];
+}
+
+/* configuration */
+
+- (unsigned int)fetchLimit {
+  return fetchLimit;
+}
+
+/* accessors */
+
+- (void)setItem:(id)_item {
+  ASSIGN(self->item, _item);
+}
+- (id)item {
+  return self->item;
 }
 
 /* folder */
 
-- (id)notesFolder {
-  return [[self clientObject] lookupName:@"Notes" inContext:[self context]
-			      acquire:NO];
-}
-
-- (NSArray *)fetchAllNotes {
-  NSMutableArray *lNotes;
-  NSArray  *names;
-  id       folder;
-  unsigned i, count;
+- (NSArray *)fetch {
+  NSMutableArray *lList;
+  NSEnumerator *names;
+  NSString     *name;
+  id           folder;
   
-  if ((folder = [self notesFolder]) == nil)
+  if ((folder = [self clientObject]) == nil)
     return nil;
   
   // TODO: use some bulk fetch for better performance (ala WebDAV)
   
-  names = [folder toOneRelationshipKeys];
-  if ((count = [names count]) == 0)
-    return names;
-  
-  lNotes = [NSMutableArray arrayWithCapacity:count];
-  for (i = 0; i < count; i++) {
-    id note;
-
-    note = [folder lookupName:[names objectAtIndex:i]
-		   inContext:[self context]
-		   acquire:NO];
+  names = [folder rssChildKeysInContext:[self context]];
+  lList = [NSMutableArray arrayWithCapacity:32];
+  while ((name = [names nextObject]) != nil) {
+    id object;
     
-    if ([note isKindOfClass:[NSException class]])
+    if ([lList count] >= [self fetchLimit]) {
+      [self logWithFormat:@"Note: RSS fetch was limited to %d items.", 
+	      [self fetchLimit]];
+      break;
+    }
+    
+    object = [folder lookupName:name inContext:[self context] acquire:NO];
+    
+    if ([object isKindOfClass:[NSException class]])
       /* some kind of error */
       continue;
-    if (![note isNotNull])
+    if (![object isNotNull])
       /* not found? weird */
       continue;
 
-    [lNotes addObject:note];
+    [lList addObject:object];
   }
-  return lNotes;
+  return lList;
 }
 
 /* actions */
 
 - (id)defaultAction {
-  [self->notes release]; self->notes = nil;
-  self->notes = [[self fetchAllNotes] retain];
-  [self debugWithFormat:@"fetched %d notes ...", [self->notes count]];
+  [self->list release]; self->list = nil;
+  self->list = [[self fetch] retain];
+  [self debugWithFormat:@"fetched %d items for RSS display ...", 
+	  [self->list count]];
   return self;
+}
+
+/* RSS channel accessors (the channel is the folder) */
+
+- (NSString *)channelTitle {
+  return [[self clientObject] rssChannelTitleInContext:[self context]];
+}
+- (NSString *)channelLink {
+  return [[self clientObject] rssLinkInContext:[self context]];
+}
+- (NSString *)channelLanguage {
+  return @"en";
+}
+
+/* RSS item accessors */
+
+- (NSString *)itemTitle {
+  return [[self item] rssTitleInContext:[self context]];
+}
+- (NSString *)itemLink {
+  return [[self item] rssLinkInContext:[self context]];
+}
+- (NSString *)itemDescription {
+  return [[self item] rssDescriptionInContext:[self context]];
 }
 
 /* generating response */
 
-- (void)appendRSSItem:(id)_note
-  toResponse:(WOResponse *)_r inContext:(WOContext *)_ctx
-{
-  NSString *url;
-  
-  [self debugWithFormat:@"gen RSS item: %@", _note];
-
-  url = [_note baseURLInContext:_ctx];
-  url = [url stringByAppendingString:@"/asBrHTML"];
+- (void)appendItemToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx {
+  [self debugWithFormat:@"gen RSS item: %@", [self item]];
   
   [_r appendContentString:@"        <title>"];
-  [_r appendContentXMLString:[_note davDisplayName]];
+  [_r appendContentXMLString:[self itemTitle]];
   [_r appendContentString:@"</title>\n"];
   
   [_r appendContentString:@"        <link>"];
-  [_r appendContentXMLString:url];
+  [_r appendContentXMLString:[self itemLink]];
   [_r appendContentString:@"</link>\n"];
   
   [_r appendContentString:@"        <description>"];
-  [_r appendContentXMLString:[_note valueForKey:@"noteContent"]];
+  [_r appendContentXMLString:[self itemDescription]];
   [_r appendContentString:@"</description>\n"];
 }
 
-- (void)appendRSSItemsToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx{
+- (void)appendItemsToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx{
   NSEnumerator *e;
-  id note;
+  id object;
   
-  e = [self->notes objectEnumerator];
-  while ((note = [e nextObject]) != nil) {
+  e = [self->list objectEnumerator];
+  while ((object = [e nextObject]) != nil) {
+    [self setItem:object];
+    
     [_r appendContentString:@"    <item>\n"];
-    [self appendRSSItem:note toResponse:_r inContext:_ctx];
+    [self appendItemToResponse:_r inContext:_ctx];
     [_r appendContentString:@"    </item>\n"];
   }
+  [self setItem:nil];
 }
 
 
-- (void)appendRSSChannelToResponse:(WOResponse *)_r inContext:(WOContext *)_c {
+- (void)appendChannelToResponse:(WOResponse *)_r inContext:(WOContext *)_c {
   /*
     <description>project info</description>
     <webMaster>email of project lead</webMaster>
@@ -153,23 +201,20 @@ static NSString *docTypeDTD =
       <width>100</width>
     </image>
   */
-  id project;
-  
-  project = [self clientObject];
-  
   [_r appendContentString:@"    <title>"];
-  [_r appendContentString:@"Notes of OGo Project '"];
-  [_r appendContentXMLString:[project nameInContainer]];
-  [_r appendContentString:@"'</title>\n"];
+  [_r appendContentXMLString:[self channelTitle]];
+  [_r appendContentString:@"</title>\n"];
   
   [_r appendContentString:@"    <link>"];
-  [_r appendContentXMLString:[project baseURLInContext:[self context]]];
+  [_r appendContentXMLString:[self channelLink]];
   [_r appendContentString:@"</link>\n"];
-  
-  [_r appendContentString:@"    <language>en</language>\n"];
+
+  [_r appendContentString:@"    <language>"];
+  [_r appendContentXMLString:[self channelLanguage]];
+  [_r appendContentString:@"</language>\n"];
 }
 
-- (void)appendRSSHeaderToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx{
+- (void)appendHeaderToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx{
   [_r appendContentString:@"<?xml version=\"1.0\"?>\n"];
   [_r appendContentString:@"<!DOCTYPE rss PUBLIC \""];
   [_r appendContentString:docTypeID];
@@ -179,29 +224,28 @@ static NSString *docTypeDTD =
   
   [_r appendContentString:@"<rss version=\"0.91\">\n"];
   [_r appendContentString:@"  <channel>\n"];
-  [self appendRSSChannelToResponse:_r inContext:_ctx];
+  [self appendChannelToResponse:_r inContext:_ctx];
   
   /* yes, in RSS the items are children of the channel! */
 }
-- (void)appendRSSFooterToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx{
+- (void)appendFooterToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx{
   [_r appendContentString:@"  </channel>\n</rss>\n"];
 }
 
 - (void)appendToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx {
   [_r setHeader:@"text/xml" forKey:@"content-type"];
-  [self appendRSSHeaderToResponse:_r inContext:_ctx];
-  [self appendRSSItemsToResponse:_r  inContext:_ctx];
-  [self appendRSSFooterToResponse:_r inContext:_ctx];
+  [self appendHeaderToResponse:_r inContext:_ctx];
+  [self appendItemsToResponse:_r  inContext:_ctx];
+  [self appendFooterToResponse:_r inContext:_ctx];
 }
 
-@end /* SxProjectNotesRSS */
+@end /* SxFolderRSS */
 
-@implementation SxProjectNotesRDF
+@implementation SxFolderRDF
 
 /* generating response */
 
-- (void)appendRSSItem:(id)_note
-  toResponse:(WOResponse *)_r inContext:(WOContext *)_ctx
+- (void)appendItemToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx
 {
   /*
   <item rdf:about="http://freshmeat.net/releases/173828/">
@@ -248,7 +292,7 @@ d links to new code are added daily.</description>
   [_r appendContentString:@"</channel>\n"];
 }
 
-- (void)appendRSSHeaderToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx{
+- (void)appendHeaderToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx{
   [_r appendContentString:@"<?xml version=\"1.0\"?>\n"];
 
   [_r appendContentString:@"<rdf:RDF "];
@@ -269,8 +313,57 @@ d links to new code are added daily.</description>
   
   [self appendChannelToResponse:_r inContext:_ctx];
 }
-- (void)appendRSSFooterToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx{
+- (void)appendFooterToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx{
   [_r appendContentString:@"</rdf:RDF>\n"];
 }
 
-@end /* SxProjectNotesRDF */
+@end /* SxFolderRDF */
+
+#include <NGObjWeb/SoDAV.h>
+
+@implementation NSObject(SoRSSObject)
+
+- (NSString *)rssChannelTitleInContext:(WOContext *)_ctx {
+  NSString *s;
+  
+  // TODO: should ask channel for title
+  s = @"Items of OGo Channel '";
+  s = [s stringByAppendingString:[self nameInContainer]];
+  s = [s stringByAppendingString:@"'"];
+  return s;
+}
+
+- (NSString *)rssTitleInContext:(WOContext *)_ctx {
+  return [self davDisplayName];
+}
+
+- (NSString *)rssDescriptionInContext:(WOContext *)_ctx {
+  return [self valueForKey:@"contentAsString"];
+}
+
+- (NSString *)rssLinkInContext:(WOContext *)_ctx {
+  // TODO: the link is displayed in Thunderbird. There are multiple options
+  //       for RSS links:
+  //       a) generate a specific RSS view (current approach)
+  //       b) 
+  NSString *url;
+  SoClass  *clazz;
+  
+  url   = [self baseURLInContext:_ctx];
+  clazz = [self soClass];
+
+  if ([clazz hasKey:@"rssView" inContext:_ctx])
+    url = [url stringByAppendingString:@"/rssView"];
+  else if ([clazz hasKey:@"asBrHTML" inContext:_ctx])
+    url = [url stringByAppendingString:@"/asBrHTML"];
+  else if ([clazz hasKey:@"view" inContext:_ctx])
+    url = [url stringByAppendingString:@"/view"];
+  
+  return url;
+}
+
+- (NSEnumerator *)rssChildKeysInContext:(WOContext *)_ctx {
+  return [self davChildKeysInContext:_ctx];
+}
+
+@end /* NSObject(SoRSSObject) */

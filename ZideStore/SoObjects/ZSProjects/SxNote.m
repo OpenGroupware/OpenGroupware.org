@@ -107,6 +107,9 @@ static BOOL debugOn = NO;
   [self debugWithFormat:@"load note from: '%@'", fileName];
   return [NSString stringWithContentsOfFile:fileName];
 }
+- (NSString *)contentAsString {
+  return [self noteContent];
+}
 
 /* permissions */
 
@@ -118,7 +121,7 @@ static BOOL debugOn = NO;
 /* actions */
 
 - (id)GETAction:(id)_ctx {
-  return [self noteContent];
+  return [self contentAsString];
 }
 
 - (id)asPreHTMLAction:(id)_ctx {
@@ -128,7 +131,7 @@ static BOOL debugOn = NO;
   r = [_ctx response];
   [r setHeader:@"text/html" forKey:@"content-type"];
   [r appendContentString:@"<pre>"];
-  [r appendContentHTMLString:[self noteContent]];
+  [r appendContentHTMLString:[self contentAsString]];
   [r appendContentString:@"</pre>"];
   return r;
 }
@@ -139,7 +142,7 @@ static BOOL debugOn = NO;
   NSString     *s;
   NSEnumerator *e;
   
-  if ((s = [self noteContent]) == nil)
+  if ((s = [self contentAsString]) == nil)
     return nil;
   
   r = [_ctx response];
@@ -239,6 +242,15 @@ static BOOL debugOn = NO;
 
 - (NSString *)davDisplayName {
   // TODO: use title if available?
+  id       lNoteEO;
+  NSString *title;
+  
+  lNoteEO = [self _fetchNoteEOInContext:nil];
+  title   = [lNoteEO valueForKey:@"title"];
+  
+  if ([title isNotNull])
+    return title;
+  
   return [self nameInContainer];
 }
 
@@ -257,7 +269,7 @@ static BOOL debugOn = NO;
   // TODO: a bit expensive, maybe we can do that faster
   NSString *s;
   
-  s = [self noteContent];
+  s = [self contentAsString];
   return [s isNotNull] ? [NSNumber numberWithInt:[s length]] : nil;
 }
 

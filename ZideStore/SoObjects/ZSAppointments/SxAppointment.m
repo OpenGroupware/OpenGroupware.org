@@ -85,6 +85,27 @@ static BOOL logAptChange = NO;
   return self->group;
 }
 
+/* comment */
+
+- (NSString *)fetchCommentInContext:(id)_ctx {
+  LSCommandContext *cmdctx;
+  id dateEO;
+
+  /* fetch EO */
+  
+  if ((dateEO = [self objectInContext:_ctx]) == nil)
+    return nil;
+
+  /* fetch comment */
+  
+  cmdctx = [self commandContextInContext:_ctx];
+  [cmdctx runCommand:@"appointment::get-comments", @"object", dateEO, nil];
+  return [dateEO valueForKey:@"comment"];
+}
+- (NSString *)comment {
+  return [self fetchCommentInContext:[[WOApplication application] context]];
+}
+
 /* Exchange permissions */
 
 - (BOOL)isDeletionAllowed {
@@ -372,9 +393,10 @@ static BOOL logAptChange = NO;
   
   if ([participants count] == 0) {
     // if no participants, take current account
-    participants =
-      [NSArray arrayWithObject:
-               [[self commandContextInContext:_ctx] valueForKey:LSAccountKey]];
+    id account;
+    
+    account = [[self commandContextInContext:_ctx] valueForKey:LSAccountKey];
+    participants = [NSArray arrayWithObject:account];
   }
   
   [keys removeObject:@"participants"];
@@ -668,6 +690,22 @@ static BOOL logAptChange = NO;
 		       allObjects] copy];
   }
   return defNames;
+}
+
+/* RSS */
+
+- (NSString *)rssTitleInContext:(WOContext *)_ctx {
+  // TODO: we might want to add stuff like startDate/endDate
+  id dateEO;
+  
+  if ((dateEO = [self objectInContext:nil]) == nil)
+    return nil;
+  return [dateEO valueForKey:@"title"];
+}
+
+- (NSString *)rssDescriptionInContext:(WOContext *)_ctx {
+  // TODO: I guess we want to embed more information
+  return [self fetchCommentInContext:_ctx];
 }
 
 @end /* SxAppointment */

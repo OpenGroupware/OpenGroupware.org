@@ -37,7 +37,7 @@
 
 @interface SxNote : SxObject
 {
-  id noteEO;
+  id noteEO; // TODO: the superclass already has an 'eo' ivar?
 }
 
 - (id)initWithName:(NSString *)_key inContainer:(id)_folder;

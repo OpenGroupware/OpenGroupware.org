@@ -532,7 +532,7 @@ static int  SxAptFolder_MonthsIntoFuture = 12;
     : [o retain];
   
   // fetch needed attributes of participants 
-  if (o)
+  if (o != nil)
     [self fetchParticipantsForAppointments:[NSArray arrayWithObject:o]];
   
   return o;
