@@ -43,6 +43,7 @@ LSWProjectWizard            = "Editar projeto";
 LSWProjects                 = "Projetos";
 LSWTextDocumentEditor       = "Editar documento texto";
 MoveFilesFromProject        = "Mover arquivos do projeto";
+OGoDocumentImport           = "Importar documento";
 ProcessManagerView          = "Mostrar gerenciador de processos";
 ProjectPreferences          = "Preferências de Projetos";
 Projects                    = "Projetos";
