@@ -1,4 +1,4 @@
-// $Id: SkyInlineWeekColumnView.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller class
 
 Font: SkyConfigFont {}
 
@@ -44,15 +44,9 @@ WeekdayTitle: LSWSchedulerDateTitle {
   directActionName = dayDirectActionName
 }
 
-HasDayInfoCond: WOConditional {
-  condition = hasCurrentDayInfo;
-}
-HasHolidayInfo: WOConditional {
-  condition = hasHolidays;
-}
-HasAllDayApts: WOConditional {
-  condition = hasAllDayApts;
-}
+HasDayInfoCond: WOConditional { condition = hasCurrentDayInfo; }
+HasHolidayInfo: WOConditional { condition = hasHolidays;       }
+HasAllDayApts:  WOConditional { condition = hasAllDayApts;     }
 
 HolidayInfo: SkyRichString {
   value  = currentDayInfo;
@@ -159,6 +153,16 @@ UseDACond: WOConditional {
 }
 UseDACondElse: WOConditional {
   condition = useDirectActionForView;
+  negate    = YES;
+}
+
+IsListOnlyApt: WOConditional {
+  condition = appointment.permissions;
+  value     = "l";
+}
+IsViewableApt: WOConditional {
+  condition = appointment.permissions;
+  value     = "l";
   negate    = YES;
 }
 

@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include ../common.make
 
@@ -25,21 +25,6 @@ LSWScheduler_OBJC_FILES = 			\
 	NSCalendarDate+UnitAdder.m		\
 	SkyAptTypeSelection.m			\
 	OGoAppointmentDateFormatter.m		\
-
-LSWScheduler_COMPONENTS = 			\
-	LSWAppointmentEditor.wo			\
-	LSWAppointmentViewer.wo			\
-	LSWAppointmentHtmlMailPage.wo		\
-	LSWAppointmentTextMailPage.wo		\
-	LSWSchedulerPreferences.wo		\
-	LSWAppointmentProposal.wo		\
-	SkyParticipantsSelection.wo		\
-	SkyAptParticipantsList.wo		\
-	SkyResourceSelection.wo			\
-	LSWAppointmentMove.wo			\
-	SkyAptDateSelection.wo			\
-	SkyAppointmentPrintViewer.wo            \
-	SkyAptTypeSelection.wo			\
 
 LSWScheduler_RESOURCE_FILES += Defaults.plist Version
 

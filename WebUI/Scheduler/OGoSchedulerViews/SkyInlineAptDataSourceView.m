@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id$
 
 #include "SkyAppointmentFormatter.h"
 #include <OGoScheduler/SkyHolidayCalculator.h>
@@ -659,22 +658,25 @@ static NSArray      *coreTeamAttrs   = nil;
 
 - (BOOL)useDirectActionForView {
   /* action */
-  return ([self->appointment valueForKey:@"dateId"] == nil)
-    ? (([self->appointment valueForKey:@"globalID"] == nil)
-       ? NO : YES)
-    : YES;
+  if ([[self->appointment valueForKey:@"dateId"] isNotNull])
+    return YES;
+  if ([[self->appointment valueForKey:@"globalID"] isNotNull])
+    return YES;
+  return NO;
 }
 - (id)appointmentOID {
+  EOKeyGlobalID *gid;
   id oid;
   
   oid = [self->appointment valueForKey:@"dateId"];
-  if (oid == nil) {
-    EOKeyGlobalID *gid;
-    
-    gid = [self->appointment valueForKey:@"globalID"];
-    if (gid) oid = [[gid keyValuesArray] componentsJoinedByString:@"-"];
-  }
-  return oid;
+  if ([oid isNotNull])
+    return oid;
+  
+  gid = [self->appointment valueForKey:@"globalID"];
+  if ([gid isNotNull])
+    return [[gid keyValuesArray] componentsJoinedByString:@"-"];
+  
+  return nil;
 }
 - (id)appointmentEntity {
   static SEL gidSel = NULL;
@@ -696,14 +698,13 @@ static NSArray      *coreTeamAttrs   = nil;
     return [self->appointment entityName];
   return nil;
 }
+
 - (id)viewAppointment {
   WOComponent *c;
   
   /*
-   *
    * doesn't work with TableMatrix, which doesn't support
    * invokeActionForRequest
-   *
    */
 
   if (self->appointment == nil)

@@ -1,34 +1,51 @@
-<!-- $Id: SkyInlineWeekColumnView.html 2 2004-08-20 11:37:44Z znek $ -->
 <table border="0" cellpadding="0" width="100%" cellspacing="1">
-    <tr>
-      <td width="2" valign="top">
-        <#Browser><#BrowserDayLabel/></#Browser>
-      </td>
-      <td width="100%" valign="top">
-        <#WeekColumnView>
-
+  <tr>
+    <td width="2" valign="top">
+      <#Browser><#BrowserDayLabel/></#Browser>
+    </td>
+    <td width="100%" valign="top">
+      <#WeekColumnView>
         <#TitleMode><#WeekdayTitle/></#TitleMode>
         
-      <#InfoMode>
-        <#DropZone/>
-        <#HasDayInfoCond
-          ><#HasHolidayInfo><#HolidayInfo/><br /></#HasHolidayInfo
-          ><#HasAllDayApts><#AllDayApts><#DragZone><#Font
+        <#InfoMode>
+          <#DropZone/>
+          <#HasDayInfoCond>
+            <#HasHolidayInfo>
+              <#HolidayInfo/>
+              <br />
+            </#HasHolidayInfo>
+            
+            <#HasAllDayApts>
+              <#AllDayApts>
+                <#IsListOnlyApt>
+                  <#Font>
+                   <#AptInfoIcon/>
+                   <#AptContentText/>
+                  </#Font>
+                </#IsListOnlyApt>
 
-          ><#UseDACond
-            ><#ViewAptLink
-              ><#AptInfoIcon/><#AptTitleSpan><#AptTitle/></#AptTitleSpan
-            ></#ViewAptLink
-          ></#UseDACond
-          ><#UseDACondElse
-            ><#ViewAptAction
-              ><#AptInfoIcon/><#AptTitleSpan><#AptTitle/></#AptTitleSpan
-            ></#ViewAptAction
-          ></#UseDACondElse><#Semicolon/><#AptContentText/><br />
-
-          </#Font></#DragZone></#AllDayApts></#HasAllDayApts
-        ><hr /></#HasDayInfoCond>
-      </#InfoMode>
+                <#IsViewableApt>
+                <#DragZone><#Font>
+                 <#UseDACond>
+                  <#ViewAptLink
+                  ><#AptInfoIcon/><#AptTitleSpan><#AptTitle/></#AptTitleSpan
+                  ></#ViewAptLink>
+                 </#UseDACond>
+                 <#UseDACondElse>
+                  <#ViewAptAction
+                  ><#AptInfoIcon/><#AptTitleSpan><#AptTitle/></#AptTitleSpan
+                  ></#ViewAptAction>
+                 </#UseDACondElse>
+                 <#Semicolon/>
+                 <#AptContentText/>
+                 <br />
+                </#Font></#DragZone>
+                </#IsViewableApt>
+              </#AllDayApts>
+            </#HasAllDayApts>
+            <hr />
+          </#HasDayInfoCond>
+        </#InfoMode>
         
         <#ContentMode><#Font
           ><#ViewAccessAllowedCond
@@ -51,9 +68,10 @@
             ><#AptInfoIcon/><#StartTime/><#AptTitleSpan
             ><#AptTitle/></#AptTitleSpan
           ></#ViewAccessAllowedCondElse
-        ><#Semicolon/><#AptContentText/><br /></#Font></#ContentMode>
-
+        ><#Semicolon/><#AptContentText/>
+        <br />
+        </#Font></#ContentMode>
       </#WeekColumnView>
-      </td>
-    </tr>
+    </td>
+  </tr>
 </table>

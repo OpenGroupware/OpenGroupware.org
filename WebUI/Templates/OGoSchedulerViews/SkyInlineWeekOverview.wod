@@ -109,6 +109,16 @@ AptContentText: SkyRichString {
   color     = config.colors_contentText;
 }
 
+IsListOnlyApt: WOConditional {
+  condition = appointment.permissions;
+  value     = "l";
+}
+IsViewableApt: WOConditional {
+  condition = appointment.permissions;
+  value     = "l";
+  negate    = YES;
+}
+
 DropZone: WEDropContainer {
   tags          = ( appointment );
   action        = droppedAppointment;
@@ -123,4 +133,3 @@ DragZone: WEDragContainer {
   object      = appointment;
   isDraggable = isAppointmentDraggable;
 }
-

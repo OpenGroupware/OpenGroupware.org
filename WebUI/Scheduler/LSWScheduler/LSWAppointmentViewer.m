@@ -462,46 +462,71 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   [result    release]; result    = nil;
 }
 
+- (void)_fillCommentIntoAptEO:(id)appointment {
+  id tmp;
+  
+  if ([[appointment valueForKey:@"comment"] isNotNull]) /* already filled */
+    return;
+
+  [appointment run:@"appointment::get-comment",
+		 @"relationKey", @"dateInfo",
+	       nil];
+  tmp = [[appointment valueForKey:@"dateInfo"] valueForKey:@"comment"];
+  if (tmp != nil) [appointment takeValue:tmp forKey:@"comment"];
+}
+
 - (BOOL)prepareForActivationCommand:(NSString *)_command
   type:(NGMimeType *)_type
   configuration:(NSDictionary *)_cmdCfg
 {
-  id appointment;
+  // TODO: replace with -activate... method
   NSTimeZone *tz;
-
+  id appointment;
+  
   if (![super prepareForActivationCommand:_command
 	      type:_type configuration:_cmdCfg])
     return NO;
-
+  
   if ((tz = [[self context] valueForKey:@"SkySchedulerTimeZone"]) == nil)
     tz = [[self session] timeZone];
-
+  
   self->timeZone = [tz retain];
     
   appointment = [self object];
-
+  
   if ([[_type type] isEqualToString:@"eo-gid"]) {
     if (![[_type subType] isEqualToString:@"date"])
       return NO;
-
+    
     appointment = [self _getAppointmentByGlobalID:appointment];
-      
     [self setObject:appointment];
   }
-  else if (![[appointment valueForKey:@"comment"] isNotNull]) {
-    id tmp;
-
-    [appointment run:@"appointment::get-comment",
-		 @"relationKey", @"dateInfo",
-		 nil];
-    tmp = [[appointment valueForKey:@"dateInfo"] valueForKey:@"comment"];
-    if (tmp) [appointment takeValue:tmp forKey:@"comment"];
-  }
-
+  else
+    [self _fillCommentIntoAptEO:appointment];
+  
   if (appointment == nil) {
     [self logWithFormat:@"WARNING: %s No appointment can be set!!!", 
   	    __PRETTY_FUNCTION__];
     return NO;
+  }
+  
+  /* check permissions */
+  {
+    EOGlobalID *gid;
+    NSString *perms;
+    
+    gid   = [appointment valueForKey:@"globalID"];
+    perms = [self runCommand:@"appointment::access", @"gid", gid, nil];
+    if (![perms isNotNull]) {
+      [self logWithFormat:@"got no permissions for apt: %@", gid];
+      [self setErrorString:@"could not get permissions of appointment!"];
+      return NO;
+    }
+    if ([perms rangeOfString:@"v"].length == 0) {
+      [self logWithFormat:@"rejected access to appointment: %@", gid];
+      [self setErrorString:@"no view permissions on appointment!"];
+      return NO;
+    }
   }
   
   /* refetch owner */
@@ -509,8 +534,7 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   if (![[appointment valueForKey:@"owner"] isNotNull]) {
     id owner;
     
-    owner = [self _getOwnerOf:appointment];
-    if (owner)
+    if ((owner = [self _getOwnerOf:appointment]) != nil)
       [appointment takeValue:owner forKey:@"owner"];
   }
   [self _fetchWriteAccessList];

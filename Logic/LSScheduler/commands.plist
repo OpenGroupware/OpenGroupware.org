@@ -1,11 +1,9 @@
-// $Id$
 {
   domainList = (
         datecompanyassignment,
         date,
         appointment,
         appointmentresource
-//        event
   );
 
   domains = {
@@ -128,10 +126,5 @@
         "get-ical"          = { class = "LSGetICalForAppointmentsCommand"; };
       };
     };
-//    "event" = {
-//      "operations" = {
-//        "new"           = { class = "LSNewEventCommand";        };
-//      };
-//    };
   };
 }

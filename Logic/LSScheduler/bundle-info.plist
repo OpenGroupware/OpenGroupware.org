@@ -1,4 +1,3 @@
-// $Id$
 {
   bundleHandler = LSSchedulerCommands;
   
@@ -81,7 +80,6 @@
         { name = "appointment::get-by-sourceurls";       },
         { name = "appointment::new-with-vevent";         },
         { name = "appointment::get-ical";                },
-//        { name = "event::new";                           },
     );
     classes = (
         { name = LSGetAccessTeamInfoCommand;         },
@@ -123,7 +121,6 @@
         { name = LSGetAppointmentsForSourceUrls;     },
         { name = LSNewAppointmentFromVEventCommand;  },
         { name = LSGetICalForAppointmentsCommand;  },
-//        { name = LSNewEventCommand;                  },
     );     
   };
 }

@@ -1,3 +1,8 @@
+2004-11-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetAppointmentsForGlobalIDs.m: major code cleanups (needs more)
+	  (v5.1.55)
+
 2004-11-18  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSAptAccessCommand.m: properly include common.h (v5.1.54)

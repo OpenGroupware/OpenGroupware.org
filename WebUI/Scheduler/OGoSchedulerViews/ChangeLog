@@ -1,3 +1,7 @@
+2004-11-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyInlineAptDataSourceView.m: minor code cleanups (v5.1.40)
+
 2004-09-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* removed creation of derived resources in German.lproj and

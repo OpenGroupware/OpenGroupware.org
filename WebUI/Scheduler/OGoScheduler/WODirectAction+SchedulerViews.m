@@ -267,59 +267,79 @@
   /* lookup global-id and activate */
   
   {
-    id page;
+    WOComponent *page;
     page = [[sn navigation] activateObject:gid withVerb:@"view"];
     return page;
   }
-  
-  return nil;
 }
 
-- (id<WOActionResults>)viewAptAction {
+- (BOOL)hasDateEntityFormValue {
   NSString *entity;
-  id oid;
-  id gid;
-  id sn;
-  id ctx;
-  id obj;
-  id last, c;
 
   entity = [[self request] formValueForKey:@"entity"];
-
   if ((entity == nil) ||
       ([entity length] == 0) ||
       ([entity isEqualToString:@"date"]) ||
       ([entity isEqualToString:@"appointment"]))
-    return [self viewDateAction];
+    return YES;
 
+  return NO;
+}
+
+- (EOKeyGlobalID *)globalIDForMultiKeyValue:(NSArray *)oids {
+  // TODO: explain when a multi-value key can happen!
+  EOKeyGlobalID *gid;
+  unsigned      i, cnt;
+  id            *pKeys;
+  
+  if ((cnt = [oids count]) < 2)
+    return nil;
+  
+  pKeys = (id *)calloc(cnt + 2, sizeof(id));
+  for (i = 0; i < cnt; i++)
+    pKeys[i] = [NSNumber numberWithInt:[[oids objectAtIndex:i] intValue]];
+  
+  gid = [EOKeyGlobalID globalIDWithEntityName:[gid entityName]
+		       keys:pKeys keyCount:cnt zone:nil];
+  if (pKeys != NULL) free(pKeys);
+  
+  return gid;
+}
+
+- (id<WOActionResults>)viewAptAction {
+  OGoSession       *sn;
+  LSCommandContext *ctx;
+  EOKeyGlobalID    *gid;
+  id oid;
+  id obj;
+  id last, c;
+  
+  if ([self hasDateEntityFormValue])
+    return [self viewDateAction];
+  
   oid = [[self request] formValueForKey:@"oid"];
   if (oid == nil) {
     [self logWithFormat:@"missing object id in activation-action."];
     return nil;
   }
-
+  
   sn  = [self session];
   ctx = [sn commandContext];
-  gid = [[ctx typeManager] globalIDForPrimaryKey:oid];
+  gid = (EOKeyGlobalID *)[[ctx typeManager] globalIDForPrimaryKey:oid];
   
   if (gid == nil) {
-    [self logWithFormat:@"couldn't determine gid of objectid %@", oid];
+    [self logWithFormat:@"could not determine gid of objectid %@", oid];
     return nil;
   }
-
+  
   {
     // check wether we have a multi pKey gid
-    NSArray *oids = [oid componentsSeparatedByString:@"-"];
+    NSArray *oids;
     unsigned cnt;
-    if ((cnt = [oids count]) > 1) {
-      int i;
-      id  *pKeys = (id *)calloc(cnt, sizeof(id));
-      for (i = 0; i < cnt; i++)
-        pKeys[i] = [NSNumber numberWithInt:[[oids objectAtIndex:i] intValue]];
-      gid = [EOKeyGlobalID globalIDWithEntityName:[gid entityName]
-                           keys:pKeys keyCount:cnt zone:nil];
-      free(pKeys);
-    }
+    
+    oids = [oid componentsSeparatedByString:@"-"];
+    if ((cnt = [oids count]) > 1)
+      gid = [self globalIDForMultiKeyValue:oids];
   }
 
   last = [[sn navigation] activePage];
@@ -327,25 +347,24 @@
            activateObject:gid
            withVerb:@"view"];
 
-  if (c == last) {
-    if ([[last errorString] length] > 0)
-      [last setErrorString:nil];
-    
-    obj = [[ctx documentManager] documentForGlobalID:gid];
-    if (gid == nil) {
-      [self logWithFormat:@"couldn't determine document of gid %@", gid];
-      return nil;
-    }
-    c = [[sn navigation]
-             activateObject:obj
-             withVerb:@"view"];
-    if (c == nil) {
-      [self logWithFormat:@"couldn't determine viewer page for " 
-            @"gid %@ or document %@", gid, obj];
-      return nil;
-    }
+  if (c != last)
+    return c;
+  
+  if ([[last errorString] length] > 0)
+    [last setErrorString:nil];
+  
+  obj = [[ctx documentManager] documentForGlobalID:gid];
+  if (gid == nil) {
+    [self logWithFormat:@"could not determine document of gid %@", gid];
+    return nil;
   }
-
+  
+  c = [[sn navigation] activateObject:obj withVerb:@"view"];
+  if (c == nil) {
+    [self logWithFormat:@"could not determine viewer page for " 
+            @"gid %@ or document %@", gid, obj];
+    return nil;
+  }
   return c;
 }
 

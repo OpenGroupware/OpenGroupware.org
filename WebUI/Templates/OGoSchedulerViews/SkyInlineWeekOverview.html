@@ -4,21 +4,41 @@
   <#TitleMode><#DayTitle/></#TitleMode>
 
   <#InfoMode>
-      <#DropZone/>
-      <#HasDayInfoCond><#HasHolidayInfo><#HolidayInfo/><br /></#HasHolidayInfo
-       ><#HasAllDayApts
-         ><#AllDayApts><#DragZone>
-          <#Font><#UseDACond
-            ><#ViewAptLink><#AptInfoIcon/><#AptTitleSpan
-            ><#AptTitle/></#AptTitleSpan></#ViewAptLink
-          ></#UseDACond
-          ><#UseDACondElse
-            ><#ViewAptAction><#AptInfoIcon/><#AptTitleSpan
-            ><#AptTitle/></#AptTitleSpan></#ViewAptAction
-          ></#UseDACondElse></#Font
-         ><br />
-        <#AptContentText/><br />
-      </#DragZone></#AllDayApts></#HasAllDayApts><hr /></#HasDayInfoCond>
+    <#DropZone/>
+    <#HasDayInfoCond>
+      <#HasHolidayInfo><#HolidayInfo/><br /></#HasHolidayInfo>
+      <#HasAllDayApts>
+        <#AllDayApts>
+          <#IsListOnlyApt>
+            <#Font>
+              <#AptInfoIcon/>
+              <#AptContentText/>
+            </#Font>
+          </#IsListOnlyApt>
+
+          <#IsViewableApt>
+          <#DragZone>
+            <#Font>
+              <#UseDACond>
+                <#ViewAptLink><#AptInfoIcon/><#AptTitleSpan
+                ><#AptTitle/></#AptTitleSpan></#ViewAptLink>
+              </#UseDACond>
+
+              <#UseDACondElse>
+                <#ViewAptAction><#AptInfoIcon/><#AptTitleSpan
+                ><#AptTitle/></#AptTitleSpan></#ViewAptAction>
+              </#UseDACondElse>
+            </#Font>
+            <br />
+            <#AptContentText/>
+            <br />
+          </#DragZone>
+          </#IsViewableApt>
+        </#AllDayApts>
+      </#HasAllDayApts>
+      
+      <hr />
+    </#HasDayInfoCond>
   </#InfoMode>
 
   <#PMInfoMode><#DropZone/></#PMInfoMode>

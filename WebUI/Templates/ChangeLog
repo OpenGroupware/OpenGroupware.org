@@ -1,3 +1,9 @@
+2004-11-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSchedulerViews/SkyInlineWeekOverview.html,
+	  OGoSchedulerViews/SkyInlineWeekColumnView.html: do not show link for
+	  private appointments (fix OGo bug #556)
+
 2004-11-23  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed some issue with RelatedLinksUI
