@@ -1,7 +1,7 @@
 Summary:		OpenGroupware.
 Name:			ogo
 Version:		%{ogo_version}
-Release:		%{ogo_release}.%{ogo_buildcount}
+Release:		%{ogo_release}.%{ogo_buildcount}%{dist_suffix}
 Vendor:			http://www.opengroupware.org
 Packager:		Frank Reppin <frank@opengroupware.org>	
 License:		GPL

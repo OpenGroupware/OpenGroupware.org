@@ -1,7 +1,7 @@
 Summary:		OGo environment
 Name:			ogo-environment
 Version:		%{ogo_env_version}
-Release:		%{ogo_env_buildcount}
+Release:		%{ogo_env_buildcount}%{dist_suffix}
 Vendor:			http://www.opengroupware.org
 Packager:		Frank Reppin <frank@opengroupware.org>	
 License:		LGPL
