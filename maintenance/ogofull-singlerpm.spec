@@ -147,7 +147,6 @@ make %{ogoall_ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{prefix}
                              BUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
                              WOBUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
                              install
-cd ..
 
 SHAREDIR_OGO="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a"
 SHAREDIR_ZIDE="${RPM_BUILD_ROOT}%{prefix}/share/zidestore-1.3"
