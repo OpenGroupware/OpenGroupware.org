@@ -1,4 +1,4 @@
-opengroupware.org (1.0a.9-1) UNRELEASED; urgency=low
+opengroupware.org (1.0a.9-0) UNRELEASED; urgency=low
 
   * New upstream release.
   * Replaced previous autoconfiguration stuff with new ogo-create-instance
