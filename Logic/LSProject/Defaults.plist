@@ -1,5 +1,4 @@
 {
-  UseFlatDocumentFileStructureStatus = NO;
   LSJobImportFormat = {
     Seperator = ";";
     Format = (
@@ -11,5 +10,4 @@
     );
   };
   skyp4_log_documentdownload = YES;
-  UseFoldersForIDRanges = YES;
 }

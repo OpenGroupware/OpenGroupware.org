@@ -1,3 +1,10 @@
+2005-04-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Defaults.plist: removed UseFlatDocumentFileStructureStatus default,
+	  doesn't seem to be used anywhere, moved UseFoldersForIDRanges default
+	  to LSDocuments bundle (where it is used) - should fix OGo bug #1331
+	  (v5.1.39)
+
 2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Defaults.plist: moved 'LSAttachmentPath' default to LSAddress

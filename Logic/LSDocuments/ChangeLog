@@ -1,3 +1,8 @@
+2005-04-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Defaults.plist: moved in UseFoldersForIDRanges default from LSProject
+	  (should fix OGo bug #1331) (v5.1.5)
+
 2004-10-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* bundle-info.plist: added LSGetAttachmentNameCommand (v5.1.4)
