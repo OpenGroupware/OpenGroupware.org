@@ -1,3 +1,8 @@
+2004-11-01  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* SxAddressFolder.m: added custom resource type tag for folders
+	  ({GROUPWARE:}vcard-collection) (v1.3.76)
+	
 2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.3.75

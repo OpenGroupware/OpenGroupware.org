@@ -1,3 +1,17 @@
+2004-11-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAppointment.m: ensure HTTP if-match preconditions for PUT actions,
+	  return etag after PUT action (return WOResponse instead of 
+	  NSException (v1.3.87)
+
+	* v1.3.86
+	
+	* SxAppointment.m: fixed iCal content type to be text/calendar, always
+	  deliver iCal content when the accept header is set to text/calendar
+	
+	* SxAppointmentFolder.m: added custom resource type tag for folders
+	  ({GROUPWARE:}vevent-collection)
+
 2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
 	
 	* SxAppointmentFolder.m: properly support getetag only queries,

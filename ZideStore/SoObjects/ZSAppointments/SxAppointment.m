@@ -204,6 +204,22 @@ static BOOL createNewAptWhenNotFound = YES;
   return [NSArray arrayWithObject:self];
 }
 
+- (BOOL)shouldReturn201AfterPUTInContext:(WOContext *)_ctx {
+  WEClientCapabilities *cc;
+  NSString *ua;
+  
+  cc = [[(WOContext *)_ctx request] clientCapabilities];
+  ua = [cc userAgentType];
+  if ([ua isEqualToString:@"Evolution"])
+    /* Evo needs 201, otherwise an error will be shown */
+    return YES;
+  if ([ua isEqualToString:@"ZideLook"])
+    return YES;
+  
+  /* if I remember right, Cadaver complains on 201 */
+  return NO;
+}
+
 #define SX_NEWKEY(__key__) \
   if ((tmp = [_info valueForKey:__key__])) {\
     [changeSet setObject:tmp forKey:__key__];\
@@ -217,8 +233,9 @@ static BOOL createNewAptWhenNotFound = YES;
   NSMutableArray      *keys;
   NSMutableDictionary *changeSet;
   NSException    *error;
-  NSString       *log;
+  NSString       *log, *etag;
   NSMutableArray *participants;
+  WOResponse     *r;
   id tmp;
   
   if (logAptChange) [self logWithFormat:@"GOT: %@", _info];
@@ -308,30 +325,27 @@ static BOOL createNewAptWhenNotFound = YES;
   if ([error isKindOfClass:[NSException class]])
     return error;
   
-  return [NSException exceptionWithHTTPStatus:200 /* OK */
-		      reason:@"updated object"];
+  ASSIGN(self->eo, error);
+  
+  /* setup response */
+  
+  r = [_ctx response];
+
+  [r setStatus:
+       [self shouldReturn201AfterPUTInContext:_ctx]
+       ? 201 /* Created */ : 200 /* OK */];
+
+  // TODO: set location header for new appointment
+  if ((etag = [self davEntityTag]) != nil)
+    [r setHeader:etag forKey:@"etag"];
+  
+  return r;
 }
 #undef SX_NEWKEY
 
 - (void)reloadObjectInContext:(id)_ctx {
   [self->eo release]; self->eo = nil;
   [self objectInContext:_ctx];
-}
-
-- (BOOL)shouldReturn201AfterPUTInContext:(WOContext *)_ctx {
-  WEClientCapabilities *cc;
-  NSString *ua;
-  
-  cc = [[(WOContext *)_ctx request] clientCapabilities];
-  ua = [cc userAgentType];
-  if ([ua isEqualToString:@"Evolution"])
-    /* Evo needs 201, otherwise an error will be shown */
-    return YES;
-  if ([ua isEqualToString:@"ZideLook"])
-    return YES;
-  
-  /* if I remember right, Cadaver complains on 201 */
-  return NO;
 }
 
 #define SX_DIFFKEY(__key__) \
@@ -342,11 +356,12 @@ static BOOL createNewAptWhenNotFound = YES;
   }
 
 - (id)patchAptWithInfo:(NSDictionary *)_info inContext:(id)_ctx {
+  WOResponse          *r;
   NSMutableArray      *keys;
   NSMutableDictionary *changeSet;
-  NSException     *error;
-  NSString        *log;
-  NSMutableArray  *participants;
+  NSException         *error;
+  NSString            *log, *etag;
+  NSMutableArray      *participants;
   id  obj, tmp;
   int oldVersion, newVersion;
   
@@ -369,7 +384,7 @@ static BOOL createNewAptWhenNotFound = YES;
   
   oldVersion = [[obj   valueForKey:@"objectVersion"] intValue];
   newVersion = [[_info valueForKey:@"sequence"] intValue];
-  [self logWithFormat:@"patch %i=>%i", oldVersion, newVersion];
+  [self debugWithFormat:@"patch old=>new %i=>%i", oldVersion, newVersion];
   
   /* maybe we can use the sequence for conflict detection (objversion+1 ?) */
   
@@ -471,11 +486,19 @@ static BOOL createNewAptWhenNotFound = YES;
 
   if ([error isKindOfClass:[NSException class]])
     return error;
+
+  /* setup response */
   
-  return [NSException exceptionWithHTTPStatus:
-                        [self shouldReturn201AfterPUTInContext:_ctx]
-                        ? 201 /* Created */ : 200 /* OK */
-		      reason:@"updated object"];
+  r = [_ctx response];
+
+  [r setStatus:
+       [self shouldReturn201AfterPUTInContext:_ctx]
+       ? 201 /* Created */ : 200 /* OK */];
+  
+  if ((etag = [self davEntityTag]) != nil)
+    [r setHeader:etag forKey:@"etag"];
+  
+  return r;
 }
 #undef SX_DIFFKEY
 
@@ -531,7 +554,11 @@ static BOOL createNewAptWhenNotFound = YES;
 }
 
 - (id)PUTAction:(id)_ctx {
+  NSException *error;
   NSString *ctype;
+
+  if ((error = [self matchesRequestConditionInContext:_ctx]) != nil)
+    return error;
   
   if ([self isNew]) {
     WEClientCapabilities *cc;
@@ -647,10 +674,11 @@ static BOOL createNewAptWhenNotFound = YES;
 
 - (id)GETAction:(id)_ctx {
   WOResponse *r;
+  WORequest  *rq;
   id obj;
   NSTimeZone *tz;
   id        cmdctx; 
-  NSString *tzName;
+  NSString *tzName, *etag;
 
   cmdctx = [self commandContextInContext:_ctx];
   tzName = [[cmdctx userDefaults] stringForKey:@"timezone"];
@@ -667,16 +695,19 @@ static BOOL createNewAptWhenNotFound = YES;
   // need owner information
   [self fetchOwnerForAppointment:obj inContext:_ctx];
   
-  r = [(WOContext *)_ctx response];
-  if ([[[(WOContext *)_ctx request] uri] hasSuffix:@".ics"]) {
-    NSString   *ical;
+  rq = [(WOContext *)_ctx request];
+  r  = [(WOContext *)_ctx response];
+  if ([[rq uri] hasSuffix:@".ics"] || 
+      [[rq headerForKey:@"accept"] hasPrefix:@"text/calendar"]) {
+    NSString *ical;
+    
     // TODO: tz
     if ((ical = [self iCalString]) == nil) {
       return [NSException exceptionWithHTTPStatus:500
                           reason:@"could not render EO as iCalendar"];
     }
     
-    [r setHeader:@"text/vcalendar" forKey:@"content-type"];
+    [r setHeader:@"text/calendar" forKey:@"content-type"];
     [r appendContentString:ical];
   }
   else {
@@ -691,6 +722,10 @@ static BOOL createNewAptWhenNotFound = YES;
     [r setHeader:@"message/rfc822" forKey:@"content-type"];
     [r appendContentString:mime];
   }
+  
+  if ((etag = [self davEntityTag]) != nil)
+    [r setHeader:etag forKey:@"etag"];
+  
   return r;
 }
 

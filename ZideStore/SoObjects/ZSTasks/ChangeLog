@@ -1,3 +1,8 @@
+2004-11-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxTaskFolder.m: added custom resource type tag for folders 
+	  ({GROUPWARE:}vtodo-collection) (v1.3.74)
+
 2004-10-23  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxTask.m: fixed a warning on MacOSX (v1.3.73)

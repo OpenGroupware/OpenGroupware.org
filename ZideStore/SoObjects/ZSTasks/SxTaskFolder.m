@@ -273,6 +273,16 @@
 
 /* DAV default attributes (allprop queries by ZideLook ;-) */
 
+- (id)davResourceType {
+  static id coltype = nil;
+  if (coltype == nil) {
+    id tmp;
+    tmp = [NSArray arrayWithObjects:@"vtodo-collection", @"GROUPWARE:", nil];
+    coltype = [[NSArray alloc] initWithObjects:@"collection", tmp, nil];
+  }
+  return coltype;
+}
+
 - (NSString *)folderAllPropSetName {
   return @"DefaultTaskFolderProperties";
 }

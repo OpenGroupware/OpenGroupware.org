@@ -18,7 +18,6 @@
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
 */
-// $Id: SxAppointmentFolder.m 1 2004-08-20 11:17:52Z znek $
 
 #include "SxAppointmentFolder.h"
 #include "SxAppointment.h"
@@ -632,6 +631,16 @@
 }
 - (NSString *)entryAllPropSetName {
   return @"DefaultAppointmentProperties";
+}
+
+- (id)davResourceType {
+  static id coltype = nil;
+  if (coltype == nil) {
+    id tmp;
+    tmp = [NSArray arrayWithObjects:@"vevent-collection", @"GROUPWARE:", nil];
+    coltype = [[NSArray alloc] initWithObjects:@"collection", tmp, nil];
+  }
+  return coltype;
 }
 
 - (NSArray *)defaultWebDAVPropertyNamesInContext:(id)_ctx {
