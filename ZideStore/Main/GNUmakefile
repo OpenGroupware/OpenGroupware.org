@@ -15,14 +15,12 @@ ZideStore13_RESOURCE_FILES += \
 	Version				\
 	product.plist			\
 	\
-	Maps/E2KAttrMap.plist		\
-	Maps/DAVPropSets.plist		\
-	Maps/MAPIPropMap.plist		\
-	Maps/MAPIPropIDMap.plist	\
-	\
-	Maps/AptBackendSets.plist	\
-	\
-	Maps/PersonalFolderInfo.plist	\
+	../Maps/E2KAttrMap.plist	\
+	../Maps/DAVPropSets.plist	\
+	../Maps/MAPIPropMap.plist	\
+	../Maps/MAPIPropIDMap.plist	\
+	../Maps/AptBackendSets.plist	\
+	../Maps/PersonalFolderInfo.plist
 
 ZideStore13_WEBSERVER_RESOURCE_FILES += \
 	../PrefsUI/English.lproj/*.gif 	\

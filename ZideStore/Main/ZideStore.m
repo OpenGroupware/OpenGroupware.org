@@ -75,7 +75,7 @@
       
     e = [tmp objectEnumerator];
     while ((tmp = [e nextObject])) {
-      tmp = [tmp stringByAppendingPathComponent:@"Library/ZideStore12"];
+      tmp = [tmp stringByAppendingPathComponent:@"Library/ZideStore-1.3"];
       if (![ma containsObject:tmp])
         [ma addObject:tmp];
     }
