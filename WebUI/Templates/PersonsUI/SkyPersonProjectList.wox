@@ -1,6 +1,9 @@
 <?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
-<var:component className="SkyProjectList"
+<!-- TODO: remove .wo if this works! -->
+<var:component
+  className="SkyProjectList"
   projects="person.projectDataSource.fetchObjects"
+
   xmlns="http://www.opengroupware.org/ns/wox/ogo"
   xmlns:html="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"

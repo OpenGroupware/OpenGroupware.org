@@ -6,7 +6,6 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
 >
-  <!-- $Id: LSWObjectViewer.wox,v 1.2 2004/05/01 17:57:46 helge Exp $ -->
 <!-- TODO: would need to wrap "LSWTableViewCell" dynelement -->
   
   <var:if condition="isAttributeVisible">
