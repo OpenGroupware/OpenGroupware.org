@@ -791,6 +791,20 @@ static EONull   *null  = nil;
 //
 //
 //**************************************************************************
+- (BOOL) isMemberOfOwnerTeam:(id)aRow inContext:(id)_context
+{
+	if((aRow == nil) || (_context == nil))
+		return NO;
+
+	return NO;
+}
+
+//**************************************************************************
+// 
+//
+//
+//
+//**************************************************************************
 - (BOOL) hasViewRight:(id)aRow inContext:(id)_context
 {
 	if((aRow == nil) || (_context == nil))
@@ -801,6 +815,9 @@ static EONull   *null  = nil;
 		return YES;
 
 	if([self isInReadAccessList:aRow inContext:_context] == YES)
+		return YES;
+
+	if([self isMemberOfOwnerTeam:aRow inContext:_context] == YES)
 		return YES;
 
 	return NO;
@@ -1110,6 +1127,9 @@ static EONull   *null  = nil;
 	enumerator = [readAccessDates objectEnumerator];
 	while ((resultRow = [enumerator nextObject]))
 	{
+		// Thierry SUCKS ;-)
+		gid = [entity globalIDForRow:resultRow];
+
 		if(([self hasDeleteRight:resultRow  inContext:_ctx]) == YES)
 		{
 			right |= DELETE_RIGHT;

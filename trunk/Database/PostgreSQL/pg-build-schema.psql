@@ -210,10 +210,12 @@ CREATE TABLE date_company_assignment (
   outlook_key                varchar(255),
   constraint                 pk_date_company_assignment primary key
                              (date_company_assignment_id));
+
 CREATE TABLE scheduler_delegation (
   company_id                int not null,
   rdv_type                  varchar(100),
-  delegate_company_id       int not null;
+  delegate_company_id       int not null);
+
 
 CREATE TABLE project (
   project_id     int not null,
@@ -749,7 +751,7 @@ CREATE TABLE palm_category (
 INSERT INTO person (company_id, login, name, description, is_account, 
                     is_intra_account, is_extra_account, is_person, number, 
                     is_private, is_readonly, db_status, object_version) 
-  VALUES (10000, 'root', 'root', 'Administrator', 1, 1, 0, 1, 'LS10000', 0, 1,
+  VALUES (10000, 'ogoAdmin','ogoAdmin','Administrator', 1, 1, 0, 1, 'LS10000', 0, 1,
           'inserted', 1);
 
 INSERT INTO staff (staff_id, company_id, is_account) 

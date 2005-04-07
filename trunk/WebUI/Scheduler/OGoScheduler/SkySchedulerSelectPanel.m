@@ -1247,7 +1247,7 @@ static NSNumber     *yesNum = nil;
 {
   
     NSMutableArray  *delegList= nil;
-    NSArray	    *attributPerson=nil;
+    NSArray	    *attribut=nil;
     NSMutableString *accountString=nil;
     NSEnumerator    *keyEnumerator = nil;
     NSArray*        arrayOfID = nil;	
@@ -1256,21 +1256,24 @@ static NSNumber     *yesNum = nil;
     id              key = nil;
     id		    aPerson = nil;
     id		    hasFirstname=nil;
+    id		    hasName=nil;
     id		    loginAccount=nil;
     NSMutableArray  *globalIds = nil;
     NSEnumerator    *enumPerson = nil;
     NSNumber 	    *numberID = nil;
     EOKeyGlobalID   *gid = nil;
     NSMutableDictionary * newChoice = nil; 
-    
+    id 		    teamAccount=nil; 
     //initialisation
     delegList = [[NSMutableArray alloc] initWithCapacity:16];
 
-     loginAccount= [[[self session] activeAccount] valueForKey:@"companyId"];   
+    loginAccount= [[[self session] activeAccount] valueForKey:@"companyId"];   
     // retreive delegation for active account
     resultDictionary = [self runCommand:@"appointment::get-delegation-for-delegate",@"withDelegateId",loginAccount,nil];
 
-  
+    //get the account type
+    teamAccount = [[[self session] activeAccount] valueForKey:@"isTeam"];
+ 
     if (self->delegation)
 	[self->delegation release];
 
@@ -1293,23 +1296,41 @@ static NSNumber     *yesNum = nil;
 	{
 		globalIds = [NSMutableArray arrayWithCapacity:[arrayOfID count]];
 		for ( j = 0 ; j < [arrayOfID count]; j++)
-		{
+	        {	
+		 if ((teamAccount = 1 ))
+		 {
+			 numberID = [NSNumber numberWithUnsignedInt:[[arrayOfID objectAtIndex:j] intValue]];
+                         gid = [EOKeyGlobalID globalIDWithEntityName:@"Team" 
+                                                    keys:&numberID keyCount:1 zone:nil];
+                         [self logWithFormat:@"gid :%@",gid];
+                         [globalIds addObject:gid];
+			 attribut = nil;
+			 [self logWithFormat:@"juste avant team::get-by-globalid"];
+			 attribut = [self runCommand:@"team::get-by-globalid", 
+			       			@"gids",globalIds, 
+						@"attributes",teamInfoAttrNames, nil];
+			 [self logWithFormat:@"#####attributTeam :%@",attribut];
+		 }
+		
+		 else
+		 {
 			numberID = [NSNumber numberWithUnsignedInt:[[arrayOfID objectAtIndex:j] intValue]];
 			gid = [EOKeyGlobalID globalIDWithEntityName:@"Person" 
 						keys:&numberID keyCount:1 zone:nil];
                 	[self logWithFormat:@"gid :%@",gid];
 			[globalIds addObject:gid];
-		}
-
-		attributPerson = nil;
-		[self logWithFormat:@"juste avant person::get-by-globalid"];
-		attributPerson = [self runCommand:@"person::get-by-globalid", 
+		
+			attribut = nil;
+			[self logWithFormat:@"juste avant person::get-by-globalid"];
+			attribut = [self runCommand:@"person::get-by-globalid", 
 			       			@"gids",globalIds, 
 						@"attributes",personInfoAttrNames, nil];
-		[self logWithFormat:@"#####attributPerson :%@",attributPerson];
-		if(attributPerson != nil)
-		{
-			enumPerson = [attributPerson objectEnumerator];
+			[self logWithFormat:@"#####attributPerson :%@",attribut];
+		 }
+		
+		 if(attribut != nil)
+		 {
+			enumPerson = [attribut objectEnumerator];
 			while((aPerson = [enumPerson nextObject]))
 			{
 				newChoice = [[NSMutableDictionary alloc] init];
@@ -1332,7 +1353,29 @@ static NSNumber     *yesNum = nil;
 				}
 				
 				[accountString  appendString:@" : "];
-				[accountString  appendString:[aPerson  valueForKey:@"name"]];
+				
+				hasName = [aPerson valueForKey:@"Name"];
+				if ((teamAccount =1))
+				{
+					if (hasName !=nil)
+					{
+						[accountString appendString:hasName];	
+					}
+					if ([aPerson valueForKey:@"Name"] !=nil)
+					{
+						 [newChoice setObject:[aPerson valueForKey:@"Name"] forKey:@"Name"];		
+					}
+					else
+					{
+						  [newChoice setObject:@"description" forKey:@"Name"];		
+					}
+				}
+				else
+				{
+					[accountString  appendString:[aPerson  valueForKey:@"name"]];
+					[newChoice setObject:[aPerson valueForKey:@"name"] forKey:@"name"];
+				}
+				
 				[accountString  appendString:@" "];
 				
 				hasFirstname = [aPerson valueForKey:@"firstname"];
@@ -1344,6 +1387,7 @@ static NSNumber     *yesNum = nil;
 				[newChoice setObject:accountString forKey:@"label"];
 
 				if ([aPerson valueForKey:@"firstname"] !=nil)
+				
 				{
 					[newChoice setObject:[aPerson valueForKey:@"firstname"] forKey:@"firstname"];
 				}
@@ -1353,7 +1397,7 @@ static NSNumber     *yesNum = nil;
 					
 				}
 				
-				[newChoice setObject:[aPerson valueForKey:@"name"] forKey:@"name"];
+				//[newChoice setObject:[aPerson valueForKey:@"name"] forKey:@"name"];
 				[newChoice setObject:[aPerson valueForKey:@"login"] forKey:@"login"];
 				[newChoice setObject:[aPerson valueForKey:@"companyId"] forKey:@"companyId"];
 				[newChoice setObject:[aPerson valueForKey:@"globalID"] forKey:@"globalID"];
@@ -1363,6 +1407,7 @@ static NSNumber     *yesNum = nil;
 				[delegList addObject:newChoice];
 			}
 		}
+           }
 	}
    }
 
