@@ -1,5 +1,4 @@
 {
-  cvsid         = "$Id$";
   bundleHandler = SkyPersonsModule;
 
   requires = {
