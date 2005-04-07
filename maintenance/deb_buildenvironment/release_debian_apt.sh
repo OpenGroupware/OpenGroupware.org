@@ -35,8 +35,11 @@ Origin: OpenGroupware.org
 Label: OpenGroupware.org Debian packages
 Architecture: i386" >/var/virtual_hosts/download/packages/debian/dists/${FLAVOUR}/releases/${RELEASE}/binary-i386/Release
 
+/usr/bin/apt-ftparchive release >> \
+  /var/virtual_hosts/download/packages/debian/dists/${FLAVOUR}/releases/${RELEASE}/binary-i386/Release
+
 /usr/bin/expect -c \
-  "spawn /usr/bin/gpg --sign /var/virtual_hosts/download/packages/debian/dists/${FLAVOUR}/releases/${RELEASE}/binary-i386/Release; \
+  "spawn /usr/bin/gpg --sign -ba /var/virtual_hosts/download/packages/debian/dists/${FLAVOUR}/releases/${RELEASE}/binary-i386/Release; \
    expect \"Enter pass phrase:\"; \
    send -- \"${PASSPHRASE}\\r\"; \
    expect eof" >/dev/null
