@@ -10,6 +10,12 @@ if [ "x${FLAVOUR}" = "x" ]; then
   exit 1
 fi
 
+if [ ! -e "${HOME}/sign_rpm_passphrase.secret" ]; then
+  echo -e "No secret found..."
+  echo -e "cannot proceed!"
+  exit 0
+fi
+
 if [ "x${RELEASE}" = "x" ]; then
   echo -en "No releaes given...\n"
   echo -en "This must be the basename of the directory in:\n"
@@ -19,6 +25,21 @@ if [ "x${RELEASE}" = "x" ]; then
   echo -en "${POSSIBILITIES}\n"
   exit 1
 fi
+
+source ${HOME}/sign_rpm_passphrase.secret
+
+echo "Archive: download.opengroupware.org
+Version: 1.0+opengroupware.org
+Component: ${FLAVOUR}/releases/${RELEASE}
+Origin: OpenGroupware.org
+Label: OpenGroupware.org Debian packages
+Architecture: i386" >/var/virtual_hosts/download/packages/debian/dists/${FLAVOUR}/releases/${RELEASE}/binary-i386/Release
+
+/usr/bin/expect -c \
+  "spawn /usr/bin/gpg --sign /var/virtual_hosts/download/packages/debian/dists/${FLAVOUR}/releases/${RELEASE}/binary-i386/Release; \
+   expect \"Enter pass phrase:\"; \
+   send -- \"${PASSPHRASE}\\r\"; \
+   expect eof" >/dev/null
 
 #rm -fr ${HOME}/tmp/*
 #mkdir -p ${HOME}/tmp/
