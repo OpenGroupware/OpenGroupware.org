@@ -793,9 +793,49 @@ static EONull   *null  = nil;
 //**************************************************************************
 - (BOOL) isMemberOfOwnerTeam:(id)aRow inContext:(id)_context
 {
+	id ownerID;
+	id login;
+	id loginCompanyID;
+	id keyGlobalID;
+	NSArray * arrayOfTeamGIDForOwner;
+	NSArray * arrayOfPersonIDForTeam;
+	id aTeamID;
+	
 	if((aRow == nil) || (_context == nil))
 		return NO;
+	// get the login id
+	
+	login = [_context valueForKey:LSAccountKey];
+	loginCompanyID = [login valueForKey:@"companyId"];
+	NSNumber *aNumber = [NSNumber numberWithInt:[loginCompanyID intValue]];
+	keyGlobalID = [self personGID:aNumber];
+	[self logWithFormat:@"**** isMemberOfOwnerTeam : login : %@",login];
+	
+	// first get Teams of owner
+	ownerID = [aRow objectForKey:@"ownerId"];
+	[self logWithFormat:@"**** isMemberOfOwnerTeam : ownerID : %@",ownerID];
+	NSNumber *numberOwnerID = [NSNumber numberWithInt:[ownerID intValue]];
+	[self logWithFormat:@"**** isMemberOfOwnerTeam : numberOwnerID : %@",numberOwnerID];
+	EOKeyGlobalID * anID = [self personGID:numberOwnerID];
+	[self logWithFormat:@"**** isMemberOfOwnerTeam : anID : %@",anID];
+	arrayOfTeamGIDForOwner = [self _fetchTeamGIDsOfAccountWithGID:anID inContext:_context];
 
+	[self logWithFormat:@"**** isMemberOfOwnerTeam : arrayOfTeamGIDForOwner : %@",arrayOfTeamGIDForOwner];
+	
+	NSEnumerator * enumeratorOfTeam = [arrayOfTeamGIDForOwner objectEnumerator];
+	while((aTeamID = [enumeratorOfTeam nextObject]))
+	{
+		[self logWithFormat:@"**** isMemberOfOwnerTeam : aTeamID : %@",aTeamID];
+		arrayOfPersonIDForTeam = [self _fetchMemberGIDsOfTeamWithGID:aTeamID inContext:_context];
+		[self logWithFormat:@"**** isMemberOfOwnerTeam : arrayOfPersonIDForTeam : %@",arrayOfPersonIDForTeam];
+		if([arrayOfPersonIDForTeam containsObject:keyGlobalID])
+		{
+			[self logWithFormat:@"**** isMemberOfOwnerTeam : __YES__"];
+			return YES;
+		}
+	}
+	
+	[self logWithFormat:@"**** isMemberOfOwnerTeam : __NO__"];
 	return NO;
 }
 
