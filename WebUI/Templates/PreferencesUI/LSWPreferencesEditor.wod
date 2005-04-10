@@ -1,4 +1,4 @@
-// $Id: LSWPreferencesEditor.wod,v 1.2 2004/06/20 19:16:02 helge Exp $
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
@@ -132,14 +132,12 @@ ConfigTitle: LSWViewerTitle {
   title     = labels.configLabel;
 }
 
-LockedLabel: WOString {
-  value = labels.locked;
-}
 
 LockedCheckBox: WOCheckBox {
   checked = isLocked;
 }
 
+LockedLabel:                WOString { value = labels.locked;            }
 IsTemplateUserLabel:        WOString { value = labels.isTemplateUser;    }
 LocationTeamLabel:          WOString { value = labels.locationTeamLabel; }
 TemplateUserSelectionLabel: WOString { value = labels.templateUser;      }
