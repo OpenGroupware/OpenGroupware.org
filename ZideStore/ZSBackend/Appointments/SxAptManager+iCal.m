@@ -150,17 +150,15 @@ static BOOL catchExceptions = YES;
     _tz = [NSTimeZone timeZoneWithAbbreviation:_tz];
   
   if (attributes == nil) {
-    static NSString *keys[] = {
-      @"ownerId", @"dateId", @"startDate", @"endDate", @"cycleEndDate", // 5
-      @"title", @"location", @"type", @"aptType", @"comment", // +5 = 10
-      @"globalID", @"objectVersion", // +2 = 12
-                       
-      @"sourceUrl",@"calendarName", @"fbtype", // +3 = 15
-      @"evoReminder", @"olReminder", @"onlineMeeting", // +3 = 18
-      @"keywords", @"associatedContacts",  // +2 = 20
-      nil
-    };
-    attributes = [[NSArray alloc] initWithObjects:keys count:20];
+    attributes = [[NSArray alloc] initWithObjects:
+      @"ownerId", @"dateId", @"startDate", @"endDate", @"cycleEndDate",
+      @"title", @"location", @"type", @"aptType", @"comment",
+      @"globalID", @"objectVersion",
+      @"sourceUrl",@"calendarName", @"fbtype",
+      @"evoReminder", @"olReminder", @"onlineMeeting",
+      @"keywords", @"associatedContacts",
+      @"accessTeamId",
+    nil];
   }
   
   if ([_gids count] == 0)
@@ -224,7 +222,7 @@ static BOOL catchExceptions = YES;
 /* put */
 
 - (void)putOGoEvents:(NSMutableDictionary *)_map
-      withOldGIDList:(NSMutableArray *)_oldGids  
+  withOldGIDList:(NSMutableArray *)_oldGids  
 {
   // these are ogo-gid's mapped to iCalEvents
   LSCommandContext *ctx;

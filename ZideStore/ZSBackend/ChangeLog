@@ -1,3 +1,9 @@
+2005-04-07  Thomas Klute  <klute@klute-thiemann.de>
+
+	* Appointments/SxAptManager+iCal.m: fetch 'accessTeamId' to allow 
+	  proper rendering of public/private class, might fix part of OGo bug
+	  #1242 (v1.3.83)
+
 2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxRecordCacheManager.m: minor improvement in cache logging (v1.3.82)
