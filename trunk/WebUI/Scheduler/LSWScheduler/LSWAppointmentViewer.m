@@ -521,7 +521,7 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   
   [result addObjectsFromArray:[self _fetchPersonGIDs:personIds]];
   [result addObjectsFromArray:[self _fetchTeamGIDs:teamIds]];
-  
+  [self logWithFormat:@"resultat de la writeAccess %@",result];
   [self _setWriteACLStringUsingRecords:result];
   
   [personIds release]; personIds = nil;

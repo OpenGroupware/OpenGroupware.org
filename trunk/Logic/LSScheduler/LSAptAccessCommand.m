@@ -2,6 +2,8 @@
  Copyright (C) 2000-2005 SKYRIX Software AG
  
  This file is part of OpenGroupware.org.
+
+ Commentaires
  
  OGo is free software; you can redistribute it and/or modify it under
  the terms of the GNU Lesser General Public License as published by the
@@ -58,12 +60,12 @@ static NSString *right_lv    = @"lv";
 static NSString *right_l     = @"l";
 static EONull   *null  = nil;
 
-#define NONE_RIGHT	0x0
-#define DELETE_RIGHT	0x2
-#define EDIT_RIGHT	0x4
-#define LIST_RIGHT	0x8
-#define UPDATE_RIGHT	0x16
-#define VIEW_RIGHT	0x32
+#define NONE_RIGHT		0
+#define DELETE_RIGHT	2
+#define EDIT_RIGHT		4
+#define LIST_RIGHT		8
+#define UPDATE_RIGHT	16
+#define VIEW_RIGHT		32
 #define ALL_RIGHT	( DELETE_RIGHT | EDIT_RIGHT | LIST_RIGHT | UPDATE_RIGHT | VIEW_RIGHT )
 
 //**************************************************************************
@@ -857,8 +859,14 @@ static EONull   *null  = nil;
 	if([self isInReadAccessList:aRow inContext:_context] == YES)
 		return YES;
 
-	if([self isMemberOfOwnerTeam:aRow inContext:_context] == YES)
-		return YES;
+	// if appoitment is of type "Normal" we allow a member of the owner team
+	// to view the appointment
+	
+	if ([rdvType isEqualToString:@"Normal"] == YES)
+	{
+		if([self isMemberOfOwnerTeam:aRow inContext:_context] == YES)
+			return YES;
+	}
 
 	return NO;
 }
@@ -1012,7 +1020,7 @@ static EONull   *null  = nil;
 	if (*gid == nil)
 		[self logWithFormat:@"**** gid is NULL"];
 
-	if(rights == ALL_RIGHT)
+	if((rights & LIST_RIGHT) && (rights & UPDATE_RIGHT) && (rights & VIEW_RIGHT) && (rights & DELETE_RIGHT) && (rights & EDIT_RIGHT))
 	{
 		[self logWithFormat:@"**** insert ALL_RIGHT"];
 		[*accessRight setObject:right_deluv forKey:[*gid copy]];
@@ -1056,22 +1064,21 @@ static EONull   *null  = nil;
 //**************************************************************************
 - (void)_executeInContext:(id)_ctx
 {
-	EOGlobalID		*gid;
+	EOGlobalID			*gid;
 	NSAutoreleasePool	*pool;
-	EOEntity		*entity;
-	NSArray			*myAttributes;
+	EOEntity			*entity;
+	NSArray				*myAttributes;
 	EOAdaptorChannel	*myAdaptorChannel;
-	unsigned		globalIDCount;
+	unsigned			globalIDCount;
 	NSMutableDictionary	*accessRights;
 	NSMutableDictionary	*writeAccessLists;
 	NSMutableArray		*readAccessDates;
-	id			login;
-	NSArray			*loginTeams;
-	BOOL			ok;
+	id					login;
+	NSArray				*loginTeams;
+	BOOL				ok;
 	NSDictionary		*resultRow;
 	NSEnumerator		*enumerator;
-	unsigned		right = 0;
-
+	unsigned			right = 0;
 
 	myAdaptorChannel = [[_ctx valueForKey:LSDatabaseChannelKey] adaptorChannel];
 #ifdef GLC_DEBUG
@@ -1087,6 +1094,7 @@ static EONull   *null  = nil;
 		[self setReturnValue:nil];
 		return;
 	}
+	
 	pool = [[NSAutoreleasePool alloc] init];
 
 	// first get the current login id so here we know who we are 
@@ -1108,9 +1116,9 @@ static EONull   *null  = nil;
 #endif
     
 	// create receiving object
-	accessRights  = [NSMutableDictionary dictionaryWithCapacity:globalIDCount];
-	writeAccessLists  = [NSMutableDictionary dictionaryWithCapacity:globalIDCount];
-	readAccessDates  = [NSMutableArray arrayWithCapacity:globalIDCount];
+	accessRights		= [NSMutableDictionary dictionaryWithCapacity:globalIDCount];
+	writeAccessLists	= [NSMutableDictionary dictionaryWithCapacity:globalIDCount];
+	readAccessDates		= [NSMutableArray arrayWithCapacity:globalIDCount];
 
 	// now build our qualifier 
 	// buildSQLQualifier use class variable "gids" tp build the request
@@ -1152,7 +1160,7 @@ static EONull   *null  = nil;
 
 		if(([self hasAllRights:resultRow inContext:_ctx]) == YES)
 		{
-			right |= ALL_RIGHT;
+			right = ALL_RIGHT;
 			[self logWithFormat:@"*** _executeInContext : right = %u (ALL_RIGHT)",right];
 			[self insertAccessRightTo:&accessRights fromRight:right forGID:&gid];
 			continue;

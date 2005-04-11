@@ -76,6 +76,7 @@
   UseMemoryStoredMime             = NO;
   Mail_Use_8bit_Encoding_For_Text = NO;
   MailEditor_TextFieldSize        = 80;
+  SkyNoMailCopyToSend             = 0; // GLC added to handle when there is no mail server
   DisableEpozEditor               = NO; // globally disable Epoz
 
   mail_editor_htmlmail_header = "<html><head><title>OpenGroupware.org</title></head><body>";

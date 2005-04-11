@@ -573,13 +573,13 @@ delegRdvPrivTitle: SkyCollapsibleContent {
   title      = labels.delegrdvpriv;
 }
 AccountSelectionDelegPrivAccess: SkyParticipantsSelection {
-         participants         = delegRdvPriv;
-         selectedParticipants = selectedDelegRdvPriv;
+         participants         = delegRdvPrivate;
+         selectedParticipants = selectedDelegRdvPrivate;
          onlyAccounts         = YES;
          viewHeadLine         = NO;
          headLineLabel        = "searchPopupEntries";
-         searchLabel          = "searchDelegRdvPriv";
-	 selectionLabel       = "setDelegRdvPriv";
+         searchLabel          = "searchDelegRdvPrivate";
+	 selectionLabel       = "setDelegRdvPrivate";
 	 }
 //public
 
@@ -588,13 +588,13 @@ delegRdvPubliTitle: SkyCollapsibleContent {
   title      = labels.delegrdvpubli;
 }
 AccountSelectionDelegPubliAccess: SkyParticipantsSelection {
-         participants         = delegRdvPubli;
-         selectedParticipants = selectedDelegRdvPubli;
+         participants         = delegRdvPublic;
+         selectedParticipants = selectedDelegRdvPublic;
          onlyAccounts         = YES;
          viewHeadLine         = NO;
          headLineLabel        = "searchPopupEntries";
-         searchLabel          = "searchDelegRdvPubli";
-	 selectionLabel       = "setDelegRdvPubli";
+         searchLabel          = "searchDelegRdvPublic";
+	 selectionLabel       = "setDelegRdvPublic";
 	 }
 //Normal
 
@@ -603,13 +603,13 @@ delegRdvNormTitle: SkyCollapsibleContent {
   title      = labels.delegrdvnorm;
 }
 AccountSelectionDelegNormAccess: SkyParticipantsSelection {
-         participants         = delegRdvNorm;
-         selectedParticipants = selectedDelegRdvNorm;
+         participants         = delegRdvNormal;
+         selectedParticipants = selectedDelegRdvNormal;
          onlyAccounts         = YES;
          viewHeadLine         = NO;
          headLineLabel        = "searchPopupEntries";
-         searchLabel          = "searchDelegRdvNorm";
-	 selectionLabel       = "setDelegRdvNorm";
+         searchLabel          = "searchDelegRdvNormal";
+	 selectionLabel       = "setDelegRdvNormal";
 	 }
 
 //Confidentiel
@@ -619,11 +619,11 @@ delegRdvConfTitle: SkyCollapsibleContent {
   title      = labels.delegrdvconf;
 }
 AccountSelectionDelegConfAccess: SkyParticipantsSelection {
-         participants         = delegRdvConf;
-         selectedParticipants = selectedDelegRdvConf;
+         participants         = delegRdvConfidential;
+         selectedParticipants = selectedDelegRdvConfidential;
          onlyAccounts         = YES;
          viewHeadLine         = NO;
          headLineLabel        = "searchPopupEntries";
-         searchLabel          = "searchDelegRdvConf";
-	 selectionLabel       = "setDelegRdvConf";
+         searchLabel          = "searchDelegRdvConfidential";
+	 selectionLabel       = "setDelegRdvConfidential";
 }

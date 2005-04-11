@@ -224,6 +224,22 @@ static Class      StrClass        = nil;
 }
 
 - (id)init {
+
+ [self logWithFormat:@"#######   init method (DEBUT)"];
+  [self confirmUpload];
+ 
+  id anObject = [self session];
+  [self logWithFormat:@"*** Appel init: SkyNoMailCopyToSent %@ --", anObject];
+  
+  anObject = [[self session] userDefaults];
+  [self logWithFormat:@"*** Appel init: SkyNoMailCopyToSent %@ --", anObject];
+
+  anObject = [[[self session] userDefaults] objectForKey:@"SkyNoMailCopyToSent"];
+  [self logWithFormat:@"*** Appel init: SkyNoMailCopyToSent %@ --", anObject];	
+
+  [self logWithFormat:@"#######   init method (FIN)"];
+	
+	
   if ((self = [super init])) {
     self->addresses   = [[NSMutableArray alloc] init];
     self->attachments = [[NSMutableArray alloc] initWithCapacity:8];
@@ -643,9 +659,11 @@ static Class      StrClass        = nil;
   return [[self userDefaults] boolForKey:@"mail_useEpozMailEditor"];
 }
 - (BOOL)isPlainTextCheckboxEnabled {
+  
   if ([self useEpoz])
     return NO;
   
+
   return ![[self userDefaults] boolForKey:@"mail_disablePlainTextCheckbox"];
 }
 - (BOOL)doesAllowHTMLSignature {
@@ -1266,19 +1284,47 @@ static Class      StrClass        = nil;
   return nil; /* Note: leavePage is called above */
 }
 
-- (id)send {
+- (id)send
+{    
+  [self logWithFormat:@"#######   send method (DEBUT)"];
   [self confirmUpload];
+ 
+  id anObject = [self session];
+  [self logWithFormat:@"*** Appel send: SkyNoMailCopyToSent %@ --", anObject];
   
-  if (![self hasImapContext]) {
+  anObject = [[self session] userDefaults];
+  [self logWithFormat:@"*** Appel send: SkyNoMailCopyToSent %@ --", anObject];
+
+  anObject = [[[self session] userDefaults] objectForKey:@"SkyNoMailCopyToSent"];
+  [self logWithFormat:@"*** Appel send: SkyNoMailCopyToSent %@ --", anObject];
+
+  
+//  [self logWithFormat:@"*** Appel send: SkyMaxNavLabelLenght %@ --", [[[self session] userDefaults] objectForKey:@"SkyMaxNavLabelLenght"]];
+//    
+//  if ([[[[self session] userDefaults] objectForKey:@"SkyNoMailCopyToSent"] boolValue])
+//  {
+//  	[self logWithFormat:@"*** On envoie directement sans sauvegarde !!!! ********************"];
+//  	return [self buildMessageAndSend:YES save:NO];
+//  }
+//  else
+//  {
+//  	[self logWithFormat:@"*** On envoie et on tente de sauvegarder le mail !!!! ********************"];
+//  }
+  
+  if (![self hasImapContext])
+  {
     if ([self isInWarningMode])
       [self setIsInWarningMode:NO];
-    else {
+    else
+	{
       [self setIsInWarningMode:YES];
       self->warningKind = Warning_Send;
+	  [self logWithFormat:@"#######   send method (WARNING)"];
       return nil;
     }
   }
   return [self buildMessageAndSend:YES save:NO];
+  [self logWithFormat:@"#######   send method (FIN)"];
 }
 
 - (id)sendIm {

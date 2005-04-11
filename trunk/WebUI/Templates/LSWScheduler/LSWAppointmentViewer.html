@@ -29,7 +29,9 @@
 	<!-- ADDED BY AO-->   
             <tr><#RdvTypeAttr /></tr>
             <#IsAbsenceCond><tr><#AbsenceAttr /></tr></#IsAbsenceCond> 
+
     
+        <!-- Propriétaire-->   
             <tr>
               <#IsOwnerArchivedCondElse>
                 <#OwnerAttr />
@@ -62,6 +64,7 @@
         <#AptParticipantsTab><#ParticipantsList /></#AptParticipantsTab>
         <#AptNotesTab       ><#Notes            /></#AptNotesTab>
         <#LinkTab           ><#RelatedLinks     /></#LinkTab>
+        <#DelegTab           ><#ParticipantsList     /></#DelegTab>
         
         <#IsLogTabEnabled>
           <#LogsTab><#LogList /></#LogsTab>

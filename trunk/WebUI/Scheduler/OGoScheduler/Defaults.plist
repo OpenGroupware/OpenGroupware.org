@@ -140,7 +140,7 @@
     "participants.name",      "participants.description",
     "participants.isTeam",    "participants.isAccount"
   );
-  schedulerselect_teamfetchkeys   = ( description );
+  schedulerselect_teamfetchkeys   = ( description,globalID,isTeam );
   schedulerselect_personfetchkeys = ( 
     name, firstname, isAccount, login, companyId, globalID
   );

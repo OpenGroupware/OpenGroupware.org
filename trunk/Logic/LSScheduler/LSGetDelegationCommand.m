@@ -87,14 +87,14 @@
 //**************************************************************************
 - (void)_prepareForExecutionInContext:(id)_ctx
 {
-	[self logWithFormat:@"***** _prepareForExecutionInContext (DEBUT)" ];
+	
 	idsForPrivatesFromDB = nil;
 	idsForConfidentialsFromDB = nil;
 	idsForNormalsFromDB = nil;
 	idsForPublicsFromDB = nil;
 	// call to super
 	[super _prepareForExecutionInContext:_ctx];
-	[self logWithFormat:@"***** _prepareForExecutionInContext (FIN)" ];
+	
 }
 ///**************************************************************************
 // 
@@ -104,7 +104,7 @@
 //**************************************************************************
 - (void)_executeInContext:(id)_ctx
 {
-	[self logWithFormat:@"***** _executeInContext (DEBUT)" ];
+	
 	EOEntity *sqlEntity = nil;
 	EOAdaptorChannel *channel = nil;
 	EOSQLQualifier * sqlQualifier = nil;
@@ -136,7 +136,7 @@
 	[sqlQualifier setUsesDistinct:YES];
 
 
-	[self logWithFormat:@"sqlQualifier = %@",sqlQualifier];
+	
 
 	// Attributes
 
@@ -215,7 +215,7 @@
 	[publicIDs autorelease];
 	[attributes autorelease];
 
-	[self logWithFormat:@"***** _executeInContext (FIN)" ];
+	
 }
 
 @end

@@ -180,6 +180,7 @@ mail_show_unsubscribed_folder_in_root = "Show only subscribed folders in root";
 mail_subjectLength               = "Subject Length";
 mail_trashFolderName             = "Trashfolder";
 mail_useEpozMailEditor           = "Use Epoz in mail editor";
+SkyNoMailCopyToSent              = "Don't save a copy of the mail";
 mail_viewAttachmentBodysInEditor = "View attachments in editor";
 mail_viewAttachmentsInline       = "View attachments inline";
 mail_viewImagesInline            = "View images inline";

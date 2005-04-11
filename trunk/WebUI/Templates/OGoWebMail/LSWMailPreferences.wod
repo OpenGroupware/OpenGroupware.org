@@ -90,6 +90,16 @@ AccessTitle: SkyCollapsibleContent {
 
 /* edit fields */
 
+// GLC added to handle le case when you don't have a mail server defined
+MailCopySent: OGoDefaultEditField {
+  defaults        = defaults;
+  componentLabels = labels;
+  key             = "SkyNoMailCopyToSend";
+  useFormatter    = "bool";
+  valueType       = "checkbox";
+  isEditableDef   = YES;
+}
+
 MailEditorType: OGoDefaultEditField {
   defaults        = defaults;
   componentLabels = labels;
