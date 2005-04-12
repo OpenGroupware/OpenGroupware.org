@@ -73,6 +73,9 @@ opengroupware.org-1.0alpha5-shapeshifter-r86.tar.gz
 opengroupware.org-1.0alpha6-shapeshifter-r89.tar.gz
 opengroupware.org-1.0alpha7-shapeshifter-r158.tar.gz
 opengroupware.org-1.0alpha8-shapeshifter-r452.tar.gz
+opengroupware.org-1.0alpha9-ultra-r630.tar.gz
+opengroupware.org-1.0alpha10-ultra-r695.tar.gz
+opengroupware.org-1.0alpha11-ultra-r778.tar.gz
 );
 
 my $build_opts = "-v yes -u yes -t release -d yes -f yes";

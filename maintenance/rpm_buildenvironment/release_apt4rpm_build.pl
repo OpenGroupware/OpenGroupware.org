@@ -27,6 +27,7 @@ my @distris = qw( fedora-core3
   rhel3
   redhat9
   conectiva10
+  suse93
 );
 
 getopt('dtvn');
@@ -114,7 +115,7 @@ print RELEASE "Version: $type\n";
 print RELEASE "Origin: http://download.opengroupware.org\n";
 print RELEASE "Label: $distri\n";
 print RELEASE "Architecture: i386\n" if (("$distri" eq "suse82") or ("$distri" eq "fedora-core2") or ("$distri" eq "fedora-core3") or ("$distri" eq "rhel3") or ("$distri" eq "redhat9") or ("$distri" eq "conectiva10"));
-print RELEASE "Architecture: i586\n" if (("$distri" eq "suse91") or ("$distri" eq "suse91") or ("$distri" eq "sles9") or ("$distri" eq "mdk-10.0") or ("$distri" eq "mdk-10.1"));
+print RELEASE "Architecture: i586\n" if (("$distri" eq "suse91") or ("$distri" eq "suse92") or ("$distri" eq "sles9") or ("$distri" eq "mdk-10.0") or ("$distri" eq "mdk-10.1") ("$distri" eq "suse93"));
 print RELEASE "NotAutomatic: false\n";
 close(RELEASE);
 
