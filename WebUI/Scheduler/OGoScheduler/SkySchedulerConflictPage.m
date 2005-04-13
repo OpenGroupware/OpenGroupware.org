@@ -20,19 +20,14 @@
 */
 
 #include "SkySchedulerConflictPage.h"
+#include "common.h"
 
-#import <Foundation/Foundation.h>
-#import <EOControl/EOQualifier.h>
-#import <EOControl/EOKeyGlobalID.h>
-#import <NGExtensions/NGExtensions.h>
-#import <LSFoundation/LSCommandContext.h>
-#import <OGoFoundation/OGoSession.h>
-#import <OGoFoundation/LSWMailEditorComponent.h>
-#import <NGMime/NGMime.h>
 #include <NGExtensions/EOFilterDataSource.h>
-#include <OGoFoundation/OGoFoundation.h>
+#include <OGoFoundation/OGoSession.h>
+#include <OGoFoundation/LSWMailEditorComponent.h>
+#include <OGoFoundation/NSObject+Commands.h>
+#include <OGoFoundation/OGoNavigation.h>
 #include <OGoFoundation/LSWNotifications.h>
-#include <OGoScheduler/SkySchedulerConflictDataSource.h>
 
 @implementation SkySchedulerConflictPage
 
@@ -459,10 +454,12 @@ static NSNumber   *noNum      = nil;
 
 - (id)backToNonEditorPage {
   OGoNavigation *nav;
+  
   nav = [[self session] navigation];
   do {
     [nav leavePage];
   } while ([[nav activePage] isEditorPage]);
+  
   return [nav activePage];
 }
 
@@ -490,12 +487,15 @@ static NSNumber   *noNum      = nil;
     notificationName = LSWUpdatedAppointmentNotificationName;
   }
   if (result == nil)
-    return nil;
+    return nil; /* stay on page */
   
   [self postChange:notificationName onObject:result];
   [self backToNonEditorPage];
-  if (self->sendMail)
-    return [self createMail:result];
+  
+  if (self->sendMail) {
+    /* Note: we must call -enterPage:, otherwise it doesn't work (#138) */
+    [[[self session] navigation] enterPage:[self createMail:result]];
+  }
   
   return [[[self session] navigation] activePage];
 }
@@ -503,7 +503,7 @@ static NSNumber   *noNum      = nil;
 - (id)ignoreConflicts {
   id  apt;
   id  tmp;
-
+  
   apt   = [self appointment];
   [apt takeValue:yesNum forKey:@"isWarningIgnored"];
   tmp = [self save];
@@ -523,9 +523,10 @@ static NSNumber   *noNum      = nil;
   return tmp;
 }
 
-/* k/v coding */
+/* key/value coding */
 
 - (void)takeValue:(id)_val forKey:(id)_key {
+  // TODO: is this necessary?
   if ([_key isEqualToString:@"dataSource"])
     [self setConflictDataSource:_val];
   else if ([_key isEqualToString:@"action"])

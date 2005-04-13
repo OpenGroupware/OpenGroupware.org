@@ -1,3 +1,8 @@
+2005-04-13  Ralph Schmidt  <r.schmidt@comchat-security.de>
+	
+	* SkySchedulerConflictPage.m: properly send notification mails on
+	  editor conflicts (OGo bug #138) (v5.1.33)
+
 2005-01-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkySchedulerSelectPanel.m: moved some plist statics to Defaults, some
