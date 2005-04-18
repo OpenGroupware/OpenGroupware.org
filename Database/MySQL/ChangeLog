@@ -1,0 +1,6 @@
+2005-04-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* build-schema.mysql: replaced 'timestamp with timezone' with DATETIME,
+	  removed 'article' and 'invoice' tables
+
+	* create MySQL schema from PostgreSQL one
