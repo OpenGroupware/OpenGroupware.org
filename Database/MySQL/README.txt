@@ -22,5 +22,5 @@ Creating new users ... using 'GRANT':
 
   GRANT ALL PRIVILEGES ON *.* 
         TO OGo@"%"
-        IDENTIFIED BY 'test'
+        IDENTIFIED BY 'OGo'
         WITH GRANT OPTION;
