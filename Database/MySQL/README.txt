@@ -50,3 +50,11 @@ mysql --protocol=tcp --host=localhost -u OGo --password=abc
 
 mysql --protocol=tcp --host=localhost -u OGo --password=abc \
       < build-schema.mysql5
+
+Starting OGo
+============
+
+ogo-webui-1.0a \
+  -LSAdaptor MySQL4 \
+  -LSConnectionDictionary '{hostName = "127.0.0.1"; userName=OGo; password=OGo; databaseName=OGo;}' \
+  -LSModelName OpenGroupware.org_MySQL5

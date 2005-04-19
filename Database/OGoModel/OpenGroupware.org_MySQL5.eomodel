@@ -4,7 +4,7 @@
   adaptorName      = "MySQL";
 
   pkeyGeneratorDictionary = {
-    newKeyExpression = "UPDATE key_generator SET id=LAST_INSERT_ID(id+1);SELECT LAST_INSERT_ID();";
+    newKeyExpression = "UPDATE key_generator SET id=LAST_INSERT_ID(id+1);SELECT LAST_INSERT_ID()";
   };
   
   entities = (

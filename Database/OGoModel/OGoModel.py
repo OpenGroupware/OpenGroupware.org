@@ -40,7 +40,7 @@ adaptorInfo = {
   mysql5: {
     'adaptorClassName': 'MySQLAdaptor',
     'adaptorName':      'MySQL',                   # TODO: do we need +10?
-    'newKeyExpression': 'UPDATE key_generator SET id=LAST_INSERT_ID(id+1);SELECT LAST_INSERT_ID();',
+    'newKeyExpression': 'UPDATE key_generator SET id=LAST_INSERT_ID(id+1); SELECT LAST_INSERT_ID()',
     'calendarFormat':   "%Y-%m-%d %H:%M:%S"
   }
 }
