@@ -7,13 +7,13 @@ Changes
 =======
 
 TIMESTAMP WITH TIMEZONE => DATETIME
+pg table inheritance    => views
+date_x                  => appointment
 
 TODO
 ====
 
-- company/document views
-  - then: inserts
-- sequence
+- create index does not work
 
 Views
 =====
@@ -43,3 +43,10 @@ Creating new users ... using 'GRANT':
         TO OGo@"%"
         IDENTIFIED BY 'OGo'
         WITH GRANT OPTION;
+
+Cmdline Tool
+============
+mysql --protocol=tcp --host=localhost -u OGo --password=abc
+
+mysql --protocol=tcp --host=localhost -u OGo --password=abc \
+      < build-schema.mysql5
