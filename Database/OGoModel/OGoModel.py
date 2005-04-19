@@ -22,6 +22,7 @@ calendarFormat = "@calendarFormat"
 
 fb             = "FrontBase"
 pgsql          = "PostgreSQL"
+mysql5         = "MySQL5"
 
 adaptorInfo = {
   fb: {
@@ -34,6 +35,12 @@ adaptorInfo = {
     'adaptorClassName': 'PostgreSQLAdaptor',
     'adaptorName':      'PostgreSQL',
     'newKeyExpression': 'select nextval(\\\'key_generator\\\')',
+    'calendarFormat':   "%Y-%m-%d %H:%M:%S"
+  },
+  mysql5: {
+    'adaptorClassName': 'MySQLAdaptor',
+    'adaptorName':      'MySQL',                   # TODO: do we need +10?
+    'newKeyExpression': 'UPDATE key_generator SET id=LAST_INSERT_ID(id+1);SELECT LAST_INSERT_ID();',
     'calendarFormat':   "%Y-%m-%d %H:%M:%S"
   }
 }
@@ -54,6 +61,21 @@ userTypes = {
     't_float':         "INT", #"NUMERIC(19,8)",
     't_money':         "INT", #"NUMERIC(19,4)",
     't_image':         "VARCHAR(4000)", #"LONG RAW",
+    },
+  mysql5:  {
+    't_id':            "INT",
+    't_int':           "INT",
+    't_bool':          "INT",
+    't_string':        "VARCHAR(255)",
+    't_smallstring':   "VARCHAR(100)",
+    't_tinystring':    "VARCHAR(50)",
+    't_tinieststring': "VARCHAR(10)",
+    't_text':          "TEXT",
+    't_datetime':      "DATE",
+    't_price':         "INT", #"NUMERIC(19,2)",
+    't_float':         "INT", #"NUMERIC(19,8)",
+    't_money':         "INT", #"NUMERIC(19,4)",
+    't_image':         "LONGBLOB", #"LONG RAW",
     }
 }
 
@@ -101,6 +123,7 @@ CompanyAssignment = {
     "function": {
       column:        "ffunction",
       pgsql+column:  "function",
+      mysql5+column: "function",
       coltype:       't_string',
       valueClass:    'NSString',
       width:         255,
@@ -191,6 +214,7 @@ CompanyValue = {
     "type": {
       column:        "ftype",
       pgsql+column:  "type",
+      mysql5+column: "type",
       coltype:       't_int',
       valueClass:    'NSNumber',
       valueType:     'i',
@@ -288,6 +312,7 @@ Trust = {
     "number": {
       column:        "fnumber",
       pgsql+column:  "number",
+      mysql5+column: "number",
       coltype:       't_smallstring',
       valueClass:    'NSString',
       width:         100,
@@ -503,6 +528,7 @@ JobHistory = {
     "action": {
       column:        "faction",
       pgsql+column:  "action",      
+      mysql5+column: "action",      
       coltype:       't_tinystring',
       valueClass:    'NSString',
       width:         50,
@@ -564,6 +590,7 @@ AppointmentResource = {
     "name": {
       column:        "fname",
       pgsql+column:  "name",      
+      mysql5+column: "name",      
       coltype:       't_string',
       valueClass:    'NSString',
       width:         255,
@@ -781,6 +808,7 @@ Person = {
     "number": {
       column:        "fnumber",
       pgsql+column:  "number",      
+      mysql5+column: "number",      
       coltype:       't_smallstring',
       valueClass:    'NSString',
       width:         100,
@@ -810,6 +838,7 @@ Person = {
     "name": {
       column:        "fname",
       pgsql+column:  "name",      
+      mysql5+column: "name",      
       coltype:       't_tinystring',
       valueClass:    'NSString',
       width:         50,
@@ -1162,6 +1191,7 @@ Project = {
     "name": {
       column:        "fname",
       pgsql+column:  "name",      
+      mysql5+column: "name",      
       coltype:       't_string',
       valueClass:    'NSString',
       width:         255,
@@ -1170,6 +1200,7 @@ Project = {
     "number": {
       column:        "fnumber",
       pgsql+column:  "number",      
+      mysql5+column: "number",      
       coltype:       't_smallstring',
       valueClass:    'NSString',
       width:         100,
@@ -1315,6 +1346,7 @@ Enterprise = {
     "number": {
       column:        "fnumber",
       pgsql+column:  "number",      
+      mysql5+column: "number",      
       coltype:       't_smallstring',
       valueClass:    'NSString',
       width:         100,
@@ -1751,6 +1783,7 @@ Address = {
     "type": {
       column:        "ftype",
       pgsql+column:  "type",      
+      mysql5+column: "type",      
       coltype:       't_tinystring',
       valueClass:    'NSString',
       width:         50,
@@ -2438,6 +2471,7 @@ Telephone = {
     "number": {
       column:        "fnumber",
       pgsql+column:  "number",      
+      mysql5+column: "number",      
       coltype:       't_string',
       valueClass:    'NSString',
       width:         255,
@@ -2453,6 +2487,7 @@ Telephone = {
     "type": {
       column:        "ftype",
       pgsql+column:  "type",      
+      mysql5+column: "type",      
       coltype:       't_tinystring',
       valueClass:    'NSString',
       width:         50,
@@ -2502,6 +2537,7 @@ Telephone = {
 Date = {
     table:        "appointment",
     pgsql+table:  "date_x",    
+    mysql5+table: "apointment",    
     className:    'LSAppointment',
     
     # attributes
@@ -2576,6 +2612,7 @@ Date = {
     "type": {
       column:        "ftype",
       pgsql+column:  "type",      
+      mysql5+column: "type",      
       coltype:       't_tinystring', # weekday,daily,weekly,monthly,yearly
       valueClass:    'NSString',
       width:         50,
@@ -2811,6 +2848,7 @@ Job = {
     "name": {
       column:        "fname",
       pgsql+column:  "name",      
+      mysql5+column: "name",      
       coltype:       't_string',
       valueClass:    'NSString',
       width:         255,
@@ -2831,6 +2869,7 @@ Job = {
     "notify": {
       column:        "notify",
       pgsql+column:  "notify_x",      
+      mysql5+column: "notify_x",      
       coltype:    't_int',
       valueClass: 'NSNumber',
       valueType:  'i',
@@ -3119,6 +3158,7 @@ Team = {
     "number": {
       column:        "fnumber",
       pgsql+column:  "number",      
+      mysql5+column: "number",      
       coltype:       't_string',
       valueClass:    'NSString',
       width:         255,
@@ -3449,6 +3489,7 @@ ObjectAcl = {
     "action": {
       column:        "faction",
       pgsql+column:  "action",      
+      mysql5+column: "action",      
       coltype:    't_string',
       valueClass: 'NSString',
       width:      10,
@@ -3500,6 +3541,7 @@ NewsArticle = {
     "name": {
       column:        "fname",
       pgsql+column:  "name",      
+      mysql5+column: "name",      
       coltype:       't_string',
       valueClass:    'NSString',
       width:         255,
@@ -3618,6 +3660,7 @@ Log = {
     "action": {
       column:        "faction",
       pgsql+column:  "action",      
+      mysql5+column: "action",      
       coltype:       't_smallstring',
       valueClass:    'NSString',
       width:         100,
@@ -3654,6 +3697,7 @@ SessionLog = {
     "action": {
       column:        "faction",
       pgsql+column:  "action",      
+      mysql5+column: "action",      
       coltype:       't_smallstring',
       valueClass:    'NSString',
       width:         100,
@@ -4302,6 +4346,7 @@ Resource = {
     "type": {
       column:        "ftype",
       pgsql+column:  "type",      
+      mysql5+column: "type",      
       coltype:    't_int',
       valueClass: 'NSNumber',
       valueType:  'i',
@@ -4468,6 +4513,7 @@ JobAssignment = {
     "position": {
       column:        "fposition",
       pgsql+column:  "position_x",      
+      mysql5+column: "position_x",      
       coltype:       't_int',
       valueClass:    'NSNumber',
       valueType:     'i',

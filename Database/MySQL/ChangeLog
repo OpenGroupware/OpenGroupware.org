@@ -1,3 +1,8 @@
+2005-04-19  Helge Hess  <helge.hess@skyrix.com>
+
+	* build-schema.mysql5: added sequence 'key_generator', renamed 'date_x'
+	  table to 'appointment'
+
 2005-04-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* build-schema.mysql: replaced 'timestamp with timezone' with DATETIME,

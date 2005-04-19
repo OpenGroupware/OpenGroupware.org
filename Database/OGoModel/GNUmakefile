@@ -20,7 +20,8 @@ OGo_SUBPROJECTS = Classes
 
 MODELS = \
 	OpenGroupware.org_FrontBase2.eomodel	\
-	OpenGroupware.org_PostgreSQL.eomodel
+	OpenGroupware.org_PostgreSQL.eomodel	\
+	OpenGroupware.org_MySQL5.eomodel
 
 CREATE_SCRIPTS = \
 	../PostgreSQL/pg-build-schema.psql		\

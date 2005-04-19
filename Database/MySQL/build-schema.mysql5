@@ -148,7 +148,7 @@ CREATE TABLE appointment_resource (
   constraint pkx_company_category primary key (appointment_resource_id),
   constraint unique_aptresname_idx unique(name));
 
-CREATE TABLE date_x (
+CREATE TABLE appointment (
   date_id                int not null,
   object_version         int,
   owner_id               int,
@@ -705,7 +705,9 @@ INSERT INTO news_article (news_article_id, name, caption, is_index_article,
                           object_version)
   VALUES (10006, 'index', 'Index', 1, 1);
 
-CREATE SEQUENCE key_generator INCREMENT 10 START 10100;
+-- TODO: do we need an increment of 10? Or is that handled by LAST_INSERT_ID?
+CREATE TABLE key_generator (id INT NOT NULL);
+INSERT INTO  key_generator VALUES (10100);
 
 UPDATE project_company_assignment set access_right = 'r' 
   WHERE has_access = 1 AND access_right is null
@@ -744,10 +746,10 @@ CREATE INDEX team_is_location_idx ON team(is_location_team);
 
 CREATE INDEX attribute_idx ON company_value(attribute);
 CREATE INDEX company_value_type_idx      ON company_value(type);
-CREATE INDEX is_absence_idx           ON date_x(is_absence);
-CREATE INDEX is_attendance_idx        ON date_x(is_attendance);
-CREATE INDEX is_conflict_disabled_idx ON date_x(is_conflict_disabled);
-CREATE INDEX resource_names_ind       ON date_x(resource_names);
+CREATE INDEX is_absence_idx           ON appointment(is_absence);
+CREATE INDEX is_attendance_idx        ON appointment(is_attendance);
+CREATE INDEX is_conflict_disabled_idx ON appointment(is_conflict_disabled);
+CREATE INDEX resource_names_ind       ON appointment(resource_names);
 CREATE INDEX is_fake_idx           ON project(is_fake);
 CREATE INDEX project_kind_idx      ON project(kind);
 CREATE INDEX project_status_idx    ON project(status);
@@ -807,8 +809,8 @@ CREATE INDEX obj_acl_permissions_idx ON object_acl(permissions);
 
 CREATE INDEX log_creation_date_idx ON log(creation_date);
 CREATE INDEX log_date_idx ON session_log(log_date);
-CREATE INDEX start_date_ind           ON date_x(start_date);
-CREATE INDEX end_date_ind             ON date_x(end_date);
+CREATE INDEX start_date_ind           ON appointment(start_date);
+CREATE INDEX end_date_ind             ON appointment(end_date);
 
 CREATE INDEX company_contact_idx ON company(contact_id);
 CREATE INDEX company_owner_idx   ON company(owner_id);
@@ -819,9 +821,9 @@ CREATE INDEX cvalue_company_idx  ON company_value(company_id);
 CREATE INDEX cassignment_company_idx    ON company_assignment(company_id);
 CREATE INDEX cassignment_subcompany_idx ON company_assignment(sub_company_id);
 
-CREATE INDEX apt_parent_idx ON date_x (parent_date_id);
-CREATE INDEX apt_owner_idx  ON date_x (owner_id);
-CREATE INDEX apt_team_idx   ON date_x (access_team_id);
+CREATE INDEX apt_parent_idx ON appointment (parent_date_id);
+CREATE INDEX apt_owner_idx  ON appointment (owner_id);
+CREATE INDEX apt_team_idx   ON appointment (access_team_id);
 
 CREATE INDEX date_info_apt_idx ON date_info (date_id);
 

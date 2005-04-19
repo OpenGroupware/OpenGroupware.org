@@ -1,5 +1,4 @@
-# $Id$
-
+# makefile actions
 
 ifneq ($(PYTHON),)
 
@@ -10,6 +9,10 @@ OpenGroupware.org_FrontBase2.eomodel : OGoModel.py
 OpenGroupware.org_PostgreSQL.eomodel : OGoModel.py
 	@echo "The PostgreSQL.eomodel seems to be outdated, you might want to regenerate!"
 	#$(PYTHON) genmodel.py $< PostgreSQL >$@
+
+OpenGroupware.org_MySQL5.eomodel : OGoModel.py
+	@echo "The MySQL5.eomodel seems to be outdated, you might want to regenerate!"
+	#$(PYTHON) genmodel.py $< MySQL5 >$@
 
 endif
 
