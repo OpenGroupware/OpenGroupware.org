@@ -682,7 +682,13 @@ static NSDictionary *LSMimeTypes = nil;
   return YES;
 }
 - (NSString *)trashFolderForPath:(NSString *)_path {
-  return @"/trash";
+  static NSString *trashFolderPath = nil;
+  if (trashFolderPath == nil) {
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    trashFolderPath = [[ud stringForKey:@"OGoProjectTrashFolderPath"] copy];
+    if (trashFolderPath == nil) trashFolderPath = @"/trash";
+  }
+  return trashFolderPath;
 }
 
 - (BOOL)supportAccessRights {

@@ -1,3 +1,8 @@
+2005-04-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyFSFileManager.m: made trash folder path configurable using the
+	  'OGoProjectTrashFolderPath' default (v5.1.25)
+
 2004-07-31  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile.preamble: fixed -L path for inline compilation (v5.0.24)

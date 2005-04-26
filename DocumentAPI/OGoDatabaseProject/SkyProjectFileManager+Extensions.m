@@ -334,7 +334,7 @@
     [self _buildErrorWithSource:_path dest:nil msg:20 handler:nil cmd:_cmd];
     return nil;
   }
-  RELEASE(self->lastException); self->lastException = nil;
+  [self->lastException release]; self->lastException = nil;
   self->lastErrorCode = 0;
   return [self->cache gidForPath:_path manager:self];
 }
@@ -345,7 +345,13 @@
   return YES;
 }
 - (NSString *)trashFolderForPath:(NSString *)_path {
-  return @"/trash";
+  static NSString *trashFolderPath = nil;
+  if (trashFolderPath == nil) {
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    trashFolderPath = [[ud stringForKey:@"OGoProjectTrashFolderPath"] copy];
+    if (trashFolderPath == nil) trashFolderPath = @"/trash";
+  }
+  return trashFolderPath;
 }
 
 - (id)context {

@@ -1,3 +1,8 @@
+2005-04-26  Helge Hess  <helge.hess@skyrix.com>
+	
+	* SkyProjectFileManager+Extensions.m: made trash folder path
+	  configurable using the 'OGoProjectTrashFolderPath' default (v5.1.49)
+	
 2005-04-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.48
