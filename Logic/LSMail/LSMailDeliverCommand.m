@@ -64,10 +64,17 @@ static EONull *null = nil;
     [[ud stringForKey:@"send_bulk_message_install_prefix_var"] copy];
   
   SendMailPath = [[ud stringForKey:@"SendmailPath"] copy];
-  if ([SendMailPath length] == 0)
-    SendMailPath = @"/usr/lib/sendmail";
+  if ([SendMailPath length] == 0) {
+    if ((SendMailPath = [[ud stringForKey:@"WOSendMail"] copy]) == nil)
+      SendMailPath = @"/usr/lib/sendmail";
+  }
+  else {
+    NSLog(@"Note: deprecated 'SendmailPath' default is set, "
+          @"use 'WOSendMail' instead.");
+  }
+  
   if (![[NSFileManager defaultManager] isExecutableFileAtPath:SendMailPath]) {
-    NSLog(@"ERROR: did not find executable sendmail sendmail file: '%@'",
+    NSLog(@"ERROR: did not find executable sendmail file: '%@'",
 	  SendMailPath);
     [SendMailPath release]; SendMailPath = nil;
   }
