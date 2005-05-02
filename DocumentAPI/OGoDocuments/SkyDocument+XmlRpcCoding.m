@@ -31,7 +31,7 @@
   return self;
 }
 
-- (void)encodeWithXmlRpcCoder:(id)_coder {
+- (void)encodeWithXmlRpcCoder:(XmlRpcEncoder *)_coder {
   [_coder encodeString:[[self documentURL] stringValue] forKey:@"id"];
 }
 

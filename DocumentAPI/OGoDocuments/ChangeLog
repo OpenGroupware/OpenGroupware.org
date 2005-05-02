@@ -1,3 +1,13 @@
+2005-05-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.24
+
+	* SkyDocument+XmlRpcCoding.m, SkyDocumentManagerImp.m: fixed gcc 4.0
+	  warnings
+
+	* NGLocalFileDocument+DOM.m: added compatibility with new DOM in
+	  SOPE 4.5
+
 2004-12-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyDocumentManagerImp.m: minor improvement to url=>gid input

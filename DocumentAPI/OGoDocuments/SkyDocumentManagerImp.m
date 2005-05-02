@@ -31,7 +31,7 @@
 
 @implementation SkyDocumentManager
 
-- (id)initWithContext:(id)_context {
+- (id)initWithContext:(LSCommandContext *)_context {
   NSAssert(_context, @"missing context parameter ..");
   
   if ((self = [super init])) {

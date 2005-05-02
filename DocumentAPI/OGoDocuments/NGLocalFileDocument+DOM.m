@@ -76,10 +76,16 @@ static int  maxContentDOMCacheSize = 16000;
   return nil; /* default reader */
 }
 
-- (DOMImplementation *)domImplementationForBLOB {
-  static DOMImplementation *domimp = nil; // THREAD
-  if (domimp == nil)
-    domimp = [[DOMImplementation alloc] init];
+- (id)domImplementationForBLOB {
+  static id domimp = nil; // THREAD
+  if (domimp == nil) {
+    Class clazz;
+    
+    if ((clazz = NSClassFromString(@"NGDOMImplementation")) == Nil)
+      clazz = NSClassFromString(@"DOMImplementation");
+    
+    domimp = [[clazz alloc] init];
+  }
   return domimp;
 }
 
@@ -161,10 +167,10 @@ static int  maxContentDOMCacheSize = 16000;
 - (id)contentAsDOMDocument {
   NSAutoreleasePool *pool;
   NSString          *string;
-  DOMImplementation *domimp;
-  id   parser;
-  id   saxHandler;
-  id   domDocument;
+  id domimp;
+  id parser;
+  id saxHandler;
+  id domDocument;
   
   if (self->contentDOM) /* cached */
     return self->contentDOM;
