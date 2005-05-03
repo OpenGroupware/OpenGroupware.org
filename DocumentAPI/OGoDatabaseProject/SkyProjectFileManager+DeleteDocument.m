@@ -187,10 +187,10 @@
     [self->cache rollbackTransaction];
     return NO;
   }
-  while ((obj = [enumerator nextObject])) {
-    [_array addObject:[obj objectForKey:@"SkyBlobPath"]];
-  }
-
+  
+  while ((obj = [enumerator nextObject]) != nil)
+    [_array addObject:[(NSDictionary *)obj objectForKey:@"SkyBlobPath"]];
+  
   return YES;
 }
 

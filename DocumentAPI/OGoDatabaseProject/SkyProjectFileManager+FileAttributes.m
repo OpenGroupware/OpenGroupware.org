@@ -96,7 +96,7 @@ static inline NSNumber *boolNum(BOOL value) {
 
 + (NSString *)blobNameForDocument:(id)_doc globalID:(EOGlobalID *)_gid
   realDoc:(id)_realDoc manager:(id)_manager
-  projectId:(id)_projectId
+  projectId:(NSNumber *)_projectId
   context:(id<SkyProjectFileManagerContext>)_ctx
 {
   NSString *blobName = nil;
@@ -108,12 +108,12 @@ static inline NSNumber *boolNum(BOOL value) {
   }
   NS_DURING {
     isOk = YES;
-    [_doc setObject:_gid forKey:@"globalID"];
+    [(NSMutableDictionary *)_doc setObject:_gid forKey:@"globalID"];
 
     if (_realDoc)
       if (_realDoc != _doc) 
 	/* _doc is document-editing */
-        [_doc setObject:_realDoc forKey:@"toDocument"];
+        [(NSMutableDictionary *)_doc setObject:_realDoc forKey:@"toDocument"];
 
     [SkyProjectFileManager runGetAttachmentNameCommand:_doc
                            projectId:_projectId
@@ -431,7 +431,7 @@ static BOOL isRootAccountID(NSNumber *cid) {
       if ([doc isKindOfClass:EOGenericRecordClass] ||
           [doc isKindOfClass:NSMutableDictionaryClass]) {
         removeCache = YES;
-        [doc removeObjectForKey:@"attachmentName"];
+        [(NSMutableDictionary *)doc removeObjectForKey:@"attachmentName"];
       }
       else
         removeCache = NO;
@@ -457,7 +457,7 @@ static BOOL isRootAccountID(NSNumber *cid) {
 	EOKeyGlobalID *gid;
 	
         if (removeCache)
-          [doc removeObjectForKey:@"attachmentName"];
+          [(NSMutableDictionary *)doc removeObjectForKey:@"attachmentName"];
         
 	gid = [EOKeyGlobalID globalIDWithEntityName:@"DocumentEditing"
 			     keys:&number keyCount:1 zone:NULL];
@@ -472,7 +472,7 @@ static BOOL isRootAccountID(NSNumber *cid) {
         [attrs setObject:edBlob  forKey:@"__editBlobPath__"];
 
         if (removeCache)
-          [doc removeObjectForKey:@"attachmentName"];
+          [(NSMutableDictionary *)doc removeObjectForKey:@"attachmentName"];
       }
 
       if (doc == _editing) {

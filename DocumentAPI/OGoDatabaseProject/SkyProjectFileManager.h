@@ -291,9 +291,11 @@ extern NSString *SkyProjectFM_MoveFailedAtPaths;
 + (EOQualifier *)replaceAttributes:(EOQualifier *)_qual;
 @end /* SkyProjectFileManager(Qualifier) */
 
+@class LSCommandContext;
+
 @protocol SkyProjectFileManagerContext
 - (NSString *)accountLogin4PersonId:(NSNumber *)_personId;
-- (id)commandContext;
+- (LSCommandContext *)commandContext;
 - (id)getAttachmentNameCommand;
 - (void)setGetAttachmentNameCommand:(id)_id;
 @end

@@ -613,8 +613,9 @@ static NSNumber *yesNum = nil;
       NSString      *path, *parent;
       EOKeyGlobalID *gid;
       NSNumber      *key;
+      id editing;
 
-      if ((key = [doc objectForKey:@"parentDocumentId"]) == nil)
+      if ((key = [(NSDictionary*)doc objectForKey:@"parentDocumentId"]) == nil)
 	continue;
       if (![key isNotNull])
         continue;
@@ -623,10 +624,11 @@ static NSNumber *yesNum = nil;
                               keys:&key keyCount:1 zone:NULL];
       parent = [self pathForGID:gid manager:_manager];
       
+      editing = [docEditings objectForKey:
+			       [(NSDictionary *)doc objectForKey:@"documentId"]];
       fileAttrs = [SkyProjectFileManager 
 		    buildFileAttrsForDoc:doc
-		    editing:[docEditings objectForKey:
-					   [doc objectForKey:@"documentId"]]
+		    editing:editing
 		    atPath:parent isVersion:NO
 		    projectId:[self->project valueForKey:@"projectId"]
 		    fileAttrContext:self];

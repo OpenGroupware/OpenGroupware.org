@@ -128,7 +128,7 @@ static EOSQLQualifier *trueQualifier = nil;
   BOOL             closeTrans;
   EOAdaptorChannel *channel;
   NSArray          *attrs;
-  id               row;
+  NSDictionary     *row;
 
   [self resetData];
 

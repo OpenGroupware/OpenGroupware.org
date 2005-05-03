@@ -278,9 +278,9 @@ SELECT DISTINCT p1.kind FROM project p1;
   
   if (self->projects != nil)
     return self->projects;
-  
-  ds = [[[SkyProjectDataSource alloc] initWithContext:self->context]
-                               autorelease];
+
+  ds = [SkyProjectDataSource alloc]; // keep gcc happy
+  ds = [[ds initWithContext:self->context] autorelease];
   [ds setFetchSpecification:[self fetchSpecificationForProjectDS]];
   self->projects = [[ds fetchObjects] retain];
   return self->projects;
@@ -297,8 +297,9 @@ SELECT DISTINCT p1.kind FROM project p1;
   NSMutableDictionary *projectForId;
   NGMutableHashMap    *result;
   FMContext           *fmContext;
-  
-  fmContext = [[[FMContext alloc] initWithContext:self->context] autorelease];
+
+  fmContext = [FMContext alloc]; // keep gcc happy
+  fmContext = [[fmContext initWithContext:self->context] autorelease];
   
   if (![self->context isTransactionInProgress]) {
     commitTransaction = YES;
@@ -370,11 +371,11 @@ SELECT DISTINCT p1.kind FROM project p1;
     docs       = [NSMutableArray arrayWithCapacity:[result count] * 5];
       
     while ((pid = [enumerator nextObject]) != nil) {
+      NSMutableDictionary *obj; // TODO: correct type?
       NSEnumerator *docEnum;
-      id           obj;
       
       docEnum = [result objectEnumeratorForKey:pid];
-      while ((obj = [docEnum nextObject])) {
+      while ((obj = [docEnum nextObject]) != nil) {
 	NSEnumerator *pEnum;
 	id           p;
 

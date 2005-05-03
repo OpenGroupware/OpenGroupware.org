@@ -1001,7 +1001,8 @@ static inline NSNumber *boolNum(BOOL value) {
   EOKeyGlobalID *gid;
   NSNumber      *projectId;
   
-  editing   = [docEditings objectForKey:[doc objectForKey:@"documentId"]];
+  editing   = [docEditings objectForKey:
+			     [(NSDictionary *)doc objectForKey:@"documentId"]];
   projectId = [self->project valueForKey:@"projectId"];
   fileAttrs = [SkyProjectFileManager buildFileAttrsForDoc:doc
 				     editing:editing
@@ -1117,7 +1118,8 @@ static inline NSNumber *boolNum(BOOL value) {
         return;
       }
       recursionFlag++;
-      key = [[docs lastObject] objectForKey:@"parentDocumentId"];
+      key = [(NSDictionary *)[docs lastObject]
+			     objectForKey:@"parentDocumentId"];
       if ([key isNotNull]) {
         EOKeyGlobalID *gid;
         
@@ -1183,26 +1185,27 @@ static inline NSNumber *boolNum(BOOL value) {
     NSString      *path;
     EOKeyGlobalID *gid;
     NSString      *folder;
-
-    {
-      NSNumber *key;
+    NSNumber      *key;
+    id editing;
         
-      key = [doc objectForKey:@"parentDocumentId"];
-      
-      if ([key isNotNull]) {
+    key = [(NSDictionary *)doc objectForKey:@"parentDocumentId"];
+    
+    if ([key isNotNull]) {
         gid = [EOKeyGlobalID globalIDWithEntityName:@"Doc"
                              keys:&key keyCount:1 zone:NULL];
         folder = [self pathForGID:gid manager:nil];
-      }
-      else {
-        NSLog(@"ERROR[%s] missing parentDocumentId", __PRETTY_FUNCTION__);
-        continue;
-      }
     }
+    else {
+      [self logWithFormat:@"ERROR(%s): missing parentDocumentId", 
+	    __PRETTY_FUNCTION__];
+      continue;
+    }
+    
+    editing = [docEditings objectForKey:
+			     [(NSDictionary *)doc objectForKey:@"documentId"]];
     fileAttrs = [SkyProjectFileManager buildFileAttrsForDoc:doc
-                                       editing:[docEditings objectForKey:
-                                              [doc objectForKey:@"documentId"]]
-                      atPath:folder isVersion:NO
+                                       editing:editing
+				       atPath:folder isVersion:NO
                                        projectId:[self->project
                                                       valueForKey:@"projectId"]
                                        fileAttrContext:self];

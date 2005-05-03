@@ -452,17 +452,18 @@
 }
 
 + (NSNumber *)pidForDocId:(NSNumber *)_did context:(id)_ctx {
-  return [[_ctx valueForKey:@"docToProjectCache"] objectForKey:_did];
+  return [(NSDictionary *)[_ctx valueForKey:@"docToProjectCache"] 
+			  objectForKey:_did];
 }
 
 + (NSDictionary *)projectIdsForDocsInContext:(id)_ctx {
-  return [[_ctx valueForKey:@"docToProjectCache"]
+  return [(NSDictionary *)[_ctx valueForKey:@"docToProjectCache"]
                 objectForKey:@"projectIdsForDocs"];
 }
 
 + (void)setProjectIdsForDocs:(NSDictionary *)_dict inContext:(id)_ctx {
-  [[_ctx valueForKey:@"docToProjectCache"]
-         setObject:_dict forKey:@"projectIdsForDocs"];
+  [(NSMutableDictionary *)[_ctx valueForKey:@"docToProjectCache"]
+			  setObject:_dict forKey:@"projectIdsForDocs"];
 }
 
 - (NSArray *)searchChildsForFolder:(NSString *)_path

@@ -181,7 +181,8 @@ static inline NSNumber *boolNum(BOOL value) {
                                  sortOrderings:nil
                                  usesDistinct:YES isDeep:NO hints:nil];
   
-  pds = [[[SkyProjectDataSource alloc] initWithContext:_ctx] autorelease];
+  pds = [SkyProjectDataSource alloc]; /* keep gcc happy */
+  pds = [[pds initWithContext:_ctx] autorelease];
   
   [pds setFetchSpecification:fspec];
   [fspec release]; fspec = nil;
@@ -630,7 +631,9 @@ static inline NSNumber *boolNum(BOOL value) {
 
 /* like movePaths: ... */
 
-- (BOOL)fileManager:(id)_fm shouldProceedAfterError:(NSDictionary *)_err {
+- (BOOL)fileManager:(NSFileManager *)_fm
+  shouldProceedAfterError:(NSDictionary *)_err
+{
   return YES;
 }
 
