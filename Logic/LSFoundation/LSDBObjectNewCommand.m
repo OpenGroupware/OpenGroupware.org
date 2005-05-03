@@ -101,22 +101,18 @@
         reason:@"Could not refetch inserted object!"];
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  [self assert:(_key != nil) reason:@"passed invalid key to -takeValue:forKey:"];
-
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if (_value == nil) _value = [NSNull null];
     
   NSAssert(self->recordDict, @"no record dict available");
   [self->recordDict setObject:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
-  [self assert:(_key != nil) reason:@"passed invalid key to -valueForKey:"];
-
+- (id)valueForKey:(NSString *)_key {
   NSAssert(self->recordDict, @"no record dict available");
   return [self->recordDict objectForKey:_key];
 }
 
-@end
+@end /* LSDBObjectNewCommand */

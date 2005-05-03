@@ -99,7 +99,7 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"sortAttribute"])
     [self setSortAttribute:_value];
   else if ([_key isEqualToString:@"sortList"])
@@ -110,15 +110,15 @@
     [self foundInvalidSetKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"sortAttribute"])
     return [self sortAttribute];
-  else if ([_key isEqualToString:@"sortList"])
+  if ([_key isEqualToString:@"sortList"])
     return [self sortList];
-  else if ([_key isEqualToString:@"ordering"])
+  if ([_key isEqualToString:@"ordering"])
     return [NSNumber numberWithInt:[self ordering]];
-  else
-    return [self foundInvalidGetKey:_key];
+
+  return [self foundInvalidGetKey:_key];
 }
 
-@end
+@end /* LSSortCommand */

@@ -240,15 +240,15 @@
 
 /* command lookup */
 
-- (id<NSObject,LSCommand>)command:(NSString *)_operation
-  inDomain:(NSString *)_domain
-{
+- (id)command:(NSString *)_operation inDomain:(NSString *)_domain {
   NSString *s;
-  s = [NSString stringWithFormat:@"%@::%@", _domain, _operation];
+
+  s = [[_domain stringByAppendingString:@"::"] 
+	        stringByAppendingString:_operation];
   return [self lookupCommand:s];
 }
 
-- (id<NSObject,LSCommand>)lookupCommand:(NSString *)_command {
+- (id)lookupCommand:(NSString *)_command {
   _LSBundleCommandInfo   *info;
   id<NSObject,LSCommand> cmd;
 

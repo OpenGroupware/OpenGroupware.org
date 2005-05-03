@@ -102,13 +102,13 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"removeFromSource"])
     [self setRemoveFromSource:_value];
   else
     [self foundInvalidSetKey:_key];
 }
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   return ([_key isEqualToString:@"removeFromSource"])
     ? [self removeFromSource]
     : [self foundInvalidGetKey:_key];

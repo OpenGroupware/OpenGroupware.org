@@ -263,7 +263,7 @@ NSString *ProfileCommandsFileName = nil;
   return self->linkManager;
 }
 
-- (id)accessManager {
+- (SkyAccessManager *)accessManager {
   return self->accessManager;
 }
 

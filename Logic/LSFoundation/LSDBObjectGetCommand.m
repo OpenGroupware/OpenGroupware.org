@@ -266,10 +266,7 @@ static NSNumber *yesNum = nil;
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  [self assert:(_key != nil) 
-	reason:@"passed invalid key to -takeValue:forKey:"];
-  
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"operator"])
     [self setOperator:_value];
   else if ([_key isEqualToString:@"comparator"])
@@ -289,9 +286,7 @@ static NSNumber *yesNum = nil;
   }
 }
 
-- (id)valueForKey:(id)_key {
-  [self assert:(_key != nil) reason:@"passed invalid key to -valueForKey:"];
-  
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"operator"])
     return [self operator];
   if ([_key isEqualToString:@"comparator"])

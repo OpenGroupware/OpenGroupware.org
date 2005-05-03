@@ -177,10 +177,10 @@
 - (void)registerClassesOfBundle:(NSBundle *)_bundle {
   /* ensure that +initialize is called right after loading the plugin */
   NSEnumerator *classes;
-  id classDict;
+  NSDictionary *classDict;
   
   classes = [[_bundle providedResourcesOfType:@"classes"] objectEnumerator];
-  while ((classDict = [classes nextObject])) {
+  while ((classDict = [classes nextObject]) != nil) {
     NSString *clazzName;
     Class    clazz;
     

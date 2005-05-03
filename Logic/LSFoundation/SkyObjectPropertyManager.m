@@ -423,7 +423,7 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   return [props autorelease];
 }
 
-- (NSDictionary *)propertiesForGlobalID:(id)_gid
+- (NSDictionary *)propertiesForGlobalID:(EOGlobalID *)_gid
   namespace:(NSString *)_namespace
 {
   NSDictionary *result;
@@ -442,11 +442,11 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   return result;
 }
 
-- (NSArray *)allKeysForGlobalID:(id)_gid {
+- (NSArray *)allKeysForGlobalID:(EOGlobalID *)_gid {
   return [self allKeysForGlobalID:_gid namespace:nil];
 }
 
-- (NSArray *)allKeysForGlobalID:(id)_gid
+- (NSArray *)allKeysForGlobalID:(EOGlobalID *)_gid
   namespace:(NSString *)_namespace
 {
   EOEntity         *e;
@@ -712,7 +712,7 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
 */
 
 - (NSException *)addProperties:(NSDictionary *)_properties 
-  accessOID:(EOGlobalID *)_access globalID:(id)_gid
+  accessOID:(EOGlobalID *)_access globalID:(EOGlobalID *)_gid
 {
   return [self _addProperties:_properties accessOID:_access globalID:_gid
                checkExist:YES];
@@ -831,7 +831,7 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
 }
 
 - (NSException *)updateProperties:(NSDictionary *)_properties 
-  globalID:(id)_gid
+  globalID:(EOGlobalID *)_gid
 {
   return [self _updateProperties:_properties globalID:_gid checkExist:YES];
 }
@@ -847,14 +847,11 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   return [self removeProperties:[self allKeysForGlobalID:_gid] globalID:_gid];
 }
 
-- (NSException *)removeProperties:(NSArray *)_keys 
-  globalID:(id)_gid
-{
+- (NSException *)removeProperties:(NSArray *)_keys globalID:(EOGlobalID *)_gid{
   return [self removeProperties:_keys globalID:_gid checkAccess:YES];
 }
 
-- (NSException *)removeProperties:(NSArray *)_keys 
-  globalID:(id)_gid
+- (NSException *)removeProperties:(NSArray *)_keys globalID:(EOGlobalID *)_gid
   checkAccess:(BOOL)_check
 {
   EOEntity         *e;
@@ -927,7 +924,7 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
 
 - (NSException *)setAccessOID:(EOGlobalID *)_access
   propertyKeys:(NSArray *)_keys 
-  globalID:(id)_gid
+  globalID:(EOGlobalID *)_gid
 {
   EOEntity         *e;
   EOAdaptorChannel *adc;

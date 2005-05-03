@@ -355,10 +355,10 @@ static Class   StrClass = Nil;
            is retrieved from the last OID's entity)
   */
   // TODO: this does not cache results!
-  EOGlobalID *loginID;
-  id         *allowed;
-  int        allowCnt, cnt;
-  NSArray    *oids;
+  EOGlobalID   *loginID;
+  id           *allowed;
+  unsigned int allowCnt, cnt;
+  NSArray      *oids;
   
   loginID = [[self->context valueForKey:LSAccountKey] valueForKey:@"globalID"];
   

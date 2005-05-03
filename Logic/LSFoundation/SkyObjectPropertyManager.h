@@ -34,7 +34,7 @@
 */
 
 @class NSDictionary, NSArray, NSString, NSException, NSMutableArray, NSNumber;
-@class NSMutableDictionary, NSSet;
+@class NSMutableDictionary, NSSet, NSNotification;
 @class EOQualifier, EOGlobalID, EODatabase, EOAdaptorChannel, EOEntity;
 @class EOAdaptor;
 @class LSCommandContext;
@@ -167,7 +167,7 @@ extern NSString *SkyOPMWrongPropertyKeyExceptionName;
 
 /* sybase notifications */
 
-- (void)gotDBMessage:(id)_notification;
+- (void)gotDBMessage:(NSNotification *)_notification;
 
 /* accessors */
 

@@ -150,19 +150,16 @@
   [self setReturnValue:obj];
 }
 
+- (void)setCheckAccess:(NSNumber *)_n {
+  ASSIGNCOPY(self->checkAccess, _n);
+}
 - (NSNumber *)checkAccess {
   return self->checkAccess;
 }
-- (void)setCheckAccess:(NSNumber *)_n {
-  ASSIGN(self->checkAccess, _n);
-}
-                           
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  [self assert:(_key != nil) reason:@"passed invalid key to -takeValue:forKey:"];
-  
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"primaryKey"])
     [self setPrimaryKeyValue:_value];
   else if ([_key isEqualToString:@"object"])
@@ -177,19 +174,16 @@
   }
 }
 
-- (id)valueForKey:(id)_key {
-  [self assert:(_key != nil) reason:@"passed invalid key to -valueForKey:"];
-  
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"primaryKey"])
     return [self primaryKeyValue];
-  else if ([_key isEqualToString:@"checkAccess"])
+  if ([_key isEqualToString:@"checkAccess"])
     return [self checkAccess];
-  else if ([_key isEqualToString:@"object"])
+  if ([_key isEqualToString:@"object"])
     return [self object];
-  else {
-    NSAssert(self->recordDict, @"no record dict available");
-    return [self->recordDict objectForKey:_key];
-  }
+
+  NSAssert(self->recordDict, @"no record dict available");
+  return [self->recordDict objectForKey:_key];
 }
 
-@end
+@end /* LSDBObjectSetCommand */

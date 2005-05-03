@@ -91,7 +91,7 @@
 - (void)_validateInContext:(id)_context {
 }
 
-// database stuff
+/* database stuff */
 
 - (EODatabaseChannel *)databaseChannel {
   return [activeContext valueForKey:LSDatabaseChannelKey];
@@ -103,19 +103,14 @@
 
 /* KVC */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  [self assert:(_key != nil) 
-        reason:@"passed invalid key to -takeValue:forKey:"];
-  
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"entity"])
     [self setEntity:_value];
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
-  [self assert:(_key != nil) reason:@"passed invalid key to -valueForKey:"];
-
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"entity"])
     return [self entity];
 

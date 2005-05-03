@@ -42,9 +42,10 @@ static BOOL debugOn = NO;
   debugOn = [ud boolForKey:@"SkyAccessManagerDebug"];
 }
 
-+ (id)accessHandlerWithContext:(id)_ctx {
++ (id)accessHandlerWithContext:(LSCommandContext *)_ctx {
   if (_ctx == nil) {
-    NSLog(@"ERROR(%s): could not create handler due to invalid context!",_ctx);
+    NSLog(@"ERROR(%s): could not create handler due to invalid context!",
+	  __PRETTY_FUNCTION__);
     return nil;
   }
   return [[[self alloc] initWithContext:_ctx] autorelease];

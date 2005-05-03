@@ -135,7 +135,7 @@
   }
 }
 
-// accessors
+/* accessors */
 
 - (void)setReallyDelete:(BOOL)_reallyDelete {
   self->reallyDelete = _reallyDelete;
@@ -145,9 +145,9 @@
   return self->reallyDelete;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   [self assert:[_key isKindOfClass:[NSString class]]
         reason:@"key must be a string"];
   
@@ -172,17 +172,15 @@
   }
 }
 
-- (id)valueForKey:(id)_key {
-  NSAssert([_key isKindOfClass:[NSString class]], @"key must be a string");
-
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"object"])
     return [self object];
-  else if ([_key isEqualToString:@"reallyDelete"])
+  if ([_key isEqualToString:@"reallyDelete"])
     return [NSNumber numberWithBool:[self reallyDelete]];
-  else if ([_key isEqualToString:@"primaryKey"])
+  if ([_key isEqualToString:@"primaryKey"])
     return [self primaryKeyValue];
-  else
-    return [self->recordDict objectForKey:_key];
+  
+  return [self->recordDict objectForKey:_key];
 }
 
-@end
+@end /* LSDBObjectDeleteCommand */

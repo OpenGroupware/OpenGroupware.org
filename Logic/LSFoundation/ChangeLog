@@ -1,3 +1,7 @@
+2005-05-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed gcc 4.0 warnings (v5.1.99)
+
 2005-04-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* NGBundleManager+OGo.m: sort bundles by name prior loading to ensure

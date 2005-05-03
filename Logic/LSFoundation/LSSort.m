@@ -171,7 +171,7 @@ static int arrayWithRelKeyDescSorter
 
 /* accessors */
 
-- (void)setSortArray:_sortArray {
+- (void)setSortArray:(NSArray *)_sortArray {
   ASSIGN(sortArray, _sortArray);
 }
 

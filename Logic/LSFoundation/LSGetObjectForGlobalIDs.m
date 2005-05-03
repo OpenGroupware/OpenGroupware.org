@@ -625,15 +625,13 @@ static BOOL doCacheGIDs = YES;
 
 /* key-value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"gid"])
     [self setGlobalID:_value];
   else if ([_key isEqualToString:@"gids"])
     [self setGlobalIDs:_value];
   else if ([_key isEqualToString:@"groupBy"]) {
-    id tmp = self->groupBy;
-    self->groupBy = [_value copy];
-    [tmp release];
+    ASSIGNCOPY(self->groupBy, _value);
   }
   else if ([_key isEqualToString:@"attributes"])
     [self setAttributes:_value];
@@ -647,7 +645,7 @@ static BOOL doCacheGIDs = YES;
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   id v;
   
   if ([_key isEqualToString:@"gid"])
