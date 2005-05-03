@@ -50,7 +50,7 @@
   [self postDataSourceChangedNotification];
   ASSIGN(self->fetchSpecification, _fs);
 }
-- (id)fetchSpecification {
+- (EOFetchSpecification *)fetchSpecification {
   return self->fetchSpecification;
 }
 

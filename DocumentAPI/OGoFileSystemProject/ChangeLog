@@ -1,3 +1,11 @@
+2005-05-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.26
+
+	* SkyFSDocument+DOM.m: added compatibility with new DOM in SOPE 4.5
+
+	* fixed gcc 4.0 warnings
+
 2005-04-26  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyFSFileManager.m: made trash folder path configurable using the

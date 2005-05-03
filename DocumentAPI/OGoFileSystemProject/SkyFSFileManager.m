@@ -462,8 +462,10 @@ static NSDictionary *LSMimeTypes = nil;
 }
 
 - (EODataSource *)dataSourceForDocumentSearchAtPath:(NSString *)_path {
-  return [[[[self folderDataSourceClass] alloc]
-            initWithPath:_path fileManager:self] autorelease];
+  SkyFSFolderDataSource *ds;
+  
+  ds = [[self folderDataSourceClass] alloc]; // keep gcc happy
+  return [[ds initWithPath:_path fileManager:self] autorelease];
 }
 
 /* file operations */
@@ -835,7 +837,8 @@ static NSString *LockPrefix = @"lock";
                [[[self->project valueForKey:@"projectId"] stringValue]
                                 stringByAppendingPathExtension:LockPrefix]];
 
-    self->lock = [[NSDistributedLock alloc] initWithPath:tmp];
+    self->lock = [(NSDistributedLock *)[NSDistributedLock alloc] 
+				       initWithPath:tmp];
   }
   return self->lock;
 }

@@ -48,10 +48,16 @@ static void _categoryInitialize(void) {
 
 /* SkyDocumentFeature_DOMBLOB */
 
-- (DOMImplementation *)domImplementationForBLOB {
-  static DOMImplementation *domimp = nil; // THREAD
-  if (domimp == nil)
-    domimp = [[DOMImplementation alloc] init];
+- (id)domImplementationForBLOB {
+  static id domimp = nil; // THREAD
+  if (domimp == nil) {
+    Class clazz;
+    
+    if ((clazz = NSClassFromString(@"NGDOMImplementation")) == Nil)
+      clazz = NSClassFromString(@"DOMImplementation");
+    
+    domimp = [[clazz alloc] init];
+  }
   return domimp;
 }
 
@@ -165,7 +171,7 @@ static void _categoryInitialize(void) {
   NSAutoreleasePool *pool;
   NSString          *string;
   NSString          *lMimeType;
-  DOMImplementation *domimp;
+  id   domimp;
   id   parser;
   id   saxHandler;
   id   domDocument;

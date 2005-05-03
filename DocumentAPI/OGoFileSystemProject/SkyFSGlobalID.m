@@ -51,7 +51,7 @@
 
 /* NSCopying */
 
-- (SkyFSGlobalID *)copyWithZone:(NSZone *)_zone {
+- (id)copyWithZone:(NSZone *)_zone {
   return [[SkyFSGlobalID alloc] initWithPath:self->path
                                 projectGID:self->projectGID];
 }
