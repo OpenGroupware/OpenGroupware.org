@@ -34,14 +34,14 @@
 
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSSetAccountCommand
 
 - (void)dealloc {
-  [self->teams release];
-  [self->data release];
-  [self->filter release];
+  [self->teams    release];
+  [self->data     release];
+  [self->filter   release];
   [self->filePath release];
   [super dealloc];
 }
@@ -154,16 +154,16 @@
   }
 }
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Person";
 }
 
-// accessors
+/* accessors */
 
 - (void)setData:(NSData *)_data {
-  ASSIGN(self->data, _data);
+  ASSIGNCOPY(self->data, _data);
 }
 - (NSData *)data {
   return self->data;
@@ -177,7 +177,7 @@
 }
 
 - (void)setFilePath:(NSString *)_filePath {
-  ASSIGN(self->filePath, _filePath);
+  ASSIGNCOPY(self->filePath, _filePath);
 }
 - (NSString *)filePath {
   return self->filePath;
@@ -186,48 +186,47 @@
 - (void)setTeams:(NSArray *)_teams {
   ASSIGN(self->teams, _teams);
 }
-
 - (NSArray *)teams {
   return self->teams;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"teams"] ||
       [_key isEqualToString:@"toGroup"] ||
       [_key isEqualToString:@"groups"]) {
     [self setTeams:_value];
     return;
   }
-  else if ([_key isEqualToString:@"data"]) {
+  if ([_key isEqualToString:@"data"]) {
     [self setData:_value];
     return;
   }
-  else if ([_key isEqualToString:@"filter"]) {
+  if ([_key isEqualToString:@"filter"]) {
     [self setFilter:_value];
     return;
   }
-  else if ([_key isEqualToString:@"filePath"]) {
+  if ([_key isEqualToString:@"filePath"]) {
     [self setFilePath:_value];
     return;
   }
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"teams"] ||
       [_key isEqualToString:@"toGroup"] ||
       [_key isEqualToString:@"groups"])
     return [self teams];
-  else if ([_key isEqualToString:@"data"])
+  if ([_key isEqualToString:@"data"])
     return [self data];
-  else if ([_key isEqualToString:@"filePath"])
+  if ([_key isEqualToString:@"filePath"])
     return [self filePath];
-  else if ([_key isEqualToString:@"filter"])
+  if ([_key isEqualToString:@"filter"])
     return [self filter];
-
+  
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSSetAccountCommand */

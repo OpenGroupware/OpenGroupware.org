@@ -203,30 +203,31 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"teams"] ||
       [_key isEqualToString:@"toGroup"] ||
       [_key isEqualToString:@"groups"]) {
     [self setTeams:_value];
     return;
   }
-  else if ([_key isEqualToString:@"dontCryptPassword"]) {
+  if ([_key isEqualToString:@"dontCryptPassword"]) {
     self->dontCryptPassword = [_value boolValue];
     return;
   }
-  else
-    [super takeValue:_value forKey:_key];
+
+  [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"teams"] ||
       [_key isEqualToString:@"toGroup"] ||
       [_key isEqualToString:@"groups"])
     return [self teams];
-  else if ([_key isEqualToString:@"dontCryptPassword"])
+
+  if ([_key isEqualToString:@"dontCryptPassword"])
     return [NSNumber numberWithBool:self->dontCryptPassword];
-  else
-    return [super valueForKey:_key];
+  
+  return [super valueForKey:_key];
 }
 
 @end /* LSNewAccountCommand */

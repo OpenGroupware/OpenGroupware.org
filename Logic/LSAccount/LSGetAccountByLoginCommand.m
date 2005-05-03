@@ -28,22 +28,24 @@
 
 @end
 
-#import "common.h"
-#import <GDLAccess/EOSQLQualifier.h>
+#include "common.h"
+#include <GDLAccess/EOSQLQualifier.h>
 
 @implementation LSGetAccountByLoginCommand
 
-// command methods
+/* command methods */
 
 - (void)_executeInContext:(id)_context {
   NSString       *userName    = [self->recordDict valueForKey:@"login"];
   EOSQLQualifier *myQualifier = nil;
-  NSMutableArray *result      = [[NSMutableArray allocWithZone:[self zone]] init];
-  
+  NSMutableArray *result;
   EOSQLQualifier *isArchivedQualifier = nil;
+  
+  result      = [[NSMutableArray alloc] initWithCapacity:4];
 
-  isArchivedQualifier =  [[EOSQLQualifier alloc] initWithEntity:[self entity]
-                                     qualifierFormat:@"dbStatus <> 'archived'"];
+  isArchivedQualifier =
+    [[EOSQLQualifier alloc] initWithEntity:[self entity]
+			    qualifierFormat:@"dbStatus <> 'archived'"];
   
   myQualifier = [[EOSQLQualifier alloc] initWithEntity:[self entity]
                                      qualifierFormat:
@@ -61,8 +63,8 @@
       obj = nil;
     }
   }
-  RELEASE(myQualifier);         myQualifier       = nil;
-  RELEASE(isArchivedQualifier); isArchivedQualifier = nil;
+  [myQualifier         release]; myQualifier       = nil;
+  [isArchivedQualifier release]; isArchivedQualifier = nil;
   [self assert:([result count] < 2)
         reason:@"ERROR: more than one user for login !!!"];
   
@@ -73,7 +75,7 @@
     return;
   }
   
-  RELEASE(result); result = nil;
+  [result release]; result = nil;
         
   // set teams for result accounts(s) in key 'teams'
 
@@ -93,7 +95,7 @@
                 @"relationKey", @"telephones", nil);
 }
 
-// accessors
+/* accessors */
 
 - (void)setLogin:(NSString *)_login {
   [self->recordDict setObject:_login forKey:@"login"];
@@ -102,15 +104,15 @@
   return [self->recordDict objectForKey:@"login"];
 }
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Person";
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"login"]) {
     [self setLogin:_value];
     return;
@@ -118,10 +120,10 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"login"])
     return [self login];
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSGetAccountByLoginCommand */

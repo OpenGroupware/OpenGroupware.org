@@ -41,8 +41,8 @@
 
 @end
 
-#import "common.h"
-#import <GDLAccess/EOSQLQualifier.h>
+#include "common.h"
+#include <GDLAccess/EOSQLQualifier.h>
 
 //#include <NGLdap/NGLdapConnection.h>
 
@@ -53,7 +53,7 @@
 
 @interface NSObject(Defaults)
 - (id)initWithUserDefaults:(NSUserDefaults *)_ud
-                andContext:(LSCommandContext *)_tx;
+  andContext:(LSCommandContext *)_tx;
 @end
 
 @implementation LSLoginAccountCommand
@@ -65,11 +65,13 @@
   return self;
 }
 - (void)dealloc {
-  RELEASE(self->password);
-  RELEASE(self->crypted);
-  RELEASE(self->isSessionLogEnabled);
+  [self->password            release];
+  [self->crypted             release];
+  [self->isSessionLogEnabled release];
   [super dealloc];
 }
+
+/* validation */
 
 - (void)_validateKeysForContext:(id)_context {  
   if (self->password == nil) {
@@ -100,10 +102,9 @@
   NSArray        *accounts            = nil;
   id             account              = nil;
   NSString       *userName            = nil;
-  EOSQLQualifier *authQualifier       = nil;
-  EOSQLQualifier *isArchivedQualifier = nil;  
+  EOSQLQualifier *authQualifier;
+  EOSQLQualifier *isArchivedQualifier;  
   NSAutoreleasePool *p;
-
   static int UseSkyrixLoginForImap = -1;
 
   if (UseSkyrixLoginForImap == -1) {
@@ -263,7 +264,7 @@
   [p release];
 }
 
-// accessors
+/* accessors */
 
 - (void)setLogin:(NSString *)_login {
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"LSUserDefaultsKey"])
@@ -275,24 +276,21 @@
 }
 
 - (void)setPassword:(NSString *)_pwd {
-  if (self->password != _pwd) {
-    RELEASE(self->password); self->password = nil;
-    self->password = [_pwd copyWithZone:[self zone]];
-  }
+  ASSIGNCOPY(self->password, _pwd);
 }
 - (NSString *)password {
   return self->password;
 }
 
 - (void)setIsSessionLogEnabled:(NSNumber *)_flag {
-  ASSIGN(self->isSessionLogEnabled, _flag);
+  ASSIGNCOPY(self->isSessionLogEnabled, _flag);
 }
 - (NSNumber *)isSessionLogEnabled {
   return self->isSessionLogEnabled;
 }
 
 - (void)setCrypted:(NSNumber *)_flag {
-  ASSIGN(self->crypted, _flag);
+  ASSIGNCOPY(self->crypted, _flag);
 }
 - (NSNumber *)crypted {
   return self->crypted;
@@ -305,36 +303,32 @@
   return self->suCtx;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  if ([_key isEqualToString:@"password"]) {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
+  if ([_key isEqualToString:@"password"])
     [self setPassword:_value];
-  }
-  else if ([_key isEqualToString:@"crypted"]) {
+  else if ([_key isEqualToString:@"crypted"])
     [self setCrypted:_value];
-  }
-  else if ([_key isEqualToString:@"isSessionLogEnabled"]) {
+  else if ([_key isEqualToString:@"isSessionLogEnabled"])
     [self setIsSessionLogEnabled:_value];
-  }
-  else if ([_key isEqualToString:@"superUserContext"]) {
+  else if ([_key isEqualToString:@"superUserContext"])
     [self setSuContext:_value];
-  }
   else 
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"password"])
     return [self password];
-  else if ([_key isEqualToString:@"crypted"])
+  if ([_key isEqualToString:@"crypted"])
     return [self crypted];
-  else if ([_key isEqualToString:@"isSessionLogEnabled"])
+  if ([_key isEqualToString:@"isSessionLogEnabled"])
     return [self isSessionLogEnabled];
-  else if ([_key isEqualToString:@"superUserContext"])
+  if ([_key isEqualToString:@"superUserContext"])
     return [self suContext];
-  else 
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
-@end
+@end /* LSLoginAccountCommand */

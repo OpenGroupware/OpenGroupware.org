@@ -277,56 +277,61 @@ static int WritePasswordToLDAP = -1;
   }
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"object"] ||
       [_key isEqualToString:@"account"]) {
     [self setObject:_value];
     return;
   }
-  else if ([_key isEqualToString:@"newPassword"] ||
+  if ([_key isEqualToString:@"newPassword"] ||
            [_key isEqualToString:@"password"]) {
-    ASSIGN(self->newPassword, _value);
+    ASSIGNCOPY(self->newPassword, _value);
     return;
   }
-  else if ([_key isEqualToString:@"oldPassword"]) {
-    ASSIGN(self->oldPassword, _value);
+  if ([_key isEqualToString:@"oldPassword"]) {
+    ASSIGNCOPY(self->oldPassword, _value);
     return;
   }
-  else if ([_key isEqualToString:@"isCrypted"]) {
+  if ([_key isEqualToString:@"isCrypted"]) {
     self->isCrypted = [_value boolValue];
     return;
   }
-  else if ([_key isEqualToString:@"logText"] ||
-           [_key isEqualToString:@"logAction"]) {
+  if ([_key isEqualToString:@"logText"] ||
+      [_key isEqualToString:@"logAction"]) {
     [super takeValue:_value forKey:_key];
     return;
   }
-  NSLog(@"WARNING[%s]: key %@ (value: %@) is not setable in "
+  
+  [self logWithFormat:@"WARNING(%s): key %@ (value: %@) is not setable in "
         @"change-password command",
-        __PRETTY_FUNCTION__, _key, _value);
+        __PRETTY_FUNCTION__, _key, _value];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"object"] ||
       [_key isEqualToString:@"account"]) {
     return [self object];
   }
-  else if ([_key isEqualToString:@"newPassword"] ||
-           [_key isEqualToString:@"password"]) {
+  
+  if ([_key isEqualToString:@"newPassword"] ||
+      [_key isEqualToString:@"password"]) {
     return self->newPassword;
   }
-  else if ([_key isEqualToString:@"isCrypted"]) {
+  if ([_key isEqualToString:@"isCrypted"])
     return [NSNumber numberWithBool:self->isCrypted];
-  }
-  else if ([_key isEqualToString:@"logText"] ||
+  
+  if ([_key isEqualToString:@"logText"] ||
            [_key isEqualToString:@"logAction"] ||
            [_key isEqualToString:@"companyId"])
     return [super valueForKey:_key];
-  NSLog(@"WARNING[%s]: key %@ is not valid in "
+  
+  [self logWithFormat:@"WARNING(%s): key %@ is not valid in "
         @"change-password command",
-        __PRETTY_FUNCTION__, _key);
+        __PRETTY_FUNCTION__, _key];
   return nil;
 }
+
+/* command entity */
 
 - (NSString *)entityName {
   return @"Person";

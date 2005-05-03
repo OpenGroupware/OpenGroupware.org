@@ -1,3 +1,11 @@
+2005-05-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.17
+
+	* fixed gcc 4.0 warnings (mostly KVC)
+
+	* LSGetAccountsForGlobalIDsCommand.m: removed dead code
+
 2004-11-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetTeamForAccountCommand.m: minor code cleanups (v5.1.16)

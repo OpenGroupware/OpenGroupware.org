@@ -65,23 +65,27 @@
                 @"loginStatus", [NSNumber numberWithBool:NO], nil);
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+/* key/value coding */
+
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"object"] ||
       [_key isEqualToString:@"account"]) {
     [self setObject:_value];
     return;
   }
-  NSLog(@"WARNING[%s]: key %@ is not setable in toperson command",
-        __PRETTY_FUNCTION__, _key);
+  [self logWithFormat:
+	  @"WARNING(%s): key %@ is not setable in toperson command",
+          __PRETTY_FUNCTION__, _key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"object"] ||
       [_key isEqualToString:@"account"]) {
     return [self object];
   }
-  NSLog(@"WARNING[%s]: key %@ is not valid in toperson command",
-        __PRETTY_FUNCTION__, _key);
+
+  [self logWithFormat:@"WARNING(%s): key %@ is not valid in toperson command",
+        __PRETTY_FUNCTION__, _key];
   return nil;
 }
 
