@@ -36,15 +36,13 @@
 
 @implementation LSProjectsToCompanyAssignmentCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->projects);
-  RELEASE(self->removedProjects);
+  [self->projects        release];
+  [self->removedProjects release];
   [super dealloc];
 }
-#endif
 
-// command methods
+/* command methods */
 
 - (BOOL)_object:(id)_object isInList:(NSArray *)_list {
   NSEnumerator *listEnum;
@@ -63,19 +61,19 @@
 }
 
 - (void)_removeOldAssignmentsInContext:(id)_context {
-  NSEnumerator *pEnum       = nil;
-  NSEnumerator *asEnum      = nil;
-  NSArray      *assignments = nil;
-  id           p            = nil;
-  id           as           = nil; 
+  NSEnumerator *pEnum;
+  id           p;
 
   pEnum = [self->removedProjects objectEnumerator];
-  
-  while ((p = [pEnum nextObject])) {
+  while ((p = [pEnum nextObject]) != nil) {
+    NSEnumerator *asEnum;
+    NSArray      *assignments;
+    id           as; 
+    
     assignments = [p valueForKey:@"companyAssignments"];
     asEnum = [assignments objectEnumerator];
     
-    while ((as = [asEnum nextObject])) {
+    while ((as = [asEnum nextObject]) != nil) {
       if ([[[self object] valueForKey:@"companyId"]
                   isEqual:[as valueForKey:@"companyId"]]) {
         LSRunCommandV(_context,        @"projectcompanyassignment",  @"delete",
@@ -87,7 +85,7 @@
 }
 
 - (void)_saveAssignmentsInContext:(id)_context {
-  NSArray      *oldAssignments = nil;
+  NSArray      *oldAssignments;
   NSEnumerator *pEnum          = nil;
   id           p               = nil; 
   id           obj             = [self object];
@@ -103,7 +101,7 @@
 
   pEnum = [self->projects objectEnumerator];
 
-  while ((p = [pEnum nextObject])) {
+  while ((p = [pEnum nextObject]) != nil) {
     if (![self _object:p isInList:oldAssignments]) {
       LSRunCommandV(_context,     @"projectcompanyassignment",  @"new",
                     @"companyId", [obj valueForKey:@"companyId"],
@@ -122,7 +120,7 @@
   }
 }
 
-// accessors
+/* accessors */
 
 - (void)setProjects:(NSArray *)_projects {
   ASSIGN(self->projects, _projects);
@@ -130,6 +128,7 @@
 - (NSArray *)projects {
   return self->projects;
 }
+
 - (void)setRemovedProjects:(NSArray *)_removedProjects {
   ASSIGN(self->removedProjects, _removedProjects);
 }
@@ -137,9 +136,9 @@
   return self->removedProjects;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"projects"]) {
     [self setProjects:_value];
     return;
@@ -151,10 +150,10 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"removedProjects"])
     return [self removedProjects];
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSProjectsToCompanyAssignmentCommand */

@@ -90,9 +90,9 @@
   return self->newResources;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"oldResources"])
     [self setOldResources:_value];
   else if ([_key isEqualToString:@"newResources"])
@@ -101,7 +101,7 @@
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"oldResources"])
     return [self oldResources];
   else if ([_key isEqualToString:@"newResources"])

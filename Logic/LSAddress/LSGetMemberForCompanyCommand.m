@@ -575,7 +575,7 @@ static BOOL debugCache      = NO;
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
 #if DEBUG && 0
   NSAssert1([_value isNotNull], @"take value 'null' for key %@", _key);
 #endif
@@ -595,13 +595,14 @@ static BOOL debugCache      = NO;
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"group"] || [_key isEqualToString:@"object"])
     return [self group];
-  else if ([_key isEqualToString:@"groups"])
+  if ([_key isEqualToString:@"groups"])
     return [self groups];
-  else if ([_key isEqualToString:@"fetchGlobalIDs"])
+  if ([_key isEqualToString:@"fetchGlobalIDs"])
     return [NSNumber numberWithBool:[self fetchGlobalIDs]];
+  
   return [super valueForKey:_key];
 }
 

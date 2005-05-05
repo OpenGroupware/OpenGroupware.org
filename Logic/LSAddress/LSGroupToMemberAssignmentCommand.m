@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#import <LSFoundation/LSDBObjectBaseCommand.h>
+#include <LSFoundation/LSDBObjectBaseCommand.h>
 
 @class NSArray;
 
@@ -35,25 +35,25 @@
 
 @implementation LSGroupToMemberAssignmentCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->groups);
+  [self->groups release];
   [super dealloc];
 }
-#endif
 
-// command methods
+/* command methods */
 
 - (BOOL)_object:(id)_object isInList:(NSArray *)_list {
-  NSEnumerator *listEnum  = [_list objectEnumerator];
-  id           listObject = nil;
-  id           pkey;
+  NSEnumerator *listEnum;
+  id           listObject;
+  NSNumber     *pkey;
 
   pkey = [_object valueForKey:@"companyId"];
-
+  
+  listEnum  = [_list objectEnumerator];
   while ((listObject = [listEnum nextObject])) {
-    id opkey = [listObject valueForKey:@"companyId"];
-
+    NSNumber *opkey;
+    
+    opkey = [listObject valueForKey:@"companyId"];
     if ([pkey isEqual:opkey]) return YES;
   }
   return NO;
@@ -62,27 +62,27 @@
 static BOOL _objectIsNoEnterprise(LSGroupToMemberAssignmentCommand *self,
                                   id _context,
                                   id _obj) {
-  NSArray *e = nil;
+  NSArray *e;
 
   e = LSRunCommandV(_context, @"enterprise", @"get",
-                    @"companyId", [_obj valueForKey:@"companyId"],
+                    @"companyId",   [_obj valueForKey:@"companyId"],
                     @"checkAccess", [NSNumber numberWithBool:NO],
                     nil);
-
+  
   return ([e count] > 0) ? NO : YES;
 }
 
 - (void)_removeOldAssignmentsInContext:(id)_context {
-  NSArray      *oldAssignments = nil;
-  NSEnumerator *listEnum       = nil;
-  id           assignment      = nil;
-  id           obj             = nil;
+  NSArray      *oldAssignments;
+  NSEnumerator *listEnum;
+  id           assignment;
+  id           obj;
 
   obj            = [self object];
   oldAssignments = [obj valueForKey:@"toCompanyAssignment1"];
   listEnum       = [oldAssignments objectEnumerator];
 
-  while ((assignment = [listEnum nextObject])) {
+  while ((assignment = [listEnum nextObject]) != nil) {
     if ((![self _object:assignment isInList:self->groups]) &&
         (_objectIsNoEnterprise(self, _context, assignment))) {
       LSRunCommandV(_context,        @"companyassignment", @"delete",
@@ -94,16 +94,16 @@ static BOOL _objectIsNoEnterprise(LSGroupToMemberAssignmentCommand *self,
 }
 
 - (void)_saveAssignmentsInContext:(id)_context {
-  NSArray      *oldAssignments = nil;
-  NSEnumerator *listEnum       = nil;
-  id           newAssignment   = nil; 
-  id           obj             = nil;
+  NSArray      *oldAssignments;
+  NSEnumerator *listEnum;
+  id           newAssignment; 
+  id           obj;
 
   obj            = [self object];
   oldAssignments = [obj valueForKey:@"toCompanyAssignment1"];
   listEnum       = [self->groups objectEnumerator];
 
-  while ((newAssignment = [listEnum nextObject])) {
+  while ((newAssignment = [listEnum nextObject]) != nil) {
     if (![self _object:newAssignment isInList:oldAssignments]) {
       LSRunCommandV(_context,        @"companyassignment", @"new",
                     @"subCompanyId", [obj valueForKey:@"companyId"],
@@ -129,13 +129,13 @@ static BOOL _objectIsNoEnterprise(LSGroupToMemberAssignmentCommand *self,
 
 }
 
-// initialize records
+/* initialize records */
 
 - (NSString *)entityName {
   return @"CompanyAssignment";
 }
 
-// accessors
+/* accessors */
  
 - (void)setGroups:(NSArray *)_groups {
   ASSIGN(self->groups, _groups);
@@ -144,25 +144,26 @@ static BOOL _objectIsNoEnterprise(LSGroupToMemberAssignmentCommand *self,
   return self->groups;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"member"]) {
     [self setObject:_value];
     return;
-  } else if ([_key isEqualToString:@"groups"]) {
+  }
+  if ([_key isEqualToString:@"groups"]) {
     [self setGroups:_value];
     return;
   }
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"member"])
     return [self object];
-  else if ([_key isEqualToString:@"groups"])
+  if ([_key isEqualToString:@"groups"])
     return [self groups];
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSGroupToMemberAssignmentCommand */

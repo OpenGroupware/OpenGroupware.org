@@ -80,6 +80,8 @@ static NSDictionary *telephoneMapping = nil;
   [super dealloc];
 }
 
+/* command methods */
+
 - (id)_prepareResultForCount:(int)_cnt {
   /* Note: results are retained */
   
@@ -828,7 +830,7 @@ static NSDictionary *telephoneMapping = nil;
 
 /* key-value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"gid"])
     [self setGlobalID:_value];
   else if ([_key isEqualToString:@"gids"])
@@ -843,7 +845,7 @@ static NSDictionary *telephoneMapping = nil;
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   id v;
   
   if ([_key isEqualToString:@"gid"])

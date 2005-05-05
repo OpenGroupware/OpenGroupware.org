@@ -54,14 +54,14 @@
 
 - (void)_executeInContext:(id)_context {
   NSMutableDictionary *dict     = nil;
-  NSNumber            *uid      = nil;
+  NSNumber            *uid;
   NSNumber            *template = nil;
-  id                  user      = nil;
+  id                  user;
 
   user = [_context valueForKey:LSAccountKey];
   uid  = [user valueForKey:@"companyId"];
   
-  if (self->account) {
+  if (self->account != nil) {
     NSNumber *aid;
 
     aid = [self->account valueForKey:@"companyId"];
@@ -78,7 +78,7 @@
   }
   
   template = [user valueForKey:@"templateUserId"];
-  if ((template == nil) || ((id)[NSNull null] == template))
+  if ((template == nil) || ((id)[NSNull null] == template)) // TODO: isNotNull
     template = [NSNumber numberWithInt:9999];
   
   if (![uid isEqual:template]) {
@@ -96,7 +96,9 @@
                                                   self->defaults, dict, uid);
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+/* key/value coding */
+
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"defaults"]) {
     ASSIGN(self->defaults, _value);
   }
@@ -107,7 +109,7 @@
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"defaults"])
     return self->defaults;
 

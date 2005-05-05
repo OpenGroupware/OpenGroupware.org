@@ -29,7 +29,7 @@
 @end
 
 #include <GDLAccess/EOEntity+Factory.h>
-#import "common.h"
+#include "common.h"
 
 @implementation LSChangeLoginStatusCommand
 
@@ -44,7 +44,7 @@
   return obj;
 }
 
-// create new Primary Key
+/* create new Primary Key */
 
 - (NSDictionary *)_newPrimaryKeyDictForContext:(id)_ctx
   keyName:(NSString *)_name{
@@ -160,19 +160,18 @@
   return @"Person";
 }
 
-// accessors
+/* accessors */
 
 - (void)setLoginStatus:(BOOL)_status {
   self->loginStatus = _status;
 }
-
 - (BOOL)loginStatus {
   return self->loginStatus;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"loginStatus"]) {
     [self setLoginStatus:[_value boolValue]];
     return;
@@ -181,11 +180,11 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
-  if ([_key isEqualToString:@"loginStatus"]) {
+- (id)valueForKey:(NSString *)_key {
+  if ([_key isEqualToString:@"loginStatus"])
     return [NSNumber numberWithBool:[self loginStatus]];
-  }
+
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSChangeLoginStatusCommand */

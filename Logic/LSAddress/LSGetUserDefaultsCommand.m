@@ -138,7 +138,9 @@
   [self setReturnValue:defs];
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+/* key/value coding */
+
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"user"]) {
     ASSIGN(self->user, _value);
   }
@@ -146,7 +148,7 @@
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"user"])
     return self->user;
 

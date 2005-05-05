@@ -19,20 +19,18 @@
   02111-1307, USA.
 */
 
-#import "common.h"
-#import "LSMemberToGroupAssignmentCommand.h"
+#include "LSMemberToGroupAssignmentCommand.h"
+#include "common.h"
 
 @implementation LSMemberToGroupAssignmentCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->members);
-  RELEASE(self->changedMemberIds);
+  [self->members release];
+  [self->changedMemberIds release];
   [super dealloc];
 }
-#endif
 
-// command methods
+/* command methods */
 
 - (BOOL)_object:(id)_object isInList:(NSArray *)_list {
   NSEnumerator *listEnum  = [_list objectEnumerator];
@@ -145,7 +143,7 @@
   return @"CompanyAssignment";
 }
 
-// accessors
+/* accessors */
 
 - (void)setMembers:(NSArray *)_members {
   ASSIGN(self->members, _members);
@@ -154,25 +152,26 @@
   return self->members;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"group"]) {
     [self setObject:_value];
     return;
-  } else if ([_key isEqualToString:@"members"]) {
+  }
+  if ([_key isEqualToString:@"members"]) {
     [self setMembers:_value];
     return;
   }
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"group"])
     return [self object];
-  else if ([_key isEqualToString:@"members"])
+  if ([_key isEqualToString:@"members"])
     return [self members];
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSMemberToGroupAssignmentCommand */

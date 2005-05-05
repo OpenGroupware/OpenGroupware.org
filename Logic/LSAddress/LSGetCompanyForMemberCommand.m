@@ -460,7 +460,7 @@ static int compareGroups(id group1, id group2, void *context) {
   return @"Company";
 }
 
-// accessors
+/* accessors */
 
 - (void)setMember:(id)_member {
   NSArray *m;
@@ -479,7 +479,7 @@ static int compareGroups(id group1, id group2, void *context) {
   return self->members;
 }
 - (void)setRelationKey:(NSString *)_key {
-  ASSIGN(self->relationKey, _key);
+  ASSIGNCOPY(self->relationKey, _key);
 }
 - (NSString *)relationKey {
   return self->relationKey;
@@ -487,7 +487,7 @@ static int compareGroups(id group1, id group2, void *context) {
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"member"]) {
     [self setMember:_value];
     return;
@@ -512,7 +512,7 @@ static int compareGroups(id group1, id group2, void *context) {
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"member"])
     return [self member];
   if ([_key isEqualToString:@"members"])

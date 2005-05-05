@@ -90,9 +90,9 @@
   return self->newCategories;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"oldCategories"])
     [self setOldCategories:_value];
   else if ([_key isEqualToString:@"newCategories"])
@@ -101,13 +101,13 @@
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"oldCategories"])
     return [self oldCategories];
-  else if ([_key isEqualToString:@"newCategories"])
+  if ([_key isEqualToString:@"newCategories"])
     return [self newCategories];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
 @end /* LSSetCategoriesCommand */

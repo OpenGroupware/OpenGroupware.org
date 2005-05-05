@@ -208,27 +208,31 @@ static EONull *null = nil;
 /* key-value coding */
 
 - (void)takeValue:(id)_value forKey:(NSString *)_key {
-  if ([_key isEqualToString:@"companies"])
+  if ([_key isEqualToString:@"companies"]) {
     ASSIGN(self->companies, _value);
+  }
   else if ([_key isEqualToString:@"company"]) {
     NSArray *tmp;
-
-    tmp = [NSArray arrayWithObject:_value];
+    
+    tmp = (_value != nil) 
+      ? [[NSArray alloc] initWithObjects:&_value count:1] : nil;
     ASSIGN(self->companies, tmp);
+    [tmp release];
   }
-  else if ([_key isEqualToString:@"attributes"])
+  else if ([_key isEqualToString:@"attributes"]) {
     ASSIGN(self->attributes, _value);
+  }
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"companies"])
     return self->companies;
-  else if ([_key isEqualToString:@"attributes"])
+  if ([_key isEqualToString:@"attributes"])
     return self->attributes;
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
 @end /* LSQueryCompanyValues */

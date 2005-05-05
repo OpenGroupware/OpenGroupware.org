@@ -24,7 +24,7 @@
 @interface LSCheckLoginCommand : LSBaseCommand
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSCheckLoginCommand
 
@@ -43,7 +43,7 @@
                              [_context valueForKey:LSAccountKey]]]];
 }
 
-// accessors
+/* accessors */
 
 - (void)setStaff:(id)_staff {
   [self setObject:_staff ? [NSArray arrayWithObject:_staff] : nil];
@@ -52,32 +52,31 @@
   return [[self object] objectAtIndex:0];
 }
 
-// key/value coding
+/* key/value coding */
 
-
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"object"] || [_key isEqualToString:@"staffList"])
     [self setObject:_value];
   else if ([_key isEqualToString:@"staff"])
     [self setStaff:_value];
   else {
+    NSString *s;
+
+    s = [NSString stringWithFormat:
+		    @"key: %@ is not valid in domain '%@' for operation '%@'.",
+		  _key, [self domain], [self operation]];
     [LSDBObjectCommandException raiseOnFail:NO object:self
-                                reason:
-                                [NSString stringWithFormat:
-                                          @"key: %@ is not valid in domain '%@' "
-                                          @"for operation '%@'.",
-                                          _key, [self domain],
-                                          [self operation]]];
+                                reason:s];
   }
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"object"] || [_key isEqualToString:@"staffList"])
     return [self object];
-  else if ([_key isEqualToString:@"staff"])
+  if ([_key isEqualToString:@"staff"])
     return [self staff];
-  else
-    return nil;
+  
+  return nil;
 }
 
-@end
+@end /* LSCheckLoginCommand */

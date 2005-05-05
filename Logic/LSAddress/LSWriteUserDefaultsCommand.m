@@ -105,7 +105,9 @@
                                                   dict, self->userId);
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+/* key/value coding */
+
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"key"]) {
     ASSIGNCOPY(self->key, _value);
   }
@@ -123,7 +125,7 @@
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"key"])
     return self->key;
   if ([_key isEqualToString:@"value"])

@@ -826,16 +826,16 @@ static EONull       *null = nil;
   return self->searchKeys;
 }
 
-- (void)setEntityName:(id)_id {
-  ASSIGN(self->entityName, _id);
+- (void)setEntityName:(NSString *)_id {
+  ASSIGNCOPY(self->entityName, _id);
 }
-- (id)entityName {
+- (NSString *)entityName {
   return self->entityName;
 }
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"searchKeys"])
     [self setSearchKeys:_value];
   else if ([_key isEqualToString:@"entityName"])
@@ -844,7 +844,7 @@ static EONull       *null = nil;
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"searchKeys"])
     return [self searchKeys];
   
