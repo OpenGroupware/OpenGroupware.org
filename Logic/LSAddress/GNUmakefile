@@ -19,7 +19,9 @@ libLSAddress_OBJC_FILES = \
 	LSProjectsToCompanyAssignmentCommand.m	\
 	LSGetCompanyCommand.m			\
 	LSNewTelephoneCommand.m			\
+	\
 	LSGetVCardForGlobalIDsCommand.m	 	\
+	LSSetVCardCommand.m			\
 	LSVCardAddressFormatter.m		\
 	LSVCardLabelFormatter.m			\
 	LSVCardNameFormatter.m			\

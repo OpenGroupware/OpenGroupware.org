@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#import <LSFoundation/LSDBObjectBaseCommand.h>
+#include <LSFoundation/LSDBObjectBaseCommand.h>
 
 @class NSArray;
 
@@ -29,9 +29,9 @@
   NSArray *newCategories;
 }
 
-@end /* LSSetCategoriesCommand */
+@end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSSetCategoriesCommand
 
@@ -42,26 +42,27 @@
   [super dealloc];
 }
 
-// command methods
+/* command methods */
 
 - (void)_executeInContext:(id)_context {
-  int            i, cnt = [self->oldCategories count];
-  NSMutableArray *c     = [NSMutableArray arrayWithCapacity:10];
-
-  if (cnt) {
+  int            i, cnt;
+  NSMutableArray *c;
+  
+  c = [NSMutableArray arrayWithCapacity:10];
+  
+  cnt = [self->oldCategories count];
+  if (cnt > 0) {
     id <NSObject,LSCommand> cmd;
-
-    cmd = LSLookupCommand(@"companycategory", @"delete");
     
+    cmd = LSLookupCommand(@"companycategory", @"delete");
     for (i = 0; i < cnt; i++) {
       [cmd takeValue:[self->oldCategories objectAtIndex:i] forKey:@"object"];
       [cmd runInContext:_context]; 
     }
   }
-
+  
   cnt = [self->newCategories count];
-
-  if (cnt) {
+  if (cnt > 0) {
     id <NSObject,LSCommand> cmd;
 
     cmd = LSLookupCommand(@"companycategory", @"new");
@@ -74,7 +75,7 @@
   [self setReturnValue:c];
 }
 
-// accessors
+/* accessors */
 
 - (void)setOldCategories:(NSArray *)_oldCategories {
   ASSIGN(self->oldCategories, _oldCategories);

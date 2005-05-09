@@ -36,10 +36,7 @@
 
 @end
 
-#import <Foundation/Foundation.h>
-#import <GDLAccess/GDLAccess.h>
-#import <EOControl/EOControl.h>
-#import <LSFoundation/LSFoundation.h>
+#include "common.h"
 
 @implementation LSQueryCompanyValues
 

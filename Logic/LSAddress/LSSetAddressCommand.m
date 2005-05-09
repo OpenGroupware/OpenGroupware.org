@@ -21,8 +21,6 @@
 
 #include "LSSetCompanyCommand.h"
 
-@class NSArray;
-
 @interface LSSetAddressCommand : LSDBObjectSetCommand
 {
 @private
@@ -31,7 +29,7 @@
 
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSSetAddressCommand
 
@@ -44,16 +42,19 @@
   return self;
 }
 
-- (void)_executeInContext:(id)_context {
-  id      companyId  = [[self object] valueForKey:@"companyId"];
-  NSArray *companies = nil;
+/* execute */
 
+- (void)_executeInContext:(id)_context {
+  NSNumber *companyId;
+  NSArray  *companies;
+  
   [super _executeInContext:_context];
   
+  companyId  = [[self object] valueForKey:@"companyId"];
   companies = LSRunCommandV(_context, @"company",  @"get",
                             @"primaryKey",  @"companyId",
                             @"companyId",   companyId, nil);
-
+  
   [self assert:([companies count] < 2)
         format:@"Only one object allowed for one companyId, "
                @"found %i companies: %@", [companies count], companies];
@@ -71,12 +72,13 @@
 }
 
 
-// initialize records
+/* initialize records */
 
 - (NSString *)entityName {
   return @"Address";
 }
 
+/* key/value coding */
 
 - (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"shouldLog"])
@@ -92,4 +94,4 @@
     return [super valueForKey:_key];
 }
 
-@end
+@end /* LSSetAddressCommand */

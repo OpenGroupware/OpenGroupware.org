@@ -15,6 +15,7 @@
       operations = {
         "get"       = { class = "LSGetCompanyCommand"; };
         "get-vcard" = { class = "LSGetVCardForGlobalIDsCommand"; };
+        "set-vcard" = { class = "LSSetVCardCommand"; };
       };
     };
     "login" = {
