@@ -24,8 +24,9 @@
 /*
   This command fetches person-objects based on a list of EOGlobalIDs.
 
-  Additionally it runs:
-
+  Additionally it runs or if no 'attributes' argument is set or if the
+  proper specifier is set (extendedAttributes, telephones, comment):
+    
     person::get-extattrs
     person::get-telephones
     person::get-comment
@@ -65,7 +66,7 @@
   
   if ([self _shouldFetchAttribute:@"extendedAttributes"]) {
     id obj;
-
+    
     obj = [_objs lastObject];
     
     LSRunCommandV(_context, @"person", @"get-extattrs",
@@ -73,7 +74,7 @@
                   @"entityName",  @"Person",
                   @"relationKey", @"companyValue", nil);
   }
-
+  
   if ([self _shouldFetchAttribute:@"telephones"]) {
     LSRunCommandV(_context, @"person", @"get-telephones",
                   @"objects",    _objs,

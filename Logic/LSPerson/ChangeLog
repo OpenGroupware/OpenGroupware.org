@@ -1,3 +1,8 @@
+2005-05-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSGetPersonCommand.m, LSGetPersonsForGlobalIDs.m: minor code cleanups
+	  (v5.1.21)
+
 2004-12-22  Helge Hess  <helge.hess@opengroupware.org>
 	
 	* LSExtendedSearchPersonCommand.m: minor code cleanups (v5.1.20)

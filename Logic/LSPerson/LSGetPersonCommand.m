@@ -19,13 +19,13 @@
   02111-1307, USA.
 */
 
-#import <LSFoundation/LSDBObjectGetCommand.h>
+#include <LSFoundation/LSDBObjectGetCommand.h>
 
 @interface LSGetPersonCommand : LSDBObjectGetCommand
 @end
 
 #include "common.h"
-#import <EOControl/EOKeyGlobalID.h>
+#include <EOControl/EOKeyGlobalID.h>
 
 @implementation LSGetPersonCommand
 
@@ -36,11 +36,11 @@
   EOSQLQualifier *isTemplateQualifier;
 
   isArchivedQualifier =  [[EOSQLQualifier alloc] initWithEntity:[self entity]
-                                     qualifierFormat:@"dbStatus <> 'archived'"];
+                                    qualifierFormat:@"dbStatus <> 'archived'"];
   isTemplateQualifier =  [[EOSQLQualifier alloc]
                                           initWithEntity:[self entity]
                                           qualifierFormat:
-                                            @"(isTemplateUser is NULL) OR "
+                                            @"(isTemplateUser IS NULL) OR "
                                             @"(isTemplateUser = 0)"]; 
   
   [super _prepareForExecutionInContext:_context];
@@ -51,21 +51,19 @@
 }
 
 - (void)_executeInContext:(id)_context {
+  NSArray *a;
+  
   [super _executeInContext:_context];
 
-  {
-    NSArray *a;
+  a = [self object];
 
-    a = [self object];
+  if (![a isKindOfClass:[NSArray class]])
+    a = [NSArray arrayWithObject:a];
 
-    if (![a isKindOfClass:[NSArray class]]) {
-      a = [NSArray arrayWithObject:a];
-    }
-
-    if ([a count] == 0)
-      return;
+  if ([a count] == 0)
+    return;
     
-    if ([[self checkAccess] boolValue]) {
+  if ([[self checkAccess] boolValue]) {
       if (![[_context accessManager]
                       operation:@"r"
                       allowedOnObjectIDs:[a map:@selector(valueForKey:)
@@ -74,19 +72,18 @@
         [self setReturnValue:nil];
         return;
       }
-    }
   }
   
   [self setObject:LSRunCommandV(_context,
                                 @"person", @"check-permission",
                                 @"object", [self object], nil)];
-
-  //get extended attributes 
+  
+  // get extended attributes 
   LSRunCommandV(_context, @"person", @"get-extattrs",
                 @"objects", [self object],
                 @"relationKey", @"companyValue", nil);
 
-  //get telephones
+  // get telephones
   LSRunCommandV(_context, @"person", @"get-telephones",
                 @"objects", [self object],
                 @"relationKey", @"telephones", nil);
@@ -100,7 +97,7 @@
 
 /* KVC */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"gid"]) {
     _key   = @"companyId";
     _value = [_value keyValues][0];
@@ -108,19 +105,18 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
-  id v;
-  
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"gid"]) {
-    v = [super valueForKey:@"companyId"];
+    id v;
+    
+    v = [self valueForKey:@"companyId"];
     v = [EOKeyGlobalID globalIDWithEntityName:[self entityName]
                        keys:&v keyCount:1
                        zone:NULL];
+    return v;
   }
-  else
-    v = [super valueForKey:_key];
   
-  return v;
+  return [super valueForKey:_key];
 }
 
 @end /* LSGetPersonCommand */
