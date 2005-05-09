@@ -262,12 +262,12 @@ NSString *checkEmail(NSString *_email) {
                     @"\n", [ok count], [failed count]];
   if ([failed count] > 0) {
         NSEnumerator *enumerator;
-        id           o;
+	NSDictionary *o;
 
         [sendMailBlob appendString:@"Send Failed:\n\n"];
         
         enumerator = [failed objectEnumerator];
-        while ((o = [enumerator nextObject])) {
+        while ((o = [enumerator nextObject]) != nil) {
           [sendMailBlob appendFormat:
                         @"List Entry: <%@>; To Header: <%@>; Sendmail call:"
                         @"<%@> status: FAILED <%@>\n",
@@ -278,20 +278,20 @@ NSString *checkEmail(NSString *_email) {
         }
   }
   if ([ok count] > 0) {
-        NSEnumerator *enumerator;
-        id           o;
+    NSEnumerator *enumerator;
+    NSDictionary *o;
 
-        [sendMailBlob appendString:@"Send OK:\n\n"];
+    [sendMailBlob appendString:@"Send OK:\n\n"];
         
-        enumerator = [ok objectEnumerator];
-        while ((o = [enumerator nextObject])) {
+    enumerator = [ok objectEnumerator];
+    while ((o = [enumerator nextObject]) != nil) {
           [sendMailBlob appendFormat:
                         @"List Entry: <%@>; To Header: <%@>; Sendmail call:"
                         @"<%@> status: OK\n",
                         [o objectForKey:@"entry"],
                         [o objectForKey:@"to"],
                         [o objectForKey:@"sendmail"]];
-        }
+    }
   }
   [sendMailBlob appendString:@"\n"];
   [sendMailBlob appendString:

@@ -104,7 +104,7 @@ static BOOL     EnableSpamassasinFilter = NO;
   return nil;
 }
 
-- (void)processFilterEntry:(id)aEntry match:(NSString *)_match
+- (void)processFilterEntry:(NSDictionary *)aEntry match:(NSString *)_match
   defaultRulePrefix:(NSString *)_defRulePrefix
   andAddToProcMailScript:(NSMutableString *)procmailFilter
 {
@@ -128,7 +128,7 @@ static BOOL     EnableSpamassasinFilter = NO;
   [procmailFilter appendString:@"\n"];
 }
 
-- (void)processFilter:(id)aFilter 
+- (void)processFilter:(NSDictionary *)aFilter 
   andAddToProcMailScript:(NSMutableString *)procmailFilter
 {
   NSMutableString *target;

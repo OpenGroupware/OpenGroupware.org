@@ -698,7 +698,7 @@ static BOOL     coreOnException = NO;
     [NSString stringWithFormat:@"%@/%@.defaults",
               defpath, [(EOKeyGlobalID *)[_acc globalID] keyValues][0]];
   tz = [NSDictionary dictionaryWithContentsOfFile:defpath];
-  tz = [tz objectForKey:@"timezone"];
+  tz = [(NSDictionary *)tz objectForKey:@"timezone"];
   if (tz == nil)
     tz = self->defaultTimeZone;
   return [NSTimeZone timeZoneWithAbbreviation:tz];

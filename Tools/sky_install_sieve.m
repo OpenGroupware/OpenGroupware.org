@@ -116,7 +116,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
   return [_key isEqualToString:@"or"] ? @"anyof" : @"allof";
 }
 
-- (void)appendFilterEntry:(id)aEntry
+- (void)appendFilterEntry:(NSDictionary *)aEntry
   toFilterString:(NSMutableString *)sieveFilter
 {
   NSString *kind;
@@ -143,7 +143,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
   [sieveFilter appendString:@"\""];
 }
 
-- (void)appendVacation:(id)vacation
+- (void)appendVacation:(NSDictionary *)vacation
   toFilterString:(NSMutableString *)sieveFilter
 {
   NSEnumerator *addenum;
@@ -206,7 +206,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
   return str;
 }
 
-- (void)appendFilter:(id)aFilter isFirst:(BOOL)firstEntry
+- (void)appendFilter:(NSDictionary *)aFilter isFirst:(BOOL)firstEntry
   toFilterString:(NSMutableString *)sieveFilter
 {
   BOOL         isFirst;
@@ -274,7 +274,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
   NSMutableString *sieveFilter;
   NSEnumerator    *enumerator;
   BOOL            firstEntry;
-  id              aFilter;
+  NSDictionary    *aFilter;
   NSDictionary    *vacation, *forward;
   
   f = [[NSArray alloc] initWithContentsOfFile:_fileName];

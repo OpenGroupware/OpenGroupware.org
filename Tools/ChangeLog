@@ -1,3 +1,11 @@
+2005-05-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* changed names of most tools to be more consistent (ogo-xxx-yyy),
+	  with the exception of skyaptnotify, sky_install_sieve and
+	  sky_send_bulk_messages (to avoid breaking setups)
+
+	* fixed gcc 4.0 warnings
+
 2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* skyaptnotify.m: minor code cleanups

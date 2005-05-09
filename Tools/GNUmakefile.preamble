@@ -1,4 +1,4 @@
-# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
+# compilation settings
 
 ADDITIONAL_INCLUDE_DIRS += \
 	-I../Logic/		\
@@ -20,7 +20,7 @@ LSFoundationLIBS = \
 	-lGDLAccess	\
 	-lNGMime -lNGLdap
 
-skyprojectimporter_TOOL_LIBS += \
+ogo-project-import_TOOL_LIBS += \
 	-lGDLAccess 		\
 	-lLSFoundation 		\
 	-lOGoRawDatabase 	\
@@ -30,8 +30,8 @@ skyprojectimporter_TOOL_LIBS += \
 	-lOGoDocuments		\
 	-lNGMime -lNGLdap
 
-skyprojectexporter_TOOL_LIBS += $(skyprojectimporter_TOOL_LIBS)
-skylistprojects_TOOL_LIBS    += $(skyprojectimporter_TOOL_LIBS)
+ogo-project-export_TOOL_LIBS += $(ogo-project-import_TOOL_LIBS)
+ogo-project-list_TOOL_LIBS   += $(ogo-project-import_TOOL_LIBS)
 
 skyaptnotify_TOOL_LIBS += \
 	-lLSFoundation		\
@@ -42,20 +42,21 @@ skyaptnotify_TOOL_LIBS += \
 	-lNGMime -lNGLdap	\
 
 
-sky_add_account_TOOL_LIBS     += $(LSFoundationLIBS)
-sky_get_login_names_TOOL_LIBS += $(LSFoundationLIBS)
-sky_del_account_TOOL_LIBS     += $(LSFoundationLIBS)
-sky_license_info_TOOL_LIBS    += $(LSFoundationLIBS)
+ogo-account-add_TOOL_LIBS     += $(LSFoundationLIBS)
+ogo-account-list_TOOL_LIBS += $(LSFoundationLIBS)
+ogo-account-del_TOOL_LIBS     += $(LSFoundationLIBS)
 
-skydefaults_TOOL_LIBS  += $(LSFoundationLIBS)
-skyruncmd_TOOL_LIBS    += $(LSFoundationLIBS)
-skyjobs2ical_TOOL_LIBS += $(LSFoundationLIBS)
-skylistacls_TOOL_LIBS  += $(LSFoundationLIBS)
-skycheckperm_TOOL_LIBS += $(LSFoundationLIBS)
+ogo-defaults_TOOL_LIBS         += $(LSFoundationLIBS)
+ogo-runcmd_TOOL_LIBS           += $(LSFoundationLIBS)
+ogo-jobs-export_TOOL_LIBS      += $(LSFoundationLIBS)
+ogo-acl-list_TOOL_LIBS         += $(LSFoundationLIBS)
+ogo-check-permission_TOOL_LIBS += $(LSFoundationLIBS)
 
-sky_install_sieve_TOOL_LIBS      += -lNGMime
-sky_install_procmail_TOOL_LIBS   += -lNGMime
-sky_send_bulk_messages_TOOL_LIBS += -lNGMime
+sky_install_sieve_TOOL_LIBS       += -lNGMime
+sky_send_bulk_messages_TOOL_LIBS  += -lNGMime
+ogo-instfilter-procmail_TOOL_LIBS += -lNGMime
+
+#sky_license_info_TOOL_LIBS    += $(LSFoundationLIBS)
 
 # libs for all tools
 
