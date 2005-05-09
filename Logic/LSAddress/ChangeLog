@@ -1,5 +1,7 @@
 2005-05-09  Helge Hess  <helge.hess@opengroupware.org>
 
+	* moved LSSetResourcesCommand.m to LSScheduler (v5.1.55)
+
 	* LSVCardCompanyFormatter.m: improved support for uid/source fields,
 	  added support for FBURL, X-EVOLUTION-FILE-AS, X-AIM|X-ICQ|X-JABBER,
 	  X-EVOLUTION-ANNIVERSARY, X-EVOLUTION-SPOUSE, X-EVOLUTION-ASSISTANT,
