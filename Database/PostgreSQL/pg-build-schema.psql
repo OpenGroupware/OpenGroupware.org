@@ -1,6 +1,5 @@
 -- OpenGroupware.org database schema creation script
--- (C) 2000-2004 SKYRIX Software AG
--- $Id: pg-build-schema.psql,v 1.6 2004/01/26 15:12:41 helge Exp $
+-- (C) 2000-2005 SKYRIX Software AG
 
 CREATE TABLE staff (
   staff_id    int not null,
