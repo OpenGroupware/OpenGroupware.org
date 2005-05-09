@@ -42,15 +42,17 @@ skyaptnotify_TOOL_LIBS += \
 	-lNGMime -lNGLdap	\
 
 
-ogo-account-add_TOOL_LIBS     += $(LSFoundationLIBS)
+ogo-account-add_TOOL_LIBS  += $(LSFoundationLIBS)
 ogo-account-list_TOOL_LIBS += $(LSFoundationLIBS)
-ogo-account-del_TOOL_LIBS     += $(LSFoundationLIBS)
+ogo-account-del_TOOL_LIBS  += $(LSFoundationLIBS)
 
 ogo-defaults_TOOL_LIBS         += $(LSFoundationLIBS)
 ogo-runcmd_TOOL_LIBS           += $(LSFoundationLIBS)
 ogo-jobs-export_TOOL_LIBS      += $(LSFoundationLIBS)
 ogo-acl-list_TOOL_LIBS         += $(LSFoundationLIBS)
 ogo-check-permission_TOOL_LIBS += $(LSFoundationLIBS)
+
+ogo-vcard-get_TOOL_LIBS += $(LSFoundationLIBS)
 
 sky_install_sieve_TOOL_LIBS       += -lNGMime
 sky_send_bulk_messages_TOOL_LIBS  += -lNGMime

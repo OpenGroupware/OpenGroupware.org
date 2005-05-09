@@ -118,10 +118,8 @@ static NSDictionary *addressMapping = nil;
           toVCard:_vCard];
   // URL
   if ([(tmp = [_contact valueForKey:@"url"]) isNotNull]) {
-    if ([tmp length] > 0) {
-      [self logWithFormat:@"URL: '%@'", tmp];
+    if ([tmp length] > 0)
       [self _appendName:@"URL" andValue:tmp toVCard:_vCard];
-    }
   }
 }
 

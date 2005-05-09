@@ -55,18 +55,17 @@
 @implementation RunCmd
 
 - (void)usage {
+  static const char *toolname = "ogo-runcmd";
   fprintf(stderr,
-          "skyruncmd "
-          "-login <login> -password <pwd> "
-          "<cmd> [(<key> <value>)*]\n\n"
+          "%s -login <login> -password <pwd> <cmd> [(<key> <value>)*]\n\n"
           "  examples:\n"
-	  "    skyruncmd -login donald -password x person::get  login donald\n"
-	  "    skyruncmd -login donald -password x project::get number SALES\n"
-	  "    skyruncmd -login donald -password x job::get-todo-jobs\n"
+	  "    %s -login donald -password x person::get  login donald\n"
+	  "    %s -login donald -password x project::get number SALES\n"
+	  "    %s -login donald -password x job::get-todo-jobs\n"
 	  "\n"
 	  "  special keys:\n"
 	  "    returnType - to return 'many' objects, use 2\n"
-	  "\n");
+	  "\n", toolname, toolname, toolname, toolname);
 }
 
 - (id)init {
