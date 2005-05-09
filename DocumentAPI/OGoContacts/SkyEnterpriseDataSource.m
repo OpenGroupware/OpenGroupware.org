@@ -157,7 +157,7 @@ static NSSet *nativeKeys = nil;
   ds = [[SkyEnterpriseDataSource alloc] initWithContext:[_dm context]];
   if (ds == nil)
     return nil;
-  AUTORELEASE(ds);
+  ds = [ds autorelease];
 
   return [ds _fetchObjectsForGlobalIDs:_gids];
 }

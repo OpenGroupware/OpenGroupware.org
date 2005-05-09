@@ -76,7 +76,7 @@
 @implementation CheckPermission
 
 - (void)usage {
-  NSLog(@"skylistprojects -login <login> -password <pwd> [object-id]+ [op]");
+  printf("skycheckperm -login <login> -password <pwd> [object-id]+ [op]\n");
 }
 
 - (id)init {
@@ -206,7 +206,8 @@ int main(int argc, char **argv, char **env) {
   [NSProcessInfo initializeWithArguments:argv count:argc environment:env];
 #endif
   
-  rc = [CheckPermission run:[[NSProcessInfo processInfo] argumentsWithoutDefaults]];
+  rc = [CheckPermission run:[[NSProcessInfo processInfo] 
+                              argumentsWithoutDefaults]];
   [pool release];
   return rc;
 }
