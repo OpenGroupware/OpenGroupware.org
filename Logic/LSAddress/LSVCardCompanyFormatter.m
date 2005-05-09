@@ -26,6 +26,8 @@
 #include "NSString+VCard.h"
 #include "common.h"
 
+NSString *LSVUidPrefix = @"vcfuid://";
+
 @implementation LSVCardCompanyFormatter
 
 static NSString     *skyrixId = nil;
@@ -85,15 +87,42 @@ static NSDictionary *addressMapping = nil;
 
 /* common company stuff */
 
-- (void)_appendContactData:(id)_contact toVCard:(NSMutableString *)_vCard {
-  // UID, COMMENT, CATEGORIES, CLASS, URL
+- (void)_appendIdentifier:(id)_contact toVCard:(NSMutableString *)_vCard {
+  // UID, SOURCE
+  NSString *sourceUrl;
   id tmp;
   
-  tmp = [skyrixId stringByAppendingString:
-		    [[_contact valueForKey:@"companyId"] stringValue]];
+  if ([(sourceUrl = [_contact valueForKey:@"sourceUrl"]) isNotNull]) {
+    NSRange r;
+    
+    r = [sourceUrl rangeOfString:@"://"];
+    if (r.length == 0) {
+      /* not a URL, use it as ID, prefix with UID prefix */
+      tmp = [LSVUidPrefix stringByAppendingString:sourceUrl];
+      [self _appendName:@"UID"    andValue:sourceUrl toVCard:_vCard];
+      [self _appendName:@"SOURCE" andValue:tmp       toVCard:_vCard];
+    }
+    else {
+      /* a URL, check for UID prefix, otherwise reuse the URL */
+      tmp = [sourceUrl hasPrefix:LSVUidPrefix]
+	? [sourceUrl substringFromIndex:[LSVUidPrefix length]]
+	: sourceUrl;
+      [self _appendName:@"UID"    andValue:tmp       toVCard:_vCard];
+      [self _appendName:@"SOURCE" andValue:sourceUrl toVCard:_vCard];
+    }
+  }
+  else {
+    /* add internal OGo URL as UID _and_ SOURCE */
+    sourceUrl = [skyrixId stringByAppendingString:
+			    [[_contact valueForKey:@"companyId"] stringValue]];
+    [self _appendName:@"UID"    andValue:sourceUrl toVCard:_vCard];
+    [self _appendName:@"SOURCE" andValue:sourceUrl toVCard:_vCard];
+  }
+}
 
-  [self _appendName:@"UID"    andValue:tmp toVCard:_vCard];
-  [self _appendName:@"SOURCE" andValue:tmp toVCard:_vCard];
+- (void)_appendContactData:(id)_contact toVCard:(NSMutableString *)_vCard {
+  // COMMENT, CATEGORIES, CLASS, URL
+  id tmp;
   
   tmp = [[NSString alloc] initWithFormat:
                     @"vCard for contact with id %@ (v%@)",
@@ -102,24 +131,82 @@ static NSDictionary *addressMapping = nil;
   [self _appendName:@"NAME" andValue:tmp toVCard:_vCard];
   [tmp release]; tmp = nil;
   
-  // COMMENT
+  /* COMMENT */
   tmp = [[_contact valueForKey:@"comment"] valueForKey:@"comment"];
   if ([tmp isNotNull])
     [self _appendName:@"NOTE" andValue:tmp toVCard:_vCard];
-  // CATEGORIES
+
+  /* CATEGORIES */
   if ([(tmp = [_contact valueForKey:@"keywords"]) isNotNull]) {
     tmp = [tmp componentsSeparatedByString:@","];
     [self _appendName:@"CATEGORIES" andValue:tmp toVCard:_vCard];
   }
-  // CLASS
-  if ([(tmp = [_contact valueForKey:@"isPrivate"]) isNotNull])
+
+  /* CLASS */
+  // TODO: better map to sensitivity?
+  if ([(tmp = [_contact valueForKey:@"isPrivate"]) isNotNull]) {
     [self _appendName:@"CLASS"
           andValue:[tmp boolValue] ? @"PRIVATE" : @"PUBLIC"
           toVCard:_vCard];
-  // URL
+  }
+
+  /* URL */
   if ([(tmp = [_contact valueForKey:@"url"]) isNotNull]) {
     if ([tmp length] > 0)
       [self _appendName:@"URL" andValue:tmp toVCard:_vCard];
+  }
+  
+  /* X-EVOLUTION-FILE-AS */
+  if ([(tmp = [_contact valueForKey:@"fileas"]) isNotNull]) {
+    if ([tmp length] > 0)
+      [self _appendName:@"X-EVOLUTION-FILE-AS" andValue:tmp toVCard:_vCard];
+  }
+  
+  /* X-EVOLUTION-MANAGER */
+  if ([(tmp = [_contact valueForKey:@"bossName"]) isNotNull]) {
+    if ([tmp length] > 0)
+      [self _appendName:@"X-EVOLUTION-MANAGER" andValue:tmp toVCard:_vCard];
+  }
+  
+  /* X-EVOLUTION-ASSISTANT */
+  if ([(tmp = [_contact valueForKey:@"assistantName"]) isNotNull]) {
+    if ([tmp length] > 0)
+      [self _appendName:@"X-EVOLUTION-ASSISTANT" andValue:tmp toVCard:_vCard];
+  }
+  
+  /* X-EVOLUTION-SPOUSE */
+  if ([(tmp = [_contact valueForKey:@"partnerName"]) isNotNull]) {
+    if ([tmp length] > 0)
+      [self _appendName:@"X-EVOLUTION-SPOUSE" andValue:tmp toVCard:_vCard];
+  }
+  
+  /* ROLE */
+  if ([(tmp = [_contact valueForKey:@"occupation"]) isNotNull]) {
+    /* 'profession' in Evo UI */
+    if ([tmp length] > 0)
+      [self _appendName:@"ROLE" andValue:tmp toVCard:_vCard];
+  }
+  
+  /* X-AIM or X-ICQ or X-JABBER */
+  if ([(tmp = [_contact valueForKey:@"imAddress"]) isNotNull]) {
+    if ([tmp length] > 0) {
+      if (isdigit([tmp characterAtIndex:0]))
+	[self _appendName:@"X-ICQ" andValue:tmp toVCard:_vCard];
+      else if ([tmp rangeOfString:@"@"].length > 0)
+	[self _appendName:@"X-JABBER" andValue:tmp toVCard:_vCard];
+      else
+	[self _appendName:@"X-AIM" andValue:tmp toVCard:_vCard];
+    }
+  }
+  
+  /* X-EVOLUTION-ANNIVERSARY */
+  if ([(tmp = [_contact valueForKey:@"anniversary"]) isNotNull]) {
+    tmp = [[NSString alloc] initWithFormat:@"%04i-%02i-%02i",
+			    [tmp yearOfCommonEra], [tmp monthOfYear],
+			    [tmp dayOfMonth]];
+    [self _appendName:@"X-EVOLUTION-ANNIVERSARY" andValue:tmp 
+	  toVCard:_vCard];
+    [tmp release];
   }
 }
 
@@ -235,6 +322,7 @@ static NSDictionary *addressMapping = nil;
 
 - (void)appendContentForObject:(id)_comp toString:(NSMutableString *)_ms {
   [self _appendTeamData:_comp    toVCard:_ms];
+  [self _appendIdentifier:_comp  toVCard:_ms];
   [self _appendContactData:_comp toVCard:_ms];
 }
 
@@ -273,7 +361,7 @@ static NSDictionary *addressMapping = nil;
 }
 
 - (void)_appendPersonData:(id)_person toVCard:(NSMutableString *)_vCard {
-  // FN, N, EMAIL, NICKNAME, BDAY, TITLE, URL
+  // FN, N, EMAIL, NICKNAME, BDAY, TITLE, FBURL
   id tmp;
   
   [self _appendPersonName:_person  toVCard:_vCard];  // FN, N
@@ -282,20 +370,28 @@ static NSDictionary *addressMapping = nil;
   if ([(tmp = [_person valueForKey:@"description"]) isNotNull])
     [self _appendName:@"NICKNAME" andValue:tmp toVCard:_vCard];
   // BDAY
-  if ([(tmp = [_person valueForKey:@"birthday"]) isNotNull]) 
-    [self _appendName:@"BDAY"
-          andValue:[NSString stringWithFormat:@"%04i-%02i-%02i",
-                             [tmp yearOfCommonEra], [tmp monthOfYear],
-                             [tmp dayOfMonth]]
-          toVCard:_vCard];
+  if ([(tmp = [_person valueForKey:@"birthday"]) isNotNull]) {
+    tmp = [[NSString alloc] initWithFormat:@"%04i-%02i-%02i",
+			    [tmp yearOfCommonEra], [tmp monthOfYear],
+			    [tmp dayOfMonth]];
+    [self _appendName:@"BDAY" andValue:tmp toVCard:_vCard];
+    [tmp release];
+  }
   // TITLE
   if ([(tmp = [_person valueForKey:@"job_title"]) isNotNull])
     [self _appendName:@"TITLE" andValue:tmp toVCard:_vCard];
+  
+  // TODO: add support for ZideStore CalURLs? (CALURI:)
+  // TODO: add support for ZideStore FreeBusy URLs?
+  // FBURL
+  if ([(tmp = [_person valueForKey:@"freebusyUrl"]) isNotNull])
+    [self _appendName:@"FBURL" andValue:tmp toVCard:_vCard];
 }
 
 - (void)appendContentForObject:(id)_comp toString:(NSMutableString *)_ms {
   [self _appendPersonData:_comp toVCard:_ms];
   
+  [self _appendIdentifier:_comp         toVCard:_ms];
   [self _appendContactData:_comp        toVCard:_ms];
   [self _appendAddressData:_comp        toVCard:_ms];
   [self _appendTelephoneData:_comp      toVCard:_ms];
@@ -336,6 +432,7 @@ static NSDictionary *addressMapping = nil;
 - (void)appendContentForObject:(id)_comp toString:(NSMutableString *)_ms {
   [self _appendEnterpriseData:_comp toVCard:_ms];
   
+  [self _appendIdentifier:_comp         toVCard:_ms];
   [self _appendContactData:_comp        toVCard:_ms];
   [self _appendAddressData:_comp        toVCard:_ms];
   [self _appendTelephoneData:_comp      toVCard:_ms];

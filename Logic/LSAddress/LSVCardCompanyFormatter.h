@@ -38,6 +38,8 @@
 
 @class NSString, NSMutableString;
 
+extern NSString *LSVUidPrefix;
+
 @interface LSVCardCompanyFormatter : NSFormatter
 
 + (id)formatter;

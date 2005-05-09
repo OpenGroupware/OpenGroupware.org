@@ -1,3 +1,10 @@
+2005-05-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSVCardCompanyFormatter.m: improved support for uid/source fields,
+	  added support for FBURL, X-EVOLUTION-FILE-AS, X-AIM|X-ICQ|X-JABBER,
+	  X-EVOLUTION-ANNIVERSARY, X-EVOLUTION-SPOUSE, X-EVOLUTION-ASSISTANT,
+	  X-EVOLUTION-MANAGER, ROLE (v5.1.54)
+
 2005-05-09  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSGetVCardForGlobalIDsCommand.m: major code reorgs, moved vCard
