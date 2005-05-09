@@ -48,10 +48,11 @@
 #include "common.h"
 
 // we need to cheat a bit to support both, SOPE 4.4 and SOPE 4.5
-
 @interface NSObject(NGVCard)
 + (NSArray *)parseVCardsFromSource:(id)_src;
 @end
+
+extern NSString *LSVUidPrefix;
 
 @implementation LSSetVCardCommand
 
@@ -81,7 +82,28 @@ static Class NGVCardClass = Nil;
 
 /* running the command */
 
+- (EOKeyGlobalID *)globalIDForCard:(id)_card inContext:(id)_ctx {
+  id tmp;
+  
+  if ([self->gid isNotNull])
+    return self->gid;
+  
+  // TODO: check UID, check SOURCE
+  
+  if ((tmp = [_card valueForKey:@"uid"]) != nil) {
+    //[self logWithFormat:@"check uid %@", tmp];
+  }
+  if ((tmp = [_card valueForKey:@"source"]) != nil) {
+    //[self logWithFormat:@"check source %@", tmp];
+  }
+  
+  return nil;
+}
+
 - (void)_executeInContext:(id)_context {
+  EOKeyGlobalID *lgid;
+  id eo;
+  
   /* parse vCard object */
   
   if (self->vCardObject == nil) {
@@ -94,6 +116,21 @@ static Class NGVCardClass = Nil;
 	  reason:@"More than one vCard in submitted vCard entity!"];
     [self assert:([a count] > 0)
 	  reason:@"No vCard in submitted vCard entity!"];
+    
+    self->vCardObject = [[a objectAtIndex:0] retain];
+  }
+  
+  /* check whether card exists and fetch EO if it does */
+  
+  if ((lgid = [self globalIDForCard:self->vCardObject inContext:_context])) {
+    ASSIGN(self->gid, lgid);
+    [self logWithFormat:@"write to GID: %@", lgid];
+    
+    eo = [_context runCommand:@"object::get-by-global-id",
+		   @"gid", self->gid, nil];
+  }
+  else {
+    [self logWithFormat:@"import new vCard .."];
   }
 }
 
@@ -107,7 +144,7 @@ static Class NGVCardClass = Nil;
 }
 
 - (void)setVCardObject:(id)_vc {
-  ASSIGNCOPY(self->vCardObject, _vc);
+  ASSIGN(self->vCardObject, _vc);
 }
 - (id)vCardObject {
   return self->vCardObject;
@@ -121,7 +158,7 @@ static Class NGVCardClass = Nil;
 }
 
 - (void)setGlobalID:(EOKeyGlobalID *)_gid {
-  ASSIGNCOPY(self->gid, _gid);
+  ASSIGN(self->gid, _gid);
 }
 - (EOKeyGlobalID *)globalID {
   return self->gid;

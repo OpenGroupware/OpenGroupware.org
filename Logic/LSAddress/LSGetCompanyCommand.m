@@ -19,57 +19,62 @@
   02111-1307, USA.
 */
 
-#import "common.h"
-#import "LSGetCompanyCommand.h"
+#include "LSGetCompanyCommand.h"
+#include "common.h"
 
 @implementation LSGetCompanyCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->companyId);
+  [self->companyId release];
   [super dealloc];
 }
-#endif
+
+/* run */
 
 - (void)_executeInContext:(id)_context {
-  NSMutableArray *resultList    = [NSMutableArray array];
+  NSMutableArray *resultList;
   id teamCmd       = LSLookupCommand(@"team", @"get");
   id personCmd     = LSLookupCommand(@"person", @"get");
   id enterpriseCmd = LSLookupCommand(@"enterprise", @"get");
-
+  
   [teamCmd       takeValue:self->companyId forKey:@"companyId"];
   [personCmd     takeValue:self->companyId forKey:@"companyId"];
   [enterpriseCmd takeValue:self->companyId forKey:@"companyId"];
   
+  resultList = [NSMutableArray arrayWithCapacity:16];
   [resultList addObjectsFromArray:[teamCmd       runInContext:_context]];
   [resultList addObjectsFromArray:[personCmd     runInContext:_context]];
   [resultList addObjectsFromArray:[enterpriseCmd runInContext:_context]];
-
-
+  
+  
   if (![[_context accessManager]
                   operation:@"r"
                   allowedOnObjectIDs:[resultList map:@selector(valueForKey:)
                                                  with:@"globalID"]]) {
-    NSLog(@"%s: Missing read access for %@", __PRETTY_FUNCTION__, resultList);
+    [self logWithFormat:@"Missing read access on objects: %@", resultList];
     [self setReturnValue:nil];
     return;
   }
+  
   [self setReturnValue:resultList];
 }
 
+/* key/value coding */
+
 - (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"companyId"]) {
-    ASSIGN(self->companyId, _value);
+    ASSIGNCOPY(self->companyId, _value);
     return;
   }
-  else
-    [super takeValue:_value forKey:_key];
+  
+  [super takeValue:_value forKey:_key];
 }
 
 - (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"companyId"])
     return self->companyId;
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
-@end
+
+@end /* LSGetCompanyCommand */
