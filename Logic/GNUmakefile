@@ -23,7 +23,6 @@ SUBPROJECTS += \
 SUBPROJECTS += \
 	LSMail		\
 	LSProject	\
-	LSResource	\
 	LSScheduler	\
 	LSTasks		\
 	LSDocuments	\

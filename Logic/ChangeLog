@@ -1,3 +1,7 @@
+2005-05-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* removed deprecated LSResource bundle
+
 2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile: properly include config.make
