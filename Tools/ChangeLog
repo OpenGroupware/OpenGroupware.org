@@ -1,3 +1,7 @@
+2005-05-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added ogo-vcard-put tool
+
 2005-05-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* added ogo-vcard-get tool

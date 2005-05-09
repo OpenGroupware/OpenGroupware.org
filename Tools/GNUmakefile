@@ -27,7 +27,8 @@ TOOL_NAME += \
 	ogo-account-del		\
 
 TOOL_NAME += \
-	ogo-vcard-get
+	ogo-vcard-get		\
+	ogo-vcard-put		\
 
 skyaptnotify_OBJC_FILES           = skyaptnotify.m
 sky_install_sieve_OBJC_FILES      = sky_install_sieve.m
@@ -52,6 +53,7 @@ ogo-check-permission_OBJC_FILES = ogo-check-permission.m
 ogo-instfilter-procmail_OBJC_FILES = ogo-instfilter-procmail.m
 
 ogo-vcard-get_OBJC_FILES = ogo-vcard-get.m
+ogo-vcard-put_OBJC_FILES = ogo-vcard-put.m
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/tool.make
