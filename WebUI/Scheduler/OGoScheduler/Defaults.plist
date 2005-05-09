@@ -1,4 +1,6 @@
 {
+  // TODO: a lot of DUPs between this and OGoSchedulerViews!
+
   scheduler_hide_new_proposal_on_rescat    = YES;
   scheduler_selectPanel_showAptTypes       = YES;
 
