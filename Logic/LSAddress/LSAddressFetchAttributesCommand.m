@@ -96,25 +96,26 @@ static EONull       *null = nil;
 }
 
 - (void)_executeInContext:(id)_ctx {
-  EOEntity       *entity      = _getEntityNamed(self->entityName);
+  EOEntity       *entity;
   NSEnumerator   *enumerator  = nil;
   NSDictionary   *obj         = nil;
-  NSArray        *keys        = nil;
-  NSString       *primAttr    = nil;
-  NSDictionary   *source      = nil;
+  NSArray        *keys;
+  NSString       *primAttr;
+  NSDictionary   *source;
   NSDictionary   *target      = nil;  
-  EOEntity       *trgEntity   = nil; 
+  EOEntity       *trgEntity; 
   EOEntity       *assEntity   = nil;
   NSArray        *assignments = nil;
   void           *z           = [self zone];
   NSMutableSet   *trgIds      = nil;
   NSString       *trgPrimKey  = nil;
-  NSString       *targetKey   = nil;
+  NSString       *targetKey;
   NSMutableSet   *result      = nil;
-  BOOL           isPerson     = NO;
-    
+  BOOL           isPerson;
+  
   /* get entity */
 
+  entity   = _getEntityNamed(self->entityName);
   primAttr = [(EOAttribute *)[[entity primaryKeyAttributes] lastObject] name];
   keys     = self->searchKeys;
 
@@ -201,8 +202,8 @@ static EONull       *null = nil;
     [dict release]; dict = nil;
   }
   enumerator = [assignments objectEnumerator];
-  while ((obj = [enumerator nextObject])) {
-    NSMutableDictionary *sourceTmp = nil;
+  while ((obj = [enumerator nextObject]) != nil) {
+    NSMutableDictionary *sourceTmp;
 
     sourceTmp = [source objectForKey:[obj objectForKey:primAttr]];
     if ([sourceTmp objectForKey:targetKey] == nil) {
@@ -238,8 +239,8 @@ static EONull       *null = nil;
 }
 
 - (NSArray *)attributesForEntity:(EOEntity *)_entity inContext:(id)_ctx {
-  NSEnumerator *attrNames  = nil;
-  NSMutableSet *attributes = nil;
+  NSEnumerator *attrNames;
+  NSMutableSet *attributes;
   NSArray      *result     = nil;
   id           obj         = nil;
 
@@ -254,22 +255,23 @@ static EONull       *null = nil;
   
   attributes = [[NSMutableSet alloc] initWithCapacity:32];
   
-  while ((obj = [attrNames nextObject])) {
-    id attr = nil;
+  while ((obj = [attrNames nextObject]) != nil) {
+    id attr;
+    
     if ((attr = [_entity attributeNamed:obj]) != nil)
       [attributes addObject:attr];
   }
   [attributes addObjectsFromArray:[_entity primaryKeyAttributes]];
   result = [attributes allObjects];
-  RELEASE(attributes); attributes = nil;
+  [attributes release]; attributes = nil;
   return result;
 }
 
 - (NSArray *)extendedAttrsForEntity:(EOEntity *)_entity inContext:(id)_ctx {
-  NSEnumerator *attrNames  = nil;
-  NSMutableSet *attributes = nil;
-  NSArray      *result     = nil;
-  id           obj         = nil;
+  NSEnumerator *attrNames;
+  NSMutableSet *attributes;
+  NSArray      *result;
+  id           obj;
   
   // TODO: is this really a context-specific default?!
   attributes    = [[NSMutableSet alloc] initWithCapacity:32];
@@ -277,8 +279,9 @@ static EONull       *null = nil;
                            dictionaryForKey:@"RequiredAttributes"]
                            objectForKey:[_entity name]]
                            objectEnumerator];
-  while ((obj = [attrNames nextObject])) {
-    id attr = nil;
+  while ((obj = [attrNames nextObject]) != nil) {
+    id attr;
+    
     if ((attr = [_entity attributeNamed:obj]) == nil)
       [attributes addObject:obj];
   }
@@ -299,7 +302,7 @@ static EONull       *null = nil;
   NSMutableDictionary *obj        = nil;
   NSString            *addrKind   = nil;
   BOOL                isPerson;
-
+  
   isPerson = [[_entity name] isEqualToString:@"Person"];
 
   /* Required attributes */
@@ -311,7 +314,7 @@ static EONull       *null = nil;
   result   = [NSMutableDictionary dictionaryWithCapacity:[values count]];
 
   enumerator = [values objectEnumerator];
-  while ((obj = [enumerator nextObject])) {
+  while ((obj = [enumerator nextObject]) != nil) {
     NSMutableDictionary *md;
     
     md = [obj mutableCopy]; // make it mutable

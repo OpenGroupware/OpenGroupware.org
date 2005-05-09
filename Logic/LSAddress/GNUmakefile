@@ -20,6 +20,10 @@ libLSAddress_OBJC_FILES = \
 	LSGetCompanyCommand.m			\
 	LSNewTelephoneCommand.m			\
 	LSGetVCardForGlobalIDsCommand.m	 	\
+	LSVCardAddressFormatter.m		\
+	LSVCardLabelFormatter.m			\
+	LSVCardNameFormatter.m			\
+	LSVCardCompanyFormatter.m		\
 
 LSAddress_OBJC_FILES = \
 	LSGetStaffForGlobalIDsCommand.m		\

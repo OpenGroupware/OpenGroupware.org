@@ -27,6 +27,14 @@
   (during that the access is checked)
   and looks for cached vCards ( <id>.<version>.vcf in LSAttachmentPath)
   and builds new if needed.
+
+  The command supports grouping (groupBy parameter) and these attributes:
+    vCardData
+    companyId
+    globalID
+    objectVersion
+
+  If no attribute is requested, an array of vCard strings is returned.
   
   @see: RFC 2426
 */
@@ -37,24 +45,25 @@
 {
   NSArray  *gids;
   BOOL     buildResponse;
-  NSArray  *attributes; // valid: vCardData, companyId, globalID, objectVersion
-                        // if not defined, array of iCalStrings is returned
-  NSString *groupBy;    // one of the attributes
+  NSArray  *attributes;
+  NSString *groupBy;
 }
 
 @end
 
-// TODO: do we really need to have a dependency on WOResponse?
 #include "NSString+VCard.h"
+#include "LSVCardCompanyFormatter.h"
 #include "common.h"
+
+// TODO: do we really need to have a dependency on WOResponse?
 #include <NGObjWeb/WOResponse.h>
 
 @implementation LSGetVCardForGlobalIDsCommand
 
 static NSString     *LSAttachmentPath = nil;
 static NSString     *skyrixId = nil;
-static NSDictionary *addressMapping = nil;
 static NSDictionary *telephoneMapping = nil;
+static NSDictionary *addressMapping = nil;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -140,371 +149,8 @@ static NSDictionary *telephoneMapping = nil;
   [(NSMutableDictionary *)_result setObject:entry forKey:tmp];
 }
 
-/* build vCard */
-
-- (void)_appendTextValue:(NSString *)_str toVCard:(NSMutableString *)_vCard {
-  [_vCard appendString:[_str stringByEscapingUnsafeVCardCharacters]];
-}
-
-- (void)_appendName:(NSString *)_name andValue:(id)_value
-  toVCard:(NSMutableString *)_vCard
-{
-  [_vCard appendString:_name];
-  [_vCard appendString:@":"];
-  if ([_value isKindOfClass:[NSArray class]]) {
-    int cnt, i;
-    
-    for (i = 0, cnt = [_value count]; i < cnt; i++)
-      [self _appendTextValue:[_value objectAtIndex:i] toVCard:_vCard];
-  }
-  else if ([_value isKindOfClass:[NSString class]])
-    [self _appendTextValue:_value toVCard:_vCard];
-  else 
-    [self _appendTextValue:[_value description] toVCard:_vCard];
-  [_vCard appendString:@"\r\n"];
-}
-
-/* BEGIN: Person specific */
-
-- (void)_appendPersonName:(id)_person
-  toVCard:(NSMutableString *)_vCard
-{
-  // FN and N are required
-  NSString *tmp, *tmp2, *fn;
-  
-  // N, name components
-  // FN, formated name
-  tmp  = [_person valueForKey:@"name"];
-  tmp2 = [_person valueForKey:@"firstname"];
-  if (([tmp isNotNull] && ([tmp length] > 0)) &&
-      ([tmp2 isNotNull] && ([tmp2 length] > 0))) {
-    fn = [[tmp2 stringByAppendingString:@" "] stringByAppendingString:tmp];
-  }
-  else if ([tmp isNotNull] && [tmp length])
-    fn = tmp;  // ok, lastname
-  else if ([tmp2 isNotNull] && [tmp2 length])
-    fn = tmp2; // take firstname
-  else { // no firstname, no lastname, take id
-    fn = [NSString stringWithFormat:@"Person: %@",
-                   [_person valueForKey:@"companyId"]];
-  }
-  
-  // N:lastname;givenname;additional names;honorific prefixes;
-  //   honorifix suffixes
-  [_vCard appendString:@"N:"];
-  // lastname
-  [self _appendTextValue:[tmp isNotNull] ? tmp : fn toVCard:_vCard];
-  [_vCard appendString:@";"];
-  // firstname
-  tmp = tmp2;
-  [self _appendTextValue:[tmp isNotNull] ? tmp : @"" toVCard:_vCard];
-  [_vCard appendString:@";"];
-  // middlename
-  tmp = [_person valueForKey:@"middlename"];
-  [self _appendTextValue:[tmp isNotNull] ? tmp : @"" toVCard:_vCard];
-  [_vCard appendString:@";"];
-  // degree
-  tmp = [_person valueForKey:@"degree"];
-  [self _appendTextValue:[tmp isNotNull] ? tmp : @"" toVCard:_vCard];
-  [_vCard appendString:@";"];
-  // other title
-  tmp = [_person valueForKey:@"other_title1"];
-  [self _appendTextValue:[tmp isNotNull] ? tmp : @"" toVCard:_vCard];
-  if ([(tmp = [_person valueForKey:@"other_title2"]) isNotNull]) {
-    [_vCard appendString:@","];
-    [self _appendTextValue:tmp toVCard:_vCard];
-  }
-  [_vCard appendString:@"\r\n"];
-
-  // FN: formated name
-  [self _appendName:@"FN" andValue:fn toVCard:_vCard];
-}
-
-- (void)_appendPersonEmail:(id)_person toVCard:(NSMutableString *)_vCard {
-  id tmp;
-  // EMAIL
-  if ([(tmp = [_person valueForKey:@"email1"]) isNotNull])
-    [self _appendName:@"EMAIL;TYPE=internet,pref" andValue:tmp
-          toVCard:_vCard];  
-  if ([(tmp = [_person valueForKey:@"email2"]) isNotNull]) 
-    [self _appendName:@"EMAIL;TYPE=internet" andValue:tmp toVCard:_vCard];  
-  if ([(tmp = [_person valueForKey:@"email3"]) isNotNull]) 
-    [self _appendName:@"EMAIL;TYPE=internet" andValue:tmp toVCard:_vCard];
-}
-
-- (void)_appendPersonData:(id)_person
-  toVCard:(NSMutableString *)_vCard
-{
-  // FN, N, EMAIL, NICKNAME, BDAY, TITLE, URL
-  id tmp;
-  [self _appendPersonName:_person toVCard:_vCard];  // FN, N
-  [self _appendPersonEmail:_person toVCard:_vCard]; // EMAIL
-  // NICKNAME
-  if ([(tmp = [_person valueForKey:@"description"]) isNotNull])
-    [self _appendName:@"NICKNAME" andValue:tmp toVCard:_vCard];
-  // BDAY
-  if ([(tmp = [_person valueForKey:@"birthday"]) isNotNull]) 
-    [self _appendName:@"BDAY"
-          andValue:[NSString stringWithFormat:@"%04i-%02i-%02i",
-                             [tmp yearOfCommonEra], [tmp monthOfYear],
-                             [tmp dayOfMonth]]
-          toVCard:_vCard];
-  // TITLE
-  if ([(tmp = [_person valueForKey:@"job_title"]) isNotNull])
-    [self _appendName:@"TITLE" andValue:tmp toVCard:_vCard];
-}
-
-/* END: Person specific */
-
-/* BEGIN: Enterprise specific */
-
-- (void)_appendEnterpriseData:(id)_enterprise
-  toVCard:(NSMutableString *)_vCard
-{
-  // FN, N, ORG, EMAIL
-  id tmp;
-  tmp  = [_enterprise valueForKey:@"description"];
-  if ([tmp length]) 
-    tmp = [NSString stringWithFormat:@"Enterprise: %@",
-                    [_enterprise valueForKey:@"companyId"]];
-  // FN, formated name
-  [self _appendName:@"FN" andValue:tmp toVCard:_vCard];
-  // ORG
-  [self _appendName:@"ORG" andValue:tmp toVCard:_vCard];
-  // N
-  [_vCard appendString:@"N:"];
-  [self _appendTextValue:tmp toVCard:_vCard];
-  if ([tmp = ([_enterprise valueForKey:@"number"]) isNotNull]) {
-    [_vCard appendString:@";"];
-    [self _appendTextValue:tmp toVCard:_vCard];
-  }
-  [_vCard appendString:@"\r\n"];
-
-  if ([(tmp = [_enterprise valueForKey:@"email"]) isNotNull])
-    [self _appendName:@"EMAIL;TYPE=internet" andValue:tmp toVCard:_vCard];
-}
-
-/* END: Enterprise specific */
-
-/* common contact data */
-- (void)_appendContactData:(id)_contact toVCard:(NSMutableString *)_vCard {
-  // UID, COMMENT, CATEGORIES, CLASS, URL
-  id tmp;
-  
-  tmp = [skyrixId stringByAppendingString:
-		    [[_contact valueForKey:@"companyId"] stringValue]];
-  // UID
-  [self _appendName:@"UID"
-        andValue:tmp
-        toVCard:_vCard];
-  // SOURCE
-  [self _appendName:@"SOURCE"
-        andValue:[NSString stringWithFormat:
-                           @"vCard generated by your OGo on '%@'; "
-                           @"contact-id: %@",
-                           [[NSHost currentHost] name], tmp]
-        toVCard:_vCard];
-  // NAME
-  [self _appendName:@"NAME"
-        andValue:[NSString stringWithFormat:
-                           @"vCard for contact with id %@ version: %@",
-                           [_contact valueForKey:@"companyId"],
-                           [_contact valueForKey:@"objectVersion"]]
-        toVCard:_vCard];
-  // COMMENT
-  if ([(tmp = [[_contact valueForKey:@"comment"] valueForKey:@"comment"])
-            isNotNull])
-    [self _appendName:@"NOTE" andValue:tmp toVCard:_vCard];
-  // CATEGORIES
-  if ([(tmp = [_contact valueForKey:@"keywords"]) isNotNull]) {
-    tmp = [tmp componentsSeparatedByString:@","];
-    [self _appendName:@"CATEGORIES" andValue:tmp toVCard:_vCard];
-  }
-  // CLASS
-  if ([(tmp = [_contact valueForKey:@"isPrivate"]) isNotNull])
-    [self _appendName:@"CLASS"
-          andValue:[tmp boolValue] ? @"PRIVATE" : @"PUBLIC"
-          toVCard:_vCard];
-  // URL
-  if ([(tmp = [_contact valueForKey:@"url"]) isNotNull])
-    [self _appendName:@"URL" andValue:tmp toVCard:_vCard];
-}
-
-/* team data */
-
-- (void)_appendTeamData:(id)_team toVCard:(NSMutableString *)_vCard
-{
-  id tmp;
-  tmp  = [_team valueForKey:@"description"];
-  if ([tmp length]) 
-    tmp = [NSString stringWithFormat:@"Team: %@",
-                    [_team valueForKey:@"companyId"]];
-  // FN, formated name
-  [self _appendName:@"FN" andValue:tmp toVCard:_vCard];
-  // N
-  [_vCard appendString:@"N:"];
-  [self _appendTextValue:tmp toVCard:_vCard];
-  if ([tmp = ([_team valueForKey:@"number"]) isNotNull]) {
-    [_vCard appendString:@";"];
-    [self _appendTextValue:tmp toVCard:_vCard];
-  }
-  [_vCard appendString:@"\r\n"];
-
-  if ([(tmp = [_team valueForKey:@"email"]) isNotNull])
-    [self _appendName:@"EMAIL;TYPE=internet" andValue:tmp toVCard:_vCard];
-
-}
-
-/* address data */
-
-- (void)_appendAddressData:(id)_contact toVCard:(NSMutableString *)_vCard
-  inContext:(id)_context
-{
-  // ADR, LABEL
-  NSArray *addrs;
-  int i, cnt;
-  
-  // fetch address data
-  addrs = LSRunCommandV(_context,
-                        @"address", @"get",
-                        @"companyId",  [_contact valueForKey:@"companyId"],
-                        @"returnType", intObj(LSDBReturnType_ManyObjects),
-                        nil);
-  for (i = 0, cnt = [addrs count]; i < cnt; i++) {
-    NSString *label;
-    id address;
-    id type;
-    NSString *name1, *name2, *name3, *street, *city, *zip, *country, *state;
-    
-    address = [addrs objectAtIndex:i];
-    type    = [address valueForKey:@"type"];
-
-    name1   = [address valueForKey:@"name1"];
-    name2   = [address valueForKey:@"name2"];
-    name3   = [address valueForKey:@"name3"];
-    street  = [address valueForKey:@"street"];
-    city    = [address valueForKey:@"city"];
-    zip     = [address valueForKey:@"zip"];
-    country = [address valueForKey:@"country"];
-    state   = [address valueForKey:@"state"];
-
-    if ([street length] || [city length] || [state length] ||
-        [zip length] || [country length]) {
-      // ADR: post office box;extended address;street address;city;region;
-      //      postal code;country
-      // @see Default: LSVCard_AddressMapping
-
-      type = [addressMapping valueForKey:type];
-      [_vCard appendString:@"ADR"];
-      if ([type length]) [_vCard appendFormat:@";TYPE=%@", type];
-      [_vCard appendFormat:@":;;"]; // no post office box; no extended address;
-      [self _appendTextValue:street  toVCard:_vCard];
-      [_vCard appendFormat:@";"];
-      [self _appendTextValue:city    toVCard:_vCard];
-      [_vCard appendFormat:@";"];
-      [self _appendTextValue:state   toVCard:_vCard];
-      [_vCard appendFormat:@";"];
-      [self _appendTextValue:zip     toVCard:_vCard];
-      [_vCard appendFormat:@";"];
-      [self _appendTextValue:country toVCard:_vCard];
-      [_vCard appendFormat:@"\r\n"];
-
-    }
-
-    if ([street length] || [city length] || [zip length] || [country length]
-        || [name1 length] || [name2 length] || [name3 length]) {
-      // LABEL
-      label = @"";
-      if ([name1 length])
-        label = [label stringByAppendingFormat:@"%@\\n", name1];
-      if ([name2 length])
-        label = [label stringByAppendingFormat:@"%@\\n", name2];
-      if ([name3 length])
-        label = [label stringByAppendingFormat:@"%@\\n", name3];
-    
-      if ([street length])
-        label = [label stringByAppendingFormat:@"%@\\n", street];
-      if ([zip length])
-        label = [label stringByAppendingFormat:@"%@ ", zip];
-      if ([city length])
-        label = [label stringByAppendingFormat:@"%@\\n", city];
-      if ([country length])
-        label = [label stringByAppendingFormat:@"%@", country];
-
-      if ([label length]) {
-        type = ([type length])
-          ? [NSString stringWithFormat:@"LABEL;%@", type] : @"LABEL";
-        [self _appendName:type andValue:label toVCard:_vCard];
-      }
-    }
-  }
-}
-
-/* telephone data */
-- (void)_appendTelephoneData:(id)_company toVCard:(NSMutableString *)_vCard
-{
-  // TEL
-  NSArray *telephones;
-  int i, cnt;
-  
-  telephones = [_company valueForKey:@"telephones"];
-  for (i = 0, cnt = [telephones count]; i < cnt; i++) {
-    id telephone;
-    id type;
-
-    telephone = [telephones objectAtIndex:i];
-    type      = [telephone valueForKey:@"type"];
-    type      = [telephoneMapping valueForKey:type];
-    type      = ([type length])
-      ? [NSString stringWithFormat:@"TEL;TYPE=%@", type] : @"TEL";
-    telephone = [telephone valueForKey:@"realNumber"];
-
-    if ([telephone length]) 
-      [self _appendName:type andValue:telephone toVCard:_vCard];
-  }
-}
-
-- (void)_appendExtendedAttributes:(id)_contact
-  toVCard:(NSMutableString *)_vCard
-{
-  // todo
-}
-
-- (NSString *)_buildVCardForContact:(id)_comp inContext:(id)_context {
-  NSMutableString *vCard;
-  EOKeyGlobalID   *gid;
-
-  vCard = [NSMutableString stringWithCapacity:32];
-  [vCard appendString:@"BEGIN:vCard\r\n"];
-  [vCard appendString:@"VERSION:3.0\r\n"];
-  [vCard appendString:@"PRODID:-//OpenGroupware.org//LSAddress v5.1.0\r\n"];
-  [vCard appendString:@"PROFILE:vCard\r\n"];
-
-  gid = [_comp valueForKey:@"globalID"];
-
-  if (([[gid entityName] isEqualToString:@"Team"])) {
-    [self _appendTeamData:_comp toVCard:vCard];
-    [self _appendContactData:_comp toVCard:vCard];
-  }
-  else {
-    if ([[gid entityName] isEqualToString:@"Person"]) 
-      [self _appendPersonData:_comp toVCard:vCard];
-    else
-      [self _appendEnterpriseData:_comp toVCard:vCard];
-
-    [self _appendContactData:_comp toVCard:vCard];
-    [self _appendAddressData:_comp toVCard:vCard inContext:_context];
-    [self _appendTelephoneData:_comp toVCard:vCard];
-    [self _appendExtendedAttributes:_comp toVCard:vCard];
-  }
-
-  [vCard appendString:@"END:vCard\r\n"];
-
-  return vCard;
-}
-
-
 /* fetching */
+
 - (NSArray *)_fetchIdsAndVersionsInContext:(id)_context {
   static NSArray *attrs = nil;
   NSMutableArray *result;
@@ -519,14 +165,14 @@ static NSDictionary *telephoneMapping = nil;
                              @"companyId", @"globalID",
                              @"objectVersion", nil];
   }
-
+  
   cnt = [self->gids count];
   if (cnt == 0) return [NSArray array];
 
   persons     = [[NSMutableArray alloc] initWithCapacity:cnt];
   enterprises = [[NSMutableArray alloc] initWithCapacity:cnt];
   teams       = [[NSMutableArray alloc] initWithCapacity:cnt];
-
+  
   while (cnt--) {
     gid = [self->gids objectAtIndex:cnt];
     if ([[gid entityName] isEqualToString:@"Person"])
@@ -536,40 +182,43 @@ static NSDictionary *telephoneMapping = nil;
     else if ([[gid entityName] isEqualToString:@"Team"])
       [teams addObject:gid];
     else {
-      [self assert:NO
-            reason:[NSString stringWithFormat:@"invalid entityName '%@' "
-                             @"(Person and Enterprise accepted)",
-                             [gid entityName]]];
+      NSString *s;
+      
+      s = [NSString stringWithFormat:
+                      @"invalid entityName '%@' "
+                      @"(Person, Team and Enterprise accepted)",
+                    [gid entityName]];
+      [self assert:NO reason:s];
     }
   }
 
   result =
     [NSMutableArray arrayWithCapacity:[persons count]+[enterprises count]+
                     [teams count]];
-  if ([persons count] > 0)
+  if ([persons count] > 0) {
     [result addObjectsFromArray:
             LSRunCommandV(_context,
                           @"person",     @"get-by-globalid",
                           @"gids",       persons,
                           @"attributes", attrs,
                           nil)];
-
-  if ([enterprises count] > 0)
+  }
+  if ([enterprises count] > 0) {
     [result addObjectsFromArray:
             LSRunCommandV(_context,
                           @"enterprise", @"get-by-globalid",
                           @"gids",       enterprises,
                           @"attributes", attrs,
                           nil)];
-
-  if ([teams count] > 0)
+  }
+  if ([teams count] > 0) {
     [result addObjectsFromArray:
             LSRunCommandV(_context,
                           @"team", @"get-by-globalid",
                           @"gids",       teams,
                           @"attributes", attrs,
                           nil)];
-
+  }
 
   [persons     release];
   [enterprises release];
@@ -579,10 +228,10 @@ static NSDictionary *telephoneMapping = nil;
 
 /* caching */
 - (id)_cachedVCardForRecord:(id)_record inContext:(id)_context {
-  NSString       *path;
-  NSString       *file;
-  NSFileManager  *manager;
-  id cId, oV;
+  NSString      *path;
+  NSString      *file;
+  NSFileManager *manager;
+  NSNumber      *cId, *oV;
 
   [self assert:(_record != nil) reason:@"no record to fetch vCard for!"];
 
@@ -647,28 +296,60 @@ static NSDictionary *telephoneMapping = nil;
   result:(id)_result
   inContext:(id)_context
 {
-  NSArray        *globalIDs;
-  NSArray        *contacts;
-  NSString       *vCard;
-  id             contact;
-  int            cnt, i;
-
+  NSArray  *globalIDs;
+  NSArray  *contacts;
+  unsigned cnt, i;
+  
   globalIDs = [_uncachedContacts valueForKey:@"globalID"];
   contacts  = LSRunCommandV(_context, _type, @"get-by-globalid",
                             @"gids", globalIDs, nil);
-
-  cnt = [contacts count];
-
-  for (i = 0; i < cnt; i++) {
+  
+  for (i = 0, cnt = [contacts count]; i < cnt; i++) {
+    EOKeyGlobalID *gid;
+    NSFormatter   *formatter;
+    NSString      *vCard;
+    id contact;
+    
     contact = [contacts objectAtIndex:i];
-    vCard   = [self _buildVCardForContact:contact inContext:_context];
-    if (vCard == nil) {
-      NSLog(@"%s: failed building vCard for contact:%@", __PRETTY_FUNCTION__,
-            contact);
+    gid     = [contact valueForKey:@"globalID"];
+    
+    /* select vCard generator */
+    
+    if (([[gid entityName] isEqualToString:@"Person"]))
+      formatter = [LSVCardPersonFormatter formatter];
+    else if (([[gid entityName] isEqualToString:@"Enterprise"]))
+      formatter = [LSVCardEnterpriseFormatter formatter];
+    else if (([[gid entityName] isEqualToString:@"Team"]))
+      formatter = [LSVCardTeamFormatter formatter];
+    else {
+      [self logWithFormat:@"ERROR: cannot process record: %@", gid];
       continue;
     }
+    
+    /* fetch addresses */
+    
+    if (![[gid entityName] isEqualToString:@"Team"]) {
+      NSArray *addrs;
+      
+      addrs = LSRunCommandV(_context,
+                            @"address", @"get",
+                            @"companyId",  [contact valueForKey:@"companyId"],
+                            @"returnType", intObj(LSDBReturnType_ManyObjects),
+                            nil);
+      [contact takeValue:addrs forKey:@"addresses"];
+    }
+    
+    /* build vCard */
+    
+    if ((vCard = [formatter stringForObjectValue:contact]) == nil) {
+      [self logWithFormat:
+              @"ERROR(%s): failed building vCard for contact (%@): %@", 
+              __PRETTY_FUNCTION__, formatter, contact];
+      continue;
+    }
+    
     [self _cacheVCard:vCard forContact:contact inContext:_context];
-    [self _addVCard:vCard ofRecord:contact toResult:_result];
+    [self _addVCard:vCard   ofRecord:contact   toResult:_result];
   }
 
 }
@@ -682,7 +363,7 @@ static NSDictionary *telephoneMapping = nil;
   
   if ([_vCards isKindOfClass:[NSDictionary class]]) 
     _vCards = [_vCards allValues];
-  if ([self->attributes count])
+  if ([self->attributes count] > 0)
     _vCards = [_vCards valueForKey:@"vCardData"];
   
   s    = [_vCards componentsJoinedByString:@""];
@@ -815,14 +496,14 @@ static NSDictionary *telephoneMapping = nil;
 }
 
 - (void)setAttributes:(NSArray *)_attributes {
-  ASSIGN(self->attributes,_attributes);
+  ASSIGN(self->attributes, _attributes);
 }
 - (NSArray *)attributes {
   return self->attributes;
 }
 
 - (void)setGroupBy:(NSString *)_group {
-  ASSIGN(self->groupBy,_group);
+  ASSIGNCOPY(self->groupBy,_group);
 }
 - (NSString *)groupBy {
   return self->groupBy;
