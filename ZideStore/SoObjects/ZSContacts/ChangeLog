@@ -1,3 +1,7 @@
+2005-05-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* moved a lot of settings from code to product.plist (v1.3.82)
+
 2005-03-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.3.81

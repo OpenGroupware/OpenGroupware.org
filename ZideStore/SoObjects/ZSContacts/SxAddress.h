@@ -46,15 +46,24 @@
   NSMutableDictionary *phones;
 }
 
+/* operations */
+
 - (void)markAsPrivate;
 - (void)markAsAccount;
+
+/* matching */
 
 - (BOOL)fillCompanyRecord:(NSMutableDictionary *)values
   from:(NSDictionary *)_setProps
   keySet:(NSMutableArray *)keys;
 
+/* manager */
+
 - (SxContactManager *)contactManagerInContext:(id)_ctx;
 - (void)clearVars;
+- (Class)selfRendererClass;
+
+/* URL */
 
 - (NSString *)baseURL;
 

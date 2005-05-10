@@ -97,17 +97,17 @@ static BOOL debugEO = NO;
 /* updating/inserting */
 
 - (NSString *)entityName {
-  return nil;
+  return [[self soClass] lookupKey:@"entityName" inContext:nil];
 }
 - (NSString *)updateCommandName {
-  return nil;
+  return [[self soClass] lookupKey:@"updateCommand" inContext:nil];
 }
 - (NSString *)newCommandName {
-  return nil;
+  return [[self soClass] lookupKey:@"newCommand" inContext:nil];
 }
 
 + (NSString *)deleteCommandName {
-  return nil;
+  return [[self soClass] lookupKey:@"deleteCommand" inContext:nil];
 }
 + (NSString *)primaryKeyName {
   return @"companyId";
@@ -476,18 +476,37 @@ static BOOL debugEO = NO;
 /* update ...*/
 
 - (Class)updateClass {
-  [self subclassResponsibility:_cmd];
-  return NULL;
+  NSString *n;
+    
+  if ((n = [[self soClass] lookupKey:@"updateClass" inContext:nil]) != nil)
+    return NSClassFromString(n);
+  
+  [self logWithFormat:@"WARNING: no update class is specified!"];
+  return Nil;
 }
 
 - (Class)zideLookParserClass {
-  [self subclassResponsibility:_cmd];
-  return NULL;
+  NSString *n;
+  if ((n = [[self soClass] lookupKey:@"zlParserClass" inContext:nil]) != nil)
+    return NSClassFromString(n);
+  return Nil;
+}
+- (Class)zideLookRendererClass {
+  NSString *n;
+  if ((n = [[self soClass] lookupKey:@"zlRendererClass" inContext:nil]) != nil)
+    return NSClassFromString(n);
+  return Nil;
 }
 
 - (Class)evolutionParserClass {
-  [self subclassResponsibility:_cmd];
-  return NULL;
+  NSString *n;
+  if ((n = [[self soClass] lookupKey:@"evcParserClass" inContext:nil]) != nil)
+    return NSClassFromString(n);
+  return Nil;
+}
+
+- (Class)selfRendererClass {
+  return [self zideLookRendererClass];
 }
 
 #if 0
@@ -778,6 +797,11 @@ static BOOL debugEO = NO;
 }
 
 /* GET-Action */
+
+- (id)PUTAction:(WOContext *)_ctx {
+  [self logWithFormat:@"SHOULD PUT: %@",  [self entityName]];
+  return nil;
+}
 
 - (id)GETAction:(WOContext *)_ctx {
   SxContactManager *manager;

@@ -34,37 +34,7 @@
   return [[[self objectInContext:nil] valueForKey:@"objectVersion"] intValue];
 }
 
-/* updating/inserting */
-
-- (NSString *)entityName {
-  return @"Team";
-}
-- (NSString *)updateCommandName {
-  return @"team::set";
-}
-- (NSString *)newCommandName {
-  return @"team::new";
-}
-+ (NSString *)getCommandName {
-  return @"team::get";
-}
-+ (NSString *)deleteCommandName {
-  return @"team::delete";
-}
-
-- (Class)selfRendererClass {
-  static Class RendererClass = Nil;
-  static BOOL didInit = NO;
-  if (!didInit) {
-    NSString *className = @"SxZLGroupRenderer";
-    didInit = YES;
-    
-    if ((RendererClass = NSClassFromString(className)) == Nil)
-      [self logWithFormat:@"Note: attempt to access '%@'", className];
-    // TODO: need a fallback renderer
-  }
-  return RendererClass;
-}
+/* queries */
 
 - (id)davQueryOnSelf:(EOFetchSpecification *)_fs inContext:(id)_ctx {
   /* Note: this is also called for bulk fetches */
@@ -91,7 +61,7 @@
   else /* fallback, return SoObject to SOPE WebDAV layer */
     res = (id)self;
   
-  return [NSArray arrayWithObject:res];
+  return (res != nil) ? [NSArray arrayWithObject:res] : nil;
 }
 
 @end /* SxGroup */

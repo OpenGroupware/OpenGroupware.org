@@ -42,6 +42,54 @@
         "View"                    = "Owner";
       };
     };
+
+    SxPerson = {
+      superclass  = "SxAddress";
+
+      slots = {
+        entityName    = { value = "Person";         };
+        updateCommand = { value = "person::set";    };
+        newCommand    = { value = "person::new";    };
+        deleteCommand = { value = "person::delete"; };
+        getCommand    = { value = "person::get";    };
+
+        updateClass     = { value = "SxUpdatePerson";         };
+        zlParserClass   = { value = "SxZLFullPersonParser";   };
+        evcParserClass  = { value = "SxEvoFullPersonParser";  };
+        zlRendererClass = { value = "SxZLFullPersonRenderer"; };
+      };
+    };
+
+    SxEnterprise = {
+      superclass  = "SxAddress";
+
+      slots = {
+        entityName      = { value = "Enterprise";         };
+        updateCommand   = { value = "enterprise::set";    };
+        newCommand      = { value = "enterprise::new";    };
+        deleteCommand   = { value = "enterprise::delete"; };
+        getCommand      = { value = "enterprise::get";    };
+
+        updateClass     = { value = "SxUpdateEnterprise"; };
+        zlParserClass   = { value = "SxZLFullEnterpriseParser";   };
+        evcParserClass  = { value = "SxEvoFullEnterpriseParser";  };
+        zlRendererClass = { value = "SxZLFullEnterpriseRenderer"; };
+      };
+    };
+
+    SxGroup = {
+      superclass  = "SxAddress";
+
+      slots = {
+        entityName    = { value = "Team"; };
+        updateCommand = { value = "team::set";    };
+        newCommand    = { value = "team::new";    };
+        deleteCommand = { value = "team::delete"; };
+        getCommand    = { value = "team::get";    };
+        
+        zlRendererClass = { value = "SxZLGroupRenderer"; };
+      };
+    };
   };
   
   factories = {

@@ -23,7 +23,6 @@
 #include "SxPersonFolder.h"
 #include "SxVCardPersonRenderer.h"
 #include <ZSBackend/SxContactManager.h>
-#include <ZSBackend/SxUpdatePerson.h>
 #include <ZSFrontend/SxFolder.h>
 #include <ZSFrontend/SxRendererFactory.h>
 #include <ZSFrontend/SxRenderer.h>
@@ -38,23 +37,6 @@
   [self->enterprise release]; self->enterprise = nil;
 }
 
-- (NSString *)entityName {
-  return @"Person";
-}
-- (NSString *)updateCommandName {
-  return @"person::set";
-}
-- (NSString *)newCommandName {
-  return @"person::new";
-}
-
-+ (NSString *)getCommandName {
-  return @"person::get";
-}
-+ (NSString *)deleteCommandName {
-  return @"person::delete";
-}
-
 /* updating */
 
 - (BOOL)fillCompanyRecord:(NSMutableDictionary *)values
@@ -62,20 +44,6 @@
   keySet:(NSMutableArray *)keys
 {
   return [super fillCompanyRecord:values from:_setProps keySet:keys];
-}
-
-- (Class)selfRendererClass {
-  static Class RendererClass = Nil;
-  static BOOL didInit = NO;
-  if (!didInit) {
-    NSString *className = @"SxZLFullPersonRenderer";
-    didInit = YES;
-    
-    if ((RendererClass = NSClassFromString(className)) == Nil)
-      [self logWithFormat:@"Note: attempt to access '%@'", className];
-    // TODO: need a fallback renderer
-  }
-  return RendererClass;
 }
 
 - (id)davQueryOnSelf:(EOFetchSpecification *)_fs inContext:(id)_ctx {
@@ -107,36 +75,6 @@
     res = (id)self;
   
   return res != nil ? [NSArray arrayWithObject:res] : nil;
-}
-
-- (Class)updateClass {
-  static Class SxUpdatePersonClass = NULL;
-
-  if (SxUpdatePersonClass == NULL) {
-   SxUpdatePersonClass =
-      NSClassFromString(@"SxUpdatePerson");
-  }
-  return SxUpdatePersonClass;
-}
-
-- (Class)zideLookParserClass {
-  static Class SxZLFullPersonParserClass = NULL;
-
-  if (SxZLFullPersonParserClass == NULL) {
-    SxZLFullPersonParserClass =
-      NSClassFromString(@"SxZLFullPersonParser");
-  }
-  return SxZLFullPersonParserClass;
-}
-
-- (Class)evolutionParserClass {
-  static Class SxEvoFullPersonParserClass = NULL;
-
-  if (SxEvoFullPersonParserClass == NULL) {
-    SxEvoFullPersonParserClass =
-      NSClassFromString(@"SxEvoFullPersonParser");
-  }
-  return SxEvoFullPersonParserClass;
 }
 
 @end /* SxPerson */

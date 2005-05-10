@@ -33,24 +33,6 @@
 
 @implementation SxEnterprise
 
-/* updating/inserting */
-
-- (NSString *)entityName {
-  return @"Enterprise";
-}
-- (NSString *)updateCommandName {
-  return @"enterprise::set";
-}
-- (NSString *)newCommandName {
-  return @"enterprise::new";
-}
-+ (NSString *)getCommandName {
-  return @"enterprise::get";
-}
-+ (NSString *)deleteCommandName {
-  return @"enterprise::delete";
-}
-
 /* updates */
 
 - (BOOL)fillCompanyRecord:(NSMutableDictionary *)values
@@ -133,20 +115,6 @@
   return YES;
 }
 
-- (Class)selfRendererClass {
-  static Class RendererClass = Nil;
-  static BOOL didInit = NO;
-  if (!didInit) {
-    NSString *className = @"SxZLFullEnterpriseRenderer";
-    didInit = YES;
-    
-    if ((RendererClass = NSClassFromString(className)) == Nil)
-      [self logWithFormat:@"Note: attempt to access '%@'", className];
-    // TODO: need a fallback renderer
-  }
-  return RendererClass;
-}
-
 - (NSArray *)davQueryOnSelf:(EOFetchSpecification *)_fs inContext:(id)_ctx {
   /* Note: this is also called for bulk fetches */
   NSDictionary               *res;
@@ -178,36 +146,6 @@
     res = (id)self;
 
   return (res != nil) ? [NSArray arrayWithObject:res] : nil;
-}
-
-- (Class)updateClass {
-  static Class SxUpdateEnterpriseClass = NULL;
-
-  if (SxUpdateEnterpriseClass == NULL) {
-   SxUpdateEnterpriseClass =
-      NSClassFromString(@"SxUpdateEnterprise");
-  }
-  return SxUpdateEnterpriseClass;
-}
-
-- (Class)zideLookParserClass {
-  static Class SxZLFullEnterpriseParserClass = NULL;
-
-  if (SxZLFullEnterpriseParserClass == NULL) {
-    SxZLFullEnterpriseParserClass =
-      NSClassFromString(@"SxZLFullEnterpriseParser");
-  }
-  return SxZLFullEnterpriseParserClass;
-}
-
-- (Class)evolutionParserClass {
-  static Class SxEvoFullEnterpriseParserClass = NULL;
-
-  if (SxEvoFullEnterpriseParserClass == NULL) {
-    SxEvoFullEnterpriseParserClass =
-      NSClassFromString(@"SxEvoFullEnterpriseParser");
-  }
-  return SxEvoFullEnterpriseParserClass;
 }
 
 @end /* SxEnterprise */
