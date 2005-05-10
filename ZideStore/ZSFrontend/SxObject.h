@@ -42,6 +42,7 @@
 @class NSNumber, NSString, NSMutableDictionary, NSSet, NSException;
 @class EOGlobalID;
 @class LSCommandContext;
+@class WOContext;
 
 @interface SxObject : NSObject
 {
@@ -84,7 +85,7 @@
 
 /* actions */
 
-- (id)GETAction:(id)_ctx;
+- (id)GETAction:(WOContext *)_ctx;
 - (id)DELETEAction:(id)_ctx;
 
 - (NSException *)matchesRequestConditionInContext:(id)_ctx;

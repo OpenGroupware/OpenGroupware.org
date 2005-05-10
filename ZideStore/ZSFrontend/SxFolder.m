@@ -694,13 +694,13 @@ static NSString *cachePath  = nil;
   id           obj;
 
   enumerator = [[self subPropMapper] objectEnumerator];
-  while ((obj = [enumerator nextObject])) {
+  while ((obj = [enumerator nextObject]) != nil) {
     id res;
     
     if ((res = [obj propertySetNamed:_name]))
       return res;
   }
-  if ((set = [propsets objectForKey:_name]))
+  if ((set = [propsets objectForKey:_name]) != nil)
     return set;
   if (propsets == nil) 
     propsets = [[NSMutableDictionary alloc] init];
@@ -714,6 +714,7 @@ static NSString *cachePath  = nil;
       [self logWithFormat:@"Note: did not find property set '%@'", _name];
       [warnSets addObject:_name];
     }
+    // TODO: we might want to fallback to some standard DAV property set
     return nil;
   }
   
