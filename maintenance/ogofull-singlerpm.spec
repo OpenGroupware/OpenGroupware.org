@@ -566,21 +566,21 @@ rm -fr ${RPM_BUILD_ROOT}
 %ghost %attr(0755,root,root) %config %{_sysconfdir}/init.d/ogo-webui-1.0a
 %{prefix}/bin/load-LSModel
 %{prefix}/bin/ogo-ppls-1.0a
-%{prefix}/bin/sky_add_account
-%{prefix}/bin/sky_del_account
-%{prefix}/bin/sky_get_login_names
-%{prefix}/bin/sky_install_procmail
+%{prefix}/bin/ogo-account-add
+%{prefix}/bin/ogo-account-del
+%{prefix}/bin/ogo-account-list
+%{prefix}/bin/ogo-acl-list
+%{prefix}/bin/ogo-check-permission
+%{prefix}/bin/ogo-defaults
+%{prefix}/bin/ogo-instfilter-procmail
+%{prefix}/bin/ogo-jobs-export
+%{prefix}/bin/ogo-project-export
+%{prefix}/bin/ogo-project-import
+%{prefix}/bin/ogo-project-list
+%{prefix}/bin/ogo-runcmd
 %{prefix}/bin/sky_install_sieve
 %{prefix}/bin/sky_send_bulk_messages
 %{prefix}/bin/skyaptnotify
-%{prefix}/bin/skycheckperm
-%{prefix}/bin/skydefaults
-%{prefix}/bin/skyjobs2ical
-%{prefix}/bin/skylistacls
-%{prefix}/bin/skylistprojects
-%{prefix}/bin/skyprojectexporter
-%{prefix}/bin/skyprojectimporter
-%{prefix}/bin/skyruncmd
 %{prefix}/share/opengroupware.org-1.0a/aptnotify_template/ogo-aptnotify.sh
 %{prefix}/lib/%{ogo_libogopalmui}.so.5.1*
 %{prefix}/lib/%{ogo_libogopalm}.so.5.1*
@@ -769,6 +769,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Tue May 10 2005 Helge Hess <hh@opengroupware.org>
+- fixed some tool names
 * Thu Mar 18 2005 Frank Reppin <frank@opengroupware.org>
 - be current and more descriptive descriptive description
 - divided sharedir into sharedir_ogo/sharedir_zide

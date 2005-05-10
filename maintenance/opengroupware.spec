@@ -971,21 +971,21 @@ rm -fr ${RPM_BUILD_ROOT}
 
 %files tools
 %defattr(-,root,root,-)
-%{prefix}/bin/sky_add_account
-%{prefix}/bin/sky_del_account
-%{prefix}/bin/sky_get_login_names
-%{prefix}/bin/sky_install_procmail
+%{prefix}/bin/ogo-account-add
+%{prefix}/bin/ogo-account-del
+%{prefix}/bin/ogo-account-list
+%{prefix}/bin/ogo-acl-list
+%{prefix}/bin/ogo-check-permission
+%{prefix}/bin/ogo-defaults
+%{prefix}/bin/ogo-instfilter-procmail
+%{prefix}/bin/ogo-jobs-export
+%{prefix}/bin/ogo-project-export
+%{prefix}/bin/ogo-project-import
+%{prefix}/bin/ogo-project-list
+%{prefix}/bin/ogo-runcmd
 %{prefix}/bin/sky_install_sieve
 %{prefix}/bin/sky_send_bulk_messages
 %{prefix}/bin/skyaptnotify
-%{prefix}/bin/skycheckperm
-%{prefix}/bin/skydefaults
-%{prefix}/bin/skyjobs2ical
-%{prefix}/bin/skylistacls
-%{prefix}/bin/skylistprojects
-%{prefix}/bin/skyprojectexporter
-%{prefix}/bin/skyprojectimporter
-%{prefix}/bin/skyruncmd
 %{prefix}/share/opengroupware.org-1.0a/aptnotify_template/ogo-aptnotify.sh
 
 %files webui-app
@@ -1186,6 +1186,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Tue May 10 2005 Helge Hess <hh@opengroupware.org>
+- fixed some tool names
 * Wed Mar 16 2005 Frank Reppin <frank@opengroupware.org>
 - added initscripts as ghosts.
 * Tue Mar 15 2005 Frank Reppin <frank@opengroupware.org>
