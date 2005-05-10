@@ -167,8 +167,8 @@ static NSDictionary *holidaysConfig = nil;
 - (void)setUserDefaults:(NSUserDefaults *)_ud {
   [self _resetYearCaches];
   // force reload, TODO: explain the calls below?
-  [self setYear:self->year + 1];
-  [self setYear:self->year - 1];
+  [self setYear:(self->year + 1)];
+  [self setYear:(self->year - 1)];
   ASSIGN(self->userDefaults,_ud);
 }
 - (NSUserDefaults *)userDefaults {
@@ -195,11 +195,11 @@ static NSDictionary *holidaysConfig = nil;
 }
 
 - (void)setFirstMay:(NSCalendarDate *)_firstMay {
-  ASSIGN(self->firstMay,_firstMay);
+  ASSIGN(self->firstMay, _firstMay);
 }
 - (NSCalendarDate *)firstMay {
   // Erster Mai
-  if (self->firstMay)
+  if (self->firstMay != nil)
     return self->firstMay;
   
   self->firstMay =
@@ -298,8 +298,17 @@ static NSDictionary *holidaysConfig = nil;
 
 - (NSCalendarDate *)mothersDay {
   // Muttertag
-  return [[self firstMay] dateByAddingYears:0 months:0
-                          days:(14 - [[self firstMay] dayOfWeek])];
+  NSCalendarDate *date, *may1;
+  int d;
+  
+  may1 = [self firstMay];
+  d = 14 - [may1 dayOfWeek];
+  date = [may1 dateByAddingYears:0 months:0 days:d];
+  if ([date isEqual:[self whitsun]]) {
+    d = 7 - [may1 dayOfWeek];
+    date = [may1 dateByAddingYears:0 months:0 days:d];
+  }
+  return date;
 }
 
 - (void)setFirstAdvent:(NSCalendarDate *)_fadvent {
@@ -307,7 +316,7 @@ static NSDictionary *holidaysConfig = nil;
 }
 - (NSCalendarDate *)firstAdvent {
   // Erster Advent
-  if (self->firstAdvent)
+  if (self->firstAdvent != nil)
     return self->firstAdvent;
   
   [self setFirstAdvent:

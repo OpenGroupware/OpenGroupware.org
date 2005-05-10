@@ -1,3 +1,8 @@
+2005-05-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyHolidayCalculator.m: fixed OGo bug #1371 (incorrect calculation of
+	  mother's day (v5.1.31)
+
 2004-12-22  Helge Hess  <helge.hess@opengroupware.org>
 
 	* added Holidays-dutch.plist as provided by Jorrit Jorittsma (v5.1.30)
