@@ -32,7 +32,7 @@
 @interface SkyAptDataSource(PrivateMethods)
 - (void)primaryClear;
 - (void)clear;
-- (id)objects;
+- (NSArray *)objects;
 @end
 
 @interface SkyAppointmentDocument(SkyAptDataSource)

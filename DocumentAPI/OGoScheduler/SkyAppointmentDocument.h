@@ -24,7 +24,7 @@
 
 #include <OGoDocuments/SkyDocument.h>
 
-@class NSArray, NSNumber, NSString, NSCalendarDate;
+@class NSArray, NSNumber, NSString, NSCalendarDate, NSDictionary;
 @class EODataSource, EOGlobalID;
 
 @interface SkyAppointmentDocument : SkyDocument
@@ -151,7 +151,7 @@
 - (id)accessTeamId;
 - (void)setAccessTeamId:(id)_teamId;
 
-- (id)asDict;
+- (NSDictionary *)asDict;
 - (EODataSource *)dataSource;
 
 @end

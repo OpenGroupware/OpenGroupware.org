@@ -103,7 +103,7 @@ static NSDictionary *holidaysConfig = nil;
 
 + (SkyHolidayCalculator *)calculatorWithYear:(int)_year
   timeZone:(NSTimeZone *)_tz
-  userDefaults:(id)_ud
+  userDefaults:(NSUserDefaults *)_ud
 {
   return [[[SkyHolidayCalculator alloc] initWithYear:_year timeZone:_tz 
 					userDefaults:_ud] autorelease];
@@ -116,7 +116,9 @@ static NSDictionary *holidaysConfig = nil;
   return self;
 }
 
-- (id)initWithYear:(int)_year timeZone:(NSTimeZone *)_tz userDefaults:(id)_ud {
+- (id)initWithYear:(int)_year timeZone:(NSTimeZone *)_tz 
+  userDefaults:(NSUserDefaults *)_ud 
+{
   if ((self = [self init])) {
     self->year         = _year;
     self->timeZone     = [_tz retain];
@@ -297,14 +299,13 @@ static NSDictionary *holidaysConfig = nil;
 }
 
 - (NSCalendarDate *)mothersDay {
-  // Muttertag
   NSCalendarDate *date, *may1;
   int d;
   
   may1 = [self firstMay];
   d = 14 - [may1 dayOfWeek];
   date = [may1 dateByAddingYears:0 months:0 days:d];
-  if ([date isEqual:[self whitsun]]) {
+  if ([date isEqual:[self whitsun]]) { // to avoid incorrect calc in 2005
     d = 7 - [may1 dayOfWeek];
     date = [may1 dateByAddingYears:0 months:0 days:d];
   }
@@ -615,7 +616,7 @@ static NSDictionary *holidaysConfig = nil;
 - (NSArray *)holidaysOfDate:(NSCalendarDate *)_date {
   NSString *dateKey;
   NSArray  *result;
-  unsigned char buf[16];
+  char buf[16];
   
   if (_date == nil)
     return nil;

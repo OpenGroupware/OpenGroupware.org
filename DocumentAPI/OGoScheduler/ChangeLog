@@ -1,4 +1,6 @@
-2005-05-10  Helge Hess  <helge.hess@skyrix.com>
+2005-05-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed gcc 4.0 warnings (v5.1.32)
 
 	* SkyHolidayCalculator.m: fixed OGo bug #1371 (incorrect calculation of
 	  mother's day (v5.1.31)

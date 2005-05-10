@@ -39,9 +39,9 @@
 
 @implementation SkyAppointmentDataSource
 
-- (id)initWithContext:(id)_ctx {
-  if ((self = [super init])) {
-    NSNotificationCenter *nc = nil;
+- (id)initWithContext:(LSCommandContext *)_ctx {
+  if ((self = [super init]) != nil) {
+    NSNotificationCenter *nc;
 
     nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self
@@ -95,7 +95,7 @@
   return [[self->fetchSpecification copy] autorelease];
 }
 
-- (id)context {
+- (LSCommandContext *)context {
   return self->context;
 }
 
