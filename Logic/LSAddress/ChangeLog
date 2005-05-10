@@ -1,3 +1,11 @@
+2005-05-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.60
+
+	* LSSetVCardCommand.m: work on vCard mapping
+
+	* LSSetCompanyCommand.m, NSNewCompanyCommand.m: major code cleanups
+
 2005-05-10  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSSetVCardCommand.m: fixed call to object::get-by-globalid (v5.1.59)

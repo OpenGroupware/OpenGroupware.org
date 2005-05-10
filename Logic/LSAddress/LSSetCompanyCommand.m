@@ -33,6 +33,20 @@
 
 @implementation LSSetCompanyCommand
 
+static id <NSObject,LSCommand> setCmd = nil;
+static id <NSObject,LSCommand> newCmd = nil;
+static NSArray  *defExcludeKeys    = nil;
+static NSString *autoNumberPrefix = @"OGo";
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  static BOOL didInit = NO;
+  if (didInit) return;
+  didInit = YES;
+  
+  defExcludeKeys = [[ud arrayForKey:@"LSCompanyCommandExcludeKeys"] copy];
+}
+
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
   if ((self = [super initForOperation:_operation inDomain:_domain])) {
     [self takeValue:@"05_changed"      forKey:@"logAction"];
@@ -55,6 +69,9 @@
   NSNumber       *objId;
   EOSQLQualifier *qual;
   EOModel        *model;
+  id   genObjInfo = nil;
+  id c;
+  id obj;
 
   model = [[[_ctx valueForKey:LSDatabaseKey] adaptor] model];
   objId = [[self object] valueForKey:@"companyId"];
@@ -71,39 +88,27 @@
   }
   [qual release]; qual = nil;
 
-  {
-    BOOL isOk       = NO;
-    id   genObjInfo = nil;
 
-    genObjInfo = [[self databaseChannel] fetchWithZone:NULL];
-    [[self databaseChannel] cancelFetch];
+  genObjInfo = [[self databaseChannel] fetchWithZone:NULL];
+  [[self databaseChannel] cancelFetch];
     
-    if (genObjInfo) {
-      id c;
+  if (genObjInfo == nil)
+    return NO;
 
-      c = [self comment];
-      
-      if ([c length] == 0)
+  c = [self comment];
+  if ([c length] == 0)
         c = [NSNull null];
     
-      [genObjInfo takeValue:c forKey:@"comment"];
-      {
-        id obj;
+  [genObjInfo takeValue:c forKey:@"comment"];
 
-        obj = [self primaryKeyValue];
-        if ([obj intValue] != 0)
-          [genObjInfo takeValue:obj forKey:@"companyId"];
-      }
+  obj = [self primaryKeyValue];
+  if ([obj intValue] != 0)
+    [genObjInfo takeValue:obj forKey:@"companyId"];
 
-      [genObjInfo takeValue:@"updated" forKey:@"status"];
+  [genObjInfo takeValue:@"updated" forKey:@"status"];
 
-      [self assert:(genObjInfo != nil)
-            reason:@"no toCompanyInfo to update .."];
-      
-      isOk = [[self databaseChannel] updateObject:genObjInfo];
-    }
-    return isOk;
-  }
+  [self assert:(genObjInfo != nil) reason:@"no toCompanyInfo to update .."];
+  return [[self databaseChannel] updateObject:genObjInfo];
 }
 
 - (void)_setExtendedAttributesInContext:(id)_context {
@@ -122,44 +127,38 @@
   obj      = [self object];
   extAttrs = [obj valueForKey:@"companyValue"];
   for (i = 0, cnt = [extAttrs count]; i < cnt; i++) {
-    id extAttr = [extAttrs objectAtIndex:i];
-    id value   = [obj valueForKey:[extAttr valueForKey:@"attribute"]];
-
+    id extAttr, value;
+    
+    extAttr = [extAttrs objectAtIndex:i];
+    value   = [obj valueForKey:[extAttr valueForKey:@"attribute"]];
+    
     LSRunCommandV(_context, @"companyvalue", @"set",
-                  @"object", extAttr,
+                  @"object",      extAttr,
                   @"checkAccess", [self checkAccess],
-                  @"value",  value, nil);
+                  @"value",       value, nil);
   }
   // handle new attributes
   excludeKeys = 
     [NSMutableArray arrayWithArray:[[obj entity] classPropertyNames]];
-  [excludeKeys addObjectsFromArray:[NSArray arrayWithObjects:
-                                            @"projects", @"groups",
-                                            @"members",  @"owner",
-                                            @"contact",  @"comment",
-                                            @"persons",  @"companyValue",
-                                            @"telephones", @"pictureFilePath",
-                                            @"pictureData", @"attributeMap",
-                                            @"projectAssignments", nil]];
-  
+  [excludeKeys addObjectsFromArray:defExcludeKeys];
   [excludeKeys addObjectsFromArray:[extAttrs valueForKey:@"attribute"]];
-
+  
   defaultAttrs = [self _fetchDefaultExtendedAttributes:_context];
   keyEnum      = [defaultAttrs keyEnumerator];
   map          = [obj valueForKey:@"attributeMap"];
   compValues   = [obj valueForKey:@"companyValue"];
-  accountId  = [[_context valueForKey:LSAccountKey] valueForKey:@"companyId"];
+  accountId = [[_context valueForKey:LSAccountKey] valueForKey:@"companyId"];
   
-  while ((key = [keyEnum nextObject])) {
+  while ((key = [keyEnum nextObject]) != nil) {
     NSDictionary *attr;
     int           type;
     NSString     *label;
     id            userId;
     id            compValue = nil;
-
+    
     if (!(![excludeKeys containsObject:key] && [obj valueForKey:key] != nil))
       continue;
-
+    
     attr   = [defaultAttrs objectForKey:key];
     type   = [[attr valueForKey:@"type"] intValue];
     label  = [attr valueForKey:@"label"];
@@ -170,42 +169,53 @@
     if (type == 0) type = 1;
     if (label == nil) label = (id)[NSNull null];
     compValue = LSRunCommandV(_context,
-                      @"companyvalue", @"new",
-                      @"companyId", [obj valueForKey:@"companyId"],
-                      @"attribute", key,
-                      @"uid",       userId,
-                      @"label",     label,
-                      @"type",      [NSNumber numberWithInt:type],
-                      @"value",     [obj valueForKey:key], nil);
+			      @"companyvalue", @"new",
+			      @"companyId", [obj valueForKey:@"companyId"],
+			      @"attribute", key,
+			      @"uid",       userId,
+			      @"label",     label,
+			      @"type",      [NSNumber numberWithInt:type],
+			      @"value",     [obj valueForKey:key], nil);
     [map setObject:compValue forKey:key];
     [compValues addObject:compValue];
   }
 }
 
 - (id)_findEOWithId:(NSNumber *)_phoneId {
-  NSArray *tels  = [[self object] valueForKey:@"toTelephone"];
-  id      tel    = nil;
-  int     i, cnt = [tels count];
-
-  for (i = 0; i < cnt; i++) {
-    tel = [tels objectAtIndex:i];
+  NSArray *tels;
+  int     i, cnt;
+  
+  tels = [[self object] valueForKey:@"toTelephone"];
+  for (i = 0, cnt = [tels count]; i < cnt; i++) {
+    id tel;
     
+    tel = [tels objectAtIndex:i];
     if ([[tel valueForKey:@"telephoneId"] isEqual:_phoneId])
-      break;
+      return tel;
   }
-  return tel;
+  return nil;
+}
+
+- (void)_setupPhoneCommands {
+  if (setCmd == nil) setCmd = [LSLookupCommand(@"telephone", @"set") retain];
+  if (newCmd == nil) newCmd = [LSLookupCommand(@"telephone", @"new") retain];
 }
 
 - (void)_setTelephoneCommandsInContext:(id)_context {
-  int     i, cnt = [self->telephones count];
-  id      pkey   = [[self object] valueForKey:[self primaryKeyName]];
-  id <NSObject,LSCommand> setCmd = LSLookupCommand(@"telephone", @"set");
-  id <NSObject,LSCommand> newCmd = LSLookupCommand(@"telephone", @"new");
+  NSNumber *pkey;
+  int i, cnt;
 
-  for (i = 0; i < cnt; i++) {
-    NSDictionary *telDict = [self->telephones objectAtIndex:i];
-    id           phoneId  = [telDict valueForKey:@"telephoneId"];
-    id           telEO    = [self _findEOWithId:phoneId];
+  [self _setupPhoneCommands];
+  
+  pkey = [[self object] valueForKey:[self primaryKeyName]];
+  for (i = 0, cnt = [self->telephones count]; i < cnt; i++) {
+    NSDictionary *telDict;
+    NSNumber     *phoneId;
+    id           telEO;
+    
+    telDict = [self->telephones objectAtIndex:i];
+    phoneId  = [telDict valueForKey:@"telephoneId"];
+    telEO    = [self _findEOWithId:phoneId];
     
     if ([phoneId isNotNull]) {
       [setCmd takeValue:telEO forKey:@"object"];
@@ -221,55 +231,35 @@
   }
 }
 
-- (void)_prepareForExecutionInContext:(id)_context {
+- (void)_fixNumber {
   id obj, n;
-  
-  [super _prepareForExecutionInContext:_context];
 
   obj = [self object];
   n   = [obj valueForKey:@"number"];
-
-  if ([n isKindOfClass:[NSString class]])
-    if (![n length])
+  
+  if ([n isKindOfClass:[NSString class]]) {
+    if ([n length] == 0)
       n = nil;
-    
-  if (![n isNotNull]) {
-    n = [NSString stringWithFormat:@"SKY%@",
-                  [obj valueForKey:@"companyId"]];
-    [obj takeValue:n forKey:@"number"];
   }
+  if ([n isNotNull])
+    return;
+  
+  n = [autoNumberPrefix stringByAppendingString:
+			  [[obj valueForKey:@"companyId"] stringValue]];
+  [obj takeValue:n forKey:@"number"];
 }
 
-- (void)_executeInContext:(id)_context {
-  [self assert:([self object] != nil) reason:@"no company object to act on"];
+- (void)_prepareForExecutionInContext:(id)_context {
+  [super _prepareForExecutionInContext:_context];
+  [self _fixNumber];
+}
 
-  if ([[self checkAccess] boolValue]) {
-    if (![[_context accessManager]
-                    operation:@"w"
-                    allowedOnObjectID:[[self object]
-                                             valueForKey:@"globalID"]]) {
-      NSLog(@"%s: Missing write access for %@", __PRETTY_FUNCTION__,
-            [self object]);
-      [self setReturnValue:nil];
-      return;
-    }
-  }
+- (BOOL)hasWriteAccessOn:(id)_obj inContext:(id)_ctx {
+  _obj = [_obj valueForKey:@"globalID"];
+  return [[_ctx accessManager] operation:@"w" allowedOnObjectID:_obj];
+}
 
-  [self _increaseVersion];
-  
-  [super _executeInContext:_context];
-
-  //  if (self->comment)
-  [self assert:[self _setCompanyInfo:_context]];
-
-  [self _setExtendedAttributesInContext:_context];
-
-  if (self->telephones != nil)
-    [self _setTelephoneCommandsInContext:_context];
-
-
-  // save attachement
-  {
+- (void)saveAttachmentInContext:(id)_context {
     NSFileManager  *manager;
     NSUserDefaults *defaults;
     id             obj;
@@ -309,8 +299,35 @@
       [self assert:isOk
             reason:@"error during save of person/enterprise picture"];
     }
+}
+
+- (void)_executeInContext:(id)_context {
+  [self assert:([self object] != nil) reason:@"no company object to act on"];
+  
+  if ([[self checkAccess] boolValue]) {
+    if (![self hasWriteAccessOn:[self object] inContext:_context]) {
+      // TODO: do not log object!
+      [self logWithFormat:@"missing write access for %@", [self object]];
+      [self setReturnValue:nil];
+      return;
+    }
   }
 
+  [self _increaseVersion];
+  
+  [super _executeInContext:_context];
+
+  //  if (self->comment)
+  [self assert:[self _setCompanyInfo:_context]];
+
+  [self _setExtendedAttributesInContext:_context];
+
+  if (self->telephones != nil)
+    [self _setTelephoneCommandsInContext:_context];
+  
+  // save attachment
+  [self saveAttachmentInContext:_context];
+  
   LSRunCommandV(_context, @"object", @"add-log",
                 @"logText"    , [self valueForKey:@"logText"],
                 @"action"     , [self valueForKey:@"logAction"],

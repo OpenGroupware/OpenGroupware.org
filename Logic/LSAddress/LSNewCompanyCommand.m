@@ -42,17 +42,10 @@ static NSString *autoNumberPrefix = @"OGo";
   if (didInit) return;
   didInit = YES;
   
-  defExcludeKeys = [[NSArray alloc] initWithObjects:
-					@"projects", @"groups",
-				        @"members",  @"owner",
-				        @"contact",  @"comment",
-				        @"persons",  @"companyValue",
-				        @"telephones", @"pictureFilePath",
-				        @"pictureData", @"attributeMap",
-				        @"projectAssignments", nil];
+  defExcludeKeys = [[ud arrayForKey:@"LSCompanyCommandExcludeKeys"] copy];
   null   = [[EONull null] retain];
   yesNum = [[NSNumber numberWithBool:YES] retain];
-
+  
   autoLoginPrefix  = [[ud stringForKey:@"LSAutoCompanyLoginPrefix"] copy];
   autoNumberPrefix = [[ud stringForKey:@"LSAutoCompanyNumberPrefix"] copy];
 }

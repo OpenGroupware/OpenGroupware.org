@@ -201,4 +201,9 @@
 
   LSAutoCompanyLoginPrefix  = "OGo";
   LSAutoCompanyNumberPrefix = "OGo";
+
+  LSCompanyCommandExcludeKeys = ( /* used by new/set command */
+    projects, groups, members, owner, contact, comment, persons, companyValue,
+    telephones, pictureFilePath, pictureData, attributeMap, projectAssignments
+  );
 }
