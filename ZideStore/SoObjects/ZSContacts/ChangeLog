@@ -1,5 +1,7 @@
 2005-05-10  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SxAddress.m: improved exception handling (v1.3.85)
+
 	* SxAddress.m: properly commit changes (v1.3.84)
 
 2005-05-10  Helge Hess  <helge.hess@skyrix.com>

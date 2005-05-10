@@ -605,6 +605,10 @@ static BOOL debugEO = NO;
   return NO;
 }
 
+- (NSException *)handleVCardSetException:(NSException *)_exception {
+  return _exception;
+}
+
 - (id)PUTAction:(WOContext *)_ctx {
   LSCommandContext *cmdctx;
   WOResponse  *r;
@@ -646,12 +650,26 @@ static BOOL debugEO = NO;
   /* add vCard */
   
   cmdctx = [self commandContextInContext:_ctx];
-  result = [cmdctx runCommand:@"company::set-vcard",
+  NS_DURING {
+    error  = nil;
+    result = [cmdctx runCommand:@"company::set-vcard",
              @"vCard",         content,
              @"entityName",    [self entityName],
 	     @"createPrivate", [NSNumber numberWithBool:self->isPrivate],
              @"gid",           [self isNew] ? nil : [self globalID],
              nil];
+  }
+  NS_HANDLER {
+    error = [self handleVCardSetException:localException];
+    result = nil;
+  }
+  NS_ENDHANDLER;
+  
+  if (error != nil) {
+    [self logWithFormat:@"ERROR: failed to write vCard: %@", error];
+    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
+                        reason:[error reason]];
+  }
   
   if (debugEO) [self logWithFormat:@"got EO: %@", result];
   
