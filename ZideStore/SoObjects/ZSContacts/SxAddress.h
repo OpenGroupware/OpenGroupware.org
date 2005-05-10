@@ -24,6 +24,13 @@
 
 #include <ZSFrontend/SxObject.h>
 
+/*
+  SxAddress
+  
+  This is an abstract superclass for 'company' subclasses, like SxEnterprise or
+  SxPerson.
+*/
+
 @class NSMutableDictionary, NSDictionary, NSMutableArray;
 @class EOFetchSpecification;
 @class SxContactManager;
@@ -32,7 +39,7 @@
 {
   BOOL isPrivate;
   BOOL isAccount;
-
+  
   id company;
   id subCompany;
   NSMutableDictionary *addr;

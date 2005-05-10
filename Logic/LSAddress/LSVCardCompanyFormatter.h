@@ -52,6 +52,7 @@ extern NSString *LSVUidPrefix;
 
 /* common company stuff */
 
+- (void)_appendIdentifier:(id)_contact         toVCard:(NSMutableString *)_ms;
 - (void)_appendContactData:(id)_contact        toVCard:(NSMutableString *)_ms;
 - (void)_appendAddressData:(id)_contact        toVCard:(NSMutableString *)_ms;
 - (void)_appendTelephoneData:(id)_company      toVCard:(NSMutableString *)_ms;

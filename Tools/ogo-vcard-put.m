@@ -126,7 +126,7 @@
 	      stringByAppendingPathComponent:_path];
   }
   
-  if ((url = [NSURL fileURLWithPath:_path]) == nil) {
+  if ((url = [[[NSURL alloc] initFileURLWithPath:_path] autorelease]) == nil) {
     NSLog(@"ERROR: could not make URL from path: %@", _path);
     return 1;
   }
