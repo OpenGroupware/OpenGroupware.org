@@ -554,26 +554,12 @@ added:   Contrib/compare-releases.py
 changed: Contrib/ChangeBlogger/
      2004-09-09  Marcus Mueller  <znek@mulle-kybernetik.com>
      	* changelogparser.py: bugfix
-added:   Logic/LSTasks/LSTasks.cmd
-added:   Logic/LSResource/LSResource.cmd
-added:   Logic/LSDocuments/LSDocuments.cmd
 changed: Logic/LSMail/
      2004-06-
-added:   Logic/LSMail/LSMail.cmd
-added:   Logic/LSAccount/LSAccount.cmd
-added:   Logic/LSNews/LSNews.cmd
-added:   Logic/LSProject/LSProject.cmd
-added:   Logic/LSPerson/LSPerson.cmd
-added:   Logic/LSTeam/LSTeam.cmd
-added:   Logic/LSScheduler/LSScheduler.cmd
-added:   Logic/LSEnterprise/LSEnterprise.cmd
 changed: Logic/LSFoundation/
      2004-09-10  Helge Hess  <helge.hess@skyrix.com>
      	* OGoContextManager+LDAP.m: removed a log if an empty password is being
      	  passed in for login (v5.1.88)
-added:   Logic/LSBase/LSBase.cmd
-added:   Logic/LSAddress/LSAddress.cmd
-added:   Logic/LSSearch/LSSearch.cmd
 changed: Themes/
      2004-09-07  Helge Hess  <helge.hess@skyrix.com>
      	* English.lproj: added mimeicon_application_mac_binhex40_16x19.gif

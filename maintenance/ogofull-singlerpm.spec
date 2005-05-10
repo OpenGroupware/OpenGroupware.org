@@ -617,7 +617,6 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/lib/opengroupware.org-1.0a/commands/LSNews.cmd
 %{prefix}/lib/opengroupware.org-1.0a/commands/LSPerson.cmd
 %{prefix}/lib/opengroupware.org-1.0a/commands/LSProject.cmd
-%{prefix}/lib/opengroupware.org-1.0a/commands/LSResource.cmd
 %{prefix}/lib/opengroupware.org-1.0a/commands/LSScheduler.cmd
 %{prefix}/lib/opengroupware.org-1.0a/commands/LSSearch.cmd
 %{prefix}/lib/opengroupware.org-1.0a/commands/LSTasks.cmd
@@ -771,6 +770,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %changelog
 * Tue May 10 2005 Helge Hess <hh@opengroupware.org>
 - fixed some tool names
+- removed LSResource.cmd
 * Thu Mar 18 2005 Frank Reppin <frank@opengroupware.org>
 - be current and more descriptive descriptive description
 - divided sharedir into sharedir_ogo/sharedir_zide

@@ -707,14 +707,8 @@ changed: Contrib/ChangeBlogger/
 added:   Contrib/ChangeBlogger/find-changelogs.sh
 added:   Contrib/ChangeBlogger/clhtml_current_yearmonth.py
 added:   Logic/ChangeLog
-added:   Logic/LSTasks/LSTasks.cmd
-added:   Logic/LSResource/LSResource.cmd
-added:   Logic/LSDocuments/LSDocuments.cmd
 changed: Logic/LSMail/
      2004-06-
-added:   Logic/LSMail/LSMail.cmd
-added:   Logic/LSAccount/LSAccount.cmd
-added:   Logic/LSNews/LSNews.cmd
 changed: Logic/LSProject/
      2004-09-06  Helge Hess  <helge.hess@skyrix.com>
      	* Defaults.plist: changed attachment path to
@@ -722,12 +716,7 @@ changed: Logic/LSProject/
      	  (v5.1.29)
      	* Defaults.plist: changed default attachment path from /home/siteadm
      	  to /var/opengroupware.org/attachments (v5.1.28)
-added:   Logic/LSProject/LSProject.cmd
-added:   Logic/LSPerson/LSPerson.cmd
-added:   Logic/LSTeam/LSTeam.cmd
-added:   Logic/LSScheduler/LSScheduler.cmd
 added:   Logic/LSScheduler/fhs.make
-added:   Logic/LSEnterprise/LSEnterprise.cmd
 changed: Logic/LSFoundation/
      2004-09-10  Helge Hess  <helge.hess@skyrix.com>
      	* OGoContextManager+LDAP.m: removed a log if an empty password is being
@@ -837,19 +826,16 @@ removed: Logic/LSFoundation/LSFoundation/LSDBArrayFilterCommand.h
 changed: Logic/LSBase/
      2004-08-31  Helge Hess  <helge.hess@skyrix.com>
      	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.18)
-added:   Logic/LSBase/LSBase.cmd
 changed: Logic/LSAddress/
      2004-09-06  Helge Hess  <helge.hess@skyrix.com>
      	* LSWriteUserDefaultsCommand.m: minor code cleanups, attempt to
      	  autocreate LSAttachmentPath if it doesn't exist (v5.1.43)
      2004-09-01  Helge Hess  <helge.hess@opengroupware.org>
      	* added makefile for FHS install (v5.1.42)
-added:   Logic/LSAddress/LSAddress.cmd
 added:   Logic/LSAddress/fhs.make
 changed: Logic/LSSearch/
      2004-08-31  Helge Hess  <helge.hess@skyrix.com>
      	* GNUmakefile.preamble: added library lookup pathes for FHS (v5.1.18)
-added:   Logic/LSSearch/LSSearch.cmd
 added:   Logic/LSSearch/fhs.make
 changed: Themes/
      2004-09-07  Helge Hess  <helge.hess@skyrix.com>

@@ -1,6 +1,7 @@
 2005-05-10  Helge Hess  <helge.hess@skyrix.com>
 
-	* opengroupware.spec, ogofull-singleprm.spec: fixed tool names
+	* opengroupware.spec, ogofull-singleprm.spec: fixed tool names, removed
+	  LSResource.cmd
 
 2005-03-10  Helge Hess  <helge.hess@skyrix.com>
 
