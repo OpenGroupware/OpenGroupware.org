@@ -56,9 +56,16 @@ extern NSString *LSVUidPrefix;
 
 @implementation LSSetVCardCommand
 
-static Class NGVCardClass = Nil;
+static NSString *skyrixId = nil;
+static Class    NGVCardClass = Nil;
 
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  skyrixId = [ud stringForKey:@"skyrix_id"];
+  skyrixId = [[NSString alloc] initWithFormat:@"skyrix://%@/%@/",
+			         [[NSHost currentHost] name], skyrixId];
+  
   if ((NGVCardClass = NSClassFromString(@"NGVCard")) == Nil)
     NSLog(@"Note: NGVCard class not available, vCard parsing not available.");
 }
@@ -82,19 +89,50 @@ static Class NGVCardClass = Nil;
 
 /* running the command */
 
+- (EOKeyGlobalID *)globalIDFromURL:(NSString *)_url inContext:(id)_ctx {
+  EOGlobalID *lgid;
+  int pkey;
+  
+  if (![_url hasPrefix:@"skyrix://"])
+    return nil;
+  
+  if (![_url hasPrefix:skyrixId]) {
+    [self logWithFormat:@"record from different OGo installation: %@", _url];
+    return nil;
+  }
+  
+  pkey = [[_url lastPathComponent] intValue];
+  lgid = [[_ctx typeManager] globalIDForPrimaryKey:
+                              [NSNumber numberWithInt:pkey]];
+  if (lgid == nil) {
+    [self logWithFormat:@"did not find OGo id: %@", _url];
+    return nil;
+  }
+  
+  return (EOKeyGlobalID *)lgid;
+}
+
 - (EOKeyGlobalID *)globalIDForCard:(id)_card inContext:(id)_ctx {
-  id tmp;
+  EOKeyGlobalID *lgid;
+  NSString *tmp;
   
   if ([self->gid isNotNull])
     return self->gid;
   
-  // TODO: check UID, check SOURCE
+  // TODO: check UID, check SOURCE in source_url field
   
   if ((tmp = [_card valueForKey:@"uid"]) != nil) {
-    //[self logWithFormat:@"check uid %@", tmp];
+    if ([tmp hasPrefix:@"skyrix://"]) {
+      if ((lgid = [self globalIDFromURL:tmp inContext:_ctx]) != nil)
+        return lgid;
+    }
   }
+  
   if ((tmp = [_card valueForKey:@"source"]) != nil) {
-    //[self logWithFormat:@"check source %@", tmp];
+    if ([tmp hasPrefix:@"skyrix://"]) {
+      if ((lgid = [self globalIDFromURL:tmp inContext:_ctx]) != nil)
+        return lgid;
+    }
   }
   
   return nil;

@@ -40,10 +40,6 @@
 - (EOGlobalID *)globalID;
 @end
 
-@interface NSClassDescription(UsedPrivates)
-+ (NSClassDescription *)classDescriptionForEntityName:(NSString *)_entityName;
-@end
-
 @implementation LSTypeManager
 
 + (int)version {
@@ -138,65 +134,6 @@
     return [(id)_globalId entityName];
   
   return nil;
-}
-
-/* class descriptions */
-
-- (NSArray *)classDescriptionsForObjects:(NSArray *)_objects {
-  unsigned oc;
-  NSArray  *array;
-
-  array = nil;
-  if ((oc = [_objects count]) > 0) {
-    NSArray  *entityNames;
-    id       obj[oc];
-    unsigned i;
-    
-    entityNames = [self entityNamesForObjects:_objects];
-    for (i = 0; i < oc; i++) {
-      NSString *entityName;
-
-      entityName = [entityNames objectAtIndex:i];
-      obj[i] = [EOClassDescription classDescriptionForEntityName:entityName];
-    }
-    array = [NSArray arrayWithObjects:obj count:oc];
-  }
-  return array;
-}
-
-- (NSArray *)classDescriptionsForGlobalIDs:(NSArray *)_gids {
-  unsigned oc;
-  NSArray  *array;
-
-  array = nil;
-  if ((oc = [_gids count]) > 0) {
-    NSArray  *entityNames;
-    id       obj[oc];
-    unsigned i;
-    
-    entityNames = [self entityNamesForGlobalIDs:_gids];
-    for (i = 0; i < oc; i++) {
-      NSString *entityName;
-
-      entityName = [entityNames objectAtIndex:i];
-      obj[i] = [EOClassDescription classDescriptionForEntityName:entityName];
-    }
-    array = [NSArray arrayWithObjects:obj count:oc];
-  }
-  return array;
-}
-
-- (EOClassDescription *)classDescriptionForObject:(id)_object {
-  NSString *entityName;
-
-  entityName = [self entityNameForObject:_object];
-  return (id)[EOClassDescription classDescriptionForEntityName:entityName];
-}
-- (EOClassDescription *)classDescriptionForGlobalID:(EOGlobalID *)_globalId {
-  NSString *entityName;
-
-  entityName = [self entityNameForGlobalID:_globalId];
-  return (id)[EOClassDescription classDescriptionForEntityName:entityName];
 }
 
 /* primary keys */

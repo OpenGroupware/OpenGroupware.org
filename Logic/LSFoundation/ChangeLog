@@ -1,3 +1,7 @@
+2005-05-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSTypeManager: removed classDescription methods (unused) (v5.1.100)
+
 2005-05-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed gcc 4.0 warnings (v5.1.99)

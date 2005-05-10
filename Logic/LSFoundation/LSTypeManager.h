@@ -37,13 +37,6 @@
 - (NSString *)entityNameForObject:(id)_object;
 - (NSString *)entityNameForGlobalID:(EOGlobalID *)_globalId;
 
-/* class descriptions */
-
-- (NSArray *)classDescriptionsForObjects:(NSArray *)_objects;
-- (NSArray *)classDescriptionsForGlobalIDs:(NSArray *)_gids;
-- (EOClassDescription *)classDescriptionForObject:(id)_object;
-- (EOClassDescription *)classDescriptionForGlobalID:(EOGlobalID *)_globalId;
-
 /*
   this is for *backwards* compatibility only, you should use EOGlobalID's
   wherever possible

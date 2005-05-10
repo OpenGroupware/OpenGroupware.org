@@ -33,7 +33,6 @@ LSAddress_OBJC_FILES = \
 	_NSUserDefaults.m			\
 	LSCheckLoginCommand.m              	\
 	LSSetCategoriesCommand.m            	\
-	LSSetResourcesCommand.m             	\
 	LSRegisterUserDefaultsCommand.m		\
 	LSWriteUserDefaultsCommand.m		\
 	LSUserDefaultsFunctions.m		\

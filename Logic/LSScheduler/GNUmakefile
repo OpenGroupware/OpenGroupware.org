@@ -29,6 +29,7 @@ LSScheduler_OBJC_FILES = \
 	LSGetAppointmentsForGlobalIDs.m			\
 	LSConvertTimeZoneCommand.m     			\
 	LSSetAppointmentCommand.m      			\
+	LSSetResourcesCommand.m				\
 	LSNewAppointmentCommand.m      			\
 	LSGetAppointmentCommand.m      			\
 	LSDeleteAppointmentCommand.m   			\

@@ -1,4 +1,4 @@
-# $Id$
+# compilation settings
 
 ADDITIONAL_INCLUDE_DIRS += \
         -I./Headers     \
@@ -14,6 +14,7 @@ LSAddress_BUNDLE_LIBS += \
 libLSAddress_LIBRARIES_DEPEND_UPON += \
 	-lLSFoundation	\
 	-lGDLAccess	\
+        -lNGiCal        \
 	-lNGMime -lNGLdap -lNGStreams -lNGExtensions -lEOControl \
 	-lDOM -lSaxObjC
 
