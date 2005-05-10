@@ -1,3 +1,13 @@
+2005-05-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* v1.3.107
+
+	* SxObject.m: return a 405 if a PUT is attempted (subclasses need to
+	  override to support a PUT)
+
+	* SxFolder.m: return 405 instead of 200 if a PUT on a folder is
+	  attempted
+
 2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.3.106

@@ -475,8 +475,7 @@
   /* fake default */
   
   r = [(WOContext *)_ctx response];
-  [r setStatus:200 /* Ok */];
-  [self logWithFormat:@"PUT on object, just saying OK"];
+  [r setStatus:405 /* Forbidden */];
   return r;
 }
 

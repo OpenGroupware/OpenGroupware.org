@@ -636,7 +636,7 @@ static NSString *cachePath  = nil;
   }
   
   [r setStatus:200 /* Ok */];
-  [self logWithFormat:@"GET on folder, just saying OK"];
+  [self logWithFormat:@"GET on folder, returning nothing."];
   return r;
 }
 
@@ -645,11 +645,14 @@ static NSString *cachePath  = nil;
   WOResponse *r;
 
   r = [(WOContext *)_ctx response];
+#if 1
+  [r setStatus:405 /* forbidden */];
+#else
   [r setStatus:200 /* Ok */];
-  
+#endif  
   [self logWithFormat:
-	  @"PUT on folder (probably attempt to create an object!), "
-	  @"just saying OK (path-info: '%@')", [_ctx pathInfo]];
+	  @"PUT on folder (attempt to create an object?), path-info: '%@'", 
+          [_ctx pathInfo]];
   return r;
 }
 
