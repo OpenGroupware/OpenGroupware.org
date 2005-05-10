@@ -206,6 +206,7 @@ static BOOL embedViewURL             = NO;
 }
 
 - (BOOL)shouldReturn201AfterPUTInContext:(WOContext *)_ctx {
+  // TODO: DUP in SxAddress (move to SxObject?)
   WEClientCapabilities *cc;
   NSString *ua;
   
@@ -351,7 +352,7 @@ static BOOL embedViewURL             = NO;
   if ((etag = [self davEntityTag]) != nil)
     [r setHeader:etag forKey:@"etag"];
   
-  /* set location header */
+  /* set location header (TODO: DUP in SxAddress) */
   if ([(tmp = [self->eo valueForKey:@"dateId"]) isNotNull]) {
     url = [[self container] baseURLInContext:_ctx];
     if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];

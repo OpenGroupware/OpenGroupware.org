@@ -250,7 +250,7 @@ static BOOL debugEO = NO;
 {
   id value;
   
-  if ((value = [_setProps objectForKey:@"email1"])) {
+  if ((value = [_setProps objectForKey:@"email1"]) != nil) {
     NSString *dn;
     
     if ((dn = [_setProps objectForKey:@"email1displayname"])) {
@@ -263,7 +263,7 @@ static BOOL debugEO = NO;
     
     [values setObject:[value stringValue] forKey:@"email1"];
   }
-  if ((value = [_setProps objectForKey:@"email2"])) {
+  if ((value = [_setProps objectForKey:@"email2"]) != nil) {
     NSString *dn;
     
     if ((dn = [_setProps objectForKey:@"email2displayname"])) {
@@ -397,12 +397,12 @@ static BOOL debugEO = NO;
       [self logWithFormat:@"got EO: %@", neweo];
     
     companyId = [[neweo valueForKey:@"companyId"] intValue];
-    [self logWithFormat:@"  company-id: %i", companyId];
+    if (debugEO) [self logWithFormat:@"  company-id: %i", companyId];
     
     /* TODO: check permissions */
     ch = [[cmdctx valueForKey:LSDatabaseChannelKey] adaptorChannel];
     e = [phoneDict keyEnumerator];
-    while ((key = [e nextObject])) {
+    while ((key = [e nextObject]) != nil) {
       NSString *value;
       NSString *sql;
       
@@ -475,262 +475,55 @@ static BOOL debugEO = NO;
 
 /* update ...*/
 
-- (Class)updateClass {
+- (Class)classFromSlotNamed:(NSString *)_slot {
+  static NSMutableSet *ms = nil;
   NSString *n;
+  Class clazz;
     
-  if ((n = [[self soClass] lookupKey:@"updateClass" inContext:nil]) != nil)
-    return NSClassFromString(n);
+  if ((n = [[self soClass] lookupKey:_slot inContext:nil]) == nil)
+    return Nil;
   
-  [self logWithFormat:@"WARNING: no update class is specified!"];
+  if ((clazz = NSClassFromString(n)) != Nil)
+    return clazz;
+
+  if ([ms containsObject:n])
+    return Nil;
+  
+  if (ms == nil) ms = [[NSMutableSet alloc] initWithCapacity:16];
+  [ms addObject:n];
+  [self logWithFormat:@"WARNING: did not find class specified in slot %@: %@",
+          _slot, n];
   return Nil;
+}
+
+- (Class)updateClass {
+  return [self classFromSlotNamed:@"updateClass"];
 }
 
 - (Class)zideLookParserClass {
-  NSString *n;
-  if ((n = [[self soClass] lookupKey:@"zlParserClass" inContext:nil]) != nil)
-    return NSClassFromString(n);
-  return Nil;
+  return [self classFromSlotNamed:@"zlParserClass"];
 }
 - (Class)zideLookRendererClass {
-  NSString *n;
-  if ((n = [[self soClass] lookupKey:@"zlRendererClass" inContext:nil]) != nil)
-    return NSClassFromString(n);
-  return Nil;
+  return [self classFromSlotNamed:@"zlRendererClass"];
 }
-
 - (Class)evolutionParserClass {
-  NSString *n;
-  if ((n = [[self soClass] lookupKey:@"evcParserClass" inContext:nil]) != nil)
-    return NSClassFromString(n);
-  return Nil;
+  return [self classFromSlotNamed:@"evcParserClass"];
 }
 
 - (Class)selfRendererClass {
   return [self zideLookRendererClass];
 }
 
-#if 0
-- (NSException *)zlSetProperties:(NSDictionary *)_setProps
-  removePropertiesNamed:(NSArray *)_delProps 
-  inContext:(id)_ctx
-{
-  NSException *exc;
-  id          ep;
-
-  exc = nil;
-  ep  = nil;
-
-  NS_DURING {
-    LSCommandContext   *ctx;
-    NSNumber           *pkey;
-    NSDictionary       *attrs;
-    id                 obj, ren;
-
-    ctx   = [self commandContextInContext:_ctx];
-    pkey  = [self primaryKey];
-    ren   = [[self revRendererClass] parserWithContext:_ctx];
-    
-    attrs = [ren revRenderEntry:_setProps];
-    ep    = [[[self updateClass] alloc] initWithContext:ctx primaryKey:pkey
-                                        attributes:attrs];
-    [ep setType:[[self container] type]];
-    if (!(obj = [ep update])) {
-      NSLog(@"update failed with _setProps %@", _setProps);
-    }
-    else {
-      if ([ep wasNew]) {
-        id oid;
-
-        if (!(oid = [obj valueForKey:@"companyId"])) {
-          NSLog(@"Missing companyId for %@", obj);
-        }
-        else {
-          [_ctx setObject:oid forKey:@"SxNewObjectID"];
-        }
-      }
-    }
-  }
-  NS_HANDLER {
-    printf("got exception %s\n", [[localException description] cString]);
-    exc = localException;
-  }
-  NS_ENDHANDLER;
-  [ep release]; ep = nil;
-  return exc;
-}
-
-- (NSException *)evoSetProperties:(NSDictionary *)_setProps
-  removePropertiesNamed:(NSArray *)_delProps 
-  inContext:(id)_ctx
-{
-  /*
-    bday = "1969-12-30T23:00:00Z";
-    cn = "Bjoern Stierand";
-    email1 = "bs@skyrix.com";
-    email1addrtype = SMTP;
-    email1displayname = "bs@skyrix.com";
-    emailaddresslist = "<V:v xmlns:V=\"xml:\">0</V:v>";
-    emaillisttype = 1;
-    fileas = "Bjoern Stierand";
-    givenName = Bjoern;
-    nickname = bjoern;
-    sn = Stierand;
-    telephoneNumber = 2222;
-    
-    redundant attributes: 
-      cn
-      fileas
-      email1addrtype
-  */
-  LSCommandContext    *cmdctx;
-  NSMutableDictionary *values;
-  NSMutableDictionary *phoneDict, addrDict;
-  NSMutableArray      *keys;
-  NSException *e = nil;
-  EOGlobalID  *gid;
-  int companyId;
-  id  obj;
-  id  value;
-
-  if (self->flags.isNew) {
-    return [self davCreateObject:[self nameInContainer]
-		 properties:_setProps
-		 inContext:_ctx];
-  }
-  
-  /* could support lookup based on login ! */
-  companyId = [[self nameInContainer] intValue];
-  
-  [self debugWithFormat:@"patch: %@, del: %@", _setProps, _delProps];
-  
-  keys = [[[_setProps allKeys] mutableCopy] autorelease];
-  
-  if (companyId == 0) {
-    [self logWithFormat:@"invalid object name: %@", [self nameInContainer]];
-    return [NSException exceptionWithHTTPStatus:404
-			reason:@"invalid child object name."];
-  }
-  gid = [self globalID];
-  [self logWithFormat:@"GID: %@", gid];
-  
-  /* find EO object */
-  
-  if ((cmdctx = [[self container] commandContextInContext:_ctx]) == nil) {
-    [self logWithFormat:@"got no command context ?"];
-    return [NSException exceptionWithHTTPStatus:500
-			reason:@"got no command context !"];
-  }
-  
-  if ((obj = [self objectInContext:_ctx]) == nil) {
-    return [NSException exceptionWithHTTPStatus:404
-			reason:@"did not find object"];
-  }
-  if (debugEO)
-    [self logWithFormat:@"got EO: 0x%08X", obj];
-  
-  /* remove redundant or unused attributes */
-  
-  [keys removeObject:@"cn"];
-  [keys removeObject:@"fileas"];
-  [keys removeObject:@"email1addrtype"];
-  [keys removeObject:@"email2addrtype"];
-  [keys removeObject:@"emailaddresslist"];
-  [keys removeObject:@"emaillisttype"];
-  
-  /* select out maintable attributes */
-  
-  [self logWithFormat:@"  keys: %@", [keys componentsJoinedByString:@","]];
-  
-  values    = [NSMutableDictionary dictionaryWithCapacity:16];
-  phoneDict = [NSMutableDictionary dictionaryWithCapacity:8];
-  addrDict  = [NSMutableDictionary dictionaryWithCapacity:4];
-  
-  [values setObject:obj            forKey:@"object"];
-  [values setObject:@"05_changed" forKey:@"logAction"];
-  [values setObject:@"person was changed in Evolution or Outlook"
-          forKey:@"logText"];
-  
-  [self fillCompanyRecord:values   from:_setProps keySet:keys];
-  [self fillEmailRecord:values     from:_setProps keySet:keys];
-  [self fillPhoneRecord:phoneDict  from:_setProps keySet:keys];
-  
-  if ((value = [_setProps objectForKey:@"title"])) {
-    [values setObject:[value stringValue] forKey:@"job_title"];
-    [keys removeObject:@"title"];
-  }
-  
-  [self logWithFormat:@"  remaining keys: %@", 
-	  [keys componentsJoinedByString:@","]];
-  
-  /* perform edit */
-  
-  NS_DURING {
-    EOAdaptorChannel *ch;
-    NSEnumerator *e;
-    NSString     *key;
-
-
-    [cmdctx runCommand:[self updateCommandName] arguments:values];
-    
-    /* TODO: check permissions */
-    ch = [[cmdctx valueForKey:LSDatabaseChannelKey] adaptorChannel];
-    e = [phoneDict keyEnumerator];
-    while ((key = [e nextObject])) {
-      NSString *value;
-      NSString *sql;
-      
-      value = [phoneDict objectForKey:key];
-      sql = [self updateSqlForPhoneKey:key value:value 
-		  withCompanyId:companyId];
-      
-      if ([sql length] == 0) {
-	[self logWithFormat:@"got no SQL for phone key: '%@'", key];
-	continue;
-      }
-      
-      if (![ch evaluateExpression:sql]) {
-	// TODO: rollback & give back exception
-	[self logWithFormat:@"failed to update phone key %@: %@", key, sql];
-	continue;
-      }
-      
-      //[self logWithFormat:@"successful update of phone-key: %@", key];
-    }
-  }
-  NS_HANDLER
-    e = [localException retain];
-  NS_ENDHANDLER;
-  
-  /* check error state */
-  
-  if (e != nil) {
-    [self logWithFormat:@"set failed: %@", e];
-    [cmdctx rollback];
-  }
-  else if (![cmdctx commit]) {
-    [self logWithFormat:@"commit failed !"];
-    [cmdctx rollback];
-    e = [NSException exceptionWithHTTPStatus:500 /* forbidden */
-		     reason:@"transaction commit failed."];
-  }
-  else
-    /* everything seems fine .. */
-    e = nil;
-  
-  return e;
-}
-#endif
-
 - (SxContactManager *)contactManagerInContext:(id)_ctx {
   LSCommandContext *cmdctx;
   SxContactManager *sm;
 
   if ((cmdctx = [self commandContextInContext:_ctx]) == nil) {
-    [self logWithFormat:@"got no SKYRiX context for context: %@", _ctx];
+    [self logWithFormat:@"ERROR: got no OGo context for context: %@", _ctx];
     return nil;
   }
   if ((sm = [SxContactManager managerWithContext:cmdctx]) == nil) {
-    [self logWithFormat:@"got no contact manager for SKYRiX context: %@", 
+    [self logWithFormat:@"ERROR: got no contact manager for OGo context: %@", 
             cmdctx];
     return nil;
   }
@@ -747,12 +540,11 @@ static BOOL debugEO = NO;
   Class       rc;
   
   ua = [[_ctx request] headerForKey:@"user-agent"];
-
-  if ([ua hasPrefix:@"Evolution/"])
-    rc = [self evolutionParserClass];
-  else
-    rc = [self zideLookParserClass];
-
+  
+  rc = ([ua hasPrefix:@"Evolution/"])
+    ? [self evolutionParserClass]
+    : [self zideLookParserClass];
+  
   exc = nil;
   ep  = nil;
 
@@ -772,17 +564,15 @@ static BOOL debugEO = NO;
 
     [ep setType:[[self container] type]];
     if (!(obj = [ep update]))
-      NSLog(@"update failed with _setProps %@", _setProps);
+      [self logWithFormat:@"update failed with _setProps %@", _setProps];
     else {
       if ([ep wasNew]) {
         id oid;
 
-        if (!(oid = [obj valueForKey:@"companyId"])) {
-          NSLog(@"Missing companyId for %@", obj);
-        }
-        else {
+        if ((oid = [obj valueForKey:@"companyId"]) == nil)
+          [self logWithFormat:@"Missing companyId for %@", obj];
+        else
           [_ctx setObject:oid forKey:@"SxNewObjectID"];
-        }
       }
     }
   }
@@ -796,11 +586,109 @@ static BOOL debugEO = NO;
 
 }
 
-/* GET-Action */
+/* actions */
+
+- (BOOL)shouldReturn201AfterPUTInContext:(WOContext *)_ctx {
+  // TODO: DUP in SxAppointment (move to SxObject?)
+  WEClientCapabilities *cc;
+  NSString *ua;
+  
+  cc = [[(WOContext *)_ctx request] clientCapabilities];
+  ua = [cc userAgentType];
+  if ([ua isEqualToString:@"Evolution"])
+    /* Evo needs 201, otherwise an error will be shown */
+    return YES;
+  if ([ua isEqualToString:@"ZideLook"])
+    return YES;
+  
+  /* if I remember right, Cadaver complains on 201 */
+  return NO;
+}
 
 - (id)PUTAction:(WOContext *)_ctx {
-  [self logWithFormat:@"SHOULD PUT: %@",  [self entityName]];
-  return nil;
+  WOResponse  *r;
+  NSException *error;
+  NSString *mtype, *etag, *tmp, *url;
+  NSString *content = nil;
+  id result;
+  
+  /* check HTTP preconditions */
+  
+  if ((error = [self matchesRequestConditionInContext:_ctx]))
+    return error;
+  
+  /* check MIME-type */
+  
+  mtype = [[_ctx request] headerForKey:@"content-type"];
+  if (![mtype hasPrefix:@"text/x-vcard"]) {
+    if ([mtype length] > 0) {
+      [self logWithFormat:@"ERROR: tried to PUT unsupported MIME type: %@",
+            mtype];
+      
+      // TODO: use different status?!
+      return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
+                          reason:@"unsupported content type in PUT"];
+    }
+    
+    content = [[_ctx request] contentAsString];
+    if (![content hasPrefix:@"BEGIN:"]) {
+      return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
+                          reason:@"missing content type in PUT"];
+    }
+    else {
+      [self logWithFormat:
+              @"WARN: missing content-type in PUT, but looks like vCard ..."];
+    }
+  }
+  if (content == nil) content = [[_ctx request] contentAsString];
+  
+  /* add vCard */
+  
+  result = [[self commandContextInContext:_ctx]
+             runCommand:@"company::set-vcard",
+             @"vCard",      content,
+             @"entityName", [self entityName],
+             @"gid",        [self isNew] ? nil : [self globalID],
+             nil];
+  
+  if (debugEO) [self logWithFormat:@"got EO: %@", result];
+  
+  if (![[result valueForKey:@"companyId"] isNotNull]) {
+    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
+                        reason:@"ERROR: failed to create record!"];
+  }
+
+  /* remember result */
+  
+  ASSIGN(self->eo, result);
+  
+  /* setup response */
+
+  r = [(WOContext *)_ctx response];
+  [r setStatus:
+       [self shouldReturn201AfterPUTInContext:_ctx]
+       ? 201 /* Created */ : 200 /* OK */];
+  
+  /* set etag header */
+  if ((etag = [self davEntityTag]) != nil)
+    [r setHeader:etag forKey:@"etag"];
+  
+  /* set location header (TODO: DUP in SxAppointment) */
+  if ([(tmp = [self->eo valueForKey:@"companyId"]) isNotNull]) {
+    url = [[self container] baseURLInContext:_ctx];
+    if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
+    
+    tmp = [tmp stringValue];
+    tmp = [tmp stringByAppendingString:@".vcf"];
+    
+    [r setHeader:[url stringByAppendingString:tmp] forKey:@"location"];
+  }
+  else {
+    [self logWithFormat:
+	    @"WARNING: cannot set location header, missing new object id!"];
+  }
+  
+  return r;
 }
 
 - (id)GETAction:(WOContext *)_ctx {
