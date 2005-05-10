@@ -372,21 +372,26 @@ RelatedLinks: OGoObjectLinkList {
 
 //-----------------------------------
 //####ADDED BY AO####
-//Ajout 
+//Delegation
 
 DelegAttribute:    WOString { value = labels.deleg; }
 
-DelegAttr: SkyAttribute {
+DelegAttr: SkyAttribute 
+{
   label      = labels.delegrdv;
   string     = object.delegrdv;
   keyColor   = "subAttributeCell";
   valueColor = "subValueCell";
 }
 
-DelegTab: SkySimpleTabItem {
+DelegTab: SkySimpleTabItem 
+{
   key   = "delegation";
   label = labels.delegation;
 }
-DelegList: SkyObjectDelegList {
-  object = appointment;
+// Participant list like partcipants viewer
+DelegationList: SkyDelegationList
+{
+  appointment  = appointment;
 }
+

@@ -25,6 +25,7 @@ LSWScheduler_OBJC_FILES = 			\
 	NSCalendarDate+UnitAdder.m		\
 	SkyAptTypeSelection.m			\
 	OGoAppointmentDateFormatter.m		\
+	SkyDelegationList.m			\
 
 LSWScheduler_RESOURCE_FILES += Defaults.plist Version
 

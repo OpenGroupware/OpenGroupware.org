@@ -113,7 +113,7 @@
 //**************************************************************************
 - (void)_prepareForExecutionInContext:(id)_ctx
 {
-	id object;
+	id obj;
 	// [self setReturnValueToCopyOfValue:accessRights];
     
 	[self logWithFormat:@"***** _prepareForExecutionInContext" ];
@@ -122,11 +122,11 @@
 	NSNumber * aCompanyID = [login  valueForKey:@"companyId"];
 	[super _prepareForExecutionInContext:_ctx];
 
-	object = [self object];
+	obj = [self object];
 
-	[object takeValue:[self getIDToAdd]  forKey:@"delegateCompanyId"];
-	[object takeValue:[self getRdvType] forKey:@"rdvType"];
-	[object takeValue:aCompanyID forKey:@"companyId"];
+	[obj takeValue:[self getIDToAdd]  forKey:@"delegateCompanyId"];
+	[obj takeValue:[self getRdvType] forKey:@"rdvType"];
+	[obj takeValue:aCompanyID forKey:@"companyId"];
 	[self logWithFormat:@"***** _prepareForExecutionInContext ======> recordDict : %@",self->recordDict];
 }
 

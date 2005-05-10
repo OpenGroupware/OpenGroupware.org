@@ -295,6 +295,7 @@ tiff                     = "Download TIF document" ;
 title                    = "Filename";
 titleLabel               = "Filename";
 token                    = "Token";
+togglecreate		 = "Toggle Create";
 txt                      = "Download Text document";
 type                     = "Type";
 unknown                  = "download miscellaneous document type";

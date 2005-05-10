@@ -75,10 +75,10 @@ static int maxCycleCount = 100;
 {
   id cyclic = [self object];
   id pkey   = [cyclic valueForKey:@"dateId"];
-
   LSRunCommandV(_context, @"appointment", @"new",
                 @"ownerId",           [cyclic valueForKey:@"ownerId"],
-                @"parentDateId",      pkey,
+                @"creatorId",         [cyclic valueForKey:@"creatorId"],
+				@"parentDateId",      pkey,
                 @"startDate",         _startDate,
                 @"endDate",           _endDate,
                 @"cycleEndDate",      [cyclic valueForKey:@"cycleEndDate"],
@@ -195,10 +195,10 @@ static int maxCycleCount = 100;
 
       fSD = [fSD hour:[sD hourOfDay] minute:[sD minuteOfHour]];
       fED = [fED hour:[eD hourOfDay] minute:[eD minuteOfHour]];
-
       [_context runCommand:@"appointment::set",
                 @"object", firstCyclic,
-        @"ownerId"         ,   [firstCyclic valueForKey:@"ownerId"],            
+        @"ownerId"         ,   [firstCyclic valueForKey:@"ownerId"], 
+		@"creatorId"	   ,   [firstCyclic valueForKey:@"creatorId"],           
         @"accessTeamId"    ,   [obj valueForKey:@"accessTeamId"],
         @"type"            ,   [firstCyclic valueForKey:@"type"],            
         @"startDate"       ,   fSD,

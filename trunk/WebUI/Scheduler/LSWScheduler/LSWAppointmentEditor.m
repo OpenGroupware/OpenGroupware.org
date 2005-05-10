@@ -3672,13 +3672,13 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 	
 	if ((pId = [[self object] valueForKey:@"parentDateId"])) {
 		NSMutableArray *c;
-		id             firstCyclic;
+		id          firstCyclic;
 		
 		c           = [NSMutableArray array];
 		firstCyclic = [self _fetchAppointmentForPrimaryKey:pId];
 		[c addObject:firstCyclic];
 		[c addObjectsFromArray:
-			[self _fetchCyclicAppointmentsOfAppointment:firstCyclic]];
+		[self _fetchCyclicAppointmentsOfAppointment:firstCyclic]];
 		cyclics = c;
 	}
 	else {
