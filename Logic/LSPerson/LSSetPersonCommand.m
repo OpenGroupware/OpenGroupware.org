@@ -70,11 +70,14 @@
   entity  = [[self databaseModel] entityNamed:@"Person"];
   
   if ((companyId = [self valueForKey:@"companyId"]) == nil) {
-    id obj = [self object];
+    id obj;
+    
+    obj = [self object];
+    [self assert:[obj isNotNull] reason:@"Missing object for update!"];
     companyId = [obj valueForKey:@"companyId"];
   }
   
-  [self assert:(companyId != nil) reason:@"missing companyId!"];
+  [self assert:[companyId isNotNull] reason:@"Missing companyId for update!"];
   
   attributes = [NSMutableArray arrayWithCapacity:8];
   
@@ -92,12 +95,10 @@
                 fetchOrder:nil lock:NO];
   [self assert:ok reason:[sybaseMessages description]];
   one = [channel fetchAttributes:attributes withZone:NULL];
-  if (one != nil) {
+  if (one != nil)
     [channel cancelFetch]; 
-  }
-  else {
+  else
     [self assert:NO reason:@"failed to fetch old account data"]; 
-  }
   return one;
 }
 
@@ -137,31 +138,36 @@
   return @"Person";
 }
 
+- (void)addAttachmentInContext:(id)_context {
+  /* code comes from LSSetAccountCommand */
+  BOOL     isOk;
+  NSString *path;
+  NSString *fileName;
+  
+  if (!(self->data != nil && self->filePath != nil && [self->data length] > 0))
+    return;
+  
+  path = [[_context userDefaults] stringForKey:@"LSAttachmentPath"];
+
+  fileName = [[[[_context valueForKey:LSAccountKey]
+                          valueForKey:@"companyId"] stringValue]
+                          stringByAppendingPathExtension:@"html"];
+  fileName = [path stringByAppendingPathComponent:fileName];
+  
+  isOk = [self->data writeToFile:fileName atomically:YES];
+  [self assert:isOk reason:@"error during save of attachment"];
+}
+
 - (void)_executeInContext:(id)_context {
   [super _executeInContext:_context];
-
-  /* code comes from LSSetAccountCommand */
-
-  if (self->data != nil && self->filePath != nil && [self->data length] > 0) {
-    BOOL     isOk;
-    NSString *path     = nil;
-    NSString *fileName = nil;
-    
-    path = [[_context userDefaults] stringForKey:@"LSAttachmentPath"];
-
-    fileName = [[[[_context valueForKey:LSAccountKey]
-                            valueForKey:@"companyId"] stringValue]
-                            stringByAppendingPathExtension:@"html"];
-    fileName = [path stringByAppendingPathComponent:fileName];
-
-    isOk = [self->data writeToFile:fileName atomically:YES];
-    [self assert:isOk reason:@"error during save of attachment"];
-  }
-  if ([[self object] valueForKey:@"isAccount"])
+  [self addAttachmentInContext:_context];
+  
+  if ([[self object] valueForKey:@"isAccount"]) {
     [[NSNotificationCenter defaultCenter]
                            postNotificationName:
                              @"SkyUpdatedAccountNotification"
                            object:[self object]];
+  }
 }
 
 /* accessors */
