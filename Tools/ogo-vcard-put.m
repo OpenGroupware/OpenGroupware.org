@@ -88,7 +88,7 @@
   
   NSLog(@"    import %@", [_vCard valueForKey:@"uid"]);
   result = [_ctx runCommand:@"company::set-vcard",
-		 @"vCardObject", _vCard, nil];
+		 @"vCardObject", _vCard, @"sourceLookup", @"YES", nil];
   NSLog(@"    added record: %@", [result valueForKey:@"companyId"]);
   
   return 0;

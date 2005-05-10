@@ -1,5 +1,5 @@
 # version file
 
-SUBMINOR_VERSION:=21
+SUBMINOR_VERSION:=22
 
 # v5.0.16 requires LSSearch v5.0.13

@@ -31,13 +31,12 @@
 
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSSetPersonCommand
 
-/* access check */
 - (void)dealloc {
-  [self->data release];
+  [self->data     release];
   [self->filePath release];
   [super dealloc];
 }
@@ -55,13 +54,15 @@
   return accountAttr;
 }
 
+/* access check */
+
 - (NSDictionary *)fetchOldAccountValues:(id)_context {
   EOAdaptorChannel *channel;
   EOEntity         *entity;
-  NSMutableArray *attributes;
-  NSEnumerator   *e;
-  EOSQLQualifier *qual;
-  id   companyId;
+  NSMutableArray   *attributes;
+  NSEnumerator     *e;
+  EOSQLQualifier   *qual;
+  NSNumber         *companyId;
   id   one;
   BOOL ok;
   
@@ -73,13 +74,12 @@
     companyId = [obj valueForKey:@"companyId"];
   }
   
-  [self assert:(companyId != nil)
-        reason:@"missing company id !"];
+  [self assert:(companyId != nil) reason:@"missing companyId!"];
   
   attributes = [NSMutableArray arrayWithCapacity:8];
   
   e = [[self accountAttributes] objectEnumerator];
-  while ((one = [e nextObject]))
+  while ((one = [e nextObject]) != nil)
     [attributes addObject:[entity attributeNamed:one]];
   
   [attributes addObject:[entity attributeNamed:@"companyId"]];
@@ -92,7 +92,7 @@
                 fetchOrder:nil lock:NO];
   [self assert:ok reason:[sybaseMessages description]];
   one = [channel fetchAttributes:attributes withZone:NULL];
-  if (one) {
+  if (one != nil) {
     [channel cancelFetch]; 
   }
   else {
@@ -104,26 +104,30 @@
 /* prepare */
 
 - (void)_prepareForExecutionInContext:(id)_context {
-  NSEnumerator *e;
-  id one, old, oldValue, newValue;
+  id old;
   
-  old = [self fetchOldAccountValues:_context];
-  if (old != nil) {
+  if ((old = [self fetchOldAccountValues:_context]) != nil) {
+    NSEnumerator *e;
+    id one, oldValue, newValue;
+    
     e = [[self accountAttributes] objectEnumerator];
-    while ((one = [e nextObject])) {
+    while ((one = [e nextObject]) != nil) {
       newValue = [self valueForKey:one];
-      if ([newValue isNotNull]) {
-        oldValue = [old valueForKey:one];
-        if (![newValue isEqual:oldValue]) {
-          // value changed
-          NSLog(@"WARNING[%s]: %@ tried to change account value '%@' "
-                @"of %@ from %@ to %@",
-                __PRETTY_FUNCTION__, [[_context valueForKey:LSAccountKey]
-                                                valueForKey:@"login"],
-                one, [old valueForKey:@"login"], oldValue, newValue);
-          [self takeValue:oldValue forKey:one];
-        }
-      }
+      if (![newValue isNotNull])
+	continue;
+
+      oldValue = [old valueForKey:one];
+      if ([newValue isEqual:oldValue])
+	continue;
+
+      // value changed
+      [self logWithFormat:
+	      @"WARNING[%s]: %@ tried to change account value '%@' "
+              @"of %@ from %@ to %@",
+              __PRETTY_FUNCTION__, [[_context valueForKey:LSAccountKey]
+                                              valueForKey:@"login"],
+              one, [old valueForKey:@"login"], oldValue, newValue];
+      [self takeValue:oldValue forKey:one];
     }
   }
   [super _prepareForExecutionInContext:_context];  
@@ -142,7 +146,7 @@
     BOOL     isOk;
     NSString *path     = nil;
     NSString *fileName = nil;
-
+    
     path = [[_context userDefaults] stringForKey:@"LSAttachmentPath"];
 
     fileName = [[[[_context valueForKey:LSAccountKey]
@@ -158,11 +162,9 @@
                            postNotificationName:
                              @"SkyUpdatedAccountNotification"
                            object:[self object]];
-  
-  
-  
-  
 }
+
+/* accessors */
 
 - (void)setData:(NSData *)_data {
   ASSIGN(self->data, _data);
@@ -172,13 +174,15 @@
 }
 
 - (void)setFilePath:(NSString *)_filePath {
-  ASSIGN(self->filePath, _filePath);
+  ASSIGNCOPY(self->filePath, _filePath);
 }
 - (NSString *)filePath {
   return self->filePath;
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+/* key/value coding */
+
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"data"]) {
     [self setData:_value];
     return;
@@ -190,7 +194,7 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"data"])
     return [self data];
   else if ([_key isEqualToString:@"filePath"])
