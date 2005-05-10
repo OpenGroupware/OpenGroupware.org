@@ -1,3 +1,7 @@
+2005-05-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAddress.m: properly commit changes (v1.3.84)
+
 2005-05-10  Helge Hess  <helge.hess@skyrix.com>
 
 	* SxAddress.m: added vCard PUT support based on the company::set-vcard

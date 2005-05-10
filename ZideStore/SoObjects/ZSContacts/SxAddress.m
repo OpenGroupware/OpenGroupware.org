@@ -435,14 +435,14 @@ static BOOL debugEO = NO;
   else if (![cmdctx commit]) {
     [self logWithFormat:@"commit failed !"];
     [cmdctx rollback];
-    e = [NSException exceptionWithHTTPStatus:500 /* forbidden */
+    e = [NSException exceptionWithHTTPStatus:500 /* Server Error */
 		     reason:@"transaction commit failed."];
   }
   else {
     /* everything seems fine .. */
     e = nil;
-    [_ctx setObject:[NSNumber numberWithInt:companyId]
-	  forKey:@"SxNewObjectID"];
+    [(WOContext *)_ctx setObject:[NSNumber numberWithInt:companyId]
+		       forKey:@"SxNewObjectID"];
   }
   
   return e;
@@ -572,7 +572,7 @@ static BOOL debugEO = NO;
         if ((oid = [obj valueForKey:@"companyId"]) == nil)
           [self logWithFormat:@"Missing companyId for %@", obj];
         else
-          [_ctx setObject:oid forKey:@"SxNewObjectID"];
+          [(WOContext *)_ctx setObject:oid forKey:@"SxNewObjectID"];
       }
     }
   }
@@ -606,10 +606,11 @@ static BOOL debugEO = NO;
 }
 
 - (id)PUTAction:(WOContext *)_ctx {
+  LSCommandContext *cmdctx;
   WOResponse  *r;
   NSException *error;
-  NSString *mtype, *etag, *tmp, *url;
-  NSString *content = nil;
+  NSString    *mtype, *etag, *tmp, *url;
+  NSString    *content = nil;
   id result;
   
   /* check HTTP preconditions */
@@ -644,20 +645,31 @@ static BOOL debugEO = NO;
   
   /* add vCard */
   
-  result = [[self commandContextInContext:_ctx]
-             runCommand:@"company::set-vcard",
-             @"vCard",      content,
-             @"entityName", [self entityName],
-             @"gid",        [self isNew] ? nil : [self globalID],
+  cmdctx = [self commandContextInContext:_ctx];
+  result = [cmdctx runCommand:@"company::set-vcard",
+             @"vCard",         content,
+             @"entityName",    [self entityName],
+	     @"createPrivate", [NSNumber numberWithBool:self->isPrivate],
+             @"gid",           [self isNew] ? nil : [self globalID],
              nil];
   
   if (debugEO) [self logWithFormat:@"got EO: %@", result];
   
   if (![[result valueForKey:@"companyId"] isNotNull]) {
+    [cmdctx rollback];
     return [NSException exceptionWithHTTPStatus:500 /* Server Error */
                         reason:@"ERROR: failed to create record!"];
   }
-
+  
+  /* commit */
+  
+  if (![cmdctx commit]) {
+    [self logWithFormat:@"commit failed !"];
+    [cmdctx rollback];
+    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
+			reason:@"transaction commit failed."];
+  }
+  
   /* remember result */
   
   ASSIGN(self->eo, result);
