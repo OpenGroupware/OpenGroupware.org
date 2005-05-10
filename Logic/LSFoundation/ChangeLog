@@ -1,3 +1,8 @@
+2005-05-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSDBObjectSetCommand.m, LSBaseCommand.m: minor code cleanups
+	  (v5.1.101)
+
 2005-05-10  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSTypeManager: removed classDescription methods (unused) (v5.1.100)

@@ -97,6 +97,11 @@
   return obj;
 }
 
+- (BOOL)hasWriteAccessInContext:(id)_ctx {
+  return [[_ctx accessManager] operation:@"w"
+			       allowedOnObjectID:[[self object] globalID]];
+}
+
 - (void)_prepareForExecutionInContext:(id)_context {
   id obj = [self object];
 
@@ -114,11 +119,8 @@
     [obj takeValue:gid forKey:@"globalID"];
   }
   if ([[self checkAccess] boolValue]) {
-    if (![[_context accessManager] operation:@"w"
-                                   allowedOnObjectID:
-                                   [[self object] globalID]]) {
-      [self assert:NO reason:@"Save failed! Missing access!"];
-    }
+    [self assert:[self hasWriteAccessInContext:_context]
+	  reason:@"Object update failed due to missing write access!"];
   }
 
   if (obj == nil) {
@@ -149,6 +151,8 @@
 
   [self setReturnValue:obj];
 }
+
+/* accessors */
 
 - (void)setCheckAccess:(NSNumber *)_n {
   ASSIGNCOPY(self->checkAccess, _n);

@@ -25,6 +25,14 @@
 #import  <Foundation/NSNotification.h>
 #include <LSFoundation/LSBaseCommand.h>
 
+/*
+  LSDBObjectBaseCommand
+
+  Abstract superclass for other CRUD subclasses.
+
+  TODO: document!
+*/
+
 @class NSMutableArray, NSMutableDictionary, NSArray;
 @class EOAdaptor, EOModel, EODatabase, EOEntity;
 @class EOAttribute, EORelationship, EOSQLQualifier;

@@ -27,18 +27,19 @@
 @class NSNumber;
 
 /*
-  LSDBObjectSetCommand faehrt ein Datenbank-Update.
+  LSDBObjectSetCommand runs a database update for a given object.
 
-  Benoetigt wird entweder der Primary-Key des Objektes oder das Objekt selbst.
-  Wird der Primary-Key benutzt, wird das Objekt automatisch angefordert.
+  The command either requires a primary key of an object or the object itself.
+  In case the primary key is being used, the object is automatically retrieved
+  from the store.
 
     _prepareForExecutionInContext:
-      setzt den 'status' auf 'updated'
-      wenn das 'primaryKey' Attribute benutzt wird, hole Objekt
-      initialisiere Objekt mit den recordDict-Werten
+      sets the 'status' to 'updated'
+      in case the 'primaryKey' attribute is being used, get the object
+      initialize object with the recordDict values
 
     _executeInContext:
-      fuehrt updateObject in der Datenbank aus
+      run -updateObject: in the database
 */
 
 @interface LSDBObjectSetCommand : LSDBObjectBaseCommand
@@ -46,20 +47,22 @@
   NSNumber *checkAccess;
 }
 
-// command methods
+/* command methods */
 
 - (NSArray  *)_fetchRelationForEntity:(EOEntity *)_entity;
 
 - (void)_prepareForExecutionInContext:(id)_context;
 - (void)_executeInContext:(id)_context;
 
-- (NSNumber *)checkAccess;
+/* accessors */
+
 - (void)setCheckAccess:(NSNumber *)_n;
-// key/value coding
+- (NSNumber *)checkAccess;
+
+/* key/value coding */
 
 - (void)takeValue:(id)_value forKey:(NSString *)_key;
 - (id)valueForKey:(NSString *)_key;
-
 
 @end
 
