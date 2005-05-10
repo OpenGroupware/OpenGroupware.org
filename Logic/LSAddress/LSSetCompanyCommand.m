@@ -400,7 +400,7 @@ static NSString *autoNumberPrefix = @"OGo";
     [self setDeleteImage:[_value boolValue]];
     return;
   }
-
+  
   [super takeValue:_value forKey:_key];
 }
 

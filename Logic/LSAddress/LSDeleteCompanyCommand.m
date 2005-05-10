@@ -19,8 +19,8 @@
   02111-1307, USA.
 */
 
-#import "common.h"
-#import "LSDeleteCompanyCommand.h"
+#include "LSDeleteCompanyCommand.h"
+#include "common.h"
  
 @implementation LSDeleteCompanyCommand
 
@@ -74,6 +74,10 @@
   return YES;
 }
 
+- (BOOL)isRootID:(NSNumber *)_pkey {
+  return [_pkey intValue] == 10000 ? YES : NO;
+}
+
 - (void)_executeInContext:(id)_context {
   id user;
   id isAccount;
@@ -83,14 +87,14 @@
   user      = [_context valueForKey:LSAccountKey];
   isAccount = [[self object] valueForKey:@"isAccount"];
 
-  if ((isAccount!=nil) && ([isAccount boolValue])) {
-    [self assert:([[user valueForKey:@"companyId"] intValue] == 10000)
+  if ((isAccount != nil) && ([isAccount boolValue])) {
+    [self assert:[self isRootID:[user valueForKey:@"companyId"]]
           reason:@"Only root can delete accounts!"];
   }
   if (![[_context accessManager] operation:@"w"
                                  allowedOnObjectID:
                                  [[self object] globalID]]) {
-    [self assert:NO reason:@"Save failed! Missing access!"];
+    [self assert:NO reason:@"Delete failed due to missing write access."];
   }
   
   [self _deleteCompanyInfo];
@@ -102,4 +106,4 @@
   [super _executeInContext:_context];
 }
 
-@end
+@end /* LSDeleteCompanyCommand */

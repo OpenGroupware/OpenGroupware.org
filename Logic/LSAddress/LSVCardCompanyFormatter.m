@@ -350,10 +350,13 @@ static NSDictionary *addressMapping = nil;
 
 - (void)_appendPersonEmail:(id)_person toVCard:(NSMutableString *)_vCard {
   id tmp;
+  // TODO: 'email' column
+  
   // EMAIL
-  if ([(tmp = [_person valueForKey:@"email1"]) isNotNull])
+  if ([(tmp = [_person valueForKey:@"email1"]) isNotNull]) {
     [self _appendName:@"EMAIL;TYPE=internet,pref" andValue:tmp
           toVCard:_vCard];  
+  }
   if ([(tmp = [_person valueForKey:@"email2"]) isNotNull]) 
     [self _appendName:@"EMAIL;TYPE=internet" andValue:tmp toVCard:_vCard];  
   if ([(tmp = [_person valueForKey:@"email3"]) isNotNull]) 

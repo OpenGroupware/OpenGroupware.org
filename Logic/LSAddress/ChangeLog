@@ -1,5 +1,11 @@
 2005-05-10  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v5.1.61
+
+	* LSSetVCardCommand.m: fixed vcard update for core attributes
+
+	* LSDeleteCompanyCommand.m, LSVCardCompanyFormatter.m: code cleanups
+
 	* v5.1.60
 
 	* LSSetVCardCommand.m: work on vCard mapping

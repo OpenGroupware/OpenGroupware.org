@@ -177,7 +177,7 @@ static Class    NGVCardClass = Nil;
     _value = [_value stringValue];
   }
   
-  [self->changeset setObject:_value forKey:_key];
+  [self->changeset setObject:(_value ? _value : [EONull null]) forKey:_key];
 }
 
 - (void)mapVKey:(NSString *)_rkey to:(NSString *)_lkey {
@@ -322,10 +322,20 @@ static Class    NGVCardClass = Nil;
   // also: confidential
 }
 
+- (void)appendPersonEMails:(NSArray *)_mails {
+  [self logWithFormat:@"process person emails: %@", _mails];
+}
+
+- (void)appendGenericEMails:(NSArray *)_mails {
+  [self logWithFormat:@"process generic emails: %@", _mails];
+}
+
 /* main generators */
 
-- (NSDictionary *)extractPersonChangeSetFromVCard:(id)_vc inContext:(id)_ctx {
-  NSDictionary *cs;
+- (NSMutableDictionary *)extractPersonChangeSetFromVCard:(id)_vc
+  inContext:(id)_ctx
+{
+  NSMutableDictionary *cs;
   id n, org;
   
   self->changeset = [[NSMutableDictionary alloc] initWithCapacity:48];
@@ -336,6 +346,7 @@ static Class    NGVCardClass = Nil;
   [self appendCommon:_vc];
   [self appendNote:_vc];
   [self appendPhoto:_vc];
+  [self appendPersonEMails:[_vc valueForKey:@"email"]];
   // [self appendClassification:_vc toChangeSet:md];
 
   /* TODO: name handling */
@@ -359,8 +370,10 @@ static Class    NGVCardClass = Nil;
   return cs;
 }
 
-- (NSDictionary *)extractEnterpriseChangeSetFromVCard:(id)_vc inContext:(id)_c{
-  NSDictionary *cs;
+- (NSMutableDictionary *)extractEnterpriseChangeSetFromVCard:(id)_vc
+  inContext:(id)_c
+{
+  NSMutableDictionary *cs;
   id n, org, tmp;
   
   self->changeset = [[NSMutableDictionary alloc] initWithCapacity:48];
@@ -371,6 +384,7 @@ static Class    NGVCardClass = Nil;
   [self appendCommon:_vc];
   [self appendNote:_vc];
   [self appendPhoto:_vc];
+  [self appendGenericEMails:[_vc valueForKey:@"email"]];
   // [self appendClassification:_vc toChangeSet:md];
   
   /* name handling */
@@ -405,7 +419,8 @@ static Class    NGVCardClass = Nil;
 
 - (void)_executeInContext:(id)_context {
   EOKeyGlobalID *lgid;
-  NSDictionary  *lChangeSet = nil;
+  NSMutableDictionary  *lChangeSet = nil;
+  NSString      *cn;
   id eo;
   
   /* parse vCard object */
@@ -433,6 +448,9 @@ static Class    NGVCardClass = Nil;
     eo = [_context runCommand:@"object::get-by-globalid",
 		   @"gid", self->gid, nil];
     [self setNewEntityName:[lgid entityName]];
+    
+    if ([eo isKindOfClass:[NSArray class]])
+      eo = [eo count] > 0 ? [eo lastObject] : nil;
   }
   else {
     [self logWithFormat:@"import new vCard .."];
@@ -460,8 +478,45 @@ static Class    NGVCardClass = Nil;
   [self logWithFormat:@"lChangeSet: %@", lChangeSet];
   
   /* apply main change */
-
   
+  if (![[changeset valueForKey:@"isPrivate"] isNotNull]) {
+    [lChangeSet setObject:[NSNumber numberWithBool:self->createPrivate]
+	       forKey:@"isPrivate"];
+  }
+
+  cn = [self->newEntityName lowercaseString];
+  
+  if (eo == nil) {
+    cn = [cn stringByAppendingString:@"::new"];
+    [lChangeSet setObject:@"vCard import" forKey:@"logText"];
+    
+    if ((eo = [_context runCommand:cn arguments:lChangeSet]) == nil) {
+      [self logWithFormat:@"vCard insert failed."];
+      [self setReturnValue:nil];
+      return;
+    }
+    if ([eo isKindOfClass:[NSArray class]])
+      eo = ([eo count] > 0) ? [eo lastObject] : nil;
+    [self setReturnValue:eo];
+  }
+  else {
+    cn = [cn stringByAppendingString:@"::set"];
+    [lChangeSet setObject:[eo valueForKey:@"companyId"] forKey:@"companyId"];
+    [lChangeSet setObject:@"vCard update"               forKey:@"logText"];
+    
+    if ((eo = [_context runCommand:cn arguments:lChangeSet]) == nil) {
+      [self logWithFormat:@"vCard update failed."];
+      [self setReturnValue:nil];
+      return;
+    }
+    if ([eo isKindOfClass:[NSArray class]])
+      eo = ([eo count] > 0) ? [eo lastObject] : nil;
+    [self setReturnValue:eo];
+  }
+
+  /* apply telephone, address */
+
+  // [self logWithFormat:@"EO: %@", eo];
 }
 
 /* accessors */
