@@ -1,5 +1,7 @@
 2005-05-10  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSSetVCardCommand.m: fixed call to object::get-by-globalid (v5.1.59)
+
 	* GNUmakefile.preamble: link against NGiCal to get access to the vCard
 	  parser (v5.1.58)
 

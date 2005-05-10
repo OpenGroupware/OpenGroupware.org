@@ -164,7 +164,7 @@ static Class    NGVCardClass = Nil;
     ASSIGN(self->gid, lgid);
     [self logWithFormat:@"write to GID: %@", lgid];
     
-    eo = [_context runCommand:@"object::get-by-global-id",
+    eo = [_context runCommand:@"object::get-by-globalid",
 		   @"gid", self->gid, nil];
   }
   else {
@@ -210,7 +210,7 @@ static Class    NGVCardClass = Nil;
   else if ([_key isEqualToString:@"vCardObject"])
     [self setVCardObject:_value];
   else if ([_key isEqualToString:@"gid"])
-    [self setGlobalID:_value];
+    [self setGlobalID:([_value isNotNull] ? _value : nil)];
   else if ([_key isEqualToString:@"newEntityName"])
     [self setNewEntityName:_value];
   else
@@ -220,7 +220,7 @@ static Class    NGVCardClass = Nil;
 - (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"vCard"])
     return [self vCard];
-  else if ([_key isEqualToString:@"vCardObject"])
+  if ([_key isEqualToString:@"vCardObject"])
     return [self vCardObject];
   if ([_key isEqualToString:@"gid"])
     return [self globalID];
