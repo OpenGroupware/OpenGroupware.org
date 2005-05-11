@@ -1,3 +1,11 @@
+2005-05-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* PersonsUI/LSWPersonAdvancedSearch.html: fixed broken HTML / element
+	  nesting
+
+	* PersonsUI/LSWPersonAdvancedSearch.wod: added names to most form
+	  fields
+
 2005-04-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* updated themes/components.cfg with tab-text fontcolor settings

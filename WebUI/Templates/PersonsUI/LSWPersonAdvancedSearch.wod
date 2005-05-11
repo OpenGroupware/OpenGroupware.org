@@ -21,14 +21,15 @@ LoadSearchLabel:     WOString { value = labels.loadSearch;     }
 
 
 ZipField: WOTextField {
+  name  = "zip";
   value = person.address#zip;
   size  = 30;
 }
 
 LastNameField: WOTextField {
-    name  = "focusField";
-    value = person.name;
-    size  = 30;
+  name  = "focusField"; // hackish
+  value = person.name;
+  size  = 30;
 }
 
 CategoryPopUp: WOPopUpButton {
@@ -48,6 +49,7 @@ ExtendedAttrs: WOPopUpButton {
 }
 
 TeleTypes: WOPopUpButton {
+  name      = "phonetype";
   list      = session.userDefaults.LSTeleType.Person;
   item      = currentTeleType;
   string    = currentTeleTypeLabel;
@@ -59,13 +61,30 @@ ExtendedValue: WOTextField {
   size  = 30;
 }
 
-FirstNameField: WOTextField { value = person.firstname;      size = 30; }
-CityField:      WOTextField { value = person.address#city;   size = 30; }
-Street:         WOTextField { value = person.address#street; size = 30; }
-Comment:        WOTextField { value = person.comment;        size = 30; }
-Telephone:      WOTextField { value = person.phone#number;   size = 30; }
-Email:          WOTextField { value = person.email1;         size = 30; }
-Url:            WOTextField {value = person.url;             size = 30; }
+// TODO: use CSS for field width
+FirstNameField: WOTextField { 
+  name = "firstname"; 
+  value = person.firstname;
+  size = 30;
+}
+CityField: WOTextField {
+  name = "city";
+  value = person.address#city;
+  size = 30;
+}
+Street: WOTextField { 
+  name  = "street";
+  value = person.address#street;
+  size  = 30;
+}
+Telephone: WOTextField {
+  name  = "phone";
+  value = person.phone#number;
+  size  = 30;
+}
+Comment: WOTextField { name = "comment"; value = person.comment; size = 30; }
+Email:   WOTextField { name = "email";   value = person.email1;  size = 30; }
+Url:     WOTextField { name = "url";     value = person.url;     size = 30; }
 
 SearchSubmit: WOSubmitButton {
   action = search;
@@ -88,7 +107,6 @@ ClearSubmit: WOSubmitButton {
   class  = "button_wide";
 }
 
-HasSearchedCond:     WOConditional { condition = hasSearched; }
 HasSearchedCondElse: WOConditional { condition = hasSearched; negate = YES; }
 
 AttributeCell: SkyAttributeCell { keyColor = "subAttributeCell"; }
@@ -103,6 +121,7 @@ Font:     SkyConfigFont     {}
 EditFont: SkyConfigEditFont {}
 
 MaxSearchCountPopUp: WOPopUpButton {
+  name      = "maxsearchcount";
   list      = ( "100", "200", "500", "600", "1000" );
   item      = item;
   string    = item;

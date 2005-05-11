@@ -1,4 +1,4 @@
-// binds template to controller class
+// bind template to controller class
 
 Frame: LSWSkyrixFrame {}
 
