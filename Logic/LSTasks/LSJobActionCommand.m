@@ -21,13 +21,18 @@
 
 #include <LSFoundation/LSDBObjectSetCommand.h>
 
+/*
+  LSJobActionCommand
+
+  TODO: document
+*/
+
 @class NSString;
 
 @interface LSJobActionCommand : LSDBObjectSetCommand
 {
   NSString *action;
   NSString *comment;
-  NSString *divideComment;
 }
 
 - (void)setAction:(NSString *)_action;
@@ -52,9 +57,8 @@ extern NSString *LSWJobHasChanged;
 }
 
 - (void)dealloc {
-  [self->action        release];
-  [self->comment       release];
-  [self->divideComment release];
+  [self->action  release];
+  [self->comment release];
   [super dealloc];
 }
 
@@ -174,63 +178,25 @@ extern NSString *LSWJobHasChanged;
   return groups;
 }
 
-- (BOOL)_validateArchiveKeysForContext:(id)_context {
-  NSArray *parentJobs;
-  id      job, firstParentJob, account, userId;
-  
-  /* ensure that the object is filled, TODO: check whether this is required */
-  job = [self object];
-  LSRunCommandV(_context, @"job", @"getparentjobs", @"job", job, nil);
-  parentJobs     = [job valueForKey:@"parentHierachie"];
-  firstParentJob = ([parentJobs count] == 0)?job:[parentJobs objectAtIndex:0];
-  
-  /* check permissions */
-  
-  account = [_context valueForKey:LSAccountKey];
-  userId  = [account valueForKey:@"companyId"];
-  if ([userId intValue] == 10000) /* root */
-    return YES;
-
-  if ([[firstParentJob valueForKey:@"creatorId"] isEqual:userId])
-    return YES;
-  
-  [self assert:NO
-	reason:@"only super-parent-job creator may archive job object"];
-  return NO;
+- (BOOL)isRootId:(NSNumber *)_pkey {
+  return [_pkey intValue] == 10000 ? YES : NO;
 }
 
-- (BOOL)_validateDevideKeysForContext:(id)_context {
-  id   account, userId, parentJob, pexId, tmp;
+- (BOOL)_validateArchiveKeysForContext:(id)_context {
+  NSNumber *userId;
   
-  /* preconditions */
+  /* ensure that the object is filled, TODO: check whether this is required */
   
-  parentJob = [[self object] valueForKey:@"toParentJob"];
-  if (![parentJob isNotNull])
-    [self assert:NO reason:@"try to execute divide-action without parentJob"];
-
   /* check permissions */
   
-  account = [_context valueForKey:LSAccountKey];
-  userId  = [account valueForKey:@"companyId"];
-  if ([userId intValue] == 10000) /* root */
+  userId  = [[_context valueForKey:LSAccountKey] valueForKey:@"companyId"];
+  
+  if ([self isRootId:userId])
+    return YES;
+  if ([[[self object] valueForKey:@"creatorId"] isEqual:userId])
     return YES;
   
-  pexId = [parentJob valueForKey:@"executantId"];
-  if ([pexId isEqual:userId]) /* login is parent-job executant */
-    return YES;
-
-  tmp = [parentJob valueForKey:@"creatorId"];
-  if ([tmp isEqual:userId]) /* login is parent-job creator */
-    return YES;
-  
-  tmp = [self groupIdsForLoginInContext:_context];
-  if ([tmp containsObject:pexId])
-     /* the executant of the parent is a group of the login */
-    return YES;
-  
-  [self assert:NO
-	reason:@"only parent-job executant or creator "
-	  @"may execute divide-action"];
+  [self assert:NO reason:@"only root or creator may delete task"];
   return NO;
 }
 
@@ -268,7 +234,6 @@ extern NSString *LSWJobHasChanged;
 
 - (void)_validateKeysForContext:(id)_context {
   id      job, account, userId;
-  BOOL    isRoot;
   NSArray *groups;
   
   job = [self object];
@@ -283,7 +248,6 @@ extern NSString *LSWJobHasChanged;
   account = [_context valueForKey:LSAccountKey];
   userId  = [account valueForKey:@"companyId"];
   groups  = [self groupIdsForLoginInContext:_context];
-  isRoot  = ([userId intValue] == 10000) ? YES : NO;
   
   /* special processing */
   
@@ -291,12 +255,13 @@ extern NSString *LSWJobHasChanged;
     [self logWithFormat:@"unknown action: %@", self->action];
     [self assert:NO format:@"invalid action key (%@) specified", self->action];
   }
+  else if ([self->action isEqualToString:@"divided"]) {
+    [self logWithFormat:@"deprecated action: %@", self->action];
+    [self assert:NO format:@"invalid action key (%@) specified", self->action];
+  }
   
   if ([self->action isEqualToString:@"archive"])
     [self _validateArchiveKeysForContext:_context];
-  
-  else if ([self->action isEqualToString:@"divided"])
-    [self _validateDevideKeysForContext:_context];
   else
     [self _validateCommonKeysForContext:_context];
   
@@ -374,6 +339,8 @@ extern NSString *LSWJobHasChanged;
                 nil);
 }
 
+/* accessors */
+
 - (void)setAction:(NSString *)_action {
   ASSIGNCOPY(self->action, _action);
 }
@@ -382,57 +349,40 @@ extern NSString *LSWJobHasChanged;
 }
 
 - (void)setComment:(NSString *)_comment {
-  if (self->comment != _comment) {
-    [self->comment autorelease];
-    self->comment = [_comment copy];
-  }
+  ASSIGNCOPY(self->comment, _comment);
 }
 - (NSString *)comment {
   return self->comment;
 }
 
-- (void)setDivideComment:(NSString *)_comment {
-  if (self->divideComment != _comment) {
-    [self->divideComment autorelease];
-    self->divideComment = [_comment copy];
-  }
-}
-- (NSString *)divideComment {
-  return self->divideComment;
-}
-
-// initialize records
+/* typing */
 
 - (NSString *)entityName {
   return @"Job";
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"action"])
     [self setAction:_value];
   else if ([_key isEqualToString:@"comment"])
     [self setComment:_value];
-  else if ([_key isEqualToString:@"divideComment"])
-    [self setDivideComment:_value];
   else if ([_key isEqualToString:@"object"])
     [self setObject:_value];
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"action"])
     return [self action];
-  else if ([_key isEqualToString:@"comment"])
+  if ([_key isEqualToString:@"comment"])
     return [self comment];
-  else if ([_key isEqualToString:@"divideComment"])
-    return [self divideComment];
-  else if ([_key isEqualToString:@"object"])
+  if ([_key isEqualToString:@"object"])
     return [self object];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
 @end /* LSJobActionCommand */

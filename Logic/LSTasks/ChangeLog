@@ -1,3 +1,8 @@
+2005-05-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSJobActionCommand.m: removed parent-job code, removed support for
+	  'devide' action (v5.1.4)
+
 2004-08-02  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSDeleteJobCommand.m: minor code cleanups (v5.0.3)
