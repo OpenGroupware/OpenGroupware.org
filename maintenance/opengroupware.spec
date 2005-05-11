@@ -982,6 +982,8 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/bin/ogo-project-import
 %{prefix}/bin/ogo-project-list
 %{prefix}/bin/ogo-runcmd
+%{prefix}/bin/ogo-vcard-get
+%{prefix}/bin/ogo-vcard-put
 %{prefix}/bin/sky_install_sieve
 %{prefix}/bin/sky_send_bulk_messages
 %{prefix}/bin/skyaptnotify
@@ -1185,6 +1187,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Wed May 11 2005 Frank Reppin <frank@opengroupware.org>
+- added ogo-vcard-get/ogo-vcard-put
 * Tue May 10 2005 Helge Hess <hh@opengroupware.org>
 - fixed some tool names
 - removed LSResource.cmd
