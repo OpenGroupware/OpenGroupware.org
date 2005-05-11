@@ -1,4 +1,4 @@
-// $Id: SkyInlineMonthOverview.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 IsResCategorySelected: WOConditional {
   condition = isResCategorySelected;
@@ -63,21 +63,11 @@ WeekOfYearLabel: WOString {
   value = weekOfYear;
 }
 
-IsMonth: WOConditional {
-  condition = isInMonth;
-}
-IsNotMonth: WOConditional {
-  condition = isInMonth;
-  negate    = YES;
-}
+IsMonth:    WOConditional { condition = isInMonth; }
+IsNotMonth: WOConditional { condition = isInMonth; negate = YES; }
 
-IsToday: WOConditional {
-  condition = isToday;
-}
-IsNotToday: WOConditional {
-  condition = isToday;
-  negate    = YES;
-}
+IsToday:    WOConditional { condition = isToday; }
+IsNotToday: WOConditional { condition = isToday; negate = YES; }
 
 // DaysRep
 
@@ -154,6 +144,7 @@ ViewAptAction: WOHyperlink {
   TITLE  = shortTextForApt;
 }
 
+// checks whether we have a primary key
 UseDACond: WOConditional {
   condition = useDirectActionForView;
 }

@@ -22,7 +22,9 @@
                       <#DayLabel /></#ShowDayLinkFont></#ViewDay></b>
                   </#IsToday>
                   <#IsNotToday>
-                    <b><i><#ViewDay><#ShowDayLinkFont><#DayLabel /></#ShowDayLinkFont></#ViewDay></i></b>
+                    <!-- TODO: use CSS -->
+                    <b><i><#ViewDay><#ShowDayLinkFont
+                      ><#DayLabel /></#ShowDayLinkFont></#ViewDay></i></b>
                   </#IsNotToday>
               </#IsMonth>
               <#IsNotMonth>
@@ -47,11 +49,13 @@
               <#DragApt>
                 <#IsViewAccessAllowed>
                   <#UseDACond>
-                      <#ViewAptLink>
-                        <#AptInfoIcon /></#ViewAptLink><#ViewAptLink><#TitleFont><#AptInfo /></#TitleFont></#ViewAptLink>
+                      <#ViewAptLink><#AptInfoIcon /></#ViewAptLink
+                       ><#ViewAptLink><#TitleFont><#AptInfo /></#TitleFont
+                       ></#ViewAptLink>
                     </#UseDACond><#UseDACondElse>
-                      <#ViewAptAction>
-                        <#AptInfoIcon /></#ViewAptAction><#ViewAptAction><#TitleFont><#AptInfo /></#TitleFont></#ViewAptAction>
+                      <#ViewAptAction><#AptInfoIcon /></#ViewAptAction
+                       ><#ViewAptAction><#TitleFont><#AptInfo /></#TitleFont
+                       ></#ViewAptAction>
                     </#UseDACondElse>
                   </#IsViewAccessAllowed>
   
