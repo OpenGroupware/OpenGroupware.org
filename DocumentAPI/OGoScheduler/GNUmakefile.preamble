@@ -1,4 +1,4 @@
-# $Id$
+# compilation settings
 
 libOGoScheduler_INCLUDE_DIRS += \
 	-I..	\
@@ -6,10 +6,12 @@ libOGoScheduler_INCLUDE_DIRS += \
 	-I../../Logic/LSScheduler
 
 libOGoScheduler_LIBRARIES_DEPEND_UPON += \
-	-lOGoSchedulerTools \
-	-lOGoDocuments	\
-	-lLSFoundation -lGDLAccess \
-	-lNGStreams -lNGExtensions -lEOControl
+	-lOGoSchedulerTools		\
+	-lOGoDocuments			\
+	-lLSFoundation -lGDLAccess	\
+	-lNGLdap -lNGMime		\
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
 
 OGoScheduler_BUNDLE_LIBS += \
 	-lOGoScheduler	\
