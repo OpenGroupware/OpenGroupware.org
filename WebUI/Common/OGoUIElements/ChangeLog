@@ -1,3 +1,7 @@
+2005-05-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoUIElementsBuilder.m: fixed a warning on non-lf setups (v5.1.44)
+
 2005-04-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyTabView.m: added colors_tabText key to configure the font-color

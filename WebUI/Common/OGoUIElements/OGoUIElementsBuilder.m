@@ -49,6 +49,7 @@
 @end
 
 #include "common.h"
+#include <NGExtensions/NSString+Ext.h>
 
 #ifndef XMLNS_OGoWOx
 #  define XMLNS_OGoWOx @"http://www.opengroupware.org/ns/wox/ogo"
