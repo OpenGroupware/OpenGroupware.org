@@ -215,8 +215,8 @@ static BOOL debugOn = NO;
   
   qualifier = [super extendedSearchQualifier:_context];
   if (debugOn) {
-    [self logWithFormat:@"super qualifier: %@: %@",
-	  [qualifier expressionValueForContext:nil], qualifier];
+    [self logWithFormat:@"super qualifier: %@",
+	  [qualifier expressionValueForContext:nil]];
   }
   
   if ([self->keyword isNotNull]) {

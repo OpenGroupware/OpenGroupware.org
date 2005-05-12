@@ -1,5 +1,8 @@
 2005-05-12  Helge Hess  <helge.hess@opengroupware.org>
 
+	* EOSQLQualifier+LS.m: added hack to split keywords containing ", "
+	  into multiple searches (v5.1.103)
+
 	* EOSQLQualifier+LS.m: added category on EOSQLQualifier to build
 	  qualifiers which search in DB columns which contain comma separated
 	  values (eg the 'keywords' field) (v5.1.102)

@@ -1,5 +1,8 @@
 2005-05-12  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSExtendedSearchCommand.m: fixed a bug in keyword record scanning
+	  (v5.1.21)
+
 	* v5.1.20
 
 	* fixed gcc 4.0 warnings

@@ -367,7 +367,7 @@
   NSArray               *records;
   LSGenericSearchRecord *record;
   unsigned max, i;
-  id lKeyWord;
+  id lKeyWord = nil;
   
   records = [self searchRecordList];
   for (i = 0, max = [records count]; i < max; i++) {

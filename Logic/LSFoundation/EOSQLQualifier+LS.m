@@ -30,6 +30,13 @@
 {
   NSMutableString *format;
   
+  /* a hack to support LSWPersonAdvancedSearch / EOQualifiers */
+  if ([_value rangeOfString:@", "].length > 0) {
+    return [self initWithEntity:_entity csvAttribute:_attrName
+		 containingValues:[_value componentsSeparatedByString:@", "]
+		 conjoin:YES];
+  }
+  
   format = [[NSMutableString alloc] initWithCapacity:256];
   [format appendString:@"("];
   
