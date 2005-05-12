@@ -55,6 +55,10 @@
 - (EOGlobalID *)globalID;
 @end
 
+@interface NSHost(CheckLocalAddress)
++ (BOOL)isLocalHost:(NSString *)_host;
+@end
+
 @implementation NSHost(CheckLocalAddress)
 
 + (BOOL)isLocalHost:(NSString *)_host {

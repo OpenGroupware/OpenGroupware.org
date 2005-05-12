@@ -1,4 +1,4 @@
-# $Id$
+# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
 
 ADDITIONAL_OBJCFLAGS += -Wno-import -Wno-protocol
 
@@ -9,6 +9,7 @@ libOGoProject_INCLUDE_DIRS += 		\
 libOGoProject_LIBRARIES_DEPEND_UPON += \
 	-lOGoDocuments			\
 	-lLSFoundation -lGDLAccess	\
+	-lNGMime -lNGLdap		\
 	-lNGStreams -lNGExtensions -lEOControl	\
 	-lDOM -lSaxObjC			\
 

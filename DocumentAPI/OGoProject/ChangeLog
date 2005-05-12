@@ -1,3 +1,13 @@
+2005-05-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.39
+
+	* SkyContentHandler.m: fixed a warning
+
+	* SkyProjectURLHandle.m: fixed a warning
+
+	* OGoFileManagerFactory.m: fixed not to use deprecated methods
+
 2005-02-24  Helge Hess  <helge.hess@skyrix.com>
 	
 	* SkyProject.m, SkyProjectDataSource.m: some code cleanups, property

@@ -117,12 +117,11 @@ static NSDictionary *baseToClass  = nil;
   }
   
   if (project == nil) {
-    NSLog(@"ERROR(%s); missing project for gid: %@",
-          __PRETTY_FUNCTION__, _gid);
+    [self logWithFormat:@"ERROR(%s); missing project for gid: %@",
+            __PRETTY_FUNCTION__, _gid];
     return nil;
   }
-  return [OGoFileManagerFactory fileManagerInContext:_context
-                                forProject:project];
+  return [self fileManagerInContext:_context forProject:project];
 }
 
 - (Class)fileManagerClassForScheme:(NSString *)_scheme {
@@ -169,7 +168,7 @@ static NSDictionary *baseToClass  = nil;
   urlString = [_project valueForKey:@"url"];
   
   url = (![urlString isNotNull])
-    ? [OGoFileManagerFactory skyrixBaseURL]
+    ? [self skyrixBaseURL]
     : [NSURL URLWithString:urlString];
   
   scheme = [url scheme];
@@ -291,8 +290,8 @@ static NSDictionary *baseToClass  = nil;
   
   keyRow = [[[_ctx valueForKey:LSDatabaseChannelKey] adaptorChannel]
                    primaryKeyForNewRowWithEntity:project];
-
-  baseURL = [OGoFileManagerFactory fileSystemBaseURL];
+  
+  baseURL = [self fileSystemBaseURL];
   path = [[keyRow objectForKey:@"projectId"] stringValue];
   path = [[baseURL path] stringByAppendingPathComponent:path];
 
@@ -327,7 +326,8 @@ static NSDictionary *baseToClass  = nil;
   fmClass = [baseToClass objectForKey:_base];
 
   if ([fmClass respondsToSelector:_cmd]) {
-    return [fmClass newURLForProjectBase:_base 
+    // Note: incorrect cast, is a filemanager class!
+    return [(OGoFileManagerFactory *)fmClass newURLForProjectBase:_base 
 		    stringValue:url
 		    commandContext:_ctx];
   }

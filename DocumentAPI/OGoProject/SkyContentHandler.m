@@ -39,21 +39,27 @@
 
 static NSEmptyFileManagerBlobHandler *EmptyFileManagerBlobHandler = nil;
 
-+ (id)emptyBlobHandler {
+static NSEmptyFileManagerBlobHandler *EmptyBlobHandler(void) {
   if (EmptyFileManagerBlobHandler == nil)
     EmptyFileManagerBlobHandler = [[NSEmptyFileManagerBlobHandler alloc] init];
-  
   return EmptyFileManagerBlobHandler;
+}
++ (id)emptyBlobHandler { // TODO: is this used anywhere else?
+  return EmptyBlobHandler();
 }
 
 - (id)initWithFileManager:(id<NSObject,NGFileManager>)_fm 
   path:(NSString *)_path 
 {
-  if ([_path length] == 0)
-    return [[NSFileManagerBlobHandler emptyBlobHandler] retain];
+  if ([_path length] == 0) {
+    [self release];
+    return [EmptyBlobHandler() retain];
+  }
 
-  if (![_fm fileExistsAtPath:_path])
-    return [[NSEmptyFileManagerBlobHandler emptyBlobHandler] retain];
+  if (![_fm fileExistsAtPath:_path]) {
+    [self release];
+    return [EmptyBlobHandler() retain];
+  }
   
   if ((self = [super init])) {
     self->fm   = [_fm retain];
