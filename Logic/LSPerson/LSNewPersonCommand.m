@@ -28,32 +28,25 @@
 
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSNewPersonCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->enterprise);
+  [self->enterprise release];
   [super dealloc];
 }
-#endif
 
 // access check
 - (NSArray *)accountAttributes {
   static NSArray *accountAttr = nil;
   if (accountAttr == nil) {
     accountAttr =
-      [NSArray arrayWithObjects:
+      [[NSArray alloc] initWithObjects:
                //@"isAccount",
-               @"isIntraAccount",
-               @"isExtraAccount",
-               @"isTemplateUser",
-               @"isLocked",
-               @"login",
-               @"password",
+               @"isIntraAccount", @"isExtraAccount", @"isTemplateUser",
+               @"isLocked", @"login", @"password",
                nil];
-    RETAIN(accountAttr);
   }
   return accountAttr;
 }
@@ -62,10 +55,11 @@
 - (void)_prepareForExecutionInContext:(id)_context {
   NSEnumerator *e;
   id one;
-  id newValue;
 
   e = [[self accountAttributes] objectEnumerator];
-  while ((one = [e nextObject])) {
+  while ((one = [e nextObject]) != nil) {
+    id newValue;
+    
     newValue = [self valueForKey:one];
     if ([newValue isNotNull]) {
       NSLog(@"WARNING[%s]: %@ tried to create person with account value '%@'",
@@ -90,7 +84,7 @@
   }
 }
 
-// accessors
+/* accessors */
 
 - (void)setEnterprise:(id)_enterprise {
   ASSIGN(self->enterprise, _enterprise);
@@ -99,15 +93,15 @@
   return self->enterprise;
 }
 
-// initialize records
+/* initialize records */
 
 - (NSString *)entityName {
   return @"Person";
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"enterprise"]) {
     [self setEnterprise:_value];
     return;
@@ -115,10 +109,10 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"enterprise"])
     return [self enterprise];
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSNewPersonCommand */

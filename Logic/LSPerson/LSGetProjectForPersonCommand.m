@@ -375,42 +375,43 @@
   return self->onlyAssigned; 
 }
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Person";
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"person"]) {
     [self setObject:_value];
     return;
   }
-  else if ([_key isEqualToString:@"withoutKinds"]) {
+  if ([_key isEqualToString:@"withoutKinds"]) {
     [self setWithoutKinds:_value];
     return;
   }
-  else if ([_key isEqualToString:@"withArchived"]) {
+  if ([_key isEqualToString:@"withArchived"]) {
     [self setWithArchived:[_value boolValue]];
     return;
   }
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"person"])
     return [self object];
-  else if ([_key isEqualToString:@"withoutKinds"])
+  if ([_key isEqualToString:@"withoutKinds"])
     return [self withoutKinds];
-  else if ([_key isEqualToString:@"withArchived"])
+  if ([_key isEqualToString:@"withArchived"])
     return [NSNumber numberWithBool:self->withArchived];
 
   return [super valueForKey:_key];
 }
 
 @end /* LSGetProjectForPersonCommand */
+
 
 @implementation LSGetProjectGlobalIDsForPersonCommand
 
@@ -432,7 +433,7 @@
   for (i = 0; i < count; i++) {
     EOGlobalID *gid;
     
-    if ((gid = [[projects objectAtIndex:i] globalID])) {
+    if ((gid = [[projects objectAtIndex:i] globalID]) != nil) {
       [gids addObject:gid];
     }
     else {
@@ -441,7 +442,7 @@
     }
   }
   
-  [self setReturnValue:AUTORELEASE([gids copy])];
+  [self setReturnValue:[[gids copy] autorelease]];
 }
 
 @end /* LSGetProjectGlobalIDsForPersonCommand */

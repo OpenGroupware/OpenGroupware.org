@@ -25,6 +25,8 @@
   person::extended-search
   
   TODO: document parameters
+  
+  Eg called by SkyPersonDataSource.
 */
 
 @class NSString, NSArray, NSDictionary;
@@ -53,13 +55,19 @@
 
 @implementation LSExtendedSearchPersonCommand
 
+static BOOL debugOn = NO;
+
 + (int)version {
   return [super version] /* v2 */;
 }
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSAssert2([super version] == 2,
             @"invalid superclass (%@) version %i !",
             NSStringFromClass([self superclass]), [super version]);
+  
+  if ((debugOn = [ud boolForKey:@"LSDebugExtSearch"]))
+    NSLog(@"Note: LSDebugExtSearch is enabled for %@", self);
 }
 
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
@@ -180,20 +188,7 @@
 
 /* qualifier construction */
 
-- (EOSQLQualifier *)extendedSearchQualifier:(void *)_context {
-  EOSQLQualifier *qualifier, *isArchivedQualifier, *isTemplateQualifier;
-  
-  qualifier           = [super extendedSearchQualifier:_context];
-  isArchivedQualifier = 
-    [[EOSQLQualifier alloc] initWithEntity:[self entity]
-                            qualifierFormat:@"dbStatus <> 'archived'"];
-  isTemplateQualifier =  
-    [[EOSQLQualifier alloc] initWithEntity:[self entity]
-                            qualifierFormat:
-                              @"(isTemplateUser IS NULL) OR "
-                              @"(isTemplateUser = 0)"]; 
- 
-  if ([self->keyword isNotNull]) {
+- (EOSQLQualifier *)buildKeywordsQualifier:(void *)_ctx entity:(EOEntity *)_e {
     EOSQLQualifier  *q;
     NSMutableString *format;
     NSString        *comp;
@@ -229,7 +224,7 @@
     [format appendString:@" '%@, %%')"];
     [format appendString:@")"];
     
-    q = [[EOSQLQualifier alloc] initWithEntity:[qualifier entity]
+    q = [[EOSQLQualifier alloc] initWithEntity:_e
                                 qualifierFormat:format,
                                 @"keywords", keyw,
                                 @"keywords", keyw,
@@ -237,15 +232,43 @@
                                 @"keywords", keyw];
     [format release]; format = nil;
     
+    return [q autorelease];
+}
+
+- (EOSQLQualifier *)extendedSearchQualifier:(void *)_context {
+  EOSQLQualifier *qualifier, *isArchivedQualifier, *isTemplateQualifier;
+  
+  qualifier = [super extendedSearchQualifier:_context];
+  if (debugOn) [self logWithFormat:@"super qualifier: %@", qualifier];
+
+  isArchivedQualifier = 
+    [[EOSQLQualifier alloc] initWithEntity:[self entity]
+                            qualifierFormat:@"dbStatus <> 'archived'"];
+  isTemplateQualifier =  
+    [[EOSQLQualifier alloc] initWithEntity:[self entity]
+                            qualifierFormat:
+                              @"(isTemplateUser IS NULL) OR "
+                              @"(isTemplateUser = 0)"]; 
+ 
+  if ([self->keyword isNotNull]) {
+    EOSQLQualifier *q;
+    
+    if (debugOn) {
+      [self logWithFormat:@"  keyword: '%@'(%@)", 
+	      self->keyword, NSStringFromClass([self->keyword class])];
+    }
+    q = [self buildKeywordsQualifier:_context entity:[qualifier entity]];
+    
     if ([[self operator] isEqualToString:@"OR"])
       [qualifier disjoinWithQualifier:q];
     else
       [qualifier conjoinWithQualifier:q];
-    [q release]; q = nil;
   }
   
-  if (self->withoutAccounts == YES) {
+  if (self->withoutAccounts) {
     EOSQLQualifier *q;
+
+    if (debugOn) [self logWithFormat:@"  withoutAccounts turned on."];
 
     q = [[EOSQLQualifier alloc] initWithEntity:[qualifier entity]
                                 qualifierFormat:@"(%A = 0) OR (%A IS NULL)",
@@ -253,32 +276,39 @@
     [qualifier conjoinWithQualifier:q];
     [q release];
   }
-
+  
   [qualifier conjoinWithQualifier:isArchivedQualifier];
   [qualifier conjoinWithQualifier:isTemplateQualifier];
   [isArchivedQualifier release];
   [isTemplateQualifier release];
+
+  if (debugOn) [self logWithFormat:@"  FINAL: %@", qualifier];
   return qualifier;
 }
 
-/* command methods */
+/* accessors */
 
 - (void)setKeyword:(NSString *)_keyword {
-  ASSIGN(self->keyword,_keyword);
+  ASSIGNCOPY(self->keyword,_keyword);
 }
 - (void)setKeywordComparator:(NSString *)_cmp {
-  ASSIGN(self->keywordComparator,_cmp);
+  ASSIGNCOPY(self->keywordComparator,_cmp);
 }
+
+/* command methods */
 
 - (void)_checkRecordsForKeywords {
   NSArray               *records;
   LSGenericSearchRecord *record;
   unsigned max, i;
 
-  records = [self searchRecordList];
+  if (debugOn)
+    [self logWithFormat:@"checking search records for keywords ..."];
+  
   [self->keyword release]; self->keyword = nil;
-  max = [records count];
-  for (i = 0; i < max; i++) {
+  
+  records = [self searchRecordList];
+  for (i = 0, max = [records count]; i < max; i++) {
     NSString *keyw;
     
     record = [records objectAtIndex:i];
@@ -290,6 +320,7 @@
     if ([keyw length] == 0)
       continue;
     
+    if (debugOn) [self logWithFormat:@"  found keyword: '%@'", keyw];
 #if LIB_FOUNDATION_LIBRARY
     keyw = [keyw stringByReplacingString:@"*" withString:@"%"];
 #else
@@ -307,7 +338,7 @@
 - (void)_prepareForExecutionInContext:(id)_context {
   if (self->searchAttributes) {
     [self takeValue:[self _searchRecordsInContext:_context]
-             forKey:@"searchRecords"];
+	  forKey:@"searchRecords"];
   }
   [super _prepareForExecutionInContext:_context];
   [self _checkRecordsForKeywords];
@@ -317,10 +348,11 @@
 - (void)_executeInContext:(id)_context {
   [super _executeInContext:_context];
 
-  if ([self fetchGlobalIDs]) return;
-  
-  if ([[self fetchIds] boolValue])
+  if ([self fetchGlobalIDs] || [[self fetchIds] boolValue]) {
+    if (debugOn) 
+      [self logWithFormat:@"  fetching gids/ids, no post-processing .."];
     return;
+  }
   
   /* get extended attributes */
   if (self->attributes == nil ||
@@ -352,7 +384,7 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"withoutAccounts"])
     [self setWithoutAccounts:[_value boolValue]];
   else if ([_key isEqualToString:@"searchAttributes"])
@@ -363,7 +395,7 @@
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"withoutAccounts"])
     return [NSNumber numberWithBool:[self withoutAccounts]];
 

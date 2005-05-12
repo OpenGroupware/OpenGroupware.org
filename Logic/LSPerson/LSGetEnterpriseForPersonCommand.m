@@ -35,9 +35,14 @@
 - (BOOL)fetchGlobalIDs;
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSGetEnterpriseForPersonCommand
+
+- (void)dealloc {
+  [self->attributes release];
+  [super dealloc];
+}
 
 // record initializer
 
@@ -75,12 +80,7 @@
   }
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
-- (void)dealloc {
-  RELEASE(self->attributes);
-  [super dealloc];
-}
-#endif
+/* accessors */
 
 - (void)setAttributes:(NSArray *)_attrs {
   ASSIGN(self->attributes, _attrs);
@@ -89,9 +89,9 @@
   return self->attributes;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"person"] || [_key isEqualToString:@"object"])
     [self setMember:_value];
   else if ([_key isEqualToString:@"persons"])
@@ -102,15 +102,15 @@
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"person"] || [_key isEqualToString:@"object"])
     return [self member];
-  else if ([_key isEqualToString:@"persons"])
+  if ([_key isEqualToString:@"persons"])
     return [self members];
-  else if ([_key isEqualToString:@"attributes"])
+  if ([_key isEqualToString:@"attributes"])
     return [self attributes];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
-@end
+@end /* LSGetEnterpriseForPersonCommand */

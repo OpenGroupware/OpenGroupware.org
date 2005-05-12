@@ -23,16 +23,15 @@
 
 @class NSString;
 
-/* the command sets the isAccount flag to YES
- * must be NO before
- */
+/* 
+   The command sets the isAccount flag to YES
+   must be NO before
+*/
 
 @interface LSPersonToAccountCommand : LSDBObjectBaseCommand
-{}
-
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSPersonToAccountCommand
 
@@ -62,23 +61,26 @@
                 @"loginStatus", [NSNumber numberWithBool:YES], nil);
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+/* key/value coding */
+
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"object"] ||
       [_key isEqualToString:@"account"]) {
     [self setObject:_value];
     return;
   }
-  NSLog(@"WARNING[%s]: key %@ is not setable in toaccount command",
-        __PRETTY_FUNCTION__, _key);
+  [self logWithFormat:
+	  @"WARNING[%s]: key %@ is not setable in toaccount command",
+	  __PRETTY_FUNCTION__, _key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"object"] ||
       [_key isEqualToString:@"account"]) {
     return [self object];
   }
-  NSLog(@"WARNING[%s]: key %@ is not valid in toaccount command",
-        __PRETTY_FUNCTION__, _key);
+  [self logWithFormat:@"WARNING[%s]: key %@ is not valid in toaccount command",
+        __PRETTY_FUNCTION__, _key];
   return nil;
 }
 
