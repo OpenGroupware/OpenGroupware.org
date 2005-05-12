@@ -361,6 +361,59 @@
   [pool release];
 }
 
+/* support for person/enterprise */
+
+- (id)_checkRecordsForCSVAttribute:(NSString *)_attrName {
+  NSArray               *records;
+  LSGenericSearchRecord *record;
+  unsigned max, i;
+  id lKeyWord;
+  
+  records = [self searchRecordList];
+  for (i = 0, max = [records count]; i < max; i++) {
+    id keyw;
+    
+    record = [records objectAtIndex:i];
+    
+    if (![[[record entity] name] isEqualToString:[self entityName]])
+      continue;
+    
+    if ((keyw = [record valueForKey:_attrName]) == nil)
+      continue;
+    if ([keyw isKindOfClass:[NSString class]] && [keyw length] == 0)
+      continue;
+    if ([keyw isKindOfClass:[NSArray class]] && [keyw count] == 0)
+      continue;
+    
+    /* found a keyword, this terminates the loop */
+    
+    //if (debugOn) [self logWithFormat:@"  found %@: '%@'", _attrNamekeyw];
+
+    if ([keyw isKindOfClass:[NSArray class]])
+      lKeyWord = [keyw valueForKey:@"stringByDeletingSQLKeywordPatterns"];
+    else
+      lKeyWord = [[keyw stringValue] stringByDeletingSQLKeywordPatterns];
+    
+    /* remove from record */
+    
+    if ([[self operator] isEqualToString:@"OR"])
+      [record removeObjectForKey:_attrName];
+    else {
+#if 0
+      // TODO: please explain that, doesn't seem to make sense?
+      [record takeValue:@"*" forKey:_attrName];
+#else
+      // hh: I don't think the above is necessary, the keywords are appended
+      //     as a separate qualifier.
+      [record removeObjectForKey:_attrName];
+#endif
+    }
+    
+    break;
+  }
+  return lKeyWord;
+}
+
 /* accessors */
 
 - (void)setSearchRecordList:(NSArray *)_searchRecordList {
@@ -458,3 +511,18 @@
 }
 
 @end /* LSExtendedSearchCommand */
+
+
+@implementation NSString(SQLPatterns)
+
+- (NSString *)stringByDeletingSQLKeywordPatterns {
+  if (NO /* keywordsWithPatterns */)
+    self = [self stringByReplacingString:@"*" withString:@"%"];
+  else {
+    self = [self stringByReplacingString:@"*" withString:@""];
+    self = [self stringByReplacingString:@"%" withString:@""];
+  }
+  return self;
+}
+
+@end /* NSString(SQLPatterns) */

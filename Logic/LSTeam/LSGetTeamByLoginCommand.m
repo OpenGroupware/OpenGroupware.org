@@ -31,8 +31,8 @@
 
 @end
 
-#import "common.h"
-#import <GDLAccess/EOSQLQualifier.h>
+#include "common.h"
+#include <GDLAccess/EOSQLQualifier.h>
 
 @implementation LSGetTeamByLoginCommand
 
@@ -97,14 +97,14 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"login"])
     [self setLogin:_value];
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"login"])
     return [self login];
   return [super valueForKey:_key];

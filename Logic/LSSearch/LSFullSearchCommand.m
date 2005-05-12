@@ -546,7 +546,7 @@ static BOOL debugOn;
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   NSString *s;
   
   if ([_key isEqualToString:@"entity"]) {
@@ -576,7 +576,7 @@ static BOOL debugOn;
   [LSDBObjectCommandException raiseOnFail:NO object:self reason:s];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"entity"])
     return [self entityName];
   if ([_key isEqualToString:@"searchString"])

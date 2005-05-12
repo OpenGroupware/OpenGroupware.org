@@ -99,13 +99,13 @@ static int compareAccounts(id member1, id member2, void *context) {
   [super _executeInContext:_context];
   
   e = [[self groups] objectEnumerator];
-  while ((team = [e nextObject]))
+  while ((team = [e nextObject]) != nil)
     [self _fetchMembersOfTeam:team inContext:_context];
 }
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"team"] || [_key isEqualToString:@"object"]) {
     [self setGroup:_value];
     return;
@@ -117,7 +117,7 @@ static int compareAccounts(id member1, id member2, void *context) {
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"team"] || [_key isEqualToString:@"object"])
     return [self group];
   if ([_key isEqualToString:@"teams"])

@@ -31,7 +31,7 @@
 
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSSetTeamCommand
 
@@ -44,9 +44,10 @@
 
 - (void)_setStaffInContext:(id)_context {
   BOOL isOk  = NO;
-  id   staff = nil;
-  id   team  = [self object]; 
+  id   staff;
+  id   team;
 
+  team  = [self object]; 
   staff = [[team valueForKey:@"toStaff"] lastObject];
     
   [staff takeValue:[team valueForKey:@"description"]
@@ -98,18 +99,18 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"accounts"] || [_key isEqualToString:@"toMember"])
     [self setAccounts:_value];
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"accounts"] || [_key isEqualToString:@"toMember"])
     return [self accounts];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
 @end /* LSSetTeamCommand */

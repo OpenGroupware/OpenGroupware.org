@@ -19,41 +19,39 @@
   02111-1307, USA.
 */
 
-#include "common.h"
 #include "LSGenericSearchRecord.h"
+#include "common.h"
 
 @implementation LSGenericSearchRecord
 
 - (id)init{
   if ((self = [super init])) {
-    self->searchDict = [[NSMutableDictionary alloc] init];
+    self->searchDict = [[NSMutableDictionary alloc] initWithCapacity:4];
   }
   return self;
 }
  
 - (id)initWithEntity:(EOEntity *)_entity {
   if ((self = [self init])) {
-    ASSIGN(self->entity, _entity);
+    self->entity = [_entity retain];
   }
   return self;
 }
  
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->entity);
-  RELEASE(self->searchDict);
-  RELEASE(self->comparator);
+  [self->entity     release];
+  [self->searchDict release];
+  [self->comparator release];
   [super dealloc];
 }
-#endif
 
-// accessors
+/* accessors */
 
-- (EOEntity *)entity {
-  return self->entity;
-}
 - (void)setEntity:(EOEntity *)_entity {
   ASSIGN(self->entity, _entity);
+}
+- (EOEntity *)entity {
+  return self->entity;
 }
 
 - (void)setComparator:(NSString *)_comparator {
@@ -81,7 +79,7 @@
   return [self->searchDict keyEnumerator];
 }
 
-// key/value coding
+/* key/value coding */
 
 - (void)takeValuesFromDictionary:(NSDictionary *)_dictionary {
   NSEnumerator *keyEnum;
@@ -93,16 +91,19 @@
     [self takeValue:[_dictionary objectForKey:key] forKey:key];
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   [self->searchDict takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   return [self->searchDict valueForKey:_key];
 }
 
+/* description */
+
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<LSGenericSearchRecord "
-                   @"entity %@ searchDict %@>", self->entity, self->searchDict];
+  return [NSString stringWithFormat:
+		     @"<LSGenericSearchRecord entity %@ searchDict %@>", 
+		     self->entity, self->searchDict];
 }
-@end
+@end /* LSGenericSearchRecord */

@@ -28,33 +28,33 @@
 // command methods
 
 - (void)_executeInContext:(id)_context {
-  NSMutableArray        *records = [[NSMutableArray alloc] init];
-  LSGenericSearchRecord *record  = [[LSGenericSearchRecord alloc] init];
+  NSMutableArray        *records;
+  LSGenericSearchRecord *record;
 
+  record  = [[LSGenericSearchRecord alloc] init];
   [record setEntity:[self entity]];
   [record takeValuesFromDictionary:self->recordDict];
-
+  
+  records = [[NSMutableArray alloc] initWithCapacity:4];
   [records addObject:record];
   [self setReturnValue:record];
 
-  RELEASE(record);  record  = nil;
-  RELEASE(records); records = nil;
+  [record  release]; record  = nil;
+  [records release]; records = nil;
 }
 
-// initialize records
+/* key/value coding */
 
-// key/value coding
-
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"entity"]) {
     [self setEntityName:_value];
     return;
   }
-  else
-    [self->recordDict takeValue:_value forKey:_key];
+
+  [self->recordDict takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"entity"])
     return [self entityName];
   else

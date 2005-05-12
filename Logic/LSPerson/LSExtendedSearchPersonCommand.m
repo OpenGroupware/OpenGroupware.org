@@ -43,8 +43,7 @@
        "telephones" and
        "extendedAttributes"
   */
-  NSString     *keyword; // build special qualifiers for keywords
-  NSString     *keywordComparator;
+  id keyword; // build special qualifiers for keywords
 }
 @end
 
@@ -61,7 +60,6 @@
 @implementation LSExtendedSearchPersonCommand
 
 static BOOL debugOn = NO;
-static BOOL keywordsWithPatterns = NO;
 
 + (int)version {
   return [super version] /* v2 */;
@@ -73,7 +71,7 @@ static BOOL keywordsWithPatterns = NO;
             NSStringFromClass([self superclass]), [super version]);
   
   if ((debugOn = [ud boolForKey:@"LSDebugExtSearch"]))
-    NSLog(@"Note: LSDebugExtSearch is enabled for %@", self);
+    NSLog(@"Note: LSDebugExtSearch is enabled for %@",NSStringFromClass(self));
 }
 
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
@@ -84,10 +82,9 @@ static BOOL keywordsWithPatterns = NO;
 }
 
 - (void)dealloc {
-  [self->searchAttributes  release];
-  [self->attributes        release];
-  [self->keyword           release];
-  [self->keywordComparator release];
+  [self->searchAttributes release];
+  [self->attributes       release];
+  [self->keyword          release];
   [super dealloc];
 }
 
@@ -213,16 +210,6 @@ static BOOL keywordsWithPatterns = NO;
   return q;
 }
 
-- (EOSQLQualifier *)buildQualifierForKeyword:(NSString *)_keyword
-  entity:(EOEntity *)_e
-{
-  EOSQLQualifier  *q;
-  
-  q = [[[EOSQLQualifier alloc] initWithEntity:_e csvAttribute:@"keywords"
-			       containingValue:_keyword] autorelease];
-  return q;
-}
-
 - (EOSQLQualifier *)extendedSearchQualifier:(void *)_context {
   EOSQLQualifier *qualifier;
   
@@ -239,10 +226,11 @@ static BOOL keywordsWithPatterns = NO;
       [self logWithFormat:@"  keyword: '%@'(%@)", 
 	      self->keyword, NSStringFromClass([self->keyword class])];
     }
-    q = [self buildQualifierForKeyword:self->keyword 
-	      entity:[qualifier entity]];
+    q = [[[EOSQLQualifier alloc] initWithEntity:[qualifier entity]
+				 csvAttribute:@"keywords"
+				 containingValue:self->keyword] autorelease];
     
-    if (q != nil && [self isNoMatchSQLQualifier:qualifier])
+    if (q != nil && ([self isNoMatchSQLQualifier:qualifier] || qualifier==nil))
       qualifier = q;
     else {
       if ([[self operator] isEqualToString:@"OR"])
@@ -283,65 +271,12 @@ static BOOL keywordsWithPatterns = NO;
 
 /* accessors */
 
-- (void)setKeyword:(NSString *)_keyword {
-  ASSIGNCOPY(self->keyword,_keyword);
-}
-- (void)setKeywordComparator:(NSString *)_cmp {
-  ASSIGNCOPY(self->keywordComparator,_cmp);
+- (void)setKeyword:(id)_keyword {
+  ASSIGNCOPY(self->keyword, _keyword);
 }
 
 /* command methods */
 
-- (void)_checkRecordsForKeywords {
-  NSArray               *records;
-  LSGenericSearchRecord *record;
-  unsigned max, i;
-
-  if (debugOn)
-    [self logWithFormat:@"checking search records for keywords ..."];
-  
-  [self->keyword release]; self->keyword = nil;
-  
-  records = [self searchRecordList];
-  for (i = 0, max = [records count]; i < max; i++) {
-    NSString *keyw;
-    
-    record = [records objectAtIndex:i];
-    
-    if (![[[record entity] name] isEqualToString:[self entityName]])
-      continue;
-    
-    keyw = [record valueForKey:@"keywords"];
-    if ([keyw length] == 0)
-      continue;
-    
-    if (debugOn) [self logWithFormat:@"  found keyword: '%@'", keyw];
-
-    if (keywordsWithPatterns)
-      keyw = [keyw stringByReplacingString:@"*" withString:@"%"];
-    else {
-      keyw = [keyw stringByReplacingString:@"*" withString:@""];
-      keyw = [keyw stringByReplacingString:@"%" withString:@""];
-    }
-    
-    [self setKeyword:keyw];
-    [self setKeywordComparator:
-	    keywordsWithPatterns ? [record comparator] : @"EQUAL"];
-    
-    if ([[self operator] isEqualToString:@"OR"])
-      [record removeObjectForKey:@"keywords"];
-    else {
-#if 0
-      // TODO: please explain that, doesn't seem to make sense?
-      [record takeValue:@"*" forKey:@"keywords"];
-#else
-      // hh: I don't think the above is necessary, the keywords are appended
-      //     as a separate qualifier.
-      [record removeObjectForKey:@"keywords"];
-#endif
-    }
-  }
-}
 
 - (void)_prepareForExecutionInContext:(id)_context {
   if (self->searchAttributes) {
@@ -349,7 +284,7 @@ static BOOL keywordsWithPatterns = NO;
 	  forKey:@"searchRecords"];
   }
   [super _prepareForExecutionInContext:_context];
-  [self _checkRecordsForKeywords];
+  [self setKeyword:[self _checkRecordsForCSVAttribute:@"keywords"]];
 }
 
 

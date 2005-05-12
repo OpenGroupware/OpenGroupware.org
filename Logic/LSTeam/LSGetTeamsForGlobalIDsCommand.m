@@ -48,6 +48,8 @@
   return self;
 }
 
+/* typing */
+
 - (NSString *)entityName {
   return @"Team";
 }
@@ -57,7 +59,7 @@
 - (EOSQLQualifier *)validateQualifier:(EOSQLQualifier *)_qual {
   EOSQLQualifier *isArchivedQualifier;
   
-  if (self->fetchArchivedTeams == YES)
+  if (self->fetchArchivedTeams)
     return _qual;
 
   isArchivedQualifier = 
@@ -71,14 +73,14 @@
 - (void)fetchAdditionalInfosForObjects:(NSArray *)_obj context:(id)_context {
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"fetchArchivedTeams"])
     self->fetchArchivedTeams = [_value boolValue];
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   return [_key isEqualToString:@"fetchArchivedTeams"]
     ? [NSNumber numberWithBool:self->fetchArchivedTeams]
     : [super valueForKey:_key];

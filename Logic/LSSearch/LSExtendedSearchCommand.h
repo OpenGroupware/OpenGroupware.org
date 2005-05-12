@@ -52,11 +52,25 @@
 - (void)setFetchGlobalIDs:(BOOL)_fetchGlobalIDs;
 - (BOOL)fetchGlobalIDs;
 
+- (NSString *)operator;
+
+/* qualifier */
+
 - (EOSQLQualifier *)extendedSearchQualifier:(void *)_context;
 - (BOOL)isNoMatchSQLQualifier:(EOSQLQualifier *)_q;
 
 - (LSExtendedSearch *)extendedSearch;
 
+/* support for person/enterprise */
+
+- (id)_checkRecordsForCSVAttribute:(NSString *)_attrName;
+
+@end
+
+#import <Foundation/NSString.h>
+
+@interface NSString(SQLPatterns)
+- (NSString *)stringByDeletingSQLKeywordPatterns;
 @end
 
 #endif /* __LSLogic_LSSearch_LSExtendedSearchCommand_H__ */

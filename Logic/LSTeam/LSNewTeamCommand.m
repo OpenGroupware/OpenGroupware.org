@@ -31,7 +31,7 @@
 
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSNewTeamCommand
 
@@ -44,10 +44,10 @@
 
 - (void)_newStaffInContext:(id)_context {
   BOOL         isOk         = NO;
-  id           staff        = nil;
-  id           pkey         = nil;
-  NSDictionary *pk          = nil;
-  EOEntity     *staffEntity = nil;
+  id           staff;
+  NSNumber     *pkey;
+  NSDictionary *pk;
+  EOEntity     *staffEntity;
 
   pkey        = [[self object] valueForKey:[self primaryKeyName]];
   pk          = [self newPrimaryKeyDictForContext:_context keyName:@"staffId"];
@@ -99,25 +99,24 @@
 - (void)setAccounts:(NSArray *)_accounts {
   ASSIGN(accounts, _accounts);
 }
-
 - (NSArray *)accounts {
   return self->accounts;
 }
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"accounts"] || [_key isEqualToString:@"toMember"])
     [self setAccounts:_value];
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"accounts"] || [_key isEqualToString:@"toMember"])
     return [self accounts];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
 @end /* LSNewTeamCommand */

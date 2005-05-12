@@ -236,7 +236,7 @@
   [LSDBObjectCommandException raiseOnFail:NO object:self reason:s];
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key length] == 0)
     return;
   
@@ -258,7 +258,7 @@
     [self _raiseInvalidKeyException:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"object"] || [_key isEqualToString:@"staffList"])
     return [self object];
   if ([_key isEqualToString:@"staff"])
@@ -273,10 +273,11 @@
 
 @end /* LSResolveAccountsCommand */
 
+
 @implementation _LSResolveAccountsCommand_Cache
 
 - (void)dealloc {
-  if (self->set) {
+  if (self->set != NULL) {
     NSFreeHashTable(self->set);
     self->set = NULL;
   }

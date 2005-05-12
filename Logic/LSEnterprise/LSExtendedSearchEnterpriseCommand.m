@@ -30,11 +30,11 @@
        "extendedAttributes"
   */
   NSString *keyword; // build special qualifiers for keywords
-  NSString *keywordComparator;
 }
 @end
 
 #include "common.h"
+#include <LSFoundation/EOSQLQualifier+LS.h>
 
 @interface NSObject(LSExtendedSearchEnterpriseCommand)
 - (NSNumber *)fetchIds;
@@ -55,55 +55,33 @@
 - (void)dealloc {
   [self->attributes release];
   [self->keyword    release];
-  [self->keywordComparator release];
   [super dealloc];
 }
 
+/* qualifiers */
+
 - (EOSQLQualifier *)extendedSearchQualifier:(void *)_context {
   EOSQLQualifier *qualifier;
-  EOSQLQualifier *q;
-  NSString       *format;
-  NSString       *sqlOperator;
-  NSString       *keyw;
   
   qualifier = [super extendedSearchQualifier:_context];
-  if (![self->keyword isNotNull])
-    return qualifier;
-  
-  if ([self->keywordComparator isEqualToString:@"EQUAL"])
-    sqlOperator = @"=";
-  else {
-    sqlOperator = [self->keywordComparator length]
-      ? self->keywordComparator : @"LIKE";
-  }
-  keyw = [self->keyword lowercaseString];
-  
-  /* create keyword qualifier */
-  
-  format = [[NSString alloc] initWithFormat:
-                @"("
-                @"lower(%%A) %@ '%%@' OR "
-                @"lower(%%A) %@ '%%%%, %%@' OR "
-                @"lower(%%A) %@ '%%%%, %%@, %%%%' OR "
-                @"lower(%%A) %@ '%%@, %%%%'"
-                @")", sqlOperator, sqlOperator, sqlOperator, sqlOperator];
-  
-  q = [[EOSQLQualifier alloc] initWithEntity:[qualifier entity]
-                              qualifierFormat:format,
-                                @"keywords", keyw,
-                                @"keywords", keyw,
-                                @"keywords", keyw,
-                                @"keywords", keyw];
-  [format release];
 
-  /* join keyword qualifier */
+  // TODO: mostly a DUP to LSPerson (LSPerson has more additional checks?!)
+  if ([self->keyword isNotNull]) {
+    EOSQLQualifier *q;
+    
+    q = [[[EOSQLQualifier alloc] initWithEntity:[qualifier entity]
+				 csvAttribute:@"keywords"
+				 containingValue:self->keyword] autorelease];
   
-  if ([[self operator] isEqualToString:@"OR"])
-    [qualifier disjoinWithQualifier:q];
-  else
-    [qualifier conjoinWithQualifier:q];
-  [q release]; q = nil;
-  
+    if (q != nil && ([self isNoMatchSQLQualifier:qualifier] || qualifier==nil))
+      qualifier = q;
+    else {
+      if ([[self operator] isEqualToString:@"OR"])
+	[qualifier disjoinWithQualifier:q];
+      else
+	[qualifier conjoinWithQualifier:q];
+    }
+  }
   return qualifier;
 }
 
@@ -112,47 +90,10 @@
 - (void)setKeyword:(NSString *)_keyword {
   ASSIGNCOPY(self->keyword,_keyword);
 }
-- (void)setKeywordComparator:(NSString *)_cmp {
-  ASSIGNCOPY(self->keywordComparator,_cmp);
-}
-
-- (void)_checkRecordsForKeywords {
-  NSArray               *records;
-  LSGenericSearchRecord *record;
-  unsigned max, i;
-
-  [self->keyword release]; self->keyword = nil;
-  
-  records = [self searchRecordList];
-  for (i = 0, max = [records count]; i < max; i++) {
-    NSString *keyw;
-    
-    record = [records objectAtIndex:i];
-    
-    if (![[[record entity] name] isEqualToString:[self entityName]])
-      continue;
-    
-    keyw = [record valueForKey:@"keywords"];
-    if ([keyw length] == 0)
-      continue;
-
-#if LIB_FOUNDATION_LIBRARY      
-    keyw = [keyw stringByReplacingString:@"*" withString:@"%"];
-#else
-#  warning FIXME: incorrect implementation on this Foundation library
-#endif
-    [self setKeyword:keyw];
-    [self setKeywordComparator:[record comparator]];
-    if ([[self operator] isEqualToString:@"OR"])
-      [record removeObjectForKey:@"keywords"];
-    else
-      [record takeValue:@"*" forKey:@"keywords"];
-  }
-}
 
 - (void)_prepareForExecutionInContext:(id)_context {
   [super _prepareForExecutionInContext:_context];
-  [self _checkRecordsForKeywords];
+  [self setKeyword:[self _checkRecordsForCSVAttribute:@"keywords"]];
 }
 
 - (BOOL)_shouldFetchExtendedAttributes {
@@ -192,28 +133,31 @@
   }
 }
 
+/* typing */
+
 - (NSString *)entityName {
   return @"Enterprise";
 }
 
+/* accessors */
+
 - (void)setAttributes:(NSArray *)_attributes {
   ASSIGN(self->attributes, _attributes);
 }
-
 - (NSArray *)attributes {
   return self->attributes;
 }
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"attributes"])
     [self setAttributes:_value ];
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"attributes"])
     return [self attributes];
   

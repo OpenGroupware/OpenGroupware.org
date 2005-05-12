@@ -157,11 +157,11 @@
   }
   [self->searchString release]; self->searchString = nil;
   
-  self->searchString = [[NSString alloc] initWithCString:mutableCString
+  self->searchString = [[NSString alloc] initWithCString:(char*)mutableCString
                                          length:mutableCPos];
 
   listEnum = [self->furtherSearches objectEnumerator];  
-  while ((search = [listEnum nextObject]))
+  while ((search = [listEnum nextObject]) != nil)
     [search setGoodSearchString:self->searchString];
 }
 
