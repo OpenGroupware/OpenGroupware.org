@@ -64,13 +64,15 @@
     
     // TODO: move this code to a method
     keys = [NSMutableArray arrayWithCapacity:16];
-
+    
     attrs = [[[self session]
                     userDefaults]
                     arrayForKey:@"SkyPublicExtendedEnterpriseAttributes"];
 
-    for (i = 0, cnt = [attrs count]; i < cnt; i++)
-      [keys addObject:[[attrs objectAtIndex:i] objectForKey:@"key"]];
+    for (i = 0, cnt = [attrs count]; i < cnt; i++) {
+      [keys addObject:
+	      [(NSDictionary *)[attrs objectAtIndex:i] objectForKey:@"key"]];
+    }
     
     keys = (id)[keys sortedArrayUsingSelector:@selector(compare:)];
     self->extendedAttributeKeys = [keys retain];
@@ -106,6 +108,19 @@
 }
 - (NSMutableDictionary *)enterprise {
   return self->enterprise;
+}
+
+// TODO: dup to LSWPersonAdvancedSearch, this is a hack used in Logic
+- (void)setKeywordsAsArray:(NSArray *)_a {
+  [[self enterprise] takeValue:[_a componentsJoinedByString:@", "] 
+		     forKey:@"keywords"];
+}
+- (NSArray *)keywordsAsArray {
+  NSString *s;
+  
+  if (![(s = [[self enterprise] valueForKey:@"keywords"]) isNotNull])
+    return nil;
+  return [s componentsSeparatedByString:@", "];
 }
 
 - (void)setQualifier:(EOQualifier *)_qualifier {}

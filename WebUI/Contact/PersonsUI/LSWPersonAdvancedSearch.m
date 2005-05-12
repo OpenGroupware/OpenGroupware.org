@@ -116,6 +116,19 @@ static NSArray *SkyPublicExtendedPersonAttributes = nil;
   return self->person;
 }
 
+// TODO: dup to LSWEnterpriseAdvancedSearch, this is a hack used in Logic
+- (void)setKeywordsAsArray:(NSArray *)_a {
+  [[self person] takeValue:[_a componentsJoinedByString:@", "] 
+		 forKey:@"keywords"];
+}
+- (NSArray *)keywordsAsArray {
+  NSString *s;
+  
+  if (![(s = [[self person] valueForKey:@"keywords"]) isNotNull])
+    return nil;
+  return [s componentsSeparatedByString:@", "];
+}
+
 - (void)setQualifier:(EOQualifier *)_qualifier {
 }
 
@@ -291,11 +304,7 @@ static NSArray *SkyPublicExtendedPersonAttributes = nil;
 
 - (id)search {
   /* creates qualifier an asks LSWPersons page to display results */
-  
-  [self logWithFormat:@"SEARCH ..."];
   [self _createQualifier];
-  [self logWithFormat:@"  Q: %@", self->qualifier];
-  
   [self->formletterData release]; self->formletterData = nil;
   return [self performParentAction:@"advancedSearch"];
 }

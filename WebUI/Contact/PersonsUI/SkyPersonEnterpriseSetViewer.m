@@ -101,7 +101,7 @@
 /* accessors */
 
 - (NSString *)epInfo {
-  unsigned char buf[32];
+  char buf[32];
   sprintf(buf, "(%d/%d)", (self->enterpriseIndex + 1), 
 	  [[self enterprises] count]);
   return [NSString stringWithCString:buf];

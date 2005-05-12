@@ -587,7 +587,7 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
   
   [self setTabKey:@"advancedSearch"];
   if ((page = (id)[self tabClicked]) == nil)
-    page = [[[self session] navigation] activePage];
+    page = self;
   return page;
 }
 

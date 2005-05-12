@@ -38,7 +38,7 @@
 
 int compareEnterprises(id e1, id e2, void* context) {
   return [[e1 valueForKey:@"description"]
-          caseInsensitiveCompare:[e2 objectForKey:@"description"]];
+	   caseInsensitiveCompare:[e2 valueForKey:@"description"]];
 }
 
 @implementation LSWEnterpriseSearchPage

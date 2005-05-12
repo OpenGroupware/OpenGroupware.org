@@ -52,6 +52,7 @@
 #include <OGoScheduler/SkyAppointmentQualifier.h>
 #include <OGoScheduler/SkyAptDataSource.h>
 #include <EOControl/EOFetchSpecification.h>
+#include <EOControl/EOKeyGlobalID.h>
 #include <OGoContacts/SkyPersonDocument.h>
 #include <OGoContacts/SkyPersonDataSource.h>
 #include <OGoContacts/SkyPersonAddressConverterDataSource.h>

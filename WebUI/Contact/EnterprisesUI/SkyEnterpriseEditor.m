@@ -51,7 +51,7 @@
 
 - (BOOL)prepareForActivationCommand:(NSString *)_command
   type:(NGMimeType *)_type
-  configuration:(id)_cfg
+  configuration:(NSDictionary *)_cfg
 {
   BOOL r;
 

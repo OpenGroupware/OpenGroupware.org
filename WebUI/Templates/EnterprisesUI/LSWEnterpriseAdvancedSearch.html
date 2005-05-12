@@ -1,7 +1,5 @@
-<!--$Id: LSWEnterpriseAdvancedSearch.html 2 2004-08-20 11:37:44Z znek $ -->
-
-<table border="0" cellspacing="0" cellpadding="4" width="100%">
-    <#Form>
+  <#Form>
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
       <#MainButtonRow>
         <td colspan="4" align="left"><#Font><b><#Label/></b></#Font></td>
       </#MainButtonRow>
@@ -62,41 +60,42 @@
           <#SearchSubmit/><#FormLetterSubmit/><#ClearSubmit/>
         </td>
       </tr>
-
-      <tr><td colspan="4" /></tr>
-      <#MainButtonRow>
-        <td colspan="2" align="left">
-          <#Font><b><#SaveSearchLabel/></b></#Font>
-        </td>
-        <td colspan="2" align="left"><#Font><b>
-          <#HasSearchesToLoadCond><#LoadSearchLabel/></#HasSearchesToLoadCond>
-         <#HasSearchesToLoadCondElse>&nbsp;</#HasSearchesToLoadCondElse>
-        </b></#Font></td>
-      </#MainButtonRow>
       <tr><td colspan="4" /></tr>
 
-      <tr><td colspan="2">
-        <table border="0" cellspacing="0" cellpadding="4" width="100%">
-          <tr><#SaveSearchAttr><#SaveTitle/></#SaveSearchAttr></tr>
-          <tr><#CreateTabAttr><#CreateTabCheckBox/></#CreateTabAttr></tr>
-          <tr><td /><td><#SaveSearchSubmit/></td></tr>
-        </table>
-    </#Form><!-- Form -->
-    </td><td colspan="2" valign="top">
-    <#HasSearchesToLoadCond>
+      <tr>
+	<#SaveSearchAttr><#SaveTitle/></#SaveSearchAttr>
+        <#CreateTabAttr><#CreateTabCheckBox/></#CreateTabAttr>
+      </tr>  
+      <tr> 
+        <td> </td>
+        <td colspan="3"><#SaveSearchSubmit/></td>
+      </tr> 
+
+      <tr><td colspan="4" /></tr>
+      <#HasFormletterCond>
+        <tr><td /><td colspan="3"><br /><#Formletter/></td></tr>
+      </#HasFormletterCond>
+    </table>
+  </#Form>
+
+  <!-- separate, because it uses an own form -->
+  <#HasSearchesToLoadCond>
+    <#LoadSearchForm>
       <table border="0" cellspacing="0" cellpadding="4" width="100%">
-      <#LoadSearchForm>
-        <tr><#LoadSearchAttr><#LoadSearchPopUp/></#LoadSearchAttr></tr>
-        <tr><#AttributeCell/><#ValueCell>&nbsp;</#ValueCell></tr>
-        <#HasNoJavaScriptCond>
-          <tr><td /><td><#LoadSearchSubmit/></td></tr>
-        </#HasNoJavaScriptCond>
-      </#LoadSearchForm>
+        <#MainButtonRow>
+          <td colspan="4" align="left"><#Font><b>
+            <#LoadSearchLabel/>
+          </b></#Font></td>
+        </#MainButtonRow>
+
+        <tr><td colspan="4" /></tr>
+
+        <tr>
+          <#LoadSearchAttr>
+            <#LoadSearchPopUp/>
+            <#HasNoJavaScriptCond><#LoadSearchSubmit/></#HasNoJavaScriptCond>
+          </#LoadSearchAttr>
+        </tr>
       </table>
-    </#HasSearchesToLoadCond>
-    </td></tr>
-    <tr><td colspan="4" /></tr>
-    <#HasFormletterCond>
-      <tr><td /><td colspan="3"><br /><#Formletter/></td></tr>
-    </#HasFormletterCond>
-</table>
+    </#LoadSearchForm>
+  </#HasSearchesToLoadCond>

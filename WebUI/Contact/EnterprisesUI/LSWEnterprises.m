@@ -309,7 +309,7 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   return nil;
 }
 
-- (id)tabClicked {
+- (WOComponent *)tabClicked {
   EOFetchSpecification *fspec;
   
   fspec = [self fetchSpecification];
@@ -468,8 +468,11 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   ma  = [NSMutableArray array];
   max = [ar count];
   for (i = 0; i < max; i++) {
+    NSDictionary *d;
+    
     key = [ar objectAtIndex:i];
-    if ([[[all objectForKey:key] objectForKey:@"showTab"] boolValue])
+    d = [all objectForKey:key];
+    if ([[d objectForKey:@"showTab"] boolValue])
       [ma addObject:key];
   }
   return ma;
@@ -520,11 +523,12 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   // TODO: move tab management to separate class!
   id             title;
   NSUserDefaults *ud;
-  id             settings;
+  NSMutableDictionary *settings;
   
   title    = [[self savedSearches] objectAtIndex:[self itemIndex]];
   ud       = [[self session] userDefaults];
-  settings = [[ud objectForKey:@"enterprise_custom_qualifiers"] mutableCopy];
+  settings =
+    [[ud dictionaryForKey:@"enterprise_custom_qualifiers"] mutableCopy];
   [settings removeObjectForKey:title];
   [ud setObject:settings forKey:@"enterprise_custom_qualifiers"];
   [ud synchronize];

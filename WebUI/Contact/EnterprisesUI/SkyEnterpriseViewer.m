@@ -665,7 +665,7 @@ static int compareDocumentEntries(id document1, id document2, void *context) {
 }
 
 - (void)_newObjectLinkEnterprise {
-  id                  obj;
+  NSDictionary        *obj;
   id                  accountId  = nil;
   NSMutableDictionary *objLink   = nil;
 

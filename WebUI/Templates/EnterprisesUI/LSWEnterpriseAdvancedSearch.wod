@@ -41,12 +41,24 @@ ExtendedValue: WOTextField {
   size  = "30";
 }
 
+/*
 CategoryPopUp: WOPopUpButton {
   list      = session.categoryNames;
   item      = item;
   string    = item;
   selection = enterprise.keywords;
   nilString = "-";
+}
+*/
+CategoryPopUp: WOBrowser {
+  name          = "category";
+  list          = session.categoryNames;
+  item          = item;
+  displayString = item;
+  selections    = keywordsAsArray;
+  multiple      = YES;
+  size          = 5;
+  style         = "width: 100%;";
 }
 
 CategoryLabel:  WOString { value = labels.categoryLabel;  }
@@ -110,6 +122,7 @@ AttributeCell: SkyAttributeCell {
 
 ValueCell: SkyValueCell {
   valueColor = "subValueCell"; 
+  valign     = "top";
 }
 
 MainButtonRow: WOGenericContainer {

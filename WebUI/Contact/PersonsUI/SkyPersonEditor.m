@@ -60,7 +60,7 @@
 
 - (BOOL)prepareForActivationCommand:(NSString *)_command
   type:(NGMimeType *)_type
-  configuration:(id)_cfg
+  configuration:(NSDictionary *)_cfg
 {
   BOOL r;
   id   obj;
@@ -93,8 +93,8 @@
 
 /* accessors */
 
-- (SkyPersonDocument *)person {
-  return (SkyPersonDocument *)[self object];
+- (id)person {
+  return [self object];
 }
 
 - (SkyDocument *)addressDocument {
