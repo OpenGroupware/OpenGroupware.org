@@ -85,35 +85,31 @@
     self->endDate    = OWGetProperty(_config, @"endDate");
     self->isInMonth  = OWGetProperty(_config, @"isInMonth");
 
-    self->template = RETAIN(_t);
+    self->template = [_t retain];
   }
   return self;
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->year);
-  RELEASE(self->month);
-  RELEASE(self->timeZone);
-  RELEASE(self->firstDay);
-  RELEASE(self->tableTags);
-  
-  RELEASE(self->startDate);
-  RELEASE(self->endDate);
-  RELEASE(self->isInMonth);
-  
-  RELEASE(self->template);
+  [self->year      release];
+  [self->month     release];
+  [self->timeZone  release];
+  [self->firstDay  release];
+  [self->tableTags release];
+  [self->startDate release];
+  [self->endDate   release];
+  [self->isInMonth release];
+  [self->template  release];
   [super dealloc];
 }
-#endif
 
-//accessors
+/* accessors */
 
-- (WOElement *)template {
+- (id)template {
   return self->template;
 }
 
-// OWResponder
+/* processing requests */
 
 static inline void
 _applyDate(SkyMonthRepetition *self, WOComponent *sComponent,
@@ -144,16 +140,19 @@ _generateCell(SkyMonthRepetition *self, WOResponse *response,
        forKey:@"SkyMonthRepetition"];
   
   [ctx appendElementIDComponent:key];
-  if (dateId) {
+  if (dateId != nil) {
     NSString *eid;
-    eid = [NSString stringWithFormat:@"%d",
-                      (unsigned)[dateId timeIntervalSince1970]];
+    char buf[8];
+    
+    sprintf(buf, "%d", (unsigned)[dateId timeIntervalSince1970]);
+    eid = [[NSString alloc] initWithCString:buf];
     [ctx appendElementIDComponent:eid];
+    [eid release];
   }
   
   [self->template appendToResponse:response inContext:ctx];
   
-  if (dateId)
+  if (dateId != nil)
     [ctx deleteLastElementIDComponent];
   [ctx deleteLastElementIDComponent];
 }
@@ -181,12 +180,12 @@ _takeValuesInCell(SkyMonthRepetition *self, WORequest *request,
 }
 
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
+  // TODO: split up this huge method
   WOComponent    *sComponent;
   unsigned       y, m, first;
   unsigned       count = 0;
   NSTimeZone     *tz;
   BOOL           useTableTags;
-
   BOOL           hasHeader      = NO;
   BOOL           hasLeftTop     = NO;
   BOOL           hasLeft        = NO;
@@ -386,7 +385,8 @@ _takeValuesInCell(SkyMonthRepetition *self, WORequest *request,
         // generate right border
         if (hasRight) {
           _generateCell(self, _response, _ctx, @"right",
-                        [NSString stringWithFormat:@"%i", [day weekOfYear]],nil);
+                        [NSString stringWithFormat:@"%i", [day weekOfYear]],
+			nil);
         }
         else if ((hasRightTop) || (hasRightBottom))
           [_response appendContentString:@"<td></td>"];
@@ -563,23 +563,22 @@ _takeValuesInCell(SkyMonthRepetition *self, WORequest *request,
   template:(WOElement *)_t
 {
   if ((self = [super initWithName:_name associations:_config template:_t])) {
-    self->orientation  = OWGetProperty(_config, @"orientation");
-    self->dayOfWeek    = OWGetProperty(_config, @"dayOfWeek");
-    self->weekOfYear   = OWGetProperty(_config, @"weekOfYear");
-    self->colspan      = OWGetProperty(_config, @"colspan");
+    self->orientation = OWGetProperty(_config, @"orientation");
+    self->dayOfWeek   = OWGetProperty(_config, @"dayOfWeek");
+    self->weekOfYear  = OWGetProperty(_config, @"weekOfYear");
+    self->colspan     = OWGetProperty(_config, @"colspan");
 
-    self->template = RETAIN(_t);
+    self->template = [_t retain];
   }
   return self;
 }
 
 - (void)dealloc {
-  RELEASE(self->orientation);
-  RELEASE(self->dayOfWeek);
-  RELEASE(self->weekOfYear);
-  RELEASE(self->colspan);
-  
-  RELEASE(self->template);
+  [self->orientation release];
+  [self->dayOfWeek   release];
+  [self->weekOfYear  release];
+  [self->colspan     release];
+  [self->template    release];
   [super dealloc];
 }
 
@@ -603,9 +602,8 @@ _takeValuesInCell(SkyMonthRepetition *self, WORequest *request,
       [self->template takeValuesFromRequest:_req inContext:_ctx];
       [_ctx deleteLastElementIDComponent];
   }
-  else {
+  else
     [self->template takeValuesFromRequest:_req inContext:_ctx];
-  }
 }
 
 - (id)invokeActionForRequest:(WORequest *)_req inContext:(WOContext *)_ctx {

@@ -138,7 +138,7 @@ static NSArray *months = nil;
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"month"])
     [self setMonth:[_value intValue]];
   else if ([_key isEqualToString:@"year"])

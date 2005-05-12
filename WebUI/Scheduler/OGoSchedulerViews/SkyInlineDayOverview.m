@@ -456,7 +456,7 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_val forKey:(id)_key {
+- (void)takeValue:(id)_val forKey:(NSString *)_key {
   if ([_key isEqualToString:@"day"]) {
     [self setDay:_val];
     return;
@@ -465,7 +465,7 @@
   [super takeValue:_val forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"day"])
     return [self day];
   

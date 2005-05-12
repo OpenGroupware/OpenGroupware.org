@@ -657,6 +657,7 @@ static NSArray      *coreTeamAttrs   = nil;
 }
 
 - (BOOL)useDirectActionForView {
+  // TODO: in which case do we miss a global-id?
   /* action */
   if ([[self->appointment valueForKey:@"dateId"] isNotNull])
     return YES;
@@ -881,7 +882,7 @@ static NSArray      *coreTeamAttrs   = nil;
 
 /* k/v coding */
 
-- (void)takeValue:(id)_val forKey:(id)_key {
+- (void)takeValue:(id)_val forKey:(NSString *)_key {
   if ([_key isEqualToString:@"dataSource"]) 
     [self setDataSource:_val];
   else if ([_key isEqualToString:@"printMode"])
@@ -892,7 +893,7 @@ static NSArray      *coreTeamAttrs   = nil;
     [super takeValue:_val forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"dataSource"]) 
     return [self dataSource];
   if ([_key isEqualToString:@"holidays"]) 

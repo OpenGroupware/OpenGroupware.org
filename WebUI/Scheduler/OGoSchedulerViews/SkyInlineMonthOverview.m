@@ -315,7 +315,7 @@
   return [super personWasDropped:_person];
 }
 
-// dnd support
+/* DnD support */
 
 - (NSCalendarDate *)droppedAptDateWithOldDate:(NSCalendarDate *)_date {
   NSCalendarDate *toDate = [self currentDate];
@@ -330,7 +330,7 @@
 
 /* k/v coding */
 
-- (void)takeValue:(id)_val forKey:(id)_key {
+- (void)takeValue:(id)_val forKey:(NSString *)_key {
   if ([_key isEqualToString:@"month"])
     self->month = [_val intValue];
   else if ([_key isEqualToString:@"year"])
@@ -339,7 +339,7 @@
     [super takeValue:_val forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"month"])
    return [NSNumber numberWithInt:self->month];
   if ([_key isEqualToString:@"year"])
