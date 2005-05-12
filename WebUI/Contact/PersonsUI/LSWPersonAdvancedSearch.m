@@ -19,7 +19,30 @@
   02111-1307, USA.
 */
 
-#include "LSWPersonAdvancedSearch.h"
+#include <OGoFoundation/OGoComponent.h>
+
+@class NSData, NSArray, NSMutableArray, NSDictionary, EOQualifier;
+
+@interface LSWPersonAdvancedSearch : OGoComponent
+{
+@private
+  NSString            *maxSearchCount;
+  NSArray             *extendedAttributeKeys;
+  NSString            *currentTeleType;  // non-retained
+  NSMutableDictionary *person;           // LSGenericSearchRecord
+  id                  item;              // non-retained
+  BOOL                hasSearched;
+  NSData              *formletterData;
+  EOQualifier         *qualifier;
+
+  NSString            *udKey; // userDefaultKey
+  NSString            *searchTitle;
+  NSString            *saveTitle;
+  BOOL                showTab;
+}
+
+@end
+
 #include "common.h"
 #include <NGExtensions/NSString+Ext.h>
 #include <OGoContacts/SkyPersonAddressConverterDataSource.h>
@@ -237,7 +260,7 @@ static NSArray *SkyPublicExtendedPersonAttributes = nil;
       if (isFirstKey)
         isFirstKey = NO;
       else
-        [format appendString:@" and "];
+        [format appendString:@" AND "];
 
       [format appendString:key];
 
@@ -267,7 +290,12 @@ static NSArray *SkyPublicExtendedPersonAttributes = nil;
 }
 
 - (id)search {
+  /* creates qualifier an asks LSWPersons page to display results */
+  
+  [self logWithFormat:@"SEARCH ..."];
   [self _createQualifier];
+  [self logWithFormat:@"  Q: %@", self->qualifier];
+  
   [self->formletterData release]; self->formletterData = nil;
   return [self performParentAction:@"advancedSearch"];
 }

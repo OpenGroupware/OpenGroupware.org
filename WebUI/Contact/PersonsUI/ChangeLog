@@ -1,3 +1,13 @@
+2005-05-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.53
+
+	* LSWPersons.m: added direct action to jump to advanced search
+	  (LSWPersons/showAdvancedSearch)
+
+	* LSWPersonAdvancedSearch.m: included @interface in .m file, deleted .h
+	  file
+
 2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWPersons.m, EOQualifier+PersonUI.m: fixed a warning on MacOSX

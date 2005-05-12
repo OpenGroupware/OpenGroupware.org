@@ -1,6 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=52
+SUBMINOR_VERSION:=53
 
 # v5.1.51 requires libOGoContacts v5.1.40
 # v5.0.38 requires OGoUIElements  v5.0.20

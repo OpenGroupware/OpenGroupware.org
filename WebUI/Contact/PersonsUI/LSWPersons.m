@@ -433,8 +433,9 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 }
 
 - (WOComponent *)advancedSearch {
+  /* this is triggered using -performParentAction in LSWPersonAdvancedSearch */
   EOFetchSpecification *fspec;
-
+  
   fspec = [self fetchSpecification];
   
   [fspec setQualifier:[self qualifier]];
@@ -478,8 +479,8 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
   ud  = [[self session] userDefaults];
   all = [ud dictionaryForKey:@"person_custom_qualifiers"];
   ar  = [all allKeys];
-  ma  = [NSMutableArray array];
   max = [ar count];
+  ma  = [NSMutableArray arrayWithCapacity:16];
   for (i = 0; i < max; i++) {
     NSString *key;
     
@@ -514,6 +515,7 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
   maxMax    = [maxSearchCountDef unsignedIntValue];
   if (maxSearch < 10 || maxSearch > maxMax) {
     maxSearch = maxMax;
+    // TODO: why is a string being used?
     [self setMaxSearchCount:[NSString stringWithFormat:@"%d", maxSearch]];
   }
 
@@ -576,6 +578,17 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 }
 - (id)infolineGathering {
   return [self pageWithName:@"SkyInfolineGathering"];
+}
+
+/* direct activation */
+
+- (id<WOActionResults>)showAdvancedSearchAction {
+  OGoContentPage *page;
+  
+  [self setTabKey:@"advancedSearch"];
+  if ((page = (id)[self tabClicked]) == nil)
+    page = [[[self session] navigation] activePage];
+  return page;
 }
 
 @end /* LSWPersons */
