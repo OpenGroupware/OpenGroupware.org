@@ -34,15 +34,13 @@
       
 */
 
+#include <NGObjWeb/WODirectAction.h>
 #include <OGoFoundation/OGoFoundation.h>
 #include <OGoFoundation/OGoSession.h>
 #include <OGoBase/LSCommandContext+Doc.h>
-#import <NGObjWeb/NGObjWeb.h>
-#import <NGExtensions/NGExtensions.h>
-#import <LSFoundation/LSFoundation.h>
-#import <NGMime/NGMimeType.h>
+#include <NGObjWeb/NGObjWeb.h>
 #include <OGoScheduler/SkyAptDataSource.h>
-#include <EOControl/EOKeyGlobalID.h>
+#include "common.h"
 
 @interface NSObject(Privates)
 - (void)setResources:(id)_resources;

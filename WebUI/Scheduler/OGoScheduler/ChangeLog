@@ -1,3 +1,7 @@
+2005-05-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* WODirectAction+SchedulerViews.m: properly include common.h (v5.1.34)
+
 2005-04-13  Ralph Schmidt  <r.schmidt@comchat-security.de>
 	
 	* SkySchedulerConflictPage.m: properly send notification mails on
