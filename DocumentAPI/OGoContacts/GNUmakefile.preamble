@@ -12,14 +12,16 @@ libOGoContacts_LIBRARIES_DEPEND_UPON += \
 	-lNGStreams -lNGExtensions -lEOControl	\
 	-lDOM -lSaxObjC
 
-OGoContacts_LIB_DIRS       += \
+OGoContacts_LIB_DIRS += \
 	-L./$(GNUSTEP_OBJ_DIR)	\
-	-L../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR) \
-	-lNGStreams -lNGExtensions -lEOControl
+	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
 
 OGoContacts_BUNDLE_LIBS += \
-	-lOGoContacts -lLSFoundation -lGDLAccess \
-	-lNGLdap -lNGMime -lDOM -lSaxObjC
+	-lOGoContacts -lOGoDocuments -lLSFoundation \
+	-lGDLAccess \
+	-lNGLdap -lNGMime \
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
 
 ADDITIONAL_CPP_FLAGS += -Wall
 

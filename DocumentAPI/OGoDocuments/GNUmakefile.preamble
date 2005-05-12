@@ -1,4 +1,4 @@
-# $Id$
+# compilation settings
 
 libOGoDocuments_INCLUDE_DIRS += -I..
 

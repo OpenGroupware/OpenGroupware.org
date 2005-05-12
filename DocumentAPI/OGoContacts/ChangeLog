@@ -1,3 +1,7 @@
+2005-05-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: fixed linking path to LSFoundation (v5.1.42)
+
 2005-03-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile.preamble: cleaned up linking on MacOSX (v5.1.41)
