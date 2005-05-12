@@ -1,5 +1,7 @@
 2005-05-12  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SkyAppointmentDataSource.m: minor code cleanups (v5.1.33)
+
 	* GNUmakefile.preamble: fixed static library dependencies for OSX
 
 2005-05-10  Helge Hess  <helge.hess@opengroupware.org>

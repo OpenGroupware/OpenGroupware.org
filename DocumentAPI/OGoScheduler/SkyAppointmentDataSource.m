@@ -107,15 +107,13 @@
   NSMutableDictionary  *args  = nil;
   NSCalendarDate   *startDate = nil;
   NSCalendarDate   *endDate   = nil;
-  NSTimeZone       *timeZone  = nil;
+  NSTimeZone       *timeZone;
   NSArray *companies          = nil;
   NSArray *resources          = nil;
   NSArray *aptTypes           = nil;
-  NSArray *attributes         = nil;
-  NSArray *sortOrderings      = nil;
   NSArray *dates              = nil;
-  NSArray *gidsToFetch        = nil;
-  BOOL    fetchGlobalIDs      = NO;
+  NSArray *attributes, *sortOrderings, *gidsToFetch;
+  BOOL    fetchGlobalIDs;
   BOOL    onlyNotified        = NO;
   BOOL    onlyResourceApts    = NO;
 
@@ -145,23 +143,25 @@
   if (qual == nil)
     ;// do nothing
   else if ([qual isKindOfClass:[SkyAppointmentQualifier class]]) {
-    startDate     = [(SkyAppointmentQualifier *)qual startDate];
-    endDate       = [(SkyAppointmentQualifier *)qual endDate];
-    resources     = [(SkyAppointmentQualifier *)qual resources];
-    companies     = [(SkyAppointmentQualifier *)qual companies];
-    if (![companies count]) {
-      companies = [(SkyAppointmentQualifier *)qual personGIDs];
-    }
+    SkyAppointmentQualifier *aq = qual;
+    
+    startDate        = [aq startDate];
+    endDate          = [aq endDate];
+    resources        = [aq resources];
+    aptTypes         = [aq aptTypes];
+    onlyNotified     = [aq onlyNotified];
+    onlyResourceApts = [aq onlyResourceApts];
+
+    companies     = [aq companies];
+    if ([companies count] == 0)
+      companies = [aq personGIDs];
     else {
       companies = [[companies mutableCopy] autorelease];
       [(NSMutableArray *)companies addObjectsFromArray:
-                 [(SkyAppointmentQualifier *)qual personGIDs]];
+                 [aq personGIDs]];
     }
-    aptTypes      = [(SkyAppointmentQualifier *)qual aptTypes];
-    onlyNotified  = [(SkyAppointmentQualifier *)qual onlyNotified];
-    onlyResourceApts = [(SkyAppointmentQualifier *)qual onlyResourceApts];
-    if ([(SkyAppointmentQualifier *)qual timeZone])
-      timeZone = [(SkyAppointmentQualifier *)qual timeZone];
+    if ([aq timeZone] != nil)
+      timeZone = [aq timeZone];
   }
   else if ([qual isKindOfClass:[EOKeyValueQualifier class]] &&
            [[(EOKeyValueQualifier *)qual key] isEqualToString:@"globalID"]) {

@@ -68,7 +68,9 @@ OGoContacts_RESOURCE_FILES += Defaults.plist
 
 # test tools
 
+ifeq ($(tests),yes)
 TOOL_NAME = test_ogocds
+endif
 
 test_ogocds_OBJC_FILES += test_ogocds.m
 
