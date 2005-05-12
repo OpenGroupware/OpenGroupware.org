@@ -43,20 +43,58 @@
   andRelatedRecords:(NSArray *)_relatedRecords
 {
   if ((self = [self init])) {
-    self->searchRecord   = RETAIN(_searchRecord);
-    self->relatedRecords = RETAIN(_relatedRecords);
+    self->searchRecord   = [_searchRecord   retain];
+    self->relatedRecords = [_relatedRecords retain];
   }
   return self;
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->operator);
-  RELEASE(self->searchRecord);
-  RELEASE(self->relatedRecords);
+  [self->operator       release];
+  [self->searchRecord   release];
+  [self->relatedRecords release];
   [super dealloc];
 }
-#endif
+
+/* qualifiers */
+
+- (void)_appendKey:(NSString *)key ofRecord:(LSGenericSearchRecord *)_record
+  toFormat:(NSMutableString *)format
+{
+  EOAttribute *attr;
+  id          value;
+  NSString    *extType;
+
+  attr    = [[_record entity]     attributeNamed:key];
+  value   = [[_record searchDict] valueForKey:key];
+  extType = [[attr externalType]  lowercaseString];
+
+  NSAssert2(attr, @"missing attribute for key %@ in entity %@",
+	    key, [_record entity]);
+    
+  value = [value stringValue];
+  if ([value length] == 0)
+    return;
+
+  if ([format length] > 0) {
+    [format appendString:@" "];
+    [format appendString:self->operator];
+    [format appendString:@" "];
+  }
+  
+  if ([[attr valueClassName] isEqualToString:@"NSNumber"] ||
+      [[attr valueClassName] isEqualToString:@"NSCalendarDate"]) {
+    [format appendString:[self _formatForNumberAttribute:attr andValue:value]];
+  }
+  else if ([[attr valueClassName] isEqualToString:@"NSString"] &&
+                 [extType hasSuffix:@"text"]) {
+    [format appendString:[self _formatForTextAttribute:attr andValue:value]];
+  }
+  else if ([[attr valueClassName] isEqualToString:@"NSString"] &&
+                 ![extType hasSuffix:@"text"]) {
+    [format appendString:[self _formatForStringAttribute:attr andValue:value]];
+  }
+}
 
 - (NSString *)_qualifierFormatForRecord:(LSGenericSearchRecord *)_record {
   NSMutableString *format;
@@ -68,42 +106,9 @@
   
   [self setComparator:[_record comparator]];
   
-  while ((key = [keys nextObject])) {
-    EOAttribute *attr;
-    id          value;
-    NSString    *extType;
-
-    attr    = [[_record entity]     attributeNamed:key];
-    value   = [[_record searchDict] valueForKey:key];
-    extType = [[attr externalType]  lowercaseString];
-
-    NSAssert2(attr, @"missing attribute for key %@ in entity %@",
-              key, [_record entity]);
-    
-    value = [value stringValue];
-    
-    if ([value length] > 0) {
-      if ([format length] > 0) {
-        [format appendString:@" "];
-        [format appendString:self->operator];
-        [format appendString:@" "];
-      }
-      if ([[attr valueClassName] isEqualToString:@"NSNumber"] ||
-          [[attr valueClassName] isEqualToString:@"NSCalendarDate"]) {
-        [format appendString:
-                [self _formatForNumberAttribute:attr andValue:value]];
-      }
-      else if ([[attr valueClassName] isEqualToString:@"NSString"] &&
-                 [extType hasSuffix:@"text"]) {
-        [format appendString:[self _formatForTextAttribute:attr andValue:value]];
-      }
-      else if ([[attr valueClassName] isEqualToString:@"NSString"] &&
-                 ![extType hasSuffix:@"text"]) {
-        [format appendString:
-                [self _formatForStringAttribute:attr andValue:value]];
-      }
-    }
-  }
+  while ((key = [keys nextObject]) != nil)
+    [self _appendKey:key ofRecord:_record toFormat:format];
+  
   return format;
 }
 
@@ -125,7 +130,7 @@
 
   listEnum = [self->relatedRecords objectEnumerator];
   
-  while ((record = [listEnum nextObject])) {
+  while ((record = [listEnum nextObject]) != nil) {
     tmp  = [self _qualifierFormatForRecord:record];
     if ([tmp length] > 0) {
       if ([format length] > startQLength) {
@@ -137,7 +142,8 @@
     }
   }
   if ([format length] == startQLength)
-    [format appendString:@"1=2"];
+    return @"1=2";
+  
   [format appendString:@" )"];
   return format;
 }
@@ -149,22 +155,24 @@
                                       qualifierFormat:[self _qualifierFormat]];
   [qualifier setUsesDistinct:YES];
 
-  return AUTORELEASE(qualifier);
+  return [qualifier autorelease];
 }
 
 - (EOEntity *)entity {
   return [self->searchRecord entity];
 }
 
-// accessors
+/* accessors */
 
 - (void)setOperator:(NSString *)_operator {
-  NSMutableString *string = [[NSMutableString allocWithZone:[self zone]]
-                                       initWithString:@" "];
+  NSMutableString *string;
+  
+  string = [[NSMutableString alloc] initWithString:@" "];
   [string appendString:_operator];
   [string appendString:@" "];
   if (self->operator != nil) {
-    RELEASE(self->operator); self->operator = nil;
+    [self->operator release]; 
+    self->operator = nil;
   }
   self->operator = string;
 }
@@ -186,5 +194,4 @@
   return self->relatedRecords;
 }
 
-@end
-
+@end /* LSExtendedSearch */

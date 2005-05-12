@@ -24,8 +24,15 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
-@class NSArray, LSExtendedSearch, EOSQLQualifier, NSString, NSMutableDictionary;
-@class NSNumber;
+/*
+  LSExtendedSearchCommand
+
+  (Abstract?) Superclass for eg LSExtendedSearchPersonCommand.
+*/
+
+@class NSArray, NSString, NSNumber, NSMutableDictionary;
+@class EOSQLQualifier;
+@class LSExtendedSearch;
 
 @interface LSExtendedSearchCommand : LSDBObjectBaseCommand
 {
@@ -46,6 +53,7 @@
 - (BOOL)fetchGlobalIDs;
 
 - (EOSQLQualifier *)extendedSearchQualifier:(void *)_context;
+- (BOOL)isNoMatchSQLQualifier:(EOSQLQualifier *)_q;
 
 - (LSExtendedSearch *)extendedSearch;
 

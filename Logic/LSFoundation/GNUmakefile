@@ -49,6 +49,8 @@ libLSFoundation_HEADER_FILES = \
 	OGoObjectLink.h			\
 	OGoObjectLinkManager.h		\
 	NGBundleManager+OGo.h		\
+	\
+	EOSQLQualifier+LS.h		\
 
 libLSFoundation_OBJC_FILES = \
 	LSArrayFilterCommand.m			\
@@ -91,6 +93,8 @@ libLSFoundation_OBJC_FILES = \
 	OGoObjectLink.m				\
 	OGoObjectLinkManager.m			\
 	NGBundleManager+OGo.m			\
+	\
+	EOSQLQualifier+LS.m			\
 
 libLSFoundation_INCLUDE_DIRS             = -ILSFoundation
 libLSFoundation_HEADER_FILES_DIR         = .

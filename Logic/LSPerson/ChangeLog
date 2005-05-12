@@ -1,5 +1,11 @@
 2005-05-12  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSExtendedSearchPersonCommand.m: modified to allow fetches for
+	  just categories (without other keys) (v5.1.25)
+
+	* LSExtendedSearchPersonCommand.m: do not use LOWER in keyword fetches,
+	  changed behaviour to strip patterns from keywords (v5.1.24)
+
 	* v5.1.23
 
 	* LSExtendedSearchPersonCommand.m: code cleanups, added

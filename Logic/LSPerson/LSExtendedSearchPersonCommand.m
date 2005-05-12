@@ -25,6 +25,9 @@
   person::extended-search
   
   TODO: document parameters
+
+  Note: you may only subclass this command with commands using the same entity,
+        otherwise qualifier caches might be broken.
   
   Eg called by SkyPersonDataSource.
 */
@@ -47,6 +50,8 @@
 
 #include "common.h"
 #include <LSSearch/LSGenericSearchRecord.h>
+#include <LSFoundation/EOSQLQualifier+LS.h>
+#include <NGExtensions/NSString+Ext.h>
 
 @interface NSObject(LSExtendedSearchPersonCommand)
 - (NSNumber *)fetchIds;
@@ -56,6 +61,7 @@
 @implementation LSExtendedSearchPersonCommand
 
 static BOOL debugOn = NO;
+static BOOL keywordsWithPatterns = NO;
 
 + (int)version {
   return [super version] /* v2 */;
@@ -188,68 +194,44 @@ static BOOL debugOn = NO;
 
 /* qualifier construction */
 
-- (EOSQLQualifier *)buildKeywordsQualifier:(void *)_ctx entity:(EOEntity *)_e {
-    EOSQLQualifier  *q;
-    NSMutableString *format;
-    NSString        *comp;
-    NSString        *keyw;
-    
-    comp = [self->keywordComparator isEqualToString:@"EQUAL"]
-      ? (id)@"="
-      : ([self->keywordComparator length] > 0
-         ? self->keywordComparator 
-         : (id)@"LIKE" );
-    keyw = [self->keyword lowercaseString];
-    
-    format = [[NSMutableString alloc] initWithCapacity:256];
-    [format appendString:@"("];
-    /* exact */
-    [format appendString:@"(LOWER(%A) "];
-    [format appendString:comp];
-    [format appendString:@" '%@') OR "];
-    
-    /* suffix */
-    [format appendString:@"(LOWER(%A) "];
-    [format appendString:comp];
-    [format appendString:@" '%%, %@') OR "];
+- (EOSQLQualifier *)isNotTemplateUserQualifier {
+  static EOSQLQualifier *q = nil;
+  
+  if (q != nil) return q;
+  q = [[EOSQLQualifier alloc] initWithEntity:[self entity]
+			      qualifierFormat:
+                              @"(isTemplateUser IS NULL) OR "
+                              @"(isTemplateUser = 0)"];
+  return q;
+}
+- (EOSQLQualifier *)notArchivedQualifier {
+  static EOSQLQualifier *q = nil;
+  
+  if (q != nil) return q;
+  q = [[EOSQLQualifier alloc] initWithEntity:[self entity]
+			      qualifierFormat:@"dbStatus <> 'archived'"];
+  return q;
+}
 
-    /* middle */
-    [format appendString:@"(LOWER(%A) "];
-    [format appendString:comp];
-    [format appendString:@" '%%, %@, %%') OR "];
-    
-    /* prefix */
-    [format appendString:@"(LOWER(%A) "];
-    [format appendString:comp];
-    [format appendString:@" '%@, %%')"];
-    [format appendString:@")"];
-    
-    q = [[EOSQLQualifier alloc] initWithEntity:_e
-                                qualifierFormat:format,
-                                @"keywords", keyw,
-                                @"keywords", keyw,
-                                @"keywords", keyw,
-                                @"keywords", keyw];
-    [format release]; format = nil;
-    
-    return [q autorelease];
+- (EOSQLQualifier *)buildQualifierForKeyword:(NSString *)_keyword
+  entity:(EOEntity *)_e
+{
+  EOSQLQualifier  *q;
+  
+  q = [[[EOSQLQualifier alloc] initWithEntity:_e csvAttribute:@"keywords"
+			       containingValue:_keyword] autorelease];
+  return q;
 }
 
 - (EOSQLQualifier *)extendedSearchQualifier:(void *)_context {
-  EOSQLQualifier *qualifier, *isArchivedQualifier, *isTemplateQualifier;
+  EOSQLQualifier *qualifier;
   
   qualifier = [super extendedSearchQualifier:_context];
-  if (debugOn) [self logWithFormat:@"super qualifier: %@", qualifier];
-
-  isArchivedQualifier = 
-    [[EOSQLQualifier alloc] initWithEntity:[self entity]
-                            qualifierFormat:@"dbStatus <> 'archived'"];
-  isTemplateQualifier =  
-    [[EOSQLQualifier alloc] initWithEntity:[self entity]
-                            qualifierFormat:
-                              @"(isTemplateUser IS NULL) OR "
-                              @"(isTemplateUser = 0)"]; 
- 
+  if (debugOn) {
+    [self logWithFormat:@"super qualifier: %@: %@",
+	  [qualifier expressionValueForContext:nil], qualifier];
+  }
+  
   if ([self->keyword isNotNull]) {
     EOSQLQualifier *q;
     
@@ -257,13 +239,25 @@ static BOOL debugOn = NO;
       [self logWithFormat:@"  keyword: '%@'(%@)", 
 	      self->keyword, NSStringFromClass([self->keyword class])];
     }
-    q = [self buildKeywordsQualifier:_context entity:[qualifier entity]];
+    q = [self buildQualifierForKeyword:self->keyword 
+	      entity:[qualifier entity]];
     
-    if ([[self operator] isEqualToString:@"OR"])
-      [qualifier disjoinWithQualifier:q];
-    else
-      [qualifier conjoinWithQualifier:q];
+    if (q != nil && [self isNoMatchSQLQualifier:qualifier])
+      qualifier = q;
+    else {
+      if ([[self operator] isEqualToString:@"OR"])
+	[qualifier disjoinWithQualifier:q];
+      else
+	[qualifier conjoinWithQualifier:q];
+    }
   }
+  else if ([self isNoMatchSQLQualifier:qualifier]) {
+    /* Note: all Qs below are conjoins */
+    if (debugOn) [self logWithFormat:@"  no match qualifier ..."];
+    return qualifier;
+  }
+  
+  /* Note: do not use disjoins below! */
   
   if (self->withoutAccounts) {
     EOSQLQualifier *q;
@@ -277,12 +271,13 @@ static BOOL debugOn = NO;
     [q release];
   }
   
-  [qualifier conjoinWithQualifier:isArchivedQualifier];
-  [qualifier conjoinWithQualifier:isTemplateQualifier];
-  [isArchivedQualifier release];
-  [isTemplateQualifier release];
-
-  if (debugOn) [self logWithFormat:@"  FINAL: %@", qualifier];
+  [qualifier conjoinWithQualifier:[self notArchivedQualifier]];
+  [qualifier conjoinWithQualifier:[self isNotTemplateUserQualifier]];
+  
+  if (debugOn) {
+    [self logWithFormat:@"  FINAL: %@", 
+	  [qualifier expressionValueForContext:nil]];
+  }
   return qualifier;
 }
 
@@ -321,17 +316,30 @@ static BOOL debugOn = NO;
       continue;
     
     if (debugOn) [self logWithFormat:@"  found keyword: '%@'", keyw];
-#if LIB_FOUNDATION_LIBRARY
-    keyw = [keyw stringByReplacingString:@"*" withString:@"%"];
-#else
-#  warning FIXME: incorrect implementation with this Foundation library
-#endif
+
+    if (keywordsWithPatterns)
+      keyw = [keyw stringByReplacingString:@"*" withString:@"%"];
+    else {
+      keyw = [keyw stringByReplacingString:@"*" withString:@""];
+      keyw = [keyw stringByReplacingString:@"%" withString:@""];
+    }
+    
     [self setKeyword:keyw];
-    [self setKeywordComparator:[record comparator]];
+    [self setKeywordComparator:
+	    keywordsWithPatterns ? [record comparator] : @"EQUAL"];
+    
     if ([[self operator] isEqualToString:@"OR"])
       [record removeObjectForKey:@"keywords"];
-    else
+    else {
+#if 0
+      // TODO: please explain that, doesn't seem to make sense?
       [record takeValue:@"*" forKey:@"keywords"];
+#else
+      // hh: I don't think the above is necessary, the keywords are appended
+      //     as a separate qualifier.
+      [record removeObjectForKey:@"keywords"];
+#endif
+    }
   }
 }
 

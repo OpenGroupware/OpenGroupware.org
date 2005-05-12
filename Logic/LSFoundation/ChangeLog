@@ -1,3 +1,9 @@
+2005-05-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* EOSQLQualifier+LS.m: added category on EOSQLQualifier to build
+	  qualifiers which search in DB columns which contain comma separated
+	  values (eg the 'keywords' field) (v5.1.102)
+
 2005-05-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSDBObjectSetCommand.m, LSBaseCommand.m: minor code cleanups

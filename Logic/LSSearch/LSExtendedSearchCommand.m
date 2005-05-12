@@ -42,18 +42,16 @@
   return [super version] + 1; /* v2 */
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->searchKeys);
-  RELEASE(self->searchRecordList);
-  RELEASE(self->extendedSearch);
-  RELEASE(self->operator);
-  RELEASE(self->maxSearchCount);
+  [self->searchKeys       release];
+  [self->searchRecordList release];
+  [self->extendedSearch   release];
+  [self->operator         release];
+  [self->maxSearchCount   release];
   [super dealloc];
 }
-#endif
 
-// command methods
+/* command methods */
 
 - (void)_validateKeysForContext:(id)_context {
 }
@@ -64,29 +62,26 @@
   id             record          = nil;
   id             searchRecord    = nil;
 
-  relatedRecords = [[NSMutableArray allocWithZone:[self zone]] init];
+  relatedRecords = [[NSMutableArray alloc] initWithCapacity:4];
 
   if (self->searchKeys != nil) { // use parameter keys
-    searchRecord = [[LSGenericSearchRecord allocWithZone:[self zone]]
-                                           initWithEntity:[self entity]];
+    searchRecord = [[LSGenericSearchRecord alloc]initWithEntity:[self entity]];
     [searchRecord takeValuesFromDictionary:self->searchKeys];
   }
   else { // search primary prototype record
     NSString *ename = [self entityName];
     
     listEnum = [self->searchRecordList objectEnumerator];
-
-    while((record = [listEnum nextObject])) {
+    while ((record = [listEnum nextObject]) != nil) {
       if ([ename isEqualToString:[[record entity] name]]) {
-        searchRecord = record;
-        RETAIN(searchRecord);
+        searchRecord = [record retain];
         break;
       }
     }
   }
   if (searchRecord != nil) {
-    RELEASE(self->extendedSearch); self->extendedSearch = nil;
-    self->extendedSearch = [[LSExtendedSearch allocWithZone:[self zone]] init];
+    [self->extendedSearch release]; self->extendedSearch = nil;
+    self->extendedSearch = [[LSExtendedSearch alloc] init];
 
     [relatedRecords addObjectsFromArray:self->searchRecordList];
     [relatedRecords removeObject:searchRecord];
@@ -96,12 +91,27 @@
     [self->extendedSearch setRelatedRecords:relatedRecords];
     [self->extendedSearch setDbAdaptor:[self databaseAdaptor]];
   }
-  RELEASE(searchRecord);   searchRecord   = nil;
-  RELEASE(relatedRecords); relatedRecords = nil;
+  [searchRecord   release]; searchRecord   = nil;
+  [relatedRecords release]; relatedRecords = nil;
 }
 
 - (EOSQLQualifier *)extendedSearchQualifier:(void *)_context {
   return [self->extendedSearch qualifier];
+}
+
+- (BOOL)isNoMatchSQLQualifier:(EOSQLQualifier *)_q {
+  // quite hackish, 1=2 is returned by the LSExtendedSearch
+  NSString *s;
+  
+  s = [_q expressionValueForContext:nil];
+  return [s isEqualToString:@"1=2"];
+}
+
+- (int)lesMaxSearchCountInContext:(id)_context {
+  if ([self maxSearchCount] != nil)
+    return [[self maxSearchCount] intValue];
+
+  return [[[_context userDefaults] objectForKey:@"LSMaxSearchCount"] intValue];
 }
 
 - (NSArray *)_fetchObjects:(id)_context {
@@ -115,22 +125,15 @@
   NSMutableArray    *results   = nil;
   EODatabaseChannel *channel   = [self databaseChannel];
 
-  if ([self maxSearchCount] != nil) {
-    maxSearch = [[self maxSearchCount] intValue];
-  }
-  else {
-    maxSearch =
-      [[[_context userDefaults] objectForKey:@"LSMaxSearchCount"] intValue];
-  }
-
+  maxSearch = [self lesMaxSearchCountInContext:_context];
   qualifier = [self _buildQualifierWithContext:_context];
   
-  results   = [NSMutableArray arrayWithCapacity:(maxSearch > 0) ? maxSearch
-                                                                : 512];
-
+  results   = [NSMutableArray arrayWithCapacity:
+				(maxSearch > 0) ? maxSearch : 512];
+  
   [self assert:[channel selectObjectsDescribedByQualifier:qualifier
                         fetchOrder:nil]];
-
+  
   fetch  = [channel methodForSelector:@selector(fetchWithZone:)];
   addObj = [results methodForSelector:@selector(addObject:)];
   
@@ -139,15 +142,16 @@
       
     addObj(results, @selector(addObject:), result);
     cnt = [results count];
-    if ((maxSearch != 0) && (cnt == maxSearch)) {
+    
+    if ((maxSearch != 0) && (cnt == maxSearch))
       [[self databaseChannel] cancelFetch];
-    }
     result = nil;
   }
   return results;
 }
 
 - (NSArray *)_fetchIds:(id)_context {
+  // TODO: in this case we could fetch all and filter access afterwards?!
   int maxSearch = 0;
   int cnt       = 0;
   BOOL fetchGids;
@@ -168,15 +172,8 @@
                         fetchOrder:nil lock:YES]];
   
   fetchGids = [self fetchGlobalIDs];
-
-  if ([self maxSearchCount] != nil) {
-    maxSearch = [[self maxSearchCount] intValue];
-  }
-  else {
-    maxSearch =
-      [[[_context userDefaults] objectForKey:@"LSMaxSearchCount"] intValue];
-  }
-
+  
+  maxSearch = [self lesMaxSearchCountInContext:_context];
   while ((maxSearch == 0) || (cnt < maxSearch)) {
     NSDictionary *row;
     
@@ -207,65 +204,55 @@
   return results;
 }
 
+- (EOSQLQualifier *)newPrivateQualifierForCompanyId:(NSNumber *)_cid
+  entity:(EOEntity *)_entity
+{
+  if (_cid == nil) _cid = [NSNumber numberWithInt:0];
+  return [[EOSQLQualifier alloc] initWithEntity:_entity
+				 qualifierFormat:
+				   @"(isPrivate = 0) OR "
+				   @"(isPrivate IS NULL) OR (ownerId = %@)",
+                                   _cid];
+}
+
+- (EOSQLQualifier *)newNoFakeQualifierWithEntity:(EOEntity *)_entity {
+  return [[EOSQLQualifier alloc] initWithEntity:_entity
+				 qualifierFormat:
+				   @"(isFake = 0) OR (isFake IS NULL)"];
+}
+
 - (EOSQLQualifier *)_buildQualifierWithContext:(id)_context {
-  EOSQLQualifier *qualifier = nil;
-  EOEntity       *entity    = nil;
+  EOSQLQualifier *qualifier;
+  EOEntity       *entity;
 
   qualifier = [self extendedSearchQualifier:_context];
   entity    = [qualifier entity];
-
+  
   if ([entity attributeNamed:@"isPrivate"] &&
       ![[entity name] isEqualToString:@"Person"]) {
-    EOSQLQualifier *privQual = nil;
-    id             accountId = nil;
+    EOSQLQualifier *privQual;
+    id             accountId;
     
     accountId = [[_context valueForKey:LSAccountKey] valueForKey:@"companyId"];
-
-    if (accountId == nil)
-      accountId = [NSNumber numberWithInt:0];
-
-    privQual  = [[EOSQLQualifier alloc] initWithEntity:entity
-                                        qualifierFormat:
-                                        @"(isPrivate = 0) OR "
-                                        @"(isPrivate is NULL) OR (ownerId = %@)",
-                                        accountId];
+    privQual = [self newPrivateQualifierForCompanyId:accountId entity:entity];
     [qualifier conjoinWithQualifier:privQual];
-    RELEASE(privQual); privQual = nil;
+    [privQual release]; privQual = nil;
   }
   if ([entity attributeNamed:@"isFake"] != nil) {
     EOSQLQualifier *fakeQual = nil;
-
-    fakeQual  = [[EOSQLQualifier alloc] initWithEntity:entity
-                                        qualifierFormat:
-                                        @"(isFake = 0) OR "
-                                        @"(isFake is NULL)"];
+    
+    fakeQual  = [self newNoFakeQualifierWithEntity:entity];
     [qualifier conjoinWithQualifier:fakeQual];
-    RELEASE(fakeQual); fakeQual = nil;
+    [fakeQual release]; fakeQual = nil;
   }
   return qualifier;
 }
 
+- (NSArray *)_determineAccessGIDsFromResults:(NSArray *)r {
+  if ([self fetchGlobalIDs])
+    return r;
 
-- (void)_executeInContext:(id)_context {
-  NSAutoreleasePool *pool;
-  NSArray *r;
-
-  pool = [[NSAutoreleasePool alloc] init];
-
-  r = ([[self fetchIds] boolValue])
-    ? [self _fetchIds:_context]
-    :  [self _fetchObjects:_context];
-  
-  r = [r copy];
-  
-  AUTORELEASE(r);
-  {
-    NSArray *access;
-
-    if ([self fetchGlobalIDs]) {
-      access = r;
-    }
-    else if ([[self fetchIds] boolValue]) { /* got dict with pk and entity */
+  if ([[self fetchIds] boolValue]) { /* got dict with pk and entity */
       NSEnumerator   *enumerator;
       NSDictionary   *obj;
       NSString       *keyName, *en;
@@ -275,7 +262,7 @@
       keyName    = nil;
       en         = nil;      
       a          = [NSMutableArray arrayWithCapacity:[r count]];
-      while ((obj = [enumerator nextObject])) {
+      while ((obj = [enumerator nextObject]) != nil) {
         id k;
         
         if (keyName == nil) {
@@ -288,75 +275,93 @@
         [a addObject:[EOKeyGlobalID globalIDWithEntityName:en
                                     keys:&k keyCount:1 zone:NULL]];
       }
-      access = a;
-    }
-    else {
-      access = [r map:@selector(valueForKey:) with:@"globalID"];
-    }
-    access = [[_context accessManager] objects:access forOperation:@"r"];
-
-    if ([self fetchGlobalIDs]) {
-      NSMutableArray *a;
-      NSEnumerator   *enumerator;
-      id             obj;
-
-      a = [NSMutableArray arrayWithCapacity:[access count]];
-      enumerator = [r objectEnumerator];
-      while ((obj = [enumerator nextObject])) {
-        if ([access containsObject:obj])
-          [a addObject:obj];
-      }
-      access = a;
-    }
-    else if ([[self fetchIds] boolValue]) {
-      NSMutableArray *a;
-      NSEnumerator   *enumerator;
-      NSDictionary   *obj;
-      NSString       *keyName, *en;
-
-      a = [NSMutableArray arrayWithCapacity:[access count]];
-      enumerator = [r objectEnumerator];
-      keyName    = nil;
-      en = nil;      
-      
-      while ((obj = [enumerator nextObject])) {
-        id k, o;
-        
-        if (keyName == nil) {
-          keyName = [(EOAttribute *)[[[obj valueForKey:@"entity"] 
-				       primaryKeyAttributes] lastObject] name];
-          en = [(EOEntity *)[obj valueForKey:@"entity"] name];
-          NSAssert(keyName, @"missing key name");
-        }
-        k = [obj objectForKey:keyName];
-        o = [EOKeyGlobalID globalIDWithEntityName:en
-                           keys:&k keyCount:1 zone:NULL];
-        if ([access containsObject:o])
-          [a addObject:obj];
-      }
-      access = a;
-    }
-    else {
-      NSMutableArray *a;
-      NSEnumerator   *enumerator;
-      id             obj;
-
-      a = [NSMutableArray arrayWithCapacity:[access count]];
-      enumerator = [r objectEnumerator];
-      while ((obj = [enumerator nextObject])) {
-        if ([access containsObject:[obj valueForKey:@"globalID"]])
-          [a addObject:obj];
-      }
-      access = a;
-    }
-    r = access;
+      return a;
   }
-  [self setReturnValue:r];
-
-  RELEASE(pool);
+  
+  return [r map:@selector(valueForKey:) with:@"globalID"];
 }
 
-// accessors
+- (NSArray *)filterResults:(NSArray *)r fromAccess:(NSArray *)access {
+  NSMutableArray *a;
+  NSEnumerator   *enumerator;
+  id obj;
+
+  a = [NSMutableArray arrayWithCapacity:[access count]];
+  enumerator = [r objectEnumerator];
+  
+  if ([self fetchGlobalIDs]) {
+    NSMutableArray *a;
+    NSEnumerator   *enumerator;
+    
+    /* 
+       Why can't we just return 'access'? I suppose because the 'r' might
+       be sorted.
+    */
+    while ((obj = [enumerator nextObject]) != nil) {
+      if ([access containsObject:obj])
+	[a addObject:obj];
+    }
+  }
+  else if ([[self fetchIds] boolValue]) {
+    NSString *keyName, *en;
+
+    keyName = nil;
+    en      = nil;      
+    while ((obj = [enumerator nextObject]) != nil) {
+      id k, o;
+	
+      if (keyName == nil) {
+	NSArray *pkeys;
+	
+	pkeys   = [[obj valueForKey:@"entity"] primaryKeyAttributes];
+	keyName = [(EOAttribute *)[pkeys lastObject] name];
+	en      = [(EOEntity *)[obj valueForKey:@"entity"] name];
+	NSAssert(keyName, @"missing key name");
+      }
+      
+      k = [(NSDictionary *)obj objectForKey:keyName];
+      o = [EOKeyGlobalID globalIDWithEntityName:en
+			 keys:&k keyCount:1 zone:NULL];
+      if ([access containsObject:o])
+	[a addObject:obj];
+    }
+  }
+  else {
+    while ((obj = [enumerator nextObject]) != nil) {
+        if ([access containsObject:[obj valueForKey:@"globalID"]])
+          [a addObject:obj];
+    }
+  }
+  return a;
+}
+
+- (void)_executeInContext:(id)_context {
+  NSAutoreleasePool *pool;
+  NSArray *access;
+  NSArray *r;
+
+  pool = [[NSAutoreleasePool alloc] init];
+  
+  /* primary fetch */
+
+  r = ([[self fetchIds] boolValue])
+    ? [self _fetchIds:_context]
+    : [self _fetchObjects:_context];
+  
+  r = [[r copy] autorelease];
+
+  /* check permissions */
+  
+  access = [self _determineAccessGIDsFromResults:r];
+  access = [[_context accessManager] objects:access forOperation:@"r"];
+  r      = [self filterResults:r fromAccess:access];
+  
+  /* set return value to permission-checked objects */
+  [self setReturnValue:r];
+  [pool release];
+}
+
+/* accessors */
 
 - (void)setSearchRecordList:(NSArray *)_searchRecordList {
   ASSIGN(self->searchRecordList, _searchRecordList);
@@ -366,10 +371,7 @@
 }
 
 - (void)setOperator:(NSString *)_op {
-  if (self->operator != _op) {
-    RELEASE(self->operator); self->operator = nil;
-    self->operator = [_op copyWithZone:[self zone]];
-  }
+  ASSIGNCOPY(self->operator, _op);
 }
 - (NSString *)operator {
   return self->operator;
@@ -405,27 +407,24 @@
     : [NSNumber numberWithBool:NO];
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   [self assert:(_key != nil)
         reason:@"passed invalid key to -takeValue:forKey: .."];
 
   if (_value == nil) _value = [EONull null];
   
-  if ([_key isEqualToString:@"entity"]) {
+  if ([_key isEqualToString:@"entity"])
     [self setEntityName:[_value stringValue]];
-  }
   else if ([_key isEqualToString:@"searchRecords"] ||
            [_key isEqualToString:@"object"]) {
     [self setSearchRecordList:_value];
   }
-  else if ([_key isEqualToString:@"operator"]) {
+  else if ([_key isEqualToString:@"operator"])
     [self setOperator:[_value stringValue]];
-  }
-  else if ([_key isEqualToString:@"fetchIds"]) {
+  else if ([_key isEqualToString:@"fetchIds"])
     [self setFetchIds:_value];
-  }
   else if ([_key isEqualToString:@"fetchGlobalIDs"]) {
     [self setFetchGlobalIDs:[_value boolValue]];
   }
@@ -434,30 +433,28 @@
   }
   else {
     if (self->searchKeys == nil)
-      self->searchKeys = [[NSMutableDictionary allocWithZone:[self zone]] init];
+      self->searchKeys = [[NSMutableDictionary alloc] initWithCapacity:4];
 
     [self->searchKeys setObject:_value forKey:_key];
   }
-  return;
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   [self assert:(_key != nil) reason:@"passed invalid key to -valueForKey: .."];
   
   if ([_key isEqualToString:@"entity"])
     return [self entityName];
-  else if ([_key isEqualToString:@"searchRecords"] ||
-           [_key isEqualToString:@"object"])
+  if ([_key isEqualToString:@"searchRecords"] ||
+      [_key isEqualToString:@"object"])
     return [self searchRecordList];
-  else if ([_key isEqualToString:@"operator"])
+  if ([_key isEqualToString:@"operator"])
     return [self operator];
-  else if ([_key isEqualToString:@"fetchIds"])
+  if ([_key isEqualToString:@"fetchIds"])
     return [self fetchIds];
-  else if ([_key isEqualToString:@"fetchGlobalIDs"])
+  if ([_key isEqualToString:@"fetchGlobalIDs"])
     return [NSNumber numberWithBool:[self fetchGlobalIDs]];
-  else
-    return [self->searchKeys objectForKey:_key];
-  return [super valueForKey:_key];
+  
+  return [self->searchKeys objectForKey:_key];
 }
 
-@end
+@end /* LSExtendedSearchCommand */
