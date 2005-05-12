@@ -68,11 +68,13 @@
 
 #include <OGoContacts/SkyCompanyDataSource.h>
 
+#ifndef SkyDeletedPersonNotification
 #define SkyDeletedPersonNotification @"SkyDeletedPersonNotification"
 #define SkyUpdatedPersonNotification @"SkyUpdatedPersonNotification"
 #define SkyNewPersonNotification     @"SkyNewPersonNotification"
+#endif
 
-#import <EOControl/EODataSource.h>
+#include <EOControl/EODataSource.h>
 
 @class NSArray;
 @class EOQualifier, EOFetchSpecification;

@@ -4,28 +4,30 @@ ADDITIONAL_LIB_DIRS += \
 	-L../OGoDocuments/$(GNUSTEP_OBJ_DIR)	\
 	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
 
-libOGoContacts_LIBRARIES_DEPEND_UPON += \
-	-lOGoDocuments			\
+CORELIBS = \
 	-lLSFoundation -lGDLAccess	\
 	-lNGLdap			\
 	-lNGMime			\
 	-lNGStreams -lNGExtensions -lEOControl	\
 	-lDOM -lSaxObjC
 
+libOGoContacts_LIBRARIES_DEPEND_UPON += -lOGoDocuments $(CORELIBS)
+
+
 OGoContacts_LIB_DIRS += \
 	-L./$(GNUSTEP_OBJ_DIR)	\
 	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
 
-OGoContacts_BUNDLE_LIBS += \
-	-lOGoContacts -lOGoDocuments -lLSFoundation \
-	-lGDLAccess \
-	-lNGLdap -lNGMime \
-	-lNGStreams -lNGExtensions -lEOControl \
-	-lDOM -lSaxObjC
+OGoContacts_BUNDLE_LIBS += -lOGoContacts -lOGoDocuments $(CORELIBS)
+
+
+test_ogocds_LIB_DIRS  += -L./$(GNUSTEP_OBJ_DIR)
+test_ogocds_TOOL_LIBS += -lOGoContacts -lOGoDocuments $(CORELIBS)
+
 
 ADDITIONAL_CPP_FLAGS += -Wall
 
-ADDITIONAL_INCLUDE_DIRS += -I.. -I../LSFoundation
+ADDITIONAL_INCLUDE_DIRS += -I.. -I../..
 
 ADDITIONAL_LIB_DIRS += \
 	-L../OGoDocuments/$(GNUSTEP_OBJ_DIR)

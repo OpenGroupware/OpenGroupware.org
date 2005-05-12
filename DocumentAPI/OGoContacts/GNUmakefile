@@ -66,8 +66,15 @@ OGoContacts_OBJC_FILES = 	\
 
 OGoContacts_RESOURCE_FILES += Defaults.plist
 
+# test tools
+
+TOOL_NAME = test_ogocds
+
+test_ogocds_OBJC_FILES += test_ogocds.m
+
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/bundle.make
+include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
 -include ../fhslib.make

@@ -29,13 +29,20 @@
 
 @implementation SkyCompanyDataSource
 
+static BOOL doExplain = NO;
+
 + (int)version {
   return [super version] + 0; /* v1 */
 }
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];;
+  
   NSAssert2([super version] == 1,
             @"invalid superclass (%@) version %i !",
             NSStringFromClass([self superclass]), [super version]);
+  
+  if ((doExplain = [ud boolForKey:@"OGoCompanyDataSourceExplain"]))
+    NSLog(@"Note: OGoCompanyDataSourceExplain is enabled.");
 }
 
 - (NSNotificationCenter *)notificationCenter {
@@ -50,10 +57,9 @@
 
 - (id)initWithContext:(id)_context { // designated initializer
   if (_context == nil) {
-#if DEBUG
-    NSLog(@"WARNING(%s): missing context for datasource creation ..",
-          __PRETTY_FUNCTION__);
-#endif
+    [self logWithFormat:
+            @"WARNING(%s): missing context for datasource creation ..",
+            __PRETTY_FUNCTION__];
     [self release];
     return nil;
   }
@@ -82,7 +88,7 @@
 - (void)setFetchSpecification:(EOFetchSpecification *)_fSpec {
   if ([self->fetchSpecification isEqual:_fSpec])
     return;
-
+  
   ASSIGNCOPY(self->fetchSpecification, _fSpec);
   [self postDataSourceChangedNotification];
 }
@@ -222,19 +228,30 @@
 - (NSArray *)_fetchObjectsWithKeyValueQualifier:(EOKeyValueQualifier *)_q
   fetchLimit:(int)_fetchLimit;
 {
-  NSString *key  = nil;
+  NSString *key;
   id       value = nil;
+
+  if (doExplain) {
+    [self logWithFormat:@"EXPLAIN: fetch key/value qualifier (limit %i): %@",
+          _fetchLimit, _q];
+  }
   
   if ((key = [self _mapKeyFromDocToEO:[_q key]]) == nil) {
-    [self logWithFormat:@"ERROR(%s): key is nil!", __PRETTY_FUNCTION__];
+    [self logWithFormat:@"ERROR(%s): key '%@' is not available: %@",
+          __PRETTY_FUNCTION__, [_q key], _q];
     return nil;
   }
   
-  if ((value = [[_q value] stringValue]) == nil)
+  if ((value = [[_q value] stringValue]) == nil) {
+    if (doExplain)
+      [self logWithFormat:@"EXPLAIN: qualifier has no value => (): %@",_q];
     return [NSArray array];
+  }
   
-  if ([key isEqualToString:@"fullSearchString"])
+  if ([key isEqualToString:@"fullSearchString"]) {
+    if (doExplain)[self logWithFormat:@"EXPLAIN:   full-search qualifier ..."];
     return [self _performFullTextSearch:value fetchLimit:_fetchLimit];
+  }
   
   return [self _fetchCompaniesWithQualifier:_q
                operator:@"AND"
@@ -585,36 +602,59 @@
 {
   /* a primary fetch method called for EOAndQualifier/EOOrQualifier's */
   NSArray *searchRecords;
-  NSArray *result = nil, *fullResults = nil;
+  NSArray *result = nil;
+  NSArray *fullResults = nil;
   NSArray *fullSearchStrings;
-
+  
+  if (doExplain) {
+    [self logWithFormat:@"EXPLAIN: fetch op=%@,limit=%d: '%@'",
+            _operator, _fetchLimit, _qual];
+  }
+  
   /* split qualifiers */
   
   fullSearchStrings = nil;
   searchRecords = [self searchRecordsFromQualifier:_qual
                         fullTextSearchValues:&fullSearchStrings];
-  if ([searchRecords isKindOfClass:[NSException class]])
+  if ([searchRecords isKindOfClass:[NSException class]]) {
+    if (doExplain) {
+      [self logWithFormat:@"EXPLAIN:   failed to create search recs: %@",
+              searchRecords];
+    }
     return searchRecords;
+  }
 
+  if (doExplain) {
+    [self logWithFormat:
+            @"EXPLAIN:   created search records:\n%@\n  full-searches: %@",
+            searchRecords, fullSearchStrings];
+  }
+  
   /* perform searches */
   
   if ([fullSearchStrings count] == 1) {
     /* a single fulltext search */
+    if (doExplain)
+      [self logWithFormat:@"EXPLAIN:   run a single fullsearch .."];
     fullResults = [self _performFullTextSearch:
                           [fullSearchStrings objectAtIndex:0]
                         fetchLimit:_fetchLimit];
   }
   else if ([fullSearchStrings count] > 0) {
     /* multiple fulltext keys */
-#if 0
-    [self debugWithFormat:@"searching for multiple fulltext keys: %@ (%@)", 
-            fullSearchStrings, _qual];
-#endif
+    if (doExplain) {
+      [self logWithFormat:@"EXPLAIN:   run multiple fullsearches: %@",
+              fullSearchStrings];
+    }
     fullResults = [self _performFullTextSearches:fullSearchStrings
                         isAndMode:[_qual isKindOfClass:[EOAndQualifier class]]
                         fetchLimit:_fetchLimit];
   }
   else if ([searchRecords count] > 0) {
+    if (doExplain) {
+      [self logWithFormat:@"EXPLAIN:   run regular search (%@) ..",
+              [self nameOfExtSearchCommand]];
+    }
     result = [self->context runCommand:[self nameOfExtSearchCommand],
                   @"operator",       _operator,
                   @"searchRecords",  searchRecords,
@@ -655,7 +695,8 @@
   reason = 
     @"SkyPersonDataSource: EOKeyValueQualifers are only supported by "
     @"following operators: "
-    @"(EOQualifierOperatorLike, EOQualifierOperatorEqual)";
+    @"(EOQualifierOperatorLike, EOQualifierOperatorEqual): ";
+  reason = [reason stringByAppendingString:[_qual description]];
   
   return [NSException exceptionWithName:@"UnsupportedQualifierException"
                       reason:reason userInfo:ui];
@@ -694,17 +735,13 @@
     hint = @"only supports EOKeyValueQualifiers "
       @"(optionally wrapped by an EOOrQualifier or EOAndQualifier)!";
   }
-  else if ([_qualifier isKindOfClass:[EOOrQualifier class]] &&
-           !SEL_EQ([qual selector], EOQualifierOperatorLike)) {
-    hint = 
-      @"EOOrQualifers are only supported with the following operators: "
-      @"( EOQualifierOperatorLike )";
-  }
-  else if ([_qualifier isKindOfClass:[EOAndQualifier class]] &&
-             !SEL_EQ([qual selector], EOQualifierOperatorLike)) {
-    hint = 
-      @"EOAndQualifers are only supported with the following operators: "
-      @"( EOQualifierOperatorLike )";
+  else if ([_qualifier isKindOfClass:[EOOrQualifier class]] ||
+           [_qualifier isKindOfClass:[EOAndQualifier class]]) {
+    if (!SEL_EQ([qual selector], EOQualifierOperatorLike)) {
+      hint = 
+        @"EOAnd/OrQualifers are only supported with the following operators: "
+        @"( EOQualifierOperatorLike )";
+    }
   }
   if (hint == nil) return nil;
   

@@ -1,5 +1,3 @@
-# $Id$
-
 OGoContacts
 ===========
 
@@ -21,17 +19,17 @@ phone.type+"Address" -> telephone
 Class Hierarchy
 ===============
 
-  NSObject
-    SkyDocument
+  [NSObject]
+    [SkyDocument]
       SkyAddressDocument
       SkyCompanyDocument
         SkyEnterpriseDocument
         SkyPersonDocument
-    SkyDocumentType
+    [SkyDocumentType]
       SkyAddressDocumentType
       SkyEnterpriseDocumentType
       SkyPersonDocumentType
-    EODataSource
+    [EODataSource]
       SkyAddressConverterDataSource
         SkyEnterpriseAddressConverterDataSource
         SkyPersonAddressConverterDataSource
@@ -46,7 +44,7 @@ Class Hierarchy
         SkyPersonProjectDataSource
       SkyContactAddressDataSource
       SkyEnterpriseAllProjectsDataSource
-    SkyAccessHandler
+    [SkyAccessHandler]
       SkyContactsAccessHandler
     SkyEnterpriseDocumentGlobalIDResolver
     SkyPersonDocumentGlobalIDResolver
