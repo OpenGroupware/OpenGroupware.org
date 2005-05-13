@@ -1,5 +1,7 @@
 2005-05-13  Helge Hess  <helge.hess@skyrix.com>
 
+	* SxAddress.m: properly deliver etag in GET requests (v1.3.88)
+
 	* SxAddressFolder.m: added proper mapping for 'new' key records
 	  (v1.3.87)
 

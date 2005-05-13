@@ -732,6 +732,7 @@ static BOOL debugEO = NO;
   NSString     *vCard;
   NSData       *contentData;
   NSDictionary *result;
+  NSString     *etag;
   
   manager = [SxContactManager managerWithContext:
 				[self commandContextInContext:_ctx]];
@@ -754,6 +755,10 @@ static BOOL debugEO = NO;
   response = [WOResponse responseWithRequest:[_ctx request]];
   [response setStatus:200 /* OK */];
   [response setHeader:@"text/x-vcard; charset=utf-8" forKey:@"content-type"];
+  
+  if ((etag = [self davEntityTag]) != nil)
+    [response setHeader:etag forKey:@"etag"];
+  
   [response setContent:contentData];
   return response;
 }
