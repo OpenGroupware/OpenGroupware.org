@@ -62,7 +62,39 @@
 }
 
 - (NSString *)entity {
+  // TODO: is this used somewhere?
+  [self logWithFormat:@"WARNING(%s): this method is hardcoded to Person!",
+        __PRETTY_FUNCTION__];
   return @"Person";
+}
+
+- (Class)recordClassForKey:(NSString *)_key {
+  // TODO: mostly DUP from SxAppointmentFolder
+  NSString *n;
+  
+  [self debugWithFormat:@"record class for key: '%@'", _key];
+  
+  if ([_key length] == 0)
+    return [super recordClassForKey:_key];
+  
+  if (!isdigit([_key characterAtIndex:0])) {
+    Class clazz;
+    
+    [self logWithFormat:@"no digit, ask super for key: '%@'", _key];
+    if ((clazz = [super recordClassForKey:_key]))
+      return clazz;
+    
+    // intended fall through
+    [self logWithFormat:@"  no digit super returned no key: '%@'", _key];
+  }
+  
+  if ((n = [[self soClass] lookupKey:@"recordClass" inContext:nil]) == nil) {
+    [self logWithFormat:@"ERROR: found no 'recordClass' in SoClass!"];
+    return [super recordClassForKey:_key];
+  }
+  
+  [self debugWithFormat:@"use %@ for key: '%@'", n, _key];
+  return NSClassFromString(n);
 }
 
 - (id)childForNewKey:(NSString *)_key inContext:(id)_ctx {

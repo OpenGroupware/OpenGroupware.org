@@ -90,6 +90,22 @@
         zlRendererClass = { value = "SxZLGroupRenderer"; };
       };
     };
+
+    SxPersonFolder = {
+      superclass  = "SxAddressFolder";
+
+      slots = {
+        recordClass = { value = "SxPerson"; };
+      };
+    };
+
+    SxEnterpriseFolder = {
+      superclass  = "SxAddressFolder";
+
+      slots = {
+        recordClass = { value = "SxEnterprise"; };
+      };
+    };
   };
   
   factories = {

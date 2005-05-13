@@ -1,5 +1,8 @@
 2005-05-13  Helge Hess  <helge.hess@skyrix.com>
 
+	* SxAddressFolder.m: added proper mapping for 'new' key records
+	  (v1.3.87)
+
 	* SxAddress.m: implemented missing getCommand, this allows deletes from
 	  WebDAV/Evolution (v1.3.86)
 
