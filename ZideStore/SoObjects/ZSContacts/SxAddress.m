@@ -102,11 +102,15 @@ static BOOL debugEO = NO;
 - (NSString *)updateCommandName {
   return [[self soClass] lookupKey:@"updateCommand" inContext:nil];
 }
-- (NSString *)newCommandName {
+- (NSString *)newCommandName { // should be a class method?
   return [[self soClass] lookupKey:@"newCommand" inContext:nil];
 }
 
-+ (NSString *)deleteCommandName {
++ (NSString *)getCommandName {
+  return [[self soClass] lookupKey:@"getCommand" inContext:nil];
+}
+
++ (NSString *)deleteCommandName { // TODO: is this correct? => yes, I think so
   return [[self soClass] lookupKey:@"deleteCommand" inContext:nil];
 }
 + (NSString *)primaryKeyName {

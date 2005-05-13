@@ -402,7 +402,8 @@
     return nil;
   
   if ([etags containsObject:etag]) {
-    [self debugWithFormat:@"etag '%@' matches: %@", etag, etags];
+    [self debugWithFormat:@"etag '%@' matches: %@", etag, 
+          [etags componentsJoinedByString:@","]];
     return nil; /* one etag matches, so continue with request */
   }
   

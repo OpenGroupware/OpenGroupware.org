@@ -1,3 +1,8 @@
+2005-05-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxAddress.m: implemented missing getCommand, this allows deletes from
+	  WebDAV/Evolution (v1.3.86)
+
 2005-05-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAddress.m: improved exception handling (v1.3.85)
