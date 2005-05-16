@@ -23,7 +23,7 @@ viewImagesInline      = "Vedi immagini in linea"
 viewAttachmentsInline = "Vedi allegati in linea"
 viewAttachmentBodysInEditor = "Vedi corpo degli allegati nell'editor"
 
-YES                   = "Si"
+YES                   = "Sì"
 NO                    = "No"
 login                 = "Login"
 

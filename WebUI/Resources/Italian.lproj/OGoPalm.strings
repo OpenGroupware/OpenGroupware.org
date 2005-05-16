@@ -2,19 +2,19 @@
 
 SkyPalmAssignAddress = "Assegna contatto OGo"
 SkyPalmAssignDate    = "Assegna appuntamento OGo"
-SkyPalmAssignJob     = "Assegna attivita' OGo"
+SkyPalmAssignJob     = "Assegna attività OGo"
 SkyPalmAssignMemo    = "Assegna documento OGo"
 
 SkyPalmAddressEditor = "Modifica contatti palmare"
 SkyPalmDateEditor    = "Modifica impegni palmare"
 SkyPalmMemoEditor    = "Modifica memo palmare"
-SkyPalmJobEditor     = "Modifica attivita' palmare"
+SkyPalmJobEditor     = "Modifica attività palmare"
 
 SkyPalmAddressViewer                = "Vista contatti palmare"
 SkyPalmDateViewer                   = "Vista impegni palmare"
 SkyPalmDateCopyViewer               = "Vista palmdate"
 SkyPalmMemoViewer                   = "Vista memo palmare"
-SkyPalmJobViewer                    = "Vista attivita' palmare"
+SkyPalmJobViewer                    = "Vista attività palmare"
 
 SkyPalmPage                          = "Sincronizzazione Palmare"
 SkyPalmPref_postSyncMustBeActivated  = "(PostSync dev'essere attivato)";
@@ -53,7 +53,7 @@ SkyPalmPreferences_skyrixEnterpriseSyncAttributes = "Rappresentazione attributi"
 
 action_assignSkyrixAddress = "Assegnazione ad una tabella di indirizzi OGo"
 action_assignSkyrixAppointment = "Assegnazione ad un appuntamento OGo"
-action_assignSkyrixJob     = "Assegna ad attivita' OGo"
+action_assignSkyrixJob     = "Assegna ad attività OGo"
 action_assignSkyrixMemo    = "Assegna ad un documento OGo"
 action_changeAddress       = "cambia indirizzo"
 action_changeAddresses     = "cambia indirizzi"
@@ -125,7 +125,7 @@ attribute_address        = "indirizzo"
 attribute_alarm          = "allarme"
 attribute_aptType        = "tipo"
 attribute_categoryName   = "categoria"
-attribute_city           = "citta'"
+attribute_city           = "città"
 attribute_company        = "ditta"
 attribute_country        = "stato"
 attribute_custom0        = "Campo Personalizzato 0"
@@ -147,7 +147,7 @@ attribute_home           = "casa"
 attribute_isCompleted    = "completo"
 attribute_jobStatus      = "stato"
 attribute_lastname       = "cognome"
-attribute_location       = "localita'"
+attribute_location       = "località"
 attribute_main           = "principale"
 attribute_memo           = "memo"
 attribute_mobile         = "cellulare"
@@ -159,7 +159,7 @@ attribute_other          = "altro"
 attribute_owner          = "proprietario"
 attribute_pager          = "numeratore"
 attribute_palmSync       = "Sincronizzazione Palmare"
-attribute_priority       = "priorita'"
+attribute_priority       = "priorità"
 attribute_projectCode    = "codice progetto"
 attribute_projectLeader  = "manager progetto"
 attribute_repeat         = "ripeti tipo"
@@ -187,7 +187,7 @@ autoScrollSize_1000 = "1000 pixel";
 
 // generated keys
 bool_no            = "No"
-bool_yes           = "Si"
+bool_yes           = "Sì"
 
 calendarPopupDuedateLabel   = "cerca data di nascita"
 calendarPopupEnddateLabel   = "cerca data finale"
@@ -204,7 +204,7 @@ conflict_handling_2 = "sovrascrivi le modifiche nei valori OGo";
 conflict_handling_3 = "sovrascrivi le modifiche nei valori Palm";
 
 conflict_notification_0 = "non notificare";
-conflict_notification_5 = "crea un'attivita'";
+conflict_notification_5 = "crea un'attività";
 
 // generated keys
 create-skyrix-record  = "crea un record OGo"
@@ -265,7 +265,7 @@ label_onlyMyAppointments  = "solo miei appuntamenti";
 label_palmAddress     = "indirizzo palmare"
 label_palmAddresses   = "indirizzi palmare"
 label_palmDate        = "impegno palmare"
-label_palmJob         = "attivita' palm"
+label_palmJob         = "attività palm"
 label_palmMemo        = "memo palm"
 label_pda_timezone    = "fuso locale palm"
 label_popup_all       = "tutto"
@@ -297,16 +297,16 @@ label_skyrixAddresses = "indirizzi OGo"
 label_skyrixAppointment  = "appuntamento OGo"
 label_skyrixAppointments = "appuntamenti OGo"
 label_skyrixDocument  = "documento OGo"
-label_skyrixJob       = "attivita' OGo"
-label_skyrixJobs      = "attivita' OGo"
-label_toDoJobs        = "lista attivita'"
+label_skyrixJob       = "attività OGo"
+label_skyrixJobs      = "attività OGo"
+label_toDoJobs        = "lista attività"
 label_validFiles      = "file validi"
 label_writeAccess     = "scrittura"
 
 // generated keys
 list_title_address = "Indirizzi Palmare"
 list_title_date    = "Impegni Palmare"
-list_title_job     = "Attivita' Palmare"
+list_title_job     = "Attività Palmare"
 list_title_memo    = "Memo Palmare"
 
 // generated keys
@@ -326,14 +326,14 @@ month_9            = "settembre"
 // generated keys
 new_address_from_skyrix = "nuovo da contatto OGo"
 new_date_from_skyrix    = "nuovo da appuntamento OGo"
-new_job_from_skyrix     = "nuovo da attivita' OGo"
+new_job_from_skyrix     = "nuovo da attività OGo"
 new_memo_from_skyrix    = "nuovo da documento"
 new-from-skyrix-record  = "nuovo da record OGo"
 
 new_address             = "nuovo indirizzo palmare"
 new_date                = "nuovo impegno palmare"
 new_memo                = "nuovo memo palmare"
-new_job                 = "nuova attivita' palmare"
+new_job                 = "nuova attività palmare"
 
 // generated keys
 person             = "persona"
@@ -366,7 +366,7 @@ showRepeatings     = "mostra ripetizioni"
 // generated keys
 skyrixAddressType_         = "--"
 skyrixAddressType_bill     = "Indirizzo fiscale"
-skyrixAddressType_location = "Localita'"
+skyrixAddressType_location = "Località"
 skyrixAddressType_mailing  = "Indirizzo postale"
 skyrixAddressType_private  = "Indirizzo privato"
 skyrixAddressType_ship     = "Indirizzo di spedizione"
@@ -459,11 +459,11 @@ to                 = "a"
 
 // generated keys
 weekday_long_0     = "domenica"
-weekday_long_1     = "lunedi'"
-weekday_long_2     = "martedi'"
-weekday_long_3     = "mercoledi'"
-weekday_long_4     = "giovedi'"
-weekday_long_5     = "venerdi'"
+weekday_long_1     = "lunedì"
+weekday_long_2     = "martedì"
+weekday_long_3     = "mercoledì"
+weekday_long_4     = "giovedì"
+weekday_long_5     = "venerdì"
 weekday_long_6     = "sabato"
 weekday_short_0    = "dom"
 weekday_short_1    = "lun"
