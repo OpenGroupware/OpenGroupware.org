@@ -169,8 +169,8 @@
   ms = [NSMutableString stringWithCapacity:256];
   [ms appendString:@"BEGIN:VCALENDAR\r\n"];
   [ms appendString:
-        @"PRODID:-//SKYRIX groupware server//"
-        @"NONSGML skyjobs2ical 1.0.0//EN\r\n"];
+        @"PRODID:-//OpenGroupware.org//"
+        @"NONSGML ZideStore 1.3//EN\r\n"];
   [ms appendString:@"VERSION:2.0\r\n"];
   [ms appendString:@"METHOD:PUBLISH\r\n"];
   

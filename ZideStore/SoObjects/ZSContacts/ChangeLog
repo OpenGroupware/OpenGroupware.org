@@ -1,3 +1,8 @@
+2005-05-17  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxAddress.m: removed code for product.plist binding, this now lives
+	  in SxObject (v1.3.89)
+
 2005-05-13  Helge Hess  <helge.hess@skyrix.com>
 
 	* SxAddress.m: properly deliver etag in GET requests (v1.3.88)

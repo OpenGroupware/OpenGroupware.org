@@ -20,9 +20,19 @@
 	"Add Documents, Images and Files" = "Owner";
       };
     };
+
     SxTask = {
       superclass  = "SxObject";
       protectedBy = "View";
+
+      slots = {
+        entityName    = { value = "Job";         };
+        primaryKeyName= { value = "jobId";       };
+        updateCommand = { value = "job::set";    };
+        newCommand    = { value = "job::new";    };
+        deleteCommand = { value = "job::delete"; };
+        getCommand    = { value = "job::get";    };
+      };
 
       methods = {
         "GET" = {

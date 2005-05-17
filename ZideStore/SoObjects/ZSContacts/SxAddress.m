@@ -97,24 +97,13 @@ static BOOL debugEO = NO;
 /* updating/inserting */
 
 - (NSString *)entityName {
-  return [[self soClass] lookupKey:@"entityName" inContext:nil];
+  return [[self class] entityName];
 }
 - (NSString *)updateCommandName {
-  return [[self soClass] lookupKey:@"updateCommand" inContext:nil];
+  return [[self class] updateCommandName];
 }
 - (NSString *)newCommandName { // should be a class method?
-  return [[self soClass] lookupKey:@"newCommand" inContext:nil];
-}
-
-+ (NSString *)getCommandName {
-  return [[self soClass] lookupKey:@"getCommand" inContext:nil];
-}
-
-+ (NSString *)deleteCommandName { // TODO: is this correct? => yes, I think so
-  return [[self soClass] lookupKey:@"deleteCommand" inContext:nil];
-}
-+ (NSString *)primaryKeyName {
-  return @"companyId";
+  return [[self class] newCommandName];
 }
 
 - (NSString *)updateSqlForPhoneKey:(NSString *)_key value:(id)_value 

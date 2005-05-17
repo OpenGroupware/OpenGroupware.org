@@ -580,23 +580,23 @@
 /* reflection necessary for operation */
 
 + (NSString *)primaryKeyName {
-  return nil;
+  return [[self soClass] lookupKey:@"primaryKeyName" inContext:nil];
 }
 + (NSString *)entityName {
-  return nil;
+  return [[self soClass] lookupKey:@"entityName" inContext:nil];
 }
 
 + (NSString *)getCommandName {
-  return nil;
+  return [[self soClass] lookupKey:@"getCommand" inContext:nil];
 }
 + (NSString *)deleteCommandName {
-  return nil;
+  return [[self soClass] lookupKey:@"deleteCommand" inContext:nil];
 }
 + (NSString *)newCommandName {
-  return nil;
+  return [[self soClass] lookupKey:@"newCommand" inContext:nil];
 }
 + (NSString *)setCommandName {
-  return nil;
+  return [[self soClass] lookupKey:@"setCommand" inContext:nil];
 }
 
 /* KVC */

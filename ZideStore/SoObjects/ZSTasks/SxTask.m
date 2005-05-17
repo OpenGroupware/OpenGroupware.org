@@ -37,23 +37,6 @@
 
 static BOOL debugParser = YES;
 
-+ (NSString *)primaryKeyName {
-  /* need to overwrite that method for SxObject */
-  return @"jobId";
-}
-+ (NSString *)entityName {
-  return @"Job";
-}
-+ (NSString *)getCommandName {
-  return @"job::get";
-}
-+ (NSString *)newCommandName {
-  return @"job::new";
-}
-+ (NSString *)setCommandName {
-  return @"job::set";
-}
-
 - (id)initWithJob:(id)_job inFolder:(SxTaskFolder *)_folder {
   return [self initWithEO:_job inFolder:_folder];
 }
@@ -113,60 +96,8 @@ static BOOL debugParser = YES;
   return @"IPM.Task";
 }
 
-- (int)cdoAction {
-  /* MAPI 10800003 */
-  return 1280;
-  /* whatever this is and means ... (taken from Apache), also 272 */
-}
-- (NSString *)mapiID_8112_int {
-  return @"2";
-}
-- (NSString *)mapiID_8113_int {
-  return @"1";
-}
-- (NSString *)mapiID_8123_int {
-  return @"-1000";
-}
-- (NSString *)mapiID_8124_bool {
-  return @"0";
-}
-- (NSString *)mapiID_8129_int {
-  return @"0";
-}
-- (NSString *)mapiID_812A_int {
-  return @"0";
-}
-- (NSString *)mapiID_812C_bool {
-  return @"1";
-}
-- (NSString *)cdoIsRecurring {
-  return @"0";
-}
-- (NSString *)cdoItemIsComplete {
-  id jobStatus;
-
-  jobStatus = [[self object] valueForKey:@"jobStatus"];
-  if (([jobStatus isEqualToString:@"25_done"]) ||
-      ([jobStatus isEqualToString:@"30_archived"]))
-    return @"1";
-  return @"0";
-}
-
-// TODO: cdoEntryID
-// TODO: cdoInstanceKey
-// TODO: cdoObjectType, cdoSearchKey
-// mapiID_8108000B
-// mapiID_81050040 (taskCommonEnd)
 
 /* mail->task mappings */
-
-- (void)setThreadTopic:(NSString *)_tp {
-  [self takeValue:_tp forKey:@"subject"];
-}
-- (NSString *)threadTopic {
-  /* subject is created as 'threadTopic' */
-  return [self valueForKey:@"subject"];
-}
 
 - (void)fetchCreatorForTask:(id)_task inContext:(id)_ctx {
   SxContactManager *cm;
@@ -219,17 +150,6 @@ static BOOL debugParser = YES;
   return [self sentRepresentingEmailAddress];
 }
 
-- (id)cdoTrustSender {
-  return @"1";
-}
-
-- (id)cdoMessageFlags {
-  return @"3"; // READ, UNMODIFIED
-}
-- (id)cdoMessageStatus {
-  return @"0";
-}
-
 - (id)normalizedSubject {
   return [self valueForKey:@"subject"];
 }
@@ -256,15 +176,6 @@ static BOOL debugParser = YES;
   if (skyPriority > 3)
     return 2; // low
   return 0; // normal
-}
-- (int)cdoPriority {
-  // see SxDavTaskAction -getPriority for details
-  int pri;
-  
-  pri = [self priority];
-  if (pri == 2)
-    pri = -1;
-  return pri;
 }
 - (id)importance { // maybe same as priority ?
   // see SxDavTaskAction -getPriority for details
@@ -427,8 +338,7 @@ static BOOL debugParser = YES;
   [md removeObjectForKey:@"davUid"];
   [md removeObjectForKey:@"locationURL"];
   [md removeObjectForKey:@"outlookMessageClass"];
-    
-  /* what is mapi0x0000811c ? */
+  
   return [self updateJobWithProperties:md inContext:_ctx];
 }
 
@@ -538,28 +448,64 @@ static BOOL debugParser = YES;
   return r;
 }
 
-- (id)GETAction:(WOContext *)_ctx {
-  //[self logWithFormat:@"render EO: %@", [self object]];
-  SxTaskRenderer *r;
+- (NSString *)iCalString {
+  SxTaskRenderer *renderer;
   NSString *ical;
   
-  r = [[SxTaskRenderer alloc] init];
-  ical = [r vCalendarStringForTask:self];
-  [r release]; r = nil;
+  renderer = [[SxTaskRenderer alloc] init];
+  ical = [renderer vCalendarStringForTask:self];
+  [renderer release]; renderer = nil;
   
   return ical;
 }
 
-- (WOResponse *)PUTAction:(WOContext *)_ctx {
-  WOResponse *r = [_ctx response];
+- (id)GETAction:(WOContext *)_ctx {
+  //[self logWithFormat:@"render EO: %@", [self object]];
+  WOResponse *r;
+  NSString   *ical, *etag;
   
+  /* return proper code for missing EOs */
+  
+  if ([self objectInContext:_ctx] == nil) {
+    return [NSException exceptionWithHTTPStatus:404 /* Not Found */
+                        reason:@"did not find EO"];
+  }
+  
+  /* generate iCalendar */
+  
+  if ((ical = [self iCalString]) == nil) {
+    return [NSException exceptionWithHTTPStatus:500
+                        reason:@"could not render task as iCalendar"];
+  }
+  
+  /* setup response */
+  
+  r  = [(WOContext *)_ctx response];
+  [r setContentEncoding:NSUTF8StringEncoding];
+  [r setHeader:@"text/calendar; charset=utf-8" forKey:@"content-type"];
+  [r appendContentString:ical];
+  
+  if ((etag = [self davEntityTag]) != nil)
+    [r setHeader:etag forKey:@"etag"];
+  
+  return r;
+}
+
+- (id)PUTAction:(WOContext *)_ctx {
+  NSException *error;
+  
+  if ((error = [self matchesRequestConditionInContext:_ctx]) != nil)
+    return error;
+  
+#if 0 // old connector stuff
   if ([[[_ctx request] headerForKey:@"user-agent"] hasPrefix:@"Evolution/"])
     return [self putEvoComment:_ctx];
+#endif
   
-  [self logWithFormat:@"change task ..."];
-  [self debugWithFormat:@"fake new task ..."];
-  [r setStatus:204 /* no content */];
-  return r;
+  [self logWithFormat:@"TODO: change task ..."];
+  
+  return [NSException exceptionWithHTTPStatus:501 /* Not Implemented */
+                      reason:@"vtodo PUT not yet implemented"];
 }
 
 - (id)objectInContext:(id)_ctx {
@@ -591,32 +537,6 @@ static BOOL debugParser = YES;
 
 /* properties set in Apache */
 
-- (int)alternateRecipientAllowed {
-  return 1;
-}
-- (int)originatorDeliveryReportRequested {
-  return 0;
-}
-- (int)readReceiptRequested {
-  return 0;
-}
-
-- (int)mapi0x1006_int {
-  return 0;
-}
-- (int)mapi0x1007_int {
-  return 0;
-}
-- (int)mapi0x1010_int {
-  return 0;
-}
-- (int)mapi0x1011_int {
-  return 0;
-}
-- (int)mapi0x3FDE_int {
-  return 28591;
-}
-
 - (NSString *)travelDistance {
   return [[self object] valueForKey:@"kilometers"];
 }
@@ -629,66 +549,6 @@ static BOOL debugParser = YES;
 }
 - (NSString *)accountingInfo {
   return [[self object] valueForKey:@"accountingInfo"];
-}
-- (NSString *)cdoBody {
-  NSString *body;
-  static NSString *PrefixStr = @"ZideLook rich-text compressed comment: ";
-
-  body = [[self object] valueForKey:@"comment"];
-
-  if ([body isNotNull]) {
-    if ([body length] > [PrefixStr length]) {
-      if ([body hasPrefix:PrefixStr]) {
-        return nil;
-      }
-    }
-  }
-  else {
-    body = nil;
-  }
-  return body;
-}
-
-- (int)rtfInSync {
-  return 1;
-}
-
-- (int)rtfSyncBodyCRC {
-  return 0;
-}
-
-- (int)rtfSyncBodyCount {
-  return 0;
-}
-- (int)rtfSyncPrefixCount {
-  return 0;
-}
-- (int)rtfSyncTrailingCount {
-  return 0;
-}
-
-- (int)cdoDepth {
-  return 0;
-}
-
-- (int)cdoStatus {
-  return 0;
-}
-
-- (NSString *)rtfCompressed {
-  NSString        *body;
-  static NSString *PrefixStr = @"ZideLook rich-text compressed comment: ";
-
-  body = [[self object] valueForKey:@"comment"];
-
-  if (![body isNotNull])
-    body = @"";
-  
-  if ([body hasPrefix:PrefixStr])
-    body = [body substringFromIndex:[PrefixStr length]];
-  else
-    body = [[body stringByEncodingRTF] stringByEncodingBase64];
-  return body;
 }
 
 /* permissions */
@@ -725,7 +585,8 @@ static BOOL debugParser = YES;
   
   error = nil;
   NS_DURING {
-    object = [cmdctx runCommand:[[self class] newCommandName] arguments:_record];
+    object = [cmdctx runCommand:[[self class] newCommandName]
+                     arguments:_record];
     
     if (![cmdctx commit]) {
       error = [[NSException exceptionWithHTTPStatus:409 /* Conflict */

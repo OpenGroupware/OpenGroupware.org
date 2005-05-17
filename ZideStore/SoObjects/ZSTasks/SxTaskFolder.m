@@ -109,30 +109,6 @@
   return @"urn:content-classes:taskfolder";
 }
 
-- (int)mapiID_8112_int {
-  return 3;
-}
-- (int)mapiID_8113_int {
-  return 1;
-}
-
-#if 0
-- (int)cdoRights {
-  NSLog(@"################ [%s] ###############", __PRETTY_FUNCTION__);
-  return 2043;
-  /* frightsReadAny          0x001
-   * frightsCreate           0x002
-   * frightsEditOwned        0x008
-   * frightsDeleteOwned      0x010
-   * frightsEditAny          0x020
-   * frightsDeleteAny        0x040
-   * frightsCreateSubfolder  0x080
-   * frightsOwner            0x100
-   * frightsContact          0x200
-   * frightsVisible          0x400
-   */
-}
-#endif
 
 - (NSString *)fileExtensionForFileSystem {
   return @"ics";

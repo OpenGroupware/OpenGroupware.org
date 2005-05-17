@@ -26,6 +26,10 @@
       superclass  = "SxObject";
       protectedBy = "View";
 
+      slots = {
+        primaryKeyName = { value = "companyId"; };
+      };
+
       methods = {
         "GET" = {
           protectedBy = "View";
