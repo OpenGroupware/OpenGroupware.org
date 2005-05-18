@@ -1,0 +1,56 @@
+-- GLC update script for MNH OpenGroupware database
+-- (C) 2000-2005 GLC
+-- Thierry DELHAISE : thierry.delhaise@glconseil.com
+-- Date : 18 Mai 2005
+
+DROP TABLE date_x;
+
+CREATE TABLE date_x (
+  date_id                int not null,
+  object_version         int,
+  owner_id               int,
+  creator_id             int,
+  access_team_id         int,
+  parent_date_id         int,
+
+  start_date             timestamp with time zone  not null,
+  end_date               timestamp with time zone  not null,
+  cycle_end_date         timestamp with time zone,
+  type                   varchar(50),     -- repetition type
+  title                  varchar(255) not null,
+  location               varchar(255),
+  absence                varchar(255),
+  resource_names         varchar(255),
+  write_access_list      varchar(255),
+  read_access_list       varchar(255),
+  is_absence             smallint,
+  is_attendance          smallint,
+  is_conflict_disabled   smallint,
+  travel_duration_before int,
+  travel_duration_after  int,
+  notification_time      int,
+  db_status              varchar(50),
+  apt_type               varchar(100),    -- appointment type (birthday...)
+  rdv_type               varchar(100),    -- appointment type (norma...)
+  calendar_name          varchar(255),
+  source_url             varchar(255),
+  fbtype                 varchar(50),     -- free/busy type
+
+  sensitivity            smallint,        -- sensitivity
+  busy_type              smallint,        -- busy type
+  importance             smallint,        -- importance
+  last_modified          int,             -- timestamp of last modification
+  evo_reminder           varchar(255),    -- Evolution reminder settings
+  ol_reminder            varchar(255),    -- Outlook reminder settings
+  online_meeting         varchar(255),    -- CSV for online meeting values
+  associated_contacts    varchar(255),    -- Outlook associated_contacts
+  keywords               varchar(255),    -- Outlook keywords
+
+  constraint             pk_date primary key (date_id));
+
+
+CREATE TABLE scheduler_delegation (
+  company_id                int not null,
+  rdv_type                  varchar(100),
+  delegate_company_id       int not null);
+
