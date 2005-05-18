@@ -3,19 +3,180 @@
 	<td align="left" colspan=5><#Font><b><#DelegTitle /></b></#Font></td>
   </#MainButtonRow>
 	
-	<#DelegForm>
-	<table>
-	<tr>
-		<td rowspan="3" valign="top"> <#DelegListSource/></td>
-		<td rowspan="3" valign="top"> 
-		    <#AddPerson/><#DelPerson/>
-		</td>
-		<td rowspan="3" valign="top"> <#DelegListDestination/></td>
-		<td rowspan="3" valign="bottom"> <#OK/></td>
-	</tr>
-	<tr><#ParticipantsList/></tr>
+<#DelegForm>
+	<table align="center">
+	   	<!-- 1st line-->
+		<tr>
+			<th style="font-family: arial;font-size: 10px"><#TitleListSource/></th>
+		        <th></th>
+			<th style="font-family: arial;font-size: 10px"><#TitleListDestination/></th>
+	 	</tr>	
+	 	
+		 <!--2nd line-->
+		<tr>
+			<td rowspan="2" align="center"> <#DelegListSource/></td>
+			<td><#AddPerson/></td>
+			<td rowspan="2" align="center"> <#DelegListDestination/></td>
+	 	</tr>
+	         <!--3rd line-->
+	  	<tr>
+			<td ><#DelPerson/></td>
+	  	</tr>
+		<!--4th line-->
+		<tr>
+			<td colspan="3" align="right"> <#OK/></td>
+		</tr>
+       	<tr><#ParticipantsList/></tr>	
+	</table>	
+	<!--participants list -->
+	<!--
+	<#IsPrintModeCondElse>
+		<table border="0" cellspacing="0" cellpadding="1" width="100%">
+			<#MainButtonRow>
+				<td align="left"><#Font><b><#MainTitle /></b></#Font></td>
+				<td align="right"><#Buttons /></td>
+			</#MainButtonRow>
+			<tr><td></td><td></td></tr>
+		</table>
+	</#IsPrintModeCondElse>
+
+	<table border="0" cellspacing="0" cellpadding="1" width="100%">
+		<#TableHeaderRow>
+		<th align="left"><#Font><#NameLabel   /></#Font></th>
+		<th align="left"><#Font><#FNameLabel  /></#Font></th>
+		<th align="left"><#Font><#DegreeLabel /></#Font></th>
+
+		<#ShowParticipantStateCond>
+     	  	<th align="left"><#Font><#PartRoleLabel  /></#Font></th>
+    	  	<th align="left"><#Font><#PartStatusLabel /></#Font></th>
+    		</#ShowParticipantStateCond>
+
+		<#ShowDetailsCond>
+     	 	<th align="left"><#Font><#FunctionLabel /></#Font></th>
+      	 	<th align="left"><#Font><#EmailLabel    /></#Font></th>
+     	 	<th align="left"><#Font><#TelLabel      /></#Font></th>
+      	
+		 <#IsEnterpriseAvailable>
+			<th align="left"><#Font><#EpLabel /></#Font></th>
+      	 	</#IsEnterpriseAvailable>
+		</#ShowDetailsCond>
+		</#TableHeaderRow>
+
+		<#ParticipantRepetition>
+		<#IsTeamParticipant>
+		<tr><#FullTableData /></tr>
+
+		<#MainButtonRow>
+		<#FullTableData>
+	 -->
+          <!--
+          <#ExpandTeamsCond    ><#HideMembersAction/></#ExpandTeamsCond>
+          <#ExpandTeamsCondElse><#ShowMembersAction/></#ExpandTeamsCondElse>
+          &nbsp;
+          -->
+	<!--
+		<#IsArchivedCondElse>
+			<#Font><#TeamLabel /> <#TeamName /></#Font>
+		</#IsArchivedCondElse>
+		<#IsArchivedCond>
+		<#ArchivedObjectFont><#TeamLabel /> <#TeamName /></#ArchivedObjectFont>
+		</#IsArchivedCond>
+		</#FullTableData>
+		</#MainButtonRow>
+
+		<#MemberRepetition>
+		<tr>
+			<td>
+				<#Font>
+					<#IsPersonAvailable><#MemberLink /></#IsPersonAvailable>
+					<#IsPersonNotAvailable><#MemberName /></#IsPersonNotAvailable>
+				</#Font>
+			</td>
+			<td><#Font><#MemberFName  /></#Font></td>
+			<td><#Font><#MemberDegree /></#Font></td>
+
+			<#ShowParticipantStateCond>
+				<td><#Font><#PartRole   /></#Font></td>
+				<td><#Font><#PartStatus /></#Font></td>
+			</#ShowParticipantStateCond>
+
+			<#ShowDetailsCond>
+				<td><#Font><#MemberFunction /></#Font></td>
+				<td>
+					<#Font>
+						<#IsInternalMailer><#MemberEmailAction /></#IsInternalMailer>
+						<#IsNotInternalMailer> <#MemberEmail /></#IsNotInternalMailer>
+					</#Font>
+				</td>
+				<td><#Font><#DialTel><#MemberTel /></#DialTel></#Font></td>
+            
+				<#IsEnterpriseAvailable>
+					<td><#Font><#MemberEnterpriseRep><#EnterpriseName /></#MemberEnterpriseRep></#Font></td>
+				</#IsEnterpriseAvailable>
+			</#ShowDetailsCond>
+		</tr>
+		</#MemberRepetition>
+		</#IsTeamParticipant>
+
+		<#IsPersonParticipant>
+		<#IsParticipantViewAllowed>
+		<tr>
+			<td>
+				<#IsArchivedCondElse>
+					<#Font>
+						<#IsPersonAvailable><#ParticipantLink /></#IsPersonAvailable>
+						<#IsPersonNotAvailable><#PartName /></#IsPersonNotAvailable>
+					</#Font>
+				</#IsArchivedCondElse>
+				<#IsArchivedCond>
+					<#ArchivedObjectFont><#PartName /></#ArchivedObjectFont>
+				</#IsArchivedCond>
+			</td>
+			<td><#Font><#PartFName /></#Font></td>
+			<td><#Font><#PartDegree /></#Font></td>
+
+			<#ShowParticipantStateCond>
+				<td><#Font><#PartRole   /></#Font></td>
+				<td><#Font><#PartStatus /></#Font></td>
+			</#ShowParticipantStateCond>
+
+			<#ShowDetailsCond>
+				<td><#Font><#PartFunction /></#Font></td>
+				<td>
+					<#Font>
+						<#IsInternalMailer><#PartEmailAction /></#IsInternalMailer>
+						<#IsNotInternalMailer><#PartEmail /></#IsNotInternalMailer>
+					</#Font>
+				</td>
+				<td><#Font><#DialPartTel><#PartTel /></#DialPartTel></#Font></td>
+			<#IsEnterpriseAvailable>
+				<td>
+					<#Font>
+						<#PartEnterpriseRep><#EnterpriseName /></#PartEnterpriseRep>
+					</#Font>
+				</td>
+			</#IsEnterpriseAvailable>
+			</#ShowDetailsCond>
+		</tr>
+		</#IsParticipantViewAllowed>
+		<#IsParticipantViewAllowedElse>
+		<tr>
+			<td><#Font><#PartName /></#Font></td>
+				<#IsEnterpriseAvailable>
+					<td colspan="6" align="middle">
+				</#IsEnterpriseAvailable>
+				<#IsEnterpriseNotAvailable>
+					<td colspan="5" align="middle">
+				</#IsEnterpriseNotAvailable>
+				<#Font><b><#PrivateLabel /></b></#Font>
+			</td>
+		</tr>
+		</#IsParticipantViewAllowedElse>
+		</#IsPersonParticipant>
+		</#ParticipantRepetition>
 	</table>
-	</#DelegForm>
+      -->
+</#DelegForm>
 
 
 
