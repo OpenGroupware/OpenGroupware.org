@@ -660,6 +660,7 @@ searchReadAccess                 = "Search accounts/teams";
 setReadAccess                    = "Select accounts/teams";
 readAccess			 = "Readaccess";
 delegrdv			 = "Delegation";
+delegation			 = "Delegation";
 searchDelegRdvPrivate            = "Search accounts/teams for Private";
 setDelegRdvPrivate               = "Select accounts/teams";
 searchDelegRdvConfidential       = "Search accounts/teams for Confidential";
