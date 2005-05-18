@@ -1,0 +1,137 @@
+// $Id: Main.wod,v 1.5 2004/02/12 23:20:43 helge Exp $
+
+Stylesheet: WOGenericElement {
+  elementName = "link";
+  rel         = "stylesheet";
+  type        = "text/css";
+  href        = stylesheetURL;
+}
+
+MenuLogoTop: WOImage {
+  filename = "menu_logo_top.gif";
+  align    = "center";
+  valign   = "middle";
+  border   = "0";
+}
+
+SkyrixIsUp: WOConditional {
+  condition = isSkyrixUp;
+}
+SkyrixIsDown: WOConditional {
+  condition = isSkyrixUp;
+  negate    = YES;
+}
+
+Form: WOForm {
+  name             = "loginform";
+  directActionName = "login";
+  ?da              = directAction;
+  ?o               = cycleId;
+}
+BrowserConfigDetect: WOHiddenField {
+  name  = "browserconfig";
+  value = "browserConfig";
+}
+
+LoginLabel: WOString {
+  value = "Identifiant"; // config.labels.user
+}
+PasswordLabel: WOString {
+  value = "Mot de passe"; // config.labels.password;
+}
+
+Login: WOTextField {
+  name  = "login";
+  value = user;
+  SIZE  = 20;
+}
+
+Password: WOPasswordField {
+  name  = "password";
+  value = password;
+  SIZE  = 20;
+}
+
+IsAutoLogin: WOConditional {
+  condition = autologin;
+}
+
+Go: WOSubmitButton {
+  //action = login;
+  name   = "loginbutton";
+  value  = "valider"; // config.labels.login;
+  class = "button_narrow";
+}
+
+<!-- Image1Homepage: WOImage {
+  filename    = "homepage1.gif";
+  BORDER      = "0";
+}
+ -->
+<!-- Image2HomePage: WOImage {
+  filename    = "homepage2.gif";
+  BORDER      = "0";
+}
+ -->
+Version: WOString {
+  value = application.version;
+}
+
+ExpirePage: WOMetaRefresh {
+  action  = expirePage;
+  timeout = pageExpireTimeout;
+}
+Font: WOGenericContainer {
+        elementName   = "FONT";
+          COLOR         = "black";//config.font_color;
+          SIZE          = "2";//config.font_size;
+          FACE          = "Arial,Helvetica,Verdana,Geneva,Tahoma";//config.font_face;
+};
+EditFont: WOGenericContainer {
+        elementName   = "FONT";
+          COLOR         = "";//config.editFont.color;
+          SIZE          = "2";//config.editFont.size;
+          FACE          = "";//config.editFont.face;
+};
+
+DirectActionIsSet: WOConditional {
+  condition = hasDirectAction;
+}
+DAName: WOString {
+  value = directAction;
+}
+DAClass: WOString {
+  value = directActionObject.class.name;
+}
+
+/* database stuff */
+
+Database: WOString {
+  value = databaseName;
+}
+
+DBServer: WOString {
+  value = databaseServer;
+}
+
+DBUser: WOString {
+  value = databaseUser;
+}
+
+IsLoginNotAuthorizedCond: WOConditional {
+  condition = isLoginNotAuthorized;
+}
+
+LoginIsNotAuthorizedLabel: WOString {
+  value = "Wrong Password or User";
+}
+
+LinePix: WOImage {
+  filename         = "line_stretch.gif";
+};
+LineLeft: WOImage {
+  filename         = "line_left.gif";
+};
+LineRight: WOImage {
+  filename         = "line_right.gif";
+};
