@@ -102,7 +102,7 @@ SearchTextField: WOTextField {
 AddSubmit: WOSubmitButton {
   action   = addAddress;
   value    = labels.mail_editor_addrecipient;
-  class    = "button_narrow";
+  class    = "button_auto";
 }
 
 UploadRep: WORepetition {

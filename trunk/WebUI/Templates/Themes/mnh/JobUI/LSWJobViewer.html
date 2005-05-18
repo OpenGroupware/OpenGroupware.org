@@ -1,0 +1,137 @@
+<#Frame>
+  <!-- $Id: LSWJobViewer.html 2 2004-08-20 11:37:44Z znek $ -->
+  <#Window>
+    <table width="100%" border="0" cellpadding="4" cellspacing="0">
+      <#Title><#Buttons/></#Title>
+
+      <#IsNotInConfigMode>
+        <tr>
+          <#AttributeCell><#Font><#JobLabel/>:</#Font></#AttributeCell>
+          <#ValueCell><#Font><b><#JobName/></b></#Font></#ValueCell>
+        </tr>
+
+        <#HasProject>
+          <tr>
+            <#AttributeCell><#Font><#ProjectLabel/>:</#Font></#AttributeCell>
+            <#ValueCell>
+              <#Font>
+                <#EnableProjectLink><#Project      /></#EnableProjectLink>
+                <#ForbidProjectLink><#ProjectString/></#ForbidProjectLink>
+                &nbsp;
+              </#Font>
+            </#ValueCell>
+          </tr>
+        </#HasProject>
+
+        <tr>
+          <#AttributeCell><#Font><#CreatorLabel/>:</#Font></#AttributeCell>
+          <#ValueCell>
+            <#CreatorVisibleCond><#CreatorName/></#CreatorVisibleCond>
+            <#CreatorVisibleCondElse>*</#CreatorVisibleCondElse>
+          </#ValueCell>
+        </tr>
+
+        <tr>
+          <#AttributeCell><#Font><#ExecutantLabel/>:</#Font></#AttributeCell>
+          <#ValueCell>
+            <#IsTeamJob><#ExecutantTeamName/></#IsTeamJob>
+            <#IsTeamJobElse>
+              <#ExecutantVisibleCond>
+                <#ExecutantName/>
+              </#ExecutantVisibleCond>
+              <#ExecutantVisibleCondElse>*</#ExecutantVisibleCondElse>
+            </#IsTeamJobElse>
+          </#ValueCell>
+        </tr>
+
+        <tr>
+          <#AttributeCell><#Font><#StartDateLabel/>:</#Font></#AttributeCell>
+          <#ValueCell><#Font><#StartDate/></#Font></#ValueCell>
+        </tr>
+
+        <tr>
+          <#AttributeCell><#Font><#EndDateLabel/>:</#Font></#AttributeCell>
+          <#ValueCell><#Font>
+            <#OnTimeCondition><#EndDate/></#OnTimeCondition>
+            <#OnTimeConditionElse>
+              <#OutOffTimeFont><#EndDate/></#OutOffTimeFont>
+            </#OnTimeConditionElse></#Font>
+          </#ValueCell>
+        </tr>
+        <#HasPrefExec>
+          <tr>
+            <#AttributeCell><#Font><#PrefExecLabel/>:</#Font></#AttributeCell>
+            <#ValueCell><#Font><#PrefExcString /></#Font></#ValueCell>
+          </tr>
+        </#HasPrefExec>
+          
+        <#HasReferredPerson>
+          <tr>
+            <#AttributeCell>
+              <#Font><#ReferredPersonLabel/>:</#Font>
+            </#AttributeCell>
+            <#ValueCell><#Font>
+              <a href="<#RefPersonLink />"><#RefPersonLabel /></a>
+            </#Font></#ValueCell>
+          </tr>
+        </#HasReferredPerson>
+          
+        <#HasRunningTimer>
+          <tr>
+            <#AttributeCell><#Font><#TimerLabel/>:</#Font></#AttributeCell>
+            <#ValueCell><#Font><#TimerValue/>&nbsp;&nbsp;
+              <#TimerImage /></#Font></#ValueCell>
+          </tr>
+        </#HasRunningTimer>
+      </#IsNotInConfigMode>
+        
+      <#IsInConfigMode><#ViewerConfig/></#IsInConfigMode>
+    </table>
+
+    <#IsNotInConfigMode>
+      <p>
+        <#TabView>
+          <#AttributesTab><#PersonalAttributes/></#AttributesTab>
+          
+          <#JobHistoryTab>
+<!--
+              <#CommentCollapsible>
+                <#CollTitleMode><#Font><#CreateCommentTitle/>
+                  </#Font></#CollTitleMode>
+                <#CollContentMode>
+                  <#CommentQuickCreateForm>
+                    <#CommentTextArea/><br />
+                    <#CommentSubmit />
+                  </#CommentQuickCreateForm>
+                </#CollContentMode>
+              </#CommentCollapsible>
+            </table>
+-->
+            <#CanComment>
+              <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                <#CommentCollapsible>
+                  <tr>
+                    <td colspan="2">
+                      <#CommentQuickCreateForm>
+                        <#CommentTextArea/><br />
+                        <#CommentSubmit />
+                      </#CommentQuickCreateForm>
+                    </td>
+                  </tr>
+                </#CommentCollapsible>
+              </table>
+            </#CanComment>
+
+            <#JobHistoryList/>
+          </#JobHistoryTab>
+          
+          <#IsLinkTabEnabled>
+            <#LinkTab><#RelatedLinks/></#LinkTab>
+          </#IsLinkTabEnabled>
+  
+          <#IsLogTabEnabled><#LogTab><#LogList/></#LogTab></#IsLogTabEnabled>
+        </#TabView>
+      </p>
+    </#IsNotInConfigMode>
+  </#Window>
+</#Frame>

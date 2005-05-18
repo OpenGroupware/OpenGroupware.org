@@ -140,7 +140,7 @@ SaveAndMailSubmit: WOSubmitButton {
   action = saveAndSendMail;
   value  = labels.saveAndMailButtonLabel;
   title  = labels.saveAndMailButtonLabel_title;
-  class  = "button_narrow";
+  class  = "button_wide";
 }
 
 DeleteButton: WOSubmitButton {

@@ -344,3 +344,4 @@ sendOnly   = "Envoyer uniquement";
 showHtmlMailTextInline   = "Afficher dans le corps le texte des messages HTML";
 thenRedirectTo   = "Renvoyer à l'adresse";
 useEpozMailEditor   = "Utiliser Epoz dans l'éditeur de courriels";
+newList                          = "Nouvelle";

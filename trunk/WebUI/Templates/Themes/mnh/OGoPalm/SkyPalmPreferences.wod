@@ -1,0 +1,463 @@
+// $Id: SkyPalmPreferences.wod,v 1.6 2004/01/08 12:36:35 martin Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.SkyPalmPreferences;
+  onClose = session.navigation.leavePage;
+}
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+// collapsible
+WebUITitle: SkyCollapsibleContent {
+  visibility       = defaults.SkyPalmPreferences_show_webui;
+  title            = labels.SkyPalmPreferences_webui;
+  submitActionName = "";
+}
+
+AddressTitle: SkyCollapsibleContent {
+  visibility       = defaults.SkyPalmPreferences_show_address;
+  title            = labels.SkyPalmPreferences_address;
+  submitActionName = "";
+}
+DateTitle: SkyCollapsibleContent {
+  visibility       = defaults.SkyPalmPreferences_show_date;
+  title            = labels.SkyPalmPreferences_datebook;
+  submitActionName = "";
+}
+MemoTitle: SkyCollapsibleContent {
+  visibility       = defaults.SkyPalmPreferences_show_memo;
+  title            = labels.SkyPalmPreferences_memo;
+  submitActionName = "";
+}
+JobTitle: SkyCollapsibleContent {
+  visibility       = defaults.SkyPalmPreferences_show_job;
+  title            = labels.SkyPalmPreferences_job;
+  submitActionName = "";
+}
+SkyrixPersonSyncTitle: SkyCollapsibleContent {
+  visibility = defaults.SkyPalmPreferences_show_personSync;
+  title      = labels.SkyPalmPreferences_skyrixPersonSync;
+}
+SkyrixEnterpriseSyncTitle: SkyCollapsibleContent {
+  visibility = defaults.SkyPalmPreferences_show_enterpriseSync;
+  title      = labels.SkyPalmPreferences_skyrixEnterpriseSync;
+}
+PalmSyncTitle: SkyCollapsibleContent {
+  visibility = defaults.SkyPalmPreferences_show_palmSync;
+  title      = labels.SkyPalmPreferences_palmSync;
+}
+TwoWaySyncTitle: SkyCollapsibleContent {
+  visibility = defaults.SkyPalmPreferences_show_twoWaySync;
+  title      = labels.SkyPalmPreferences_ogoTwoWaySync;
+}
+
+AutoScrollSizeAttr: SkyAttribute {
+  label = labels.label_autoScrollSize;
+}
+BatchSizeAttr: SkyAttribute {
+  label = labels.label_batchSize;
+}
+ConduitsAttr: SkyAttribute {
+  label = labels.label_hotsync_conduits;
+}
+
+ConflictHandlingAttr: SkyAttribute {
+  label = labels.label_conflict_handling;
+}
+ConflictNotificationAttr: SkyAttribute {
+  label = labels.label_conflict_notification;
+}
+
+// Form
+PreferencesForm: WOForm {
+  name = "editform";
+}
+
+SorterItem: WOString {
+  value = labels.$item;
+}
+
+AddressAttributesLabel: WOString {
+  value = labels.SkyPalmPreferences_addressAttributes;
+}
+AddressAttributes: SkyListSorter {
+  selectionTitle    = labels.label_selection_title;
+  nonSelectionTitle = labels.label_non_selection_title;
+  selection         = addressListState.attributes;
+  list              = addressListState.allAttributes;
+  item              = item;
+}
+AddressAutoScrollSize: WOPopUpButton {
+  list   = ( 0, 200, 250, 300, 400, 500, 600, 700, 800, 1000 );
+  item   = item;
+  string = labels.$autoScrollItemLabelKey;
+  singleSelection = YES;
+  selection       = addressListState.editAutoscrollSize;
+}
+AddressBatchSize: WOPopUpButton {
+  list   = ( 20, 50, 100, 150, 200, 300, 500 );
+  item   = item;
+  string = item;
+  singleSelection = YES;
+  selection       = addressListState.editBatchSize;
+}
+
+DateAttributesLabel: WOString {
+  value = labels.SkyPalmPreferences_dateAttributes;
+}
+DateAttributes: SkyListSorter {
+  selectionTitle    = labels.label_selection_title;
+  nonSelectionTitle = labels.label_non_selection_title;
+  selection         = dateListState.attributes;
+  list              = dateListState.allAttributes;
+  item              = item;
+}
+DateAutoScrollSize: WOPopUpButton {
+  list   = ( 0, 200, 250, 300, 400, 500, 600, 700, 800, 1000 );
+  item   = item;
+  string = labels.$autoScrollItemLabelKey;
+  singleSelection = YES;
+  selection       = dateListState.editAutoscrollSize;
+}
+DateBatchSize: WOPopUpButton {
+  list   = ( 20, 50, 100, 150, 200, 300, 500 );
+  item   = item;
+  string = item;
+  singleSelection = YES;
+  selection       = dateListState.editBatchSize;
+}
+
+MemoAttributesLabel: WOString {
+  value = labels.SkyPalmPreferences_memoAttributes;
+}
+MemoAttributes: SkyListSorter {
+  selectionTitle    = labels.label_selection_title;
+  nonSelectionTitle = labels.label_non_selection_title;
+  selection         = memoListState.attributes;
+  list              = memoListState.allAttributes;
+  item              = item;
+}
+MemoAutoScrollSize: WOPopUpButton {
+  list   = ( 0, 200, 250, 300, 400, 500, 600, 700, 800, 1000 );
+  item   = item;
+  string = labels.$autoScrollItemLabelKey;
+  singleSelection = YES;
+  selection       = memoListState.editAutoscrollSize;
+}
+MemoBatchSize: WOPopUpButton {
+  list   = ( 20, 50, 100, 150, 200, 300, 500 );
+  item   = item;
+  string = item;
+  singleSelection = YES;
+  selection       = memoListState.editBatchSize;
+}
+
+JobAttributesLabel: WOString {
+  value = labels.SkyPalmPreferences_jobAttributes;
+}
+JobAttributes: SkyListSorter {
+  selectionTitle    = labels.label_selection_title;
+  nonSelectionTitle = labels.label_non_selection_title;
+  selection         = jobListState.attributes;
+  list              = jobListState.allAttributes;
+  item              = item;
+}
+JobAutoScrollSize: WOPopUpButton {
+  list   = ( 0, 200, 250, 300, 400, 500, 600, 700, 800, 1000 );
+  item   = item;
+  string = labels.$autoScrollItemLabelKey;
+  singleSelection = YES;
+  selection       = memoListState.editAutoscrollSize;
+}
+JobBatchSize: WOPopUpButton {
+  list   = ( 20, 50, 100, 150, 200, 300, 500 );
+  item   = item;
+  string = item;
+  singleSelection = YES;
+  selection       = jobListState.editBatchSize;
+}
+
+// some labels
+AddressLabel: SkyRichString {
+  value = labels.SkyPalmPreferences_address;
+}
+DateBookLabel: SkyRichString {
+  value = labels.SkyPalmPreferences_datebook;
+}
+MemoPadLabel: SkyRichString {
+  value = labels.SkyPalmPreferences_memo;
+}
+ToDoLabel: SkyRichString {
+  value = labels.SkyPalmPreferences_job;
+}
+
+SkyrixPersonLabel: SkyRichString {
+  value = labels.SkyPalmPreferences_skyrixPersonSync;
+}
+SkyrixEnterpriseLabel: SkyRichString {
+  value = labels.SkyPalmPreferences_skyrixEnterpriseSync;
+}
+
+// address attributes mapping
+SkyrixAddressMappingLabel: WOString {
+  value = labels.SkyPalmPreferences_skyrixAddressAttributeMapping;
+}
+
+AddressAttributesRep: WORepetition {
+  list = ( "name1", "name2", "name3" );
+  item = attribute;
+}
+SkyrixAttributeLabel: WOString {
+  value = labels.$skyrixAttributeKey;
+}
+PalmPersonItemPopup: WOPopUpButton {
+  list            = palmKeysWithoutPhoneKeys;
+  item            = item;
+  string          = labels.$palmAttributeKey;
+  singleSelection = YES;
+  selection       = palmAttributeForSkyrixPersonAddressAttribute;
+}
+PalmEnterpriseItemPopup: WOPopUpButton {
+  list            = palmKeysWithoutPhoneKeys;
+  item            = item;
+  string          = labels.$palmAttributeKey;
+  singleSelection = YES;
+  selection       = palmAttributeForSkyrixEnterpriseAddressAttribute;
+}
+
+// skyrix address sync
+SkyrixPersonSyncLabel: WOString {
+  value = labels.SkyPalmPreferences_skyrixPersonSyncAttributes;
+}
+SkyrixEnterpriseSyncLabel: WOString {
+  value = labels.SkyPalmPreferences_skyrixEnterpriseSyncAttributes;
+}
+PALMLabel: SkyRichString {
+  value  = "Palm";
+  isBold = YES;
+}
+SKYRIXLabel: SkyRichString {
+  value  = "OGo";
+  isBold = YES;
+}
+SkyrixAddressTypeLabel: WOString {
+  value = labels.SkyPalmPreferences_skyrixAddressType;
+}
+PalmAddressAttributesRep: WORepetition {
+  list = palmAddressAttributes;
+  item = item;
+}
+
+ItemAttributeLabel: SkyRichString {
+  value = labels.$palmAttributeKey;
+}
+SkyrixPersonItemPopup: WOPopUpButton {
+  list            = skyrixPersonAttributes;
+  item            = attribute;
+  string          = labels.$skyrixAttributeKey;
+  singleSelection = YES;
+  selection       = skyrixAddressPersonAttributeOfItem;
+}
+SkyrixEnterpriseItemPopup: WOPopUpButton {
+  list            = skyrixEnterpriseAttributes;
+  item            = attribute;
+  string          = labels.$skyrixAttributeKey;
+  singleSelection = YES;
+  selection       = skyrixAddressEnterpriseAttributeOfItem;
+}
+
+PersonAddressType: WOPopUpButton {
+  list            = personAddressTypes;
+  item            = item;
+  string          = labels.$skyrixAddressTypeKey;
+  singleSelection = YES;
+  selection       = defaults.OGoPalmAddress_Person_Address;
+}
+EnterpriseAddressType: WOPopUpButton {
+  list            = enterpriseAddressTypes;
+  item            = item;
+  string          = labels.$skyrixAddressTypeKey;
+  singleSelection = YES;
+  selection       = defaults.OGoPalmAddress_Enterprise_Address;
+}
+
+// palm sync
+PalmTimeZone: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.label_pda_timezone;
+  isEditable = YES;
+  valueType  = "popup";
+  value      = defaults.pda_timezone;
+  valueList  = defaults.LSTimeZones;
+}
+Conduits: WOCheckBoxList {
+  //  list       = ( "AddressDB", "DatebookDB", "MemoDB", "ToDoDB" );
+  list       = availableConduits;
+  item       = item;
+  selections = defaults.OGoPalm_sync_conduits;
+  value      = item;
+}
+SyncSkyrixBeforePalmLabel: WOString {
+  value = labels.SkyPalmPreferences_preSync;
+}
+PreSyncHelp: SkyRichString {
+  value = labels.SkyPalmPreferences_preSyncHelp;
+}
+SyncSkyrixAfterPalmLabel: WOString {
+  value = labels.SkyPalmPreferences_postSync;
+}
+PostSyncHelp: SkyRichString {
+  value = labels.SkyPalmPreferences_postSyncHelp;
+}
+SyncSkyrixBeforePalmCheckbox: WOCheckBox {
+  checked = defaults.OGoPalmSync_preSyncWithSkyrix;
+}
+SyncSkyrixAfterPalmCheckbox: WOCheckBox {
+  checked = defaults.OGoPalmSync_postSyncWithSkyrix;
+}
+
+OGoDateDefaultReadAccessLabel: WOString {
+  value = labels.SkyPalmPreferences_ogoDateDefaultReadAccess;
+}
+OGoDateDefaultWriteAccessLabel: WOString {
+  value = labels.SkyPalmPreferences_ogoDateDefaultWriteAccess;
+}
+OGoDateDefaultWriteAccess: SkyParticipantsSelection {
+  participants         = ogoDateWriteAccess;
+  selectedParticipants = selectedOgoDateWriteAccess;
+  onlyAccounts         = YES;
+  viewHeadLine         = NO;
+  headLineLabel        = "searchPopupEntries";
+  searchLabel          = "searchWriteAccess";
+  selectionLabel       = "setWriteAccess";
+}
+OGoDateDefaultReadAccess: WOPopUpButton {
+  list            = ogoDateAccessTeams;
+  item            = item;
+  string          = item.description;
+  selection       = selectedOgoDateAccessTeam;
+  singleSelection = YES;
+  noSelectionString = labels.SkyPalmPreferences_private;
+}
+
+ConflictHandlingPopUp: WOPopUpButton {
+  list   = ( 0, 1, 2, 3 ); // see SkyPalmConstants.h
+  item   = item;
+  string = labels.$conflictHandlingLabelKey;
+  selection       = oGoPalmConflictHandling;
+  singleSelection = YES;
+}
+ConflictNotificationPopUp: WOPopUpButton {
+  list   = ( 0, 5 ); // see SkyPalmConstants.h
+  item   = item;
+  string = labels.$conflictNotificationLabelKey;
+  selection       = oGoPalmConflictNotification;
+  singleSelection = YES;
+}
+
+// import behaviour
+PreSyncMustBeActivatedLabel: SkyRichString {
+  value = labels.SkyPalmPref_preSyncMustBeActivated;
+}
+PostSyncMustBeActivatedLabel: SkyRichString {
+  value = labels.SkyPalmPref_postSyncMustBeActivated;
+}
+
+// import addresses
+ImportOGoContactsAttr: SkyAttribute {
+  label = labels.SkyPalmPreferences_importOGoContacts;
+}
+ImportPalmContactsAttr: SkyAttribute {
+  label = labels.SkyPalmPreferences_importPalmContacts;
+}
+ImportOGoContactsPopUp: WOPopUpButton {
+  list            = ( "sync_favorites",
+                      "sync_owned_contacts",
+                      "sync_nothing" );
+  item            = item;
+  string          = labels.$importOGoContactsLabelKey;
+  singleSelection = YES;
+  selection       = defaults.SkyPalm_AddressPreSyncMethod;  
+}
+ImportPalmContactsPopUp: WOPopUpButton {
+  list            = ( "sync_non_private",
+                      "sync_all",
+                      "sync_nothing" );
+  item            = item;
+  string          = labels.$importPalmContactsLabelKey;
+  singleSelection = YES;
+  selection       = defaults.SkyPalm_AddressImportPalmData;  
+}
+
+// import dates
+ImportOGoDatesAttr: SkyAttribute {
+  label = labels.SkyPalmPreferences_importOGoDates;  
+}
+ImportOGoDatesFromAttr: SkyAttribute {
+  label = labels.SkyPalmPreferences_importOGoDatesFrom;
+}
+ImportOGoDatesToAttr: SkyAttribute {
+  label = labels.SkyPalmPreferences_importOGoDatesTo;
+}
+ImportPalmDatesAttr: SkyAttribute {
+  label = labels.SkyPalmPreferences_importPalmDates;
+}
+ImportOGoDatesCheckBox: WOCheckBox {
+  checked = defaults.SkyPalm_DatesImportOGoData;
+}
+ImportOGoDatesFrom: WOTextField {
+  value = importOGoDatesFrom;
+  size = 2;
+}
+ImportOGoDatesTo: WOTextField {
+  value = importOGoDatesTo;
+  size = 2;
+}
+DaysLabel: SkyRichString {
+  value = labels.label_days;
+}
+ImportPalmDatesPopUp: WOPopUpButton {
+  list            = ( "sync_non_private",
+                      "sync_all",
+                      "sync_nothing" );
+  item            = item;
+  string          = labels.$importPalmDatesLabelKey;
+  singleSelection = YES;
+  selection       = defaults.SkyPalm_DatesPostSyncMethod;  
+}
+
+SaveSubmit: WOSubmitButton {
+  action   = save;
+  value    = labels.action_save;
+  disabled = isSaveDisabled;
+  class    = "button_narrow";
+}
+
+// save
+/*SaveSubmit: WOImageButton {
+  action   = save;
+  filename = "save.gif";
+  name     = labels.action_save;
+  ALT      = labels.action_save;
+  title    = labels.action_save;
+  BORDER   = 0;
+}*/
+
+CancelImage: WOHyperlink {
+  action = cancel;
+  string = labels.cancelButtonLabel;
+  class  = "button_narrow";
+}
+
+/*
+CancelButton: WOHyperlink {
+  action = cancel;
+}
+CancelImage: WOImage {
+  filename = "cancel.gif";
+  ALT      = labels.cancelButtonLabel;
+  title    = labels.cancelButtonLabel;
+  BORDER   = 0;
+}*/

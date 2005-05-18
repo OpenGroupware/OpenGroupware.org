@@ -383,7 +383,6 @@ DelegAttr: SkyAttribute
   keyColor   = "subAttributeCell";
   valueColor = "subValueCell";
 }
-
 DelegTab: SkySimpleTabItem 
 {
   key   = "delegation";

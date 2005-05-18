@@ -1,0 +1,28 @@
+<!-- $Id: LSWProjectPreferences.html 2 2004-08-20 11:37:44Z znek $ -->
+
+<#Frame>
+  <#Window>
+    <#PreferencesForm>
+      <table border="0" cellspacing="0" cellpadding="4" width="100%">
+        <#WindowTitle />
+
+        <#ProjectsSubviewField />
+        <#ProjectSubviewField />
+        <!--#BlockSizeField/-->
+        <#ColumnSizeField />
+
+        <#IsDockedProjectsEditable>
+          <#DockedProjects />
+        </#IsDockedProjectsEditable>
+
+        <tr>
+          <td></td>
+          <td>
+            <#SaveSubmit />
+            <#CancelButton />
+          </td>
+        </tr>
+      </table>
+    </#PreferencesForm>
+  </#Window>
+</#Frame>

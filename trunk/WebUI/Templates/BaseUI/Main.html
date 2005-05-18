@@ -1,5 +1,6 @@
 <html>
   <head>
+    <!-- $Id: Main.html,v 1.6 2004/08/11 11:31:35 helge Exp $ -->
     <title>OpenGroupware.org</title>
     <#Stylesheet />
   </head>
@@ -10,18 +11,19 @@
       <tr>
         <td align="left" valign="bottom" width="50%" class="headline">
           <nobr>
-            <a href="http://www.opengroupware.org/en/about/" 
-	       target="OGo">About</a>   |
-            <a href="http://www.opengroupware.org/en/projects/documentation/"
-               target="OGo">Docs</a> |
-	    <a href="http://www.opengroupware.org/en/users/faq/index.html"
-	       target="OGo">FAQ</a>     |
-	    <a href="http://www.opengroupware.org/en/license/"
-	       target="OGo">License</a> |
-	    <a href="http://www.opengroupware.org/en/users/support/"
-	       target="OGo">Support</a> |
+            <!-- <a href="http://www.opengroupware.org/en/about/" 
+	       target="OGo">About</a>   | -->
+          <a href="/Documents/Documentation-OGo.pdf"
+               target="OGo">Documentation</a> 
+	    		<!-- 
+	    		<a href="http://www.opengroupware.org/en/users/faq/index.html"
+		       target="OGo">FAQ</a>     |
+	    	   <a href="http://www.opengroupware.org/en/license/"
+		       target="OGo">License</a> |
+		      <a href="http://www.opengroupware.org/en/users/support/"
+		       target="OGo">Support</a> |
             <a href="http://www.opengroupware.org/en/devs/bugs/"
-	       target="OGo">Report Bugs!</a>
+		       target="OGo">Report Bugs!</a> -->
           </nobr>
         </td>
         <td align="right"><a href="http://www.opengroupware.org/" target="OGo"
@@ -39,8 +41,8 @@
 
 
 <p align>&nbsp;</p>
-<p align="center">
-  <table border="0" cellpadding="0" cellspacing="0">
+<p align="center" valign="middle">
+  <table border="0" cellpadding="0" cellspacing="0" valign="middle"> 
     <tr>
       <td valign="middle" align="center">
  
@@ -76,74 +78,77 @@
             </td>
           </tr>
         </table>
-      </#SkyrixIsDown>
+    </#SkyrixIsDown>
 
-      <#SkyrixIsUp>
+    <#SkyrixIsUp>
         &nbsp;
-        <table border="0">
+        <table border="0" width="100%">
           <tr>
             <td align="center" valign="middle">
-              <#Form>
-                <#BrowserConfigDetect />
-                <#AuthURLField />
-
-                <table border="0">
-                  <#IsLoginNotAuthorizedCond>
-                    <tr>
-                      <td align="right" colspan="2"
-                          ><#Font><b><#LoginIsNotAuthorizedLabel 
-                                        /></b></#Font></td>
-                    </tr>
-                    <tr><td colspan="2"></td></tr>
-                  </#IsLoginNotAuthorizedCond>
+    <#Form>
+      <#BrowserConfigDetect />
+	     <table border="0" cellpadding="0" cellspacing="0" width="90%" class="divLoginbox">
+	     <tr><td colspan="2" align="center" class="divLoginboxHeader" style="border-bottom: #9c9c9c 1px solid;">Authentification OGo:</td></tr>
+	     <tr>
+             <td class="divSideboxEntry"> 
+              <table border="0" align="center" width="100%">
                 
+                <#IsLoginNotAuthorizedCond>
                   <tr>
-                    <td align='right'><#Font><#LoginLabel />:</#Font></td>
-                    <td><#EditFont><#Login /></#EditFont></td>
+                    <td align="right" colspan="2"><#Font><b><#LoginIsNotAuthorizedLabel /></b></#Font></td>
                   </tr>
-                  <tr>
-                    <td align='right'><#Font><#PasswordLabel />:</#Font></td>
-                    <td><#EditFont><#Password /></#EditFont></td>
-                  </tr>
+                  <tr><td colspan="2"></td></tr>
+                </#IsLoginNotAuthorizedCond>
                 
-                  <#DirectActionIsSet>
-                    <tr>
-                      <td valign='top' align='right'
-                          ><#Font>Execute:</#Font></td>
-                      <td>
-                        <#Font>
-                        <i><b>
-                          <#DAName /><br />
-                          <#DAClass />
-                        </b></i>
-                        </#Font>
-                      </td>
-                    </tr>
-                  </#DirectActionIsSet>
-
+                <tr>
+                  <td align='right'><#Font><#LoginLabel />:</#Font></td>
+                  <td><#EditFont><#Login /></#EditFont></td>
+                  <td align="right" rowspan="2"> <#Image2HomePage /> </td>
+                </tr>
+                <tr>
+                  <td align='right'><#Font><#PasswordLabel />:</#Font></td>
+                  <td><#EditFont><#Password /></#EditFont></td>
+                </tr>
+                
+                <#DirectActionIsSet>
                   <tr>
-                    <td></td>
-                    <td><#Go />
-                     <#IsAutoLogin>
-                      <script language="JavaScript">
-                      <!-- hide from older browsers
-                         if (document.loginform) {
-                            document.loginform.submit();
-                         }
-                      // -->
-                      </script>
-                     </#IsAutoLogin>
+                    <td valign='top' align='right'><#Font>Execute:</#Font></td>
+                    <td>
+                      <#Font>
+                      <i><b>
+                        <#DAName /><br />
+                        <#DAClass />
+                      </b></i>
+                      </#Font>
                     </td>
                   </tr>
-                </table>
-              </#Form>
+                </#DirectActionIsSet>
+
+                <tr>
+                  <td colspan="3" align="center"><#Go />
+                   <#IsAutoLogin>
+                    <script language="JavaScript">
+                    <!-- hide from older browsers
+                       if (document.loginform) {
+                          document.loginform.submit();
+                       }
+                    // -->
+                    </script>
+                   </#IsAutoLogin>
+                  </td>
+                </tr>
+
+              </table>
+             </td>
+             </tr>
+	     </table>
+  </#Form>
             </td>
           </tr>
         </table>
-      </#SkyrixIsUp>
+    </#SkyrixIsUp><!-- SkyrixIsUp -->
 
       </td>
-      <td align="center"><#Image2HomePage /></td>
     </tr>
     <tr>
       <td colspan="2">
@@ -157,12 +162,11 @@
           <tr><td colspan="3"></td><tr>
           <tr>
             <td colspan="3" align="center"><#Font><small>
-              &copy; 2000-2005
-    	      <a href="http://www.skyrix.com/knoppix/skyrix/" target="skyrix" 
-    	         style="text-decoration:none;"
-                 ><font color="#000000">SKYRIX Software AG</font></a>.
-              </small></#Font>
-            </td>
+    	  		© 2000-2004
+	    	  <!-- <a href="http://www.skyrix.com/knoppix/skyrix/" target="skyrix" 
+   	     style="text-decoration:none;"> -->
+            <font color="#000000">SKYRIX Software AG</font><!-- </a> -->.</small>
+            </#Font>
           </tr>
         </table>
       </td>
@@ -182,6 +186,6 @@
         }
       // -->
       </script>
-    </#SkyrixIsUp>
+    </#SkyrixIsUp><!-- SkyrixIsUp -->
   </body>
 </html>

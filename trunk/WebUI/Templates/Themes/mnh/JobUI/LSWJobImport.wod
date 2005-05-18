@@ -1,0 +1,245 @@
+// $Id: LSWJobImport.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = labels.jobImportWindowTitle;
+}
+
+TabView: SkyTabView {
+  selection = tabKey;
+}
+
+JobTab: SkyTabItem {
+  key   = "jobs";
+  label = labels.subview;
+  icon  = "jobs";
+  width = 150; 
+}
+
+FieldCond: WOConditional {
+  condition = importField;
+}
+
+ImportFieldCond: WOConditional {
+  condition = importField;
+}
+
+ImportFieldCondElse: WOConditional {
+  condition = importField;
+  negate = YES;
+}
+
+ProjectName: WOString {
+  value = project.name;
+}
+
+BodyRepetition: WORepetition {
+  list  = jobs;
+  item  = job;
+  index = count;
+}
+
+UploadField: WOFileUpload {
+  data = data;
+  path = path;
+}
+
+Form: WOForm {
+  enctype = "multipart/form-data";
+}
+
+FileUpload: WOString {
+  value = labels.fileUpload;
+}
+
+Import: WOSubmitButton {
+  action   = import;
+  name     = labels.import;
+  value    = labels.import;
+  class    = "button_narrow";
+}
+
+ResumeAll: WOSubmitButton {
+  action   = resumeAll;
+  name     = labels.resumeAll;
+  value    = labels.resumeAll;
+  class    = "button_wide";
+}
+
+ResumeSelected: WOSubmitButton {
+  action   = resumeSelected;
+  name     = labels.resumeSelected;
+  value    = labels.resumeSelected;
+  class    = "button_wide";
+}
+
+SelectParentJob: WOString {
+  value = labels.parentJob;
+}
+
+JobPopup: WOPopUpButton {
+  list      = parentJobList;
+  item      = item;
+  string    = item.name;
+  selection = selectedParentJob;
+}
+
+OneControlJob: WOString {
+  value = labels.oneControlJob;
+}
+
+OneControlJobCheckbox: WOCheckBox {
+  checked = oneControlJob;
+}
+
+DescriptionLabel: WOString {
+  value = labels.annotation;
+}
+
+Description: WOText {
+  value = importAnnotation;
+  rows  = "5";
+  cols  = "80";
+  wrap  = "physical";
+}
+
+Cancel: WOHyperlink {
+  action = cancel;
+  string = labels.cancel;
+  class  = "button_narrow";
+}
+
+DescriptionSubmit: WOSubmitButton {
+  value  = labels.annotationSubmit;
+  action = setImportAnnotation;
+}
+
+AttributeCell: SkyAttributeCell {}
+ValueCell:     SkyValueCell     {}
+
+HeaderCell: WOGenericContainer {
+  elementName = "td";
+  align       = "left";
+  bgcolor     = config.colors_headerCellColor;
+  border      = "0";  
+}
+
+AllHeaderCell: WOGenericContainer {
+  elementName = "td";
+  colspan     = "5";
+  align       = "left";
+  bgcolor     = config.colors_headerCellColor;
+}
+
+BodyCell: WOGenericContainer {
+  elementName = "td";
+  align       = "left";
+  bgcolor     = bodyCellColor;
+}
+
+TableHeaderRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_tableHeaderRow;
+}
+
+ErrorBodyRecordCell: WOGenericContainer {
+  elementName = "td";
+  align       = "right";
+  valign      = "top";
+  width       = "10%";
+  bgcolor     = errorBodyCellColor;
+}
+
+ErrorBodyDescriptionCell: WOGenericContainer {
+  elementName = "td";
+  align       = "left";
+  bgcolor     = errorBodyCellColor;
+}
+
+HierachieHeader: WOString { value = labels.hierachie; }
+NameHeader:      WOString { value = labels.name;      }
+ExecutantHeader: WOString { value = labels.executant; }
+ProjectHeader:   WOString { value = labels.project;   }
+StartDateHeader: WOString { value = labels.startDate; }
+EndDateHeader:   WOString { value = labels.endDate;   }
+ResumeHeader:    WOString { value = labels.resume;    }
+
+
+Name: WOHyperlink {
+  action = editJob;
+  string = job.name;
+}
+
+ImportErrors: WOString { value = labels.importErrors; }
+
+Hierachie: WOString { value = job.HierachieNumber; }             
+Executant: WOString { value = job.executant.name; }
+Project:   WOString { value = job.toProject.name; }
+
+StartDate: WOString {
+  value = job.startDate;
+  formatter = startDateFormatter;        
+}
+EndDate: WOString {
+  value = job.endDate;
+  formatter = endDateFormatter;    
+}
+
+Resume: WOCheckBox {
+  checked = job.resume;
+}
+
+ShowErrors:     WOConditional { condition = showErrors;    }
+ShowErrorsElse: WOConditional { condition = relShowErrors; }
+
+ShowErrorsLink: WOHyperlink {
+  action   = showErrorsAction;
+  filename = "show_errors.gif";
+  alt      = labels.showErrors;
+  border   = "0";
+  align    = "top";
+}
+
+HideErrorsLink: WOHyperlink {
+  action   = hideErrorsAction;
+  filename = "hide_errors.gif";
+  alt      = labels.hideErrors;
+  border   = "0";
+  align    = "top";
+}
+
+RecordString: WOString {
+  value = labels.records;
+}
+
+DescriptionString: WOString {
+  value = labels.errorDesription;
+}
+
+MainErrorRepetition: WORepetition {
+  list  = errorMainRepetition;
+  item  = currentErrorName;
+  index = errorCount;
+}
+
+RecordId: WOString {
+  value = currentErrorName;
+}
+
+SubErrorRepetition: WORepetition {
+  list = errorSubRepetition;
+  item = currentError;
+}
+
+ErrorDescription: WOString {
+  value = currentError;
+}
+
+MainButtonRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_mainButtonRow;
+}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}

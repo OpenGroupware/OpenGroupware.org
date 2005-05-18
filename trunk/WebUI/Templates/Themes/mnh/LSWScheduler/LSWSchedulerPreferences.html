@@ -1,0 +1,244 @@
+<#Frame>
+<!-- $Id: LSWSchedulerPreferences.html 2 2004-08-20 11:37:44Z znek $ -->
+ <#Window>
+  <#PreferencesForm>
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+      <#EditorTitle>
+        <#AppointmentViewField  />
+        <#TimeInputTypeField    />
+        <#AptTypeInputTypeField />
+        <#ColumnSizeField       />
+
+        <#DefaultCCForNotificationMails />
+        <#ShowNotificationDevicesCond>
+          <#NotificationDevicesAttr>
+            <#NotificationDevices />
+          </#NotificationDevicesAttr>
+        </#ShowNotificationDevicesCond>
+
+        <#SchedulerPageTab />
+        <#SchedulerPageWeekView />
+        <#SchedulerPageDayView />
+        <!-- #ShowJobs/ -->
+        <#ShowPalmDates />
+        <#ShowFullNames />
+        <#IsRoot>
+          <#HideIgnoreConflictsInEditor><#Font>
+            (<#OnlyIfResourcesAreSet />)</#Font>
+          </#HideIgnoreConflictsInEditor>
+        </#IsRoot>
+      </#EditorTitle>
+
+      <tr><td colspan="2"></td></tr>
+      <#OverviewTitle>
+        <#ViewPopupNumber />
+        <tr>
+          <#AttributeCell />
+          <#ValueCell><hr size="1" noshade="noshade" /></#ValueCell>
+        </tr>
+        <#ResourceSelection />
+        <#AccountSelection />
+      </#OverviewTitle>
+
+      <tr><td colspan="2"></td></tr>
+      <#WeekOverviewTitle>
+        <#ShortInfo />
+        <#WithResources />
+        <#ColumnsPerDay />
+      </#WeekOverviewTitle>
+
+      <tr><td colspan="2"></td></tr>
+      <#DayOverviewTitle>
+        <#DayOverviewStart />
+        <#DayOverviewEnd />
+        <#DayOverviewInterval />
+        <#ColumnsPerDayDayView />
+      </#DayOverviewTitle>
+
+      <tr><td colspan="2"></td></tr>
+      <#AccessTitle>
+        <#AccountSelectionWriteAccess />
+      </#AccessTitle> 
+ 	
+      <tr><td colspan="2"></td></tr>
+       <#readAccessTitle>
+         <#AccountSelectionReadAccess />
+       </#readAccessTitle>
+			     
+      <tr><td colspan="2"></td></tr>
+      <#HolidaysTitle>
+        <tr>
+          <#AttributeCell>
+            <#Font>
+              <#SchoolHolidayLabel />:
+            </#Font>
+          </#AttributeCell>
+          <#ValueCell>
+            <table cellspacing="0" cellpadding="0">
+             <tr>
+              <#SchoolHolidaysRepetition>
+                <td>
+                  <#Font>
+                    <#HolidayEditable><#ShowHolidayCB /></#HolidayEditable>
+                    <#ShowHolidayLabel />
+                  </#Font>
+                </td>
+                <#MakeBR></tr><tr></#MakeBR>
+              </#SchoolHolidaysRepetition>
+             </tr>
+            </table>
+          </#ValueCell>
+        </tr>
+        <tr>
+          <#AttributeCell>
+            <#Font>
+              <#HolidayGroupsLabel />:
+            </#Font>
+          </#AttributeCell>
+          <#ValueCell>
+            <table cellspacing="0" cellpadding="0">
+	     <tr>
+              <#HolidayGroupRepetition>
+                <td>
+                  <#Font>
+                    <#HolidayEditable><#ShowHolidayCB /></#HolidayEditable>
+                    <#ShowHolidayLabel />
+                  </#Font>
+                </td>
+                <#MakeBR></tr><tr></#MakeBR>
+              </#HolidayGroupRepetition>
+             </tr>
+            </table>
+          </#ValueCell>
+        </tr>
+        <tr>
+          <#AttributeCell>
+            <#Font><#RestHolidayLabel />:</#Font>
+          </#AttributeCell>
+          <#ValueCell>
+            <table cellspacing="0" cellpadding="0">
+             <tr>
+              <#RestHolidaysRepetition>
+                <td>
+                  <#Font>
+                    <#HolidayEditable><#ShowHolidayCB /></#HolidayEditable>
+                    <#ShowHolidayLabel />
+                  </#Font>
+                </td>
+                <#MakeBR></tr><tr></#MakeBR>
+              </#RestHolidaysRepetition>  
+             </tr>
+            </table>
+          </#ValueCell>
+        </tr>
+        <tr>
+          <#AttributeCell>
+            <#Font><#CustomHolidaysLabel />:</#Font>
+          </#AttributeCell>
+          <#ValueCell>
+            <#Font>
+              <#FormatExample /><br />
+              <#FormatExample2 /><br />
+            </#Font>
+            <#CustomHolidays />
+          </#ValueCell>
+        </tr>
+      </#HolidaysTitle>
+
+      <tr><td colspan="2"></td></tr>
+
+      <#MailTemplateTitle>
+          <#Font>
+            <#TemplateDateFormat />
+          </#Font>
+          <#EditorMailTemplate>
+            <table>
+              <#BindingRep>
+                <tr>
+                  <td align="right">
+                    <#Font><#BLabel />:</#Font>
+                  </td>
+                  <td>
+                    <#Font>&nbsp;$<#BValue />$</#Font>
+                  </td>
+                </tr>
+              </#BindingRep>
+            </table>
+          </#EditorMailTemplate>
+          <#AttachAppointmentsToMail />
+      </#MailTemplateTitle>
+
+<!--delegation d'agenda-->
+      <tr><td colspan="2"></td></tr>
+        <#delegRdvTitle>
+		<#AccountSelectionDelegPrivAccess />
+	   	<#AccountSelectionDelegConfAccess />
+	   	<#AccountSelectionDelegNormAccess />
+	   	<#AccountSelectionDelegPubliAccess />
+	</#delegRdvTitle>
+	<!--
+	<#delegRdvPrivTitle>
+		<#AccountSelectionDelegPrivAccess />
+	</#delegRdvPrivTitle>
+	<#delegRdvConfTitle>
+	   	<#AccountSelectionDelegConfAccess />
+        </#delegRdvConfTitle>
+        <#delegRdvNormTitle>
+	   	<#AccountSelectionDelegNormAccess />
+        </#delegRdvNormTitle>
+        <#delegRdvPubliTitle>
+	   	<#AccountSelectionDelegPubliAccess />
+        </#delegRdvPubliTitle>
+	-->
+	<#IsRoot>
+
+        <tr><td colspan="2"></td></tr>
+          <#AccessWindowTitle>
+          <tr>
+            <#AttributeCell>
+              <#Font><#SchedulerTimeInputTypeLabel />:</#Font>
+            </#AttributeCell>
+  
+            <#ValueCell>
+              <#EditFont><#SchedulerTimeInputTypeAccess /></#EditFont>
+            </#ValueCell>
+          </tr>
+          <tr>
+            <#AttributeCell>
+              <#Font><#SchedulerAptTypeInputTypeLabel />:</#Font>
+            </#AttributeCell>
+            <#ValueCell>
+              <#EditFont><#SchedulerAptTypeInputTypeAccess /></#EditFont>
+            </#ValueCell>
+          </tr>
+          <#ShowNotificationDevicesRootCond>
+             <tr>
+               <#NotificationDevicesAccessAttr>
+                 <#NotificationDevicesAccess />
+               </#NotificationDevicesAccessAttr>
+             </tr>
+           </#ShowNotificationDevicesRootCond>
+           </#AccessWindowTitle>
+        </#IsRoot>
+        <tr>
+          <td></td>
+          <td>
+            <#SaveSubmit />
+            <#CancelButton />
+          </td>
+        </tr>
+      </table>
+
+  </#PreferencesForm>
+ </#Window>
+
+<script language="JavaScript">
+<!-- hide
+function searchFieldChanged() {
+  document.editform.submit();
+  return true;
+}
+// -->
+</script>
+
+</#Frame>

@@ -165,8 +165,6 @@ static EONull   *null  = nil;
 						@"object",_gid, 
 						@"fetchGlobalIDs", [NSNumber numberWithBool:YES], nil);
 
-  	[self logWithFormat:@"*** _fetchTeamGIDsOfAccountWithGID call for gid %@ ", _gid];
-  	[self logWithFormat:@"*** _fetchTeamGIDsOfAccountWithGID return array %@ ", anArray];
 	return anArray;
 #else
 	return LSRunCommandV(_ctx, @"account", @"teams", 
@@ -187,8 +185,6 @@ static EONull   *null  = nil;
 			@"team", _gid, 
 			@"fetchGlobalIDs", [NSNumber numberWithBool:YES], nil);
 
-  	[self logWithFormat:@"*** _fetchMemberGIDsOfTeamWithGID call for gid %@ ", _gid];
-  	[self logWithFormat:@"*** _fetchMemberGIDsOfTeamWithGID return array %@ ", anArray];
 	return anArray;
 #else
 	return LSRunCommandV(_ctx, @"team", @"members", 
@@ -253,7 +249,6 @@ static EONull   *null  = nil;
 	}
 
 	[super _prepareForExecutionInContext:_context];
-	[self logWithFormat:@"***** _prepareExecutionInContext..... (FIN) : delegations = %@",self->currentDelegation];
 }
 
 //**************************************************************************
@@ -268,12 +263,10 @@ static EONull   *null  = nil;
 	NSMutableDictionary *accessDictionnary;
 	NSEnumerator *enumerator;
 	EOGlobalID   *gid;
-	[self logWithFormat:@"***** _executeForRootInContext  (DEBUT)"];
   
 	if (self->singleFetch) 
 	{
 		[self setReturnValue:right_deluv];
-		[self logWithFormat:@"***** _executeForRootInContext  (FIN)"];
 		return;
 	}
   
@@ -283,7 +276,6 @@ static EONull   *null  = nil;
 		[accessDictionnary setObject:right_deluv forKey:gid];
   
 	[self setReturnValueToCopyOfValue:accessDictionnary];
-	[self logWithFormat:@"***** _executeForRootInContext  (FIN)"];
 }
 //**************************************************************************
 // 
@@ -308,24 +300,19 @@ static EONull   *null  = nil;
 	// *************************************************************
 	// return YES;
 
-	[self logWithFormat:@"**** isAnAppointmentParticipant aRow = %@",aRow];
 
 	entity = [self entity];
 
 	login    = [_context valueForKey:LSAccountKey];
 	loginGlobalID = [login valueForKey:@"globalID"];
-	[self logWithFormat:@"**** isAnAppointmentParticipant : loginGlobalID = %@",loginGlobalID];
 
 	globalID = [entity globalIDForRow:aRow];
 
-	[self logWithFormat:@"**** isAnAppointmentParticipant : globalID = %@",globalID];
 
 	participants = LSRunCommandV(_context, @"appointment", @"get-participants", @"date",globalID, @"fetchGlobalIDs",[NSNumber numberWithBool:YES], nil);
 
-	[self logWithFormat:@"**** isAnAppointmentParticipant participants %@",participants];
 	if([participants containsObject:loginGlobalID] == YES)
 	{
-		[self logWithFormat:@"**** isAnAppointmentParticipant loginGlobalID (%@) is a participants"];
 		return YES;
 	}
 
@@ -341,26 +328,18 @@ static EONull   *null  = nil;
 	NSEnumerator *enumerator = [participants objectEnumerator];
 	while((anObject = [enumerator nextObject]))
 	{
-		[self logWithFormat:@"**** anObject = %@",anObject];
 		for(i = 0 ; i < counter; i++)
 		{
 			NSNumber *anID = [arrayDelegation objectAtIndex:i];
-			[self logWithFormat:@"**** anID = %@",anID];
 			EOKeyGlobalID *personID = [self personGID:anID];
 			if([anObject isEqual:personID] == YES)
 			{
-				[self logWithFormat:@"**** persondID (%@) is considere", personID];
-				[self logWithFormat:@"**** as a participant since one of participant"];
-				[self logWithFormat:@"**** %@ gave him/her a delegation for this type of appointment",anObject];
 				return YES;
 			}
 
 			EOKeyGlobalID *teamID = [self teamGID:anID];
 			if([anObject isEqual:teamID] == YES)
 			{
-				[self logWithFormat:@"**** teamID (%@) is considere", teamID];
-				[self logWithFormat:@"**** as a participant since one of participant"];
-				[self logWithFormat:@"**** %@ gave him/her a delegation for this type of appointment",anObject];
 				return YES;
 			}
 		}
@@ -392,12 +371,10 @@ static EONull   *null  = nil;
 
 		if([arrayOfTeamID containsObject:accessTeamGid] == YES)
 		{
-			[self logWithFormat:@"**** checkForArrayOfTeamID:inAccessList : ===== YES ====="];
 			return YES;
 		}
 	}
 
-	[self logWithFormat:@"**** checkForArrayOfTeamID:inAccessList : ----- NO -----"];
 	return NO;
 }
 //**************************************************************************
@@ -422,11 +399,9 @@ static EONull   *null  = nil;
 
 	if([arrayOfID containsObject:[anID stringValue]] == YES)
 	{
-		[self logWithFormat:@"**** checkForPersonID:inAccessList : ===== YES ====="];
 		return YES;
 	}
 
-	[self logWithFormat:@"**** checkForPersonID:inAccessList : ----- NO -----"];
 	return NO;
 }
 //**************************************************************************
@@ -439,13 +414,11 @@ static EONull   *null  = nil;
 {
 	if(type == nil)
 	{
-		[self logWithFormat:@"**** getArrayOfDelegationForType return nil for type %@ ",type];
 		return nil;
 	}
 
 	if([type length] <= 0)
 	{
-		[self logWithFormat:@"**** getArrayOfDelegationForType return nil for type %@ ",type];
 		return nil;
 	}
 
@@ -469,7 +442,6 @@ static EONull   *null  = nil;
 		return [currentDelegation valueForKey:@"idNormal"];
 	}	
 
-	[self logWithFormat:@"**** getArrayOfDelegationForType return nil for type %@ ",type];
 	return nil;	
 }
 
@@ -623,19 +595,15 @@ static EONull   *null  = nil;
 	loginPersonID = [login valueForKey:@"companyId"] ;
 	integerLoginPersonID = [loginPersonID  intValue];
 	ownerId = [aRow objectForKey:@"ownerId"];
-	[self logWithFormat:@"ownerId (class %@) = %@",[ownerId class], ownerId];
 
 	NSString * rdvType = [aRow valueForKey:@"rdvType"];
-	[self logWithFormat:@"rdvType : %@",rdvType];
 
 	arrayOfID = [self getArrayOfDelegationForType:rdvType];
 	if([arrayOfID containsObject:ownerId])
 	{
-		[self logWithFormat:@"**** isInDelegationList : YES (%@)",loginPersonID];
 		return YES;
 	}
 
-	[self logWithFormat:@"**** isInDelegationList : NO (%@) arrayOfID = %@",loginPersonID,arrayOfID];
 	return NO;
 }
 //**************************************************************************
@@ -732,12 +700,9 @@ static EONull   *null  = nil;
 	ownerID = [aRow valueForKey:@"ownerId"];
 
 	ownerGID = [self personGID:ownerID];
-	[self logWithFormat:@"**** hasListRight ownerGID  = %@",ownerGID];
 	loginPersonGID = [self personGID:loginPersonID];
-	[self logWithFormat:@"**** hasListRight loginPersonGID  = %@",loginPersonGID];
 
 	loginTeams = [self _fetchTeamGIDsOfAccountWithGID:[login valueForKey:@"globalID"] inContext:_context];
-	[self logWithFormat:@"**** hasListRight loginTeam = %@",loginTeams];
 
 	loginTeamEnumerator = [loginTeams objectEnumerator];
 	memberEnumerator = nil;
@@ -747,29 +712,24 @@ static EONull   *null  = nil;
 		ownerIsMember = NO;
 		meIsMember = NO;
 		membersOfTeam = [self _fetchMemberGIDsOfTeamWithGID:aTeamGID inContext:_context];
-		[self logWithFormat:@"**** hasListRight membersOfTeam = %@",membersOfTeam];
 		memberEnumerator = [membersOfTeam objectEnumerator];
 		while((membersGID = [memberEnumerator nextObject]))
 		{
 			if([membersGID isEqual:ownerGID] == YES)
 			{
-				[self logWithFormat:@"**** hasListRight ownerIsMember = YES"];
 				ownerIsMember = YES;
 			}
 			if([membersGID isEqual:loginPersonGID] == YES)
 			{
-				[self logWithFormat:@"**** hasListRight meIsMember = YES"];
 				meIsMember = YES;
 			}
 		}
 		if((ownerIsMember == YES) && (meIsMember == YES))
 		{
-			[self logWithFormat:@"**** hasListRight meIsMember AND ownerIsMember = YES"]; 
 			return YES;
 		}
 	}
 
-	[self logWithFormat:@"**** hasListRight ---- NO -----"]; 
 	return NO;
 }
 
@@ -811,33 +771,24 @@ static EONull   *null  = nil;
 	loginCompanyID = [login valueForKey:@"companyId"];
 	NSNumber *aNumber = [NSNumber numberWithInt:[loginCompanyID intValue]];
 	keyGlobalID = [self personGID:aNumber];
-	[self logWithFormat:@"**** isMemberOfOwnerTeam : login : %@",login];
 	
 	// first get Teams of owner
 	ownerID = [aRow objectForKey:@"ownerId"];
-	[self logWithFormat:@"**** isMemberOfOwnerTeam : ownerID : %@",ownerID];
 	NSNumber *numberOwnerID = [NSNumber numberWithInt:[ownerID intValue]];
-	[self logWithFormat:@"**** isMemberOfOwnerTeam : numberOwnerID : %@",numberOwnerID];
 	EOKeyGlobalID * anID = [self personGID:numberOwnerID];
-	[self logWithFormat:@"**** isMemberOfOwnerTeam : anID : %@",anID];
 	arrayOfTeamGIDForOwner = [self _fetchTeamGIDsOfAccountWithGID:anID inContext:_context];
 
-	[self logWithFormat:@"**** isMemberOfOwnerTeam : arrayOfTeamGIDForOwner : %@",arrayOfTeamGIDForOwner];
 	
 	NSEnumerator * enumeratorOfTeam = [arrayOfTeamGIDForOwner objectEnumerator];
 	while((aTeamID = [enumeratorOfTeam nextObject]))
 	{
-		[self logWithFormat:@"**** isMemberOfOwnerTeam : aTeamID : %@",aTeamID];
 		arrayOfPersonIDForTeam = [self _fetchMemberGIDsOfTeamWithGID:aTeamID inContext:_context];
-		[self logWithFormat:@"**** isMemberOfOwnerTeam : arrayOfPersonIDForTeam : %@",arrayOfPersonIDForTeam];
 		if([arrayOfPersonIDForTeam containsObject:keyGlobalID])
 		{
-			[self logWithFormat:@"**** isMemberOfOwnerTeam : __YES__"];
 			return YES;
 		}
 	}
 	
-	[self logWithFormat:@"**** isMemberOfOwnerTeam : __NO__"];
 	return NO;
 }
 
@@ -991,7 +942,6 @@ static EONull   *null  = nil;
 		 gidAsString = [[gid keyValues][0] stringValue];
 		if ([gidAsString length] == 0)
 		{
-			[self logWithFormat:@"weird GID for IN query: %@ ('%@')", gid, gidAsString];
 			continue;
 		}
 	   
@@ -1015,45 +965,32 @@ static EONull   *null  = nil;
 //**************************************************************************
 - (void)insertAccessRightTo:(NSMutableDictionary**)accessRight fromRight:(unsigned)rights forGID:(EOGlobalID**)gid
 {
-	if (*accessRight == nil)
-		[self logWithFormat:@"**** accessRight is NULL"];
-	if (*gid == nil)
-		[self logWithFormat:@"**** gid is NULL"];
 
 	if((rights & LIST_RIGHT) && (rights & UPDATE_RIGHT) && (rights & VIEW_RIGHT) && (rights & DELETE_RIGHT) && (rights & EDIT_RIGHT))
 	{
-		[self logWithFormat:@"**** insert ALL_RIGHT"];
 		[*accessRight setObject:right_deluv forKey:[*gid copy]];
 		return;
 	}
 
 	if((rights & LIST_RIGHT) && (rights & UPDATE_RIGHT) && (rights & VIEW_RIGHT))
 	{
-		[self logWithFormat:@"**** insert LIST_RIGHT"];
-		[self logWithFormat:@"**** insert UPDATE_RIGHT"];
-		[self logWithFormat:@"**** insert VIEW_RIGHT"];
 		[*accessRight setObject:right_luv forKey:[*gid copy]];
 		return;
 	}
 
 	if((rights & LIST_RIGHT) && (rights & VIEW_RIGHT) )
 	{
-		[self logWithFormat:@"**** insert LIST_RIGHT"];
-		[self logWithFormat:@"**** insert VIEW_RIGHT"];
 		[*accessRight setObject:right_lv forKey:[*gid copy]];
 		return;
 	}
 
 	if((rights & LIST_RIGHT))
 	{
-		[self logWithFormat:@"**** insert LIST_RIGHT"];
 		[*accessRight setObject:right_l forKey:[*gid copy]];
 		return;
 	}
 	id gidCopy = [*gid copy];
-	[self logWithFormat:@"**** before INSERT NOTHING for right %u AND gid %@",rights,gidCopy];
 	[*accessRight setObject:@"" forKey:gidCopy];
-	[self logWithFormat:@"**** after INSERT NOTHING for right %u AND gid %@",rights,gidCopy];
 }
 
 //**************************************************************************
@@ -1161,7 +1098,6 @@ static EONull   *null  = nil;
 		if(([self hasAllRights:resultRow inContext:_ctx]) == YES)
 		{
 			right = ALL_RIGHT;
-			[self logWithFormat:@"*** _executeInContext : right = %u (ALL_RIGHT)",right];
 			[self insertAccessRightTo:&accessRights fromRight:right forGID:&gid];
 			continue;
 		}
@@ -1181,31 +1117,26 @@ static EONull   *null  = nil;
 		if(([self hasDeleteRight:resultRow  inContext:_ctx]) == YES)
 		{
 			right |= DELETE_RIGHT;
-			[self logWithFormat:@"*** _executeInContext : right = %u (DELETE_RIGHT)",right];
 		}
 
 		if((right & DELETE_RIGHT) || ([self hasEditRight:resultRow  inContext:_ctx]) == YES)
 		{
 			right |= EDIT_RIGHT;
-			[self logWithFormat:@"*** _executeInContext : right = %u (EDIT_RIGHT)",right];
 		}
 
 		if((right & DELETE_RIGHT) || ([self hasUpdateRight:resultRow  inContext:_ctx]) == YES)
 		{
 			right |= UPDATE_RIGHT;
-			[self logWithFormat:@"*** _executeInContext : right = %u (UPDATE_RIGHT)",right];
 		}
 
 		if((right & UPDATE_RIGHT) || ([self hasViewRight:resultRow  inContext:_ctx]) == YES)
 		{
 			right |= VIEW_RIGHT;
-			[self logWithFormat:@"*** _executeInContext : right = %u (VIEW_RIGHT)",right];
 		}
 
 		if((right & UPDATE_RIGHT) || (right & VIEW_RIGHT) || ([self hasListRight:resultRow  inContext:_ctx]) == YES)
 		{
 			right |= LIST_RIGHT;
-			[self logWithFormat:@"*** _executeInContext : right = %u (LIST_RIGHT)",right];
 		}
 
 		[self insertAccessRightTo:&accessRights fromRight:right forGID:&gid];
@@ -1214,12 +1145,10 @@ static EONull   *null  = nil;
 	/* set result */
 	if (self->singleFetch)
 	{
-		[self logWithFormat:@"*** _executeInContext : setResult single fetch %@ ",[accessRights objectForKey:[self->gids lastObject]]];
 		[self setReturnValue:[accessRights objectForKey:[self->gids lastObject]]];
 	}
 	else
 	{
-		[self logWithFormat:@"*** _executeInContext : setResult %@ ",accessRights];
 		[self setReturnValueToCopyOfValue:accessRights];
 	}
     

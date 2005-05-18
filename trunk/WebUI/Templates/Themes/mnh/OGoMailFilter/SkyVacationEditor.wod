@@ -1,0 +1,160 @@
+// $Id: SkyVacationEditor.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.vacationTitle;
+  onClose = cancel;
+}
+
+Form: WOForm {
+  name   = "vacationeditor";
+  action = save;
+}
+
+HasDeleteCond: WOConditional {
+  condition = isDeleteDisabled;
+  negate    = YES;
+}
+
+SaveSubmit: WOSubmitButton {
+  action   = save;
+  value    = labels.saveButtonLabel;
+  class    = "button_narrow";
+}
+
+DeleteSubmit: WOSubmitButton {
+  action   = delete;
+  value    = labels.deleteButtonLabel;
+  class    = "button_narrow";
+}
+
+CancelSubmit: WOHyperlink {
+  action = cancel;
+  string = labels.cancelButtonLabel;
+  class  = "button_narrow";
+}
+
+AttributeCell: WOGenericContainer {
+  elementName = "td";
+  align       = "right";
+//valign      = "top";
+  bgcolor     = config.colors_attributeCell;
+  width       = "15%";
+}
+AttributeCellUp: WOGenericContainer {
+  elementName = "td";
+  align       = "right";
+  valign      = "top";
+  bgcolor     = config.colors_attributeCell;
+  width       = "15%";
+}
+
+AttributeCellTwo: WOGenericContainer {
+  elementName = "td";
+  align       = "right";
+  colspan     = "2";
+//valign      = "top";
+  bgcolor     = config.colors_attributeCell;
+  width       = "15%";
+}
+
+ValueCell: WOGenericContainer {
+  elementName = "td";
+  align       = "left";
+  bgcolor     = config.colors_valueCell;
+}
+
+// searching for persons
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}
+
+SubjectLabel:        WOString { value = labels.subject;   }
+RepeatIntervalLabel: WOString { value = labels.repeat;    }
+TextLabel:           WOString { value = labels.text;      }
+TheLabel:            WOString { value = theLabel;         }
+AddressLabel:        WOString { value = labels.addresses; }
+PasswordLabel:       WOString { value = labels.password;  }
+KeepMailsLabel:      WOString { value = labels.keepMails; }
+ForwardLabel:        WOString { value = labels.vforward;  }
+InDays:              WOString { value = labels.inDays;    }
+
+Subject: WOTextField {
+  name      = "subject";
+  value     = vacation.subject;
+  formatter = session.formatString;
+  size      = 40;
+}
+RepeatInterval: WOTextField {
+  value     = vacation.repeatInterval;
+  formatter = session.formatString;
+  size      = 2;
+}
+Text: WOText {
+  value     = vacation.text;
+  formatter = session.formatString;
+  rows      = "4";
+  cols      = "60";
+}
+
+HasPasswordCond: WOConditional {
+  condition = hasPassword;
+  negate    = YES;
+}
+PasswordTextField: WOPasswordField {
+  value = password;
+}
+
+WarningModeCond: WOConditional { 
+  condition = isInWarningMode; 
+}
+WarningModeCondElse: WOConditional {
+  condition = isInWarningMode;
+  negate    = YES;
+}
+
+Warning: LSWWarningPanel {
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
+}
+
+EmailText: WOTextField {
+  value = newMail;
+}
+
+AddSubmit: WOSubmitButton {
+  action = add;
+  value  = labels.addButtonLabel;
+  class  = "button_narrow";
+}
+
+EmailList: SkyListView {
+  list          = vacation.emails;
+  item          = item;
+  selectInverse = YES;
+  selectedItems = removedEmails;
+  columns       = 3;
+}
+
+KeepMails: WOCheckBox {
+  checked = forward.keepMails;
+}
+
+AddForwardSubmit: WOSubmitButton {
+  action = add;
+  value  = labels.addButtonLabel;
+  class  = "button_narrow";
+}
+
+ForwardList: SkyListView {
+  list          = forward.emails;
+  item          = item;
+  selectInverse = YES;
+  selectedItems = removedForwards;
+  columns       = 3;
+}
+
+Forward: WOTextField {
+  value = newForward;
+}

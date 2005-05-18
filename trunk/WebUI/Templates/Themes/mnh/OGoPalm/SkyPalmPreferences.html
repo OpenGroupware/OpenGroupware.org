@@ -1,0 +1,223 @@
+<!-- $Id: SkyPalmPreferences.html,v 1.6 2003/12/22 13:56:35 martin Exp $ -->
+<#Frame>
+  <#Window>
+    <#PreferencesForm>
+      <table border="0" cellspacing="0" cellpadding="4" width="100%">
+
+      <#PalmSyncTitle>
+        <#PalmTimeZone />
+        <tr>
+        <#ConduitsAttr>
+          <#Conduits />
+        </#ConduitsAttr>
+      </tr>
+          <tr>
+        <#AttributeCell>
+          <#SyncSkyrixBeforePalmLabel />:</#AttributeCell>
+        <#ValueCell>
+          <#SyncSkyrixBeforePalmCheckbox /><#PreSyncHelp />
+        </#ValueCell>
+      </tr>
+        <tr>
+        <#AttributeCell>
+          <#SyncSkyrixAfterPalmLabel />:</#AttributeCell>
+        <#ValueCell>
+          <#SyncSkyrixAfterPalmCheckbox /><#PostSyncHelp />
+        </#ValueCell>
+      </tr>
+        <tr><td /><td><#AddressLabel /></td></tr>
+        <tr><#ImportOGoContactsAttr>
+          <#ImportOGoContactsPopUp /><#PreSyncMustBeActivatedLabel />
+        </#ImportOGoContactsAttr></tr>
+        <tr><#ImportPalmContactsAttr>
+          <#ImportPalmContactsPopUp /><#PostSyncMustBeActivatedLabel />
+          </#ImportPalmContactsAttr></tr>
+
+        <tr><td /><td><#DateBookLabel /></td></tr>
+        <tr><#ImportOGoDatesAttr>
+          <#ImportOGoDatesCheckBox /><#PreSyncMustBeActivatedLabel />
+        </#ImportOGoDatesAttr></tr>
+        <tr><#ImportOGoDatesFromAttr>-<#ImportOGoDatesFrom /><#DaysLabel />
+          </#ImportOGoDatesFromAttr></tr>
+        <tr><#ImportOGoDatesToAttr>+<#ImportOGoDatesTo /><#DaysLabel />
+          </#ImportOGoDatesToAttr></tr>
+        <tr><#ImportPalmDatesAttr>
+          <#ImportPalmDatesPopUp /><#PostSyncMustBeActivatedLabel />
+          </#ImportPalmDatesAttr></tr>
+
+      </#PalmSyncTitle><!-- PalmSyncTitle -->
+
+      <tr><td colspan="2"></td></tr>
+      <#TwoWaySyncTitle>
+        <tr>
+          <#ConflictHandlingAttr><#ConflictHandlingPopUp />
+          </#ConflictHandlingAttr>
+        </tr>
+        <tr>
+          <#ConflictNotificationAttr><#ConflictNotificationPopUp />
+          </#ConflictNotificationAttr>
+        </tr>
+      </#TwoWaySyncTitle>
+
+      <tr><td colspan="2"></td></tr>
+        <!-- AddressValues -->
+      <#AddressTitle>
+        <tr><td /><td><#SkyrixPersonLabel /></td></tr>
+        <tr>
+        <#AttributeCell>
+          <#SkyrixAddressTypeLabel />:</#AttributeCell>
+        <#ValueCell>
+          <#PersonAddressType />
+        </#ValueCell>
+      </tr>
+        <tr>
+        <#AttributeCell>
+          <#SkyrixAddressMappingLabel />:</#AttributeCell>
+        <#ValueCell>
+          <table cellpadding="1" cellspacing="1" border="0">
+            <tr><td><#SKYRIXLabel /></td>
+          <td><#PALMLabel /></td></tr>
+          <#AddressAttributesRep>
+            <tr><td><#SkyrixAttributeLabel />:</td>
+            <td><#PalmPersonItemPopup /></td></tr>
+          </#AddressAttributesRep><!-- AddressAttributesRep -->
+        </table>
+        </#ValueCell>
+      </tr>
+        <tr>
+        <#AttributeCell>
+          <#SkyrixPersonSyncLabel />:</#AttributeCell>
+        <#ValueCell>
+          <table cellpadding="1" cellspacing="1" border="0">
+            <tr><td><#PALMLabel /></td>
+          <td><#SKYRIXLabel /></td></tr>
+          <#PalmAddressAttributesRep>
+            <tr><td><#ItemAttributeLabel />:</td>
+            <td><#SkyrixPersonItemPopup /></td></tr>
+          </#PalmAddressAttributesRep><!-- PalmAddressAttributesRep -->
+        </table>
+        </#ValueCell>
+      </tr>
+
+        <tr><td /><td><#SkyrixEnterpriseLabel /></td></tr>
+        <tr>
+        <#AttributeCell>
+          <#SkyrixAddressTypeLabel />:</#AttributeCell>
+        <#ValueCell>
+          <#EnterpriseAddressType />
+        </#ValueCell>
+      </tr>
+        <tr>
+        <#AttributeCell>
+          <#SkyrixAddressMappingLabel />:</#AttributeCell>
+        <#ValueCell>
+          <table cellpadding="1" cellspacing="1" border="0">
+            <tr><td><#SKYRIXLabel /></td>
+          <td><#PALMLabel /></td></tr>
+          <#AddressAttributesRep>
+            <tr><td><#SkyrixAttributeLabel />:</td>
+            <td><#PalmEnterpriseItemPopup /></td></tr>
+          </#AddressAttributesRep><!-- AddressAttributesRep -->
+        </table>
+        </#ValueCell>
+      </tr>
+        <tr>
+        <#AttributeCell>
+          <#SkyrixEnterpriseSyncLabel />:</#AttributeCell>
+        <#ValueCell>
+          <table cellpadding="1" cellspacing="1" border="0">
+            <tr><td><#PALMLabel /></td>
+          <td><#SKYRIXLabel /></td></tr>
+          <#PalmAddressAttributesRep>
+            <tr><td><#ItemAttributeLabel />:</td>
+            <td><#SkyrixEnterpriseItemPopup /></td></tr>
+          </#PalmAddressAttributesRep><!-- PalmAddressAttributesRep -->
+        </table>
+        </#ValueCell>
+      </tr>
+
+      </#AddressTitle><!-- AddressTitle -->
+
+      <tr><td colspan="2"></td></tr>
+      <#DateTitle>
+        <tr>
+        <#AttributeCell>
+          <#OGoDateDefaultReadAccessLabel />:</#AttributeCell>
+        <#ValueCell>
+          <#OGoDateDefaultReadAccess />
+        </#ValueCell>
+      </tr>
+        <tr>
+        <#AttributeCell>
+          <#OGoDateDefaultWriteAccessLabel />:</#AttributeCell>
+        <#ValueCell />
+      </tr>
+      <#OGoDateDefaultWriteAccess />
+      </#DateTitle><!-- DateTitle -->
+
+      <!-- 
+      <tr><td colspan="2"></td></tr>
+      <#MemoTitle>
+      </#MemoTitle><!-- MemoTitle -->
+
+      <!-- 
+      <tr><td colspan="2"></td></tr>
+      <#JobTitle>
+      </#JobTitle><!-- JobTitle -->
+
+      <tr><td colspan="2"></td></tr>
+      <#WebUITitle>
+
+        <tr><td /><td><#AddressLabel /></td></tr>
+        <tr>
+        <#AttributeCell>
+          <#AddressAttributesLabel />:</#AttributeCell>
+        <#ValueCell>
+          <#AddressAttributes><#SorterItem /></#AddressAttributes>
+        </#ValueCell>
+        </tr>
+        <tr><#BatchSizeAttr><#AddressBatchSize /></#BatchSizeAttr></tr>
+
+        <tr><td /><td><#DateBookLabel /></td></tr>
+        <tr>
+        <#AttributeCell>
+          <#DateAttributesLabel />:</#AttributeCell>
+        <#ValueCell>
+          <#DateAttributes><#SorterItem /></#DateAttributes>
+        </#ValueCell>
+        </tr>
+        <tr><#BatchSizeAttr><#DateBatchSize /></#BatchSizeAttr></tr>
+
+        <tr><td /><td><#MemoPadLabel /></td></tr>
+        <tr>
+        <#AttributeCell>
+          <#MemoAttributesLabel />:</#AttributeCell>
+        <#ValueCell>
+          <#MemoAttributes><#SorterItem /></#MemoAttributes>
+        </#ValueCell>
+        </tr>
+        <tr><#BatchSizeAttr><#MemoBatchSize /></#BatchSizeAttr></tr>
+
+        <tr><td /><td><#ToDoLabel /></td></tr>
+        <tr>
+        <#AttributeCell>
+          <#JobAttributesLabel />:</#AttributeCell>
+        <#ValueCell>
+          <#JobAttributes><#SorterItem /></#JobAttributes>
+        </#ValueCell>
+        </tr>
+        <tr><#BatchSizeAttr><#JobBatchSize /></#BatchSizeAttr></tr>
+
+      </#WebUITitle>
+       
+      <tr>
+        <td></td>
+        <td>
+      <#SaveSubmit />
+        <#CancelImage />
+    </td>
+    </tr>
+    </table>
+    </#PreferencesForm><!-- PreferencesForm -->
+  </#Window><!-- Window -->
+</#Frame><!-- Frame -->

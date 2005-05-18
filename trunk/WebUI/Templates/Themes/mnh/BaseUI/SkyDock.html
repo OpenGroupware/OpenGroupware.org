@@ -1,0 +1,128 @@
+<!-- $Id: SkyDock.html,v 1.3 2004/08/05 23:01:09 helge Exp $ -->
+
+<#IsNotTextMode>
+  <td valign="top">
+    <table cellpadding="0" cellspacing="0" border="0" width=100% height="52"
+           background="<#DockBackgroundURL/>">
+      
+      <tr>
+        <td width="10"> &nbsp;</td>
+        <#DockEntries>
+          <td valign="middle" align="center" width="50">
+            <#HasMiniView  ><#MiniView /></#HasMiniView>
+            <#LacksMiniView>
+              <#ActivePageIsNotEditor>
+                <#DockLink><#DockImage /></#DockLink>
+              </#ActivePageIsNotEditor>
+              <#ActivePageIsEditor><#DockImage /></#ActivePageIsEditor>
+            </#LacksMiniView>
+          </td>
+
+          <td valign="middle" align="center" width="4">&nbsp;</td>
+        </#DockEntries>
+
+        <td width="13%"> &nbsp;</td>
+        <td width="13%"> &nbsp;</td>
+        <#IsLogoMenuRightAligned>
+              <td width="10"> &nbsp;</td>
+              <td align="center"><#ActivePageIsNotEditor><#PrefsLink><#PrefsImageRight /></#PrefsLink></#ActivePageIsNotEditor>
+              <#ActivePageIsEditor><#PrefsImageRight /></#ActivePageIsEditor></td>
+              <td width="10"> &nbsp;</td>
+              <td align="center"><#HomeLink><#HomeImageRight /></#HomeLink></td>
+              <td width="10"> &nbsp;</td>
+              <td align="center"><#DeskLink><#DeskImageRight /></#DeskLink></td>
+        </#IsLogoMenuRightAligned>
+        <td align="right"><#LogoImageLinkMNH><#LogoImageMNH /></#LogoImageLinkMNH></td>
+          <#DockedProjects />
+        </td>
+      </tr>
+      <tr>
+        <td> &nbsp;</td>
+        <#DockEntries>
+          <td valign="middle" align="center"
+              style="font-size: 9px;"><#DockLabel /></td>
+
+          <td valign="middle" align="center" width="4">&nbsp;</td>
+        </#DockEntries>
+        <td> &nbsp;</td>
+        <td> &nbsp;</td>
+
+        <#IsLogoMenuRightAligned>
+              <td> &nbsp;</td>
+              <td align="center" style="font-size: 9px;"><#PrefsLabel /></td>
+              <td> &nbsp;</td>
+              <td align="center" style="font-size: 9px;"><#HomeLabel /></td>
+              <td> &nbsp;</td>
+              <td align="center" style="font-size: 9px;"><#DeskLabel /></td>
+        </#IsLogoMenuRightAligned>
+        <td> &nbsp;</td>
+      </tr>
+    </table>
+  </td>
+<!--      <#IsLogoMenuBottomAligned>
+        <tr>
+         <td align="center" valign="bottom"><#LogoImageLinkMNH><#LogoImageMNH /></#LogoImageLinkMNH></td>
+        </tr>
+        <tr>
+          <td align="center" valign="top"><#ActivePageIsNotEditor><#PrefsLink><#PrefsImage /></#PrefsLink></#ActivePageIsNotEditor><#ActivePageIsEditor><#PrefsImage /></#ActivePageIsEditor><#HomeLink><#HomeImage /></#HomeLink><#DeskLink><#DeskImage /></#DeskLink></td>
+        </tr>
+      </#IsLogoMenuBottomAligned> -->
+</#IsNotTextMode>
+
+<#IsTextMode>
+  <#TextDockCell>
+    <#Font>
+      <#ActivePageIsNotEditor>
+        <#TextDockEntries>
+          <#HasMiniTextView><#MiniTextView /></#HasMiniTextView>
+          <#LacksMiniTextView>
+            <#DockLink><#DockLabel /></#DockLink>
+          </#LacksMiniTextView>
+        </#TextDockEntries>
+      </#ActivePageIsNotEditor>
+          
+      <#ActivePageIsEditor>
+        <#TextDockEntries>
+          <#HasMiniTextView  ><#MiniTextView /></#HasMiniTextView>
+          <#LacksMiniTextView><#DockLabel    /></#LacksMiniTextView>
+        </#TextDockEntries>
+      </#ActivePageIsEditor>
+      
+      <#DockedProjects />
+    </#Font>
+  </#TextDockCell>
+      
+  <td align="right" valign="top" nowrap="nowrap">
+    <#Font>
+      &nbsp;|&nbsp;
+      <#ActivePageIsNotEditor>
+        <#PrefsLink><b><#PrefsLabel /></b></#PrefsLink>
+      </#ActivePageIsNotEditor>
+      <#ActivePageIsEditor><#PrefsLabel /></#ActivePageIsEditor>    
+    </#Font>
+  </td>
+</#IsTextMode>
+
+<#IsTextModeBrowser>
+<#Font>
+  <#TextDockEntries>
+    <#ActivePageIsNotEditor>
+      <#HasMiniTextView><#MiniTextView /></#HasMiniTextView>
+      <#LacksMiniTextView>
+        <#DockLink><#DockLabel /></#DockLink>
+      </#LacksMiniTextView>
+    </#ActivePageIsNotEditor>
+
+    <#ActivePageIsEditor>
+      <#HasMiniTextView  ><#MiniTextView /></#HasMiniTextView>
+      <#LacksMiniTextView><#DockLabel    /></#LacksMiniTextView>
+    </#ActivePageIsEditor>
+  </#TextDockEntries>
+      <#DockedProjects />
+  -
+  <#ActivePageIsNotEditor>
+    <#PrefsLink><i><#PrefsLabel /></i></#PrefsLink>
+  </#ActivePageIsNotEditor>
+  <#ActivePageIsEditor><#PrefsLabel /></#ActivePageIsEditor>
+</#Font>
+</#IsTextModeBrowser>

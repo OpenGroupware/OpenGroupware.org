@@ -1,0 +1,100 @@
+// $Id: SkyNews.wod,v 1.2 2003/12/22 16:53:55 helge Exp $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = labels.NewsWindowTitle;
+  onClose = session.navigation.leavePage;
+}
+
+TabView: SkyTabView {
+  selection = tabKey;
+  width = 150px;
+}
+
+NewsTab: SkyTabItem {
+  key    = "news";
+  action = tabClicked;
+  label  = labels.news;
+  icon   = "news";
+  width = 150px;
+}
+
+EditorsTab: SkyTabItem {
+  key    = "editors";
+  action = tabClicked;
+  label  = labels.news_editors;
+  icon   = "news_editors";
+  width = 150px;
+}
+
+JobList: SkyJobList {}
+
+IsSchedulerLicensed: SkyLicenseConditional {
+  modules = ( Scheduler2 );
+  showInfo = NO;
+}
+
+AppointmentList: SkyNewsAppointmentList {}
+
+News: LSWNewsArticleViewer {
+  isInline = YES;
+}
+
+ShowNewsOnTopCond: WOConditional {
+  condition = session.userDefaults.news_showNewsOnTop;
+}
+
+ShowNewsNotOnTopCond: WOConditional {
+  condition = session.userDefaults.news_showNewsOnTop;
+  negate    = YES;
+}
+
+ButtonMode: WETableViewButtonMode {}
+
+Buttons: SkyButtonRow {
+  ordering = ( new );
+  onNew    = newNewsArticle;
+  new      = labels.new;
+  tipNew   = labels.new;
+}
+
+NewsArticleList: SkyTableView {
+  dataSource   = dataSource;
+  item         = article;
+  batchSize    = 50;
+  currentBatch = start;
+  isDescending = isDescending;
+  sortedKey    = sortedKey;  
+  titleString  = labels.NewsArticleList_title;
+  footerString = labels.NewsArticleList_label;
+}
+
+NameData: WETableData {
+  sortKey = "name";
+  title   = labels.name;
+  string  = article.name;
+  action  = viewNewsArticle;
+}
+
+CaptionData: WETableData {
+  sortKey = "caption";
+  title   = labels.articleCaptionLabel;
+}
+
+Caption: WOString {
+  value = article.caption;
+}
+
+IsIndexArticleData: WETableData {
+  sortKey = "indexArticle";
+  title   = labels.indexArticle;
+}
+
+IsIndexArticle: WOString {
+  value = isIndexArticle;
+}
+
+IsAccountNewsEditor: WOConditional {
+  condition = isAccountNewsEditor;
+}

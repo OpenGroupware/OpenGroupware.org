@@ -671,5 +671,5 @@ setDelegRdvPublic                = "Select accounts/teams";
 rdvType		 		 = "Appointment Case";
 assignReadAccess                 = "Set Read Access";
 cancelButtonLabel_title          = "cancel";
-addPerson			 = "Add >>";
-delPerson			 = "<<Del";
+addPerson			 = " >>";
+delPerson			 = "<<";

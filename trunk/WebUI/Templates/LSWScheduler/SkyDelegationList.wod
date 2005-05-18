@@ -1,0 +1,73 @@
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title = labels.windowTitleDelegList;
+  onClose = cancel;
+}
+
+DelegForm : WOForm 
+{
+  name="delegform";
+}
+
+DelegateCondition : WOConditional
+{
+  delegation = isDelegate;
+}
+
+MainButtonRow: WOGenericContainer {
+  elementName = "TR";
+  BGCOLOR     = config.colors_tableViewHeaderCell;
+}
+
+Font: SkyConfigFont {}
+
+ParticipantsList: SkyAptParticipantsList {
+  appointment = appointment;
+}
+
+DelegTitle : WOString 
+{
+value = "add or del participants";
+}
+
+DelegListSource : WOBrowser 
+{
+ list       = loadListSource;
+ item	    = delegListSourceItem;
+ selections = selectedSource;
+ multiple   = YES;
+ name	    = "deleglistsource";
+ size	    = 2;
+}
+
+DelegListDestination : WOBrowser
+{
+  list       = loadListDestination;
+  item	     = delegListDestinationItem;
+  selections = selectedDestination;
+  multiple   = YES;
+  name 	     = "deleglistdestination";
+  size	     = 2
+}
+
+AddPerson : WOSubmitButton 
+{
+  action = addPersonToDestination;
+  value  = labels.addPerson;
+  class  = "button_auto";
+}
+
+DelPerson :WOSubmitButton 
+{
+ action   = delPersonFromDestination;
+ value    = labels.delPerson;
+ class  = "button_auto";
+}
+
+OK : WOSubmitButton 
+{
+  action = saveList;
+  value  = labels.saveButtonLabel;
+  class  = "button_auto";  
+}

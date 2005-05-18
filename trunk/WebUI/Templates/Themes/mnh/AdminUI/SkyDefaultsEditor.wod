@@ -1,0 +1,83 @@
+// $Id: SkyDefaultsEditor.wod 2 2004-08-20 11:37:44Z znek $
+
+Frame: LSWSkyrixFrame {}
+
+Window: LSWWindowFrame {
+  title   = labels.SkyDefaultsEditor;
+  onClose = session.navigation.leavePage;
+}
+
+Form: WOForm {}
+
+Elements: WORepetition {
+  list = domain.domainElements;
+  item = currentElement;
+}
+
+AttributeCell: SkyAttributeCell {
+  width = "30%";
+}
+
+ValueCell: SkyValueCell {}
+
+AttributeName: WOString {
+  value = currentElement.name;
+}
+
+EditField: WOTextField {
+  value = currentElement.value;
+  size="50";
+}
+
+PasswordField: WOPasswordField {
+  value = currentElement.value;
+  size="30";
+}
+
+SelectionList: WOPopUpButton {
+  list      = currentElement.predefinedValues;
+  selection = currentSelection;
+}
+
+Description: WOString {
+  value = currentElement.info;
+  escapeHTML = NO;
+}
+
+EditorButtons: SkyEditorButtons {
+  isDeleteEnabled = NO;
+  saveLabel       = labels.saveButtonLabel; 
+  cancelLabel     = labels.cancelButtonLabel;
+}
+
+IsCriticalValue: WOConditional {
+  condition = currentElement.isCritical;
+}
+
+IsCriticalValueElse: WOConditional {
+  condition = currentElement.isCritical;
+  negate = YES;
+}
+
+IsPasswordValue: WOConditional {
+  condition = isPassword;
+}
+
+HasPredefinedValues: WOConditional {
+  condition = hasPredefinedValues;
+}
+
+HasPredefinedValuesElse: WOConditional {
+  condition = hasPredefinedValues;
+  negate    = YES;
+}
+
+IsTextArea:  WOConditional { condition = isTextArea;  }
+IsTextField: WOConditional { condition = isTextField; }
+
+TextArea: WOText {
+  value = textValue;
+  wrap  = "physical";
+  rows  = currentElement.rows;
+  cols  = currentElement.cols;
+}
