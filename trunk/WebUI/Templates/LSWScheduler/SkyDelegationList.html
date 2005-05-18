@@ -1,7 +1,7 @@
  <!-- Delagattion Tab--> 
-  <#MainButtonRow>
+  <#DelegMainButtonRow>
 	<td align="left" colspan=5><#Font><b><#DelegTitle /></b></#Font></td>
-  </#MainButtonRow>
+  </#DelegMainButtonRow>
 	
 <#DelegForm>
 	<table align="center">
@@ -32,39 +32,39 @@
 	</table>	
 	<!--participants list -->
 	
-	<#IsPrintModeCondElse>
+	<#DelegIsPrintModeCondElse>
 		<table border="0" cellspacing="0" cellpadding="1" width="100%">
-			<#MainButtonRow>
-				<td align="left"><#Font><b><#MainTitle /></b></#Font></td>
-				<td align="right"><#Buttons /></td>
-			</#MainButtonRow>
+			<#DelegMainButtonRow>
+				<td align="left"><#Font><b><#DelegMainTitle /></b></#Font></td>
+				<td align="right"><#DelegButtons /></td>
+			</#DelegMainButtonRow>
 			<tr><td></td><td></td></tr>
 		</table>
-	</#IsPrintModeCondElse>
+	</#DelegIsPrintModeCondElse>
 
 	<table border="0" cellspacing="0" cellpadding="1" width="100%">
-		<#TableHeaderRow>
-		<th align="left"><#Font><#NameLabel   /></#Font></th>
-		<th align="left"><#Font><#FNameLabel  /></#Font></th>
-		<th align="left"><#Font><#DegreeLabel /></#Font></th>
+		<#DelegTableHeaderRow>
+		<th align="left"><#Font><#DelegNameLabel   /></#Font></th>
+		<th align="left"><#Font><#DelegFNameLabel  /></#Font></th>
+		<th align="left"><#Font><#DelegDegreeLabel /></#Font></th>
 
-		<#ShowParticipantStateCond>
-     	  	<th align="left"><#Font><#PartRoleLabel  /></#Font></th>
-    	  	<th align="left"><#Font><#PartStatusLabel /></#Font></th>
-    		</#ShowParticipantStateCond>
+		<#DelegShowParticipantStateCond>
+     	  	<th align="left"><#Font><#DelegPartRoleLabel  /></#Font></th>
+    	  	<th align="left"><#Font><#DelegPartStatusLabel /></#Font></th>
+    		</#DelegShowParticipantStateCond>
 
-		<#ShowDetailsCond>
-     	 	<th align="left"><#Font><#FunctionLabel /></#Font></th>
-      	 	<th align="left"><#Font><#EmailLabel    /></#Font></th>
-     	 	<th align="left"><#Font><#TelLabel      /></#Font></th>
+		<#DelegShowDetailsCond>
+     	 	<th align="left"><#Font><#DelegFunctionLabel /></#Font></th>
+      	 	<th align="left"><#Font><#DelegEmailLabel    /></#Font></th>
+     	 	<th align="left"><#Font><#DelegTelLabel      /></#Font></th>
       	
-		<#IsEnterpriseAvailable>
-			<th align="left"><#Font><#EpLabel /></#Font></th>
-      	 	</#IsEnterpriseAvailable>
-		</#ShowDetailsCond>
-		</#TableHeaderRow>
+		<#DelegIsEnterpriseAvailable>
+			<th align="left"><#Font><#DelegEpLabel /></#Font></th>
+      	 	</#DelegIsEnterpriseAvailable>
+		</#DelegShowDetailsCond>
+		</#DelegTableHeaderRow>
 
-		<#ParticipantRepetition>
+		<#DelegParticipantRepetition>
 	<!--	
 	<#IsTeamParticipant>
 			<tr><#FullTableData /></tr>
@@ -121,62 +121,62 @@
 			</#MemberRepetition>
 		</#IsTeamParticipant>
 -->
-		<#IsPersonParticipant>
-			<#IsParticipantViewAllowed>
+		<#DelegIsPersonParticipant>
+			<#DelegIsParticipantViewAllowed>
 			<tr>
 				<td>
-					<#IsArchivedCondElse>
+					<#DelegIsArchivedCondElse>
 						<#Font>
-							<#IsPersonAvailable><#ParticipantLink /></#IsPersonAvailable>
-							<#IsPersonNotAvailable><#PartName /></#IsPersonNotAvailable>
+							<#DelegIsPersonAvailable><#DelegParticipantLink /></#DelegIsPersonAvailable>
+							<#DelegIsPersonNotAvailable><#DelegPartName /></#DelegIsPersonNotAvailable>
 						</#Font>
-					</#IsArchivedCondElse>
-					<#IsArchivedCond>
-						<#ArchivedObjectFont><#PartName /></#ArchivedObjectFont>
-					</#IsArchivedCond>
+					</#DelegIsArchivedCondElse>
+					<#DelegIsArchivedCond>
+						<#DelegArchivedObjectFont><#DelegPartName /></#DelegArchivedObjectFont>
+					</#DelegIsArchivedCond>
 				</td>
-				<td><#Font><#PartFName /></#Font></td>
-				<td><#Font><#PartDegree /></#Font></td>
-				<#ShowParticipantStateCond>
-					<td><#Font><#PartRole   /></#Font></td>
-					<td><#Font><#PartStatus /></#Font></td>
-				</#ShowParticipantStateCond>
+				<td><#Font><#DelegPartFName /></#Font></td>
+				<td><#Font><#DelegPartDegree /></#Font></td>
+				<#DelegShowParticipantStateCond>
+					<td><#Font><#DelegPartRole   /></#Font></td>
+					<td><#Font><#PDelegartStatus /></#Font></td>
+				</#DelegShowParticipantStateCond>
 
-				<#ShowDetailsCond>
-					<td><#Font><#PartFunction /></#Font></td>
+				<#DelegShowDetailsCond>
+					<td><#Font><#DelegPartFunction /></#Font></td>
 					<td>
 						<#Font>
-							<#IsInternalMailer><#PartEmailAction /></#IsInternalMailer>
-							<#IsNotInternalMailer><#PartEmail /></#IsNotInternalMailer>
+							<#DelegIsInternalMailer><#DelegPartEmailAction /></#DelegIsInternalMailer>
+							<#DelegIsNotInternalMailer><#DelegPartEmail /></#DelegIsNotInternalMailer>
 						</#Font>
 					</td>
-					<td><#Font><#DialPartTel><#PartTel /></#DialPartTel></#Font></td>
-				<#IsEnterpriseAvailable>
+					<td><#Font><#DelegDialPartTel><#DelegPartTel /></#DelegDialPartTel></#Font></td>
+				<#DelegIsEnterpriseAvailable>
 					<td>
 						<#Font>
-							<#PartEnterpriseRep><#EnterpriseName /></#PartEnterpriseRep>
+							<#DelegPartEnterpriseRep><#DelegEnterpriseName /></#DelegPartEnterpriseRep>
 						</#Font>
 					</td>
-				</#IsEnterpriseAvailable>
-				</#ShowDetailsCond>
+				</#DelegIsEnterpriseAvailable>
+				</#DelegShowDetailsCond>
 			</tr>
-			</#IsParticipantViewAllowed>
-			<#IsParticipantViewAllowedElse>
+			</#DelegIsParticipantViewAllowed>
+			<#DelegIsParticipantViewAllowedElse>
 				<tr>
 					<td>
 						<!--<#Font><#PartName /></#Font></td>-->
-						<#IsEnterpriseAvailable>
+						<#DelegIsEnterpriseAvailable>
 							<td colspan="6" align="middle">
-						</#IsEnterpriseAvailable>
-						<#IsEnterpriseNotAvailable>
+						</#DelegIsEnterpriseAvailable>
+						<#DelegIsEnterpriseNotAvailable>
 							<td colspan="5" align="middle">
-						</#IsEnterpriseNotAvailable>
+						</#DelegIsEnterpriseNotAvailable>
 						<!--<#Font><b><#PrivateLabel /></b></#Font>-->
 					</td>
 				</tr>
-			</#IsParticipantViewAllowedElse>
-		</#IsPersonParticipant>
-	</#ParticipantRepetition>
+			</#DelegIsParticipantViewAllowedElse>
+		</#DelegIsPersonParticipant>
+	</#DelegParticipantRepetition>
 	</table>
 </#DelegForm>
 
