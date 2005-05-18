@@ -56,7 +56,7 @@ DelegListSource : WOBrowser
  selections = selectedSource;
  multiple   = YES;
  name	    = "deleglistsource";
- size	    = 1;
+ size	    = "4";
  class	    = "delegate_GLC"; 
 }
 
@@ -67,7 +67,7 @@ DelegListDestination : WOBrowser
   selections = selectedDestination;
   multiple   = YES;
   name 	     = "deleglistdestination";
-  size	     = 1; 
+  size	     = "4"; 
   class	    = "delegate_GLC"; 
 }
 
@@ -107,23 +107,12 @@ MainTitle: WOString {
   value = appointment.title;
 }
 
-IsAddMeToParticipantsCond: WOConditional {
-  condition = isAddMeToParticipants;
-}
-
-IsRemoveMeFromParticipantsCond: WOConditional {
-  condition = isRemoveMeFromParticipants;
-}
 Buttons: SkyButtonRow {
   ordering = (
-    removeme, enabledetails, disabledetails,
+    enabledetails, disabledetails,
     showmembers, hidemembers,
     accept, decline, tentative
   );
-
-  hasRemoveme = isRemoveMeFromParticipants;
-  onRemoveme  = removeMeFromParticipants;
-  removeme    = labels.removeMe;
 
   hasEnabledetails  = hideDetails;
   onEnabledetails   = enableDetails;
