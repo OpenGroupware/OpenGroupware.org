@@ -32,11 +32,7 @@
 
 @interface SxICalendar : SxObject
 {
-  NSString *group;
 }
-
-- (void)setGroup:(NSString *)_group;
-- (NSString *)group;
 
 @end /* SxICalendar */
 

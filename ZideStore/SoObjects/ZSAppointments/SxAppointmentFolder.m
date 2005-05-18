@@ -147,11 +147,8 @@
 }
 
 - (id)iCalendarForKey:(NSString *)_key inContext:(id)_ctx {
-  id obj;
-  
-  obj = [[SxICalendar alloc] initNewWithName:_key inFolder:self];
-  [obj setGroup:[self group]];
-  return [obj autorelease];
+  return [[[SxICalendar alloc] initNewWithName:_key inFolder:self] 
+	                autorelease];
 }
 
 - (id)overviewFolderInContext:(id)_ctx {
@@ -634,7 +631,7 @@
   return @"DefaultAppointmentProperties";
 }
 
-- (id)davResourceType {
+- (NSString *)davResourceType {
   static id coltype = nil;
   if (coltype == nil) {
     id tmp;
@@ -643,7 +640,7 @@
 		     @"vevent-collection", @"http://groupdav.org/", nil];
     coltype = [[NSArray alloc] initWithObjects:@"collection", tmp, nil];
   }
-  return coltype;
+  return (NSString *)coltype; // TODO: type should be fixed in SOPE (OGo 1.1)
 }
 
 - (NSArray *)defaultWebDAVPropertyNamesInContext:(id)_ctx {

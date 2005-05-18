@@ -1,3 +1,8 @@
+2005-05-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxICalendar.m: rewritten to use folder for queries instead of doing
+	  queries on its own (fixed OGo bug #1386) (v1.3.97)
+
 2005-03-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxICalendar.m, SxAppointment.m: generate iCal data as UTF-8,

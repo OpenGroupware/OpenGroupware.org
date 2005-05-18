@@ -50,19 +50,7 @@ static BOOL debugZSICal = NO;
   debugZSICal = [ud boolForKey:@"ZLDebugICal"];
 }
 
-- (void)dealloc {
-  [self->group release];
-  [super dealloc];
-}
-
 /* accessors */
-
-- (void)setGroup:(NSString *)_group {
-  ASSIGNCOPY(self->group, _group);
-}
-- (NSString *)group {
-  return self->group;
-}
 
 - (id)parentFolder {
   return self->container;
@@ -71,12 +59,12 @@ static BOOL debugZSICal = NO;
 /* backend */
 
 - (SxAptManager *)aptManagerInContext:(id)_ctx {
-  return [SxAptManager managerWithContext:[self commandContextInContext:_ctx]];
+  return [[self container] aptManagerInContext:_ctx];
 }
 
 - (BOOL)isPublish {
   /* 
-     a publish prefix signals that objects will only be added or modified,
+     A publish prefix signals that objects will only be added or modified,
      never deleted.
   */
   
@@ -85,8 +73,8 @@ static BOOL debugZSICal = NO;
 }
 - (SxAptSetIdentifier *)currentAptSet {
   return [self isPublish] 
-    ? nil // only publish available here
-    : [SxAptSetIdentifier aptSetForGroup:[self group]];
+    ? nil // only publish available here // TODO: explain the comment left
+    : [[self container] aptSetID];
 }
 
 /* fetching */
@@ -108,10 +96,10 @@ static BOOL debugZSICal = NO;
 
 /* methods */
 
-- (id)GETAction:(id)_ctx {
+- (id)GETAction:(WOContext *)_ctx {
   NSEnumerator *dateEnum;
   WOResponse   *r;
-  id           date;
+  NSDictionary *date;
 
   dateEnum = [self fetchDatesInContext:_ctx];
   r        = [(WOContext *)_ctx response];
@@ -340,7 +328,7 @@ static SaxObjectDecoder          *sax   = nil;
   NSArray      *gids;
   WOResponse   *r;
   NSEnumerator *e;
-  id           iCal;
+  NSDictionary *iCal;
 
   gids = [self extractBulkGlobalIDs:_fs];
   e    = [[self aptManagerInContext:_ctx]
