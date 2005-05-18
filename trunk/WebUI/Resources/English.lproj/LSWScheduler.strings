@@ -674,3 +674,7 @@ assignReadAccess                 = "Set Read Access";
 cancelButtonLabel_title          = "cancel";
 addPerson			 = " >>";
 delPerson			 = "<<";
+TitleListSource			 = "remove the delegate participant of the appointment";
+TitleListDestination		 = "add the delegate participant of the appointment";  
+windowTitleDelegList		 = "add or remove participant"; 
+delegateWindow			 = "add or remove participant"; 
