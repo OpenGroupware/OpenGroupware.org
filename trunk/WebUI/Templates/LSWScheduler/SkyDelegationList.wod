@@ -33,13 +33,6 @@ TitleListDestination : WOString
 {
    value 	= labels.TitleListDestination;
 }
-MainButtonRow: WOGenericContainer {
-  elementName = "TR";
-  BGCOLOR     = config.colors_tableViewHeaderCell;
-}
-
-Font: DefaultFont {
-}
 
 ParticipantsList: SkyAptParticipantsList {
   appointment = appointment;
@@ -93,21 +86,22 @@ OK : WOSubmitButton
 }
 
 //liste des participants
-IsPrintModeCondElse: WOConditional {
+
+DelegIsPrintModeCondElse: WOConditional {
   condition = printMode;
   negate    = YES;
 }
 
-MainButtonRow: WOGenericContainer {
+DelegMainButtonRow: WOGenericContainer {
   elementName = "TR";
   BGCOLOR     = config.colors_tableViewHeaderCell;
 }
 
-MainTitle: WOString {
+DelegMainTitle: WOString {
   value = appointment.title;
 }
 
-Buttons: SkyButtonRow {
+DelegButtons: SkyButtonRow {
   ordering = (
     enabledetails, disabledetails,
     showmembers, hidemembers,
@@ -141,32 +135,32 @@ Buttons: SkyButtonRow {
   tentative    = labels.action_appointmentTentative;
 }
 
-ShowParticipantStateCond: WOConditional {
+DelegShowParticipantStateCond: WOConditional {
   condition = showParticipantRoles;
 }
-ShowDetailsCond: WOConditional {
+ DelegShowDetailsCond: WOConditional {
   condition = showDetails;
 }
-ExpandTeamsCond: WOConditional {
+ DelegExpandTeamsCond: WOConditional {
   condition = expandTeams;
 }
-ExpandTeamsCondElse: WOConditional {
+ DelegExpandTeamsCondElse: WOConditional {
   condition = expandTeams;
   negate    = YES;
 }
-FullTableData: WOGenericContainer {
+ DelegFullTableData: WOGenericContainer {
   elementName = "td";
   colspan     = tableColumns;
 }
 
-HideMembersAction: WOHyperlink {
+ DelegHideMembersAction: WOHyperlink {
   filename = "expanded.gif";
   action   = hideMembers;
   title    = labels.action_hideMembers;
   alt      = labels.action_hideMembers;
   border   = 0;
 }
-ShowMembersAction: WOHyperlink {
+ DelegShowMembersAction: WOHyperlink {
   filename = "collapsed.gif";
   action   = showMembers;
   title    = labels.action_showMembers;
@@ -174,365 +168,153 @@ ShowMembersAction: WOHyperlink {
   border   = 0;
 }
 
-ParticipantRepetition: WORepetition {
+ DelegParticipantRepetition: WORepetition {
   list    = participants;
   item    = item;
 }
-ParticipantLink: WOHyperlink {
+
+ DelegParticipantLink: WOHyperlink {
   directActionName = "activate";
   ?oid    = item.companyId;
   string  = participantLabel;
 }
 
-IsTeamParticipant: WOConditional {
+ DelegIsTeamParticipant: WOConditional {
   condition = isParticipantTeam;
 }
 
-Font:SkyConfigFont {}
+ Font: SkyConfigFont {}
 
-ArchivedObjectFont: WOGenericContainer {
+
+ DelegArchivedObjectFont: WOGenericContainer {
   elementName = "FONT";
   SIZE        = config.font_size;
   FACE        = config.font_face;
   COLOR       = config.colors_deleted_object;
 }
  
-TableHeaderRow: WOGenericContainer {
+ DelegTableHeaderRow: WOGenericContainer {
   elementName = "TR";
   BGCOLOR     = config.colors_tableViewAttributeCell;
 }
   
 // labels
  
-NameLabel : WOString {
+ DelegNameLabel : WOString {
   value   = labels.nameLabel;
 }
-FNameLabel : WOString {
+ DelegFNameLabel : WOString {
   value   = labels.fNameLabel;
 }
-FunctionLabel : WOString {
+ DelegFunctionLabel : WOString {
   value   = labels.functionLabel;
 }
-DegreeLabel : WOString {
+ DelegDegreeLabel : WOString {
   value   = labels.degreeLabel;
 }
-PartRoleLabel: WOString {
+ DelegPartRoleLabel: WOString {
   value   = labels.participantRole;
 }
-PartStatusLabel: WOString {
+ DelegPartStatusLabel: WOString {
   value   = labels.participantStatus;
 }
-EmailLabel : WOString {
+ DelegEmailLabel : WOString {
   value   = labels.emailLabel;
 }
-TelLabel : WOString {
+ DelegTelLabel : WOString {
   value   = labels.telLabel;
 }
-EpLabel : WOString {
-  value   = labels.epLabel;
-}
-Font: SkyConfigFont {}
-
-ArchivedObjectFont: WOGenericContainer {
-  elementName = "FONT";
-  SIZE        = config.font_size;
-  FACE        = config.font_face;
-  COLOR       = config.colors_deleted_object;
-}
- 
-TableHeaderRow: WOGenericContainer {
-  elementName = "TR";
-  BGCOLOR     = config.colors_tableViewAttributeCell;
-}
-  
-// labels
- 
-NameLabel : WOString {
-  value   = labels.nameLabel;
-}
-FNameLabel : WOString {
-  value   = labels.fNameLabel;
-}
-FunctionLabel : WOString {
-  value   = labels.functionLabel;
-}
-DegreeLabel : WOString {
-  value   = labels.degreeLabel;
-}
-PartRoleLabel: WOString {
-  value   = labels.participantRole;
-}
-PartStatusLabel: WOString {
-  value   = labels.participantStatus;
-}
-EmailLabel : WOString {
-  value   = labels.emailLabel;
-}
-TelLabel : WOString {
-  value   = labels.telLabel;
-}
-EpLabel : WOString {
-  value   = labels.epLabel;
-}
-Font: SkyConfigFont {}
-
-ArchivedObjectFont: WOGenericContainer {
-  elementName = "FONT";
-  SIZE        = config.font_size;
-  FACE        = config.font_face;
-  COLOR       = config.colors_deleted_object;
-}
- 
-TableHeaderRow: WOGenericContainer {
-  elementName = "TR";
-  BGCOLOR     = config.colors_tableViewAttributeCell;
-}
-  
-// labels
- 
-NameLabel : WOString {
-  value   = labels.nameLabel;
-}
-FNameLabel : WOString {
-  value   = labels.fNameLabel;
-}
-FunctionLabel : WOString {
-  value   = labels.functionLabel;
-}
-DegreeLabel : WOString {
-  value   = labels.degreeLabel;
-}
-PartRoleLabel: WOString {
-  value   = labels.participantRole;
-}
-PartStatusLabel: WOString {
-  value   = labels.participantStatus;
-}
-EmailLabel : WOString {
-  value   = labels.emailLabel;
-}
-TelLabel : WOString {
-  value   = labels.telLabel;
-}
-EpLabel : WOString {
-  value   = labels.epLabel;
-}
-Font: SkyConfigFont {}
-
-ArchivedObjectFont: WOGenericContainer {
-  elementName = "FONT";
-  SIZE        = config.font_size;
-  FACE        = config.font_face;
-  COLOR       = config.colors_deleted_object;
-}
- 
-TableHeaderRow: WOGenericContainer {
-  elementName = "TR";
-  BGCOLOR     = config.colors_tableViewAttributeCell;
-}
-  
-// labels
- 
-NameLabel : WOString {
-  value   = labels.nameLabel;
-}
-FNameLabel : WOString {
-  value   = labels.fNameLabel;
-}
-FunctionLabel : WOString {
-  value   = labels.functionLabel;
-}
-DegreeLabel : WOString {
-  value   = labels.degreeLabel;
-}
-PartRoleLabel: WOString {
-  value   = labels.participantRole;
-}
-PartStatusLabel: WOString {
-  value   = labels.participantStatus;
-}
-EmailLabel : WOString {
-  value   = labels.emailLabel;
-}
-TelLabel : WOString {
-  value   = labels.telLabel;
-}
-EpLabel : WOString {
-  value   = labels.epLabel;
-}
-Font: SkyConfigFont {}
-
-ArchivedObjectFont: WOGenericContainer {
-  elementName = "FONT";
-  SIZE        = config.font_size;
-  FACE        = config.font_face;
-  COLOR       = config.colors_deleted_object;
-}
- 
-TableHeaderRow: WOGenericContainer {
-  elementName = "TR";
-  BGCOLOR     = config.colors_tableViewAttributeCell;
-}
-  
-// labels
- 
-NameLabel : WOString {
-  value   = labels.nameLabel;
-}
-FNameLabel : WOString {
-  value   = labels.fNameLabel;
-}
-FunctionLabel : WOString {
-  value   = labels.functionLabel;
-}
-DegreeLabel : WOString {
-  value   = labels.degreeLabel;
-}
-PartRoleLabel: WOString {
-  value   = labels.participantRole;
-}
-PartStatusLabel: WOString {
-  value   = labels.participantStatus;
-}
-EmailLabel : WOString {
-  value   = labels.emailLabel;
-}
-TelLabel : WOString {
-  value   = labels.telLabel;
-}
-EpLabel : WOString {
-  value   = labels.epLabel;
-}
-Font: SkyConfigFont {}
-
-
-ArchivedObjectFont: WOGenericContainer {
-  elementName = "FONT";
-  SIZE        = config.font_size;
-  FACE        = config.font_face;
-  COLOR       = config.colors_deleted_object;
-}
- 
-TableHeaderRow: WOGenericContainer {
-  elementName = "TR";
-  BGCOLOR     = config.colors_tableViewAttributeCell;
-}
-  
-// labels
- 
-NameLabel : WOString {
-  value   = labels.nameLabel;
-}
-FNameLabel : WOString {
-  value   = labels.fNameLabel;
-}
-FunctionLabel : WOString {
-  value   = labels.functionLabel;
-}
-DegreeLabel : WOString {
-  value   = labels.degreeLabel;
-}
-PartRoleLabel: WOString {
-  value   = labels.participantRole;
-}
-PartStatusLabel: WOString {
-  value   = labels.participantStatus;
-}
-EmailLabel : WOString {
-  value   = labels.emailLabel;
-}
-TelLabel : WOString {
-  value   = labels.telLabel;
-}
-EpLabel : WOString {
+ DelegEpLabel : WOString {
   value   = labels.epLabel;
 }
 
-TeamLabel : WOString {
+ DelegTeamLabel : WOString {
   value   = labels.teamLabel;
 }
-PrivateLabel : WOString {
+ DelegPrivateLabel : WOString {
   value   = labels.accessTeam;
 }
 
-IsPersonAvailable: WOConditional {
+ DelegIsPersonAvailable: WOConditional {
   condition = isPersonAvailable;
 }
-IsPersonNotAvailable: WOConditional {
+ DelegIsPersonNotAvailable: WOConditional {
   condition = isPersonAvailable;
   negate    = YES;
 }
-IsEnterpriseAvailable: WOConditional {
+ DelegIsEnterpriseAvailable: WOConditional {
   condition = isEnterpriseAvailable;
 }
-IsEnterpriseNotAvailable: WOConditional {
+ DelegIsEnterpriseNotAvailable: WOConditional {
   condition = isEnterpriseAvailable;
   negate    = YES;
 }
-IsInternalMailer: WOConditional {
+ DelegIsInternalMailer: WOConditional {
   condition = isInternalMailEditor;
 }
-IsNotInternalMailer: WOConditional {
+ DelegIsNotInternalMailer: WOConditional {
   condition = isInternalMailEditor;
   negate    = YES;
 }
 
 
-IsArchivedCondElse : WOConditional {
+ DelegIsArchivedCondElse : WOConditional {
   negate    = YES;
   condition = isArchived;
 };
-IsArchivedCond : WOConditional {
+ DelegIsArchivedCond : WOConditional {
   condition = isArchived;
 };
 
-IsTeamParticipant: WOConditional {
+ DelegIsTeamParticipant: WOConditional {
   condition = isParticipantTeam;
   negate    = YES;
 }
 
-IsPersonParticipant: WOConditional {
+ DelegIsPersonParticipant: WOConditional {
   condition = isParticipantTeam;
   negate    = YES;
 }
 
-IsParticipantViewAllowed: WOConditional {
+ DelegIsParticipantViewAllowed: WOConditional {
   condition = isParticipantViewAllowed;
 }
-IsParticipantViewAllowedElse: WOConditional {
+ DelegIsParticipantViewAllowedElse: WOConditional {
   condition = isParticipantViewAllowed;
 }
-TeamName: WOString {
+ DelegTeamName: WOString {
   value  = participantLabel;
 }
 
-MemberRepetition: WORepetition {
+ DelegMemberRepetition: WORepetition {
   list    = participantTeamMembers;
   item    = member;
 }
-MemberLink: WOHyperlink {
+ 
+ DelegMemberLink: WOHyperlink {
   directActionName = "activate";
   ?oid    = member.companyId;
   string  = teamMemberLabel;
 }
-MemberName: WOString {
+
+ DelegMemberName: WOString {
   value = member.name;
 }
 
 /* enterprise stuff */
 
-PartEnterpriseRep: WORepetition {
+ DelegPartEnterpriseRep: WORepetition {
   list       = item.enterprises;
   item       = enterprise;
   separator  = ", ";
 }
-MemberEnterpriseRep: WORepetition {
+ DelegMemberEnterpriseRep: WORepetition {
   list       = member.enterprises;
   item       = enterprise;
   separator  = ", ";
 }
 
-EnterpriseName : WOHyperlink {
+ DelegEnterpriseName : WOHyperlink {
   directActionName = "activate";
   ?oid    = enterprise.companyId;
   string  = enterprise.description;
@@ -540,63 +322,63 @@ EnterpriseName : WOHyperlink {
 
 /* member values */
 
-MemberFName: WOString {
+ DelegMemberFName: WOString {
   value  = member.firstname;
 }
-MemberFunction: WOString {
+ DelegMemberFunction: WOString {
   value  = member.job_title;
 }
-MemberEmail: WOHyperlink {
+ DelegMemberEmail: WOHyperlink {
   href   = memberEmail;
   string = member.email1;
 }
-MemberEmailAction: WOHyperlink {
+ DelegMemberEmailAction: WOHyperlink {
   action = mailToMember;
   string = member.email1;
 }
-MemberDegree: WOString {
+ DelegMemberDegree: WOString {
   value  = member.degree;
 }
-MemberTel: WOString {
+ DelegMemberTel: WOString {
   value  = member.01_tel;
 }
-DialTel: SkyDialNumber {
+ DelegDialTel: SkyDialNumber {
   number = member.01_tel;
 }
 
 /* participant values */
 
-PartName: WOString {
+ DelegPartName: WOString {
   value  = item.name;
 }
-PartFName: WOString {
+ DelegPartFName: WOString {
   value  = item.firstname;
 }
-PartFunction: WOString {
+ DelegPartFunction: WOString {
   value  = item.job_title;
 }
-PartEmail: WOHyperlink {
+ DelegPartEmail: WOHyperlink {
   href   = itemEmail;
   string = item.email1;
 }
-PartEmailAction: WOHyperlink {
+ DelegPartEmailAction: WOHyperlink {
   action = mailToItem;
   string = item.email1;
 }
-PartDegree: WOString {
+ DelegPartDegree: WOString {
   value  = item.degree;
 }
-PartRole: WOString {
+ DelegPartRole: WOString {
   value = item.role;
 }
-PartStatus: SkyRichString {
+ DelegPartStatus: SkyRichString {
   value = participantStatusLabel;
   color = participantStatusColor;
 }
-PartTel: WOString {
+ DelegPartTel: WOString {
   value  = item.01_tel;
 }
-DialPartTel: SkyDialNumber {
+ DelegDialPartTel: SkyDialNumber {
   number = item.01_tel;
 }
 
