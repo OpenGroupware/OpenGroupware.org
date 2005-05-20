@@ -291,7 +291,6 @@
   
   if ([self fetchGlobalIDs]) {
     NSMutableArray *a;
-    NSEnumerator   *enumerator;
     
     /* 
        Why can't we just return 'access'? I suppose because the 'r' might
@@ -304,7 +303,7 @@
   }
   else if ([[self fetchIds] boolValue]) {
     NSString *keyName, *en;
-
+    
     keyName = nil;
     en      = nil;      
     while ((obj = [enumerator nextObject]) != nil) {
