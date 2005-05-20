@@ -274,6 +274,7 @@ if [ $1 = 1 ]; then
   elif [ ! "`grep '%{prefix}/lib' %{_sysconfdir}/ld.so.conf`" ]; then
     echo "%{prefix}/lib" >> %{_sysconfdir}/ld.so.conf
   fi
+  /sbin/ldconfig
   ##
   NHSD_INIT_VERSION="ogo-nhsd-1.0a"
   NHSD_INIT_PREFIX="%{prefix}"
@@ -294,7 +295,6 @@ if [ $1 = 1 ]; then
     chown root:root %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
     chmod 755 %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
     chkconfig --add "${NHSD_INIT_VERSION}"
-    /sbin/ldconfig
   fi
   ##
   OGO_INIT_VERSION="ogo-webui-1.0a"
@@ -338,7 +338,6 @@ if [ $1 = 1 ]; then
     chown root:root %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
     chmod 755 %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
     chkconfig --add "${XMLRPCD_INIT_VERSION}"
-    /sbin/ldconfig
   fi
   ##
   ZIDESTORE_INIT_VERSION="ogo-zidestore-1.3"
@@ -360,7 +359,6 @@ if [ $1 = 1 ]; then
     chown root:root %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
     chmod 755 %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
     chkconfig --add "${ZIDESTORE_INIT_VERSION}"
-    /sbin/ldconfig
   fi
   ##
   OGO_SYSCONF="ogo-webui-1.0a"
@@ -768,6 +766,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Fri May 20 2005 Frank Reppin <frank@opengroupware.org>
+- proper ldconfig call in post
 * Tue May 10 2005 Helge Hess <hh@opengroupware.org>
 - fixed some tool names
 - removed LSResource.cmd
