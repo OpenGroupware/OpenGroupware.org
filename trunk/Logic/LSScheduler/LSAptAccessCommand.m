@@ -1113,6 +1113,11 @@ static EONull   *null  = nil;
 	{
 		// Thierry SUCKS ;-)
 		gid = [entity globalIDForRow:resultRow];
+		// Putain de bug de merde !!!!!!
+		// Thierry : 21 Mai 2005
+		// Mon petit Thierry, il fo penser a remettre tes variables a zero !!!!!!! GROS CON !!!!
+		// ATTENTION : y'a que moi qui ai le droit de dire que je suis un Gros CON ;-)
+		right = 0; 
 
 		if(([self hasDeleteRight:resultRow  inContext:_ctx]) == YES)
 		{
