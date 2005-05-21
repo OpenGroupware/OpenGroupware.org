@@ -1,3 +1,8 @@
+2005-05-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSExtendedSearchCommand.m: fixed another crasher introduced in one
+	  of the last commits (similiar issue to OGo bug #1387) (v5.1.23)
+
 2005-05-20  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSExtendedSearchCommand.m: fixed a crasher introduced in one of the

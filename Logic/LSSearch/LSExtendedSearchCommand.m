@@ -290,8 +290,6 @@
   enumerator = [r objectEnumerator];
   
   if ([self fetchGlobalIDs]) {
-    NSMutableArray *a;
-    
     /* 
        Why can't we just return 'access'? I suppose because the 'r' might
        be sorted.
@@ -511,6 +509,7 @@
 
 @end /* LSExtendedSearchCommand */
 
+#include <NGExtensions/NSString+ext.h>
 
 @implementation NSString(SQLPatterns)
 
