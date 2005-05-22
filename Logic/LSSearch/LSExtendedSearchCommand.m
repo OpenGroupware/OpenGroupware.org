@@ -509,7 +509,7 @@
 
 @end /* LSExtendedSearchCommand */
 
-#include <NGExtensions/NSString+ext.h>
+#include <NGExtensions/NSString+Ext.h>
 
 @implementation NSString(SQLPatterns)
 

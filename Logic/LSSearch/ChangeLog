@@ -1,3 +1,8 @@
+2005-05-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSExtendedSearchCommand.m: fixed and HFS vs Linux compilation issue
+	  (v5.1.24)
+
 2005-05-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSExtendedSearchCommand.m: fixed another crasher introduced in one
