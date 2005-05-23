@@ -964,7 +964,7 @@ static NSSet *AllListAttrs = nil;
 
 - (void)takeValue:(id)_value forKey:(id)_key
 {
-	[self logWithFormat:@"**** takevalue: _key %@ and value : %@",_key, _value];
+//	[self logWithFormat:@"**** takevalue: _key %@ and value : %@",_key, _value];
 	if ([_key isEqualToString:@"gid"])
 		[self setGlobalID:_value];
 	else if ([_key isEqualToString:@"gids"])
