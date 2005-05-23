@@ -31,7 +31,7 @@
 //
 //
 //**************************************************************************
-#define GLC_DEBUG 1
+// #define GLC_DEBUG 1
 
 @interface LSSetDelegationCommand : LSBaseCommand
 {
@@ -75,7 +75,7 @@
 //**************************************************************************
 - (void)setNewDelegations:(NSDictionary *)aDictionary
 {
-    	[self logWithFormat:@"***** setNewDelegations : aDictionary =  %@",aDictionary ];
+//    	[self logWithFormat:@"***** setNewDelegations : aDictionary =  %@",aDictionary ];
 	if(newDelegationsEntries)
 	{
 		[newDelegationsEntries release];
@@ -98,7 +98,7 @@
 //**************************************************************************
 - (void)takeValue:(id)_value forKey:(id)_key
 {
-    	[self logWithFormat:@"***** takeValue : keys are %@ and values : %@",_key,_value ];
+//    	[self logWithFormat:@"***** takeValue : keys are %@ and values : %@",_key,_value ];
 	if([_key isEqualToString:@"dictDelegation"])
 	{
 		[self setNewDelegations:_value];
@@ -118,7 +118,7 @@
 {
 	id value;
 	
- 	[self logWithFormat:@"***** valueForKey : keys are %@ ",_key ];
+// 	[self logWithFormat:@"***** valueForKey : keys are %@ ",_key ];
 	if([_key isEqualToString:@"dictDelegation"])
 	{
 		return [self delegations];
@@ -126,7 +126,7 @@
 
 	value = [ super valueForKey:_key ];
 
-	[self logWithFormat:@"***** valueForKey : key %@, value : %@",_key,value ];
+//	[self logWithFormat:@"***** valueForKey : key %@, value : %@",_key,value ];
 	return value;
 }
 //**************************************************************************
@@ -137,7 +137,7 @@
 //**************************************************************************
 - (void)_prepareForExecutionInContext:(id)_context
 {
-    	[self logWithFormat:@"***** _PrepareForExecutionInContext" ];
+//    	[self logWithFormat:@"***** _PrepareForExecutionInContext" ];
 	arrayForPublics 	= nil;
 	arrayForPrivates 	= nil;
 	arrayForConfidentials 	= nil;
@@ -157,7 +157,7 @@
 //**************************************************************************
 - (void)dealloc
 {
-    	[self logWithFormat:@"***** _dealloc" ];
+//    	[self logWithFormat:@"***** _dealloc" ];
 	if(arrayForPrivates)
 	{
 		[arrayForPrivates release];
@@ -183,12 +183,12 @@
 	}
 	
 	// now call our parent
-    	[self logWithFormat:@"***** _dealloc : before super::dealloc" ];
+//    	[self logWithFormat:@"***** _dealloc : before super::dealloc" ];
 
 	[super dealloc];
 	// Never caal this last line since self have been release . Prefer NSLog 
 	// [self logWithFormat:@"***** _dealloc : after super::dealloc" ];
-	NSLog(@"***** _dealloc : after super::dealloc") ;
+//	NSLog(@"***** _dealloc : after super::dealloc") ;
 }
 
 //**************************************************************************
@@ -202,7 +202,7 @@
 	NSDictionary * currentDelegations = nil;
 	NSArray * arrayOfTargetID = nil;
 	NSArray * arrayOfSourceID = nil;
-	[self logWithFormat:@"***** (DEBUT) _executeInContext : ctx = %@",_context ];
+//	[self logWithFormat:@"***** (DEBUT) _executeInContext : ctx = %@",_context ];
 
 	// first get existant delegations for this accounts
 
@@ -228,8 +228,8 @@
    		[self setReturnValue:nil];
 		return;
 	}
-    	[self logWithFormat:@"newDelegationsEntries : %@",newDelegationsEntries];
-    	[self logWithFormat:@"currentDelegations : %@",currentDelegations];
+//    	[self logWithFormat:@"newDelegationsEntries : %@",newDelegationsEntries];
+//    	[self logWithFormat:@"currentDelegations : %@",currentDelegations];
 
 	// 
 	NSEnumerator * keysEnumerator = [newDelegationsEntries keyEnumerator];
@@ -251,7 +251,7 @@
 		idToAdd = [[NSMutableArray alloc] init];
 		idToDelete = [[NSMutableArray alloc] init];
 
-		[self logWithFormat:@"***** while loop : key %@", key];
+//		[self logWithFormat:@"***** while loop : key %@", key];
 
 		// first retrieve target ID 
 		arrayOfTargetID = [newDelegationsEntries valueForKey:key];
@@ -265,10 +265,10 @@
 		{
 			[self logWithFormat:@"***** %@'s array is null = BUG", key];
 		} 
-		else
-		{
-			[self logWithFormat:@"***** %@ dump source : %@", key,arrayOfSourceID];
-		}
+//		else
+//		{
+//			[self logWithFormat:@"***** %@ dump source : %@", key,arrayOfSourceID];
+//		}
 
 		// rules : ID not present in Source but Present in Target need to be add.
 		found = NO;
@@ -276,23 +276,23 @@
 		while (( targetObject = [ targetEnumerator nextObject] ))
 		{
 			targetValue = [targetObject longValue];
-			[self logWithFormat:@"***** target value : %ld ", targetValue];
+//			[self logWithFormat:@"***** target value : %ld ", targetValue];
 			sourceEnumerator = [arrayOfSourceID objectEnumerator];
 			while(( sourceObject = [ sourceEnumerator nextObject ] ))
 			{
 				sourceValue = [sourceObject longValue];
-				[self logWithFormat:@"***** source value : %ld ", sourceValue];
+//				[self logWithFormat:@"***** source value : %ld ", sourceValue];
 				if( targetValue == sourceValue )
 				{
 					found = YES;
 					break;
 				}
-				[self logWithFormat:@"***** source value : %ld result : %d", sourceValue, found];
+//				[self logWithFormat:@"***** source value : %ld result : %d", sourceValue, found];
 			}
 
 			if(found == NO)
 			{
-				[self logWithFormat:@"***** found = NO so add %ld", targetValue];
+//				[self logWithFormat:@"***** found = NO so add %ld", targetValue];
 				[idToAdd addObject:targetObject];
 			}
 
@@ -315,11 +315,11 @@
 					found = YES;
 					break;
 				}
-				[self logWithFormat:@"***** source value : %ld target value : %ld result : %d", sourceValue, targetValue, found];
+//				[self logWithFormat:@"***** source value : %ld target value : %ld result : %d", sourceValue, targetValue, found];
 			}
 			if(found == NO)
 			{
-				[self logWithFormat:@"***** found = NO so add %ld", sourceValue];
+//				[self logWithFormat:@"***** found = NO so add %ld", sourceValue];
 				[idToDelete addObject:sourceObject];
 			}
 
@@ -334,13 +334,13 @@
 			for ( i = 0; i < [idToAdd count]; i++)
 			{
 				// command to add id
-				[self logWithFormat:@"***** run appointment::add-delegation : key %@ , %@", key,[idToAdd objectAtIndex:i]];
+//				[self logWithFormat:@"***** run appointment::add-delegation : key %@ , %@", key,[idToAdd objectAtIndex:i]];
 				LSRunCommandV(_context,@"appointment",@"add-delegation",key,[idToAdd objectAtIndex:i],nil);
 			}
 		}
 		else
 		{
-			[self logWithFormat:@"***** NO IDS to add !!!"];
+//			[self logWithFormat:@"***** NO IDS to add !!!"];
 		}
 
 		if ( [idToDelete count] > 0 )
@@ -349,17 +349,17 @@
 			for ( i = 0; i < [idToDelete count]; i++)
 			{
 				// command to delete id
-				[self logWithFormat:@"***** run appointment::del-delegation : key %@ , %@", key,[idToDelete objectAtIndex:i]];
+//				[self logWithFormat:@"***** run appointment::del-delegation : key %@ , %@", key,[idToDelete objectAtIndex:i]];
 				LSRunCommandV(_context,@"appointment",@"del-delegation",key,[idToDelete objectAtIndex:i],nil);
 			}
 		}
 		else
 		{
-			[self logWithFormat:@"***** NO IDS to delete !!!"];
+//			[self logWithFormat:@"***** NO IDS to delete !!!"];
 		}
 	}
     
-	[self logWithFormat:@"***** (FIN) _executeInContext "];
+//	[self logWithFormat:@"***** (FIN) _executeInContext "];
 	[self setReturnValue:nil];
 }
 
