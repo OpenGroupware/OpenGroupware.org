@@ -31,7 +31,7 @@
 //
 //
 //**************************************************************************
-#define GLC_DEBUG 1
+// #define GLC_DEBUG 1
 
 @interface LSDelDelegationCommand : LSDBObjectBaseCommand
 {
@@ -95,7 +95,7 @@
 		idToDelete = nil;
 		companyID = nil;
 		reallyDelete = YES;	
-		[[[self databaseChannel] adaptorChannel] setDebugEnabled:YES];
+// 		[[[self databaseChannel] adaptorChannel] setDebugEnabled:YES];
 	}       
 	return self;
 }
@@ -133,8 +133,8 @@
 {
 	id anObject;
 
-	[self logWithFormat:@"**** _prepareForExecutionInContext"];
-	[[[self databaseChannel] adaptorChannel] setDebugEnabled:YES];
+//	[self logWithFormat:@"**** _prepareForExecutionInContext"];
+//	[[[self databaseChannel] adaptorChannel] setDebugEnabled:YES];
 
 	id login = [_ctx valueForKey:LSAccountKey];
 	NSNumber* aCompanyID = [login valueForKey:@"companyId"];
@@ -207,18 +207,18 @@
 //**************************************************************************
 - (void)_executeInContext:(id)_ctx
 {
-	[self logWithFormat:@"***** _executeInContext (DEBUT)"];
+//	[self logWithFormat:@"***** _executeInContext (DEBUT)"];
 	EODatabaseChannel	*dbChannel;
 	EOSQLQualifier		*dbQualifier;
 	NSException		*exception = nil;
 	NSMutableString		*format = [NSMutableString stringWithCapacity:128];
 
 	[format appendString:@"delegate_company_id = %@ AND company_id = %@ AND rdv_type='%@' "];
-	[self logWithFormat:@"##### _fetchRecord : [self getIDToDelete] = '%@'  ",[self getIDToDelete] ];
+//	[self logWithFormat:@"##### _fetchRecord : [self getIDToDelete] = '%@'  ",[self getIDToDelete] ];
 
 
   
-	[self logWithFormat:@"##### _fetchRecord : format = %@ ",format];
+//	[self logWithFormat:@"##### _fetchRecord : format = %@ ",format];
 
 	dbQualifier = [[EOSQLQualifier alloc] initWithEntity:[self entity]
 						qualifierFormat:format,
@@ -226,7 +226,7 @@
 						[self primaryKeyValue],
 						[self getRdvType]];
 
-	[self logWithFormat:@"##### _fetchRecord : dbQualifier = %@ ",dbQualifier];
+//	[self logWithFormat:@"##### _fetchRecord : dbQualifier = %@ ",dbQualifier];
 
 	dbChannel = [self databaseChannel];
 	EOAdaptorChannel *adaptorChannel = [[self databaseChannel] adaptorChannel];
@@ -239,7 +239,7 @@
 		[exception raise];
 	}
 
-	[self logWithFormat:@"***** _executeInContext (FIN)"];
+//	[self logWithFormat:@"***** _executeInContext (FIN)"];
 }
 
 //**************************************************************************
@@ -251,7 +251,7 @@
 
 -(void)takeValue:(id)_value forKey:(id)_key
 {
-	[self logWithFormat:@"***** takevalue : keys are %@ and values : %@",_key,_value ];
+//	[self logWithFormat:@"***** takevalue : keys are %@ and values : %@",_key,_value ];
 	if([_key isEqualToString:@"idConfidential"])
 	{
 		[self setRdvType:@"Confidential"];
@@ -305,7 +305,7 @@
 {
 	id value;
 	
-	[self logWithFormat:@"***** valueForKey : keys are %@ ",_key ];
+//	[self logWithFormat:@"***** valueForKey : keys are %@ ",_key ];
 
 	if([_key isEqualToString:@"companyId"])
 	{
@@ -334,7 +334,7 @@
 	else
 	{
 		value = [self->recordDict objectForKey:_key];
-		[self logWithFormat:@"***** valueForKey : key %@ => value : %@ ",_key, value ];
+//		[self logWithFormat:@"***** valueForKey : key %@ => value : %@ ",_key, value ];
 		return value;
 	}
 }
@@ -346,16 +346,16 @@
 	id                obj          = nil;
 	NSMutableString*  format = [NSMutableString stringWithCapacity:128];
 	[format appendString:@"delegate_company_id = %@ AND company_id = %@ AND rdv_type='%@' "];
-	[self logWithFormat:@"##### _fetchRecord : [self getIDToDelete] = '%@'  ",[self getIDToDelete] ];
+//	[self logWithFormat:@"##### _fetchRecord : [self getIDToDelete] = '%@'  ",[self getIDToDelete] ];
   
-	[self logWithFormat:@"##### _fetchRecord : format = %@ ",format];
+//	[self logWithFormat:@"##### _fetchRecord : format = %@ ",format];
 
 	dbQualifier = [[EOSQLQualifier alloc] initWithEntity:[self entity] qualifierFormat:format,
 					[self getIDToDelete],
 					[self primaryKeyValue],
 					[self getRdvType]];
 
-	[self logWithFormat:@"##### _fetchRecord : dbQualifier = %@ ",dbQualifier];
+//	[self logWithFormat:@"##### _fetchRecord : dbQualifier = %@ ",dbQualifier];
 
 	dbChannel = [self databaseChannel];
 	[dbChannel selectObjectsDescribedByQualifier:dbQualifier fetchOrder:nil];
@@ -370,11 +370,11 @@
 			[dbChannel cancelFetch];
 		}
 
-		[self logWithFormat:@"fetchRecord return YES"];
+//		[self logWithFormat:@"fetchRecord return YES"];
 		return YES;
 	}
 
-	[self logWithFormat:@"fetchRecord return NO"];
+//	[self logWithFormat:@"fetchRecord return NO"];
 	return NO;
 }
 
