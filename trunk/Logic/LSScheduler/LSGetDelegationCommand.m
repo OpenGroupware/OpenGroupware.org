@@ -28,7 +28,7 @@
 //
 //
 //**************************************************************************
-#define GLC_DEBUG 1
+// #define GLC_DEBUG 0
 
 @interface LSGetDelegationCommand : LSDBObjectBaseCommand
 {
@@ -205,7 +205,7 @@
 	[returnDictionary setObject:publicIDs forKey:@"idPublic"];
 
 	[self setReturnValue:returnDictionary];
-	[self logWithFormat:@"***** returnDictionary = %@",returnDictionary ];
+// 	[self logWithFormat:@"***** returnDictionary = %@",returnDictionary ];
 
 	[returnDictionary autorelease];
 	[sqlQualifier autorelease];
