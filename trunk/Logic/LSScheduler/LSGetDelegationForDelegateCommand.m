@@ -31,7 +31,7 @@
 //
 //
 //**************************************************************************
-#define GLC_DEBUG 1
+// #define GLC_DEBUG 0
 
 @interface LSGetDelegationForDelegateCommand : LSDBObjectBaseCommand
 {
@@ -73,7 +73,7 @@
 	if(self)
 	{
 		delegateID = nil;
-		[[[self databaseChannel] adaptorChannel] setDebugEnabled:YES];
+//		[[[self databaseChannel] adaptorChannel] setDebugEnabled:YES];
 	}
 	return self;
 }
@@ -119,7 +119,7 @@
 //**************************************************************************
 - (void)takeValue:(id)_value forKey:(id)_key
 {
-	[self logWithFormat:@"***** takeValue : keys are %@ and values : %@",_key,_value ];
+//	[self logWithFormat:@"***** takeValue : keys are %@ and values : %@",_key,_value ];
 	if([_key isEqualToString:@"withDelegateId"])
 	{
 		[self setDelegateId:_value];
@@ -137,10 +137,10 @@
 //**************************************************************************
 - (void)_prepareForExecutionInContext:(id)_ctx
 {
-	[self logWithFormat:@"***** _prepareForExecutionInContext (DEBUT)" ];
+//	[self logWithFormat:@"***** _prepareForExecutionInContext (DEBUT)" ];
 	// call to super
 	[super _prepareForExecutionInContext:_ctx];
-	[self logWithFormat:@"***** _prepareForExecutionInContext (FIN)" ];
+//	[self:@"***** _prepareForExecutionInContext (FIN)" ];
 }
 ///**************************************************************************
 // 
@@ -150,7 +150,7 @@
 //**************************************************************************
 - (void)_executeInContext:(id)_ctx
 {
-	[self logWithFormat:@"***** _executeInContext (DEBUT)" ];
+//	[self logWithFormat:@"***** _executeInContext (DEBUT)" ];
 	EOEntity *sqlEntity = nil;
 	EOAdaptorChannel *channel = nil;
 	EOSQLQualifier * sqlQualifier = nil;
@@ -173,7 +173,7 @@
 	// Entity
 
 	myModel = [self databaseModel];
-	[self logWithFormat:@"**** myModel : %@",myModel];
+//	[self logWithFormat:@"**** myModel : %@",myModel];
 
 	sqlEntity = [myModel entityNamed:[self entityName]];
 	if(sqlEntity == nil)
@@ -194,7 +194,7 @@
 	[sqlQualifier setUsesDistinct:YES];
 
 
-	[self logWithFormat:@"sqlQualifier = %@",sqlQualifier];
+//	[self logWithFormat:@"sqlQualifier = %@",sqlQualifier];
 
 	// Attributes
 
@@ -276,7 +276,7 @@
 	[returnDictionary setObject:publicIDs forKey:@"idPublic"];
 
 	[self setReturnValue:returnDictionary];
-	[self logWithFormat:@"***** returnDictionary = %@",returnDictionary ];
+//	[self logWithFormat:@"***** returnDictionary = %@",returnDictionary ];
 
 	[returnDictionary autorelease];
 	[sqlQualifier autorelease];
@@ -286,7 +286,7 @@
 	[publicIDs autorelease];
 	[attributes autorelease];
 
-	[self logWithFormat:@"***** _executeInContext (FIN)" ];
+//	[self logWithFormat:@"***** _executeInContext (FIN)" ];
 }
 
 @end
