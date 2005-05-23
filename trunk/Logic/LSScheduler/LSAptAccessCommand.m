@@ -37,7 +37,7 @@
 //
 //
 //**************************************************************************
-#define GLC_DEBUG 1
+// #define GLC_DEBUG 0
 
 @interface LSAptAccessCommand : LSDBObjectBaseCommand
 {
