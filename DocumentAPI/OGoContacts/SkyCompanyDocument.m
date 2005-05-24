@@ -55,17 +55,19 @@
   dataSource:(EODataSource *)_ds
   addAsObserver:(BOOL)_addAsObserver
 {
-  if ((self = [super init])) {
-    self->addAsObserver = _addAsObserver;
-    ASSIGN(self->globalID, _gid);
-    [self _registerForGID];
-    ASSIGN(self->dataSource, _ds);
-    {
-      EOFetchSpecification *fSpec = [_ds fetchSpecification];
-      NSArray              *attrs = [[fSpec hints] objectForKey:@"attributes"];
+  if ((self = [super init]) != nil) {
+    EOFetchSpecification *fSpec;
+    NSArray              *attrs;
 
-      ASSIGN(self->supportedAttributes, attrs);
-    }
+    self->addAsObserver = _addAsObserver;
+    self->globalID = [_gid retain];
+    [self _registerForGID];
+    
+    self->dataSource = [_ds retain];
+    
+    fSpec = [_ds fetchSpecification];
+    attrs = [[fSpec hints] objectForKey:@"attributes"];
+    self->supportedAttributes = [attrs copy];
   }
   return self;
 }
@@ -81,9 +83,8 @@
   if (self->addAsObserver)
     [[NSNotificationCenter defaultCenter] removeObserver:self];
   
-  [self->dataSource release];
-  [self->globalID   release];
-  
+  [self->dataSource    release];
+  [self->globalID      release];
   [self->addresses     release];
   [self->phones        release];
   [self->phoneTypes    release];
@@ -92,24 +93,18 @@
   [self->objectVersion release];
   [self->comment       release];
   [self->keywords      release];
-
-  [self->imageData release];
-  [self->imageType release];
-  [self->imagePath release];
-
-  [self->contact release];
-  [self->owner   release];
-
-  [self->ownerGID   release];
-  [self->contactGID release];
-
+  [self->imageData     release];
+  [self->imageType     release];
+  [self->imagePath     release];
+  [self->contact       release];
+  [self->owner         release];
+  [self->ownerGID      release];
+  [self->contactGID    release];
   [self->supportedAttributes release];
   [self->attributeMap        release];
-
   [self->bossName   release];
   [self->department release];
   [self->office     release];
-
   [super dealloc];
 }
 
@@ -118,7 +113,7 @@
 - (BOOL)isComplete {
   if ([self isValid] == NO)
     return NO;
-
+  
   if (self->supportedAttributes != nil)
     return NO;
 
@@ -152,7 +147,7 @@
 }
 
 - (void)setSupportedAttributes:(NSArray *)_attrs {
-  ASSIGN(self->supportedAttributes, _attrs);
+  ASSIGNCOPY(self->supportedAttributes, _attrs);
 }
 - (NSArray *)supportedAttributes {
   return self->supportedAttributes;
@@ -188,7 +183,7 @@
   [self->office     release]; self->office     = nil;
   
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  RELEASE(self->globalID);     self->globalID     = nil;  
+  [self->globalID release]; self->globalID     = nil;  
   self->status.isValid = NO;
 }
 - (void)invalidate:(NSNotification *)_notification {
@@ -874,27 +869,26 @@
     dict = [[NSMutableDictionary alloc] initWithCapacity:[types count]];
     e    = [types objectEnumerator];
 
-    while ((type = [e nextObject])) {
+    while ((type = [e nextObject]) != nil) {
       one = [[SkyAddressDocument alloc] initWithContext:[self context]];
       [one setType:type];
       [dict setObject:one forKey:type];
-      RELEASE(one);
+      [one release]; one = nil;
     }
   }
   else {
-    NSArray *all  = nil;
-
+    NSArray *all;
+    
     all  = [[self addressDataSource] fetchObjects];
     e    = [all objectEnumerator];
     dict = [[NSMutableDictionary alloc] initWithCapacity:[all count]];
-
-    while ((one = [e nextObject])) {
+    
+    while ((one = [e nextObject]) != nil)
       [dict setObject:one forKey:[one type]];
-    }
   }
-
-  RELEASE(self->addresses);
-  self->addresses = dict;   dict = nil;
+  
+  [self->addresses release];
+  self->addresses = dict; dict = nil;
 }
 
 - (EOKeyGlobalID *)_personGidFrom:(NSString *)_personId {

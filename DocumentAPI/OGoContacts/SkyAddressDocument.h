@@ -38,7 +38,6 @@
   country    -> string
   state      -> string
   type       -> string
-
 */
 
 @class SkyContactAddressDataSource;
@@ -56,7 +55,7 @@
   NSString *type;
   NSNumber *companyId;
 
-  // bitset-struct
+  // TODO: make it a bitset-struct
   struct {
     BOOL isEdited;
     BOOL isValid;
@@ -71,18 +70,20 @@
 }
 
 - (id)initWithObject:(id)_address
-            globalID:(EOGlobalID *)_gid
-          dataSource:(SkyContactAddressDataSource *)_ds
-       addAsObserver:(BOOL)_addAsObserver;
+  globalID:(EOGlobalID *)_gid
+  dataSource:(SkyContactAddressDataSource *)_ds
+  addAsObserver:(BOOL)_addAsObserver;
+
 - (id)initWithObject:(id)_address
-            globalID:(EOGlobalID *)_gid
-          dataSource:(SkyContactAddressDataSource *)_ds;
+  globalID:(EOGlobalID *)_gid
+  dataSource:(SkyContactAddressDataSource *)_ds;
+
 - (id)initWithObject:(id)_address
-          dataSource:(SkyContactAddressDataSource *)_ds;
+  dataSource:(SkyContactAddressDataSource *)_ds;
 - (id)initWithGlobalID:(EOGlobalID *)_gid
-            dataSource:(SkyContactAddressDataSource *)_ds;
-- (id)initWithGlobalID:(EOGlobalID *)_gid
-               context:(id)_context;
+  dataSource:(SkyContactAddressDataSource *)_ds;
+
+- (id)initWithGlobalID:(EOGlobalID *)_gid context:(id)_context;
 - (id)initWithContext:(id)_context;
 
 /* accessors */

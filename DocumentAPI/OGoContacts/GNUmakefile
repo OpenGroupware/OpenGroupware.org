@@ -69,10 +69,11 @@ OGoContacts_RESOURCE_FILES += Defaults.plist
 # test tools
 
 ifeq ($(tests),yes)
-TOOL_NAME = test_ogocds
+TOOL_NAME = test_ogocds test_ogocds_addrfetch
 endif
 
-test_ogocds_OBJC_FILES += test_ogocds.m
+test_ogocds_OBJC_FILES           += test_ogocds.m
+test_ogocds_addrfetch_OBJC_FILES += test_ogocds_addrfetch.m
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make

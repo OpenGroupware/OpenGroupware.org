@@ -21,8 +21,10 @@ OGoContacts_LIB_DIRS += \
 OGoContacts_BUNDLE_LIBS += -lOGoContacts -lOGoDocuments $(CORELIBS)
 
 
-test_ogocds_LIB_DIRS  += -L./$(GNUSTEP_OBJ_DIR)
-test_ogocds_TOOL_LIBS += -lOGoContacts -lOGoDocuments $(CORELIBS)
+test_ogocds_LIB_DIRS            += -L./$(GNUSTEP_OBJ_DIR)
+test_ogocds_TOOL_LIBS           += -lOGoContacts -lOGoDocuments $(CORELIBS)
+test_ogocds_addrfetch_LIB_DIRS  += -L./$(GNUSTEP_OBJ_DIR)
+test_ogocds_addrfetch_TOOL_LIBS += -lOGoContacts -lOGoDocuments $(CORELIBS)
 
 
 ADDITIONAL_CPP_FLAGS += -Wall

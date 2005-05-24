@@ -468,7 +468,8 @@ static BOOL doExplain = NO;
 
   if (attributes == nil)
     return nil;
-  else {
+
+  {
     NSEnumerator *attrEnum;
     NSArray      *attrs;
     NSString     *attr;
@@ -477,10 +478,10 @@ static BOOL doExplain = NO;
     attrEnum   = [attrs objectEnumerator];
     attributes = [NSMutableArray arrayWithCapacity:([attrs count] + 1)];
     
-    while ((attr = [attrEnum nextObject]))
+    while ((attr = [attrEnum nextObject]) != nil)
       [(NSMutableArray *)attributes addObject:[self _mapKeyFromDocToEO:attr]];
   }
-
+  
   if (![attributes containsObject:@"objectVersion"]) {
     attributes = [attributes arrayByAddingObject:@"objectVersion"];
     [fSpecAttrs addObject:@"objectVersion"];
@@ -508,7 +509,7 @@ static BOOL doExplain = NO;
     [hints release];
   }
   [fSpecAttrs release];
-
+  
   return attributes;
 }
 

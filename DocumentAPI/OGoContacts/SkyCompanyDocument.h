@@ -25,7 +25,7 @@
   addressTypes -> list of address   types
   phoneTypes   -> list of telephone types
 
-  accessing telephon attributes:
+  accessing telephone attributes:
     phoneType  -> phone number (string)
     phoneType+"_info ->phone info (string)
     
