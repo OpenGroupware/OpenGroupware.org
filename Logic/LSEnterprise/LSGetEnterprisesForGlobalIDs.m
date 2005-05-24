@@ -38,13 +38,9 @@
 }
 
 - (BOOL)_shouldFetchAttribute:(NSString *)_attr {
-  NSArray *attrs;
-
-  attrs = self->attributes;
-  
-  return (attrs == nil)
-    ? YES
-    : [attrs containsObject:_attr];
+  return (self->attributes == nil) 
+    ? YES 
+    : [self->attributes containsObject:_attr];
 }
 
 - (void)fetchAdditionalInfosForObjects:(NSArray *)_objs context:(id)_context {

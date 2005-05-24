@@ -47,6 +47,7 @@ LSAddress_OBJC_FILES = \
 	LSMemberToGroupAssignmentCommand.m 	\
 	LSQueryCompanyValues.m              	\
 	NSString+VCard.m			\
+	NSString+Phone.m			\
 
 LSAddress_RESOURCE_FILES += Defaults.plist Version
 

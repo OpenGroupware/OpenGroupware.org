@@ -1,3 +1,8 @@
+2005-05-24  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSNewTelephoneCommand.m: moved phone number parser to string category
+	  (v5.1.62)
+
 2005-05-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.61
