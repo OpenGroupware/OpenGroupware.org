@@ -66,3 +66,17 @@ Class Hierachy
           LSFetchTelsForPersonCommand
     _LSGetMembersForCompany_Cache
     _LSResolveAccountsCommand_Cache
+
+
+vCard Notes
+===========
+- some generation stuff is explain in the formatter header files
+- addresses:
+  - Evolution 2.2.2 shows these types (hardcoded, no settings):
+    - work, home, other
+    - no 'pref' is set
+  - Kontact 3.4 allows arbitary addresses, but shows these per default:
+    - work, home
+    - it also allows for 'pref' to be set
+  - vCard ADR has no name1,name2,name3 in addresses ...
+    - LABEL has

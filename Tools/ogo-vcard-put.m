@@ -89,8 +89,19 @@
   NSLog(@"    import %@", [_vCard valueForKey:@"uid"]);
   result = [_ctx runCommand:@"company::set-vcard",
 		 @"vCardObject", _vCard, @"sourceLookup", @"YES", nil];
-  NSLog(@"    added/updated record: %@", [result valueForKey:@"companyId"]);
   
+  /* commit transaction */
+  
+  if ([_ctx isTransactionInProgress]) {
+    if (![_ctx commit]) {
+      NSLog(@"ERROR: failed to commit transaction!");
+      [_ctx rollback];
+      return 3;
+    }
+  }
+
+  /* log */
+  NSLog(@"    added/updated record: %@", [result valueForKey:@"companyId"]);
   return 0;
 }
 

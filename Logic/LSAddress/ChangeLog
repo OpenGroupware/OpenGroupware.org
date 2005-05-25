@@ -1,5 +1,15 @@
 2005-05-25  Helge Hess  <helge.hess@skyrix.com>
 
+	* v5.1.64
+	
+	* LSSetVCardCommand.m: finished address support in vCard set command
+	
+	* LSVCardAddressFormatter.m: added a small hack to retrieve pobox/ext.
+	  into name2/name3 fields
+
+	* Defaults.plist: changed default vCard/type mappings to better match
+	  Evolution and Kontact
+
 	* v5.1.63
 	
 	* LSSetVCardCommand.m: improved mapping of array values - avoid NSNull

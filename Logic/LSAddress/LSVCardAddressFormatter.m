@@ -52,14 +52,31 @@ static NSDictionary *addressMapping = nil;
 
 - (NSString *)stringForObjectValue:(id)address {
   NSMutableString *ms;
+  NSString *pobox, *extadd, *street, *city, *zip, *country, *state;
+  NSString *tmp;
   id type;
-  NSString *street, *city, *zip, *country, *state;
   
+  pobox   = nil;
+  extadd  = nil;
   street  = [address valueForKey:@"street"];
   city    = [address valueForKey:@"city"];
   zip     = [address valueForKey:@"zip"];
   country = [address valueForKey:@"country"];
   state   = [address valueForKey:@"state"];
+
+  // TODO: add fields for the two in the DB (OGo 1.1)
+  if ([(tmp = [address valueForKey:@"name2"]) isNotNull]) {
+    if ([tmp hasPrefix:@"pobox:"])
+      pobox = [tmp substringFromIndex:6];
+    if ([tmp hasPrefix:@"extadd:"])
+      pobox = [tmp substringFromIndex:7];
+  }
+  if ([(tmp = [address valueForKey:@"name3"]) isNotNull]) {
+    if ([tmp hasPrefix:@"pobox:"])
+      pobox = [tmp substringFromIndex:6];
+    if ([tmp hasPrefix:@"extadd:"])
+      pobox = [tmp substringFromIndex:7];
+  }
   
   if (!([street length] != 0 || [city length] != 0 || [state length] != 0 ||
         [zip length] != 0 || [country length] != 0 ))
@@ -83,7 +100,8 @@ static NSDictionary *addressMapping = nil;
   if ([self generateTag] || [self generateType]) 
     [ms appendString:@":"];
   
-  [ms appendString:@";;"]; // no post office box; no extended address;
+  [self _appendTextValue:pobox   toVCard:ms]; [ms appendString:@";"];
+  [self _appendTextValue:extadd  toVCard:ms]; [ms appendString:@";"];
   [self _appendTextValue:street  toVCard:ms]; [ms appendString:@";"];
   [self _appendTextValue:city    toVCard:ms]; [ms appendString:@";"];
   [self _appendTextValue:state   toVCard:ms]; [ms appendString:@";"];

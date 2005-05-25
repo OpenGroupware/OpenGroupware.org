@@ -24,6 +24,14 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
+/*
+  LSDBObjectGetCommand
+
+  TODO: document
+  
+  Note: this is actually a search command, not a simple "get one EO".
+*/
+
 @class NSNumber, NSString;
 @class EOSQLQualifier;
 

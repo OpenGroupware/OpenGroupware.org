@@ -228,10 +228,22 @@ static NSDictionary *addressMapping = nil;
     id address;
     
     address = [addrs objectAtIndex:i];
+
     type = [address valueForKey:@"type"];
-    type = ([type isNotNull] && [type hasPrefix:@"V:"])
-      ? [type substringFromIndex:2]
-      : [addressMapping valueForKey:type];
+    
+    if ([type isNotNull] && [type hasPrefix:@"V:"]) {
+      /* a vCard specific type */
+      type = [type substringFromIndex:2];
+      
+      // remove counter (eg V:1work, V:2work)
+      if ([type length] > 0 && isdigit([type characterAtIndex:0]))
+        type = [type substringFromIndex:1];
+      
+      if ([type hasSuffix:@"untyped"]) /* imported VCF had no ADR type */
+        type = nil;
+    }
+    else
+      type = [addressMapping valueForKey:type];
     
     s = [[LSVCardAddressFormatter formatter] stringForObjectValue:address];
     if (s != nil) {

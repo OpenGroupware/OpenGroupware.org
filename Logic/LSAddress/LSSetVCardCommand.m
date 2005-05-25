@@ -63,8 +63,10 @@ extern NSString *LSVUidPrefix;
 
 @implementation LSSetVCardCommand
 
-static NSString *skyrixId = nil;
-static Class    NGVCardClass = Nil;
+static NSString     *skyrixId         = nil;
+static Class        NGVCardClass      = Nil;
+static NSDictionary *personRevMapping = nil;
+static NSDictionary *enterpriseRevMapping = nil;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -75,6 +77,11 @@ static Class    NGVCardClass = Nil;
   
   if ((NGVCardClass = NSClassFromString(@"NGVCard")) == Nil)
     NSLog(@"Note: NGVCard class not available, vCard parsing not available.");
+  
+  personRevMapping = 
+    [[ud dictionaryForKey:@"LSVCard_PersonAddressRevMapping"]  copy];
+  enterpriseRevMapping = 
+    [[ud dictionaryForKey:@"LSVCard_EnterpriseAddressRevMapping"]  copy];
 }
 
 - (void)dealloc {
@@ -337,8 +344,8 @@ static Class    NGVCardClass = Nil;
   if ((tmp = [[_vc valueForKey:@"vClass"] stringValue]) == nil)
     return;
   
-  // TODO: first check permissions!
-
+  // TODO: first check permissions! (should be done by the set command?)
+  
   tmp = [tmp stringValue];
   if ([tmp caseInsensitiveCompare:@"private"] == NSOrderedSame)
     [self->changeset 
@@ -444,6 +451,184 @@ static Class    NGVCardClass = Nil;
 
 // TODO: label, email, adr, tel
 
+- (NSString *)findPrimaryTypeInArray:(NSArray *)_types {
+  if (![_types isNotNull] || [_types count] == 0) /* no types => no primary */
+    return nil;
+  
+  if ([_types count] == 1)
+    return [_types lastObject];
+  
+  if ([_types count] == 2) {
+    if ([[_types objectAtIndex:0] isEqualToString:@"PREF"])
+      return [_types objectAtIndex:1];
+    if ([[_types objectAtIndex:1] isEqualToString:@"PREF"])
+      return [_types objectAtIndex:0];
+  }
+  
+  /* more than one type => no primary */
+  return nil;
+}
+
+- (void)_processVCardAddress:(id)_vadr mappedToType:(NSString *)_type
+  intoContact:(id)_contact inContext:(id)_context
+{
+  NSMutableDictionary *lChangeSet;
+  NSString *tmp;
+  id addressEO;
+  
+  [self debugWithFormat:@"save under type %@: %@", _type, _vadr];
+  
+  /* fetch EO object to set the new values */
+  
+  // TODO: this performs a case insensitive match on the type.
+  addressEO = [_context runCommand:@"address::get",
+                        @"operator",   @"AND",
+                        @"comparator", @"EQUAL",
+                        @"type",       _type,
+                        @"companyId",  [_contact valueForKey:@"companyId"],
+                        nil];
+  if ([addressEO isKindOfClass:[NSArray class]])
+    addressEO = ([addressEO count] > 0) ? [addressEO objectAtIndex:0] : nil;
+
+  /* make changeset */
+  
+  lChangeSet = [NSMutableDictionary dictionaryWithCapacity:8];
+  [lChangeSet takeValue:[NSNumber numberWithBool:NO] forKey:@"shouldLog"];
+
+  [lChangeSet takeValue:[_vadr valueForKey:@"street"]   forKey:@"street"];
+  [lChangeSet takeValue:[_vadr valueForKey:@"locality"] forKey:@"city"];
+  [lChangeSet takeValue:[_vadr valueForKey:@"region"]   forKey:@"state"];
+  [lChangeSet takeValue:[_vadr valueForKey:@"pcode"]    forKey:@"zip"];
+  [lChangeSet takeValue:[_vadr valueForKey:@"country"]  forKey:@"country"];
+  
+  // TODO: add fields for the two in the DB (OGo 1.1)
+  if ([(tmp = [_vadr valueForKey:@"pobox"]) isNotNull]) {
+    tmp = [@"pobox:" stringByAppendingString:tmp];
+    [lChangeSet takeValue:tmp forKey:@"name2"];
+  }
+  if ([(tmp = [_vadr valueForKey:@"extadd"]) isNotNull]) {
+    tmp = [@"extadd:" stringByAppendingString:tmp];
+    [lChangeSet takeValue:tmp forKey:@"name3"];
+  }
+  
+  /* check whether the address type already exists */
+  
+  if (![addressEO isNotNull]) {
+    [lChangeSet takeValue:[_contact valueForKey:@"companyId"]
+                forKey:@"companyId"];
+    [lChangeSet takeValue:_type forKey:@"type"];
+    //[lChangeSet setObject:@"vCard address import" forKey:@"logText"];
+    addressEO = [_context runCommand:@"address::new" arguments:lChangeSet];
+  }
+  else {
+    [lChangeSet takeValue:[addressEO valueForKey:@"addressId"]
+                forKey:@"addressId"];
+    //[lChangeSet setObject:@"vCard address update" forKey:@"logText"];
+    addressEO = [_context runCommand:@"address::set" arguments:lChangeSet];
+  }
+}
+
+- (NSString *)mapTypes:(NSArray *)atypes usingMapping:(NSDictionary *)mapping
+  andUniquer:(NSMutableSet *)usedTypes
+{
+  NSString *primaryType, *mappedType;
+  NSString *vct;
+  short i;
+  
+  if ((primaryType = [self findPrimaryTypeInArray:atypes]) != nil) {
+    if ((mappedType = [mapping valueForKey:primaryType]) != nil) {
+      /* check for multiple addresses of the same type (forbidden in OGo) */
+      if (![usedTypes containsObject:mappedType])
+        return mappedType;
+      
+      /* already used (eg two 'work' addresses) */
+    }
+  }
+    
+  /* create custom types */
+    
+  // normalize
+  vct = [[atypes sortedArrayUsingSelector:@selector(compare:)]
+                 componentsJoinedByString:@","];
+  vct = [vct uppercaseString];
+  
+  if ([vct length] == 0) vct = @"untyped";
+      
+  mappedType = [@"V:" stringByAppendingString:vct];
+  if (![usedTypes containsObject:mappedType])
+    /* first custom type of this vtype */
+    return mappedType;
+  
+  /* ok, this type was already added, need a sequence ... */
+        
+  mappedType = nil;
+  for (i = 1; i < 10 && mappedType == nil; i++) {
+          mappedType = [@"V:" stringByAppendingFormat:@"%i%@", i, vct];
+          if ([usedTypes containsObject:mappedType])
+            mappedType = nil;
+  }
+  return mappedType;
+}
+
+- (void)_processAddressesFromVCard:(id)_vcard intoContact:(id)_contact
+  inContext:(id)_context
+{
+  /*
+    Note: we do not try to be smart about typeless addresses in combination
+          with unused addresses in OGo. We always treat such as custom addrs.
+  */
+  NSMutableSet *usedTypes;
+  NSEnumerator *adrs;
+  NSDictionary *mapping;
+  NSString     *k;
+  id adr; // really: NGVCardAddress object
+
+  if (![_contact isNotNull]) {
+    [self logWithFormat:@"ERROR(%s): got no contact!", __PRETTY_FUNCTION__];
+    return;
+  }
+
+  /* find type mapping table */
+  
+  k = [[_contact valueForKey:@"globalID"] entityName];
+  if ([k isEqualToString:@"Person"])
+    mapping = personRevMapping;
+  else if ([k isEqualToString:@"Enterprise"])
+    mapping = enterpriseRevMapping;
+  else {
+    [self logWithFormat:@"Note: not processing vCard ADR's for %@ objects.",k];
+    return;
+  }
+  
+  /* walk over all addresses and map */
+  
+  usedTypes = [NSMutableSet setWithCapacity:8];
+  
+  adrs = [[_vcard valueForKey:@"adr"] objectEnumerator];
+  while ((adr = [adrs nextObject]) != nil) {
+    NSArray  *atypes;
+    NSString *mappedType;
+    
+    atypes     = [adr valueForKey:@"types"];
+    mappedType = [self mapTypes:atypes 
+                       usingMapping:mapping andUniquer:usedTypes];
+    if (mappedType == nil) {
+      [self logWithFormat:
+              @"Note: did not store ADR, all slots are filled: %@", atypes];
+      continue;
+    }
+    
+    /* process */
+    
+    [self _processVCardAddress:adr mappedToType:mappedType
+          intoContact:_contact inContext:_context];
+    
+    /* mark type as consumed */
+    if (mappedType != nil)
+      [usedTypes addObject:mappedType];
+  }
+}
+
 - (void)_executeInContext:(id)_context {
   EOKeyGlobalID *lgid;
   NSMutableDictionary  *lChangeSet = nil;
@@ -502,7 +687,7 @@ static Class    NGVCardClass = Nil;
   }
   
   [self assert:(lChangeSet != nil) reason:@"got no master changeset!"];
-  [self logWithFormat:@"lChangeSet: %@", lChangeSet];
+  [self debugWithFormat:@"lChangeSet: %@", lChangeSet];
   
   /* apply main change */
   
@@ -540,10 +725,17 @@ static Class    NGVCardClass = Nil;
       eo = ([eo count] > 0) ? [eo lastObject] : nil;
     [self setReturnValue:eo];
   }
-
+  
   /* apply telephone, address */
-
-  // [self logWithFormat:@"EO: %@", eo];
+  
+  [self _processAddressesFromVCard:self->vCardObject intoContact:eo
+        inContext:_context];
+  
+  // TODO: phone (in creation step?)
+  
+#if 0
+  [self logWithFormat:@"EO: %@", eo];
+#endif
 }
 
 /* accessors */

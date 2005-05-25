@@ -177,16 +177,29 @@
   };
   LSVCard = ("firstname", "middlename", "name", "tel1.number", "tel2.number",
              "fax.number", "url");
-
+  
   // ADR TYPES: dom, intl, postal, parcel, home, work, pref,
   // @see rfc 2426
   LSVCard_AddressMapping = {
-    "location" = "dom";
-    "private"  = "home";
-    "mailing"  = "pref,postal,intl,parcel";   // TODO: two 'pref' addrs?
-    "ship"     = "pref,postal,intl,work,dom";
-    "bill"     = "intl,parcel";
+    // persons: (mapping which is ok for Kontact 3.4 and Evo 2.2.2)
+    "location" = "WORK";
+    "private"  = "HOME";
+    "mailing"  = "OTHER";
+    // enterprises:
+    "bill"     = "WORK";
+    "ship"     = "OTHER";
   };
+  LSVCard_PersonAddressRevMapping = {
+    work  = location;
+    home  = private;
+    other = mailing;
+  };
+  LSVCard_EnterpriseAddressRevMapping = {
+    work  = bill;
+    other = ship;
+    // 'home' considered custom for enterprises
+  };
+
   // TEL TYPES: home, msg, work, pref, fax, cell, page, bbs, modem, isdn, pcs,
   //            voice, video, car
   // @see rfc 2426
