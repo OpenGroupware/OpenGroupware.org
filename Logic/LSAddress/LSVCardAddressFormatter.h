@@ -24,6 +24,20 @@
 
 #import <Foundation/NSFormatter.h>
 
+/*
+  LSVCardAddressFormatter
+  
+  Converts an address object with the KVC string keys
+  
+    street, city, zip, country, state
+    
+  into a vCard string value to be used with the ADR vCard property which is:
+
+    pobox;extaddr;street;city;state;zip;country
+  
+  Note: OGo addresses are also generated as vCard labels (LABEL properties).
+*/
+
 @interface LSVCardAddressFormatter : NSFormatter
 + (id)formatter;
 @end

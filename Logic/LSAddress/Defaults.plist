@@ -183,7 +183,7 @@
   LSVCard_AddressMapping = {
     "location" = "dom";
     "private"  = "home";
-    "mailing"  = "pref,postal,intl,parcel";
+    "mailing"  = "pref,postal,intl,parcel";   // TODO: two 'pref' addrs?
     "ship"     = "pref,postal,intl,work,dom";
     "bill"     = "intl,parcel";
   };

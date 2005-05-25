@@ -24,6 +24,26 @@
 
 #import <Foundation/NSFormatter.h>
 
+/*
+  LSVCardLabelFormatter
+  
+  Converts an address object with the KVC string keys
+  
+    name1, name2, name3, street, city, zip, country, state
+    
+  into a vCard string value to be used with the LABEL vCard property which is
+  an arbitary string value. We generate this format:
+    name1\n
+    name2\n
+    name3\n
+    street\n
+    zip city\n
+    country
+  The "\n" are physical backslashes and generated this way (not as ASCII 10).
+  
+  Note: OGo addresses are also generated as vCard labels (ADR properties).
+*/
+
 @interface LSVCardLabelFormatter : NSFormatter
 + (id)formatter;
 @end

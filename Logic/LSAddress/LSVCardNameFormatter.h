@@ -24,6 +24,17 @@
 
 #import <Foundation/NSFormatter.h>
 
+/*
+  LSVCardFormattedNameFormatter
+  
+  This generates a value suitable for use with the vCard "FN" property. The
+  format is:
+  
+    FN:givenname lastname
+  
+  And its 'clever' about missing values.
+*/
+
 @interface LSVCardFormattedNameFormatter : NSFormatter
 
 + (id)formatter;
@@ -31,6 +42,23 @@
 - (NSString *)fnForPerson:(id)_person;
 
 @end
+
+/*
+  LSVCardNameFormatter
+  
+  This generates a value suitable for use with the vCard "N" property. The
+  format is:
+    N:lastname;givenname;additional names;honorific prefixes;
+       honorifix suffixes
+
+  the KVC keys used from the object are:
+    name
+    firstname
+    middlename
+    degree
+    other_title1
+    other_title2
+*/
 
 @interface LSVCardNameFormatter : LSVCardFormattedNameFormatter
 @end

@@ -166,8 +166,26 @@ static Class    NGVCardClass = Nil;
   
   /* we get vCard values which we need to map */
   if ([_value isKindOfClass:[NSArray class]]) {
-    _value = [[_value valueForKey:@"stringValue"]
-	       componentsJoinedByString:@","];
+    NSMutableString *ms;
+    unsigned i, count;
+
+    ms = nil;
+    for (i = 0, count = [_value count]; i < count; i++) {
+      /* Note: filters out null and empty values */
+      id tmp;
+      
+      tmp = [_value objectAtIndex:i];
+      if (![tmp isNotNull]) continue;
+      tmp = [tmp stringValue];
+      if ([tmp length] == 0) continue;
+      
+      if (ms == nil)
+        ms = [NSMutableString stringWithCapacity:32];
+      else
+        [ms appendString:@","];
+      [ms appendString:tmp];
+    }
+    _value = (ms != nil) ? ms : (id)[EONull null];
   }
   else if (![_value isNotNull]) {
     if (_value == nil) 
@@ -214,11 +232,20 @@ static Class    NGVCardClass = Nil;
 /* main entity changeset */
 
 - (void)appendIdentity:(id)_vc {
-  id tmp;
+  NSString *tmp;
   
   if ((tmp = [_vc valueForKey:@"uid"]) != nil) {
-    [self mapValue:[LSVUidPrefix stringByAppendingString:[tmp stringValue]] 
-	  to:@"sourceUrl"];
+    if ([tmp hasPrefix:LSVUidPrefix]) /* keep UID-prefix URLs as is */
+      [self mapValue:tmp to:@"sourceUrl"];
+    else if ([tmp hasPrefix:skyrixId]) /* native "source_url", remove */
+      [self mapValue:[NSNull null] to:@"sourceUrl"];
+    else if ([tmp rangeOfString:@"://"].length > 0) /* reuse URLs as-is */
+      [self mapValue:tmp to:@"sourceUrl"];
+    else {
+      /* prefix non-URL UIDs */
+      [self mapValue:[LSVUidPrefix stringByAppendingString:[tmp stringValue]] 
+            to:@"sourceUrl"];
+    }
   }
   else if ((tmp = [_vc valueForKey:@"source"]) != nil)
     [self mapValue:[tmp stringValue] to:@"sourceUrl"];

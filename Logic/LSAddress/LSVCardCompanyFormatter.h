@@ -34,6 +34,32 @@
 
   All of the formatters expect the EO object (or something with the same KVC
   API). The latter two also need prefetched addresses in the 'addresses' key!
+
+  Identifier generation (UID and SOURCE properties):
+    - we have a source_url
+      - if the value is not a URL (no ://)
+        => use value as UID, create the special UID-URI prefix for SOURCE
+      - if the value is a URL
+        - if the URL is the special UID-URI
+          => use UID from URI as UID and URI as SOURCE
+        - other URL
+          => use URL as UID and SOURCE (same value)
+    - we have no source_url
+      => use OGo URL as UID and SOURCE (same value)
+
+  Phone generation:
+    TODO
+
+  Address generation:
+    for each address
+    - get the vCard type
+      - if OGo type starts with "V:", use the remainder as the vCard type
+        - beware: OGo internally needs uniqued types per contact! you cannot
+                  have "two" private addresses
+      - otherwise use LSVCard_AddressMapping
+      - if no type is given, generate none
+    - generate the ADR   property with the type, use formatter for value
+    - generate the LABEL property with the type, use formatter for value
 */
 
 @class NSString, NSMutableString;

@@ -73,7 +73,7 @@
   tmp  = [_person valueForKey:@"name"];
   tmp2 = [_person valueForKey:@"firstname"];
   fn   = [self fnForPerson:_person];
-
+  
   // lastname
   [self _appendTextValue:[tmp isNotNull] ? tmp : fn toVCard:ms];
   [ms appendString:@";"];

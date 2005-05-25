@@ -1,3 +1,17 @@
+2005-05-25  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.63
+	
+	* LSSetVCardCommand.m: improved mapping of array values - avoid NSNull
+	  being generated as <null> (eg freebusyUrl), improved handling of
+	  source-urls
+	  
+	* LSVCardCompanyFormatter.m: generate full LSAddress version into vCard
+	  product-id, added support for special V: values in OGo addresses to
+	  store arbitary vCard types
+        
+	* LSVCardAddressFormatter.m: removed unused name[1-3] local variables
+
 2005-05-24  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSNewTelephoneCommand.m: moved phone number parser to string category

@@ -53,11 +53,8 @@ static NSDictionary *addressMapping = nil;
 - (NSString *)stringForObjectValue:(id)address {
   NSMutableString *ms;
   id type;
-  NSString *name1, *name2, *name3, *street, *city, *zip, *country, *state;
+  NSString *street, *city, *zip, *country, *state;
   
-  name1   = [address valueForKey:@"name1"];
-  name2   = [address valueForKey:@"name2"];
-  name3   = [address valueForKey:@"name3"];
   street  = [address valueForKey:@"street"];
   city    = [address valueForKey:@"city"];
   zip     = [address valueForKey:@"zip"];
@@ -74,10 +71,10 @@ static NSDictionary *addressMapping = nil;
   
   ms = [NSMutableString stringWithCapacity:64];
   
-  if ([self generateTag]) 
+  if ([self generateTag])  /* currently disabled */
     [ms appendString:@"ADR"];
   
-  if ([self generateType]) {
+  if ([self generateType]) { /* currently disabled */
     type = [address valueForKey:@"type"];
     type = [addressMapping valueForKey:type];
     

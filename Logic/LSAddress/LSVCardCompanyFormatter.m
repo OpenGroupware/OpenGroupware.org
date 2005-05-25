@@ -54,7 +54,8 @@ static NSDictionary *addressMapping = nil;
 - (void)appendPreambleToString:(NSMutableString *)_ms {
   [_ms appendString:@"BEGIN:vCard\r\n"];
   [_ms appendString:@"VERSION:3.0\r\n"];
-  [_ms appendString:@"PRODID:-//OpenGroupware.org//LSAddress v5.1.0\r\n"];
+  [_ms appendFormat:@"PRODID:-//OpenGroupware.org//LSAddress v%i.%i.%i\r\n",
+         OGO_MAJOR_VERSION, OGO_MINOR_VERSION, OGO_SUBMINOR_VERSION];
   [_ms appendString:@"PROFILE:vCard\r\n"];
 }
 - (void)appendPostambleToString:(NSMutableString *)_ms {
@@ -223,12 +224,14 @@ static NSDictionary *addressMapping = nil;
   
   for (i = 0, cnt = [addrs count]; i < cnt; i++) {
     NSString *s;
+    NSString *type;
     id address;
-    id type;
     
     address = [addrs objectAtIndex:i];
     type = [address valueForKey:@"type"];
-    type = [addressMapping valueForKey:type];
+    type = ([type isNotNull] && [type hasPrefix:@"V:"])
+      ? [type substringFromIndex:2]
+      : [addressMapping valueForKey:type];
     
     s = [[LSVCardAddressFormatter formatter] stringForObjectValue:address];
     if (s != nil) {
@@ -387,8 +390,10 @@ static NSDictionary *addressMapping = nil;
   // TODO: add support for ZideStore CalURLs? (CALURI:)
   // TODO: add support for ZideStore FreeBusy URLs?
   // FBURL
-  if ([(tmp = [_person valueForKey:@"freebusyUrl"]) isNotNull])
+  if ([(tmp = [_person valueForKey:@"freebusyUrl"]) isNotNull]) {
+    [self logWithFormat:@"GEN FB: %@ (%@)", tmp, [tmp class]];
     [self _appendName:@"FBURL" andValue:tmp toVCard:_vCard];
+  }
 }
 
 - (void)appendContentForObject:(id)_comp toString:(NSMutableString *)_ms {

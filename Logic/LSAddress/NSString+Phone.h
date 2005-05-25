@@ -24,7 +24,9 @@
 
 #import <Foundation/NSString.h>
 
-/* 
+/*
+  Note: used to fill the 'real_number' column in the database.
+
    parses a number and trys to build a unique number
  
    +<country>-<city>-<number>{-<extension>}
