@@ -110,12 +110,12 @@ static BOOL kontactGroupDAV = YES;
 }
 
 - (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
-  WEClientCapabilities *cc;
-  
   if ([_key isEqualToString:@"getIDsAndVersions"])
     return [self getIDsAndVersionsAction:_ctx];
   
   if (kontactGroupDAV) {
+    WEClientCapabilities *cc;
+  
     cc = [[_ctx request] clientCapabilities];
     if ([[cc userAgentType] isEqualToString:@"Konqueror"]) {
       if ([cc majorVersion] == 3 && [cc minorVersion] == 4) {

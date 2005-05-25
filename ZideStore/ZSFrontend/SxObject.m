@@ -28,6 +28,15 @@
 
 @implementation SxObject
 
+static BOOL kontactGroupDAV = YES;
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  kontactGroupDAV = 
+    [ud boolForKey:@"ZSDisableKontact34GroupDAVHack"] ? NO : YES;
+}
+
 - (id)initWithEO:(id)_eo inFolder:(id)_folder {
   if ((self = [super init])) {
     self->nameInContainer = 
@@ -135,7 +144,8 @@
   if (self->eo)
     return self->eo;
   
-  if (_ctx == nil) _ctx = [[WOApplication application] context];
+  if (_ctx == nil) 
+    _ctx = [(WOApplication *)[WOApplication application] context];
   
   if ((ctx = [self commandContextInContext:_ctx]) == nil) {
     [self logWithFormat:@"missing command context !"];
@@ -180,9 +190,10 @@
 }
 
 - (id)object {
-  return self->eo
+  return (self->eo != nil)
     ? self->eo
-    : [self objectInContext:[[WOApplication application] context]];
+    : [self objectInContext:
+	      [(WOApplication *)[WOApplication application] context]];
 }
 
 /* attribute mappings */
@@ -199,7 +210,8 @@
 /* common DAV attributes */
 
 - (id)davUid {
-  return [self baseURLInContext:[[WOApplication application] context]];
+  return [self baseURLInContext:
+		 [(WOApplication *)[WOApplication application] context]];
 }
 - (NSString *)davResourceType {
   return @"";
@@ -208,7 +220,7 @@
   return NO;
 }
 
-- (NSString *)davEntityTag {
+- (id)davEntityTag {
   id obj;
   
   if ((obj = [self object]) == nil)
@@ -406,9 +418,27 @@
           [etags componentsJoinedByString:@","]];
     return nil; /* one etag matches, so continue with request */
   }
+
+  /* hack for Kontact 3.4 */
+  
+  if (kontactGroupDAV) {
+    WEClientCapabilities *cc;
+    
+    cc = [[_ctx request] clientCapabilities];
+    if ([[cc userAgentType] isEqualToString:@"Konqueror"]) {
+      if ([cc majorVersion] == 3 && [cc minorVersion] == 4) {
+	[self logWithFormat:
+		@"WARNING: applying Kontact 3.4 GroupDAV hack"
+		@" - etag check is disabled!"
+		@" (can be enabled using 'ZSDisableKontact34GroupDAVHack')"];
+	return nil;
+      }
+    }
+  }
   
   // TODO: we might want to return the davEntityTag in the response
-  [self debugWithFormat:@"etag '%@' does not match: %@", etag, etags];
+  [self debugWithFormat:@"etag '%@' does not match: %@", etag, 
+	[etags componentsJoinedByString:@","]];
   return [NSException exceptionWithHTTPStatus:412 /* Precondition Failed */
 		      reason:@"Precondition Failed"];
 }
@@ -526,7 +556,7 @@
   
   return error;
 }
-- (id)DELETEAction:(WOContext *)_ctx {
+- (id)DELETEAction:(id)_ctx {
   NSException *error;
   id obj;
   

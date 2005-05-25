@@ -354,13 +354,16 @@ static BOOL embedViewURL             = NO;
   
   /* set location header (TODO: DUP in SxAddress) */
   if ([(tmp = [self->eo valueForKey:@"dateId"]) isNotNull]) {
-    url = [[self container] baseURLInContext:_ctx];
-    if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
+    if (![[tmp stringValue] isEqualToString:[self nameInContainer]]) {
+      /* only set 'location' if it actually changed (on creation) */
+      url = [[self container] baseURLInContext:_ctx];
+      if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
     
-    tmp = [tmp stringValue];
-    tmp = [tmp stringByAppendingString:@".ics"];
+      tmp = [tmp stringValue];
+      tmp = [tmp stringByAppendingString:@".ics"];
     
-    [r setHeader:[url stringByAppendingString:tmp] forKey:@"location"];
+      [r setHeader:[url stringByAppendingString:tmp] forKey:@"location"];
+    }
   }
   else {
     [self logWithFormat:
@@ -650,7 +653,7 @@ static BOOL embedViewURL             = NO;
 
 - (id)context {
   // hack
-  return [[WOApplication application] context];
+  return [(WOApplication *)[WOApplication application] context];
 }
 
 - (NSString *)hackVEvent:(NSString *)_vevent {
@@ -671,7 +674,8 @@ static BOOL embedViewURL             = NO;
   [s appendString:@";X-LABEL=OGo"];
   [s appendString:@":"];
   [s appendString:
-       [[self baseURLInContext:[[WOApplication application] context]]
+       [[self baseURLInContext:
+		[(WOApplication *)[WOApplication application] context]]
 	      stringByAppendingString:@"/view"]];
   [s appendString:@"\r\n"];
   
@@ -731,7 +735,7 @@ static BOOL embedViewURL             = NO;
   return [am renderAppointmentAsMIME:obj timezone:nil];
 }
 
-- (id)GETAction:(id)_ctx {
+- (id)GETAction:(WOContext *)_ctx {
   WOResponse *r;
   WORequest  *rq;
   id obj;

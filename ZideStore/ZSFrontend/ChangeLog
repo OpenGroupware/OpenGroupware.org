@@ -1,3 +1,9 @@
+2005-05-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxObject.m: added a hack to disable etag consistency check when
+	  ZideStore is accessed using Kontact 3.4. This can be disabled using
+	  the 'ZSDisableKontact34GroupDAVHack' default. (v1.3.109)
+
 2005-05-17  Helge Hess  <helge.hess@skyrix.com>
 
 	* SxObject.m: lookup entity/pkey/CRUD methods using SoClass (v1.3.108)

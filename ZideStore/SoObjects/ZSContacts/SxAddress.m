@@ -100,7 +100,7 @@ static BOOL debugEO = NO;
   return [[self class] entityName];
 }
 - (NSString *)updateCommandName {
-  return [[self class] updateCommandName];
+  return [[self class] setCommandName];
 }
 - (NSString *)newCommandName { // should be a class method?
   return [[self class] newCommandName];
@@ -698,13 +698,16 @@ static BOOL debugEO = NO;
   
   /* set location header (TODO: DUP in SxAppointment) */
   if ([(tmp = [self->eo valueForKey:@"companyId"]) isNotNull]) {
-    url = [[self container] baseURLInContext:_ctx];
-    if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
+    if (![[tmp stringValue] isEqualToString:[self nameInContainer]]) {
+      /* only set 'location' if it actually changed (on creation) */
+      url = [[self container] baseURLInContext:_ctx];
+      if (![url hasSuffix:@"/"]) url = [url stringByAppendingString:@"/"];
     
-    tmp = [tmp stringValue];
-    tmp = [tmp stringByAppendingString:@".vcf"];
+      tmp = [tmp stringValue];
+      tmp = [tmp stringByAppendingString:@".vcf"];
     
-    [r setHeader:[url stringByAppendingString:tmp] forKey:@"location"];
+      [r setHeader:[url stringByAppendingString:tmp] forKey:@"location"];
+    }
   }
   else {
     [self logWithFormat:

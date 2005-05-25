@@ -1,3 +1,8 @@
+2005-05-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAppointment.m: only set PUT 'location' header if the location
+	  changed (v1.3.98)
+
 2005-05-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxICalendar.m: rewritten to use folder for queries instead of doing
