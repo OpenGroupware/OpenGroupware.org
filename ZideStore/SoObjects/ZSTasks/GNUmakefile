@@ -23,6 +23,8 @@ libZSTasks_OBJC_FILES = \
 	SxDavTaskAction.m	\
 	SxDavTaskCreate.m	\
 	SxDavTaskChange.m	\
+	\
+	SxTask+ZL.m		\
 
 Tasks_RESOURCE_FILES += \
 	bundle-info.plist	\

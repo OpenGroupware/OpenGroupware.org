@@ -535,7 +535,7 @@ static BOOL embedViewURL             = NO;
 - (id)_processPUTData:(NSData *)_content
   withParseSelector:(SEL)_parseSel inContext:(id)_ctx
 {
-  /* request body contains a message/rfc822 */
+  /* request body contains a message/rfc822 or a text/calendar */
   SxAppointmentMessageParser *parser;
   NSArray *infos;
   id      info;
@@ -610,7 +610,8 @@ static BOOL embedViewURL             = NO;
     return [self putICalendarAction:_ctx];
   
   if ([ctype length] == 0) {
-    // TODO: what clients do that?
+    // TODO: which clients do that? (eg when editing in Cadaver)
+    // DUP in SxTask.m
     static NSData *iCalSignature = nil;
     NSData *data;
 
@@ -630,7 +631,7 @@ static BOOL embedViewURL             = NO;
   
   [self logWithFormat:@"Note: does not accept PUTs of type: '%@'", ctype];
   return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
-                      reason:@"invalid format for PUT (not a message/rfc822)"];
+                      reason:@"invalid format for PUT (not a text/calendar)"];
 }
 
 - (void)fetchOwnerForAppointment:(id)_apt inContext:(id)_ctx {

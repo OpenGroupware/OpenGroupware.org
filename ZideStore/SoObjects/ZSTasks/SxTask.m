@@ -25,17 +25,14 @@
 #include "SxDavTaskCreate.h"
 #include "SxDavTaskChange.h"
 #include <ZSFrontend/NSObject+ExValues.h>
-#include <ZSBackend/NSString+rtf.h>
 #include <ZSBackend/SxTaskManager.h>
 #include <ZSBackend/SxContactManager.h>
 #include "common.h"
-
-#include <NGMail/NGMimeMessageParser.h> // for comments from Evolution
 #include <GDLAccess/GDLAccess.h>
+#include <SaxObjC/SaxObjC.h>
+#include <NGiCal/NGiCal.h>
 
 @implementation SxTask
-
-static BOOL debugParser = YES;
 
 - (id)initWithJob:(id)_job inFolder:(SxTaskFolder *)_folder {
   return [self initWithEO:_job inFolder:_folder];
@@ -75,10 +72,6 @@ static BOOL debugParser = YES;
   return [[[self object] valueForKey:@"objectVersion"] intValue];
 }
 
-- (NSString *)hmSpecialKey {
-  return nil;
-}
-
 - (NSString *)davDisplayName {
   return [[self object] valueForKey:@"name"];
 }
@@ -88,10 +81,6 @@ static BOOL debugParser = YES;
   return [NSDate date];
 }
 
-- (void)setOutlookMessageClass:(NSString *)_mc {
-  if (![_mc isEqualToString:@"IPM.Task"])
-    [self logWithFormat:@"tried to assign invalid message class: %@", _mc];
-}
 - (NSString *)outlookMessageClass {
   return @"IPM.Task";
 }
@@ -143,22 +132,8 @@ static BOOL debugParser = YES;
   /*    @"Bjoern Stierand"; */
 }
 
-- (NSString *)sentRepresentingEmailAddress {
-  return @"";
-}
-- (NSString *)senderEmailAddress {
-  return [self sentRepresentingEmailAddress];
-}
-
-- (id)normalizedSubject {
-  return [self valueForKey:@"subject"];
-}
-
-- (id)mapiID_00008586 {
-  return @""; // ??
-}
-
 - (int)sensitivity { // same as access_class, only as int, see NOTES
+  // TODO: properly implement
   return 0; // 0 is public
 }
 
@@ -342,111 +317,7 @@ static BOOL debugParser = YES;
   return [self updateJobWithProperties:md inContext:_ctx];
 }
 
-/* MIME parsing */
-
-- (BOOL)parser:(NGMimePartParser *)_parser
-  parseRawBodyData:(NSData *)_data
-  ofPart:(id<NGMimePart>)_part
-{
-  /* we keep the raw body */
-  if (debugParser)
-    [self logWithFormat:@"parser, keep data (len=%i)", [_data length]];
-  [_part setBody:_data];
-  return YES;
-}
-
-- (id)putEvoComment:(id)_ctx {
-  /* 
-     After Evo did a PROPPATCH, it does a PUT with content-type
-     message/rfc822. The message has the comment as the body and 
-     these relevant (mail) headers:
-       content-class: urn:content-classes:task
-       Subject:       test 3
-       Thread-Topic:  test 3
-       Priority:      normal
-       Importance:    normal
-       From:          "Helge Hess" <hh@skyrix.com>
-  */
-  NGMimeMessageParser *mimeParser;
-  WOResponse *r;
-  id part;
-  NSString *comment;
-  
-  r    = [(WOContext *)_ctx response];
-  part = [[(WOContext *)_ctx request] content];
-  if (debugParser)
-    [self logWithFormat:@"should parse %d bytes ..", [part length]];
-  
-  if ([part length] == 0) {
-    [self logWithFormat:@"missing content for PUT ..."];
-    return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
-                        reason:
-                          @"no content in task-comment PUT !"];
-  }
-  
-  /* Evolution PUT's a MIME message containing an iCal file */
-  mimeParser = [[NGMimeMessageParser alloc] init];
-  [mimeParser setDelegate:self];
-  part = [mimeParser parsePartFromData:part];
-  [mimeParser release]; mimeParser = nil;
-  
-  if (part == nil) {
-    [self logWithFormat:@"could not parse MIME structure for task comment."];
-    return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
-                        reason:
-                          @"could not parse MIME structure for task comment"];
-  }
-  
-  // we are interested in the body of the mimepart (which is the comment
-  // of our task object)
-  comment = [[NSString alloc] initWithData:[part body] 
-                              encoding:[NSString defaultCStringEncoding]];
-
-  if ([self isNew]) {
-    if ([comment length] > 0)
-      [self logWithFormat:
-              @"WARNING: losing comment, can't handle comments "
-              @"on create yet: %@", comment];
-
-    // if we return 204 (no-content) here, the new task won't show up in Evo
-    [r setStatus:200];
-    [comment release];
-    return r;
-  }
-  
-  if (![[[self object] valueForKey:@"comment"] isEqualToString:comment]) {
-    NSDictionary *changes;
-    LSCommandContext *cmdctx;
-    
-    [[self object] takeValue:comment forKey:@"comment"];
-
-    changes = [NSDictionary dictionaryWithObjectsAndKeys:
-                            [self object],@"object",
-                            nil];
-
-    if ((cmdctx = [self commandContextInContext:_ctx]) != nil) {
-      EOModel     *model;
-      NSNumber    *width;
-      
-      model = [[[cmdctx valueForKey:LSDatabaseKey] adaptor] model];
-      width = [[[model entityNamed:@"Job"] attributeNamed:@"comment"]
-                       valueForKey:@"width"];
-
-      if ([width intValue] >= (int)[comment length]) {
-        [cmdctx runCommand:@"job::set" arguments:changes];
-        [cmdctx commit];
-      }
-      else
-        [self logWithFormat:
-              @"WARNING: losing comment, too long for DB field"
-              @" (comment: %i - db: %@)", [comment length], width];
-    }
-  }
-
-  [comment release]; comment = nil;
-  [r setStatus:200];
-  return r;
-}
+/* iCalendar representation */
 
 - (NSString *)iCalString {
   SxTaskRenderer *renderer;
@@ -458,6 +329,99 @@ static BOOL debugParser = YES;
   
   return ical;
 }
+
+/* iCalendar parsing / putting */
+
+static id<NSObject,SaxXMLReader> parser = nil;
+static SaxObjectDecoder *sax = nil;
+
+- (BOOL)_ensureICalParser {
+  if (parser == nil ) {
+    SaxXMLReaderFactory *factory = 
+      [SaxXMLReaderFactory standardXMLReaderFactory];
+    parser = [[factory createXMLReaderForMimeType:@"text/calendar"] retain];
+  }
+  if (parser == nil) {
+    [self logWithFormat:@"found no iCal parser !"];
+    return NO;
+  }
+  if (sax == nil && parser != nil) {
+    sax = [[SaxObjectDecoder alloc] initWithMappingNamed:@"NGiCal"];
+    [parser setContentHandler:sax];
+    [parser setErrorHandler:sax];
+  }
+  if (sax == nil) {
+    [self logWithFormat:@"found no iCal object decoder !"];
+    return NO;
+  }
+  return YES;
+}
+
+- (id)putICalendarToDo:(iCalToDo *)_todo inContext:(id)_ctx {
+  [self logWithFormat:@"TODO: change task: %@", _todo];
+  
+  return [NSException exceptionWithHTTPStatus:501 /* Not Implemented */
+                      reason:@"VTODO PUT not yet implemented"];
+  
+}
+
+- (id)parseICalendarData:(NSData *)_data {
+  iCalCalendar *cal;
+  NSArray      *todos;
+
+  /* parse calendar data */
+  
+  if (![self _ensureICalParser]) {
+    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
+                        reason:@"failed to create iCalendar parser"];
+  }
+  [parser parseFromSource:_data];
+  if ((cal = [sax rootObject]) == nil) { // TODO: different error code?
+    return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
+                        reason:@"Could not parse iCalendar content of PUT"];
+  }
+  
+  /* check calendar data for a single vtodo */
+  
+  todos = [cal todos];
+  if ([todos count] == 0) {
+    return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
+                        reason:@"iCalendar content of PUT contained no VTODO"];
+  }
+  if ([todos count] > 1) {
+    // TODO: for CalDAV we could support multiple vtodo's in one (repetitions)
+    return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
+                        reason:
+			  @"iCalendar content of PUT contained more than one "
+			  @"VTODO"];
+  }
+  return [todos objectAtIndex:0];
+}
+
+- (id)putICalendarAction:(id)_ctx {
+  /* request body contains a text/calendar */
+  NSData   *content;
+  iCalToDo *todo;
+  
+  /* get content */
+  
+  content = [[(WOContext *)_ctx request] content];
+  if ([content length] == 0) {
+    return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
+                        reason:@"got empty PUT body"];
+  }
+  
+  /* parse */
+
+  todo = [self parseICalendarData:content];
+  if ([todo isKindOfClass:[NSException class]])
+    return todo;
+  
+  /* perform changes */
+  return [self putICalendarToDo:todo inContext:_ctx];
+}
+
+/* actions */
 
 - (id)GETAction:(WOContext *)_ctx {
   //[self logWithFormat:@"render EO: %@", [self object]];
@@ -493,20 +457,42 @@ static BOOL debugParser = YES;
 
 - (id)PUTAction:(WOContext *)_ctx {
   NSException *error;
+  NSString *ctype;
   
   if ((error = [self matchesRequestConditionInContext:_ctx]) != nil)
     return error;
+
+  ctype = [[(WOContext *)_ctx request] headerForKey:@"content-type"];
+  if ([ctype hasPrefix:@"text/calendar"])
+    return [self putICalendarAction:_ctx];
   
-#if 0 // old connector stuff
-  if ([[[_ctx request] headerForKey:@"user-agent"] hasPrefix:@"Evolution/"])
-    return [self putEvoComment:_ctx];
-#endif
+  if ([ctype length] == 0) {
+    // TODO: which clients do that? (eg when editing in Cadaver)
+    // TODO: move this code to NSData category (or better WORequest?)
+    // DUP in SxAppointment.m
+    static NSData *iCalSignature = nil;
+    NSData *data;
+
+    if (iCalSignature == nil) {
+      iCalSignature = [[NSData alloc] initWithBytes:@"BEGIN:VCALENDAR" 
+                                      length:15];
+    }
+    
+    [self logWithFormat:@"Note: client submitted no content-type!"];
+    data = [[(WOContext *)_ctx request] content];
+    if ([data hasPrefix:iCalSignature]) {
+      [self logWithFormat:
+              @"request seems to contain iCalendar data, try that."];
+    }
+    return [self putICalendarAction:_ctx];
+  }
   
-  [self logWithFormat:@"TODO: change task ..."];
-  
-  return [NSException exceptionWithHTTPStatus:501 /* Not Implemented */
-                      reason:@"vtodo PUT not yet implemented"];
+  [self logWithFormat:@"Note: does not accept PUTs of type: '%@'", ctype];
+  return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
+                      reason:@"invalid format for PUT (not a text/calendar)"];
 }
+
+/* fetch EO object */
 
 - (id)objectInContext:(id)_ctx {
   if (self->eo) 
@@ -516,7 +502,10 @@ static BOOL debugParser = YES;
   return self->eo;
 }
 
+/* delete action */
+
 - (id)primaryDeleteObjectInContext:(id)_ctx {
+  // TODO: who calls this? The SOPE WebDAV layer?
   NSException *error;
   
   error = [[self taskManagerInContext:_ctx] 

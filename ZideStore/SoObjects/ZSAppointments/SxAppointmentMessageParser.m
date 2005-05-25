@@ -267,11 +267,15 @@ static SaxObjectDecoder *sax = nil;
   //if ((timestamp = [_event timestamp])) 
   //  [record setObject:tmp forKey:@"timestamp"];
   
-  if ((tmp = [_event sequence]))
-    [record setObject:[NSNumber numberWithInt:[tmp intValue]] forKey:@"sequence"];
-  if ((tmp = [_event duration]))
+  if ((tmp = [_event sequence])) {
+    [record setObject:[NSNumber numberWithInt:[tmp intValue]] 
+	    forKey:@"sequence"];
+  }
+  if ((tmp = [_event duration])) {
     // TODO: check whether duration is really int ...
-    [record setObject:[NSNumber numberWithInt:[tmp intValue]] forKey:@"duration"];
+    [record setObject:[NSNumber numberWithInt:[tmp intValue]] 
+	    forKey:@"duration"];
+  }
   
   /* fill in info from header */
   
