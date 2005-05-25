@@ -144,7 +144,6 @@ static SaxObjectDecoder *sax = nil;
    */
   NSMutableString *ms;
   unsigned        i, max;
-  id              alarm, trigger, attach, tmp;
 
   max = [_alarms count];
   if (!max) return @"";
@@ -152,6 +151,9 @@ static SaxObjectDecoder *sax = nil;
   ms = [NSMutableString stringWithCapacity:32];
 
   for (i = 0; i < max; i++) {
+    NSDictionary *alarm, *trigger, *attach;
+    id tmp;
+    
     alarm   = [_alarms objectAtIndex:i];
     trigger = [alarm objectForKey:@"trigger"];
     attach  = [alarm objectForKey:@"attachment"];
@@ -362,8 +364,8 @@ static SaxObjectDecoder *sax = nil;
   /* check for Entourage signature by scanning the first 255 bytes ... */
   [_data getBytes:buf length:(len < 255) ? len : 255];
   buf[(len < 255) ? len : 255] = '\0';
-  if (strstr(buf, "Microsoft") == NULL) return nil;
-  if (strstr(buf, "Entourage") == NULL) return nil;
+  if (strstr((char *)buf, "Microsoft") == NULL) return nil;
+  if (strstr((char *)buf, "Entourage") == NULL) return nil;
 
   [self logWithFormat:
 	  @"Note: got unparsable Entourage iCal data (len=%i), hack ...",
@@ -381,7 +383,7 @@ static SaxObjectDecoder *sax = nil;
   
   /* now check for BEGIN:VTIMEZONE ... */
   
-  if ((vtStart = strstr(bytes, "BEGIN:VTIMEZONE")) == NULL) {
+  if ((vtStart = (void *)strstr((char *)bytes, "BEGIN:VTIMEZONE")) == NULL) {
     /* does not contain a timezone */
     if (bytes) free(bytes);
     return nil;
@@ -390,7 +392,7 @@ static SaxObjectDecoder *sax = nil;
   /* skip begin, then check for END:VTIMEZONE */
   
   p = vtStart + 15; /* len of "BEGIN:VTIMEZONE" */
-  if (strstr(p, "END:VTIMEZONE")) {
+  if (strstr((char *)p, "END:VTIMEZONE")) {
     /* found END:VTIMEZONE, proper format ... */
     if (bytes) free(bytes);
     return nil;
@@ -403,7 +405,7 @@ static SaxObjectDecoder *sax = nil;
      patch: we insert a "END:VTIMEZONE\r\n"(len: 15) before the next 
      BEGIN: tag ... 
   */
-  if ((p = strstr(p, "BEGIN:")) == NULL) {
+  if ((p = (void *)strstr((char *)p, "BEGIN:")) == NULL) {
     [self logWithFormat:@"Note:   submitted data looks completely broken."];
     if (bytes) free(bytes);
     return nil;
@@ -412,7 +414,7 @@ static SaxObjectDecoder *sax = nil;
   patchedData = [NSMutableData dataWithCapacity:(len + 20)];
   [patchedData appendBytes:bytes length:(p - bytes)];
   [patchedData appendBytes:"END:VTIMEZONE\r\n" length:15];
-  [patchedData appendBytes:p length:strlen(p)];
+  [patchedData appendBytes:p length:strlen((char *)p)];
   if (bytes) free(bytes);
 
   /* now try to parse a second time */

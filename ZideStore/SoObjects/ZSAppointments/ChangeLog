@@ -1,3 +1,7 @@
+2005-05-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxAppointmentMessageParser.m: fixed some gcc 4.0 warnings (v1.3.99)
+
 2005-05-25  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAppointment.m: only set PUT 'location' header if the location
