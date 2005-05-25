@@ -29,10 +29,14 @@
 @implementation SxProjectsFolder
 
 static BOOL debugOn = NO;
+static BOOL kontactGroupDAV = YES;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
   debugOn = [ud boolForKey:@"SxProjectsFolderDebugEnabled"];
+  kontactGroupDAV = 
+    [ud boolForKey:@"ZSDisableKontact34GroupDAVHack"] ? NO : YES;
 }
 
 - (void)dealloc {
@@ -106,8 +110,29 @@ static BOOL debugOn = NO;
 }
 
 - (id)lookupName:(NSString *)_key inContext:(id)_ctx acquire:(BOOL)_flag {
+  WEClientCapabilities *cc;
+  
   if ([_key isEqualToString:@"getIDsAndVersions"])
     return [self getIDsAndVersionsAction:_ctx];
+  
+  if (kontactGroupDAV) {
+    cc = [[_ctx request] clientCapabilities];
+    if ([[cc userAgentType] isEqualToString:@"Konqueror"]) {
+      if ([cc majorVersion] == 3 && [cc minorVersion] == 4) {
+	if (![[_ctx valueForKey:@"KontactGroupDAVDidWarn"] boolValue]) {
+	  [self logWithFormat:
+		  @"WARNING: applying Kontact 3.4 GroupDAV hack"
+		  @" - project browsing is disabled!"
+		  @" (can be enabled using 'ZSDisableKontact34GroupDAVHack')"];
+	  [_ctx takeValue:@"YES" forKey:@"KontactGroupDAVDidWarn"];
+	}
+	return nil;
+      }
+    }
+  }
+  
+  [self logWithFormat:@"CC: %@",
+	[[_ctx request] clientCapabilities]];
   
   return [super lookupName:_key inContext:_ctx acquire:_flag];
 }

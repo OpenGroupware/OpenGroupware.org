@@ -1,3 +1,11 @@
+2005-05-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxProjectsFolder.m: added a hack to stop Kontact 3.4.0 from
+	  traversing the full WebDAV hierarchy. This can be disabled using the
+	  'ZSDisableKontact34GroupDAVHack' default. If the hack is enabled
+	  (default setting), you won't be able to use Konqueror to browse your
+	  project documents. (v1.3.94)
+
 2005-01-24  Helge Hess  <helge.hess@skyrix.com>
 
 	* SxDocument.m: added generation of etag, fixed generation of content
