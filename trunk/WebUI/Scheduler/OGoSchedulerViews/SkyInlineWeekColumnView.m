@@ -77,17 +77,17 @@
   ASSIGN(self->weekStart,_weekStart);
 }
 - (NSCalendarDate *)weekStart {
-  return self->weekStart;  
+  return self->weekStart;
 }
 
 - (void)setDayIndex:(char)_idx {
   NSCalendarDate *d;
-  
+
   if ((self->dayIndex == _idx) && (self->currentDate != nil))
     return;
 
   self->dayIndex = _idx;
-  
+
   if (_idx > 0) {
     d = [[self weekStart]
                dateByAddingYears:0 months:0 days:_idx
@@ -123,7 +123,7 @@
     ? @"colors_selectedContentCell"
     : @"colors_contentCell";
   color  = [[self config] valueForKey:color];
-  
+
   return color;
 }
 
@@ -171,11 +171,11 @@
 - (NSString *)startTime {
   NSString       *fm;
   NSCalendarDate *sD, *wD;
-  
+
   fm = [self showAMPMDates] ? @"%I:%M %p" : @"%H:%M";
   sD = [self->appointment valueForKey:@"startDate"];
   wD = [self currentDate];
-  
+
   if (([sD dayOfYear]       <  [wD dayOfYear]) &&
       ([sD yearOfCommonEra] <= [wD yearOfCommonEra])) {
     fm = [fm stringByAppendingString:@"(%m-%d)"];
@@ -184,18 +184,18 @@
   if ([sD yearOfCommonEra] < [wD yearOfCommonEra]) {
     fm = [fm stringByAppendingString:@"(%Y-%m-%d)"];
   }
-  
+
   return [sD descriptionWithCalendarFormat:fm];
 }
 
 - (NSString *)endTime {
   NSString       *fm;
   NSCalendarDate *eD, *wD;
-  
+
   fm = [self showAMPMDates] ? @"%I:%M %p" : @"%H:%M";
   eD = [self->appointment valueForKey:@"endDate"];
   wD = [self currentDate];
-  
+
   if ([wD dayOfYear] < [eD dayOfYear] &&
       ([eD yearOfCommonEra] >= [wD yearOfCommonEra])) {
     fm = [fm stringByAppendingString:@"(%m-%d)"];
@@ -204,17 +204,24 @@
   if ([eD yearOfCommonEra] > [wD yearOfCommonEra]) {
     fm = [fm stringByAppendingString:@"(%Y-%m-%d)"];
   }
-  
+
   return [eD descriptionWithCalendarFormat:fm];
 }
 
 - (NSString *)shortTextForApt {
+	NSString *popup;
+
+	popup = [NSString stringWithString:@""];
+	return popup;
+
+  /* GLC we hide some information at user sight */
+  /*
   SkyAppointmentFormatter *f;
-  
+
   f = [SkyAppointmentFormatter formatterWithFormat:
                                @"\n%T;\n%L;\n%5P;\n%50R"];
   [f setShowFullNames:[self showFullNames]];
-  
+
   //  [f setRelationDate:self->day]; ???
 
   return [NSString stringWithFormat:@"%@:%@ - %@;%@",
@@ -222,11 +229,12 @@
                    [self startTime],
                    [self endTime],
                    [f stringForObjectValue:self->appointment]];
+  */
 }
 
 - (NSFormatter *)aptTitleFormatter {
   SkyAppointmentFormatter *format;
-  
+
   format = [SkyAppointmentFormatter formatterWithFormat:@" %50T"];
   //  [format setRelationDate:self->day]; ???
   return format;

@@ -6,7 +6,7 @@
     <td width="100%" valign="top">
       <#WeekColumnView>
         <#TitleMode><#WeekdayTitle/></#TitleMode>
-        
+
         <#InfoMode>
           <#DropZone/>
           <#HasDayInfoCond>
@@ -14,7 +14,7 @@
               <#HolidayInfo/>
               <br />
             </#HasHolidayInfo>
-            
+
             <#HasAllDayApts>
               <#AllDayApts>
                 <#IsListOnlyApt>
@@ -46,26 +46,26 @@
             <hr />
           </#HasDayInfoCond>
         </#InfoMode>
-        
+
         <#ContentMode><#Font
           ><#ViewAccessAllowedCond
             ><#DragZone
               ><#UseDACond
                 ><#ViewAptLink
-                  ><#AptInfoIcon/><#StartTime/><#AptTitleSpan
+                  ><#AptInfoIcon/><#StartTime/> - <#EndTime/><#AptTitleSpan
                   ><#AptTitle/></#AptTitleSpan
                 ></#ViewAptLink
               ></#UseDACond
               ><#UseDACondElse
                 ><#ViewAptAction
-                  ><#AptInfoIcon/><#StartTime/><#AptTitleSpan
+                  ><#AptInfoIcon/><#StartTime/> - <#EndTime/><#AptTitleSpan
                   ><#AptTitle/></#AptTitleSpan
                 ></#ViewAptAction
               ></#UseDACondElse
             ></#DragZone
           ></#ViewAccessAllowedCond
           ><#ViewAccessAllowedCondElse
-            ><#AptInfoIcon/><#StartTime/><#AptTitleSpan
+            ><#AptInfoIcon/><#StartTime/> - <#EndTime/><#AptTitleSpan
             ><#AptTitle/></#AptTitleSpan
           ></#ViewAccessAllowedCondElse
         ><#Semicolon/><#AptContentText/>

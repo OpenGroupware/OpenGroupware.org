@@ -1,18 +1,18 @@
 /*
  Copyright (C) 2000-2005 SKYRIX Software AG
- 
+
  This file is part of OpenGroupware.org.
- 
+
  OGo is free software; you can redistribute it and/or modify it under
  the terms of the GNU Lesser General Public License as published by the
  Free Software Foundation; either version 2, or (at your option) any
  later version.
- 
+
  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
  WARRANTY; without even the implied warranty of MERCHANTABILITY or
  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
  License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public
  License along with OGo; see the file COPYING.  If not, write to the
  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
@@ -23,7 +23,7 @@
 
 /*
  SkySchedulerDateCell
- 
+
  TODO: document what it does.
  */
 
@@ -41,7 +41,7 @@
 	WOAssociation *action;
 	WOAssociation *aptTypeLabel;  // label for appointment type
 	WOAssociation *isAllDay;
-	
+
 	WOAssociation *icon;          // icon filename (default: apt_10x10.gif)
 	WOElement     *template;
 }
@@ -64,7 +64,7 @@ static NSArray *participantSortOrderings = nil;
 //
 //
 //*********************************************************************************************************
-+ (int)version 
++ (int)version
 {
 	return [super version] + 0;
 }
@@ -74,7 +74,7 @@ static NSArray *participantSortOrderings = nil;
 //
 //
 //*********************************************************************************************************
-+ (void)initialize 
++ (void)initialize
 {
 	participantSortOrderings = [[NSArray alloc] initWithObjects:
 		[EOSortOrdering sortOrderingWithKey:@"isTeam"
@@ -116,7 +116,7 @@ static NSArray *participantSortOrderings = nil;
 //
 //
 //*********************************************************************************************************
-- (void)dealloc 
+- (void)dealloc
 {
 	[self->template     release];
 	[self->isClickable  release];
@@ -149,14 +149,14 @@ static NSArray *participantSortOrderings = nil;
 	BOOL     isDeleted      = NO;
 	id       dbStatus       = nil;
 	NSString *cssClass;
-	
+
 	cssClass = @"skydatecell_other";
-	
+
 	pkey      = [_person valueForKey:@"companyId"];
 	dbStatus  = [_person valueForKey:@"dbStatus"];
-	
+
 	isDeleted = (dbStatus != nil) ? [dbStatus isEqualToString:@"archived"] : NO;
-	
+
 	if ([[_person valueForKey:@"isAccount"] boolValue])
 	{
 		if (_showFull)
@@ -166,7 +166,7 @@ static NSArray *participantSortOrderings = nil;
 		}
 		else
 			label1         = [_person valueForKey:@"login"];
-		
+
 		isLoginAccount = [_loginPKey isEqual:pkey];
 		isOwner        = [_ownerPKey isEqual:pkey];
 		isAccount      = YES;
@@ -186,24 +186,24 @@ static NSArray *participantSortOrderings = nil;
 		}
 		else
 			label1 = [_person valueForKey:@"name"];
-		
+
 		if (label1 == nil)
 			label1 = [_person valueForKey:@"description"];
 	}
 	if (![label1 isNotNull])
 		label1 = nil;
-	if (![label2 isNotNull]) 
+	if (![label2 isNotNull])
 		label2 = nil;
-	
+
 	if ((label1 == nil) && (label2 != nil))
 	{
 		label1 = label2;
 		label2 = nil;
 	}
-	
+
 	if (label1 == nil)
 		label1 = @"*";
-	
+
 	if (isDeleted)
 	{
 		cssClass = @"skydatecell_delparts";
@@ -224,18 +224,18 @@ static NSArray *participantSortOrderings = nil;
 	{
 		cssClass = @"skydatecell_other";
 	}
-	
+
 	[_response appendContentString:@"<span class=\""];
 	[_response appendContentString:cssClass];
 	[_response appendContentString:@"\">"];
-	
+
 	[_response appendContentHTMLString:label1];
 	if (label2)
 	{
 		[_response appendContentHTMLString:@", "];
 		[_response appendContentHTMLString:label2];
 	}
-	
+
 	[_response appendContentString:@"</span>"];
 }
 
@@ -252,31 +252,31 @@ static NSArray *participantSortOrderings = nil;
 	NSCalendarDate *sD, *wD;
 	BOOL           allDay;
 	id             comp;
-	
+
 	comp = [_ctx component];
 	fm  = _showAMPM ? @"%I:%M %p" : @"%H:%M";
 	sD = [_apt valueForKey:@"startDate"];
 	wD = [self->weekday valueInComponent:comp];
-	
+
 	allDay = [self->isAllDay boolValueInComponent:comp];
-	
+
 	if (allDay)
 	{
-		if ([sD yearOfCommonEra] < [wD yearOfCommonEra]) 
+		if ([sD yearOfCommonEra] < [wD yearOfCommonEra])
 			fm = @"%Y-%m-%d";
-		else if (([sD dayOfYear]       <  [wD dayOfYear]) && ([sD yearOfCommonEra] <= [wD yearOfCommonEra])) 
+		else if (([sD dayOfYear]       <  [wD dayOfYear]) && ([sD yearOfCommonEra] <= [wD yearOfCommonEra]))
 			fm = @"%m-%d";
 		else
 			fm = @""; // today
 	}
 	else
 	{
-		if ([sD yearOfCommonEra] < [wD yearOfCommonEra]) 
+		if ([sD yearOfCommonEra] < [wD yearOfCommonEra])
 			fm = [fm stringByAppendingString:@"(%Y-%m-%d)"];
-		else if (([sD dayOfYear]       <  [wD dayOfYear]) && ([sD yearOfCommonEra] <= [wD yearOfCommonEra])) 
+		else if (([sD dayOfYear]       <  [wD dayOfYear]) && ([sD yearOfCommonEra] <= [wD yearOfCommonEra]))
 			fm = [fm stringByAppendingString:@"(%m-%d)"];
 	}
-	
+
 	return [sD descriptionWithCalendarFormat:fm];
 }
 
@@ -293,31 +293,31 @@ static NSArray *participantSortOrderings = nil;
 	NSCalendarDate *eD, *wD;
 	BOOL           allDay;
 	id             comp;
-	
+
 	comp = [_ctx component];
 	fm = _showAMPM ? @"%I:%M %p" : @"%H:%M";
 	eD = [_apt valueForKey:@"endDate"];
 	wD = [self->weekday valueInComponent:comp];
-	
+
 	allDay = [self->isAllDay boolValueInComponent:comp];
-	
+
 	if (allDay)
 	{
-		if ([eD yearOfCommonEra] > [wD yearOfCommonEra]) 
+		if ([eD yearOfCommonEra] > [wD yearOfCommonEra])
 			fm = @"%Y-%m-%d";
-		else if ([wD dayOfYear] < [eD dayOfYear] &&	 ([eD yearOfCommonEra] >= [wD yearOfCommonEra])) 
+		else if ([wD dayOfYear] < [eD dayOfYear] &&	 ([eD yearOfCommonEra] >= [wD yearOfCommonEra]))
 			fm = @"%m-%d";
 		else
 			fm = @""; // today
 	}
 	else
 	{
-		if ([eD yearOfCommonEra] > [wD yearOfCommonEra]) 
+		if ([eD yearOfCommonEra] > [wD yearOfCommonEra])
 			fm = [fm stringByAppendingString:@"(%Y-%m-%d)"];
-		else if ([wD dayOfYear] < [eD dayOfYear] &&	 ([eD yearOfCommonEra] >= [wD yearOfCommonEra])) 
+		else if ([wD dayOfYear] < [eD dayOfYear] &&	 ([eD yearOfCommonEra] >= [wD yearOfCommonEra]))
 			fm = [fm stringByAppendingString:@"(%m-%d)"];
 	}
-	
+
 	return [eD descriptionWithCalendarFormat:fm];
 }
 
@@ -331,9 +331,9 @@ static NSArray *participantSortOrderings = nil;
 {
 	NSString    *t = nil;
 	WOComponent *co;
-	
+
 	co = [_ctx component];
-	
+
 	if ([self->isPrivate boolValueInComponent:co])
 	{
 		t = [self->privateLabel stringValueInComponent:co];
@@ -343,9 +343,9 @@ static NSArray *participantSortOrderings = nil;
 		t = [_apt valueForKey:@"title"];
 		if (![t isNotNull]) t = [self->privateLabel stringValueInComponent:co];
 	}
-	
+
 	t = [t stringValue];
-	
+
 	if (_len != -1)
 	{
 		if ([t length] > _len)
@@ -354,10 +354,10 @@ static NSArray *participantSortOrderings = nil;
 			t = [t stringByAppendingString:@".."];
 		}
 	}
-	
+
 	if ([t length] == 0)
 		t = @"*";
-	
+
 	return t;
 }
 
@@ -370,13 +370,13 @@ static NSArray *participantSortOrderings = nil;
 - (NSString *)resourceStringForAppointment:(id)_apt maxLength:(int)_len inContext:(WOContext *)_ctx
 {
 	NSString *r = nil;
-	
+
 	r = [_apt valueForKey:@"resourceNames"];
 	r = [r stringValue];
-	
-	if (_len != -1) 
+
+	if (_len != -1)
 	{
-		if ([r length] > _len) 
+		if ([r length] > _len)
 		{
 			r = [r substringToIndex:(_len - 2)];
 			r = [r stringByAppendingString:@".."];
@@ -393,8 +393,14 @@ static NSArray *participantSortOrderings = nil;
 //*********************************************************************************************************
 - (NSString *)shortTextForAppointment:(id)_apt newline:(BOOL)_nl showFullNames:(BOOL)_showFull showAMPM:(BOOL)_showAMPM	inContext:(WOContext *)_ctx
 {
+	NSString *popup;
+
+	popup = [NSString stringWithString:@""];
+	return popup;
+  	/* GLC we hide some information at user sight */
+	/*
 	SkyAppointmentFormatter *f;
-	
+
 	f = [SkyAppointmentFormatter formatterWithFormat:_nl ? @"%S - %E;\n%T;\n%L;\n%10P;\n%50R" : @"%S - %E; %T; %L; %10P; %50R"];
 	[f setShowFullNames:_showFull];
 	[f setRelationDate:[self->weekday valueInComponent:[_ctx component]]];
@@ -406,8 +412,9 @@ static NSArray *participantSortOrderings = nil;
 	}
 	else if (_showAMPM)
 		[f switchToAMPMTimes:YES];
-	
+
 	return [f stringForObjectValue:_apt];
+	*/
 }
 
 //*********************************************************************************************************
@@ -426,44 +433,44 @@ static NSArray *participantSortOrderings = nil;
 	BOOL     showFull;
 	BOOL     showAMPM;
 	id       ud;
-	
+
 	ud       = [[_ctx session] userDefaults];
 	showFull = [ud boolForKey:@"scheduler_overview_full_names"];
 	showAMPM = [ud boolForKey:@"scheduler_AMPM_dates"];
-	
+
 	[_response appendContentString:@"<a class=\"skydatecell_link\" href=\""];
-	
+
 	oid = [[_apt valueForKey:@"dateId"] intValue];
 	tz  = [[[_apt valueForKey:@"startDate"] timeZone] abbreviation];
 	alt = [self shortTextForAppointment:_apt newline:YES showFullNames:showFull showAMPM:showAMPM inContext:_ctx];
 	serial = getpid() + time(NULL);
-	
+
 	tz = [tz stringByEscapingURL];
-	
+
 	url = [NSString stringWithFormat:@"oid=%i&tz=%@&o=%d&%@=%@",oid, tz, serial,WORequestValueSessionID,[[_ctx session] sessionID]];
-	
+
 	url = [_ctx urlWithRequestHandlerKey:@"wa" path:@"/viewApt" queryString:url];
 	[_response appendContentString:url];
-	
+
 	[_response appendContentString:@"\" title=\""];
 	[_response appendContentHTMLAttributeValue:alt];
-	
+
 	if ([[[_ctx session] valueForKey:@"isJavaScriptEnabled"] boolValue])
 	{
-		
+
 		alt = [self shortTextForAppointment:_apt newline:NO  showFullNames:showFull showAMPM:showAMPM inContext:_ctx];
-		
+
 		if ([alt length] > 0)
 		{
 			alt = [[alt componentsSeparatedByString:@"'"] componentsJoinedByString:@"&rsquo;"];
-			
+
 			[_response appendContentString:@"\" onMouseOver=\"window.status='"];
 			[_response appendContentHTMLAttributeValue:alt];
 			[_response appendContentString:@"';return true\" onMouseOut="];
 			[_response appendContentString:@"\"window.status='SKYRIX';return true"];
 		}
 	}
-	
+
 	[_response appendContentString:@"\">"];
 }
 
@@ -483,37 +490,37 @@ static NSArray *participantSortOrderings = nil;
 	ud       = [[_ctx session] userDefaults];
 	showFull = [ud boolForKey:@"scheduler_overview_full_names"];
 	showAMPM = [ud boolForKey:@"scheduler_AMPM_dates"];
-	
+
 	alt = [self shortTextForAppointment:_apt newline:YES showFullNames:showFull showAMPM:showAMPM inContext:_ctx];
-	
+
 	url = [_ctx componentActionURL];
-	
+
 	//  NSLog(@"<SkySchedulerDateCell> Appending Component action: %@", url);
-	
+
 	[_response appendContentString:@"<a class=\"skydatecell_link\" href=\""];
-	
+
 	[_response appendContentHTMLAttributeValue:url];
-	
+
 	[_response appendContentString:@"\" title=\""];
 	[_response appendContentHTMLAttributeValue:alt];
-	
+
 	if ([[[_ctx session] valueForKey:@"isJavaScriptEnabled"] boolValue])
 	{
 		alt = [self shortTextForAppointment:_apt newline:NO showFullNames:showFull showAMPM:showAMPM inContext:_ctx];
-		
+
 		if ([alt length] > 0)
 		{
 			alt = [[alt componentsSeparatedByString:@"'"] componentsJoinedByString:@"\\'"];
-			
+
 			[_response appendContentString:@"\" onMouseOver=\"window.status='"];
 			[_response appendContentString:alt];
 			[_response appendContentString:@"';return true\" onMouseOut="];
 			[_response appendContentString:@"\"window.status='SKYRIX';return true"];
 		}
 	}
-	
+
 	[_response appendContentString:@"\">"];
-	
+
 }
 
 //*********************************************************************************************************
@@ -532,9 +539,9 @@ static NSArray *participantSortOrderings = nil;
 	ud       = [[_ctx session] userDefaults];
 	showFull = [ud boolForKey:@"scheduler_overview_full_names"];
 	showAMPM = [ud boolForKey:@"scheduler_AMPM_dates"];
-	
+
 	languages = [[_ctx session] languages];
-	
+
 	src = [self->icon valueInComponent:[_ctx component]];
 	if ([src length] < 1)
 		src = @"apt_10x10.gif";
@@ -542,18 +549,18 @@ static NSArray *participantSortOrderings = nil;
 	if ([src length] > 0)
 	{
 		NSString *alt = nil;
-		
+
 		alt = [self shortTextForAppointment:_apt newline:YES showFullNames:showFull showAMPM:showAMPM inContext:_ctx];
-		
+
 		[_response appendContentString:@"<img border='0' valign='top' src=\""];
 		[_response appendContentHTMLAttributeValue:src];
-		
+
 		if ([alt length] > 0)
 		{
 			[_response appendContentString:@"\" alt=\""];
 			[_response appendContentHTMLAttributeValue:alt];
 		}
-		
+
 		[_response appendContentString:@"\" />"];
 	}
 }
@@ -580,25 +587,25 @@ static NSArray *participantSortOrderings = nil;
 	BOOL           showFull = NO;
 	BOOL           showAMPM = NO;
 	NSUserDefaults *defaults = nil;
-	
+
 	defaults = [(OGoSession *)[_ctx session] userDefaults];
-	
+
 	shortInfo     = [defaults boolForKey:@"scheduler_overview_short_info"];
 	withResources = [defaults boolForKey:@"scheduler_overview_with_resources"];
 	showFull      = [defaults boolForKey:@"scheduler_overview_full_names"];
 	showAMPM      = [defaults boolForKey:@"scheduler_AMPM_dates"];
-	
+
 	a    = [self->appointment      valueInComponent:co];
 	wD   = [self->weekday          valueInComponent:co];
 	link = [self->isClickable      boolValueInComponent:co];
 	priv = [self->isPrivate        boolValueInComponent:co];
-	
+
 	noAcc = ([a valueForKey:@"accessTeamId"] == nil);
 	owner = [a valueForKey:@"ownerId"];
-	
+
 	if (link)
 		componentAction = ([a valueForKey:@"dateId"] == nil) ? YES : NO;
-	
+
 	if (link)
 	{
 		if (componentAction)
@@ -606,12 +613,12 @@ static NSArray *participantSortOrderings = nil;
 		else
 			[self appendDAToResponse:_response inContext:_ctx appointment:a];
 	}
-	
+
 	[self appendIconToResponse:_response inContext:_ctx appointment:a];
-	
+
 	{ /* link content */
 		NSString *s;
-		
+
 		if ((s = [self fromDateStringForAppointment:a showAMPM:showAMPM
 										  inContext:_ctx]))
 			[_response appendContentHTMLString:s];
@@ -620,9 +627,9 @@ static NSArray *participantSortOrderings = nil;
 	if (!shortInfo)
 	{
 		NSString *s;
-		
+
 		[_response appendContentString:@"<span class=\"skydatecell_text\">"];
-		
+
 		s = [self endDateStringForAppointment:a showAMPM:showAMPM inContext:_ctx];
 		if ([s length] > 0)
 		{
@@ -635,43 +642,45 @@ static NSArray *participantSortOrderings = nil;
 	{
 		/* short info: gen title after start-time */
 		NSString *t = nil;
-		
+
 		[_response appendContentString:	noAcc ? @" <span class=\"skydatecell_titlePrivate\">" : @" <span class=\"skydatecell_title\">"];
-		
-		t = [self titleStringForAppointment:a maxLength:14 inContext:_ctx];
+
+		t = [self titleStringForAppointment:a maxLength:50 inContext:_ctx];
 		[_response appendContentHTMLString:t];
-		
+
 		[_response appendContentString:@"</span>"];
 	}
 	if (link)
 		[_response appendContentString:@"</a>"];
 
-	[_response appendContentString:@"<br />"];
-	
+	//[_response appendContentString:@"<br />"];
+
+	/* GLC we hide some information at user sight */
 	/* participants */
+	/*
 	{
 		NSNumber *loginPKey;
 		NSArray  *p;
 		int      i, count;
-	
+
 		loginPKey = [[(id)[_ctx session] activeAccount] valueForKey:@"companyId"];
-    
+
 		p = [self->participants valueInComponent:[_ctx component]];
 		p = [p sortedArrayUsingKeyOrderArray:participantSortOrderings];
-    
+
 		if ((count = [p count]) == 0)
-		{
+		{*/
 			/* no participants ?? */
-		}
+	/*	}
 		else if (count <= 5)
 		{
 			for (i = 0; i < count; i++)
 			{
 				id participant = [p objectAtIndex:i];
-			
+
 				if (i != 0)
 					[_response appendContentHTMLString:@", "];
-			
+
 				[self _appendParticipant:participant login:loginPKey owner:owner showFullName:showFull toResponse:_response inContext:_ctx];
 			}
 			[_response appendContentString:@"<br />"];
@@ -679,40 +688,41 @@ static NSArray *participantSortOrderings = nil;
 		else
 		{
 			unsigned accountCount;
-		
+
 			for (i = 0, accountCount = 0; i < count; i++)
 			{
 				id participant = [p objectAtIndex:i];
-			
+
 				if ([[participant valueForKey:@"isAccount"] boolValue] || [[participant valueForKey:@"isTeam"] boolValue])
 				{
 					if (accountCount != 0) [_response appendContentHTMLString:@", "];
-				
+
 					[self _appendParticipant:participant login:loginPKey owner:owner showFullName:showFull toResponse:_response inContext:_ctx];
 					accountCount++;
-				
+
 					if (accountCount > 4)
 						break;
 				}
 			}
-		
+
 			if (accountCount != count)
 				[_response appendContentHTMLString:@", ..."];
-		
+
 			[_response appendContentString:@"<br />"];
 		}
-	}
+	}*/
 
+	/* GLC we hide some information at user sight */
 	/* resources */
-
+/*
 	if (withResources)
 	{
 		if (![self->isPrivate boolValueInComponent:co])
 		{
 			NSString *r;
-			
+
 			r = [self resourceStringForAppointment:a maxLength:24 inContext:_ctx];
-			
+
 			if (r != nil && ([r length] > 0) && ![r isEqualToString:@" "])
 			{
 				[_response appendContentString:
@@ -722,29 +732,31 @@ static NSArray *participantSortOrderings = nil;
 				[_response appendContentString:@"<br />"];
 			}
 		}
-	}
+	}*/
 
 	/* title */
 	if (!shortInfo)
 	{
 		NSString *t = nil;
-		
+
 		[_response appendContentString:noAcc ? @" <span class=\"skydatecell_titlePrivate\">" : @" <span class=\"skydatecell_title\">"];
-		
-		t = [self titleStringForAppointment:a maxLength:24 inContext:_ctx];
+
+		t = [self titleStringForAppointment:a maxLength:50 inContext:_ctx];
 		[_response appendContentHTMLString:t];
 		[_response appendContentString:@"</span><br />"];
 	}
 
+	/* GLC we hide some information at user sight */
 	/* location */
+	/*
 	if (!shortInfo)
 	{
 		if (![self->isPrivate boolValueInComponent:co])
 		{
 			NSString *l;
-			
+
 			l = [[a valueForKey:@"location"] stringValue];
-			
+
 			if (l != nil && ([l length] > 0) && ![l isEqualToString:@" "])
 			{
 				[_response appendContentString:
@@ -753,15 +765,15 @@ static NSArray *participantSortOrderings = nil;
 				[_response appendContentString:@"</span><br />"];
 			}
 		}
-	}
+	}*/
 
 	/* absence */
 	if (![self->isPrivate boolValueInComponent:co] && sevD)
 	{
 		NSString *ab;
-		
+
 		ab = [a valueForKey:@"absence"];
-		
+
 		if (ab != nil && ([ab length] > 0) && ![ab isEqualToString:@" "])
 		{
 			[_response appendContentString:	@"<span class=\"skydatecell_absence\">"];
@@ -779,7 +791,7 @@ static NSArray *participantSortOrderings = nil;
 //
 //
 //*********************************************************************************************************
-- (void)takeValuesFromRequest:(WORequest *)_rq inContext:(WOContext *)_ctx 
+- (void)takeValuesFromRequest:(WORequest *)_rq inContext:(WOContext *)_ctx
 {
 	[self->template takeValuesFromRequest:_rq inContext:_ctx];
 }
@@ -794,18 +806,18 @@ static NSArray *participantSortOrderings = nil;
 {
 	WOComponent *co  = [_ctx component];
 	BOOL        link = NO;
-	
+
 	link = [self->isClickable boolValueInComponent:co];
-	
+
 	if (link)
 	{
 		id a;
-		
+
 		a = [self->appointment valueInComponent:co];
 		if ([a valueForKey:@"dateId"] == nil)
 			return [self->action valueInComponent:[_ctx component]];
 	}
-	
+
 	return [self->template invokeActionForRequest:_rq inContext:_ctx];
 }
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
 #
 # Note: When adding make options to this script, ensure that the source still

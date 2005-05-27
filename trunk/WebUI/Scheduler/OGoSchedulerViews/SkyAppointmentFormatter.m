@@ -31,18 +31,18 @@
 {
   NSMutableString *format;
   NSString *s;
-  
+
   format = [NSMutableString stringWithCapacity:128];
-  
+
   [format appendString:@"<b><i>%S - %E</i></b>,"];
   s = [(NSString *)[NSString alloc] initWithFormat:@" %%%dT", _len];
   [format appendString:s];
   [s release];
-  
+
   if (_withLoc) [format appendString:@"\n%L"];
   [format appendString:@"\n%P"];
   if (_withRes) [format appendString:@"\n%R"];
-  
+
   if (_addNL) [format appendString:@"\n"];
   return [self formatterWithFormat:format];
 }
@@ -58,14 +58,14 @@
 
   title = [_apt valueForKey:@"title"];
   len = _canView ? ([title isNotNull] ? [title length] : 0) : 0;
-  
+
   res = [_apt valueForKey:@"resourceNames"];
   loc = [_apt valueForKey:@"location"];
   if (![res isNotNull]) res = nil;
   if (![loc isNotNull]) loc = nil;
   if ([res length] == 0 || [res isEqualToString:@" "]) res = nil;
   if ([loc length] == 0 || [loc isEqualToString:@" "]) loc = nil;
-  
+
   f = [SkyAppointmentFormatter printFormatterWithTitleLength:len
 			       includeLocation:(loc != nil) ? YES: NO
 			       includeResources:(res != nil) ? YES : NO
@@ -89,11 +89,13 @@
   if (![loc isNotNull]) loc = nil;
   if ([res length] == 0 || [res isEqualToString:@" "]) res = nil;
   if ([loc length] == 0 || [loc isEqualToString:@" "]) loc = nil;
-  
+
+  /* GLC we hide some information at user sight */
+  /*
   if (loc != nil) [format appendString:@"%L; "];
   [format appendString:@"%P"];
   if (res != nil) [format appendString:@"; %R"];
-  
+  */
   f =  [self formatterWithFormat:format];
   [f setShowFullNames:_showFullNames];
   return f;
@@ -233,7 +235,7 @@
   NSCalendarDate *rel;
 
   rel = self->relationDate;
-  
+
   if (_format == nil) {
     if (rel == nil) {
       f = self->dateFormat;
@@ -270,7 +272,7 @@
 
 - (NSString *)stringForParticipant:(id)_part {
   id label = nil;
-  
+
   if ([[_part valueForKey:@"isTeam"] boolValue]) {
     if ((label = [_part valueForKey:@"info"]) == nil)
       label = [_part valueForKey:@"description"];
@@ -331,7 +333,7 @@
 
     if (cnt != 0)
       [pString appendString:self->participantsSeparator];
-      
+
     [pString appendString:
              [self stringForParticipant:[p objectAtIndex:cnt]]];
   }
@@ -360,10 +362,10 @@
       t = [t stringByAppendingString:self->toLongString];
     }
   }
-  
+
   if (l == 0)
     t = @"*";
-  
+
   return t;
 }
 
@@ -380,17 +382,17 @@
       [t length] == 0 ||
       [t isEqualToString:@" "])
     return @"";
-  
+
   if (l > 1) {
     if ([t length] > l) {
       t = [t substringToIndex:(l - 2)];
       t = [t stringByAppendingString:self->toLongString];
     }
   }
-  
+
   if (l == 0)
     t = @"";
-  
+
   return t;
 }
 
@@ -414,10 +416,10 @@
       t = [t stringByAppendingString:self->toLongString];
     }
   }
-  
+
   if (l == 0)
     t = @"";
-  
+
   return t;
 }
 
@@ -490,13 +492,13 @@
       else if (c == '(') {
         int     end;
         NSRange r = NSMakeRange(cnt,length-cnt);
-        
+
         r = [self->formatString rangeOfString:@")"
                  options:0 range:r];
-        
+
         end = r.location - 1;
         r = NSMakeRange(cnt+1, end-cnt-1);
-        
+
         helper = [self->formatString substringWithRange:r];
         cnt = end + 1;
       }
@@ -519,7 +521,7 @@
       }
     }
   }
-  
+
   return newString;
 }
 

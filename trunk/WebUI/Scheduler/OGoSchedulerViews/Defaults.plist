@@ -2,15 +2,15 @@
 {
   scheduler_hide_new_proposal_on_rescat    = YES;
 
-  scheduler_daychart_maxaptinfolength      = 14;
-  scheduler_weekchart_maxaptinfolength     = 7;
+  scheduler_daychart_maxaptinfolength      = 50;
+  scheduler_weekchart_maxaptinfolength     = 50;
   scheduler_weekchart_starthour            = 8;
   scheduler_weekchart_endhour              = 21;
   scheduler_weekchart_columnsperday        = 24;
   scheduler_daychart_columnsperday         = 24;
   scheduler_first_day_of_week              = 1; // monday
   scheduler_monthoverview_maxaptperday     = 20;
-  scheduler_monthoverview_maxaptinfolength = 14;
+  scheduler_monthoverview_maxaptinfolength = 50;
   scheduler_dayoverview_timeinterval       = 3600; // in seconds
   scheduler_dayoverview_daystart           = 480;  // minutes after 0:00
   scheduler_dayoverview_dayend             = 1080; // minutes after 0:00

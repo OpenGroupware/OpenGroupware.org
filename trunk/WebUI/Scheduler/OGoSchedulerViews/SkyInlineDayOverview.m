@@ -29,7 +29,7 @@
 @protected
   NSCalendarDate *day;
   id             intervalDataSource;
-  
+
   // config
   NSTimeInterval interval;
   NSTimeInterval dayStart;
@@ -57,7 +57,7 @@
 - (id)init {
   if ((self = [super init])) {
     NSNotificationCenter *nc = nil;
-    
+
     nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(noteChange:)
         name:@"SkyDataSourceWillClear" object:nil];
@@ -79,9 +79,9 @@
 
 - (void)syncAwake {
   NSUserDefaults *ud;
-  
+
   [super syncAwake];
-  
+
   ud = [(id)[self session] userDefaults];
   self->interval =
     [[ud objectForKey:@"scheduler_dayoverview_timeinterval"] doubleValue];
@@ -111,13 +111,13 @@
   s = [self currentDate];
   e = [s dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
          seconds:(int)self->interval];
-  
+
   begin = [s beginOfDay];
   end1  = [[s endOfDay] dateByAddingYears:0 months:0 days:0
                         hours:0 minutes:-1 seconds:0]; // 23:58:59
   end2  = [begin dateByAddingYears:0 months:0 days:1
                  hours:0 minutes:0 seconds:0]; // 24:00:00
-  
+
   q = [EOQualifier qualifierWithQualifierFormat:
                    @"(startDate > %@ OR startDate = %@)"
                    @" AND (startDate < %@) AND NOT "
@@ -154,7 +154,7 @@
 - (void)setDataSource:(id)_ds {
   if (self->dataSource == _ds)
     return;
-  
+
   [super setDataSource:_ds];
   [self->intervalDataSource release];
 #if 0 // TODO: explain
@@ -190,7 +190,7 @@
 
 - (NSArray *)moreDayApts {
   NSArray *ma;
-  
+
   if (self->moreDayApts)
     return self->moreDayApts;
 
@@ -253,7 +253,7 @@
   // hope that array is time sorted
 
   firstDate = nil;
-  
+
   if ([apts count] > 0) {
     int            cnt = 0;
     id             apt;
@@ -308,7 +308,7 @@
     date = [firstDate beginOfDay];
     helper = [firstDate hourOfDay]*3600 + [firstDate minuteOfHour]*60 +
              [firstDate secondOfMinute];
-    
+
     while (([date hourOfDay]*3600 + [date minuteOfHour]*60 +
             [date secondOfMinute] + self->interval) <= helper)
       {
@@ -330,9 +330,9 @@
 
   [firstDate setTimeZone:[self->day timeZone]];
   [lastDate setTimeZone:[self->day timeZone]];
-  
+
   times = [NSMutableArray array];
-    
+
   while ((firstDate != nil) &&
          (([firstDate earlierDate:lastDate] == firstDate) ||
           ([firstDate isEqual:lastDate])))
@@ -349,7 +349,7 @@
 
 - (NSArray *)currentAppointments {
   NSArray *apts;
-  
+
   if (self->currentApts)
     return self->currentApts;
 
@@ -366,7 +366,7 @@
 
 - (BOOL)hasCurrentAppointments {
   NSArray *apts;
-  
+
   apts = [self currentAppointments];
   return ((apts!= nil) && ([apts count] > 0)) ? YES : NO;
 }
@@ -401,7 +401,7 @@
 
 - (NSFormatter *)aptFullInfoFormatter {
   id f;
-  
+
   f = [super aptFullInfoFormatter];
   [f setRelationDate:self->day];
 
@@ -412,20 +412,24 @@
   SkyAppointmentFormatter *f;
   NSMutableString         *format;
   id                      res, loc;
-  
+
   format = [NSMutableString stringWithCapacity:128];
-  
+
   res = [self->appointment valueForKey:@"resourceNames"];
   loc = [self->appointment valueForKey:@"location"];
   if (![res isNotNull]) res = nil;
   if (![loc isNotNull]) loc = nil;
   if ([res length] == 0 || [res isEqualToString:@" "]) res = nil;
   if ([loc length] == 0 || [loc isEqualToString:@" "]) loc = nil;
-  
+
+
+  /* GLC we hide some information at user sight */
+  /*
   if (loc != nil) [format appendString:@"; %L"];
   [format appendString:@"; %P"];
   if (res != nil) [format appendString:@"; %R"];
-  
+  */
+
   f = [SkyAppointmentFormatter formatterWithFormat:format];
   [f setShowFullNames:[self showFullNames]];
   return f;
@@ -433,7 +437,7 @@
 
 - (NSFormatter *)aptTimeFormatter {
   SkyAppointmentFormatter *format;
-  
+
   format = [SkyAppointmentFormatter formatterWithFormat:@"%S - %E; "];
   [format setRelationDate:self->day];
   if ([self showAMPMDates]) [format switchToAMPMTimes:YES];
@@ -446,7 +450,7 @@
   [self setCurrentDate:self->day];
   info = [self holidayInfo];
   [self setCurrentDate:nil];
-  
+
   return info;
 }
 
@@ -461,14 +465,14 @@
     [self setDay:_val];
     return;
   }
-  
+
   [super takeValue:_val forKey:_key];
 }
 
 - (id)valueForKey:(id)_key {
   if ([_key isEqualToString:@"day"])
     return [self day];
-  
+
   return [super valueForKey:_key];
 }
 

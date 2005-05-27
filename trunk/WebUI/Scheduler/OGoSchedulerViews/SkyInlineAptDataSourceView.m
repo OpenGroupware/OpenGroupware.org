@@ -49,33 +49,33 @@ static NSArray      *coreTeamAttrs   = nil;
   NSArray *tmpAptTypes;
   NSArray *custom;
   NSArray *special; // for palm / private / jobs etc.
-  
+
   if (didInit) return;
   didInit = YES;
-  
+
   corePersonAttrs = [[NSArray alloc] initWithObjects:
 				       @"login", @"name", @"firstname", nil];
   coreTeamAttrs   = [[NSArray alloc] initWithObjects:
 				       @"description", @"globalID", nil];
 
   /* configuredAptTypes */
-  
+
   tmpAptTypes = [ud arrayForKey:@"SkyScheduler_defaultAppointmentTypes"];
   if (tmpAptTypes == nil) tmpAptTypes = [NSArray array];
-  
+
   if ((custom = [ud arrayForKey:@"SkyScheduler_customAppointmentTypes"]))
     tmpAptTypes = [tmpAptTypes arrayByAddingObjectsFromArray:custom];
   if ((special = [ud arrayForKey:@"SkyScheduler_specialAppointmentTypes"]))
     tmpAptTypes = [tmpAptTypes arrayByAddingObjectsFromArray:special];
 
   configured = [tmpAptTypes copy];
-  
+
   /* mappedAptTypes */
   {
     NSEnumerator        *e;
     NSMutableDictionary *md;
     id                  one;
-    
+
     e  = [configured objectEnumerator];
     md = [NSMutableDictionary dictionaryWithCapacity:[configured count]];
     while ((one = [e nextObject]))
@@ -95,7 +95,7 @@ static NSArray      *coreTeamAttrs   = nil;
 - (id)init {
   if ((self = [super init])) {
     // TODO: accessing a session in -init is not recommended
-    self->hidePropAndNew = 
+    self->hidePropAndNew =
       [[self userDefaults] boolForKey:
 			     @"scheduler_hide_new_proposal_on_rescat"];
     self->yearDirectActionName  = @"viewYear";
@@ -137,9 +137,9 @@ static NSArray      *coreTeamAttrs   = nil;
 
 - (void)syncAwake {
   NSUserDefaults *ud;
-  
+
   [super syncAwake];
-  
+
   ud = [self userDefaults];
   self->showFullNames = [ud boolForKey:@"scheduler_overview_full_names"];
   self->showAMPMDates = [ud boolForKey:@"scheduler_AMPM_dates"];
@@ -174,7 +174,7 @@ static NSArray      *coreTeamAttrs   = nil;
 - (id)holidays {
   SkyHolidayCalculator *c;
   NSCalendarDate       *d;
-  
+
   if (self->holidays)
     return self->holidays;
   if ((d = [self currentDate]) == nil)
@@ -281,20 +281,20 @@ static NSArray      *coreTeamAttrs   = nil;
 
 - (BOOL)appointmentViewAccessAllowed {
   NSString *perms;
-  
+
   if ((perms = [self->appointment valueForKey:@"permissions"]))
     return [perms rangeOfString:@"v"].length > 0 ? YES : NO;
-  
+
   return [[self->appointment valueForKey:@"isViewAllowed"] boolValue];
 }
 - (BOOL)isAppointmentDraggable {
   NSString *perms;
-  
+
   if ((perms = [self->appointment valueForKey:@"permissions"]) == nil)
     return NO;
   if ([perms rangeOfString:@"e"].length == 0)
     return NO;
-  
+
   return YES;
 }
 - (BOOL)isPrivateAppointment {
@@ -304,7 +304,7 @@ static NSArray      *coreTeamAttrs   = nil;
 
 - (NSFormatter *)aptTimeFormatter {
   SkyAppointmentFormatter *format;
-  
+
   format = [SkyAppointmentFormatter formatterWithFormat:@"%S - %E"];
   [format setRelationDate:self->currentDate];
   if ([self showAMPMDates]) [format switchToAMPMTimes:YES];
@@ -331,9 +331,12 @@ static NSArray      *coreTeamAttrs   = nil;
 
   res = [self->appointment valueForKey:@"resourceNames"];
   loc = [self->appointment valueForKey:@"location"];
-  
+
   [format appendString:[NSString stringWithFormat:@"%%S - %%E; %%T"]];
 
+
+ /* GLC we hide some information at user sight */
+ /*
   if (loc != nil && [loc length] > 0 && ![loc isEqualToString:@" "])
     [format appendString:[NSString stringWithFormat:@"; %%L"]];
 
@@ -341,7 +344,8 @@ static NSArray      *coreTeamAttrs   = nil;
 
   if (res != nil && [res length] > 0 && ![res isEqualToString:@" "])
     [format appendString:[NSString stringWithFormat:@"; %%R"]];
-            
+*/
+
   f = [SkyAppointmentFormatter formatterWithFormat:format];
   [f setRelationDate:self->currentDate];
   [f setShowFullNames:self->showFullNames];
@@ -358,8 +362,13 @@ static NSArray      *coreTeamAttrs   = nil;
   return nil;
 }
 - (NSString *)shortTextForApt {
-  SkyAppointmentFormatter *f;
-  
+	NSString *popup;
+
+	popup = [NSString stringWithString:@""];
+	return popup;
+  /* GLC we hide some information at user sight */
+  /*SkyAppointmentFormatter *f;
+
   f = [SkyAppointmentFormatter formatterWithFormat:
                                @"%S - %E;\n%T;\n%L;\n%5P;\n%50R"];
   [f setRelationDate:[self referenceDateForFormatter]];
@@ -368,7 +377,7 @@ static NSArray      *coreTeamAttrs   = nil;
 
   return [NSString stringWithFormat:@"%@:\n%@",
                    [self aptTypeLabel],
-                   [f stringForObjectValue:self->appointment]];
+                   [f stringForObjectValue:self->appointment]];*/
 }
 
 - (NSFormatter *)aptContentFormatter {
@@ -383,11 +392,11 @@ static NSArray      *coreTeamAttrs   = nil;
 {
   NSEnumerator  *compEnum;
   EOKeyGlobalID *company;
-  
+
   compEnum   = [gids objectEnumerator];
   while ((company = [compEnum nextObject])) {
     NSString *e;
-    
+
     e = [company entityName];
     if ([e isEqualToString:@"Person"]) {
       [personGids addObject:company];
@@ -397,7 +406,7 @@ static NSArray      *coreTeamAttrs   = nil;
       [teamGids addObject:company];
       continue; // Note: this was 'break' before, which I think is wrong
     }
-    
+
     [self debugWithFormat:
 	    @"Note: unknown entity '%@' in company global-id: %@",
 	    e, company];
@@ -411,12 +420,12 @@ static NSArray      *coreTeamAttrs   = nil;
   NSArray      *comps;
   NSMutableArray *personGids;
   NSMutableArray *teamGids;
-  
+
   personGids = [NSMutableArray arrayWithCapacity:4];
   teamGids   = [NSMutableArray arrayWithCapacity:4];
   [self _splitResultGIDs:[[self dataSource] companies]
 	intoPersonGIDs:personGids andTeamGIDs:teamGids];
-  
+
   /* fetching persons and appending to name */
   if ([personGids count] > 0) {
     NSEnumerator *compEnum;
@@ -424,18 +433,18 @@ static NSArray      *coreTeamAttrs   = nil;
 
     comps = [self runCommand:@"person::get-by-globalid",
 		  @"gids", personGids, @"attributes", corePersonAttrs, nil];
-    
+
     compEnum = [comps objectEnumerator];
     while ((company = [compEnum nextObject])) {
       all = [all isNotNull]
 	? [all stringByAppendingString:@"; "]
         : (id)@"";
-	    
+
       if ((d = [company valueForKey:@"name"]) == nil)
         d = [company valueForKey:@"login"];
       else {
         NSString *fd;
-	
+
         if ((fd = [company valueForKey:@"firstname"]) != nil)
           d = [NSString stringWithFormat:@"%@, %@", d, fd];
       }
@@ -445,19 +454,19 @@ static NSArray      *coreTeamAttrs   = nil;
   if ([teamGids count] > 0) {
     NSEnumerator *compEnum;
     id company;
-    
+
     comps = [self runCommand:@"team::get-by-globalid",
 		    @"gids", teamGids, @"attributes", coreTeamAttrs, nil];
-    
+
     compEnum = [comps objectEnumerator];
     while ((company = [compEnum nextObject])) {
       all = [all isNotNull] ? [all stringByAppendingString:@"; "] : (id)@"";
-      
+
       all = [all stringByAppendingString:
                  [company valueForKey:@"description"]];
     }
   }
-  
+
   return all;
 }
 
@@ -472,8 +481,8 @@ static NSArray      *coreTeamAttrs   = nil;
 
   infos = [self currentHolidays];
   if (![infos count]) return @"";
-  
-  info  = [NSMutableString stringWithCapacity:20];  
+
+  info  = [NSMutableString stringWithCapacity:20];
   {
     // append holidays
     int      cnt;
@@ -488,7 +497,7 @@ static NSArray      *coreTeamAttrs   = nil;
       [info appendString:label];
     }
   }
-  
+
   return info;
 }
 - (NSString *)currentDayInfo {
@@ -596,7 +605,7 @@ static NSArray      *coreTeamAttrs   = nil;
 - (NSArray *)aptTypes {
   if (self->aptTypes)
     return self->aptTypes;
-  
+
   self->aptTypes = [configured retain];
   return self->aptTypes;
 }
@@ -613,7 +622,7 @@ static NSArray      *coreTeamAttrs   = nil;
 - (NSString *)aptTypeKey {
   /* getting type of apt, if private: '_private_' */
   NSString *key;
-  
+
   if ((key = [self->appointment valueForKey:@"aptType"]) != nil) return key;
   if ([self isPrivateAppointment]) return @"_private_";
   return [self _noneAptType];
@@ -621,12 +630,12 @@ static NSArray      *coreTeamAttrs   = nil;
 - (NSDictionary *)aptTypeDict {
   /* getting the config of apt type */
   NSString     *key;
-  id           one;  
+  id           one;
   static NSDictionary *defaultAppType = nil;
-  
+
   if (defaultAppType == nil)
     defaultAppType = [aptTypeMap valueForKey:[self _noneAptType]];
-  
+
   key = [self aptTypeKey];
   one = [key isNotNull] ? [aptTypeMap valueForKey:key] : nil;
   return (one != nil) ? one : defaultAppType;
@@ -636,11 +645,11 @@ static NSArray      *coreTeamAttrs   = nil;
   /* the label from the type-config or for default types from labels */
   NSDictionary *dict;
   NSString     *label;
-  
+
   dict  = [self aptTypeDict];
   label = [dict valueForKey:@"label"];
   if (label != nil) return label;
-  
+
   label = [[dict valueForKey:@"type"] stringValue];
   label = [@"aptType_" stringByAppendingString:label];
   return [[self labels] valueForKey:label];
@@ -667,33 +676,33 @@ static NSArray      *coreTeamAttrs   = nil;
 - (id)appointmentOID {
   EOKeyGlobalID *gid;
   id oid;
-  
+
   oid = [self->appointment valueForKey:@"dateId"];
   if ([oid isNotNull])
     return oid;
-  
+
   gid = [self->appointment valueForKey:@"globalID"];
   if ([gid isNotNull])
     return [[gid keyValuesArray] componentsJoinedByString:@"-"];
-  
+
   return nil;
 }
 - (id)appointmentEntity {
   static SEL gidSel = NULL;
   static SEL entSel = NULL;
   EOGlobalID *gid;
-  
+
   if (gidSel == NULL) gidSel = @selector(globalID);
   if (entSel == NULL) entSel = @selector(entityName);
 
   gid = [self->appointment valueForKey:@"globalID"];
-  
+
   if (gid == nil) {
     if ([self->appointment respondsToSelector:gidSel])
       gid = [self->appointment globalID];
   }
   if (gid != nil) return [gid entityName];
-  
+
   if ([self->appointment respondsToSelector:entSel])
     return [self->appointment entityName];
   return nil;
@@ -701,7 +710,7 @@ static NSArray      *coreTeamAttrs   = nil;
 
 - (id)viewAppointment {
   WOComponent *c;
-  
+
   /*
    * doesn't work with TableMatrix, which doesn't support
    * invokeActionForRequest
@@ -710,7 +719,7 @@ static NSArray      *coreTeamAttrs   = nil;
   if (self->appointment == nil)
     /* no appointment is set */
     return nil;
-  
+
   c = [[(id)[self session] navigation]
                   activateObject:[self appointment]
                   withVerb:@"view"];
@@ -732,17 +741,17 @@ static NSArray      *coreTeamAttrs   = nil;
   /* if person is dropped, make new apt with person as participant */
   NSDictionary *d;
   NSCalendarDate *toDate;
-  
+
   toDate = [self currentDate];
-  
+
   d = [NSDictionary dictionaryWithObjectsAndKeys:
                       [NSArray arrayWithObjects:&_person count:1],
                       @"participants",
                       toDate, @"startDate",
                       nil];
-  
+
   [[self session] transferObject:d owner:self];
-  
+
   return [[self session] instantiateComponentForCommand:@"new"
                          type:[NGMimeType mimeType:@"eo/date"]];
 }
@@ -751,21 +760,21 @@ static NSArray      *coreTeamAttrs   = nil;
   // TODO: split up this huge method
   NSCalendarDate *toDate, *oldStart;
   id apt, obj;
-  
+
   obj = [self appointment];
-  
+
   if ([obj isKindOfClass:[EOGenericRecord class]]) {
     NSString *entityName = [[obj entity] name];
 
     if ([entityName isEqualToString:@"Person"])
       return [self personWasDropped:obj];
   }
-  
+
   apt       = obj;
-  
+
   toDate   = [self currentDate];
   oldStart = [apt valueForKey:@"startDate"];
-  
+
 #if 0
   NSLog(@"dropped apt\n  '%@'\n  %@\n  weekday: %@",
         [apt valueForKey:@"title"],
@@ -775,11 +784,11 @@ static NSArray      *coreTeamAttrs   = nil;
 
   if (toDate == nil)
     return nil;
-  
+
   if (apt != nil) {
     NSTimeInterval duration;
     NSCalendarDate *newStart, *newEnd;
-    
+
     duration = [[apt valueForKey:@"endDate"] timeIntervalSinceDate:oldStart];
 
     newStart = [self droppedAptDateWithOldDate:oldStart];
@@ -789,12 +798,12 @@ static NSArray      *coreTeamAttrs   = nil;
     [newEnd setTimeZone:[newStart timeZone]];
 
     AUTORELEASE(newEnd);
-    
+
 
 #if 0
     NSLog(@"new from %@ to %@", newStart, newEnd);
 #endif
-    
+
     /* get full EO object */
     apt = [self runCommand:@"appointment::get-by-globalid",
                   @"gid",      [apt valueForKey:@"globalID"],
@@ -824,14 +833,14 @@ static NSArray      *coreTeamAttrs   = nil;
 
         if ([c isKindOfClass:[NSArray class]])
           c = ([c count] > 0) ? [c lastObject] : nil;
-      
+
         if (c)
           [apt takeValue:c forKey:@"owner"];
       }
     }
-    
+
     /* perform move */
-    
+
     if (apt == nil) {
       [self logWithFormat:@"couldn't fetch date .."];
     }
@@ -872,7 +881,7 @@ static NSArray      *coreTeamAttrs   = nil;
       }
       NS_ENDHANDLER;
     }
-    
+
     //    [[self dataSource] clear];
     [[self cacheDataSource] clear];
   }
@@ -882,7 +891,7 @@ static NSArray      *coreTeamAttrs   = nil;
 /* k/v coding */
 
 - (void)takeValue:(id)_val forKey:(id)_key {
-  if ([_key isEqualToString:@"dataSource"]) 
+  if ([_key isEqualToString:@"dataSource"])
     [self setDataSource:_val];
   else if ([_key isEqualToString:@"printMode"])
     self->printMode = [_val boolValue];
@@ -893,9 +902,9 @@ static NSArray      *coreTeamAttrs   = nil;
 }
 
 - (id)valueForKey:(id)_key {
-  if ([_key isEqualToString:@"dataSource"]) 
+  if ([_key isEqualToString:@"dataSource"])
     return [self dataSource];
-  if ([_key isEqualToString:@"holidays"]) 
+  if ([_key isEqualToString:@"holidays"])
     return [self holidays];
   if ([_key isEqualToString:@"printMode"])
     return [NSNumber numberWithBool:self->printMode];
