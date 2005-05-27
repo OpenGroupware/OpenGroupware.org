@@ -1,3 +1,4 @@
+//SkyDelegationList.m
 #include "common.h"
 #include <OGoFoundation/OGoSession.h>
 #include <OGoFoundation/OGoNavigation.h>
@@ -103,7 +104,6 @@ static NGMimeType   *eoDateType        = nil;
 	self->listDestinationInit = nil;
 	self->arraySource = nil;
 	self->arrayDestination = nil;
-
   }
   return self;
 }
@@ -828,7 +828,6 @@ static NSString *_personName(id self, id _person)
   id ac;
 
   ac = [[self session] activeAccount];
-  [self logWithFormat:@"######_particpants dans update : %@#######",_participants];  
   [_eo run:@"appointment::set-participants", @"participants",
        _participants, nil];
   if (![self commit]) 
@@ -1077,7 +1076,6 @@ static NSString *_personName(id self, id _person)
 
 - (id)selectedSource
 { 
-	[self logWithFormat:@"#### method selection:%@",self->selectedSource];
 	return self->selectedSource;
 }
 
@@ -1089,7 +1087,6 @@ static NSString *_personName(id self, id _person)
 //**********************************************************
 - (void)setSelectedSource : (id)_selectedSource
 {
-	[self logWithFormat:@"####### setSelectedSource : class %@, valeurs : %@",[_selectedSource class],_selectedSource ];
 	ASSIGN(self->selectedSource,_selectedSource);
 }
 
@@ -1101,7 +1098,6 @@ static NSString *_personName(id self, id _person)
 //**********************************************************
 -(void)setSelectedDestination:(id)_selectedDestination
 {
-	[self logWithFormat:@"####### setSelectedDestination : class %@, valeurs : %@",[_selectedDestination class],_selectedDestination ];
 	ASSIGN(self->selectedDestination,_selectedDestination);
 }
 
@@ -1163,7 +1159,6 @@ static NSString *_personName(id self, id _person)
 	rdvDelegationType = [[self appointmentAsEO] valueForKey:@"rdvType"];
 	if(rdvDelegationType == nil)
 	{
-		[self logWithFormat:@"### initListSource : %s %d",__FILE__,__LINE__];
 		return nil;
 	}
 	
@@ -1171,7 +1166,6 @@ static NSString *_personName(id self, id _person)
 	loginAccount = [[[self session] activeAccount] valueForKey:@"companyId"];
 	if(loginAccount == nil)
 	{
-		[self logWithFormat:@"### initListSource : %s %d",__FILE__,__LINE__];
 		return nil;
 	}
 	
@@ -1180,14 +1174,12 @@ static NSString *_personName(id self, id _person)
 	delegationsForUser = [self runCommand:@"appointment::get-delegation-for-delegate",@"withDelegateId",loginAccount,nil];
 	if(delegationsForUser == nil)
 	{
-		[self logWithFormat:@"### initListSource : %s %d",__FILE__,__LINE__];
 		return nil;
 	}
 	
 	// si pas de delegation pour ce user, la liste est forcement vide, donc on peut retourner nil tout de suite
 	if(([delegationsForUser count] <= 0) )
 	{
-		[self logWithFormat:@"### initListSource : %s %d",__FILE__,__LINE__];
 		return nil;
 	}
 	
@@ -1195,52 +1187,47 @@ static NSString *_personName(id self, id _person)
 	NSMutableString *typeDeRendezVous = [[NSMutableString alloc]init];
 	[typeDeRendezVous appendString:@"id"];
 	[typeDeRendezVous appendString:rdvDelegationType];
-	[self logWithFormat:@"### typeDeRendezVous: %@",typeDeRendezVous];
 	delegatesID = [delegationsForUser valueForKey:typeDeRendezVous];
-	
+	//cette chaine permet uniquement de transformer la cle dans le mm format q celle du dictionaire de 
+	//delegation
+
+	[typeDeRendezVous release];	
 	// si aucun ID dans le tableau, on retourne nil => il n'y a pas de delegation pour le type de rendez-vous
 	if([delegatesID count] <= 0)
 	{
-		[self logWithFormat:@"### initListSource : %s %d",__FILE__,__LINE__];
 		return nil;
 	}
 	
 	// on recupere la liste des participants. si pas de participants == GROS BUG, mais on degage proprement !!!
 	participantsList = [self participants];
+	[self logWithFormat:@"###[participantsList retainCount] :%d ",[participantsList retainCount]];
 	if([participantsList count] <= 0)
 	{
-		[self logWithFormat:@"### initListSource : %s %d",__FILE__,__LINE__];
 		return nil;
 	}
-	
-	[self logWithFormat:@"### initListSource : participantsList : %@",participantsList];
-	[self logWithFormat:@"### initListSource : delegatesID : %@",delegatesID];
-	
-	returnDictionary = [[NSMutableDictionary alloc] initWithCapacity:[participantsList count]];
+
+	//returnDictionary = [[NSMutableDictionary alloc] initWithCapacity:[participantsList count]];
+	returnDictionary = [[NSMutableDictionary alloc] init];
 	if(returnDictionary == nil)
 	{
-		[self logWithFormat:@"### initListSource : %s %d",__FILE__,__LINE__];
 		return nil;
 	}
 	
+        NSAutoreleasePool* pool=[[NSAutoreleasePool alloc]init];	
 	participantsEnumerator = [participantsList objectEnumerator];
 	while( (currentObject = [participantsEnumerator nextObject]) != nil )
 	{
 		participantCompanyID = [currentObject valueForKey:@"companyId"];
-		[self logWithFormat:@"### initListSource : %s %d participantCompanyID %@ (class %@)",__FILE__,__LINE__,participantCompanyID,[participantCompanyID class]];
-		[self logWithFormat:@"### initListSource : %s %d delegatesID %@ ",__FILE__,__LINE__,delegatesID];
 		if(participantCompanyID == nil)
 		{
-			[self logWithFormat:@"### initListSource : %s %d",__FILE__,__LINE__];
 			return nil;
 		}
 		
 		if([delegatesID containsObject:participantCompanyID] == YES)
 		{
-			[self logWithFormat:@"### initListSource : debut construction du dictionnaire"];
+			NSMutableString* NameAndFirstName = [[NSMutableString alloc] init];
 			// Anne a dit : on met Prenom, espace, Nom, c'est plsu joli !!!! A les femmes !!!
 			// donc le grouillot de base s'execute !!! 
-			NSMutableString* NameAndFirstName = [[NSMutableString alloc] init];
 			// prenom
 			if([currentObject valueForKey:@"firstname"] == nil)
 			{
@@ -1263,15 +1250,18 @@ static NSString *_personName(id self, id _person)
 			}
 			
 			[returnDictionary setObject:NameAndFirstName forKey:[participantCompanyID copy]];
+			[NameAndFirstName release];	
 		}
 		else
 		{
 			[self logWithFormat:@"### initListSource : %s %d !!!!!!!!!! LA COMPARAISON A ECHOUE !!!!!!!!!",__FILE__,__LINE__];
 		}
 	}
-	[self logWithFormat:@"### initListSource : fin initListSource"];
+
+	[pool release];
 	// finalement on retourne le dictionnaire
 	return returnDictionary;
+	//return [returnDictionary autorelease];
 }
 	
 //**********************************************************
@@ -1282,7 +1272,6 @@ static NSString *_personName(id self, id _person)
 //**********************************************************
 - (NSMutableArray*)loadListSource
 {	
-	[self logWithFormat:@"### loadListSource : %@",self->listSource];
 	// si self->flagListSource == yes, alors cela veut dire que l'on est passe une fois dans CETTE methode
 	// et que self->listSourceInit est deja initialisee. Sinon, on doit l'initialiser ici.
 	
@@ -1293,21 +1282,15 @@ static NSString *_personName(id self, id _person)
 			[self->listSourceInit release];
 		
 		self->listSource = [[self initListSource] retain];
-		[self logWithFormat:@"### loadListSource : valeur de self->listSource : %@", self->listSource];
-		
 		self->listSourceInit = [self->listSource copy];
-		[self logWithFormat:@"### loadListSource : valeur de self->listSourceInit : %@", self->listSourceInit];
 		
 	}
-	
 	if(self->arraySource != nil)
 		[self->arraySource release];
 	
 	self->arraySource = [[self generateArray:self->listSource] retain];
-	
 	return  self->arraySource;
 }
-
 //**********************************************************
 //
 //
@@ -1316,8 +1299,7 @@ static NSString *_personName(id self, id _person)
 //**********************************************************
 -(NSMutableDictionary *)initListDestination
 {
-	
-	NSArray* delegatesID;
+	NSArray* delegatesID = nil;
 	NSDictionary* delegationsForUser;
 	NSString* rdvDelegationType;
 	id loginAccount;
@@ -1340,15 +1322,10 @@ static NSString *_personName(id self, id _person)
 	loginAccount = [[[self session] activeAccount] valueForKey:@"companyId"];
 	if(loginAccount == nil)
 		return nil;
-	
-	[self logWithFormat:@"### initListDestination : loginAccount class %@", [loginAccount class]];
-	
 
 	loginAccountString = [[[self session] activeAccount] valueForKey:@"companyId"];
 	if(loginAccount == nil)
 		return nil;
-	
-	[self logWithFormat:@"### initListDestination : loginAccountString class %@", [loginAccountString class]];
 	
 	// on recupere les delegations pour l'utilisateur CONNECTE 
 	// si rien retourne nil : et on peut dire en plus GROS BUG.
@@ -1364,35 +1341,31 @@ static NSString *_personName(id self, id _person)
 	NSMutableString *typeDeRendezVous = [[NSMutableString alloc]init];
 	[typeDeRendezVous appendString:@"id"];
 	[typeDeRendezVous appendString:rdvDelegationType];
-	[self logWithFormat:@"### initListDestination : typedeRendezvous  : %@",rdvDelegationType];
 	
 	delegatesID = [delegationsForUser valueForKey:typeDeRendezVous];
+	[typeDeRendezVous release];
+	
 	// si aucun ID dans le tableau, on retourne nil => il n'y a pas de delegation pour le type de rendez-vous
 	if([delegatesID count] <= 0)
 	{
-		[self logWithFormat:@"### initListDestination : %s %d",__FILE__,__LINE__];
 		return nil;
 	}
 	// on recupere la liste des participants dans la source. 
 	if([self->listSource count] <= 0)
 	{
-	 	[self logWithFormat:@"### initListDestination : %s %d",__FILE__,__LINE__];
 	 	return nil;
 	}
-	
-	
-	[self logWithFormat:@"### initListDestination : self->listSource : %@",self->listSource];
-	[self logWithFormat:@"### initListDestination : delegatesID : %@",delegatesID];
-	
-	returnDictionary = [[NSMutableDictionary alloc] initWithCapacity:[delegatesID count]];
+	//l'allocation est en dehors pool donc nous ne géns pas le release dan sle poool
+	//returnDictionary = [[NSMutableDictionary alloc] initWithCapacity:[delegatesID count]];
+	returnDictionary = [[NSMutableDictionary alloc] init];
 	if(returnDictionary == nil)
 	{
-		[self logWithFormat:@"##### initListDestination : %s %d",__FILE__,__LINE__];
 		return nil;
 	}
-	
+
 	// on construit un tableau avec toutes les clezf de listSource
-	NSMutableArray* arrayOfKeyFromListSource = [[NSMutableArray alloc]initWithCapacity:[self->listSource count]];
+	//NSMutableArray* arrayOfKeyFromListSource = [[NSMutableArray alloc]initWithCapacity:[self->listSource count]];
+	NSMutableArray* arrayOfKeyFromListSource = [[NSMutableArray alloc]init];
 	delegateParticipantEnumerator = [self->listSource keyEnumerator];
 	while( (keyDelegateParticipant = [delegateParticipantEnumerator nextObject]) != nil )
 	{
@@ -1402,15 +1375,12 @@ static NSString *_personName(id self, id _person)
 	delegateIDEnumerator = [delegatesID objectEnumerator];
 	while((currentDelegateID = [delegateIDEnumerator nextObject]) != nil )
 	{
-		[self logWithFormat:@"### initListDestination : %s %d, currentDelegateID %@ (class %@)",__FILE__,__LINE__,currentDelegateID,[currentDelegateID class]];
-		[self logWithFormat:@"### initListDestination : %s %d, arrayOfKeyFromListSource %@ (class %@)",__FILE__,__LINE__,arrayOfKeyFromListSource];
 		//on cherche si personne dŽlŽguŽe n'est pas dans la liste participants
 		//on ajoute cette personne dans le dictionnaire de destination 
 		// if([keyDelegateParticipant intValue] != [currentDelegateID intValue])
 			
 		if([arrayOfKeyFromListSource containsObject:currentDelegateID] == NO)
 		{
-
 			NSMutableArray* attributesArray = [[NSMutableArray alloc] init];
 			[attributesArray addObject:@"name"];
 			[attributesArray addObject:@"firstname"];
@@ -1423,47 +1393,43 @@ static NSString *_personName(id self, id _person)
 			accountWithCompanyID = [self runCommand:@"person::get-by-globalid",@"gid",gid,@"attributes",attributesArray,nil];
 				
 			[attributesArray release];
-				
 			// Anne a dit : on met Prenom, espace, Nom, c'est plsu joli !!!! A les femmes !!!
 			// donc le grouillot de base s'execute !!! 
-				
-			[self logWithFormat:@"### initListDestination : account::get %@",accountWithCompanyID];
 			
 			NSMutableString* NameAndFirstName = [[NSMutableString alloc] init];
-				
 			valueFromObject = [accountWithCompanyID valueForKey:@"firstname"];
 				
 			if(valueFromObject == nil)
 				[NameAndFirstName appendString:@"NoFirstName"];
 			else
 			{
-				[self logWithFormat:@"### initListDestination : %s %d valueFromObject = %@",__FILE__,__LINE__,valueFromObject];
 				if ([valueFromObject isKindOfClass:[NSArray class]])
 					valueFromObject = [valueFromObject lastObject];
-				[self logWithFormat:@"### initListDestination : %s %d valueFromObject = %@",__FILE__,__LINE__,valueFromObject];
+				
 				[NameAndFirstName appendString:valueFromObject];
 			}
 				
 			[NameAndFirstName appendString:@" "];
-					
+			
 			valueFromObject = [accountWithCompanyID valueForKey:@"name"];
 			if(valueFromObject == nil)
 				[NameAndFirstName appendString:@"NoName"];
 			else
 			{
-				[self logWithFormat:@"### initListDestination : %s %d valueFromObject = %@",__FILE__,__LINE__,valueFromObject];
 				if ([valueFromObject isKindOfClass:[NSArray class]])
 					valueFromObject = [valueFromObject lastObject];
-				[self logWithFormat:@"### initListDestination : %s %d valueFromObject = %@",__FILE__,__LINE__,valueFromObject];
+				
 				[NameAndFirstName appendString:valueFromObject];
 			}
 		
 			[returnDictionary setObject:NameAndFirstName forKey:[currentDelegateID copy]];
+			[NameAndFirstName release];
 		}
 	}
-	
-	[self logWithFormat:@"### initListDestination : returnDictionary : %@",returnDictionary];
 	// finalement on retourne le dictionnaire
+	[self logWithFormat:@"##### avant release [delegatesID retainCount]: %d ",[delegatesID retainCount]];
+	[arrayOfKeyFromListSource release];
+	//return returnDictionary;
 	return [returnDictionary autorelease];
 }
 
@@ -1475,7 +1441,6 @@ static NSString *_personName(id self, id _person)
 //**********************************************************
 - (NSMutableArray*)loadListDestination
 {
-	[self logWithFormat:@"### loadListDestination"];
 
 	if ((self->flagListDestination == NO))
 	{
@@ -1484,12 +1449,9 @@ static NSString *_personName(id self, id _person)
 			[self->listDestination release];
 		
 		self->listDestination = [[self initListDestination] retain];
-		[self logWithFormat:@"### loadListDestination : valeur de self->listDestination : %@", self->listDestination];
 		
 		self->listDestinationInit = [self->listDestination copy];
-		[self logWithFormat:@"### oadListDestination : valeur de self->listDestinationInit : %@", self->listDestinationInit];
 	}
-	
 	if(self->arrayDestination != nil)
 		[self->arrayDestination release];
 	
@@ -1497,7 +1459,6 @@ static NSString *_personName(id self, id _person)
 
 	return  self->arrayDestination;
 }
-
 //**********************************************************
 //
 //
@@ -1518,7 +1479,6 @@ static NSString *_personName(id self, id _person)
 	
 	//On prend la liste des item sŽlectionnŽ
 	
-	[self logWithFormat:@"### checkItemSource :  list des objects selectionne :%@",_objectSelected];
 	if(_source == nil)
 	{
 		[self logWithFormat:@"###########################################"];
@@ -1550,10 +1510,7 @@ static NSString *_personName(id self, id _person)
 		valueInSource = [_source keyEnumerator];
 		while ((sourceKey = [valueInSource nextObject])!=nil)
 		{
-			[self logWithFormat:@"### checkItemSource : sourceKey (%@) : %@",[sourceKey class], sourceKey];
 			stringItem = [_source objectForKey:sourceKey];
-			[self logWithFormat:@"### checkItemSource : valueItem (%@) : %@",[stringItem class], stringItem];
-			[self logWithFormat:@"### checkItemSource : valueSelected (%@) : %@",[stringSelected class], stringSelected];
 			
 			if ([stringItem isEqualToString:stringSelected] == YES)
 			{
@@ -1561,7 +1518,6 @@ static NSString *_personName(id self, id _person)
 				// [_destination setObject:[stringItem copy] forKey:sourceKey];
 				// [_destination setObject:stringSelected forKey:sourceKey]; NO !!!!!!!!!!!!
 				// [_source removeObjectForKey:sourceKey];
-				[self logWithFormat:@"### checkItemSource : need to move object %@ for key %@", stringItem, sourceKey];
 				[dictionaryOfObjectsToMove setObject:[stringItem copy] forKey:[sourceKey copy]];
 			}
 		}
@@ -1577,7 +1533,6 @@ static NSString *_personName(id self, id _person)
 		[_source removeObjectForKey:theKeyToMove];
 		[_destination setObject:[stringToMove copy] forKey:[theKeyToMove copy]];
 	}
-	
 	[dictionaryOfObjectsToMove release];
 }
 
@@ -1601,8 +1556,6 @@ static NSString *_personName(id self, id _person)
 	
 	//person Info
 	personInfoAttrNames = [[ud arrayForKey:@"schedulerselect_personfetchkeys"] copy];
-	
-	[self logWithFormat:@"liste du dico pour Destination :%@",_source];
 	if ((_source !=nil))
 	{
 		enumListSourceKey = [_source keyEnumerator];
@@ -1614,15 +1567,12 @@ static NSString *_personName(id self, id _person)
 			{	
 				numberID = [NSNumber numberWithUnsignedInt:[[keyArray objectAtIndex:j] intValue]];
 				gid = [EOKeyGlobalID globalIDWithEntityName:@"Person" keys:&numberID keyCount:1 zone:nil];
-				[self logWithFormat:@"gid Person:%@",gid];
 				[globalIds addObject:gid];
-				[self logWithFormat:@"#####globalIds :%@#####",globalIds];
 			}		
 			// attribut = [[NSMutableArray alloc]initWithCapacity:[_source count]];
 			attribut = [self runCommand:@"person::get-by-globalid",@"gids",globalIds, @"attributes",personInfoAttrNames, nil];
 		}
 	}
-	
 	return attribut;
 }
 //**********************************************************
@@ -1660,12 +1610,7 @@ static NSString *_personName(id self, id _person)
 
 -(id) addPersonToDestination
 {
-	[self logWithFormat:@"#### method addPersonToDestination"];	
-	[self logWithFormat:@"#### listSource avant check : %@ ",self->listSource];	
-	[self logWithFormat:@"#### listDestination avant check : %@",self->listDestination];	
 	[self checkItemSource:self->listSource toDestination:self->listDestination withObjectSelected:self->selectedSource];
-	[self logWithFormat:@"#### listSource apres check : %@ ",self->listSource];	
-	[self logWithFormat:@"#### listDestination apres check : %@",self->listDestination];
 	return nil;
 }
 
@@ -1677,13 +1622,7 @@ static NSString *_personName(id self, id _person)
 //**********************************************************
 - (id) delPersonFromDestination
 {
-	[self logWithFormat:@"#### method delPersonFromDestination"];
-	[self logWithFormat:@"#### _destination avant check : %@ ",self->listSource];	
-	[self logWithFormat:@"#### _source  avant check : %@",self->listDestination];
-	[self logWithFormat:@"#### listDestination avant check : %@",self->selectedDestination];	
 	[self checkItemSource:self->listDestination toDestination:self->listSource withObjectSelected:self->selectedDestination];
-	[self logWithFormat:@"#### _destinationapres check : %@ ",self->listSource];	
-	[self logWithFormat:@"#### _source  apres check : %@",self->listDestination];
 	return nil;
 }
 
@@ -1696,7 +1635,6 @@ static NSString *_personName(id self, id _person)
 - (id) saveList
 {	
 	// TODO : reecrire cette methode !!! 
-	[self logWithFormat:@"#####save######"];
 	NSEnumerator* enumerSource;
 	NSEnumerator* enumerSourceInit;
 	NSEnumerator* enumerDestination;
@@ -1704,7 +1642,7 @@ static NSString *_personName(id self, id _person)
 	NSEnumerator *enumAjouterParticipant;
 	NSEnumerator *enumSupprimerParticipant;
 	NSMutableArray* sourceListInit = [[NSMutableArray alloc]init];
-	NSMutableArray *destinationListInit = [[NSMutableArray alloc]init];
+	NSMutableArray* destinationListInit = [[NSMutableArray alloc]init];
 	
 	id key=nil;
 	id objetASupprimer=nil;
@@ -1720,13 +1658,13 @@ static NSString *_personName(id self, id _person)
 	if (( self->listDestinationInit == nil) || ( self->listDestination == nil) )
 		return nil;
 	
-	
 	// participantRendezVous est le tableau qui v anous servir a finalement mettre a jour les participants du rendez-vous en 
 	// fin de fonction.
 	// on l'insitialise avec les participants actuels du rendez-vous : c'est voulu.
 	// plus tard dans le corp de la fonction, on deletera les participants qui ne doivent plus etre la.
+	NSAutoreleasePool* pool=[[NSAutoreleasePool alloc]init];
 	NSMutableArray* participantRendezVous = [NSMutableArray arrayWithArray:[app valueForKey:@"participants"]];
-	
+	[self logWithFormat:@"#####apres allocation [participantRendezVous retainCount]:%d",[participantRendezVous retainCount]];
 	// Est ce que la liste source peut etre vide : 
 	// oui : dans le cas ou parmis les participants au rendez-vous il n'y avait qu'une personne seule personne dŽlŽguŽ (elle est participant en plus, bien sure) 
 	// et que cette personne fait parti de la liste des dŽlŽguŽs. Dans ce cas, l'utilisateur courrant peut supprimer ce participant et donc la liste devient vide.
@@ -1737,60 +1675,44 @@ static NSString *_personName(id self, id _person)
 	
 	// si la liste source est vide cela veut dire que tous les dŽlŽguŽs qui Žtaient participants au rendez vous ont ŽtŽ supprimŽs. Ces participants doivent donc se
 	// retrouver dans le tableau supprimerParticipant
-	
-	// 
-	
 	if ( ([self->listSource count] > 0) )
 	{
-		[self logWithFormat:@"#### listSource (%d) :%@ ",[self->listSource count],self->listSource];
-		[self logWithFormat:@"#### listSourceInit (%d) :%@ ",[self->listSourceInit count],self->listSourceInit];
-		[self logWithFormat:@"#### listDestination (%d) :%@ ",[self->listDestination count],self->listDestination];
-		[self logWithFormat:@"#### listDestinationInit (%d) :%@ ",[self->listDestinationInit count],self->listDestinationInit];
-		
-		NSMutableArray *ajouterParticipant= [[NSMutableArray alloc]initWithCapacity:16];
-		NSMutableArray *supprimerParticipant= [[NSMutableArray alloc]initWithCapacity:16];
+		NSMutableArray *ajouterParticipant= [[NSMutableArray alloc]init];
+		[self logWithFormat:@"#####apres allocation [ ajouterParticipant retainCount]:%d",[ajouterParticipant retainCount]];
+		NSMutableArray *supprimerParticipant= [[NSMutableArray alloc]init];
+		[self logWithFormat:@"#####apres allocation [supprimerParticipant retainCount]:%d",[supprimerParticipant retainCount]];
 		NSEnumerator* testEnumerator = [ajouterParticipant objectEnumerator];
 		id object;
 		
 		while ( (object = [testEnumerator nextObject]) != nil)
 		{
 			id value = [object valueForKey:@"companyId"];
-			[self logWithFormat:@"$$$$$$$$$$  companyId value : %@",value];
 		}
-		
-		//on enumere la listSource 
 		enumerSourceInit = [self->listSourceInit keyEnumerator];
 		while ((key = [enumerSourceInit nextObject])!=nil)
 		{
-			[self logWithFormat:@"#### ajoute key = %@ (class %@)dans sourceListInit",key,[key class]];
 			[sourceListInit addObject:key];
 		}
 		
-		[self logWithFormat:@"###sourceListInit:%@",sourceListInit];
 		//on cherche si dans cette source le participant n'est pas dans le rendez vous
 		//on met ce participant dans une liste temporaire pour l'ajout au rendez-vous 
 		enumerSource = [self->listSource keyEnumerator];
 		while ((key = [enumerSource nextObject])!=nil)
 		{	
-			[self logWithFormat:@"### key : %@ (class %@)",key,[key class]];
 			//[source addObject:key];
 			NSNumber* source = [NSNumber numberWithInt: [key intValue]];
-
-			[self logWithFormat:@"###source:%@ (class %@)",source,[source class]];
+			[self logWithFormat:@"#####apres allocation [source1 retainCount]:%d",[source  retainCount]];
 			if (([sourceListInit containsObject:source] == NO))
 			{
 				[ajouterParticipant addObject:key];
+				[source release];
+				[self logWithFormat:@"#####apres release  [source1 retainCount]:%d",[source  retainCount]];
 			}
 			else
 			{
 				[self logWithFormat:@"------------------ reject : %@",source];
 			}
-				
-			[self logWithFormat:@"####ajouterParticipant :%@",ajouterParticipant];
 		}
-	
-		[self logWithFormat:@"delParticipant"];
-		
 		
 		enumerDestinationInit = [self->listDestinationInit keyEnumerator];
 		while ((key = [enumerDestinationInit nextObject])!=nil)
@@ -1804,61 +1726,67 @@ static NSString *_personName(id self, id _person)
 			while ((key = [enumerDestination nextObject])!=nil)
 			{	
 				NSNumber* destination = [NSNumber numberWithInt: [key intValue]];
-				[self logWithFormat:@"delParticipant"];
+				[self logWithFormat:@"#####apres allocation [destination retainCount]:%d",[destination  retainCount]];
 				if (([destinationListInit containsObject:destination]==NO))
 				{
 					[supprimerParticipant addObject:key];
+
+
 				}
 				else
 				{
 					[self logWithFormat:@"------------------ reject : %@",destination];
 				}
-				[self logWithFormat:@"#######supprimerParticipant :%@########",supprimerParticipant];
+				[destination release];
+				[self logWithFormat:@"#####apres release  [destination retainCount]:%d",[destination  retainCount]];
 			}
 		}
 		
 		if (( [ajouterParticipant count] > 0))
 		{
-			[self logWithFormat:@"#######  ajouterParticipant : %@",ajouterParticipant];
 			enumAjouterParticipant = [ajouterParticipant objectEnumerator];
 			while ((objetAAjouter = [enumAjouterParticipant nextObject])!=nil)
 			{
-					
-					NSNumber* numberID = [NSNumber numberWithInt: [objetAAjouter intValue]];
-					attributAjouterParticipant = [self runCommand:@"account::get",@"companyId",numberID, nil];
-					if ( [attributAjouterParticipant isKindOfClass:[NSArray class]] == YES)
+				NSNumber* numberID = [NSNumber numberWithInt: [objetAAjouter intValue]];
+				[self logWithFormat:@"######apres allocation [numberID1 retainCount]:%d",[numberID  retainCount]];
+				attributAjouterParticipant = [self runCommand:@"account::get",@"companyId",numberID, nil];
+				[numberID release];
+				[self logWithFormat:@"######apres release [numberID1 retainCount]:%d",[numberID  retainCount]];
+				attributAjouterParticipant = [self runCommand:@"account::get",@"companyId",numberID, nil];
+				if ( [attributAjouterParticipant isKindOfClass:[NSArray class]] == YES)
+				{
+					if (([participantRendezVous containsObject:[attributAjouterParticipant lastObject]]==NO))
 					{
-						if (([participantRendezVous containsObject:[attributAjouterParticipant lastObject]]==NO))
-						{
-							[participantRendezVous addObject:[attributAjouterParticipant lastObject]];
-						}
+						[participantRendezVous addObject:[attributAjouterParticipant lastObject]];
 					}
-					else
+				}
+				else
+				{
+					if (([participantRendezVous containsObject:attributAjouterParticipant]==NO))
 					{
-						if (([participantRendezVous containsObject:attributAjouterParticipant]==NO))
-						{
-							[participantRendezVous addObject:attributAjouterParticipant];
-						}
+						[participantRendezVous addObject:attributAjouterParticipant];
 					}
+				}
 			}
-			[self logWithFormat:@"#######attributAjouterParticipant avant le add dans attributAjouterParticipant :%@#####",attributAjouterParticipant];
+			[ajouterParticipant release];
+			[self logWithFormat:@"####apres ajouterParticipant [ajouterParticipant  retainCount]:%d",[ajouterParticipant retainCount]];
 		}
 		
 		if (([supprimerParticipant  count] > 0))
 		{
-			[self logWithFormat:@"#######  supprimerParticipant : %@",supprimerParticipant];
 			enumSupprimerParticipant = [supprimerParticipant objectEnumerator];
 			while ((objetASupprimer = [enumSupprimerParticipant nextObject])!=nil)
 			{		
 				NSNumber* numberID = [NSNumber numberWithInt: [objetASupprimer intValue]];
+				[self logWithFormat:@"######apres allocation [numberID2 retainCount]:%d",[numberID  retainCount]];
 				attributSupprimerParticipant = [self runCommand:@"account::get",@"companyId",numberID, nil];
+				[numberID release];
+				[self logWithFormat:@"######apres release [numberID2 retainCount]:%d",[numberID  retainCount]];
 				// ANCIEN
 				// if (([participantRendezVous containsObject:attributSupprimerParticipant]==YES))
 				// {
 				// 	[participantRendezVous removeObject:attributSupprimerParticipant];
 				// }
-						
-						
 				/// NOUVEAU
 				if ( [attributSupprimerParticipant isKindOfClass:[NSArray class]] == YES)
 				{
@@ -1875,23 +1803,23 @@ static NSString *_personName(id self, id _person)
 					}
 				}
 			}
+			//[supprimerParticipant release];
 		}
 	}
 	else 
 	{		
-			// marche pas !!!!! 
-		[self logWithFormat:@"######remove si listeSource vide"];
 		NSMutableArray* source = [[NSMutableArray alloc]initWithCapacity:[self->listSourceInit count]];
+		[self logWithFormat:@"####apres allocation [ source2 retainCount]:%d",[source  retainCount]];
 		enumerSource = [self->listSourceInit keyEnumerator];
 		while ((key = [enumerSource nextObject])!=nil)
 		{	
 			[source addObject:key];
 		}
-			
 		enumSupprimerParticipant = [source 	objectEnumerator];
 		while ((objetASupprimer=[enumSupprimerParticipant nextObject])!=nil)
 		{
 			NSNumber* numberID = [NSNumber numberWithInt: [objetASupprimer intValue]];
+			[self logWithFormat:@"#####apres allocation [numberID3 retainCount]:%d",[numberID  retainCount]];
 			attributSupprimerParticipant = [self runCommand:@"account::get",@"companyId",numberID, nil];
 			if ( [attributSupprimerParticipant isKindOfClass:[NSArray class]] == YES)
 			{
@@ -1908,11 +1836,12 @@ static NSString *_personName(id self, id _person)
 				}
 			}
 		}
+		[source release];
 	}
-	
-	
-	[self logWithFormat:@"##### participants rdv : %s %d participantRendezVous = %@",__FILE__,__LINE__,participantRendezVous];
 	[self updateParticipants:participantRendezVous ofEO:app logText:[[self labels] valueForKey:@"addParticipants"]];
+	//[participantRendezVous release];
+	[self logWithFormat:@"[participantRendezVous retainCount] : %d",[participantRendezVous retainCount]];
+	[pool release];
 	return nil;
 }
 

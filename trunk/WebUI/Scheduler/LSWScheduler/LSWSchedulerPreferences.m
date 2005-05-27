@@ -528,10 +528,10 @@ static NSArray  *teamAttrNames = nil;
 {
   self->writeAccess = [[self _getGlobalIDsDefault: @"scheduler_write_access_accounts" entityName:@"Person"] mutableCopy];
   [self->writeAccess addObjectsFromArray : [self _getGlobalIDsDefault:@"scheduler_write_access_teams" entityName:@"Team"]];
-  [self logWithFormat:@"_processWriteAccess : self->writeAccess = %@",self->writeAccess];
+//  [self logWithFormat:@"_processWriteAccess : self->writeAccess = %@",self->writeAccess];
   
   self->selectedWriteAccess = [[NSArray alloc] initWithArray:self->writeAccess];
-  [self logWithFormat:@"_processWriteAccess : self->selectedWriteAccess = %@",self->selectedWriteAccess];
+ // [self logWithFormat:@"_processWriteAccess : self->selectedWriteAccess = %@",self->selectedWriteAccess];
 }
 //###ADDED BY AO###
 //######READ#######
@@ -550,21 +550,15 @@ static NSArray  *teamAttrNames = nil;
    NSArray * arrayOfID = nil;
 
    resultDictionary = [self runCommand:@"appointment::get-delegation",nil];
-   [self logWithFormat:@"_processDelegRdvPrivate : resultDictionary = %@",resultDictionary];
-   
    arrayOfID = [[resultDictionary valueForKey:@"idPrivate"] retain ];
-   [self logWithFormat:@"_processDelegRdvPrivate : arrayOfID = %@",arrayOfID];
-
    NSArray * objectsPerson  = [self _getGIDSforIds:arrayOfID entityName:@"Person"];
-   [self logWithFormat:@"_processDelegRdvPrivate : objectsPerson = %@",objectsPerson];
    NSArray * objectsTeam = [self _getGIDSforIds:arrayOfID entityName:@"Team"];
-   [self logWithFormat:@"_processDelegRdvPrivate : objectsTeam = %@",objectsTeam];
 
    // First we search for person
    if ( (objectsPerson != nil) && ([objectsPerson count] > 0) )
    {
-	   NSMutableArray * gids = [ NSMutableArray arrayWithCapacity:[objectsPerson count]];
-	   
+	   //NSMutableArray * gids = [ NSMutableArray arrayWithCapacity:[objectsPerson count]];
+           NSMutableArray* gids = [[NSMutableArray alloc]init];	   
 	   for(i = 0 ; i < [objectsPerson count]; i++)
 	   {
 		   [gids addObject:[[objectsPerson objectAtIndex:i] valueForKey:@"globalID"] ];
@@ -582,14 +576,15 @@ static NSArray  *teamAttrNames = nil;
 	   }
 	   else
 		   [self logWithFormat:@"_processDelegRdvPrivate : PERSON self->delegRdvPrivate = nil"];
-   
-	   [self logWithFormat:@"_processDelegRdvPrivate : PERSON self->delegRdvPrivate = %@",self->delegRdvPrivate];
+   	   
+	[gids release];
    }
 
    // Second for Team
-   if ( (objectsTeam != nil) && ([objectsTeam count] > 0) )
+   if ( (objectsTeam != nil) || ([objectsTeam count] > 0) )
    {
-	   NSMutableArray * gids = [ NSMutableArray arrayWithCapacity:[objectsTeam count]];
+	   //NSMutableArray * gids = [ NSMutableArray arrayWithCapacity:[objectsTeam count]];
+           NSMutableArray* gids = [[NSMutableArray alloc]init];	   
 	   
 	   for(i = 0 ; i < [objectsTeam count]; i++)
 	   {
@@ -624,12 +619,10 @@ static NSArray  *teamAttrNames = nil;
 		   else
 			   [self logWithFormat:@"_processDelegRdvPrivate : TEAM self->delegRdvPrivate = nil"];
 	   }
-	   [self logWithFormat:@"_processDelegRdvPrivate : TEAM self->delegRdvPrivate = %@",self->delegRdvPrivate];
+	[gids release];
    }
-   [self logWithFormat:@"_processDelegRdvPrivate : AVANT ALLOC self->delegRdvPrivate = %@",self->delegRdvPrivate];
    if(self->delegRdvPrivate != nil)
 	   self->selectedDelegRdvPrivate = [[NSArray alloc] initWithArray:self->delegRdvPrivate];
-   [self logWithFormat:@"### selectedDelegPrivate :%@",self->selectedDelegRdvPrivate];
 }
 
 - (void)_processDelegRdvPublic
@@ -639,15 +632,15 @@ static NSArray  *teamAttrNames = nil;
 	NSArray * arrayOfID = nil;
 	
 	resultDictionary = [self runCommand:@"appointment::get-delegation",nil];
-	[self logWithFormat:@"_processDelegRdvPublic : resultDictionary = %@",resultDictionary];
+	//[self logWithFormat:@"_processDelegRdvPublic : resultDictionary = %@",resultDictionary];
 	
 	arrayOfID = [[resultDictionary valueForKey:@"idPublic"] retain ];
-	[self logWithFormat:@"_processDelegRdvPublic : arrayOfID = %@",arrayOfID];
+	//[self logWithFormat:@"_processDelegRdvPublic : arrayOfID = %@",arrayOfID];
 	
 	NSArray * objectsPerson  = [self _getGIDSforIds:arrayOfID entityName:@"Person"];
-	[self logWithFormat:@"_processDelegRdvPublic : objectsPerson = %@",objectsPerson];
+	//[self logWithFormat:@"_processDelegRdvPublic : objectsPerson = %@",objectsPerson];
 	NSArray * objectsTeam = [self _getGIDSforIds:arrayOfID entityName:@"Team"];
-	[self logWithFormat:@"_processDelegRdvPublic : objectsTeam = %@",objectsTeam];
+	//[self logWithFormat:@"_processDelegRdvPublic : objectsTeam = %@",objectsTeam];
 	
 	// First we search for person
 	if ( (objectsPerson != nil) && ([objectsPerson count] > 0) )
@@ -672,7 +665,7 @@ static NSArray  *teamAttrNames = nil;
 		else
 			[self logWithFormat:@"_processDelegRdvPublic : PERSON self->delegRdvPublic = nil"];
 		
-		[self logWithFormat:@"_processDelegRdvPublic : PERSON self->delegRdvPublic = %@",self->delegRdvPrivate];
+	//	[self logWithFormat:@"_processDelegRdvPublic : PERSON self->delegRdvPublic = %@",self->delegRdvPrivate];
 	}
 	
 	// Second for Team
@@ -718,7 +711,8 @@ static NSArray  *teamAttrNames = nil;
 	[self logWithFormat:@"_processDelegRdvPublic : AVANT ALLOC self->delegRdvPrivate = %@",self->delegRdvPublic];
 	if(self->delegRdvPublic != nil)
 		self->selectedDelegRdvPublic = [[NSArray alloc] initWithArray:self->delegRdvPublic];
-	[self logWithFormat:@"### _processDelegRdvPublic :%@",self->selectedDelegRdvPublic];
+	//[self logWithFormat:@"### _processDelegRdvPublic :%@",self->selectedDelegRdvPublic];
+	
 }
 
 - (void)_processDelegRdvConfidential
@@ -728,15 +722,15 @@ static NSArray  *teamAttrNames = nil;
 	NSArray * arrayOfID = nil;
 	
 	resultDictionary = [self runCommand:@"appointment::get-delegation",nil];
-	[self logWithFormat:@"_processDelegRdvConfidential : resultDictionary = %@",resultDictionary];
+	//[self logWithFormat:@"_processDelegRdvConfidential : resultDictionary = %@",resultDictionary];
 	
 	arrayOfID = [[resultDictionary valueForKey:@"idConfidential"] retain ];
-	[self logWithFormat:@"_processDelegRdvConfidential : arrayOfID = %@",arrayOfID];
+	//[self logWithFormat:@"_processDelegRdvConfidential : arrayOfID = %@",arrayOfID];
 	
 	NSArray * objectsPerson  = [self _getGIDSforIds:arrayOfID entityName:@"Person"];
-	[self logWithFormat:@"_processDelegRdvConfidential : objectsPerson = %@",objectsPerson];
+	//[self logWithFormat:@"_processDelegRdvConfidential : objectsPerson = %@",objectsPerson];
 	NSArray * objectsTeam = [self _getGIDSforIds:arrayOfID entityName:@"Team"];
-	[self logWithFormat:@"_processDelegRdvConfidential : objectsTeam = %@",objectsTeam];
+	//[self logWithFormat:@"_processDelegRdvConfidential : objectsTeam = %@",objectsTeam];
 	
 	// First we search for person
 	if ( (objectsPerson != nil) && ([objectsPerson count] > 0) )
@@ -761,7 +755,7 @@ static NSArray  *teamAttrNames = nil;
 		else
 			[self logWithFormat:@"_processDelegRdvConfidential : PERSON self->delegRdvConfidential = nil"];
 		
-		[self logWithFormat:@"_processDelegRdvConfidential : PERSON self->delegRdvConfidential = %@",self->delegRdvConfidential];
+	//	[self logWithFormat:@"_processDelegRdvConfidential : PERSON self->delegRdvConfidential = %@",self->delegRdvConfidential];
 	}
 	
 	// Second for Team
@@ -807,7 +801,7 @@ static NSArray  *teamAttrNames = nil;
 	[self logWithFormat:@"_processDelegRdvConfidential : AVANT ALLOC self->delegRdvConfidential = %@",self->delegRdvConfidential];
 	if(self->delegRdvConfidential != nil)
 		self->selectedDelegRdvConfidential = [[NSArray alloc] initWithArray:self->delegRdvConfidential];
-	[self logWithFormat:@"### _processDelegRdvConfidential :%@",self->selectedDelegRdvConfidential];
+	//[self logWithFormat:@"### _processDelegRdvConfidential :%@",self->selectedDelegRdvConfidential];
 }
 
 - (void)_processDelegRdvNormal
@@ -817,15 +811,15 @@ static NSArray  *teamAttrNames = nil;
 	NSArray * arrayOfID = nil;
 	
 	resultDictionary = [self runCommand:@"appointment::get-delegation",nil];
-	[self logWithFormat:@"_processDelegRdvNormal : resultDictionary = %@",resultDictionary];
+	//[self logWithFormat:@"_processDelegRdvNormal : resultDictionary = %@",resultDictionary];
 	
 	arrayOfID = [[resultDictionary valueForKey:@"idNormal"] retain ];
-	[self logWithFormat:@"_processDelegRdvPrivate : arrayOfID = %@",arrayOfID];
+	//[self logWithFormat:@"_processDelegRdvPrivate : arrayOfID = %@",arrayOfID];
 	
 	NSArray * objectsPerson  = [self _getGIDSforIds:arrayOfID entityName:@"Person"];
-	[self logWithFormat:@"_processDelegRdvNormal : objectsPerson = %@",objectsPerson];
+	//[self logWithFormat:@"_processDelegRdvNormal : objectsPerson = %@",objectsPerson];
 	NSArray * objectsTeam = [self _getGIDSforIds:arrayOfID entityName:@"Team"];
-	[self logWithFormat:@"_processDelegRdvNormal : objectsTeam = %@",objectsTeam];
+	//[self logWithFormat:@"_processDelegRdvNormal : objectsTeam = %@",objectsTeam];
 	
 	// First we search for person
 	if ( (objectsPerson != nil) && ([objectsPerson count] > 0) )
@@ -850,7 +844,7 @@ static NSArray  *teamAttrNames = nil;
 		else
 			[self logWithFormat:@"_processDelegRdvNormal : PERSON self->delegRdvNormal = nil"];
 		
-		[self logWithFormat:@"_processDelegRdvNormal : PERSON self->delegRdvNormal = %@",self->delegRdvNormal];
+	//	[self logWithFormat:@"_processDelegRdvNormal : PERSON self->delegRdvNormal = %@",self->delegRdvNormal];
 	}
 	
 	// Second for Team
@@ -893,10 +887,10 @@ static NSArray  *teamAttrNames = nil;
 		}
 		[self logWithFormat:@"_processDelegRdvNormal : TEAM self->delegRdvNormal = %@",self->delegRdvNormal];
 	}
-	[self logWithFormat:@"_processDelegRdvNormal : AVANT ALLOC self->delegRdvNormal = %@",self->delegRdvNormal];
+	//[self logWithFormat:@"_processDelegRdvNormal : AVANT ALLOC self->delegRdvNormal = %@",self->delegRdvNormal];
 	if(self->delegRdvNormal != nil)
 		self->selectedDelegRdvNormal = [[NSArray alloc] initWithArray:self->delegRdvNormal];
-	[self logWithFormat:@"### selectedDelegRdvNormal :%@",self->selectedDelegRdvNormal];
+	//[self logWithFormat:@"### selectedDelegRdvNormal :%@",self->selectedDelegRdvNormal];
 }
 //###############
 
@@ -1945,7 +1939,7 @@ static NSArray  *teamAttrNames = nil;
 - (void) saveDelegation
 {
 	//id anObject = nil;
-	id aValue = nil;
+        id aValue = nil;
 
 	NSMutableArray    * result   = [[NSMutableArray alloc]initWithCapacity:16];
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -1955,7 +1949,7 @@ static NSArray  *teamAttrNames = nil;
 	NSMutableArray * idNormal = [[NSMutableArray alloc] initWithCapacity:[self->selectedDelegRdvNormal count]];
 	NSMutableArray * idPublic = [[NSMutableArray alloc] initWithCapacity:[self->selectedDelegRdvPublic count]];
 
-	[self logWithFormat:@"########### sauvegarde des delegations (DEBUT) #################"];
+	//[self logWithFormat:@"########### sauvegarde des delegations (DEBUT) #################"];
 
 	//**********************
 	// process Private array
@@ -2025,7 +2019,7 @@ static NSArray  *teamAttrNames = nil;
 
 	[dico setObject:idPublic forKey:@"idPublic"];
 	
-	[self logWithFormat:@"###dico pour la delegation: %@",dico];
+	//[self logWithFormat:@"###dico pour la delegation: %@",dico];
 	result = [self runCommand:@"appointment::set-delegation",@"dictDelegation",dico,nil];
 
 	[idPrivate release];
@@ -2039,7 +2033,7 @@ static NSArray  *teamAttrNames = nil;
 	idPublic 	 =nil;
 	[pool release];
 
-	[self logWithFormat:@"########### sauvegarde des delegations (FIN) #################"];
+	//[self logWithFormat:@"########### sauvegarde des delegations (FIN) #################"];
 }
 
 - (void) getIdDelegation
@@ -2051,9 +2045,7 @@ static NSArray  *teamAttrNames = nil;
 	id 		attribut	     = nil;
 	NSDictionary   *dico;
 	result   = [[NSMutableArray alloc]initWithCapacity:16];
-        	
-	[self logWithFormat:@"########### getIdDelegation dans LSWPreferences des delegations (DEBUT) #################"];
-	
+        //result = [[NSMutableArray alloc]init]; 	
 	//Récuparation les valeurs du et on stock les données dans un tableau 
 	result = [self runCommand:@"appointment::get-delegation",nil];
 	enumerator = [result objectEnumerator];
@@ -2066,28 +2058,14 @@ static NSArray  *teamAttrNames = nil;
 			attribut = [personDeleg valueForKey:@"idNormal"];
 			attribut = [self runCommand:@"person::get",@"companyId",descriptionIdNormal,nil];				
 			attribut = [attribut valueForKey:@"description"];
-			[self logWithFormat:@"dans LSWSchedulerPreferences description de la personne :%@",descriptionIdNormal];
 		}
 	}
-	[self logWithFormat:@"########### getIdDelegation dans LSWPreferences des delegations (FIN) #################"];
 	
 	//Récuparation les valeurs du et on stock les données dans un tableau
 	dico= [[NSMutableDictionary alloc]init];
 	dico= [self runCommand:@"appointment::get-delegation",nil];
-	//result = [self runCommand:@"appointment::set-delegation",@"dictDelegation",dico,nil];
-	
-	//enumerator = [result objectEnumerator];
-	
-	/*if (result !=nil){
-		//traitement des données afin d'obtenir la description  du compte grace au companyId
-		while ((personDeleg = [enumerator nextObject])){
-		        attribut = [personDeleg valueForKey:@"idNormal"];
-			attribut = [self runCommand:@"person::get",@"companyId",descriptionIdNormal,nil];				
-			attribut = [attribut valueForKey:@"description"];
-			[self logWithFormat:@"dans LSWSchedulerPreferences description de la personne :%@",descriptionIdNormal];
-		}
-	}*/
-	[self logWithFormat:@"########### getIdDelegation dans LSWPreferences des delegations (FIN) #################"];
+	//[dico release];
+	//[result release];
 }
 
 //#############

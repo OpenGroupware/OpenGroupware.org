@@ -498,7 +498,7 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   NSMutableArray *personIds;
   NSMutableArray *teamIds;
   NSMutableArray *result;
-  //###ADDED BY AO###
+  //###ADDED BY AO###s
   NSNumber	 *crkey = nil;
   
   personIds = [[NSMutableArray alloc] init];
@@ -506,10 +506,8 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   result    = [[NSMutableArray alloc] init];
 
   pkey = [[self object] valueForKey:@"ownerId"];
-  [self logWithFormat:@"GLC write Owner: %@", pkey];
   //###ADDED BY AO###
   crkey = [[self object] valueForKey:@"creatorId"];
-  [self logWithFormat:@"GLC write Creator: %@", crkey];
   oid  = [EOKeyGlobalID globalIDWithEntityName:@"Person" 
                           keys:&pkey keyCount:1 zone:NULL];
   [personIds addObject:oid];
@@ -521,7 +519,6 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   
   [result addObjectsFromArray:[self _fetchPersonGIDs:personIds]];
   [result addObjectsFromArray:[self _fetchTeamGIDs:teamIds]];
-  [self logWithFormat:@"resultat de la writeAccess %@",result];
   [self _setWriteACLStringUsingRecords:result];
   
   [personIds release]; personIds = nil;
@@ -566,7 +563,6 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   teamIds   = [[NSMutableArray alloc] init];
   result    = [[NSMutableArray alloc] init];
   pkey = [[self object] valueForKey:@"ownerId"];
-  [self logWithFormat:@"###GLC read Owner: %@", pkey];
   oid  = [EOKeyGlobalID globalIDWithEntityName:@"Person"
 	  		   keys:&pkey keyCount:1 zone:NULL];		
    	  [personIds addObject:oid];
@@ -581,8 +577,6 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   
   
   [self _setReadACLStringUsingRecords:result]; 
-  [self logWithFormat:@"###GLC read list: %@", list];
-  [self logWithFormat:@"###GLC result list: %@", result];
   [personIds release]; personIds = nil;
   [teamIds   release]; teamIds   = nil;
   [result    release]; result    = nil;
@@ -675,8 +669,8 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
       [appointment takeValue:creator forKey:@"creator"];
   }
   [self _fetchWriteAccessList];
- //ADDED BY AO#######
-  // ######READ######
+ // #####ADDED BY AO#######
+ // ######READ######
  [self _fetchReadAccessList];
   return YES;
 }

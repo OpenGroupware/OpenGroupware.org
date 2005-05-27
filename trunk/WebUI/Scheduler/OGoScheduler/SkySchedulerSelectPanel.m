@@ -186,7 +186,7 @@ static NSNumber     *yesNum = nil;
 }
 
 - (void)dealloc {
-  [self->activeAccount    release];
+  [self->activeAccount     release];
   [self->defaults          release];
   [self->searchString      release];
   [self->accounts          release];
@@ -200,7 +200,7 @@ static NSNumber     *yesNum = nil;
   [self->selTmCache        release];
   [self->resources         release];
   [self->selectedResources release];
-  [self->selResCache      release];
+  [self->selResCache       release];
   [self->selectedAptTypes  release];
   [self->aptTypes          release];
 
@@ -968,7 +968,7 @@ static NSNumber     *yesNum = nil;
 {
 	// ##### TD ########
 	NSNumber *num = [self->activeAccount valueForKey:@"companyId"];
-	[self logWithFormat:@"### activeAccountID : %@",num];
+	// [self logWithFormat:@"### activeAccountID : %@",num];
 	return num;
 	// ##### TD ########
 }
@@ -1222,10 +1222,10 @@ static NSNumber     *yesNum = nil;
 - (NSString *)delegationLabel 
 {
   NSString *label;
-  [self logWithFormat:@"###### delegationLabel : self->item %@",self->item];
+ // [self logWithFormat:@"###### delegationLabel : self->item %@",self->item];
   if(self->item == nil)
 	  //return @"-----------";
-	  return @"mon agenda";
+	  return @"Mon Agenda";
 
   label = [self->item valueForKey:@"label"];
 
@@ -1247,39 +1247,33 @@ static NSNumber     *yesNum = nil;
 {
   
     NSMutableArray		*delegList= nil;
-    NSArray				*attribut=nil;
+    NSMutableArray		*attribut=nil;
     NSMutableString		*accountString=nil;
     NSEnumerator		*keyEnumerator = nil;
     NSArray*			arrayOfID = nil;	
     id					resultDictionary = nil;
-    id					resultDictionaryTeam = nil;
     int					j; 
     id					key = nil;
     id					aPerson = nil;
     id					hasFirstname=nil;
     id					hasName=nil;
     id					loginAccount=nil;
-	 id					teamAccount=nil;
+	id					teamAccount=nil;
     NSMutableArray		*globalIds = nil;
     NSEnumerator		*enumPerson = nil;
     NSNumber			*numberID = nil;
     EOKeyGlobalID		*gid = nil;
     NSMutableDictionary * newChoice = nil; 
-    //id 		    teamAccount=nil; 
-    //initialisation
-    delegList = [[NSMutableArray alloc] initWithCapacity:16];
-
+    //On conserve delegList en dehors du Pool, afin de conserver la valeur du dictionnaire
+	delegList = [[NSMutableArray alloc] initWithCapacity:16];
     loginAccount = [[[self session] activeAccount] valueForKey:@"companyId"];   
     teamAccount =  [self run:@"team::members", @"object", loginAccount, nil];		    
-    [self logWithFormat:@"*******teamAccount :%@******",teamAccount]; 
-	// retreive delegation for active account
+    //[self logWithFormat:@"*******teamAccount :%@******",teamAccount]; 
+	// retrieve delegation for active account
     resultDictionary = [self runCommand:@"appointment::get-delegation-for-delegate",@"withDelegateId",loginAccount,nil];
    
-
     if (self->delegation)
-
-	[self->delegation release];
-
+		[self->delegation release];
 
      // we copy all value of the resultDictionary
     self->delegation = [[NSDictionary alloc] initWithDictionary:resultDictionary copyItems:YES];
@@ -1288,59 +1282,53 @@ static NSNumber     *yesNum = nil;
     // remember that for each key (four) we have an array (never null) containing
     // ids (person and team)
     keyEnumerator = [resultDictionary keyEnumerator];
-   
+    NSAutoreleasePool* pool=[[NSAutoreleasePool alloc]init];
     while ((key = [keyEnumerator nextObject]))
     {
-
 		arrayOfID = [resultDictionary valueForKey:key];
 		// so if this array contain something 
 		// we will construct a dictionary with ours keys
 		if( (arrayOfID != nil) && ([arrayOfID count] > 0) )
 		{
-			globalIds = [NSMutableArray arrayWithCapacity:[arrayOfID count]];
+			//Nous devons alloué le NSMutableArray avec un alloc init puisqu'avec la méthode 
+			//arrayWithCapacity il ajoute un retain par conséquent  nous ne pourrions pas executer un release
+			globalIds = [[NSMutableArray alloc]init];
 			for ( j = 0 ; j < [arrayOfID count]; j++)
 			{	
 				numberID = [NSNumber numberWithUnsignedInt:[[arrayOfID objectAtIndex:j] intValue]];
 				gid = [EOKeyGlobalID globalIDWithEntityName:@"Person" keys:&numberID keyCount:1 zone:nil];
 				[self logWithFormat:@"gid Person:%@",gid];
-			
 				[globalIds addObject:gid];
 			}
-			attribut = nil;
-		 	
-			[self logWithFormat:@"juste avant person::get-by-globalid"];
 			attribut = [self runCommand:@"person::get-by-globalid",@"gids",globalIds, @"attributes",personInfoAttrNames, nil];
-			[self logWithFormat:@"#####attributPerson :%@",attribut];
-
+			[globalIds release];
+			
 			if(attribut != nil)
 			{
 				enumPerson = [attribut objectEnumerator];
 				while((aPerson = [enumPerson nextObject]))
 				{
 					newChoice = [[NSMutableDictionary alloc] init];
-    				accountString     = [NSMutableString stringWithCapacity:64];
+    				accountString     = [[NSMutableString alloc]init];
+
 					if(([key isEqualToString:@"idPrivate"]))
 					{
 						[accountString  appendString:@"Private"];
 					}
-					
 					else if(([key isEqualToString:@"idConfidential"]))
 					{
 						[accountString  appendString:@"Confidential "];
 					}
-					
 					else if(([key isEqualToString:@"idPublic"]))
 					{
 						[accountString  appendString:@"Public"];
 					}
-					
 					else if(([key isEqualToString:@"idNormal"]))
 					{
 						[accountString  appendString:@"Normal"];
 					}
 				
 					[accountString  appendString:@" : "];
-				
 					hasName = [aPerson valueForKey:@"name"];
 					
 					if (hasName !=nil)
@@ -1353,7 +1341,6 @@ static NSNumber     *yesNum = nil;
 						[newChoice setObject:[aPerson valueForKey:@"name"] forKey:@"name"];		
 					}
 				
-					
 					//[accountString  appendString:[aPerson  valueForKey:@"name"]];
 					//[newChoice setObject:[aPerson valueForKey:@"name"] forKey:@"name"];
 				
@@ -1368,17 +1355,13 @@ static NSNumber     *yesNum = nil;
 					[newChoice setObject:accountString forKey:@"label"];
 
 					if ([aPerson valueForKey:@"firstname"] !=nil)
-				
 					{
 						[newChoice setObject:[aPerson valueForKey:@"firstname"] forKey:@"firstname"];
 					}
-				
 					else
 					{
 						[newChoice setObject:@"" forKey:@"firstname"];
-					
 					}
-				
 					//[newChoice setObject:[aPerson valueForKey:@"name"] forKey:@"name"];
 					[newChoice setObject:[aPerson valueForKey:@"login"] forKey:@"login"];
 					[newChoice setObject:[aPerson valueForKey:@"companyId"] forKey:@"companyId"];
@@ -1386,15 +1369,13 @@ static NSNumber     *yesNum = nil;
 					[newChoice setObject:[aPerson valueForKey:@"isAccount"] forKey:@"isAccount"];
 					[newChoice setObject:key forKey:@"rdvType"];
 					[accountString release];  //newChoice has retain the value
-					[delegList addObject:newChoice];
+					[delegList addObject:[newChoice autorelease]];
 				}
 			}
 		}
    }
-
-    [self logWithFormat:@"ICI 4"];
-	return delegList;
-   
+	[pool release];
+	return [delegList autorelease];
 }
 //********************************************************************************************
 //
@@ -1404,11 +1385,11 @@ static NSNumber     *yesNum = nil;
 //********************************************************************************************
 - (void) setSelectedDelegation:(id)_type
 {
-	[self logWithFormat:@"******** setSelectedDelegation : type %@ ", _type ];
+	//[self logWithFormat:@"******** setSelectedDelegation : type %@ ", _type ];
 	[self->selectedDelegation release];
 
 	self->selectedDelegation = [_type retain];
-	[self logWithFormat:@"#########selectedDelegation :%@",self->selectedDelegation]; 
+	//[self logWithFormat:@"#########selectedDelegation :%@",self->selectedDelegation]; 
 
 	[[self session]setActiveAccountInSchedulerViews:[self->selectedDelegation copy]];
 }
@@ -1420,7 +1401,7 @@ static NSNumber     *yesNum = nil;
 //********************************************************************************************
 - (id) selectedDelegation
 {
-	[self logWithFormat:@"******** selectedDelegation %@",self->selectedDelegation];
+	//[self logWithFormat:@"******** selectedDelegation %@",self->selectedDelegation];
 	return self->selectedDelegation;
 
 }

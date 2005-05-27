@@ -332,6 +332,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 	/* prepare resources */
 	[self->resources     removeAllObjects];
 	[self->accessMembers removeAllObjects];
+	//[dicoCreator release];	
 	return YES;
 }
 
@@ -525,7 +526,6 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 	list = [ra componentsJoinedByString:@","];
 	[ra release];
 	ra = nil;
-	[self logWithFormat:@"Liste readAccess dans l'editeur %@",list]; 
 	return list;
 }
 //*******************************************************************************************
@@ -1040,12 +1040,10 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 	NSMutableArray	*list=[[NSMutableArray alloc]init]; 
 	
 	selectInScheduler = [[[self session] getActiveAccountInSchedulerViews] retain]; 
-	[self logWithFormat:@"###selectInScheduler de AppointmentEditor : %@", selectInScheduler];
 	
 	if ((selectInScheduler == nil))
 	{
 		list = [NSMutableArray arrayWithArray:[self->defaults arrayForKey:@"scheduler_rdvpopup"]];
-		[self logWithFormat:@"###listbox avec type de rdv  :%@",list]; 
 	}
 	else
 	{ 
@@ -1061,12 +1059,11 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 			returnString  = @"Public";
 		
 		
-		[self logWithFormat:@"###typeRdv  de AppointmentEditor : %@",returnString];
 		[list addObject:returnString];
-    }
+    	}
 	[selectInScheduler release];
-	[self logWithFormat:@"###Liste des rdv :%@###",list];
-	return list;
+	return list ;
+	//return [list autorelease];
 }
 
 //*******************************************************************************************
@@ -2995,7 +2992,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 		return nil;
 	
 	isFirst    = YES;
-	readAccessList = [NSMutableString stringWithCapacity:128];
+	readAccessList = [[NSMutableString alloc]init];
 	enumerator = [self->selectedReadAccessMembers objectEnumerator];
 	
 	while ((obj = [enumerator nextObject])) {
@@ -3005,7 +3002,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 			[readAccessList appendString:@","];
 		[readAccessList appendString:[[obj valueForKey:@"companyId"] stringValue]];
 	}
-	return readAccessList;
+	return [readAccessList autorelease];
 }
 
 //*******************************************************************************************
@@ -3088,12 +3085,10 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 	else
 		[apmt takeValue:@"" forKey:@"readAccessList"];
 	
-	[self logWithFormat:@"######## apmt apres MAJ accessList %@",apmt];
 	
 	[apmt takeValue:rdvCreator forKey:@"creatorId"];
 	[apmt takeValue:rdvOwner forKey:@"ownerId"];
 	
-	[self logWithFormat:@"######## apmt apres takeValue rdvCreator %@",apmt];
 	
 	//##############
 	[apmt takeValue:self->selectedParticipants forKey:@"participants"];  
@@ -3969,11 +3964,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 - (id) save
 {
 	id result;
-	[self logWithFormat:@"++++++++++++++++++   Dans le save (DEBUT)"];
-	
 	result = [super save];
-	
-	[self logWithFormat:@"++++++++++++++++++   Dans le save (FIN)"];
 	return result;
 }
 

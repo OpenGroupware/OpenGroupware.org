@@ -357,7 +357,10 @@ static EONull   *null  = nil;
 {	
 	int count,i;
 	EOGlobalID *accessTeamGid;
+	BOOL retValue = NO;
 
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	
 	NSArray * arrayOfID = [accessList componentsSeparatedByString:@","];
 	count = [arrayOfID count];
 
@@ -371,11 +374,13 @@ static EONull   *null  = nil;
 
 		if([arrayOfTeamID containsObject:accessTeamGid] == YES)
 		{
-			return YES;
+			retValue =  YES;
+			break;
 		}
 	}
 
-	return NO;
+	[pool release];
+	return retValue;
 }
 //**************************************************************************
 // 
@@ -385,6 +390,9 @@ static EONull   *null  = nil;
 //**************************************************************************
 - (BOOL)checkForPersonID:(id)anID inAccessList:(NSString*)accessList
 {
+	BOOL retValue = NO;
+	
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	NSArray * arrayOfID = [accessList componentsSeparatedByString:@","];
 
 	//accessList could contains personID and TeamID. So in case of TeamID we need
@@ -399,10 +407,11 @@ static EONull   *null  = nil;
 
 	if([arrayOfID containsObject:[anID stringValue]] == YES)
 	{
-		return YES;
+		retValue = YES;
 	}
 
-	return NO;
+	[pool release];
+	return retValue;
 }
 //**************************************************************************
 // 
@@ -460,9 +469,12 @@ static EONull   *null  = nil;
 	int	integerLoginPersonID;
 	NSArray *loginTeams;
 	NSArray *arrayOfID;
-
+	BOOL retValue = NO;
+	
 	if((aRow == nil) || (_context == nil))
 		return NO;
+	
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 
 	login = [_context valueForKey:LSAccountKey];
 	loginPersonID = [login valueForKey:@"companyId"] ;
@@ -479,12 +491,14 @@ static EONull   *null  = nil;
 			// first check as a person meber of the accessList
 			if([self checkForPersonID:loginPersonID inAccessList:readAccessList] == YES)
 			{
-				return YES;
+				retValue = YES;
+				goto end;
 			}
 			// now check as a teamMember
 			if([self checkForArrayOfTeamID:loginTeams inAccessList:readAccessList] == YES)
 			{
-				return YES;
+				retValue = YES;
+				goto end;
 			}
 			// nwo check if the login account have a delegation for this type of appointment
 			// and if one of the delegate id is a member of the write access list
@@ -500,14 +514,18 @@ static EONull   *null  = nil;
 					// on day we should manage delegation about team
 					if([self checkForPersonID:anID inAccessList:readAccessList] == YES)
 					{
-						return YES;
+						retValue = YES;
+						goto end;
 					}
 				}
 			}
 		}
 	}
 
-	return NO;
+	
+end:
+	[pool release];
+	return retValue;
 }
 //**************************************************************************
 // 
@@ -524,10 +542,14 @@ static EONull   *null  = nil;
 	int	integerLoginPersonID;
 	NSArray *loginTeams;
 	NSArray *arrayOfID;
+	BOOL retValue = NO;
 
 	if((aRow == nil) || (_context == nil))
 		return NO;
+	
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 
+	
 	login = [_context valueForKey:LSAccountKey];
 	loginPersonID = [login valueForKey:@"companyId"] ;
 	integerLoginPersonID = [loginPersonID  intValue];
@@ -543,12 +565,14 @@ static EONull   *null  = nil;
 			// first check as a person meber of the accessList
 			if([self checkForPersonID:loginPersonID inAccessList:writeAccessList] == YES)
 			{
-				return YES;
+				retValue = YES;
+				goto end;
 			}
 			// now check as a teamMember
 			if([self checkForArrayOfTeamID:loginTeams inAccessList:writeAccessList] == YES)
 			{
-				return YES;
+				retValue = YES;
+				goto end;
 			}
 			// nwo check if the login account have a delegation for this type of appointment
 			// and if one of the delegate id is a member of the write access list
@@ -564,14 +588,17 @@ static EONull   *null  = nil;
 					// on day we should manage delegation about team
 					if([self checkForPersonID:anID inAccessList:writeAccessList] == YES)
 					{
-						return YES;
+						retValue = YES;
+						goto end;
 					}
 				}
 			}
 		}
 	}
 
-	return NO;
+end:
+	[pool release];
+	return retValue;
 }
 
 //**************************************************************************
@@ -587,9 +614,12 @@ static EONull   *null  = nil;
 	id	loginPersonID;
 	int	integerLoginPersonID;
 	NSArray *arrayOfID;
+	BOOL retValue = NO;
 	
 	if((aRow == nil) || (_context == nil))
 		return NO;
+	
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
 	login = [_context valueForKey:LSAccountKey];
 	loginPersonID = [login valueForKey:@"companyId"] ;
@@ -601,10 +631,11 @@ static EONull   *null  = nil;
 	arrayOfID = [self getArrayOfDelegationForType:rdvType];
 	if([arrayOfID containsObject:ownerId])
 	{
-		return YES;
+		retValue = YES;
 	}
 
-	return NO;
+	[pool release];
+	return retValue;
 }
 //**************************************************************************
 // 
@@ -618,9 +649,13 @@ static EONull   *null  = nil;
 	id	ownerId;
 	id	loginPersonID;
 	int	integerLoginPersonID;
+	BOOL retValue = NO;
+	
 	
 	if((aRow == nil) || (_context == nil))
 		return NO;
+	
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
 	login = [_context valueForKey:LSAccountKey];
 	loginPersonID = [login valueForKey:@"companyId"] ;
@@ -630,10 +665,11 @@ static EONull   *null  = nil;
 	    
 	if ([ownerId intValue] == integerLoginPersonID)
 	{
-		return YES;
+		retValue = YES;
 	}
 
-	return NO;
+	[pool release];
+	return retValue;
 }
 
 //**************************************************************************
@@ -683,15 +719,26 @@ static EONull   *null  = nil;
 	NSEnumerator *memberEnumerator;
 	BOOL ownerIsMember;
 	BOOL meIsMember;
+	BOOL retValue = NO;
 	// an id have list right when :
 	// - it is a team member of the owner
 	// - the rdvType of the appointment is Public;
 	if((aRow == nil) || (_context == nil))
 		return NO;
+	
+	// HACK TM
+	
+	return YES;
+	
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 
+	
 	NSString * rdvType = [aRow valueForKey:@"rdvType"];
 	if([rdvType isEqualToString:@"Public"] == YES)
-		return YES;
+	{
+		retValue = YES;
+		goto end;
+	}
 	
 	login = [_context valueForKey:LSAccountKey];
 	loginPersonID = [login valueForKey:@"companyId"] ;
@@ -726,11 +773,14 @@ static EONull   *null  = nil;
 		}
 		if((ownerIsMember == YES) && (meIsMember == YES))
 		{
-			return YES;
+			retValue = YES;
+			goto end;
 		}
 	}
 
-	return NO;
+end:
+	[pool release];
+	return retValue;
 }
 
 //**************************************************************************
@@ -762,11 +812,13 @@ static EONull   *null  = nil;
 	NSArray * arrayOfTeamGIDForOwner;
 	NSArray * arrayOfPersonIDForTeam;
 	id aTeamID;
+	BOOL retValue = NO;
 	
 	if((aRow == nil) || (_context == nil))
 		return NO;
 	// get the login id
-	
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+
 	login = [_context valueForKey:LSAccountKey];
 	loginCompanyID = [login valueForKey:@"companyId"];
 	NSNumber *aNumber = [NSNumber numberWithInt:[loginCompanyID intValue]];
@@ -785,11 +837,14 @@ static EONull   *null  = nil;
 		arrayOfPersonIDForTeam = [self _fetchMemberGIDsOfTeamWithGID:aTeamID inContext:_context];
 		if([arrayOfPersonIDForTeam containsObject:keyGlobalID])
 		{
-			return YES;
+			retValue = YES;
+			goto end;
 		}
 	}
 	
-	return NO;
+end:
+	[pool release];
+	return retValue;
 }
 
 //**************************************************************************
@@ -800,26 +855,41 @@ static EONull   *null  = nil;
 //**************************************************************************
 - (BOOL) hasViewRight:(id)aRow inContext:(id)_context
 {
+	BOOL retValue = NO;
+	
 	if((aRow == nil) || (_context == nil))
 		return NO;
 
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	
 	NSString * rdvType = [aRow valueForKey:@"rdvType"];
 	if([rdvType isEqualToString:@"Public"] == YES)
-		return YES;
+	{
+		retValue = YES;
+		goto end;
+	}
 
 	if([self isInReadAccessList:aRow inContext:_context] == YES)
-		return YES;
-
+	{
+		retValue = YES;
+		goto end;
+	}
+	
 	// if appoitment is of type "Normal" we allow a member of the owner team
 	// to view the appointment
 	
 	if ([rdvType isEqualToString:@"Normal"] == YES)
 	{
 		if([self isMemberOfOwnerTeam:aRow inContext:_context] == YES)
-			return YES;
+		{
+			retValue = YES;
+			goto end;
+		}
 	}
 
-	return NO;
+end:
+	[pool release];
+	return retValue;
 }
 
 //**************************************************************************
@@ -901,15 +971,15 @@ static EONull   *null  = nil;
 //**************************************************************************
 - (EOSQLQualifier*) buildSQLQualifier
 {
-	NSArray 		*myAttributes;
-	EOSQLQualifier		*myQualifier;
-	EOAdaptorChannel	*myAdaptorChannel;
-	NSMutableString		*requeteString;
-	unsigned		i;
-	BOOL			isFirst;
-	unsigned		globalIDCount;
-	EOEntity		*entity;
-	NSString		*primaryKeyAttributeName;
+	NSArray*			myAttributes;
+	EOSQLQualifier*		myQualifier;
+	EOAdaptorChannel*	myAdaptorChannel;
+	NSMutableString*	requeteString;
+	unsigned			i;
+	BOOL				isFirst;
+	unsigned			globalIDCount;
+	EOEntity*			entity;
+	NSString*			primaryKeyAttributeName;
 		
 	myAttributes = [[self getAttributes] copy];
 	if(myAttributes == nil)
@@ -954,6 +1024,7 @@ static EONull   *null  = nil;
 	myQualifier = [[EOSQLQualifier alloc] initWithEntity:entity qualifierFormat:requeteString, primaryKeyAttributeName];
 
 	[myAttributes release];
+	[requeteString release];
 	return [myQualifier autorelease];
 }
 
