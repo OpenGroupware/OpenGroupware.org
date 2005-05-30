@@ -122,10 +122,10 @@ static NSString *autoNumberPrefix = @"OGo";
   NSNumber            *accountId    = nil;
   int                 i, cnt;
   id                  obj;
-
-  // handle already existing attributes
+  
+  /* handle already existing attributes */
   obj      = [self object];
-  extAttrs = [obj valueForKey:@"companyValue"];
+  extAttrs = [obj valueForKey:@"companyValue"]; // TODO: who does that?
   for (i = 0, cnt = [extAttrs count]; i < cnt; i++) {
     id extAttr, value;
     
@@ -137,7 +137,8 @@ static NSString *autoNumberPrefix = @"OGo";
                   @"checkAccess", [self checkAccess],
                   @"value",       value, nil);
   }
-  // handle new attributes
+
+  /* handle new attributes */
   excludeKeys = 
     [NSMutableArray arrayWithArray:[[obj entity] classPropertyNames]];
   [excludeKeys addObjectsFromArray:defExcludeKeys];
@@ -185,10 +186,12 @@ static NSString *autoNumberPrefix = @"OGo";
   NSArray *tels;
   int     i, cnt;
   
+  // TODO: ensure explicit fetch of phones, avoid fault?
   tels = [[self object] valueForKey:@"toTelephone"];
   for (i = 0, cnt = [tels count]; i < cnt; i++) {
     id tel;
-    
+  
+    // TODO: should we also check the type?
     tel = [tels objectAtIndex:i];
     if ([[tel valueForKey:@"telephoneId"] isEqual:_phoneId])
       return tel;
@@ -201,6 +204,27 @@ static NSString *autoNumberPrefix = @"OGo";
   if (newCmd == nil) newCmd = [LSLookupCommand(@"telephone", @"new") retain];
 }
 
+- (void)_setTelephone:(NSDictionary *)telDict 
+  onContactWithPrimaryKey:(NSNumber *)pkey inContext:(id)_context
+{
+  NSNumber *phoneId;
+  id       telEO;
+
+  phoneId  = [telDict valueForKey:@"telephoneId"];
+  telEO    = [self _findEOWithId:phoneId];
+    
+  if ([phoneId isNotNull]) { /* telephone::set */
+    [setCmd takeValue:telEO forKey:@"object"];
+    [setCmd takeValuesFromDictionary:telDict];
+    [setCmd runInContext:_context];
+  }
+  else { /* telephone::new */
+    [newCmd takeValuesFromDictionary:telDict];
+    [newCmd takeValue:pkey forKey:@"companyId"];
+    phoneId = [[newCmd runInContext:_context] valueForKey:@"telephoneId"];
+    [telDict takeValue:phoneId forKey:@"telephoneId"];
+  }
+}
 - (void)_setTelephoneCommandsInContext:(id)_context {
   NSNumber *pkey;
   int i, cnt;
@@ -209,27 +233,12 @@ static NSString *autoNumberPrefix = @"OGo";
   
   pkey = [[self object] valueForKey:[self primaryKeyName]];
   for (i = 0, cnt = [self->telephones count]; i < cnt; i++) {
-    NSDictionary *telDict;
-    NSNumber     *phoneId;
-    id           telEO;
-    
-    telDict = [self->telephones objectAtIndex:i];
-    phoneId  = [telDict valueForKey:@"telephoneId"];
-    telEO    = [self _findEOWithId:phoneId];
-    
-    if ([phoneId isNotNull]) {
-      [setCmd takeValue:telEO forKey:@"object"];
-      [setCmd takeValuesFromDictionary:telDict];
-      [setCmd runInContext:_context];
-    }
-    else {
-      [newCmd takeValuesFromDictionary:telDict];
-      [newCmd takeValue:pkey forKey:@"companyId"];
-      phoneId = [[newCmd runInContext:_context] valueForKey:@"telephoneId"];
-      [telDict takeValue:phoneId forKey:@"telephoneId"];
-    }
+    [self _setTelephone:[self->telephones objectAtIndex:i] 
+	  onContactWithPrimaryKey:pkey inContext:_context];
   }
 }
+
+/* prepare for execution */
 
 - (void)_fixNumber {
   id obj, n;
@@ -243,9 +252,9 @@ static NSString *autoNumberPrefix = @"OGo";
   }
   if ([n isNotNull])
     return;
-  
-  n = [autoNumberPrefix stringByAppendingString:
-			  [[obj valueForKey:@"companyId"] stringValue]];
+
+  n = [[obj valueForKey:@"companyId"] stringValue];
+  n = [autoNumberPrefix stringByAppendingString:n];
   [obj takeValue:n forKey:@"number"];
 }
 
@@ -254,51 +263,56 @@ static NSString *autoNumberPrefix = @"OGo";
   [self _fixNumber];
 }
 
+/* run */
+
 - (BOOL)hasWriteAccessOn:(id)_obj inContext:(id)_ctx {
   _obj = [_obj valueForKey:@"globalID"];
   return [[_ctx accessManager] operation:@"w" allowedOnObjectID:_obj];
 }
 
 - (void)saveAttachmentInContext:(id)_context {
-    NSFileManager  *manager;
-    NSUserDefaults *defaults;
-    id             obj;
-    NSString       *fileName = nil;
-    NSString       *fName    = nil;
-    BOOL           isOk      = NO;
+  // TODO: overridden in person::set?
+  /*
+    Writes the picture for a given contact
+  */
+  NSFileManager  *manager;
+  NSUserDefaults *defaults;
+  id             obj;
+  NSString       *fileName = nil;
+  NSString       *fName    = nil;
+  BOOL           isOk      = NO;
 
-    manager  = [NSFileManager defaultManager];
-    defaults = [_context userDefaults];
-    obj      = [self object];
+  manager  = [NSFileManager defaultManager];
+  defaults = [_context userDefaults];
+  obj      = [self object];
     
-    fileName = [defaults stringForKey:@"LSAttachmentPath"];
-    fileName = [NSString stringWithFormat:@"%@/%@.picture",
+  fileName = [defaults stringForKey:@"LSAttachmentPath"];
+  fileName = [NSString stringWithFormat:@"%@/%@.picture",
                          fileName, [obj valueForKey:@"companyId"]];
 
-    if ((self->pictureData != nil && self->pictureFilePath != nil
-         && [self->pictureData length] > 0)
-        || self->deleteImage) {
-      fName = [fileName stringByAppendingPathExtension:@"jpg"];
+  if ((self->pictureData != nil && self->pictureFilePath != nil
+       && [self->pictureData length] > 0)
+      || self->deleteImage) {
+    fName = [fileName stringByAppendingPathExtension:@"jpg"];
+    
+    if ([manager fileExistsAtPath:fName])
+      [manager removeFileAtPath:fName handler:nil];        
+    
+    fName = [fileName stringByAppendingPathExtension:@"gif"];
 
-      if ([manager fileExistsAtPath:fName]) {
-        [manager removeFileAtPath:fName handler:nil];        
-      }
-      fName = [fileName stringByAppendingPathExtension:@"gif"];
+    if ([manager fileExistsAtPath:fName])
+      [manager removeFileAtPath:fName handler:nil];        
+  }
 
-      if ([manager fileExistsAtPath:fName]) {
-        [manager removeFileAtPath:fName handler:nil];        
-      }
-    }
-
-    if (self->pictureData !=nil && self->pictureFilePath != nil &&
-        [self->pictureData length] > 0) {
-      fName = [fileName stringByAppendingPathExtension:
+  if (self->pictureData !=nil && self->pictureFilePath != nil &&
+      [self->pictureData length] > 0) {
+    fName = [fileName stringByAppendingPathExtension:
                         [self->pictureFilePath pathExtension]];
-      isOk  = [self->pictureData writeToFile:fName atomically:YES];
+    isOk  = [self->pictureData writeToFile:fName atomically:YES];
 
-      [self assert:isOk
-            reason:@"error during save of person/enterprise picture"];
-    }
+    [self assert:isOk
+	  reason:@"error during save of person/enterprise picture"];
+  }
 }
 
 - (void)_executeInContext:(id)_context {
@@ -347,10 +361,7 @@ static NSString *autoNumberPrefix = @"OGo";
 /* company info accessors */
 
 - (void)setComment:(NSString *)_comment {
-  if (self->comment != _comment) {
-    RELEASE(self->comment); self->comment = nil;
-    self->comment = [_comment copyWithZone:[self zone]];
-  }
+  ASSIGNCOPY(self->comment, _comment);
 }
 - (NSString *)comment {
   return self->comment;
@@ -364,7 +375,7 @@ static NSString *autoNumberPrefix = @"OGo";
 }
 
 - (void)setPictureFilePath:(NSString *)_pictureFilePath {
-  ASSIGN(self->pictureFilePath, _pictureFilePath);
+  ASSIGNCOPY(self->pictureFilePath, _pictureFilePath);
 }
 - (NSString *)pictureFilePath {
   return self->pictureFilePath;
@@ -437,7 +448,8 @@ static NSString *autoNumberPrefix = @"OGo";
   NSMutableDictionary *attrs;
   
   attrs = [self _getDefaults:@"Public" with:_context];
-  [attrs addEntriesFromDictionary:[self _getDefaults:@"Private" with:_context]];
+  [attrs addEntriesFromDictionary:
+	   [self _getDefaults:@"Private" with:_context]];
   return attrs;
 }
 

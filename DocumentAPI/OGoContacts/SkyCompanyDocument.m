@@ -205,7 +205,7 @@
   
   if (_type == nil) return;
   
-  if ([[self phoneNumberForType:_type] isEqual:_number])
+  if ([[self phoneNumberForType:_type] isEqual:_number]) /* did not change */
     return;
   
   phone = [self->phones valueForKey:_type];
@@ -726,27 +726,30 @@
   if ([self isAttributeSupported:@"telephones"]) {
     list = [_object valueForKey:@"telephones"];
     cnt  = [list count];
-    RELEASE(self->phones);
+    [self->phones release]; self->phones = nil;
     self->phones = [[NSMutableDictionary alloc] initWithCapacity:cnt];
     
     for (i = 0; i < cnt; i++) {
-      id       phone = [list objectAtIndex:i];
-      NSString *type = [phone valueForKey:@"type"];
+      NSMutableDictionary *dict;
+      id       phone;
+      NSString *type;
+      
+      phone = [list objectAtIndex:i];
+      type  = [phone valueForKey:@"type"];
 
-      if ([type isNotNull]) {
-        NSMutableDictionary *dict;
+      if (![type isNotNull]) continue;
         
-        dict = [NSMutableDictionary dictionaryWithCapacity:4];
+      dict = [[NSMutableDictionary alloc] initWithCapacity:4];
         
-        [dict takeValue:[phone valueForKey:@"type"]   forKey:@"type"];
-        [dict takeValue:[phone valueForKey:@"number"] forKey:@"number"];
-        [dict takeValue:[phone valueForKey:@"info"]   forKey:@"info"];
-        if ([phone objectForKey:@"telephoneId"] != nil) {
-          [dict setObject:[phone objectForKey:@"telephoneId"]
-                forKey:@"telephoneId"];
-        }
-        [self->phones setObject:dict forKey:type];
+      [dict takeValue:[phone valueForKey:@"type"]   forKey:@"type"];
+      [dict takeValue:[phone valueForKey:@"number"] forKey:@"number"];
+      [dict takeValue:[phone valueForKey:@"info"]   forKey:@"info"];
+      if ([phone objectForKey:@"telephoneId"] != nil) {
+	[dict setObject:[phone objectForKey:@"telephoneId"]
+	      forKey:@"telephoneId"];
       }
+      [self->phones setObject:dict forKey:type];
+      [dict release]; dict = nil;
     }
 
     [self _loadPhoneTypes];

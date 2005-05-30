@@ -26,6 +26,25 @@
 
 @class NSString, NSArray, NSData;
 
+/*
+  LSSetCompanyCommand
+
+  Subclasses:
+    person::set
+    enterprise::set
+    TODO?
+
+  Handling of phone numbers
+
+    Apparently phone number handling is automagic. The "telephones" argument
+    can be set to configure those, the command will create them automagically.
+    A single record is an NSDictionary containing those keys:
+      type
+      number
+      info
+      telephoneId (to change exisiting numbers)
+*/
+
 @interface LSSetCompanyCommand : LSDBObjectSetCommand
 {
 @private
