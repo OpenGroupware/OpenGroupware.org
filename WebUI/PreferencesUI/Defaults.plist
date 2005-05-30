@@ -1,4 +1,9 @@
 // NSUserDefaults
 {
   usermanager_blocksize = 30;
+
+  usermanager_newreccopydefnames = (
+    usermanager_blocksize, admin_exportAddresses, admin_mailquota,
+    admin_vaddresses, admin_LocalDomainAliases
+  );
 }

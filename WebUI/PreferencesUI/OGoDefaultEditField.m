@@ -99,39 +99,41 @@
 /* notifications */
 
 - (void)sleep {
-  ASSIGN(self->value, nil);
+  [self->value release]; self->value = nil;
   [super sleep];
 }
+
+/* handle request */
 
 - (void)takeValuesFromRequest:(WORequest *)_req inContext:(WOContext *)_ctx {
   id oldValue, v;
 
   oldValue = [[self value] copy];
-
   if (![oldValue isNotNull])
     oldValue = @"";
-
+  
   [super takeValuesFromRequest:_req inContext:_ctx];
-
+  
   if (self->defaults == nil) {
-    NSLog(@"%s: Missing defaults !", __PRETTY_FUNCTION__);
+    [self logWithFormat:@"ERROR(%s): Missing defaults object!", 
+            __PRETTY_FUNCTION__];
     return;
   }
   v = [self value];
 
   if (![v isNotNull])
     v = @"";
-
-  if (![[oldValue stringValue] isEqual:[v stringValue]]) {
+  
+  if (![[oldValue stringValue] isEqual:[v stringValue]])
     [self->defaults setObject:v forKey:self->key];
-  }
+  
   [oldValue release]; oldValue = nil;
-  ASSIGN(self->value, nil);
+  [self->value release]; self->value = nil;
 }
 
 - (id)value {
-  if (![self->key length]) {
-    NSLog(@"missing key ...");
+  if ([self->key length] == 0) {
+    [self logWithFormat:@"missing key ..."];
     return nil;
   }
   if (self->value == nil)
@@ -145,21 +147,20 @@
 }
 
 - (BOOL)isText {
-  return (self->type == DefEdit_IsText);
+  return (self->type == DefEdit_IsText) ? YES : NO;
 }
 - (BOOL)isPopUp {
-  return (self->type == DefEdit_IsPopup);
+  return (self->type == DefEdit_IsPopup) ? YES : NO;
 }
 - (BOOL)isCheckBox {
-  return (self->type == DefEdit_IsCheckBox);
+  return (self->type == DefEdit_IsCheckBox) ? YES : NO;
 }
 - (BOOL)isPassword {
-  return (self->type == DefEdit_IsPassword);
+  return (self->type == DefEdit_IsPassword) ? YES : NO;
 }
 - (BOOL)isString {
-  return (self->type == DefEdit_IsString);
+  return (self->type == DefEdit_IsString) ? YES : NO;
 }
-
 
 - (NSString *)popupLabel {
   return [self->componentLabels valueForKey:[self->item stringValue]];
@@ -167,42 +168,46 @@
 
 /* accessors */
 
+- (void)setFormatter:(NSFormatter *)_form {
+  ASSIGN(self->formatter, _form);
+}
 - (NSFormatter *)formatter {
   return self->formatter;
 }
-- (void)setFormatter:(NSFormatter *)_form {
-  ASSIGN(self->formatter, _form);
+
+- (void)setComponentLabels:(id)_l {
+  ASSIGN(self->componentLabels, _l);
 }
 - (id)componentLabels {
   return self->componentLabels;
 }
-- (void)setComponentLabels:(id)_l {
-  ASSIGN(self->componentLabels, _l);
+
+- (void)setKey:(id)_k {
+  ASSIGN(self->key, _k);
 }
 - (id)key {
   return self->key;
 }
-- (void)setKey:(id)_k {
-  ASSIGN(self->key, _k);
-}
 
+- (void)setDefaults:(NSUserDefaults *)_d {
+  ASSIGN(self->defaults, _d);
+}
 - (NSUserDefaults *)defaults {
   return self->defaults;
 }
-- (void)setDefaults:(NSUserDefaults *)_d {
-  ASSIGN(self->defaults, _d);
+
+- (void)setItem:(id)_d {
+  ASSIGN(self->item, _d);
 }
 - (id)item {
   return self->item;
 }
-- (void)setItem:(id)_d {
-  ASSIGN(self->item, _d);
+
+- (void)setValueList:(id)_v {
+  ASSIGN(self->valueList, _v);
 }
 - (id)valueList {
   return self->valueList;
-}
-- (void)setValueList:(id)_v {
-  ASSIGN(self->valueList, _v);
 }
 
 - (int)typeForValueType:(NSString *)_t {
@@ -221,9 +226,6 @@
   return DefEdit_IsString;
 }
 
-- (NSString *)valueType {
-  return self->valueType;
-}
 - (void)setValueType:(NSString *)_t {
   if ([self->valueType isEqual:_t])
     return;
@@ -231,15 +233,22 @@
   self->type = [self typeForValueType:_t];
   ASSIGN(self->valueType, _t);
 }
+- (NSString *)valueType {
+  return self->valueType;
+}
 
+- (void)setRows:(int)_i {
+  self->rows = _i;
+}
 - (int)rows {
   if (self->rows == 0)
     return 30;
   
   return self->rows;
 }
-- (void)setRows:(int)_i {
-  self->rows = _i;
+
+- (void)setCols:(int)_i {
+  self->cols = _i;
 }
 - (int)cols {
   if (self->cols == 0)
@@ -247,29 +256,26 @@
   
   return self->cols;
 }
-- (void)setCols:(int)_i {
-  self->cols = _i;
-}
 
-- (BOOL)localizeValue {
-  return self->flags.localizeValue ? YES : NO;
-}
 - (void)setLocalizeValue:(BOOL)_b {
   self->flags.localizeValue = _b ? 1 : 0;
 }
-
-- (BOOL)isEditableDef {
-  return self->flags.isEditableDef ? YES : NO;
+- (BOOL)localizeValue {
+  return self->flags.localizeValue ? YES : NO;
 }
+
 - (void)setIsEditableDef:(BOOL)_i {
   self->flags.isEditableDef = _i ? 1 : 0;
 }
-
-- (BOOL)isEditable {
-  return self->flags.isEditable ? YES : NO;
+- (BOOL)isEditableDef {
+  return self->flags.isEditableDef ? YES : NO;
 }
+
 - (void)setIsEditable:(BOOL)_i {
   self->flags.isEditable = _i ? 1 : 0;
+}
+- (BOOL)isEditable {
+  return self->flags.isEditable ? YES : NO;
 }
 
 - (BOOL)isRoot {
@@ -277,7 +283,7 @@
 }
 
 - (void)setUseFormatter:(NSString *)_s {
-  ASSIGN(self->useFormatter, _s);
+  ASSIGNCOPY(self->useFormatter, _s);
 }
 - (NSString *)useFormatter {
   return self->useFormatter;

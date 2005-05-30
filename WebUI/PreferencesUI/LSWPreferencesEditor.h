@@ -19,10 +19,16 @@
   02111-1307, USA.
 */
 
-#ifndef __LSWebInterface_LSWPreferences_LSWPreferencesEditor_H__
-#define __LSWebInterface_LSWPreferences_LSWPreferencesEditor_H__
+#ifndef __PreferencesUI_LSWPreferencesEditor_H__
+#define __PreferencesUI_LSWPreferencesEditor_H__
 
 #include <OGoFoundation/LSWEditorPage.h>
+
+/*
+  LSWPreferencesEditor
+  
+  Note: this is actually the account editor!
+*/
 
 @class NSString, NSMutableArray, NSArray, NSDictionary;
 @class NSUserDefaults, NSNumber;
@@ -51,4 +57,4 @@
 
 @end
 
-#endif /* __LSWebInterface_LSWPreferences_LSWPreferencesEditor_H__*/
+#endif /* __PreferencesUI_LSWPreferencesEditor_H__*/

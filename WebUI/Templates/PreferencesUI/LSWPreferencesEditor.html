@@ -1,8 +1,12 @@
 <#Frame>
   <#Window>
-   <#WarningModeCondElse>
-    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+    <#WarningModeCond>
+      <#Warning />  
+    </#WarningModeCond>
+
+    <#WarningModeCondElse>
       <#Form>
+       <table border="0" cellspacing="0" cellpadding="4" width="100%">
         <#WindowTitle />
 
         <#IsRootCond>
@@ -83,13 +87,9 @@
         </#IsNotTemplateUser>
       </td>
     </tr>
+   </table>
   </#Form>
-</table>
  </#WarningModeCondElse>
- <#WarningModeCond>
-   <#Warning />  
- </#WarningModeCond>
-
 </#Window>
 
 <script language="JavaScript">

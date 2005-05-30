@@ -50,14 +50,7 @@ static NSArray  *UserDefKeys        = nil;
   if (tmplUserID == nil) tmplUserID = [[NSNumber numberWithInt:9999] retain];
 
   IsMailConfigEnabled = [ud boolForKey:@"MailConfigEnabled"];
-  
-  if (UserDefKeys == nil) {
-    UserDefKeys = [[NSArray alloc] initWithObjects:
-				     @"usermanager_blocksize",
-				     @"admin_mailquota",
-				     @"admin_vaddresses",
-				     @"admin_LocalDomainAliases", nil];
-  }
+  UserDefKeys = [[ud arrayForKey:@"usermanager_newreccopydefnames"] copy];
 }
 
 - (void)dealloc {
@@ -629,24 +622,32 @@ static NSArray  *UserDefKeys        = nil;
   return account;
 }
 
-- (id)save {
+- (BOOL)_saveCategories {
   WOSession *sn;
-  id        result;
-
-  sn = [self session];
   
-  if ([self isRootEdited]) {
-    [self runCommand:
+  if (![self isRootEdited])
+    return YES;
+  
+  sn = [self session];
+  [self runCommand:
             @"companycategory::set-all",
             @"oldCategories", [sn categories],
             @"newCategories", self->categories, nil];
-    
-    [sn fetchCategories];
-  }
+  [sn fetchCategories];
+  return YES;
+}
+
+- (id)save {
+  id result;
+  
+  if (![self _saveCategories])
+    return nil;
+  
   if ((result = [super save]) == nil)
     return nil;
   
   if ([self isInNewMode]) {
+    // TODO: explain this
     id           obj, def, key, oldDef;
     NSEnumerator *enumerator;
       
@@ -655,7 +656,7 @@ static NSArray  *UserDefKeys        = nil;
     def    = [self runCommand:@"userdefaults::get", @"user", obj, nil];
       
     enumerator = [UserDefKeys objectEnumerator];
-    while ((key = [enumerator nextObject])) {
+    while ((key = [enumerator nextObject]) != nil) {
         id value;
 
         value = [self->defaults objectForKey:key];
@@ -704,6 +705,8 @@ static NSArray  *UserDefKeys        = nil;
 }
 
 - (id)defaults {
+  if (self->defaults == nil)
+    [self logWithFormat:@"WARNING: no defaults available!"];
   return self->defaults;
 }
 

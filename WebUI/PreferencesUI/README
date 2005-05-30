@@ -1,7 +1,12 @@
-# $Id$
-
 PreferencesUI
 =============
 
 Note: also contains the account editor and view! This is "LSWPreferencesViewer"
       and "LSWPreferencesEditor".
+
+Todo
+====
+
+OGoDefaultEditField.m
+- check whether isEditableDef and isEditable are supposed to be the same
+  binding

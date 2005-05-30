@@ -1,3 +1,12 @@
+2005-05-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.38
+
+	* OGoDefaultEditField.m: some code cleanups
+
+	* LSWPreferencesEditor.m: properly transfer 'admin_exportAddresses'
+	  default when saving new records
+
 2004-10-31  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyDisplayPreferences.m: removed deprecated bookmark code (v5.1.37)
