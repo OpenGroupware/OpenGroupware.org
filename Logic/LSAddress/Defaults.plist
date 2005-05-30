@@ -211,6 +211,14 @@
     "05_tel_private" = "home,voice";
     "15_fax_private" = "home,fax";
   };
+  LSVCard_PersonTelephoneRevMapping = {
+    work  = "";
+    fax   = "";
+  };
+  LSVCard_EnterpriseTelephoneRevMapping = {
+    work  = "";
+    fax   = "";
+  };
 
   LSAutoCompanyLoginPrefix  = "OGo";
   LSAutoCompanyNumberPrefix = "OGo";

@@ -1,3 +1,7 @@
+2005-05-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSSetVCardCommand.m: preparations for phone handling (v5.1.66)
+
 2005-05-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSSetCompanyCommand.m: minor code cleanups (v5.1.65)

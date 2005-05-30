@@ -65,11 +65,18 @@ extern NSString *LSVUidPrefix;
 
 static NSString     *skyrixId         = nil;
 static Class        NGVCardClass      = Nil;
-static NSDictionary *personRevMapping = nil;
-static NSDictionary *enterpriseRevMapping = nil;
+static NSNumber     *yesNum           = nil;
+static NSNumber     *noNum            = nil;
+static NSDictionary *personRevMapping          = nil;
+static NSDictionary *enterpriseRevMapping      = nil;
+static NSDictionary *personPhoneRevMapping     = nil;
+static NSDictionary *enterprisePhoneRevMapping = nil;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+
+  yesNum = [[NSNumber numberWithBool:YES] retain];
+  noNum  = [[NSNumber numberWithBool:NO]  retain];
   
   skyrixId = [ud stringForKey:@"skyrix_id"];
   skyrixId = [[NSString alloc] initWithFormat:@"skyrix://%@/%@/",
@@ -82,6 +89,11 @@ static NSDictionary *enterpriseRevMapping = nil;
     [[ud dictionaryForKey:@"LSVCard_PersonAddressRevMapping"]  copy];
   enterpriseRevMapping = 
     [[ud dictionaryForKey:@"LSVCard_EnterpriseAddressRevMapping"]  copy];
+  
+  personPhoneRevMapping = 
+    [[ud dictionaryForKey:@"LSVCard_PersonTelephoneRevMapping"]  copy];
+  enterprisePhoneRevMapping = 
+    [[ud dictionaryForKey:@"LSVCard_EnterpriseTelephoneRevMapping"]  copy];
 }
 
 - (void)dealloc {
@@ -348,20 +360,18 @@ static NSDictionary *enterpriseRevMapping = nil;
   
   tmp = [tmp stringValue];
   if ([tmp caseInsensitiveCompare:@"private"] == NSOrderedSame)
-    [self->changeset 
-	 setObject:[NSNumber numberWithBool:YES] forKey:@"isPrivate"];
+    [self->changeset setObject:yesNum forKey:@"isPrivate"];
   else if ([tmp caseInsensitiveCompare:@"public"] == NSOrderedSame)
-    [self->changeset
-	 setObject:[NSNumber numberWithBool:NO] forKey:@"isPrivate"];
+    [self->changeset setObject:noNum forKey:@"isPrivate"];
   // also: confidential
 }
 
 - (void)appendPersonEMails:(NSArray *)_mails {
-  [self logWithFormat:@"process person emails: %@", _mails];
+  [self logWithFormat:@"TODO: process person emails: %@", _mails];
 }
 
 - (void)appendGenericEMails:(NSArray *)_mails {
-  [self logWithFormat:@"process generic emails: %@", _mails];
+  [self logWithFormat:@"TODO: process generic emails: %@", _mails];
 }
 
 /* main generators */
@@ -373,8 +383,7 @@ static NSDictionary *enterpriseRevMapping = nil;
   id n, org;
   
   self->changeset = [[NSMutableDictionary alloc] initWithCapacity:48];
-  [self->changeset 
-       setObject:[NSNumber numberWithBool:YES] forKey:@"isPerson"];
+  [self->changeset setObject:yesNum forKey:@"isPerson"];
   
   [self appendIdentity:_vc];
   [self appendCommon:_vc];
@@ -383,7 +392,7 @@ static NSDictionary *enterpriseRevMapping = nil;
   [self appendPersonEMails:[_vc valueForKey:@"email"]];
   // [self appendClassification:_vc toChangeSet:md];
 
-  /* TODO: name handling */
+  /* TODO: name handling (what is missing?) */
   
   n = [_vc valueForKey:@"n"]; // NGVCardName
   [self mapValue:[n valueForKey:@"family"] to:@"name"];
@@ -411,8 +420,7 @@ static NSDictionary *enterpriseRevMapping = nil;
   id n, org, tmp;
   
   self->changeset = [[NSMutableDictionary alloc] initWithCapacity:48];
-  [self->changeset 
-       setObject:[NSNumber numberWithBool:YES] forKey:@"isEnterprise"];
+  [self->changeset setObject:yesNum forKey:@"isEnterprise"];
   
   [self appendIdentity:_vc];
   [self appendCommon:_vc];
@@ -472,11 +480,12 @@ static NSDictionary *enterpriseRevMapping = nil;
 - (void)_processVCardAddress:(id)_vadr mappedToType:(NSString *)_type
   intoContact:(id)_contact inContext:(id)_context
 {
+  /* _vadr is a NGVCardAddress */
   NSMutableDictionary *lChangeSet;
   NSString *tmp;
   id addressEO;
   
-  [self debugWithFormat:@"save under type %@: %@", _type, _vadr];
+  [self debugWithFormat:@"save adr under type %@: %@", _type, _vadr];
   
   /* fetch EO object to set the new values */
   
@@ -493,7 +502,7 @@ static NSDictionary *enterpriseRevMapping = nil;
   /* make changeset */
   
   lChangeSet = [NSMutableDictionary dictionaryWithCapacity:8];
-  [lChangeSet takeValue:[NSNumber numberWithBool:NO] forKey:@"shouldLog"];
+  [lChangeSet takeValue:noNum forKey:@"shouldLog"];
 
   [lChangeSet takeValue:[_vadr valueForKey:@"street"]   forKey:@"street"];
   [lChangeSet takeValue:[_vadr valueForKey:@"locality"] forKey:@"city"];
@@ -527,6 +536,93 @@ static NSDictionary *enterpriseRevMapping = nil;
     addressEO = [_context runCommand:@"address::set" arguments:lChangeSet];
   }
 }
+
+- (void)_processVCardPhone:(id)_vtel mappedToType:(NSString *)_type
+  intoContact:(id)_contact inContext:(id)_context
+{
+  /* _vtel is a NGVCardPhone */
+  NSMutableDictionary *lChangeSet;
+  id phoneEO;
+  
+  [self debugWithFormat:@"save phone under type %@: %@", _type, _vtel];
+
+  /* fetch EO object to set the new values */
+  
+  // TODO: this performs a case insensitive match on the type.
+  phoneEO = [_context runCommand:@"telephone::get",
+                        @"operator",   @"AND",
+                        @"comparator", @"EQUAL",
+                        @"type",       _type,
+                        @"companyId",  [_contact valueForKey:@"companyId"],
+                        nil];
+  if ([phoneEO isKindOfClass:[NSArray class]])
+    phoneEO = ([phoneEO count] > 0) ? [phoneEO objectAtIndex:0] : nil;
+  
+  /* make changeset */
+  
+  lChangeSet = [NSMutableDictionary dictionaryWithCapacity:8];
+  [lChangeSet takeValue:noNum               forKey:@"shouldLog"];
+  [lChangeSet takeValue:[_vtel stringValue] forKey:@"number"];
+  
+  /* check whether the address type already exists */
+  
+  if (![phoneEO isNotNull]) {
+    [lChangeSet takeValue:[_contact valueForKey:@"companyId"]
+                forKey:@"companyId"];
+    [lChangeSet takeValue:_type forKey:@"type"];
+    //[lChangeSet setObject:@"vCard address import" forKey:@"logText"];
+    phoneEO = [_context runCommand:@"telephone::new" arguments:lChangeSet];
+  }
+  else {
+    [lChangeSet takeValue:[phoneEO valueForKey:@"addressId"]
+                forKey:@"addressId"];
+    //[lChangeSet setObject:@"vCard address update" forKey:@"logText"];
+    phoneEO = [_context runCommand:@"telephone::set" arguments:lChangeSet];
+  }
+}
+
+- (NSDictionary *)revAdrMappingForContact:(id)_contact {
+  NSString *k;
+
+  k = [[_contact valueForKey:@"globalID"] entityName];
+  if ([k isEqualToString:@"Person"])
+    return personRevMapping;
+  if ([k isEqualToString:@"Enterprise"])
+    return enterpriseRevMapping;
+
+  [self logWithFormat:@"Note: not processing vCard ADR's for %@ objects.",k];
+  return nil;
+}
+
+- (NSDictionary *)revPhoneMappingForContact:(id)_contact {
+  NSString *k;
+
+  k = [[_contact valueForKey:@"globalID"] entityName];
+  if ([k isEqualToString:@"Person"])
+    return personPhoneRevMapping;
+  if ([k isEqualToString:@"Enterprise"])
+    return enterprisePhoneRevMapping;
+
+  [self logWithFormat:@"Note: not processing vCard TEL's for %@ objects.",k];
+  return nil;
+}
+
+/* phone types */
+
+- (BOOL)doTypes:(NSArray *)_types containType:(NSString *)_key
+  andType:(NSString *)_key2 optional:(BOOL)_optional
+{
+  int idx, count;
+  if ((count = [_types count]) == 0) return NO;
+  if (count > 3) return NO;
+  if ((idx = [_types indexOfObject:_key]) == NSNotFound) 
+    return NO; /* does not contain primary key (WORK or HOME) */
+
+#warning COMPLETE ME
+  return NO;
+}
+
+/* generic ADR/TEL mapping */
 
 - (NSString *)mapTypes:(NSArray *)atypes usingMapping:(NSDictionary *)mapping
   andUniquer:(NSMutableSet *)usedTypes
@@ -570,7 +666,9 @@ static NSDictionary *enterpriseRevMapping = nil;
   return mappedType;
 }
 
-- (void)_processAddressesFromVCard:(id)_vcard intoContact:(id)_contact
+- (void)_processAddressField:(NSString *)_key fromVCard:(id)_vcard
+  intoContact:(id)_contact usingSelector:(SEL)_cpu
+  typeMapping:(NSDictionary *)mapping
   inContext:(id)_context
 {
   /*
@@ -579,24 +677,17 @@ static NSDictionary *enterpriseRevMapping = nil;
   */
   NSMutableSet *usedTypes;
   NSEnumerator *adrs;
-  NSDictionary *mapping;
-  NSString     *k;
-  id adr; // really: NGVCardAddress object
-
+  void (*cpu)(id, SEL, id, NSString *, id, id);
+  id adr; // really: NGVCardAddress or NGVCardPhone object
+  
   if (![_contact isNotNull]) {
     [self logWithFormat:@"ERROR(%s): got no contact!", __PRETTY_FUNCTION__];
     return;
   }
-
-  /* find type mapping table */
   
-  k = [[_contact valueForKey:@"globalID"] entityName];
-  if ([k isEqualToString:@"Person"])
-    mapping = personRevMapping;
-  else if ([k isEqualToString:@"Enterprise"])
-    mapping = enterpriseRevMapping;
-  else {
-    [self logWithFormat:@"Note: not processing vCard ADR's for %@ objects.",k];
+  if ((cpu = (void *)[self methodForSelector:_cpu]) == NULL ){
+    [self logWithFormat:@"ERROR(%s): failed to lookup selector: '%@'",
+            NSStringFromSelector(_cpu)];
     return;
   }
   
@@ -604,7 +695,7 @@ static NSDictionary *enterpriseRevMapping = nil;
   
   usedTypes = [NSMutableSet setWithCapacity:8];
   
-  adrs = [[_vcard valueForKey:@"adr"] objectEnumerator];
+  adrs = [[_vcard valueForKey:_key] objectEnumerator];
   while ((adr = [adrs nextObject]) != nil) {
     NSArray  *atypes;
     NSString *mappedType;
@@ -614,20 +705,80 @@ static NSDictionary *enterpriseRevMapping = nil;
                        usingMapping:mapping andUniquer:usedTypes];
     if (mappedType == nil) {
       [self logWithFormat:
-              @"Note: did not store ADR, all slots are filled: %@", atypes];
+              @"Note: did not store '%@', all slots are filled: %@",
+              _key, atypes];
       continue;
     }
     
     /* process */
     
-    [self _processVCardAddress:adr mappedToType:mappedType
-          intoContact:_contact inContext:_context];
+    cpu(self, _cpu, adr, mappedType, _contact, _context);
     
     /* mark type as consumed */
     if (mappedType != nil)
       [usedTypes addObject:mappedType];
   }
 }
+
+- (void)_processPhoneField:(NSString *)_key fromVCard:(id)_vcard
+  intoContact:(id)_contact usingSelector:(SEL)_cpu
+  typeMapping:(NSDictionary *)mapping
+  inContext:(id)_context
+{
+  /*
+    Note: we do not try to be smart about typeless addresses in combination
+          with unused addresses in OGo. We always treat such as custom addrs.
+  */
+  NSMutableSet *usedTypes;
+  NSEnumerator *adrs;
+  void (*cpu)(id, SEL, id, NSString *, id, id);
+  id adr; // really: NGVCardAddress or NGVCardPhone object
+  
+  if (![_contact isNotNull]) {
+    [self logWithFormat:@"ERROR(%s): got no contact!", __PRETTY_FUNCTION__];
+    return;
+  }
+  
+  if ((cpu = (void *)[self methodForSelector:_cpu]) == NULL ){
+    [self logWithFormat:@"ERROR(%s): failed to lookup selector: '%@'",
+            NSStringFromSelector(_cpu)];
+    return;
+  }
+  
+  /* walk over all addresses and map */
+  
+  usedTypes = [NSMutableSet setWithCapacity:8];
+  
+  adrs = [[_vcard valueForKey:_key] objectEnumerator];
+  while ((adr = [adrs nextObject]) != nil) {
+    NSArray  *atypes;
+    NSString *mappedType = nil;
+    
+    atypes = [adr valueForKey:@"types"];
+    
+    if (mappedType == nil) {
+      /* use mapping using Defaults.plist */
+      mappedType = [self mapTypes:atypes 
+                         usingMapping:mapping andUniquer:usedTypes];
+    }
+    if (mappedType == nil) {
+      [self logWithFormat:
+              @"Note: did not store '%@', all slots are filled: %@",
+              _key, atypes];
+      continue;
+    }
+    
+    /* process */
+    
+    cpu(self, _cpu, adr, mappedType, _contact, _context);
+    
+    /* mark type as consumed */
+    if (mappedType != nil)
+      [usedTypes addObject:mappedType];
+  }
+}
+
+/* primary run function */
 
 - (void)_executeInContext:(id)_context {
   EOKeyGlobalID *lgid;
@@ -728,10 +879,24 @@ static NSDictionary *enterpriseRevMapping = nil;
   
   /* apply telephone, address */
   
-  [self _processAddressesFromVCard:self->vCardObject intoContact:eo
+  [self _processAddressField:@"adr" fromVCard:self->vCardObject
+        intoContact:eo
+        usingSelector:
+          @selector(_processVCardAddress:mappedToType:intoContact:inContext:)
+        typeMapping:[self revAdrMappingForContact:eo]
         inContext:_context];
-  
-  // TODO: phone (in creation step?)
+
+#if 1
+#warning complete me
+#else  
+  /* Note: we are handling the phone relationship on our own */
+  [self _processPhoneField:@"tel" fromVCard:self->vCardObject
+        intoContact:eo
+        usingSelector:
+          @selector(_processVCardPhone:mappedToType:intoContact:inContext:)
+        typeMapping:[self revPhoneMappingForContact:eo]
+        inContext:_context];
+#endif
   
 #if 0
   [self logWithFormat:@"EO: %@", eo];
