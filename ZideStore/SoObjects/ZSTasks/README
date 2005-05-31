@@ -1,16 +1,15 @@
-# $Id: README 1 2004-08-20 11:17:52Z znek $
-
-Tasks
-- mapped to SKYRiX Jobs
+ZSTasks
+=======
+- mapped to OGo Jobs
 - child of
   - group-folder
   - home-folder
 - disallow as child of account/person-folder !
 
-This is (still) special, because the SxTask objects are used as value
-containers !
+This code is (still) special, because the SxTask objects are used as value
+containers.
 
-Job Creation:
+Job Creation (ZideLook / Outlook):
   cdoAction           [1280]
   cdoIsRecurring      [eg 0]
   cdoItemIsComplete   [eg 0]
@@ -44,3 +43,122 @@ SxTaskRenderer   used to render a task in the iCalendar format
 
 SxTaskStatus     a small helper class to abstract the Outlook task status and
                  to calculate skyrix representations
+
+
+iCalendar
+=========
+
+Evo 2.2:
+---snip---
+UID:20050526T000711Z-19409-204-19344-0@move
+DTSTAMP:20050526T000711Z
+SUMMARY:testtask
+PRIORITY:5
+CREATED:20050526T000711
+LAST-MODIFIED:20050526T000711
+STATUS:COMPLETED
+DESCRIPTION:test description\nblah\n
+DUE;VALUE=DATE:20050529
+DTSTART;VALUE=DATE:20050525
+CLASS:CONFIDENTIAL
+CATEGORIES:Ideas\,Status
+PERCENT-COMPLETE:100
+COMPLETED:20050525T220000Z
+URL:http://www.webpage.de/
+SEQUENCE:1
+---snap---
+
+Kontact 3.4
+---snip--
+DTSTAMP:20050526T001732Z
+ORGANIZER;CN=Anonymous:MAILTO:nobody@nowhere
+ATTENDEE;CN=UU oo;RSVP=FALSE;PARTSTAT=ACCEPTED;ROLE=REQ-PARTICIPANT:mailto:ddd@ooo.com
+ATTENDEE;CN=blah blah;RSVP=TRUE;PARTSTAT=DELEGATED;ROLE=NON-PARTICIPANT:mailto:bb@bbb.com
+CREATED:20050526T001530Z
+UID:KOrganizer-904973760.578
+SEQUENCE:13
+LAST-MODIFIED:20050526T001635Z
+DESCRIPTION:test\nnote\n
+SUMMARY:testtodo
+LOCATION:testlocation
+CLASS:CONFIDENTIAL
+PRIORITY:3
+CATEGORIES:Education
+CATEGORIES:Holiday
+CATEGORIES:Meeting
+RRULE:FREQ=WEEKLY;COUNT=8;INTERVAL=1;BYDAY=TH
+ATTACH:http://www.web.de/
+DUE;VALUE=DATE:20050602
+DTSTART;VALUE=DATE:20050526
+PERCENT-COMPLETE:80
+RECURRENCE-ID:20050622T220000Z
+BEGIN:VALARM
+ATTACH:/usr/share/apps/korganizer/sounds/icemag.wav
+ACTION:PROCEDURE
+TRIGGER;VALUE=DURATION:-PT1M
+END:VALARM
+---snap---
+
+Possible mapping:
+ Evo 2.2 attrs:
+  uid              => sourceUrl
+  summary          => name
+  priority         => 5=normal, 3=high, 7=low, 0=undefined (Evo 2.2) (kde:0-9)
+  created          => 
+  last-modified    => lastModified
+  status           => jobStatus? (IN-PROCESS, COMPLETED, ???)
+  description      => comment
+  due              => endDate
+  dtstart          => startDate
+  class            => sensitivity?  (CONFIDENTIAL, PUBLIC, PRIVATE)
+  categories       => category
+  percent-complete => percentComplete
+  completed        => completionDate
+  url              => 
+  sequence         => check against object_version? (nope=>etag!)
+
+ Missing, Kontact:
+  organizer
+  attendee
+  location
+  rrule
+  attach (url?!)
+  recurrence-id
+  valarm (attach, action, trigger)
+
+Dont touch:
+  projectId
+
+OGo model (EO Job):
+  Job
+    jobId
+    parentJobId
+    projectId
+    creatorId		=> TODO: organizer?
+    executantId		=> TODO: attendee?
+    name		=> title
+    startDate		=> dtstart
+    endDate		=> due
+    notify
+    isControlJob
+    isTeamJob
+    jobStatus		=> status?
+    category		=> categories
+    kind		???
+    priority		=> priority
+    keywords		[basically the same like categories]
+    sourceUrl		=> uid
+    sensitivity		=> class
+    comment		=> comment
+    completionDate	=> completed
+    percentComplete	=> percent-complete
+    actualWork		
+    totalWork		
+    lastModified	=> last-modified
+    accountingInfo	
+    kilometers		
+    associatedCompanies	
+    associatedContacts	
+    timerDate		
+    dbStatus
+    objectVersion
