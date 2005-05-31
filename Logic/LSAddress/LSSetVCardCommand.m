@@ -681,8 +681,8 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
      Evolution to store slot indices).
   */
   NSMutableDictionary *lChangeSet;
-  NSString *info;
-  id   args;
+  NSString     *info;
+  NSDictionary *args;
   id   phoneEO;
   
   [self debugWithFormat:@"save phone under type %@: %@", _type, _vtel];
@@ -717,13 +717,11 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
       if ([args objectForKey:@"X-OGO-INFO"] == nil) {
         /* add existing info */
         args = [[args mutableCopy] autorelease];
-        [args setObject:[phoneEO valueForKey:@"info"] forKey:@"X-OGO-INFO"];
+        [(NSMutableDictionary *)args setObject:[phoneEO valueForKey:@"info"] 
+				     forKey:@"X-OGO-INFO"];
       }
     }
     
-#if COCOA_FOUNDATION_LIBRARY || NeXT_FOUNDATION_LIBRARY
-#  warning imperfect handling of vCard arguments on this Foundation library
-#endif
     if ([args count] == 0) {
       // TODO: should we do this? preserving/merging info might be useful
       //       when accessing with multiple (non-preserving) clients
@@ -998,16 +996,20 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   /* check whether card exists and fetch EO if it does */
   
   if ((lgid = [self globalIDForCard:self->vCardObject inContext:_context])) {
+    NSString *cmdname;
+    
     ASSIGN(self->gid, lgid);
     [self logWithFormat:@"write to GID: %@", lgid];
     
     /* 
-       Note: apparently this doesn't run person::get! So you need to fetch
-             attributes/phones etc on your own.
+       Note: object::get-by-globalid apparently doesn't run person::get! So 
+             we need to use generic methods (or optionally fetch extattrs etc
+	     on our own).
     */
-#warning FIX ME: can't use object::get-by-globalid here
-    eo = [_context runCommand:@"object::get-by-globalid",
-		   @"gid", self->gid, nil];
+    cmdname = [[lgid entityName] lowercaseString];
+    cmdname = [cmdname stringByAppendingString:@"::get-by-globalid"];
+    
+    eo = [_context runCommand:cmdname, @"gid", lgid, nil];
     [self setNewEntityName:[lgid entityName]];
     
     if ([eo isKindOfClass:[NSArray class]])

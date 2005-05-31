@@ -90,6 +90,10 @@ all phone numbers of company contacts
   FROM  telephone AS t, enterprise AS e 
   WHERE t.company_id=e.company_id;
 
+  SELECT   t.number, t.type, p.name, p.firstname
+  FROM     telephone t, person p
+  WHERE    t.company_id=p.company_id AND p.name='Duck'
+  ORDER BY company_id, type;
 
 vCard Dumps
 ===========

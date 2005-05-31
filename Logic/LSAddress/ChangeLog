@@ -1,4 +1,8 @@
-2005-05-31  Helge Hess  <helge.hess@skyrix.com>
+2005-05-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSSetVCardCommand.m: changed to use specific get-by-globalid commands
+	  to ensure a consistent fetch, this removed the issue with email
+	  address values being duplicated (v5.1.71)
 
 	* v5.1.70
 

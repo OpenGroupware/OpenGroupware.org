@@ -280,7 +280,7 @@ static BOOL         renderOGoPhoneType = NO;
   
   if (![info hasPrefix:@"V:"]) {
     info = [info stringByEscapingUnsafeVCardCharacters];
-    return [@"X-OGO-INFO=" stringByAppendingString:info];
+    return [@";X-OGO-INFO=" stringByAppendingString:info];
   }
   
   info = [info substringFromIndex:2];
@@ -309,7 +309,7 @@ static BOOL         renderOGoPhoneType = NO;
 
 static int compareKey(id o1, id o2, void *ctx) {
   if (o1 == o2) return NSOrderedSame;
-  return [[o1 valueForKey:ctx] compare:[o2 valueForKey:ctx]];
+  return [(NSString *)[o1 valueForKey:ctx] compare:[o2 valueForKey:ctx]];
 }
 
 - (void)_appendTelephoneData:(id)_company toVCard:(NSMutableString *)_vCard {
