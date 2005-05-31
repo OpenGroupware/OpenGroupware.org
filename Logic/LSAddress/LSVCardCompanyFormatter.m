@@ -265,25 +265,80 @@ static NSDictionary *addressMapping = nil;
   }
 }
 
+- (NSString *)vCardStringForTelInfo:(NSString *)info {
+  NSMutableString *ms;
+  
+  if (![info isNotNull])  return nil;
+  if ([info length] == 0) return nil;
+  
+  if (![info hasPrefix:@"V:"]) {
+    info = [info stringByEscapingUnsafeVCardCharacters];
+    return [@"X-OGO-INFO=" stringByAppendingString:info];
+  }
+  
+  info = [info substringFromIndex:2];
+  ms   = [NSMutableString stringWithCapacity:32];
+
+      if ([info characterAtIndex:0] == '{') {
+	NSDictionary *plist;
+	NSEnumerator *e;
+	NSString     *k;
+	
+	plist = [info propertyList];
+	e  = [plist keyEnumerator];
+	while ((k = [e nextObject]) != nil) {
+	  [ms appendString:@";"];
+	  [ms appendString:k];
+	  [ms appendString:@"="];
+	  [ms appendString:[[plist objectForKey:k] stringValue]];
+	}
+      }
+      else {
+	[ms appendString:@";"];
+	[ms appendString:info];
+      }
+      return ms;
+}
+
 - (void)_appendTelephoneData:(id)_company toVCard:(NSMutableString *)_vCard {
-  // TEL
+  /* TEL property */
   NSArray *telephones;
   int i, cnt;
   
   telephones = [_company valueForKey:@"telephones"];
   for (i = 0, cnt = [telephones count]; i < cnt; i++) {
-    id telephone;
-    id type;
-
-    telephone = [telephones objectAtIndex:i];
-    type      = [telephone valueForKey:@"type"];
-    type      = [telephoneMapping valueForKey:type];
-    type      = ([type length] > 0)
-      ? [NSString stringWithFormat:@"TEL;TYPE=%@", type] : @"TEL";
-    telephone = [telephone valueForKey:@"realNumber"];
-
-    if ([telephone length] > 0)
-      [self _appendName:type andValue:telephone toVCard:_vCard];
+    NSMutableString *name;
+    NSString *num, *type, *info;
+    id telephoneEO;
+    
+    telephoneEO = [telephones objectAtIndex:i];
+    type        = [telephoneEO valueForKey:@"type"];
+    info        = [telephoneEO valueForKey:@"info"];
+    num         = [telephoneEO valueForKey:@"number"];
+    
+    if (![num isNotNull])  continue;
+    if ([num length] == 0) continue;
+    
+    name = [[NSMutableString alloc] initWithCapacity:128];
+    [name appendString:@"TEL"];
+    
+    if ([type isNotNull] && [type length] > 0) {
+      [name appendString:@";X-OGO-TYPE="];
+      [name appendString:type];
+      
+      if ((type = [telephoneMapping valueForKey:type]) != nil) {
+	[name appendString:@";TYPE="];
+	[name appendString:type];
+      }
+    }
+    
+    if ((info = [self vCardStringForTelInfo:info]) != nil) {
+      [name appendString:@";"];
+      [name appendString:info];
+    }
+    
+    [self _appendName:name andValue:num toVCard:_vCard];
+    [name release]; name = nil;
   }
 }
 

@@ -25,6 +25,8 @@
 
 @implementation NSString(Phone)
 
+static int MinimumPhoneNumberLength = 4;
+
 - (NSString *)stringByNormalizingOGoPhoneNumber {
   unsigned len = [self length];
   char     *source, *buffer; // Unicode
@@ -69,18 +71,24 @@
       else {
         // no digit
         BOOL isPlus = NO;
-        if (bLen == 0 && c == '+') isPlus = YES;
-        for (k = i+1; (k < len) && (!isdigit(source[k])); k++) {}
+	
+        if (bLen == 0 && c == '+') 
+	  isPlus = YES;
+	
+        for (k = i+1; (k < len) && (!isdigit(source[k])); k++)
+	  ;
+	
         pLen = k - i;
-        if (isPlus)
-          buffer[bLen++] = '+';
-        else
-          buffer[bLen++] = '-';
-        i+= pLen;
+	buffer[bLen++] = isPlus ? '+' : '-';
+	bLen++;
+        i += pLen;
       }
   }
 
-  self = [NSString stringWithCString:buffer length:bLen];
+  if (bLen >= MinimumPhoneNumberLength)
+    self = [NSString stringWithCString:buffer length:bLen];
+  else
+    self = @"";
   
   if (buffer) free(buffer); buffer = NULL;
   if (source) free(source); source = NULL;

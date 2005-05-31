@@ -1,8 +1,14 @@
-2005-05-30  Helge Hess  <helge.hess@skyrix.com>
+2005-05-31  Helge Hess  <helge.hess@opengroupware.org>
 
-	* LSSetVCardCommand.m: preparations for phone handling (v5.1.66)
+	* LSVCardCompanyFormatter.m: improved phone generation (v5.1.68)
 
 2005-05-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSVCardCompanyFormatter.m: changed to use 'number' for vCard instead
+	  of 'realNumber' (which happens to be unset if the number doesn't
+	  match a pattern [eg contains strings]) (v5.1.67)
+
+	* LSSetVCardCommand.m: preparations for phone handling (v5.1.66)
 
 	* LSSetCompanyCommand.m: minor code cleanups (v5.1.65)
 
