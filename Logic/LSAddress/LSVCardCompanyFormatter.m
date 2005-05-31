@@ -380,15 +380,33 @@ static int compareKey(id o1, id o2, void *ctx) {
   }
 }
 
+- (void)_appendExtraEmails:(id)_person markFirstAsPreferred:(BOOL)_pref
+  toVCard:(NSMutableString *)_vCard
+{
+  id tmp;
+  
+  if ([(tmp = [_person valueForKey:@"email1"]) isNotNull]) {
+    [self _appendName:(_pref ? @"EMAIL;TYPE=PREF" : @"EMAIL") andValue:tmp
+          toVCard:_vCard];  
+  }
+  if ([(tmp = [_person valueForKey:@"email2"]) isNotNull]) 
+    [self _appendName:@"EMAIL" andValue:tmp toVCard:_vCard];  
+  if ([(tmp = [_person valueForKey:@"email3"]) isNotNull]) 
+    [self _appendName:@"EMAIL" andValue:tmp toVCard:_vCard];
+  if ([(tmp = [_person valueForKey:@"email4"]) isNotNull]) 
+    [self _appendName:@"EMAIL" andValue:tmp toVCard:_vCard];
+}
+
 - (void)_appendExtendedAttributes:(id)_contact
   toVCard:(NSMutableString *)_vCard
 {
-  // todo: deliver company values
+  // todo: deliver company values eg as Kontact X- attributes
 }
 
 /* main entry */
 
 - (void)appendContentForObject:(id)_company toString:(NSMutableString *)_ms {
+  // override in subclasses
 }
 
 - (NSString *)stringForObjectValue:(id)_company {
@@ -408,11 +426,13 @@ static int compareKey(id o1, id o2, void *ctx) {
 
 - (void)_appendTeamData:(id)_team toVCard:(NSMutableString *)_vCard {
   id tmp;
+  
   tmp  = [_team valueForKey:@"description"];
-  if ([tmp length]) 
+  if (![tmp isNotNull] || [tmp length] == 0) {
     tmp = [NSString stringWithFormat:@"Team: %@",
                     [_team valueForKey:@"companyId"]];
-  // FN, formated name
+  }
+  // FN, formatted name
   [self _appendName:@"FN" andValue:tmp toVCard:_vCard];
   // N
   [_vCard appendString:@"N:"];
@@ -422,10 +442,12 @@ static int compareKey(id o1, id o2, void *ctx) {
     [self _appendTextValue:tmp toVCard:_vCard];
   }
   [_vCard appendString:@"\r\n"];
+  
+  /* EMAIL */
 
   if ([(tmp = [_team valueForKey:@"email"]) isNotNull])
-    [self _appendName:@"EMAIL;TYPE=internet" andValue:tmp toVCard:_vCard];
-
+    [self _appendName:@"EMAIL;TYPE=PREF" andValue:tmp toVCard:_vCard];
+  [self _appendExtraEmails:_team markFirstAsPreferred:NO toVCard:_vCard];
 }
 
 - (void)appendContentForObject:(id)_comp toString:(NSMutableString *)_ms {
@@ -456,27 +478,17 @@ static int compareKey(id o1, id o2, void *ctx) {
   [_vCard appendString:@"\r\n"];
 }
 
-- (void)_appendPersonEmail:(id)_person toVCard:(NSMutableString *)_vCard {
-  id tmp;
-  // TODO: 'email' column
-  
-  // EMAIL
-  if ([(tmp = [_person valueForKey:@"email1"]) isNotNull]) {
-    [self _appendName:@"EMAIL;TYPE=internet,pref" andValue:tmp
-          toVCard:_vCard];  
-  }
-  if ([(tmp = [_person valueForKey:@"email2"]) isNotNull]) 
-    [self _appendName:@"EMAIL;TYPE=internet" andValue:tmp toVCard:_vCard];  
-  if ([(tmp = [_person valueForKey:@"email3"]) isNotNull]) 
-    [self _appendName:@"EMAIL;TYPE=internet" andValue:tmp toVCard:_vCard];
-}
-
 - (void)_appendPersonData:(id)_person toVCard:(NSMutableString *)_vCard {
   // FN, N, EMAIL, NICKNAME, BDAY, TITLE, FBURL
   id tmp;
   
-  [self _appendPersonName:_person  toVCard:_vCard];  // FN, N
-  [self _appendPersonEmail:_person toVCard:_vCard]; // EMAIL
+  [self _appendPersonName:_person  toVCard:_vCard]; // FN, N
+  
+  // EMAIL
+  [self _appendExtraEmails:_person markFirstAsPreferred:YES toVCard:_vCard];
+  if ([(tmp = [_person valueForKey:@"email"]) isNotNull])
+    [self _appendName:@"EMAIL" andValue:tmp toVCard:_vCard];  
+  
   // NICKNAME
   if ([(tmp = [_person valueForKey:@"description"]) isNotNull])
     [self _appendName:@"NICKNAME" andValue:tmp toVCard:_vCard];
@@ -496,7 +508,7 @@ static int compareKey(id o1, id o2, void *ctx) {
   // TODO: add support for ZideStore FreeBusy URLs?
   // FBURL
   if ([(tmp = [_person valueForKey:@"freebusyUrl"]) isNotNull]) {
-    [self logWithFormat:@"GEN FB: %@ (%@)", tmp, [tmp class]];
+    //[self logWithFormat:@"GEN FB: %@ (%@)", tmp, [tmp class]];
     [self _appendName:@"FBURL" andValue:tmp toVCard:_vCard];
   }
 }
@@ -537,9 +549,11 @@ static int compareKey(id o1, id o2, void *ctx) {
     [self _appendTextValue:tmp toVCard:_vCard];
   }
   [_vCard appendString:@"\r\n"];
-
+  
   if ([(tmp = [_e valueForKey:@"email"]) isNotNull])
-    [self _appendName:@"EMAIL;TYPE=internet" andValue:tmp toVCard:_vCard];
+    [self _appendName:@"EMAIL;TYPE=PREF" andValue:tmp toVCard:_vCard];
+  
+  [self _appendExtraEmails:_e markFirstAsPreferred:NO toVCard:_vCard];
 }
 
 - (void)appendContentForObject:(id)_comp toString:(NSMutableString *)_ms {

@@ -126,6 +126,10 @@ static NSString *autoNumberPrefix = @"OGo";
   /* handle already existing attributes */
   obj      = [self object];
   extAttrs = [obj valueForKey:@"companyValue"]; // TODO: who does that?
+  // TODO: autofetch if 'companyValue' isn't set?
+  if (extAttrs == nil)
+    [self logWithFormat:@"WARNING: companyValue is not set, might DUP attrs."];
+  
   for (i = 0, cnt = [extAttrs count]; i < cnt; i++) {
     id extAttr, value;
     

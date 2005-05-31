@@ -88,6 +88,7 @@ static NSString     *skyrixId         = nil;
 static Class        NGVCardClass      = Nil;
 static NSNumber     *yesNum           = nil;
 static NSNumber     *noNum            = nil;
+static NSNull       *null             = nil;
 static NSDictionary *personRevMapping          = nil;
 static NSDictionary *enterpriseRevMapping      = nil;
 static NSDictionary *personPhoneRevMapping     = nil;
@@ -98,6 +99,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
 
   yesNum = [[NSNumber numberWithBool:YES] retain];
   noNum  = [[NSNumber numberWithBool:NO]  retain];
+  null   = [[NSNull null] retain];
   
   skyrixId = [ud stringForKey:@"skyrix_id"];
   skyrixId = [[NSString alloc] initWithFormat:@"skyrix://%@/%@/",
@@ -278,7 +280,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
     if ([tmp hasPrefix:LSVUidPrefix]) /* keep UID-prefix URLs as is */
       [self mapValue:tmp to:@"sourceUrl"];
     else if ([tmp hasPrefix:skyrixId]) /* native "source_url", remove */
-      [self mapValue:[NSNull null] to:@"sourceUrl"];
+      [self mapValue:null to:@"sourceUrl"];
     else if ([tmp rangeOfString:@"://"].length > 0) /* reuse URLs as-is */
       [self mapValue:tmp to:@"sourceUrl"];
     else {
@@ -387,12 +389,50 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   // also: confidential
 }
 
-- (void)appendPersonEMails:(NSArray *)_mails {
-  [self logWithFormat:@"TODO: process person emails: %@", _mails];
-}
+- (void)appendEMails:(NSArray *)_mails preferExtAttr:(BOOL)_preferExt {
+  /*
+    Just load them into properties in the same sequence as in the vCard.
+    TODO: would be better to scan for PREF?
+    
+    TODO: We loose email types. We could add them as part of the attribute
+          name, but then we would get issues with the WebUI in various places.
+    TODO: We currently can't use the label to store the value, this gets
+          overridden in the WebUI for unknown reasons.
 
-- (void)appendGenericEMails:(NSArray *)_mails {
-  [self logWithFormat:@"TODO: process generic emails: %@", _mails];
+    TODO: if we delete an email, mails in the sequence "push up", eg if
+          email2 is deleted, email3 becomes email2!
+  */
+  NSEnumerator *mails;
+  id  email; /* NGVCardSimpleValue */
+  int i;
+  
+  mails = [_mails objectEnumerator];
+  
+  if (!_preferExt) {
+    if ([(email = [mails nextObject]) isNotNull])
+      [self->changeset setObject:[email stringValue] forKey:@"email"];
+    else
+      [self->changeset setObject:null forKey:@"email"];
+  }
+  
+  // TODO: this is tricky, since we should also delete mail fields
+
+  /* 
+     Currently we write email1-4 even if neither the vCard nor the
+     OGo contact previously had them (especially: enterprises+teams).
+     
+     We would need to pass in the EO to change that.
+  */
+
+  for (i = 1; i <= 4; i++) {
+    NSString *k;
+
+    k = [[NSString alloc] initWithFormat:@"email%i", i];
+    email = [mails nextObject];
+    email = [email isNotNull] ? [email stringValue] : (id)null;
+    [self->changeset setObject:email forKey:k];
+    [k release];
+  }
 }
 
 /* main generators */
@@ -410,7 +450,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   [self appendCommon:_vc];
   [self appendNote:_vc];
   [self appendPhoto:_vc];
-  [self appendPersonEMails:[_vc valueForKey:@"email"]];
+  [self appendEMails:[_vc valueForKey:@"email"] preferExtAttr:YES];
   // [self appendClassification:_vc toChangeSet:md];
 
   /* TODO: name handling (what is missing?) */
@@ -447,7 +487,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   [self appendCommon:_vc];
   [self appendNote:_vc];
   [self appendPhoto:_vc];
-  [self appendGenericEMails:[_vc valueForKey:@"email"]];
+  [self appendEMails:[_vc valueForKey:@"email"] preferExtAttr:NO];
   // [self appendClassification:_vc toChangeSet:md];
   
   /* name handling */
@@ -687,7 +727,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
     if ([args count] == 0) {
       // TODO: should we do this? preserving/merging info might be useful
       //       when accessing with multiple (non-preserving) clients
-      argstr = (id)[NSNull null]; /* reset info (eg args removed on client) */
+      argstr = (id)null; /* reset info (eg args removed on client) */
     }
     else
       argstr = [self infoValueForArguments:args];
@@ -961,6 +1001,11 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
     ASSIGN(self->gid, lgid);
     [self logWithFormat:@"write to GID: %@", lgid];
     
+    /* 
+       Note: apparently this doesn't run person::get! So you need to fetch
+             attributes/phones etc on your own.
+    */
+#warning FIX ME: can't use object::get-by-globalid here
     eo = [_context runCommand:@"object::get-by-globalid",
 		   @"gid", self->gid, nil];
     [self setNewEntityName:[lgid entityName]];

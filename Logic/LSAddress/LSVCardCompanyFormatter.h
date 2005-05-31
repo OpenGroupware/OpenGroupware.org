@@ -83,6 +83,8 @@ extern NSString *LSVUidPrefix;
 - (void)_appendAddressData:(id)_contact        toVCard:(NSMutableString *)_ms;
 - (void)_appendTelephoneData:(id)_company      toVCard:(NSMutableString *)_ms;
 - (void)_appendExtendedAttributes:(id)_contact toVCard:(NSMutableString *)_ms;
+- (void)_appendExtraEmails:(id)_person markFirstAsPreferred:(BOOL)_pref
+  toVCard:(NSMutableString *)_vCard;
 
 /* main entry */
 

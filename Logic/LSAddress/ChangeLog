@@ -1,5 +1,17 @@
 2005-05-31  Helge Hess  <helge.hess@skyrix.com>
 
+	* v5.1.70
+
+	* LSSetVCardCommand.m: work on vCard email support
+	
+	* LSSetCompanyCommand.m: print a warning if extattrs are being changed
+	  but no companyValue record is set in object
+
+	* LSVCardCompanyFormatter.m: do not generate 'internet' mail types for
+	  emails (generate no type), added support for a email4 (Evolution has
+	  support for 4 different mail addresses in the UI), generate ext-attr
+	  emails for enterprises/teams, fixed naming of teams
+	  
 	* v5.1.69
 
 	* LSVCardCompanyFormatter.m: fixed generation of multiple phone types,

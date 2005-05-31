@@ -33,9 +33,15 @@
 
 - (void)_executeInContext:(id)_context {
   NSMutableArray *resultList;
-  id teamCmd       = LSLookupCommand(@"team", @"get");
-  id personCmd     = LSLookupCommand(@"person", @"get");
-  id enterpriseCmd = LSLookupCommand(@"enterprise", @"get");
+  id teamCmd, personCmd, enterpriseCmd;
+
+  /* 
+     Note: we cannot cache the commands since the content is modified and not
+           resetted.
+  */
+  teamCmd       = LSLookupCommand(@"team", @"get");
+  personCmd     = LSLookupCommand(@"person", @"get");
+  enterpriseCmd = LSLookupCommand(@"enterprise", @"get");
   
   [teamCmd       takeValue:self->companyId forKey:@"companyId"];
   [personCmd     takeValue:self->companyId forKey:@"companyId"];
