@@ -1,4 +1,11 @@
-2005-05-31  Helge Hess  <helge.hess@opengroupware.org>
+2005-05-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.69
+
+	* LSVCardCompanyFormatter.m: fixed generation of multiple phone types,
+	  added support for V: prefixed phone types
+
+	* LSSetVCardCommand.m: finished saving phone numbers from vCards
 
 	* LSVCardCompanyFormatter.m: improved phone generation (v5.1.68)
 

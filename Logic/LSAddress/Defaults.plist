@@ -210,14 +210,19 @@
     "03_tel_funk"    = "cell,voice";
     "05_tel_private" = "home,voice";
     "15_fax_private" = "home,fax";
+    "30_pager"       = "pager";
+    "31_other1"      = "voice";
+    "32_other2"      = "voice";
   };
-  LSVCard_PersonTelephoneRevMapping = {
-    work  = "";
-    fax   = "";
+  LSVCard_PersonTelephoneRevMapping = { // Note: only used as fallback
+    work  = "01_tel";
+    fax   = "10_fax";
+    pager = "30_pager";
   };
-  LSVCard_EnterpriseTelephoneRevMapping = {
-    work  = "";
-    fax   = "";
+  LSVCard_EnterpriseTelephoneRevMapping = { // Note: only used as fallback
+    work  = "01_tel";
+    fax   = "10_fax";
+    pager = "30_pager";
   };
 
   LSAutoCompanyLoginPrefix  = "OGo";

@@ -63,6 +63,27 @@ extern NSString *LSVUidPrefix;
 
 @implementation LSSetVCardCommand
 
+static struct { 
+  NSString *key; 
+  NSString *key2; 
+  BOOL     opt; 
+  NSString *type;
+  NSString *alttype;
+} hardPhoneTypes[] = { /* ordering matters, eg for matching FAX! */
+  { @"WORK", @"FAX", NO, @"10_fax",         nil },
+  { @"HOME", @"FAX", NO, @"15_fax_private", nil },
+  
+  { @"CELL",  @"VOICE", YES, @"03_tel_funk",    nil },
+  { @"WORK",  @"VOICE", YES, @"01_tel",         @"02_tel" },
+  { @"HOME",  @"VOICE", YES, @"05_tel_private", nil },
+
+  { @"PAGER", @"WORK",  YES, @"30_pager",  nil },
+  { @"VOICE", nil,      YES, @"31_other1", @"32_other2" },
+  
+  /* Note: we intentionally do not map "just VOICE" to tel_01, its 'other' */
+  { NULL, NULL, NO, NULL }
+};
+
 static NSString     *skyrixId         = nil;
 static Class        NGVCardClass      = Nil;
 static NSNumber     *yesNum           = nil;
@@ -455,9 +476,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
     [self assert:([self->vCard length] > 0) reason:@"vCard has no content!"];
 }
 
-/* running the command */
-
-// TODO: label, email, adr, tel
+/* working on type arrays */
 
 - (NSString *)findPrimaryTypeInArray:(NSArray *)_types {
   if (![_types isNotNull] || [_types count] == 0) /* no types => no primary */
@@ -476,6 +495,60 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   /* more than one type => no primary */
   return nil;
 }
+
+- (BOOL)doTypes:(NSArray *)_types containType:(NSString *)_key
+  andType:(NSString *)_key2 optional:(BOOL)_optional
+{
+  /*
+    Checks for types containing 1-3 items, eg:
+      work
+      work,voice
+      home,fax,pref
+    The first type-key must always be present, the second is optional.
+  */
+  int idx, secidx, prefidx, count;
+  
+  if ((count = [_types count]) == 0) return NO;
+  if (count > 3) return NO;
+  
+  /* convert all types to uppercase */
+  _types = [_types valueForKey:@"uppercaseString"];
+  
+#if 0
+  [self debugWithFormat:@"CHECK %@ against %@/%@/%s",
+        [_types componentsJoinedByString:@","],
+        _key, _key2, (_optional ? "optional" : "mandatory")];
+#endif
+  
+  if ((idx = [_types indexOfObject:_key]) == NSNotFound)
+    return NO; /* does not contain primary type (WORK or HOME) */
+  
+  if (count == 1) /* just the primary type, eg WORK */
+    return _optional ? YES : NO;
+  
+  secidx = [_types indexOfObject:_key2];
+  if (!_optional && secidx == NSNotFound)
+    return NO; /* second type is non-optional and missing */
+  
+  prefidx = [_types indexOfObject:@"PREF"];
+  if (count == 2) {
+    if (prefidx != NSNotFound) /* eg WORK,PREF */
+      return _optional ? YES : NO;
+    
+    return secidx == NSNotFound ? NO : YES;
+  }
+  
+  if (count != 3) {
+    [self logWithFormat:@"ERROR(%s:%i): count should be 3 but is %i", 
+          __PRETTY_FUNCTION__, __LINE__, count];
+  }
+  /* count is three, all must match: PREF + TYPE + TYPE 2 */
+  if (secidx  == NSNotFound) return NO;
+  if (prefidx == NSNotFound) return NO;
+  return YES;
+}
+
+/* running the command */
 
 - (void)_processVCardAddress:(id)_vadr mappedToType:(NSString *)_type
   intoContact:(id)_contact inContext:(id)_context
@@ -510,6 +583,8 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   [lChangeSet takeValue:[_vadr valueForKey:@"pcode"]    forKey:@"zip"];
   [lChangeSet takeValue:[_vadr valueForKey:@"country"]  forKey:@"country"];
   
+  // TODO: add field for extended attributes?
+  
   // TODO: add fields for the two in the DB (OGo 1.1)
   if ([(tmp = [_vadr valueForKey:@"pobox"]) isNotNull]) {
     tmp = [@"pobox:" stringByAppendingString:tmp];
@@ -537,15 +612,42 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   }
 }
 
+- (NSString *)infoValueForArguments:(NSDictionary *)_args {
+  NSMutableString *argstr;
+  NSEnumerator *e;
+  NSString     *k;
+  
+  argstr = [NSMutableString stringWithCapacity:128];
+  [argstr appendString:@"V:{"];
+  e = [_args keyEnumerator];
+  while ((k = [e nextObject]) != nil) {
+    // TODO: escaping?!
+    [argstr appendString:k];
+    [argstr appendString:@"=\""];
+    [argstr appendString:[[_args objectForKey:k] stringValue]];
+    [argstr appendString:@"\";"];
+  }
+  [argstr appendString:@"}"];
+  return argstr;
+}
+
 - (void)_processVCardPhone:(id)_vtel mappedToType:(NSString *)_type
   intoContact:(id)_contact inContext:(id)_context
 {
-  /* _vtel is a NGVCardPhone */
+  /* 
+     _vtel is a NGVCardPhone 
+
+     We reuse the 'info' field for additional vCard arguments (eg used by
+     Evolution to store slot indices).
+  */
   NSMutableDictionary *lChangeSet;
-  id phoneEO;
+  NSString *info;
+  id   args;
+  id   phoneEO;
   
   [self debugWithFormat:@"save phone under type %@: %@", _type, _vtel];
-
+  info = nil;
+  
   /* fetch EO object to set the new values */
   
   // TODO: this performs a case insensitive match on the type.
@@ -554,9 +656,13 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
                         @"comparator", @"EQUAL",
                         @"type",       _type,
                         @"companyId",  [_contact valueForKey:@"companyId"],
-                        nil];
-  if ([phoneEO isKindOfClass:[NSArray class]])
+                      nil];
+  if ([phoneEO isKindOfClass:[NSArray class]]) {
     phoneEO = ([phoneEO count] > 0) ? [phoneEO objectAtIndex:0] : nil;
+    info = [phoneEO valueForKey:@"info"];
+    if (![info isNotNull] || [info length] == 0)
+      info = nil;
+  }
   
   /* make changeset */
   
@@ -564,8 +670,47 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   [lChangeSet takeValue:noNum               forKey:@"shouldLog"];
   [lChangeSet takeValue:[_vtel stringValue] forKey:@"number"];
   
-  /* check whether the address type already exists */
+  if ([(args = [_vtel valueForKey:@"arguments"]) isNotNull]) {
+    NSString *argstr;
+
+    if (info != nil && ![info hasPrefix:@"V:"]) { /* keep existing infos */
+      if ([args objectForKey:@"X-OGO-INFO"] == nil) {
+        /* add existing info */
+        args = [[args mutableCopy] autorelease];
+        [args setObject:[phoneEO valueForKey:@"info"] forKey:@"X-OGO-INFO"];
+      }
+    }
+    
+#if COCOA_FOUNDATION_LIBRARY || NeXT_FOUNDATION_LIBRARY
+#  warning imperfect handling of vCard arguments on this Foundation library
+#endif
+    if ([args count] == 0) {
+      // TODO: should we do this? preserving/merging info might be useful
+      //       when accessing with multiple (non-preserving) clients
+      argstr = (id)[NSNull null]; /* reset info (eg args removed on client) */
+    }
+    else
+      argstr = [self infoValueForArguments:args];
+    
+    // TODO: check limit against EO-Model!
+    // TODO: expand info length in PostgreSQL?
+    if ([argstr isNotNull] && [argstr length] > 254) {
+      [self logWithFormat:
+              @"ERROR: cannot store vCard arguments, too long: %i vs 254",
+              [argstr length]];
+      argstr = nil;
+    }
+    
+    if (argstr != nil)
+      [lChangeSet setObject:argstr forKey:@"info"];
+  }
   
+  /* check whether the address type already exists */
+
+#if 0
+  [self debugWithFormat:@"  phone: %@ (0x%08X)", lChangeSet, phoneEO];
+#endif
+
   if (![phoneEO isNotNull]) {
     [lChangeSet takeValue:[_contact valueForKey:@"companyId"]
                 forKey:@"companyId"];
@@ -574,8 +719,8 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
     phoneEO = [_context runCommand:@"telephone::new" arguments:lChangeSet];
   }
   else {
-    [lChangeSet takeValue:[phoneEO valueForKey:@"addressId"]
-                forKey:@"addressId"];
+    [lChangeSet takeValue:[phoneEO valueForKey:@"telephoneId"]
+                forKey:@"telephoneId"];
     //[lChangeSet setObject:@"vCard address update" forKey:@"logText"];
     phoneEO = [_context runCommand:@"telephone::set" arguments:lChangeSet];
   }
@@ -605,21 +750,6 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
 
   [self logWithFormat:@"Note: not processing vCard TEL's for %@ objects.",k];
   return nil;
-}
-
-/* phone types */
-
-- (BOOL)doTypes:(NSArray *)_types containType:(NSString *)_key
-  andType:(NSString *)_key2 optional:(BOOL)_optional
-{
-  int idx, count;
-  if ((count = [_types count]) == 0) return NO;
-  if (count > 3) return NO;
-  if ((idx = [_types indexOfObject:_key]) == NSNotFound) 
-    return NO; /* does not contain primary key (WORK or HOME) */
-
-#warning COMPLETE ME
-  return NO;
 }
 
 /* generic ADR/TEL mapping */
@@ -753,11 +883,34 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   while ((adr = [adrs nextObject]) != nil) {
     NSArray  *atypes;
     NSString *mappedType = nil;
+    unsigned i;
     
     atypes = [adr valueForKey:@"types"];
     
+    /* 
+       Some hardcoded mapping (because phone-numbers are usually multi-type,
+       eg work,voice (which we cannot do easily with a plist).
+    */
+    for (i = 0; hardPhoneTypes[i].key != nil; i++) {
+      if ([self doTypes:atypes
+                containType:hardPhoneTypes[i].key
+                andType:hardPhoneTypes[i].key2
+                optional:hardPhoneTypes[i].opt]) {
+        mappedType = hardPhoneTypes[i].type;
+        if ([usedTypes containsObject:mappedType]) {
+          /* already used, check alt, then fallback */
+          if ((mappedType = hardPhoneTypes[i].alttype) != nil) {
+            if ([usedTypes containsObject:mappedType])
+              mappedType = nil; /* also used */
+          }
+        }
+        break;
+      }
+    }
+    
+    /* generic mapping */
+    
     if (mappedType == nil) {
-      /* use mapping using Defaults.plist */
       mappedType = [self mapTypes:atypes 
                          usingMapping:mapping andUniquer:usedTypes];
     }
@@ -886,9 +1039,6 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
         typeMapping:[self revAdrMappingForContact:eo]
         inContext:_context];
 
-#if 1
-#warning complete me
-#else  
   /* Note: we are handling the phone relationship on our own */
   [self _processPhoneField:@"tel" fromVCard:self->vCardObject
         intoContact:eo
@@ -896,8 +1046,6 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
           @selector(_processVCardPhone:mappedToType:intoContact:inContext:)
         typeMapping:[self revPhoneMappingForContact:eo]
         inContext:_context];
-#endif
-  
 #if 0
   [self logWithFormat:@"EO: %@", eo];
 #endif

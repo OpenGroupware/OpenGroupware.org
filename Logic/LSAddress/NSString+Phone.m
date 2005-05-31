@@ -75,11 +75,11 @@ static int MinimumPhoneNumberLength = 4;
         if (bLen == 0 && c == '+') 
 	  isPlus = YES;
 	
-        for (k = i+1; (k < len) && (!isdigit(source[k])); k++)
+        for (k = i + 1; (k < len) && (!isdigit(source[k])); k++)
 	  ;
 	
         pLen = k - i;
-	buffer[bLen++] = isPlus ? '+' : '-';
+	buffer[bLen] = isPlus ? '+' : '-';
 	bLen++;
         i += pLen;
       }

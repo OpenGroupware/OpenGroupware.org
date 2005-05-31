@@ -30,9 +30,10 @@ NSString *LSVUidPrefix = @"vcfuid://";
 
 @implementation LSVCardCompanyFormatter
 
-static NSString     *skyrixId = nil;
-static NSDictionary *telephoneMapping = nil;
-static NSDictionary *addressMapping = nil;
+static NSString     *skyrixId          = nil;
+static NSDictionary *telephoneMapping  = nil;
+static NSDictionary *addressMapping    = nil;
+static BOOL         renderOGoPhoneType = NO;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -52,14 +53,14 @@ static NSDictionary *addressMapping = nil;
 /* generic */
 
 - (void)appendPreambleToString:(NSMutableString *)_ms {
-  [_ms appendString:@"BEGIN:vCard\r\n"];
+  [_ms appendString:@"BEGIN:VCARD\r\n"];
   [_ms appendString:@"VERSION:3.0\r\n"];
   [_ms appendFormat:@"PRODID:-//OpenGroupware.org//LSAddress v%i.%i.%i\r\n",
          OGO_MAJOR_VERSION, OGO_MINOR_VERSION, OGO_SUBMINOR_VERSION];
   [_ms appendString:@"PROFILE:vCard\r\n"];
 }
 - (void)appendPostambleToString:(NSMutableString *)_ms {
-  [_ms appendString:@"END:vCard\r\n"];
+  [_ms appendString:@"END:VCARD\r\n"];
 }
 
 /* vCard formatting */
@@ -211,6 +212,22 @@ static NSDictionary *addressMapping = nil;
   }
 }
 
+- (NSString *)typeFromVCardTypeHack:(NSString *)type {
+  if (![type isNotNull])       return nil;
+  if (![type hasPrefix:@"V:"]) return nil;
+
+      /* a vCard specific type */
+      type = [type substringFromIndex:2];
+      
+      // remove counter (eg V:1work, V:2work)
+      if ([type length] > 0 && isdigit([type characterAtIndex:0]))
+        type = [type substringFromIndex:1];
+      
+      if ([type hasSuffix:@"untyped"]) /* imported VCF had no ADR type */
+        type = nil;
+      return type;
+}
+
 - (void)_appendAddressData:(id)_contact toVCard:(NSMutableString *)_vCard {
   // ADR, LABEL
   NSArray *addrs;
@@ -228,22 +245,12 @@ static NSDictionary *addressMapping = nil;
     id address;
     
     address = [addrs objectAtIndex:i];
-
+    
     type = [address valueForKey:@"type"];
     
-    if ([type isNotNull] && [type hasPrefix:@"V:"]) {
-      /* a vCard specific type */
-      type = [type substringFromIndex:2];
-      
-      // remove counter (eg V:1work, V:2work)
-      if ([type length] > 0 && isdigit([type characterAtIndex:0]))
-        type = [type substringFromIndex:1];
-      
-      if ([type hasSuffix:@"untyped"]) /* imported VCF had no ADR type */
-        type = nil;
-    }
-    else
-      type = [addressMapping valueForKey:type];
+    type = ([type isNotNull] && [type hasPrefix:@"V:"])
+      ? [self typeFromVCardTypeHack:type]
+      : [addressMapping valueForKey:type];
     
     s = [[LSVCardAddressFormatter formatter] stringForObjectValue:address];
     if (s != nil) {
@@ -279,25 +286,30 @@ static NSDictionary *addressMapping = nil;
   info = [info substringFromIndex:2];
   ms   = [NSMutableString stringWithCapacity:32];
 
-      if ([info characterAtIndex:0] == '{') {
-	NSDictionary *plist;
-	NSEnumerator *e;
-	NSString     *k;
+  if ([info characterAtIndex:0] == '{') {
+    NSDictionary *plist;
+    NSEnumerator *e;
+    NSString     *k;
 	
-	plist = [info propertyList];
-	e  = [plist keyEnumerator];
-	while ((k = [e nextObject]) != nil) {
+    plist = [info propertyList];
+    e  = [plist keyEnumerator];
+    while ((k = [e nextObject]) != nil) {
 	  [ms appendString:@";"];
 	  [ms appendString:k];
 	  [ms appendString:@"="];
 	  [ms appendString:[[plist objectForKey:k] stringValue]];
-	}
-      }
-      else {
-	[ms appendString:@";"];
-	[ms appendString:info];
-      }
-      return ms;
+    }
+  }
+  else {
+    [ms appendString:@";"];
+    [ms appendString:info];
+  }
+  return ms;
+}
+
+static int compareKey(id o1, id o2, void *ctx) {
+  if (o1 == o2) return NSOrderedSame;
+  return [[o1 valueForKey:ctx] compare:[o2 valueForKey:ctx]];
 }
 
 - (void)_appendTelephoneData:(id)_company toVCard:(NSMutableString *)_vCard {
@@ -305,7 +317,10 @@ static NSDictionary *addressMapping = nil;
   NSArray *telephones;
   int i, cnt;
   
+  /* always render phones in the same ordering */
   telephones = [_company valueForKey:@"telephones"];
+  telephones = [telephones sortedArrayUsingFunction:compareKey
+                           context:@"type"];
   for (i = 0, cnt = [telephones count]; i < cnt; i++) {
     NSMutableString *name;
     NSString *num, *type, *info;
@@ -323,19 +338,42 @@ static NSDictionary *addressMapping = nil;
     [name appendString:@"TEL"];
     
     if ([type isNotNull] && [type length] > 0) {
-      [name appendString:@";X-OGO-TYPE="];
-      [name appendString:type];
+      if (renderOGoPhoneType) {
+        [name appendString:@";X-OGO-TYPE="];
+        [name appendString:type];
+      }
       
-      if ((type = [telephoneMapping valueForKey:type]) != nil) {
-	[name appendString:@";TYPE="];
-	[name appendString:type];
+      if ([type hasPrefix:@"V:"]) {
+        if ((type = [self typeFromVCardTypeHack:type]) != nil) {
+          [name appendString:@";TYPE="];
+          [name appendString:type];
+        }
+      }
+      else if ((type = [telephoneMapping valueForKey:type]) != nil) {
+        NSEnumerator *e;
+        
+        e = [type isKindOfClass:[NSArray class]]
+          ? [(id)type objectEnumerator]
+          : [[type componentsSeparatedByString:@","] objectEnumerator];
+        while ((type = [e nextObject]) != nil) {
+          if ([type length] == 0) continue;
+          [name appendString:@";TYPE="];
+          [name appendString:type];
+        }
+      }
+      else {
+        [self logWithFormat:@"Note: did not find a mapping for phone: %@ / %@",
+              [telephoneEO valueForKey:@"telephoneId"],
+              [telephoneEO valueForKey:@"type"]];
       }
     }
-    
-    if ((info = [self vCardStringForTelInfo:info]) != nil) {
-      [name appendString:@";"];
-      [name appendString:info];
+    else {
+      [self logWithFormat:@"ERROR: phone has no type: %@",
+              [telephoneEO valueForKey:@"telephoneId"]];
     }
+    
+    if ((info = [self vCardStringForTelInfo:info]) != nil)
+      [name appendString:info]; /* includes the preceding semicolon */
     
     [self _appendName:name andValue:num toVCard:_vCard];
     [name release]; name = nil;

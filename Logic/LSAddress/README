@@ -80,3 +80,73 @@ vCard Notes
     - it also allows for 'pref' to be set
   - vCard ADR has no name1,name2,name3 in addresses ...
     - LABEL has
+
+
+SQL Queries
+===========
+
+all phone numbers of company contacts
+  SELECT DISTINCT t.type, e.company_id, e.description, t.number
+  FROM  telephone AS t, enterprise AS e 
+  WHERE t.company_id=e.company_id;
+
+
+vCard Dumps
+===========
+
+K:
+In UI: work + home (with pref-option)
+WORK, POSTAL, ...
+
+ADR;TYPE=dom;TYPE=home;TYPE=intl;TYPE=parcel;TYPE=postal;TYPE=pref;TYPE=wor
+ k:POBOX;;Street\nABC\n;Locality;Region;12345;Germany
+ADR;TYPE=work:PO;;dsafjh\ndsafh;Entenhausen;;12345;Germany
+ADR;TYPE=postal:;;postal;Enten;;;Gabon
+
+E:
+WORK, HOME, OTHER [also in UI]
+
+ADR;TYPE=WORK:;;abc;Berlin;Berlin;03421;Deutschland
+LABEL;TYPE=WORK:abc\nBerlin\, Berlin\n03421\nDeutschland
+ADR;TYPE=HOME:;sdfjak\n;Street ABC;Entenhausen;Enten;12345;Country
+LABEL;TYPE=HOME:Street ABC\nsdfjak\n\nEntenhausen\, Enten\n12345\nCountry
+ADR;TYPE=OTHER:;;;Hamburg;Hamburg;04040;Germany
+
+OGo:
+Person:     private, mailing, location
+Enterprise: shipping, billing
+
+
+Phone
+=====
+K:
+UI: default: home, work, mobile - in another panel any combination
+work | work | home | cell | fax,modem,video
+
+TEL;TYPE=WORK:0123-work
+TEL;TYPE=WORK:7789
+TEL;TYPE=HOME:0123-home
+TEL;TYPE=CELL:0123-mobile
+TEL;TYPE=FAX;TYPE=MODEM;TYPE=VIDEO:2348978723
+
+E:
+UI: up to 8 phones (4 by default)
+work,voice | home,voice | cell | work,fax | home,fax | pager | voice
++ X-EVOLUTION-UI-SLOT=N
+
+TEL;TYPE=WORK;TYPE=VOICE;X-EVOLUTION-UI-SLOT=1:0123-business
+TEL;TYPE=HOME;TYPE=VOICE;X-EVOLUTION-UI-SLOT=2:0123-home
+TEL;TYPE=CELL;X-EVOLUTION-UI-SLOT=3:0123-mobile
+TEL;TYPE=WORK;TYPE=FAX;X-EVOLUTION-UI-SLOT=4:0432-businessfax
+TEL;TYPE=HOME;TYPE=FAX;X-EVOLUTION-UI-SLOT=5:0432-homefax
+TEL;TYPE=PAGER;X-EVOLUTION-UI-SLOT=6:555-pager
+TEL;TYPE=VOICE;X-EVOLUTION-UI-SLOT=7:0123-other
+TEL;TYPE=VOICE;X-EVOLUTION-UI-SLOT=8:0123-other2
+
+OGo:
+ 01_tel
+ 02_tel
+ 03_tel_funk
+ 05_tel_private
+ 10_fax
+ 15_fax_private
