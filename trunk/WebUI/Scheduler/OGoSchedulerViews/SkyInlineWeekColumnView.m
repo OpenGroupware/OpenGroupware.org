@@ -209,10 +209,39 @@
 }
 
 - (NSString *)shortTextForApt {
-	NSString *popup;
+    NSString *popup;
+    EOGlobalID *gid;
+    NSString *perms;
+    SkyAppointmentFormatter *f;
 
-	popup = [NSString stringWithString:@""];
+    gid   = [self->appointment valueForKey:@"globalID"];
+    perms = [self runCommand:@"appointment::access", @"gid", gid, nil];
+    if (![perms isNotNull])
+    {
+    	[self logWithFormat:@"Error: got no permissions for apt: %@", gid];
+     	popup = [NSString stringWithString:@""];
 	return popup;
+    }
+
+    if ([perms rangeOfString:@"l"].length != 0)
+    {
+    	f = [SkyAppointmentFormatter formatterWithFormat:@"\n%T;\n%L;\n%5P;\n%50R"];
+    }
+    else
+    {
+    	popup = [NSString stringWithString:@""];
+	return popup;
+    }
+
+    [f setShowFullNames:[self showFullNames]];
+
+  //  [f setRelationDate:self->day]; ???
+
+  return [NSString stringWithFormat:@"%@:%@ - %@;%@",
+                   [self aptTypeLabel],
+                   [self startTime],
+                   [self endTime],
+                   [f stringForObjectValue:self->appointment]];
 
   /* GLC we hide some information at user sight */
   /*

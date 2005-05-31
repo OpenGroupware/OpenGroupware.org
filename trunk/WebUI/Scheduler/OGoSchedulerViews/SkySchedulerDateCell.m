@@ -393,12 +393,46 @@ static NSArray *participantSortOrderings = nil;
 //*********************************************************************************************************
 - (NSString *)shortTextForAppointment:(id)_apt newline:(BOOL)_nl showFullNames:(BOOL)_showFull showAMPM:(BOOL)_showAMPM	inContext:(WOContext *)_ctx
 {
-	NSString *popup;
+    NSString *popup;
+    EOGlobalID *gid;
+    NSString *perms;
+    SkyAppointmentFormatter *f;
 
-	popup = [NSString stringWithString:@""];
+    gid   = [_apt valueForKey:@"globalID"];
+    perms = [[_ctx session] runCommand:@"appointment::access", @"gid", gid, nil];
+    if (![perms isNotNull])
+    {
+    	[self logWithFormat:@"Error: got no permissions for apt: %@", gid];
+     	popup = [NSString stringWithString:@""];
 	return popup;
+    }
+
+    if ([perms rangeOfString:@"l"].length != 0)
+    {
+    	f = [SkyAppointmentFormatter formatterWithFormat:_nl ? @"%S - %E;\n%T;\n%L;\n%10P;\n%50R" : @"%S - %E; %T; %L; %10P; %50R"];
+    }
+    else
+    {
+    	popup = [NSString stringWithString:@""];
+	return popup;
+    }
+
+    [f setShowFullNames:_showFull];
+    [f setRelationDate:[self->weekday valueInComponent:[_ctx component]]];
+    if ([self->isAllDay boolValueInComponent:[_ctx component]])
+    {
+	[f setDateFormat:@"%m-%d"];
+	[f setOtherDayDateFormat:@"%m-%d"];
+	[f setOtherYearDateFormat:@"%Y-%m-%d"];
+    }
+    else if (_showAMPM)
+	[f switchToAMPMTimes:YES];
+
+    return [f stringForObjectValue:_apt];
   	/* GLC we hide some information at user sight */
 	/*
+
+
 	SkyAppointmentFormatter *f;
 
 	f = [SkyAppointmentFormatter formatterWithFormat:_nl ? @"%S - %E;\n%T;\n%L;\n%10P;\n%50R" : @"%S - %E; %T; %L; %10P; %50R"];
