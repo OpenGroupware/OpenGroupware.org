@@ -1,3 +1,9 @@
+2005-06-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSVCardCompanyFormatter.m, LSSetVCardCommand.m: use 'sensitivity'
+	  DB field for vCard 'class' property (instead of trying to map that
+	  to actual permissions) (v5.1.72)
+
 2005-05-31  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSSetVCardCommand.m: changed to use specific get-by-globalid commands

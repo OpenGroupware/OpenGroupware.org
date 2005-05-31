@@ -145,11 +145,22 @@ static BOOL         renderOGoPhoneType = NO;
   }
 
   /* CLASS */
-  // TODO: better map to sensitivity?
-  if ([(tmp = [_contact valueForKey:@"isPrivate"]) isNotNull]) {
-    [self _appendName:@"CLASS"
-          andValue:[tmp boolValue] ? @"PRIVATE" : @"PUBLIC"
-          toVCard:_vCard];
+  
+  if ([(tmp = [_contact valueForKey:@"sensitivity"]) isNotNull]) {
+    NSString *v;
+    
+    if ([tmp intValue] == 2)
+      v = @"PRIVATE";
+    else if ([tmp intValue] == 1)
+      v = @"CONFIDENTIAL";
+    else if ([tmp intValue] == 0)
+      v = @"PUBLIC";
+    else {
+      [self logWithFormat:@"ERROR: unknown sensitivity, using private: %@",
+	      tmp];
+      v = @"PRIVATE";
+    }
+    [self _appendName:@"CLASS" andValue:v toVCard:_vCard];
   }
 
   /* URL */
