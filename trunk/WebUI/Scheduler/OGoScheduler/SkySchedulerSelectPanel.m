@@ -988,6 +988,9 @@ static NSNumber     *yesNum = nil;
           @"userdefaults", self->defaults,
           @"userId",       [self activeAccountID], nil];
 }
+
+
+
 - (void)_writeIDsOfCompanyEOs:(NSArray *)_eos toDefaultNamed:(NSString *)_def {
   NSMutableArray *ma;
   unsigned i, count;
@@ -1004,29 +1007,35 @@ static NSNumber     *yesNum = nil;
   [self _writeIDs:ma toDefaultNamed:_def];
   [ma release];
 }
-- (NSArray *)_readGIDsOfEntity:(NSString *)_e fromDefaultNamed:(NSString *)_d {
-  NSMutableArray *gids;
-  NSArray  *strs;
-  unsigned i, count;
+
+- (NSMutableArray *)_readGIDsOfEntity:(NSString *)_e fromDefaultNamed:(NSString *)_d 
+{
+	NSMutableArray *gids;
+	NSArray  *strs;
+	unsigned i, count;
+
+	_d = [@"scheduler_panel_" stringByAppendingString:_d];
+	if ((strs = [self->defaults arrayForKey:_d]) == nil)
+		return nil;
   
-  _d = [@"scheduler_panel_" stringByAppendingString:_d];
-  if ((strs = [self->defaults arrayForKey:_d]) == nil)
-    return nil;
-  
-  count = [strs count];
-  gids  = [NSMutableArray arrayWithCapacity:count];
-  for (i = 0; i < count; i++) {
-    NSNumber      *pkey;
-    EOKeyGlobalID *gid;
+	count = [strs count];
+//	gids  = [NSMutableArray arrayWithCapacity:count];
+	gids  = [[NSMutableArray alloc] initWithCapacity:count];
+
+	for (i = 0; i < count; i++) 
+	{
+		NSNumber      *pkey;
+		EOKeyGlobalID *gid;
     
-    pkey = [NSNumber numberWithUnsignedInt:[[strs objectAtIndex:i] intValue]];
-    if (pkey == nil) continue;
+		pkey = [NSNumber numberWithUnsignedInt:[[strs objectAtIndex:i] intValue]];
+		if (pkey == nil) continue;
     
-    gid  = [EOKeyGlobalID globalIDWithEntityName:_e
-			  keys:&pkey keyCount:1 zone:NULL];
-    if (gid) [gids addObject:gid];
-  }
-  return gids;
+		gid  = [EOKeyGlobalID globalIDWithEntityName:_e keys:&pkey keyCount:1 zone:NULL];
+		if (gid) [gids addObject:gid];
+	}
+	[self logWithFormat:@" #### avant [gids retainCount] : %d",[gids retainCount]];
+	return gids;
+
 }
 
 - (void)writePanelItemsToDefaults {
@@ -1041,23 +1050,27 @@ static NSNumber     *yesNum = nil;
   if (s == nil) s = @"resCategory";
     
   s = [NSString stringWithFormat:@"(%@)", s];
+  NSAutoreleasePool* pool = [[NSAutoreleasePool alloc]init];
   r = [NSMutableArray arrayWithCapacity:8];
     
   enumerator = [resNames objectEnumerator];
-  while ((n = [enumerator nextObject])) {
-      if ([n hasSuffix:s]) {
-        n = [[n  componentsSeparatedByString:@" ("] objectAtIndex:0];
-	n = [n stringByAppendingString:@" (resCategory)"];
-        [r addObject:n];
+  while ((n = [enumerator nextObject])) 
+  {
+      if ([n hasSuffix:s]) 
+	  {
+			n = [[n  componentsSeparatedByString:@" ("] objectAtIndex:0];
+			n = [n stringByAppendingString:@" (resCategory)"];
+			[r addObject:n];
       }
       else 
         [r addObject:n];
   }
   [self _writePanelResourcesNames:r];
-  
+
   [self _writeIDsOfCompanyEOs:self->persons  toDefaultNamed:@"persons"];
   [self _writeIDsOfCompanyEOs:self->accounts toDefaultNamed:@"accounts"];
   [self _writeIDsOfCompanyEOs:self->teams    toDefaultNamed:@"teams"];
+  [pool release];
 }
 
 - (void)reconfigure {
@@ -1088,61 +1101,81 @@ static NSNumber     *yesNum = nil;
   return AUTORELEASE(ma);
 }
 
-- (void)_initializePreSelectedItems {
-  // TODO: split up this huge method
+- (void) fetchAccount
+{
+  id tmp = nil;
+  id res = nil;
+  id me  = nil;
+  
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc]init];
+  tmp = [self _readGIDsOfEntity:@"Person" fromDefaultNamed:@"accounts"];
+  
+  if ([tmp count] > 0)
+  {
+		NSArray *ac;
+		res = [self runCommand:@"person::get-by-globalID",@"gids",tmp,@"attributes", personInfoAttrNames,@"groupBy",@"globalID",nil];
+		res = [res allValues];
+	
+		ac = [res sortedArrayUsingKeyOrderArray:nameFirstNameSortOrderings];
+		[self->selectedAccounts release]; self->selectedAccounts = nil;
+		self->selectedAccounts = [ac mutableCopy];
+		[self->accounts release]; self->accounts = nil;
+		self->accounts = [self->selectedAccounts copy];
+  }
+  else 
+  {
+		NSArray *ac;
+		EOKeyGlobalID* gid;
+		me = [(id)[self session] activeAccount];
+		gid = [me valueForKey:@"globalID"];
+		[tmp addObject:gid];
+		res = [self runCommand:@"person::get-by-globalID", @"gids",tmp,@"attributes", personInfoAttrNames,@"groupBy", @"globalID",nil];
+		res = [res allValues];
+    
+		ac = [res sortedArrayUsingKeyOrderArray:nameFirstNameSortOrderings];
+		[self->selectedAccounts release]; self->selectedAccounts = nil;
+		self->selectedAccounts = [ac mutableCopy];
+		[self->accounts release]; self->accounts = nil;
+		self->accounts = [self->selectedAccounts copy];
+		[self logWithFormat:@"[tmp retainCount] :%d ",[tmp retainCount]];	
+		[self logWithFormat:@"[ac retainCount] :%d ",[ac retainCount]];	
+		[tmp release];
+  }
+  
+  [pool release];
+}
+
+-(void) fetchTeams
+{
   id tmp = nil;
   id res = nil;
   
   tmp = [self _readGIDsOfEntity:@"Team" fromDefaultNamed:@"teams"];
   [self logWithFormat:@" SkySchedulerSelectPanel.m tmp : %@",tmp];
-  if ([tmp count] > 0) {
-    NSArray *t;
-    
-    res = [self runCommand:@"team::get-by-globalID",
-                  @"gids",       tmp,
-                  @"attributes", teamInfoAttrNames,
-                  @"groupBy",    @"globalID",
-		nil];
-    res = [res allValues];
+  if ([tmp count] > 0) 
+  {
+		NSArray *t;
+		res = [self runCommand:@"team::get-by-globalID",@"gids",tmp,@"attributes", teamInfoAttrNames, @"groupBy",@"globalID",nil];
+		res = [res allValues];
 
-    t = [res sortedArrayUsingKeyOrderArray:descriptionSortOrderings];
-    [self->selectedTeams release]; self->selectedTeams = nil;
-    self->selectedTeams = [t mutableCopy];
-    [self->teams release]; self->teams = nil;
-    self->teams = [self->selectedTeams copy];
+		t = [res sortedArrayUsingKeyOrderArray:descriptionSortOrderings];
+		[self->selectedTeams release]; self->selectedTeams = nil;
+		self->selectedTeams = [t mutableCopy];
+		[self->teams release]; self->teams = nil;
+		self->teams = [self->selectedTeams copy];
   }
-  
-  /* fetch accounts */
-  
-  tmp = [self _readGIDsOfEntity:@"Person" fromDefaultNamed:@"accounts"];
-  if ([tmp count] > 0) {
-    NSArray *ac;
-    
-    res = [self runCommand:@"person::get-by-globalID",
-                  @"gids",       tmp,
-		  @"attributes", personInfoAttrNames,
-                  @"groupBy",    @"globalID",
-                  nil];
-    res = [res allValues];
+}
+
+-(void) fetchPersons
+{
+	id tmp = nil;
+	id res = nil;
 	
-    ac = [res sortedArrayUsingKeyOrderArray:nameFirstNameSortOrderings];
-    [self->selectedAccounts release]; self->selectedAccounts = nil;
-    self->selectedAccounts = [ac mutableCopy];
-    [self->accounts release]; self->accounts = nil;
-    self->accounts = [self->selectedAccounts copy];
-  }
-  
-  /* fetch persons */
-  
-  tmp = [self _readGIDsOfEntity:@"Person" fromDefaultNamed:@"persons"];
-  if ([tmp count] > 0) {
+	tmp = [self _readGIDsOfEntity:@"Person" fromDefaultNamed:@"persons"];
+	if ([tmp count] > 0) {
     NSArray *ps;
     
-    res = [self runCommand:@"person::get-by-globalID",
-                  @"gids",       tmp,
-		  @"attributes", personInfoAttrNames,
-                  @"groupBy",    @"globalID",
-		nil];
+    res = [self runCommand:@"person::get-by-globalID", @"gids",tmp,@"attributes", personInfoAttrNames,@"groupBy",@"globalID",nil];
     res = [res allValues];
     
     ps = [res sortedArrayUsingKeyOrderArray:nameFirstNameSortOrderings];
@@ -1151,12 +1184,14 @@ static NSNumber     *yesNum = nil;
     [self->persons release];
     self->persons = [self->selectedPersons copy];
   }
+}
 
-  /* resource names */
+-(void) fetchResources 
+{
+	id tmp = nil;	
+	tmp = [self->defaults arrayForKey:@"scheduler_panel_resourceNames"];
 
-  tmp = [self->defaults arrayForKey:@"scheduler_panel_resourceNames"];
-  {
-    NSEnumerator   *enumerator = nil;
+	NSEnumerator   *enumerator = nil;
     NSMutableArray *r          = nil;
     NSString       *n          = nil;
     NSString       *s          = nil;
@@ -1165,21 +1200,25 @@ static NSNumber     *yesNum = nil;
     if (s == nil) s = @"resCategory";
     
     r = [NSMutableArray arrayWithCapacity:8];
-    
     enumerator = [tmp objectEnumerator];
 
-    while ((n = [enumerator nextObject])) {
-      if ([n hasSuffix:@"(resCategory)"]) {
-        n = [[n  componentsSeparatedByString:@" ("] objectAtIndex:0];
-        [r addObject:[NSString stringWithFormat:@"%@ (%@)", n, s]];
+    while ((n = [enumerator nextObject]))
+	{
+      if ([n hasSuffix:@"(resCategory)"])
+	  {
+			n = [[n  componentsSeparatedByString:@" ("] objectAtIndex:0];
+			[r addObject:[NSString stringWithFormat:@"%@ (%@)", n, s]];
       }
       else 
         [r addObject:n];
     }
     ASSIGN(self->resources, r);
-  }
+}
 
-  {
+- (void) fetchCategories
+{
+	id tmp = nil;
+	tmp = [self->defaults arrayForKey:@"scheduler_panel_resourceNames"];
     NSEnumerator   *enumerator = nil;
     NSMutableArray *r          = nil;
     NSString       *n          = nil;
@@ -1189,30 +1228,38 @@ static NSNumber     *yesNum = nil;
     if (s == nil) s = @"resCategory";
     
     r = [NSMutableArray arrayWithCapacity:8];
-    
     enumerator = [tmp objectEnumerator];
 
-    while ((n = [enumerator nextObject])) {
-      NSMutableDictionary *rD;
-
-      rD = [NSMutableDictionary dictionaryWithCapacity:1];
-      
-      if ([n hasSuffix:@"(resCategory)"]) {
-        n = [[n  componentsSeparatedByString:@" ("] objectAtIndex:0];
-	n = [[NSString alloc] initWithFormat:@"%@ (%@)", n, s];
-        [rD setObject:n forKey:@"name"];
-	[n release]; n = nil;
-      }
-      else {
-        [rD setObject:n forKey:@"name"];
-      }
-      [r addObject:rD];
+    while ((n = [enumerator nextObject])) 
+	{
+		NSMutableDictionary *rD;
+		rD = [NSMutableDictionary dictionaryWithCapacity:1];
+		if ([n hasSuffix:@"(resCategory)"]) 
+		{
+			n = [[n  componentsSeparatedByString:@" ("] objectAtIndex:0];
+			n = [[NSString alloc] initWithFormat:@"%@ (%@)", n, s];
+			[rD setObject:n forKey:@"name"];
+			[n release]; n = nil;
+		}
+		else 
+		{
+			[rD setObject:n forKey:@"name"];
+		}
+		[r addObject:rD];
     }    
     [self setSelectedResources:r];
     RELEASE(self->resources);
     self->resources = [self->selectedResources copy];
-  }
 }
+
+- (void)_initializePreSelectedItems {
+  // TODO: split up this huge method
+  [self fetchTeams];
+  [self fetchAccount];
+  [self fetchPersons];
+  [self fetchResources];
+  [self fetchCategories];
+ }
 //********************************************************************************************
 //
 //
@@ -1405,7 +1452,12 @@ static NSNumber     *yesNum = nil;
 	return self->selectedDelegation;
 
 }
-
+//********************************************************************************************
+//
+//
+//
+//
+//********************************************************************************************
 - (NSArray *)distinctCategories:(NSArray *)_items {
   int i, cnt;
   id  obj;
@@ -1436,50 +1488,47 @@ static NSNumber     *yesNum = nil;
   return ma;
 }
 
-- (void)computeSearchString {
+- (void)computeSearchString 
+{
+ 
   if (!self->isExtended)
-    return;
+	return;
   
-  if ((self->searchString == nil) ||
-      ([self->searchString isEqualToString:@""])) {
-    [self setTeams:self->selectedTeams];
-    [self setResources:self->selectedResources];
-    [self setAccounts:self->selectedAccounts];
-    [self setPersons:self->selectedPersons];
+  NSAutoreleasePool* pool =[[NSAutoreleasePool alloc]init];
+  if ((self->searchString == nil) ||([self->searchString isEqualToString:@""])) 
+  {
+		[self setTeams:self->selectedTeams];
+		[self setResources:self->selectedResources];
+		[self setAccounts:self->selectedAccounts];
+		[self setPersons:self->selectedPersons];
   }
-  else {
-    id  res;
-    int cnt;
-    int max = self->maxSearchCount;
+  else 
+  {
+		id  res;
+		int cnt;
+		int max = self->maxSearchCount;
 
     // teams
-    res = self->selectedTeams;
-    cnt = (res) ? [res count] : 0;
-    res = [self runCommand:@"team::extended-search",
-                @"fetchGlobalIDs", yesNum,
-                @"operator",       @"OR",
-                @"description",    self->searchString,
-                @"maxSearchCount", [NSNumber numberWithInt:(max - cnt)],
-                nil];
-    if (res != nil) {
-      res = [self runCommand:@"team::get-by-globalID",
-                  @"gids",       res,
-                  @"attributes", [NSArray arrayWithObject:@"description"],
-                  @"groupBy",    @"globalID",
-                  nil];
-      res = [res allValues];
-      {
-        NSArray *t;
+		res = self->selectedTeams;
+		cnt = (res) ? [res count] : 0;
+		res = [self runCommand:@"team::extended-search",@"fetchGlobalIDs", yesNum,@"operator",@"OR",@"description",    self->searchString,
+														@"maxSearchCount", [NSNumber numberWithInt:(max - cnt)],nil];
+		if (res != nil)
+		{
+			res = [self runCommand:@"team::get-by-globalID",@"gids",res,@"attributes", [NSArray arrayWithObject:@"description"],@"groupBy",@"globalID",nil];
+			res = [res allValues];
+			{
+				NSArray *t;
 
-        t = [self appendItems:res toArray:self->selectedTeams];
-        t = [t sortedArrayUsingKeyOrderArray:descriptionSortOrderings];
-        [self setTeams:t];
-      }
-    }
+				t = [self appendItems:res toArray:self->selectedTeams];
+				t = [t sortedArrayUsingKeyOrderArray:descriptionSortOrderings];
+				[self setTeams:t];
+			}
+		}
     // accounts
-    res = self->selectedAccounts;
-    cnt = (res) ? [res count] : 0;
-    res = [self runCommand:@"account::extended-search",
+		res = self->selectedAccounts;
+		cnt = (res) ? [res count] : 0;
+		res = [self runCommand:@"account::extended-search",
                 @"fetchGlobalIDs", yesNum,
                 @"operator",       @"OR",
                 @"name",           self->searchString,
@@ -1488,25 +1537,22 @@ static NSNumber     *yesNum = nil;
                 @"login",          self->searchString,
                 @"maxSearchCount", [NSNumber numberWithInt:(max - cnt)],
                 nil];
-    if (res != nil) {
-      res = [self runCommand:@"person::get-by-globalID",
-                  @"gids",       res,
-                  @"attributes", personInfoAttrNames,
-                  @"groupBy",    @"globalID",
-                  nil];
-      res = [res allValues];
-      {
-        NSArray *ac;
+		if (res != nil) 
+		{
+			res = [self runCommand:@"person::get-by-globalID",@"gids",res,@"attributes", personInfoAttrNames,@"groupBy",    @"globalID",nil];
+			res = [res allValues];
+			{
+				NSArray *ac;
 
-        ac = [self appendItems:res toArray:self->selectedAccounts];
-        ac = [ac sortedArrayUsingKeyOrderArray:nameFirstNameSortOrderings];
-        [self setAccounts:ac];
-      }
-    }
+				ac = [self appendItems:res toArray:self->selectedAccounts];
+				ac = [ac sortedArrayUsingKeyOrderArray:nameFirstNameSortOrderings];
+				[self setAccounts:ac];
+			}
+		}
     // persons
-    res = self->selectedPersons;
-    cnt = (res) ? [res count] : 0;
-    res = [self runCommand:@"person::extended-search",
+		res = self->selectedPersons;
+		cnt = (res) ? [res count] : 0;
+		res = [self runCommand:@"person::extended-search",
                 @"fetchGlobalIDs",  yesNum,
                 @"operator",        @"OR",
                 @"name",            self->searchString,
@@ -1516,66 +1562,56 @@ static NSNumber     *yesNum = nil;
                 @"withoutAccounts", yesNum,
                 @"maxSearchCount",  [NSNumber numberWithInt:(max - cnt)],
                 nil];
-    if (res != nil) {
-      res = [self runCommand:@"person::get-by-globalID",
-                  @"gids",       res,
-                  @"attributes", personInfoAttrNames,
-                  @"groupBy",    @"globalID",
-                  nil];
-      res = [res allValues];
-      {
-        NSArray *p;
+		if (res != nil) 
+		{
+			res = [self runCommand:@"person::get-by-globalID",@"gids",res,@"attributes", personInfoAttrNames,@"groupBy",@"globalID",nil];
+			res = [res allValues];
+			{
+				NSArray *p;
 
-        p = [self appendItems:res toArray:self->selectedPersons];
-        p = [p sortedArrayUsingKeyOrderArray:nameFirstNameSortOrderings];
-        [self setPersons:p];
-      }
-    }
+				p = [self appendItems:res toArray:self->selectedPersons];
+				p = [p sortedArrayUsingKeyOrderArray:nameFirstNameSortOrderings];
+				[self setPersons:p];
+			}
+		}
     // resources
-    {
-      NSArray *r = nil;
+		{
+			NSArray *r = nil;
 
-      res = self->selectedResources;
-      cnt = (res) ? [res count] : 0;
-      res = [self runCommand:@"appointmentresource::extended-search",
+			res = self->selectedResources;
+			cnt = (res) ? [res count] : 0;
+			res = [self runCommand:@"appointmentresource::extended-search",
                   @"fetchGlobalIDs",  yesNum,
                   @"operator",        @"OR",
                   @"category",        self->searchString,
-                  @"maxSearchCount",  [NSNumber numberWithInt:(max - cnt)],
-                  nil];
-      if (res != nil) {
-        res = [self runCommand:@"appointmentresource::get-by-globalID",
-                    @"gids",         res,
-                    @"attributes",   [NSArray arrayWithObject:@"category"],
-                    nil];
-        r = [self distinctCategories:res];
-        r = [self appendItems:r toArray:self->resources];
-	r = [r sortedArrayUsingKeyOrderArray:nameSortOrderings];
-	if (r != nil) [self setResources:r];
-      }
+                  @"maxSearchCount",  [NSNumber numberWithInt:(max - cnt)],nil];
+			if (res != nil) 
+			{
+				res = [self runCommand:@"appointmentresource::get-by-globalID",@"gids",res,@"attributes",   [NSArray arrayWithObject:@"category"],nil];
+				r = [self distinctCategories:res];
+				r = [self appendItems:r toArray:self->resources];
+				r = [r sortedArrayUsingKeyOrderArray:nameSortOrderings];
+				if (r != nil) [self setResources:r];
+			}
 
-      res = [self runCommand:@"appointmentresource::extended-search",
-                  @"fetchGlobalIDs",  yesNum,
-                  @"operator",        @"OR",
-                  @"name",            self->searchString,
-                  @"maxSearchCount",  [NSNumber numberWithInt:(max - cnt)],
-                  nil];
-      if (res != nil) {
-        res = [self runCommand:@"appointmentresource::get-by-globalID",
-                    @"gids",         res,
-                    @"attributes",   [NSArray arrayWithObject:@"name"],
-                    nil];
+			res = [self runCommand:@"appointmentresource::extended-search",@"fetchGlobalIDs",  yesNum,@"operator",@"OR",@"name",self->searchString,
+																	 @"maxSearchCount",  [NSNumber numberWithInt:(max - cnt)],nil];
+			if (res != nil) 
+			{
+				res = [self runCommand:@"appointmentresource::get-by-globalID",@"gids",res,@"attributes",[NSArray arrayWithObject:@"name"],nil];
 
-        if (res != nil)
-          r = [res sortedArrayUsingKeyOrderArray:nameSortOrderings];
-	
-        r = [self appendItems:res toArray:self->resources];
-      }
-      if (r != nil)
-        [self setResources:r];
-    }
-  }
-  [self setSearchString:@""];
+				if (res != nil)
+					r = [res sortedArrayUsingKeyOrderArray:nameSortOrderings];
+			
+				r = [self appendItems:res toArray:self->resources];
+			}
+			
+			if (r != nil)
+			[self setResources:r];
+		}
+	}
+	[self setSearchString:@""];
+	[pool release];
 }
 
 - (BOOL)isTimeZoneLicensed {
@@ -1600,16 +1636,12 @@ static NSNumber     *yesNum = nil;
 - (id)extend {
   EOKeyGlobalID *gid;
   id me;
-
+ 
   me = [(id)[self session] activeAccount];
   gid = [me valueForKey:@"globalID"];
 
-  me = [[self runCommand:@"person::get-by-globalID",
-              @"gids",       [NSArray arrayWithObject:gid],
-              @"attributes",
-              [NSArray arrayWithObjects:@"companyId", @"name", @"firstname",
-                       @"isAccount", @"login", @"globalID", nil],
-              nil] lastObject];
+  me = [[self runCommand:@"person::get-by-globalID",@"gids",[NSArray arrayWithObject:gid],@"attributes",
+			[NSArray arrayWithObjects:@"companyId", @"name", @"firstname",@"isAccount", @"login", @"globalID", nil],nil] lastObject];
 
   self->isExtended = (self->isExtended) ? NO : YES;
 
