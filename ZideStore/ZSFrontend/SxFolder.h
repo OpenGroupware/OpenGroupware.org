@@ -53,7 +53,6 @@
 - (id)container;
 
 - (BOOL)doExplainQueries;
-- (int)zlGenerationCount;
 
 /* naming */
 
@@ -63,7 +62,7 @@
 
 - (LSCommandContext *)commandContextInContext:(id)_ctx;
 
-/* Exchange Access Control (cdoAccess mask) */
+/* Exchange Access Control */
 
 - (BOOL)isReadAllowed;
 - (BOOL)isModificationAllowed;
@@ -72,8 +71,6 @@
 - (BOOL)isDeletionAllowed;
 
 - (NSString *)outlookFolderClass;
-
-- (id)cdoAccess;
 
 /* ZideLook specialties */
 
@@ -96,13 +93,8 @@
 
 /* ZideLook queries common for all folders */
 
-- (BOOL)isMsgInfoQuery:(EOFetchSpecification *)_fs;
-- (BOOL)isSubFolderQuery:(EOFetchSpecification *)_fs;
 - (BOOL)isWebDAVListQuery:(EOFetchSpecification *)_fs;
 - (BOOL)isETagsQuery:(EOFetchSpecification *)_fs;
-
-- (id)performMsgInfoQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx;
-- (id)performSubFolderQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx;
 
 /* actions */
 
@@ -111,6 +103,20 @@
 - (id)DELETEAction:(id)_ctx;
 
 - (id)getIDsAndVersionsAction:(id)_ctx;
+
+@end
+
+@interface SxFolder(ZL)
+
+- (id)cdoAccess;
+
+- (int)zlGenerationCount;
+
+- (BOOL)isMsgInfoQuery:(EOFetchSpecification *)_fs;
+- (BOOL)isSubFolderQuery:(EOFetchSpecification *)_fs;
+
+- (id)performMsgInfoQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx;
+- (id)performSubFolderQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx;
 
 @end
 

@@ -57,6 +57,8 @@ libZSFrontend_OBJC_FILES = \
 	EOQualifier+Additions.m	\
 	NGResourceLocator+ZSF.m	\
 	SxStoreInfoFolder.m	\
+	\
+	SxFolder+ZL.m		\
 
 libZSFrontend_RESOURCES += \
 	E2KAttrMap.plist	\

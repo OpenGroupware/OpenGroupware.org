@@ -1,5 +1,8 @@
 2005-06-01  Helge Hess  <helge.hess@skyrix.com>
 
+	* SxFolder.m: moved ZideLook related methods to own file/category
+	  (v1.3.112)
+
 	* SxFolder.m: added new factory method for existing children (v1.3.111)
 
 2005-06-01  Helge Hess  <helge.hess@opengroupware.org>
