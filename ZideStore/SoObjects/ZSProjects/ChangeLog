@@ -1,3 +1,8 @@
+2005-06-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxProjectFolder.m: fixed a crasher when retrieving the project list
+	  (v1.3.95)
+
 2005-05-25  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxProjectsFolder.m: added a hack to stop Kontact 3.4.0 from

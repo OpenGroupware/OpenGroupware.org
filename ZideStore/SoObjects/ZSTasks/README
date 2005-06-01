@@ -48,6 +48,11 @@ SxTaskStatus     a small helper class to abstract the Outlook task status and
 iCalendar
 =========
 
+Outlook Sensitivity:
+  0: public
+  1: confidential
+  2: private
+
 Evo 2.2:
 ---snip---
 UID:20050526T000711Z-19409-204-19344-0@move
@@ -104,7 +109,7 @@ Possible mapping:
   uid              => sourceUrl
   summary          => name
   priority         => 5=normal, 3=high, 7=low, 0=undefined (Evo 2.2) (kde:0-9)
-  created          => 
+  created          => ?
   last-modified    => lastModified
   status           => jobStatus? (IN-PROCESS, COMPLETED, ???)
   description      => comment
@@ -114,7 +119,7 @@ Possible mapping:
   categories       => category
   percent-complete => percentComplete
   completed        => completionDate
-  url              => 
+  url              => ?
   sequence         => check against object_version? (nope=>etag!)
 
  Missing, Kontact:

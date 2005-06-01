@@ -153,7 +153,7 @@ static BOOL    debugOn = NO;
     [eo takeValue:[[tmp copy] autorelease] forKey:@"comment"];
   
   /* done */
-  return [eo valueForKey:@"comment"];
+  return tmp;
 }
 
 /* child names */
@@ -337,7 +337,7 @@ static BOOL    debugOn = NO;
 /* RSS support */
 
 - (NSString *)rssDescriptionInContext:(WOContext *)_ctx {
-  return [self fetchAbstractInContext:_ctx];
+  return [[self fetchAbstractInContext:_ctx] stringValue];
 }
 
 /* description */

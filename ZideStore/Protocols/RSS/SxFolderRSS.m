@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2003-2004 SKYRIX Software AG
+  Copyright (C) 2003-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -41,16 +41,7 @@
 @interface SxFolderRDF : WOComponent
 @end
 
-@interface NSObject(SoRSSObject)
-
-- (NSString *)rssChannelTitleInContext:(WOContext *)_ctx;
-- (NSEnumerator *)rssChildKeysInContext:(WOContext *)_ctx;
-- (NSString *)rssTitleInContext:(WOContext *)_ctx;
-- (NSString *)rssLinkInContext:(WOContext *)_ctx;
-- (NSString *)rssDescriptionInContext:(WOContext *)_ctx;
-
-@end
-
+#include "NSObject+SoRSSObject.h"
 #include <SaxObjC/XMLNamespaces.h>
 #include "common.h"
 
@@ -123,7 +114,7 @@ static unsigned int fetchLimit = 1000;
 
 /* actions */
 
-- (id)defaultAction {
+- (id<WOActionResults>)defaultAction {
   [self->list release]; self->list = nil;
   self->list = [[self fetch] retain];
   [self debugWithFormat:@"fetched %d items for RSS display ...", 
@@ -318,52 +309,3 @@ d links to new code are added daily.</description>
 }
 
 @end /* SxFolderRDF */
-
-#include <NGObjWeb/SoDAV.h>
-
-@implementation NSObject(SoRSSObject)
-
-- (NSString *)rssChannelTitleInContext:(WOContext *)_ctx {
-  NSString *s;
-  
-  // TODO: should ask channel for title
-  s = @"Items of OGo Channel '";
-  s = [s stringByAppendingString:[self nameInContainer]];
-  s = [s stringByAppendingString:@"'"];
-  return s;
-}
-
-- (NSString *)rssTitleInContext:(WOContext *)_ctx {
-  return [self davDisplayName];
-}
-
-- (NSString *)rssDescriptionInContext:(WOContext *)_ctx {
-  return [self valueForKey:@"contentAsString"];
-}
-
-- (NSString *)rssLinkInContext:(WOContext *)_ctx {
-  // TODO: the link is displayed in Thunderbird. There are multiple options
-  //       for RSS links:
-  //       a) generate a specific RSS view (current approach)
-  //       b) 
-  NSString *url;
-  SoClass  *clazz;
-  
-  url   = [self baseURLInContext:_ctx];
-  clazz = [self soClass];
-
-  if ([clazz hasKey:@"rssView" inContext:_ctx])
-    url = [url stringByAppendingString:@"/rssView"];
-  else if ([clazz hasKey:@"asBrHTML" inContext:_ctx])
-    url = [url stringByAppendingString:@"/asBrHTML"];
-  else if ([clazz hasKey:@"view" inContext:_ctx])
-    url = [url stringByAppendingString:@"/view"];
-  
-  return url;
-}
-
-- (NSEnumerator *)rssChildKeysInContext:(WOContext *)_ctx {
-  return [self davChildKeysInContext:_ctx];
-}
-
-@end /* NSObject(SoRSSObject) */
