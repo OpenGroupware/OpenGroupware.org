@@ -60,7 +60,7 @@ static BOOL debugRenderer = NO;
   id tmp; 
   [_ms appendString:@"TRIGGER"];
 
-  tmp = [_trigger objectForKey:@"valueType"];
+  tmp = [(NSDictionary *)_trigger objectForKey:@"valueType"];
   if (tmp)
     [_ms appendFormat:@";VALUE=%@", [tmp uppercaseString]];
 
@@ -68,19 +68,19 @@ static BOOL debugRenderer = NO;
   [_ms appendString:@";RELATED=START"];
 
   [_ms appendString:@":"];
-  [_ms appendString:[_trigger objectForKey:@"value"]];
+  [_ms appendString:[(NSDictionary *)_trigger objectForKey:@"value"]];
   [_ms appendString:@"\r\n"];  
 }
 - (void)appendAttachmentAsICal:(id)_attach to:(NSMutableString *)_ms {
   id tmp; 
   [_ms appendString:@"ATTACH"];
 
-  tmp = [_attach objectForKey:@"valueType"];
+  tmp = [(NSDictionary *)_attach objectForKey:@"valueType"];
   if (tmp)
     [_ms appendFormat:@";VALUE=%@", tmp];
 
   [_ms appendString:@":"];
-  [_ms appendString:[_attach objectForKey:@"value"]];
+  [_ms appendString:[(NSDictionary *)_attach objectForKey:@"value"]];
   [_ms appendString:@"\r\n"];  
 }
 
@@ -89,16 +89,16 @@ static BOOL debugRenderer = NO;
   
   [_ms appendString:@"BEGIN:VALARM\r\n"];
 
-  tmp = [_alarm objectForKey:@"action"];
+  tmp = [(NSDictionary *)_alarm objectForKey:@"action"];
   if (tmp) [_ms appendFormat:@"ACTION:%@\r\n", tmp];
 
-  tmp = [_alarm objectForKey:@"comment"];
+  tmp = [(NSDictionary *)_alarm objectForKey:@"comment"];
   if (tmp) [_ms appendFormat:@"DESCRIPTION:%@\r\n", tmp];
 
-  tmp = [_alarm objectForKey:@"trigger"];
+  tmp = [(NSDictionary *)_alarm objectForKey:@"trigger"];
   if (tmp) [self appendTriggerAsICal:tmp to:_ms];
 
-  tmp = [_alarm objectForKey:@"attachment"];
+  tmp = [(NSDictionary *)_alarm objectForKey:@"attachment"];
   if (tmp) [self appendAttachmentAsICal:tmp to:_ms];
 
   [_ms appendString:@"END:VALARM\r\n"];
@@ -375,7 +375,9 @@ static BOOL debugRenderer = NO;
   [self->ical appendString:@"X-MICROSOFT-CDO-ALLDAYEVENT:FALSE\r\n"];
   //else [self->ical appendString:@"X-MICROSOFT-CDO-ALLDAYEVENT:TRUE\r\n"];
 
-  [self appendAttendeesAsICal:[_eo objectForKey:@"participants"] to:self->ical];
+  [self appendAttendeesAsICal:
+	  [(NSDictionary *)_eo objectForKey:@"participants"] 
+	to:self->ical];
 
   {
     id tmp = [_eo valueForKey:@"evoReminder"];

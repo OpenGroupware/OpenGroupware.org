@@ -192,33 +192,37 @@ static NSDictionary        *MemCacheConfig = nil;
   key = [[NSNumber numberWithInt:_pkey] stringValue];
 
   if (key) {
-    if (DebugOn) [self debugWithFormat:@"store entry in mem cache %i/%@",
-                       _pkey, [_entry objectForKey:@"version"]];
-
+    if (DebugOn) {
+      [self debugWithFormat:@"store entry in mem cache %i/%@",
+	      _pkey, [(NSDictionary *)_entry objectForKey:@"version"]];
+    }
+    
     [self->memCache setObject:_entry forKey:key];
   }
 }
 
 - (id)memCacheEntryForKey:(int)_pkey inVersion:(int)_version {
   NSString *key;
+  id obj;
 
   key = [[NSNumber numberWithInt:_pkey] stringValue];
 
-  if (key) {
-    id obj;
-
-    obj = [self->memCache objectForKey:key];
-
-    if ([[obj objectForKey:@"version"] intValue] == _version) {
-    if (DebugOn) [self debugWithFormat:@"memCache hit %i/%i",
-                       _pkey, _version];
-      return obj;
-    }
+  if (key == nil) {
+    if (DebugOn)
+      [self debugWithFormat:@"memCache miss %i/%i", _pkey, _version];
+    return nil;
   }
-  if (DebugOn) [self debugWithFormat:@"memCache miss %i/%i",
-                     _pkey, _version];
-  
-  return nil;
+    
+  obj = [(NSDictionary *)self->memCache objectForKey:key];
+  if (![[(NSDictionary *)obj objectForKey:@"version"] intValue] == _version) {
+    if (DebugOn)
+      [self debugWithFormat:@"memCache miss %i/%i (version)", _pkey, _version];
+    return nil;
+  }
+
+  if (DebugOn) 
+    [self debugWithFormat:@"memCache hit %i/%i", _pkey, _version];
+  return obj;
 }
 
 - (id)cacheEntryForKey:(int)_pkey inVersion:(int)_version {

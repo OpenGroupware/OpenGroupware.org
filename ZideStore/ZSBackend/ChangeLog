@@ -1,3 +1,7 @@
+2005-06-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed gcc 4.0 warnings (v1.3.84)
+
 2005-04-07  Thomas Klute  <klute@klute-thiemann.de>
 
 	* Appointments/SxAptManager+iCal.m: fetch 'accessTeamId' to allow 

@@ -157,13 +157,13 @@ static NSArray *accountKeys = nil;
   
   md = [[NSMutableDictionary alloc] initWithCapacity:32];
   
-  while ((one = [allE nextObject])) {
-    gid = [one globalID];
-    if (gid != nil) {
-      one = [one valuesForKeys:accountKeys];
-      [one setObject:gid forKey:@"globalID"];
-      [md setObject:one forKey:gid];
-    }
+  while ((one = [allE nextObject]) != nil) {
+    if ((gid = [one globalID]) == nil)
+      continue;
+
+    one = [one valuesForKeys:accountKeys];
+    [(NSMutableDictionary *)one setObject:gid forKey:@"globalID"];
+    [md setObject:one forKey:gid];
   }
   accountInfo = [md copy];
   [md release];

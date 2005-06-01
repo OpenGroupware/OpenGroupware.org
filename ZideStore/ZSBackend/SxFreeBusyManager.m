@@ -282,7 +282,7 @@ static SxFreeBusyManager *sharedInstance = NULL;
   EOAdaptorChannel *chan;
   EOAdaptorContext *ctx;
   NSArray          *attributes;
-  id               record;
+  NSDictionary     *record;
   NSMutableArray   *result;
   BOOL             closeConnection;
   static id        values[4];
@@ -328,9 +328,9 @@ static SxFreeBusyManager *sharedInstance = NULL;
                         @"could not get a description of the SQL results"
 			userInfo:nil];
   }
-
-  result = [NSMutableArray array];
-  while ((record = [chan fetchAttributes:attributes withZone:NULL])) {
+  
+  result = [NSMutableArray arrayWithCapacity:128];
+  while ((record = [chan fetchAttributes:attributes withZone:NULL]) != nil) {
     values[0] = [record objectForKey:@"startdate"];
     values[1] = [record objectForKey:@"enddate"];
     values[2] = [record objectForKey:@"fbtype"];
