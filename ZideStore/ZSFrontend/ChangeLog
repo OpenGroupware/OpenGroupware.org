@@ -1,3 +1,13 @@
+2005-06-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.3.113
+
+	* SxUserFolder.m: removed specific root property mappings, removed some
+	  deprecated Evo connector methods
+
+	* DAVPropSets.plist: removed deprecated Evolution mappings, removed
+	  some default property sets
+
 2005-06-01  Helge Hess  <helge.hess@skyrix.com>
 
 	* SxFolder.m: moved ZideLook related methods to own file/category

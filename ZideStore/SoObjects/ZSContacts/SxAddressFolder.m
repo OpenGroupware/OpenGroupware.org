@@ -280,115 +280,6 @@
 			  object:self selector:@selector(renderListEntry:)];
 }
 
-/* ZideLook support */
-
-- (id)zideLookRendererInContext:(id)_ctx {
-  static Class ZLCLass = NULL;
-  static BOOL didInit = NO;
-
-  if (!didInit) {
-    NSString *rcName = @"SxZLPersonRenderer";
-    didInit = YES;
-    
-    if ((ZLCLass = NSClassFromString(rcName)) == Nil) {
-      [self logWithFormat:
-	      @"ERROR: attempt to use '%@' which could not be found."];
-    }
-  }
-  return [ZLCLass rendererWithFolder:self inContext:_ctx];
-}
-
-- (id)performZLAddressQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx {
-  SxContactManager *cm;
-  NSEnumerator *e;
-  
-  if ([self doExplainQueries]) {
-    [self logWithFormat:@"ZL Address Query [depth=%@]: %@",
-	    [[(WOContext *)_ctx request] headerForKey:@"depth"],
-            [[_fs selectedWebDAVPropertyNames] componentsJoinedByString:@","]];
-  }
-  
-  // TODO: add a special ZideLook query
-  cm = [self contactManagerInContext:_ctx];
-  e  = [self runEvoQueryWithContactManager:cm prefix:nil];
-  
-  return [SxMapEnumerator enumeratorWithSource:e
-			  object:[self zideLookRendererInContext:_ctx]
-			  selector:@selector(renderEntry:)];
-}
-
-- (id)performZLABQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx {
-  SxContactManager *cm;
-  NSEnumerator *e;
-  id renderer;
-  
-  if ([self doExplainQueries]) {
-    [self logWithFormat:@"ZL Address Book Query [depth=%@]: %@",
-	    [[(WOContext *)_ctx request] headerForKey:@"depth"],
-            [[_fs selectedWebDAVPropertyNames] componentsJoinedByString:@","]];
-  }
-  
-  // TODO: add a special ZideLook query
-  cm = [self contactManagerInContext:_ctx];
-  e  = [self runEvoQueryWithContactManager:cm prefix:nil];
-  
-  renderer = [self zideLookRendererInContext:_ctx];
-  [renderer setGenerateNormalizedSubject:YES];
-  
-  return [SxMapEnumerator enumeratorWithSource:e
-			  object:renderer
-			  selector:@selector(renderEntry:)];
-}
-
-- (id)renderMsgInfoEntry:(id)_entry {
-  // gets: pkey,version
-  /* 
-     davDisplayName      - firstname, lastname ?
-     davResourceType     - fix: ""
-     zlGenerationCount   - objectVersion
-     outlookMessageClass - fix: "IPM.Contact"
-     cdoDisplayType      - 0
-  */
-  NSMutableDictionary *record;
-  NSString *url, *pkey;
-  id  keys[6], vals[6];
-  int p;
-  
-  if (_entry == nil) return nil;
-  if ((record = _entry) == nil)
-    return nil;
-  
-  pkey = [[record objectForKey:@"pkey"] stringValue];
-  url = [NSString stringWithFormat:@"%@%@.vcf", [self baseURL], pkey];
-  
-  p = 0;
-  keys[p] = @"{DAV:}href";     vals[p] = url;  p++;
-  keys[p] = @"davDisplayName"; vals[p] = pkey; p++; // TODO ?
-  keys[p] = @"zlGenerationCount"; 
-  vals[p] = [_entry valueForKey:@"version"]; 
-  p++;
-  keys[p] = @"outlookMessageClass"; vals[p] = @"IPM.Contact"; p++;
-  
-  return [NSDictionary dictionaryWithObjects:vals forKeys:keys count:p];
-}
-
-- (id)performMsgInfoQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx {
-  /* the second query by ZideLook, get basic message infos */
-  // davDisplayName, davResourceType, zlGenerationCount, outlookMessageClass,
-  // cdoDisplayType
-  SxContactManager *cm;
-  NSEnumerator *e;
-  
-  [self logWithFormat:@"ZL 1 Query - address message baseinfo: %@",
-          [[_fs selectedWebDAVPropertyNames] componentsJoinedByString:@","]];
-  
-  cm = [self contactManagerInContext:_ctx];
-  e  = [self runListQueryWithContactManager:cm];
-  
-  return [SxMapEnumerator enumeratorWithSource:e
-			  object:self selector:@selector(renderMsgInfoEntry:)];
-}
-
 /* general */
 
 - (SEL)fetchSelectorForQuery:(EOFetchSpecification *)_fs
@@ -466,7 +357,7 @@
   return @"IPF.Contact";
 }
 
-- (id)davResourceType {
+- (NSString *)davResourceType {
   static id coltype = nil;
   if (coltype == nil) {
     id tmp;
@@ -475,33 +366,6 @@
     coltype = [[NSArray alloc] initWithObjects:@"collection", tmp, nil];
   }
   return coltype;
-}
-
-- (int)cdoDisplayType {
-  return 0x04000000;
-}
-
-- (NSString *)folderAllPropSetName {
-  return @"DefaultContactFolderProperties";
-}
-- (NSString *)entryAllPropSetName {
-  return @"DefaultContactProperties";
-}
-
-- (NSArray *)defaultWebDAVPropertyNamesInContext:(id)_ctx {
-  /* overridden for efficiency (caches array in static var) */
-  static NSArray *defFolderNames = nil;
-  static NSArray *defEntryNames  = nil;
-  
-  if (defFolderNames == nil) {
-    defFolderNames =
-      [[[self propertySetNamed:[self folderAllPropSetName]] allObjects] copy];
-  }
-  if (defEntryNames == nil) {
-    defEntryNames =
-      [[[self propertySetNamed:[self entryAllPropSetName]] allObjects] copy];
-  }
-  return [self isBulkQueryContext:_ctx] ? defEntryNames : defFolderNames;
 }
 
 /* description */

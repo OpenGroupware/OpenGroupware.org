@@ -46,7 +46,7 @@
   return [super fillCompanyRecord:values from:_setProps keySet:keys];
 }
 
-- (id)davQueryOnSelf:(EOFetchSpecification *)_fs inContext:(id)_ctx {
+- (NSArray *)davQueryOnSelf:(EOFetchSpecification *)_fs inContext:(id)_ctx {
   /* Note: this is also called for bulk fetches */
   NSDictionary           *res;
   SxContactManager       *manager;

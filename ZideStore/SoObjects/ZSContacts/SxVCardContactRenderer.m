@@ -26,7 +26,7 @@
 
 @implementation SxVCardContactRenderer
 
-+ (id)renderer {
++ (SxVCardContactRenderer *)renderer {
   return [[[self alloc] init] autorelease];
 }
 

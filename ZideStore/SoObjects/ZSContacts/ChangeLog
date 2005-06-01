@@ -1,4 +1,14 @@
-2005-06-01  Helge Hess  <helge.hess@skyrix.com>
+2005-06-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.3.92
+
+	* SxAddressFolder.m: removed contact specific default WebDAV property
+	  sets (<allprop>), if we need this again, we should use a 
+	  product.plist slot for this functionality
+
+	* SxAddressFolder.m: moved ZL specific stuff to own category/file
+
+	* fixed gcc 4.0 warnings
 
 	* SxAddressFolder.m: properly tag records as private which are
 	  'apparently' existing (v1.3.91)

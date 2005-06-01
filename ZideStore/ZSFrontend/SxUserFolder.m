@@ -441,31 +441,6 @@ static NSDictionary *personalFolderMap = nil;
   return [[self messageFolderRoot] stringByAppendingPathComponent:@"Drafts/"];
 }
 
-- (id)mapiStoreEntryID {
-  /*
-    An opaque BLOB to identify a store (basically the 'skyrix_id' default) ?
-    
-    Queried by Evo on the home-folder.
-  */
-#if 0
-#  warning Evo testing enabled
-  ExStoreEntryID *entryID;
-  NSString *dn;
-  id       val;
-  
-  dn = @"/o=OGo/ou=First Administrative Group/cn=Recipients/cn=";
-  dn = [dn stringByAppendingString:self->login];
-  
-  entryID = [[ExStoreEntryID alloc] initWithDN:dn hostName:nil];
-  val = [entryID exDavBase64Value];
-  [entryID release];
-  return val;
-#else
-  return [[[NSUserDefaults standardUserDefaults] objectForKey:@"skyrix_id"]
-	                   exDavBase64Value];
-#endif
-}
-
 - (NSString *)maxpoll {
   return @"30";
 }
@@ -479,15 +454,6 @@ static NSDictionary *personalFolderMap = nil;
 - (BOOL)davHasSubFolders {
   /* user folders are there to have child folders */
   return YES;
-}
-
-- (NSArray *)defaultWebDAVPropertyNamesInContext:(id)_ctx {
-  static NSMutableArray *defNames = nil;
-  if (defNames == nil) {
-    defNames =
-      [[[self propertySetNamed:@"DefaultRootProperties"] allObjects] copy];
-  }
-  return defNames;
 }
 
 /* messages */
@@ -509,58 +475,7 @@ static NSDictionary *personalFolderMap = nil;
 
 /* actions */
 
-- (id)evoGetAction:(WOContext *)_ctx {
-  /* 
-     Evolution issues a GET on the folder to check credentials
-     
-     With the Connector 2.0 Evo expects an HTML page, Erik writes (thanks!):
-     - EXC will start with a GET request.
-     - This is used to find out whether it is connected to a proper exchange 
-       server.
-     - Things like SSL requirements are also fetched from this output.
-     - I've noticed in the source that EXC does something with the <base> but 
-       it seems what I enter has no effect.
-     - Zidestore will not provide a body for a GET, so we'll have to supply 
-       this ourselves.
-     - EXC only cares about the presence of <base>.
-		$sbody = "<BASE href=\"http://blaat/\">";
-     - We are now done with processing the GET request. 
-     
-     In Connector 2.0.2 this code is in e2k-autoconfig.c:
-       e2k_autoconfig_getcontext().
-  */
-  WOResponse *r;
-  
-  r = [_ctx response];
-  [r setStatus:200 /* OK */];
-  
-  /* fake being Exchange, checked by Connector (6.5=2003, 6.0=2000)*/
-  [r setHeader:@"6.5.zidestore" forKey:@"MS-WebStorage"];
-  
-  [r setHeader:@"text/html" forKey:@"content-type"];
-  [r appendContentString:@"<BASE href=\""];
-  [r appendContentHTMLAttributeValue:[self baseURLInContext:_ctx]];
-  [r appendContentString:@"\">"];
-  return r;
-}
-
 - (id)GETAction:(id)_ctx {
-  NSString *ua;
-  BOOL isLicensed = NO;
-
-#if 0
-  isLicensed = [[self commandContextInContext:_ctx] 
-                      isModuleLicensed:@"ZideStore"];
-#else
-  isLicensed = YES;
-#endif
-  ua = [[[(WOContext *)_ctx request] clientCapabilities] userAgentType];
-  if ([ua isEqualToString:@"Evolution"])
-    return [self evoGetAction:_ctx];
-  
-  if (!isLicensed)
-    return [[WOApplication application] pageWithName:@"SxMissingLicensePage"];
-  
   return [[WOApplication application] pageWithName:@"SxUserHomePage"];
 }
 

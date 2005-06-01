@@ -174,7 +174,7 @@
     [ms appendString:@"BDAY:"];
     if ([tmp isKindOfClass:[NSCalendarDate class]]) {
       NSString *s;
-      unsigned char buf[64];
+      char buf[64];
       
       sprintf(buf, "%04i-%02i-%02i", 
 	      [tmp yearOfCommonEra], [tmp monthOfYear], [tmp dayOfMonth]);

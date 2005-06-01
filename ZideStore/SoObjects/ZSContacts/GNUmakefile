@@ -29,7 +29,8 @@ libZSContacts_OBJC_FILES = \
 	\
 	SxVCardPersonRenderer.m	\
 	\
-	ZSPersonListEntryRenderer.m
+	ZSPersonListEntryRenderer.m	\
+	SxAddressFolder+ZL.m		\
 
 Contacts_RESOURCE_FILES += 	\
 	bundle-info.plist	\
