@@ -407,7 +407,7 @@ static NSArray *participantSortOrderings = nil;
 	return popup;
     }
 
-    if ([perms rangeOfString:@"l"].length != 0)
+    if ([perms rangeOfString:@"v"].length != 0)
     {
     	f = [SkyAppointmentFormatter formatterWithFormat:_nl ? @"%S - %E;\n%T;\n%L;\n%10P;\n%50R" : @"%S - %E; %T; %L; %10P; %50R"];
     }
@@ -812,7 +812,7 @@ static NSArray *participantSortOrderings = nil;
 		{
 			[_response appendContentString:	@"<span class=\"skydatecell_absence\">"];
 			[_response appendContentHTMLString:[ab stringValue]];
-			[_response appendContentString:@"</span>"];
+			[_response appendContentString:@"</span><br />"];
 		}
 	}
 }

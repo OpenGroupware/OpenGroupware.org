@@ -11,7 +11,7 @@
         <#AllDayApts>
           <#IsListOnlyApt>
             <#Font>
-              <#AptInfoIcon/>
+              <#AptInfoIcon/><#AptTitleSpan><#AptTitle/></#AptTitleSpan><br>
               <#AptContentText/>
             </#Font>
           </#IsListOnlyApt>
@@ -36,13 +36,13 @@
           </#IsViewableApt>
         </#AllDayApts>
       </#HasAllDayApts>
-      
+
       <hr />
     </#HasDayInfoCond>
   </#InfoMode>
 
   <#PMInfoMode><#DropZone/></#PMInfoMode>
-    
+
   <#ContentMode>
     <#Font><#DragZone><#Appointment/></#DragZone></#Font>
   </#ContentMode>

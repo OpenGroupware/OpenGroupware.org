@@ -223,7 +223,7 @@
 	return popup;
     }
 
-    if ([perms rangeOfString:@"l"].length != 0)
+    if ([perms rangeOfString:@"v"].length != 0)
     {
     	f = [SkyAppointmentFormatter formatterWithFormat:@"\n%T;\n%L;\n%5P;\n%50R"];
     }
