@@ -1,5 +1,7 @@
 2005-06-01  Helge Hess  <helge.hess@opengroupware.org>
 
+	* fixed gcc 4.0 warnings (v1.3.96)
+
 	* SxProjectFolder.m: fixed a crasher when retrieving the project list
 	  (v1.3.95)
 

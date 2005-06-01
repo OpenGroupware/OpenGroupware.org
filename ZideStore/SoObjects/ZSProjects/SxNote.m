@@ -159,7 +159,7 @@ static BOOL debugOn = NO;
 
 /* actions */
 
-- (id)GETAction:(id)_ctx {
+- (id)GETAction:(WOContext *)_ctx {
   NSString *content;
   
   content = [self contentAsString];
@@ -292,7 +292,7 @@ static BOOL debugOn = NO;
   return [NSNumber numberWithBool:YES];
 }
 
-- (id)DELETEAction:(WOContext *)_ctx {
+- (id)DELETEAction:(id)_ctx {
   LSCommandContext *cmdctx;
   id neo;
   

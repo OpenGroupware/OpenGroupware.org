@@ -105,18 +105,16 @@ static NSTimeZone   *gmt            = nil;
   
   len = 22;
   if ((slen = [s length]) > len) {
-    NSLog(@"%s: too long for use as a UID: '%@' (len=%i)", s, [s length]);
+    [self logWithFormat:
+	    @"%s: too long for use as a UID: '%@' (len=%i)", s, [s length]];
     s = [s substringToIndex:len];
   }
   for (i = 0, ptr = buf; i < len; i++) {
-    if (slen <= i) 
-      sprintf(ptr, "%02x", 0xEA);
-    else
-      sprintf(ptr, "%02x", [s characterAtIndex:i]);
-    ptr+=2;
+    sprintf((char *)ptr, "%02x", slen <= i ? 0xEA : [s characterAtIndex:i]);
+    ptr += 2;
   }
   *ptr = '\0';
-  return [NSString stringWithCString:buf length:(len * 2)];
+  return [NSString stringWithCString:(char *)buf length:(len * 2)];
 }
 
 @end /* NSObject(ExValues) */
@@ -219,7 +217,7 @@ static NSTimeZone   *gmt            = nil;
 @implementation NSString(ExValues)
 
 // this is used for Folder-URLs in OL 2000
-- (id)asEncodedHomePageURL:(BOOL)_show {
+- (NSString *)asEncodedHomePageURL:(BOOL)_show {
   /*
     002 - 0 - 0 - 0
     001 - 0 - 0 - 0
@@ -300,7 +298,7 @@ static NSTimeZone   *gmt            = nil;
     0xBE, 0xA3, 0x10, 0x19, 0x9D, 0x6E, 0x00, 0xDD,
     0x01, 0x0F, 0x54, 0x02, 0x00, 0x00, 0x01, 0x10
   };
-  static unsigned char *SMTP = "SMTP";
+  static unsigned char *SMTP = (unsigned char *)"SMTP";
   NSMutableData *data;
   NSData        *selfdata;
   id enc;

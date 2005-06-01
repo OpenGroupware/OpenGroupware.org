@@ -431,7 +431,7 @@ static BOOL debugOn = NO;
   return [NSNumber numberWithInt:201 /* Created */];
 }
 
-- (id)DELETEAction:(WOContext *)_ctx {
+- (id)DELETEAction:(id)_ctx {
   LSCommandContext *cmdctx;
   NSException *error;
   id          fm;

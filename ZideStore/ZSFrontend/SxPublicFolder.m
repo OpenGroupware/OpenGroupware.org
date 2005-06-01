@@ -145,7 +145,8 @@
 /* base URL */
 
 - (NSString *)baseURL {
-  return [self baseURLInContext:[[WOApplication application] context]];
+  return [self baseURLInContext:
+		 [(WOApplication *)[WOApplication application] context]];
 }
 
 /* DAV things */

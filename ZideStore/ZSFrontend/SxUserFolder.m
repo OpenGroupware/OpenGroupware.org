@@ -109,7 +109,8 @@ static NSDictionary *personalFolderMap = nil;
 - (BOOL)useSeparateRootInContext:(id)_ctx {
   NSString *ua;
   
-  if (_ctx == nil) _ctx = [[WOApplication application] context];
+  if (_ctx == nil)
+    _ctx = [(WOApplication *)[WOApplication application] context];
   
   ua = [[[(WOContext *)_ctx request] clientCapabilities] userAgentType];
   if ([ua rangeOfString:@"ZideLook"].length > 0)
@@ -328,7 +329,8 @@ static NSDictionary *personalFolderMap = nil;
 }
 
 - (NSString *)baseURL {
-  return [self baseURLInContext:[[WOApplication application] context]];
+  return [self baseURLInContext:
+		 [(WOApplication *)[WOApplication application] context]];
 }
 
 /* Exchange/HTTP-Mail properties */
@@ -355,11 +357,11 @@ static NSDictionary *personalFolderMap = nil;
   NSString *msgroot;
   id ctx;
   
-  if (self->msgFolderRoot)
+  if (self->msgFolderRoot != nil)
     /* cached */
     return self->msgFolderRoot;
   
-  ctx     = [[WOApplication application] context];
+  ctx     = [(WOApplication *)[WOApplication application] context];
   msgroot = [self baseURLInContext:ctx];
   
   if ([self useSeparateMessageFolderRootInContext:ctx]) {

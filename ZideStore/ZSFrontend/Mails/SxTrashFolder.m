@@ -50,7 +50,7 @@
   inContext:(id)_ctx
 {
   [self logWithFormat:@"fake successful creation in Trash folder ..."];
-  [_ctx setObject:@"0000" forKey:@"SxNewObjectID"];
+  [(NSMutableDictionary *)_ctx setObject:@"0000" forKey:@"SxNewObjectID"];
   return nil; /* nil says, everything's OK */  
 }
 

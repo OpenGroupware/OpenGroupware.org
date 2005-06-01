@@ -32,7 +32,7 @@
 */
 
 @class NSString, NSDictionary, NSMutableArray, NSMutableDictionary, NSNumber;
-@class NSArray;
+@class NSArray, NSException;
 @class SxObject;
 
 @interface SxDavAction : NSObject
@@ -67,7 +67,7 @@
 - (NSNumber *)skyrixValueForOutlookPriority:(int)_pri;
 
 /* running */
-- (id)runInContext:(id)_ctx;
+- (NSException *)runInContext:(id)_ctx;
 
 
 @end /* SxDavAction */

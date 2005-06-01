@@ -83,7 +83,8 @@ static BOOL debugOn = NO;
   id<SkyDocumentFileManager> fm;
   NSString *p;
   
-  if (_ctx == nil) _ctx = [[WOApplication application] context];
+  if (_ctx == nil)
+    _ctx = [(WOApplication *)[WOApplication application] context];
   
   if ((fm = [self fileManagerInContext:_ctx]) == nil)
     return nil;
@@ -300,7 +301,7 @@ static BOOL debugOn = NO;
   return r;
 }
 
-- (id)GETAction:(id)_ctx {
+- (id)GETAction:(WOContext *)_ctx {
   WOResponse *r;
   id       fm;
   NSString *p;
@@ -330,7 +331,7 @@ static BOOL debugOn = NO;
   return r;
 }
 
-- (id)DELETEAction:(WOContext *)_ctx {
+- (id)DELETEAction:(id)_ctx {
   LSCommandContext *cmdctx;
   id       fm;
   NSString *p;

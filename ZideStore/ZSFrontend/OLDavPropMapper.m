@@ -203,7 +203,7 @@ static NSString *mi2 = @"{http://schemas.microsoft.com/mapi/id/{";
     while ((obj = [enumerator nextObject])) {
       id res;
       
-      if ((res = [obj objectForKey:_key]))
+      if ((res = [(NSDictionary *)obj objectForKey:_key]))
         return res;
     }
   }

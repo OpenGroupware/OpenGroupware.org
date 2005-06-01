@@ -96,7 +96,7 @@ static NSString *docTypeDTD =
 
 /* actions */
 
-- (id)defaultAction {
+- (id<WOActionResults>)defaultAction {
   [self->notes release]; self->notes = nil;
   self->notes = [[self fetchAllNotes] retain];
   [self debugWithFormat:@"fetched %d notes ...", [self->notes count]];

@@ -62,7 +62,7 @@ static NSDictionary *personalFolderMap = nil;
   NSString *url;
   NSString *t;
   
-  ctx = [[WOApplication application] context];
+  ctx = [(WOApplication *)[WOApplication application] context];
   rq  = [ctx request];
   url = [[self container] baseURLInContext:ctx];
   url = [url stringByAppendingString:@"settings"];
@@ -189,7 +189,8 @@ static NSDictionary *personalFolderMap = nil;
 }
 
 - (NSString *)baseURL {
-  return [self baseURLInContext:[[WOApplication application] context]];
+  return [self baseURLInContext:
+		 [(WOApplication *)[WOApplication application] context]];
 }
 
 /* DAV things */
@@ -208,15 +209,16 @@ static NSDictionary *personalFolderMap = nil;
   return defNames;
 }
 
-- (id)davCreateCollection:(NSString *)_name inContext:(id)_ctx {
+- (NSException *)davCreateCollection:(NSString *)_name inContext:(id)_ctx {
   WOResponse *r;
   
   [self logWithFormat:@"shall create collection: '%@'", _name];
   
+  // TODO: we should just return 'nil'?!
   r = [(WOContext *)_ctx response];
   [r setStatus:201 /* Created */];
   [r appendContentString:@"collection already exists, faked creation !"];
-  return r;
+  return (id)r;
 }
 
 /* messages */

@@ -143,7 +143,8 @@ static NSString *cachePath  = nil;
   SxAuthenticator  *auth;
   LSCommandContext *ctx;
   
-  if (_ctx == nil) _ctx = [[WOApplication application] context];
+  if (_ctx == nil) 
+    _ctx = [(WOApplication *)[WOApplication application] context];
   
   if ((auth = [self authenticatorInContext:_ctx]) == nil) {
     [self logWithFormat:@"ERROR: got no authenticator for context: %@", _ctx];
@@ -176,7 +177,7 @@ static NSString *cachePath  = nil;
   NSString *key;
   id auth;
   
-  if ((ctx = [[WOApplication application] context]) == nil)
+  if ((ctx = [(WOApplication *)[WOApplication application] context]) == nil)
     return nil;
   if ((auth = [self authenticatorInContext:ctx]) == nil)
     return nil;
@@ -383,7 +384,10 @@ static NSString *cachePath  = nil;
   }
   if (self->baseURL == nil) {
     NSString *b;
-    if (_ctx == nil) _ctx = [[WOApplication application] context];
+    
+    if (_ctx == nil) 
+      _ctx = [(WOApplication *)[WOApplication application] context];
+    
     if ((b = [super baseURLInContext:_ctx])) {
       if ([b hasSuffix:@"/"])
 	self->baseURL = [b copy];
@@ -396,7 +400,8 @@ static NSString *cachePath  = nil;
 }
 
 - (NSString *)baseURL {
-  return [self baseURLInContext:[[WOApplication application] context]];
+  return [self baseURLInContext:
+		 [(WOApplication *)[WOApplication application] context]];
 }
 
 /* name lookup */

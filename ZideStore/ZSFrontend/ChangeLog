@@ -1,3 +1,7 @@
+2005-06-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed gcc 4.0 warnings (v1.3.110)
+
 2005-05-25  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxObject.m: added a hack to disable etag consistency check when

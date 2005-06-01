@@ -240,11 +240,11 @@
     }
     
     if (mapped != nil) {
-      if ((tmp = [mapped objectForKey:@"rsvp"]))
+      if ((tmp = [(NSDictionary *)mapped objectForKey:@"rsvp"]))
         [person takeValue:tmp forKey:@"rsvp"];
-      if ((tmp = [mapped objectForKey:@"partStat"]))
+      if ((tmp = [(NSDictionary *)mapped objectForKey:@"partStat"]))
         [person takeValue:tmp forKey:@"partStatus"];
-      if ((tmp = [mapped objectForKey:@"role"]))
+      if ((tmp = [(NSDictionary *)mapped objectForKey:@"role"]))
         [person takeValue:tmp forKey:@"role"];
       
       [_map removeObjectForKey:key];

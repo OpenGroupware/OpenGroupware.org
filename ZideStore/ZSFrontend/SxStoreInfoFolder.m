@@ -66,15 +66,16 @@
   return YES;
 }
 
-- (id)davCreateCollection:(NSString *)_name inContext:(id)_ctx {
+- (NSException *)davCreateCollection:(NSString *)_name inContext:(id)_ctx {
   WOResponse *r;
   
   [self logWithFormat:@"shall create collection: '%@'", _name];
   
+  // TODO: should just return nil?
   r = [(WOContext *)_ctx response];
   [r setStatus:201 /* Created */];
   [r appendContentString:@"collection already exists, faked creation !"];
-  return r;
+  return (id)r;
 }
 
 /* messages */

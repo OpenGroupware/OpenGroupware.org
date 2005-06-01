@@ -155,7 +155,7 @@
 
 /* running */
 
-- (id)runInContext:(id)_ctx {
+- (NSException *)runInContext:(id)_ctx {
   [self logWithFormat:@"run not implemented !"];
   return nil;
 }
