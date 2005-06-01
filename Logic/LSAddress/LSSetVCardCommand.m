@@ -465,8 +465,8 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   [self appendNote:_vc];
   [self appendPhoto:_vc];
   [self appendEMails:[_vc valueForKey:@"email"] preferExtAttr:YES];
-  // [self appendClassification:_vc toChangeSet:md];
-
+  [self appendClassification:_vc];
+  
   /* TODO: name handling (what is missing?) */
   
   n = [_vc valueForKey:@"n"]; // NGVCardName
@@ -502,7 +502,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   [self appendNote:_vc];
   [self appendPhoto:_vc];
   [self appendEMails:[_vc valueForKey:@"email"] preferExtAttr:NO];
-  // [self appendClassification:_vc toChangeSet:md];
+  [self appendClassification:_vc];
   
   /* name handling */
   
@@ -1056,16 +1056,17 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   
   /* apply main change */
   
-  if (![[changeset valueForKey:@"isPrivate"] isNotNull]) {
-    [lChangeSet setObject:[NSNumber numberWithBool:self->createPrivate]
-	       forKey:@"isPrivate"];
-  }
-
   cn = [self->newEntityName lowercaseString];
   
   if (eo == nil) {
     cn = [cn stringByAppendingString:@"::new"];
     [lChangeSet setObject:@"vCard import" forKey:@"logText"];
+    
+    [lChangeSet setObject:[NSNumber numberWithBool:self->createPrivate]
+                forKey:@"isPrivate"];
+
+    [self debugWithFormat:@"create new record (private=%@)...",
+            [lChangeSet valueForKey:@"isPrivate"]];
     
     if ((eo = [_context runCommand:cn arguments:lChangeSet]) == nil) {
       [self logWithFormat:@"vCard insert failed."];
@@ -1077,6 +1078,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
     [self setReturnValue:eo];
   }
   else {
+    [self debugWithFormat:@"overwrite existing record ..."];
     cn = [cn stringByAppendingString:@"::set"];
     [lChangeSet setObject:[eo valueForKey:@"companyId"] forKey:@"companyId"];
     [lChangeSet setObject:@"vCard update"               forKey:@"logText"];

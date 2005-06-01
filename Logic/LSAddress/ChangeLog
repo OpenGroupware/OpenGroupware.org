@@ -1,4 +1,10 @@
-2005-06-01  Helge Hess  <helge.hess@opengroupware.org>
+2005-06-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.73
+
+	* Defaults.plist: fixed mappings for uppercase address types
+
+	* LSSetVCardCommand.m: properly add classification
 
 	* LSVCardCompanyFormatter.m, LSSetVCardCommand.m: use 'sensitivity'
 	  DB field for vCard 'class' property (instead of trying to map that

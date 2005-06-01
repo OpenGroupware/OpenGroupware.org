@@ -189,14 +189,19 @@
     "bill"     = "WORK";
     "ship"     = "OTHER";
   };
-  LSVCard_PersonAddressRevMapping = {
+  LSVCard_PersonAddressRevMapping = { // Note: always upper in later revs
     work  = location;
     home  = private;
     other = mailing;
+    WORK  = location;
+    HOME  = private;
+    OTHER = mailing;
   };
-  LSVCard_EnterpriseAddressRevMapping = {
+  LSVCard_EnterpriseAddressRevMapping = { // Note: always upper in later revs
     work  = bill;
     other = ship;
+    WORK  = bill;
+    OTHER = ship;
     // 'home' considered custom for enterprises
   };
 
