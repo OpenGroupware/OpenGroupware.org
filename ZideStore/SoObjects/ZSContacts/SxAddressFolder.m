@@ -97,6 +97,17 @@
   return NSClassFromString(n);
 }
 
+- (id)childForExistingKey:(NSString *)_key inContext:(id)_ctx {
+  id v;
+  
+  if ((v = [super childForExistingKey:_key inContext:_ctx]) == nil)
+    return nil;
+  
+  if (![[self type] isEqualToString:@"public"])
+    [v markAsPrivate];
+  return v;
+}
+
 - (id)childForNewKey:(NSString *)_key inContext:(id)_ctx {
   id child;
   
@@ -108,9 +119,7 @@
   child = [[self recordClassForKey:_key] alloc];
   child = [[child initNewWithName:_key inFolder:self] autorelease];
   
-  if ([[self type] isEqualToString:@"public"])
-    ;
-  else
+  if (![[self type] isEqualToString:@"public"])
     [child markAsPrivate];
   
   return child;

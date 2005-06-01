@@ -431,6 +431,10 @@ static NSString *cachePath  = nil;
     /* as long as we don't allow login names as keys ... */
     return YES;
   
+  // TODO: what exactly is the gain of not fetching the EO? In which cases is
+  //       the EO not used?
+  //       maybe we should use the access manager to check for existance?
+  
   return NO;
 }
 
@@ -444,6 +448,20 @@ static NSString *cachePath  = nil;
   [self logWithFormat:@"Note: class does not specify object for new key: '%@'",
 	  _key];
   return nil;
+}
+
+- (id)childForExistingKey:(NSString *)_key inContext:(id)_ctx {
+  Class recClass;
+  id value;
+  
+  recClass = [self recordClassForKey:_key];
+  if ([recClass instancesRespondToSelector:@selector(initWithName:inFolder:)])
+    // TODO: deprecated?!
+    value = [[recClass alloc] initWithName:_key inFolder:self];
+  else
+    value = [[recClass alloc] initWithName:_key inContainer:self];
+  
+  return [value autorelease];
 }
 
 - (BOOL)shouldIgnoreName:(NSString *)_name inContext:(id)_ctx {
@@ -562,7 +580,6 @@ static NSString *cachePath  = nil;
 
 - (id)lookupName:(NSString *)_name inContext:(id)_ctx acquire:(BOOL)_ac {
   NSString *nkey;
-  Class    recClass;
   id value;
 
   /* some special ZideStore things ... */
@@ -600,21 +617,16 @@ static NSString *cachePath  = nil;
   
   /* perform query */
   
-  if ([self isNewKey:nkey inContext:_ctx])
-    return [self childForNewKey:nkey inContext:_ctx];
-  
-  recClass = [self recordClassForKey:nkey];
-  if ([recClass instancesRespondToSelector:@selector(initWithName:inFolder:)])
-    value = [[recClass alloc] initWithName:nkey inFolder:self];
-  else
-    value = [[recClass alloc] initWithName:nkey inContainer:self];
+  value = [self isNewKey:nkey inContext:_ctx]
+    ? [self childForNewKey:nkey inContext:_ctx]
+    : [self childForExistingKey:nkey inContext:_ctx];
   
   if (value == nil) {
     [self logWithFormat:@"ERROR(%s): got no record for key %@", 
 	    __PRETTY_FUNCTION__, nkey];
-    return nil;
+    return [NSException exceptionWithHTTPStatus:404 /* Not Found */
+                        reason:@"could not resolve given key"];
   }
-  value = [value autorelease];
   
   // TODO: add to cache
   return value;

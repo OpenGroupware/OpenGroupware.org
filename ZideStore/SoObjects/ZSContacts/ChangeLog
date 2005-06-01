@@ -1,3 +1,8 @@
+2005-06-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxAddressFolder.m: properly tag records as private which are
+	  'apparently' existing (v1.3.91)
+
 2005-05-25  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAddress.m: only set PUT 'location' header if the location changed

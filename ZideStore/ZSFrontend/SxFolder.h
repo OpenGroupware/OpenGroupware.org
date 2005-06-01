@@ -87,7 +87,8 @@
 /* factory */
 
 - (Class)recordClassForKey:(NSString *)_key;
-- (id)childForNewKey:(NSString *)_key inContext:(id)_ctx;
+- (id)childForNewKey:(NSString *)_key      inContext:(id)_ctx;
+- (id)childForExistingKey:(NSString *)_key inContext:(id)_ctx;
 
 /* URLs */
 
