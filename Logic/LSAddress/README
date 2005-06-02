@@ -116,6 +116,9 @@ ADR;TYPE=HOME:;sdfjak\n;Street ABC;Entenhausen;Enten;12345;Country
 LABEL;TYPE=HOME:Street ABC\nsdfjak\n\nEntenhausen\, Enten\n12345\nCountry
 ADR;TYPE=OTHER:;;;Hamburg;Hamburg;04040;Germany
 
+OL2002:
+ADR;WORK:;office;street;City;State;12345;Germany
+
 OGo:
 Person:     private, mailing, location
 Enterprise: shipping, billing
@@ -147,6 +150,12 @@ TEL;TYPE=PAGER;X-EVOLUTION-UI-SLOT=6:555-pager
 TEL;TYPE=VOICE;X-EVOLUTION-UI-SLOT=7:0123-other
 TEL;TYPE=VOICE;X-EVOLUTION-UI-SLOT=8:0123-other2
 
+OL2002:
+TEL;WORK;VOICE:busiphone
+TEL;HOME;VOICE:privphone
+TEL;CELL;VOICE:mobile
+TEL;WORK;FAX:faxbusi
+
 OGo:
  01_tel
  02_tel
@@ -171,6 +180,9 @@ EMAIL;TYPE=WORK;X-EVOLUTION-UI-SLOT=1:work@dago
 EMAIL;TYPE=HOME;X-EVOLUTION-UI-SLOT=2:home@dago
 EMAIL;TYPE=OTHER;X-EVOLUTION-UI-SLOT=3:other@dago
 EMAIL;TYPE=OTHER;X-EVOLUTION-UI-SLOT=4:other2@dago
+
+OL2002:
+EMAIL;PREF;INTERNET:outlook@ogo.com
 
 OGo Persons:
   saved in company_value

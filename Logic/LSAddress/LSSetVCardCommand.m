@@ -309,6 +309,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   
   [self mapVKey:@"categories"             to:@"keywords"];
   [self mapVKey:@"role"                   to:@"occupation"];
+  [self mapVKey:@"title"                  to:@"job_title"];
   [self mapVXKey:@"X-EVOLUTION-FILE-AS"   to:@"fileas"];
   [self mapVXKey:@"X-EVOLUTION-MANAGER"   to:@"bossName"];
   [self mapVXKey:@"X-EVOLUTION-SPOUSE"    to:@"partnerName"];

@@ -1,5 +1,8 @@
 2005-06-02  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSSetVCardCommand.m: map vCard 'title' property to 'job_title'
+	  ext-attrs (v5.1.75)
+
 	* LSVCardCompanyFormatter.m, LSSetVCardCommand.m: improved handling of
 	  ORG property, added support for 8-digit birthdays (Outlook), fixed
 	  handling of 'url' property (v5.1.74)
