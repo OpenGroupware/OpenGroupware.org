@@ -41,9 +41,20 @@
 
 @end /* NSObject(Parser) */
 
+// we need to cheat a bit to support both, SOPE 4.4 and SOPE 4.5
+@interface NSObject(NGVCard)
++ (NSArray *)parseVCardsFromSource:(id)_src;
+@end
+
 @implementation SxAddress
 
+static Class NGVCardClass = Nil;
 static BOOL debugEO = NO;
+
++ (void)initialize {
+  if ((NGVCardClass = NSClassFromString(@"NGVCard")) == Nil)
+    NSLog(@"Note: NGVCard class not available, vCard parsing not available.");
+}
 
 - (void)clearVars {
   [self->company release];    self->company    = nil;
@@ -449,8 +460,14 @@ static BOOL debugEO = NO;
   
   if (self->flags.isNew) 
     return nil;
+
+  /* we actually start at 10000 */
+  if ((companyId = [[self nameInContainer] intValue]) < 1000) {
+    [self logWithFormat:@"Note: could not derive proper companyId from: %@", 
+            [self nameInContainer]];
+    return nil;
+  }
   
-  companyId = [[self nameInContainer] intValue];
   value = [NSNumber numberWithInt:companyId];
   gid   = [EOKeyGlobalID globalIDWithEntityName:[self entityName]
 			 keys:&value keyCount:1
@@ -602,18 +619,43 @@ static BOOL debugEO = NO;
   return _exception;
 }
 
+- (WOResponse *)handleMacOSXHack:(WOContext *)_ctx {
+  /* 
+     MacOSX WebDAV FS first does an empty PUT to create the item (argh!), so
+     we fake a successful creation and wait for the real PUT.
+  */
+  WORequest *rq = [_ctx request];
+  
+  if (![[[rq clientCapabilities] userAgentType] isEqualToString:
+                                                  @"MacOSXDAVFS"])
+    return nil;
+
+  if ([[rq content] length] > 0)
+    return nil;
+  
+  /* fake creation */
+  [[_ctx response] setStatus:201 /* Created */];
+  return [_ctx response];
+}
+
 - (id)PUTAction:(WOContext *)_ctx {
   LSCommandContext *cmdctx;
   WOResponse  *r;
   NSException *error;
   NSString    *mtype, *etag, *tmp, *url;
   NSString    *content = nil;
+  NSArray     *vCards;
   id result;
   
   /* check HTTP preconditions */
   
   if ((error = [self matchesRequestConditionInContext:_ctx]))
     return error;
+
+  /* MacOSX WebDAV Hack */
+  
+  if ((r = [self handleMacOSXHack:_ctx]) != nil)
+    return r;
   
   /* check MIME-type */
   
@@ -639,18 +681,58 @@ static BOOL debugEO = NO;
     }
   }
   if (content == nil) content = [[_ctx request] contentAsString];
+
+  /* parse vCards */
+  
+  if (NGVCardClass == Nil) {
+    return [NSException exceptionWithHTTPStatus:500 /* Server Error */
+                        reason:@"Did not find vCard parser."];
+  }
+  
+  vCards = [NGVCardClass parseVCardsFromSource:content];
+  if ([vCards count] == 0) {
+    [self logWithFormat:@"ERROR: could not parse given vCard (len=%d)",
+            [content length]];
+    return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
+                        reason:@"The request did not contain a valid vCard"];
+  }
   
   /* add vCard */
+  
+  // TODO: we should parse the vCard here, then detect the number of vCards
+  //       and do a regular import in case there are many (eg do not pass in
+  //       the gid)
   
   cmdctx = [self commandContextInContext:_ctx];
   NS_DURING {
     error  = nil;
-    result = [cmdctx runCommand:@"company::set-vcard",
-             @"vCard",         content,
-             @"entityName",    [self entityName],
-	     @"createPrivate", [NSNumber numberWithBool:self->isPrivate],
-             @"gid",           [self isNew] ? nil : [self globalID],
-             nil];
+    if ([vCards count] == 1) {
+      result = [cmdctx runCommand:@"company::set-vcard",
+                       @"vCardObject",   [vCards objectAtIndex:0],
+                       @"entityName",    [self entityName],
+                       @"createPrivate", 
+                         [NSNumber numberWithBool:self->isPrivate],
+                       @"gid",           [self isNew] ? nil : [self globalID],
+                       nil];
+    }
+    else {
+      /*
+        An import or bulk upload (difference: we do not give a global-id). The
+        last object will be treated as the new result.
+      */
+      unsigned i;
+      
+      for (i = 0; i < [vCards count]; i++) {
+        result = [cmdctx runCommand:@"company::set-vcard",
+                         @"vCardObject",   [vCards objectAtIndex:i],
+                         @"entityName",    [self entityName],
+                         @"createPrivate", 
+                         [NSNumber numberWithBool:self->isPrivate],
+                         nil];
+        if (![[result valueForKey:@"companyId"] isNotNull])
+          break;
+      }
+    }
   }
   NS_HANDLER {
     error = [self handleVCardSetException:localException];
@@ -725,12 +807,18 @@ static BOOL debugEO = NO;
   NSData       *contentData;
   NSDictionary *result;
   NSString     *etag;
+  EOGlobalID   *gid;
+
+  if ((gid = [self globalID]) == nil) {
+    return [NSException exceptionWithHTTPStatus:404 /* not found */
+			reason:@"did not find vcard for given object name"];
+  }
   
   manager = [SxContactManager managerWithContext:
 				[self commandContextInContext:_ctx]];
   
   e = [manager idsAndVersionsAndVCardsForGlobalIDs:
-		 [NSArray arrayWithObject:[self globalID]]];
+		 [NSArray arrayWithObject:gid]];
   
   if ((result = [e nextObject]) == nil) {
     return [NSException exceptionWithHTTPStatus:404 /* not found */

@@ -1,3 +1,13 @@
+2005-06-02  Helge Hess  <helge.hess@skyrix.com>
+
+	* v1.3.93
+
+	* ZSPersonListEntryRenderer.m: improved rendering of names
+
+	* SxAddress.m: added a hack for MacOSX WebDAV file system PUT's (does
+	  an empty PUT prior PUTting the real vCard content), fixed GETAction
+	  to work with invalid global-ids
+
 2005-06-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.3.92

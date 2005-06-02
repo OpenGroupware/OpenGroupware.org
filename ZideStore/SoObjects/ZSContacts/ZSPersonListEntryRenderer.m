@@ -32,10 +32,6 @@ static id sharedRenderer = nil; // THREAD
   return sharedRenderer;
 }
 
-- (void)dealloc {
-  [super dealloc];
-}
-
 /* rendering */
 
 - (id)renderEntry:(id)_entry representingSoObject:(id)_object {
@@ -43,12 +39,12 @@ static id sharedRenderer = nil; // THREAD
   // checked-in,checked-out
   /*
     <key name="{DAV:}href"    >$baseURL$/$pkey$.vcf?sn=$sn$</key>
-    <key name="davContentType">text/vcard</key>
+    <key name="davContentType">text/x-vcard</key>
     <key name="davDisplayName">$sn$, $givenname$</key>
   */
   NSMutableDictionary *record;
   NSString *url, *dname;
-  NSString *sn, *pkey;
+  NSString *sn, *gn, *pkey;
   id tmp;
   
   if ((record = [[_entry mutableCopy] autorelease]) == nil)
@@ -58,23 +54,30 @@ static id sharedRenderer = nil; // THREAD
   
   // getting: pkey, sn, givenname
   sn   = [record objectForKey:@"sn"];
+  gn   = [record objectForKey:@"givenname"];
+  gn   = [gn isNotNull] ? ([gn length] > 0 ? gn : nil) : nil;
+  sn   = [sn isNotNull] ? ([sn length] > 0 ? sn : nil) : nil;
   pkey = [[record objectForKey:@"pkey"] stringValue];
   
   /* get URL */
   
   // TODO: do not use formats
   url = [NSString stringWithFormat:@"%@%@.vcf", [_object baseURL], pkey];
-  if ([sn length] > 0)
+  if ([sn length] > 0) {
+    // TODO: this should be filtered based on the UA
     url = [url stringByAppendingFormat:@"?sn=%@", [sn stringByEscapingURL]];
+  }
   
   [record setObject:url forKey:@"{DAV:}href"];
+  [record setObject:@"text/x-vcard; charset='utf-8'" forKey:@"davContentType"];
   
   /* render display name */
   
-  tmp   = [record objectForKey:@"givenname"];
-  dname = [sn isNotNull]
-    ? [[sn stringByAppendingString:@", "] stringByAppendingString:tmp]
-    : nil;
+  if (gn != nil && sn != nil)
+    dname = [[sn stringByAppendingString:@", "] stringByAppendingString:gn];
+  else
+    dname = gn != nil ? gn : sn;
+  
   if (dname != nil)
     [record setObject:dname forKey:@"davDisplayName"];
 

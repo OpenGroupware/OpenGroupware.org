@@ -5,6 +5,7 @@ USED_LIBS = \
 	-lGDLAccess		\
         -lNGObjWeb		\
 	-lNGMime		\
+        -lNGiCal                \
 	-lNGStreams -lNGExtensions -lEOControl \
 	-lXmlRpc -lDOM -lSaxObjC
 
