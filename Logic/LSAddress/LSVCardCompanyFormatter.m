@@ -489,6 +489,37 @@ static int compareKey(id o1, id o2, void *ctx) {
   [_vCard appendString:@"\r\n"];
 }
 
+- (void)_appendOrg:(id)_person toVCard:(NSMutableString *)_vCard {
+  // sequence: company,department,office
+  NSString *org, *dep, *office;
+  
+  // thats tricky, we might want to map 'org' to the first company?
+  org    = [_person valueForKey:@"associatedCompany"]; // TODO: CSV?
+  dep    = [_person valueForKey:@"department"];
+  office = [_person valueForKey:@"office"];
+  if (![org    isNotNull] || [org    length] == 0) org    = nil;
+  if (![dep    isNotNull] || [dep    length] == 0) dep    = nil;
+  if (![office isNotNull] || [office length] == 0) office = nil;
+  
+  if (org == nil && dep == nil && office == nil)
+    return;
+  
+  [_vCard appendString:@"ORG:"];
+  [_vCard appendString:(org != nil) 
+          ? [org stringByEscapingUnsafeVCardCharacters] : @""];
+  if (dep != nil || office != nil) {
+    [_vCard appendString:@";"];
+    [_vCard appendString:(dep != nil) 
+            ? [dep stringByEscapingUnsafeVCardCharacters] : @""];
+  }
+  if (office != nil) {
+    [_vCard appendString:@";"];
+    [_vCard appendString:[office stringByEscapingUnsafeVCardCharacters]];
+  }
+  
+  [_vCard appendString:@"\r\n"];
+}
+
 - (void)_appendPersonData:(id)_person toVCard:(NSMutableString *)_vCard {
   // FN, N, EMAIL, NICKNAME, BDAY, TITLE, FBURL
   id tmp;
@@ -531,6 +562,7 @@ static int compareKey(id o1, id o2, void *ctx) {
   [self _appendContactData:_comp        toVCard:_ms];
   [self _appendAddressData:_comp        toVCard:_ms];
   [self _appendTelephoneData:_comp      toVCard:_ms];
+  [self _appendOrg:_comp                toVCard:_ms];
   [self _appendExtendedAttributes:_comp toVCard:_ms];
 }
 
@@ -538,6 +570,36 @@ static int compareKey(id o1, id o2, void *ctx) {
 
 
 @implementation LSVCardEnterpriseFormatter
+
+- (void)_appendOrg:(id)_contact toVCard:(NSMutableString *)_vCard {
+  // sequence: company,department,office
+  NSString *org, *dep, *office;
+  
+  org    = [_contact valueForKey:@"description"];
+  dep    = [_contact valueForKey:@"department"];
+  office = [_contact valueForKey:@"office"];
+  if (![org    isNotNull] || [org    length] == 0) org    = nil;
+  if (![dep    isNotNull] || [dep    length] == 0) dep    = nil;
+  if (![office isNotNull] || [office length] == 0) office = nil;
+  
+  if (org == nil && dep == nil && office == nil)
+    return;
+  
+  [_vCard appendString:@"ORG:"];
+  [_vCard appendString:(org != nil) 
+          ? [org stringByEscapingUnsafeVCardCharacters] : @""];
+  if (dep != nil || office != nil) {
+    [_vCard appendString:@";"];
+    [_vCard appendString:(dep != nil) 
+            ? [dep stringByEscapingUnsafeVCardCharacters] : @""];
+  }
+  if (office != nil) {
+    [_vCard appendString:@";"];
+    [_vCard appendString:[office stringByEscapingUnsafeVCardCharacters]];
+  }
+  
+  [_vCard appendString:@"\r\n"];
+}
 
 - (void)_appendEnterpriseData:(id)_e toVCard:(NSMutableString *)_vCard{
   // FN, N, ORG, EMAIL
@@ -550,8 +612,10 @@ static int compareKey(id o1, id o2, void *ctx) {
   }
   // FN, formatted name
   [self _appendName:@"FN" andValue:tmp toVCard:_vCard];
+
   // ORG
-  [self _appendName:@"ORG" andValue:tmp toVCard:_vCard];
+  [self _appendOrg:_e toVCard:_vCard];
+  
   // N
   [_vCard appendString:@"N:"];
   [self _appendTextValue:tmp toVCard:_vCard];

@@ -1,3 +1,9 @@
+2005-06-02  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSVCardCompanyFormatter.m, LSSetVCardCommand.m: improved handling of
+	  ORG property, added support for 8-digit birthdays (Outlook), fixed
+	  handling of 'url' property (v5.1.74)
+
 2005-06-01  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.1.73

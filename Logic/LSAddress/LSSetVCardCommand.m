@@ -259,15 +259,23 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
     return _value;
   if (![_value isNotNull])
     return _value;
-  
-  s = [_value stringValue];
-  if ([s length] < 10) {
-    [self logWithFormat:@"ERROR: cannot process vCard date: '%@'", _value];
-    return nil;
+
+  cd = nil;
+  s  = [_value stringValue];
+  if ([s length] == 19) { /* full date */
+    cd = [NSCalendarDate dateWithString:s calendarFormat:@"%Y-%m-%d %H:%M:%S"];
+  }
+  else if ([s length] >= 10) { /* eg Evolution */
+    s = [s stringByAppendingString:@" 12:00:00"];
+    cd = [NSCalendarDate dateWithString:s calendarFormat:@"%Y-%m-%d %H:%M:%S"];
+  }
+  else if ([s length] == 8) { /* eg Outlook */
+    s = [s stringByAppendingString:@" 12:00:00"];
+    cd = [NSCalendarDate dateWithString:s calendarFormat:@"%Y%m%d %H:%M:%S"];
   }
   
-  s = [s stringByAppendingString:@" 12:00:00"];
-  cd = [NSCalendarDate dateWithString:s calendarFormat:@"%Y-%m-%d %H:%M:%S"];
+  if (cd == nil)
+    [self logWithFormat:@"ERROR: cannot process vCard date: '%@'", _value];
   return cd;
 }
 
@@ -328,7 +336,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   /* URL */
   
   tmp = [_vc valueForKey:@"url"];
-  if ([tmp isNotNull] && [tmp count] > 1) {
+  if ([tmp isNotNull] && [tmp count] > 0) {
     if ([tmp count] > 1) {
       // TODO: just add to note? => beware, might add up (check substring)
       [self logWithFormat:@"ERROR: can only store one URL, loosing others."];
@@ -348,14 +356,24 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   id org; // NGVCardOrg
   NSArray *units;
   id tmp;
+
+  if (![(org = [_vc valueForKey:@"org"]) isNotNull])
+    return;
   
-  org   = [_vc valueForKey:@"org"]; // NGVCardOrg
   units = [org valueForKey:@"orgunits"];
   
-  tmp = [units count] > 1 ? [units objectAtIndex:0] : nil;
+  if ([[self->changeset valueForKey:@"isEnterprise"] boolValue])
+    [self mapValue:[org valueForKey:@"orgnam"] to:@"description"];
+  else {
+    // TODO: maybe support relationships
+    // TODO: CSV is overloaded, might give issues with Outlook!
+    [self mapValue:[org valueForKey:@"orgnam"] to:@"associatedCompany"];
+  }
+  
+  tmp = [units count] > 0 ? [units objectAtIndex:0] : nil;
   [self mapValue:tmp to:@"department"];
   
-  tmp = [units count] > 2 ? [units objectAtIndex:1] : nil;
+  tmp = [units count] > 1 ? [units objectAtIndex:1] : nil;
   [self mapValue:tmp to:@"office"];
 }
 
