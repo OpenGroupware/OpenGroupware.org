@@ -13,6 +13,7 @@ DISTRI="fedora-core3"
 #DISTRI="sles9"
 #DISTRI="slss8"
 #DISTRI="rhel3"
+#DISTRI="rhel4"
 #DISTRI="redhat9"
 #DISTRI="conectiva10"
 
