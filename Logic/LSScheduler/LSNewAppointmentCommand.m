@@ -373,7 +373,7 @@ static NSArray  *startDateOrderings = nil;
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"cycleEndDate"]) {
     if ([_value isKindOfClass:[NSCalendarDate class]])
       [super takeValue:_value forKey:@"cycleEndDate"];
@@ -390,7 +390,7 @@ static NSArray  *startDateOrderings = nil;
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"comment"])
     return [self comment];
   else if ([_key isEqualToString:@"participants"])
@@ -401,9 +401,7 @@ static NSArray  *startDateOrderings = nil;
     return [super valueForKey:_key];
 }
 
-@end /* LSNewAppointmentCommand */
-
-@implementation LSNewAppointmentCommand(UsedCommands)
+/* UsedCommands */
 
 - (NSArray *)fetchConflictGIDsOfParticipants:(NSArray *)_parts
   andResources:(NSArray *)_resources
@@ -446,4 +444,4 @@ static NSArray  *startDateOrderings = nil;
                 nil);
 }
 
-@end /* LSNewAppointmentCommand(UsedCommands) */
+@end /* LSNewAppointmentCommand */

@@ -19,8 +19,9 @@
   02111-1307, USA.
 */
 
-#import "common.h"
 #include <LSFoundation/LSDBObjectNewCommand.h>
+
+@class NSArray;
 
 @interface LSDateAssignmentCommand : LSDBObjectNewCommand
 {
@@ -35,6 +36,8 @@
 - (NSArray *)participantList;
 
 @end
+
+#include "common.h"
 
 @implementation LSDateAssignmentCommand
 
@@ -301,13 +304,13 @@
     [self _addAssignments:toAdd inContext:_context];
 }
 
-// initialize records
+/* initialize records */
 
 - (NSString *)entityName {
   return @"DateCompanyAssignment";
 }
 
-// accessors
+/* accessors */
 
 - (void)setDate:(id)_date {
   [self setAppointment:_date];
@@ -330,9 +333,9 @@
   return self->participantList;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"date"] ||
       [_key isEqualToString:@"appointment"] ||
       [_key isEqualToString:@"object"]) {
@@ -359,16 +362,17 @@
   }
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"date"] ||
       [_key isEqualToString:@"appointment"] ||
       [_key isEqualToString:@"object"])
     return [self object];
-  else if ([_key isEqualToString:@"participantList"] ||
-           [_key isEqualToString:@"participants"])
+  
+  if ([_key isEqualToString:@"participantList"] ||
+      [_key isEqualToString:@"participants"])
     return [self participantList];
-  else
-    return nil;
+
+  return nil; /* rather call super? */
 }
 
-@end
+@end /* LSDateAssignmentCommand */

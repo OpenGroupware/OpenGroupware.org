@@ -33,7 +33,7 @@
 
 @end
 
-#import "common.h"
+#include "common.h"
 #include "OGoCycleDateCalculator.h"
 
 @implementation LSCyclicAppointmentsCommand
@@ -267,7 +267,7 @@ static int maxCycleCount = 100;
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString  *)_key {
   if ([_key isEqualToString:@"cyclicAppointment"])
     [self setCyclicAppointment:_value];
   else  if ([_key isEqualToString:@"participants"])
@@ -280,14 +280,14 @@ static int maxCycleCount = 100;
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"cyclicAppointment"])
     return [self cyclicAppointment];
-  else if ([_key isEqualToString:@"participants"])
+  if ([_key isEqualToString:@"participants"])
     return [self participants];
-  else if ([_key isEqualToString:@"comment"])
+  if ([_key isEqualToString:@"comment"])
     return [self comment];
-  else if ([_key isEqualToString:@"isWarningIgnored"])
+  if ([_key isEqualToString:@"isWarningIgnored"])
     return [NSNumber numberWithBool:self->isWarningIgnored];
   return [super valueForKey:_key];
 }

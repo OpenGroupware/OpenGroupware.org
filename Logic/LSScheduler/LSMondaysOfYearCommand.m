@@ -133,7 +133,7 @@
 }
 
 - (void)setDateInYear:(NSCalendarDate *)_dateInYear {
-  ASSIGN(dateInYear, _dateInYear);
+  ASSIGNCOPY(dateInYear, _dateInYear);
 }
 - (NSCalendarDate *)dateInYear {
   return dateInYear;
@@ -141,7 +141,7 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"dateInYear"]) {
     if ([_value isKindOfClass:[NSCalendarDate class]])
       [self setDateInYear:_value];
@@ -153,7 +153,7 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"dateInYear"])
     return [self dateInYear];
   

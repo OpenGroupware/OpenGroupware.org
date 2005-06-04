@@ -157,7 +157,7 @@ static BOOL catchExceptions = YES;
       @"sourceUrl",@"calendarName", @"fbtype",
       @"evoReminder", @"olReminder", @"onlineMeeting",
       @"keywords", @"associatedContacts",
-      @"accessTeamId",
+      @"accessTeamId", @"sensitivity",
     nil];
   }
   

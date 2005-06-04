@@ -19,8 +19,9 @@
   02111-1307, USA.
 */
 
-#import "common.h"
 #include <LSFoundation/LSBaseCommand.h>
+
+@class NSString, NSTimeZone;
 
 @interface LSConvertTimeZoneCommand : LSBaseCommand
 {
@@ -34,16 +35,16 @@
 
 @end
 
+#include "common.h"
+
 @implementation LSConvertTimeZoneCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(timeZone);
+  [self->timeZone release];
   [super dealloc];
 }
-#endif
 
-// command methods
+/* command methods */
 
 - (void)_executeInContext:(id)_context {
   NSCalendarDate *myDate = nil;
@@ -78,32 +79,26 @@
   return timeZone;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  if ([_key isEqualToString:@"timeZoneAbbrev"]) {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
+  if ([_key isEqualToString:@"timeZoneAbbrev"])
     [self setTimeZoneWithAbbreviation:_value];
-    return;
-  }
-  else if ([_key isEqualToString:@"timeZone"]) {
+  else if ([_key isEqualToString:@"timeZone"])
     [self setTimeZone:_value];
-    return;    
-  }
-  else if ([_key isEqualToString:@"object"]) {
+  else if ([_key isEqualToString:@"object"])
     [self setObject:_value];
-    return;    
-  }
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"timeZone"])
     return [self timeZone];
-  else  if ([_key isEqualToString:@"object"])
+  if ([_key isEqualToString:@"object"])
     return [self object];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
-@end
+@end /* LSConvertTimeZoneCommand */

@@ -247,8 +247,7 @@ static NSNumber *nNo  = nil;
   filtered = [self _filterAppointments:results context:_context];
   
   if (filtered != results) {
-    RELEASE(results); results = nil;
-    results = RETAIN(filtered);
+    ASSIGN(results, filtered);
   }
   
   /* fetch comments */
@@ -259,12 +258,8 @@ static NSNumber *nNo  = nil;
   /* fetch owners */
   
   if (self->fetchOwners) {
-#if LIB_FOUNDATION_LIBRARY
-    [self notImplemented:_cmd];
-#else
-    NSLog(@"ERROR(%s): fetching owners is not implemented!",
-	  __PRETTY_FUNCTION__);
-#endif
+    [self logWithFormat:@"ERROR(%s): fetching owners is not implemented!",
+	  __PRETTY_FUNCTION__];
   }
   
   /* determine access info */
@@ -300,7 +295,7 @@ static NSNumber *nNo  = nil;
 - (void)setDay:(NSCalendarDate *)_day {
   NSAssert1([_day isKindOfClass:[NSCalendarDate class]],
             @"invalid parameter %@ ..", _day);
-  ASSIGN(self->day, _day);
+  ASSIGNCOPY(self->day, _day);
 }
 - (NSCalendarDate *)day {
   return self->day;
@@ -338,18 +333,14 @@ static NSNumber *nNo  = nil;
 }
 
 - (void)setTime:(id)_time {
-  NSString *tmp = self->time;                             
-  self->time = [_time copyWithZone:[self zone]];
-  RELEASE(tmp); tmp = nil;  
+  ASSIGNCOPY(self->time, _time);
 }
 - (id)time {
   return self->time;
 }
 
 - (void)setTitle:(id)_title {
-  NSString *tmp = self->title;
-  self->title = [_title copyWithZone:[self zone]];
-  RELEASE(tmp); tmp = nil;  
+  ASSIGNCOPY(self->title, _title);
 }
 - (id)title {
   return self->title;
@@ -357,7 +348,7 @@ static NSNumber *nNo  = nil;
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"day"]) {
     if ([_value isKindOfClass:[NSCalendarDate class]])
       [self setDay:_value];
@@ -382,19 +373,19 @@ static NSNumber *nNo  = nil;
   return;
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"day"])
     return [self day];
-  else if ([_key isEqualToString:@"team"])
+  if ([_key isEqualToString:@"team"])
     return [self team];
-  else if ([_key isEqualToString:@"fetchOwners"])
+  if ([_key isEqualToString:@"fetchOwners"])
     return [NSNumber numberWithBool:[self fetchOwners]];
-  else if ([_key isEqualToString:@"timeZone"])
+  if ([_key isEqualToString:@"timeZone"])
     return [self timeZone];
-  else if ([_key isEqualToString:@"withoutPrivate"])
+  if ([_key isEqualToString:@"withoutPrivate"])
     return [NSNumber numberWithBool:[self withoutPrivate]];
-  else 
-    return [super valueForKey:_key];
+  
+  return [super valueForKey:_key];
 }
 
-@end
+@end /* LSGetDateForADayCommand */

@@ -19,7 +19,6 @@
   02111-1307, USA.
 */
 
-#import "common.h"
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
 /*
@@ -29,12 +28,16 @@
   It assign the property 'isViewAllowed' to the appointment objects.
 */
 
+@class NSArray;
+
 @interface LSGetAccessTeamInfoCommand : LSDBObjectBaseCommand
 {
   NSArray *appointments;
 }
 
 @end
+
+#include "common.h"
 
 @implementation LSGetAccessTeamInfoCommand
 
@@ -47,11 +50,15 @@ static NSNumber *nNo  = nil;
 }
 
 - (void)dealloc {
-  RELEASE(self->appointments);
+  [self->appointments release];
   [super dealloc];
 }
 
 /* execution */
+
+- (BOOL)isRootLoginID:(NSNumber *)_num inContext:(id)_ctx {
+  return [_num intValue] == 10000 ? YES : NO;
+}
 
 - (void)_executeInContext:(id)_context {
   NSEnumerator *e;
@@ -70,8 +77,10 @@ static NSNumber *nNo  = nil;
   loginTeams = [login valueForKey:@"groups"];
   
   if (loginTeams == nil) {
-    if (login)
-      loginTeams = [_context runCommand:@"account::teams", @"object", login,nil];
+    if (login != nil) {
+      loginTeams = [_context runCommand:@"account::teams", 
+			     @"object", login,nil];
+    }
     
     loginTeams = [login valueForKey:@"groups"];
   }
@@ -82,17 +91,19 @@ static NSNumber *nNo  = nil;
   // get pkey of login account
   loginId = [login valueForKey:@"companyId"];
                              
-  while ((appointment = [e nextObject])) {
-    id teamKey = [appointment valueForKey:@"accessTeamId"];
+  while ((appointment = [e nextObject]) != nil) {
+    NSNumber *teamKey;
+
+    teamKey = [appointment valueForKey:@"accessTeamId"];
     
     // the owner may always view the appointment
     if ([[appointment valueForKey:@"ownerId"] isEqual:loginId] ||
-        ([loginId intValue] == 10000)) {
+	[self isRootLoginID:loginId inContext:_context]) {
       [appointment takeValue:nYes forKey:@"isViewAllowed"];
       continue;
     }
     
-    if (teamKey) {
+    if ([teamKey isNotNull]) {
       // if team is 'null', the appointment is private to the owner
 
       // check whether the login user is in access-team
@@ -141,7 +152,7 @@ static NSNumber *nNo  = nil;
 
 /* KVC */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"appointments"]) {
     ASSIGN(self->appointments, _value);
   }
@@ -149,11 +160,11 @@ static NSNumber *nNo  = nil;
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"appointments"])
     return self->appointments;
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
-@end
+@end /* LSGetAccessTeamInfoCommand */

@@ -374,13 +374,13 @@ static NSNumber *nNo  = nil;
   RELEASE(currentIds); currentIds = nil;  
 }
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Date";
 }
 
-// accessors
+/* accessors */
 
 - (void)setBeginFromString:(NSString *)_beginString {
   NSCalendarDate *myDate = nil;
@@ -391,7 +391,7 @@ static NSNumber *nNo  = nil;
 }
 
 - (void)setBegin:(NSCalendarDate *)_begin {
-  ASSIGN(self->begin, _begin);
+  ASSIGNCOPY(self->begin, _begin);
 }
 - (NSCalendarDate *)begin {
   return self->begin;
@@ -406,7 +406,7 @@ static NSNumber *nNo  = nil;
 }
 
 - (void)setEnd:(NSCalendarDate *)_end {
-  ASSIGN(self->end, _end);
+  ASSIGNCOPY(self->end, _end);
 }
 - (NSCalendarDate *)end {
   return self->end;
@@ -445,9 +445,9 @@ static NSNumber *nNo  = nil;
   return self->fetchGlobalIDs;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"begin"]) {
     if ([_value isKindOfClass:[NSCalendarDate class]])
       [self setBegin:_value];
@@ -472,18 +472,18 @@ static NSNumber *nNo  = nil;
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"begin"])
     return [self begin];
-  else if ([_key isEqualToString:@"end"])
+  if ([_key isEqualToString:@"end"])
     return [self end];
-  else if ([_key isEqualToString:@"appointment"])
+  if ([_key isEqualToString:@"appointment"])
     return [self appointment];
-  else if ([_key isEqualToString:@"staffList"])
+  if ([_key isEqualToString:@"staffList"])
     return [self staffList];
-  else if ([_key isEqualToString:@"resourceList"])
+  if ([_key isEqualToString:@"resourceList"])
     return [self resourceList];
-  else if ([_key isEqualToString:@"fetchGlobalIDs"])
+  if ([_key isEqualToString:@"fetchGlobalIDs"])
     return [NSNumber numberWithBool:[self fetchGlobalIDs]];
 
   return [super valueForKey:_key];

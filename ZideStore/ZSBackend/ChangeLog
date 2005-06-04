@@ -1,5 +1,12 @@
 2005-06-04  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v1.3.86
+
+	* SxAptManager+iCal: fetch 'sensitivity' attribute
+
+	* SxAppointmentRenderer.m: changed to map 'sensitivity' to iCal 'class'
+	  instead of using the access group
+
 	* moved Appointments, Contacts subproject files to top-level (v1.3.85)
 
 2005-06-01  Helge Hess  <helge.hess@opengroupware.org>

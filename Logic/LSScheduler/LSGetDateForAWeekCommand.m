@@ -169,7 +169,7 @@ static NSArray *sortStartDateAsc = nil;
 - (void)setMonday:(NSCalendarDate *)_monday {
   NSAssert1([_monday isKindOfClass:[NSCalendarDate class]],
             @"invalid parameter %@ ..", _monday);
-  ASSIGN(self->monday, _monday);
+  ASSIGNCOPY(self->monday, _monday);
 }
 - (NSCalendarDate *)monday {
   return self->monday;
@@ -221,7 +221,7 @@ static NSArray *sortStartDateAsc = nil;
 }
 
 - (void)setResourceName:(NSString *)_name {
-  ASSIGN(self->resourceName, _name);
+  ASSIGNCOPY(self->resourceName, _name);
 }
 - (id)resourceName {
   return self->resourceName;
@@ -229,7 +229,7 @@ static NSArray *sortStartDateAsc = nil;
 
 /* key-value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"monday"]) {
     if ([_value isKindOfClass:[NSCalendarDate class]])
       [self setMonday:_value];
@@ -254,7 +254,7 @@ static NSArray *sortStartDateAsc = nil;
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   id v;
   
   if ([_key isEqualToString:@"monday"])

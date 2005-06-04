@@ -39,8 +39,6 @@
 #include <NGExtensions/NSCalendarDate+misc.h>
 #include "common.h"
 
-#define ALL_INTRANET_ID 10003
-
 @implementation LSUpdateAppointmentWithVEventCommand
 
 static NSNumber *yesNum = nil;
@@ -225,14 +223,31 @@ static NSNumber *noNum  = nil;
 
   [self _detectAllDayInContext:_context];
 
-  if ((tmp = [event accessClass])) {
-    id accessTeamId = [NSNull null];
+  if ([(tmp = [event accessClass]) isNotNull]) {
+    // DUP in LSNewAppointmentCommand
+    int sensitivity;
+
     if ([tmp isEqualToString:@"PUBLIC"])
-      accessTeamId = [NSNumber numberWithInt:ALL_INTRANET_ID];
-    [self takeValue:accessTeamId forKey:@"accessTeamId"];
+      sensitivity = 0;
+    else if ([tmp isEqualToString:@"PRIVATE"])
+      sensitivity = 2;
+    else if ([tmp isEqualToString:@"PERSONAL"]) /* non-standard */
+      sensitivity = 1;
+    else if ([tmp isEqualToString:@"CONFIDENTIAL"]) /* non-standard */
+      sensitivity = 3;
+    else if ([tmp length] == 0)
+      sensitivity = -1;
+    else {
+      [self logWithFormat:@"ERROR: unknown iCal class: '%@'", tmp];
+      sensitivity = -1;
+    }
+    if (sensitivity >= 0) {
+      [self takeValue:[NSNumber numberWithInt:sensitivity] 
+	    forKey:@"sensitivity"];
+    }
   }
 
-  if ((tmp = [event attendees])) {
+  if ([(tmp = [event attendees]) isNotNull]) {
     unsigned max = [tmp count];
     if (max) {
       NSMutableArray *persons = [NSMutableArray arrayWithCapacity:max];
@@ -289,7 +304,7 @@ static NSNumber *noNum  = nil;
 
 /* kvc */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"vevent"]) {
     [self setVEvent:_value];
     return;
@@ -297,7 +312,7 @@ static NSNumber *noNum  = nil;
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"vevent"])
     return [self vEvent];
   return [super valueForKey:_key];

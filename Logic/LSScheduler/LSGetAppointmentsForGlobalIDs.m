@@ -245,7 +245,7 @@ static NSSet *AllListAttrs = nil;
 - (void)_associateCompaniesWithAppointments:(NSArray *)results 
   withGIDs:(NSArray *)resultGids
   personGIDs:(NSDictionary *)pgids
-  persons:(id)persons teams:(id)teams
+  persons:(NSDictionary *)persons teams:(NSDictionary *)teams
 {
   unsigned i, count;
 
@@ -849,7 +849,7 @@ static NSSet *AllListAttrs = nil;
 
 /* key-value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"gid"])
     [self setGlobalID:_value];
   else if ([_key isEqualToString:@"gids"])
@@ -874,7 +874,7 @@ static NSSet *AllListAttrs = nil;
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   id v;
   
   if ([_key isEqualToString:@"gid"])

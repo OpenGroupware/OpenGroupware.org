@@ -187,19 +187,23 @@
 
 /* key-value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  if ([_key isEqualToString:@"startDate"])
-    ASSIGN(self->startDate, _value);
-  else if ([_key isEqualToString:@"endDate"])
-    ASSIGN(self->endDate, _value);
-  else if ([_key isEqualToString:@"category"])
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
+  if ([_key isEqualToString:@"startDate"]) {
+    ASSIGNCOPY(self->startDate, _value);
+  }
+  else if ([_key isEqualToString:@"endDate"]) {
+    ASSIGNCOPY(self->endDate, _value);
+  }
+  else if ([_key isEqualToString:@"category"]) {
     ASSIGN(self->category, _value);
+  }
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   id v = nil;
+  
   if ([_key isEqualToString:@"startDate"])
     v = self->startDate;
   else if ([_key isEqualToString:@"endDate"])

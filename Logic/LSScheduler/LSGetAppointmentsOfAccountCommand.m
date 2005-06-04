@@ -328,17 +328,17 @@ static NSNumber *nYes = nil, *nNo = nil;
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"company"]) {
     ASSIGN(self->company, _value);
     return;
   }
   if ([_key isEqualToString:@"startDate"]) {
-    ASSIGN(self->startDate, _value);
+    ASSIGNCOPY(self->startDate, _value);
     return;
   }
   if ([_key isEqualToString:@"endDate"]) {
-    ASSIGN(self->endDate, _value);
+    ASSIGNCOPY(self->endDate, _value);
     return;
   }
   if ([_key isEqualToString:@"timeZone"]) {
@@ -346,14 +346,14 @@ static NSNumber *nYes = nil, *nNo = nil;
     return;
   }
   if ([_key isEqualToString:@"fetchGlobalIDs"]) {
-    ASSIGN(self->fetchGlobalIDs, _value);
+    ASSIGNCOPY(self->fetchGlobalIDs, _value);
     return;
   }
 
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"company"])
     return self->company;
   if ([_key isEqualToString:@"startDate"])

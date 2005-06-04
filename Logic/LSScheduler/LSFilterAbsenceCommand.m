@@ -19,9 +19,9 @@
   02111-1307, USA.
 */
 
-#import "common.h"
 #include <LSFoundation/LSArrayFilterCommand.h>
-#include "LSAppointment+Filters.h"
+
+@class NSNumber, NSCalendarDate;
 
 @interface LSFilterAbsenceCommand : LSArrayFilterCommand
 {
@@ -35,23 +35,24 @@
 
 @end
 
+#include "LSAppointment+Filters.h"
+#include "common.h"
+
 @implementation LSFilterAbsenceCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->weekDay);
-  RELEASE(self->mondayOfWeek);
+  [self->weekDay      release];
+  [self->mondayOfWeek release];
   [super dealloc];
 }
-#endif
 
-// command methods
+/* command methods */
 
 - (BOOL)includeObjectInResult:(id)_object {
   return [_object filterAbsenceWithSpec:self];
 }
 
-// accessors
+/* accessors */
 
 - (void)setDateList:(NSArray *)_dateList {
   [self setObject:_dateList];
@@ -61,45 +62,40 @@
 }
 
 - (void)setWeekDay:(NSNumber *)_weekDay {
-  ASSIGN(self->weekDay, _weekDay);
+  ASSIGNCOPY(self->weekDay, _weekDay);
 }
 - (NSNumber *)weekDay {
   return self->weekDay;
 }
 
 - (void)setMondayOfWeek:(NSCalendarDate *)_monday {
-  ASSIGN(self->mondayOfWeek, _monday);
+  ASSIGNCOPY(self->mondayOfWeek, _monday);
 }
 - (NSCalendarDate *)mondayOfWeek {
   return self->mondayOfWeek;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  if ([_key isEqualToString:@"dateList"] || [_key isEqualToString:@"object"]) {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
+  if ([_key isEqualToString:@"dateList"] || [_key isEqualToString:@"object"])
     [self setObject:_value];
-    return;
-  }
-  else  if ([_key isEqualToString:@"weekDay"]) {
+  else  if ([_key isEqualToString:@"weekDay"])
     [self setWeekDay:_value];
-    return;
-  }
-  else  if ([_key isEqualToString:@"mondayOfWeek"]) {
+  else  if ([_key isEqualToString:@"mondayOfWeek"])
     [self setMondayOfWeek:_value];
-    return;
-  }
-  [super takeValue:_value forKey:_key];
+  else
+    [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"dateList"] || [_key isEqualToString:@"object"])
     return [self object];
-  else if ([_key isEqualToString:@"weekDay"])
+  if ([_key isEqualToString:@"weekDay"])
     return [self weekDay];
-  else if ([_key isEqualToString:@"mondayOfWeek"])
+  if ([_key isEqualToString:@"mondayOfWeek"])
     return [self mondayOfWeek];
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSFilterAbsenceCommand */

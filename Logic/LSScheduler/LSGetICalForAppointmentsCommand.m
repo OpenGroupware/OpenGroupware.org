@@ -164,10 +164,20 @@ static NSString   *skyrixId = nil;
     [self _appendName:@"CATEGORIES" andValue:tmp toICal:_iCal];
   
   /* class */
-  tmp = ([(tmp = [_date valueForKey:@"accessTeamId"]) isNotNull])
-    ? @"PUBLIC"
-    : @"PRIVATE";
-  [self _appendName:@"CLASS" andValue:tmp toICal:_iCal];
+  if ([(tmp = [_date valueForKey:@"sensitivity"]) isNotNull]) {
+    if ([tmp intValue] == 0 /* undefined */)
+      tmp = @"PUBLIC";
+    else if ([tmp intValue] == 1 /* personal */ || 
+	     [tmp intValue] == 2 /* private  */)
+      tmp = @"PRIVATE";
+    else if ([tmp intValue] == 3 /* confidential */)
+      tmp = @"CONFIDENTIAL";
+    else {
+      [self logWithFormat:@"ERROR: unknown sensitivity: %@", tmp];
+      tmp = nil;
+    }
+    if (tmp != nil) [self _appendName:@"CLASS" andValue:tmp toICal:_iCal];
+  }
   
   if ([(tmp = [[_date valueForKey:@"location"] stringValue]) length])
     [self _appendName:@"LOCATION" andValue:tmp toICal:_iCal];
@@ -585,7 +595,7 @@ static NSString   *skyrixId = nil;
     [self setReturnValue:[NSArray array]];
 }
 
-// accessors
+/* accessors */
 
 - (void)setGlobalIDs:(NSArray *)_gids {
   ASSIGN(self->gids,_gids);
@@ -616,7 +626,7 @@ static NSString   *skyrixId = nil;
 
 /* key-value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"gid"])
     [self setGlobalID:_value];
   else if ([_key isEqualToString:@"gids"])
@@ -633,25 +643,23 @@ static NSString   *skyrixId = nil;
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
-  id v;
-  
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"gid"])
-    v = [self globalID];
-  else if ([_key isEqualToString:@"gids"])
-    v = [self globalIDs];
-  else if (([_key isEqualToString:@"appointments"]) ||
-           ([_key isEqualToString:@"dates"]) ||
-           ([_key isEqualToString:@"objects"]))
-    v = [self appointments];
-  else if (([_key isEqualToString:@"appointment"]) ||
-           ([_key isEqualToString:@"date"]) ||
-           ([_key isEqualToString:@"object"]))
-    v = [self appointment];
-  else 
-    v = [super valueForKey:_key];
-  
-  return v;
+    return [self globalID];
+
+  if ([_key isEqualToString:@"gids"])
+    return [self globalIDs];
+
+  if ([_key isEqualToString:@"appointments"] ||
+      [_key isEqualToString:@"dates"] ||
+      [_key isEqualToString:@"objects"])
+    return [self appointments];
+  if ([_key isEqualToString:@"appointment"] ||
+      [_key isEqualToString:@"date"] ||
+      [_key isEqualToString:@"object"])
+    return [self appointment];
+
+  return [super valueForKey:_key];
 }
 
 @end /* LSGetICalForAppointmentsCommand */

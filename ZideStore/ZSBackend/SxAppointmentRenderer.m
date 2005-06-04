@@ -283,8 +283,8 @@ static BOOL debugRenderer = NO;
   NSString *dateFmt;
   id       owner;
 
-  NSLog(@"WARNING%s: SxAppointmentRenderer deprecated. "
-        @"use command appointment::get-ical", __PRETTY_FUNCTION__);
+  [self logWithFormat:@"WARNING(%s): SxAppointmentRenderer deprecated. "
+        @"use command appointment::get-ical", __PRETTY_FUNCTION__];
 
   if (skyrixId == nil) {
     skyrixId = [[NSUserDefaults standardUserDefaults]
@@ -356,7 +356,6 @@ static BOOL debugRenderer = NO;
   
   [self->ical appendFormat:@"PRIORITY:%i\r\n", 0 /*[self priority]*/];
 
-  // TODO: rather use sensitivity
   /*
     "OlSensitivity" for Appointment and Task items in MSDN:
     0 - normal / no sensititvity specified
@@ -364,9 +363,16 @@ static BOOL debugRenderer = NO;
     2 - private
     3 - confidential
   */
-  t = [_eo valueForKey:@"accessTeamId"];
-  t = ([t intValue] > 1000) ? @"PUBLIC" : @"PRIVATE";
-  [self->ical appendFormat:@"CLASS:%@\r\n", t /*[self aptClass]*/];
+  if ([(t = [_eo valueForKey:@"sensititvity"]) isNotNull]) {
+    if ([t intValue] == 0 /* undefined */)
+      [self->ical appendString:@"CLASS:PUBLIC\r\n"];
+    else if ([t intValue] == 1 /* personal */ || [t intValue] == 2 /*private*/)
+      [self->ical appendString:@"CLASS:PRIVATE\r\n"];
+    else if ([t intValue] == 3 /* confidential */)
+      [self->ical appendString:@"CLASS:CONFIDENTIAL\r\n"];
+    else
+      [self logWithFormat:@"ERROR: unknown sensitivity: %@", t];
+  }
   
   //[self->ical appendFormat:@"STATUS:%@\r\n", @"" /*[self status]*/];
   //[self->ical appendFormat:@"TRANSP:%@\r\n", @"" /*[self transp]*/];

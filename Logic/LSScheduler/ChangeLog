@@ -1,3 +1,16 @@
+2005-06-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.58
+
+	* LSGetICalForAppointmentsCommand.m, 
+	  LSNewAppointmentFromVEventCommand.m,
+	  LSUpdateAppointmentWithVEventCommand.m: changed to map 'sensitivity'
+	  to iCal 'class' instead of using the readAccessGroup
+
+	* fixed gcc 4.0 warnings, minor code cleanups
+
+	* LSAptAccessCommand.m: major code cleanups
+
 2005-05-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* moved in LSSetResourcesCommand.m from LSAddress (v5.1.57)

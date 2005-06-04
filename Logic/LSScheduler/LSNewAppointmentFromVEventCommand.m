@@ -42,12 +42,9 @@
 
 @implementation LSNewAppointmentFromVEventCommand
 
-static int ALL_INTRANET_ID = 10003; // TODO: make a default
-
 - (id)rsvpValue:(NSString *)_rsvp {
-  if ([[_rsvp lowercaseString] isEqualToString:@"true"])
-    return [NSNumber numberWithBool:YES];
-  return [NSNumber numberWithBool:NO];
+  _rsvp = [_rsvp lowercaseString];
+  return [NSNumber numberWithBool:[_rsvp isEqualToString:@"true"]];
 }
 
 - (id)partStatusValue:(NSString *)_partStat {
@@ -211,7 +208,7 @@ static int ALL_INTRANET_ID = 10003; // TODO: make a default
   event = (iCalEvent *)[self vEvent];
   [self assert:(event != nil) reason:@"missing vevent"];
 
-  if ((tmp = [event summary])) {
+  if ([(tmp = [event summary]) isNotNull]) {
     [self takeValue:tmp forKey:@"title"];
   }
   else {
@@ -230,15 +227,32 @@ static int ALL_INTRANET_ID = 10003; // TODO: make a default
   if ((tmp = [event priority])) [self takeValue:tmp forKey:@"importance"];
 
   [self _detectAllDayInContext:_context];
+  
+  if ([(tmp = [event accessClass]) isNotNull]) {
+    // DUP in LSUpdateAppointmentWithVEventCommand
+    int sensitivity;
 
-  if ((tmp = [event accessClass])) {
-    id accessTeamId = [NSNull null];
     if ([tmp isEqualToString:@"PUBLIC"])
-      accessTeamId = [NSNumber numberWithInt:ALL_INTRANET_ID];
-    [self takeValue:accessTeamId forKey:@"accessTeamId"];
+      sensitivity = 0;
+    else if ([tmp isEqualToString:@"PRIVATE"])
+      sensitivity = 2;
+    else if ([tmp isEqualToString:@"PERSONAL"]) /* non-standard */
+      sensitivity = 1;
+    else if ([tmp isEqualToString:@"CONFIDENTIAL"]) /* non-standard */
+      sensitivity = 3;
+    else if ([tmp length] == 0)
+      sensitivity = -1;
+    else {
+      [self logWithFormat:@"ERROR: unknown iCal class: '%@'", tmp];
+      sensitivity = -1;
+    }
+    if (sensitivity >= 0) {
+      [self takeValue:[NSNumber numberWithInt:sensitivity] 
+	    forKey:@"sensitivity"];
+    }
   }
   
-  if ((tmp = [event attendees])) {
+  if ([(tmp = [event attendees]) isNotNull]) {
     unsigned max = [tmp count];
     if (max) {
       NSMutableArray *persons = [NSMutableArray arrayWithCapacity:max];
@@ -255,19 +269,23 @@ static int ALL_INTRANET_ID = 10003; // TODO: make a default
       [self takeValue:persons forKey:@"participants"];
     }
   }
-
-  if (![[self valueForKey:@"participants"] count])
+  
+  if ([[self valueForKey:@"participants"] count] == 0) {
     [self takeValue:
-          [NSArray arrayWithObject:[_context valueForKey:LSAccountKey]]
+	    [NSArray arrayWithObject:[_context valueForKey:LSAccountKey]]
           forKey:@"participants"];
+  }
 
-
-  if ((tmp = [event alarms])) {
-    unsigned max = [tmp count];
-    if (max) {
-      NSMutableArray *alarms = [NSMutableArray arrayWithCapacity:max];
+  
+  if ([(tmp = [event alarms]) isNotNull]) {
+    unsigned max;
+    
+    if ((max = [tmp count]) > 0) {
+      NSMutableArray *alarms;
       unsigned       i;
       id             one;
+      
+      alarms = [NSMutableArray arrayWithCapacity:max];
       for (i = 0; i < max; i++) {
         one = [self processAlarm:[tmp objectAtIndex:i]];
         if (one)
@@ -305,7 +323,7 @@ static int ALL_INTRANET_ID = 10003; // TODO: make a default
 
 /* KVC */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"vevent"]) {
     [self setVEvent:_value];
     return;
@@ -313,7 +331,7 @@ static int ALL_INTRANET_ID = 10003; // TODO: make a default
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"vevent"])
     return [self vEvent];
   return [super valueForKey:_key];

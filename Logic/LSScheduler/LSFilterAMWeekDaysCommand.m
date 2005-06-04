@@ -19,9 +19,9 @@
   02111-1307, USA.
 */
 
-#import "common.h"
 #include <LSFoundation/LSArrayFilterCommand.h>
-#include "LSAppointment+Filters.h"
+
+@class NSNumber, NSCalendarDate;
 
 @interface LSFilterAMWeekDaysCommand : LSArrayFilterCommand
 {
@@ -37,6 +37,9 @@
 - (NSNumber *)weekDay;
 
 @end
+
+#include "LSAppointment+Filters.h"
+#include "common.h"
 
 @implementation NSObject(AMWeekDaySelector)
 
@@ -106,25 +109,23 @@
   return NO;
 }
 
-@end
+@end /* NSObject(AMWeekDaySelector) */
 
 @implementation LSFilterAMWeekDaysCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->weekDay);
-  RELEASE(self->mondayOfWeek);
+  [self->weekDay      release];
+  [self->mondayOfWeek release];
   [super dealloc];
 }
-#endif
 
-// command methods
+/* command methods */
 
 - (BOOL)includeObjectInResult:(id)_object {
   return [_object filterAMWeekDayWithSpec:self];
 }
 
-// accessors
+/* accessors */
 
 - (void)setDateList:(NSArray *)_dateList {
   [self setObject:_dateList];
@@ -134,14 +135,14 @@
 }
 
 - (void)setWeekDay:(NSNumber *)_weekDay {
-  ASSIGN(self->weekDay, _weekDay);
+  ASSIGNCOPY(self->weekDay, _weekDay);
 }
 - (NSNumber *)weekDay {
   return self->weekDay;
 }
 
 - (void)setMondayOfWeek:(NSCalendarDate *)_monday {
-  ASSIGN(self->mondayOfWeek, _monday);
+  ASSIGNCOPY(self->mondayOfWeek, _monday);
 }
 - (NSCalendarDate *)mondayOfWeek {
   return self->mondayOfWeek;
@@ -168,9 +169,9 @@
   return self->withAttendance;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"dateList"] || [_key isEqualToString:@"object"]) {
     [self setObject:_value];
     return;
@@ -198,20 +199,20 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"dateList"] || [_key isEqualToString:@"object"])
     return [self object];
-  else if ([_key isEqualToString:@"weekDay"])
+  if ([_key isEqualToString:@"weekDay"])
     return [self weekDay];
-  else if ([_key isEqualToString:@"mondayOfWeek"])
+  if ([_key isEqualToString:@"mondayOfWeek"])
     return [self mondayOfWeek];
-  else if ([_key isEqualToString:@"withSeveralDays"])
+  if ([_key isEqualToString:@"withSeveralDays"])
     return [NSNumber numberWithBool:self->withSeveralDays];
-  else if ([_key isEqualToString:@"withAbsence"])
+  if ([_key isEqualToString:@"withAbsence"])
     return [NSNumber numberWithBool:self->withAbsence];
-  else if ([_key isEqualToString:@"withAttendance"])
+  if ([_key isEqualToString:@"withAttendance"])
     return [NSNumber numberWithBool:self->withAttendance];
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSFilterAMWeekDaysCommand */

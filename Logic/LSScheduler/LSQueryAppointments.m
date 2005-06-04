@@ -489,14 +489,14 @@ static EONull   *null = nil;
 				 calendarFormat:@"%Y-%m-%d %H:%M %Z"];
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"fromDate"]) {
     if ([_value isKindOfClass:[NSString class]]) {
       [self->fromDate release]; self->fromDate = nil;
       self->fromDate = [self _parseCalendarDate:_value];
     }
     else {
-      ASSIGN(self->fromDate, _value);
+      ASSIGNCOPY(self->fromDate, _value);
     }
     return;
   }
@@ -506,7 +506,7 @@ static EONull   *null = nil;
       self->toDate = [self _parseCalendarDate:_value];
     }
     else {
-      ASSIGN(self->toDate, _value);
+      ASSIGNCOPY(self->toDate, _value);
     }
     return;
   }
@@ -515,11 +515,11 @@ static EONull   *null = nil;
     return;
   }
   if ([_key isEqualToString:@"resourceNames"]) {
-    ASSIGN(self->resourceNames, _value);
+    ASSIGNCOPY(self->resourceNames, _value);
     return;
   }
   if ([_key isEqualToString:@"aptTypes"]) {
-    ASSIGN(self->aptTypes, _value);
+    ASSIGNCOPY(self->aptTypes, _value);
     return;
   }
   if ([_key isEqualToString:@"accessTeam"]) {
@@ -532,7 +532,7 @@ static EONull   *null = nil;
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   id v;
   
   if ([_key isEqualToString:@"fromDate"])

@@ -19,8 +19,9 @@
   02111-1307, USA.
 */
 
-#import "common.h"
 #include <LSFoundation/LSDBObjectBaseCommand.h>
+
+@class NSArray;
 
 @interface LSParticipantsIntersectionCommand : LSDBObjectBaseCommand
 {
@@ -30,16 +31,18 @@
 
 @end
 
+#include "common.h"
+
 @implementation LSParticipantsIntersectionCommand
 
-// command methods
+/* command methods */
 
 - (void)_executeInContext:(id)_context {
   NSMutableSet *accountSet;
   NSMutableSet *participantSet;
   
-  accountSet     = [[NSMutableSet allocWithZone:[self zone]] init];
-  participantSet = [[NSMutableSet allocWithZone:[self zone]] init];
+  accountSet     = [[NSMutableSet alloc] initWithCapacity:16];
+  participantSet = [[NSMutableSet alloc] initWithCapacity:16];
 
   [participantSet addObjectsFromArray:
                     LSRunCommandV(_context,
@@ -53,11 +56,11 @@
 
   [participantSet intersectSet:accountSet];
   [self setReturnValue:[participantSet allObjects]];
-  RELEASE(participantSet); participantSet = nil;
-  RELEASE(accountSet);     accountSet = nil;
+  [participantSet release]; participantSet = nil;
+  [accountSet     release]; accountSet = nil;
 }
 
-// accessors
+/* accessors */
 
 - (void)setStaffList:(id)_staffList {
   ASSIGN(self->staffList, _staffList);
@@ -73,22 +76,17 @@
   return [self->staffList objectAtIndex:0];
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"object"]
       || [_key isEqualToString:@"participants"]) {
     [self setObject:_value];
-    return;
   }
-  else if ([_key isEqualToString:@"staffList"]) {
+  else if ([_key isEqualToString:@"staffList"])
     [self setStaffList:_value];
-    return;
-  }
-  else if ([_key isEqualToString:@"staff"]) {
+  else if ([_key isEqualToString:@"staff"])
     [self setStaff:_value];
-    return;
-  }
   else {
     [LSDBObjectCommandException raiseOnFail:NO object:self
                                 reason:
@@ -100,15 +98,16 @@
   }
 }
 
-- (id)valueForKey:(id)_key {
-  if ([_key isEqualToString:@"object"] || [_key isEqualToString:@"participants"])
+- (id)valueForKey:(NSString *)_key {
+  if ([_key isEqualToString:@"object"] || 
+      [_key isEqualToString:@"participants"])
     return [self object];
-  else if ([_key isEqualToString:@"staff"])
+  if ([_key isEqualToString:@"staff"])
     return [self staff]; 
-  else if ([_key isEqualToString:@"staffList"])
+  if ([_key isEqualToString:@"staffList"])
     return [self staffList]; 
-  else
-    return nil;
+
+  return nil;
 }
 
 @end

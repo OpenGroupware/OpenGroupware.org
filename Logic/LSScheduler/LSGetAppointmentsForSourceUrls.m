@@ -34,11 +34,12 @@
 
 @end /* LSGetAppointmentsForSourceUrls */
 
-#import <Foundation/Foundation.h>
+#include "common.h"
+#if 0
 #include <LSFoundation/LSCommandKeys.h>
 #include <EOControl/EOControl.h>
 #include <GDLAccess/GDLAccess.h>
-#include "common.h"
+#endif
 
 @implementation LSGetAppointmentsForSourceUrls
 
@@ -136,7 +137,7 @@
     if (gids == nil)
       gids = [NSMutableArray arrayWithCapacity:urlCount];
 
-    while ((record = [adCh fetchAttributes:attrs withZone:NULL])) {
+    while ((record = [adCh fetchAttributes:attrs withZone:NULL]) != nil) {
       NSString   *pKey;
       EOGlobalID *gid;
       
@@ -171,25 +172,21 @@
 /* accessors */
 
 - (void)setSourceUrls:(NSArray *)_urls {
-  if (self->sourceUrls != _urls) {
-    id tmp = self->sourceUrls;
-    self->sourceUrls = [_urls copy];
-    [tmp release]; tmp = nil;
-  }
+  ASSIGNCOPY(self->sourceUrls, _urls);
 }
 - (NSArray *)sourceUrls {
   return self->sourceUrls;
 }
 
 - (void)setSourceUrl:(NSString *)_url {
-  [self setSourceUrls:[NSArray arrayWithObject:_url]];
+  [self setSourceUrls:_url ? [NSArray arrayWithObject:_url] : nil];
 }
 - (NSString *)sourceUrl {
   return [self->sourceUrls lastObject];
 }
 
 - (void)setAttributes:(NSArray *)_attributes {
-  ASSIGN(self->attributes, _attributes);
+  ASSIGNCOPY(self->attributes, _attributes);
 }
 - (NSArray *)attributes {
   return self->attributes;
@@ -203,7 +200,7 @@
 }
 
 - (void)setSortOrderings:(NSArray *)_orderings {
-  ASSIGN(self->sortOrderings, _orderings);
+  ASSIGNCOPY(self->sortOrderings, _orderings);
 }
 - (NSArray *)sortOrderings {
   return self->sortOrderings;
@@ -211,7 +208,7 @@
 
 /* key-value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"sourceUrl"])
     [self setSourceUrl:_value];
   else if ([_key isEqualToString:@"sourceUrls"])
@@ -219,7 +216,7 @@
   else if ([_key isEqualToString:@"attributes"])
     [self setAttributes:_value];
   else if ([_key isEqualToString:@"groupBy"]) {
-    ASSIGN(self->groupBy, _value);
+    ASSIGNCOPY(self->groupBy, _value);
   }
   else if ([_key isEqualToString:@"sortOrderings"])
     [self setSortOrderings:_value];
@@ -236,7 +233,7 @@
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   id v;
   
   if ([_key isEqualToString:@"sourceUrl"])

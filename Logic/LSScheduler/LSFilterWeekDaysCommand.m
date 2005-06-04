@@ -19,8 +19,9 @@
   02111-1307, USA.
 */
 
-#import "common.h"
 #include <LSFoundation/LSArrayFilterCommand.h>
+
+@class NSNumber;
 
 @interface LSFilterWeekDaysCommand : LSArrayFilterCommand
 {
@@ -28,23 +29,23 @@
   NSNumber *weekDay;
 }
 
-// accessors
+/* accessors */
 
 - (void)setWeekDay:(NSNumber *)_weekDay;
 - (NSNumber *)weekDay;
 
 @end
 
+#include "common.h"
+
 @implementation LSFilterWeekDaysCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->weekDay);
+  [self->weekDay release];
   [super dealloc];
 }
-#endif
 
-// command methods
+/* command methods */
 
 - (BOOL)includeObjectInResult:(id)_object {
   NSCalendarDate *startDate;
@@ -56,7 +57,7 @@
   return (myWeekDay == [[self weekDay] intValue]);
 }
 
-// accessors
+/* accessors */
 
 - (void)setDateList:(NSArray *)_dateList {
   [self setObject:_dateList];
@@ -66,15 +67,15 @@
 }
 
 - (void)setWeekDay:(NSNumber *)_weekDay {
-  ASSIGN(self->weekDay, _weekDay);
+  ASSIGNCOPY(self->weekDay, _weekDay);
 }
 - (NSNumber *)weekDay {
   return self->weekDay;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"dateList"] || [_key isEqualToString:@"object"])
     [self setObject:_value];
   else  if ([_key isEqualToString:@"weekDay"])
@@ -83,7 +84,7 @@
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"dateList"] || [_key isEqualToString:@"object"])
     return [self object];
   else if ([_key isEqualToString:@"weekDay"])
@@ -92,4 +93,4 @@
     return [super valueForKey:_key];
 }
 
-@end
+@end /* LSFilterWeekDaysCommand */

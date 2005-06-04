@@ -19,8 +19,9 @@
   02111-1307, USA.
 */
 
-#import "common.h"
 #include <LSFoundation/LSDBArrayFilterCommand.h>
+
+@class NSArray;
 
 @interface LSFilterStaffCommand : LSDBArrayFilterCommand
 {
@@ -34,6 +35,8 @@
 - (id)staff;
 
 @end
+
+#include "common.h"
 
 @implementation NSObject(AppointmentFilterStaff)
 
@@ -65,18 +68,16 @@
 #endif
 }
 
-@end
+@end /* NSObject(AppointmentFilterStaff) */
 
 @implementation LSFilterStaffCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->staffList);
+  [self->staffList release];
   [super dealloc];
 }
-#endif
 
-// command methods
+/* command methods */
 
 - (BOOL)_object:(id)_object isInList:(NSArray *)_list {
   NSEnumerator *listEnum  = [_list objectEnumerator];
@@ -172,21 +173,15 @@
   return [self->staffList objectAtIndex:0];
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  if ([_key isEqualToString:@"object"] || [_key isEqualToString:@"dateList"]) {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
+  if ([_key isEqualToString:@"object"] || [_key isEqualToString:@"dateList"])
     [self setObject:_value];
-    return;
-  }
-  else  if ([_key isEqualToString:@"staffList"]) {
+  else  if ([_key isEqualToString:@"staffList"])
     [self setStaffList:_value];
-    return;
-  }
-  else  if ([_key isEqualToString:@"staff"]) {
+  else  if ([_key isEqualToString:@"staff"])
     [self setStaff:_value];
-    return;
-  }
   else {
     [LSDBObjectCommandException raiseOnFail:NO object:self
                                 reason:
@@ -198,15 +193,15 @@
   }
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"object"] || [_key isEqualToString:@"dateList"])
     return [self object];
-  else if ([_key isEqualToString:@"staffList"])
+  if ([_key isEqualToString:@"staffList"])
     return [self staffList];
-  else if ([_key isEqualToString:@"staff"])
+  if ([_key isEqualToString:@"staff"])
     return [self staff];
-  else
-    return nil;
+
+  return nil;
 }
 
-@end
+@end /* LSFilterStaffCommand */
