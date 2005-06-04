@@ -20,7 +20,7 @@ LSPerson_OBJC_FILES += \
 
 LSPerson_RESOURCE_FILES += Version
 
-LSPerson_INCLUDE_DIRS += -I../LSAddress/Headers
+LSPerson_INCLUDE_DIRS += -I..
 LSPerson_BUNDLE_LIBS  += -lLSSearch -lLSFoundation -lLSAddress
 
 LSPerson_LIB_DIRS += \

@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include "LSNewCompanyCommand.h"
+#include <LSAddress/LSNewCompanyCommand.h>
 
 @class NSArray;
 
@@ -151,7 +151,7 @@ static NSNumber *noNum  = nil;
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"persons"]) {
     [self setPersons:_value];
     return;
@@ -160,7 +160,7 @@ static NSNumber *noNum  = nil;
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"persons"])
     return [self persons];
 

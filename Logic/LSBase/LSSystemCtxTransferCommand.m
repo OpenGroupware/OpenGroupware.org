@@ -19,27 +19,27 @@
   02111-1307, USA.
 */
 
-#include "common.h"
 #include "LSSystemCtxTransferCommand.h"
+#include "common.h"
+
+// TODO: actually used anywhere?!
 
 @implementation LSSystemCtxTransferCommand
 
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
   if ((self = [super initForOperation:_operation inDomain:_domain])) {
-    keysToTransfer = [[NSMutableDictionary alloc] init];
+    self->keysToTransfer = [[NSMutableDictionary alloc] initWithCapacity:16];
   }
   return self;
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(keysToTransfer);
-  RELEASE(command);
+  [self->keysToTransfer release];
+  [self->command        release];
   [super dealloc];
 }
-#endif
 
-// command type
+/* command type */
 
 - (BOOL)requiresChannel {
   return NO;
@@ -48,17 +48,20 @@
   return NO;
 }
 
-// command methods
+/* command methods */
 
 - (void)_executeInContext:(id)_context {
-  NSEnumerator *keys = [keysToTransfer keyEnumerator];
-  id key = nil;
+  NSEnumerator *keys;
+  NSString *key;
+  
+  keys = [keysToTransfer keyEnumerator];
+  while ((key = [keys nextObject]) != nil) {
+    NSString *targetKey = [keysToTransfer objectForKey:key];
 
-  while ((key = [keys nextObject])) {
-    id targetKey = [keysToTransfer objectForKey:key];
-
-    NSAssert([key isKindOfClass:[NSString class]], @"key must be a string");
-    NSAssert([targetKey isKindOfClass:[NSString class]], @"key must be a string");
+    NSAssert([key isKindOfClass:[NSString class]], 
+	     @"key must be a string");
+    NSAssert([targetKey isKindOfClass:[NSString class]], 
+	     @"key must be a string");
 
     [command takeValue:[_context valueForKey:key]
              forKey:targetKey];
@@ -67,36 +70,36 @@
   [command runInContext:_context];
 }
 
-// accessors
+/* accessors */
 
 - (void)setCommand:(id<NSObject,LSCommand>)_command {
   ASSIGN(command, _command);
 }
-
 - (id<NSObject,LSCommand>)command {
   return command;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   NSAssert([_key isKindOfClass:[NSString class]], @"key must be a string");
   
   if ([_key isEqualToString:@"command"])
     [self setCommand:_value];
   else {
-    NSAssert([_value isKindOfClass:[NSString class]], @"value must be a string");
+    NSAssert([_value isKindOfClass:[NSString class]], 
+	     @"value must be a string");
     [keysToTransfer setObject:_value forKey:_key];
   }
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   NSAssert([_key isKindOfClass:[NSString class]], @"key must be a string");
   
   if ([_key isEqualToString:@"command"])
     return [self command];
-  else
-    return [keysToTransfer objectForKey:_key];
+
+  return [keysToTransfer objectForKey:_key];
 }
 
-@end
+@end /* LSSystemCtxTransferCommand */

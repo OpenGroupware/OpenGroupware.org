@@ -19,7 +19,9 @@
   02111-1307, USA.
 */
 
-#include "LSGetMemberForCompanyCommand.h"
+#include <LSAddress/LSGetMemberForCompanyCommand.h>
+
+@class NSArray;
 
 @interface LSGetMemberForEnterpriseCommand : LSGetMemberForCompanyCommand
 {
@@ -50,6 +52,8 @@
   return @"Person";
 }
 
+/* run */
+
 - (void)_executeInContext:(id)_context {
   
   [super _executeInContext:_context];
@@ -75,15 +79,15 @@
 }
 
 - (void)setAttributes:(NSArray *)_attributes {
-  ASSIGN(self->attributes, _attributes);
+  ASSIGNCOPY(self->attributes, _attributes);
 }
 - (NSArray *)attributes {
   return self->attributes;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"enterprise"] || 
       [_key isEqualToString:@"object"]) {
     [self setGroup:_value];
@@ -101,7 +105,7 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"enterprise"] || [_key isEqualToString:@"object"])
     return [self group];
   if ([_key isEqualToString:@"enterprises"])

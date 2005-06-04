@@ -19,14 +19,14 @@
   02111-1307, USA.
 */
 
-#include <LSSetCompanyCommand.h>
+#include <LSAddress/LSSetCompanyCommand.h>
 
 @class NSArray, NSData, NSString;
 
 @interface LSDeleteAccountCommand : LSSetCompanyCommand
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSDeleteAccountCommand
 
@@ -36,7 +36,6 @@
   id obj;
 
   obj = [self object];
-  
   [self assert:(obj != nil) reason:@"no account object"];
 
   LSRunCommandV(_context, @"account", @"setgroups",

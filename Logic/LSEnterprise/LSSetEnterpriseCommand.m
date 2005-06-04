@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include "LSSetCompanyCommand.h"
+#include <LSAddress/LSSetCompanyCommand.h>
 
 @class NSArray;
 
@@ -54,25 +54,24 @@
   }
 }
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Enterprise";
 }
 
-// accessors
+/* accessors */
 
 - (void)setPersons:(NSArray *)_persons {
   ASSIGN(persons, _persons);
 }
-
 - (NSArray *)persons {
   return self->persons;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"persons"]) {
     [self setPersons:_value];
     return;
@@ -81,7 +80,7 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"persons"])
     return [self persons];
 

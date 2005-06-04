@@ -19,7 +19,6 @@
   02111-1307, USA.
 */
 
-#import "common.h"
 #include <LSFoundation/LSDBObjectNewCommand.h>
 
 @interface LSAddLogCommand : LSDBObjectNewCommand
@@ -30,10 +29,12 @@
 
 @end
 
+#include "common.h"
+
 @implementation LSAddLogCommand
 
 - (void)dealloc {
-  RELEASE(self->objectToLog);
+  [self->objectToLog release];
   [super dealloc];
 }
 
@@ -50,9 +51,9 @@
   owner = [_context valueForKey:LSAccountKey];
   
   if ([self valueForKey:@"objectId"] == nil) {
-    if (self->objectToLog) {
-      EOEntity     *objectEntity;
-      NSNumber     *objectId;
+    if (self->objectToLog != nil) {
+      EOEntity *objectEntity;
+      NSNumber *objectId;
 
       objectEntity = [[self->objectToLog classDescription] entity];
       objectId = [self->objectToLog valueForKey:
@@ -94,16 +95,16 @@
 
 /* accessors */
 
-- (id)objectToLog {
-  return self->objectToLog;
-}
 - (void)setObjectToLog: (id)_objectToLog {
   ASSIGN(self->objectToLog,_objectToLog);
+}
+- (id)objectToLog {
+  return self->objectToLog;
 }
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"objectToLog"]) {
     [self setObjectToLog: _value];
     return;
@@ -113,7 +114,7 @@
   
   [super takeValue:_value forKey:_key];
 }
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   return [super valueForKey:_key];
 }
 

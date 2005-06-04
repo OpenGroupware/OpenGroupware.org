@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include <LSSetCompanyCommand.h>
+#include <LSAddress/LSSetCompanyCommand.h>
 
 
 @class NSString;
@@ -46,7 +46,7 @@
 
 @end
 
-#import "common.h"
+#include "common.h"
 #include <NGLdap/NGLdap.h>
 
 @implementation LSChangePasswordCommand

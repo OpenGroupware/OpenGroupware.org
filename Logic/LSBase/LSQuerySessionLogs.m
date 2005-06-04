@@ -37,29 +37,26 @@
 
 @end
 
-#import <Foundation/Foundation.h>
-#import <GDLAccess/GDLAccess.h>
-#import <EOControl/EOControl.h>
-#import <LSFoundation/LSFoundation.h>
+#include <GDLAccess/EONull.h>
+#include <EOControl/EOKeyGlobalID.h>
+#include "common.h"
 
 @implementation LSQuerySessionLogs
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->fromDate);
-  RELEASE(self->accounts);
+  [self->fromDate release];
+  [self->accounts release];
   [super dealloc];
 }
-#endif
 
 /* qualifier construction */
 
 - (NSArray *)_buildQualifierInContext:(id)_ctx {
   static id null = nil;
   NSString        *fmtFromDate  = nil;
-  EOAdaptor       *adaptor      = nil;
-  EOEntity        *entity       = nil;
-  EOAttribute     *fmtAttribute = nil;
+  EOAdaptor       *adaptor;
+  EOEntity        *entity;
+  EOAttribute     *fmtAttribute;
   EOSQLQualifier  *q            = nil;
   EOSQLQualifier  *tq           = nil;
   NSMutableString *in           = nil;
@@ -91,7 +88,7 @@
     enumerator = [self->accounts objectEnumerator];
 
     i = 0;
-    while ((obj = [enumerator nextObject])) {
+    while ((obj = [enumerator nextObject]) != nil) {
       NSString *pkey;
       
       if (i != 0) [in appendString:@","];
@@ -102,7 +99,7 @@
       i++;
       
       if (i == batchSize) {
-        [ins addObject:AUTORELEASE([in copy])];
+        [ins addObject:[[in copy] autorelease]];
         [in setString:@""];
         i = 0;
       }
@@ -188,26 +185,28 @@
       
       [mgids addObjectsFromArray:gids];
     }
-    gids = AUTORELEASE([mgids copy]);
+    gids = [[mgids copy] autorelease];
   }
   
   [self setReturnValue:gids];
 
-  RELEASE(pool);
+  [pool release];
 }
 
 /* key-value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  if ([_key isEqualToString:@"fromDate"]) 
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
+  if ([_key isEqualToString:@"fromDate"]) {
     ASSIGN(self->fromDate, _value);
-  else if ([_key isEqualToString:@"accounts"]) 
+  }
+  else if ([_key isEqualToString:@"accounts"]) {
     ASSIGN(self->accounts, _value);
+  }
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   id v = nil;
   
   if ([_key isEqualToString:@"fromDate"])

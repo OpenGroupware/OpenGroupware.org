@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include <LSNewCompanyCommand.h>
+#include <LSAddress/LSNewCompanyCommand.h>
 
 @class NSArray;
 
@@ -31,16 +31,14 @@
 
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSNewAccountCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->teams);
+  [self->teams release];
   [super dealloc];
 }
-#endif
 
 - (void)_newStaffInContext:(id)_context {
   BOOL         isOk         = NO;

@@ -19,8 +19,8 @@
   02111-1307, USA.
 */
 
-#include "common.h"
 #include "LSCryptCommand.h"
+#include "common.h"
 #include <sys/types.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -51,7 +51,7 @@
     }
     while (((c > 57) && (c < 65)) || ((c > 90) && (c < 97)));
     
-    s = [[NSString alloc] initWithCString:&c length:1];
+    s = [[NSString alloc] initWithCString:(char *)&c length:1];
     [mySalt appendString:s];
     [s release];
   }
@@ -109,7 +109,7 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"password"])
     [self setPasswd:_value];
   else if ([_key isEqualToString:@"salt"])
@@ -118,13 +118,13 @@
     [self foundInvalidSetKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"password"])
     return [self passwd];
-  else if ([_key isEqualToString:@"salt"])
+  if ([_key isEqualToString:@"salt"])
     return [self passwd];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
 @end /* LSCryptCommand */

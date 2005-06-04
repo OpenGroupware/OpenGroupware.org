@@ -24,15 +24,13 @@
 
 @implementation LSSystemCtxLogCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(keysToLog);
-  RELEASE(out);
+  [self->keysToLog release];
+  [self->out       release];
   [super dealloc];
 }
-#endif
 
-// command type
+/* command type */
 
 - (BOOL)requiresChannel {
   return NO;
@@ -41,23 +39,24 @@
   return NO;
 }
 
-// command methods
+/* command methods */
 
 - (void)_executeInContext:(id)_context {
-  NSEnumerator *keys = [keysToLog objectEnumerator];
-  id key = nil;
+  NSEnumerator *keys;
+  id key;
 
+  keys = [keysToLog objectEnumerator];
   [out writeString:@"logging context\n"];
   while ((key = [keys nextObject])) {
     id value = [_context valueForKey:key];
 
-    if (value) [out writeFormat:@"  %8@: %@\n", key, value];
+    if (value != nil) [out writeFormat:@"  %8@: %@\n", key, value];
   }
   [out writeString:@"-\n"];
 
 }
 
-// accessors
+/* accessors */
 
 - (void)setLogStream:(id<NSObject,NGExtendedTextOutputStream>)_stream {
   ASSIGN(out, _stream);
@@ -67,15 +66,15 @@
 }
 
 - (void)setKeysToLog:(NSArray *)_keys {
-  ASSIGN(keysToLog, _keys);
+  ASSIGNCOPY(keysToLog, _keys);
 }
 - (NSArray *)keysToLog {
   return keysToLog;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"logStream"])
     [self setLogStream:_value];
   else if ([_key isEqualToString:@"keysToLog"])
@@ -84,13 +83,13 @@
     [self foundInvalidSetKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"logStream"])
     return [self logStream];
-  else if ([_key isEqualToString:@"keysToLog"])
+  if ([_key isEqualToString:@"keysToLog"])
     return [self keysToLog];
-  else
-    return nil;
+
+  return nil;
 }
 
-@end
+@end /* LSSystemCtxLogCommand */

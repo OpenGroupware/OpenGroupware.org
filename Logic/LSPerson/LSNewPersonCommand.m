@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include "LSNewCompanyCommand.h"
+#include <LSAddress/LSNewCompanyCommand.h>
 
 @interface LSNewPersonCommand : LSNewCompanyCommand
 {

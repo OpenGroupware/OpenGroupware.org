@@ -1,3 +1,7 @@
+2005-06-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed compilation for new LSAddress (v5.1.18)
+
 2005-05-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.17

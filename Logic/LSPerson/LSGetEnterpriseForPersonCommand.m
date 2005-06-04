@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#include "LSGetCompanyForMemberCommand.h"
+#include <LSAddress/LSGetCompanyForMemberCommand.h>
 
 @interface LSGetEnterpriseForPersonCommand : LSGetCompanyForMemberCommand
 {

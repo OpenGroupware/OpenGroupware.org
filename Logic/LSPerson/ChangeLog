@@ -1,3 +1,7 @@
+2005-06-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed compilation for new LSAddress (v5.1.27)
+
 2005-05-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSExtendedSearchPersonCommand.m: moved some methods to superclass

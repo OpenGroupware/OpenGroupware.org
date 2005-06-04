@@ -26,8 +26,12 @@
 #include <LSFoundation/LSCommand.h>
 
 /*
-  Mit diesem Kommando kann man Keys aus dem Context an ein Kommando uebertragen.
+  Using this command one can transfer keys from a context to a command.
+
+  TODO: used anywhere? If not => remove.
 */
+
+@class NSString, NSMutableDictionary;
 
 @interface LSSystemCtxTransferCommand : LSBaseCommand
 {
@@ -38,11 +42,11 @@
 
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain;
 
-// command methods
+/* command methods */
 
 - (void)_executeInContext:(id)_context;
 
-// accessors
+/* accessors */
 
 - (void)setCommand:(id<NSObject,LSCommand>)_command;
 - (id<NSObject,LSCommand>)command;

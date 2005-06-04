@@ -19,14 +19,14 @@
   02111-1307, USA.
 */
 
-#include <LSSetCompanyCommand.h>
+#include <LSAddress/LSSetCompanyCommand.h>
 
 @class NSArray, NSData, NSString;
 
 @interface LSDeleteTeamCommand : LSSetCompanyCommand
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSDeleteTeamCommand
 

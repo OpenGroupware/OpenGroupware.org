@@ -19,7 +19,6 @@
   02111-1307, USA.
 */
 
-#import "common.h"
 #include <LSFoundation/LSDBObjectNewCommand.h>
 
 @interface LSAddSessionLogCommand : LSDBObjectNewCommand
@@ -27,6 +26,8 @@
   id account;
 }
 @end
+
+#include "common.h"
 
 @implementation LSAddSessionLogCommand
 
@@ -81,7 +82,7 @@ static BOOL disableSessionLog = NO;
   return @"SessionLog";
 }
 
-- (void)setAccount: (id)_account {
+- (void)setAccount:(id)_account {
   ASSIGN(self->account, _account);
 }
 - (id)account {
@@ -90,14 +91,14 @@ static BOOL disableSessionLog = NO;
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"account"]) {
     [self setAccount:_value];
     return;
   }
   [super takeValue:_value forKey:_key];
 }
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"account"]) 
     return [self account];
   

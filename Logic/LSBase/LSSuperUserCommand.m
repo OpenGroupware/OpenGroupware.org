@@ -10,7 +10,7 @@
 
 @end /* LSSuperUserCommand */
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSSuperUserCommand
 
@@ -21,22 +21,25 @@
 
 /* accessors */
 
+- (void)setLogin:(NSString *)_login {
+  ASSIGNCOPY(self->login,_login);
+}
 - (NSString *)login {
   return self->login;
 }
-- (void)setLogin:(NSString *)_login {
-  ASSIGN(self->login,_login);
-}
 
-- (BOOL)isSessionLogEnabled {
-  return self->isSessionLogEnabled;
-}
 - (void)setIsSessionLogEnabled:(BOOL)_flag {
   self->isSessionLogEnabled = _flag;
 }
+- (BOOL)isSessionLogEnabled {
+  return self->isSessionLogEnabled;
+}
+
+/* run command */
 
 - (void)_prepareForExecutionInContext:(id)_context {
   id account;
+  
   account = [_context valueForKey:LSAccountKey];
   [self assert:(account != nil)
         reason:@"missing super user account"];
@@ -50,7 +53,9 @@
                   isSessionLogEnabled:[self isSessionLogEnabled]]];
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+/* key/value coding */
+
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"login"])
     [self setLogin:_value];
   else if ([_key isEqualToString:@"isSessionLogEnabled"])
@@ -59,14 +64,13 @@
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"login"])
     return [self login];
-  else if ([_key isEqualToString:@"isSessionLogEnabled"])
+  if ([_key isEqualToString:@"isSessionLogEnabled"])
     return [NSNumber numberWithBool:[self isSessionLogEnabled]];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
-  
 
 @end /* LSSuperUserCommand */
