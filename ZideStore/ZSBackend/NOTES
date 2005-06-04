@@ -1,43 +1,47 @@
-Caching/Folder-Version Thoughts
-===============================
+NOTES for Backend
+=================
 
 Why is the appointment ical renderer located in the *backend* ???
 - because the backend is responsible for managing the cache and the frontend
   asking for the iCalendar of an appointment is quite usual - so we should
   cache the whole iCal
 
-- TODO: locking, keine rollbacks bei ID-set checks
-- TODO: garbage collection (alte sets und caches wegloeschen ...)
+Caching/Folder-Version Thoughts
+===============================
+- TODO: locking, no rollbacks with ID-set checks
+- TODO: garbage collection (delete old sets and caches ...)
 
-- Update von der Version
-  - irgendjemand fragt nach der Version
-    - wir kontrollieren
-      a) ist die Version als Dirty markiert (bekannte Aenderung ueber DAV?)
-      b) ist der Timeout fuer die Version rum ?
-      c) haben wir schon eine Version
-    - wenn weder a noch b
-      - return aktuelle Version
-    - wenn a oder b, fetchen wir die Folder-Set aus der Datenbank
-      - wir vergleichen die Set mit der Set der aktuellen Version
-        - gleich geblieben, wir returnen die gespeicherte Version
-        - geaendert, dann erhoehen wir die Generation und speichern
-          die gefetchte Set unter dem neuen ID
+- Update of the Version
+  - someone asks for the version
+    - we check
+      a) is the version marked as dirty (known change via DAV?)
+      b) is the timeout of the version expired ?
+      c) do we already have a version
+    - if neither a nor b
+      - return current version
+    - if a or b, fetch folder-set from the database
+      - we compare the set with the set of the current version
+        - stayed the same, we returned the saved version
+        - changed, we bump the generation and save the fetched set under the 
+          new ID
 
-- Evo fragt alle Appointments von /donald/Calendar
+DEPRECATED below, we don't want to support Connector:
+
+- Evo Connector asks for all Appointments of /donald/Calendar
   
-  - wir schauen die aktuelle Folder Version nach
-    => wie ?, wann wird aktualisiert ?, wer tut das ?
+  - we look up the current Folder Version
+    => how ?, when is it updated ?, who does this ?
   
-  - wenn passt, dann
-    - schauen ob "evofull.version" existiert
-      - wenn ja, => deliver
-      - wenn nein, wie passt nicht
+  - if it matches, then
+    - check whether "evofull.version" exists
+      - if yes, => deliver
+      - if no, sorry, why doesn't it match?
   
-  - wenn nicht passt oder nicht vorhanden
-    - fetche alles
-    - speichere nach evofull.version
+  - if it doesn't match or exist
+    - fetch everything
+    - save to evofull.version
 
-- Evo fragt alle Contacts von /donald/Contacts/
+- Evo ask for all contacts in /donald/Contacts/
 
-  - prefix erzeugt extra cache datei !
-    Bsp: priv-persons-a.plist
+  - prefix created extra cache file !
+    eg: priv-persons-a.plist

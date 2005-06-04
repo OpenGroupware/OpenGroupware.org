@@ -359,7 +359,7 @@ static BOOL debugRenderer = NO;
   // TODO: rather use sensitivity
   /*
     "OlSensitivity" for Appointment and Task items in MSDN:
-    0 - normal
+    0 - normal / no sensititvity specified
     1 - personal
     2 - private
     3 - confidential

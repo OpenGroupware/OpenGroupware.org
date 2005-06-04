@@ -1,5 +1,3 @@
-# $Id: README 1 2004-08-20 11:17:52Z znek $
-
 ZideStore Backend
 =================
 
@@ -44,3 +42,9 @@ Class Hierarchy
       SxFetchEnterprise
       SxFetchGroup
       SxFetchPerson
+
+Apt
+===
+ZLAptLogChanges              - BOOL
+SxAptFolder_MonthsIntoPast   - int (2)
+SxAptFolder_MonthsIntoFuture - int (12)
