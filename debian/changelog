@@ -3,8 +3,11 @@ opengroupware.org (1.0a.13-0) UNRELEASED; urgency=low
   * debian/ogo-create-instance: Add a Default for skyaptnotify logging.
   * Added README.Debian for skyaptnotify, informing the user about the need to
     set up a crontab entry
+  * Rename some toolname from sky* to ogo-*
+  * Install new README.Instances which explains how to create
+    OpenGroupware.org instances
 
- -- Sebastian Ley <ley@debian.org>  Fri, 25 Mar 2005 18:15:26 +0100
+ -- Sebastian Ley <ley@debian.org>  Sat,  4 Jun 2005 19:26:16 +0200
 
 opengroupware.org (1.0a.10-0) experimental; urgency=low
 

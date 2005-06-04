@@ -355,7 +355,7 @@ Description: Tools for the webmailing component of OpenGroupware.org
     The filters are stored in an internal format in OpenGroupware.org and
     sky_install_sieve is invoked to convert that into Sieve and transfer it to
     the server.
-  * sky_install_procmail:
+  * ogo-instfilter-procmail:
     Same as sky_install_sieve but for procmail.
 
 Package: opengroupware.org-skyaptnotify

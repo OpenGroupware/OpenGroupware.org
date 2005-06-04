@@ -1,0 +1,80 @@
+Creating and removing OpenGroupware.org instances
+-------------------------------------------------
+
+While the most common setup of OpenGroupware.org is to have one
+application server running, it is possible to run as many instances as
+you wish. Each of these instances needs individual configuration and
+setup, and this document describes how they are created and added to
+the global startup process.
+
+The easiest way to set up an instance is to use the ogo-create-instance
+script which asks detailed questions and does most of the work
+automatically. For more complicated setups it might be desirable to
+understand how setting up the instances works however. The following
+paragraphs describe all that but assume a good deal of system administration
+knowledge and experience. 
+
+An instance is defined by the system user which which runs the
+application server. The configuration which is specific for this 
+instance is set and retrieved by a registry like system called
+"Defaults". The Defaults databse consists of human readable files of
+key-value pairs, which are ususally stored in $HOME/.libFoundation/Defaults.
+The files should not be edited manually however, in the package
+libfoundation-tools there is a program calld "Defaults" which allows for
+manipulation of these Defaults.
+
+For a detailed list of available Defaults see
+/usr/share/doc/opengroupware.org/README.Defaults. One Default needs to be set
+necessarily, namely the LSConnectionDictionary. It tells the application
+server which database server it shall use and how to access it. See
+README.Defaults on how to set it properly.
+
+The following Defaults are not mandatory but it is highly recommended to 
+specify them as well:
+skyrix_id
+LSAtatchmentPath
+LSNewsImagesPath
+LSNewsImagesURL
+SkyFSPath
+
+The paths set in LSAttachmentPath, LSNewsImagesPath and SkyFSPath need to
+be accessible by the user running the instance, so they are best created under
+that user's $HOME directory.
+
+The next thing that has to be taken care of is the database. With the
+LSConnectionDictionary the application server will know where to look for
+it, it is up to you to ensure that it actually present there. The
+correspondent database user and database need to be created. In Debian
+this is done by becomning root and then the user postgres, the PostgreSQL
+superuser. Use the createuser and createdb scripts to set up user and
+database. After that you need to create the necessary tables in the database.
+In the package opengroupware.org-database-scripts there is file
+/usr/lib/opengroupware.org-${WEBUI_VERSION}/commands/OGo.model/Resources/pg-build-schema.psql,
+which contains the necessary SQL commands to create the tables. Use psql
+(in postgresql-client) to log into the database as the newly created user
+and use \i followed by the above filename to execute the script.
+
+FIXME Setup mod-ngobjweb
+
+The last thing you need to do is to register your newly created instance to
+the global startup process, so that is is brought up automatically on system
+start. To achieve this, create a directory under /etc/opengroupware.org which
+is named after the instance. In this directory create a file named init.conf,
+containing 8 lines in the following form:
+USER=ogo
+WEBUI_VERSION=1.0a
+WEBUI_PORT=20000
+ZIDESTORE_VERSION=1.3
+ZIDESTORE_PORT=21000
+XMLRPCD_VERSION=1.0a
+XMLRPCD_PORT=22000
+NHSD_VERSION=none
+
+USER denotes the system user which runs your instance, the *_PORT settings
+specify the TCP ports the corresponding server will be listening on. With the 
+*_VERSION settings you define which versions of the servers shall be started.
+A special value "none" will tell the startup process to not start that server
+at all for this instance. The NHSD (network hot-sync daemon, for palm
+synchronisation) can not be assigned a port since it always listens on the same
+port. This will mean however that only one instance on one machine can start
+the nhsd.
