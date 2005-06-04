@@ -49,10 +49,38 @@ libZSBackend_OBJC_FILES = \
 	NSObject+DBColumns.m		\
 	NGResourceLocator+ZSB.m		\
 
-libZSBackend_SUBPROJECTS = Contacts Appointments
+libZSBackend_OBJC_FILES += \
+	SxAptManager.m		\
+	SxAptSetHandler.m	\
+	SxAptSetIdentifier.m	\
+	SxAptManager+iCal.m	\
+	\
+	SxAppointmentRenderer.m	\
+
+libZSBackend_OBJC_FILES += \
+	SxContactManager.m			\
+	SxContactManager+evo.m			\
+	SxContactSQLQuery.m			\
+	SxEvoContactSQLQuery.m			\
+	SxZLContactSQLQuery.m			\
+	SxListContactSQLQuery.m			\
+	SxContactEmailSQLQuery.m		\
+	\
+	SxFetchContact.m			\
+	SxFetchEnterprise.m			\
+	SxFetchPerson.m				\
+	SxFetchGroup.m				\
+	\
+	SxUpdateContact.m			\
+	SxUpdateEnterprise.m			\
+	SxUpdatePerson.m			\
+	\
+	SxContactSetIdentifier.m		\
+	\
+	NSMutableDictionary+SetSafeObject.m	\
 
 libZSBackend_RESOURCES += \
-	Appointments/AptBackendSets.plist
+	AptBackendSets.plist
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make

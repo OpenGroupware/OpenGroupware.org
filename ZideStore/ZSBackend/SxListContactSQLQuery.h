@@ -19,27 +19,33 @@
   02111-1307, USA.
 */
 
-#ifndef __Contacts_SxEvoContactSQLQuery_H__
-#define __Contacts_SxEvoContactSQLQuery_H__
+#ifndef __Contacts_SxListContactSQLQuery_H__
+#define __Contacts_SxListContactSQLQuery_H__
 
-#include <Contacts/SxContactSQLQuery.h>
+#include "SxContactSQLQuery.h"
 
 /*
-  SxEvoContactSQLQuery
+  SxListContactSQLQuery
+  
+  This query is used by cadaver to fetch the basic info about a contact,
+  like display-name or URL.
 
-  Fetches:
-    pkey, sn, givenname, middlename, salutation, url, bday, login, nickname
-    shouldFetchAllEmails: email1, email2, email3
-    jobtitle
-    shouldFetchAllPhoneNumbers: tel01, tel02, tel03, tel10, tel15
-    addresses (prefixes: loc, priv and mail:
-      name1,name2,name3,street,zip,city,country,state
+  Person results:
+    pkey
+    sn
+    givenname
+    version
+  
+  Enterprise results:
+    pkey
+    cn
+    version
 */
 
-@interface SxEvoContactSQLQuery : SxContactSQLQuery
+@interface SxListContactSQLQuery : SxContactSQLQuery
 {
 }
 
 @end
 
-#endif /* __Contacts_SxEvoContactSQLQuery_H__ */
+#endif /* __Contacts_SxListContactSQLQuery_H__ */

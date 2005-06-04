@@ -1,3 +1,7 @@
+2005-06-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved Appointments, Contacts subproject files to top-level (v1.3.85)
+
 2005-06-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed gcc 4.0 warnings (v1.3.84)

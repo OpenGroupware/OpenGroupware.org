@@ -27,7 +27,7 @@
 #include <NGObjWeb/NSException+HTTP.h>
 
 #include "SxContactManager.h"
-#include <Contacts/SxContactEmailSQLQuery.h>
+#include "SxContactEmailSQLQuery.h"
 
 @implementation SxAptManager
 

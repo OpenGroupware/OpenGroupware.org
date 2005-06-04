@@ -1,7 +1,10 @@
-$Id: NOTES 1 2004-08-20 11:17:52Z znek $
-
 Caching/Folder-Version Thoughts
 ===============================
+
+Why is the appointment ical renderer located in the *backend* ???
+- because the backend is responsible for managing the cache and the frontend
+  asking for the iCalendar of an appointment is quite usual - so we should
+  cache the whole iCal
 
 - TODO: locking, keine rollbacks bei ID-set checks
 - TODO: garbage collection (alte sets und caches wegloeschen ...)

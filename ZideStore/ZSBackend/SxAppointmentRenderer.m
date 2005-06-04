@@ -356,12 +356,29 @@ static BOOL debugRenderer = NO;
   
   [self->ical appendFormat:@"PRIORITY:%i\r\n", 0 /*[self priority]*/];
 
+  // TODO: rather use sensitivity
+  /*
+    "OlSensitivity" for Appointment and Task items in MSDN:
+    0 - normal
+    1 - personal
+    2 - private
+    3 - confidential
+  */
   t = [_eo valueForKey:@"accessTeamId"];
   t = ([t intValue] > 1000) ? @"PUBLIC" : @"PRIVATE";
   [self->ical appendFormat:@"CLASS:%@\r\n", t /*[self aptClass]*/];
+  
   //[self->ical appendFormat:@"STATUS:%@\r\n", @"" /*[self status]*/];
   //[self->ical appendFormat:@"TRANSP:%@\r\n", @"" /*[self transp]*/];
   
+  /*
+    'TRANSP' says whether the event is included in FreeBusy processing, is
+    either: OPAQUE or TRANSPARENT and can be selected in Evolution (2.2)
+    using the "show time as busy" checkbox
+  */
+  [self->ical appendString:@"TRANSP:OPAQUE\r\n"];
+  
+  // TODO:
   [self->ical appendString:@"CREATED:20030113T191908Z\r\n"];
   [self->ical appendString:@"LAST-MODIFIED:20030113T191912Z\r\n"];
   [self->ical appendString:@"DTSTAMP:20030113T191908Z\r\n"];

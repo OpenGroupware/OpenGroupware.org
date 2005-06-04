@@ -72,7 +72,7 @@ static int createGroupAptsInGroupFolder = -1;
    * 0 - Normal       (PUBLIC)   
    * 1 - Personal
    * 2 - Privat       (PRIVATE)
-   * 3 - Confidentail (CONFIDENTIAL)
+   * 3 - Confidential (CONFIDENTIAL)
    */
   int val = [_sens intValue];
   if (val == 2)

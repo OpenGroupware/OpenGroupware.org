@@ -22,7 +22,7 @@
 #ifndef __Contacts_SxZLContactSQLQuery_H__
 #define __Contacts_SxZLContactSQLQuery_H__
 
-#include <Contacts/SxContactSQLQuery.h>
+#include "SxContactSQLQuery.h"
 
 /*
   SxEvoContactSQLQuery
