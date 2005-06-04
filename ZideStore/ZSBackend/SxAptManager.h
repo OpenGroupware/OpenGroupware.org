@@ -101,6 +101,8 @@
 
 @end
 
+@class NSTimeZone;
+
 @interface SxAptManager(iCal)
 
 // returns enum of dicts with "pkey", "lastmodified" and "iCalData"
