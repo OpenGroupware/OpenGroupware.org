@@ -26,7 +26,7 @@
 
 /*
   LSGetObjectForGlobalIDs
-
+  
   This class is a superclass for commands which fetch objects based on a list
   of EOGlobalIDs.
 */
