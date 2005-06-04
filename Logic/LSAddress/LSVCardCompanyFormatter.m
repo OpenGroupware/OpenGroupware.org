@@ -149,9 +149,9 @@ static BOOL         renderOGoPhoneType = NO;
   if ([(tmp = [_contact valueForKey:@"sensitivity"]) isNotNull]) {
     NSString *v;
     
-    if ([tmp intValue] == 2)
+    if ([tmp intValue] == 2 /* private*/ || [tmp intValue] == 1 /* Personal */)
       v = @"PRIVATE";
-    else if ([tmp intValue] == 1)
+    else if ([tmp intValue] == 3)
       v = @"CONFIDENTIAL";
     else if ([tmp intValue] == 0)
       v = @"PUBLIC";

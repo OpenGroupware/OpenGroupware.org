@@ -6,9 +6,7 @@ ADDITIONAL_CPPFLAGS += \
         -DOGO_MINOR_VERSION=$(MINOR_VERSION)   \
         -DOGO_SUBMINOR_VERSION=$(SUBMINOR_VERSION)
 
-ADDITIONAL_INCLUDE_DIRS += \
-        -I./Headers     \
-        -I../LSFoundation/
+ADDITIONAL_INCLUDE_DIRS += -I. -I..
 
 LSAddress_BUNDLE_LIBS += \
 	-lLSSearch	\

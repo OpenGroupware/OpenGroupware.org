@@ -392,12 +392,12 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
 //   [obj valueForKey:[extAttr valueForKey:@"attribute"]]
 
 - (void)appendClassification:(id)_vc {
-  // TODO: use sensitivity instead
   /*
     Outlook Sensitivity:
-    0: public
-    1: confidential
-    2: private
+    0 - normal / no sensititvity specified (mapped to public)
+    1 - personal
+    2 - private
+    3 - confidential
     
     Note: sensitivity is a marker, not an actual permission!
   */
@@ -413,7 +413,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   else if ([tmp caseInsensitiveCompare:@"public"] == NSOrderedSame)
     v = 0;
   else if ([tmp caseInsensitiveCompare:@"confidential"] == NSOrderedSame)
-    v = 1;
+    v = 3;
   else {
     [self logWithFormat:@"ERROR: unknown vCard class, using private: %@", tmp];
     v = 2;
