@@ -1,6 +1,6 @@
 # Version file
 
-SUBMINOR_VERSION:=78
+SUBMINOR_VERSION:=79
 
 # v1.3.77 requires libZSFrontend v1.3.108
 # v1.3.74 requires libNGObjWeb   v4.3.80

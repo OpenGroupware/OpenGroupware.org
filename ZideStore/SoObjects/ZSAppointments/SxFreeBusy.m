@@ -292,11 +292,12 @@ static NSArray *startDateOrdering = nil;
                   hours:0 minutes:interval seconds:0];
     /* check active dates */
     if ([activeDates count] > 0) {
-      NSEnumerator *e = [[activeDates allObjects] objectEnumerator];
-
+      NSEnumerator *e;
+      
+      e = [[activeDates allObjects] objectEnumerator];
       while ((date = [e nextObject]) != nil) {
-        start = [date objectForKey:@"startDate"];
-        end   = [date objectForKey:@"endDate"];
+        start = [(NSDictionary *)date objectForKey:@"startDate"];
+        end   = [(NSDictionary *)date objectForKey:@"endDate"];
 
         if (([start earlierDate:curEnd] == curEnd) ||
             ([start isEqual:curEnd]) ||
@@ -311,8 +312,8 @@ static NSArray *startDateOrdering = nil;
     // fill active dates
     for (; i < max; i++) {
       date  = [_dates objectAtIndex:i];
-      start = [date objectForKey:@"startDate"];
-      end   = [date objectForKey:@"endDate"];
+      start = [(NSDictionary *)date objectForKey:@"startDate"];
+      end   = [(NSDictionary *)date objectForKey:@"endDate"];
 
       if (([start laterDate:curEnd] == curEnd) &&
           ([end laterDate:cur] == end)) {
@@ -325,7 +326,7 @@ static NSArray *startDateOrdering = nil;
       }
     }
 
-    if ([activeDates count]) {
+    if ([activeDates count] > 0) {
       id busyType = [[activeDates anyObject] valueForKey:@"busyType"];
       if ([busyType isNotNull])
         busyType = [busyType stringValue];

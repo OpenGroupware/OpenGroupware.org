@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include ../common.make
 
@@ -25,6 +25,7 @@ libZSTasks_OBJC_FILES = \
 	SxDavTaskChange.m	\
 	\
 	SxTask+ZL.m		\
+	SxTaskFolder+ZL.m	\
 
 Tasks_RESOURCE_FILES += \
 	bundle-info.plist	\

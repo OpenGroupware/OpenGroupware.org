@@ -1,3 +1,8 @@
+2005-06-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed some gcc 4.0 warnings, fixed a compilation issue with ZSBackend
+	  (v1.3.100)
+
 2005-05-26  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAppointmentMessageParser.m: fixed some gcc 4.0 warnings (v1.3.99)

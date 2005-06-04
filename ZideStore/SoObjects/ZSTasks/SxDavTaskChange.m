@@ -54,7 +54,7 @@ static inline void __handleValue(SxDavTaskChange *self,
     [self->keys removeObject:_propKey];
 }
 
-- (id)runInContext:(id)_ctx {
+- (NSException *)runInContext:(id)_ctx {
   // TODO: if action on a group job, move it to private jobs ...
   // TODO: fix this method ...
   LSCommandContext    *cmdctx;
@@ -70,7 +70,7 @@ static inline void __handleValue(SxDavTaskChange *self,
   }
   if ((obj = [[self task] objectInContext:_ctx]) == nil) {
     [self logWithFormat:@"ERROR: did not find EO ..."];
-    return [NSException exceptionWithHTTPStatus:500];
+    return [NSException exceptionWithHTTPStatus:500 /* Server Error */];
   }
   
   [self debugWithFormat:@"UPDATE: %@ vs %@", self->props, obj];
@@ -84,7 +84,7 @@ static inline void __handleValue(SxDavTaskChange *self,
     return [NSException exceptionWithHTTPStatus:501 /* Not Implemented */
                         reason:@"ZideStore does not support recurring jobs"];
   }
-  if ((tmp = [self->props objectForKey:@"isTeamTask"])) {
+  if ([(tmp = [self->props objectForKey:@"isTeamTask"]) isNotNull]) {
     if ([tmp boolValue])
       [self logWithFormat:@"WARNING: marked as team task, ignored."];
     [keys removeObject:@"isTeamTask"]; // ?? 0 - unused

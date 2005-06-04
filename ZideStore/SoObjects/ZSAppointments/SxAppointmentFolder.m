@@ -32,9 +32,6 @@
 #include <ZSBackend/SxContactManager.h>
 #include <ZSBackend/SxBackendMaster.h>
 
-// TODO: remove dependency
-#include <ZSBackend/Appointments/SxAppointmentRenderer.h>
-
 @interface NSObject(UsedPrivates) // TODO: fix that
 - (id)rendererWithFolder:(id)_folder inContext:(id)_ctx;
 @end

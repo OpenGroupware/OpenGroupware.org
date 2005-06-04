@@ -115,6 +115,10 @@
 - (id)putVEvents:(NSArray *)_events
   inAptSet:(SxAptSetIdentifier *)_aptSet;
 
+// TODO: do not use! Use commands instead.
+- (id)renderAppointmentAsICal:(id)_eo timezone:(NSTimeZone *)_tz;
+- (id)renderAppointmentAsMIME:(id)_eo timezone:(NSTimeZone *)_tz;
+
 @end
 
 /*

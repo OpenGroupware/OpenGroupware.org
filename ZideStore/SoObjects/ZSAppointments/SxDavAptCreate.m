@@ -158,10 +158,10 @@ static NSNumber *yesNum = nil;
     [self->changeSet setObject:type forKey:@"type"];
 }
 
-- (id)runInContext:(id)_ctx {
+- (NSException *)runInContext:(id)_ctx {
   NSException *error;
   id          tmp;
-
+  
   [self removeUnusedKeys];
   
   if (![self checkMessageClass]) {
@@ -169,12 +169,12 @@ static NSNumber *yesNum = nil;
                         reason:@"unexpected message class"];
   }
   
-  if ((error = [self processTitleInContext:_ctx]))
+  if ((error = [self processTitleInContext:_ctx]) != nil)
     return error;
-  if ((error = [self processAppointmentRangeInContext:_ctx]))
+  if ((error = [self processAppointmentRangeInContext:_ctx]) != nil)
     return error;
   
-  if ((tmp = [self->props objectForKey:@"location"])) {
+  if ([(tmp = [self->props objectForKey:@"location"]) isNotNull]) {
     [self->changeSet setObject:tmp forKey:@"location"];
     [self->keys removeObject:@"location"];
   }
@@ -245,7 +245,7 @@ static NSNumber *yesNum = nil;
   
   if ((tmp = [error valueForKey:@"dateId"]) != nil) {
     [self logWithFormat:@"deliver new date-id: %@", tmp];
-    [_ctx setObject:tmp forKey:@"SxNewObjectID"];
+    [(WOContext *)_ctx setObject:tmp forKey:@"SxNewObjectID"];
   }
   else
     [self logWithFormat:@"ERROR: missing dateId !"];

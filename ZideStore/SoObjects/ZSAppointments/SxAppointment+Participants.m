@@ -270,8 +270,9 @@
   static int StoreUnkownPerson = -1;
     
   NSEnumerator *e;
-  id person;
-  id name, email, newPerson, tmp;
+  NSDictionary *person;
+  NSString *name, *email;
+  id newPerson, tmp;
 
   if (StoreUnkownPerson == -1) {
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -284,7 +285,7 @@
     
   e = [_unknown objectEnumerator];
   // unknown participants
-  while ((person = [e nextObject])) {
+  while ((person = [e nextObject]) != nil) {
     name  = [person objectForKey:@"cn"];
     email = [person objectForKey:@"email"];
 

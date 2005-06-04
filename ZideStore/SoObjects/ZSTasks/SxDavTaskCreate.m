@@ -72,7 +72,7 @@ static BOOL debugPatch = NO;
 
 /* process */
 
-- (id)runInContext:(id)_ctx {
+- (NSException *)runInContext:(id)_ctx {
   NSException  *error;
   SxTaskStatus *status;
   NSString     *log;
@@ -86,7 +86,7 @@ static BOOL debugPatch = NO;
                         reason:@"ZideStore does not support recurring jobs"];
   }
   
-  if ((tmp = [self->props objectForKey:@"rtfCompressed"])) {
+  if ([(tmp = [self->props objectForKey:@"rtfCompressed"]) isNotNull]) {
     int length;
 
     length = [tmp length];
@@ -254,7 +254,7 @@ static BOOL debugPatch = NO;
   /* set SxNewObjectID in context for ZideLook */
   if ((tmp = [error valueForKey:@"jobId"])) {
     [self debugWithFormat:@"deliver new job-id: %@", tmp];
-    [_ctx setObject:tmp forKey:@"SxNewObjectID"];
+    [(WOContext *)_ctx setObject:tmp forKey:@"SxNewObjectID"];
   }
   else
     [self logWithFormat:@"ERROR: missing jobId !"];

@@ -104,12 +104,9 @@
 - (NSString *)outlookFolderClass {
   return @"IPF.Task";
 }
-
 - (NSString *)davContentClass {
   return @"urn:content-classes:taskfolder";
 }
-
-
 - (NSString *)fileExtensionForFileSystem {
   return @"ics";
 }
@@ -126,19 +123,19 @@
 
 - (NSString *)getIDsAndVersionsInContext:(id)_ctx {
   SxTaskManager *tm;
-  NSEnumerator  *tasks;
+  NSEnumerator    *tasks;
   NSMutableString *ms;
-  id            task;
-  unsigned      i = 0;
+  NSDictionary    *task;
+  unsigned        i = 0;
 
-  if (self->idsAndVersions)
+  if (self->idsAndVersions != nil)
     return self->idsAndVersions;
   
   tm    = [self taskManagerInContext:_ctx];
   tasks = [tm listTasksOfGroup:[self group] type:[self type]];
   
   ms = [NSMutableString stringWithCapacity:128];
-  while ((task = [tasks nextObject])) {
+  while ((task = [tasks nextObject]) != nil) {
     i++;
     [ms appendFormat:@"%i:%i\n", 
           [[task objectForKey:@"jobId"] intValue],
@@ -178,44 +175,6 @@
   return jobs;
 }
 
-- (NSArray *)performEvoQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx {
-  EOQualifier *q;
-  id jobs;
-  
-  if ((q = [_fs qualifier])) {
-    /* qualifier=davLastModified > 1970-01-01T00:00:00Z */
-    NSCalendarDate *modDate = nil;
-    
-    if ([q isKindOfClass:[EOKeyValueQualifier class]]) {
-      if ([[(EOKeyValueQualifier *)q key] isEqualToString:@"davLastModified"])
-	// TODO: check operation
-	modDate = [(EOKeyValueQualifier *)q value];
-    }
-    if (modDate)
-      [self logWithFormat:@"mod-date: %@", modDate];
-    else
-      [self logWithFormat:@"evolution query: %@", q];
-  }
-  
-  jobs = [[self taskManagerInContext:_ctx] 
-	        evoTasksOfGroup:[self group] type:[self type]];
-  jobs = [[[NSArray alloc] initWithObjectsFromEnumerator:jobs] autorelease];
-  jobs = [self mapJobs:jobs];
-  return jobs;
-}
-
-- (id)performMsgInfoQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx {
-  /* messages query */
-  return [self performEvoQuery:nil inContext:_ctx];
-}
-
-- (NSArray *)performZideLookTaskQuery:(EOFetchSpecification *)_fs 
-  inContext:(id)_ctx 
-{
-  [self logWithFormat:@"ZideLook task query"];
-  return [self performEvoQuery:_fs inContext:_ctx];
-}
-
 - (SEL)fetchSelectorForQuery:(EOFetchSpecification *)_fs
   onAttributeSet:(NSSet *)propNames
   inContext:(id)_ctx
@@ -249,7 +208,7 @@
 
 /* DAV default attributes (allprop queries by ZideLook ;-) */
 
-- (id)davResourceType {
+- (NSString *)davResourceType {
   static id coltype = nil;
   if (coltype == nil) {
     id tmp;
@@ -261,14 +220,16 @@
 }
 
 - (NSString *)folderAllPropSetName {
+  // TODO: use product.plist for this
   return @"DefaultTaskFolderProperties";
 }
-
 - (NSString *)entryAllPropSetName {
+  // TODO: use product.plist for this
   return @"DefaultTaskProperties";
 }
 
 - (NSArray *)defaultWebDAVPropertyNamesInContext:(id)_ctx {
+  // TODO: use product.plist for this
   /* overridden for efficiency (caches array in static var) */
   static NSArray *defFolderNames = nil;
   static NSArray *defEntryNames  = nil;
@@ -297,4 +258,4 @@
   return ms;
 }
 
-@end /* SxTaskFolder(Exchange) */
+@end /* SxTaskFolder */

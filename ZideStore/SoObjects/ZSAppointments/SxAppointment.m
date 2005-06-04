@@ -28,7 +28,6 @@
 #include <ZSFrontend/SxRendererFactory.h>
 #include "common.h"
 #include <EOControl/EOKeyGlobalID.h>
-#include <ZSBackend/Appointments/SxAppointmentRenderer.h>
 #include <ZSBackend/SxContactManager.h>
 #include <ZSBackend/SxAptManager.h>
 
@@ -686,23 +685,18 @@ static BOOL embedViewURL             = NO;
 }
 
 - (NSString *)iCalVEventString {
-  // deprecated
-  //SxAppointmentRenderer *renderer = [SxAppointmentRenderer renderer];
   NSString *ical;
+  SxAptManager *am;
   id obj;
-  id am;
-
+  
   am = [self aptManagerInContext:[self context]];
   
   if ((obj = [self objectInContext:[self context]]) == nil)
     return nil;
   
-#if 0
-  return [renderer renderAppointmentAsICal:obj timezone:nil];
-#else
+  // TODO: use command?!
   ical = [am renderAppointmentAsICal:obj timezone:nil];
   return [self hackVEvent:ical];
-#endif
 }
 - (NSString *)iCalString {
   NSMutableString *m;
@@ -722,17 +716,13 @@ static BOOL embedViewURL             = NO;
 }
 
 - (NSString *)iCalMailString {
-  // deprecated
-  // SxAppointmentRenderer *renderer = [SxAppointmentRenderer renderer];
+  SxAptManager *am;
   id obj;
-  id am;
-
-  am = [self aptManagerInContext:[self context]];
   
+  am = [self aptManagerInContext:[self context]];
   if ((obj = [self objectInContext:[self context]]) == nil)
     return nil;
   
-  //return [renderer renderAppointmentAsMIME:obj timezone:nil];
   return [am renderAppointmentAsMIME:obj timezone:nil];
 }
 
