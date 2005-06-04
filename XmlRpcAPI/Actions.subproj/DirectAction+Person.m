@@ -67,10 +67,10 @@
   
   if ([tmp respondsToSelector:@selector(keyEnumerator)]) {
     objEnum = [tmp keyEnumerator];
-    while ((obj = [objEnum nextObject])) {
+    while ((obj = [objEnum nextObject]) != nil) {
       id value;
 
-      value = [tmp objectForKey:obj];
+      value = [(NSDictionary *)tmp objectForKey:obj];
       if (value == nil) continue;
       [*_to setExtendedAttribute:value forKey:obj];
     }
@@ -79,7 +79,7 @@
   tmp = [_from objectForKey:@"phones"];
   if ([tmp respondsToSelector:@selector(objectEnumerator)]) {
     objEnum = [tmp objectEnumerator];
-    while ((obj = [objEnum nextObject])) {
+    while ((obj = [objEnum nextObject]) != nil) {
       NSString *type;
 
       type = [obj valueForKey:@"type"];
@@ -392,10 +392,13 @@
     return [self _getPersonByNumber:[_arg stringValue]];
   
   if ([_arg isKindOfClass:[NSDictionary class]]) {
-    if ((tmp = [_arg objectForKey:@"id"]) != nil)
-      return [self person_getByIdAction:tmp :nil];
-
-    return [self _getPersonByNumber:[_arg objectForKey:@"number"]];
+    if ((tmp = [(NSDictionary *)_arg objectForKey:@"id"]) != nil)
+      return [self person_getByIdAction:tmp:nil];
+    if ((tmp = [(NSDictionary *)_arg objectForKey:@"number"]) != nil)
+      return [self _getPersonByNumber:tmp];
+    
+    // TODO: return fault?
+    return nil;
   }
   
   if ([_arg isKindOfClass:[SkyPersonDocument class]])

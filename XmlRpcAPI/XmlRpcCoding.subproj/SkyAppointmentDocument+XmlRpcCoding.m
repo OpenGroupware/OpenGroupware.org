@@ -41,7 +41,7 @@
   return self;
 }
 
-- (void)encodeWithXmlRpcCoder:(XmlRpcEncoder *)_coder {
+- (void)encodeWithXmlRpcCoder:(id)_coder {
   [super encodeWithXmlRpcCoder:_coder];
   [_coder encodeDateTime:[self startDate]    forKey:@"startDate"];
   [_coder encodeDateTime:[self endDate]      forKey:@"endDate"];

@@ -680,21 +680,22 @@
                  urlsForGlobalIDs:[jobDS fetchObjects]];
 }
 
-- (id)_insertJob:(NSDictionary *)_job intoDoc:(id)_doc {
-  EODataSource   *jobDS = [_doc jobDataSource];
-  SkyJobDocument *job   = nil;
+- (SkyJobDocument *)_insertJob:(id)_job intoDoc:(id)_doc {
+  EODataSource   *jobDS;
+  SkyJobDocument *job;
 
   if ([[_job valueForKey:@"name"] length] == 0) {
-    return [self faultWithFaultCode:XMLRPC_FAULT_MISSING_PARAMETER
-                 reason:@"tried to create a job without a 'name' attribute"];
+    return (id)[self faultWithFaultCode:XMLRPC_FAULT_MISSING_PARAMETER
+		     reason:
+		       @"tried to create a job without a 'name' attribute"];
   }
   
-  job = [jobDS createObject];
-  NSAssert(job, @"couldn't create job");
+  jobDS = [_doc jobDataSource];
+  job   = [jobDS createObject];
+  NSAssert(job, @"could not create job");
   [self _takeValuesDict:_job toJob:&job];
-
-  [jobDS insertObject:job];
   
+  [jobDS insertObject:job];
   return job;
 }
 

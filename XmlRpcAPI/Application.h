@@ -24,7 +24,7 @@
 
 #include <NGObjWeb/WOApplication.h>
 
-@class NSMutableDictionary;
+@class NSDictionary, NSMutableDictionary;
 
 @interface Application : WOApplication
 {
@@ -32,8 +32,8 @@
   id                  credentials;
 }
 
-- (id)credentials;
-- (void)setCredentials:(id)_credentials;
+- (void)setCredentials:(NSString *)_credentials;
+- (NSString *)credentials;
 
 @end /* Application */
 

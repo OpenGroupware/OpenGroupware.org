@@ -45,11 +45,12 @@
       : [NSArray arrayWithObject:_qual];
 
     qualEnum = [quals objectEnumerator];
-    while ((qualifier = [qualEnum nextObject])) {
-      id key, value;
+    while ((qualifier = [qualEnum nextObject]) != nil) {
+      NSString *key;
+      id value;
       
-      key = [qualifier key];
-      value = [[qualifier value] stringValue];
+      key   = [qualifier key];
+      value = [[(EOKeyValueQualifier *)qualifier value] stringValue];
       [searchRecord takeValue:value forKey:key];
     }
     return [NSArray arrayWithObject:searchRecord];

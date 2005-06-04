@@ -567,21 +567,24 @@
   if ([_account isKindOfClass:[NSDictionary class]]) {
     NSString *tmp;
 
-    if ((tmp = [_account objectForKey:@"login"]))
+    if ((tmp = [(NSDictionary *)_account objectForKey:@"login"]))
       account = [self _getAccountByLogin:tmp];
-    else if ((tmp = [_account objectForKey:@"number"]))
+    else if ((tmp = [(NSDictionary *)_account objectForKey:@"number"]))
       account = [self _getAccountByNumber:tmp];
-    else
+    else {
+      // TODO: rather return a fault?
       return [NSNumber numberWithBool:NO];
+    }
   }
   else if ([_account isKindOfClass:[SkyAccountDocument class]])
     account = _account;
   
-  if (account) {
-    [[self accountDataSource] deleteObject:account];
-    return [NSNumber numberWithBool:YES];
-  }
-  return [NSNumber numberWithBool:NO];
+  if (account == nil)
+    // TODO: rather return a fault?
+    return [NSNumber numberWithBool:NO];
+  
+  [[self accountDataSource] deleteObject:account];
+  return [NSNumber numberWithBool:YES];
 }
 
 @end /* DirectAction(Account) */

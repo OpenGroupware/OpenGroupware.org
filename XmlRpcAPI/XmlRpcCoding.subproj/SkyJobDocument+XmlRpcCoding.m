@@ -49,7 +49,7 @@
   return self;
 }
 
-- (void)encodeWithXmlRpcCoder:(XmlRpcEncoder *)_coder {
+- (void)encodeWithXmlRpcCoder:(id)_coder {
   [super encodeWithXmlRpcCoder:_coder];
   
   [_coder encodeBoolean:self->isTeamJob             forKey:@"isTeamJob"];

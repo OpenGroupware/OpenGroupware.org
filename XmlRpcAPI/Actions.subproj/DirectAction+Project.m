@@ -162,7 +162,7 @@ static id noNum(void) {
                  @"project", project,
                  nil];
 
-    loginGID = [[[[self session]
+    loginGID = [[[(Session *)[self session]
                         commandContext]
                         valueForKey:LSAccountKey]
                         globalID];
@@ -186,7 +186,7 @@ static id noNum(void) {
       return noNum();
     }
 
-    [account setObject:_rights forKey:@"accessRight"];
+    [(NSMutableDictionary *)account setObject:_rights forKey:@"accessRight"];
 
     [ctx runCommand:@"project::assign-accounts",
          @"project", project,

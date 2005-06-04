@@ -26,6 +26,7 @@
 
 @class EODataSource, SkyDocument, SkyCompanyDocument;
 @class NSException, NSMutableDictionary;
+@class LSCommandContext;
 
 #define XMLRPC_FAULT_INVALID_PARAMETER 1
 #define XMLRPC_FAULT_MISSING_PARAMETER 2
@@ -48,7 +49,7 @@
 - (EODataSource *)projectDataSource;
 - (id)fileManagerForCode:(NSString *)_code;
 
-- (id)commandContext;
+- (LSCommandContext *)commandContext;
 - (SkyDocument *)getDocumentByArgument:(id)_arg;
 - (id)getDocumentById:(id)_arg
   dataSource:(EODataSource *)_dataSource

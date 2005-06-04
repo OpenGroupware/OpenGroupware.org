@@ -74,7 +74,8 @@
             forKey:@"target"];
     }
     else {
-      [dict setObject:[[ctx documentManager] urlForGlobalID:(id)[obj target]]
+      [dict setObject:[[ctx documentManager] 
+			    urlForGlobalID:(id)[(OGoObjectLink *)obj target]]
             forKey:@"target"];
     }
 

@@ -124,8 +124,9 @@
   if ([_baseValue isKindOfClass:[NSDictionary class]]) {
     NSString *tmp;
       
-    k = [_baseValue objectForKey:@"key"];
-    if ((tmp = [[_baseValue objectForKey:@"selector"] stringValue])) {
+    k = [(NSDictionary *)_baseValue objectForKey:@"key"];
+    tmp = [[(NSDictionary *)_baseValue objectForKey:@"selector"] stringValue];
+    if (tmp != nil) {
       if ([tmp isEqualToString:@"compareAscending"])
         sel = EOCompareAscending;
       else if ([tmp isEqualToString:@"compareDescending"])

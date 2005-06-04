@@ -233,7 +233,7 @@
   return [ctx autorelease];
 }
 
-- (id)commandContext {
+- (LSCommandContext *)commandContext {
   return [(Session *)[self session] commandContext];
 }
 

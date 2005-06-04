@@ -210,8 +210,9 @@
     return nil;
   }
 
-  return [OGoFileManagerFactory fileManagerInContext:self->commandContext
-                                forProjectGID:gid];
+  return [[OGoFileManagerFactory sharedFileManagerFactory]
+	   fileManagerInContext:self->commandContext
+	   forProjectGID:gid];
 }
 
 @end /* Session */

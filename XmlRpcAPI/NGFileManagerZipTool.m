@@ -125,22 +125,22 @@
 
 @implementation NGFileManagerUnzipTool
 
-- (NSException *)unzipPath:_zipfile toPath:_toPath {
-  NSData *zipData = nil;
+- (NSException *)unzipPath:(NSString *)_zipfile toPath:(NSString *)_toPath {
+  NSData *zipData;
 
   zipData = [[self sourceFileManager] contentsAtPath:_zipfile];
-  NSAssert([zipData length], @"zipfile contains no data");
+  NSAssert([zipData length] != 0, @"zipfile contains no data");
   [self unzipData:zipData toPath:_toPath];
 
   return nil;
 }
 
-- (NSException *)unzipData:(NSData *)_data toPath:_toPath {
+- (NSException *)unzipData:(NSData *)_data toPath:(NSString *)_toPath {
   id<NSObject,NGFileManager> oldSourceFm  = nil;
-  NSFileManager              *localFm     = nil;
-  NGUnixTool                 *unixTool    = nil;
-  NSString                   *tmpPath     = nil;
-  NSString                   *tmpZipFile  = nil;
+  NSFileManager              *localFm;
+  NGUnixTool                 *unixTool;
+  NSString                   *tmpPath;
+  NSString                   *tmpZipFile;
   NSFileHandle               *nullHandle  = nil;
   NSTask                     *unzipTask   = nil;
   int                        result;

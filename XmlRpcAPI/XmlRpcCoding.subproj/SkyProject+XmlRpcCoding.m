@@ -40,18 +40,18 @@
   return self;
 }
 
-- (void)encodeWithXmlRpcCoder:(XmlRpcEncoder *)_coder {
+- (void)encodeWithXmlRpcCoder:(id)_coder {
   [super encodeWithXmlRpcCoder:_coder];
 
-  [_coder encodeString:[self name]                  forKey:@"name"];
-  [_coder encodeDateTime:[self startDate]           forKey:@"startDate"];
-  [_coder encodeDateTime:[self endDate]             forKey:@"endDate"];
-  [_coder encodeObject:[self leader]                forKey:@"leader"];
-  [_coder encodeObject:[self team]                  forKey:@"team"];
-  [_coder encodeObject:[self number]                forKey:@"number"];
-  [_coder encodeObject:self->type                   forKey:@"type"];
-  [_coder encodeObject:[self kind]                  forKey:@"kind"];
-  [_coder encodeObject:self->projectAccounts        forKey:@"accounts"];
+  [_coder encodeString:[self name]           forKey:@"name"];
+  [_coder encodeDateTime:[self startDate]    forKey:@"startDate"];
+  [_coder encodeDateTime:[self endDate]      forKey:@"endDate"];
+  [_coder encodeObject:[self leader]         forKey:@"leader"];
+  [_coder encodeObject:[self team]           forKey:@"team"];
+  [_coder encodeObject:[self number]         forKey:@"number"];
+  [_coder encodeObject:self->type            forKey:@"type"];
+  [_coder encodeObject:[self kind]           forKey:@"kind"];
+  [_coder encodeObject:self->projectAccounts forKey:@"accounts"];
 }
 
 @end /* SkyProject(XmlRpcCoding) */

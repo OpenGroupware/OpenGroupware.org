@@ -23,7 +23,7 @@
 #include "common.h"
 
 @interface WOApplication(skyxmlrpcd)
-- (id)_initializeSessionInContext:(id)_ctx;
+- (id)_initializeSessionInContext:(WOContext *)_ctx;
 @end
 
 @implementation Application
