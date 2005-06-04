@@ -39,7 +39,7 @@
   
   ids      = [NSMutableString stringWithCapacity:256];
   listEnum = [self->articles objectEnumerator];
-  while ((myArticle = [listEnum nextObject])) {
+  while ((myArticle = [listEnum nextObject]) != nil) {
     if (isFirst)
       isFirst = NO;
     else
@@ -51,15 +51,15 @@
 }
 
 - (EOSQLQualifier *)_qualifierForOneArticle {
-  EOEntity       *relEntity = nil;
-  EOSQLQualifier *qualifier = nil;
+  EOEntity       *relEntity;
+  EOSQLQualifier *qualifier;
   id             art;
 
   relEntity = [[self databaseModel] entityNamed:[self relatedEntityName]];
 
   art       = [self article];
   qualifier = [[EOSQLQualifier alloc] initWithEntity:relEntity
-                                   qualifierFormat:
+				      qualifierFormat:
                                    @"%A=%@",
                                    @"toNewsArticleLink1.newsArticleId",
                                    [art valueForKey:@"newsArticleId"]];
@@ -263,22 +263,19 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  if ([_key isEqualToString:@"article"] || [_key isEqualToString:@"object"]) {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
+  if ([_key isEqualToString:@"article"] || [_key isEqualToString:@"object"])
     [self setArticle:_value];
-    return;
-  }
-  else if ([_key isEqualToString:@"articles"]) {
+  else if ([_key isEqualToString:@"articles"])
     [self setArticles:_value];
-    return;
-  }
-  [super takeValue:_value forKey:_key];
+  else
+    [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"article"] || [_key isEqualToString:@"object"])
     return [self article];
-  else if ([_key isEqualToString:@"articles"])
+  if ([_key isEqualToString:@"articles"])
     return [self articles];
   return [super valueForKey:_key];
 }

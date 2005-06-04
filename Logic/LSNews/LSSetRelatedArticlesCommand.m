@@ -19,45 +19,47 @@
   02111-1307, USA.
 */
 
-#import "common.h"
-#import "LSSetRelatedArticlesCommand.h"
+#include "LSSetRelatedArticlesCommand.h"
+#include "common.h"
 
 @implementation LSSetRelatedArticlesCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->relatedArticles);
+  [self->relatedArticles release];
   [super dealloc];
 }
-#endif
 
-// command methods
+/* command methods */
 
 - (BOOL)_object:(id)_object isInList:(NSArray *)_list {
-  NSEnumerator *listEnum  = [_list objectEnumerator];
-  id           listObject = nil;
-  id           pkey;
-
+  NSEnumerator *listEnum;
+  id           listObject;
+  NSNumber     *pkey;
+  
   pkey = [_object valueForKey:@"subNewsArticleId"];
-
-  while ((listObject = [listEnum nextObject])) {
-    id opkey = [listObject valueForKey:@"newsArticleId"];
-
+  
+  listEnum = [_list objectEnumerator];
+  while ((listObject = [listEnum nextObject]) != nil) {
+    NSNumber *opkey;
+    
+    opkey = [listObject valueForKey:@"newsArticleId"];
     if ([pkey isEqual:opkey]) return YES;
   }
   return NO;
 }
 
 - (BOOL)_object2:(id)_object isInList:(NSArray *)_list {
-  NSEnumerator *listEnum  = [_list objectEnumerator];
+  NSEnumerator *listEnum;
   id           listObject = nil;
-  id           pkey;
+  NSNumber     *pkey;
 
   pkey = [_object valueForKey:@"newsArticleId"];
 
-  while ((listObject = [listEnum nextObject])) {
-    id opkey = [listObject valueForKey:@"subNewsArticleId"];
-
+  listEnum  = [_list objectEnumerator];
+  while ((listObject = [listEnum nextObject]) != nil) {
+    NSNumber *opkey;
+    
+    opkey = [listObject valueForKey:@"subNewsArticleId"];
     if ([pkey isEqual:opkey]) return YES;
   }
   return NO;
@@ -70,13 +72,13 @@
 
   oldAssignments = [[self object] valueForKey:@"toNewsArticleLink"];
   listEnum       = [oldAssignments objectEnumerator];
+  while ((assignment = [listEnum nextObject]) != nil) {
+    if ([self _object:assignment isInList:self->relatedArticles])
+      continue;
 
-  while ((assignment = [listEnum nextObject])) {
-    if (![self _object:assignment isInList:self->relatedArticles]) {
-      LSRunCommandV(_context,        @"newsarticlelink",  @"delete",
-                    @"object",       assignment,
-                    @"reallyDelete", [NSNumber numberWithBool:YES], nil);
-    }
+    LSRunCommandV(_context,        @"newsarticlelink",  @"delete",
+		  @"object",       assignment,
+		  @"reallyDelete", [NSNumber numberWithBool:YES], nil);
   }
 }
 
@@ -90,7 +92,7 @@
   oldAssignments = [obj valueForKey:@"toNewsArticleLink"];
   listEnum       = [self->relatedArticles objectEnumerator];
   
-  while ((newAssignment = [listEnum nextObject])) {
+  while ((newAssignment = [listEnum nextObject]) != nil) {
     if (![self _object2:newAssignment isInList:oldAssignments]) {
       LSRunCommandV(_context,         @"newsarticlelink",  @"new",
                     @"newsArticleId", [obj valueForKey:@"newsArticleId"],
@@ -105,13 +107,13 @@
   [self _saveAssignmentsInContext:_context];
 }
 
-// initialize records
+/* initialize records */
 
 - (NSString *)entityName {
   return @"NewsArticleLink";
 }
 
-// accessors
+/* accessors */
 
 - (void)setRelatedArticles:(NSArray *)_articles{
   ASSIGN(self->relatedArticles, _articles);
@@ -120,21 +122,18 @@
   return self->relatedArticles;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  if ([_key isEqualToString:@"newsArticle"]) {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
+  if ([_key isEqualToString:@"newsArticle"])
     [self setObject:_value];
-    return;
-  }
-  else if ([_key isEqualToString:@"relatedArticles"]) {
+  else if ([_key isEqualToString:@"relatedArticles"])
     [self setRelatedArticles:_value];
-    return;
-  }
-  [super takeValue:_value forKey:_key];
+  else
+    [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"newsArticle"])
     return [self object];
   if ([_key isEqualToString:@"relatedArticles"])
@@ -142,4 +141,4 @@
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSSetRelatedArticlesCommand */

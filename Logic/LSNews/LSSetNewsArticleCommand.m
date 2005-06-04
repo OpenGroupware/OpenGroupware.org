@@ -19,23 +19,23 @@
   02111-1307, USA.
 */
 
-#import "common.h"
-#import "LSSetNewsArticleCommand.h"
+#include "LSSetNewsArticleCommand.h"
+#include "common.h"
 
 @implementation LSSetNewsArticleCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->fileContent);
-  RELEASE(self->data);
-  RELEASE(self->filePath);
-  RELEASE(self->relatedArticles);
+  [self->fileContent     release];
+  [self->data            release];
+  [self->filePath        release];
+  [self->relatedArticles release];
   [super dealloc];
 }
-#endif
+
+/* run */
 
 - (BOOL)_resetIndexArticles {
-  NSString         *expr      = nil;
+  NSString         *expr;
   EOAdaptorChannel *adChannel = nil;
   id obj;
 
@@ -51,24 +51,28 @@
   return ([adChannel evaluateExpression:expr])  ? YES : NO;
 }
 
+- (BOOL)isRootId:(NSNumber *)_pkey inContext:(id)_ctx {
+  return [_pkey intValue] == 10000 ? YES : NO;
+}
+
 - (void)_prepareForExecutionInContext:(id)_context {
   NSEnumerator *teamEnum;
   id           account;
   id           team;
   BOOL         access = NO;
-
+  
   account = [_context valueForKey:LSAccountKey];
-
-  if ([[account valueForKey:@"companyId"] intValue] == 10000) {
+  
+  if ([self isRootId:[account valueForKey:@"companyId"] inContext:_context])
     access = YES;
-  } else {
+  else {
     teamEnum =
       [LSRunCommandV(_context, @"account", @"teams",
                      @"account", account,
                      @"returnType", intObj(LSDBReturnType_ManyObjects),
                      nil) objectEnumerator];
 
-    while ((team = [teamEnum nextObject])) {
+    while ((team = [teamEnum nextObject]) != nil) {
       if ([[team valueForKey:@"login"] isEqualToString:@"newseditors"]) {
         access = YES;
         break;
@@ -145,7 +149,8 @@
     }
   }
 }
-// accessors
+
+/* accessors */
 
 - (void)setData:(NSData *)_data {
   ASSIGN(self->data, _data);
@@ -155,14 +160,14 @@
 }
 
 - (void)setFilePath:(NSString *)_filePath {
-  ASSIGN(self->filePath, _filePath);
+  ASSIGNCOPY(self->filePath, _filePath);
 }
 - (NSString *)filePath {
   return self->filePath;
 }
 
 - (void)setFileContent:(NSString *)_fileContent {
-  ASSIGN(self->fileContent, _fileContent);
+  ASSIGNCOPY(self->fileContent, _fileContent);
 }
 - (NSString *)fileContent {
   return self->fileContent;
@@ -188,44 +193,35 @@
   return @"NewsArticle";
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  if ([_key isEqualToString:@"data"]) {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
+  if ([_key isEqualToString:@"data"])
     [self setData:_value];
-    return;
-  }
-  else if ([_key isEqualToString:@"filePath"]) {
+  else if ([_key isEqualToString:@"filePath"])
     [self setFilePath:_value];
-    return;
-  }
-  else if ([_key isEqualToString:@"fileContent"]) {
+  else if ([_key isEqualToString:@"fileContent"])
     [self setFileContent:_value];
-    return;
-  }
-  else if ([_key isEqualToString:@"relatedArticles"]) {
+  else if ([_key isEqualToString:@"relatedArticles"])
     [self setRelatedArticles:_value];
-    return;
-  }
-  else if ([_key isEqualToString:@"deleteImage"]) {
+  else if ([_key isEqualToString:@"deleteImage"])
     [self setDeleteImage:[_value boolValue]];
-    return;
-  }
-  [super takeValue:_value forKey:_key];
+  else
+    [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"data"])
     return [self data];
-  else if ([_key isEqualToString:@"filePath"])
+  if ([_key isEqualToString:@"filePath"])
     return [self filePath];
-  else if ([_key isEqualToString:@"fileContent"])
+  if ([_key isEqualToString:@"fileContent"])
     return [self fileContent];
-  else if ([_key isEqualToString:@"relatedArticles"])
+  if ([_key isEqualToString:@"relatedArticles"])
     return [self relatedArticles];
-  else if ([_key isEqualToString:@"deleteImage"])
+  if ([_key isEqualToString:@"deleteImage"])
     return [NSNumber numberWithBool:[self deleteImage]];
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSSetNewsArticleCommand */

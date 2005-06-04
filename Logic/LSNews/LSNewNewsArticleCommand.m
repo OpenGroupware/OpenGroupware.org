@@ -19,20 +19,20 @@
   02111-1307, USA.
 */
 
-#import "common.h"
-#import "LSNewNewsArticleCommand.h"
+#include "LSNewNewsArticleCommand.h"
+#include "common.h"
 
 @implementation LSNewNewsArticleCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->data);
-  RELEASE(self->filePath);
-  RELEASE(self->relatedArticles);
-  RELEASE(self->fileContent);
+  [self->data            release];
+  [self->filePath        release];
+  [self->relatedArticles release];
+  [self->fileContent     release];
   [super dealloc];
 }
-#endif
+
+/* run */
 
 - (BOOL)_resetIndexArticles {
   NSString         *expr      = nil;
@@ -64,16 +64,14 @@
   [super _executeInContext:_context];
   obj = [self object];
 
-  if ([[obj valueForKey:@"isIndexArticle"] boolValue]) {
+  if ([[obj valueForKey:@"isIndexArticle"] boolValue])
     [self _resetIndexArticles];
-  }
   
   if (self->relatedArticles == nil || [self->relatedArticles count] == 0) {
     self->relatedArticles =
-      LSRunCommandV(_context, @"newsArticle", @"get",
-                    @"isIndexArticle", [NSNumber numberWithBool:YES],
-                    nil);
-    RETAIN(self->relatedArticles);
+      [LSRunCommandV(_context, @"newsArticle", @"get",
+		     @"isIndexArticle", [NSNumber numberWithBool:YES],
+		     nil) retain];
   }
 
   LSRunCommandV(_context, @"newsArticle", @"set-related-Articles",
@@ -81,18 +79,17 @@
                 @"relatedArticles", self->relatedArticles, nil);
 
 
-  // save attachement
+  /* save attachement */
 
-  if (self->fileContent != nil) {
+  if ([self->fileContent isNotNull]) {
     fileName = [NSString stringWithFormat:@"%@/%@.txt",
-                         path, [obj valueForKey:@"newsArticleId"]];
+                           path, [obj valueForKey:@"newsArticleId"]];
     
     isOk = [self->fileContent writeToFile:fileName atomically:YES];
-
     [self assert:isOk reason:@"error during save of news article attachment"];
   }
-
-  if (self->data !=nil && self->filePath != nil) {
+  
+  if ([self->data isNotNull] && [self->filePath isNotNull]) {
     path     = [defaults stringForKey:@"LSNewsImagesPath"];
     fileName = [NSString stringWithFormat:@"%@/%@.%@",
                          path, [obj valueForKey:@"newsArticleId"],
@@ -104,10 +101,10 @@
   }
 }
 
-// accessors
+/* accessors */
 
 - (void)setFileContent:(NSString *)_content {
-  ASSIGN(self->fileContent, _content);
+  ASSIGNCOPY(self->fileContent, _content);
 }
 - (id)fileContent {
   return self->fileContent;
@@ -121,7 +118,7 @@
 }
 
 - (void)setFilePath:(NSString *)_filePath {
-  ASSIGN(self->filePath, _filePath);
+  ASSIGNCOPY(self->filePath, _filePath);
 }
 - (NSString *)filePath {
   return self->filePath;
@@ -135,15 +132,15 @@
   return self->relatedArticles;
 }
 
-// initialize records
+/* initialize records */
 
 - (NSString *)entityName {
   return @"NewsArticle";
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"data"]) {
     [self setData:_value];
     return;
@@ -163,16 +160,16 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"data"])
     return [self data];
-  else if ([_key isEqualToString:@"filePath"])
+  if ([_key isEqualToString:@"filePath"])
     return [self filePath];
-  else if ([_key isEqualToString:@"fileContent"])
+  if ([_key isEqualToString:@"fileContent"])
     return [self fileContent];
-  else if ([_key isEqualToString:@"relatedArticles"])
+  if ([_key isEqualToString:@"relatedArticles"])
     return [self relatedArticles];
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSNewNewsArticleCommand */
