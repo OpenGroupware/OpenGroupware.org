@@ -1,3 +1,8 @@
+2005-06-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* XmlRpcCoding.subproj/SkyJobDocument+XmlRpcCoding.m: added support for
+	  most of the Outlook related task properties (v5.1.60)
+
 2005-06-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed gcc 4.0 warnings (v5.1.59)

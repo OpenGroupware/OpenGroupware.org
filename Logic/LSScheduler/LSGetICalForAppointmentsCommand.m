@@ -223,6 +223,7 @@ static NSString   *skyrixId = nil;
     
   }
 
+  // TODO: map to fbtype database field?
   [self _appendName:@"TRANSP" andValue:@"OPAQUE" toICal:_iCal];
   
   // RELATED-TO

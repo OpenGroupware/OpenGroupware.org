@@ -30,21 +30,38 @@
 
 @implementation SkyJobDocument(XmlRpcCoding)
 
+static NSNumber *_sjInt(int i) {
+  return [NSNumber numberWithInt:i];
+}
+
 - (id)initWithXmlRpcCoder:(XmlRpcDecoder *)_coder {
   if ((self = [super initWithXmlRpcCoder:_coder])) {
-    [self setName:[_coder decodeStringForKey:@"name"]];
+    [self setName:     [_coder decodeStringForKey:@"name"]];
     [self setStartDate:[_coder decodeDateTimeForKey:@"startDate"]];
-    [self setEndDate:[_coder decodeDateTimeForKey:@"endDate"]];
-    [self setKeywords:[_coder decodeStringForKey:@"keywords"]];
-    [self setCategory:[_coder decodeStringForKey:@"category"]];
-    [self setStatus:[_coder decodeStringForKey:@"status"]];
-    [self setPriority:
-          [NSNumber numberWithInt:[_coder decodeIntForKey:@"priority"]]];
-    [self setType:[_coder decodeStringForKey:@"type"]];
-    [self setCreator:[_coder decodeObjectForKey:@"creator"]];
-    [self setExecutor:[_coder decodeObjectForKey:@"executor"]];
-    [self _setObjectVersion:
-          [NSNumber numberWithInt:[_coder decodeIntForKey:@"objectVersion"]]];
+    [self setEndDate:  [_coder decodeDateTimeForKey:@"endDate"]];
+    [self setKeywords: [_coder decodeStringForKey:@"keywords"]];
+    [self setCategory: [_coder decodeStringForKey:@"category"]];
+    [self setStatus:   [_coder decodeStringForKey:@"status"]];
+    [self setPriority: _sjInt([_coder decodeIntForKey:@"priority"])];
+    [self setType:     [_coder decodeStringForKey:@"type"]];
+    [self setCreator:  [_coder decodeObjectForKey:@"creator"]];
+    [self setExecutor: [_coder decodeObjectForKey:@"executor"]];
+    [self _setObjectVersion:_sjInt([_coder decodeIntForKey:@"objectVersion"])];
+
+    [self setSensitivity:_sjInt([_coder decodeIntForKey:@"sensitivity"])];
+    [self setComment:       [_coder decodeStringForKey:@"comment"]];
+    [self setCompletionDate:[_coder decodeDateTimeForKey:@"completionDate"]];
+    [self setPercentComplete:
+	    _sjInt([_coder decodeIntForKey:@"percentComplete"])];
+    [self setAccountingInfo:[_coder decodeStringForKey:@"accountingInfo"]];
+    [self setAssociatedCompanies:
+	    [_coder decodeStringForKey:@"associatedCompanies"]];
+    [self setAssociatedContacts:
+	    [_coder decodeStringForKey:@"associatedContacts"]];
+
+    [self setActualWork:_sjInt([_coder decodeIntForKey:@"actualWork"])];
+    [self setTotalWork: _sjInt([_coder decodeIntForKey:@"totalWork"])];
+    [self setKilometers:_sjInt([_coder decodeIntForKey:@"kilometers"])];
   }
   return self;
 }
@@ -64,6 +81,19 @@
   [_coder encodeObject:[self creator]               forKey:@"creator"];
   [_coder encodeObject:[self executor]              forKey:@"executor"];
   [_coder encodeInt:[[self objectVersion] intValue] forKey:@"objectVersion"];
+  
+  [_coder encodeInt:[[self sensitivity] intValue]   forKey:@"sensitivity"];
+  [_coder encodeString:[self comment]               forKey:@"comment"];
+  [_coder encodeDateTime:[self completionDate]      forKey:@"completionDate"];
+  [_coder encodeInt:[[self percentComplete] intValue]
+	  forKey:@"percentComplete"];
+  [_coder encodeString:[self accountingInfo]        forKey:@"accountingInfo"];
+  [_coder encodeString:[self associatedCompanies]
+	  forKey:@"associatedCompanies"];
+  [_coder encodeString:[self associatedContacts] forKey:@"associatedContacts"];
+  [_coder encodeInt:[[self actualWork] intValue] forKey:@"actualWork"];
+  [_coder encodeInt:[[self totalWork]  intValue] forKey:@"totalWork"];
+  [_coder encodeInt:[[self kilometers] intValue] forKey:@"kilometers"];
 }
 
 @end /* SkyJobDocument(XmlRpcCoding) */
