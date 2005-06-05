@@ -27,7 +27,7 @@
  *
  * accepts:
  * attributes:
- *   dateCompanyAssigmentId
+ *   dateCompanyAssignmentId
  *   companyId
  *   dateId
  *   partStatus
@@ -104,7 +104,7 @@ static NSNumber *yesNum                         = nil;
 
   dateCompanyAssignmentAttributes =
     [[NSArray alloc] initWithObjects:
-                       @"dateCompanyAssigmentId",
+                       @"dateCompanyAssignmentId",
                        @"companyId",
                        @"dateId",
                        @"partStatus",
@@ -170,7 +170,7 @@ static NSNumber *yesNum                         = nil;
   // go thru' the requested attributes
   // and filter those defined in _maxAttr
   
-  while ((one = [e nextObject])) {
+  while ((one = [e nextObject]) != nil) {
     if (_subKey != nil) {
       // key must have a prefix (i.e.: 'team.')
       if (![one hasPrefix:_subKey]) continue;
@@ -178,9 +178,18 @@ static NSNumber *yesNum                         = nil;
     if ([_maxAttr containsObject:one]) {
       // key allowed
       if (_subKey != nil) one = [one substringFromIndex:[_subKey length]];
-      if (_entity != nil)
-        // create a proper EOAttribute
-        [ma addObject:[_entity attributeNamed:one]];
+      if (_entity != nil) {
+        /* create a proper EOAttribute */
+	EOAttribute *a;
+
+	if ((a = [_entity attributeNamed:one]) == nil) {
+	  [self logWithFormat:
+		  @"ERROR: did not find attribute in entity %@: '%@'",
+		  _entity, one];
+	}
+	else
+	  [ma addObject:a];
+      }
       else
         // just add the string
         [ma addObject:one];

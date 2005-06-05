@@ -1,3 +1,15 @@
+2005-06-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.3.101
+
+	* SxAppointment+Participants.m: fixed handling of extended participant
+	  properties (proper defaults for WebUI), fixed handling of participant
+	  change sets
+	  
+	* SxAppointment.m, SxAppointmentMessageParser.m: properly deal with
+	  iCal class=>sensitivity mapping, improved changelogs, added support
+	  for some fields
+
 2005-06-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed some gcc 4.0 warnings, fixed a compilation issue with ZSBackend

@@ -232,7 +232,7 @@ static BOOL embedViewURL             = NO;
   id account, team;
     
   if ((createGroupAptsInGroupFolder) && ((team = [self groupInContext:_ctx])))
-    return [NSArray arrayWithObject:team];
+    return team ? [NSArray arrayWithObject:team] : nil;
   
   account = [[self commandContextInContext:_ctx] valueForKey:LSAccountKey];
   return account ? [NSArray arrayWithObject:account] : nil;
@@ -257,6 +257,35 @@ static BOOL embedViewURL             = NO;
   return participants;
 }
 
+- (NSString *)logTextForChangeSet:(NSDictionary *)_cs keys:(NSArray *)_k {
+  NSMutableString *log;
+  id tmp;
+  
+  log = [NSMutableString stringWithCapacity:128];
+  [log appendString:@"ZS:"];
+
+  tmp = [_cs allKeys];
+  if ([tmp containsObject:@"isWarningIgnored"]) {
+    tmp = [[tmp mutableCopy] autorelease];
+    [tmp removeObject:@"isWarningIgnored"];
+  }
+  if ([tmp count] > 0) {
+    [log appendString:@" "];
+    [log appendString:[tmp componentsJoinedByString:@","]];
+  }
+
+  if ([_k count] > 0) {
+    tmp = [_k componentsJoinedByString:@","];
+    [self logWithFormat:@"Note: loosing keys: %@", tmp];
+    [log appendString:@" (lost="];
+    [log appendString:tmp];
+    [log appendString:@")"];
+  }
+  if ([log length] == 3)
+    [log appendString:@" no change detected."];
+  return log;
+}
+
 - (id)createAptWithInfo:(NSDictionary *)_info inContext:(id)_ctx {
   // TODO: should we make a redirect to the created file? probably confuses
   //       clients but is likely to be the correct thing to do.
@@ -264,7 +293,7 @@ static BOOL embedViewURL             = NO;
   NSMutableArray      *keys;
   NSMutableDictionary *changeSet;
   NSException    *error;
-  NSString       *log, *etag;
+  NSString       *etag;
   NSArray        *participants;
   WOResponse     *r;
   NSString       *url;
@@ -280,9 +309,6 @@ static BOOL embedViewURL             = NO;
   [keys removeObject:@"sequence"];     // extracted above
   
   /* TODO: add new columns */
-  [keys removeObject:@"lastModified"]; // use for conflict detection ?
-  [keys removeObject:@"accessClass"];
-  [keys removeObject:@"importance"];
   [keys removeObject:@"priority"];
   
   /* participants */
@@ -309,31 +335,24 @@ static BOOL embedViewURL             = NO;
   SX_NEWKEY(@"title");
   SX_NEWKEY(@"location");
   SX_NEWKEY(@"comment");
+  SX_NEWKEY(@"importance");
+  SX_NEWKEY(@"lastModified");
+  SX_NEWKEY(@"sensitivity");
   
   /* read-access-group */
   
-  if ((tmp = [self pkeyOfGroupInContext:_ctx]))
+  if ([(tmp = [self pkeyOfGroupInContext:_ctx]) isNotNull])
     [changeSet setObject:tmp forKey:@"accessTeamId"];
   
   /* conflicts */
   
   [changeSet setObject:yesNum forKey:@"isWarningIgnored"];
   
-  /* add log */
-  
-  if ([keys count] > 0) {
-    [self logWithFormat:@"loosing keys: %@", 
-	    [keys componentsJoinedByString:@","]];
-  }
-  
-  log = [NSString stringWithFormat:@"created by ZideStore %@ (lost=%@)",
-		    [[changeSet allKeys] componentsJoinedByString:@","],
-		    [keys componentsJoinedByString:@","]];
-  
   /* perform changes */
   
   error = [[self aptManagerInContext:_ctx] 
-                 createWithEOAttributes:changeSet log:log];
+                 createWithEOAttributes:changeSet
+	         log:[self logTextForChangeSet:changeSet keys:keys]];
   if ([error isKindOfClass:[NSException class]])
     return error;
   
@@ -375,6 +394,7 @@ static BOOL embedViewURL             = NO;
 - (void)reloadObjectInContext:(id)_ctx {
   [self->eo release]; self->eo = nil;
   [self objectInContext:_ctx];
+  /* Note: apparently 'participants' is not set after this? */
 }
 
 #define SX_DIFFKEY(__key__) \
@@ -389,7 +409,7 @@ static BOOL embedViewURL             = NO;
   NSMutableArray      *keys;
   NSMutableDictionary *changeSet;
   NSException         *error;
-  NSString            *log, *etag;
+  NSString            *etag;
   NSMutableArray      *participants;
   id  obj, tmp;
   int oldVersion, newVersion;
@@ -423,19 +443,17 @@ static BOOL embedViewURL             = NO;
   
   /* remove superflous keys */
   [keys removeObject:@"creationDate"]; // unused
-  [keys removeObject:@"uid"];          // unused
+  [keys removeObject:@"uid"];          // unused => TODO: check that!
   [keys removeObject:@"sequence"];     // extracted above
+  [keys removeObject:@"creator"];      // extracted above
   
-  /* TODO: add new columns */
-  [keys removeObject:@"lastModified"]; // use for conflict detection ?
-  [keys removeObject:@"accessClass"];
-  [keys removeObject:@"importance"];
+  // TODO: add a column for this field (TODO: when is it used? valid in iCal?)
   [keys removeObject:@"priority"];
   
   /* check values */
 
   changeSet = [NSMutableDictionary dictionaryWithCapacity:16];
-
+  
   /* conflicts */
 
   [changeSet setObject:[NSNumber numberWithBool:YES]
@@ -446,28 +464,32 @@ static BOOL embedViewURL             = NO;
   SX_DIFFKEY(@"title");
   SX_DIFFKEY(@"location");
   SX_DIFFKEY(@"comment");
-
+  SX_DIFFKEY(@"lastModified");
+  SX_DIFFKEY(@"importance");
+  SX_DIFFKEY(@"sensitivity");
   SX_DIFFKEY(@"evoReminder");
   
-  participants = [NSMutableArray array];
+  participants = [NSMutableArray arrayWithCapacity:1];
   if ([self isInOverviewFolder]) {
     id team = [self groupInContext:_ctx];
-    if (logAptChange)
-      NSLog(@"%s in overview calendar: %@",
-            __PRETTY_FUNCTION__, team);
-    if (team)
+    if (logAptChange) {
+      [self logWithFormat:@"%s in overview calendar: %@",
+            __PRETTY_FUNCTION__, team];
+    }
+    if ([team isNotNull])
       [participants addObject:team];
-    else
-      [participants addObject:
-                    [[self commandContextInContext:_ctx]
-                           valueForKey:LSAccountKey]];
+    else {
+      id loginEO;
+      
+      loginEO = [[self commandContextInContext:_ctx] valueForKey:LSAccountKey];
+      [participants addObject:loginEO];
+    }
   }
   
-  tmp = [self fetchParticipantsForPersons:
-              [_info objectForKey:@"participants"]
+  tmp = [self fetchParticipantsForPersons:[_info objectForKey:@"participants"]
               inContext:_ctx];
   
-  if ([tmp count])
+  if ([tmp count] > 0)
     [participants addObjectsFromArray:tmp];
   
   /* TODO: mh: hack */
@@ -482,37 +504,40 @@ static BOOL embedViewURL             = NO;
     id account;
     
     account = [[self commandContextInContext:_ctx] valueForKey:LSAccountKey];
-    participants = [NSArray arrayWithObject:account];
+    participants = account != nil ? [NSArray arrayWithObject:account] : nil;
   }
+  
+  /* ensure that EO participants are fetched */
+
+  tmp = [[self commandContextInContext:_ctx]
+	  runCommand:@"appointment::list-participants",
+	  @"appointment", self->eo,
+	  nil];
+  
+  /* compare participants */
   
   [keys removeObject:@"participants"];
   participants = (NSMutableArray *)[self checkChangedParticipants:participants
-                                         forOldParticipants:
-                                         [self->eo
-                                              valueForKey:@"participants"]
+                                         forOldParticipants:tmp
                                          inContext:_ctx];
-  if (participants)
-    // participants changed
+  if ([participants count] > 0) {
+    /* participants changed */
     [changeSet setObject:participants forKey:@"participants"];
-  
-  /* add log */
-  
-  if ([keys count] > 0)
-    [self logWithFormat:@"loosing keys: %@",
-          [keys componentsJoinedByString:@","]];
-  
-  log = [NSString stringWithFormat:
-                  @"changed by ZideStore (changed=%@,lost=%@)",
-                  [[changeSet allKeys] componentsJoinedByString:@","],
-                  [keys componentsJoinedByString:@","]];
+  }
   
   /* perform changes */
-  
-  error = [[self aptManagerInContext:_ctx]
+
+  if ([changeSet count] < 2) {
+    /* no change (just isWarningIgnored) */
+    error = nil;
+  }
+  else {
+    error = [[self aptManagerInContext:_ctx]
                  updateRecordWithPrimaryKey:[self primaryKey]
                  withEOChanges:changeSet
-                 log:log];
-
+                 log:[self logTextForChangeSet:changeSet keys:keys]];
+  }
+  
   if ([error isKindOfClass:[NSException class]])
     return error;
 
@@ -637,6 +662,7 @@ static BOOL embedViewURL             = NO;
   id ownerId = [_apt valueForKey:@"ownerId"];
   id ids[1];
   id gid;
+  
   if (ownerId != nil) {
     SxContactManager *cm =
       [SxContactManager managerWithContext:

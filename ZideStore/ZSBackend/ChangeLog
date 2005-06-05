@@ -1,3 +1,16 @@
+2005-06-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.3.87
+
+	* SxAptManager+iCal.m: ensure that appointments are fetched with all
+	  participants by performing a fetch using the global-id (instead of
+	  the possibly unloaded EO) - this fixes the generation of attendee
+	  fields
+
+	* SxAppointmentRenderer.m: do not render x-microsoft fields, do not
+	  render created,last-modified and dtstamp (currently unsupported,
+	  can be supported using log-table)
+
 2005-06-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.3.86

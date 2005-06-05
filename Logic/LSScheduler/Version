@@ -1,5 +1,5 @@
 # version file
 
-SUBMINOR_VERSION:=58
+SUBMINOR_VERSION:=59
 
 # v5.0.40 requires libLSFoundation v5.0.49

@@ -403,69 +403,83 @@ static NSString   *skyrixId = nil;
 
 - (void)_appendAttendees:(id)_date toICal:(NSMutableString *)_iCal {
   // ATTENDEE, ORGANIZER
-  //
   NSArray *parts;
   id participant;
   int cnt, i;
   id ownerId;
-
+  
   parts   = [_date valueForKey:@"participants"];
   ownerId = [_date valueForKey:@"ownerId"];
-    
-  cnt = [parts count];
-  for (i = 0; i < cnt; i++) { 
-    id   role, rsvp, cn, email, state;
-    id   companyId;
-    BOOL isTeam;
 
+  if ([parts count] == 0) {
+    [self logWithFormat:@"WARNING: no participants in appoinment: %@",
+	  [_date valueForKey:@"dateId"]];
+  }
+  
+  for (i = 0, cnt = [parts count]; i < cnt; i++) { 
+    NSString *role, *rsvp, *cn, *email, *state;
+    NSString *tmp;
+    NSNumber *companyId;
+    BOOL     isTeam;
+    
     participant = [parts objectAtIndex:i];
     role      = [participant valueForKey:@"role"];
     isTeam    = [[participant valueForKey:@"isTeam"] boolValue];
     rsvp      = [participant valueForKey:@"rsvp"];
     state     = [participant valueForKey:@"partStatus"];
     companyId = [participant valueForKey:@"companyId"];
-
+    
     if (isTeam) {
       cn    = [participant valueForKey:@"description"];
       email = [participant valueForKey:@"email"];
-      if (![email length]) email = cn;
+      if (![email isNotNull] || [email length] == 0)
+	email = cn;
     }
     else {
       NSString *tmp;
       
-      if ((tmp = [participant valueForKey:@"firstname"]) != nil)
-        cn = [tmp stringByAppendingString:@" "];
-      else
-        cn = @"";
-
+      cn = ((tmp = [participant valueForKey:@"firstname"]) != nil)
+	? [tmp stringByAppendingString:@" "] : @"";
+      
       if ((tmp = [participant valueForKey:@"name"]) != nil)
         cn = [cn stringByAppendingString:tmp];
       
       if ([cn length] == 0) cn = @"No Name";
-    
-      email = ((tmp = [participant valueForKey:@"email1"]) != nil)
-        ? tmp : cn;
+      
+      if ([(tmp = [participant valueForKey:@"email1"]) isNotNull])
+	email = tmp;
+      else if ([(tmp = [participant valueForKey:@"email"]) isNotNull])
+	email = tmp;
+      else {
+	[self logWithFormat:@"WARNING: using CN as email: '%@'", cn];
+	email = cn;
+      }
     }
-
-    [self _appendName:
-          [NSString stringWithFormat:
+    
+    tmp = [[NSString alloc] initWithFormat:
                     @"ATTENDEE;CUTYPE=\"%@\";PARTSTAT=\"%@\""
                     @";ROLE=\"%@\";RSVP=\"%@\";CN=\"%@\"",
                     isTeam               ? @"GROUP" : @"INDIVIDUAL",
                     ([state length] > 0) ? state    : @"NEEDS-ACTION",
                     ([role length] > 0)  ? role     : @"OPT-PARTICIPANT",
                     [rsvp boolValue]     ? @"TRUE"  : @"FALSE",
-                    cn]
-          andValue:[NSString stringWithFormat:@"MAILTO:%@", email]
+                    cn];
+    [self _appendName:tmp
+          andValue:[@"MAILTO:" stringByAppendingString:email]
           toICal:_iCal];
+    [tmp release]; tmp = nil;
     
     if (([companyId intValue] == [ownerId intValue]) &&
-        ([companyId intValue] != 0)) 
-      [self _appendName:[NSString stringWithFormat:@"ORGANIZER;CN=\"%@\"", cn]
-            andValue:   [NSString stringWithFormat:@"MAILTO:%@", email]
+        ([companyId intValue] != 0)) {
+      tmp = [[NSString alloc] initWithFormat:@"ORGANIZER;CN=\"%@\"", cn];
+      [self _appendName:tmp
+            andValue:   [@"MAILTO:" stringByAppendingString:email]
             toICal:_iCal];
+      [tmp release]; tmp = nil;
+    }
   }
-    
+  
+  // TODO: add owner if it isn't a participant!
 }
 
 - (NSString *)_iCalForDate:(id)_date inContext:(id)_context {
@@ -480,7 +494,7 @@ static NSString   *skyrixId = nil;
   [self _appendAttendees:_date toICal:iCal];
 
   [iCal appendString:@"END:VEVENT\r\n"];
-
+  
   return iCal;
 }
 
@@ -510,7 +524,7 @@ static NSString   *skyrixId = nil;
   return aptAttributes;
 }
 
-- (NSArray *)particpantAttributes {
+- (NSArray *)participantAttributes {
   static NSArray *partAttributes = nil;
   if (partAttributes == nil) {
     partAttributes =
@@ -540,23 +554,29 @@ static NSString   *skyrixId = nil;
 - (NSArray *)_fetchAppointmentsInContext:(id)_context {
   NSDictionary *participants;
   NSArray      *dates;
+  
   dates =
     [_context runCommand:@"appointment::get-by-globalid",
               @"gids",         self->gids,
               @"attributes",   [self appointmentAttributes], nil];
   participants =
     [_context runCommand:@"appointment::list-participants",
-              @"attributes",   [self particpantAttributes],
+              @"attributes",   [self participantAttributes],
               @"appointments", dates,
               @"groupBy",      @"dateId",
               nil];
-  if ([participants count]) {
+  
+  if ([participants count] > 0) {
     NSEnumerator *e;
     id apt;
+    
     e = [dates objectEnumerator];
-    while ((apt = [e nextObject])) {
-      id dateId = [apt valueForKey:@"dateId"];
-      id parts  = [participants valueForKey:dateId];
+    while ((apt = [e nextObject]) != nil) {
+      NSNumber *dateId;
+      NSArray  *parts;
+      
+      dateId = [apt valueForKey:@"dateId"];
+      parts  = [participants objectForKey:dateId];
       if (parts == nil) parts = [NSArray array];
       [apt takeValue:parts forKey:@"participants"];
     }
@@ -567,32 +587,39 @@ static NSString   *skyrixId = nil;
 /* execute */
 
 - (void)_executeInContext:(id)_context {
-  int     cnt;
-
-  if (self->apts == nil) {
+  NSMutableArray *result;
+  int cnt;
+  
+  if (self->apts == nil)
     self->apts = [[self _fetchAppointmentsInContext:_context] retain];
-  }
-
-  if ((cnt = [self->apts count])) {
-    NSMutableArray *result;
-    id record;
-
-    result    = [[NSMutableArray alloc] initWithCapacity:cnt];
-
-    while (cnt--) {
-      record = [self->apts objectAtIndex:cnt];
-      record = [self _iCalForDate:record inContext:_context];
-      if (record) [result addObject:record];
-      else {
-        NSLog(@"%s: failed building iCal for record: %@", record);
-      }
-    }
-    
-    [self setReturnValue:result];
-    [result release];
-  }
   else
+    [self debugWithFormat:@"Note: appointments already fetched?"];
+  
+  if ((cnt = [self->apts count]) == 0) {
     [self setReturnValue:[NSArray array]];
+    return;
+  }
+
+  result = [[NSMutableArray alloc] initWithCapacity:cnt];
+    
+  while (cnt--) {
+    NSString *ical;
+    id record;
+    
+    record = [self->apts objectAtIndex:cnt];
+    
+    if ((ical = [self _iCalForDate:record inContext:_context]) != nil) {
+      [result addObject:ical];
+    }
+    else {
+      [self logWithFormat:@"ERROR: failed building iCal for record: '%@'", 
+	      record];
+      [result addObject:[NSNull null]];
+    }
+  }
+  
+  [self setReturnValue:result];
+  [result release]; result = nil;
 }
 
 /* accessors */

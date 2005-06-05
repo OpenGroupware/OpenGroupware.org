@@ -345,8 +345,7 @@ static BOOL debugRenderer = NO;
   t = [_eo valueForKey:@"location"];
   if ([t isNotNull]) [self->ical appendFormat:@"LOCATION:%@\r\n", t];
   
-  t = [_eo valueForKey:@"comment"];
-  if ([t isNotNull]) {
+  if ([(t = [_eo valueForKey:@"comment"]) isNotNull]) {
     [self->ical appendFormat:@"DESCRIPTION:%@\r\n",
 	[t stringByReplacingString:@"\n" withString:@"\\N"]];
   }
@@ -354,7 +353,9 @@ static BOOL debugRenderer = NO;
   [self->ical appendFormat:@"SEQUENCE:%i\r\n", 
         [[_eo valueForKey:@"objectVersion"] intValue]];
   
+#if 0
   [self->ical appendFormat:@"PRIORITY:%i\r\n", 0 /*[self priority]*/];
+#endif
 
   /*
     "OlSensitivity" for Appointment and Task items in MSDN:
@@ -384,11 +385,14 @@ static BOOL debugRenderer = NO;
   */
   [self->ical appendString:@"TRANSP:OPAQUE\r\n"];
   
-  // TODO:
+#if 0
+  // TODO: fetch those using log-table!
   [self->ical appendString:@"CREATED:20030113T191908Z\r\n"];
   [self->ical appendString:@"LAST-MODIFIED:20030113T191912Z\r\n"];
   [self->ical appendString:@"DTSTAMP:20030113T191908Z\r\n"];
+#endif
   
+#if 0
   [self->ical appendFormat:@"X-MICROSOFT-CDO-IMPORTANCE:%i\r\n",
       0 /* [self importance] */];
   [self->ical appendString:@"X-MICROSOFT-CDO-BUSYSTATUS:BUSY\r\n"];
@@ -397,14 +401,16 @@ static BOOL debugRenderer = NO;
   //if (![self isAllDayEvent])
   [self->ical appendString:@"X-MICROSOFT-CDO-ALLDAYEVENT:FALSE\r\n"];
   //else [self->ical appendString:@"X-MICROSOFT-CDO-ALLDAYEVENT:TRUE\r\n"];
-
+#endif
+  
   [self appendAttendeesAsICal:
 	  [(NSDictionary *)_eo objectForKey:@"participants"] 
 	to:self->ical];
 
   {
-    id tmp = [_eo valueForKey:@"evoReminder"];
-    if (tmp)
+    id tmp;
+    
+    if ([(tmp = [_eo valueForKey:@"evoReminder"]) isNotNull])
       [self appendAlarmsAsICal:[self parseAlarmsCSV:tmp] to:self->ical];
   }
   
@@ -417,11 +423,12 @@ static BOOL debugRenderer = NO;
 }
 
 - (void)appendTimeZoneAsICal:(NSTimeZone *)_tz
-                      atDate:(NSCalendarDate *)_date
-                          to:(NSMutableString *)_ical
+  atDate:(NSCalendarDate *)_date
+  to:(NSMutableString *)_ical
 {
   int offset;
   int hours, minutes;
+  
   offset = [_tz secondsFromGMTForDate:_date];
   minutes  = offset  / 60;
   hours    = minutes / 60;

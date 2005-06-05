@@ -214,8 +214,24 @@ static SaxObjectDecoder *sax = nil;
   
   if ((tmp = [_event created])) 
     [record setObject:tmp forKey:@"creationDate"];
-  if ((tmp = [_event accessClass])) 
-    [record setObject:tmp forKey:@"accessClass"];
+  if ([(tmp = [_event accessClass]) isNotNull]) {
+    /* map to sensitivity */
+    tmp = [tmp uppercaseString];
+    if ([tmp isEqualToString:@"PUBLIC"])
+      tmp = [NSNumber numberWithInt:0];
+    else if ([tmp isEqualToString:@"PRIVATE"])
+      tmp = [NSNumber numberWithInt:2];
+    else if ([tmp isEqualToString:@"CONFIDENTIAL"])
+      tmp = [NSNumber numberWithInt:3];
+    else if ([tmp isEqualToString:@"PERSONAL"]) /* non standard, OL value */
+      tmp = [NSNumber numberWithInt:1];
+    else {
+      [self logWithFormat:@"ERROR: unknown iCalendar class: '%@'", tmp];
+      tmp = nil;
+    }
+    
+    if (tmp != nil) [record setObject:tmp forKey:@"sensitivity"];
+  }
   if ((tmp = [_event priority])) 
     [record setObject:tmp forKey:@"priority"];
     

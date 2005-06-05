@@ -42,9 +42,14 @@ static BOOL catchExceptions = YES;
 - (id)renderAppointmentAsICal:(id)_eo timezone:(NSTimeZone *)_tz {
   id ical;
   
+  if (![[_eo valueForKey:@"participants"] isNotNull])
+    [self logWithFormat:@"date has no participant yet ..."];
+  
   ical = [[self commandContext] runCommand:@"appointment::get-ical",
-                                @"date", _eo, nil];
-  return [ical lastObject];
+				@"gid", [_eo valueForKey:@"globalID"], nil];
+  return [ical isKindOfClass:[NSArray class]]
+    ? ([ical count] > 0 ? [ical objectAtIndex:0] : nil)
+    : ical;
 }
 - (id)renderAppointmentAsMIME:(id)_eo timezone:(NSTimeZone *)_tz {
   SxAppointmentRenderer *renderer = [SxAppointmentRenderer renderer];
@@ -452,7 +457,7 @@ static BOOL catchExceptions = YES;
 
      TODO: we need a bulk delete
    */
-  if ((cnt = [oldGIDList count])) {
+  if ((cnt = [oldGIDList count]) > 0) {
     EOKeyGlobalID *gid;
     id            error = nil;
     id            pKey;

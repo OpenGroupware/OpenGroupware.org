@@ -28,6 +28,13 @@
 
 @implementation SxAppointment(Participants)
 
+#if 0
+#warning DEBUG CODE
+static BOOL debugOn = YES;
+#else
+static BOOL debugOn = NO;
+#endif
+
 - (EOGlobalID *)globalIDFromAccountInfo:(id)_info {
   id   pkey;
   BOOL isTeam = NO;
@@ -123,10 +130,12 @@
     }
     else {
       id contact;
-      if ([contacts count] > 1)
+
+      if ([contacts count] > 1) {
         [self logWithFormat:
               @"WARNING[%s] found more than one person for entry: %@",
               __PRETTY_FUNCTION__, tmp];
+      }
       contact = [contacts objectAtIndex:0];
       tmp = [contact valueForKey:@"globalID"];
       if (tmp == nil) {
@@ -368,7 +377,7 @@
 
   if ([_persons count] == 0)
     return [NSArray array];
-
+  
   if (usePKeyMails == -1) {
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     usePKeyMails = [ud boolForKey:@"SxUsePKeyMailRecipients"];
@@ -381,11 +390,11 @@
   createNewEntriesForUnknownParticipants = YES;
 
   emails  = [NSMutableArray arrayWithCapacity:[_persons count]];
-  persons = [NSMutableArray array];
-  unknown = [NSMutableArray array];
+  persons = [NSMutableArray arrayWithCapacity:8];
+  unknown = [NSMutableArray arrayWithCapacity:4];
   
   e      = [_persons objectEnumerator];
-  while ((person = [e nextObject])) {
+  while ((person = [e nextObject]) != nil) {
     if (![self classifyParticipant:person
                map:map
                emails:emails
@@ -397,12 +406,12 @@
     }
   }
 
-  // try to get accounts for the listed emails
-  if ([emails count]) {
-    if (usePKeyMails) {
+  /* try to get accounts for the listed emails */
+  if ([emails count] > 0) {
+    if (usePKeyMails)
       [self addPKeyEmails:emails toGIDList:persons];
-    }
-    if ([emails count]) {
+    
+    if ([emails count] > 0) {
       [self addAccountInfos:[cm listAccountsWithEmails:emails]
             toGIDList:persons];
       [self addAccountInfos:[cm listPublicPersonsWithEmails:emails]
@@ -414,7 +423,7 @@
     }
   }
   
-  // try to get accounts for collected cns
+  /* try to get accounts for collected cns */
   e       = [persons objectEnumerator];
   persons = [NSMutableArray array];
   [emails removeAllObjects];
@@ -423,27 +432,92 @@
         contactManager:cm];
   
   // get persons for collected gids
-  if ([persons count]) { // got participants, who are not accounts
-    if ((tmp = [self fetchStaffForGIDs:persons commandContext:cmdctx]))
+  if ([persons count] > 0) { // got participants, who are not accounts
+    if ((tmp = [self fetchStaffForGIDs:persons commandContext:cmdctx]) != nil)
       [emails addObjectsFromArray:tmp];
   }
-
-  // append additional apt attributes
+  
+  /* append additional apt attributes */
   emails = [self mapParticipants:emails backWithMap:map];
 
-  if ([map count])
-    // unmatched entries cannot be found in the database
-    // so there are unknown
+  if ([map count] > 0) {
+    /*
+      unmatched entries cannot be found in the database
+      so they are unknown
+    */
     [unknown addObjectsFromArray:[map allValues]];
-
-  if ([unknown count]) 
+  }
+  
+  if ([unknown count] > 0) {
     [self createEntriesForUnknown:unknown
           addToResult:emails
           commandContext:cmdctx];
+  }
   
   return emails;
 }
 
+
+- (BOOL)checkWhetherParticipantChanged:(id)mapped new:(id)tmp {
+  NSNumber *pkey;
+  id newVal, oldVal;
+
+  pkey = [mapped valueForKey:@"companyId"];
+
+  if ([(newVal = [tmp valueForKey:@"rsvp"]) isNotNull]) {
+      oldVal = [mapped valueForKey:@"rsvp"];
+      if (![oldVal isNotNull]) /* default value (OGo WebUI) */
+	oldVal = [NSNumber numberWithInt:0]; /* rsvp: false */
+      
+      if (![newVal isEqual:oldVal]) {
+	if ([SxAppointment logAptChange]) {
+	  [self logWithFormat:@"%s: %@ has changed rsvp '%@' -> '%@'",
+		__PRETTY_FUNCTION__, pkey, oldVal, newVal];
+	}
+	if (debugOn) {
+	  [self logWithFormat:@"   rsvp changed: %@ (%@ => %@)", 
+	          pkey, oldVal, newVal];
+	}
+	return YES;
+      }
+  }
+
+  if ([(newVal = [tmp valueForKey:@"role"]) isNotNull]) {
+      oldVal = [mapped valueForKey:@"role"];
+      if (![oldVal isNotNull]) /* default value (OGo WebUI) */
+	oldVal = @"OPT-PARTICIPANT";
+      
+      if (![newVal isEqual:oldVal]) {
+	if ([SxAppointment logAptChange]) {
+	  [self logWithFormat:@"%s: %@ has changed role '%@' -> '%@'",
+		__PRETTY_FUNCTION__, pkey, oldVal, newVal];
+	}
+	if (debugOn) {
+	  [self logWithFormat:@"   role changed: %@ (%@ => %@)", pkey,
+		oldVal, newVal];
+	}
+	return YES;
+      }
+  }
+    
+  if ([(newVal = [tmp valueForKey:@"partStatus"]) isNotNull]) {
+      oldVal = [mapped valueForKey:@"partStatus"];
+      if (![oldVal isNotNull]) /* default value (OGo WebUI) */
+	oldVal = @"NEEDS-ACTION";
+      
+      if (![newVal isEqual:oldVal]) {
+	if ([SxAppointment logAptChange])
+	  NSLog(@"%s: %@ has changed partStatus '%@' -> '%@'",
+		__PRETTY_FUNCTION__, pkey, oldVal, newVal);
+	if (debugOn) {
+	  [self logWithFormat:@"   partstat changed: %@ (%@ => %@)", pkey,
+		oldVal, newVal];
+	}
+	return YES;
+      }
+  }
+  return NO;
+}
 
 // returns the newParts if the participants changed 
 - (NSArray *)checkChangedParticipants:(NSArray *)_newParts
@@ -454,74 +528,55 @@
   NSMutableDictionary *map;
   NSMutableArray      *oldIds;
   NSEnumerator        *e;
-  id                  tmp, pkey;
+  id                  newPart;
   unsigned            i, max;
-  BOOL               isZideLook = NO;
-  WEClientCapabilities *cc;
   
-  cc = [[(WOContext *)_ctx request] clientCapabilities];
-  if ([[cc userAgentType] isEqualToString:@"ZideLook"])
-    isZideLook = YES;
+  if (debugOn) {
+    [self logWithFormat:@"COMPARE: new %@ with old %@",
+	    [_newParts valueForKey:@"email1"],
+	    [_oldParts valueForKey:@"email1"]];
+  }
   
   if ([_newParts count] != (max = [_oldParts count]))
     return _newParts;
-
+  
   if (max == 0)
     return nil;
 
   map    = [NSMutableDictionary dictionaryWithCapacity:max];
   oldIds = [NSMutableArray arrayWithCapacity:max];
   for (i = 0; i < max; i++) {
-    tmp = [_oldParts objectAtIndex:i];
-    pkey = [tmp valueForKey:@"companyId"];
-    if (pkey) {
-      [map setObject:tmp forKey:pkey];
+    NSNumber *pkey;
+    id oldPart;
+    
+    oldPart  = [_oldParts objectAtIndex:i];
+    pkey = [oldPart valueForKey:@"companyId"];
+    if (pkey != nil) {
+      [map setObject:oldPart forKey:pkey];
       [oldIds addObject:pkey];
     }
   }
-
-  e      = [_newParts objectEnumerator];
-  while ((tmp = [e nextObject])) {
-    id mapped;
-    id newVal, oldVal;
-    pkey = [tmp valueForKey:@"companyId"];
-    if (![oldIds containsObject:pkey])
-      return _newParts;
-
-    // check for changed participant attributes
-    mapped = [map objectForKey:pkey];
-
-    newVal = [tmp valueForKey:@"rsvp"];
-    oldVal = [mapped valueForKey:@"rsvp"];
-    if (([newVal isNotNull] || [oldVal isNotNull]) &&
-        (![newVal isEqual:oldVal])) {
-      if ([SxAppointment logAptChange])
-        NSLog(@"%s: %@ has changed rsvp '%@' -> '%@'",
-              __PRETTY_FUNCTION__, pkey, oldVal, newVal);
-      return _newParts;
-    }
-
-    newVal = [tmp valueForKey:@"role"];
-    oldVal = [mapped valueForKey:@"role"];
-    if (([newVal isNotNull] || [oldVal isNotNull]) &&
-        (![newVal isEqual:oldVal])) {
-      if ([SxAppointment logAptChange])
-        NSLog(@"%s: %@ has changed role '%@' -> '%@'",
-              __PRETTY_FUNCTION__, pkey, oldVal, newVal);
-      return _newParts;
-    }
+  
+  if (debugOn)
+    [self logWithFormat:@"  iterate over all news participants ..."];
+  
+  e = [_newParts objectEnumerator];
+  while ((newPart = [e nextObject]) != nil) {
+    NSNumber *pkey;
     
-    newVal = [tmp valueForKey:@"partStatus"];
-    oldVal = [mapped valueForKey:@"partStatus"];
-    if (([newVal isNotNull] || [oldVal isNotNull]) &&
-        (![newVal isEqual:oldVal])) {
-      if ([SxAppointment logAptChange])
-        NSLog(@"%s: %@ has changed partStatus '%@' -> '%@'",
-              __PRETTY_FUNCTION__, pkey, oldVal, newVal);
+    pkey = [newPart valueForKey:@"companyId"];
+    if (![oldIds containsObject:pkey]) {
+      if (debugOn) [self logWithFormat:@"   new pkey: %@", pkey];
       return _newParts;
     }
+    if (debugOn) [self logWithFormat:@"   old pkey: %@", pkey];
     
+    /* check for changed participant attributes */
+    if ([self checkWhetherParticipantChanged:[map objectForKey:pkey]
+	      new:newPart])
+      return _newParts;
   }
+  if (debugOn) [self logWithFormat:@"  participants stayed the same."];
   return nil;
 }
 
