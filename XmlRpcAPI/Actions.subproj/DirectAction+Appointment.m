@@ -389,6 +389,48 @@
   return [NSNumber numberWithBool:YES];
 }
 
+- (id)urlStringsForNonEmptyParticipants:(id)_parts {
+  if (![_parts isNotNull]) {
+    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+                 reason:@"No participants supplied"];
+  }
+
+  if ([_parts isKindOfClass:[NSArray class]]) {
+    id firstPart;
+    
+    if ([_parts count] == 0) {
+      return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+		   reason:@"No participants supplied"];
+    }
+    firstPart = [_parts objectAtIndex:0];
+    
+    if ([firstPart isKindOfClass:[NSString class]])
+      return _parts;
+    
+    if ([firstPart isKindOfClass:[NSNumber class]]) {
+      /* convert numbers to URLs */
+      return [_parts valueForKey:@"stringValue"];
+    }
+    
+    /* treat as dictionary's */
+    return [_parts valueForKey:@"id"];
+  }
+
+  if ([_parts isKindOfClass:[NSString class]])
+    return [NSArray arrayWithObjects:&_parts count:1];
+
+  if ([_parts isKindOfClass:[NSDictionary class]]) {
+    if ([(_parts = [_parts valueForKey:@"id"]) isNotNull])
+      _parts = [NSArray arrayWithObjects:&_parts count:1];
+    return _parts;
+  }
+  
+  [self logWithFormat:@"ERROR: unexpected participant parameter type: '%@'",
+	NSStringFromClass([_parts class])];
+  return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+	       reason:@"Unexpected participants parameter type"];
+}
+
 - (id)appointment_setParticipantsAction:(id)_app:(id)_parts {
   SkyAppointmentDocument *app;
   NSArray                *gids;
@@ -401,6 +443,14 @@
     return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_RESULT
                  reason:@"No appointment for argument found"];
   }
+
+  /* check participants argument */
+  
+  _parts = [self urlStringsForNonEmptyParticipants:_parts];
+  if ([_parts isKindOfClass:[NSException class]])
+    return _parts;
+  
+  /* process URLs */
   
   gids = [[[self commandContext] documentManager] globalIDsForURLs:_parts];
   if ([gids count] == 0) {

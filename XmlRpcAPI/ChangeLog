@@ -1,3 +1,9 @@
+2005-06-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Appointment.m: improved handling of
+	  participants in appointment.setParticipants (should fix OGo bug 
+	  #1401) (v5.1.61)
+
 2005-06-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* XmlRpcCoding.subproj/SkyJobDocument+XmlRpcCoding.m: added support for
