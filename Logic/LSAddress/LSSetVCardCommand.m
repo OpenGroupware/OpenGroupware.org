@@ -490,7 +490,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   
   n = [_vc valueForKey:@"n"]; // NGVCardName
   [self mapValue:[n valueForKey:@"family"] to:@"name"];
-  [self mapValue:[n valueForKey:@"given"]  to:@"firstName"];
+  [self mapValue:[n valueForKey:@"given"]  to:@"firstname"];
   [self mapValue:[n valueForKey:@"suffix"] to:@"nameAffix"];
   [self mapValue:[n valueForKey:@"prefix"] to:@"nameTitle"];
   // TODO: other?
