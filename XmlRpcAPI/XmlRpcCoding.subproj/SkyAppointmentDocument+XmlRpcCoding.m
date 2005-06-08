@@ -28,15 +28,16 @@
 
 - (id)initWithXmlRpcCoder:(XmlRpcDecoder *)_coder {
   if ((self = [super initWithXmlRpcCoder:_coder])) {
-    [self setStartDate:[_coder decodeDateTimeForKey:@"startDate"]];
-    [self setEndDate:[_coder decodeDateTimeForKey:@"endDate"]];
+    [self setStartDate:   [_coder decodeDateTimeForKey:@"startDate"]];
+    [self setEndDate:     [_coder decodeDateTimeForKey:@"endDate"]];
     [self setCycleEndDate:[_coder decodeDateTimeForKey:@"cycleEndDate"]];
-    [self setTitle:[_coder decodeStringForKey:@"title"]];
-    [self setLocation:[_coder decodeStringForKey:@"location"]];
-    [self setType:[_coder decodeStringForKey:@"type"]];
-    [self setOwner:[_coder decodeObjectForKey:@"owner"]];
-    [self setComment:[_coder decodeStringForKey:@"comment"]];
+    [self setTitle:       [_coder decodeStringForKey:@"title"]];
+    [self setLocation:    [_coder decodeStringForKey:@"location"]];
+    [self setType:        [_coder decodeStringForKey:@"type"]];
+    [self setOwner:       [_coder decodeObjectForKey:@"owner"]];
+    [self setComment:     [_coder decodeStringForKey:@"comment"]];
     [self setParticipants:[_coder decodeArrayForKey:@"participants"]];
+    [self setAptType:     [_coder decodeStringForKey:@"aptType"]];
   }  
   return self;
 }
@@ -52,6 +53,7 @@
   [_coder encodeObject:[self owner]          forKey:@"owner"];
   [_coder encodeString:[self comment]        forKey:@"comment"];
   [_coder encodeArray:[self participants]    forKey:@"participants"];
+  [_coder encodeString:[self aptType]        forKey:@"aptType"];
 }
 
 @end /* SkyAppointmentDocument(XmlRpcCoding) */
