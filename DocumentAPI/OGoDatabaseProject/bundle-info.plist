@@ -1,5 +1,4 @@
 {
-  CVSID = "$Id$";
   bundleHandler = "SkyDBProjectBundleManager";
 
   requires = {
@@ -34,7 +33,7 @@
 
     OGoProjectBases = (
       { 
-        name             = "Skyrix";
+        name             = "Database";
         fileManagerClass = SkyProjectFileManager;
       }
     );

@@ -1,3 +1,8 @@
+2005-06-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* bundle-info.plist: renamed projectbase "Skyrix" to "Database"
+	  (fixes OGo bug #1398) (v5.1.51)
+
 2005-05-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.50
