@@ -6,7 +6,7 @@ Prerequisites
 =============
 
 SOPE 4.4
-- gnustep-make (gstep-make 1.9.2 or gstep-make 1.10 from www.gnustep.org)
+- gnustep-make (gstep-make 1.10 from www.gnustep.org)
 - Foundation library (eg ThirdParty/libFoundation)
 - libxml2/libxml2-dev
 - autoconf
@@ -51,22 +51,15 @@ Building
 If the prerequisites are properly fulfilled, building OpenGroupware.org is
 a simple:
 
-  make -s debug=yes strip=yes all
+  ./configure
+  make all
 
 Get a coffee, compiling all the OGo packages takes about 8 minutes on Debian 
 Athlon 1.8+ (and about 17 minutes on a MacOSX G4 1.25, 13min on YDL).
 
 Installation:
 
-  make -s debug=yes strip=yes install
-
-Or to install in an FHS location:
-
-  make -s debug=yes strip=yes FHS_INSTALL_ROOT=/usr/local install
-
-Important: ensure that GNUstep.sh from gnustep-make is properly loaded into the
-           shell environment, otherwise you will see errors like "/common.make"
-           not being found.
+  make install
 
 Configuration
 =============
@@ -81,17 +74,19 @@ TODO: write configuration guide for OGo 1.0.
 
 links
 *****
+
+ln -s ~/myogosrctree/WebUI/Resources \
+            $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/translations
+ln -s ~/myogosrctree/WebUI/Templates \
+            $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/templates
+ln -s ~/myogosrctree/Themes/WebServerResources \
+            $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/www
+
+If you use the GNUstep environment (you probably don't), the links are different:
   - pushd $GNUSTEP_USER_ROOT
     - ln -s ~/myogosrctree/WebUI/Resources .
     - ln -s ~/myogosrctree/WebUI/Templates Library/OpenGroupware.org-1.0a/
     - ln -s ~/myogosrctree/Themes/WebServerResources .
-  - for FHS layout:
-    - ln -s ~/myogosrctree/WebUI/Resources \
-            $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/translations 
-    - ln -s ~/myogosrctree/WebUI/Templates \
-            $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/templates
-    - ln -s ~/myogosrctree/Themes/WebServerResources \
-            $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/www
 
 database
 ********
@@ -114,7 +109,7 @@ defaults
   => no need to set if you use user=OGo, pwd emtpy, DB=OGo
 
   NGBundlePath
-    => Note: not required for standard locations!
+    => IMPORTANT: not required for standard locations!
     Defaults write NSGlobalDomain NGBundlePath \
       '"$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/Commands:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/DataSources:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/WebUI:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/"'
 
