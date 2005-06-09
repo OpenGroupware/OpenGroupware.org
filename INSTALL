@@ -118,6 +118,13 @@ defaults
     Defaults write NSGlobalDomain NGBundlePath \
       '"$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/Commands:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/DataSources:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/WebUI:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/"'
 
+init-scripts
+************
+
+Init-Scripts depend on the actual platform, so you need to
+come up with an own. The templates used for the RPM packages can
+be found in:
+  maintenance/rpm_buildenvironment/initscript_templates/
 
 UPGRADE NOTES
 =============
