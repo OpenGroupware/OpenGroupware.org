@@ -93,7 +93,12 @@ database
   su - postgres
   createuser OGo
   createdb   OGo
+
   psql -h localhost OGo OGo (must work)
+    => if this doesn't work, you need to allow TCP/IP in pg_hba.conf, eg:
+       "host OGo OGo 127.0.0.1 255.255.255.255 trust"
+       (you should use appropriate password auth in deployments!)
+
   cd Database/PostgreSQL/
   psql -h localhost OGo OGo < pg-build-schema.psql
 
