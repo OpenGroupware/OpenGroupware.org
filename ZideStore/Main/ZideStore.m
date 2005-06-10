@@ -56,14 +56,9 @@
 + (int)zsMinorVersion {
   return ZS_MINOR_VERSION;
 }
-+ (NSString *)zsGNUstepBundlePath {
-  NSString *relName;
-#if COCOA_Foundation_LIBRARY
-  relName = @"";
-#else
-  relName = @"Library/";
-#endif
-  return [NSString stringWithFormat:@"%@ZideStore-%i.%i", relName,
+
++ (NSString *)zsGNUstepBundlePathWithPrefix:(NSString *)_prefix {
+  return [NSString stringWithFormat:@"%@ZideStore-%i.%i", _prefix,
                       [self zsMajorVersion], [self zsMinorVersion]];
 }
 
@@ -79,23 +74,10 @@
   
   env = [[NSProcessInfo processInfo] environment];
   ma  = [NSMutableArray arrayWithCapacity:6];
-  
-  relName = [[self class] zsGNUstepBundlePath];
-#if COCOA_Foundation_LIBRARY
-  tmp = NSSearchPathForDirectoriesInDomains(NSAllLibrariesDirectory,
-                                            NSAllDomainsMask,
-                                            YES);
-  if ([tmp count] > 0) {
-    NSEnumerator *e;
-      
-    e = [tmp objectEnumerator];
-    while ((tmp = [e nextObject])) {
-      tmp = [tmp stringByAppendingPathComponent:relName];
-      if (![ma containsObject:tmp])
-        [ma addObject:tmp];
-    }
-  }
-#else
+
+  /* check GNUstep locations */
+
+  relName = [[self class] zsGNUstepBundlePathWithPrefix:@"Library/"];
   if ((tmp = [env objectForKey:@"GNUSTEP_PATHPREFIX_LIST"]) == nil)
     tmp = [env objectForKey:@"GNUSTEP_PATHLIST"];
   
@@ -110,18 +92,41 @@
         [ma addObject:tmp];
     }
   }
+
+  /* check Cocoa locations */
+
+  relName = [[self class] zsGNUstepBundlePathWithPrefix:@""];
+#if COCOA_Foundation_LIBRARY
+  tmp = NSSearchPathForDirectoriesInDomains(NSAllLibrariesDirectory,
+                                            NSAllDomainsMask,
+                                            YES);
+  if ([tmp count] > 0) {
+    NSEnumerator *e;
+      
+    e = [tmp objectEnumerator];
+    while ((tmp = [e nextObject])) {
+      tmp = [tmp stringByAppendingPathComponent:relName];
+      if (![ma containsObject:tmp])
+        [ma addObject:tmp];
+    }
+  }
 #endif
 
+  /* check FHS locations */
+  
   relName = [NSString stringWithFormat:@"lib/zidestore-%i.%i/",
                       ZS_MAJOR_VERSION, ZS_MINOR_VERSION];
+  // TODO: add some configured path
   [ma addObject:[@"/usr/local/" stringByAppendingPathComponent:relName]];
   [ma addObject:[@"/usr/"       stringByAppendingPathComponent:relName]];
   
   searchPathes = [ma copy];
   
-  if ([searchPathes count] == 0)
-    NSLog(@"%s: no search pathes were found !", __PRETTY_FUNCTION__);
-  
+  if ([searchPathes count] == 0) {
+    [self logWithFormat:
+	    @"%s: no search pathes were found !", __PRETTY_FUNCTION__];
+  }
+  [self logWithFormat:@"PATHES: %@", searchPathes];
   return searchPathes;
 }
 
@@ -135,16 +140,17 @@
   fm       = [NSFileManager defaultManager];
   
   pathes = [[self zsProductSearchPathes] objectEnumerator];
-  while ((lpath = [pathes nextObject])) {
+  while ((lpath = [pathes nextObject]) != nil) {
     NSEnumerator *productNames;
     NSString *productName;
     
     productNames = [[fm directoryContentsAtPath:lpath] objectEnumerator];
     
-    while ((productName = [productNames nextObject])) {
+    while ((productName = [productNames nextObject]) != nil) {
       NSString *bpath;
       
       bpath = [lpath stringByAppendingPathComponent:productName];
+      
       [self logWithFormat:@"register ZideStore product: %@", 
               [bpath lastPathComponent]];
       [registry registerProductAtPath:bpath];
