@@ -144,25 +144,29 @@
   return [(id)[self session] commandContext];
 }
 - (SkyAppointmentDataSource *)_dataSourceFrom:(NSCalendarDate *)_from
-                                   to:(NSCalendarDate *)_to
+  to:(NSCalendarDate *)_to
 {
   SkyAppointmentDataSource *das;
-  das = [(SkyAppointmentDataSource *)[SkyAppointmentDataSource alloc]
-                                     initWithContext:[self _commandContext]];
+  
+  das = [SkyAppointmentDataSource alloc]; // keep gcc happy
+  das = [das initWithContext:[self _commandContext]];
   [das setFetchSpecification:[self _fetchSpecFrom:_from to:_to]];
 
-  return AUTORELEASE(das);
+  return [das autorelease];
 }
-- (NSArray *)_searchAptsFrom:(NSCalendarDate *)_from
-                          to:(NSCalendarDate *)_to
-{
-  SkyAppointmentDataSource *das = [self _dataSourceFrom:_from to:_to];
-  NSEnumerator             *e   = [[das fetchObjects] objectEnumerator];
+- (NSArray *)_searchAptsFrom:(NSCalendarDate *)_from to:(NSCalendarDate *)_to {
+  SkyAppointmentDataSource *das;
+  NSEnumerator             *e;
   id                       one;
-  NSMutableArray           *ma  = [NSMutableArray array];
-  NSString                 *perms;
-
-  while ((one = [e nextObject])) {
+  NSMutableArray           *ma;
+  
+  das = [self _dataSourceFrom:_from to:_to];
+  e   = [[das fetchObjects] objectEnumerator];
+  ma  = [[NSMutableArray alloc] initWithCapacity:128];
+  
+  while ((one = [e nextObject]) != nil) {
+    NSString *perms;
+    
     perms = [one valueForKey:@"permissions"];
     if (([[one valueForKey:@"title"] length]) ||  // can see title --> allowed
         ((perms) && ([perms indexOfString:@"v"] != NSNotFound)) ||
@@ -170,30 +174,37 @@
       [ma addObject:one];
   }
   one = [ma copy];
-  return AUTORELEASE(one);
+  [ma release]; ma = nil;
+  return [one autorelease];
 }
 
 - (NSCalendarDate *)_stringToDate:(NSString *)_src {
-  NSCalendarDate *date = [NSCalendarDate dateWithString:_src
-                                         calendarFormat:@"%Y-%m-%d"];
-  return (date == nil)
-    ? [NSCalendarDate date]
-    : date;
+  NSCalendarDate *date;
+  NSString *fmt;
+  
+  fmt  = ([_src length] > 13) ? @"%Y-%m-%d %H:%M" : @"%Y-%m-%d";
+  if ((date = [NSCalendarDate dateWithString:_src calendarFormat:fmt]) != nil)
+    return date;
+  
+  return [NSCalendarDate date]; // TODO: hm, is this a good idea?
 }
 - (NSCalendarDate *)_fromDateAsDate {
-  return [self _stringToDate:self->fromDate];
+  return [self _stringToDate:
+		 [self->fromDate stringByAppendingString:@" 00:00"]];
 }
 - (NSCalendarDate *)_toDateAsDate {
-  return [self _stringToDate:self->toDate];
+  return [self _stringToDate:
+		 [self->toDate stringByAppendingString:@" 23:59"]];
 }
 
 - (EOQualifier *)_qualifierForPalmDS {
-  id actualId = [self->doc globalID];
-
-  if (actualId != nil) {
+  id actualId;
+  
+  actualId = [self->doc globalID];
+  if ([actualId isNotNull])
     actualId = [[actualId keyValuesArray] objectAtIndex:0];
-  }
-  if ((actualId != nil) && ([actualId intValue] > 0)) {
+  
+  if ([actualId isNotNull] && ([actualId intValue] > 0)) {
     return [EOQualifier qualifierWithQualifierFormat:
                         @"(skyrix_id > 0) AND (is_deleted=0) AND "
                         @"(is_archived=0) "
@@ -294,18 +305,23 @@
 }
 
 - (void)_searchApts {
-  NSArray        *as   = nil;
-  NSCalendarDate *from = nil;
-  NSCalendarDate *to   = nil;
-
+  NSArray        *as;
+  NSCalendarDate *from, *to;
+  
   from = [self _fromDateAsDate];
   to   = [self _toDateAsDate];
-
-  as   = [self _searchAptsFrom:from to:to];
-  as   = [self _filterAptsWithoutBindings:as];
-  as   = [self _filterRepetitionApts:as];
-
-  ASSIGN(self->apts,as);
+  
+  if ([from earlierDate:to] == from) {
+    as   = [self _searchAptsFrom:from to:to];
+    as   = [self _filterAptsWithoutBindings:as];
+    as   = [self _filterRepetitionApts:as];
+  }
+  else {
+    [self setErrorString:@"event fetch error, fromdate later than enddate"];
+    as = nil;
+  }
+  
+  ASSIGN(self->apts, as);
 }
 
 - (void)_fetchAptsOfRange {
@@ -442,7 +458,7 @@
   WOResourceManager *rm;
   NSString *url;
   
-  rm = [(id)[WOApplication application] resourceManager];
+  rm = [[self application] resourceManager];
   
   url = [rm urlForResourceNamed:@"calendar.html"
             inFramework:nil
@@ -450,8 +466,8 @@
             request:[[self context] request]];
   
   if (url == nil) {
-    [self debugWithFormat:@"couldn't locate calendar page"];
-    url = @"/Skyrix.woa/WebServerResources/English.lproj/calendar.html";
+    [self debugWithFormat:@"could not locate calendar page"];
+    url = @"/OpenGroupware.woa/WebServerResources/English.lproj/calendar.html";
   }
 
   return url;
@@ -471,20 +487,26 @@
   return [self _dateOnClickEvent:@"to"];
 }
 
-// appointment display
+/* appointment display */
 
 - (NSString *)_timeStrForApt:(id)_apt {
-  NSCalendarDate *start = [_apt valueForKey:@"startDate"];
-  NSCalendarDate *end   = [_apt valueForKey:@"endDate"];
+  // TODO: should be a formatter
+  NSCalendarDate *start;
+  NSCalendarDate *end;
 
-  if ([start isDateOnSameDay:end])
+  start = [_apt valueForKey:@"startDate"];
+  end   = [_apt valueForKey:@"endDate"];
+
+  if ([start isDateOnSameDay:end]) {
     return [NSString stringWithFormat:@"%@ - %@",
                      [start descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M"],
                      [end descriptionWithCalendarFormat:@"%H:%M"]];
-  if ([start yearOfCommonEra] == [end yearOfCommonEra])
+  }
+  if ([start yearOfCommonEra] == [end yearOfCommonEra]) {
     return [NSString stringWithFormat:@"%@ - %@",
                      [start descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M"],
                      [end descriptionWithCalendarFormat:@"%m-%d %H:%M"]];
+  }
   return [NSString stringWithFormat:@"%@ - %@",
                    [start descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M"],
                    [end descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M"]];
@@ -520,12 +542,12 @@
 
 - (id)searchAppointments {
   self->searchApts = YES;
-  RELEASE(self->apts); self->apts = nil;
+  [self->apts release]; self->apts = nil;
   return [self changeAppointment];
 }
 - (id)showAppointments {
   self->searchApts = NO;
-  RELEASE(self->apts); self->apts = nil;
+  [self->apts release]; self->apts = nil;
   return [self changeAppointment];
 }
 
@@ -537,11 +559,13 @@
   return _rec;
 }
 - (NSMutableArray *)_checkSkyrixRecords:(NSArray *)_recs {
-  NSMutableArray *checked = [NSMutableArray array];
-  NSEnumerator   *e       = [_recs objectEnumerator];
-  id             one      = nil;
+  NSMutableArray *checked;
+  NSEnumerator   *e;
+  id             one;
 
-  while ((one = [e nextObject])) {
+  checked = [NSMutableArray arrayWithCapacity:8];
+  e       = [_recs objectEnumerator];
+  while ((one = [e nextObject]) != nil) {
     one = [self _checkSkyrixRecord:one];
     if (![checked containsObject:one])
       [checked addObject:one];
@@ -550,7 +574,6 @@
 }
 
 - (id)save {
-
   if ([self isSingleSelection]) {
     if ([self createFromRecord]) {
       NSCalendarDate *date = [NSCalendarDate date];
@@ -579,24 +602,26 @@
   return @"dateId";
 }
 - (SkyPalmDateDocument *)newPalmDoc {
-  NSCalendarDate      *date   = [NSCalendarDate date];
-  SkyPalmDateDocument *newDoc =
-    (SkyPalmDateDocument *)[[self dataSource] newDocument];
-
+  NSCalendarDate      *date;
+  SkyPalmDateDocument *newDoc;
+  
+  date   = [NSCalendarDate date];
+  newDoc = (SkyPalmDateDocument *)[[self dataSource] newDocument];
+  
   [date setTimeZone:[[self session] timeZone]];
   [newDoc setStartdate:date];
   return newDoc;
 }
 
 - (id)newSkyrixRecordForPalmDoc:(SkyPalmDocument *)_doc {
-  id                       ctx  = nil;
+  LSCommandContext         *ctx;
   SkyAppointmentDataSource *das = nil;
   id                       rec  = nil;
   NSArray        *writeAccess;
   id             readAccess;
-  id tmp;
+  id             tmp;
   NSUserDefaults *ud;
-
+  
   ctx = [(id)[self session] commandContext];
   das = [(SkyAppointmentDataSource *)[SkyAppointmentDataSource alloc]
                                      initWithContext:ctx];
@@ -621,13 +646,14 @@
     : nil;    
     
   
-  rec = [das createObject];
+  rec = [[[das createObject] retain] autorelease];
+  
   [rec setWriteAccess:writeAccess];
   [rec setAccessTeamId:readAccess];
   [_doc putValuesToSkyrixRecord:rec];
   [(SkyAppointmentDocument *)rec save];
-
-  RELEASE(das);
+  
+  [das release]; das = nil;
   return rec;
 }
 

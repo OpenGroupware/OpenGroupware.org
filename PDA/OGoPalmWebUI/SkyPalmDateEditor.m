@@ -92,74 +92,75 @@
   return self;
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->startdate);
-  RELEASE(self->alarmUnit);
-  RELEASE(self->repeatFrequencys);
-  RELEASE(self->weekdaySelection);
-  RELEASE(self->repeatEnddate);
+  [self->startdate        release];
+  [self->alarmUnit        release];
+  [self->repeatFrequencys release];
+  [self->weekdaySelection release];
+  [self->repeatEnddate    release];
   [super dealloc];
 }
-#endif
+
+/* activation */
 
 - (BOOL)prepareForActivationCommand:(NSString *)_command
-                               type:(NGMimeType *)_type
-                      configuration:(id)_cfg
+  type:(NGMimeType *)_type
+  configuration:(NSDictionary *)_cfg
 {
-  if ([super prepareForActivationCommand:_command type:_type
-             configuration:_cfg])
-    {
-      
-      NSCalendarDate *start;
-      NSCalendarDate *end;
-      int            repeatType;
-      id             obj;
-
-      obj = [self snapshot];
+  NSCalendarDate *start;
+  NSCalendarDate *end;
+  int            repeatType;
+  id             obj;
   
-      // date
-      start = [obj valueForKey:@"startdate"];
-      end   = [obj valueForKey:@"enddate"];
-      if (start == nil) {
+  if (![super prepareForActivationCommand:_command type:_type
+	      configuration:_cfg])
+    return NO;
+      
+  obj = [self snapshot];
+  
+  // date
+  start = [obj valueForKey:@"startdate"];
+  end   = [obj valueForKey:@"enddate"];
+  if (start == nil) {
         self->startHour   = -1;
         self->startMinute = -1;
         self->endHour     = -1;
         self->endMinute   = -1;
         start = [NSCalendarDate date];
         [start setTimeZone:[(id)[self session] timeZone]];
-      }
-      else if ([obj isUntimed]) {
+  }
+  else if ([obj isUntimed]) {
         self->startHour   = -1;
         self->startMinute = -1;
         self->endHour     = -1;
         self->endMinute   = -1;
-      }
-      else {
+  }
+  else {
         self->startHour   = [start hourOfDay];
         self->startMinute = [start minuteOfHour];
         self->endHour     = [end hourOfDay];
         self->endMinute   = [end minuteOfHour];
-      }
-      [self setStartdate:[start descriptionWithCalendarFormat:@"%Y-%m-%d"]];
+  }
+  [self setStartdate:[start descriptionWithCalendarFormat:@"%Y-%m-%d"]];
 
-      // alarm
-      [self setAlarmUnit:
-            [[NSNumber numberWithInt:[obj alarmAdvanceUnit]] stringValue]];
+  // alarm
+  [self setAlarmUnit:
+	  [[NSNumber numberWithInt:[obj alarmAdvanceUnit]] stringValue]];
 
-      // repeat
-      end = [obj valueForKey:@"repeatEnddate"];
-      if (end == nil) {
+  // repeat
+  end = [obj valueForKey:@"repeatEnddate"];
+  if (end == nil) {
         [self setRepeatEnddate:@""];
         self->hasRepeatEnddate = NO;
-      } else {
+  } 
+  else {
         [self setRepeatEnddate:
               [end descriptionWithCalendarFormat:@"%Y-%m-%d"]];
         self->hasRepeatEnddate = YES;
-      }
+  }
   
-      repeatType = [obj repeatType];
-      if (repeatType == REPEATTYPE_WEEKLY) {
+  repeatType = [obj repeatType];
+  if (repeatType == REPEATTYPE_WEEKLY) {
         int      repeatOn = [obj repeatOn];
         int      cnt      = 0;
         NSNumber *nYes    = [NSNumber numberWithBool:YES];
@@ -168,22 +169,21 @@
             [self->weekdaySelection replaceObjectAtIndex:cnt withObject:nYes];
           repeatOn >>= 1;
         }
-      }
-      [self _setRepeatFrequency:
-            [[NSNumber numberWithInt:[obj repeatFrequency]] stringValue]
-            ofMode:repeatType];
+  }
+  [self _setRepeatFrequency:
+	  [[NSNumber numberWithInt:[obj repeatFrequency]] stringValue]
+	ofMode:repeatType];
       
-      return YES;
-    }
-  return NO;
+  return YES;
 }
 
-// accessors
+/* accessors */
+
 - (id)date {
   return [self snapshot];
 }
 
-// startdate
+/* startdate */
 - (void)setStartHour:(NSNumber *)_h {
   self->startHour = [_h intValue];
 }
@@ -203,7 +203,7 @@
   return self->startdate;
 }
 
-// enddate
+/* enddate */
 - (void)setEndHour:(NSNumber *)_h {
   self->endHour = [_h intValue];
 }
@@ -265,7 +265,7 @@
   WOResourceManager *rm;
   NSString *url;
   
-  rm = [(id)[WOApplication application] resourceManager];
+  rm = [[self application] resourceManager];
   
   url = [rm urlForResourceNamed:@"calendar.html"
             inFramework:nil

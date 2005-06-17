@@ -181,7 +181,7 @@
   WOResourceManager *rm;
   NSString *url;
   
-  rm = [(id)[WOApplication application] resourceManager];
+  rm = [[self application] resourceManager];
   
   url = [rm urlForResourceNamed:@"calendar.html"
             inFramework:nil

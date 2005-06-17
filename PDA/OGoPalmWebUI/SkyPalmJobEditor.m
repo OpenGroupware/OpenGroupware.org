@@ -35,6 +35,7 @@
 
 #include "common.h"
 #include <OGoPalm/SkyPalmJobDocument.h>
+#include <NGObjWeb/WOApplication.h>
 
 @interface NSObject(SkyPalmJobEditorMethods)
 - (id)resourceManager;
@@ -46,6 +47,8 @@
   [self->duedate release];
   [super dealloc];
 }
+
+/* activation */
 
 - (BOOL)prepareForEditCommand:(NSString *)_command
   type:(NGMimeType *)_type
@@ -95,7 +98,7 @@
   WOResourceManager *rm;
   NSString *url;
   
-  rm = [(id)[WOApplication application] resourceManager];
+  rm = [(WOApplication *)[self application] resourceManager];
   
   url = [rm urlForResourceNamed:@"calendar.html"
             inFramework:nil

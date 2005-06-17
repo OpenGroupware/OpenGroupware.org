@@ -1,3 +1,13 @@
+2005-06-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.1.29
+
+	* fixed gcc 4.0 warnings
+
+	* SkyPalmAssignDate.m: code cleanups, use 00:00/23:59 for from-date and
+	  to-date ranges, avoid an assertion (should fix bug #1413) - spotted
+	  by Marc Lardy
+
 2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
 
 	* bundle-info.plist: removed missing SkyPalmEntryListViewer (v5.1.28)

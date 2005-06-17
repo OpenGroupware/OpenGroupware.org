@@ -27,47 +27,30 @@
 }
 @end /* SkyPalmAssignJob */
 
-#import <Foundation/Foundation.h>
-#include <OGoFoundation/OGoFoundation.h>
+#include "common.h"
 #include <LSFoundation/LSFoundation.h>
-#include <EOControl/EOQualifier.h>
-#include <EOControl/EOFetchSpecification.h>
-#include <EOControl/EOSortOrdering.h>
-#include <EOControl/EOKeyGlobalID.h>
-#include <NGExtensions/EODataSource+NGExtensions.h>
-
-#include <OGoJobs/SkyPersonJobDataSource.h>
-#include <OGoPalm/SkyPalmConstants.h>
-#include <OGoPalm/SkyPalmJobDocument.h>
-#include <OGoPalm/SkyPalmEntryDataSource.h>
-
 #include <OGoJobs/SkyJobDocument.h>
 #include <OGoJobs/SkyPersonJobDataSource.h>
+#include <OGoPalm/SkyPalmConstants.h>
+#include <OGoPalm/SkyPalmEntryDataSource.h>
+#include <OGoPalm/SkyPalmJobDocument.h>
 
 @implementation SkyPalmAssignJob
 
-- (id)init {
-  if ((self = [super init])) {
-    self->jobs = nil;
-  }
-  return self;
-}
-
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->jobs);
+  [self->jobs release];
   [super dealloc];
 }
-#endif
 
-// accessors
+/* accessors */
 
 - (EOQualifier *)_qualifierForPalmDS {
-  id actualId = [[self doc] globalID];
-
-  if (actualId != nil) {
+  id actualId;
+  
+  actualId = [(SkyPalmDocument *)[self doc] globalID];
+  if ([actualId isNotNull])
     actualId = [[actualId keyValuesArray] objectAtIndex:0];
-  }
+  
   if ((actualId != nil) && ([actualId intValue] > 0)) {
     return [EOQualifier qualifierWithQualifierFormat:
                         @"skyrix_id > 0 AND is_deleted=0 AND is_archived=0 "

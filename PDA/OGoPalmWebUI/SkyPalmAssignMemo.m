@@ -163,9 +163,9 @@ static NSArray     *filenameSortOrderings      = nil;
   if (self->fileManager == nil) {
     if ([self projectGID] != nil) {
       self->fileManager =
-        [OGoFileManagerFactory fileManagerInContext:
-                               [(id)[self session] commandContext]
-                               forProjectGID:[self projectGID]];
+        [[OGoFileManagerFactory sharedFileManagerFactory]
+	  fileManagerInContext:[(id)[self session] commandContext]
+	  forProjectGID:[self projectGID]];
       self->fileManager = [self->fileManager retain];
     }
   }
@@ -176,32 +176,35 @@ static NSArray     *filenameSortOrderings      = nil;
   ASSIGN(self->projectGID,_p);
 }
 - (id)projectGID {
-  if (self->projectGID == nil) {
-    if ([self skyrixRecord] != nil) {
-      id sId = nil;
+  id sId;
+  
+  if (self->projectGID != nil)
+    return self->projectGID;
 
-      sId = [[self skyrixRecord] globalID];
+  if ([self skyrixRecord] == nil)
+    return nil;
 
-      // not yet supported
-      //if ([sId isKindOfClass:[SkyFSGlobalID class]]) {
-      //  sId = [(SkyFSGlobalID *)sId projectGID];
-      //}
-      //else
-      if ([sId isKindOfClass:[EOKeyGlobalID class]]) {
-        sId = [[self projectFileManagerClass]
-                     projectGlobalIDForDocumentGlobalID:sId
-                     context:[(id)[self session] commandContext]];
-      }
-      else {
-        NSLog(@"%s: unsupported projectGID: %@",
-              __PRETTY_FUNCTION__, sId);
-        sId = nil;
-      }
+  sId = [(SkyPalmDocument *)[self skyrixRecord] globalID];
 
-      if (sId != nil)
-        [self setProjectGID:sId];
-    }
+  // not yet supported
+  //if ([sId isKindOfClass:[SkyFSGlobalID class]]) {
+  //  sId = [(SkyFSGlobalID *)sId projectGID];
+  //}
+  //else
+  if ([sId isKindOfClass:[EOKeyGlobalID class]]) {
+    sId = [[self projectFileManagerClass]
+	    projectGlobalIDForDocumentGlobalID:sId
+	    context:[(id)[self session] commandContext]];
   }
+  else {
+    NSLog(@"%s: unsupported projectGID: %@",
+	  __PRETTY_FUNCTION__, sId);
+    sId = nil;
+  }
+
+  if (sId != nil)
+    [self setProjectGID:sId];
+  
   return self->projectGID;
 }
 

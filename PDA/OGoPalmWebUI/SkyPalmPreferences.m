@@ -397,7 +397,7 @@ static NSMutableArray *_getGIDSforIds(SkyPalmPreferences *self,
     NSEnumerator   *e;
     NSMutableArray *ma;
 
-    ma  = [NSMutableArray array];
+    ma  = [NSMutableArray arrayWithCapacity:16];
     tmp = [[self defaults] dictionaryForKey:@"OGoPalmAddress_Palm_Attributes"];
     e   = [tmp keyEnumerator];
 
@@ -624,8 +624,8 @@ static NSMutableArray *_getGIDSforIds(SkyPalmPreferences *self,
 
 - (id)save {
   NSNotificationCenter *nc;
-  id ud;
-  id uid;
+  NSUserDefaults *ud;
+  NSNumber       *uid;
 
   uid = [[self account] valueForKey:@"companyId"];
 
@@ -677,8 +677,8 @@ static NSMutableArray *_getGIDSforIds(SkyPalmPreferences *self,
           @"value",        tIds,
           @"userdefaults", ud,
           @"userId",       uid, nil];
-    RELEASE(pIds); pIds = nil;
-    RELEASE(tIds); tIds = nil;
+    [pIds release]; pIds = nil;
+    [tIds release]; tIds = nil;
   }
 
   [ud setObject:[[[self selectedOgoDateAccessTeam]
@@ -713,7 +713,7 @@ static NSMutableArray *_getGIDSforIds(SkyPalmPreferences *self,
     args = [NSArray arrayWithObjects:@"name", @"firstname", @"isAccount",
                     @"login", nil];
   else
-    NSLog(@"WARNING: unknown entityName %@", _entityName);
+    [self logWithFormat:@"WARNING: unknown entityName %@", _entityName];
 
 
   if ((_ids != nil) && ([_ids count] > 0)) {
@@ -732,9 +732,9 @@ static NSMutableArray *_getGIDSforIds(SkyPalmPreferences *self,
                   @"gids", gids,
                   @"attributes", args,
                   @"groupBy", @"globalID", nil] allValues];
-    RELEASE(gids);
-    free(objs);
-    return AUTORELEASE([tmp mutableCopy]);
+    [gids release];
+    if (objs) free(objs);
+    return [[tmp mutableCopy] autorelease];
   }
   else
     return [NSMutableArray array];

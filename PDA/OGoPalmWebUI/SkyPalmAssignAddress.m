@@ -54,16 +54,15 @@
 - (id)init {
   if ((self = [super init])) {
     [self setAddressType:@"person"];
-    self->addresses = nil;
     [self setSearchString:@" "];
   }
   return self;
 }
 
 - (void)dealloc {
-  RELEASE(self->addressType);
-  RELEASE(self->addresses);
-  RELEASE(self->searchString);
+  [self->addressType  release];
+  [self->addresses    release];
+  [self->searchString release];
   [super dealloc];
 }
 
@@ -71,19 +70,17 @@
 
 - (BOOL)prepareForActivationCommand:(NSString *)_command
   type:(NGMimeType *)_type
-  configuration:(id)_cfg
+  configuration:(NSDictionary *)_cfg
 {
   if ([super prepareForActivationCommand:_command
-             type:_type configuration:_cfg])
-    {
-      if ([self assignToRecord]) {
-        if (![self hasAddress]) {
+             type:_type configuration:_cfg]) {
+    if ([self assignToRecord]) {
+        if (![self hasAddress])
           [self searchAddresses];
-        }
-      }
-
-      return YES;
     }
+    
+    return YES;
+  }
   return NO;
 }
 
@@ -205,21 +202,26 @@
 }
 
 - (void)_searchPersons {
-  id ctx = [(id)[self session] commandContext];
-  id das = [[SkyPersonDataSource alloc] initWithContext:ctx];
+  SkyPersonDataSource *das;
+  
+  das = [SkyPersonDataSource alloc]; // keep gcc happy
+  das = [das initWithContext:[(id)[self session] commandContext]];
   [self _searchCompaniesWithDS:das
         andQualifier:[self _searchPersonsQualifier]];
-  RELEASE(das);
+  [das release];
 }
 - (void)_searchEnterprises {
-  id ctx = [(id)[self session] commandContext];
-  id das = [[SkyEnterpriseDataSource alloc] initWithContext:ctx];
+  SkyEnterpriseDataSource *das;
+  
+  das = [SkyEnterpriseDataSource alloc];
+  das = [das initWithContext:[(id)[self session] commandContext]];
   [self _searchCompaniesWithDS:das
-        andQualifier:[self _searchEnterprisesQualifier]];
-  RELEASE(das);
+	andQualifier:[self _searchEnterprisesQualifier]];
+  [das release];
 }
 
-// actions
+/* actions */
+
 - (id)searchAddresses {
   if ([[self addressType] isEqualToString:@"person"])
     [self _searchPersons];
@@ -311,8 +313,8 @@
 
 - (id)newSkyrixRecordForPalmDoc:(SkyPalmDocument *)_doc {
   LSCommandContext *ctx;
-  EODataSource     *das = nil;
-  id               rec  = nil;
+  EODataSource     *das;
+  id               rec;
   Class            dsClass;
   
   ctx = [(id)[self session] commandContext];
@@ -321,7 +323,8 @@
     ? [SkyPersonDataSource class]
     : [SkyEnterpriseDataSource class];
   
-  das = [[[dsClass alloc] initWithContext:(id)ctx] autorelease];
+  das = [dsClass alloc];
+  das = [[(SkyPersonDataSource *)das initWithContext:(id)ctx] autorelease];
   
   [(SkyPalmAddressDocument *)_doc setSkyrixType:[self addressType]];
   rec = [das createObject];
