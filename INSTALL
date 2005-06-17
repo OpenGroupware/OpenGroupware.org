@@ -76,16 +76,16 @@ links
 *****
 
 ln -s ~/myogosrctree/WebUI/Resources \
-            $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/translations
+            $FHS_INSTALL_ROOT/share/opengroupware.org-1.1/translations
 ln -s ~/myogosrctree/WebUI/Templates \
-            $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/templates
+            $FHS_INSTALL_ROOT/share/opengroupware.org-1.1/templates
 ln -s ~/myogosrctree/Themes/WebServerResources \
-            $FHS_INSTALL_ROOT/share/opengroupware.org-1.0a/www
+            $FHS_INSTALL_ROOT/share/opengroupware.org-1.1/www
 
 If you use the GNUstep environment (you probably don't), the links are different:
   - pushd $GNUSTEP_USER_ROOT
     - ln -s ~/myogosrctree/WebUI/Resources .
-    - ln -s ~/myogosrctree/WebUI/Templates Library/OpenGroupware.org-1.0a/
+    - ln -s ~/myogosrctree/WebUI/Templates Library/OpenGroupware.org-1.1/
     - ln -s ~/myogosrctree/Themes/WebServerResources .
 
 database
@@ -116,7 +116,7 @@ defaults
   NGBundlePath
     => IMPORTANT: not required for standard locations!
     Defaults write NSGlobalDomain NGBundlePath \
-      '"$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/Commands:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/DataSources:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/WebUI:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.0a/"'
+      '"$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.1/Commands:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.1/DataSources:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.1/WebUI:$(GNUSTEP_USER_ROOT)/Library/OpenGroupware.org-1.1/"'
 
 init-scripts
 ************
@@ -135,7 +135,7 @@ a) note that the daemons now live in
 
      /usr/local/sbin/ (or /usr/sbin)
 
-   and are not wrappers anymore (eg ogo-webui-1.0a instead of 
+   and are not wrappers anymore (eg ogo-webui-1.1 instead of 
    OpenGroupware.woa)
 
 b) the PostgreSQL adaptor was renamed from PostgreSQL72 to PostgreSQL
@@ -147,11 +147,11 @@ c) the Alias for the WebServerResources now starts with
      /OpenGroupware.woa/
 
 d) the webserver resources now live in
-     /usr[/local]/share/opengroupware.org-1.0a/www
+     /usr[/local]/share/opengroupware.org-1.1/www
 
 e) translations (formerly the "Resources" link in $GNUSTEP_USER_ROOT) now live
    in:
-     /usr[/local]/share/opengroupware.org-1.0a/translations/
+     /usr[/local]/share/opengroupware.org-1.1/translations/
 
 f) you might need to remove your NGBundlePath, its not required anymore (for
    FHS installs):
