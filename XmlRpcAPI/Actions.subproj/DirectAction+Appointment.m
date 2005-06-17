@@ -39,9 +39,10 @@
 - (void)_takeValuesDict:(NSDictionary *)_from
   toAppointment:(SkyAppointmentDocument **)_to
 {
+  // TODO: document. Apparently those are the keys which can be changed?
   [*_to takeValuesFromObject:_from
         keys:@"startDate", @"endDate", @"title", @"location", @"cycleEndDate",
-             @"type", @"comment",  nil];
+	@"type", @"comment", @"aptType", nil];
 }
 
 - (NSCalendarDate *)_calendarDateForValue:(id)_val {

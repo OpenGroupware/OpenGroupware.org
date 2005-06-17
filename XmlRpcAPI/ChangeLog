@@ -1,3 +1,8 @@
+2005-06-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Appointment.m: added 'aptType' to
+	  insert/update processing, should fix OGo bug #1418 (v5.1.63)
+
 2005-06-08  Helge Hess  <helge.hess@skyrix.com>
 
 	* XmlRpcCoding.subproj/SkyAppointmentDocument+XmlRpcCoding.m: added
