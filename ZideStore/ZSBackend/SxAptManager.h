@@ -29,6 +29,10 @@
   
   Manage the appointment backend. Identify folder sets using the
   set-identifier.
+
+  Note: a lot of the operations are actually carried out by the SxAptSetHandler
+        object. A difference is that the handler doesn't perform transaction
+        handling.
 */
 
 @class NSString, NSDate, NSArray, NSDictionary, NSMutableDictionary;

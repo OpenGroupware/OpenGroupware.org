@@ -119,6 +119,7 @@
 - (void)setPriority:(NSNumber *)_priority;
 - (NSNumber *)priority;
 
+/* OL: 0-normal/undef, 1-personal, 2-private, 3-confidential */
 - (void)setSensitivity:(NSNumber *)_sensitivity;
 - (NSNumber *)sensitivity;
 
