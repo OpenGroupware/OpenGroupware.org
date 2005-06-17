@@ -1,6 +1,6 @@
 # makefile postprocessing
 
-VERSUFFIX="1.0a"
+VERSUFFIX="1.0"
 
 ifeq ($(FHS_INSTALL_ROOT),)
 

@@ -6,8 +6,8 @@ GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
 include ../Version
 include ./Version
 
-OGO_NHSD_NAME = ogo-nhsd-1.0a
-OGO_PPLS_NAME = ogo-ppls-1.0a
+OGO_NHSD_NAME = ogo-nhsd-1.0
+OGO_PPLS_NAME = ogo-ppls-1.0
 FHS_DAEMONS   = $(OGO_NHSD_NAME)
 FHS_TOOLS     = $(OGO_PPLS_NAME)
 

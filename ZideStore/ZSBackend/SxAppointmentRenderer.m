@@ -44,7 +44,7 @@ static BOOL debugRenderer = NO;
 /* rendering */
 
 - (NSString *)productID {
-  return @"OpenGroupware.org ZideStore 1.3";
+  return @"OpenGroupware.org ZideStore 1.4";
 }
 
 - (NSString *)cnForAccount:(id)_acc {

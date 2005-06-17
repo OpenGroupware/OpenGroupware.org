@@ -5,8 +5,8 @@ ifneq ($(FHS_INSTALL_ROOT),)
 FHS_INCLUDE_DIR=$(FHS_INSTALL_ROOT)/include/
 FHS_LIB_DIR=$(FHS_INSTALL_ROOT)/lib/
 
-FHS_SHARE_DIR=$(FHS_INSTALL_ROOT)/share/opengroupware.org-1.0a/
-FHS_COMMANDS_DIR=$(FHS_LIB_DIR)opengroupware.org-1.0a/commands/
+FHS_SHARE_DIR=$(FHS_INSTALL_ROOT)/share/opengroupware.org-1.0/
+FHS_COMMANDS_DIR=$(FHS_LIB_DIR)opengroupware.org-1.0/commands/
 
 NONFHS_BINDIR="$(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)"
 

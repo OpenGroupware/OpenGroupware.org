@@ -302,7 +302,7 @@ static BOOL   debugOn = NO;
   
   // TODO: use lists ..., or maybe NGResourceLocator
   path = [self findResourceDirectoryNamed:@"Resources" 
-		fhsName:@"share/opengroupware.org-1.0a/translations/"];
+		fhsName:@"share/opengroupware.org-1.0/translations/"];
   if (path == nil)
     return nil;
 
@@ -352,7 +352,7 @@ static BOOL   debugOn = NO;
   fm = [NSFileManager defaultManager];
   // TODO: should be NGResourceLocator method?
   rpath = [[self class] findResourceDirectoryNamed:@"Resources" 
-			fhsName:@"share/opengroupware.org-1.0a/translations/"];
+			fhsName:@"share/opengroupware.org-1.0/translations/"];
   if (rpath == nil) {
     [self logWithFormat:@"missing $GNUSTEP_USER_ROOT/Resources directory ..."];
     return nil;

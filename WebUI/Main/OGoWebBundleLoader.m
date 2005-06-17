@@ -27,7 +27,7 @@
 
 static BOOL logBundleLoading          = NO;
 static BOOL loadWebUIBundlesOnStartup = YES;
-static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
+static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0/";
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];

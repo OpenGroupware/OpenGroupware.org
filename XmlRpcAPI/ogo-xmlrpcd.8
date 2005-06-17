@@ -11,21 +11,21 @@
 .\"
 
 .SH NAME
-ogo-xmlrpcd-1.0a \- OGo XML-RPC protocol server
+ogo-xmlrpcd-1.0 \- OGo XML-RPC protocol server
 .SH SYNOPSIS
-.B ogo-xmlrpcd-1.0a 
+.B ogo-xmlrpcd-1.0 
 [
 .BI \-WOPort " port"
 ]
 
 .SH DESCRIPTION
 The
-.B ogo-xmlrpcd-1.0a
+.B ogo-xmlrpcd-1.0
 server can be used to access the OpenGroupware.org functionality and database
 using the XML-RPC protocol.
 .PP
 Note that you should not connect
-.B ogo-xmlrpcd-1.0a
+.B ogo-xmlrpcd-1.0
 directly on its port using your client, but rather use
 .B mod_ngobjweb
 in combination with
@@ -35,7 +35,7 @@ in combination with
 .TP 12
 .IP "-WOPort port"
 This option sets the TCP/IP port the
-.B ogo-xmlrpcd-1.0a
+.B ogo-xmlrpcd-1.0
 server is running on and which the mod_ngobjweb will connect to.
 
 .SH FILES
@@ -45,7 +45,7 @@ This file contains configurations which apply to all OpenGroupware.org
 related daemons. This includes settings like the database connection
 dictionary or the path where preferences of OGo accounts are stored.
 .RE
-.I /etc/opengroupware.org/ogo-xmlrpcd-1.0a.plist
+.I /etc/opengroupware.org/ogo-xmlrpcd-1.0.plist
 .RS
 Configurations contained in this file overwrite those in the NSGlobalDomain.
 You can persist any command line option in this file using the

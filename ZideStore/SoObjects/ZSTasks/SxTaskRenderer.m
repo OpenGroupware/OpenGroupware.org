@@ -170,7 +170,7 @@
   [ms appendString:@"BEGIN:VCALENDAR\r\n"];
   [ms appendString:
         @"PRODID:-//OpenGroupware.org//"
-        @"NONSGML ZideStore 1.3//EN\r\n"];
+        @"NONSGML ZideStore 1.4//EN\r\n"];
   [ms appendString:@"VERSION:2.0\r\n"];
   [ms appendString:@"METHOD:PUBLISH\r\n"];
   
