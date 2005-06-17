@@ -58,7 +58,7 @@ if [ $1 = 1 ]; then
   Defaults write NSGlobalDomain skyrix_id `hostname`
   Defaults write NSGlobalDomain TimeZoneName GMT
   Defaults write NSGlobalDomain WOHttpAllowHost '( localhost, 127.0.0.1, localhost.localdomain)'
-  Defaults write ogo-nhsd-1.0a NGBundlePath '%{prefix}/lib/opengroupware.org-1.0a/conduits'
+  Defaults write ogo-nhsd-1.0 NGBundlePath '%{prefix}/lib/opengroupware.org-1.0/conduits'
   Defaults write skyaptnotify AptNotifyVerbose NO
   Defaults write skyaptnotify AptNotifyFromAdress '${OGO_USER}@`hostname`'
   Defaults write skyaptnotify AptNotifySentResourcesFile '%{_var}/log/opengroupware/sent-resources'
@@ -121,6 +121,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Fri Jun 17 2005 Helge Hess <helge.hess@opengroupware.org>
+- patched pathes for version 1.0
 * Mon Mar 14 2005 Frank Reppin <frank@opengroupware.org>
 - added skyaptnotify defaults
 * Thu Mar 10 2005 Frank Reppin <frank@opengroupware.org>
