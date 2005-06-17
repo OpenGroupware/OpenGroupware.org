@@ -1,5 +1,9 @@
 2005-06-17  Helge Hess  <helge.hess@opengroupware.org>
 
+	* Actions.subproj/DirectAction+Job.m: added support for changing
+	  most of the Outlook related task properties, should fix OGo bug #1412
+	  (v5.1.64)
+
 	* Actions.subproj/DirectAction+Appointment.m: added 'aptType' to
 	  insert/update processing, should fix OGo bug #1418 (v5.1.63)
 

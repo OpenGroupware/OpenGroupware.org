@@ -640,9 +640,14 @@
 @implementation DirectAction(JobPrivate)
 
 - (void)_takeValuesDict:(NSDictionary *)_from toJob:(SkyJobDocument **)_to {
+  // TODO: document, apparently the allowed keys in an update/insert?
   [*_to takeValuesFromObject:_from
         keys:@"name", @"startDate", @"endDate", @"category", @"jobStatus",
-	@"priority", @"type", @"comment", nil];
+	@"priority", @"type", @"comment", 
+	@"sensitivity", @"completionDate", @"percentComplete",
+	@"accountingInfo", @"associatedCompanies", @"associatedContacts",
+	@"actualWork", @"totalWork", @"kilometers",
+	nil];
 }
 
 - (NSArray *)_fetchJobsOf:(id)_doc fSpec:(id)_fSpec {
