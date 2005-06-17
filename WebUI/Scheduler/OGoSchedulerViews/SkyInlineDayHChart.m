@@ -195,72 +195,68 @@
   return [[self hour] descriptionWithCalendarFormat:format];
 }
 
+- (BOOL)hasTheCurrentAppointmentTheResource:(NSString *)_row {
+  // isResource
+  NSString *resources;
+  
+  resources = [self->appointment valueForKey:@"resourceNames"];
+  if (![resources isNotNull])
+    return NO;
+    
+  return ([resources rangeOfString:_row].length == 0) ? NO : YES;
+}
+
 - (BOOL)isAppointmentInRow {
   // TODO: cleanup/splitup
-  if (self->appointment == nil)
+  NSArray *participants;
+  NSMutableArray *teams = nil;
+  int            i, cnt;
+  
+  if (![self->appointment isNotNull])
     return NO;
   
-  if ([self->row isKindOfClass:[NSString class]]) {
-    // isResource
-    NSString *resources;
-    
-    resources = [self->appointment valueForKey:@"resourceNames"];
+  if ([self->row isKindOfClass:[NSString class]])
+    return [self hasTheCurrentAppointmentTheResource:self->row];
+  
+  if ((participants = [self->appointment valueForKey:@"participants"]) == nil)
+    return NO;
 
-    if (![resources isNotNull])
-      return NO;
-    
-    return ([resources rangeOfString:self->row].length == 0) ? NO : YES;
+  teams = [NSMutableArray arrayWithCapacity:[participants count]];
+
+  for (i = 0, cnt = [participants count]; i < cnt; i++) {
+    EOGlobalID *gid;
+
+    gid = [[participants objectAtIndex:i] valueForKey:@"globalID"];
+
+    if ([gid isEqual:[self->row valueForKey:@"globalID"]])
+      return YES;
+    if ([[gid entityName] isEqualToString:@"Team"])
+      [teams addObject:gid];
   }
-  else {
-    NSArray *participants;
-    
-    participants = [self->appointment valueForKey:@"participants"];
-
-    if (participants == nil)
-      return NO;
-    else {
-      NSMutableArray *teams = nil;
-      int            i, cnt;
-
-      teams = [NSMutableArray array];
-
-      for (i = 0, cnt = [participants count]; i < cnt; i++) {
-        id gid = nil;
-
-        gid = [[participants objectAtIndex:i] valueForKey:@"globalID"];
-
-        if ([gid isEqual:[self->row valueForKey:@"globalID"]])
-          return YES;
-        if ([[gid entityName] isEqualToString:@"Team"]) {
-          [teams addObject:gid];
-        }
-      }
-      if ([teams count] > 0) {
-        id members = nil;
+  
+  if ([teams count] > 0) {
+    id members;
         
-        if ((members = [self->appointment valueForKey:@"members"]) == nil) {
-          members = [self runCommand:@"team::members",
+    if ((members = [self->appointment valueForKey:@"members"]) == nil) {
+      members = [self runCommand:@"team::members",
                           @"groups",         teams,
                           @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
                           nil];
-          if ([members isKindOfClass:[NSDictionary class]]) {
+      if ([members isKindOfClass:[NSDictionary class]]) {
             NSMutableArray *a = nil;
             int             i, cnt;
             
-            a = [NSMutableArray array];
+            a = [NSMutableArray arrayWithCapacity:8];
             members = [members allValues];
 
             for (i = 0, cnt = [members count]; i < cnt; i++) 
               [a addObjectsFromArray:[members objectAtIndex:i]];
             members = a;
-          }
-          [self->appointment takeValue:members forKey:@"members"];
-        }
-        if ([members containsObject:[self->row valueForKey:@"globalID"]])
-          return YES;
       }
+      [self->appointment takeValue:members forKey:@"members"];
     }
-    return NO;
+    if ([members containsObject:[self->row valueForKey:@"globalID"]])
+      return YES;
   }
   return NO;
 }
@@ -310,61 +306,94 @@
   return ([[self rows] count] > 0) ? YES : NO;
 }
 
-- (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
-  id all = [[self dataSource] companies];
-  id pers = [NSMutableArray array];
-  id tms  = [NSMutableArray array];
+- (id)_fetchMembersForTeamGlobalIDs:(NSArray *)_gids {
+  /* returns a single object for one GID and a dict for multiple? */
+  return [self runCommand:@"team::members",
+	         @"groups",         _gids,
+	         @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
+	       nil];
+}
+
+- (void)_setupPersonsAndTeamsForResponseGeneration {
+  // DUP in SkyInlineWeekHChart
+  NSArray        *all;
+  NSMutableArray *pers;
+  NSMutableArray *tms;
   int cnt = 0;
 
-  while (cnt < [all count]) {
-    id one = [all objectAtIndex:cnt++];
+  all  = [[self dataSource] companies];
+  pers = [NSMutableArray arrayWithCapacity:8];
+  tms  = [NSMutableArray arrayWithCapacity:2];
+  
+  for (cnt = 0; cnt < [all count]; cnt++) {
+    id one = [all objectAtIndex:cnt];
     if ([[one entityName] isEqualToString:@"Person"])
       [pers addObject:one];
     else
       [tms addObject:one];
   }
   if ([tms count] > 0) {
-    id members;
-    int cnt = 0;
-    members = [self runCommand:@"team::members",
-                    @"groups",         tms,
-                    @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
-                    nil];
-
-    while (cnt < [members count]) {
-      id obj = [members objectAtIndex:cnt++];
-      if (![pers containsObject:obj]) {
+    NSArray *members;
+    unsigned cnt;
+    
+    members = [self _fetchMembersForTeamGlobalIDs:tms];
+    if ([members isKindOfClass:[NSDictionary class]])
+      members = [(NSDictionary *)members allValues];
+    
+    for (cnt = 0; cnt < [members count]; cnt++) {
+      id obj = [members objectAtIndex:cnt];
+      
+      if (![pers containsObject:obj])
         [pers addObject:obj];
-      }
     }
   }
   if ([pers count] > 0) {
-    pers = [self runCommand:@"person::get-by-globalid",
-                 @"gids", pers,
-                 @"attributes",[NSArray arrayWithObjects:@"login", @"name",
-                                        @"firstname", @"globalID", nil],
-                 nil];
+    static NSArray *attrs     = nil;
+    static NSArray *orderings = nil;
 
-    pers = [pers sortedArrayUsingKeyOrderArray:
-                 [NSArray arrayWithObjects:
-                          [EOSortOrdering sortOrderingWithKey:@"name"
-                                          selector:EOCompareAscending],
-                          [EOSortOrdering sortOrderingWithKey:@"firstname"
-                                          selector:EOCompareAscending],
-                          nil]];
-
+    if (attrs == nil) {
+      attrs = [[[NSUserDefaults standardUserDefaults] 
+		 arrayForKey:@"OGoScheduler_HChartsPersonFetchKeys"] copy];
+    }
+    if (orderings == nil) {
+      EOSortOrdering *nameAsc, *fnameAsc;
+      
+      nameAsc  = [EOSortOrdering sortOrderingWithKey:@"name"
+                                 selector:EOCompareAscending];
+      fnameAsc = [EOSortOrdering sortOrderingWithKey:@"firstname"
+                                 selector:EOCompareAscending];
+      orderings = [[NSArray alloc] initWithObjects:nameAsc, fnameAsc, nil];
+    }
+    
+    if ([pers count] > 0) {
+      pers = [self runCommand:@"person::get-by-globalid",
+                     @"gids",       pers,
+                     @"attributes", attrs, nil];
+    }
+    else
+      pers = [NSArray array];
+    
+    pers = (id)[pers sortedArrayUsingKeyOrderArray:orderings];
+    
     ASSIGN(self->persons, pers);
   }
   else
     self->persons = [[NSArray alloc] init];
-  {
-    NSArray *rs;
+}
+
+- (void)_setupResourcesForResponseGeneration {
+  NSArray *rs;
     
-    rs = [self->dataSource resources];
-    rs = [rs sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-    rs = [rs arrayByAddingObjectsFromArray:self->persons];
-    ASSIGN(self->rows,rs);
-  }
+  rs = [self->dataSource resources];
+  rs = [rs sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+  rs = [rs arrayByAddingObjectsFromArray:self->persons];
+  ASSIGN(self->rows,rs);
+}
+
+- (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
+  [self _setupPersonsAndTeamsForResponseGeneration];
+  [self _setupResourcesForResponseGeneration];
+  
   [super appendToResponse:_response inContext:_ctx];
 }
 

@@ -276,8 +276,8 @@ static NSNumber *yesNum = nil;
 
         if ((members = [self->appointment valueForKey:@"members"]) == nil) {
           members = [self runCommand:@"team::members",
-                          @"groups",         teams,
-                          @"fetchGlobalIDs", yesNum,
+                            @"groups",         teams,
+                            @"fetchGlobalIDs", yesNum,
                           nil];
           if ([members isKindOfClass:[NSDictionary class]]) {
             NSMutableArray *a = nil;
@@ -347,34 +347,44 @@ static NSNumber *yesNum = nil;
   return ([[self rows] count] > 0) ? YES : NO;
 }
 
-- (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
+- (id)_fetchMembersForTeamGlobalIDs:(NSArray *)_gids {
+  /* returns a single object for one GID and a dict for multiple? */
+  return [self runCommand:@"team::members",
+	         @"groups",         _gids,
+	         @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
+	       nil];
+}
+
+- (void)_setupPersonsAndTeamsForResponseGeneration {
   // TODO: split up?
   NSArray        *all;
   NSMutableArray *pers;
   NSMutableArray *tms;
-  int cnt = 0;
-
-  all  = [[self dataSource] companies];
-  pers = [NSMutableArray array];
-  tms  = [NSMutableArray array];
+  unsigned       cnt;
   
-  while (cnt < [all count]) {
-    id one = [all objectAtIndex:cnt++];
+  all  = [[self dataSource] companies];
+  pers = [NSMutableArray arrayWithCapacity:4];
+  tms  = [NSMutableArray arrayWithCapacity:2];
+  
+  for (cnt = 0; cnt < [all count]; cnt++) {
+    id one = [all objectAtIndex:cnt];
+    
     if ([[one entityName] isEqualToString:@"Person"])
       [pers addObject:one];
     else
       [tms addObject:one];
   }
   if ([tms count] > 0) {
-    id members = nil;
-    int cnt = 0;
-    members = [self runCommand:@"team::members",
-                    @"groups",         tms,
-                    @"fetchGlobalIDs", yesNum,
-                    nil];
-
-    while (cnt < [members count]) {
-      id obj = [members objectAtIndex:cnt++];
+    NSArray  *members;
+    unsigned cnt;
+    
+    members = [self _fetchMembersForTeamGlobalIDs:tms];
+    if ([members isKindOfClass:[NSDictionary class]])
+      members = [(NSDictionary *)members allValues];
+    
+    for (cnt = 0; cnt < [members count]; cnt++) {
+      id obj = [members objectAtIndex:cnt];
+      
       if (![pers containsObject:obj])
         [pers addObject:obj];
     }
@@ -383,9 +393,10 @@ static NSNumber *yesNum = nil;
     static NSArray *attrs     = nil;
     static NSArray *orderings = nil;
     NSArray *recs;
+    
     if (attrs == nil) {
-      attrs = [[NSArray alloc] initWithObjects:@"login", @"name",
-                                 @"firstname", @"globalID", nil];
+      attrs = [[[NSUserDefaults standardUserDefaults] 
+		 arrayForKey:@"OGoScheduler_HChartsPersonFetchKeys"] copy];
     }
     if (orderings == nil) {
       EOSortOrdering *nameAsc, *fnameAsc;
@@ -396,7 +407,7 @@ static NSNumber *yesNum = nil;
       orderings = [[NSArray alloc] initWithObjects:nameAsc, fnameAsc, nil];
     }
 
-    if ([pers count]) {
+    if ([pers count] > 0) {
       recs = [self runCommand:@"person::get-by-globalid",
                    @"gids",       pers,
                    @"attributes", attrs,
@@ -410,15 +421,21 @@ static NSNumber *yesNum = nil;
   }
   else
     self->persons = [[NSArray alloc] init];
-  
-  {
-    NSArray *rs = nil;
+}
+
+- (void)_setupResourcesForResponseGeneration {
+  NSArray *rs = nil;
     
-    rs = [self->dataSource resources];
-    rs = [rs sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-    rs = [rs arrayByAddingObjectsFromArray:self->persons];
-    ASSIGN(self->rows, rs);
-  }
+  rs = [self->dataSource resources];
+  rs = [rs sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+  rs = [rs arrayByAddingObjectsFromArray:self->persons];
+  ASSIGN(self->rows, rs);
+}
+
+- (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
+  [self _setupPersonsAndTeamsForResponseGeneration];
+  [self _setupResourcesForResponseGeneration];
+  
   [super appendToResponse:_response inContext:_ctx];
 }
 

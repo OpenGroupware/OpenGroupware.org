@@ -144,4 +144,6 @@
     "participants.isAccount"
   );
   OGoScheduler_NewsPageDateFormat = "%Y-%m-%d";
+
+  OGoScheduler_HChartsPersonFetchKeys = ( login, name, firstname, globalID );
 }
