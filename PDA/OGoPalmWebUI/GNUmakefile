@@ -9,7 +9,7 @@ include ./Version
 
 WOBUNDLE_NAME        = OGoPalm
 WOBUNDLE_EXTENSION   = .lso
-WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.0a/WebUI/
+WOBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.1/WebUI/
 
 OGoPalm_PRINCIPAL_CLASS = SkyPalmModule
 

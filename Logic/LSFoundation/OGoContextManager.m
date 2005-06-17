@@ -54,7 +54,7 @@ static int      LSAllowSpacesInLogin           = -1;
 static BOOL     loadCommandBundlesOnStartup    = YES;
 static BOOL     loadDataSourceBundlesOnStartup = YES;
 static NSString *OGoBundlePathSpecifier        = nil;
-static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
+static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
 
 + (void)registerInUserDefaults:(NSUserDefaults *)_defs {
   NSArray      *timeZoneNames;
@@ -82,8 +82,8 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
            @"PostgreSQL",                  @"LSAdaptor",
            timeZoneNames,                  @"LSTimeZones",
 	   condict,                        @"LSConnectionDictionary",
-           @"OpenGroupware.org-1.0a",      @"OGoBundlePathSpecifier",
-           @"lib/opengroupware.org-1.0a/", @"OGoFHSBundleSubPath",
+           @"OpenGroupware.org-1.1",      @"OGoBundlePathSpecifier",
+           @"lib/opengroupware.org-1.1/", @"OGoFHSBundleSubPath",
            [NSNumber numberWithBool:YES],  @"LSSessionAccountLogEnabled",
           nil];
   [_defs registerDefaults:defs];
@@ -295,7 +295,7 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0a/";
     
     p = OGoBundlePathSpecifier;
     r = [p rangeOfString:@"-"];
-    if (r.length > 0) /* strip off version, like in "OpenGroupware.org-1.0a" */
+    if (r.length > 0) /* strip off version, like in "OpenGroupware.org-1.1" */
       p = [p substringToIndex:r.location];
     *(&modelName) = [p stringByAppendingString:@"_PostgreSQL"];
   }

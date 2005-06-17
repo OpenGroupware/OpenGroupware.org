@@ -391,7 +391,7 @@ sub get_current_from_rpmmacro {
     #ogofull fake
     if ($package eq "ogofull") {
       #$cur_version = $cline if ($cline =~ s/^\%ogofull_version\s+//);
-      $cur_version = "1.0a";
+      $cur_version = "1.1";
       #$cur_svnrev = $cline if ($cline =~ s/^\%ogofull_release\s+//);
       $cur_svnrev = "0";
       #$cur_buildcount = $cline if ($cline =~ s/^\%ogofull_buildcount\s+//);
@@ -558,7 +558,7 @@ sub collect_patchinfo {
     close(OGO);
     chomp $new_svnrev if (defined $new_svnrev);
     #hardcoded basevalue... helge tells me :]
-    $new_version = "1.0a";
+    $new_version = "1.1";
     if ($build_type eq "release") {
       #check comments above (in sope)
       $new_version = $release_tarballname;
@@ -595,7 +595,7 @@ sub collect_patchinfo {
   }
   ###########################################################################
   if ($package eq "ogo-environment") {
-    $new_major = "1.0a";
+    $new_major = "1.1";
     $new_minor = "0";
     $new_svnrev = "0";
     $new_version = (defined $version_override ? $version_override : $new_major);
@@ -639,7 +639,7 @@ sub collect_patchinfo {
   }
   ###########################################################################
   if ($package eq "ogo-database-setup") {
-    $new_major = "1.0a";
+    $new_major = "1.1";
     $new_minor = "0";
     $new_svnrev = "0";
     $new_version = (defined $version_override ? $version_override : $new_major);
@@ -647,7 +647,7 @@ sub collect_patchinfo {
   ####
   if ($package eq "ogofull") {
     #ogofull must be adjusted in the specfile itself
-    $new_major = "1.0a";
+    $new_major = "1.1";
     $new_minor = "0";
     $new_svnrev = "0";
     $new_version = (defined $version_override ? $version_override : $new_major);

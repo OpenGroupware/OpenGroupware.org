@@ -16,7 +16,7 @@ else
 RESOURCES_DIR=$(GNUSTEP_LOCAL_ROOT)/Library/Libraries/Resources/OGoScheduler
 endif
 else
-RESOURCES_DIR=$(FHS_INSTALL_ROOT)/share/opengroupware.org-1.0a
+RESOURCES_DIR=$(FHS_INSTALL_ROOT)/share/opengroupware.org-1.1
 endif
 
 libOGoScheduler_CPPFLAGS += \

@@ -7,7 +7,7 @@ sub$(COMMAND_BUNDLE)_OBJC_FILES = $($(COMMAND_BUNDLE)_OBJC_FILES)
 
 BUNDLE_NAME        = $(COMMAND_BUNDLE)
 BUNDLE_EXTENSION   = .cmd
-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.0a/Commands/
+BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.1/Commands/
 
 $(COMMAND_BUNDLE)_RESOURCE_FILES  += commands.plist
 $(COMMAND_BUNDLE)_PRINCIPAL_CLASS = $(COMMAND_BUNDLE)Commands
@@ -59,7 +59,7 @@ endif # mingw32
 ifneq ($(FHS_INSTALL_ROOT),)
 
 FHS_LIB_DIR=$(FHS_INSTALL_ROOT)/lib/
-FHS_CMD_DIR=$(FHS_LIB_DIR)opengroupware.org-1.0a/commands/
+FHS_CMD_DIR=$(FHS_LIB_DIR)opengroupware.org-1.1/commands/
 
 fhs-sax-dirs ::
 	$(MKDIRS) $(FHS_CMD_DIR)

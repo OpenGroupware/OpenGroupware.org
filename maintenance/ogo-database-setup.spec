@@ -29,7 +29,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ****************************** install ******************************
 %install
-DBSETUP_DEST="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0a/dbsetup"
+DBSETUP_DEST="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.1/dbsetup"
 mkdir -p ${DBSETUP_DEST}
 
 cp -Rp Database/SQLite ${DBSETUP_DEST}/
@@ -40,8 +40,8 @@ cp %{_specdir}/db_setup_template/database_setup_psql.sh ${DBSETUP_DEST}/
 # ****************************** post ********************************
 %post
 if [ $1 = 1 ]; then
-  if [ -f "%{prefix}/share/opengroupware.org-1.0a/dbsetup/database_setup_psql.sh" ]; then
-    %{prefix}/share/opengroupware.org-1.0a/dbsetup/database_setup_psql.sh initial
+  if [ -f "%{prefix}/share/opengroupware.org-1.1/dbsetup/database_setup_psql.sh" ]; then
+    %{prefix}/share/opengroupware.org-1.1/dbsetup/database_setup_psql.sh initial
   fi
 fi
 
@@ -54,15 +54,17 @@ rm -fr ${RPM_BUILD_ROOT}
 # ****************************** files ********************************
 %files
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0a/dbsetup
+%{prefix}/share/opengroupware.org-1.1/dbsetup
 
 # ********************************* changelog *************************
 %changelog
+* Fri Jun 17 2005 Helge Hess <helge.hess@opengroupware.org>
+- patched pathes for version 1.1
 * Tue Mar 01 2005 Frank Reppin <frank@opengroupware.org>
 - drop dependency on ogo-environment
 * Sat Jan 29 2005 Frank Reppin <frank@opengroupware.org>
 - run 'database_setup_psql.sh initial' in post (if 1)
-  (execution can be fully disabled by editing sysconfig/ogo-webui-1.0a)
+  (execution can be fully disabled by editing sysconfig/ogo-webui-1.1)
 * Tue Jan 25 2005 Frank Reppin <frank@opengroupware.org>
 - fix for OGo Bug #1192
 * Sun Jan 16 2005 Frank Reppin <frank@opengroupware.org>

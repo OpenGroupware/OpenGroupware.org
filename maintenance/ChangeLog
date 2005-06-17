@@ -1,3 +1,8 @@
+2005-06-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* ogo-environment.spec, opengroupware.spec, ogofull-singleprm.spec,
+	  ogo-database-setup.spec: fixed some versions for 1.0
+
 2005-05-10  Helge Hess  <helge.hess@skyrix.com>
 
 	* opengroupware.spec, ogofull-singleprm.spec: fixed tool names, removed

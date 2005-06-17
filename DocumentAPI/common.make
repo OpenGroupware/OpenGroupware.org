@@ -8,7 +8,7 @@ include ./Version
 
 GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
 
-BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.0a/DataSources/
+BUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/OpenGroupware.org-1.1/DataSources/
 
 ADDITIONAL_CPPFLAGS += -pipe -Wall -Wno-protocol
 
