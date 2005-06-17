@@ -15,7 +15,6 @@ SUBPROJECTS += \
 	Scheduler		\
 	Mailer			\
 	Project			\
-	SoOGo			\
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/aggregate.make

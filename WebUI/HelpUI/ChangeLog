@@ -1,8 +1,0 @@
-2005-03-11  Helge Hess  <helge.hess@opengroupware.org>
-
-	* GNUmakefile (HelpUI_PRINCIPAL_CLASS): fixed principal class (v5.1.2)
-
-2004-01-13  Helge Hess  <helge.hess@opengroupware.org>
-
-	* created ChangeLog
-
