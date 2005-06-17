@@ -24,7 +24,7 @@
 @interface LSGetLogsCommand : LSDBObjectBaseCommand
 @end
 
-#import "common.h"
+#include "common.h"
 #include <EOControl/EOKeyGlobalID.h>
 #include <GDLAccess/EOSQLQualifier.h>
 
@@ -108,7 +108,7 @@ static NSTimeZone *gmt = nil;
     NSLog(@"WARNING[%s]: missing object", __PRETTY_FUNCTION__);
     return;
   }
-
+  
   [self _getPrimaryKey:&objectId andEntity:&objectEntity ofObject:obj];
   
   q = [EOSQLQualifier alloc];
@@ -120,13 +120,13 @@ static NSTimeZone *gmt = nil;
                           lock:NO]
         reason:[sybaseMessages description]];
   
-  while ((obj = [adChannel fetchAttributes:logAttrs withZone:NULL])) {
+  while ((obj = [adChannel fetchAttributes:logAttrs withZone:NULL]) != nil) {
     NSCalendarDate *d;
     id tmp;
     
     /* adjust timezone of dates */
-    d = [obj valueForKey:@"creationDate"];
-    if (d) [d setTimeZone:tz];
+    if ([(d = [obj valueForKey:@"creationDate"]) isNotNull])
+      [d setTimeZone:tz];
     
     tmp = [obj mutableCopy];
     [result addObject:tmp];
