@@ -36,7 +36,7 @@ my $line;
 my $sope_spec;
 my $sope_src;
 
-@ogo_releases = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
+@ogo_releases = `wget -q --proxy=off -O - http://$dl_host/nightly/sources/releases/MD5_INDEX`;
 open(KNOWN_OGo_RELEASES, ">> $hpath/OGo.known.rel");
 foreach $orel (@ogo_releases) {
   chomp $orel;
@@ -48,8 +48,8 @@ foreach $orel (@ogo_releases) {
   $buildtarget =~ s/-r\d+.*$//g;
   unless(grep /\b$orel\b/, @already_known_ogo_rel) {
     $i_really_had_sth_todo = "yes";
-    print "Retrieving: http://$dl_host/sources/releases/$orel\n";
-    system("wget -q --proxy=off -O $ENV{HOME}/sources/$orel http://$dl_host/sources/releases/$orel");
+    print "Retrieving: http://$dl_host/nightly/sources/releases/$orel\n";
+    system("wget -q --proxy=off -O $ENV{HOME}/sources/$orel http://$dl_host/nightly/sources/releases/$orel");
     #since we build the OGo release using a specific SOPE release... we must 
     #cleanup prior OGo *and* SOPE builds
     #I guess we don't need to do it exactly this way bc apt-get install in a later stage

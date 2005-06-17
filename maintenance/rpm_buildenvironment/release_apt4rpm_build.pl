@@ -17,6 +17,7 @@ my $type = "releases";
 my $verbose = "no";
 my @distris = qw( fedora-core3
   fedora-core2
+  fedora-core4
   suse82
   suse91
   suse92
@@ -62,14 +63,14 @@ if (!$opt_n) {
   print "\n";
   print "Nothing given to <-n>\n";
   print "<-n> eats the basename of the release/~ dir... ie:\n";
-  print "/var/virtual_hosts/download/packages/fedora-core2/releases/sope-4.3.8-shapeshifter\n";
+  print "/var/virtual_hosts/download/nightly/packages/fedora-core2/releases/sope-4.3.8-shapeshifter\n";
   print "would require: <-n sope-4.3.8-shapeshifter>\n";
   exit 0;
 } else {
   $rel_name = $opt_n;
   chomp $rel_name;
-  print "checking for existence of: /var/virtual_hosts/download/packages/$distri/$type/$rel_name\n";
-  print "Doesn't exist?\n" and exit 0 unless (-e "/var/virtual_hosts/download/packages/$distri/$type/$rel_name");
+  print "checking for existence of: /var/virtual_hosts/download/nightly/packages/$distri/$type/$rel_name\n";
+  print "Doesn't exist?\n" and exit 0 unless (-e "/var/virtual_hosts/download/nightly/packages/$distri/$type/$rel_name");
 }
 
 if (!$opt_t or ($opt_t !~ m/^trunk$/i)) {
@@ -84,7 +85,7 @@ if (!$opt_t or ($opt_t !~ m/^trunk$/i)) {
 
 #we have releases for ogo and sope only...
 
-my @tmp_apt_items = `/bin/ls -laA /var/virtual_hosts/download/packages/$distri/$type/$rel_name/*.rpm | awk '{print \$9}'` or die "DIEDIEDIE: $!\n" if ("$type" eq "releases");
+my @tmp_apt_items = `/bin/ls -laA /var/virtual_hosts/download/nightly/packages/$distri/$type/$rel_name/*.rpm | awk '{print \$9}'` or die "DIEDIEDIE: $!\n" if ("$type" eq "releases");
 
 foreach $item (@tmp_apt_items) {
   chomp $item;
@@ -99,28 +100,28 @@ if ("$verbose" eq "yes") {
   print "---------------------------\n";
 }
 
-`mkdir -p "/var/virtual_hosts/download/packages/apt4rpm/$distri/$type/RPMS.$rel_name"`;
-`rm -f /var/virtual_hosts/download/packages/apt4rpm/$distri/$type/RPMS.$rel_name/*`;
+`mkdir -p "/var/virtual_hosts/download/nightly/packages/apt4rpm/$distri/$type/RPMS.$rel_name"`;
+`rm -f /var/virtual_hosts/download/nightly/packages/apt4rpm/$distri/$type/RPMS.$rel_name/*`;
 
 foreach $item (@rel_rpms) {
   chomp $item;
-  #print "do: /bin/ln -s \"/var/virtual_hosts/download/packages/$distri/$type/$rel_name\" /var/virtual_hosts/download/packages/apt4rpm/$distri/$type/RPMS.$rel_name/$item\n";
-  `/bin/ln -s "/var/virtual_hosts/download/packages/$distri/$type/$rel_name/$item" /var/virtual_hosts/download/packages/apt4rpm/$distri/$type/RPMS.$rel_name/$item`;
+  #print "do: /bin/ln -s \"/var/virtual_hosts/download/nightly/packages/$distri/$type/$rel_name\" /var/virtual_hosts/download/nightly/packages/apt4rpm/$distri/$type/RPMS.$rel_name/$item\n";
+  `/bin/ln -s "/var/virtual_hosts/download/nightly/packages/$distri/$type/$rel_name/$item" /var/virtual_hosts/download/nightly/packages/apt4rpm/$distri/$type/RPMS.$rel_name/$item`;
 }
 
-`mkdir -p "/var/virtual_hosts/download/packages/apt4rpm/$distri/$type/base"`;
-open(RELEASE, "> /var/virtual_hosts/download/packages/apt4rpm/$distri/$type/base/release.$rel_name");
+`mkdir -p "/var/virtual_hosts/download/nightly/packages/apt4rpm/$distri/$type/base"`;
+open(RELEASE, "> /var/virtual_hosts/download/nightly/packages/apt4rpm/$distri/$type/base/release.$rel_name");
 print RELEASE "Archive: $rel_name\n";
 print RELEASE "Component: $rel_name\n";
 print RELEASE "Version: $type\n";
 print RELEASE "Origin: http://download.opengroupware.org\n";
 print RELEASE "Label: $distri\n";
-print RELEASE "Architecture: i386\n" if (("$distri" eq "suse82") or ("$distri" eq "fedora-core2") or ("$distri" eq "fedora-core3") or ("$distri" eq "rhel3") or ("$distri" eq "rhel4") or ("$distri" eq "redhat9") or ("$distri" eq "conectiva10"));
+print RELEASE "Architecture: i386\n" if (("$distri" eq "suse82") or ("$distri" eq "fedora-core2") or ("$distri" eq "fedora-core3") or ("$distri" eq "rhel3") or ("$distri" eq "fedora-core4") or ("$distri" eq "rhel4") or ("$distri" eq "redhat9") or ("$distri" eq "conectiva10"));
 print RELEASE "Architecture: i586\n" if (("$distri" eq "suse91") or ("$distri" eq "suse92") or ("$distri" eq "suse93") or("$distri" eq "sles9") or ("$distri" eq "mdk-10.0") or ("$distri" eq "mdk-10.1"));
 print RELEASE "NotAutomatic: false\n";
 close(RELEASE);
 
-my @tmp_dirs = `find /var/virtual_hosts/download/packages/apt4rpm/$distri/$type/ -type d -name '*RPMS*'`;
+my @tmp_dirs = `find /var/virtual_hosts/download/nightly/packages/apt4rpm/$distri/$type/ -type d -name '*RPMS*'`;
 my @rel_repos;
 foreach $item (@tmp_dirs) {
   chomp $item;
@@ -130,5 +131,5 @@ foreach $item (@tmp_dirs) {
   push @rel_repos, $tmp_dir;
 }
 
-`/usr/bin/genbasedir-0.5 --bz2only /var/virtual_hosts/download/packages/apt4rpm/$distri/$type @rel_repos`;
+`/usr/bin/genbasedir-0.5 --bz2only /var/virtual_hosts/download/nightly/packages/apt4rpm/$distri/$type @rel_repos`;
 

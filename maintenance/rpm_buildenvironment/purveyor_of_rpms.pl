@@ -63,8 +63,8 @@ sub move_to_dest {
   my $remote_user = "www";
   my $remote_host = "download.opengroupware.org";
   my $remote_dir;
-  my $remote_trunk_dir = "/var/virtual_hosts/download/packages/$host_i_runon/trunk";
-  my $remote_rel_dir = "/var/virtual_hosts/download/packages/$host_i_runon/releases";
+  my $remote_trunk_dir = "/var/virtual_hosts/download/nightly/packages/$host_i_runon/trunk";
+  my $remote_rel_dir = "/var/virtual_hosts/download/nightly/packages/$host_i_runon/releases";
   my $do_link = "yes";
   if (($do_upload eq "yes") and ($build_type eq "release")) {
     $remote_dir = $remote_rel_dir;
@@ -133,7 +133,7 @@ sub build_rpm {
     print "[RPMBUILD]          - didn't found UseSOPE hint in specfile.\n" and exit 1 if (($verbose eq "yes") and (!$use_sope));
     print "[RPMBUILD]          - building $package using: SOPE release  $use_sope\n" if ($verbose eq "yes");
     print "[RPMBUILD]          - getting MD5_INDEX for $use_sope prior installation...\n" if ($verbose eq "yes");
-    @t_sope = `wget -q --proxy=off -O - http://$dl_host/packages/$host_i_runon/releases/$use_sope/MD5_INDEX` or die "I DIE: couldn't fetch MD5_INDEX (http://$dl_host/packages/$host_i_runon/releases/$use_sope/MD5_INDEX)\n";
+    @t_sope = `wget -q --proxy=off -O - http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/MD5_INDEX` or die "I DIE: couldn't fetch MD5_INDEX (http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/MD5_INDEX)\n";
     #parse through MD5_INDEX and generate a list of all sope RPMS... additionally download 'em into install_tmp/
     foreach $line (@t_sope) {
       chomp $line;
@@ -141,7 +141,7 @@ sub build_rpm {
       $line =~ s/^.*\s+//g;
       $sope_rpm = $line;
       print "[RPMBUILD]          - loading $sope_rpm into install_tmp/" if ($verbose eq "yes");
-      $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$sope_rpm http://$dl_host/packages/$host_i_runon/releases/$use_sope/$sope_rpm");
+      $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$sope_rpm http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/$sope_rpm");
       print " ...success!\n" if($rc == 0);
       print "\nFATAL: system call (wget) returned $rc whilst downloading $sope_rpm into install_tmp/\n" and exit 1 unless($rc == 0);
       push(@sope, $sope_rpm);
@@ -712,7 +712,7 @@ sub get_latest_sources {
   #<trunk>
   if(("$do_download" eq "yes") and ("$build_type" eq "trunk")) {
     print "[DOWNLOAD_SRC]      - Download sources for a trunk build!\n" if ($verbose eq "yes");
-    @latest = `wget -q --proxy=off -O - http://$dl_host/sources/trunk/LATESTVERSION`;
+    @latest = `wget -q --proxy=off -O - http://$dl_host/nightly/sources/trunk/LATESTVERSION`;
     #remap package name to its corresponding source tarball prefix
     #bc specfile names are not always the same as the source tarball name
     $package_mapped_tosrc = "libobjc-lf2" if ("$package" eq "libobjc-lf2");
@@ -743,23 +743,23 @@ sub get_latest_sources {
     $destfilename = $dl_candidate;
     $destfilename =~ s/-r\d+-\d+/-latest/g;
     print "[DOWNLOAD_SRC]      - Will download $dl_candidate and save the file as $destfilename\n" if ($verbose eq "yes");
-    `wget -q --proxy=off -O "$sources_dir/$destfilename" http://$dl_host/sources/trunk/$dl_candidate`;
+    `wget -q --proxy=off -O "$sources_dir/$destfilename" http://$dl_host/nightly/sources/trunk/$dl_candidate`;
   }
   #</trunk>
   #<release>
   if(("$do_download" eq "yes") and ("$build_type" eq "release") and ($package !~ m/^mod_ngobjweb_/)) {
     #MD5_INDEX comes in handy here, bc this file keeps track of all uploaded releases
-    @latest = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
+    @latest = `wget -q --proxy=off -O - http://$dl_host/nightly/sources/releases/MD5_INDEX`;
     chomp $release_tarballname;
     if (grep /$release_tarballname$/, @latest) {
       print "[DOWNLOAD_SRC]      - $release_tarballname should be present for download.\n" if ($verbose eq "yes");
       print "[DOWNLOAD_SRC]      - going to retrieve into -> $sources_dir/$release_tarballname\n" if ($verbose eq "yes");
-      `wget -q --proxy=off -O "$sources_dir/$release_tarballname" http://$dl_host/sources/releases/$release_tarballname`;
+      `wget -q --proxy=off -O "$sources_dir/$release_tarballname" http://$dl_host/nightly/sources/releases/$release_tarballname`;
     } elsif ( -f "$sources_dir/$release_tarballname" ) {
       print "[DOWNLOAD_SRC]      - using $sources_dir/$release_tarballname\n" if ($verbose eq "yes");
       print "[DOWNLOAD_SRC]      - bc I had no luck downloading the sources from $dl_host\n" if ($verbose eq "yes");
     } elsif ($fake_svn eq "yes") {
-      `wget -q --proxy=off -O "$sources_dir/$release_tarballname" http://$dl_host/sources/trunk/$release_tarballname`;
+      `wget -q --proxy=off -O "$sources_dir/$release_tarballname" http://$dl_host/nightly/sources/trunk/$release_tarballname`;
       print "[DOWNLOAD_SRC]      - FAKE BUILD SOURCES -> sources/trunk/$release_tarballname\n";
     } else {
       print "[DOWNLOAD_SRC]      - Looks like $release_tarballname isn't even present at neither $dl_host nor $sources_dir/.\n" if ($verbose eq "yes");
@@ -884,7 +884,7 @@ sub get_commandline_options {
     #release build)... there won't be a `normal` case where the script will die whilst trying to upload
     #a package into a non-existant directory.
     #Examples for a common option given to <-r> are available at:
-    #  http://download.opengroupware.org/packages/fedora-core3/releases/
+    #  http://download.opengroupware.org/nightly/packages/fedora-core3/releases/
     #  (see the subdirs there)
     $rdirbase = $opt_r;
   }

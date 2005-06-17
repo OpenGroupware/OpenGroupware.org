@@ -105,7 +105,7 @@ sub getconf {
   return @a;
 }
 
-@ogo_releases = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
+@ogo_releases = `wget -q --proxy=off -O - http://$dl_host/nightly/sources/releases/MD5_INDEX`;
 open(KNOWN_OGo_RELEASES, ">> $hpath/OGo.known.rel");
 foreach $orel (@ogo_releases) {
   my @sope;
@@ -119,8 +119,8 @@ foreach $orel (@ogo_releases) {
   $buildtarget =~ s/-r\d+.*$//g;
   unless(grep /\b$orel\b/, @already_known_ogo_rel) {
     $i_really_had_sth_todo = "yes";
-    print "Retrieving: http://$dl_host/sources/releases/$orel\n";
-    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$orel http://$dl_host/sources/releases/$orel");
+    print "Retrieving: http://$dl_host/nightly/sources/releases/$orel\n";
+    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$orel http://$dl_host/nightly/sources/releases/$orel");
     #since we build the OGo release using a specific SOPE release... we must
     #cleanup everything prior the actual wanted OGo *and* SOPE builds
     #I don't use apt-get here bc not every RPM based distri provides a package (apt-get).
@@ -155,7 +155,7 @@ foreach $orel (@ogo_releases) {
     }
     #we should've already build this SOPE release at least once in an earlier run
     print "preparing SOPE... $use_sope\n";
-    @t_sope = `wget -q --proxy=off -O - http://$dl_host/packages/$host_i_runon/releases/$use_sope/MD5_INDEX` or die "I DIE: couldn't fetch MD5_INDEX (http://$dl_host/packages/$host_i_runon/releases/$use_sope/MD5_INDEX)\n";
+    @t_sope = `wget -q --proxy=off -O - http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/MD5_INDEX` or die "I DIE: couldn't fetch MD5_INDEX (http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/MD5_INDEX)\n";
     warn "WARNING: the following 'foreach' loops through each and every package found...\n";
     #rather rare case... it produces too much noise on stdout if there are re-rebuild versions of the same release (with different SVN revisions ofcourse)
     foreach $line (@t_sope) {
@@ -164,7 +164,7 @@ foreach $orel (@ogo_releases) {
       $line =~ s/^.*\s+//g;
       $sope_rpm = $line;
       print "downloading: $sope_rpm into install_tmp/";
-      $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$sope_rpm http://$dl_host/packages/$host_i_runon/releases/$use_sope/$sope_rpm");
+      $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$sope_rpm http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/$sope_rpm");
       print " ...success!\n" if($rc == 0);
       print "\nFATAL: system call (wget) returned $rc whilst downloading $sope_rpm into install_tmp/\n" and exit 1 unless($rc == 0);
       push(@sope, $sope_rpm);
@@ -196,8 +196,8 @@ foreach $orel (@ogo_releases) {
     system("$ENV{HOME}/purveyor_of_rpms.pl -p ogofull $build_opts -c $orel -r $apttarget -s $ENV{HOME}/spec_tmp/$buildtarget-singlerpm.spec");
     print "thus calling: /home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $apttarget\n";
     print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $apttarget\n";
-    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/packages/$host_i_runon/releases/$apttarget/\n";
-    print SSH "echo \"This OGo release was built using $use_sope\" >/var/virtual_hosts/download/packages/$host_i_runon/releases/$apttarget/SOPE.INFO\n";
+    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/nightly/packages/$host_i_runon/releases/$apttarget/\n";
+    print SSH "echo \"This OGo release was built using $use_sope\" >/var/virtual_hosts/download/nightly/packages/$host_i_runon/releases/$apttarget/SOPE.INFO\n";
     close(SSH);
   }
 }

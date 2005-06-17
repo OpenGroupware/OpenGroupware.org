@@ -24,7 +24,7 @@ print "Not enough revisions to keep...\nYou asked me to keep $keep_revisions \$k
 open(OUT, ">rm_candidates_sources.out");
 foreach $current_group(@groups) {
   print "current group to check is: $current_group\n";
-  opendir(DIR, "/var/virtual_hosts/download/sources/trunk");
+  opendir(DIR, "/var/virtual_hosts/download/nightly/sources/trunk");
   my @u_this_group_tarballs = grep(/^$current_group-trunk.*\.tar.gz$/,readdir(DIR));
   my $no_of_tarballs_in_group = @u_this_group_tarballs;
   next if($no_of_tarballs_in_group == 0);
@@ -57,7 +57,7 @@ foreach $current_group(@groups) {
       $dc = shift(@versions);
       $dc =~ s/\./-/g;
       #print "     could delete files from group $current_group*trunk_r$dc*\n";
-      print OUT "rm -f /var/virtual_hosts/download/sources/trunk/$current_group-trunk-r$dc*.tar.gz\n";
+      print OUT "rm -f /var/virtual_hosts/download/nightly/sources/trunk/$current_group-trunk-r$dc*.tar.gz\n";
     }
     print "\$keep_revisions = $keep_revisions is larger/equal $no_of_versions....\n";
     print "@versions\n";
@@ -65,7 +65,7 @@ foreach $current_group(@groups) {
   }
 }
 #exit 0;
-print OUT "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/sources/trunk/\n";
-print OUT "/home/www/scripts/do_LATESTVERSION.pl /var/virtual_hosts/download/sources/trunk/\n";
+print OUT "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/nightly/sources/trunk/\n";
+print OUT "/home/www/scripts/do_LATESTVERSION.pl /var/virtual_hosts/download/nightly/sources/trunk/\n";
 print OUT "#================================================================================================\n";
 close(OUT);

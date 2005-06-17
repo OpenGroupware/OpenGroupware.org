@@ -32,7 +32,7 @@ my @tp_releases;
 
 mkdir("$ENV{HOME}/deb_store", 0755) unless -e ("$ENV{HOME}/deb_store");
 
-@tp_releases = `wget --proxy=off -q -O - http://$dl_host/sources/releases/MD5_INDEX`;
+@tp_releases = `wget --proxy=off -q -O - http://$dl_host/nightly/sources/releases/MD5_INDEX`;
 open(KNOWN_TP_RELEASES, ">> $hpath/ThirdParty.known.rel");
 foreach $tprel (@tp_releases) {
   chomp $tprel;
@@ -46,8 +46,8 @@ foreach $tprel (@tp_releases) {
     my $package_to_build; # <-p> switch for 'purveyor_of_debs.pl'
     my $cleanup;
     $i_really_had_sth_todo = "yes";
-    print "Retrieving: http://$dl_host/sources/releases/$tprel\n";
-    system("wget --proxy=off -q -O $ENV{HOME}/sources/$tprel http://$dl_host/sources/releases/$tprel");
+    print "Retrieving: http://$dl_host/nightly/sources/releases/$tprel\n";
+    system("wget --proxy=off -q -O $ENV{HOME}/sources/$tprel http://$dl_host/nightly/sources/releases/$tprel");
     ###
     $package_to_build = "sope-epoz" if ($tprel =~ m/epoz/i);
     $cleanup = "sope-epoz" if ($tprel =~ m/epoz/i);

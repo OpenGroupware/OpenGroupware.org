@@ -32,7 +32,7 @@ sope-4.3.8-shapeshifter-r210.tar.gz
 my $build_opts = "-v yes -u yes -t release -d yes -f yes";
 my @sope_releases;
 
-@sope_releases = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
+@sope_releases = `wget -q --proxy=off -O - http://$dl_host/nightly/sources/releases/MD5_INDEX`;
 open(KNOWN_SOPE_RELEASES, ">> $hpath/SOPE.known.rel");
 foreach $srel (@sope_releases) {
   chomp $srel;
@@ -59,8 +59,8 @@ foreach $srel (@sope_releases) {
       system("$ENV{HOME}/purveyor_of_debs.pl -p libobjc-lf2 -t release -v yes -u no -d yes -c $dep") if($dep =~ m/gnustep-objc-lf2/i);
       system("$ENV{HOME}/purveyor_of_debs.pl -p libfoundation -t release -v yes -u no -d yes -c $dep") if($dep =~ m/libfoundation/i);
     }
-    print "Retrieving: http://$dl_host/sources/releases/$srel\n";
-    system("wget -q --proxy=off -O $ENV{HOME}/sources/$srel http://$dl_host/sources/releases/$srel");
+    print "Retrieving: http://$dl_host/nightly/sources/releases/$srel\n";
+    system("wget -q --proxy=off -O $ENV{HOME}/sources/$srel http://$dl_host/nightly/sources/releases/$srel");
     print "cleaning up prior actual build...\n";
     system("sudo dpkg --purge --force-all `dpkg -l | awk '{print \$2}' | grep -iE '(^libsope|^sope|^libical-sope)'`");
     print "SOPE_REL: building debs for SOPE $srel\n";

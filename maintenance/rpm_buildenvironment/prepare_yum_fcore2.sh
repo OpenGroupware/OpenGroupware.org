@@ -2,7 +2,7 @@
 
 MYHOME="${HOME}"
 YUMTEMP="yum-tmp"
-YUMREPO="/var/virtual_hosts/download/packages/fedora-core2/"
+YUMREPO="/var/virtual_hosts/download/nightly/packages/fedora-core2/"
 
 rm -fr ${YUMTEMP}
 mkdir ${YUMTEMP}

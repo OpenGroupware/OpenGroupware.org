@@ -55,7 +55,7 @@ sub getconf {
   return @a;
 }
 
-@sope_releases = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
+@sope_releases = `wget -q --proxy=off -O - http://$dl_host/nightly/sources/releases/MD5_INDEX`;
 open(KNOWN_SOPE_RELEASES, ">> $hpath/SOPE.known.rel");
 foreach $srel (@sope_releases) {
   chomp $srel;
@@ -74,8 +74,8 @@ foreach $srel (@sope_releases) {
     my $uselibobjc_lf2;
     my $uselibfoundation;
     $i_really_had_sth_todo = "yes";
-    print "Retrieving: http://$dl_host/sources/releases/$srel\n";
-    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$srel http://$dl_host/sources/releases/$srel");
+    print "Retrieving: http://$dl_host/nightly/sources/releases/$srel\n";
+    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$srel http://$dl_host/nightly/sources/releases/$srel");
     print "cleaning up prior actual build...\n";
     system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
     system("sudo /sbin/ldconfig");
@@ -121,7 +121,7 @@ foreach $srel (@sope_releases) {
       print "libobjc-lf2   -> $uselibobjc_lf2\n" if($uselibobjc_lf2);
       print "libFoundation -> $uselibfoundation\n" if($uselibfoundation);
       print "going to check availability of those ThirdParty requirements for $host_i_runon\n" if($has_certain_tp_requirements eq "yes");
-      @tp_requirements = `wget -q --proxy=off -O - http://$dl_host/packages/$host_i_runon/releases/ThirdParty/MD5_INDEX`;
+      @tp_requirements = `wget -q --proxy=off -O - http://$dl_host/nightly/packages/$host_i_runon/releases/ThirdParty/MD5_INDEX`;
       foreach $single_req_package(@tp_requirements) {
         chomp $single_req_package;
         next unless($single_req_package =~ m/\.rpm$/i);
@@ -135,7 +135,7 @@ foreach $srel (@sope_releases) {
       }
       if($libobjc_install_candidate) {
         print "downloading $libobjc_install_candidate to install_tmp/\n";
-        $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libobjc_install_candidate http://$dl_host/packages/$host_i_runon/releases/ThirdParty/$libobjc_install_candidate");
+        $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libobjc_install_candidate http://$dl_host/nightly/packages/$host_i_runon/releases/ThirdParty/$libobjc_install_candidate");
         print "FATAL: system call (wget) returned $rc whilst downloading $libobjc_install_candidate into install_tmp/\n" and exit 1 unless($rc == 0);
         #dissecting $libobjc_install_candidate in order to get the proper name for the corresponding -devel RPM
         $libobjc_install_candidate_arch = `/bin/rpm --qf '%{arch}' -qp $ENV{HOME}/install_tmp/$libobjc_install_candidate`;
@@ -144,7 +144,7 @@ foreach $srel (@sope_releases) {
         $libobjc_install_candidate_name = `/bin/rpm --qf '%{name}' -qp $ENV{HOME}/install_tmp/$libobjc_install_candidate`;
         $libobjc_install_candidate_devel = "$libobjc_install_candidate_name" . "-devel-" . "$libobjc_install_candidate_version" . "-" . "$libobjc_install_candidate_release" . "\." . "$libobjc_install_candidate_arch" . "\.rpm";
         print "downloading $libobjc_install_candidate_devel to install_tmp/\n";
-        $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libobjc_install_candidate_devel http://$dl_host/packages/$host_i_runon/releases/ThirdParty/$libobjc_install_candidate_devel");
+        $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libobjc_install_candidate_devel http://$dl_host/nightly/packages/$host_i_runon/releases/ThirdParty/$libobjc_install_candidate_devel");
         print "FATAL: system call (wget) returned $rc whilst downloading $libobjc_install_candidate_devel into install_tmp/\n" and exit 1 unless($rc == 0);
         #wipe out old and install the chosen one.
         system("sudo rpm -e `rpm -qa|grep -i '^libobjc-lf2'` --nodeps");
@@ -154,7 +154,7 @@ foreach $srel (@sope_releases) {
       }
       if($libfoundation_install_candidate) {
         print "downloading $libfoundation_install_candidate to install_tmp/\n";
-        $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libfoundation_install_candidate http://$dl_host/packages/$host_i_runon/releases/ThirdParty/$libfoundation_install_candidate");
+        $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libfoundation_install_candidate http://$dl_host/nightly/packages/$host_i_runon/releases/ThirdParty/$libfoundation_install_candidate");
         print "FATAL: system call (wget) returned $rc whilst downloading $libfoundation_install_candidate into install_tmp/\n" and exit 1 unless($rc == 0);
         #dissecting $libfoundation_install_candidate in order to get the proper name for the corresponding -devel RPM
         $libfoundation_install_candidate_arch = `/bin/rpm --qf '%{arch}' -qp $ENV{HOME}/install_tmp/$libfoundation_install_candidate`;
@@ -163,7 +163,7 @@ foreach $srel (@sope_releases) {
         $libfoundation_install_candidate_name = `/bin/rpm --qf '%{name}' -qp $ENV{HOME}/install_tmp/$libfoundation_install_candidate`;
         $libfoundation_install_candidate_devel = "$libfoundation_install_candidate_name" . "-devel-" . "$libfoundation_install_candidate_version" . "-" . "$libfoundation_install_candidate_release" . "\." . "$libfoundation_install_candidate_arch" . "\.rpm";
         print "downloading $libfoundation_install_candidate_devel to install_tmp/\n";
-        $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libfoundation_install_candidate_devel http://$dl_host/packages/$host_i_runon/releases/ThirdParty/$libfoundation_install_candidate_devel");
+        $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libfoundation_install_candidate_devel http://$dl_host/nightly//packages/$host_i_runon/releases/ThirdParty/$libfoundation_install_candidate_devel");
         print "FATAL: system call (wget) returned $rc whilst downloading $libfoundation_install_candidate into install_tmp/\n" and exit 1 unless($rc == 0);
         system("sudo rpm -e `rpm -qa|grep -i '^libfoundation'` --nodeps");
         system("/usr/bin/sudo /bin/rpm -Uvh --force $ENV{HOME}/install_tmp/$libfoundation_install_candidate");
@@ -182,7 +182,7 @@ foreach $srel (@sope_releases) {
     print "recreating apt-repository for: $host_i_runon\n";
     open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
     print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $buildtarget\n";
-    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/packages/$host_i_runon/releases/$buildtarget/\n";
+    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/nightly/packages/$host_i_runon/releases/$buildtarget/\n";
     close(SSH);
   }
 }

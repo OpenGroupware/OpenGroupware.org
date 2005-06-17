@@ -43,7 +43,7 @@ sub getconf {
   return @a;
 }
 
-@tp_releases = `wget -q --proxy=off -O - http://$dl_host/sources/releases/MD5_INDEX`;
+@tp_releases = `wget -q --proxy=off -O - http://$dl_host/nightly/sources/releases/MD5_INDEX`;
 open(KNOWN_TP_RELEASES, ">> $hpath/ThirdParty.known.rel");
 foreach $tprel (@tp_releases) {
   chomp $tprel;
@@ -61,8 +61,8 @@ foreach $tprel (@tp_releases) {
     my $tardirname; #HINT... specified during sourcetarball creation (svn_update.sh)
     my $buildtargetspecfilesize;
     $i_really_had_sth_todo = "yes";
-    print "Retrieving: http://$dl_host/sources/releases/$tprel\n";
-    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$tprel http://$dl_host/sources/releases/$tprel");
+    print "Retrieving: http://$dl_host/nightly/sources/releases/$tprel\n";
+    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$tprel http://$dl_host/nightly/sources/releases/$tprel");
     $cleanup = "epoz" if ($tprel =~ m/epoz/i);
     $mapped_temp_specfilename = "epoz.spec" if ($tprel =~ m/epoz/i);
     $package_to_build = "epoz" if ($tprel =~ m/epoz/i);
@@ -120,7 +120,7 @@ foreach $tprel (@tp_releases) {
     print "recreating apt-repository for: $host_i_runon\n";
     open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
     print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n ThirdParty\n";
-    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/packages/$host_i_runon/releases/ThirdParty/\n";
+    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/nightly/packages/$host_i_runon/releases/ThirdParty/\n";
     close(SSH);
   }
 }

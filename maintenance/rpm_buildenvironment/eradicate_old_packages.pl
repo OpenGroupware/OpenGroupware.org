@@ -9,6 +9,7 @@ my $current_distri;
 my $must_rebuild_sth = "no";
 my @distris = qw(fedora-core2
   fedora-core3
+  fedora-core4
   mdk-10.0
   mdk-10.1
   redhat9
@@ -52,7 +53,7 @@ foreach $current_distri(@distris) {
   print "checking in $current_distri\n";
   foreach $current_group(@groups) {
     print "current group to check is: $current_group\n";
-    opendir(DIR, "/var/virtual_hosts/download/packages/$current_distri/trunk");
+    opendir(DIR, "/var/virtual_hosts/download/nightly/packages/$current_distri/trunk");
     my @u_this_group_rpms = grep(/^$current_group.*trunk.*\.rpm$/,readdir(DIR));
     my $no_of_rpms_in_group = @u_this_group_rpms;
     next if($no_of_rpms_in_group == 0) and print "Skipping group $current_group bc $no_of_rpms_in_group packages found\n########################################### next one .... \n";
@@ -85,7 +86,7 @@ foreach $current_distri(@distris) {
         $dc = shift(@versions);
         push(@for_removal, $dc);
         #print "     could delete files from group $current_group*trunk_r$dc*\n";
-        print OUT "rm -f /var/virtual_hosts/download/packages/$current_distri/trunk/$current_group*trunk_r$dc*.rpm\n";
+        print OUT "rm -f /var/virtual_hosts/download/nightly/packages/$current_distri/trunk/$current_group*trunk_r$dc*.rpm\n";
         $must_rebuild_sth = "yes" if(@for_removal);
       }
       print "\$keep_revisions = $keep_revisions is larger/equal $no_of_versions....\n";
@@ -103,8 +104,8 @@ foreach $current_distri(@distris) {
   }
   #exit 0;
   if($must_rebuild_sth eq "yes") {
-    print OUT "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/packages/$current_distri/trunk/\n";
-    print OUT "/home/www/scripts/do_LATESTVERSION.pl /var/virtual_hosts/download/packages/$current_distri/trunk/\n";
+    print OUT "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/nightly/packages/$current_distri/trunk/\n";
+    print OUT "/home/www/scripts/do_LATESTVERSION.pl /var/virtual_hosts/download/nightly/packages/$current_distri/trunk/\n";
     print OUT "/home/www/scripts/trunk_apt4rpm_build.pl -d $current_distri\n";
     print OUT "#================================================================================================\n";
   }
