@@ -1,6 +1,6 @@
 # makefile postprocessing
 
-VERSUFFIX="1.0"
+VERSUFFIX=1.0
 
 ifeq ($(FHS_INSTALL_ROOT),)
 
@@ -16,6 +16,8 @@ TEMPLATES_DIR=$(OGoSHAREDIR)/templates
 
 endif
 
+# fix that, quite hackish
+
 install-template-link :
 	if test -L $(TEMPLATES_DIR); then \
 	  echo "templates link exists: $(TEMPLATES_DIR)"; \
@@ -23,7 +25,11 @@ install-template-link :
 	  echo "templates directory exists (update?!): $(TEMPLATES_DIR)"; \
 	else \
 	  echo "link templates directory $(TEMPLATES_DIR) .."; \
-	  ln -sf $(PWD)/Templates $(TEMPLATES_DIR); \
+	  if test -d $(PWD)/WebUI/Templates; then \
+	    ln -sf $(PWD)/WebUI/Templates $(TEMPLATES_DIR); \
+	  elif test -d $(PWD)/Templates; then \
+	    ln -sf $(PWD)/Templates $(TEMPLATES_DIR); \
+          fi; \
         fi
 
 install-translations-link :
@@ -33,7 +39,11 @@ install-translations-link :
 	  echo "translations directory exists (update?!): $(TRANSLATIONS_DIR)"; \
 	else \
 	  echo "link translations directory $(TRANSLATIONS_DIR) .."; \
-	  ln -sf $(PWD)/Resources $(TRANSLATIONS_DIR); \
+	  if test -d $(PWD)/WebUI/Resources; then \
+	    ln -sf $(PWD)/WebUI/Resources $(TRANSLATIONS_DIR); \
+	  elif test -d $(PWD)/Resources; then \
+	    ln -sf $(PWD)/Resources $(TRANSLATIONS_DIR); \
+	  fi; \
         fi
 
 install :: install-template-link install-translations-link

@@ -546,7 +546,7 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   
   // TODO: some kind of hack ... - need to decide how we want to deal with
   //       the bundle less main component
-  _appName = @"OpenGroupware10a";
+  _appName = @"OpenGroupware10";
   
   if (debugOn) {
     [self logWithFormat:@"lookup URL of resource: '%@'/%@/%@", 

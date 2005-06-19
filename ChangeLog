@@ -1,3 +1,10 @@
+2005-06-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* WebUI/GNUmakefile.postamble: fixed creation of template/translation
+	  links
+
+	* GNUmakefile: improved behaviour with empty GNUSTEP_MAKEFILES variable
+
 2005-03-21  Helge Hess  <helge.hess@opengroupware.org>
 
 	* configure: on OSX use --disable-strip / --with-gnustep per default,

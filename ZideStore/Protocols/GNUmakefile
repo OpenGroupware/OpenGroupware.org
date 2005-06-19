@@ -3,10 +3,7 @@
 -include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 
-SUBPROJECTS += \
-	EvoConnect	\
-	WCAP		\
-	RSS		\
+SUBPROJECTS += RSS
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/aggregate.make
