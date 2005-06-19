@@ -368,7 +368,7 @@ static BOOL logBundleLoading          = NO;
     
   resp = [WOResponse responseWithRequest:req];
   [resp appendContentString:
-          @"<html><head><title>SKYRiX Mails</title>\n"
+          @"<html><head><title>OGo Mails</title>\n"
           @"<body vlink=\"#000000\" bgcolor=\"#FFECD0\" link=\"#000000\" "
           @"font=\"#000000\">\n"
           @"<center> <b>Your session expired.</b></center>\n"

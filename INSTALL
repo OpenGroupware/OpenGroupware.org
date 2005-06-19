@@ -126,10 +126,21 @@ come up with an own. The templates used for the RPM packages can
 be found in:
   maintenance/rpm_buildenvironment/initscript_templates/
 
-UPGRADE NOTES
-=============
 
-.. for Users which upgrade from a CVS based "non-FHS" installation.
+Upgrading from 1.0a to 1.1
+==========================
+
+For users which upgrade from one of the 1.0 alpha versions to OGo 1.1.
+
+If you want to keep your settings, copy your .plist files, eg:
+
+  cp ogo-webui-1.0a.plist    ogo-webui-1.1.plist
+  cp ogo-zidestore-1.3.plist ogo-zidestore-1.5.plist
+
+Upgrading from pre-1.0 alpha
+============================
+
+For users which upgrade from a CVS based "non-FHS" installation.
 
 a) note that the daemons now live in
 

@@ -11,19 +11,19 @@
 .\"
 
 .SH NAME
-ogo-webui-1.0a \- OGo HTML interface server
+ogo-webui-1.1 \- OGo HTML interface server
 .SH SYNOPSIS
-.B ogo-webui-1.0a 
+.B ogo-webui-1.1 
 [
 .BI \-WOPort " port"
 ]
 
 .SH DESCRIPTION
-.B ogo-webui-1.0a
+.B ogo-webui-1.1
 is the server which provides the HTML interface of OpenGroupware.org.
 .PP
 Note that you should not connect
-.B ogo-webui-1.0a
+.B ogo-webui-1.1
 directly on its port using your browser, but rather use
 .B mod_ngobjweb
 in combination with
@@ -34,7 +34,7 @@ Please see the installation instructions for further information.
 .TP 12
 .IP "-WOPort port"
 This option sets the TCP/IP port the
-.B ogo-webui-1.0a
+.B ogo-webui-1.1
 server is running on and which the mod_ngobjweb will connect to.
 
 .SH FILES
@@ -44,7 +44,7 @@ This file contains configurations which apply to all OpenGroupware.org
 related daemons. This includes settings like the database connection
 dictionary or the path where preferences of OGo accounts are stored.
 .RE
-.I /etc/opengroupware.org/ogo-webui-1.0a.plist
+.I /etc/opengroupware.org/ogo-webui-1.1.plist
 .RS
 Configurations contained in this file overwrite those in the NSGlobalDomain.
 You can persist any command line option in this file using the
