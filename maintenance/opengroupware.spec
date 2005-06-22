@@ -1006,7 +1006,6 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/lib/opengroupware.org-1.0/webui/PreferencesUI.lso
 %{prefix}/lib/opengroupware.org-1.0/webui/PropertiesUI.lso
 %{prefix}/lib/opengroupware.org-1.0/webui/RelatedLinksUI.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/SoOGo.lso
 %{prefix}/share/opengroupware.org-1.0/templates/AdminUI
 %{prefix}/share/opengroupware.org-1.0/templates/BaseUI
 %{prefix}/share/opengroupware.org-1.0/templates/OGoUIElements
@@ -1187,6 +1186,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Wed Jun 22 2005 Frank Reppin <frank@opengroupware.org>
+- removed webui/SoOGo.lso from webui-core
 * Fri Jun 17 2005 Helge Hess <helge.hess@opengroupware.org>
 - patched pathes for version 1.0
 * Wed May 11 2005 Frank Reppin <frank@opengroupware.org>
