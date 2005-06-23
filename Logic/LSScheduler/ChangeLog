@@ -1,3 +1,8 @@
+2005-06-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSFetchCyclicAppointmentCommand.m: fixed a bug, probably introduced
+	  in v5.1.58 (merged in from OGo 1.1) (v5.2.60)
+
 2005-06-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.59

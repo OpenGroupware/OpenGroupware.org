@@ -19,7 +19,7 @@
   02111-1307, USA.
 */
 
-#import "common.h"
+#include "common.h"
 #include <LSFoundation/LSDBFetchRelationCommand.h>
 
 @interface LSFetchCyclicAppointmentCommand : LSDBFetchRelationCommand
@@ -27,22 +27,27 @@
 
 @implementation LSFetchCyclicAppointmentCommand
 
+- (BOOL)isRootId:(NSNumber *)_companyId inContext:(id)_ctx {
+  return [_companyId intValue] == 10000 ? YES : NO;
+}
+
 - (void)_checkPermission:(NSArray *)_appointments context:(id)_ctx {
-  NSMutableArray *filtered = nil;
-  NSEnumerator   *e        = [_appointments objectEnumerator];
-  id appointment           = nil;
-  id login                 = nil;
-  id loginId               = nil;
-  id loginTeams            = nil;
-
-  filtered = [[NSMutableArray allocWithZone:[self zone]]
-                              initWithCapacity:[_appointments count]];
-
+  // NOTE: sideeffect is that the object is reset (_appointments!)
+  NSMutableArray *filtered;
+  NSEnumerator   *e;
+  NSNumber *loginId;
+  id loginTeams; /* set or array */
+  id appointment;
+  id login;
+  
+  e        = [_appointments objectEnumerator];
+  filtered = [[NSMutableArray alloc] initWithCapacity:[_appointments count]];
+  
   // get login account
   login = [_ctx valueForKey:LSAccountKey];
 
   // get pkeys of the teams of the login account
-  if (login)
+  if (login != nil)
     loginTeams = [_ctx runCommand:@"account::teams", @"object", login, nil];
   
   loginTeams = [loginTeams mappedSetUsingSelector:@selector(valueForKey:)
@@ -51,36 +56,40 @@
   // get pkey of login account
   loginId = [login valueForKey:@"companyId"];
                              
-  while ((appointment = [e nextObject])) {
-    id teamKey = [appointment valueForKey:@"accessTeamId"];
+  while ((appointment = [e nextObject]) != nil) {
+    NSNumber *teamKey;
     
     // the owner may always view the appointment
     if ([[appointment valueForKey:@"ownerId"] isEqual:loginId] ||
-        ([loginId intValue] == 10000)) {
+        ([self isRootId:loginId inContext:_ctx])) {
       [filtered addObject:appointment];
       continue;
     }
+    
+    if ((teamKey = [appointment valueForKey:@"accessTeamId"]) != nil) {
+      /* if team is 'null', the appointment is private to the owner */
       
-    if (teamKey) {
-      // if team is 'null', the appointment is private to the owner
-
-      // check whether the login user is in access-team
+      /* check whether the login user is in access-team */
       if ([loginTeams containsObject:teamKey]) {
         [filtered addObject:appointment];
         continue;
       }
     }
 
-    // check whether the login user is a participant
+    /* check whether the login user is a participant */
     {
-      NSArray *participants = [appointment valueForKey:@"participants"];
-      int i, count = [participants count];
+      NSArray  *participants;
+      unsigned i, count;
       BOOL found = NO;
 
-      for (i = 0; i < count; i++) {
-        id participant = [participants objectAtIndex:i];
-        id pkey        = [participant valueForKey:@"companyId"];
-
+      participants = [appointment valueForKey:@"participants"];
+      for (i = 0, count = [participants count]; i < count; i++) {
+        id participant;
+        NSNumber *pkey;
+	
+	participant = [participants objectAtIndex:i];
+	pkey        = [participant valueForKey:@"companyId"];
+	
         if ([[participant valueForKey:@"isTeam"] boolValue]) {
           if ([loginTeams containsObject:pkey]) {
             found = YES;
@@ -101,7 +110,7 @@
     }
   }
   [self setReturnValue:filtered];
-  RELEASE(filtered); filtered = nil;
+  [filtered release]; filtered = nil;
 }
 
 - (void)_fetchParticipantsForAppointments:(NSArray *)_dates context:(id)_ctx{
@@ -115,10 +124,11 @@
   [super _executeInContext:_context];
 
   results = [self object];
-    
+  
   [self _fetchParticipantsForAppointments:results context:_context];
   [self _checkPermission:results context:_context];
-
+  results = [self returnValue];
+  
   LSRunCommandV(_context, @"appointment", @"get-comments",
                 @"objects", results, nil);
 }
@@ -143,4 +153,4 @@
   return @"parentDateId";
 }
 
-@end
+@end /* LSFetchCyclicAppointmentCommand */
