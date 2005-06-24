@@ -64,7 +64,7 @@ sub move_to_dest {
   my $remote_host = "download.opengroupware.org";
   my $remote_dir;
   my $remote_trunk_dir = "/var/virtual_hosts/download/nightly/packages/$host_i_runon/trunk";
-  my $remote_rel_dir = "/var/virtual_hosts/download/nightly/packages/$host_i_runon/releases";
+  my $remote_rel_dir = "/var/virtual_hosts/download/releases/unstable/$host_i_runon/releases";
   my $do_link = "yes";
   if (($do_upload eq "yes") and ($build_type eq "release")) {
     $remote_dir = $remote_rel_dir;
