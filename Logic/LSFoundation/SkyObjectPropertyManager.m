@@ -270,9 +270,13 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
     }
     [q release]; q = nil;
     
-    while ((fetch = [adc fetchAttributes:attrs withZone:NULL])) {
+    while ((fetch = [adc fetchAttributes:attrs withZone:NULL]) != nil) {
+      NSCalendarDate *date;
+      
       /* correct timezone */
-      [[fetch valueForKey:@"valueDate"] setTimeZone:tz];
+      if ([(date = [fetch valueForKey:@"valueDate"]) isNotNull])
+	[date setTimeZone:tz];
+      
       [tmp addObject:fetch];
     }
   }
