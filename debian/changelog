@@ -1,3 +1,9 @@
+opengroupware.org (1.0beta.1-0) UNRELEASED; urgency=low
+
+  * Bump OGO SONAME version to 5.2, ZideStore SONAME version to 1.4.
+
+ -- Sebastian Ley <ley@debian.org>  Mon, 27 Jun 2005 12:21:53 +0200
+
 opengroupware.org (1.0a.13-0) UNRELEASED; urgency=low
 
   * debian/ogo-create-instance: Add a Default for skyaptnotify logging.
