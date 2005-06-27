@@ -14,9 +14,9 @@ MAKE_FLAGS = messages=yes OPTFLAG=-O0
 
 GNUSTEP_SETUP=/usr/lib/opengroupware.org/System/Library/Makefiles/GNUstep.sh
 
-OGOVER=1.0a
-OGOSONAME=5.1
-ZSVER=1.3
+OGOVER=1.1
+OGOSONAME=5.3
+ZSVER=1.5
 SOPEVER := $(shell COLUMNS=200 dpkg -l libsope-xml*-dev |grep ^ii | awk '{print $$2}' | sed -e s/^libsope-xml// -e s/-dev//)
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))

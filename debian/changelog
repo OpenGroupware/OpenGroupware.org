@@ -1,3 +1,9 @@
+opengroupware.org (1.1.0-0) UNRELEASED; urgency=low
+
+  * New upstream release. 
+
+ -- Sebastian Ley <ley@debian.org>  Mon, 27 Jun 2005 12:25:59 +0200
+
 opengroupware.org (1.0a.13-0) UNRELEASED; urgency=low
 
   * debian/ogo-create-instance: Add a Default for skyaptnotify logging.
