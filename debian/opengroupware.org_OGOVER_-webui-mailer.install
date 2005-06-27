@@ -11,4 +11,4 @@ usr/share/opengroupware.org-*/templates/OGoMailInfo
 usr/share/opengroupware.org-*/templates/OGoMailViewers
 usr/share/opengroupware.org-*/templates/OGoRecipientLists
 usr/share/opengroupware.org-*/templates/OGoMailEditor
-usr/share/opengroupware.org-1.0a/templates/OGoMailFilter
+usr/share/opengroupware.org-*/templates/OGoMailFilter
