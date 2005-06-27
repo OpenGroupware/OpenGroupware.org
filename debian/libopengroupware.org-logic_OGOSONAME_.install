@@ -2,4 +2,4 @@ usr/lib/libLSAddress.so.*
 usr/lib/libLSFoundation.so.*
 usr/lib/libLSSearch.so.*
 usr/lib/libOGoSchedulerTools.so.*
-usr/lib/opengroupware.org-1.0a/commands/*.cmd
+usr/lib/opengroupware.org-*/commands/*.cmd
