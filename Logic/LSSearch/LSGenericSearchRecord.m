@@ -62,7 +62,7 @@
 }
 
 - (NSDictionary *)searchDict {
-  return self->searchDict;
+  return [[self->searchDict copy] autorelease];
 }
 
 - (void)removeAllObjects {
@@ -70,24 +70,35 @@
 }
 
 - (void)removeObjectForKey:(id)_key {
+  NSLog(@"0x%08X remove: %@", self, _key);
   [self->searchDict removeObjectForKey:_key];
 }
 
-// enumerators
+/* enumerators */
 
 - (NSEnumerator *)keyEnumerator {
   return [self->searchDict keyEnumerator];
+}
+
+/* NSCopying */
+
+- (id)copyWithZone:(NSZone *)_zone {
+  LSGenericSearchRecord *r;
+  
+  r = [[LSGenericSearchRecord alloc] initWithEntity:self->entity];
+  [r->searchDict addEntriesFromDictionary:self->searchDict];
+  [r setComparator:[self comparator]];
+  return r;
 }
 
 /* key/value coding */
 
 - (void)takeValuesFromDictionary:(NSDictionary *)_dictionary {
   NSEnumerator *keyEnum;
-  id           key;
+  NSString     *key;
   
   keyEnum = [_dictionary keyEnumerator];
-  
-  while ((key = [keyEnum nextObject]))
+  while ((key = [keyEnum nextObject]) != nil)
     [self takeValue:[_dictionary objectForKey:key] forKey:key];
 }
 
@@ -102,8 +113,19 @@
 /* description */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:
-		     @"<LSGenericSearchRecord entity %@ searchDict %@>", 
-		     self->entity, self->searchDict];
+  NSMutableString *ms;
+
+  ms = [NSMutableString stringWithCapacity:128];
+  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@" entity=%@", [self->entity name]];
+  
+  if ([self->searchDict count] == 0)
+    [ms appendFormat:@" empty-dict<0x%08X>", self->searchDict];
+  else
+    [ms appendFormat:@" dict<0x%08X>=%@", self->searchDict];
+
+  [ms appendString:@">"];
+  return ms;
 }
+
 @end /* LSGenericSearchRecord */

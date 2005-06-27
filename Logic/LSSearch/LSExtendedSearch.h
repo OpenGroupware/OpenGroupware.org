@@ -40,10 +40,11 @@
 - (EOSQLQualifier *)qualifier;
 - (EOEntity *)entity;
 
-//accessors
+/* accessors */
 
-- (NSString *)operator;
 - (void)setOperator:(NSString *)_operator;
+- (NSString *)operator;
+
 - (void)setSearchRecord:(LSGenericSearchRecord *)_searchRecord;
 - (LSGenericSearchRecord *)searchRecord;
 - (void)setRelatedRecords:(NSArray *)_relatedRecords;

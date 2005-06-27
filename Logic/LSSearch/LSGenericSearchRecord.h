@@ -26,7 +26,7 @@
 
 @class EOEntity, NSMutableDictionary, NSDictionary;
 
-@interface LSGenericSearchRecord : NSObject
+@interface LSGenericSearchRecord : NSObject < NSCopying >
 {
 @private
   EOEntity            *entity;
@@ -39,10 +39,10 @@
 
 - (void)takeValuesFromDictionary:(NSDictionary *)_dictionary;
 
-// accessors
+/* accessors */
  
-- (EOEntity *)entity;
 - (void)setEntity:(EOEntity *)_entity;
+- (EOEntity *)entity;
 - (void)setComparator:(NSString *)_comparator;
 - (NSString *)comparator;
 - (NSDictionary *)searchDict;

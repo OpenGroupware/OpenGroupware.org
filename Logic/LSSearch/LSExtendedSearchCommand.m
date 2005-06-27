@@ -57,20 +57,21 @@
 }
 
 - (void)_prepareForExecutionInContext:(id)_context {
-  NSMutableArray *relatedRecords = nil;
-  NSEnumerator   *listEnum       = nil;
-  id             record          = nil;
-  id             searchRecord    = nil;
+  NSMutableArray        *relatedRecords;
+  LSGenericSearchRecord *searchRecord = nil;
 
   relatedRecords = [[NSMutableArray alloc] initWithCapacity:4];
-
+  
   if (self->searchKeys != nil) { // use parameter keys
     searchRecord = [[LSGenericSearchRecord alloc]initWithEntity:[self entity]];
     [searchRecord takeValuesFromDictionary:self->searchKeys];
   }
-  else { // search primary prototype record
-    NSString *ename = [self entityName];
+  else { /* search primary prototype record */
+    LSGenericSearchRecord *record;
+    NSEnumerator *listEnum;
+    NSString *ename;
     
+    ename    = [self entityName];
     listEnum = [self->searchRecordList objectEnumerator];
     while ((record = [listEnum nextObject]) != nil) {
       if ([ename isEqualToString:[[record entity] name]]) {
@@ -81,14 +82,16 @@
   }
   if (searchRecord != nil) {
     [self->extendedSearch release]; self->extendedSearch = nil;
-    self->extendedSearch = [[LSExtendedSearch alloc] init];
-
+    
     [relatedRecords addObjectsFromArray:self->searchRecordList];
     [relatedRecords removeObject:searchRecord];
 
-    if (self->operator) [self->extendedSearch setOperator:self->operator];
-    [self->extendedSearch setSearchRecord:searchRecord];
-    [self->extendedSearch setRelatedRecords:relatedRecords];
+    self->extendedSearch =
+      [[LSExtendedSearch alloc] initWithSearchRecord:searchRecord
+                                andRelatedRecords:relatedRecords];
+    
+    if ([self->operator isNotNull])
+      [self->extendedSearch setOperator:self->operator];
     [self->extendedSearch setDbAdaptor:[self databaseAdaptor]];
   }
   [searchRecord   release]; searchRecord   = nil;
@@ -249,20 +252,24 @@
 }
 
 - (NSArray *)_determineAccessGIDsFromResults:(NSArray *)r {
+  NSEnumerator   *enumerator;
+  NSDictionary   *obj;
+  NSString       *keyName, *en;
+  NSMutableArray *a;
+
   if ([self fetchGlobalIDs])
     return r;
 
-  if ([[self fetchIds] boolValue]) { /* got dict with pk and entity */
-      NSEnumerator   *enumerator;
-      NSDictionary   *obj;
-      NSString       *keyName, *en;
-      NSMutableArray *a;
+  if (![[self fetchIds] boolValue])
+    return [r map:@selector(valueForKey:) with:@"globalID"];
+
+  /* got dict with pk and entity */
       
-      enumerator = [r objectEnumerator];
-      keyName    = nil;
-      en         = nil;      
-      a          = [NSMutableArray arrayWithCapacity:[r count]];
-      while ((obj = [enumerator nextObject]) != nil) {
+  enumerator = [r objectEnumerator];
+  keyName    = nil;
+  en         = nil;      
+  a          = [NSMutableArray arrayWithCapacity:[r count]];
+  while ((obj = [enumerator nextObject]) != nil) {
         id k;
         
         if (keyName == nil) {
@@ -274,11 +281,8 @@
         k = [obj objectForKey:keyName];
         [a addObject:[EOKeyGlobalID globalIDWithEntityName:en
                                     keys:&k keyCount:1 zone:NULL]];
-      }
-      return a;
   }
-  
-  return [r map:@selector(valueForKey:) with:@"globalID"];
+  return a;
 }
 
 - (NSArray *)filterResults:(NSArray *)r fromAccess:(NSArray *)access {
@@ -361,6 +365,7 @@
 /* support for person/enterprise */
 
 - (id)_checkRecordsForCSVAttribute:(NSString *)_attrName {
+  /* Note: that can give weird results with multiple keywords-records */
   NSArray               *records;
   LSGenericSearchRecord *record;
   unsigned max, i;

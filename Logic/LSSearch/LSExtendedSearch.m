@@ -19,9 +19,9 @@
   02111-1307, USA.
 */
 
-#include "common.h"
-#include "LSGenericSearchRecord.h"
 #include "LSExtendedSearch.h"
+#include "LSGenericSearchRecord.h"
+#include "common.h"
 #include <GDLAccess/EOSQLQualifier.h>
 
 @implementation LSExtendedSearch
@@ -113,15 +113,23 @@
 }
 
 - (NSString *)_qualifierFormat {
-  NSMutableString *format   = nil;
-  NSEnumerator    *listEnum = nil;
-  id              record    = nil;
-  NSString        *tmp      = nil;
-  NSString        *startQ   = nil;
-  int             startQLength = 0;
-
+  /* 
+     Note: the command still modifies searchRecords between the -init call and
+           qualifier generation!
+  */
+  NSMutableString *format;
+  NSEnumerator    *listEnum;
+  id              record;
+  NSString        *startQ;
+  int             startQLength;
+  
   startQ       = @"( ";
   startQLength = [startQ length];
+
+#if 0
+  [self logWithFormat:@"S: %@", self->searchRecord];
+  [self logWithFormat:@"R: %@", self->relatedRecords];
+#endif
   
   format = [NSMutableString stringWithCapacity:64];
 
@@ -129,28 +137,35 @@
   [format appendString:[self _qualifierFormatForRecord:self->searchRecord]];
 
   listEnum = [self->relatedRecords objectEnumerator];
-  
   while ((record = [listEnum nextObject]) != nil) {
+    NSString *tmp;
+    
     tmp  = [self _qualifierFormatForRecord:record];
-    if ([tmp length] > 0) {
-      if ([format length] > startQLength) {
-        [format appendString:@" "];
-        [format appendString:self->operator];
-        [format appendString:@" "];
-      }
-      [format appendString:tmp];
+    if ([tmp length] == 0)
+      continue;
+
+    if ([format length] > startQLength) {
+      [format appendString:@" "];
+      [format appendString:self->operator];
+      [format appendString:@" "];
     }
+    [format appendString:tmp];
   }
   if ([format length] == startQLength)
     return @"1=2";
   
   [format appendString:@" )"];
+
+#if 0  
+#warning DEBUG LOG
+  [self logWithFormat:@"Q: '%@'", format];
+#endif
   return format;
 }
 
 - (EOSQLQualifier *)qualifier {
-  EOSQLQualifier *qualifier = nil;
-
+  EOSQLQualifier *qualifier;
+  
   qualifier = [[EOSQLQualifier alloc] initWithEntity:[self entity]
                                       qualifierFormat:[self _qualifierFormat]];
   [qualifier setUsesDistinct:YES];
@@ -181,7 +196,8 @@
 }
 
 - (void)setSearchRecord:(LSGenericSearchRecord *)_searchRecord {
-  ASSIGN(searchRecord, _searchRecord);
+  /* Note: do not use -copy, the command still modifies the records */
+  ASSIGN(self->searchRecord, _searchRecord);
 }
 - (LSGenericSearchRecord *)searchRecord {
   return self->searchRecord;
