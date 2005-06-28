@@ -21,104 +21,67 @@
 
 #include <OGoPalm/SkyPalmAddressDocument.h>
 #include <OGoPalm/SkyPalmConstants.h>
+#include "common.h"
 
 @implementation SkyPalmAddressDocument
 
-- (id)init {
-  if ((self = [super init])) {
-    self->workPhone   = nil;
-    self->homePhone   = nil;
-    self->faxPhone    = nil;
-    self->otherPhone  = nil;
-    self->emailPhone  = nil;
-    self->mainPhone   = nil;
-    self->pagerPhone  = nil;
-    self->mobilePhone = nil;
-
-    self->address   = nil;
-    self->city      = nil;
-    self->company   = nil;
-    self->country   = nil;
-    self->firstname = nil;
-    self->lastname  = nil;
-    self->note      = nil;
-    self->phone0    = nil;
-    self->phone1    = nil;
-    self->phone2    = nil;
-    self->phone3    = nil;
-    self->state     = nil;
-    self->title     = nil;
-    self->zipcode   = nil;
-    self->custom1   = nil;
-    self->custom2   = nil;
-    self->custom3   = nil;
-    self->custom4   = nil;
-
-    self->skyrixType = nil;
-  }
-  return self;
-}
-
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->address);
-  RELEASE(self->city);
-  RELEASE(self->company);
-  RELEASE(self->country);
-  RELEASE(self->firstname);
-  RELEASE(self->lastname);
-  RELEASE(self->note);
-  RELEASE(self->phone0);
-  RELEASE(self->phone1);
-  RELEASE(self->phone2);
-  RELEASE(self->phone3);
-  RELEASE(self->phone4);
-  RELEASE(self->state);
-  RELEASE(self->title);
-  RELEASE(self->zipcode);
-  RELEASE(self->custom1);
-  RELEASE(self->custom2);
-  RELEASE(self->custom3);
-  RELEASE(self->custom4);
-
-  RELEASE(self->workPhone);
-  RELEASE(self->homePhone);
-  RELEASE(self->faxPhone);
-  RELEASE(self->otherPhone);
-  RELEASE(self->emailPhone);
-  RELEASE(self->mainPhone);
-  RELEASE(self->pagerPhone);
-  RELEASE(self->mobilePhone);
-
-  RELEASE(self->skyrixType);
+  [self->address     release];
+  [self->city        release];
+  [self->company     release];
+  [self->country     release];
+  [self->firstname   release];
+  [self->lastname    release];
+  [self->note        release];
+  [self->phone0      release];
+  [self->phone1      release];
+  [self->phone2      release];
+  [self->phone3      release];
+  [self->phone4      release];
+  [self->state       release];
+  [self->title       release];
+  [self->zipcode     release];
+  [self->custom1     release];
+  [self->custom2     release];
+  [self->custom3     release];
+  [self->custom4     release];
+  [self->workPhone   release];
+  [self->homePhone   release];
+  [self->faxPhone    release];
+  [self->otherPhone  release];
+  [self->emailPhone  release];
+  [self->mainPhone   release];
+  [self->pagerPhone  release];
+  [self->mobilePhone release];
+  [self->skyrixType  release];
   [super dealloc];
 }
-#endif
 
-// accessors
+/* accessors */
+
 - (void)setAddress:(NSString *)_address {
-  ASSIGN(self->address,_address);
+  ASSIGNCOPY(self->address,_address);
 }
 - (NSString *)address {
   return self->address;
 }
 
 - (void)setCity:(NSString *)_city {
-  ASSIGN(self->city,_city);
+  ASSIGNCOPY(self->city,_city);
 }
 - (NSString *)city {
   return self->city;
 }
 
 - (void)setCompany:(NSString *)_company {
-  ASSIGN(self->company,_company);
+  ASSIGNCOPY(self->company,_company);
 }
 - (NSString *)company {
   return self->company;
 }
 
 - (void)setCountry:(NSString *)_country {
-  ASSIGN(self->country,_country);
+  ASSIGNCOPY(self->country,_country);
 }
 - (NSString *)country {
   return self->country;
@@ -132,56 +95,56 @@
 }
 
 - (void)setFirstname:(NSString *)_firstname {
-  ASSIGN(self->firstname,_firstname);
+  ASSIGNCOPY(self->firstname,_firstname);
 }
 - (NSString *)firstname {
   return self->firstname;
 }
 
 - (void)setLastname:(NSString *)_lastname {
-  ASSIGN(self->lastname,_lastname);
+  ASSIGNCOPY(self->lastname,_lastname);
 }
 - (NSString *)lastname {
   return self->lastname;
 }
 
 - (void)setNote:(NSString *)_note {
-  ASSIGN(self->note,_note);
+  ASSIGNCOPY(self->note,_note);
 }
 - (NSString *)note {
   return self->note;
 }
 
 - (void)setPhone0:(NSString *)_phone {
-  ASSIGN(self->phone0,_phone);
+  ASSIGNCOPY(self->phone0,_phone);
 }
 - (NSString *)phone0 {
   return self->phone0;
 }
 
 - (void)setPhone1:(NSString *)_phone {
-  ASSIGN(self->phone1,_phone);
+  ASSIGNCOPY(self->phone1,_phone);
 }
 - (NSString *)phone1 {
   return self->phone1;
 }
 
 - (void)setPhone2:(NSString *)_phone {
-  ASSIGN(self->phone2,_phone);
+  ASSIGNCOPY(self->phone2,_phone);
 }
 - (NSString *)phone2 {
   return self->phone2;
 }
 
 - (void)setPhone3:(NSString *)_phone {
-  ASSIGN(self->phone3,_phone);
+  ASSIGNCOPY(self->phone3,_phone);
 }
 - (NSString *)phone3 {
   return self->phone3;
 }
 
 - (void)setPhone4:(NSString *)_phone {
-  ASSIGN(self->phone4,_phone);
+  ASSIGNCOPY(self->phone4,_phone);
 }
 - (NSString *)phone4 {
   return self->phone4;
@@ -223,56 +186,56 @@
 }
 
 - (void)setState:(NSString *)_state {
-  ASSIGN(self->state,_state);
+  ASSIGNCOPY(self->state,_state);
 }
 - (NSString *)state {
   return self->state;
 }
 
 - (void)setTitle:(NSString *)_title {
-  ASSIGN(self->title,_title);
+  ASSIGNCOPY(self->title,_title);
 }
 - (NSString *)title {
   return self->title;
 }
 
 - (void)setZipcode:(NSString *)_code {
-  ASSIGN(self->zipcode,_code);
+  ASSIGNCOPY(self->zipcode,_code);
 }
 - (NSString *)zipcode {
   return self->zipcode;
 }
 
 - (void)setCustom1:(NSString *)_custom {
-  ASSIGN(self->custom1,_custom);
+  ASSIGNCOPY(self->custom1,_custom);
 }
 - (NSString *)custom1 {
   return self->custom1;
 }
 
 - (void)setCustom2:(NSString *)_custom {
-  ASSIGN(self->custom2,_custom);
+  ASSIGNCOPY(self->custom2,_custom);
 }
 - (NSString *)custom2 {
   return self->custom2;
 }
 
 - (void)setCustom3:(NSString *)_custom {
-  ASSIGN(self->custom3,_custom);
+  ASSIGNCOPY(self->custom3,_custom);
 }
 - (NSString *)custom3 {
   return self->custom3;
 }
 
 - (void)setCustom4:(NSString *)_custom {
-  ASSIGN(self->custom4,_custom);
+  ASSIGNCOPY(self->custom4,_custom);
 }
 - (NSString *)custom4 {
   return self->custom4;
 }
 
 - (void)setSkyrixType:(NSString *)_type {
-  ASSIGN(self->skyrixType,_type);
+  ASSIGNCOPY(self->skyrixType,_type);
 }
 - (NSString *)skyrixType {
   return self->skyrixType;
@@ -373,7 +336,6 @@
   NSString *mainP  = @"";   // 5
   NSString *pager  = @"";   // 6
   NSString *mobile = @"";   // 7
-    
   NSNumber *labelId  = nil;
   NSString *labelKey = nil;
   NSString *value    = nil;
@@ -418,14 +380,14 @@
         }
     }
   }
-  ASSIGN(self->workPhone,work);
-  ASSIGN(self->homePhone,home);
-  ASSIGN(self->faxPhone,fax);
-  ASSIGN(self->otherPhone,other);
-  ASSIGN(self->emailPhone,email);
-  ASSIGN(self->mainPhone,mainP);
-  ASSIGN(self->pagerPhone,pager);
-  ASSIGN(self->mobilePhone,mobile);
+  ASSIGNCOPY(self->workPhone,   work);
+  ASSIGNCOPY(self->homePhone,   home);
+  ASSIGNCOPY(self->faxPhone,    fax);
+  ASSIGNCOPY(self->otherPhone,  other);
+  ASSIGNCOPY(self->emailPhone,  email);
+  ASSIGNCOPY(self->mainPhone,   mainP);
+  ASSIGNCOPY(self->pagerPhone,  pager);
+  ASSIGNCOPY(self->mobilePhone, mobile);
 }
 
 // overwriting
