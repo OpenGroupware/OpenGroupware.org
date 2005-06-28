@@ -1,3 +1,10 @@
+2005-06-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWPersonAdvancedSearch.m: when multiple keywords (categories) are
+	  selected the search UI now creates multiple EOKeyValueQualifiers to
+	  represent the query. Further it now supports the selection of the
+	  search operation (AND or OR) (v5.3.54)
+
 2005-05-12  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.1.53

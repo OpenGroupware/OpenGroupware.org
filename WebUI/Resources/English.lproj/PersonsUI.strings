@@ -1,5 +1,3 @@
-// $Id: PersonsUI.strings,v 1.11 2004/05/05 10:59:00 helge Exp $
-
 00_created                         = "created";
 01_dear_ms                         = "Dear Ms.";
 01_tel                             = "Telephone 1";
@@ -233,6 +231,9 @@ number                             = "Number";
 number_of_employed                 = "Number of employees";
 number_of_users                    = "Number of users";
 objectVersion                      = "Version";
+operator                           = "Searchoperator";
+operator_and                       = "Match All";
+operator_or                        = "Match One";
 other_title1                       = "Other Position 1";
 other_title2                       = "Other Position 2";
 overview                           = "overview";

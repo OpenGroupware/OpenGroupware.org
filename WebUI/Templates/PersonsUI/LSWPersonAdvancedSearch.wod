@@ -18,7 +18,20 @@ UrlLabel:            WOString { value = labels.url;            }
 MaxSearchCountLabel: WOString { value = labels.maxResults;     }
 SaveSearchLabel:     WOString { value = labels.saveSearch;     }
 LoadSearchLabel:     WOString { value = labels.loadSearch;     }
+OperatorLabel:       WOString { value = labels.operator;       }
+AndOperatorLabel:    WOString { value = labels.operator_and;   }
+OrOperatorLabel:     WOString { value = labels.operator_or;    }
 
+AndOperator: WORadioButton {
+  name      = "operator";
+  value     = "AND";
+  selection = qualifierOperator;
+}
+OrOperator: WORadioButton {
+  name      = "operator";
+  value     = "OR";
+  selection = qualifierOperator;
+}
 
 ZipField: WOTextField {
   name  = "zip";

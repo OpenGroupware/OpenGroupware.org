@@ -34,6 +34,7 @@
   BOOL                hasSearched;
   NSData              *formletterData;
   EOQualifier         *qualifier;
+  NSString            *qualifierOperator;
 
   NSString            *udKey; // userDefaultKey
   NSString            *searchTitle;
@@ -59,7 +60,8 @@
 
 @implementation LSWPersonAdvancedSearch
 
-static NSArray *SkyPublicExtendedPersonAttributes = nil;
+static NSArray  *SkyPublicExtendedPersonAttributes = nil;
+static NSString *KeywordSeparator = @", ";
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -95,6 +97,7 @@ static NSArray *SkyPublicExtendedPersonAttributes = nil;
 }
 
 - (void)dealloc {
+  [self->qualifierOperator     release];
   [self->maxSearchCount        release];
   [self->extendedAttributeKeys release];
   [self->person                release];
@@ -118,7 +121,7 @@ static NSArray *SkyPublicExtendedPersonAttributes = nil;
 
 // TODO: dup to LSWEnterpriseAdvancedSearch, this is a hack used in Logic
 - (void)setKeywordsAsArray:(NSArray *)_a {
-  [[self person] takeValue:[_a componentsJoinedByString:@", "] 
+  [[self person] takeValue:[_a componentsJoinedByString:KeywordSeparator] 
 		 forKey:@"keywords"];
 }
 - (NSArray *)keywordsAsArray {
@@ -126,7 +129,7 @@ static NSArray *SkyPublicExtendedPersonAttributes = nil;
   
   if (![(s = [[self person] valueForKey:@"keywords"]) isNotNull])
     return nil;
-  return [s componentsSeparatedByString:@", "];
+  return [s componentsSeparatedByString:KeywordSeparator];
 }
 
 - (void)setQualifier:(EOQualifier *)_qualifier {
@@ -243,63 +246,83 @@ static NSArray *SkyPublicExtendedPersonAttributes = nil;
   }
 }
 
+- (void)setQualifierOperator:(NSString *)_op {
+  ASSIGNCOPY(self->qualifierOperator, _op);
+}
+- (NSString *)qualifierOperator {
+  return [self->qualifierOperator isNotNull] 
+    ? self->qualifierOperator : @"AND";
+}
+
 - (void)_createQualifier {
   NSMutableDictionary *dict;
   NSArray             *keys;
   int                 i, cnt;
-
+  NSMutableArray      *qualifiers;
+  
   dict = [self _createSearchInfo];
-
+  
   if ([self valueForKey:@"companyValueAttribute"] &&
       [self valueForKey:@"companyValueValue"]) {
     [dict setObject:[self valueForKey:@"companyValueValue"]
           forKey:[self valueForKey:@"companyValueAttribute"]];
   }
 
-  {
-    NSMutableString *format    = nil;
-    BOOL            isFirstKey = YES;
+  // TODO: rewrite to directly construct the qualifier
+  qualifiers = [[NSMutableArray alloc] initWithCapacity:4];
+  keys       = [dict allKeys];
+  
+  for (i = 0, cnt = [keys count]; i < cnt; i++) {
+    EOQualifier *q;
+    NSString *key;
+    NSString *value;
     
-    format = [NSMutableString stringWithCapacity:128];
-    keys   = [dict allKeys];
-    cnt    = [keys count];
+    key   = [keys objectAtIndex:i];
+    value = [[dict objectForKey:key] stringValue];
     
-    for (i = 0; i < cnt; i++) {
-      NSString *key  = [keys objectAtIndex:i];
-      id       value = [dict objectForKey:key];      
-
-      value = [value stringValue];
-
-      if (isFirstKey)
-        isFirstKey = NO;
-      else
-        [format appendString:@" AND "];
-
-      [format appendString:key];
-
-      // TODO: this looks a LOT like duplicate code with PersonsUI!
-#if 0
-      if (([key isEqualToString:@"keywords"] &&
-	   !([(NSString *)value hasPrefix:@"*"] ||
-	     [(NSString *)value hasPrefix:@"%"])))
-	[format appendString:@" like '*"];
-      else
-#endif
-      [format appendString:@" like '"];        
-
-      if ([value rangeOfString:@"%"].length > 0) 
-        value = [value stringByReplacingString:@"%" withString:@"*"];
-      [format appendString:value];
-      if (![(NSString *)value hasSuffix:@"*"])
-        [format appendString:@"*'"];
-      else
-        [format appendString:@"'"];
+    /* special keywords processing */
+    
+    if ([key isEqualToString:@"keywords"]) {
+      if ([value rangeOfString:KeywordSeparator].length > 0) {
+        NSArray  *keywords;
+        unsigned j, jcnt;
+        
+        keywords = [value componentsSeparatedByString:KeywordSeparator];
+        for (j = 0, jcnt = [keywords count]; j < jcnt; j++) {
+          // Note: datasource only supports like with a suffix-star
+          q = [[EOKeyValueQualifier alloc]
+                initWithKey:@"keywords"
+                operatorSelector:EOQualifierOperatorLike
+                value:
+                  [[keywords objectAtIndex:j] stringByAppendingString:@"*"]];
+          if (q != nil) [qualifiers addObject:q];
+          [q release]; q = nil;
+        }
+        continue;
+      }
     }
     
-    [self->qualifier release]; self->qualifier = nil;
-    self->qualifier = 
-      [[EOQualifier qualifierWithQualifierFormat:format] retain];
+    /* create LIKE qualifiers for fields */
+    
+    if ([value rangeOfString:@"%"].length > 0) 
+      value = [value stringByReplacingString:@"%" withString:@"*"];
+    if (![(NSString *)value hasSuffix:@"*"])
+      value = [value stringByAppendingString:@"*"];
+    
+    q = [[EOKeyValueQualifier alloc]
+          initWithKey:key
+          operatorSelector:EOQualifierOperatorLike
+          value:value];
+    if (q != nil) [qualifiers addObject:q];
+    [q release]; q = nil;
   }
+  
+  [self->qualifier release]; self->qualifier = nil;
+  
+  self->qualifier = [[self qualifierOperator] isEqualToString:@"OR"]
+    ? [[EOOrQualifier alloc]  initWithQualifierArray:qualifiers]
+    : [[EOAndQualifier alloc] initWithQualifierArray:qualifiers];
+  [qualifiers release]; qualifiers = nil;
 }
 
 - (id)search {

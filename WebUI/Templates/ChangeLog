@@ -1,3 +1,8 @@
+2005-06-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* PersonsUI/LSWPersonAdvancedSearch.[html|wod]: added UI for search
+	  operator selection
+
 2005-05-30  Helge Hess  <helge.hess@skyrix.com>
 
 	* PreferencesUI/LSWPreferencesEditor.html: fixed nesting of form/table
