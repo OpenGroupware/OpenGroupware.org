@@ -270,17 +270,17 @@
   en         = nil;      
   a          = [NSMutableArray arrayWithCapacity:[r count]];
   while ((obj = [enumerator nextObject]) != nil) {
-        id k;
+    id k;
         
-        if (keyName == nil) {
-          keyName = [(EOAttribute *)[[[obj valueForKey:@"entity"] 
-				       primaryKeyAttributes] lastObject] name];
-          en = [(EOEntity *)[obj valueForKey:@"entity"] name];
-          NSAssert1(keyName, @"missing key name for %@", obj);
-        }
-        k = [obj objectForKey:keyName];
-        [a addObject:[EOKeyGlobalID globalIDWithEntityName:en
-                                    keys:&k keyCount:1 zone:NULL]];
+    if (keyName == nil) {
+      keyName = [(EOAttribute *)[[[obj valueForKey:@"entity"] 
+                                   primaryKeyAttributes] lastObject] name];
+      en = [(EOEntity *)[obj valueForKey:@"entity"] name];
+      NSAssert1(keyName, @"missing key name for %@", obj);
+    }
+    k = [obj objectForKey:keyName];
+    [a addObject:[EOKeyGlobalID globalIDWithEntityName:en
+                                keys:&k keyCount:1 zone:NULL]];
   }
   return a;
 }

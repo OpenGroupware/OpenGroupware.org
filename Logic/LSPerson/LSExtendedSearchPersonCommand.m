@@ -226,9 +226,19 @@ static BOOL debugOn = NO;
       [self logWithFormat:@"  keyword: '%@'(%@)", 
 	      self->keyword, NSStringFromClass([self->keyword class])];
     }
-    q = [[[EOSQLQualifier alloc] initWithEntity:[qualifier entity]
-				 csvAttribute:@"keywords"
-				 containingValue:self->keyword] autorelease];
+    if ([self->keyword rangeOfString:@", "].length > 0) {
+      q = [[[EOSQLQualifier alloc] 
+             initWithEntity:[qualifier entity]
+             csvAttribute:@"keywords"
+             containingValues:
+               [self->keyword componentsSeparatedByString:@", "]
+             conjoin:![[self operator] isEqualToString:@"OR"]] autorelease];
+    }
+    else {
+      q = [[[EOSQLQualifier alloc] initWithEntity:[qualifier entity]
+                                   csvAttribute:@"keywords"
+                                   containingValue:self->keyword] autorelease];
+    }
     
     if (q != nil && ([self isNoMatchSQLQualifier:qualifier] || qualifier==nil))
       qualifier = q;
@@ -277,13 +287,14 @@ static BOOL debugOn = NO;
 
 /* command methods */
 
-
 - (void)_prepareForExecutionInContext:(id)_context {
   if (self->searchAttributes) {
     [self takeValue:[self _searchRecordsInContext:_context]
 	  forKey:@"searchRecords"];
   }
   [super _prepareForExecutionInContext:_context];
+  
+  // TODO: what does this do?
   [self setKeyword:[self _checkRecordsForCSVAttribute:@"keywords"]];
 }
 

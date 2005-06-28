@@ -1,6 +1,11 @@
+2005-06-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSGenericSearchRecord.m: fixed a -description format argument
+	  (v5.3.26)
+
 2005-06-27  Helge Hess  <helge.hess@skyrix.com>
 
-	* v5.1.25
+	* v5.3.25
 
 	* LSExtendedSearchCommand.m, LSExtendedSearch.m: some code cleanups
 

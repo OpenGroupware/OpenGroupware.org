@@ -70,7 +70,7 @@
 }
 
 - (void)removeObjectForKey:(id)_key {
-  NSLog(@"0x%08X remove: %@", self, _key);
+  /* this is called as a sideeffect after the record is in LSExtendedSearch */
   [self->searchDict removeObjectForKey:_key];
 }
 
@@ -122,7 +122,7 @@
   if ([self->searchDict count] == 0)
     [ms appendFormat:@" empty-dict<0x%08X>", self->searchDict];
   else
-    [ms appendFormat:@" dict<0x%08X>=%@", self->searchDict];
+    [ms appendFormat:@" dict<0x%08X>=%@", self->searchDict, self->searchDict];
 
   [ms appendString:@">"];
   return ms;
