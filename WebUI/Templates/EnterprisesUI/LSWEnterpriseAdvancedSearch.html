@@ -54,7 +54,13 @@
           <#ValueCell/>
         </tr>
       </#HasExtendedAttrs>
-
+      <tr>
+        <#AttributeCell><#Font><#OperatorLabel/>:</#Font></#AttributeCell>
+        <#ValueCell><#EditFont>
+          <#AndOperator/> <#Font><#AndOperatorLabel/></#Font>
+          <#OrOperator /> <#Font><#OrOperatorLabel /></#Font>
+        </#EditFont></#ValueCell>
+      </tr>  
       <tr> 
         <td /><td colspan="3">
           <#SearchSubmit/><#FormLetterSubmit/><#ClearSubmit/>

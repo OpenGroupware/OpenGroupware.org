@@ -1,13 +1,33 @@
-// $Id: LSWEnterpriseAdvancedSearch.wod 2 2004-08-20 11:37:44Z znek $
-
-Label: WOString { value = labels.LSWEnterpriseAdvancedSearch; }
+// bind template to class
 
 Form: WOForm { name = "searchform"; }
 
-Zip:        WOString { value = labels.zip;        }
-Enterprise: WOString { value = labels.enterprise; }
-City:       WOString { value = labels.city;       }
-Country:    WOString { value = labels.country;    }
+Label:               WOString { value = labels.LSWEnterpriseAdvancedSearch; }
+Zip:                 WOString { value = labels.zip;        }
+Enterprise:          WOString { value = labels.enterprise; }
+City:                WOString { value = labels.city;       }
+Country:             WOString { value = labels.country;    }
+CategoryLabel:       WOString { value = labels.categoryLabel;  }
+NumberLabel:         WOString { value = labels.number;         }
+EmailLabel:          WOString { value = labels.email;          }
+CommentLabel:        WOString { value = labels.comment;        }
+TelephoneLabel:      WOString { value = labels.telephoneLabel; }
+UrlLabel:            WOString { value = labels.url;            }
+StreetLabel:         WOString { value = labels.street; escapeHTML = NO; }
+OperatorLabel:       WOString { value = labels.operator;       }
+AndOperatorLabel:    WOString { value = labels.operator_and;   }
+OrOperatorLabel:     WOString { value = labels.operator_or;    }
+
+AndOperator: WORadioButton {
+  name      = "operator";
+  value     = "AND";
+  selection = qualifierOperator;
+}
+OrOperator: WORadioButton {
+  name      = "operator";
+  value     = "OR";
+  selection = qualifierOperator;
+}
 
 ZipField: WOTextField {
   value = enterprise.address#zip;
@@ -61,17 +81,6 @@ CategoryPopUp: WOBrowser {
   style         = "width: 100%;";
 }
 
-CategoryLabel:  WOString { value = labels.categoryLabel;  }
-NumberLabel:    WOString { value = labels.number;         }
-EmailLabel:     WOString { value = labels.email;          }
-CommentLabel:   WOString { value = labels.comment;        }
-TelephoneLabel: WOString { value = labels.telephoneLabel; }
-UrlLabel:       WOString { value = labels.url;            }
-
-StreetLabel: WOString {
-  value = labels.street;
-  escapeHTML = NO;
-}
 
 Number: WOTextField {
   value = enterprise.number;

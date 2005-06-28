@@ -1,5 +1,9 @@
 2005-06-28  Helge Hess  <helge.hess@skyrix.com>
 
+	* English|German.lproj/EnterprisesUI.strings: added 'operator',
+	  'operator_and' and 'operator_or' keys for selecting the search
+	  operator in the LSWEnterpriseAdvancedSearch component
+
 	* English|German.lproj/PersonsUI.strings: added 'operator',
 	  'operator_and' and 'operator_or' keys for selecting the search
 	  operator in the LSWPersonAdvancedSearch component

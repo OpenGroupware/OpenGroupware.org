@@ -103,10 +103,9 @@ static NSString *KeywordSeparator = @", ";
   [self->person                release];
   [self->formletterData        release];
   [self->qualifier             release];
-
-  [self->udKey       release];
-  [self->searchTitle release];
-  [self->saveTitle   release];
+  [self->udKey                 release];
+  [self->searchTitle           release];
+  [self->saveTitle             release];
   [super dealloc];
 }
 
@@ -255,6 +254,7 @@ static NSString *KeywordSeparator = @", ";
 }
 
 - (void)_createQualifier {
+  // DUP: LSWEnterpriseAdvancedSearch
   NSMutableDictionary *dict;
   NSArray             *keys;
   int                 i, cnt;
@@ -268,7 +268,6 @@ static NSString *KeywordSeparator = @", ";
           forKey:[self valueForKey:@"companyValueAttribute"]];
   }
 
-  // TODO: rewrite to directly construct the qualifier
   qualifiers = [[NSMutableArray alloc] initWithCapacity:4];
   keys       = [dict allKeys];
   

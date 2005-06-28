@@ -1,4 +1,4 @@
-// bind to class
+// bind template to class
 
 Form: WOForm {
   name = "searchform";
