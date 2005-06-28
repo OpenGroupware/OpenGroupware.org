@@ -99,6 +99,9 @@ CREATE TABLE company_info (
   constraint pk_company_info primary key (company_info_id));
 
 
+-- Note: attribute_type is not mapped in model!
+--       neither are: value_date, value_int, category
+-- Likely reason: those columns where added to mirror obj_property
 CREATE TABLE company_value (
   company_value_id   int         not null,
   company_id         int        ,
