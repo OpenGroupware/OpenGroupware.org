@@ -107,6 +107,7 @@ static BOOL doExplain = NO;
 }
 
 - (NSSet *)nativeKeys {
+  /* Note: returns the EOModel attribute names */
   [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
@@ -653,8 +654,8 @@ static BOOL doExplain = NO;
   }
   else if ([searchRecords count] > 0) {
     if (doExplain) {
-      [self logWithFormat:@"EXPLAIN:   run regular search (%@) ..",
-              [self nameOfExtSearchCommand]];
+      [self logWithFormat:@"EXPLAIN:   run regular search (%@ / %@) ..",
+              [self nameOfExtSearchCommand], _operator];
     }
     result = [self->context runCommand:[self nameOfExtSearchCommand],
                   @"operator",       _operator,
@@ -694,7 +695,7 @@ static BOOL doExplain = NO;
   NSDictionary *ui = nil;
   
   reason = 
-    @"SkyPersonDataSource: EOKeyValueQualifers are only supported by "
+    @"SkyPersonDataSource: EOKeyValueQualifers are only supported with the "
     @"following operators: "
     @"(EOQualifierOperatorLike, EOQualifierOperatorEqual): ";
   reason = [reason stringByAppendingString:[_qual description]];
@@ -824,6 +825,7 @@ static BOOL doExplain = NO;
     
     if (checkForAsterisk && ![value hasSuffix:@"*"]) {
       // TODO: do not raise
+      [self logWithFormat:@"ERROR: value has no star-suffix: '%@'", value];
       exception = [self _unsupportedKeyValueQualifierError:(id)qual];
       [exception raise];
     }
@@ -843,6 +845,15 @@ static BOOL doExplain = NO;
 	  /* everything is fine, key is not yet set */
 	  [company takeValue:value forKey:key];
 	}
+        else if (company != nil && [key isEqualToString:@"keywords"]) {
+          /* key is set, but its a 'keywords' CSV key => special handling */
+          NSString *kw;
+          
+          kw = [company valueForKey:key];
+          kw = [kw stringByAppendingString:@", "]; // MUST BE this separator
+          kw = [kw stringByAppendingString:value];
+          [company takeValue:kw forKey:key];
+        }
 	else {
 	  /* key has already been set, need special treatment */
 	  if (valueToCompanyRecord == nil) {

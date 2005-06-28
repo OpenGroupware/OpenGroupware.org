@@ -1,3 +1,9 @@
+2005-06-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyCompanyDataSource.m: changed to merge multiple 'keywords'
+	  arguments in AND/OR qualifiers into a single search record key (using
+	  CSV hack), log operator when explain option is turned on (v5.3.45)
+
 2005-05-24  Helge Hess  <helge.hess@skyrix.com>
 
 	* minor code cleanups, added test_ogocds_addrfetch tool to test address
