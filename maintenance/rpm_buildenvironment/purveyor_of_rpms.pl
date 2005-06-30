@@ -63,18 +63,20 @@ sub move_to_dest {
   my $remote_user = "www";
   my $remote_host = "download.opengroupware.org";
   my $remote_dir;
+  my $remote_rel_dir;
   my $remote_trunk_dir = "/var/virtual_hosts/download/nightly/packages/$host_i_runon/trunk";
-  my $remote_rel_dir = "/var/virtual_hosts/download/releases/unstable/$host_i_runon/releases";
+  $remote_rel_dir = "/var/virtual_hosts/download/releases/unstable/$remote_release_dirname/$host_i_runon" if(($remote_release_dirname) and (!$rdirbase));
+  $remote_rel_dir = "/var/virtual_hosts/download/releases/unstable/$rdirbase/$host_i_runon" if($rdirbase);
   my $do_link = "yes";
   if (($do_upload eq "yes") and ($build_type eq "release")) {
     $remote_dir = $remote_rel_dir;
     print "[MOVETODEST]        - going to create directory for release on remote side.\n";
-    print "[MOVETODEST]        - name -> $remote_dir/$remote_release_dirname.\n" if ($remote_release_dirname);
-    print "[MOVETODEST]        - name -> $remote_dir/$rdirbase.\n" if ($rdirbase);
+    print "[MOVETODEST]        - creating -> $remote_rel_dir\n";
     open(SSH, "|/usr/bin/ssh $remote_user\@$remote_host");
-    print SSH "cd $remote_dir\n";
-    print SSH "mkdir -p $remote_release_dirname\n" if ($remote_release_dirname);
-    print SSH "mkdir -p $rdirbase\n" if ($rdirbase); #didn't I mention that it's already there :)
+    print SSH "mkdir -p $remote_dir\n";
+    #print SSH "cd $remote_dir\n";
+    #print SSH "mkdir -p $remote_release_dirname\n" if ($remote_release_dirname);
+    #print SSH "mkdir -p $rdirbase\n" if ($rdirbase); #didn't I mention that it's already there :)
     close(SSH);
   }
   foreach $rpm (@rpms_build) {
@@ -87,12 +89,17 @@ sub move_to_dest {
     print "[MOVETODEST]        - $package will be put into $rdirbase as requested via commandline\n" if (($verbose eq "yes") and ($do_upload eq "yes") and ($rdirbase));
     print "[MOVETODEST]        - $package rolling out '$rpm_basename' to $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "yes"));
     print "[MOVETODEST]        - $package won't copy '$rpm_basename' to $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "no"));
+    #copy and sign trunk rpm
     system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_trunk_dir/ 1>>$logout 2>>$logerr") if (($build_type eq "trunk") and ($do_upload eq "yes"));
     system("/usr/bin/ssh $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_trunk_dir/$rpm_basename 1>>$logout 2>>$logerr") if (($build_type eq "trunk") and ($do_upload eq "yes"));
-    system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_rel_dir/$rdirbase/ 1>>$logout 2>>$logerr") if (($rdirbase) and ($build_type eq "release") and ($do_upload eq "yes"));
-    system("/usr/bin/ssh $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_rel_dir/$rdirbase/$rpm_basename 1>>$logout 2>>$logerr") if (($rdirbase) and ($build_type eq "release") and ($do_upload eq "yes"));
-    system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_rel_dir/$remote_release_dirname/ 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
-    system("/usr/bin/ssh $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_rel_dir/$remote_release_dirname/$rpm_basename 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
+    #copy and sign (release) rpm ending up in \$rdirbase
+    system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_dir 1>>$logout 2>>$logerr") if (($rdirbase) and ($build_type eq "release") and ($do_upload eq "yes"));
+    system("/usr/bin/ssh $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_dir/$rpm_basename 1>>$logout 2>>$logerr") if (($rdirbase) and ($build_type eq "release") and ($do_upload eq "yes"));
+    #copy and sign (release) rpm which ends up in the automatically determined directory
+    #XXX system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_rel_dir/$remote_release_dirname/ 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
+    system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_dir 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
+    #XXX system("/usr/bin/ssh $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_rel_dir/$remote_release_dirname/$rpm_basename 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
+    system("/usr/bin/ssh $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_dir/$rpm_basename 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
     $remote_dir = $remote_trunk_dir if ($build_type eq "trunk");
     $remote_dir = $remote_rel_dir if ($build_type eq "release");
     print "[LINKATDEST]        - will not really link $ln_name <- $rpm_basename at $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "no") and ($build_type eq "trunk"));
