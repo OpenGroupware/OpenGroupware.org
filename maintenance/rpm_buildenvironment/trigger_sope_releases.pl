@@ -30,7 +30,6 @@ my @skip_list = qw( sope-4.2pre-r3.tar.gz
   sope-4.4beta.1-voyager-r513.tar.gz
   sope-4.4beta.2-voyager-r527.tar.gz
   sope-4.4beta.3-voyager-r602.tar.gz
-  sope-4.4beta.4-voyager-r638.tar.gz
   sope-4.5alpha.0-nevermind-r514.tar.gz
   sope-4.5alpha.1-nevermind-r515.tar.gz
 );
@@ -182,7 +181,7 @@ foreach $srel (@sope_releases) {
     print "recreating apt-repository for: $host_i_runon\n";
     open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
     print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $buildtarget\n";
-    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/nightly/packages/$host_i_runon/releases/$buildtarget/\n";
+    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/releases/unstable/$buildtarget/$host_i_runon/\n";
     close(SSH);
   }
 }

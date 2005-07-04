@@ -120,7 +120,7 @@ foreach $tprel (@tp_releases) {
     print "recreating apt-repository for: $host_i_runon\n";
     open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
     print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n ThirdParty\n";
-    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/nightly/packages/$host_i_runon/releases/ThirdParty/\n";
+    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/releases/unstable/ThirdParty/$host_i_runon/\n";
     close(SSH);
   }
 }
