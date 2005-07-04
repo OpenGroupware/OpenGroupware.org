@@ -1,3 +1,7 @@
+2005-07-04 Olivier Hallot (olivier@ig.com.br>
+
+        * added UI to select the search operator pt-BR
+
 2005-04-04 Olivier Hallot <olivier@ig.com.br>
 
 	* added strings in AddressUI in preparation for bug 271 resolution
