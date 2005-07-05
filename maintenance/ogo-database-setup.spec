@@ -30,13 +30,15 @@ rm -fr ${RPM_BUILD_ROOT}
 # ****************************** install ******************************
 %install
 DBSETUP_DEST="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.1/dbsetup"
-OGO_WEBUI_SYSCONF_NAME="ogo-webui-1.1"
+OGO_WEBUI_SYSCONFIG_NAME="ogo-webui-1.1"
+OGO_SHAREDIR="opengroupware.org-1.1"
 mkdir -p ${DBSETUP_DEST}
 
 cp -Rp Database/SQLite ${DBSETUP_DEST}/
 cp -Rp Database/PostgreSQL ${DBSETUP_DEST}/
 cp -Rp Database/FrontBase ${DBSETUP_DEST}/
-sed "s^OGO_WEBUI_SYSCONF_NAME^${OGO_WEBUI_SYSCONF_NAME}^g" \
+sed "s^OGO_WEBUI_SYSCONFIG_NAME^${OGO_WEBUI_SYSCONFIG_NAME}^g;
+     s^OGO_SHAREDIR^${OGO_SHAREDIR}^g" \
     %{_specdir}/db_setup_template/database_setup_psql.sh \
     >${DBSETUP_DEST}/database_setup_psql.sh
 
@@ -61,6 +63,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Tue Jul 05 2005 Frank Reppin <frank@opengroupware.org>
+- fix creation of database_setup_psql.sh
 * Fri Jun 17 2005 Helge Hess <helge.hess@opengroupware.org>
 - patched pathes for version 1.1
 * Tue Mar 01 2005 Frank Reppin <frank@opengroupware.org>

@@ -20,6 +20,7 @@ PGCLIENTENCODING="LATIN1"           # client encoding to use
 # pull in sysconfig settings - if present
 # and thus override predefined vars upon request
 [ -f /etc/sysconfig/OGO_WEBUI_SYSCONFIG_NAME ] && . /etc/sysconfig/OGO_WEBUI_SYSCONFIG_NAME
+[ -f /etc/sysconfig/ogo-webui ] && . /etc/sysconfig/ogo-webui
 
 # these variables shouldn't be overriden by custom
 # sysconfig settings (unless you really know what you do ofcourse!)
@@ -39,8 +40,8 @@ NOW=`date +%Y%m%d-%H%M%S`
 RUNS_ON="`uname`"
 
 # where are the schemes we need?
-COMMON_OGO_CORE_SCHEME_LOCATION="/usr/local/share/opengroupware.org-1.0a/dbsetup/PostgreSQL/pg-build-schema.psql"
-COMMON_OGO_UPDATE_SCHEME_LOCATION="/usr/local/share/opengroupware.org-1.0a/dbsetup/PostgreSQL/pg-update-schema.psql"
+COMMON_OGO_CORE_SCHEME_LOCATION="/usr/local/share/OGO_SHAREDIR/dbsetup/PostgreSQL/pg-build-schema.psql"
+COMMON_OGO_UPDATE_SCHEME_LOCATION="/usr/local/share/OGO_SHAREDIR/dbsetup/PostgreSQL/pg-update-schema.psql"
 
 # be more verbose on certain errors!
 OGO_BUGZILLA_INDEX="http://bugzilla.opengroupware.org"
