@@ -37,7 +37,7 @@ mkdir -p ${DBSETUP_DEST}
 cp -Rp Database/SQLite ${DBSETUP_DEST}/
 cp -Rp Database/PostgreSQL ${DBSETUP_DEST}/
 cp -Rp Database/FrontBase ${DBSETUP_DEST}/
-sed "s^OGO_WEBUI_SYSCONFIG_NAME^${OGO_WEBUI_SYSCONFIG_NAME}^g;
+sed "s^OGO_WEBUI_SYSCONFIG_NAME^${OGO_WEBUI_SYSCONFIG_NAME}^g; \
      s^OGO_SHAREDIR^${OGO_SHAREDIR}^g" \
     %{_specdir}/db_setup_template/database_setup_psql.sh \
     >${DBSETUP_DEST}/database_setup_psql.sh

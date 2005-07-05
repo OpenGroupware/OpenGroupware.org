@@ -49,6 +49,7 @@ if [ $1 = 1 ]; then
   ln -s %{_var}/lib/opengroupware.org/.libFoundation opengroupware.org
   ## some defaults
   OGO_USER="ogo"
+  OGO_GROUP="skyrix"
   OGO_HOME="/var/lib/opengroupware.org"
   export PATH=$PATH:%{prefix}/bin
   su - ${OGO_USER} -c "
@@ -67,6 +68,7 @@ if [ $1 = 1 ]; then
   "
   ##
   chmod 755 ${OGO_HOME}
+  chown -R ${OGO_USER}:${OGO_GROUP} ${OGO_HOME}
   ##
   if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
     echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/opengroupware.conf
@@ -121,6 +123,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Tue Jul 05 2005 Frank Reppin <frank@opengroupware.org>
+- added suggestion from Olivier to chown ogo:skyrix in post
+  to gather current uid/gid (after removal)
 * Fri Jun 17 2005 Helge Hess <helge.hess@opengroupware.org>
 - patched pathes for version 1.1
 * Mon Mar 14 2005 Frank Reppin <frank@opengroupware.org>
