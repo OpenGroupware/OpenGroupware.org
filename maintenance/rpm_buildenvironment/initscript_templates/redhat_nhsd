@@ -24,7 +24,7 @@ SLEEP="3"
 
 # pull in sysconfig settings
 # 
-[ -f /etc/sysconfig/NHSD_INIT_VERSION ] && . /etc/sysconfig/NHSD_INIT_VERSION
+[ -f /etc/sysconfig/ogo-nhsd ] && . /etc/sysconfig/ogo-nhsd
 
 sleep_dots()
 {

@@ -24,7 +24,7 @@ SLEEP=3
 
 # pull in sysconfig settings
 # 
-[ -f /etc/sysconfig/XMLRPCD_INIT_VERSION ] && . /etc/sysconfig/XMLRPCD_INIT_VERSION
+[ -f /etc/sysconfig/ogo-xmlrpcd ] && . /etc/sysconfig/ogo-xmlrpcd
 
 sleep_dots()
 {

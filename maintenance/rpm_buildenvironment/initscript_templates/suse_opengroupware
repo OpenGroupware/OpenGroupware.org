@@ -37,7 +37,7 @@ SLEEP=3
 
 # pull in sysconfig settings
 # 
-[ -f /etc/sysconfig/OGO_INIT_VERSION ] && . /etc/sysconfig/OGO_INIT_VERSION
+[ -f /etc/sysconfig/ogo-webui ] && . /etc/sysconfig/ogo-webui
 
 start()
 {

@@ -24,7 +24,7 @@ SLEEP=3
 
 # pull in sysconfig settings
 # 
-[ -f /etc/sysconfig/ZIDESTORE_INIT_VERSION ] && . /etc/sysconfig/ZIDESTORE_INIT_VERSION
+[ -f /etc/sysconfig/ogo-zidestore ] && . /etc/sysconfig/ogo-zidestore
 
 sleep_dots()
 {
