@@ -30,12 +30,15 @@ rm -fr ${RPM_BUILD_ROOT}
 # ****************************** install ******************************
 %install
 DBSETUP_DEST="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.1/dbsetup"
+OGO_WEBUI_SYSCONF_NAME="ogo-webui-1.1"
 mkdir -p ${DBSETUP_DEST}
 
 cp -Rp Database/SQLite ${DBSETUP_DEST}/
 cp -Rp Database/PostgreSQL ${DBSETUP_DEST}/
 cp -Rp Database/FrontBase ${DBSETUP_DEST}/
-cp %{_specdir}/db_setup_template/database_setup_psql.sh ${DBSETUP_DEST}/
+sed "s^OGO_WEBUI_SYSCONF_NAME^${OGO_WEBUI_SYSCONF_NAME}^g" \
+    %{_specdir}/db_setup_template/database_setup_psql.sh \
+    >${DBSETUP_DEST}/database_setup_psql.sh
 
 # ****************************** post ********************************
 %post

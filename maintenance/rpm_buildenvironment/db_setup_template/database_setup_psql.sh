@@ -19,7 +19,7 @@ PGCLIENTENCODING="LATIN1"           # client encoding to use
 
 # pull in sysconfig settings - if present
 # and thus override predefined vars upon request
-[ -f /etc/sysconfig/ogo-webui-1.0a ] && . /etc/sysconfig/ogo-webui-1.0a
+[ -f /etc/sysconfig/OGO_WEBUI_SYSCONFIG_NAME ] && . /etc/sysconfig/OGO_WEBUI_SYSCONFIG_NAME
 
 # these variables shouldn't be overriden by custom
 # sysconfig settings (unless you really know what you do ofcourse!)
