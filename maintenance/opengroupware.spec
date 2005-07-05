@@ -644,10 +644,10 @@ if [ $1 = 1 ]; then
 fi
 
 if [ $1 = 2 ]; then
+  NHSD_INIT_NAME="ogo-nhsd"
+  NHSD_INIT_VERSION="ogo-nhsd-%{ogo_v}"
+  NHSD_INIT_PREFIX="%{prefix}"
   if [ ! -f "/etc/init.d/ogo-nhsd" ]; then
-    NHSD_INIT_NAME="ogo-nhsd"
-    NHSD_INIT_VERSION="ogo-nhsd-%{ogo_v}"
-    NHSD_INIT_PREFIX="%{prefix}"
     if [ -f "/etc/SuSE-release" ]; then
       sed "s^NHSD_INIT_VERSION^${NHSD_INIT_VERSION}^g; \
            s^NHSD_INIT_PREFIX^${NHSD_INIT_PREFIX}^g" \
@@ -718,6 +718,9 @@ if [ $1 = 1 ]; then
 fi
 
 if [ $1 = 2 ]; then
+  OGO_INIT_NAME="ogo-webui"
+  OGO_INIT_VERSION="ogo-webui-%{ogo_v}"
+  OGO_INIT_PREFIX="%{prefix}"
   if [ ! -f "/etc/init.d/ogo-webui" ]; then
     if [ -f "/etc/SuSE-release" ]; then
       sed "s^OGO_INIT_VERSION^${OGO_INIT_VERSION}^g; \
@@ -782,6 +785,9 @@ if [ $1 = 1 ]; then
 fi
 
 if [ $1 = 2 ]; then
+  XMLRPCD_INIT_NAME="ogo-xmlrpcd"
+  XMLRPCD_INIT_VERSION="ogo-xmlrpcd-%{ogo_v}"
+  XMLRPCD_INIT_PREFIX="%{prefix}"
   if [ ! -f "/etc/init.d/ogo-xmlrpcd" ]; then
     if [ -f "/etc/SuSE-release" ]; then
       sed "s^XMLRPCD_INIT_VERSION^${XMLRPCD_INIT_VERSION}^g; \
@@ -846,6 +852,9 @@ if [ $1 = 1 ]; then
 fi
 
 if [ $1 = 2 ]; then
+  ZIDESTORE_INIT_NAME="ogo-zidestore"
+  ZIDESTORE_INIT_VERSION="ogo-zidestore-%{zide_v}"
+  ZIDESTORE_INIT_PREFIX="%{prefix}"
   if [ ! -f "/etc/init.d/ogo-zidestore" ]; then
     if [ -f "/etc/SuSE-release" ]; then
       sed "s^ZIDESTORE_INIT_VERSION^${ZIDESTORE_INIT_VERSION}^g; \
