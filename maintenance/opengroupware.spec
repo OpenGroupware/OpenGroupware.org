@@ -584,9 +584,26 @@ echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
 # ****************************** post *********************************
 %post meta
 if [ $1 = 1 ]; then
-  #must rework dependencies
   /sbin/ldconfig
 fi
+
+%post docapi
+/sbin/ldonfig
+
+%post docapi-fs-project
+/sbin/ldconfig
+
+%post docapi-db-project
+/sbin/ldconfig
+
+%post logic
+/sbin/ldconfig
+
+%post webui-core
+/sbin/ldconfig
+
+%post webui-mailer
+/sbin/ldconfig
 
 %post tools
 if [ $1 = 1 ]; then
@@ -639,8 +656,8 @@ if [ $1 = 1 ]; then
     chown root:root %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
     chmod 755 %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
     chkconfig --add "${NHSD_INIT_NAME}"
-    /sbin/ldconfig
   fi
+  /sbin/ldconfig
 fi
 
 if [ $1 = 2 ]; then
@@ -681,6 +698,10 @@ if [ $1 = 2 ]; then
     fi
     chown root:root %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
     chmod 755 %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+  fi
+  /sbin/ldconfig
+  if [ -f "%{_sysconfdir}/init.d/${NHSD_INIT_NAME}" ]; then
+    "%{_sysconfdir}/init.d/${NHSD_INIT_NAME}" restart
   fi
 fi
 
@@ -756,6 +777,10 @@ if [ $1 = 2 ]; then
     chown root:root %{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
     chmod 755 %{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
   fi
+  /sbin/ldconfig
+  if [ -f "%{_sysconfdir}/init.d/${OGO_INIT_NAME}" ]; then
+    "%{_sysconfdir}/init.d/${OGO_INIT_NAME}" restart
+  fi
 fi
 
 %post xmlrpcd
@@ -780,8 +805,8 @@ if [ $1 = 1 ]; then
     chown root:root %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
     chmod 755 %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
     chkconfig --add "${XMLRPCD_INIT_NAME}"
-    /sbin/ldconfig
   fi
+  /sbin/ldconfig
 fi
 
 if [ $1 = 2 ]; then
@@ -823,6 +848,10 @@ if [ $1 = 2 ]; then
     chown root:root %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
     chmod 755 %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
   fi
+  /sbin/ldconfig
+  if [ -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_NAME}" ]; then
+    "%{_sysconfdir}/init.d/${XMLRPCD_INIT_NAME}" restart
+  fi
 fi
 
 %post zidestore
@@ -847,8 +876,8 @@ if [ $1 = 1 ]; then
     chown root:root %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
     chmod 755 %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
     chkconfig --add "${ZIDESTORE_INIT_NAME}"
-    /sbin/ldconfig
   fi
+  /sbin/ldconfig
 fi
 
 if [ $1 = 2 ]; then
@@ -890,6 +919,10 @@ if [ $1 = 2 ]; then
     chown root:root %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
     chmod 755 %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
   fi
+  /sbin/ldconfig
+  if [ -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_NAME}" ]; then
+    "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_NAME}" restart
+  fi
 fi
 
 # ****************************** preun *********************************
@@ -924,6 +957,24 @@ if [ $1 = 0 ]; then
   /sbin/ldconfig
 fi
 
+%pre pda
+if [ $1 = 2 ]; then
+  NHSD_OLD_INIT="ogo-nhsd-1.0a"
+  if [ -f "%{_sysconfdir}/init.d/${NHSD_OLD_INIT}" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      "%{_sysconfdir}/init.d/${NHSD_OLD_INIT}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${NHSD_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${NHSD_OLD_INIT}"
+      rm -f /usr/sbin/rc"${NHSD_OLD_INIT}"
+    else
+      service "${NHSD_OLD_INIT}" stop
+      chkconfig "${NHSD_OLD_INIT}" off
+      chkconfig --del "${NHSD_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${NHSD_OLD_INIT}"
+    fi
+  fi 
+fi  
+
 %preun webui-app
 if [ $1 = 0 ]; then
   OGO_INIT_NAME="ogo-webui"
@@ -949,6 +1000,24 @@ if [ $1 = 0 ]; then
   /sbin/ldconfig
 fi
 
+%pre webui-app
+if [ $1 = 2 ]; then
+  WEBUI_OLD_INIT="ogo-webui-1.0a"
+  if [ -f "%{_sysconfdir}/init.d/${WEBUI_OLD_INIT}" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      "%{_sysconfdir}/init.d/${WEBUI_OLD_INIT}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${WEBUI_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${WEBUI_OLD_INIT}"
+      rm -f /usr/sbin/rc"${WEBUI_OLD_INIT}"
+    else
+      service "${WEBUI_OLD_INIT}" stop
+      chkconfig "${WEBUI_OLD_INIT}" off
+      chkconfig --del "${WEBUI_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${WEBUI_OLD_INIT}"
+    fi
+  fi 
+fi  
+
 %preun xmlrpcd
 if [ $1 = 0 ]; then
   XMLRPCD_INIT_NAME="ogo-xmlrpcd"
@@ -970,6 +1039,24 @@ if [ $1 = 0 ]; then
   /sbin/ldconfig
 fi
 
+%pre xmlrpcd
+if [ $1 = 2 ]; then
+  XMLRPCD_OLD_INIT="ogo-xmlrpcd-1.0a"
+  if [ -f "%{_sysconfdir}/init.d/${XMLRPCD_OLD_INIT}" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      "%{_sysconfdir}/init.d/${XMLRPCD_OLD_INIT}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${XMLRPCD_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${XMLRPCD_OLD_INIT}"
+      rm -f /usr/sbin/rc"${XMLRPCD_OLD_INIT}"
+    else
+      service "${XMLRPCD_OLD_INIT}" stop
+      chkconfig "${XMLRPCD_OLD_INIT}" off
+      chkconfig --del "${XMLRPCD_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${XMLRPCD_OLD_INIT}"
+    fi
+  fi 
+fi  
+
 %preun zidestore
 if [ $1 = 0 ]; then
   ZIDESTORE_INIT_NAME="ogo-zidestore"
@@ -990,6 +1077,24 @@ if [ $1 = 0 ]; then
   fi
   /sbin/ldconfig
 fi
+
+%pre zidestore
+if [ $1 = 2 ]; then
+  ZIDESTORE_OLD_INIT="ogo-zidestore-1.3"
+  if [ -f "%{_sysconfdir}/init.d/${ZIDESTORE_OLD_INIT}" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      "%{_sysconfdir}/init.d/${ZIDESTORE_OLD_INIT}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${ZIDESTORE_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${ZIDESTORE_OLD_INIT}"
+      rm -f /usr/sbin/rc"${ZIDESTORE_OLD_INIT}"
+    else
+      service "${ZIDESTORE_OLD_INIT}" stop
+      chkconfig "${ZIDESTORE_OLD_INIT}" off
+      chkconfig --del "${ZIDESTORE_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${ZIDESTORE_OLD_INIT}"
+    fi
+  fi 
+fi  
 
 # ****************************** clean ********************************
 %clean
@@ -1376,6 +1481,10 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Fri Jul 08 2005 Frank Reppin <frank@opengroupware.org>
+- cleanse init.d/ prior update (some pre sections)
+- restart services in post for update
+- call ldconfig in post for packages providing libraries
 * Tue Jul 05 2005 Frank Reppin <frank@opengroupware.org>
 - defined ogo_v/zide_v/libogo_v in header and replaced
   all occurances
