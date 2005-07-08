@@ -701,7 +701,7 @@ if [ $1 = 2 ]; then
   fi
   /sbin/ldconfig
   if [ -f "%{_sysconfdir}/init.d/${NHSD_INIT_NAME}" ]; then
-    "%{_sysconfdir}/init.d/${NHSD_INIT_NAME}" restart
+    "%{_sysconfdir}/init.d/${NHSD_INIT_NAME}" restart >/dev/null 2>&1
   fi
 fi
 
@@ -779,7 +779,7 @@ if [ $1 = 2 ]; then
   fi
   /sbin/ldconfig
   if [ -f "%{_sysconfdir}/init.d/${OGO_INIT_NAME}" ]; then
-    "%{_sysconfdir}/init.d/${OGO_INIT_NAME}" restart
+    "%{_sysconfdir}/init.d/${OGO_INIT_NAME}" restart >/dev/null 2>&1
   fi
 fi
 
@@ -850,7 +850,7 @@ if [ $1 = 2 ]; then
   fi
   /sbin/ldconfig
   if [ -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_NAME}" ]; then
-    "%{_sysconfdir}/init.d/${XMLRPCD_INIT_NAME}" restart
+    "%{_sysconfdir}/init.d/${XMLRPCD_INIT_NAME}" restart >/dev/null 2>&1
   fi
 fi
 
@@ -921,7 +921,7 @@ if [ $1 = 2 ]; then
   fi
   /sbin/ldconfig
   if [ -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_NAME}" ]; then
-    "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_NAME}" restart
+    "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_NAME}" restart >/dev/null 2>&1
   fi
 fi
 
