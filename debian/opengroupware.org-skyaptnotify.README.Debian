@@ -10,7 +10,7 @@ Become root
 $ su - ogo
 $ crontab -e
 Add the following to the opening crontab file:
-0-59/5 * * * * /usr/bin/skyaptnotify >/dev/null 2> /var/log/opengroupware.org/ogo/skyaptnotify.log
+0-59/5 * * * * /usr/bin/skyaptnotify >/dev/null 2>> /var/log/opengroupware.org/ogo/skyaptnotify.log
 
 That will check for upcoming appointments every five minutes and send
 out he appropriate emails.
