@@ -588,7 +588,7 @@ if [ $1 = 1 ]; then
 fi
 
 %post docapi
-/sbin/ldonfig
+/sbin/ldconfig
 
 %post docapi-fs-project
 /sbin/ldconfig
