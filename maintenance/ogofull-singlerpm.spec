@@ -6,12 +6,12 @@
 %define ogoall_gstepmake_makeflags      debug=yes
 %define ogoall_libfobjc_source          gnustep-objc-lf2.95.3-r85.tar.gz
 %define ogoall_libfobjc_makeflags       debug=yes
-%define ogoall_libfoundation_source     libFoundation-1.0.67-r91.tar.gz
-%define ogoall_libfoundation_version    1.0.67
+%define ogoall_libfoundation_source     libfoundation10-1.0.72-r107.tar.gz
+%define ogoall_libfoundation_version    1.0.72
 %define ogoall_libfoundation_major      1
 %define ogoall_libfoundation_minor      0
 %define ogoall_libfoundation_makeflags  debug=yes
-%define ogoall_sope_source              sope-4.4rc.1-r638.tar.gz
+%define ogoall_sope_source              sope-4.4rc.1-r862.tar.gz
 %define ogoall_sope_major               4
 %define ogoall_sope_minor               4
 %define ogoall_sope_makeflags           debug=yes
@@ -739,18 +739,18 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # translations
 %{prefix}/share/opengroupware.org-1.0/translations/Basque.lproj
-%{prefix}/share/opengroupware.org-1.0/translations/Danish.lproj
+#%{prefix}/share/opengroupware.org-1.0/translations/Danish.lproj
 %{prefix}/share/opengroupware.org-1.0/translations/Dutch.lproj
 %{prefix}/share/opengroupware.org-1.0/translations/English.lproj
 %{prefix}/share/opengroupware.org-1.0/translations/French.lproj
 %{prefix}/share/opengroupware.org-1.0/translations/German.lproj
-%{prefix}/share/opengroupware.org-1.0/translations/Hungarian.lproj
+#%{prefix}/share/opengroupware.org-1.0/translations/Hungarian.lproj
 %{prefix}/share/opengroupware.org-1.0/translations/Italian.lproj
-%{prefix}/share/opengroupware.org-1.0/translations/Japanese.lproj
+#%{prefix}/share/opengroupware.org-1.0/translations/Japanese.lproj
 %{prefix}/share/opengroupware.org-1.0/translations/Norwegian.lproj
-%{prefix}/share/opengroupware.org-1.0/translations/Polish.lproj
+#%{prefix}/share/opengroupware.org-1.0/translations/Polish.lproj
 %{prefix}/share/opengroupware.org-1.0/translations/Portuguese.lproj
-%{prefix}/share/opengroupware.org-1.0/translations/Slovak.lproj
+#%{prefix}/share/opengroupware.org-1.0/translations/Slovak.lproj
 %{prefix}/share/opengroupware.org-1.0/translations/Spanish.lproj
 %{prefix}/share/opengroupware.org-1.0/translations/ptBR.lproj
 

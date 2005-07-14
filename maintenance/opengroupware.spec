@@ -327,14 +327,14 @@ AutoReqProv:  off
 %description webui-resource-basque
 This package contains the Basque translation for OpenGroupware.org's web UI.
 ##
-%package webui-resource-dk
-Summary:      Danish translation for OpenGroupware.org's web UI
-Group:        Development/Libraries
-Requires:     ogo-webui-app
-AutoReqProv:  off
-
-%description webui-resource-dk
-This package contains the Danish translation for OpenGroupware.org's web UI.
+#%package webui-resource-dk
+#Summary:      Danish translation for OpenGroupware.org's web UI
+#Group:        Development/Libraries
+#Requires:     ogo-webui-app
+#AutoReqProv:  off
+#
+#%description webui-resource-dk
+#This package contains the Danish translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-nl
 Summary:      Dutch translation for OpenGroupware.org's web UI
@@ -372,14 +372,14 @@ AutoReqProv:  off
 %description webui-resource-de
 This package contains the German translation for OpenGroupware.org's web UI.
 ##
-%package webui-resource-hu
-Summary:      Hungarian translation for OpenGroupware.org's web UI
-Group:        Development/Libraries
-Requires:     ogo-webui-app
-AutoReqProv:  off
-
-%description webui-resource-hu
-This package contains the Hungarian translation for OpenGroupware.org's web UI.
+#%package webui-resource-hu
+#Summary:      Hungarian translation for OpenGroupware.org's web UI
+#Group:        Development/Libraries
+#Requires:     ogo-webui-app
+#AutoReqProv:  off
+#
+#%description webui-resource-hu
+#This package contains the Hungarian translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-it
 Summary:      Italian translation for OpenGroupware.org's web UI
@@ -390,14 +390,14 @@ AutoReqProv:  off
 %description webui-resource-it
 This package contains the Italian translation for OpenGroupware.org's web UI.
 ##
-%package webui-resource-jp
-Summary:      Japanese translation for OpenGroupware.org's web UI
-Group:        Development/Libraries
-Requires:     ogo-webui-app
-AutoReqProv:  off
-
-%description webui-resource-jp
-This package contains the Japanese translation for OpenGroupware.org's web UI.
+#%package webui-resource-jp
+#Summary:      Japanese translation for OpenGroupware.org's web UI
+#Group:        Development/Libraries
+#Requires:     ogo-webui-app
+#AutoReqProv:  off
+#
+#%description webui-resource-jp
+#This package contains the Japanese translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-no
 Summary:      Norwegian translation for OpenGroupware.org's web UI
@@ -408,14 +408,14 @@ AutoReqProv:  off
 %description webui-resource-no
 This package contains the Norwegian translation for OpenGroupware.org's web UI.
 ##
-%package webui-resource-pl
-Summary:      Polish translation for OpenGroupware.org's web UI
-Group:        Development/Libraries
-Requires:     ogo-webui-app
-AutoReqProv:  off
-
-%description webui-resource-pl
-This package contains the Polish translation for OpenGroupware.org's web UI.
+#%package webui-resource-pl
+#Summary:      Polish translation for OpenGroupware.org's web UI
+#Group:        Development/Libraries
+#Requires:     ogo-webui-app
+#AutoReqProv:  off
+#
+#%description webui-resource-pl
+#This package contains the Polish translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-pt
 Summary:      Portuguese translation for OpenGroupware.org's web UI
@@ -435,13 +435,13 @@ AutoReqProv:  off
 %description webui-resource-es
 This package contains the Spanish translation for OpenGroupware.org's web UI.
 ##
-%package webui-resource-sk
-Summary:      Slovak translation for OpenGroupware.org's web UI
-Group:        Development/Libraries
-Requires:     ogo-webui-app
-AutoReqProv:  off
-
-%description webui-resource-sk
+#%package webui-resource-sk
+#Summary:      Slovak translation for OpenGroupware.org's web UI
+#Group:        Development/Libraries
+#Requires:     ogo-webui-app
+#AutoReqProv:  off
+#
+#%description webui-resource-sk
 This package contains the Slovak translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-ptbr
@@ -1096,9 +1096,9 @@ rm -fr ${RPM_BUILD_ROOT}
 %defattr(-,root,root,-)
 %{prefix}/share/opengroupware.org-1.0/translations/Basque.lproj
 
-%files webui-resource-dk
-%defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/Danish.lproj
+#%files webui-resource-dk
+#%defattr(-,root,root,-)
+#%{prefix}/share/opengroupware.org-1.0/translations/Danish.lproj
 
 %files webui-resource-nl
 %defattr(-,root,root,-)
@@ -1116,33 +1116,33 @@ rm -fr ${RPM_BUILD_ROOT}
 %defattr(-,root,root,-)
 %{prefix}/share/opengroupware.org-1.0/translations/German.lproj
 
-%files webui-resource-hu
-%defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/Hungarian.lproj
+#%files webui-resource-hu
+#%defattr(-,root,root,-)
+#%{prefix}/share/opengroupware.org-1.0/translations/Hungarian.lproj
 
 %files webui-resource-it
 %defattr(-,root,root,-)
 %{prefix}/share/opengroupware.org-1.0/translations/Italian.lproj
 
-%files webui-resource-jp
-%defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/Japanese.lproj
+#%files webui-resource-jp
+#%defattr(-,root,root,-)
+#%{prefix}/share/opengroupware.org-1.0/translations/Japanese.lproj
 
 %files webui-resource-no
 %defattr(-,root,root,-)
 %{prefix}/share/opengroupware.org-1.0/translations/Norwegian.lproj
 
-%files webui-resource-pl
-%defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/Polish.lproj
+#%files webui-resource-pl
+#%defattr(-,root,root,-)
+#%{prefix}/share/opengroupware.org-1.0/translations/Polish.lproj
 
 %files webui-resource-pt
 %defattr(-,root,root,-)
 %{prefix}/share/opengroupware.org-1.0/translations/Portuguese.lproj
 
-%files webui-resource-sk
-%defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/Slovak.lproj
+#%files webui-resource-sk
+#%defattr(-,root,root,-)
+#%{prefix}/share/opengroupware.org-1.0/translations/Slovak.lproj
 
 %files webui-resource-es
 %defattr(-,root,root,-)
