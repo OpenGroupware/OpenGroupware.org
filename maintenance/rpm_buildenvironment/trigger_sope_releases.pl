@@ -54,11 +54,11 @@ sub getconf {
   return @a;
 }
 
-@sope_releases = `wget -q --proxy=off -O - http://$dl_host/nightly/sources/releases/MD5_INDEX`;
+@sope_releases = `wget -q --proxy=off -O - http://$dl_host/releases/unstable/.MD5_INDEX`;
 open(KNOWN_SOPE_RELEASES, ">> $hpath/SOPE.known.rel");
 foreach $srel (@sope_releases) {
   chomp $srel;
-  $srel =~ s/^.*\s+//g;
+  $srel =~ s/^.*\s+.*\/source\///g;
   next unless($srel =~ m/^sope/i);
   my @already_known_sope_rel = `cat $hpath/SOPE.known.rel`;
   next if (grep /$srel/, @skip_list);

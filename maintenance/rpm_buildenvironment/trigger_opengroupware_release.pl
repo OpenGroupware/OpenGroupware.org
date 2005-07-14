@@ -104,7 +104,7 @@ sub getconf {
   return @a;
 }
 
-@ogo_releases = `wget -q --proxy=off -O - http://$dl_host/nightly/sources/releases/MD5_INDEX`;
+@ogo_releases = `wget -q --proxy=off -O - http://$dl_host/releases/unstable/.MD5_INDEX`;
 open(KNOWN_OGo_RELEASES, ">> $hpath/OGo.known.rel");
 foreach $orel (@ogo_releases) {
   my @sope;
@@ -112,7 +112,7 @@ foreach $orel (@ogo_releases) {
   my @sope_source;
   my $srel;
   chomp $orel;
-  $orel =~ s/^.*\s+//g;
+  $orel =~ s/^.*\s+.*\/source\///g;
   next unless($orel =~ m/^opengroupware.org/i);
   my @already_known_ogo_rel = `cat $hpath/OGo.known.rel`;
   next if (grep /$orel/, @skip_list);

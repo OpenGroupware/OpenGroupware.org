@@ -43,11 +43,11 @@ sub getconf {
   return @a;
 }
 
-@tp_releases = `wget -q --proxy=off -O - http://$dl_host/nightly/sources/releases/MD5_INDEX`;
+@tp_releases = `wget -q --proxy=off -O - http://$dl_host/releases/unstable/.MD5_INDEX`;
 open(KNOWN_TP_RELEASES, ">> $hpath/ThirdParty.known.rel");
 foreach $tprel (@tp_releases) {
   chomp $tprel;
-  $tprel =~ s/^.*\s+//g;
+  $tprel =~ s/^.*\s+.*\/source\///g;
   next unless($tprel =~ m/epoz|gnustep-objc|libFoundation|libical-sope/i);
   my @already_known_tp_rel = `cat $hpath/ThirdParty.known.rel`;
   next if (grep /$tprel/, @skip_list);
