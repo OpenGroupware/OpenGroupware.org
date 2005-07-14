@@ -61,6 +61,7 @@ my @latest;
 my $tarball_name;
 my $orel;
 my $buildtarget;
+my $sourcedir;
 my $apttarget;
 my $version_override;
 my $hpath = "$ENV{HOME}/";
@@ -118,10 +119,12 @@ foreach $orel (@ogo_releases) {
   next if (grep /$orel/, @skip_list);
   $buildtarget = $orel;
   $buildtarget =~ s/-r\d+.*$//g;
+  $sourcedir = $buildtarget;
+  $sourcedir =~ s/^opengroupware\.org/opengroupware/g;
   unless(grep /\b$orel\b/, @already_known_ogo_rel) {
     $i_really_had_sth_todo = "yes";
-    print "Retrieving: http://$dl_host/nightly/sources/releases/$orel\n";
-    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$orel http://$dl_host/nightly/sources/releases/$orel");
+    print "Retrieving: http://$dl_host/releases/unstable/$sourcedir/source/$orel\n";
+    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$orel http://$dl_host/releases/unstable/$sourcedir/source/$orel");
     #since we build the OGo release using a specific SOPE release... we must
     #cleanup everything prior the actual wanted OGo *and* SOPE builds
     #I don't use apt-get here bc not every RPM based distri provides a package (apt-get).

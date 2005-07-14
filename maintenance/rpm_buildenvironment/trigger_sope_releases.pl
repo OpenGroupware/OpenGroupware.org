@@ -73,8 +73,8 @@ foreach $srel (@sope_releases) {
     my $uselibobjc_lf2;
     my $uselibfoundation;
     $i_really_had_sth_todo = "yes";
-    print "Retrieving: http://$dl_host/nightly/sources/releases/$srel\n";
-    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$srel http://$dl_host/nightly/sources/releases/$srel");
+    print "Retrieving: http://$dl_host/releases/unstable/$buildtarget/$srel\n";
+    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$srel http://$dl_host/releases/unstable/$buildtarget/$srel");
     print "cleaning up prior actual build...\n";
     system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
     system("sudo /sbin/ldconfig");

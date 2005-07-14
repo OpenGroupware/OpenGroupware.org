@@ -61,8 +61,8 @@ foreach $tprel (@tp_releases) {
     my $tardirname; #HINT... specified during sourcetarball creation (svn_update.sh)
     my $buildtargetspecfilesize;
     $i_really_had_sth_todo = "yes";
-    print "Retrieving: http://$dl_host/nightly/sources/releases/$tprel\n";
-    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$tprel http://$dl_host/nightly/sources/releases/$tprel");
+    print "Retrieving: http://$dl_host/releases/unstable/ThirdParty/source/$tprel\n";
+    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$tprel http://$dl_host/releases/unstable/ThirdParty/source/$tprel");
     $cleanup = "epoz" if ($tprel =~ m/epoz/i);
     $mapped_temp_specfilename = "epoz.spec" if ($tprel =~ m/epoz/i);
     $package_to_build = "epoz" if ($tprel =~ m/epoz/i);
