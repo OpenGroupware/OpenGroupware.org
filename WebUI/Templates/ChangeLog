@@ -1,3 +1,9 @@
+2005-07-17  Olivier Hallot  <olivier@ig.com.br>
+
+	* OGoSchedulerViews/SkyInlineMonthOverview.wod,
+	  OGoSchedulerViews/SkyInlineYearOverview.wod: properly pass month as
+	  a parameter (fixes OGo bug #1463)
+
 2005-06-28  Helge Hess  <helge.hess@skyrix.com>
 
 	* EnterprisesUI/LSWEnterpriseAdvancedSearch.[html|wod]: added UI for

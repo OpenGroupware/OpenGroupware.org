@@ -55,6 +55,7 @@ SwitchToWeekView: WOHyperlink {
   disabled         = isWeekDirectActionDisabled;
   directActionName = weekDirectActionName;
   ?year            = yearForViewWeek;
+  ?month           = month;
   ?week            = weekOfYear;
   ?tz              = dataSource.timeZone.abbreviation;
 }

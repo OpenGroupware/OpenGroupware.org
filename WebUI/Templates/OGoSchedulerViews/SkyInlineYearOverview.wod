@@ -1,4 +1,4 @@
-// $Id: SkyInlineYearOverview.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 Font: SkyConfigFont {}
 
@@ -84,6 +84,7 @@ SwitchToWeekView: WOHyperlink {
   disabled         = isWeekDirectActionDisabled;
   directActionName = weekDirectActionName;
   ?year            = yearForViewWeek;
+  ?month           = month;
   ?week            = weekOfYear;
   ?tz              = timeZone.abbreviation;
 }
