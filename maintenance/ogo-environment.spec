@@ -52,6 +52,10 @@ if [ $1 = 1 ]; then
   OGO_GROUP="skyrix"
   OGO_HOME="/var/lib/opengroupware.org"
   export PATH=$PATH:%{prefix}/bin
+  ##
+  chmod 755 ${OGO_HOME}
+  chown -R ${OGO_USER}:${OGO_GROUP} ${OGO_HOME}
+  ##
   su - ${OGO_USER} -c "
   Defaults write NSGlobalDomain LSConnectionDictionary '{hostName=\"127.0.0.1\"; userName=OGo; password=\"\"; port=5432; databaseName=OGo}'
   Defaults write NSGlobalDomain LSNewsImagesPath '${OGO_HOME}/news'
@@ -66,9 +70,6 @@ if [ $1 = 1 ]; then
   Defaults write skyaptnotify AptNotifySkyrixPassword '\"\"'
   Defaults write skyaptnotify AptNotifySkyrixUser root
   "
-  ##
-  chmod 755 ${OGO_HOME}
-  chown -R ${OGO_USER}:${OGO_GROUP} ${OGO_HOME}
   ##
   if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
     echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/opengroupware.conf
@@ -123,6 +124,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Tue Jul 18 2005 Frank Reppin <frank@opengroupware.org>
+- chmod/chown prior trying to use Defaults command
 * Tue Jul 05 2005 Frank Reppin <frank@opengroupware.org>
 - added suggestion from Olivier to chown ogo:skyrix in post
   to gather current uid/gid (after removal)
