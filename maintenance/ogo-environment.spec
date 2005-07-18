@@ -49,8 +49,13 @@ if [ $1 = 1 ]; then
   ln -s %{_var}/lib/opengroupware.org/.libFoundation opengroupware.org
   ## some defaults
   OGO_USER="ogo"
+  OGO_GROUP="skyrix"
   OGO_HOME="/var/lib/opengroupware.org"
   export PATH=$PATH:%{prefix}/bin
+  ##
+  chmod 755 ${OGO_HOME}
+  chown -R ${OGO_USER}:${OGO_GROUP} ${OGO_HOME}
+  ##
   su - ${OGO_USER} -c "
   Defaults write NSGlobalDomain LSConnectionDictionary '{hostName=\"127.0.0.1\"; userName=OGo; password=\"\"; port=5432; databaseName=OGo}'
   Defaults write NSGlobalDomain LSNewsImagesPath '${OGO_HOME}/news'
@@ -58,15 +63,13 @@ if [ $1 = 1 ]; then
   Defaults write NSGlobalDomain skyrix_id `hostname`
   Defaults write NSGlobalDomain TimeZoneName GMT
   Defaults write NSGlobalDomain WOHttpAllowHost '( localhost, 127.0.0.1, localhost.localdomain)'
-  Defaults write ogo-nhsd-1.0 NGBundlePath '%{prefix}/lib/opengroupware.org-1.0/conduits'
+  Defaults write ogo-nhsd-1.0 NGBundlePath '%{prefix}/lib/opengroupware.org-1.1/conduits'
   Defaults write skyaptnotify AptNotifyVerbose NO
   Defaults write skyaptnotify AptNotifyFromAdress '${OGO_USER}@`hostname`'
   Defaults write skyaptnotify AptNotifySentResourcesFile '%{_var}/log/opengroupware/sent-resources'
   Defaults write skyaptnotify AptNotifySkyrixPassword '\"\"'
   Defaults write skyaptnotify AptNotifySkyrixUser root
   "
-  ##
-  chmod 755 ${OGO_HOME}
   ##
   if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
     echo "%{prefix}/lib" > %{_sysconfdir}/ld.so.conf.d/opengroupware.conf
@@ -121,6 +124,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Mon Jul 18 2005 Frank Reppin <frank@opengroupware.org>
+- MFC
 * Fri Jun 17 2005 Helge Hess <helge.hess@opengroupware.org>
 - patched pathes for version 1.0
 * Mon Mar 14 2005 Frank Reppin <frank@opengroupware.org>
@@ -144,3 +149,4 @@ rm -fr ${RPM_BUILD_ROOT}
 - add logdir (/var/log/opengroupware)
 * Wed Sep 09 2004 Frank Reppin <frank@opengroupware.org>
 - initial release
+

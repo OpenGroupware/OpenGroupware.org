@@ -29,13 +29,18 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ****************************** install ******************************
 %install
-DBSETUP_DEST="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0/dbsetup"
+DBSETUP_DEST="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.1/dbsetup"
+OGO_WEBUI_SYSCONFIG_NAME="ogo-webui-1.0"
+OGO_SHAREDIR="opengroupware.org-1.0"
 mkdir -p ${DBSETUP_DEST}
 
 cp -Rp Database/SQLite ${DBSETUP_DEST}/
 cp -Rp Database/PostgreSQL ${DBSETUP_DEST}/
 cp -Rp Database/FrontBase ${DBSETUP_DEST}/
-cp %{_specdir}/db_setup_template/database_setup_psql.sh ${DBSETUP_DEST}/
+sed "s^OGO_WEBUI_SYSCONFIG_NAME^${OGO_WEBUI_SYSCONFIG_NAME}^g; \
+     s^OGO_SHAREDIR^${OGO_SHAREDIR}^g" \
+    %{_specdir}/db_setup_template/database_setup_psql.sh \
+    >${DBSETUP_DEST}/database_setup_psql.sh
 
 # ****************************** post ********************************
 %post
@@ -58,6 +63,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Mon Jul 18 2005 Frank Reppin <frank@opengroupware.org>
+- MFC
 * Fri Jun 17 2005 Helge Hess <helge.hess@opengroupware.org>
 - patched pathes for version 1.0
 * Tue Mar 01 2005 Frank Reppin <frank@opengroupware.org>

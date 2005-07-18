@@ -2,6 +2,9 @@
 %define smin 4
 %define lfmaj 1
 %define lfmin 0
+%define ogo_v 1.0
+%define zide_v 1.4
+%define libogo_v 5.2
 
 Summary:       A free and open groupware suite.
 Name:          ogo
@@ -442,7 +445,7 @@ This package contains the Spanish translation for OpenGroupware.org's web UI.
 #AutoReqProv:  off
 #
 #%description webui-resource-sk
-This package contains the Slovak translation for OpenGroupware.org's web UI.
+#This package contains the Slovak translation for OpenGroupware.org's web UI.
 ##
 %package webui-resource-ptbr
 Summary:      Portuguese (Brazilian) translation for OpenGroupware.org's web UI
@@ -507,7 +510,7 @@ make %{ogo_makeflags} GNUSTEP_INSTALLATION_DIR=${FAKE_GSROOT} \
                       WOBUNDLE_INSTALL_DIR=${RPM_BUILD_ROOT}%{prefix} \
                       install
 
-SHAREDIR="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0"
+SHAREDIR="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-%{ogo_v}"
 rm -f "${SHAREDIR}/templates"
 rm -f "${SHAREDIR}/translations"
 rm -f "${SHAREDIR}/www"
@@ -529,7 +532,7 @@ echo "You've installed OGo %{ogo_version}-%{ogo_release} using the meta package!
 
 #prepare initscript templates
 INITSCRIPTS_TMP_DIR_OGO="${SHAREDIR}/initscript_templates"
-INITSCRIPTS_TMP_DIR_ZIDE="${RPM_BUILD_ROOT}%{prefix}/share/zidestore-1.4/initscript_templates"
+INITSCRIPTS_TMP_DIR_ZIDE="${RPM_BUILD_ROOT}%{prefix}/share/zidestore-%{zide_v}/initscript_templates"
 mkdir -p ${INITSCRIPTS_TMP_DIR_OGO}
 mkdir -p ${INITSCRIPTS_TMP_DIR_ZIDE}
 cp %{_specdir}/initscript_templates/redhat_nhsd ${INITSCRIPTS_TMP_DIR_OGO}/
@@ -544,10 +547,10 @@ cp %{_specdir}/initscript_templates/suse_zidestore ${INITSCRIPTS_TMP_DIR_ZIDE}/
 #ghost initscripts
 INITSCRIPT_DST="${RPM_BUILD_ROOT}%{_sysconfdir}/init.d"
 mkdir -p ${INITSCRIPT_DST}
-touch ${INITSCRIPT_DST}/ogo-nhsd-1.0
-touch ${INITSCRIPT_DST}/ogo-webui-1.0
-touch ${INITSCRIPT_DST}/ogo-xmlrpcd-1.0
-touch ${INITSCRIPT_DST}/ogo-zidestore-1.4
+touch ${INITSCRIPT_DST}/ogo-nhsd
+touch ${INITSCRIPT_DST}/ogo-webui
+touch ${INITSCRIPT_DST}/ogo-xmlrpcd
+touch ${INITSCRIPT_DST}/ogo-zidestore
 
 #template for ogo-aptnotify
 APTNOTIFY_TMP_DIR="${SHAREDIR}/aptnotify_template"
@@ -567,27 +570,44 @@ UPDATE_SCHEMA=\"YES\"                 # will attempt to update the database sche
 OGO_USER=\"ogo\"                      # default username (unix) of your OGo install - might vary
 PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
 USE_SKYAPTNOTIFY=\"YES\"              # periodically runs aptnotify - or not
-" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-webui-1.0
+" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-webui
 
 echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
-" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-nhsd-1.0
+" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-nhsd
 
 echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
-" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-xmlrpcd-1.0
+" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-xmlrpcd
 
 echo "PGCLIENTENCODING=\"LATIN1\"           # client encoding to use
-" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-zidestore-1.4
+" >${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/ogo-zidestore
 
 # ****************************** post *********************************
 %post meta
 if [ $1 = 1 ]; then
-  #must rework dependencies
   /sbin/ldconfig
 fi
 
+%post docapi
+/sbin/ldconfig
+
+%post docapi-fs-project
+/sbin/ldconfig
+
+%post docapi-db-project
+/sbin/ldconfig
+
+%post logic
+/sbin/ldconfig
+
+%post webui-core
+/sbin/ldconfig
+
+%post webui-mailer
+/sbin/ldconfig
+
 %post tools
 if [ $1 = 1 ]; then
-  OGO_SYSCONF="ogo-webui-1.0"
+  OGO_SYSCONF="ogo-webui"
   OGO_PREFIX="%{prefix}"
   CRON_D="%{_sysconfdir}/cron.d"
   if [ -d "${CRON_D}" ]; then
@@ -595,58 +615,119 @@ if [ $1 = 1 ]; then
   fi
   sed "s^OGO_SYSCONF^${OGO_SYSCONF}^g; \
        s^OGO_PREFIX^${OGO_PREFIX}^g" \
-       "%{prefix}/share/opengroupware.org-1.0/aptnotify_template/ogo-aptnotify.sh" \
+       "%{prefix}/share/opengroupware.org-%{ogo_v}/aptnotify_template/ogo-aptnotify.sh" \
+       >"%{prefix}/bin/ogo-aptnotify.sh"
+  chmod 750 "%{prefix}/bin/ogo-aptnotify.sh"
+fi
+
+if [ $1 = 2 ]; then
+  OGO_SYSCONF="ogo-webui"
+  OGO_PREFIX="%{prefix}"
+  CRON_D="%{_sysconfdir}/cron.d"
+  if [ -d "${CRON_D}" ]; then
+    echo "*/5 * * * root %{prefix}/bin/ogo-aptnotify.sh >/dev/null" >%{_sysconfdir}/cron.d/ogo-aptnotify
+  fi
+  sed "s^OGO_SYSCONF^${OGO_SYSCONF}^g; \
+       s^OGO_PREFIX^${OGO_PREFIX}^g" \
+       "%{prefix}/share/opengroupware.org-%{ogo_v}/aptnotify_template/ogo-aptnotify.sh" \
        >"%{prefix}/bin/ogo-aptnotify.sh"
   chmod 750 "%{prefix}/bin/ogo-aptnotify.sh"
 fi
 
 %post pda
 if [ $1 = 1 ]; then
-  NHSD_INIT_VERSION="ogo-nhsd-1.0"
+  NHSD_INIT_NAME="ogo-nhsd"
+  NHSD_INIT_VERSION="ogo-nhsd-%{ogo_v}"
   NHSD_INIT_PREFIX="%{prefix}"
   if [ -f "/etc/SuSE-release" ]; then
     sed "s^NHSD_INIT_VERSION^${NHSD_INIT_VERSION}^g; \
          s^NHSD_INIT_PREFIX^${NHSD_INIT_PREFIX}^g" \
-         "%{prefix}/share/opengroupware.org-1.0/initscript_templates/suse_nhsd" \
-         >%{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
-    chown root:root %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
-    chmod 755 %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
-    insserv -f %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
-    ln -s %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}" /usr/sbin/rc"${NHSD_INIT_VERSION}"
+         "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/suse_nhsd" \
+         >%{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+    chown root:root %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+    chmod 755 %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+    insserv -f %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+    ln -s %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}" /usr/sbin/rc"${NHSD_INIT_NAME}"
   else
     sed "s^NHSD_INIT_VERSION^${NHSD_INIT_VERSION}^g; \
          s^NHSD_INIT_PREFIX^${NHSD_INIT_PREFIX}^g" \
-         "%{prefix}/share/opengroupware.org-1.0/initscript_templates/redhat_nhsd" \
-         >%{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
-    chown root:root %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
-    chmod 755 %{_sysconfdir}/init.d/"${NHSD_INIT_VERSION}"
-    chkconfig --add "${NHSD_INIT_VERSION}"
-    /sbin/ldconfig
+         "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/redhat_nhsd" \
+         >%{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+    chown root:root %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+    chmod 755 %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+    chkconfig --add "${NHSD_INIT_NAME}"
+  fi
+  /sbin/ldconfig
+fi
+
+if [ $1 = 2 ]; then
+  NHSD_INIT_NAME="ogo-nhsd"
+  NHSD_INIT_VERSION="ogo-nhsd-%{ogo_v}"
+  NHSD_INIT_PREFIX="%{prefix}"
+  if [ ! -f "/etc/init.d/ogo-nhsd" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      sed "s^NHSD_INIT_VERSION^${NHSD_INIT_VERSION}^g; \
+           s^NHSD_INIT_PREFIX^${NHSD_INIT_PREFIX}^g" \
+           "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/suse_nhsd" \
+           >%{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+      chown root:root %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+      chmod 755 %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+      insserv -f %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+      ln -s %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}" /usr/sbin/rc"${NHSD_INIT_NAME}"
+    else
+      sed "s^NHSD_INIT_VERSION^${NHSD_INIT_VERSION}^g; \
+           s^NHSD_INIT_PREFIX^${NHSD_INIT_PREFIX}^g" \
+           "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/redhat_nhsd" \
+           >%{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+      chown root:root %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+      chmod 755 %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+      chkconfig --add "${NHSD_INIT_NAME}"
+      /sbin/ldconfig
+    fi
+  else
+    if [ -f "/etc/SuSE-release" ]; then
+      sed "s^NHSD_INIT_VERSION^${NHSD_INIT_VERSION}^g; \
+           s^NHSD_INIT_PREFIX^${NHSD_INIT_PREFIX}^g" \
+           "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/suse_nhsd" \
+           >%{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+    else
+      sed "s^NHSD_INIT_VERSION^${NHSD_INIT_VERSION}^g; \
+           s^NHSD_INIT_PREFIX^${NHSD_INIT_PREFIX}^g" \
+           "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/redhat_nhsd" \
+           >%{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+    fi
+    chown root:root %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+    chmod 755 %{_sysconfdir}/init.d/"${NHSD_INIT_NAME}"
+  fi
+  /sbin/ldconfig
+  if [ -f "%{_sysconfdir}/init.d/${NHSD_INIT_NAME}" ]; then
+    "%{_sysconfdir}/init.d/${NHSD_INIT_NAME}" restart >/dev/null 2>&1
   fi
 fi
 
 %post webui-app
 if [ $1 = 1 ]; then
-  OGO_INIT_VERSION="ogo-webui-1.0"
+  OGO_INIT_NAME="ogo-webui"
+  OGO_INIT_VERSION="ogo-webui-%{ogo_v}"
   OGO_INIT_PREFIX="%{prefix}"
   if [ -f "/etc/SuSE-release" ]; then
     sed "s^OGO_INIT_VERSION^${OGO_INIT_VERSION}^g; \
          s^OGO_INIT_PREFIX^${OGO_INIT_PREFIX}^g" \
-         "%{prefix}/share/opengroupware.org-1.0/initscript_templates/suse_opengroupware" \
-         >%{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
-    chown root:root %{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
-    chmod 755 %{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
-    insserv -f %{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
-    ln -s %{_sysconfdir}/init.d/"${OGO_INIT_VERSION}" /usr/sbin/rc"${OGO_INIT_VERSION}"
+         "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/suse_opengroupware" \
+         >%{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+    chown root:root %{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+    chmod 755 %{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+    insserv -f %{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+    ln -s %{_sysconfdir}/init.d/"${OGO_INIT_NAME}" /usr/sbin/rc"${OGO_INIT_NAME}"
   else
     sed "s^OGO_INIT_VERSION^${OGO_INIT_VERSION}^g; \
          s^OGO_INIT_PREFIX^${OGO_INIT_PREFIX}^g" \
-         "%{prefix}/share/opengroupware.org-1.0/initscript_templates/redhat_opengroupware" \
-         >%{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
-    chown root:root %{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
-    chmod 755 %{_sysconfdir}/init.d/"${OGO_INIT_VERSION}"
-    chkconfig --add "${OGO_INIT_VERSION}"
-    chkconfig "${OGO_INIT_VERSION}" on
+         "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/redhat_opengroupware" \
+         >%{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+    chown root:root %{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+    chmod 755 %{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+    chkconfig --add "${OGO_INIT_NAME}"
+    chkconfig "${OGO_INIT_NAME}" on
   fi
   ##
   if [ -d %{_sysconfdir}/ld.so.conf.d ]; then
@@ -657,53 +738,190 @@ if [ $1 = 1 ]; then
   /sbin/ldconfig
 fi
 
+if [ $1 = 2 ]; then
+  OGO_INIT_NAME="ogo-webui"
+  OGO_INIT_VERSION="ogo-webui-%{ogo_v}"
+  OGO_INIT_PREFIX="%{prefix}"
+  if [ ! -f "/etc/init.d/ogo-webui" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      sed "s^OGO_INIT_VERSION^${OGO_INIT_VERSION}^g; \
+           s^OGO_INIT_PREFIX^${OGO_INIT_PREFIX}^g" \
+           "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/suse_opengroupware" \
+           >%{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+      chown root:root %{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+      chmod 755 %{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+      insserv -f %{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+      ln -s %{_sysconfdir}/init.d/"${OGO_INIT_NAME}" /usr/sbin/rc"${OGO_INIT_NAME}"
+    else
+      sed "s^OGO_INIT_VERSION^${OGO_INIT_VERSION}^g; \
+           s^OGO_INIT_PREFIX^${OGO_INIT_PREFIX}^g" \
+           "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/redhat_opengroupware" \
+           >%{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+      chown root:root %{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+      chmod 755 %{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+      chkconfig --add "${OGO_INIT_NAME}"
+      chkconfig "${OGO_INIT_NAME}" on
+    fi
+  else
+    if [ -f "/etc/SuSE-release" ]; then
+      sed "s^OGO_INIT_VERSION^${OGO_INIT_VERSION}^g; \
+           s^OGO_INIT_PREFIX^${OGO_INIT_PREFIX}^g" \
+           "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/suse_opengroupware" \
+           >%{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+    else
+      sed "s^OGO_INIT_VERSION^${OGO_INIT_VERSION}^g; \
+           s^OGO_INIT_PREFIX^${OGO_INIT_PREFIX}^g" \
+           "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/redhat_opengroupware" \
+           >%{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+    fi
+    chown root:root %{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+    chmod 755 %{_sysconfdir}/init.d/"${OGO_INIT_NAME}"
+  fi
+  /sbin/ldconfig
+  if [ -f "%{_sysconfdir}/init.d/${OGO_INIT_NAME}" ]; then
+    "%{_sysconfdir}/init.d/${OGO_INIT_NAME}" restart >/dev/null 2>&1
+  fi
+fi
+
 %post xmlrpcd
 if [ $1 = 1 ]; then
-  XMLRPCD_INIT_VERSION="ogo-xmlrpcd-1.0"
+  XMLRPCD_INIT_NAME="ogo-xmlrpcd"
+  XMLRPCD_INIT_VERSION="ogo-xmlrpcd-%{ogo_v}"
   XMLRPCD_INIT_PREFIX="%{prefix}"
   if [ -f "/etc/SuSE-release" ]; then
     sed "s^XMLRPCD_INIT_VERSION^${XMLRPCD_INIT_VERSION}^g; \
          s^XMLRPCD_INIT_PREFIX^${XMLRPCD_INIT_PREFIX}^g" \
-         "%{prefix}/share/opengroupware.org-1.0/initscript_templates/suse_xmlrpcd" \
-         >%{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
-    chown root:root %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
-    chmod 755 %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
-    insserv -f %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
-    ln -s %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}" /usr/sbin/rc"${XMLRPCD_INIT_VERSION}"
+         "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/suse_xmlrpcd" \
+         >%{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+    chown root:root %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+    chmod 755 %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+    insserv -f %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+    ln -s %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}" /usr/sbin/rc"${XMLRPCD_INIT_NAME}"
   else
     sed "s^XMLRPCD_INIT_VERSION^${XMLRPCD_INIT_VERSION}^g; \
          s^XMLRPCD_INIT_PREFIX^${XMLRPCD_INIT_PREFIX}^g" \
-         "%{prefix}/share/opengroupware.org-1.0/initscript_templates/redhat_xmlrpcd" \
-         >%{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
-    chown root:root %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
-    chmod 755 %{_sysconfdir}/init.d/"${XMLRPCD_INIT_VERSION}"
-    chkconfig --add "${XMLRPCD_INIT_VERSION}"
-    /sbin/ldconfig
+         "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/redhat_xmlrpcd" \
+         >%{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+    chown root:root %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+    chmod 755 %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+    chkconfig --add "${XMLRPCD_INIT_NAME}"
+  fi
+  /sbin/ldconfig
+fi
+
+if [ $1 = 2 ]; then
+  XMLRPCD_INIT_NAME="ogo-xmlrpcd"
+  XMLRPCD_INIT_VERSION="ogo-xmlrpcd-%{ogo_v}"
+  XMLRPCD_INIT_PREFIX="%{prefix}"
+  if [ ! -f "/etc/init.d/ogo-xmlrpcd" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      sed "s^XMLRPCD_INIT_VERSION^${XMLRPCD_INIT_VERSION}^g; \
+           s^XMLRPCD_INIT_PREFIX^${XMLRPCD_INIT_PREFIX}^g" \
+           "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/suse_xmlrpcd" \
+           >%{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+      chown root:root %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+      chmod 755 %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+      insserv -f %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+      ln -s %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}" /usr/sbin/rc"${XMLRPCD_INIT_NAME}"
+    else
+      sed "s^XMLRPCD_INIT_VERSION^${XMLRPCD_INIT_VERSION}^g; \
+           s^XMLRPCD_INIT_PREFIX^${XMLRPCD_INIT_PREFIX}^g" \
+           "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/redhat_xmlrpcd" \
+           >%{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+      chown root:root %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+      chmod 755 %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+      chkconfig --add "${XMLRPCD_INIT_NAME}"
+      /sbin/ldconfig
+    fi
+  else
+    if [ -f "/etc/SuSE-release" ]; then
+      sed "s^XMLRPCD_INIT_VERSION^${XMLRPCD_INIT_VERSION}^g; \
+           s^XMLRPCD_INIT_PREFIX^${XMLRPCD_INIT_PREFIX}^g" \
+           "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/suse_xmlrpcd" \
+           >%{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+    else
+      sed "s^XMLRPCD_INIT_VERSION^${XMLRPCD_INIT_VERSION}^g; \
+           s^XMLRPCD_INIT_PREFIX^${XMLRPCD_INIT_PREFIX}^g" \
+           "%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/redhat_xmlrpcd" \
+           >%{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+    fi
+    chown root:root %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+    chmod 755 %{_sysconfdir}/init.d/"${XMLRPCD_INIT_NAME}"
+  fi
+  /sbin/ldconfig
+  if [ -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_NAME}" ]; then
+    "%{_sysconfdir}/init.d/${XMLRPCD_INIT_NAME}" restart >/dev/null 2>&1
   fi
 fi
 
 %post zidestore
 if [ $1 = 1 ]; then
-  ZIDESTORE_INIT_VERSION="ogo-zidestore-1.4"
+  ZIDESTORE_INIT_NAME="ogo-zidestore"
+  ZIDESTORE_INIT_VERSION="ogo-zidestore-%{zide_v}"
   ZIDESTORE_INIT_PREFIX="%{prefix}"
   if [ -f "/etc/SuSE-release" ]; then
     sed "s^ZIDESTORE_INIT_VERSION^${ZIDESTORE_INIT_VERSION}^g; \
          s^ZIDESTORE_INIT_PREFIX^${ZIDESTORE_INIT_PREFIX}^g" \
-         "%{prefix}/share/zidestore-1.4/initscript_templates/suse_zidestore" \
-         >%{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
-    chown root:root %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
-    chmod 755 %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
-    insserv -f %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
-    ln -s %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}" /usr/sbin/rc"${ZIDESTORE_INIT_VERSION}"
+         "%{prefix}/share/zidestore-%{zide_v}/initscript_templates/suse_zidestore" \
+         >%{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+    chown root:root %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+    chmod 755 %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+    insserv -f %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+    ln -s %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}" /usr/sbin/rc"${ZIDESTORE_INIT_NAME}"
   else
     sed "s^ZIDESTORE_INIT_VERSION^${ZIDESTORE_INIT_VERSION}^g; \
          s^ZIDESTORE_INIT_PREFIX^${ZIDESTORE_INIT_PREFIX}^g" \
-         "%{prefix}/share/zidestore-1.4/initscript_templates/redhat_zidestore" \
-         >%{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
-    chown root:root %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
-    chmod 755 %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_VERSION}"
-    chkconfig --add "${ZIDESTORE_INIT_VERSION}"
-    /sbin/ldconfig
+         "%{prefix}/share/zidestore-%{zide_v}/initscript_templates/redhat_zidestore" \
+         >%{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+    chown root:root %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+    chmod 755 %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+    chkconfig --add "${ZIDESTORE_INIT_NAME}"
+  fi
+  /sbin/ldconfig
+fi
+
+if [ $1 = 2 ]; then
+  ZIDESTORE_INIT_NAME="ogo-zidestore"
+  ZIDESTORE_INIT_VERSION="ogo-zidestore-%{zide_v}"
+  ZIDESTORE_INIT_PREFIX="%{prefix}"
+  if [ ! -f "/etc/init.d/ogo-zidestore" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      sed "s^ZIDESTORE_INIT_VERSION^${ZIDESTORE_INIT_VERSION}^g; \
+           s^ZIDESTORE_INIT_PREFIX^${ZIDESTORE_INIT_PREFIX}^g" \
+           "%{prefix}/share/zidestore-%{zide_v}/initscript_templates/suse_zidestore" \
+           >%{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+      chown root:root %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+      chmod 755 %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+      insserv -f %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+      ln -s %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}" /usr/sbin/rc"${ZIDESTORE_INIT_NAME}"
+    else
+      sed "s^ZIDESTORE_INIT_VERSION^${ZIDESTORE_INIT_VERSION}^g; \
+           s^ZIDESTORE_INIT_PREFIX^${ZIDESTORE_INIT_PREFIX}^g" \
+           "%{prefix}/share/zidestore-%{zide_v}/initscript_templates/redhat_zidestore" \
+           >%{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+      chown root:root %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+      chmod 755 %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+      chkconfig --add "${ZIDESTORE_INIT_NAME}"
+      /sbin/ldconfig
+    fi
+  else
+    if [ -f "/etc/SuSE-release" ]; then
+      sed "s^ZIDESTORE_INIT_VERSION^${ZIDESTORE_INIT_VERSION}^g; \
+           s^ZIDESTORE_INIT_PREFIX^${ZIDESTORE_INIT_PREFIX}^g" \
+           "%{prefix}/share/zidestore-%{zide_v}/initscript_templates/suse_zidestore" \
+           >%{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+    else
+      sed "s^ZIDESTORE_INIT_VERSION^${ZIDESTORE_INIT_VERSION}^g; \
+           s^ZIDESTORE_INIT_PREFIX^${ZIDESTORE_INIT_PREFIX}^g" \
+           "%{prefix}/share/zidestore-%{zide_v}/initscript_templates/redhat_zidestore" \
+           >%{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+    fi
+    chown root:root %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+    chmod 755 %{_sysconfdir}/init.d/"${ZIDESTORE_INIT_NAME}"
+  fi
+  /sbin/ldconfig
+  if [ -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_NAME}" ]; then
+    "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_NAME}" restart >/dev/null 2>&1
   fi
 fi
 
@@ -720,39 +938,59 @@ fi
 
 %preun pda
 if [ $1 = 0 ]; then
-  NHSD_INIT_VERSION="ogo-nhsd-1.0"
+  NHSD_INIT_NAME="ogo-nhsd"
+  NHSD_INIT_VERSION="ogo-nhsd-%{ogo_v}"
   NHSD_INIT_PREFIX="%{prefix}"
-  if [ -f "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}" ]; then
+  if [ -f "%{_sysconfdir}/init.d/${NHSD_INIT_NAME}" ]; then
     if [ -f "/etc/SuSE-release" ]; then
-      "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}" stop
-      insserv --remove "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}"
-      rm -f "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}"
-      rm -f /usr/sbin/rc"${NHSD_INIT_VERSION}"
+      "%{_sysconfdir}/init.d/${NHSD_INIT_NAME}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${NHSD_INIT_NAME}"
+      rm -f "%{_sysconfdir}/init.d/${NHSD_INIT_NAME}"
+      rm -f /usr/sbin/rc"${NHSD_INIT_NAME}"
     else
-      service "${NHSD_INIT_VERSION}" stop
-      chkconfig "${NHSD_INIT_VERSION}" off
-      chkconfig --del "${NHSD_INIT_VERSION}"
-      rm -f "%{_sysconfdir}/init.d/${NHSD_INIT_VERSION}"
+      service "${NHSD_INIT_NAME}" stop
+      chkconfig "${NHSD_INIT_NAME}" off
+      chkconfig --del "${NHSD_INIT_NAME}"
+      rm -f "%{_sysconfdir}/init.d/${NHSD_INIT_NAME}"
     fi
   fi
   /sbin/ldconfig
 fi
 
+%pre pda
+if [ $1 = 2 ]; then
+  NHSD_OLD_INIT="ogo-nhsd-1.0a"
+  if [ -f "%{_sysconfdir}/init.d/${NHSD_OLD_INIT}" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      "%{_sysconfdir}/init.d/${NHSD_OLD_INIT}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${NHSD_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${NHSD_OLD_INIT}"
+      rm -f /usr/sbin/rc"${NHSD_OLD_INIT}"
+    else
+      service "${NHSD_OLD_INIT}" stop
+      chkconfig "${NHSD_OLD_INIT}" off
+      chkconfig --del "${NHSD_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${NHSD_OLD_INIT}"
+    fi
+  fi 
+fi  
+
 %preun webui-app
 if [ $1 = 0 ]; then
-  OGO_INIT_VERSION="ogo-webui-1.0"
+  OGO_INIT_NAME="ogo-webui"
+  OGO_INIT_VERSION="ogo-webui-%{ogo_v}"
   OGO_INIT_PREFIX="%{prefix}"
-  if [ -f "%{_sysconfdir}/init.d/${OGO_INIT_VERSION}" ]; then
+  if [ -f "%{_sysconfdir}/init.d/${OGO_INIT_NAME}" ]; then
     if [ -f "/etc/SuSE-release" ]; then
-      "%{_sysconfdir}/init.d/${OGO_INIT_VERSION}" stop
-      insserv --remove "%{_sysconfdir}/init.d/${OGO_INIT_VERSION}"
-      rm -f "%{_sysconfdir}/init.d/${OGO_INIT_VERSION}"
-      rm -f /usr/sbin/rc"${OGO_INIT_VERSION}"
+      "%{_sysconfdir}/init.d/${OGO_INIT_NAME}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${OGO_INIT_NAME}"
+      rm -f "%{_sysconfdir}/init.d/${OGO_INIT_NAME}"
+      rm -f /usr/sbin/rc"${OGO_INIT_NAME}"
     else
-      service "${OGO_INIT_VERSION}" stop
-      chkconfig "${OGO_INIT_VERSION}" off
-      chkconfig --del "${OGO_INIT_VERSION}"
-      rm -f "%{_sysconfdir}/init.d/${OGO_INIT_VERSION}"
+      service "${OGO_INIT_NAME}" stop
+      chkconfig "${OGO_INIT_NAME}" off
+      chkconfig --del "${OGO_INIT_NAME}"
+      rm -f "%{_sysconfdir}/init.d/${OGO_INIT_NAME}"
     fi 
   fi
   ##
@@ -762,45 +1000,101 @@ if [ $1 = 0 ]; then
   /sbin/ldconfig
 fi
 
+%pre webui-app
+if [ $1 = 2 ]; then
+  WEBUI_OLD_INIT="ogo-webui-1.0a"
+  if [ -f "%{_sysconfdir}/init.d/${WEBUI_OLD_INIT}" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      "%{_sysconfdir}/init.d/${WEBUI_OLD_INIT}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${WEBUI_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${WEBUI_OLD_INIT}"
+      rm -f /usr/sbin/rc"${WEBUI_OLD_INIT}"
+    else
+      service "${WEBUI_OLD_INIT}" stop
+      chkconfig "${WEBUI_OLD_INIT}" off
+      chkconfig --del "${WEBUI_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${WEBUI_OLD_INIT}"
+    fi
+  fi 
+fi  
+
 %preun xmlrpcd
 if [ $1 = 0 ]; then
-  XMLRPCD_INIT_VERSION="ogo-xmlrpcd-1.0"
+  XMLRPCD_INIT_NAME="ogo-xmlrpcd"
+  XMLRPCD_INIT_VERSION="ogo-xmlrpcd-%{ogo_v}"
   XMLRPCD_INIT_PREFIX="%{prefix}"
-  if [ -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}" ]; then
+  if [ -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_NAME}" ]; then
     if [ -f "/etc/SuSE-release" ]; then
-      "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}" stop
-      insserv --remove "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}"
-      rm -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}"
-      rm -f /usr/sbin/rc"${XMLRPCD_INIT_VERSION}"
+      "%{_sysconfdir}/init.d/${XMLRPCD_INIT_NAME}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${XMLRPCD_INIT_NAME}"
+      rm -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_NAME}"
+      rm -f /usr/sbin/rc"${XMLRPCD_INIT_NAME}"
     else
-      service "${XMLRPCD_INIT_VERSION}" stop
-      chkconfig "${XMLRPCD_INIT_VERSION}" off
-      chkconfig --del "${XMLRPCD_INIT_VERSION}"
-      rm -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_VERSION}"
+      service "${XMLRPCD_INIT_NAME}" stop
+      chkconfig "${XMLRPCD_INIT_NAME}" off
+      chkconfig --del "${XMLRPCD_INIT_NAME}"
+      rm -f "%{_sysconfdir}/init.d/${XMLRPCD_INIT_NAME}"
     fi 
   fi
   /sbin/ldconfig
 fi
 
+%pre xmlrpcd
+if [ $1 = 2 ]; then
+  XMLRPCD_OLD_INIT="ogo-xmlrpcd-1.0a"
+  if [ -f "%{_sysconfdir}/init.d/${XMLRPCD_OLD_INIT}" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      "%{_sysconfdir}/init.d/${XMLRPCD_OLD_INIT}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${XMLRPCD_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${XMLRPCD_OLD_INIT}"
+      rm -f /usr/sbin/rc"${XMLRPCD_OLD_INIT}"
+    else
+      service "${XMLRPCD_OLD_INIT}" stop
+      chkconfig "${XMLRPCD_OLD_INIT}" off
+      chkconfig --del "${XMLRPCD_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${XMLRPCD_OLD_INIT}"
+    fi
+  fi 
+fi  
+
 %preun zidestore
 if [ $1 = 0 ]; then
-  ZIDESTORE_INIT_VERSION="ogo-zidestore-1.4"
+  ZIDESTORE_INIT_NAME="ogo-zidestore"
+  ZIDESTORE_INIT_VERSION="ogo-zidestore-%{zide_v}"
   ZIDESTORE_INIT_PREFIX="%{prefix}"
-  if [ -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}" ]; then
+  if [ -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_NAME}" ]; then
     if [ -f "/etc/SuSE-release" ]; then
-      "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}" stop
-      insserv --remove "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}"
-      rm -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}"
-      rm -f /usr/sbin/rc"${ZIDESTORE_INIT_VERSION}"
+      "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_NAME}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_NAME}"
+      rm -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_NAME}"
+      rm -f /usr/sbin/rc"${ZIDESTORE_INIT_NAME}"
     else
-      service "${ZIDESTORE_INIT_VERSION}" stop
-      chkconfig "${ZIDESTORE_INIT_VERSION}" off
-      chkconfig --del "${ZIDESTORE_INIT_VERSION}"
-      rm -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_VERSION}"
+      service "${ZIDESTORE_INIT_NAME}" stop
+      chkconfig "${ZIDESTORE_INIT_NAME}" off
+      chkconfig --del "${ZIDESTORE_INIT_NAME}"
+      rm -f "%{_sysconfdir}/init.d/${ZIDESTORE_INIT_NAME}"
     fi
   fi
   /sbin/ldconfig
 fi
+
+%pre zidestore
+if [ $1 = 2 ]; then
+  ZIDESTORE_OLD_INIT="ogo-zidestore-1.3"
+  if [ -f "%{_sysconfdir}/init.d/${ZIDESTORE_OLD_INIT}" ]; then
+    if [ -f "/etc/SuSE-release" ]; then
+      "%{_sysconfdir}/init.d/${ZIDESTORE_OLD_INIT}" stop
+      insserv --remove "%{_sysconfdir}/init.d/${ZIDESTORE_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${ZIDESTORE_OLD_INIT}"
+      rm -f /usr/sbin/rc"${ZIDESTORE_OLD_INIT}"
+    else
+      service "${ZIDESTORE_OLD_INIT}" stop
+      chkconfig "${ZIDESTORE_OLD_INIT}" off
+      chkconfig --del "${ZIDESTORE_OLD_INIT}"
+      rm -f "%{_sysconfdir}/init.d/${ZIDESTORE_OLD_INIT}"
+    fi
+  fi 
+fi  
 
 # ****************************** clean ********************************
 %clean
@@ -809,26 +1103,26 @@ rm -fr ${RPM_BUILD_ROOT}
 # ****************************** files ********************************
 %files docapi
 %defattr(-,root,root,-)
-%{prefix}/lib/opengroupware.org-1.0/datasources/OGoAccounts.ds
-%{prefix}/lib/opengroupware.org-1.0/datasources/OGoBase.ds
-%{prefix}/lib/opengroupware.org-1.0/datasources/OGoContacts.ds
-%{prefix}/lib/opengroupware.org-1.0/datasources/OGoJobs.ds
-%{prefix}/lib/opengroupware.org-1.0/datasources/OGoProject.ds
-%{prefix}/lib/opengroupware.org-1.0/datasources/OGoRawDatabase.ds
-%{prefix}/lib/opengroupware.org-1.0/datasources/OGoScheduler.ds
-%{prefix}/lib/libOGoAccounts*.so.5.2*
-%{prefix}/lib/libOGoBase*.so.5.2*
-%{prefix}/lib/libOGoContacts*.so.5.2*
-%{prefix}/lib/libOGoDocuments*.so.5.2*
-%{prefix}/lib/libOGoJobs*.so.5.2*
-%{prefix}/lib/libOGoProject*.so.5.2*
-%{prefix}/lib/libOGoRawDatabase*.so.5.2*
-%{prefix}/lib/libOGoScheduler*.so.5.2*
+%{prefix}/lib/opengroupware.org-%{ogo_v}/datasources/OGoAccounts.ds
+%{prefix}/lib/opengroupware.org-%{ogo_v}/datasources/OGoBase.ds
+%{prefix}/lib/opengroupware.org-%{ogo_v}/datasources/OGoContacts.ds
+%{prefix}/lib/opengroupware.org-%{ogo_v}/datasources/OGoJobs.ds
+%{prefix}/lib/opengroupware.org-%{ogo_v}/datasources/OGoProject.ds
+%{prefix}/lib/opengroupware.org-%{ogo_v}/datasources/OGoRawDatabase.ds
+%{prefix}/lib/opengroupware.org-%{ogo_v}/datasources/OGoScheduler.ds
+%{prefix}/lib/libOGoAccounts*.so.%{libogo_v}*
+%{prefix}/lib/libOGoBase*.so.%{libogo_v}*
+%{prefix}/lib/libOGoContacts*.so.%{libogo_v}*
+%{prefix}/lib/libOGoDocuments*.so.%{libogo_v}*
+%{prefix}/lib/libOGoJobs*.so.%{libogo_v}*
+%{prefix}/lib/libOGoProject*.so.%{libogo_v}*
+%{prefix}/lib/libOGoRawDatabase*.so.%{libogo_v}*
+%{prefix}/lib/libOGoScheduler*.so.%{libogo_v}*
 
 %files docapi-fs-project
 %defattr(-,root,root,-)
-%{prefix}/lib/opengroupware.org-1.0/datasources/OGoFileSystemProject.ds
-%{prefix}/lib/libOGoFileSystemProject*.so.5.2*
+%{prefix}/lib/opengroupware.org-%{ogo_v}/datasources/OGoFileSystemProject.ds
+%{prefix}/lib/libOGoFileSystemProject*.so.%{libogo_v}*
 
 %files docapi-fs-project-devel
 %defattr(-,root,root,-)
@@ -837,8 +1131,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 %files docapi-db-project
 %defattr(-,root,root,-)
-%{prefix}/lib/opengroupware.org-1.0/datasources/OGoDatabaseProject.ds
-%{prefix}/lib/libOGoDatabaseProject*.so.5.2*
+%{prefix}/lib/opengroupware.org-%{ogo_v}/datasources/OGoDatabaseProject.ds
+%{prefix}/lib/libOGoDatabaseProject*.so.%{libogo_v}*
 
 %files docapi-db-project-devel
 %defattr(-,root,root,-)
@@ -866,24 +1160,24 @@ rm -fr ${RPM_BUILD_ROOT}
 
 %files logic
 %defattr(-,root,root,-)
-%{prefix}/lib/opengroupware.org-1.0/commands/LSAccount.cmd
-%{prefix}/lib/opengroupware.org-1.0/commands/LSAddress.cmd
-%{prefix}/lib/opengroupware.org-1.0/commands/LSBase.cmd
-%{prefix}/lib/opengroupware.org-1.0/commands/LSDocuments.cmd
-%{prefix}/lib/opengroupware.org-1.0/commands/LSEnterprise.cmd
-%{prefix}/lib/opengroupware.org-1.0/commands/LSMail.cmd
-%{prefix}/lib/opengroupware.org-1.0/commands/LSNews.cmd
-%{prefix}/lib/opengroupware.org-1.0/commands/LSPerson.cmd
-%{prefix}/lib/opengroupware.org-1.0/commands/LSProject.cmd
-%{prefix}/lib/opengroupware.org-1.0/commands/LSScheduler.cmd
-%{prefix}/lib/opengroupware.org-1.0/commands/LSSearch.cmd
-%{prefix}/lib/opengroupware.org-1.0/commands/LSTasks.cmd
-%{prefix}/lib/opengroupware.org-1.0/commands/LSTeam.cmd
-%{prefix}/lib/opengroupware.org-1.0/commands/OGo.model
-%{prefix}/lib/libLSAddress*.so.5.2*
-%{prefix}/lib/libLSFoundation*.so.5.2*
-%{prefix}/lib/libLSSearch*.so.5.2*
-%{prefix}/lib/libOGoSchedulerTools*.so.5.2*
+%{prefix}/lib/opengroupware.org-%{ogo_v}/commands/LSAccount.cmd
+%{prefix}/lib/opengroupware.org-%{ogo_v}/commands/LSAddress.cmd
+%{prefix}/lib/opengroupware.org-%{ogo_v}/commands/LSBase.cmd
+%{prefix}/lib/opengroupware.org-%{ogo_v}/commands/LSDocuments.cmd
+%{prefix}/lib/opengroupware.org-%{ogo_v}/commands/LSEnterprise.cmd
+%{prefix}/lib/opengroupware.org-%{ogo_v}/commands/LSMail.cmd
+%{prefix}/lib/opengroupware.org-%{ogo_v}/commands/LSNews.cmd
+%{prefix}/lib/opengroupware.org-%{ogo_v}/commands/LSPerson.cmd
+%{prefix}/lib/opengroupware.org-%{ogo_v}/commands/LSProject.cmd
+%{prefix}/lib/opengroupware.org-%{ogo_v}/commands/LSScheduler.cmd
+%{prefix}/lib/opengroupware.org-%{ogo_v}/commands/LSSearch.cmd
+%{prefix}/lib/opengroupware.org-%{ogo_v}/commands/LSTasks.cmd
+%{prefix}/lib/opengroupware.org-%{ogo_v}/commands/LSTeam.cmd
+%{prefix}/lib/opengroupware.org-%{ogo_v}/commands/OGo.model
+%{prefix}/lib/libLSAddress*.so.%{libogo_v}*
+%{prefix}/lib/libLSFoundation*.so.%{libogo_v}*
+%{prefix}/lib/libLSSearch*.so.%{libogo_v}*
+%{prefix}/lib/libOGoSchedulerTools*.so.%{libogo_v}*
 
 %files logic-tools
 %defattr(-,root,root,-)
@@ -900,28 +1194,28 @@ rm -fr ${RPM_BUILD_ROOT}
 
 %files meta
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/INSTALLED.USING.METAPACKAGE
+%{prefix}/share/opengroupware.org-%{ogo_v}/INSTALLED.USING.METAPACKAGE
 
 %files pda
 %defattr(-,root,root,-)
-%{prefix}/sbin/ogo-nhsd-1.0
-%{prefix}/bin/ogo-ppls-1.0
-%{prefix}/lib/libOGoNHS*.so.5.2*
-%{prefix}/lib/%{ogo_libogopalmui}.so.5.2*
-%{prefix}/lib/%{ogo_libogopalm}.so.5.2*
-%{prefix}/lib/libPPSync*.so.5.2*
-%{prefix}/lib/opengroupware.org-1.0/conduits/OpenGroupwareNHS.conduit/OpenGroupwareNHS
-%{prefix}/lib/opengroupware.org-1.0/conduits/OpenGroupwareNHS.conduit/Resources/Info-gnustep.plist
-%{prefix}/lib/opengroupware.org-1.0/conduits/OpenGroupwareNHS.conduit/bundle-info.plist
-%{prefix}/lib/opengroupware.org-1.0/conduits/OpenGroupwareNHS.conduit/stamp.make
-%{prefix}/lib/opengroupware.org-1.0/datasources/OGoPalmDS.ds/OGoPalmDS
-%{prefix}/lib/opengroupware.org-1.0/datasources/OGoPalmDS.ds/Resources/Info-gnustep.plist
-%{prefix}/lib/opengroupware.org-1.0/datasources/OGoPalmDS.ds/bundle-info.plist
-%{prefix}/lib/opengroupware.org-1.0/datasources/OGoPalmDS.ds/stamp.make
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoPalm.lso
-%{prefix}/share/opengroupware.org-1.0/initscript_templates/*nhsd
-%attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-nhsd-1.0
-%ghost %attr(0755,root,root) %config %{_sysconfdir}/init.d/ogo-nhsd-1.0
+%{prefix}/sbin/ogo-nhsd-%{ogo_v}
+%{prefix}/bin/ogo-ppls-%{ogo_v}
+%{prefix}/lib/libOGoNHS*.so.%{libogo_v}*
+%{prefix}/lib/%{ogo_libogopalmui}.so.%{libogo_v}*
+%{prefix}/lib/%{ogo_libogopalm}.so.%{libogo_v}*
+%{prefix}/lib/libPPSync*.so.%{libogo_v}*
+%{prefix}/lib/opengroupware.org-%{ogo_v}/conduits/OpenGroupwareNHS.conduit/OpenGroupwareNHS
+%{prefix}/lib/opengroupware.org-%{ogo_v}/conduits/OpenGroupwareNHS.conduit/Resources/Info-gnustep.plist
+%{prefix}/lib/opengroupware.org-%{ogo_v}/conduits/OpenGroupwareNHS.conduit/bundle-info.plist
+%{prefix}/lib/opengroupware.org-%{ogo_v}/conduits/OpenGroupwareNHS.conduit/stamp.make
+%{prefix}/lib/opengroupware.org-%{ogo_v}/datasources/OGoPalmDS.ds/OGoPalmDS
+%{prefix}/lib/opengroupware.org-%{ogo_v}/datasources/OGoPalmDS.ds/Resources/Info-gnustep.plist
+%{prefix}/lib/opengroupware.org-%{ogo_v}/datasources/OGoPalmDS.ds/bundle-info.plist
+%{prefix}/lib/opengroupware.org-%{ogo_v}/datasources/OGoPalmDS.ds/stamp.make
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoPalm.lso
+%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/*nhsd
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/ogo-nhsd
+%ghost %attr(0755,root,root) %config %{_sysconfdir}/init.d/ogo-nhsd
 
 %files pda-devel
 %defattr(-,root,root,-)
@@ -936,37 +1230,37 @@ rm -fr ${RPM_BUILD_ROOT}
 
 %files theme-default
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/www/Danish.lproj
-%{prefix}/share/opengroupware.org-1.0/www/English.lproj
-%{prefix}/share/opengroupware.org-1.0/www/German.lproj
-%{prefix}/share/opengroupware.org-1.0/www/Italian.lproj
-%{prefix}/share/opengroupware.org-1.0/www/Polish.lproj
-%{prefix}/share/opengroupware.org-1.0/www/Spanish.lproj
-%{prefix}/share/opengroupware.org-1.0/www/WOStats.xsl
-%{prefix}/share/opengroupware.org-1.0/www/menu.js
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/Danish.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/English.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/German.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/Italian.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/Polish.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/Spanish.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/WOStats.xsl
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/menu.js
 
 %files theme-ooo
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/templates/Themes/OOo
-%{prefix}/share/opengroupware.org-1.0/www/English_OOo.lproj
-%{prefix}/share/opengroupware.org-1.0/www/German_OOo.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/Themes/OOo
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/English_OOo.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/German_OOo.lproj
 
 %files theme-blue
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/templates/Themes/blue
-%{prefix}/share/opengroupware.org-1.0/www/English_blue.lproj
-%{prefix}/share/opengroupware.org-1.0/www/German_blue.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/Themes/blue
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/English_blue.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/German_blue.lproj
 
 %files theme-kde
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/templates/Themes/kde
-%{prefix}/share/opengroupware.org-1.0/www/English_kde.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/Themes/kde
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/English_kde.lproj
 
 %files theme-orange
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/templates/Themes/orange
-%{prefix}/share/opengroupware.org-1.0/www/English_orange.lproj
-%{prefix}/share/opengroupware.org-1.0/www/German_orange.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/Themes/orange
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/English_orange.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/www/German_orange.lproj
 
 %files tools
 %defattr(-,root,root,-)
@@ -987,31 +1281,31 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/bin/sky_install_sieve
 %{prefix}/bin/sky_send_bulk_messages
 %{prefix}/bin/skyaptnotify
-%{prefix}/share/opengroupware.org-1.0/aptnotify_template/ogo-aptnotify.sh
+%{prefix}/share/opengroupware.org-%{ogo_v}/aptnotify_template/ogo-aptnotify.sh
 
 %files webui-app
 %defattr(-,root,root,-)
-%{prefix}/sbin/ogo-webui-1.0
-%{prefix}/share/opengroupware.org-1.0/templates/ogo-webui-1.0
-%{prefix}/share/opengroupware.org-1.0/initscript_templates/*opengroupware
-%attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-webui-1.0
-%ghost %attr(0755,root,root) %config %{_sysconfdir}/init.d/ogo-webui-1.0
+%{prefix}/sbin/ogo-webui-%{ogo_v}
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/ogo-webui-%{ogo_v}
+%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/*opengroupware
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/ogo-webui
+%ghost %attr(0755,root,root) %config %{_sysconfdir}/init.d/ogo-webui
 
 %files webui-core
 %defattr(-,root,root,-)
-%{prefix}/lib/libOGoFoundation*.so.5.2*
-%{prefix}/lib/opengroupware.org-1.0/webui/AdminUI.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/BaseUI.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoUIElements.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/PreferencesUI.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/PropertiesUI.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/RelatedLinksUI.lso
-%{prefix}/share/opengroupware.org-1.0/templates/AdminUI
-%{prefix}/share/opengroupware.org-1.0/templates/BaseUI
-%{prefix}/share/opengroupware.org-1.0/templates/OGoUIElements
-%{prefix}/share/opengroupware.org-1.0/templates/PreferencesUI
-%{prefix}/share/opengroupware.org-1.0/templates/PropertiesUI
-%{prefix}/share/opengroupware.org-1.0/templates/RelatedLinksUI
+%{prefix}/lib/libOGoFoundation*.so.%{libogo_v}*
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/AdminUI.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/BaseUI.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoUIElements.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/PreferencesUI.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/PropertiesUI.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/RelatedLinksUI.lso
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/AdminUI
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/BaseUI
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoUIElements
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/PreferencesUI
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/PropertiesUI
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/RelatedLinksUI
 
 %files webui-core-devel
 %defattr(-,root,root,-)
@@ -1020,47 +1314,47 @@ rm -fr ${RPM_BUILD_ROOT}
 
 %files webui-calendar
 %defattr(-,root,root,-)
-%{prefix}/lib/opengroupware.org-1.0/webui/LSWScheduler.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoResourceScheduler.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoScheduler.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoSchedulerDock.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoSchedulerViews.lso
-%{prefix}/share/opengroupware.org-1.0/templates/LSWScheduler
-%{prefix}/share/opengroupware.org-1.0/templates/OGoResourceScheduler
-%{prefix}/share/opengroupware.org-1.0/templates/OGoScheduler
-%{prefix}/share/opengroupware.org-1.0/templates/OGoSchedulerDock
-%{prefix}/share/opengroupware.org-1.0/templates/OGoSchedulerViews
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/LSWScheduler.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoResourceScheduler.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoScheduler.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoSchedulerDock.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoSchedulerViews.lso
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/LSWScheduler
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoResourceScheduler
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoScheduler
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoSchedulerDock
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoSchedulerViews
 
-%{prefix}/share/opengroupware.org-1.0/Holidays.plist
+%{prefix}/share/opengroupware.org-%{ogo_v}/Holidays.plist
 
 %files webui-contact
 %defattr(-,root,root,-)
-%{prefix}/lib/opengroupware.org-1.0/webui/AddressUI.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/EnterprisesUI.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/LDAPAccounts.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/PersonsUI.lso
-%{prefix}/share/opengroupware.org-1.0/templates/AddressUI
-%{prefix}/share/opengroupware.org-1.0/templates/EnterprisesUI
-%{prefix}/share/opengroupware.org-1.0/templates/LDAPAccounts
-%{prefix}/share/opengroupware.org-1.0/templates/PersonsUI
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/AddressUI.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/EnterprisesUI.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/LDAPAccounts.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/PersonsUI.lso
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/AddressUI
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/EnterprisesUI
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/LDAPAccounts
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/PersonsUI
 
 %files webui-mailer
 %defattr(-,root,root,-)
-%{prefix}/lib/libOGoWebMail*.so.5.2*
-%{prefix}/lib/opengroupware.org-1.0/webui/LSWMail.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoMailEditor.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoMailFilter.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoMailInfo.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoMailViewers.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoRecipientLists.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoWebMail.lso
-%{prefix}/share/opengroupware.org-1.0/templates/LSWMail
-%{prefix}/share/opengroupware.org-1.0/templates/OGoMailEditor
-%{prefix}/share/opengroupware.org-1.0/templates/OGoMailFilter
-%{prefix}/share/opengroupware.org-1.0/templates/OGoMailInfo
-%{prefix}/share/opengroupware.org-1.0/templates/OGoMailViewers
-%{prefix}/share/opengroupware.org-1.0/templates/OGoRecipientLists
-%{prefix}/share/opengroupware.org-1.0/templates/OGoWebMail
+%{prefix}/lib/libOGoWebMail*.so.%{libogo_v}*
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/LSWMail.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoMailEditor.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoMailFilter.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoMailInfo.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoMailViewers.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoRecipientLists.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoWebMail.lso
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/LSWMail
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoMailEditor
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoMailFilter
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoMailInfo
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoMailViewers
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoRecipientLists
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoWebMail
 
 %files webui-mailer-devel
 %defattr(-,root,root,-)
@@ -1069,109 +1363,109 @@ rm -fr ${RPM_BUILD_ROOT}
 
 %files webui-news
 %defattr(-,root,root,-)
-%{prefix}/lib/opengroupware.org-1.0/webui/NewsUI.lso
-%{prefix}/share/opengroupware.org-1.0/templates/NewsUI
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/NewsUI.lso
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/NewsUI
 
 %files webui-task
 %defattr(-,root,root,-)
-%{prefix}/lib/opengroupware.org-1.0/webui/JobUI.lso
-%{prefix}/share/opengroupware.org-1.0/templates/JobUI
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/JobUI.lso
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/JobUI
 
 %files webui-project
 %defattr(-,root,root,-)
-%{prefix}/lib/opengroupware.org-1.0/webui/LSWProject.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoDocInlineViewers.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoNote.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoProject.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoProjectInfo.lso
-%{prefix}/lib/opengroupware.org-1.0/webui/OGoProjectZip.lso
-%{prefix}/share/opengroupware.org-1.0/templates/LSWProject
-%{prefix}/share/opengroupware.org-1.0/templates/OGoDocInlineViewers
-%{prefix}/share/opengroupware.org-1.0/templates/OGoNote
-%{prefix}/share/opengroupware.org-1.0/templates/OGoProject
-%{prefix}/share/opengroupware.org-1.0/templates/OGoProjectInfo
-%{prefix}/share/opengroupware.org-1.0/templates/OGoProjectZip
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/LSWProject.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoDocInlineViewers.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoNote.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoProject.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoProjectInfo.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoProjectZip.lso
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/LSWProject
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoDocInlineViewers
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoNote
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoProject
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoProjectInfo
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoProjectZip
 
 %files webui-resource-basque
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/Basque.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/translations/Basque.lproj
 
 #%files webui-resource-dk
 #%defattr(-,root,root,-)
-#%{prefix}/share/opengroupware.org-1.0/translations/Danish.lproj
+#%{prefix}/share/opengroupware.org-%{ogo_v}/translations/Danish.lproj
 
 %files webui-resource-nl
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/Dutch.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/translations/Dutch.lproj
 
 %files webui-resource-en
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/English.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/translations/English.lproj
 
 %files webui-resource-fr
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/French.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/translations/French.lproj
 
 %files webui-resource-de
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/German.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/translations/German.lproj
 
 #%files webui-resource-hu
 #%defattr(-,root,root,-)
-#%{prefix}/share/opengroupware.org-1.0/translations/Hungarian.lproj
+#%{prefix}/share/opengroupware.org-%{ogo_v}/translations/Hungarian.lproj
 
 %files webui-resource-it
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/Italian.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/translations/Italian.lproj
 
 #%files webui-resource-jp
 #%defattr(-,root,root,-)
-#%{prefix}/share/opengroupware.org-1.0/translations/Japanese.lproj
+#%{prefix}/share/opengroupware.org-%{ogo_v}/translations/Japanese.lproj
 
 %files webui-resource-no
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/Norwegian.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/translations/Norwegian.lproj
 
 #%files webui-resource-pl
 #%defattr(-,root,root,-)
-#%{prefix}/share/opengroupware.org-1.0/translations/Polish.lproj
+#%{prefix}/share/opengroupware.org-%{ogo_v}/translations/Polish.lproj
 
 %files webui-resource-pt
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/Portuguese.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/translations/Portuguese.lproj
 
 #%files webui-resource-sk
 #%defattr(-,root,root,-)
-#%{prefix}/share/opengroupware.org-1.0/translations/Slovak.lproj
+#%{prefix}/share/opengroupware.org-%{ogo_v}/translations/Slovak.lproj
 
 %files webui-resource-es
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/Spanish.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/translations/Spanish.lproj
 
 %files webui-resource-ptbr
 %defattr(-,root,root,-)
-%{prefix}/share/opengroupware.org-1.0/translations/ptBR.lproj
+%{prefix}/share/opengroupware.org-%{ogo_v}/translations/ptBR.lproj
 
 %files xmlrpcd
 %defattr(-,root,root,-)
-%{prefix}/sbin/ogo-xmlrpcd-1.0
-%{prefix}/share/opengroupware.org-1.0/initscript_templates/*xmlrpcd
-%attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-xmlrpcd-1.0
-%ghost %attr(0755,root,root) %{_sysconfdir}/init.d/ogo-xmlrpcd-1.0
+%{prefix}/sbin/ogo-xmlrpcd-%{ogo_v}
+%{prefix}/share/opengroupware.org-%{ogo_v}/initscript_templates/*xmlrpcd
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/ogo-xmlrpcd
+%ghost %attr(0755,root,root) %{_sysconfdir}/init.d/ogo-xmlrpcd
 
 %files zidestore
 %defattr(-,root,root,-)
-%{prefix}/sbin/ogo-zidestore-1.4
-%{prefix}/lib/libZSAppointments*.so.1.4*
-%{prefix}/lib/libZSBackend*.so.1.4*
-%{prefix}/lib/libZSContacts*.so.1.4*
-%{prefix}/lib/libZSFrontend*.so.1.4*
-%{prefix}/lib/libZSProjects*.so.1.4*
-%{prefix}/lib/libZSTasks*.so.1.4*
-%{prefix}/lib/zidestore-1.4
-%{prefix}/share/zidestore-1.4
-%attr(0644,root,root) %config %{_sysconfdir}/sysconfig/ogo-zidestore-1.4
-%ghost %attr(0755,root,root) %{_sysconfdir}/init.d/ogo-zidestore-1.4
+%{prefix}/sbin/ogo-zidestore-%{zide_v}
+%{prefix}/lib/libZSAppointments*.so.%{zide_v}*
+%{prefix}/lib/libZSBackend*.so.%{zide_v}*
+%{prefix}/lib/libZSContacts*.so.%{zide_v}*
+%{prefix}/lib/libZSFrontend*.so.%{zide_v}*
+%{prefix}/lib/libZSProjects*.so.%{zide_v}*
+%{prefix}/lib/libZSTasks*.so.%{zide_v}*
+%{prefix}/lib/zidestore-%{zide_v}
+%{prefix}/share/zidestore-%{zide_v}
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/ogo-zidestore
+%ghost %attr(0755,root,root) %{_sysconfdir}/init.d/ogo-zidestore
 
 %files zidestore-devel
 %defattr(-,root,root,-)
@@ -1186,6 +1480,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Mon Jul 18 2005 Frank Reppin <frank@opengroupware.org>
+- MFC
 * Wed Jun 22 2005 Frank Reppin <frank@opengroupware.org>
 - removed webui/SoOGo.lso from webui-core
 * Fri Jun 17 2005 Helge Hess <helge.hess@opengroupware.org>
