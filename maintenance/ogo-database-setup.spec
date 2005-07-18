@@ -29,7 +29,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ****************************** install ******************************
 %install
-DBSETUP_DEST="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.1/dbsetup"
+DBSETUP_DEST="${RPM_BUILD_ROOT}%{prefix}/share/opengroupware.org-1.0/dbsetup"
 OGO_WEBUI_SYSCONFIG_NAME="ogo-webui-1.0"
 OGO_SHAREDIR="opengroupware.org-1.0"
 mkdir -p ${DBSETUP_DEST}

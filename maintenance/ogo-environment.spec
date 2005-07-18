@@ -63,7 +63,7 @@ if [ $1 = 1 ]; then
   Defaults write NSGlobalDomain skyrix_id `hostname`
   Defaults write NSGlobalDomain TimeZoneName GMT
   Defaults write NSGlobalDomain WOHttpAllowHost '( localhost, 127.0.0.1, localhost.localdomain)'
-  Defaults write ogo-nhsd-1.0 NGBundlePath '%{prefix}/lib/opengroupware.org-1.1/conduits'
+  Defaults write ogo-nhsd-1.0 NGBundlePath '%{prefix}/lib/opengroupware.org-1.0/conduits'
   Defaults write skyaptnotify AptNotifyVerbose NO
   Defaults write skyaptnotify AptNotifyFromAdress '${OGO_USER}@`hostname`'
   Defaults write skyaptnotify AptNotifySentResourcesFile '%{_var}/log/opengroupware/sent-resources'
