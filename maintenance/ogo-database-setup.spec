@@ -41,6 +41,7 @@ sed "s^OGO_WEBUI_SYSCONFIG_NAME^${OGO_WEBUI_SYSCONFIG_NAME}^g; \
      s^OGO_SHAREDIR^${OGO_SHAREDIR}^g" \
     %{_specdir}/db_setup_template/database_setup_psql.sh \
     >${DBSETUP_DEST}/database_setup_psql.sh
+chmod 750 ${DBSETUP_DEST}/database_setup_psql.sh
 
 # ****************************** post ********************************
 %post
@@ -63,6 +64,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Tue Jul 19 2005 Frank Reppin <frank@opengroupware.org>
+- fix permissions of setup script
 * Tue Jul 05 2005 Frank Reppin <frank@opengroupware.org>
 - fix creation of database_setup_psql.sh
 * Fri Jun 17 2005 Helge Hess <helge.hess@opengroupware.org>
