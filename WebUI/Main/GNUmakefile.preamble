@@ -1,4 +1,4 @@
-# $Id$
+# compilation settings
 
 ifneq ($(FHS_INSTALL_ROOT),)
 ADDITIONAL_CPPFLAGS += -DFHS_INSTALL_ROOT=\"$(FHS_INSTALL_ROOT)\"
@@ -33,3 +33,10 @@ $(WEBUID_NAME)_TOOL_LIBS += \
 
 $(WEBUID_NAME)_TOOL_LIBS += \
 	-lldap
+
+
+# platform specific stuff
+
+ifeq ($(findstring openbsd3, $(GNUSTEP_TARGET_OS)), openbsd3)
+$(WEBUID_NAME)_TOOL_LIBS += -liconv
+endif

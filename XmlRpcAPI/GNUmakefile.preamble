@@ -31,3 +31,8 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-I$(OGoROOT)/DocumentAPI
 
 SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+
+# OS dependend stuff
+ifeq ($(findstring openbsd3, $(GNUSTEP_TARGET_OS)), openbsd3)
+$(XMLRPCD_NAME)_TOOL_LIBS += -liconv
+endif
