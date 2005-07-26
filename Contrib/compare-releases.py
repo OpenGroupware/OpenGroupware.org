@@ -11,7 +11,7 @@ excludeList = (
 excludeSuffixes = (
     ".xcode", ".o", ".so", "_obj", ".gdladaptor", ".sax", ".sxp",
     ".zsp", ".woa", ".bundle", ".tmp", ".ds", ".model", ".lso",
-    ".cmd"
+    ".cmd", ".odr"
 )
 
 def usage():
