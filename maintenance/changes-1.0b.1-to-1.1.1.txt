@@ -1,0 +1,105 @@
+Differences to 1.0beta.1-rock. Note that those are different branches, the
+changes mostly show things as 'added' which got removed for the 1.0 release.
+
+Directories which are not in 1.0:
+- Misc
+- Migration
+- Recycler
+- Database/MySQL
+- ZideStore
+  - UI-X, WCAP, EvoConnect, Sieve, Mailer
+- WebUI: SoOGo
+
+===========================================================================
+r1180
+compare /home/helge/dev/complete/OpenGroupware.org/releases/1.0beta.1-rock with .
+added:   Misc
+added:   Migration
+added:   Recycler
+added:   Database/MySQL
+changed: Database/OGoModel/
+     2005-07-11  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile: removed MySQL and FrontBase for release (v5.2.16)
+added:   Database/OGoModel/OpenGroupware.org_FrontBase2.eomodel
+added:   Database/OGoModel/OpenGroupware.org_MySQL5.eomodel
+changed: DocumentAPI/OGoContacts/
+     2005-06-28  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyCompanyDataSource.m: changed to merge multiple 'keywords'
+     	  arguments in AND/OR qualifiers into a single search record key (using
+     	  CSV hack), log operator when explain option is turned on (v5.3.45)
+added:   Themes/WebServerResources/English_kde.lproj/nuvolap
+added:   ZideStore/UI-X
+added:   ZideStore/Protocols/WCAP
+added:   ZideStore/Protocols/EvoConnect
+added:   ZideStore/SoObjects/Sieve
+added:   ZideStore/SoObjects/Mailer
+added:   WebUI/HelpUI
+added:   WebUI/SoOGo
+changed: WebUI/Contact/EnterprisesUI/
+     2005-06-28  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWEnterpriseAdvancedSearch.m: when multiple keywords (categories) 
+     	  are selected the search UI now creates multiple EOKeyValueQualifiers
+     	  to represent the query. Further it now supports the selection of the
+     	  search operation (AND or OR) (v5.3.35)
+changed: WebUI/Contact/PersonsUI/
+     2005-06-28  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWPersonAdvancedSearch.m: when multiple keywords (categories) are
+     	  selected the search UI now creates multiple EOKeyValueQualifiers to
+     	  represent the query. Further it now supports the selection of the
+     	  search operation (AND or OR) (v5.3.54)
+changed: WebUI/Main/
+     2005-07-23  Sebastian Reitenbach  <reitenbach@rapideye.de>
+     	* GNUmakefile.preamble: added OpenBSD linking flags (v5.3.78)
+changed: WebUI/Templates/
+     2005-07-17  Olivier Hallot  <olivier@ig.com.br>
+     	* OGoSchedulerViews/SkyInlineMonthOverview.wod,
+     	  OGoSchedulerViews/SkyInlineYearOverview.wod: properly pass month as
+     	  a parameter (fixes OGo bug #1463)
+     2005-06-28  Helge Hess  <helge.hess@skyrix.com>
+     	* EnterprisesUI/LSWEnterpriseAdvancedSearch.[html|wod]: added UI for
+     	  search operator selection
+     	* PersonsUI/LSWPersonAdvancedSearch.[html|wod]: added UI for search
+     	  operator selection
+added:   WebUI/Templates/ogo-webui-1.1
+removed: WebUI/Templates/ogo-webui-1.0
+added:   WebUI/Templates/Themes/orange/ogo-webui-1.1
+removed: WebUI/Templates/Themes/orange/ogo-webui-1.0
+added:   WebUI/Templates/Themes/blue/ogo-webui-1.1
+removed: WebUI/Templates/Themes/blue/ogo-webui-1.0
+added:   WebUI/Templates/Themes/kde/ogo-webui-1.1
+removed: WebUI/Templates/Themes/kde/ogo-webui-1.0
+added:   maintenance/rpm_buildenvironment/macros/fedora-core4
+changed: Logic/LSSearch/
+     2005-06-28  Helge Hess  <helge.hess@skyrix.com>
+     	* LSGenericSearchRecord.m: fixed a -description format argument
+     	  (v5.3.26)
+     2005-06-27  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.25
+     	* LSExtendedSearchCommand.m, LSExtendedSearch.m: some code cleanups
+     	* LSGenericSearchRecord.m: added NSCopying support, improved
+     	  -description
+changed: Logic/LSFoundation/
+     2005-07-23  Sebastian Reitenbach  <reitenbach@rapideye.de>
+     	* GNUmakefile.preamble: added OpenBSD linking flags (v5.3.105)
+     2005-06-26  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyObjectPropertyManager.m: fixed an NSNull Cocoa issue (v5.3.104)
+changed: Logic/LSScheduler/
+     2005-06-24  Helge Hess  <
+changed: Logic/LSEnterprise/
+     2005-06-28  Helge Hess  <helge.hess@skyrix.com>
+     	* LSExtendedSearchEnterpriseCommand.m: added special processing for
+     	  keyword searches (v5.3.16)
+changed: Logic/LSPerson/
+     2005-06-28  Helge Hess  <helge.hess@skyrix.com>
+     	* LSExtendedSearchPersonCommand.m: added special processing for keyword
+     	  searches (v5.3.28)
+added:   Contrib/ChangeBlogger
+changed: XmlRpcAPI/
+     2005-07-23  Sebastian Reitenbach  <reitenbach@rapideye.de>
+     	* GNUmakefile.preamble: added OpenBSD linking flags (v5.3.65)
+changed: Tools/
+     2005-07-23  Sebastian Reitenbach  <reitenbach@rapideye.de>
+     	* GNUmakefile.preamble: added OpenBSD linking flags
+changed: PDA/OGoPalm/
+     2005-06-28  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyPalmAddressDocument.m: minor code cleanups (v5.3.31)
