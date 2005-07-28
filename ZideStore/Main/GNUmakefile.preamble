@@ -33,5 +33,10 @@ ADDITIONAL_TOOL_LIBS += \
 	-lNGStreams -lNGExtensions -lEOControl	\
 	-lXmlRpc -lDOM -lSaxObjC
 
+# OS related stuff
+ifeq ($(findstring openbsd3, $(GNUSTEP_HOST_OS)), openbsd3)
+ADDITIONAL_TOOL_LIBS += -liconv
+endif
+
 # for OSX
 #	-lcrypt
