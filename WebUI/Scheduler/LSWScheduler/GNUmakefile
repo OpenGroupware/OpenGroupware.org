@@ -9,7 +9,6 @@ LSWScheduler_PRINCIPAL_CLASS = LSWSchedulerModule
 LSWScheduler_OBJC_FILES = 			\
 	LSWSchedulerModule.m			\
 	LSWSchedulerDateTitle.m			\
-	LSWSchedulerDateCell.m			\
 	LSWAppointmentEditor.m			\
 	LSWAppointmentEditor+Fetches.m		\
 	LSWAppointmentViewer.m			\

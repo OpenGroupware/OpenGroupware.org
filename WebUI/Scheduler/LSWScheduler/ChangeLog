@@ -1,6 +1,8 @@
 2005-08-02  Helge Hess  <helge.hess@skyrix.com>
 
-	* v5.1.62
+	* removed unused LSWSchedulerDateCell (v5.3.63)
+
+	* v5.3.62
 
 	* LSWSchedulerDateTitle.m: minor improvements
 

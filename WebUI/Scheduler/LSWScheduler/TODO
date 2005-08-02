@@ -13,10 +13,6 @@ LSWAppointmentViewer
   an English.lproj one. Then the German.lproj does not seem to be a derived
   template?
 
-LSWSchedulerDateCell
-  Should use CSS stylesheets instead of FONT tags!
-  appendToResponse needs cleanup
-
 LSWAppointmentEditor
   The AppointmentEditor really needs a lot of cleanup work! It's huge, doesn't
   use reusable components etc ...

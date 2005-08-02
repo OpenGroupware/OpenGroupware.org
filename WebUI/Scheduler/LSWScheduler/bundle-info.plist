@@ -20,7 +20,6 @@
     classes = (
       { name = LSWSchedulerModule;         },
       { name = LSWSchedulerDateTitle;      },
-      { name = LSWSchedulerDateCell;       },
       { name = LSWAppointmentMailPage;     },
       { name = LSWAppointmentHtmlMailPage; },
       { name = LSWAppointmentTextMailPage; },
