@@ -1,3 +1,9 @@
+2005-08-02  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkySchedulerSelectPopUp.m: only fetch member teams into the popup in
+	  case the 'scheduler_memberteams_only' default is set (related to
+	  #1507), code cleanups, assign-bugfix (v5.3.35)
+
 2005-05-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* WODirectAction+SchedulerViews.m: properly include common.h (v5.1.34)

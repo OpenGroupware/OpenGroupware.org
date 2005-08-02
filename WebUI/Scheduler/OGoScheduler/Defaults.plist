@@ -3,6 +3,7 @@
 
   scheduler_hide_new_proposal_on_rescat    = YES;
   scheduler_selectPanel_showAptTypes       = YES;
+  scheduler_memberteams_only               = NO;
 
 
   scheduler_daychart_maxaptinfolength      = 14;

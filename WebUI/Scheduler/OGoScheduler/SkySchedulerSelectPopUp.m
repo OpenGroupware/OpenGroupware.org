@@ -91,8 +91,10 @@ static NSArray  *categoryAttrArray   = nil;
 static NSNumber *yesNum              = nil;
 static Class    StrClass             = Nil;
 static Class    DictClass            = Nil;
+static BOOL     showOnlyMemberTeams  = NO;
 
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   static BOOL didInit = NO;
   if (didInit) return;
   didInit = YES;
@@ -100,11 +102,17 @@ static Class    DictClass            = Nil;
   StrClass  = [NSString     class];
   DictClass = [NSDictionary class];
   yesNum    = [[NSNumber numberWithBool:YES] retain];
+
+  if ((showOnlyMemberTeams = [ud boolForKey:@"scheduler_memberteams_only"])) {
+    NSLog(@"Note: %@ configured to show member-teams only.",
+          NSStringFromClass(self));
+  }
   
-  personCoreAttrNames = 
-    [[NSArray alloc] initWithObjects:
-		       @"name", @"firstname", @"isAccount", @"login", nil];
-  teamCoreAttrNames = [[NSArray alloc] initWithObjects:@"description", nil];
+  personCoreAttrNames =
+    [[ud arrayForKey:@"schedulerselect_personfetchkeys"] copy];
+  teamCoreAttrNames =
+    [[ud arrayForKey:@"schedulerselect_teamfetchkeys"] copy];
+  
   nameAttrArray     = [[NSArray alloc] initWithObjects:@"name", nil];
   categoryAttrArray = [[NSArray alloc] initWithObjects:@"category", nil];
 }
@@ -119,12 +127,12 @@ static Class    DictClass            = Nil;
 }
 
 - (void)dealloc {
-  RELEASE(self->item);
-  RELEASE(self->preSelectedItems);
-  RELEASE(self->possibleItems);
-  RELEASE(self->idsForTeams);
-  RELEASE(self->idsForPerson); 
-  RELEASE(self->resources);
+  [self->item             release];
+  [self->preSelectedItems release];
+  [self->possibleItems    release];
+  [self->idsForTeams      release];
+  [self->idsForPerson     release];
+  [self->resources        release];
   [super dealloc];
 }
 
@@ -459,45 +467,23 @@ static Class    DictClass            = Nil;
   return ma;
 }
 
-- (void)_initializePreSelectedItems {
-  // TODO: split up this big method!
-  NSMutableArray *array = nil;
-  id             tmp;
-  NSUserDefaults *defs;
-  BOOL           reload = NO;
+- (BOOL)_initializePreSelectedResources:(NSArray *)tmp {
+  NSEnumerator   *enumerator = nil;
+  NSMutableArray *r          = nil;
+  NSString       *n          = nil;
+  NSString       *s          = nil;
+  BOOL           reload;
   
-  defs = [self userDefaults];
-  
-  tmp = [defs arrayForKey:@"scheduler_popup_persons"];
-  if ((self->idsForPerson == nil) || ![self->idsForPerson isEqual:tmp])
-    reload = YES;
-
-  ASSIGN(self->idsForPerson, tmp);
-
-  tmp = [defs arrayForKey:@"scheduler_popup_teams"];
-  if ((self->idsForTeams == nil) || ![self->idsForTeams isEqual:tmp])
-    reload = YES;
-
-  ASSIGN(self->idsForTeams, tmp);
-
-  tmp = [defs arrayForKey:@"scheduler_popup_resourceNames"];
   if ((self->resources == nil) || ![self->resources isEqual:tmp])
     reload = YES;
 
-  {
-    NSEnumerator   *enumerator = nil;
-    NSMutableArray *r          = nil;
-    NSString       *n          = nil;
-    NSString       *s          = nil;
-
-    s = [[self labels] valueForKey:@"resCategory"];
-    if (s == nil) s = @"resCategory";
+  s = [[self labels] valueForKey:@"resCategory"];
+  if (s == nil) s = @"resCategory";
     
-    r = [NSMutableArray arrayWithCapacity:8];
+  r = [NSMutableArray arrayWithCapacity:8];
     
-    enumerator = [tmp objectEnumerator];
-
-    while ((n = [enumerator nextObject])) {
+  enumerator = [tmp objectEnumerator];
+  while ((n = [enumerator nextObject]) != nil) {
       if ([n hasSuffix:@"(resCategory)"]) {
         n = [[n  componentsSeparatedByString:@" ("] objectAtIndex:0];
         [r addObject:[StrClass stringWithFormat:@"%@ (%@)", n, s]];
@@ -506,64 +492,120 @@ static Class    DictClass            = Nil;
         [r addObject:n];
     }
     ASSIGN(self->resources, r);
-  }
+    
+    return reload;
+}
 
-  if (reload) {
-    if (self->preSelectedItems != nil) {
-      [self->possibleItems removeObjectsInArray:self->preSelectedItems];
-      [self->preSelectedItems release]; self->preSelectedItems = nil;
-    }
-    
-    array = [[NSMutableArray alloc] init];
-    
-    tmp = [self _getGIDsForIds:self->idsForPerson entityName:@"Person"];
-    if (tmp != nil)
-      [array addObjectsFromArray:tmp];
-    
-    tmp = [self _getGIDsForIds:self->idsForTeams entityName:@"Team"];
-    if (tmp != nil)
-      [array addObjectsFromArray:tmp];
-
-    if (self->resources != nil)
-      [array addObjectsFromArray:self->resources];
+- (void)removeObjectWithCompanyId:(NSNumber *)_pkey
+  fromArray:(NSMutableArray *)_array
+{
+  NSEnumerator *enumerator;
+  id           obj;
   
-    { /* remove activeAccount */
-      NSEnumerator *enumerator;
-      id           obj;
-      NSNumber     *acid;
-      
-      acid = [[[self session] activeAccount] valueForKey:@"companyId"];
-
-      enumerator = [array objectEnumerator];
-      while ((obj = [enumerator nextObject])) {
-        if (![obj isKindOfClass:StrClass]) {
-          if ([[obj valueForKey:@"companyId"] isEqual:acid])
-            break;
-        }
-      }
-      if (obj != nil)
-        [array removeObject:obj];
+  enumerator = [_array objectEnumerator];
+  while ((obj = [enumerator nextObject]) != nil) {
+    if (![obj isKindOfClass:StrClass]) {
+      if ([[obj valueForKey:@"companyId"] isEqual:_pkey])
+        break;
     }
-    if ([array count] == 0) {
-      id tmp = nil;
-      tmp = [self _fetchAllTeamGlobalIDs];
-      if ([tmp count] > 0) {
-        tmp = [[self _fetchGroupedCoreAttrsOfTeamsWithGIDs:tmp] allValues];
-        if (tmp) [array addObjectsFromArray:tmp];
-      }
-    }
-    
-    [array sortUsingFunction:compareItems context:nil];
-    
-    self->preSelectedItems = [array copy];
-    
-    [self->possibleItems addObjectsFromArray:self->preSelectedItems];
-    
-    if (![self->possibleItems containsObject:self->selectedItem])
-      self->selectedItem = [self->possibleItems objectAtIndex:0];
-    
-    [array release]; array = nil;
   }
+  if (obj != nil)
+    [_array removeObject:obj];
+}
+
+- (void)_initializePreSelectedItemsDoReload {
+  NSMutableArray *array = nil;
+  id tmp;
+  
+  if (self->preSelectedItems != nil) {
+    [self->possibleItems removeObjectsInArray:self->preSelectedItems];
+    [self->preSelectedItems release]; self->preSelectedItems = nil;
+  }
+  
+  array = [[NSMutableArray alloc] initWithCapacity:16];
+
+  /* add configured persons */
+    
+  tmp = [self _getGIDsForIds:self->idsForPerson entityName:@"Person"];
+  if (tmp != nil)
+    [array addObjectsFromArray:tmp];
+
+  /* add configured teams */
+    
+  tmp = [self _getGIDsForIds:self->idsForTeams entityName:@"Team"];
+  if (tmp != nil)
+    [array addObjectsFromArray:tmp];
+
+  /* add configured resources */
+
+  if (self->resources != nil)
+    [array addObjectsFromArray:self->resources];
+  
+  /* remove activeAccount (I think because its always added on top?) */
+  
+  [self removeObjectWithCompanyId:
+          [[[self session] activeAccount] valueForKey:@"companyId"]
+        fromArray:array];
+  
+  /* no values in popup, fetch all teams */
+  
+  if ([array count] == 0) {
+    NSArray *tmp = nil;
+    
+    if (showOnlyMemberTeams) {
+      tmp = [self _fetchTeamsOfAccountEO:[[self session] activeAccount]];
+      tmp = [tmp valueForKey:@"globalID"];
+    }
+    else
+      tmp = [self _fetchAllTeamGlobalIDs];
+    
+    if ([tmp count] > 0) {
+      tmp = [[self _fetchGroupedCoreAttrsOfTeamsWithGIDs:tmp] allValues];
+      if (tmp != nil) [array addObjectsFromArray:tmp];
+    }
+  }
+    
+  [array sortUsingFunction:compareItems context:nil];
+    
+  self->preSelectedItems = [array copy];
+  [array release]; array = nil;
+
+  /* add results to 'possible items' (items being displayed) */
+  [self->possibleItems addObjectsFromArray:self->preSelectedItems];
+  
+  /* select first item in case the old selection is not available anymore */
+  if (![self->possibleItems containsObject:self->selectedItem]) {
+    /* Note: must wrap ASSIGN in {} */
+    /* Note: this was no assign before, bug or feature? */
+    ASSIGN(self->selectedItem, [self->possibleItems objectAtIndex:0]);
+  }
+}
+
+- (void)_initializePreSelectedItems {
+  id             tmp;
+  NSUserDefaults *defs;
+  BOOL           reload = NO;
+  
+  defs = [self userDefaults];
+  
+  /* collect IDs from defaults and such */
+  
+  tmp = [defs arrayForKey:@"scheduler_popup_persons"];
+  if ((self->idsForPerson == nil) || ![self->idsForPerson isEqual:tmp])
+    reload = YES;
+  ASSIGN(self->idsForPerson, tmp);
+
+  tmp = [defs arrayForKey:@"scheduler_popup_teams"];
+  if ((self->idsForTeams == nil) || ![self->idsForTeams isEqual:tmp])
+    reload = YES;
+  ASSIGN(self->idsForTeams, tmp);
+
+  if ([self _initializePreSelectedResources:
+              [defs arrayForKey:@"scheduler_popup_resourceNames"]])
+    reload = YES;
+  
+  if (reload)
+    [self _initializePreSelectedItemsDoReload];
 }
 
 - (NSArray *)_getGIDsForIds:(NSArray *)_ids entityName:(NSString *)_entityName{
@@ -799,6 +841,7 @@ static Class    DictClass            = Nil;
 static Class NSStringClass = Nil;
 
 static NSString *_personName(id _item) {
+  // TODO: make that a formatter
   NSString *n;
   NSString *f;
   
