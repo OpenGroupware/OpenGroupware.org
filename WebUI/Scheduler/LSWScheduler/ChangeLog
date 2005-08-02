@@ -1,3 +1,12 @@
+2005-08-02  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.1.62
+
+	* LSWSchedulerDateTitle.m: minor improvements
+
+	* LSWSchedulerDateCell.m: reuse default color bindings, avoid usage of
+	  cal-formats to improve performance
+
 2005-02-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWSchedulerDateCell.m: minor code cleanups (v5.1.61)

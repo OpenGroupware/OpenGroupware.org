@@ -23,9 +23,11 @@
 
 /*
   LSWSchedulerDateCell
-
+  
   This dynamic element renders most appointment info "snippets" in OGo
   views.
+
+  TODO: document!
 */
 
 @class WOAssociation;
@@ -61,50 +63,56 @@ extern unsigned getpid();
 @implementation LSWSchedulerDateCell
 
 static NSArray *isAccountThenLoginOrderings = nil;
+static WOAssociation *cfgAptLink    = nil;
+static WOAssociation *cfgOwnerColor = nil;
+static WOAssociation *cfgTitleColor = nil;
+static WOAssociation *cfgLocColor   = nil;
+static WOAssociation *cfgTextColor  = nil;
 
 + (int)version {
   return [super version] + 0;
 }
 
+static inline WOAssociation *lswNewKeyBinding(NSString *kp) {
+  return [[WOAssociation associationWithKeyPath:kp] retain];
+}
+
++ (void)_setupStaticBindings {
+  cfgAptLink    = lswNewKeyBinding(@"config.colors_appointmentLink");
+  cfgOwnerColor = lswNewKeyBinding(@"config.colors_ownerColor");
+  cfgTitleColor = lswNewKeyBinding(@"config.colors_titleColor");
+  cfgLocColor   = lswNewKeyBinding(@"config.colors_locationColor");
+  cfgTextColor  = lswNewKeyBinding(@"config.colors_contentText");
+}
+
 + (void)initialize {
+  static BOOL didInit = NO;
+  if (didInit) return;
+  
   if (isAccountThenLoginOrderings == nil) {
     EOSortOrdering *lso, *aso;
     
     aso = [EOSortOrdering sortOrderingWithKey:@"isAccount"
 			  selector:EOCompareAscending];
-    lso = [EOSortOrdering sortOrderingWithKey:@"login"
-			  selector:EOCompareAscending];
+    lso = [EOSortOrdering sortOrderingWithKey:@"login" 
+                          selector:EOCompareAscending];
     isAccountThenLoginOrderings = [[NSArray alloc] initWithObjects:
 						     aso, lso, nil];
   }
+
+  [self _setupStaticBindings];
+  
+  didInit = YES;
 }
 
 - (void)_setupDefaultBindings {
-  if (self->linkColor == nil) {
-    self->linkColor =
-      [WOAssociation associationWithKeyPath:@"config.colors_appointmentLink"];
-    RETAIN(self->linkColor);
-  }
-  if (self->ownerColor == nil) {
-    self->ownerColor =
-      [WOAssociation associationWithKeyPath:@"config.colors_ownerColor"];
-    RETAIN(self->ownerColor);
-  }
-  if (self->titleColor == nil) {
-    self->titleColor =
-      [WOAssociation associationWithKeyPath:@"config.colors_titleColor"];
-    RETAIN(self->titleColor);
-  }
-  if (self->locationColor == nil) {
-    self->locationColor =
-      [WOAssociation associationWithKeyPath:@"config.colors_locationColor"];
-    RETAIN(self->locationColor);
-  }
-  if (self->color == nil) {
-    self->color =
-      [WOAssociation associationWithKeyPath:@"config.colors_contentText"];
-    RETAIN(self->color);
-  }
+  // TODO: check whether those bindings are ever rewritten!
+  // TODO: replace bindings with CSS
+  if (self->linkColor     == nil) self->linkColor     = [cfgAptLink    retain];
+  if (self->ownerColor    == nil) self->ownerColor    = [cfgOwnerColor retain];
+  if (self->titleColor    == nil) self->titleColor    = [cfgTitleColor retain];
+  if (self->locationColor == nil) self->locationColor = [cfgLocColor   retain];
+  if (self->color         == nil) self->color         = [cfgTextColor  retain];
 }
 
 - (id)initWithName:(NSString *)_name
@@ -114,18 +122,19 @@ static NSArray *isAccountThenLoginOrderings = nil;
   if ((self = [super initWithName:_name associations:_config template:_t])) {
     self->appointment      = OWGetProperty(_config, @"appointment");
     self->weekday          = OWGetProperty(_config, @"weekday");
-    self->linkColor        = OWGetProperty(_config, @"linkColor");
-    self->color            = OWGetProperty(_config, @"color");
     self->participants     = OWGetProperty(_config, @"participants");
-    self->ownerColor       = OWGetProperty(_config, @"ownerColor");
-    self->titleColor       = OWGetProperty(_config, @"titleColor");
-    self->locationColor    = OWGetProperty(_config, @"locationColor");
     self->isClickable      = OWGetProperty(_config, @"isClickable");
     self->isPrivate        = OWGetProperty(_config, @"isPrivate");
     self->isForSeveralDays = OWGetProperty(_config, @"isForSeveralDays");
     self->privateLabel     = OWGetProperty(_config, @"privateLabel");
     self->action           = OWGetProperty(_config, @"action");
     
+    /* color bindings */ // TODO: replace by CSS
+    self->linkColor        = OWGetProperty(_config, @"linkColor");
+    self->color            = OWGetProperty(_config, @"color");
+    self->ownerColor       = OWGetProperty(_config, @"ownerColor");
+    self->titleColor       = OWGetProperty(_config, @"titleColor");
+    self->locationColor    = OWGetProperty(_config, @"locationColor");
     [self _setupDefaultBindings];
   }
   return self;
@@ -227,65 +236,131 @@ static NSArray *isAccountThenLoginOrderings = nil;
   else if (!isAccount) [_response appendContentString:@"</i>"];
 }
 
+- (NSString *)daLinkToApt:(id)a inContext:(WOContext *)_ctx {
+  NSString     *url, *s;
+  unsigned int oid;
+  NSString     *tz;
+  unsigned     serial;
+
+  if (a == nil) return nil;
+  
+  oid    = [[a valueForKey:@"dateId"] unsignedIntValue];
+  tz     = [[[a valueForKey:@"startDate"] timeZone] abbreviation];
+  serial = getpid() + time(NULL); // TODO: can't we use the context-id?
+  
+  tz = [tz stringByEscapingURL];
+      
+  s = [[NSString alloc] initWithFormat:@"oid=%d&tz=%@&o=%d&%@=%@",
+                          oid, tz, serial, WORequestValueSessionID,
+                          [[_ctx session] sessionID]];
+  
+  url = [_ctx urlWithRequestHandlerKey:@"wa"
+              path:@"/viewApt"
+              queryString:s];
+  [s release];
+  return url;
+}
+
+- (unsigned int)appendParticipants:(NSArray *)_parts
+  withOwnerId:(NSNumber *)owner
+  toResponse:(WOResponse *)_response inContext:(WOContext *)_ctx
+{
+  /* returns the number of generated items */
+  NSNumber     *loginPKey;
+  NSArray      *p;
+  unsigned int i, count;
+  unsigned     accountCount;
+  
+  /* sort for display */
+  p = [_parts sortedArrayUsingKeyOrderArray:isAccountThenLoginOrderings];
+  
+  if ((count = [p count]) == 0) /* no participants ?? */
+    return 0;
+  
+  loginPKey = [[[_ctx session] activeAccount] valueForKey:@"companyId"];
+  
+  if (count <= 5) {
+    for (i = 0; i < count; i++) {
+      id participant = [p objectAtIndex:i];
+
+      if (i != 0) [_response appendContentHTMLString:@", "];
+      
+      [self _appendParticipant:participant
+            login:loginPKey
+            owner:owner
+            toResponse:_response inContext:_ctx];
+    }
+    return count;
+  }
+  
+  // TODO: document what it does (just keep accounts?)
+  
+  for (i = 0, accountCount = 0; i < count; i++) {
+    id participant = [p objectAtIndex:i];
+    
+    if (![[participant valueForKey:@"isAccount"] boolValue])
+      continue;
+
+    if (accountCount != 0) [_response appendContentHTMLString:@", "];
+          
+    [self _appendParticipant:participant
+          login:loginPKey
+          owner:owner
+          toResponse:_response inContext:_ctx];
+    accountCount++;
+  }
+  
+  if (accountCount != count)
+    [_response appendContentHTMLString:@", ..."];
+  
+  return accountCount;
+}
+
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
   // TODO: split up this huge method
   // TODO: improve labels
   // TODO: replace font tag with CSS
+  /*
+    Note: private and no-access is not the same! 'private' just says whether
+          the apt itself is marked private.
+  */
   WOComponent    *co = [_ctx component];
   id             a;
   NSString       *c;
   NSString       *lc;
   NSCalendarDate *wD;
-  id             owner;
+  NSNumber       *owner;
   NSString       *oc, *tc, *loc;
   BOOL           link, priv, sevD, noAcc;
+  unsigned       count;
   
-  a    = [self->appointment      valueInComponent:co];
+  if ((a = [self->appointment valueInComponent:co]) == nil) {
+    [self errorWithFormat:@"got no appointment?"];
+    return;
+  }
+  
+  /* get values of bindings */
+  
   wD   = [self->weekday          valueInComponent:co];
-  c    = [self->color            stringValueInComponent:co];
-  lc   = [self->linkColor        stringValueInComponent:co];
-  oc   = [self->ownerColor       stringValueInComponent:co];
-  tc   = [self->titleColor       stringValueInComponent:co];
-  loc  = [self->locationColor    stringValueInComponent:co];
   link = [self->isClickable      boolValueInComponent:co];
-  priv = [self->isPrivate        boolValueInComponent:co];
   sevD = [self->isForSeveralDays boolValueInComponent:co];
+  priv = [self->isPrivate        boolValueInComponent:co];
   
-  noAcc = ([a valueForKey:@"accessTeamId"] == nil) ? YES : NO;
+  noAcc = [[a valueForKey:@"accessTeamId"] isNotNull] ? NO : YES;
   owner = [a valueForKey:@"ownerId"];
-    
+  
+  /* get values of colors bindings TODO: replace with CSS! */
+  c    = [self->color         stringValueInComponent:co];
+  lc   = [self->linkColor     stringValueInComponent:co];
+  oc   = [self->ownerColor    stringValueInComponent:co];
+  tc   = [self->titleColor    stringValueInComponent:co];
+  loc  = [self->locationColor stringValueInComponent:co];
   if (lc == nil) lc = c;
-
+  
+  // TODO: checks action?! => we generate a DA => probably we need a "genLink"
   if ((self->action != nil) && link) {
     [_response appendContentString:@"<a href=\""];
-#if 0
-    [_response appendContentString:[_ctx url]];
-#else
-    /* direct action */
-    {
-      NSString *url;
-      int      oid;
-      NSString *tz;
-      unsigned serial;
-      
-      oid = [[a valueForKey:@"dateId"] intValue];
-      tz  = [[[a valueForKey:@"startDate"] timeZone] abbreviation];
-      serial = getpid() + time(NULL);
-      
-      tz = [tz stringByEscapingURL];
-      
-      url = [NSString stringWithFormat:
-                        @"oid=%i&tz=%@&o=%d&%@=%@",
-                        oid, tz, serial,
-                        WORequestValueSessionID,
-                        [[_ctx session] sessionID]];
-      
-      url = [_ctx urlWithRequestHandlerKey:@"wa"
-                  path:@"/viewApt"
-                  queryString:url];
-      [_response appendContentString:url];
-    }
-#endif
+    [_response appendContentString:[self daLinkToApt:a inContext:_ctx]];
     [_response appendContentString:@"\">"];
   }
   { // link content
@@ -296,28 +371,31 @@ static NSArray *isAccountThenLoginOrderings = nil;
       [_response appendContentString:@"\">"];
     }
     
-    {
-      NSString       *fm = @"%H:%M";
-      NSCalendarDate *sD = [a valueForKey:@"startDate"];
-
+    { // TODO: make that an apt-formatter?
+      NSCalendarDate *sD;
+      char buf[32];
+      
+      sD = [a valueForKey:@"startDate"];
       if (!sevD &&
           (([sD dayOfYear]       <  [wD dayOfYear]) &&
            ([sD yearOfCommonEra] <= [wD yearOfCommonEra]))) {
-        fm = @"%H:%M(%m-%d)";
-#if 0
-        NSLog(@"sd doy  %i vs %i", [sD dayOfYear], [wD dayOfYear]);
-        NSLog(@"  title:   %@", [a valueForKey:@"title"]);
-        NSLog(@"  start:   %@", sD);
-        NSLog(@"  weekday: %@", wD);
-#endif
+        snprintf(buf, sizeof(buf), "%02d:%02d(%02d-%02d)", /* %H:%M(%m-%d) */
+                 [sD hourOfDay], [sD minuteOfHour],
+                 [sD monthOfYear], [sD dayOfMonth]);
       }
       else if (sevD) {
-        fm = @"%Y-%m-%d %H:%M";
+        snprintf(buf, sizeof(buf),
+                 "%04d-%02d-%02d %02d:%02d", /* %Y-%m-%d %H:%M */
+                 [sD yearOfCommonEra], [sD monthOfYear], [sD dayOfMonth],
+                 [sD hourOfDay], [sD minuteOfHour]);
+      }
+      else {
+        snprintf(buf, sizeof(buf), "%02d:%02d",  /* %H:%M */
+                 [sD hourOfDay], [sD minuteOfHour]);
       }
       
-      // TODO: descriptionWithCalendarFormat is slow!
-      [_response appendContentHTMLString:
-		   [sD descriptionWithCalendarFormat:fm]];
+      /* does not contain HTML specials */
+      [_response appendContentCString:(unsigned char *)buf];
     }
 
     if (lc) [_response appendContentString:@"</font>"];
@@ -326,7 +404,7 @@ static NSArray *isAccountThenLoginOrderings = nil;
     [_response appendContentString:@"</a>"];
 
   if (c) {
-    // TODO: use stylesheets
+    /* TODO: use stylesheets */
     [_response appendContentString:@"<font color=\""];
     [_response appendContentString:c];
     [_response appendContentString:@"\">"];
@@ -334,82 +412,43 @@ static NSArray *isAccountThenLoginOrderings = nil;
 
   [_response appendContentHTMLString:@" - "];
   {
-    NSString       *fm = @"%H:%M";
-    NSCalendarDate *eD = [a valueForKey:@"endDate"];
-
+    NSCalendarDate *eD;
+    char buf[32];
+    
+    eD = [a valueForKey:@"endDate"];
     if (!sevD &&
         ([wD dayOfYear] < [eD dayOfYear] &&
          ([eD yearOfCommonEra] >= [wD yearOfCommonEra]))) {
-      fm = @"%H:%M(%m-%d)";
-#if 0
-      NSLog(@"ed doy  %i vs %i", [eD dayOfYear], [wD dayOfYear]);
-      NSLog(@"  title:   %@", [a valueForKey:@"title"]);
-      NSLog(@"  end:     %@", eD);
-      NSLog(@"  weekday: %@", wD);
-#endif
+      snprintf(buf, sizeof(buf), "%02d:%02d(%02d-%02d)", /* %H:%M(%m-%d) */
+               [eD hourOfDay],   [eD minuteOfHour],
+               [eD monthOfYear], [eD dayOfMonth]);
     }      
     else if (sevD) {
-      fm = @"%Y-%m-%d %H:%M";
+      snprintf(buf, sizeof(buf),
+               "%04d-%02d-%02d %02d:%02d", /* %Y-%m-%d %H:%M */
+               [eD yearOfCommonEra], [eD monthOfYear], [eD dayOfMonth],
+               [eD hourOfDay], [eD minuteOfHour]);
     }
-
-    // TODO: descriptionWithCalendarFormat is slow!
-    [_response appendContentHTMLString:[eD descriptionWithCalendarFormat:fm]];
+    else {
+      snprintf(buf, sizeof(buf), "%02d:%02d",  /* %H:%M */
+               [eD hourOfDay], [eD minuteOfHour]);
+    }
+    
+    /* does not contain HTML specials */
+    [_response appendContentCString:(unsigned char *)buf];
   }
 
   [_response appendContentString:@"<br />"];
-
-  // participants
-  {
-    id      loginPKey = nil;
-    NSArray *p        = nil;
-    int     i, count;
-
-    loginPKey = [[[_ctx session] activeAccount] valueForKey:@"companyId"];
-    p         = [self->participants valueInComponent:[_ctx component]];
-    
-    p = [p sortedArrayUsingKeyOrderArray:isAccountThenLoginOrderings];
-    count = [p count];
-    if (count == 0) {
-      /* no participants ?? */
-    }
-    else if (count <= 5) {
-      for (i = 0; i < count; i++) {
-        id participant = [p objectAtIndex:i];
-
-        if (i != 0) [_response appendContentHTMLString:@", "];
-      
-        [self _appendParticipant:participant
-              login:loginPKey
-              owner:owner
-              toResponse:_response inContext:_ctx];
-      }
-      [_response appendContentString:@"<br />"];
-    }
-    else {
-      unsigned accountCount;
-      
-      for (i = 0, accountCount = 0; i < count; i++) {
-        id participant = [p objectAtIndex:i];
-        
-        if ([[participant valueForKey:@"isAccount"] boolValue]) {
-          if (accountCount != 0) [_response appendContentHTMLString:@", "];
-          
-          [self _appendParticipant:participant
-                login:loginPKey
-                owner:owner
+  
+  /* participants */
+  
+  count = [self appendParticipants:[self->participants valueInComponent:co]
+                withOwnerId:owner
                 toResponse:_response inContext:_ctx];
-          accountCount++;
-        }
-      }
-      
-      if (accountCount != count)
-        [_response appendContentHTMLString:@", ..."];
-      
-      [_response appendContentString:@"<br />"];
-    }
-  }
-
-  // title
+  if (count > 0)
+    [_response appendContentString:@"<br />"];
+  
+  /* title */
   { 
     if (tc) {
       // TODO: use CSS
@@ -420,9 +459,8 @@ static NSArray *isAccountThenLoginOrderings = nil;
     {
       NSString *t = nil;
       
-      if ([self->isPrivate boolValueInComponent:co]) {
+      if (priv)
         t = [self->privateLabel stringValueInComponent:co];
-      }
       else {
 	// TODO: use CSS
         if (noAcc) [_response appendContentString:@"<i>"];
@@ -443,17 +481,19 @@ static NSArray *isAccountThenLoginOrderings = nil;
     if (tc) [_response appendContentString:@"</font>"];
   }
   
-  // location
+  /* location */
   {
-    if (![self->isPrivate boolValueInComponent:co]) {
-      NSString *l = [a valueForKey:@"location"];
+    if (!priv) {
+      NSString *l;
+      
+      l = [a valueForKey:@"location"];
       if (loc) {
 	// TODO: use CSS
         [_response appendContentString:@"<font color=\""];
         [_response appendContentString:loc];
         [_response appendContentString:@"\">"];
-      }        
-      if (l != nil && ([l length] > 0) && ![l isEqualToString:@" "]) {
+      }
+      if ([l isNotEmpty] && ![l isEqualToString:@" "]) {
         if (noAcc) [_response appendContentString:@"<i>"]; // TODO: use CSS
         [_response appendContentHTMLString:[l stringValue]];
         if (noAcc) [_response appendContentString:@"</i>"];
@@ -462,24 +502,26 @@ static NSArray *isAccountThenLoginOrderings = nil;
       if (loc) [_response appendContentString:@"</font>"];
     }
   }
-  // absence
+  /* absence */
   {
-    if (![self->isPrivate boolValueInComponent:co] && sevD) {
-      NSString *ab = [a valueForKey:@"absence"];
+    if (!priv && sevD) {
+      NSString *ab;
+      
+      ab = [a valueForKey:@"absence"];
       if (loc) {
 	// TODO: use CSS
         [_response appendContentString:@"<font color=\""];
         [_response appendContentString:loc];
         [_response appendContentString:@"\">"];
-      }        
-      if (ab != nil && ([ab length] > 0) && ![ab isEqualToString:@" "]) {
-        [_response appendContentHTMLString:[ab stringValue]];
       }
+      if ([ab isNotEmpty] && ![ab isEqualToString:@" "])
+        [_response appendContentHTMLString:[ab stringValue]];
+      
       if (loc) [_response appendContentString:@"</font>"];
     }
   }
     
-  if (c) [_response appendContentString:@"</font>"];
+  if (c != nil) [_response appendContentString:@"</font>"];
 }
 
 @end /* LSWSchedulerDateCell */

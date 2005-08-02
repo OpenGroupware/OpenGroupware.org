@@ -24,8 +24,17 @@
 @class WOAssociation;
 
 /*
-  Stylesheet classes:
+  LSWSchedulerDateTitle
 
+  TODO: document!
+
+  Used in:
+    SkyPalmDateWeekOverview.wo
+    SkyPrintWeekOverview.wo
+    SkyInlineWeek*.wo
+    SkyWeekRepetition.m
+  
+  Stylesheet classes:
     skydatetitle
     skydatetitlehigh
     skydatetitlelink
@@ -87,13 +96,13 @@
 }
 
 - (void)dealloc {
-  RELEASE(self->disableAction);
-  RELEASE(self->disableNew);
-  RELEASE(self->showAMPMDates);
-  RELEASE(self->highlight);
-  RELEASE(self->newLabel);
-  RELEASE(self->title);
-  RELEASE(self->date);
+  [self->disableAction release];
+  [self->disableNew    release];
+  [self->showAMPMDates release];
+  [self->highlight     release];
+  [self->newLabel      release];
+  [self->title         release];
+  [self->date          release];
   [super dealloc];
 }
 
@@ -184,9 +193,11 @@
 
       if (doJavaScript) {
         NSString *desc;
-        desc = [[NSString alloc] initWithFormat:@"%04i-%02i-%02i",
-                                 [d yearOfCommonEra], [d monthOfYear],
-                                 [d dayOfMonth]];
+        char buf[16];
+        
+        snprintf(buf, sizeof(buf), "%04i-%02i-%02i",
+                 [d yearOfCommonEra], [d monthOfYear], [d dayOfMonth]);
+        desc = [[NSString alloc] initWithCString:buf];
         [self appendJS:desc toReponse:_response inContext:_ctx];
         [desc release];
       }

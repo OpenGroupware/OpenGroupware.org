@@ -1,5 +1,3 @@
-# $Id$
-
 LSWScheduler
 ============
 
@@ -18,3 +16,22 @@ SkyParticipantsSelection
 - used in: SkyPalmPreferences, LSWAppointmentProposal, LSWSchedulerPreferences,
            LSWAppointmentEditor
 - Note: LSWProjectEditor has its own mechanism for doing that ...
+
+SkyParticipantsSelection
+========================
+- used by: LSWAppointmentEditor, LSWAppointmentProposal, 
+           LSWSchedulerPreferences
+- must be embedded in a <table> (generates tr tags)
+
+Sample:
+---snip---
+AccountSelection: SkyParticipantsSelection {
+  participants         = participants;
+  selectedParticipants = selectedParticipants;
+  onlyAccounts         = NO;
+  viewHeadLine         = NO;
+  headLineLabel        = "searchPopupEntries";
+  searchLabel          = "searchPopupEntries";
+  selectionLabel       = "choosePopupEntries";
+}
+---snap---
