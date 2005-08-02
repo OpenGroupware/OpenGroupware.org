@@ -1,3 +1,9 @@
+2005-08-02  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkySchedulerDateCell.m: added ability to hide appointments which have
+	  only the 'list' permission. Can be activated using the bool default
+	  'scheduler_hide_listonly_appointments'  (#1505) (v5.3.46)
+
 2005-06-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyInlineDayHChart.m, SkyInlineWeekHChart.m: major code cleanups,

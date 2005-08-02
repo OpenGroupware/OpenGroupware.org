@@ -20,6 +20,7 @@
   scheduler_overview_short_info            = YES;
   scheduler_overview_with_resources        = YES;
   scheduler_weekchart_showrowlink          = YES;
+  scheduler_hide_listonly_appointments     = NO;
 
   // holidays
   scheduler_show_holiday_shrovetide       = NO;  // Fastnacht

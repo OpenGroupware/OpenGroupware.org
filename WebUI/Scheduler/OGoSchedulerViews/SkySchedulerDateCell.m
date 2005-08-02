@@ -58,11 +58,17 @@ extern unsigned getpid();
 @implementation SkySchedulerDateCell
 
 static NSArray *participantSortOrderings = nil;
+static BOOL hideListOnlyAppointments = NO;
 
 + (int)version {
   return [super version] + 0;
 }
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  hideListOnlyAppointments = 
+    [ud boolForKey:@"scheduler_hide_listonly_appointments"];
+  
   participantSortOrderings = [[NSArray alloc] initWithObjects:
                     [EOSortOrdering sortOrderingWithKey:@"isTeam"
                                     selector:EOCompareAscending],
@@ -492,38 +498,52 @@ static NSArray *participantSortOrderings = nil;
 
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
   WOComponent    *co = [_ctx component];
-  id             a     = nil;
-  NSCalendarDate *wD   = nil;
-  id             owner = nil;
-  BOOL           link  = NO;
-  BOOL           priv  = NO;
+  id             a;
+  NSCalendarDate *wD;
+  NSNumber       *owner;
+  BOOL           link;
+  BOOL           priv;
   BOOL           sevD  = NO;
-  BOOL           noAcc = NO;
+  BOOL           noAcc;
   BOOL           shortInfo     = YES;
   BOOL           withResources = NO;
   BOOL           componentAction = NO;
   BOOL           showFull = NO;
   BOOL           showAMPM = NO;
   NSUserDefaults *defaults = nil;
+  NSString       *s;
+
+  co = [_ctx component];
+  
+  if ((a = [self->appointment valueInComponent:co]) == nil)
+    return; /* should never happen? */
+
+  if (hideListOnlyAppointments) {
+    if ([(s = [a valueForKey:@"permissions"]) isNotNull]) {
+      if ([s length] == 0 || [s isEqualToString:@"l"])
+        /* only has 'l' permission, refuse display */
+        return;
+    }
+    else
+      [self errorWithFormat:@"appointment has no 'permissions' key: %@", a];
+  }
   
   defaults = [(OGoSession *)[_ctx session] userDefaults];
-
+  
   shortInfo     = [defaults boolForKey:@"scheduler_overview_short_info"];
   withResources = [defaults boolForKey:@"scheduler_overview_with_resources"];
   showFull      = [defaults boolForKey:@"scheduler_overview_full_names"];
   showAMPM      = [defaults boolForKey:@"scheduler_AMPM_dates"];
   
-  a    = [self->appointment      valueInComponent:co];
   wD   = [self->weekday          valueInComponent:co];
   link = [self->isClickable      boolValueInComponent:co];
   priv = [self->isPrivate        boolValueInComponent:co];
-
-  noAcc = ([a valueForKey:@"accessTeamId"] == nil);
+  
+  noAcc = [[a valueForKey:@"accessTeamId"] isNotNull] ? NO : YES;
   owner = [a valueForKey:@"ownerId"];
-
-  if (link)
-    componentAction = ([a valueForKey:@"dateId"] == nil)
-      ? YES : NO;
+  
+  if (link) // TODO: explain
+    componentAction = ([a valueForKey:@"dateId"] == nil) ? YES : NO;
   
   if (link) {
     if (componentAction)
@@ -700,20 +720,16 @@ static NSArray *participantSortOrderings = nil;
   [self->template takeValuesFromRequest:_rq inContext:_ctx];
 }
 
-- (id)invokeActionForRequest:(WORequest *)_rq
-  inContext:(WOContext *)_ctx
-{
-  WOComponent *co  = [_ctx component];
-  BOOL        link = NO;
+- (id)invokeActionForRequest:(WORequest *)_rq inContext:(WOContext *)_ctx {
+  WOComponent *co;
   
-  link = [self->isClickable boolValueInComponent:co];
-  
-  if (link) {
+  co = [_ctx component];
+  if ([self->isClickable boolValueInComponent:co]) {
     id a;
     
     a = [self->appointment valueInComponent:co];
-    if ([a valueForKey:@"dateId"] == nil)
-      return [self->action valueInComponent:[_ctx component]];
+    if ([a valueForKey:@"dateId"] == nil) // TODO: is this correct?
+      return [self->action valueInComponent:co];
   }
   
   return [self->template invokeActionForRequest:_rq inContext:_ctx];
