@@ -28,11 +28,11 @@
 
 @interface NSObject(OGoSessionUserManagementPrivateMethodes)
 - (id)initWithContext:(id)_ctx projectGlobalID:(EOGlobalID *)_gid;
-@end /* NSObject(OGoSessionUserManagementPrivateMethodes) */
+@end
 
 @interface OGoSession(UserManagementPrivateMethodes)
 - (void)_buildDockInfos;
-@end /* OGoSession(UserManagementPrivateMethodes) */
+@end
 
 
 @implementation OGoSession(UserManagement)
@@ -89,6 +89,11 @@ static int compareTeams(id team1, id team2, void *context) {
 /* staff */
 
 - (NSArray *)teams { // DEPRECATED
+  /* 
+     used in:
+     - SkyParticipantsSelection.wod
+     ??
+  */
 #if DEBUG
   [self debugWithFormat:
           @"called deprecated method [session -teams] in component '%@'!",
@@ -123,13 +128,11 @@ static int compareTeams(id team1, id team2, void *context) {
 - (NSArray *)locationTeams {
   NSMutableArray *myTeams;
   int            i, cnt;
-
+  
   [self _fetchTeamsOnDemand];
   
-  myTeams = [[NSMutableArray allocWithZone:[self zone]] init];
-  cnt     = [self->teams count];
-  
-  for (i = 0; i < cnt; i++) {
+  myTeams = [NSMutableArray arrayWithCapacity:4];
+  for (i = 0, cnt = [self->teams count]; i < cnt; i++) {
     id   team;
     BOOL isLocation;
 
@@ -139,16 +142,17 @@ static int compareTeams(id team1, id team2, void *context) {
     if (isLocation)
       [myTeams addObject:team];
   }
-  return AUTORELEASE(myTeams);
+  return myTeams;
 }
 
 - (NSArray *)teamsWithNames:(NSArray *)_names {
+  // TODO: who uses this??
   NSMutableArray *myTeams;
   int            i, cnt;
   
   [self _fetchTeamsOnDemand];
   
-  myTeams = [[NSMutableArray allocWithZone:[self zone]] init];
+  myTeams = [NSMutableArray arrayWithCapacity:4];
   cnt     = [self->teams count];
   
   for (i = 0; i < cnt; i++) {
@@ -160,19 +164,34 @@ static int compareTeams(id team1, id team2, void *context) {
     if ([_names containsObject:name])
       [myTeams addObject:team];
   }
-  return AUTORELEASE(myTeams);
+  return myTeams;
 }
 
 - (void)fetchTeams {
+  static int showMembersOnly = -1;
   NSArray *t;
   
-  t = [self runCommand:@"team::get",
+  if (showMembersOnly == -1) {
+    showMembersOnly = [[NSUserDefaults standardUserDefaults]
+                        boolForKey:@"OGoShowMemberTeamsOnly"] ? 1 : 0;
+    if (showMembersOnly)
+      [self logWithFormat:@"Note: configured to return only member-teams!"];
+  }
+  
+  if (showMembersOnly) {
+    t = [self runCommand:@"account::teams", 
+              @"account", [self activeAccount], nil];
+  }
+  else {
+    t = [self runCommand:@"team::get",
               @"returnType", intObj(LSDBReturnType_ManyObjects), nil];
+  }
+  
   t = [t sortedArrayUsingFunction:compareTeams context:self];
   
   ASSIGN(self->teams, t);
 
-#if 0
+#if 0 /* this fetches the members of the teams, which means: all accounts! */
   [self runCommand:@"team::members",
           @"teams",      self->teams,
           @"returnType", intObj(LSDBReturnType_ManyObjects), nil];
@@ -186,7 +205,7 @@ static int compareTeams(id team1, id team2, void *context) {
   NSMutableArray *aac;
   NSAutoreleasePool *pool;
 
-  pool = [NSAutoreleasePool new];
+  pool = [[NSAutoreleasePool alloc] init];
   
   ac  = [NSMutableArray arrayWithCapacity:128];
   aac = [NSMutableArray arrayWithCapacity:8];
@@ -200,25 +219,24 @@ static int compareTeams(id team1, id team2, void *context) {
 
     account = [a objectAtIndex:i] ;
     login   = [account valueForKey:@"login"];
-
-    if (([login intValue] != 10000)
-        && ([login intValue] != 9999)) {
+    
+    /* 10000 = root-user, 9999 = template user */
+    // TODO: should we filter out template users?
+    
+    if (([login intValue] != 10000) && ([login intValue] != 9999))
       [ac addObject:account];
-    }
-    if (![login intValue] == 10000) {
+    
+    if (![login intValue] == 10000)
       [aac addObject:account];
-    }    
   }
 
   [ac  sortUsingFunction:compareAccounts context:self];
   [aac sortUsingFunction:compareAccounts context:self];
-
-  AUTORELEASE(self->accounts);
-  AUTORELEASE(self->allAccounts);
-  self->accounts    = [ac  copyWithZone:[self zone]];
-  self->allAccounts = [aac copyWithZone:[self zone]];
   
-  RELEASE(pool);
+  ASSIGNCOPY(self->accounts,    ac);
+  ASSIGNCOPY(self->allAccounts, aac);
+  
+  [pool release];
 }
 
 - (void)fetchCategories {
@@ -226,23 +244,18 @@ static int compareTeams(id team1, id team2, void *context) {
   NSArray        *t = nil;
   int i, cnt;
 
-  c = [NSMutableArray arrayWithCapacity:10];
   t = [self runCommand:@"companycategory::get",
               @"returnType", intObj(LSDBReturnType_ManyObjects),
               nil];
   ASSIGN(self->categories, t);
-
-  cnt = [t count];
-
-  for (i = 0; i < cnt; i++) {
-    NSString *cn = [[t objectAtIndex:i] valueForKey:@"category"];
-
-    [c addObject:cn];
-  }
   
-  RELEASE(self->categoryNames); self->categoryNames = nil;
-  self->categoryNames = [c sortedArrayUsingSelector:@selector(compare:)];
-  RETAIN(self->categoryNames);
+  c = [NSMutableArray arrayWithCapacity:10];
+  for (i = 0, cnt = [t count]; i < cnt; i++)
+    [c addObject:[[t objectAtIndex:i] valueForKey:@"category"]];
+  
+  [self->categoryNames release]; self->categoryNames = nil;
+  self->categoryNames = 
+    [[c sortedArrayUsingSelector:@selector(compare:)] copy];
 }
 
 /*
@@ -261,11 +274,12 @@ static int compareTeams(id team1, id team2, void *context) {
 }
 
 - (void)fetchDockedProjectInfos {
-  RELEASE(self->dockedProjectInfos); self->dockedProjectInfos = nil;
+  [self->dockedProjectInfos release]; self->dockedProjectInfos = nil;
   // [self _buildDockInfos]; is done by dockedProjectInfos
 }
 
 @end /* OGoSession(UserManagement) */
+
 
 @implementation OGoSession(UserManagementPrivateMethodes)
 

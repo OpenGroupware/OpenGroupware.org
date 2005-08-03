@@ -1,3 +1,10 @@
+2005-08-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoSession+UserManagement.m: code cleanups, added bool default
+	  'OGoShowMembersTeamsOnly' to make the session.teams method return
+	  just the teams the login is a member of. Eg this affects the
+	  scheduler preferences (SkyParticipantsSelection component) (v5.3.86)
+
 2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoModuleManager.m: changed behaviour to +initialize all classes on
