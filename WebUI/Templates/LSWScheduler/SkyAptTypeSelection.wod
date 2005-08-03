@@ -1,4 +1,4 @@
-// $Id: SkyAptTypeSelection.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 /* conditions */
 PopUpCond: WOConditional {
