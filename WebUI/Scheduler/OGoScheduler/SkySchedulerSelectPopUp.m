@@ -95,11 +95,19 @@ static Class    StrClass             = Nil;
 static Class    DictClass            = Nil;
 static BOOL     showOnlyMemberTeams  = NO;
 
++ (int)version {
+  return [super version] + 0 /* v2 */;
+}
+
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   static BOOL didInit = NO;
   if (didInit) return;
   didInit = YES;
+
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
 
   StrClass  = [NSString     class];
   DictClass = [NSDictionary class];
@@ -174,6 +182,9 @@ static BOOL     showOnlyMemberTeams  = NO;
 - (NSArray *)_fetchAllTeamGlobalIDs {
   return [self runCommand:@"team::extended-search",
 	         @"fetchGlobalIDs", yesNum,
+                 @"onlyTeamsWithAccount", 
+                 (showOnlyMemberTeams
+                  ? [[self session] activeAccount] : [NSNull null]),
 	         @"description", @"%%", nil];
 }
 

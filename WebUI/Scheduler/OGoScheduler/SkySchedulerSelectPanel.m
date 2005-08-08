@@ -105,7 +105,8 @@ static NSArray      *descriptionSortOrderings = nil;
 static NSArray      *nameFirstNameSortOrderings = nil;
 static NSArray      *nameSortOrderings          = nil;
 static NSArray      *monthNames                 = nil;
-static NSNumber     *yesNum = nil;
+static NSNumber     *yesNum                     = nil;
+static BOOL         showOnlyMemberTeams = NO;
 
 + (int)version {
   return 1; // TODO: looks weird, should be: [super version] + 0 /* v2 */;
@@ -124,6 +125,11 @@ static NSNumber     *yesNum = nil;
   
   yesNum = [[NSNumber numberWithBool:YES] retain];
 
+  if ((showOnlyMemberTeams = [ud boolForKey:@"scheduler_memberteams_only"])) {
+    NSLog(@"Note: %@ configured to show member-teams only.",
+          NSStringFromClass(self));
+  }
+  
   /* setup sort orderings */
   
   so = [EOSortOrdering sortOrderingWithKey:@"startDate"
@@ -1185,7 +1191,7 @@ static NSNumber     *yesNum = nil;
       [r addObject:rD];
     }    
     [self setSelectedResources:r];
-    RELEASE(self->resources);
+    [self->resources release]; self->resources = nil;
     self->resources = [self->selectedResources copy];
   }
 }
@@ -1244,6 +1250,9 @@ static NSNumber     *yesNum = nil;
                 @"operator",       @"OR",
                 @"description",    self->searchString,
                 @"maxSearchCount", [NSNumber numberWithInt:(max - cnt)],
+                @"onlyTeamsWithAccount", 
+                 (showOnlyMemberTeams
+                  ? [[self session] activeAccount] : [NSNull null]),
                 nil];
     if (res != nil) {
       res = [self runCommand:@"team::get-by-globalID",

@@ -1,5 +1,9 @@
 2005-08-08  Helge Hess  <helge.hess@skyrix.com>
 
+	* SkySchedulerSelectPanel.m: restrict searches in extended-mode to
+	  member-teams if the 'scheduler_memberteams_only' default is set
+	  (#1507) (v5.3.37)
+
 	* v5.3.36
 
 	* SkySchedulerSelectPopUp.m: restrict searches to member-teams if the
