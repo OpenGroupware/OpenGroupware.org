@@ -1,3 +1,8 @@
+2005-08-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* configure: add linking-results as vars to config.make, do not enforce
+	  gstep-make on MacOSX
+
 2005-06-19  Helge Hess  <helge.hess@opengroupware.org>
 
 	* WebUI/GNUmakefile.postamble: fixed creation of template/translation

@@ -132,12 +132,13 @@ function validateGNUstepArgs() {
 }
 
 function setupAppleArgs() {
-  ARG_WITH_STRIP=0
-  ARG_WITH_GNUSTEP=1
+  # disabled those:
+  # ARG_WITH_STRIP=0
+  # ARG_WITH_GNUSTEP=1
   
   if test "xLIBRARY_COMBO" != "apple-apple-nil"; then
     if test "xLIBRARY_COMBO" != "apple-apple-apple"; then
-      echo "WARNING: detected unusual GNUstep setup: $LIBRARY_COMBO"
+      echo "Note: detected MacOSX GNUstep setup: $LIBRARY_COMBO"
       echo ""
     fi
   fi
@@ -297,6 +298,7 @@ function checkLinking() {
 
   if test $LINK_RESULT = 0; then
     echo "$2 library found: $1"
+    cfgwrite "HAS_LIBRARY_$1=yes"
   else
     if test "x$2" = "xrequired"; then
       echo "failed to link $2 library: $1"
@@ -304,6 +306,7 @@ function checkLinking() {
       exit 1
     else
       echo "failed to link $2 library: $1"
+      cfgwrite "HAS_LIBRARY_$1=no"
     fi
   fi
   
