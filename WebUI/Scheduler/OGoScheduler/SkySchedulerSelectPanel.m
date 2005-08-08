@@ -107,6 +107,10 @@ static NSArray      *nameSortOrderings          = nil;
 static NSArray      *monthNames                 = nil;
 static NSNumber     *yesNum = nil;
 
++ (int)version {
+  return 1; // TODO: looks weird, should be: [super version] + 0 /* v2 */;
+}
+
 + (void)initialize {
   static BOOL didInit = NO;
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -114,6 +118,10 @@ static NSNumber     *yesNum = nil;
   if (didInit) return;
   didInit = YES;
 
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
+  
   yesNum = [[NSNumber numberWithBool:YES] retain];
 
   /* setup sort orderings */
@@ -148,9 +156,8 @@ static NSNumber     *yesNum = nil;
   monthNames = [[ud arrayForKey:@"schedulerselect_months"] copy];
 }
 
-+ (int)version {
-  return 1;
-}
+/* mark components as non-sync */
+
 - (BOOL)synchronizesVariablesWithBindings {
   return NO;
 }
@@ -196,7 +203,7 @@ static NSNumber     *yesNum = nil;
   [self->selTmCache        release];
   [self->resources         release];
   [self->selectedResources release];
-  [self->selResCache      release];
+  [self->selResCache       release];
   [self->selectedAptTypes  release];
   [self->aptTypes          release];
 
@@ -209,8 +216,7 @@ static NSNumber     *yesNum = nil;
 
 - (void)_setLabelForPerson:(id)_p {
   // TODO: should be a formatter
-  id p;
-  id d;
+  id p, d;
   
   p = _p;
   d = nil;
@@ -378,7 +384,7 @@ static NSNumber     *yesNum = nil;
   return [[self labels] valueForKey:label];
 }
 
-// single mode
+/* single mode */
 - (void)setSelectedAptType:(id)_type {
   NSString *key;
   
@@ -401,7 +407,7 @@ static NSNumber     *yesNum = nil;
   e      = [[self aptTypes] objectEnumerator];
   wanted = [self->selectedAptTypes lastObject];
   
-  while ((one = [e nextObject])) {
+  while ((one = [e nextObject]) != nil) {
     NSString *key;
     
     key = [one valueForKey:@"type"];
@@ -513,20 +519,16 @@ static NSNumber     *yesNum = nil;
 /* conditional */
 
 - (BOOL)hasAccounts {
-  return ((self->accounts == nil) || ([self->accounts count] == 0))
-    ? NO : YES;
+  return [self->accounts isNotEmpty];
 }
 - (BOOL)hasPersons {
-  return ((self->persons == nil) || ([self->persons count] == 0))
-    ? NO : YES;
+  return [self->persons isNotEmpty];
 }
 - (BOOL)hasTeams {
-  return ((self->teams == nil) || ([self->teams count] == 0))
-    ? NO : YES;
+  return [self->teams isNotEmpty];
 }
 - (BOOL)hasResources {
-  return ((self->resources == nil) || ([self->resources count] == 0))
-    ? NO : YES;
+  return [self->resources isNotEmpty];
 }
 
 /* direct action support */

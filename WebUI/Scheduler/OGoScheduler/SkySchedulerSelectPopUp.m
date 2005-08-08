@@ -25,6 +25,8 @@
   This component generates a PopUp containing groups and accounts. It should
   be extended to allow any kind of person.
 
+  Note: this elements includes the search-field and the 'me too' checkbox.
+
     Input parameters:
 
       showAccount     - should include the login account in the list
@@ -59,10 +61,10 @@
   id              onChange;
   NSArray         *preSelectedItems;  
   
-  BOOL      meToo;
-  int       meTooCond;
+  BOOL     meToo;
+  int      meTooCond;
   NSString *searchText;
-  int       maxLabelLength;
+  int      maxLabelLength;
 
   NSArray  *idsForPerson;
   NSArray  *idsForTeams;
@@ -177,10 +179,13 @@ static BOOL     showOnlyMemberTeams  = NO;
 
 - (NSArray *)_fetchTeamGlobalIDsMatching:(NSString *)_text max:(int)_max {
   return [self runCommand:@"team::extended-search",
-	         @"fetchGlobalIDs", yesNum,
-	         @"operator", @"OR",
-	         @"description", _text,
-                 @"maxSearchCount", [NSNumber numberWithInt:_max],
+	         @"fetchGlobalIDs",       yesNum,
+	         @"operator",             @"OR",
+	         @"description",          _text,
+                 @"maxSearchCount",       [NSNumber numberWithInt:_max],
+                 @"onlyTeamsWithAccount", 
+                 (showOnlyMemberTeams
+                  ? [[self session] activeAccount] : [NSNull null]),
 	       nil];
 }
 
@@ -402,23 +407,21 @@ static BOOL     showOnlyMemberTeams  = NO;
       NSString *fn   = nil;
       NSString *ln   = nil;
       
-      if ([[self->item valueForKey:@"isAccount"] boolValue])
-        kind = @"Account";
-      else
-        kind = @"Person";
-
+      kind = [[self->item valueForKey:@"isAccount"] boolValue]
+        ? @"Account"
+        : @"Person";
+      
       fn = [self->item valueForKey:@"firstname"];
       ln = [self->item valueForKey:@"name"];
-
+      
       kind = [l valueForKey:kind];
       
       if (![ln isNotNull])
         n = [self->item valueForKey:@"login"];
       else {
-        if (![fn isNotNull])
-          n = ln;
-        else
-          n = [StrClass stringWithFormat:@"%@ %@", fn, ln];
+        n = ![fn isNotNull]
+          ? ln
+          : [StrClass stringWithFormat:@"%@ %@", fn, ln];
       }
       d = [StrClass stringWithFormat:@"%@: %@", kind, n];
     }
@@ -427,7 +430,7 @@ static BOOL     showOnlyMemberTeams  = NO;
   maxLen = [self maxLabelLength];
   if ([d length] > maxLen)
     // TODO: use a category or even better a formatter
-    d = [StrClass stringWithFormat:@"%@..", [d substringToIndex:maxLen-2]];
+    d = [[d substringToIndex:maxLen-2] stringByAppendingString:@".."];
   return d;
 }
 
@@ -696,6 +699,23 @@ static BOOL     showOnlyMemberTeams  = NO;
 
 /* catch nil-assignments to selected-company */
 
+- (void)removeActiveAccountFromSet:(id)_set {
+  /* remove activeAccount */
+  NSEnumerator *enumerator = nil;
+  id           obj         = nil;
+  NSNumber     *acId       = nil;
+  
+  acId = [[[self session] activeAccount] valueForKey:@"companyId"];
+  
+  enumerator = [_set objectEnumerator];
+  while ((obj = [enumerator nextObject]) != nil) {
+    if ([obj isEqual:acId])
+      break;
+  }
+  if (obj != nil)
+    [_set removeObject:obj];
+}
+
 - (void)_postProcessSearchText {
   /* TODO: split up this big method */
   NSMutableSet *objs = nil;
@@ -705,7 +725,7 @@ static BOOL     showOnlyMemberTeams  = NO;
   
   if ([self->searchText length] == 0)
     return;
-    
+  
   maxSearch  = [self defaultAdditionalPopUpEntries];
   
   objs = [[NSMutableSet alloc] init];
@@ -731,23 +751,7 @@ static BOOL     showOnlyMemberTeams  = NO;
     if (tmp != nil) {
       tmp = [[self _fetchGroupedCoreAttrsOfPersonsWithGIDs:tmp] allValues];
       [objs addObjectsFromArray:tmp];
-      {
-	/* remove activeAccount */
-	NSEnumerator *enumerator = nil;
-	id           obj         = nil;
-	NSNumber     *acId       = nil;
-
-	acId = [[[self session] activeAccount] valueForKey:@"companyId"];
-
-	enumerator = [obj objectEnumerator];
-
-	while ((obj = [enumerator nextObject])) {
-	  if ([obj isEqual:acId])
-              break;
-	}
-	if (obj != nil)
-	  [objs removeObject:obj];
-      }
+      [self removeActiveAccountFromSet:objs];
     }
     cnt = [objs count];
   }

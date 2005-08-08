@@ -1,3 +1,13 @@
+2005-08-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.3.36
+
+	* SkySchedulerSelectPopUp.m: restrict searches to member-teams if the
+	  'scheduler_memberteams_only' default is set (#1507)
+
+	* SkySchedulerSelectPanel.m: added fragile baseclass check, use new
+	  -isNotEmpty method
+
 2005-08-02  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkySchedulerSelectPopUp.m: only fetch member teams into the popup in
