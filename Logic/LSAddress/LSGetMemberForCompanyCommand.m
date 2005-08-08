@@ -249,7 +249,7 @@ static BOOL debugCache      = NO;
   NSEnumerator *listEnum = [_members objectEnumerator];
   id           myMember  = nil;
 
-  while ((myMember = [listEnum nextObject])) {
+  while ((myMember = [listEnum nextObject]) != nil) {
     if ([[myMember valueForKey:@"companyId"] isEqual:_memberId]) {
       return myMember;
     }
@@ -476,7 +476,7 @@ static BOOL debugCache      = NO;
     ? @"_cache_CompanyMember_gids"
     : @"_cache_CompanyMembers";
   
-  if ((cache = [_context valueForKey:cacheKey])) {
+  if ((cache = [_context valueForKey:cacheKey]) != nil) {
     if ([cache->groups isEqualToArray:self->groups]) {
       if (debugCache)
         [self logWithFormat:@"%s: reused cached result.", __PRETTY_FUNCTION__];
@@ -489,6 +489,7 @@ static BOOL debugCache      = NO;
     cache = [[[_LSGetMembersForCompany_Cache alloc] init] autorelease];
   }
   
+  // TODO: fix to always return an array (if an array parameters was given)
   [self setReturnValue:([self->groups count] == 1)
           ? [self _fetchForOneObjectInContext:_context]
           : [self _fetchForMoreObjectsInContext:_context]];

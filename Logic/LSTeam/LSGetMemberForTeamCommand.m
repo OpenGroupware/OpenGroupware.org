@@ -98,6 +98,9 @@ static int compareAccounts(id member1, id member2, void *context) {
   
   [super _executeInContext:_context];
   
+  /* fetch additional info for members */
+  
+  // TODO: collect all members in one set and perform just one fetch!
   e = [[self groups] objectEnumerator];
   while ((team = [e nextObject]) != nil)
     [self _fetchMembersOfTeam:team inContext:_context];

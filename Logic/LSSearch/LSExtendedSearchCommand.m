@@ -118,6 +118,7 @@
 }
 
 - (NSArray *)_fetchObjects:(id)_context {
+  /* Note: overridden in some subclasses */
   int maxSearch = 0;
   int cnt       = 0;
   id  result    = nil;
@@ -154,6 +155,7 @@
 }
 
 - (NSArray *)_fetchIds:(id)_context {
+  /* Note: overridden in some subclasses */
   // TODO: in this case we could fetch all and filter access afterwards?!
   int maxSearch = 0;
   int cnt       = 0;
