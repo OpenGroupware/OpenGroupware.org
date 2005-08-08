@@ -147,6 +147,8 @@ static int compareTeams(id team1, id team2, void *context) {
 
 - (NSArray *)teamsWithNames:(NSArray *)_names {
   // TODO: who uses this??
+  // Note: might have side-effects with OGoShowMemberTeamsOnly (only searches
+  //       in such which may or may not be wanted)
   NSMutableArray *myTeams;
   int            i, cnt;
   

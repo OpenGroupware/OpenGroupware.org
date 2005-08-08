@@ -1,3 +1,8 @@
+2005-08-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyParticipantsSelection.m: fixed some gcc 4.0 warnings, minor code
+	  cleanups (v5.3.64)
+
 2005-08-02  Helge Hess  <helge.hess@skyrix.com>
 
 	* removed unused LSWSchedulerDateCell (v5.3.63)

@@ -49,7 +49,7 @@
   } spsFlags;
 }
 - (void)initializeParticipants;
-- (id)participants;
+- (NSArray *)participants;
 @end
 
 #include <OGoFoundation/OGoSession.h>
@@ -59,13 +59,13 @@
 static int compareParticipants(id part1, id part2, void *context);
 
 @interface NSObject(PRIVATE)
-- (id)globalID;
+- (EOGlobalID *)globalID;
 - (id)search;
 @end
 
 @implementation SkyParticipantsSelection
 
-static BOOL     debugOn              = NO;
+static BOOL     debugOn              = YES;
 static BOOL     hasLSWEnterprises    = NO;
 static NSNumber *yesNum              = nil;
 static NSNumber *noNum               = nil;
@@ -410,7 +410,7 @@ static NSArray  *emptyArray          = nil;
       if ([obj isKindOfClass:[NSDictionary class]]) {
         id gid = nil;
 
-        gid = [obj objectForKey:@"globalID"];
+        gid = [(NSDictionary *)obj objectForKey:@"globalID"];
         if (gid == nil) {
           NSLog(@"WARNING: missing globalID for %@", obj);
         }
@@ -618,11 +618,11 @@ static NSArray  *emptyArray          = nil;
     EOGlobalID *key;
     id ent;
         
-    if ((key = [obj objectForKey:@"globalID"]) == nil)
+    if ((key = [(NSDictionary *)obj objectForKey:@"globalID"]) == nil)
       continue;
     
     if ((ent = [persons objectForKey:key]) != nil)
-      [obj setObject:ent forKey:@"enterprises"];
+      [(NSMutableDictionary *)obj setObject:ent forKey:@"enterprises"];
   }
   [persons release]; persons = nil;
 }
@@ -637,7 +637,7 @@ static NSArray  *emptyArray          = nil;
   [self initializeParticipants];
   [self->resultList removeAllObjects];
 
-  // search in persons
+  /* search in persons */
   if ([self->searchText length] > 0) {
     NSMutableDictionary *result   = nil;
     NSString     *searchTextPart = nil;
@@ -648,7 +648,7 @@ static NSArray  *emptyArray          = nil;
     
     enu = [[self->searchText componentsSeparatedByString:@","]
                              objectEnumerator];
-    while ((searchTextPart = [enu nextObject])) {
+    while ((searchTextPart = [enu nextObject]) != nil) {
       NSArray *gids;
       
       if ([searchTextPart length] == 0)
@@ -667,7 +667,7 @@ static NSArray  *emptyArray          = nil;
       NSDictionary *obj;
       
       enumerator = [result objectEnumerator];
-      while ((obj = [enumerator nextObject])) {
+      while ((obj = [enumerator nextObject]) != nil) {
         NSMutableDictionary *m;
         
         if ([self->participants containsObject:obj])
@@ -681,8 +681,8 @@ static NSArray  *emptyArray          = nil;
     didSearch = YES;
   }
   
-  // show selected teams
-  if (self->searchTeam) {
+  /* show selected teams */
+  if ([self->searchTeam isNotNull]) {
     NSDictionary *res;
     NSArray      *gids;
     
@@ -757,32 +757,32 @@ static NSArray  *emptyArray          = nil;
           [self showResolveTeamsCheckBox]);
 }
 
+- (void)setHeadLineLabel:(NSString *)_str {
+  ASSIGNCOPY(self->headLineLabel, _str);
+}
 - (NSString *)headLineLabel {
   return self->headLineLabel;
 }
-- (void)setHeadLineLabel:(NSString *)_str {
-  ASSIGN(self->headLineLabel, _str);
-}
 
+- (void)setSearchLabel:(NSString *)_str {
+  ASSIGNCOPY(self->searchLabel, _str);
+}
 - (NSString *)searchLabel {
   return self->searchLabel;
 }
-- (void)setSearchLabel:(NSString *)_str {
-  ASSIGN(self->searchLabel, _str);
-}
 
+- (void)setSelectionLabel:(NSString *)_str {
+  ASSIGNCOPY(self->selectionLabel, _str);
+}
 - (NSString *)selectionLabel {
   return self->selectionLabel;
 }
-- (void)setSelectionLabel:(NSString *)_str {
-  ASSIGN(self->selectionLabel, _str);
-}
 
-- (BOOL)viewHeadLine {
-  return self->spsFlags.viewHeadLine ? YES : NO;
-}
 - (void)setViewHeadLine:(BOOL)_view {
   self->spsFlags.viewHeadLine = _view ? 1 : 0;
+}
+- (BOOL)viewHeadLine {
+  return self->spsFlags.viewHeadLine ? YES : NO;
 }
 
 - (BOOL)isEnterpriseAvailable {
