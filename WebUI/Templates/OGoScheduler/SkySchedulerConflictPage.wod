@@ -1,4 +1,4 @@
-// $Id: SkySchedulerConflictPage.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
@@ -10,18 +10,18 @@ Window: LSWWindowFrame {
 // cells
 
 ParticipantAppointmentCell: WOGenericContainer {
-  elementName = "TD";
-  ALIGN       = "left";
-  VALIGN      = "top";
-  BGCOLOR     = config.colors_valueCell;
-  ROWSPAN     = participantConflicts.count;
+  elementName = "td";
+  align       = "left";
+  valign      = "top";
+  bgcolor     = config.colors_valueCell;
+  rowspan     = participantConflicts.count;
 }
 ResourceAppointmentCell: WOGenericContainer {
-  elementName = "TD";
-  ALIGN       = "left";
-  VALIGN      = "top";
-  BGCOLOR     = config.colors_valueCell;
-  ROWSPAN     = resourceConflicts.count;
+  elementName = "td";
+  align       = "left";
+  valign      = "top";
+  bgcolor     = config.colors_valueCell;
+  rowspan     = resourceConflicts.count;
 }
 
 ValueCell: SkyValueCell {}
@@ -29,14 +29,14 @@ ValueCell: SkyValueCell {}
 // conditions
 
 HasParticipantConflictCond: WOConditional {
-  condition = hasParticipantConflicts;
+  condition = participantConflicts.isNotEmpty;
 }
 IsNotLastParticipantConflictCond: WOConditional {
   condition = isNotLastParticipantConflict;
 }
 
 HasResourceConflictCond: WOConditional {
-  condition = hasResourceConflicts;
+  condition = resourceConflicts.isNotEmpty;
 }
 IsNotLastResourceConflictCond: WOConditional {
   condition = isNotLastResourceConflict;

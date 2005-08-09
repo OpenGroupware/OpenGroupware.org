@@ -1,5 +1,4 @@
 <?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
-<!-- $Id: OGoPersonLinkEditor.wox,v 1.2 2004/05/19 18:59:47 helge Exp $ -->
 <OGo:page var:title="labels.personlinkeditor_title"
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
