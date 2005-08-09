@@ -1,3 +1,10 @@
+2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSGetDateWithConflictCommand.m: major code cleanups, got more
+	  tolerant on input parameters, does not only check accounts and teams
+	  but all given staff objects, fixed a small (qualifier) memory leak
+	  (v5.3.61)
+
 2005-06-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSFetchCyclicAppointmentCommand.m: fixed a bug, probably introduced

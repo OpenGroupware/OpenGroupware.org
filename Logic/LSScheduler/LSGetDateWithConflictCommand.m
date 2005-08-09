@@ -19,8 +19,24 @@
   02111-1307, USA.
 */
 
-#import "common.h"
 #include <LSFoundation/LSDBObjectBaseCommand.h>
+
+/*
+  appointment::conflicts
+  
+  This command fetches the appointments conflicting for a certain set of
+  people/teams/resources in a certain timeframe.
+  It can also fetch the "pending" conflicts for a specific appointment.
+  
+  The result of the fetch is either a set of appointments, either just the
+  EOGlobalID's or the full EOs (as fetched by appointment::get-by-globalid).
+  
+  Used in:
+    ./DocumentAPI/OGoScheduler/SkySchedulerConflictDataSource.m
+    ./Recycler/SandStorm/skyaptd/SkyAptAction+Conflicts.m
+*/
+
+@class NSArray, NSCalendarDate;
 
 @interface LSGetDateWithConflictCommand : LSDBObjectBaseCommand
 {
@@ -33,7 +49,7 @@
   BOOL           fetchGlobalIDs;
 }
 
-// accessors
+/* accessors */
 
 - (void)setBegin:(NSCalendarDate *)_begin;
 - (NSCalendarDate *)begin;
@@ -47,43 +63,72 @@
 
 @end
 
+#include "common.h"
+
 @implementation LSGetDateWithConflictCommand
 
 static NSNumber *nYes = nil;
 static NSNumber *nNo  = nil;
+static NSArray *startDateSortOrderings = nil;
 
 + (void)initialize {
   if (nYes == nil) nYes = [[NSNumber numberWithBool:YES] retain];
   if (nNo  == nil) nNo  = [[NSNumber numberWithBool:NO]  retain];
+
+  if (startDateSortOrderings == nil) {
+    startDateSortOrderings = [[NSArray alloc] initWithObjects:
+                               [EOSortOrdering sortOrderingWithKey:@"startDate"
+                                               selector:EOCompareAscending],
+                              nil];
+  }
 }
 
 - (void)dealloc {
-  RELEASE(self->begin);
-  RELEASE(self->end);
-  RELEASE(self->staffList);
-  RELEASE(self->resourceList);
-  RELEASE(self->appointment);
+  [self->begin        release];
+  [self->end          release];
+  [self->staffList    release];
+  [self->resourceList release];
+  [self->appointment  release];
   [super dealloc];
 }
 
-// command methods
+/* command methods */
+
+- (NSNumber *)pkeyFromCompanyObject:(id)item {
+  if ([item isKindOfClass:[EOKeyGlobalID class]])
+    return [(EOKeyGlobalID *)item keyValues][0];
+  if ([item isKindOfClass:[NSNumber class]])
+    return item;
+  if ([item isNotNull])
+    return [item valueForKey:@"companyId"];
+  return nil;
+}
+
+- (NSNumber *)pkeyFromAptObject:(id)item {
+  if ([item isKindOfClass:[EOKeyGlobalID class]])
+    return [(EOKeyGlobalID *)item keyValues][0];
+  if ([item isKindOfClass:[NSNumber class]])
+    return item;
+  if ([item isNotNull])
+    return [item valueForKey:@"dateId"];
+  return nil;
+}
 
 - (NSArray *)_staffIds {
   NSMutableSet *idSet;
   NSEnumerator *listEnum;
   id           item      = nil;
 
-  idSet    = [NSMutableSet set];
+  idSet    = [NSMutableSet setWithCapacity:16];
   listEnum = [self->staffList objectEnumerator];
-
-  while ((item = [listEnum nextObject])) {
-    id pKey;
-
-    pKey = [item valueForKey:@"companyId"];
+  
+  while ((item = [listEnum nextObject]) != nil) {
+    NSNumber *pKey;
     
-    [self assert:(pKey != nil) reason:@"found foreign key which is nil !"];
-
-    if (pKey != nil) [idSet addObject:pKey];
+    if ([(pKey = [self pkeyFromCompanyObject:item]) isNotNull])
+      [idSet addObject:pKey];
+    else
+      [self logWithFormat:@"ERROR: got a staff-id which is nil!: %@", item];
   }
   return [idSet allObjects];
 }
@@ -114,25 +159,64 @@ static NSNumber *nNo  = nil;
   return NO;
 }
 
-- (NSArray *)_resourceConflicts {
-  id                  formattedBegin = nil;
-  id                  formattedEnd   = nil;
-  EOSQLQualifier      *qualifier     = nil;
-  EOAdaptor           *adaptor;
-  EODatabaseChannel   *channel;
-  EOEntity            *myEntity;
-  EOAttribute         *startDateAttr, *endDateAttr, *strAttribute;
-  NSArray             *gids;
-  id                  res;
-  int                 resCnt;
-  int                 cnt;
+- (EOSQLQualifier *)sqlQualifierToCheckResourceName:(NSString *)res
+  formattedStartDate:(NSString *)_from formattedEndDate:(NSString *)_to
+  adaptor:(EOAdaptor *)adaptor
+{
+  static EOAttribute *strAttribute = nil; // THREAD
+  EOSQLQualifier *qualifier;
+  NSString *s;
+  NSString *tmp1, *tmp2, *tmp3, *tmp4;
+  
+  if (strAttribute == nil) {
+    /* Note: we can do this because we use just one model */
+    strAttribute = [[[self entity] attributeNamed:@"resourceNames"] copy];
+  }
+  
+  tmp1 = [adaptor formatValue:res forAttribute:strAttribute];
+  s    = [res stringByAppendingString:@",%"];
+  tmp2 = [adaptor formatValue:s forAttribute:strAttribute];
+  s    = [@"%, " stringByAppendingString:res];
+  tmp3 = [adaptor formatValue:s forAttribute:strAttribute];
+  s    = [s stringByAppendingString:@",%"];
+  tmp4 = [adaptor formatValue:s forAttribute:strAttribute]; 
+  
+  qualifier =
+    [[EOSQLQualifier alloc] initWithEntity:[self entity]
+                            qualifierFormat:
+                              @"%A > %@ AND %A < %@ AND "
+                              @"(%A LIKE %@ OR  %A LIKE %@ "
+                              @"OR (%A LIKE %@)"
+                              @"OR (%A LIKE %@))"
+                              @"AND (%A = 0 OR %A IS NULL) "
+                              @"AND (%A = 0 OR %A IS NULL)",
+                              /* Note: end start/end reverse is intentional! */
+                              @"endDate",   _from,
+                              @"startDate", _to,
+                              @"resourceNames", tmp1, @"resourceNames", tmp2,
+                              @"resourceNames", tmp3, @"resourceNames", tmp4,
+                              @"isAttendance", @"isAttendance",
+                              @"isConflictDisabled", @"isConflictDisabled"];
+  return qualifier;
+}
 
-  adaptor       = [self databaseAdaptor];
-  channel       = [self databaseChannel];
-  myEntity      = [self entity];
-  startDateAttr = [myEntity attributeNamed:@"startDate"];
-  endDateAttr   = [myEntity attributeNamed:@"endDate"];
-  strAttribute  = [myEntity attributeNamed:@"resourceNames"];
+- (NSArray *)_resourceConflicts {
+  static EOAttribute *startDateAttr = nil, *endDateAttr = nil; // THREAD
+  NSString          *formattedBegin = nil;
+  NSString          *formattedEnd   = nil;
+  EOAdaptor         *adaptor;
+  EODatabaseChannel *channel;
+  NSArray           *gids;
+  int               resCnt;
+  int               cnt;
+  
+  if (startDateAttr == nil) {
+    startDateAttr = [[[self entity] attributeNamed:@"startDate"] retain];
+    endDateAttr   = [[[self entity] attributeNamed:@"endDate"] retain];
+  }
+  
+  adaptor = [self databaseAdaptor];
+  channel = [self databaseChannel];
   
   formattedBegin= [adaptor formatValue:self->begin forAttribute:startDateAttr];
   formattedEnd  = [adaptor formatValue:self->end   forAttribute:endDateAttr];
@@ -141,53 +225,36 @@ static NSNumber *nNo  = nil;
   gids   = [NSArray array];
 
   for (cnt = 0; cnt < resCnt; cnt++) {
-    id tmp1, tmp2, tmp3, tmp4;
+    EOSQLQualifier *qualifier;
+    NSArray  *tgids;
+    NSString *res;
 
     res = [self->resourceList objectAtIndex:cnt];
     
-    tmp1 = [adaptor formatValue:res forAttribute:strAttribute];
-
-    tmp2 = [adaptor formatValue:[NSString stringWithFormat:@"%@,%%", res]
-                    forAttribute:strAttribute];
-
-    tmp3 = [adaptor formatValue:[NSString stringWithFormat:@"%%, %@", res]
-                    forAttribute:strAttribute];
-
-    tmp4 = [adaptor formatValue:[NSString stringWithFormat:@"%%, %@,%%",
-                                          res]
-                    forAttribute:strAttribute]; 
-    qualifier =
-      [[EOSQLQualifier alloc] initWithEntity:myEntity
-                              qualifierFormat:
-                              @"%A > %@ AND %A < %@ AND "
-                              @"(%A LIKE %@ OR  %A LIKE %@ "
-                              @"OR %A LIKE %@ "
-                              @"OR %A LIKE %@)"
-                              @"AND (%A = 0 OR %A is null) "
-                              @"AND (%A = 0 OR %A is null)",
-                              @"endDate",   formattedBegin,
-                              @"startDate", formattedEnd,
-                              @"resourceNames", tmp1, @"resourceNames", tmp2,
-                              @"resourceNames", tmp3, @"resourceNames", tmp4,
-                              @"isAttendance", @"isAttendance",
-                              @"isConflictDisabled", @"isConflictDisabled"];
-
-    if (self->appointment != nil) {
+    qualifier = [self sqlQualifierToCheckResourceName:res
+                      formattedStartDate:formattedBegin
+                      formattedEndDate:formattedEnd
+                      adaptor:adaptor];
+    
+    if ([self->appointment isNotNull]) {
       EOSQLQualifier *selfQual = nil;
-
-      selfQual = [[EOSQLQualifier alloc] initWithEntity:myEntity
-                   qualifierFormat:
-                   @"%A <> %@",
-                   @"dateId",
-                   [self->appointment valueForKey:@"dateId"]];
+      
+      selfQual = [[EOSQLQualifier alloc] 
+                   initWithEntity:[self entity]
+                   qualifierFormat:@"%A <> %@",
+                   @"dateId", [self pkeyFromAptObject:self->appointment]];
       [qualifier conjoinWithQualifier:selfQual];
-      RELEASE(selfQual); selfQual = nil;
+      [selfQual release]; selfQual = nil;
     }
     [qualifier setUsesDistinct:YES];
     
-    gids = [gids arrayByAddingObjectsFromArray:
-                 [channel globalIDsForSQLQualifier:qualifier
-                          sortOrderings:nil]];
+    tgids = [channel globalIDsForSQLQualifier:qualifier
+                     sortOrderings:nil];
+
+    [qualifier release]; qualifier = nil;
+    
+    if ([tgids count] > 0)
+      gids = [gids arrayByAddingObjectsFromArray:tgids];
   }
 
   return gids;
@@ -261,40 +328,90 @@ static NSNumber *nNo  = nil;
   return [qualifier autorelease];
 }
 
+- (void)_addMembersOfTeam:(id)staff toStaffSet:(NSMutableSet *)staffSet
+  inContext:(LSCommandContext *)_ctx
+{
+  NSArray *members;
+
+  if ([staff isKindOfClass:[EOGlobalID class]]) {
+    [self errorWithFormat:@"%s: cannot process EOGlobalIDs yet: %@",
+          __PRETTY_FUNCTION__, staff];
+    return;
+  }
+  
+  if ((members = [staff valueForKey:@"members"]) == nil) {
+    LSRunCommandV(_ctx, @"team", @"members", @"object", staff, nil);
+    //was: [staff call:@"team::members", nil];
+    members = [staff valueForKey:@"members"];
+  }
+  [staffSet addObjectsFromArray:members];
+}
+
+- (void)_addTeamsOfAccount:(id)staff toStaffSet:(NSMutableSet *)staffSet
+  inContext:(LSCommandContext *)_ctx
+{
+  NSArray *groups;
+      
+  if ((groups = [staff valueForKey:@"groups"]) == nil) {
+    LSRunCommandV(_ctx, @"account", @"teams", @"object", staff, nil);
+    //was: [staff call:@"account::teams", nil];
+    groups = [staff valueForKey:@"groups"];
+  }
+  [staffSet addObjectsFromArray:groups];
+}
+
+- (BOOL)isTeamStaffObject:(id)_object {
+  if (![_object isNotNull])
+    return NO;
+
+  if ([_object isKindOfClass:[EOGlobalID class]])
+    return [[_object entityName] isEqualToString:@"Team"];
+  
+  return [[_object valueForKey:@"isTeam"] boolValue];
+}
+
+- (BOOL)isAccountStaffObject:(id)_object {
+  if (![_object isNotNull])
+    return NO;
+
+  if ([_object isKindOfClass:[EOGlobalID class]]) {
+    if (![[_object entityName] isEqualToString:@"Person"])
+      return NO;
+    
+    // TODO: fetch isAccount flag to check whether the GID is an account
+  }
+  
+  return [[_object valueForKey:@"isAccount"] boolValue];
+}
+
 - (void)_prepareForExecutionInContext:(id)_context {
   int          i, cnt;
   NSMutableSet *staffSet = nil;
   NSArray      *newStaff = nil;
   
-  cnt = [self->staffList count];
-  staffSet = [NSMutableSet set];
- 
+  cnt      = [self->staffList count];
+  staffSet = [NSMutableSet setWithCapacity:cnt];
+  
   for (i = 0; i < cnt; i++) {
-    id staff = [self->staffList objectAtIndex:i];
-
-    if ([[staff valueForKey:@"isTeam"] boolValue]) {
-      NSArray *members = [staff valueForKey:@"members"];
+    id staff;
+    
+    staff = [self->staffList objectAtIndex:i];
+    
+    [staffSet addObject:staff];
+    
+    /*
+      If you check whether a team is 'available', you need to know whether
+      all of the members are available.
       
-      if (members == nil) {
-        LSRunCommandV(_context, @"team", @"members", @"object", staff, nil);
-        //was: [staff call:@"team::members", nil];
-        members = [staff valueForKey:@"members"];
-      }
-      [staffSet addObject:staff];
-      [staffSet addObjectsFromArray:members];
-    }
-    else if ([[staff valueForKey:@"isAccount"] boolValue]) {
-      NSArray *groups = [staff valueForKey:@"groups"];
-
-      if (groups == nil) {
-        LSRunCommandV(_context, @"account", @"teams", @"object", staff, nil);
-        //was: [staff call:@"account::teams", nil];
-        groups = [staff valueForKey:@"groups"];
-      }
-      [staffSet addObject:staff];
-      [staffSet addObjectsFromArray:groups];
-    }
+      If you check whether an account is 'available', you need to know whether
+      any of the teams the account is in are booked.
+    */
+    if ([self isTeamStaffObject:staff])
+      [self _addMembersOfTeam:staff toStaffSet:staffSet inContext:_context];
+    else if ([self isAccountStaffObject:staff])
+      [self _addTeamsOfAccount:staff toStaffSet:staffSet inContext:_context];
   }
+  
   newStaff = [staffSet allObjects];
   ASSIGN(self->staffList, newStaff);
 }
@@ -310,9 +427,9 @@ static NSNumber *nNo  = nil;
   int max    = 0;
   
   channel    = [self databaseChannel];
-  gids       = [[NSMutableArray alloc] init];
-  currentIds = [[NSMutableArray alloc] init];
-
+  gids       = [[NSMutableArray alloc] initWithCapacity:16];
+  currentIds = [[NSMutableArray alloc] initWithCapacity:16];
+  
   [currentIds addObjectsFromArray:[self _staffIds]];
 
   max    = 240;
@@ -353,32 +470,29 @@ static NSNumber *nNo  = nil;
   
   if (!self->fetchGlobalIDs) {
     NSArray *eos;
-    NSArray *sortOrderings;
-
-    sortOrderings = [NSArray arrayWithObject:
-                               [EOSortOrdering sortOrderingWithKey:@"startDate"
-                                               selector:EOCompareAscending]];
-
+    
     /* fetch objects */
     eos = LSRunCommandV(_context,
                         @"appointment", @"get-by-globalid",
                         @"gids",          gids,
-                        @"sortOrderings", sortOrderings,
+                        @"sortOrderings", startDateSortOrderings,
                         nil);
     [self setReturnValue:eos];
   }
   else {
     [self setReturnValue:gids];
   }
-  RELEASE(gids);       gids       = nil;  
-  RELEASE(currentIds); currentIds = nil;  
+  [gids       release]; gids       = nil;  
+  [currentIds release]; currentIds = nil;  
 }
+
 
 /* record initializer */
 
 - (NSString *)entityName {
   return @"Date";
 }
+
 
 /* accessors */
 

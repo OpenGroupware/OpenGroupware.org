@@ -239,13 +239,13 @@
 /* PrimaryKeyTypes */
 
 - (EOGlobalID *)globalIDForPrimaryKey:(id)_pkey {
-  EOGlobalID *gid;
-  id         pkey;
-  int        pkeyInt;
-  NSString   *entityName;
-
-  pkeyInt = [_pkey intValue];
-
+  EOGlobalID   *gid;
+  id           pkey;
+  unsigned int pkeyInt;
+  NSString     *entityName;
+  
+  pkeyInt = [_pkey unsignedIntValue];
+  
   if (pkeyInt == 0) /* '0' as pkey is not allowed here */
     return nil;
 
@@ -265,7 +265,7 @@
   gid = [EOKeyGlobalID globalIDWithEntityName:entityName
                        keys:&pkey keyCount:1
                        zone:NULL];
-  if (gid) 
+  if (gid != nil) 
     NSMapInsert(self->pkeyToGid, (void*)pkeyInt, gid);
 
   return gid;

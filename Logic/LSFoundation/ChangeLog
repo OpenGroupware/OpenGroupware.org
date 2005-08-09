@@ -1,3 +1,7 @@
+2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSTypeManager.m: use unsigned int for pkeys (v5.3.106)
+
 2005-07-23  Sebastian Reitenbach  <reitenbach@rapideye.de>
 
 	* GNUmakefile.preamble: added OpenBSD linking flags (v5.3.105)

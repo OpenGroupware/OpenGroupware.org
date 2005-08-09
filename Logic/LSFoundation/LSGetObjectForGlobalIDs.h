@@ -29,6 +29,8 @@
   
   This class is a superclass for commands which fetch objects based on a list
   of EOGlobalIDs.
+  
+  Note: LSBase contains a subclass.
 */
 
 @class NSNumber, NSString, NSArray;
