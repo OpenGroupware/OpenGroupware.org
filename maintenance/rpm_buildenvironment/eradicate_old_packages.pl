@@ -52,6 +52,7 @@ open(OUT, ">rm_candidates.out");
 foreach $current_distri(@distris) {
   print "checking in $current_distri\n";
   foreach $current_group(@groups) {
+    print "parsing packages in $current_distri\n";
     print "current group to check is: $current_group\n";
     opendir(DIR, "/var/virtual_hosts/download/nightly/packages/$current_distri/trunk");
     my @u_this_group_rpms = grep(/^$current_group.*trunk.*\.rpm$/,readdir(DIR));
@@ -67,15 +68,18 @@ foreach $current_distri(@distris) {
       next if (($rpm =~ m/latest/i) or ($no_of_rpms_in_group == 0));
       my $exact_v;
       $exact_v = $rpm;
-      $exact_v =~ s/mdk\.i/.i/g;
-      $exact_v =~ s/cl\.i/.i/g;
+      $exact_v =~ s/mdk\.i/\.i/g;
+      $exact_v =~ s/cl\.i/\.i/g;
       $exact_v =~ s/^$current_group.*trunk_r(.*)\.i.*$//g;
       $exact_v = $1;
+      #print "DEBUG: exact version is -> $exact_v\n";
       push(@versions, $exact_v) unless(grep /$exact_v/, @versions);
       #detect most recent one... useful? hm, no...
       $most_recent = $exact_v if($exact_v > $most_recent);
     }
-    $no_of_versions = @versions;
+    my @sorted_versions = sort { $a <=> $b } @versions;
+    #print "DEBUG: \@sorted_versions contains -> @sorted_versions\n";
+    $no_of_versions = @sorted_versions;
     if ($no_of_rpms_in_group > $keep_revisions) {
       my $i;
       my $delcount;
@@ -83,7 +87,7 @@ foreach $current_distri(@distris) {
       $delcount = $no_of_versions - $keep_revisions;
       for($i=0; $i < $delcount; $i++) {
         my $dc;
-        $dc = shift(@versions);
+        $dc = shift(@sorted_versions);
         push(@for_removal, $dc);
         #print "     could delete files from group $current_group*trunk_r$dc*\n";
         print OUT "rm -f /var/virtual_hosts/download/nightly/packages/$current_distri/trunk/$current_group*trunk_r$dc*.rpm\n";
@@ -91,7 +95,7 @@ foreach $current_distri(@distris) {
       }
       print "\$keep_revisions = $keep_revisions is larger/equal $no_of_versions....\n";
       print "will kick -> @for_removal\n";
-      print "will keep -> @versions\n";
+      print "will keep -> @sorted_versions\n";
       print "DEBUG >> most_recent thereof -> $most_recent\n";
       print "########################################### next one ....\n";
     } else {
@@ -102,12 +106,12 @@ foreach $current_distri(@distris) {
       $must_rebuild_sth = "no";
     }
   }
-  #exit 0;
   if($must_rebuild_sth eq "yes") {
     print OUT "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/nightly/packages/$current_distri/trunk/\n";
     print OUT "/home/www/scripts/do_LATESTVERSION.pl /var/virtual_hosts/download/nightly/packages/$current_distri/trunk/\n";
     print OUT "/home/www/scripts/trunk_apt4rpm_build.pl -d $current_distri\n";
     print OUT "#================================================================================================\n";
   }
+  #exit 0;
 }
 close(OUT);

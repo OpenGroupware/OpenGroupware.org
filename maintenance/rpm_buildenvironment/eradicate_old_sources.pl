@@ -42,29 +42,32 @@ foreach $current_group(@groups) {
     $exact_v_svn = $1;
     $exact_v_date = $2;
     $exact_v = "$exact_v_svn" . "." . "$exact_v_date";
-    print "DEBUG >>> $exact_v\n";
+    #print "DEBUG >>> $exact_v\n";
     push(@versions, $exact_v) unless(grep /$exact_v/, @versions);
     #detect most recent one... useful? hm, no...
     $most_recent = $exact_v if($exact_v > $most_recent);
   }
-  $no_of_versions = @versions;
+  my @sorted_versions = sort { $a <=> $b } @versions;
+  #print "DEBUG: \@sorted_versions contains -> @sorted_versions\n";
+  $no_of_versions = @sorted_versions;
   if ($no_of_tarballs_in_group > $keep_revisions) {
     my $i;
     my $delcount;
+    my @for_removal;
     $delcount = $no_of_versions - $keep_revisions;
     for($i=0; $i < $delcount; $i++) {
       my $dc;
-      $dc = shift(@versions);
+      $dc = shift(@sorted_versions);
       $dc =~ s/\./-/g;
-      #print "     could delete files from group $current_group*trunk_r$dc*\n";
+      push(@for_removal, $dc);
       print OUT "rm -f /var/virtual_hosts/download/nightly/sources/trunk/$current_group-trunk-r$dc*.tar.gz\n";
     }
     print "\$keep_revisions = $keep_revisions is larger/equal $no_of_versions....\n";
-    print "@versions\n";
+    print "will keep: @sorted_versions\n";
+    print "will kick: @for_removal\n";
     print "DEBUG >> most_recent thereof -> $most_recent\n";
   }
 }
-#exit 0;
 print OUT "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/nightly/sources/trunk/\n";
 print OUT "/home/www/scripts/do_LATESTVERSION.pl /var/virtual_hosts/download/nightly/sources/trunk/\n";
 print OUT "#================================================================================================\n";
