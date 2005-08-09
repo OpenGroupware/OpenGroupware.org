@@ -1,3 +1,7 @@
+2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyResourceSchedulerPage.m: fixed gcc 4.0 warnings (v5.3.12)
+
 2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
 
 	* bundle-info.plist: removed a category registered as a class (v5.1.11)

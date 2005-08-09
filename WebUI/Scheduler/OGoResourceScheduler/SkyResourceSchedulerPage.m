@@ -264,17 +264,16 @@
   }
   
   if ([self->selectedTab isEqualToString:@"yearoverview"]) {
-    unsigned char buf[64];
-    sprintf(buf, "%d", self->year);
+    char buf[64];
+    snprintf(buf, sizeof(buf), "%d", self->year);
     return [NSString stringWithCString:buf];
   }
   
   if ([self->selectedTab isEqualToString:@"dayoverview"]) {
     NSString *label;
     
-    label =
-      [[(OGoSession *)[self session] formatDate] 
-	stringForObjectValue:self->day];
+    label = [[(OGoSession *)[self session] formatDate] 
+              stringForObjectValue:self->day];
     return label;
   }
   return @"SkyScheduler 2";
@@ -460,7 +459,7 @@
 
 /* KVC */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"year"]) {
     [self setYear:[_value intValue]];
     return;
@@ -480,22 +479,22 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
-  if ([_key isEqualToString:@"year"]) {
+- (id)valueForKey:(NSString *)_key {
+  if ([_key isEqualToString:@"year"])
     return [NSNumber numberWithInt:self->year];
-  }
-  if ([_key isEqualToString:@"month"]) {
+
+  if ([_key isEqualToString:@"month"])
     return [NSNumber numberWithInt:self->month];
-  }
-  if ([_key isEqualToString:@"weekViewKey"]) {
+
+  if ([_key isEqualToString:@"weekViewKey"])
     return [self weekViewKey];
-  }
-  if ([_key isEqualToString:@"dayViewKey"]) {
+
+  if ([_key isEqualToString:@"dayViewKey"])
     return [self dayViewKey];
-  }
-  if ([_key isEqualToString:@"dataSource"]) {
+
+  if ([_key isEqualToString:@"dataSource"])
     return [self dataSource];
-  }
+  
   return [super valueForKey:_key];
 }
 
