@@ -21,25 +21,39 @@
 
 #include <OGoFoundation/OGoContentPage.h>
 
-@class EODataSource, NSString, NSArray, NSTimeZone;
+/*
+  SkySchedulerConflictPage
+  
+  Required arguments:
+    'dataSource' - a SkySchedulerConflictDataSource focused on an appointment
+  
+  TODO: document
+*/
+
+@class NSString, NSArray, NSTimeZone;
+@class EODataSource;
 
 @interface SkySchedulerConflictPage : OGoContentPage
 {
   id       conflictDataSource;
   NSString *action;
   NSString *mailContent;
-  BOOL     sendMail;
-  //
   NSArray  *participantIds;
   id       conflict;
   unsigned index;
-  BOOL     isMailEnabled;
+  
+  NSTimeZone *timeZone;
+  struct {
+    int sendMail:1;
+    int isMailEnabled:1;
+    int reserved:30;
+  } sscFlags;
+
   // cache
   NSArray  *participantConflicts;
   NSArray  *resourceConflicts;
-
-  NSTimeZone *timeZone;
 }
+
 @end
 
 #include "common.h"
@@ -68,32 +82,26 @@ static NSNumber   *noNum      = nil;
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     NGBundleManager *bm = [NGBundleManager defaultBundleManager];
-
-    if ([bm bundleProvidingResource:@"LSWImapMailEditor"
-            ofType:@"WOComponents"] != nil)
-      self->isMailEnabled = YES;
-    else
-      self->isMailEnabled = NO;
-    self->participantIds = nil;
-    self->participantConflicts = nil;
-    self->resourceConflicts = nil;
-    self->sendMail = NO;
-    self->action   = [[NSString alloc] initWithString:@"edited"];
-    self->timeZone = nil;
+    
+    self->sscFlags.isMailEnabled = 
+      ([bm bundleProvidingResource:@"LSWImapMailEditor"
+           ofType:@"WOComponents"] != nil) ? 1 : 0;
+    
+    self->action   = @"edited";
   }
   return self;
 }
 
 - (void)dealloc {
-  RELEASE(self->conflictDataSource);
-  RELEASE(self->action);
-  RELEASE(self->mailContent);
-  RELEASE(self->conflict);
-  RELEASE(self->participantConflicts);
-  RELEASE(self->resourceConflicts);
-  RELEASE(self->timeZone);
+  [self->conflictDataSource release];
+  [self->action             release];
+  [self->mailContent        release];
+  [self->conflict           release];
+  [self->participantConflicts release];
+  [self->resourceConflicts  release];
+  [self->timeZone           release];
   [super dealloc];
 }
 
@@ -108,6 +116,11 @@ static NSNumber   *noNum      = nil;
 }
 - (id)conflictDataSource {
   return self->conflictDataSource;
+}
+
+- (void)setDataSource:(EODataSource *)_ds {
+  /* Note: used in KVC */
+  [self setConflictDataSource:_ds];
 }
 
 - (void)setAction:(NSString *)_action {
@@ -131,11 +144,11 @@ static NSNumber   *noNum      = nil;
   return self->mailContent;
 }
 
-- (void)setSendMail:(NSNumber *)_send {
-  self->sendMail = [_send boolValue];
+- (void)setSendMail:(BOOL)_send {
+  self->sscFlags.sendMail = _send ? 1 : 0;
 }
-- (NSNumber *)sendMail {
-  return [NSNumber numberWithBool:self->sendMail];
+- (BOOL)sendMail {
+  return self->sscFlags.sendMail ? YES : NO;
 }
 
 - (void)setConflict:(id)_conflict {
@@ -157,29 +170,32 @@ static NSNumber   *noNum      = nil;
 }
 
 - (NSArray *)participantIds {
-  if (self->participantIds == nil) {
-    NSMutableSet   *ms;
-    id             teams;
-    id             accounts;
-    NSEnumerator   *partEnum;
-    id             part;
-    id             parts;
+  NSMutableSet   *ms;
+  id             teams;
+  id             accounts;
+  NSEnumerator   *partEnum;
+  id             part;
+  id             parts;
 
-    ms       = [NSMutableSet set];
-    teams    = [NSMutableArray array];
-    accounts = [NSMutableArray array];
-    partEnum =
-      [[[self appointment] valueForKey:@"participants"] objectEnumerator];
+  if (self->participantIds != nil)
+    return self->participantIds;
 
-    while ((part = [partEnum nextObject])) {
-      if ([[part valueForKey:@"isTeam"] boolValue])
-        [teams addObject:[part valueForKey:@"globalID"]];
-      else if ([[part valueForKey:@"isAccount"] boolValue])
-        [accounts addObject:[part valueForKey:@"globalID"]];
-    }
 
-    /* getting teams */
-    if ([teams count] > 0) {
+  ms       = [NSMutableSet setWithCapacity:16];
+  teams    = [NSMutableArray arrayWithCapacity:4];
+  accounts = [NSMutableArray arrayWithCapacity:4];
+  partEnum =
+    [[[self appointment] valueForKey:@"participants"] objectEnumerator];
+  
+  while ((part = [partEnum nextObject]) != nil) {
+    if ([[part valueForKey:@"isTeam"] boolValue])
+      [teams addObject:[part valueForKey:@"globalID"]];
+    else if ([[part valueForKey:@"isAccount"] boolValue])
+      [accounts addObject:[part valueForKey:@"globalID"]];
+  }
+
+  /* getting teams */
+  if ([teams count] > 0) {
       NSArray *keys;
       int     i, cnt;
 
@@ -199,8 +215,9 @@ static NSNumber   *noNum      = nil;
           [ms addObjectsFromArray:[teams valueForKey:[keys objectAtIndex:i]]];
         }
       }
-    }
-    if ([accounts count] > 0) {
+  }
+
+  if ([accounts count] > 0) {
       NSArray *keys;
       int     i, cnt;
 
@@ -208,7 +225,7 @@ static NSNumber   *noNum      = nil;
       [ms addObjectsFromArray:accounts];
       accounts = [self runCommand:@"account::teams",
                        @"accounts", accounts,
-                       @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
+                       @"fetchGlobalIDs", yesNum,
                        nil];
       if (cnt == 1) {
         [ms addObjectsFromArray:accounts];
@@ -221,30 +238,30 @@ static NSNumber   *noNum      = nil;
               [accounts valueForKey:[keys objectAtIndex:i]]];
         }
       }
-    }
-
-    parts = [NSMutableArray array];
-    // getting primary key values
-    if ([ms count] > 0) {
-      partEnum = [ms objectEnumerator];
-      while ((part = [partEnum nextObject])) {
-        [parts addObject:[(EOKeyGlobalID*)part keyValues][0]];
-      }
-    }
-    parts = [parts copy];
-    AUTORELEASE(parts);
-    ASSIGN(self->participantIds, parts);
   }
+
+  parts = [NSMutableArray arrayWithCapacity:16];
+  // getting primary key values
+  if ([ms count] > 0) {
+    partEnum = [ms objectEnumerator];
+    while ((part = [partEnum nextObject]) != nil)
+      [parts addObject:[(EOKeyGlobalID*)part keyValues][0]];
+  }
+  
+  parts = [parts copy];
+  [self->participantIds release];
+  self->participantIds = parts;
+  
   return self->participantIds;
 }
 
 /* filter qualifier */
 
 - (NSString *)resourceQualifierString {
-  NSString    *in;
-  NSArray     *resources;
-  NSString    *resourceNames;
-  int         i, cnt;
+  NSString *in;
+  NSArray  *resources;
+  NSString *resourceNames;
+  int      i, cnt;
 
   
   resourceNames = [[self appointment] valueForKey:@"resourceNames"];
@@ -263,9 +280,9 @@ static NSNumber   *noNum      = nil;
       : @"";
     
     in = [in stringByAppendingFormat:
-             @"(resourceNames like '%@*\' "
-             @"OR resourceNames like '*%@*' "
-             @"OR resourceNames like '%@*' "
+             @"(resourceNames LIKE '%@*\' "
+             @"OR resourceNames LIKE '*%@*' "
+             @"OR resourceNames LIKE '%@*' "
              @"OR resourceNames = '%@')", res, res, res, res];
   }
   if (in == nil) {
@@ -285,12 +302,11 @@ static NSNumber   *noNum      = nil;
 }
 
 - (EOQualifier *)resourceQualifier {
-  EOQualifier *q;
-  NSString    *in = [self resourceQualifierString];
-  if (in == nil)
+  NSString *in;
+  
+  if ((in = [self resourceQualifierString]) == nil)
     return nil;
-  q = [EOQualifier qualifierWithQualifierFormat:in];
-  return q;
+  return [EOQualifier qualifierWithQualifierFormat:in];
 }
 
 /* caching */
@@ -299,18 +315,21 @@ static NSNumber   *noNum      = nil;
   ASSIGN(self->participantConflicts,_cfls);
 }
 - (NSArray *)participantConflicts {
-  if (self->participantConflicts == nil) {
-    EOFilterDataSource *participantDs;
-    EOQualifier        *q;
+  EOFilterDataSource *participantDs;
+  EOQualifier        *q;
+  
+  if (self->participantConflicts != nil)
+    return self->participantConflicts;
 
-    participantDs =
-      [[EOFilterDataSource alloc] initWithDataSource:self->conflictDataSource];
-    q = [self participantQualifier];
-    [participantDs setAuxiliaryQualifier:q];
+  /* wrap conflict-datasource in a filter-datasource */
 
-    [self setParticipantConflicts:[participantDs fetchObjects]];
-    RELEASE(participantDs);
-  }
+  participantDs =
+    [[EOFilterDataSource alloc] initWithDataSource:self->conflictDataSource];
+  q = [self participantQualifier];
+  [participantDs setAuxiliaryQualifier:q];
+  
+  [self setParticipantConflicts:[participantDs fetchObjects]];
+  [participantDs release];
   return self->participantConflicts;
 }
 
@@ -318,25 +337,20 @@ static NSNumber   *noNum      = nil;
   ASSIGN(self->resourceConflicts,_cfls);
 }
 - (NSArray *)resourceConflicts {
-  if (self->resourceConflicts == nil) {
-    EOFilterDataSource *resourceDs;
-    EOQualifier *q;
+  EOFilterDataSource *resourceDs;
+  EOQualifier *q;
+  
+  if (self->resourceConflicts != nil)
+    return self->resourceConflicts;
 
-    resourceDs =
-      [[EOFilterDataSource alloc] initWithDataSource:self->conflictDataSource];
-    q = [self resourceQualifier];
-    [resourceDs setAuxiliaryQualifier:q];
-
-    [self setResourceConflicts:[resourceDs fetchObjects]];
-    RELEASE(resourceDs);
-  }
+  resourceDs =
+    [[EOFilterDataSource alloc] initWithDataSource:self->conflictDataSource];
+  q = [self resourceQualifier];
+  [resourceDs setAuxiliaryQualifier:q];
+  
+  [self setResourceConflicts:[resourceDs fetchObjects]];
+  [resourceDs release];
   return self->resourceConflicts;
-}
-
-- (NSString *)description {
-  return [NSString stringWithFormat:
-                   @"%@|SkySchedulerConflictPage:<action:%@>",
-                   [super description], self->action];
 }
 
 /* conditional */
@@ -349,52 +363,48 @@ static NSNumber   *noNum      = nil;
     ? NO : YES;
 }
 
-- (BOOL)hasParticipantConflicts {
-  return ([[self participantConflicts] count] > 0)
-    ? YES : NO;
-}
-- (BOOL)hasResourceConflicts {
-  return ([[self resourceConflicts] count] > 0)
-    ? YES : NO;
-}
 - (BOOL)hideIgnoreButtons {
   BOOL hide = NO;
 
-  hide = ([self hasResourceConflicts] &&
-         [[[self session] userDefaults]
-                 boolForKey:@"scheduler_hide_ignore_conflicts"]);
+  hide = ([[self resourceConflicts] isNotEmpty] &&
+          [[[self session] userDefaults]
+                  boolForKey:@"scheduler_hide_ignore_conflicts"]);
   return hide;
 }
 
 /* mail helper */
 
 - (BOOL)isMailLicensed {
+  [self errorWithFormat:@"Called deprecated method: %s", __PRETTY_FUNCTION__];
   return YES;
 }
 
 - (NSArray *)expandedParticipants:(NSArray *)_part {
-  int      i, cnt   = [_part count];
-  id       staffSet = [NSMutableSet set];
-        
+  NSMutableSet *staffSet;
+  unsigned i, cnt;
+
+  cnt      = [_part count];
+  staffSet = [NSMutableSet setWithCapacity:cnt];
+  
+  /* flatten teams to their members */
   for (i = 0; i < cnt; i++) {
-    id staff = [_part objectAtIndex:i];
-
+    id staff;
+    
+    staff = [_part objectAtIndex:i];
     if ([[staff valueForKey:@"isTeam"] boolValue]) {
-      NSArray *members = [staff valueForKey:@"members"];
-
-      if (members == nil) {
+      // TODO: shouldn't we use team::expand or something?
+      NSArray *members;
+      
+      if ((members = [staff valueForKey:@"members"]) == nil) {
         [self run:@"team::members", @"object", staff, nil];
         members = [staff valueForKey:@"members"];
       }
       [staffSet addObjectsFromArray:members];
     }
-    else {
+    else
       [staffSet addObject:staff]; 
-    }
   }
-  staffSet = [staffSet allObjects];
-
-  return staffSet;
+  return [staffSet allObjects];
 }
 
 /* actions */
@@ -413,6 +423,10 @@ static NSNumber   *noNum      = nil;
              valueForKey:@"scheduler_attach_apts_to_mails"]
              boolValue];
 }
+- (id)ccForNotificationMails {
+  return [[[self session] userDefaults]
+	         objectForKey:@"scheduler_ccForNotificationMails"];
+}
 
 - (id)createMail:(id)_apt {
   /* TODO: split up into smaller methods */
@@ -425,7 +439,7 @@ static NSNumber   *noNum      = nil;
   id           rec    = nil;
   BOOL         first  = YES;
   
-  if (!self->isMailEnabled) {
+  if (!self->sscFlags.isMailEnabled) {
     [self setErrorString:@"mail module is not enabled !"];
     return nil;
   }
@@ -441,16 +455,16 @@ static NSNumber   *noNum      = nil;
   str = [self action];
 
   /* set default cc */
-
-  cc = [[[self session] userDefaults]
-	       objectForKey:@"scheduler_ccForNotificationMails"];
-  if (cc) [mailEditor addReceiver:cc type:@"cc"];
   
-  subject = [NSString stringWithFormat:@"%@: '%@' %@",
+  if ([(cc = [self ccForNotificationMails]) isNotEmpty])
+    [mailEditor addReceiver:cc type:@"cc"];
+  
+  subject = [[NSString alloc] initWithFormat:@"%@: '%@' %@",
 		        [[self labels] valueForKey:@"appointment"],
 		        title,
 		        [[self labels] valueForKey:str]];
   [mailEditor setSubject:subject];
+  [subject release]; subject = nil;
   
   attach = [self shouldAttachAppointmentsToMails];
   [mailEditor addAttachment:_apt type:eoDateType
@@ -458,11 +472,10 @@ static NSNumber   *noNum      = nil;
 
   if (self->mailContent == nil) self->mailContent = @"";
   [mailEditor setContentWithoutSign:self->mailContent];
-
+  
   recEn = [ps objectEnumerator];
-  first  = YES;
-        
-  while ((rec = [recEn nextObject])) {
+  first = YES;
+  while ((rec = [recEn nextObject]) != nil) {
     if (first) {
       [mailEditor addReceiver:rec];
       first = NO;
@@ -491,21 +504,18 @@ static NSNumber   *noNum      = nil;
   NSString *notificationName;
   id       apt;
   
-  apt   = [self appointment];
-
-  if (self->timeZone) {
+  apt = [self appointment];
+  if ([self->timeZone isNotNull]) {
     [[apt valueForKey:@"startDate"] setTimeZone:self->timeZone];
-    [[apt valueForKey:@"endDate"] setTimeZone:self->timeZone];
+    [[apt valueForKey:@"endDate"]   setTimeZone:self->timeZone];
   }
   
-  isNew = ([apt valueForKey:@"dateId"] == nil)
-    ? YES : NO;
-  if (isNew) {
+  if ((isNew = [[apt valueForKey:@"dateId"] isNotNull] ? NO : YES)) {
     result           = [self runCommand:@"appointment::new" arguments:apt];
     notificationName = LSWNewAppointmentNotificationName;
   }
   else {
-    result = [self runCommand:@"appointment::set" arguments:apt];
+    result           = [self runCommand:@"appointment::set" arguments:apt];
     notificationName = LSWUpdatedAppointmentNotificationName;
   }
   if (result == nil)
@@ -514,7 +524,7 @@ static NSNumber   *noNum      = nil;
   [self postChange:notificationName onObject:result];
   [self backToNonEditorPage];
   
-  if (self->sendMail) {
+  if (self->sscFlags.sendMail) {
     /* Note: we must call -enterPage:, otherwise it doesn't work (#138) */
     [[[self session] navigation] enterPage:[self createMail:result]];
   }
@@ -523,10 +533,9 @@ static NSNumber   *noNum      = nil;
 }
 
 - (id)ignoreConflicts {
-  id  apt;
-  id  tmp;
+  id apt, tmp;
   
-  apt   = [self appointment];
+  apt = [self appointment];
   [apt takeValue:yesNum forKey:@"isWarningIgnored"];
   tmp = [self save];
   [apt takeValue:noNum forKey:@"isWarningIgnored"];
@@ -545,22 +554,12 @@ static NSNumber   *noNum      = nil;
   return tmp;
 }
 
-/* key/value coding */
+/* description */
 
-- (void)takeValue:(id)_val forKey:(NSString *)_key {
-  // TODO: is this necessary?
-  if ([_key isEqualToString:@"dataSource"])
-    [self setConflictDataSource:_val];
-  else if ([_key isEqualToString:@"action"])
-    [self setAction:_val];
-  else if ([_key isEqualToString:@"mailContent"])
-    [self setMailContent:_val];
-  else if ([_key isEqualToString:@"sendMail"])
-    [self setSendMail:_val];
-  else if ([_key isEqualToString:@"timeZone"])
-    [self setTimeZone:_val];
-  else
-    [super takeValue:_val forKey:_key];
+- (NSString *)description {
+  return [NSString stringWithFormat:
+                   @"%@|SkySchedulerConflictPage:<action:%@>",
+                   [super description], self->action];
 }
 
 @end /* SkySchedulerConflictPage */

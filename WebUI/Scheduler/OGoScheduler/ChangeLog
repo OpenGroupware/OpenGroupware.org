@@ -1,5 +1,9 @@
 2005-08-09  Helge Hess  <helge.hess@skyrix.com>
 
+	* SkySchedulerConflictPage.m: removed -takeValue:forKey: method (use
+	  default implementation), use a bitset for flags to save four precious
+	  bytes, major code cleanups (v5.3.39)
+
 	* v5.3.38
 
 	* WODirectAction+SchedulerViews.m, SkySchedulerPage.m: fixed gcc 4.0
