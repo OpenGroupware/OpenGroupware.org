@@ -19,7 +19,8 @@ TOOL_NAME += \
 	ogo-runcmd		\
 	ogo-defaults		\
 	ogo-acl-list		\
-	ogo-check-permission
+	ogo-check-permission	\
+	ogo-check-aptconflicts
 				\
 TOOL_NAME += \
 	ogo-account-list	\
@@ -36,9 +37,9 @@ sky_send_bulk_messages_OBJC_FILES = sky_send_bulk_messages.m
 
 ogo-jobs-export_OBJC_FILES = ogo-jobs-export.m
 
-ogo-account-list_OBJC_FILES = SkyTool.m	SkyGetLoginNames.m
-ogo-account-add_OBJC_FILES  = SkyTool.m SkyAddAccount.m
-ogo-account-del_OBJC_FILES  = SkyTool.m	SkyDelAccount.m
+ogo-account-list_OBJC_FILES   = SkyTool.m SkyGetLoginNames.m
+ogo-account-add_OBJC_FILES    = SkyTool.m SkyAddAccount.m
+ogo-account-del_OBJC_FILES    = SkyTool.m SkyDelAccount.m
 
 ogo-project-export_OBJC_FILES = ogo-project-export.m NGUnixTool.m
 ogo-project-import_OBJC_FILES = ogo-project-import.m NGUnixTool.m
@@ -47,8 +48,9 @@ ogo-project-list_OBJC_FILES   = ogo-project-list.m
 ogo-runcmd_OBJC_FILES         = ogo-runcmd.m
 ogo-defaults_OBJC_FILES       = ogo-defaults.m
 
-ogo-acl-list_OBJC_FILES	         = ogo-list-acls.m
-ogo-check-permission_OBJC_FILES = ogo-check-permission.m
+ogo-acl-list_OBJC_FILES	           = ogo-list-acls.m
+ogo-check-permission_OBJC_FILES    = ogo-check-permission.m
+ogo-check-aptconflicts_OBJC_FILES  = ogo-check-aptconflicts.m
 
 ogo-instfilter-procmail_OBJC_FILES = ogo-instfilter-procmail.m
 

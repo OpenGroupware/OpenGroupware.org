@@ -1,3 +1,8 @@
+2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* added tool ogo-check-aptconflicts tool to test the conflict checking
+	  functionality
+
 2005-07-23  Sebastian Reitenbach  <reitenbach@rapideye.de>
 
 	* GNUmakefile.preamble: added OpenBSD linking flags
