@@ -1,3 +1,14 @@
+2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.3.34
+
+	* SkySchedulerConflictDataSource.m: fixed a small memleak, marked
+	  -hasConflicts method deprecated, use -fetchObjects instead, wrap
+	  fetch in an NSAutoreleasePool, major code cleanups
+
+	* SkySchedulerConflictDataSource.h: added proper header include
+	  protection
+
 2005-05-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyAppointmentDataSource.m: minor code cleanups (v5.1.33)

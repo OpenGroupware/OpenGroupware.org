@@ -19,9 +19,25 @@
   02111-1307, USA.
 */
 
+#ifndef __SkySchedulerConflictDataSource_H__
+#define __SkySchedulerConflictDataSource_H__
+
 #import <EOControl/EODataSource.h>
 
-@class LSCommandContext, NSMutableArray;
+/*
+  SkySchedulerConflictDataSource
+
+  TODO: document
+
+  Used by:
+    OGoSchedulerViews/SkyInlineAptDataSourceView.m
+    OGoScheduler/SkySchedulerConflictPage.m
+    LSWScheduler/LSWAppointmentMove.m
+    LSWScheduler/LSWAppointmentEditor.m
+*/
+
+@class NSArray, NSMutableArray;
+@class LSCommandContext;
 
 @interface SkySchedulerConflictDataSource : EODataSource
 {
@@ -34,19 +50,19 @@
   /* additional datasource to look for conflicts */
   NSMutableArray *dataSources;
   
-  /* result cache */
+  /* result cache */ // TODO: do not cache! (use EOCacheDataSource for that!)
   NSArray *conflicts;
 }
 
 - (void)setAppointment:(id)_apt;
 - (id)appointment;
-- (void)setContext:(id)_ctx;
-- (id)context;
+- (void)setContext:(LSCommandContext *)_ctx;
+- (LSCommandContext *)context;
 
 // add a datasource to look for conflicting entries
 // _ds should handle SkyAppointmentQualifier
 - (void)addDataSource:(EODataSource *)_ds;
 
-- (BOOL)hasConflicts;
-
 @end
+
+#endif /* __SkySchedulerConflictDataSource_H__ */

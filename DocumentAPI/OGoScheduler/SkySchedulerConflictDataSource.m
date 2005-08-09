@@ -31,6 +31,7 @@
 static NSArray  *startDateSortOrderings = nil;
 static NSArray  *coreAttrNames          = nil;
 static NSNumber *yesNum        = nil;
+static NSArray  *emptyArray    = nil;
 static int      LSMaxAptCycles = 0;
 
 + (void)initialize {
@@ -61,7 +62,8 @@ static int      LSMaxAptCycles = 0;
   LSMaxAptCycles = [[ud objectForKey:@"LSMaxAptCycles"] intValue];
   if (LSMaxAptCycles < 1) LSMaxAptCycles = 100;
   
-  if (yesNum == nil) yesNum = [[NSNumber numberWithBool:YES] retain];
+  if (yesNum     == nil) yesNum     = [[NSNumber numberWithBool:YES] retain];
+  if (emptyArray == nil) emptyArray = [[NSArray alloc] init];
 }
 
 - (id)initWithContext:(id)_ctx {
@@ -94,89 +96,102 @@ static int      LSMaxAptCycles = 0;
   return [testDate dayOfWeek];
 }
 
+/* cycle calculation */
+
 - (NSArray *)_appointmentDates {
+  /* 
+     Calculate 'date slots', process cycles.
+  */
   NSString       *type;
   NSCalendarDate *sD, *eD, *cycleDate;
   id             apt, tmp;
   NSNumber       *dateId;
   
-  apt    = self->appointment;
-  type   = [apt valueForKey:@"type"];
-  sD     = [[[apt valueForKey:@"startDate"] copy] autorelease];
-  eD     = [[[apt valueForKey:@"endDate"] copy] autorelease];
+  apt  = self->appointment;
+  type = [apt valueForKey:@"type"];
+  sD   = [[[apt valueForKey:@"startDate"] copy] autorelease];
+  eD   = [[[apt valueForKey:@"endDate"]   copy] autorelease];
   
   tmp = [apt valueForKey:@"cycleEndDate"];
   cycleDate = [tmp isNotNull] ? [tmp endOfDay] : nil;
   
   dateId = [apt valueForKey:@"dateId"];
   
+  // TODO: what does this do?
   if ([[apt valueForKey:@"setAllCyclic"] boolValue])
     return [apt valueForKey:@"cyclics"];
   
-  if ([type isNotNull] && (![dateId isNotNull])) {
-    return
-      [OGoCycleDateCalculator cycleDatesForStartDate:sD
-                              endDate:eD
-                              type:type
-                              maxCycles:LSMaxAptCycles
-                              startAt:0
-                              endDate:cycleDate
-                              keepTime:YES];
+  if ([type isNotNull] && ![dateId isNotNull]) {
+    /* process as cycle */
+    return [OGoCycleDateCalculator cycleDatesForStartDate:sD endDate:eD
+                                   type:type maxCycles:LSMaxAptCycles
+                                   startAt:0 endDate:cycleDate
+                                   keepTime:YES];
   }
   
   tmp = [NSDictionary dictionaryWithObjectsAndKeys:
 			sD, @"startDate", eD, @"endDate",
 		        dateId, @"dateId", nil];
-  return [NSArray arrayWithObject:tmp];
+  return tmp ? [NSArray arrayWithObject:tmp] : nil;
 }
 
 /* accessors */
 
 - (void)setAppointment:(id)_apt {
-  if (self->appointment != _apt) {
-    [self->conflicts release]; 
-    self->conflicts = nil;
-  }
+  if (self->appointment == _apt)
+    return;
+
+  [self->conflicts release]; 
+  self->conflicts = nil;
   ASSIGN(self->appointment, _apt);
+
+  [self postDataSourceChangedNotification];
 }
 - (id)appointment {
   return self->appointment;
 }
 
-- (void)setContext:(id)_ctx {
-  if ([_ctx isKindOfClass:[OGoContextSession class]])
-    _ctx = [_ctx commandContext];
+- (void)setContext:(LSCommandContext *)_ctx {
+  if ([_ctx isKindOfClass:[OGoContextSession class]]) {
+    [self errorWithFormat:@"Called with OGoContextSession: %@", _ctx];
+    _ctx = [(OGoContextSession *)_ctx commandContext];
+  }
   
   ASSIGN(self->lso, _ctx);
 }
-- (id)context {
+- (LSCommandContext *)context {
   return self->lso;
 }
 
 - (void)addDataSource:(EODataSource *)_ds {
   if (self->dataSources == nil)
-    self->dataSources = [[NSMutableArray alloc] init];
-  if (![self->dataSources containsObject:_ds])
+    self->dataSources = [[NSMutableArray alloc] initWithCapacity:2];
+  
+  if (![self->dataSources containsObject:_ds]) {
     [self->dataSources addObject:_ds];
+    [self postDataSourceChangedNotification];
+  }
 }
 
 - (BOOL)hasConflicts {
+  // TODO: hm, hm. Should be done by the client, not a DS method!
+  [self errorWithFormat:@"Called deprecated method: %s", __PRETTY_FUNCTION__];
   return ([[self fetchObjects] count] > 0) ? YES : NO;
 }
 
-- (NSArray *)fetchConflictsFromDataSource:(EODataSource *)_ds
-                                  forDate:(NSDictionary *)_dict
-                             participants:(NSArray *)_participants
-                                resources:(NSArray *)_resources
+/* source datasource */
+
+- (EOFetchSpecification *)fetchSpecificationForDate:(NSDictionary *)_slot
+  participants:(NSArray *)_participants
+  resources:(NSArray *)_resources
 {
   EOFetchSpecification    *fs;
   SkyAppointmentQualifier *qual;
   NSCalendarDate          *sD;
-  NSArray                 *result;
   
   qual = [[SkyAppointmentQualifier alloc] init];
-  [qual setStartDate:(sD = [_dict valueForKey:@"startDate"])];
-  [qual setEndDate:   [_dict valueForKey:@"endDate"]];
+  [qual setStartDate:(sD = [_slot valueForKey:@"startDate"])];
+  [qual setEndDate:   [_slot valueForKey:@"endDate"]];
   [qual setTimeZone:  [sD timeZone]];
   [qual setCompanies: [_participants valueForKey:@"globalID"]];
   [qual setResources: _resources];
@@ -184,11 +199,32 @@ static int      LSMaxAptCycles = 0;
   fs = [EOFetchSpecification fetchSpecificationWithEntityName:@"date"
                              qualifier:qual 
                              sortOrderings:startDateSortOrderings];
-  [qual release];
+  [qual release]; qual = nil;
+  
+  return fs;
+}
+
+- (NSArray *)fetchConflictsFromDataSource:(EODataSource *)_ds
+  forDate:(NSDictionary *)_slot
+  participants:(NSArray *)_participants
+  resources:(NSArray *)_resources
+{
+  /* 
+     Fetch all dates in the given range which match the participants
+     and resources, aka 'the conflicts'.
+  */
+  EOFetchSpecification *fs;
+  NSArray              *result;
+  
+  fs = [self fetchSpecificationForDate:_slot 
+             participants:_participants resources:_resources];
+
   [_ds setFetchSpecification:fs];
   result = [_ds fetchObjects];
   return result;
 }
+
+/* handle NSCalendarDate objects */
 
 - (NSCalendarDate *)copyDateObject:(NSCalendarDate *)_date {
   // TODO: this looks weird? why not use -copy? (must have a reason...)
@@ -213,7 +249,7 @@ static int      LSMaxAptCycles = 0;
   NSDictionary *args;
   
   if ([[_apt valueForKey:@"dateId"] isNotNull]) {
-    args = [NSDictionary dictionaryWithObjectsAndKeys:
+    args = [[NSDictionary alloc] initWithObjectsAndKeys:
                            _startDate,    @"begin",
                            _endDate,      @"end",
                            _participants, @"staffList",
@@ -223,7 +259,7 @@ static int      LSMaxAptCycles = 0;
                          nil];
   }
   else {
-    args = [NSDictionary dictionaryWithObjectsAndKeys:
+    args = [[NSDictionary alloc] initWithObjectsAndKeys:
                            _startDate,    @"begin",
                            _endDate,      @"end",
                            _participants, @"staffList",
@@ -235,6 +271,8 @@ static int      LSMaxAptCycles = 0;
   lconflicts = [(id)self->lso
                     runCommand:@"appointment::conflicts"
                     arguments:args];
+  [args release]; args = nil;
+  
   return lconflicts;
 }
 
@@ -246,7 +284,7 @@ static int      LSMaxAptCycles = 0;
   if (_gids == nil)
     return nil;
   if ([_gids count] == 0)
-    return [NSArray array];
+    return emptyArray;
 
   args = [NSDictionary dictionaryWithObjectsAndKeys:
                            _gids,                  @"gids",
@@ -259,69 +297,105 @@ static int      LSMaxAptCycles = 0;
               arguments:args];
 }
 
-- (NSArray *)fetchObjects {
-  // TODO: split up method
+/* process apt */
+
+- (BOOL)shouldProcessAppointment:(id)_apt {
+  if ([[_apt valueForKey:@"isConflictDisabled"] boolValue])
+    return NO;
+  if ([[_apt valueForKey:@"isWarningIgnored"] boolValue])
+    return NO;
+  return YES;
+}
+
+- (NSTimeZone *)processAppointment:(id)apt
+  addToConflicts:(NSMutableArray *)cs
+  returnAptGIDs:(NSArray **)_gids
+{
+  /*
+    Note: this uses and returns the timezone of the first object.
+  */
+  // TODO: whats the diff between 'cs' and _gids?
+  //       I think 'cs' are objects from other datasources, like PalmDS
+  NSMutableArray *gids;
   NSTimeZone     *tz = nil;
+  NSString       *resourceNames = nil;
   NSCalendarDate *startDate, *endDate;
   NSArray        *a, *aptDates, *participants;
-  NSMutableArray *cs, *gids;
-  id             apt;
   int i, cnt;
-  int k, max;
+
+  gids = [NSMutableArray arrayWithCapacity:16];
+  
+  /* this calculates recurrences and returns a set of slots(start/end/id) */
+  aptDates = [self _appointmentDates];
+  
+  a = [(resourceNames = [apt valueForKey:@"resourceNames"]) isNotNull]
+    ? [resourceNames componentsSeparatedByString:@", "]
+    : emptyArray;
+      
+  participants = [apt valueForKey:@"participants"];
+  
+  /* aptDates contains the slots, usually just one, but for cycles more! */
+  for (i = 0, cnt = [aptDates count]; i < cnt; i++) {
+    NSArray *lconflicts;
+    int k, max;
+    NSDictionary *aptSlot;
+    
+    aptSlot = [aptDates objectAtIndex:i];
+    
+    startDate = [self copyDateObject:[aptSlot valueForKey:@"startDate"]];
+    endDate   = [self copyDateObject:[aptSlot valueForKey:@"endDate"]];
+    if (i == 0) tz = [startDate timeZone]; // TODO: is this correct? (use apt?)
+    
+    /* this calls appointment::conflicts */
+
+    lconflicts = [self _fetchConflictGIDsForParticipants:participants
+                       andResources:a
+                       from:startDate to:endDate
+                       onAppointment:aptSlot];
+    
+    if ([lconflicts count] > 0)
+      [gids addObjectsFromArray:lconflicts];
+    
+    /* I _think_ that this the stuff below is to support Palm DS */
+    
+    for (k = 0, max = [self->dataSources count]; k < max; k++) {
+      NSArray *llconflicts;
+      
+      /* all appointments in the same timeslot with the matching users */
+      llconflicts = [self fetchConflictsFromDataSource:
+                            [self->dataSources objectAtIndex:k]
+                          forDate:aptSlot participants:participants 
+                          resources:a];
+      if ([llconflicts count] > 0)
+        [cs addObjectsFromArray:llconflicts];
+    }
+  }
+
+  if (_gids != NULL) *_gids = gids;
+  return tz;
+}
+
+/* primary entry method */
+
+- (NSArray *)fetchObjects {
+  // TODO: split up method
+  NSAutoreleasePool *pool;
+  NSTimeZone     *tz = nil;
+  NSMutableArray *cs;
+  NSArray        *gids = nil;
   
   // TODO: datasources should never cache on their own but the client should
   //       use an EOCacheDataSource
-  if (self->conflicts) /* cached */
+  if (self->conflicts != nil) /* cached */
     return self->conflicts;
-  
-  apt  = self->appointment;
-  cs   = [NSMutableArray array];
-  gids = [NSMutableArray array];
-    
-  if ((![[apt valueForKey:@"isConflictDisabled"] boolValue]) &&
-      (![[apt valueForKey:@"isWarningIgnored"] boolValue])) {
-    NSString *resourceNames = nil;
 
-    aptDates = [self _appointmentDates];
-      
-      resourceNames = [apt valueForKey:@"resourceNames"];
-      
-      a = (![resourceNames isNotNull])
-        ? [NSArray array]
-        : [resourceNames componentsSeparatedByString:@", "];
-      
-      participants = [apt valueForKey:@"participants"];
-      
-      for (i = 0, cnt = [aptDates count]; i < cnt; i++) {
-        id apt;
-        NSArray *lconflicts;
-        
-        apt = [aptDates objectAtIndex:i];
-        
-        startDate = [self copyDateObject:[apt valueForKey:@"startDate"]];
-        endDate   = [self copyDateObject:[apt valueForKey:@"endDate"]];
-        if (i == 0) tz = [startDate timeZone];
-        
-        lconflicts = [self _fetchConflictGIDsForParticipants:participants
-                           andResources:a
-                           from:startDate to:endDate
-                           onAppointment:apt];
-        
-        if ([lconflicts count] > 0)
-          [gids addObjectsFromArray:lconflicts];
-        
-        /* fetch conflicting appointments from */
-        for (k = 0, max = [self->dataSources count]; k < max; k++) {
-          NSArray *llconflicts;
-          
-          llconflicts = [self fetchConflictsFromDataSource:
-                                [self->dataSources objectAtIndex:k]
-                              forDate:apt participants:participants 
-                              resources:a];
-          if ([llconflicts count] > 0)
-            [cs addObjectsFromArray:llconflicts];
-        }
-      }
+  pool = [[NSAutoreleasePool alloc] init];
+  
+  cs = [NSMutableArray arrayWithCapacity:16];
+  if ([self shouldProcessAppointment:self->appointment]) {
+    tz = [self processAppointment:self->appointment
+               addToConflicts:cs
+               returnAptGIDs:&gids];
   }
   
   /* fetch appointments for global-ids */
@@ -331,8 +405,11 @@ static int      LSMaxAptCycles = 0;
           [self _fetchAppointmentsForGIDs:gids timeZone:tz]];
   }
   
+  [self->conflicts release]; self->conflicts = nil;
   self->conflicts = 
     [[cs sortedArrayUsingKeyOrderArray:startDateSortOrderings] retain];
+  
+  [pool release]; pool = nil;
   
   return self->conflicts;
 }
