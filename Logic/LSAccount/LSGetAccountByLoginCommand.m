@@ -21,6 +21,12 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
+/*
+  account::get-by-login
+
+  TODO: document
+*/
+
 @interface LSGetAccountByLoginCommand : LSDBObjectBaseCommand
 
 - (void)setLogin:(NSString *)_username;

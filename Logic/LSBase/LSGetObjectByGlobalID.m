@@ -22,9 +22,12 @@
 #include <LSFoundation/LSGetObjectForGlobalIDs.h>
 
 /*
+  object::get-by-globalid
+
   This command fetches objects based on a list of EOGlobalIDs.
 
   Whats the difference to the superclass?
+  => it extracts the entity from the first GID
 */
 
 @interface LSGetObjectByGlobalID : LSGetObjectForGlobalIDs
