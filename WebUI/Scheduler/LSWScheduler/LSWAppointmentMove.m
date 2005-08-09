@@ -377,7 +377,9 @@ static NSDictionary *_bindingForAppointment(id self, id obj);
       [self debugWithFormat:@"Note: missing SkyPalmDateDataSource"];
   }
   
-  if ([ds hasConflicts])
+  // TODO: do we need caching here? (if so, add it by using an EOCacheDS)
+  // TODO: DUP in LSWAppointmentEditor?
+  if ([[ds fetchObjects] isNotEmpty])
     [self _pageForConflictsInDataSource:ds action:_action];
   
   return [super saveAndGoBackWithCount:_backCount];

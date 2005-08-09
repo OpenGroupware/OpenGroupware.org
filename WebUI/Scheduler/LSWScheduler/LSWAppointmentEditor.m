@@ -1739,7 +1739,9 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   [ds setAppointment:[self snapshot]];
   ds = [self _addExtraDataSourcesToConflictDS:ds];
   
-  if ([ds hasConflicts])
+  // TODO: do we need caching here? (if so, add it by using an EOCacheDS)
+  // TODO: DUP in LSWAppointmentMove?
+  if ([[ds fetchObjects] isNotEmpty])
     return [self _handleConflictsInConflictDS:ds action:_action];
   
   /* return */

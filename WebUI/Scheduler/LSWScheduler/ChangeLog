@@ -1,3 +1,8 @@
+2005-08-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWAppointmentMove.m, LSWAppointmentEditor.m: do not use deprecated
+	  -hasConflicts of SkySchedulerConflictDataSource (v5.3.66)
+
 2005-08-09  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.3.65
