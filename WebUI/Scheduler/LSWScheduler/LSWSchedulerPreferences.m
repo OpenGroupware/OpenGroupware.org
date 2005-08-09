@@ -1002,8 +1002,8 @@ static NSNumber *noNum = nil;
   self->startHour = [_hour intValue];
 }
 - (NSString *)startHour {
-  unsigned char buf[8];
-  sprintf(buf, "%02i", self->startHour);
+  char buf[8];
+  snprintf(buf, sizeof(buf), "%02i", self->startHour);
   return [NSString stringWithCString:buf];
 }
 
@@ -1011,8 +1011,8 @@ static NSNumber *noNum = nil;
   self->endHour = [_hour intValue];
 }
 - (NSString *)endHour {
-  unsigned char buf[8];
-  sprintf(buf, "%02i", self->endHour);
+  char buf[8];
+  snprintf(buf, sizeof(buf), "%02i", self->endHour);
   return [NSString stringWithCString:buf];
 }
 
@@ -1020,8 +1020,8 @@ static NSNumber *noNum = nil;
   self->columnsPerDayWeekView = [_columns intValue];
 }
 - (NSString *)columnsPerDayWeekView {
-  unsigned char buf[8];
-  sprintf(buf, "%i", self->columnsPerDayWeekView);
+  char buf[8];
+  snprintf(buf, sizeof(buf), "%i", self->columnsPerDayWeekView);
   return [NSString stringWithCString:buf];
 }
 
@@ -1029,8 +1029,8 @@ static NSNumber *noNum = nil;
   self->columnsPerDayDayView = [_columns intValue];
 }
 - (NSString *)columnsPerDayDayView {
-  unsigned char buf[8];
-  sprintf(buf, "%i", self->columnsPerDayDayView);
+  char buf[8];
+  snprintf(buf, sizeof(buf), "%i", self->columnsPerDayDayView);
   return [NSString stringWithCString:buf];
 }
 

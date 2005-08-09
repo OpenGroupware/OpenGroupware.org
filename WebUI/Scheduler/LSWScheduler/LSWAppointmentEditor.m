@@ -427,7 +427,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 
 - (void)_setupStartDate:(NSCalendarDate *)sd andEndDate:(NSCalendarDate *)ed {
   int shour, ehour, smin, emin;
-  unsigned char buf[8];
+  char buf[8];
   
   shour = [sd hourOfDay];
   ehour = [ed hourOfDay];
@@ -437,13 +437,13 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   self->startTime = [[self timeStringForHour:shour minute:smin] retain];
   self->endTime   = [[self timeStringForHour:ehour minute:emin] retain];
   
-  sprintf(buf, "%02i", shour);
+  snprintf(buf, sizeof(buf), "%02i", shour);
   self->startHour   = [[NSString alloc] initWithCString:buf];
-  sprintf(buf, "%02i", smin);
+  snprintf(buf, sizeof(buf), "%02i", smin);
   self->startMinute = [[NSString alloc] initWithCString:buf];
-  sprintf(buf, "%02i", ehour);
+  snprintf(buf, sizeof(buf), "%02i", ehour);
   self->endHour     = [[NSString alloc] initWithCString:buf];
-  sprintf(buf, "%02i", emin);
+  snprintf(buf, sizeof(buf), "%02i", emin);
   self->endMinute   = [[NSString alloc] initWithCString:buf];
 }
 

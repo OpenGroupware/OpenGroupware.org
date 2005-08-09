@@ -1,3 +1,13 @@
+2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.3.65
+
+	* LSWAppointmentProposal.m: minor code improvements, fixed gcc 4.0
+	  warnings, fixed a minor memleak (new-component)
+
+	* LSWSchedulerPreferences.m, LSWAppointmentEditor.m: fixed gcc 4.0
+	  warnings
+
 2005-08-08  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyParticipantsSelection.m: fixed some gcc 4.0 warnings, minor code
