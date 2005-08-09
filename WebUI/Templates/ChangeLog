@@ -1,3 +1,7 @@
+2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoScheduler/SkySchedulerConflictPage: some template cleanups
+
 2005-07-17  Olivier Hallot  <olivier@ig.com.br>
 
 	* OGoSchedulerViews/SkyInlineMonthOverview.wod,
