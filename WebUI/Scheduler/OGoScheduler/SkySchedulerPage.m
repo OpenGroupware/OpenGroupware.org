@@ -393,7 +393,7 @@ static NSArray* months = nil; /* label keys */
   case 2006: return @"2006";
   case 2007: return @"2007";
   default: {
-    unsigned char buf[8];
+    char buf[8];
     sprintf(buf, "%d", self->year);
     return [NSString stringWithCString:buf];
   }
@@ -478,17 +478,17 @@ static NSArray* months = nil; /* label keys */
 
 // TODO: move to icon object
 - (NSString *)monthIcon {
-  unsigned char buf[16];
+  char buf[16];
   sprintf(buf, "month%02d", self->month);
   return [NSString stringWithCString:buf];
 }
 - (NSString *)weekIcon {
-  unsigned char buf[16];
+  char buf[16];
   sprintf(buf, "week%02d", [self currentWeek]);
   return [NSString stringWithCString:buf];
 }
 - (NSString *)yearIcon {
-  unsigned char buf[16];
+  char buf[16];
   
   if (!(((self->year > 1995) && (self->year < 2016))))
     return @"year";
@@ -497,7 +497,7 @@ static NSArray* months = nil; /* label keys */
   return [NSString stringWithCString:buf];
 }
 - (NSString *)dayIcon {
-  unsigned char buf[16];
+  char buf[16];
   sprintf(buf, "day%02d", [[self day] dayOfMonth]);
   return [NSString stringWithCString:buf];
 }

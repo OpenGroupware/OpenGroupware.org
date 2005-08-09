@@ -252,11 +252,11 @@
   if (tz == nil)
     tz = [sn timeZone];
   
-  if (tz) {
+  if ([tz isNotNull]) {
     /* pass timezone in context */
     WOContext *ctx;
-
-    ctx = [sn context];
+    
+    ctx = [(WOSession *)sn context];
     if (ctx == nil) [self logWithFormat:@"CONTEXT IS NIL !"];
     [ctx takeValue:tz forKey:@"SkySchedulerTimeZone"];
   }

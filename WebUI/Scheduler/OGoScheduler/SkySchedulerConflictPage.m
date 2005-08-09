@@ -19,7 +19,29 @@
   02111-1307, USA.
 */
 
-#include "SkySchedulerConflictPage.h"
+#include <OGoFoundation/OGoContentPage.h>
+
+@class EODataSource, NSString, NSArray, NSTimeZone;
+
+@interface SkySchedulerConflictPage : OGoContentPage
+{
+  id       conflictDataSource;
+  NSString *action;
+  NSString *mailContent;
+  BOOL     sendMail;
+  //
+  NSArray  *participantIds;
+  id       conflict;
+  unsigned index;
+  BOOL     isMailEnabled;
+  // cache
+  NSArray  *participantConflicts;
+  NSArray  *resourceConflicts;
+
+  NSTimeZone *timeZone;
+}
+@end
+
 #include "common.h"
 
 #include <NGExtensions/EOFilterDataSource.h>
@@ -525,7 +547,7 @@ static NSNumber   *noNum      = nil;
 
 /* key/value coding */
 
-- (void)takeValue:(id)_val forKey:(id)_key {
+- (void)takeValue:(id)_val forKey:(NSString *)_key {
   // TODO: is this necessary?
   if ([_key isEqualToString:@"dataSource"])
     [self setConflictDataSource:_val];
