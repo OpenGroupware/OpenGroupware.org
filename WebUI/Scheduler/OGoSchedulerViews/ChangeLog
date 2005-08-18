@@ -1,3 +1,13 @@
+2005-08-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.3.47
+
+	* SkyInlineAptDataSourceView.m: do not use deprecated
+	  SkySchedulerConflictDataSource API
+
+	* SkyMonthBrowser.m: code cleanups (moved some statics to
+	  Defaults.plist, removed unused ivars)
+
 2005-08-02  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkySchedulerDateCell.m: added ability to hide appointments which have

@@ -1,4 +1,4 @@
-// $Id: SkyInlineDayOverview.wod 2 2004-08-20 11:37:44Z znek $
+// bind template t controller
 
 IsViewAccessAllowed: WOConditional {
   condition = appointmentViewAccessAllowed;
@@ -313,7 +313,6 @@ BrowserDayLabel: WOString {
 IsInMonthCond: WOConditional {
   condition = browserDateInMonth;
 }
-
 IsInMonthCondElse: WOConditional {
   condition = browserDateInMonth;
   negate    = YES;

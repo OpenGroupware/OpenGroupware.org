@@ -54,9 +54,10 @@
   NSArray *conflicts;
 }
 
+- (id)initWithContext:(LSCommandContext *)_ctx;
+
 - (void)setAppointment:(id)_apt;
 - (id)appointment;
-- (void)setContext:(LSCommandContext *)_ctx;
 - (LSCommandContext *)context;
 
 // add a datasource to look for conflicting entries

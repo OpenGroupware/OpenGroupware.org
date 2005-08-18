@@ -833,8 +833,8 @@ static NSArray      *coreTeamAttrs   = nil;
     
     /* perform move */
     
-    if (apt == nil) {
-      [self logWithFormat:@"couldn't fetch date .."];
+    if (![apt isNotNull]) {
+      [self errorWithFormat:@"Could not fetch appointment."];
     }
     else {
       static NSString *errStringKey = @"errorString";
@@ -845,17 +845,20 @@ static NSArray      *coreTeamAttrs   = nil;
       {
         SkySchedulerConflictDataSource *ds;
 
-        ds = [[SkySchedulerConflictDataSource alloc] init];
-        [ds setContext:[(id)[self session] commandContext]];
+        ds = [SkySchedulerConflictDataSource alloc];
+        ds = [ds initWithContext:[(id)[self session] commandContext]];
         [ds setAppointment:apt];
-        if ([ds hasConflicts]) {
-          id page;
+        
+        // TODO: wrap in a cache datasource instead of relying on SCDS!
+        if ([[ds fetchObjects] count] > 0) {
+          WOComponent *page;
+          
           page = [self pageWithName:@"SkySchedulerConflictPage"];
           [page takeValue:ds forKey:@"dataSource"];
-          AUTORELEASE(ds);
+          [ds release]; ds = nil;
           return page;
         }
-        RELEASE(ds);
+        [ds release]; ds= nil;
       }
 
       NS_DURING {

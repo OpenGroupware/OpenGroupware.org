@@ -1,3 +1,7 @@
+2005-08-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoSchedulerViews: minor template cleanups
+
 2005-08-09  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoScheduler/SkySchedulerConflictPage: some template cleanups

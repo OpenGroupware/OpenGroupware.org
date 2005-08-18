@@ -66,7 +66,7 @@ static int      LSMaxAptCycles = 0;
   if (emptyArray == nil) emptyArray = [[NSArray alloc] init];
 }
 
-- (id)initWithContext:(id)_ctx {
+- (id)initWithContext:(LSCommandContext *)_ctx {
   if ((self = [super init])) {
     self->lso = [_ctx retain];
   }

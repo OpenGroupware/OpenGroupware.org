@@ -1,4 +1,8 @@
-// $Id: SkyMonthBrowser.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
+
+/*
+  This one displays a calendar matrix for a set of months
+*/
 
 // Style
 
@@ -14,7 +18,8 @@ MonthsRep: WORepetition {
   item  = item;
 }
 
-SingleMonthRep: SkyMonthRepetition {
+// Note: no WOx for that yet
+SingleMonthRep: SkyMonthRepetition { // the repetion does all the magic
   year      = currentYear;
   month     = currentMonth;
   timeZone  = timeZone;
@@ -64,15 +69,9 @@ ContentCell: SkyMonthCell {
 
 // Labels:
 
-MonthLabel: WOString {
-  value = monthLabel;
-}
-WeekdayTitle: WOString {
-  value = weekdayTitle;
-}
-WeekOfYear: WOString {
-  value = weekOfYear;
-}
+MonthLabel:   WOString { value = monthLabel;   }
+WeekdayTitle: WOString { value = weekdayTitle; }
+WeekOfYear:   WOString { value = weekOfYear;   }
 
 // Links:
 

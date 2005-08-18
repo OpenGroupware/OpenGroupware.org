@@ -1,3 +1,8 @@
+2005-08-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkySchedulerConflictDataSource.h: deprecated -setContext: in favor of
+	  -initWithContext: (v5.3.35)
+
 2005-08-09  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.3.34

@@ -1,4 +1,4 @@
-// $Id: SkyInlineDayChart.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 // conditionals
 
@@ -39,7 +39,7 @@ TextColor: WOGenericContainer {
 }
 
 // matrix
-ChartMatrix: WEVSpanTableMatrix {
+ChartMatrix: WEVSpanTableMatrix { // WOx: <var:vspan-matrix>, TODO: array plist
   list       = cacheDataSource.fetchObjects;
   item       = appointment;
   columns    = ( 0 );

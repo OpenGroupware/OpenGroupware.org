@@ -76,11 +76,6 @@
   int        monthOffset;
   int        dayOfWeek;
   int        weekOfYear;
-  // colors
-  NSString   *dayCellColor;
-  NSString   *noMonthCellColor;
-  NSString   *todayCellColor;
-
 }
 
 @end
@@ -95,9 +90,21 @@
 
 @implementation SkyMonthBrowser
 
+static NSArray *fullMonthNames   = nil;
+static NSArray *fullWeekdayNames = nil;
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  fullMonthNames = 
+    [[ud arrayForKey:@"OGoScheduler_MonthBrowser_FullMonths"] copy];
+  fullWeekdayNames = 
+    [[ud arrayForKey:@"OGoScheduler_MonthBrowser_FullWeekdays"] copy];
+}
+
 - (id)init {
-  if ((self = [super init])) {
-    NSCalendarDate *now = nil;
+  if ((self = [super init]) != nil) {
+    NSCalendarDate *now;
 
     [self setTimeZone:[(id)[self session] timeZone]];
     now = [NSCalendarDate date];
@@ -109,23 +116,23 @@
     
     self->showTitle      = YES;
     self->showWeekOfYear = NO;
-
-    self->dayCellColor     = nil;
-    self->noMonthCellColor = nil;
-    self->todayCellColor   = nil;
   }
   return self;
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->timeZone);
-  RELEASE(self->date);
+  [self->timeZone release];
+  [self->date     release];
   [super dealloc];
 }
-#endif
 
-// var accessors
+/* component type */
+
+- (BOOL)synchronizesVariablesWithBindings {
+  return NO;
+}
+
+/* accessors */
 
 - (void)setTimeZone:(NSTimeZone *)_tz {
   ASSIGN(self->timeZone,_tz);
@@ -133,15 +140,17 @@
 - (NSTimeZone *)timeZone {
   return self->timeZone;
 }
+
 - (int)year {
   return self->year;
 }
 - (int)month {
   return self->month;
 }
-- (int)months {
+- (int)months { // number of months to display?
   return self->months;
 }
+
 - (BOOL)showTitle {
   return self->showTitle;
 }
@@ -157,10 +166,13 @@
   return self->monthOffset;
 }
 
-// somehow the WebObject cursor feature confuses the SkyMonthRepetition
+// somehow the NGObjWeb cursor feature confuses the SkyMonthRepetition
 // so this is here to leave cursor==component
-- (void)setItem:(id)_item {}
-- (id)item { return nil; }
+- (void)setItem:(id)_item {
+}
+- (id)item {
+  return nil;
+}
 
 - (void)setDayOfWeek:(int)_dow {
   self->dayOfWeek = _dow;
@@ -168,6 +180,7 @@
 - (int)dayOfWeek {
   return self->dayOfWeek;
 }
+
 - (void)setWeekOfYear:(int)_woy {
   self->weekOfYear = _woy;
 }
@@ -175,37 +188,32 @@
   return self->weekOfYear;
 }
 
-// additinal accessors
-
-- (BOOL)synchronizesVariablesWithBindings {
-  return NO;
-}
+/* additional accessors */
 
 - (NSArray *)monthsArray {
-  NSMutableArray *ma = nil;
-  int            cnt = 0;
-
-  ma = [NSMutableArray array];
-  for (cnt = 0; cnt < self->months; cnt++) {
+  NSMutableArray *ma;
+  unsigned       cnt;
+  
+  ma = [NSMutableArray arrayWithCapacity:self->months];
+  for (cnt = 0; cnt < self->months; cnt++)
     [ma addObject:[NSNumber numberWithInt:cnt]];
-  }
   return ma;
 }
 
 - (int)currentMonth {
-  int m = self->monthOffset + self->month;
-  while (m > 12)
-    m -= 12;
+  int m;
+  
+  for (m = self->monthOffset + self->month; m > 12; m -= 12)
+    ;
   return m;
 }
 - (int)currentYear {
-  int m = self->monthOffset + self->month;
-  int div = 0;
-  while (m > 12) {
-    div++;
-    m -= 12;
-  }
-  return self->year + div;
+  int m;
+  int div;
+  
+  for (m = self->monthOffset + self->month, div = 0; m > 12; div++, m -= 12)
+    ;
+  return (self->year + div);
 }
 
 - (void)setDate:(NSCalendarDate *)_date {
@@ -218,40 +226,34 @@
 }
 
 - (NSString *)monthLabel {
-  static NSArray *ms = nil;
-  NSString       *l  = nil;
-  if (ms == nil)
-    ms = [[NSArray alloc] initWithObjects:
-                          @"January", @"February", @"March", @"April",
-                          @"May", @"June", @"July", @"August",
-                          @"September", @"October", @"November", @"December",
-                          nil];
-  l = [ms objectAtIndex:([self currentMonth] - 1)];
+  NSString *l;
+  
+  l = [fullMonthNames objectAtIndex:([self currentMonth] - 1)];
   l = [[self labels] valueForKey:l];
-  l = [NSString stringWithFormat:@"%@ %i", l, [self currentYear]];
-  return l;
+  
+  return [NSString stringWithFormat:@"%@ %04i", l, [self currentYear]];
 }
 
 - (NSString *)weekdayTitle {
-  static NSArray *ds = nil;
-  NSString       *l  = nil;
-  if (ds == nil)
-    ds = [[NSArray alloc] initWithObjects:
-                          @"Sunday", @"Monday", @"Tuesday", @"Wednesday",
-                          @"Thursday", @"Friday", @"Saturday", nil];
-  l = [ds objectAtIndex:self->dayOfWeek];
+  NSString *l;
+
+  l = [fullWeekdayNames objectAtIndex:self->dayOfWeek];
   if (YES) // configuration possibility may come later (shortWeekdayTitles)
-    l = [NSString stringWithFormat:@"short_%@",l];
-  l = [[self labels] valueForKey:l];
-  return l;
+    l = l ? [@"short_" stringByAppendingString:l] : nil;
+  return [[self labels] valueForKey:l];
 }
 
 - (NSString *)cellColor {
-  id c = [self config];
+  id c;
+
+  c = [self config]; // TODO: replace that with CSS!
+  
   if (!self->isInMonth)
     return [c valueForKey:@"colors_noMonthDayCell"];
+  
   if ([self->date isToday])
     return [c valueForKey:@"colors_todayCell"];
+  
   return [c valueForKey:@"colors_dayCell"];
 }
 
@@ -294,4 +296,4 @@
   return self->weekOfYear;
 }
 
-@end
+@end /* SkyMonthBrowser */
