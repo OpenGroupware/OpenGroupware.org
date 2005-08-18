@@ -136,7 +136,7 @@ application logic.
 %package pda
 Summary:      PDA syncing framework for OpenGroupware.org
 Group:        Development/Libraries
-Requires:     sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-core sope%{smaj}%{smin}-xml sope%{smaj}%{smin}-ldap libfoundation%{lfmaj}%{lfmin} libobjc-lf2 ogo-webui-app ogo-docapi ogo-logic
+Requires:     sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-core sope%{smaj}%{smin}-xml sope%{smaj}%{smin}-ldap libfoundation%{lfmaj}%{lfmin} libobjc-lf2 ogo-webui-app ogo-docapi ogo-logic pilot-link
 AutoReqProv:  off
 
 %description pda
@@ -1480,6 +1480,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Thu Aug 18 2005 Frank Reppin <frank@opengroupware.org>
+- MFC > pda requires pilot-link (pilot-link provides libpisock)
 * Mon Jul 18 2005 Frank Reppin <frank@opengroupware.org>
 - MFC
 * Wed Jun 22 2005 Frank Reppin <frank@opengroupware.org>
