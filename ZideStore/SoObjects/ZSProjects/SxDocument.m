@@ -214,6 +214,7 @@ static BOOL debugOn = NO;
   NSString *p;
   
   if ([[self nameInContainer] hasPrefix:@"._"]) {
+    // TODO: should we fake a 200 instead?
     return [NSException exceptionWithHTTPStatus:404 /* not found */
 			reason:@"rejecting writes to resourcefork file"];
   }

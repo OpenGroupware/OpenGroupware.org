@@ -97,7 +97,8 @@ static BOOL     logAppChange = NO;
     return error;
   if ((error = [self processAppointmentRangeInContext:_ctx]))
     return error;
-  
+
+  // TODO: remove Outlook specific stuff
   if ((tmp = [self->props objectForKey:@"rtfCompressed"])) {
     if ([tmp length] > 0) {
 #if 0

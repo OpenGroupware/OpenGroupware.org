@@ -1,5 +1,3 @@
-# $Id$
-
 - move all products to Products subdirectory to avoid confusion
 
 - add Sybase related fixes from the SKYRiX 5 CVS
