@@ -32,6 +32,7 @@ COMMON_PG_PROCESSNAME="postmaster"
 COMMON_PG_DATADIR_PREFIX="/var/lib/pgsql/data"
 COMMON_POSTGRESQL_CONF="${COMMON_PG_DATADIR_PREFIX}/postgresql.conf"
 COMMON_PGHBA_CONF="${COMMON_PG_DATADIR_PREFIX}/pg_hba.conf"
+COMMON_PG_VERSION="${COMMON_PG_DATADIR_PREFIX}/PG_VERSION"
 COMMON_PG_INITSCRIPT="/etc/init.d/postgresql"
 DEFAULT_OGO_DB_NAME="OGo"
 DEFAULT_OGO_DB_USER="OGo"
@@ -81,7 +82,7 @@ initial()
 {
   # get current postgres state
   # postgresql is already installed due to dependencies
-  if [ ! -f "${COMMON_PG_DATADIR_PREFIX}/PG_VERSION"  ]; then
+  if [ ! -f "${COMMON_PG_VERSION}"  ]; then
     echo -e "PostgreSQL not yet initialized."
     echo -e "(will be initialized by the initscript)"
     MUST_START_PG="YES"
@@ -100,13 +101,13 @@ initial()
     #the initscript is named 'rhdb' on at least RHEL3
     if [ -f "/etc/init.d/rhdb" ]; then
       echo -e "Found '/etc/init.d/rhdb'..."
-      /etc/init.d/rhdb start
       COMMON_PG_INITSCRIPT="/etc/init.d/rhdb"
+      ${COMMON_PG_INITSCRIPT} start
     #everywhere else it should be 'postgresql'
     #(at least on all our RPM buildhosts)
     elif [ -f "/etc/init.d/postgresql" ]; then
       echo -e "Found '/etc/init.d/postgresql'"
-      /etc/init.d/postgresql start
+      ${COMMON_PG_INITSCRIPT} start
       #and check if we had success....
       #I cannot really rely on the returncode here...
       #while SUSE returns the actually true exitcode, Fedora doesn't
@@ -162,22 +163,34 @@ initial()
     echo -e "  ${OGO_BUGZILLA_INDEX}"
     exit 1
   fi
+  if [ ! -f "${COMMON_PG_VERSION}" ]; then
+    echo -e "Although we had an initdb... I cannot see ${COMMON_PG_VERSION}"
+    echo -e "this indicates a probably really fatal error."
+    echo -e "I cannot proceed setting up the OGo Database ${OGO_DB_ITSELF}"
+    echo -e "... I quit!"
+    echo -e "I suggest that you consult:"
+    echo -e "  ${OGO_ML_INDEX}"
+    echo -e "  ${OGO_FAQ_INDEX}"
+    echo -e "  ${OGO_BUGZILLA_INDEX}"
+    exit 1
+  fi
+
+  #get this pg_version
+  THIS_PG_VERSION="`cat ${COMMON_PG_VERSION}`"
+  REAL_PG_VERSION="${THIS_PG_VERSION}"
+  if [ "`echo ${THIS_PG_VERSION} | grep -E "^7"`" ]; then
+    THIS_PG_VERSION="7"
+  elif [ "`echo ${THIS_PG_VERSION} | grep -E "^8"`" ]; then
+    THIS_PG_VERSION="8"
+  fi
+  echo -e "We're on PostgreSQL ${THIS_PG_VERSION} (${REAL_PG_VERSION})"
   
   if [ "x${PATCH_POSTGRESQL_CONF}" = "xYES" ]; then
     echo -e "checking ${COMMON_POSTGRESQL_CONF}"
-    if [ "`grep -E "^tcpip_socket[[:space:]]*=[[:space:]]*true$" ${COMMON_POSTGRESQL_CONF}`"  ]; then
-      echo -e "  no patching needed for ${COMMON_POSTGRESQL_CONF}"
-      echo -e "  'tcpip_socket = true' already set."
-      NEED_RESTART_TO_ACTIVATE="NO"
-    else
-      echo -e "  need to patch ${COMMON_POSTGRESQL_CONF}"
-      echo -e "  backup current one to ${COMMON_POSTGRESQL_CONF}.${NOW}"
-      sed -i.${NOW} -r "s~^#tcpip_socket.*~tcpip_socket = true~" ${COMMON_POSTGRESQL_CONF}
-      chmod ${POSTGRESQL_CONF_ACR} ${COMMON_POSTGRESQL_CONF}
-      chmod ${POSTGRESQL_CONF_ACR} ${COMMON_POSTGRESQL_CONF}.${NOW}
-      chown ${POSTGRESQL_CONF_UID}:${POSTGRESQL_CONF_GID} ${COMMON_POSTGRESQL_CONF}
-      chown ${POSTGRESQL_CONF_UID}:${POSTGRESQL_CONF_GID} ${COMMON_POSTGRESQL_CONF}.${NOW}
-      NEED_RESTART_TO_ACTIVATE="YES"
+    if [ "x${THIS_PG_VERSION}" = "x7" ]; then
+      patch_version_7_pg_hba
+    elif [ "x${THIS_PG_VERSION}" = "x8" ]; then
+      patch_version_8_pg_hba
     fi
   else
     echo -e "You didn't set PATCH_POSTGRESQL_CONF to \"YES\"... is set to ${PATCH_POSTGRESQL_CONF}"
@@ -187,20 +200,10 @@ initial()
   
   if [ "x${PATCH_PGHBA_CONF}" = "xYES" ]; then
     echo -e "checking ${COMMON_PGHBA_CONF}"
-    if [ "`grep -E "^host[[:space:]]*${OGO_DB_ITSELF}[[:space:]]*${OGO_DB_USER}[[:space:]]*127.0.0.1[[:space:]]*255.255.255.255[[:space:]]*trust$" ${COMMON_PGHBA_CONF}`" ]; then
-      echo -e "  no patching needed for ${COMMON_PGHBA_CONF}"
-      #restart to activate is already either `yes` or `no`
-    else
-      echo -e "  need to patch ${COMMON_PGHBA_CONF}"
-      echo -e "  backup current one to ${COMMON_PGHBA_CONF}.${NOW}"
-      cp ${COMMON_PGHBA_CONF} ${COMMON_PGHBA_CONF}.${NOW}
-      #sed -i.${NOW} -r "s~#host\s+all\s+all\s+127.0.0.1\s+255.255.255.255.*~host    ${OGO_DB_ITSELF}    ${OGO_DB_USER}    127.0.0.1    255.255.255.255    trust~" ${COMMON_PGHBA_CONF}
-      echo "host  ${OGO_DB_ITSELF}    ${OGO_DB_USER}    127.0.0.1    255.255.255.255    trust" >>${COMMON_PGHBA_CONF}
-      chmod ${PGHBA_CONF_ACR} ${COMMON_PGHBA_CONF}
-      chmod ${PGHBA_CONF_ACR} ${COMMON_PGHBA_CONF}.${NOW}
-      chown ${PGHBA_CONF_UID}:${PGHBA_CONF_GID} ${COMMON_PGHBA_CONF}
-      chown ${PGHBA_CONF_UID}:${PGHBA_CONF_GID} ${COMMON_PGHBA_CONF}.${NOW}
-      NEED_RESTART_TO_ACTIVATE="YES"
+    if [ "x${THIS_PG_VERSION}" = "x7" ]; then
+      patch_version_7_pg_conf
+    elif [ "x${THIS_PG_VERSION}" = "x8" ]; then
+      patch_version_8_pg_conf
     fi
   else
     echo -e "You didn't set PATCH_PGHBA_CONF to \"YES\"... is set to ${PATCH_PGHBA_CONF}"
@@ -329,6 +332,74 @@ initial()
       exit 1
     fi
   fi
+}
+
+patch_version_7_pg_hba() {
+ if [ "`grep -E "^tcpip_socket[[:space:]]*=[[:space:]]*true$" ${COMMON_POSTGRESQL_CONF}`"  ]; then
+   echo -e "  no patching needed for ${COMMON_POSTGRESQL_CONF}"
+   echo -e "  'tcpip_socket = true' already set."
+   NEED_RESTART_TO_ACTIVATE="NO"
+ else
+   echo -e "  need to patch ${COMMON_POSTGRESQL_CONF} for ${REAL_PG_VERSION}"
+   echo -e "  backup current one to ${COMMON_POSTGRESQL_CONF}.${NOW}"
+   sed -i.${NOW} -r "s~^#tcpip_socket.*~tcpip_socket = true~" ${COMMON_POSTGRESQL_CONF}
+   chmod ${POSTGRESQL_CONF_ACR} ${COMMON_POSTGRESQL_CONF}
+   chmod ${POSTGRESQL_CONF_ACR} ${COMMON_POSTGRESQL_CONF}.${NOW}
+   chown ${POSTGRESQL_CONF_UID}:${POSTGRESQL_CONF_GID} ${COMMON_POSTGRESQL_CONF}
+   chown ${POSTGRESQL_CONF_UID}:${POSTGRESQL_CONF_GID} ${COMMON_POSTGRESQL_CONF}.${NOW}
+   NEED_RESTART_TO_ACTIVATE="YES"
+ fi
+}
+
+patch_version_7_pg_conf() {
+ if [ "`grep -E "^host[[:space:]]*${OGO_DB_ITSELF}[[:space:]]*${OGO_DB_USER}[[:space:]]*127.0.0.1[[:space:]]*255.255.255.255[[:space:]]*trust$" ${COMMON_PGHBA_CONF}`" ]; then
+   echo -e "  no patching needed for ${COMMON_PGHBA_CONF}"
+   #restart to activate is already either `yes` or `no`
+ else
+   echo -e "  need to patch ${COMMON_PGHBA_CONF} for ${REAL_PG_VERSION}"
+   echo -e "  backup current one to ${COMMON_PGHBA_CONF}.${NOW}"
+   cp ${COMMON_PGHBA_CONF} ${COMMON_PGHBA_CONF}.${NOW}
+   #sed -i.${NOW} -r "s~#host\s+all\s+all\s+127.0.0.1\s+255.255.255.255.*~host    ${OGO_DB_ITSELF}    ${OGO_DB_USER}    127.0.0.1    255.255.255.255    trust~" ${COMMON_PGHBA_CONF}
+   echo "host  ${OGO_DB_ITSELF}    ${OGO_DB_USER}    127.0.0.1    255.255.255.255    trust" >>${COMMON_PGHBA_CONF}
+   chmod ${PGHBA_CONF_ACR} ${COMMON_PGHBA_CONF}
+   chmod ${PGHBA_CONF_ACR} ${COMMON_PGHBA_CONF}.${NOW}
+   chown ${PGHBA_CONF_UID}:${PGHBA_CONF_GID} ${COMMON_PGHBA_CONF}
+   chown ${PGHBA_CONF_UID}:${PGHBA_CONF_GID} ${COMMON_PGHBA_CONF}.${NOW}
+   NEED_RESTART_TO_ACTIVATE="YES"
+  fi
+}
+
+patch_version_8_pg_hba() {
+ if [ "`grep -E "^host[[:space:]]*${OGO_DB_ITSELF}[[:space:]]*${OGO_DB_USER}[[:space:]]*127.0.0.1/32[[:space:]]*trust$" ${COMMON_PGHBA_CONF}`" ]; then
+   echo -e "  no patching needed for ${COMMON_PGHBA_CONF}"
+   #restart to activate is already either `yes` or `no`
+ else
+   echo -e "  need to patch ${COMMON_PGHBA_CONF} for ${REAL_PG_VERSION}"
+   echo -e "  backup current one to ${COMMON_PGHBA_CONF}.${NOW}"
+   sed -i.${NOW} -r "s~#\s+TYPE\s+DATABASE\s+USER\s+CIDR-ADDRESS\s+METHOD~# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\nhost  ${OGO_DB_ITSELF}    ${OGO_DB_USER}    127.0.0.1/32    trust~" ${COMMON_PGHBA_CONF}
+   chmod ${PGHBA_CONF_ACR} ${COMMON_PGHBA_CONF}
+   chmod ${PGHBA_CONF_ACR} ${COMMON_PGHBA_CONF}.${NOW}
+   chown ${PGHBA_CONF_UID}:${PGHBA_CONF_GID} ${COMMON_PGHBA_CONF}
+   chown ${PGHBA_CONF_UID}:${PGHBA_CONF_GID} ${COMMON_PGHBA_CONF}.${NOW}
+   NEED_RESTART_TO_ACTIVATE="YES"
+  fi
+}
+
+patch_version_8_pg_conf() {
+ if [ "`grep -E "^port[[:space:]]*=[[:space:]]*5432$" ${COMMON_POSTGRESQL_CONF}`"  ]; then
+   echo -e "  no patching needed for ${COMMON_POSTGRESQL_CONF}"
+   echo -e "  'port = 5432' already set."
+   NEED_RESTART_TO_ACTIVATE="NO"
+ else
+   echo -e "  need to patch ${COMMON_POSTGRESQL_CONF} for ${REAL_PG_VERSION}"
+   echo -e "  backup current one to ${COMMON_POSTGRESQL_CONF}.${NOW}"
+   sed -i.${NOW} -r "s~^#port = 5432.*~port = 5432~" ${COMMON_POSTGRESQL_CONF}
+   chmod ${POSTGRESQL_CONF_ACR} ${COMMON_POSTGRESQL_CONF}
+   chmod ${POSTGRESQL_CONF_ACR} ${COMMON_POSTGRESQL_CONF}.${NOW}
+   chown ${POSTGRESQL_CONF_UID}:${POSTGRESQL_CONF_GID} ${COMMON_POSTGRESQL_CONF}
+   chown ${POSTGRESQL_CONF_UID}:${POSTGRESQL_CONF_GID} ${COMMON_POSTGRESQL_CONF}.${NOW}
+   NEED_RESTART_TO_ACTIVATE="YES"
+ fi
 }
 
 case "${1}" in
