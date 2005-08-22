@@ -35,7 +35,7 @@
 
   rootAccessSkyAptNotifyDevices     = YES;
   scheduler_editor_canResolveTeams  = NO;
-  scheduler_participantRolesEnabled = NO;
+  scheduler_participantRolesEnabled = YES;
   scheduler_attach_apts_to_mails    = NO;
 
   scheduler_participantStatus_colors = {

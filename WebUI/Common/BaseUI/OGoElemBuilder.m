@@ -718,7 +718,7 @@ static WOAssociation *yesAssoc = nil;
   
   /* construct child elements (rework for OGo:body?) */
   
-  if ((tmp = [self lookupUniqueTag:@"body" in:_element])) {
+  if ((tmp = [self lookupUniqueTag:@"body" in:_element]) != nil) {
     /* mode a: explicit hierarchy with 'head' and 'body' subelements */
     WOElement *head, *body;
     

@@ -21,8 +21,6 @@
 
 #include <NGObjWeb/WODynamicElement.h>
 
-#define NUMBER_OF_SECONDS_PER_DAY (24 * 60 * 60)
-
 @interface SkyMonthRepetition : WODynamicElement
 {
 @protected
@@ -65,6 +63,7 @@
   WOElement *template;
 }
 @end /* SkyMonthCell */
+
 
 #include "common.h"
 
@@ -255,7 +254,7 @@ _takeValuesInCell(SkyMonthRepetition *self, WORequest *request,
     queryE = [[[_ctx valueForKey:@"SkyMonthRepetition"] valueForKey:@"query"]
                      objectEnumerator];
 
-    while ((orient = [queryE nextObject])) {
+    while ((orient = [queryE nextObject]) != nil) {
       if ((!hasHeader) && ([orient isEqualToString:@"header"]))
         hasHeader = YES;
       if ((!hasCell) && ([orient isEqualToString:@"cell"]))
@@ -556,6 +555,7 @@ _takeValuesInCell(SkyMonthRepetition *self, WORequest *request,
 
 @end /* SkyMonthRepetition */
 
+
 @implementation SkyMonthLabel
 
 - (id)initWithName:(NSString *)_name
@@ -706,6 +706,7 @@ _takeValuesInCell(SkyMonthRepetition *self, WORequest *request,
 
 @end /* SkyMonthLabel */
 
+
 @implementation SkyMonthCell
 
 - (id)initWithName:(NSString *)_name
@@ -713,7 +714,7 @@ _takeValuesInCell(SkyMonthRepetition *self, WORequest *request,
   template:(WOElement *)_t
 {
   if ((self = [super initWithName:_name associations:_config template:_t])) {
-    self->template = RETAIN(_t);
+    self->template = [_t retain];
   }
   return self;
 }
@@ -730,7 +731,7 @@ _takeValuesInCell(SkyMonthRepetition *self, WORequest *request,
   id tmp;
   
   op  = [_ctx valueForKey:@"SkyMonthRepetition"];
-  if ((tmp = [op objectForKey:@"cell"]))
+  if ((tmp = [op objectForKey:@"cell"]) != nil)
     [self->template takeValuesFromRequest:_req inContext:_ctx];
 }
 

@@ -21,6 +21,24 @@
 
 #include <OGoFoundation/OGoComponent.h>
 
+/*
+  SkySchedulerConflictCell
+
+  TODO: document
+  
+  Note: badly named, this renders a <table/>, not a table cell (eg 'td').
+  
+  Bindings:
+    type:
+      00_participantConflict
+      01_participantAppointment
+      05_resourceConflict
+      06_resourceAppointment
+
+  This component is used by the SkySchedulerConflictPage to render the base
+  appointment as well as the conflicts.
+*/
+
 @class NSString, NSArray, NSNumber;
 
 @interface SkySchedulerConflictCell : OGoComponent
@@ -30,10 +48,13 @@
   NSString *type;
   NSArray  *participantIds;
   
-  id       actual;
+  id       actual; // depending on type, either 'appointment' or 'conflict'
   id       item;
   NSNumber *flagCache;
-  BOOL     showFullNames;
+  struct {
+    int showFullNames:1;
+    int reserved:31;
+  } ssccFlags;
 }
 
 @end
@@ -45,24 +66,24 @@
 @implementation SkySchedulerConflictCell
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     NSUserDefaults *ud;
 
     ud = [[self session] userDefaults];
-    self->showFullNames =
-      [ud boolForKey:@"scheduler_overview_full_names"];
+    self->ssccFlags.showFullNames =
+      [ud boolForKey:@"scheduler_overview_full_names"] ? 1 : 0;
   }
   return self;
 }
 
 - (void)dealloc {
-  RELEASE(self->appointment);
-  RELEASE(self->conflict);
-  RELEASE(self->type);
-  RELEASE(self->participantIds);
-  RELEASE(self->actual);
-  RELEASE(self->item);
-  RELEASE(self->flagCache);
+  [self->appointment    release];
+  [self->conflict       release];
+  [self->type           release];
+  [self->participantIds release];
+  [self->actual         release];
+  [self->item           release];
+  [self->flagCache      release];
   [super dealloc];
 }
 
@@ -83,33 +104,38 @@
 }
 
 - (void)setType:(NSString *)_type {
-  ASSIGN(self->type,_type);
-  RELEASE(self->actual); self->actual = nil;
+  ASSIGN(self-> type,_type);
+  
+  [self->actual release]; self->actual = nil;
 }
 - (NSString *)type {
   return self->type;
 }
 
 - (void)setParticipantIds:(NSArray *)_ids {
-  ASSIGN(self->participantIds,_ids);
+  ASSIGN(self->participantIds, _ids);
 }
 - (NSArray *)participantIds {
   return self->participantIds;
 }
 
 - (id)actual {
-  if (self->actual == nil) {
-    if ([self->type hasSuffix:@"Appointment"])
-      ASSIGN(self->actual, self->appointment);
-    else if ([self->type hasSuffix:@"Conflict"])
-      ASSIGN(self->actual, self->conflict);
+  if (self->actual != nil)
+    return self->actual;
+
+  if ([self->type hasSuffix:@"Appointment"]) {
+    ASSIGN(self->actual, self->appointment);
+  }
+  else if ([self->type hasSuffix:@"Conflict"]) {
+    ASSIGN(self->actual, self->conflict);
   }
   return self->actual;
 }
 
 - (void)setItem:(id)_item {
   ASSIGN(self->item,_item);
-  RELEASE(self->flagCache); self->flagCache = nil;
+
+  [self->flagCache release]; self->flagCache = nil;
 }
 - (id)item {
   return self->item;
@@ -118,18 +144,16 @@
 /* additional accessors */
 
 - (NSString *)participant {
+  // TODO: use a formatter?!
   id label = nil;
   
-  if ([[self->item valueForKey:@"isTeam"] boolValue]) {
+  if ([[self->item valueForKey:@"isTeam"] boolValue])
     label = [self->item valueForKey:@"description"];
-  }
-  else if ([[self->item valueForKey:@"isAccount"] boolValue]) {
+  else if ([[self->item valueForKey:@"isAccount"] boolValue])
     label = [self->item valueForKey:@"login"];
-  }
-  else {
+  else
     label = [self->item valueForKey:@"name"];
-  }
-
+  
   if (![label isNotNull])
     label = @"*";
 
@@ -138,11 +162,11 @@
 
 - (NSArray *)resources {
   NSString *resourceNames;
-  resourceNames = [[self actual] valueForKey:@"resourceNames"];
 
+  resourceNames = [[self actual] valueForKey:@"resourceNames"];
   if (![resourceNames isNotNull])
     return [NSArray array];
-
+  
   return [resourceNames componentsSeparatedByString:@", "];
 }
 
@@ -150,17 +174,16 @@
 
 - (BOOL)doesPartConflict:(id)_part {
   NSNumber *pid;
-
+  
   pid = [_part valueForKey:@"companyId"];
-  return ([self->participantIds containsObject:pid])
-    ? YES : NO;
+  return [self->participantIds containsObject:pid];
 }
 - (BOOL)doesAnyParticipantConflict {
-  NSEnumerator *e = [[[self actual] valueForKey:@"participant"]
-                            objectEnumerator];
+  NSEnumerator *e;
   id           one;
 
-  while ((one = [e nextObject])) {
+  e = [[[self actual] valueForKey:@"participant"] objectEnumerator];
+  while ((one = [e nextObject]) != nil) {
     if ([self doesPartConflict:one]) return YES;
   }
   return NO;
@@ -184,7 +207,7 @@
   all = [[self->appointment valueForKey:@"resourceNames"]
                             componentsSeparatedByString:@", "];
   
-  while ((one = [e nextObject])) {
+  while ((one = [e nextObject]) != nil) {
     if ([all containsObject:one]) return YES;
   }
   return NO;
@@ -231,13 +254,13 @@
 
 - (SkyAppointmentFormatter *)participantFormatter {
   SkyAppointmentFormatter *f;
+  
   f = [SkyAppointmentFormatter formatterWithFormat:@"%P"];
-  [f setShowFullNames:self->showFullNames];
+  [f setShowFullNames:self->ssccFlags.showFullNames ? YES : NO];
   return f;
 }
 - (SkyAppointmentFormatter *)resourceFormatter {
   return [SkyAppointmentFormatter formatterWithFormat:@"%R"];
 }
 
-
-@end
+@end /* SkySchedulerConflictCell */

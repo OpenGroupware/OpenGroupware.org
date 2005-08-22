@@ -124,7 +124,7 @@ static NSNumber   *noNum      = nil;
 }
 
 - (void)setAction:(NSString *)_action {
-  ASSIGN(self->action, _action);
+  ASSIGNCOPY(self->action, _action);
 }
 - (NSString *)action {
   return self->action;
@@ -138,7 +138,7 @@ static NSNumber   *noNum      = nil;
 }
 
 - (void)setMailContent:(NSString *)_mailContent {
-  ASSIGN(self->mailContent, _mailContent);
+  ASSIGNCOPY(self->mailContent, _mailContent);
 }
 - (NSString *)mailContent {
   return self->mailContent;
@@ -196,48 +196,49 @@ static NSNumber   *noNum      = nil;
 
   /* getting teams */
   if ([teams count] > 0) {
-      NSArray *keys;
-      int     i, cnt;
-
-      cnt   = [teams count];
-      [ms addObjectsFromArray:teams];
-      teams = [self runCommand:@"team::members",
+    unsigned cnt;
+      
+    cnt   = [teams count];
+    [ms addObjectsFromArray:teams];
+    teams = [self runCommand:@"team::members",
                     @"groups", teams,
                     @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
-                    nil];
-      if (cnt == 1) {
-        [ms addObjectsFromArray:teams];
-      }
-      else {
-        keys = [teams allKeys];
-        //      [ms addObjectsFromArray:keys];
-        for (i = 0, cnt = [keys count]; i < cnt; i++) {
-          [ms addObjectsFromArray:[teams valueForKey:[keys objectAtIndex:i]]];
-        }
-      }
+                  nil];
+    if (cnt == 1) { // TODO: this is a hack to deal with single-value incon.?
+      [ms addObjectsFromArray:teams];
+    }
+    else {
+      NSArray  *keys;
+      unsigned i;
+        
+      keys = [teams allKeys];
+      // [ms addObjectsFromArray:keys];
+      for (i = 0, cnt = [keys count]; i < cnt; i++)
+        [ms addObjectsFromArray:[teams valueForKey:[keys objectAtIndex:i]]];
+    }
   }
 
   if ([accounts count] > 0) {
-      NSArray *keys;
-      int     i, cnt;
+    NSArray  *keys, *teams;
+    unsigned i, cnt;
 
-      cnt = [accounts count];
-      [ms addObjectsFromArray:accounts];
-      accounts = [self runCommand:@"account::teams",
-                       @"accounts", accounts,
-                       @"fetchGlobalIDs", yesNum,
-                       nil];
-      if (cnt == 1) {
-        [ms addObjectsFromArray:accounts];
+    cnt = [accounts count];
+    [ms addObjectsFromArray:accounts];
+    teams = [self runCommand:@"account::teams",
+                    @"accounts", accounts,
+                    @"fetchGlobalIDs", yesNum,
+                  nil];
+    if (cnt == 1) {
+      [ms addObjectsFromArray:teams];
+    }
+    else {
+      keys = [teams allKeys];
+      //      [ms addObjectsFromArray:keys];
+      for (i = 0, cnt = [keys count]; i < cnt; i++) {
+        [ms addObjectsFromArray:
+              [teams valueForKey:[keys objectAtIndex:i]]];
       }
-      else {
-        keys = [accounts allKeys];
-        //      [ms addObjectsFromArray:keys];
-        for (i = 0, cnt = [keys count]; i < cnt; i++) {
-          [ms addObjectsFromArray:
-              [accounts valueForKey:[keys objectAtIndex:i]]];
-        }
-      }
+    }
   }
 
   parts = [NSMutableArray arrayWithCapacity:16];
@@ -293,10 +294,14 @@ static NSNumber   *noNum      = nil;
 }
 
 - (EOQualifier *)participantQualifier {
-  NSString    *in = [self resourceQualifierString];
+  NSString *in;
 
-  if (in == nil)
+  // TODO: this is apparently correct, though I do not understand what this is
+  //       supposed to do
+  
+  if ((in = [self resourceQualifierString]) == nil)
     return nil;
+  
   in = [NSString stringWithFormat:@"NOT (%@)", in];
   return [EOQualifier qualifierWithQualifierFormat:in];
 }
@@ -306,6 +311,7 @@ static NSNumber   *noNum      = nil;
   
   if ((in = [self resourceQualifierString]) == nil)
     return nil;
+  
   return [EOQualifier qualifierWithQualifierFormat:in];
 }
 
@@ -322,7 +328,7 @@ static NSNumber   *noNum      = nil;
     return self->participantConflicts;
 
   /* wrap conflict-datasource in a filter-datasource */
-
+  
   participantDs =
     [[EOFilterDataSource alloc] initWithDataSource:self->conflictDataSource];
   q = [self participantQualifier];
@@ -448,7 +454,7 @@ static NSNumber   *noNum      = nil;
     return nil;
     
   title   = [_apt valueForKey:@"title"];
-
+  
   [self runCommand:@"appointment::get-participants",@"appointment",_apt,nil];
   ps  = [_apt valueForKey:@"participants"];
   ps  = [self expandedParticipants:ps];
@@ -459,6 +465,7 @@ static NSNumber   *noNum      = nil;
   if ([(cc = [self ccForNotificationMails]) isNotEmpty])
     [mailEditor addReceiver:cc type:@"cc"];
   
+  // TODO: make that a formatter
   subject = [[NSString alloc] initWithFormat:@"%@: '%@' %@",
 		        [[self labels] valueForKey:@"appointment"],
 		        title,
