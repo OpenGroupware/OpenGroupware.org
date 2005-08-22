@@ -1,3 +1,7 @@
+2005-08-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoScheduler/SkySchedulerConflictPage: rewritten as WOx template
+
 2005-08-18  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoSchedulerViews: minor template cleanups
