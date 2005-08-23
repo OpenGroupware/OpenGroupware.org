@@ -590,13 +590,13 @@ CREATE TABLE table_version (
   table_version int not null,
   constraint    pk_table_version primary key (table_name));
 
-CREATE TABLE person () INHERITS(company);
+CREATE TABLE person ()     INHERITS(company);
 CREATE TABLE enterprise () INHERITS(company);
-CREATE TABLE trust () INHERITS(company);
-CREATE TABLE team () INHERITS(company);
+CREATE TABLE trust ()      INHERITS(company);
+CREATE TABLE team ()       INHERITS(company);
 
 CREATE TABLE note () INHERITS(document);
-CREATE TABLE doc () INHERITS(document);
+CREATE TABLE doc ()  INHERITS(document);
 
 -- PDA
 
@@ -882,6 +882,8 @@ CREATE INDEX obj_l_target_type_idx   ON obj_link(target_type);
 CREATE INDEX obj_l_target_idx        ON obj_link(target_id);
 CREATE INDEX obj_l_label_idx         ON obj_link(label);
 CREATE INDEX obj_l_type_idx          ON obj_link(link_type);
+
+CREATE INDEX obj_info_objectid ON obj_info(obj_id);
 
 CREATE INDEX obj_p_obj_type_idx         ON obj_property(obj_type);
 CREATE INDEX obj_acl_sort_key_idx    ON object_acl(sort_key);

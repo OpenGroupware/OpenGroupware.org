@@ -1,3 +1,10 @@
+2005-08-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added pg-fill-objinfo.psql script to fill the obj_info table of the
+	  database
+
+	* pg-build-schema.psql: create index on obj_info table
+
 2005-03-22  Stefan Huehner  <stefan@huehner.org>
 	
 	* pg-build-schema.psql.constraints: removed all table creation and
