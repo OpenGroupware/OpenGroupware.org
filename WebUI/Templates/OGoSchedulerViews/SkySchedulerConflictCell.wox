@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<table width="100%" cellspacing="2" cellpadding="2"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+  <tr>
+    <OGo:td-attr><OGo:font><OGo:label key="title"/>:</OGo:font></OGo:td-attr>
+    <OGo:td-value><OGo:font><b
+       ><var:string value="actual.title"/></b></OGo:font></OGo:td-value>
+  </tr>
+  <tr>
+    <OGo:td-attr><OGo:font
+       ><OGo:label key="startDate"/>:</OGo:font></OGo:td-attr>
+    <OGo:td-value><OGo:font
+       ><var:string value="actual.startDate" 
+           formatter="session.formatDateTimeTZ"/></OGo:font></OGo:td-value>
+  </tr>
+  <tr>
+    <OGo:td-attr><OGo:font><OGo:label key="endDate"/>:</OGo:font></OGo:td-attr>
+    <OGo:td-value><OGo:font
+       ><var:string value="actual.endDate" 
+            formatter="session.formatDateTimeTZ"/></OGo:font></OGo:td-value>
+  </tr>
+  <tr>
+    <OGo:td-attr><OGo:font
+       ><OGo:label key="location"/>:</OGo:font></OGo:td-attr>
+    <OGo:td-value><OGo:font
+       ><var:string value="actual.location"/></OGo:font></OGo:td-value>
+  </tr>
+  
+  <var:if condition="showParticipantsCell">
+    <tr>
+      <OGo:td-attr><OGo:font
+        ><OGo:label key="participants"/>:</OGo:font></OGo:td-attr>
+      <OGo:td-value>
+        <OGo:font>
+          <var:foreach list="actual.participants" item="item">
+            <var:if condition="isParticipantConflicting">
+              <font color="red"><var:string value="participant"/></font>
+            </var:if>
+            <var:if condition="isParticipantConflicting" const:negate="1">
+              <var:string value="participant"/>
+            </var:if>
+          </var:foreach>
+        </OGo:font>
+      </OGo:td-value>
+    </tr>
+  </var:if>
+
+  <var:if condition="showResourceCell">
+    <tr>
+      <OGo:td-attr><OGo:font
+        ><OGo:label key="resources"/>:</OGo:font></OGo:td-attr>
+      <OGo:td-value>
+        <OGo:font>
+          <var:foreach list="resources" item="item">
+            <var:if condition="isResourceConflicting">
+              <font color="red"><var:string value="item"/></font>
+            </var:if>
+            <var:if condition="isResourceConflicting" const:negate="1">
+              <var:string value="item"/>
+            </var:if>
+          </var:foreach>
+        </OGo:font>
+      </OGo:td-value>
+    </tr>
+  </var:if>
+
+  <var:if condition="listParticipants">
+    <tr>
+      <OGo:td-attr><OGo:font
+         ><OGo:label key="participants"/>:</OGo:font></OGo:td-attr>
+      <OGo:td-value><OGo:font>
+        <var:string value="actual" formatter="participantFormatter"/>
+      </OGo:font></OGo:td-value>
+    </tr>
+  </var:if>
+
+  <var:if condition="listResources">
+    <tr>
+      <OGo:td-attr><OGo:font
+         ><OGo:label key="resources"/>:</OGo:font></OGo:td-attr>
+      <OGo:td-value><OGo:font>
+        <var:string value="actual" formatter="resourceFormatter"/></OGo:font>
+      </OGo:td-value>
+    </tr>
+  </var:if>
+</table>

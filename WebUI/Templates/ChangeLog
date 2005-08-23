@@ -1,5 +1,7 @@
 2005-08-23  Helge Hess  <helge.hess@skyrix.com>
 
+	* OGoSchedulerViews/SkySchedulerConflictCell: rewritten as WOx template
+
 	* OGoScheduler/SkySchedulerPage.wox-pre: work on WOx scheduler page
 
 	* OGoProject/SkyP4ProjectTableView: made project code clickable
