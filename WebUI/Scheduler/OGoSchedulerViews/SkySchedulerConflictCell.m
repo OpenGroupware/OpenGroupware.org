@@ -29,6 +29,11 @@
   Note: badly named, this renders a <table/>, not a table cell (eg 'td').
   
   Bindings:
+    appointment      - base appointment
+    
+    conflict         - conflictin appointment
+    participantIds   - array of participant companyIds (teams flattened!?)
+    
     type:
       00_participantConflict
       01_participantAppointment
@@ -176,12 +181,14 @@
   NSNumber *pid;
   
   pid = [_part valueForKey:@"companyId"];
-  return [self->participantIds containsObject:pid];
+  return pid != nil ? [self->participantIds containsObject:pid] : NO;
 }
+
 - (BOOL)doesAnyParticipantConflict {
+  // TODO: who uses that?
   NSEnumerator *e;
   id           one;
-
+  
   e = [[[self actual] valueForKey:@"participant"] objectEnumerator];
   while ((one = [e nextObject]) != nil) {
     if ([self doesPartConflict:one]) return YES;
@@ -214,40 +221,36 @@
 }
 
 - (BOOL)isParticipantConflicting {
-  if (self->flagCache == nil) {
+  if (self->flagCache == nil) { // TODO: fix this nonsense
     NSNumber *flag;
-    flag = [NSNumber numberWithBool:
-                     [self doesPartConflict:self->item]];
-    ASSIGN(self->flagCache,flag);
+    
+    flag = [NSNumber numberWithBool:[self doesPartConflict:self->item]];
+    ASSIGN(self->flagCache, flag);
   }
   return [self->flagCache boolValue];
 }
 - (BOOL)isResourceConflicting {
-  if (self->flagCache == nil) {
+  if (self->flagCache == nil) { // TODO: fix this nonsense
     NSNumber *flag;
-    flag = [NSNumber numberWithBool:
-                     [self doesResourceConflict:self->item]];
-    ASSIGN(self->flagCache,flag);
+    
+    flag = [NSNumber numberWithBool: [self doesResourceConflict:self->item]];
+    ASSIGN(self->flagCache, flag);
   }
   return [self->flagCache boolValue];
 }
 
 - (BOOL)showParticipantsCell {
-  if ([[self type] hasSuffix:@"Conflict"]) return YES;
-  return NO;
+  return [[self type] hasSuffix:@"Conflict"];
 }
 - (BOOL)showResourceCell {
-  if ([[self type] hasSuffix:@"Conflict"]) return YES;
-  return NO;
+  return [[self type] hasSuffix:@"Conflict"];
 }
 
 - (BOOL)listResources {
-  if ([[self type] hasSuffix:@"Appointment"]) return YES;
-  return NO;
+  return [[self type] hasSuffix:@"Appointment"];
 }
 - (BOOL)listParticipants {
-  if ([[self type] hasSuffix:@"Appointment"]) return YES;
-  return NO;
+  return [[self type] hasSuffix:@"Appointment"];
 }
 
 /* formatting */

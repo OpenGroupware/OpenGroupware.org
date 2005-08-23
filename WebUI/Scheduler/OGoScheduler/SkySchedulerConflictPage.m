@@ -169,23 +169,22 @@ static NSNumber   *noNum      = nil;
   return YES;
 }
 
-- (NSArray *)participantIds {
-  NSMutableSet   *ms;
-  id             teams;
-  id             accounts;
-  NSEnumerator   *partEnum;
-  id             part;
-  id             parts;
+/* collecting participants */
 
-  if (self->participantIds != nil)
-    return self->participantIds;
+- (void)_collectTeamGIDs:(NSMutableArray *)teams
+  andAccountGIDs:(NSMutableArray *)accounts
+  fromParticipantsArray:(NSArray *)_parts
+{
+  /* 
+     Scan participants, sort teams into 'teams' and accounts into 'accounts'.
+     
+     Note: does not add non-account contacts!
+  */
+  NSEnumerator *partEnum;
+  id           part;
 
-
-  ms       = [NSMutableSet setWithCapacity:16];
-  teams    = [NSMutableArray arrayWithCapacity:4];
-  accounts = [NSMutableArray arrayWithCapacity:4];
   partEnum =
-    [[[self appointment] valueForKey:@"participants"] objectEnumerator];
+    [_parts objectEnumerator];
   
   while ((part = [partEnum nextObject]) != nil) {
     if ([[part valueForKey:@"isTeam"] boolValue])
@@ -193,72 +192,119 @@ static NSNumber   *noNum      = nil;
     else if ([[part valueForKey:@"isAccount"] boolValue])
       [accounts addObject:[part valueForKey:@"globalID"]];
   }
+}
 
-  /* getting teams */
-  if ([teams count] > 0) {
-    unsigned cnt;
-      
-    cnt   = [teams count];
-    [ms addObjectsFromArray:teams];
-    teams = [self runCommand:@"team::members",
+- (void)_addTeamGIDsAndMembers:(NSArray *)teams toGIDsSet:(NSMutableSet *)ms {
+  unsigned cnt;
+  id rteams;
+  
+  if ([teams count] == 0)
+    return;
+
+  cnt   = [teams count];
+  [ms addObjectsFromArray:teams];
+  rteams = [self runCommand:@"team::members",
                     @"groups", teams,
                     @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
-                  nil];
-    if (cnt == 1) { // TODO: this is a hack to deal with single-value incon.?
-      [ms addObjectsFromArray:teams];
-    }
-    else {
-      NSArray  *keys;
-      unsigned i;
-        
-      keys = [teams allKeys];
-      // [ms addObjectsFromArray:keys];
-      for (i = 0, cnt = [keys count]; i < cnt; i++)
-        [ms addObjectsFromArray:[teams valueForKey:[keys objectAtIndex:i]]];
-    }
+                nil];
+  if (cnt == 1) { // TODO: this is a hack to deal with single-value inconsist.?
+    [ms addObjectsFromArray:rteams];
   }
+  else {
+    NSArray  *keys;
+    unsigned i;
+        
+    keys = [rteams allKeys];
+    // [ms addObjectsFromArray:keys];
+    for (i = 0, cnt = [keys count]; i < cnt; i++)
+      [ms addObjectsFromArray:[rteams valueForKey:[keys objectAtIndex:i]]];
+  }
+}
 
-  if ([accounts count] > 0) {
-    NSArray  *keys, *teams;
-    unsigned i, cnt;
+- (void)_addAccountGIDsAndTeams:(NSArray *)accounts
+  toGIDsSet:(NSMutableSet *)ms
+{
+  unsigned i, cnt;
+  id teams;
+  
+  if ([accounts count] == 0)
+    return;
 
-    cnt = [accounts count];
-    [ms addObjectsFromArray:accounts];
-    teams = [self runCommand:@"account::teams",
+  cnt = [accounts count];
+  [ms addObjectsFromArray:accounts];
+  teams = [self runCommand:@"account::teams",
                     @"accounts", accounts,
                     @"fetchGlobalIDs", yesNum,
-                  nil];
-    if (cnt == 1) {
+                nil];
+  if (cnt == 1) {
       [ms addObjectsFromArray:teams];
-    }
-    else {
-      keys = [teams allKeys];
-      //      [ms addObjectsFromArray:keys];
-      for (i = 0, cnt = [keys count]; i < cnt; i++) {
-        [ms addObjectsFromArray:
-              [teams valueForKey:[keys objectAtIndex:i]]];
-      }
+  }
+  else {
+    NSArray *keys;
+    
+    keys = [teams allKeys];
+    //      [ms addObjectsFromArray:keys];
+    for (i = 0, cnt = [keys count]; i < cnt; i++) {
+      [ms addObjectsFromArray:
+            [teams valueForKey:[keys objectAtIndex:i]]];
     }
   }
+}
+
+- (NSArray *)primaryKeysFromGIDs:(NSSet *)ms {
+  NSMutableArray *parts;
+  NSEnumerator   *partEnum;
+  id part;
 
   parts = [NSMutableArray arrayWithCapacity:16];
-  // getting primary key values
-  if ([ms count] > 0) {
-    partEnum = [ms objectEnumerator];
-    while ((part = [partEnum nextObject]) != nil)
-      [parts addObject:[(EOKeyGlobalID*)part keyValues][0]];
-  }
+  if ([ms count] == 0)
+    return parts;
   
-  parts = [parts copy];
+  partEnum = [ms objectEnumerator];
+  while ((part = [partEnum nextObject]) != nil)
+    [parts addObject:[(EOKeyGlobalID*)part keyValues][0]];
+  
+  return parts;
+}
+
+- (NSArray *)participantIds {
+  // TODO: move to a command! (appointment::get-all-participant-ids?)
+  NSMutableSet   *ms;
+  NSMutableArray *teams;
+  NSMutableArray *accounts;
+  NSArray        *parts;
+  
+  if (self->participantIds != nil)
+    return self->participantIds;
+  
+  teams    = [[NSMutableArray alloc] initWithCapacity:4];
+  accounts = [[NSMutableArray alloc] initWithCapacity:4];
+  
+  [self _collectTeamGIDs:teams andAccountGIDs:accounts 
+        fromParticipantsArray:[[self appointment]valueForKey:@"participants"]];
+  
+  ms = [[NSMutableSet alloc] initWithCapacity:16];
+  [self _addTeamGIDsAndMembers:teams     toGIDsSet:ms];
+  [self _addAccountGIDsAndTeams:accounts toGIDsSet:ms];
+  [teams    release]; teams    = nil;
+  [accounts release]; accounts = nil;
+  
+  /* transform GIDs to primary keys */
+  
+  parts = [[self primaryKeysFromGIDs:ms] copy];
+  [ms release]; ms = nil;
+  
   [self->participantIds release];
   self->participantIds = parts;
   
   return self->participantIds;
 }
 
+
 /* filter qualifier */
 
 - (NSString *)resourceQualifierString {
+  // used by qualifiers
   NSString *in;
   NSArray  *resources;
   NSString *resourceNames;

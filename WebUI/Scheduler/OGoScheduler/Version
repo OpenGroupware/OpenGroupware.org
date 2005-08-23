@@ -1,5 +1,5 @@
 # version file
 
-SUBMINOR_VERSION:=40
+SUBMINOR_VERSION:=41
 
 # v5.3.36 requires LSTeam v5.3.12

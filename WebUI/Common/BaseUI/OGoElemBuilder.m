@@ -325,6 +325,7 @@ static WOAssociation *yesAssoc = nil;
 }
 
 - (WOElement *)buildTabItem:(id<DOMElement>)_elem templateBuilder:(id)_b {
+  // TODO: should we build a SkySimpleTabItem instead?
   /*
     key     // regular assoc
     label   // always keypath: labels.$value
