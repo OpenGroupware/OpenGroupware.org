@@ -14,12 +14,12 @@ Font: SkyConfigFont {}
 
 // new weekOverview
 
-TitleMode:   WEWeekOverviewTitleMode   {};
-InfoMode:    WEWeekOverviewInfoMode    {};
-PMInfoMode:  WEWeekOverviewPMInfoMode  {};
-ContentMode: WEWeekOverviewContentMode {};
+TitleMode:   WEWeekOverviewTitleMode   {}; // WOx: var:week-title
+InfoMode:    WEWeekOverviewInfoMode    {}; // WOx: var:week-info
+PMInfoMode:  WEWeekOverviewPMInfoMode  {}; // WOx: var:week-pminfo
+ContentMode: WEWeekOverviewContentMode {}; // WOx: var:week
 
-WeekOverview: WEWeekOverview {
+WeekOverview: WEWeekOverview { // WOx: var:week-overview
   list       = cacheDataSource.fetchObjects;
   item       = appointment;
   weekStart  = weekStart;
@@ -31,7 +31,7 @@ WeekOverview: WEWeekOverview {
   contentColor = contentColor; // "#FAE8B8";
 }
 
-Appointment: SkySchedulerDateCell {
+Appointment: SkySchedulerDateCell { // WOx: no mapping for this dynamic element
   appointment  = appointment;
   weekday      = currentDate;
   participants = appointment.participants;

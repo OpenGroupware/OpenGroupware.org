@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<OGo:tableview
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+
+  var:dataSource    = "dataSource"
+  var:batchSize     = "blockSize"
+  var:currentBatch  = "currentBatch"
+  var:item          = "appointment"
+  var:index         = "index"
+  var:sortedKey     = "sortedKey"
+  var:isDescending  = "isDescending"
+  const:cellspacing = "2"
+>
+<!--
+  WOx issues:
+  - 'selections' array in WESwitch
+  -->
+
+  <OGo:ttitle><OGo:font
+     ><b><var:string value="detailAptsLabel"/></b></OGo:font></OGo:ttitle>
+
+  <OGo:tbutton><#NewAptButton/></OGo:tbutton>
+
+  <var:switch selections="(TODO)"> <!-- WOx ISSUE -->
+    <var:case const:key="startDate">
+      <#StartDateData><OGo:font
+        ><var:string value="appointment.startDate"
+            formatter="session.formatDateTime" /></OGo:font></#StartDateData>
+    </var:case>
+
+    <var:case const:key="endDate">
+      <#EndDateData><OGo:font
+        ><var:string value="appointment.endDate"
+            formatter="session.formatDateTime" /></OGo:font></#EndDateData>
+    </var:case>
+
+    <var:case const:key="title">
+      <#TitleData>
+        <OGo:font><a directActionName="viewApt"
+                     var:_oid="appointmentOID"
+                     var:_entity="appointmentEntity"
+                     var:_tz="appointment.startDate.timeZone.abbreviation"
+                     var:_ctx="context.contextID"
+          ><var:string value="appointment.title" /></a></OGo:font>
+      </#TitleData>
+    </var:case>
+
+    <var:case const:key="location">
+      <#LocationData><OGo:font
+         ><var:string value="appointment.location"/></OGo:font></#LocationDate>
+    </var:case>
+
+    <var:case const:key="resources">
+      <#ResourcesData><OGo:font
+        ><var:string value="appointment.resourceNames"/></OGo:font
+        ></#ResourcesData>
+    </var:case>
+
+    <var:case const:key="participants">
+      <#ParticipantsData><OGo:font><var:string value="appointment" 
+         formatter="participantFormatter"/></OGo:font></#ParticipantsData>
+    </var:case>
+
+  </var:switch>
+
+  <OGo:tfooter>
+    <small><OGo:font><OGo:label key="appointments"/>:</OGo:font></small>
+  </OGo:tfooter>
+
+</OGo:tableview>

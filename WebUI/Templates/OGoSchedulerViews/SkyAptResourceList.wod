@@ -1,5 +1,7 @@
 // bind template to controller
 
+// used by LSWStaff.wod
+
 // TODO: replace LSWTableView with WETableView
 
 AptResourceList: LSWTableView {

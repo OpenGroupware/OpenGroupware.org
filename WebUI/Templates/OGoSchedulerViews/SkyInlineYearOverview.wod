@@ -20,7 +20,7 @@ MonthCell: WOGenericContainer {
   VALIGN      = "top";
 }
 
-MonthRep: SkyMonthRepetition {
+MonthRep: SkyMonthRepetition { // WOx: no mapping fo this dynamic element
   year        = year;
   month       = month;
   timeZone    = timeZone;

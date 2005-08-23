@@ -1,5 +1,7 @@
 // bind template to controller
 
+// TODO: where is this used?
+
 // TODO: replace with WETableView
 AptResourceGroupList: LSWTableView {
   labels            = labels;
