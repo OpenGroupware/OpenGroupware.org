@@ -19,13 +19,15 @@ FooterMode: WETableViewFooterMode {}
 ButtonMode: WETableViewButtonMode {}
 GroupMode:  WETableViewGroupMode  {}
 
-PCode: WETableData {
+PCodeTD: WETableData {
   title   = labels.code;
   sortKey = "number";
-  string  = project.number;
+}
+PCode: WOString {
+  value = project.number;
 }
 
-PName:      WETableData { title = labels.name;      sortKey = "name";      }
+PNameTD:    WETableData { title = labels.name;      sortKey = "name";      }
 PStartDate: WETableData { title = labels.startDate; sortKey = "startDate"; }
 
 PLeader: WETableData {

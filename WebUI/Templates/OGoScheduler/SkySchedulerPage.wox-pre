@@ -6,6 +6,13 @@
   xmlns:const="http://www.skyrix.com/od/constant"
 >
 <!-- NOTE: this is not used in the moment -->
+<!--
+  TODO: pending WOx issues:
+  - OGo:tabitem with dynamic label
+  - buttons (search for buttons TODO)
+
+  TODO: split up this component?
+  -->
 
   <var:component className="SkySchedulerSelectPanel" 
                  timeZone="timeZone" weekStart="weekStart"
@@ -30,23 +37,23 @@
                   <td><img src="icon_apt_overview_inactive.gif" 
                            border="0" align="top" var:alt="labels.overview" 
                            var:title="labels.overview"/></td>
-                  <td><#DayVChartLink><#VChartIcon/></#DayVChartLink></td>
-                  <td><#DayHChartLink><#HChartIcon/></#DayHChartLink></td>
+                  <td><a var:action="switchToDayVChart"><img rsrc:src="icon_apt_chart.gif" border="0" valign="top" var:alt="labels.vchart" var:title="labels.vchart"/></a></td>
+                  <td><a var:action="switchToDayHChart"><img rsrc:src="icon_apt_list.gif" border="0" valign="top" var:alt="labels.hchart" var:title="labels.hchart"/></a></td>
                 </var:if>
                 
                 <var:if condition="dayViewKey" const:value="vchart">
                   <td>
-                    <#DayOverviewLink><#OverviewIcon/></#DayOverviewLink>
+                    <a var:action="switchToDayOverview"><img rsrc:src="icon_apt_overview.gif" border="0" valign="top" var:alt="labels.overview" var:title="labels.overview"/></a>
                   </td>
                   <td><#VChartIconInactive/></td>
-                  <td><#DayHChartLink><#HChartIcon/></#DayHChartLink></td>
+                  <td><a var:action="switchToDayHChart"><img rsrc:src="icon_apt_list.gif" border="0" valign="top" var:alt="labels.hchart" var:title="labels.hchart"/></a></td>
                 </var:if>
                 
                 <var:if condition="dayViewKey" const:value="hchart">
                   <td>
-                    <#DayOverviewLink><#OverviewIcon/></#DayOverviewLink>
+                    <a var:action="switchToDayOverview"><img rsrc:src="icon_apt_overview.gif" border="0" valign="top" var:alt="labels.overview" var:title="labels.overview"/></a>
                   </td>
-                  <td><#DayVChartLink><#VChartIcon/></#DayVChartLink></td>
+                  <td><a var:action="switchToDayVChart"><img rsrc:src="icon_apt_chart.gif" border="0" valign="top" var:alt="labels.vchart" var:title="labels.vchart"/></a></td>
                   <td><#HChartIconInactive/></td>
                 </var:if>
               </tr>
@@ -61,60 +68,122 @@
         </tr>
       </table>
         
-      <#DayOverviewActive><#DayOverview/></#DayOverviewActive>
-      <#DayVChartActive  ><#DayVChart  /></#DayVChartActive>
-      <#DayHChartActive  ><#DayHChart  /></#DayHChartActive>
-    </var:tabitem>
+      <var:if condition="dayViewKey" const:value="overview">
+        <var:component className="SkyInlineDayOverview"
+                       dataSource="dataSource" holidays="holidays"
+                       day="day" />
+      </var:if>
+      <var:if condition="dayViewKey" const:value="vchart">
+        <var:component className="SkyInlineDayChart"
+                       dataSource="dataSource" holidays="holidays"
+                       day="day" />
+      </var:if>
+      <var:if condition="dayViewKey" const:value="hchart">
+        <var:component className="SkyInlineDayHChart"
+                       dataSource="dataSource" holidays="holidays"
+                       day="day" />
+      </var:if>
+    </OGo:tabitem>
 
       <#WeekOverviewTab>
+        <!-- TODO: problematic, we have a dynamic label which is unsupported
+                   by OGo:tabitem right now.
+          <OGo:tabitem key="weekoverview" label="weekTabLabel" >
+          -->
         <table border="0" cellpadding="4" width="100%" cellspacing="2">
           <tr>
-          <td align="left" valign="middle" 
-              var:bgcolor="config.colors_mainButtonRow" width="1%">
+            <td align="left" valign="middle" 
+                var:bgcolor="config.colors_mainButtonRow" width="1%">
+              <!-- TODO: this button thing should be some dynamic element -->
               <table border='0' cellpadding='0' cellspacing='0'>
                <tr>
-                <#WeekOverviewActive>
+                <var:if condition="weekViewKey" const:value="overview">
                   <td><#OverviewIconInactive/></td>
-                  <td><#WeekVChartLink><#VChartIcon/></#WeekVChartLink></td>
-                  <td><#WeekHChartLink><#HChartIcon/></#WeekHChartLink></td>
                   <td>
-                    <#WeekColumnViewLink
-                       ><#ColumnViewIcon/></#WeekColumnViewLink>
+                    <a var:action="switchToWeekVChart"
+                       ><img rsrc:src="icon_apt_chart.gif" border="0" 
+                             valign="top" var:alt="labels.vchart" 
+                             var:title="labels.vchart"/></a>
                   </td>
-                </#WeekOverviewActive>
-
-                <#WeekVChartActive>
                   <td>
-                    <#WeekOverviewLink><#OverviewIcon/></#WeekOverviewLink>
+                    <a var:action="switchToWeekHChart"
+                       ><img rsrc:src="icon_apt_list.gif" border="0" 
+                             valign="top" var:alt="labels.hchart" 
+                             var:title="labels.hchart"/></a>
+                  </td>
+                  <td>
+                    <a var:action="switchToWeekColumnView"
+		       ><img rsrc:src="icon_apt_column_view.gif" border="0" 
+                             valign="top" var:alt="labels.columnView" 
+                             var:title="labels.columnView"/></a>
+                  </td>
+                </var:if>
+
+                <var:if condition="weekViewKey" const:value="vchart">
+                  <td>
+                    <a var:action="switchToWeekOverview"
+                       ><img rsrc:src="icon_apt_overview.gif" border="0" 
+                             valign="top" var:alt="labels.overview" 
+                             var:title="labels.overview"/></a>
                   </td>
                   <td><#VChartIconInactive/></td>
-                  <td><#WeekHChartLink><#HChartIcon/></#WeekHChartLink></td>
                   <td>
-                    <#WeekColumnViewLink
-		       ><#ColumnViewIcon/></#WeekColumnViewLink>
+                    <a var:action="switchToWeekHChart"
+                       ><img rsrc:src="icon_apt_list.gif" border="0" 
+                             valign="top" var:alt="labels.hchart"
+                             var:title="labels.hchart"/></a>
                   </td>
-                </#WeekVChartActive>
+                  <td>
+                    <a var:action="switchToWeekColumnView"
+		       ><img rsrc:src="icon_apt_column_view.gif" border="0" 
+                             valign="top" var:alt="labels.columnView" 
+                             var:title="labels.columnView"/></a>
+                  </td>
+                </var:if>
 
-                <#WeekHChartActive>
+                <var:if condition="weekViewKey" const:value="hchart">
                   <td>
-                    <#WeekOverviewLink><#OverviewIcon/></#WeekOverviewLink>
+                    <a var:action="switchToWeekOverview"
+                       ><img rsrc:src="icon_apt_overview.gif" border="0" 
+                             valign="top" var:alt="labels.overview"
+                             var:title="labels.overview"/></a>
                   </td>
-                  <td><#WeekVChartLink><#VChartIcon/></#WeekVChartLink></td>
+                  <td>
+                    <a var:action="switchToWeekVChart"
+                       ><img rsrc:src="icon_apt_chart.gif" border="0" 
+                             valign="top" var:alt="labels.vchart"
+                             var:title="labels.vchart"/></a>
+                  </td>
                   <td><#HChartIconInactive/></td>
                   <td>
-                    <#WeekColumnViewLink
-                      ><#ColumnViewIcon/></#WeekColumnViewLink>
+                    <a var:action="switchToWeekColumnView"
+		       ><img rsrc:src="icon_apt_column_view.gif" border="0" 
+                             valign="top" var:alt="labels.columnView" 
+                             var:title="labels.columnView"/></a>
                   </td>
-                </#WeekHChartActive>
+                </var:if>
 
-                <#WeekColumnViewActive>
+                <var:if condition="weekViewKey" const:value="columnview">
                   <td>
-                    <#WeekOverviewLink><#OverviewIcon/></#WeekOverviewLink>
+                    <a var:action="switchToWeekOverview"
+                       ><img rsrc:src="icon_apt_overview.gif" border="0" 
+                             valign="top" var:alt="labels.overview"
+                             var:title="labels.overview"/></a>
                   </td>
-                  <td><#WeekVChartLink><#VChartIcon/></#WeekVChartLink></td>
-                  <td><#WeekHChartLink><#HChartIcon/></#WeekHChartLink></td>
+                  <td>
+                    <a var:action="switchToWeekVChart"
+                       ><img rsrc:src="icon_apt_chart.gif" border="0" 
+                             valign="top" var:alt="labels.vchart"
+                             var:title="labels.vchart"/></a>
+                  </td>
+                  <td>
+                    <a var:action="switchToWeekHChart"
+                       ><img rsrc:src="icon_apt_list.gif" border="0"
+                             valign="top" var:alt="labels.hchart"
+                             var:title="labels.hchart"/></a>
+                  </td>
                   <td><#ColumnViewIconInactive/></td>
-                </#WeekColumnViewActive>
+                </var:if>
 
                </tr>
               </table>
@@ -127,11 +196,28 @@
             </td>
           </tr>
         </table>
-        
-        <#WeekOverviewActive  ><#WeekOverview/></#WeekOverviewActive>
-        <#WeekVChartActive    ><#WeekVChart/></#WeekVChartActive>
-        <#WeekHChartActive    ><#WeekHChart/></#WeekHChartActive>
-        <#WeekColumnViewActive><#WeekColumnView/></#WeekColumnViewActive>
+
+        <!-- TODO: just use WOSwitchComponent? (bad perf?) -->
+        <var:if condition="weekViewKey" const:value="overview">
+          <var:component className="SkyInlineWeekOverview"
+                         dataSource="dataSource" holidays="holidays"
+                         weekStart="weekStart" />
+        </var:if>
+        <var:if condition="weekViewKey" const:value="vchart">
+          <var:component className="SkyInlineWeekChart"
+                         dataSource="dataSource" holidays="holidays"
+                         weekStart="weekStart" />
+        </var:if>
+        <var:if condition="weekViewKey" const:value="hchart">
+          <var:component className="SkyInlineWeekHChart"
+                         dataSource="dataSource" holidays="holidays"
+                         weekStart="weekStart" />
+        </var:if>
+        <var:if condition="weekViewKey" const:value="columnview">
+          <var:component className="SkyInlineWeekColumnView"
+                         dataSource="dataSource" holidays="holidays"
+                         weekStart="weekStart" />
+        </var:if>
       </#WeekOverviewTab>
 
       <#MonthOverviewTab>
@@ -150,6 +236,9 @@
 		       year="year" month="month" />
       </#MonthOverviewTab>
 
-      <#YearOverviewTab><#YearOverview/></#YearOverviewTab>
+      <#YearOverviewTab>
+        <var:component className="SkyInlineYearOverview"
+                       year="year" timeZone="timeZone" />
+      </#YearOverviewTab>
   </OGo:tab>
 </OGo:page>
