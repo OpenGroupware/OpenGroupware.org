@@ -1,3 +1,7 @@
+2005-08-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSAddLogCommand.m: marked as irrelevant for obj_info cache (v5.3.24)
+
 2005-06-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetLogsCommand.m: minor code cleanups (v5.1.23)

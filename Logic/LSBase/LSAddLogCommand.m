@@ -42,6 +42,10 @@
   return YES;
 }
 
+- (BOOL)shouldInsertObjectInObjInfoTable:(id)_object {
+  return NO;
+}
+
 - (void)_prepareForExecutionInContext:(id)_context {
   id owner;
 
@@ -67,7 +71,7 @@
   
   owner = [owner valueForKey:@"companyId"];
   if (owner == nil)
-    owner = [NSNumber numberWithInt:10000]; // root
+    owner = [NSNumber numberWithInt:10000 /* Root */]; // root
   
   [self assert:(owner != nil) reason:@"no owner set (login!)"];
   
