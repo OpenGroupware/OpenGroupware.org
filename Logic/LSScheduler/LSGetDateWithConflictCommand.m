@@ -278,27 +278,50 @@ static NSArray *startDateSortOrderings = nil;
     [adaptor formatValue:self->begin forAttribute:startDateAttr];
   formattedEnd   =
     [adaptor formatValue:self->end   forAttribute:endDateAttr];
+
+  /*
+    Note: the @"endDate", formattedBegin, @"startDate", formattedEnd is
+          intentional!
+  */
   
+  // TODO: how can the staffList be empty? What is supposed to happen in this
+  //       case?
   if ([self->staffList count] > 0) { // TODO: should be "[in length] > 0"?
     NSString *in;
+    NSString *pattern;
+    NSString *conflictStates;
+    
+    // TODO: we might want to add a default to control those states
+    conflictStates = @"'ACCEPTED', 'TENTATIVE', 'NEEDS-ACTION'";
+    pattern =
+      @"(%A > %@) AND (%A < %@) "
+      @"AND (%A = 0 OR %A IS NULL) "
+      @"AND (%A = 0 OR %A IS NULL) "
+      @"AND ((%A IN (%@)) AND "
+      @"(%A IS NULL OR NOT %A = 'NON-PARTICIPANT') AND "
+      @"(%A IS NULL OR %A IN (%@)))"
+      ;
     
     in = [self joinPrimaryKeysFromArrayForIN:_ids];
-    qualifier = [[EOSQLQualifier alloc] initWithEntity:myEntity
-                                        qualifierFormat:
-                                        @"(%A > %@) AND (%A < %@) "
-                                        @"AND (%A = 0 OR %A IS NULL) "
-                                        @"AND (%A = 0 OR %A IS NULL) "
-                                        @"AND (%A IN (%@))",
-                                        @"endDate",   formattedBegin,
-                                        @"startDate", formattedEnd,
-                                        @"isAttendance",
-                                        @"isAttendance",
-                                        @"isConflictDisabled",
-                                        @"isConflictDisabled",
-                                        @"toDateCompanyAssignment.companyId",
-                                        in];
+    qualifier = [[EOSQLQualifier alloc] 
+                  initWithEntity:myEntity
+                  qualifierFormat:pattern,
+                  @"endDate",   formattedBegin,
+                  @"startDate", formattedEnd,
+                  @"isAttendance",
+                  @"isAttendance",
+                  @"isConflictDisabled",
+                  @"isConflictDisabled",
+                  @"toDateCompanyAssignment.companyId",
+                  in,
+                  @"toDateCompanyAssignment.role",
+                  @"toDateCompanyAssignment.role",
+                  @"toDateCompanyAssignment.partStatus",
+                  @"toDateCompanyAssignment.partStatus",
+                  conflictStates];
   }
-  else {
+  else { // TODO: find out when this happens
+    [self logWithFormat:@"Note: queried w/o staffList."];
     qualifier = [[EOSQLQualifier alloc]
                                  initWithEntity:myEntity
                                  qualifierFormat:
