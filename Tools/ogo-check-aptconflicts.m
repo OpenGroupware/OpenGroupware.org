@@ -117,6 +117,27 @@
   
   for (i = 0; i < [apts count]; i++)
     [self printAppointment:[apts objectAtIndex:i]];
+  
+#if 1
+  // tests
+  {
+    NSArray *attrs;
+
+    attrs = [[NSArray alloc] initWithObjects:
+                               @"dateId", @"companyId", @"partStatus", @"role",
+                               @"team.globalID", @"team.isTeam",
+                               @"team.members",@"team.companyId", 
+                               @"person.globalID",
+                             nil];
+
+    NSLog(@"LIST: %@",
+        [_ctx runCommand:@"appointment::list-participants",
+              @"gids", gids,
+              @"attributes", attrs,
+              @"groupBy", @"dateId",
+              nil]);
+  }
+#endif
   return 0;
 }
 
