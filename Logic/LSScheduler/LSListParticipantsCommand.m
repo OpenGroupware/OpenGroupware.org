@@ -20,53 +20,62 @@
 */
 
 /*
- * fetch participants, resolveTeams and fetch enterprises for one appointment
- *
- * returns an array of participants (person and team dictionaries)
- * team members are resolved, beeing dictionarys too
- *
- * accepts:
- * attributes:
- *   dateCompanyAssignmentId
- *   companyId
- *   dateId
- *   partStatus
- *   role
- *   comment
- *   rsvp
- *
- *   team.companyId
- *   team.description
- *   team.isTeam
- *   team.email
- *
- *   team.members
- *
- *   person.companyId
- *   person.globalID
- *   person.firstname
- *   person.extendedAttributes
- *   person.telephones
- *   person.name
- *   person.salutation
- *   person.degree
- *   person.isPrivate
- *   person.ownerId
- *
- *   person.enterprises
- *                     
- *   enterprises.description
- *   enterprises.companyId
- *   enterprises.globalID
- *
- *  dateId
- *  dateIds
- *  gid
- *  gids
- *
- *  groupBy
- *
- */
+  appointment::list-participants
+  
+  Fetch participants, resolveTeams and fetch enterprises for appointment
+  attendee rows (DateCompanyAssignment table).
+ 
+  Returns an array of participants (person and team dictionaries)
+  team members are resolved, being dictionaries too
+
+  BUG:
+    Currently this only works properly with grouping or one appointment.
+
+  Note: one often wants to use "groupBy: dateId", otherwise you get a plain
+        array of entries.
+        An "groupBy: companyId" might be interesting as well.
+        
+  accepts:
+  attributes:
+    dateCompanyAssignmentId
+    companyId
+    dateId
+    partStatus
+    role
+    comment
+    rsvp
+ 
+    team.companyId
+    team.description
+    team.isTeam
+    team.email
+ 
+    team.members
+ 
+    person.companyId
+    person.globalID
+    person.firstname
+    person.extendedAttributes
+    person.telephones
+    person.name
+    person.salutation
+    person.degree
+    person.isPrivate
+    person.ownerId
+ 
+    person.enterprises
+                      
+    enterprises.description
+    enterprises.companyId
+    enterprises.globalID
+ 
+   dateId
+   dateIds
+   gid
+   gids
+ 
+   groupBy
+*/
 
 // TODO: needs more cleanup
 // TODO: should check for apt permissions?
@@ -94,6 +103,7 @@ static NSArray  *dateCompanyAssignmentAttributes = nil;
 static NSArray  *teamAttributes                  = nil;
 static NSArray  *personAttributes               = nil;
 static NSNumber *yesNum                         = nil;
+static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
 
 + (void)initialize {
   static BOOL didInit = NO;
@@ -138,12 +148,15 @@ static NSNumber *yesNum                         = nil;
 }
 
 + (NSArray *)dateCompanyAssignmentAttributes {
+  // TODO: remove method if this is not overridden somewhere
   return dateCompanyAssignmentAttributes;
 }
 + (NSArray *)teamAttributes {
+  // TODO: remove method if this is not overridden somewhere
   return teamAttributes;
 }
 + (NSArray *)personAttributes {
+  // TODO: remove method if this is not overridden somewhere
   return personAttributes;
 }
 
@@ -166,7 +179,7 @@ static NSNumber *yesNum                         = nil;
   if ([_attributes count] == 0) _attributes = _maxAttr;
   
   e = [_attributes objectEnumerator];
-  ma = [NSMutableArray array];
+  ma = [NSMutableArray arrayWithCapacity:16];
   // go thru' the requested attributes
   // and filter those defined in _maxAttr
   
@@ -253,13 +266,13 @@ static NSNumber *yesNum                         = nil;
   _attributes =
     [self _checkAttributes:_attributes
           maxAttributes:
-          [LSListParticipantsCommand dateCompanyAssignmentAttributes]
+            [LSListParticipantsCommand dateCompanyAssignmentAttributes]
           entity:entity subKey:nil];
 
   ma = [NSMutableArray arrayWithCapacity:32];
   // create "IN" query
   inEnum = [[self _createInQuerys] objectEnumerator];
-  while ((in = [inEnum nextObject])) {
+  while ((in = [inEnum nextObject]) != nil) {
     EOSQLQualifier *qual;
     id             one;
     BOOL           ok;
@@ -273,7 +286,7 @@ static NSNumber *yesNum                         = nil;
                   fetchOrder:nil lock:NO];
     [self assert:ok reason:[sybaseMessages description]];
 
-    while ((one = [channel fetchAttributes:_attributes withZone:NULL]))
+    while ((one = [channel fetchAttributes:_attributes withZone:NULL]) != nil)
       [ma addObject:one];
     
     [qual release]; qual = nil;
@@ -418,14 +431,15 @@ static NSNumber *yesNum                         = nil;
   allPersons:(NSMutableArray *)_allPersons
   inContext:(id)_context
 {
-  NSEnumerator *e;
-  id           tGID;
+  NSEnumerator  *e;
+  EOKeyGlobalID *tGID;
   
   (*_memberMap) =
     [self memberGIDsForTeamsIds:[_teams valueForKey:@"companyId"]
           context:_context];
+  
   e = [(*_memberMap) keyEnumerator];
-  while ((tGID = [e nextObject])) {
+  while ((tGID = [e nextObject]) != nil) {
     NSArray  *ms;
     unsigned i, max;
     
@@ -503,7 +517,7 @@ static NSNumber *yesNum                         = nil;
     ma    = [NSMutableArray arrayWithCapacity:8];
     ee    = [entps objectEnumerator];
     
-    while ((gid = [ee nextObject])) {
+    while ((gid = [ee nextObject]) != nil) {
       gid = [gid keyValues][0];
       gid = [id2Enterprise objectForKey:gid];
       
@@ -546,19 +560,70 @@ static NSNumber *yesNum                         = nil;
 - (void)_groupEntry:(NSDictionary *)_entry 
   intoGroup:(NSMutableDictionary *)_dict 
 {
-  id             key;
+  /* called by -_groupResult..., maintains the entries in a grouping dict */
+  NSString       *key;
   NSMutableArray *gr;
   
   if ((key = [_entry objectForKey:self->groupBy]) == nil) {
-    [self assert:NO reason:@"invalid groupBy key"];
+    // TODO: set some error status / return an exception?
+    [self errorWithFormat:@"Invalid groupBy key: '%@'", self->groupBy];
+    return;
+  }
+  
+  if ((gr = [_dict valueForKey:key]) != nil) {
+    /* group already exists, add record */
+    [gr addObject:_entry];
     return;
   }
 
-  gr = [_dict objectForKey:key];
-  if (gr == nil)
-    [_dict setObject:[NSMutableArray arrayWithObject:_entry] forKey:key];
-  else
-    [gr addObject:_entry];
+  /* create new group */
+  gr = [[NSMutableArray alloc] initWithCapacity:8];
+  [gr addObject:_entry];
+  [_dict setObject:gr forKey:key];
+  [gr release]; gr = nil;
+}
+
+- (void)fixupPartInfoInEntry:(NSMutableDictionary *)_entry {
+  id tmp;
+  
+  /* fixup defaults (Note: the two if's are _intentional_!) */
+  if ((tmp = [_entry objectForKey:@"partStatus"]) != nil &&
+        defaultPartStatus != nil) {
+      if (![tmp isNotNull])
+        [_entry setObject:defaultPartStatus forKey:@"partStatus"];
+  }
+  if ((tmp = [_entry objectForKey:@"role"]) != nil) {
+      if (![tmp isNotNull])
+        [_entry setObject:@"REQ-PARTICIPANT" forKey:@"role"];
+  }
+}
+
+- (NSDictionary *)fillEntry:(NSMutableDictionary *)_entry
+  withCompany:(NSDictionary *)_company andAssignment:(NSDictionary *)_assi
+{
+  [_entry removeAllObjects];
+
+  /* add information fetched for person/team */
+  
+  if ([_company isKindOfClass:[NSDictionary class]])
+    [_entry addEntriesFromDictionary:_company];
+  else {
+      // TODO: this might happen if no attrs are given?
+    [self warnWithFormat:
+            @"Given company object is not a dictionary: %@",
+            _company];
+    [_entry setObject:_company forKey:@"company"];
+  }
+
+  /* add participation information (role/status) */
+  
+  if ([_assi count] > 1) {
+    /* len=1, we already checked the companyId? */
+    [_entry addEntriesFromDictionary:_assi];
+    [self fixupPartInfoInEntry:_entry];
+  }
+  
+  return [_entry copy];
 }
 
 - (id)_groupResult:(NSArray *)_assignments
@@ -567,28 +632,32 @@ static NSNumber *yesNum                         = nil;
   memberMap:(NSDictionary *)_memberMap
 {
   /*
-    if grouped
-    double participants may occure
-    so go thru the assignments and not the persons and teams
+    This is used if the 'groupBy' argument was used (otherwise _plainResu...).
+    
+    Duplicate participants may occur, so go through the assignments and not
+    the persons and teams.
   */
-  NSMutableDictionary *group;
+  NSMutableDictionary *group, *mentry;
   NSDictionary        *idToTeams;
   NSEnumerator        *e;
-  NSNumber     *companyId;
-  NSDictionary *one;
-  id company;
-
-  group = [NSMutableDictionary dictionaryWithCapacity:[_assignments count]];
+  NSDictionary *assignmentRecord;
+  
+  group  = [NSMutableDictionary dictionaryWithCapacity:32];
+  mentry = [[NSMutableDictionary alloc] initWithCapacity:16];
+  
+  idToTeams = [self mappedToCompanyId:_teams];
+  e         = [_assignments objectEnumerator];
     
-  idToTeams   = [self mappedToCompanyId:_teams];
-  e           = [_assignments objectEnumerator];
+  while ((assignmentRecord = [e nextObject]) != nil) {
+    NSDictionary *entry;
+    NSNumber *companyId;
+    id company;
     
-  while ((one = [e nextObject])) {
-    companyId = [one objectForKey:@"companyId"];
+    companyId = [assignmentRecord objectForKey:@"companyId"];
     
-    if ((company = [_idToPersons objectForKey:companyId]))
+    if ((company = [_idToPersons objectForKey:companyId]) != nil)
       ; // assignment is person
-    else if ((company = [idToTeams objectForKey:companyId])) {
+    else if ((company = [idToTeams objectForKey:companyId]) != nil) {
       // assignment is team
       if (![company isKindOfClass:[NSMutableDictionary class]])
         company = [[company mutableCopy] autorelease];
@@ -601,80 +670,94 @@ static NSNumber *yesNum                         = nil;
       }
     }
     else {
-      NSLog(@"WARNING[%s] didn't find company for assignment: %@",
-            __PRETTY_FUNCTION__, one);
-      NSLog(@"WARNING[%s] the company seems to not exist any more. ignoring.",
-            __PRETTY_FUNCTION__);
+      [self warnWithFormat:
+              @"%s: did not find company for assignment: %@"
+              @"the company seems to not exist any more. ignoring.",
+            __PRETTY_FUNCTION__, assignmentRecord];
       continue;
     }
-    if ([one count] > 1)
-      /* more than just companyId in assignment dict */
-      [company addEntriesFromDictionary:one];
-
-    /* now group that entry */
-    [self _groupEntry:company intoGroup:group];
+    
+    /* build entry */
+    
+    entry = [self fillEntry:mentry 
+                  withCompany:company andAssignment:assignmentRecord];
+    [self _groupEntry:entry intoGroup:group];
+    [entry release]; entry = nil;
   }
+  
+  [mentry release]; mentry = nil;
   return group;
 }
 
 - (id)_plainResult:(NSArray *)_assignments
-             teams:(NSArray *)_teams
-           persons:(NSArray *)_personGIDs
-         personMap:(NSDictionary *)_idToPersons
-         memberMap:(NSDictionary *)_memberMap
+  teams:(NSArray *)_teams
+  persons:(NSArray *)_personGIDs
+  personMap:(NSDictionary *)_idToPersons
+  memberMap:(NSDictionary *)_memberMap
 {
+  // TODO:
+  //   This is broken for multiple appointments! It will reuse the same
+  //   info record for all apts AND CAN LOOSE appointments.
+  //   Probably we need to iterate over the assignments, not over the persons.
   // no grouping
   // just the participants listed
+  NSMutableDictionary *mentry;
   NSDictionary   *idToAssignment;
   NSMutableArray *allPersons;
   NSEnumerator   *e;
-
   id one;
   id assign;
 
   idToAssignment = [self mappedToCompanyId:_assignments];    
-  allPersons     = [NSMutableArray array];
-  // first the persons
+  allPersons     = [NSMutableArray arrayWithCapacity:64];
+  mentry         = [[NSMutableDictionary alloc] initWithCapacity:16];
+  
+  /* first the persons */
   e = [_personGIDs objectEnumerator];
-  while ((one = [e nextObject])) {
+  while ((one = [e nextObject]) != nil) {
     one    = [one keyValues][0];
     assign = [idToAssignment objectForKey:one];
-    one    = [_idToPersons objectForKey:one];
-    if (one != nil) {
-      if ([assign count] > 1) // more than companyId
-        // add assignment entries like status and role
-        [one addEntriesFromDictionary:assign];
-      [allPersons addObject:one];
-    }
+    
+    if ((one = [_idToPersons objectForKey:one]) == nil)
+      continue;
+    
+    one = [self fillEntry:mentry withCompany:one andAssignment:assign];
+    [allPersons addObject:one];
+    [one release]; one = nil;
   }
-  // now the teams
+  
+  /* now the teams */
   e = [_teams objectEnumerator];
-  while ((one = [e nextObject])) {
-    id teamId;
-    // make mutable
-    if (![one isKindOfClass:[NSMutableDictionary class]]) {
-      one = [one mutableCopy];
-      AUTORELEASE(one);
-    }
+  while ((one = [e nextObject]) != nil) {
+    NSNumber *teamId;
+    
+    /* make mutable */
+    [mentry removeAllObjects];
+    [mentry addEntriesFromDictionary:one];
+    
     // get team id
-    teamId = [one valueForKey:@"companyId"];
+    teamId = [mentry valueForKey:@"companyId"];
     // get assignment entry
     assign = [idToAssignment objectForKey:teamId];
     if ([assign count] > 1) // more than companyId
       // add assignment entries like status and role
-      [one addEntriesFromDictionary:assign];
+      [mentry addEntriesFromDictionary:assign];
 
     if (_memberMap != nil) {
       [self _mapMembers:_memberMap
             outOfPersons:_idToPersons
-            toTeam:one
+            toTeam:mentry
             teamId:teamId];
     }
+
+    one = [mentry copy];
     [allPersons addObject:one];
+    [one release]; one = nil;
   }
-
+  
+  [mentry release]; mentry = nil;
+  
   [allPersons sortUsingFunction:compareParticipants context:self];
-
   return allPersons;
 }
 
@@ -697,20 +780,14 @@ static NSNumber *yesNum                         = nil;
   NSArray        *persons;
   NSArray        *allPersons;
   // members mapped to team gid
-  NSDictionary   *memberMap   = nil;
+  NSDictionary   *teamGIDToMemberGIDs   = nil;
   NSDictionary   *idToPersons = nil;
-
   BOOL           fetchMembers = NO;
   BOOL           needExtraAttributes = NO;
-
-  if (![self->dateIds count]) {
-    if ([self->groupBy length]) {
-      [self setReturnValue:[NSDictionary dictionary]];
-    }
-    else {
-      [self setReturnValue:[NSArray array]];
-    }
-    return;
+  
+  if ([self->dateIds count] == 0) {
+    [self setReturnValue:([self->groupBy length] > 0)
+            ? [NSDictionary dictionary] : [NSArray array]];
   }
 
   if ((self->attributes == nil) ||
@@ -749,15 +826,17 @@ static NSNumber *yesNum                         = nil;
                   attributes:self->attributes];
   /* get the assigned person gids */
   persons = [self personGIDsForParticipantIds:participantIds];
-  
+
   /* get the members of the teams */
   if (([teams count] > 0) && fetchMembers) {
     NSMutableArray *maPers;
-
+    
     maPers = [[persons mutableCopy] autorelease];
+
+    /* this creates the teamGIDToMemberGIDs dictionary */
     [self _fetchTeamMembers:teams
-          memberMap:&memberMap
-          allPersons:maPers
+          memberMap:&teamGIDToMemberGIDs
+          allPersons:maPers /* filled with additional persons from the teams?*/
           inContext:_context];
     allPersons = maPers;
   }
@@ -766,24 +845,26 @@ static NSNumber *yesNum                         = nil;
   }
 
   /* now fetch all data for the persons */
+  
   if ([allPersons count] > 0) {
     NSArray *allp;
+    
     allp        = [self _fetchAllPersonsForGIDs:allPersons inContext:_context];
     idToPersons = [self mappedToCompanyId:allp];
-
-    // fetch enterprises for persons
+    
+    /* fetch enterprises for persons */
     if ([self->attributes containsObject:@"person.enterprises"]) {
       [self _fetchEnterprisesForPersonGIDs:allPersons
             persons:allp
             inContext:_context];
     }
   }
-
-  if ([self->groupBy length]) {
+  
+  if ([self->groupBy length] > 0) {
     [self setReturnValue:[self _groupResult:assignments
                                teams:teams
                                personMap:idToPersons
-                               memberMap:memberMap]];
+                               memberMap:teamGIDToMemberGIDs]];
   }
 
   else {
@@ -791,9 +872,10 @@ static NSNumber *yesNum                         = nil;
                                teams:teams
                                persons:persons
                                personMap:idToPersons
-                               memberMap:memberMap]];
+                               memberMap:teamGIDToMemberGIDs]];
   }
 }
+
 
 /* record initializer */
 
@@ -804,9 +886,8 @@ static NSNumber *yesNum                         = nil;
 /* key/value coding */
 
 - (void)setDateIds:(NSArray *)_dateIds {
-  ASSIGN(self->dateIds,_dateIds);
+  ASSIGNCOPY(self->dateIds,_dateIds);
 }
-
 - (void)setDateId:(id)_dateId {
   [self setDateIds:[NSArray arrayWithObject:_dateId]];
 }
@@ -814,13 +895,14 @@ static NSNumber *yesNum                         = nil;
 - (void)setGlobalIDs:(NSArray *)_gids {
   unsigned       i, max;
   NSMutableArray *ma;
-  id             gid;
   
   max = [_gids count];
   ma  = [NSMutableArray arrayWithCapacity:[_gids count]];
   for (i = 0; i < max; i++) {
+    EOKeyGlobalID *gid;
+    
     gid = [_gids objectAtIndex:i];
-    [ma addObject:[(EOKeyGlobalID *)gid keyValues][0]];
+    [ma addObject:[gid keyValues][0]];
   }
   [self setDateIds:ma];
 }
@@ -885,11 +967,15 @@ static NSNumber *yesNum                         = nil;
 
 @end /* LSListParticipantsCommand */
 
+
 static int compareParticipants(id part1, id part2, void *context) {
   BOOL     part1IsTeam;
   BOOL     part2IsTeam;
   NSString *name1      = nil;
   NSString *name2      = nil;
+
+  if (part1 == part2)
+    return NSOrderedSame;
   
   part1IsTeam = [[part1 valueForKey:@"isTeam"] boolValue];
   part2IsTeam = [[part2 valueForKey:@"isTeam"] boolValue];
