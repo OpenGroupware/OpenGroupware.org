@@ -204,7 +204,7 @@ foreach $orel (@ogo_releases) {
     system("$ENV{HOME}/purveyor_of_rpms.pl -p opengroupware $build_opts -c $orel -s $ENV{HOME}/spec_tmp/$buildtarget.spec");
     print KNOWN_OGo_RELEASES "$orel\n";
     print "recreating apt-repository for: $host_i_runon >>> $buildtarget\n";
-    open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
+    open(SSH, "|/usr/bin/ssh -T $www_user\@$www_host");
     #these differ...
     #$apttarget = $buildtarget;
     #$version_override = $buildtarget;

@@ -72,7 +72,7 @@ sub move_to_dest {
     $remote_dir = $remote_rel_dir;
     print "[MOVETODEST]        - going to create directory for release on remote side.\n";
     print "[MOVETODEST]        - creating -> $remote_rel_dir\n";
-    open(SSH, "|/usr/bin/ssh $remote_user\@$remote_host");
+    open(SSH, "|/usr/bin/ssh -T $remote_user\@$remote_host");
     print SSH "mkdir -p $remote_dir\n";
     #print SSH "cd $remote_dir\n";
     #print SSH "mkdir -p $remote_release_dirname\n" if ($remote_release_dirname);
@@ -91,15 +91,15 @@ sub move_to_dest {
     print "[MOVETODEST]        - $package won't copy '$rpm_basename' to $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "no"));
     #copy and sign trunk rpm
     system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_trunk_dir/ 1>>$logout 2>>$logerr") if (($build_type eq "trunk") and ($do_upload eq "yes"));
-    system("/usr/bin/ssh $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_trunk_dir/$rpm_basename 1>>$logout 2>>$logerr") if (($build_type eq "trunk") and ($do_upload eq "yes"));
+    system("/usr/bin/ssh -T $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_trunk_dir/$rpm_basename 1>>$logout 2>>$logerr") if (($build_type eq "trunk") and ($do_upload eq "yes"));
     #copy and sign (release) rpm ending up in \$rdirbase
     system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_dir 1>>$logout 2>>$logerr") if (($rdirbase) and ($build_type eq "release") and ($do_upload eq "yes"));
-    system("/usr/bin/ssh $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_dir/$rpm_basename 1>>$logout 2>>$logerr") if (($rdirbase) and ($build_type eq "release") and ($do_upload eq "yes"));
+    system("/usr/bin/ssh -T $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_dir/$rpm_basename 1>>$logout 2>>$logerr") if (($rdirbase) and ($build_type eq "release") and ($do_upload eq "yes"));
     #copy and sign (release) rpm which ends up in the automatically determined directory
     #XXX system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_rel_dir/$remote_release_dirname/ 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
     system("/usr/bin/scp $rpm $remote_user\@$remote_host:$remote_dir 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
-    #XXX system("/usr/bin/ssh $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_rel_dir/$remote_release_dirname/$rpm_basename 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
-    system("/usr/bin/ssh $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_dir/$rpm_basename 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
+    #XXX system("/usr/bin/ssh -T $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_rel_dir/$remote_release_dirname/$rpm_basename 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
+    system("/usr/bin/ssh -T $remote_user\@$remote_host /home/www/scripts/sign_rpm.sh $remote_dir/$rpm_basename 1>>$logout 2>>$logerr") if (($build_type eq "release") and ($do_upload eq "yes") and (!$rdirbase));
     $remote_dir = $remote_trunk_dir if ($build_type eq "trunk");
     $remote_dir = $remote_rel_dir if ($build_type eq "release");
     print "[LINKATDEST]        - will not really link $ln_name <- $rpm_basename at $remote_host\n" if (($verbose eq "yes") and ($do_upload eq "no") and ($build_type eq "trunk"));
@@ -107,7 +107,7 @@ sub move_to_dest {
     if (($do_upload eq "yes") and ($do_link eq "yes") and ($build_type eq "trunk")) {
       print "[LINKATDEST]        - \$remote_dir set to: $remote_dir\n" if ($verbose eq "yes");
       print "[LINKATDEST]        - will link $ln_name <- $rpm_basename at $remote_host\n" if ($verbose eq "yes");
-      open(SSH, "|/usr/bin/ssh $remote_user\@$remote_host");
+      open(SSH, "|/usr/bin/ssh -T $remote_user\@$remote_host");
       print SSH "cd $remote_dir\n";
       print SSH "/bin/ln -sf $rpm_basename $ln_name\n";
       close(SSH);

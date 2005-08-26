@@ -179,7 +179,7 @@ foreach $srel (@sope_releases) {
     system("$ENV{HOME}/purveyor_of_rpms.pl -p sope $build_opts -c $srel -s $ENV{HOME}/spec_tmp/$buildtarget.spec");
     print KNOWN_SOPE_RELEASES "$srel\n";
     print "recreating apt-repository for: $host_i_runon\n";
-    open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
+    open(SSH, "|/usr/bin/ssh -T $www_user\@$www_host");
     print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $buildtarget\n";
     print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/releases/unstable/$buildtarget/$host_i_runon/\n";
     close(SSH);
