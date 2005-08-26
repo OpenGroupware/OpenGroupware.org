@@ -36,6 +36,8 @@ OPTS="-v yes -u yes -d yes"
 for PACKAGE in ${SPECS}; do
   echo -en "Building for ${PACKAGE}\n"
   /home/build/purveyor_of_rpms.pl -p ${PACKAGE} ${OPTS}
+  `ssh ${WWWUSER}\@${WWWHOST} "/home/www/scripts/do_LATESTVERSION.pl /var/virtual_hosts/download/nightly/packages/${DISTRI}/trunk/ >/dev/null 2>&1"`;
+  `ssh ${WWWUSER}\@${WWWHOST} "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/nightly/packages/${DISTRI}/trunk/ >/dev/null 2>&1"`;
 done
 
 rm -fr /home/build/rpm/tmp/*
