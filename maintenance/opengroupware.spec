@@ -1,5 +1,5 @@
 %define smaj 4
-%define smin 4
+%define smin 5
 %define lfmaj 1
 %define lfmin 0
 %define ogo_v 1.1
@@ -20,7 +20,7 @@ Source:        %{ogo_source}
 Prefix:        %{ogo_prefix}
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildPreReq:   ogo-gnustep_make
-#UseSOPE:      sope-4.4rc.1-rock
+#UseSOPE:      trunk
 
 %description
 OpenGroupware.org aims at being an open source groupware server which
@@ -1268,6 +1268,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/bin/ogo-account-del
 %{prefix}/bin/ogo-account-list
 %{prefix}/bin/ogo-acl-list
+%{prefix}/bin/ogo-check-aptconflicts
 %{prefix}/bin/ogo-check-permission
 %{prefix}/bin/ogo-defaults
 %{prefix}/bin/ogo-instfilter-procmail
@@ -1481,6 +1482,9 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Fri Aug 26 2005 Frank Reppin <frank@opengroupware.org>
+- added ogo-check-aptconflicts
+- use SOPE trunk for OGo trunk builds
 * Thu Aug 18 2005 Frank Reppin <frank@opengroupware.org>
 - pda requires pilot-link (pilot-link provides libpisock)
 * Fri Jul 08 2005 Frank Reppin <frank@opengroupware.org>
