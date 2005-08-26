@@ -139,10 +139,10 @@ sub build_rpm {
     }
     print "[RPMBUILD]          - didn't found UseSOPE hint in specfile.\n" and exit 1 if (($verbose eq "yes") and (!$use_sope));
     print "[RPMBUILD]          - building $package using: SOPE $use_sope\n" if ($verbose eq "yes");
-    print "[RPMBUILD]          - getting MD5_INDEX for SOPE $use_sope prior installation...\n" if ($verbose eq "yes");
+    print "[RPMBUILD]          - getting MD5_INDEX/LATESTVERSION for SOPE $use_sope prior installation...\n" if ($verbose eq "yes");
     @t_sope = `wget -q --proxy=off -O - http://$dl_host/releases/unstable/$use_sope/$host_i_runon/MD5_INDEX` or die "I DIE: couldn't fetch MD5_INDEX (http://$dl_host/releases/unstable/$use_sope/$host_i_runon/MD5_INDEX)\n" if($use_sope !~ m/^trunk/);
     @t_sope = `wget -q --proxy=off -O - http://$dl_host/nightly/packages/$host_i_runon/$use_sope/LATESTVERSION` or die "I DIE: couldn't fetch LATESTVERSION (http://$dl_host/nightly/packages/$host_i_runon/$use_sope/LATESTVERSION)\n" if($use_sope =~ m/^trunk/);
-    #parse through MD5_INDEX and generate a list of all sope RPMS... additionally download 'em into install_tmp/
+    #parse through MD5_INDEX/LATESTVERSION and generate a list of all sope RPMS... additionally download 'em into install_tmp/
     foreach $line (@t_sope) {
       chomp $line;
       next unless($line =~ m/^sope.*\.rpm$/i);
