@@ -1,3 +1,7 @@
+2005-08-27  Sebastian Ley  <ley@debian.org>
+
+	* Slovak.lproj: Remove spurious convps and convsp binaries.
+
 2005-06-28  Helge Hess  <helge.hess@skyrix.com>
 
 	* English|German.lproj/EnterprisesUI.strings: added 'operator',
