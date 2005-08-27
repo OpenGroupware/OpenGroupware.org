@@ -1,8 +1,11 @@
 opengroupware.org (1.0beta.1-0) UNRELEASED; urgency=low
 
   * Bump OGO SONAME version to 5.2, ZideStore SONAME version to 1.4.
+  * Add existing packages alternatives to each virtual build dependency.
+  * Use libsope-dev as build-dependency instead of all individual SOPE devel
+    packages.
 
- -- Sebastian Ley <ley@debian.org>  Mon, 27 Jun 2005 12:21:53 +0200
+ -- Sebastian Ley <ley@debian.org>  Sat, 27 Aug 2005 14:57:20 +0200
 
 opengroupware.org (1.0a.13-0) UNRELEASED; urgency=low
 
