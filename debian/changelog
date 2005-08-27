@@ -4,8 +4,9 @@ opengroupware.org (1.0beta.1-0) UNRELEASED; urgency=low
   * Add existing packages alternatives to each virtual build dependency.
   * Use libsope-dev as build-dependency instead of all individual SOPE devel
     packages.
+  * Don't build packages with removed translations. 
 
- -- Sebastian Ley <ley@debian.org>  Sat, 27 Aug 2005 14:57:20 +0200
+ -- Sebastian Ley <ley@debian.org>  Sat, 27 Aug 2005 16:30:48 +0200
 
 opengroupware.org (1.0a.13-0) UNRELEASED; urgency=low
 
