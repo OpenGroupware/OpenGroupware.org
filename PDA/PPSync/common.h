@@ -24,7 +24,7 @@
 #include <GDLAccess/EOFault.h>
 
 #if !LIB_FOUNDATION_LIBRARY
-#  include <NGExtensions/NSObjectMacros.h>
+#  include <NGExtensions/NGObjectMacros.h>
 #endif
 
 #include <NGExtensions/NGExtensions.h>
