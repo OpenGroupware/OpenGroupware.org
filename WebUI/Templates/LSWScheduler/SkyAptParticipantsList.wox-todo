@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<OGo:container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+
+<#IsPrintModeCondElse>
+  <table border="0" cellspacing="0" cellpadding="1" width="100%">
+    <#MainButtonRow>
+      <td align="left"><OGo:font><b><#MainTitle /></b></OGo:font></td>
+      <td align="right"><#Buttons /></td>
+    </#MainButtonRow>
+    <tr><td></td><td></td></tr>
+  </table>
+</#IsPrintModeCondElse>
+
+<table border="0" cellspacing="0" cellpadding="1" width="100%">
+  <#TableHeaderRow>
+    <th align="left"><OGo:font><#NameLabel   /></OGo:font></th>
+    <th align="left"><OGo:font><#FNameLabel  /></OGo:font></th>
+    <th align="left"><OGo:font><#DegreeLabel /></OGo:font></th>
+
+    <#ShowParticipantStateCond>
+      <th align="left"><OGo:font><#PartRoleLabel  /></OGo:font></th>
+      <th align="left"><OGo:font><#PartStatusLabel /></OGo:font></th>
+    </#ShowParticipantStateCond>
+
+    <#ShowDetailsCond>
+      <th align="left"><OGo:font><#FunctionLabel /></OGo:font></th>
+      <th align="left"><OGo:font><#EmailLabel    /></OGo:font></th>
+      <th align="left"><OGo:font><#TelLabel      /></OGo:font></th>
+      <#IsEnterpriseAvailable>
+        <th align="left"><OGo:font><#EpLabel /></OGo:font></th>
+      </#IsEnterpriseAvailable>
+    </#ShowDetailsCond>
+  </#TableHeaderRow>
+
+  <#ParticipantRepetition>
+    <#IsTeamParticipant>
+      <tr><#FullTableData /></tr>
+
+      <#MainButtonRow>
+        <#FullTableData>
+          <!--
+          <#ExpandTeamsCond    ><#HideMembersAction/></#ExpandTeamsCond>
+          <#ExpandTeamsCondElse><#ShowMembersAction/></#ExpandTeamsCondElse>
+          &nbsp; 
+          -->
+          <#IsArchivedCondElse>
+            <OGo:font><#TeamLabel /> <#TeamName /></OGo:font>
+          </#IsArchivedCondElse>
+          <#IsArchivedCond>
+            <#ArchivedObjectFont>  
+              <#TeamLabel /> <#TeamName />
+            </#ArchivedObjectFont>
+          </#IsArchivedCond>
+        </#FullTableData>
+      </#MainButtonRow>
+      
+      <#MemberRepetition>
+        <tr>
+          <td>
+            <OGo:font>
+              <#IsPersonAvailable><#MemberLink /></#IsPersonAvailable> 
+              <#IsPersonNotAvailable><#MemberName /></#IsPersonNotAvailable> 
+            </OGo:font>
+          </td>
+          <td><OGo:font><#MemberFName  /></OGo:font></td>
+          <td><OGo:font><#MemberDegree /></OGo:font></td>
+
+          <#ShowParticipantStateCond>
+            <td><OGo:font><#PartRole   /></OGo:font></td>
+            <td><OGo:font><#PartStatus /></OGo:font></td>
+          </#ShowParticipantStateCond>
+
+          <#ShowDetailsCond>
+            <td><OGo:font><#MemberFunction /></OGo:font></td>
+            <td><OGo:font>
+              <#IsInternalMailer><#MemberEmailAction /></#IsInternalMailer>
+              <#IsNotInternalMailer> <#MemberEmail /></#IsNotInternalMailer>
+            </OGo:font></td>
+            <td><OGo:font><#DialTel><#MemberTel /></#DialTel></OGo:font></td>
+            <#IsEnterpriseAvailable>
+              <td><OGo:font>
+                <#MemberEnterpriseRep><#EnterpriseName /></#MemberEnterpriseRep>
+              </OGo:font></td>
+            </#IsEnterpriseAvailable>
+          </#ShowDetailsCond>
+        </tr>   
+      </#MemberRepetition>
+    </#IsTeamParticipant>
+
+    <#IsPersonParticipant>
+      <var:if condition="isParticipantViewAllowed">
+       <tr>
+        <td>
+          <var:if condition="isArchived" const:negate="1">
+            <OGo:font>
+              <#IsPersonAvailable><#ParticipantLink /></#IsPersonAvailable>
+              <#IsPersonNotAvailable><#PartName /></#IsPersonNotAvailable>
+            </OGo:font>
+          </var:if>
+          <var:if condition="isArchived">
+            <#ArchivedObjectFont><#PartName /></#ArchivedObjectFont>
+          </var:if>
+        </td>
+        <td><OGo:font><#PartFName /></OGo:font></td>
+        <td><OGo:font><#PartDegree /></OGo:font></td>
+
+        <var:if condition="showParticipantRoles">
+          <td><OGo:font><var:string value="participantRoleLabel" /></OGo:font></td>
+          <td><OGo:font><var:rich-string value="participantStatusLabel" 
+			      color="participantStatusColor"/></OGo:font></td>
+        </var:if>
+
+        <#ShowDetailsCond>
+          <td><OGo:font><#PartFunction /></OGo:font></td>
+          <td><OGo:font>
+            <#IsInternalMailer><#PartEmailAction /></#IsInternalMailer>
+            <#IsNotInternalMailer><#PartEmail /></#IsNotInternalMailer>
+          </OGo:font></td>
+          <td><OGo:font><#DialPartTel><#PartTel /></#DialPartTel></OGo:font></td>
+          <#IsEnterpriseAvailable>
+            <td><OGo:font>
+              <#PartEnterpriseRep><#EnterpriseName /></#PartEnterpriseRep>
+            </OGo:font></td>
+          </#IsEnterpriseAvailable>
+        </#ShowDetailsCond>
+       </tr>
+      </var:if> 
+
+      <var:if condition="isParticipantViewAllowed" const:negate="1">
+       <tr>
+        <td><OGo:font><#PartName /></OGo:font></td>
+          <var:if condition="isEnterpriseAvailable">
+            <td colspan="6" align="middle">
+          </var:if>
+          <var:if condition="isEnterpriseAvailable" const:negate="1">
+            <td colspan="5" align="middle">
+          </var:if>
+          <OGo:font><b><OGo:label key="accessTeam" /></b></OGo:font></td>
+       </tr>
+      </var:if> 
+    </#IsPersonParticipant>
+  </#ParticipantRepetition>
+</table>
+
+</OGo:container>

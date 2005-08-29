@@ -1,3 +1,9 @@
+2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* English|German.lproj/LSWScheduler.strings: added labels for
+	  participant roles: partRole_CHAIR, partRole_NON-PARTICIPANT,
+	  partRole_OPT-PARTICIPANT, partRole_REQ-PARTICIPANT
+
 2005-08-27  Sebastian Ley  <ley@debian.org>
 
 	* Slovak.lproj: Remove spurious convps and convsp binaries.

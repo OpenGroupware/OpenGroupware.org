@@ -189,6 +189,23 @@ static NGMimeType   *eoDateType        = nil;
   return self->item;
 }
 
+- (NSString *)participantRole {
+  NSString *v;
+  
+  v = [self->item valueForKey:@"role"];
+  if (![v isNotNull])
+    v = @"REQ-PARTICIPANT";
+  return v;
+}
+- (NSString *)participantRoleLabel {
+  NSString *status;
+  
+  if ((status = [self participantRole]) == nil)
+    return nil;
+  status = [@"partRole_" stringByAppendingString:[status stringValue]];
+  return [[self labels] valueForKey:status];
+}
+
 - (NSString *)participantStatus {
   NSString *status;
   

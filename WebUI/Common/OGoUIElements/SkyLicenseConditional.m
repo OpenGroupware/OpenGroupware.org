@@ -23,6 +23,20 @@
 #include <OGoFoundation/OGoSession.h>
 
 // DEPRECATED: we are OpenSource now :-)
+/*
+  Still used in:
+  
+  find . -type f -name "*.wod" -exec grep -l SkyLicenseConditional \{\} \;
+    EnterprisesUI/SkyEnterpriseProjectList.wod
+    EnterprisesUI/SkyEnterpriseAttributesEditor.wod
+    EnterprisesUI/SkyWizardEnterpriseViewer.wod
+    EnterprisesUI/SkyEnterpriseEditor.wod
+    LSWScheduler/SkyAppointmentPrintViewer.wod
+    JobUI/SkyAssignProjectToJobEditor.wod
+    NewsUI/LSWNewsArticleViewer.wod
+    NewsUI/LSWNewsArticleEditor.wod
+    NewsUI/SkyNewsPreferences.wod
+*/
 
 @interface SkyLicenseConditional : WODynamicElement
 {
@@ -55,21 +69,21 @@
 
 /* accessors */
 
-- (WOElement *)template {
+- (id)template {
   return self->template;
 }
 
-// ******************** responder ********************
+/* handle requests */
 
-- (void)takeValuesFromRequest:(WORequest *)_request
-  inContext:(WOContext *)_ctx
-{
-  [self->template takeValuesFromRequest:_request inContext:_ctx];
+- (void)takeValuesFromRequest:(WORequest *)_rq inContext:(WOContext *)_ctx {
+  [self->template takeValuesFromRequest:_rq inContext:_ctx];
 }
 
-- (id)invokeActionForRequest:(WORequest *)_request inContext:(WOContext *)_ctx {
-  return [self->template invokeActionForRequest:_request inContext:_ctx];
+- (id)invokeActionForRequest:(WORequest *)_rq inContext:(WOContext *)_ctx {
+  return [self->template invokeActionForRequest:_rq inContext:_ctx];
 }
+
+/* generate response */
 
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
   [self->template appendToResponse:_response inContext:_ctx];
@@ -80,7 +94,7 @@
 - (NSString *)associationDescription {
   NSMutableString *str = [NSMutableString stringWithCapacity:128];
   
-  if (self->template)
+  if (self->template != nil)
     [str appendFormat:@" template=%@",  self->template];
   return str;
 }

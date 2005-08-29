@@ -208,7 +208,7 @@ PartDegree: WOString {
   value  = item.degree;
 }
 PartRole: WOString {
-  value = item.role;
+  value = participantRoleLabel;
 }
 PartStatus: SkyRichString {
   value = participantStatusLabel;

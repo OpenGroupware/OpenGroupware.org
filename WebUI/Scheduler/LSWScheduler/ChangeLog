@@ -1,5 +1,7 @@
 2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SkyAptParticipantsList.m: added localized participant roles (v5.3.69)
+
 	* SkyAptParticipantsList.m: fixed changing of participant status (new
 	  code returned immutable records) (v5.3.68)
 
