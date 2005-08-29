@@ -90,8 +90,8 @@
   NSTimeZone *tzone  = nil;
   NSString   *abbrev;
 
-  abbrev = [[self->ctx valueForKey:LSUserDefaultsKey]
-                       objectForKey:@"timezone"];
+  abbrev = [(NSUserDefaults *)[self->ctx valueForKey:LSUserDefaultsKey]
+			      objectForKey:@"timezone"];
 
   if (abbrev != nil)
     tzone = [NSTimeZone timeZoneWithAbbreviation:abbrev];
@@ -264,13 +264,13 @@
   return jobAptType;
 }
 
-- (void)takeValue:(id)_val forKey:(id)_key {
+- (void)takeValue:(id)_val forKey:(NSString *)_key {
   if ([_key isEqualToString:@"members"]) 
     [self->aptValues takeValue:_val forKey:_key];
   else
     [super takeValue:_val forKey:_key];
 }
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"members"])
     return [self->aptValues valueForKey:_key];
   return [super valueForKey:_key];

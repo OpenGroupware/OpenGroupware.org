@@ -30,12 +30,15 @@
 
 @class NSArray, NSSet;
 @class EOQualifier, EOFetchSpecification;
+@class LSCommandContext;
 
 @interface SkyAccountDataSource : EODataSource
 {
   EOFetchSpecification *fetchSpecification;
   id                   context;
 }
+
+- (id)initWithContext:(LSCommandContext *)_context; // designated initializer
 
 - (NSSet *)nativeKeys;
 

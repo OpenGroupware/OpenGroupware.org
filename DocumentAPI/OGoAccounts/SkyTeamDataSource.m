@@ -476,18 +476,21 @@ static NSSet *nativeKeys = nil;
   withDocumentManager:(id<SkyDocumentManager>)_dm
 {
   SkyTeamDataSource *ds;
+  NSArray *results;
   
   if (_gids == nil)
     return nil;
   if ([_gids count] == 0)
     return [NSArray array];
   
-  ds = [[SkyTeamDataSource alloc] initWithContext:[_dm context]];
+  ds = [(SkyTeamDataSource *)[SkyTeamDataSource alloc] 
+			     initWithContext:[_dm context]];
   if (ds == nil)
     return nil;
-  AUTORELEASE(ds);
-
-  return [ds _fetchObjectsForGlobalIDs:_gids];
+  
+  results = [[ds _fetchObjectsForGlobalIDs:_gids] retain];
+  [ds release]; ds = nil;
+  return results;
 }
 
 @end /* SkyTeamDocumentGlobalIDResolver */

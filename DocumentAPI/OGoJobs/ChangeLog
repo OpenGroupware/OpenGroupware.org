@@ -1,3 +1,8 @@
+2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyJobDocument.m, SkySchedulerJobDataSource.m: fixed gcc4 warnings
+	  (v5.3.23)
+
 2004-08-02  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyPersonJobDataSource.m(-deleteObject:): implemented delete method

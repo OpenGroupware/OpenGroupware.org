@@ -82,17 +82,18 @@ static NSSet *NativeKeys = nil;
                            map:@selector(name)]];
 }
 
-- (id)initWithContext:(id)_context { // designated initializer
+- (id)initWithContext:(LSCommandContext *)_context { // designated initializer
   if (_context == nil) {
 #if DEBUG
-    NSLog(@"WARNING(%s): missing context for datasource creation ..",
-          __PRETTY_FUNCTION__);
+    [self logWithFormat:
+	    @"WARNING(%s): missing context for datasource creation ..",
+          __PRETTY_FUNCTION__];
 #endif
     [self release];
     return nil;
   }
   
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     ASSIGN(self->context, _context);
     
     [self _registerForNotifications];

@@ -22,6 +22,7 @@
 #include "SkyJobHistoryDataSource.h"
 #include "SkyJobDocument.h"
 #include <OGoContacts/SkyPersonDocument.h>
+#include <OGoAccounts/SkyAccountDataSource.h>
 #include "common.h"
 
 @interface SkyJobDocument(PrivateMethodes)
@@ -306,7 +307,10 @@ static BOOL debugDocRegistration = NO;
 }
 
 - (SkyDocument *)creator {
-  if ([self->creator isKindOfClass:[EOGlobalID class]]) {
+  if (![self->creator isKindOfClass:[EOGlobalID class]])
+    return self->creator;
+  
+  {
     Class                clazz;
     NSString             *creatorId = nil;
     EODataSource         *ds;
@@ -315,7 +319,8 @@ static BOOL debugDocRegistration = NO;
 
     creatorId = [[(EOKeyGlobalID *)self->creator keyValuesArray] lastObject];
     clazz = NSClassFromString(@"SkyAccountDataSource");
-    ds    = [[clazz alloc] initWithContext:[self context]];
+    ds    = [(SkyAccountDataSource *)[clazz alloc] 
+				     initWithContext:[self context]];
     qual  = [[EOKeyValueQualifier alloc]
                                   initWithKey:@"companyId"
                                   operatorSelector:EOQualifierOperatorEqual
@@ -375,7 +380,8 @@ static BOOL debugDocRegistration = NO;
     executorId = [[(EOKeyGlobalID *)self->executor keyValuesArray] lastObject];
 
     clazz = NSClassFromString(dsName);
-    ds    = [[clazz alloc] initWithContext:[self context]];
+    ds    = [(SkyAccountDataSource *)[clazz alloc] 
+				     initWithContext:[self context]];
     qual  = [[EOKeyValueQualifier alloc]
                                   initWithKey:@"companyId"
                                   operatorSelector:EOQualifierOperatorEqual

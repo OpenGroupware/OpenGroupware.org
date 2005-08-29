@@ -1,5 +1,5 @@
-# $Id$
+# Version file
 
-SUBMINOR_VERSION:=22
+SUBMINOR_VERSION:=23
 
 # v5.0.21 requires libOGoDocuments v5.0.20

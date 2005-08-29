@@ -1,3 +1,12 @@
+2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.19
+
+	* SkyAccountDataSource.h: expose -initWithContext: method
+
+	* SkyTeamDataSource.m, SkyAccountDataSource.m, SkyAccountDocument.m:
+	  fixed gcc4 warnings
+
 2005-01-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyAccountDataSource.m: minor code cleanups (v5.1.18)

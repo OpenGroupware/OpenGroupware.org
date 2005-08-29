@@ -113,7 +113,8 @@
   id           own;
 
   own  = [_ctx valueForKey:LSAccountKey];
-  ds   = [[[SkyAccountDataSource alloc] initWithContext:_ctx] autorelease];
+  ds   = [[(SkyAccountDataSource *)[SkyAccountDataSource alloc] 
+				   initWithContext:_ctx] autorelease];
   dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                               [NSNumber numberWithBool:YES],  @"isAccount",
                               [own valueForKey:@"companyId"], @"ownerId",
