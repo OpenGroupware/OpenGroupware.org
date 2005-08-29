@@ -289,18 +289,24 @@ static NSArray *startDateSortOrderings = nil;
   if ([self->staffList count] > 0) { // TODO: should be "[in length] > 0"?
     NSString *in;
     NSString *pattern;
-    NSString *conflictStates;
     
-    // TODO: we might want to add a default to control those states
-    conflictStates = @"'ACCEPTED', 'TENTATIVE', 'NEEDS-ACTION'";
     pattern =
       @"(%A > %@) AND (%A < %@) "
       @"AND (%A = 0 OR %A IS NULL) "
       @"AND (%A = 0 OR %A IS NULL) "
       @"AND ((%A IN (%@)) AND "
-      @"(%A IS NULL OR NOT %A = 'NON-PARTICIPANT') AND "
-      @"(%A IS NULL OR %A IN (%@)))"
+      // conflict for NEED-INFO CHAIR and REQ-PART events and then for all
+      // ACCEPTED/TENTATIVE events (unless used with a non-part)
+      // args: stat, stat, role, role, role, stat, stat, role
+      // TODO: move to an own qualifier which is static and conjoined?
+      @"(((%A IS NULL OR %A = 'NEEDS-ACTION') AND "
+      @"  (%A = 'CHAIR' OR %A = 'REQ-PARTICIPANT' OR %A IS NULL)) "
+      @" OR "
+      @" ((%A = 'ACCEPTED' OR %A = 'TENTATIVE') AND "
+      @"  (NOT %A = 'NON-PARTICIPANT')))"
+      @")"
       ;
+
     
     in = [self joinPrimaryKeysFromArrayForIN:_ids];
     qualifier = [[EOSQLQualifier alloc] 
@@ -314,11 +320,15 @@ static NSArray *startDateSortOrderings = nil;
                   @"isConflictDisabled",
                   @"toDateCompanyAssignment.companyId",
                   in,
+                  @"toDateCompanyAssignment.partStatus",
+                  @"toDateCompanyAssignment.partStatus",
+                  @"toDateCompanyAssignment.role",
                   @"toDateCompanyAssignment.role",
                   @"toDateCompanyAssignment.role",
                   @"toDateCompanyAssignment.partStatus",
                   @"toDateCompanyAssignment.partStatus",
-                  conflictStates];
+                  @"toDateCompanyAssignment.role"
+                 ];
   }
   else { // TODO: find out when this happens
     [self logWithFormat:@"Note: queried w/o staffList."];

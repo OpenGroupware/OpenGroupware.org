@@ -1,3 +1,8 @@
+2005-08-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSGetDateWithConflictCommand.m: fixed conflict detection according to
+	  conflict map in #1262) (v5.3.65)
+
 2005-08-25  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSListParticipantsCommand.m: fixed some major bug in participation
