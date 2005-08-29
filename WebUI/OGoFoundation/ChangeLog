@@ -1,3 +1,7 @@
+2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed gcc4 warnings (v5.3.87)
+
 2005-08-03  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoSession+UserManagement.m: code cleanups, added bool default

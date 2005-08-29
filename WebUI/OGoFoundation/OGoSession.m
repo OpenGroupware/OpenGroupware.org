@@ -1293,10 +1293,10 @@ static NSString *OGoDateTimeTZFormat     = nil;
 
 @implementation OGoSession(PageManagement)
 
-- (WOComponent *)restorePageForContextID:(NSString *)_cid {
+- (id)restorePageForContextID:(NSString *)_cid {
   WOComponent *p;
 
-  if ((p = [super restorePageForContextID:_cid])) {
+  if ((p = [super restorePageForContextID:_cid]) != nil) {
     if (debugPageCache)
       [self debugWithFormat:@"page was restored from cache .."];
     return p;

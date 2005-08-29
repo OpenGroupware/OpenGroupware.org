@@ -24,6 +24,13 @@
 
 #include <OGoFoundation/LSWContentPage.h>
 
+/*
+  SkyEditorPage
+
+  TODO: document
+  TODO: change superclass
+*/
+
 @class NSMutableDictionary, NSDictionary, NSString;
 @class NGMimeType, SkyDocument;
 
@@ -44,7 +51,7 @@
 - (void)setIsInNewMode:(BOOL)_status;
 - (BOOL)isInNewMode;
 - (void)setObject:(id)_oject;
-- (SkyDocument *)object;
+- (id)object;
 
 - (NSString *)objectLabel;
 - (NSString *)label;

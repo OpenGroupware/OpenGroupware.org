@@ -134,7 +134,7 @@ static BOOL debugOn = NO;
 
 /* pages */
 
-- (WOComponent *)pageWithName:(NSString *)_name {
+- (id)pageWithName:(NSString *)_name {
   /* support for persistent components */
   OGoSession *sn;
   id         p;

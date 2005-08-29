@@ -64,7 +64,7 @@ static __inline__ void chRemove(OGoConfigHandler *table, id key);
 
 /* initialization */
 
-- (id)initWithComponent:(id)_component {
+- (id)initWithComponent:(WOComponent *)_component {
   //  NSLog(@"Config<0x%08X>: component=%@", self, [_component name]);
   unsigned capacity;
   

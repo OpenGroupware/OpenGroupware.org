@@ -56,7 +56,7 @@
 
 - (BOOL)prepareForActivationCommand:(NSString *)_command
   type:(NGMimeType *)_type
-  configuration:(id)_cfg
+  configuration:(NSDictionary *)_cfg
 {
   [self clearViewer];
   self->activationCommand = [_command copy];

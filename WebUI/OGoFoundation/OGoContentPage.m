@@ -170,7 +170,7 @@
 
 /* page navigation */
 
-- (BOOL)rollbackForPage:(OGoContentPage *)_page {
+- (BOOL)rollbackForPage:(id<OGoContentPage>)_page {
   return YES;
 }
 

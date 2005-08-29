@@ -72,7 +72,7 @@
 
 - (BOOL)prepareForActivationCommand:(NSString *)_command
   type:(NGMimeType *)_type
-  configuration:(id)_cfg
+  configuration:(NSDictionary *)_cfg
 {
   [self clearEditor];
   self->activationCommand = [_command copy];

@@ -61,7 +61,7 @@ static __inline__ void chRemove(LSWLabelHandler *table, id key);
 
 /* initialization */
 
-- (id)initWithComponent:(id)_component {
+- (id)initWithComponent:(WOComponent *)_component {
   unsigned capacity;
   
   //  NSLog(@"Label<0x%08X>: component=%@", self, [_component name]);

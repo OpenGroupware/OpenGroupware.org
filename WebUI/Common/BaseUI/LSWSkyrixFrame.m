@@ -484,7 +484,7 @@ static BOOL debugPageRefresh = NO;
   NSTimeInterval duration;
   NSDate         *rStartDate;
   NSDate         *now;
-  unsigned char  buf[16];
+  char buf[16];
   
   if (!showTimings)
     return @"";
