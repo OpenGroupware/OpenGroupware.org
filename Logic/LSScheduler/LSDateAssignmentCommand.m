@@ -21,6 +21,12 @@
 
 #include <LSFoundation/LSDBObjectNewCommand.h>
 
+/*
+  LSDateAssignmentCommand / appointment::set-participants
+  
+  TODO: document
+*/
+
 @class NSArray;
 
 @interface LSDateAssignmentCommand : LSDBObjectNewCommand
@@ -49,7 +55,9 @@
 // command methods
 
 - (BOOL)_newEntry:(id)_object changedSinceEntry:(id)_oldEntry {
-  id pkey, role, state, rsvp;
+  NSNumber *pkey;
+  NSString *role, *state;
+  NSNumber *rsvp;
 
   pkey  = [_object valueForKey:@"companyId"];
   role  = [_object valueForKey:@"role"];
@@ -80,8 +88,9 @@
 
 - (id)_findOldEntry:(NSArray *)_oldEntries forNewEntry:(id)_newOne {
   unsigned int max, i;
-  id           listObject, pkey, opkey;
-
+  NSNumber     *pkey, *opkey;
+  id           listObject;
+  
   max  = [_oldEntries count];
   pkey = [_newOne valueForKey:@"companyId"];
   
@@ -101,10 +110,9 @@
 {
   NSEnumerator *listEnum;
   id           assignment;
-
-  listEnum       = [_oldAssignments objectEnumerator];
   
-  while ((assignment = [listEnum nextObject])) {
+  listEnum = [_oldAssignments objectEnumerator];
+  while ((assignment = [listEnum nextObject]) != nil) {
     LSDBObjectDeleteCommand *dCmd;
 
     dCmd = LSLookupCommandV(@"DateCompanyAssignment", @"delete",
@@ -120,11 +128,11 @@
   NSEnumerator *listEnum;
   id           newParticipant;
 
-  listEnum       = [_assignments objectEnumerator];
+  listEnum = [_assignments objectEnumerator];
   
-  while ((newParticipant = [listEnum nextObject])) {
+  while ((newParticipant = [listEnum nextObject]) != nil) {
     BOOL isStaff;
-
+    
     isStaff = ([[newParticipant valueForKey:@"isAccount"] boolValue] ||
                [[newParticipant valueForKey:@"isTeam"] boolValue]);
     
@@ -145,13 +153,13 @@
   toRemove:(NSMutableArray *)_toRemove
   toAdd:(NSMutableArray *)_toAdd
 {
-  unsigned int max, i;
   NSMutableArray *oldList, *addedIds;
-
+  unsigned int max, i;
+  
   max      = [_newList count];
   oldList  = [[_oldList mutableCopy] autorelease];
-  addedIds = [NSMutableArray arrayWithCapacity:max+1];
-
+  addedIds = [NSMutableArray arrayWithCapacity:(max + 1)];
+  
   // check every new entry
   for (i = 0; i < max; i++) {
     id newEntry, oldEntry, cId;
@@ -183,7 +191,7 @@
     }
   }
 
-  if ([oldList count])
+  if ([oldList count] > 0)
     [_toRemove addObjectsFromArray:oldList];
 }
 
@@ -205,10 +213,10 @@
   NSEnumerator   *listEnum;
   id             obj;
 
-  validatedList = [[NSMutableArray alloc] init];
-  listEnum      = [self->participantList objectEnumerator];
-
-  while ((obj = [listEnum nextObject])) {
+  validatedList = [[NSMutableArray alloc] initWithCapacity:8];
+  
+  listEnum = [self->participantList objectEnumerator];
+  while ((obj = [listEnum nextObject]) != nil) {
     NSString *ename;
 
     ename = nil;
@@ -222,8 +230,13 @@
     else
       [validatedList addObject:obj];
   }
-  ASSIGN(self->participantList, nil);
+  
+  [self->participantList release];
   self->participantList = validatedList; // validatedList is retained
+}
+
+- (BOOL)isRootPKey:(NSNumber *)_pkey inContext:(id)_ctx {
+  return [_pkey unsignedIntValue] == 10000 ? YES : NO;
 }
 
 - (void)_checkOwnerInContext:(id)_context {
@@ -234,12 +247,12 @@
   ac    = [_context valueForKey:LSAccountKey];
   login = [ac valueForKey:@"login"];
   acId  = [ac valueForKey:@"companyId"];
-
-  if ([acId intValue] != 10000) {
+  
+  if (![self isRootPKey:acId inContext:_context]) {
     /* old version (problem: can't add active account to appointment
                              if acctive account is't owner)
-    [self assert:[acId isEqual:[[self object] valueForKey:@"ownerId"]] 
-          reason:@"tried to change appointment of other account"];
+       [self assert:[acId isEqual:[[self object] valueForKey:@"ownerId"]] 
+             reason:@"tried to change appointment of other account"];
     */
     // only private appointments can't be changed
     if (![acId isEqual:[[self object] valueForKey:@"ownerId"]]) {
@@ -292,15 +305,15 @@
   oldList = [self _fetchOldParticipants:_context];
   newList = self->participantList;
 
-  toRemove = [NSMutableArray array];
-  toAdd    = [NSMutableArray array];
-
+  toRemove = [NSMutableArray arrayWithCapacity:4];
+  toAdd    = [NSMutableArray arrayWithCapacity:4];
+  
   [self syncOldList:oldList withNewList:newList
         toRemove:toRemove toAdd:toAdd];
-
-  if ([toRemove count])
+  
+  if ([toRemove count] > 0)
     [self _removeOldAssignments:toRemove inContext:_context];
-  if ([toAdd count])
+  if ([toAdd count] > 0)
     [self _addAssignments:toAdd inContext:_context];
 }
 
@@ -342,24 +355,21 @@
     [self setObject:_value];
     return;
   }
-  else if ([_key isEqualToString:@"participantList"] ||
-           [_key isEqualToString:@"participants"]) {
+
+  if ([_key isEqualToString:@"participantList"] ||
+      [_key isEqualToString:@"participants"]) {
     [self setParticipantList:_value];
     return;
   }
-  else if ([_key isEqualToString:@"logText"] ||
-           [_key isEqualToString:@"logAction"]) {
+
+  if ([_key isEqualToString:@"logText"] ||
+      [_key isEqualToString:@"logAction"]) {
     [super takeValue:_value forKey:_key];
+    return;
   }
-  else {
-    [LSDBObjectCommandException raiseOnFail:NO object:self
-                                reason:
-                                [NSString stringWithFormat:
-                                          @"key: %@ is not valid in domain "
-                                          @"'%@' for operation '%@'.",
-                                          _key, [self domain],
-                                          [self operation]]];
-  }
+  
+  [self errorWithFormat:@"got invalid KVC key: '%@'", _key];
+  [super takeValue:_value forKey:_key];
 }
 
 - (id)valueForKey:(NSString *)_key {

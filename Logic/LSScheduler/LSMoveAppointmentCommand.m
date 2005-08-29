@@ -19,13 +19,15 @@
   02111-1307, USA.
 */
 
-#import "common.h"
 #include "LSSetAppointmentCommand.h"
 
 @interface LSMoveAppointmentCommand : LSSetAppointmentCommand
-{}
+{
+}
 
-@end /* LSMoveAppointmentCommand */
+@end
+
+#include "common.h"
 
 @implementation LSMoveAppointmentCommand
 
@@ -49,7 +51,7 @@
                 [oldStart descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M %Z"],
                 [newStart descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M %Z"]];
   }
-
+  
   [self takeValue:logText  forKey:@"logText"];
   [self takeValue:newStart forKey:@"startDate"];
   [self takeValue:newEnd   forKey:@"endDate"];
