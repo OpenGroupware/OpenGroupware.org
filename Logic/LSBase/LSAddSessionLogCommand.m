@@ -47,6 +47,10 @@ static BOOL disableSessionLog = NO;
   return disableSessionLog ? NO : YES;
 }
 
+- (BOOL)shouldInsertObjectInObjInfoTable:(id)_object {
+  return NO;
+}
+
 - (void)_prepareForExecutionInContext:(id)_context {
   NSCalendarDate *now;
   
