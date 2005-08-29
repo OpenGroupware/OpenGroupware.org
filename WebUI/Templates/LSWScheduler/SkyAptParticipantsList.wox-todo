@@ -5,109 +5,181 @@
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
 >
+<!-- INCOMPLETE -->
+<!-- WOx: SkyDialNumber -->
 
-<#IsPrintModeCondElse>
+<var:if condition="printMode" const:negate="1">
   <table border="0" cellspacing="0" cellpadding="1" width="100%">
-    <#MainButtonRow>
-      <td align="left"><OGo:font><b><#MainTitle /></b></OGo:font></td>
-      <td align="right"><#Buttons /></td>
-    </#MainButtonRow>
+    <tr var:bgcolor="config.colors_tableViewHeaderCell">
+      <td align="left"><OGo:font><b
+          ><var:string value="appointment.title" /></b></OGo:font></td>
+<!-- TODO -->      
+      <td align="right">
+        <#Buttons />
+Buttons: SkyButtonRow {
+  ordering = ( 
+    addme, removeme, enabledetails, disabledetails,
+    showmembers, hidemembers,
+    accept, decline, tentative
+  );
+
+  hasAddme = isAddMeToParticipants;
+  onAddme  = addMeToParticipants;
+  addme    = addMeToParticipantsActionLabel;
+
+  hasRemoveme = isRemoveMeFromParticipants;
+  onRemoveme  = removeMeFromParticipants;
+  removeme    = labels.removeMe;
+
+  hasEnabledetails  = hideDetails;
+  onEnabledetails   = enableDetails;
+  enabledetails     = labels.showDetails;
+
+  hasDisabledetails = showDetails;
+  onDisabledetails  = disableDetails;
+  disabledetails    = labels.hideDetails;
+
+  hasShowmembers = dontExpandTeams;
+  onShowmembers  = showMembers;
+  showmembers    = labels.action_showMembers;
+
+  hasHidemembers = expandTeams;
+  onHidemembers  = hideMembers;
+  hidemembers    = labels.action_hideMembers;
+
+  hasAccept    = showAcceptButton;
+  onAccept     = acceptAppointment;
+  accept       = labels.action_acceptAppointment;
+  hasDecline   = showDeclineButton;
+  onDecline    = declineAppointment;
+  decline      = labels.action_declineAppointment;
+  hasTentative = showTentativeButton;
+  onTentative  = appointmentTentative;
+  tentative    = labels.action_appointmentTentative;
+      </td>
+    </tr>
     <tr><td></td><td></td></tr>
   </table>
-</#IsPrintModeCondElse>
+</var:if>
 
 <table border="0" cellspacing="0" cellpadding="1" width="100%">
-  <#TableHeaderRow>
-    <th align="left"><OGo:font><#NameLabel   /></OGo:font></th>
-    <th align="left"><OGo:font><#FNameLabel  /></OGo:font></th>
-    <th align="left"><OGo:font><#DegreeLabel /></OGo:font></th>
+  <tr var:bgcolor="config.colors_tableViewAttributeCell">
+    <th align="left"><OGo:font><OGo:label key="nameLabel"  /></OGo:font></th>
+    <th align="left"><OGo:font><OGo:label key="fNameLabel" /></OGo:font></th>
+    <th align="left"><OGo:font><OGo:label key="degreeLabel"/></OGo:font></th>
 
-    <#ShowParticipantStateCond>
-      <th align="left"><OGo:font><#PartRoleLabel  /></OGo:font></th>
-      <th align="left"><OGo:font><#PartStatusLabel /></OGo:font></th>
-    </#ShowParticipantStateCond>
+    <var:if condition="showParticipantRoles">
+      <th align="left"><OGo:font
+	 ><OGo:label key="participantRole"/></OGo:font></th>
+      <th align="left"><OGo:font
+         ><OGo:label key="participantStatus"/></OGo:font></th>
+    </var:if>
 
-    <#ShowDetailsCond>
-      <th align="left"><OGo:font><#FunctionLabel /></OGo:font></th>
-      <th align="left"><OGo:font><#EmailLabel    /></OGo:font></th>
-      <th align="left"><OGo:font><#TelLabel      /></OGo:font></th>
-      <#IsEnterpriseAvailable>
-        <th align="left"><OGo:font><#EpLabel /></OGo:font></th>
-      </#IsEnterpriseAvailable>
-    </#ShowDetailsCond>
-  </#TableHeaderRow>
+    <var:if condition="showDetails">
+      <th align="left"><OGo:font><OGo:label key="functionLabel" /></OGo:font></th>
+      <th align="left"><OGo:font><OGo:label key="emailLabel" /></OGo:font></th>
+      <th align="left"><OGo:font><OGo:label key="telLabel" /></OGo:font></th>
+      <var:if condition="isEnterpriseAvailable">
+        <th align="left"><OGo:font><OGo:label key="epLabel" /></OGo:font></th>
+      </var:if>
+    </var:if>
+  </tr>
 
-  <#ParticipantRepetition>
-    <#IsTeamParticipant>
-      <tr><#FullTableData /></tr>
+  <var:foreach list="participants" item="item">
+    <var:if condition="isParticipantTeam">
+      <tr><td var:colspan="tableColumns"/></tr>
 
-      <#MainButtonRow>
-        <#FullTableData>
-          <!--
-          <#ExpandTeamsCond    ><#HideMembersAction/></#ExpandTeamsCond>
-          <#ExpandTeamsCondElse><#ShowMembersAction/></#ExpandTeamsCondElse>
-          &nbsp; 
-          -->
-          <#IsArchivedCondElse>
-            <OGo:font><#TeamLabel /> <#TeamName /></OGo:font>
-          </#IsArchivedCondElse>
-          <#IsArchivedCond>
-            <#ArchivedObjectFont>  
-              <#TeamLabel /> <#TeamName />
-            </#ArchivedObjectFont>
-          </#IsArchivedCond>
-        </#FullTableData>
-      </#MainButtonRow>
+      <tr var:bgcolor="config.colors_tableViewHeaderCell">
+        <td var:colspan="tableColumns">
+          <var:if condition="isArchived" const:negate="1">
+            <OGo:font>
+              <OGo:label key="teamLabel" />
+              <var:string value="participantLabel" />
+            </OGo:font>
+          </var:if>
+          <var:if condition="isArchived">
+            <!-- TODO: use CSS -->
+            <font var:size="config.font_size" var:face="config.font_face" 
+                  var:color="config.colors_deleted_object">
+              <OGo:label key="teamLabel" />
+              <var:string value="participantLabel" />
+            </font>
+          </var:if>
+        </td>
+      </tr>
       
-      <#MemberRepetition>
+      <var:foreach list="participantTeamMembers" item="member">
         <tr>
           <td>
             <OGo:font>
-              <#IsPersonAvailable><#MemberLink /></#IsPersonAvailable> 
-              <#IsPersonNotAvailable><#MemberName /></#IsPersonNotAvailable> 
+              <var:if condition="isPersonAvailable"
+                   ><a directActionName="activate"
+                       var:_oid="member.companyId" 
+                       var:string="teamMemberLabel" /></var:if> 
+              <var:if condition="isPersonAvailable" const:negate="1"
+                   ><var:string value="member.name" /></var:if> 
             </OGo:font>
           </td>
-          <td><OGo:font><#MemberFName  /></OGo:font></td>
-          <td><OGo:font><#MemberDegree /></OGo:font></td>
+          <td><OGo:font><var:string value="member.firstname" /></OGo:font></td>
+          <td><OGo:font><var:string value="member.degree" /></OGo:font></td>
 
-          <#ShowParticipantStateCond>
-            <td><OGo:font><#PartRole   /></OGo:font></td>
-            <td><OGo:font><#PartStatus /></OGo:font></td>
-          </#ShowParticipantStateCond>
+          <var:if condition="showParticipantRoles">
+            <td><OGo:font
+                 ><var:string value="participantRoleLabel" /></OGo:font></td>
+            <td><OGo:font
+                 ><var:string value="participantStatusLabel" /></OGo:font></td>
+          </var:if>
 
-          <#ShowDetailsCond>
-            <td><OGo:font><#MemberFunction /></OGo:font></td>
+          <var:if condition="showDetails">
+            <td><OGo:font
+                 ><var:string value="member.job_title" /></OGo:font></td>
             <td><OGo:font>
-              <#IsInternalMailer><#MemberEmailAction /></#IsInternalMailer>
-              <#IsNotInternalMailer> <#MemberEmail /></#IsNotInternalMailer>
+              <var:if condition="isInternalMailEditor">
+                <a var:action="mailToMember"><var:string="member.email1" /></a>
+              </var:if>
+              <var:if condition="isInternalMailEditor" const:negate="1">
+	        <a var:href="memberEmail"><var:string="member.email1" /></a>
+              </var:if>
             </OGo:font></td>
-            <td><OGo:font><#DialTel><#MemberTel /></#DialTel></OGo:font></td>
-            <#IsEnterpriseAvailable>
+            <td><OGo:font><#DialTel
+               ><var:string value="member.01_tel" /></#DialTel></OGo:font></td>
+            <var:if condition="isEnterpriseAvailable">
               <td><OGo:font>
-                <#MemberEnterpriseRep><#EnterpriseName /></#MemberEnterpriseRep>
+                <var:foreach list="member.enterprises" item="enterprise"
+                   const:separator=", "
+                   ><a directActionName="activate"
+		       var:_oid="enterprise.companyId"
+                       var:string="enterprise.description" /></var:foreach>
               </OGo:font></td>
-            </#IsEnterpriseAvailable>
-          </#ShowDetailsCond>
+            </var:if>
+          </var:if>
         </tr>   
-      </#MemberRepetition>
-    </#IsTeamParticipant>
+      </var:foreach>
+    </var:if>
 
-    <#IsPersonParticipant>
+    <var:if condition="isParticipantTeam">
       <var:if condition="isParticipantViewAllowed">
        <tr>
         <td>
           <var:if condition="isArchived" const:negate="1">
             <OGo:font>
-              <#IsPersonAvailable><#ParticipantLink /></#IsPersonAvailable>
-              <#IsPersonNotAvailable><#PartName /></#IsPersonNotAvailable>
+              <!-- TODO: bind and use a formatter? -->
+              <var:if condition="isPersonAvailable"
+                  ><a directActionName="activate"
+                      var:_oid="item.companyId" 
+                      var:string="participantLabel" /></var:if>
+              <var:if condition="isPersonAvailable" const:negate="1"
+                  ><var:string value="item.name" /></var:if>
             </OGo:font>
           </var:if>
           <var:if condition="isArchived">
-            <#ArchivedObjectFont><#PartName /></#ArchivedObjectFont>
+            <font var:size="config.font_size" var:face="config.font_face" 
+                  var:color="config.colors_deleted_object">
+              <var:string value="item.name" /></font>
           </var:if>
         </td>
-        <td><OGo:font><#PartFName /></OGo:font></td>
-        <td><OGo:font><#PartDegree /></OGo:font></td>
+        <td><OGo:font><var:string value="item.firstname" /></OGo:font></td>
+        <td><OGo:font><var:string value="item.degree" /></OGo:font></td>
 
         <var:if condition="showParticipantRoles">
           <td><OGo:font><var:string value="participantRoleLabel" /></OGo:font></td>
@@ -115,25 +187,29 @@
 			      color="participantStatusColor"/></OGo:font></td>
         </var:if>
 
-        <#ShowDetailsCond>
-          <td><OGo:font><#PartFunction /></OGo:font></td>
+        <var:if condition="showDetails">
+          <td><OGo:font><var:string value="item.job_title" /></OGo:font></td>
           <td><OGo:font>
             <#IsInternalMailer><#PartEmailAction /></#IsInternalMailer>
             <#IsNotInternalMailer><#PartEmail /></#IsNotInternalMailer>
           </OGo:font></td>
-          <td><OGo:font><#DialPartTel><#PartTel /></#DialPartTel></OGo:font></td>
-          <#IsEnterpriseAvailable>
+          <td><OGo:font><#DialPartTel><var:string value="item.01_tel" /></#DialPartTel></OGo:font></td>
+          <var:if condition="isEnterpriseAvailable">
             <td><OGo:font>
-              <#PartEnterpriseRep><#EnterpriseName /></#PartEnterpriseRep>
+              <var:foreach list="item.enterprises" item="enterprise"
+                  const:separator=", "
+                  ><a directActionName="activate" 
+                      var:_oid="enterprise.companyId"
+                      var:string="enterprise.description" /></var:foreach>
             </OGo:font></td>
-          </#IsEnterpriseAvailable>
-        </#ShowDetailsCond>
+          </var:if>
+        </var:if>
        </tr>
       </var:if> 
 
       <var:if condition="isParticipantViewAllowed" const:negate="1">
        <tr>
-        <td><OGo:font><#PartName /></OGo:font></td>
+        <td><OGo:font><var:string value="item.name" /></OGo:font></td>
           <var:if condition="isEnterpriseAvailable">
             <td colspan="6" align="middle">
           </var:if>
@@ -143,8 +219,8 @@
           <OGo:font><b><OGo:label key="accessTeam" /></b></OGo:font></td>
        </tr>
       </var:if> 
-    </#IsPersonParticipant>
-  </#ParticipantRepetition>
+    </var:if>
+  </var:foreach>>
 </table>
 
 </OGo:container>
