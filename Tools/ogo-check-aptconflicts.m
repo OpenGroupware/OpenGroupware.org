@@ -79,65 +79,76 @@
 
 /* run with context */
 
-- (void)printAppointment:(id)_apt {
+- (void)printAppointment:(id)_apt conflictInfo:(NSArray *)conflictInfo {
+  unsigned i, count;
+  
   printf("  %s (%s)\n", 
          [[_apt valueForKey:@"title"] cString],
          [[[_apt valueForKey:@"dateId"] description] cString]);
   printf("    time: %s - %s\n",
          [[[_apt valueForKey:@"startDate"] description] cString],
          [[[_apt valueForKey:@"endDate"] description] cString]);
+
+  if ((count = [conflictInfo count]) == 0) {
+    printf("    no info on conflict?!\n");
+    return;
+  }
+  
+  for (i = 0; i < count; i++) {
+    NSDictionary *info;
+    NSString *stat;
+    
+    info = [conflictInfo objectAtIndex:i];
+    if ([(stat = [info valueForKey:@"resourceName"]) isNotNull]) {
+      printf("    resource:  %s\n", [stat cString]);
+    }
+    else {
+      stat = [info valueForKey:@"partStatus"];
+      printf("    conflicts: %-8d (status=%s, role=%s)\n",
+             [[info valueForKey:@"companyId"] unsignedIntValue],
+             [stat isNotNull] ? [stat cString] : "<null>",
+             [[info valueForKey:@"role"] cString]);
+    }
+  }
 }
 
 - (int)checkFrom:(NSCalendarDate *)_from to:(NSCalendarDate *)_to
   forParticipants:(NSArray *)_parts
   inContext:(LSCommandContext *)_ctx
 {
-  NSArray  *gids;
+  NSDictionary *conflictInfo;
   NSArray  *apts;
   unsigned i;
   
-  gids = [_ctx runCommand:@"appointment::conflicts",
-               @"begin", _from, @"end", _to,
-               @"staffList", _parts,
-               @"fetchGlobalIDs", @"YES",
-               nil];
+  conflictInfo = [_ctx runCommand:@"appointment::conflicts",
+                       @"begin", _from, @"end", _to,
+                       @"staffList",         _parts,
+                       @"fetchGlobalIDs",    @"YES",
+                       @"fetchConflictInfo", @"YES",
+#if 0 // to test resource conflicts
+                       @"resourceList", [NSArray arrayWithObject:@"Tisch"],
+#endif
+                       nil];
   
-  if ([gids count] == 0) {
+  if ([conflictInfo count] == 0) {
     printf("No conflicting appointments found.\n");
     return 0;
   }
   
   apts = [_ctx runCommand:@"appointment::get-by-globalid",
-                 @"gids", gids, nil];
-
+               @"gids", [conflictInfo allKeys], nil];
+  
   printf("Found %d conflicting appointments (%s - %s):\n", 
-         [gids count],
+         [conflictInfo count],
          [[_from description] cString],
          [[_to   description] cString]);
   
-  for (i = 0; i < [apts count]; i++)
-    [self printAppointment:[apts objectAtIndex:i]];
-  
-#if 1
-  // tests
-  {
-    NSArray *attrs;
-
-    attrs = [[NSArray alloc] initWithObjects:
-                               @"dateId", @"companyId", @"partStatus", @"role",
-                               @"team.globalID", @"team.isTeam",
-                               @"team.members",@"team.companyId", 
-                               @"person.globalID",
-                             nil];
-
-    NSLog(@"LIST: %@",
-        [_ctx runCommand:@"appointment::list-participants",
-              @"gids", gids,
-              @"attributes", attrs,
-              @"groupBy", @"dateId",
-              nil]);
+  for (i = 0; i < [apts count]; i++) {
+    [self printAppointment:[apts objectAtIndex:i] 
+          conflictInfo:[conflictInfo objectForKey:
+                                       [[apts objectAtIndex:i] globalID]]];
   }
-#endif
+  
   return 0;
 }
 
@@ -249,7 +260,7 @@
     NSLog(@"Could not decode from or to argument!");
     return 1;
   }
-
+  
   partNames = ([_args count] > 3)
     ? [_args subarrayWithRange:NSMakeRange(3, [_args count] - 3)]
     : [NSArray arrayWithObject:self->login];

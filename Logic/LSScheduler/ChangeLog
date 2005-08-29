@@ -1,5 +1,13 @@
 2005-08-29  Helge Hess  <helge.hess@skyrix.com>
 
+	* v5.3.66
+
+	* LSGetDateWithConflictCommand.m: added ability to retrieve detailed
+	  conflict information
+
+	* LSListParticipantsCommand.m: added ability to list CSV resources as
+	  participant records
+
 	* LSGetDateWithConflictCommand.m: fixed conflict detection according to
 	  conflict map in #1262) (v5.3.65)
 

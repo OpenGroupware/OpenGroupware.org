@@ -94,7 +94,7 @@ static NSSet *AllListAttrs = nil;
   /* ensure that all gid's are LSDate gid's */
   
   e = [self->gids objectEnumerator];
-  while ((gid = [e nextObject])) {
+  while ((gid = [e nextObject]) != nil) {
     NSString *eName;
     
     eName = [(EOKeyGlobalID *)gid entityName];

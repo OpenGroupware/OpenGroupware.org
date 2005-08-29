@@ -87,7 +87,14 @@
   NSArray  *dateIds;
   NSArray  *attributes;
   NSString *groupBy;
+  struct {
+    int listCSVResources:1;
+    int reserved:31;
+  } llpcFlags;
 }
+
+- (NSArray *)globalIDs;
+
 @end /* LSDBObjectBaseCommand */
 
 
@@ -268,7 +275,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
           maxAttributes:
             [LSListParticipantsCommand dateCompanyAssignmentAttributes]
           entity:entity subKey:nil];
-
+  
   ma = [NSMutableArray arrayWithCapacity:32];
   // create "IN" query
   inEnum = [[self _createInQuerys] objectEnumerator];
@@ -630,6 +637,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
   teams:(NSArray *)_teams
   personMap:(NSDictionary *)_idToPersons
   memberMap:(NSDictionary *)_memberMap
+  resources:(NSArray *)_resources
 {
   /*
     This is used if the 'groupBy' argument was used (otherwise _plainResu...).
@@ -646,8 +654,8 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
   mentry = [[NSMutableDictionary alloc] initWithCapacity:16];
   
   idToTeams = [self mappedToCompanyId:_teams];
-  e         = [_assignments objectEnumerator];
-    
+  
+  e = [_assignments objectEnumerator];
   while ((assignmentRecord = [e nextObject]) != nil) {
     NSDictionary *entry;
     NSNumber *companyId;
@@ -684,8 +692,14 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
     [self _groupEntry:entry intoGroup:group];
     [entry release]; entry = nil;
   }
-  
   [mentry release]; mentry = nil;
+  
+  /* add resources */
+  
+  e = [_resources objectEnumerator];
+  while ((assignmentRecord = [e nextObject]) != nil)
+    [self _groupEntry:assignmentRecord intoGroup:group];
+  
   return group;
 }
 
@@ -695,6 +709,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
   personMap:(NSDictionary *)_idToPersons
   memberMap:(NSDictionary *)_memberMap
 {
+  // TODO: add support for resources
   // TODO:
   //   This is broken for multiple appointments! It will reuse the same
   //   info record for all apts AND CAN LOOSE appointments.
@@ -772,8 +787,63 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
                 entity:nil subKey:nil] count] > 0 ? YES : NO;
 }
 
+- (NSArray *)fetchResourceInfosInContext:(id)_ctx {
+  static NSString *CSVResourceMarker = @", ";
+  static NSArray *attrs = nil;
+  NSMutableArray *results = nil;
+  NSArray  *apts;
+  unsigned i, count;
+  
+  if (attrs == nil) {
+    attrs = [[NSArray alloc] initWithObjects:
+                               @"dateId", @"globalID", @"resourceNames",
+                               nil];
+  }
+  
+  apts = [_ctx runCommand:@"appointment::get-by-globalid",
+               @"gids", [self globalIDs],
+               @"attributes", attrs,
+               nil];
+  count = [apts count];
+  
+  for (i = 0; i < count; i++) {
+    NSDictionary *apt;
+    unsigned j, jcount;
+    id names;
+    
+    apt   = [apts objectAtIndex:i];
+    names = [apt valueForKey:@"resourceNames"];
+    if (![names isNotNull]) continue;
+    
+    if (results == nil)
+      results = [NSMutableArray arrayWithCapacity:(count * 2)];
+    
+    names  = [names componentsSeparatedByString:CSVResourceMarker];
+    jcount = [names count];
+    
+    for (j = 0; j < jcount; j++) {
+      NSDictionary *rec;
+      id keys[5];
+      id values[5];
+      
+      keys[0] = @"dateId";       values[0] = [apt valueForKey:@"dateId"];
+      keys[1] = @"partStatus";   values[1] = @"ACCEPTED";
+      keys[2] = @"role";         values[2] = @"REQ-PARTICIPANT";
+      keys[3] = @"resourceName"; values[3] = [names objectAtIndex:j];
+      // TODO: should we also fetch the GID of the resource?
+      
+      rec = [[NSDictionary alloc] initWithObjects:values forKeys:keys
+                                  count:4];
+      [results addObject:rec];
+      [rec release]; rec = nil;
+    }
+  }
+  return results;
+}
+
 - (void)_executeInContext:(id)_context {
   /* TODO: split up method */
+  NSArray        *resources;
   NSArray        *assignments;
   NSArray        *participantIds;
   NSArray        *teams;
@@ -784,6 +854,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
   NSDictionary   *idToPersons = nil;
   BOOL           fetchMembers = NO;
   BOOL           needExtraAttributes = NO;
+  id result;
   
   if ([self->dateIds count] == 0) {
     [self setReturnValue:([self->groupBy length] > 0)
@@ -795,8 +866,15 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
     fetchMembers = YES;
   
   /* first fetch the assignments */
+  
   assignments = [self fetchCompanyDateAssignments:self->attributes];
 
+  /* then CSV resources when requested */
+
+  resources = self->llpcFlags.listCSVResources
+    ? [self fetchResourceInfosInContext:_context]
+    : nil;
+  
   /* special case: no extra attributes (teams/persons/enterprises requested)*/
     
   if (fetchMembers)
@@ -812,22 +890,31 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
   if (!needExtraAttributes) {
     // don't need any extra attributes, so return just the
     // dateCompanyAssignments
-      
-    // TODO: support grouping here
+    
+    if (self->groupBy != nil) // TODO: support
+      [self errorWithFormat:@"requested grouping, not applied!"];
+    if (self->llpcFlags.listCSVResources) // TODO: support
+      [self errorWithFormat:@"requested resources, not applied!"];
+    
     [self setReturnValue:assignments];
     return; /* special case match */
   }
   
   /* extract participant ids */
+  
   participantIds = [assignments valueForKey:@"companyId"];
   
   /* get the assigned teams */
+  
   teams   = [self teamsForParticipantIds:participantIds
                   attributes:self->attributes];
+  
   /* get the assigned person gids */
+  
   persons = [self personGIDsForParticipantIds:participantIds];
 
   /* get the members of the teams */
+  
   if (([teams count] > 0) && fetchMembers) {
     NSMutableArray *maPers;
     
@@ -861,19 +948,24 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
   }
   
   if ([self->groupBy length] > 0) {
-    [self setReturnValue:[self _groupResult:assignments
-                               teams:teams
-                               personMap:idToPersons
-                               memberMap:teamGIDToMemberGIDs]];
+    result = [self _groupResult:assignments
+                   teams:teams
+                   personMap:idToPersons
+                   memberMap:teamGIDToMemberGIDs
+                   resources:resources];
   }
-
   else {
-    [self setReturnValue:[self _plainResult:assignments
-                               teams:teams
-                               persons:persons
-                               personMap:idToPersons
-                               memberMap:teamGIDToMemberGIDs]];
+    if (self->llpcFlags.listCSVResources) // TODO: support
+      [self errorWithFormat:@"requested resources, not applied!"];
+    
+    result = [self _plainResult:assignments
+                   teams:teams
+                   persons:persons
+                   personMap:idToPersons
+                   memberMap:teamGIDToMemberGIDs];
   }
+  
+  [self setReturnValue:result];
 }
 
 
@@ -905,6 +997,21 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
     [ma addObject:[gid keyValues][0]];
   }
   [self setDateIds:ma];
+}
+- (NSArray *)globalIDs {
+  unsigned       i, max;
+  NSMutableArray *ma;
+  
+  max = [self->dateIds count];
+  ma  = [NSMutableArray arrayWithCapacity:max];
+  for (i = 0; i < max; i++) {
+    NSNumber *dateId;
+    
+    dateId = [self->dateIds objectAtIndex:i];
+    [ma addObject:[EOKeyGlobalID globalIDWithEntityName:@"Date"
+                                 keys:&dateId keyCount:1 zone:NULL]];
+  }
+  return ma;
 }
 
 - (void)setGlobalID:(id)_gid {
@@ -948,6 +1055,10 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
     ASSIGN(self->groupBy,_value);
     return;
   }
+  if ([_key isEqualToString:@"listCSVResources"]) {
+    self->llpcFlags.listCSVResources = [_value boolValue] ? 1 : 0;
+    return;
+  }
   
   [super takeValue:_value forKey:_key];
 }
@@ -961,6 +1072,8 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
     return self->attributes;
   if ([_key isEqualToString:@"groupBy"])
     return self->groupBy;
+  if ([_key isEqualToString:@"listCSVResources"])
+    return [NSNumber numberWithBool:self->llpcFlags.listCSVResources ?YES:NO];
   
   return [super valueForKey:_key];
 }

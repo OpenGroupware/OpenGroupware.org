@@ -22,20 +22,14 @@
 #include <LSFoundation/LSGetObjectForGlobalIDs.h>
 
 /*
-  This command fetches resource-objects based on a list of EOGlobalIDs.
-
-  Additionally it runs:
-
+  This command fetches resource-objects based on a list of (resource)
+  EOGlobalIDs. Those are the CSV based resources.
 */
 
 @interface LSGetResourcesForGlobalIDs : LSGetObjectForGlobalIDs
 @end
 
-#include <LSFoundation/LSCommandKeys.h>
-#import <Foundation/Foundation.h>
-#import <EOControl/EOControl.h>
-#import <GDLAccess/GDLAccess.h>
-
+#include "common.h"
 
 @implementation LSGetResourcesForGlobalIDs
 
@@ -43,7 +37,7 @@
   return @"AppointmentResource";
 }
 
-- (void)fetchAdditionalInfosForObjects:(NSArray *)_objs context:(id)_context {  
+- (void)fetchAdditionalInfosForObjects:(NSArray *)_objs context:(id)_context {
 }
 
-@end
+@end /* LSGetResourcesForGlobalIDs */

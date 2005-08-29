@@ -31,6 +31,13 @@
   The result of the fetch is either a set of appointments, either just the
   EOGlobalID's or the full EOs (as fetched by appointment::get-by-globalid).
   
+  When the 'fetchConflictInfo' key is set, a dictionary is returned. The keys
+  are the GIDs of the conflicting events and the value is an info record about
+  the conflict.
+  
+  TODO: we have no way yet to say whether items in a staffList are optional.
+        (role/status for the query items)
+  
   Used in:
     ./DocumentAPI/OGoScheduler/SkySchedulerConflictDataSource.m
     ./Recycler/SandStorm/skyaptd/SkyAptAction+Conflicts.m
@@ -47,6 +54,7 @@
   NSCalendarDate *begin;
   NSCalendarDate *end;
   BOOL           fetchGlobalIDs;
+  BOOL           fetchConflictInfo;
 }
 
 /* accessors */
@@ -449,7 +457,88 @@ static NSArray *startDateSortOrderings = nil;
   ASSIGN(self->staffList, newStaff);
 }
 
-- (void)_executeInContext:(id)_context {
+- (id)fetchConflictInfoForGIDs:(NSArray *)_gids inContext:(id)_ctx {
+  static NSArray *attrs;
+  NSMutableDictionary *conflictInfoMap;
+  NSDictionary *partInfoMap;
+  NSSet        *staffPKeys;
+  unsigned     i, count;
+  
+  if (attrs == nil) {
+    attrs = [[NSArray alloc] initWithObjects:
+                               @"dateId", @"companyId", @"partStatus", @"role",
+                               @"team.globalID", @"team.isTeam",
+                               // not required?: @"team.members",
+                               @"team.companyId", 
+                               @"person.globalID",
+                             nil];
+  }
+  if (_gids == nil)
+    return nil;
+  if ((count = [_gids count]) == 0)
+    return [NSDictionary dictionary];
+  
+  /* fetch participant-status/type information */
+  
+  partInfoMap = [_ctx runCommand:@"appointment::list-participants",
+                        @"gids",       _gids,
+                        @"attributes", attrs,
+                        @"groupBy", @"dateId",
+                        @"listCSVResources", [NSNumber numberWithBool:YES],
+                      nil];
+  // [self logWithFormat:@"X: %@", partInfoMap];
+  
+  /* collect primary keys of teams/accounts */
+  
+  staffPKeys = [NSSet setWithArray:[self->staffList valueForKey:@"companyId"]];
+  
+  /* walk over each GID and check participant/resource conflicts */
+  
+  conflictInfoMap = [NSMutableDictionary dictionaryWithCapacity:count];
+  for (i = 0; i < count; i++) {
+    NSMutableArray *conflictParts;
+    EOKeyGlobalID  *gid;
+    NSArray        *partInfos;
+    unsigned       j, jcount;
+    
+    gid       = [_gids objectAtIndex:i];
+    partInfos = [partInfoMap objectForKey:[gid keyValues][0]];
+    
+    //[self logWithFormat:@"check %@ ..", gid];
+    
+    /* check each participant-info */
+    
+    jcount        = [partInfos count];
+    conflictParts = [[NSMutableArray alloc] initWithCapacity:jcount + 1];
+    
+    for (j = 0; j < jcount; j++) {
+      NSDictionary *partInfo;
+      id tmp;
+      
+      partInfo = [partInfos objectAtIndex:j];
+
+      if ([(tmp = [partInfo valueForKey:@"companyId"]) isNotNull]) {
+        if ([staffPKeys containsObject:tmp])
+          [conflictParts addObject:partInfo];
+      }
+      
+      if ([(tmp = [partInfo valueForKey:@"resourceName"]) isNotNull]) {
+        if ([self->resourceList containsObject:tmp])
+          [conflictParts addObject:partInfo];
+      }
+    }
+    
+    // TODO: check resources (could be returned as an opt by parts::list?)
+    
+    /* register results */
+    [conflictInfoMap setObject:conflictParts forKey:gid];
+    [conflictParts release]; conflictParts = nil;
+  }
+  
+  return conflictInfoMap;
+}
+
+- (void)_executeInContext:(id)_ctx {
   NSMutableArray    *gids;
   NSMutableArray    *currentIds;
   EODatabaseChannel *channel;
@@ -505,20 +594,23 @@ static NSArray *startDateSortOrderings = nil;
     NSArray *eos;
     
     /* fetch objects */
-    eos = LSRunCommandV(_context,
+    eos = LSRunCommandV(_ctx,
                         @"appointment", @"get-by-globalid",
                         @"gids",          gids,
                         @"sortOrderings", startDateSortOrderings,
                         nil);
     [self setReturnValue:eos];
+    
+    if (self->fetchConflictInfo)
+      [self errorWithFormat:@"Can only fetch conflict-info in GID mode!"];
   }
-  else {
+  else if (!self->fetchConflictInfo)
     [self setReturnValue:gids];
-  }
+  else
+    [self setReturnValue:[self fetchConflictInfoForGIDs:gids inContext:_ctx]];
   [gids       release]; gids       = nil;  
-  [currentIds release]; currentIds = nil;  
+  [currentIds release]; currentIds = nil;
 }
-
 
 /* record initializer */
 
@@ -592,6 +684,13 @@ static NSArray *startDateSortOrderings = nil;
   return self->fetchGlobalIDs;
 }
 
+- (void)setFetchConflictInfo:(BOOL)_flag {
+  self->fetchConflictInfo = _flag;
+}
+- (BOOL)fetchConflictInfo {
+  return self->fetchConflictInfo;
+}
+
 /* key/value coding */
 
 - (void)takeValue:(id)_value forKey:(NSString *)_key {
@@ -615,6 +714,8 @@ static NSArray *startDateSortOrderings = nil;
     [self setResourceList:_value];
   else if ([_key isEqualToString:@"fetchGlobalIDs"])
     [self setFetchGlobalIDs:[_value boolValue]];
+  else if ([_key isEqualToString:@"fetchConflictInfo"])
+    [self setFetchConflictInfo:[_value boolValue]];
   else
     [super takeValue:_value forKey:_key];
 }
@@ -632,6 +733,8 @@ static NSArray *startDateSortOrderings = nil;
     return [self resourceList];
   if ([_key isEqualToString:@"fetchGlobalIDs"])
     return [NSNumber numberWithBool:[self fetchGlobalIDs]];
+  if ([_key isEqualToString:@"fetchConflictInfo"])
+    return [NSNumber numberWithBool:[self fetchConflictInfo]];
 
   return [super valueForKey:_key];
 }
