@@ -516,15 +516,14 @@ static NGMimeType   *eoDateType        = nil;
 /* extended participant attributes */
 
 - (id)myParticipantSettingsInList:(NSArray *)_parts {
-  id       me;
   NSNumber *meId;
   unsigned i, cnt;
-  id       part;
-
-  me     = [[self session] activeAccount];
-  meId   = [me valueForKey:@"companyId"];
-  cnt = [_parts count];
-  for (i = 0; i < cnt; i++) {
+  
+  meId = [[[self session] activeAccount] valueForKey:@"companyId"];
+  
+  for (i = 0, cnt = [_parts count]; i < cnt; i++) {
+    id part;
+    
     part = [_parts objectAtIndex:i];
     if ([[part valueForKey:@"companyId"] isEqual:meId])
       return part;
@@ -741,7 +740,7 @@ static NSString *_personName(id self, id _person) {
     id           rec;
         
     recEn = [ps objectEnumerator];
-    while ((rec = [recEn nextObject]))
+    while ((rec = [recEn nextObject]) != nil)
       [mailEditor addReceiver:rec];
   }
   [self leavePage];
@@ -752,29 +751,32 @@ static NSString *_personName(id self, id _person) {
 - (id)updateParticipants:(NSArray *)_participants ofEO:(id)_eo 
   logText:(NSString *)_logText
 {
+  // TODO: this should live in a command and get triggered by a DA
   id ac;
 
   ac = [[self session] activeAccount];
-
-  [_eo run:@"appointment::set-participants", @"participants",
-       _participants, nil];
-    
+  
+  [self runCommand:@"appointment::set-participants", 
+	  @"object", _eo,
+	  @"participants", _participants, 
+	nil];
+  
   if (![self commit]) {
     [self setErrorString:@"Could not commit transaction"];
     [self rollback];
     return nil;
   }
-
+  
   _logText = [_logText stringByAppendingString:[ac valueForKey:@"name"]];
-  [self run:@"object::add-log",
+  [self runCommand:@"object::add-log",
+          @"objectToLog", _eo, 
           @"logText",     _logText,
           @"action",      @"05_changed",
-          @"objectToLog", _eo, 
 	nil];
 
   [self postChange:LSWUpdatedAppointmentNotificationName
 	onObject:_eo];
-      
+  
   if ([self isMailAvailable])
     [self sendMailWithSubject:_logText];
   
@@ -825,19 +827,31 @@ static NSString *_personName(id self, id _person) {
 }
 
 - (id)changeParticipantStateTo:(NSString *)_state logKey:(NSString *)_key {
+  // TODO: this should live in a command and get triggered by a DA
   NSMutableArray *parts;
   id partSettings;
   
-  // we need the assignemtn attributes (partStatus, role, ..)
+  // we need the assignment attributes (partStatus, role, ..)
   parts        = [NSMutableArray arrayWithArray:[self participants]];
   partSettings = [self myParticipantSettingsInList:parts];
-
+  
   if (partSettings == nil)
     return nil;
   if ([[partSettings valueForKey:@"partSettings"] isEqualToString:_state])
     return nil;
   
+  if (![partSettings isKindOfClass:[NSMutableDictionary class]]) {
+    if ([partSettings isKindOfClass:[NSDictionary class]]) {
+      id oldpart = partSettings;
+      partSettings = [[partSettings mutableCopy] autorelease];
+      
+      [parts removeObject:oldpart];
+      [parts addObject:partSettings];
+    }
+  }
+
   [partSettings takeValue:_state forKey:@"partStatus"];  
+  
   [self updateParticipants:parts ofEO:[self appointmentAsEO]
 	logText:[[self labels] valueForKey:_key]];
   [self->participants release]; self->participants = nil;
@@ -864,8 +878,8 @@ static NSString *_personName(id self, id _person) {
 
 - (void)sleep {
   [self resetParticipants];
-  RELEASE(self->member);       self->member       = nil;
-  RELEASE(self->item);         self->item         = nil;
+  [self->member release]; self->member = nil;
+  [self->item   release]; self->item   = nil;
   [super sleep];
 }
 

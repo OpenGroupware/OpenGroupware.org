@@ -1,3 +1,8 @@
+2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAptParticipantsList.m: fixed changing of participant status (new
+	  code returned immutable records) (v5.3.68)
+
 2005-08-22  Helge Hess  <helge.hess@skyrix.com>
 
 	* Defaults.plist: enable participant roles per default (v5.3.67)
