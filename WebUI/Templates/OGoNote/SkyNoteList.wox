@@ -1,5 +1,4 @@
 <?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
-<!-- $Id: SkyNoteList.wox,v 1.3 2004/05/01 16:03:08 helge Exp $ -->
 <span
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"
@@ -9,16 +8,17 @@
  <form var:action="noteQuickCreate">
 
   <!-- title with new note link -->
+  <!-- TODO: can we use <OGo:page-head> ? -->
   <table cellspacing="0" cellpadding="1" border="0" width="100%">
     <tr var:bgcolor="config.colors_tableViewAttributeCell">
       <td><OGo:font><b><var:string value="title" /></b></OGo:font></td>
       <td align="right">
-        <OGo:buttons>
-          <OGo:button name="showhide" label="togglecreate" 
-                      action="toggleQuickCreate" />
-          <OGo:button name="createnewnote" label="new" 
-                      action="createNewNote" />
-        </OGo:buttons>
+        <buttons xmlns="http://www.opengroupware.org/ns/wox/ogo">
+          <button name="showhide" label="togglecreate" 
+                  action="toggleQuickCreate" />
+          <button name="createnewnote" label="new" 
+                  action="createNewNote" />
+        </buttons>
       </td> 
     </tr>
     <tr><td colspan="2"></td></tr>

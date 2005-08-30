@@ -390,12 +390,15 @@ static WOAssociation *yesAssoc = nil;
     string    // regular assoc
     width     // regular assoc
     enabled   // wrap in WOConditional, enabled=>condition, always keypath
+    is-sub    // BOOL, generates 'subAttributeCell'/'subValueCell' bindings
+    shows-deleted-object // BOOL, generates 'valueFontColor' binding
     
     <attribute label="FileManager" string="fileManager" />
     
     TestInfoA: SkyAttribute { // dynamic element
       label  = "TestInfoA";
       string = fileManager;
+      doTR   = YES;
     }
   */
   id<NSObject,DOMNamedNodeMap> attrs;
@@ -413,6 +416,29 @@ static WOAssociation *yesAssoc = nil;
   
   [assocs setObject:yesAssoc forKey:@"doTR"];
   
+  if ([[_elem attribute:@"is-sub" namespaceURI:@"*"] boolValue]) {
+    static WOAssociation *keyColor = nil, *valueColor = nil;
+    if (keyColor == nil) {
+      keyColor = [[WOAssociation associationWithValue:
+                                   @"subAttributeCell"] retain];
+    }
+    if (valueColor == nil) {
+      valueColor = [[WOAssociation associationWithValue:
+                                     @"subValueCell"] retain];
+    }
+    
+    [assocs setObject:keyColor   forKey:@"keyColor"];
+    [assocs setObject:valueColor forKey:@"valueColor"];
+  }
+  if ([[_elem attribute:@"shows-deleted-object" namespaceURI:@"*"] boolValue]){
+    static WOAssociation *color = nil;
+    if (color == nil) {
+      color = [[WOAssociation associationWithValue:
+                                @"colors_deleted_object"] retain];
+    }
+    [assocs setObject:color forKey:@"valueFontColor"];
+  }
+  
   if ((s = [_elem attribute:@"label" namespaceURI:@"*"])) {
     s = [@"labels." stringByAppendingString:s];
     [assocs setObject:[WOAssociation associationWithKeyPath:s]
@@ -422,6 +448,7 @@ static WOAssociation *yesAssoc = nil;
     [assocs setObject:[_b associationForAttribute:attr] forKey:@"string"];
   if ((attr = [attrs namedItem:@"width" namespaceURI:@"*"]))
     [assocs setObject:[_b associationForAttribute:attr] forKey:@"width"];
+
   
   condition = ((s = [_elem attribute:@"enabled" namespaceURI:@"*"]))
     ? [WOAssociation associationWithKeyPath:s] : nil;
@@ -440,7 +467,7 @@ static WOAssociation *yesAssoc = nil;
 }
 - (WOElement *)buildAttributes:(id<DOMElement>)_elem templateBuilder:(id)_b {
   /*
-    <attributes>
+    <attributes sub-table="1">
       <attribute label="FileManager" string="fileManager" />
       <attribute label="Test Info"   const:string="blub" />
     </attributes>
@@ -450,12 +477,32 @@ static WOAssociation *yesAssoc = nil;
       string = fileManager;
     }
   */
-  NSArray *children;
+  NSArray   *children;
+  WOElement *result;
   
   children = [_elem hasChildNodes]
     ? [_b buildNodes:[_elem childNodes] templateBuilder:_b]
     : nil;
-  return [self elementForElementsAndStrings:children];
+  
+  if ([[_elem attribute:@"sub-table" namespaceURI:@"*"] boolValue]) {
+    NSMutableArray *ma;
+    
+    ma = [[NSMutableArray alloc] initWithCapacity:([children count] + 3)];
+    
+    /* Note: this definition was taken from LSWAppointmentViewer.wod */
+    // TODO: replace table-values with CSS
+    [ma addObject:
+          @"<table width=\"100%\" bgcolor=\"#FAE8B8\" border=\"0\" "
+          @"cellpadding=\"4\" cellspacing=\"0\">"];
+    [ma addObjectsFromArray:children];
+    [ma addObject:@"</table>"];
+    
+    result = [self elementForElementsAndStrings:ma];
+    [ma release]; ma = nil;
+  }
+  else
+    result = [self elementForElementsAndStrings:children];
+  return result;
 }
 
 - (void)addButton:(id<DOMElement>)_button withName:(NSString *)_name
@@ -574,6 +621,11 @@ static WOAssociation *yesAssoc = nil;
   /*
     <OGo:page-head title="IPK Publisher Project">
       <OGo:buttons>...</OGo:buttons>
+      <OGo:attributes>
+        <attribute label="FileManager" string="fileManager" />
+        <attribute label="Test Info"   const:string="blub" />
+         ..
+      </OGo:attributes>
     </OGo:page-head>
     
     Builds:

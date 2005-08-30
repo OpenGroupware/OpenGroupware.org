@@ -1,3 +1,9 @@
+2005-08-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoElemBuilder.m: added support for building <attributes/> sections
+	  with <table> tags for 'sub attributes', added support for building
+	  color-binding for 'sub attributes' (is-sub attribute) (v5.3.107)
+
 2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWSkyrixFrame.m: fixed a gcc4 warning (v5.3.106)

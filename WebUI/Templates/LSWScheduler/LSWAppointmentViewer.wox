@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<page
+  var:title="labels.AppointmentViewerTitle"
+  xmlns="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+  <head var:title="startDate">
+    <buttons>
+      <button name="clip" label="clip"
+              action="placeInClipboard" />
+      <button name="mail" label="send"
+              action="mailObject" url="objectUrl" />
+
+      <button name="delete" label="deleteButtonLabel"
+              action="delete" var:enabled="hasLoginDeleteAccess" />
+      <button name="move" label="move"
+              action="move" var:enabled="hasLoginEditAccess" />
+      <button name="edit" label="edit"
+              action="edit" var:enabled="hasLoginEditAccess" />
+
+      <button name="print" label="printButtonLabel"
+              action="print" target="printApt" />
+    </buttons>
+    <attributes>
+      <attribute label="title"    var:string="appointment.title" />
+      <attribute label="location" var:string="appointment.location" />
+    </attributes>
+  </head>
+  
+  <body>
+    <tab selectionDefault="scheduler_appointment_view">
+      <tabitem key="attributes" label="attributes">
+        <attributes sub-table="1">
+          <attribute label="startTime" var:string="startDate" is-sub="1" />
+          <attribute label="endTime"   var:string="endDate"   is-sub="1" />
+          <attribute label="notificationTime" var:string="notificationTime"
+                     is-sub="1" />
+
+          <attribute label="cycle" is-sub="1" enabled="isCyclic">
+            <var:string var:value="cycleType" const:escapeHTML="0" />
+            <entity name="nbsp" />
+            <label key="until"  />
+            <entity name="nbsp" />
+            <var:string var:value="cycleEndDateString" />
+          </attribute>
+
+          <attribute label="resource" var:string="object.resourceNames"
+                     is-sub="1" />
+          <attribute label="attribute_aptType" var:string="aptTypeLabel"
+                     is-sub="1" />
+
+          <attribute label="absence" var:string="object.absence"
+                     enabled="object.isAbsence.boolValue" is-sub="1" />
+
+          <var:if condition="isOwnerArchived" const:negate="1">
+            <attribute label="creator" var:string="appointment.owner.login"
+                       is-sub="1" />
+          </var:if>
+          <attribute label="creator" var:string="appointment.owner.login"
+                     enabled="isOwnerArchived"
+                     is-sub="1" shows-deleted-object="1" />
+
+          <attribute label="accessTeamLabel" is-sub="1">
+            <var:string var:value="accessTeamLabel"
+                        var:valueWhenEmpty="labels.private" />
+          </attribute>
+
+          <attribute label="writeAccess" var:string="writeAccessList"
+                     is-sub="1" />
+
+          <attribute label="comment" is-sub="1">
+            <var:string var:value="appointment.comment"
+                        const:insertBR="1"
+                        const:valueWhenEmpty="" />
+          </attribute>
+
+          <attribute label="ignoreConflictsLabel" var:string="ignoreConflicts"
+                     is-sub="1" />
+          <attribute label="objectVersionLabel"
+                     var:string="appointment.objectVersion"
+                     is-sub="1" />
+        </attributes>
+      </tabitem>
+
+      <tabitem key="participants" label="participants">
+        <var:component className="SkyAptParticipantsList"
+                       var:appointment="appointment"/>
+      </tabitem>
+
+      <tabitem key="notes" label="notes">
+        <var:component className="SkyNoteList"
+                       var:appointment="appointment"
+                       var:title="appointment.title" />
+      </tabitem>
+
+      <tabitem key="links" label="links">
+        <var:component className="OGoObjectLinkList" var:object="appointment"/>
+      </tabitem>
+
+      <tabitem key="log" label="logsLabel">        
+        <var:component className="SkyObjectLogList" var:object="appointment"/>
+      </tabitem>
+    </tab>
+  </body>
+</page>

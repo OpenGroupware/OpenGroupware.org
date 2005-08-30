@@ -1,3 +1,9 @@
+2005-08-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoNote/SkyNoteList.wox: minor template cleanups
+
+	* LSWScheduler/LSWAppointmentViewer: rewritten as WOx template
+
 2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWScheduler/SkyAptParticipantsList.wod: localize participant role
