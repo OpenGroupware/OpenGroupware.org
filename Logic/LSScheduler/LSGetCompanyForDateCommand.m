@@ -21,6 +21,12 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
+/*
+  LSGetCompanyForDateCommand / appointment::get-participants
+
+  TODO: document
+*/
+
 @class NSMutableArray;
 
 @interface LSGetCompanyForDateCommand : LSDBObjectBaseCommand

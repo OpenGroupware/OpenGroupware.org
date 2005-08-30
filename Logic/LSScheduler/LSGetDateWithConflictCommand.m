@@ -430,6 +430,58 @@ static NSArray *startDateSortOrderings = nil;
   NSMutableSet *staffSet = nil;
   NSArray      *newStaff = nil;
   
+  if ([self->appointment isNotNull]) {
+    /* turn GIDs into real apt */
+    if ([self->appointment isKindOfClass:[EOGlobalID class]]) {
+      id tmp;
+      
+      tmp = LSRunCommandV(_context, @"appointment", @"get-by-globalid",
+                          @"gid", self->appointment, nil);
+      if ([tmp isKindOfClass:[NSArray class]])
+        tmp = [tmp lastObject];
+
+      if ([tmp isNotNull]) {
+        ASSIGN(self->appointment, tmp);
+      }
+      else {
+        [self errorWithFormat:@"could not fetch appointment for GID: %@", 
+              self->appointment];
+        ASSIGN(self->appointment, nil);
+      }
+    }
+    
+    /* setup begin/end from 'appointment' when available */
+    if (self->begin == nil && self->end == nil) {
+      self->begin = [[self->appointment valueForKey:@"startDate"] copy];
+      self->end   = [[self->appointment valueForKey:@"endDate"]   copy];
+    }
+    
+    /* setup staff/resources from 'appointment' when available */
+    if (self->resourceList == nil && self->staffList == nil) {
+      id tmp;
+      
+      tmp = [self->appointment valueForKey:@"resourceNames"];
+      if ([tmp isNotNull]) {
+        self->resourceList = [[tmp componentsSeparatedByString:@", "] copy];
+      }
+      
+      tmp = [self->appointment valueForKey:@"participants"];
+      if (![tmp isNotNull]) {
+        tmp = LSRunCommandV(_context, @"appointment", @"get-participants",
+                            @"appointment", self->appointment, nil);
+      }
+      
+      if ([tmp isNotNull])
+        self->staffList = [tmp retain];
+      else {
+        [self errorWithFormat:@"could not detect participants: %@", 
+              self->appointment];
+      }
+    }
+  }
+  
+  /* fixup stafflist for processing */
+  
   cnt      = [self->staffList count];
   staffSet = [NSMutableSet setWithCapacity:cnt];
   
@@ -601,7 +653,7 @@ static NSArray *startDateSortOrderings = nil;
                         nil);
     [self setReturnValue:eos];
     
-    if (self->fetchConflictInfo)
+    if (self->fetchConflictInfo) // TODO: why is that?
       [self errorWithFormat:@"Can only fetch conflict-info in GID mode!"];
   }
   else if (!self->fetchConflictInfo)

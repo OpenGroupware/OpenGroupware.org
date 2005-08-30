@@ -1,3 +1,9 @@
+2005-08-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSGetDateWithConflictCommand.m: automatically set begin/end and
+	  staff/resources if no parameters are given but the appointment
+	  (v5.3.68)
+
 2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.67
