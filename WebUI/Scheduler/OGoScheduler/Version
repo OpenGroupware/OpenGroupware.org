@@ -1,6 +1,7 @@
 # version file
 
-SUBMINOR_VERSION:=42
+SUBMINOR_VERSION:=43
 
+# v5.3.43 requires LSScheduler v5.3.69
 # v5.3.42 requires LSScheduler v5.3.68
 # v5.3.36 requires LSTeam      v5.3.12

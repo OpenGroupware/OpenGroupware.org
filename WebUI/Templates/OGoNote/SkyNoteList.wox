@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
-<span
+<OGo:container
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
@@ -8,7 +8,7 @@
  <form var:action="noteQuickCreate">
 
   <!-- title with new note link -->
-  <!-- TODO: can we use <OGo:page-head> ? -->
+  <!-- TODO: can we use <OGo:page-head> ? => different color/clash with tv -->
   <table cellspacing="0" cellpadding="1" border="0" width="100%">
     <tr var:bgcolor="config.colors_tableViewAttributeCell">
       <td><OGo:font><b><var:string value="title" /></b></OGo:font></td>
@@ -145,4 +145,4 @@
     </var:foreach>
   </table>
  </form>
-</span>
+</OGo:container>

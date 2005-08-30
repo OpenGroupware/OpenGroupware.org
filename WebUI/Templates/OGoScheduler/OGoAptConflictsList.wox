@@ -1,26 +1,84 @@
 <?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
-<table border="0" width="100%"
+<OGo:container
   xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
 >
-  <var:foreach list="conflictDates" item="currentDate">
-    <tr>
-      <td valign="top" align="left">
-        <OGo:font>
-          <a directActionName="activate" var:_oid="currentDate.dateId"
-            ><var:string value="currentDate.title" /></a>
-        </OGo:font>
-      </td>
-      <td valign="top" align="left">
-        <OGo:font>
-          (<var:string value="currentDate.startDate"
-                       formatter="formatDateTime" /> -
-           <var:string value="currentDate.endDate"
-                       formatter="formatDateTime" />)
-        </OGo:font>
-      </td>
-    </tr>
-  </var:foreach>
-</table>
+  <OGo:page-head title="abc" />
+
+  <table border="0" width="100%">
+    <var:foreach list="conflictDates" item="currentDate">
+      <tr>
+        <td valign="top" align="left" width="25%">
+          <OGo:font>
+            <a directActionName="activate" var:_oid="currentDate.dateId"
+               var:_c="context.contextID"
+              ><var:string value="currentDate.title" /></a>
+          </OGo:font>
+        </td>
+        <td valign="top" align="left">
+          <OGo:font>
+            (<var:string value="currentDate.startDate"
+                         formatter="formatDateTime" /> -
+             <var:string value="currentDate.endDate"
+                         formatter="formatDateTime" />)
+          </OGo:font>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="padding-left: 32px;">
+          <table width="100%" border="0">
+            <var:foreach list="currentDateConflicts" item="currentConflict">
+              <tr>
+                <var:if condition="currentConflict.isTeam">
+                  <td width="100">
+                    <OGo:font><OGo:label key="Team"/>:</OGo:font>
+                  </td>
+                  <td>
+                    <OGo:font>
+                      <a directActionName="activate"
+                         var:_oid="currentConflict.companyId"
+                         var:_c="context.contextID"
+                        ><var:string value="currentConflict.description" /></a>
+                    </OGo:font>
+                  </td>
+                </var:if>
+                
+                <var:if condition="currentConflict.resourceName.isNotNull">
+                  <td width="100">
+                    <OGo:font><OGo:label key="Resource"/>:</OGo:font>
+                  </td>
+                  <td>
+                    <OGo:font>
+                      <var:string value="currentConflict.resourceName" />
+                    </OGo:font>
+                  </td>
+                </var:if>
+
+                <var:if condition="currentConflict.globalID.entityName"
+                        const:value="Person">
+                  <td width="100">
+                    <OGo:font><OGo:label key="Person"/>:</OGo:font>
+                  </td>
+                  <td>
+                    <OGo:font>
+                      <a directActionName="activate"
+                         var:_oid="currentConflict.companyId"
+                         var:_c="context.contextID"
+                        ><var:string value="currentConflict.firstname" />
+                         <var:string value="currentConflict.lastname" /></a>
+
+                      (<var:string value="conflictPartStatusLabel"/>,
+                       <var:string value="conflictRoleLabel"/>)
+                    </OGo:font>
+                  </td>
+                </var:if>
+              </tr>
+            </var:foreach>
+          </table>
+        </td>
+      </tr>
+    </var:foreach>
+  </table>
+</OGo:container>

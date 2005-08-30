@@ -40,6 +40,7 @@
 
   /* transient */
   id currentDate;
+  id currentConflict;
 }
 
 - (void)_resetCaches;
@@ -50,28 +51,32 @@
 
 @implementation OGoAptConflictsList
 
-static NSNumber *yesNum   = nil;
-static NSArray  *aptAttrs = nil;
+static NSNumber *yesNum        = nil;
+static NSArray  *aptAttrs      = nil;
+static NSArray  *conflictAttrs = nil;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   
   yesNum   = [[NSNumber numberWithBool:YES] retain];
   aptAttrs = [[ud arrayForKey:@"schedulerconflicts_fetchkeys"] copy];
+  conflictAttrs = [[ud arrayForKey:@"schedulerconflicts_conflictkeys"] copy];
 }
 
 - (void)dealloc {
-  [self->currentDate   release];
-  [self->appointment   release];
-  [self->conflictDates release];
-  [self->conflictInfos release];
+  [self->currentConflict release];
+  [self->currentDate     release];
+  [self->appointment     release];
+  [self->conflictDates   release];
+  [self->conflictInfos   release];
   [super dealloc];
 }
 
 /* notifications */
 
 - (void)sleep {
-  [self->currentDate release]; self->currentDate = nil;
+  [self->currentConflict release]; self->currentConflict = nil;
+  [self->currentDate     release]; self->currentDate     = nil;
   [super sleep];
 }
 
@@ -95,9 +100,17 @@ static NSArray  *aptAttrs = nil;
   return self->currentDate;
 }
 
+- (void)setCurrentConflict:(id)_rec {
+  ASSIGN(self->currentConflict, _rec);
+}
+- (id)currentConflict {
+  return self->currentConflict;
+}
+
 /* operations */
 
 - (void)_resetCaches {
+  [self->currentConflict release]; self->currentConflict = nil;
   [self->currentDate   release]; self->currentDate   = nil;
   [self->conflictDates release]; self->conflictDates = nil;
   [self->conflictInfos release]; self->conflictInfos = nil;
@@ -112,6 +125,7 @@ static NSArray  *aptAttrs = nil;
              @"appointment", [self appointment],
              @"fetchConflictInfo", yesNum,
              @"fetchGlobalIDs",    yesNum,
+	     @"conflictInfoAttributes", conflictAttrs,
            nil] copy];
   
   self->conflictDates = 
@@ -134,6 +148,29 @@ static NSArray  *aptAttrs = nil;
   }
   
   return self->conflictDates;
+}
+
+- (NSArray *)currentDateConflicts {
+  EOGlobalID *gid;
+  
+  gid = [[self currentDate] valueForKey:@"globalID"];
+  return gid != nil ? [self->conflictInfos objectForKey:gid] : nil;
+}
+
+- (NSString *)conflictPartStatusLabel {
+  NSString *s;
+  
+  s = [[self currentConflict] valueForKey:@"partStatus"];
+  s = [s isNotNull] ? s : @"NEEDS-ACTION";
+  s = [@"partStat_" stringByAppendingString:s];
+  return [[self labels] valueForKey:s];
+}
+- (NSString *)conflictRoleLabel {
+  NSString *s;
+  
+  s = [[self currentConflict] valueForKey:@"role"];
+  s = [@"partRole_" stringByAppendingString:s];
+  return [[self labels] valueForKey:s];
 }
 
 @end /* OGoAptConflictsList */

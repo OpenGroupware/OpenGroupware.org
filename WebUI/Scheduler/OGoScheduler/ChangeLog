@@ -1,3 +1,7 @@
+2005-08-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoAptConflictsList.m: show conflict info (v5.3.43)
+
 2005-08-30  Helge Hess  <helge.hess@skyrix.com>
 
 	* added OGoAptConflictsList component to display appointment conflicts

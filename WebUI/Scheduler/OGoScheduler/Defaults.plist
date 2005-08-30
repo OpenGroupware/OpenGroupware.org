@@ -155,4 +155,9 @@
   schedulerconflicts_fetchkeys = (
     title, location, startDate, endDate, globalID
   );
+  schedulerconflicts_conflictkeys = (
+    companyId, partStatus, role,
+    team.isTeam, team.description,
+    person.name, person.firstname
+  );
 }

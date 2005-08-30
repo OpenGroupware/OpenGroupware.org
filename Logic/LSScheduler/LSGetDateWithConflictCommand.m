@@ -55,6 +55,7 @@
   NSCalendarDate *end;
   BOOL           fetchGlobalIDs;
   BOOL           fetchConflictInfo;
+  NSArray        *conflictInfoAttributes; // for apt::list-participants
 }
 
 /* accessors */
@@ -92,6 +93,7 @@ static NSArray *startDateSortOrderings = nil;
 }
 
 - (void)dealloc {
+  [self->conflictInfoAttributes release];
   [self->begin        release];
   [self->end          release];
   [self->staffList    release];
@@ -510,21 +512,34 @@ static NSArray *startDateSortOrderings = nil;
 }
 
 - (id)fetchConflictInfoForGIDs:(NSArray *)_gids inContext:(id)_ctx {
-  static NSArray *attrs;
+  static NSArray *rattrs;
   NSMutableDictionary *conflictInfoMap;
   NSDictionary *partInfoMap;
+  NSArray      *attrs;
   NSSet        *staffPKeys;
   unsigned     i, count;
   
-  if (attrs == nil) {
-    attrs = [[NSArray alloc] initWithObjects:
+  if (rattrs == nil) {
+    rattrs = [[NSArray alloc] initWithObjects:
                                @"dateId", @"companyId", @"partStatus", @"role",
                                @"team.globalID", @"team.isTeam",
                                // not required?: @"team.members",
                                @"team.companyId", 
                                @"person.globalID",
-                             nil];
+			      nil];
   }
+  if ([self->conflictInfoAttributes count] > 0) {
+    NSMutableSet *ms;
+
+    ms = [[NSMutableSet alloc] initWithCapacity:32];
+    [ms addObjectsFromArray:rattrs];
+    [ms addObjectsFromArray:self->conflictInfoAttributes];
+    attrs = [[[ms allObjects] copy] autorelease];
+    [ms release]; ms = nil;
+  }
+  else
+    attrs = rattrs;
+
   if (_gids == nil)
     return nil;
   if ((count = [_gids count]) == 0)
@@ -729,6 +744,13 @@ static NSArray *startDateSortOrderings = nil;
   return self->resourceList ;
 }
 
+- (void)setConflictInfoAttributes:(NSArray *)_attrs {
+  ASSIGNCOPY(self->conflictInfoAttributes, _attrs);
+}
+- (NSArray *)conflictInfoAttributes {
+  return self->conflictInfoAttributes ;
+}
+
 - (void)setFetchGlobalIDs:(BOOL)_flag {
   self->fetchGlobalIDs = _flag;
 }
@@ -768,6 +790,8 @@ static NSArray *startDateSortOrderings = nil;
     [self setFetchGlobalIDs:[_value boolValue]];
   else if ([_key isEqualToString:@"fetchConflictInfo"])
     [self setFetchConflictInfo:[_value boolValue]];
+  else if ([_key isEqualToString:@"conflictInfoAttributes"])
+    [self setConflictInfoAttributes:_value];
   else
     [super takeValue:_value forKey:_key];
 }
@@ -787,6 +811,8 @@ static NSArray *startDateSortOrderings = nil;
     return [NSNumber numberWithBool:[self fetchGlobalIDs]];
   if ([_key isEqualToString:@"fetchConflictInfo"])
     return [NSNumber numberWithBool:[self fetchConflictInfo]];
+  if ([_key isEqualToString:@"conflictInfoAttributes"])
+    return [self conflictInfoAttributes];
 
   return [super valueForKey:_key];
 }

@@ -1,3 +1,7 @@
+2005-08-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoScheduler/OGoAptConflictsList.wox: added infos on conflict
+
 2005-08-30  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoScheduler: added template for OGoAptConflictsList
