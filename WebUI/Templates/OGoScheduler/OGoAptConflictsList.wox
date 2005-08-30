@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<table border="0" width="100%"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+  <var:foreach list="conflictDates" item="currentDate">
+    <tr>
+      <td valign="top" align="left">
+        <OGo:font>
+          <a directActionName="activate" var:_oid="currentDate.dateId"
+            ><var:string value="currentDate.title" /></a>
+        </OGo:font>
+      </td>
+      <td valign="top" align="left">
+        <OGo:font>
+          (<var:string value="currentDate.startDate"
+                       formatter="formatDateTime" /> -
+           <var:string value="currentDate.endDate"
+                       formatter="formatDateTime" />)
+        </OGo:font>
+      </td>
+    </tr>
+  </var:foreach>
+</table>

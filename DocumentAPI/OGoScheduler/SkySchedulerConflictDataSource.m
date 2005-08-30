@@ -267,7 +267,7 @@ static int      LSMaxAptCycles = 0;
                            _resources,    @"resourceList",
                          nil];
   }
-        
+  
   lconflicts = [(id)self->lso
                     runCommand:@"appointment::conflicts"
                     arguments:args];

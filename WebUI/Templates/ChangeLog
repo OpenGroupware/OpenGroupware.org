@@ -1,5 +1,9 @@
 2005-08-30  Helge Hess  <helge.hess@skyrix.com>
 
+	* OGoScheduler: added template for OGoAptConflictsList
+
+	* LSWScheduler/LSWAppointmentViewer.wox: added conflicts tab
+
 	* OGoNote/SkyNoteList.wox: minor template cleanups
 
 	* LSWScheduler/LSWAppointmentViewer: rewritten as WOx template

@@ -1,5 +1,4 @@
 <?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
-<!-- $Id: SkyAptDeletePanel.wox,v 1.2 2004/05/28 14:46:23 helge Exp $ -->
 <OGo:page var:title="labels.AptDeletePanelTitle"
   var:onClose = "session.navigation.leavePage"
   xmlns="http://www.w3.org/1999/xhtml"

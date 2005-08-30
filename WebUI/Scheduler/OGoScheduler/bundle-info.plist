@@ -25,6 +25,18 @@
       { name = SkySchedulerSelectPanel;    },
       { name = SkySchedulerConflictPage;   },
       { name = SkyAptDeletePanel;          },
+      { name = OGoAptConflictsList;        },
+    );
+    
+    WOComponents = (
+      { name = SkySchedulerPage;           },
+      { name = SkyAptResourceEditor;       },
+      { name = SkySchedulerSelectPopUp;    },      
+      { name = SkyAptResourceViewer;       },
+      { name = SkySchedulerSelectPanel;    },
+      { name = SkySchedulerConflictPage;   },
+      { name = SkyAptDeletePanel;          },
+      { name = OGoAptConflictsList;        },
     );
     
     DockablePages = (
@@ -37,15 +49,7 @@
         listicon  = "icon_scheduler_26x21.gif";
       },
     );
-    WOComponents = (
-      { name = SkySchedulerPage;           },
-      { name = SkyAptResourceEditor;       },
-      { name = SkySchedulerSelectPopUp;    },      
-      { name = SkyAptResourceViewer;       },
-      { name = SkySchedulerSelectPanel;    },
-      { name = SkySchedulerConflictPage;   },
-      { name = SkyAptDeletePanel;          },
-    );
+
     LSWCommands = (
       {
         verb      = delete; 

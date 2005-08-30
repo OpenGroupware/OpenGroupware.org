@@ -94,6 +94,11 @@
                        var:title="appointment.title" />
       </tabitem>
 
+      <tabitem key="conflicts" label="conflicts">
+        <var:component className="OGoAptConflictsList"
+                       var:appointment="appointment"/>
+      </tabitem>
+
       <tabitem key="links" label="links">
         <var:component className="OGoObjectLinkList" var:object="appointment"/>
       </tabitem>

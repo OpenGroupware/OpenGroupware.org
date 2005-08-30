@@ -1,5 +1,3 @@
-// $id: LSWScheduler.strings,v 1.3 2003/08/12 15:27:20 martin Exp $
-
 00                        = "00:00";
 00_created                = "created";
 01                        = "01:00";
@@ -142,6 +140,7 @@ columnsPerDay              = "Columns per day (list)";
 comment                    = "Comment";
 commentLabel               = "Annotations";
 comment_binding            = "comment";
+conflicts                  = "conflicts";
 conflictDisabled           = "not conflicting";
 corpusChristi              = "Corpus Christi";
 created                    = "created";
@@ -472,7 +471,8 @@ hours                   = "hours";
 ignoreConflictsLabel    = "Ignore Conflicts";
 interval                = "Proposalinterval";
 isAllDayEvent           = "all day";
-latestFinishTime        = "Latest Endtime" ;
+latestFinishTime        = "Latest Endtime";
+links                   = "links";
 linkLabel               = "Link";
 location                = "Location";
 locationLabel           = "Location";
