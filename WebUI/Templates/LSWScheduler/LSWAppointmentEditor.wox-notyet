@@ -25,133 +25,231 @@
       <table width="100%" border="0" cellpadding="4" cellspacing="0">
         <!-- appointment date title -->
 
-      <#AppCollapsible>
-        <#CollTitleMode>
-          &nbsp;<#Font><b><#AppointmentOnLabel />&nbsp;<#AppointmentDayLabel /><#IsNotNewConditional><#IsCyclic>&nbsp;(<#Cycle />&nbsp;<#UntilLabel />&nbsp;<#CycleEndDateString />)</#IsCyclic></#IsNotNewConditional></b></#Font>
-        </#CollTitleMode>
+      <OGo:collapsible visibilityDefault="scheduler_editor_expand_attributes"
+                       emptySubmit="1">
+        <title>
+          <OGo:font><b>
+            <OGo:label key="appointmentOnLabel" />
+            <var:string value="appointmentDayLabel" />
+            <var:if condition="isInNewMode" const:negate="1">
+              <var:if condition="isCyclic">
+                (<var:string value="cycleType" const:escapeHTML="0" />
+                <OGo:label key="until" />
+                <var:string value="cycleEndDateString" />)
+              </var:if>
+            </var:if>
+          </b></OGo:font>
+        </title>
       
-        <#CollContentMode>
+        <content>
           <tr><td colspan="2"> </td></tr>
 
           <!-- apointment form -->
-          <#AptDateSelection />
+          <var:component className="SkyAptTypeSelection"
+             startDate   = "startDate"   startHour = "startHour"
+             startMinute = "startMinute" startTime = "startTime"
+             endDate     = "endDate"     endHour   = "endHour"
+             endMinute   = "endMinute"   endTime   = "endTime"
+             isAllDayEvent = "isAllDayEvent"
+             timeInputType = "timeInputType"
+             isNewOrNotCyclic = "isNewOrNotCyclic"
+             const:formName   = "editform"
+             useAMPMDates     = "showAMPMDates" />
 
-      <tr>
-        <#AttributeCell><#Font><#TitleAttribute />:</#Font></#AttributeCell>
-        <#ValueCell><#EditFont><#TitleTextField /></#EditFont></#ValueCell>
-      </tr>
-      <tr>
-        <#AttributeCell><#Font><#LocationAttribute />:</#Font></#AttributeCell>
-        <#ValueCell><#EditFont>
-                <#LocationTextField />
-        </#EditFont></#ValueCell>
-      </tr>
-      <#IsInNewMode>
-        <tr>
-          <#AttributeCell><#Font><#CycleAttribute />:</#Font></#AttributeCell>
-          <#ValueCell><#EditFont>
-            <#CyclePopUp />
-            <#Font><#CycleEndDateLabel />:</#Font>
-            <#CycleEndDate />
-            <#ShowCalPopUp>
-              <#CalendarPopupCycleEndDateLink />
-            </#ShowCalPopUp>
-          </#EditFont></#ValueCell>
-        </tr>
-      </#IsInNewMode>
-      <#IsNotificationEnabled>
-        <tr>
-          <#AttributeCell><#Font><#NotificationLabel />:</#Font></#AttributeCell>
-          <#ValueCell>
-            <#EditFont><#MeasuresPopUp /></#EditFont>
-            <#Font><#BeforeLabel /></#Font>
-          </#ValueCell>
-        </tr>
-      </#IsNotificationEnabled>
-      <tr>
-        <#AttributeCell><#Font><#AccessTeamAttribute />:</#Font></#AttributeCell>
-        <#ValueCell><#EditFont><#AccessTeamSelect /></#EditFont></#ValueCell>
-      </tr>
-      <#ShowIgnoreConflictsCond>
-        <tr>
-          <#AttributeCell><#Font><#IgnoreConflictsLabel />:</#Font></#AttributeCell>
-          <#ValueCell><#Font><#IgnoreConflictsButtons /></#Font></#ValueCell>
-        </tr>
-      </#ShowIgnoreConflictsCond>
-      <#ShowAptTypeSelectionCond>
-        <tr>
-           <#AptTypeAttr><#AptTypeSelection /></#AptTypeAttr>
-        </tr>
-      </#ShowAptTypeSelectionCond>
-    </#CollContentMode>
-    </#AppCollapsible>
+          <OGo:attribute label="title" editfont="1">
+            <input type="text" name="title" size="40"
+                   var:value="appointment.title" />
+          </OGo:attribute>
+
+          <OGo:attribute label="location" editfont="1">
+            <input type="text" name="location" size="40"
+                   var:value="appointment.location" />
+          </OGo:attribute>
+
+      <var:if condition="isInNewMode">
+        <OGo:attribute label="type" editfont="1">
+            <var:popup list="userDefaults.apteditor_cycletypes" item="item"
+                       string="unitLabel" selection="appointmentType"
+                       noSelectionString="labels.once" />
+
+            <OGo:font><OGo:label key="cycleEndDateLabel"/>:</OGo:font>
+
+            <input type="text" name="cycleEndDate" size="12"
+                   var:value="cycleEndDate" />
+            <var:if condition="session.isJavaScriptEnabled">
+              <OGo:calpopup elementName="cycleEndDate" formName="editform"/>
+            </var:if>
+        </OGo:attribute>
+      </var:if>
+      <var:if condition="isNotificationEnabled">
+        <OGo:attribute label="notificationTime" editfont="1">
+            <var:popup list="userDefaults.apteditor_notify_values"
+                       item="measure" string="measureLabel"
+                       selection="notificationTime"
+                       const:noSelectionString="-" />
+          <OGo:font><OGo:label key="before" /></OGo:font>
+        </OGo:attribute>
+      </var:if>
+
+      <OGo:attribute label="accessTeamLabel" editfont="1">
+        <var:popup list="accessTeams" item="item" string="item.description"
+                   selection="selectedAccessTeam"
+                   noSelectionString="labels.privateAppointment" />
+      </OGo:attribute>
+
+        <var:if condition="isShowIgnoreConflicts">
+          <OGo:attribute label="ignoreConflictsLabel">
+            <OGo:font>
+              <var:radio-button-list
+                 list      = "userDefaults.apteditor_ignorevalues" item="item"
+                 value     = "ignoreConflictsLabel"
+                 selection = "ignoreConflictsButtonSelection"
+                 const:prefix=" " const:suffix=" " />
+            </OGo:font>
+          </OGo:attribute>
+        </var:if>
+
+        <OGo:attribute label="attribute_aptType">
+          <var:component className="SkyAptTypeSelection"
+                         selection="appointment.aptType" />
+        </OGo:attribute>
+      </content>
+    </OGo:collapsible>
 
     <tr><td colspan="2"></td></tr>
 
-    <#ParticipantsTitle><#ParticipantsSelection /></#ParticipantsTitle>
+    <OGo:collapsible visibilityDefault="scheduler_editor_expand_participants"
+                     label="searchParticipants" emptySubmit="1"
+                     var:isClicked="isParticipantsClicked">
+      <var:component className="SkyParticipantsSelection"
+         participants="participants"
+         selectedParticipants="selectedParticipants"
+         const:onlyAccounts="0"
+         const:headLineLabel="searchParticipants"
+         const:searchLabel="searchParticipants"
+         const:selectionLabel="addParticipants";
+         const:viewHeadLine="0"
+         isClicked="isParticipantsClicked" />
+    </OGo:collapsible>
 
     <tr><td colspan="2"></td></tr>
 
-    <#ResourcesTitle><#ResourceSelection /></#ResourcesTitle>
+    <OGo:collapsible visibilityDefault="scheduler_editor_expand_resources"
+                     label="searchResources" emptySubmit="1"
+                     var:isClicked="isResourceClicked">
+      <var:component className="SkyResourceSelection"
+         resources="resources" resultList="moreResources"
+         const:viewHeadLine="0" const:onlyResources="1"
+         isClicked="isResourceClicked" />
+    </OGo:collapsible>
 
     <tr><td colspan="2"></td></tr>
 
-    <#AccessTitle><#AccessSelection /></#AccessTitle>
+    <OGo:collapsible visibilityDefault="scheduler_editor_expand_access"
+                     label="assignAccessRights" emptySubmit="1"
+                     var:isClicked="isAccessClicked">
+      <var:component className="SkyParticipantsSelection"
+         participants="accessMembers"
+         selectedParticipants="selectedAccessMembers"
+         const:onlyAccounts="1"
+         const:headLineLabel="assignAccessRights"
+         const:searchLabel="searchAccounts"
+         const:selectionLabel="chooseAccounts"
+         const:viewHeadLine="0"
+         isClicked="isAccessClicked" />
+    </OGo:collapsible>
 
     <tr><td colspan="2"></td></tr>
 
-    <#CommentTitle>
-      <tr>
-        <#AttributeCell><#Font><#CommentAttribute />:</#Font></#AttributeCell>
-        <#ValueCell><#EditFont><#CommentTextArea /></#EditFont></#ValueCell>
-      </tr>
-    </#CommentTitle>
+    <OGo:collapsible visibilityDefault="scheduler_editor_expand_comment"
+                     label="comment" emptySubmit="1">
+      <OGo:attribute label="comment" editfont="1">
+        <var:component className="SkyTextEditor"
+           text    = "comment"
+           rows    = "session.userDefaults.scheduler_editor_comment_rows"
+           columns = "session.userDefaults.scheduler_editor_comment_columns"
+           const:wrap="physical" />
+      </OGo:attribute>
+    </OGo:collapsible>
 
     <tr>
       <td></td>
       <td>
-        <#SaveSubmit />
+        <input type="submit" var:action="save" class="button_narrow"
+               var:value="labels.saveButtonLabel"
+               var:title="labels.saveButtonLabel_title" />
 
-        <#IsNotNewConditional>
-          <#IsCyclic><#SaveAllSubmit /></#IsCyclic>
-        </#IsNotNewConditional>
+        <var:if condition="isInNewMode" const:negate="1">
+          <var:if condition="isCyclic">
+            <input type="submit" var:action="saveAllCyclic" class="button_wide"
+                   var:disabled="isSaveDisabled"
+                   var:value="labels.saveAllButtonLabel"
+                   var:title="labels.saveAllButtonLabel_title" />
+          </var:if>
+        </var:if>
+        
+        <var:if condition="isMailEnabled">
+          <input type="submit" var:action="saveAndSendMail"
+                 class="button_narrow"
+                 var:value="labels.saveAndMailButtonLabel"
+                 var:title="labels.saveAndMailButtonLabel_title" />
+        </var:if>
 
-        <#IsMailEnabled><#SaveAndMailSubmit /></#IsMailEnabled>
-
-        <#IsNotNewConditional>
-          <#IsDeleteEnabled>
-            <#IsJavaScriptEnabled ><#DeleteSubmitJS/></#IsJavaScriptEnabled>
-            <#IsJavaScriptDisabled><#DeleteLink    /></#IsJavaScriptDisabled>
-          </#IsDeleteEnabled>
+        <var:if condition="isInNewMode" const:negate="1">
+          <var:if condition="isDeleteDisabled" const:negate="1">
+            <var:if condition="session.isJavaScriptEnabled">
+              <var:js-confirm-panel action="reallyDelete"
+                 const:border="0" const:class="button_narrow"
+                 string="labels.deleteButtonLabel"
+                 confirmMessage="labels.really_delete" />
+            </var:if>
+            <var:if condition="session.isJavaScriptEnabled" const:negate="1">
+              <a var:action="delete" var:title="labels.deleteButtonLabel_title"
+                 var:disabled="isDeleteDisabled" class="button_narrow"
+                 ><OGo:label key="deleteButtonLabel" /></a>
+            </var:if>
+          </var:if>
           
-          <#IsCyclic><#DeleteAllLink /></#IsCyclic>
-        </#IsNotNewConditional>
+          <var:if condition="isCyclic">
+            <a var:action="deleteAllCyclic"
+               var:title="labels.deleteAllButtonLabel_title"
+               var:disabled="isDeleteDisabled" class="button_wide"
+               ><OGo:label key="deleteAllButtonLabel" /></a>
+          </var:if>
+        </var:if>
 
-        <#CancelSubmit />
+        <a var:action="cancel" class="button_narrow"
+           ><OGo:label key="cancelButtonLabel" /></a>
 
-        <!--#DateProposalSubmit/-->
+        <!-- #DateProposalSubmit/ -->
       </td>
     </tr>
 
     <tr><td colspan="2"></td></tr>
 
-    <#IsNotNewConditional>
-        <!-- move appointment section -->
-        <#MoveTitle>
-            <tr>
-             <#AttributeCell><#Font><#MoveAppointmentAttribute />:</#Font></#AttributeCell>
-             <#ValueCell><#EditFont>
-               <#MoveAmountPopUp    />
-               <#MoveUnitPopUp      />
-               <#MoveDirectionPopUp />
-             </#EditFont></#ValueCell>
-            </tr>
-            <tr>
-              <td></td>
-              <td><#MoveSubmit /></td>
-            </tr>
-        </#MoveTitle>
-      </#IsNotNewConditional>
+    <var:if condition="isInNewMode" const:negate="1">
+      <!-- move appointment section -->
+
+        <OGo:collapsible visibilityDefault="scheduler_editor_expand_move"
+                         label="move" emptySubmit="1">
+          <OGo:attribute label="moveAppointment" editfont="1">
+              <var:popup list="userDefaults.apteditor_move_amount" item="item"
+                         selection="moveAmount" string="moveAmountLabel" />
+              <var:popup list="idxArray3" item="item"
+                         selection="moveUnit" string="moveUnitLabel" />
+              <var:popup list="idxArray2" item="item"
+                         selection="moveDirection"
+                         string="moveDirectionLabel" />
+          </OGo:attribute>
+          <tr>
+            <td></td>
+            <td><input type="submit" var:action="moveAppointment"
+                       class="button_narrow"
+                       var:value="labels.moveButtonLabel"
+                       var:title="labels.moveButtonLabel_title" /></td>
+          </tr>
+        </OGo:collapsible>
+      </var:if>
     </table>
     </form>
 
