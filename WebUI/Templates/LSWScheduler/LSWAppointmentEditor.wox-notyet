@@ -45,13 +45,13 @@
           <tr><td colspan="2"> </td></tr>
 
           <!-- apointment form -->
-          <var:component className="SkyAptTypeSelection"
+          <var:component className="SkyAptDateSelection"
              startDate   = "startDate"   startHour = "startHour"
              startMinute = "startMinute" startTime = "startTime"
              endDate     = "endDate"     endHour   = "endHour"
              endMinute   = "endMinute"   endTime   = "endTime"
-             isAllDayEvent = "isAllDayEvent"
-             timeInputType = "timeInputType"
+             isAllDayEvent    = "isAllDayEvent"
+             timeInputType    = "timeInputType"
              isNewOrNotCyclic = "isNewOrNotCyclic"
              const:formName   = "editform"
              useAMPMDates     = "showAMPMDates" />
@@ -127,7 +127,7 @@
          const:onlyAccounts="0"
          const:headLineLabel="searchParticipants"
          const:searchLabel="searchParticipants"
-         const:selectionLabel="addParticipants";
+         const:selectionLabel="addParticipants"
          const:viewHeadLine="0"
          isClicked="isParticipantsClicked" />
     </OGo:collapsible>
