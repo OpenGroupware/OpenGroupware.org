@@ -1,3 +1,7 @@
+2005-08-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoElemBuilder.m: fixed some syntax error (v5.3.109)
+
 2005-08-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoElemBuilder.m: added support for warning mode in OGo:page tags

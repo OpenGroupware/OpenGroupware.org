@@ -1,3 +1,7 @@
+2005-08-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWAppointmentMove.m: minor code cleanups, fixed a warning (v5.3.70)
+
 2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyAptParticipantsList.m: added localized participant roles (v5.3.69)

@@ -6,14 +6,12 @@ WOBUNDLE_NAME = PropertiesUI
 
 PropertiesUI_PRINCIPAL_CLASS = PropertiesUI
 
+PropertiesUI_PCH_FILE = common.h
+
 PropertiesUI_OBJC_FILES = \
 	PropertiesUI.m			\
 	SkyObjectPropertyViewer.m	\
 	SkyObjectPropertyEditor.m
-
-PropertiesUI_COMPONENTS = \
-	SkyObjectPropertyViewer.wo	\
-	SkyObjectPropertyEditor.wo
 
 PropertiesUI_RESOURCE_FILES += Version
 

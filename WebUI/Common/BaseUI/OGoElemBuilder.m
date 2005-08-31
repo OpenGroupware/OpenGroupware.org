@@ -1088,27 +1088,27 @@ static WOAssociation *yesAssoc = nil;
   NSString  *cid;
   id tmp;
   
-  if (debugOn) [self debugWithFormat:@"  build OGo collapsible: %@", _element];
+  if (debugOn) [self debugWithFormat:@"  build OGo collapsible: %@", _el];
 
   /* unique component ID */
   
-  cid = [_b uniqueIDForNode:_element];
+  cid = [_b uniqueIDForNode:_el];
   if (debugOn) [self debugWithFormat:@"  CID: %@", cid];
   
   /* check children */
 
-  if ((tmp = [self lookupUniqueTag:@"content" in:_element]) != nil) {
+  if ((tmp = [self lookupUniqueTag:@"content" in:_el]) != nil) {
     /* mode a: explicit hierarchy with 'title' and 'content' subelements */
     WOElement *title, *content;
     
     // content = [self buildCollapsibleContent:tmp templateBuilder:_b];
 
-    if ((tmp = [self lookupUniqueTag:@"title" in:_element]) == nil) {
-      [self logWithFormat:@"WARNING: missing collap. title in: %@", _element];
-      head = [self elementForRawString:@"<!-- missing collapsible head -->"];
+    if ((tmp = [self lookupUniqueTag:@"title" in:_el]) == nil) {
+      [self logWithFormat:@"WARNING: missing collap. title in: %@", _el];
+      title = [self elementForRawString:@"<!-- missing collapsible head -->"];
     }
     else
-      ;//head = [self buildCollapsibleTitle:tmp templateBuilder:_b];
+      ;//title = [self buildCollapsibleTitle:tmp templateBuilder:_b];
 
     children = [NSArray arrayWithObjects:title, content, nil];
     [title   release]; title   = nil;
@@ -1117,14 +1117,14 @@ static WOAssociation *yesAssoc = nil;
   else {
     /* mode b: arbitary subelements */
     // TODO: check whether returned children array are retained!
-    children = [_element hasChildNodes]
-      ? [_b buildNodes:[_element childNodes] templateBuilder:_b]
+    children = [_el hasChildNodes]
+      ? [_b buildNodes:[_el childNodes] templateBuilder:_b]
       : nil;
   }
   
   /* build associations */
   
-  if ((assocs = [_b associationsForAttributes:[_element attributes]]) == nil)
+  if ((assocs = [_b associationsForAttributes:[_el attributes]]) == nil)
     assocs = [NSMutableDictionary dictionaryWithCapacity:2];
   
   

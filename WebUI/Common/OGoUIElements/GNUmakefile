@@ -6,6 +6,8 @@ WOBUNDLE_NAME = OGoUIElements
 
 OGoUIElements_PRINCIPAL_CLASS = SkyUIElementsModule
 
+OGoUIElements_PCH_FILE = common.h
+
 OGoUIElements_OBJC_FILES = 		\
 	SkyUIElementsModule.m         	\
 	SkyFileManagerTreeView.m	\

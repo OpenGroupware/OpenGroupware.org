@@ -6,6 +6,8 @@ WOBUNDLE_NAME = BaseUI
 
 BaseUI_PRINCIPAL_CLASS = LSWBaseModule
 
+BaseUI_PCH_FILE = common.h
+
 BaseUI_OBJC_FILES = 			\
         LSWBaseModule.m                 \
 	OGoElemBuilder.m		\

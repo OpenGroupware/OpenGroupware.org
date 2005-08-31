@@ -6,6 +6,7 @@ include ./Version
 
 LIBRARY_NAME = libOGoFoundation
 
+libOGoFoundation_PCH_FILE = common.h
 libOGoFoundation_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 libOGoFoundation_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 

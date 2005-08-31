@@ -6,6 +6,8 @@ WOBUNDLE_NAME = RelatedLinksUI
 
 RelatedLinksUI_PRINCIPAL_CLASS = RelatedLinksUI
 
+RelatedLinksUI_PCH_FILE = common.h
+
 RelatedLinksUI_OBJC_FILES = \
 	RelatedLinksUI.m	\
 	OGoObjectLinkList.m	\

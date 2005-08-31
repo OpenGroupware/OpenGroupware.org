@@ -6,6 +6,8 @@ WOBUNDLE_NAME = LSWScheduler
 
 LSWScheduler_PRINCIPAL_CLASS = LSWSchedulerModule
 
+LSWScheduler_PCH_FILE = common.h
+
 LSWScheduler_OBJC_FILES = 			\
 	LSWSchedulerModule.m			\
 	LSWSchedulerDateTitle.m			\

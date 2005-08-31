@@ -338,12 +338,12 @@ static NSDictionary *_bindingForAppointment(id self, id obj);
   template = [self->defaults valueForKey:@"scheduler_mail_template"];
 
   if ([template isNotNull]) {
-	    NSString *s;
-	    
-	    s = [template stringByReplacingVariablesWithBindings:
-			    _bindingForAppointment(self, [self snapshot])
-			  stringForUnknownBindings:@""];
-            [page takeValue:s forKey:@"mailContent"];
+    NSString *s;
+    
+    s = [template stringByReplacingVariablesWithBindings:
+		    _bindingForAppointment(self, [self snapshot])
+		  stringForUnknownBindings:@""];
+    [page takeValue:s forKey:@"mailContent"];
   }
   else {
     [page takeValue:@"" forKey:@"mailContent"];
@@ -351,34 +351,44 @@ static NSDictionary *_bindingForAppointment(id self, id obj);
   return page;
 }
 
+- (SkySchedulerConflictDataSource *)conflictDataSource {
+  /* checking conflicts */
+  SkySchedulerConflictDataSource *ds;
+  NSUserDefaults *ud;
+  Class          c;
+  EODataSource   *pds;
+  
+  ud = [[self session] userDefaults];
+  ds = [SkySchedulerConflictDataSource alloc];
+  ds = [[ds initWithContext:[(id)[self session] commandContext]] autorelease];
+  [ds setAppointment:[self conflictCheckApt]];
+  
+  /* add a palmdatedatasource to also check for conflicting palm dates */
+  if (![[ud valueForKey:@"scheduler_show_palm_dates"] boolValue])
+    return ds;
+
+  
+  if ((c = NSClassFromString(@"SkyPalmDateDataSource")) == nil)
+    return ds;
+  
+  // TODO: fix type casts
+  
+  pds = [c alloc];
+  pds = [(SkyAccessManager *)pds initWithContext:
+			       (id)[[self session] commandContext]];
+  [ds addDataSource:pds];
+  [pds release];
+  return ds;
+}
+
 - (id)saveAndGoBackWithCount:(int)_backCount action:(NSString *)_action {
   // TODO: cleanup!
   /* checking conflicts */
   SkySchedulerConflictDataSource *ds;
-  NSUserDefaults                 *ud;
-  Class                          c;
-  EODataSource                   *pds;
-  
-  ud = [[self session] userDefaults];
-  ds = [[[SkySchedulerConflictDataSource alloc] init] autorelease];
-  [ds setContext:[(id)[self session] commandContext]];
-  [ds setAppointment:[self conflictCheckApt]];
-  
-  // add a palmdatedatasource to also check for conflicting palm dates
-  if ([[ud valueForKey:@"scheduler_show_palm_dates"] boolValue]) {
-    if ((c = NSClassFromString(@"SkyPalmDateDataSource"))) {
-      // TODO: fix type casts
-      pds = [(SkyAccessManager *)[c alloc] initWithContext:
-				   (id)[[self session] commandContext]];
-      [ds addDataSource:pds];
-      [pds release];
-    }
-    else
-      [self debugWithFormat:@"Note: missing SkyPalmDateDataSource"];
-  }
   
   // TODO: do we need caching here? (if so, add it by using an EOCacheDS)
   // TODO: DUP in LSWAppointmentEditor?
+  ds = [self conflictDataSource];
   if ([[ds fetchObjects] isNotEmpty])
     [self _pageForConflictsInDataSource:ds action:_action];
   

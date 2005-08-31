@@ -1,3 +1,7 @@
+2005-08-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: removed .wo wrappers from makefile (v5.3.9)
+
 2004-08-23  Helge Hess  <helge@dogbert.in.skyrix.com>
 
 	* removed usage of deprecated singleSelection binding (v5.1.8)
