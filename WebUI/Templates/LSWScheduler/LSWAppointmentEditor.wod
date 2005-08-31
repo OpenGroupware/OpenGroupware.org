@@ -34,8 +34,8 @@ WarningModeCondElse: WOConditional {
 }
 
 Warning: LSWWarningPanel {
-  onOk      = warningOkAction;
-  phrase    = warningPhrase;
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
 }
 
 AptDateSelection: SkyAptDateSelection {

@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<OGo:page
+  var:title="labels.AppEditorTitle"
+  var:onClose="cancel"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+  <OGo:warn okAction="warningOkAction" var:phrase="warningPhrase" />
+  
+  <OGo:body>
+    <var:if condition="session.isJavaScriptEnabled">
+      <OGo:calpopup-script />
+
+      <script language="JavaScript" rsrc:src="LSWAppointmentEditor.js">
+        <!-- space required for HTML -->
+      </script>
+    </var:if>
+
+    <form name="editform">
+
+      <!-- edit panel -->
+      <table width="100%" border="0" cellpadding="4" cellspacing="0">
+        <!-- appointment date title -->
+
+      <#AppCollapsible>
+        <#CollTitleMode>
+          &nbsp;<#Font><b><#AppointmentOnLabel />&nbsp;<#AppointmentDayLabel /><#IsNotNewConditional><#IsCyclic>&nbsp;(<#Cycle />&nbsp;<#UntilLabel />&nbsp;<#CycleEndDateString />)</#IsCyclic></#IsNotNewConditional></b></#Font>
+        </#CollTitleMode>
+      
+        <#CollContentMode>
+          <tr><td colspan="2"> </td></tr>
+
+          <!-- apointment form -->
+          <#AptDateSelection />
+
+      <tr>
+        <#AttributeCell><#Font><#TitleAttribute />:</#Font></#AttributeCell>
+        <#ValueCell><#EditFont><#TitleTextField /></#EditFont></#ValueCell>
+      </tr>
+      <tr>
+        <#AttributeCell><#Font><#LocationAttribute />:</#Font></#AttributeCell>
+        <#ValueCell><#EditFont>
+                <#LocationTextField />
+        </#EditFont></#ValueCell>
+      </tr>
+      <#IsInNewMode>
+        <tr>
+          <#AttributeCell><#Font><#CycleAttribute />:</#Font></#AttributeCell>
+          <#ValueCell><#EditFont>
+            <#CyclePopUp />
+            <#Font><#CycleEndDateLabel />:</#Font>
+            <#CycleEndDate />
+            <#ShowCalPopUp>
+              <#CalendarPopupCycleEndDateLink />
+            </#ShowCalPopUp>
+          </#EditFont></#ValueCell>
+        </tr>
+      </#IsInNewMode>
+      <#IsNotificationEnabled>
+        <tr>
+          <#AttributeCell><#Font><#NotificationLabel />:</#Font></#AttributeCell>
+          <#ValueCell>
+            <#EditFont><#MeasuresPopUp /></#EditFont>
+            <#Font><#BeforeLabel /></#Font>
+          </#ValueCell>
+        </tr>
+      </#IsNotificationEnabled>
+      <tr>
+        <#AttributeCell><#Font><#AccessTeamAttribute />:</#Font></#AttributeCell>
+        <#ValueCell><#EditFont><#AccessTeamSelect /></#EditFont></#ValueCell>
+      </tr>
+      <#ShowIgnoreConflictsCond>
+        <tr>
+          <#AttributeCell><#Font><#IgnoreConflictsLabel />:</#Font></#AttributeCell>
+          <#ValueCell><#Font><#IgnoreConflictsButtons /></#Font></#ValueCell>
+        </tr>
+      </#ShowIgnoreConflictsCond>
+      <#ShowAptTypeSelectionCond>
+        <tr>
+           <#AptTypeAttr><#AptTypeSelection /></#AptTypeAttr>
+        </tr>
+      </#ShowAptTypeSelectionCond>
+    </#CollContentMode>
+    </#AppCollapsible>
+
+    <tr><td colspan="2"></td></tr>
+
+    <#ParticipantsTitle><#ParticipantsSelection /></#ParticipantsTitle>
+
+    <tr><td colspan="2"></td></tr>
+
+    <#ResourcesTitle><#ResourceSelection /></#ResourcesTitle>
+
+    <tr><td colspan="2"></td></tr>
+
+    <#AccessTitle><#AccessSelection /></#AccessTitle>
+
+    <tr><td colspan="2"></td></tr>
+
+    <#CommentTitle>
+      <tr>
+        <#AttributeCell><#Font><#CommentAttribute />:</#Font></#AttributeCell>
+        <#ValueCell><#EditFont><#CommentTextArea /></#EditFont></#ValueCell>
+      </tr>
+    </#CommentTitle>
+
+    <tr>
+      <td></td>
+      <td>
+        <#SaveSubmit />
+
+        <#IsNotNewConditional>
+          <#IsCyclic><#SaveAllSubmit /></#IsCyclic>
+        </#IsNotNewConditional>
+
+        <#IsMailEnabled><#SaveAndMailSubmit /></#IsMailEnabled>
+
+        <#IsNotNewConditional>
+          <#IsDeleteEnabled>
+            <#IsJavaScriptEnabled ><#DeleteSubmitJS/></#IsJavaScriptEnabled>
+            <#IsJavaScriptDisabled><#DeleteLink    /></#IsJavaScriptDisabled>
+          </#IsDeleteEnabled>
+          
+          <#IsCyclic><#DeleteAllLink /></#IsCyclic>
+        </#IsNotNewConditional>
+
+        <#CancelSubmit />
+
+        <!--#DateProposalSubmit/-->
+      </td>
+    </tr>
+
+    <tr><td colspan="2"></td></tr>
+
+    <#IsNotNewConditional>
+        <!-- move appointment section -->
+        <#MoveTitle>
+            <tr>
+             <#AttributeCell><#Font><#MoveAppointmentAttribute />:</#Font></#AttributeCell>
+             <#ValueCell><#EditFont>
+               <#MoveAmountPopUp    />
+               <#MoveUnitPopUp      />
+               <#MoveDirectionPopUp />
+             </#EditFont></#ValueCell>
+            </tr>
+            <tr>
+              <td></td>
+              <td><#MoveSubmit /></td>
+            </tr>
+        </#MoveTitle>
+      </#IsNotNewConditional>
+    </table>
+    </form>
+
+    <var:if condition="session.isJavaScriptEnabled">
+      <script language="JavaScript">
+        if (document.editform.title) {
+          document.editform.title.focus();
+        }
+      </script>
+    </var:if>
+  </OGo:body>
+</OGo:page>

@@ -35,7 +35,8 @@
   Supported tags:
     <OGo:page [title,onClose] .../> to LSWSkyrixFrame, OGoWindowFrame
       <head/>
-      <body>
+      <body/>
+      <warn/>
     <OGo:page-head .../>
     <OGo:page-body .../>
     <OGo:buttons   .../>
@@ -135,6 +136,14 @@ static WOAssociation *yesAssoc = nil;
   return @"SkyCalendarPopUp";
 }
 
+- (NSString *)warningComponentName {
+  return @"LSWWarningPanel";
+}
+
+- (NSString *)collapsibleComponentName {
+  return @"SkyCollapsibleContent";
+}
+
 /* convenience methods */
 
 - (id<DOMElement>)lookupUniqueTag:(NSString *)_name in:(id<DOMElement>)_elem {
@@ -200,6 +209,7 @@ static WOAssociation *yesAssoc = nil;
 
 - (WOElement *)wrapElement:(WOElement *)_element 
   inCondition:(WOAssociation *)_condition
+  negate:(BOOL)_flag
 {
   // NOTE: *releases* _element parameter!
   //       returns retained conditional
@@ -213,8 +223,15 @@ static WOAssociation *yesAssoc = nil;
   if (_condition == nil)
     return _element;
   
-  assocs = [[NSMutableDictionary alloc] initWithObjects:&_condition
-                                        forKeys:&key count:1];
+  if (_flag) {
+    assocs = [[NSMutableDictionary alloc] 
+	       initWithObjectsAndKeys:_condition, key,
+	       yesAssoc, @"negate", nil];
+  }
+  else {
+    assocs = [[NSMutableDictionary alloc] initWithObjects:&_condition
+					  forKeys:&key count:1];
+  }
   children = [[NSArray alloc] initWithObjects:&_element count:1];
   element = [[[self conditionalClass] alloc] initWithName:nil
                                              associations:assocs
@@ -224,6 +241,12 @@ static WOAssociation *yesAssoc = nil;
   [assocs   release];
   return element;
 }
+- (WOElement *)wrapElement:(WOElement *)_element 
+  inCondition:(WOAssociation *)_condition
+{
+  return [self wrapElement:_element inCondition:_condition negate:NO];
+}
+
 - (WOElement *)wrapElements:(NSArray *)_children inElement:(Class)_class {
   WOElement *element;
   
@@ -707,6 +730,11 @@ static WOAssociation *yesAssoc = nil;
 }
 
 - (WOElement *)buildPageBody:(id<DOMElement>)_element templateBuilder:(id)_b {
+  /*
+    <OGo:page-body>
+      ...
+    </OGo:page-body>
+  */
   NSMutableArray *ma;
   NSArray   *children;
   WOElement *element;
@@ -727,6 +755,55 @@ static WOAssociation *yesAssoc = nil;
   element = [self elementForElementsAndStrings:ma];
   [ma release];
   return element;
+}
+
+- (WOElement *)buildPageWarn:(id<DOMElement>)_element templateBuilder:(id)_b {
+  /*
+    okAction      - always keypath
+    warningPhrase - regular assoc
+    
+    <OGo:page>
+      <OGo:warn okAction="warningOkAction" var:phrase="warningPhrase" />
+      ...
+    </OGo:page>
+
+    Builds:
+      Warning: LSWWarningPanel {
+        onOk   = warningOkAction;
+        phrase = warningPhrase;
+      }
+  */
+  NSMutableDictionary  *assocs;
+  id<NSObject,DOMAttr> attr;
+  NSString *cid, *s;
+  
+  if (debugOn) [self debugWithFormat:@"  build OGo page-warn: %@", _element];
+  
+  /* unique component ID */
+  
+  cid = [_b uniqueIDForNode:_element];
+  if (debugOn) [self debugWithFormat:@"  CID: %@", cid];
+
+  /* setup associations */
+  
+  assocs = [[NSMutableDictionary alloc] initWithCapacity:4];
+  
+  if ((s = [_element attribute:@"okAction" namespaceURI:@"*"]) != nil) {
+    [assocs setObject:[WOAssociation associationWithKeyPath:s] 
+            forKey:@"onOk"];
+  }
+  
+  if ((attr = [[_element attributes] namedItem:@"phrase" namespaceURI:@"*"]))
+    [assocs setObject:[_b associationForAttribute:attr] forKey:@"phrase"];
+  
+  /* create component */
+  
+  [_b registerSubComponentWithId:cid 
+      componentName:[self warningComponentName] bindings:assocs];
+  [assocs release]; assocs = nil;
+  
+  return [[ChildRefClass alloc]
+           initWithName:cid associations:nil contentElements:nil];
 }
 
 - (WOElement *)buildPage:(id<DOMElement>)_element templateBuilder:(id)_b {
@@ -773,7 +850,7 @@ static WOAssociation *yesAssoc = nil;
   
   if ((tmp = [self lookupUniqueTag:@"body" in:_element]) != nil) {
     /* mode a: explicit hierarchy with 'head' and 'body' subelements */
-    WOElement *head, *body;
+    WOElement *head, *body, *warn;
     
     body = [self buildPageBody:tmp templateBuilder:_b];
     
@@ -784,8 +861,27 @@ static WOAssociation *yesAssoc = nil;
     else
       head = [self buildPageHead:tmp templateBuilder:_b];
     
-    children = [NSArray arrayWithObjects:head, body, nil];
-    [head release]; [body release];
+    warn = ((tmp = [self lookupUniqueTag:@"warn" in:_element]) != nil)
+      ? [self buildPageWarn:tmp templateBuilder:_b] : nil;
+
+    if (warn != nil) {
+      /* wrap body / wrap warn using 'isInWarningMode' binding */
+      static WOAssociation *warnAssoc = nil; // THREAD
+      
+      if (warnAssoc == nil) {
+	warnAssoc =
+	  [[WOAssociation associationWithKeyPath:@"isInWarningMode"] copy];
+      }
+      
+      head = [self wrapElement:head inCondition:warnAssoc negate:YES];
+      body = [self wrapElement:body inCondition:warnAssoc negate:YES];
+      warn = [self wrapElement:warn inCondition:warnAssoc negate:NO];
+    }
+    
+    children = [NSArray arrayWithObjects:head, body, warn, nil];
+    [head release]; head = nil;
+    [body release]; body = nil;
+    [warn release]; warn = nil;
   }
   else {
     /* mode b: arbitary subelements */
@@ -920,9 +1016,9 @@ static WOAssociation *yesAssoc = nil;
       formName    = "editform";
     }
   */
-  NSMutableDictionary  *assocs;
-  NSString  *s;
-  NSString  *cid;
+  NSMutableDictionary *assocs;
+  NSString *s;
+  NSString *cid;
   
   cid = [_b uniqueIDForNode:_el];
   if (debugOn) [self debugWithFormat:@"  calpopup CID: %@", cid];
@@ -931,7 +1027,7 @@ static WOAssociation *yesAssoc = nil;
   
   assocs = [[NSMutableDictionary alloc] initWithCapacity:4];
   
-  if ((s = [_el attribute:@"name" namespaceURI:@"*"])) {
+  if ((s = [_el attribute:@"name" namespaceURI:@"*"]) != nil) {
     [assocs setObject:[WOAssociation associationWithValue:s] 
             forKey:@"elementName"];
   }
@@ -947,10 +1043,101 @@ static WOAssociation *yesAssoc = nil;
   
   [_b registerSubComponentWithId:cid
       componentName:[self calPopUpComponentName] bindings:assocs];
-  [assocs release];
+  [assocs release]; assocs = nil;
   
   return [[ChildRefClass alloc] 
            initWithName:cid associations:nil contentElements:nil];
+}
+
+- (WOElement *)buildCollapsible:(id<DOMElement>)_el templateBuilder:(id)_b {
+  // TODO: register in dispatcher!
+  /*
+    OGo:collapsible
+      title
+      content
+    or:
+    OGo:collapsible title="..."
+
+
+    <#AppCollapsible>
+      <#CollTitleMode>...</#CollTitleMode>
+      <#CollContentMode>..</#CollContentMode>
+    </#AppCollapsible>
+
+    CollTitleMode:   SkyCollapsibleTitleMode   {}
+    CollContentMode: SkyCollapsibleContentMode {}
+
+    AppCollapsible: SkyCollapsibleContent {
+      visibility = session.userDefaults.scheduler_editor_expand_attributes;
+      submitActionName = "";
+      structuredMode   = YES;
+    }
+    
+    or:
+    ParticipantsTitle:  SkyCollapsibleContent {
+      visibility = session.userDefaults.scheduler_editor_expand_participants;
+      title      = labels.searchParticipants;
+      submitActionName = "";
+      isClicked = isParticipantsClicked;
+    }
+  */
+  // TODO: add support for SkyCollapsibleContent (WOComponent!)
+  //  'visibility', 'visibilityDefault', 'title' (label), 'submitActionName'
+  NSMutableDictionary *assocs;
+  NSArray   *children;
+  NSString  *cid;
+  id tmp;
+  
+  if (debugOn) [self debugWithFormat:@"  build OGo collapsible: %@", _element];
+
+  /* unique component ID */
+  
+  cid = [_b uniqueIDForNode:_element];
+  if (debugOn) [self debugWithFormat:@"  CID: %@", cid];
+  
+  /* check children */
+
+  if ((tmp = [self lookupUniqueTag:@"content" in:_element]) != nil) {
+    /* mode a: explicit hierarchy with 'title' and 'content' subelements */
+    WOElement *title, *content;
+    
+    // content = [self buildCollapsibleContent:tmp templateBuilder:_b];
+
+    if ((tmp = [self lookupUniqueTag:@"title" in:_element]) == nil) {
+      [self logWithFormat:@"WARNING: missing collap. title in: %@", _element];
+      head = [self elementForRawString:@"<!-- missing collapsible head -->"];
+    }
+    else
+      ;//head = [self buildCollapsibleTitle:tmp templateBuilder:_b];
+
+    children = [NSArray arrayWithObjects:title, content, nil];
+    [title   release]; title   = nil;
+    [content release]; content = nil;
+  }
+  else {
+    /* mode b: arbitary subelements */
+    // TODO: check whether returned children array are retained!
+    children = [_element hasChildNodes]
+      ? [_b buildNodes:[_element childNodes] templateBuilder:_b]
+      : nil;
+  }
+  
+  /* build associations */
+  
+  if ((assocs = [_b associationsForAttributes:[_element attributes]]) == nil)
+    assocs = [NSMutableDictionary dictionaryWithCapacity:2];
+  
+  
+#warning COMPLETE ME
+  
+  /* create component */
+  
+  if (debugOn) [self debugWithFormat:@"collapsible children: %@", children];
+  
+  [_b registerSubComponentWithId:cid 
+      componentName:[self collapsibleComponentName] bindings:nil];
+  return [[ChildRefClass alloc]
+           initWithName:cid associations:assocs contentElements:children];
 }
 
 /* element class builder (direct mappings of XML tag to dynamic element) */
@@ -988,9 +1175,6 @@ static WOAssociation *yesAssoc = nil;
   unichar   c1;
   WOElement *element;
 
-  // TODO: add support for SkyCollapsibleContent (WOComponent!)
-  //  'visibility', 'visibilityDefault', 'title' (label), 'submitActionName'
-  
   if (![[_element namespaceURI] isEqualToString:XMLNS_OGoWOx])
     return [self->nextBuilder buildElement:_element templateBuilder:_b];
   
