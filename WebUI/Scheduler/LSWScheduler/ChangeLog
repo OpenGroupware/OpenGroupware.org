@@ -1,3 +1,8 @@
+2005-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* Defaults.plist: added some plist values necessary for
+	  LSWAppointmentEditor.wox (v5.3.71)
+
 2005-08-31  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWAppointmentMove.m: minor code cleanups, fixed a warning (v5.3.70)

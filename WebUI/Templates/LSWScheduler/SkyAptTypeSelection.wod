@@ -10,10 +10,10 @@ ButtonListCond: WOConditional {
   value     = "Icons";  
 }
 HasJScriptCond: WOConditional {
-  condition = context.request.clientCapabilities.isJavaScriptBrowser;
+  condition = session.isJavaScriptEnabled;
 }
 HasJScriptCondElse: WOConditional {
-  condition = context.request.clientCapabilities.isJavaScriptBrowser;
+  condition = session.isJavaScriptEnabled;
   negate    = YES;
 }
 

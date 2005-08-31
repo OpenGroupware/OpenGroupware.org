@@ -1,5 +1,13 @@
 2005-08-31  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSWScheduler/LSWAppointmentEditor: rewritten as WOx template
+
+	* LSWScheduler/SkyAptDateSelection.html: embed 'all day' label in plain
+	  font
+
+	* LSWScheduler/SkyAptTypeSelection.wod: use session method to determine
+	  whether JavaScript is enabled
+
 	* OGoScheduler/OGoAptConflictsList.wox: properly display lastname for
 	  conflicting persons
 
