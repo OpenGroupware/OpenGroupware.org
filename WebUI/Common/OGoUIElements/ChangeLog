@@ -1,3 +1,8 @@
+2005-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoUIElementsBuilder.m: do not process 'collapsible' tag (done in
+	  OGoElemBuilder) (v5.3.45)
+
 2005-05-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoUIElementsBuilder.m: fixed a warning on non-lf setups (v5.1.44)

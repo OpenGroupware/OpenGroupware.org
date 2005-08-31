@@ -36,6 +36,7 @@
     <OGo:td        .../>    maps to WETableData
     <OGo:th        .../>    maps to WETableHeader
 
+    //TODO: this is in OGoElemBuilder?!
     <OGo:collapsible .../>  maps to SkyCollapsibleContent
 
     <OGo:field     .../>    maps to OGoField
@@ -278,10 +279,12 @@ static BOOL  debugOn           = NO;
 
   switch (c1) {
     case 'c': { /* starting with 'c' */
+#if 0 // TODO: this is in OGoElemBuilder?!
       if (tl == 11 && [tagName isEqualToString:@"collapsible"]) {
 	return [self buildComponent:[self collapsibleComponentName]
 		     element:_element templateBuilder:_b];
       }
+#endif
       if (tl == 8 && [tagName isEqualToString:@"calpopup"]) {
 	return [self buildComponent:[self datePopUpComponentName]
 		     element:_element templateBuilder:_b];

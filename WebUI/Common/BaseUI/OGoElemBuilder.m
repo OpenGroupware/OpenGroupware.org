@@ -143,6 +143,12 @@ static WOAssociation *yesAssoc = nil;
 - (NSString *)collapsibleComponentName {
   return @"SkyCollapsibleContent";
 }
+- (Class)collapsibleContentClass {
+  return NSClassFromString(@"SkyCollapsibleContentMode");
+}
+- (Class)collapsibleTitleClass {
+  return NSClassFromString(@"SkyCollapsibleTitleMode");
+}
 
 /* convenience methods */
 
@@ -257,6 +263,18 @@ static WOAssociation *yesAssoc = nil;
                             associations:nil
                             contentElements:_children];
   return element;
+}
+- (WOElement *)wrapChildrenOfTag:(id<DOMElement>)_tag templateBuilder:(id)_b
+  inElement:(Class)_class
+{
+  // TODO: method naming is not quite perfect ;-|
+  NSArray *children;
+  
+  children = [_tag hasChildNodes]
+    ? [_b buildNodes:[_tag childNodes] templateBuilder:_b]
+    : nil;
+  
+  return [self wrapElements:children inElement:_class];
 }
 
 /* build specific elements */
@@ -414,6 +432,7 @@ static WOAssociation *yesAssoc = nil;
     width     // regular assoc
     enabled   // wrap in WOConditional, enabled=>condition, always keypath
     is-sub    // BOOL, generates 'subAttributeCell'/'subValueCell' bindings
+    editfont  // BOOL, embed content in OGo:editfont
     shows-deleted-object // BOOL, generates 'valueFontColor' binding
     
     <attribute label="FileManager" string="fileManager" />
@@ -477,15 +496,24 @@ static WOAssociation *yesAssoc = nil;
     ? [WOAssociation associationWithKeyPath:s] : nil;
   
   /* create element */
-  
+
   children = [_elem hasChildNodes]
     ? [_b buildNodes:[_elem childNodes] templateBuilder:_b]
     : nil;
+  if (children != nil) {
+    if ([[_elem attribute:@"editfont" namespaceURI:@"*"] boolValue]) {
+      WOElement *font;
+      
+      font = [self wrapElements:children inElement:[self editFontClass]];
+      children = [NSArray arrayWithObjects:&font count:1];
+      [font release]; font = nil;
+    }
+  }
   
   element = [[[self attributeClass] alloc] initWithName:nil
 					   associations:assocs
 					   contentElements:children];
-  [assocs release];
+  [assocs release]; assocs = nil;
   return [self wrapElement:element inCondition:condition];
 }
 - (WOElement *)buildAttributes:(id<DOMElement>)_elem templateBuilder:(id)_b {
@@ -854,12 +882,9 @@ static WOAssociation *yesAssoc = nil;
     
     body = [self buildPageBody:tmp templateBuilder:_b];
     
-    if ((tmp = [self lookupUniqueTag:@"head" in:_element]) == nil) {
-      [self logWithFormat:@"WARNING: missing page head in: %@", _element];
-      head = [self elementForRawString:@"<!-- missing page head -->"];
-    }
-    else
-      head = [self buildPageHead:tmp templateBuilder:_b];
+    head = ((tmp = [self lookupUniqueTag:@"head" in:_element]) != nil)
+      ? [self buildPageHead:tmp templateBuilder:_b]
+      : nil;
     
     warn = ((tmp = [self lookupUniqueTag:@"warn" in:_element]) != nil)
       ? [self buildPageWarn:tmp templateBuilder:_b] : nil;
@@ -872,13 +897,16 @@ static WOAssociation *yesAssoc = nil;
 	warnAssoc =
 	  [[WOAssociation associationWithKeyPath:@"isInWarningMode"] copy];
       }
-      
-      head = [self wrapElement:head inCondition:warnAssoc negate:YES];
+
+      if (head != nil)
+        head = [self wrapElement:head inCondition:warnAssoc negate:YES];
       body = [self wrapElement:body inCondition:warnAssoc negate:YES];
       warn = [self wrapElement:warn inCondition:warnAssoc negate:NO];
     }
     
-    children = [NSArray arrayWithObjects:head, body, warn, nil];
+    children = (head != nil)
+      ? [NSArray arrayWithObjects:head, body, warn, nil]
+      : [NSArray arrayWithObjects:body, warn, nil];
     [head release]; head = nil;
     [body release]; body = nil;
     [warn release]; warn = nil;
@@ -939,7 +967,7 @@ static WOAssociation *yesAssoc = nil;
   
   ma = [[NSMutableArray alloc] initWithCapacity:[children count] + 3];
   [ma addObject:@"<span>"]; // TODO: add CSS class
-  if (children) [ma addObjectsFromArray:children];
+  if (children != nil) [ma addObjectsFromArray:children];
   [ma addObject:@"</span>"];
   element = [self elementForElementsAndStrings:ma];
   [ma release];
@@ -986,22 +1014,12 @@ static WOAssociation *yesAssoc = nil;
 }
 
 - (WOElement *)buildFont:(id<DOMElement>)_element templateBuilder:(id)_b {
-  NSArray *children;
-  
-  children = [_element hasChildNodes]
-    ? [_b buildNodes:[_element childNodes] templateBuilder:_b]
-    : nil;
-  
-  return [self wrapElements:children inElement:[self fontClass]];
+  return [self wrapChildrenOfTag:_element templateBuilder:_b
+               inElement:[self fontClass]];
 }
 - (WOElement *)buildEditFont:(id<DOMElement>)_element templateBuilder:(id)_b {
-  NSArray *children;
-  
-  children = [_element hasChildNodes]
-    ? [_b buildNodes:[_element childNodes] templateBuilder:_b]
-    : nil;
-  
-  return [self wrapElements:children inElement:[self editFontClass]];
+  return [self wrapChildrenOfTag:_element templateBuilder:_b
+               inElement:[self editFontClass]];
 }
 
 - (WOElement *)buildCalendarPopUp:(id<DOMElement>)_el templateBuilder:(id)_b {
@@ -1050,9 +1068,15 @@ static WOAssociation *yesAssoc = nil;
 }
 
 - (WOElement *)buildCollapsible:(id<DOMElement>)_el templateBuilder:(id)_b {
-  // TODO: register in dispatcher!
   /*
-    OGo:collapsible
+    visibilityDefault
+    visibility
+    emptySubmit
+    title
+    label
+
+    <OGo:collapsible visibilityDefault="scheduler_editor_expand_attributes"
+                     emptySubmit="1">
       title
       content
     or:
@@ -1081,15 +1105,18 @@ static WOAssociation *yesAssoc = nil;
       isClicked = isParticipantsClicked;
     }
   */
-  // TODO: add support for SkyCollapsibleContent (WOComponent!)
-  //  'visibility', 'visibilityDefault', 'title' (label), 'submitActionName'
   NSMutableDictionary *assocs;
+  id<NSObject,DOMNamedNodeMap> attrs;
+  id<NSObject,DOMAttr> attr;
   NSArray   *children;
-  NSString  *cid;
+  NSString  *cid, *s;
   id tmp;
   
   if (debugOn) [self debugWithFormat:@"  build OGo collapsible: %@", _el];
-
+  
+  assocs = [NSMutableDictionary dictionaryWithCapacity:8];
+  attrs  = [_el attributes];
+  
   /* unique component ID */
   
   cid = [_b uniqueIDForNode:_el];
@@ -1101,14 +1128,20 @@ static WOAssociation *yesAssoc = nil;
     /* mode a: explicit hierarchy with 'title' and 'content' subelements */
     WOElement *title, *content;
     
-    // content = [self buildCollapsibleContent:tmp templateBuilder:_b];
+    /* mark as structured */
+    [assocs setObject:yesAssoc forKey:@"structuredMode"];
+    
+    content = [self wrapChildrenOfTag:tmp templateBuilder:_b
+                    inElement:[self collapsibleContentClass]];
 
     if ((tmp = [self lookupUniqueTag:@"title" in:_el]) == nil) {
-      [self logWithFormat:@"WARNING: missing collap. title in: %@", _el];
+      [self warnWithFormat:@"WARNING: missing collap. title in: %@", _el];
       title = [self elementForRawString:@"<!-- missing collapsible head -->"];
     }
-    else
-      ;//title = [self buildCollapsibleTitle:tmp templateBuilder:_b];
+    else {
+      title = [self wrapChildrenOfTag:tmp templateBuilder:_b
+                    inElement:[self collapsibleTitleClass]];
+    }
 
     children = [NSArray arrayWithObjects:title, content, nil];
     [title   release]; title   = nil;
@@ -1122,22 +1155,42 @@ static WOAssociation *yesAssoc = nil;
       : nil;
   }
   
-  /* build associations */
+  /* fill associations */
+
+  if ((attr = [attrs namedItem:@"visibility" namespaceURI:@"*"]))
+    [assocs setObject:[_b associationForAttribute:attr] forKey:@"visibility"];
+  else if ((s = [_el attribute:@"visibilityDefault" namespaceURI:@"*"])) {
+    s = [@"session.userDefaults." stringByAppendingString:s];
+    [assocs setObject:[WOAssociation associationWithKeyPath:s]
+	    forKey:@"visibility"];
+  }
   
-  if ((assocs = [_b associationsForAttributes:[_el attributes]]) == nil)
-    assocs = [NSMutableDictionary dictionaryWithCapacity:2];
+  if ([[_el attribute:@"emptySubmit" namespaceURI:@"*"] boolValue]) {
+    static WOAssociation *emptyStrAssoc = nil;
+    if (emptyStrAssoc == nil)
+      emptyStrAssoc = [[WOAssociation associationWithValue:@""] retain];
+    [assocs setObject:emptyStrAssoc forKey:@"submitActionName"];
+  }
+
+  if ((attr = [attrs namedItem:@"isClicked" namespaceURI:@"*"]))
+    [assocs setObject:[_b associationForAttribute:attr] forKey:@"isClicked"];
   
-  
-#warning COMPLETE ME
+  if ((attr = [attrs namedItem:@"title" namespaceURI:@"*"]))
+    [assocs setObject:[_b associationForAttribute:attr] forKey:@"title"];
+  else if ((s = [_el attribute:@"label" namespaceURI:@"*"])) {
+    s = [@"labels." stringByAppendingString:s];
+    [assocs setObject:[WOAssociation associationWithKeyPath:s]
+            forKey:@"title"];
+  }
   
   /* create component */
   
   if (debugOn) [self debugWithFormat:@"collapsible children: %@", children];
   
   [_b registerSubComponentWithId:cid 
-      componentName:[self collapsibleComponentName] bindings:nil];
+      componentName:[self collapsibleComponentName] bindings:assocs];
   return [[ChildRefClass alloc]
-           initWithName:cid associations:assocs contentElements:children];
+           initWithName:cid associations:nil contentElements:children];
 }
 
 /* element class builder (direct mappings of XML tag to dynamic element) */
@@ -1202,8 +1255,10 @@ static WOAssociation *yesAssoc = nil;
   case 'c':
     if (tl == 13 && [tagName isEqualToString:@"calendarpopup"])
       element = [self buildCalendarPopUp:_element templateBuilder:_b];
-    if (tl == 9 && [tagName isEqualToString:@"container"])
+    if (tl == 9  && [tagName isEqualToString:@"container"])
       element = [self buildContainer:_element templateBuilder:_b];
+    if (tl == 11 && [tagName isEqualToString:@"collapsible"])
+      element = [self buildCollapsible:_element templateBuilder:_b];
     break;
 
   case 'e':

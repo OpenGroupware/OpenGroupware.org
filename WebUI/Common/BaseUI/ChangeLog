@@ -1,3 +1,9 @@
+2005-08-31  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoElemBuilder.m: added support for SkyCollapsibleContent, the
+	  <attribute> tag now supports the 'editfont' bool-attribute to embed
+	  the attribute contents in an edit-font (v5.3.110)
+
 2005-08-31  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoElemBuilder.m: fixed some syntax error (v5.3.109)
