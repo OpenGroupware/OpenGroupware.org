@@ -67,7 +67,7 @@
                          var:_oid="currentConflict.companyId"
                          var:_c="context.contextID"
                         ><var:string value="currentConflict.firstname" />
-                         <var:string value="currentConflict.lastname" /></a>
+                         <var:string value="currentConflict.name" /></a>
 
                       (<var:string value="conflictPartStatusLabel"/>,
                        <var:string value="conflictRoleLabel"/>)
