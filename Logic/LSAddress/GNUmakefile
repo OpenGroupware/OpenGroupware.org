@@ -7,6 +7,8 @@ include ./Version
 COMMAND_BUNDLE = LSAddress
 LIBRARY_NAME   = libLSAddress
 
+libLSAddress_PCH_FILE = common.h
+LSAddress_PCH_FILE = common.h
 libLSAddress_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 libLSAddress_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 

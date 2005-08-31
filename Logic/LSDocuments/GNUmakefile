@@ -5,6 +5,8 @@ include ../common.make
 
 COMMAND_BUNDLE = LSDocuments
 
+LSDocuments_PCH_FILE = common.h
+
 LSDocuments_OBJC_FILES = \
 	LSCheckGetPermissionDocumentCommand.m		\
 	LSCheckGetPermissionDocumentEditingCommand.m	\

@@ -5,6 +5,8 @@ include ../common.make
 
 COMMAND_BUNDLE = LSNews
 
+LSNews_PCH_FILE = common.h
+
 LSNews_OBJC_FILES = \
 	LSNewNewsArticleCommand.m     \
 	LSDeleteNewsArticleCommand.m  \

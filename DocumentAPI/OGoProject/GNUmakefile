@@ -4,9 +4,12 @@
 include ../common.make
 include ./Version
 
-LIBRARY_NAME       = libOGoProject
-BUNDLE_NAME        = OGoProject
-BUNDLE_EXTENSION   = .ds
+LIBRARY_NAME     = libOGoProject
+BUNDLE_NAME      = OGoProject
+BUNDLE_EXTENSION = .ds
+
+libOGoProject_PCH_FILE = common.h
+OGoProject_PCH_FILE = common.h
 
 libOGoProject_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 libOGoProject_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)

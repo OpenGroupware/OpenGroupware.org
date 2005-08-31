@@ -8,6 +8,9 @@ LIBRARY_NAME       = libOGoDatabaseProject
 BUNDLE_NAME        = OGoDatabaseProject
 BUNDLE_EXTENSION   = .ds
 
+libOGoDatabaseProject_PCH_FILE = common.h
+OGoDatabaseProject_PCH_FILE = common.h
+
 libOGoDatabaseProject_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 libOGoDatabaseProject_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 

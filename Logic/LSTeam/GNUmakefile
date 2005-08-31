@@ -5,6 +5,8 @@ include ../common.make
 
 COMMAND_BUNDLE = LSTeam
 
+LSTeam_PCH_FILE = common.h
+
 LSTeam_OBJC_FILES = \
 	LSNewTeamCommand.m                 	\
 	LSSetTeamCommand.m                 	\

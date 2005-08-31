@@ -10,6 +10,9 @@ BUNDLE_NAME        = LSSearch
 BUNDLE_EXTENSION   = .cmd
 LIBRARY_NAME	   = libLSSearch
 
+LSSearch_PCH_FILE = common.h
+libLSSearch_PCH_FILE = common.h
+
 libLSSearch_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 libLSSearch_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 

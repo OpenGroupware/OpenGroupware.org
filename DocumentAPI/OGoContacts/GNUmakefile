@@ -8,6 +8,9 @@ LIBRARY_NAME       = libOGoContacts
 BUNDLE_NAME        = OGoContacts
 BUNDLE_EXTENSION   = .ds
 
+libOGoContacts_PCH_FILE = common.h
+OGoContacts_PCH_FILE = common.h
+
 libOGoContacts_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 libOGoContacts_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 

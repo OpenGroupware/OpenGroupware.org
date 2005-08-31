@@ -6,6 +6,8 @@ include ./Version
 
 LIBRARY_NAME = libOGoDocuments
 
+libOGoDocuments_PCH_FILE = common.h
+
 libOGoDocuments_HEADER_FILES = \
 	SkyDocuments.h			\
 	SkyContext.h			\

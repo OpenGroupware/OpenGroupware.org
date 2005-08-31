@@ -5,6 +5,8 @@ include ../common.make
 
 COMMAND_BUNDLE = LSTasks
 
+LSTasks_PCH_FILE = common.h
+
 LSTasks_OBJC_FILES = \
 	LSAllSubJobsDoneJobCommand.m		\
 	LSAssignProjectToJobCommand.m		\

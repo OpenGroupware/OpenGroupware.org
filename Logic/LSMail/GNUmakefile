@@ -5,6 +5,8 @@ include ../common.make
 
 COMMAND_BUNDLE = LSMail
 
+LSMail_PCH_FILE = common.h
+
 LSMail_OBJC_FILES =        \
 	LSMailDeliverCommand.m      \
 	LSMailFunctions.m           \

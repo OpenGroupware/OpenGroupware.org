@@ -8,6 +8,9 @@ LIBRARY_NAME     = libOGoFileSystemProject
 BUNDLE_NAME      = OGoFileSystemProject
 BUNDLE_EXTENSION = .ds
 
+libOGoFileSystemProject_PCH_FILE = common.h
+OGoFileSystemProject_PCH_FILE = common.h
+
 libOGoFileSystemProject_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 libOGoFileSystemProject_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 

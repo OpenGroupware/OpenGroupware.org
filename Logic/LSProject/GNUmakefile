@@ -5,6 +5,8 @@ include ../common.make
 
 COMMAND_BUNDLE = LSProject
 
+LSProject_PCH_FILE = common.h
+
 LSProject_OBJC_FILES += \
 	LSArchiveProjectCommand.m		\
 	LSCheckGetPermissionProjectCommand.m	\

@@ -4,9 +4,12 @@
 include ../common.make
 include ./Version
 
-LIBRARY_NAME       = libOGoRawDatabase
-BUNDLE_NAME        = OGoRawDatabase
-BUNDLE_EXTENSION   = .ds
+LIBRARY_NAME     = libOGoRawDatabase
+BUNDLE_NAME      = OGoRawDatabase
+BUNDLE_EXTENSION = .ds
+
+OGoRawDatabase_PCH_FILE = common.h
+libOGoRawDatabase_PCH_FILE = common.h
 
 libOGoRawDatabase_HEADER_FILES_DIR         = .
 libOGoRawDatabase_HEADER_FILES_INSTALL_DIR = /OGoRawDatabase

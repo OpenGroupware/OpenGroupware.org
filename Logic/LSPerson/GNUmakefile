@@ -5,6 +5,8 @@ include ../common.make
 
 COMMAND_BUNDLE = LSPerson
 
+LSPerson_PCH_FILE = common.h
+
 LSPerson_OBJC_FILES += \
 	LSExtendedSearchPersonCommand.m			\
 	LSFetchTelsForPersonCommand.m			\

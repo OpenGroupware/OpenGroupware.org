@@ -5,6 +5,8 @@ include $(GNUSTEP_MAKEFILES)/common.make
 
 COMMAND_BUNDLE = LSBase
 
+LSBase_PCH_FILE = common.h
+
 LSBase_OBJC_FILES =               	\
 	LSCryptCommand.m              	\
 	LSSystemCtxLogCommand.m		\

@@ -8,6 +8,9 @@ LIBRARY_NAME       = libOGoScheduler
 BUNDLE_NAME        = OGoScheduler
 BUNDLE_EXTENSION   = .ds
 
+OGoScheduler_PCH_FILE = common.h
+libOGoScheduler_PCH_FILE = common.h
+
 # TODO: this should rather check the makefile version!
 ifeq ($(FHS_INSTALL_ROOT),)
 ifeq ($(FOUNDATION_LIB),fd)

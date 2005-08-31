@@ -5,6 +5,8 @@ include ../common.make
 
 COMMAND_BUNDLE = LSEnterprise
 
+LSEnterprise_PCH_FILE = common.h
+
 LSEnterprise_OBJC_FILES += \
         LSExtendedSearchEnterpriseCommand.m     \
         LSFullSearchEnterpriseCommand.m         \

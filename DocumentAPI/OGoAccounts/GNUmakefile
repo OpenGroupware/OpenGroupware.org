@@ -8,6 +8,8 @@ LIBRARY_NAME       = libOGoAccounts
 BUNDLE_NAME        = OGoAccounts
 BUNDLE_EXTENSION   = .ds
 
+libOGoAccounts_PCH_FILE = common.h
+OGoAccounts_PCH_FILE = common.h
 libOGoAccounts_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 libOGoAccounts_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 

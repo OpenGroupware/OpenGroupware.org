@@ -5,6 +5,7 @@ include ../common.make
 
 COMMAND_BUNDLE = LSAccount
 
+LSAccount_PCH_FILE = common.h
 LSAccount_OBJC_FILES = \
 	LSNewAccountCommand.m              	\
 	LSSetAccountCommand.m              	\

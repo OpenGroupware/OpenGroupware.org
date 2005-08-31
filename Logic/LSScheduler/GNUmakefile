@@ -7,6 +7,9 @@ include $(GNUSTEP_MAKEFILES)/common.make
 
 COMMAND_BUNDLE = LSScheduler
 
+LSScheduler_PCH_FILE = common.h
+libOGoSchedulerTools_PCH_FILE = common.h
+
 GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
 
 LIBRARY_NAME = libOGoSchedulerTools
