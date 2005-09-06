@@ -150,6 +150,10 @@ static WOAssociation *yesAssoc = nil;
   return NSClassFromString(@"SkyCollapsibleTitleMode");
 }
 
+- (NSString *)listViewComponentName {
+  return @"SkyListView";
+}
+
 /* convenience methods */
 
 - (id<DOMElement>)lookupUniqueTag:(NSString *)_name in:(id<DOMElement>)_elem {
@@ -1067,6 +1071,43 @@ static WOAssociation *yesAssoc = nil;
            initWithName:cid associations:nil contentElements:nil];
 }
 
+- (WOElement *)buildListView:(id<DOMElement>)_el templateBuilder:(id)_b {
+  /*
+    <listview .../>
+    
+    ParticipantList: SkyListView {
+      list          = participants;
+      item          = item;
+      columns       = noOfCols;
+      selectInverse = YES;
+      selectedItems = removedParticipants;
+      attributes    = attributesList;
+    }
+  */
+  NSMutableDictionary *assocs;
+  NSString *cid;
+  
+  cid = [_b uniqueIDForNode:_el];
+  if (debugOn) [self debugWithFormat:@"  listview CID: %@", cid];
+  
+  /* build associations */
+  
+  if ((assocs = [_b associationsForAttributes:[_el attributes]]) == nil)
+    assocs = [NSMutableDictionary dictionaryWithCapacity:2];
+
+#if 0
+  [self logWithFormat:@"CID %@ ASSOCS: %@", cid, assocs];
+#endif
+  
+  /* build component */
+  
+  [_b registerSubComponentWithId:cid
+      componentName:[self listViewComponentName] bindings:assocs];
+  
+  return [[ChildRefClass alloc] 
+           initWithName:cid associations:nil contentElements:nil];
+}
+
 - (WOElement *)buildCollapsible:(id<DOMElement>)_el templateBuilder:(id)_b {
   /*
     visibilityDefault
@@ -1274,6 +1315,8 @@ static WOAssociation *yesAssoc = nil;
   case 'l':
     if (tl == 5 && [tagName isEqualToString:@"label"])
       element = [self buildLabel:_element templateBuilder:_b];
+    if (tl == 8 && [tagName isEqualToString:@"listview"])
+      element = [self buildListView:_element templateBuilder:_b];
     break;
     
   case 'o':
