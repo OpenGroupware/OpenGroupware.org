@@ -1,3 +1,7 @@
+2005-09-02 Olivier Hallot (olivier@ig.com.br>
+
+        * Added LSWScheduler.strings and OGoScheduler.strings translations related to bug 1262 - Agenda participant roles
+
 2005-07-04 Olivier Hallot (olivier@ig.com.br>
 
         * added UI to select the search operator pt-BR
