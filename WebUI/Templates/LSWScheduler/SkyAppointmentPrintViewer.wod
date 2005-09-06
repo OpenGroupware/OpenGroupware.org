@@ -1,31 +1,13 @@
-// $Id: %
-
 // conditions
 
-IsLicensedCond: SkyLicenseConditional {
-  modules  = ( Scheduler,Scheduler2 );
-  ormode   = YES;
-}
-IsProjectLicensedCond: SkyLicenseConditional {
-  modules = ( Project );
-  showInfo = NO;
-}
-IsAbsenceCond : WOConditional {
-  condition = appointment.isAbsence.boolValue;
-};
-IsCyclicCond: WOConditional {
-  condition = isCyclic;
-};
-IsOwnerArchivedCondElse : WOConditional {
+IsAbsenceCond: WOConditional { condition = appointment.isAbsence.boolValue; };
+IsCyclicCond:  WOConditional { condition = isCyclic; };
+IsOwnerArchivedCondElse: WOConditional {
   condition = isOwnerArchived;
   negate    = YES;
 }
-IsOwnerArchivedCond : WOConditional {
-  condition = isOwnerArchived;  
-}
-IsLogTabEnabled: WOConditional {
-  condition = isLogTabEnabled;
-}
+IsOwnerArchivedCond: WOConditional { condition = isOwnerArchived; }
+IsLogTabEnabled:     WOConditional { condition = isLogTabEnabled; }
 
 // content
 AptTitle: WOString {

@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<OGo:container
+  var:title="labels.AppEditorTitle"
+  var:onClose="cancel"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+  <var:if condition="viewHeadLine"><!-- TODO: use CSS -->
+    <tr var:bgcolor="config.colors_mainButtonRow">
+      <td colspan="2">
+        <OGo:font>
+          <b><OGo:label key="$headLineLabel" /></b>
+        </OGo:font>
+      </td>
+    </tr>
+    <tr><td colspan="2"></td></tr>
+  </var:if>
+
+  <OGo:attribute label="$searchLabel" editfont="1">
+    <var:popup list="session.teams" item="item" string="item.description"
+               selection="searchTeam" noSelectionString="noSelectionString"
+               const:onChange="document.editform.submit();" />
+    <input type="text" var:value="searchParticipantText" />
+    <input type="submit" var:value="labels.searchButtonLabel"
+           var:action="searchAction" class="button_narrow" />
+
+    <var:if condition="showAnyCheckBox">
+      <table border="0" bordercolordark="black" bordercolorlight="white" 
+             cellpadding="0" cellspacing="0">
+        <tr>
+          <var:if condition="showExtendEnterprisesCheckBox">
+            <OGo:td-value><small><OGo:font
+              ><input type="checkbox" var:checked="showExtended"
+                      onClick="document.editform.submit(); return true" 
+              /><OGo:label key="ExtendedView" 
+              /></OGo:font></small></OGo:td-value>
+          </var:if>
+          <var:if condition="showResolveTeamsCheckBox">
+            <OGo:td-value><small><OGo:font
+              ><input type="checkbox" var:checked="resolveTeams" 
+              /><OGo:label key="resolveTeams" 
+              /></OGo:font></small></OGo:td-value>
+          </var:if>
+        </tr>
+      </table>
+    </var:if>
+
+    <hr size="1" noshade="noshade" /> <!-- use CSS -->
+  </OGo:attribute>
+
+  <var:if condition="hasParticipantSelection">
+    <OGo:attribute label="$selectionLabel">
+      <OGo:font>
+        <OGo:listview 
+          var:list="participants" var:item="item" var:columns="noOfCols"
+          const:selectInverse="1"
+          var:selectedItems="removedParticipants"
+          var:attributes="attributesList" />
+        <OGo:listview
+          var:list="resultList" var:item="item" var:columns="noOfCols"
+          var:selectedItems="addedParticipants"
+          var:attributes="attributesList" />
+
+        <hr noshade="noshade" size="1" />
+      </OGo:font>
+    </OGo:attribute>
+  </var:if>
+</OGo:container>
