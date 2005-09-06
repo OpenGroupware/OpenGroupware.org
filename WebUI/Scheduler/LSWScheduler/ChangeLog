@@ -1,3 +1,12 @@
+2005-09-06  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.3.72
+
+	* SkyParticipantsSelection.m: some code cleanups
+
+	* LSWAppointmentEditor.m: remove use of deprecated
+	  SkySchedulerConflictDataSource method
+
 2005-08-31  Helge Hess  <helge.hess@skyrix.com>
 
 	* Defaults.plist: added some plist values necessary for

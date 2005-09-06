@@ -391,22 +391,26 @@ static NSArray  *emptyArray          = nil;
   [self->removedParticipants removeAllObjects];
 }
 
+- (void)setSelectedParticipants:(id)_part {
+}
 - (NSArray *)selectedParticipants {
-  if (self->selectedParticipantsCache == nil) {
-    NSMutableArray *pgids      = nil;
-    NSMutableArray *tgids      = nil;    
-    NSEnumerator   *enumerator = nil;
-    id             obj         = nil;
-    NSArray        *part       = nil;
-    NSMutableArray *result     = nil;
+  NSMutableArray *pgids      = nil;
+  NSMutableArray *tgids      = nil;    
+  NSEnumerator   *enumerator = nil;
+  id             obj         = nil;
+  NSArray        *part       = nil;
+  NSMutableArray *result     = nil;
 
-    part       = [self participants];
-    pgids      = [[NSMutableArray alloc] init];
-    tgids      = [[NSMutableArray alloc] init];
-    result     = [[NSMutableArray alloc] init];
-    enumerator = [part objectEnumerator];
-  
-    while ((obj = [enumerator nextObject])) {
+  if (self->selectedParticipantsCache != nil)
+    return self->selectedParticipantsCache;
+
+  part       = [self participants];
+  pgids      = [[NSMutableArray alloc] initWithCapacity:16];
+  tgids      = [[NSMutableArray alloc] initWithCapacity:16];
+  result     = [[NSMutableArray alloc] initWithCapacity:16];
+
+  enumerator = [part objectEnumerator];
+  while ((obj = [enumerator nextObject]) != nil) {
       if ([obj isKindOfClass:[NSDictionary class]]) {
         id gid = nil;
 
@@ -435,12 +439,12 @@ static NSArray  *emptyArray          = nil;
           [result addObject:obj];
         }
       }
-    }
+  }
     
-    if ([pgids count] > 0)
-      [result addObjectsFromArray:[self _fetchPersonEOsForGlobalIDs:pgids]];
+  if ([pgids count] > 0)
+    [result addObjectsFromArray:[self _fetchPersonEOsForGlobalIDs:pgids]];
     
-    if ([tgids count] > 0) {
+  if ([tgids count] > 0) {
       NSArray *teams;
       
       if (self->spsFlags.resolveTeams) {
@@ -452,22 +456,18 @@ static NSArray  *emptyArray          = nil;
         teams = [self _fetchTeamEOsForGlobalIDs:tgids];
       }
       [result addObjectsFromArray:teams];
-    }
-    
-    [tgids release]; tgids = nil;
-    [pgids release]; pgids = nil;    
-    self->selectedParticipantsCache = result;
   }
+    
+  [tgids release]; tgids = nil;
+  [pgids release]; pgids = nil;    
+  self->selectedParticipantsCache = result;
+  
   return self->selectedParticipantsCache;
 }
 
-- (void)setSelectedParticipants:(id)_part {
-}
-
 - (NSArray *)participants {
-  return [self->participants sortedArrayUsingFunction:
-              compareParticipants
-              context:NULL];
+  return [self->participants sortedArrayUsingFunction:compareParticipants
+                             context:NULL];
 }
 
 - (void)setParticipants:(id)_part {

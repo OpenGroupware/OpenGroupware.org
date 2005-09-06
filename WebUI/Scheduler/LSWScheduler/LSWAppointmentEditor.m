@@ -253,7 +253,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   self->timeZone = [[date timeZone] retain];
   
   NSAssert(self->participants, @"participants array is not setup !");
-
+  
   if (addParticipants) {
     NSMutableSet *s;
     
@@ -263,6 +263,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     [self->participants addObjectsFromArray:[s allObjects]];
     [s release]; s = nil;
   }
+  
   [self setSelectedParticipants:
         (self->participants != nil) ? self->participants : [NSArray array]];
   
@@ -1734,8 +1735,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   
   /* checking conflicts */
 
-  ds = [[[SkySchedulerConflictDataSource alloc] init] autorelease];
-  [ds setContext:[[self session] commandContext]];
+  ds = [SkySchedulerConflictDataSource alloc];
+  ds = [[ds initWithContext:[[self session] commandContext]] autorelease];
   [ds setAppointment:[self snapshot]];
   ds = [self _addExtraDataSourcesToConflictDS:ds];
   
@@ -2329,6 +2330,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 @end /* LSWAppointmentEditor */
+
 
 @implementation WOComponent(PageConstructors)
 
