@@ -1,0 +1,38 @@
+<?xml version='1.0' standalone="yes" ?>
+<var:if
+  condition="hidePopUp" const:negate="1"
+
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+  <table width="30%" border="0" cellpadding="0" cellspacing="2">
+    <tr>
+      <td align="right" nowrap="nowrap">
+        <var:if condition="showLoadForm">
+          <form name="loadform" var:action="loadSearch">
+            <var:popup list="listKeys" selection="searchTitle"
+                       const:onChange="document.loadform.submit(); return true"
+                       nilString="labels.savedSearches" />
+
+            <var:if condition="session.isJavaScriptEnabled" const:negate="1">
+              <input type="submit" class="button_auto"
+                     name="savedSearchLoadButton"
+                     var:action="loadSearch"
+                     var:value="labels.savedSearchesShow"
+                     var:title="labels.savedSearchesShow" />
+            </var:if>
+            <var:if condition="hasSearchSelected">
+              <input type="submit" class="button_auto"
+                     var:action="removeSearch"
+                     var:value="labels.savedSearchesDelete"
+                     var:title="labels.savedSearchesDelete" />
+            </var:if>
+          </form>
+        </var:if>
+      </td>
+    </tr>
+  </table>
+</var:if>
