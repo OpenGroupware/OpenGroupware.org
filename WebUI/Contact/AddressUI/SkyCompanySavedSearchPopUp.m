@@ -21,6 +21,12 @@
 
 #include <OGoFoundation/OGoComponent.h>
 
+/*
+  SkyCompanySavedSearchPopUp
+
+  TODO: document
+*/
+
 @class EOQualifier;
 @class NSNumber;
 
@@ -120,38 +126,41 @@
 }
 
 - (void)setUdKey:(NSString *)_key {
-  if (![self->udKey isEqualToString:_key]) {
-    ASSIGN(self->udKey,_key);
-    [self->listKeys release]; self->listKeys = nil;
-  }
+  if ([self->udKey isEqualToString:_key])
+    return;
+  
+  ASSIGNCOPY(self->udKey,_key);
+  [self->listKeys release]; self->listKeys = nil;
 }
 - (NSString *)udKey {
   return self->udKey;
 }
 
 - (void)setSearchTitle:(NSString *)_title {
-  ASSIGN(self->searchTitle,_title);
+  ASSIGNCOPY(self->searchTitle,_title);
 }
 - (NSString *)searchTitle {
   return self->searchTitle;
 }
 
 - (void)setSaveTitle:(NSString *)_title {
-  ASSIGN(self->saveTitle,_title);
+  ASSIGNCOPY(self->saveTitle,_title);
 }
 - (NSString *)saveTitle {
   return self->saveTitle;
 }
 
 - (void)setShowTab:(NSNumber *)_showTab {
-  ASSIGN(self->showTab,_showTab);
+  ASSIGN(self->showTab, _showTab);
 }
 - (NSNumber *)showTab {
   if (self->showTab == nil) {
     NSUserDefaults *ud;
     NSDictionary   *settings;
+    
     ud       = [[self session] userDefaults];
     settings = [ud objectForKey:[self udKey]];
+    
     self->showTab = [settings objectForKey:@"showTab"];
     [self setShowTab:[NSNumber numberWithBool:[self->showTab boolValue]]];
   }
@@ -159,25 +168,33 @@
 }
 
 - (NSArray *)listKeys {
-  if (self->listKeys == nil) {
-    NSUserDefaults *ud;
-    NSDictionary   *settings;
-    NSArray        *allKeys;
-    NSMutableArray *wantedKeys;
-    unsigned i, max;
-    ud = [[self session] userDefaults];
-    settings = [ud objectForKey:[self udKey]];
-    allKeys  = [settings allKeys];
-    max      = [allKeys count];
-    wantedKeys = [NSMutableArray array];
-    for (i = 0; i < max; i++) {
-      id key  = [allKeys objectAtIndex:i];
-      id flag = [[settings objectForKey:key] objectForKey:@"showTab"];
-      if (![flag boolValue]) [wantedKeys addObject:key];
-    }
-    self->listKeys =
-      [[wantedKeys sortedArrayUsingSelector:@selector(compare:)] retain];
+  NSUserDefaults *ud;
+  NSDictionary   *settings;
+  NSArray        *allKeys;
+  NSMutableArray *wantedKeys;
+  unsigned i, max;
+  
+  if (self->listKeys != nil)
+    return self->listKeys;
+  
+  ud         = [[self session] userDefaults];
+  settings   = [ud objectForKey:[self udKey]];
+  allKeys    = [settings allKeys];
+  max        = [allKeys count];
+  wantedKeys = [NSMutableArray arrayWithCapacity:8];
+  
+  /* filter out all saved-searches which are displayed as a tab */
+  for (i = 0; i < max; i++) {
+    NSString *key, *flag;
+    
+    key  = [allKeys objectAtIndex:i];
+    flag = [(NSDictionary *)[settings objectForKey:key] 
+                            objectForKey:@"showTab"];
+    if (![flag boolValue]) [wantedKeys addObject:key];
   }
+  self->listKeys =
+    [[wantedKeys sortedArrayUsingSelector:@selector(compare:)] retain];
+  
   return self->listKeys;
 }
 
@@ -244,7 +261,7 @@
     return;
   }
 
-  entry = [[ud objectForKey:[self udKey]] objectForKey:[self searchTitle]];
+  entry = [[ud dictionaryForKey:[self udKey]] objectForKey:[self searchTitle]];
 
   ar = [entry objectForKey:@"qualifier"];
   [self setQualifier:[self buildQualifierWithArray:ar]];
@@ -263,18 +280,20 @@
 - (id)removeSearch {
   NSString       *key;
   NSUserDefaults *ud;
-  id             settings;
+  NSMutableDictionary *settings;
+  
   if ([(key = [self searchTitle]) length] == 0) {
-    NSLog(@"%s: failed removing saved search", __PRETTY_FUNCTION__);
+    [self errorWithFormat:
+            @"%s: failed removing saved search", __PRETTY_FUNCTION__];
     return nil;
   }
+  
   ud = [[self session] userDefaults];
-  settings = [ud objectForKey:[self udKey]];
-  settings = [settings mutableCopy];
+  settings = [[ud dictionaryForKey:[self udKey]] mutableCopy];
   
   [settings removeObjectForKey:key];
   [ud setObject:settings forKey:[self udKey]];
-
+  
   [settings release]; settings = nil;
   [ud synchronize];
   [self->listKeys release]; self->listKeys = nil;
@@ -285,7 +304,7 @@
   NSDictionary   *info;
   id             qual;
   NSUserDefaults *ud;
-  id             settings;
+  NSDictionary   *settings;
 
   // old // qual = [self arrayForQualifier:[self qualifier]];
   // new
@@ -305,14 +324,14 @@
                        nil];
 
   ud       = [[self session] userDefaults];
-  settings = [ud objectForKey:[self udKey]];
+  settings = [ud dictionaryForKey:[self udKey]];
   if (settings == nil) {
     settings = [NSDictionary dictionaryWithObjectsAndKeys:
-                             info, [self saveTitle], nil];
+                               info, [self saveTitle], nil];
   }
   else {
     settings = [[settings mutableCopy] autorelease];
-    [settings setObject:info forKey:[self saveTitle]];
+    [(NSMutableDictionary *)settings setObject:info forKey:[self saveTitle]];
   }
   [ud setObject:settings forKey:[self udKey]];
   [ud synchronize];
@@ -566,12 +585,11 @@
                                        value:value] autorelease];
 }
 
-- (EOQualifier *)buildQualifierWithArray:(id)_array {
+- (EOQualifier *)buildQualifierWithArray:(NSArray *)_array {
   NSString *type;
 
-  if ([_array isKindOfClass:[NSString class]]) {
-    return [[[EOQualifier alloc] initWithString:_array] autorelease];
-  }
+  if ([_array isKindOfClass:[NSString class]])
+    return [[[EOQualifier alloc] initWithString:(id)_array] autorelease];
   
   if ([_array count] == 0) {
     NSLog(@"WARNING[%s]: cannot build qualifier from empty array",
