@@ -1,0 +1,20 @@
+<?xml version='1.0' standalone="yes" ?>
+<OGo:container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+  <var:if condition="company.isAccount" const:negate="1">
+    <OGo:attribute label="privateLabel" editfont="1">
+      <input type="checkbox" name="contact_isprivate"
+             var:checked="company.isPrivate" />
+    </OGo:attribute>
+  </var:if>
+
+  <OGo:attribute label="personeditor_readonlyLabel" editfont="1">
+    <input type="checkbox" name="contact_isreadonly"
+           var:checked="company.isReadonly" />
+  </OGo:attribute>
+</OGo:container>

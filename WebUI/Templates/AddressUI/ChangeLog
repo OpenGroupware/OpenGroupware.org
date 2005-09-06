@@ -1,5 +1,7 @@
 2005-09-06  Helge Hess  <helge.hess@skyrix.com>
 
+	* SkyCompanyFlagSubEditor: rewritten as WOx template
+
 	* SkyCompanySavedSearchPopUp: rewritten as WOx template
 
 2005-02-11  Helge Hess  <helge.hess@skyrix.com>
