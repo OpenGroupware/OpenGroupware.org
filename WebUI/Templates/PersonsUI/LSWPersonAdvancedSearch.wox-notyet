@@ -8,6 +8,7 @@
 <!--
   WOx TODO:
     SkySubAttribute
+    SkyAttribute w/o <tr>
   -->
   <form name="searchform">
     <table border="0" cellspacing="0" cellpadding="4" width="100%">
@@ -63,7 +64,17 @@
       <tr> 
         <td> </td>
         <td colspan="3">
-          <#SearchSubmit/><#FormLetterSubmit/><#ClearSubmit/>
+          <input type="submit" var:action="search" class="button_narrow"
+                 var:name="labels.searchButtonLabel"
+                 var:value="labels.searchButtonLabel" />
+
+          <input type="submit" var:action="formletter" class="button_wide"
+                 var:name="labels.formLetterButtonLabel"
+                 var:value="labels.formLetterButtonLabel" />
+
+          <input type="submit" var:action="clearForm" class="button_wide"
+                 var:name="labels.clearButtonLabel"
+                 var:value="labels.clearButtonLabel" />
         </td>
       </tr> 
 
@@ -75,13 +86,24 @@
       </tr>  
       <tr> 
         <td> </td>
-        <td colspan="3"><#SaveSearchSubmit/></td>
+        <td colspan="3">
+          <input type="submit" var:action="saveSearch" class="button_narrow"
+                 var:name="labels.saveButtonLabel"
+                 var:value="labels.saveButtonLabel" />
+        </td>
       </tr> 
 
       <tr><td colspan="4" /></tr>
-      <#HasFormletterCond>
-        <tr><td /><td colspan="3"><br /><#Formletter/></td></tr>
-      </#HasFormletterCond>
+      <var:if condition="hasFormletter">
+        <tr>
+          <td />
+          <td colspan="3">
+            <br />
+            <var:component className="LSWFormLetterComponent"
+                           data="formletterData" />
+          </td>
+        </tr>
+      </var:if>
     </table>
   </form>
 
@@ -89,11 +111,11 @@
   <var:if condition="hasSavedSearches">
     <form name="savedSearch" var:action="loadSavedSearch">
       <table border="0" cellspacing="0" cellpadding="4" width="100%">
-        <#MainButtonRow>
+        <tr var:bgcolor="config.colors_mainButtonRow">
           <td colspan="4" align="left"><OGo:font><b>
-            <#LoadSearchLabel/>
+            <OGo:label key="loadSearch"/>
           </b></OGo:font></td>
-        </#MainButtonRow>
+        </tr>
 
         <tr><td colspan="4" /></tr>
 

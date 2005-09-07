@@ -1,5 +1,7 @@
 2005-09-07  Helge Hess  <helge.hess@skyrix.com>
 
+	* OGoElemBuilder.m: removed some deprecated methods (v5.3.113)
+
 	* OGoElemBuilder.m: added 'do-tr' attribute to <attribute> tag to
 	  control generation of the <tr> tag (required for multi-column
 	  tables), moved building of collapsibles to OGoUIElementsBuilder,

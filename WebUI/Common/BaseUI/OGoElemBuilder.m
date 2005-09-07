@@ -167,15 +167,6 @@ static WOAssociation *yesAssoc = nil;
                             contentElements:_children];
   return element;
 }
-- (WOElement *)wrapChildrenOfTag:(id<DOMElement>)_tag templateBuilder:(id)_b
-  inElement:(Class)_class
-{
-  // DEPRECATED
-  [self logWithFormat:@"used deprecated method: %@", 
-        NSStringFromSelector(_cmd)];
-  return [self wrapChildrenOfElement:_tag inElementOfClass:_class
-               templateBuilder:_b];
-}
 
 /* build specific elements */
 
@@ -630,7 +621,7 @@ static WOAssociation *yesAssoc = nil;
   /* viewer title */
   
   children = nil;
-  if ((tmp = [self lookupUniqueTag:@"buttons" in:_element])) {
+  if ((tmp = [self lookupUniqueTag:@"buttons" inElement:_element])) {
     if (debugOn) [self debugWithFormat:@"got head buttons: %@", tmp];
     element  = [self buildButtonRow:tmp templateBuilder:_b];
     children = [[NSArray alloc] initWithObjects:&element count:1];
@@ -647,7 +638,7 @@ static WOAssociation *yesAssoc = nil;
   
   /* attributes */
   
-  if ((tmp = [self lookupUniqueTag:@"attributes" in:_element])) {
+  if ((tmp = [self lookupUniqueTag:@"attributes" inElement:_element])) {
     tmp = [self buildAttributes:tmp templateBuilder:_b];
     [rootElements addObject:tmp];
   }
@@ -782,17 +773,17 @@ static WOAssociation *yesAssoc = nil;
   
   /* construct child elements (rework for OGo:body?) */
   
-  if ((tmp = [self lookupUniqueTag:@"body" in:_element]) != nil) {
+  if ((tmp = [self lookupUniqueTag:@"body" inElement:_element]) != nil) {
     /* mode a: explicit hierarchy with 'head' and 'body' subelements */
     WOElement *head, *body, *warn;
     
     body = [self buildPageBody:tmp templateBuilder:_b];
     
-    head = ((tmp = [self lookupUniqueTag:@"head" in:_element]) != nil)
+    head = ((tmp = [self lookupUniqueTag:@"head" inElement:_element]) != nil)
       ? [self buildPageHead:tmp templateBuilder:_b]
       : nil;
     
-    warn = ((tmp = [self lookupUniqueTag:@"warn" in:_element]) != nil)
+    warn = ((tmp = [self lookupUniqueTag:@"warn" inElement:_element]) != nil)
       ? [self buildPageWarn:tmp templateBuilder:_b] : nil;
 
     if (warn != nil) {
@@ -920,12 +911,14 @@ static WOAssociation *yesAssoc = nil;
 }
 
 - (WOElement *)buildFont:(id<DOMElement>)_element templateBuilder:(id)_b {
-  return [self wrapChildrenOfTag:_element templateBuilder:_b
-               inElement:[self fontClass]];
+  return [self wrapChildrenOfElement:_element
+               inElementOfClass:[self fontClass] 
+               templateBuilder:_b];
 }
 - (WOElement *)buildEditFont:(id<DOMElement>)_element templateBuilder:(id)_b {
-  return [self wrapChildrenOfTag:_element templateBuilder:_b
-               inElement:[self editFontClass]];
+  return [self wrapChildrenOfElement:_element
+               inElementOfClass:[self editFontClass] 
+               templateBuilder:_b];
 }
 
 - (WOElement *)buildCalendarPopUp:(id<DOMElement>)_el templateBuilder:(id)_b {
