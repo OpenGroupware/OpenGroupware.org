@@ -1,0 +1,90 @@
+<?xml version='1.0' standalone="yes" ?>
+<OGo:container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+<!--
+  WOx TODO:
+    LSWObjectViewer
+    SkyObjectField  (dynamic element in BaseUI)
+    CurrentAttr: SkyAttribute { label = currentAttrLabel;
+  -->
+
+  <var:foreach list="attributes" item="currentAttr">
+    <var:if condition="doHideEmpty">
+      <var:if condition="isNotEmpty">
+        <OGo:attribute LABELPATH="currentAttrLabel" condition="isinDefaults" 
+           is-sub="1"><#CurrentAttrValue/>
+           <var:string value="attributeSuffix"/></OGo:attribute>
+      </var:if>
+    </var:if>
+    
+    <var:if condition="doHideEmpty" const:negate="1">
+      <OGo:attribute LABELPATH="currentAttrLabel" condition="isinDefaults" 
+         is-sub="1"><#CurrentAttrValue/>
+         <var:string value="attributeSuffix"/></OGo:attribute>
+    </var:if>
+  </var:foreach>
+  
+  <var:foreach list="publicAttributes" item="currentAttr">
+    <var:if condition="doHideEmpty">
+      <var:if condition="isNotEmpty">
+        <OGo:attribute LABELPATH="currentAttrLabel" condition="isinDefaults" 
+           is-sub="1"><#CurrentAttrValue/>
+           <var:string value="attributeSuffix"/></OGo:attribute>
+      </var:if>
+    </var:if>
+
+    <var:if condition="doHideEmpty" const:negate="1">
+      <OGo:attribute LABELPATH="currentAttrLabel" condition="isinDefaults" 
+         is-sub="1"><#CurrentAttrValue/>
+         <var:string value="attributeSuffix"/></OGo:attribute>
+    </var:if>
+  </var:foreach>
+
+  <var:foreach list="privateAttributes" item="currentAttr">
+    <var:if condition="isCurrentAttributeVisible">
+      <OGo:attribute LABELPATH="currentAttrLabel" condition="isinDefaults" 
+         is-sub="1"><#CurrentAttrValue/>
+         <var:string value="attributeSuffix"/></OGo:attribute>
+    </var:if>
+  </var:foreach>
+
+  <var:if condition="isJobViewer" const:negate="1">
+    <var:component className="SkyTelephoneViewer" attributes="patternValues"
+                   const:noTableAndTitle="1" company="company" />
+
+    <var:foreach list="addressTypes" item="addressType">
+      <var:if condition="showAddressType">
+        <tr>
+          <td>&nbsp;</td>
+          <td align="left" valign="top"
+              var:bgcolor="config.colors_subValueCell">
+<!-- TODO: check whether correct XML name -->
+            <var:rich-string value="addressTypeLabel" const:isBold="1"
+               const:face="Arial, Helvetica" const:size="2" />
+          </td>
+        </tr>
+<!-- TODO: LSWObjectViewer -->
+  labels         = labels;
+  object         = address;
+  attributeColor = "subAttributeCell";
+  valueColor     = "subValueCell";
+  attributes = (
+    { key = "name1";   },
+    { key = "name2";   },
+    { key = "name3";   },
+    { key = "street";  },
+    { key = "city";    },
+    { key = "zip";     },
+    { key = "state";   },
+    { key = "country"; }
+  );
+      </var:if>
+    </var:foreach>
+  </var:if>
+
+</OGo:container>

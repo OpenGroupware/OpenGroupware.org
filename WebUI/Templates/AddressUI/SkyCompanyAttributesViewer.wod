@@ -1,5 +1,7 @@
 // bind template to controller class
 
+// WOx TODO: LSWObjectViewer
+
 TitleContent: WOComponentContent {}
 
 Title: LSWViewerTitle {
@@ -19,7 +21,7 @@ CurrentAttr: SkyAttribute {
   valueColor  = "subValueCell";
 }
 
-CurrentAttrValue: SkyObjectField {
+CurrentAttrValue: SkyObjectField { /* dynamic element in BaseUI */
   object     = company;
   attributes = currentAttr;
   labels     = labels;

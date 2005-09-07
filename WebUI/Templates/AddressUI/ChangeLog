@@ -1,3 +1,7 @@
+2005-09-07  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyCommentSubEditor: rewritten as WOx template
+
 2005-09-06  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyCompanyFlagSubEditor: rewritten as WOx template

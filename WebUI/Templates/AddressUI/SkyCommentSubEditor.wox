@@ -1,0 +1,13 @@
+<?xml version='1.0' standalone="yes" ?>
+<OGo:attribute
+  editfont="1"
+  label="personeditor_commentLabel"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+  <textarea var:value="document.comment" var:formatter="session.formatString"
+            wrap="physical" rows="5" cols="80" />
+</OGo:attribute>
