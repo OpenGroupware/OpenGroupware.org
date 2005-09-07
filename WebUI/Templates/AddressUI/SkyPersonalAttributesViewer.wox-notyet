@@ -1,0 +1,51 @@
+<?xml version='1.0' standalone="yes" ?>
+<OGo:container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+<!--
+  WOx TODO: SkyCollapsibleButtonMode in OGoElemBuilder
+  -->
+  <var:if condition="viewerConfigMode">
+    <table border="0" cellspacing="0" cellpadding="2" width="100%">
+      <!-- TODO: use CSS -->
+      <OGo:page-head var:title="item"
+                     var:bgcolor="config.colors_configHeader" />
+
+      <var:component className="SkyPersonalViewerConfig"
+                     object="object" viewerPattern="currentPattern"
+                     checkedItems="patternValues"
+                     isInConfigMode="viewerConfigMode" />
+    </table>
+  </var:if>
+
+  <var:if condition="viewerConfigMode" const:negate="1">
+    <var:table list="patterns" item="item" index="patternIndex"
+               maxColumns="maxColumns"
+               const:cellVAlign="top" const:width="100%">
+      <table border="0" cellspacing="0" cellpadding="2" width="100%">
+        <tr><td colspan="2"></td></tr>
+
+        <OGo:collapsible var:visibility="patternVisibility" var:title="item">
+          <buttons>
+TODO: SkyCollapsibleButtonMode in OGoElemBuilder
+            <OGo:buttons>
+              <OGo:button name="edit" var:action="edit"
+                          label="edit" var:enabled="isEditAllowed"/>
+              <OGo:button name="conf" var:action="viewerConfigModeActivate"
+                          label="viewer_config" />
+            </OGo:buttons>
+          </buttons>
+
+          <content>
+            <var:component className="SkyCompanyAttributesViewer"
+                           company="object" viewerPattern="item" />
+          </content>
+        </OGo:collapsible>
+      </table>
+    </var:table>
+  </var:if>
+</OGo:container>
