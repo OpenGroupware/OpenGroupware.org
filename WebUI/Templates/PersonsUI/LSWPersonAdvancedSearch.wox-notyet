@@ -1,0 +1,109 @@
+<var:if
+  condition="hasSearched" const:negate="1"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+<!--
+  WOx TODO:
+    SkySubAttribute
+  -->
+  <form name="searchform">
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+      <tr var:bgcolor="config.colors_mainButtonRow">
+        <td colspan="4" align="left"><OGo:font><b
+           ><OGo:label key="LSWPersonAdvancedSearch" /></b></OGo:font></td>
+      </tr>
+
+      <tr><td colspan="4" /></tr>
+      <tr>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><OGo:label key="lastName"/>:</OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#LastNameField/></OGo:editfont></OGo:td-value>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><OGo:label key="firstName"/>:</OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#FirstNameField/></OGo:editfont></OGo:td-value>
+      </tr>
+      <tr>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><OGo:label key="zip"/>:</OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#ZipField/></OGo:editfont></OGo:td-value>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><OGo:label key="city"/>:</OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#CityField/></OGo:editfont></OGo:td-value>
+      </tr>
+      <tr>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><var:string value="labels.street" const:escapeHTML="0"/>:</OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#Street/></OGo:editfont></OGo:td-value>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#TeleTypes/>:</OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#Telephone/></OGo:editfont></OGo:td-value>
+      </tr>
+      <tr>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#EmailLabel/>:</OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#Email/></OGo:editfont></OGo:td-value>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#UrlLabel/>:</OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#Url/></OGo:editfont></OGo:td-value>
+      </tr>
+      <tr>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#CommentLabel/>:</OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#Comment/></OGo:editfont></OGo:td-value>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#MaxSearchCountLabel/>:</OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#MaxSearchCountPopUp/></OGo:editfont></OGo:td-value>
+      </tr>  
+      <tr>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#CategoryLabel/>:</OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#CategoryPopUp/></OGo:editfont></OGo:td-value>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#ExtendedAttrs/>:</OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#ExtendedValue/></OGo:editfont></OGo:td-value>
+      </tr>  
+      <tr>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#OperatorLabel/>:</OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont>
+          <#AndOperator/> <OGo:font><#AndOperatorLabel/></OGo:font>
+          <#OrOperator /> <OGo:font><#OrOperatorLabel /></OGo:font>
+        </OGo:editfont></OGo:td-value>
+      </tr>  
+      <tr> 
+        <td> </td>
+        <td colspan="3">
+          <#SearchSubmit/><#FormLetterSubmit/><#ClearSubmit/>
+        </td>
+      </tr> 
+
+      <tr><td colspan="4" /></tr>
+
+      <tr>
+	<#SaveSearchAttr><#SaveTitle/></#SaveSearchAttr>
+        <#CreateTabAttr><#CreateTabCheckBox/></#CreateTabAttr>
+      </tr>  
+      <tr> 
+        <td> </td>
+        <td colspan="3"><#SaveSearchSubmit/></td>
+      </tr> 
+
+      <tr><td colspan="4" /></tr>
+      <#HasFormletterCond>
+        <tr><td /><td colspan="3"><br /><#Formletter/></td></tr>
+      </#HasFormletterCond>
+    </table>
+  </form>
+
+  <!-- separate, because it uses an own form -->
+  <var:if condition="hasSavedSearches">
+    <form name="savedSearch" var:action="loadSavedSearch">
+      <table border="0" cellspacing="0" cellpadding="4" width="100%">
+        <#MainButtonRow>
+          <td colspan="4" align="left"><OGo:font><b>
+            <#LoadSearchLabel/>
+          </b></OGo:font></td>
+        </#MainButtonRow>
+
+        <tr><td colspan="4" /></tr>
+
+        <tr>
+          <#LoadSearchAttr> <!-- SkySubAttribute -->
+            <#LoadSearchPopUp/>
+            <#HasNoJavaScriptCond><#LoadSearchSubmit/></#HasNoJavaScriptCond>
+          </#LoadSearchAttr>
+        </tr>
+      </table>
+    </form>
+  </var:if>
+</var:if>

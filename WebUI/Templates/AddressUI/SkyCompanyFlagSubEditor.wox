@@ -4,7 +4,6 @@
   xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:rsrc="OGo:url"
 >
   <var:if condition="company.isAccount" const:negate="1">
     <OGo:attribute label="privateLabel" editfont="1">
