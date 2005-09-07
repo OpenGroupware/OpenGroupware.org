@@ -58,9 +58,11 @@
 
 @implementation OGoUIElementsBuilder
 
-static Class ChildRefClass     = Nil;
-static Class CompoundElemClass = Nil;
-static BOOL  debugOn           = NO;
+static Class         ChildRefClass     = Nil;
+static Class         CompoundElemClass = Nil;
+static BOOL          debugOn           = NO;
+static NSNumber      *yesNum           = nil;
+static WOAssociation *yesAssoc         = nil;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -69,6 +71,11 @@ static BOOL  debugOn           = NO;
   
   if ((debugOn = [ud boolForKey:@"OGoElemBuilderDebugEnabled"]))
     NSLog(@"Note: OGoElemBuilder debugging enabled.");
+
+  if (yesNum   == nil) 
+    yesNum = [[NSNumber numberWithBool:YES] retain];
+  if (yesAssoc == nil)
+    yesAssoc = [[WOAssociation associationWithValue:yesNum] retain];
 }
 
 /* element classes */
@@ -86,9 +93,151 @@ static BOOL  debugOn           = NO;
   return @"SkyCalendarScript";
 }
 
+- (Class)collapsibleContentClass {
+  return NSClassFromString(@"SkyCollapsibleContentMode");
+}
+- (Class)collapsibleTitleClass {
+  return NSClassFromString(@"SkyCollapsibleTitleMode");
+}
+
 /* support elements */
 
 /* building specific components */
+
+- (WOElement *)buildCollapsible:(id<DOMElement>)_el templateBuilder:(id)_b {
+  /*
+    visibilityDefault
+    visibility
+    emptySubmit
+    title
+    label
+
+    <OGo:collapsible visibilityDefault="scheduler_editor_expand_attributes"
+                     emptySubmit="1">
+      title
+      content
+    or:
+    OGo:collapsible title="..."
+
+
+    <#AppCollapsible>
+      <#CollTitleMode>...</#CollTitleMode>
+      <#CollContentMode>..</#CollContentMode>
+    </#AppCollapsible>
+
+    CollTitleMode:   SkyCollapsibleTitleMode   {}
+    CollContentMode: SkyCollapsibleContentMode {}
+
+    AppCollapsible: SkyCollapsibleContent {
+      visibility = session.userDefaults.scheduler_editor_expand_attributes;
+      submitActionName = "";
+      structuredMode   = YES;
+    }
+    
+    or:
+    ParticipantsTitle:  SkyCollapsibleContent {
+      visibility = session.userDefaults.scheduler_editor_expand_participants;
+      title      = labels.searchParticipants;
+      submitActionName = "";
+      isClicked = isParticipantsClicked;
+    }
+  */
+  NSMutableDictionary *assocs;
+  id<NSObject,DOMNamedNodeMap> attrs;
+  id<NSObject,DOMAttr> attr;
+  NSArray   *children;
+  NSString  *cid, *s;
+  id tmp;
+  
+  if (debugOn) [self debugWithFormat:@"  build OGo collapsible: %@", _el];
+  
+  assocs = [NSMutableDictionary dictionaryWithCapacity:8];
+  attrs  = [_el attributes];
+  
+  /* unique component ID */
+  
+  cid = [_b uniqueIDForNode:_el];
+  if (debugOn) [self debugWithFormat:@"  CID: %@", cid];
+  
+  /* check children */
+
+  if ((tmp = [self lookupUniqueTag:@"content" inElement:_el]) != nil) {
+    /* mode a: explicit hierarchy with 'title' and 'content' subelements */
+    WOElement *title, *content, *buttons;
+    
+    /* mark as structured */
+    [assocs setObject:yesAssoc forKey:@"structuredMode"];
+    
+    content = [self wrapChildrenOfElement:tmp
+                    inElementOfClass:[self collapsibleContentClass]
+                    templateBuilder:_b];
+    
+    if ((tmp = [self lookupUniqueTag:@"title" inElement:_el]) == nil) {
+      [self warnWithFormat:@"WARNING: missing collap. title in: %@", _el];
+      title = [self elementForRawString:@"<!-- missing collapsible head -->"];
+    }
+    else {
+      title = [self wrapChildrenOfElement:tmp
+                    inElementOfClass:[self collapsibleTitleClass]
+                    templateBuilder:_b];
+    }
+
+    // TODO: add button mode!
+    if ((tmp = [self lookupUniqueTag:@"buttons" inElement:_el]) != nil) {
+      [self errorWithFormat:@"NOT SUPPORTING BUTTONS YET!"];
+    }
+    else
+      buttons = nil;
+
+    children = [NSArray arrayWithObjects:title, content, buttons, nil];
+    [title   release]; title   = nil;
+    [content release]; content = nil;
+  }
+  else {
+    /* mode b: arbitary subelements */
+    // TODO: check whether returned children array are retained!
+    children = [_el hasChildNodes]
+      ? [_b buildNodes:[_el childNodes] templateBuilder:_b]
+      : nil;
+  }
+  
+  /* fill associations */
+
+  if ((attr = [attrs namedItem:@"visibility" namespaceURI:@"*"]))
+    [assocs setObject:[_b associationForAttribute:attr] forKey:@"visibility"];
+  else if ((s = [_el attribute:@"visibilityDefault" namespaceURI:@"*"])) {
+    s = [@"session.userDefaults." stringByAppendingString:s];
+    [assocs setObject:[WOAssociation associationWithKeyPath:s]
+	    forKey:@"visibility"];
+  }
+  
+  if ([[_el attribute:@"emptySubmit" namespaceURI:@"*"] boolValue]) {
+    static WOAssociation *emptyStrAssoc = nil;
+    if (emptyStrAssoc == nil)
+      emptyStrAssoc = [[WOAssociation associationWithValue:@""] retain];
+    [assocs setObject:emptyStrAssoc forKey:@"submitActionName"];
+  }
+
+  if ((attr = [attrs namedItem:@"isClicked" namespaceURI:@"*"]))
+    [assocs setObject:[_b associationForAttribute:attr] forKey:@"isClicked"];
+  
+  if ((attr = [attrs namedItem:@"title" namespaceURI:@"*"]))
+    [assocs setObject:[_b associationForAttribute:attr] forKey:@"title"];
+  else if ((s = [_el attribute:@"label" namespaceURI:@"*"])) {
+    s = [@"labels." stringByAppendingString:s];
+    [assocs setObject:[WOAssociation associationWithKeyPath:s]
+            forKey:@"title"];
+  }
+  
+  /* create component */
+  
+  if (debugOn) [self debugWithFormat:@"collapsible children: %@", children];
+  
+  [_b registerSubComponentWithId:cid 
+      componentName:[self collapsibleComponentName] bindings:assocs];
+  return [[ChildRefClass alloc]
+           initWithName:cid associations:nil contentElements:children];
+}
 
 - (WOElement *)buildComponent:(NSString *)_name element:(id<DOMElement>)_el
   templateBuilder:(id)_b
@@ -279,12 +428,9 @@ static BOOL  debugOn           = NO;
 
   switch (c1) {
     case 'c': { /* starting with 'c' */
-#if 0 // TODO: this is in OGoElemBuilder?!
-      if (tl == 11 && [tagName isEqualToString:@"collapsible"]) {
-	return [self buildComponent:[self collapsibleComponentName]
-		     element:_element templateBuilder:_b];
-      }
-#endif
+      if (tl == 11 && [tagName isEqualToString:@"collapsible"])
+        return [self buildCollapsible:_element templateBuilder:_b];
+      
       if (tl == 8 && [tagName isEqualToString:@"calpopup"]) {
 	return [self buildComponent:[self datePopUpComponentName]
 		     element:_element templateBuilder:_b];

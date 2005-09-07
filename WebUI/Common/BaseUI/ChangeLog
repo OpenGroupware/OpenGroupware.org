@@ -1,3 +1,10 @@
+2005-09-07  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoElemBuilder.m: added 'do-tr' attribute to <attribute> tag to
+	  control generation of the <tr> tag (required for multi-column
+	  tables), moved building of collapsibles to OGoUIElementsBuilder,
+	  moved some build-support methods to SOPE WOxElemBuilder (v5.3.112)
+
 2005-09-06  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoElemBuilder.m: map <OGo:listview> tag to SkyListView component

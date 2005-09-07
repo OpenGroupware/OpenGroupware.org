@@ -1,3 +1,8 @@
+2005-09-07  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoUIElementsBuilder.m: added building of collapsibles (moved in
+	  from OGoElemBuilder/BaseUI) (v5.3.46)
+
 2005-08-31  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoUIElementsBuilder.m: do not process 'collapsible' tag (done in
