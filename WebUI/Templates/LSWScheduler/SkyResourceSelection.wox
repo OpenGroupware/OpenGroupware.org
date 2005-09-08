@@ -6,6 +6,7 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
 >
+  <var:if condition="plainMode" const:negate="1">
   <var:if condition="viewHeadLine">
     <tr var:bgcolor="config.colors_mainButtonRow">
       <td colspan="2">
@@ -18,7 +19,8 @@
   </var:if>
 
   <OGo:attribute label="searchResources" editfont="1">
-    <var:popup
+    <nobr>
+      <var:popup
        list              = "categories"
        item              = "item"
        string            = "item"
@@ -26,11 +28,12 @@
        noSelectionString = "noSelectionString"
        const:onChange    = "document.editform.submit();" />
      
-     <input type="text"   var:value="searchString" />
-     <input type="submit" var:action="searchAction"
-            var:value="labels.searchButtonLabel" class="button_narrow" />
+      <input type="text"   var:value="searchString" />
+      <input type="submit" var:action="searchAction"
+             var:value="labels.searchButtonLabel" class="button_narrow" />
+    </nobr>
 
-     <hr size="1" noshade="noshade" />
+    <hr size="1" noshade="noshade" />
   </OGo:attribute>
 
   <var:if condition="hasResources">
@@ -52,5 +55,40 @@
       </OGo:font>
       <hr size="1" noshade="noshade" />
     </OGo:attribute>
+  </var:if>
+  </var:if>
+
+  <var:if condition="plainMode">
+    <nobr>
+      <var:popup
+       list              = "categories"
+       item              = "item"
+       string            = "item"
+       selection         = "category"
+       noSelectionString = "noSelectionString"
+       const:onChange    = "document.editform.submit();" />
+     
+      <input type="text"   var:value="searchString" />
+      <input type="submit" var:action="searchAction"
+             var:value="labels.searchButtonLabel" class="button_narrow" />
+    </nobr>
+
+    <var:if condition="hasResources">
+      <OGo:font>
+        <OGo:listview 
+           var:list          = "resources"
+           var:item          = "item"
+           var:columns       = "noOfCols"
+           var:selectedItems = "removedResources"
+           var:attributes    = "attributesList"
+           const:selectInverse = "1" />
+        <OGo:listview 
+           var:list          = "resultList"
+           var:item          = "item"
+           var:columns       = "noOfCols"
+           var:selectedItems = "addedResources"
+           var:attributes    = "attributesList" />
+      </OGo:font>
+    </var:if>
   </var:if>
 </OGo:container>
