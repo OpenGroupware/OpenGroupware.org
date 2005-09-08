@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<OGo:container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+  <var:if condition="viewHeadLine">
+    <tr var:bgcolor="config.colors_mainButtonRow">
+      <td colspan="2">
+        <OGo:font>
+          <b><OGo:label key="searchResources" /></b>
+        </OGo:font>
+      </td>
+    </tr>
+    <tr><td colspan="2"></td></tr>
+  </var:if>
+
+  <OGo:attribute label="searchResources" editfont="1">
+    <var:popup
+       list              = "categories"
+       item              = "item"
+       string            = "item"
+       selection         = "category"
+       noSelectionString = "noSelectionString"
+       const:onChange    = "document.editform.submit();" />
+     
+     <input type="text"   var:value="searchString" />
+     <input type="submit" var:action="searchAction"
+            var:value="labels.searchButtonLabel" class="button_narrow" />
+
+     <hr size="1" noshade="noshade" />
+  </OGo:attribute>
+
+  <var:if condition="hasResources">
+    <OGo:attribute label="chooseResource">
+      <OGo:font>
+        <OGo:listview 
+           var:list          = "resources"
+           var:item          = "item"
+           var:columns       = "noOfCols"
+           var:selectedItems = "removedResources"
+           var:attributes    = "attributesList"
+           const:selectInverse = "1" />
+        <OGo:listview 
+           var:list          = "resultList"
+           var:item          = "item"
+           var:columns       = "noOfCols"
+           var:selectedItems = "addedResources"
+           var:attributes    = "attributesList" />
+      </OGo:font>
+      <hr size="1" noshade="noshade" />
+    </OGo:attribute>
+  </var:if>
+</OGo:container>

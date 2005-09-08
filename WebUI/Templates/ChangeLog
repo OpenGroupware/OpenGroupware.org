@@ -1,3 +1,7 @@
+2005-09-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWScheduler/SkyResourceSelection: rewritten as WOx template
+
 2005-09-07  Helge Hess  <helge.hess@skyrix.com>
 
 	* PersonsUI/SkyPersonProjectList: enabled WOx rewrite, removed .wo
