@@ -1,3 +1,7 @@
+2005-09-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyAttribute.m: improved generation of &nbsp; (v5.3.114)
+
 2005-09-07  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoElemBuilder.m: removed some deprecated methods (v5.3.113)

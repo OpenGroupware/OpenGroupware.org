@@ -35,7 +35,9 @@
       <font ..>$string$content</font>
     </td>
 
-  SkySubAttribute is the same, but predefines the config different.
+  SkySubAttribute is the same, but predefines the config different:
+    keyColor   => subAttributeCell
+    valueColor => subValueCell
   
   SkyAttribute config:
   
@@ -194,7 +196,7 @@
   id          cfg;
   NSString    *color;
   NSString    *s;
-  BOOL        cond;
+  BOOL        cond, doNBSP = YES;
   
   c   = [_ctx component];
   cfg = [c config];
@@ -213,15 +215,16 @@
     return;
   
   {
-    /* <TR> tag? */
-    if (self->doTR)
-      if ([[self->doTR valueInComponent:c]boolValue])
-         [_response appendContentString:@"<TR>"];
-
-    /* open cell */
+    /* <tr> tag? */
+    if (self->doTR) {
+      if ([[self->doTR valueInComponent:c] boolValue])
+         [_response appendContentString:@"<tr>\n"];
+    }
+    
+    /* open cell */ // TODO: use CSS
     [_response appendContentString:
                  @"<td valign=\"top\" align=\"right\""];
-    if (self->width) {
+    if (self->width != nil) {
       [_response appendContentString:@" width=\""];
       [_response appendContentString:self->width];
       [_response appendContentString:@"\""];
@@ -229,7 +232,7 @@
     else {
       [_response appendContentString:@" width=\"15%\""];
     }
-    if (color) {
+    if (color != nil) {
       [_response appendContentString:@" bgcolor=\""];
       [_response appendContentString:[color stringValue]];
       [_response appendContentString:@"\""];
@@ -255,10 +258,10 @@
   
     /* gen value cell */
   
-    color = [cfg valueForKey:self->valueColor];
+    color = [cfg valueForKey:self->valueColor]; // TODO: use CSS
   
     [_response appendContentString:@"<td align=\"left\" valign=\"top\""];
-    if (color) {
+    if (color != nil) {
       [_response appendContentString:@" bgcolor=\""];
       [_response appendContentString:[color stringValue]];
       [_response appendContentString:@"\""];
@@ -268,17 +271,23 @@
     /* open font tag */
     [self _appendFontTagWithColor:self->valueFontColor
           toResponse:_response inContext:_ctx];
-  
+    
     /* content */
-    if ((s = [self->string stringValueInComponent:c]))
+    if ([(s = [self->string stringValueInComponent:c]) isNotEmpty]) {
+      doNBSP = NO;
       [_response appendContentHTMLString:s];
-    [self->template appendToResponse:_response inContext:_ctx];
-
+    }
+    if (self->template != nil) {
+      [self->template appendToResponse:_response inContext:_ctx];
+      doNBSP = NO;
+    }
+    if (doNBSP) [_response appendContentString:@"&nbsp;"];
+    
     /* close font tag */
     [_response appendContentString:@"</font>"];
 
     /* close cell */
-    [_response appendContentString:@"&nbsp;</td>"];
+    [_response appendContentString:@"</td>"];
 
     /* </TR> tag? */
     if (self->doTR) {
@@ -289,6 +298,7 @@
 }
 
 @end /* SkyAttribute */
+
 
 @implementation SkySubAttribute
 
