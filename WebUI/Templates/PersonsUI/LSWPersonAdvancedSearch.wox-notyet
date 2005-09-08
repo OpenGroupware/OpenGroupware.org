@@ -8,7 +8,7 @@
 <!--
   WOx TODO:
     SkySubAttribute
-    SkyAttribute w/o <tr>
+    SkyAttribute w/o <tr> => done: do-tr="0"
   -->
   <form name="searchform">
     <table border="0" cellspacing="0" cellpadding="4" width="100%">
@@ -19,47 +19,107 @@
 
       <tr><td colspan="4" /></tr>
       <tr>
-        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><OGo:label key="lastName"/>:</OGo:font></OGo:td-attr>
-        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#LastNameField/></OGo:editfont></OGo:td-value>
-        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><OGo:label key="firstName"/>:</OGo:font></OGo:td-attr>
-        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#FirstNameField/></OGo:editfont></OGo:td-value>
+        <OGo:attribute label="lastName" is-sub="1" do-tr="0" editfont="1">
+          <input type="text" name="focusField" var:value="person.name" 
+                 size="30" />
+        </OGo:attribute>
+        <OGo:attribute label="firstName" is-sub="1" do-tr="0" editfont="1">
+          <input type="text" name="firstname" var:value="person.firstname" 
+                 size="30" />
+        </OGo:attribute>
       </tr>
       <tr>
-        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><OGo:label key="zip"/>:</OGo:font></OGo:td-attr>
-        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#ZipField/></OGo:editfont></OGo:td-value>
-        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><OGo:label key="city"/>:</OGo:font></OGo:td-attr>
-        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#CityField/></OGo:editfont></OGo:td-value>
+        <OGo:attribute label="zip" is-sub="1" do-tr="0" editfont="1">
+          <input type="text" name="zip" var:value="person.address#zip" 
+                 size="30" />
+        </OGo:attribute>
+        <OGo:attribute label="city" is-sub="1" do-tr="0" editfont="1">
+          <input type="text" name="city" var:value="person.address#city" 
+                 size="30" />
+        </OGo:attribute>
       </tr>
       <tr>
-        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><var:string value="labels.street" const:escapeHTML="0"/>:</OGo:font></OGo:td-attr>
-        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#Street/></OGo:editfont></OGo:td-value>
-        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#TeleTypes/>:</OGo:font></OGo:td-attr>
-        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#Telephone/></OGo:editfont></OGo:td-value>
-      </tr>
-      <tr>
-        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#EmailLabel/>:</OGo:font></OGo:td-attr>
-        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#Email/></OGo:editfont></OGo:td-value>
-        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#UrlLabel/>:</OGo:font></OGo:td-attr>
-        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#Url/></OGo:editfont></OGo:td-value>
-      </tr>
-      <tr>
-        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#CommentLabel/>:</OGo:font></OGo:td-attr>
-        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#Comment/></OGo:editfont></OGo:td-value>
-        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#MaxSearchCountLabel/>:</OGo:font></OGo:td-attr>
-        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#MaxSearchCountPopUp/></OGo:editfont></OGo:td-value>
-      </tr>  
-      <tr>
-        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#CategoryLabel/>:</OGo:font></OGo:td-attr>
-        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#CategoryPopUp/></OGo:editfont></OGo:td-value>
-        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#ExtendedAttrs/>:</OGo:font></OGo:td-attr>
-        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont><#ExtendedValue/></OGo:editfont></OGo:td-value>
-      </tr>  
-      <tr>
-        <OGo:td-attr keyColor="subAttributeCell"><OGo:font><#OperatorLabel/>:</OGo:font></OGo:td-attr>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font
+           ><var:string value="labels.street" const:escapeHTML="0"
+           />:</OGo:font></OGo:td-attr>
         <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont>
-          <#AndOperator/> <OGo:font><#AndOperatorLabel/></OGo:font>
-          <#OrOperator /> <OGo:font><#OrOperatorLabel /></OGo:font>
+          <input type="text" name="street" var:value="person.address#street" 
+                 size="30" />
         </OGo:editfont></OGo:td-value>
+        
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font>
+          <var:popup const:name= "phonetype"
+             list      = "session.userDefaults.LSTeleType.Person"
+             item      = "currentTeleType"
+             string    = "currentTeleTypeLabel"
+             selection = "person.phone#type"
+             nilString = "labels.allPhones" />:
+        </OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont>
+          <input type="text" name="phone" var:value="person.phone#number"
+                 size="30" />
+        </OGo:editfont></OGo:td-value>
+      </tr>
+      <tr>
+        <OGo:attribute label="email" is-sub="1" do-tr="0" editfont="1">
+          <input type="text" name="email" var:value="person.email1" size="30"/>
+        </OGo:attribute>
+        <OGo:attribute label="url" is-sub="1" do-tr="0" editfont="1">
+          <input type="text" name="url" var:value="person.url" size="30"/>
+        </OGo:attribute>
+      </tr>
+      <tr>
+        <OGo:attribute label="comment" is-sub="1" do-tr="0" editfont="1">
+          <input type="text" name="comment" var:value="person.comment"
+                 size="30" />
+        </OGo:attribute>
+        <OGo:attribute label="maxResults" is-sub="1" do-tr="0" editfont="1">
+<!-- TODO: list plist -->
+WOPopUpButton {
+  name      = "maxsearchcount";
+  list      = ( "100", "200", "500", "600", "1000" );
+  item      = item;
+  string    = item;
+  selection = maxSearchCount;
+}
+        </OGo:attribute>
+      </tr>  
+      <tr>
+        <OGo:attribute label="categoryLabel" is-sub="1" do-tr="0" editfont="1">
+TODO:
+WOBrowser {
+  name          = "category";
+  list          = session.categoryNames;
+  item          = item;
+  displayString = item;
+  selections    = keywordsAsArray;
+  multiple      = YES;
+  size          = 5;
+  style         = "width: 100%;";
+}
+        </OGo:attribute>
+        <OGo:td-attr keyColor="subAttributeCell"><OGo:font>
+          <var:popup const:name="extattrs"
+             list      = "currentValues"
+             item      = "item"
+             string    = "currentLabel"
+             selection = "companyValueAttribute"
+             const:nilString = "-" />:
+        </OGo:font></OGo:td-attr>
+        <OGo:td-value valign="top" valueColor="subValueCell"><OGo:editfont>
+          <input type="text" name="extvalue" var:value="companyValueValue"
+                 size="30"/>
+        </OGo:editfont></OGo:td-value>
+      </tr>  
+      <tr>
+        <OGo:attribute label="operator" is-sub="1" do-tr="0" editfont="1">
+          <input type="radio" name="operator" value="AND"
+                 var:selection="qualifierOperator"/>
+          <OGo:font><OGo:label key="operator_and"/></OGo:font>
+          <input type="radio" name="operator" value="OR"
+                 var:selection="qualifierOperator"/>
+          <OGo:font><OGo:label key="operator_or /></OGo:font>
+        </OGo:attribute>
       </tr>  
       <tr> 
         <td> </td>
@@ -81,8 +141,13 @@
       <tr><td colspan="4" /></tr>
 
       <tr>
-	<#SaveSearchAttr><#SaveTitle/></#SaveSearchAttr>
-        <#CreateTabAttr><#CreateTabCheckBox/></#CreateTabAttr>
+        <!-- SkySubAttribute! -->
+	<#SaveSearchAttr>
+          <input type="text" var:value="saveTitle" size="30" />
+        </#SaveSearchAttr>
+        <#CreateTabAttr>
+          <input type="checkbox" var:checked="showTab" />
+        </#CreateTabAttr>
       </tr>  
       <tr> 
         <td> </td>
@@ -121,8 +186,19 @@
 
         <tr>
           <#LoadSearchAttr> <!-- SkySubAttribute -->
-            <#LoadSearchPopUp/>
-            <#HasNoJavaScriptCond><#LoadSearchSubmit/></#HasNoJavaScriptCond>
+TODO:
+WOPopUpButton {
+  list      = savedSearches;
+  nilString = "--";
+  selection = searchTitle;
+  onChange  = "document.savedSearch.submit(); return true";
+}
+            <var:if condition="session.isJavaScriptEnabled" const:negate="1">
+              <input type="submit" var:action="loadSavedSearch"
+                     class="button_wide"
+                     name="savedSearchLoadButton"
+                     var:value="labels.savedSearchesLoad" />
+            </var:if>
           </#LoadSearchAttr>
         </tr>
       </table>
