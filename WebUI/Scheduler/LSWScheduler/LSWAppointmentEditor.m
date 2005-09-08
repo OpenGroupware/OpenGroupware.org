@@ -1772,6 +1772,28 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
                nil];
 }
 
+- (NSString *)windowTitle {
+  NSMutableString *ms;
+  id labels;
+  
+  labels = [self labels];
+  ms = [NSMutableString stringWithCapacity:96];
+  [ms appendString:[labels valueForKey:@"appointmentOnLabel"]];
+  [ms appendString:@" "];
+  [ms appendString:[self appointmentDayLabel]];
+  
+  if (![self isInNewMode] && [self isCyclic]) {
+    [ms appendString:@"("];
+    [ms appendString:[self cycleType]];
+    [ms appendString:@" "];
+    [ms appendString:[labels valueForKey:@"until"]];
+    [ms appendString:[self cycleEndDateString]];
+    [ms appendString:@")"];
+  }
+  
+  return ms;
+}
+
 - (NSString *)appointmentRemovedSubjectWithTitle:(NSString *)_title {
   NSMutableString *ms;
   id l;

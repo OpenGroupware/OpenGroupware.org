@@ -1,5 +1,12 @@
 2005-09-08  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSWScheduler/LSWAppointmentEditor.wox: major reorganizations in the
+	  positioning of elements in the appointment editor. Removed 'move'
+	  section.
+
+	* LSWScheduler/SkyAptTypeSelection.wod: use nobr to make the radio
+	  button and the image stick together on wrapping
+
 	* LSWScheduler/SkyParticipantsSelection.wox,
 	  LSWScheduler/SkyResourceSelection.wox: added 'plainMode' condition
 	  to generate elements w/o <OGo:attribute> wrappers

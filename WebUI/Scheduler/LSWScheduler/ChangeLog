@@ -1,3 +1,8 @@
+2005-09-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWAppointmentEditor.m: added -windowTitle method to generate the
+	  title for the editor (v5.3.73)
+
 2005-09-06  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.3.72

@@ -19,34 +19,32 @@
       </script>
     </var:if>
 
-    <form name="editform">
+    <form name="editform"
+    ><table border="0" cellspacing="0" cellpadding="4" width="100%">
+      <tr var:bgcolor="config.colors_mainButtonRow">
+        <td align="left">
+          <OGo:font><b><var:string value="windowTitle"/></b></OGo:font>
+        </td>
+      </tr>
+    </table>
 
 <table border="0" width="100%">
   <tr>
-    <td width="50%" valign="top">
+    <td width="65%" valign="top">
 
       <!-- edit panel -->
       <table width="100%" border="0" cellpadding="4" cellspacing="0">
         <!-- appointment date title -->
 
-      <OGo:collapsible visibilityDefault="scheduler_editor_expand_attributes"
-                       emptySubmit="1">
-        <title>
-          <OGo:font><b>
-            <OGo:label key="appointmentOnLabel" />
-            <var:string value="appointmentDayLabel" />
-            <var:if condition="isInNewMode" const:negate="1">
-              <var:if condition="isCyclic">
-                (<var:string value="cycleType" const:escapeHTML="0" />
-                <OGo:label key="until" />
-                <var:string value="cycleEndDateString" />)
-              </var:if>
-            </var:if>
-          </b></OGo:font>
-        </title>
-      
-        <content>
-          <tr><td colspan="2"> </td></tr>
+          <OGo:attribute label="title" editfont="1">
+            <input type="text" name="title" size="40"
+                   var:value="appointment.title" />
+          </OGo:attribute>
+
+          <OGo:attribute label="location" editfont="1">
+            <input type="text" name="location" size="40"
+                   var:value="appointment.location" />
+          </OGo:attribute>
 
           <!-- apointment form -->
           <var:component className="SkyAptDateSelection"
@@ -60,15 +58,6 @@
              const:formName   = "editform"
              useAMPMDates     = "showAMPMDates" />
 
-          <OGo:attribute label="title" editfont="1">
-            <input type="text" name="title" size="40"
-                   var:value="appointment.title" />
-          </OGo:attribute>
-
-          <OGo:attribute label="location" editfont="1">
-            <input type="text" name="location" size="40"
-                   var:value="appointment.location" />
-          </OGo:attribute>
 
       <var:if condition="isInNewMode">
         <OGo:attribute label="type" editfont="1">
@@ -95,100 +84,34 @@
         </OGo:attribute>
       </var:if>
 
-      <OGo:attribute label="accessTeamLabel" editfont="1">
-        <var:popup list="accessTeams" item="item" string="item.description"
-                   selection="selectedAccessTeam"
-                   noSelectionString="labels.privateAppointment" />
+      <OGo:attribute label="attribute_aptType">
+        <var:component className="SkyAptTypeSelection"
+                       selection="appointment.aptType" />
       </OGo:attribute>
 
         <var:if condition="isShowIgnoreConflicts">
-          <OGo:attribute label="ignoreConflictsLabel">
+          <OGo:attribute label="conflictsradio">
             <OGo:font>
-              <var:radio-button-list
-                 list      = "userDefaults.apteditor_ignorevalues" item="item"
-                 value     = "ignoreConflictsLabel"
-                 selection = "ignoreConflictsButtonSelection"
-                 const:prefix=" " const:suffix=" " />
+              <input name="conflicts" type="radio" value="dontIgnore"
+                     var:selection="ignoreConflictsButtonSelection" />
+              <OGo:label key="conflictsradio_dontIgnore"/>
+
+              <input name="conflicts" type="radio" value="onlyNow"
+                     var:selection="ignoreConflictsButtonSelection" />
+              <OGo:label key="conflictsradio_onlyNow"/>
+
+              <input name="conflicts" type="radio" value="always"
+                     var:selection="ignoreConflictsButtonSelection" />
+              <OGo:label key="conflictsradio_always"/>
             </OGo:font>
           </OGo:attribute>
         </var:if>
 
-        <OGo:attribute label="attribute_aptType">
-          <var:component className="SkyAptTypeSelection"
-                         selection="appointment.aptType" />
-        </OGo:attribute>
-      </content>
-    </OGo:collapsible>
-</table>
-</td>
-<td valign="top">
-<table width="100%" border="0" cellpadding="4" cellspacing="0">
-
-    <tr><td colspan="2"></td></tr>
-
-    <OGo:collapsible visibilityDefault="scheduler_editor_expand_participants"
-                     label="searchParticipants" emptySubmit="1"
-                     var:isClicked="isParticipantsClicked">
-      <var:component className="SkyParticipantsSelection"
-         participants="participants"
-         selectedParticipants="selectedParticipants"
-         const:onlyAccounts="0"
-         const:headLineLabel="searchParticipants"
-         const:searchLabel="searchParticipants"
-         const:selectionLabel="addParticipants"
-         const:viewHeadLine="0"
-         isClicked="isParticipantsClicked" />
-    </OGo:collapsible>
-
-    <tr><td colspan="2"></td></tr>
-
-    <OGo:collapsible visibilityDefault="scheduler_editor_expand_resources"
-                     label="searchResources" emptySubmit="1"
-                     var:isClicked="isResourceClicked">
-      <var:component className="SkyResourceSelection"
-         resources="resources" resultList="moreResources"
-         const:viewHeadLine="0" const:onlyResources="1"
-         isClicked="isResourceClicked" />
-    </OGo:collapsible>
-
-    <tr><td colspan="2"></td></tr>
-
-    <OGo:collapsible visibilityDefault="scheduler_editor_expand_access"
-                     label="assignAccessRights" emptySubmit="1"
-                     var:isClicked="isAccessClicked">
-      <var:component className="SkyParticipantsSelection"
-         participants="accessMembers"
-         selectedParticipants="selectedAccessMembers"
-         const:onlyAccounts="1"
-         const:headLineLabel="assignAccessRights"
-         const:searchLabel="searchAccounts"
-         const:selectionLabel="chooseAccounts"
-         const:viewHeadLine="0"
-         isClicked="isAccessClicked" />
-    </OGo:collapsible>
-</table>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-  <table width="100%" border="0" cellpadding="4" cellspacing="0">
-
-    <tr><td colspan="2"></td></tr>
-
-    <OGo:collapsible visibilityDefault="scheduler_editor_expand_comment"
-                     label="comment" emptySubmit="1">
-      <OGo:attribute label="comment" editfont="1">
-        <var:component className="SkyTextEditor"
-           text    = "comment"
-           rows    = "session.userDefaults.scheduler_editor_comment_rows"
-           columns = "session.userDefaults.scheduler_editor_comment_columns"
-           const:wrap="physical" />
-      </OGo:attribute>
-    </OGo:collapsible>
 
     <tr>
       <td></td>
       <td>
+       <nobr>
         <input type="submit" var:action="save" class="button_narrow"
                var:value="labels.saveButtonLabel"
                var:title="labels.saveButtonLabel_title" />
@@ -236,34 +159,98 @@
            ><OGo:label key="cancelButtonLabel" /></a>
 
         <!-- #DateProposalSubmit/ -->
+       </nobr>
       </td>
     </tr>
+</table>
+</td>
 
+<td valign="top" style="border-left: 1px solid black;" width="1"
+  ><entity name="nbsp" /></td>
+
+<td valign="top">
+<table width="100%" border="0" cellpadding="4" cellspacing="0">
+
+    <tr var:bgcolor="config.colors_mainButtonRow">
+      <td colspan="2"><OGo:font>
+        <OGo:label key="searchParticipants"/>
+      </OGo:font></td>
+    </tr>
+    <tr><td colspan="2">
+      <var:component className="SkyParticipantsSelection"
+         participants="participants"
+         selectedParticipants="selectedParticipants"
+         const:plainMode="1"
+         const:onlyAccounts="0"
+         const:headLineLabel="searchParticipants"
+         const:searchLabel="searchParticipants"
+         const:selectionLabel="addParticipants"
+         const:viewHeadLine="0"
+         isClicked="isParticipantsClicked" />
+    </td></tr>
     <tr><td colspan="2"></td></tr>
 
-    <var:if condition="isInNewMode" const:negate="1">
-      <!-- move appointment section -->
+    <tr var:bgcolor="config.colors_mainButtonRow">
+      <td colspan="2"><OGo:font>
+        <OGo:label key="searchResources"/>
+      </OGo:font></td>
+    </tr>
+    <tr><td colspan="2">
+      <var:component className="SkyResourceSelection"
+         resources="resources" resultList="moreResources"
+         const:plainMode="1" const:viewHeadLine="0" const:onlyResources="1"
+         isClicked="isResourceClicked" />
+    </td></tr>
+    <tr><td colspan="2"></td></tr>
 
-        <OGo:collapsible visibilityDefault="scheduler_editor_expand_move"
-                         label="move" emptySubmit="1">
-          <OGo:attribute label="moveAppointment" editfont="1">
-              <var:popup list="userDefaults.apteditor_move_amount" item="item"
-                         selection="moveAmount" string="moveAmountLabel" />
-              <var:popup list="idxArray3" item="item"
-                         selection="moveUnit" string="moveUnitLabel" />
-              <var:popup list="idxArray2" item="item"
-                         selection="moveDirection"
-                         string="moveDirectionLabel" />
-          </OGo:attribute>
-          <tr>
-            <td></td>
-            <td><input type="submit" var:action="moveAppointment"
-                       class="button_narrow"
-                       var:value="labels.moveButtonLabel"
-                       var:title="labels.moveButtonLabel_title" /></td>
-          </tr>
-        </OGo:collapsible>
-      </var:if>
+    <tr var:bgcolor="config.colors_mainButtonRow">
+      <td colspan="2"><OGo:font>
+        <OGo:label key="accessTeamLabel"/> <!-- TODO: fix label key -->
+      </OGo:font></td>
+    </tr>
+    <tr><td colspan="2">
+      <OGo:editfont>
+        <var:popup list="accessTeams" item="item" string="item.description"
+                   selection="selectedAccessTeam"
+                   noSelectionString="labels.privateAppointment" />
+      </OGo:editfont>
+    </td></tr>
+
+    <tr var:bgcolor="config.colors_mainButtonRow">
+      <td colspan="2"><OGo:font>
+        <OGo:label key="assignAccessRights"/> <!-- TODO: fix label key -->
+      </OGo:font></td>
+    </tr>
+    <tr><td colspan="2">
+      <var:component className="SkyParticipantsSelection"
+         participants="accessMembers"
+         selectedParticipants="selectedAccessMembers"
+         const:plainMode="1"
+         const:onlyAccounts="1"
+         const:headLineLabel="assignAccessRights"
+         const:searchLabel="searchAccounts"
+         const:selectionLabel="chooseAccounts"
+         const:viewHeadLine="0"
+         isClicked="isAccessClicked" />
+    </td></tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="3">
+  <table width="100%" border="0" cellpadding="4" cellspacing="0">
+    <OGo:collapsible visibilityDefault="scheduler_editor_expand_comment"
+                     label="comment" emptySubmit="1">
+      <tr>
+        <td colspan="2"><OGo:editfont>
+          <var:component className="SkyTextEditor"
+           text    = "comment"
+           rows    = "session.userDefaults.scheduler_editor_comment_rows"
+           columns = "session.userDefaults.scheduler_editor_comment_columns"
+           const:wrap="physical" />
+        </OGo:editfont></td>
+      </tr>
+    </OGo:collapsible>
 </table>
 </td>
 </tr>

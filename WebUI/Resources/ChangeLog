@@ -1,3 +1,9 @@
+2005-09-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* English|German.lproj/LSWScheduler.strings: added new labels for new
+	  appointment editor: conflictsradio, conflictsradio_dontIgnore,
+	  conflictsradio_onlyNow, conflictsradio_always
+
 2005-08-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* English|German.lproj/OGoScheduler.strings: added partRole_* and

@@ -110,8 +110,6 @@
     </var:if>
 
     <var:if condition="hasParticipantSelection">
-      <hr size="1" noshade="noshade" /> <!-- use CSS -->
-
       <OGo:font>
         <OGo:listview 
           var:list="participants" var:item="item" var:columns="noOfCols"

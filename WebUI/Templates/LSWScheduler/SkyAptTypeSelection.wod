@@ -35,6 +35,7 @@ TypeRepetition: WORepetition {
 SelectSpan: WOGenericContainer {
   elementName = "span";
   onClick     = jsScriptOnClick;
+  style       = "white-space: nowrap;"
 }
 
 SelectRadioButton: WORadioButton {
