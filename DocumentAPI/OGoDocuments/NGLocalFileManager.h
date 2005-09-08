@@ -22,12 +22,6 @@
 #ifndef __NGLocalFileManager_h__
 #define __NGLocalFileManager_h__
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSObject.h>
-#import <Foundation/NSUtilities.h>
-#import <Foundation/NSDictionary.h>
-#import <Foundation/NSFileManager.h>
-#import <EOControl/EOControl.h>
 #include <NGExtensions/NGFileManager.h>
 #include <OGoDocuments/SkyDocument.h>
 #include <OGoDocuments/SkyDocumentFileManager.h>

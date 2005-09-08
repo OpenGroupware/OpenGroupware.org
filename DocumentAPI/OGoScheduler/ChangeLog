@@ -1,3 +1,7 @@
+2005-09-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: added link deps for OSX (v5.3.36)
+
 2005-08-18  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkySchedulerConflictDataSource.h: deprecated -setContext: in favor of

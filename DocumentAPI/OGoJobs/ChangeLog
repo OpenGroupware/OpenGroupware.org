@@ -1,3 +1,7 @@
+2005-09-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: added link deps for OSX (v5.3.24)
+
 2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyJobDocument.m, SkySchedulerJobDataSource.m: fixed gcc4 warnings

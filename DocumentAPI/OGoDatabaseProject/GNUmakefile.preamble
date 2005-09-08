@@ -1,4 +1,4 @@
-# $Id$
+# compilation settings
 
 ADDITIONAL_OBJCFLAGS += -Wno-import -Wno-protocol
 
@@ -7,6 +7,7 @@ libOGoDatabaseProject_INCLUDE_DIRS += -I. -I.. -I../../Logic/LSFoundation
 libOGoDatabaseProject_LIBRARIES_DEPEND_UPON += 	\
 	-lOGoDocuments -lOGoProject		\
 	-lLSFoundation -lGDLAccess 		\
+	-lNGLdap -lNGMime			\
 	-lNGStreams -lNGExtensions -lEOControl	\
 	-lDOM -lSaxObjC
 

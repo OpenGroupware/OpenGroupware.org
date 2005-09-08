@@ -1,4 +1,4 @@
-# $Id$
+# compilation settings
 
 ADDITIONAL_LIB_DIRS += \
 	-L./$(GNUSTEP_OBJ_DIR) \
@@ -8,7 +8,9 @@ ADDITIONAL_LIB_DIRS += \
 libOGoAccounts_LIBRARIES_DEPEND_UPON += \
 	-lOGoDocuments			\
 	-lLSFoundation -lGDLAccess	\
-	-lNGStreams -lNGExtensions -lEOControl
+	-lNGLdap -lNGMime \
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
 
 ADDITIONAL_CPP_FLAGS += -Wall
 

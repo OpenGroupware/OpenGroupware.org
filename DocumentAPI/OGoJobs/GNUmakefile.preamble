@@ -1,9 +1,11 @@
-# $Id$
+# compilation settings
 
 libOGoJobs_LIBRARIES_DEPEND_UPON += \
-	-lOGoDocuments		   \
-	-lLSFoundation -lGDLAccess \
-	-lNGStreams -lNGExtensions -lEOControl
+	-lOGoDocuments			\
+	-lLSFoundation -lGDLAccess	\
+	-lNGLdap -lNGMime		\
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
 
 OGoJobs_BUNDLE_LIBS += \
 	-lOGoJobs -lOGoDocuments   \

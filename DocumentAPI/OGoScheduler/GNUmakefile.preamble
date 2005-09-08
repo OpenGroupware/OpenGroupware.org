@@ -14,8 +14,14 @@ libOGoScheduler_LIBRARIES_DEPEND_UPON += \
 	-lDOM -lSaxObjC
 
 OGoScheduler_BUNDLE_LIBS += \
-	-lOGoScheduler	\
-	-lLSFoundation
+	-lOGoDocuments		\
+	-lOGoScheduler		\
+	-lOGoSchedulerTools	\
+	-lLSFoundation		\
+	-lGDLAccess		\
+	-lNGLdap -lNGMime		\
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
 
 ADDITIONAL_LIB_DIRS += 					\
 	-L../OGoDocuments/$(GNUSTEP_OBJ_DIR)		\

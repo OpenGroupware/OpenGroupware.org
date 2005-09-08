@@ -1,3 +1,7 @@
+2005-09-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: added link deps for OSX (v5.3.52)
+
 2005-06-08  Helge Hess  <helge.hess@skyrix.com>
 
 	* bundle-info.plist: renamed projectbase "Skyrix" to "Database"

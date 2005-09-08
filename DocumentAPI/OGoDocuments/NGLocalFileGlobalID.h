@@ -22,9 +22,7 @@
 #ifndef NGLocalFileGlobalID_h
 #define NGLocalFileGlobalID_h
 
-#import <Foundation/NSString.h>
-#import <Foundation/NSUtilities.h>
-#import <EOControl/EOControl.h>
+#include <EOControl/EOGlobalID.h>
 
 @class NSString;
 
@@ -33,9 +31,11 @@
   NSString *path;
   NSString *rootPath;
 }
+
 - (id)initWithPath:(NSString *)_path rootPath:(NSString *)_root;
 - (NSString *)path;
 - (NSString *)rootPath;
+
 @end /* NGLocalFileGlobalID */
 
 #endif /* NGLocalFileGlobalID_h */

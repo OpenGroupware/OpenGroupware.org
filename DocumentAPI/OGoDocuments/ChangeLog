@@ -1,3 +1,8 @@
+2005-09-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* NGLocalFileManager.h, NGLocalFileGlobalID.h, NGLocalFileDocument.h:
+	  cleaned up header files (v5.3.25)
+
 2005-05-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.24
