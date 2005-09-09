@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<var:if condition="hasRows"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+  <var:script-drag/><var:script-drop/>
+
+  <var:hspan-matrix
+     list        = "cacheDataSource.fetchObjects"
+     item        = "appointment"
+     columns     = "columns"
+     rows        = "rows"
+     column      = "column"
+     row         = "row"
+     itemActive  = "isAppointmentInCell"
+     isRowActive = "isAppointmentInRow"
+     const:width = "100%" const:border = "0"
+     const:cellpadding = "0" const:cellspacing = "2"
+  >
+    <var:matrix-label const:elementName="td" const:position="top"
+       bgcolor="config.colors_headerLabelCell" const:align="center">
+      <font size="-4">
+        <var:string value="hourLabel"/>
+
+        <var:if condition="isResCategorySelected" const:negate="1">
+          <font size="-4" var:color="config.colors_newAppointmentLink">
+            [<a directActionName="newApt"
+                var:_year   = "day.yearOfCommonEra"
+                var:_month  = "day.monthOfYear"
+                var:_day    = "day.dayOfMonth"
+                var:_hour   = "hour.hourOfDay"
+                var:_minute = "hour.minuteOfHour"
+                var:_tz     = "day.timeZone.abbreviation"
+                var:_ctx    = "context.contextID"><OGo:label key="new"/></a>]
+          </font>
+        </var:if>
+      </font>
+    </var:matrix-label>
+      
+    <var:matrix-label const:elementName="td" const:position="left"
+                      bgcolor="config.colors_leftLabelCell">
+      <font size="-4"><var:string value="currentRowLabel"/></font>
+    </var:matrix-label>
+
+    <var:matrix-empty const:elementName="td" bgcolor="config.colors_emptyCell"
+       ><entity name="nbsp"/></var:matrix-empty>
+
+    <var:matrix-cell const:elementName="td" const:align="top"
+       bgcolor="config.colors_contentCell"
+    >
+      <var:js-drag const:tag="appointment" object="appointment"
+         isDraggable="isAppointmentDraggable"
+      >
+        <font size="-4">
+          <var:if condition="appointmentViewAccessAllowed">
+
+            <var:if condition="useDirectActionForView">
+              <a directActionName="viewApt"
+                 var:_oid="appointmentOID" var:_entity="appointmentEntity"
+                 var:_tz="appointment.startDate.timeZone.abbreviation"
+                 var:_ctx="context.contextID"
+                 var:title="shortTextForApt"
+                ><img var:filename="dateCellIcon" border="0" valign="top" 
+                      var:alt="shortTextForApt" var:title="shortTextForApt" 
+                /><font var:color="config.colors_titleColor"
+                 ><var:string value="appointment" 
+                     formatter="aptInfoFormatter"/></font></a>
+              </var:if>
+
+              <var:if condition="useDirectActionForView" const:negate="1">
+                <a var:action="viewAppointment" var:title="shortTextForApt"
+                  ><img var:filename="dateCellIcon" border="0" valign="top"
+                        var:alt="shortTextForApt" var:title="shortTextForApt"
+                 /><font var:color="config.colors_titleColor"
+                  ><var:string value="appointment"
+                      formatter="aptInfoFormatter"/></font></a>
+              </var:if>
+            </var:if>
+
+            <var:if condition="appointmentViewAccessAllowed" const:negate="1">
+              <img var:filename="dateCellIcon" border="0" valign="top" 
+                   var:alt="shortTextForApt" var:title="shortTextForApt" 
+              /><font var:color="config.colors_titleColor"
+               ><var:string value="appointment"
+                            formatter="aptInfoFormatter"/></font>
+            </var:if>
+          </font>
+      </var:js-drag>
+    </var:matrix-cell>
+  </var:hspan-matrix>
+</var:if>
