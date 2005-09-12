@@ -1,3 +1,7 @@
+2005-09-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyDBDocument.m: fixed a gcc4 warning (v5.3.12)
+
 2005-01-13  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.1.11

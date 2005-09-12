@@ -42,7 +42,10 @@
 
 #include "SkyCompanyDocument.h"
 
-@class EODataSource, EOGlobalID, NSCalendarDate, SkyPersonEnterpriseDataSource;
+@class NSString, NSCalendarDate;
+@class EODataSource, EOGlobalID;
+@class LSCommandContext;
+@class SkyPersonEnterpriseDataSource;
 
 @interface SkyPersonDocument : SkyCompanyDocument
 {
@@ -79,7 +82,7 @@
   dataSource:(EODataSource *)_ds;
 - (id)initWithGlobalID:(EOGlobalID *)_gid dataSource:(EODataSource *)_ds;
 - (id)initWithPerson:(id)_person dataSource:(EODataSource *)_ds;
-- (id)initWithEO:(id)_person context:(id)_context;
+- (id)initWithEO:(id)_person context:(LSCommandContext *)_context;
 
 /* attributes */
 

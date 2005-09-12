@@ -69,7 +69,7 @@ static NSDictionary *baseToClass  = nil;
       continue;
     }
 
-    [tmp setObject:fmClass forKey:baseName];
+    [(NSMutableDictionary *)tmp setObject:fmClass forKey:baseName];
   }
   baseToClass = [tmp copy];
 }

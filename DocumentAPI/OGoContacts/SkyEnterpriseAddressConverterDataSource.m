@@ -25,14 +25,13 @@
 
 @implementation SkyEnterpriseAddressConverterDataSource
 
-- (id)initWithContext:(id)_ctx labels:(id)_labels {
+- (id)initWithContext:(LSCommandContext *)_ctx labels:(id)_labels {
   SkyEnterpriseDataSource *ds;
 
-  ds = [[SkyEnterpriseDataSource alloc] initWithContext:_ctx];
-  
+  ds = [SkyEnterpriseDataSource alloc]; // keep gcc happy
+  ds = [ds initWithContext:_ctx];
   self = [super initWithDataSource:ds context:_ctx labels:_labels];
-  
-  RELEASE(ds); ds = nil;
+  [ds release]; ds = nil;
   
   return self;
 }

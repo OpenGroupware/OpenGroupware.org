@@ -159,11 +159,13 @@
   return addrs;
 }
 
-- (SkyAddressDocument *)createObject {
+- (id)createObject {
 #if 1
   SkyAddressDocument  *doc = nil;
-  NSMutableDictionary *src =
-    [NSMutableDictionary dictionaryWithObjectsAndKeys:
+  NSMutableDictionary *src;
+
+  src =
+    [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                          @"", @"name1",
                          @"", @"name2",
                          @"", @"name3",
@@ -177,26 +179,28 @@
   doc = [[SkyAddressDocument alloc] initWithObject:src
                                     globalID:nil
                                     dataSource:self];
+  [src release]; src = nil;
   return [doc autorelease];
 #else
   return nil;
 #endif
 }
 
-- (void)insertObject:(SkyAddressDocument *)_object {
-  id dict = [_object asDict];
+- (void)insertObject:(id)_object {
+  id dict;
   
+  dict = [_object asDict];
   dict = [self->context runCommand:@"address::new" arguments:dict];
   [_object _setGlobalID:[dict valueForKey:@"globalID"]];
   
   [self postDataSourceChangedNotification];
 }
-- (void)deleteObject:(SkyAddressDocument *)_object {
+- (void)deleteObject:(id)_object {
   id dict = [_object asDict];
   [self->context runCommand:@"address::delete" arguments:dict];
   [self postDataSourceChangedNotification];
 }
-- (void)updateObject:(SkyAddressDocument *)_object {
+- (void)updateObject:(id)_object {
   id dict = [_object asDict];
   [self->context runCommand:@"address::set" arguments:dict];
   [self postDataSourceChangedNotification];

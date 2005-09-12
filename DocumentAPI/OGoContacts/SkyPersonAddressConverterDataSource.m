@@ -25,14 +25,15 @@
 
 @implementation SkyPersonAddressConverterDataSource
 
-- (id)initWithContext:(id)_ctx labels:(id)_labels {
+- (id)initWithContext:(LSCommandContext *)_ctx labels:(id)_labels {
   SkyPersonDataSource *ds;
 
-  ds = [[SkyPersonDataSource alloc] initWithContext:_ctx];
-
+  ds = [(SkyPersonDataSource *)[SkyPersonDataSource alloc]
+			       initWithContext:_ctx];
+  
   self = [super initWithDataSource:ds context:_ctx labels:_labels];
   
-  RELEASE(ds); ds = nil;
+  [ds release]; ds = nil;
   
   return self;
 }

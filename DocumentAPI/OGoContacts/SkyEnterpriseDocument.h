@@ -37,12 +37,14 @@
     
 */
 
-#ifndef __SkyrixOS_Libraries_SkyEnterprises_SkyEnterpriseDocument_H_
-#define __SkyrixOS_Libraries_SkyEnterprises_SkyEnterpriseDocument_H_
+#ifndef __OGoContacts_SkyEnterpriseDocument_H_
+#define __OGoContacts_SkyEnterpriseDocument_H_
 
 #include "SkyCompanyDocument.h"
 
+@class NSString;
 @class EODataSource, EOGlobalID;
+@class LSCommandContext;
 
 @interface SkyEnterpriseDocument : SkyCompanyDocument
 {
@@ -64,9 +66,9 @@
   globalID:(EOGlobalID *)_gid
   dataSource:(EODataSource *)_ds;
 - (id)initWithGlobalID:(EOGlobalID *)_gid dataSource:(EODataSource *)_ds;
-- (id)initWithEnterprise:(id)_enterprise dataSource:(EODataSource *)_ds;
-- (id)initWithEO:(id)_enterprise context:(id)_context;
-- (id)initWithContext:(id)_context;
+- (id)initWithEnterprise:(id)_enterprise  dataSource:(EODataSource *)_ds;
+- (id)initWithEO:(id)_enterprise context:(LSCommandContext *)_context;
+- (id)initWithContext:(LSCommandContext *)_context;
 
 /* attributes */
 
@@ -115,4 +117,4 @@
 @end /* SkyEnterpriseDocumentType */
 
 
-#endif /* __SkyrixOS_Libraries_SkyEnterprises_SkyEnterpriseDocument_H_ */
+#endif /* __OGoContacts_SkyEnterpriseDocument_H_ */

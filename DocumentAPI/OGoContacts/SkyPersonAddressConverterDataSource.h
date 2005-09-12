@@ -19,17 +19,19 @@
   02111-1307, USA.
 */
 
-#ifndef __SkyrixOS_Libraries_SkyPersons_SkyPersonAddressConverterDataSource_H_
-#define __SkyrixOS_Libraries_SkyPersons_SkyPersonAddressConverterDataSource_H_
+#ifndef __OGoContacts_SkyPersonAddressConverterDataSource_H_
+#define __OGoContacts_SkyPersonAddressConverterDataSource_H_
 
-#import "SkyAddressConverterDataSource.h"
+#include "SkyAddressConverterDataSource.h"
 
 @class EOFetchSpecification;
 
 @interface SkyPersonAddressConverterDataSource : SkyAddressConverterDataSource
 {
 }
-- (id)initWithContext:(id)_ctx labels:(id)_labels;
+
+- (id)initWithContext:(LSCommandContext *)_ctx labels:(id)_labels;
+
 @end
 
-#endif /* __SkyrixOS_Libraries_SkyPersons_SkyPersonAddressConverterDataSource_H_ */
+#endif /* __OGoContacts_SkyPersonAddressConverterDataSource_H_ */

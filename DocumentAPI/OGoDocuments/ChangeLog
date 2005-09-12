@@ -1,3 +1,7 @@
+2005-09-12  Sebastian Reitenbach  <reitenbach@rapideye.de>
+
+	* NGLocalFileManager.h: fixed a compilation issue (v5.3.26)
+
 2005-09-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* NGLocalFileManager.h, NGLocalFileGlobalID.h, NGLocalFileDocument.h:

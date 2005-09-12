@@ -62,25 +62,28 @@ static NSNull   *null  = nil;
   if (null  == nil) null  = [[NSNull null] retain];
 }
 
-- (id)initWithContext:(id)_ctx {
+- (id)initWithContext:(LSCommandContext *)_ctx {
   EODataSource *ds;
   NSDictionary *dict;
   id           own;
   
   own  = [_ctx valueForKey:LSAccountKey];
-  ds   = [[[SkyProjectDataSource alloc] initWithContext:_ctx] autorelease];
-  dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+  ds   = [SkyProjectDataSource alloc]; // keep gcc happy
+  ds   = [[(SkyProjectDataSource *)ds initWithContext:_ctx] autorelease];
+  dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                               noNum,                          @"isFake",
                               [own valueForKey:@"companyId"], @"ownerId",
                               null ,                          @"kind",
                               [NSDate date],                  @"startDate",
                               @"05_processing",               @"status",
                               nil];
-  return [self initWithEO:(id)dict dataSource:(id)ds];
+  self = [self initWithEO:(id)dict dataSource:(id)ds];
+  [dict release]; dict = nil;
+  return self;
 }
 
 - (id)initWithEO:(id)_eo dataSource:(SkyProjectDataSource *)_ds {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     NSAssert(_ds, @"missing datasource ..");
   
     self->dataSource = [_ds retain];
@@ -278,7 +281,9 @@ static NSNull   *null  = nil;
     Class clazz = Nil;
 
     clazz = NSClassFromString(@"SkyAccountDataSource");
-    ds    = [[clazz alloc] initWithContext:[self context]];
+    ds = [clazz alloc];
+    // TODO: fix type
+    ds = [(SkyProjectDataSource *)ds initWithContext:[self context]];
   }
 
   leaderGid = (EOGlobalID *)self->leader;
@@ -324,7 +329,8 @@ static NSNull   *null  = nil;
 
   teamId = [[(EOKeyGlobalID *)self->team keyValuesArray] lastObject];
   clazz = NSClassFromString(@"SkyTeamDataSource");
-  ds    = [[clazz alloc] initWithContext:[self context]];
+  // TODO: fix type
+  ds = [(SkyProjectDataSource *)[clazz alloc] initWithContext:[self context]];
   qual  = [[EOKeyValueQualifier alloc]
                                   initWithKey:@"companyId"
                                   operatorSelector:EOQualifierOperatorEqual

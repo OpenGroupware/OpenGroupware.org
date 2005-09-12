@@ -55,7 +55,7 @@ static BOOL doExplain = NO;
   [self logWithFormat:@"ERROR: subclasses should override this method!"];
 }
 
-- (id)initWithContext:(id)_context { // designated initializer
+- (id)initWithContext:(LSCommandContext *)_context { // designated initializer
   if (_context == nil) {
     [self logWithFormat:
             @"WARNING(%s): missing context for datasource creation ..",

@@ -39,8 +39,8 @@ static NSSet *nativeKeys = nil;
       name:SkyDeletedEnterpriseNotification object:nil];
 }
 
-- (id)initWithContext:(id)_context {
-  if ((self = [super initWithContext:_context])) {
+- (id)initWithContext:(LSCommandContext *)_context {
+  if ((self = [super initWithContext:_context]) != nil) {
     if (nativeKeys == nil) {
       EOModel *model;
 
@@ -118,7 +118,8 @@ static NSSet *nativeKeys = nil;
 }
 
 - (id)createObject {
-  return [[[SkyEnterpriseDocument alloc] initWithContext:self->context]
+  return [[(SkyEnterpriseDocument *)[SkyEnterpriseDocument alloc] 
+				    initWithContext:self->context]
                                   autorelease];
 }
 
@@ -154,7 +155,8 @@ static NSSet *nativeKeys = nil;
   if ([_gids count] == 0)
     return [NSArray array];
   
-  ds = [[SkyEnterpriseDataSource alloc] initWithContext:[_dm context]];
+  ds = [SkyEnterpriseDataSource alloc]; // keep gcc happy
+  ds = [ds initWithContext:[_dm context]];
   if (ds == nil)
     return nil;
   ds = [ds autorelease];

@@ -49,11 +49,10 @@
 }
 
 - (EODataSource *)companyDataSource {
-
-  if (self->enterpriseDS == nil)
-    self->enterpriseDS = [[SkyEnterpriseDataSource alloc]
-                                             initWithContext:self->context];
-
+  if (self->enterpriseDS == nil) {
+    self->enterpriseDS = [SkyEnterpriseDataSource alloc];
+    self->enterpriseDS = [self->enterpriseDS initWithContext:self->context];
+  }
   return self->enterpriseDS;
 }
 

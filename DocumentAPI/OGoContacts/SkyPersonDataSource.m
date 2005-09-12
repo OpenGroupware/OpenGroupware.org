@@ -50,8 +50,8 @@ static NSSet *nativeKeys = nil;
       name:SkyDeletedPersonNotification object:nil];
 }
 
-- (id)initWithContext:(id)_context {
-  if ((self = [super initWithContext:_context])) {
+- (id)initWithContext:(LSCommandContext *)_context {
+  if ((self = [super initWithContext:_context]) != nil) {
     if (nativeKeys == nil) {
       // hack, we can only use one EOModel here
       EOModel *model;
@@ -136,11 +136,12 @@ static NSSet *nativeKeys = nil;
 }
 
 - (id)createObject {
-  return [[[SkyPersonDocument alloc] initWithContext:self->context]
-                              autorelease];
+  return [[(SkyPersonDocument *)[SkyPersonDocument alloc] 
+				initWithContext:self->context] autorelease];
 }
 
 @end /* SkyPersonDataSource */
+
 
 @implementation SkyPersonDocumentGlobalIDResolver
 
@@ -171,8 +172,8 @@ static NSSet *nativeKeys = nil;
   if ([_gids count] == 0)
     return [NSArray array];
   
-  ds = [[SkyPersonDataSource alloc] initWithContext:[_dm context]];
-  if (ds == nil)
+  ds = [SkyPersonDataSource alloc]; // keep gcc happy
+  if ((ds = [ds initWithContext:[_dm context]]) == nil)
     return nil;
   ds = [ds autorelease];
 

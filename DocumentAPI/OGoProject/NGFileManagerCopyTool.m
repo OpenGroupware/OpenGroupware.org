@@ -383,8 +383,10 @@ extern NSDictionary *NSParseDictionaryFromData(NSData *);
         attr     = [[NSMutableDictionary alloc] init];
         
         if ([doc isKindOfClass:[NSDictionary class]]) {
-          subject  = [[doc objectForKey:@"NSFileSubject"] stringValue];
-          mimeType = [[doc objectForKey:@"NSFileMimeType"] stringValue];
+	  NSDictionary *d = doc;
+	  
+          subject  = [[d objectForKey:@"NSFileSubject"]  stringValue];
+          mimeType = [[d objectForKey:@"NSFileMimeType"] stringValue];
           
           if ([subject length] > 0) 
             [attr setObject:subject forKey:@"NSFileSubject"];
@@ -851,7 +853,7 @@ extern NSDictionary *NSParseDictionaryFromData(NSData *);
                   atPath:_path]) {
         id doc;
         
-        doc = [(id)toolFm documentAtPath:_path];
+        doc = [(id<SkyDocumentFileManager>)toolFm documentAtPath:_path];
         
         [attributes addEntriesFromDictionary:[(NSObject *)doc attributes]];
       }

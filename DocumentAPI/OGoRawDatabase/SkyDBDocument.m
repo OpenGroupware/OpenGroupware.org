@@ -39,7 +39,7 @@
   entityName:(NSString *)_eName
 {
   if ((self = [super init])) {
-    self->dataSource = RETAIN(_ds);
+    self->dataSource = [_ds retain];
     
     self->dict       = [_dict   mutableCopy];
     self->gid        = [_gid    copy];
@@ -222,19 +222,7 @@
 
 /* key-value coding */
 
-- (id)valueForKey:(NSString *)_k {
-  if ([_k isEqualToString:@"isNew"])
-    return [NSNumber numberWithBool:[self isNew]];
-  if ([_k isEqualToString:@"isEdited"])
-    return [NSNumber numberWithBool:[self isEdited]];
-  
-  if (![[self supportedKeys] containsObject:_k])
-    return nil;
-  
-  return [self->dict valueForKey:_k];
-}
-
-- (void)takeValue:(id)_v forKey:_k {
+- (void)takeValue:(id)_v forKey:(NSString *)_k {
   id tmp;
 
 #if DEBUG && 0
@@ -273,6 +261,17 @@
     NSLog(@"%s:  value didn't change ..", __PRETTY_FUNCTION__);
 #endif
 }
+- (id)valueForKey:(NSString *)_k {
+  if ([_k isEqualToString:@"isNew"])
+    return [NSNumber numberWithBool:[self isNew]];
+  if ([_k isEqualToString:@"isEdited"])
+    return [NSNumber numberWithBool:[self isEdited]];
+  
+  if (![[self supportedKeys] containsObject:_k])
+    return nil;
+  
+  return [self->dict valueForKey:_k];
+}
 
 /* description */
 
@@ -283,13 +282,12 @@
                    self->dict];
 }
 
-@end /* SkyDBDocumentType */
-
-@implementation SkyDBDocument(Internals)
+/* Internals */
 
 - (void)_setGlobalID:(EOGlobalID *)_gid {
   if (self->gid != nil)
-    NSLog(@"WARNING(%s): overwrite alredy exist gid");
+    [self errorWithFormat:@"WARNING(%s): global-id is already set!"];
+  
   ASSIGN(self->gid, _gid);
 }
 

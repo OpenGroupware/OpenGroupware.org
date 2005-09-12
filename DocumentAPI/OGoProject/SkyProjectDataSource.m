@@ -70,7 +70,7 @@ static NSNumber *yesNum = nil;
   return nc;
 }
 
-- (id)initWithContext:(id)_context {
+- (id)initWithContext:(LSCommandContext *)_context {
   if (_context == nil) {
     [self release];
     return nil;
@@ -331,8 +331,9 @@ static NSNumber *yesNum = nil;
 {
   EODataSource *ds;
   
-  ds = [[NSClassFromString(_className) alloc] initWithContext:[self context]];
-  if (_fspec) [ds setFetchSpecification:_fspec];
+  ds = [(SkyProjectDataSource *)[NSClassFromString(_className) alloc] 
+				initWithContext:[self context]];
+  if (_fspec != nil) [ds setFetchSpecification:_fspec];
   return [ds autorelease];
 }
 
@@ -454,7 +455,8 @@ static NSNumber *yesNum = nil;
 /* operations which modify the database */
 
 - (id)createObject {
-  return [[[SkyProject alloc] initWithContext:self->context] autorelease];
+  return [[(SkyProject *)[SkyProject alloc] 
+			 initWithContext:self->context] autorelease];
 }
 
 - (void)updatePropertiesOfDocument:(SkyProject *)_obj {
@@ -467,7 +469,7 @@ static NSNumber *yesNum = nil;
   
   oprops  = [[NSMutableDictionary alloc] initWithCapacity:6];
   keyEnum = [[_obj properties] keyEnumerator];
-  while((key = [keyEnum nextObject]) != nil) {
+  while ((key = [keyEnum nextObject]) != nil) {
     str = [key characterAtIndex:0] == '{'
       ? key : [nsPrefix stringByAppendingString:key];
     

@@ -42,7 +42,7 @@
 }
 
 + (id)emptyBlobHandler;
-- (id)initWithFileManager:(id<NGFileManager>)_fm path:(NSString *)_path;
+- (id)initWithFileManager:(id<NSObject,NGFileManager>)_fm path:(NSString *)_p;
 
 /* accessors */
 

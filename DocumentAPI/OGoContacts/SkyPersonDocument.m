@@ -53,11 +53,14 @@
 
 static NSArray * addressTypes = nil;
 
-- (id)initWithEO:(id)_person context:(id)_context {
-  EODataSource *ds;
+- (id)initWithEO:(id)_person context:(LSCommandContext *)_context {
+  SkyPersonDataSource *ds;
   
-  ds = [[[SkyPersonDataSource alloc] initWithContext:_context] autorelease];
-  return [self initWithPerson:_person dataSource:ds];
+  ds = [SkyPersonDataSource alloc]; // keep gcc happy
+  ds = [ds initWithContext:_context];
+  self = [self initWithPerson:_person dataSource:ds];
+  [ds release];
+  return self;
 }
 
 // designated initializer
@@ -69,7 +72,7 @@ static NSArray * addressTypes = nil;
   if ((self = [super initWithCompany:_person
                      globalID:_gid
                      dataSource:_ds
-                     addAsObserver:_addAsObserver])) {
+                     addAsObserver:_addAsObserver]) != nil) {
     [self _loadDocument:_person];
     if (addressTypes == nil) {
       NSUserDefaults *ud = [[self context] userDefaults];
@@ -111,12 +114,13 @@ static NSArray * addressTypes = nil;
 
 /* create a virtual document */
 - (id)initWithContext:(id)_ctx {
-  EODataSource *ds;
+  SkyPersonDataSource *ds;
   NSDictionary *dict;
   id           own;
 
   own  = [_ctx valueForKey:LSAccountKey];
-  ds   = [[[SkyPersonDataSource alloc] initWithContext:_ctx] autorelease];
+  ds   = [SkyPersonDataSource alloc];
+  ds   = [ds initWithContext:_ctx];
   dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                               [self _newTelephones:_ctx],     @"telephones",
                               [NSNumber numberWithBool:NO],   @"isAccount",
@@ -124,7 +128,9 @@ static NSArray * addressTypes = nil;
                               [self _newAttributeMap:_ctx],   @"attributeMap",
                               [own valueForKey:@"companyId"], @"ownerId",
                               nil];
-  return [self initWithPerson:dict globalID:nil dataSource:ds];
+  self = [self initWithPerson:dict globalID:nil dataSource:ds];
+  [ds release];
+  return self;
 }
 
 - (void)dealloc {
@@ -393,7 +399,7 @@ static NSArray * addressTypes = nil;
     "toStaff": {
 */
 
-- (id)asDict {
+- (NSDictionary *)asDict {
   id dict = [super asDict];
   
   [dict takeValue:[self firstname]  forKey:@"firstname"];

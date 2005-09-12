@@ -39,15 +39,17 @@
     fetchGlobalIDs    - BOOL - return global-ids
 */
 
+@class LSCommandContext;
+
 @interface SkyProjectDataSource : EODataSource
 {
 @protected
-  id                   context;
+  LSCommandContext     *context;
   EOFetchSpecification *fetchSpecification;
   NSString             *timeZone;
 }
 
-- (id)initWithContext:(id)_context;
+- (id)initWithContext:(LSCommandContext *)_context;
 
 /* accessors */
 

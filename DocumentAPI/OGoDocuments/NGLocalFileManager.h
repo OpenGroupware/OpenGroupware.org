@@ -136,10 +136,13 @@
 - (BOOL)deleteDocument:(NGLocalFileDocument *)_doc;
 - (BOOL)updateDocument:(NGLocalFileDocument *)_doc;
 
-@end /* NGLocalFileManager */
+@end
+
+
+#import <Foundation/NSString.h>
 
 @interface NSString(NGPseudoFileManager)
 - (NSString *)stringByAppendingPathComponent2:(NSString *)_path;
-@end /* NSString(NGLocalFileManager) */
+@end
 
 #endif /* __NGLocalFileManager_h__ */

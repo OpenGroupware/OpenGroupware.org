@@ -46,6 +46,7 @@
 
 @class NSArray, NSSet, NSNotificationCenter;
 @class EOQualifier, EOFetchSpecification;
+@class LSCommandContext;
 
 @interface SkyCompanyDataSource : EODataSource
 {
@@ -54,7 +55,7 @@
   EOFetchSpecification *fetchSpecification;
 }
 
-- (id)initWithContext:(id)_context;
+- (id)initWithContext:(LSCommandContext *)_context;
 
 /* accessors */
 

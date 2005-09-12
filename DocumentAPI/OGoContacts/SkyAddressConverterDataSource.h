@@ -19,21 +19,31 @@
   02111-1307, USA.
 */
 
-#ifndef __SkyrixOS_Libraries_SkyPersons_SkyAddressConverterDataSource_H_
-#define __SkyrixOS_Libraries_SkyPersons_SkyAddressConverterDataSource_H_
+#ifndef __OGoContacts_SkyAddressConverterDataSource_H_
+#define __OGoContacts_SkyAddressConverterDataSource_H_
 
-#import <EOControl/EODataSource.h>
+#include <EOControl/EODataSource.h>
 
-@class EOFetchSpecification;
+/*
+  SkyAddressConverterDataSource
+
+  TODO: document
+*/
+
+@class EODataSource, EOFetchSpecification;
+@class LSCommandContext;
 
 @interface SkyAddressConverterDataSource : EODataSource
 {
   EOFetchSpecification *fetchSpecification;
   EODataSource         *source;
-  id                   context;
+  LSCommandContext      *context;
   id                   labels;
 }
-- (id)initWithDataSource:(id)_ds context:(id)_ctx labels:(id)_labels;
+
+- (id)initWithDataSource:(EODataSource *)_ds context:(LSCommandContext *)_ctx
+  labels:(id)_labels;
+
 @end
 
-#endif /* __SkyrixOS_Libraries_SkyPersons_SkyAddressConverterDataSource_H_ */
+#endif /* __OGoContacts_SkyAddressConverterDataSource_H_ */

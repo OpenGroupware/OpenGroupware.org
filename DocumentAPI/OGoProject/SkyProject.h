@@ -58,6 +58,7 @@
 @class NSMutableDictionary, NSMutableArray;
 @class SkyProjectDataSource;
 @class EODataSource;
+@class LSCommandContext;
 
 #ifndef XMLNS_PROJECT_DOCUMENT
 #define XMLNS_PROJECT_DOCUMENT \
@@ -95,7 +96,7 @@
   } status;
 }
 
-- (id)initWithContext:(id)_ctx;
+- (id)initWithContext:(LSCommandContext *)_ctx;
 - (id)initWithEO:(id)_eo dataSource:(SkyProjectDataSource *)_ds;
 
 - (void)invalidate;

@@ -90,7 +90,7 @@ static NSEmptyFileManagerBlobHandler *EmptyBlobHandler(void) {
 
 - (id<SkyBlobHandler>)blobHandlerAtPath:(NSString *)_path {
   return [[[NSFileManagerBlobHandler alloc] 
-            initWithFileManager:(id<NGFileManager>)self path:_path] 
+            initWithFileManager:(id<NSObject,NGFileManager>)self path:_path] 
             autorelease];
 }
 

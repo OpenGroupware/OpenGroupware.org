@@ -47,11 +47,14 @@ static NSArray * addressTypes = nil;
             NSStringFromClass([self superclass]), [super version]);
 }
 
-- (id)initWithEO:(id)_enterprise context:(id)_context {
-  EODataSource *ds;
+- (id)initWithEO:(id)_enterprise context:(LSCommandContext *)_context {
+  SkyEnterpriseDataSource *ds;
   
-  ds = [[SkyEnterpriseDataSource alloc] initWithContext:_context];
-  return [self initWithEnterprise:_enterprise dataSource:[ds autorelease]];
+  ds = [SkyEnterpriseDataSource alloc];
+  ds = [ds initWithContext:_context];
+  self = [self initWithEnterprise:_enterprise dataSource:ds];
+  [ds release];
+  return self;
 }
 
 /* designated initializer */
@@ -63,12 +66,12 @@ static NSArray * addressTypes = nil;
   if ((self = [super initWithCompany:_enterprise
                      globalID:_gid
                      dataSource:_ds
-                     addAsObserver:_addAsObserver])) {
+                     addAsObserver:_addAsObserver]) != nil) {
     [self _loadDocument:_enterprise];
     if (addressTypes == nil) {
       NSUserDefaults *ud = [[self context] userDefaults];
-
-      addressTypes = [[[ud objectForKey:@"LSAddressType"]
+      
+      addressTypes = [[[ud dictionaryForKey:@"LSAddressType"]
                            objectForKey:@"Enterprise"] retain];
     }
   }
@@ -100,21 +103,23 @@ static NSArray * addressTypes = nil;
   return [self initWithEnterprise:nil globalID:_gid dataSource:_ds];
 }
 
-- (id)initWithContext:(id)_ctx {
-  EODataSource *ds;
+- (id)initWithContext:(LSCommandContext *)_ctx {
+  SkyEnterpriseDataSource *ds;
   NSDictionary *dict;
   id           own;
 
   own  = [_ctx valueForKey:LSAccountKey];
-  ds   = [[[SkyEnterpriseDataSource alloc] initWithContext:_ctx]
-                                    autorelease];
+  ds   = [SkyEnterpriseDataSource alloc]; // keep gcc happy
+  ds   = [ds initWithContext:_ctx];
   dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                               [self _newTelephones:_ctx],     @"telephones",
                               [self _newAttributeMap:_ctx],   @"attributeMap",
                               [own valueForKey:@"companyId"], @"ownerId",
                               nil];
   
-  return [self initWithEnterprise:dict globalID:nil dataSource:ds];
+  self = [self initWithEnterprise:dict globalID:nil dataSource:ds];
+  [ds release];
+  return self;
 }
 
 - (void)dealloc {
@@ -143,25 +148,24 @@ static NSArray * addressTypes = nil;
 - (EODataSource *)personDataSource {
   SkyEnterprisePersonDataSource *ds;
 
-  ds = [[SkyEnterprisePersonDataSource alloc] initWithContext:[self context]
-                                              enterpriseId:[self globalID]];
+  ds = [SkyEnterprisePersonDataSource alloc]; // keep gcc happy
+  ds = [ds initWithContext:[self context] enterpriseId:[self globalID]];
   return [ds autorelease];
 }
 
 - (EODataSource *)projectDataSource {
   SkyEnterpriseProjectDataSource *ds;
 
-  ds = [[SkyEnterpriseProjectDataSource alloc] initWithContext:[self context]
-                                               enterpriseId:[self globalID]];
+  ds = [SkyEnterpriseProjectDataSource alloc]; // keep gcc happy
+  ds = [ds initWithContext:[self context] enterpriseId:[self globalID]];
   return [ds autorelease];
 }
 
 - (EODataSource *)allProjectsDataSource {
   SkyEnterpriseAllProjectsDataSource *ds;
 
-  ds = [[SkyEnterpriseAllProjectsDataSource alloc]
-                                            initWithContext:[self context]
-                                            enterpriseId:[self globalID]];
+  ds = [SkyEnterpriseAllProjectsDataSource alloc]; // keep gcc happy
+  ds = [ds initWithContext:[self context] enterpriseId:[self globalID]];
   return [ds autorelease];
 }
 
@@ -270,9 +274,10 @@ static NSArray * addressTypes = nil;
   [super invalidate];
 }
 
-- (id)asDict {
-  id dict = [super asDict];
+- (NSDictionary *)asDict {
+  id dict;
   
+  dict = [super asDict]; // TODO? should be mutable?
   [dict takeValue:[self number]   forKey:@"number"];
   [dict takeValue:[self name]     forKey:@"description"];
   [dict takeValue:[self priority] forKey:@"priority"];

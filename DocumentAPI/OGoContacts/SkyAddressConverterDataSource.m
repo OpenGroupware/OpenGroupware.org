@@ -25,8 +25,8 @@
 @implementation SkyAddressConverterDataSource
 
 - (id)initWithDataSource:(EODataSource *)_ds
-                 context:(id)_ctx
-                  labels:(id)_labels
+  context:(LSCommandContext *)_ctx
+  labels:(id)_labels
 {
   if ((self = [super init])) {
     NSAssert1((_ds  != nil), @"%s: No dataSource set!", __PRETTY_FUNCTION__);

@@ -284,7 +284,7 @@
   return das;
 }
 
-- (SkyAddressDocument *)addressForType:(NSString *)_type {
+- (id)addressForType:(NSString *)_type {
   if (self->addresses == nil)
     [self _fetchAddresses];
 
@@ -711,9 +711,9 @@
 - (void)_loadPhoneTypes {
   id tmp;
 
-  ASSIGN(self->phoneTypes, (id)nil);
+  [self->phoneTypes release]; self->phoneTypes = nil;
   tmp = [[[self context] userDefaults] dictionaryForKey:@"LSTeleType"];
-  tmp = [tmp objectForKey:[self entityName]];
+  tmp = [(NSDictionary *)tmp objectForKey:[self entityName]];
   tmp = [tmp sortedArrayUsingSelector:@selector(compare:)];
   self->phoneTypes = [[NSMutableArray alloc] initWithArray:tmp];
 }
@@ -744,8 +744,8 @@
       [dict takeValue:[phone valueForKey:@"type"]   forKey:@"type"];
       [dict takeValue:[phone valueForKey:@"number"] forKey:@"number"];
       [dict takeValue:[phone valueForKey:@"info"]   forKey:@"info"];
-      if ([phone objectForKey:@"telephoneId"] != nil) {
-	[dict setObject:[phone objectForKey:@"telephoneId"]
+      if ([(NSDictionary *)phone objectForKey:@"telephoneId"] != nil) {
+	[dict setObject:[(NSDictionary *)phone objectForKey:@"telephoneId"]
 	      forKey:@"telephoneId"];
       }
       [self->phones setObject:dict forKey:type];
@@ -873,7 +873,10 @@
     e    = [types objectEnumerator];
 
     while ((type = [e nextObject]) != nil) {
-      one = [[SkyAddressDocument alloc] initWithContext:[self context]];
+      SkyAddressDocument *one;
+      
+      one = [SkyAddressDocument alloc]; // keep gcc happy
+      one = [one initWithContext:[self context]];
       [one setType:type];
       [dict setObject:one forKey:type];
       [one release]; one = nil;
@@ -988,9 +991,8 @@
 - (NSDictionary *)_newAttributeMap:(id)_ctx {
   NSMutableDictionary *map      = nil;
   NSArray             *allAttrs = nil;
-  int                 cnt       = 0;
-  int                 pos       = 0;
-
+  unsigned cnt, pos;
+  
   map = [NSMutableDictionary dictionaryWithCapacity:12];
 
   allAttrs = [self _attributesForState:@"Private" ctx:_ctx];
@@ -1001,10 +1003,11 @@
   
   if (allAttrs == nil)
     allAttrs = [NSArray array];
-
+  
   for (pos = 0, cnt = [allAttrs count]; pos < cnt; pos++) {
-    id attr = [allAttrs objectAtIndex:pos];
+    NSDictionary *attr;
     
+    attr = [allAttrs objectAtIndex:pos];
     [map setObject:attr forKey:[attr objectForKey:@"key"]];
   }
   return map;
