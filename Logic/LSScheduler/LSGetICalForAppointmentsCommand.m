@@ -160,7 +160,7 @@ static NSString   *skyrixId = nil;
   // CREATED, DTSTAMP, LAST-MODIFIED, SEQUENCE
   NSString *tmp;
 
-  if ([(tmp = [[_date valueForKey:@"keywords"] stringValue]) length] > 0)
+  if ([(tmp = [[_date valueForKey:@"keywords"] stringValue]) isNotEmpty])
     [self _appendName:@"CATEGORIES" andValue:tmp toICal:_iCal];
   
   /* class */
@@ -179,23 +179,23 @@ static NSString   *skyrixId = nil;
     if (tmp != nil) [self _appendName:@"CLASS" andValue:tmp toICal:_iCal];
   }
   
-  if ([(tmp = [[_date valueForKey:@"location"] stringValue]) length])
+  if ([(tmp = [[_date valueForKey:@"location"] stringValue]) isNotEmpty])
     [self _appendName:@"LOCATION" andValue:tmp toICal:_iCal];
   
-  if ([(tmp = [[_date valueForKey:@"importance"] stringValue]) length] > 0)
+  if ([(tmp = [[_date valueForKey:@"importance"] stringValue]) isNotEmpty])
     [self _appendName:@"PRIORITY" andValue:tmp toICal:_iCal];
   
-  if ([(tmp = [[_date valueForKey:@"resourceNames"] stringValue]) length] > 0)
+  if ([(tmp = [[_date valueForKey:@"resourceNames"] stringValue]) isNotEmpty])
     [self _appendName:@"RESOURCES" andValue:tmp toICal:_iCal];
   
   [self _appendName:@"STATUS" andValue:@"CONFIRMED" toICal:_iCal];
   
-  if ([(tmp = [[_date valueForKey:@"title"] stringValue]) length] > 0)
+  if ([(tmp = [[_date valueForKey:@"title"] stringValue]) isNotEmpty])
     [self _appendName:@"SUMMARY" andValue:tmp toICal:_iCal];
   
   // COMMENT
   // DESCRIPTION
-  if ([(tmp = [[_date valueForKey:@"comment"] stringValue]) length] > 0)
+  if ([(tmp = [[_date valueForKey:@"comment"] stringValue]) isNotEmpty])
     [self _appendName:@"DESCRIPTION" andValue:tmp toICal:_iCal];
 
   {
@@ -313,7 +313,7 @@ static NSString   *skyrixId = nil;
     // attach-value
     while ((numColumns > k) && (k < 6)) {
       tmp = [self checkCSVEntry:[columns objectAtIndex:k]];
-      if ([tmp length]) {
+      if ([tmp isNotEmpty]) {
         switch (k) {
           case 0: case 1:
             [alarm setObject:tmp   forKey:[csvColumns objectAtIndex:k]]; break;
@@ -413,7 +413,7 @@ static NSString   *skyrixId = nil;
   ownerId = [_date valueForKey:@"ownerId"];
 
   if ([parts count] == 0) {
-    [self logWithFormat:@"WARNING: no participants in appoinment: %@",
+    [self warnWithFormat:@"no participants in appointment: %@",
 	  [_date valueForKey:@"dateId"]];
   }
   
@@ -445,14 +445,14 @@ static NSString   *skyrixId = nil;
       if ((tmp = [participant valueForKey:@"name"]) != nil)
         cn = [cn stringByAppendingString:tmp];
       
-      if ([cn length] == 0) cn = @"No Name";
+      if (![cn isNotEmpty] == 0) cn = @"No Name";
       
-      if ([(tmp = [participant valueForKey:@"email1"]) isNotNull])
+      if ([(tmp = [participant valueForKey:@"email1"]) isNotEmpty])
 	email = tmp;
-      else if ([(tmp = [participant valueForKey:@"email"]) isNotNull])
+      else if ([(tmp = [participant valueForKey:@"email"]) isNotEmpty])
 	email = tmp;
       else {
-	[self logWithFormat:@"WARNING: using CN as email: '%@'", cn];
+	[self warnWithFormat:@"using CN as email: '%@'", cn];
 	email = cn;
       }
     }
@@ -461,8 +461,8 @@ static NSString   *skyrixId = nil;
                     @"ATTENDEE;CUTYPE=\"%@\";PARTSTAT=\"%@\""
                     @";ROLE=\"%@\";RSVP=\"%@\";CN=\"%@\"",
                     isTeam               ? @"GROUP" : @"INDIVIDUAL",
-                    ([state length] > 0) ? state    : @"NEEDS-ACTION",
-                    ([role length] > 0)  ? role     : @"OPT-PARTICIPANT",
+                    [state isNotEmpty]   ? state    : @"NEEDS-ACTION",
+                    [role  isNotEmpty]   ? role     : @"OPT-PARTICIPANT",
                     [rsvp boolValue]     ? @"TRUE"  : @"FALSE",
                     cn];
     [self _appendName:tmp
@@ -613,7 +613,7 @@ static NSString   *skyrixId = nil;
       [result addObject:ical];
     }
     else {
-      [self logWithFormat:@"ERROR: failed building iCal for record: '%@'", 
+      [self errorWithFormat:@"failed building iCal for record: '%@'", 
 	      record];
       [result addObject:[NSNull null]];
     }

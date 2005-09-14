@@ -1,5 +1,8 @@
 2005-09-14  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSGetICalForAppointmentsCommand.m: use -isNotEmpty instead of
+	  checkin' string lengths for better behaviour in edge cases (v5.3.71)
+
 	* v5.3.70
 
 	* LSGetAppointmentsForGlobalIDs.m, LSGetDateWithConflictCommand.m:
