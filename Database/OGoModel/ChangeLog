@@ -1,3 +1,8 @@
+2005-09-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* bundle-info.plist: fixed dependencies (this bundle provides the
+	  OGoModel class, it doesn't require it) (v5.3.16)
+
 2005-04-19  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoModel.py: added MySQL5 model information (v5.1.15)

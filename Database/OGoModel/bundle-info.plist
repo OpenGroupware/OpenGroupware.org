@@ -6,7 +6,6 @@
     
     classes = (
       { name = NSObject;                           },
-      { name = OGoModel; exact-version = 1;        },
       { name = EOGenericRecord; exact-version = 2; }
     );
   };
@@ -19,6 +18,7 @@
     );
     
     classes = (
+      { name = OGoModel;         exact-version = 1; },
       { name = LSDatabaseObject; version = 1; },
       { name = LSAddress;                  },
       { name = LSCompanyAssignment;        },
