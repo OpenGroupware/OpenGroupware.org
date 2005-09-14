@@ -89,21 +89,46 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
   [_defs registerDefaults:defs];
 }
 
-+ (void)loadCommandBundles {
-  NGBundleManager *bm;
-  NSString     *p;
-  NSArray      *pathes;
-  NSArray      *oldPathes;
++ (NSArray *)bundleLoadPathes {
+  NSArray *pathes;
 
-  /* find pathes */
+#if COCOA_Foundation_LIBRARY || APPLE_Foundation_LIBRARY
+  NSDictionary *env = [[NSProcessInfo processInfo] environment];
+  NSString *pathList;
   
-  // TODO: use "Skyrix5" for Skyrix5 (patch in migration script)
+  if ((pathList = [env objectForKey:@"GNUSTEP_PATHLIST"]) != nil) {
+    /* 
+       This is OSX with GNUstep environment being sourced. For libFoundation
+       and GNUstep-base this is handled inside
+       NSSearchPathForDirectoriesInDomains().
+    */
+    NSMutableArray *ma;
+    unsigned i;
+
+    ma = [[[pathList componentsSeparatedByString:@":"] mutableCopy]
+	   autorelease];
+    for (i = 0; i < [ma count]; i++) {
+      NSString *p;
+      
+      p = [[ma objectAtIndex:i] stringByAppendingPathComponent:@"Library"];
+      [ma replaceObjectAtIndex:i withObject:p];
+    }
+    pathes = ma;
+  }
+  else {
+    pathes = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,
+						 NSAllDomainsMask,
+						 YES);
+  }
+#else
   pathes = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,
 					       NSAllDomainsMask,
 					       YES);
+#endif
+
   if ([FHSOGoBundleDir length] > 0) {
-    // TODO: should be some search path, eg LD_LIBRARY_SEARCHPATH?
-    NSString *bp;
+    // TODO: should be some search path, eg LD_LIBRARY_PATH?
+    NSString *bp, *p;
     
     bp     = [@"/usr/local/" stringByAppendingPathComponent:FHSOGoBundleDir];
     p      = [bp stringByAppendingPathComponent:@"commands"];
@@ -117,7 +142,18 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
     p      = [bp stringByAppendingPathComponent:@"datasources"];
     pathes = [pathes arrayByAddingObject:p];
   }
+  return pathes;
+}
 
++ (void)loadCommandBundles {
+  NGBundleManager *bm;
+  NSArray      *pathes;
+  NSArray      *oldPathes;
+
+  /* find pathes */
+  
+  pathes = [self bundleLoadPathes];
+  
   /* temporarily patch bundle search path */
   
   bm = [NGBundleManager defaultBundleManager];

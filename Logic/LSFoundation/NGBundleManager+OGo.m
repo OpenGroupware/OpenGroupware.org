@@ -28,25 +28,30 @@ static int      logBundleLoading        = -1;
 static NSString *OGoBundlePathSpecifier = nil;
 static NSString *FHSOGoBundleDir        = nil;
 
+static void _ensureLogBundleLoadingDefault(void) {
+  if (logBundleLoading == -1) {
+    // TODO: make that a logger
+    logBundleLoading = [[NSUserDefaults standardUserDefaults]
+			 boolForKey:@"OGoLogBundleLoading"] ? 1 : 0;
+  }
+}
+
 - (void)loadBundlesOfType:(NSString *)_type inPath:(NSString *)_p {
   NGBundleManager *bm;
   NSFileManager   *fm;
   NSEnumerator    *e;
   NSString        *p;
-  
-  if (logBundleLoading == -1) {
-    logBundleLoading = [[NSUserDefaults standardUserDefaults]
-			 boolForKey:@"OGoLogBundleLoading"] ? 1 : 0;
-  }
-  
+
+  _ensureLogBundleLoadingDefault();
   if (logBundleLoading)
-    NSLog(@"  load bundles of type %@ in path %@", _type, _p);
+    [self logWithFormat:@"  load bundles of type %@ in path %@", _type, _p];
+  
   bm = [NGBundleManager defaultBundleManager];
   fm = [NSFileManager defaultManager];
   e  = [[[fm directoryContentsAtPath:_p] 
 	  sortedArrayUsingSelector:@selector(compare:)] objectEnumerator];
   
-  while ((p = [e nextObject])) {
+  while ((p = [e nextObject]) != nil) {
     NSBundle *bundle;
     
     if (![[p pathExtension] isEqualToString:_type])
@@ -57,13 +62,13 @@ static NSString *FHSOGoBundleDir        = nil;
       continue;
     
     if (![bm loadBundle:bundle]) {
-      NSLog(@"could not load bundle: %@", bundle);
+      [self logWithFormat:@"could not load bundle: %@", bundle];
       continue;
     }
     
     if (logBundleLoading) {
-      NSLog(@"    did load bundle: %@", 
-	    [[bundle bundlePath] lastPathComponent]);
+      [self logWithFormat:@"    did load bundle: %@", 
+	    [[bundle bundlePath] lastPathComponent]];
     }
   }
 }
@@ -71,15 +76,14 @@ static NSString *FHSOGoBundleDir        = nil;
 - (void)loadBundlesOfType:(NSString *)_type typeDirectory:(NSString *)_dir
   inPaths:(NSArray *)_paths
 {
+  // eg called by OGoContextManager +loadCommandBundles
   NSEnumerator *e;
   NSString     *p;
   
   /* ensure category defaults */
   
-  if (logBundleLoading == -1) {
-    logBundleLoading = [[NSUserDefaults standardUserDefaults]
-			 boolForKey:@"OGoLogBundleLoading"] ? 1 : 0;
-  }
+  _ensureLogBundleLoadingDefault();
+  
   if (OGoBundlePathSpecifier == nil) {
     OGoBundlePathSpecifier = [[[NSUserDefaults standardUserDefaults] 
 				stringForKey:@"OGoBundlePathSpecifier"] copy];
@@ -89,12 +93,13 @@ static NSString *FHSOGoBundleDir        = nil;
 			 stringForKey:@"OGoFHSBundleSubPath"] copy];
   }
   
-  if (logBundleLoading) NSLog(@"load %@/%@ bundles ...", _type, _dir);
+  if (logBundleLoading) 
+    [self logWithFormat:@"load %@/%@ bundles ...", _type, _dir];
   
   /* load bundles */
   
   e = [_paths objectEnumerator];
-  while ((p = [e nextObject])) {
+  while ((p = [e nextObject]) != nil) {
     NSString *dp;
     
     if ([p rangeOfString:FHSOGoBundleDir].length > 0) {
