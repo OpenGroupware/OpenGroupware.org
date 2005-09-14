@@ -855,7 +855,7 @@ static NSSet *AllListAttrs = nil;
   else if ([_key isEqualToString:@"gids"])
     [self setGlobalIDs:_value];
   else if ([_key isEqualToString:@"attributes"])
-    [self setAttributes:_value];
+    [self setAttributes:([_value isNotNull] ? _value : nil)];
   else if ([_key isEqualToString:@"groupBy"]) {
     ASSIGN(self->groupBy, _value);
   }

@@ -577,7 +577,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
     return;
   }
   
-  if ((gr = [_dict valueForKey:key]) != nil) {
+  if ((gr = [_dict objectForKey:key]) != nil) {
     /* group already exists, add record */
     [gr addObject:_entry];
     return;

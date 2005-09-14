@@ -791,7 +791,7 @@ static NSArray *startDateSortOrderings = nil;
   else if ([_key isEqualToString:@"fetchConflictInfo"])
     [self setFetchConflictInfo:[_value boolValue]];
   else if ([_key isEqualToString:@"conflictInfoAttributes"])
-    [self setConflictInfoAttributes:_value];
+    [self setConflictInfoAttributes:([_value isNotNull] ? _value : nil)];
   else
     [super takeValue:_value forKey:_key];
 }

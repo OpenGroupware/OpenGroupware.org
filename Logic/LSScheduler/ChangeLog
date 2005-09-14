@@ -1,3 +1,12 @@
+2005-09-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.70
+
+	* LSGetAppointmentsForGlobalIDs.m, LSGetDateWithConflictCommand.m:
+	  properly deal with NSNull attribute values (triggered on OSX)
+
+	* LSListParticipantsCommand.m: fixed an OSX incompatibility
+
 2005-08-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetDateWithConflictCommand.m: added ability to specify required
