@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<OGo:container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+<!--
+  WOx TODO:
+  - unbalanced <table> tag
+  -->
+
+  <var:if condition="showTableTag">
+<!-- TODO -->
+    <table width="0" border="0">
+  </var:if>
+
+<var:if condition="useRadioButtons">
+  <var:if condition="withNil">
+    <tr>   
+      <td><input type="radio" var:name="groupName" 
+                 var:checked="isChecked" /></td>
+      <td align="left" valign="top" var:bgcolor="valueColor"
+          var:colspan="nilColSpan">
+        <OGo:font><var:string value="nilString" const:escapeHTML="0"/>
+      </OGo:font></td>
+    </tr>
+   </var:if>
+</var:if>
+
+<var:foreach list="rowList" item="row">
+  <tr>
+    <var:foreach list="columnList" item="column">
+      <var:if condition="isShowChecker">
+        <var:if condition="useCheckBox">
+          <td><input type="checkbox" var:checked="isChecked" /></td>
+        </var:if>
+
+        <var:if condition="useRadioButtons">
+          <td><input type="radio" var:name="groupName"
+                     var:checked="isChecked" /></td>
+        </var:if>
+
+        <var:if condition="usePopUp">
+          <td>
+            <var:popup list="popUpList" item="popUpItem"
+                       string="popUpItemLabel" selection="popUpSelection"
+                       nilString="popUpNilString" />
+          </td>
+        </var:if>
+      </var:if>
+
+      <var:if condition="isShowChecker" const:negate="1">
+        <td></td>
+      </var:if>
+        
+      <var:if condition="hasTemplate">
+        <td valign="top" var:bgcolor="valueColor" 
+            var:align="attribute.align"
+           ><OGo:font><var:string value="templateValue"/></OGo:font></td>
+      </var:if>
+       
+      <var:if condition="hasTemplate" const:negate="1">
+          <var:if condition="hasAttributes">
+            <var:foreach list="attributes" item="attribute">
+              <td valign="top" var:bgcolor="valueColor"
+                  var:align="attribute.align">
+                <OGo:font>
+                  <var:if condition="isItalicStyle"><i></var:if>
+                  <var:string value="valueString" />
+                  <var:if condition="isItalicStyle"></i></var:if>
+                </OGo:font>
+              </td>
+            </var:foreach>
+          </var:if>
+
+          <var:if condition="hasAttributes" const:negate="1">
+            <td valign="top" var:bgcolor="valueColor" 
+                var:align="attribute.align">
+              <OGo:font>
+                <var:if condition="isItalicStyle"><i></var:if>
+                <var:string value="valueString" />
+                <var:if condition="isItalicStyle"></i></var:if>
+              </OGo:font>
+            </td>
+          </var:if>
+      </var:if>
+    </var:foreach>
+  </tr>
+</var:foreach>
+
+  <var:if condition="showTableTag">
+<!-- TODO -->
+    </table>
+  </var:if>
+</OGo:container>
