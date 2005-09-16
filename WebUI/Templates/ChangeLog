@@ -1,3 +1,7 @@
+2005-09-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWScheduler/LSWAppointmentEditor.wox: removed headline label
+
 2005-09-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWScheduler/LSWAppointmentEditor.wox: fixed indentation

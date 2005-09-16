@@ -16,52 +16,52 @@
     <table width="0" border="0">
   </var:if>
 
-<var:if condition="useRadioButtons">
-  <var:if condition="withNil">
-    <tr>   
-      <td><input type="radio" var:name="groupName" 
-                 var:checked="isChecked" /></td>
-      <td align="left" valign="top" var:bgcolor="valueColor"
-          var:colspan="nilColSpan">
-        <OGo:font><var:string value="nilString" const:escapeHTML="0"/>
-      </OGo:font></td>
-    </tr>
-   </var:if>
-</var:if>
+  <var:if condition="useRadioButtons">
+    <var:if condition="withNil">
+      <tr>   
+        <td><input type="radio" var:name="groupName" 
+                   var:checked="isChecked" /></td>
+        <td align="left" valign="top" var:bgcolor="valueColor"
+            var:colspan="nilColSpan">
+          <OGo:font><var:string value="nilString" const:escapeHTML="0"/>
+        </OGo:font></td>
+      </tr>
+     </var:if>
+  </var:if>
 
-<var:foreach list="rowList" item="row">
-  <tr>
-    <var:foreach list="columnList" item="column">
-      <var:if condition="isShowChecker">
-        <var:if condition="useCheckBox">
-          <td><input type="checkbox" var:checked="isChecked" /></td>
+  <var:foreach list="rowList" item="row">
+    <tr>
+      <var:foreach list="columnList" item="column">
+        <var:if condition="isShowChecker">
+          <var:if condition="useCheckBox">
+            <td><input type="checkbox" var:checked="isChecked" /></td>
+          </var:if>
+  
+          <var:if condition="useRadioButtons">
+            <td><input type="radio" var:name="groupName"
+                       var:checked="isChecked" /></td>
+          </var:if>
+  
+          <var:if condition="usePopUp">
+            <td>
+              <var:popup list="popUpList" item="popUpItem"
+                         string="popUpItemLabel" selection="popUpSelection"
+                         nilString="popUpNilString" />
+            </td>
+          </var:if>
         </var:if>
-
-        <var:if condition="useRadioButtons">
-          <td><input type="radio" var:name="groupName"
-                     var:checked="isChecked" /></td>
+  
+        <var:if condition="isShowChecker" const:negate="1">
+          <td></td>
         </var:if>
-
-        <var:if condition="usePopUp">
-          <td>
-            <var:popup list="popUpList" item="popUpItem"
-                       string="popUpItemLabel" selection="popUpSelection"
-                       nilString="popUpNilString" />
-          </td>
+          
+        <var:if condition="hasTemplate">
+          <td valign="top" var:bgcolor="valueColor" 
+              var:align="attribute.align"
+             ><OGo:font><var:string value="templateValue"/></OGo:font></td>
         </var:if>
-      </var:if>
-
-      <var:if condition="isShowChecker" const:negate="1">
-        <td></td>
-      </var:if>
-        
-      <var:if condition="hasTemplate">
-        <td valign="top" var:bgcolor="valueColor" 
-            var:align="attribute.align"
-           ><OGo:font><var:string value="templateValue"/></OGo:font></td>
-      </var:if>
-       
-      <var:if condition="hasTemplate" const:negate="1">
+         
+        <var:if condition="hasTemplate" const:negate="1">
           <var:if condition="hasAttributes">
             <var:foreach list="attributes" item="attribute">
               <td valign="top" var:bgcolor="valueColor"
@@ -85,10 +85,10 @@
               </OGo:font>
             </td>
           </var:if>
-      </var:if>
-    </var:foreach>
-  </tr>
-</var:foreach>
+        </var:if>
+      </var:foreach>
+    </tr>
+  </var:foreach>
 
   <var:if condition="showTableTag">
 <!-- TODO -->

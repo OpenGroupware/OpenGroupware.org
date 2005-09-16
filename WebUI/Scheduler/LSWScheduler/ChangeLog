@@ -1,3 +1,14 @@
+2005-09-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.3.74
+	
+	* added OGoAttendeeSelection component (uses OGoUserSelectionComponent)
+	
+	* SkyParticipantsSelection.m: moved component logic to a new
+	  superclass, OGoUserSelectionComponent
+	
+	* added OGoUserSelectionComponent abstract superclass
+
 2005-09-08  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWAppointmentEditor.m: added -windowTitle method to generate the
