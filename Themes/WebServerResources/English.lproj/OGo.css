@@ -285,6 +285,27 @@ a.button_narrow {
   padding-bottom:   1px;
   overflow:         hidden;
 }
+a.button_wide { /* if we remove this, buttons loose their text-styling */
+  height:           20px;
+  width:            100px;
+  border-style:     outset;
+  border-color:     #DDDDDD;
+  border-width:     2px;
+  color:            #000000;
+  background-color: #FFFFFF;
+  font-size:        8pt;
+  font-family:      Arial, Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+  letter-spacing:   0pt;
+  text-decoration:  none;
+  text-color:       #000000;
+  text-align:       center;
+  vertical-align:   middle;
+  padding-left:     5px;
+  padding-right:    5px;
+  padding-top:      1px;
+  padding-bottom:   1px;
+  overflow:         hidden;
+}
 
 input.button_wide {
   height:           20px;

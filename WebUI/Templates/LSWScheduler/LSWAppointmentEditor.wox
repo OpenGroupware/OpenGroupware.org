@@ -113,16 +113,6 @@
                          var:value="labels.saveButtonLabel"
                          var:title="labels.saveButtonLabel_title" />
           
-                  <var:if condition="isInNewMode" const:negate="1">
-                    <var:if condition="isCyclic">
-                      <input type="submit" var:action="saveAllCyclic"
-                             class="button_wide"
-                             var:disabled="isSaveDisabled"
-                             var:value="labels.saveAllButtonLabel"
-                             var:title="labels.saveAllButtonLabel_title" />
-                    </var:if>
-                  </var:if>
-                  
                   <var:if condition="isMailEnabled">
                     <input type="submit" var:action="saveAndSendMail"
                            class="button_narrow"
@@ -148,18 +138,31 @@
                            ><OGo:label key="deleteButtonLabel" /></a>
                       </var:if>
                     </var:if>
-                    
-                    <var:if condition="isCyclic">
-                      <a var:action="deleteAllCyclic"
-                         var:title="labels.deleteAllButtonLabel_title"
-                         var:disabled="isDeleteDisabled" class="button_wide"
-                         ><OGo:label key="deleteAllButtonLabel" /></a>
-                    </var:if>
                   </var:if>
           
                   <a var:action="cancel" class="button_narrow"
                      ><OGo:label key="cancelButtonLabel" /></a>
                 </nobr>
+
+                <var:if condition="isInNewMode" const:negate="1">
+                  <var:if condition="isCyclic">
+                    <nobr>
+                      <input type="submit" var:action="saveAllCyclic"
+                             class="button_wide"
+                             var:disabled="isSaveDisabled"
+                             var:value="labels.saveAllButtonLabel"
+                             var:title="labels.saveAllButtonLabel_title" />
+
+                      <var:if condition="isDeleteDisabled" const:negate="1">
+                        <a var:action="deleteAllCyclic"
+                           var:title="labels.deleteAllButtonLabel_title"
+                           var:disabled="isDeleteDisabled"
+                           class="button_wide"
+                           ><OGo:label key="deleteAllButtonLabel" /></a>
+                      </var:if>
+                    </nobr>
+                  </var:if>
+                </var:if>
               </td>
             </tr>
           </table>

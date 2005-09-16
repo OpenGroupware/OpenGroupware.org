@@ -1,5 +1,8 @@
 2005-09-16  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSWScheduler/LSWAppointmentEditor.wox: reorganized buttons in editor
+	  (extra row for cycle-related buttons)
+
 	* LSWScheduler/LSWAppointmentEditor.wox: removed headline label
 
 2005-09-09  Helge Hess  <helge.hess@opengroupware.org>
