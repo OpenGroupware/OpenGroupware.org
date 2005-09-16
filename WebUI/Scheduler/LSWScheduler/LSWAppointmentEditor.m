@@ -143,14 +143,14 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 
     if ([bm bundleProvidingResource:@"LSWSchedulerPage"
             ofType:@"WOComponents"] != nil)
-      self->isSchedulerClassicEnabled = YES;
+      self->aeFlags.isSchedulerClassicEnabled = 1;
 
     if ([bm bundleProvidingResource:@"LSWImapMailEditor"
             ofType:@"WOComponents"] != nil)
-      self->isMailEnabled = YES;
+      self->aeFlags.isMailEnabled = 1;
     
-    //self->aptTypes = nil;
-    self->isAllDayEvent = -1;
+    self->aeFlags.isAllDayEvent      = 0;
+    self->aeFlags.isAllDayEventSetup = 0;
   }
   return self;
 }
@@ -895,30 +895,30 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return [[self labels] valueForKey:self->measure];
 }
 - (BOOL)isSchedulerClassicEnabled {
-  return self->isSchedulerClassicEnabled;
+  return self->aeFlags.isSchedulerClassicEnabled ? YES : NO;
 }
 
 - (void)setIsParticipantsClicked:(BOOL)_flag {
-  self->isParticipantsClicked = _flag;
+  self->aeFlags.isParticipantsClicked = _flag ? 1 : 0;
 }
 - (BOOL)isParticipantsClicked {
-  return self->isParticipantsClicked;
+  return self->aeFlags.isParticipantsClicked ? YES : NO;
 }
 - (void)setIsResourceClicked:(BOOL)_flag {
-  self->isResourceClicked = _flag;
+  self->aeFlags.isResourceClicked = _flag ? 1 : 0;
 }
 - (BOOL)isResourceClicked {
-  return self->isResourceClicked;
+  return self->aeFlags.isResourceClicked ? YES : NO;
 }
 - (void)setIsAccessClicked:(BOOL)_flag {
-  self->isAccessClicked = _flag;
+  self->aeFlags.isAccessClicked = _flag ? 1 : 0;
 }
 - (BOOL)isAccessClicked {
-  return self->isAccessClicked;
+  return self->aeFlags.isAccessClicked ? YES : NO;
 }
 
 - (BOOL)isMailEnabled {
-  return self->isMailEnabled;
+  return self->aeFlags.isMailEnabled ? YES : NO;
 }
 
 - (BOOL)isMailLicensed {
@@ -989,10 +989,10 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (void)setIgnoreConflicts:(BOOL)_ignoreConflicts {
-  self->ignoreConflicts = _ignoreConflicts;
+  self->aeFlags.ignoreConflicts = _ignoreConflicts ? 1 : 0;
 }
 - (BOOL)ignoreConflicts {
-  return self->ignoreConflicts;
+  return self->aeFlags.ignoreConflicts ? YES : NO;
 }
 
 - (void)setIsAbsence:(BOOL)_isAbsence {
@@ -1116,23 +1116,26 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (void)setIsAllDayEvent:(BOOL)_flag {
-  self->isAllDayEvent = (_flag) ? 1 : 0;
+  self->aeFlags.isAllDayEvent = (_flag) ? 1 : 0;
 }
 - (BOOL)isAllDayEvent {
-  if (self->isAllDayEvent == -1) {
+  if (self->aeFlags.isAllDayEventSetup == 0) {
     NSCalendarDate *startDate;
     NSCalendarDate *endDate;
     startDate = [[self snapshot] valueForKey:@"startDate"];
     endDate   = [[self snapshot] valueForKey:@"endDate"];
 
-    if (startDate == nil || endDate == nil) return NO;
-    self->isAllDayEvent =
+    if (startDate == nil || endDate == nil)
+      return NO;
+    
+    self->aeFlags.isAllDayEventSetup = 1;
+    self->aeFlags.isAllDayEvent =
       (([self->startHour intValue] == 0) &&
        ([self->startMinute intValue] == 0) &&
        ([self->endHour intValue] == 23) &&
        ([self->endMinute intValue] == 59)) ? 1 : 0;
   }
-  return self->isAllDayEvent ? YES : NO;
+  return self->aeFlags.isAllDayEvent ? YES : NO;
 }
 
 - (void)setStartDateFromProposal:(NSCalendarDate *)_date {
@@ -1641,7 +1644,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     [apmt takeValue:accessList forKey:@"writeAccessList"];
   
   [apmt takeValue:self->selectedParticipants forKey:@"participants"];  
-  [apmt takeValue:(self->ignoreConflicts ? yesNum : noNum)
+  [apmt takeValue:(self->aeFlags.ignoreConflicts ? yesNum : noNum)
         forKey:@"isWarningIgnored"];
   [apmt takeValue:[self _resourceString] forKey:@"resourceNames"];
 
@@ -1768,7 +1771,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return [self runCommand:
                @"appointment::delete",
                @"object",          [self object],
-               @"deleteAllCyclic", (self->deleteAllCyclic ? yesNum : noNum),
+               @"deleteAllCyclic", 
+	       (self->aeFlags.deleteAllCyclic ? yesNum : noNum),
                @"reallyDelete",    yesNum,
                nil];
 }
@@ -2153,7 +2157,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (id)deleteAllCyclic {
-  self->deleteAllCyclic = YES;
+  self->aeFlags.deleteAllCyclic = 1;
   return [self delete];
 }
 

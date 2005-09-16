@@ -1,3 +1,7 @@
+2005-09-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWAppointmentEditor.m: use a bitset for all the flags (v5.3.77)
+
 2005-09-16  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.76

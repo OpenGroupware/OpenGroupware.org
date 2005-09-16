@@ -35,10 +35,6 @@
   id             selectedAccessTeam;
   id             searchTeam;
   NSString       *searchText;
-  BOOL           ignoreConflicts;
-  BOOL           deleteAllCyclic;
-  BOOL           isSchedulerClassicEnabled;
-  BOOL           isMailEnabled;
   
   NSMutableArray *participants;
   NSArray        *selectedParticipants;
@@ -69,18 +65,24 @@
   NSArray        *moreResources;  
 
   //NSArray        *aptTypes;
-
-  // all day event
-  int isAllDayEvent;
-
+  
   // move fields
   char moveAmount;
   char moveUnit;      // 0=days, 1=weeks, 2=months
   char moveDirection; // 0=forward, 1=backward
   
-  BOOL isParticipantsClicked;
-  BOOL isResourceClicked;
-  BOOL isAccessClicked;
+  struct {
+    int ignoreConflicts:1;
+    int deleteAllCyclic:1;
+    int isSchedulerClassicEnabled:1;
+    int isMailEnabled:1;
+    int isParticipantsClicked:1;
+    int isResourceClicked:1;
+    int isAccessClicked:1;
+    int isAllDayEvent:1;
+    int isAllDayEventSetup:1;
+    int reserved:23;
+  } aeFlags;
 }
 
 // move accessors

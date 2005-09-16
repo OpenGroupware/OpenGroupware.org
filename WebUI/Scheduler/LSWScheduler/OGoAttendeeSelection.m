@@ -57,6 +57,16 @@
 
 /* accessors */
 
+- (void)setRoleMap:(NSDictionary *)_value {
+  if (self->roleMap != _value) {
+    [self->roleMap removeAllObjects];
+    if (_value != nil) [self->roleMap addEntriesFromDictionary:_value];
+  }
+}
+- (NSDictionary *)roleMap {
+  return self->roleMap;
+}
+
 - (void)setItemRole:(NSString *)_value {
   ASSIGNCOPY(self->itemRole, _value);
 }
