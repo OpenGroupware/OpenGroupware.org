@@ -1,0 +1,13 @@
+This port installs the required GNUstep OGo environment in order
+to compile the OpenGroupware.org suite.
+
+You might want to check the original 'gnustep-make' port if this
+is not what you want.
+
+The makefile package is a simple, powerful and extensible way to write
+makefiles for a GNUstep-based project.  It allows the user to write a
+project without having to deal with the complex issues associated with
+configuration, building, installation, and packaging.  It also allows
+the user to easily create cross-compiled binaries.
+
+WWW: http://www.gnustep.org

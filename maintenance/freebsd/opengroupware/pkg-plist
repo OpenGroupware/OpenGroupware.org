@@ -1,0 +1,1009 @@
+bin/load-LSModel
+bin/ogo-account-add
+bin/ogo-account-del
+bin/ogo-account-list
+bin/ogo-acl-list
+bin/ogo-check-permission
+bin/ogo-defaults
+bin/ogo-instfilter-procmail
+bin/ogo-jobs-export
+bin/ogo-ppls-1.0
+bin/ogo-project-export
+bin/ogo-project-import
+bin/ogo-project-list
+bin/ogo-runcmd
+bin/ogo-vcard-get
+bin/ogo-vcard-put
+bin/sky_install_sieve
+bin/sky_send_bulk_messages
+bin/skyaptnotify
+include/LSFoundation/EODatabaseChannel+LSAdditions.h
+include/LSFoundation/EOSQLQualifier+LS.h
+include/LSFoundation/LSArrayFilterCommand.h
+include/LSFoundation/LSBaseCommand.h
+include/LSFoundation/LSBundleCmdFactory.h
+include/LSFoundation/LSCommand.h
+include/LSFoundation/LSCommandContext.h
+include/LSFoundation/LSCommandFactory.h
+include/LSFoundation/LSCommandKeys.h
+include/LSFoundation/LSDBArrayFilterCommand.h
+include/LSFoundation/LSDBFetchRelationCommand.h
+include/LSFoundation/LSDBObjectBaseCommand.h
+include/LSFoundation/LSDBObjectCommandException.h
+include/LSFoundation/LSDBObjectDeleteCommand.h
+include/LSFoundation/LSDBObjectGetCommand.h
+include/LSFoundation/LSDBObjectNewCommand.h
+include/LSFoundation/LSDBObjectNewKeyCommand.h
+include/LSFoundation/LSDBObjectSetCommand.h
+include/LSFoundation/LSDBObjectTransactionCommand.h
+include/LSFoundation/LSDBTransaction.h
+include/LSFoundation/LSFoundation.h
+include/LSFoundation/LSGetObjectForGlobalIDs.h
+include/LSFoundation/LSMail.h
+include/LSFoundation/LSModuleManager.h
+include/LSFoundation/LSSort.h
+include/LSFoundation/LSSortCommand.h
+include/LSFoundation/LSTypeManager.h
+include/LSFoundation/NGBundleManager+OGo.h
+include/LSFoundation/NSObject+Commands.h
+include/LSFoundation/OGoAccessManager.h
+include/LSFoundation/OGoContextManager.h
+include/LSFoundation/OGoContextSession.h
+include/LSFoundation/OGoObjectLink.h
+include/LSFoundation/OGoObjectLinkManager.h
+include/LSFoundation/SkyAccessHandler.h
+include/LSFoundation/SkyAccessManager.h
+include/LSFoundation/SkyAttributeDataSource.h
+include/LSFoundation/SkyObjectPropertyManager.h
+include/OGoAccounts/SkyAccountDataSource.h
+include/OGoAccounts/SkyAccountDocument.h
+include/OGoAccounts/SkyAccountTeamsDataSource.h
+include/OGoAccounts/SkyMemberDataSource.h
+include/OGoAccounts/SkyTeamDataSource.h
+include/OGoAccounts/SkyTeamDocument.h
+include/OGoBase/LSCommandContext+Doc.h
+include/OGoBase/SkyLogDataSource.h
+include/OGoBase/SkyLogDocument.h
+include/OGoContacts/SkyAddressConverterDataSource.h
+include/OGoContacts/SkyAddressDocument.h
+include/OGoContacts/SkyCompanyDataSource.h
+include/OGoContacts/SkyCompanyDocument.h
+include/OGoContacts/SkyCompanyProjectDataSource.h
+include/OGoContacts/SkyContactAddressDataSource.h
+include/OGoContacts/SkyEnterpriseAddressConverterDataSource.h
+include/OGoContacts/SkyEnterpriseDataSource.h
+include/OGoContacts/SkyEnterpriseDocument.h
+include/OGoContacts/SkyEnterprisePersonDataSource.h
+include/OGoContacts/SkyEnterpriseProjectDataSource.h
+include/OGoContacts/SkyPersonAddressConverterDataSource.h
+include/OGoContacts/SkyPersonDataSource.h
+include/OGoContacts/SkyPersonDocument.h
+include/OGoContacts/SkyPersonEnterpriseDataSource.h
+include/OGoContacts/SkyPersonProjectDataSource.h
+include/OGoDatabaseProject/SkyDocumentDataSource.h
+include/OGoDatabaseProject/SkyDocumentHistoryDataSource.h
+include/OGoDatabaseProject/SkyDocumentIdHandler.h
+include/OGoDatabaseProject/SkyProjectDocument.h
+include/OGoDatabaseProject/SkyProjectDocumentDataSource.h
+include/OGoDatabaseProject/SkyProjectFileManager.h
+include/OGoDatabaseProject/SkyProjectFileManagerCache.h
+include/OGoDatabaseProject/SkyProjectFolderDataSource.h
+include/OGoDocuments/LSCommandContext+Doc.h
+include/OGoDocuments/NGLocalFileDataSource.h
+include/OGoDocuments/NGLocalFileDocument.h
+include/OGoDocuments/NGLocalFileGlobalID.h
+include/OGoDocuments/NGLocalFileManager.h
+include/OGoDocuments/SkyContext.h
+include/OGoDocuments/SkyDocument+JS.h
+include/OGoDocuments/SkyDocument.h
+include/OGoDocuments/SkyDocumentFileManager.h
+include/OGoDocuments/SkyDocumentManager.h
+include/OGoDocuments/SkyDocumentType.h
+include/OGoDocuments/SkyDocuments.h
+include/OGoFileSystemProject/SkyFSDataSource.h
+include/OGoFileSystemProject/SkyFSDocument.h
+include/OGoFileSystemProject/SkyFSFileManager.h
+include/OGoFileSystemProject/SkyFSFolderDataSource.h
+include/OGoFileSystemProject/SkyFSGlobalID.h
+include/OGoFoundation/LSStringFormatter.h
+include/OGoFoundation/LSWClipboardOwner.h
+include/OGoFoundation/LSWConfigHandler.h
+include/OGoFoundation/LSWContentPage.h
+include/OGoFoundation/LSWEditorPage+Wizard.h
+include/OGoFoundation/LSWEditorPage.h
+include/OGoFoundation/LSWLabelHandler.h
+include/OGoFoundation/LSWMailEditorComponent.h
+include/OGoFoundation/LSWMimeContent.h
+include/OGoFoundation/LSWNotifications.h
+include/OGoFoundation/LSWTreeState.h
+include/OGoFoundation/LSWViewerPage.h
+include/OGoFoundation/NSObject+Commands.h
+include/OGoFoundation/NSObject+LSWPasteboard.h
+include/OGoFoundation/OGoClipboard.h
+include/OGoFoundation/OGoComponent.h
+include/OGoFoundation/OGoConfigHandler.h
+include/OGoFoundation/OGoContentPage.h
+include/OGoFoundation/OGoEditorPage.h
+include/OGoFoundation/OGoFoundation.h
+include/OGoFoundation/OGoHelpManager.h
+include/OGoFoundation/OGoModuleManager.h
+include/OGoFoundation/OGoNavigation.h
+include/OGoFoundation/OGoObjectMailPage.h
+include/OGoFoundation/OGoResourceManager.h
+include/OGoFoundation/OGoSession.h
+include/OGoFoundation/OGoViewerPage.h
+include/OGoFoundation/OWPasteboard.h
+include/OGoFoundation/SkyEditorComponent.h
+include/OGoFoundation/SkyEditorPage.h
+include/OGoFoundation/SkyMoneyFormatter.h
+include/OGoFoundation/SkyWizard.h
+include/OGoFoundation/SkyWizardViewer.h
+include/OGoFoundation/WOComponent+Commands.h
+include/OGoFoundation/WOComponent+Navigation.h
+include/OGoFoundation/WOComponent+config.h
+include/OGoFoundation/WOSession+LSO.h
+include/OGoJobs/SkyJobDocument.h
+include/OGoJobs/SkyJobHistoryDataSource.h
+include/OGoJobs/SkyJobHistoryDocument.h
+include/OGoJobs/SkyPersonJobDataSource.h
+include/OGoJobs/SkyProjectJobDataSource.h
+include/OGoNHS/OGoNHSDeviceDataSource.h
+include/OGoPalm/SkyPalmAddressDocument.h
+include/OGoPalm/SkyPalmCategoryDataSource.h
+include/OGoPalm/SkyPalmCategoryDocument.h
+include/OGoPalm/SkyPalmConstants.h
+include/OGoPalm/SkyPalmDateDataSource.h
+include/OGoPalm/SkyPalmDateDocument.h
+include/OGoPalm/SkyPalmDateDocumentCopy.h
+include/OGoPalm/SkyPalmDocument.h
+include/OGoPalm/SkyPalmDocumentDataSource.h
+include/OGoPalm/SkyPalmEntryDataSource.h
+include/OGoPalm/SkyPalmJobDocument.h
+include/OGoPalm/SkyPalmMemoDocument.h
+include/OGoPalm/SkyPalmPostSync.h
+include/OGoPalm/SkyPalmPreSync.h
+include/OGoPalm/SkyPalmSyncMachine.h
+include/OGoPalmUI/SkyPalmAssignEntry.h
+include/OGoPalmUI/SkyPalmDataSourceViewer.h
+include/OGoPalmUI/SkyPalmDataSourceViewerState.h
+include/OGoPalmUI/SkyPalmEntryEditor.h
+include/OGoPalmUI/SkyPalmEntryList.h
+include/OGoPalmUI/SkyPalmEntryListState.h
+include/OGoPalmUI/SkyPalmEntryViewer.h
+include/OGoProject/EOQualifier+Project.h
+include/OGoProject/NGFileManagerCopyTool.h
+include/OGoProject/NGFileManagerProcessingTool.h
+include/OGoProject/NSString+XMLNamespaces.h
+include/OGoProject/OGoFileManagerFactory.h
+include/OGoProject/SkyContentHandler.h
+include/OGoProject/SkyProject.h
+include/OGoProject/SkyProjectDataSource.h
+include/OGoProject/SkyProjectHistoryDocument.h
+include/OGoProject/SkyProjectTeamDataSource.h
+include/OGoRawDatabase/SkyAdaptorDataSource.h
+include/OGoRawDatabase/SkyDBDataSource.h
+include/OGoRawDatabase/SkyDBDocument.h
+include/OGoScheduler/SkyAppointmentDataSource.h
+include/OGoScheduler/SkyAppointmentDocument.h
+include/OGoScheduler/SkyAppointmentQualifier.h
+include/OGoScheduler/SkyAptCompoundDataSource.h
+include/OGoScheduler/SkyAptDataSource.h
+include/OGoScheduler/SkyHolidayCalculator.h
+include/OGoScheduler/SkySchedulerConflictDataSource.h
+include/OGoSchedulerTools/OGoCycleDateCalculator.h
+include/OGoWebMail/LSWImapBuildFolderDict.h
+include/OGoWebMail/SkyImapContextHandler.h
+include/OGoWebMail/SkyImapMailDataSource.h
+include/OGoWebMail/SkyImapMailRestrictions.h
+include/PPSync/PPAddressDatabase.h
+include/PPSync/PPClassDescription.h
+include/PPSync/PPDataStore.h
+include/PPSync/PPDatabase.h
+include/PPSync/PPDatebookDatabase.h
+include/PPSync/PPGlobalID.h
+include/PPSync/PPMemoDatabase.h
+include/PPSync/PPPostSync.h
+include/PPSync/PPRecordDatabase.h
+include/PPSync/PPResourceDatabase.h
+include/PPSync/PPSyncContext.h
+include/PPSync/PPSyncPort.h
+include/PPSync/PPToDoDatabase.h
+include/PPSync/PPTransaction.h
+include/ZSBackend/NGResourceLocator+ZSB.h
+include/ZSBackend/NSObject+DBColumns.h
+include/ZSBackend/NSString+DBName.h
+include/ZSBackend/NSString+rtf.h
+include/ZSBackend/SxAptManager.h
+include/ZSBackend/SxBackendManager.h
+include/ZSBackend/SxBackendMaster.h
+include/ZSBackend/SxContactManager.h
+include/ZSBackend/SxFreeBusyManager.h
+include/ZSBackend/SxRecordCacheManager.h
+include/ZSBackend/SxSQLQuery.h
+include/ZSBackend/SxSQLQueryResultEnumerator.h
+include/ZSBackend/SxSetCacheManager.h
+include/ZSBackend/SxTaskManager.h
+include/ZSBackend/SxUpdateContact.h
+include/ZSBackend/SxUpdateEnterprise.h
+include/ZSBackend/SxUpdatePerson.h
+include/ZSFrontend/EOQualifier+Additions.h
+include/ZSFrontend/ExStoreEntryID.h
+include/ZSFrontend/NGResourceLocator+ZSF.h
+include/ZSFrontend/NSObject+ExValues.h
+include/ZSFrontend/NSString+csv.h
+include/ZSFrontend/OLDavPropMapper.h
+include/ZSFrontend/SxDavAction.h
+include/ZSFrontend/SxFolder.h
+include/ZSFrontend/SxImageHandler.h
+include/ZSFrontend/SxMailFolder.h
+include/ZSFrontend/SxMapEnumerator.h
+include/ZSFrontend/SxMsgRootFolder.h
+include/ZSFrontend/SxObject.h
+include/ZSFrontend/SxPublicFolder.h
+include/ZSFrontend/SxRenderer.h
+include/ZSFrontend/SxRendererFactory.h
+include/ZSFrontend/SxSearchFolder.h
+include/ZSFrontend/SxStoreInfoFolder.h
+include/ZSFrontend/SxUserFolder.h
+lib/libLSAddress_d.so
+lib/libLSAddress_d.so.5.2
+lib/libLSAddress_d.so.5.2.77
+lib/libLSFoundation_d.so
+lib/libLSFoundation_d.so.5.2
+lib/libLSFoundation_d.so.5.2.103
+lib/libLSSearch_d.so
+lib/libLSSearch_d.so.5.2
+lib/libLSSearch_d.so.5.2.24
+lib/libOGoAccounts_d.so
+lib/libOGoAccounts_d.so.5.2
+lib/libOGoAccounts_d.so.5.2.18
+lib/libOGoBase_d.so
+lib/libOGoBase_d.so.5.2
+lib/libOGoBase_d.so.5.2.8
+lib/libOGoContacts_d.so
+lib/libOGoContacts_d.so.5.2
+lib/libOGoContacts_d.so.5.2.44
+lib/libOGoDatabaseProject_d.so
+lib/libOGoDatabaseProject_d.so.5.2
+lib/libOGoDatabaseProject_d.so.5.2.51
+lib/libOGoDocuments_d.so
+lib/libOGoDocuments_d.so.5.2
+lib/libOGoDocuments_d.so.5.2.24
+lib/libOGoFileSystemProject_d.so
+lib/libOGoFileSystemProject_d.so.5.2
+lib/libOGoFileSystemProject_d.so.5.2.26
+lib/libOGoFoundation_d.so
+lib/libOGoFoundation_d.so.5.2
+lib/libOGoFoundation_d.so.5.2.85
+lib/libOGoJobs_d.so
+lib/libOGoJobs_d.so.5.2
+lib/libOGoJobs_d.so.5.2.22
+lib/libOGoNHS_d.so
+lib/libOGoNHS_d.so.5.2
+lib/libOGoNHS_d.so.5.2.12
+lib/libOGoPalmUI_d.so
+lib/libOGoPalmUI_d.so.5.2
+lib/libOGoPalmUI_d.so.5.2.7
+lib/libOGoPalm_d.so
+lib/libOGoPalm_d.so.5.2
+lib/libOGoPalm_d.so.5.2.30
+lib/libOGoProject_d.so
+lib/libOGoProject_d.so.5.2
+lib/libOGoProject_d.so.5.2.39
+lib/libOGoRawDatabase_d.so
+lib/libOGoRawDatabase_d.so.5.2
+lib/libOGoRawDatabase_d.so.5.2.11
+lib/libOGoSchedulerTools_d.so
+lib/libOGoSchedulerTools_d.so.5.2
+lib/libOGoSchedulerTools_d.so.5.2.60
+lib/libOGoScheduler_d.so
+lib/libOGoScheduler_d.so.5.2
+lib/libOGoScheduler_d.so.5.2.33
+lib/libOGoWebMail_d.so
+lib/libOGoWebMail_d.so.5.2
+lib/libOGoWebMail_d.so.5.2.104
+lib/libPPSync_d.so
+lib/libPPSync_d.so.5.2
+lib/libPPSync_d.so.5.2.13
+lib/libZSAppointments_d.so
+lib/libZSAppointments_d.so.1.4
+lib/libZSAppointments_d.so.1.4.0
+lib/libZSBackend_d.so
+lib/libZSBackend_d.so.1.4
+lib/libZSBackend_d.so.1.4.87
+lib/libZSContacts_d.so
+lib/libZSContacts_d.so.1.4
+lib/libZSContacts_d.so.1.4.0
+lib/libZSFrontend_d.so
+lib/libZSFrontend_d.so.1.4
+lib/libZSFrontend_d.so.1.4.113
+lib/libZSProjects_d.so
+lib/libZSProjects_d.so.1.4
+lib/libZSProjects_d.so.1.4.0
+lib/libZSTasks_d.so
+lib/libZSTasks_d.so.1.4
+lib/libZSTasks_d.so.1.4.0
+lib/opengroupware.org-1.0/commands/LSAccount.cmd/LSAccount
+lib/opengroupware.org-1.0/commands/LSAccount.cmd/Resources/Defaults.plist
+lib/opengroupware.org-1.0/commands/LSAccount.cmd/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/commands/LSAccount.cmd/Resources/Version
+lib/opengroupware.org-1.0/commands/LSAccount.cmd/Resources/commands.plist
+lib/opengroupware.org-1.0/commands/LSAccount.cmd/bundle-info.plist
+lib/opengroupware.org-1.0/commands/LSAccount.cmd/stamp.make
+lib/opengroupware.org-1.0/commands/LSAddress.cmd/LSAddress
+lib/opengroupware.org-1.0/commands/LSAddress.cmd/Resources/Defaults.plist
+lib/opengroupware.org-1.0/commands/LSAddress.cmd/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/commands/LSAddress.cmd/Resources/Version
+lib/opengroupware.org-1.0/commands/LSAddress.cmd/Resources/commands.plist
+lib/opengroupware.org-1.0/commands/LSAddress.cmd/bundle-info.plist
+lib/opengroupware.org-1.0/commands/LSAddress.cmd/stamp.make
+lib/opengroupware.org-1.0/commands/LSBase.cmd/LSBase
+lib/opengroupware.org-1.0/commands/LSBase.cmd/Resources/Defaults.plist
+lib/opengroupware.org-1.0/commands/LSBase.cmd/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/commands/LSBase.cmd/Resources/Version
+lib/opengroupware.org-1.0/commands/LSBase.cmd/Resources/commands.plist
+lib/opengroupware.org-1.0/commands/LSBase.cmd/bundle-info.plist
+lib/opengroupware.org-1.0/commands/LSBase.cmd/stamp.make
+lib/opengroupware.org-1.0/commands/LSDocuments.cmd/LSDocuments
+lib/opengroupware.org-1.0/commands/LSDocuments.cmd/Resources/Defaults.plist
+lib/opengroupware.org-1.0/commands/LSDocuments.cmd/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/commands/LSDocuments.cmd/Resources/Version
+lib/opengroupware.org-1.0/commands/LSDocuments.cmd/Resources/commands.plist
+lib/opengroupware.org-1.0/commands/LSDocuments.cmd/bundle-info.plist
+lib/opengroupware.org-1.0/commands/LSDocuments.cmd/stamp.make
+lib/opengroupware.org-1.0/commands/LSEnterprise.cmd/LSEnterprise
+lib/opengroupware.org-1.0/commands/LSEnterprise.cmd/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/commands/LSEnterprise.cmd/Resources/Version
+lib/opengroupware.org-1.0/commands/LSEnterprise.cmd/Resources/commands.plist
+lib/opengroupware.org-1.0/commands/LSEnterprise.cmd/bundle-info.plist
+lib/opengroupware.org-1.0/commands/LSEnterprise.cmd/stamp.make
+lib/opengroupware.org-1.0/commands/LSMail.cmd/LSMail
+lib/opengroupware.org-1.0/commands/LSMail.cmd/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/commands/LSMail.cmd/Resources/Version
+lib/opengroupware.org-1.0/commands/LSMail.cmd/Resources/commands.plist
+lib/opengroupware.org-1.0/commands/LSMail.cmd/bundle-info.plist
+lib/opengroupware.org-1.0/commands/LSMail.cmd/stamp.make
+lib/opengroupware.org-1.0/commands/LSNews.cmd/LSNews
+lib/opengroupware.org-1.0/commands/LSNews.cmd/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/commands/LSNews.cmd/Resources/Version
+lib/opengroupware.org-1.0/commands/LSNews.cmd/Resources/commands.plist
+lib/opengroupware.org-1.0/commands/LSNews.cmd/bundle-info.plist
+lib/opengroupware.org-1.0/commands/LSNews.cmd/stamp.make
+lib/opengroupware.org-1.0/commands/LSPerson.cmd/LSPerson
+lib/opengroupware.org-1.0/commands/LSPerson.cmd/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/commands/LSPerson.cmd/Resources/Version
+lib/opengroupware.org-1.0/commands/LSPerson.cmd/Resources/commands.plist
+lib/opengroupware.org-1.0/commands/LSPerson.cmd/bundle-info.plist
+lib/opengroupware.org-1.0/commands/LSPerson.cmd/stamp.make
+lib/opengroupware.org-1.0/commands/LSProject.cmd/LSProject
+lib/opengroupware.org-1.0/commands/LSProject.cmd/Resources/Defaults.plist
+lib/opengroupware.org-1.0/commands/LSProject.cmd/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/commands/LSProject.cmd/Resources/Version
+lib/opengroupware.org-1.0/commands/LSProject.cmd/Resources/commands.plist
+lib/opengroupware.org-1.0/commands/LSProject.cmd/bundle-info.plist
+lib/opengroupware.org-1.0/commands/LSProject.cmd/stamp.make
+lib/opengroupware.org-1.0/commands/LSScheduler.cmd/LSScheduler
+lib/opengroupware.org-1.0/commands/LSScheduler.cmd/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/commands/LSScheduler.cmd/Resources/Version
+lib/opengroupware.org-1.0/commands/LSScheduler.cmd/Resources/commands.plist
+lib/opengroupware.org-1.0/commands/LSScheduler.cmd/bundle-info.plist
+lib/opengroupware.org-1.0/commands/LSScheduler.cmd/stamp.make
+lib/opengroupware.org-1.0/commands/LSSearch.cmd/LSSearch
+lib/opengroupware.org-1.0/commands/LSSearch.cmd/Resources/Defaults.plist
+lib/opengroupware.org-1.0/commands/LSSearch.cmd/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/commands/LSSearch.cmd/Resources/Version
+lib/opengroupware.org-1.0/commands/LSSearch.cmd/Resources/commands.plist
+lib/opengroupware.org-1.0/commands/LSSearch.cmd/bundle-info.plist
+lib/opengroupware.org-1.0/commands/LSSearch.cmd/stamp.make
+lib/opengroupware.org-1.0/commands/LSTasks.cmd/LSTasks
+lib/opengroupware.org-1.0/commands/LSTasks.cmd/Resources/Defaults.plist
+lib/opengroupware.org-1.0/commands/LSTasks.cmd/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/commands/LSTasks.cmd/Resources/Version
+lib/opengroupware.org-1.0/commands/LSTasks.cmd/Resources/commands.plist
+lib/opengroupware.org-1.0/commands/LSTasks.cmd/bundle-info.plist
+lib/opengroupware.org-1.0/commands/LSTasks.cmd/stamp.make
+lib/opengroupware.org-1.0/commands/LSTeam.cmd/LSTeam
+lib/opengroupware.org-1.0/commands/LSTeam.cmd/Resources/Defaults.plist
+lib/opengroupware.org-1.0/commands/LSTeam.cmd/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/commands/LSTeam.cmd/Resources/Version
+lib/opengroupware.org-1.0/commands/LSTeam.cmd/Resources/commands.plist
+lib/opengroupware.org-1.0/commands/LSTeam.cmd/bundle-info.plist
+lib/opengroupware.org-1.0/commands/LSTeam.cmd/stamp.make
+lib/opengroupware.org-1.0/commands/OGo.model/OGo
+lib/opengroupware.org-1.0/commands/OGo.model/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/commands/OGo.model/Resources/OpenGroupware.org_PostgreSQL.eomodel
+lib/opengroupware.org-1.0/commands/OGo.model/Resources/Version
+lib/opengroupware.org-1.0/commands/OGo.model/Resources/pg-build-schema.psql
+lib/opengroupware.org-1.0/commands/OGo.model/Resources/pg-build-schema.psql.constraints
+lib/opengroupware.org-1.0/commands/OGo.model/Resources/pg-update-schema.psql
+lib/opengroupware.org-1.0/commands/OGo.model/bundle-info.plist
+lib/opengroupware.org-1.0/commands/OGo.model/stamp.make
+lib/opengroupware.org-1.0/conduits/OpenGroupwareNHS.conduit/OpenGroupwareNHS
+lib/opengroupware.org-1.0/conduits/OpenGroupwareNHS.conduit/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/conduits/OpenGroupwareNHS.conduit/bundle-info.plist
+lib/opengroupware.org-1.0/conduits/OpenGroupwareNHS.conduit/stamp.make
+lib/opengroupware.org-1.0/datasources/OGoAccounts.ds/OGoAccounts
+lib/opengroupware.org-1.0/datasources/OGoAccounts.ds/Resources/Defaults.plist
+lib/opengroupware.org-1.0/datasources/OGoAccounts.ds/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/datasources/OGoAccounts.ds/bundle-info.plist
+lib/opengroupware.org-1.0/datasources/OGoAccounts.ds/stamp.make
+lib/opengroupware.org-1.0/datasources/OGoBase.ds/OGoBase
+lib/opengroupware.org-1.0/datasources/OGoBase.ds/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/datasources/OGoBase.ds/bundle-info.plist
+lib/opengroupware.org-1.0/datasources/OGoBase.ds/stamp.make
+lib/opengroupware.org-1.0/datasources/OGoContacts.ds/OGoContacts
+lib/opengroupware.org-1.0/datasources/OGoContacts.ds/Resources/Defaults.plist
+lib/opengroupware.org-1.0/datasources/OGoContacts.ds/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/datasources/OGoContacts.ds/bundle-info.plist
+lib/opengroupware.org-1.0/datasources/OGoContacts.ds/stamp.make
+lib/opengroupware.org-1.0/datasources/OGoDatabaseProject.ds/OGoDatabaseProject
+lib/opengroupware.org-1.0/datasources/OGoDatabaseProject.ds/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/datasources/OGoDatabaseProject.ds/bundle-info.plist
+lib/opengroupware.org-1.0/datasources/OGoDatabaseProject.ds/stamp.make
+lib/opengroupware.org-1.0/datasources/OGoFileSystemProject.ds/OGoFileSystemProject
+lib/opengroupware.org-1.0/datasources/OGoFileSystemProject.ds/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/datasources/OGoFileSystemProject.ds/bundle-info.plist
+lib/opengroupware.org-1.0/datasources/OGoFileSystemProject.ds/stamp.make
+lib/opengroupware.org-1.0/datasources/OGoJobs.ds/OGoJobs
+lib/opengroupware.org-1.0/datasources/OGoJobs.ds/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/datasources/OGoJobs.ds/bundle-info.plist
+lib/opengroupware.org-1.0/datasources/OGoJobs.ds/stamp.make
+lib/opengroupware.org-1.0/datasources/OGoPalmDS.ds/OGoPalmDS
+lib/opengroupware.org-1.0/datasources/OGoPalmDS.ds/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/datasources/OGoPalmDS.ds/bundle-info.plist
+lib/opengroupware.org-1.0/datasources/OGoPalmDS.ds/stamp.make
+lib/opengroupware.org-1.0/datasources/OGoProject.ds/OGoProject
+lib/opengroupware.org-1.0/datasources/OGoProject.ds/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/datasources/OGoProject.ds/bundle-info.plist
+lib/opengroupware.org-1.0/datasources/OGoProject.ds/stamp.make
+lib/opengroupware.org-1.0/datasources/OGoRawDatabase.ds/OGoRawDatabase
+lib/opengroupware.org-1.0/datasources/OGoRawDatabase.ds/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/datasources/OGoRawDatabase.ds/stamp.make
+lib/opengroupware.org-1.0/datasources/OGoScheduler.ds/OGoScheduler
+lib/opengroupware.org-1.0/datasources/OGoScheduler.ds/Resources/Defaults.plist
+lib/opengroupware.org-1.0/datasources/OGoScheduler.ds/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/datasources/OGoScheduler.ds/bundle-info.plist
+lib/opengroupware.org-1.0/datasources/OGoScheduler.ds/stamp.make
+lib/opengroupware.org-1.0/webui/AddressUI.lso/AddressUI
+lib/opengroupware.org-1.0/webui/AddressUI.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/AddressUI.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/AddressUI.lso/Resources/SkyCompanyAttributesViewer.plist
+lib/opengroupware.org-1.0/webui/AddressUI.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/AddressUI.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/AdminUI.lso/AdminUI
+lib/opengroupware.org-1.0/webui/AdminUI.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/AdminUI.lso/Resources/MTA.plist
+lib/opengroupware.org-1.0/webui/AdminUI.lso/Resources/NSGlobalDomain.plist
+lib/opengroupware.org-1.0/webui/AdminUI.lso/Resources/Skyrix.plist
+lib/opengroupware.org-1.0/webui/AdminUI.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/AdminUI.lso/Resources/skyaptnotify.plist
+lib/opengroupware.org-1.0/webui/AdminUI.lso/Resources/skyxmlrpcd.plist
+lib/opengroupware.org-1.0/webui/AdminUI.lso/Resources/snsd.plist
+lib/opengroupware.org-1.0/webui/AdminUI.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/BaseUI.lso/BaseUI
+lib/opengroupware.org-1.0/webui/BaseUI.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/BaseUI.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/BaseUI.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/BaseUI.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/EnterprisesUI.lso/EnterprisesUI
+lib/opengroupware.org-1.0/webui/EnterprisesUI.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/EnterprisesUI.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/EnterprisesUI.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/EnterprisesUI.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/JobUI.lso/JobUI
+lib/opengroupware.org-1.0/webui/JobUI.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/JobUI.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/JobUI.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/JobUI.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/LDAPAccounts.lso/LDAPAccounts
+lib/opengroupware.org-1.0/webui/LDAPAccounts.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/LDAPAccounts.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/LDAPAccounts.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/LDAPAccounts.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/LSWMail.lso/LSWMail
+lib/opengroupware.org-1.0/webui/LSWMail.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/LSWMail.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/LSWMail.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/LSWProject.lso/LSWProject
+lib/opengroupware.org-1.0/webui/LSWProject.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/LSWProject.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/LSWProject.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/LSWProject.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/LSWScheduler.lso/LSWScheduler
+lib/opengroupware.org-1.0/webui/LSWScheduler.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/LSWScheduler.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/LSWScheduler.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/LSWScheduler.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/NewsUI.lso/NewsUI
+lib/opengroupware.org-1.0/webui/NewsUI.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/NewsUI.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/NewsUI.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/NewsUI.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoDocInlineViewers.lso/OGoDocInlineViewers
+lib/opengroupware.org-1.0/webui/OGoDocInlineViewers.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoDocInlineViewers.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoDocInlineViewers.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoDocInlineViewers.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoMailEditor.lso/OGoMailEditor
+lib/opengroupware.org-1.0/webui/OGoMailEditor.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoMailEditor.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoMailEditor.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoMailEditor.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoMailFilter.lso/OGoMailFilter
+lib/opengroupware.org-1.0/webui/OGoMailFilter.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoMailFilter.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoMailFilter.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoMailFilter.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoMailInfo.lso/OGoMailInfo
+lib/opengroupware.org-1.0/webui/OGoMailInfo.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoMailInfo.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoMailInfo.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoMailInfo.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoMailViewers.lso/OGoMailViewers
+lib/opengroupware.org-1.0/webui/OGoMailViewers.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoMailViewers.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoMailViewers.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoMailViewers.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoNote.lso/OGoNote
+lib/opengroupware.org-1.0/webui/OGoNote.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoNote.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoNote.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/OGoPalm
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAddressEditor.wo/SkyPalmAddressEditor.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAddressEditor.wo/SkyPalmAddressEditor.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAddressList.wo/SkyPalmAddressList.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAddressList.wo/SkyPalmAddressList.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAddressViewer.wo/SkyPalmAddressViewer.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAddressViewer.wo/SkyPalmAddressViewer.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAppointmentListing.wo/SkyPalmAppointmentListing.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAppointmentListing.wo/SkyPalmAppointmentListing.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAssignAddress.wo/SkyPalmAssignAddress.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAssignAddress.wo/SkyPalmAssignAddress.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAssignDate.wo/SkyPalmAssignDate.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAssignDate.wo/SkyPalmAssignDate.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAssignJob.wo/SkyPalmAssignJob.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAssignJob.wo/SkyPalmAssignJob.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAssignMemo.wo/SkyPalmAssignMemo.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAssignMemo.wo/SkyPalmAssignMemo.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmCategoryPopUp.wo/SkyPalmCategoryPopUp.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmCategoryPopUp.wo/SkyPalmCategoryPopUp.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmCompanyListing.wo/SkyPalmCompanyListing.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmCompanyListing.wo/SkyPalmCompanyListing.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateCopyViewer.wo/SkyPalmDateCopyViewer.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateCopyViewer.wo/SkyPalmDateCopyViewer.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateEditor.wo/SkyPalmDateEditor.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateEditor.wo/SkyPalmDateEditor.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateList.wo/SkyPalmDateList.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateList.wo/SkyPalmDateList.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateViewer.wo/SkyPalmDateViewer.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateViewer.wo/SkyPalmDateViewer.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateWeekOverview.wo/SkyPalmDateWeekOverview.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateWeekOverview.wo/SkyPalmDateWeekOverview.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmEntryListContent.wo/SkyPalmEntryListContent.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmEntryListContent.wo/SkyPalmEntryListContent.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmEntryListHeader.wo/SkyPalmEntryListHeader.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmEntryListHeader.wo/SkyPalmEntryListHeader.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmFileListing.wo/SkyPalmFileListing.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmFileListing.wo/SkyPalmFileListing.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmInlineDateViewer.wo/SkyPalmInlineDateViewer.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmInlineDateViewer.wo/SkyPalmInlineDateViewer.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmJobEditor.wo/SkyPalmJobEditor.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmJobEditor.wo/SkyPalmJobEditor.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmJobList.wo/SkyPalmJobList.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmJobList.wo/SkyPalmJobList.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmJobListing.wo/SkyPalmJobListing.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmJobListing.wo/SkyPalmJobListing.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmJobViewer.wo/SkyPalmJobViewer.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmJobViewer.wo/SkyPalmJobViewer.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmMemoEditor.wo/SkyPalmMemoEditor.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmMemoEditor.wo/SkyPalmMemoEditor.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmMemoList.wo/SkyPalmMemoList.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmMemoList.wo/SkyPalmMemoList.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmMemoViewer.wo/SkyPalmMemoViewer.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmMemoViewer.wo/SkyPalmMemoViewer.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmPage.wo/SkyPalmPage.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmPage.wo/SkyPalmPage.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmPreferences.wo/SkyPalmPreferences.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmPreferences.wo/SkyPalmPreferences.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmProjectListing.wo/SkyPalmProjectListing.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmProjectListing.wo/SkyPalmProjectListing.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmRecordList.wo/SkyPalmRecordList.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmRecordList.wo/SkyPalmRecordList.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmStringAttribute.wo/SkyPalmStringAttribute.html
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmStringAttribute.wo/SkyPalmStringAttribute.wod
+lib/opengroupware.org-1.0/webui/OGoPalm.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoProject.lso/OGoProject
+lib/opengroupware.org-1.0/webui/OGoProject.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoProject.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoProject.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoProject.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoProjectInfo.lso/OGoProjectInfo
+lib/opengroupware.org-1.0/webui/OGoProjectInfo.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoProjectInfo.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoProjectInfo.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoProjectInfo.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoProjectZip.lso/OGoProjectZip
+lib/opengroupware.org-1.0/webui/OGoProjectZip.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoProjectZip.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoProjectZip.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoProjectZip.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoRecipientLists.lso/OGoRecipientLists
+lib/opengroupware.org-1.0/webui/OGoRecipientLists.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoRecipientLists.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoRecipientLists.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoRecipientLists.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoResourceScheduler.lso/OGoResourceScheduler
+lib/opengroupware.org-1.0/webui/OGoResourceScheduler.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoResourceScheduler.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoResourceScheduler.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoResourceScheduler.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoScheduler.lso/OGoScheduler
+lib/opengroupware.org-1.0/webui/OGoScheduler.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoScheduler.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoScheduler.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoScheduler.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoSchedulerDock.lso/OGoSchedulerDock
+lib/opengroupware.org-1.0/webui/OGoSchedulerDock.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoSchedulerDock.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoSchedulerDock.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoSchedulerViews.lso/OGoSchedulerViews
+lib/opengroupware.org-1.0/webui/OGoSchedulerViews.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoSchedulerViews.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoSchedulerViews.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoSchedulerViews.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoUIElements.lso/OGoUIElements
+lib/opengroupware.org-1.0/webui/OGoUIElements.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoUIElements.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoUIElements.lso/Resources/SkyTableView_SelectAllCheckboxesScript.js
+lib/opengroupware.org-1.0/webui/OGoUIElements.lso/Resources/SkyTableView_ShiftClickScript.js
+lib/opengroupware.org-1.0/webui/OGoUIElements.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoUIElements.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/OGoWebMail.lso/OGoWebMail
+lib/opengroupware.org-1.0/webui/OGoWebMail.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/OGoWebMail.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/OGoWebMail.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/OGoWebMail.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/PersonsUI.lso/PersonsUI
+lib/opengroupware.org-1.0/webui/PersonsUI.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/PersonsUI.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/PersonsUI.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/PersonsUI.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/PreferencesUI.lso/PreferencesUI
+lib/opengroupware.org-1.0/webui/PreferencesUI.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/PreferencesUI.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/PreferencesUI.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/PreferencesUI.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/PropertiesUI.lso/PropertiesUI
+lib/opengroupware.org-1.0/webui/PropertiesUI.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/PropertiesUI.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/PropertiesUI.lso/bundle-info.plist
+lib/opengroupware.org-1.0/webui/RelatedLinksUI.lso/RelatedLinksUI
+lib/opengroupware.org-1.0/webui/RelatedLinksUI.lso/Resources/Defaults.plist
+lib/opengroupware.org-1.0/webui/RelatedLinksUI.lso/Resources/Info-gnustep.plist
+lib/opengroupware.org-1.0/webui/RelatedLinksUI.lso/Resources/Version
+lib/opengroupware.org-1.0/webui/RelatedLinksUI.lso/bundle-info.plist
+lib/zidestore-1.4/Appointments.zsp/Appointments
+lib/zidestore-1.4/Appointments.zsp/Resources/Info-gnustep.plist
+lib/zidestore-1.4/Appointments.zsp/Resources/Version
+lib/zidestore-1.4/Appointments.zsp/Resources/bundle-info.plist
+lib/zidestore-1.4/Appointments.zsp/Resources/product.plist
+lib/zidestore-1.4/Appointments.zsp/bundle-info.plist
+lib/zidestore-1.4/Appointments.zsp/stamp.make
+lib/zidestore-1.4/Contacts.zsp/Contacts
+lib/zidestore-1.4/Contacts.zsp/Resources/Info-gnustep.plist
+lib/zidestore-1.4/Contacts.zsp/Resources/Version
+lib/zidestore-1.4/Contacts.zsp/Resources/bundle-info.plist
+lib/zidestore-1.4/Contacts.zsp/Resources/product.plist
+lib/zidestore-1.4/Contacts.zsp/bundle-info.plist
+lib/zidestore-1.4/Contacts.zsp/stamp.make
+lib/zidestore-1.4/PrefsUI.zsp/PrefsUI
+lib/zidestore-1.4/PrefsUI.zsp/Resources/Info-gnustep.plist
+lib/zidestore-1.4/PrefsUI.zsp/Resources/SxFrame.wox
+lib/zidestore-1.4/PrefsUI.zsp/Resources/SxMissingLicensePage.wox
+lib/zidestore-1.4/PrefsUI.zsp/Resources/SxRootPage.wox
+lib/zidestore-1.4/PrefsUI.zsp/Resources/SxUserHomePage.wox
+lib/zidestore-1.4/PrefsUI.zsp/Resources/SxUserSettingsPage.wox
+lib/zidestore-1.4/PrefsUI.zsp/Resources/Version
+lib/zidestore-1.4/PrefsUI.zsp/Resources/banner_back.gif
+lib/zidestore-1.4/PrefsUI.zsp/Resources/banner_left.gif
+lib/zidestore-1.4/PrefsUI.zsp/Resources/banner_right.gif
+lib/zidestore-1.4/PrefsUI.zsp/Resources/bundle-info.plist
+lib/zidestore-1.4/PrefsUI.zsp/Resources/favicon.ico
+lib/zidestore-1.4/PrefsUI.zsp/Resources/homepage.jpg
+lib/zidestore-1.4/PrefsUI.zsp/Resources/product.plist
+lib/zidestore-1.4/PrefsUI.zsp/Resources/site.css
+lib/zidestore-1.4/PrefsUI.zsp/bundle-info.plist
+lib/zidestore-1.4/PrefsUI.zsp/stamp.make
+lib/zidestore-1.4/Projects.zsp/Projects
+lib/zidestore-1.4/Projects.zsp/Resources/Info-gnustep.plist
+lib/zidestore-1.4/Projects.zsp/Resources/Version
+lib/zidestore-1.4/Projects.zsp/Resources/bundle-info.plist
+lib/zidestore-1.4/Projects.zsp/Resources/product.plist
+lib/zidestore-1.4/Projects.zsp/bundle-info.plist
+lib/zidestore-1.4/Projects.zsp/stamp.make
+lib/zidestore-1.4/RSS.zsp/RSS
+lib/zidestore-1.4/RSS.zsp/Resources/Info-gnustep.plist
+lib/zidestore-1.4/RSS.zsp/Resources/Version
+lib/zidestore-1.4/RSS.zsp/Resources/bundle-info.plist
+lib/zidestore-1.4/RSS.zsp/Resources/product.plist
+lib/zidestore-1.4/RSS.zsp/bundle-info.plist
+lib/zidestore-1.4/RSS.zsp/stamp.make
+lib/zidestore-1.4/Tasks.zsp/Resources/Info-gnustep.plist
+lib/zidestore-1.4/Tasks.zsp/Resources/Version
+lib/zidestore-1.4/Tasks.zsp/Resources/bundle-info.plist
+lib/zidestore-1.4/Tasks.zsp/Resources/product.plist
+lib/zidestore-1.4/Tasks.zsp/Tasks
+lib/zidestore-1.4/Tasks.zsp/bundle-info.plist
+lib/zidestore-1.4/Tasks.zsp/stamp.make
+lib/zidestore-1.4/ZSCommon.zsp/Resources/Info-gnustep.plist
+lib/zidestore-1.4/ZSCommon.zsp/Resources/Version
+lib/zidestore-1.4/ZSCommon.zsp/Resources/bundle-info.plist
+lib/zidestore-1.4/ZSCommon.zsp/Resources/product.plist
+lib/zidestore-1.4/ZSCommon.zsp/ZSCommon
+lib/zidestore-1.4/ZSCommon.zsp/bundle-info.plist
+lib/zidestore-1.4/ZSCommon.zsp/stamp.make
+sbin/ogo-nhsd-1.0
+sbin/ogo-webui-1.0
+sbin/ogo-xmlrpcd-1.0
+sbin/ogo-zidestore-1.4
+share/nls/POSIX
+share/nls/en_US.US-ASCII
+share/opengroupware.org-1.0/Holidays.plist
+share/opengroupware.org-1.0/templates
+share/opengroupware.org-1.0/translations
+share/zidestore-1.4/AptBackendSets.plist
+share/zidestore-1.4/DAVPropSets.plist
+share/zidestore-1.4/E2KAttrMap.plist
+share/zidestore-1.4/MAPIPropIDMap.plist
+share/zidestore-1.4/MAPIPropMap.plist
+share/zidestore-1.4/PersonalFolderInfo.plist
+@dirrm share/zidestore-1.4
+@dirrm share/opengroupware.org-1.0
+@dirrm lib/zidestore-1.4/ZSCommon.zsp/Resources
+@dirrm lib/zidestore-1.4/ZSCommon.zsp
+@dirrm lib/zidestore-1.4/Tasks.zsp/Resources
+@dirrm lib/zidestore-1.4/Tasks.zsp
+@dirrm lib/zidestore-1.4/RSS.zsp/Resources
+@dirrm lib/zidestore-1.4/RSS.zsp
+@dirrm lib/zidestore-1.4/Projects.zsp/Resources
+@dirrm lib/zidestore-1.4/Projects.zsp
+@dirrm lib/zidestore-1.4/PrefsUI.zsp/Resources
+@dirrm lib/zidestore-1.4/PrefsUI.zsp
+@dirrm lib/zidestore-1.4/Contacts.zsp/Resources
+@dirrm lib/zidestore-1.4/Contacts.zsp
+@dirrm lib/zidestore-1.4/Appointments.zsp/Resources
+@dirrm lib/zidestore-1.4/Appointments.zsp
+@dirrm lib/zidestore-1.4
+@dirrm lib/opengroupware.org-1.0/webui/RelatedLinksUI.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/RelatedLinksUI.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/RelatedLinksUI.lso
+@dirrm lib/opengroupware.org-1.0/webui/PropertiesUI.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/PropertiesUI.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/PropertiesUI.lso
+@dirrm lib/opengroupware.org-1.0/webui/PreferencesUI.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/PreferencesUI.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/PreferencesUI.lso
+@dirrm lib/opengroupware.org-1.0/webui/PersonsUI.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/PersonsUI.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/PersonsUI.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoWebMail.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoWebMail.lso/Resources/English.lproj
+@dirrm lib/opengroupware.org-1.0/webui/OGoWebMail.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoWebMail.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoUIElements.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoUIElements.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoUIElements.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoSchedulerViews.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoSchedulerViews.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoSchedulerViews.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoSchedulerDock.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoSchedulerDock.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoSchedulerDock.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoScheduler.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoScheduler.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoScheduler.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoResourceScheduler.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoResourceScheduler.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoResourceScheduler.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoRecipientLists.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoRecipientLists.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoRecipientLists.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoProjectZip.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoProjectZip.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoProjectZip.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoProjectInfo.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoProjectInfo.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoProjectInfo.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoProject.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoProject.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoProject.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmStringAttribute.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmRecordList.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmProjectListing.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmPreferences.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmPage.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmMemoViewer.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmMemoList.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmMemoEditor.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmJobViewer.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmJobListing.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmJobList.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmJobEditor.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmInlineDateViewer.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmFileListing.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmEntryListHeader.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmEntryListContent.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateWeekOverview.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateViewer.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateList.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateEditor.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmDateCopyViewer.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmCompanyListing.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmCategoryPopUp.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAssignMemo.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAssignJob.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAssignDate.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAssignAddress.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAppointmentListing.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAddressViewer.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAddressList.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources/SkyPalmAddressEditor.wo
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoPalm.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoNote.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoNote.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoNote.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoMailViewers.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoMailViewers.lso/Resources/English.lproj
+@dirrm lib/opengroupware.org-1.0/webui/OGoMailViewers.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoMailViewers.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoMailInfo.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoMailInfo.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoMailInfo.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoMailFilter.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoMailFilter.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoMailFilter.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoMailEditor.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoMailEditor.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoMailEditor.lso
+@dirrm lib/opengroupware.org-1.0/webui/OGoDocInlineViewers.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/OGoDocInlineViewers.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/OGoDocInlineViewers.lso
+@dirrm lib/opengroupware.org-1.0/webui/NewsUI.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/NewsUI.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/NewsUI.lso
+@dirrm lib/opengroupware.org-1.0/webui/LSWScheduler.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/LSWScheduler.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/LSWScheduler.lso
+@dirrm lib/opengroupware.org-1.0/webui/LSWProject.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/LSWProject.lso/Resources/English.lproj
+@dirrm lib/opengroupware.org-1.0/webui/LSWProject.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/LSWProject.lso
+@dirrm lib/opengroupware.org-1.0/webui/LSWMail.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/LSWMail.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/LSWMail.lso
+@dirrm lib/opengroupware.org-1.0/webui/LDAPAccounts.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/LDAPAccounts.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/LDAPAccounts.lso
+@dirrm lib/opengroupware.org-1.0/webui/JobUI.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/JobUI.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/JobUI.lso
+@dirrm lib/opengroupware.org-1.0/webui/EnterprisesUI.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/EnterprisesUI.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/EnterprisesUI.lso
+@dirrm lib/opengroupware.org-1.0/webui/BaseUI.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/BaseUI.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/BaseUI.lso
+@dirrm lib/opengroupware.org-1.0/webui/AdminUI.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/AdminUI.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/AdminUI.lso
+@dirrm lib/opengroupware.org-1.0/webui/AddressUI.lso/Resources/WebServer
+@dirrm lib/opengroupware.org-1.0/webui/AddressUI.lso/Resources
+@dirrm lib/opengroupware.org-1.0/webui/AddressUI.lso
+@dirrm lib/opengroupware.org-1.0/webui
+@dirrm lib/opengroupware.org-1.0/datasources/OGoScheduler.ds/Resources
+@dirrm lib/opengroupware.org-1.0/datasources/OGoScheduler.ds
+@dirrm lib/opengroupware.org-1.0/datasources/OGoRawDatabase.ds/Resources
+@dirrm lib/opengroupware.org-1.0/datasources/OGoRawDatabase.ds
+@dirrm lib/opengroupware.org-1.0/datasources/OGoProject.ds/Resources
+@dirrm lib/opengroupware.org-1.0/datasources/OGoProject.ds
+@dirrm lib/opengroupware.org-1.0/datasources/OGoPalmDS.ds/Resources
+@dirrm lib/opengroupware.org-1.0/datasources/OGoPalmDS.ds
+@dirrm lib/opengroupware.org-1.0/datasources/OGoJobs.ds/Resources
+@dirrm lib/opengroupware.org-1.0/datasources/OGoJobs.ds
+@dirrm lib/opengroupware.org-1.0/datasources/OGoFileSystemProject.ds/Resources
+@dirrm lib/opengroupware.org-1.0/datasources/OGoFileSystemProject.ds
+@dirrm lib/opengroupware.org-1.0/datasources/OGoDatabaseProject.ds/Resources
+@dirrm lib/opengroupware.org-1.0/datasources/OGoDatabaseProject.ds
+@dirrm lib/opengroupware.org-1.0/datasources/OGoContacts.ds/Resources
+@dirrm lib/opengroupware.org-1.0/datasources/OGoContacts.ds
+@dirrm lib/opengroupware.org-1.0/datasources/OGoBase.ds/Resources
+@dirrm lib/opengroupware.org-1.0/datasources/OGoBase.ds
+@dirrm lib/opengroupware.org-1.0/datasources/OGoAccounts.ds/Resources
+@dirrm lib/opengroupware.org-1.0/datasources/OGoAccounts.ds
+@dirrm lib/opengroupware.org-1.0/datasources
+@dirrm lib/opengroupware.org-1.0/conduits/OpenGroupwareNHS.conduit/Resources
+@dirrm lib/opengroupware.org-1.0/conduits/OpenGroupwareNHS.conduit
+@dirrm lib/opengroupware.org-1.0/conduits
+@dirrm lib/opengroupware.org-1.0/commands/OGo.model/Resources
+@dirrm lib/opengroupware.org-1.0/commands/OGo.model
+@dirrm lib/opengroupware.org-1.0/commands/LSTeam.cmd/Resources
+@dirrm lib/opengroupware.org-1.0/commands/LSTeam.cmd
+@dirrm lib/opengroupware.org-1.0/commands/LSTasks.cmd/Resources
+@dirrm lib/opengroupware.org-1.0/commands/LSTasks.cmd
+@dirrm lib/opengroupware.org-1.0/commands/LSSearch.cmd/Resources
+@dirrm lib/opengroupware.org-1.0/commands/LSSearch.cmd
+@dirrm lib/opengroupware.org-1.0/commands/LSScheduler.cmd/Resources
+@dirrm lib/opengroupware.org-1.0/commands/LSScheduler.cmd
+@dirrm lib/opengroupware.org-1.0/commands/LSProject.cmd/Resources
+@dirrm lib/opengroupware.org-1.0/commands/LSProject.cmd
+@dirrm lib/opengroupware.org-1.0/commands/LSPerson.cmd/Resources
+@dirrm lib/opengroupware.org-1.0/commands/LSPerson.cmd
+@dirrm lib/opengroupware.org-1.0/commands/LSNews.cmd/Resources
+@dirrm lib/opengroupware.org-1.0/commands/LSNews.cmd
+@dirrm lib/opengroupware.org-1.0/commands/LSMail.cmd/Resources
+@dirrm lib/opengroupware.org-1.0/commands/LSMail.cmd
+@dirrm lib/opengroupware.org-1.0/commands/LSEnterprise.cmd/Resources
+@dirrm lib/opengroupware.org-1.0/commands/LSEnterprise.cmd
+@dirrm lib/opengroupware.org-1.0/commands/LSDocuments.cmd/Resources
+@dirrm lib/opengroupware.org-1.0/commands/LSDocuments.cmd
+@dirrm lib/opengroupware.org-1.0/commands/LSBase.cmd/Resources
+@dirrm lib/opengroupware.org-1.0/commands/LSBase.cmd
+@dirrm lib/opengroupware.org-1.0/commands/LSAddress.cmd/Resources
+@dirrm lib/opengroupware.org-1.0/commands/LSAddress.cmd
+@dirrm lib/opengroupware.org-1.0/commands/LSAccount.cmd/Resources
+@dirrm lib/opengroupware.org-1.0/commands/LSAccount.cmd
+@dirrm lib/opengroupware.org-1.0/commands
+@dirrm lib/opengroupware.org-1.0
+@dirrm include/ZSFrontend
+@dirrm include/ZSBackend
+@dirrm include/PPSync
+@dirrm include/OGoWebMail
+@dirrm include/OGoSchedulerTools
+@dirrm include/OGoScheduler
+@dirrm include/OGoRawDatabase
+@dirrm include/OGoProject
+@dirrm include/OGoPalmUI
+@dirrm include/OGoPalm
+@dirrm include/OGoNHS
+@dirrm include/OGoJobs
+@dirrm include/OGoFoundation
+@dirrm include/OGoFileSystemProject
+@dirrm include/OGoDocuments
+@dirrm include/OGoDatabaseProject
+@dirrm include/OGoContacts
+@dirrm include/OGoBase
+@dirrm include/OGoAccounts
+@dirrm include/LSFoundation
+@dirrm Tools
+@dirrm Library/ZideStore-1.4
+@dirrm Library/OpenGroupware.org-1.0/WebUI
+@dirrm Library/OpenGroupware.org-1.0/DataSources
+@dirrm Library/OpenGroupware.org-1.0/Commands
+@dirrm Library/OpenGroupware.org-1.0
+@dirrm Library/Libraries
+@dirrm Library/Headers/ZSFrontend
+@dirrm Library/Headers/ZSBackend
+@dirrm Library/Headers/PPSync
+@dirrm Library/Headers/OGoWebMail
+@dirrm Library/Headers/OGoSchedulerTools
+@dirrm Library/Headers/OGoScheduler
+@dirrm Library/Headers/OGoRawDatabase
+@dirrm Library/Headers/OGoProject
+@dirrm Library/Headers/OGoPalmUI
+@dirrm Library/Headers/OGoPalm
+@dirrm Library/Headers/OGoNHS
+@dirrm Library/Headers/OGoJobs
+@dirrm Library/Headers/OGoFoundation
+@dirrm Library/Headers/OGoFileSystemProject
+@dirrm Library/Headers/OGoDocuments
+@dirrm Library/Headers/OGoDatabaseProject
+@dirrm Library/Headers/OGoContacts
+@dirrm Library/Headers/OGoBase
+@dirrm Library/Headers/OGoAccounts
+@dirrm Library/Headers/LSFoundation
+@dirrm Library/Headers
+@dirrm Library

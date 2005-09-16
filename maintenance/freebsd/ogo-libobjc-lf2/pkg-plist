@@ -1,0 +1,20 @@
+include/objc/Object.h
+include/objc/Protocol.h
+include/objc/encoding.h
+include/objc/hash.h
+include/objc/objc-api.h
+include/objc/objc-decls.h
+include/objc/objc-list.h
+include/objc/objc-mem.h
+include/objc/objc.h
+include/objc/sarray.h
+include/objc/thr.h
+include/objc/typedstream.h
+lib/libobjc_d.so
+lib/libobjc_d.so.lf2
+lib/libobjc_d.so.lf%%SHLIB_VERSION%%
+@dirrm include/objc
+@dirrm Library/Libraries
+@dirrm Library/Headers/objc
+@dirrm Library/Headers
+@dirrm Library

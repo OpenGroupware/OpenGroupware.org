@@ -1,0 +1,13 @@
+2005-09-10 Frank Reppin  <frank@opengroupware.org>
+
+	* created ChangeLog
+	* initial import of:
+	    mod_ngobjweb
+	    ogo-gnustep-make
+	    ogo-libfoundation
+	    ogo-libobjc-lf2
+	    opengroupware
+	    opengroupware-devel
+	    sope44
+	    sope45-devel
+

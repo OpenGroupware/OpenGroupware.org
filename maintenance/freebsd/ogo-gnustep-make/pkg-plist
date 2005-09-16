@@ -1,0 +1,564 @@
+.GNUsteprc
+Library/Makefiles/GNUstep-reset.sh
+Library/Makefiles/GNUstep.csh
+Library/Makefiles/GNUstep.sh
+Library/Makefiles/Instance/Documentation/autogsdoc.make
+Library/Makefiles/Instance/Documentation/gsdoc.make
+Library/Makefiles/Instance/Documentation/install_files.make
+Library/Makefiles/Instance/Documentation/javadoc.make
+Library/Makefiles/Instance/Documentation/latex.make
+Library/Makefiles/Instance/Documentation/texi.make
+Library/Makefiles/Instance/Shared/bundle.make
+Library/Makefiles/Instance/Shared/headers.make
+Library/Makefiles/Instance/Shared/java.make
+Library/Makefiles/Instance/Shared/stamp-string.make
+Library/Makefiles/Instance/Shared/strings.make
+Library/Makefiles/Instance/application.make
+Library/Makefiles/Instance/bundle.make
+Library/Makefiles/Instance/clibrary.make
+Library/Makefiles/Instance/ctool.make
+Library/Makefiles/Instance/documentation.make
+Library/Makefiles/Instance/framework.make
+Library/Makefiles/Instance/gswapp.make
+Library/Makefiles/Instance/gswbundle.make
+Library/Makefiles/Instance/java-tool.make
+Library/Makefiles/Instance/java.make
+Library/Makefiles/Instance/library.make
+Library/Makefiles/Instance/objc.make
+Library/Makefiles/Instance/palette.make
+Library/Makefiles/Instance/resource-set.make
+Library/Makefiles/Instance/rules.make
+Library/Makefiles/Instance/service.make
+Library/Makefiles/Instance/subproject.make
+Library/Makefiles/Instance/test-application.make
+Library/Makefiles/Instance/test-library.make
+Library/Makefiles/Instance/test-tool.make
+Library/Makefiles/Instance/tool.make
+Library/Makefiles/Master/aggregate.make
+Library/Makefiles/Master/application.make
+Library/Makefiles/Master/bundle.make
+Library/Makefiles/Master/clibrary.make
+Library/Makefiles/Master/ctool.make
+Library/Makefiles/Master/documentation.make
+Library/Makefiles/Master/framework.make
+Library/Makefiles/Master/gswapp.make
+Library/Makefiles/Master/gswbundle.make
+Library/Makefiles/Master/java-tool.make
+Library/Makefiles/Master/java.make
+Library/Makefiles/Master/library.make
+Library/Makefiles/Master/objc.make
+Library/Makefiles/Master/palette.make
+Library/Makefiles/Master/resource-set.make
+Library/Makefiles/Master/rpm.make
+Library/Makefiles/Master/rules.make
+Library/Makefiles/Master/service.make
+Library/Makefiles/Master/source-distribution.make
+Library/Makefiles/Master/subproject.make
+Library/Makefiles/Master/test-application.make
+Library/Makefiles/Master/test-library.make
+Library/Makefiles/Master/test-tool.make
+Library/Makefiles/Master/tool.make
+Library/Makefiles/aggregate.make
+Library/Makefiles/application.make
+Library/Makefiles/bundle.make
+Library/Makefiles/clean_cpu.sh
+Library/Makefiles/clean_os.sh
+Library/Makefiles/clean_vendor.sh
+Library/Makefiles/clibrary.make
+Library/Makefiles/common.make
+Library/Makefiles/config.guess
+Library/Makefiles/config.make
+Library/Makefiles/config.sub
+Library/Makefiles/cpu.sh
+Library/Makefiles/ctool.make
+Library/Makefiles/documentation.make
+Library/Makefiles/executable.template
+Library/Makefiles/fixpath.sh
+Library/Makefiles/framework.make
+Library/Makefiles/gswapp.make
+Library/Makefiles/gswbundle.make
+Library/Makefiles/install-sh
+Library/Makefiles/java-executable.template
+Library/Makefiles/java-tool.make
+Library/Makefiles/java.make
+Library/Makefiles/jni.make
+Library/Makefiles/ld_lib_path.csh
+Library/Makefiles/ld_lib_path.sh
+Library/Makefiles/library-combo.make
+Library/Makefiles/library.make
+Library/Makefiles/messages.make
+Library/Makefiles/mkinstalldirs
+Library/Makefiles/names.make
+Library/Makefiles/native-library.make
+Library/Makefiles/objc.make
+Library/Makefiles/os.sh
+Library/Makefiles/palette.make
+Library/Makefiles/relative_path.sh
+Library/Makefiles/resource-set.make
+Library/Makefiles/rules.make
+Library/Makefiles/service.make
+Library/Makefiles/spec-debug-alone-rules.template
+Library/Makefiles/spec-debug-rules.template
+Library/Makefiles/spec-rules.template
+Library/Makefiles/strip_makefiles.sh
+Library/Makefiles/subproject.make
+Library/Makefiles/tar-exclude-list
+Library/Makefiles/target.make
+Library/Makefiles/test-application.make
+Library/Makefiles/test-library.make
+Library/Makefiles/test-tool.make
+Library/Makefiles/tool.make
+Library/Makefiles/transform_paths.sh
+Library/Makefiles/user_home
+Library/Makefiles/vendor.sh
+Library/Makefiles/which_lib
+Makefiles
+Tools/debugapp
+Tools/openapp
+Tools/opentool
+share/config.site
+share/nls/POSIX
+share/nls/en_US.US-ASCII
+@dirrm www
+@dirrm share/xml
+@dirrm share/skel
+@dirrm share/sgml
+@dirrm share/nls/zh_TW.UTF-8
+@dirrm share/nls/zh_TW.Big5
+@dirrm share/nls/zh_HK.UTF-8
+@dirrm share/nls/zh_HK.Big5HKSCS
+@dirrm share/nls/zh_CN.eucCN
+@dirrm share/nls/zh_CN.UTF-8
+@dirrm share/nls/zh_CN.GBK
+@dirrm share/nls/zh_CN.GB2312
+@dirrm share/nls/zh_CN.GB18030
+@dirrm share/nls/uk_UA.UTF-8
+@dirrm share/nls/uk_UA.KOI8-U
+@dirrm share/nls/uk_UA.ISO8859-5
+@dirrm share/nls/tr_TR.UTF-8
+@dirrm share/nls/tr_TR.ISO8859-9
+@dirrm share/nls/sv_SE.UTF-8
+@dirrm share/nls/sv_SE.ISO8859-15
+@dirrm share/nls/sv_SE.ISO8859-1
+@dirrm share/nls/sr_YU.UTF-8
+@dirrm share/nls/sr_YU.ISO8859-5
+@dirrm share/nls/sr_YU.ISO8859-2
+@dirrm share/nls/sl_SI.UTF-8
+@dirrm share/nls/sl_SI.ISO8859-2
+@dirrm share/nls/sk_SK.UTF-8
+@dirrm share/nls/sk_SK.ISO8859-2
+@dirrm share/nls/ru_RU.UTF-8
+@dirrm share/nls/ru_RU.KOI8-R
+@dirrm share/nls/ru_RU.ISO8859-5
+@dirrm share/nls/ru_RU.CP866
+@dirrm share/nls/ru_RU.CP1251
+@dirrm share/nls/ro_RO.UTF-8
+@dirrm share/nls/ro_RO.ISO8859-2
+@dirrm share/nls/pt_PT.UTF-8
+@dirrm share/nls/pt_PT.ISO8859-15
+@dirrm share/nls/pt_PT.ISO8859-1
+@dirrm share/nls/pt_BR.UTF-8
+@dirrm share/nls/pt_BR.ISO8859-1
+@dirrm share/nls/pl_PL.UTF-8
+@dirrm share/nls/pl_PL.ISO8859-2
+@dirrm share/nls/no_NO.UTF-8
+@dirrm share/nls/no_NO.ISO8859-15
+@dirrm share/nls/no_NO.ISO8859-1
+@dirrm share/nls/nl_NL.UTF-8
+@dirrm share/nls/nl_NL.ISO8859-15
+@dirrm share/nls/nl_NL.ISO8859-1
+@dirrm share/nls/nl_BE.UTF-8
+@dirrm share/nls/nl_BE.ISO8859-15
+@dirrm share/nls/nl_BE.ISO8859-1
+@dirrm share/nls/lt_LT.UTF-8
+@dirrm share/nls/lt_LT.ISO8859-4
+@dirrm share/nls/lt_LT.ISO8859-13
+@dirrm share/nls/la_LN.US-ASCII
+@dirrm share/nls/la_LN.ISO8859-4
+@dirrm share/nls/la_LN.ISO8859-2
+@dirrm share/nls/la_LN.ISO8859-15
+@dirrm share/nls/la_LN.ISO8859-1
+@dirrm share/nls/ko_KR.eucKR
+@dirrm share/nls/ko_KR.UTF-8
+@dirrm share/nls/ko_KR.CP949
+@dirrm share/nls/kk_KZ.UTF-8
+@dirrm share/nls/kk_KZ.PT154
+@dirrm share/nls/ja_JP.eucJP
+@dirrm share/nls/ja_JP.UTF-8
+@dirrm share/nls/ja_JP.SJIS
+@dirrm share/nls/it_IT.UTF-8
+@dirrm share/nls/it_IT.ISO8859-15
+@dirrm share/nls/it_IT.ISO8859-1
+@dirrm share/nls/it_CH.UTF-8
+@dirrm share/nls/it_CH.ISO8859-15
+@dirrm share/nls/it_CH.ISO8859-1
+@dirrm share/nls/is_IS.UTF-8
+@dirrm share/nls/is_IS.ISO8859-15
+@dirrm share/nls/is_IS.ISO8859-1
+@dirrm share/nls/hy_AM.UTF-8
+@dirrm share/nls/hy_AM.ARMSCII-8
+@dirrm share/nls/hu_HU.UTF-8
+@dirrm share/nls/hu_HU.ISO8859-2
+@dirrm share/nls/hr_HR.UTF-8
+@dirrm share/nls/hr_HR.ISO8859-2
+@dirrm share/nls/hi_IN.ISCII-DEV
+@dirrm share/nls/he_IL.UTF-8
+@dirrm share/nls/fr_FR.UTF-8
+@dirrm share/nls/fr_FR.ISO8859-15
+@dirrm share/nls/fr_FR.ISO8859-1
+@dirrm share/nls/fr_CH.UTF-8
+@dirrm share/nls/fr_CH.ISO8859-15
+@dirrm share/nls/fr_CH.ISO8859-1
+@dirrm share/nls/fr_CA.UTF-8
+@dirrm share/nls/fr_CA.ISO8859-15
+@dirrm share/nls/fr_CA.ISO8859-1
+@dirrm share/nls/fr_BE.UTF-8
+@dirrm share/nls/fr_BE.ISO8859-15
+@dirrm share/nls/fr_BE.ISO8859-1
+@dirrm share/nls/fi_FI.UTF-8
+@dirrm share/nls/fi_FI.ISO8859-15
+@dirrm share/nls/fi_FI.ISO8859-1
+@dirrm share/nls/et_EE.UTF-8
+@dirrm share/nls/et_EE.ISO8859-15
+@dirrm share/nls/es_ES.UTF-8
+@dirrm share/nls/es_ES.ISO8859-15
+@dirrm share/nls/es_ES.ISO8859-1
+@dirrm share/nls/en_US.UTF-8
+@dirrm share/nls/en_US.ISO8859-15
+@dirrm share/nls/en_US.ISO8859-1
+@dirrm share/nls/en_NZ.UTF-8
+@dirrm share/nls/en_NZ.US-ASCII
+@dirrm share/nls/en_NZ.ISO8859-15
+@dirrm share/nls/en_NZ.ISO8859-1
+@dirrm share/nls/en_IE.UTF-8
+@dirrm share/nls/en_GB.UTF-8
+@dirrm share/nls/en_GB.US-ASCII
+@dirrm share/nls/en_GB.ISO8859-15
+@dirrm share/nls/en_GB.ISO8859-1
+@dirrm share/nls/en_CA.UTF-8
+@dirrm share/nls/en_CA.US-ASCII
+@dirrm share/nls/en_CA.ISO8859-15
+@dirrm share/nls/en_CA.ISO8859-1
+@dirrm share/nls/en_AU.UTF-8
+@dirrm share/nls/en_AU.US-ASCII
+@dirrm share/nls/en_AU.ISO8859-15
+@dirrm share/nls/en_AU.ISO8859-1
+@dirrm share/nls/el_GR.UTF-8
+@dirrm share/nls/el_GR.ISO8859-7
+@dirrm share/nls/de_DE.UTF-8
+@dirrm share/nls/de_DE.ISO8859-15
+@dirrm share/nls/de_DE.ISO8859-1
+@dirrm share/nls/de_CH.UTF-8
+@dirrm share/nls/de_CH.ISO8859-15
+@dirrm share/nls/de_CH.ISO8859-1
+@dirrm share/nls/de_AT.UTF-8
+@dirrm share/nls/de_AT.ISO8859-15
+@dirrm share/nls/de_AT.ISO8859-1
+@dirrm share/nls/da_DK.UTF-8
+@dirrm share/nls/da_DK.ISO8859-15
+@dirrm share/nls/da_DK.ISO8859-1
+@dirrm share/nls/cs_CZ.UTF-8
+@dirrm share/nls/cs_CZ.ISO8859-2
+@dirrm share/nls/ca_ES.UTF-8
+@dirrm share/nls/ca_ES.ISO8859-15
+@dirrm share/nls/ca_ES.ISO8859-1
+@dirrm share/nls/bg_BG.UTF-8
+@dirrm share/nls/bg_BG.CP1251
+@dirrm share/nls/be_BY.UTF-8
+@dirrm share/nls/be_BY.ISO8859-5
+@dirrm share/nls/be_BY.CP1251
+@dirrm share/nls/be_BY.CP1131
+@dirrm share/nls/am_ET.UTF-8
+@dirrm share/nls/af_ZA.UTF-8
+@dirrm share/nls/af_ZA.ISO8859-15
+@dirrm share/nls/af_ZA.ISO8859-1
+@dirrm share/nls/C
+@dirrm share/nls
+@dirrm share/misc
+@dirrm share/locale/zh_TW.Big5/LC_MESSAGES
+@dirrm share/locale/zh_TW.Big5
+@dirrm share/locale/zh_CN.GB2312/LC_MESSAGES
+@dirrm share/locale/zh_CN.GB2312
+@dirrm share/locale/zh/LC_MESSAGES
+@dirrm share/locale/zh
+@dirrm share/locale/wa/LC_MESSAGES
+@dirrm share/locale/wa
+@dirrm share/locale/vi/LC_MESSAGES
+@dirrm share/locale/vi
+@dirrm share/locale/tr/LC_MESSAGES
+@dirrm share/locale/tr
+@dirrm share/locale/th/LC_MESSAGES
+@dirrm share/locale/th
+@dirrm share/locale/ta/LC_MESSAGES
+@dirrm share/locale/ta
+@dirrm share/locale/sv/LC_MESSAGES
+@dirrm share/locale/sv
+@dirrm share/locale/sr@Latn/LC_MESSAGES
+@dirrm share/locale/sr@Latn
+@dirrm share/locale/sq/LC_MESSAGES
+@dirrm share/locale/sq
+@dirrm share/locale/ru/LC_MESSAGES
+@dirrm share/locale/ru
+@dirrm share/locale/pt_PT/LC_MESSAGES
+@dirrm share/locale/pt_PT
+@dirrm share/locale/pt_BR/LC_MESSAGES
+@dirrm share/locale/pt_BR
+@dirrm share/locale/pa/LC_MESSAGES
+@dirrm share/locale/pa
+@dirrm share/locale/or/LC_MESSAGES
+@dirrm share/locale/or
+@dirrm share/locale/nl/LC_MESSAGES
+@dirrm share/locale/nl
+@dirrm share/locale/nb/LC_MESSAGES
+@dirrm share/locale/nb
+@dirrm share/locale/mt/LC_MESSAGES
+@dirrm share/locale/mt
+@dirrm share/locale/ms/LC_MESSAGES
+@dirrm share/locale/ms
+@dirrm share/locale/mn/LC_MESSAGES
+@dirrm share/locale/mn
+@dirrm share/locale/ml/LC_MESSAGES
+@dirrm share/locale/ml
+@dirrm share/locale/mk/LC_MESSAGES
+@dirrm share/locale/mk
+@dirrm share/locale/lv/LC_MESSAGES
+@dirrm share/locale/lv
+@dirrm share/locale/lt/LC_MESSAGES
+@dirrm share/locale/lt
+@dirrm share/locale/kn/LC_MESSAGES
+@dirrm share/locale/kn
+@dirrm share/locale/ka/LC_MESSAGES
+@dirrm share/locale/ka
+@dirrm share/locale/ja/LC_MESSAGES
+@dirrm share/locale/ja
+@dirrm share/locale/it/LC_MESSAGES
+@dirrm share/locale/it
+@dirrm share/locale/is/LC_MESSAGES
+@dirrm share/locale/is
+@dirrm share/locale/id/LC_MESSAGES
+@dirrm share/locale/id
+@dirrm share/locale/hu/LC_MESSAGES
+@dirrm share/locale/hu
+@dirrm share/locale/hr/LC_MESSAGES
+@dirrm share/locale/hr
+@dirrm share/locale/hi/LC_MESSAGES
+@dirrm share/locale/hi
+@dirrm share/locale/he/LC_MESSAGES
+@dirrm share/locale/he
+@dirrm share/locale/gu/LC_MESSAGES
+@dirrm share/locale/gu
+@dirrm share/locale/ga/LC_MESSAGES
+@dirrm share/locale/ga
+@dirrm share/locale/fr/LC_MESSAGES
+@dirrm share/locale/fr
+@dirrm share/locale/fa/LC_MESSAGES
+@dirrm share/locale/fa
+@dirrm share/locale/eu/LC_MESSAGES
+@dirrm share/locale/eu
+@dirrm share/locale/et/LC_MESSAGES
+@dirrm share/locale/et
+@dirrm share/locale/es_MX/LC_MESSAGES
+@dirrm share/locale/es_MX
+@dirrm share/locale/es_ES/LC_MESSAGES
+@dirrm share/locale/es_ES
+@dirrm share/locale/es/LC_MESSAGES
+@dirrm share/locale/es
+@dirrm share/locale/eo/LC_MESSAGES
+@dirrm share/locale/eo
+@dirrm share/locale/en_GB/LC_MESSAGES
+@dirrm share/locale/en_GB
+@dirrm share/locale/en_CA/LC_MESSAGES
+@dirrm share/locale/en_CA
+@dirrm share/locale/en/LC_MESSAGES
+@dirrm share/locale/en
+@dirrm share/locale/ee/LC_MESSAGES
+@dirrm share/locale/ee
+@dirrm share/locale/dk/LC_MESSAGES
+@dirrm share/locale/dk
+@dirrm share/locale/de/LC_MESSAGES
+@dirrm share/locale/de
+@dirrm share/locale/da/LC_MESSAGES
+@dirrm share/locale/da
+@dirrm share/locale/cy/LC_MESSAGES
+@dirrm share/locale/cy
+@dirrm share/locale/bs/LC_MESSAGES
+@dirrm share/locale/bs
+@dirrm share/locale/br/LC_MESSAGES
+@dirrm share/locale/br
+@dirrm share/locale/bn/LC_MESSAGES
+@dirrm share/locale/bn
+@dirrm share/locale/bg/LC_MESSAGES
+@dirrm share/locale/bg
+@dirrm share/locale/az/LC_MESSAGES
+@dirrm share/locale/az
+@dirrm share/locale/ar/LC_MESSAGES
+@dirrm share/locale/ar
+@dirrm share/locale/am/LC_MESSAGES
+@dirrm share/locale/am
+@dirrm share/locale/af/LC_MESSAGES
+@dirrm share/locale/af
+@dirrm share/locale
+@dirrm share/java/classes
+@dirrm share/java
+@dirrm share/examples
+@dirrm share/emacs/site-lisp
+@dirrm share/emacs
+@dirrm share/doc/ja
+@dirrm share/doc
+@dirrm share/dict
+@dirrm share/aclocal
+@dirrm share
+@dirrm sbin
+@dirrm man/ru.KOI8-R/mann
+@dirrm man/ru.KOI8-R/manl
+@dirrm man/ru.KOI8-R/man9
+@dirrm man/ru.KOI8-R/man8
+@dirrm man/ru.KOI8-R/man7
+@dirrm man/ru.KOI8-R/man6
+@dirrm man/ru.KOI8-R/man5
+@dirrm man/ru.KOI8-R/man4
+@dirrm man/ru.KOI8-R/man3
+@dirrm man/ru.KOI8-R/man2
+@dirrm man/ru.KOI8-R/man1
+@dirrm man/ru.KOI8-R/catn
+@dirrm man/ru.KOI8-R/catl
+@dirrm man/ru.KOI8-R/cat9
+@dirrm man/ru.KOI8-R/cat8
+@dirrm man/ru.KOI8-R/cat7
+@dirrm man/ru.KOI8-R/cat6
+@dirrm man/ru.KOI8-R/cat5
+@dirrm man/ru.KOI8-R/cat4
+@dirrm man/ru.KOI8-R/cat3
+@dirrm man/ru.KOI8-R/cat2
+@dirrm man/ru.KOI8-R/cat1
+@dirrm man/ru.KOI8-R
+@dirrm man/mann
+@dirrm man/manl
+@dirrm man/man9
+@dirrm man/man8
+@dirrm man/man7
+@dirrm man/man6
+@dirrm man/man5
+@dirrm man/man4
+@dirrm man/man3
+@dirrm man/man2
+@dirrm man/man1
+@dirrm man/ja/mann
+@dirrm man/ja/manl
+@dirrm man/ja/man9
+@dirrm man/ja/man8
+@dirrm man/ja/man7
+@dirrm man/ja/man6
+@dirrm man/ja/man5
+@dirrm man/ja/man4
+@dirrm man/ja/man3
+@dirrm man/ja/man2
+@dirrm man/ja/man1
+@dirrm man/ja/catn
+@dirrm man/ja/catl
+@dirrm man/ja/cat9
+@dirrm man/ja/cat8
+@dirrm man/ja/cat7
+@dirrm man/ja/cat6
+@dirrm man/ja/cat5
+@dirrm man/ja/cat4
+@dirrm man/ja/cat3
+@dirrm man/ja/cat2
+@dirrm man/ja/cat1
+@dirrm man/ja
+@dirrm man/en.ISO8859-1/catn
+@dirrm man/en.ISO8859-1/cat9/i386
+@dirrm man/en.ISO8859-1/cat9
+@dirrm man/en.ISO8859-1/cat8/i386
+@dirrm man/en.ISO8859-1/cat8/alpha
+@dirrm man/en.ISO8859-1/cat8
+@dirrm man/en.ISO8859-1/cat7
+@dirrm man/en.ISO8859-1/cat6
+@dirrm man/en.ISO8859-1/cat5
+@dirrm man/en.ISO8859-1/cat4/i386
+@dirrm man/en.ISO8859-1/cat4/alpha
+@dirrm man/en.ISO8859-1/cat4
+@dirrm man/en.ISO8859-1/cat3
+@dirrm man/en.ISO8859-1/cat2
+@dirrm man/en.ISO8859-1/cat1aout
+@dirrm man/en.ISO8859-1/cat1
+@dirrm man/en.ISO8859-1
+@dirrm man/de.ISO8859-1/mann
+@dirrm man/de.ISO8859-1/manl
+@dirrm man/de.ISO8859-1/man9
+@dirrm man/de.ISO8859-1/man8
+@dirrm man/de.ISO8859-1/man7
+@dirrm man/de.ISO8859-1/man6
+@dirrm man/de.ISO8859-1/man5
+@dirrm man/de.ISO8859-1/man4
+@dirrm man/de.ISO8859-1/man3
+@dirrm man/de.ISO8859-1/man2
+@dirrm man/de.ISO8859-1/man1
+@dirrm man/de.ISO8859-1/catn
+@dirrm man/de.ISO8859-1/catl
+@dirrm man/de.ISO8859-1/cat9
+@dirrm man/de.ISO8859-1/cat8
+@dirrm man/de.ISO8859-1/cat7
+@dirrm man/de.ISO8859-1/cat6
+@dirrm man/de.ISO8859-1/cat5
+@dirrm man/de.ISO8859-1/cat4
+@dirrm man/de.ISO8859-1/cat3
+@dirrm man/de.ISO8859-1/cat2
+@dirrm man/de.ISO8859-1/cat1
+@dirrm man/de.ISO8859-1
+@dirrm man/catn
+@dirrm man/catl
+@dirrm man/cat9
+@dirrm man/cat8
+@dirrm man/cat7
+@dirrm man/cat6
+@dirrm man/cat5
+@dirrm man/cat4
+@dirrm man/cat3
+@dirrm man/cat2
+@dirrm man/cat1
+@dirrm man
+@dirrm libexec
+@dirrm libdata/pkgconfig
+@dirrm libdata
+@dirrm lib
+@dirrm info
+@dirrm include
+@dirrm etc/rc.d
+@dirrm etc/pam.d
+@dirrm etc
+@dirrm bin
+@dirrm Tools/Resources
+@dirrm Tools/Java
+@dirrm Tools
+@dirrm Library/Sounds
+@dirrm Library/Services
+@dirrm Library/PostScript
+@dirrm Library/Makefiles/ix86
+@dirrm Library/Makefiles/Master
+@dirrm Library/Makefiles/Instance/Shared
+@dirrm Library/Makefiles/Instance/Documentation
+@dirrm Library/Makefiles/Instance
+@dirrm Library/Makefiles/Auxiliary
+@dirrm Library/Makefiles/Additional
+@dirrm Library/Makefiles
+@dirrm Library/Libraries/Resources
+@dirrm Library/Libraries/Java
+@dirrm Library/Libraries
+@dirrm Library/KeyBindings
+@dirrm Library/Images
+@dirrm Library/Headers
+@dirrm Library/Frameworks
+@dirrm Library/Fonts
+@dirrm Library/Documentation/man
+@dirrm Library/Documentation/info
+@dirrm Library/Documentation/User
+@dirrm Library/Documentation/Developer
+@dirrm Library/Documentation
+@dirrm Library/DocTemplates
+@dirrm Library/Colors
+@dirrm Library/ColorPickers
+@dirrm Library/Bundles
+@dirrm Library/ApplicationSupport
+@dirrm Library
+@dirrm Applications

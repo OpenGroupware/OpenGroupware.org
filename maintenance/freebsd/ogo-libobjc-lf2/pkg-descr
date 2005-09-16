@@ -1,0 +1,3 @@
+Library needed to run Objective-C applications which use libFoundation.
+
+This library is required solely by the SOPE/OGo suite.

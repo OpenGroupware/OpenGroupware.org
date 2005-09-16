@@ -1,0 +1,10 @@
+==> %%P_NAME%%-%%P_VERSION%% post install notice
+
+  Please restart apache in order to activate the
+  changes we've just made to your configuration:
+
+  %%AP_RC%% stop
+  %%AP_RC%% start
+
+
+

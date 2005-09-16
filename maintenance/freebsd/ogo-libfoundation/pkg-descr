@@ -1,0 +1,3 @@
+libFoundation is a library that provides an almost complete
+implementation of the OpenStep specification plus many other extensions
+that can be found in the Apple's MacOS X Foundation library.

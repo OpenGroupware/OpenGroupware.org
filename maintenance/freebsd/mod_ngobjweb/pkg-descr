@@ -1,0 +1,3 @@
+This is an Apache module for forwarding HTTP requests to SOPE application
+server instances. It has the ability to ask the snsd load balancer to 
+distribute requests between processes and/or hosts.
