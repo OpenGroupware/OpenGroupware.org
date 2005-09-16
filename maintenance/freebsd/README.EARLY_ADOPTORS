@@ -1,0 +1,27 @@
+Whilst everything in here is already quite functional - this port collection
+is still in an
+
+  USE AT THY OWN RISK
+
+stage.
+
+Everything may change without further notice, rendering your installation
+inaccesible or otherwise not useful as expected.
+
+You've been warned.
+
+HOWTO:
+=========
+
+Simply checkout everything from, freebsd/
+and copy it to:
+
+   /usr/port/devel/
+
+Run your favourite 'make' target from within'
+the portsdir of what you intend to build, the
+required dependencies should be resolved automatically.
+
+(Once alive - the port won't reside in devel/
+alone - I may/will deorbit some parts to other groups according
+to the ports-developer guidelines)

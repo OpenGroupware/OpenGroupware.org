@@ -1,0 +1,34 @@
+STATUS:
+========
+
+  * general TODO:
+
+    make it autoconfig everything required depending on if
+    is an upgrade or a fresh install
+
+
+  * Joe Auty <joe at netmusician dot org> was so kind to test and
+     reported:
+
+    port: opengroupware/opengroupware-devel
+    error: portsdb/pkgdb complains about the
+           portversion/portrevision 'not in due',
+           so we have to rework the versioning scheme
+           for at least this port
+    problem: how to satisfy bsd.port.mk whilst maintaining
+             most of the naming scheme OGo uses.
+             The exact portversion/sources used to build the port
+             should be visible using pkg_info (I really don't
+             want a separate mapping FreeBSD versions vs OGo versions
+             once a user hits the mailing list/bugzille reporting an
+             issue). pkg_info should at least suggest whether $USER uses
+             a release build (port: opengroupware) and which release
+             sources were used... same for the trunk builds (port:
+             opengroupware-devel).
+
+
+    FIXED: but we lost the explicit versioning scheme in pkg_info
+           in favour of making 'portlint' even more happy.
+           I've dropped the idea of knowing the exact version reported
+           by pkg_info bc we know what versions we've committed, and thus
+           it shouldn't be hard to figure out.
