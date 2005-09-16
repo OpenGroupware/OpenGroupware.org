@@ -1509,8 +1509,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 - (NSString *)insertNotificationName {
   NSNotificationCenter *nc;
 
+  // TODO: what is this?! Evil!
   nc = [NSNotificationCenter defaultCenter];
-  
   [nc postNotificationName:SkyNewAppointmentNotification object:nil];
 
   return LSWNewAppointmentNotificationName;
@@ -1518,8 +1518,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 - (NSString *)updateNotificationName {
   NSNotificationCenter *nc;
 
+  // TODO: what is this?! Evil!
   nc = [NSNotificationCenter defaultCenter];
-  
   [nc postNotificationName:SkyUpdatedAppointmentNotification object:nil];
 
   return LSWUpdatedAppointmentNotificationName;
@@ -1527,8 +1527,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 - (NSString *)deleteNotificationName {
   NSNotificationCenter *nc;
   
+  // TODO: what is this?! Evil!
   nc = [NSNotificationCenter defaultCenter];
-  
   [nc postNotificationName:SkyDeletedAppointmentNotification object:nil];
 
   return LSWDeletedAppointmentNotificationName;
@@ -1748,7 +1748,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   /* return */
   
   [self _correctSnapshotTimeZone];
-  return [super saveAndGoBackWithCount:_backCount];
+  return [super saveAndGoBackWithCount:_backCount]; // call into LSWEditorPage
 }
 
 - (id)saveAndGoBackWithCount:(int)_backCount {
