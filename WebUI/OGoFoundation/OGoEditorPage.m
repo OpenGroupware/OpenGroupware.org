@@ -289,6 +289,7 @@
 /* actions */
 
 - (id)saveAndGoBackWithCount:(int)_backCount {
+  NSString *notificationName;
   id result = nil;
   SEL op;
   
@@ -299,22 +300,29 @@
   
   op = self->isInNewMode ? @selector(insertObject) : @selector(updateObject);
 
-  if ((result = [self _performOpInTransaction:op])) {
-    NSString *notificationName = self->isInNewMode
-      ? [self insertNotificationName]
-      : [self updateNotificationName];
-
-    ASSIGN(self->object, result);
-
-    [[self session] transferObject:result owner:self];
-
-    if (notificationName) {
-      [self postChange:notificationName onObject:result];
-    }
-    return [self backWithCount:_backCount];
+  if ((result = [self _performOpInTransaction:op]) == nil) {
+    [self errorWithFormat:@"%s: could not perform operation!", 
+	  __PRETTY_FUNCTION__];
+    return nil;
   }
-  [self debugWithFormat:@"couldn't perform op .."];
-  return nil;
+
+  /* reassign focus object and transfer that to the pasteboard */
+  // TODO: is the latter required for anything?
+  
+  ASSIGN(self->object, result);
+  [[self session] transferObject:self->object owner:self];
+
+  /* post change notification */
+  
+  notificationName = self->isInNewMode
+    ? [self insertNotificationName]
+    : [self updateNotificationName];
+  
+  if (notificationName != nil)
+    [self postChange:notificationName onObject:result];
+  
+  /* jump to a previous page */
+  return [self backWithCount:_backCount];
 }
 
 - (id)deleteAndGoBackWithCount:(int)_backCount {

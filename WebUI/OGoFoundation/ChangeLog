@@ -1,3 +1,7 @@
+2005-09-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoEditorPage.m: minor code cleanups (v5.3.88)
+
 2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed gcc4 warnings (v5.3.87)
