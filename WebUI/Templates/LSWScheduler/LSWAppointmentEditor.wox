@@ -179,15 +179,29 @@
               </OGo:font></td>
             </tr>
             <tr><td colspan="2">
-              <var:component className="SkyParticipantsSelection"
-                 participants="participants"
-                 selectedParticipants="selectedParticipants"
-                 const:plainMode="1"
-                 const:onlyAccounts="0"
-                 const:searchLabel="searchParticipants"
-                 const:selectionLabel="addParticipants"
-                 const:viewHeadLine="0"
-                 isClicked="isParticipantsClicked" />
+              <var:if condition=
+                "session.userDefaults.apteditor_useattendeeselector.boolValue"
+                const:negate="1">
+                <var:component className="SkyParticipantsSelection"
+                   participants="participants"
+                   selectedParticipants="selectedParticipants"
+                   const:plainMode="1"
+                   const:onlyAccounts="0"
+                   const:searchLabel="searchParticipants"
+                   const:selectionLabel="addParticipants"
+                   const:viewHeadLine="0"
+                   isClicked="isParticipantsClicked" />
+              </var:if>
+              <var:if condition=
+                "session.userDefaults.apteditor_useattendeeselector.boolValue">
+                <var:component className="OGoAttendeeSelection"
+                   participants="participants"
+                   selectedParticipants="selectedParticipants"
+                   const:onlyAccounts="0"
+                   const:searchLabel="searchParticipants"
+                   const:selectionLabel="addParticipants"
+                   isClicked="isParticipantsClicked" />
+              </var:if>
             </td></tr>
             <tr><td colspan="2"></td></tr>
 

@@ -1,5 +1,11 @@
 2005-09-16  Helge Hess  <helge.hess@skyrix.com>
 
+	* v5.3.75
+
+	* OGoAttendeeSelection.m: added ivars for selected roles
+
+	* SkyParticipantsSelection.m: added ivar flag for plainmode
+
 	* v5.3.74
 	
 	* added OGoAttendeeSelection component (uses OGoUserSelectionComponent)

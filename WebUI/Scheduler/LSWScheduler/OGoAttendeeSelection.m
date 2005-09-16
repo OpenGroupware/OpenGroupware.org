@@ -31,6 +31,8 @@
 
 @interface OGoAttendeeSelection : OGoUserSelectionComponent
 {
+  NSString *itemRole; /* CHAIR, REQ-PARTICIPANT, ... */
+  NSString *selectedItemRole;
 }
 @end
 
@@ -39,4 +41,50 @@
 #include "common.h"
 
 @implementation OGoAttendeeSelection
+
+- (void)dealloc {
+  [self->selectedItemRole release];
+  [self->itemRole release];
+  [super dealloc];
+}
+
+/* accessors */
+
+- (void)setItemRole:(NSString *)_value {
+  ASSIGNCOPY(self->itemRole, _value);
+}
+- (NSString *)itemRole {
+  return self->itemRole;
+}
+
+- (void)setSelectedItemRole:(NSString *)_value {
+  ASSIGNCOPY(self->selectedItemRole, _value);
+}
+- (NSString *)selectedItemRole {
+  return self->selectedItemRole;
+}
+
+/* derived accessors */
+
+- (NSString *)itemRoleLabel {
+  NSString *s;
+  
+  if ((s = [self itemRole]) == nil)
+    return nil;
+  
+  s = [s hasPrefix:@"-"]
+    ? [@"popupaction_" stringByAppendingString:s]
+    : [@"popuprole_"   stringByAppendingString:s];
+  
+  return [[self labels] valueForKey:s];
+}
+
+/* notifications */
+
+- (void)sleep {
+  [self->itemRole         release]; self->itemRole         = nil;
+  [self->selectedItemRole release]; self->selectedItemRole = nil;
+  [super sleep];
+}
+
 @end /* OGoAttendeeSelection */

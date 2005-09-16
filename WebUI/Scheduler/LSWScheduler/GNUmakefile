@@ -27,6 +27,7 @@ LSWScheduler_OBJC_FILES = 			\
 	SkyAptTypeSelection.m			\
 	OGoAppointmentDateFormatter.m		\
 	OGoUserSelectionComponent.m		\
+	OGoAttendeeSelection.m			\
 
 LSWScheduler_RESOURCE_FILES += Defaults.plist Version
 

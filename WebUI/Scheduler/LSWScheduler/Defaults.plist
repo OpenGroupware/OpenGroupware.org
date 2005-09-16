@@ -95,4 +95,21 @@
   apteditor_cycletypes   = (
     "daily", "weekly", "14_daily", "4_weekly", "monthly", "weekday", "yearly"
   );
+
+  apteditor_useattendeeselector = NO;
+
+  attendeeselector_setrolelist = (
+    "CHAIR",
+    "REQ-PARTICIPANT",
+    "OPT-PARTICIPANT",
+    "NON-PARTICIPANT",
+    "-remove"
+  );
+  attendeeselector_addrolelist = (
+    "-donotadd",
+    "CHAIR",
+    "REQ-PARTICIPANT",
+    "OPT-PARTICIPANT",
+    "NON-PARTICIPANT"
+  );
 }

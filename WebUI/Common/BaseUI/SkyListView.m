@@ -183,11 +183,11 @@
   return self->itemTemplate;
 }
 
-- (BOOL)selectInverse {
-  return selectInverse;
-}
 - (void)setSelectInverse:(BOOL)_flag {
   self->selectInverse = _flag;
+}
+- (BOOL)selectInverse {
+  return self->selectInverse;
 }
 
 - (void)setUseRadioButtons:(BOOL)_flag {

@@ -130,7 +130,7 @@ static NSArray  *emptyArray          = nil;
   if ((result = [self->item valueForKey:@"name"]) == nil)
     return [self->item valueForKey:@"login"];
   
-  if ((fd = [self->item valueForKey:@"firstname"]))
+  if ((fd = [self->item valueForKey:@"firstname"]) != nil)
     result = [NSString stringWithFormat:@"%@, %@", result, fd];
   
   return result;

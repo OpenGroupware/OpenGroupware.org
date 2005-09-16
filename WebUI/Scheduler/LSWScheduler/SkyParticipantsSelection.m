@@ -26,7 +26,8 @@
   NSString *headLineLabel;
   struct {
     int viewHeadLine:1;
-    int reserved:31;
+    int plainMode:1;
+    int reserved:30;
   } spsFlags;
 }
 @end
@@ -63,6 +64,13 @@ static BOOL hasLSWEnterprises = NO;
 }
 - (BOOL)viewHeadLine {
   return self->spsFlags.viewHeadLine ? YES : NO;
+}
+
+- (void)setPlainMode:(BOOL)_view {
+  self->spsFlags.plainMode = _view ? 1 : 0;
+}
+- (BOOL)plainMode {
+  return self->spsFlags.plainMode ? YES : NO;
 }
 
 - (void)setHeadLineLabel:(NSString *)_str {
