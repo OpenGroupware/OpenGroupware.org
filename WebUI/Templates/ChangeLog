@@ -1,3 +1,7 @@
+2005-09-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWScheduler/LSWAppointmentEditor.wox: fixed indentation
+
 2005-09-09  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoSchedulerViews/SkyInlineDayHChart: rewritten as WOx template
