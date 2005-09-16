@@ -46,57 +46,51 @@
   </var:if>
 
   <var:if condition="hasParticipantSelection">
-    <table border="0" cellpadding="0" cellspacing="0" width="98%">
+   <div style="padding-top: 3px;">
+    <table border="0" cellpadding="2" cellspacing="0" width="98%">
       <var:foreach list="participants" item="item">
         <tr>
-          <td><OGo:font>
-            <var:string value="item.login" />
-          </OGo:font></td>
-          <var:if condition="showExtended">
-            <td><OGo:font>
-              <i>
-                <var:foreach value="item.enterprises"
-                             item="company"
-                             const:separator=", ">
-                  <var:string value="company.description" />
-                </var:foreach>
-              </i>
-            </OGo:font></td>
-          </var:if>
-          <td align="right"><OGo:font>
+          <OGo:td-value>
+            <var:string value="participantLabel" />
+          </OGo:td-value>
+
+          <td align="right" var:bgcolor="config.colors_valueCell"><OGo:font>
             <var:popup list="session.userDefaults.attendeeselector_setrolelist"
                        item="itemRole" string="itemRoleLabel"
                        selection="selectedItemRole" />
           </OGo:font></td>
         </tr>
       </var:foreach>
-    </table>
 
-    <table border="0" cellpadding="0" cellspacing="0" width="98%">
       <var:foreach list="resultList" item="item">
         <tr>
           <td><OGo:font>
-            <var:string value="item.login" />
+            <var:string value="participantLabel" />
           </OGo:font></td>
+
           <td align="right"><OGo:font>
             <var:popup list="session.userDefaults.attendeeselector_addrolelist"
                        item="itemRole" string="itemRoleLabel"
                        selection="selectedItemRole" />
           </OGo:font></td>
         </tr>
+        <var:if condition="showExtended">
+          <var:if condition="item.enterprises.isNotEmpty">
+            <tr>
+              <td colspan="2"><OGo:font>
+                <i style="padding-left: 10px; padding-bottom: 2px;">
+                  <var:foreach list="item.enterprises"
+                               item="company"
+                               const:separator=", ">
+                    <var:string value="company.description" />
+                  </var:foreach>
+                </i>
+              </OGo:font></td>
+            </tr>
+          </var:if>
+        </var:if>
       </var:foreach>
     </table>
-
-    <OGo:font>
-        <OGo:listview 
-          var:list="participants" var:item="item" var:columns="noOfCols"
-          const:selectInverse="1"
-          var:selectedItems="removedParticipants"
-          var:attributes="attributesList" />
-        <OGo:listview
-          var:list="resultList" var:item="item" var:columns="noOfCols"
-          var:selectedItems="addedParticipants"
-          var:attributes="attributesList" />
-    </OGo:font>
+   </div>
   </var:if>
 </OGo:container>

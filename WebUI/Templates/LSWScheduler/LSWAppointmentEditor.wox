@@ -199,7 +199,6 @@
                    selectedParticipants="selectedParticipants"
                    const:onlyAccounts="0"
                    const:searchLabel="searchParticipants"
-                   const:selectionLabel="addParticipants"
                    isClicked="isParticipantsClicked" />
               </var:if>
             </td></tr>

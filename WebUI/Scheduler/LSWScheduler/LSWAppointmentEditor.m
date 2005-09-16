@@ -515,7 +515,9 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   [super syncSleep];
 }
 
-- (id)invokeActionForRequest:(WORequest *)_request inContext:(WOContext *)_ctx {
+/* action handling */
+
+- (id)invokeActionForRequest:(WORequest *)_rq inContext:(WOContext *)_ctx {
   [self _ensureSyncAwake];
 
   if ([self->timeInputType isEqualToString:@"PopUp"]) {
@@ -527,8 +529,10 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     self->endTime   = [[self timeStringForHour:[self->endHour intValue]
                              minute:[self->endMinute intValue]] retain];
   }
-  return [super invokeActionForRequest:_request inContext:_ctx];
+  return [super invokeActionForRequest:_rq inContext:_ctx];
 }
+
+/* resources */
 
 - (NSString *)_resourceString {
   return ([self->resources count] == 0)
@@ -867,21 +871,21 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 /* --- notificationTime ------------------------------------------- */
 
 - (void)setNotificationTime:(NSString *)_time {
-  ASSIGN(self->notificationTime, _time);
+  ASSIGNCOPY(self->notificationTime, _time);
 }
 - (NSString *)notificationTime {
   return self->notificationTime;
 }
 
 - (void)setMeasure:(NSString *)_measure {
-  ASSIGN(self->measure, _measure);
+  ASSIGNCOPY(self->measure, _measure);
 }
 - (NSString *)measure {
   return self->measure;   // "minutes" || "hours" || "days"
 }
 
 - (void)setSelectedMeasure:(NSString *)_measure {
-  ASSIGN(self->selectedMeasure, _measure);
+  ASSIGNCOPY(self->selectedMeasure, _measure);
 }
 - (NSString *)selectedMeasure {
   return self->selectedMeasure;
@@ -1193,11 +1197,11 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (NSArray *)expandedParticipants {
-  int      i, cnt;
-  id       staffSet;
+  NSMutableSet *staffSet;
+  unsigned i, cnt;
         
   cnt      = [self->participants count];
-  staffSet = [NSMutableSet set];
+  staffSet = [NSMutableSet setWithCapacity:cnt];
         
   for (i = 0; i < cnt; i++) {
     NSArray *members;
@@ -1215,9 +1219,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     }
     [staffSet addObjectsFromArray:members];
   }
-  staffSet = [staffSet allObjects];
-
-  return staffSet;
+  return [staffSet allObjects];
 }
 
 - (NSString *)cycleType {
@@ -1312,8 +1314,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (BOOL)scanTo24HourTime:(NSString *)_time
-                    hour:(int *)hour_
-                  minute:(int *)minute_
+  hour:(int *)hour_ minute:(int *)minute_
 {
   int  hour;
   int  minute;
@@ -1342,7 +1343,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   id              l;
   int             hours, minutes;
 
-  if ([[self errorString] length]) return YES;  
+  if ([[self errorString] isNotEmpty]) return YES;  
   
   appointment = [self snapshot];
   error       = [NSMutableString stringWithCapacity:128];

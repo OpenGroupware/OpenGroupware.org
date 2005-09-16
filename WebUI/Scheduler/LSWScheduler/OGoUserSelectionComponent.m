@@ -28,7 +28,7 @@ static int compareParticipants(id part1, id part2, void *context);
 
 @interface NSObject(PRIVATE)
 - (EOGlobalID *)globalID;
-- (id)search;
+- (void)searchAndResetSearchText;
 @end
 
 @implementation OGoUserSelectionComponent
@@ -54,10 +54,8 @@ static NSArray  *emptyArray          = nil;
 
 - (id)init {
   if ((self = [super init]) != nil) {
-    self->resultList            = [[NSMutableArray alloc] initWithCapacity:16];
-    self->removedParticipants   = [[NSMutableArray alloc] initWithCapacity:4];
-    self->addedParticipants     = [[NSMutableArray alloc] initWithCapacity:4];
-    self->participants          = [[NSMutableArray alloc] initWithCapacity:8];
+    self->resultList   = [[NSMutableArray alloc] initWithCapacity:16];
+    self->participants = [[NSMutableArray alloc] initWithCapacity:8];
   }
   return self;
 }
@@ -67,61 +65,58 @@ static NSArray  *emptyArray          = nil;
   [self->searchTeam          release];
   [self->participants        release];
   [self->resultList          release];
-  [self->removedParticipants release];
-  [self->addedParticipants   release];
   [self->selectedParticipantsCache  release];
   [super dealloc];
 }
 
 /* notifications */
 
-- (void)syncAwake {
-  [super syncAwake];
-  // this must be run *before* -takeValuesFromRequest:inContext: is called
-  [self->removedParticipants removeAllObjects];
-  [self->addedParticipants   removeAllObjects];
-}
-
 - (void)syncSleep {
   // reset transient variables
-  [self->removedParticipants removeAllObjects];
-  [self->addedParticipants   removeAllObjects];
   [self->selectedParticipantsCache release];
   self->selectedParticipantsCache = nil;
   [super syncSleep];
 }
 
+- (void)sleep {
+  [self->item release]; self->item = nil;
+  [super sleep];
+}
+
 /* handling requests */
 
-- (void)takeValuesFromRequest:(WORequest *)_req inContext:(WOContext *)_ctx {
-  if (debugOn) [self debugWithFormat:@"take values"];
-  
-  [super takeValuesFromRequest:_req inContext:_ctx];
-
-  if (debugOn) [self debugWithFormat:@"  text: '%@'", self->searchText];
-  
-  // TODO: is this swap correct? If so, document!
-  if (self->searchText != nil && ([self->searchText length] > 0)) {
+- (void)_ensureEitherSearchTestOrPopUpTeam {
+  /* If a search-text is set, use it and reset the search team */
+  if ([self->searchText isNotEmpty]) {
     [self->searchTeam release]; 
     self->searchTeam = nil;
   }
-  if (self->searchTeam != nil) {
+  else if ([self->searchTeam isNotNull]) {
+    /* this catches empty searchText setups */
     [self->searchText release]; 
     self->searchText = nil;
   }
-  
-  if (debugOn) [self debugWithFormat:@"  after: '%@'", self->searchText];
-  
-  [self search];
-  [self->searchText release]; self->searchText = nil;
+}
+
+- (void)takeValuesFromRequest:(WORequest *)_req inContext:(WOContext *)_ctx {
+  /*
+    This is overridden to ensure that the search is done (and all arrays are
+    properly setup) _before_ any action runs (eg a 'save' action in the main
+    editor).
+  */
+  [super takeValuesFromRequest:_req inContext:_ctx];
+  [self _ensureEitherSearchTestOrPopUpTeam];
+  [self searchAndResetSearchText];
 }
 
 /* implementation */
 
 - (NSString *)participantLabel {
   // TODO: should be done by a formatter
+  // Note: this is apparently also called indirectly by SkyListView using the
+  //       'binding' key in the attributes dictionary
   NSString *result = nil, *fd;
-
+  
   if ([[self->item valueForKey:@"isTeam"] boolValue]) {
     result = [self->item valueForKey:@"description"];
     return [@"Team: " stringByAppendingString:result];
@@ -137,11 +132,12 @@ static NSArray  *emptyArray          = nil;
 }
 
 - (void)removeDuplicateParticipantListEntries {
-  int i, count;
-
+  /* remove participants from 'resultList' which are in 'participants' */
+  unsigned i, count;
+  
   for (i = 0, count = [self->participants count]; i < count; i++) {
-    int j, count2;
-    id  pkey;
+    unsigned j, count2;
+    NSNumber *pkey;
     
     pkey = [[self->participants objectAtIndex:i] valueForKey:@"companyId"];
     if (pkey == nil) continue;
@@ -186,7 +182,7 @@ static NSArray  *emptyArray          = nil;
 
 - (void)setSearchTeam:(id)_team {
   if (_team != nil && ![self->searchTeam isEqual:_team])
-     self->uscFlags.isClicked = 1;
+    self->uscFlags.isClicked = 1; // TODO: used for what?
   ASSIGN(self->searchTeam, _team);
 }
 - (id)searchTeam {
@@ -292,138 +288,99 @@ static NSArray  *emptyArray          = nil;
   return d;
 }
 
-/* participants management */
+- (NSArray *)getCompanyEOsForCompanyRecordList:(NSArray *)part
+  doResolveTeams:(BOOL)_resolveTeams
+{
+  /*
+    Note: this returns a *retained* array!
+    
+    Input elements can be:
+    a) EOs => taken as is
+    b) GIDs
+    c) NSDictionary records
+    
+    The result is a set of EO objects (Person or Team entities).
+  */
+  // TODO: should be a command?
+  NSMutableArray *pgids, *tgids;    
+  NSEnumerator   *enumerator;
+  id             obj;
+  NSMutableArray *result;
 
-- (void)initializeParticipants {
-  int i, count;
+  pgids  = [[NSMutableArray alloc] initWithCapacity:16];
+  tgids  = [[NSMutableArray alloc] initWithCapacity:16];
+  result = [[NSMutableArray alloc] initWithCapacity:16];
   
-  // participants selected in resultList
-  for (i = 0, count = [self->addedParticipants count]; i < count; i++) {
-    id  participant;
-    id  pkey;
-    int j, count2;
-
-    participant = [self->addedParticipants objectAtIndex:i];
-    pkey        = [participant valueForKey:@"companyId"];
-    if (pkey == nil) {
-      NSLog(@"ERROR(%@): invalid pkey of participant %@", self, participant);
-      continue;
-    }
-    for (j = 0, count2 = [self->participants count]; j < count2; j++) {
-      id opkey;
-
-      opkey = [[self->participants objectAtIndex:j] valueForKey:@"companyId"];
-      if ([opkey isEqual:pkey]) { // already in array
-        pkey = nil;
-        break;
+  /* filter out team and person gids */
+  
+  enumerator = [part objectEnumerator];
+  while ((obj = [enumerator nextObject]) != nil) {
+    if ([obj isKindOfClass:[NSDictionary class]] || 
+	[obj isKindOfClass:[EOGlobalID class]]) {
+      EOGlobalID *gid = nil;
+      
+      if ([obj isKindOfClass:[NSDictionary class]]) {
+	if ((gid = [(NSDictionary *)obj objectForKey:@"globalID"]) == nil) {
+	  [self warnWithFormat:@"missing globalID for %@", obj];
+	  continue;
+	}
       }
+      else
+	gid = obj;
+      
+      if ([[gid entityName] isEqualToString:@"Person"])
+	[pgids addObject:gid];
+      else if ([[gid entityName] isEqualToString:@"Team"])
+	[tgids addObject:gid];
+      else
+	[self warnWithFormat:@"unexpected gid: %@", gid];
     }
-    if (pkey) {
-      [self->participants addObject:participant];
-      [self->resultList removeObject:participant];
+    else { /* treated as an EO */
+      if (_resolveTeams && [[obj valueForKey:@"isTeam"] boolValue]) {
+	[tgids addObject:[obj globalID]];
+      }
+      else
+	[result addObject:obj];
     }
   }
-  [self->addedParticipants removeAllObjects];
-    // participants not selected in participants list
-  for (i = 0, count = [self->removedParticipants count]; i < count; i++) {
-    id  participant;
-    id  pkey;
-    int j, count2, removeIdx = -1;
+  
+  /* fetch pending persons */
 
-    participant = [self->removedParticipants objectAtIndex:i];
-    pkey        = [participant valueForKey:@"companyId"];
-
-    if (pkey == nil) {
-      NSLog(@"ERROR(%@): invalid pkey of participant %@", self, participant);
-      continue;
+  if ([pgids count] > 0)
+    [result addObjectsFromArray:[self _fetchPersonEOsForGlobalIDs:pgids]];
+  
+  /* fetch pending teams */
+    
+  if ([tgids count] > 0) {
+    NSArray *teams;
+      
+    if (_resolveTeams) {
+      // TODO: fix variable naming ...
+      teams = [self _fetchTeamMemberGlobalIDsForTeamGlobalIDs:tgids];
+      teams = [self _fetchPersonEOsForGlobalIDs:teams];
     }
-    for (j = 0, count2 = [self->participants count]; j < count2; j++) {
-      id opkey;
-      opkey = [[self->participants objectAtIndex:j] valueForKey:@"companyId"];
-      if ([opkey isEqual:pkey]) { // found in array
-        removeIdx = j;
-        break;
-      }
-    }
-    if (removeIdx != -1) {
-      [self->participants removeObjectAtIndex:removeIdx];
-      [self->resultList addObject:participant];
-    }
+    else
+      teams = [self _fetchTeamEOsForGlobalIDs:tgids];
+    
+    [result addObjectsFromArray:teams];
   }
-  [self->removedParticipants removeAllObjects];
+  
+  [tgids release]; tgids = nil;
+  [pgids release]; pgids = nil;    
+  return result;
 }
 
 - (void)setSelectedParticipants:(id)_part {
+  // KVC support
 }
 - (NSArray *)selectedParticipants {
-  NSMutableArray *pgids      = nil;
-  NSMutableArray *tgids      = nil;    
-  NSEnumerator   *enumerator = nil;
-  id             obj         = nil;
-  NSArray        *part       = nil;
-  NSMutableArray *result     = nil;
-
+  /* Note: this is reset in -syncSleep */
   if (self->selectedParticipantsCache != nil)
     return self->selectedParticipantsCache;
-
-  part       = [self participants];
-  pgids      = [[NSMutableArray alloc] initWithCapacity:16];
-  tgids      = [[NSMutableArray alloc] initWithCapacity:16];
-  result     = [[NSMutableArray alloc] initWithCapacity:16];
-
-  enumerator = [part objectEnumerator];
-  while ((obj = [enumerator nextObject]) != nil) {
-      if ([obj isKindOfClass:[NSDictionary class]]) {
-        id gid = nil;
-
-        gid = [(NSDictionary *)obj objectForKey:@"globalID"];
-        if (gid == nil) {
-          NSLog(@"WARNING: missing globalID for %@", obj);
-        }
-        else {
-          if ([[gid entityName] isEqualToString:@"Person"]) {
-            [pgids addObject:gid];
-          }
-          else if ([[gid entityName] isEqualToString:@"Team"]) {
-            [tgids addObject:gid];
-          }
-          else {
-            NSLog(@"WARNING: unknown gid %@", gid);
-          }
-        }
-      }
-      else {
-        if ((self->uscFlags.resolveTeams) &&
-            ([[obj valueForKey:@"isTeam"] boolValue])) {
-          [tgids addObject:[obj globalID]];
-        }
-        else {
-          [result addObject:obj];
-        }
-      }
-  }
-    
-  if ([pgids count] > 0)
-    [result addObjectsFromArray:[self _fetchPersonEOsForGlobalIDs:pgids]];
-    
-  if ([tgids count] > 0) {
-      NSArray *teams;
-      
-      if (self->uscFlags.resolveTeams) {
-        // TODO: fix variable naming ...
-        teams = [self _fetchTeamMemberGlobalIDsForTeamGlobalIDs:tgids];
-        teams = [self _fetchPersonEOsForGlobalIDs:teams];
-      }
-      else {
-        teams = [self _fetchTeamEOsForGlobalIDs:tgids];
-      }
-      [result addObjectsFromArray:teams];
-  }
-    
-  [tgids release]; tgids = nil;
-  [pgids release]; pgids = nil;    
-  self->selectedParticipantsCache = result;
   
+  self->selectedParticipantsCache = 
+    [self getCompanyEOsForCompanyRecordList:[self participants]
+	  doResolveTeams:self->uscFlags.resolveTeams];
   return self->selectedParticipantsCache;
 }
 
@@ -468,42 +425,6 @@ static NSArray  *emptyArray          = nil;
                            context:NULL];
 }
 
-- (void)setAddedParticipants:(NSMutableArray *)_addedParticipants {
-  ASSIGN(self->addedParticipants, _addedParticipants);
-}
-- (NSMutableArray *)addedParticipants {
-  return self->addedParticipants;
-}
-
-- (void)setRemovedParticipants:(NSMutableArray *)_removedParticipants {
-  ASSIGN(self->removedParticipants, _removedParticipants);
-}
-- (NSMutableArray *)removedParticipants {
-  return self->removedParticipants;
-}
-
-- (NSArray *)attributesList {
-  NSMutableArray      *myAttr;
-  NSMutableDictionary *myDict1;
-  NSMutableDictionary *myDict2;
-
-  myAttr  = [NSMutableArray arrayWithCapacity:16];
-  myDict1 = [[NSMutableDictionary alloc] initWithCapacity:8];
-  myDict2 = [[NSMutableDictionary alloc] initWithCapacity:8];
-  
-  [myDict1 takeValue:@"participantLabel" forKey:@"binding"];
-  [myAttr addObject: myDict1];
-  
-  if (self->uscFlags.showExtended) {
-    [myDict2 takeValue:@"enterprises.description" forKey:@"key"];
-    [myDict2 takeValue:@",  " forKey:@"separator"];
-    [myAttr addObject: myDict2];
-  }
-  [myDict1 release]; myDict1 = nil;
-  [myDict2 release]; myDict2 = nil;
-  return myAttr;
-}
-
 - (int)noOfCols {
   id  d;
   int n;
@@ -531,8 +452,8 @@ static NSArray  *emptyArray          = nil;
     return;
   }
   
-  personGIDs = [self->resultList 
-                    map:@selector(objectForKey:) with:@"globalID"];
+  personGIDs = [self->resultList map:@selector(objectForKey:) 
+		                 with:@"globalID"];
   personEnterprises = [self _fetchEnterpriseGlobalIDsForPersonGlobalIDs:
                               personGIDs];
     
@@ -556,15 +477,15 @@ static NSArray  *emptyArray          = nil;
   enumerator  = [personEnterprises keyEnumerator];
   persons     = [[NSMutableDictionary alloc] initWithCapacity:
                                                [personEnterprises count]];
-  while ((obj = [enumerator nextObject])) {
+  while ((obj = [enumerator nextObject]) != nil) {
     NSEnumerator   *e;
     id             o;
     NSMutableArray *array;
 
     e = [[personEnterprises objectForKey:obj] objectEnumerator];
 	
-    array = [NSMutableArray array];
-    while ((o = [e nextObject])) {
+    array = [NSMutableArray arrayWithCapacity:16];
+    while ((o = [e nextObject]) != nil) {
       id o1;
 	  
       if ((o1 = [enterprises objectForKey:o]) == nil)
@@ -576,7 +497,7 @@ static NSArray  *emptyArray          = nil;
   }
 
   enumerator = [self->resultList objectEnumerator];
-  while ((obj = [enumerator nextObject])) {
+  while ((obj = [enumerator nextObject]) != nil) {
     EOGlobalID *key;
     id ent;
         
@@ -589,88 +510,92 @@ static NSArray  *emptyArray          = nil;
   [persons release]; persons = nil;
 }
 
-- (id)search {
-  // TODO: split up this huge method!
-  BOOL didSearch = NO;
+- (void)addSearchResultsNotInParticipantsToResultList:(NSDictionary *)_results{
+  NSEnumerator *enu;
+  id obj;
 
+  if (_results == nil)
+    return;
+  
+  enu = [_results objectEnumerator];
+  while ((obj = [enu nextObject]) != nil) {
+    NSMutableDictionary *m;
+    
+    if ([self->participants containsObject:obj])
+      continue;
+    
+    m = [obj mutableCopy]; // make it mutable (why is this necessary???)
+    [self->resultList addObject:m];
+    [m release];
+  }
+}
+
+- (void)_doSearch:(NSString *)_txt {
+  /*
+    Note that the text can contain commas, eg: "donald,mickey".
+
+    The method returns whether something was searched for.
+  */
+  NSMutableDictionary *result;
+  NSString     *searchTextPart;
+  NSEnumerator *enu;
+  
+  if (![_txt isNotEmpty])
+    return;
+  
+  result = [NSMutableDictionary dictionaryWithCapacity:1];
+  
+  /* search for each component */
+  enu = [[_txt componentsSeparatedByString:@","] objectEnumerator];
+  while ((searchTextPart = [enu nextObject]) != nil) {
+    NSDictionary *res;
+    NSArray *gids;
+    
+    searchTextPart = [searchTextPart stringByTrimmingSpaces];
+    if (![searchTextPart isNotEmpty])
+      continue;
+      
+    gids = [self _fetchPersonGlobalIDsMatchingSubstring:searchTextPart
+		 onlyAccounts:self->uscFlags.onlyAccounts];
+    res = [self _fetchPersonNameAttributesGroupedByGlobalIDs:gids];
+    if (res != nil) [result addEntriesFromDictionary:res];
+  }
+  
+  [self addSearchResultsNotInParticipantsToResultList:result];
+}
+
+- (void)_setupTeamInResultList:(id)_selectedTeam {
+  NSDictionary *res;
+  NSArray      *gids;
+
+  if (![_selectedTeam isNotNull])
+    return;
+
+  if (![_selectedTeam isKindOfClass:[EOGlobalID class]])
+    _selectedTeam = [_selectedTeam globalID];
+    
+  gids = [self _fetchTeamMemberGlobalIDsForTeamGlobalID:_selectedTeam];
+  
+  // TODO: assigning an immutable to result
+  res = [self _fetchPersonNameAttributesGroupedByGlobalIDs:gids];
+  
+  [self addSearchResultsNotInParticipantsToResultList:res];
+}
+
+- (id)search {
   if (debugOn)
     [self debugWithFormat:@"perform search: '%@' ...", self->searchText];
   
-  [self initializeParticipants];
   [self->resultList removeAllObjects];
 
   /* search in persons */
-  if ([self->searchText length] > 0) {
-    NSMutableDictionary *result   = nil;
-    NSString     *searchTextPart = nil;
-    NSEnumerator *enu            = nil;
-    NSDictionary *res            = nil;
-    
-    result = [NSMutableDictionary dictionaryWithCapacity:1];
-    
-    enu = [[self->searchText componentsSeparatedByString:@","]
-                             objectEnumerator];
-    while ((searchTextPart = [enu nextObject]) != nil) {
-      NSArray *gids;
-      
-      if ([searchTextPart length] == 0)
-        continue;
-
-      searchTextPart = [searchTextPart stringByTrimmingSpaces];
-      
-      gids = [self _fetchPersonGlobalIDsMatchingSubstring:searchTextPart
-                   onlyAccounts:self->uscFlags.onlyAccounts];
-      res = [self _fetchPersonNameAttributesGroupedByGlobalIDs:gids];
-      if (res) [result addEntriesFromDictionary:res];
-    }
-    
-    if (result != nil) {
-      NSEnumerator *enumerator;
-      NSDictionary *obj;
-      
-      enumerator = [result objectEnumerator];
-      while ((obj = [enumerator nextObject]) != nil) {
-        NSMutableDictionary *m;
-        
-        if ([self->participants containsObject:obj])
-          continue;
-        
-        m = [obj mutableCopy];
-        [self->resultList addObject:m];
-        [m release];
-      }
-    }
-    didSearch = YES;
-  }
+  if ([self->searchText isNotEmpty])
+    [self _doSearch:self->searchText];
   
   /* show selected teams */
-  if ([self->searchTeam isNotNull]) {
-    NSDictionary *res;
-    NSArray      *gids;
-    
-    gids = [self _fetchTeamMemberGlobalIDsForTeamGlobalID:
-                   [self->searchTeam globalID]];
-    
-    // TODO: assigning an immutable to result
-    res = [self _fetchPersonNameAttributesGroupedByGlobalIDs:gids];
-    if (res != nil) {
-      NSEnumerator *enumerator;
-      NSDictionary *obj;
-      
-      enumerator = [res objectEnumerator];
-      while ((obj = [enumerator nextObject])) { // TODO: looks like a DUP
-        NSMutableDictionary *m;
-        
-        if ([self->participants containsObject:obj])
-          continue;
-        
-        m = [obj mutableCopy];
-        [self->resultList addObject:m];
-        [m release];
-      }
-    }
-    didSearch = YES;
-  }
+  if ([self->searchTeam isNotNull])
+    [self _setupTeamInResultList:self->searchTeam];
+  
   [self removeDuplicateParticipantListEntries];
   
   if (self->uscFlags.showExtended)
@@ -683,19 +608,17 @@ static NSArray  *emptyArray          = nil;
   return nil;
 }
 
+- (void)searchAndResetSearchText {
+  // called by -takeValuesFromRequest:inContext:!
+  
+  [self search];
+  [self->searchText release]; self->searchText = nil;
+}
+
 - (id)searchAction {
   if (debugOn) [self debugWithFormat:@"0x%08X did click search ...", self];
   self->uscFlags.isClicked = 1;
   return nil;
-}
-
-/* notifications */
-
-- (void)sleep {
-  [self->removedParticipants removeAllObjects];
-  [self->addedParticipants   removeAllObjects];
-  [self->item release]; self->item = nil;
-  [super sleep];
 }
 
 /* accessors */
@@ -724,13 +647,6 @@ static NSArray  *emptyArray          = nil;
 }
 - (NSString *)searchLabel {
   return self->searchLabel;
-}
-
-- (void)setSelectionLabel:(NSString *)_str {
-  ASSIGNCOPY(self->selectionLabel, _str);
-}
-- (NSString *)selectionLabel {
-  return self->selectionLabel;
 }
 
 - (void)setIsClicked:(BOOL)_flag {

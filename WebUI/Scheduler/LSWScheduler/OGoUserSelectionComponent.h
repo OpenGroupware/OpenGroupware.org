@@ -43,8 +43,6 @@
 {
   NSMutableArray *participants;
   NSMutableArray *resultList;
-  NSMutableArray *removedParticipants;
-  NSMutableArray *addedParticipants;
 
   NSArray  *selectedParticipantsCache;
   NSString *searchText;
@@ -52,7 +50,6 @@
   id       item;
 
   NSString *searchLabel;
-  NSString *selectionLabel;
 
   struct {
     int showExtended:1;
@@ -63,8 +60,13 @@
   } uscFlags;
 }
 
-- (void)initializeParticipants;
+/* accessors */
+
 - (NSArray *)participants;
+
+/* actions */
+
+- (id)search;
 
 @end
 

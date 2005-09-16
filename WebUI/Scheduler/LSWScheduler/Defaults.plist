@@ -99,16 +99,16 @@
   apteditor_useattendeeselector = NO;
 
   attendeeselector_setrolelist = (
-    "CHAIR",
     "REQ-PARTICIPANT",
+    "CHAIR",
     "OPT-PARTICIPANT",
     "NON-PARTICIPANT",
     "-remove"
   );
   attendeeselector_addrolelist = (
     "-donotadd",
-    "CHAIR",
     "REQ-PARTICIPANT",
+    "CHAIR",
     "OPT-PARTICIPANT",
     "NON-PARTICIPANT"
   );

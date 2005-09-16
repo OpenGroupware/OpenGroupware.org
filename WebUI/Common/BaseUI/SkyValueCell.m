@@ -123,7 +123,7 @@
   [_response appendContentString:@"<td align=\"left\""];
   if (self->alignTop)
     [_response appendContentString:@" valign=\"top\""];
-  if (color) {
+  if (color != nil) {
     [_response appendContentString:@" bgcolor=\""];
     [_response appendContentString:[color stringValue]];
     [_response appendContentString:@"\""];
