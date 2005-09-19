@@ -194,9 +194,16 @@
               </var:if>
               <var:if condition=
                 "session.userDefaults.apteditor_useattendeeselector.boolValue">
+                <!--
+                  TODO: why are there two bindings for the participants?
+                        'selectedParticipants' is an out parameter and returns
+                        EOs based on the 'participants' (potentially resolving
+                        teams if configured so).
+                  -->
                 <var:component className="OGoAttendeeSelection"
                    participants="participants"
                    selectedParticipants="selectedParticipants"
+                   roleMap="roleMap"
                    const:onlyAccounts="0"
                    const:searchLabel="searchParticipants"
                    isClicked="isParticipantsClicked" />

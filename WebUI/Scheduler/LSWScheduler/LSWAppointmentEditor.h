@@ -32,6 +32,7 @@
 */
 
 @class NSString, NSArray, NSMutableArray, NSUserDefaults, NSTimeZone;
+@class NSMutableDictionary;
 
 @interface LSWAppointmentEditor : LSWEditorPage
 {
@@ -45,7 +46,8 @@
   
   NSMutableArray *participants;
   NSArray        *selectedParticipants;
-  
+  NSMutableDictionary *roleMap;
+
   NSMutableArray *accessMembers;
   NSArray        *selectedAccessMembers;
 

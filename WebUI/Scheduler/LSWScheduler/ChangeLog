@@ -1,5 +1,7 @@
 2005-09-19  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSWAppointmentEditor.m: properly load the rolemap (v5.3.79)
+
 	* LSWAppointmentEditor.m: code cleanups (v5.3.78)
 
 2005-09-17  Helge Hess  <helge.hess@opengroupware.org>

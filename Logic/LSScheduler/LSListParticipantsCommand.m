@@ -69,12 +69,12 @@
     enterprises.companyId
     enterprises.globalID
  
-   dateId
-   dateIds
-   gid
-   gids
+  dateId
+  dateIds
+  gid
+  gids
  
-   groupBy
+  groupBy
 */
 
 // TODO: needs more cleanup
@@ -303,14 +303,17 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
 }
 
 - (NSDictionary *)mappedToCompanyId:(NSArray *)_ar {
+  // TODO: move to an NSArray category? (maybe already in NGExt?)
   NSMutableDictionary *md;
   NSEnumerator *e;
-  id           one, key;
-
+  id           one;
+  
   md = [NSMutableDictionary dictionaryWithCapacity:[_ar count]];
   e  = [_ar objectEnumerator];
   
-  while ((one = [e nextObject])) {
+  while ((one = [e nextObject]) != nil) {
+    NSNumber *key;
+    
     key = [one valueForKey:@"companyId"];
     if ((one != nil) && (key != nil))
       [md setObject:one forKey:key];
@@ -356,7 +359,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
   [self assert:ok reason:[sybaseMessages description]];
 
   ma = [NSMutableArray arrayWithCapacity:16];
-  while ((one = [channel fetchAttributes:_attributes withZone:NULL]))
+  while ((one = [channel fetchAttributes:_attributes withZone:NULL]) != nil)
     [ma addObject:one];
   
   [qual release]; qual = nil;
@@ -478,7 +481,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
   inContext:(id)_context
 {
   id             tmp;
-  NSDictionary   *enterprises;
+  NSDictionary   *pgidToEgids;
   NSEnumerator   *e;
   NSMutableArray *allEnterprises;
   NSDictionary   *id2Enterprise;
@@ -490,18 +493,18 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
                       nil);
   
   if ([_personGIDs count] == 1) {
-    enterprises = [NSDictionary dictionaryWithObject:tmp
+    pgidToEgids = [NSDictionary dictionaryWithObject:tmp
                                 forKey:[_personGIDs lastObject]];
   }
   else
-    enterprises = tmp;
+    pgidToEgids = tmp;
 
-  e              = [enterprises keyEnumerator];
+  e              = [pgidToEgids keyEnumerator];
   allEnterprises = [NSMutableArray arrayWithCapacity:8];
-  while ((tmp = [e nextObject])) {
-    [allEnterprises addObjectsFromArray:[enterprises objectForKey:tmp]];
-  }
-  /* now allEnterprises contains all gids of the enterprises */
+  while ((tmp = [e nextObject]) != nil)
+    [allEnterprises addObjectsFromArray:[pgidToEgids objectForKey:tmp]];
+  
+  /* now 'allEnterprises' contains all gids of the enterprises */
   pAttributes    = [self _enterpriseAttributes:self->attributes];
   allEnterprises =
     LSRunCommandV(_context, @"enterprise", @"get-by-globalid",
@@ -513,27 +516,28 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
 
   /* assign the enterprises to the persons */
   e = [_allPersons objectEnumerator];
-  while ((tmp = [e nextObject])) {
+  while ((tmp = [e nextObject]) != nil) {
     NSMutableArray *ma;
     NSEnumerator   *ee;
     EOKeyGlobalID  *gid;
     id entps;
     
     gid   = [tmp valueForKey:@"globalID"];
-    entps = [enterprises objectForKey:gid];
+    entps = [pgidToEgids objectForKey:gid];
     ma    = [NSMutableArray arrayWithCapacity:8];
     ee    = [entps objectEnumerator];
     
     while ((gid = [ee nextObject]) != nil) {
-      gid = [gid keyValues][0];
-      gid = [id2Enterprise objectForKey:gid];
+      id tmp;
+
+      tmp = [gid keyValues][0];
+      tmp = [id2Enterprise objectForKey:tmp];
       
-      if (gid != nil)
-        [ma addObject:gid];
+      if (tmp != nil)
+        [ma addObject:tmp];
     }
     [(NSMutableDictionary *)tmp setObject:ma forKey:@"enterprises"];
   }
-
 }
 
 - (void)_mapMembers:(NSDictionary *)_memberMap
@@ -947,7 +951,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
     }
   }
   
-  if ([self->groupBy length] > 0) {
+  if ([self->groupBy isNotEmpty]) {
     result = [self _groupResult:assignments
                    teams:teams
                    personMap:idToPersons

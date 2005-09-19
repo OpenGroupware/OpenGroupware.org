@@ -156,6 +156,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (void)dealloc {
+  [self->roleMap               release];
   [self->accessTeams           release];
   [self->comment               release];
   [self->searchText            release];
@@ -297,15 +298,43 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (void)_setupParticipantsForAppointment:(id)appointment {
-  NSArray *ps;
-
+  NSArray  *ps;
+  NSArray  *partInfos;
+  unsigned i, count;
+  
   ps = [self _fetchParticipantsOfAppointment:appointment force:NO];
+  
   [self->participants removeAllObjects];
   [self->participants addObjectsFromArray:ps];
   [self setSelectedParticipants:
         [self->participants isNotNull] ? self->participants : [NSArray array]];
   
+  // TODO: not always required? (and if required, task of the subcomponent?)
   [self _fetchEnterprisesOfPersons:self->participants];
+
+  /* fill role map */
+  
+  if (self->roleMap == nil)
+    self->roleMap = [[NSMutableDictionary alloc] initWithCapacity:16];
+  else
+    [self->roleMap removeAllObjects];
+  
+  partInfos = [self _fetchPartCoreInfoOfAppointment:appointment];
+  for (i = 0, count = [partInfos count]; i < count; i++) {
+    NSDictionary *partInfo;
+    NSString *role;
+    
+    partInfo = [partInfos objectAtIndex:i];
+    role     = [partInfo valueForKey:@"role"];
+    if (![role isNotEmpty]) {
+      /*
+        This happens for 'old' appointments opened with the new editor. The
+        'old' participants will be resaved as 'required' ones.
+      */
+      role = @"REQ-PARTICIPANT";
+    }
+    [self->roleMap setObject:role forKey:[partInfo valueForKey:@"companyId"]];
+  }
 }
 
 - (void)_setupResourcesFromSnapshot:(id)_snapshot {
@@ -847,6 +876,16 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return self->resources;
 }
 
+- (void)setRoleMap:(NSMutableDictionary *)_roleMap {
+  if (self->roleMap == _roleMap)
+    return;
+  
+  ASSIGN(self->roleMap, _roleMap);
+}
+- (NSMutableDictionary *)roleMap {
+  return self->roleMap;
+}
+
 - (void)addParticipant:(id)_participant {
   if ([self->participants containsObject:_participant]) return;
   [self->participants addObject:_participant];
@@ -955,9 +994,14 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (void)setSelectedParticipants:(NSArray *)_array {
+  /* 
+     Those are used as 'participants' in -parseSnapshotValues, its synced up
+     from SkyParticipantsSelection/OGoAttendeeSelection.
+  */
   ASSIGN(self->selectedParticipants, _array);
 }
 - (id)selectedParticipants {
+  /* Note: this is not used as input in SkyParticipantsSelection */
   return self->selectedParticipants;
 }
 
@@ -1634,13 +1678,14 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (void)parseSnapshotValues {
+  /* called by -saveAndGoBackWithCount:action: */
   NSString *accessList;
   id       apmt;
-
+  
   apmt       = [self snapshot];
   accessList = [self _accessList];
 
-  if (accessList)
+  if (accessList != nil)
     [apmt takeValue:accessList forKey:@"writeAccessList"];
   
   [apmt takeValue:self->selectedParticipants forKey:@"participants"];  
@@ -1731,15 +1776,22 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 - (id)saveAndGoBackWithCount:(int)_backCount action:(NSString *)_action {
   SkySchedulerConflictDataSource *ds;
   
-  if (![self checkConstraintsForSave])
+  if (![self checkConstraintsForSave]) {
+    // TODO: place after parseSnapshotValues??
+    [self debugWithFormat:@"save constraint check failed"];
     return nil;
+  }
   
   [self parseSnapshotValues];
 
   [self _correctSnapshotTimeZone];
   
   /* checking conflicts */
-
+  /* 
+     Note: we use SkySchedulerConflictDataSource here because the command
+           doesn't check for palm conflicts (_addExtraDataSourcesToConflictDS)
+  */
+  
   ds = [SkySchedulerConflictDataSource alloc];
   ds = [[ds initWithContext:[[self session] commandContext]] autorelease];
   [ds setAppointment:[self snapshot]];
@@ -1752,7 +1804,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   
   /* return */
   
-  [self _correctSnapshotTimeZone];
+  [self _correctSnapshotTimeZone]; // again?
   return [super saveAndGoBackWithCount:_backCount]; // call into LSWEditorPage
 }
 
@@ -1761,10 +1813,12 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (id)insertObject {
+  /* called by -_performOpInTransaction: */
   return [self runCommand:@"appointment::new" arguments:[self snapshot]];
 }
 
 - (id)updateObject {
+  /* called by -_performOpInTransaction: */
   return [self runCommand:@"appointment::set" arguments:[self snapshot]];
 }
 

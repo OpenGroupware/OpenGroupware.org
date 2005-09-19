@@ -33,6 +33,7 @@
 - (NSArray *)_fetchPersonsForGIDs:(NSArray *)_gids;
 - (NSArray *)_fetchTeamsForGIDs:(NSArray *)_gids;
 - (NSArray *)_fetchParticipantsOfAppointment:(id)_apt force:(BOOL)_force;
+- (NSArray *)_fetchPartCoreInfoOfAppointment:(id)_apt;
 
 - (NSString *)_getCommentOfAppointment:(id)_apt;
 

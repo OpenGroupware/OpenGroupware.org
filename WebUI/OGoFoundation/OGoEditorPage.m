@@ -196,7 +196,7 @@
     
     if (isOk) {
       if (!self->isInNewMode) {
-        if (self->object) {
+        if (self->object != nil) {
           [self->snapshot takeValue:self->object forKey:@"object"];
         }
         else {

@@ -51,6 +51,8 @@
 - (NSArray *)_fetchParticipantsOfAppointment:(id)_apt force:(BOOL)_force {
   NSArray *ps;
   
+  if (_apt == nil) return nil;
+  
   if (!_force) {
     ps = [_apt valueForKey:@"participants"];
     if ([ps isNotNull]) return ps;
@@ -60,6 +62,17 @@
           @"appointment", _apt, nil];
   ps = [_apt valueForKey:@"participants"];
   return [ps isNotNull] ? ps : nil;
+}
+
+- (NSArray *)_fetchPartCoreInfoOfAppointment:(id)_apt {
+  // Note: 'groupBy' is unsupported for simple fetches in list-parts
+  static NSArray *coreInfo = nil;
+  if (coreInfo == nil)
+    coreInfo = [[NSArray alloc] initWithObjects:@"companyId", @"role", nil];
+  return [self runCommand:@"appointment::list-participants",
+                 @"gid", [_apt globalID], 
+                 @"attributes", coreInfo,
+               nil];
 }
 
 - (NSString *)_getCommentOfAppointment:(id)_apt {

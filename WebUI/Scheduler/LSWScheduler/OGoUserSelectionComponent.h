@@ -35,6 +35,19 @@
   Subclasses:
     SkyParticipantsSelection
     OGoAttendeeSelection
+
+  Bindings
+    participants         [in/out] array
+    selectedParticipants [out]    array
+    onlyAccounts         [in/out] bool
+    searchLabel          [in/out] string
+    isClicked            [in/out] bool
+    TODO: incomplete?
+  
+  TODO: why are there two bindings for the participants?
+        'selectedParticipants' is an out parameter and returns
+        EOs based on the 'participants' (potentially resolving
+        teams if configured so).
 */
 
 @class NSString, NSArray, NSMutableArray;
