@@ -1,5 +1,7 @@
 2005-09-19  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSWAppointmentProposal.m: major code cleanups (v5.3.81)
+
 	* v5.3.80
 
 	* LSWAppointmentEditor.m: properly save the 'role' information in the

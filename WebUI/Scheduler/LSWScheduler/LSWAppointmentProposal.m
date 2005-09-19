@@ -91,13 +91,12 @@ static int compareDates(id part1, id part2, void* context) {
 
 @implementation LSWAppointmentProposal
 
-static NSArray *hourArray;
-static NSArray *minuteArray;
+static NSArray *hourArray   = nil;
+static NSArray *minuteArray = nil;
 
-static inline NSCalendarDate *_getDate(LSWAppointmentProposal*,int,int,int,
-                                       NSString*);
-static inline NSString *_getTimeStringFromInt(LSWAppointmentProposal*,int);
-static inline int _getIntFromTimeString(LSWAppointmentProposal*,NSString*);
+static inline NSCalendarDate *_getDate(int h, int m, int s, NSString *tzname);
+static inline NSString *_getTimeStringFromInt(int v);
+static inline int _getIntFromTimeString(NSString *str);
 static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
                                           NSString*, int, int);
 
@@ -165,19 +164,17 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
   [super syncAwake];
 
   if (self->timeZone == nil) {
-    NSTimeZone *tz  = nil;
-    NSString   *tzA = nil;
+    NSTimeZone *tz;
+    NSString   *tzA;
     
     if ((tz = [[self context] valueForKey:@"SkySchedulerTimeZone"]) == nil)
       tz = [[self session] timeZone];
-
-    self->timeZone = tz;
-    RETAIN(self->timeZone);
-
+    
+    self->timeZone = [tz retain];
+    
     tzA = [self->timeZone abbreviation]; 
-
-    self->startDate = RETAIN(_getDate(self, 9, 0, 0, tzA));
-    self->endDate   = RETAIN(_getDate(self, 18, 59, 59, tzA));
+    self->startDate = [_getDate( 9,  0,  0, tzA) retain];
+    self->endDate   = [_getDate(18, 59, 59, tzA) retain];
 
     [self runCommand:@"person::enterprises",
           @"persons",     self->participants,
@@ -194,81 +191,9 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
   [self->addedParticipants   removeAllObjects];
 }
 
-// Actions
+/* processing */
 
-- (id)cancel {
-  [self leavePage];
-  return nil;
-}
-
-- (id)search {
-  NSMutableArray *resourceNames = nil;
-  NSMutableArray *categories    = nil;
-  NSEnumerator   *enumerator    = nil;
-  id             obj            = nil;
-  NSString       *str;
-
-  str = [[self labels] valueForKey:@"resCategory"];
-
-  if (str == nil) str = @"resCategory";
-
-  str           = [NSString stringWithFormat:@" (%@)", str];
-  resourceNames = [[NSMutableArray alloc] init];
-  categories    = [[NSMutableArray alloc] init];
-  enumerator    = [self->resources objectEnumerator];
-
-  while ((obj = [enumerator nextObject])) {
-
-    if ([obj hasSuffix:str]) {
-      [categories addObject:[obj substringWithRange:
-                                 NSMakeRange(0, [obj length] - [str length])]];
-    }
-    else
-      [resourceNames addObject:obj];
-#if 0      
-    NSArray *comp;
-
-    comp = [obj componentsSeparatedByString:@" ("];
-    
-    if ([comp count] == 1)
-      [resourceNames addObject:obj];
-    else {
-      [categories addObject:[comp objectAtIndex:0]];
-    }
-#endif    
-  }
-  if ((self->startDate == nil) || (![self->startDate isNotNull]))
-    return nil;
-  if ((self->endDate == nil) || (![self->endDate isNotNull]))
-    return nil;
-
-  if ((self->duration < 0) || (self->interval < 0) ||
-      (self->earliestStartTime < 0) || (self->latestFinishTime < 0))
-    return nil;
-    
-  if (self->searchList != nil) {
-    RELEASE(self->searchList); self->searchList = nil;
-  }
-
-  self->searchList =
-    [self runCommand:@"appointment::proposal",
-          @"participants", self->selectedParticipants,
-          @"resources",    resourceNames,
-          @"categories",   categories,          
-          @"startDate",    self->startDate,
-          @"endDate",      self->endDate,
-          @"timeZone",     self->timeZone,
-          @"duration",     [NSNumber numberWithInt:self->duration], 
-          @"startTime",    [NSNumber numberWithInt:self->earliestStartTime],
-          @"endTime",      [NSNumber numberWithInt:self->latestFinishTime],
-          @"interval",     [NSNumber numberWithInt:self->interval],
-          nil];
-
-  RETAIN(self->searchList);
-  RELEASE(resourceNames); resourceNames = nil;
-  RELEASE(categories);    categories    = nil;
-
-  { /* build captions */
+- (void)_rebuildCaptions {
     int i, cnt = 0;
     int st, lf = 0;
     int add    = 0;
@@ -279,44 +204,37 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
     lf = lf / 60;
 
     lf = (lf < st) ? st : lf;    
-    if (self->hourCaptionList != nil)
-      RELEASE(self->hourCaptionList);
+    [self->hourCaptionList release]; self->hourCaptionList = nil;
 
     add = ((self->latestFinishTime % 60) == 0) ? 0 : 1;
     self->hourCaptionList =
-      [hourArray subarrayWithRange:NSMakeRange(st, lf - st + add)];
-    RETAIN(self->hourCaptionList);
+      [[hourArray subarrayWithRange:NSMakeRange(st, lf - st + add)] retain];
+    
+    [self->minuteCaptionList release]; self->minuteCaptionList = nil;
+    self->minuteCaptionList = [[NSMutableArray alloc] initWithCapacity:48];
 
-    if (self->minuteCaptionList != nil)
-      RELEASE(self->minuteCaptionList);
-
-    self->minuteCaptionList = [[NSMutableArray allocWithZone:[self zone]]
-                                        initWithCapacity:48];
-
-    if (self->allDayHours != nil)
-      RELEASE(self->allDayHours);
-
-    self->allDayHours = [[NSMutableArray allocWithZone:[self zone]]
-                                              initWithCapacity:64];
+    [self->allDayHours release]; self->allDayHours = nil;
+    self->allDayHours = [[NSMutableArray alloc] initWithCapacity:64];
     
     for (i = 0, cnt = [self->hourCaptionList count]; i < cnt; i++) {
-      NSString *str = [self->hourCaptionList objectAtIndex:i];
-      NSString *dum = nil;
+      NSString *str, *dum, *s;
 
-      if ([str length] < 2)
-        dum = @"0";
-      else
-        dum = @"";
+      str = [self->hourCaptionList objectAtIndex:i];
+      dum = ([str length] < 2) ? @"0" : @"";
       
       [self->minuteCaptionList addObjectsFromArray:minuteArray];
       
-      [self->allDayHours addObject:[NSString stringWithFormat:@"%@%@:%@",
-                                             dum, str, @"00"]];
-      [self->allDayHours addObject:[NSString stringWithFormat:@"%@%@:%@",
-                                             dum, str, @"30"]];
+      s = [[NSString alloc] initWithFormat:@"%@%@:%@", dum, str, @"00"];
+      [self->allDayHours addObject:s];
+      [s release];
+      
+      s = [[NSString alloc] initWithFormat:@"%@%@:%@", dum, str, @"30"];
+      [self->allDayHours addObject:s];
+      [s release];
     }
-  }
-  { /* build day-arrays */
+}
+
+- (void)_rebuildDayArrays {
     NSMutableDictionary *dict;
     NSEnumerator        *enumerator;
     id                  obj;
@@ -353,37 +271,138 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
     [self->sortedDates release]; self->sortedDates = nil;
     self->sortedDates = dict;
     dict = nil;
-  }
-  { /* build timeslices */
-    NSMutableDictionary *dict     = nil;
-    NSEnumerator        *dateEnum = [self->sortedDates keyEnumerator];
-    id                  dateObj   = nil;
+}
 
-    dict = [NSMutableDictionary dictionaryWithCapacity:64];
+- (NSDictionary *)_rebuildTimeSlicesForDates:(NSDictionary *)_dates {
+  NSMutableDictionary *dict;
+  NSEnumerator        *dateEnum;
+  id                  dateObj;
+
+  dateEnum = [_dates keyEnumerator];
+  dict = [NSMutableDictionary dictionaryWithCapacity:64];
     
-    while ((dateObj = [dateEnum nextObject])) {
-      id             obj         = nil;
-      NSMutableArray *array      = nil;
-      int            i, cnt      = 0;
-
+  while ((dateObj = [dateEnum nextObject]) != nil) {
+      NSMutableArray *array;
+      unsigned       i, cnt;
+      
       array = [NSMutableArray arrayWithCapacity:48];
-
+      
       for (i = 0, cnt = [self->allDayHours count]; i < cnt; i++) {
         NSDictionary *entry;
+        id           obj;
         
         obj = [self->allDayHours objectAtIndex:i];
         
-        entry = _getTimeEntry(self, [self->sortedDates objectForKey:dateObj],
+        entry = _getTimeEntry(self, [_dates objectForKey:dateObj],
                               obj, i, cnt);
         [array addObject:entry];
       }
       [dict setObject:array forKey:dateObj];
     }
-    ASSIGN(self->calculatedTable, dict);
+    return dict;
+}
+
+/* actions */
+
+- (id)cancel {
+  [self leavePage];
+  return nil;
+}
+
+- (BOOL)validateForSearch {
+  if (![self->startDate isNotNull])
+    return NO;
+  if (![self->endDate isNotNull])
+    return NO;
+
+  if ((self->duration < 0) || (self->interval < 0) ||
+      (self->earliestStartTime < 0) || (self->latestFinishTime < 0))
+    return NO;
+  return YES;
+}
+
+
+- (id)search {
+  NSMutableArray *resourceNames;
+  NSMutableArray *categories;
+  NSEnumerator   *enumerator;
+  id             obj;
+  NSString       *str;
+  
+  /* split self->resources into resourceNames and categories? */
+  // TODO: move to own method?!
+
+  str = [[self labels] valueForKey:@"resCategory"];
+  if (str == nil) str = @"resCategory";
+  str           = [NSString stringWithFormat:@" (%@)", str];
+  resourceNames = [[NSMutableArray alloc] initWithCapacity:16];
+  categories    = [[NSMutableArray alloc] initWithCapacity:16];
+  
+  enumerator    = [self->resources objectEnumerator];
+  while ((obj = [enumerator nextObject]) != nil) {
+    if ([obj hasSuffix:str]) {
+      NSString *s;
+      
+      s = [obj substringWithRange:NSMakeRange(0, [obj length] - [str length])];
+      [categories addObject:s];
+    }
+    else
+      [resourceNames addObject:obj];
+#if 0      
+    NSArray *comp;
+
+    comp = [obj componentsSeparatedByString:@" ("];
+    
+    if ([comp count] == 1)
+      [resourceNames addObject:obj];
+    else {
+      [categories addObject:[comp objectAtIndex:0]];
+    }
+#endif    
   }
+  
+  /* validate input */
+  
+  if (![self validateForSearch]) {
+    [self setErrorString:@"Some search criteria is incorrect!"];
+    return nil;
+  }
+  
+  /* run proposal command */
+    
+  if (self->searchList != nil) {
+    [self->searchList release]; self->searchList = nil;
+  }
+
+  self->searchList =
+    [self runCommand:@"appointment::proposal",
+          @"participants", self->selectedParticipants,
+          @"resources",    resourceNames,
+          @"categories",   categories,          
+          @"startDate",    self->startDate,
+          @"endDate",      self->endDate,
+          @"timeZone",     self->timeZone,
+          @"duration",     [NSNumber numberWithInt:self->duration], 
+          @"startTime",    [NSNumber numberWithInt:self->earliestStartTime],
+          @"endTime",      [NSNumber numberWithInt:self->latestFinishTime],
+          @"interval",     [NSNumber numberWithInt:self->interval],
+          nil];
+  self->searchList = [self->searchList retain];
+  
+  [resourceNames release]; resourceNames = nil;
+  [categories    release]; categories    = nil;
+  
+  [self _rebuildCaptions];
+  [self _rebuildDayArrays];
+  
+  [self->calculatedTable release]; self->calculatedTable = nil;
+  self->calculatedTable =
+    [[self _rebuildTimeSlicesForDates:self->sortedDates] retain];
+  
   self->hasSearched = YES;
   return nil;
 }
+
 
 - (id)takeAppointment {
   NSDictionary *obj;
@@ -453,6 +472,7 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
         }
         resEnum = [allRes objectEnumerator];
         resHasObj = NO;
+
         while ((aRes = [resEnum nextObject]) != nil) {
           if (![resArray containsObject:aRes]) {
             if (!resHasObj) {
@@ -524,12 +544,9 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
 
 - (NSString *)configuredTimeZoneName {
   NSString *tz;
-
-  tz = [[[self session] userDefaults] objectForKey:@"timezone"];
-  if ([tz length] == 0)
-    tz = @"GMT";
   
-  return tz;
+  tz = [[[self session] userDefaults] objectForKey:@"timezone"];
+  return [tz isNotEmpty] ? tz : @"GMT";
 }
 
 // TODO: clean up this startDate/endDate conversions
@@ -570,33 +587,32 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
   return [self->endDate descriptionWithCalendarFormat:@"%Y-%m-%d"];
 }
 
-- (NSString *)duration {
-  return _getTimeStringFromInt(self, self->duration);
-}
-
 - (void)setDuration:(NSString *)_dur {
-  self->duration = _getIntFromTimeString(self, _dur);
+  self->duration = _getIntFromTimeString(_dur);
+}
+- (NSString *)duration {
+  return _getTimeStringFromInt(self->duration);
 }
 
-- (id)interval {
-  return _getTimeStringFromInt(self, self->interval);
-}
 - (void)setInterval:(NSString *)_interval {
-  self->interval = _getIntFromTimeString(self, _interval);
+  self->interval = _getIntFromTimeString(_interval);
+}
+- (id)interval {
+  return _getTimeStringFromInt(self->interval);
 }
 
-- (NSString *)earliestStartTime {
-  return _getTimeStringFromInt(self, self->earliestStartTime);
-}
 - (void)setEarliestStartTime:(NSString *)_str {
-  self->earliestStartTime = _getIntFromTimeString(self, _str);
+  self->earliestStartTime = _getIntFromTimeString(_str);
+}
+- (NSString *)earliestStartTime {
+  return _getTimeStringFromInt(self->earliestStartTime);
 }
 
-- (NSString *)latestFinishTime {
-  return _getTimeStringFromInt(self, self->latestFinishTime);
-}
 - (void)setLatestFinishTime:(NSString *)_str {
-  self->latestFinishTime = _getIntFromTimeString(self, _str);
+  self->latestFinishTime = _getIntFromTimeString(_str);
+}
+- (NSString *)latestFinishTime {
+  return _getTimeStringFromInt(self->latestFinishTime);
 }
 
 - (id)searchList {
@@ -731,17 +747,23 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
       NSLog(@"WARNING: unknown gid %@", gid);
     }
   }
-  if ([pgids count] > 0)
-    [result addObjectsFromArray:[self runCommand:@"person::get-by-globalID",
-                                      @"gids", pgids, nil]];
-  if ([tgids count] > 0)
-    [result addObjectsFromArray:[self runCommand:@"team::get-by-globalID",
-                                      @"gids", tgids, nil]];
+  if ([pgids isNotEmpty]) {
+    NSArray *tmp;
+    
+    tmp = [self runCommand:@"person::get-by-globalID", @"gids", pgids, nil];
+    [result addObjectsFromArray:tmp];
+  }
+  if ([tgids isNotEmpty]) {
+    NSArray *tmp;
+    
+    tmp = [self runCommand:@"team::get-by-globalID", @"gids", tgids, nil];
+    [result addObjectsFromArray:tmp];
+  }
 
   [self->participants addObjectsFromArray:result];
-  RELEASE(result); result = nil;
-  RELEASE(tgids);  tgids  = nil;
-  RELEASE(pgids);  pgids  = nil;    
+  [result release]; result = nil;
+  [tgids  release]; tgids  = nil;
+  [pgids  release]; pgids  = nil;    
 }
 
 - (void)setParticipants:(id)_part {
@@ -772,6 +794,7 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
 }
 
 /* key/value coding */
+// TODO: why is this hardcoded?
 
 - (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"appointment"])
@@ -788,12 +811,12 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
   else if ([_key isEqualToString:@"resources"]) {
     id tmp = self->resources;
     self->resources = [_value mutableCopy];
-    RELEASE(tmp);
+    [tmp release];
   }
   else if ([_key isEqualToString:@"participants"]) {
     id tmp = self->participants;
     self->participants = [_value mutableCopy];
-    RELEASE(tmp);
+    [tmp release];
   }
   else
     [super takeValue:_value forKey:_key];
@@ -808,62 +831,64 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
 
 /* functions */
 
-static inline NSCalendarDate *_getDate(LSWAppointmentProposal *self,
-                                       int _h, int _m, int _s, NSString *_tzA)
-{
-  NSString *ds = nil;
+static inline NSCalendarDate *_getDate(int _h, int _m, int _s, NSString *_tzA){
+  // TODO: this should be some regular date function?! why this crap with
+  //       parsing a string for date construction?!
+  NSCalendarDate *now;
+  NSString *ds, *s;
+  char buf[64];
+  
+  now = [NSCalendarDate date];
 
-  ds = [[NSCalendarDate date] descriptionWithCalendarFormat:@"%Y-%m-%d"];
-  ds = [NSString stringWithFormat:@"%@ %d:%d:%d %@", ds, _h, _m, _s, _tzA];
-
+  snprintf(buf, sizeof(buf), "%04i-%02i-%02i %02d:%02d:%02d ",
+           [now yearOfCommonEra], [now monthOfYear], [now dayOfMonth],
+           _h, _m, _s);
+  s = [[NSString alloc] initWithCString:buf];
+  ds = [s stringByAppendingString:_tzA];
+  [s release]; s = nil;
+  
   return [NSCalendarDate dateWithString:ds
                          calendarFormat:@"%Y-%m-%d %H:%M:%S %Z"];
 }
 
-static inline NSString *_getTimeStringFromInt(LSWAppointmentProposal *self,
-                                                int _number) {
-  if (_number < 0) {
+static inline NSString *_getTimeStringFromInt(int _number) {
+  char buf[16];
+  int hour, min;
+  
+  if (_number < 0)
     return @"01:00";
-  }
-  else {
-    int hour, min;
+  
+  min = _number % 60;
+  
+  hour = (_number > 59)
+    ? (_number / 60)
+    : 0;
 
-    min = _number % 60;
-
-    if (_number > 59)
-      hour = _number / 60;
-    else
-      hour = 0;
-    return [NSString stringWithFormat:@"%02i:%02i", hour, min];
-  }
-  return nil;
+  snprintf(buf, sizeof(buf), "%02i:%02i", hour, min);
+  return [NSString stringWithCString:buf];
 }
 
-static inline int _getIntFromTimeString(LSWAppointmentProposal *self,
-                                         NSString *_str) {
-  if (_str == nil) {
+static inline int _getIntFromTimeString(NSString *_str) {
+  int hour, min;
+
+  if (_str == nil)
     return -1;
-  }
-  else {
-    int hour, min;
-
-    hour = [[_str substringToIndex:2] intValue];
-    min  = [[_str substringFromIndex:3] intValue];
+  
+  hour = [[_str substringToIndex:2]   intValue];
+  min  = [[_str substringFromIndex:3] intValue];
+  
+  if ((hour < 0) || (hour > 23))
+    hour = 1;
+  if ((min < 0) || (min > 59))
+    min = 0;
     
-    if ((hour < 0) || (hour > 23))
-      hour = 1;
-    if ((min < 0) || (min > 59))
-      min = 0;
-    
-    return hour * 60 + min;
-  }
+  return hour * 60 + min;
 }
 
-static inline id _isStartTime(LSWAppointmentProposal *self, NSArray *_dates,
-                              NSString *_time) {
+static inline id _isStartTime(NSArray *_dates, NSString *_time) {
   NSEnumerator *enumerator;
   NSDictionary *obj;
-
+  
   enumerator = [_dates objectEnumerator];
   while ((obj = [enumerator nextObject]) != nil) {
     if (![[obj objectForKey:@"kind"] isEqualToString:@"start"])
@@ -933,7 +958,7 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal *self,
   
   if (_isStartOrEndTime(self, _dates, _time, _pos, _count))
     status = @"startOrEnd";
-  else if ((obj = _isStartTime(self, _dates, _time)) != nil)
+  else if ((obj = _isStartTime(_dates, _time)) != nil)
     status = @"startTime";
   else if (_isFreeTime(_dates, _time))
     status = @"free";
