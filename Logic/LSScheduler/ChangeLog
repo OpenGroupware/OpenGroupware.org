@@ -1,5 +1,8 @@
 2005-09-19  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSDateAssignmentCommand.m, LSNewAppointmentCommand.m: code cleanups,
+	  added some docs (v5.3.73)
+
 	* LSListParticipantsCommand.m: minor code cleanups (v5.3.72)
 
 2005-09-14  Helge Hess  <helge.hess@opengroupware.org>

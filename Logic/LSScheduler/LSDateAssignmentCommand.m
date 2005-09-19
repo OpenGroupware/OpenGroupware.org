@@ -25,6 +25,24 @@
   LSDateAssignmentCommand / appointment::set-participants
   
   TODO: document
+
+  The objects in the 'participants' array do not need to be full EO objects,
+  they just need to have a 'companyId' attribute AND 'isAccount' or 'isTeam'
+  if the record is one of those.
+  It may have 'role', 'rsvp' and 'partStatus' keys.
+  
+  Arguments:
+    date | appointment | object
+    participants | participantList
+    logText
+    logAction
+
+  Called by:
+    appointment::new
+    appointment::set
+    ...
+
+  NOTE: yes, the key is 'partStatus' despite the DB column 'partstatus'.
 */
 
 @class NSArray;
@@ -56,14 +74,14 @@
 
 - (BOOL)_newEntry:(id)_object changedSinceEntry:(id)_oldEntry {
   NSNumber *pkey;
-  NSString *role, *state;
+  NSString *role, *status;
   NSNumber *rsvp;
 
   pkey  = [_object valueForKey:@"companyId"];
   role  = [_object valueForKey:@"role"];
   rsvp  = [_object valueForKey:@"rsvp"];
-  state = [_object valueForKey:@"partStatus"];
-      
+  status = [_object valueForKey:@"partStatus"];
+  
   // check these participant attributes only, if both not null
   if ([role isNotNull]) {
     if (![role isEqual:[_oldEntry valueForKey:@"role"]])
@@ -75,7 +93,7 @@
       // no equal rsvp
       return YES; 
   }
-  if ([state isNotNull]) {
+  if ([status isNotNull]) {
     if (![role isEqual:[_oldEntry valueForKey:@"partStatus"]])
       // no equal partStatus
       return YES; 
@@ -86,35 +104,35 @@
   return NO; // entry didn't change
 }
 
-- (id)_findOldEntry:(NSArray *)_oldEntries forNewEntry:(id)_newOne {
+- (id)_findOldEntry:(NSArray *)_oldEntries forCompanyId:(NSNumber *)pkey {
+  /* Returns the 'old' DateCompanyAssignment EO object */
   unsigned int max, i;
-  NSNumber     *pkey, *opkey;
-  id           listObject;
   
-  max  = [_oldEntries count];
-  pkey = [_newOne valueForKey:@"companyId"];
-  
-  for (i = 0; i < max; i++) {
-    listObject = [_oldEntries objectAtIndex:i];
-
+  for (i = 0, max = [_oldEntries count]; i < max; i++) {
+    NSNumber *opkey;
+    id listObject = [_oldEntries objectAtIndex:i];
+    
     opkey = [listObject valueForKey:@"companyId"];
-    if ([pkey isEqual:opkey])
+    if (pkey == opkey || [pkey isEqual:opkey])
       return listObject;
   }
-
+  
   return nil;
 }
 
 - (void)_removeOldAssignments:(NSArray *)_oldAssignments
   inContext:(id)_context
 {
+  // TODO: use raw SQL instead?
+  //   DELETE FROM date_company_assignment WHERE company_id IN (a,b,c)
+  //   => might need to notify the EO objects of change?
   NSEnumerator *listEnum;
   id           assignment;
   
   listEnum = [_oldAssignments objectEnumerator];
   while ((assignment = [listEnum nextObject]) != nil) {
     LSDBObjectDeleteCommand *dCmd;
-
+    
     dCmd = LSLookupCommandV(@"DateCompanyAssignment", @"delete",
                             @"object", assignment, nil);
     [dCmd setReallyDelete:YES];
@@ -127,17 +145,27 @@
 {
   NSEnumerator *listEnum;
   id           newParticipant;
+  NSNumber     *aptPKey;
 
-  listEnum = [_assignments objectEnumerator];
+  aptPKey = [[self object] valueForKey:@"dateId"];
   
+  listEnum = [_assignments objectEnumerator];
   while ((newParticipant = [listEnum nextObject]) != nil) {
     BOOL isStaff;
     
     isStaff = ([[newParticipant valueForKey:@"isAccount"] boolValue] ||
                [[newParticipant valueForKey:@"isTeam"] boolValue]);
     
+    if (!isStaff) {
+      if ([newParticipant valueForKey:@"isPerson"] == nil) {
+        [self warnWithFormat:
+                @"non-staff participant (probably missing type marker!): %@",
+                newParticipant];
+      }
+    }
+    
     LSRunCommandV(_context, @"DateCompanyAssignment", @"new",
-                  @"dateId",     [[self object] valueForKey:@"dateId"],
+                  @"dateId",     aptPKey,
                   @"companyId",  [newParticipant valueForKey:@"companyId"],
                   @"isStaff",    [NSNumber numberWithBool:isStaff],
                   @"partStatus", [newParticipant valueForKey:@"partStatus"],
@@ -154,44 +182,53 @@
   toAdd:(NSMutableArray *)_toAdd
 {
   NSMutableArray *oldList, *addedIds;
-  unsigned int max, i;
+  unsigned int newListCount, i;
   
-  max      = [_newList count];
-  oldList  = [[_oldList mutableCopy] autorelease];
-  addedIds = [NSMutableArray arrayWithCapacity:(max + 1)];
+  newListCount = [_newList count];
+  oldList      = [[_oldList mutableCopy] autorelease];
+  addedIds     = [NSMutableArray arrayWithCapacity:(newListCount + 1)];
   
-  // check every new entry
-  for (i = 0; i < max; i++) {
-    id newEntry, oldEntry, cId;
-
+  /* check every new entry */
+  for (i = 0; i < newListCount; i++) {
+    NSNumber *cId;
+    id newEntry, oldEntry;
+    
     newEntry = [_newList objectAtIndex:i];
-    oldEntry = [self _findOldEntry:oldList forNewEntry:newEntry];
+    oldEntry = [self _findOldEntry:oldList 
+                     forCompanyId:[newEntry valueForKey:@"companyId"]];
     cId      = [newEntry valueForKey:@"companyId"];
-
+    
     if ([addedIds containsObject:cId]) {
-      // no double add
+      /* no double add */
+      [self warnWithFormat:@"attempt to add a participant twice: %@", cId];
       continue;
     }
-
-    else if (oldEntry == nil) {
-      // no old entry -> totaly new entry
+    
+    if (oldEntry == nil) {
+      /* no old entry -> completely new entry */
       [_toAdd addObject:newEntry];
+      [addedIds addObject:cId];
+      continue;
     }
-
-    else if ([self _newEntry:newEntry changedSinceEntry:oldEntry]) {
-      // new entry changed since old
+    
+    if ([self _newEntry:newEntry changedSinceEntry:oldEntry]) {
+      /* 
+         New entry changed since old. We remove the old and add the new, not
+         sure whether this makes sense. Can't we update the old assignment?
+      */
       [_toAdd    addObject:newEntry];
       [_toRemove addObject:oldEntry];
       
       [oldList removeObject:oldEntry];
       [addedIds addObject:cId];
+      continue;
     }
-    else { /* no changes */
-      [oldList removeObject:oldEntry];
-    }
+    
+    /* no changes */
+    [oldList removeObject:oldEntry]; /* keep it */
   }
-
-  if ([oldList count] > 0)
+  
+  if ([oldList isNotEmpty])
     [_toRemove addObjectsFromArray:oldList];
 }
 
@@ -217,18 +254,25 @@
   
   listEnum = [self->participantList objectEnumerator];
   while ((obj = [listEnum nextObject]) != nil) {
-    NSString *ename;
-
-    ename = nil;
-    
     if ([obj respondsToSelector:@selector(entity)]) {
+      NSString *ename;
+
       ename = [[obj entity] name];
     
       if (([ename isEqual:@"Person"] || [ename isEqual:@"Team"]))
         [validatedList addObject:obj];
+      else {
+        [self errorWithFormat:
+                @"got participant object with unknown entity %@: %@",
+                ename, obj];
+      }
     }
-    else
-      [validatedList addObject:obj];
+    else { /* is not an EO object (eg a dictionary) */
+      if ([[obj valueForKey:@"companyId"] isNotNull])
+        [validatedList addObject:obj];
+      else
+        [self errorWithFormat:@"participant has no company-id: %@", obj];
+    }
   }
   
   [self->participantList release];
@@ -281,10 +325,12 @@
 }
 
 - (NSArray *)_fetchOldParticipants:(id)_context {
-  //  return LSRunCommandV(_context, @"appointment", @"list-participants",
-  //                       @"appointment", [self object],
-  //                       @"attributes",  [self _neededParticipantKeys],
-  //                       nil);
+#if 0 // TODO: why not use this?
+  return LSRunCommandV(_context, @"appointment", @"list-participants",
+                         @"appointment", [self object],
+                         @"attributes",  [self _neededParticipantKeys],
+                         nil);
+#else
   return
     LSRunCommandV(_context,
                   @"datecompanyassignment", @"get",
@@ -292,6 +338,7 @@
                   @"returnType",
                   [NSNumber numberWithInt:LSDBReturnType_ManyObjects],
                   nil);
+#endif
 }
 
 - (void)_prepareForExecutionInContext:(id)_context {
@@ -304,16 +351,16 @@
   //oldList = [[self object] valueForKey:@"toDateCompanyAssignment"];
   oldList = [self _fetchOldParticipants:_context];
   newList = self->participantList;
-
+  
   toRemove = [NSMutableArray arrayWithCapacity:4];
   toAdd    = [NSMutableArray arrayWithCapacity:4];
   
   [self syncOldList:oldList withNewList:newList
         toRemove:toRemove toAdd:toAdd];
   
-  if ([toRemove count] > 0)
+  if ([toRemove isNotEmpty])
     [self _removeOldAssignments:toRemove inContext:_context];
-  if ([toAdd count] > 0)
+  if ([toAdd isNotEmpty])
     [self _addAssignments:toAdd inContext:_context];
 }
 

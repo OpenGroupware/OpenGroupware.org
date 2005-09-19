@@ -126,7 +126,8 @@ static NSArray  *startDateOrderings = nil;
 - (void)_appendConflict:(id)ap toString:(NSMutableString *)conflictString
   inContext:(id)_context 
 {
-  /* TODO: duplicate conflict code in new-command! */
+  // TODO: duplicate conflict code in new-command! DUP
+  // TODO: better use some structure conflict reporting?
   NSString *title = nil;
   NSString *resN  = nil;
   id       sD     = nil;
@@ -134,7 +135,7 @@ static NSArray  *startDateOrderings = nil;
   NSArray  *ps    = nil;
   NSMutableString *p = nil;
   int      j, psCnt;
-
+  
   if (![[ap valueForKey:@"isViewAllowed"] boolValue] &&
       [ap valueForKey:@"accessTeamId"] == nil) {
     title = @"*";          
@@ -147,23 +148,24 @@ static NSArray  *startDateOrderings = nil;
   eD = [ap valueForKey:@"endDate"];
 
   ps = [ap valueForKey:@"participants"]; 
-  p  = [[NSMutableString alloc] init];
+  p  = [[NSMutableString alloc] initWithCapacity:64];
         
   for (j = 0, psCnt = [ps count]; j < psCnt; j++) {
+    NSString *s;
+    
     if (j > 0)
       [p appendString:@", "];
-      
-    [p appendString:
-           [self _stringForParticipant:[ps objectAtIndex:j]
-                 andIsViewAllowed:
-                 [[ap valueForKey:@"isViewAllowed"] boolValue]]];
+    
+    s = [self _stringForParticipant:[ps objectAtIndex:j]
+              andIsViewAllowed:[[ap valueForKey:@"isViewAllowed"] boolValue]];
+    [p appendString:s];
   }
   
   sD = [sD descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M"];
   eD = [eD descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M"];
   resN = [ap valueForKey:@"resourceNames"];
-
-  resN = (resN != nil) 
+  
+  resN = [resN isNotEmpty]
     ? [NSString stringWithFormat:@"(%@)", resN]
     : @"";
   
@@ -213,9 +215,9 @@ static NSArray  *startDateOrderings = nil;
   endDate    = [self valueForKey:@"endDate"];
   resNames   = [self valueForKey:@"resourceNames"];
   
-  if ([resNames isNotNull])
+  if ([resNames isNotEmpty])
     res = [resNames componentsSeparatedByString:@", "];
-
+  
   conflicts = [self fetchConflictGIDsOfParticipants:self->participants
                     andResources:res
                     from:startDate to:endDate
@@ -231,27 +233,38 @@ static NSArray  *startDateOrderings = nil;
   return [[[self object] valueForKey:@"parentDateId"] isNotNull];
 }
 - (BOOL)_dateIsCyclic {
-  return [[[self object] valueForKey:@"type"] isNotNull];
+  return [[[self object] valueForKey:@"type"] isNotEmpty];
 }
 
 - (BOOL)_newDateInfoInContext:(id)_context {
-  id           dateInfo  = nil;
-  NSDictionary *pk       = nil;
-  EOEntity     *myEntity = [[self databaseModel] entityNamed:@"DateInfo"];
-  id           pkey      = [[self object] valueForKey:[self primaryKeyName]];
-
+  /* Note: date_info contains the comment 'blob' (was required for Sybase) */
+  id           dateInfo;
+  NSDictionary *pk;
+  EOEntity     *myEntity;
+  NSNumber     *pkey;
+  
+  myEntity = [[self databaseModel] entityNamed:@"DateInfo"];
+  pkey     = [[self object] valueForKey:[self primaryKeyName]];
+  
   pk       = [self newPrimaryKeyDictForContext:_context keyName:@"dateId"];
   dateInfo = [self produceEmptyEOWithPrimaryKey:pk entity:myEntity];
   [dateInfo takeValue:[dateInfo valueForKey:@"dateId"] forKey:@"dateInfoId"];
 
   [dateInfo takeValue:null forKey:@"dateId"];
   
-  if ([self comment]) [dateInfo takeValue:[self comment] forKey:@"comment"];
+  if ([self comment] != nil)
+    [dateInfo takeValue:[self comment] forKey:@"comment"];
 
   [dateInfo takeValue:pkey        forKey:@"dateId"];
   [dateInfo takeValue:@"inserted" forKey:@"dbStatus"];
   return [[self databaseChannel] insertObject:dateInfo];
 }
+
+- (BOOL)isRootCompanyId:(NSNumber *)_companyId {
+  return [_companyId unsignedIntValue] == 10000 ? YES : NO;
+}
+
+/* prepare */
 
 - (void)_prepareForExecutionInContext:(id)_context {
   id owner = nil;
@@ -267,8 +280,8 @@ static NSArray  *startDateOrderings = nil;
 
   if (![pId isNotNull]) {
     if (owner != nil) {
-      if ([[[_context valueForKey:LSAccountKey]
-                      valueForKey:@"companyId"] intValue] != 10000) {
+      if (![self isRootCompanyId:[[_context valueForKey:LSAccountKey]
+                                   valueForKey:@"companyId"]]) {
         [self assert:NO
               reason:@"Only root is allowd to explicit set an owner for "
               @"appointments!"];
@@ -284,7 +297,7 @@ static NSArray  *startDateOrderings = nil;
   }
   [self takeValue:[NSNumber numberWithInt:1] forKey:@"objectVersion"];
   
-  [self assert:([self->participants count] > 0)
+  [self assert:[self->participants isNotEmpty]
         reason:@"no participants set !"];
 
   [self _checkStartDateIsBeforeEndDate];
@@ -295,10 +308,11 @@ static NSArray  *startDateOrderings = nil;
   [super _prepareForExecutionInContext:_context];
 }
 
+/* execute */
+
 - (void)_executeInContext:(id)_context {
   id obj               = nil;
-  NSCalendarDate *sD   = nil;
-  NSCalendarDate *eD   = nil;
+  NSCalendarDate *sD, *eD;
   NSTimeZone     *tzsD = nil;
   NSTimeZone     *tzeD = nil;
 
@@ -320,10 +334,9 @@ static NSArray  *startDateOrderings = nil;
   [[obj valueForKey:@"endDate"]   setTimeZone:tzeD];
   
   [self assert:[self _newDateInfoInContext:_context]];
-
-  [self assert:([self->participants count] > 0)
-        reason:@"no participants set !"];
   
+  [self assert:[self->participants isNotEmpty]
+        reason:@"no participants set !"];
   [self _assignParticipantsInContext:_context];
 
   if ([self _dateIsCyclic] && ![self _hasParent])
@@ -341,14 +354,14 @@ static NSArray  *startDateOrderings = nil;
 /* date info accessors */
 
 - (void)setComment:(NSString *)_comment {
-  ASSIGN(comment, _comment);
+  ASSIGNCOPY(comment, _comment);
 }
 - (NSString *)comment {
   return comment;
 }
 
 - (void)setIsWarningIgnored:(NSNumber *)_isWarningIgnored {
-  ASSIGN(isWarningIgnored, _isWarningIgnored);
+  ASSIGNCOPY(isWarningIgnored, _isWarningIgnored);
 }
 - (NSNumber *)isWarningIgnored {
   return isWarningIgnored;
@@ -362,13 +375,14 @@ static NSArray  *startDateOrderings = nil;
 }
 
 - (void)setCycleEndDateFromString:(NSString *)_cycleEndDateString {
-  NSCalendarDate *myDate = nil;
-
+  NSCalendarDate *myDate;
+  
   _cycleEndDateString = [_cycleEndDateString stringByAppendingString:
                                              @" 12:00:00"];
-  myDate = [NSCalendarDate dateWithString:_cycleEndDateString
-                           calendarFormat:@"%Y-%m-%d %H:%M:%S"];
+  myDate = [[NSCalendarDate alloc] initWithString:_cycleEndDateString
+                                   calendarFormat:@"%Y-%m-%d %H:%M:%S"];
   [super takeValue:myDate forKey:@"cycleEndDate"];
+  [myDate release]; myDate = nil;
 }
 
 /* key/value coding */
@@ -418,7 +432,7 @@ static NSArray  *startDateOrderings = nil;
 }
 
 - (void)_newCyclicDatesInContext:(id)_context {
-  id res = nil;
+  id res;
   
   res = LSRunCommandV(_context, @"appointment", @"new-cyclic",
                       @"cyclicAppointment", [self object],
@@ -426,7 +440,7 @@ static NSArray  *startDateOrderings = nil;
                       @"participants",      self->participants,
                       @"comment",           [self valueForKey:@"comment"],
                       nil);
-  // should check result
+  // TODO: should check result
 }
 
 - (void)_assignParticipantsInContext:(id)_context {

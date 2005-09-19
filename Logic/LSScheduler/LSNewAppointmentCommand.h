@@ -24,6 +24,13 @@
 
 #include <LSFoundation/LSDBObjectNewCommand.h>
 
+/*
+  LSNewAppointmentCommand (appointment::new)
+
+  Subclasses:
+    LSNewAppointmentFromVEventCommand
+*/
+
 @class NSNumber;
 
 @interface LSNewAppointmentCommand : LSDBObjectNewCommand

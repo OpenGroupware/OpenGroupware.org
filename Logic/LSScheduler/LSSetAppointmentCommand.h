@@ -24,6 +24,16 @@
 
 #include <LSFoundation/LSDBObjectSetCommand.h>
 
+/*
+  LSSetAppointmentCommand (appointment::set)
+  
+  TODO: document
+  
+  Subclasses:
+    LSMoveAppointmentCommand - TODO: fix that ...
+    LSUpdateAppointmentWithVEventCommand ?
+*/
+
 @interface LSSetAppointmentCommand : LSDBObjectSetCommand
 {
 @private
