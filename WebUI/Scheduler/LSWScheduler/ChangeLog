@@ -1,5 +1,14 @@
 2005-09-19  Helge Hess  <helge.hess@skyrix.com>
 
+	* v5.3.80
+
+	* LSWAppointmentEditor.m: properly save the 'role' information in the
+	  snapshot for subsequent save/create. The 'participants' array in the
+	  snapshot is not a set of full EOs anymore! (can lead to issues, but
+	  works fine so far)
+
+	* LSWAppointmentViewer.m: minor code cleanups
+
 	* LSWAppointmentEditor.m: properly load the rolemap (v5.3.79)
 
 	* LSWAppointmentEditor.m: code cleanups (v5.3.78)

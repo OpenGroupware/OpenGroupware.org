@@ -21,6 +21,12 @@
 
 #include <OGoFoundation/OGoViewerPage.h>
 
+/*
+  LSWAppointmentViewer
+
+  TODO: document
+*/
+
 @class NSTimeZone, NSArray, NSMutableString;
 
 @interface LSWAppointmentViewer : LSWViewerPage
@@ -190,14 +196,14 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   [bindings setObject:sd forKey:@"startDate"];
   [bindings setObject:ed forKey:@"endDate"];
 
-  if ((title = [obj valueForKey:@"title"]))
+  if ((title = [obj valueForKey:@"title"]) != nil)
     [bindings setObject:title forKey:@"title"];
-  if ((location = [obj valueForKey:@"location"]))
+  if ((location = [obj valueForKey:@"location"]) != nil)
     [bindings setObject:location forKey:@"location"];
-  if ((resNames = [obj valueForKey:@"resourceNames"]))
+  if ((resNames = [obj valueForKey:@"resourceNames"]) != nil)
     [bindings setObject:resNames forKey:@"resourceNames"];        
 
-  if ((c = [obj valueForKey:@"comment"]))
+  if ((c = [obj valueForKey:@"comment"]) != nil)
     [bindings setObject:c forKey:@"comment"];
   else
     [bindings setObject:@"" forKey:@"comment"];

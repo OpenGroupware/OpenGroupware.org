@@ -253,7 +253,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   [self->timeZone release]; self->timeZone = nil;
   self->timeZone = [[date timeZone] retain];
   
-  NSAssert(self->participants, @"participants array is not setup !");
+  NSAssert(self->participants, @"participants array is missing!");
   
   if (addParticipants) {
     NSMutableSet *s;
@@ -827,26 +827,24 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return self->searchTeam;
 }
 
-- (void)setParticipantsFromGids:(id)_gids {
+- (void)setParticipantsFromGids:(NSArray *)_gids {
   NSMutableArray *pgids, *tgids, *result;
   NSEnumerator   *enumerator;
-  id             gid;
+  EOKeyGlobalID  *gid;
 
-  pgids      = [[NSMutableArray alloc] init];
-  tgids      = [[NSMutableArray alloc] init];
-  result     = [[NSMutableArray alloc] init];
+  pgids      = [[NSMutableArray alloc] initWithCapacity:4];
+  tgids      = [[NSMutableArray alloc] initWithCapacity:4];
+  result     = [[NSMutableArray alloc] initWithCapacity:4];
+
   enumerator = [_gids objectEnumerator];
-  
-  while ((gid = [enumerator nextObject])) {
-    if ([[gid entityName] isEqualToString:@"Person"]) {
+  while ((gid = [enumerator nextObject]) != nil) {
+    if ([[gid entityName] isEqualToString:@"Person"])
       [pgids addObject:gid];
-    }
-    else if ([[gid entityName] isEqualToString:@"Team"]) {
+    else if ([[gid entityName] isEqualToString:@"Team"])
       [tgids addObject:gid];
-    }
     else {
-      NSLog(@"WARNING[%s:%d]: unknown gid %@", __PRETTY_FUNCTION__, __LINE__,
-            gid);
+      [self warnWithFormat:@"[%s:%d]: unknown gid %@", 
+            __PRETTY_FUNCTION__, __LINE__, gid];
     }
   }
   [result addObjectsFromArray:[self _fetchPersonsForGIDs:pgids]];
@@ -859,14 +857,15 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   [pgids  release]; pgids  = nil;    
 }
 
-- (void)setParticipantsFromProposal:(id)_part {
+- (void)setParticipantsFromProposal:(NSArray *)_part {
   if (_part == self->participants) return;
   [self->participants release];
   self->participants = [_part mutableCopy];
 }
 
-- (void)setResources:(id)_res {
+- (void)setResources:(NSArray *)_res {
   NSArray *tmp;
+  
   if (self->resources == _res) return;
   tmp = self->resources;
   self->resources = [_res mutableCopy];
@@ -1677,28 +1676,94 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return accessList;
 }
 
+- (NSArray *)participantsInfoChanges:(NSArray *)_partEOs {
+  /*
+    This calculates the records for the appointment::set-participants command.
+    It includes just the required info (id + role), not the full EOs.
+  */
+  static NSArray *copyKeys = nil;
+  NSMutableArray *partInfos;
+  unsigned i, count;
+  
+  if (copyKeys == nil) {
+    /* 
+       Those are keys which are set in the participant array of the snapshot,
+       which in turn is used in subsequent pages! (eg the
+       SkySchedulerConflictPage reuses that array)
+    */
+    copyKeys = [[NSArray alloc] initWithObjects:@"companyId",
+                                @"globalID", @"description", @"login",
+                                @"name", @"firstname", @"isTeam", @"isAccount",
+                                @"isPerson", nil];
+  }
+  
+  if ((count = [_partEOs count]) == 0)
+    return [NSArray array];
+
+  partInfos = [NSMutableArray arrayWithCapacity:count];
+  for (i = 0; i < count; i++) {
+    NSMutableDictionary *partInfo;
+    NSString *role;
+    
+    partInfo =
+      [[[_partEOs objectAtIndex:i] valuesForKeys:copyKeys] mutableCopy];
+    
+    role = [self->roleMap objectForKey:[partInfo objectForKey:@"companyId"]];
+    if ([role isNotEmpty])
+      [partInfo setObject:role forKey:@"role"];
+    
+    [partInfos addObject:partInfo];
+    [partInfo release];
+  }
+  return partInfos;
+}
+
 - (void)parseSnapshotValues {
-  /* called by -saveAndGoBackWithCount:action: */
+  /* 
+     Called by -saveAndGoBackWithCount:action:. The 'snapshot' is not a real
+     snapshot but a set of parameters passed to the 'appointment::insert' or
+     'appointment::update' command.
+     Some of the parameters are directly bound in the template, but some are
+     just setup here.
+  */
   NSString *accessList;
   id       apmt;
   
-  apmt       = [self snapshot];
-  accessList = [self _accessList];
-
-  if (accessList != nil)
+  apmt = [self snapshot];
+  
+  /* write access rights */
+  
+  if ((accessList = [self _accessList]) != nil)
     [apmt takeValue:accessList forKey:@"writeAccessList"];
   
-  [apmt takeValue:self->selectedParticipants forKey:@"participants"];  
+  /* transfer participants */
+
+#if 0 // (required for some code sections, eg conflicts?)
+  [apmt takeValue:self->selectedParticipants forKey:@"participants"];
+#else
+  /* this can conflict with code which expects EOs in the snapshot */
+  [apmt takeValue:[self participantsInfoChanges:self->selectedParticipants]
+        forKey:@"participants"];
+#endif
+  
+  /* whether to ignore conflicts */
+  
   [apmt takeValue:(self->aeFlags.ignoreConflicts ? yesNum : noNum)
         forKey:@"isWarningIgnored"];
+
+  /* setup resources */
+  
   [apmt takeValue:[self _resourceString] forKey:@"resourceNames"];
+
+  /* transfer comment */
 
   if (self->comment != nil)
     [apmt takeValue:self->comment forKey:@"comment"];
 
+  /* fixup notification time */
+  
   [apmt takeValue:null forKey:@"notificationTime"];
-
-  if (self->notificationTime != nil) {
+  if ([self->notificationTime isNotEmpty]) {
     NSNumber *time;
     
     // TODO: what is this '10m' special case?
@@ -1801,6 +1866,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   // TODO: DUP in LSWAppointmentMove?
   if ([[ds fetchObjects] isNotEmpty])
     return [self _handleConflictsInConflictDS:ds action:_action];
+
+  [self logWithFormat:@"NO CONFLICTS, GO ON .."];
   
   /* return */
   
@@ -1814,12 +1881,33 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 
 - (id)insertObject {
   /* called by -_performOpInTransaction: */
+#if 1
   return [self runCommand:@"appointment::new" arguments:[self snapshot]];
+#else // moved to snapshot
+  NSMutableDictionary *args;
+  
+  // Note: this code is in here because the 'snapshot' is used in other
+  //       contexts and the 'reduced' participants hurt in such case
+  // TODO: better enumerate all transfered keys in the command call?
+  args = [[[self snapshot] mutableCopy] autorelease];
+  [args setObject:[self participantsInfoChanges:self->selectedParticipants]
+        forKey:@"participants"];  
+  return [self runCommand:@"appointment::new" arguments:args];
+#endif
 }
 
 - (id)updateObject {
   /* called by -_performOpInTransaction: */
+#if 1
   return [self runCommand:@"appointment::set" arguments:[self snapshot]];
+#else // moved to snapshot
+  NSMutableDictionary *args;
+  
+  args = [[[self snapshot] mutableCopy] autorelease];
+  [args setObject:[self participantsInfoChanges:self->selectedParticipants]
+        forKey:@"participants"];  
+  return [self runCommand:@"appointment::set" arguments:args];
+#endif
 }
 
 - (id)deleteObject {

@@ -152,7 +152,7 @@ static NSNumber   *noNum      = nil;
 }
 
 - (void)setConflict:(id)_conflict {
-  ASSIGN(self->conflict,_conflict);
+  ASSIGN(self->conflict, _conflict);
 }
 - (id)conflict {
   return self->conflict;
