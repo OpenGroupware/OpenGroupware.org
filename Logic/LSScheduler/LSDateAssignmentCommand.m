@@ -157,7 +157,8 @@
                [[newParticipant valueForKey:@"isTeam"] boolValue]);
     
     if (!isStaff) {
-      if ([newParticipant valueForKey:@"isPerson"] == nil) {
+      if ([newParticipant valueForKey:@"isAccount"] == nil &&
+          [newParticipant valueForKey:@"isTeam"]) {
         [self warnWithFormat:
                 @"non-staff participant (probably missing type marker!): %@",
                 newParticipant];
