@@ -5,7 +5,7 @@
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
 >
-  <OGo:page-head title="abc" />
+  <OGo:page-head var:title="context.page.objectLabel" />
 
   <table border="0" width="100%">
     <var:foreach list="conflictDates" item="currentDate">

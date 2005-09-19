@@ -1,3 +1,8 @@
+2005-09-19  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoScheduler/OGoAptConflictsList.wox: print appointment title in
+	  table view header
+
 2005-09-16  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWScheduler/LSWAppointmentEditor.wox: reorganized buttons in editor
