@@ -100,43 +100,31 @@ static inline int _getIntFromTimeString(NSString *str);
 static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
                                           NSString*, int, int);
 
-+ (void)initialize {
-  [super initialize];
-
-  if (hourArray == nil) {
-    hourArray = [[NSArray allocWithZone:[self zone]]
-                          initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5",
-                                          @"6", @"7", @"8", @"9", @"10", @"11",
-                                          @"12", @"13", @"14", @"15", @"16",
-                                          @"17", @"18", @"19", @"20", @"21",
-                                          @"22", @"23", nil];
-  }
-  if (minuteArray == nil) {
-    minuteArray = [[NSArray allocWithZone:[self zone]]
-                            initWithObjects:@"00", @"30", nil];
-  }
-}
-
 + (int)version {
   return [super version] + 2;
 }
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  hourArray   = [[ud arrayForKey:@"proposal_hourarray"]   copy];
+  minuteArray = [[ud arrayForKey:@"proposal_minutearray"] copy];
+}
 
 - (id)init {
-  if ((self = [super init])) {    
+  if ((self = [super init]) != nil) {
     self->earliestStartTime = -1;
     self->latestFinishTime  = -1;
 
     self->duration = 60;
     self->interval = 30;
     
-    self->resources    = [[NSMutableArray alloc] init];
-    self->participants = [[NSMutableArray alloc] init];
+    self->resources    = [[NSMutableArray alloc] initWithCapacity:16];
+    self->participants = [[NSMutableArray alloc] initWithCapacity:16];
     //[self->participants addObject:[[self session] activeAccount]];
   }
   return self;
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
   RELEASE(self->searchTeam);
   RELEASE(self->searchText);
@@ -158,7 +146,8 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
   RELEASE(self->timeZone);
   [super dealloc];
 }
-#endif
+
+/* notifications */
 
 - (void)syncAwake {
   [super syncAwake];
@@ -274,14 +263,33 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
 }
 
 - (NSDictionary *)_rebuildTimeSlicesForDates:(NSDictionary *)_dates {
+  /*
+    The '_dates' input parameter is a dictionary where the key is a plain date,
+    eg '2005-09-20' and the value is the array of slots for this date.
+
+    The result is keyed on the same date-string, it contains additional records
+    for 'unfree' slots, eg:
+        {
+            dates = {
+                endDate = "2005-09-19 11:00:00 +0200";
+                kind = start;
+                startDate = "2005-09-19 10:00:00 +0200";
+            };
+            status = startTime;
+        },
+        {
+            status = unfree;
+        },
+  */
+  // TODO: 'unfree'??? => busy!
   NSMutableDictionary *dict;
   NSEnumerator        *dateEnum;
-  id                  dateObj;
-
-  dateEnum = [_dates keyEnumerator];
+  NSString            *dateKey;
+  
   dict = [NSMutableDictionary dictionaryWithCapacity:64];
-    
-  while ((dateObj = [dateEnum nextObject]) != nil) {
+  
+  dateEnum = [_dates keyEnumerator];
+  while ((dateKey = [dateEnum nextObject]) != nil) {
       NSMutableArray *array;
       unsigned       i, cnt;
       
@@ -293,13 +301,13 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
         
         obj = [self->allDayHours objectAtIndex:i];
         
-        entry = _getTimeEntry(self, [_dates objectForKey:dateObj],
+        entry = _getTimeEntry(self, [_dates objectForKey:dateKey],
                               obj, i, cnt);
         [array addObject:entry];
       }
-      [dict setObject:array forKey:dateObj];
-    }
-    return dict;
+      [dict setObject:array forKey:dateKey];
+  }
+  return dict;
 }
 
 /* actions */
@@ -367,13 +375,17 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
     [self setErrorString:@"Some search criteria is incorrect!"];
     return nil;
   }
-  
-  /* run proposal command */
-    
-  if (self->searchList != nil) {
-    [self->searchList release]; self->searchList = nil;
-  }
 
+  /* free old stuff */
+
+  [self->searchList      release]; self->searchList = nil;
+  [self->calculatedTable release]; self->calculatedTable = nil;
+  
+  /* 
+     run proposal command, the returned list is an array of dicts with keys
+     'startDate', 'endDate' and 'kind' (= start or end)
+  */
+  
   self->searchList =
     [self runCommand:@"appointment::proposal",
           @"participants", self->selectedParticipants,
@@ -392,10 +404,11 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
   [resourceNames release]; resourceNames = nil;
   [categories    release]; categories    = nil;
   
+  /* calculate presentation of results */
+  
   [self _rebuildCaptions];
   [self _rebuildDayArrays];
   
-  [self->calculatedTable release]; self->calculatedTable = nil;
   self->calculatedTable =
     [[self _rebuildTimeSlicesForDates:self->sortedDates] retain];
   
@@ -724,28 +737,25 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
   return self->selectedParticipants;
 }
 
-- (void)setParticipantsFromGids:(id)_gids {
+- (void)setParticipantsFromGids:(NSArray *)_gids {
   NSMutableArray *pgids      = nil;
   NSMutableArray *tgids      = nil;    
   NSEnumerator   *enumerator = nil;
   id             gid         = nil;
   NSMutableArray *result     = nil;
 
-  pgids      = [[NSMutableArray alloc] init];
-  tgids      = [[NSMutableArray alloc] init];
-  result     = [[NSMutableArray alloc] init];
+  pgids      = [[NSMutableArray alloc] initWithCapacity:16];
+  tgids      = [[NSMutableArray alloc] initWithCapacity:16];
+  result     = [[NSMutableArray alloc] initWithCapacity:16];
+
   enumerator = [_gids objectEnumerator];
-  
-  while ((gid = [enumerator nextObject])) {
-    if ([[gid entityName] isEqualToString:@"Person"]) {
+  while ((gid = [enumerator nextObject]) != nil) {
+    if ([[gid entityName] isEqualToString:@"Person"])
       [pgids addObject:gid];
-    }
-    else if ([[gid entityName] isEqualToString:@"Team"]) {
+    else if ([[gid entityName] isEqualToString:@"Team"])
       [tgids addObject:gid];
-    }
-    else {
-      NSLog(@"WARNING: unknown gid %@", gid);
-    }
+    else
+      [self warnWithFormat:@"unknown gid %@", gid];
   }
   if ([pgids isNotEmpty]) {
     NSArray *tmp;

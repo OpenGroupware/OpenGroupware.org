@@ -23,6 +23,25 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
+/*
+  LSAppointmentProposalCommand (appointment::proposal)
+  
+  Use in:
+    LSWAppointmentProposal
+
+  Returns an array of dictionaries like:
+    {
+        endDate = "2005-09-19 18:00:00 +0200";
+        kind = start;
+        startDate = "2005-09-19 17:00:00 +0200";
+    },
+    {
+        endDate = "2005-09-19 18:00:00 +0200";
+        kind = end;
+        startDate = "2005-09-19 17:01:00 +0200";
+    }
+*/
+
 @class NSCalendarDate, NSTimeZone;
 
 @interface LSAppointmentProposalCommand : LSDBObjectBaseCommand
@@ -38,9 +57,10 @@
   int            startTime; // seconds from 0:00
   int            endTime;   // seconds from 0:00
   NSTimeZone     *timeZone;
+  NSCalendarDate *now;
 }
 
-- (NSArray *)_getStaffIds:(id)_ctx;
+- (NSArray *)_getPrimaryKeysOfCompanyRecords:(NSArray *)_a inContext:(id)_ctx;
 - (NSString *)_getResourceString:(id)_ctx;
 - (NSArray *)_getFreeTimeIntervals:(NSArray *)_dates inContext:(id)_ctx;
 - (NSMutableArray *)_getDatesInContext:(id)_context;
@@ -56,12 +76,13 @@
 
 - (NSCalendarDate *)dateAtHour:(int)_hour minute:(int)_minute second:(int)_sec;
 
-- (void)_sortAndMergeDates:(NSMutableArray *)_dates inContext:(id)_context;
-
 - (NSArray *)_getStartDateFetchOrderingWithEntity:(EOEntity *)_entity
   inContext:(id)_context;
 - (NSMutableArray *)_datesForParticipantsAndResources:(id)_context;
 - (NSMutableArray *)_datesForCategories:(id)_ctx;
+
+- (void)_sortDates:(NSMutableArray *)_dates  inContext:(id)_context;
+- (void)_mergeDates:(NSMutableArray *)_dates inContext:(id)_context;
 
 @end
 
@@ -97,6 +118,7 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
 }
 
 - (void)dealloc {
+  [self->now          release];
   [self->participants release];
   [self->resources    release];
   [self->startDate    release];
@@ -110,6 +132,10 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
 - (void)_prepareForExecutionInContext:(id)_context {
   if (self->timeZone == nil)
     self->timeZone = [gmt retain];
+
+  [self->now release]; self->now = nil;
+  self->now = [[NSCalendarDate date] copy];
+  [self->now setTimeZone:self->timeZone];
   
   if (![self->startDate isNotNull]) {
     [self logWithFormat:@"WARNING: startDate == nil, take today"];
@@ -160,11 +186,13 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   [pool release];
 
   pool = [[NSAutoreleasePool alloc] init];
-  [self _sortAndMergeDates:dates inContext:_context];
+  [self _sortDates:dates  inContext:_context];
+  [self _mergeDates:dates inContext:_context];
   [pool release];
-
+  
   pool = [[NSAutoreleasePool alloc] init];
-  [dates autorelease];
+  /* dates is an array of dicts with _only_ 'startDate' and 'endDate' */
+  [dates autorelease]; // Note: still live and used as an arg below!
   dates = [(id)[self _getFreeTimeIntervals:dates inContext:_context] retain];
   [pool release];
   
@@ -172,68 +200,70 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   [dates release];
 }
 
-- (NSArray *)_getStaffIds:(id)_context {
-  NSMutableSet *staff  = nil;
-  int          i, cnt;
+- (NSArray *)_getPrimaryKeysOfCompanyRecords:(NSArray *)_a inContext:(id)_ctx {
+  NSMutableSet *staff;
+  unsigned i, cnt;
   
-  cnt = [self->participants count];
+  cnt   = [_a count];
   staff = [NSMutableSet setWithCapacity:cnt + 1];
   
+  // TODO: just fetch the IDs of members and teams
   for (i = 0; i < cnt; i++) {
     id obj;
     
-    obj = [self->participants objectAtIndex:i];
+    obj = [_a objectAtIndex:i];
     if ([[obj valueForKey:@"isTeam"] boolValue]) {
-      NSArray *teams   = nil;      
-      NSArray *members = [obj valueForKey:@"members"];
+      NSArray *teams;      
+      NSArray *members;
 
-      if (members == nil) {
-        LSRunCommandV(_context, @"team", @"members", @"object", obj, nil);
+      if ((members = [obj valueForKey:@"members"]) == nil) {
+        LSRunCommandV(_ctx, @"team", @"members", @"object", obj, nil);
       }
-      members = [obj valueForKey:@"members"];
-      if (members == nil) {
-        NSLog(@"Couldn`t fetch members for team %@", obj);
+      if ((members = [obj valueForKey:@"members"]) == nil) {
+        [self errorWithFormat:@"could not fetch members for team %@", obj];
         members = emptyArray;
       }
 #if 0 // hh: document!
       [staff removeObject:obj];
 #endif
       
-      
-      teams = LSRunCommandV(_context, @"account", @"teams",
+      teams = LSRunCommandV(_ctx, @"account", @"teams",
                             @"accounts", members, nil);
-      [staff addObjectsFromArray:teams];
-      [staff addObjectsFromArray:members];
-      [staff addObject:obj];
+      [staff addObjectsFromArray:[teams valueForKey:@"companyId"]];
+      [staff addObjectsFromArray:[members valueForKey:@"companyId"]];
+      [staff addObject:[obj valueForKey:@"companyId"]];
     }
     else {
-      NSArray *teams = nil;
-
-      teams = LSRunCommandV(_context, @"account", @"teams", 
+      NSArray *teams;
+      
+      teams = LSRunCommandV(_ctx, @"account", @"teams", 
                             @"object", obj, nil);
-      [staff addObjectsFromArray:teams];
-      [staff addObject:obj];
+      [staff addObjectsFromArray:[teams valueForKey:@"companyId"]];
+      [staff addObject:[obj valueForKey:@"companyId"]];
     }
   }
-  return [[staff allObjects] map:@selector(objectForKey:) with:@"companyId"];
+  return [staff allObjects];
 }
 
 - (NSString *)_getResourceString:(id)_context {
-  int             i, cnt = 0;
-  NSMutableString *str   = nil;
-  BOOL            first  = YES;
-  str = [NSMutableString stringWithCapacity:255];
+  int             i, cnt;
+  NSMutableString *str;
+  BOOL            first;
 
-  for (i = 0, cnt = [self->resources count]; i < cnt; i++) {
-    id s = [self->resources objectAtIndex:i];
-    if ([s length] > 0) {
-      if (!first)
-        [str appendString:@", "];
-      else
-        first = NO;
-      
-      [str appendString:s];
-    }
+  str = [NSMutableString stringWithCapacity:255];
+  
+  for (i = 0, cnt = [self->resources count], first = YES; i < cnt; i++) {
+    NSString *s;
+
+    s = [self->resources objectAtIndex:i];
+    if (![s isNotEmpty])
+      continue;
+    
+    if (!first)
+      [str appendString:@", "];
+    else
+      first = NO;
+    [str appendString:s];
   }
   return str;
 }
@@ -254,12 +284,12 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
 {
   EOSQLQualifier *qualifier;
   
-  if ([_ids count] == 0) {
-    [self logWithFormat:@"ERROR(%s): got no IDs for building qualifier!",
+  if (![_ids isNotEmpty]) {
+    [self errorWithFormat:@"%s: got no IDs for building qualifier!",
 	    __PRETTY_FUNCTION__];
     return nil;
   }
-
+  
   qualifier = [self createSqlInQualifierOnEntity:_entity
 		    attributePath:@"toDateCompanyAssignment.companyId"
 		    primaryKeys:_ids];
@@ -304,43 +334,44 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   /* TODO: split up */
   id      obj  = nil;
   NSArray *res = nil;
-  
-    NSEnumerator   *enumerator = nil;
-    EOSQLQualifier *qualifier  = nil;
+  NSEnumerator   *enumerator = nil;
+  EOSQLQualifier *qualifier  = nil;
     
-    res = [self _removeEmptyResources:_res];
-    if ([res count] == 0)
-      return emptyArray;
+  res = [self _removeEmptyResources:_res];
+  if (![res isNotEmpty])
+    return emptyArray;
 
-    enumerator = [res objectEnumerator];
-    while ((obj = [enumerator nextObject])) {
+  enumerator = [res objectEnumerator];
+  while ((obj = [enumerator nextObject]) != nil) {
       EOSQLQualifier *rq;
 	
       rq = [self _atomicResQualifier:obj forEntity:_entity inContext:_context];
       
       if (qualifier == nil)
 	qualifier = rq;
-      else if (rq)
+      else if (rq != nil)
 	[qualifier disjoinWithQualifier:rq];
       else {
-	[self logWithFormat:@"WARNING(%s): got no qualifier!", 
+	[self warnWithFormat:@"%s: got no qualifier!", 
 	        __PRETTY_FUNCTION__];
       }
-    }
-    return (qualifier) ? [NSArray arrayWithObject:qualifier] : emptyArray;
+  }
+  return (qualifier != nil) ? [NSArray arrayWithObject:qualifier] : emptyArray;
 }
 
 - (EOSQLQualifier *)_dateQualifierForEntity:(EOEntity *)_entity
   inContext:(id)_context adaptor:(EOAdaptor *)_adaptor
 {
-  id             formattedBegin = nil;
-  id             formattedEnd   = nil;
-  EOSQLQualifier *qualifier     = nil;
-
-  formattedBegin = [_adaptor formatValue:self->startDate
-                             forAttribute:[_entity attributeNamed:@"startDate"]];
-  formattedEnd   = [_adaptor formatValue:self->endDate
-                             forAttribute:[_entity attributeNamed:@"endDate"]];
+  NSString       *formattedBegin, *formattedEnd;
+  EOSQLQualifier *qualifier;
+  
+  formattedBegin = 
+    [_adaptor formatValue:self->startDate
+              forAttribute:[_entity attributeNamed:@"startDate"]];
+  formattedEnd   = 
+    [_adaptor formatValue:self->endDate
+              forAttribute:[_entity attributeNamed:@"endDate"]];
+  
   qualifier = [[EOSQLQualifier alloc] initWithEntity:_entity
                                       qualifierFormat:
                                       @"%A > %@ AND %A < %@ ",
@@ -364,10 +395,8 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   
   tzName = [(NSUserDefaults *)[_ctx valueForKey:LSUserDefaultsKey] 
                               objectForKey:@"timezone"];
-  if ((tz = [NSTimeZone timeZoneWithAbbreviation:tzName]))
-    return tz;
-  
-  return met;
+  return ((tz = [NSTimeZone timeZoneWithAbbreviation:tzName]) != nil)
+    ? tz : met;
 }
 
 - (NSArray *)_fetchResourcesForCategory:(id)_obj inContext:(id)_ctx {
@@ -401,57 +430,56 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   result = [[NSMutableSet alloc] initWithCapacity:255];
 
   enumerator = [self->categories objectEnumerator];
-  while ((obj = [enumerator nextObject])) {
+  while ((obj = [enumerator nextObject]) != nil) {
     NSArray             *res   = nil;
-    NSMutableArray      *dates = nil;
+    NSMutableArray      *dates;
     NSMutableDictionary *dict  = nil;
     EOSQLQualifier *qualifier;
 
     dates = [[NSMutableArray alloc] initWithCapacity:100];
+    
     res   = LSRunCommandV(_ctx, @"appointmentresource", @"categories",
                           @"category", obj, nil);
 
-       qualifier = [[self _resQualifier:res entity:entity context:_ctx
-                         adaptor:adaptor] lastObject];
-      [qualifier conjoinWithQualifier:[self _dateQualifierForEntity:entity
-                                            inContext:_ctx
-                                            adaptor:adaptor]];
-      if (![channel selectAttributes:attributes describedByQualifier:qualifier
-		    fetchOrder:
-		      [self _getStartDateFetchOrderingWithEntity:entity
-			    inContext:_ctx]
-		    lock:NO]) {
-        return [NSMutableArray array];
-      }
+    qualifier = [[self _resQualifier:res entity:entity context:_ctx
+                       adaptor:adaptor] lastObject];
+    [qualifier conjoinWithQualifier:[self _dateQualifierForEntity:entity
+                                          inContext:_ctx
+                                          adaptor:adaptor]];
+    
+    if (![channel selectAttributes:attributes describedByQualifier:qualifier
+                  fetchOrder:[self _getStartDateFetchOrderingWithEntity:entity
+                                   inContext:_ctx]
+                  lock:NO]) {
+      [self errorWithFormat:@"could not perform SQL select!"];
+      return [NSMutableArray arrayWithCapacity:4];
+    }
       
-      while ((dict = [channel fetchAttributes:attributes withZone:NULL])) {
+    while ((dict = [channel fetchAttributes:attributes withZone:NULL])) {
         NSCalendarDate *date  = nil;
         NSMutableArray *array = nil;
         id             tmp    = nil;
         id *v = NULL;
         id *k = NULL;
 
-        v = calloc(3, sizeof(id));
-        k = calloc(3, sizeof(id));
+        v = calloc(4, sizeof(id));
+        k = calloc(4, sizeof(id));
 	
         date = [dict objectForKey:@"startDate"];
-        if (date != nil) {
-          [date setTimeZone:self->timeZone];
-        }
+        [date setTimeZone:self->timeZone];
         v[0] = date;
         k[0] = @"startDate";
         
         date = [dict objectForKey:@"endDate"];
-        if (date != nil)
-          [date setTimeZone:self->timeZone];
-	
+        [date setTimeZone:self->timeZone];
         v[1] = date;
         k[1] = @"endDate";
 
-        array  = [NSMutableArray array];
-        tmp    = [dict objectForKey:@"resourceNames"];
-        if (tmp != nil) {
-          NSEnumerator *resEnum = nil;
+        array  = [NSMutableArray arrayWithCapacity:16];
+
+        if ((tmp = [dict objectForKey:@"resourceNames"]) != nil) {
+          NSEnumerator *resEnum;
+          
           resEnum = [[tmp componentsSeparatedByString:@", "] objectEnumerator];
           while ((tmp = [resEnum nextObject])) {
             if ([res containsObject:tmp])
@@ -460,11 +488,14 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
         }
         v[2] = array;
         k[2] = @"resourceNames";
-        [dates addObject:[NSDictionary dictionaryWithObjects:v forKeys:k
-                                       count:3]];
-        if (v) free(v); if (k) free(k);
-      }
-      
+        
+        tmp = [[NSDictionary alloc] initWithObjects:v forKeys:k count:3];
+        [dates addObject:tmp];
+        [tmp release];
+        if (v != NULL) free(v);
+        if (k != NULL) free(k);
+    }
+    
     {
       NSMutableArray *array    = nil;
       NSEnumerator   *resEnum  = nil;
@@ -677,8 +708,9 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   qualifier = [self _dateQualifierForEntity:entity
 		    inContext:_context
 		    adaptor:adaptor];
-     
-  partIds = [self _getStaffIds:_context];
+  
+  partIds = [self _getPrimaryKeysOfCompanyRecords:self->participants
+                  inContext:_context];
   cnt     = [partIds count];
   i       = 0;
   do {
@@ -739,12 +771,12 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
 
 /* bubble sort (dates should be already sorted) */
 
-static void _sortDates(LSAppointmentProposalCommand *self, id _context,
-                       NSMutableArray *_dates) {
-  int  i, cnt  = 0;
+- (void)_sortDates:(NSMutableArray *)_dates inContext:(id)_context {
   BOOL isReady = NO;
-
+  
   while (!isReady) {
+    unsigned i, cnt;
+    
     isReady = YES;
     
     for (i = 0, cnt = [_dates count]; i < cnt - 1; i++) {
@@ -766,10 +798,8 @@ static void _sortDates(LSAppointmentProposalCommand *self, id _context,
   }
 }
 
-static void _mergeDates(LSAppointmentProposalCommand *self, id _context,
-                        NSMutableArray *_dates) 
-{
-  int i, cnt = 0;
+- (void)_mergeDates:(NSMutableArray *)_dates inContext:(id)_context {
+  unsigned i, cnt;
   
   for (i = 0, cnt = [_dates count]; i < cnt - 1; i++) {
     // date probably means "appointment" here
@@ -777,25 +807,25 @@ static void _mergeDates(LSAppointmentProposalCommand *self, id _context,
     NSDictionary   *date2;
     NSCalendarDate *endDate1;
     NSCalendarDate *endDate2;
-    NSCalendarDate *endDate  = nil;
+    NSCalendarDate *lEndDate;
     NSDictionary   *dict     = nil;
     
-    date1                 = [_dates objectAtIndex:i];
-    date2                 = [_dates objectAtIndex:i+1];
+    date1    = [_dates objectAtIndex:i];
+    date2    = [_dates objectAtIndex:i+1];
     endDate1 = [date1 objectForKey:@"endDate"];
-
+    
     if ([endDate1 compare:
                   [date2 objectForKey:@"startDate"]] == NSOrderedAscending)
       continue;
       
     endDate2 = [date2 objectForKey:@"endDate"];
-    endDate = ([endDate1 compare:endDate2] == NSOrderedDescending)
+    lEndDate = ([endDate1 compare:endDate2] == NSOrderedDescending)
       ? endDate1
       : endDate2;
-
+    
     dict = [[NSDictionary alloc] initWithObjectsAndKeys:
                            [date1 objectForKey:@"startDate"], @"startDate",
-                           endDate , @"endDate", nil];
+                           lEndDate , @"endDate", nil];
     [_dates removeObjectsInRange:NSMakeRange(i, 2)];
     [_dates insertObject:dict atIndex:i];
     [dict release]; dict = nil;
@@ -804,24 +834,233 @@ static void _mergeDates(LSAppointmentProposalCommand *self, id _context,
   }
 }
 
-- (void)_sortAndMergeDates:(NSMutableArray *)_dates inContext:(id)_context {
-  _sortDates(self, _context, _dates);
-  _mergeDates(self, _context, _dates);
+- (BOOL)_getFreeTimeIntervals:(NSArray *)_dates
+  forDay:(unsigned)i addToResult:(NSMutableArray *)result
+  startDateCursor:(NSCalendarDate **)_sD_ currentDateIndex:(int *)_iDates_
+  inContext:(id)_context
+{
+  // TODO: split up this methods, REFACTOR!
+  /*
+    Note: the method returns YES if the caller should stop processing further
+          slots (limit reached)
+          
+    Note: *_iDates_ is an *index* into the _dates array.
+  */
+  double         end                 = 0;
+  NSCalendarDate *eD                 = nil;
+  BOOL           alreadyAtTheNextDay = NO;
+  unsigned cntDates;
+  const double steps  = 60;
+  const double dur    = self->duration  * 60;
+  const double startT = self->startTime * 60;
+  const double endT   = self->endTime   * 60;
+  
+  cntDates = [_dates count];
+  
+  /* setup start and end date */
+  
+  *_sD_ = [*_sD_ beginOfDay];
+  [*_sD_ setTimeZone:self->timeZone];
+
+  if ([*_sD_ timeIntervalSinceReferenceDate] >
+      [self->endDate timeIntervalSinceReferenceDate])
+    return NO; /* leave the loop */
+  
+  if (debugOn) {
+      [self logWithFormat:@"########## day number %d", i];
+      [self logWithFormat:@"********** sD %@ %g", *_sD_,
+            [*_sD_ timeIntervalSinceReferenceDate]];
+  }
+  end = [*_sD_ timeIntervalSinceReferenceDate] + endT;
+  if (debugOn)
+    [self logWithFormat:@"********** end %g", end];
+    
+  *_sD_ = [*_sD_ addTimeInterval:startT];
+  [*_sD_ setTimeZone:self->timeZone];
+  if (debugOn) {
+      [self logWithFormat:@"********** sD after startTime%@ %g", *_sD_,
+            [*_sD_ timeIntervalSinceReferenceDate]];
+  }
+  eD = [*_sD_ addTimeInterval:dur];
+  [eD setTimeZone:self->timeZone];
+    
+  if (debugOn) {
+    [self logWithFormat:@"********** eD %@ %g", eD,
+            [eD timeIntervalSinceReferenceDate]];
+  }
+
+  /* loop */
+  
+  alreadyAtTheNextDay = NO;
+  while ([eD timeIntervalSinceReferenceDate] <= end) {
+    NSDictionary   *datesEntry = nil;
+    BOOL           foundDate   = NO;
+    BOOL           addStep     = YES;
+    BOOL           isFirst     = YES;
+
+    if (*_iDates_ < cntDates) {
+      NSCalendarDate *entryStart, *entryEnd;
+
+      datesEntry = [_dates objectAtIndex:*_iDates_];
+      entryStart = [datesEntry objectForKey:@"startDate"];
+      entryEnd   = [datesEntry objectForKey:@"endDate"];
+        if (debugOn ) {
+          [self logWithFormat:
+                  @"********** [sD timeIntervalSinceReferenceDate]<%g"
+              @"|%@> - [entryEnd timeIntervalSinceReferenceDate]<%g|%@> = %g",
+              [*_sD_ timeIntervalSinceReferenceDate], *_sD_,
+              [entryEnd timeIntervalSinceReferenceDate], entryEnd,
+              ([*_sD_ timeIntervalSinceReferenceDate] -
+               [entryEnd timeIntervalSinceReferenceDate])];
+        }
+        if ([*_sD_ timeIntervalSinceReferenceDate] -
+            [entryEnd timeIntervalSinceReferenceDate] > 0) {
+          /* _dates[i] is before sD */
+          if (debugOn) {
+            [self logWithFormat:@"********** _dates[%@] is before %@ -- %@",
+                    datesEntry, *_sD_, eD];
+          }
+          *_iDates_ = *_iDates_ + 1;
+          foundDate = NO;
+          addStep   = NO;
+        }
+        else if ([eD timeIntervalSinceReferenceDate] -
+                 [entryStart timeIntervalSinceReferenceDate] <= 0) {
+          if (debugOn) {
+            [self logWithFormat:@"********** _date[%@] is after %@ -- %@",
+                  datesEntry, *_sD_, eD];
+          }
+          foundDate = YES;
+          addStep   = YES;
+        }
+        else {
+          if (isFirst) {
+            if ([entryStart timeIntervalSinceReferenceDate] >
+                [*_sD_ timeIntervalSinceReferenceDate]) {
+              int min = [*_sD_ minuteOfHour];
+
+              if ((min == 0) || (min == 30)) {
+                NSDictionary *d;
+                
+                d = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                            *_sD_,      @"startDate",
+                                            entryStart, @"endDate",
+                                            @"free",    @"kind", nil];
+                [result addObject:d];
+                [d release];
+              }
+              isFirst = NO;
+            }
+          }
+          *_sD_ = entryEnd;
+          [*_sD_ setTimeZone:self->timeZone];
+          
+          eD = [*_sD_ addTimeInterval:dur];
+          [eD setTimeZone:self->timeZone];
+          
+          foundDate = NO;
+          addStep   = NO;
+          if ([[*_sD_ beginOfDay] timeIntervalSinceReferenceDate] > end) {
+            alreadyAtTheNextDay = YES;
+            break;
+          }
+          else {
+            *_iDates_ = *_iDates_ + 1;
+          }
+        }
+      }
+      else /* iDates >= cntDates - means we have reached the soft-limit? */
+        foundDate = YES;
+      
+      if (foundDate) {
+        int min = [*_sD_ minuteOfHour];
+        
+        if (debugOn)
+          [self logWithFormat:@"********** found date %@ -- %@", *_sD_, eD];
+        
+        [*_sD_ setTimeZone:self->timeZone];
+        [eD setTimeZone:self->timeZone];
+        
+        if ((min == 0) || (min == 30)) {
+          NSDictionary *d;
+          
+          d = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                      *_sD_, @"startDate", eD, @"endDate",
+                                      @"start", @"kind", nil];
+          [result addObject:d];
+          [d release];
+        }
+      }
+      else if (debugOn) {
+        [self logWithFormat:@"********** %@ -- %@ conflicted with %@",
+              *_sD_, eD,
+              datesEntry];
+      }
+      
+      
+      if (debugOn) {
+        [self logWithFormat:@"********** next step before %@ %g", *_sD_,
+              [*_sD_ timeIntervalSinceReferenceDate]];
+      }
+      if (addStep) {
+        *_sD_ = [*_sD_ addTimeInterval:steps];
+        [*_sD_ setTimeZone:self->timeZone];
+        eD = [*_sD_ addTimeInterval:dur];
+        [eD setTimeZone:self->timeZone];
+        
+        if (debugOn) {
+          [self logWithFormat:@"********** next step after %@ %g", *_sD_,
+                [*_sD_ timeIntervalSinceReferenceDate]];
+        }
+      }
+      else if (debugOn) {
+        [self logWithFormat:@"no next step"];
+      }
+      
+      if ([eD timeIntervalSinceReferenceDate] > end) {
+        if ([*_sD_ timeIntervalSinceReferenceDate] < end) {
+          NSCalendarDate *e;
+          NSDictionary   *d;
+          
+          e = [NSCalendarDate dateWithTimeIntervalSinceReferenceDate:end];
+          [e setTimeZone:self->timeZone];
+
+          d = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                      *_sD_,     @"startDate",
+                                      e,      @"endDate",
+                                      @"end", @"kind", nil];
+          [result addObject:d];
+          [d release];
+        }
+      }
+  }
+
+  /* after loop */
+
+  if (debugOn) {
+      [self logWithFormat:@"********** next day before %@ %g", *_sD_,
+            [*_sD_ timeIntervalSinceReferenceDate]];
+  }
+  if (!alreadyAtTheNextDay) {
+      *_sD_ = [*_sD_ addTimeInterval:(24 * 60 * 60)];
+      [*_sD_ setTimeZone:self->timeZone];
+  }
+  if (debugOn) {
+      [self logWithFormat:@"********** next day after %@ %g", *_sD_,
+            [*_sD_ timeIntervalSinceReferenceDate]];
+  }
+  if ([result count] > LSAppointmentProposalCommand_MAXSEARCH)
+    return NO; /* leave the loop */
+  
+  return YES;
 }
 
 - (NSArray *)_getFreeTimeIntervals:(NSArray *)_dates inContext:(id)_context {
   /* TODO: split up this huge method */
   NSMutableArray *result = nil;
   NSCalendarDate *sD     = nil;
-  int iDates, cntDates, days, i;
-#if 0  // hh asks: what does that mean?
-  double steps  = self->interval  * 60;
-#else  
-  double steps  = 60;
-#endif  
-  double dur    = self->duration  * 60;
-  double startT = self->startTime * 60;
-  double endT   = self->endTime   * 60;
+  unsigned i, days;
+  int iDates, cntDates;
 
   result = [NSMutableArray arrayWithCapacity:
                              LSAppointmentProposalCommand_MAXSEARCH];
@@ -829,11 +1068,11 @@ static void _mergeDates(LSAppointmentProposalCommand *self, id _context,
   days = ([self->endDate timeIntervalSinceReferenceDate] -
           [self->startDate timeIntervalSinceReferenceDate]) / 60 / 60 / 24;
   days++;
-
+  
   [self->startDate setTimeZone:self->timeZone];
   [self->startDate setCalendarFormat:@"%Y-%m-%d %H:%M:%S %z"];
-  [self->endDate setTimeZone:self->timeZone];
-  [self->endDate setCalendarFormat:@"%Y-%m-%d %H:%M:%S %z"];
+  [self->endDate   setTimeZone:self->timeZone];
+  [self->endDate   setCalendarFormat:@"%Y-%m-%d %H:%M:%S %z"];
 
   if (debugOn) {
     [self logWithFormat:@"********** self->startDate %@", self->startDate];
@@ -845,199 +1084,12 @@ static void _mergeDates(LSAppointmentProposalCommand *self, id _context,
   sD       = self->startDate;
   iDates   = 0;
   cntDates = [_dates count];
-
+  
   for (i = 0; i < days; i++) {
-    double         end                 = 0;
-    NSCalendarDate *eD                 = nil;
-    BOOL           alreadyAtTheNextDay = NO;
-    
-    sD = [sD beginOfDay];
-    [sD setTimeZone:self->timeZone];
-
-    if ([sD timeIntervalSinceReferenceDate] >
-        [self->endDate timeIntervalSinceReferenceDate])
-      break;
-    
-    if (debugOn) {
-      [self logWithFormat:@"########## day number %d", i];
-      [self logWithFormat:@"********** sD %@ %g", sD,
-            [sD timeIntervalSinceReferenceDate]];
-    }
-    end = [sD timeIntervalSinceReferenceDate] + endT;
-    if (debugOn)
-      [self logWithFormat:@"********** end %g", end];
-    
-    sD = [sD addTimeInterval:startT];
-    [sD setTimeZone:self->timeZone];
-    if (debugOn) {
-      [self logWithFormat:@"********** sD after startTime%@ %g", sD,
-            [sD timeIntervalSinceReferenceDate]];
-    }
-    eD = [sD addTimeInterval:dur];
-    [eD setTimeZone:self->timeZone];
-    
-    if (debugOn) {
-      [self logWithFormat:@"********** eD %@ %g", eD,
-            [eD timeIntervalSinceReferenceDate]];
-    }
-    
-    alreadyAtTheNextDay = NO;
-    while ([eD timeIntervalSinceReferenceDate] <= end) {
-      NSDictionary   *datesEntry = nil;
-      BOOL           foundDate   = NO;
-      BOOL           addStep     = YES;
-      BOOL           isFirst     = YES;
-
-      if (iDates < cntDates) {
-        NSCalendarDate *entryStart = nil;
-        NSCalendarDate *entryEnd   = nil;
-
-        datesEntry = [_dates objectAtIndex:iDates];
-        entryStart = [datesEntry objectForKey:@"startDate"];
-        entryEnd   = [datesEntry objectForKey:@"endDate"];
-        if (debugOn ) {
-          [self logWithFormat:@"********** [sD timeIntervalSinceReferenceDate]<%g"
-              @"|%@> - [entryEnd timeIntervalSinceReferenceDate]<%g|%@> = %g",
-              [sD timeIntervalSinceReferenceDate], sD,
-              [entryEnd timeIntervalSinceReferenceDate], entryEnd,
-              ([sD timeIntervalSinceReferenceDate] -
-               [entryEnd timeIntervalSinceReferenceDate])];
-        }
-        if ([sD timeIntervalSinceReferenceDate] -
-            [entryEnd timeIntervalSinceReferenceDate] > 0) {
-          /* _dates[i] is before sD */
-          if (debugOn) {
-            [self logWithFormat:@"********** _dates[%@] is before %@ -- %@",
-                    datesEntry, sD, eD];
-          }
-          iDates++;
-          foundDate = NO;
-
-#if 0
-          /* done on 20000920 */          
-          addStep   = YES;
-#else
-          addStep   = NO;
-#endif          
-        }
-        else if ([eD timeIntervalSinceReferenceDate] -
-                 [entryStart timeIntervalSinceReferenceDate] <= 0) {
-          if (debugOn) {
-            [self logWithFormat:@"********** _date[%@] is after %@ -- %@",
-                  datesEntry, sD, eD];
-          }
-          foundDate = YES;
-          addStep   = YES;
-        }
-        else {
-          if (isFirst) {
-            if ([entryStart timeIntervalSinceReferenceDate] >
-                [sD timeIntervalSinceReferenceDate]) {
-              int min = [sD minuteOfHour];
-
-              if ((min == 0) || (min == 30)) {
-                NSDictionary *d;
-                
-                d = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                            sD,         @"startDate",
-                                            entryStart, @"endDate",
-                                            @"free",    @"kind", nil];
-                [result addObject:d];
-                [d release];
-              }
-              isFirst = NO;
-            }
-          }
-          sD = entryEnd;
-          [sD setTimeZone:self->timeZone];
-          
-          eD = [sD addTimeInterval:dur];
-          [eD setTimeZone:self->timeZone];
-          
-          foundDate = NO;
-          addStep   = NO;
-          if ([[sD beginOfDay] timeIntervalSinceReferenceDate] > end) {
-            alreadyAtTheNextDay = YES;
-            break;
-          }
-          else
-            iDates++;
-        }
-      }
-      else {
-        foundDate = YES;
-      }
-      if (foundDate) {
-        int min = [sD minuteOfHour];
-        
-        if (debugOn)
-          [self logWithFormat:@"********** found date %@ -- %@", sD, eD];
-        
-        [sD setTimeZone:self->timeZone];
-        [eD setTimeZone:self->timeZone];
-        
-        if ((min == 0) || (min == 30)) {
-          NSDictionary *d;
-          
-          d = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                      sD, @"startDate", eD, @"endDate",
-                                      @"start", @"kind", nil];
-          [result addObject:d];
-          [d release];
-        }
-      }
-      else if (debugOn) {
-        [self logWithFormat:@"********** %@ -- %@ conflicted with %@", sD, eD,
-              datesEntry];
-      }
-      if (debugOn) {
-        [self logWithFormat:@"********** next step before %@ %g", sD,
-              [sD timeIntervalSinceReferenceDate]];
-      }
-      if (addStep) {
-        sD = [sD addTimeInterval:steps];
-        [sD setTimeZone:self->timeZone];
-        eD = [sD addTimeInterval:dur];
-        [eD setTimeZone:self->timeZone];
-        
-        if (debugOn) {
-          [self logWithFormat:@"********** next step after %@ %g", sD,
-                [sD timeIntervalSinceReferenceDate]];
-        }
-      }
-      else if (debugOn) {
-        [self logWithFormat:@"no next step"];
-      }
-      if ([eD timeIntervalSinceReferenceDate] > end) {
-        if ([sD timeIntervalSinceReferenceDate] < end) {
-          NSCalendarDate *e;
-          NSDictionary   *d;
-          
-          e = [NSCalendarDate dateWithTimeIntervalSinceReferenceDate:end];
-          [e setTimeZone:self->timeZone];
-
-          d = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                      sD,     @"startDate",
-                                      e,      @"endDate",
-                                      @"end", @"kind", nil];
-          [result addObject:d];
-          [d release];
-        }
-      }
-    }
-    if (debugOn) {
-      [self logWithFormat:@"********** next day before %@ %g", sD,
-            [sD timeIntervalSinceReferenceDate]];
-    }
-    if (!alreadyAtTheNextDay) {
-      sD = [sD addTimeInterval:(24 * 60 * 60)];
-      [sD setTimeZone:self->timeZone];
-    }
-    if (debugOn) {
-      [self logWithFormat:@"********** next day after %@ %g", sD,
-            [sD timeIntervalSinceReferenceDate]];
-    }
-    if ([result count] > LSAppointmentProposalCommand_MAXSEARCH)
+    if (![self _getFreeTimeIntervals:_dates 
+               forDay:i addToResult:result
+               startDateCursor:&sD currentDateIndex:&iDates
+               inContext:_context])
       break;
   }
   if (debugOn) {
@@ -1049,14 +1101,9 @@ static void _mergeDates(LSAppointmentProposalCommand *self, id _context,
 }
 
 - (NSCalendarDate *)dateAtHour:(int)_hour minute:(int)_minute second:(int)_sec{
-  NSCalendarDate *now;
-  
-  now = [NSCalendarDate date];
-  [now setTimeZone:self->timeZone];
-
-  return [NSCalendarDate dateWithYear:[now yearOfCommonEra]
-                         month:[now monthOfYear]
-                         day:[now dayOfMonth]
+  return [NSCalendarDate dateWithYear:[self->now yearOfCommonEra]
+                         month:[self->now monthOfYear]
+                         day:[self->now dayOfMonth]
                          hour:_hour
                          minute:_minute
                          second:_sec
