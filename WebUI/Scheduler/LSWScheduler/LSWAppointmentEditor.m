@@ -123,7 +123,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     NGBundleManager *bm;
     
     // TODO: accessing the session in init is no good, should be setup in awake
@@ -269,7 +269,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   
   [self _fetchEnterprisesOfPersons:self->participants];
   
-  /* prepare resources */
+  /* prepare resources */ // TODO: explain those! (how can they be filled?)
   [self->resources     removeAllObjects];
   [self->accessMembers removeAllObjects];
   return YES;
@@ -323,13 +323,15 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   NSNumber *timeNumber;
   NSString *time;
   
-  if ([appointment valueForKey:@"notificationTime"] == nil)
-    return;
-
   timeNumber = [appointment valueForKey:@"notificationTime"];
-  time       = [timeNumber stringValue];
-    
-  if ([time isEqualToString:@"10"]) { time = @"10m";  }
+  if (![timeNumber isNotNull])
+    return;
+  
+  time = [timeNumber stringValue];
+  
+  if ([time isEqualToString:@"10"]) // TODO: what is this good for?
+    time = @"10m";
+  
   [self setNotificationTime:time];
 }
 
@@ -375,10 +377,9 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return list;
 }
 - (BOOL)isFilledWriteAccessList:(NSString *)_list {
-  if (![_list isNotNull])  return NO;
-  if ([_list length] == 0) return NO;
-  if ([_list isEqualToString:@" "]) return NO;
-  return YES;
+  return [_list isNotEmpty]
+    ? (![_list isEqualToString:@" "] ? YES : NO)
+    : NO;
 }
 
 - (void)fillAccessMembersFromWriteAccessList:(NSString *)_list {
@@ -415,15 +416,20 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (NSString *)timeStringForHour:(int)_hour minute:(int)_minute {
+  char buf[32];
+  
   if ([self showAMPMDates]) {
     BOOL am = YES;
     if (_hour >= 12) am = NO;
     _hour %= 12;
     if (!_hour) _hour = 12;
-    return [NSString stringWithFormat:@"%02i:%02i %@",
-                     _hour, _minute, am ? @"AM" : @"PM"];
+    snprintf(buf, sizeof(buf), "%02i:%02i %s",
+             _hour, _minute, am ? "AM" : "PM");
   }
-  return [NSString stringWithFormat:@"%02i:%02i", _hour, _minute];
+  else
+    snprintf(buf, sizeof(buf), "%02i:%02i", _hour, _minute);
+  
+  return [NSString stringWithCString:buf];
 }
 
 - (void)_setupStartDate:(NSCalendarDate *)sd andEndDate:(NSCalendarDate *)ed {
@@ -697,9 +703,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (BOOL)isValidYear:(int)year {
-  if (!((year >= 2037) || ((year < 1700) && (year != 0))))
-    return YES;
-  return NO;
+  return (!((year >= 2037) || ((year < 1700) && (year != 0)))) ? YES : NO;
 }
 - (void)checkYearRange:(NSString *)_dateString {
   if ([self isValidYear:[_dateString intValue]]) // expects 2004-xx format
@@ -922,10 +926,12 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (BOOL)isMailLicensed {
-  return YES;
+  [self logWithFormat:@"called deprecated method: %s", __PRETTY_FUNCTION__];
+  return YES; // DEPRECATED
 }
 - (BOOL)isAptConflictLicensed {
-  return YES;
+  [self logWithFormat:@"called deprecated method: %s", __PRETTY_FUNCTION__];
+  return YES; // DEPRECATED
 }
 
 - (BOOL)isNotificationEnabled {
@@ -970,12 +976,11 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (BOOL)hasParent {
-  return ([[[self snapshot] valueForKey:@"parentDateId"] isNotNull])
-    ? YES : NO;
+  return [[[self snapshot] valueForKey:@"parentDateId"] isNotNull];
 }
 
 - (BOOL)isCyclic {
-  return ([[[self snapshot] valueForKey:@"type"] isNotNull]) ? YES : NO; 
+  return [[[self snapshot] valueForKey:@"type"] isNotNull];
 }
 - (BOOL)isNewOrNotCyclic {
   return ([self isInNewMode] || (![self isCyclic])) ? YES : NO;
@@ -1066,46 +1071,39 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return self->endMinute;
 }
 
-- (void)setStartDate:(NSString *)_startDate {
+- (void)fillDateField:(NSString *)_key withString:(NSString *)_s {
   NSString       *s;
   NSCalendarDate *d;
 
-  s = [NSString stringWithFormat:@"%@ 00:00:00 %@",
-                 _startDate, [self->timeZone abbreviation]];
+  s = [[NSString alloc] initWithFormat:@"%@ 00:00:00 %@",
+                        _s, [self->timeZone abbreviation]];
   
-  d = [NSCalendarDate dateWithString:s calendarFormat:@"%Y-%m-%d %H:%M:%S %Z"];
+  d = [[NSCalendarDate alloc] initWithString:s calendarFormat:DateParseFmt];
+  [s release]; s = nil;
   
-  if (d) {
-    [[self snapshot] takeValue:d forKey:@"startDate"];
+  if (d != nil) {
+    [[self snapshot] takeValue:d forKey:_key];
+    [d release];
   }
-  else [self checkYearRange:_startDate];
+  else
+    [self checkYearRange:_s]; // TODO: what does this do?
 }
 
+- (void)setStartDate:(NSString *)_startDate {
+  [self fillDateField:@"startDate" withString:_startDate];
+}
 - (NSString *)startDate {
   NSCalendarDate *d;
-
-  d = [[self snapshot] valueForKey:@"startDate"];
   
-  if (d == nil)
+  if ((d = [[self snapshot] valueForKey:@"startDate"]) == nil)
     return nil;
   
   return [d descriptionWithCalendarFormat:DateFmt];
 }
 
 - (void)setEndDate:(NSString *)_endDate {
-  NSString       *s;
-  NSCalendarDate *d;
-  
-  s = [NSString stringWithFormat:@"%@ 00:00:00 %@",
-                 _endDate, [self->timeZone abbreviation]];
-  d = [NSCalendarDate dateWithString:s calendarFormat:DateParseFmt];
-  
-  if (d)
-    [[self snapshot] takeValue:d forKey:@"endDate"];
-  else
-    [self checkYearRange:_endDate];
+  [self fillDateField:@"endDate" withString:_endDate];
 }
-
 - (NSString *)endDate {
   NSCalendarDate *d;
 
@@ -1242,8 +1240,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   type:(NSString *)_type
   cycleEndDate:(NSCalendarDate *)_cycleDate
 {
-  int            cnt, i;
-  BOOL           cycleEnd, isWeekend;
+  int  cnt, i;
+  BOOL cycleEnd, isWeekend;
 
   cnt       = 0;
   i         = 0;
@@ -1286,7 +1284,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   NSString     *del;
   NSEnumerator *enumerator;
   
-  if (![_time length]) {
+  if (![_time isNotEmpty]) {
     *hour_   = 0;
     *minute_ = 0;
     *am_     = NO;
@@ -1300,7 +1298,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   }
   
   enumerator = [Delimiter objectEnumerator];
-  while ((del = [enumerator nextObject])) {
+  while ((del = [enumerator nextObject]) != nil) {
     if ([_time rangeOfString:del].length > 0)
       break;
   }
@@ -1378,20 +1376,21 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
                                @"error_starttimeMinutesBetween0And59"]];
     }
   }
-  if ([error length] > 0) {
+  if ([error isNotEmpty]) {
     [self setErrorString:error];
     return YES;
   }
-  else {
+  
+  {
     NSCalendarDate *d;
 
     d = [appointment valueForKey:@"startDate"];      
     d = [d hour:hours minute:minutes];
     
-    if (d)
+    if (d != nil)
       [appointment takeValue:d forKey:@"startDate"];
   }
-
+  
   if ([self isAllDayEvent]) {
     hours   = 23;
     minutes = 59;
@@ -1421,17 +1420,18 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
       }
     }
   }
-  if ([error length] > 0) {
+  if ([error isNotEmpty]) {
     [self setErrorString:error];
     return YES;
   }
-  else {
+  
+  {
     NSCalendarDate *d;
 
     d = [appointment valueForKey:@"endDate"];      
     d = [d hour:hours minute:minutes];
     
-    if (d)
+    if (d != nil)
       [appointment takeValue:d forKey:@"endDate"];
   }
   
@@ -1475,28 +1475,28 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     }
   }
 
-  if ([[appointment valueForKey:@"title"] length] == 0)
+  if (![[appointment valueForKey:@"title"] isNotEmpty])
     [error appendString:[l valueForKey:@"error_noTitle"]];
-
-  if ([self->participants count] <= 0)
+  
+  if (![self->participants isNotEmpty])
     [error appendString:[l valueForKey:@"error_noParticipants"]];
   
   {
     NSScanner *scanner;
 
     scanner = [NSScanner scannerWithString:self->notificationTime];    
-
-    if (![scanner scanInt:NULL] && [self->notificationTime length] >0 &&
+    
+    if (![scanner scanInt:NULL] && [self->notificationTime isNotEmpty] &&
         ![self->selectedMeasure isEqualToString:@"-"]) {
       [error appendString:[l valueForKey:@"error_invalidReminder"]];
     }
   }
   
-  if ([error length] > 0) {
+  if ([error isNotEmpty]) {
     [self setErrorString:error];
     return YES;
   }
-
+  
   [self setErrorString:nil];
   return NO;
 }
@@ -1512,7 +1512,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 
 - (NSString *)insertNotificationName {
   NSNotificationCenter *nc;
-
+  
   // TODO: what is this?! Evil!
   nc = [NSNotificationCenter defaultCenter];
   [nc postNotificationName:SkyNewAppointmentNotification object:nil];
@@ -1648,15 +1648,16 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
         forKey:@"isWarningIgnored"];
   [apmt takeValue:[self _resourceString] forKey:@"resourceNames"];
 
-  if (self->comment)
+  if (self->comment != nil)
     [apmt takeValue:self->comment forKey:@"comment"];
 
   [apmt takeValue:null forKey:@"notificationTime"];
 
-  if (self->notificationTime) {
+  if (self->notificationTime != nil) {
     NSNumber *time;
     
-    time = ([self->notificationTime isEqualToString:@"10m"])
+    // TODO: what is this '10m' special case?
+    time = [self->notificationTime isEqualToString:@"10m"]
       ? num10
       : [NSNumber numberWithInt:[self->notificationTime intValue]];
 

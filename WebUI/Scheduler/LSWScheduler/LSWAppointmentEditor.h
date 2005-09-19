@@ -24,6 +24,13 @@
 
 #include <OGoFoundation/LSWEditorPage.h>
 
+/*
+  LSWEditorPage
+  
+  This is the editor component for OGo appointments. Yes, it is indeed quite
+  bloated and needs a replacement ;-)
+*/
+
 @class NSString, NSArray, NSMutableArray, NSUserDefaults, NSTimeZone;
 
 @interface LSWAppointmentEditor : LSWEditorPage
@@ -38,7 +45,7 @@
   
   NSMutableArray *participants;
   NSArray        *selectedParticipants;
-
+  
   NSMutableArray *accessMembers;
   NSArray        *selectedAccessMembers;
 
@@ -106,6 +113,6 @@
 - (NSArray *)defaultWriteAccessAccounts;
 - (NSArray *)defaultWriteAccessTeams;
 
-@end /* LSWAppointmentEditor */
+@end
 
 #endif /* __LSWScheduler_LSWAppointmentEditor_Fetches_H__ */
