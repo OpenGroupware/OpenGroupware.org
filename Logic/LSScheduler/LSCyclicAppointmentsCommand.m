@@ -21,6 +21,22 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
+/*
+  LSCyclicAppointmentsCommand (appointment::new-cyclic)
+  
+  TODO: document
+  
+  Arguments:
+    cyclicAppointment - EO object - base appointment
+    isWarningIgnored  - BOOL
+    participants      - array of dicts/EOs (for appointment::set-participants)
+    comment           - string
+  
+  Used by:
+    appointment::new
+    appointment::set (with 'setAllCyclic' YES)
+*/
+
 @class NSString, NSArray;
 
 @interface LSCyclicAppointmentsCommand : LSDBObjectBaseCommand
@@ -73,8 +89,11 @@ static int maxCycleCount = 100;
   start:(NSCalendarDate *)_startDate
   end:(NSCalendarDate *)_endDate
 {
-  id cyclic = [self object];
-  id pkey   = [cyclic valueForKey:@"dateId"];
+  id cyclic;
+  NSNumber *pkey;
+
+  cyclic = [self object];
+  pkey   = [cyclic valueForKey:@"dateId"];
 
   LSRunCommandV(_context, @"appointment", @"new",
                 @"ownerId",           [cyclic valueForKey:@"ownerId"],
@@ -136,16 +155,17 @@ static int maxCycleCount = 100;
 }
 
 - (void)_newCyclicAppointmentsInContext:(id)_context {
-  int            i          = 1;
-  int            cnt        = 0;
-  
-  id             cyclic     = [self object];
-  NSString       *type      = [cyclic valueForKey:@"type"];
-  NSCalendarDate *realStart = [cyclic valueForKey:@"startDate"];
-  NSCalendarDate *realEnd   = [cyclic valueForKey:@"endDate"];
-  NSCalendarDate *cycleDate = [[cyclic valueForKey:@"cycleEndDate"] endOfDay];
+  unsigned       i, cnt;
+  id             cyclic;
+  NSString       *type;
+  NSCalendarDate *realStart, *realEnd, *cycleDate;
   NSArray        *cycles;
-  NSDictionary   *cycle;
+  
+  cyclic    = [self object];
+  type      = [cyclic valueForKey:@"type"];
+  realStart = [cyclic valueForKey:@"startDate"];
+  realEnd   = [cyclic valueForKey:@"endDate"];
+  cycleDate = [[cyclic valueForKey:@"cycleEndDate"] endOfDay];
 
   cycles =
     [OGoCycleDateCalculator cycleDatesForStartDate:realStart
@@ -155,9 +175,10 @@ static int maxCycleCount = 100;
                             startAt:1
                             endDate:cycleDate
                             keepTime:YES];
-
-  cnt = [cycles count];
-  for (i = 0; i < cnt; i++) {
+  
+  for (i = 0, cnt = [cycles count]; i < cnt; i++) {
+    NSDictionary *cycle;
+    
     cycle = [cycles objectAtIndex:i];
     [self _newCyclicAppointmentInContext:_context
           start:[cycle valueForKey:@"startDate"]
@@ -170,35 +191,51 @@ static int maxCycleCount = 100;
         reason:@"Appointment was not set cyclic!"];
 }
 
-- (void)_executeInContext:(id)_context {
-  id       obj  = [self object];
-  NSNumber *pId = [obj valueForKey:@"parentDateId"];
+- (id)_getAppointmentEOForId:(NSNumber *)pId inContext:(id)_context {
+  id firstCyclic;
   
-  if ([pId isNotNull]) {
-    id firstCyclic;
-    
-    firstCyclic = LSRunCommandV(_context, @"appointment", @"get",
-                                @"dateId", pId, nil);
+  firstCyclic = LSRunCommandV(_context, @"appointment", @"get",
+                              @"dateId", pId, nil);
+  if ([firstCyclic count] == 0) {
+    [self warnWithFormat:@"did not find given id: %@", pId];
+    return nil;
+  }
+  if ([firstCyclic count] > 1) {
+    [self errorWithFormat:@"found more than one object for pkey: %@", pId];
+    return nil;
+  }
+  return [firstCyclic objectAtIndex:0];
+}
 
-    if ([firstCyclic count] == 1) {
-      NSCalendarDate *sD  = [obj valueForKey:@"startDate"];
-      NSCalendarDate *eD  = [obj valueForKey:@"endDate"];
-      NSCalendarDate *fSD = nil;
-      NSCalendarDate *fED = nil;
+- (void)_processObjectWithParentId:(NSNumber *)pId inContext:(id)_context {
+  // TODO: document what this method does!
+  // Note: this method patches the 'object'
+  NSTimeZone     *tz;
+  NSCalendarDate *sD, *eD, *fSD = nil, *fED = nil;
+  id firstCyclic;
+  id obj;
 
-      firstCyclic = [firstCyclic objectAtIndex:0];
-
-      fSD = [firstCyclic valueForKey:@"startDate"];
-      fED = [firstCyclic valueForKey:@"endDate"];
-      [fSD setTimeZone:[sD timeZoneDetail]];
-      [fED setTimeZone:[eD timeZoneDetail]];
-
-      fSD = [fSD hour:[sD hourOfDay] minute:[sD minuteOfHour]];
-      fED = [fED hour:[eD hourOfDay] minute:[eD minuteOfHour]];
-
-      [_context runCommand:@"appointment::set",
+  if (![pId isNotNull])
+    return;
+  
+  obj = [self object];
+  sD  = [obj valueForKey:@"startDate"];
+  eD  = [obj valueForKey:@"endDate"];
+  tz  = [sD timeZoneDetail];
+  
+  firstCyclic = [self _getAppointmentEOForId:pId inContext:_context];
+  fSD = [firstCyclic valueForKey:@"startDate"];
+  fED = [firstCyclic valueForKey:@"endDate"];
+  [fSD setTimeZone:tz];
+  [fED setTimeZone:tz];
+  
+  fSD = [fSD hour:[sD hourOfDay] minute:[sD minuteOfHour]];
+  fED = [fED hour:[eD hourOfDay] minute:[eD minuteOfHour]];
+  
+  // TODO: this one is interesting, what does it do?
+  [_context runCommand:@"appointment::set",
                 @"object", firstCyclic,
-        @"ownerId"         ,   [firstCyclic valueForKey:@"ownerId"],            
+        @"ownerId"         ,   [firstCyclic valueForKey:@"ownerId"],
         @"accessTeamId"    ,   [obj valueForKey:@"accessTeamId"],
         @"type"            ,   [firstCyclic valueForKey:@"type"],            
         @"startDate"       ,   fSD,
@@ -218,10 +255,17 @@ static int maxCycleCount = 100;
         @"participants"    ,   self->participants,
         @"comment"         ,   self->comment,   
         nil];
+  
+  [self setObject:firstCyclic];
+}
 
-      [self setObject:firstCyclic];
-    }
-  }
+- (void)_executeInContext:(id)_context {
+  NSNumber *pId;
+  
+  if ([(pId = [[self object] valueForKey:@"parentDateId"]) isNotNull])
+    /* this patches the 'object' of the command */
+    [self _processObjectWithParentId:pId inContext:_context];
+  
   [self assert:[self _appointmentHasCycleEnd]
         reason:@"Appointment has no cycle end date!"];
 
@@ -245,7 +289,7 @@ static int maxCycleCount = 100;
 }
 
 - (void)setComment:(NSString *)_comment {
-  ASSIGN(self->comment, _comment);
+  ASSIGNCOPY(self->comment, _comment);
 }
 - (NSString *)comment {
   return self->comment;
