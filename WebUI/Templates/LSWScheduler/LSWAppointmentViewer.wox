@@ -38,11 +38,7 @@
                      is-sub="1" />
 
           <attribute label="cycle" is-sub="1" enabled="isCyclic">
-            <var:string var:value="cycleType" const:escapeHTML="0" />
-            <entity name="nbsp" />
-            <label key="until"  />
-            <entity name="nbsp" />
-            <var:string var:value="cycleEndDateString" />
+            <var:string value="appointment" formatter="recurrenceFormatter"/>
           </attribute>
 
           <attribute label="resource" var:string="object.resourceNames"

@@ -35,6 +35,7 @@
       { name = SkyAppointmentPrintViewer;  },
       { name = SkyAptTypeSelection;        },
       { name = OGoAttendeeSelection;       },
+      { name = OGoRecurrenceFormatter;     },
     );
     
     PreferencePages = (

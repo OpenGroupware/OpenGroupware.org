@@ -1,3 +1,8 @@
+2005-09-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWScheduler/LSWAppointmentViewer.wox: use recurrence formatter to
+	  display recurrence info
+
 2005-09-19  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoScheduler/OGoAptConflictsList.wox: print appointment title in

@@ -1,3 +1,12 @@
+2005-09-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.3.83
+
+	* LSWAppointmentEditor.m: changed to use new recurrence formatter
+
+	* added OGoRecurrenceFormatter to format appointment recurrence
+	  descriptions
+
 2005-09-19  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWAppointmentProposal.m: more code cleanups (v5.3.82)

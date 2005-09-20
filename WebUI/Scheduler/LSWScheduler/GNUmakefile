@@ -28,6 +28,7 @@ LSWScheduler_OBJC_FILES = 			\
 	OGoAppointmentDateFormatter.m		\
 	OGoUserSelectionComponent.m		\
 	OGoAttendeeSelection.m			\
+	OGoRecurrenceFormatter.m		\
 
 LSWScheduler_RESOURCE_FILES += Defaults.plist Version
 

@@ -32,6 +32,7 @@
 #include <OGoScheduler/SkySchedulerConflictDataSource.h>
 #include <NGObjWeb/WEClientCapabilities.h>
 #include <OGoScheduler/SkyAptDataSource.h>
+#include "OGoRecurrenceFormatter.h"
 
 /*
   TODO: this file contains a *LOT* of duplicate code, especially in the
@@ -1011,11 +1012,11 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return self->accessMembers;
 }
 
-- (id)selectedAccessMembers {
-  return self->selectedAccessMembers;
-}
 - (void)setSelectedAccessMembers:(NSArray *)_array {
   ASSIGN(self->selectedAccessMembers, _array);
+}
+- (id)selectedAccessMembers {
+  return self->selectedAccessMembers;
 }
 
 - (BOOL)hasParent {
@@ -1023,7 +1024,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (BOOL)isCyclic {
-  return [[[self snapshot] valueForKey:@"type"] isNotNull];
+  return [[[self snapshot] valueForKey:@"type"] isNotEmpty];
 }
 - (BOOL)isNewOrNotCyclic {
   return ([self isInNewMode] || (![self isCyclic])) ? YES : NO;
@@ -1267,7 +1268,17 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (NSString *)cycleType {
-  return [[self labels] valueForKey:[[self snapshot] valueForKey:@"type"]];
+  NSString *t;
+  
+  if ((t = [[self snapshot] valueForKey:@"type"]) == nil)
+    return nil;
+  
+  if ([t hasPrefix:@"RRULE:"]) {
+    // TODO: add a rrule formatter
+    return [t substringFromIndex:6];
+  }
+  
+  return [[self labels] valueForKey:t];
 }
 
 - (NSString *)timeInputType {
@@ -1921,7 +1932,9 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (NSString *)windowTitle {
+  // TODO: move to a formatter
   NSMutableString *ms;
+  NSString *s;
   id labels;
   
   labels = [self labels];
@@ -1930,15 +1943,15 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   [ms appendString:@" "];
   [ms appendString:[self appointmentDayLabel]];
   
-  if (![self isInNewMode] && [self isCyclic]) {
-    [ms appendString:@"("];
-    [ms appendString:[self cycleType]];
-    [ms appendString:@" "];
-    [ms appendString:[labels valueForKey:@"until"]];
-    [ms appendString:[self cycleEndDateString]];
+  s = [self isInNewMode]
+    ? nil
+    : [[self recurrenceFormatter] stringForObjectValue:[self snapshot]];
+  
+  if ([s isNotEmpty]) {
+    [ms appendString:@" ("];
+    [ms appendString:s];
     [ms appendString:@")"];
   }
-  
   return ms;
 }
 
