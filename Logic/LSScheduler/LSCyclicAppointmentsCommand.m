@@ -26,6 +26,15 @@
   
   TODO: document
   
+  Note: this command does NOT preserve cyclic appointments or exceptions, when
+        applied, it deletes all old cycles prior applying the new ones!
+     => not sure whether this is necessary. At least the OGo apt-editor does
+        not allow editing of the recurrence pattern anyway? (so we could just
+        update the value-fields of the apts)
+     => we probably do want to adjust for changes in the 'time' of the start/
+        enddate but not in the date (which would be similiar to a pattern
+        change).
+  
   Arguments:
     cyclicAppointment - EO object - base appointment
     isWarningIgnored  - BOOL
@@ -89,30 +98,30 @@ static int maxCycleCount = 100;
   start:(NSCalendarDate *)_startDate
   end:(NSCalendarDate *)_endDate
 {
-  id cyclic;
+  id master;
   NSNumber *pkey;
 
-  cyclic = [self object];
-  pkey   = [cyclic valueForKey:@"dateId"];
+  master = [self object];
+  pkey   = [master valueForKey:@"dateId"];
 
   LSRunCommandV(_context, @"appointment", @"new",
-                @"ownerId",           [cyclic valueForKey:@"ownerId"],
+                @"ownerId",           [master valueForKey:@"ownerId"],
                 @"parentDateId",      pkey,
                 @"startDate",         _startDate,
                 @"endDate",           _endDate,
-                @"cycleEndDate",      [cyclic valueForKey:@"cycleEndDate"],
-                @"accessTeamId",      [cyclic valueForKey:@"accessTeamId"],
-                @"type",              [cyclic valueForKey:@"type"],
-                @"location",          [cyclic valueForKey:@"location"],
-                @"title",             [cyclic valueForKey:@"title"],
-                @"aptType",           [cyclic valueForKey:@"aptType"],
-                @"absence",           [cyclic valueForKey:@"absence"],
-                @"resourceNames",     [cyclic valueForKey:@"resourceNames"],
-                @"writeAccessList",   [cyclic valueForKey:@"writeAccessList"],
-                @"isAbsence",         [cyclic valueForKey:@"isAbsence"],
-                @"isAttendance",      [cyclic valueForKey:@"isAttendance"],
-                @"isConflictDisabled",[cyclic valueForKey:@"isConflictDisabled"],
-                @"notificationTime",  [cyclic valueForKey:@"notificationTime"],
+                @"cycleEndDate",      [master valueForKey:@"cycleEndDate"],
+                @"accessTeamId",      [master valueForKey:@"accessTeamId"],
+                @"type",              [master valueForKey:@"type"],
+                @"location",          [master valueForKey:@"location"],
+                @"title",             [master valueForKey:@"title"],
+                @"aptType",           [master valueForKey:@"aptType"],
+                @"absence",           [master valueForKey:@"absence"],
+                @"resourceNames",     [master valueForKey:@"resourceNames"],
+                @"writeAccessList",   [master valueForKey:@"writeAccessList"],
+                @"isAbsence",         [master valueForKey:@"isAbsence"],
+                @"isAttendance",      [master valueForKey:@"isAttendance"],
+                @"isConflictDisabled",[master valueForKey:@"isConflictDisabled"],
+                @"notificationTime",  [master valueForKey:@"notificationTime"],
                 @"participants",      self->participants,
                 @"isWarningIgnored",
                 [NSNumber numberWithBool:self->isWarningIgnored],
@@ -166,7 +175,7 @@ static int maxCycleCount = 100;
   realStart = [cyclic valueForKey:@"startDate"];
   realEnd   = [cyclic valueForKey:@"endDate"];
   cycleDate = [[cyclic valueForKey:@"cycleEndDate"] endOfDay];
-
+  
   cycles =
     [OGoCycleDateCalculator cycleDatesForStartDate:realStart
                             endDate:realEnd
@@ -177,7 +186,7 @@ static int maxCycleCount = 100;
                             keepTime:YES];
   
   for (i = 0, cnt = [cycles count]; i < cnt; i++) {
-    NSDictionary *cycle;
+    id cycle; /* either an NSDictionary or an NGCalendarDateRange */
     
     cycle = [cycles objectAtIndex:i];
     [self _newCyclicAppointmentInContext:_context
@@ -262,6 +271,7 @@ static int maxCycleCount = 100;
 - (void)_executeInContext:(id)_context {
   NSNumber *pId;
   
+  /* if the given object is not the first apt in the sequence, do "something"*/
   if ([(pId = [[self object] valueForKey:@"parentDateId"]) isNotNull])
     /* this patches the 'object' of the command */
     [self _processObjectWithParentId:pId inContext:_context];

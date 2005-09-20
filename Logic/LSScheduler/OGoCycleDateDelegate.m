@@ -1,11 +1,8 @@
 
 #include "OGoCycleDateCalculator.h"
-#import  <Foundation/Foundation.h>
-#include <NGExtensions/NSCalendarDate+misc.h>
 
 @interface OGoCycleDateDailyDelegate : OGoCycleDateDelegate
-{}
-@end /* OGoCycleDateDailyDelegate */
+@end
 
 @interface OGoCycleDateWeeklyDelegate : OGoCycleDateDelegate
 {
@@ -20,7 +17,7 @@
 
 - (id)initWithWeekDays:(NSArray *)_weekDays;
 
-@end /* OGoCycleDateWeeklyDelegate */
+@end
 
 @interface OGoCycleDateMonthlyWeekDayDelegate : OGoCycleDateDelegate
 {
@@ -32,7 +29,7 @@
   id     calculator; // non-retained
 }
 - (id)initWithWeekDay:(unsigned)_weekDay inWeek:(unsigned)_week;
-@end /* OGoCycleDateMonthlyWeekDayDelegate */
+@end
 
 @interface OGoCycleDateMonthlyDateDelegate : OGoCycleDateDelegate
 {
@@ -40,15 +37,14 @@
   double endDiv;
   id     calculator; // non-retained  
 }
-@end /* OGoCycleDateMonthlyDateDelegate */
+@end
 
 @interface OGoCycleDateYearlyDelegate : OGoCycleDateDelegate
-{
-}
-@end /* OGoCycleDateYearlyDelegate */
+@end
 
+#include "common.h"
+#include <NGExtensions/NSCalendarDate+misc.h>
 
-/* ######### implementation ########## */
 
 @implementation OGoCycleDateDelegate
 
@@ -56,11 +52,8 @@
   andEndDate:(NSCalendarDate **)_endDate
   forCycleCalculator:(OGoCycleDateCalculator *)_calculator
 {
-#if LIB_FOUNDATION_LIBRARY
-  [self subclassResponsibility:_cmd];
-#else
-  NSLog(@"%s: subclass should override this method!", __PRETTY_FUNCTION__);
-#endif
+  [self errorWithFormat:@"%s: subclass should override this method: %@", 
+        __PRETTY_FUNCTION__, NSStringFromSelector(_cmd)];
   return NO;
 }
 

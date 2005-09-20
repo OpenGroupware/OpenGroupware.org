@@ -376,9 +376,16 @@ static NSArray  *startDateOrderings = nil;
 
 - (void)setCycleEndDateFromString:(NSString *)_cycleEndDateString {
   NSCalendarDate *myDate;
+
+  if (![_cycleEndDateString isNotEmpty]) {
+    [super takeValue:nil forKey:@"cycleEndDate"];
+    return;
+  }
   
-  _cycleEndDateString = [_cycleEndDateString stringByAppendingString:
-                                             @" 12:00:00"];
+  if ([_cycleEndDateString length] < 14) {
+    _cycleEndDateString = [_cycleEndDateString stringByAppendingString:
+                                                 @" 12:00:00"];
+  }
   myDate = [[NSCalendarDate alloc] initWithString:_cycleEndDateString
                                    calendarFormat:@"%Y-%m-%d %H:%M:%S"];
   [super takeValue:myDate forKey:@"cycleEndDate"];

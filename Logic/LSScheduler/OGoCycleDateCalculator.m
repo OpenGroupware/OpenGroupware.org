@@ -1,6 +1,9 @@
 
 #include "OGoCycleDateCalculator.h"
 #include <NGExtensions/NSCalendarDate+misc.h>
+#include <NGExtensions/NGCalendarDateRange.h>
+#include <NGiCal/iCalRecurrenceCalculator.h>
+#include <NGiCal/iCalRecurrenceRule.h>
 #include "common.h"
 
 @implementation OGoCycleDateCalculator
@@ -27,20 +30,74 @@
   endDate:(NSCalendarDate *)_cycleEndDate
   keepTime:(BOOL)_keepTime
 {
-  int            i          = _offset;
-  int            cnt        = 0;
-  BOOL           cycleEnd   = NO;
+  int            i, cnt;
+  BOOL           cycleEnd;
   NSMutableArray *ma;
+  NSCalendarDate *sD, *eD;
   
-  NSCalendarDate *sD        = [_startDate hour:12 minute:0 second:0];
-  NSCalendarDate *eD        = [_endDate   hour:12 minute:0 second:0];
+  if ([_type hasPrefix:@"RRULE:"]) {
+    iCalRecurrenceCalculator *cpu;
+    iCalRecurrenceRule  *rrule;
+    NGCalendarDateRange *eventRange;
+    NSString *pattern;
 
-  if (_cycleEndDate == nil || _maxCycles < 1) 
-    return [NSArray array];
+    /* parse rule */
+    
+    pattern = [_type substringFromIndex:6];
+    if ((rrule = [[iCalRecurrenceRule alloc] initWithString:pattern]) == nil) {
+      [self errorWithFormat:@"%s: could not parse iCal rrule: '%@'",
+            __PRETTY_FUNCTION__, pattern];
+      return nil;
+    }
 
-  ma = [NSMutableArray array];
+    /* setup iCal calculator */
+    
+    eventRange = [NGCalendarDateRange calendarDateRangeWithStartDate:_startDate
+                                      endDate:_endDate];
+    
+    cpu = [iCalRecurrenceCalculator 
+            recurrenceCalculatorForRecurrenceRule:rrule
+            withFirstInstanceCalendarDateRange:eventRange];
+    
+    if (![_cycleEndDate isNotNull]) {
+      if ((_cycleEndDate = [[[rrule untilDate] copy] autorelease]) != nil) {
+        /* UNTIL probably not saved in DB */
+        [self warnWithFormat:@"rrule has an UNTIL, but the calculation not."];
+      }
+    }
+    [rrule release]; rrule = nil;
+
+    /* ensure some preconditions */
+    
+    if (!_keepTime) {
+      [self errorWithFormat:@"%s: cannot process rrule %@ with keep-time off!",
+            __PRETTY_FUNCTION__, rrule];
+    }
+    // TODO: check 'offset'?
+    
+    if (![_cycleEndDate isNotNull]) {
+      [self errorWithFormat:@"%s: got no cycle enddate!", __PRETTY_FUNCTION__];
+      return nil;
+    }
+    
+    /* run calculation */
+    
+    eventRange = [NGCalendarDateRange calendarDateRangeWithStartDate:_startDate
+                                      endDate:_cycleEndDate];
+    return [cpu recurrenceRangesWithinCalendarDateRange:eventRange];
+  }
   
-  while (!cycleEnd) {
+  if (_cycleEndDate == nil || _maxCycles < 1) {
+    if (_cycleEndDate == nil)
+      [self warnWithFormat:@"got no cycle enddate!"];
+    return [NSArray array]; // TODO: rather return 'nil'?
+  }
+  
+  sD = [_startDate hour:12 minute:0 second:0];
+  eD = [_endDate   hour:12 minute:0 second:0];
+  ma = [NSMutableArray arrayWithCapacity:64];
+  
+  for (i = _offset, cnt = 0, cycleEnd = NO; !cycleEnd; ) {
     NSCalendarDate *newStartDate = nil;
     NSCalendarDate *newEndDate   = nil;
     BOOL           ignoreWeekends = NO;
@@ -76,7 +133,8 @@
       newEndDate   = [eD dateByAddingYears:i*1 months:0 days:0];
     }
     else {
-      NSLog(@"%s: unknown repetition type: %@", __PRETTY_FUNCTION__, _type);
+      [self errorWithFormat:@"%s: unknown repetition type: %@", 
+            __PRETTY_FUNCTION__, _type];
       return [NSArray array];
     }
     i++;
@@ -92,21 +150,25 @@
     
     if (ignoreWeekends) {
       int day = [sD dayOfWeek];
-      if (day == 0 || day == 6) {
+      if (day == 0 /* Sunday */ || day == 6 /* Saturday */)
         continue;
-      }
     }
-
+    
     if ((_cycleEndDate != nil) &&
         ([newStartDate compare:_cycleEndDate] != NSOrderedAscending)) {
       cycleEnd = YES;
     }
-
+    
     if (!cycleEnd) {
-      [ma addObject:
-          [NSDictionary dictionaryWithObjectsAndKeys:
-                        newStartDate, @"startDate",
-                        newEndDate,   @"endDate", nil]];
+      static const NSString *keys[2] = { @"startDate", @"endDate" };
+      id values[2];
+      NSDictionary *d;
+      
+      values[0] = newStartDate;
+      values[1] = newEndDate;
+      d = [[NSDictionary alloc] initWithObjects:values forKeys:keys count:2];
+      [ma addObject:d];
+      [d release]; d = nil;
       cnt++;
     }
     
@@ -118,7 +180,7 @@
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     self->seekIndex       = -1;
     self->frequency       =  1;
     self->maxCycles       = -1;

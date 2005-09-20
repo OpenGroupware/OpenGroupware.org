@@ -344,7 +344,9 @@ static NSArray  *startDateOrderings = nil;
   
   if ([self _appointmentIsCyclic] && self->setAllCyclic) {
     id res;
-
+    
+    // IMPORTANT: this deletes all cyclic appointments and creates new ones
+    // TODO: we probably want to change that?!
     res = [self _newCyclicWithObject:[self object]
                 comment:self->comment
                 participants:self->participants
