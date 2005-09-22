@@ -71,6 +71,7 @@ static BOOL profileConfig  = NO;
 static BOOL profileSleep   = NO;
 static BOOL debugConfig    = NO;
 static BOOL debugPageCache = NO;
+static BOOL forceJavaScript = NO;
 static NSString *OGoDateFormat           = nil;
 static NSString *OGoAMPMTimeFormat       = nil;
 static NSString *OGoTimeFormat           = nil;
@@ -121,6 +122,9 @@ static NSString *OGoDateTimeTZFormat     = nil;
   OGoAMPMTimeFormat       = [ud stringForKey:@"OGoAMPMTimeFormat"];
   OGoAMPMDateTimeFormat   = [ud stringForKey:@"OGoAMPMDateTimeFormat"];
   OGoAMPMDateTimeTZFormat = [ud stringForKey:@"OGoAMPMDateTimeTZFormat"];
+  
+  if ((forceJavaScript = [ud boolForKey:@"OGoAlwaysEnableJavaScript"]))
+    NSLog(@"Note: WebUI configured to always use JavaScript.");
 
   bm = [[NGBundleManager defaultBundleManager] retain];
 }
@@ -471,7 +475,6 @@ static NSString *OGoDateTimeTZFormat     = nil;
 }
 
 - (void)awake {
-  /* push JavaScript context */
   [[NSNotificationCenter defaultCenter]
                          postNotificationName:@"OGoSessionAwake"
                          object:nil];
@@ -566,6 +569,13 @@ static NSString *OGoDateTimeTZFormat     = nil;
   return ([[[self activeAccount] valueForKey:@"companyId"] intValue] == 10000)
     ? YES
     : NO;
+}
+
+- (void)setIsJavaScriptEnabled:(BOOL)_flag {
+  self->isJavaScriptEnabled = _flag;
+}
+- (BOOL)isJavaScriptEnabled {
+  return forceJavaScript || self->isJavaScriptEnabled ? YES : NO;
 }
 
 /* configuration */

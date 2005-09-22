@@ -71,12 +71,14 @@
   NSArray              *categoryNames;
   NSArray              *dockedProjectInfos;
 
-  // favorites (TODO: what is choosenFavorite?)
+  /* favorites (TODO: what is choosenFavorite?) */
   OGoClipboard         *favorites;
   id                   choosenFavorite;
-
-  // userDefaults
+  
+  /* userDefaults */
   NSUserDefaults       *userDefaults;
+
+  BOOL isJavaScriptEnabled;
 }
 
 /* LSOffice commands */

@@ -1,3 +1,9 @@
+2005-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoSession.m: made 'isJavaScriptEnabled' an instance variable, added
+	  default 'OGoAlwaysEnableJavaScript' to enable JS even if the login
+	  page did not detect JS (v5.3.89)
+
 2005-09-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoEditorPage.m: minor code cleanups (v5.3.88)
