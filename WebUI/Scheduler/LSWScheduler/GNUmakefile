@@ -29,6 +29,7 @@ LSWScheduler_OBJC_FILES = 			\
 	OGoUserSelectionComponent.m		\
 	OGoAttendeeSelection.m			\
 	OGoRecurrenceFormatter.m		\
+	OGoCycleSelection.m			\
 
 LSWScheduler_RESOURCE_FILES += Defaults.plist Version
 

@@ -1036,7 +1036,7 @@ static Class      StrClass        = nil;
       /* this happens if attachData in the dict is set to 0 */
       // TODO: what about 'sendObject' objects?
       if ([[obj valueForKey:@"sendObject"] boolValue]) {
-	[self logWithFormat:@"WARNING: not attaching: %@/%@/0x%08X", 
+	[self warnWithFormat:@"not attaching: %@/%@/0x%08X", 
 	      [obj valueForKey:@"mimeType"],
 	      NSStringFromClass([obj class]), obj];
       }

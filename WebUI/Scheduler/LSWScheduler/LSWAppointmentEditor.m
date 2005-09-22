@@ -794,7 +794,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return [[self snapshot] objectForKey:@"type"];
 }
 
-- (NSString *)unitLabel {
+- (NSString *)unitLabel { // TODO: maybe we can remove this
   return [[self labels] valueForKey:self->item];
 }
 
@@ -1267,7 +1267,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return [staffSet allObjects];
 }
 
-- (NSString *)cycleType {
+#if 0 // TODO: remove when we are sure its not used
+- (NSString *)cycleType { // replaced by formatter
   NSString *t;
   
   if ((t = [[self snapshot] valueForKey:@"type"]) == nil)
@@ -1280,6 +1281,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   
   return [[self labels] valueForKey:t];
 }
+#endif
 
 - (NSString *)timeInputType {
   return self->timeInputType;
@@ -1294,6 +1296,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   type:(NSString *)_type
   cycleEndDate:(NSCalendarDate *)_cycleDate
 {
+  // TODO: what does this do? should use OGoCycleCalculator?
+  // called by -checkConstraints
   int  cnt, i;
   BOOL cycleEnd, isWeekend;
 
@@ -1304,7 +1308,9 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   
   while (!cycleEnd) {
     NSCalendarDate *newStartDate;
-
+    
+    // TODO: replace that?!
+    // TODO: add support for rrule!
     newStartDate = [_start dateByAddingValue:i inUnit:_type];
     
     if ([newStartDate compare:_cycleDate] == NSOrderedAscending) {
@@ -1493,6 +1499,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     NSCalendarDate *cDate;
     unsigned       cycleCnt, maxCycles;
     
+    // TODO: fixup enddate for rrules?
     cDate     = [appointment valueForKey:@"cycleEndDate"];
     maxCycles = [self maxAppointmentCycles];
     
@@ -1505,10 +1512,9 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 		       type:type cycleEndDate:cDate];
       if (cycleCnt > maxCycles) {
 	NSString *s;
-
-	s = [NSString stringWithFormat:
-			[l valueForKey:@"error_toManyCyclics"], cycleCnt];
-	[error appendString:s];
+        
+        s = [l valueForKey:@"error_toManyCyclics"];
+	[error appendFormat:s, cycleCnt];
       }
     }
   }

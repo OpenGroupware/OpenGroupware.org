@@ -1,3 +1,8 @@
+2005-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* added OGoCycleSelection component for editing the appointment
+	  recurrence information (v5.3.84)
+
 2005-09-20  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.3.83

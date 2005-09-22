@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<OGo:container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+  <!--
+    Static HTML form-names:
+      'cycleType'
+      'cycleEndDate'
+    Static HTML ids:
+      'cycleSection'
+    Refers:
+      'editform'
+    -->
+  <var:popup const:name="cycleType"
+             list="userDefaults.apteditor_cycletypes"
+             item="item" value="item"
+             string="labels.$item" selection="cycleType"
+             noSelectionString="labels.once" 
+             const:onchange="LSWAptEditor_updateCycle(this)" />
+
+  <span id="cycleSection" style="display: none;">
+    <OGo:font><OGo:label key="cycleEndDateLabel"/>:</OGo:font>
+
+    <input type="text" name="cycleEndDate" size="12"
+           var:value="cycleEndDate" />
+    <var:if condition="session.isJavaScriptEnabled">
+      <OGo:calpopup elementName="cycleEndDate"
+                    formName="editform" />
+    </var:if>
+  </span>
+  
+  <div id="monthCycleSection" style="display: none;">
+  </div>
+
+</OGo:container>

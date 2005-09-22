@@ -36,6 +36,7 @@
       { name = SkyAptTypeSelection;        },
       { name = OGoAttendeeSelection;       },
       { name = OGoRecurrenceFormatter;     },
+      { name = OGoCycleSelection;          },
     );
     
     PreferencePages = (
@@ -62,6 +63,7 @@
       { name = SkyAppointmentPrintViewer;  },
       { name = SkyAptTypeSelection;        },
       { name = OGoAttendeeSelection;       },
+      { name = OGoCycleSelection;          },
     );
 
     LSWCommands = (

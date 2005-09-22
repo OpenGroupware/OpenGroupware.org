@@ -17,7 +17,8 @@
          else if (isNS4)     object = document.layers[divId];
          else if ((object = document.getElementById(divId)))
            object = object.style;
-         if (object) object.visibility = visible ? 'visible' : 'hidden';
+         if (object) 
+           object.display = visible ? 'inline' : 'none';
        }
 
        // End -->

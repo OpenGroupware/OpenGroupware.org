@@ -56,9 +56,16 @@
 
             <var:if condition="isInNewMode">
               <OGo:attribute label="type" editfont="1">
-                <var:popup list="userDefaults.apteditor_cycletypes" item="item"
-                       string="unitLabel" selection="appointmentType"
-                       noSelectionString="labels.once" />
+                <var:component className="OGoCycleSelection"
+                               cycleType="appointmentType"
+                               cycleEndDate="cycleEndDate" />
+<!--
+                <var:popup const:name="cycleType"
+                           list="userDefaults.apteditor_cycletypes"
+                           item="item" value="item"
+                           string="unitLabel" selection="appointmentType"
+                           noSelectionString="labels.once" 
+                           const:onchange="LSWAptEditor_updateCycle(this)" />
 
                 <OGo:font><OGo:label key="cycleEndDateLabel"/>:</OGo:font>
 
@@ -68,6 +75,7 @@
                   <OGo:calpopup elementName="cycleEndDate"
                                 formName="editform"/>
                 </var:if>
+  -->
               </OGo:attribute>
             </var:if>
 

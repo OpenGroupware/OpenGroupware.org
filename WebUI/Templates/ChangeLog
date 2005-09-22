@@ -1,3 +1,12 @@
+2005-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWScheduler/SkyAptDateSelection.html: use 'display' instead of
+	  'visibility' when the input is switched to 'all day'
+
+	* LSWScheduler/LSWAppointmentEditor.wox: use cycle type strings as
+	  values in popup, cycle-type popup got a constant form name, calls
+	  a JavaScript function on popup changes
+
 2005-09-20  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWScheduler/LSWAppointmentViewer.wox: use recurrence formatter to
