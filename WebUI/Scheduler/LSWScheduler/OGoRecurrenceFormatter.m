@@ -25,7 +25,7 @@
 
 @implementation OGoRecurrenceFormatter
 
-static NSString *CycleDateStringFmt= @"%Y-%m-%d %Z";
+static NSString *CycleDateStringFmt= @"%Y-%m-%d";
 
 - (id)initWithLabels:(id)_labels {
   if ((self = [super init]) != nil) {
@@ -61,6 +61,7 @@ static NSString *CycleDateStringFmt= @"%Y-%m-%d %Z";
 - (NSString *)stringForICalRecurrence:(iCalRecurrenceRule *)_rrule {
   // TODO: this is far from complete
   NSMutableString *ms;
+  unsigned dayMask;
   id tmp;
   
   if (_rrule == nil)
@@ -68,7 +69,44 @@ static NSString *CycleDateStringFmt= @"%Y-%m-%d %Z";
   
   ms = [NSMutableString stringWithCapacity:128];
   
-  [ms appendString:[_rrule iCalRepresentation]];
+  if ((dayMask = [_rrule byDayMask]) != 0) {
+    NSString *k;
+    
+    k = [@"cycle_occurence_" stringByAppendingFormat:@"%i",
+          [_rrule byDayOccurence1]];
+    [ms appendString:[self->labels valueForKey:k]];
+    [ms appendString:@" "];
+    
+    /* day */
+    if (dayMask & iCalWeekDayMonday)         k = @"MO";
+    else if (dayMask & iCalWeekDayTuesday)   k = @"TU";
+    else if (dayMask & iCalWeekDayWednesday) k = @"WE";
+    else if (dayMask & iCalWeekDayThursday)  k = @"TH";
+    else if (dayMask & iCalWeekDayFriday)    k = @"FR";
+    else if (dayMask & iCalWeekDaySaturday)  k = @"SA";
+    else if (dayMask & iCalWeekDaySunday)    k = @"SU";
+    else k = @"UNKNOWN";
+    k = [@"cycle_day_" stringByAppendingString:k];
+    [ms appendString:[self->labels valueForKey:k]];
+    [ms appendString:@", "];
+  }
+  
+  switch ([_rrule frequency]) {
+  case iCalRecurrenceFrequenceDaily:
+    [ms appendString:[self->labels valueForKey:@"daily"]];
+    break;
+  case iCalRecurrenceFrequenceWeekly:
+    [ms appendString:[self->labels valueForKey:@"weekly"]];
+    break;
+  case iCalRecurrenceFrequenceMonthly:
+    [ms appendString:[self->labels valueForKey:@"monthly"]];
+    break;
+  case iCalRecurrenceFrequenceYearly:
+    [ms appendString:[self->labels valueForKey:@"yearly"]];
+    break;
+  default:
+    return [_rrule iCalRepresentation];
+  }
   
   /* "until" */
 

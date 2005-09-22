@@ -1,5 +1,7 @@
 2005-09-22  Helge Hess  <helge.hess@skyrix.com>
 
+	* OGoRecurrenceFormatter.m: improved rendering of rrules (v5.3.86)
+
 	* v5.3.85
 
 	* OGoCycleSelection.m: added support for some rrules
