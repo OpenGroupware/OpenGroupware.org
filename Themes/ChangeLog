@@ -1,3 +1,11 @@
+2005-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* WebServerResources/English.lproj/LSWAppointmentEditor.js: prepared
+	  JS function for recurrence selector
+
+	* WebServerResources/English.lproj/OGo.css: replaced invalid 'align'
+	  with 'text-align', replaced invalid 'text-color' with just 'color'
+
 2005-08-31  Helge Hess  <helge.hess@opengroupware.org>
 
 	* added LSWAppointmentEditor.js JavaScript resource

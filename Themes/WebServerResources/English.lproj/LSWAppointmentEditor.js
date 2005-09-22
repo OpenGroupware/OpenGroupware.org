@@ -32,3 +32,23 @@ function searchFieldChanged() {
   document.editform.submit();
   return true;
 }
+
+function LSWAptEditor_updateCycle(sender) {
+  var cycleDiv;
+  
+  cycleDiv = document.getElementById("cycleSection");
+  cycleDiv.style.display = (sender.value == "WONoSelectionString")
+      ? "none" : "inline";
+  
+  cycleDiv = document.getElementById("monthCycleSection");
+  cycleDiv.style.display = (sender.value == "monthly")
+      ? "block" : "none";
+}
+
+function LSWAptEditor_updateMonth(sender) {
+  var cycleDiv;
+  
+  cycleDiv = document.getElementById("monthCycleDay");
+  cycleDiv.style.display = (sender.value == "WONoSelectionString")
+      ? "none" : "inline";
+}
