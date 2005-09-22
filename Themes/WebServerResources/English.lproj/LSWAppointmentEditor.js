@@ -18,7 +18,16 @@ function validateEditorContent() {
 
   if (document.editform.title.value.length == 0)
     errorString = errorString + " => No title set.\n";
-
+  
+  if (document.editform.cycleType) {
+    if (document.editform.cycleType != "WONoSelectionString" &&
+        document.editform.cycleType != "") {
+      if (document.editform.cycleEndDate.length == 0) {
+        errorString = errorString + " => No cycle enddate set.\n";
+      }
+    }
+  }
+  
   if (errorString.length > 0) {
     alert("invalid input:\n" + errorString);
     return false;

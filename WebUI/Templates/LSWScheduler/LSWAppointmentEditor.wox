@@ -19,6 +19,7 @@
       </script>
     </var:if>
 
+    <!-- TODO: check  onsubmit="validateEditorContent()" -->
     <form name="editform"
     ><table border="0" cellspacing="0" cellpadding="4" width="100%">
       <tr var:bgcolor="config.colors_mainButtonRow">

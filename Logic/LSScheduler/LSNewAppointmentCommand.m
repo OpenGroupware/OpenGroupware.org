@@ -20,6 +20,7 @@
 */
 
 #include "LSNewAppointmentCommand.h"
+#include "OGoCycleDateCalculator.h"
 #include "common.h"
 
 @interface LSNewAppointmentCommand(UsedCommands)
@@ -266,6 +267,59 @@ static NSArray  *startDateOrderings = nil;
 
 /* prepare */
 
+- (void)_fixupICalRecurrenceInMaster {
+  /*
+    This is required because the first instances of an iCalendar recurrence
+    is NOT required to match the given startdate/enddate!
+    
+    So we adjust the start/enddate of the master appointment to the actual 
+    first instance.
+    
+    Sample: rrule is "every thursday till christmas" but the given startDate
+            is a monday. This will "correct" the startdate to the first
+            thursday after the monday.
+  */
+  NSString *recType;
+  NSArray  *cycles;
+  id firstInstance;
+  
+  recType = [self valueForKey:@"type"];
+  if (![recType isNotEmpty])
+    return;
+  
+  /* check cycleEndDate */
+  
+  if (![[self valueForKey:@"cycleEndDate"] isNotNull]) {
+    [self warnWithFormat:@"missing a cycle enddate for recurrence: %@",
+            recType];
+  }
+  
+  /* fixup rrule */
+  
+  if (![recType hasPrefix:@"RRULE:"])
+    return;
+  
+  
+  cycles =
+    [OGoCycleDateCalculator cycleDatesForStartDate:
+                              [self valueForKey:@"startDate"]
+                            endDate:[self valueForKey:@"endDate"]
+                            type:recType
+                            maxCycles:2 startAt:1
+                            endDate:[self valueForKey:@"cycleEndDate"]
+                            keepTime:YES];
+  if ([cycles count] == 0) {
+    [self errorWithFormat:@"calculation returned no cycles for rrule: '%@'",
+            recType];
+    return;
+  }
+  
+  firstInstance = [cycles objectAtIndex:0];
+  
+  LSCommandSet(self, @"startDate", [firstInstance valueForKey:@"startDate"]);
+  LSCommandSet(self, @"endDate",   [firstInstance valueForKey:@"endDate"]);
+}
+
 - (void)_prepareForExecutionInContext:(id)_context {
   id owner = nil;
   NSNumber *pId;
@@ -276,14 +330,14 @@ static NSArray  *startDateOrderings = nil;
   pId   = [self valueForKey:@"parentDateId"];
   owner = [self valueForKey:@"ownerId"];
   
-  // set owner of appointment
+  /* set owner of appointment */
 
   if (![pId isNotNull]) {
     if (owner != nil) {
       if (![self isRootCompanyId:[[_context valueForKey:LSAccountKey]
                                    valueForKey:@"companyId"]]) {
         [self assert:NO
-              reason:@"Only root is allowd to explicit set an owner for "
+              reason:@"Only root is allowd to explicitly set an owner for "
               @"appointments!"];
       }
     }
@@ -300,6 +354,9 @@ static NSArray  *startDateOrderings = nil;
   [self assert:[self->participants isNotEmpty]
         reason:@"no participants set !"];
 
+  if (![pId isNotNull])
+    [self _fixupICalRecurrenceInMaster];
+  
   [self _checkStartDateIsBeforeEndDate];
   
   if (![self->isWarningIgnored boolValue])
@@ -315,7 +372,7 @@ static NSArray  *startDateOrderings = nil;
   NSCalendarDate *sD, *eD;
   NSTimeZone     *tzsD = nil;
   NSTimeZone     *tzeD = nil;
-
+  
   sD = [self valueForKey:@"startDate"];
   eD = [self valueForKey:@"endDate"];
   

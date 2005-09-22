@@ -190,12 +190,15 @@ static int maxCycleCount = 100;
                             startAt:1
                             endDate:cycleDate
                             keepTime:YES];
-
-#warning REMOVE ME, debug log
-  [self logWithFormat:@"got %d cycles for type %@", 
-        [cycles count], type];
   
-  for (i = 0, cnt = [cycles count]; i < cnt; i++) {
+  /*
+     Note: this is tricky. iCal recurrence rules _include_ the first instance
+           of the recurrence. So we need to skip that.
+           We _also_ must patch the master event since the first rrule instance
+           does not necessarily match the startdate/enddate given!
+  */
+  cnt = [cycles count];
+  for (i = [type hasPrefix:@"RRULE:"] ? 1 : 0; i < cnt; i++) {
     id cycle; /* either an NSDictionary or an NGCalendarDateRange */
     
     cycle = [cycles objectAtIndex:i];

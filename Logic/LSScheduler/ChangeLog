@@ -1,3 +1,9 @@
+2005-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSNewAppointmentCommand.m, LSCyclicAppointmentsCommand.m: fixed
+	  creation of iCal rrule cycles (patch the master to the first instance
+	  and start cycle-generation at the second) (v5.3.77)
+
 2005-09-20  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.3.76
