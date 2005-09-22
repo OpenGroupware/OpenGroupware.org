@@ -1,5 +1,12 @@
 2005-09-22  Helge Hess  <helge.hess@skyrix.com>
 
+	* v5.3.85
+
+	* OGoCycleSelection.m: added support for some rrules
+	
+	* LSWAppointmentEditor.m: use OGoCycleDateCalculator to determine
+	  number of generated cycles
+
 	* added OGoCycleSelection component for editing the appointment
 	  recurrence information (v5.3.84)
 

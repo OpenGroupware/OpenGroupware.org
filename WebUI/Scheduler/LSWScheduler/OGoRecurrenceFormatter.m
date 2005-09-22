@@ -95,8 +95,10 @@ static NSString *CycleDateStringFmt= @"%Y-%m-%d %Z";
   
   if ([_str hasPrefix:@"RRULE:"]) {
     iCalRecurrenceRule *rrule;
+    NSString *pat;
     
-    if ((rrule = [[iCalRecurrenceRule alloc] initWithString:_str]) != nil) {
+    pat = [_str substringFromIndex:6];
+    if ((rrule = [[iCalRecurrenceRule alloc] initWithString:pat]) != nil) {
       s = [self stringForICalRecurrence:rrule];
       [rrule release];
     }

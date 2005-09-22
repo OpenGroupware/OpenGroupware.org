@@ -34,6 +34,8 @@
      => we probably do want to adjust for changes in the 'time' of the start/
         enddate but not in the date (which would be similiar to a pattern
         change).
+     => maybe we can detect local changes based on the object-version (in case
+        it differs from the master?)
   
   Arguments:
     cyclicAppointment - EO object - base appointment
@@ -176,6 +178,10 @@ static int maxCycleCount = 100;
   realEnd   = [cyclic valueForKey:@"endDate"];
   cycleDate = [[cyclic valueForKey:@"cycleEndDate"] endOfDay];
   
+  /* 
+     Note: this skips the first instance for OGo types, but the iCal calculator
+           returns all instances!
+  */
   cycles =
     [OGoCycleDateCalculator cycleDatesForStartDate:realStart
                             endDate:realEnd
@@ -184,6 +190,10 @@ static int maxCycleCount = 100;
                             startAt:1
                             endDate:cycleDate
                             keepTime:YES];
+
+#warning REMOVE ME, debug log
+  [self logWithFormat:@"got %d cycles for type %@", 
+        [cycles count], type];
   
   for (i = 0, cnt = [cycles count]; i < cnt; i++) {
     id cycle; /* either an NSDictionary or an NGCalendarDateRange */

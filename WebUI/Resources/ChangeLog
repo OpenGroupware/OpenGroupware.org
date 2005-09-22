@@ -1,3 +1,8 @@
+2005-09-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* English|German.lproj/LSWScheduler.strings: added new labels for
+	  month recurrence rule selection (cycle_...)
+
 2005-09-16  Helge Hess  <helge.hess@skyrix.com>
 
 	* English|German.lproj/LSWScheduler.strings: added new labels for new

@@ -10,19 +10,23 @@
     Static HTML form-names:
       'cycleType'
       'cycleEndDate'
+      'monthDayOccurences'
+      'monthCycleDay'
     Static HTML ids:
       'cycleSection'
+      'monthCycleSection'
     Refers:
       'editform'
     -->
   <var:popup const:name="cycleType"
              list="userDefaults.apteditor_cycletypes"
              item="item" value="item"
-             string="labels.$item" selection="cycleType"
+             selection="cycleTypePart"
+             string="labels.$item"
              noSelectionString="labels.once" 
              const:onchange="LSWAptEditor_updateCycle(this)" />
 
-  <span id="cycleSection" style="display: none;">
+  <span id="cycleSection" var:style="defaultCycleSectionStyle">
     <OGo:font><OGo:label key="cycleEndDateLabel"/>:</OGo:font>
 
     <input type="text" name="cycleEndDate" size="12"
@@ -33,7 +37,21 @@
     </var:if>
   </span>
   
-  <div id="monthCycleSection" style="display: none;">
+  <div id="monthCycleSection" var:style="defaultMonthSectionStyle">
+    <var:popup const:name="monthDayOccurences"
+               list="userDefaults.apteditor_cyclemonth_dayoccurences"
+               item="item" value="item"
+               selection="dayOccurence"
+               string="itemOccurenceLabel"
+               const:onchange="LSWAptEditor_updateMonth(this)" />
+
+    <span id="monthCycleDay" var:style="defaultMonthCycleStyle">
+      <var:popup const:name="monthCycleDay"
+                 list="userDefaults.apteditor_cycle_days"
+                 item="item" value="item"
+                 selection="day"
+                 string="itemDayLabel" />
+    </span>
   </div>
 
 </OGo:container>

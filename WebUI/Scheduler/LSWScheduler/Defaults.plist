@@ -95,6 +95,10 @@
   apteditor_cycletypes   = (
     "daily", "weekly", "14_daily", "4_weekly", "monthly", "weekday", "yearly"
   );
+  apteditor_cyclemonth_dayoccurences = (
+    "-", 0, 1, 2, 3, 4, -1
+  );
+  apteditor_cycle_days = ( MO, TU, WE, TH, FR, SA, SU );
 
   apteditor_useattendeeselector = NO;
 

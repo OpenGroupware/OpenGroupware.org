@@ -33,6 +33,7 @@
 #include <NGObjWeb/WEClientCapabilities.h>
 #include <OGoScheduler/SkyAptDataSource.h>
 #include "OGoRecurrenceFormatter.h"
+#include <OGoSchedulerTools/OGoCycleDateCalculator.h>
 
 /*
   TODO: this file contains a *LOT* of duplicate code, especially in the
@@ -1292,51 +1293,6 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 
 /* actions */
 
-- (unsigned)countCyclesWithStartDate:(NSCalendarDate *)_start
-  type:(NSString *)_type
-  cycleEndDate:(NSCalendarDate *)_cycleDate
-{
-  // TODO: what does this do? should use OGoCycleCalculator?
-  // called by -checkConstraints
-  int  cnt, i;
-  BOOL cycleEnd, isWeekend;
-
-  cnt       = 0;
-  i         = 0;
-  cycleEnd  = NO;
-  isWeekend = NO;
-  
-  while (!cycleEnd) {
-    NSCalendarDate *newStartDate;
-    
-    // TODO: replace that?!
-    // TODO: add support for rrule!
-    newStartDate = [_start dateByAddingValue:i inUnit:_type];
-    
-    if ([newStartDate compare:_cycleDate] == NSOrderedAscending) {
-      if ([_type isEqual:@"weekday"]) {
-        int day;
-        
-        day = [newStartDate dayOfWeek];
-        isWeekend = (day > 0 && day < 6) ? NO : YES;
-      }
-      
-      if (!isWeekend)
-        cnt++;
-      i++;
-    }
-    else {
-      cycleEnd = YES;
-    }
-#if 0 // hh asks: why is this commented out?
-    if (cnt > 100) { 
-      cycleEnd = YES;
-    }
-#endif
-  }
-  return cnt;
-}
-
 - (BOOL)scanTime:(NSString *)_time hour:(int *)hour_ minute:(int *)minute_
   am:(BOOL *)am_
 {
@@ -1497,24 +1453,30 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   
   if ([type isNotNull]) {
     NSCalendarDate *cDate;
-    unsigned       cycleCnt, maxCycles;
     
     // TODO: fixup enddate for rrules?
     cDate     = [appointment valueForKey:@"cycleEndDate"];
-    maxCycles = [self maxAppointmentCycles];
     
     if (![cDate isNotNull]) {
       [error appendString:[l valueForKey:@"error_noCycleEndDate"]];
     }
     else {
-      cycleCnt = [self countCyclesWithStartDate:
-			 [appointment valueForKey:@"startDate"]
-		       type:type cycleEndDate:cDate];
-      if (cycleCnt > maxCycles) {
+      NSArray *cycles;
+      
+      cycles = [OGoCycleDateCalculator cycleDatesForStartDate:
+                                         [appointment valueForKey:@"startDate"]
+                                       endDate:
+                                         [appointment valueForKey:@"endDate"]
+                                       type:type
+                                       maxCycles:4096 /* arbitary selection */
+                                       startAt:1
+                                       endDate:cDate
+                                       keepTime:YES];
+      if ([cycles count] > [self maxAppointmentCycles]) {
 	NSString *s;
         
         s = [l valueForKey:@"error_toManyCyclics"];
-	[error appendFormat:s, cycleCnt];
+	[error appendFormat:s, [cycles count]];
       }
     }
   }
@@ -1883,8 +1845,6 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   // TODO: DUP in LSWAppointmentMove?
   if ([[ds fetchObjects] isNotEmpty])
     return [self _handleConflictsInConflictDS:ds action:_action];
-
-  [self logWithFormat:@"NO CONFLICTS, GO ON .."];
   
   /* return */
   

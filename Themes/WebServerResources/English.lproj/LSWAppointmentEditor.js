@@ -49,6 +49,10 @@ function LSWAptEditor_updateMonth(sender) {
   var cycleDiv;
   
   cycleDiv = document.getElementById("monthCycleDay");
-  cycleDiv.style.display = (sender.value == "WONoSelectionString")
-      ? "none" : "inline";
+  if (sender.value == "WONoSelectionString")
+    cycleDiv.style.display = "none";
+  else if (sender.value == "-")
+    cycleDiv.style.display = "none";
+  else
+    cycleDiv.style.display = "inline";
 }
