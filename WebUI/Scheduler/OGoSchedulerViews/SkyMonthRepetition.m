@@ -67,6 +67,12 @@
 
 #include "common.h"
 
+#if APPLE_Foundation_LIBRARY || COCOA_Foundation_LIBRARY
+@interface NSCalendarDate(UsedPrivates)
+- (id)initWithTimeIntervalSince1970:(NSTimeInterval)_interval;
+@end
+#endif
+
 @implementation SkyMonthRepetition
 
 - (id)initWithName:(NSString *)_name

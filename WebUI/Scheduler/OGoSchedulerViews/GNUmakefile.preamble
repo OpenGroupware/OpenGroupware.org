@@ -3,5 +3,6 @@
 ADDITIONAL_BUNDLE_LIBS += \
 	-lOGoSchedulerTools	\
 	-lGDLAccess		\
+	-lNGiCal		\
 	-lDOM -lSaxObjC
 

@@ -1,10 +1,11 @@
-# $Id: GNUmakefile.preamble 1 2004-08-20 11:17:52Z znek $
+# compilation settings
 
 OGoScheduler_WOBUNDLE_LIBS += \
 	-lOGoFoundation	\
 	-lNGObjWeb	\
 	-lOGoScheduler -lOGoDocuments \
-	-lGDLAccess \
+	-lNGiCal	\
+	-lGDLAccess	\
 	-lDOM -lSaxObjC
 
 ADDITIONAL_BUNDLE_LIBS += $(OGoScheduler_WOBUNDLE_LIBS)

@@ -1,3 +1,7 @@
+2005-09-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyMonthRepetition.m: fixed a warning on OSX (v5.3.50)
+
 2005-08-23  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkySchedulerConflictCell.m: code cleanups (v5.3.49)
