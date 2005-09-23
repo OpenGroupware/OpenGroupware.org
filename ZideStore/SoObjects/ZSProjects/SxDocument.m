@@ -293,7 +293,7 @@ static BOOL debugOn = NO;
 			reason:@"document does not exist"];
   }
   
-  r = [_ctx response];
+  r = [(WOContext *)_ctx response];
   [r setStatus:200 /* OK */];
   [r setContent:(NSData *)[NSData data]];
   [self applyFileAttributesOnResponse:r];

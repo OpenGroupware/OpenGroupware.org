@@ -1,3 +1,7 @@
+2005-09-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxDocument.m: fixed a gcc4 warning (v1.5.97)
+
 2005-06-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed gcc 4.0 warnings (v1.3.96)
