@@ -2,7 +2,7 @@
 0 = "No"
 1 = "Sì"
 enterprise_sub_view    = "Vista secondaria aziende"
-job_import_name        = "Importa compito"
+job_import_name        = "Importa attività"
 mail_editor_type       = "Tipo editor posta"
 mail_send_type         = "Invia posta come"
 scheduler_end_hour     = "Ora finale agenda"
