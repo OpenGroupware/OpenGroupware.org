@@ -1,5 +1,7 @@
 // bind template to controller
 
+// WOx TODO: LSWObjectEditor
+
 Frame: LSWSkyrixFrame {}
 
 Window: LSWWindowFrame {

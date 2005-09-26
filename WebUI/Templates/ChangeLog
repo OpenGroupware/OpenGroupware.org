@@ -1,3 +1,11 @@
+2005-09-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWScheduler/LSWAppointmentEditor.wox: removed old cycle editor
+
+	* PreferencesUI/OGoDefaultEditFrame,
+	  PreferencesUI/OGoDefaultEditField,
+	  PreferencesUI/OGoDefaultViewField: rewritten as WOx template
+
 2005-09-22  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWScheduler/SkyAptDateSelection.html: use 'display' instead of

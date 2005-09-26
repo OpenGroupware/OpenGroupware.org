@@ -60,23 +60,6 @@
                 <var:component className="OGoCycleSelection"
                                cycleType="appointmentType"
                                cycleEndDate="cycleEndDate" />
-<!--
-                <var:popup const:name="cycleType"
-                           list="userDefaults.apteditor_cycletypes"
-                           item="item" value="item"
-                           string="unitLabel" selection="appointmentType"
-                           noSelectionString="labels.once" 
-                           const:onchange="LSWAptEditor_updateCycle(this)" />
-
-                <OGo:font><OGo:label key="cycleEndDateLabel"/>:</OGo:font>
-
-                <input type="text" name="cycleEndDate" size="12"
-                       var:value="cycleEndDate" />
-                <var:if condition="session.isJavaScriptEnabled">
-                  <OGo:calpopup elementName="cycleEndDate"
-                                formName="editform"/>
-                </var:if>
-  -->
               </OGo:attribute>
             </var:if>
 

@@ -1,4 +1,6 @@
-// $Id: SkySchedulerDockView.wod,v 1.1 2003/08/04 16:00:01 thomas Exp $
+// bind template to controller
+
+// WOx issues: plist in WEDropContainer
 
 SchedulerLink: WOHyperlink {
   directActionName = "dock";

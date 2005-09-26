@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<tr
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+  <var:if condition="isInViewerMode" const:negate="1">
+    <OGo:td-attr width="1%" alignLeft="1">
+      <entity name="nbsp"/>
+      <var:if condition="isEditable">
+        <input type="image" filename="reset.gif" var:action="resetValue"
+               var:alt="labels.resetToDefault"
+               var:value="labels.resetToDefault" />
+      </var:if>
+    </OGo:td-attr>  
+  </var:if>
+
+  <OGo:td-attr width="15%"><var:string value="defaultLabel" />:</OGo:td-attr>
+
+  <OGo:td-value alignTop="1">
+    <var:if condition="isEditable"><var:component-content/></var:if>
+    <var:if condition="isEditable" const:negate="1">
+      <var:if condition="isText">
+        <pre><var:string value="readOnlyValue" formatter="formatter"/></pre>
+      </var:if>
+      <var:if condition="isText" const:negate="1">
+        <OGo:font><var:string value="readOnlyValue" 
+                              formatter="formatter"/></OGo:font>
+      </var:if>
+    </var:if>
+    <var:if condition="isInViewerMode">
+      <entity name="nbsp"/><var:component-content/>
+    </var:if>
+  </OGo:td-value>
+
+  <var:if condition="isInViewerMode" const:negate="1">
+    <td align="right" valign="top">
+      <OGo:font>
+        <entity name="nbsp"/>
+        <var:if condition="isRoot">
+          <input type="checkbox" var:checked="isEditableValue"
+             /><var:string value="labels.editableForAccount" />
+          <entity name="nbsp"/>
+          <input type="image" filename="reset.gif" var:action="resetEditable"
+                 var:alt="labels.resetToDefault"
+                 var:value="labels.resetEditable" />
+        </var:if>
+      </OGo:font>
+    </td>
+  </var:if>
+</tr>

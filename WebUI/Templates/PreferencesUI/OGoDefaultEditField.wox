@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<var:component className="OGoDefaultEditFrame"
+  componentLabels = "componentLabels"
+  key             = "key"
+  defaults        = "defaults"
+  formatter       = "formatter"
+  isEditableDef   = "isEditableDef"
+  localizeValue   = "localizeValue"
+  useFormatter    = "useFormatter"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+  <var:if condition="isPopUp">
+    <var:popup list="valueList" item="item" string="popupLabel" 
+               selection="value" />
+  </var:if>
+
+  <var:if condition="isText">
+    <table>
+      <tr>
+        <td><textarea var:value="value" wrap="physical"
+                      var:rows="rows" var:cols="cols" /></td>
+        <td valign="top"><var:component-content/></td>
+      </tr>
+    </table>
+  </var:if>
+
+  <var:if condition="isString">
+    <input type="text" var:value="value" var:size="rows" />
+  </var:if>
+
+  <var:if condition="isPasswd">
+    <input type="password" var:value="value" />
+  </var:if>
+
+  <var:if condition="isCheckBox">
+    <input type="checkbox" var:checked="value" />
+  </var:if>
+
+  <var:if condition="isText" const:negate="1">
+    <var:component-content/>
+  </var:if>
+</var:component>
