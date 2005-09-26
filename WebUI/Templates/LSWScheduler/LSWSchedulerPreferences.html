@@ -1,8 +1,15 @@
 <#Frame>
  <#Window>
   <#PreferencesForm>
+    <table border="0" cellspacing="1" cellpadding="4" width="100%">
+      <#MainButtonRow>
+        <td align="left" colspan="2">
+          <#Font><b><#EditorLabel/></b></#Font>
+        </td>
+      </#MainButtonRow>
+      <tr>
+<td valign="top">
     <table border="0" cellspacing="0" cellpadding="4" width="100%">
-      <#EditorTitle>
         <#AppointmentViewField  />
         <#TimeInputTypeField    />
         <#AptTypeInputTypeField />
@@ -26,9 +33,38 @@
             (<#OnlyIfResourcesAreSet />)</#Font>
           </#HideIgnoreConflictsInEditor>
         </#IsRoot>
-      </#EditorTitle>
+    </table>
+</td>
+<td valign="top">
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+      <#MainButtonRow>
+        <td align="left" colspan="2">
+          <#Font><b><#WeekOverviewLabel/></b></#Font>
+        </td>
+      </#MainButtonRow>
+      <#ShortInfo />
+      <#WithResources />
+      <#ColumnsPerDay />
 
-      <tr><td colspan="2"></td></tr>
+      <tr><td colspan="2"><entity name="nbsp"/></td></tr>
+
+      <#MainButtonRow>
+        <td align="left" colspan="2">
+          <#Font><b><#DayOverviewLabel/></b></#Font>
+        </td>
+      </#MainButtonRow>
+      <#DayOverviewStart />
+      <#DayOverviewEnd />
+      <#DayOverviewInterval />
+      <#ColumnsPerDayDayView />
+    </table>
+</td>
+</tr>
+</table>
+
+    <br />
+
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
       <#OverviewTitle>
         <#ViewPopupNumber />
         <tr>
@@ -38,28 +74,19 @@
         <#ResourceSelection />
         <#AccountSelection />
       </#OverviewTitle>
+    </table>
 
-      <tr><td colspan="2"></td></tr>
-      <#WeekOverviewTitle>
-        <#ShortInfo />
-        <#WithResources />
-        <#ColumnsPerDay />
-      </#WeekOverviewTitle>
+    <br />
 
-      <tr><td colspan="2"></td></tr>
-      <#DayOverviewTitle>
-        <#DayOverviewStart />
-        <#DayOverviewEnd />
-        <#DayOverviewInterval />
-        <#ColumnsPerDayDayView />
-      </#DayOverviewTitle>
-
-      <tr><td colspan="2"></td></tr>
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
       <#AccessTitle>
         <#AccountSelectionWriteAccess />
       </#AccessTitle> 
+    </table>
 
-      <tr><td colspan="2"></td></tr>
+    <br />
+
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
       <#HolidaysTitle>
         <tr>
           <#AttributeCell>
@@ -138,9 +165,11 @@
           </#ValueCell>
         </tr>
       </#HolidaysTitle>
+    </table>
 
-      <tr><td colspan="2"></td></tr>
+    <br />
 
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
       <#MailTemplateTitle>
           <#Font>
             <#TemplateDateFormat />

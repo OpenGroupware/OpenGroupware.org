@@ -1,3 +1,9 @@
+2005-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWScheduler/LSWSchedulerPreferences: some reorganizations in
+	  calendar preferences editor, moved some plist values to
+	  Defaults.plist
+
 2005-09-26  Helge Hess  <helge.hess@opengroupware.org>
 
 	* PreferencesUI/SkyDefaultEditField.wox: rewritten as WOx template

@@ -7,11 +7,17 @@ Window: LSWWindowFrame {
   onClose = session.navigation.leavePage;
 }
 
+MainButtonRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_mainButtonRow;
+}
+
 EditorTitle: SkyCollapsibleContent {
   visibility       = session.userDefaults.scheduler_pref_expand_editor;
   submitActionName = "";
   title            = labels.EditorDefaults;
 }
+EditorLabel: WOString { value = labels.EditorDefaults; }
 
 AccessWindowTitle: SkyCollapsibleContent {
   visibility       = session.userDefaults.scheduler_pref_expand_access;
@@ -122,7 +128,7 @@ TimeInputTypeField: SkyDefaultEditField {
   isEditable = isSchedulerTimeInputTypeEditable;
   valueType  = "popup";
   value      = schedulerTimeInputType;
-  valueList  = ( "PopUp", "TextField" );
+  valueList  = userDefaults.scheduler_popup_textfield;
 }
 AptTypeInputTypeField: SkyDefaultEditField {
   labels     = labels;
@@ -130,7 +136,7 @@ AptTypeInputTypeField: SkyDefaultEditField {
   isEditable = isSchedulerAptTypeInputTypeEditable;
   valueType  = "popup";
   value      = schedulerAptTypeInputType;
-  valueList  = ( "PopUp", "Icons" );
+  valueList  = userDefaults.scheduler_popup_icons;
 }
 
 StartHourField: SkyDefaultEditField {
@@ -139,11 +145,7 @@ StartHourField: SkyDefaultEditField {
   isEditable = isSchedulerStartHourEditable;
   valueType  = "popup";
   value      = startHour;
-  valueList  = (
-    "00", "01", "02", "03", "04", "05", "06", "07", "08",
-    "09", "10", "11", "12", "13", "14", "15", "16", "17",
-    "18", "19", "20", "21", "22", "23"
-  );
+  valueList  = userDefaults.scheduler_padhour_fields;
 }
 EndHourField: SkyDefaultEditField {
   labels     = labels;
@@ -151,11 +153,7 @@ EndHourField: SkyDefaultEditField {
   isEditable = isSchedulerEndHourEditable;
   valueType  = "popup";
   value      = endHour;
-  valueList  = (
-    "00", "01", "02", "03", "04", "05", "06", "07", "08",
-    "09", "10", "11", "12", "13", "14", "15", "16", "17",
-    "18", "19", "20", "21", "22", "23"
-  );
+  valueList  = userDefaults.scheduler_padhour_fields;
 }
 
 SchedulerViewAccess: WOCheckBox {
@@ -205,7 +203,7 @@ ColumnSizeField: SkyDefaultEditField {
   isEditable = isNoOfColsEditable;
   valueType  = "popup";
   value      = noOfCols;
-  valueList  = ( "1", "2", "3", "4", "5" );
+  valueList  = userDefaults.scheduler_prefcolcount;
 }
 
 SchedulerPageTab: SkyDefaultEditField {
@@ -214,8 +212,7 @@ SchedulerPageTab: SkyDefaultEditField {
   isEditable = YES;
   valueType  = "popup";
   value      = schedulerPageTab;
-  valueList  = ( "dayoverview", "weekoverview",
-                 "monthoverview", "yearoverview" );
+  valueList  = userDefaults.scheduler_viewentry;
 }
 SchedulerPageWeekView: SkyDefaultEditField {
   labels     = labels;
@@ -223,8 +220,7 @@ SchedulerPageWeekView: SkyDefaultEditField {
   isEditable = YES;
   valueType  = "popup";
   value      = schedulerPageWeekViewPopUp;
-  valueList  = ( "week_overview", "week_vchart",
-                 "week_hchart",   "week_columnview" );
+  valueList  = userDefaults.scheduler_weekentry;
 }
 SchedulerPageDayView: SkyDefaultEditField {
   labels     = labels;
@@ -232,8 +228,7 @@ SchedulerPageDayView: SkyDefaultEditField {
   isEditable = YES;
   valueType  = "popup";
   value      = schedulerPageDayViewPopUp;
-  valueList  = ( "day_overview", "day_vchart",
-                 "day_hchart" );
+  valueList  = userDefaults.scheduler_dayentry;
 }
 ShowJobs: SkyDefaultEditField {
   label      = labels.showJobsInScheduler;
@@ -299,7 +294,7 @@ ViewPopupNumber: SkyDefaultEditField {
   isEditable = YES;
   valueType  = "popup";
   value      = additionalPopupEntries;
-  valueList  = ( "10", "20", "30", "50", "70", "100" );
+  valueList  = userDefaults.scheduler_prefadd_popupentries;
 }
 
 ResourceSelection: SkyResourceSelection {
@@ -339,6 +334,9 @@ DayOverviewTitle: SkyCollapsibleContent {
   visibility = session.userDefaults.scheduler_pref_expand_dayOverview;
   title      = labels.DayOverview;
 }
+DayOverviewLabel: WOString {
+  value = labels.DayOverview;
+}
 
 DayOverviewStart: SkyDefaultEditField {
   labels     = labelsForMinutes;
@@ -371,17 +369,12 @@ DayOverviewInterval: SkyDefaultEditField {
 }
 
 ColumnsPerDayDayView: SkyDefaultEditField {
-  labels      = {
-   "12" = "120";
-   "24" = "60";
-   "48" = "30";
-   "96" = "15";
-  };
+  labels      = userDefaults.scheduler_prefcoldaylabels;
   label       = labels.minutesPerColumn;
   isEditable  = isDayChartColumnsPerDayEditable;
   valueType   = "popup";
   value       = columnsPerDayDayView;
-  valueList   = ( "12", "24", "48", "96" );
+  valueList   = userDefaults.scheduler_prefcoldayvalues;
 }
 
 // Holidays
@@ -453,6 +446,9 @@ IsSchedulerClassicEnabled: WOConditional {
 WeekOverviewTitle: SkyCollapsibleContent {
   visibility = session.userDefaults.scheduler_pref_expand_weekOverview;
   title      = labels.WeekOverview;
+}
+WeekOverviewLabel: WOString {
+  value = labels.WeekOverview;
 }
 
 ShortInfo: SkyDefaultEditField {

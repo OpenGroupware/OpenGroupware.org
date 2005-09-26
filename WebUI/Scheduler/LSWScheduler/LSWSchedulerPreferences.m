@@ -216,6 +216,15 @@ static NSNumber *noNum = nil;
   return YES;
 }
 
+- (NSUserDefaults *)userDefaults {
+  return [[self session] userDefaults];
+}
+- (NSUserDefaults *)systemUserDefaults {
+  static NSUserDefaults *ud = nil;
+  if (ud == nil) ud = [[NSUserDefaults standardUserDefaults] retain];
+  return ud;
+}
+
 - (BOOL)_isEditable:(NSString *)_defName {
   id obj;
 
