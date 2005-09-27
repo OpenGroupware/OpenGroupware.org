@@ -309,7 +309,9 @@ static BOOL UseFoldersForIDRanges        = NO;
   return NO;
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+/* key/value coding */
+
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"projectId"]) {
     [self setProjectId:_value];
     return;
@@ -328,7 +330,7 @@ static BOOL UseFoldersForIDRanges        = NO;
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"projectId"])
     return [self projectId];
   

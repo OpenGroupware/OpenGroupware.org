@@ -58,18 +58,20 @@
   return @"DocumentEditing";
 }
 
-- (NSNumber *)checkPermissions {
-  return self->checkPermissions;
-}
+/* accessors */
+
 - (void)setCheckPermissions:(NSNumber *)_bool {
   ASSIGN(self->checkPermissions, _bool);
+}
+- (NSNumber *)checkPermissions {
+  return self->checkPermissions;
 }
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"checkPermissions"]) {
-    ASSIGN(self->checkPermissions, _value);
+    ASSIGN(self->checkPermissions, _value); // TODO: why an object?
     return;
   }
   

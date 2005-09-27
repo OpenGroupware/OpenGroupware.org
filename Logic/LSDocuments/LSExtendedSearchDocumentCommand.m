@@ -19,70 +19,72 @@
   02111-1307, USA.
 */
 
-#import <LSSearch/LSExtendedSearchCommand.h>
+#include <LSSearch/LSExtendedSearchCommand.h>
 
 @interface LSExtendedSearchDocumentCommand : LSExtendedSearchCommand
 {
-@protected
   id project;
 }
 
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSExtendedSearchDocumentCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->project);
+  [self->project release];
   [super dealloc];
 }
-#endif
 
-// command methods
+/* command methods */
 
 - (EOSQLQualifier *)extendedSearchQualifier:(void *)_context {
-  EOSQLQualifier *qualifier   = nil;
-  EOSQLQualifier *inQualifier = nil;
+  EOSQLQualifier *qualifier;
+  EOSQLQualifier *inQualifier;
 
   qualifier = [super extendedSearchQualifier:_context];
-
+  
   inQualifier =
     [[EOSQLQualifier alloc]
                      initWithEntity:[self entity]
                      qualifierFormat:@"%A = %@",
-                     @"projectId", [self->project valueForKey:@"projectId"], nil];
+                     @"projectId", [self->project valueForKey:@"projectId"], 
+                     nil];
   [qualifier conjoinWithQualifier:inQualifier];
-  RELEASE(inQualifier); inQualifier = nil;
+  [inQualifier release]; inQualifier = nil;
   return qualifier;
 }
 
 - (void)_executeInContext:(id)_context {
   [super _executeInContext:(id)_context];
+  
   [self setObject:LSRunCommandV(_context,
                                 @"doc",    @"check-get-permission",
                                 @"object", [self object], nil)];
-
-  //get attachment name
-
+  
   LSRunCommandV(_context, @"doc", @"get-attachment-name",
                 @"objects", [self object], nil);
 }
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Doc";
 }
 
-- (void)setProject:(id)_id { ASSIGN(self->project, _id); }
+/* accessors */
 
-- (id)project { return self->project; }
+- (void)setProject:(id)_id {
+  ASSIGN(self->project, _id);
+}
+- (id)project {
+  return self->project;
+}
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"project"]) {
     [self setProject:_value];
     return;
@@ -90,12 +92,11 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
-  if ([_key isEqualToString:@"project"]) {
+- (id)valueForKey:(NSString *)_key {
+  if ([_key isEqualToString:@"project"])
     return [self project];
-  }
+  
   return [super valueForKey:_key];
 }
 
-
-@end
+@end /* LSExtendedSearchDocumentCommand */

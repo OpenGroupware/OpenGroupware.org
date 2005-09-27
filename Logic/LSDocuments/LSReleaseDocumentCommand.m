@@ -19,12 +19,12 @@
   02111-1307, USA.
 */
 
-#import <LSFoundation/LSDBObjectSetCommand.h>
+#include <LSFoundation/LSDBObjectSetCommand.h>
 
 @interface LSReleaseDocumentCommand : LSDBObjectSetCommand
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSReleaseDocumentCommand
 
@@ -85,8 +85,8 @@
 
 - (void)_prepareForExecutionInContext:(id)_context {
   int cnt     = 0;
-  id  obj     = nil;
-  id  editing = nil;
+  id  obj;
+  id  editing;
   
   [super _prepareForExecutionInContext:_context];
 
@@ -94,7 +94,8 @@
   
   if ((editing = [obj valueForKey:@"toDocumentEditing"]) == nil) {
     editing = LSRunCommandV(_context, @"documentediting", @"get",
-                            @"documentEditingId", [obj valueForKey:@"documentId"],
+                            @"documentEditingId", 
+                            [obj valueForKey:@"documentId"],
                             nil);
   }
   [self assert:editing != nil reason:@"missing documentEditing"];
@@ -103,8 +104,9 @@
     id account   = [_context valueForKey:LSAccountKey];
     id accountId = [account valueForKey:@"companyId"];
     
-    [self assert:(([accountId isEqual:[editing valueForKey:@"currentOwnerId"]])||
-                  ([accountId intValue] == 10000))
+    [self assert:
+            (([accountId isEqual:[editing valueForKey:@"currentOwnerId"]])||
+             ([accountId intValue] == 10000)) // TODO: make that a method
           reason:@"only current owner can release!"];
 
     [self assert:(![[obj valueForKey:@"isFolder"] boolValue]) 
@@ -128,6 +130,7 @@
 }
 
 - (void)_executeInContext:(id)_context {
+  // TODO: split up this big method
   id   vers                = nil;
   id   obj;
   id   editing;
@@ -187,7 +190,10 @@
                        @"checkAccess",  [self valueForKey:@"checkAccess"],
                        @"dbStatus",     @"inserted", nil);
   
-  // copy attachment from editing to version or link to former checked out version
+  /*
+    copy attachment from editing to version or link to former checked out 
+    version
+  */
   {
     BOOL     isOk    = NO;
     NSString *source = nil;
@@ -241,15 +247,15 @@
   }
 }
 
-// initialize records
+/* initialize records */
 
 - (NSString *)entityName {
   return @"Doc";
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"document"]) {
     [self setObject:_value];
     return;
@@ -257,10 +263,10 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"document"])
     return [self object];
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSReleaseDocumentCommand */

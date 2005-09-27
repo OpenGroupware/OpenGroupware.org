@@ -19,29 +19,30 @@
   02111-1307, USA.
 */
 
-#import <LSFoundation/LSDBObjectSetCommand.h>
+#include <LSFoundation/LSDBObjectSetCommand.h>
+
+// TODO: looks like a DUP to LSSetFolderCommand?
 
 @interface LSSetObjectLinkCommand : LSDBObjectSetCommand
 {
-@private  
   id folder;
 }
 
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSSetObjectLinkCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->folder);
+  [self->folder release];
   [super dealloc];
 }
-#endif
+
+/* command methods */
 
 - (void)_prepareForExecutionInContext:(id)_context {
-  if (self->folder != nil) {
+  if ([self->folder isNotNull]) {
     [self takeValue:[self->folder valueForKey:@"documentId"]
           forKey:@"parentDocumentId"];
   }
@@ -49,7 +50,7 @@
   [super _prepareForExecutionInContext:_context];
 }
 
-// accessors
+/* accessors */
 
 - (void)setFolder:(id)_folder {
   ASSIGN(self->folder, _folder);
@@ -58,15 +59,15 @@
   return self->folder;
 }
 
-// initialize records
+/* initialize records */
 
 - (NSString *)entityName {
   return @"Doc";
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"folder"]) {
     [self setFolder:_value];
     return;
@@ -74,10 +75,10 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"folder"])
     return [self folder];
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSSetObjectLinkCommand */

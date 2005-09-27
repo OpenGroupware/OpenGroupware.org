@@ -19,8 +19,8 @@
   02111-1307, USA.
 */
 
-#import "common.h"
-#import "LSNewDocumentCommand.h"
+#include "LSNewDocumentCommand.h"
+#include "common.h"
 
 @implementation LSNewDocumentCommand
 
@@ -32,6 +32,8 @@
   [self->fileContent release];
   [super dealloc];
 }
+
+/* command methods */
 
 - (void)_setFileType {
   NSString *fileType;
@@ -164,10 +166,10 @@
   }
 }
 
-// accessors
+/* accessors */
 
 - (void)setFileContent:(NSString *)_content {
-  ASSIGN(self->fileContent, _content);
+  ASSIGN(self->fileContent, _content); // avoid copy, could be BIG
 }
 - (id)fileContent {
   return self->fileContent;
@@ -188,76 +190,78 @@
 }
 
 - (void)setData:(NSData *)_data {
-  ASSIGN(self->data, _data);
+  ASSIGN(self->data, _data); // avoid copy, could be BIG
 }
 - (NSData *)data {
   return self->data;
 }
 
 - (void)setFilePath:(NSString *)_filePath {
-  ASSIGN(self->filePath, _filePath);
+  ASSIGNCOPY(self->filePath, _filePath);
 }
 - (NSString *)filePath {
   return self->filePath;
 }
 
+- (void)setAutoRelease:(BOOL)_autoRelease { // bad bad name
+  self->autoRelease = _autoRelease;
+}
 - (BOOL)autoRelease {
   return self->autoRelease;
 }
-- (void)setAutoRelease:(BOOL)_autoRelease {
-  self->autoRelease = _autoRelease;
-}
 
-// initialize records
+/* initialize records */
 
 - (NSString *)entityName {
   return @"Doc";
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"data"]) {
     [self setData:_value];
     return;
   }
-  else if ([_key isEqualToString:@"folder"]) {
+  if ([_key isEqualToString:@"folder"]) {
     [self setFolder:_value];
     return;
   }
-  else if ([_key isEqualToString:@"project"]) {
+  if ([_key isEqualToString:@"project"]) {
     [self setProject:_value];
     return;
   }
-  else if ([_key isEqualToString:@"filePath"]) {
+  if ([_key isEqualToString:@"filePath"]) {
     [self setFilePath:_value];
     return;
   }
-  else if ([_key isEqualToString:@"autoRelease"]) {
+  if ([_key isEqualToString:@"autoRelease"]) {
     [self setAutoRelease:[_value boolValue]];
     return;
   }
-  else if ([_key isEqualToString:@"fileContent"]) {
+  if ([_key isEqualToString:@"fileContent"]) {
     [self setFileContent:_value];
     return;
   }
+  
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"data"])
     return [self data];
-  else if ([_key isEqualToString:@"folder"])
+  if ([_key isEqualToString:@"folder"])
     return self->folder;
-  else if ([_key isEqualToString:@"project"])
+  if ([_key isEqualToString:@"project"])
     return [self project];
-  else if ([_key isEqualToString:@"filePath"])
+  if ([_key isEqualToString:@"filePath"])
     return [self filePath];
-  else if ([_key isEqualToString:@"autoRelease"])
+  if ([_key isEqualToString:@"autoRelease"])
     return [NSNumber numberWithBool:self->autoRelease];
-  else if ([_key isEqualToString:@"fileContent"])
+  if ([_key isEqualToString:@"fileContent"])
     return [self fileContent];
+  
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSNewDocumentCommand */

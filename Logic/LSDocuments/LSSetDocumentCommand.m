@@ -228,7 +228,7 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"data"]) {
     [self setData:_value];
     return;
@@ -249,7 +249,7 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"data"])
     return [self data];
   if ([_key isEqualToString:@"filePath"])

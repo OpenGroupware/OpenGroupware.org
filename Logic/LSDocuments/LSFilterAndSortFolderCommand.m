@@ -19,13 +19,13 @@
   02111-1307, USA.
 */
 
-#import "common.h"
-#import "LSFilterAndSortFolderCommand.h"
+#include "LSFilterAndSortFolderCommand.h"
+#include "common.h"
 
 @implementation LSFilterAndSortFolderCommand
 
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
-  if ((self = [super initForOperation:_operation inDomain:_domain])) {
+  if ((self = [super initForOperation:_operation inDomain:_domain]) != nil) {
     ordering = LSAscendingOrder;
   }
   return self;
@@ -38,23 +38,30 @@
   [super dealloc];
 }
 
-// command methods
+/* command methods */
 
 - (void)_executeInContext:(id)_context {
-  NSMutableArray *filteredList  = [NSMutableArray new];
-  NSEnumerator   *docEnumerator = [self->documentList objectEnumerator];
-  id             document       = nil;
-  id             sCmd           = LSLookupCommand(@"system", @"sort");
-  
-  while ((document = [docEnumerator nextObject])) 
-    if ([[document valueForKey:@"isFolder"] intValue]) 
-      [filteredList addObject:document];
+  // TODO: looks like a DUP to the other filterandsort command
+  NSMutableArray *filteredList;
+  NSEnumerator   *docEnumerator;
+  id             document;
+  id             sCmd;
 
-  if (self->sortAttribute) {
+  filteredList  = [[NSMutableArray alloc] initWithCapacity:32];
+  docEnumerator = [self->documentList objectEnumerator];
+  sCmd           = LSLookupCommand(@"system", @"sort");
+  
+  while ((document = [docEnumerator nextObject]) != nil) {
+    if ([[document valueForKey:@"isFolder"] intValue])  // TODO: bool-value?!
+      [filteredList addObject:document];
+  }
+  
+  if ([self->sortAttribute isNotNull]) {
     NSArray *sortedList = nil;
     
     [sCmd takeValue:filteredList forKey:@"sortList"];
-    RELEASE(filteredList);
+    [filteredList release]; filteredList = nil;
+    
     [sCmd takeValue:self->sortAttribute forKey:@"sortAttribute"];
     [sCmd takeValue:[NSNumber numberWithInt:self->ordering] forKey:@"ordering"];
     sortedList = [sCmd runInContext:_context];
@@ -62,11 +69,11 @@
   }
   else {
     [self setReturnValue:filteredList];
-    RELEASE(filteredList); filteredList = nil;
+    [filteredList release]; filteredList = nil;
   }
 }
 
-// accessors
+/* accessors */
 
 - (void)setDocumentList:(NSArray *)_documentList {
   ASSIGN(self->documentList, _documentList);
@@ -85,38 +92,37 @@
 - (void)setOrdering:(LSOrdering)_ordering {
   self->ordering = _ordering;
 }
-
 - (LSOrdering)ordering {
   return self->ordering;
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"documentList"]) {
     [self setDocumentList:_value];
     return;
   }
-  else  if ([_key isEqualToString:@"sortAttribute"]) {
+  if ([_key isEqualToString:@"sortAttribute"]) {
     [self setSortAttribute:_value];
     return;
   }
-  else if ([_key isEqualToString:@"ordering"]) {
+  if ([_key isEqualToString:@"ordering"]) {
     [self setOrdering:[_value intValue]];
     return;
   }
-
+  
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"documentList"])
     return [self documentList];
-  else if ([_key isEqualToString:@"sortAttribute"])
+  if ([_key isEqualToString:@"sortAttribute"])
     return [self sortAttribute];
-  else if ([_key isEqualToString:@"ordering"])
+  if ([_key isEqualToString:@"ordering"])
     return [NSNumber numberWithInt:[self ordering]];
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSFilterAndSortFolderCommand */
