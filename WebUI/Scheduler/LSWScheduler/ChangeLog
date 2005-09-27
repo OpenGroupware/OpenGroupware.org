@@ -1,5 +1,13 @@
 2005-09-27  Helge Hess  <helge.hess@skyrix.com>
 
+	* v5.3.89
+
+	* OGoCycleSelection.m: minor improvement in cycle-type handling
+
+	* LSWAppointmentEditor.m: changed to load default notification time
+	  from 'scheduler_defnotifytime' default (OGo rq #1510), some code
+	  cleanups
+
 	* LSWSchedulerPreferences.m: major code cleanups, added
 	  'notificationTime' default ('scheduler_defnotifytime') (v5.3.88)
 
@@ -14,7 +22,7 @@
 
 	* v5.3.85
 
-	* OGoCycleSelection.m: added support for some rrules
+	* OGoCycleSelection.m: added support for some rrules (OGo rq #1508)
 	
 	* LSWAppointmentEditor.m: use OGoCycleDateCalculator to determine
 	  number of generated cycles

@@ -230,7 +230,9 @@
 }
 
 - (void)setCycleType:(NSString *)_s {
-  if ([self->cycleType isEqual:_s])
+  if (![_s isNotNull])
+    _s = nil;
+  if (self->cycleType == _s || [self->cycleType isEqual:_s])
     return;
   
   if ([_s hasPrefix:@"RRULE:"]) {

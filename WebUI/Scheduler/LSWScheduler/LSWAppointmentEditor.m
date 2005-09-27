@@ -92,6 +92,7 @@ static NSArray    *idxArray3 = nil;
 static NSArray    *Delimiter = nil;
 static NSNull     *null      = nil;
 static NGMimeType *eoDateType= nil;
+static BOOL       debugConstraints = NO;
 
 // TODO: document those formats
 static NSString *DateParseFmt      = @"%Y-%m-%d %H:%M:%S %Z";
@@ -271,6 +272,16 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
         (self->participants != nil) ? self->participants : [NSArray array]];
   
   [self _fetchEnterprisesOfPersons:self->participants];
+  
+  /* setup notification-time from default */
+  {
+    NSString *s;
+
+    s = [[[self session] userDefaults] 
+          stringForKey:@"scheduler_defnotifytime"];
+    if ([s isNotEmpty] && ![s isEqualToString:@"no-notify"])
+      [self setNotificationTime:s];
+  }
   
   /* prepare resources */ // TODO: explain those! (how can they be filled?)
   [self->resources     removeAllObjects];
@@ -1361,8 +1372,11 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   NSString        *type;
   id              l;
   int             hours, minutes;
-
-  if ([[self errorString] isNotEmpty]) return YES;  
+  
+  if ([[self errorString] isNotEmpty]) {
+    if (debugConstraints) [self logWithFormat:@"an error string is set"];
+    return YES;
+  }
   
   appointment = [self snapshot];
   error       = [NSMutableString stringWithCapacity:128];
@@ -1375,8 +1389,10 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   }
   else {
     BOOL am;
+    
     if (![self scanTime:self->startTime hour:&hours minute:&minutes am:&am]) {
       [self setErrorString:[l valueForKey:@"error_starttimeParse"]];
+      if (debugConstraints) [self logWithFormat:@"missing start-time"];
       return YES;
     }
     if ([self showAMPMDates]) {
@@ -1396,6 +1412,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   }
   if ([error isNotEmpty]) {
     [self setErrorString:error];
+    if (debugConstraints) [self logWithFormat:@"contraint(a): %@", error];
     return YES;
   }
   
@@ -1440,6 +1457,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   }
   if ([error isNotEmpty]) {
     [self setErrorString:error];
+    if (debugConstraints) [self logWithFormat:@"contraint(b): %@", error];
     return YES;
   }
   
@@ -1453,11 +1471,11 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
       [appointment takeValue:d forKey:@"endDate"];
   }
   
-  if ([type isNotNull]) {
+  if ([type isNotEmpty]) {
     NSCalendarDate *cDate;
     
     // TODO: fixup enddate for rrules?
-    cDate     = [appointment valueForKey:@"cycleEndDate"];
+    cDate = [appointment valueForKey:@"cycleEndDate"];
     
     if (![cDate isNotNull]) {
       [error appendString:[l valueForKey:@"error_noCycleEndDate"]];
@@ -1518,6 +1536,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   
   if ([error isNotEmpty]) {
     [self setErrorString:error];
+    if (debugConstraints) [self logWithFormat:@"contraint(c): %@", error];
     return YES;
   }
   
@@ -1640,7 +1659,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   id              obj;
   BOOL            isFirst;
   
-  if ([self->selectedAccessMembers count] == 0)
+  if (![self->selectedAccessMembers isNotEmpty])
     return nil;
 
   isFirst    = YES;
@@ -1824,12 +1843,12 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   
   if (![self checkConstraintsForSave]) {
     // TODO: place after parseSnapshotValues??
-    [self debugWithFormat:@"save constraint check failed"];
+    if (debugConstraints)
+      [self logWithFormat:@"abort with: %@", [self errorString]];
     return nil;
   }
   
   [self parseSnapshotValues];
-
   [self _correctSnapshotTimeZone];
   
   /* checking conflicts */
@@ -1845,8 +1864,10 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   
   // TODO: do we need caching here? (if so, add it by using an EOCacheDS)
   // TODO: DUP in LSWAppointmentMove?
-  if ([[ds fetchObjects] isNotEmpty])
+  if ([[ds fetchObjects] isNotEmpty]) {
+    [self debugWithFormat:@"handle conflicts .."];
     return [self _handleConflictsInConflictDS:ds action:_action];
+  }
   
   /* return */
   
@@ -1860,33 +1881,12 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 
 - (id)insertObject {
   /* called by -_performOpInTransaction: */
-#if 1
   return [self runCommand:@"appointment::new" arguments:[self snapshot]];
-#else // moved to snapshot
-  NSMutableDictionary *args;
-  
-  // Note: this code is in here because the 'snapshot' is used in other
-  //       contexts and the 'reduced' participants hurt in such case
-  // TODO: better enumerate all transfered keys in the command call?
-  args = [[[self snapshot] mutableCopy] autorelease];
-  [args setObject:[self participantsInfoChanges:self->selectedParticipants]
-        forKey:@"participants"];  
-  return [self runCommand:@"appointment::new" arguments:args];
-#endif
 }
 
 - (id)updateObject {
   /* called by -_performOpInTransaction: */
-#if 1
   return [self runCommand:@"appointment::set" arguments:[self snapshot]];
-#else // moved to snapshot
-  NSMutableDictionary *args;
-  
-  args = [[[self snapshot] mutableCopy] autorelease];
-  [args setObject:[self participantsInfoChanges:self->selectedParticipants]
-        forKey:@"participants"];  
-  return [self runCommand:@"appointment::set" arguments:args];
-#endif
 }
 
 - (id)deleteObject {
@@ -2039,8 +2039,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     return page;
   
   if (![self isMailEnabled]) {
-    [self logWithFormat:
-            @"WARNING: mail is not enabled, not entering the editor .."];
+    [self warnWithFormat:@"mail is not enabled, not entering the editor .."];
     return nil;
   }
   if ([[self navigation] activePage] == self) {
@@ -2050,7 +2049,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     return nil;
   }
   if ((mailEditor = [self pageWithName:@"LSWImapMailEditor"]) == nil) {
-    [self logWithFormat:@"WARNING: could not instantiate mail editor!"];
+    [self warnWithFormat:@"could not instantiate mail editor!"];
     return nil;
   }
   
@@ -2075,8 +2074,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   /* set default cc */
   
   cc = [self ccForNotificationMails];
-  if (cc) [mailEditor addReceiver:cc type:@"cc"];
-
+  if ([cc isNotEmpty]) [mailEditor addReceiver:cc type:@"cc"];
+  
   /* set subject */
   
   str = [self isInNewMode] ? @"created" : @"edited";
