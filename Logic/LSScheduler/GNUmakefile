@@ -71,7 +71,10 @@ LSScheduler_OBJC_FILES = \
 
 LSScheduler_RESOURCE_FILES += Version
 
-LSScheduler_BUNDLE_LIBS += -lLSFoundation -lOGoSchedulerTools -lNGiCal
+LSScheduler_BUNDLE_LIBS += \
+	-lLSFoundation -lOGoSchedulerTools -lNGiCal
+
+libOGoSchedulerTools_LIBRARIES_DEPEND_UPON += -lNGiCal
 
 ADDITIONAL_LIB_DIRS += -L./$(GNUSTEP_OBJ_DIR)
 
