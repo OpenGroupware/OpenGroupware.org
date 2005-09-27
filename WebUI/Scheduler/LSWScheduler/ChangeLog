@@ -1,5 +1,8 @@
 2005-09-27  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSWAppointmentEditor.m: fixed include path for OGoCycleDateCalculator
+	  (v5.3.90)
+
 	* v5.3.89
 
 	* OGoCycleSelection.m: minor improvement in cycle-type handling

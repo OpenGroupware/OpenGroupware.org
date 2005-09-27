@@ -33,7 +33,10 @@
 #include <NGObjWeb/WEClientCapabilities.h>
 #include <OGoScheduler/SkyAptDataSource.h>
 #include "OGoRecurrenceFormatter.h"
-#include <OGoSchedulerTools/OGoCycleDateCalculator.h>
+
+// do not include from OGoSchedulerTools, this lives in Logic/LSScheduler at
+// (fresh) build time
+#include <LSScheduler/OGoCycleDateCalculator.h>
 
 /*
   TODO: this file contains a *LOT* of duplicate code, especially in the
