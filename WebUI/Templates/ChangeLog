@@ -1,5 +1,9 @@
 2005-09-27  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSWScheduler/LSWAppointmentViewer.wox: properly trigger printApt
+	  action, issue as mentioned in bug #1262 (got broken during WOx
+	  conversion)
+
 	* LSWScheduler/LSWAppointmentEditor.wox: removed a conditional around
 	  the notification time (notifications are always enabled)
 

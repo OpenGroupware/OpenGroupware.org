@@ -20,7 +20,7 @@
               action="edit" var:enabled="hasLoginEditAccess" />
 
       <button name="print" label="printButtonLabel"
-              action="print" target="printApt" />
+              action="printApt" target="print" />
     </buttons>
     <attributes>
       <attribute label="title"    var:string="appointment.title" />
