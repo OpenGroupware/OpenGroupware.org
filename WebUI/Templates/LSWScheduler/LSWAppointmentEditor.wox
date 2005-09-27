@@ -63,15 +63,13 @@
               </OGo:attribute>
             </var:if>
 
-            <var:if condition="isNotificationEnabled">
-              <OGo:attribute label="notificationTime" editfont="1">
-                <var:popup list="userDefaults.apteditor_notify_values"
-                       item="measure" string="measureLabel"
-                       selection="notificationTime"
-                       const:noSelectionString="-" />
-                <OGo:font><OGo:label key="before" /></OGo:font>
-              </OGo:attribute>
-            </var:if>
+            <OGo:attribute label="notificationTime" editfont="1">
+              <var:popup list="userDefaults.apteditor_notify_values"
+                         item="measure" string="labels.$measure"
+                         selection="notificationTime"
+                         const:noSelectionString="-" />
+              <OGo:font><OGo:label key="before" /></OGo:font>
+            </OGo:attribute>
 
             <OGo:attribute label="attribute_aptType">
               <var:component className="SkyAptTypeSelection"

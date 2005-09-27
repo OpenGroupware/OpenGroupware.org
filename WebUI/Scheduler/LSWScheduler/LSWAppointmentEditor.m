@@ -938,6 +938,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 - (NSString *)measureLabel {
   return [[self labels] valueForKey:self->measure];
 }
+
 - (BOOL)isSchedulerClassicEnabled {
   return self->aeFlags.isSchedulerClassicEnabled ? YES : NO;
 }
@@ -975,7 +976,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (BOOL)isNotificationEnabled {
-  return YES;
+  [self logWithFormat:@"called deprecated method: %s", __PRETTY_FUNCTION__];
+  return YES; // DEPRECATED
 }
 
 /* ---------------------------------------------------------------- */
