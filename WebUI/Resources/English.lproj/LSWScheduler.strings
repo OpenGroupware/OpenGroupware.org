@@ -538,6 +538,7 @@ newYear                 = "New Year";
 newYearsEve             = "New Year's Eve";
 newsArticles            = "news articles";
 no                      = "no";
+"no-notify"             = "no notification";
 noOfCols                = "Nr. of columns in search results";
 noResult                = "Got no free time interval";
 notForSeveralDays       = "without for several days";

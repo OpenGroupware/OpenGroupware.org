@@ -1,4 +1,7 @@
-# $Id$
+# compilation settings
+
+-include ../../config.make
+include $(GNUSTEP_MAKEFILES)/common.make
 
 RESOURCES_INSTALLATION_DIR = \
 		$(GNUSTEP_INSTALLATION_DIR)/Resources

@@ -8,59 +8,64 @@
         </td>
       </#MainButtonRow>
       <tr>
-<td valign="top">
-    <table border="0" cellspacing="0" cellpadding="4" width="100%">
-        <#AppointmentViewField  />
-        <#TimeInputTypeField    />
-        <#AptTypeInputTypeField />
-        <#ColumnSizeField       />
+        <td valign="top">
+          <table border="0" cellspacing="0" cellpadding="4"
+                width="100%">
+            <#AppointmentViewField  />
+            <#TimeInputTypeField    />
+            <#AptTypeInputTypeField />
+            <#ColumnSizeField       />
+    
+            <#DefaultCCForNotificationMails />
+            <#ShowNotificationDevicesCond>
+              <#NotificationDevicesAttr>
+                <#NotificationDevices />
+              </#NotificationDevicesAttr>
+            </#ShowNotificationDevicesCond>
 
-        <#DefaultCCForNotificationMails />
-        <#ShowNotificationDevicesCond>
-          <#NotificationDevicesAttr>
-            <#NotificationDevices />
-          </#NotificationDevicesAttr>
-        </#ShowNotificationDevicesCond>
-
-        <#SchedulerPageTab />
-        <#SchedulerPageWeekView />
-        <#SchedulerPageDayView />
-        <!-- #ShowJobs/ -->
-        <#ShowPalmDates />
-        <#ShowFullNames />
-        <#IsRoot>
-          <#HideIgnoreConflictsInEditor><#Font>
-            (<#OnlyIfResourcesAreSet />)</#Font>
-          </#HideIgnoreConflictsInEditor>
-        </#IsRoot>
-    </table>
-</td>
-<td valign="top">
-    <table border="0" cellspacing="0" cellpadding="4" width="100%">
-      <#MainButtonRow>
-        <td align="left" colspan="2">
-          <#Font><b><#WeekOverviewLabel/></b></#Font>
+            <#SchedulerPageTab />
+            <#SchedulerPageWeekView />
+            <#SchedulerPageDayView />
+            <!-- #ShowJobs/ -->
+            <#ShowPalmDates />
+            <#ShowFullNames />
+            <#IsRoot>
+              <#HideIgnoreConflictsInEditor><#Font>
+                (<#OnlyIfResourcesAreSet />)</#Font>
+              </#HideIgnoreConflictsInEditor>
+            </#IsRoot>
+            <#NotificationTimeField>
+              <#Font><#BeforeLabel/></#Font>
+            </#NotificationTimeField>
+          </table>
         </td>
-      </#MainButtonRow>
-      <#ShortInfo />
-      <#WithResources />
-      <#ColumnsPerDay />
+        <td valign="top">
+          <table border="0" cellspacing="0" cellpadding="4"
+                 width="100%">
+            <#MainButtonRow>
+              <td align="left" colspan="2">
+                <#Font><b><#WeekOverviewLabel/></b></#Font>
+              </td>
+            </#MainButtonRow>
+            <#ShortInfo />
+            <#WithResources />
+            <#ColumnsPerDay />
 
-      <tr><td colspan="2"><entity name="nbsp"/></td></tr>
+            <tr><td colspan="2"><entity name="nbsp"/></td></tr>
 
-      <#MainButtonRow>
-        <td align="left" colspan="2">
-          <#Font><b><#DayOverviewLabel/></b></#Font>
+            <#MainButtonRow>
+              <td align="left" colspan="2">
+                <#Font><b><#DayOverviewLabel/></b></#Font>
+              </td>
+            </#MainButtonRow>
+            <#DayOverviewStart />
+            <#DayOverviewEnd />
+            <#DayOverviewInterval />
+            <#ColumnsPerDayDayView />
+          </table>
         </td>
-      </#MainButtonRow>
-      <#DayOverviewStart />
-      <#DayOverviewEnd />
-      <#DayOverviewInterval />
-      <#ColumnsPerDayDayView />
+      </tr>
     </table>
-</td>
-</tr>
-</table>
 
     <br />
 

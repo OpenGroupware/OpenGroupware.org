@@ -526,3 +526,22 @@ AttachAppointmentsToMail: SkyDefaultEditField {
   valueType  = "checkbox";
   value      = attachAppointments;
 }
+
+NotificationTimePopUp: WOPopUpButton {
+  list              = userDefaults.apteditor_notify_values;
+  item              = measure;
+  string            = labels.$measure;
+  selection         = notificationTime;
+  noSelectionString = "-";
+}
+BeforeLabel: WOString {
+  value = labels.before;
+}
+NotificationTimeField: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.notificationTime;
+  isEditable = YES; // isNotificationTimeEditable;
+  valueType  = "popup";
+  value      = notificationTime;
+  valueList  = userDefaults.aptpref_notify_values;
+}

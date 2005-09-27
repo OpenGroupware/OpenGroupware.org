@@ -536,6 +536,7 @@ newAppointmentLabel          = "Neu";
 newYear                      = "Neujahr";
 newYearsEve                  = "Silvester";
 no                           = "Nein";
+"no-notify"                  = "Keine Erinnerung";
 noOfCols                     = "Spaltenanzahl bei Suchergebnissen";
 noResult                     = "Es wurden keine freien Zeiten gefunden";
 notForSeveralDays            = "ohne mehrtägige Termine";

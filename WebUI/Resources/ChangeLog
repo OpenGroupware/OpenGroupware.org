@@ -1,3 +1,8 @@
+2005-09-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* English|German.lproj/LSWScheduler.strings: added 'no-notify' label
+	  (used in notification preferences of scheduler)
+
 2005-09-22  Helge Hess  <helge.hess@skyrix.com>
 
 	* English|German.lproj/LSWScheduler.strings: added new labels for

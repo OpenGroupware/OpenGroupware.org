@@ -26,6 +26,18 @@
 // TODO: split up in sections?!
 // TODO: this is awkward in general and should be handled in a declarative way?
 
+/*
+  How to add a default:
+  1. add an ivar
+  2. add ivar to dealloc
+  3. add an accessor for ivar
+  4. add a 'permission' accessor, eg 'isNotificationDevicesEditable'
+  5. release ivar in _resetEditorDefaultValues
+  6. load ivar from default in _loadEditorFromDefaults:
+  7. save default in -save
+  TODO: something missing?
+*/
+
 @class NSUserDefaults, NSString, NSArray, NSMutableArray, NSMutableDictionary;
 
 @interface LSWSchedulerPreferences : OGoContentPage
@@ -99,6 +111,8 @@
   BOOL           showTodos;     // show todos in scheduler views
   BOOL           showPalmDates; // show palm dates
   BOOL           showFullNames;//try to show first and last name in date cells
+  
+  NSString       *notificationTime;
 }
 
 - (void)setItem:(id)_item;
@@ -130,7 +144,7 @@ static NSNumber *noNum = nil;
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     int                 cnt;
     NSMutableArray      *ma;
     NSMutableDictionary *md;
@@ -140,7 +154,7 @@ static NSNumber *noNum = nil;
     // TODO: maybe move to an own object?
     ma = [[NSMutableArray alloc] initWithCapacity:16];
     md = [[NSMutableDictionary alloc] initWithCapacity:24];
-    for (cnt = 0; cnt < 1440; cnt+=60) {
+    for (cnt = 0; cnt < 1440; cnt += 60) {
       NSNumber *k;
       NSString *s;
       char buf[16];
@@ -163,6 +177,7 @@ static NSNumber *noNum = nil;
 }
 
 - (void)dealloc {
+  [self->notificationTime              release];
   [self->mailTemplate                  release];
   [self->templateDateFormat            release];
   [self->schedulerView                 release];
@@ -461,7 +476,7 @@ static NSNumber *noNum = nil;
   tmp = [self->defaults arrayForKey:@"scheduler_popup_resourceNames"];
   enumerator = [tmp objectEnumerator];
     
-  while ((n = [enumerator nextObject])) {
+  while ((n = [enumerator nextObject]) != nil) {
     if ([n hasSuffix:@"(resCategory)"]) {
       NSString *k;
 	
@@ -498,11 +513,10 @@ static NSNumber *noNum = nil;
     [[NSArray alloc] initWithArray:self->writeAccess];
 }
 
-- (void)setAccount:(id)_account {
-  // TODO: split up this huge method!
-  NSUserDefaults *ud = nil;
-  id             tmp = nil;
+// TODO: we should use some static C array to list the mappings between ivar
+//       and default-name
 
+- (void)_resetEditorDefaultValues {
   RELEASE(self->mailTemplate);          self->mailTemplate    = nil;
   RELEASE(self->templateDateFormat);    self->templateDateFormat = nil;
   RELEASE(self->defaults);              self->defaults           = nil;
@@ -532,54 +546,51 @@ static NSNumber *noNum = nil;
   self->defaultCCForNotificationMails = nil;
   RELEASE(self->notificationDevices);   self->notificationDevices = nil;
   
-  ASSIGN(self->account, _account);
-  
-  ud = _account
-    ? [self runCommand:@"userdefaults::get", @"user", _account, nil]
-    : [self runCommand:@"userdefaults::get", nil];
-  
-  self->defaults = [ud retain];
+  [self->notificationTime release]; self->notificationTime = nil;
+}
+
+- (void)_loadEditorFromDefaults:(NSUserDefaults *)ud {
+  id tmp = nil;
   
   self->mailTemplate =
-    [[self->defaults stringForKey:@"scheduler_mail_template"]
-                     copy];
+    [[ud stringForKey:@"scheduler_mail_template"] copy];
   self->templateDateFormat =
-    [[self->defaults stringForKey:@"scheduler_mail_template_date_format"] copy];
+    [[ud stringForKey:@"scheduler_mail_template_date_format"] copy];
 
   self->attachAppointments =
-    [self->defaults boolForKey:@"scheduler_attach_apts_to_mails"];
+    [ud boolForKey:@"scheduler_attach_apts_to_mails"];
   
   self->schedulerView =
-    [[self->defaults stringForKey:@"scheduler_view"] copy];
+    [[ud stringForKey:@"scheduler_view"] copy];
   self->appointmentView =
-    [[self->defaults stringForKey:@"scheduler_appointment_view"] copy];
-  self->absenceMode = [[self->defaults stringForKey:@"absence_mode"] copy];
+    [[ud stringForKey:@"scheduler_appointment_view"] copy];
+  self->absenceMode = [[ud stringForKey:@"absence_mode"] copy];
   self->timeInputType =
-    [[self->defaults stringForKey:@"scheduler_time_input_type"] copy];
+    [[ud stringForKey:@"scheduler_time_input_type"] copy];
   self->aptTypeInputType =
-    [[self->defaults stringForKey:@"scheduler_apttype_input_type"] copy];
+    [[ud stringForKey:@"scheduler_apttype_input_type"] copy];
   self->defaultCCForNotificationMails =
-    [[self->defaults stringForKey:@"scheduler_ccForNotificationMails"] copy];
+    [[ud stringForKey:@"scheduler_ccForNotificationMails"] copy];
 
-  tmp = [self->defaults objectForKey:@"scheduler_start_hour"];
+  tmp = [ud objectForKey:@"scheduler_start_hour"];
   self->startHour = tmp ? [tmp intValue] : 9;
-  tmp = [self->defaults objectForKey:@"scheduler_end_hour"];
+  tmp = [ud objectForKey:@"scheduler_end_hour"];
   self->endHour = tmp ? [tmp intValue] : 20;
-  tmp = [self->defaults objectForKey:@"scheduler_weekchart_columnsperday"];
+  tmp = [ud objectForKey:@"scheduler_weekchart_columnsperday"];
   self->columnsPerDayWeekView = tmp ? [tmp intValue] : 24;
-  tmp = [self->defaults objectForKey:@"scheduler_daychart_columnsperday"];
+  tmp = [ud objectForKey:@"scheduler_daychart_columnsperday"];
   self->columnsPerDayDayView = tmp ? [tmp intValue] : 60;
 
-  tmp = [self->defaults objectForKey:@"scheduler_dayoverview_daystart"];
+  tmp = [ud objectForKey:@"scheduler_dayoverview_daystart"];
   self->dayOverviewStartHour = tmp ? [tmp intValue] : 480;
-  tmp = [self->defaults objectForKey:@"scheduler_dayoverview_dayend"];
+  tmp = [ud objectForKey:@"scheduler_dayoverview_dayend"];
   self->dayOverviewEndHour = tmp ? [tmp intValue] : 1080;
-  tmp = [self->defaults objectForKey:@"scheduler_dayoverview_timeinterval"];
+  tmp = [ud objectForKey:@"scheduler_dayoverview_timeinterval"];
   self->dayOverviewInterval = tmp ? [tmp intValue] : 3600;
 
-  self->noOfCols = [self->defaults objectForKey:@"scheduler_no_of_cols"];
-  RETAIN(self->noOfCols);
-
+  self->noOfCols =
+    [[ud objectForKey:@"scheduler_no_of_cols"] retain];
+  
   self->isTemplateDateFormatEditable  =
     [self _isEditable:@"scheduler_mail_template_date_format"];
   self->isMailTemplateEditable  =
@@ -613,48 +624,71 @@ static NSNumber *noNum = nil;
     [self _isEditable:@"scheduler_appoinment_view"];
 
   self->additionalPopupEntries =
-    [self->defaults integerForKey:@"scheduler_additional_popup_entries"];
-
-
+    [ud integerForKey:@"scheduler_additional_popup_entries"];
+  
+  /* notification */
+  
   self->isNotificationDevicesEditable =
     [self _isEditable:@"SkyAptNotifyDevices"];
   self->notificationDevices =
-    [self->defaults objectForKey:@"SkyAptNotifyDevices"];
-  if ([self->notificationDevices count] == 0) // must be atleast one
-    self->notificationDevices = [NSArray arrayWithObject:@"email"];
-  RETAIN(self->notificationDevices);
-
+    [ud arrayForKey:@"SkyAptNotifyDevices"];
+  if ([self->notificationDevices isNotEmpty]) // must be atleast one
+    self->notificationDevices = [self->notificationDevices retain];
+  else
+    self->notificationDevices = [[NSArray alloc] initWithObjects:@"email",nil];
+  
+  self->notificationTime = 
+    [[ud stringForKey:@"scheduler_defnotifytime"] copy];
+  
+  /* tabs */
+  
   self->schedulerPageTab =
-    [[self->defaults stringForKey:@"schedulerpage_tab"] copy];
+    [[ud stringForKey:@"schedulerpage_tab"] copy];
   self->schedulerPageWeekView =
-    [[self->defaults stringForKey:@"schedulerpage_weekview"] copy];
+    [[ud stringForKey:@"schedulerpage_weekview"] copy];
   self->schedulerPageDayView =
-    [[self->defaults stringForKey:@"schedulerpage_dayview"] copy];
-
-  self->showTodos     = [self->defaults boolForKey:@"scheduler_show_jobs"];
+    [[ud stringForKey:@"schedulerpage_dayview"] copy];
+  
+  self->showTodos     = [ud boolForKey:@"scheduler_show_jobs"];
   self->showPalmDates =
-    [self->defaults boolForKey:@"scheduler_show_palm_dates"];
+    [ud boolForKey:@"scheduler_show_palm_dates"];
 
   self->showFullNames =
-    [self->defaults boolForKey:@"scheduler_overview_full_names"];
+    [ud boolForKey:@"scheduler_overview_full_names"];
   
   [self _processPopUpResourceNames];
   [self _processParticipants];
   [self _processWriteAccess];
   
   self->shortInfo =
-    [[self->defaults objectForKey:@"scheduler_overview_short_info"] boolValue];
+    [[ud objectForKey:@"scheduler_overview_short_info"] boolValue];
 
   self->withResources =
-    [[self->defaults objectForKey:@"scheduler_overview_with_resources"]
+    [[ud objectForKey:@"scheduler_overview_with_resources"]
                      boolValue];
 
   self->hideIgnoreConflicts =
-    [[self->defaults objectForKey:@"scheduler_hide_ignore_conflicts"]
+    [[ud objectForKey:@"scheduler_hide_ignore_conflicts"]
                      boolValue];
-  
+
   [self _processHolidays];
   [self _processCustomHolidays];
+}
+
+- (void)setAccount:(id)_account {
+  // TODO: split up this huge method!
+  NSUserDefaults *ud;
+  
+  [self _resetEditorDefaultValues];
+  ASSIGN(self->account, _account);
+  
+  ud = _account
+    ? [self runCommand:@"userdefaults::get", @"user", _account, nil]
+    : [self runCommand:@"userdefaults::get", nil];
+  
+  ASSIGN(self->defaults, ud);
+  
+  [self _loadEditorFromDefaults:self->defaults];
 }
 
 
@@ -745,23 +779,19 @@ static NSNumber *noNum = nil;
 
 // scheduler page startup tab
 - (void)setSchedulerPageTab:(NSString *)_tab {
-  ASSIGN(self->schedulerPageTab,_tab);
+  ASSIGNCOPY(self->schedulerPageTab,_tab);
 }
 - (NSString *)schedulerPageTab {
-  if (self->schedulerPageTab == nil) {
+  if (self->schedulerPageTab == nil)
     self->schedulerPageTab = @"weekoverview";
-    RETAIN(self->schedulerPageTab);
-  }
   return self->schedulerPageTab;
 }
 - (void)setSchedulerPageWeekView:(NSString *)_view {
   ASSIGN(self->schedulerPageWeekView,_view);
 }
 - (NSString *)schedulerPageWeekView {
-  if (self->schedulerPageWeekView == nil) {
+  if (self->schedulerPageWeekView == nil)
     self->schedulerPageWeekView = @"overview";
-    RETAIN(self->schedulerPageWeekView);
-  }
   return self->schedulerPageWeekView;
 }
 - (void)setSchedulerPageWeekViewPopUp:(NSString *)_view {
@@ -772,13 +802,11 @@ static NSNumber *noNum = nil;
                       [self schedulerPageWeekView]];
 }
 - (void)setSchedulerPageDayView:(NSString *)_view {
-  ASSIGN(self->schedulerPageDayView,_view);
+  ASSIGNCOPY(self->schedulerPageDayView,_view);
 }
 - (NSString *)schedulerPageDayView {
-  if (self->schedulerPageDayView == nil) {
+  if (self->schedulerPageDayView == nil)
     self->schedulerPageDayView = @"overview";
-    RETAIN(self->schedulerPageDayView);
-  }
   return self->schedulerPageDayView;
 }
 - (void)setSchedulerPageDayViewPopUp:(NSString *)_view {
@@ -858,17 +886,27 @@ static NSNumber *noNum = nil;
   return YES;
 }
 
-- (NSString*)absenceMode {
-  return self->absenceMode;
+- (void)setNotificationTime:(NSString *)_s {
+  ASSIGNCOPY(self->notificationTime, _s);
 }
+- (NSString *)notificationTime {
+  return self->notificationTime;
+}
+- (BOOL)isNotificationTimeEditable {
+  return YES;
+}
+
+/* absence */
 
 - (void)setIsAbsenceModeEditableRoot:(BOOL)_flag {
   if (self->isRoot)
     self->isAbsenceModeEditable = _flag;
 }
-
-- (void)setAbsenceMode:(NSString*)_mode {
-  ASSIGN(self->absenceMode,_mode);
+- (void)setAbsenceMode:(NSString *)_mode {
+  ASSIGNCOPY(self->absenceMode,_mode);
+}
+- (NSString *)absenceMode {
+  return self->absenceMode;
 }
 
 - (void)setIsAppointmentViewEditableRoot:(BOOL)_flag {
@@ -962,11 +1000,11 @@ static NSNumber *noNum = nil;
   return self->item;
 }
 
+- (void)setDefaultCCForNotificationMails:(NSString *)_str {
+  ASSIGNCOPY(self->defaultCCForNotificationMails, _str);
+}
 - (NSString *)defaultCCForNotificationMails {
   return self->defaultCCForNotificationMails;
-}
-- (void)setDefaultCCForNotificationMails:(NSString *)_str {
-  ASSIGN(self->defaultCCForNotificationMails, _str);
 }
 
 - (void)setIsAbsenceModeEditable:(BOOL)_flag {
@@ -978,21 +1016,21 @@ static NSNumber *noNum = nil;
 }
 
 - (void)setSchedulerView:(NSString *)_value {
-  ASSIGN(self->schedulerView, _value);
+  ASSIGNCOPY(self->schedulerView, _value);
 }
 - (NSString *)schedulerView {
   return self->schedulerView;
 }
 
 - (void)setSchedulerTimeInputType:(NSString *)_value {
-  ASSIGN(self->timeInputType, _value);
+  ASSIGNCOPY(self->timeInputType, _value);
 }
 - (NSString *)schedulerTimeInputType {
   return self->timeInputType;
 }
 
 - (void)setSchedulerAptTypeInputType:(NSString *)_value {
-  ASSIGN(self->aptTypeInputType, _value);
+  ASSIGNCOPY(self->aptTypeInputType, _value);
 }
 - (NSString *)schedulerAptTypeInputType {
   return self->aptTypeInputType;
@@ -1000,7 +1038,7 @@ static NSNumber *noNum = nil;
  
 
 - (void)setAppointmentView:(NSString *)_view {
-  ASSIGN(self->appointmentView,_view);
+  ASSIGNCOPY(self->appointmentView,_view);
 }
 
 - (NSString *)appointmentView {
@@ -1087,40 +1125,48 @@ static NSNumber *noNum = nil;
   return [[self labels] valueForKey:[self endHour]];
 }
 
-- (NSArray *)resourceNames {
-  return self->resourceNames;
-}
+/* resources */
+
 - (void)setResourceNames:(NSArray *)_names {
   ASSIGN(self->resourceNames, _names);
 }
-
-- (NSArray *)participants {
-  return self->participants;
+- (NSArray *)resourceNames {
+  return self->resourceNames;
 }
+
+/* participants */
+
 - (void)setParticipants:(NSArray *)_p {
   ASSIGN(self->participants, _p);
 }
-
-- (NSArray *)selectedParticipants {
-  return self->selectedParticipants;
+- (NSArray *)participants {
+  return self->participants;
 }
+
 - (void)setSelectedParticipants:(NSArray *)_s {
   ASSIGN(self->selectedParticipants, _s);
 }
-
-- (NSArray *)writeAccess {
-  return self->writeAccess;
+- (NSArray *)selectedParticipants {
+  return self->selectedParticipants;
 }
+
+/* write access */
+
 - (void)setWriteAccess:(NSArray *)_p {
   ASSIGN(self->writeAccess, _p);
 }
-
-- (NSArray *)selectedWriteAccess {
-  return self->selectedWriteAccess;
+- (NSArray *)writeAccess {
+  return self->writeAccess;
 }
+
 - (void)setSelectedWriteAccess:(NSArray *)_s {
   ASSIGN(self->selectedWriteAccess, _s);
 }
+- (NSArray *)selectedWriteAccess {
+  return self->selectedWriteAccess;
+}
+
+/* scheduler popup */
 
 - (NSString *)additionalPopupEntries {
   return [NSString stringWithFormat:@"%d", self->additionalPopupEntries];
@@ -1146,6 +1192,8 @@ static NSNumber *noNum = nil;
 - (NSDictionary *)labelsForMinutes {
   return self->labelsForMinutes;
 }
+
+/* holidays */
 
 - (void)setHolidayGroups:(NSMutableDictionary *)_hg {
   ASSIGN(self->holidayGroups,_hg);
@@ -1183,21 +1231,23 @@ static NSNumber *noNum = nil;
 }
 
 - (void)setHoliday:(NSString *)_h {
-  ASSIGN(self->holiday, _h);
+  ASSIGNCOPY(self->holiday, _h);
 }
 - (NSString *)holiday {
   return self->holiday;
 }
 
 - (void)setCustomHolidays:(NSString *)_custom {
-  ASSIGN(self->customHolidays,_custom);
+  ASSIGNCOPY(self->customHolidays,_custom);
 }
 - (NSString *)customHolidays {
   return self->customHolidays;
 }
 
+/* mail template */
+
 - (void)setMailTemplate:(NSString *)_str {
-  ASSIGN(self->mailTemplate,_str);
+  ASSIGNCOPY(self->mailTemplate,_str);
 }
 - (NSString *)mailTemplate {
   return self->mailTemplate;
@@ -1211,7 +1261,7 @@ static NSNumber *noNum = nil;
 }
 
 - (void)setTemplateDateFormat:(NSString *)_str {
-  ASSIGN(self->templateDateFormat,_str);
+  ASSIGNCOPY(self->templateDateFormat,_str);
 }
 - (NSString *)templateDateFormat {
   return self->templateDateFormat;
@@ -1313,6 +1363,7 @@ static NSNumber *noNum = nil;
     : NO;
 }
 
+
 /* actions */
 
 - (id)cancel {
@@ -1332,6 +1383,9 @@ static NSNumber *noNum = nil;
           @"defaults", self->defaults,
           @"userId",   uid,
 	nil];
+}
+- (void)_writeDefault:(NSString *)_key value:(id)_value {
+  return [self _writeDefault:_key value:_value ifTrue:YES];
 }
 
 - (void)addIDsOfObjects:(NSArray *)_objects 
@@ -1536,7 +1590,7 @@ static NSNumber *noNum = nil;
 
     days = (days)
       ? [days mutableCopy]
-      : [[NSMutableDictionary alloc] init];
+      : [[NSMutableDictionary alloc] initWithCapacity:16];
     parts = [parts mutableCopy];
 
     [parts removeObjectAtIndex:0];
@@ -1564,7 +1618,7 @@ static NSNumber *noNum = nil;
   
   lines = [[self->customHolidays componentsSeparatedByString:@"\n"]
 	                         objectEnumerator];
-  while ((line = [lines nextObject])) {
+  while ((line = [lines nextObject]) != nil) {
     [self _saveCustomHolidayLine:line
 	  toCustomHolidays:custom
 	  toCustomEveryYear:customEveryYear];
@@ -1593,7 +1647,7 @@ static NSNumber *noNum = nil;
   r = [NSMutableArray arrayWithCapacity:8];
     
   enumerator = [self->resourceNames objectEnumerator];
-  while ((n = [enumerator nextObject])) {
+  while ((n = [enumerator nextObject]) != nil) {
     if ([n hasSuffix:s]) {
       n = [[n  componentsSeparatedByString:@" ("] objectAtIndex:0];
       [r addObject:[NSString stringWithFormat:@"%@ (resCategory)", n]];
@@ -1609,10 +1663,19 @@ static NSNumber *noNum = nil;
           @"userId",       uid, nil];
 }
 
+- (void)_writeDefault:(NSString *)_defName boolValue:(BOOL)_flag {
+  [self runCommand:@"userdefaults::write",
+        @"key",      _defName,
+        @"value",    [NSNumber numberWithBool:_flag],
+        @"defaults", self->defaults,
+        @"userId",   [self accountId],
+        nil];
+}
+
 - (id)save {
   // TODO: split up this huge method! this is a catastrophe!
   NSNumber *uid;
-
+  
   uid = [self accountId];
 
   if ((self->defaultCCForNotificationMails == nil) ||
@@ -1644,13 +1707,9 @@ static NSNumber *noNum = nil;
 	value:[self templateDateFormat]
 	ifTrue:[self isTemplateDateFormatEditable]];
   
-  [self runCommand:@"userdefaults::write",
-        @"key",      @"scheduler_attach_apts_to_mails",
-        @"value",    [NSNumber numberWithBool:[self attachAppointments]],
-        @"defaults", self->defaults,
-        @"userId",   uid,
-        nil];
-
+  [self _writeDefault:@"scheduler_attach_apts_to_mails"
+        boolValue:[self attachAppointments]];
+  
   [self _writeDefault:@"scheduler_appointment_view" 
 	value:[self appointmentView]
 	ifTrue:[self isAppointmentViewEditable]];
@@ -1691,80 +1750,33 @@ static NSNumber *noNum = nil;
   [self _writeDefault:@"scheduler_no_of_cols" value:[self noOfCols]
 	ifTrue:[self isNoOfColsEditable]];
   
-  [self runCommand:@"userdefaults::write",
-        @"key",      @"scheduler_additional_popup_entries",
-        @"value",    [NSNumber numberWithInt:self->additionalPopupEntries],
-        @"defaults", self->defaults,
-        @"userId",   uid,
-        nil];
-
-  [self runCommand:@"userdefaults::write",
-        @"key",      @"scheduler_overview_short_info",
-        @"value",    [NSNumber numberWithBool:[self shortInfo]],
-        @"defaults", self->defaults,
-        @"userId",   uid,
-        nil];
-
-  [self runCommand:@"userdefaults::write",
-        @"key",      @"scheduler_overview_with_resources",
-        @"value",    [NSNumber numberWithBool:[self withResources]],
-        @"defaults", self->defaults,
-        @"userId",   uid,
-        nil];
-
-  [self runCommand:@"userdefaults::write",
-        @"key",      @"scheduler_hide_ignore_conflicts",
-        @"value",    [NSNumber numberWithBool:[self hideIgnoreConflicts]],
-        @"defaults", self->defaults,
-        @"userId",   uid,
-        nil];
-
-  [self runCommand:@"userdefaults::write",
-        @"key",      @"schedulerpage_tab",
-        @"value",    [self schedulerPageTab],
-        @"defaults", self->defaults,
-        @"userId",   uid,
-        nil];
-  [self runCommand:@"userdefaults::write",
-        @"key",      @"schedulerpage_weekview",
-        @"value",    [self schedulerPageWeekView],
-        @"defaults", self->defaults,
-        @"userId",   uid,
-        nil];
-  [self runCommand:@"userdefaults::write",
-        @"key",      @"schedulerpage_dayview",
-        @"value",    [self schedulerPageDayView],
-        @"defaults", self->defaults,
-        @"userId",   uid,
-        nil];
-
-  [self runCommand:@"userdefaults::write",
-        @"key",      @"scheduler_show_jobs",
-        @"value",    [NSNumber numberWithBool:[self showTodos]],
-        @"defaults", self->defaults,
-        @"userId",   uid,
-        nil];
-  [self runCommand:@"userdefaults::write",
-        @"key",      @"scheduler_show_palm_dates",
-        @"value",    [NSNumber numberWithBool:[self showPalmDates]],
-        @"defaults", self->defaults,
-        @"userId",   uid,
-        nil];
-  [self runCommand:@"userdefaults::write",
-        @"key",      @"scheduler_overview_full_names",
-        @"value",    [NSNumber numberWithBool:[self showFullNames]],
-        @"defaults", self->defaults,
-        @"userId",   uid,
-        nil];
-
-  if ([self isNotificationDevicesEditable]) {
-    [self runCommand:@"userdefaults::write",
-          @"key",      @"SkyAptNotifyDevices",
-          @"value",    [self notificationDevices],
-          @"defaults", self->defaults,
-          @"userId",   uid,
-          nil];
-  }
+  [self _writeDefault:@"scheduler_additional_popup_entries"
+        value:[NSNumber numberWithInt:self->additionalPopupEntries]];
+  
+  [self _writeDefault:@"scheduler_overview_short_info" 
+        boolValue:[self shortInfo]];
+  [self _writeDefault:@"scheduler_overview_with_resources"
+        boolValue:[self withResources]];
+  [self _writeDefault:@"scheduler_hide_ignore_conflicts"
+        boolValue:[self hideIgnoreConflicts]];
+  
+  [self _writeDefault:@"schedulerpage_tab" value:[self schedulerPageTab]];
+  [self _writeDefault:@"schedulerpage_weekview" 
+        value:[self schedulerPageWeekView]];
+  [self _writeDefault:@"schedulerpage_dayview" 
+        value:[self schedulerPageDayView]];
+  
+  [self _writeDefault:@"scheduler_show_jobs" boolValue:[self showTodos]];
+  [self _writeDefault:@"scheduler_show_palm_dates" 
+        boolValue:[self showPalmDates]];
+  [self _writeDefault:@"scheduler_overview_full_names"
+        boolValue:[self showFullNames]];
+  
+  [self _writeDefault:@"SkyAptNotifyDevices"
+        value:[self notificationDevices]
+        ifTrue:[self isNotificationDevicesEditable]];
+  [self _writeDefault:@"scheduler_defnotifytime" 
+        value:[self notificationTime]];
   
   [self _savePopUpResourceNames];
   
