@@ -29,8 +29,8 @@
 @interface LSGetMemberForCompanyCommand : LSDBObjectBaseCommand
 {
 @private
-  NSArray    *groups;
-  BOOL       fetchGlobalIDs;
+  NSArray *groups;
+  BOOL    fetchGlobalIDs;
 }
 
 // accessors

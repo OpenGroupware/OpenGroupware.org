@@ -25,11 +25,11 @@
     ..
 */
 
-#import "common.h"
-#import "LSGetMemberForCompanyCommand.h"
-#import <GDLAccess/EOSQLQualifier.h>
-#import <EOControl/EOGlobalID.h>
-#import <EOControl/EOKeyGlobalID.h>
+#include "common.h"
+#include "LSGetMemberForCompanyCommand.h"
+#include <GDLAccess/EOSQLQualifier.h>
+#include <EOControl/EOGlobalID.h>
+#include <EOControl/EOKeyGlobalID.h>
 
 @interface _LSGetMembersForCompany_Cache : NSObject
 {
@@ -69,8 +69,8 @@ static BOOL debugCache      = NO;
 /* qualifier processing */
 
 - (EOSQLQualifier *)verifyQualifier:(EOSQLQualifier *)_qual_ {
-  EOSQLQualifier *qualifier = nil;
-  EOEntity       *entity    = nil;
+  EOSQLQualifier *qualifier;
+  EOEntity       *entity;
   
   entity    = [[self databaseModel] entityNamed:[self memberEntityName]];
   qualifier = [[EOSQLQualifier alloc] 
@@ -110,17 +110,17 @@ static BOOL debugCache      = NO;
 }
 
 - (NSArray *)_groupIdString {
-  NSMutableSet *idSet    = nil;
-  NSEnumerator *listEnum = nil;
-  id           item      = nil;
+  NSMutableSet *idSet;
+  NSEnumerator *listEnum;
+  id           item;
   BOOL         doGIDs;
   
   idSet    = [NSMutableSet setWithCapacity:[self->groups count]];
   listEnum = [self->groups objectEnumerator];
   
   doGIDs = [self fetchGlobalIDs];
-  while ((item = [listEnum nextObject])) {
-    id pKey;
+  while ((item = [listEnum nextObject]) != nil) {
+    NSNumber *pKey;
     
     pKey = doGIDs
       ? [item keyValues][0]
@@ -139,8 +139,8 @@ static BOOL debugCache      = NO;
 }
 
 - (EOSQLQualifier *)_qualifierForCompanyAssignment:(NSString *)_in {
-  EOEntity    *assignmentEntity = nil;
-  EOSQLQualifier *qualifier     = nil;
+  EOEntity       *assignmentEntity;
+  EOSQLQualifier *qualifier;
 
   assignmentEntity = [[self databaseModel] entityNamed:@"CompanyAssignment"];
   
@@ -200,8 +200,9 @@ static BOOL debugCache      = NO;
     [self assert:(result != nil) reason:[sybaseMessages description]];
     return result;
   }
-  else {
-    NSMutableArray *myMembers      = nil;
+  
+  {
+    NSMutableArray *myMembers;
     NSArray        *checkedMembers;
     id             obj;
     
@@ -230,13 +231,12 @@ static BOOL debugCache      = NO;
       objs = calloc([gids count] + 2, sizeof(id));
       
       enumerator = [myMembers objectEnumerator];
-
-      while ((obj = [enumerator nextObject])) {
+      while ((obj = [enumerator nextObject]) != nil) {
         if ([gids containsObject:[obj valueForKey:@"globalID"]])
           objs[cnt++] = obj;
       }
       checkedMembers = [NSMutableArray arrayWithObjects:objs count:cnt];
-      free(objs); objs = NULL;
+      if (objs != NULL) free(objs); objs = NULL;
     }
     
     [[self group] takeValue:checkedMembers forKey:@"members"];
@@ -246,13 +246,14 @@ static BOOL debugCache      = NO;
 }
 
 - (id)_findMemberWithId:(NSNumber *)_memberId inMembers:(NSArray *)_members  {
-  NSEnumerator *listEnum = [_members objectEnumerator];
-  id           myMember  = nil;
-
+  // TODO: make that an NSArray category (-elementWithValue:..forKey: or sth)
+  NSEnumerator *listEnum;
+  id           myMember;
+  
+  listEnum = [_members objectEnumerator];
   while ((myMember = [listEnum nextObject]) != nil) {
-    if ([[myMember valueForKey:@"companyId"] isEqual:_memberId]) {
+    if ([[myMember valueForKey:@"companyId"] isEqual:_memberId])
       return myMember;
-    }
   }
   return nil;
 }
@@ -261,13 +262,13 @@ static BOOL debugCache      = NO;
   andMembers:(NSArray *)_members
 {
   NSMutableArray *_assignments;
-  NSEnumerator *listEnum = nil;
-  id           myGroup   = nil;
+  NSEnumerator *listEnum;
+  id           myGroup;
   
   _assignments = [[_assignmentArgs mutableCopy] autorelease];
-  listEnum = [self->groups objectEnumerator];
   
-  while ((myGroup = [listEnum nextObject])) {
+  listEnum = [self->groups objectEnumerator];
+  while ((myGroup = [listEnum nextObject]) != nil) {
     NSMutableArray *myMembers = nil;
     NSNumber       *groupId   = nil; 
     int            i, cnt;
@@ -608,6 +609,7 @@ static BOOL debugCache      = NO;
 }
 
 @end /* LSGetMemberForCompanyCommand */
+
 
 @implementation _LSGetMembersForCompany_Cache
 
