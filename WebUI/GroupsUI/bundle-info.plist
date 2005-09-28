@@ -1,0 +1,43 @@
+{
+  bundleHandler = GroupsUIModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = LSAccount; type = cmd; },
+      { name = LSTeam;    type = cmd; },
+    );
+    classes = (
+      { name = NSObject;          },
+      { name = OGoModuleManager;  exact-version = 2; },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     },
+    );
+  };
+  
+  provides = {
+    classes = (
+        { name = GroupsUIModule;        },
+    );
+    
+    DockablePages = (
+      {   
+        name      = "Groups";
+        component = "LSWJobs"; // TODO
+        labelKey  = "Groups";
+        image     = "menu_usermanager_labeled.gif";
+        listicon  = "icon_usermanager_26x21.gif";
+      }
+    );
+    
+    WOComponents = (
+    );
+    
+    PreferencePages = (
+    );
+
+    LSWCommands = (
+    );
+  };
+}
