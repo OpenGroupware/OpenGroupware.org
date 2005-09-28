@@ -60,8 +60,32 @@
 /* operations */
 
 - (NSArray *)_fetchMyTeams {
-  [self logWithFormat:@"perform fetch ..."];
-  return nil;
+  LSCommandContext *cmdctx;
+  NSArray *gids, *teams;
+  
+  cmdctx = [[self session] commandContext];
+  
+  /* fetch global ids of teams where I'm a member */
+  
+  // TODO: also fetch teams where the user is the 'ownerId'?!
+  gids = [cmdctx runCommand:@"team::extended-search",
+                 @"fetchGlobalIDs",       @"YES",
+                 @"onlyTeamsWithAccount", [[self session] activeAccount],
+                 @"description",          @"%%", 
+                 nil];
+  if (![gids isNotNull]) {
+    [self setErrorString:@"Did not find teams for login account?!"];
+    return nil;
+  }
+  
+  /* fetch information about the teams */
+  
+  teams = [cmdctx runCommand:@"team::get-by-globalID",
+                  @"gids", gids, nil];
+  // TODO: fill in member info
+  
+  //[self logWithFormat:@"performed fetch: %@", teams];
+  return teams;
 }
 
 /* notifications */

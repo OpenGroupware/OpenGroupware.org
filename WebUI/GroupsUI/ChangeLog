@@ -1,5 +1,7 @@
 2005-09-28  Helge Hess  <helge.hess@skyrix.com>
 
+	* OGoGroupsPage.m: fetches member teams (v5.3.4)
+
 	* OGoGroupsPage.m: prepared ivars / tabs / tableview (v5.3.3)
 
 	* added (still empty) OGoGroupsPage (v5.3.2)

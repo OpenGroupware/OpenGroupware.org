@@ -573,7 +573,7 @@ static BOOL     showOnlyMemberTeams  = NO;
     else
       tmp = [self _fetchAllTeamGlobalIDs];
     
-    if ([tmp count] > 0) {
+    if ([tmp isNotEmpty]) {
       tmp = [[self _fetchGroupedCoreAttrsOfTeamsWithGIDs:tmp] allValues];
       if (tmp != nil) [array addObjectsFromArray:tmp];
     }

@@ -13,13 +13,16 @@
     <tabitem key="mygroups" label="mygroups">
 
       <!-- TODO: labels -->
-      <tableview var:list="groupList" item="item"
+      <tableview var:list="groupList" var:item="item"
                  titleString="Team List" footerString="teams:">
         <td title="name">
+          <var:string value="item.description" />
         </td>
         <td title="email">
+          <var:string value="item.email" />
         </td>
         <td title="accounts">
+          TODO
         </td>
       </tableview>
 
