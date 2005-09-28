@@ -98,6 +98,7 @@
 - (void)registerForNotificationNamed:(NSString *)_notificationName
   object:(id)_object
 {
+  // TODO: why is this commented out? Its used in e.g. LSWStaff.
 #if 0
   [[self session] addObserver:self
                   selector:@selector(notificationBroker:)
