@@ -1,4 +1,4 @@
-# $Id$
+# compilation settings
 
 OGoROOT   =../..
 WebUIROOT =..

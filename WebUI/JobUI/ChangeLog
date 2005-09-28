@@ -1,3 +1,12 @@
+2005-09-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.3.52
+
+	* GNUmakefile, GNUmakefile.preamble: minor cleanups
+
+	* bundle-info.plist: refer to OGoModuleManager instead of
+	  LSWModuleManager
+
 2005-03-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyJobList.m: changed to use direct action for activating a job

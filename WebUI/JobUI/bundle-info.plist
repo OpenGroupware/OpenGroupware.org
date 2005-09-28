@@ -9,7 +9,7 @@
     );
     classes = (
       { name = NSObject;          },
-      { name = LSWModuleManager;  exact-version = 2; },
+      { name = OGoModuleManager;  exact-version = 2; },
       { name = SkyAttributeCell; },
       { name = SkyValueCell;     },
     );

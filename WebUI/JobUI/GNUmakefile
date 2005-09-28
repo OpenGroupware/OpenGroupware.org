@@ -1,4 +1,4 @@
-# $Id: GNUmakefile 1 2004-08-20 11:17:52Z znek $
+# GNUstep makefile
 
 include ../common.make
 
@@ -22,19 +22,6 @@ JobUI_OBJC_FILES = \
 	SkyJobAttributesEditor.m	\
 	OGoJobStatus.m			\
 	NSArray+JobIntNums.m		\
-
-JobUI_COMPONENTS = \
-	LSWJobViewer.wo			\
-	LSWJobs.wo			\
-	LSWJobEditor.wo			\
-	LSWJobAction.wo			\
-	LSWJobImport.wo			\
-	LSWJobHtmlMailPage.wo		\
-	LSWJobTextMailPage.wo		\
-	LSWJobPreferences.wo    	\
-	SkyJobList.wo           	\
-	SkyAssignProjectToJobEditor.wo	\
-	SkyJobAttributesEditor.wo	\
 
 JobUI_RESOURCE_FILES += Defaults.plist Version
 
