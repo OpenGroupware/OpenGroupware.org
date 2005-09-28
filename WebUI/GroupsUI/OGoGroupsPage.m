@@ -21,10 +21,61 @@
 
 #include <OGoFoundation/OGoContentPage.h>
 
+@class NSArray;
+
 @interface OGoGroupsPage : OGoContentPage
+{
+  NSArray *groupList;
+  id item;
+}
+
 @end
 
 #include "common.h"
 
 @implementation OGoGroupsPage
+
+- (void)dealloc {
+  [self->groupList release];
+  [self->item      release];
+  [super dealloc];
+}
+
+/* accessors */
+
+- (void)setItem:(id)_value {
+  ASSIGN(self->item, _value);
+}
+- (id)item {
+  return self->item;
+}
+
+- (void)setGroupList:(NSArray *)_value {
+  ASSIGN(self->groupList, _value);
+}
+- (NSArray *)groupList {
+  return self->groupList;
+}
+
+/* operations */
+
+- (NSArray *)_fetchMyTeams {
+  [self logWithFormat:@"perform fetch ..."];
+  return nil;
+}
+
+/* notifications */
+
+- (void)syncAwake {
+  [super syncAwake];
+  
+  if (self->groupList == nil)
+    [self setGroupList:[self _fetchMyTeams]];
+}
+
+- (void)sleep {
+  [self setItem:nil];
+  [super sleep];
+}
+
 @end /* OGoGroupsPage */

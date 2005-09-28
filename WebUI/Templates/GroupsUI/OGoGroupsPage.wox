@@ -1,11 +1,28 @@
 <?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
-<OGo:page
+<page
   var:title="labels.$name"
-  xmlns="http://www.w3.org/1999/xhtml"
+
+  xmlns="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:html="http://www.w3.org/1999/xhtml"
   xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
 >
-  GroupsUI
-</OGo:page>
+  <tab selectionDefault="groupspage_lasttab">
+    <tabitem key="mygroups" label="mygroups">
+
+      <!-- TODO: labels -->
+      <tableview var:list="groupList" item="item"
+                 titleString="Team List" footerString="teams:">
+        <td title="name">
+        </td>
+        <td title="email">
+        </td>
+        <td title="accounts">
+        </td>
+      </tableview>
+
+    </tabitem>
+  </tab>
+</page>
