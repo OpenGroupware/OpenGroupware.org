@@ -19,38 +19,18 @@
   02111-1307, USA.
 */
 
-#ifndef __PreferencesUI_LSWPreferencesEditor_H__
-#define __PreferencesUI_LSWPreferencesEditor_H__
+#ifndef __BoolFormatter_H__
+#define __BoolFormatter_H__
 
-#include <OGoFoundation/LSWEditorPage.h>
+#import <Foundation/NSFormatter.h>
 
-/*
-  LSWPreferencesEditor
-  
-  Note: this is actually the account editor!
-*/
-
-@class NSString, NSMutableArray, NSArray, NSDictionary;
-@class NSUserDefaults, NSNumber;
-
-@interface LSWPreferencesEditor : LSWEditorPage
+@interface BoolFormatter : NSFormatter
 {
-@private
-  id             data;
-  NSString       *filePath;
-  NSMutableArray *categories;
-  NSMutableArray *teams;
-  NSArray        *editableDefaults;
-  id             item;
-  int            idx;
-  id             popupItem;
-  NSMutableArray *selectedTeams;
-  BOOL           newMode;
-  NSDictionary   *templateUsers;
-  NSUserDefaults *defaults;
-  NSArray        *localDomains;
+  id labels;
 }
+
+- (id)initWithLables:(id)_l;
 
 @end
 
-#endif /* __PreferencesUI_LSWPreferencesEditor_H__*/
+#endif /* __BoolFormatter_H__ */

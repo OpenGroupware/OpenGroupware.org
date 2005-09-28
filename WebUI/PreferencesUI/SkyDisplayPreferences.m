@@ -451,12 +451,12 @@ static NSNumber *NoNumber  = nil;
 /* dockable pages */
 
 - (NSString *)dockItemLabel {
-  NSString *tmp, *tableName;
-  id di;
+  NSString     *tmp, *tableName, *s;
+  NSDictionary *di;
 
   if ((di = [self item]) == nil)
     return nil;
-
+  
   tableName = [[di objectForKey:@"bundle"] bundleName];
     
   if (tableName == nil)
@@ -468,29 +468,29 @@ static NSNumber *NoNumber  = nil;
 
   if (tmp == nil)
     return nil;
-
-  di = [[[self application] resourceManager]
+  
+  s = [[[self application] resourceManager]
                stringForKey:tmp inTableNamed:tableName
                withDefaultValue:nil
                languages:[(WOSession *)[self session] languages]];
-  if (di == nil)
-    di = tmp;
-  return di;
+  return s != nil ? s : tmp;
 }
 
 - (id)showDockPage {
+  OGoNavigation *nav;
   id page;
 
-  if ((page = [[self item] objectForKey:@"componentName"]) != nil)
+  page = [(NSDictionary *)[self item] objectForKey:@"componentName"];
+  if (page != nil)
     page = [self pageWithName:page];
   
-  if (page) {
-    OGoNavigation *nav;
-    
-    nav = [[self session] navigation];
-    [nav leavePage];
-    [nav enterPage:page];
-  }
+  if (page == nil)
+    return nil;
+  
+  // TODO: can we save the stuff below and just return the component?
+  nav = [[self session] navigation];
+  [nav leavePage];
+  [nav enterPage:page];
   return page;
 }
 
@@ -678,8 +678,8 @@ static NSNumber *NoNumber  = nil;
     l = _splitMe;
     t = nil;
   }
-  [self setLanguage:[l length] > 0 ? l : @"English"];
-  [self setTheme:   [t length] > 0 ? t : @"default"];
+  [self setLanguage:[l isNotEmpty] ? l : @"English"];
+  [self setTheme:   [t isNotEmpty] ? t : @"default"];
 }
 - (NSString *)languageAndTheme {
   /* join lang and theme, eg "English_blue" as required by OGo internally */
@@ -688,8 +688,8 @@ static NSNumber *NoNumber  = nil;
   t = [self theme];
   l = [self language];
   if ([t isEqualToString:@"default"]) t = nil;
-  if ([l length] == 0) l = @"English";
-  if ([t length] > 0)
+  if (![l isNotEmpty]) l = @"English";
+  if ([t isNotEmpty])
     l = [[l stringByAppendingString:@"_"] stringByAppendingString:t];
   return l;
 }

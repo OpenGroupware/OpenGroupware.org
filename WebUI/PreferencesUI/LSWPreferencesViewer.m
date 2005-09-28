@@ -52,8 +52,8 @@ static NSArray *PreferencePages = nil;
 static int keySort(id o1, id o2, void *ctx) {
   NSString *key = ctx;
   
-  o1 = [o1 objectForKey:key];
-  o2 = [o2 objectForKey:key];
+  o1 = [(NSDictionary *)o1 objectForKey:key];
+  o2 = [(NSDictionary *)o2 objectForKey:key];
   return [(NSString *)o1 compare:o2];
 }
 
@@ -278,7 +278,7 @@ static int keySort(id o1, id o2, void *ctx) {
     self->editorBundle =
       [[[NGBundleManager defaultBundleManager]
                          bundleProvidingResource:
-                         [[self editor] objectForKey:@"name"]
+                           [(NSDictionary *)[self editor] objectForKey:@"name"]
                          ofType:@"PreferencePages"] retain];
   }
   return self->editorBundle;
@@ -287,14 +287,15 @@ static int keySort(id o1, id o2, void *ctx) {
 - (NSString *)editorLabel {
   /* to be improved .. (use localized label) */
   return [[self labels] valueForKey:
-                        [[self editor] objectForKey:@"labelKey"]];
+                          [(NSDictionary *)[self editor] 
+                                           objectForKey:@"labelKey"]];
 }
 
 - (BOOL)hasIcon {
-  return [[self editor] objectForKey:@"icon"] ? YES : NO;
+  return [(NSDictionary *)[self editor] objectForKey:@"icon"] ? YES : NO;
 }
 - (NSString *)editorIcon {
-  return [[self editor] objectForKey:@"icon"];
+  return [(NSDictionary *)[self editor] objectForKey:@"icon"];
 }
 
 /* accessors */
@@ -305,6 +306,7 @@ static int keySort(id o1, id o2, void *ctx) {
 - (id)item {
   return self->item;
 }
+
 - (void)setCategory:(id)_i {
   ASSIGN(self->category, _i);
 }
@@ -322,8 +324,9 @@ static int keySort(id o1, id o2, void *ctx) {
   return [self isRoot];
 }
 
-- (id)defaults {
-  if (self->defaults) return self->defaults;
+- (NSUserDefaults *)defaults {
+  if (self->defaults != nil)
+    return self->defaults;
   
   if ([[self session] activeAccountIsRoot]) {
     self->defaults = [[self runCommand:@"userdefaults::get", @"user",
@@ -350,18 +353,19 @@ static int keySort(id o1, id o2, void *ctx) {
 
 - (id)showEditor {
   id editorPage;
-
-  if ((editorPage = [[self editor] objectForKey:@"component"]) == nil) {
+  
+  editorPage = [(NSDictionary *)[self editor] objectForKey:@"component"];
+  if (![editorPage isNotEmpty]) {
     [self logWithFormat:
             @"missing 'component' config for preference-page %@",
             [self editor]];
     return nil;
   }
-
+  
   if ((editorPage = [self pageWithName:editorPage]) == nil) {
     [self logWithFormat:
             @"couldn't instantiate preference-page %@",
-            [[self editor] objectForKey:@"component"]];
+            [(NSDictionary *)[self editor] objectForKey:@"component"]];
     return nil;
   }
   

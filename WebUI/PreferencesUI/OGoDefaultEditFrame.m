@@ -19,12 +19,14 @@
   02111-1307, USA.
 */
 
-#include "common.h"
+#include <NGObjWeb/WOComponent.h>
+
+@class NSString, NSUserDefaults;
 
 @interface OGoDefaultEditFrame : WOComponent
 {
   id componentLabels;
-  id defaults;
+  NSUserDefaults *defaults;
   id value;
   id formatter;
   
@@ -39,64 +41,18 @@
   NSString *key;
 }
 
-- (id)defaults;
-- (void)setDefaults:(id)_d;
+- (void)setDefaults:(NSUserDefaults *)_d;
+- (NSUserDefaults *)defaults;
+
 - (id)value;
 - (BOOL)isRoot;
+
 @end /* OGoDefaultEditField */
 
-@interface SimpleTextSepFormatter : NSFormatter
-@end
-
-@implementation SimpleTextSepFormatter
-- (NSString *)stringForObjectValue:(id)_obj {
-  return [[[_obj componentsSeparatedByString:@"\n"]
-                 map:@selector(stringByTrimmingSpaces)]
-                 componentsJoinedByString:@"; "];
-  
-}
-@end /* SimpleTextAreaFormatter */
-
-@interface ArrayFormatter : NSFormatter
-@end
-
-@implementation ArrayFormatter
-- (NSString *)stringForObjectValue:(id)_obj {
-  return [[_obj map:@selector(stringByTrimmingSpaces)]
-                componentsJoinedByString:@"; "];
-  
-}
-@end /* SimpleTextAreaFormatter */
-
-@interface BoolFormatter : NSFormatter
-{
-  id labels;
-}
-- (id)initWithLables:(id)_l;
-@end
-
-@implementation BoolFormatter
-
-- (id)initWithLables:(id)_l {
-  if ((self = [super init])) {
-    ASSIGN(self->labels, _l);
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [self->labels release];
-  [super dealloc];
-}
-
-- (NSString *)stringForObjectValue:(id)_obj {
-  NSString *str;
-
-  str = ([_obj boolValue]) ? @"YES" : @"NO";
-
-  return (self->labels != nil) ? [self->labels valueForKey:str] : str;
-}
-@end /* SimpleTextAreaFormatter */
+#include "SimpleTextSepFormatter.h"
+#include "ArrayFormatter.h"
+#include "BoolFormatter.h"
+#include "common.h"
 
 @implementation OGoDefaultEditFrame
 
@@ -124,10 +80,12 @@
   return [@"isEditable_" stringByAppendingString:self->key];
 }
 
-- (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
-  if ([self->key length]) {
-    id o;
+/* generate response */
 
+- (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
+  if ([self->key isNotEmpty]) {
+    id o;
+    
     o = [[self defaults] objectForKey:[self isEditableKey]];
 
     if (o == nil)
@@ -138,6 +96,8 @@
   [super appendToResponse:_response inContext:_ctx];
 }
 
+/* handle requests */
+
 - (void)takeValuesFromRequest:(WORequest *)_req inContext:(WOContext *)_ctx {
   BOOL oldIsEditable;
 
@@ -145,13 +105,19 @@
 
   [super takeValuesFromRequest:_req inContext:_ctx];
 
-  if (oldIsEditable != self->isEditableValue)
+  if (oldIsEditable != self->isEditableValue) {
     [self->defaults setObject:[NSNumber numberWithBool:self->isEditableValue]
          forKey:[self isEditableKey]];
+  }
 }
 
+/* value */
+
+- (void)setValue:(id)_v {
+  ASSIGN(self->value, _v);
+}
 - (id)value {
-  if (![self->key length]) {
+  if (![self->key isNotEmpty]) {
     NSLog(@"missing key ...");
     return nil;
   }
@@ -161,20 +127,18 @@
   return self->value;
 }
 
-- (void)setValue:(id)_v {
-  ASSIGN(self->value, _v);
-}
+/* permissions */
 
 - (BOOL)isEditable {
   return ((self->isEditableValue || [self isRoot]) &&
-          self->isInViewerMode == NO);
+          !self->isInViewerMode);
 }
 
-- (BOOL)isEditableValue {
-  return self->isEditableValue;
-}
 - (void)setIsEditableValue:(BOOL)_b {
   self->isEditableValue = _b;
+}
+- (BOOL)isEditableValue {
+  return self->isEditableValue;
 }
 
 - (NSString *)readOnlyValue {
@@ -190,8 +154,11 @@
 
 /* accessors */
 
+- (void)setFormatter:(id)_form {
+  ASSIGN(self->formatter, _form);
+}
 - (id)formatter {
-  if (self->formatter == nil && ([self->useFormatter length] > 0)) {
+  if (self->formatter == nil && [self->useFormatter isNotEmpty]) {
     if ([self->useFormatter isEqualToString:@"stringField"])
       self->formatter = [[SimpleTextSepFormatter alloc] init];
     else if ([self->useFormatter isEqualToString:@"array"])
@@ -201,28 +168,29 @@
   }
   return self->formatter;
 }
-- (void)setFormatter:(id)_form {
-  ASSIGN(self->formatter, _form);
+
+- (void)setComponentLabels:(id)_l {
+  ASSIGN(self->componentLabels, _l);
 }
 - (id)componentLabels {
   return self->componentLabels;
 }
-- (void)setComponentLabels:(id)_l {
-  ASSIGN(self->componentLabels, _l);
+
+- (void)setKey:(id)_k {
+  ASSIGN(self->key, _k);
 }
 - (id)key {
   return self->key;
 }
-- (void)setKey:(id)_k {
-  ASSIGN(self->key, _k);
-}
 
-- (id)defaults {
-  return self->defaults;
-}
-- (void)setDefaults:(id)_d {
+- (void)setDefaults:(NSUserDefaults *)_d {
   ASSIGN(self->defaults, _d);
 }
+- (NSUserDefaults *)defaults {
+  return self->defaults;
+}
+
+/* actions */
 
 - (id)resetEditable {
   [self->defaults removeObjectForKey:[self isEditableKey]];

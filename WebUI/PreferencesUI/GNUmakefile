@@ -20,6 +20,10 @@ PreferencesUI_OBJC_FILES = 		\
 	OGoDefaultEditField.m		\
 	OGoDefaultEditFrame.m		\
 	OGoDefaultViewField.m		\
+	\
+	SimpleTextSepFormatter.m	\
+	ArrayFormatter.m		\
+	BoolFormatter.m			\
 
 PreferencesUI_RESOURCE_FILES += Defaults.plist Version
 

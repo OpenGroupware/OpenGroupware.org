@@ -74,10 +74,12 @@
   int cols;
 }
 
-- (id)defaults;
-- (void)setDefaults:(id)_d;
+- (void)setDefaults:(NSUserDefaults *)_d;
+- (NSUserDefaults *)defaults;
+
 - (id)value;
 - (BOOL)isRoot;
+
 @end /* OGoDefaultEditField */
 
 #include "common.h"
@@ -132,7 +134,7 @@
 }
 
 - (id)value {
-  if ([self->key length] == 0) {
+  if (![self->key isNotEmpty]) {
     [self logWithFormat:@"missing key ..."];
     return nil;
   }

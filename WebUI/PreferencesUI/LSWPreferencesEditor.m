@@ -99,9 +99,10 @@ static NSArray  *UserDefKeys        = nil;
     [[NSMutableDictionary alloc] initWithCapacity:[tmpUser count]];
   
   enumerator = [tmpUser objectEnumerator];
-  while ((tmp = [enumerator nextObject])) {
-      [(id)self->templateUsers setObject:[tmp objectForKey:@"companyId"]
-           forKey:[tmp objectForKey:@"login"]];
+  while ((tmp = [enumerator nextObject]) != nil) {
+    [(NSMutableDictionary *)self->templateUsers 
+         setObject:[tmp valueForKey:@"companyId"]
+         forKey:[tmp valueForKey:@"login"]];
   }
   tmp = self->templateUsers;
   self->templateUsers = [tmp copy];
@@ -261,7 +262,7 @@ static NSArray  *UserDefKeys        = nil;
       cName = [NSString stringWithCString:[cName cString]
 			length:([cName length] - 1)];
     }
-    if ([cName length] > 0)
+    if ([cName isNotEmpty])
       [self->categories addObject:cName];
   }
 }
@@ -274,36 +275,36 @@ static NSArray  *UserDefKeys        = nil;
   return self->teams;
 }
 
-- (id)item {
-  return self->item;
-}
 - (void)setItem:(id)_itm {
   ASSIGN(self->item, _itm);
 }
-
-- (int)idx {
-  return self->idx;
+- (id)item {
+  return self->item;
 }
+
 - (void)setIdx:(int)_idx {
   self->idx = _idx;
+}
+- (int)idx {
+  return self->idx;
 }
 
 - (NSString *)preferencesLabel {
   NSString *label;
 
-  label = [self->item objectForKey:@"DefaultName"];
+  label = [(NSDictionary *)self->item objectForKey:@"DefaultName"];
   label = [[self labels] valueForKey:label];
   if (label == nil)
-    label = [self->item objectForKey:@"DefaultName"];
+    label = [(NSDictionary *)self->item objectForKey:@"DefaultName"];
   
   return label;
 }
 
-- (id)popupItem {
-  return self->popupItem;
-}
 - (void)setPopupItem:(id)_itm {
   ASSIGN(self->popupItem, _itm);
+}
+- (id)popupItem {
+  return self->popupItem;
 }
 
 - (NSString *)loginName {
@@ -329,10 +330,14 @@ static NSArray  *UserDefKeys        = nil;
   return [NSString stringWithFormat:@"<%@>", prefLabel];
 }
 
+/* actions */
+
 - (id)cancel {
   [self leavePage];
   return nil;
 }
+
+/* todo */
 
 - (NSDictionary *)account {
   return [self snapshot];
@@ -340,7 +345,7 @@ static NSArray  *UserDefKeys        = nil;
 
 - (void)setLocationTeam:(id)_team {
   [self->selectedTeams removeObjectsInArray:[[self session] locationTeams]];
-  if (_team)
+  if ([_team isNotNull])
     [self->selectedTeams addObject:_team];
 }
 - (id)locationTeam {
@@ -368,16 +373,15 @@ static NSArray  *UserDefKeys        = nil;
   return [self->selectedTeams containsObject:self->item];
 }
 
+- (void)setSelectedTeams:(NSMutableArray *)_team {
+  ASSIGN(self->selectedTeams, _team);
+}
 - (NSMutableArray*)selectedTeams {
   return  self->selectedTeams ;
 }
 
-- (void)setSelectedTeams:(NSMutableArray*)_team {
-  ASSIGN(self->selectedTeams,_team);
-}
-
 - (void)setIsInGroup:(BOOL)_value { 
-  if (_value == YES) {
+  if (_value) {
     if (![self->selectedTeams containsObject:self->item])
       [self->selectedTeams addObject:self->item];
   }
@@ -400,6 +404,7 @@ static NSArray  *UserDefKeys        = nil;
 - (BOOL)isLocked {
   return [[[self snapshot] valueForKey:@"isLocked"] boolValue];
 }
+
 - (void)setIsTemplateUser:(BOOL)_lck {
   [[self snapshot] takeValue:[NSNumber numberWithBool:_lck]
                    forKey:@"isTemplateUser"];
@@ -499,13 +504,13 @@ static NSArray  *UserDefKeys        = nil;
   lname = [[self snapshot] valueForKey:@"name"];
   tmpl  = [[[self snapshot] valueForKey:@"isTemplateUser"] boolValue];
   
-  if (![login isNotNull] || [login length] == 0)
+  if (![login isNotEmpty])
     [error appendFormat:@" %@.", [l valueForKey:@"No login set"]];
-
-  if ((![lname isNotNull] || [lname length] == 0) && (tmpl == NO))
+  
+  if (![lname isNotEmpty] && !tmpl)
     [error appendFormat:@" %@.", [l valueForKey:@"No last name set"]];
-
-  if ([error length] > 0) {
+  
+  if ([error isNotEmpty]) {
     [self setErrorString:error];
     return YES;
   }
@@ -607,7 +612,7 @@ static NSArray  *UserDefKeys        = nil;
     [account takeValue:@"template"                    forKey:@"description"];
     [account takeValue:[NSArray array]                forKey:@"groups"];
   }
-
+  
   if (self->data != nil && self->filePath != nil && [self->data length] > 0) {
     [account takeValue:self->data     forKey:@"data"];
     [account takeValue:self->filePath forKey:@"filePath"];
@@ -637,6 +642,8 @@ static NSArray  *UserDefKeys        = nil;
   return YES;
 }
 
+/* actions */
+
 - (id)save {
   id result;
   
@@ -648,7 +655,9 @@ static NSArray  *UserDefKeys        = nil;
   
   if ([self isInNewMode]) {
     // TODO: explain this
-    id           obj, def, key, oldDef;
+    NSUserDefaults *def, *oldDef;
+    NSString       *key;
+    id           obj;
     NSEnumerator *enumerator;
       
     oldDef = [self runCommand:@"userdefaults::get", nil];
@@ -657,17 +666,16 @@ static NSArray  *UserDefKeys        = nil;
       
     enumerator = [UserDefKeys objectEnumerator];
     while ((key = [enumerator nextObject]) != nil) {
-        id value;
-
-        value = [self->defaults objectForKey:key];
+      id value;
+      
+      value = [self->defaults objectForKey:key];
         
-        if ([self isTemplateUser]) {
+      if ([self isTemplateUser])
+        [def setObject:value forKey:key];
+      else {
+        if (![[oldDef objectForKey:key] isEqual:value])
           [def setObject:value forKey:key];
-        }
-        else {
-          if (![[oldDef objectForKey:key] isEqual:value])
-            [def setObject:value forKey:key];
-        }
+      }
     }
     ASSIGN(self->defaults, def);
   }
@@ -684,11 +692,17 @@ static NSArray  *UserDefKeys        = nil;
   return [self activateObject:[self object] withVerb:@"editAccountPassword"];
 }
 
+/* template user */
+
 - (NSArray *)templateUserNames {
   return [self->templateUsers allKeys];
 }
 
-- (id)templateUserId {
+- (void)setTemplateUserId:(NSNumber *)_id {
+  [[self snapshot] takeValue:[self->templateUsers objectForKey:_id]
+                   forKey:@"templateUserId"];
+}
+- (NSNumber *)templateUserId {
   NSNumber *n;
   
   n = [[self snapshot] valueForKey:@"templateUserId"];
@@ -699,14 +713,11 @@ static NSArray  *UserDefKeys        = nil;
   return [[self->templateUsers allKeysForObject:n] lastObject]; 
 }
 
-- (void)setTemplateUserId:(id)_id {
-  [[self snapshot] takeValue:[self->templateUsers objectForKey:_id]
-                   forKey:@"templateUserId"];
-}
+/* defaults */
 
-- (id)defaults {
+- (NSUserDefaults *)defaults {
   if (self->defaults == nil)
-    [self logWithFormat:@"WARNING: no defaults available!"];
+    [self warnWithFormat:@"no defaults available!"];
   return self->defaults;
 }
 
