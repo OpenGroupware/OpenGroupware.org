@@ -18,13 +18,14 @@
   
   provides = {
     classes = (
-        { name = GroupsUIModule;        },
+        { name = GroupsUIModule; },
+        { name = OGoGroupsPage;  },
     );
     
     DockablePages = (
       {   
         name      = "Groups";
-        component = "LSWJobs"; // TODO
+        component = "OGoGroupsPage";
         labelKey  = "Groups";
         image     = "menu_usermanager_labeled.gif";
         listicon  = "icon_usermanager_26x21.gif";
@@ -32,6 +33,7 @@
     );
     
     WOComponents = (
+        { name = OGoGroupsPage;  },
     );
     
     PreferencePages = (

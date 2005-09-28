@@ -10,7 +10,8 @@ WOBUNDLE_INSTALL_DIR = \
 GroupsUI_PRINCIPAL_CLASS = GroupsUIModule
 
 GroupsUI_OBJC_FILES += \
-	GroupsUIModule.m
+	GroupsUIModule.m	\
+	OGoGroupsPage.m		\
 
 GroupsUI_RESOURCE_FILES += Defaults.plist Version
 
