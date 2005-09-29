@@ -1159,6 +1159,21 @@ static Class   StrClass = Nil;
   return YES;
 }
 
+/* description */
+
+- (NSString *)description {
+  NSMutableString *ms;
+
+  ms = [NSMutableString stringWithCapacity:128];
+  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+  
+  [ms appendFormat:@" ctx=0x%08X",   self->context];
+  [ms appendFormat:@" #handlers=%d", [self->accessHandlers count]];
+  
+  [ms appendString:@">"];
+  return ms;
+}
+
 @end /* OGoAccessManager */
 
 @implementation SkyAccessManager // DEPRECATED

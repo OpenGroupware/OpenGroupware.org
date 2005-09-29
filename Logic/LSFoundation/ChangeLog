@@ -1,3 +1,7 @@
+2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoAccessManager.m, OGoAccessHandler.m: added -description (v5.3.111)
+
 2005-09-29  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.3.110
