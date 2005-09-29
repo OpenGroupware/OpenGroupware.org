@@ -1,3 +1,8 @@
+2005-09-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSExtendedSearchTeamCommand.m: code cleanups, fixed a bug in
+	  filtering for member-ids when fetching EOs (v5.3.13)
+
 2005-08-08  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSExtendedSearchTeamCommand.m: added ability to restrict results to

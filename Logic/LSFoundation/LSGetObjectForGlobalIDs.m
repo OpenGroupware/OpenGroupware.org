@@ -326,7 +326,7 @@ static BOOL doCacheGIDs = YES;
       }
       else {
         if (additionalKeys == nil)
-          additionalKeys = [NSMutableArray array];
+          additionalKeys = [NSMutableArray arrayWithCapacity:16];
         [additionalKeys addObject:attrName];
       }
     }

@@ -21,9 +21,25 @@
 
 #include <LSSearch/LSExtendedSearchCommand.h>
 
-@interface LSExtendedSearchCommand(PRIVATE)
-- (NSNumber *)fetchIds;
-@end
+/*
+  LSExtendedSearchTeamCommand (team::extended-search)
+  
+  TODO: document
+
+  Example call:
+    gids = [cmdctx runCommand:@"team::extended-search",
+                     @"fetchGlobalIDs",       @"YES",
+                     @"onlyTeamsWithAccount", [[self session] activeAccount],
+                     @"description",          @"%%", 
+                   nil];
+  TODO: is the 'description %%' required?
+
+    ogo-runcmd  -login donald -password duck \
+      team::extended-search \
+      fetchGlobalIDs NO description '%%' onlyTeamsWithAccount 10290
+
+  TODO: this filters members in memory, should be moved to the SQL qualifier.
+*/
 
 @interface LSExtendedSearchTeamCommand : LSExtendedSearchCommand
 {
@@ -33,6 +49,10 @@
 @end
 
 #include "common.h"
+
+@interface LSExtendedSearchCommand(PRIVATE)
+- (NSNumber *)fetchIds;
+@end
 
 @interface LSExtendedSearchCommand(Privates)
 - (NSArray *)_fetchObjects:(id)_context;
@@ -81,21 +101,26 @@ static NSNumber *yesNum = nil;
 
 /* helper methods */
 
-- (BOOL)doesArray:(NSArray *)_gids containPrimaryKey:(id)_pkey {
+- (BOOL)doesArray:(NSArray *)_gidsOrEOs containPrimaryKey:(NSNumber *)_pkey {
   unsigned i, count;
   
   if (![_pkey isNotNull])
     return NO;
-  if ((count = [_gids count]) == 0)
+  if ((count = [_gidsOrEOs count]) == 0)
     return NO;
   
   for (i = 0; i < count; i++) {
     EOKeyGlobalID *gid;
     
-    gid = [_gids objectAtIndex:i];
-    if (![gid isNotNull]) continue;
-    if (![gid isKindOfClass:[EOGlobalID class]])
+    gid = [_gidsOrEOs objectAtIndex:i];
+    if (![gid isNotNull]) /* NSNull */
+      continue;
+    
+    if (![gid isKindOfClass:[EOGlobalID class]]) {
+      /* treat it as an EO object */
+      // TODO: also support NSNumbers?
       gid = (EOKeyGlobalID *)[(id)gid globalID];
+    }
     
     if ([_pkey isEqual:[gid keyValues][0]])
       return YES;
@@ -110,8 +135,11 @@ static NSNumber *yesNum = nil;
   if (![_results isNotEmpty] || ![self->onlyTeamsWithAccountId isNotNull])
     return _results;
   
-  /* just one member matched (results has one record) ... */
-
+  /* 
+     Just one member matched (results has one record) ... 
+     
+     If multiple ones matched, '_members' will be an NSDictionary.
+  */
   if ([_members isKindOfClass:[NSArray class]]) {
     if ([self doesArray:_members 
               containPrimaryKey:self->onlyTeamsWithAccountId])
@@ -119,27 +147,45 @@ static NSNumber *yesNum = nil;
     return nil;
   }
   
-  /* (zero or) more than one member matched ... */
-  
+  /* 
+     (zero or) more than one member matched ... 
+     
+     '_members' is an array of GIDs keyed to the GID in '_results'.
+  */
   for (i = 0, count = [_results count]; i < count; i++) {
     NSArray *mmembers;
-      
-    mmembers = 
-      [(NSDictionary *)_members objectForKey:[_results objectAtIndex:i]];
+    id eoOrGID;
+    
+    eoOrGID = [_results objectAtIndex:i];
+    
+    mmembers = [eoOrGID isKindOfClass:[EOGlobalID class]]
+      ? [(NSDictionary *)_members objectForKey:eoOrGID]
+      : [(NSDictionary *)_members objectForKey:
+                           [eoOrGID valueForKey:@"globalID"]];
     
     if ([self doesArray:mmembers 
               containPrimaryKey:self->onlyTeamsWithAccountId])
       continue;
     
+    /* did not contain member, make mutable and remove */
+    
     if (ma == nil)
       ma = [[_results mutableCopy] autorelease];
-    [ma removeObject:[_results objectAtIndex:i]];
+    [ma removeObject:eoOrGID];
   }
   
   return (ma != nil) ? ma : _results;
 }
 
 /* override fetch methods to support onlyTeamsWithAccountId */
+
+- (id)_fetchMemberGIDsForTeamGIDs:(NSArray *)_gids inContext:(id)_context {
+  // TODO: fix that different-result-objects-crap in team::members!
+  return [_context runCommand:@"team::members",
+                     @"groups",         _gids,
+                     @"fetchGlobalIDs", yesNum,
+                   nil];
+}
 
 - (NSArray *)_fetchObjects:(id)_context {
   NSArray *results;
@@ -149,10 +195,9 @@ static NSNumber *yesNum = nil;
   if (![results isNotEmpty] || ![self->onlyTeamsWithAccountId isNotNull])
     return results;
   
-  members = [_context runCommand:@"team::members",
-                      @"groups", [results valueForKey:@"globalID"],
-                      @"fetchGlobalIDs", yesNum,
-                      nil];
+  /* Note: the result is keyed on the global-id, not the EO! */
+  members = [self _fetchMemberGIDsForTeamGIDs:[results valueForKey:@"globalID"]
+                  inContext:_context];
   
   return [self filterResults:results onMembers:members];
 }
@@ -165,30 +210,47 @@ static NSNumber *yesNum = nil;
   if (![results isNotEmpty] || ![self->onlyTeamsWithAccountId isNotNull])
     return results;
   
-  members = [_context runCommand:@"team::members",
-                      @"groups", results,
-                      @"fetchGlobalIDs", yesNum,
-                      nil];
-  // TODO: fix that different-result-objects-crap in team::members!
-  
+  members = [self _fetchMemberGIDsForTeamGIDs:results inContext:_context];
   return [self filterResults:results onMembers:members];
 }
 
 /* accessors */
 
-- (void)setOnlyTeamsWithAccount:(id)_account {
+- (NSNumber *)_primaryKeyFromObject:(id)_account {
   /* extract the id */
   if ([_account isKindOfClass:[EOKeyGlobalID class]])
-    _account = [(EOKeyGlobalID *)_account keyValues][0];
-  else if ([_account isKindOfClass:[NSNumber class]])
-    ;
-  else if ([_account isNotNull]) {
+    return [(EOKeyGlobalID *)_account keyValues][0];
+  
+  if ([_account isKindOfClass:[NSNumber class]])
+    return _account;
+
+  if ([_account isKindOfClass:[NSString class]]) {
+    if (![_account isNotEmpty])
+      return nil;
+    
+    if (!isdigit([_account characterAtIndex:0])) {
+      // TODO: we might want to run a fetch in this case?
+      //       => but not inside an accessor
+      [self errorWithFormat:@"parameter is not a number: '%@'", _account];
+      return nil;
+    }
+    
+    return [NSNumber numberWithUnsignedInt:[_account unsignedIntValue]];
+  }
+  
+  if ([_account isNotNull]) {
     _account = [_account valueForKey:@"globalID"];
     if ([_account isNotNull]) 
       _account = [(EOKeyGlobalID *)_account keyValues][0];
+    
+    return _account;
   }
-  else
-    _account = nil;
+  
+  return nil;
+}
+
+- (void)setOnlyTeamsWithAccount:(id)_account {
+  _account = [self _primaryKeyFromObject:_account];
   
   ASSIGN(self->onlyTeamsWithAccountId, _account);
 }
