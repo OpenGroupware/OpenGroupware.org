@@ -13,16 +13,23 @@
     <tabitem key="mygroups" label="mygroups">
 
       <!-- TODO: labels -->
-      <tableview var:list="groupList" var:item="item"
+      <tableview var:list="groupList" var:item="group"
                  titleString="Team List" footerString="teams:">
         <td title="name">
-          <var:string value="item.description" />
+          <var:string value="group.description" />
         </td>
         <td title="email">
-          <var:string value="item.email" />
+          <var:string value="group.email" />
+        </td>
+        <td title="owner">
+          <var:string value="group.ownerId" />
         </td>
         <td title="accounts">
-          TODO
+          <var:foreach list="group.members" item="account" 
+                       const:separator=", ">
+            <html:a directActionName="activate" var:_oid="account.companyId"
+              ><var:string value="account.login" /></html:a
+          ></var:foreach>
         </td>
       </tableview>
 

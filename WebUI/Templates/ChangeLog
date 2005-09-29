@@ -1,3 +1,8 @@
+2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GroupsUI/OGoGroupsPage.wox: use new ivar bindings, added a link to
+	  the account contact viewer, shows owner-id
+
 2005-09-27  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWScheduler/LSWAppointmentViewer.wox: properly trigger printApt

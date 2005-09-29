@@ -26,8 +26,11 @@
 @interface OGoGroupsPage : OGoContentPage
 {
   NSArray *groupList;
-  id item;
+  id group;
+  id account;
 }
+
+- (NSArray *)_fetchMyTeams;
 
 @end
 
@@ -35,25 +38,71 @@
 
 @implementation OGoGroupsPage
 
+static NSNotificationCenter *nc = nil;
+
++ (void)initialize {
+  if (nc == nil)
+    nc = [[NSNotificationCenter defaultCenter] retain];
+}
+
+- (void)_registerResetNotification:(NSString *)_name {
+  [nc addObserver:self selector:@selector(resetList:) name:_name object:nil];
+}
+
+- (id)init {
+  id p;
+
+  /* this component is a session-singleton */
+  if ((p = [self persistentInstance]) != nil) {
+    [self release];
+    return [p retain];
+  }
+  
+  if ((self = [super init]) != nil) {
+    [self registerAsPersistentInstance];
+    
+    [self _registerResetNotification:LSWNewAccountNotificationName];
+    [self _registerResetNotification:LSWDeletedAccountNotificationName];
+    [self _registerResetNotification:LSWNewTeamNotificationName];
+    [self _registerResetNotification:LSWDeletedTeamNotificationName];
+    [self _registerResetNotification:LSWUpdatedAccountNotificationName];
+    [self _registerResetNotification:LSWUpdatedTeamNotificationName];
+  }
+  return self;
+}
+
 - (void)dealloc {
+  [nc removeObserver:self];
+  
   [self->groupList release];
-  [self->item      release];
+  [self->group     release];
+  [self->account   release];
   [super dealloc];
 }
 
 /* accessors */
 
-- (void)setItem:(id)_value {
-  ASSIGN(self->item, _value);
+- (void)setGroup:(id)_value {
+  ASSIGN(self->group, _value);
 }
-- (id)item {
-  return self->item;
+- (id)group {
+  return self->group;
+}
+
+- (void)setAccount:(id)_value {
+  ASSIGN(self->account, _value);
+}
+- (id)account {
+  return self->account;
 }
 
 - (void)setGroupList:(NSArray *)_value {
   ASSIGN(self->groupList, _value);
 }
 - (NSArray *)groupList {
+  if (self->groupList == nil)
+    self->groupList = [[self _fetchMyTeams] retain];
+  
   return self->groupList;
 }
 
@@ -82,24 +131,29 @@
   
   teams = [cmdctx runCommand:@"team::get-by-globalID",
                   @"gids", gids, nil];
-  // TODO: fill in member info
   
-  //[self logWithFormat:@"performed fetch: %@", teams];
+  /* fetch members */
+
+  [cmdctx runCommand:@"team::members",
+	  @"teams",      teams,
+	  @"returnType", intObj(LSDBReturnType_ManyObjects), 
+	  nil];
+  
   return teams;
 }
 
 /* notifications */
 
-- (void)syncAwake {
-  [super syncAwake];
-  
-  if (self->groupList == nil)
-    [self setGroupList:[self _fetchMyTeams]];
+- (void)sleep {
+  [self setGroup:nil];
+  [self setAccount:nil];
+  [super sleep];
 }
 
-- (void)sleep {
-  [self setItem:nil];
-  [super sleep];
+- (void)resetList:(NSNotification *)_nc {
+  [self setGroupList:nil];
+  [self setGroup:nil];
+  [self setAccount:nil];
 }
 
 @end /* OGoGroupsPage */

@@ -1,3 +1,8 @@
+2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoGroupsPage.m: improved naming of ivars, handle notifications to
+	  track changes, fetches members of teams (v5.3.5)
+
 2005-09-28  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoGroupsPage.m: fetches member teams (v5.3.4)
