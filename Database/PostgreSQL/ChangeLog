@@ -1,3 +1,8 @@
+2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* pg-build-schema.psql: mark default teams as owned by root, readonly
+	  but not private
+
 2005-08-23  Helge Hess  <helge.hess@opengroupware.org>
 
 	* added pg-fill-objinfo.psql script to fill the obj_info table of the

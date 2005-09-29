@@ -1,3 +1,8 @@
+2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* build-schema.mysql5: mark default teams as owned by root, readonly
+	  but not private
+
 2005-04-19  Helge Hess  <helge.hess@skyrix.com>
 
 	* build-schema.mysql5: replaced PostgreSQL table inheritance with
