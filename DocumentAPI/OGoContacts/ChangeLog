@@ -1,3 +1,8 @@
+2005-09-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyContactsAccessHandler.m: major code cleanups, added debug logs
+	  (v5.3.47)
+
 2005-09-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* removed gcc4 warnings, removed some unnecessary autorelease calls
