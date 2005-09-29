@@ -1,3 +1,8 @@
+2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoModel.py (Team): expose isPrivate and isReadonly columns of
+	  team table (v5.3.17)
+
 2005-09-14  Helge Hess  <helge.hess@opengroupware.org>
 
 	* bundle-info.plist: fixed dependencies (this bundle provides the

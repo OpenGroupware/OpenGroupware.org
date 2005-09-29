@@ -3199,6 +3199,20 @@ Team = {
       width:      50,
       flags:      [ property, allowsNull, ],
     },
+    "isPrivate": {
+      column:     "is_private",
+      coltype:    't_bool',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ lock, property, allowsNull, ],
+    },
+    "isReadonly": {
+      column:     "is_readonly",
+      coltype:    't_bool',
+      valueClass: 'NSNumber',
+      valueType:  'i',
+      flags:      [ lock, property, allowsNull, ],
+    },
     "objectVersion": {
       column:     "object_version",
       coltype:    't_int',

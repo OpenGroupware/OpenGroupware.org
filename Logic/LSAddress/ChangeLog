@@ -1,5 +1,8 @@
 2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoCompanyAccessHandler.m: implemented 'owner', 'private' and
+	  'readonly' permission control for teams (v5.3.80)
+
 	* moved in OGoCompanyAccessHandler from DocumentAPI/OGoContacts
 	  (v5.3.79)
 

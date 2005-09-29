@@ -19,9 +19,9 @@
   02111-1307, USA.
 */
 
-#include <LSFoundation/SkyAccessHandler.h>
+#include <LSFoundation/OGoAccessHandler.h>
 
-@interface OGoCompanyAccessHandler : SkyAccessHandler
+@interface OGoCompanyAccessHandler : OGoAccessHandler
 @end
 
 #include "common.h"
@@ -30,9 +30,9 @@
 - (EOGlobalID *)globalID;
 @end
 
-@interface SkyAccessHandler(Internals)
+@interface OGoAccessHandler(Internals)
 - (BOOL)_checkGIDs:(NSArray *)_ids;
-@end /* SkyAccessHandler(Internals) */
+@end
 
 @implementation OGoCompanyAccessHandler
 
@@ -48,7 +48,7 @@ static BOOL debugOn = YES;
   if (contactPermAttrs == nil) {
     contactPermAttrs = [[NSArray alloc] initWithObjects:@"ownerId",
 					  @"isPrivate", @"isReadonly",
-					  @"globalID", nil];
+					  @"companyId", @"globalID", nil];
   }
   if (entityNames == nil) {
     id name[4];
@@ -280,12 +280,14 @@ static BOOL debugOn = YES;
   return [self _checkAccessMask:perm with:_operation];
 }
 
-- (BOOL)isAccessGIDRoot:(EOGlobalID *)_accessGID {
+- (BOOL)isContactPKeyRoot:(NSNumber *)_pkey {
   // TODO: root role
+  return [_pkey intValue] == 10000 ? YES : NO;
+}
+- (BOOL)isContactGIDRoot:(EOGlobalID *)_accessGID {
   if (_accessGID == nil)
     return NO;
-  return ([[(EOKeyGlobalID *)_accessGID keyValues][0] intValue] == 10000)
-    ? YES : NO;
+  return [self isContactPKeyRoot:[(EOKeyGlobalID *)_accessGID keyValues][0]];
 }
 
 - (NSArray *)removeDuplicatesInArray:(NSArray *)_array {
@@ -297,21 +299,21 @@ static BOOL debugOn = YES;
 }
 
 - (NSArray *)filterOutTeamGIDsFromArray:(NSArray *)_oids
-  addTeamsToArray:(NSMutableArray *)result
+  addTeamGIDsToArray:(NSMutableArray *)_teamGIDs
 {
-  NSEnumerator *enumerator;
-  id           obj, *objs;
-  int          cnt;
-
-  cnt  = 0;
+  NSEnumerator  *enumerator;
+  EOKeyGlobalID *oid;
+  id            *objs;
+  int           cnt;
+  
   objs = calloc([_oids count] + 2, sizeof(id));
   
   enumerator = [_oids objectEnumerator];
-  while ((obj = [enumerator nextObject]) != nil) {
-    if ([[obj entityName] isEqualToString:@"Team"])
-      [result addObject:obj];
+  for (cnt = 0; (oid = [enumerator nextObject]) != nil; ) {
+    if ([[oid entityName] isEqualToString:@"Team"])
+      [_teamGIDs addObject:oid];
     else {
-      objs[cnt] = obj;
+      objs[cnt] = oid;
       cnt++;
     }
   }
@@ -338,13 +340,167 @@ static BOOL debugOn = YES;
 
 - (NSDictionary *)accessCacheForObjects:(id)objects {
   // TODO: explain what this method does
+  // I think it retrieves the objects' ACL w/o the object stuff
   OGoAccessManager *manager;
   NSArray *oids;
-      
+  
   manager = [[self context] accessManager];
   oids    = [objects valueForKey:@"globalID"];
-  return [manager allowedOperationsForObjectIds:oids
-                  accessGlobalIDs:nil];
+  return [manager allowedOperationsForObjectIds:oids accessGlobalIDs:nil];
+}
+
+- (NSString *)_calculateReadOnlyAndPrivateForTeamPermRecord:(id)_permInfos
+  accessGID:(EOKeyGlobalID *)_accessGID
+{
+  /*
+    Rules for teams:
+    - all teams owned by root or none are treated as read/only for everyone
+      (compatibility rule, we probably want to mark all default teams readOnly)
+    - if the _accessGID is the owner, he has full read/write access
+    - otherwise:
+      - if the team is isPrivate
+        - members get read permission
+          - if the team is not isReadOnly they get write access
+        - none-members get no access at all
+      - if the team is not isPrivate
+        - everyone gets read permission
+        - if the team is not isReadOnly everyone get write access?
+          - TODO: should be limited to members? => no not really I guess
+  */
+  NSNumber *ownerId;
+  NSArray  *memberGIDs;
+  
+  /* check root */
+  
+  if ([self isContactGIDRoot:_accessGID]) /* root has full access */
+    return @"rw";
+  
+  /* check owner-id */
+  
+  ownerId = [_permInfos valueForKey:@"ownerId"];
+  
+  if (![ownerId isNotNull]) { /* treat unassigned IDs as pub/r */
+    if (debugOn) [self debugWithFormat:@"  team is not owned => r"];
+    return @"r";
+  }
+  
+  if ([self isContactPKeyRoot:ownerId]) { /* treat root owned as pub/r */
+    if (debugOn) [self debugWithFormat:@"  team is owned by root => r"];
+    return @"r";
+  }
+  
+  if ([ownerId isEqual:[_accessGID keyValues][0]]) {
+    if (debugOn) [self debugWithFormat:@"  team is owned by access-id => rw"];
+    return @"rw";
+  }
+  
+  /* owner is neither accessor nor root or empty */
+  
+  if (![[_permInfos valueForKey:@"isPrivate"] boolValue]) {
+    /* item is public */
+    if (debugOn) [self debugWithFormat:@"  team is public => r or rw"];
+    return [[_permInfos valueForKey:@"isReadonly"] boolValue] ? @"r" : @"rw";
+  }
+  
+  /* the item is private, check whether we are a member */
+  
+  memberGIDs = [[self context] runCommand:@"team::members",
+			       @"group", [_permInfos valueForKey:@"globalID"],
+			       @"fetchGlobalIDs",[NSNumber numberWithBool:YES],
+			       nil];
+
+  if (![memberGIDs containsObject:_accessGID]) {
+    /* access-id is not a member, so no access at all to private team */
+    if (debugOn) [self debugWithFormat:@"  not a member, private team."];
+    return @"";
+  }
+  
+  if (debugOn) [self debugWithFormat:@"  we are a member => r or rw"];
+  return [[_permInfos valueForKey:@"isReadonly"] boolValue] ? @"r" : @"rw";
+}
+
+- (void)addAllowedTeamGIDs:(NSArray *)_oids toArray:(NSMutableArray *)result
+  forOperation:(NSString *)_operation
+  forAccessGlobalID:(EOGlobalID *)_accessGID
+  searchAll:(BOOL)_all
+{
+  /*
+    Note: we do not check ACLs for teams. Might be too slow or then maybe not.
+    
+    Note: root is already catched, so this method doesn't need to care about
+          that.
+  */
+  NSArray      *permInfos;
+  NSDictionary *permInfoRec;
+  NSEnumerator *enumerator;
+  
+  if (![_oids isNotEmpty])
+    return;
+  
+  /* we first add all GIDs and then remove them when necessary */
+  [result addObjectsFromArray:_oids];
+  
+  permInfos = [self fetchCompanyPermAttrsForGIDs:_oids];
+
+  enumerator = [permInfos objectEnumerator];
+  while ((permInfoRec = [enumerator nextObject]) != nil) {
+    NSString *perm;
+    
+    perm = [self _calculateReadOnlyAndPrivateForTeamPermRecord:permInfoRec
+		 accessGID:(EOKeyGlobalID *)_accessGID];
+    [self cacheOperation:perm for:[permInfoRec valueForKey:@"globalID"]];
+    
+    if (debugOn) {
+      [self debugWithFormat:@"access on team %@: '%@'", 
+	      [permInfoRec valueForKey:@"companyId"], perm];
+    }
+    
+    if (![self _checkAccessMask:perm with:_operation])
+      [result removeObject:[permInfoRec valueForKey:@"globalID"]];
+  }
+}
+
+- (void)addAllowedContactGIDs:(NSArray *)_oids toArray:(NSMutableArray *)result
+  forOperation:(NSString *)_operation
+  forAccessGlobalID:(EOGlobalID *)_accessGID
+  searchAll:(BOOL)_all
+{
+  /*
+    Note: root is already catched, so this method doesn't need to care about
+          that.
+  */
+  NSArray      *permInfos, *teams;
+  NSDictionary *accessCache;
+  NSDictionary *permInfoRec;
+  NSEnumerator *enumerator;
+  
+  if (![_oids isNotEmpty])
+    return;
+  
+  permInfos = [self fetchCompanyPermAttrsForGIDs:_oids];
+  
+  // TODO: explain that section
+  
+  accessCache = [self accessCacheForObjects:permInfos];
+  
+  /* fetched on-demand (required for resolving team ACLs entries) */
+  teams = nil;
+  
+  enumerator = [permInfos objectEnumerator];
+  while ((permInfoRec = [enumerator nextObject]) != nil) {
+    NSDictionary *cache;
+    
+    cache = [accessCache objectForKey:[permInfoRec valueForKey:@"globalID"]];
+    
+    if ([self _checkAccess:_operation forCompanyPermRecord:permInfoRec
+	      accessGID:(EOKeyGlobalID *)_accessGID
+	      teamGIds:&teams
+	      cache:cache]) {
+      [result addObject:[permInfoRec valueForKey:@"globalID"]];
+    }
+    else if (!_all) // TODO: explain (I think this aborts all if one fails)
+      break;
+  }
 }
 
 - (NSArray *)objects:(NSArray *)_oids
@@ -354,8 +510,8 @@ static BOOL debugOn = YES;
 {
   // TODO: split up
   // TODO: document what '_all' does
-  NSMutableArray   *result;
-  NSEnumerator     *enumerator;
+  NSMutableArray *resultGIDs, *teamGIDs;
+  NSArray        *contactGIDs;
   
   if (debugOn) {
     [self debugWithFormat:@"filter op '%@' on %d gids for %@ (all=%s)",
@@ -382,52 +538,28 @@ static BOOL debugOn = YES;
 
   /* first allow everything for root */
   
-  if ([self isAccessGIDRoot:_accessGID]) { /* root sees everything */
+  if ([self isContactGIDRoot:_accessGID]) { /* root sees everything */
     if (debugOn) [self debugWithFormat:@"  allowed all for root ..."];
     return _oids;
   }
+
+  resultGIDs = [NSMutableArray arrayWithCapacity:[_oids count]];
+  teamGIDs   = [NSMutableArray arrayWithCapacity:[_oids count]];
   
   /* process Teams */
   
-  result  = [NSMutableArray arrayWithCapacity:[_oids count]];
+  contactGIDs = [self filterOutTeamGIDsFromArray:_oids
+		      addTeamGIDsToArray:teamGIDs];
   
-  _oids = [self filterOutTeamGIDsFromArray:_oids
-                addTeamsToArray:result];
+  [self addAllowedTeamGIDs:teamGIDs toArray:resultGIDs
+	forOperation:_operation forAccessGlobalID:_accessGID
+	searchAll:_all];
   
-  if (![_oids isNotEmpty]) /* found only teams */
-    return result;
+  [self addAllowedContactGIDs:contactGIDs toArray:resultGIDs
+	forOperation:_operation forAccessGlobalID:_accessGID
+	searchAll:_all];
   
-  {
-    NSArray      *objects, *teams;
-    NSDictionary *accessCache;
-    NSDictionary *permInfoRec;
-    
-    objects = [self fetchCompanyPermAttrsForGIDs:_oids];
-    
-    // TODO: explain that section
-    
-    accessCache = [self accessCacheForObjects:objects];
-    
-    /* fetched on-demand */
-    teams = nil;
-    
-    enumerator = [objects objectEnumerator];
-    while ((permInfoRec = [enumerator nextObject]) != nil) {
-      NSDictionary *cache;
-      
-      cache = [accessCache objectForKey:[permInfoRec valueForKey:@"globalID"]];
-      
-      if ([self _checkAccess:_operation forCompanyPermRecord:permInfoRec
-                accessGID:(EOKeyGlobalID *)_accessGID
-                teamGIds:&teams
-                cache:cache]) {
-        [result addObject:[permInfoRec valueForKey:@"globalID"]];
-      }
-      else if (!_all) // TODO: explain (I think this aborts all if one fails)
-	break;
-    }
-  }
-  return result;
+  return resultGIDs;
 }
 
 - (BOOL)operation:(NSString *)_operation
@@ -441,7 +573,7 @@ static BOOL debugOn = YES;
           _operation, [_oids count], _accessGID];
   }
   
-  if ([self isAccessGIDRoot:_accessGID]) {
+  if ([self isContactGIDRoot:_accessGID]) {
     if (debugOn) [self debugWithFormat:@"  allowed all for root ..."];
     return YES;
   }

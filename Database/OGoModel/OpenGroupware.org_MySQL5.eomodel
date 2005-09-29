@@ -4,7 +4,7 @@
   adaptorName      = "MySQL";
 
   pkeyGeneratorDictionary = {
-    newKeyExpression = "UPDATE key_generator SET id=LAST_INSERT_ID(id+1);SELECT LAST_INSERT_ID()";
+    newKeyExpression = "UPDATE key_generator SET id=LAST_INSERT_ID(id+1); SELECT LAST_INSERT_ID()";
   };
   
   entities = (
@@ -6293,11 +6293,18 @@
       className            = "LSTeam";
       primaryKeyAttributes = ( "companyId" );
       
-      attributesUsedForLocking = ( companyId, objectVersion, ownerId );
+      attributesUsedForLocking = (
+        isReadonly,
+        companyId,
+        isPrivate,
+        objectVersion,
+        ownerId,
+      );
       classProperties = (
         isLocationTeam,
         emailAlias,
         office,
+        isReadonly,
         sensitivity,
         assistantName,
         number,
@@ -6307,14 +6314,14 @@
         companyId,
         anniversary,
         fileas,
-        department,
+        isPrivate,
         email,
         partnerName,
         associatedContacts,
         description,
         objectVersion,
         isTeam,
-        nameTitle,
+        department,
         bossName,
         freebusyUrl,
         associatedCategories,
@@ -6323,6 +6330,7 @@
         imAddress,
         ownerId,
         login,
+        nameTitle,
         dirServer,
         toCompanyAssignment,
         toStaff,
@@ -6478,6 +6486,22 @@
         {
           name           = "isLocationTeam";
           columnName     = "is_location_team";
+          externalType   = "INT";
+          valueClassName = "NSNumber";
+          valueType      = i;
+          allowsNull     = Y;
+        },
+        {
+          name           = "isPrivate";
+          columnName     = "is_private";
+          externalType   = "INT";
+          valueClassName = "NSNumber";
+          valueType      = i;
+          allowsNull     = Y;
+        },
+        {
+          name           = "isReadonly";
+          columnName     = "is_readonly";
           externalType   = "INT";
           valueClassName = "NSNumber";
           valueType      = i;
