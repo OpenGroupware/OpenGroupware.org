@@ -91,5 +91,19 @@
         { name = LSGetVCardForGlobalIDsCommand;       },
         { name = LSSetVCardCommand;                   }
     );
+
+    SkyAccessHandlers = (
+      { name = "Person";     },
+      { name = "Company";    },
+      { name = "Enterprise"; },
+      { name = "Team";       }
+    );
+  };
+
+  SkyAccessHandlers = {
+    Person         = "OGoCompanyAccessHandler";
+    Enterprise     = "OGoCompanyAccessHandler";
+    Company        = "OGoCompanyAccessHandler";
+    Team           = "OGoCompanyAccessHandler";
   };
 }

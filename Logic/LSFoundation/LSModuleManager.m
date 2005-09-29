@@ -101,8 +101,8 @@
 #endif
   
   if (defaults == nil) {
-    [self logWithFormat:
-            @"WARNING(%s): couldn't load defaults of bundle %@ (path=%@)",
+    [self warnWithFormat:
+            @"%s: couldn't load defaults of bundle %@ (path=%@)",
             __PRETTY_FUNCTION__,
             [_bundle bundleName], path];
     return;
@@ -185,13 +185,13 @@
     Class    clazz;
     
     if ((clazzName = [classDict objectForKey:@"name"]) == nil) {
-      [self logWithFormat:@"ERROR: got invalid 'classes' dict: %@", classDict];
+      [self errorWithFormat:@"got invalid 'classes' dict: %@", classDict];
       continue;
     }
     
     if ((clazz = NSClassFromString(clazzName)) == Nil) {
-      [self logWithFormat:
-	      @"WARNING: did not find class as registered in bundle: '%@'\n  "
+      [self warnWithFormat:
+	      @"did not find class as registered in bundle: '%@'\n  "
 	      @"%@", clazzName, _bundle];
       continue;
     }

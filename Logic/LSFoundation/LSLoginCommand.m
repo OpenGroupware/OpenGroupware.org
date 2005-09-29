@@ -91,10 +91,8 @@
     [users addObject:user];
   user = [users lastObject];
   
-  if ([users count] > 1) {
-    [self logWithFormat:
-	    @"WARNING: more than one user for login '%@'!", [self login]];
-  }
+  if ([users count] > 1)
+    [self warnWithFormat:@"more than one user for login '%@'!", [self login]];
   
   [LSUserNotAuthorizedException raiseOnFail:(user != nil) object:self
                                 reason:@"no permission to login"];

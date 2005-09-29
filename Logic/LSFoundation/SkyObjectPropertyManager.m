@@ -263,8 +263,8 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
     error = [adc selectAttributesX:attrs
 		 describedByQualifier:q fetchOrder:nil lock:NO];
     if (error != nil) {
-      NSLog(@"ERROR[%s]: select for qualifier %@ failed: %@",
-            __PRETTY_FUNCTION__, q, error);
+      [self errorWithFormat:@"%s: select for qualifier %@ failed: %@",
+            __PRETTY_FUNCTION__, q, error];
       [q release]; q = nil;
       return nil;
     }
@@ -300,12 +300,12 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   object = nil;
   kgid   = [_mapping objectForKey:[_obj objectForKey:@"objectId"]];
 
-  if (!kgid) {
-    NSLog(@"WARNING: missing globalID for obj %@ mapOIDsWithGIDs %@",
-          _obj, _mapping);
+  if (kgid == nil) {
+    [self warnWithFormat:@"missing globalID for obj %@ mapOIDsWithGIDs %@",
+          _obj, _mapping];
     return;
   }
-  if (!(dict = [_props objectForKey:kgid])) {
+  if ((dict = [_props objectForKey:kgid]) == nil) {
     dict = [NSMutableDictionary dictionaryWithCapacity:64];
     [_props setObject:dict forKey:kgid];
   }
@@ -326,8 +326,8 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
       object = [NSURL URLWithString:urlStr];
     }
     else {
-      NSLog(@"WARNING[%s]: missing string for url-type",
-            __PRETTY_FUNCTION__);
+      [self warnWithFormat:@"%s: missing string for url-type",
+            __PRETTY_FUNCTION__];
       object = [NSNull null];
     }
   }
@@ -487,8 +487,8 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   error = [adc selectAttributesX:attrs describedByQualifier:qualifier
 	       fetchOrder:nil lock:NO];
   if (error != nil) {
-    NSLog(@"ERROR[%s]: select for qualifier %@ failed: %@", 
-	  __PRETTY_FUNCTION__, qualifier, error);
+    [self errorWithFormat:@"%s: select for qualifier %@ failed: %@", 
+	  __PRETTY_FUNCTION__, qualifier, error];
     [qualifier release]; qualifier = nil;
     return [NSArray array];
   }
@@ -511,7 +511,7 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
       k   = nsNameString(nsp, [fetch objectForKey:@"key"]);
     }
     if (k == nil) {
-      [self logWithFormat:@"WARNING(%s): missing key for globalID %@", 
+      [self warnWithFormat:@"%s: missing key for globalID %@", 
 	    __PRETTY_FUNCTION__, _gid];
       k = @"";
     }
@@ -607,8 +607,8 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
     _name = nil;
 
   if (_pQual == nil || (![_pQual isNotNull])) {
-    NSLog(@"WARNING[%s]: missing qualifier entityName %@",
-          __PRETTY_FUNCTION__, _name);
+    [self warnWithFormat:@"%s: missing qualifier entityName %@",
+          __PRETTY_FUNCTION__, _name];
     return [NSArray array];
   }
   
@@ -663,8 +663,8 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   [self _ensureOpenTransaction];
   {
     if (![adc evaluateExpression:qualifier]) {
-      NSLog(@"ERROR[%s]: evaluation of %@ failed",
-            __PRETTY_FUNCTION__, qualifier);
+      [self errorWithFormat:@"%s: evaluation of %@ failed",
+            __PRETTY_FUNCTION__, qualifier];
       return [NSArray array];
     }
     result = [[NSMutableArray alloc] initWithCapacity:255];
@@ -693,9 +693,7 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
 	EOGlobalID *gid;
 	
 	if ((gid = [self _processPropertyGlobalIDRow:row]) == nil) {
-	  [self logWithFormat:
-		  @"WARNING: got not global-id for property row: %@",
-		  row];
+	  [self warnWithFormat:@"got not global-id for property row: %@", row];
 	  continue;
 	}
 	
@@ -870,8 +868,8 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   if (_check) {
     if (![[self->context accessManager] operation:@"w"
                                         allowedOnObjectID:_gid]) {
-      NSLog(@"WARNING[%s] no write acccess for gid ", __PRETTY_FUNCTION__,
-            _gid);
+      [self warnWithFormat:@"%s no write acccess for gid: %@",
+	      __PRETTY_FUNCTION__, _gid];
       return nil;
     }
   }
@@ -943,7 +941,8 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   static NSString *AccessKey = @"accessKey";
 
   if (![[self->context accessManager] operation:@"w" allowedOnObjectID:_gid]) {
-    NSLog(@"WARNING[%s] no read acccess for gid ", __PRETTY_FUNCTION__, _gid);
+    [self warnWithFormat:@"%s: no read acccess for gid: %@", 
+	  __PRETTY_FUNCTION__, _gid];
     return nil;
   }
   e      = [self entity];
@@ -1194,11 +1193,12 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   NSDictionary *props;
   
   if ([_source count] != [_dest count]) {
-    NSLog(@"WARNING[%s]: unbalanced source/destination _source %@ _dest %@",
-          __PRETTY_FUNCTION__, _source, _dest);
+    [self warnWithFormat:
+	    @"%s: unbalanced source/destination _source %@ _dest %@",
+            __PRETTY_FUNCTION__, _source, _dest];
     return NO;
   }
-  if (![_source count])
+  if (![_source isNotEmpty])
     return YES;
 
   sourceEnum = [_source objectEnumerator];

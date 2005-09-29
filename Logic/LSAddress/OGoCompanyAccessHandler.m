@@ -21,13 +21,10 @@
 
 #include <LSFoundation/SkyAccessHandler.h>
 
-// TODO: this belongs into Logic/LSAddress
-
-@interface SkyContactsAccessHandler : SkyAccessHandler
+@interface OGoCompanyAccessHandler : SkyAccessHandler
 @end
 
 #include "common.h"
-#include "timing.h"
 
 @interface NSObject(Private)
 - (EOGlobalID *)globalID;
@@ -37,7 +34,7 @@
 - (BOOL)_checkGIDs:(NSArray *)_ids;
 @end /* SkyAccessHandler(Internals) */
 
-@implementation SkyContactsAccessHandler
+@implementation OGoCompanyAccessHandler
 
 static NSArray *entityNames = nil;
 static NSArray *contactPermAttrs = nil;
@@ -406,7 +403,6 @@ static BOOL debugOn = YES;
     NSDictionary *permInfoRec;
     
     objects = [self fetchCompanyPermAttrsForGIDs:_oids];
-    TIME_END();
     
     // TODO: explain that section
     
@@ -470,4 +466,4 @@ static BOOL debugOn = YES;
   return entityNames;
 }
 
-@end /* SkyContactsAccessHandler */
+@end /* OGoCompanyAccessHandler */

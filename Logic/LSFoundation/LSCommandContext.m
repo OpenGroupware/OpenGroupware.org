@@ -118,13 +118,13 @@ NSString *ProfileCommandsFileName = nil;
     self->accessManager = [[SkyAccessManager alloc] initWithContext:self];
     
     if (self->typeManager == nil)
-      [self logWithFormat:@"ERROR: LSTypeManager is missing!"];
+      [self errorWithFormat:@"LSTypeManager is missing!"];
     if (self->objectPropertyManager == nil)
-      [self logWithFormat:@"ERROR: SkyObjectPropertyManager is missing!"];
+      [self errorWithFormat:@"SkyObjectPropertyManager is missing!"];
     if (self->linkManager == nil)
-      [self logWithFormat:@"ERROR: OGoObjectLinkManager is missing!"];
+      [self errorWithFormat:@"OGoObjectLinkManager is missing!"];
     if (self->accessManager == nil)
-      [self logWithFormat:@"ERROR: SkyAccessManager is missing!"];
+      [self errorWithFormat:@"SkyAccessManager is missing!"];
 
     /* ivars */
     
@@ -573,7 +573,7 @@ static inline void _markAccessed(LSCommandContext *self) {
   
   /* try to open channel */
   if (![dbCh openChannel]) {
-    [self logWithFormat:@"ERROR: couldn't open database channel !"];
+    [self errorWithFormat:@"could not open database channel !"];
     return NO;
   }
   
@@ -711,7 +711,7 @@ static inline void _markAccessed(LSCommandContext *self) {
   dbCtx = [self valueForKey:LSDatabaseContextKey];
 
   if (![dbCtx commitTransaction]) {
-    [self logWithFormat:@"ERROR: couldn't commit database transaction !"];
+    [self errorWithFormat:@"could not commit database transaction !"];
     _markAccessed(self);
     return NO;
   }
@@ -780,18 +780,16 @@ static NSMutableArray *ctxStack = nil;
   id ctx;
   
   if (ctxStack == nil) {
-    [self logWithFormat:@"WARNING(-popContext:): context stack is not setup."];
+    [self warnWithFormat:@"-popContext: context stack is not setup."];
     return;
   }
   if ((count = [ctxStack count]) == 0) {
-    [self logWithFormat:@"WARNING(-popContext:): context stack is empty."];
+    [self warnWithFormat:@"-popContext: context stack is empty."];
     return;
   }
 
-  ctx = [ctxStack objectAtIndex:(count - 1)];
-  if (ctx != self) {
-    [self logWithFormat:
-            @"WARNING(-popContext:): different ctx on top of stack."];
+  if ((ctx = [ctxStack objectAtIndex:(count - 1)]) != self) {
+    [self warnWithFormat:@"-popContext: different ctx on top of stack."];
     return;
   }
   

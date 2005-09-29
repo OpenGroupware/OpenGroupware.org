@@ -249,7 +249,7 @@ static NSNull   *null = nil;
         OGoObjectLink *lnk;
         
         if ((lnk = [OGoObjectLink objectLinkWithAttributes:dict]) == nil) {
-          [self logWithFormat:@"ERROR: could not create link object: id=%@",
+          [self errorWithFormat:@"could not create link object: id=%@",
                   [dict valueForKey:@"objectLinkId"]];
           continue;
         }
@@ -328,7 +328,7 @@ static NSNull   *null = nil;
   str                 = [NSMutableString stringWithCapacity:32];
 
   if (_gid == nil) {
-    [self debugWithFormat:@"WARNING[%s] got empty gid for action [%@]",
+    [self warnWithFormat:@"%s: got empty gid for action [%@]",
           __PRETTY_FUNCTION__, _action];
     return nil;
   }

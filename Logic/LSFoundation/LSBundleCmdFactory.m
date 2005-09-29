@@ -126,8 +126,8 @@
   //NSLog(@"lookup info for command %@ in %@", _command, _bundle);
   
   if ((path = [_bundle pathForResource:@"commands" ofType:@"plist"]) == nil) {
-    NSLog(@"WARNING: did not find commands.plist in bundle %@ !",
-          [_bundle bundlePath]);
+    [self warnWithFormat:@"did not find commands.plist in bundle %@ !",
+          [_bundle bundlePath]];
   }
   else {
     NSDictionary *commands;
@@ -136,7 +136,7 @@
       [self processCommandDictionary:commands ofBundle:_bundle];
     }
     else
-      NSLog(@"WARNING: could not load commands model %@ !", path);
+      [self warnWithFormat:@"could not load commands model: %@", path];
   }
   
   /* look into info cache (which got filled previously) */
@@ -222,8 +222,8 @@
     _i->commandClass = NSClassFromString(_i->commandClassName);
   
   if (_i->commandClass == nil) {
-    NSLog(@"ERROR: did not find class %@ for command %@",
-          _i->commandClassName, _i->command);
+    [self errorWithFormat:@"did not find class %@ for command %@",
+          _i->commandClassName, _i->command];
     return nil;
   }
 

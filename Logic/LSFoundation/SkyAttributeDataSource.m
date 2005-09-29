@@ -52,7 +52,7 @@ static BOOL debugOn = NO;
 }
 
 - (id)init {
-  NSLog(@"WARNING: Wrong initializer, use 'initWithContext:'");
+  [self errorWithFormat:@"Wrong initializer, use 'initWithContext:'"];
   [self release];
   return nil;
 }
@@ -60,7 +60,7 @@ static BOOL debugOn = NO;
 - (id)initWithDataSource:(EODataSource *)_ds context:(id)_context {
   if ((self = [super init])) {
     if (![_ds isKindOfClass:[EODataSource class]]) {
-      [self logWithFormat:@"ERROR(%s): expected datasource as parameter: %@", 
+      [self errorWithFormat:@"%s: expected datasource as parameter: %@", 
 	    __PRETTY_FUNCTION__, _ds];
       [self release];
       return nil;
@@ -101,14 +101,14 @@ static BOOL debugOn = NO;
 }
 
 - (NSSet *)namespaces {
-  [self logWithFormat:
-	  @"WARNING(%s): use of deprecated method, set namespace in hints",
+  [self warnWithFormat:
+	  @"%s: use of deprecated method, set namespace in hints",
 	  __PRETTY_FUNCTION__];
   return self->namespaces;
 }
 - (void)setNamespaces:(NSSet *)_ns {
-  [self logWithFormat:
-	  @"WARNING(%s): use of deprecated method, set namespace in hints",
+  [self warnWithFormat:
+	  @"%s: use of deprecated method, set namespace in hints",
           __PRETTY_FUNCTION__];
   ASSIGN(self->namespaces, _ns);
 }
@@ -211,15 +211,15 @@ static BOOL debugOn = NO;
   /* check preconditions */
   
   if ((qualifier = [self->fetchSpecification qualifier]) == nil) {
-    [self logWithFormat:@"WARNING(%s): missing qualifier", 
+    [self warnWithFormat:@"%s: missing qualifier", 
 	    __PRETTY_FUNCTION__];
     return nil;
   }
   if (debugOn) [self debugWithFormat:@"  qualifier: %@", qualifier];
   
   if (![self isNamespaceOrDbKeysValid]) {
-    [self logWithFormat:
-	    @"ERROR(%s): either defaultNamespace and dbKeys has to be nil "
+    [self errorWithFormat:
+	    @"%s: either defaultNamespace and dbKeys has to be nil "
             @"or values", __PRETTY_FUNCTION__];
     return nil;
   }

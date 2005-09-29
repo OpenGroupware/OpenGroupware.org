@@ -131,8 +131,8 @@
       continue;
     }
     
-    [self logWithFormat:
-            @"WARNING: date command argument '%@' is not a date (%@): %@", 
+    [self warnWithFormat:
+            @"date command argument '%@' is not a date (%@): %@", 
             key, NSStringFromClass([value class]), value];
     
     /* coerce a value to a date */
@@ -141,8 +141,8 @@
     date = [NSCalendarDate dateWithString:[value stringValue]
                            calendarFormat:fmt];
     if (date == nil) {
-      [self logWithFormat:
-              @"ERROR: Could not convert key %@ (%@:%@) to date, format is %@",
+      [self errorWithFormat:
+              @"Could not convert key %@ (%@:%@) to date, format is %@",
 	      key, NSStringFromClass([value class]), value,
               [attr calendarFormat]];
     }
@@ -293,8 +293,8 @@
   NSArray  *pkeys  = [entity primaryKeyAttributeNames];
 
   if ([pkeys count] != 1) {
-    [self logWithFormat:
-            @"ERROR(%s): can only handle entities with one primary key "
+    [self errorWithFormat:
+            @"%s: can only handle entities with one primary key "
             @"(entity=%@, keys=%@)!", __PRETTY_FUNCTION__, entity, pkeys];
     return nil;
   }
@@ -361,7 +361,7 @@
     
     pkey = [_ids objectAtIndex:i];
     if (![pkey isNotNull]) {
-      [self logWithFormat:@"WARNING: found null in primary-key array!"
+      [self warnWithFormat:@"found null in primary-key array!"
 	      @" (usually due to a broken constraint in the DB!)"];
       continue;
     }

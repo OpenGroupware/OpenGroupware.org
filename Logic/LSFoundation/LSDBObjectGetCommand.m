@@ -109,7 +109,7 @@ static NSNumber *yesNum = nil;
     id          value          = nil;
       
     if ((attr = [myEntity attributeNamed:key]) == nil) {
-      [self logWithFormat:@"ERROR: did not find attribute for key %@.", key];
+      [self errorWithFormat:@"did not find attribute for key %@.", key];
       continue;
     }
     
@@ -216,10 +216,10 @@ static NSNumber *yesNum = nil;
 - (void)_prepareForExecutionInContext:(id)_context {
   NSNumber *pkey;
   
-  if (self->qualifier)
-    [self logWithFormat:@"WARNING: qualifier already set ..."];
+  if (self->qualifier != nil)
+    [self warnWithFormat:@"qualifier already set ..."];
   
-  if ((pkey = [self->recordDict objectForKey:@"oid"])) {
+  if ((pkey = [self->recordDict objectForKey:@"oid"]) != nil) {
     [self setPrimaryKeyValue:pkey];
     [self->recordDict removeObjectForKey:@"oid"];
   }

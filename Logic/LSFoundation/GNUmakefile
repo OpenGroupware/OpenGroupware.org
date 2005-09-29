@@ -46,6 +46,7 @@ libLSFoundation_HEADER_FILES = \
 	SkyAttributeDataSource.h	\
 	SkyAccessManager.h		\
 	OGoAccessManager.h		\
+	OGoAccessHandler.h		\
 	SkyAccessHandler.h		\
 	OGoObjectLink.h			\
 	OGoObjectLinkManager.h		\
@@ -89,7 +90,7 @@ libLSFoundation_OBJC_FILES = \
 	SkyAttributeDataSource.m		\
 	SkyAttributeDataSource+Internals.m	\
 	OGoAccessManager.m			\
-	SkyAccessHandler.m			\
+	OGoAccessHandler.m			\
 	SkyPropertyValues.m			\
 	OGoObjectLink.m				\
 	OGoObjectLinkManager.m			\

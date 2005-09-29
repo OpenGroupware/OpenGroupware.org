@@ -22,7 +22,7 @@
 #include "LSCommandContext.h"
 #include "LSCommandKeys.h"
 #include "common.h"
-#include <LSFoundation/SkyAccessHandler.h>
+#include <LSFoundation/OGoAccessHandler.h>
 #include <LSFoundation/LSFoundation.h>
 
 #if 0
@@ -44,7 +44,7 @@
 - (void)postFlagsDidChange:(EOGlobalID *)_gid;
 
 - (void)_checkBundleForAccessHandlers:(NSBundle *)_bundle;
-- (id<SkyAccessHandler>)_accessHandlerForObjectID:(EOGlobalID *)_gid;
+- (id<OGoAccessHandler>)_accessHandlerForObjectID:(EOGlobalID *)_gid;
 - (void)_checkForAccessHandlers;
 
 - (EOEntity *)aclEntity;
@@ -161,7 +161,7 @@ static Class   StrClass = Nil;
 {
   EOGlobalID           *loginID = nil;
   id                   login    = nil;
-  id<SkyAccessHandler> handler  = nil;
+  id<OGoAccessHandler> handler  = nil;
   BOOL                 result;
   NSArray              *oids;
 
@@ -172,7 +172,7 @@ static Class   StrClass = Nil;
   loginID = [login valueForKey:@"globalID"];
 
   if (![_accountID isNotNull]) {
-    NSLog(@"WARNING[%s]: missing _accountID", __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"%s: missing _accountID", __PRETTY_FUNCTION__];
     return NO;
   }
   if (![_oids isNotNull])       return NO;
@@ -303,7 +303,7 @@ static Class   StrClass = Nil;
   addToAllowedCArray:(id *)allowed allowedCount:(unsigned *)allowCnt
 {
   /* let handler filters OIDs and add the result set to the allowed array */
-  id<SkyAccessHandler> handler;
+  id<OGoAccessHandler> handler;
   NSEnumerator  *enumerator;
   EOKeyGlobalID *gid;
   NSArray       *oids;
@@ -311,10 +311,8 @@ static Class   StrClass = Nil;
   if ([_oids count] == 0) /* nothing to check */
     return;
 
-  if ((handler = [self _accessHandlerForObjectID:[_oids lastObject]]) == nil) {
-    [self logWithFormat:@"WARNING: found no access handler for %@",
-	    [_oids lastObject]];
-  }
+  if ((handler = [self _accessHandlerForObjectID:[_oids lastObject]]) == nil)
+    [self warnWithFormat:@"found no access handler for %@",[_oids lastObject]];
   
   if (debugOn) {
     [self debugWithFormat:@"  check op '%@' account %@: %@",
@@ -369,8 +367,7 @@ static Class   StrClass = Nil;
   }
   
   if (![_oids isNotNull]) {
-    [self debugWithFormat:@"WARNING[%s]: no oids passed in.",
-	    __PRETTY_FUNCTION__];
+    [self warnWithFormat:@"%s: no oids passed in.", __PRETTY_FUNCTION__];
     return nil;
   }
   if ([_oids count] == 0) {
@@ -386,7 +383,7 @@ static Class   StrClass = Nil;
   }
   
   if (![_accountID isNotNull]) {
-    NSLog(@"ERROR(%s): missing access id", __PRETTY_FUNCTION__);
+    [self errorWithFormat:@"%s: missing access id", __PRETTY_FUNCTION__];
     return [NSArray array];
   }
 
@@ -518,13 +515,13 @@ static Class   StrClass = Nil;
   BOOL delete;
 
   if (![_objId isNotNull]) {
-    NSLog(@"WARNING[%s]: object id", __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"%s: object id", __PRETTY_FUNCTION__];
     return NO;
   }
 
   if (![self operation:@"w" allowedOnObjectID:_objId]) {
-    NSLog(@"WARNING[%s]: setOperation not allowed for %@",
-          __PRETTY_FUNCTION__, _objId);
+    [self warnWithFormat:@"%s: setOperation not allowed for %@",
+          __PRETTY_FUNCTION__, _objId];
     return NO;
   }
   
@@ -562,18 +559,18 @@ static Class   StrClass = Nil;
   result = YES;
 
   if (![_objId isNotNull]) {
-    NSLog(@"WARNING[%s]: object id", __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"%s: object id", __PRETTY_FUNCTION__];
     return NO;
   }
   
   if (![self operation:@"w" allowedOnObjectID:_objId]) {
-    NSLog(@"WARNING[%s]: setOperation not allowed for %@",
-          __PRETTY_FUNCTION__, _objId);
+    [self warnWithFormat:@"%s: setOperation not allowed for %@",
+          __PRETTY_FUNCTION__, _objId];
     return NO;
   }
+  
   enumerator = [_operations keyEnumerator];
-
-  while ((gid = [enumerator nextObject])) {
+  while ((gid = [enumerator nextObject]) != nil) {
     BOOL     delete;
     NSString *value;
 
@@ -583,9 +580,9 @@ static Class   StrClass = Nil;
     if (![value isNotNull]) {
       delete = YES;
     }
-    if (![value length])
+    if (![value isNotEmpty])
       delete = YES;
-
+    
     if (delete) {
       result = [self deleteOperationForObjectID:_objId accessGlobalID:gid
                      checkAccess:NO];
@@ -644,8 +641,7 @@ static Class   StrClass = Nil;
       str = [NSMutableString stringWithCapacity:32];
     
     if (![gid isKindOfClass:[EOKeyGlobalID class]]) {
-      [self logWithFormat:@"WARNING: got passed a non EOKeyGlobalID gid: %@",
-	      gid];
+      [self warnWithFormat:@"got passed a non EOKeyGlobalID gid: %@", gid];
       [str appendFormat:@"'%@'", [gid stringValue]];
       continue;
     }
@@ -668,17 +664,18 @@ static Class   StrClass = Nil;
   static NSArray  *attrs  = nil;
   
   if (![_objIds isNotNull]) {
-    [self logWithFormat:@"WARNING[%s] missing object ids",__PRETTY_FUNCTION__];
+    [self warnWithFormat:@"%s: missing object ids",__PRETTY_FUNCTION__];
     return nil;
   }
-  if ([_objIds count] == 0)
+  if (![_objIds isNotEmpty])
     return nil;
 
   if (![_accGids isNotNull])
     _accGids = nil;
   
-  if ([_accGids count] > 250) {
-    NSLog(@"WARNING[%s]: to many ids for sql qualifier", __PRETTY_FUNCTION__);
+  if ([_accGids count] > 250) { // TODO: make configurable?
+    [self warnWithFormat:@"%s: to many ids for sql qualifier", 
+	  __PRETTY_FUNCTION__];
     return nil;
   }
   
@@ -725,8 +722,8 @@ static Class   StrClass = Nil;
     error = [channel selectAttributesX:attrs describedByQualifier:qual
 		     fetchOrder:nil lock:NO];
     if (error != nil) {
-      NSLog(@"ERROR[%s]: evaluation of qualifier %@ failed: %@",
-            __PRETTY_FUNCTION__, qual, error);
+      [self errorWithFormat:@"%s: evaluation of qualifier %@ failed: %@",
+            __PRETTY_FUNCTION__, qual, error];
       [self rollbackTransaction];
       return nil;
     }
@@ -791,7 +788,7 @@ static Class   StrClass = Nil;
 }
 
 /*
-  SkyAccessHandlers = (
+  OGoAccessHandlers = (
     {
       ObjectIdentifier = "Person";
       AccessHandler    = "SkyPersonAccessHandler";
@@ -814,7 +811,7 @@ static Class   StrClass = Nil;
   
   path          = [_bundle pathForResource:@"bundle-info" ofType:@"plist"];
   handlers      = [NSDictionary dictionaryWithContentsOfFile:path];
-  handlers      = [handlers objectForKey:@"SkyAccessHandlers"];
+  handlers      = [handlers objectForKey:@"OGoAccessHandlers"];
   keyEnumerator = [handlers keyEnumerator];
   
   while ((key = [keyEnumerator nextObject]) != nil) {
@@ -823,8 +820,8 @@ static Class   StrClass = Nil;
     
     handlerClass = [_bundle classNamed:[handlers objectForKey:key]];
     if (handlerClass == Nil) {
-      [self logWithFormat:
-	      @"ERROR: did not find class '%@' for key '%@'\n"
+      [self errorWithFormat:
+	      @"did not find class '%@' for key '%@'\n"
               @"  in bundle: %@\n  handlers: %@",
 	      [handlers objectForKey:key], key, _bundle, handlers];
       continue;
@@ -832,8 +829,8 @@ static Class   StrClass = Nil;
     
     handler = [handlerClass accessHandlerWithContext:self->context];
     if (handler == nil) {
-      [self logWithFormat:
-	      @"ERROR: could not instantiate class '%@' for key '%@'\n"
+      [self errorWithFormat:
+	      @"could not instantiate class '%@' for key '%@'\n"
               @"  in bundle: %@\n  handlers: %@",
 	      [handlers objectForKey:key], key, _bundle, handlers];
       continue;
@@ -845,15 +842,15 @@ static Class   StrClass = Nil;
   }
 }
 
-- (id<SkyAccessHandler>)_accessHandlerForObjectID:(EOGlobalID *)_gid {
+- (id<OGoAccessHandler>)_accessHandlerForObjectID:(EOGlobalID *)_gid {
   NSString             *entityName;
   NSBundle             *bundle;
-  id<SkyAccessHandler> handler;
+  id<OGoAccessHandler> handler;
 
   if (![_gid isNotNull])
      return nil;
   if (![_gid isKindOfClass:[EOKeyGlobalID class]]) {
-    [self logWithFormat:@"ERROR(%s): got invalid global-id %@: %@",
+    [self errorWithFormat:@"%s: got invalid global-id %@: %@",
 	  __PRETTY_FUNCTION__, _gid, [_gid class]];
     return nil;
   }
@@ -926,26 +923,26 @@ static Class   StrClass = Nil;
   EOSQLQualifier   *qual;
 
   if (![_operation isNotNull]) {
-    NSLog(@"WARNING[%s]: missing operation", __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"%s: missing operation", __PRETTY_FUNCTION__];
     return NO;
   }
-  if (![_operation length]) {
-    NSLog(@"WARNING[%s]: missing operation", __PRETTY_FUNCTION__);
+  if (![_operation isNotEmpty]) {
+    [self warnWithFormat:@"%s: missing operation", __PRETTY_FUNCTION__];
     return NO;
   }
   if (![_objId isNotNull]) {
-    NSLog(@"WARNING[%s]: missing objec id", __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"%s: missing objec id", __PRETTY_FUNCTION__];
     return NO;
   }
   if (![_accessId isNotNull]) {
-    NSLog(@"WARNING[%s]: missing access id", __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"%s: missing access id", __PRETTY_FUNCTION__];
     return NO;
   }
   
   if (_accessCheck) {
     if (![self operation:@"w" allowedOnObjectID:_objId]) {
-      NSLog(@"WARNING[%s]: insertOperation not allowed for %@",
-            __PRETTY_FUNCTION__, _objId);
+      [self warnWithFormat:@"%s: insertOperation not allowed for %@",
+            __PRETTY_FUNCTION__, _objId];
       return NO;
     }
   }
@@ -955,8 +952,8 @@ static Class   StrClass = Nil;
   
   row = [self _createRowForUpdateOfPermission:_operation];
   if (![channel updateRow:row describedByQualifier:qual]) {
-    NSLog(@"ERROR[%s]: update for row %@, qualifier %@, failed",
-          __PRETTY_FUNCTION__, row, qual);
+    [self errorWithFormat:@"%s: update for row %@, qualifier %@, failed",
+          __PRETTY_FUNCTION__, row, qual];
     [self rollbackTransaction];
     return NO;
   }
@@ -999,26 +996,26 @@ static Class   StrClass = Nil;
 
 
   if (![_operation isNotNull]) {
-    NSLog(@"WARNING[%s]: missing operation", __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"%s: missing operation", __PRETTY_FUNCTION__];
     return NO;
   }
-  if (![_operation length]) {
-    NSLog(@"WARNING[%s]: missing operation", __PRETTY_FUNCTION__);
+  if (![_operation isNotEmpty]) {
+    [self warnWithFormat:@"%s: missing operation", __PRETTY_FUNCTION__];
     return NO;
   }
   if (![_objId isNotNull]) {
-    NSLog(@"WARNING[%s]: missing objec id", __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"%s: missing objec id", __PRETTY_FUNCTION__];
     return NO;
   }
   if (![_accessId isNotNull]) {
-    NSLog(@"WARNING[%s]: missing access id", __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"%s: missing access id", __PRETTY_FUNCTION__];
     return NO;
   }
   
   if (_accessCheck) {
     if (![self operation:@"w" allowedOnObjectID:_objId]) {
-      NSLog(@"WARNING[%s]: insertOperation not allowed for %@",
-            __PRETTY_FUNCTION__, _objId);
+      [self warnWithFormat:@"%s: insertOperation not allowed for %@",
+            __PRETTY_FUNCTION__, _objId];
       return NO;
     }
   }
@@ -1029,7 +1026,7 @@ static Class   StrClass = Nil;
   row = [self _createRowForAclID:aclId permissions:_operation
 	      accessID:_accessId objectID:_objId];
   if (![channel insertRow:row forEntity:[self aclEntity]]) {
-    [self logWithFormat:@"ERROR[%s]: insert for row %@ and entity %@ failed",
+    [self errorWithFormat:@"%s: insert for row %@ and entity %@ failed",
           __PRETTY_FUNCTION__, row, [self aclEntity]];
     [self rollbackTransaction];
     [row release];
@@ -1086,15 +1083,15 @@ static Class   StrClass = Nil;
   EOSQLQualifier   *qual;
   
   if (![_objId isNotNull]) {
-    [self logWithFormat:@"WARNING[%s] missing object id", 
-	    __PRETTY_FUNCTION__];
+    [self warnWithFormat:@"%s: missing object id", __PRETTY_FUNCTION__];
     return NO;
   }
   
   if (_accessCheck) {
     if (![self operation:@"w" allowedOnObjectID:_objId]) {
-      NSLog(@"WARNING[%s]: deleteOperationForObjectID not allowed for %@",
-            __PRETTY_FUNCTION__, _objId);
+      [self warnWithFormat:
+	      @"%s: deleteOperationForObjectID not allowed for %@",
+            __PRETTY_FUNCTION__, _objId];
       return NO;
     }
   }
@@ -1106,7 +1103,7 @@ static Class   StrClass = Nil;
   
   qual = [self _delQualifierForObjectID:_objId accessGlobalID:_accessId];
   if (![channel deleteRowsDescribedByQualifier:qual]) {
-    [self logWithFormat:@"ERROR[%s]: delete for ACL qualifier %@ failed",
+    [self errorWithFormat:@"%s: delete for ACL qualifier %@ failed",
           __PRETTY_FUNCTION__, qual];
     [self rollbackTransaction];
     [qual release]; qual = nil;

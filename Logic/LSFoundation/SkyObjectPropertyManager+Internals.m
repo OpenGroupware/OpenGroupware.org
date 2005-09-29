@@ -322,20 +322,21 @@ extern NSString *SkyOPMWrongPropertyKeyExceptionName;
   NSEnumerator    *enumerator;
   id              key;
   BOOL            isFirst;
-
+  
   isFirst = YES;
   str     = [NSMutableString stringWithCapacity:512];
   
-  if ([_keys count] == 0) {
-    NSLog(@"WARNING: no keys to delete");
+  if (![_keys isNotEmpty]) {
+    [self warnWithFormat:@"no keys to delete"];
     return nil;
   }
-  enumerator = [_keys objectEnumerator];
 
   [str appendString:@"objectId = "];
   [str appendString:[_objId stringValue]];
   [str appendString:@" AND ("];
-  while ((key = [enumerator nextObject])) {
+  
+  enumerator = [_keys objectEnumerator];
+  while ((key = [enumerator nextObject]) != nil) {
     NSString *k, *ns;
 
     k  = nil;
@@ -1019,7 +1020,8 @@ FREE_ARRAYS:
 
 #if 1
   if (![[self->context accessManager] operation:@"w" allowedOnObjectID:_gid]) {
-    NSLog(@"WARNING[%s] no write acccess for gid ", __PRETTY_FUNCTION__, _gid);
+    [self warnWithFormat:@"%s: no write acccess for gid ",
+	    __PRETTY_FUNCTION__, _gid];
     return nil;
   }
 #endif  
@@ -1174,7 +1176,8 @@ FREE_ARRAYS:
   rollback    = NO;
   
   if (![[self->context accessManager] operation:@"w" allowedOnObjectID:_gid]) {
-    NSLog(@"WARNING[%s] no write acccess for gid ", __PRETTY_FUNCTION__, _gid);
+    [self warnWithFormat:@"%s: no write acccess for gid ", 
+	  __PRETTY_FUNCTION__, _gid];
     return nil;
   }
 
@@ -1304,7 +1307,8 @@ FREE_ARRAYS:
 
   if (![[self->context accessManager] operation:@"r"
                                       allowedOnObjectIDs:_gids]) {
-    NSLog(@"WARNING[%s] no r acccess for gid ", __PRETTY_FUNCTION__, _gids);
+    [self warnWithFormat:@"%s: no 'r' acccess for gid: %@",
+	    __PRETTY_FUNCTION__, _gids];
     return nil;
   }
   if ([_gids count] == 0) {
@@ -1351,7 +1355,7 @@ FREE_ARRAYS:
       [q release]; q = nil;
       
       if (error != nil) {
-	[self logWithFormat:@"ERROR(%s): could not select: %@",
+	[self errorWithFormat:@"%s: could not select: %@",
 	        __PRETTY_FUNCTION__, error];
 	continue;
       }
@@ -1429,8 +1433,9 @@ FREE_ARRAYS:
       kgid = [mapOIDsWithGIDs objectForKey:[fetch objectForKey:@"objectId"]];
 
       if (kgid == nil) {
-        NSLog(@"WARNING: missing globalID for fetch %@ mapOIDsWithGIDs %@",
-              fetch, mapOIDsWithGIDs);
+        [self warnWithFormat:
+		@"missing globalID for fetch %@ mapOIDsWithGIDs %@",
+                fetch, mapOIDsWithGIDs];
         continue;
       }
       aid = [mapAccessIds objectForKey:[fetch objectForKey:@"accessKey"]];

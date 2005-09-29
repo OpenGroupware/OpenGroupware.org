@@ -30,6 +30,7 @@ libLSAddress_OBJC_FILES = \
 	LSVCardCompanyFormatter.m		\
 
 LSAddress_OBJC_FILES = \
+	OGoCompanyAccessHandler.m		\
 	LSGetStaffForGlobalIDsCommand.m		\
 	LSUserDefaults.m			\
 	_NSUserDefaults.m			\

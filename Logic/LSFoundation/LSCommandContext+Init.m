@@ -32,8 +32,8 @@
 
 - (id)initWithManager:(OGoContextManager *)_lso {
   if (_lso == nil) {
-    NSLog(@"ERROR(%s): missing OGoContextManager object !",
-          __PRETTY_FUNCTION__);
+    [self errorWithFormat:@"%s: missing OGoContextManager object !",
+          __PRETTY_FUNCTION__];
     [self release];
     return nil;
   }

@@ -244,8 +244,8 @@ static inline BOOL _keyHasNamespace(SkyAttributeDataSource *self,
       result = obj;
     }
     else {
-      [self logWithFormat:
-              @"WARNING[%s]: Unknown result class for"
+      [self warnWithFormat:
+              @"%s: Unknown result class for"
               @" SkyAttributeDataSource obj[%@] %@", __PRETTY_FUNCTION__,
               NSStringFromClass([obj class]), obj];
     }
@@ -292,8 +292,8 @@ static inline BOOL _keyHasNamespace(SkyAttributeDataSource *self,
   }
   
   if (hasDB && hasAttr) {
-    [self logWithFormat:
-            @"WARNING(%s): got mixed qualifier %@", __PRETTY_FUNCTION__,_qual];
+    [self warnWithFormat:
+            @"%s: got mixed qualifier %@", __PRETTY_FUNCTION__,_qual];
     return nil;
   }
   else if (hasDB)
@@ -337,8 +337,8 @@ static inline BOOL _keyHasNamespace(SkyAttributeDataSource *self,
   qualCnt = [quals count];
   
   if (qualCnt == 0) {
-    NSLog(@"WARNING(%s): AND/OR qualifier without subqualifiers !",
-          __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"%s: AND/OR qualifier without subqualifiers !",
+          __PRETTY_FUNCTION__];
     return [NSSet set];
   }
 
@@ -600,8 +600,8 @@ static inline BOOL _keyHasNamespace(SkyAttributeDataSource *self,
   if ([_obj isKindOfClass:[EOGlobalID class]])
     return _obj;
   
-  NSLog(@"WARNING[%s]: could not determine global id for obj[%@] %@",
-        __PRETTY_FUNCTION__, NSStringFromClass([_obj class]), _obj);
+  [self warnWithFormat:@"%s: could not determine global id for obj[%@] %@",
+        __PRETTY_FUNCTION__, NSStringFromClass([_obj class]), _obj];
   return _obj;
 }
 

@@ -210,23 +210,23 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
   NGBundleManager *bm;
   NSString        *modelPath;
   NSBundle        *modelBundle;
-
-  if ([modelName length] == 0) {
-    [self logWithFormat:@"ERROR: missing model name."];
+  
+  if (![modelName isNotEmpty]) {
+    [self errorWithFormat:@"missing model name."];
     return NO;
   }
   
   /* locate model using bundle manager */
   
   if ((bm = [NGBundleManager defaultBundleManager]) == nil) {
-    [self logWithFormat:@"ERROR: could not instantiate bundle manager !"];
+    [self errorWithFormat:@"could not instantiate bundle manager !"];
     return NO;
   }
   
   modelBundle = [bm bundleProvidingResource:modelName ofType:@"EOModels"];
   if (modelBundle == nil) {
-    [self logWithFormat:
-	    @"ERROR: did not find bundle for model '%@' (type=EOModels)",
+    [self errorWithFormat:
+	    @"did not find bundle for model '%@' (type=EOModels)",
             modelName];
     modelPath = nil;
     return NO;
@@ -236,8 +236,9 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
   
   modelPath = [modelBundle pathForResource:modelName ofType:@"eomodel"];
   if (modelPath == nil) {
-    NSLog(@"ERROR: did not find path for model %@ (type=eomodel) in bundle %@",
-	  modelName, modelBundle);
+    [self errorWithFormat:
+	    @"did not find path for model %@ (type=eomodel) in bundle %@",
+	    modelName, modelBundle];
     return NO;
   }
     
@@ -254,15 +255,15 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
       self->model = [[EOModel alloc] initWithContentsOfFile:path];
   }
   if (self->model == nil) {
-    [self logWithFormat:@"ERROR(%s): could not load model: '%@'",
+    [self errorWithFormat:@"%s: could not load model: '%@'",
             __PRETTY_FUNCTION__, modelName];
     return NO;
   }
   
   self->personEntity = [[self->model entityNamed:@"Person"] retain];
   if (self->personEntity == nil) {
-    [self logWithFormat:
-	      @"ERROR(%s): did not find 'Person' entity in model: '%@'",
+    [self errorWithFormat:
+	      @"%s: did not find 'Person' entity in model: '%@'",
             __PRETTY_FUNCTION__, modelName];
     return NO;
   }
@@ -298,8 +299,9 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
   self->adaptor = [[EOAdaptor adaptorWithName:adaptorName] retain];
   
   if (self->adaptor == nil) {
-    NSLog(@"ERROR(%s): could not instantiate adaptor for model %@ !",
-          __PRETTY_FUNCTION__, [defs stringForKey:@"LSOfficeModel"]);
+    [self errorWithFormat:
+	    @"%s: could not instantiate adaptor for model %@ !",
+          __PRETTY_FUNCTION__, [defs stringForKey:@"LSOfficeModel"]];
     return NO;
   }
   
@@ -340,7 +342,7 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
 		       connectionDictionary:conDict];
   }
   else {
-    [self logWithFormat:@"ERROR: got no name for model?"];
+    [self errorWithFormat:@"got no name for model?"];
     canConnect = NO;
   }
   
@@ -461,22 +463,24 @@ static NSString *fmt = @"%@..-/.%@";
   BOOL                isOk        = NO;
   
   if (self->authAttributes == nil) {
-    [self logWithFormat:@"ERROR(%s): auth attributes are not set up!",
+    [self errorWithFormat:@"%s: auth attributes are not set up!",
 	    __PRETTY_FUNCTION__];
     return NO;
   }
   
   if (_crypted) {
-    NSLog(@"ERROR(%s): cannot not perform LDAP-Login with crypted password",
-	  __PRETTY_FUNCTION__);
+    [self errorWithFormat:
+	    @"%s: cannot not perform LDAP-Login with crypted password",
+	    __PRETTY_FUNCTION__];
     return NO;
   }
   
 #if !LIB_FOUNDATION_LIBRARY
 #  warning TODO: login space removal processing disabled on this platform
   if (LSAllowSpacesInLogin == 0) {
-    NSLog(@"WARNING: disabled login spaces which are unsupported on this "
-	  @"Foundation library.");
+    [self warnWithFormat:
+	    @"disabled login spaces which are unsupported on this "
+	    @"Foundation library."];
   }
 #else
   if (LSAllowSpacesInLogin == 0)
@@ -713,15 +717,15 @@ static NSString *fmt = @"%@..-/.%@";
   /* check preconditions */
 
   if (self->adContext == nil) {
-    [self logWithFormat:@"ERROR: no adaptor context available!"];
+    [self errorWithFormat:@"no adaptor context available!"];
     return nil;
   }
   if (self->adChannel == nil) {
-    [self logWithFormat:@"ERROR: no adaptor channel available!"];
+    [self errorWithFormat:@"no adaptor channel available!"];
     return nil;
   }
   if (self->personEntity == nil) {
-    [self logWithFormat:@"ERROR: no person entity available!"];
+    [self errorWithFormat:@"no person entity available!"];
     return nil;
   }
   

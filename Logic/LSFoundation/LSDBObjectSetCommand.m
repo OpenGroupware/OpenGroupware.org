@@ -83,9 +83,8 @@
   if ((obj = [dbChannel fetchWithZone:NULL]) == nil)
     return nil;
 
-  if ([dbChannel fetchWithZone:NULL]) {
-    [self logWithFormat:
-            @"WARNING: got more than one object for primary key !\n"];
+  if ([dbChannel fetchWithZone:NULL] != nil) {
+    [self warnWithFormat:@"got more than one object for primary key !\n"];
     [dbChannel cancelFetch];
   }
 #if 0

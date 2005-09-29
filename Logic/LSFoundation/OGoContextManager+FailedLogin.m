@@ -132,7 +132,7 @@ static NSString *LockInfoMail        = nil;
   error = [self->adChannel selectAttributesX:attrs
 	       describedByQualifier:qualifier fetchOrder:nil lock:NO];
   if (error != nil) {
-    [self logWithFormat:@"ERROR: could not fetch login information: %@",
+    [self errorWithFormat:@"could not fetch login information: %@",
 	    error];
     [self->adContext rollbackTransaction];
     return nil;

@@ -1,3 +1,15 @@
+2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.109
+
+	* all files: use -errorWithFormat:/-warnWithFormat: instead of
+	  -logWithFormat:/NSLog where applicable
+
+	* renamed SkyAccessHandler to OGoAccessHandler
+
+	* LSDBObjectNewCommand.m: automagically register new objects in
+	  obj_info table
+
 2005-09-29  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoAccessManager.m: fixed a bug in access manager lookup (v5.3.108)

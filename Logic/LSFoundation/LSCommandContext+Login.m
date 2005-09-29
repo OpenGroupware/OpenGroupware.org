@@ -124,8 +124,8 @@
   }
   
 #if 0
-  if ([_pwd length] == 0)
-    [self logWithFormat:@"WARNING: missing password!"];
+  if (![_pwd isNotEmpty])
+    [self warnWithFormat:@"missing password!"];
 #endif  
   
   loginAccount = [self runCommand:@"account::login",

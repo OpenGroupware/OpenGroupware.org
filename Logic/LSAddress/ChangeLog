@@ -1,3 +1,8 @@
+2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved in OGoCompanyAccessHandler from DocumentAPI/OGoContacts
+	  (v5.3.79)
+
 2005-09-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetMemberForCompanyCommand.m: code cleanups (v5.3.78)

@@ -25,13 +25,6 @@
       { name = SkyEnterpriseAddressConverterDataSource; }
     );
     
-    SkyAccessHandlers = (
-      { name = "Person";     },
-      { name = "Company";    },
-      { name = "Enterprise"; },
-      { name = "Team";       }
-    );
-
     SkyDocumentGlobalIDResolver = (
       {
         name          = SkyPersonDocumentGlobalIDResolver;
@@ -44,11 +37,5 @@
         qualifier     = "entityName='Enterprise'";
       }
     );
-  };
-  SkyAccessHandlers = {
-    Person         = "SkyContactsAccessHandler";
-    Enterprise     = "SkyContactsAccessHandler";
-    Company        = "SkyContactsAccessHandler";
-    Team           = "SkyContactsAccessHandler";
   };
 }

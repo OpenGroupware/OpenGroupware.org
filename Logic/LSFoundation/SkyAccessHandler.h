@@ -22,48 +22,12 @@
 #ifndef __OGo_LSFoundation_SkyAccessHandler__
 #define __OGo_LSFoundation_SkyAccessHandler__
 
-#import <Foundation/NSObject.h>
+#include <LSFoundation/OGoAccessHandler.h>
 
-@class NSMutableDictionary, NSString, NSArray, NSNumber;
-@class EOGlobalID, EOKeyGlobalID;
-@class LSCommandContext;
+// DEPRECATED: use OGoAccessHandler!
 
-@protocol SkyAccessHandler<NSObject>
-
-+ (id)accessHandlerWithContext:(LSCommandContext *)_ctx;
-- (id)initWithContext:(LSCommandContext *)_ctx;
-
-- (BOOL)operation:(NSString *)_operation
-  allowedOnObjectIDs:(NSArray *)_oids
-  forAccessGlobalID:(EOGlobalID *)_access;
-
-- (NSArray *)objects:(NSArray *)_oids
-  forOperation:(NSString *)_str
-  forAccessGlobalID:(EOGlobalID *)_accountID;
-
-@end
-
-@interface SkyAccessHandler : NSObject <SkyAccessHandler>
-{
-@private
-  LSCommandContext *context;
-}
-
-+ (id)accessHandlerWithContext:(LSCommandContext *)_ctx;
-
-- (id)initWithContext:(LSCommandContext *)_ctx;
-
-- (BOOL)operation:(NSString *)_operation
-  allowedOnObjectIDs:(NSArray *)_oids
-  forAccessGlobalID:(EOGlobalID *)_accountID;
-
-- (NSArray *)objects:(NSArray *)_oids
-  forOperation:(NSString *)_str
-  forAccessGlobalID:(EOGlobalID *)_accessGID;
-
-- (LSCommandContext *)context;
-- (void)cacheOperation:(NSString *)_str for:(NSNumber *)_id;
-
-@end
+#ifndef SkyAccessHandler
+#  define SkyAccessHandler OGoAccessHandler
+#endif
 
 #endif /* __OGo_LSFoundation_SkyAccessHandler__ */

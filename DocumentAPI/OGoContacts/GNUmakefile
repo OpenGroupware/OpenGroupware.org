@@ -63,9 +63,7 @@ FHS_HEADER_DIRS = OGoContacts
 
 OGoContacts_PRINCIPAL_CLASS = SkyContactsBundleManager
 
-OGoContacts_OBJC_FILES = 	\
-	SkyContactsBundleManager.m \
-	SkyContactsAccessHandler.m \
+OGoContacts_OBJC_FILES += SkyContactsBundleManager.m
 
 OGoContacts_RESOURCE_FILES += Defaults.plist
 

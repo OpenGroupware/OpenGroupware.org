@@ -41,7 +41,7 @@
 /* execution */
 
 - (BOOL)includeObjectInResult:(id)_object {
-  [self logWithFormat:@"ERROR(%s): subclass should override this method!",
+  [self errorWithFormat:@"%s: subclass should override this method!",
 	  __PRETTY_FUNCTION__];
   return NO;
 }

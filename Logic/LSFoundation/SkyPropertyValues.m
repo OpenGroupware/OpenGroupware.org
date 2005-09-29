@@ -34,8 +34,8 @@
 
 - (void)_buildSkyPropValues:(SkyPropValues *)_vals {
 #if DEBUG
-  NSLog(@"WARNING(%s): getting sky property of value with class %@",
-        __PRETTY_FUNCTION__, NSStringFromClass([self class]));
+  [self warnWithFormat:@"%s: getting sky property of value with class %@",
+        __PRETTY_FUNCTION__, NSStringFromClass([self class])];
 #endif
   [[self stringValue] _buildSkyPropValues:_vals];
 }

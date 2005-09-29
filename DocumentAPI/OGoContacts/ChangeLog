@@ -1,3 +1,8 @@
+2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyContactsAccessHandler.m: moved to Logic/LSAddress as
+	  OGoCompanyAccessHandler.m (v5.3.49)
+
 2005-09-29  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyContactsAccessHandler.m: major performance improvement, teams are

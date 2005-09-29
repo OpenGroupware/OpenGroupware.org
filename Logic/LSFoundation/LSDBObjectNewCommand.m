@@ -46,7 +46,8 @@
 /* create enterprise object */
 
 - (id)produceEmptyEOWithPrimaryKey:(NSDictionary *)_pkey
-  entity:(EOEntity *)_entity {
+  entity:(EOEntity *)_entity
+{
   id obj;
 
   obj = [_entity produceNewObjectWithPrimaryKey:_pkey];
@@ -87,6 +88,19 @@
   [obj takeValuesFromDictionary:recordDict];
 }
 
+- (BOOL)shouldInsertObjectInObjInfoTable:(id)_object {
+  if (_object == nil)
+    return NO;
+  
+  return YES;
+}
+
+- (void)insertObjectInObjectInfoTable:(id)_object inContext:(id)_ctx {
+  [self logWithFormat:@"register in objinfo: %@ / %@",
+	[self entityName],
+	[_object valueForKey:[self primaryKeyName]]];
+}
+
 - (void)_executeInContext:(id)_context {
   BOOL isOk = NO;
 
@@ -99,6 +113,9 @@
 
   [self assert:[[self databaseChannel] refetchObject:[self object]]
         reason:@"Could not refetch inserted object!"];
+  
+  if ([self shouldInsertObjectInObjInfoTable:[self object]])
+    [self insertObjectInObjectInfoTable:[self object] inContext:_context];
 }
 
 /* key/value coding */

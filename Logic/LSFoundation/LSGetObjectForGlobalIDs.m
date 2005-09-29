@@ -86,8 +86,8 @@ static BOOL doCacheGIDs = YES;
     
     eName = [(EOKeyGlobalID *)gid entityName];
     if (eName != nil && ![eName isEqualToString:validEntityName]) {
-      [self debugWithFormat:
-              @"WARNING: called command with invalid global-id, "
+      [self warnWithFormat:
+              @"called command with invalid global-id, "
               @"entity '%@' expected, got '%@': %@",
               validEntityName, eName, gid];
       modifyArray = YES;
@@ -135,7 +135,7 @@ static BOOL doCacheGIDs = YES;
 }
 
 - (NSException *)handleEOSortException:(NSException *)_ex {
-  [self logWithFormat:@"ERROR: catched exception during sort: %@", _ex];
+  [self errorWithFormat:@"catched exception during sort: %@", _ex];
   return nil;
 }
 - (id)_fetchEOsInContext:(id)_context gids:(NSArray *)_gids {
@@ -179,8 +179,8 @@ static BOOL doCacheGIDs = YES;
 
 #if DEBUG
       if (![gid isNotNull]) {
-        [self debugWithFormat:
-                @"ERROR: missing gid at index %d in gid-array: %@", 
+        [self errorWithFormat:
+                @"missing gid at index %d in gid-array: %@", 
                 j, _gids];
         continue;
       }

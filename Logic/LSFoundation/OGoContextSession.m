@@ -50,13 +50,13 @@
   manager:(OGoContextManager *)_lso 
 {
   if (_lso == nil) {
-    [self logWithFormat:@"ERROR(%s): missing OGo context manager!", 
+    [self errorWithFormat:@"%s: missing OGo context manager!", 
             __PRETTY_FUNCTION__];
     [self release];
     return nil;
   }
   if (_cmdCtx == nil) {
-    [self logWithFormat:@"ERROR(%s): missing OGo command context!", 
+    [self errorWithFormat:@"%s: missing OGo command context!", 
             __PRETTY_FUNCTION__];
     [self release];
     return nil;
@@ -79,7 +79,7 @@
   LSCommandContext *cctx;
   
   if (_lso == nil) {
-    [self logWithFormat:@"ERROR(%s): missing OGo context manager!", 
+    [self errorWithFormat:@"%s: missing OGo context manager!", 
             __PRETTY_FUNCTION__];
     [self release];
     return nil;
@@ -130,8 +130,8 @@ static OGoContextSession *activeSession = nil;
     activeSession = nil;
   }
   else {
-    [self logWithFormat:@"WARNING: tried to deactivate inactive session !"];
-    [self logWithFormat:@"activeSession: %@, self: %@", activeSession, self];
+    [self warnWithFormat:@"tried to deactivate inactive session !"];
+    [self warnWithFormat:@"activeSession: %@, self: %@", activeSession, self];
     [activeSession release];
     activeSession = nil;
     //abort();
@@ -281,8 +281,8 @@ static OGoContextSession *activeSession = nil;
   }
 
 #if 0
-  if ([_pwd length] == 0)
-    [self logWithFormat:@"WARNING: missing password!"];
+  if (![_pwd isNotEmpty])
+    [self warnWithFormat:@"missing password!"];
 #endif  
   
   self->loginAccount = [self runCommand:@"account::login",

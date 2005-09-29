@@ -65,8 +65,8 @@
 #if 1
   while (YES) {
     if (cntPk > 1)
-      NSLog(@"WARNING: get primary key record failed %d times", cntPk);
-
+      [self warnWithFormat:@"get primary key record failed %d times!", cntPk];
+    
     pkey = [adChannel primaryKeyForNewRowWithEntity:[self entity]];
     if (pkey != nil)
       break;

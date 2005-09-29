@@ -19,20 +19,21 @@
   02111-1307, USA.
 */
 
-#include <LSFoundation/SkyAccessHandler.h>
+#include <LSFoundation/OGoAccessHandler.h>
 #include "common.h"
 #include <LSFoundation/LSCommandContext.h>
 #include <LSFoundation/SkyAccessManager.h>
 
-@interface SkyAccessHandler(Internals)
+@interface OGoAccessHandler(Internals)
 - (BOOL)_checkGIDs:(NSArray *)_ids;
 - (NSArray *)_entityNames;
-@end /* SkyAccessHandler(Internals) */
+@end /* OGoAccessHandler(Internals) */
 
 @interface NSObject(Private)
 - (SkyAccessManager *)accessManager;
 @end
-@implementation SkyAccessHandler
+
+@implementation OGoAccessHandler
 
 static BOOL debugOn = NO;
 
@@ -44,8 +45,9 @@ static BOOL debugOn = NO;
 
 + (id)accessHandlerWithContext:(LSCommandContext *)_ctx {
   if (_ctx == nil) {
-    NSLog(@"ERROR(%s): could not create handler due to invalid context!",
-	  __PRETTY_FUNCTION__);
+    [self errorWithFormat:
+	    @"%s: could not create handler due to invalid context!",
+	    __PRETTY_FUNCTION__];
     return nil;
   }
   return [[[self alloc] initWithContext:_ctx] autorelease];
@@ -53,8 +55,8 @@ static BOOL debugOn = NO;
 
 - (id)initWithContext:(LSCommandContext *)_ctx {
   if (_ctx == nil) {
-    [self logWithFormat:
-	    @"ERROR(%s): could not create handler due to a missing context!",
+    [self errorWithFormat:
+	    @"%s: could not create handler due to a missing context!",
 	    __PRETTY_FUNCTION__, _ctx];
     [self release];
     return nil;
@@ -145,13 +147,13 @@ static BOOL debugOn = NO;
   enumerator = [_ids objectEnumerator];
   while ((gid = [enumerator nextObject])) {
     if (![gid isKindOfClass:[EOKeyGlobalID class]]) {
-      [self logWithFormat:@"ERROR[%s]: wrong gid %@ for accessHandler %@",
+      [self errorWithFormat:@"%s: wrong gid %@ for accessHandler %@",
             __PRETTY_FUNCTION__, gid, self];
       return NO;
     }
     if (![[self _entityNames] containsObject:[gid entityName]]) {
-      [self logWithFormat:
-	      @"ERROR[%s]: wrong entity in gid %@ for accessHandler %@",
+      [self errorWithFormat:
+	      @"%s: wrong entity in gid %@ for accessHandler %@",
               __PRETTY_FUNCTION__, gid, self];
       return NO;
     }
@@ -173,4 +175,4 @@ static BOOL debugOn = NO;
   return debugOn;
 }
 
-@end /* SkyAccessHandler(Internals) */
+@end /* OGoAccessHandler */
