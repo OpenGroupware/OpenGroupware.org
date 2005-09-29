@@ -1,3 +1,7 @@
+2005-09-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* ogo-check-permission.m: fixed toolname in usage
+
 2005-08-29  Helge Hess  <helge.hess@skyrix.com>
 
 	* ogo-check-aptconflicts.m: changed to use the new conflict-info

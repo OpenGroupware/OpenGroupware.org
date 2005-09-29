@@ -76,15 +76,16 @@
 @implementation CheckPermission
 
 - (void)usage {
-  printf("skycheckperm -login <login> -password <pwd> [object-id]+ [op]\n");
+  printf("ogo-check-permission "
+         "-login <login> -password <pwd> [object-id]+ [op]\n");
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     
     if ((self->lso = [[OGoContextManager defaultManager] retain]) == nil) {
-      NSLog(@"ERROR: could not create OGo context manager.");
+      [self errorWithFormat:@"could not create OGo context manager."];
       [self release];
       return nil;
     }
@@ -93,7 +94,7 @@
     self->password = [[ud stringForKey:@"password"]  copy];
     self->sxid     = [[ud stringForKey:@"skyrix_id"] copy];
     
-    if ([self->login length] == 0) {
+    if (![self->login isNotEmpty]) {
       [self usage];
       [self release];
       return nil;
@@ -117,7 +118,7 @@
   NSString       *s;
 
   e = [_args objectEnumerator];
-  while ((s = [e nextObject])) {
+  while ((s = [e nextObject]) != nil) {
     NSNumber *n;
     
     n = [NSNumber numberWithUnsignedInt:[s unsignedIntValue]];
@@ -159,6 +160,7 @@
   /* setup access manager ... */
   
   am = [_ctx accessManager];
+  [self debugWithFormat:@"access manager: %@", am];
   [self debugWithFormat:@"allowed operations: %@", 
 	  [am allowedOperationsForObjectIds:gids]];
   

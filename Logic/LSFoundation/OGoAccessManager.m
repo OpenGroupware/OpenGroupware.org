@@ -216,7 +216,7 @@ static Class   StrClass = Nil;
   }
   
   if (result) {
-    if ([oids count] > 0) {
+    if ([oids isNotEmpty]) {
       handler = [self _accessHandlerForObjectID:[_oids lastObject]];
       result = YES;
       if (handler != nil) {
@@ -226,10 +226,10 @@ static Class   StrClass = Nil;
 	
 	if (debugOn) {
 	  [self debugWithFormat:
-		  @"%s\n  operation: %@\n  allowed on: %@\n  access-gid: %@\n"
+		  @"%s\n  operation: %@\n  check on: %@\n  access-gid: %@\n"
 		  @"  handler: %@\n  => %@",
 		  __PRETTY_FUNCTION__, _operation, oids, _accountID,
-		  handler, result?@"accepted":@"denied"];
+		  handler, result ? @"allowed" : @"denied"];
         }
       }
     }
@@ -800,6 +800,7 @@ static Class   StrClass = Nil;
 */
   
 - (void)_checkBundleForAccessHandlers:(NSBundle *)_bundle {
+  /* Note: this fills the 'accessHandlers' ivar */
   NSDictionary *handlers;
   NSString     *path;
   NSEnumerator *keyEnumerator;
@@ -807,7 +808,7 @@ static Class   StrClass = Nil;
   
   if (_bundle == nil)
     return;
-
+  
   if (debugOn)
     [self debugWithFormat:@"check access handler bundle: %@", _bundle];
   
@@ -861,11 +862,14 @@ static Class   StrClass = Nil;
   
   /* setup / check  cache */
   
+  if ((handler = [self->accessHandlers objectForKey:entityName]) != nil) {
+    [self debugWithFormat:@"found cached access handler for entity %@: %@",
+            entityName, handler];
+    return handler;
+  }
+  
   if (self->accessHandlers == nil)
     self->accessHandlers = [[NSMutableDictionary alloc] initWithCapacity:16];
-  
-  if ((handler = [self->accessHandlers objectForKey:entityName]) != nil)
-    return handler;
   
   /* lookup with bundle manager */
   
@@ -873,12 +877,22 @@ static Class   StrClass = Nil;
 	                     bundleProvidingResource:entityName
 	                     ofType:@"SkyAccessHandlers"];
   if (bundle == nil) {
-    [self debugWithFormat:
-	    @"ERROR: found no access handler for GID %@ (entity=%@): %@", 
+    [self errorWithFormat:
+	    @"found no access handler for GID %@ (entity=%@): %@", 
 	    _gid, entityName, self->accessHandlers];
   }
   
+  /* this fills the cache */
   [self _checkBundleForAccessHandlers:bundle];
+
+  /* retry cache */
+  
+  if ((handler = [self->accessHandlers objectForKey:entityName]) != nil) {
+    [self debugWithFormat:@"found access handler for entity %@: %@",
+            entityName, handler];
+    return handler;
+  }
+  
   return nil;
 }
 
