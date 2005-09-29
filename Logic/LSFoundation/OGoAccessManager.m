@@ -43,7 +43,7 @@
 - (NSNotificationCenter *)notificationCenter;
 - (void)postFlagsDidChange:(EOGlobalID *)_gid;
 
-- (void)_checkBundleForAccessHandlers:(NSBundle *)_bundle;
+- (BOOL)_checkBundleForAccessHandlers:(NSBundle *)_bundle;
 - (id<OGoAccessHandler>)_accessHandlerForObjectID:(EOGlobalID *)_gid;
 - (void)_checkForAccessHandlers;
 
@@ -796,24 +796,37 @@ static Class   StrClass = Nil;
   );
 */
   
-- (void)_checkBundleForAccessHandlers:(NSBundle *)_bundle {
+- (BOOL)_checkBundleForAccessHandlers:(NSBundle *)_bundle {
   /* Note: this fills the 'accessHandlers' ivar */
-  NSDictionary *handlers;
+  NSDictionary *handlers, *bundleInfo;
   NSString     *path;
   NSEnumerator *keyEnumerator;
   id           key;
   
   if (_bundle == nil)
-    return;
+    return NO;
   
   if (debugOn)
     [self debugWithFormat:@"check access handler bundle: %@", _bundle];
   
-  path          = [_bundle pathForResource:@"bundle-info" ofType:@"plist"];
-  handlers      = [NSDictionary dictionaryWithContentsOfFile:path];
-  handlers      = [handlers objectForKey:@"OGoAccessHandlers"];
-  keyEnumerator = [handlers keyEnumerator];
+  if ((path = [_bundle pathForResource:@"bundle-info" ofType:@"plist"])==nil) {
+    [self warnWithFormat:@"did not find bundle-info.plist in bundle: %@",
+	  _bundle];
+    return NO;
+  }
   
+  if ((bundleInfo = [NSDictionary dictionaryWithContentsOfFile:path]) == nil) {
+    [self errorWithFormat:@"could not load bundle-info.plist: %@", path];
+    return NO;
+  }
+  
+  // TODO: thats not particulary beautiful. We should use just one entry.
+  if ((handlers = [bundleInfo objectForKey:@"OGoAccessHandlers"]) == nil)
+    handlers = [bundleInfo objectForKey:@"SkyAccessHandlers"];
+  
+  /* register handlers found in bundle */
+  
+  keyEnumerator = [handlers keyEnumerator];
   while ((key = [keyEnumerator nextObject]) != nil) {
     Class handlerClass;
     id    handler;
@@ -840,6 +853,7 @@ static Class   StrClass = Nil;
       [self debugWithFormat:@"  found handler for key '%@': %@", key, handler];
     [self->accessHandlers setObject:handler forKey:key];
   }
+  return YES;
 }
 
 - (id<OGoAccessHandler>)_accessHandlerForObjectID:(EOGlobalID *)_gid {

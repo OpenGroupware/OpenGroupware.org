@@ -298,7 +298,7 @@
   /* then query entities */
   
   entityNames =
-    [self->context runCommand:@"system::get-object-type", @"oids", _pkeys, nil];
+    [self->context runCommand:@"system::get-object-type", @"oids", _pkeys,nil];
 
   for (i = 0; i < pc; i++) {
     NSString      *eName;
@@ -329,4 +329,21 @@
   return [NSArray arrayWithObjects:gids count:pc];
 }
 
-@end /* LSTypeManager(PrimaryKeyTypes) */
+/* description */
+
+- (NSString *)description {
+  NSMutableString *ms;
+
+  ms = [NSMutableString stringWithCapacity:128];
+  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+
+  [ms appendFormat:@" ctx=0x%08X", self->context];
+  
+  if (self->pkeyToGid != NULL)
+    [ms appendFormat:@" #pkey-map=%d", NSCountMapTable(self->pkeyToGid)];
+  
+  [ms appendString:@">"];
+  return ms;
+}
+
+@end /* LSTypeManager */

@@ -1,4 +1,12 @@
-2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+2005-09-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.3.110
+
+	* OGoAccessManager.m: improved access handler loading
+
+	* LSCommandContext.m: incorporated categories into main class
+
+	* LSTypeManager.m: added -description
 
 	* v5.3.109
 

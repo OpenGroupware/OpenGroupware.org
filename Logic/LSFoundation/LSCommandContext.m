@@ -280,7 +280,12 @@ NSString *ProfileCommandsFileName = nil;
   ASSIGN(self->commandFactory, _factory);
 }
 - (id<NSObject,LSCommandFactory>)commandFactory {
-  return self->commandFactory;
+  // TODO: this is inefficient, but the way its used to be ...
+  id<NSObject,LSCommandFactory> factory;
+
+  factory = [self valueForKey:LSCommandFactoryKey];
+  NSAssert(factory, @"no factory set !");
+  return factory;
 }
 
 /* flushing caches */
@@ -345,23 +350,12 @@ NSString *ProfileCommandsFileName = nil;
 }
 
 - (id)valueForKey:(NSString *)_key {
-  return ([_key isEqualToString:LSCommandFactoryKey])
+  return [_key isEqualToString:LSCommandFactoryKey]
     ? self->commandFactory
     : [self->extraVariables objectForKey:_key];
 }
 
-/* description */
-
-- (NSString *)description {
-  return [NSString stringWithFormat:@"<%@[0x%08X]: login=%@ tx=%s>",
-                     NSStringFromClass([self class]), self,
-                     [[self valueForKey:LSAccountKey] valueForKey:@"login"],
-                     [self isTransactionInProgress] ? "yes" : "no"];
-}
-
-@end /* LSCommandContext */
-
-@implementation LSCommandContext(Logging)
+/* Logging */
 
 - (void)logWithFormat:(NSString *)_format, ... {
   NSString *value = nil;
@@ -400,17 +394,7 @@ NSString *ProfileCommandsFileName = nil;
   }
 }
 
-@end /* LSCommandContext(Logging) */
-
-@implementation LSCommandContext(LookupCommands)
-
-- (id<NSObject,LSCommandFactory>)commandFactory {
-  id<NSObject,LSCommandFactory> factory;
-
-  factory = [self valueForKey:LSCommandFactoryKey];
-  NSAssert(factory, @"no factory set !");
-  return factory;
-}
+/* LookupCommands */
 
 - (id<LSCommand>)lookupCommand:(NSString *)_command inDomain:(NSString *)_do {
   return lookupCommand(self, _do, _command, nil, NULL);
@@ -436,13 +420,9 @@ NSString *ProfileCommandsFileName = nil;
   return lookupCommand(self, _domain, _command, _arg0, _va);
 }
 
-@end /* LSCommandContext(LookupCommands) */
+/* RunningCommands */
 
-@implementation LSCommandContext(RunningCommands)
-
-- (BOOL)handleException:(NSException *)_exception
-  ofCommand:(id<LSCommand>)_command
-{
+- (BOOL)handleException:(NSException *)_ex ofCommand:(id<LSCommand>)_command {
   return NO;
 }
 
@@ -500,9 +480,7 @@ NSString *ProfileCommandsFileName = nil;
   return runCommand(self, command);
 }
 
-@end /* LSCommandContext(RunningCommands) */
-
-@implementation LSCommandContext(Channels)
+/* Channels */
 
 static inline void _markAccessed(LSCommandContext *self) {
   [self->lastAccess release]; self->lastAccess = nil;
@@ -520,7 +498,8 @@ static inline void _markAccessed(LSCommandContext *self) {
   
   if ([self isTransactionInProgress]) {
     [self logWithFormat:
-            @"can't close channel, a transaction is in progress (started at %@)",
+            @"cannott close channel, a transaction is in progress "
+	    @"(started at %@)",
             self->txStartTime];
     return;
   }
@@ -613,9 +592,7 @@ static inline void _markAccessed(LSCommandContext *self) {
   [_timer invalidate];
 }
 
-@end /* LSCommandContext(Channels) */
-
-@implementation LSCommandContext(Transactions)
+/* Transactions */
 
 - (void)_ensureNoDatabaseTransactionInProgress {
   /* check whether dbContext has inconsistencies */
@@ -761,9 +738,7 @@ static inline void _markAccessed(LSCommandContext *self) {
   return (self->txStartTime != nil) ? YES : NO;
 }
 
-@end /* LSCommandContext(Transactions) */
-
-@implementation LSCommandContext(GlobalContext)
+/* GlobalContext */
 
 // MT
 static NSMutableArray *ctxStack = nil;
@@ -803,9 +778,7 @@ static NSMutableArray *ctxStack = nil;
   return [ctxStack lastObject];
 }
 
-@end /* LSCommandContext(GlobalContext) */
-
-@implementation LSCommandContext(StaticMethods)
+/* StaticMethods */
 
 static NSNull *null = nil;
 
@@ -957,4 +930,23 @@ static id runCommand(LSCommandContext *self, id<LSCommand> _command) {
   return result;
 }
 
-@end /* LSCommandContext(StaticMethods) */
+/* description */
+
+- (NSString *)description {
+  NSMutableString *ms;
+  id tmp;
+
+  ms = [NSMutableString stringWithCapacity:128];
+  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+
+  if ((tmp = [self valueForKey:LSAccountKey]) != nil)
+    [ms appendFormat:@" login=%@", [tmp valueForKey:@"login"]];
+
+  if ([self isTransactionInProgress])
+    [ms appendString:@" tx-running"];
+  
+  [ms appendString:@">"];
+  return ms;
+}
+
+@end /* LSCommandContext */
