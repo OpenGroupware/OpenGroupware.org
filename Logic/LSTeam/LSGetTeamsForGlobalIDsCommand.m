@@ -19,11 +19,13 @@
   02111-1307, USA.
 */
 
-/* TODO: hh asks: what the hell is that??? - see TODO file! */
-
 #include <LSFoundation/LSGetObjectForGlobalIDs.h>
 
 /*
+  LSGetTeamsForGlobalIDsCommand / teams::get-by-global-id
+
+  TODO: document
+
   This command fetches team-objects based on a list of EOGlobalIDs.
 */
 

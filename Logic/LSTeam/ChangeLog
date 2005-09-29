@@ -1,5 +1,8 @@
 2005-09-29  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSExtendedSearchTeamCommand.m: added 'includeTeamsWithOwner' argument
+	  to include owned teams in member restricted fetches (v5.3.14)
+
 	* LSExtendedSearchTeamCommand.m: code cleanups, fixed a bug in
 	  filtering for member-ids when fetching EOs (v5.3.13)
 

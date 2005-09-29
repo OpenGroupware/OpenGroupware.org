@@ -26,6 +26,13 @@
   
   TODO: document
 
+  Arguments:
+    fetchGlobalIDs        - bool
+    onlyTeamsWithAccount  - pkey | gid | EO
+    includeTeamsWithOwner - pkey | gid | EO
+    * - EO fields
+    TODO: check args of parent-class
+
   Example call:
     gids = [cmdctx runCommand:@"team::extended-search",
                      @"fetchGlobalIDs",       @"YES",
@@ -44,6 +51,7 @@
 @interface LSExtendedSearchTeamCommand : LSExtendedSearchCommand
 {
   NSNumber *onlyTeamsWithAccountId;
+  NSNumber *includeTeamsWithOwnerId;
 }
 
 @end
@@ -75,7 +83,8 @@ static NSNumber *yesNum = nil;
 }
 
 - (void)dealloc {
-  [self->onlyTeamsWithAccountId release];
+  [self->onlyTeamsWithAccountId  release];
+  [self->includeTeamsWithOwnerId release];
   [super dealloc];
 }
 
@@ -128,7 +137,9 @@ static NSNumber *yesNum = nil;
   return NO;
 }
 
-- (NSArray *)filterResults:(NSArray *)_results onMembers:(id)_members {
+- (NSArray *)filterResults:(NSArray *)_results onMembers:(id)_members
+  andOwnerIds:(NSArray *)_ownerIds
+{
   NSMutableArray *ma = nil;
   unsigned i, count;
   
@@ -141,9 +152,18 @@ static NSNumber *yesNum = nil;
      If multiple ones matched, '_members' will be an NSDictionary.
   */
   if ([_members isKindOfClass:[NSArray class]]) {
+    if ([_results count] != 1)
+      [self errorWithFormat:@"incorrect internal assumption: %@", _results];
+    
     if ([self doesArray:_members 
               containPrimaryKey:self->onlyTeamsWithAccountId])
       return _results;
+    
+    if ([self->includeTeamsWithOwnerId isNotNull]) {
+      if ([[_ownerIds lastObject] isEqual:self->includeTeamsWithOwnerId])
+        return _results;
+    }
+    
     return nil;
   }
   
@@ -166,6 +186,11 @@ static NSNumber *yesNum = nil;
     if ([self doesArray:mmembers 
               containPrimaryKey:self->onlyTeamsWithAccountId])
       continue;
+    
+    if ([self->includeTeamsWithOwnerId isNotNull]) {
+      if ([[_ownerIds objectAtIndex:i] isEqual:self->includeTeamsWithOwnerId])
+        continue;
+    }
     
     /* did not contain member, make mutable and remove */
     
@@ -190,28 +215,50 @@ static NSNumber *yesNum = nil;
 - (NSArray *)_fetchObjects:(id)_context {
   NSArray *results;
   id      members; /* NSArray or NSDictionary */
+  NSArray *ownerIds;
   
   results = [super _fetchObjects:_context];
   if (![results isNotEmpty] || ![self->onlyTeamsWithAccountId isNotNull])
     return results;
   
+  ownerIds = [self->includeTeamsWithOwnerId isNotNull]
+    ? [results valueForKey:@"ownerId"]
+    : nil;
+  
   /* Note: the result is keyed on the global-id, not the EO! */
   members = [self _fetchMemberGIDsForTeamGIDs:[results valueForKey:@"globalID"]
                   inContext:_context];
   
-  return [self filterResults:results onMembers:members];
+  return [self filterResults:results onMembers:members andOwnerIds:ownerIds];
 }
 
 - (NSArray *)_fetchIds:(id)_context {
   NSArray *results;
   id      members; /* NSArray or NSDictionary */
+  NSArray *ownerIds = nil;
   
   results = [super _fetchIds:_context];
   if (![results isNotEmpty] || ![self->onlyTeamsWithAccountId isNotNull])
     return results;
   
+  if ([self->includeTeamsWithOwnerId isNotNull]) {
+    static NSArray *ownerIdAttrs = nil;
+    NSArray *tmp;
+
+    if (ownerIdAttrs == nil)
+      ownerIdAttrs = [[NSArray alloc] initWithObjects:@"ownerId", nil];
+    
+    tmp = [_context runCommand:@"team::get-by-globalid",
+                    @"gids", results,
+                    @"attributes", ownerIdAttrs,
+                    nil];
+    ownerIds = [tmp valueForKey:@"ownerId"];
+  }
+  else
+    ownerIds = nil;
+  
   members = [self _fetchMemberGIDsForTeamGIDs:results inContext:_context];
-  return [self filterResults:results onMembers:members];
+  return [self filterResults:results onMembers:members andOwnerIds:ownerIds];
 }
 
 /* accessors */
@@ -252,24 +299,42 @@ static NSNumber *yesNum = nil;
 - (void)setOnlyTeamsWithAccount:(id)_account {
   _account = [self _primaryKeyFromObject:_account];
   
-  ASSIGN(self->onlyTeamsWithAccountId, _account);
+  ASSIGNCOPY(self->onlyTeamsWithAccountId, _account);
 }
 - (NSNumber *)onlyTeamsWithAccount {
   return self->onlyTeamsWithAccountId;
 }
 
+- (void)setIncludeTeamsWithOwner:(id)_account {
+  _account = [self _primaryKeyFromObject:_account];
+  
+  ASSIGNCOPY(self->includeTeamsWithOwnerId, _account);
+}
+- (NSNumber *)includeTeamsWithOwner {
+  return self->includeTeamsWithOwnerId;
+}
+
 /* key/value coding */
 
 - (void)takeValue:(id)_value forKey:(NSString *)_key {
-  if ([_key isEqualToString:@"onlyTeamsWithAccount"])
+  if ([_key isEqualToString:@"onlyTeamsWithAccount"]) {
     [self setOnlyTeamsWithAccount:_value];
-  else
-    [super takeValue:_value forKey:_key];
+    return;
+  }
+  if ([_key isEqualToString:@"includeTeamsWithOwner"]) {
+    [self setIncludeTeamsWithOwner:_value];
+    return;
+  }
+  
+  [super takeValue:_value forKey:_key];
 }
 
 - (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"onlyTeamsWithAccount"])
     return [self onlyTeamsWithAccount];
+
+  if ([_key isEqualToString:@"includeTeamsWithOwner"])
+    return [self includeTeamsWithOwner];
 
   return [super valueForKey:_key];
 }
