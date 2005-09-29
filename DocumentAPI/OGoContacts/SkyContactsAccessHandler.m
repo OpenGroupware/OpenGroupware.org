@@ -67,6 +67,7 @@ static BOOL debugOn = YES;
 /* operations */
 
 - (BOOL)_checkAccessMask:(NSString *)_mask with:(NSString *)_operation {
+  // TODO: a bit overkill to check for 'r' and 'w'?
   unsigned i, opCnt;
   int maskCnt;
   
@@ -154,16 +155,84 @@ static BOOL debugOn = YES;
   return [[_permInfos valueForKey:@"isReadonly"] boolValue] ? @"r" : @"rw";
 }
 
+- (NSString *)_permMaskFromAccessCache:(NSDictionary *)_cache
+  forAccessGID:(EOKeyGlobalID *)_accessGID withTeamGIDs:(NSArray **)_teamsGIDs
+{
+  /*
+    Explanation:
+    If we have an ACL the ACL contains entries for accounts *and* for teams
+    of this account.
+    We just have two permissions for company records 'r' for read and 'w' for
+    write. This methods calculates a union of the configured fields, that is,
+    if the user ACL entry has just 'r' but some team the user is a member of
+    has 'rw', the result will be 'rw'.
+  */
+  NSString *accessStr;
+  int      bitmap;
+  
+  bitmap = 0;
+  
+  /* first check account */
+  
+  accessStr = [_cache objectForKey:_accessGID];
+  if ([accessStr isNotEmpty] && 
+      ([accessStr rangeOfString:@"r"].length > 0)) {
+    bitmap |= 1;
+  }
+    
+  if ([accessStr isNotEmpty] && 
+      ([accessStr rangeOfString:@"w"].length > 0))
+    bitmap |= 2;
+  
+  /* then check all teams (unless we already have full access) */
+  if (bitmap < 3) {
+    NSEnumerator *enumerator;
+    EOGlobalID   *teamID;
+    
+    if (*_teamsGIDs == nil)
+      *_teamsGIDs = [self _fetchTeamsForPersonID:_accessGID buildGids:YES];
+    
+    enumerator = [*_teamsGIDs objectEnumerator];
+    
+    /* 2^0 -> r 2^1 ->w */
+    while ((teamID = [enumerator nextObject]) != nil) {
+      NSString *str;
+      
+      if ((str = [_cache objectForKey:teamID]) == nil)
+        continue;
+      
+      if ([str isNotEmpty] && ([str rangeOfString:@"r"].length > 0))
+        bitmap |= 1;
+      
+      if ([str isNotEmpty] && ([str rangeOfString:@"w"].length > 0))
+        bitmap |= 2;
+      
+      if (bitmap > 2) /* we have reached full access */
+        break;
+    }
+  }
+  
+  switch (bitmap) {
+  case 0: return @"";
+  case 1: return @"r"; 
+  case 2: return @"w";
+  case 3: return @"rw"; 
+  default: return nil;
+  }
+}
+
 - (BOOL)_checkAccess:(NSString *)_operation
   forCompanyPermRecord:(id)_permInfos
   accessGID:(EOKeyGlobalID *)_accessGID
-  teamGIds:(NSArray *)_teamsGIDs
+  teamGIds:(NSArray **)_teamsGIDs
   cache:(NSDictionary *)_cache
 {
   /* called by -objects:forOperation:forAccessGlobalID:searchAll: */
-  NSString     *accessStr;
-  NSEnumerator *enumerator;
-  id           teamID;
+  /*
+    The cache contains a mapping of an access-global-id to a permission string,
+    eg Person<10000> to 'rw'.
+  */
+  NSString     *perm;
   EOGlobalID   *gid;
   NSNumber     *gidId;
   
@@ -200,59 +269,18 @@ static BOOL debugOn = YES;
     /*
       => I think this "means" that no separate ACL was set on the record.
          Apparently an ACL will supercede 'isPrivate' and 'isReadOnly'
-         processing. TODO: check that
+         processing. TODO: check that.
     */
-    NSString *perm;
-    
     perm = [self _calculateReadOnlyAndPrivateForCompanyPermRecord:_permInfos
                  accessGID:_accessGID];
-    [self cacheOperation:perm for:gidId];
-    
-    return [perm rangeOfString:_operation].length > 0 ? YES : NO;
+  }
+  else {
+    perm = [self _permMaskFromAccessCache:_cache forAccessGID:_accessGID
+                 withTeamGIDs:_teamsGIDs];
   }
   
-  accessStr = [_cache objectForKey:_accessGID];
-  /* cache access */
-  {
-    int      bitmap;
-    NSString *str;
-
-    bitmap = 0;
-    
-    if ([accessStr isNotEmpty] && 
-	([accessStr rangeOfString:@"r"].length > 0)) {
-      bitmap |= 1;
-    }
-    
-    if ([accessStr isNotEmpty] && 
-	([accessStr rangeOfString:@"w"].length > 0))
-      bitmap |= 2;
-
-    enumerator = [_teamsGIDs objectEnumerator];
-
-    /* 2^0 -> r 2^1 ->w */    
-    while ((bitmap < 3) && ((teamID = [enumerator nextObject]))) {
-      str = [_cache objectForKey:teamID];
-
-      if ([str length] && ([str rangeOfString:@"r"].length > 0))
-        bitmap |= 1;
-
-      if ([str length] && ([str rangeOfString:@"w"].length > 0))
-        bitmap |= 2;
-    }
-    str = @"";
-    switch (bitmap) {
-      case 0: str = @"";   break;
-      case 1: str = @"r";  break;
-      case 2: str = @"w";  break;
-      case 3: str = @"rw"; break;
-    }
-    [self cacheOperation:str for:gidId];
-    
-    if ([self _checkAccessMask:str with:_operation])
-      return YES;
-  }
-  return NO;
+  [self cacheOperation:perm for:gidId];
+  return [self _checkAccessMask:perm with:_operation];
 }
 
 - (BOOL)isAccessGIDRoot:(EOGlobalID *)_accessGID {
@@ -375,7 +403,7 @@ static BOOL debugOn = YES;
   {
     NSArray      *objects, *teams;
     NSDictionary *accessCache;
-    id           obj;
+    NSDictionary *permInfoRec;
     
     objects = [self fetchCompanyPermAttrsForGIDs:_oids];
     TIME_END();
@@ -384,20 +412,22 @@ static BOOL debugOn = YES;
     
     accessCache = [self accessCacheForObjects:objects];
     
-    teams = [self _fetchTeamsForPersonID:_accessGID buildGids:YES];
+    /* fetched on-demand */
+    teams = nil;
     
     enumerator = [objects objectEnumerator];
-    while ((obj = [enumerator nextObject]) != nil) {
+    while ((permInfoRec = [enumerator nextObject]) != nil) {
       NSDictionary *cache;
       
-      cache = [accessCache objectForKey:[obj valueForKey:@"globalID"]];
-      if ([self _checkAccess:_operation forCompanyPermRecord:obj
+      cache = [accessCache objectForKey:[permInfoRec valueForKey:@"globalID"]];
+      
+      if ([self _checkAccess:_operation forCompanyPermRecord:permInfoRec
                 accessGID:(EOKeyGlobalID *)_accessGID
-                teamGIds:teams
+                teamGIds:&teams
                 cache:cache]) {
-        [result addObject:[obj valueForKey:@"globalID"]];
+        [result addObject:[permInfoRec valueForKey:@"globalID"]];
       }
-      else if (!_all) // TODO: explain
+      else if (!_all) // TODO: explain (I think this aborts all if one fails)
 	break;
     }
   }

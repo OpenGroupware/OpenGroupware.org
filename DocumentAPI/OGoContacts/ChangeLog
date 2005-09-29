@@ -1,5 +1,9 @@
 2005-09-29  Helge Hess  <helge.hess@skyrix.com>
 
+	* SkyContactsAccessHandler.m: major performance improvement, teams are
+	  only fetched if an ACL is set and if the account doesn't have full
+	  access (so that its teams must be evaluated) (v5.3.48)
+
 	* SkyContactsAccessHandler.m: major code cleanups, added debug logs
 	  (v5.3.47)
 
