@@ -1,3 +1,9 @@
+2005-09-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSWAppointmentEditor.m, Defaults.plist: turned the name of the
+	  default read-access team into a default
+	  ('scheduler_default_readaccessteam') (v5.3.91)
+
 2005-09-27  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWAppointmentEditor.m: fixed include path for OGoCycleDateCalculator

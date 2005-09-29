@@ -84,7 +84,6 @@
   return [super version] + 2 /* v?? */;
 }
 
-static NSString   *AllIntranetTeamName = @"all intranet";
 static NSNumber   *yesNum    = nil;
 static NSNumber   *noNum     = nil;
 static NSNumber   *num0      = nil;
@@ -442,7 +441,14 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   }
 }
 
-- (void)_setSelectedAccessTeamToAllIntranetInArray:(NSArray *)_teams {
+- (NSString *)defaultAccessTeamName {
+  return [[[self session] userDefaults] 
+                 stringForKey:@"scheduler_default_readaccessteam"];
+}
+
+- (void)_setSelectedAccessTeamTo:(NSString *)_teamName
+  inArray:(NSArray *)_teams
+{
   /* 
      searches the accessTeams array for all-intranet and sets that as the 
      selected team 
@@ -453,11 +459,14 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     id t;
     
     t = [_teams objectAtIndex:i];
-    if ([[t valueForKey:@"login"] isEqualToString:AllIntranetTeamName]) {
+    if ([[t valueForKey:@"login"] isEqualToString:_teamName]) {
       ASSIGN(self->selectedAccessTeam, t);
       break;
     }
   }
+  [self warnWithFormat:
+          @"did not find configured default-access team: %@",
+          _teamName];
 }
 
 - (NSString *)timeStringForHour:(int)_hour minute:(int)_minute {
@@ -521,8 +530,10 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   
   ASSIGN(self->accessTeams, teams);
   
-  if ([self isInNewMode])
-    [self _setSelectedAccessTeamToAllIntranetInArray:self->accessTeams];
+  if ([self isInNewMode]) {
+    [self _setSelectedAccessTeamTo:[self defaultAccessTeamName]
+          inArray:self->accessTeams];
+  }
   
   [self _setupStartDate:[snp valueForKey:@"startDate"]
         andEndDate:[snp valueForKey:@"endDate"]];
