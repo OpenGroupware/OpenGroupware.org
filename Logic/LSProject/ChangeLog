@@ -1,3 +1,8 @@
+2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* some code cleanups, fixed some gcc4 warnings, use -warnWithFormat:
+	  (v5.3.40)
+
 2005-04-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Defaults.plist: removed UseFlatDocumentFileStructureStatus default,

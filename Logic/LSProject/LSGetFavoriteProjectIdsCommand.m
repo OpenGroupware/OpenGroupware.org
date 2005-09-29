@@ -45,7 +45,13 @@
 
 @implementation LSModifyProjectFavoritesCommand
 
+- (void)dealloc {
+  [self->projectId release];
+  [super dealloc];
+}
+
 /* accessor */
+
 - (void)setProjectId:(id)_projectId {
   ASSIGN(self->projectId,_projectId);
 }
@@ -53,10 +59,7 @@
   return self->projectId;
 }
 
-- (void)dealloc {
-  [self->projectId release];
-  [super dealloc];
-}
+/* exec */
 
 - (void)_prepareForExecutionInContext:(id)_context {
   [self assert:(projectId != nil)
@@ -64,13 +67,13 @@
   [super _prepareForExecutionInContext:_context];
 }
 
+/* key/value coding */
 
-- (void)takeValue:(id)_val forKey:(id)_key {
-  if (([_key isEqualToString:@"projectId"]) ||
-      ([_key isEqualToString:@"id"]))
+- (void)takeValue:(id)_val forKey:(NSString *)_key {
+  if ([_key isEqualToString:@"projectId"] || [_key isEqualToString:@"id"])
     [self setProjectId:_val];
-  else if (([_key isEqualToString:@"project"]) ||
-           ([_key isEqualToString:@"object"]))
+  else if ([_key isEqualToString:@"project"] ||
+	   [_key isEqualToString:@"object"])
     [self setProjectId:[_val valueForKey:@"projectId"]];
   else
     [super takeValue:_val forKey:_key];
@@ -78,15 +81,17 @@
 
 @end /* LSModifyProjectFavoritesCommand */
 
+
 @implementation LSAddProjectToFavoritesCommand
 
 - (void)_executeInContext:(id)_context {
   NSMutableArray *ma;
   NSArray        *favorites;
+  
   favorites = [[_context userDefaults]
                          arrayForKey:PROJECT_FAVORITES_UD_KEY];
   if (favorites == nil) favorites = [NSArray array];
-
+  
   ma = [[NSMutableArray alloc] initWithArray:favorites];
   if (![ma containsObject:[self projectId]]) {
     [ma addObject:[self projectId]];
@@ -95,18 +100,20 @@
                              forKey:PROJECT_FAVORITES_UD_KEY];
     [[_context userDefaults] synchronize];
   }
-    
+  
   [ma release];
   [self setReturnValue:[NSNumber numberWithBool:YES]];
 }
 
 @end /* LSAddProjectToFavoritesCommand */
 
+
 @implementation LSRemoveProjectFromFavoritesCommand
 
 - (void)_executeInContext:(id)_context {
   NSMutableArray *ma;
   NSArray        *favorites;
+
   favorites = [[_context userDefaults]
                          arrayForKey:PROJECT_FAVORITES_UD_KEY];
   if (favorites == nil) favorites = [NSArray array];
@@ -125,6 +132,7 @@
 }
 
 @end /* LSRemoveProjectFromFavoritesCommand */
+
 
 @implementation LSGetFavoriteProjectIdsCommand
 

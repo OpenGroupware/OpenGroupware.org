@@ -19,12 +19,12 @@
   02111-1307, USA.
 */
 
-#import <LSFoundation/LSDBObjectBaseCommand.h>
+#include <LSFoundation/LSDBObjectBaseCommand.h>
 
 @interface LSSetPersonsForProjectCommand : LSDBObjectBaseCommand
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSSetPersonsForProjectCommand
 
@@ -43,7 +43,7 @@
                                    [[self object] valueForKey:@"projectId"]];
   [qualifier setUsesDistinct:YES];
 
-  return AUTORELEASE(qualifier);  
+  return [qualifier autorelease];  
 }
 
 - (void)_executeInContext:(id)_context {
@@ -72,26 +72,26 @@
   [persons release]; persons = nil;
 }
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Project";
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"project"])
     [self setObject:_value];
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"project"])
     return [self object];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
-@end
+@end /* LSSetPersonsForProjectCommand */

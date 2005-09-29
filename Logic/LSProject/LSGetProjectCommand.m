@@ -43,7 +43,7 @@
   
   if ([cache isNotNull]) {
     NSNumber *pid;
-
+    
     pid = [self valueForKey:@"projectId"];
     if ([pid isNotNull]) {
       id p;
@@ -120,7 +120,7 @@
 
 /* KVC */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"gid"]) {
     [self setProjectGlobalID:_value];
     return;
@@ -128,7 +128,7 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"gid"])
     return [self projectGlobalID];
   

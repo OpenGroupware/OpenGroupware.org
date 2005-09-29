@@ -19,22 +19,22 @@
   02111-1307, USA.
 */
 
-#import <LSFoundation/LSDBObjectBaseCommand.h>
+#include <LSFoundation/LSDBObjectBaseCommand.h>
 
 @interface LSFetchTeamRelationCommand : LSDBObjectBaseCommand
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSFetchTeamRelationCommand
 
 // command methods
 
 - (EOSQLQualifier *)_qualifierForTeams {
-  EOEntity    *personEntity = nil;
-  EOSQLQualifier *qualifier    = nil;
+  EOEntity       *personEntity;
+  EOSQLQualifier *qualifier;
   id          obj, key;
-
+  
   [self assert:((obj = [self object]) != nil) reason:@"missing object"];
   [self assert:((key = [obj valueForKey:@"projectId"]) != nil)
         format:@"missing key 'projectId' in object %@", obj];
@@ -49,15 +49,15 @@
                                      [NSNumber numberWithBool:YES]];
   [qualifier setUsesDistinct:YES];
 
-  return AUTORELEASE(qualifier);  
+  return [qualifier autorelease];  
 }
 
 - (void)_executeInContext:(id)_context {
-  NSMutableArray  *teams = nil;
-  BOOL            isOk   = NO;
-  id              obj    = nil; 
+  NSMutableArray  *teams;
+  BOOL            isOk;
+  id              obj; 
 
-  teams = [[NSMutableArray allocWithZone:[self zone]] init];
+  teams = [[NSMutableArray alloc] initWithCapacity:4];
   
   isOk = [[self databaseChannel] selectObjectsDescribedByQualifier:
                                    [self _qualifierForTeams]
@@ -66,42 +66,42 @@
   [LSDBObjectCommandException raiseOnFail:isOk object:self
                               reason:[sybaseMessages description]];
   
-  while ((obj = [[self databaseChannel] fetchWithZone:NULL])) {
+  while ((obj = [[self databaseChannel] fetchWithZone:NULL]) != nil) {
     [teams addObject:obj];
     obj = nil;
   }
 
-  // check permission
+  /* check permission */
   [[self object] takeValue:teams forKey:@"teams"];
 
-  RELEASE(teams); teams = nil;
+  [teams release]; teams = nil;
 }
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Project";
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"project"] || [_key isEqualToString:@"object"]) {
     if (_value == nil)
-      [self logWithFormat:@"WARNING: set 'object' key to nil !"];
-
+      [self warnWithFormat:@"set 'object' key to nil !"];
+    
     [self setObject:_value];
     return;
   }
-  else
-    [super takeValue:_value forKey:_key];
+
+  [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"project"] || [_key isEqualToString:@"object"])
     return [self object];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
-@end
+@end /* LSFetchTeamRelationCommand */

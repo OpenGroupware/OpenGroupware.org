@@ -68,7 +68,7 @@
     return;
   
   if ([startDate compare:endDate] == NSOrderedDescending) {
-    [self logWithFormat:@"WARNING: enddate before startdate, reversing!"];
+    [self warnWithFormat:@"enddate before startdate, reversing!"];
     LSCommandSet(self, @"endDate",   startDate);
     LSCommandSet(self, @"startDate", endDate);
   }
@@ -197,23 +197,24 @@
 - (NSArray *)accounts {
   return self->accounts;
 }
+
 - (void)setRemovedAccounts:(NSArray *)_removedAccounts {
   ASSIGN(self->removedAccounts, _removedAccounts);
 }
 - (NSArray *)removedAccounts {
   return self->removedAccounts;
 }
+
 - (void)setComment:(NSString *)_comment {
-  ASSIGN(self->comment, _comment);
+  ASSIGNCOPY(self->comment, _comment);
 }
 - (NSString *)comment {
   return self->comment;
 }
 
+/* key/value coding */
 
-// key/value coding
-
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"accounts"])
     [self setAccounts:_value];
   else if ([_key isEqualToString:@"removedAccounts"])
@@ -224,15 +225,15 @@
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"accounts"])
     return [self accounts];
-  else if ([_key isEqualToString:@"removedAccounts"])
+  if ([_key isEqualToString:@"removedAccounts"])
     return [self removedAccounts];
-  else if ([_key isEqualToString:@"comment"])
+  if ([_key isEqualToString:@"comment"])
     return [self comment];
 
   return [super valueForKey:_key];
 }
 
-@end
+@end /* LSNewProjectCommand */

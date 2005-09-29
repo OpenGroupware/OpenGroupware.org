@@ -103,10 +103,11 @@
 }
 
 - (BOOL)_setProjectInfoInContext:(id)_context {
-  BOOL isOk       = NO;
-  id   genObjInfo = nil;
-  id   obj        = [self object];
+  BOOL isOk;
+  id   genObjInfo;
+  id   obj;
 
+  obj        = [self object];
   [self assert:(obj != nil) reason:@"no project object set for operation !"];
   
   genObjInfo = [obj valueForKey:@"toProjectInfo"];
@@ -132,18 +133,17 @@
   pName = [obj valueForKey:@"name"];
   pKind = [obj valueForKey:@"kind"];
 
-  if ([pName hasPrefix:@"History - "]) {
+  if ([pName hasPrefix:@"History - "])
     [obj takeValue:@"05_historyProject" forKey:@"kind"];
-  }
-  else if (pKind != nil && [pKind isEqualToString:@"05_historyProject"]) {
+  else if (pKind != nil && [pKind isEqualToString:@"05_historyProject"])
     [obj takeValue:[EONull null] forKey:@"kind"];
-  }
 }
 
 - (void)_checkStartDateIsBeforeEndDate {
-  NSCalendarDate *startDate = [self valueForKey:@"startDate"];
-  NSCalendarDate *endDate   = [self valueForKey:@"endDate"];
-
+  NSCalendarDate *startDate, *endDate;
+  
+  startDate = [self valueForKey:@"startDate"];
+  endDate   = [self valueForKey:@"endDate"];
   if ([startDate compare:endDate] == NSOrderedDescending) {
     [self takeValue:startDate forKey:@"endDate"];
     [self takeValue:endDate forKey:@"startDate"];
@@ -166,21 +166,9 @@
   return [[self databaseChannel] updateObject:document];
 }
 
-- (BOOL)_updateRootProcessInContext:(id)_context {
-  id project  = [self object];
-  id process  = LSRunCommandV(_context, @"project", @"get-root-process",
-                              @"object", project, nil);
-
-  [process takeValue:[project valueForKey:@"startDate"] forKey:@"startDate"];
-  [process takeValue:[project valueForKey:@"endDate"]   forKey:@"endDate"];
-  [process takeValue:@"updated" forKey:@"dbStatus"];
-
-  return [[self databaseChannel] updateObject:process];
-}
-
 - (void)_prepareForExecutionInContext:(id)_context {
-   id       account    = nil;
-   NSNumber *accountId = nil;
+   id       account;
+   NSNumber *accountId;
 
    account   = [_context valueForKey:LSAccountKey];
    accountId = [account valueForKey:@"companyId"];
@@ -276,16 +264,16 @@
   return self->removedAccounts;
 }
 
+- (void)setComment:(NSString *)_comment {
+  ASSIGNCOPY(self->comment, _comment);
+}
 - (NSString *)comment {
   return self->comment;
-}
-- (void)setComment:(NSString *)_comment {
-  ASSIGN(self->comment, _comment);
 }
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"accounts"]) {
     [self setAccounts:_value];
     return;
@@ -302,7 +290,7 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"accounts"])
     return [self accounts];
   if ([_key isEqualToString:@"removedAccounts"])

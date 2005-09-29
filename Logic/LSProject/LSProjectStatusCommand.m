@@ -19,18 +19,20 @@
   02111-1307, USA.
 */
 
-#import <LSFoundation/LSBaseCommand.h>
+#include <LSFoundation/LSBaseCommand.h>
 
 @interface LSProjectStatusCommand : LSBaseCommand
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSProjectStatusCommand
 
 - (void)_computeProjectStatus:(id)_project {
   NSString *status   = nil;
-  NSString *dbStatus = [_project valueForKey:@"dbStatus"];
+  NSString *dbStatus;
+  
+  dbStatus = [_project valueForKey:@"dbStatus"];
 
   if ([dbStatus isEqualToString:@"archived"]) {
     status = @"30_archived";
@@ -41,7 +43,7 @@
     
     if (start == nil || end == nil) {
       status =  @"99_undefined";
-      [self logWithFormat:@"WARNING: got project with null start or end date !"];
+      [self warnWithFormat:@"got project with null start or end date!"];
     }
     else {
       NSCalendarDate *sToday = [NSCalendarDate calendarDate];
@@ -74,43 +76,41 @@
 }
 
 - (void)_validateKeysForContext:(id)_context {
-  if ([self object] == nil) 
+  if ([self object] == nil) {
     [LSDBObjectCommandException raiseOnFail:NO object:self
                                 reason:@"no project(s) set!"];
+  }
 }
 
 - (void)_executeInContext:(id)_context {
-  int i, cnt = [[self object] count];
-
-  for (i = 0; i < cnt; i++) {
-    id myProject = [[self object] objectAtIndex:i];
-
-    [self _computeProjectStatus:myProject];
-  }
+  unsigned i, cnt;
+  
+  for (i = 0, cnt = [[self object] count]; i < cnt; i++)
+    [self _computeProjectStatus:[[self object] objectAtIndex:i]];
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  if ([_key isEqualToString:@"project"] || 
-      [_key isEqualToString:@"object"]) {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
+  if ([_key isEqualToString:@"project"] || [_key isEqualToString:@"object"]) {
     [self setObject:[NSArray arrayWithObject:_value]];
     return;
   }
-  else if ([_key isEqualToString:@"projects"]) {
+  if ([_key isEqualToString:@"projects"]) {
     [self setObject:_value];
     return;
   }
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
-  if ([_key isEqualToString:@"project"] || 
-      [_key isEqualToString:@"object"])
+- (id)valueForKey:(NSString *)_key {
+  if ([_key isEqualToString:@"project"] || [_key isEqualToString:@"object"])
     return [[self object] lastObject];
-  else if ([_key isEqualToString:@"projects"])
+
+  if ([_key isEqualToString:@"projects"])
     return [self object];
+  
   return [super valueForKey:_key];  
 }
 
-@end
+@end /* LSProjectStatusCommand */

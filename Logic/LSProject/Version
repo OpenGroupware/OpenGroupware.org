@@ -1,6 +1,6 @@
 # Version file
 
-SUBMINOR_VERSION:=39
+SUBMINOR_VERSION:=40
 
 # v5.1.38 requires LSAddress   v5.1.51
 # v5.0.27 requires LSTasks     v5.0.2

@@ -113,19 +113,19 @@
   [persons release]; persons = nil;
 }
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Project";
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"project"] || [_key isEqualToString:@"object"]) {
     if (_value == nil)
-      [self logWithFormat:@"WARNING: set 'object' key to nil !"];
-
+      [self warnWithFormat:@"set 'object' key to nil !"];
+    
     [self setObject:_value];
     return;
   }
@@ -133,7 +133,7 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"project"] || [_key isEqualToString:@"object"])
     return [self object];
 

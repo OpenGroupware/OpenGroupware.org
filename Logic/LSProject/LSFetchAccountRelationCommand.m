@@ -19,12 +19,12 @@
   02111-1307, USA.
 */
 
-#import <LSFoundation/LSDBObjectBaseCommand.h>
+#include <LSFoundation/LSDBObjectBaseCommand.h>
 
 @interface LSFetchAccountRelationCommand : LSDBObjectBaseCommand
 @end
 
-#import "common.h"
+#include "common.h"
 #include <LSFoundation/SkyAccessManager.h>
 
 @implementation LSFetchAccountRelationCommand
@@ -32,8 +32,8 @@
 // command methods
 
 - (EOSQLQualifier *)_qualifierForPerson {
-  EOEntity    *personEntity = nil;
-  EOSQLQualifier *qualifier    = nil;
+  EOEntity       *personEntity;
+  EOSQLQualifier *qualifier;
   id          obj, key;
 
   [self assert:((obj = [self object]) != nil) reason:@"missing object"];
@@ -50,15 +50,15 @@
                                      [NSNumber numberWithBool:YES]];
   [qualifier setUsesDistinct:YES];
 
-  return AUTORELEASE(qualifier);  
+  return [qualifier autorelease];  
 }
 
 - (void)_executeInContext:(id)_context {
-  NSMutableArray  *persons = nil;
+  NSMutableArray  *persons;
   BOOL            isOk     = NO;
   id              obj      = nil; 
 
-  persons = [[NSMutableArray allocWithZone:[self zone]] init];
+  persons = [[NSMutableArray alloc] initWithCapacity:4];
   
   isOk = [[self databaseChannel] selectObjectsDescribedByQualifier:
                                    [self _qualifierForPerson]
@@ -67,7 +67,7 @@
   [LSDBObjectCommandException raiseOnFail:isOk object:self
                               reason:[sybaseMessages description]];
   
-  while ((obj = [[self databaseChannel] fetchWithZone:NULL])) {
+  while ((obj = [[self databaseChannel] fetchWithZone:NULL]) != nil) {
     [persons addObject:obj];
     obj = nil;
   }
@@ -79,21 +79,16 @@
                     @"person", @"check-permission",
                     @"object", persons, nil);
 
-#if 0
-    LSRunCommandV(_context, @"person", @"get-extattrs",
-                  @"objects", permittedObjs,
-                  @"relationKey", @"companyValue", nil);
-
-    LSRunCommandV(_context, @"person", @"get-telephones",
-                  @"objects", permittedObjs,
-                  @"relationKey", @"telephones", nil);
-#else
     { // if current account has access to project but not to persons
-      SkyAccessManager *am      = [_context accessManager];
-      NSEnumerator     *e       = [permittedObjs objectEnumerator];
-      id               one      = nil;
-      NSMutableArray   *allowed = [NSMutableArray array];
-        
+      SkyAccessManager *am;
+      NSEnumerator     *e;
+      id               one;
+      NSMutableArray   *allowed;
+      
+      am      = [_context accessManager];
+      allowed = [NSMutableArray arrayWithCapacity:4];
+      
+      e = [permittedObjs objectEnumerator];
       while ((one = [e nextObject])) {
         if ([am operation:@"r"
                 allowedOnObjectID:[one valueForKey:@"globalID"]]) {
@@ -114,25 +109,24 @@
                     @"objects", allowed,
                     @"relationKey", @"telephones", nil);
     }
-#endif
-
+    
     [[self object] takeValue:permittedObjs forKey:@"accounts"];
   }
-  RELEASE(persons); persons = nil;
+  [persons release]; persons = nil;
 }
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Project";
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"project"] || [_key isEqualToString:@"object"]) {
     if (_value == nil)
-      [self logWithFormat:@"WARNING: set 'object' key to nil !"];
+      [self warnWithFormat:@"set 'object' key to nil !"];
 
     [self setObject:_value];
     return;
@@ -141,11 +135,11 @@
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"project"] || [_key isEqualToString:@"object"])
     return [self object];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
-@end
+@end /* LSFetchAccountRelationCommand */

@@ -175,7 +175,7 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"project"])
     [self setProject:_value];
   else if ([_key isEqualToString:@"folder"])
@@ -188,15 +188,16 @@
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"filePath"])
     return [self filePath];
-  else if ([_key isEqualToString:@"project"])
+  if ([_key isEqualToString:@"project"])
     return [self project];
-  else if ([_key isEqualToString:@"folder"])
+  if ([_key isEqualToString:@"folder"])
     return [self folder];
-  else if ([_key isEqualToString:@"fileContent"])
+  if ([_key isEqualToString:@"fileContent"])
     return [self fileContent];
+  
   return [super valueForKey:_key];
 }
 
