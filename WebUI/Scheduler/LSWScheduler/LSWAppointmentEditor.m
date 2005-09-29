@@ -459,7 +459,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     id t;
     
     t = [_teams objectAtIndex:i];
-    if ([[t valueForKey:@"login"] isEqualToString:_teamName]) {
+    if ([[t valueForKey:@"description"] isEqualToString:_teamName]) {
       ASSIGN(self->selectedAccessTeam, t);
       break;
     }
