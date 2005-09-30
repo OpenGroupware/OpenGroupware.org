@@ -40,32 +40,33 @@
   return self;
 }
 
-// database commands
+/* database commands */
 
 - (NSArray  *)_fetchRelationForEntity:(EOEntity *)_entity {
-  NSString *pKeyName = [self primaryKeyName];
-  id       pKey      = [[self object] valueForKey:pKeyName];
+  NSString *pKeyName;
+  id       pKey;
+  EODatabaseChannel *dbChannel;
+  NSMutableArray    *results;
+  id                obj;
+  EOSQLQualifier    *dbQualifier;
 
-  if (pKey) {
-    EODatabaseChannel *dbChannel   = [self databaseChannel];
-    NSMutableArray    *results     = nil;
-    id                obj          = nil;
-    EOSQLQualifier    *dbQualifier = nil;
+  pKeyName = [self primaryKeyName];
+  if ((pKey = [[self object] valueForKey:pKeyName]) == nil)
+    return nil;
 
-    dbQualifier = [[EOSQLQualifier alloc]
-                                   initWithEntity:_entity
-                                   qualifierFormat:@"%A=%@", pKeyName, pKey];
+  dbQualifier = [[EOSQLQualifier alloc]
+                  initWithEntity:_entity
+                  qualifierFormat:@"%A=%@", pKeyName, pKey];
  
-    [dbChannel selectObjectsDescribedByQualifier:dbQualifier fetchOrder:nil];
-    [dbQualifier release]; dbQualifier = nil;
-
-    results = [NSMutableArray arrayWithCapacity:16];
-    while ((obj = [dbChannel fetchWithZone:NULL]))
-      [results addObject:obj];
+  dbChannel = [self databaseChannel];
+  [dbChannel selectObjectsDescribedByQualifier:dbQualifier fetchOrder:nil];
+  [dbQualifier release]; dbQualifier = nil;
+  
+  results = [NSMutableArray arrayWithCapacity:16];
+  while ((obj = [dbChannel fetchWithZone:NULL]) != nil)
+    [results addObject:obj];
     
-    return results;
-  }
-  return nil;
+  return results;
 }
 
 - (id)_fetchRecord {
@@ -134,18 +135,18 @@
 }
 
 - (void)_executeInContext:(id)_context {
-  BOOL isOk = NO;
+  BOOL isOk;
   id   obj;
 
   obj = [self object];
 
   [self assert:(obj != nil) reason:@"no object to update !"];
-
+  
   isOk = [[self databaseChannel] updateObject:obj];
-
-  if (!isOk && [self->sybaseMessages count] > 0)
+  
+  if (!isOk && [self->sybaseMessages isNotEmpty])
     [self assert:NO];
-  else if (!isOk && [self->sybaseMessages count] == 0)
+  else if (!isOk && ![self->sybaseMessages isNotEmpty])
     [self assert:NO reason:@"Save failed! Record was edited by another user!"];
 
   [self setReturnValue:obj];
@@ -153,7 +154,7 @@
 
 /* accessors */
 
-- (void)setCheckAccess:(NSNumber *)_n {
+- (void)setCheckAccess:(NSNumber *)_n { // TODO: why not a BOOL?
   ASSIGNCOPY(self->checkAccess, _n);
 }
 - (NSNumber *)checkAccess {

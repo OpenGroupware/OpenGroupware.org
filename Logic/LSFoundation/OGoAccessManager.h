@@ -70,8 +70,7 @@ extern NSString *SkyAccessFlagsDidChange;
   allowedOnObjectIDs:(NSArray *)_oids
   forAccessGlobalID:(EOGlobalID *)_accountID;
 
-- (NSArray *)objects:(NSArray *)_oids
-  forOperation:(NSString *)_str;
+- (NSArray *)objects:(NSArray *)_oids forOperation:(NSString *)_str;
 
 - (NSArray *)objects:(NSArray *)_oids
   forOperation:(NSString *)_str
