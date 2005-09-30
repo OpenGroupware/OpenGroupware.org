@@ -1,13 +1,25 @@
 // bind template to controller
 
+// WOx TODO:
+// - LSWObjectEditor
+// - SkyListView? (already available?)
+
 Frame: LSWSkyrixFrame {}
 
 Window: LSWWindowFrame {
-  title                   = labels.teamTitle;
+  title   = labels.teamTitle;
   onClose = cancel;
 }
 
-TeamEditor : LSWObjectEditor {
+Warning: LSWWarningPanel {
+  onOk   = warningOkAction;
+  phrase = warningPhrase;
+}
+
+TeamForm: WOForm { name = "teamEditor"; }
+
+
+TeamEditor: LSWObjectEditor {
   labels     = labels;
   object     = team;
   attributes = (
@@ -19,104 +31,71 @@ TeamEditor : LSWObjectEditor {
   
 }
 
-WarningModeCond:     WOConditional { condition = isInWarningMode; }
+WarningModeCond:     WOConditional { condition = isInWarningMode;             }
 WarningModeCondElse: WOConditional { condition = isInWarningMode; negate=YES; }
-IsDeleteEnabled:     WOConditional { condition = isDeleteEnabled; }
+IsDeleteEnabled:     WOConditional { condition = isDeleteEnabled;             }
+NewModeCond:         WOConditional { condition = isInNewMode; negate = YES;   }
+IsRootCondition:     WOConditional { condition = session.activeAccountIsRoot; }
 
-IsNotAllIntranetTeam : WOConditional {
-        condition = isAllIntranetTeam;
-        negate    = YES;
+ShowLocationCheckbox: WOConditional {
+  condition = isAllIntranetTeam;
+  negate    = YES;
 }
 
-Warning : LSWWarningPanel {
-        onOk      = warningOkAction;
-        phrase    = warningPhrase;
-}
+Account: WOString { value = account.login;  }
 
-TeamForm: WOForm { name = "teamEditor"; }
-
-Account:      WOString { value = account.login;  }
-AccountLabel: WOString { value = labels.members; }
-
-NewModeCond : WOConditional {
-        condition = isInNewMode;
-        negate    = YES;
-}
 
 SaveSubmit: WOSubmitButton {
-        action           = save;
-        value            = labels.saveButtonLabel;
-        disabled         = isSaveDisabled;
-        class            = "button_narrow";
+  action           = save;
+  value            = labels.saveButtonLabel;
+  disabled         = isSaveDisabled;
+  class            = "button_narrow";
 }
 SaveSubmitDA: WOSubmitButton {
-        action           = save;
-        value            = labels.saveButtonLabel;
-        disabled         = isSaveDisabled;
-        class            = "button_narrow_da";
+  action           = save;
+  value            = labels.saveButtonLabel;
+  disabled         = isSaveDisabled;
+  class            = "button_narrow_da";
 }
-IsSaveEnabled: WOConditional {
-        condition        = isSaveDisabled;
-        negate           = YES;
-}
-IsSaveDisabled: WOConditional {
-        condition        = isSaveDisabled;
-}
+
+IsSaveEnabled:  WOConditional { condition = isSaveDisabled; negate = YES; }
+IsSaveDisabled: WOConditional { condition = isSaveDisabled; }
+
 DeleteSubmit: WOHyperlink {
-        action           = delete;
-        string           = labels.deleteButtonLabel;
-        disabled         = isDeleteDisabled;
-        class            = "button_narrow";
+  action   = delete;
+  string   = labels.deleteButtonLabel;
+  disabled = isDeleteDisabled;
+  class    = "button_narrow";
 }
 CancelSubmit: WOHyperlink {
-        action           = cancel;
-        string           = labels.cancelButtonLabel;
-        class            = "button_narrow";
+  action           = cancel;
+  string           = labels.cancelButtonLabel;
+  class            = "button_narrow";
 }
 
-AttributeCell: SkyAttributeCell { colspan=2;}
-ValueCell:     SkyValueCell     { colspan=2;}
-
-LocationTeamCheckBox : WOCheckBox {
-        checked = isLocationTeam;
+LocationTeamCheckBox: WOCheckBox {
+  checked = isLocationTeam;
 }
-
-LocationTeamLabel : WOString {
-        value = labels.locationTeamLabel;
-}
-
-Font:     SkyConfigFont     {}
-EditFont: SkyConfigEditFont {}
 
 AccountList: SkyListView {
-    list          = assignedAccounts;
-    item          = item;
-    columns       = 4;
-    selectInverse = YES;
-    selectedItems = removedAccounts;
-    attributes    = ( { key="login"; },
-                      { key="fullNameLabel"; } );
+  list          = assignedAccounts;
+  item          = item;
+  columns       = 4;
+  selectInverse = YES;
+  selectedItems = removedAccounts;
+  attributes    = ( { key="login"; }, { key="fullNameLabel"; } );
 }
 
 ResultList: SkyListView {
-    list          = resultList;
-    item          = item;
-    columns       = 4;
-    selectedItems = addedAccounts;
-    attributes    = ( { key="login"; },
-                      { key="fullNameLabel"; } );
+  list          = resultList;
+  item          = item;
+  columns       = 4;
+  selectedItems = addedAccounts;
+  attributes    = ( { key="login"; }, { key="fullNameLabel"; } );
 }
 
-HasSelectedAccounts: WOConditional {
-  condition  = hasSelectedAccounts;
-}
-HasSearchResult: WOConditional {
-  condition  = hasSearchResult;
-}
-
-SearchAccounts: WOString {
-  value = labels.searchAccounts;
-}
+HasSelectedAccounts: WOConditional { condition = hasSelectedAccounts; }
+HasSearchResult:     WOConditional { condition = hasSearchResult;     }
 
 SearchField: WOTextField {
   value = searchText;
@@ -131,9 +110,6 @@ SearchSubmit: WOSubmitButton {
 AccountsConditional: WOConditional {
   condition = hasAccountSelection;
   negate    = NO;
-}
-AddAccountsAttribute : WOString {
-  value = labels.addAccounts;
 }
 
 IsMailConfigEnabled: WOConditional {
@@ -169,3 +145,18 @@ ExportTeam: OGoDefaultEditField {
   useFormatter    = "bool";
   isEditableDef   = NO;
 }
+
+/* labels */
+
+AccountLabel:         WOString { value = labels.members;           }
+LocationTeamLabel:    WOString { value = labels.locationTeamLabel; }
+SearchAccounts:       WOString { value = labels.searchAccounts;    }
+AddAccountsAttribute: WOString { value = labels.addAccounts;       }
+
+/* style */
+
+AttributeCell: SkyAttributeCell { colspan=2;}
+ValueCell:     SkyValueCell     { colspan=2;}
+
+Font:     SkyConfigFont     {}
+EditFont: SkyConfigEditFont {}

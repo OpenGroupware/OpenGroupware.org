@@ -1,3 +1,14 @@
+2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.3.35
+
+	* LSWTeamViewer.m, LSWTeamEditor.m: only try to fetch defaults of team
+	  if the login account is root
+
+	* LSWTeamEditor.m: code cleanups
+
+	* SkyDefaultsEditor.m: fixed a gcc4 warning
+
 2005-09-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWStaff.m: minor code cleanups (v5.3.34)

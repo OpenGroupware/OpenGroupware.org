@@ -7,13 +7,13 @@
       <table border="0" cellspacing="0" cellpadding="4" width="100%">
         <#TeamEditor/>
     
-        <#IsNotAllIntranetTeam>
+        <#ShowLocationCheckbox>
           <tr>
             <#AttributeCell
                ><#Font><#LocationTeamLabel/>:</#Font></#AttributeCell>
             <#ValueCell><#Font><#LocationTeamCheckBox/></#Font></#ValueCell>
           </tr>
-        </#IsNotAllIntranetTeam>
+        </#ShowLocationCheckbox>
     
         <tr>
           <#AttributeCell><#Font><#SearchAccounts/>:</#Font></#AttributeCell>
@@ -36,11 +36,13 @@
           </tr>
         </#AccountsConditional>
 
-        <#IsMailConfigEnabled>
-          <#ExportTeam  />
-          <#VAddresses  />
-          <#MailboxName />
-        </#IsMailConfigEnabled>
+        <#IsRootCondition>
+          <#IsMailConfigEnabled>
+            <#ExportTeam  />
+            <#VAddresses  />
+            <#MailboxName />
+          </#IsMailConfigEnabled>
+        </#IsRootCondition>
 
         <tr> 
           <td colspan=2></td>

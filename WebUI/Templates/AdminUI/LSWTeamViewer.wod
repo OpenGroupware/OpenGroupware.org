@@ -1,4 +1,7 @@
-// $Id: LSWTeamViewer.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
+
+// WOx TODO:
+// - replace LSWObjectViewer
 
 Frame: LSWSkyrixFrame {}
 
@@ -11,7 +14,7 @@ Title: LSWViewerTitle {
   title     = team.description;
 }
 
-TeamViewer : LSWObjectViewer {
+TeamViewer: LSWObjectViewer {
   labels        = labels;
   object        = team;
   relatedObject = item; 
@@ -27,7 +30,7 @@ TeamViewer : LSWObjectViewer {
   );
 }
 
-TeamViewerWithoutLinks : LSWObjectViewer {
+TeamViewerWithoutLinks: LSWObjectViewer {
   labels        = labels;
   object        = team;
   relatedObject = item; 
@@ -52,11 +55,11 @@ Buttons: SkyButtonRow {
 }
 
 LocationTeamLabel: WOString {
-  value   = labels.locationTeamLabel;
+  value = labels.locationTeamLabel;
 }
 
 IsLocationTeam: WOString {
-  value   = isLocationTeam;
+  value = isLocationTeam;
 }
 
 AttributeCell: SkyAttributeCell {}
@@ -64,11 +67,11 @@ ValueCell:     SkyValueCell     {}
 
 Font: SkyConfigFont {}
 
-IsRootCondition : WOConditional {
+IsRootCondition: WOConditional {
   condition = session.activeAccountIsRoot;
 }
 
-IsRootConditionElse : WOConditional {
+IsRootConditionElse: WOConditional {
   condition = session.activeAccountIsRoot;
   negate    = YES;
 }

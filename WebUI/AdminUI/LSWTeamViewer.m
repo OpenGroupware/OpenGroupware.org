@@ -100,8 +100,11 @@ static BOOL IsMailConfigEnabled = NO;
             @"returnType", intObj(LSDBReturnType_ManyObjects), 
             nil];
   }
-  self->defaults = 
-    [[self runCommand:@"userdefaults::get", @"user", obj, nil] retain];
+  
+  if ([[self session] activeAccountIsRoot]) {
+    self->defaults = 
+      [[self runCommand:@"userdefaults::get", @"user", obj, nil] retain];
+  }
   return YES;
 }
 

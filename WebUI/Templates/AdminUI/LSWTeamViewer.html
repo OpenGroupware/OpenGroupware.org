@@ -1,5 +1,3 @@
-<!-- $Id: LSWTeamViewer.html 2 2004-08-20 11:37:44Z znek $ -->
-
 <#Frame>
   <#Window>
     <table width="100%" border="0" cellpadding="4" cellspacing="0">
@@ -14,11 +12,13 @@
         <#ValueCell><#Font><#IsLocationTeam/></#Font></#ValueCell>
       </tr>
       
-      <#IsMailConfigEnabled>
-        <#ExportTeam  />
-        <#VAddresses  />
-        <#MailboxName />
-      </#IsMailConfigEnabled>
+      <#IsRootCondition>
+        <#IsMailConfigEnabled>
+          <#ExportTeam  />
+          <#VAddresses  />
+          <#MailboxName />
+        </#IsMailConfigEnabled>
+      </#IsRootCondition>
     </table>
   </#Window>
 </#Frame>

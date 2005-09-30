@@ -52,7 +52,7 @@
   return ([[self currentElement] predefinedValues] != nil);
 }
 
-- (void)setCurrentSelection:(id)_selection {
+- (void)setCurrentSelection:(NSArray *)_selection {
   [[self currentElement] setValue:_selection];
 }
 - (NSArray *)currentSelection {

@@ -19,7 +19,8 @@
 
         <td var:title="labels.teamstv_name">
           <var:if condition="isGroupWritable">
-            <var:string value="group.description" />
+            <html:a directActionName="activate" var:_oid="group.companyId"
+              _verb="edit"><var:string value="group.description" /></html:a>
           </var:if>
           <var:if condition="isGroupWritable" const:negate="1">
             <html:i><var:string value="group.description" /></html:i>

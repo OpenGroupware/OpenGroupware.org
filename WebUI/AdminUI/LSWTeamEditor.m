@@ -42,13 +42,22 @@
 
 @implementation LSWTeamEditor
 
+static BOOL IsMailConfigEnabled = NO;
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  if ((IsMailConfigEnabled = [ud boolForKey:@"MailConfigEnabled"]))
+    NSLog(@"LSWTeamEditor: mail config is enabled.");
+}
+
 - (id)init {
   if ((self = [super init])) {
-    self->assignedAccounts = [[NSMutableArray alloc] init];
-    self->addedAccounts    = [[NSMutableArray alloc] init];
-    self->removedAccounts  = [[NSMutableArray alloc] init];
-    self->resultList       = [[NSMutableArray alloc] init];
-    self->searchText       = [[NSString       alloc] init];
+    self->assignedAccounts = [[NSMutableArray alloc] initWithCapacity:16];
+    self->addedAccounts    = [[NSMutableArray alloc] initWithCapacity:4];
+    self->removedAccounts  = [[NSMutableArray alloc] initWithCapacity:4];
+    self->resultList       = [[NSMutableArray alloc] initWithCapacity:16];
+    self->searchText       = @"";
   }
   return self;
 }
@@ -75,15 +84,17 @@
   obj = [self object]; 
 
   [self runCommand:
-        @"team::members",
-        @"object",     obj,
-        @"returnType", intObj(LSDBReturnType_ManyObjects), 
+          @"team::members",
+          @"object",     obj,
+          @"returnType", intObj(LSDBReturnType_ManyObjects), 
         nil];
   [self->assignedAccounts addObjectsFromArray:[obj valueForKey:@"members"]];
-
-  [self->defaults release]; self->defaults = nil;
-  self->defaults = [[self runCommand:@"userdefaults::get", @"user", obj, nil]
-                          retain];
+  
+  if ([[self session] activeAccountIsRoot]) {
+    [self->defaults release]; self->defaults = nil;
+    self->defaults = 
+      [[self runCommand:@"userdefaults::get", @"user", obj, nil] retain];
+  }
   return YES;
 }
 
@@ -149,7 +160,7 @@
     pkey        = [account valueForKey:@"companyId"];
 
     if (pkey == nil) {
-      NSLog(@"ERROR(%@): invalid pkey of account %@", self, account);
+      [self errorWithFormat:@"invalid pkey of account: %@", account];
       continue;
     }
 
@@ -182,7 +193,7 @@
     pkey        = [account valueForKey:@"companyId"];
 
     if (pkey == nil) {
-      NSLog(@"ERROR(%@): invalid pkey of account %@", self, account);
+      [self errorWithFormat:@"invalid pkey of account %@", account];
       continue;
     }
 
@@ -235,6 +246,7 @@
 }
 
 - (BOOL)isAllIntranetTeam {
+  // TODO: shouldn't we check for companyId 10003?
   NSString *l = [[self snapshot] valueForKey:@"login"];
   
   return ([l isEqualToString:@"all intranet"]) ? YES : NO;
@@ -255,11 +267,11 @@
     ? YES : NO;
 }
 
+- (void)setSearchText:(NSString*) _text {
+  ASSIGNCOPY(self->searchText, _text);
+}
 - (NSString*)searchText {
   return self->searchText;
-}
-- (void)setSearchText: (NSString*) _text {
-  ASSIGN(self->searchText, _text);
 }
 
 - (NSArray *)resultList {
@@ -286,7 +298,15 @@
   return self->removedAccounts;
 }
 
-// notifications
+- (NSUserDefaults *)defaults {
+  return self->defaults;
+}
+
+- (BOOL)isMailConfigEnabled {
+  return IsMailConfigEnabled;
+}
+
+/* notifications */
 
 - (NSString *)insertNotificationName {
   return LSWNewTeamNotificationName;
@@ -382,7 +402,8 @@
 
   team = [self snapshot];
 
-  [self->defaults synchronize];
+  if ([[self session] activeAccountIsRoot])
+    [self->defaults synchronize];
   
   [team takeValue:self->assignedAccounts forKey:@"accounts"];
   return [self runCommand:@"team::set" arguments:team];
@@ -395,21 +416,6 @@
                             @"reallyDelete", [NSNumber numberWithBool:YES],
                             nil];
   return result;
-}
-
-- (id)defaults {
-  return self->defaults;
-}
-
-- (BOOL)isMailConfigEnabled {
-  static int IsMailConfigEnabled = -1;
-
-  if (IsMailConfigEnabled == -1) {
-    IsMailConfigEnabled =
-      [[NSUserDefaults standardUserDefaults]
-                       boolForKey:@"MailConfigEnabled"] ? 1 : 0;
-  }
-  return (IsMailConfigEnabled == 1) ? YES : NO;
 }
 
 @end /* LSWTeamEditor */

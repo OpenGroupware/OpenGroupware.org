@@ -1,5 +1,10 @@
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
 
+	* GroupsUI/OGoGroupsPage.wox: activate team-editor for writable teams
+
+	* AdminUI: template cleanups, show team default editors only for root
+	  (only root can access defaults of other company records)
+
 	* GroupsUI/OGoGroupsPage.wox: improved owner-info, added labels, show
 	  readonly teams in italics
 
