@@ -21,10 +21,11 @@
 
 #include <OGoFoundation/OGoContentPage.h>
 
-@class NSArray, NSDictionary, NSNotification;
+@class NSArray, NSDictionary, NSNotification, NSNotificationCenter;
 
 @interface OGoGroupsPage : OGoContentPage
 {
+  NSNotificationCenter *nc;
   NSArray      *groupList;
   NSArray      *writeableTeamGIDs;
   NSDictionary *pkeyToOwnerInfo;
@@ -42,20 +43,17 @@
 
 @implementation OGoGroupsPage
 
-static NSNotificationCenter *nc = nil;
 static NSArray *ownerFetchAttrs = nil;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   
-  if (nc == nil)
-    nc = [[NSNotificationCenter defaultCenter] retain];
-
   ownerFetchAttrs = [[ud arrayForKey:@"groupsui_owner_fetchattrs"] copy];
 }
 
 - (void)_registerResetNotification:(NSString *)_name {
-  [nc addObserver:self selector:@selector(resetList:) name:_name object:nil];
+  [self->nc addObserver:self selector:@selector(resetList:) 
+            name:_name object:nil];
 }
 
 - (id)init {
@@ -70,6 +68,9 @@ static NSArray *ownerFetchAttrs = nil;
   if ((self = [super init]) != nil) {
     [self registerAsPersistentInstance];
     
+    /* we retain the NC, the NC doesn't retain us */
+    self->nc = [[[self session] notificationCenter] retain];
+    
     [self _registerResetNotification:LSWNewAccountNotificationName];
     [self _registerResetNotification:LSWDeletedAccountNotificationName];
     [self _registerResetNotification:LSWNewTeamNotificationName];
@@ -81,8 +82,9 @@ static NSArray *ownerFetchAttrs = nil;
 }
 
 - (void)dealloc {
-  [nc removeObserver:self];
-
+  [self->nc removeObserver:self];
+  [self->nc release]; self->nc = nil;
+  
   [self->pkeyToOwnerInfo   release];
   [self->writeableTeamGIDs release];
   [self->groupList release];

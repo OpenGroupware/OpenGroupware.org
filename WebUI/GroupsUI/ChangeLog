@@ -1,5 +1,8 @@
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
 
+	* OGoGroupsPage.m: properly track change notifications using session
+	  local notification center (v5.3.7)
+
 	* OGoGroupsPage.m: sort entries by name, fetch owned teams, fetch
 	  owner infos, fetch team write permissions (v5.3.6)
 
