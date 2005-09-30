@@ -777,6 +777,7 @@ INSERT INTO staff (staff_id, company_id, is_team)
 INSERT INTO company_info (company_info_id, company_id)
   VALUES (10005, 10003);
 
+
 INSERT INTO team (company_id, description, is_team, number, login, db_status, 
                   object_version, owner_id, is_readonly, is_private)
   VALUES (9991, 'news editors', 1, 'LS9991', 'newseditors', 'inserted', 1,
@@ -787,6 +788,19 @@ INSERT INTO staff (staff_id, company_id, is_team)
 
 INSERT INTO company_info (company_info_id, company_id)
   VALUES (9993, 9991);
+
+
+INSERT INTO team (company_id, description, is_team, number, login, db_status, 
+                  object_version, owner_id, is_readonly, is_private)
+  VALUES (9981, 'team creators', 1, 'LS9981', 'teamcreators', 'inserted', 1,
+          10000, 1, 0);
+
+INSERT INTO staff (staff_id, company_id, is_team) 
+  VALUES (9982, 9981, 1);
+
+INSERT INTO company_info (company_info_id, company_id)
+  VALUES (9983, 9981);
+
 
 INSERT INTO news_article (news_article_id, name, caption, is_index_article,
                           object_version)

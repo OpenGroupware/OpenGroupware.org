@@ -1,3 +1,7 @@
+2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* pg-build-schema.psql: added 'team creators' team
+
 2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* pg-build-schema.psql: mark default teams as owned by root, readonly
