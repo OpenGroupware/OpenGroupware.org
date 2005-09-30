@@ -20,7 +20,7 @@
 */
 
 #include "LSWMailRenderPage.h"
-#import "common.h"
+#include "common.h"
 
 @interface LSWMailRenderPage(Private)
 - (void)initSender;
@@ -29,7 +29,7 @@
 @implementation LSWMailRenderPage
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     [self initSender];
     self->inlineLink = YES;
     self->escapeHTML = YES;
@@ -80,7 +80,7 @@
 - (BOOL)attachCond {
   NSNumber *b;
 
-  b = [self->attachment objectForKey:@"sendObject"];
+  b = [(NSDictionary *)self->attachment objectForKey:@"sendObject"];
   if (b == nil)
     return YES;
   return [b boolValue];
@@ -156,14 +156,14 @@
   id viewer;
 
   viewer = [[self session] instantiateComponentForCommand:@"htmlMail"
-                           type:[self->attachment objectForKey:@"mimeType"]];
+                           type:[self->attachment valueForKey:@"mimeType"]];
   if (viewer == nil)
     viewer = [[self application] pageWithName:@"LSWObjectHtmlMailPage"];
 
-  [viewer setObject:[self->attachment objectForKey:@"object"]];
+  [viewer setObject:[self->attachment valueForKey:@"object"]];
   [viewer setInlineLink:self->inlineLink];
 
-  if (![[self->attachment objectForKey:@"attachData"] boolValue])
+  if (![[self->attachment valueForKey:@"attachData"] boolValue])
     [viewer setShowDirectActionLink:YES];
   
   return viewer;
@@ -171,19 +171,20 @@
 
 @end /* LSWMailHtmlRenderPage */
 
+
 @implementation LSWMailTextRenderPage
 
 - (id)currentAttachmentComponent {
   id viewer;
 
   viewer = [[self session] instantiateComponentForCommand:@"textMail"
-                           type:[self->attachment objectForKey:@"mimeType"]];
+                           type:[self->attachment valueForKey:@"mimeType"]];
   if (viewer == nil)
     viewer = [[self application] pageWithName:@"LSWObjectTextMailPage"];
 
-  [viewer setObject:[self->attachment objectForKey:@"object"]];
+  [viewer setObject:[self->attachment valueForKey:@"object"]];
 
-  if (![[self->attachment objectForKey:@"attachData"] boolValue])
+  if (![[self->attachment valueForKey:@"attachData"] boolValue])
     [viewer setShowDirectActionLink:YES];
   
   return viewer;

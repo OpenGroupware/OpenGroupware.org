@@ -75,15 +75,14 @@ static inline NSString *_getUrl(id self, NSString *_str) {
 static inline void _parseForLink(id self, NSMutableArray *_text_,
                                  NSString *_kind) 
 {
-  id   obj    = nil;
   int  i, cnt = 0;
   
   for (i = 0, cnt = [_text_ count]; i < cnt; i++) {
-    NSString *str = nil;
+    NSDictionary *obj;
+    NSString *str;
     NSRange  r;
     
     obj = [_text_ objectAtIndex:i];
-
     if (![[obj objectForKey:@"kind"] isEqualToString:@"text"])
       continue;
 
@@ -358,8 +357,11 @@ static inline NSArray *_filterLinks(id self, NSString *_str) {
 }
 
 - (BOOL)isActionLink {
-  if ([[self->item objectForKey:@"urlKind"] isEqualToString:@"mailto:"] &&
-      [[[[self session] userDefaults] objectForKey:@"mail_editor_type"]
+  if (![[(NSDictionary *)self->item objectForKey:@"urlKind"] 
+         isEqualToString:@"mailto:"])
+    return NO;
+  
+  if ([[[[self session] userDefaults] objectForKey:@"mail_editor_type"]
                isEqualToString:@"internal"]) {
     return YES;
   }
@@ -377,7 +379,7 @@ static inline NSArray *_filterLinks(id self, NSString *_str) {
   if (mailEditor == nil)
     return nil;
   
-  val = [self->item objectForKey:@"value"];
+  val = [(NSDictionary *)self->item objectForKey:@"value"];
 
   /* remove mailto: */    
   if ([val length] > 7)

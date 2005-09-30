@@ -226,8 +226,8 @@
     [article takeValue:self->data     forKey:@"data"];
     [article takeValue:self->filePath forKey:@"filePath"];
   }
-
-  [article removeObjectForKey:@"relatedArticles"];
+  
+  [(NSMutableDictionary *)article removeObjectForKey:@"relatedArticles"];
   [article takeValue:self->relatedArticles forKey:@"relatedArticles"];
   [article takeValue:[NSNumber numberWithBool:self->deleteImage]
            forKey:@"deleteImage"];
