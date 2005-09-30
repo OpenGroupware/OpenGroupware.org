@@ -287,6 +287,11 @@ static NSString *OGoTeamCreatorRoleName = nil;
 
 /* actions */
 
+- (id)refresh {
+  [self resetList:nil];
+  return nil;
+}
+
 - (id)createNewTeam {
   WOComponent *ct;
 

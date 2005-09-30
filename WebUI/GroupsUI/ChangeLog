@@ -1,5 +1,7 @@
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
 
+	* OGoGroupsPage.m: added refresh action (v5.3.9)
+
 	* OGoGroupsPage.m: added team creation (v5.3.8)
 
 	* OGoGroupsPage.m: properly track change notifications using session

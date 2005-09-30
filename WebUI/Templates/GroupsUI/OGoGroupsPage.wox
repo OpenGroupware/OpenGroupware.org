@@ -18,6 +18,8 @@
                  var:footerString="labels.teamstv_footer">
         <tbutton>
           <buttons>
+            <button name="refresh" label="refresh"
+                    action="refresh" />
             <button name="new" label="new"
                     action="createNewTeam" var:enabled="canCreateGroups" />
           </buttons>
