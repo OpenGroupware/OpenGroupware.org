@@ -1,4 +1,5 @@
 OGoGroupsPage   = "My Teams";
+Groups          = "Teams";
 mygroups        = "teams";
 teamstv_email   = "email";
 teamstv_footer  = "teams:";

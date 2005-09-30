@@ -29,6 +29,9 @@
   NSArray      *groupList;
   NSArray      *writeableTeamGIDs;
   NSDictionary *pkeyToOwnerInfo;
+  BOOL         canCreateGroups;
+  
+  /* transient vars */
   id group;
   id account;
 }
@@ -40,15 +43,18 @@
 
 #include "common.h"
 #include <EOControl/EOKeyGlobalID.h>
+#include <NGMime/NGMimeType.h>
 
 @implementation OGoGroupsPage
 
-static NSArray *ownerFetchAttrs = nil;
+static NSArray  *ownerFetchAttrs        = nil;
+static NSString *OGoTeamCreatorRoleName = nil;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   
   ownerFetchAttrs = [[ud arrayForKey:@"groupsui_owner_fetchattrs"] copy];
+  OGoTeamCreatorRoleName = [[ud stringForKey:@"OGoTeamCreatorRoleName"] copy];
 }
 
 - (void)_registerResetNotification:(NSString *)_name {
@@ -137,6 +143,10 @@ static NSArray *ownerFetchAttrs = nil;
   return [self->pkeyToOwnerInfo objectForKey:tmp];
 }
 
+- (BOOL)canCreateGroups {
+  return self->canCreateGroups;
+}
+
 /* operations */
 
 - (NSArray *)teamSortOrderings {
@@ -186,7 +196,7 @@ static NSArray *ownerFetchAttrs = nil;
 - (void)_fetchMyTeams {
   LSCommandContext *cmdctx;
   NSArray *ownerGIDs;
-  NSArray *gids, *teams;
+  NSArray *gids, *teams, *members;
 
   [self resetList:nil];
   
@@ -217,14 +227,31 @@ static NSArray *ownerFetchAttrs = nil;
   
   /* fetch members */
   
-  [cmdctx runCommand:@"team::members",
-	  @"teams",      teams,
-	  @"returnType", intObj(LSDBReturnType_ManyObjects), 
-	  nil];
+  members = [cmdctx runCommand:@"team::members",
+                    @"teams",      self->groupList,
+                    @"returnType", intObj(LSDBReturnType_ManyObjects), 
+                    nil];
 
+  /* determine whether we have are in the team-creator role */
+
+  if ([[self session] activeAccountIsRoot])
+    self->canCreateGroups = YES;
+  else if ([OGoTeamCreatorRoleName isNotEmpty]) {
+    NSArray *myTeams;
+    
+    myTeams = [cmdctx runCommand:@"account::teams",
+                        @"account",   [[self session] activeAccount],
+                        @"returnType", intObj(LSDBReturnType_ManyObjects),
+                      nil];
+    myTeams = [myTeams valueForKey:@"description"];
+    self->canCreateGroups = [myTeams containsObject:OGoTeamCreatorRoleName];
+  }
+  else
+    self->canCreateGroups = NO;
+  
   /* fetch owners */
   
-  ownerGIDs = [self setOfOwnerGlobalIDsFromOwnedObjectArray:teams];
+  ownerGIDs = [self setOfOwnerGlobalIDsFromOwnedObjectArray:self->groupList];
   if ([ownerGIDs isNotEmpty]) {
     self->pkeyToOwnerInfo = 
       [[cmdctx runCommand:@"person::get-by-globalID",
@@ -252,9 +279,25 @@ static NSArray *ownerFetchAttrs = nil;
   [self->writeableTeamGIDs release]; self->writeableTeamGIDs = nil;
   [self->groupList         release]; self->groupList         = nil;
   [self->pkeyToOwnerInfo   release]; self->pkeyToOwnerInfo   = nil;
+  self->canCreateGroups = NO;
   
   [self setGroup:nil];
   [self setAccount:nil];
+}
+
+/* actions */
+
+- (id)createNewTeam {
+  WOComponent *ct;
+
+  if (!self->canCreateGroups) {
+    [self setErrorString:@"No permission to create new teams!"];
+    return nil;
+  }
+  
+  ct = [[self session] instantiateComponentForCommand:@"new"
+                       type:[NGMimeType mimeType:@"eo/team"]];
+  return ct;
 }
 
 @end /* OGoGroupsPage */

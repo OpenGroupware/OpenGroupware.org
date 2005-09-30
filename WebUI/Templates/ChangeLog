@@ -1,4 +1,6 @@
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+	
+	* GroupsUI/OGoGroupsPage.wox: added team-creation button
 
 	* GroupsUI/OGoGroupsPage.wox: activate team-editor for writable teams
 

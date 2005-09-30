@@ -16,6 +16,12 @@
       <tableview var:list="groupList" var:item="group"
                  var:titleString="labels.teamstv_title"
                  var:footerString="labels.teamstv_footer">
+        <tbutton>
+          <buttons>
+            <button name="new" label="new"
+                    action="createNewTeam" var:enabled="canCreateGroups" />
+          </buttons>
+        </tbutton>
 
         <td var:title="labels.teamstv_name">
           <var:if condition="isGroupWritable">
