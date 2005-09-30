@@ -1304,6 +1304,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/lib/opengroupware.org-%{ogo_v}/webui/SoOGo.lso
 %{prefix}/share/opengroupware.org-%{ogo_v}/templates/AdminUI
 %{prefix}/share/opengroupware.org-%{ogo_v}/templates/BaseUI
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/GroupsUI
 %{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoUIElements
 %{prefix}/share/opengroupware.org-%{ogo_v}/templates/PreferencesUI
 %{prefix}/share/opengroupware.org-%{ogo_v}/templates/PropertiesUI
@@ -1482,6 +1483,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Fri Oct 30 2005 Frank Reppin <frank@opengroupware.org>
+- templates/GroupsUI
 * Fri Aug 26 2005 Frank Reppin <frank@opengroupware.org>
 - added ogo-check-aptconflicts
 - use SOPE trunk for OGo trunk builds
