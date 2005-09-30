@@ -52,16 +52,22 @@
 
 @implementation SkyNews
 
-static NGBundleManager *bm           = nil;
-static NGMimeType      *eoNewsType   = nil;
-static NSArray         *allNewsPages = nil;
+static NGMimeType *eoNewsType   = nil;
+static NSArray    *allNewsPages = nil;
+static NSString   *OGoNewsEditorsRoleLogin = nil;
 
 + (void)initialize {
+  NGBundleManager *bm;
+  NSUserDefaults  *ud = [NSUserDefaults standardUserDefaults];
+  
   bm = [[NGBundleManager defaultBundleManager] retain];
   allNewsPages = [[bm providedResourcesOfType:@"NewsPages"] copy];
   
   if (eoNewsType == nil)
     eoNewsType = [[NGMimeType mimeType:@"eo" subType:@"newsarticle"] retain];
+
+  OGoNewsEditorsRoleLogin = 
+    [[ud stringForKey:@"OGoNewsEditorsRoleLogin"] copy];
 }
 
 - (id)init {
@@ -164,6 +170,7 @@ static NSArray         *allNewsPages = nil;
   if ([[self session] activeAccountIsRoot])
     return YES;
   
+  // TODO: we do not really need full EOs but just the login?!
   teams = [self _fetchTeamEOsOfAccountEO:[[self session] activeAccount]];
   
   /* scan for 'newseditors' team */
@@ -171,7 +178,7 @@ static NSArray         *allNewsPages = nil;
     id team;
     
     team = [teams objectAtIndex:i];
-    if ([[team valueForKey:@"login"] isEqualToString:@"newseditors"])
+    if ([[team valueForKey:@"login"] isEqualToString:OGoNewsEditorsRoleLogin])
       return YES;
   }
   

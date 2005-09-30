@@ -1,5 +1,8 @@
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
 
+	* SkyNews.m: made news editor role team configurable
+	  ('OGoNewsEditorsRoleLogin' default) (v5.3.16)
+
 	* LSWNewsArticleViewer.m, LSWNewsArticleEditor.m: removed gcc4
 	  warnings (v5.3.15)
 

@@ -7,4 +7,5 @@
   news_showOverdueJobs = YES;
   
   NewsArticleExtensionList = ( jpg, jpeg, gif, png );
+  OGoNewsEditorsRoleLogin  = "newseditors";
 }
