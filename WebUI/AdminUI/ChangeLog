@@ -1,5 +1,8 @@
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSWTeamEditor.m, bundle-info.plist: team editor can now get activated
+	  using a global-id (v5.3.36)
+
 	* v5.3.35
 
 	* LSWTeamViewer.m, LSWTeamEditor.m: only try to fetch defaults of team

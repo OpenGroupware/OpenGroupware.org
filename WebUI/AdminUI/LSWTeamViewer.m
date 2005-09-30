@@ -91,7 +91,7 @@ static BOOL IsMailConfigEnabled = NO;
   
   obj = [self object];
     
-  NSAssert(obj, @"no team is set !");
+  NSAssert(obj, @"no team is set!");
     
   if ((members = [obj valueForKey:@"members"]) == nil) {
     [self runCommand:

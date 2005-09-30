@@ -39,6 +39,7 @@
 
 #include "common.h"
 #include <OGoFoundation/LSWNotifications.h>
+#include <EOControl/EOKeyGlobalID.h>
 
 @implementation LSWTeamEditor
 
@@ -75,14 +76,38 @@ static BOOL IsMailConfigEnabled = NO;
 
 /* activation */
 
+- (BOOL)_prepareGlobalID:(EOKeyGlobalID *)gid type:(NGMimeType *)_type {
+  // DUP of LSWTeamViewer
+  id obj;
+  
+  // TODO: rewrite to use get-by-globalid?!
+  obj = [self run:@"team::get", @"companyId", [gid keyValues][0], nil];
+  obj = [obj lastObject];
+  
+  [self setObject:obj];
+  return YES;
+}
+
 - (BOOL)prepareForEditCommand:(NSString *)_command
   type:(NGMimeType *)_type
   configuration:(NSDictionary *)_cmdCfg
 {
   id obj;
-
+  
   obj = [self object]; 
-
+  
+  if ([obj isKindOfClass:[EOGlobalID class]]) {
+    if (![self _prepareGlobalID:obj type:_type])
+      return NO;
+    
+    obj = [self object];
+    if (![self makeSnapshotFromObject]) {
+      // TODO: localize
+      [self setErrorString:@"Could not make snapshot from object!"];
+      return NO;
+    }
+  }
+  
   [self runCommand:
           @"team::members",
           @"object",     obj,
@@ -321,11 +346,12 @@ static BOOL IsMailConfigEnabled = NO;
 /* misc */
 
 - (void)_removeDuplicateAccountListEntries {
-  int i, count;
-
+  // TODO: move to some NSArray category?
+  unsigned i, count;
+  
   for (i = 0, count = [self->assignedAccounts count]; i < count; i++) {
-    int j, count2;
-    id  pkey;
+    unsigned j, count2;
+    NSNumber *pkey;
 
     pkey = [[self->assignedAccounts objectAtIndex:i] valueForKey:@"companyId"];
     if (pkey == nil) continue;
@@ -370,20 +396,21 @@ static BOOL IsMailConfigEnabled = NO;
 }
 
 - (BOOL)checkConstraints {
-  NSMutableString *error = [NSMutableString stringWithCapacity:128];
-  NSString        *desc  = [[self snapshot] valueForKey:@"description"];
+  NSMutableString *error;
+  NSString        *desc;
+  
+  error = [NSMutableString stringWithCapacity:128];
+  desc  = [[self snapshot] valueForKey:@"description"];
   
   if (![desc isNotNull] || [desc length] == 0)
     [error appendString:@" No name set."];
 
-  if ([error length] > 0) {
+  if ([error isNotEmpty]) {
     [self setErrorString:error];
     return YES;
   }
-  else {
-    [self setErrorString:nil];
-    return NO;
-  }
+  [self setErrorString:nil];
+  return NO;
 }
 
 - (BOOL)checkConstraintsForSave {
@@ -391,27 +418,27 @@ static BOOL IsMailConfigEnabled = NO;
 }
 
 - (id)insertObject {
-  id team = [self snapshot];
-
+  id team;
+  
+  team = [self snapshot];
   [team takeValue:self->assignedAccounts forKey:@"accounts"];
   return [self runCommand:@"team::new" arguments:team];
 }
 
 - (id)updateObject {
   id team;
-
-  team = [self snapshot];
-
+  
   if ([[self session] activeAccountIsRoot])
     [self->defaults synchronize];
   
+  team = [self snapshot];
   [team takeValue:self->assignedAccounts forKey:@"accounts"];
   return [self runCommand:@"team::set" arguments:team];
 }
 
 - (id)deleteObject {
   id result;
-
+  
   result = [[self object] run:@"team::delete", 
                             @"reallyDelete", [NSNumber numberWithBool:YES],
                             nil];

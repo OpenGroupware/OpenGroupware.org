@@ -66,6 +66,16 @@
         type      = "eo-gid/team"; 
         component = LSWTeamViewer; 
       },
+      { 
+        verb      = edit; 
+        type      = "eo-gid/team"; 
+        component = LSWTeamEditor; 
+      },
+      { 
+        verb      = delete; 
+        type      = "eo-gid/team"; 
+        component = LSWTeamEditor; 
+      },
       { verb = view; type = "eo/team"; component = LSWTeamViewer; },
       { verb = edit; type = "eo/team"; component = LSWTeamEditor; },
       { verb = new;  type = "eo/team"; component = LSWTeamEditor; },
