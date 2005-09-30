@@ -68,13 +68,19 @@ DeleteSubmit: WOHyperlink {
   class    = "button_narrow";
 }
 CancelSubmit: WOHyperlink {
-  action           = cancel;
-  string           = labels.cancelButtonLabel;
-  class            = "button_narrow";
+  action = cancel;
+  string = labels.cancelButtonLabel;
+  class  = "button_narrow";
 }
 
 LocationTeamCheckBox: WOCheckBox {
   checked = isLocationTeam;
+}
+ReadOnlyCheckBox: WOCheckBox {
+  checked = isReadonly;
+}
+IsOwnerOrRoot: WOConditional {
+  condition = isOwnerOrRoot;
 }
 
 AccountList: SkyListView {
@@ -152,6 +158,7 @@ AccountLabel:         WOString { value = labels.members;           }
 LocationTeamLabel:    WOString { value = labels.locationTeamLabel; }
 SearchAccounts:       WOString { value = labels.searchAccounts;    }
 AddAccountsAttribute: WOString { value = labels.addAccounts;       }
+ReadOnlyLabel:        WOString { value = labels.isreadonly;        }
 
 /* style */
 

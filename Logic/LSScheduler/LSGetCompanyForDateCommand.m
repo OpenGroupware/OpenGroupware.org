@@ -238,7 +238,7 @@ static NSNumber *yesNum = nil;
   q    = [self _qualifierOneAppointmentForPerson];
   gids = [channel globalIDsForSQLQualifier:q];
 
-  if ([gids count] > 0) {
+  if ([gids isNotEmpty]) {
     NSArray *a;
 
     a = gids;
@@ -251,8 +251,8 @@ static NSNumber *yesNum = nil;
 
       enumerator = [gids objectEnumerator];
       ma         = [NSMutableArray arrayWithCapacity:[a count]];
-
-      while ((obj = [enumerator nextObject])) {
+      
+      while ((obj = [enumerator nextObject]) != nil) {
         if ([a containsObject:obj]) 
           [ma addObject:obj];
       }

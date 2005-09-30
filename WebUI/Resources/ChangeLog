@@ -1,5 +1,8 @@
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
 
+	* English|German.lproj/AdminUI.strings: added isreadonly key for team
+	  editor
+
 	* English|German.lproj: added GroupsUI.strings
 
 2005-09-27  Helge Hess  <helge.hess@skyrix.com>

@@ -265,9 +265,29 @@ static BOOL IsMailConfigEnabled = NO;
 - (id)team {
   return [self snapshot];
 }
+
 - (void)setIsLocationTeam:(BOOL)_isLocationTeam {
   [[self snapshot] takeValue:[NSNumber numberWithBool:_isLocationTeam]
                    forKey:@"isLocationTeam"];
+}
+- (BOOL)isLocationTeam {
+  id value = [[self snapshot] valueForKey:@"isLocationTeam"];
+  return (value == nil) ? NO : [value boolValue];
+}
+
+- (void)setIsReadonly:(BOOL)_flag {
+  [[self snapshot] takeValue:[NSNumber numberWithBool:_flag]
+                   forKey:@"isReadonly"];
+}
+- (BOOL)isReadonly {
+  id flag;
+  
+  flag = [[self snapshot] valueForKey:@"isReadonly"];
+  if (![flag isNotNull]) { /* default to readonly */
+    flag = [NSNumber numberWithBool:YES];
+    [[self snapshot] takeValue:flag forKey:@"isReadonly"];
+  }
+  return [flag boolValue];
 }
 
 - (BOOL)isAllIntranetTeam {
@@ -275,12 +295,6 @@ static BOOL IsMailConfigEnabled = NO;
   NSString *l = [[self snapshot] valueForKey:@"login"];
   
   return ([l isEqualToString:@"all intranet"]) ? YES : NO;
-}
-
-- (BOOL)isLocationTeam {
-  id value = [[self snapshot] valueForKey:@"isLocationTeam"];
-
-  return (value == nil) ? NO : [value boolValue];
 }
 
 - (BOOL)isDeleteEnabled {
@@ -371,6 +385,14 @@ static BOOL IsMailConfigEnabled = NO;
   }
 }
 
+- (BOOL)isOwnerOrRoot {
+  if ([[self session] activeAccountIsRoot])
+    return YES;
+  
+  return [[[self snapshot] valueForKey:@"ownerId"] 
+           isEqual:[[[self session] activeAccount] valueForKey:@"companyId"]];
+}
+
 /* actions */
 
 - (id)search {
@@ -400,11 +422,18 @@ static BOOL IsMailConfigEnabled = NO;
   NSString        *desc;
   
   error = [NSMutableString stringWithCapacity:128];
-  desc  = [[self snapshot] valueForKey:@"description"];
   
-  if (![desc isNotNull] || [desc length] == 0)
+  if (![[[self snapshot] valueForKey:@"isPrivate"] isNotNull]) {
+    // Note: private teams are not shown for members yet, so we must set them
+    //       to public
+    [[self snapshot] takeValue:[NSNumber numberWithBool:NO]
+                     forKey:@"isPrivate"];
+  }
+  
+  desc = [[self snapshot] valueForKey:@"description"];
+  if (![desc isNotEmpty])
     [error appendString:@" No name set."];
-
+  
   if ([error isNotEmpty]) {
     [self setErrorString:error];
     return YES;

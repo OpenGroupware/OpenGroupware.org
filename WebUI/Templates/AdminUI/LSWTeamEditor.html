@@ -6,6 +6,14 @@
     <#TeamForm>
       <table border="0" cellspacing="0" cellpadding="4" width="100%">
         <#TeamEditor/>
+
+        <#IsOwnerOrRoot>
+          <tr>
+            <#AttributeCell
+               ><#Font><#ReadOnlyLabel/>:</#Font></#AttributeCell>
+            <#ValueCell><#Font><#ReadOnlyCheckBox/></#Font></#ValueCell>
+          </tr>
+        </#IsOwnerOrRoot>
     
         <#ShowLocationCheckbox>
           <tr>

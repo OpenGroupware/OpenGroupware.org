@@ -130,6 +130,7 @@ html                       = "Html";
 installation               = "installation";
 internal                   = "Internal";
 isValid                    = "Valid";
+isreadonly                 = "Read-Only";
 job_import_name            = "Job Import";
 language                   = "Language";
 license_company            = "Company";

@@ -1,5 +1,8 @@
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSWTeamEditor.m: added support for setting the readonly flag of a
+	  team (v5.3.37)
+
 	* LSWTeamEditor.m, bundle-info.plist: team editor can now get activated
 	  using a global-id (v5.3.36)
 

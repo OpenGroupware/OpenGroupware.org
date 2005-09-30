@@ -76,6 +76,7 @@ groups                 = "Teams";
 html                   = "Html";
 internal               = "Intern";
 isValid                = "gültig";
+isreadonly             = "nur lesbar";
 language               = "Sprache";
 license_company        = "Unternehmen";
 license_expire         = "Ablauf";
