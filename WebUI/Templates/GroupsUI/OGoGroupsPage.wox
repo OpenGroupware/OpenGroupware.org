@@ -14,17 +14,28 @@
 
       <!-- TODO: labels -->
       <tableview var:list="groupList" var:item="group"
-                 titleString="Team List" footerString="teams:">
-        <td title="name">
-          <var:string value="group.description" />
+                 var:titleString="labels.teamstv_title"
+                 var:footerString="labels.teamstv_footer">
+
+        <td var:title="labels.teamstv_name">
+          <var:if condition="isGroupWritable">
+            <var:string value="group.description" />
+          </var:if>
+          <var:if condition="isGroupWritable" const:negate="1">
+            <html:i><var:string value="group.description" /></html:i>
+          </var:if>
         </td>
-        <td title="email">
+
+        <td var:title="labels.teamstv_email">
           <var:string value="group.email" />
         </td>
-        <td title="owner">
-          <var:string value="group.ownerId" />
+
+        <td var:title="labels.teamstv_owner">
+          <html:a directActionName="activate" var:_oid="ownerInfo.companyId"
+            ><var:string value="ownerInfo.login" /></html:a>
         </td>
-        <td title="accounts">
+
+        <td var:title="labels.teamstv_members">
           <var:foreach list="group.members" item="account" 
                        const:separator=", ">
             <html:a directActionName="activate" var:_oid="account.companyId"

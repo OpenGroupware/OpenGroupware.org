@@ -21,28 +21,37 @@
 
 #include <OGoFoundation/OGoContentPage.h>
 
-@class NSArray;
+@class NSArray, NSDictionary, NSNotification;
 
 @interface OGoGroupsPage : OGoContentPage
 {
-  NSArray *groupList;
+  NSArray      *groupList;
+  NSArray      *writeableTeamGIDs;
+  NSDictionary *pkeyToOwnerInfo;
   id group;
   id account;
 }
 
-- (NSArray *)_fetchMyTeams;
+- (void)_fetchMyTeams;
+- (void)resetList:(NSNotification *)_notification;
 
 @end
 
 #include "common.h"
+#include <EOControl/EOKeyGlobalID.h>
 
 @implementation OGoGroupsPage
 
 static NSNotificationCenter *nc = nil;
+static NSArray *ownerFetchAttrs = nil;
 
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
   if (nc == nil)
     nc = [[NSNotificationCenter defaultCenter] retain];
+
+  ownerFetchAttrs = [[ud arrayForKey:@"groupsui_owner_fetchattrs"] copy];
 }
 
 - (void)_registerResetNotification:(NSString *)_name {
@@ -73,7 +82,9 @@ static NSNotificationCenter *nc = nil;
 
 - (void)dealloc {
   [nc removeObserver:self];
-  
+
+  [self->pkeyToOwnerInfo   release];
+  [self->writeableTeamGIDs release];
   [self->groupList release];
   [self->group     release];
   [self->account   release];
@@ -88,6 +99,9 @@ static NSNotificationCenter *nc = nil;
 - (id)group {
   return self->group;
 }
+- (EOGlobalID *)groupGlobalID {
+  return [[self group] valueForKey:@"globalID"];
+}
 
 - (void)setAccount:(id)_value {
   ASSIGN(self->account, _value);
@@ -101,16 +115,78 @@ static NSNotificationCenter *nc = nil;
 }
 - (NSArray *)groupList {
   if (self->groupList == nil)
-    self->groupList = [[self _fetchMyTeams] retain];
+    [self _fetchMyTeams];
   
   return self->groupList;
 }
 
+- (BOOL)isGroupWritable {
+  return [self->writeableTeamGIDs containsObject:[self groupGlobalID]];
+}
+
+- (NSDictionary *)ownerInfo {
+  id tmp;
+  
+  if ((tmp = [self group]) == nil)
+    return nil;
+  if ((tmp = [tmp valueForKey:@"ownerId"]) == nil) /* can happen */
+    return nil;
+  
+  return [self->pkeyToOwnerInfo objectForKey:tmp];
+}
+
 /* operations */
 
-- (NSArray *)_fetchMyTeams {
+- (NSArray *)teamSortOrderings {
+  static NSArray *sos = nil;
+  
+  if (sos == nil) {
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    EOSortOrdering *so;
+    
+    so = [[EOSortOrdering alloc] 
+           initWithPropertyList:[ud objectForKey:@"groupsui_team_sortattr"]
+           owner:nil];
+    sos = [[NSArray alloc] initWithObjects:&so count:1];
+    [so release];
+  }
+  
+  return sos;
+}
+
+- (NSArray *)setOfOwnerGlobalIDsFromOwnedObjectArray:(NSArray *)teams {
+  NSMutableArray *ownerGIDs;
+  unsigned i, count;
+  
+  if (![teams isNotEmpty])
+    return nil;
+  
+  ownerGIDs = [NSMutableArray arrayWithCapacity:8];
+  for (i = 0, count = [teams count]; i < count; i++) {
+    EOKeyGlobalID *gid;
+    NSNumber *pkey;
+      
+    pkey = [[teams objectAtIndex:i] valueForKey:@"ownerId"];
+    if (![pkey isNotNull])
+      pkey = [NSNumber numberWithInt:10000 /* root, default owner */];
+    
+    gid = [EOKeyGlobalID globalIDWithEntityName:@"Person"
+                         keys:&pkey keyCount:1 zone:NULL];
+    if ([ownerGIDs containsObject:gid])
+      continue;
+      
+    [ownerGIDs addObject:gid];
+  }
+  
+  return ownerGIDs;
+}
+
+- (void)_fetchMyTeams {
   LSCommandContext *cmdctx;
+  NSArray *ownerGIDs;
   NSArray *gids, *teams;
+
+  [self resetList:nil];
   
   cmdctx = [[self session] commandContext];
   
@@ -118,28 +194,48 @@ static NSNotificationCenter *nc = nil;
   
   // TODO: also fetch teams where the user is the 'ownerId'?!
   gids = [cmdctx runCommand:@"team::extended-search",
-                 @"fetchGlobalIDs",       @"YES",
-                 @"onlyTeamsWithAccount", [[self session] activeAccount],
-                 @"description",          @"%%", 
+                 @"fetchGlobalIDs",        @"YES",
+                 @"onlyTeamsWithAccount",  [[self session] activeAccount],
+                 @"includeTeamsWithOwner", [[self session] activeAccount],
+                 @"description",           @"%%", 
                  nil];
   if (![gids isNotNull]) {
+    // TODO: localize
     [self setErrorString:@"Did not find teams for login account?!"];
-    return nil;
+    return;
   }
   
   /* fetch information about the teams */
   
   teams = [cmdctx runCommand:@"team::get-by-globalID",
-                  @"gids", gids, nil];
+                  @"gids",          gids, 
+                  @"sortOrderings", [self teamSortOrderings],
+                  nil];
+  self->groupList = [teams retain];
   
   /* fetch members */
-
+  
   [cmdctx runCommand:@"team::members",
 	  @"teams",      teams,
 	  @"returnType", intObj(LSDBReturnType_ManyObjects), 
 	  nil];
+
+  /* fetch owners */
   
-  return teams;
+  ownerGIDs = [self setOfOwnerGlobalIDsFromOwnedObjectArray:teams];
+  if ([ownerGIDs isNotEmpty]) {
+    self->pkeyToOwnerInfo = 
+      [[cmdctx runCommand:@"person::get-by-globalID",
+                     @"gids",       ownerGIDs,
+                     @"groupBy",    @"companyId",
+                     @"attributes", ownerFetchAttrs,
+                     nil] copy];
+  }
+  
+  /* fetch permissions */
+  
+  self->writeableTeamGIDs =
+    [[[cmdctx accessManager] objects:gids forOperation:@"w"] copy];
 }
 
 /* notifications */
@@ -151,7 +247,10 @@ static NSNotificationCenter *nc = nil;
 }
 
 - (void)resetList:(NSNotification *)_nc {
-  [self setGroupList:nil];
+  [self->writeableTeamGIDs release]; self->writeableTeamGIDs = nil;
+  [self->groupList         release]; self->groupList         = nil;
+  [self->pkeyToOwnerInfo   release]; self->pkeyToOwnerInfo   = nil;
+  
   [self setGroup:nil];
   [self setAccount:nil];
 }

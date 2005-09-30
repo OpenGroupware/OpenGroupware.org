@@ -1,3 +1,8 @@
+2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* GroupsUI/OGoGroupsPage.wox: improved owner-info, added labels, show
+	  readonly teams in italics
+
 2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GroupsUI/OGoGroupsPage.wox: use new ivar bindings, added a link to

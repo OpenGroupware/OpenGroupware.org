@@ -8,6 +8,7 @@ SUBPROJECTS += \
 	Main			\
 	Common			\
 	Contact			\
+	GroupsUI		\
 	PreferencesUI		\
 	AdminUI			\
 	JobUI 			\

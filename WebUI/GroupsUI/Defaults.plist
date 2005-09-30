@@ -1,2 +1,7 @@
 {
+  groupsui_team_sortattr = {
+    key      = "description";
+    selector = compareCaseInsensitiveAscending;
+  };
+  groupsui_owner_fetchattrs = ( login, companyId, globalID, firstname, name );
 }
