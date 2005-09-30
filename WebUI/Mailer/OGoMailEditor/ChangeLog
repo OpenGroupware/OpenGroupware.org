@@ -1,3 +1,7 @@
+2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* fixed some gcc4 warnings (v5.3.9)
+
 2005-03-24  Helge Hess  <helge.hess@skyrix.com>
 
 	* v5.1.8

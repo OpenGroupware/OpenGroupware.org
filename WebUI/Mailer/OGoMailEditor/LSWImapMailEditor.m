@@ -33,6 +33,9 @@
 // TODO: an address record 'dictionary' should probably be an own object?
 // TODO: add a special object for 'uploadItem'
 
+@class NSString, NSMutableDictionary;
+@class NGImap4Context;
+
 @interface LSWImapMailEditor(AddressFormation)
 // TODO: move to a formatter subclass
 + (NSString *)_eAddressLabelForPerson:(id)_person
@@ -47,7 +50,7 @@
 - (BOOL)useEpoz;
 - (void)setDate:(id)_date;
 - (void)setContent:(id)_ctn;
-- (id)imapContext;
+- (NGImap4Context *)imapContext;
 - (void)setPart:(id)_id;
 - (void)setShowBody:(BOOL)_bool;
 - (NSString *)tabKey;
@@ -73,8 +76,8 @@
 - (NSString *)searchString;
 - (void)setSearchString:(NSString *)_str;
 
-- (void)setAttachment:(id)_att;
-- (id)attachment;
+- (void)setAttachment:(NSMutableDictionary *)_att;
+- (NSMutableDictionary *)attachment;
 - (id)attachmentContentType;
 - (id)attachmentObject;
 
@@ -1469,7 +1472,7 @@ static Class      StrClass        = nil;
   body = [[[NGMimeMultipartBody alloc] 
 	    initWithPart:(id)[NSNull null]] autorelease];
   enumerator = [[self attachmentsAsMime] objectEnumerator];
-  while ((obj  = [enumerator nextObject]))
+  while ((obj  = [enumerator nextObject]) != nil)
     [body addBodyPart:obj];
   
   return body;
@@ -1481,6 +1484,7 @@ static Class      StrClass        = nil;
 - (NSMutableDictionary *)attachment {
   return self->attachment;
 }
+
 - (id)attachmentContentType {
   return [(NSDictionary *)self->attachment objectForKey:@"mimeType"];
 }
@@ -2270,8 +2274,7 @@ static Class      StrClass        = nil;
   id         part;
   
   from = _from;
-  
-  part = (_part == nil) ? [_obj message] : _part;
+  part = (_part == nil) ? [(NGImap4Message *)_obj message] : _part;
   
   if ((type = [part contentType]) == nil)
     return;
@@ -2299,11 +2302,13 @@ static Class      StrClass        = nil;
 }
 
 - (void)_setBodyForForward:(id)_obj from:(NSString *)_from {
+  // TODO: who calls that?
+  // TODO: type 'obj' argument to NGImap4Message?
   NGMimeBodyPart   *bPart;
   NGMutableHashMap *map;
   id               part;
 
-  part = [_obj message];
+  part = [(NGImap4Message *)_obj message];
   map = [[NGMutableHashMap alloc] initWithCapacity:16];
   [map setObject:[NGMimeType mimeType:@"message/rfc822"]
        forKey:@"content-type"];

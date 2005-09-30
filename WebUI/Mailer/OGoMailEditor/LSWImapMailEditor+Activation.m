@@ -153,6 +153,7 @@ static NSArray *ReplyAllArray = nil;
 /* activation */
 
 - (void)_prepareForReplyAll {
+  // TODO: declare 'obj' as NGImap4Message?
   id             obj, o, part;
   NSEnumerator   *fields;
   NSMutableArray *addr;
@@ -167,7 +168,7 @@ static NSArray *ReplyAllArray = nil;
   self->flags.isReply = 1;
   fields = [ReplyAllArray objectEnumerator];
   obj    = [[self session] getTransferObject];
-  part   = [obj message];
+  part   = [(NGImap4Message *)obj message];
 
   while ((o = [fields nextObject]) != nil) {
     NSEnumerator *values;
@@ -221,19 +222,19 @@ static NSArray *ReplyAllArray = nil;
 }
 
 - (void)_prepareForEditAsNew {
-  id            tmp, obj;
+  id            tmp, obj; // TODO: mark 'obj' as NGImap4Message?
   NSEnumerator  *enumerator;
   NGMimeMessage *message;
   NSString *ty;
     
   obj     = [[self session] getTransferObject];
-  message = (NGMimeMessage *)[obj message];
-
-  if ((tmp = [obj valueForKey:@"subject"]))
+  message = (NGMimeMessage *)[(NGImap4Message *)obj message];
+  
+  if ([(tmp = [obj valueForKey:@"subject"]) isNotEmpty])
     [self setMailSubject:tmp];
-
+  
   enumerator = [message valuesOfHeaderFieldWithName:@"to"];
-  while ((tmp = [enumerator nextObject])) {
+  while ((tmp = [enumerator nextObject]) != nil) {
     NSEnumerator        *addrs;
     NGMailAddressParser *parser;
     NGMailAddress       *addr;

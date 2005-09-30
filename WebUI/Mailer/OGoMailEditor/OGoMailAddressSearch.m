@@ -42,6 +42,13 @@
   you may be lucky or not.
 */
 
+@interface LSWImapMailEditor(UsedPrivates) // TODO: those should be formatters?
++ (NSString *)_eAddressLabelForPerson:(id)_person
+  andAddress:(NSString *)_addr;
++ (NSString *)_eAddressForPerson:(id)_person;
++ (NSString *)_formatEmail:(NSString *)_email forPerson:(id)_person;
+@end
+
 static int _comparePersons(id part1, id part2, void *context);
 
 @implementation OGoMailAddressSearch
@@ -494,13 +501,13 @@ static int  DefMaxSearchCount             = 10;
   return NO;
 }
 
-- (id)findEmailAddressesForSearchString:(NSString *)_searchString 
+- (OGoMailAddressRecordResult *)findEmailAddressesForSearchString:(NSString *)_searchString 
   addFirstFoundAsTo:(BOOL)_addFirstFoundAsTo
   prohibited:(NSArray **)prohibited_ 
 {
   // TODO: split up this big method! (already reduced from huge to big ;-)
   /*
-    The result is a dictionary which contains the keys:
+    The result is a 'dictionary' which contains the keys:
       'email':  the primary/first email address, best match? (dictionaries)
       'emails': all addresses (an array of dictionaries)
       'header': a string containing the header field (eg 'to')
@@ -631,8 +638,8 @@ static int  DefMaxSearchCount             = 10;
   pool = [[NSAutoreleasePool alloc] init];
 
   e = [_searchStrings objectEnumerator];
-  while ((searchString = [e nextObject])) {
-    NSDictionary *addrset;
+  while ((searchString = [e nextObject]) != nil) {
+    OGoMailAddressRecordResult *addrset;
     NSArray      *subproh = nil;
     NSString     *searchItem;
     

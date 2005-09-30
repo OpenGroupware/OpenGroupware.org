@@ -74,7 +74,7 @@
   addFirstFoundAsTo:(BOOL)_addFirstFoundAsTo
   prohibited:(NSArray **)prohibited_;
 
-- (NSDictionary *)findEmailAddressesForSearchString:(NSString *)_searchString 
+- (OGoMailAddressRecordResult *)findEmailAddressesForSearchString:(NSString *)_searchString 
   addFirstFoundAsTo:(BOOL)_addFirstFoundAsTo
   prohibited:(NSArray **)prohibited_;
 
