@@ -54,15 +54,13 @@
             NSStringFromClass([self superclass]), [super version]);
 }
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
   [self unregisterAsObserver];
-  RELEASE(self->errorString);
-  RELEASE(self->warningOkAction);
-  RELEASE(self->warningPhrase);
+  [self->errorString     release];
+  [self->warningOkAction release];
+  [self->warningPhrase   release];
   [super dealloc];
 }
-#endif
 
 /* notifications */
 
@@ -79,7 +77,7 @@
   OGoContentPage *p;
   
   mp = [[[self navigation] pageStack] reverseObjectEnumerator];
-  while ((p = [mp nextObject])) {
+  while ((p = [mp nextObject]) != nil) {
     if ([p respondsToSelector:@selector(noteChange:onObject:)])
       [p noteChange:_changeName onObject:_object];
   }

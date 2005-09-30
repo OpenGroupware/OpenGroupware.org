@@ -1,5 +1,12 @@
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
 
+	* v5.3.91
+
+	* OGoSession.m: moved OGoSession categories into main class, expose
+	  -notificationCenter method (a session has an own NC)
+
+	* OGoContentPage.m: minor code cleanups
+
 	* OGoEditorPage.m: added new -makeSnapshotFromObject method, do not
 	  make a snapshot during edit activation if the object does not respond
 	  to -entity (v5.3.90)

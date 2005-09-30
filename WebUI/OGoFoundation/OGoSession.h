@@ -209,6 +209,8 @@
 
 @interface WOSession(Notifications)
 
+- (NSNotificationCenter *)notificationCenter;
+
 - (void)postChange:(NSString *)_changeName onObject:(id)_object;
 
 - (void)addObserver:(id)observer selector:(SEL)selector 

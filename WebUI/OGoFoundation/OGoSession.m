@@ -1035,9 +1035,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
   return [desc autorelease];
 }
 
-@end /* OGoSession */
-
-@implementation OGoSession(Pasteboard)
+/* Pasteboard */
 
 - (OWPasteboard *)pasteboardWithName:(NSString *)_name {
   OWPasteboard *pb;
@@ -1116,9 +1114,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
   return [object autorelease];
 }
 
-@end /* OGoSession(Pasteboard) */
-
-@implementation OGoSession(Activation)
+/* Activation */
 
 - (WOComponent *)instantiateComponentForCommand:(NSString *)_command
   type:(NGMimeType *)_type
@@ -1215,9 +1211,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
   return component;
 }
 
-@end /* OGoSession(Activation) */
-
-@implementation OGoSession(Formatters)
+/* Formatters */
 
 - (NSFormatter *)formatString {
   return self->formatString;
@@ -1246,9 +1240,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
     return [self formatString];
 }
 
-@end /* OGoSession(Formatters) */
-
-@implementation OGoSession(Notifications)
+/* Notifications */
 
 - (NSNotificationCenter *)notificationCenter {
   return self->notificationCenter;
@@ -1271,9 +1263,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
   [self->notificationCenter removeObserver:_observer];
 }
 
-@end /* OGoSession(Notifications) */
-
-@implementation OGoSession(Favorites)
+/* Favorites */
 
 - (void)addFavorite:(id)_fav {
   // DEPRECATED
@@ -1299,9 +1289,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
   return [self labelForObject:self->choosenFavorite];
 }
 
-@end /* OGoSession(Favorites) */
-
-@implementation OGoSession(PageManagement)
+/* PageManagement */
 
 - (id)restorePageForContextID:(NSString *)_cid {
   WOComponent *p;
@@ -1355,9 +1343,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
   }
 }
 
-@end /* OGoSession(PageManagement) */
-
-@implementation OGoSession(PersistentComponents)
+/* PersistentComponents */
 
 - (NSMutableDictionary *)pComponents {
   if (self->pComponents == nil)
@@ -1365,7 +1351,8 @@ static NSString *OGoDateTimeTZFormat     = nil;
   return self->pComponents;
 }
 
-@end /* OGoSession(PersistentComponents) */
+@end /* OGoSession */
+
 
 @implementation WOComponent(PersistentComponents2)
 
@@ -1374,15 +1361,14 @@ static NSString *OGoDateTimeTZFormat     = nil;
   WOSession *sn;
   id p;
 
-  if ((sn = [self session]) == nil) {
+  if ((sn = [self session]) == nil)
     return nil;
-  }
   
   className = NSStringFromClass([self class]);
 
-  if ((p = [[sn pComponents] valueForKey:className])) {
+  if ((p = [[sn pComponents] valueForKey:className]) != nil)
     return p;
-  }
+  
   return nil;
 }
 
