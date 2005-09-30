@@ -1,3 +1,8 @@
+2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoGroupsPage.m: sort entries by name, fetch owned teams, fetch
+	  owner infos, fetch team write permissions (v5.3.6)
+
 2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoGroupsPage.m: improved naming of ivars, handle notifications to
