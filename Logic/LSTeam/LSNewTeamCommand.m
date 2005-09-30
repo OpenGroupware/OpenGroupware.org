@@ -25,7 +25,6 @@
 
 @interface LSNewTeamCommand : LSNewCompanyCommand
 {
-@protected
   NSArray *accounts;
 }
 
@@ -34,6 +33,18 @@
 #include "common.h"
 
 @implementation LSNewTeamCommand
+
+static NSString *OGoTeamCreatorRoleName = nil;
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  OGoTeamCreatorRoleName = [[ud stringForKey:@"OGoTeamCreatorRoleName"] copy];
+  if ([OGoTeamCreatorRoleName isNotEmpty]) {
+    NSLog(@"Note: members of role team '%@' are allowed to create teams.",
+          OGoTeamCreatorRoleName);
+  }
+}
 
 - (void)dealloc {
   [self->accounts release];
@@ -80,7 +91,31 @@
   [super _prepareForExecutionInContext:_context];
 }
 
+- (BOOL)isRootAccount:(id)_account inContext:(LSCommandContext *)_ctx {
+  // TODO: root
+  return [[_account valueForKey:@"companyId"] intValue] == 10000 ? YES : NO;
+}
+
 - (void)_executeInContext:(id)_context {
+  if ([OGoTeamCreatorRoleName isNotEmpty]) {
+    id loginAccount;
+    
+    loginAccount = [_context valueForKey:LSAccountKey];
+    if (![self isRootAccount:loginAccount inContext:_context]) {
+      NSArray *myTeams;
+    
+      // TODO: improve efficiency
+      myTeams = [_context runCommand:@"account::teams",
+                          @"account",   loginAccount,
+                          @"returnType", intObj(LSDBReturnType_ManyObjects),
+                          nil];
+      myTeams = [myTeams valueForKey:@"description"];
+      
+      [self assert:[myTeams containsObject:OGoTeamCreatorRoleName]
+            reason:@"no permission to create teams!"];
+    }
+  }
+  
   [super _executeInContext:_context];
   [self _newStaffInContext:_context];
   

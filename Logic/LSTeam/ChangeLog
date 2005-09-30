@@ -1,5 +1,9 @@
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSNewTeamCommand.m: added team-creator permission check, team
+	  creator role team can be set using the OGoTeamCreatorRoleName
+	  default (defaults to 'team creators') (v5.3.16)
+
 	* LSSetTeamCommand.m, LSDeleteTeamCommand.m: check whether login has
 	  'write' permission prior changing/deleting team (v5.3.15)
 

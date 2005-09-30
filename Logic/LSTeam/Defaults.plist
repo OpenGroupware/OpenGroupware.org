@@ -1,4 +1,3 @@
-// NSUserDefaults
 {
-  LSTeam_CVSID = "$Id$";
+  OGoTeamCreatorRoleName = "team creators";
 }
