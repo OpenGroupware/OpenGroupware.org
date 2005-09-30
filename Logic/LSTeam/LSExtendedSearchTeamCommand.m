@@ -138,7 +138,7 @@ static NSNumber *yesNum = nil;
 }
 
 - (NSArray *)filterResults:(NSArray *)_results onMembers:(id)_members
-  andOwnerIds:(NSArray *)_ownerIds
+  andOwnerIds:(NSDictionary *)_ownerIds
 {
   NSMutableArray *ma = nil;
   unsigned i, count;
@@ -160,7 +160,8 @@ static NSNumber *yesNum = nil;
       return _results;
     
     if ([self->includeTeamsWithOwnerId isNotNull]) {
-      if ([[_ownerIds lastObject] isEqual:self->includeTeamsWithOwnerId])
+      if ([[[_ownerIds allValues] lastObject] 
+                       isEqual:self->includeTeamsWithOwnerId])
         return _results;
     }
     
@@ -188,11 +189,16 @@ static NSNumber *yesNum = nil;
       continue;
     
     if ([self->includeTeamsWithOwnerId isNotNull]) {
-      if ([[_ownerIds objectAtIndex:i] isEqual:self->includeTeamsWithOwnerId])
+      if ([[_ownerIds objectForKey:eoOrGID] 
+                      isEqual:self->includeTeamsWithOwnerId])
         continue;
     }
-    
+
     /* did not contain member, make mutable and remove */
+
+    [self logWithFormat:@"REMOVE: %@ (owner=%@ vs %@)", 
+          eoOrGID, [_ownerIds objectForKey:eoOrGID],
+          self->includeTeamsWithOwnerId];
     
     if (ma == nil)
       ma = [[_results mutableCopy] autorelease];
@@ -212,10 +218,52 @@ static NSNumber *yesNum = nil;
                    nil];
 }
 
+- (id)_fixupOwnerResult:(id)_owners results:(NSArray *)_results {
+  // TODO: quite hackish, but well ...
+  NSMutableDictionary *ownerMap;
+  
+  if (_owners == nil)
+    return nil;
+  
+  ownerMap = [NSMutableDictionary dictionaryWithCapacity:[_owners count]];
+  
+  if ([_owners isKindOfClass:[NSArray class]]) {
+    unsigned i, count;
+    
+    for (i = 0, count = [_results count]; i < count; i++) {
+      [ownerMap setObject:[_owners objectAtIndex:i] 
+                forKey:[_results objectAtIndex:i]];
+    }
+  }
+  else if ([_owners isKindOfClass:[NSDictionary class]]) {
+    NSEnumerator *keys;
+    EOGlobalID   *key;
+
+    keys = [_owners keyEnumerator];
+    while ((key = [keys nextObject]) != nil) {
+      id value;
+      
+      if ((value = [(NSDictionary *)_owners objectForKey:key]) == nil)
+        continue;
+      
+      if ([value isKindOfClass:[NSDictionary class]]) {
+        if ((value = [value valueForKey:@"ownerId"]) == nil)
+          continue;
+      }
+      
+      [ownerMap setObject:value forKey:key];
+    }
+  }
+  else
+    [self errorWithFormat:@"unexpected object: %@", _owners];
+  
+  return ownerMap;
+}
+
 - (NSArray *)_fetchObjects:(id)_context {
   NSArray *results;
   id      members; /* NSArray or NSDictionary */
-  NSArray *ownerIds;
+  NSDictionary *ownerIds;
   
   results = [super _fetchObjects:_context];
   if (![results isNotEmpty] || ![self->onlyTeamsWithAccountId isNotNull])
@@ -224,6 +272,7 @@ static NSNumber *yesNum = nil;
   ownerIds = [self->includeTeamsWithOwnerId isNotNull]
     ? [results valueForKey:@"ownerId"]
     : nil;
+  ownerIds = [self _fixupOwnerResult:ownerIds results:results];
   
   /* Note: the result is keyed on the global-id, not the EO! */
   members = [self _fetchMemberGIDsForTeamGIDs:[results valueForKey:@"globalID"]
@@ -233,9 +282,9 @@ static NSNumber *yesNum = nil;
 }
 
 - (NSArray *)_fetchIds:(id)_context {
+  NSDictionary *ownerIds = nil;
   NSArray *results;
   id      members; /* NSArray or NSDictionary */
-  NSArray *ownerIds = nil;
   
   results = [super _fetchIds:_context];
   if (![results isNotEmpty] || ![self->onlyTeamsWithAccountId isNotNull])
@@ -243,16 +292,25 @@ static NSNumber *yesNum = nil;
   
   if ([self->includeTeamsWithOwnerId isNotNull]) {
     static NSArray *ownerIdAttrs = nil;
-    NSArray *tmp;
-
-    if (ownerIdAttrs == nil)
-      ownerIdAttrs = [[NSArray alloc] initWithObjects:@"ownerId", nil];
+    NSDictionary *tmp;
+    
+    if (ownerIdAttrs == nil) {
+      ownerIdAttrs = 
+        [[NSArray alloc] initWithObjects:@"globalID", @"ownerId", nil];
+    }
     
     tmp = [_context runCommand:@"team::get-by-globalid",
                     @"gids", results,
                     @"attributes", ownerIdAttrs,
+                    @"groupBy", @"globalID",
                     nil];
-    ownerIds = [tmp valueForKey:@"ownerId"];
+    
+    ownerIds = [self _fixupOwnerResult:tmp results:results];
+    
+    if ([ownerIds count] < [results count]) {
+      [self warnWithFormat:@"less owners than results! (%d vs %d)",
+            [ownerIds count], [results count]];
+    }
   }
   else
     ownerIds = nil;

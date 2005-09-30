@@ -1,5 +1,11 @@
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
 
+	* v5.3.17
+
+	* LSExtendedSearchTeamCommand.m: fixed a bug in owner processing
+
+	* LSDeleteTeamCommand.m: also reset 'description' of deleted teams
+
 	* LSNewTeamCommand.m: added team-creator permission check, team
 	  creator role team can be set using the OGoTeamCreatorRoleName
 	  default (defaults to 'team creators') (v5.3.16)

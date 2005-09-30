@@ -32,6 +32,7 @@
 
 - (void)_executeInContext:(id)_context {
   OGoAccessManager *am;
+  NSString *delKey;
   id obj;
   
   obj = [self object];
@@ -55,8 +56,13 @@
   /* mark as archived and reset login */
   
   [obj takeValue:@"archived" forKey:@"dbStatus"];
-  [obj takeValue:[NSString stringWithFormat:@"LS%@",
-                           [obj valueForKey:@"companyId"]] forKey:@"login"];
+  
+  delKey = [NSString stringWithFormat:@"LS%@",[obj valueForKey:@"companyId"]];
+  [obj takeValue:delKey forKey:@"login"];
+  
+  delKey = [delKey stringByAppendingFormat:@" [was: %@]",
+                   [obj valueForKey:@"description"]];
+  [obj takeValue:delKey forKey:@"description"];
   
   /* let superclass perform update */
   
