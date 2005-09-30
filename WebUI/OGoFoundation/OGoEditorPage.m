@@ -70,6 +70,27 @@
   return YES;
 }
 
+- (BOOL)makeSnapshotFromObject {
+  id obj;
+  
+  [self->snapshot release]; self->snapshot = nil;
+  
+  if ((obj = [self object]) == nil) {
+    [self debugWithFormat:@"cannot make snapshot, missing object."];
+    return NO;
+  }
+  
+  if (![self->object respondsToSelector:@selector(entity)]) {
+    [self warnWithFormat:
+            @"cannot make snapshot, object does not support -entity!"];
+    return NO;
+  }
+  
+  self->snapshot =
+    [[obj valuesForKeys:[[obj entity] attributeNames]] mutableCopy];
+  return YES;
+}
+
 - (BOOL)prepareForActivationCommand:(NSString *)_command
   type:(NGMimeType *)_type
   configuration:(NSDictionary *)_cfg
@@ -84,16 +105,21 @@
     self->snapshot = [[NSMutableDictionary alloc] initWithCapacity:32];
     return [self prepareForNewCommand:_command type:_type configuration:nil];
   }
-
+  
   if ((self->object = [[[self session] getTransferObject] retain]) == nil) {
-    [self setErrorString:@"No object in transfer pasteboard !"];
+    // TODO: localize
+    [self setErrorString:@"No object in transfer pasteboard!"];
     return NO;
   }
       
   /* make snapshot */
-  self->snapshot =
-    [[self->object valuesForKeys:[[self->object entity] attributeNames]]
-                   mutableCopy];
+  if ([self->object respondsToSelector:@selector(entity)]) {
+    if (![self makeSnapshotFromObject]) {
+      // TODO: localize
+      [self setErrorString:@"Could not make snapshot from object!"];
+      return NO;
+    }
+  }
       
   return [self prepareForEditCommand:_command type:_type configuration:nil];
 }

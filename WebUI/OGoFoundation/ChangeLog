@@ -1,3 +1,9 @@
+2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoEditorPage.m: added new -makeSnapshotFromObject method, do not
+	  make a snapshot during edit activation if the object does not respond
+	  to -entity (v5.3.90)
+
 2005-09-22  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoSession.m: made 'isJavaScriptEnabled' an instance variable, added

@@ -87,6 +87,8 @@
   type:(NGMimeType *)_type
   configuration:(NSDictionary *)_cmdCfg;
 
+- (BOOL)makeSnapshotFromObject;
+
 /*
   Operations
 
