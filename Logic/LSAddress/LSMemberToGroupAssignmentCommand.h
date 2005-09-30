@@ -19,7 +19,17 @@
   02111-1307, USA.
 */
 
-#import <LSFoundation/LSDBObjectBaseCommand.h>
+#ifndef __LSMemberToGroupAssignmentCommand_H__
+#define __LSMemberToGroupAssignmentCommand_H__
+
+#include <LSFoundation/LSDBObjectBaseCommand.h>
+
+/*
+  LSMemberToGroupAssignmentCommand
+  
+  TODO: document
+  TODO: subclasses?
+*/
 
 @class NSArray, NSMutableArray;
 
@@ -31,3 +41,5 @@
 }
 
 @end
+
+#endif /* __LSMemberToGroupAssignmentCommand_H__ */

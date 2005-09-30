@@ -1,3 +1,8 @@
+2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSMemberToGroupAssignmentCommand.m: major code cleanups, check
+	  whether user has 'w' permission prior changing teams (v5.3.81)
+
 2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoCompanyAccessHandler.m: implemented 'owner', 'private' and

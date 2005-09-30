@@ -19,13 +19,20 @@
   02111-1307, USA.
 */
 
+/*
+  LSMemberToGroupAssignmentCommand
+  eg: team::set-members
+  
+  TODO: document
+*/
+
 #include "LSMemberToGroupAssignmentCommand.h"
 #include "common.h"
 
 @implementation LSMemberToGroupAssignmentCommand
 
 - (void)dealloc {
-  [self->members release];
+  [self->members          release];
   [self->changedMemberIds release];
   [super dealloc];
 }
@@ -33,46 +40,50 @@
 /* command methods */
 
 - (BOOL)_object:(id)_object isInList:(NSArray *)_list {
-  NSEnumerator *listEnum  = [_list objectEnumerator];
-  id           listObject = nil;
-  id           pkey;
+  NSEnumerator *listEnum;
+  id           listObject;
+  NSNumber     *pkey;
 
   pkey = [_object valueForKey:@"subCompanyId"];
-
+  
+  listEnum  = [_list objectEnumerator];
   while ((listObject = [listEnum nextObject])) {
-    id opkey = [listObject valueForKey:@"companyId"];
-
+    NSNumber *opkey;
+    
+    opkey = [listObject valueForKey:@"companyId"];
     if ([pkey isEqual:opkey]) return YES;
   }
   return NO;
 }
 
 - (BOOL)_object2:(id)_object isInList:(NSArray *)_list {
-  NSEnumerator *listEnum  = [_list objectEnumerator];
-  id           listObject = nil;
-  id           pkey;
+  NSEnumerator *listEnum;
+  id           listObject;
+  NSNumber     *pkey;
 
   pkey = [_object valueForKey:@"companyId"];
-
+  
+  listEnum  = [_list objectEnumerator];
   while ((listObject = [listEnum nextObject])) {
-    id opkey = [listObject valueForKey:@"subCompanyId"];
+    NSNumber *opkey;
 
+    opkey = [listObject valueForKey:@"subCompanyId"];
     if ([pkey isEqual:opkey]) return YES;
   }
   return NO;
 }
 
 - (void)_removeOldAssignmentsInContext:(id)_context {
-  NSArray      *oldAssigns = nil;
-  NSEnumerator *listEnum   = nil;
-  id           assign      = nil; 
-  id           obj         = nil;
+  NSArray      *oldAssigns;
+  NSEnumerator *listEnum;
+  id           assign; 
+  id           obj;
 
   obj        = [self object];
   oldAssigns = [obj valueForKey:@"toCompanyAssignment"];
   listEnum   = [oldAssigns objectEnumerator];
 
-  while ((assign = [listEnum nextObject])) {
+  while ((assign = [listEnum nextObject]) != nil) {
     if (![self _object:assign isInList:self->members]) {
       [self->changedMemberIds addObject:[assign valueForKey:@"subCompanyId"]];
       LSRunCommandV(_context,        @"companyassignment", @"delete",
@@ -84,60 +95,82 @@
 }
 
 - (void)_saveAssignmentsInContext:(id)_context {
-  NSArray      *oldAssigns = nil;
-  NSEnumerator *listEnum   = nil;
-  id           newAssign   = nil; 
-  id           obj         = nil;
+  NSArray      *oldAssigns;
+  NSEnumerator *listEnum;
+  id           newAssign; 
+  id           obj;
 
   obj        = [self object];
   oldAssigns = [obj valueForKey:@"toCompanyAssignment"];
   listEnum   = [self->members objectEnumerator];
 
-  while ((newAssign = [listEnum nextObject])) {
-    if (![self _object2:newAssign isInList:oldAssigns]) {
-      LSRunCommandV(_context,        @"companyassignment", @"new",
+  while ((newAssign = [listEnum nextObject]) != nil) {
+    if ([self _object2:newAssign isInList:oldAssigns])
+      continue;
+
+    LSRunCommandV(_context,        @"companyassignment", @"new",
                     @"companyId",    [obj valueForKey:@"companyId"],
                     @"subCompanyId", [newAssign valueForKey:@"companyId"],
                     nil);
-      [self->changedMemberIds addObject:[newAssign valueForKey:@"companyId"]];
-    }
+    [self->changedMemberIds addObject:[newAssign valueForKey:@"companyId"]];
   }
 }
 
-- (void)_executeInContext:(id)_context {
-  RELEASE(self->changedMemberIds); self->changedMemberIds = nil;
-
-  self->changedMemberIds = [[NSMutableArray allocWithZone:[self zone]] init];
-  
-  LSRunCommandV(_context,     [[self object] entityName], @"get",
-                @"companyId", [[self object] valueForKey:@"companyId"],
-                nil);
-
-  [self _removeOldAssignmentsInContext:_context];
-  [self _saveAssignmentsInContext:_context];
-
-  LSRunCommandV(_context,     [[self object] entityName], @"get",
-                @"companyId", [[self object] valueForKey:@"companyId"],
-                nil);
+- (void)_addLogsInContext:(LSCommandContext *)_context {
+  unsigned i, cnt;
 
   LSRunCommandV(_context, @"object", @"add-log",
                 @"objectId", [[self object] valueForKey:@"companyId"],
                 @"logText",  @"members changed",
                 @"action",   @"05_changed", nil);
 
-  {
-    int i, cnt = [self->changedMemberIds count];
-
-    for (i=0; i<cnt; i++) {
-      LSRunCommandV(_context, @"object", @"add-log",
-                    @"objectId", [self->changedMemberIds objectAtIndex:i],
-                    @"logText",  @"enterprises changed",
-                    @"action",   @"05_changed", nil);
-    }
+  for (i = 0, cnt = [self->changedMemberIds count]; i < cnt; i++) {
+    LSRunCommandV(_context, @"object", @"add-log",
+                  @"objectId", [self->changedMemberIds objectAtIndex:i],
+                  @"logText",  @"contact or team connection changed",
+                  @"action",   @"05_changed", nil);
   }
 }
 
-// initialize records
+- (void)_regetObjectInContext:(LSCommandContext *)_context {
+  LSRunCommandV(_context,     [[self object] entityName], @"get",
+                @"companyId", [[self object] valueForKey:@"companyId"],
+                nil);
+}
+
+- (void)_executeInContext:(id)_context {
+  
+  // TODO: this belongs to -prepare...?
+  [self->changedMemberIds release]; self->changedMemberIds = nil;
+  self->changedMemberIds = [[NSMutableArray alloc] initWithCapacity:4];
+  
+  [self _regetObjectInContext:_context];
+
+  /* check access */
+  // TODO: this should really be done in the access-handler, that is,
+  //       an own operation for company<>company changes instead of
+  //       using 'w'
+  
+  if ([[[self object] entityName] isEqualToString:@"Team"]) {
+    OGoAccessManager *am;
+    
+    am = [_context accessManager];
+    [self assert:[am operation:@"w" 
+                     allowedOnObjectID:[[self object] valueForKey:@"globalID"]]
+          reason:@"permission denied"];
+  }
+  
+  /* perform changes */
+  
+  [self _removeOldAssignmentsInContext:_context];
+  [self _saveAssignmentsInContext:_context];
+  
+  [self _regetObjectInContext:_context];
+  
+  [self _addLogsInContext:_context];
+}
+
+/* initialize records */
 
 - (NSString *)entityName {
   return @"CompanyAssignment";

@@ -25,7 +25,6 @@
 
 @interface LSSetTeamCommand : LSSetCompanyCommand
 {
-@protected
   NSArray *accounts;
 }
 
@@ -52,7 +51,7 @@
     
   [staff takeValue:[team valueForKey:@"description"]
          forKey:@"description"];
-  [staff takeValue:[NSNumber numberWithBool:NO] forKey:@"isAccount"];
+  [staff takeValue:[NSNumber numberWithBool:NO]  forKey:@"isAccount"];
   [staff takeValue:[NSNumber numberWithBool:YES] forKey:@"isTeam"];
   [staff takeValue:@"updated" forKey:@"dbStatus"];
 
@@ -74,9 +73,16 @@
 }
 
 - (void)_executeInContext:(id)_context {
+  OGoAccessManager *am;
+
+  am = [_context accessManager];
+  [self assert:[am operation:@"w" 
+                   allowedOnObjectID:[[self object] valueForKey:@"globalID"]]
+        reason:@"permission denied"];
+  
   [super _executeInContext:_context];
   [self _setStaffInContext:_context];
-
+  
   if (self->accounts != nil) 
     [self _setMemberAssignmentsInContext:_context];
 }
@@ -92,7 +98,6 @@
 - (void)setAccounts:(NSArray *)_accounts {
   ASSIGN(accounts, _accounts);
 }
-
 - (NSArray *)accounts {
   return self->accounts;
 }

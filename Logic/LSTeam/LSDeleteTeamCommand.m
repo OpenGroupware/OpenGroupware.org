@@ -31,25 +31,42 @@
 @implementation LSDeleteTeamCommand
 
 - (void)_executeInContext:(id)_context {
-  id obj = [self object];
+  OGoAccessManager *am;
+  id obj;
   
+  obj = [self object];
   [self assert:(obj != nil) reason:@"no team object"];
+  
+  /* check permission */
+  
+  // TODO: we should rather check for 'd', which in turn should only the owner
+  //       or root the deletion?
+  am = [_context accessManager];
+  [self assert:[am operation:@"w" 
+                   allowedOnObjectID:[obj valueForKey:@"globalID"]]
+        reason:@"permission denied"];
+  
+  /* reset members */
 
   LSRunCommandV(_context, @"team", @"setmembers",
                 @"members", [NSArray array],
                 @"group", obj, nil);
   
+  /* mark as archived and reset login */
+  
   [obj takeValue:@"archived" forKey:@"dbStatus"];
   [obj takeValue:[NSString stringWithFormat:@"LS%@",
                            [obj valueForKey:@"companyId"]] forKey:@"login"];
   
+  /* let superclass perform update */
+  
   [super _executeInContext:_context];
 }
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
-  return @"Person";
+  return @"Team";
 }
 
-@end
+@end /* LSDeleteTeamCommand */

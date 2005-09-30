@@ -1,3 +1,8 @@
+2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSSetTeamCommand.m, LSDeleteTeamCommand.m: check whether login has
+	  'write' permission prior changing/deleting team (v5.3.15)
+
 2005-09-29  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSExtendedSearchTeamCommand.m: added 'includeTeamsWithOwner' argument
