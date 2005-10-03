@@ -1,0 +1,9 @@
+OGoGroupsPage   = "Minhas equipes";
+Groups          = "Equipes";
+mygroups        = "Equipes";
+teamstv_email   = "E-mail";
+teamstv_footer  = "Equipes:";
+teamstv_members = "Membros";
+teamstv_name    = "Nome";
+teamstv_owner   = "Proprietário";
+teamstv_title   = "Lista de equipes";

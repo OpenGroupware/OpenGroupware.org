@@ -79,6 +79,7 @@ InstallInProgress           = "Instalação em andamento...";
 Install                     = "Instalar";
 internal                    = "Interno";
 isValid                     = "Válido";
+isreadonly                  = "Somente leitura";
 job_import_name             = "Importar tarefa";
 Key                         = "Chave";
 language                    = "Idioma";

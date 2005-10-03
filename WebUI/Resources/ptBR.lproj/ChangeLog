@@ -1,3 +1,7 @@
+2005-10-03 Olivier Hallot (olivier@ig.com.br>
+
+        * Minor correction in LSWScheduler.strings, added GroupsUI.strings, updated OGoScheduler.strings and AdminUI.strings
+	
 2005-09-19 Olivier Hallot (olivier@ig.com.br>
 
         * Added last LSWScheduler.strings translations related to bug 1262 -
