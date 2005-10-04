@@ -31,7 +31,7 @@ GatheringCompanyEditor: LSWObjectEditor {
   labels     = labels;
   object     = gatheringCompany;
   attributes = (
-    { key = "description";  label="name"; },
+    { key = "description";  label="company_name"; },
     { key = "name1";   },
     { key = "name2";   },
     { key = "name3";   },
@@ -47,12 +47,12 @@ GatheringPersonEditor: LSWObjectEditor {
   labels     = labels;
   object     = gatheringPerson;
   attributes = (
-    { key = "name";                           },
-    { key = "nickname" },
+    { key = "name"; label="person_name";      },
+    { key = "nickname"                        },
     { key = "firstname";                      },
     { key = "middlename";                     },    
     { key = "degree";                         },    
-    { key    = "salutation";                     
+    { key = "salutation";                     
       values = {
         "01_dear_ms"   = "Dear Ms.";
         "02_dear_mrs"  = "Dear Mrs.";

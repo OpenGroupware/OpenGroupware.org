@@ -1,3 +1,8 @@
+2005-10-04 Olivier Hallot (olivier@ig.com.br>
+
+	* SkyBusinessCardGathering.wod: changed to use 'company_name' and
+	  'person_name' labels (OGo bug #271)
+
 2005-09-07  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyCommentSubEditor: rewritten as WOx template

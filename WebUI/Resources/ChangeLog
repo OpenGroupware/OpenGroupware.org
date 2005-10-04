@@ -1,3 +1,8 @@
+2005-10-04 Olivier Hallot (olivier@ig.com.br>
+	
+	* English|German.lproj/AddressUI.strings: added 'company_name' and
+	  'person_name' labels (OGo bug #271)
+
 2005-10-04  Helge Hess  <helge.hess@skyrix.com>
 
 	* English|German.lproj/GroupsUI.strings: added labels for new/refresh

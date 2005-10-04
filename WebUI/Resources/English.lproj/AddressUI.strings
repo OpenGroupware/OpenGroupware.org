@@ -1,5 +1,3 @@
-// $Id: AddressUI.strings,v 1.15 2004/08/16 14:48:47 frank Exp $
-
 "01_dear_ms"                   = "Dear Ms.";
 "02_dear_mrs"                  = "Dear Mrs.";
 "03_dear_mr"                   = "Dear Mr.";
@@ -140,6 +138,7 @@ comment                        = "Comment";
 common_gathering_title         = "Common Attributes";
 company_gathering_title_new    = "New Company";
 company_gathering_title_search = "Company Search";
+company_name                   = "Name";
 competition_products           = "Competition products";
 completionDate                 = "Completion Date";
 contact                        = "Contact";
@@ -324,6 +323,7 @@ personView                     = "Person";
 personViewer                   = "Person view";
 person_assignment_title        = "Assign Persons";
 person_gathering_title         = "Person";
+person_name                    = "Name";
 personeditor_categoryLabel     = "Category";
 personeditor_commentLabel      = "Comment";
 personeditor_contactLabel      = "Contact";
