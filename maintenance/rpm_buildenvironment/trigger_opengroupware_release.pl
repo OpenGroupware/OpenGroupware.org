@@ -61,7 +61,6 @@ my @latest;
 my $tarball_name;
 my $orel;
 my $buildtarget;
-my $sourcedir;
 my $apttarget;
 my $version_override;
 my $hpath = "$ENV{HOME}/";
@@ -85,6 +84,7 @@ my @ogo_spec;
 my $rc;
 my $line;
 my $use_sope;
+my @t_sope;
 my $sope_rpm;
 my $sope_spec;
 eval getconf("$ENV{'HOME'}/purveyor_of_rpms.conf") or die "FATAL: $@\n";
@@ -105,26 +105,22 @@ sub getconf {
   return @a;
 }
 
-@ogo_releases = `wget -q --proxy=off -O - http://$dl_host/releases/unstable/.MD5_INDEX`;
+@ogo_releases = `wget -q --proxy=off -O - http://$dl_host/nightly/sources/releases/MD5_INDEX`;
 open(KNOWN_OGo_RELEASES, ">> $hpath/OGo.known.rel");
 foreach $orel (@ogo_releases) {
   my @sope;
   my @t_sope;
-  my @sope_source;
-  my $srel;
   chomp $orel;
-  $orel =~ s/^.*\s+.*\/source\///g;
+  $orel =~ s/^.*\s+//g;
   next unless($orel =~ m/^opengroupware.org/i);
   my @already_known_ogo_rel = `cat $hpath/OGo.known.rel`;
   next if (grep /$orel/, @skip_list);
   $buildtarget = $orel;
   $buildtarget =~ s/-r\d+.*$//g;
-  $sourcedir = $buildtarget;
-  $sourcedir =~ s/^opengroupware\.org/opengroupware/g;
   unless(grep /\b$orel\b/, @already_known_ogo_rel) {
     $i_really_had_sth_todo = "yes";
-    print "Retrieving: http://$dl_host/releases/unstable/$sourcedir/source/$orel\n";
-    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$orel http://$dl_host/releases/unstable/$sourcedir/source/$orel");
+    print "Retrieving: http://$dl_host/nightly/sources/releases/$orel\n";
+    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$orel http://$dl_host/nightly/sources/releases/$orel");
     #since we build the OGo release using a specific SOPE release... we must
     #cleanup everything prior the actual wanted OGo *and* SOPE builds
     #I don't use apt-get here bc not every RPM based distri provides a package (apt-get).
@@ -146,16 +142,8 @@ foreach $orel (@ogo_releases) {
     print "extracting specfile from $orel into $ENV{HOME}/spec_tmp/\n";
     system("mkdir $ENV{HOME}/spec_tmp/") unless (-e "$ENV{HOME}/spec_tmp/");
     system("mkdir $ENV{HOME}/install_tmp/") unless (-e "$ENV{HOME}/install_tmp/");
-    #these differ...
-    $apttarget = $buildtarget;
-    $version_override = $buildtarget;
-    $apttarget =~ s/^opengroupware\.org/opengroupware/g;
-    $version_override =~ s/opengroupware\.org-(.*)-(.*)//g;
-    $version_override = $1;
     #extract the specfile coming with the release tarball into a temporary location and keep it there
     #in order to build using exactly this specfile...
-    system("tar xfzO $ENV{HOME}/rpm/SOURCES/$orel opengroupware.org/maintenance/ogo-database-setup.spec >$ENV{HOME}/spec_tmp/ogo-database-setup-$version_override.spec");
-    system("tar xfzO $ENV{HOME}/rpm/SOURCES/$orel opengroupware.org/maintenance/ogo-environment.spec >$ENV{HOME}/spec_tmp/ogo-environment-$version_override.spec");
     system("tar xfzO $ENV{HOME}/rpm/SOURCES/$orel opengroupware.org/maintenance/opengroupware.spec >$ENV{HOME}/spec_tmp/$buildtarget.spec");
     system("tar xfzO $ENV{HOME}/rpm/SOURCES/$orel opengroupware.org/maintenance/ogofull-singlerpm.spec >$ENV{HOME}/spec_tmp/$buildtarget-singlerpm.spec");
     open(SOPEHINTS, "$ENV{HOME}/spec_tmp/$buildtarget.spec");
@@ -167,8 +155,7 @@ foreach $orel (@ogo_releases) {
     }
     #we should've already build this SOPE release at least once in an earlier run
     print "preparing SOPE... $use_sope\n";
-    @t_sope = `wget -q --proxy=off -O - http://$dl_host/releases/unstable/$use_sope/$host_i_runon/MD5_INDEX` or die "I DIE: couldn't fetch MD5_INDEX (http://$dl_host/releases/unstable/$use_sope/$host_i_runon/MD5_INDEX)\n";
-    @sope_source = `wget -q --proxy=off -O - http://$dl_host/releases/unstable/$use_sope/source/MD5_INDEX` or die "I DIE: couldn't fetch MD5_INDEX (http://$dl_host/releases/unstable/$use_sope/source/MD5_INDEX)\n";
+    @t_sope = `wget -q --proxy=off -O - http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/MD5_INDEX` or die "I DIE: couldn't fetch MD5_INDEX (http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/MD5_INDEX)\n";
     warn "WARNING: the following 'foreach' loops through each and every package found...\n";
     #rather rare case... it produces too much noise on stdout if there are re-rebuild versions of the same release (with different SVN revisions ofcourse)
     foreach $line (@t_sope) {
@@ -177,16 +164,10 @@ foreach $orel (@ogo_releases) {
       $line =~ s/^.*\s+//g;
       $sope_rpm = $line;
       print "downloading: $sope_rpm into install_tmp/";
-      $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$sope_rpm http://$dl_host/releases/unstable/$use_sope/$host_i_runon/$sope_rpm");
+      $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$sope_rpm http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/$sope_rpm");
       print " ...success!\n" if($rc == 0);
       print "\nFATAL: system call (wget) returned $rc whilst downloading $sope_rpm into install_tmp/\n" and exit 1 unless($rc == 0);
       push(@sope, $sope_rpm);
-    }
-    foreach(@sope_source) {
-      chomp;
-      next unless(m/\.tar\.gz$/i);
-      $srel = $_;
-      $srel =~ s/^.*\s+//g;
     }
     my $rpm_count = @sope;
     print "must install $rpm_count RPMS ($use_sope) from install_tmp/ ... this may take some seconds\n";
@@ -195,33 +176,28 @@ foreach $orel (@ogo_releases) {
       print "$line ($rc)...ok, done!\n" if($rc == 0);
       print "\nFATAL: system call (rpm) returned $rc whilst installing required RPMS from install_tmp/\n" and exit 1 unless($rc == 0);
     }
-    print "must extract ngobjweb specfile from $srel\n";
-    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$srel http://$dl_host/releases/unstable/$use_sope/source/$srel");
-    system("tar xfzO $ENV{HOME}/rpm/SOURCES/$srel sope/maintenance/$mod_ngobjweb_to_use.spec >$ENV{HOME}/spec_tmp/$mod_ngobjweb_to_use-$use_sope.spec");
     system("sudo /sbin/ldconfig");
     print "OGo_REL: building RPMS for OGo $orel using $use_sope\n";
     print "calling `purveyor_of_rpms.pl -p opengroupware $build_opts -c $orel -s $ENV{HOME}/spec_tmp/$buildtarget.spec\n";
     system("$ENV{HOME}/purveyor_of_rpms.pl -p opengroupware $build_opts -c $orel -s $ENV{HOME}/spec_tmp/$buildtarget.spec");
     print KNOWN_OGo_RELEASES "$orel\n";
     print "recreating apt-repository for: $host_i_runon >>> $buildtarget\n";
-    open(SSH, "|/usr/bin/ssh -T $www_user\@$www_host");
+    open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
     #these differ...
-    #$apttarget = $buildtarget;
-    #$version_override = $buildtarget;
-    #$apttarget =~ s/^opengroupware\.org/opengroupware/g;
-    #$version_override =~ s/opengroupware\.org-(.*)-(.*)//g;
-    #$version_override = $1;
-    #system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-environment $build_opts -r $apttarget -o $version_override");
-    system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-environment $build_opts -r $apttarget -o $version_override -s $ENV{HOME}/spec_tmp/ogo-environment-$version_override.spec");
-    #system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-database-setup $build_opts -r $apttarget -o $version_override");
-    system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-database-setup $build_opts -r $apttarget -o $version_override -s $ENV{HOME}/spec_tmp/ogo-database-setup-$version_override.spec");
-    system("$ENV{HOME}/purveyor_of_rpms.pl -p $mod_ngobjweb_to_use -s $ENV{HOME}/spec_tmp/$mod_ngobjweb_to_use-$use_sope.spec $build_opts -c rpm/SOURCES/sope-mod_ngobjweb-trunk-latest.tar.gz -r $apttarget");
+    $apttarget = $buildtarget;
+    $version_override = $buildtarget;
+    $apttarget =~ s/^opengroupware\.org/opengroupware/g;
+    $version_override =~ s/opengroupware\.org-(.*)-(.*)//g;
+    $version_override = $1;
+    system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-environment $build_opts -r $apttarget -o $version_override");
+    system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-database-setup $build_opts -r $apttarget -o $version_override");
+    system("$ENV{HOME}/purveyor_of_rpms.pl -p $mod_ngobjweb_to_use.spec $build_opts -c rpm/SOURCES/sope-mod_ngobjweb-trunk-latest.tar.gz -r $apttarget");
     system("$ENV{HOME}/purveyor_of_rpms.pl -p ogo-gnustep_make $build_opts -c rpm/SOURCES/gnustep-make-1.10.0.tar.gz -r $apttarget");
     system("$ENV{HOME}/purveyor_of_rpms.pl -p ogofull $build_opts -c $orel -r $apttarget -s $ENV{HOME}/spec_tmp/$buildtarget-singlerpm.spec");
     print "thus calling: /home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $apttarget\n";
     print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $apttarget\n";
-    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/releases/unstable/$apttarget/$host_i_runon/\n";
-    print SSH "echo \"This OGo release was built using $use_sope\" >/var/virtual_hosts/download/releases/unstable/$apttarget/$host_i_runon/SOPE.INFO\n";
+    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/nightly/packages/$host_i_runon/releases/$apttarget/\n";
+    print SSH "echo \"This OGo release was built using $use_sope\" >/var/virtual_hosts/download/nightly/packages/$host_i_runon/releases/$apttarget/SOPE.INFO\n";
     close(SSH);
   }
 }

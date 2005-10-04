@@ -30,6 +30,7 @@ my @skip_list = qw( sope-4.2pre-r3.tar.gz
   sope-4.4beta.1-voyager-r513.tar.gz
   sope-4.4beta.2-voyager-r527.tar.gz
   sope-4.4beta.3-voyager-r602.tar.gz
+  sope-4.4beta.4-voyager-r638.tar.gz
   sope-4.5alpha.0-nevermind-r514.tar.gz
   sope-4.5alpha.1-nevermind-r515.tar.gz
 );
@@ -54,11 +55,11 @@ sub getconf {
   return @a;
 }
 
-@sope_releases = `wget -q --proxy=off -O - http://$dl_host/releases/unstable/.MD5_INDEX`;
+@sope_releases = `wget -q --proxy=off -O - http://$dl_host/nightly/sources/releases/MD5_INDEX`;
 open(KNOWN_SOPE_RELEASES, ">> $hpath/SOPE.known.rel");
 foreach $srel (@sope_releases) {
   chomp $srel;
-  $srel =~ s/^.*\s+.*\/source\///g;
+  $srel =~ s/^.*\s+//g;
   next unless($srel =~ m/^sope/i);
   my @already_known_sope_rel = `cat $hpath/SOPE.known.rel`;
   next if (grep /$srel/, @skip_list);
@@ -73,8 +74,8 @@ foreach $srel (@sope_releases) {
     my $uselibobjc_lf2;
     my $uselibfoundation;
     $i_really_had_sth_todo = "yes";
-    print "Retrieving: http://$dl_host/releases/unstable/$buildtarget/source/$srel\n";
-    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$srel http://$dl_host/releases/unstable/$buildtarget/source/$srel");
+    print "Retrieving: http://$dl_host/nightly/sources/releases/$srel\n";
+    system("wget -q --proxy=off -O $ENV{HOME}/rpm/SOURCES/$srel http://$dl_host/nightly/sources/releases/$srel");
     print "cleaning up prior actual build...\n";
     system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
     system("sudo /sbin/ldconfig");
@@ -181,7 +182,7 @@ foreach $srel (@sope_releases) {
     print "recreating apt-repository for: $host_i_runon\n";
     open(SSH, "|/usr/bin/ssh -T $www_user\@$www_host");
     print SSH "/home/www/scripts/release_apt4rpm_build.pl -d $host_i_runon -n $buildtarget\n";
-    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/releases/unstable/$buildtarget/$host_i_runon/\n";
+    print SSH "/home/www/scripts/do_md5.pl /var/virtual_hosts/download/nightly/packages/$host_i_runon/releases/$buildtarget/\n";
     close(SSH);
   }
 }
