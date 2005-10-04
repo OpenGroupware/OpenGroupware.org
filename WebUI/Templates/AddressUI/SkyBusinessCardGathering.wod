@@ -52,20 +52,22 @@ GatheringPersonEditor: LSWObjectEditor {
     { key = "firstname";                      },
     { key = "middlename";                     },    
     { key = "degree";                         },    
-    { key = "salutation";                     
-      values = {
-        "01_dear_ms"   = "Dear Ms.";
-        "02_dear_mrs"  = "Dear Mrs.";
-        "03_dear_mr"   = "Dear Mr.";
-        "04_dear_prof" = "Dear Prof.";
-        "05_dear_dr"   = "Dear Dr.";
-        "06_geehrt_herr"      = "Sehr geehrter Herr";
-        "07_geehrt_frau"      = "Sehr geehrte Frau";
-        "08_geehrt_herr_prof" = "Sehr geehrter Herr Prof.";
-        "09_geehrt_herr_dr"   = "Sehr geehrter Herr Dr.";
-        "10_geehrt_frau_prof" = "Sehr geehrte Frau Prof.";
-        "11_geehrt_frau_dr"   = "Sehr geehrte Frau Dr.";
-      };      
+    { key   = "salutation";
+      label = "salutation";
+      isLocalized = YES;
+      valueKeys = (
+        "01_dear_ms",
+        "02_dear_mrs",
+        "03_dear_mr",
+        "04_dear_prof",
+        "05_dear_dr",
+        "06_geehrt_herr",
+        "07_geehrt_frau",
+        "08_geehrt_herr_prof",
+        "09_geehrt_herr_dr",
+        "10_geehrt_frau_prof",
+        "11_geehrt_frau_dr"
+      );
     }, 
     { key = "email1";                         },
     { key = "url";                            },

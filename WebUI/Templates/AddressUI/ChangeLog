@@ -1,5 +1,12 @@
 2005-10-04 Olivier Hallot (olivier@ig.com.br>
 
+	* SkyBusinessCardGathering.wod: changed 'salutation' field of editor
+	  to use 'isLocalized' and 'valueKeys' instead of inline 'values'. This
+	  way the localization is moved from the .wod to the .strings file
+	  (OGo bug #528)
+
+2005-10-04 Olivier Hallot (olivier@ig.com.br>
+
 	* SkyBusinessCardGathering.wod: changed to use 'company_name' and
 	  'person_name' labels (OGo bug #271)
 
