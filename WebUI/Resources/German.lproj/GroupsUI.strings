@@ -1,6 +1,8 @@
-OGoGroupsPage   = "Meine Teams";
 Groups          = "Teams";
+OGoGroupsPage   = "Meine Teams";
 mygroups        = "Teams";
+new             = "Neu";
+refresh         = "Aktualisieren";
 teamstv_email   = "E-Mail";
 teamstv_footer  = "Teams:";
 teamstv_members = "Mitglieder";
