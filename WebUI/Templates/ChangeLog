@@ -1,5 +1,10 @@
 2005-10-04 Olivier Hallot (olivier@ig.com.br>
 
+	* OGoScheduler/SkySchedulerSelectPanel.html: added popup to select the
+	  month being displayed (in month-mode) (OGo bug #67)
+
+2005-10-04 Olivier Hallot (olivier@ig.com.br>
+
 	* PersonsUI/LSWPersonAdvancedSearch.html|wod: added 'state' and
 	  'country' fields to advanced search panel (OGo bug #1552)
 
