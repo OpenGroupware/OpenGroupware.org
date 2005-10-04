@@ -42,60 +42,61 @@
 /* command methods */
 
 - (void)_executeInContext:(id)_context {
-  NSString       *userName    = [self->recordDict valueForKey:@"login"];
+  NSString       *userName;
   EOSQLQualifier *myQualifier = nil;
   NSMutableArray *result;
-  EOSQLQualifier *isArchivedQualifier = nil;
+  EOSQLQualifier *isArchivedQualifier;
+  EODatabaseChannel *dbChannel;
+  id obj;
   
-  result      = [[NSMutableArray alloc] initWithCapacity:4];
+  result = [[NSMutableArray alloc] initWithCapacity:4];
 
   isArchivedQualifier =
     [[EOSQLQualifier alloc] initWithEntity:[self entity]
 			    qualifierFormat:@"dbStatus <> 'archived'"];
   
+  userName    = [self->recordDict valueForKey:@"login"];
   myQualifier = [[EOSQLQualifier alloc] initWithEntity:[self entity]
                                      qualifierFormat:
                                      @"login = '%@' AND isAccount=1",
                                      userName];
   [myQualifier conjoinWithQualifier:isArchivedQualifier];
-  {
-    EODatabaseChannel *dbChannel = [self databaseChannel];
-    id  obj = nil;
 
-    [dbChannel selectObjectsDescribedByQualifier:myQualifier fetchOrder:nil];
-
-    while ((obj = [dbChannel fetchWithZone:NULL])) {
-      [result addObject:obj];
-      obj = nil;
-    }
+  dbChannel = [self databaseChannel];
+  [dbChannel selectObjectsDescribedByQualifier:myQualifier fetchOrder:nil];
+  
+  while ((obj = [dbChannel fetchWithZone:NULL]) != nil) {
+    [result addObject:obj];
+    obj = nil;
   }
   [myQualifier         release]; myQualifier       = nil;
   [isArchivedQualifier release]; isArchivedQualifier = nil;
   [self assert:([result count] < 2)
-        reason:@"ERROR: more than one user for login !!!"];
+        reason:@"ERROR: more than one user for login!"];
   
   if ([result count] == 1)
     [self setReturnValue:[result objectAtIndex:0]];
   else {
     [self setReturnValue:nil];
+    [result release]; result = nil;
     return;
   }
   
   [result release]; result = nil;
         
-  // set teams for result accounts(s) in key 'teams'
+  /* set teams for result accounts(s) in key 'teams' */
 
   LSRunCommandV(_context, @"account", @"teams",
                 @"object", [self object],
                 @"returnType", intObj(LSDBReturnType_ManyObjects), nil);
 
-  //set extended attributes for result account
+  /* set extended attributes for result account */
 
   LSRunCommandV(_context, @"person", @"get-extattrs",
                 @"object", [self object],
                 @"relationKey", @"companyValue", nil);
 
-  //get telephones
+  /* get telephones */
   LSRunCommandV(_context, @"person", @"get-telephones",
                 @"object", [self object],
                 @"relationKey", @"telephones", nil);
