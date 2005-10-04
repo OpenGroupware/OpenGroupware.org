@@ -91,8 +91,8 @@
   }
 
   if (date == nil) {
-    NSLog(@"%s: failed to make a date out of '%@'",
-          __PRETTY_FUNCTION__, _val);
+    [self errorWithFormat:@"%s: failed to make a date out of '%@'",
+          __PRETTY_FUNCTION__, _val];
   }
   return date;
 }

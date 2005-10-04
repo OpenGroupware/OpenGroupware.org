@@ -27,6 +27,10 @@
 #include <EOControl/EOGenericRecord.h>
 #include <EOControl/EOKeyGlobalID.h>
 
+@interface DirectAction(Appointment)
+- (NSCalendarDate *)_calendarDateForValue:(id)_val;
+@end
+
 @implementation DirectAction(Account)
 
 /* private methods */
@@ -123,105 +127,108 @@
 - (id)account_setPasswordAction:(id)_uid:(NSString *)_newPwd
   :(NSNumber *)_isCrypted
 {
-  if ([_newPwd length] == 0) {
+  LSCommandContext *ctx;
+  id account;
+  
+  if (![_newPwd isNotEmpty]) {
     return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
                  reason:@"Invalid new password supplied"];
   }
 
-  if ([self isCurrentUserRoot]) {
-    LSCommandContext *ctx;
-
-    if ((ctx = [self commandContext]) != nil) {
-      id account;
-
-      if ((account = [self _getEOForURL:_uid inContext:ctx]) == nil)
-        return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
-                     reason:@"Invalid account UID supplied"];
-
-      if (_isCrypted == nil)
-        _isCrypted = [NSNumber numberWithBool:NO];
-
-      if ([self _setPassword:_newPwd forAccount:account
-                withLogText:@"Password changed by 'root'"
-                isCrypted:_isCrypted]) {
-        if ([[account valueForKey:@"companyId"] intValue] == 10000)
-          [[self session] terminate];
-
-        return [NSNumber numberWithBool:YES];
-      }
-      return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_RESULT
-                   reason:@"Invalid result for password update command"];
-    }
-    return [self invalidCommandContextFault];
+  if (![self isCurrentUserRoot]) {
+    return [self faultWithFaultCode:XMLRPC_MISSING_PERMISSIONS
+                 reason:@"This function is only allowed to be used by 'root'"];
   }
-  return [self faultWithFaultCode:XMLRPC_MISSING_PERMISSIONS
-               reason:@"This function is only allowed to be used by 'root'"];
+  
+  if ((ctx = [self commandContext]) == nil)
+    return [self invalidCommandContextFault];
+  
+  if ((account = [self _getEOForURL:_uid inContext:ctx]) == nil) {
+    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+                 reason:@"Invalid account UID supplied"];
+  }
+
+  if (_isCrypted == nil)
+    _isCrypted = [NSNumber numberWithBool:NO];
+
+  if ([self _setPassword:_newPwd forAccount:account
+            withLogText:@"Password changed by 'root'"
+            isCrypted:_isCrypted]) {
+    if ([[account valueForKey:@"companyId"] intValue] == 10000)
+      [[self session] terminate];
+    
+    return [NSNumber numberWithBool:YES];
+  }
+  
+  return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_RESULT
+               reason:@"Invalid result for password update command"];
 }
 
 - (id)account_changePasswordAction:(NSString *)_newPwd:(NSNumber *)_isCrypted {
   LSCommandContext *ctx;
+  id account;
 
-  if ([_newPwd length] == 0)
+  if (![_newPwd isNotEmpty]) {
     return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
                  reason:@"Invalid new password supplied"];
+  }
+  
+  if ((ctx = [self commandContext]) == nil)
+    return [self invalidCommandContextFault];
 
-  if ((ctx = [self commandContext]) != nil) {
-    id account;
-
-    if ((account = [[self commandContext] valueForKey:LSAccountKey]) == nil)
-      return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_RESULT
-                   reason:@"Didn't find current account"];
+  if ((account = [[self commandContext] valueForKey:LSAccountKey]) == nil) {
+    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_RESULT
+                 reason:@"Did not find current account"];
+  }
       
-    if (_isCrypted == nil)
-      _isCrypted = [NSNumber numberWithBool:NO];
-
-    if ([self _setPassword:_newPwd forAccount:account
+  if (_isCrypted == nil)
+    _isCrypted = [NSNumber numberWithBool:NO];
+  
+  if ([self _setPassword:_newPwd forAccount:account
               withLogText:@"Password changed by user" isCrypted:_isCrypted]) {
       [[self session] terminate];
       return [NSNumber numberWithBool:YES];
-    }
-    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_RESULT
-                 reason:@"Invalid result for password update command"];
   }
-  return [self invalidCommandContextFault];
+  return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_RESULT
+               reason:@"Invalid result for password update command"];
 }
 
 - (id)account_getLoginAccountAction {
   EOGenericRecord *loginAccount;
-
-  loginAccount = [[self commandContext] valueForKey:LSAccountKey];
-  if (loginAccount != nil) {
-    EODataSource       *accountDS;
-    SkyAccountDocument *account;
-    EOGlobalID         *gid;
-    
-    accountDS = [self accountDataSource];
-    gid = [loginAccount valueForKey:@"globalID"];
-    account = [[SkyAccountDocument alloc] initWithAccount:loginAccount
+  EODataSource       *accountDS;
+  SkyAccountDocument *account;
+  EOGlobalID         *gid;
+  
+  if ((loginAccount = [[self commandContext] valueForKey:LSAccountKey])==nil) {
+    [self logWithFormat:@"Could not find current login account"];
+    return [NSNumber numberWithBool:NO];
+  }
+  
+  // TODO: rather use a fetch-spec?
+  accountDS = [self accountDataSource];
+  gid       = [loginAccount valueForKey:@"globalID"];
+  account   = [[SkyAccountDocument alloc] initWithAccount:loginAccount
                                           globalID:gid
                                           dataSource:accountDS];
-    if (account != nil)
-      return [account autorelease];
-    else {
-      [self logWithFormat:@"Couldn't create account document"];
-      return [NSNumber numberWithBool:NO];
-    }
-  }
-  [self logWithFormat:@"Couldn't find current login account"];
+  if (account != nil)
+    return [account autorelease];
+  
+  [self logWithFormat:@"Could not create account document"];
   return [NSNumber numberWithBool:NO];
 }
 
 - (id)account_getLoginAccountIdAction {
   EOGlobalID *gid;
-
+  
   gid = [[[self commandContext] valueForKey:LSAccountKey]
-                 valueForKey:@"globalID"];
+                valueForKey:@"globalID"];
 
-  if (gid != nil)
-    return [[[self commandContext] documentManager] urlForGlobalID:gid];
-
-  [self logWithFormat:@"Couldn't find global id of current login account"];
-  return [NSNumber numberWithBool:NO];
+  if (gid == nil) {
+    [self logWithFormat:@"Could not find global id of current login account"];
+    return [NSNumber numberWithBool:NO];
+  }
+  
+  return [[[self commandContext] documentManager] urlForGlobalID:gid];
 }
 
 - (NSArray *)account_fetchIdsAction:(id)_arg {
@@ -459,14 +466,16 @@
     NSMutableDictionary *args = nil;
     NSString *templateUserId;
     id result;
-
+    
   if ((ctx = [self commandContext]) == nil) {
-    [self logWithFormat:@"Invalid command context"];
-    return [NSNumber numberWithBool:NO];
+    [self errorWithFormat:@"Invalid command context"];
+    return [NSNumber numberWithBool:NO]; // TODO: return fault?
   }
-
+  
   if ((templateUserId = [_account valueForKey:@"templateUserId"]) != nil) {
     EOGlobalID *gid;
+    id tmpId;
+    id account = nil;
 
     if (([templateUserId intValue] == 0) &&
           (![templateUserId hasPrefix:@"skyrix://"])) {
@@ -485,49 +494,41 @@
     else
       gid = [[ctx documentManager] globalIDForURL:templateUserId];
 
-    if (gid != nil) {
-        id tmpId;
-        id account = nil;
-
-        if (![[gid entityName] isEqualToString:@"Person"])
-          return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
-                       reason:@"Specified template user is no person"];
-        
-        tmpId = [ctx runCommand:@"person::get-by-globalid",
-                     @"gid", gid,
-                     nil];
-
-        if ([tmpId isKindOfClass:[NSArray class]])
-          account = [tmpId objectAtIndex:0];
-
-        if (account != nil) {
-          if ([[account valueForKey:@"isTemplateUser"] boolValue]) {
-            args = [_account mutableCopy];
-            [args takeValue:[[tmpId objectAtIndex:0] valueForKey:@"companyId"]
-                  forKey:@"templateUserId"];
-          }
-          else {
-            return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
-                         reason:@"Given account is no template user"];
-          }
-        }
-        else {
-          return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
-                       reason:@"Didn't find account for template user ID"];
-        }
-    }
-    else {
+    if (gid == nil) {
       return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
-		   reason:@"Couldn't find template user for user ID"];
+		   reason:@"Could not find template user for user ID"];
     }
+
+    if (![[gid entityName] isEqualToString:@"Person"]) {
+      return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+                   reason:@"Specified template user is no person"];
+    }
+        
+    tmpId = [ctx runCommand:@"person::get-by-globalid", @"gid", gid, nil];
+    if ([tmpId isKindOfClass:[NSArray class]])
+      account = [tmpId objectAtIndex:0];
+    
+    if (account == nil) {
+      return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+                   reason:@"Did not find account for template user ID"];
+    }
+    
+    if (![[account valueForKey:@"isTemplateUser"] boolValue]) {
+      return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+                   reason:@"Given account is no template user"];
+    }
+    
+    args = [_account mutableCopy];
+    [args takeValue:[[tmpId objectAtIndex:0] valueForKey:@"companyId"]
+          forKey:@"templateUserId"];
   }
 
   if ([_dontCryptPassword boolValue]) {
-      if (args == nil) 
-        args = [_account mutableCopy];
+    if (args == nil) 
+      args = [_account mutableCopy]; // TODO: leak?
 
-      [args setObject:[NSNumber numberWithBool:YES]
-            forKey:@"dontCryptPassword"];
+    [args setObject:[NSNumber numberWithBool:YES]
+          forKey:@"dontCryptPassword"];
   }
 
   if (args != nil) {
@@ -585,6 +586,67 @@
   
   [[self accountDataSource] deleteObject:account];
   return [NSNumber numberWithBool:YES];
+}
+
+- (id)account_getSessionLogAction:(NSString *)_login:(id)_fromDate {
+  static NSArray *snLogAttrNames = nil;
+  LSCommandContext *ctx;
+  NSArray *logGids;
+  NSArray *log;
+
+  /* check preconditions */
+
+  _fromDate = [self _calendarDateForValue:_fromDate];
+  
+  if (![self isCurrentUserRoot]) {
+    return [self faultWithFaultCode:XMLRPC_MISSING_PERMISSIONS
+                 reason:@"This function is only allowed to be used by 'root'"];
+  }
+  
+  if ((ctx = [self commandContext]) == nil)
+    return [self invalidCommandContextFault];
+  
+  /* fetch log-ids */
+  
+  if ([_login isNotEmpty]) {
+    id account;
+    
+    account = [ctx runCommand:@"account::get-by-login", @"login", _login, nil];
+    account = [account valueForKey:@"globalID"];
+    if (account == nil) {
+      // TODO: return a fault
+      [self errorWithFormat:@"did not find account: '%@'", _login];
+      return nil;
+    }
+    logGids = [ctx runCommand:@"sessionlog::query",
+                   @"accounts", [NSArray arrayWithObject:account], nil];
+  }
+  else
+    logGids = [ctx runCommand:@"sessionlog::query", nil];
+  
+  if (logGids == nil) {
+    // TODO: return a fault?
+    [self errorWithFormat:@"found no logs?!"];
+    return nil;
+  }
+  
+  /* fetch log for ids */
+  
+  if (snLogAttrNames == nil) {
+    snLogAttrNames = [[NSArray alloc] initWithObjects:
+                                         @"globalID",
+                                         @"accountId",
+                                         @"action",
+                                         @"logDate",
+                                         @"account.login",
+				      nil];
+  }
+  
+  log = [ctx runCommand:@"sessionlog::get-by-globalid",
+             @"gids",       logGids,
+             @"attributes", snLogAttrNames,
+             nil];
+  return log;
 }
 
 @end /* DirectAction(Account) */

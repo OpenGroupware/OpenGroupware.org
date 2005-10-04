@@ -1,3 +1,8 @@
+2005-10-04  Helge Hess  <helge.hess@skyrix.com>
+
+	* Actions.subproj/DirectAction+Account.m: major code cleanups, added
+	  account.getSessionLogs method (OGo bug #1564) (v5.3.66)
+
 2005-07-23  Sebastian Reitenbach  <reitenbach@rapideye.de>
 
 	* GNUmakefile.preamble: added OpenBSD linking flags (v5.3.65)
