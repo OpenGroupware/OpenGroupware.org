@@ -1,3 +1,8 @@
+2005-10-04 Olivier Hallot (olivier@ig.com.br>
+
+	* PersonsUI/LSWPersonAdvancedSearch.html|wod: added 'state' and
+	  'country' fields to advanced search panel (OGo bug #1552)
+
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
 	
 	* GroupsUI/OGoGroupsPage.wox: added refresh button

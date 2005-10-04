@@ -10,6 +10,8 @@ LastName:            WOString { value = labels.lastName;       }
 CategoryLabel:       WOString { value = labels.categoryLabel;  }
 FirstName:           WOString { value = labels.firstName;      }
 City:                WOString { value = labels.city;           }
+StateName:           WOString { value = labels.state;          }
+CountryName:         WOString { value = labels.country;        }
 StreetLabel:         WOString { value = labels.street; escapeHTML = NO; }
 CommentLabel:        WOString { value = labels.comment;        }
 TelephoneLabel:      WOString { value = labels.telephoneLabel; }
@@ -98,6 +100,16 @@ FirstNameField: WOTextField {
 CityField: WOTextField {
   name = "city";
   value = person.address#city;
+  size = 30;
+}
+StateField: WOTextField {
+  name = "state";
+  value = person.address#state;
+  size = 30;
+}
+CountryField: WOTextField {
+  name = "country";
+  value = person.address#country;
   size = 30;
 }
 Street: WOTextField { 
