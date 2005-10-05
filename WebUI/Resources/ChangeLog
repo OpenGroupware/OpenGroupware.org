@@ -1,5 +1,17 @@
 2005-10-05  Helge Hess  <helge.hess@skyrix.com>
 
+	* German.lproj/OGoWebMail.strings: added 'match' and 'list-id' keys
+
+2005-10-05  Sebastian Reitenbach  <reitenbach@rapideye.de>
+
+	* English.lproj/OGoWebMail.strings: added 'filterPos' and 'list-id'
+	  keys
+
+	* English|German|French|Slovak.lproj: added 'List-Id' and
+	  'Organization' keys (OGo bug #1530)
+
+2005-10-05  Helge Hess  <helge.hess@skyrix.com>
+
 	* English|German.lproj: added OGoRecipientLists.strings (OGo bug #1357)
 
 2005-10-04 Olivier Hallot (olivier@ig.com.br>

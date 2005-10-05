@@ -43,6 +43,7 @@ Subject:      WOTextField { value = infos.subject;      size = 40; }
 Sender:       WOTextField { value = infos.from;         size = 40; }
 Organization: WOTextField { value = infos.organization; size = 40; }
 Body:         WOTextField { value = infos.body;         size = 40; }
+List-ID:      WOTextField { value = infos.list-id;      size = 40; }
 To:           WOTextField { value = infos.to;           size = 40; }
 
 ClearSubmit: WOSubmitButton {
@@ -69,6 +70,7 @@ SubjectLabel:       WOString { value = labels.subject;       escapeHTML = NO; }
 SenderLabel:        WOString { value = labels.sender;        escapeHTML = NO; }
 OrganizationLabel:  WOString { value = labels.organization;  escapeHTML = NO; }
 BodyLabel:          WOString { value = labels.body;          escapeHTML = NO; }
+List-IDLabel:       WOString { value = labels.list-id;       escapeHTML = NO; }
 MailStatus:         WOString { value = labels.messageStatus; escapeHTML = NO; }
 WithSubFolderLabel: WOString { value = labels.searchWithSubFolder;}
 ReadLabel:          WOString { value = labels.searchRead;   }

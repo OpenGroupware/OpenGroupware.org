@@ -1,3 +1,11 @@
+2005-10-05  Sebastian Reitenbach  <reitenbach@rapideye.de>
+
+	* OGoWebMail/LSWImapMailSearch.html|wod: added ability to search
+	  for 'organization' and 'list-id' mail headers
+
+	* OGoMailFilter/LSWImapMailFilterEditor.wod: added ability to filter
+	  for 'organization' and 'list-id' mail headers (OGo bug #1530)
+
 2005-10-04 Olivier Hallot (olivier@ig.com.br>
 
 	* OGoScheduler/SkySchedulerSelectPanel.html: added popup to select the

@@ -122,7 +122,7 @@ TheLabel: WOString {
 
 FieldPopup: WOPopUpButton {
 //list      = config.MailHeaderFields;
-  list      = ("from", "to", "cc", "to:cc", "subject" );
+  list      = ("from", "to", "cc", "to:cc", "subject", "Organization", "List-Id" );
   string    = mailHeaderLabel;
   item      = item;
   selection = entry.headerField;
