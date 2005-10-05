@@ -57,12 +57,14 @@
                        ><#ViewAptAction><#TitleFont><#AptInfo /></#TitleFont
                        ></#ViewAptAction>
                     </#UseDACondElse>
-                  </#IsViewAccessAllowed>
+                </#IsViewAccessAllowed>
   
-                  <#IsViewAccessAllowedElse>
-                      <#AptInfoIcon /><#TitleFont><#AptInfo /> </#TitleFont>
-                  </#IsViewAccessAllowedElse>
-                </#DragApt>
+                <#IsViewAccessAllowedElse>
+                  <#ShowListOnlyApts>
+                    <#AptInfoIcon /><#TitleFont><#AptInfo /> </#TitleFont>
+                  </#ShowListOnlyApts>
+                </#IsViewAccessAllowedElse>
+              </#DragApt>
               <br />
             </#AppointmentsRep>
             <#HasNoAppointmentsCond>&nbsp;</#HasNoAppointmentsCond>

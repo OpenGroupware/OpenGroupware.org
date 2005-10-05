@@ -1,5 +1,9 @@
 2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoSchedulerViews/SkyPrintMonthOverview.wod,
+	  OGoSchedulerViews/SkyInlineMonthOverview.html: hide list-only
+	  appointments (OGo bug #1505)
+
 	* OGoSchedulerViews/SkyPrintWeekOverview.wod: limit display of list-
 	  only appointments (OGo bug #1505)
 

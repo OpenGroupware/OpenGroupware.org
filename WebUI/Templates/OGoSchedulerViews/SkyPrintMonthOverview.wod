@@ -1,4 +1,10 @@
-// $Id: SkyPrintMonthOverview.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
+
+// WOx TODO:
+//   WEMonthOverview
+//   WEMonthOverviewInfoMode
+//   WEMonthOverviewContentMode
+//   WEMonthLabel
 
 IsInMonth: WOConditional {
   condition = isInMonth;
@@ -56,13 +62,8 @@ DayCell: WEMonthTitle {
 
 // DayInfo
 
-HasCurrentDayInfo: WOConditional {
-  condition = hasCurrentDayInfo;
-}
-
-CurrentDayInfo: WOString {
-  value = currentDayInfo;
-}
+HasCurrentDayInfo: WOConditional { condition = hasCurrentDayInfo; }
+CurrentDayInfo:    WOString      { value     = currentDayInfo;    }
 
 Appointment: WOString {
   value     = appointment;
@@ -84,3 +85,17 @@ WeekOfYearTitle: WOString { value = weekOfYear;             }
 MonthTitle:      WOString { value = labels.$monthString;    }
 YearTitle:       WOString { value = year;                   }
 CompanyName:     WOString { value = companyName;            }
+
+IsListOnlyApt: WOConditional {
+  condition = appointment.permissions;
+  value     = "l";
+}
+IsViewableApt: WOConditional {
+  condition = appointment.permissions;
+  value     = "l";
+  negate    = YES;
+}
+ShowListOnlyApts: WOConditional {
+  condition = session.userDefaults.scheduler_hide_listonly_appointments;
+  negate    = YES;
+}

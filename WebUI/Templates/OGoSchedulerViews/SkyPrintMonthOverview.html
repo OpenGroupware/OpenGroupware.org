@@ -35,7 +35,13 @@
           </#HasCurrentDayInfo>
         </#InfoMode>
         <#ContentMode>
-           <font size="-4"><#Appointment /><br /></font>
+          <#IsListOnlyApt><#ShowListOnlyApts>
+            <font size="-4"><#Appointment /><br /></font>
+          </#ShowListOnlyApts></#IsListOnlyApt>
+
+          <#IsViewableApt>
+            <font size="-4"><#Appointment /><br /></font>
+          </#IsViewableApt>
         </#ContentMode>
       </#MonthOverview>
     </table>

@@ -189,9 +189,12 @@ HasMoreThanMaxAppointments: WOConditional {
 IsViewAccessAllowed: WOConditional {
   condition = appointmentViewAccessAllowed;
 }
-
 IsViewAccessAllowedElse: WOConditional {
   condition = appointmentViewAccessAllowed;
+  negate    = YES;
+}
+ShowListOnlyApts: WOConditional {
+  condition = session.userDefaults.scheduler_hide_listonly_appointments;
   negate    = YES;
 }
 
