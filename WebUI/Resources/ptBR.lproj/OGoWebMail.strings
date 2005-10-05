@@ -111,6 +111,7 @@ enableFromPopup              = "Permitir escolher o remetente no editor de mensa
 external                     = "Externo";
 fewerButtonLabel             = "Menos";
 filter                       = "Filtro";
+filterPos                    = "Posição";
 folder                       = "Pasta";
 folderName                   = "Nome da pasta";
 folder_noSub                 = "Sem sub-pastas";
