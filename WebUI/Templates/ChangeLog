@@ -1,5 +1,8 @@
 2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoSchedulerViews/SkyPrintWeekOverview.wod: limit display of list-
+	  only appointments (OGo bug #1505)
+
 	* OGoSchedulerViews/SkyInlineWeekOverview: changed to hide list-only
 	  allday appointments (OGo bug #1505)
 

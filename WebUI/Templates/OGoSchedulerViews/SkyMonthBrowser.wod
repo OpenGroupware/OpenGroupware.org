@@ -4,6 +4,11 @@
   This one displays a calendar matrix for a set of months
 */
 
+// WOx TODO:
+//   SkyMonthRepetition
+//   SkyMonthLabel
+//   SkyMonthCell
+
 // Style
 
 Font: SkyConfigFont {

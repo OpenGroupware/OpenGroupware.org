@@ -1,3 +1,7 @@
+// WOx TODO:
+//    SkySchedulerDateCell
+//    LSWSchedulerDateTitle
+
 // used components.cfg config key:
 //   colors_titleColor
 //   colors_contentText
@@ -7,10 +11,10 @@
 //   colors_selectedContentCell (contentColor)
 //   colors_contentCell         (contentColor)
 
-DragScript: WEDragScript {}
-DropScript: WEDropScript {}
+DragScript: WEDragScript {} // <var:script-drag/>
+DropScript: WEDropScript {} // <var:script-drop/>
 
-Font: SkyConfigFont {}
+Font: SkyConfigFont {} // OGo:font
 
 // new weekOverview
 

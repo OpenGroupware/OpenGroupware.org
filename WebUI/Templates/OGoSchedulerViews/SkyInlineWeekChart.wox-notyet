@@ -8,6 +8,9 @@
 >
   <var:script-drag/><var:script-drop/>
 XML, INCOMPLETE
+
+WOx TODO:
+  LSWSchedulerDateTitle
   
 <#ChartMatrix>
   <#ChartTitle   ><#WeekdayTitle/></#ChartTitle>

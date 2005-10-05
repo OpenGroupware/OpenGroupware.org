@@ -1,16 +1,19 @@
-// $Id: SkyPrintWeekOverview.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
+
+// WOx TODO:
+//   LSWSchedulerDateTitle
 
 WeekName:    WOString { value = weekName;    }
 CompanyName: WOString { value = companyName; }
 
 // new weekOverview
 
-TitleMode:   WEWeekOverviewTitleMode   {};
-InfoMode:    WEWeekOverviewInfoMode    {};
-PMInfoMode:  WEWeekOverviewPMInfoMode  {};
-ContentMode: WEWeekOverviewContentMode {};
+TitleMode:   WEWeekOverviewTitleMode   {} /* <var:week-title>  */
+InfoMode:    WEWeekOverviewInfoMode    {} /* <var:week-info>   */
+PMInfoMode:  WEWeekOverviewPMInfoMode  {} /* <var:week-pminfo> */
+ContentMode: WEWeekOverviewContentMode {} /* <var:week>        */
 
-WeekOverview: WEWeekOverview {
+WeekOverview: WEWeekOverview { /* <var:week-overview> */
   list        = dataSource.fetchObjects;
   item        = appointment;
   weekStart   = weekStart;
@@ -20,7 +23,7 @@ WeekOverview: WEWeekOverview {
   cellspacing = "0";
 }
 
-DayTitle: LSWSchedulerDateTitle {
+DayTitle: LSWSchedulerDateTitle { // WOx TODO
   title            = labels.$currentDate;
   newLabel         = labels.new;
   highlight        = currentDate.isToday;
@@ -39,11 +42,25 @@ HasDayInfo: WOConditional {
   condition = hasCurrentDayInfo;
 }
 
-Font: SkyConfigFont {}
+Font: SkyConfigFont {} // <OGo:font/>
 
 Appointment: WOString {
   value      = appointment;
   formatter  = appointmentFormatter;
   insertBR   = YES;
   escapeHTML = NO;
+}
+
+IsListOnlyApt: WOConditional {
+  condition = appointment.permissions;
+  value     = "l";
+}
+IsViewableApt: WOConditional {
+  condition = appointment.permissions;
+  value     = "l";
+  negate    = YES;
+}
+ShowListOnlyApts: WOConditional {
+  condition = session.userDefaults.scheduler_hide_listonly_appointments;
+  negate    = YES;
 }

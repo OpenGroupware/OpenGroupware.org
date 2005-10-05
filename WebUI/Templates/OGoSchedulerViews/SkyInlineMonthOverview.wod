@@ -1,5 +1,10 @@
 // bind template to controller
 
+// WOx TODO:
+//   SkyMonthRepetition
+//   SkyMonthLabel
+//   SkyMonthCell
+
 IsResCategorySelected: WOConditional {
   condition = isResCategorySelected;
   negate    = YES;

@@ -1,5 +1,4 @@
 <html>
-  <!-- $Id: SkyPrintWeekOverview.html 2 2004-08-20 11:37:44Z znek $ -->
   <head>
     <title><#WeekName /></title>
   </head>
@@ -18,7 +17,15 @@
     <#WeekOverview>
       <#TitleMode  ><#DayTitle /></#TitleMode>
       <#InfoMode   ><#HasDayInfo><#DayInfo /><hr /></#HasDayInfo></#InfoMode>
-      <#ContentMode><#Font><#Appointment /></#Font></#ContentMode>
+      <#ContentMode>
+        <#IsListOnlyApt><#ShowListOnlyApts>
+          <#Font><#Appointment /></#Font>
+        </#ShowListOnlyApts></#IsListOnlyApt>
+
+        <#IsViewableApt>
+          <#Font><#Appointment /></#Font>
+        </#IsViewableApt>
+      </#ContentMode>
     </#WeekOverview> 
   </body>
 </html>
