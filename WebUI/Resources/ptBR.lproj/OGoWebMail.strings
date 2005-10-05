@@ -142,6 +142,7 @@ isRead                       = "Lido";
 keepMails                    = "Manter mensagens";
 label_prohibited             = "Proibido";
 lastError                    = "Último erro:";
+list-id                      = "ID da lista";
 login                        = "Login";
 logout                       = "Logout";
 lswmails_windowtitle         = "Correio";
