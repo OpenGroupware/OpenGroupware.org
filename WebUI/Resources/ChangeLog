@@ -1,3 +1,8 @@
+2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* English.lproj/LSWScheduler.strings: fixed too-many-cycles label
+	  ('too' vs 'to')
+
 2005-10-05  Helge Hess  <helge.hess@skyrix.com>
 
 	* German.lproj/OGoWebMail.strings: added 'match' and 'list-id' keys
