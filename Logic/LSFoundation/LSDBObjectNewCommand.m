@@ -89,14 +89,21 @@
 }
 
 - (BOOL)shouldInsertObjectInObjInfoTable:(id)_object {
+  NSString *en;
+  
   if (_object == nil)
+    return NO;
+  
+  en = [self entityName];
+  if ([en hasSuffix:@"Assignment"])
     return NO;
   
   return YES;
 }
 
 - (void)insertObjectInObjectInfoTable:(id)_object inContext:(id)_ctx {
-  [self logWithFormat:@"register in objinfo: %@ / %@",
+  // TODO: implement
+  [self debugWithFormat:@"TODO: register in objinfo: %@ / %@",
 	[self entityName],
 	[_object valueForKey:[self primaryKeyName]]];
 }
