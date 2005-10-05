@@ -492,6 +492,9 @@ static NSArray *startDateSortOrderings = nil;
     
     staff = [self->staffList objectAtIndex:i];
     
+    if ([[staff valueForKey:@"role"] isEqual:@"NON-PARTICIPANT"])
+      continue;
+    
     [staffSet addObject:staff];
     
     /*
