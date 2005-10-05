@@ -1,3 +1,7 @@
+2005-10-05  Helge Hess  <helge.hess@skyrix.com>
+
+	* English|German.lproj: added OGoRecipientLists.strings (OGo bug #1357)
+
 2005-10-04 Olivier Hallot (olivier@ig.com.br>
 	
 	* English|German.lproj/AddressUI.strings: added 'company_name' and
