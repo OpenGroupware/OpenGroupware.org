@@ -118,6 +118,11 @@ IsViewableApt: WOConditional {
   value     = "l";
   negate    = YES;
 }
+ShowListOnlyApts: WOConditional {
+  // Note: this will still show a separate when there are any apts
+  condition = session.userDefaults.scheduler_hide_listonly_appointments;
+  negate    = YES;
+}
 
 DropZone: WEDropContainer {
   tags          = ( appointment );

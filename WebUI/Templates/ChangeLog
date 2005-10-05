@@ -1,3 +1,8 @@
+2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSchedulerViews/SkyInlineWeekOverview: changed to hide list-only
+	  allday appointments (OGo bug #1505)
+
 2005-10-05  Sebastian Reitenbach  <reitenbach@rapideye.de>
 
 	* OGoWebMail/LSWImapMailSearch.html|wod: added ability to search

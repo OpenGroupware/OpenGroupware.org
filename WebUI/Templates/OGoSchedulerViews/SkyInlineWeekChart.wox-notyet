@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<OGo:container
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+  <var:script-drag/><var:script-drop/>
+XML, INCOMPLETE
+  
+<#ChartMatrix>
+  <#ChartTitle   ><#WeekdayTitle/></#ChartTitle>
+  <#ChartRowTitle><font size="-4"><var:string value="currentTimeLabel"/></font></#ChartRowTitle>
+
+  <#EmptyCell>&nbsp;</#EmptyCell>
+    
+  <#ChartCell>
+      <#AptDrag>
+        <font size="-4">
+          <var:if condition="appointmentViewAccessAllowed">
+            <var:if condition="useDirectActionForView">
+              <a directActionName="viewApt"
+                 var:_oid    = "appointmentOID"
+                 var:_entity = "appointmentEntity"
+                 var:_tz     = "appointment.startDate.timeZone.abbreviation"
+                 var:_ctx    = "context.contextID"
+                 var:title   = "shortTextForApt"
+              ><img var:filename="dateCellIcon" border="0" valign="top" var:alt="shortTextForApt" var:title="shortTextForApt"/><font var:color="config.colors_titleColor"><var:string value="appointment" formatter="aptInfoFormatter"/></font></a>
+            </var:if>
+            <var:if condition="useDirectActionForView" const:negate="1">
+              <a var:action="viewAppointment" var:title="shortTextForApt"><img var:filename="dateCellIcon" border="0" valign="top" var:alt="shortTextForApt" var:title="shortTextForApt"/><font var:color="config.colors_titleColor"><var:string value="appointment" formatter="aptInfoFormatter"/></font></a>
+            </var:if>
+          </var:if>
+  
+          <var:if condition="appointmentViewAccessAllowed" const:negate="1">
+            <img var:filename="dateCellIcon" border="0" valign="top" var:alt="shortTextForApt" var:title="shortTextForApt"/><font var:color="config.colors_titleColor"><var:string value="appointment" formatter="aptInfoFormatter"/></font>
+          </var:if>
+        </font>
+    </#AptDrag>
+  </#ChartCell>
+</#ChartMatrix>
+
+
+/* vert-matrix */
+
+ChartMatrix: WEVSpanTableMatrix {
+  list       = cacheDataSource.fetchObjects;
+  item       = appointment;
+  columns    = ( 0, 1, 2, 3, 4, 5, 6 );
+  rows       = hoursToShow;
+  column     = day;
+  row        = hour;
+  itemActive  = isAppointmentInCell;
+  isRowActive = isAppointmentInRow;
+  
+  //noSpanInEmptyCells = YES;
+  rowHeight   = 8;
+  WIDTH       = "100%";
+  BORDER      = 0;
+  CELLPADDING = 5;
+  CELLSPACING = 2;
+}
+
+ChartTitle: WETableMatrixLabel {
+  elementName = "td";
+  position    = "top";
+  BGCOLOR     = config.colors_headerLabelCell;
+  ALIGN       = "center";
+}
+
+ChartRowTitle: WETableMatrixLabel {
+  elementName = "td";
+  position    = "left";
+  span        = 2;
+  BGCOLOR     = config.colors_leftLabelCell;
+  WIDTH       = 2;
+}
+
+ChartCell: WETableMatrixContent {
+  elementName = "td";
+  BGCOLOR     = config.colors_contentCell;
+  VALIGN      = "top";
+}
+EmptyCell: WETableMatrixNoContent {
+  elementName = "td";
+  BGCOLOR     = config.colors_emptyCell;
+}
+
+WeekdayTitle: LSWSchedulerDateTitle {
+  title         = labels.$weekday;
+  newLabel      = labels.new;
+  highlight     = weekday.isToday;
+  date          = weekday;
+  disableNew    = isResCategorySelected;
+  directActionName = dayDirectActionName;
+}
+
+// matrix content
+
+/* appointments */
+
+AptDrag: WEDragContainer {
+  tag         = "appointment";
+  object      = appointment;
+  isDraggable = isAppointmentDraggable;
+}
+
+</OGo:container>
