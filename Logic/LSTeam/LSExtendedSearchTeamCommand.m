@@ -189,16 +189,26 @@ static NSNumber *yesNum = nil;
       continue;
     
     if ([self->includeTeamsWithOwnerId isNotNull]) {
-      if ([[_ownerIds objectForKey:eoOrGID] 
-                      isEqual:self->includeTeamsWithOwnerId])
+      NSNumber *ownerId;
+      
+      ownerId = [_ownerIds objectForKey:eoOrGID];
+      if ([ownerId isEqual:self->includeTeamsWithOwnerId])
         continue;
+
+      /* 
+	 Note: this also filters out teams owned by 'root' (10000). This is
+	       indeed intended, because we want all teams where we are a
+	       member and then those teams which are owned by us.
+      */
     }
-
+    
     /* did not contain member, make mutable and remove */
-
-    [self logWithFormat:@"REMOVE: %@ (owner=%@ vs %@)", 
+    
+#if DEBUG && 0
+    [self debugWithFormat:@"REMOVE: %@ (owner=%@ vs %@)", 
           eoOrGID, [_ownerIds objectForKey:eoOrGID],
           self->includeTeamsWithOwnerId];
+#endif
     
     if (ma == nil)
       ma = [[_results mutableCopy] autorelease];
