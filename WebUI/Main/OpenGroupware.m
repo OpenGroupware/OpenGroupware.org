@@ -233,6 +233,9 @@ static BOOL logBundleLoading          = NO;
 - (void)_setupResourceManager {
   OGoResourceManager *rm;
   
+  /* force the setup of some statics */
+  [OGoResourceManager availableOGoThemes];
+  
   rm = [OGoResourceManager alloc]; /* seperate line to keep gcc happy */
   rm = [rm initWithPath:[self path]];
   NSAssert(rm, @"could not create resource manager!");
@@ -241,7 +244,7 @@ static BOOL logBundleLoading          = NO;
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     NSUserDefaults *ud;
     
     ud = [NSUserDefaults standardUserDefaults];
@@ -280,6 +283,9 @@ static BOOL logBundleLoading          = NO;
             [[self availableCTIDialers] componentsJoinedByString:@","]];
 #endif
 
+    /* enforce init of some classes */
+    [NSClassFromString(@"WOCompoundElement") class];
+    
     /* load WebUI bundles */
     [[OGoWebBundleLoader bundleLoader] loadBundles];
     
@@ -584,7 +590,7 @@ static BOOL logBundleLoading          = NO;
   return session;
 }
 
-- (WOSession *)createSessionForRequest:(WORequest *)_request {
+- (id)createSessionForRequest:(WORequest *)_request {
   return [self _createSession];
 }
 
@@ -594,7 +600,7 @@ static BOOL logBundleLoading          = NO;
 }
 #endif
 
-- (WOComponent *)pageWithName:(NSString *)_name inContext:(WOContext *)_ctx {
+- (id)pageWithName:(NSString *)_name inContext:(WOContext *)_ctx {
   OGoSession *sn        = nil;
   id         p          = nil;
 #if WITH_URL_COMPONENTS

@@ -2,7 +2,7 @@
 #       it's *NOT* the version of the whole OpenGroupware.org environment !!!
 #       (each OpenGroupware.org component has it's own version)
 
-SUBMINOR_VERSION:=78
+SUBMINOR_VERSION:=79
 
 # v5.1.71 requires libOGoFoundation v5.1.81
 # v5.1.70 requires libOGoFoundation v5.1.80
