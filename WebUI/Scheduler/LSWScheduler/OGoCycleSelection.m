@@ -141,7 +141,7 @@
   /* byday stuff */
   
   if ((dayMask = [_rrule byDayMask]) != 0) {
-    if ([_rrule byDayOccurence1] > 0) {
+    if ([_rrule byDayOccurence1] != 0) {
       NSString *s;
       char buf[16];
       
@@ -217,7 +217,7 @@
   if ([self->cycleType isEqualToString:@"monthly"]) {
     if ([self hasDayOccurence]) {
       [ms appendString:@";BYDAY="];
-      if ([self->dayOccurence intValue] > 0)
+      if ([self->dayOccurence intValue] != 0)
         [ms appendString:self->dayOccurence];
       
       if ([self->day isNotEmpty])

@@ -1,3 +1,8 @@
+2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoCycleSelection.m: fixed handling of negative occurrences in rrules
+	  (every last friday like rrules) (v5.3.92)
+
 2005-09-29  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWAppointmentEditor.m, Defaults.plist: turned the name of the
