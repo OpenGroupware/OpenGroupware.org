@@ -1,3 +1,9 @@
+2005-10-05  Olivier Hallot  <olivier@ig.com.br>
+
+	* WODirectAction+ResourceSchedulerViews.m: use "todays" month/week/day
+	  if those form parameters where missing in the direct-action call
+	  (v5.3.13)
+
 2005-08-09  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyResourceSchedulerPage.m: fixed gcc 4.0 warnings (v5.3.12)
