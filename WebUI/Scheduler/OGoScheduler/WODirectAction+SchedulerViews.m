@@ -93,7 +93,11 @@
   
   if (year == 0)
     year = [[NSCalendarDate calendarDate] yearOfCommonEra];
-
+  if (month == 0)
+    month = [[NSCalendarDate calendarDate] monthOfYear];
+  if (weekNo == 0)
+    weekNo = [[NSCalendarDate calendarDate] weekOfYear];
+  
   date = [NSCalendarDate mondayOfWeek:weekNo inYear:year timeZone:tz];
   [date setTimeZone:tz];
   if ([date hourOfDay] != 0) {
@@ -136,6 +140,8 @@
     tz = [(id)[self session] timeZone];
   if (year == 0)
     year = [[NSCalendarDate calendarDate] yearOfCommonEra];
+  if (month == 0)
+    month = [[NSCalendarDate calendarDate] monthOfYear];
 
   [page takeValue:[NSNumber numberWithInt:year]  forKey:@"year"];
   [page takeValue:[NSNumber numberWithInt:month] forKey:@"month"];
@@ -202,7 +208,7 @@
     year = [[NSCalendarDate calendarDate] yearOfCommonEra];
   if (month == 0)
     month = [[NSCalendarDate calendarDate] monthOfYear];
-  if (month == 0)
+  if (day == 0)
     day = [[NSCalendarDate calendarDate] dayOfMonth];
 
   d = [NSCalendarDate dateWithYear:year month:month day:day

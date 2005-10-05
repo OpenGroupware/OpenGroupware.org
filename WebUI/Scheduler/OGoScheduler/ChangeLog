@@ -1,3 +1,8 @@
+2005-10-05  Olivier Hallot  <olivier@ig.com.br>
+
+	* WODirectAction+SchedulerViews.m: use "todays" month/week/day if those
+	  form parameters where missing in the direct-action call (v5.3.44)
+
 2005-08-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoAptConflictsList.m: show conflict info (v5.3.43)
