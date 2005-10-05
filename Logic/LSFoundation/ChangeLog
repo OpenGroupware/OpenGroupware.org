@@ -1,3 +1,8 @@
+2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSDBObjectNewCommand.m: leave out all entities ending in Assignment
+	  from objinfo registration (v5.3.113)
+
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSDBObjectSetCommand.m: minor code cleanups (v5.3.112)
