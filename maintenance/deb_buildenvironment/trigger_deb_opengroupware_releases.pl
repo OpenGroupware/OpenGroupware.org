@@ -111,8 +111,8 @@ foreach $orel (@ogo_releases) {
     #these differ...
     $apttarget = $buildtarget;
     $apttarget =~ s/^opengroupware\.org/opengroupware/g;
-    print "thus calling: /home/www/scripts/release_debian_apt.sh $host_i_runon $apttarget\n";
-    print SSH "/home/www/scripts/release_debian_apt.sh $host_i_runon $apttarget\n";
+    print "thus calling: /home/www/scripts/release_in_nightly_debian_apt.sh $host_i_runon $apttarget\n";
+    print SSH "/home/www/scripts/release_in_nightly_debian_apt.sh $host_i_runon $apttarget\n";
     close(SSH);
   }
 }

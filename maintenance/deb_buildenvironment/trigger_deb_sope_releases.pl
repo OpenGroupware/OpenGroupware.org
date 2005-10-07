@@ -70,7 +70,7 @@ foreach $srel (@sope_releases) {
     print "recreating apt-repository for: $host_i_runon - $buildtarget\n";
     if($perform_things_outside_buildhost eq "yes") {
       open(SSH, "|/usr/bin/ssh $www_user\@$www_host");
-      print SSH "/home/www/scripts/release_debian_apt.sh $host_i_runon $buildtarget\n";
+      print SSH "/home/www/scripts/release_in_nightly_debian_apt.sh $host_i_runon $buildtarget\n";
       close(SSH);
     }
   }
