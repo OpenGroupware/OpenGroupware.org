@@ -8,7 +8,7 @@
 use strict;
 use Getopt::Std;
 use File::Basename;
-our ($opt_d,$opt_t,$opt_v,$opt_n);
+our ($opt_d,$opt_t,$opt_v,$opt_n,$opt_s);
 my $item;
 my $distri;
 my @rel_rpms;
