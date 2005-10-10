@@ -1,4 +1,4 @@
-%define ogoall_version                  1.0beta1
+%define ogoall_version                  1.0beta2
 %define ogoall_release                  1
 %define ogoall_buildcount               0
 %define ogoall_prefix                   /usr/local
@@ -11,7 +11,7 @@
 %define ogoall_libfoundation_major      1
 %define ogoall_libfoundation_minor      0
 %define ogoall_libfoundation_makeflags  debug=yes
-%define ogoall_sope_source              sope-4.4rc.1-r862.tar.gz
+%define ogoall_sope_source              sope-4.4.0-cell-r1160.tar.gz
 %define ogoall_sope_major               4
 %define ogoall_sope_minor               4
 %define ogoall_sope_makeflags           debug=yes
