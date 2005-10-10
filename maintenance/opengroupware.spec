@@ -20,7 +20,7 @@ Source:        %{ogo_source}
 Prefix:        %{ogo_prefix}
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildPreReq:   ogo-gnustep_make
-#UseSOPE:      sope-4.4rc.1-rock
+#UseSOPE:      sope-4.4.0-cell
 
 %description
 OpenGroupware.org aims at being an open source groupware server which
@@ -1480,6 +1480,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Mon Oct 10 2005 Frank Reppin <frank@opengroupware.org>
+- use sope-4.4.0-cell to build
 * Thu Aug 18 2005 Frank Reppin <frank@opengroupware.org>
 - MFC > pda requires pilot-link (pilot-link provides libpisock)
 * Mon Jul 18 2005 Frank Reppin <frank@opengroupware.org>
