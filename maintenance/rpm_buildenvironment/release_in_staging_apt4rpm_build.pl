@@ -62,8 +62,10 @@ if (!$opt_s) {
 } else {
   $stage_for = $opt_s;
   chomp $stage_for;
-  if(($stage_for ne "stable") or ($stage_for ne "unstable")) {
-    print "either 'stable' or 'unstable' allowed\n";
+  if(($stage_for eq "stable") or ($stage_for eq "unstable")) {
+    print "ok - $stage_for\n";
+  } else {
+    print "either 'stable' or 'unstable' allowed - not $stage_for...\n";
     exit 0;
   }
 }
