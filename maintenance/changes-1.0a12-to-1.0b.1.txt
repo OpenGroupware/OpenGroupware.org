@@ -1,4 +1,4 @@
-- bug ids touched by ChangheLog:
+- bug ids touched by ChangeLog:
   #1398, #1371, #1242, #1419, #138, #1290, #1325, #1409, #1387, #1331,
   #1412, #1418, #384, #1401, #1413
 

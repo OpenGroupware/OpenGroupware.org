@@ -1,0 +1,18 @@
+- bug ids touched by ChangeLog:
+  #1357
+
+
+- build packages against SOPE 4.4.0
+- fixed webmail translation bug (#1357)
+- removed a superflous template
+
+===========================================================================
+r1410
+compare /home/helge/dev/complete/OpenGroupware.org/releases/1.0beta.1-rock with .
+removed: WebUI/Scheduler/OGoScheduler/SkySchedulerPage.wox-pre
+changed: WebUI/Resources/
+     2005-10-05  Helge Hess  <helge.hess@skyrix.com>
+     	* English|German.lproj: added OGoRecipientLists.strings (OGo bug #1357)
+added:   WebUI/Resources/English.lproj/OGoRecipientLists.strings
+added:   WebUI/Resources/German.lproj/OGoRecipientLists.strings
+added:   maintenance/changes-1.0b.1-to-1.0b.2.txt
