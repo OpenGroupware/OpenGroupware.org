@@ -1,0 +1,805 @@
+- bug ids touched by ChangeLog:
+  #67, #271, #528, #1262, #1505, #1507, #1508, #1510, #1530, #1552, #1564
+
+logic
+- enhanced team commands to allow non-root users to create/edit teams
+- enhanced team-search command to include 'owned' teams in member searches
+- added support for 'role' and 'part-stat' fields in scheduler conflict cmds
+- added support for iCal recurrence rules in cycle commands
+- added 'attributes' support to conflict command
+- enhanced conflict command to return more detailed conflict information
+- enhanced participants::list command to report CSV resources as attendee recs
+- reset 'description' when deleting teams
+- changed new command to auto-register new objects in the obj_info table
+- use -warnWithFormat:/-errorWithFormat: where appropriate
+- improved access handler loading
+- added -description methods to various LSFoundation classes
+- performance improvements in contact permission checks
+- added support for private/owned/readonly teams in OGoCompanyAccessHandler
+webui
+- rewrote several .wo templates as .wox XML templates
+- added new GroupsUI application for editing/viewing teams
+- the default read-access team in the apt-editor is now a default
+- a default notification time can now be edited in the prefs
+- added support for some specific monthly iCalendar rrules in apt-editor
+- major cleanups and reorganisations in the apt-editor
+- participant roles are now localized
+- enable participant roles per default
+- added ability to hide appointments with 'list' permission (freebusy info) in
+  various components
+- improved default values for scheduler direct actions
+- added 'conflicts' tab to appointment viewer
+- team selection popups can be restricted to teams where the user is a member
+- added month-popup to scheduler month page for faster navigation
+- detect available themes at instance startup
+- added ability to filter/search for 'organization' and 'list-id' mail headers
+- enhanced contact search with country/state fields
+- project-code in project-tableview is now a hyperlink
+- improved localization in SkyBusinessCardGathering component
+- name of 'news editor' team is now configurable
+- various enhancements to OGo WOx element builder
+- improved OGoEditorPage API
+- added a default to enable JS functionality globally
+- added support for the 'readonly' flag in the team editor
+- fixed team-editor / team-viewer to work with non-root accounts
+xmlrpcd
+- added account.getSessionLogs method
+tools
+- added ogo-check-aptconflicts tool
+database scripts / model
+- expose isPrivate and isReadonly columns of team table in EO model
+- mark default teams as owned by root, readonly but not private in SQL-create
+- precreate 'team creators' team in SQL-create script
+- added index on obj_info table
+- added SQL script to fill obj_info table (pg-fill-objinfo.psql)
+web resources
+- fixed some bugs in CSS of the default theme
+- added JS file for LSWAppointmentEditor
+general
+- improved configure script, improved OSX build support
+- use new -isNotEmpty method when appropriate
+- major code cleanups in various files
+- fixed some small memory leaks
+- fixed plenty of gcc4 related warnings
+
+Major sponsoring of enhancements by Virginia Bioinformatics Institute - THANKS!
+Major contributors for 1.1.2:
+Olivier Hallot
+Sebastian Reitenbach
+Sebastian Ley
+Marcus Mueller
+Frank Reppin
+Helge Hess
+... and many more :-)
+
+===========================================================================
+r1410
+compare /home/helge/dev/complete/OpenGroupware.org/releases/1.1.1-moveon with .
+changed: 
+     2005-08-08  Helge Hess  <helge.hess@skyrix.com>
+     	* configure: add linking-results as vars to config.make, do not enforce
+     	  gstep-make on MacOSX
+changed: DocumentAPI/OGoContacts/
+     2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyContactsAccessHandler.m: moved to Logic/LSAddress as
+     	  OGoCompanyAccessHandler.m (v5.3.49)
+     2005-09-29  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyContactsAccessHandler.m: major performance improvement, teams are
+     	  only fetched if an ACL is set and if the account doesn't have full
+     	  access (so that its teams must be evaluated) (v5.3.48)
+     	* SkyContactsAccessHandler.m: major code cleanups, added debug logs
+     	  (v5.3.47)
+     2005-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* removed gcc4 warnings, removed some unnecessary autorelease calls
+     	  (v5.3.46)
+removed: DocumentAPI/OGoContacts/SkyContactsAccessHandler.m
+changed: DocumentAPI/OGoDocuments/
+     2005-09-12  Sebastian Reitenbach  <reitenbach@rapideye.de>
+     	* NGLocalFileManager.h: fixed a compilation issue (v5.3.26)
+     2005-09-08  Helge Hess  <helge.hess@opengroupware.org>
+     	* NGLocalFileManager.h, NGLocalFileGlobalID.h, NGLocalFileDocument.h:
+     	  cleaned up header files (v5.3.25)
+changed: DocumentAPI/OGoProject/
+     2005-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc4 warnings (v5.3.40)
+changed: DocumentAPI/OGoRawDatabase/
+     2005-09-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyDBDocument.m: fixed a gcc4 warning (v5.3.12)
+changed: DocumentAPI/OGoAccounts/
+     2005-09-08  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile.preamble: added link deps for OSX (v5.3.20)
+     2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.19
+     	* SkyAccountDataSource.h: expose -initWithContext: method
+     	* SkyTeamDataSource.m, SkyAccountDataSource.m, SkyAccountDocument.m:
+     	  fixed gcc4 warnings
+changed: DocumentAPI/OGoDatabaseProject/
+     2005-09-08  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile.preamble: added link deps for OSX (v5.3.52)
+changed: DocumentAPI/OGoScheduler/
+     2005-09-08  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile.preamble: added link deps for OSX (v5.3.36)
+     2005-08-18  Helge Hess  <helge.hess@skyrix.com>
+     	* SkySchedulerConflictDataSource.h: deprecated -setContext: in favor of
+     	  -initWithContext: (v5.3.35)
+     2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.34
+     	* SkySchedulerConflictDataSource.m: fixed a small memleak, marked
+     	  -hasConflicts method deprecated, use -fetchObjects instead, wrap
+     	  fetch in an NSAutoreleasePool, major code cleanups
+     	* SkySchedulerConflictDataSource.h: added proper header include
+     	  protection
+changed: DocumentAPI/OGoJobs/
+     2005-09-08  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile.preamble: added link deps for OSX (v5.3.24)
+     2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyJobDocument.m, SkySchedulerJobDataSource.m: fixed gcc4 warnings
+     	  (v5.3.23)
+changed: Database/MySQL/
+     2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* build-schema.mysql5: mark default teams as owned by root, readonly
+     	  but not private
+added:   Database/MySQL/fill-objinfo.isql
+changed: Database/OGoModel/
+     2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoModel.py (Team): expose isPrivate and isReadonly columns of
+     	  team table (v5.3.17)
+     2005-09-14  Helge Hess  <helge.hess@opengroupware.org>
+     	* bundle-info.plist: fixed dependencies (this bundle provides the
+     	  OGoModel class, it doesn't require it) (v5.3.16)
+changed: Database/PostgreSQL/
+     2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+     	* pg-build-schema.psql: added 'team creators' team
+     2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* pg-build-schema.psql: mark default teams as owned by root, readonly
+     	  but not private
+     2005-08-23  Helge Hess  <helge.hess@opengroupware.org>
+     	* added pg-fill-objinfo.psql script to fill the obj_info table of the
+     	  database
+     	* pg-build-schema.psql: create index on obj_info table
+added:   Database/PostgreSQL/pg-fill-objinfo.psql
+changed: Themes/
+     2005-09-22  Helge Hess  <helge.hess@skyrix.com>
+     	* WebServerResources/English.lproj/LSWAppointmentEditor.js: prepared
+     	  JS function for recurrence selector
+     	* WebServerResources/English.lproj/OGo.css: replaced invalid 'align'
+     	  with 'text-align', replaced invalid 'text-color' with just 'color'
+     2005-08-31  Helge Hess  <helge.hess@opengroupware.org>
+     	* added LSWAppointmentEditor.js JavaScript resource
+added:   Themes/WebServerResources/English.lproj/LSWAppointmentEditor.js
+changed: ZideStore/SoObjects/ZSProjects/
+     2005-09-23  Helge Hess  <helge.hess@opengroupware.org>
+     	* SxDocument.m: fixed a gcc4 warning (v1.5.97)
+added:   maintenance/changes-1.1.1-to-1.1.2.txt
+added:   maintenance/freebsd
+added:   maintenance/rpm_buildenvironment/eradicate_old_debs.pl
+added:   maintenance/rpm_buildenvironment/release_in_nightly_apt4rpm_build.pl
+added:   maintenance/rpm_buildenvironment/release_in_staging_apt4rpm_build.pl
+removed: maintenance/rpm_buildenvironment/release_apt4rpm_build.pl
+added:   maintenance/deb_buildenvironment/release_in_nightly_debian_apt.sh
+added:   maintenance/deb_buildenvironment/release_in_staging_debian_apt.sh
+removed: maintenance/deb_buildenvironment/release_debian_apt.sh
+changed: Logic/LSFoundation/
+     2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSDBObjectNewCommand.m: leave out all entities ending in Assignment
+     	  from objinfo registration (v5.3.113)
+     2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+     	* LSDBObjectSetCommand.m: minor code cleanups (v5.3.112)
+     2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoAccessManager.m, OGoAccessHandler.m: added -description (v5.3.111)
+     2005-09-29  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.110
+     	* OGoAccessManager.m: improved access handler loading
+     	* LSCommandContext.m: incorporated categories into main class
+     	* LSTypeManager.m: added -description
+     	* v5.3.109
+     	* all files: use -errorWithFormat:/-warnWithFormat: instead of
+     	  -logWithFormat:/NSLog where applicable
+     	* renamed SkyAccessHandler to OGoAccessHandler
+     	* LSDBObjectNewCommand.m: automagically register new objects in
+     	  obj_info table
+     2005-09-29  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoAccessManager.m: fixed a bug in access manager lookup (v5.3.108)
+     2005-09-14  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.107
+     	* OGoContextManager.m: fixed bundle loading path for OSX with
+     	  gstep-make
+     	* NGBundleManager+OGo.m: use logging methods
+     2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+     	* LSTypeManager.m: use unsigned int for pkeys (v5.3.106)
+added:   Logic/LSFoundation/OGoAccessHandler.h
+added:   Logic/LSFoundation/OGoAccessHandler.m
+removed: Logic/LSFoundation/SkyAccessHandler.m
+changed: Logic/LSBase/
+     2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSAddSessionLogCommand.m: marked as irrelevant for obj_info cache
+     	  (v5.3.25)
+     2005-08-23  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSAddLogCommand.m: marked as irrelevant for obj_info cache (v5.3.24)
+changed: Logic/LSTeam/
+     2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSExtendedSearchTeamCommand.m: removed a debug log (v5.3.18)
+     2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.17
+     	* LSExtendedSearchTeamCommand.m: fixed a bug in owner processing
+     	* LSDeleteTeamCommand.m: also reset 'description' of deleted teams
+     	* LSNewTeamCommand.m: added team-creator permission check, team
+     	  creator role team can be set using the OGoTeamCreatorRoleName
+     	  default (defaults to 'team creators') (v5.3.16)
+     	* LSSetTeamCommand.m, LSDeleteTeamCommand.m: check whether login has
+     	  'write' permission prior changing/deleting team (v5.3.15)
+     2005-09-29  Helge Hess  <helge.hess@skyrix.com>
+     	* LSExtendedSearchTeamCommand.m: added 'includeTeamsWithOwner' argument
+     	  to include owned teams in member restricted fetches (v5.3.14)
+     	* LSExtendedSearchTeamCommand.m: code cleanups, fixed a bug in
+     	  filtering for member-ids when fetching EOs (v5.3.13)
+     2005-08-08  Helge Hess  <helge.hess@skyrix.com>
+     	* LSExtendedSearchTeamCommand.m: added ability to restrict results to
+     	  teams which have a certain member (v5.3.12)
+changed: Logic/LSScheduler/
+     2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSGetDateWithConflictCommand.m: filter out objects with
+     	  NON-PARTICIPANT role from staff-list (v5.3.79)
+     2005-09-27  Helge Hess  <helge.hess@skyrix.com>
+     	* GNUmakefile: properly link libOGoSchedulerTools against libNGiCal
+     	  (v5.3.78)
+     2005-09-22  Helge Hess  <helge.hess@skyrix.com>
+     	* LSNewAppointmentCommand.m, LSCyclicAppointmentsCommand.m: fixed
+     	  creation of iCal rrule cycles (patch the master to the first instance
+     	  and start cycle-generation at the second) (v5.3.77)
+     2005-09-20  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.76
+     	* LSNewAppointmentCommand.m: improved -setCycleEndDateFromString: in
+     	  edge conditions
+     	* OGoCycleDateDelegate.m: minor code cleanups
+     	* OGoCycleDateCalculator.m: added support for rrule calculation using
+     	  iCalRecurrenceCalculator (types with prefix RRULE:)
+     	* LSCyclicAppointmentsCommand.m: code cleanups (v5.3.75)
+     2005-09-19  Helge Hess  <helge.hess@skyrix.com>
+     	* LSAppointmentProposalCommand.m: major code cleanups (v5.3.74)
+     	* LSDateAssignmentCommand.m, LSNewAppointmentCommand.m: code cleanups,
+     	  added some docs (v5.3.73)
+     	* LSListParticipantsCommand.m: minor code cleanups (v5.3.72)
+     2005-09-14  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSGetICalForAppointmentsCommand.m: use -isNotEmpty instead of
+     	  checkin' string lengths for better behaviour in edge cases (v5.3.71)
+     	* v5.3.70
+     	* LSGetAppointmentsForGlobalIDs.m, LSGetDateWithConflictCommand.m:
+     	  properly deal with NSNull attribute values (triggered on OSX)
+     	* LSListParticipantsCommand.m: fixed an OSX incompatibility
+     2005-08-30  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSGetDateWithConflictCommand.m: added ability to specify required
+     	  attributes in conflict-info records (v5.3.69)
+     2005-08-30  Helge Hess  <helge.hess@skyrix.com>
+     	* LSGetDateWithConflictCommand.m: automatically set begin/end and
+     	  staff/resources if no parameters are given but the appointment
+     	  (v5.3.68)
+     2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.67
+     	* LSDateAssignmentCommand.m: improved KVC handling, code cleanups
+     	* LSMoveAppointmentCommand.m: minor code cleanups
+     2005-08-29  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.66
+     	* LSGetDateWithConflictCommand.m: added ability to retrieve detailed
+     	  conflict information
+     	* LSListParticipantsCommand.m: added ability to list CSV resources as
+     	  participant records
+     	* LSGetDateWithConflictCommand.m: fixed conflict detection according to
+     	  conflict map in #1262) (v5.3.65)
+     2005-08-25  Helge Hess  <helge.hess@skyrix.com>
+     	* LSListParticipantsCommand.m: fixed some major bug in participation
+     	  status bulk fetching (still contains one bug when used w/o groupBy)
+     	  (v5.3.64)
+     	* LSListParticipantsCommand.m: code cleanups (v5.3.63)
+     2005-08-24  Helge Hess  <helge.hess@skyrix.com>
+     	* LSGetDateWithConflictCommand.m: properly deal with the 'role' and
+     	  'partstat' fields (as described in #1262) (v5.3.62)
+     2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+     	* LSGetDateWithConflictCommand.m: major code cleanups, got more
+     	  tolerant on input parameters, does not only check accounts and teams
+     	  but all given staff objects, fixed a small (qualifier) memory leak
+     	  (v5.3.61)
+changed: Logic/LSAccount/
+     2005-10-04  Helge Hess  <helge.hess@skyrix.com>
+     	* LSGetAccountByLoginCommand.m: minor code cleanups (v5.3.19)
+changed: Logic/LSDocuments/
+     2005-09-27  Helge Hess  <helge.hess@skyrix.com>
+     	* all files: fixed gcc4 warnings, code cleanups (v5.3.6)
+changed: Logic/LSProject/
+     2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* some code cleanups, fixed some gcc4 warnings, use -warnWithFormat:
+     	  (v5.3.40)
+changed: Logic/LSAddress/
+     2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+     	* LSMemberToGroupAssignmentCommand.m: major code cleanups, check
+     	  whether user has 'w' permission prior changing teams (v5.3.81)
+     2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoCompanyAccessHandler.m: implemented 'owner', 'private' and
+     	  'readonly' permission control for teams (v5.3.80)
+     	* moved in OGoCompanyAccessHandler from DocumentAPI/OGoContacts
+     	  (v5.3.79)
+     2005-09-28  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSGetMemberForCompanyCommand.m: code cleanups (v5.3.78)
+added:   Logic/LSAddress/OGoCompanyAccessHandler.m
+changed: XmlRpcAPI/
+     2005-10-04  Helge Hess  <helge.hess@skyrix.com>
+     	* Actions.subproj/DirectAction+Account.m: major code cleanups, added
+     	  account.getSessionLogs method (OGo bug #1564) (v5.3.66)
+changed: Tools/
+     2005-09-29  Helge Hess  <helge.hess@skyrix.com>
+     	* ogo-check-permission.m: fixed toolname in usage
+     2005-08-29  Helge Hess  <helge.hess@skyrix.com>
+     	* ogo-check-aptconflicts.m: changed to use the new conflict-info
+     	  functionality in appointment::conflicts command
+     2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+     	* added tool ogo-check-aptconflicts tool to test the conflict checking
+     	  functionality
+added:   Tools/ogo-check-aptconflicts.m
+changed: PDA/PPSync/
+     2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* common.h: properly include NGObjectMacros.h instead of
+     	  NSObjectMacros.h (v5.3.14)
+added:   WebUI/GroupsUI
+changed: WebUI/JobUI/
+     2005-09-28  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.52
+     	* GNUmakefile, GNUmakefile.preamble: minor cleanups
+     	* bundle-info.plist: refer to OGoModuleManager instead of
+     	  LSWModuleManager
+changed: WebUI/Contact/AddressUI/
+     2005-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyCompanySavedSearchPopUp.m: fixed gcc4 warnings, improved defaults
+     	  access (v5.3.51)
+changed: WebUI/Scheduler/LSWScheduler/
+     2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoCycleSelection.m: fixed handling of negative occurrences in rrules
+     	  (every last friday like rrules) (v5.3.92)
+     2005-09-29  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWAppointmentEditor.m, Defaults.plist: turned the name of the
+     	  default read-access team into a default
+     	  ('scheduler_default_readaccessteam') (v5.3.91)
+     2005-09-27  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWAppointmentEditor.m: fixed include path for OGoCycleDateCalculator
+     	  (v5.3.90)
+     	* v5.3.89
+     	* OGoCycleSelection.m: minor improvement in cycle-type handling
+     	* LSWAppointmentEditor.m: changed to load default notification time
+     	  from 'scheduler_defnotifytime' default (OGo rq #1510), some code
+     	  cleanups
+     	* LSWSchedulerPreferences.m: major code cleanups, added
+     	  'notificationTime' default ('scheduler_defnotifytime') (v5.3.88)
+     2005-09-26  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWSchedulerPreferences.m: added -userDefaults and
+     	  -systemUserDefaults (v5.3.87)
+     2005-09-22  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoRecurrenceFormatter.m: improved rendering of rrules (v5.3.86)
+     	* v5.3.85
+     	* OGoCycleSelection.m: added support for some rrules (OGo rq #1508)
+     	* LSWAppointmentEditor.m: use OGoCycleDateCalculator to determine
+     	  number of generated cycles
+     	* added OGoCycleSelection component for editing the appointment
+     	  recurrence information (v5.3.84)
+     2005-09-20  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.83
+     	* LSWAppointmentEditor.m: changed to use new recurrence formatter
+     	* added OGoRecurrenceFormatter to format appointment recurrence
+     	  descriptions
+     2005-09-19  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWAppointmentProposal.m: more code cleanups (v5.3.82)
+     	* LSWAppointmentProposal.m: major code cleanups (v5.3.81)
+     	* v5.3.80
+     	* LSWAppointmentEditor.m: properly save the 'role' information in the
+     	  snapshot for subsequent save/create. The 'participants' array in the
+     	  snapshot is not a set of full EOs anymore! (can lead to issues, but
+     	  works fine so far)
+     	* LSWAppointmentViewer.m: minor code cleanups
+     	* LSWAppointmentEditor.m: properly load the rolemap (v5.3.79)
+     	* LSWAppointmentEditor.m: code cleanups (v5.3.78)
+     2005-09-17  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWAppointmentEditor.m: use a bitset for all the flags (v5.3.77)
+     2005-09-16  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.76
+     	* OGoAttendeeSelection.m: implemented add/delete tracking and role map
+     	* OGoUserSelectionComponent.m, SkyParticipantsSelection.m,
+     	  LSWAppointmentEditor.m: refactoring
+     2005-09-16  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.75
+     	* OGoAttendeeSelection.m: added ivars for selected roles
+     	* SkyParticipantsSelection.m: added ivar flag for plainmode
+     	* v5.3.74
+     	* added OGoAttendeeSelection component (uses OGoUserSelectionComponent)
+     	* SkyParticipantsSelection.m: moved component logic to a new
+     	  superclass, OGoUserSelectionComponent
+     	* added OGoUserSelectionComponent abstract superclass
+     2005-09-08  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWAppointmentEditor.m: added -windowTitle method to generate the
+     	  title for the editor (v5.3.73)
+     2005-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.72
+     	* SkyParticipantsSelection.m: some code cleanups
+     	* LSWAppointmentEditor.m: remove use of deprecated
+     	  SkySchedulerConflictDataSource method
+     2005-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* Defaults.plist: added some plist values necessary for
+     	  LSWAppointmentEditor.wox (v5.3.71)
+     2005-08-31  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWAppointmentMove.m: minor code cleanups, fixed a warning (v5.3.70)
+     2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyAptParticipantsList.m: added localized participant roles (v5.3.69)
+     	* SkyAptParticipantsList.m: fixed changing of participant status (new
+     	  code returned immutable records) (v5.3.68)
+     2005-08-22  Helge Hess  <helge.hess@skyrix.com>
+     	* Defaults.plist: enable participant roles per default (v5.3.67)
+     2005-08-09  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWAppointmentMove.m, LSWAppointmentEditor.m: do not use deprecated
+     	  -hasConflicts of SkySchedulerConflictDataSource (v5.3.66)
+     2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.65
+     	* LSWAppointmentProposal.m: minor code improvements, fixed gcc 4.0
+     	  warnings, fixed a minor memleak (new-component)
+     	* LSWSchedulerPreferences.m, LSWAppointmentEditor.m: fixed gcc 4.0
+     	  warnings
+     2005-08-08  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyParticipantsSelection.m: fixed some gcc 4.0 warnings, minor code
+     	  cleanups (v5.3.64)
+     2005-08-02  Helge Hess  <helge.hess@skyrix.com>
+     	* removed unused LSWSchedulerDateCell (v5.3.63)
+     	* v5.3.62
+     	* LSWSchedulerDateTitle.m: minor improvements
+     	* LSWSchedulerDateCell.m: reuse default color bindings, avoid usage of
+     	  cal-formats to improve performance
+added:   WebUI/Scheduler/LSWScheduler/OGoAttendeeSelection.m
+added:   WebUI/Scheduler/LSWScheduler/OGoUserSelectionComponent.h
+added:   WebUI/Scheduler/LSWScheduler/OGoUserSelectionComponent.m
+added:   WebUI/Scheduler/LSWScheduler/OGoRecurrenceFormatter.h
+added:   WebUI/Scheduler/LSWScheduler/OGoRecurrenceFormatter.m
+added:   WebUI/Scheduler/LSWScheduler/OGoCycleSelection.m
+removed: WebUI/Scheduler/LSWScheduler/NOTES
+removed: WebUI/Scheduler/LSWScheduler/LSWSchedulerDateCell.m
+changed: WebUI/Scheduler/OGoSchedulerViews/
+     2005-09-23  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyMonthRepetition.m: fixed a warning on OSX (v5.3.50)
+     2005-08-23  Helge Hess  <helge.hess@skyrix.com>
+     	* SkySchedulerConflictCell.m: code cleanups (v5.3.49)
+     2005-08-22  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyMonthRepetition.m, SkySchedulerConflictCell: code cleanups
+     	  (v5.3.48)
+     2005-08-18  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.47
+     	* SkyInlineAptDataSourceView.m: do not use deprecated
+     	  SkySchedulerConflictDataSource API
+     	* SkyMonthBrowser.m: code cleanups (moved some statics to
+     	  Defaults.plist, removed unused ivars)
+     2005-08-02  Helge Hess  <helge.hess@skyrix.com>
+     	* SkySchedulerDateCell.m: added ability to hide appointments which have
+     	  only the 'list' permission. Can be activated using the bool default
+     	  'scheduler_hide_listonly_appointments'  (#1505) (v5.3.46)
+changed: WebUI/Scheduler/OGoResourceScheduler/
+     2005-10-05  Olivier Hallot  <olivier@ig.com.br>
+     	* WODirectAction+ResourceSchedulerViews.m: use "todays" month/week/day
+     	  if those form parameters where missing in the direct-action call
+     	  (v5.3.13)
+     2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyResourceSchedulerPage.m: fixed gcc 4.0 warnings (v5.3.12)
+changed: WebUI/Scheduler/OGoScheduler/
+     2005-10-05  Olivier Hallot  <olivier@ig.com.br>
+     	* WODirectAction+SchedulerViews.m: use "todays" month/week/day if those
+     	  form parameters where missing in the direct-action call (v5.3.44)
+     2005-08-30  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoAptConflictsList.m: show conflict info (v5.3.43)
+     2005-08-30  Helge Hess  <helge.hess@skyrix.com>
+     	* added OGoAptConflictsList component to display appointment conflicts
+     	  in the apt-viewer (v5.3.42)
+     2005-08-23  Helge Hess  <helge.hess@skyrix.com>
+     	* SkySchedulerConflictPage.m: major code cleanups (v5.3.41)
+     2005-08-22  Helge Hess  <helge.hess@skyrix.com>
+     	* SkySchedulerConflictPage.m: code cleanups (v5.3.40)
+     2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+     	* SkySchedulerConflictPage.m: removed -takeValue:forKey: method (use
+     	  default implementation), use a bitset for flags to save four precious
+     	  bytes, major code cleanups (v5.3.39)
+     	* v5.3.38
+     	* WODirectAction+SchedulerViews.m, SkySchedulerPage.m: fixed gcc 4.0
+     	  warnings
+     	* SkySchedulerConflictPage.m: moved in @interface, deleted headerfile
+     2005-08-08  Helge Hess  <helge.hess@skyrix.com>
+     	* SkySchedulerSelectPanel.m: restrict searches in extended-mode to
+     	  member-teams if the 'scheduler_memberteams_only' default is set
+     	  (#1507) (v5.3.37)
+     	* v5.3.36
+     	* SkySchedulerSelectPopUp.m: restrict searches to member-teams if the
+     	  'scheduler_memberteams_only' default is set (#1507)
+     	* SkySchedulerSelectPanel.m: added fragile baseclass check, use new
+     	  -isNotEmpty method
+     2005-08-02  Helge Hess  <helge.hess@skyrix.com>
+     	* SkySchedulerSelectPopUp.m: only fetch member teams into the popup in
+     	  case the 'scheduler_memberteams_only' default is set (related to
+     	  #1507), code cleanups, assign-bugfix (v5.3.35)
+added:   WebUI/Scheduler/OGoScheduler/OGoAptConflictsList.m
+removed: WebUI/Scheduler/OGoScheduler/SkySchedulerPage.wox-pre
+removed: WebUI/Scheduler/OGoScheduler/SkySchedulerConflictPage.h
+changed: WebUI/Main/
+     2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* OpenGroupware.m: trigger OGoResourceManager to detect themes on
+     	  startup, fixed some gcc4 warnings (v5.3.79)
+changed: WebUI/Templates/
+     2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoSchedulerViews/SkyPrintMonthOverview.wod,
+     	  OGoSchedulerViews/SkyInlineMonthOverview.html: hide list-only
+     	  appointments (OGo bug #1505)
+     	* OGoSchedulerViews/SkyPrintWeekOverview.wod: limit display of list-
+     	  only appointments (OGo bug #1505)
+     	* OGoSchedulerViews/SkyInlineWeekOverview: changed to hide list-only
+     	  allday appointments (OGo bug #1505)
+     2005-10-05  Sebastian Reitenbach  <reitenbach@rapideye.de>
+     	* OGoWebMail/LSWImapMailSearch.html|wod: added ability to search
+     	  for 'organization' and 'list-id' mail headers
+     	* OGoMailFilter/LSWImapMailFilterEditor.wod: added ability to filter
+     	  for 'organization' and 'list-id' mail headers (OGo bug #1530)
+     2005-10-04 Olivier Hallot (olivier@ig.com.br>
+     	* OGoScheduler/SkySchedulerSelectPanel.html: added popup to select the
+     	  month being displayed (in month-mode) (OGo bug #67)
+     2005-10-04 Olivier Hallot (olivier@ig.com.br>
+     	* PersonsUI/LSWPersonAdvancedSearch.html|wod: added 'state' and
+     	  'country' fields to advanced search panel (OGo bug #1552)
+     2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+     	* GroupsUI/OGoGroupsPage.wox: added refresh button
+     	* GroupsUI/OGoGroupsPage.wox: added team-creation button
+     	* GroupsUI/OGoGroupsPage.wox: activate team-editor for writable teams
+     	* AdminUI: template cleanups, show team default editors only for root
+     	  (only root can access defaults of other company records)
+     	* GroupsUI/OGoGroupsPage.wox: improved owner-info, added labels, show
+     	  readonly teams in italics
+     2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* GroupsUI/OGoGroupsPage.wox: use new ivar bindings, added a link to
+     	  the account contact viewer, shows owner-id
+     2005-09-27  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWScheduler/LSWAppointmentViewer.wox: properly trigger printApt
+     	  action, issue as mentioned in bug #1262 (got broken during WOx
+     	  conversion)
+     	* LSWScheduler/LSWAppointmentEditor.wox: removed a conditional around
+     	  the notification time (notifications are always enabled)
+     2005-09-27  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWScheduler/LSWSchedulerPreferences: some reorganizations in
+     	  calendar preferences editor, moved some plist values to
+     	  Defaults.plist
+     2005-09-26  Helge Hess  <helge.hess@opengroupware.org>
+     	* PreferencesUI/SkyDefaultEditField.wox: rewritten as WOx template
+     	* LSWScheduler/LSWAppointmentEditor.wox: removed old cycle editor
+     	* PreferencesUI/OGoDefaultEditFrame,
+     	  PreferencesUI/OGoDefaultEditField,
+     	  PreferencesUI/OGoDefaultViewField: rewritten as WOx template
+     2005-09-22  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWScheduler/SkyAptDateSelection.html: use 'display' instead of
+     	  'visibility' when the input is switched to 'all day'
+     	* LSWScheduler/LSWAppointmentEditor.wox: use cycle type strings as
+     	  values in popup, cycle-type popup got a constant form name, calls
+     	  a JavaScript function on popup changes
+     2005-09-20  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWScheduler/LSWAppointmentViewer.wox: use recurrence formatter to
+     	  display recurrence info
+     2005-09-19  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoScheduler/OGoAptConflictsList.wox: print appointment title in
+     	  table view header
+     2005-09-16  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWScheduler/LSWAppointmentEditor.wox: reorganized buttons in editor
+     	  (extra row for cycle-related buttons)
+     	* LSWScheduler/LSWAppointmentEditor.wox: removed headline label
+     2005-09-09  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWScheduler/LSWAppointmentEditor.wox: fixed indentation
+     2005-09-09  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoSchedulerViews/SkyInlineDayHChart: rewritten as WOx template
+     2005-09-08  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWScheduler/LSWAppointmentEditor.wox: major reorganizations in the
+     	  positioning of elements in the appointment editor. Removed 'move'
+     	  section.
+     	* LSWScheduler/SkyAptTypeSelection.wod: use nobr to make the radio
+     	  button and the image stick together on wrapping
+     	* LSWScheduler/SkyParticipantsSelection.wox,
+     	  LSWScheduler/SkyResourceSelection.wox: added 'plainMode' condition
+     	  to generate elements w/o <OGo:attribute> wrappers
+     	* LSWScheduler/SkyResourceSelection: rewritten as WOx template
+     2005-09-07  Helge Hess  <helge.hess@skyrix.com>
+     	* PersonsUI/SkyPersonProjectList: enabled WOx rewrite, removed .wo
+     2005-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWScheduler/SkyParticipantsSelection: rewritten as WOx template
+     	* LSWScheduler: various minor template cleanups
+     2005-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWScheduler/LSWAppointmentEditor: rewritten as WOx template
+     	* LSWScheduler/SkyAptDateSelection.html: embed 'all day' label in plain
+     	  font
+     	* LSWScheduler/SkyAptTypeSelection.wod: use session method to determine
+     	  whether JavaScript is enabled
+     	* OGoScheduler/OGoAptConflictsList.wox: properly display lastname for
+     	  conflicting persons
+     2005-08-30  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoScheduler/OGoAptConflictsList.wox: added infos on conflict
+     2005-08-30  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoScheduler: added template for OGoAptConflictsList
+     	* LSWScheduler/LSWAppointmentViewer.wox: added conflicts tab
+     	* OGoNote/SkyNoteList.wox: minor template cleanups
+     	* LSWScheduler/LSWAppointmentViewer: rewritten as WOx template
+     2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWScheduler/SkyAptParticipantsList.wod: localize participant role
+     2005-08-23  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoSchedulerViews: various template cleanups
+     	* OGoSchedulerViews/SkySchedulerConflictCell: rewritten as WOx template
+     	* OGoScheduler/SkySchedulerPage.wox-pre: work on WOx scheduler page
+     	* OGoProject/SkyP4ProjectTableView: made project code clickable
+     2005-08-22  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoScheduler/SkySchedulerConflictPage: rewritten as WOx template
+     2005-08-18  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoSchedulerViews: minor template cleanups
+     2005-08-09  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoScheduler/SkySchedulerConflictPage: some template cleanups
+added:   WebUI/Templates/GroupsUI
+added:   WebUI/Templates/PersonsUI/LSWPersonAdvancedSearch.wox-notyet
+removed: WebUI/Templates/PersonsUI/SkyPersonProjectList.html
+removed: WebUI/Templates/PersonsUI/SkyPersonProjectList.wod
+added:   WebUI/Templates/LSWScheduler/SkyAptParticipantsList.wox-todo
+added:   WebUI/Templates/LSWScheduler/OGoAttendeeSelection.wox
+added:   WebUI/Templates/LSWScheduler/SkyResourceSelection.wox
+added:   WebUI/Templates/LSWScheduler/OGoCycleSelection.wox
+added:   WebUI/Templates/LSWScheduler/GNUmakefile
+added:   WebUI/Templates/LSWScheduler/LSWAppointmentEditor.wox
+added:   WebUI/Templates/LSWScheduler/LSWAppointmentViewer.wox
+added:   WebUI/Templates/LSWScheduler/SkyParticipantsSelection.wox
+removed: WebUI/Templates/LSWScheduler/LSWAppointmentViewer.html
+removed: WebUI/Templates/LSWScheduler/SkyResourceSelection.wod
+removed: WebUI/Templates/LSWScheduler/LSWAppointmentEditor.html
+removed: WebUI/Templates/LSWScheduler/SkyParticipantsSelection.html
+removed: WebUI/Templates/LSWScheduler/LSWAppointmentEditor.wod
+removed: WebUI/Templates/LSWScheduler/SkyResourceSelection.html
+removed: WebUI/Templates/LSWScheduler/LSWAppointmentViewer.wod
+removed: WebUI/Templates/LSWScheduler/SkyParticipantsSelection.wod
+changed: WebUI/Templates/AddressUI/
+     2005-10-04 Olivier Hallot (olivier@ig.com.br>
+     	* SkyBusinessCardGathering.wod: changed 'salutation' field of editor
+     	  to use 'isLocalized' and 'valueKeys' instead of inline 'values'. This
+     	  way the localization is moved from the .wod to the .strings file
+     	  (OGo bug #528)
+     2005-10-04 Olivier Hallot (olivier@ig.com.br>
+     	* SkyBusinessCardGathering.wod: changed to use 'company_name' and
+     	  'person_name' labels (OGo bug #271)
+     2005-09-07  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyCommentSubEditor: rewritten as WOx template
+     2005-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyCompanyFlagSubEditor: rewritten as WOx template
+     	* SkyCompanySavedSearchPopUp: rewritten as WOx template
+added:   WebUI/Templates/AddressUI/SkyCompanyFlagSubEditor.wox
+added:   WebUI/Templates/AddressUI/SkyPersonalAttributesViewer.wox-notyet
+added:   WebUI/Templates/AddressUI/SkyCommentSubEditor.wox
+added:   WebUI/Templates/AddressUI/SkyCompanyAttributesViewer.wox-notyet
+added:   WebUI/Templates/AddressUI/GNUmakefile
+added:   WebUI/Templates/AddressUI/SkyCompanySavedSearchPopUp.wox
+removed: WebUI/Templates/AddressUI/SkyCompanyFlagSubEditor.wod
+removed: WebUI/Templates/AddressUI/SkyCompanySavedSearchPopUp.html
+removed: WebUI/Templates/AddressUI/SkyCommentSubEditor.html
+removed: WebUI/Templates/AddressUI/SkyCompanyFlagSubEditor.html
+removed: WebUI/Templates/AddressUI/SkyCommentSubEditor.wod
+removed: WebUI/Templates/AddressUI/SkyCompanySavedSearchPopUp.wod
+added:   WebUI/Templates/OGoSchedulerViews/SkyInlineWeekChart.wox-notyet
+added:   WebUI/Templates/OGoSchedulerViews/SkyInlineDayHChart.wox
+added:   WebUI/Templates/OGoSchedulerViews/GNUmakefile
+added:   WebUI/Templates/OGoSchedulerViews/SkySchedulerConflictCell.wox
+added:   WebUI/Templates/OGoSchedulerViews/SkyAppointmentList.wox-notyet
+removed: WebUI/Templates/OGoSchedulerViews/SkyInlineDayHChart.html
+removed: WebUI/Templates/OGoSchedulerViews/SkyInlineDayHChart.wod
+removed: WebUI/Templates/OGoSchedulerViews/SkySchedulerConflictCell.html
+removed: WebUI/Templates/OGoSchedulerViews/SkySchedulerConflictCell.wod
+added:   WebUI/Templates/BaseUI/SkyListView.wox-notyet
+added:   WebUI/Templates/PreferencesUI/OGoDefaultEditFrame.wox
+added:   WebUI/Templates/PreferencesUI/SkyDefaultEditField.wox
+added:   WebUI/Templates/PreferencesUI/OGoDefaultEditField.wox
+added:   WebUI/Templates/PreferencesUI/GNUmakefile
+added:   WebUI/Templates/PreferencesUI/OGoDefaultViewField.wox
+removed: WebUI/Templates/PreferencesUI/OGoDefaultEditFrame.html
+removed: WebUI/Templates/PreferencesUI/OGoDefaultEditField.html
+removed: WebUI/Templates/PreferencesUI/OGoDefaultEditFrame.wod
+removed: WebUI/Templates/PreferencesUI/SkyDefaultEditField.wod
+removed: WebUI/Templates/PreferencesUI/OGoDefaultEditField.wod
+removed: WebUI/Templates/PreferencesUI/OGoDefaultViewField.html
+removed: WebUI/Templates/PreferencesUI/OGoDefaultViewField.wod
+removed: WebUI/Templates/PreferencesUI/SkyDefaultEditField.html
+added:   WebUI/Templates/OGoScheduler/SkySchedulerPage.wox-pre
+added:   WebUI/Templates/OGoScheduler/SkySchedulerConflictPage.wox
+added:   WebUI/Templates/OGoScheduler/OGoAptConflictsList.wox
+removed: WebUI/Templates/OGoScheduler/SkySchedulerConflictPage.wod
+removed: WebUI/Templates/OGoScheduler/SkySchedulerConflictPage.html
+changed: WebUI/NewsUI/
+     2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyNews.m: made news editor role team configurable
+     	  ('OGoNewsEditorsRoleLogin' default) (v5.3.16)
+     	* LSWNewsArticleViewer.m, LSWNewsArticleEditor.m: removed gcc4
+     	  warnings (v5.3.15)
+changed: WebUI/Mailer/LSWMail/
+     2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWMailRenderPage.m: removed gcc4 warnings (v5.3.13)
+changed: WebUI/Mailer/OGoMailEditor/
+     2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+     	* fixed some gcc4 warnings (v5.3.9)
+changed: WebUI/Common/BaseUI/
+     2005-09-08  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyAttribute.m: improved generation of &nbsp; (v5.3.114)
+     2005-09-07  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoElemBuilder.m: removed some deprecated methods (v5.3.113)
+     	* OGoElemBuilder.m: added 'do-tr' attribute to <attribute> tag to
+     	  control generation of the <tr> tag (required for multi-column
+     	  tables), moved building of collapsibles to OGoUIElementsBuilder,
+     	  moved some build-support methods to SOPE WOxElemBuilder (v5.3.112)
+     2005-09-06  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoElemBuilder.m: map <OGo:listview> tag to SkyListView component
+     	  (v5.3.111)
+     2005-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoElemBuilder.m: added support for SkyCollapsibleContent, the
+     	  <attribute> tag now supports the 'editfont' bool-attribute to embed
+     	  the attribute contents in an edit-font (v5.3.110)
+     2005-08-31  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoElemBuilder.m: fixed some syntax error (v5.3.109)
+     2005-08-30  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoElemBuilder.m: added support for warning mode in OGo:page tags
+     	  (v5.3.108)
+     2005-08-30  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoElemBuilder.m: added support for building <attributes/> sections
+     	  with <table> tags for 'sub attributes', added support for building
+     	  color-binding for 'sub attributes' (is-sub attribute) (v5.3.107)
+     2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWSkyrixFrame.m: fixed a gcc4 warning (v5.3.106)
+changed: WebUI/Common/OGoUIElements/
+     2005-09-07  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoUIElementsBuilder.m: added building of collapsibles (moved in
+     	  from OGoElemBuilder/BaseUI) (v5.3.46)
+     2005-08-31  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoUIElementsBuilder.m: do not process 'collapsible' tag (done in
+     	  OGoElemBuilder) (v5.3.45)
+changed: WebUI/Common/PropertiesUI/
+     2005-08-31  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile: removed .wo wrappers from makefile (v5.3.9)
+changed: WebUI/OGoFoundation/
+     2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.91
+     	* OGoSession.m: moved OGoSession categories into main class, expose
+     	  -notificationCenter method (a session has an own NC)
+     	* OGoContentPage.m: minor code cleanups
+     	* OGoEditorPage.m: added new -makeSnapshotFromObject method, do not
+     	  make a snapshot during edit activation if the object does not respond
+     	  to -entity (v5.3.90)
+     2005-09-22  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoSession.m: made 'isJavaScriptEnabled' an instance variable, added
+     	  default 'OGoAlwaysEnableJavaScript' to enable JS even if the login
+     	  page did not detect JS (v5.3.89)
+     2005-09-09  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoEditorPage.m: minor code cleanups (v5.3.88)
+     2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc4 warnings (v5.3.87)
+     2005-08-03  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoSession+UserManagement.m: code cleanups, added bool default
+     	  'OGoShowMembersTeamsOnly' to make the session.teams method return
+     	  just the teams the login is a member of. Eg this affects the
+     	  scheduler preferences (SkyParticipantsSelection component) (v5.3.86)
+changed: WebUI/PreferencesUI/
+     2005-09-28  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.39
+     	* OGoDefaultEditFrame.m: moved formatter classes to own files
+     	* LSWPreferencesEditor.m, OGoDefaultEditField.m,
+     	  SkyDisplayPreferences.m: code cleanups, fixed gcc4 warnings
+added:   WebUI/PreferencesUI/SimpleTextSepFormatter.h
+added:   WebUI/PreferencesUI/SimpleTextSepFormatter.m
+added:   WebUI/PreferencesUI/TODO
+added:   WebUI/PreferencesUI/ArrayFormatter.h
+added:   WebUI/PreferencesUI/ArrayFormatter.m
+added:   WebUI/PreferencesUI/BoolFormatter.h
+added:   WebUI/PreferencesUI/BoolFormatter.m
+changed: WebUI/AdminUI/
+     2005-09-30  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWTeamEditor.m: added support for setting the readonly flag of a
+     	  team (v5.3.37)
+     	* LSWTeamEditor.m, bundle-info.plist: team editor can now get activated
+     	  using a global-id (v5.3.36)
+     	* v5.3.35
+     	* LSWTeamViewer.m, LSWTeamEditor.m: only try to fetch defaults of team
+     	  if the login account is root
+     	* LSWTeamEditor.m: code cleanups
+     	* SkyDefaultsEditor.m: fixed a gcc4 warning
+     2005-09-28  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWStaff.m: minor code cleanups (v5.3.34)
