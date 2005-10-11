@@ -359,7 +359,3 @@ MetaSessionID: WOGenericElement {
   name        = "OGoSessionID";
   content     = existingSession.sessionID;
 }
-
-TestPHP: PHP {
-  script = "/tmp/test.php";
-}
