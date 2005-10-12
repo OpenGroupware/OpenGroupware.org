@@ -1,3 +1,7 @@
+2005-10-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* English|German.lproj: prepared RegUI string files
+
 2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* English.lproj/LSWScheduler.strings: fixed too-many-cycles label

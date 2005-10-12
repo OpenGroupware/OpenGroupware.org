@@ -1,0 +1,44 @@
+{
+  bundleHandler = RegUIModule;
+
+  requires = {
+    bundleManagerVersion = 1;
+    
+    bundles = ( 
+      { name = LSAccount; type = cmd; },
+    );
+    classes = (
+      { name = NSObject;          },
+      { name = OGoModuleManager;  exact-version = 2; },
+      { name = SkyAttributeCell; },
+      { name = SkyValueCell;     },
+    );
+  };
+  
+  provides = {
+    classes = (
+        { name = RegUIModule; },
+        { name = OGoRegPage;  },
+    );
+    
+    DockablePages = (
+      {   
+        name      = "Reg";
+        component = "OGoRegPage";
+        labelKey  = "Registration";
+        image     = "menu_usermanager_labeled.gif";
+        listicon  = "icon_usermanager_26x21.gif";
+      }
+    );
+    
+    WOComponents = (
+        { name = OGoRegPage;  },
+    );
+    
+    PreferencePages = (
+    );
+
+    LSWCommands = (
+    );
+  };
+}

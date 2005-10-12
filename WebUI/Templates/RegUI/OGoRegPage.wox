@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<page
+  var:title="labels.$name"
+
+  xmlns="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+
+  <tab selectionDefault="regpage_lasttab">
+    <tabitem key="reg" label="register">
+
+    </tabitem>
+  </tab>
+</page>
