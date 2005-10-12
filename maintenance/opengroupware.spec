@@ -1297,6 +1297,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/lib/libOGoFoundation*.so.%{libogo_v}*
 %{prefix}/lib/opengroupware.org-%{ogo_v}/webui/AdminUI.lso
 %{prefix}/lib/opengroupware.org-%{ogo_v}/webui/BaseUI.lso
+%{prefix}/lib/opengroupware.org-%{ogo_v}/webui/GroupsUI.lso
 %{prefix}/lib/opengroupware.org-%{ogo_v}/webui/OGoUIElements.lso
 %{prefix}/lib/opengroupware.org-%{ogo_v}/webui/PreferencesUI.lso
 %{prefix}/lib/opengroupware.org-%{ogo_v}/webui/PropertiesUI.lso

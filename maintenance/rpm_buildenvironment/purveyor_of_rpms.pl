@@ -133,15 +133,20 @@ sub build_rpm {
     print "[RPMBUILD]          - didn't found UseSOPE hint in specfile.\n" and exit 1 if (($verbose eq "yes") and (!$use_sope));
     print "[RPMBUILD]          - building $package using: SOPE release  $use_sope\n" if ($verbose eq "yes");
     print "[RPMBUILD]          - getting MD5_INDEX for $use_sope prior installation...\n" if ($verbose eq "yes");
-    @t_sope = `wget -q --proxy=off -O - http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/MD5_INDEX` or die "I DIE: couldn't fetch MD5_INDEX (http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/MD5_INDEX)\n";
+    if($use_sope ne "trunk") {
+      @t_sope = `wget -q --proxy=off -O - http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/MD5_INDEX` or die "I DIE: couldn't fetch MD5_INDEX (http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/MD5_INDEX)\n";
+    } elsif($use_sope eq "trunk") {
+      @t_sope = `wget -q --proxy=off -O - http://$dl_host/nightly/packages/$host_i_runon/trunk/LATESTVERSION` or die "I DIE: couldn't fetch LATESTVERSION (http://$dl_host/nightly/packages/$host_i_runon/trunk/LATESTVERSION)\n";
+    }
     #parse through MD5_INDEX and generate a list of all sope RPMS... additionally download 'em into install_tmp/
     foreach $line (@t_sope) {
       chomp $line;
-      next unless($line =~ m/\.rpm$/i);
+      next unless($line =~ m/sope.*\.rpm$/i);
       $line =~ s/^.*\s+//g;
       $sope_rpm = $line;
       print "[RPMBUILD]          - loading $sope_rpm into install_tmp/" if ($verbose eq "yes");
-      $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$sope_rpm http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/$sope_rpm");
+      $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$sope_rpm http://$dl_host/nightly/packages/$host_i_runon/releases/$use_sope/$sope_rpm") if($use_sope ne "trunk");
+      $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$sope_rpm http://$dl_host/nightly/packages/$host_i_runon/trunk/$sope_rpm") if($use_sope eq "trunk");
       print " ...success!\n" if($rc == 0);
       print "\nFATAL: system call (wget) returned $rc whilst downloading $sope_rpm into install_tmp/\n" and exit 1 unless($rc == 0);
       push(@sope, $sope_rpm);
