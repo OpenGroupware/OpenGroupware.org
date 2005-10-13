@@ -13,6 +13,10 @@
   <tab selectionDefault="regpage_lasttab">
     <tabitem key="reg" label="register">
 
+      <html:h4>Please register!</html:h4>
+
+      To be completed ... ;-)
+
     </tabitem>
   </tab>
 </page>

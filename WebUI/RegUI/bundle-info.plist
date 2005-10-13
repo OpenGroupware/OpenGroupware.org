@@ -23,11 +23,11 @@
     
     DockablePages = (
       {   
-        name      = "Reg";
+        name      = "Registration";
         component = "OGoRegPage";
         labelKey  = "Registration";
-        image     = "menu_usermanager_labeled.gif";
-        listicon  = "icon_usermanager_26x21.gif";
+        image     = "menu_bookmarks.gif"; // TODO: need one with label (orange)
+        listicon  = "icon_bookmarks_26x21.gif";
       }
     );
     

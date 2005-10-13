@@ -1,7 +1,4 @@
-// NSUserDefaults
 {
-  cvsid = "$Id$";
-
   /* SkyButtonFrame/SkyButton dynamic element */
 
   SkyButtonInactiveButtonTextColor = "#AAAAAA";
@@ -18,6 +15,7 @@
   /* ordering of dockable pages */
 
   SkyDockablePagesOrdering = (
+    "Registration",
     "UserManager",
     "News",
     "Persons",

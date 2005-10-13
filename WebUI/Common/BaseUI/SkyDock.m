@@ -81,9 +81,10 @@ struct DockInfo {
     [self release];
     return p;
   }
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     [self registerAsPersistentInstance];
 
+    // TODO: rather use the session center?
     [[NSNotificationCenter defaultCenter]
                            addObserver:self selector:@selector(reloadConfig:)
                            name:@"SkyDockReload"
@@ -93,10 +94,11 @@ struct DockInfo {
 }
 
 - (id)initWithContext:(WOContext *)_ctx {
+  // TODO: why twice?
   id p;
 
   self->context = _ctx;
-  if ((p = [self persistentInstance])) {
+  if ((p = [self persistentInstance]) != nil) {
     [p retain];
     [self release];
     [p ensureAwakeInContext:_ctx];
