@@ -69,7 +69,7 @@ static BOOL _objectIsNoEnterprise(LSGroupToMemberAssignmentCommand *self,
                     @"checkAccess", [NSNumber numberWithBool:NO],
                     nil);
   
-  return ([e count] > 0) ? NO : YES;
+  return [e isNotEmpty] ? NO : YES;
 }
 
 - (void)_removeOldAssignmentsInContext:(id)_context {

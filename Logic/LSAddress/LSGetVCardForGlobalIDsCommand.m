@@ -94,8 +94,8 @@ static NSDictionary *addressMapping = nil;
 - (id)_prepareResultForCount:(int)_cnt {
   /* Note: results are retained */
   
-  if (([self->attributes count] != 0) && ([self->groupBy length] > 0))
-    return [[NSMutableDictionary alloc] initWithCapacity:_cnt+1];
+  if ([self->attributes isNotEmpty] && [self->groupBy isNotEmpty])
+    return [[NSMutableDictionary alloc] initWithCapacity:(_cnt + 1)];
   
   return [[NSMutableArray alloc] initWithCapacity:(_cnt + 1)];
 }
@@ -111,7 +111,7 @@ static NSDictionary *addressMapping = nil;
     [self logWithFormat:@"WARNING[%s]: got no vCard!", __PRETTY_FUNCTION__];
     return;
   }
-  if ([self->attributes count] == 0) {
+  if (![self->attributes isNotEmpty]) {
     [_result addObject:_vCard];
     return;
   }
@@ -195,7 +195,7 @@ static NSDictionary *addressMapping = nil;
   result =
     [NSMutableArray arrayWithCapacity:[persons count]+[enterprises count]+
                     [teams count]];
-  if ([persons count] > 0) {
+  if ([persons isNotEmpty]) {
     [result addObjectsFromArray:
             LSRunCommandV(_context,
                           @"person",     @"get-by-globalid",
@@ -203,7 +203,7 @@ static NSDictionary *addressMapping = nil;
                           @"attributes", attrs,
                           nil)];
   }
-  if ([enterprises count] > 0) {
+  if ([enterprises isNotEmpty]) {
     [result addObjectsFromArray:
             LSRunCommandV(_context,
                           @"enterprise", @"get-by-globalid",
@@ -211,7 +211,7 @@ static NSDictionary *addressMapping = nil;
                           @"attributes", attrs,
                           nil)];
   }
-  if ([teams count] > 0) {
+  if ([teams isNotEmpty]) {
     [result addObjectsFromArray:
             LSRunCommandV(_context,
                           @"team", @"get-by-globalid",
@@ -322,7 +322,7 @@ static NSDictionary *addressMapping = nil;
     else if (([[gid entityName] isEqualToString:@"Team"]))
       formatter = [LSVCardTeamFormatter formatter];
     else {
-      [self logWithFormat:@"ERROR: cannot process record: %@", gid];
+      [self errorWithFormat:@"cannot process record: %@", gid];
       continue;
     }
     
@@ -342,8 +342,8 @@ static NSDictionary *addressMapping = nil;
     /* build vCard */
     
     if ((vCard = [formatter stringForObjectValue:contact]) == nil) {
-      [self logWithFormat:
-              @"ERROR(%s): failed building vCard for contact (%@): %@", 
+      [self errorWithFormat:
+              @"%s: failed building vCard for contact (%@): %@", 
               __PRETTY_FUNCTION__, formatter, contact];
       continue;
     }
@@ -363,7 +363,7 @@ static NSDictionary *addressMapping = nil;
   
   if ([_vCards isKindOfClass:[NSDictionary class]]) 
     _vCards = [_vCards allValues];
-  if ([self->attributes count] > 0)
+  if ([self->attributes isNotEmpty])
     _vCards = [_vCards valueForKey:@"vCardData"];
   
   s    = [_vCards componentsJoinedByString:@""];
@@ -388,7 +388,7 @@ static NSDictionary *addressMapping = nil;
   
   /* process data */
   
-  if ((cnt = [records count])) {
+  if ((cnt = [records count]) != 0) {
     NSMutableArray *uncachedPersons;
     NSMutableArray *uncachedEnterprises;
     NSMutableArray *uncachedTeams;
@@ -403,7 +403,7 @@ static NSDictionary *addressMapping = nil;
     while (cnt--) {
       record = [records objectAtIndex:cnt];
       cached = [self _cachedVCardForRecord:record inContext:_context];
-      if (cached) {
+      if (cached != nil) {
         [self _addVCard:cached ofRecord:record toResult:result];
       }
       else {
@@ -428,21 +428,21 @@ static NSDictionary *addressMapping = nil;
       }
     }
 
-    if ([uncachedPersons count] > 0) {
+    if ([uncachedPersons isNotEmpty]) {
       [self _buildAndCacheVCardsForContacts:uncachedPersons
             type:@"person"
             result:result
             inContext:_context];
     }
     
-    if ([uncachedEnterprises count] > 0) {
+    if ([uncachedEnterprises isNotEmpty]) {
       [self _buildAndCacheVCardsForContacts:uncachedEnterprises
             type:@"enterprise"
             result:result
             inContext:_context];
     }
     
-    if ([uncachedTeams count] > 0) {
+    if ([uncachedTeams isNotEmpty]) {
       [self _buildAndCacheVCardsForContacts:uncachedTeams
             type:@"team"
             result:result

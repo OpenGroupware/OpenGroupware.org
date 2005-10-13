@@ -43,10 +43,10 @@
 @implementation LSGetStaffForGlobalIDsCommand
 
 - (void)dealloc {
-  RELEASE(self->groupBy);
-  RELEASE(self->sortOrderings);
-  RELEASE(self->attributes);
-  RELEASE(self->gids);
+  [self->groupBy       release];
+  [self->sortOrderings release];
+  [self->attributes    release];
+  [self->gids          release];
   [super dealloc];
 }
 
@@ -65,10 +65,10 @@
 
   teams   = [NSMutableArray arrayWithCapacity:[self->gids count]];
   persons = [NSMutableArray arrayWithCapacity:[self->gids count]];
-
+  
   /* sort gids by type */
   e = [self->gids objectEnumerator];
-  while ((gid = [e nextObject])) {
+  while ((gid = [e nextObject]) != nil) {
     NSString *eName;
     
     eName = [(EOKeyGlobalID *)gid entityName];
@@ -84,7 +84,7 @@
 
   objects = [NSMutableArray arrayWithCapacity:[self->gids count]];
 
-  if ([teams count] > 0) {
+  if ([teams isNotEmpty]) {
     tmp = LSRunCommandV(_context, @"team", @"get-by-globalid",
                         @"gids",       teams,
                         @"attributes", self->attributes,
@@ -92,27 +92,27 @@
     [objects addObjectsFromArray:tmp];
   }
   
-  if ([persons count] > 0) {
+  if ([persons isNotEmpty]) {
     tmp = LSRunCommandV(_context, @"person", @"get-by-globalid",
                         @"gids",       persons,
                         @"attributes", self->attributes,
                         nil);
     [objects addObjectsFromArray:tmp];
   }
-
-  if (self->groupBy) {
+  
+  if (self->groupBy != nil) {
     id eo;
     
     results = [NSMutableDictionary dictionaryWithCapacity:[objects count]];
     
     e = [objects objectEnumerator];
-    while ((eo = [e nextObject])) {
+    while ((eo = [e nextObject]) != nil) {
       [(NSMutableDictionary *)results
                               setObject:eo
                               forKey:[eo valueForKey:self->groupBy]];
     }
   }
-  else if ([self->sortOrderings count] > 0) {
+  else if ([self->sortOrderings isNotEmpty]) {
     results = (id)
       [objects sortedArrayUsingKeyOrderArray:self->sortOrderings];
   }

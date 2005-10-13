@@ -280,7 +280,7 @@ static int compareGroups(id group1, id group2, void *context) {
   }
 }
 
-- (NSArray *)_fetchForMoreGidsInContext:(id)_context {
+- (NSArray *)_fetchForMoreGidsInContext:(LSCommandContext *)_context {
   EOAdaptorChannel    *adChannel;
   NSMutableDictionary *gids;
   NSDictionary        *result;
@@ -351,7 +351,7 @@ static int compareGroups(id group1, id group2, void *context) {
   return [result autorelease];
 }
 
-- (NSArray *)_fetchForMoreObjectsInContext:(id)_context {
+- (NSArray *)_fetchForMoreObjectsInContext:(LSCommandContext *)_context {
   NSMutableArray    *myAssignments;
   NSMutableArray    *myGroups;
   EODatabaseChannel *channel;
@@ -399,13 +399,13 @@ static int compareGroups(id group1, id group2, void *context) {
     }
   }
 
-  if ([self->members count] > 0) {
+  if ([self->members isNotEmpty]) {
     NSEnumerator *idBatches;
     NSString     *idBatch;
     
     idBatches = [[self _memberIdString] objectEnumerator];
 
-    while ((idBatch = [idBatches nextObject])) {
+    while ((idBatch = [idBatches nextObject]) != nil) {
       EOSQLQualifier *qmm;
       
       qmm = [self _qualifierForMoreMembers:idBatch];
@@ -419,6 +419,7 @@ static int compareGroups(id group1, id group2, void *context) {
     }
   }
   [self _setAssignments:myAssignments andGroups:myGroups];
+  
   {
     NSString *eName;
 
@@ -450,7 +451,7 @@ static int compareGroups(id group1, id group2, void *context) {
   }
 }
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Company";

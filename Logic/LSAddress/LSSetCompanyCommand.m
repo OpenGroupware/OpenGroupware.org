@@ -82,7 +82,7 @@ static NSString *autoNumberPrefix = @"OGo";
 
   if (![[self databaseChannel] selectObjectsDescribedByQualifier:qual
                                fetchOrder:nil]) {
-    [self logWithFormat:@"ERROR[%s]: select of company info failed (%@)",
+    [self errorWithFormat:@"%s: select of company info failed (%@)",
 	    __PRETTY_FUNCTION__, [self object]];
     return NO;
   }

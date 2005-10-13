@@ -416,9 +416,10 @@ static EONull       *null = nil;
 
       ownerIds = [[result allValues] valueForKey:@"ownerId"];
       
-      if ([ownerIds count] > 0 && ![ownerIds containsObject:[EONull null]]) {
-        NSMutableDictionary *ownDict = [NSMutableDictionary dictionary];
+      if ([ownerIds isNotEmpty] && ![ownerIds containsObject:[EONull null]]) {
+        NSMutableDictionary *ownDict;
         
+        ownDict = [NSMutableDictionary dictionaryWithCapacity:16];
         values      = [self fetchOwnerForKeys:ownerIds entity:_entity
                             context:_ctx];
         enumerator = [values objectEnumerator];
@@ -603,7 +604,7 @@ static EONull       *null = nil;
   id              obj         = nil;
   BOOL            isFirst     = YES;
 
-  if ([_extAttrs count] == 0)
+  if (![_extAttrs isNotEmpty])
     return nil;
   
   /* get CompanyValue Attribute */
@@ -665,7 +666,7 @@ static EONull       *null = nil;
   int cnt = 0;
   int pos = 0;
 
-  if ([_keys count] == 0)
+  if (![_keys isNotEmpty])
     return nil;
   
   channel     = [[_ctx valueForKey:LSDatabaseChannelKey] adaptorChannel];

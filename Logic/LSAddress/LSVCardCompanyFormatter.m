@@ -156,8 +156,7 @@ static BOOL         renderOGoPhoneType = NO;
     else if ([tmp intValue] == 0)
       v = @"PUBLIC";
     else {
-      [self logWithFormat:@"ERROR: unknown sensitivity, using private: %@",
-	      tmp];
+      [self errorWithFormat:@"unknown sensitivity, using private: %@", tmp];
       v = @"PRIVATE";
     }
     [self _appendName:@"CLASS" andValue:v toVCard:_vCard];
@@ -379,7 +378,7 @@ static int compareKey(id o1, id o2, void *ctx) {
       }
     }
     else {
-      [self logWithFormat:@"ERROR: phone has no type: %@",
+      [self errorWithFormat:@"phone has no type: %@",
               [telephoneEO valueForKey:@"telephoneId"]];
     }
     

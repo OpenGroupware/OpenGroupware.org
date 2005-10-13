@@ -78,8 +78,8 @@ static NSDictionary *addressMapping = nil;
       pobox = [tmp substringFromIndex:7];
   }
   
-  if (!([street length] != 0 || [city length] != 0 || [state length] != 0 ||
-        [zip length] != 0 || [country length] != 0 ))
+  if (!([street isNotEmpty] || [city isNotEmpty] || [state isNotEmpty] ||
+        [zip isNotEmpty] || [country isNotEmpty] ))
     return nil;
   
   // ADR: post office box;extended address;street address;city;region;

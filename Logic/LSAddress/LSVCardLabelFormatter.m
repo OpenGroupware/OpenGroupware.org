@@ -42,26 +42,27 @@
   country = [address valueForKey:@"country"];
   state   = [address valueForKey:@"state"];
   
-  if (!([street length] || [city length] || [zip length] || [country length]
-        || [name1 length] || [name2 length] || [name3 length]))
+  if (!([street isNotEmpty] || [city isNotEmpty] || [zip isNotEmpty] || 
+        [country isNotEmpty] || [name1 isNotEmpty] || [name2 isNotEmpty] ||
+        [name3 isNotEmpty]))
     return nil;
-
+  
   label = @"";
-  if ([name1 length] > 0)
+  if ([name1 isNotEmpty])
     label = [label stringByAppendingFormat:@"%@\\n", name1];
-  if ([name2 length] > 0)
+  if ([name2 isNotEmpty])
     label = [label stringByAppendingFormat:@"%@\\n", name2];
-  if ([name3 length] > 0)
+  if ([name3 isNotEmpty])
     label = [label stringByAppendingFormat:@"%@\\n", name3];
   
-  if ([street length] > 0)
+  if ([street isNotEmpty])
     label = [label stringByAppendingFormat:@"%@\\n", street];
-  if ([zip length] > 0)
+  if ([zip isNotEmpty])
     label = [label stringByAppendingFormat:@"%@ ", zip];
-  if ([city length] > 0)
+  if ([city isNotEmpty])
     label = [label stringByAppendingFormat:@"%@\\n", city];
-  if ([country length] > 0)
-    label = [label stringByAppendingFormat:@"%@", country];
+  if ([country isNotEmpty])
+    label = [label stringByAppendingString:[country stringValue]];
   return label;
 }
 

@@ -21,6 +21,12 @@
 
 #include <LSFoundation/LSBaseCommand.h>
 
+/*
+  LSGetUserDefaultsCommand
+
+  TODO: document
+*/
+
 @interface LSGetUserDefaultsCommand : LSBaseCommand
 {
   id user;
@@ -51,24 +57,11 @@
 
 /* prepare for execution */
 
-- (void)_prepareForExecutionInContext:_context {
-  id       account;
-  NSString *login;
-  
-  account = [_context valueForKey:LSAccountKey];
-  login   = [account valueForKey:@"companyId"];
-  
-  if ([login intValue] == 10000) // TODO: check 'root' role (or pref-edit perm)
-    return;
+- (BOOL)isRootId:(NSNumber *)_pkey inContext:(LSCommandContext *)_ctx {
+  return [_pkey intValue] == 10000 ? YES : NO; // root
+}
 
-  if (![[_context class] useLDAPAuthorization]) {
-    [self assert:[[account valueForKey:@"companyId"]
-                           isEqual:[self->user valueForKey:@"companyId"]]
-	  reason:
-	    @"only root is allowed to access preferences of other accounts"];
-  }
-  
-  {
+- (void)_checkLdapAccessInContext:(LSCommandContext *)_context {
     NSString *authLogin;
     NSString *userLogin;
       
@@ -84,11 +77,29 @@
     }
     else {
       [self assert:
-	      [[account valueForKey:@"companyId"]
+	      [[[_context valueForKey:LSAccountKey] valueForKey:@"companyId"]
 		        isEqual:[self->user valueForKey:@"companyId"]]
 	    reason:@"only root is allowed to access foreign preferences"];
     }
+}
+
+- (void)_prepareForExecutionInContext:(id)_context {
+  id       account;
+  NSNumber *login;
+  
+  account = [_context valueForKey:LSAccountKey];
+  login   = [account valueForKey:@"companyId"];
+  
+  if ([self isRootId:login inContext:_context])
+    return;
+  
+  if (![[_context class] useLDAPAuthorization]) {
+    [self assert:[login isEqual:[self->user valueForKey:@"companyId"]]
+	  reason:
+	    @"only root is allowed to access preferences of other accounts"];
   }
+  
+  [self _checkLdapAccessInContext:_context];
 }
 
 - (void)_executeInContext:(id)_context {
@@ -100,11 +111,15 @@
   loginPKey = [[_context valueForKey:LSAccountKey] valueForKey:@"companyId"];
   uid = [self->user valueForKey:@"companyId"];
   
+  /* check whether we want the defaults of the logged in account */
+  
   if ((uid != nil) && ([uid isEqual:loginPKey])) {
     /* retrieve defaults of login account */
     [self setReturnValue:[_context valueForKey:LSUserDefaultsKey]];
     return;
   }
+  
+  /* no, different account */
   
   defs = [[[LSUserDefaults alloc]
                            initWithUserDefaults:
@@ -132,7 +147,7 @@
     __registerVolatileLoginDomain_LSLogic_LSAddress(self, _context, defs, dict,
                                                     uid);
   }
-  if (self->user)
+  if (self->user != nil)
     [(LSUserDefaults *)defs setAccount:self->user];
   
   [self setReturnValue:defs];

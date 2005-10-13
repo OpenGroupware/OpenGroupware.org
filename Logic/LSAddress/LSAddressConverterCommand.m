@@ -162,7 +162,7 @@
 
   entityName = 
     [(EOEntity *)[[self->ids lastObject] valueForKey:@"entity"] name];
-  if (([entityName length] == 0) && ([self->ids count] != 0)) {
+  if (![entityName isNotEmpty] && [self->ids isNotEmpty]) {
     NSNumber *cId;
     
     cId = [[self->ids lastObject] valueForKey:@"companyId"];

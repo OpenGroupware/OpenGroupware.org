@@ -57,15 +57,18 @@
   return [NSDictionary dictionaryWithObject:key forKey:_name];
 }
 
-- (void)_newStaffInContext:(id)_context {
-  BOOL         isOk         = NO;
-  id           account      = [self object];
-  id           pkey         = [account valueForKey:[self primaryKeyName]];
-  EOEntity     *staffEntity = [[self databaseModel] entityNamed:@"Staff"];
-  id           staff        = nil;
-  NSDictionary *pk          = nil;
+- (void)_newStaffInContext:(LSCommandContext *)_context {
+  BOOL         isOk;
+  id           account;
+  NSNumber     *pkey;
+  EOEntity     *staffEntity;
+  id           staff;
+  NSDictionary *pk;
 
-
+  account     = [self object];
+  pkey        = [account valueForKey:[self primaryKeyName]];
+  staffEntity = [[self databaseModel] entityNamed:@"Staff"];
+  
   pk    = [self _newPrimaryKeyDictForContext:_context keyName:@"staffId"];
   staff = [self _produceEmptyEOWithPrimaryKey:pk entity:staffEntity];
   
@@ -83,15 +86,17 @@
                               reason:[sybaseMessages description]];
 }
 
-- (void)_setStaffInContext:(id)_context {
-  id staff   = nil;
-  id account = [self object];
+- (void)_setStaffInContext:(LSCommandContext *)_context {
+  id staff;
+  id account;
   
+  account = [self object];
   [self assert:(account != nil) reason:@"no account object for staff update"];
 
-  if (!(staff = [[account valueForKey:@"toStaff"] lastObject])) {
+  if ((staff = [[account valueForKey:@"toStaff"] lastObject]) == nil) {
     [self _newStaffInContext:_context];
-  } else {
+  } 
+  else {
     [staff takeValue:[account valueForKey:@"login"]       forKey:@"login"];
     [staff takeValue:[account valueForKey:@"password"]    forKey:@"password"];
     [staff takeValue:[account valueForKey:@"description"]
@@ -104,32 +109,41 @@
   }
 }
 
-- (void)_prepareForExecutionInContext:(id)_context {
-  id obj  = nil;
-  id user = nil;
-  NSString *prefix;
+- (BOOL)isRootId:(NSNumber *)_pkey inContext:(LSCommandContext *)_ctx {
+  return [_pkey intValue] == 10000 ? YES : NO; // ROOT
+}
 
+- (void)_prepareForExecutionInContext:(id)_context {
+  NSString *prefix;
+  id obj;
+  id user;
+  
   obj  = [self object];
   user = [_context valueForKey:LSAccountKey];
 
-  [self assert:([[user valueForKey:@"companyId"] intValue] == 10000)
+  [self assert:
+          [self isRootId:[user valueForKey:@"companyId"] inContext:_context]
         reason: @"Only root can change login status!"];
-
-  prefix = [NSString stringWithFormat:@"SKY%@",
-                     [obj valueForKey:@"companyId"]];
-
+  
+  prefix = [NSString stringWithFormat:@"OGo%@",[obj valueForKey:@"companyId"]];
+  
   if (self->loginStatus) {
-    NSString *login = [obj valueForKey:@"login"];
-    if ([login hasPrefix:prefix] && [login length] > [prefix length])
+    NSString *login;
+    
+    login = [obj valueForKey:@"login"];
+    if ([login hasPrefix:prefix] && [login length] > [prefix length]) {
       [obj takeValue:[login substringFromIndex:[prefix length]]
            forKey:@"login"];
+    }
     [obj takeValue:[NSNumber numberWithBool:YES] forKey:@"isIntraAccount"];
     [obj takeValue:[NSNumber numberWithBool:NO]  forKey:@"isExtraAccount"];
     [obj takeValue:[NSNumber numberWithBool:NO]  forKey:@"isLocked"];
     [obj takeValue:[NSNumber numberWithBool:YES] forKey:@"isAccount"];
   }
   else {
-    NSString *s = [obj valueForKey:@"login"];
+    NSString *s;
+    
+    s = [obj valueForKey:@"login"];
     if (![s hasPrefix:prefix]) {
       s = [NSString stringWithFormat:@"%@%@", prefix, s];
       [obj takeValue:s forKey:@"login"];
@@ -144,17 +158,18 @@
 }
 
 - (void)_executeInContext:(id)_context {
-
   [super _executeInContext:_context];
+  
   [self _setStaffInContext:_context];
-
-  if (!self->loginStatus) {
+  
+  if (self->loginStatus) {
     LSRunCommandV(_context, @"account", @"setgroups",
                   @"member", [self object],
                   @"groups", [NSArray array], nil);
   }
- }
-// record initializer
+}
+
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Person";

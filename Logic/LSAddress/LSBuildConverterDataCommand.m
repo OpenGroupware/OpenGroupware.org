@@ -77,10 +77,11 @@
 - (void)_prepareForIdsInCtx:(id)_ctx {
   [self assert:(self->ids != nil) reason:@"enter _prepareForIds without ids"];
 
-  if (self->objectList != nil) {
-    [self->objectList release]; self->objectList = nil;
-  }
-  if ([self->ids count] > 0) {
+  if (self->objectList != nil)
+    [self->objectList release];
+  self->objectList = nil;
+  
+  if ([self->ids isNotEmpty]) {
     self->objectList = LSRunCommandV(_ctx, @"address", @"fetchAttributes",
                                      @"searchKeys", self->ids,
                                      @"entityName", self->entityName, nil);
@@ -127,7 +128,7 @@
   NSArray  *fields  = nil;
   id tmp;
   
-  if ([self->objectList count] == 0)
+  if (![self->objectList isNotEmpty])
     return [NSData data];
 
   tmp = [(NSDictionary *)[self->objectList objectAtIndex:0] 
@@ -147,22 +148,21 @@
   }
   
   {
-    NSMutableString *result  = nil;
-    NSEnumerator    *objEnum = nil;
-    id              obj      = nil;
+    NSMutableString *result;
+    NSEnumerator    *objEnum;
+    id              obj;
     NSData          *data    = nil;
 
-    result  = [[NSMutableString allocWithZone:[self zone]]
-                                initWithCapacity:
-                                [self->objectList count] * 128];
+    result  = [[NSMutableString alloc]
+                initWithCapacity:[self->objectList count] * 128];
     objEnum = [self->objectList objectEnumerator];
 
-    while ((obj = [objEnum nextObject])) {
+    while ((obj = [objEnum nextObject]) != nil) {
       NSEnumerator *fieldEnum;
       NSDictionary *field;
       
       fieldEnum = [fields objectEnumerator];
-      while ((field = [fieldEnum nextObject])) {
+      while ((field = [fieldEnum nextObject]) != nil) {
         NSString *strObj;
         
         strObj = [self _getObj:obj forKey:[field objectForKey:@"key"]];

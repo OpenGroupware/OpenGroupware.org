@@ -58,7 +58,7 @@
   [self assert:([companies count] < 2)
         format:@"Only one object allowed for one companyId, "
                @"found %i companies: %@", [companies count], companies];
-  [self assert:([companies count] != 0)
+  [self assert:[companies isNotEmpty]
         format:@"Need one object for companyId %@, found none", companyId];
   
   if (self->shouldLog) {

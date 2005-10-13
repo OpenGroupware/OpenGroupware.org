@@ -32,34 +32,40 @@ NSString *__getUserDefaultsPath_LSLogic_LSAddress(id self, id _context,
   static NSString *LSAttachmentPath = nil;
   NSString *fileName;
   
+  if (![_uid isNotEmpty])
+    return nil;
+
   if (LSAttachmentPath == nil) {
+    // TODO: should be a method/command used by all cmds accessing the path?
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSFileManager *fm;
+    BOOL isDir;
     
     LSAttachmentPath = [ud stringForKey:@"LSAttachmentPath"];
-    if ([LSAttachmentPath length] == 0)
-      NSLog(@"ERROR: LSAttachmentPath default is not set!");
-    else {
-      NSFileManager *fm;
-      BOOL isDir;
-      
-      fm = [NSFileManager defaultManager];
-      if (![fm fileExistsAtPath:LSAttachmentPath isDirectory:&isDir]) {
-        NSLog(@"Note: configured LSAttachmentPath does not exist: %@",
-              LSAttachmentPath);
+    if (![LSAttachmentPath isNotEmpty]) {
+      [self errorWithFormat:@"LSAttachmentPath default is not set!"];
+      return nil;
+    }
+    
+    fm = [NSFileManager defaultManager];
+    if (![fm fileExistsAtPath:LSAttachmentPath isDirectory:&isDir]) {
+      [self logWithFormat:@"configured LSAttachmentPath does not exist: %@",
+              LSAttachmentPath];
         
-        if (![fm createDirectoriesAtPath:LSAttachmentPath attributes:nil]) {
-          NSLog(@"ERROR: could not create LSAttachmentPath (ensure that "
+      if (![fm createDirectoriesAtPath:LSAttachmentPath attributes:nil]) {
+        [self errorWithFormat:
+                @"ERROR: could not create LSAttachmentPath (ensure that "
                 @"the OGo process can write in this directory!): %@",
-                LSAttachmentPath);
-          LSAttachmentPath = nil;
-          return nil;
-        }
-      }
-      else if (!isDir) {
-        NSLog(@"ERROR: configured LSAttachmentPath is not a directory: '%@'",
-              LSAttachmentPath);
+                LSAttachmentPath];
         LSAttachmentPath = nil;
+        return nil;
       }
+    }
+    else if (!isDir) {
+      [self errorWithFormat:
+              @"configured LSAttachmentPath is not a directory: '%@'",
+              LSAttachmentPath];
+      LSAttachmentPath = nil;
     }
   }
   
@@ -98,7 +104,7 @@ void __writeUserDefaults_LSLogic_LSAddress(id self,id _context,
   
   path = __getUserDefaultsPath_LSLogic_LSAddress(self, _context, _uid);
   
-  [self assert:([path length] > 0)
+  [self assert:[path isNotEmpty]
         reason:@"LSAttachmentPath is not properly configured!"];
   
   [self assert:[_defaults writeToFile:path atomically:YES]

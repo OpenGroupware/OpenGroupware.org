@@ -275,7 +275,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   }
   
   if (cd == nil)
-    [self logWithFormat:@"ERROR: cannot process vCard date: '%@'", _value];
+    [self errorWithFormat:@"cannot process vCard date: '%@'", _value];
   return cd;
 }
 
@@ -337,10 +337,10 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   /* URL */
   
   tmp = [_vc valueForKey:@"url"];
-  if ([tmp isNotNull] && [tmp count] > 0) {
+  if ([tmp isNotNull] && [tmp isNotEmpty]) {
     if ([tmp count] > 1) {
       // TODO: just add to note? => beware, might add up (check substring)
-      [self logWithFormat:@"ERROR: can only store one URL, loosing others."];
+      [self errorWithFormat:@"can only store one URL, loosing others."];
     }
     [self mapValue:[[tmp objectAtIndex:0] stringValue] to:@"url"];
   }
@@ -350,7 +350,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   /* some unsupported fields */
   
   if ([(tmp = [_vc valueForKey:@"calURI"]) isNotNull])
-    [self logWithFormat:@"ERROR: loosing unsupported field: CALURI"];
+    [self errorWithFormat:@"loosing unsupported field: CALURI"];
 }
 
 - (void)appendOrg:(id)_vc {
@@ -371,7 +371,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
     [self mapValue:[org valueForKey:@"orgnam"] to:@"associatedCompany"];
   }
   
-  tmp = [units count] > 0 ? [units objectAtIndex:0] : nil;
+  tmp = [units isNotEmpty] ? [units objectAtIndex:0] : nil;
   [self mapValue:tmp to:@"department"];
   
   tmp = [units count] > 1 ? [units objectAtIndex:1] : nil;
@@ -415,7 +415,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   else if ([tmp caseInsensitiveCompare:@"confidential"] == NSOrderedSame)
     v = 3;
   else {
-    [self logWithFormat:@"ERROR: unknown vCard class, using private: %@", tmp];
+    [self errorWithFormat:@"unknown vCard class, using private: %@", tmp];
     v = 2;
   }
   
@@ -502,7 +502,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   [self appendOrg:_vc];
   
   /* finish up */
-  cs = [self->changeset count] > 0 ? self->changeset : nil;
+  cs = [self->changeset isNotEmpty] ? self->changeset : nil;
   [self->changeset autorelease]; self->changeset = nil;
   return cs;
 }
@@ -535,7 +535,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   [self appendOrg:_vc];
   
   /* finish up */
-  cs = [self->changeset count] > 0 ? self->changeset : nil;
+  cs = [self->changeset isNotEmpty] ? self->changeset : nil;
   [self->changeset autorelease]; self->changeset = nil;
   return cs;
 }
@@ -552,7 +552,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
 /* working on type arrays */
 
 - (NSString *)findPrimaryTypeInArray:(NSArray *)_types {
-  if (![_types isNotNull] || [_types count] == 0) /* no types => no primary */
+  if (![_types isNotNull] || ![_types isNotEmpty]) /* no types => no primary */
     return nil;
   
   if ([_types count] == 1)
@@ -612,7 +612,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   }
   
   if (count != 3) {
-    [self logWithFormat:@"ERROR(%s:%i): count should be 3 but is %i", 
+    [self errorWithFormat:@"%s:%i: count should be 3 but is %i", 
           __PRETTY_FUNCTION__, __LINE__, count];
   }
   /* count is three, all must match: PREF + TYPE + TYPE 2 */
@@ -643,8 +643,8 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
                         @"companyId",  [_contact valueForKey:@"companyId"],
                         nil];
   if ([addressEO isKindOfClass:[NSArray class]])
-    addressEO = ([addressEO count] > 0) ? [addressEO objectAtIndex:0] : nil;
-
+    addressEO = [addressEO isNotEmpty] ? [addressEO objectAtIndex:0] : nil;
+  
   /* make changeset */
   
   lChangeSet = [NSMutableDictionary dictionaryWithCapacity:8];
@@ -731,9 +731,9 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
                         @"companyId",  [_contact valueForKey:@"companyId"],
                       nil];
   if ([phoneEO isKindOfClass:[NSArray class]]) {
-    phoneEO = ([phoneEO count] > 0) ? [phoneEO objectAtIndex:0] : nil;
+    phoneEO = [phoneEO isNotEmpty] ? [phoneEO objectAtIndex:0] : nil;
     info = [phoneEO valueForKey:@"info"];
-    if (![info isNotNull] || [info length] == 0)
+    if (![info isNotNull] || ![info isNotEmpty])
       info = nil;
   }
   
@@ -766,8 +766,8 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
     // TODO: check limit against EO-Model!
     // TODO: expand info length in PostgreSQL?
     if ([argstr isNotNull] && [argstr length] > 254) {
-      [self logWithFormat:
-              @"ERROR: cannot store vCard arguments, too long: %i vs 254",
+      [self errorWithFormat:
+              @"cannot store vCard arguments, too long: %i vs 254",
               [argstr length]];
       argstr = nil;
     }
@@ -882,13 +882,13 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   id adr; // really: NGVCardAddress or NGVCardPhone object
   
   if (![_contact isNotNull]) {
-    [self logWithFormat:@"ERROR(%s): got no contact!", __PRETTY_FUNCTION__];
+    [self errorWithFormat:@"%s: got no contact!", __PRETTY_FUNCTION__];
     return;
   }
   
   if ((cpu = (void *)[self methodForSelector:_cpu]) == NULL ){
-    [self logWithFormat:@"ERROR(%s): failed to lookup selector: '%@'",
-            NSStringFromSelector(_cpu)];
+    [self errorWithFormat:@"%s: failed to lookup selector: '%@'",
+          __PRETTY_FUNCTION__, NSStringFromSelector(_cpu)];
     return;
   }
   
@@ -936,13 +936,13 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   id adr; // really: NGVCardAddress or NGVCardPhone object
   
   if (![_contact isNotNull]) {
-    [self logWithFormat:@"ERROR(%s): got no contact!", __PRETTY_FUNCTION__];
+    [self errorWithFormat:@"%s: got no contact!", __PRETTY_FUNCTION__];
     return;
   }
   
   if ((cpu = (void *)[self methodForSelector:_cpu]) == NULL ){
-    [self logWithFormat:@"ERROR(%s): failed to lookup selector: '%@'",
-            NSStringFromSelector(_cpu)];
+    [self errorWithFormat:@"%s: failed to lookup selector: '%@'",
+          __PRETTY_FUNCTION__, NSStringFromSelector(_cpu)];
     return;
   }
   
@@ -1046,7 +1046,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
     [self setNewEntityName:[lgid entityName]];
     
     if ([eo isKindOfClass:[NSArray class]])
-      eo = [eo count] > 0 ? [eo lastObject] : nil;
+      eo = [eo isNotEmpty] ? [eo lastObject] : nil;
   }
   else {
     [self logWithFormat:@"import new vCard .."];
@@ -1093,7 +1093,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
       return;
     }
     if ([eo isKindOfClass:[NSArray class]])
-      eo = ([eo count] > 0) ? [eo lastObject] : nil;
+      eo = [eo isNotEmpty] ? [eo lastObject] : nil;
     [self setReturnValue:eo];
   }
   else {
@@ -1108,7 +1108,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
       return;
     }
     if ([eo isKindOfClass:[NSArray class]])
-      eo = ([eo count] > 0) ? [eo lastObject] : nil;
+      eo = [eo isNotEmpty] ? [eo lastObject] : nil;
     [self setReturnValue:eo];
   }
   

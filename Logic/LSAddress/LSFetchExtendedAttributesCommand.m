@@ -129,7 +129,7 @@
           
           array = [(NSDictionary *)[self->defaultAttrs objectForKey:key]
                                                        objectForKey:@"values"];
-          if ([array count] > 0)
+          if ([array isNotEmpty])
             [extAttr takeValue:array forKey:@"values"];
         }        
         [map setObject:extAttr forKey:key];
@@ -145,7 +145,7 @@
 - (void)_executeInContext:(id)_context {
   [super _executeInContext:_context];
 
-  if ([[self object] count] > 0) {
+  if ([[self object] isNotEmpty]) {
     [self _fetchDefaultExtendedAttributes:_context];
     [self _setExtAttrs:_context];
   }
@@ -157,7 +157,7 @@
   if ([super entityName] != nil)
     return [super entityName];
   
-  [self assert:([[self object] count] > 0) reason:@"missing object"];
+  [self assert:[[self object] isNotEmpty] reason:@"missing object"];
   tmp = [[self object] lastObject];
 
   if ([tmp respondsToSelector:@selector(entityName)])
@@ -204,9 +204,10 @@
   account   = [_context valueForKey:LSAccountKey];
   key       = [NSString stringWithFormat:@"Sky%@Extended", _status];
 
-  if (account)
+  if (account != nil) {
     defs = LSRunCommandV(_context, @"userdefaults", @"get",
                          @"user", account, nil);
+  }
   else
     defs = [NSUserDefaults standardUserDefaults];
   

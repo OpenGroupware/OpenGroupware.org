@@ -273,7 +273,7 @@ static BOOL debugOn = NO;
   while ((key = [enumerator nextObject]))
     allOk = allOk && [self writeDefaultForKey:key];
     
-  if (debugOn && [[self->values allKeys] count] > 0) {
+  if (debugOn && [[self->values allKeys] isNotEmpty]) {
       [self debugWithFormat:
               @"Warning!!! LSUserDefaults could not handle values: %@",
               self->values];
@@ -283,7 +283,7 @@ static BOOL debugOn = NO;
 
   self->isChanged = NO;
 
-  if (self->account) {
+  if (self->account != nil) {
     [self->context runCommand:@"userdefaults::register",
            @"defaults", self,
            @"account", self->account, nil];
@@ -312,7 +312,7 @@ static BOOL debugOn = NO;
   }
 
   if ([type isEqualToString:LSUserDefaults_remove]) {
-    if (self->account) {
+    if (self->account != nil) {
       [self->context runCommand:@"userdefaults::delete",
            @"key",      _key,
            @"defaults", self,
@@ -335,7 +335,7 @@ static BOOL debugOn = NO;
       sel = @selector(objectForKey:);
 
     obj = [self performSelector:sel withObject:_key];
-    if (self->account) {
+    if (self->account != nil) {
       [self->context runCommand:@"userdefaults::write",
            @"key",      _key,
            @"value",    obj,
