@@ -25,6 +25,7 @@
 #include <OGoFoundation/OGoSession.h>
 #include "common.h"
 #include <LSFoundation/OGoContextManager.h>
+#include <OGoFoundation/OGoStringTableManager.h>
 #include <NGObjWeb/OWViewRequestHandler.h>
 #include <NGHttp/NGHttp.h>
 
@@ -234,7 +235,8 @@ static BOOL logBundleLoading          = NO;
   OGoResourceManager *rm;
   
   /* force the setup of some statics */
-  [OGoResourceManager availableOGoThemes];
+  [OGoResourceManager    availableOGoThemes];
+  [OGoStringTableManager availableOGoTranslations];
   
   rm = [OGoResourceManager alloc]; /* seperate line to keep gcc happy */
   rm = [rm initWithPath:[self path]];
