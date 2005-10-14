@@ -10,8 +10,8 @@ WOBUNDLE_INSTALL_DIR = \
 RegUI_PRINCIPAL_CLASS = RegUIModule
 
 RegUI_OBJC_FILES += \
-	RegUIModule.m	\
-	OGoRegPage.m	\
+	RegUIModule.m		\
+	OGoRegPage.m		\
 
 RegUI_RESOURCE_FILES += Defaults.plist Version
 

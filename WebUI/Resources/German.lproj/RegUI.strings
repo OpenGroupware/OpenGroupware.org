@@ -1,2 +1,14 @@
-OGoRegPage   = "OpenGroupware.org Registrierung";
-Registration = "Registrierung";
+OGoRegPage      = "OpenGroupware.org Registrierung";
+Registration    = "Registrierung";
+company_name    = "Firma";
+company_website = "Website";
+sect_company    = "Firma";
+sect_personal   = "Angaben zur Person";
+sect_options    = "Optionen";
+email           = "E-Mail";
+lastname        = "Nachname";
+firstname       = "Vorname";
+city            = "Stadt";
+zip             = "PLZ";
+state           = "Bundesland";
+country         = "Land";

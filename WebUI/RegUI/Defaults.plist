@@ -1,2 +1,8 @@
 {
+  regapp_infotext_showwhy = YES;
+  regapp_infotext_showwho = YES;
+  regapp_data_server = YES;
+  regapp_data_client = YES;
+  userDefaults.regapp_allow_communitycontact = NO;
+  regapp_allow_commercialcontact = NO;
 }

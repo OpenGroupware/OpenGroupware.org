@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -21,8 +21,11 @@
 
 #include <OGoFoundation/OGoContentPage.h>
 
+@class NSMutableDictionary;
+
 @interface OGoRegPage : OGoContentPage
 {
+  NSMutableDictionary *private;
 }
 
 @end
@@ -32,7 +35,7 @@
 @implementation OGoRegPage
 
 + (void)initialize {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  // NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 }
 
 - (id)init {
@@ -51,10 +54,87 @@
 }
 
 - (void)dealloc {
+  [self->private release];
   [super dealloc];
 }
 
+/* mark as editor page (to avoid refreshes) */
+
+- (BOOL)isEditorPage {
+  return YES;
+}
+
+/* load data */
+
+- (id)firstValueForKey:(NSString *)_key inArray:(NSArray *)_array {
+  unsigned i, count;
+
+  for (i = 0, count = [_array count]; i < count; i++) {
+    id v;
+    
+    v = [[_array objectAtIndex:i] valueForKey:_key];
+    if ([v isNotEmpty]) return v;
+  }
+  return nil;
+}
+
+- (void)_loadData {
+  NSArray *addrs;
+  id account;
+  id tmp;
+
+  /* fetch account data from database */
+  
+  account = [[self session] activeAccount];
+  account = [self runCommand:@"person::get",
+                    @"companyId",  [account valueForKey:@"companyId"],
+                  nil];
+  if ([account isKindOfClass:[NSArray class]])
+    account = [account isNotEmpty] ? [account lastObject] : nil;
+
+  /* setup private data dict */
+  
+  self->private = [[NSMutableDictionary alloc] initWithCapacity:16];
+  
+  if ([(tmp = [account valueForKey:@"name"]) isNotEmpty])
+    [self->private setObject:tmp forKey:@"lastname"];
+  if ([(tmp = [account valueForKey:@"firstname"]) isNotEmpty])
+    [self->private setObject:tmp forKey:@"firstname"];
+  
+  if ([(tmp = [account valueForKey:@"email"]) isNotEmpty])
+    [self->private setObject:tmp forKey:@"email"];
+  else if ([(tmp = [account valueForKey:@"email1"]) isNotEmpty])
+    [self->private setObject:tmp forKey:@"email"];
+  
+  addrs = [self runCommand:@"address::get",
+                @"companyId",  [account valueForKey:@"companyId"],
+                @"returnType", intObj(LSDBReturnType_ManyObjects),
+             nil];
+  
+  if ((tmp = [self firstValueForKey:@"city" inArray:addrs]) != nil)
+    [self->private setObject:tmp forKey:@"city"];
+  if ((tmp = [self firstValueForKey:@"zip" inArray:addrs]) != nil)
+    [self->private setObject:tmp forKey:@"zip"];
+  if ((tmp = [self firstValueForKey:@"state" inArray:addrs]) != nil)
+    [self->private setObject:tmp forKey:@"state"];
+  if ((tmp = [self firstValueForKey:@"country" inArray:addrs]) != nil)
+    [self->private setObject:tmp forKey:@"country"];
+}
+
 /* accessors */
+
+- (void)setPrivate:(id)_data {
+  // noop
+}
+- (NSMutableDictionary *)private {
+  if (self->private == nil)
+    [self _loadData];
+  return self->private;
+}
+
+- (NSUserDefaults *)userDefaults {
+  return [[self session] userDefaults];
+}
 
 /* notifications */
 
@@ -62,6 +142,39 @@
   [super sleep];
 }
 
+/* dock operations */
+
+- (void)removeRegistrationFromDock {
+  // TODO
+}
+- (id)firstPageInDock {
+  // TODO
+  return nil;
+}
+
 /* actions */
+
+- (id)doRegister {
+  // TODO: submit info, remove page from dock and jump to first page
+  [self setErrorString:@"reg not yet enabled."];
+
+  [self removeRegistrationFromDock];
+  return [self firstPageInDock];
+}
+
+- (id)doRegisterLater {
+  // TODO: move panel to last position in dock and jump to first page
+  [self setErrorString:@"reg not yet enabled."];
+  
+  return [self firstPageInDock];
+}
+
+- (id)doNeverRegister {
+  // TODO: remove panel from dock and jump to first page
+  [self setErrorString:@"disable not yet implemented"];
+
+  [self removeRegistrationFromDock];
+  return [self firstPageInDock];
+}
 
 @end /* OGoRegPage */

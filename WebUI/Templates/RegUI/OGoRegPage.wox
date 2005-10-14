@@ -13,10 +13,188 @@
   <tab selectionDefault="regpage_lasttab">
     <tabitem key="reg" label="register">
 
-      <html:h4>Please register!</html:h4>
+      <form xmlns="http://www.w3.org/1999/xhtml"
+        name="editform" var:action="doRegister">
 
-      To be completed ... ;-)
+        This panel is a feedback form which allows you to send registration
+        information back to the
+        <a href="http://www.opengroupware.org/" target="ogo"
+           >OpenGroupware.org</a> project.
+        <br />
 
+        Skip the process by
+        <a href="#" onclick="document.forms['editform'].submit()"
+           >submitting minimal information</a>
+        or
+        <a href="#bottom">jump to the bottom</a>
+        to disable the registration.
+
+        <table width="100%" border="0" cellpadding="4" cellspacing="0"
+               style="margin-top: 6px;">
+          <OGo:collapsible title="Why register?"
+             visibilityDefault="regapp_infotext_showwhy">
+           <tr><td colspan="2"><OGo:font>
+            You are <b>not required</b> to register your setup using this
+            form.
+            However, by providing us information you help us understanding who
+            uses OGo and how it is being used.
+            <br />
+            Feel free to omit any information you might consider sensitive for
+            your privacy! Even a minimal registration record is valuable data
+            for the project.
+            <br />
+            By submitting the information your are <b>not</b> being subscribed
+            to any
+            <a href="http://www.opengroupware.org/en/users/lists/index.html"
+               target="ogo">mailing list</a>!
+           </OGo:font></td></tr>
+          </OGo:collapsible>
+
+          <OGo:collapsible title="Who gets this information?"
+             visibilityDefault="regapp_infotext_showwho">
+           <tr><td colspan="2"><OGo:font>
+            The data is being transmitted to a registration database running on
+            the
+            <a href="http://www.opengroupware.org/" target="ogo"
+               >OpenGroupware.org</a>
+            community servers. Only selected core members of the OGo team have
+            access to this database.
+            <br />
+            The maintainers of the database assure you that your data 
+            is not being distributed or disseminated in any way prior approval.
+            This includes your email addresses, your home 
+            address, and any other personal data you may choose to submit.
+            Any attempt to contact you made by the OGo Community will be only
+            to further enhance the product and <b>only if you choose so</b> in
+            this form. 
+           </OGo:font></td></tr>
+          </OGo:collapsible>
+        </table>
+
+        <hr />
+        
+        <fieldset>
+          <legend><OGo:label key="sect_options" /></legend>
+          <table border="0" width="100%">
+            <tr>
+              <td valign="top">
+                <input type="checkbox" name="communitycontact"
+                 var:checked="userDefaults.regapp_allow_communitycontact" />
+              </td>
+              <td valign="top"><OGo:font>
+                I agree that the OGo community may contact me via email on
+                community issues.
+              </OGo:font></td>
+            </tr>
+
+            <tr>
+              <td valign="top">
+                <input type="checkbox" name="commercialcontact"
+                 var:checked="userDefaults.regapp_allow_commercialcontact" />
+              </td>
+              <td valign="top"><OGo:font>
+                I agree that the OGo community may send me information
+                about commercial offerings of OGo sponsors and partners.
+              </OGo:font></td>
+            </tr>
+          
+            <tr>
+              <td valign="top">
+                <input type="checkbox" name="serverdata"
+                  var:checked="userDefaults.regapp_data_server" />
+              </td>
+              <td valign="top"><OGo:font>
+                Include information about the computer running the OGo service.
+              </OGo:font></td>
+            </tr>
+          
+            <tr>
+              <td valign="top">
+                <input type="checkbox" name="clientdata"
+                 var:checked="userDefaults.regapp_data_client" />
+              </td>
+              <td valign="top"><OGo:font>
+                Include information about the browser being used.
+              </OGo:font></td>
+            </tr>
+          </table>
+          <i><a href="#bottom">finish form</a></i>
+        </fieldset>
+
+
+        <fieldset style="margin-top: 4px;">
+          <legend><OGo:label key="sect_company"/></legend>
+
+          <table width="100%" border="0" cellpadding="4" cellspacing="0">
+
+            <OGo:attribute label="company_name">
+              <input type="text" name="compname" size="40"
+                     var:value="companyName" />
+            </OGo:attribute>
+
+            <OGo:attribute label="company_website">
+              <input type="text" name="compurl" size="40"
+                     var:value="companyUrl" />
+            </OGo:attribute>
+
+          </table>
+          <i><a href="#bottom">finish form</a></i>
+        </fieldset>
+
+
+        <fieldset style="margin-top: 4px;">
+          <legend><OGo:label key="sect_personal"/></legend>
+
+          <table width="100%" border="0" cellpadding="4" cellspacing="0">
+
+            <OGo:attribute label="email">
+              <input type="text" name="email" size="40"
+                     var:value="private.email" />
+            </OGo:attribute>
+
+            <OGo:attribute label="lastname">
+              <input type="text" name="lastname" size="40"
+                     var:value="private.lastname" />
+            </OGo:attribute>
+
+            <OGo:attribute label="firstname">
+              <input type="text" name="firstname" size="40"
+                     var:value="private.firstname" />
+            </OGo:attribute>
+
+            <OGo:attribute label="city">
+              <input type="text" name="city" size="40"
+                     var:value="private.city" />
+            </OGo:attribute>
+
+            <OGo:attribute label="zip">
+              <input type="text" name="zip" size="8"
+                     var:value="private.zip" />
+            </OGo:attribute>
+
+            <OGo:attribute label="state">
+              <input type="text" name="state" size="40"
+                     var:value="private.state" />
+            </OGo:attribute>
+
+            <OGo:attribute label="country">
+              <input type="text" name="country" size="40"
+                     var:value="private.country" />
+            </OGo:attribute>
+
+          </table>
+        </fieldset>
+
+
+        <hr />
+        <a name="bottom"> </a>
+        <input type="submit" name="do_register" value="Register!"
+               var:action="doRegister" />
+        <input type="submit" name="do_register" value="Register Later"
+               var:action="doRegisterLater" />
+        <input type="submit" name="do_register" value="Never Register"
+               var:action="doNeverRegister" />
+      </form>
     </tabitem>
   </tab>
 </page>
