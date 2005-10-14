@@ -1,8 +1,9 @@
 OGoRegPage      = "OpenGroupware.org User Registration";
 Registration    = "Register";
-company_name    = "Company";
+company_name    = "Name";
 company_website = "Website";
-sect_company    = "Company Data";
+company_size    = "Employees";
+sect_company    = "Company / Institute";
 sect_personal   = "Personal Data";
 sect_options    = "Feedback Options";
 email           = "Email";
@@ -12,3 +13,22 @@ city            = "City";
 zip             = "Zipcode";
 state           = "State";
 country         = "Land";
+finishFormLink  = "finish form";
+"-"             = "-no info-";
+send_reg        = "Register!";
+send_reg_later  = "Register Later";
+send_reg_never  = "Never Register";
+qa_q_why        = "Why register?";
+qa_q_who        = "Who gets the information?";
+company_clienttools = "Clients";
+
+text_agree_community = "I agree that the OGo community may contact me via email on community issues.";
+text_agree_commerce  = "I agree that the OGo community may send me information about commercial offerings of OGo sponsors and partners.";
+text_include_server  = "Include information about the computer running the OGo service.";
+text_include_client  = "Include information about the browser being used.";
+
+htmltext_intro = "This panel is a feedback form which allows you to send registration information back to the <a href='http://www.opengroupware.org/' target='ogo'>OpenGroupware.org</a> project.<br />Finish the process by <a href='#' onclick='document.forms.editform.submit()'>submitting minimal information</a> or <a href='#bottom'>jump to the bottom</a> to skip the registration.";
+
+qa_a_why_htmltext    = "You are <b>not required</b> to register your setup using this form. However, by providing us information you help us understanding who uses OGo and how it is being used.<br />Feel free to omit any information you might consider sensitive for your privacy! Even a minimal registration record is valuable data for the project.<br />By submitting the information your are <b>not</b> being subscribed to any <a href='http://www.opengroupware.org/en/users/lists/index.html' target='ogo'>mailing list</a> or other kinds of newsletters.";
+
+qa_a_who_htmltext    = "The data is being transmitted to a registration database running on the <a href='http://www.opengroupware.org/' target='ogo'>OpenGroupware.org</a> community servers. Only selected core members of the OGo team have access to this database.<br /> The maintainers of the database assure you that your data  is not being distributed or disseminated in any way prior approval. This includes your email addresses, your home address, and any other personal data you may choose to submit. Any attempt to contact you made by the OGo Community will be only to further enhance the product and <b>only if you choose so</b> in this form.";

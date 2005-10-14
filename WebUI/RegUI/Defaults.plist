@@ -1,8 +1,14 @@
 {
-  regapp_infotext_showwhy = YES;
-  regapp_infotext_showwho = YES;
-  regapp_data_server = YES;
-  regapp_data_client = YES;
-  userDefaults.regapp_allow_communitycontact = NO;
+  regapp_infotext_showwhy        = YES;
+  regapp_infotext_showwho        = YES;
+  regapp_data_server             = YES;
+  regapp_data_client             = YES;
+  regapp_allow_communitycontact  = NO;
   regapp_allow_commercialcontact = NO;
+  regapp_data_use_web            = YES;
+  regapp_data_use_outlook        = NO;
+  regapp_data_use_kontact        = NO;
+  regapp_data_use_evo            = NO;
+  regapp_data_use_moz            = NO;
+  regapp_company_size = ( "-", "<10", "<100", ">100", ">1000" );
 }

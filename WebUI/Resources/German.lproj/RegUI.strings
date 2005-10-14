@@ -1,8 +1,9 @@
 OGoRegPage      = "OpenGroupware.org Registrierung";
 Registration    = "Registrierung";
-company_name    = "Firma";
+company_name    = "Name";
 company_website = "Website";
-sect_company    = "Firma";
+company_size    = "Mitarbeiter";
+sect_company    = "Angaben zur Firma / Institution";
 sect_personal   = "Angaben zur Person";
 sect_options    = "Optionen";
 email           = "E-Mail";
@@ -12,3 +13,23 @@ city            = "Stadt";
 zip             = "PLZ";
 state           = "Bundesland";
 country         = "Land";
+finishFormLink  = "Registrierung abschliessen";
+"-"             = "Keine Angabe";
+send_reg        = "Registrierung abschicken";
+send_reg_later  = "Später registrieren";
+send_reg_never  = "Registrierung abbrechen";
+qa_q_why        = "Warum registrieren?";
+qa_q_who        = "Wer erhält die Informationen?";
+company_clienttools = "Software";
+
+text_agree_community = "Ich stimme zu dass die OGo Community mich per E-Mail über Community Angelegenheiten informieren darf.";
+text_agree_commerce  = "Ich stimme zu dass die OGo Community mich per E-Mail über kommerzielle Angebote von OGo Sponsoren und Partnern informieren darf.";
+text_include_server  = "Der Registrierung Informationen über die OGo-Installation beilegen (CPU/Speicher).";
+text_include_client  = "Der Registrierung Informationen über den Web-Browser des Nutzers beilegen (User-Agent).";
+
+htmltext_intro = "Diese Seite erlaubt Ihnen eine Registrierung als Anwender beim <a href='http://www.opengroupware.org/' target='ogo'>OpenGroupware.org</a> Projekt.<br />Sie können den Prozess abkürzen in dem Sie <a href='#' onclick='document.forms.editform.submit()'>Minimal-Information abschicken</a> oder die Registrierung am <a href='#bottom'>Ende der Seite</a> komplett überspringen.";
+
+qa_a_why_htmltext    = "Eine Registrierung mit Hilfe dieses Formulars ist <b>nicht zwingend</b> erforderlich. Durch eine Registrierung helfen Sie uns zu verstehen von wem und wie OGo eingesetzt wird.<br /> Zögern Sie nicht Informationen wegzulassen! Selbst eine Registrierung mit minimalen Informationen (z.B. dem verwendeten Web-Browser) enthält wichtige Daten für das OGo Projekt.<br />Durch die Registrierung werden Sie bei <b>keinen</b> <a href='http://www.opengroupware.org/en/users/lists/index.html' target='ogo'>Mailinglisten</a> oder anderen  Newslettern automatisch angemeldet.";
+
+qa_a_who_htmltext    = "Ihre Daten werden zu einer Registrierungsdatenbank übermittelt die auf Servern der <a href='http://www.opengroupware.org/' target='ogo'>OpenGroupware.org</a> Community betrieben wird. Nur ausgewählte Kern-Teilnehmer der OGo Community erhalten Zugriff auf diese Datenbank.<br />Die Betreiber der Datenbank versichern, dass Ihre Daten nicht an Dritte weitergegeben werden ohne eine vorherige Erlaubnis erhalten zu haben. Das schliesst Ihre E-Mail Adresse und alle anderen persönlichen Daten ein. 
+Jeder Kontakt zu Ihnen durch die OGo Community wird nur zu dem Zweck erfolgen OGo Produkte zu erweitern und zu verbessern, und <b>nur dann</b> erfolgen wenn Sie dieses im Formular ausdrücklich erlauben.";

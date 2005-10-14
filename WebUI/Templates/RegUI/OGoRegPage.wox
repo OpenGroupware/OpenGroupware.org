@@ -16,62 +16,28 @@
       <form xmlns="http://www.w3.org/1999/xhtml"
         name="editform" var:action="doRegister">
 
-        This panel is a feedback form which allows you to send registration
-        information back to the
-        <a href="http://www.opengroupware.org/" target="ogo"
-           >OpenGroupware.org</a> project.
-        <br />
-
-        Skip the process by
-        <a href="#" onclick="document.forms['editform'].submit()"
-           >submitting minimal information</a>
-        or
-        <a href="#bottom">jump to the bottom</a>
-        to disable the registration.
+        <var:string value="labels.htmltext_intro" const:escapeHTML="0" />
 
         <table width="100%" border="0" cellpadding="4" cellspacing="0"
                style="margin-top: 6px;">
-          <OGo:collapsible title="Why register?"
+          <OGo:collapsible label="qa_q_why"
              visibilityDefault="regapp_infotext_showwhy">
            <tr><td colspan="2"><OGo:font>
-            You are <b>not required</b> to register your setup using this
-            form.
-            However, by providing us information you help us understanding who
-            uses OGo and how it is being used.
-            <br />
-            Feel free to omit any information you might consider sensitive for
-            your privacy! Even a minimal registration record is valuable data
-            for the project.
-            <br />
-            By submitting the information your are <b>not</b> being subscribed
-            to any
-            <a href="http://www.opengroupware.org/en/users/lists/index.html"
-               target="ogo">mailing list</a>!
+             <var:string value="labels.qa_a_why_htmltext"
+                         const:escapeHTML="0" />
            </OGo:font></td></tr>
           </OGo:collapsible>
 
-          <OGo:collapsible title="Who gets this information?"
+          <OGo:collapsible label="qa_q_who"
              visibilityDefault="regapp_infotext_showwho">
            <tr><td colspan="2"><OGo:font>
-            The data is being transmitted to a registration database running on
-            the
-            <a href="http://www.opengroupware.org/" target="ogo"
-               >OpenGroupware.org</a>
-            community servers. Only selected core members of the OGo team have
-            access to this database.
-            <br />
-            The maintainers of the database assure you that your data 
-            is not being distributed or disseminated in any way prior approval.
-            This includes your email addresses, your home 
-            address, and any other personal data you may choose to submit.
-            Any attempt to contact you made by the OGo Community will be only
-            to further enhance the product and <b>only if you choose so</b> in
-            this form. 
+             <var:string value="labels.qa_a_who_htmltext"
+                         const:escapeHTML="0" />
            </OGo:font></td></tr>
           </OGo:collapsible>
         </table>
 
-        <hr />
+        <br />
         
         <fieldset>
           <legend><OGo:label key="sect_options" /></legend>
@@ -82,8 +48,7 @@
                  var:checked="userDefaults.regapp_allow_communitycontact" />
               </td>
               <td valign="top"><OGo:font>
-                I agree that the OGo community may contact me via email on
-                community issues.
+                <OGo:label key="text_agree_community" />
               </OGo:font></td>
             </tr>
 
@@ -93,8 +58,7 @@
                  var:checked="userDefaults.regapp_allow_commercialcontact" />
               </td>
               <td valign="top"><OGo:font>
-                I agree that the OGo community may send me information
-                about commercial offerings of OGo sponsors and partners.
+                <OGo:label key="text_agree_commerce" />
               </OGo:font></td>
             </tr>
           
@@ -104,7 +68,7 @@
                   var:checked="userDefaults.regapp_data_server" />
               </td>
               <td valign="top"><OGo:font>
-                Include information about the computer running the OGo service.
+                <OGo:label key="text_include_server" />
               </OGo:font></td>
             </tr>
           
@@ -114,15 +78,23 @@
                  var:checked="userDefaults.regapp_data_client" />
               </td>
               <td valign="top"><OGo:font>
-                Include information about the browser being used.
+                <OGo:label key="text_include_client" />
               </OGo:font></td>
             </tr>
           </table>
-          <i><a href="#bottom">finish form</a></i>
+
+<!--
+          <div style="text-align: right; font-style: italic;">
+            <a href="#bottom"><OGo:label key="finishFormLink"/></a>
+          </div>
+  -->
         </fieldset>
 
+        <table border="0" width="100%" cellpadding="0">
+        <tr>
 
-        <fieldset style="margin-top: 4px;">
+        <td width="50%" valign="top"><OGo:font>
+        <fieldset>
           <legend><OGo:label key="sect_company"/></legend>
 
           <table width="100%" border="0" cellpadding="4" cellspacing="0">
@@ -137,12 +109,42 @@
                      var:value="companyUrl" />
             </OGo:attribute>
 
+            <OGo:attribute label="company_size">
+              <var:popup const:name="compsize"
+                list="systemUserDefaults.regapp_company_size"
+                item="item" string="labels.$item" value="item"
+                selection="companySize" />
+            </OGo:attribute>
+
+            <OGo:attribute label="company_clienttools">
+              <input type="checkbox" name="use_web"
+                 var:checked="userDefaults.regapp_data_use_web" />
+              Web-Interface
+              <br />
+              <input type="checkbox" name="use_outlook"
+                 var:checked="userDefaults.regapp_data_use_outlook" />
+              Outlook <entity name="trade"/>
+              <br />
+              <input type="checkbox" name="use_kontact"
+                 var:checked="userDefaults.regapp_data_use_kontact" />
+              Kontact
+              <br />
+              <input type="checkbox" name="use_evo"
+                 var:checked="userDefaults.regapp_data_use_evo" />
+              Evolution
+              <br />
+              <input type="checkbox" name="use_moz"
+                 var:checked="userDefaults.regapp_data_use_moz" />
+              Mozilla
+            </OGo:attribute>
+
           </table>
-          <i><a href="#bottom">finish form</a></i>
         </fieldset>
 
+        </OGo:font></td>
+        <td valign="top"><OGo:font>
 
-        <fieldset style="margin-top: 4px;">
+        <fieldset>
           <legend><OGo:label key="sect_personal"/></legend>
 
           <table width="100%" border="0" cellpadding="4" cellspacing="0">
@@ -167,11 +169,6 @@
                      var:value="private.city" />
             </OGo:attribute>
 
-            <OGo:attribute label="zip">
-              <input type="text" name="zip" size="8"
-                     var:value="private.zip" />
-            </OGo:attribute>
-
             <OGo:attribute label="state">
               <input type="text" name="state" size="40"
                      var:value="private.state" />
@@ -185,14 +182,21 @@
           </table>
         </fieldset>
 
+        </OGo:font></td>
+        </tr>
+        </table>
+
 
         <hr />
         <a name="bottom"> </a>
-        <input type="submit" name="do_register" value="Register!"
+        <input type="submit" name="do_register"
+               var:value="labels.send_reg"
                var:action="doRegister" />
-        <input type="submit" name="do_register" value="Register Later"
+        <input type="submit" name="do_register"
+               var:value="labels.send_reg_later"
                var:action="doRegisterLater" />
-        <input type="submit" name="do_register" value="Never Register"
+        <input type="submit" name="do_register"
+               var:value="labels.send_reg_never"
                var:action="doNeverRegister" />
       </form>
     </tabitem>

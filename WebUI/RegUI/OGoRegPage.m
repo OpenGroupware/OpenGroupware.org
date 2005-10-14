@@ -135,6 +135,9 @@
 - (NSUserDefaults *)userDefaults {
   return [[self session] userDefaults];
 }
+- (NSUserDefaults *)systemUserDefaults {
+  return [NSUserDefaults standardUserDefaults];
+}
 
 /* notifications */
 
