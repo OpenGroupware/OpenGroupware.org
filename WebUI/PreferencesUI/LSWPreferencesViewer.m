@@ -130,11 +130,11 @@ static int keySort(id o1, id o2, void *ctx) {
   if ([availablePrefs count] == 0)
     return;
 
-  array = [[NSMutableArray alloc] init];
-  names = [[NSMutableSet alloc] init];
+  array = [[NSMutableArray alloc] initWithCapacity:12];
+  names = [[NSMutableSet   alloc] initWithCapacity:12];
 
   e = [availablePrefs objectEnumerator];
-  while ((config = [e nextObject])) {
+  while ((config = [e nextObject]) != nil) {
     NSString *cname;
     
     cname = [config objectForKey:@"name"];

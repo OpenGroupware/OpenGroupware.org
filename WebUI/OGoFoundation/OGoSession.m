@@ -231,7 +231,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
     [[self runCommand:@"account::get-by-login",
 	     @"login", [self->lso activeLoginName], nil] retain];
   
-  NSAssert(self->activeLogin, @"couldn't determine active login");
+  NSAssert(self->activeLogin, @"could not determine active login");
   NSAssert2([[self->activeLogin valueForKey:@"login"]
                                isEqual:[self->lso activeLoginName]],
             @"got invalid login record %@ (expected %@)",

@@ -116,6 +116,7 @@ NSData *_createData(id self, NSString *_formKind, NSArray *_records) {
   return nil;
 }
 
+// TODO: rather use available command?
 NSData *_createVCardData(id self, id _obj) {
   NSMutableString *result = [NSMutableString string];
 
@@ -133,7 +134,7 @@ NSData *_createVCardData(id self, id _obj) {
           //   @"URL:http://home.earthlink.net/~fdawson\n"
    @"END:vCard\n"];
 
-  /*
+#if 0
   [result appendString:
           @"begin:vcard\n"
           @"n:Spindler;Martin\n"
@@ -157,7 +158,7 @@ NSData *_createVCardData(id self, id _obj) {
   NSLog(@"address is %@", _obj);
   NSLog(@"address is %@", [_obj valueForKey:@"address"]);
   NSLog(@"result is %@", result);
-  */
+#endif
   return [result dataUsingEncoding:[NSString defaultCStringEncoding]];
           
           
