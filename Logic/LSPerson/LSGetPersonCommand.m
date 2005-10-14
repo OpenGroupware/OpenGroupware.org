@@ -54,13 +54,13 @@
   NSArray *a;
   
   [super _executeInContext:_context];
-
+  
   a = [self object];
 
   if (![a isKindOfClass:[NSArray class]])
-    a = [NSArray arrayWithObject:a];
-
-  if ([a count] == 0)
+    a = [a isNotNull] ? [NSArray arrayWithObject:a] : nil;
+  
+  if (![a isNotEmpty])
     return;
     
   if ([[self checkAccess] boolValue]) {
@@ -68,28 +68,31 @@
                       operation:@"r"
                       allowedOnObjectIDs:[a map:@selector(valueForKey:)
                                             with:@"globalID"]]) {
-        NSLog(@"%s: Missing read access for %@", __PRETTY_FUNCTION__, a);
+        [self logWithFormat:
+                @"%s: Missing read access: %@", __PRETTY_FUNCTION__, a];
         [self setReturnValue:nil];
         return;
       }
   }
   
+  // TODO: use access manager? ([ctx accessManager]) => see above
+  // TODO: why not always use access manager?
   [self setObject:LSRunCommandV(_context,
                                 @"person", @"check-permission",
                                 @"object", [self object], nil)];
   
-  // get extended attributes 
+  /* get extended attributes */
   LSRunCommandV(_context, @"person", @"get-extattrs",
                 @"objects", [self object],
                 @"relationKey", @"companyValue", nil);
 
-  // get telephones
+  /* get telephones */
   LSRunCommandV(_context, @"person", @"get-telephones",
                 @"objects", [self object],
                 @"relationKey", @"telephones", nil);
 }
 
-// record initializer
+/* record initializer */
 
 - (NSString *)entityName {
   return @"Person";

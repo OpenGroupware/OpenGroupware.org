@@ -76,10 +76,10 @@ static NSDictionary *addressMapping = nil;
   telephoneMapping = [[ud dictionaryForKey:@"LSVCard_TelephoneMapping"] copy];
   
   LSAttachmentPath = [[ud stringForKey:@"LSAttachmentPath"] copy];
-  if ([LSAttachmentPath length] == 0)
-    NSLog(@"ERROR: did not find 'LSAttachmentPath'!");
-  else
+  if ([LSAttachmentPath isNotEmpty])
     NSLog(@"Note: storing cached vCards files in: '%@'", LSAttachmentPath);
+  else
+    NSLog(@"ERROR: did not find 'LSAttachmentPath'!");
 }
 
 - (void)dealloc {
@@ -108,7 +108,7 @@ static NSDictionary *addressMapping = nil;
   id val;
   
   if (![_vCard isNotNull]) {
-    [self logWithFormat:@"WARNING[%s]: got no vCard!", __PRETTY_FUNCTION__];
+    [self warnWithFormat:@"%s: got no vCard!", __PRETTY_FUNCTION__];
     return;
   }
   if (![self->attributes isNotEmpty]) {
@@ -131,19 +131,19 @@ static NSDictionary *addressMapping = nil;
       [entry setObject:tmp forKey:@"objectVersion"];
   }
   
-  if ([self->groupBy length] == 0) {
+  if (![self->groupBy isNotEmpty]) {
     [_result addObject:entry];
     return;
   }
       
   if ((tmp = [entry valueForKey:self->groupBy]) == nil) {
-    NSLog(@"WARNING[%s]: cannot map entry %@ by key %@",
-	  __PRETTY_FUNCTION__, entry, self->groupBy);
+    [self warnWithFormat:@"%s: cannot map entry %@ by key %@",
+	  __PRETTY_FUNCTION__, entry, self->groupBy];
     return;
   }
   if ((val = [_result valueForKey:tmp]) != nil) {
-    NSLog(@"WARNING[%s]: map already contains an entry for key %@: %@",
-	  __PRETTY_FUNCTION__, tmp, val);
+    [self warnWithFormat:@"%s: map already contains an entry for key %@: %@",
+	  __PRETTY_FUNCTION__, tmp, val];
     return;
   }
   [(NSMutableDictionary *)_result setObject:entry forKey:tmp];
@@ -238,8 +238,9 @@ static NSDictionary *addressMapping = nil;
   cId = [_record valueForKey:@"companyId"];
   oV  = [_record valueForKey:@"objectVersion"];
   if (cId == nil || oV == nil) {
-    NSLog(@"%s: missing companyId and/or objectVersion in record: %@",
-          __PRETTY_FUNCTION__, _record);
+    [self warnWithFormat:
+            @"%s: missing companyId and/or objectVersion in record: %@",
+            __PRETTY_FUNCTION__, _record];
     return nil;
   }
   
@@ -271,8 +272,9 @@ static NSDictionary *addressMapping = nil;
   cId = [_comp valueForKey:@"companyId"];
   oV  = [_comp valueForKey:@"objectVersion"];
   if (cId == nil || oV == nil) {
-    NSLog(@"%s: missing companyId and/or objectVersion in record: %@",
-          __PRETTY_FUNCTION__, _comp);
+    [self warnWithFormat:
+            @"%s: missing companyId and/or objectVersion in record: %@",
+            __PRETTY_FUNCTION__, _comp];
     return;
   }
 
