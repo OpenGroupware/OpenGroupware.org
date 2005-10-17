@@ -1,0 +1,35 @@
+OGoRegPage      = "Registro de usuário do OpenGroupware.org";
+Registration    = "Registrar";
+register        = "Registrar";
+company_name    = "Razão Social";
+company_website = "Site web";
+company_size    = "Número de funcionários";
+sect_company    = "Empresa / Organização";
+sect_personal   = "Dados pessoais";
+sect_options    = "Opções de feedback";
+email           = "E-mail";
+lastname        = "Sobrenome";
+firstname       = "Nome";
+city            = "Cidade";
+zip             = "CEP";
+state           = "Estado";
+country         = "Pais";
+finishFormLink  = "Encerrar";
+"-"             = "-sem informação-";
+send_reg        = "Registrar!";
+send_reg_later  = "Registrar mais tarde";
+send_reg_never  = "Nunca registrar";
+qa_q_why        = "Por que registrar?";
+qa_q_who        = "Quem recebe a informação?";
+company_clienttools = "Clientes";
+
+text_agree_community = "Concordo em ser contactado por e-mail pela comunidade do OpenGroupware sobre assuntos pertinentes ao projeto.";
+text_agree_commerce  = "Aceito receber informações de caráter comercial de patrocinadores e parceiros do projeto OpenGroupware.";
+text_include_server  = "Incluir informações sobre seu servidor OpenGroupware.";
+text_include_client  = "Incluir informações sobre o navegador que você usa.";
+
+htmltext_intro = "Este painel permite enviar informações de registro ao projeto <a href='http://www.opengroupware.org/' target='ogo'>OpenGroupware.org</a>.<br /><br />Encerre o processo de registro ao <a href='#' onclick='document.forms.editform.submit()'>submeter informações mínimas</a> ou <a href='#bottom'>deça até o fim da página</a> para cancelar este registro.";
+
+qa_a_why_htmltext    = "<b>O registro é opcional</b>. Entretanto, ao fornecer informações para a comunidade, você estará ajudando o projeto OpenGroupware a melhor conhecer seus usuários e entender a forma que eles estão usando o software.<br /><br />No processo de registro, você pode omitir qualquer informação que julgar importante para sua privacidade. Toda informação enviada será de grande valor para o projeto.<br /><br />Ao enviar suas informações, você <b>não</b> estará assinando qualquer <a href='http://www.opengroupware.org/en/users/lists/index.html' target='ogo'>lista</a> ou outras formas de <i>newsletters</i>.";
+
+qa_a_who_htmltext    = "As informações serão enviadas para um banco de dados de registro instalado no <a href='http://www.opengroupware.org/' target='ogo'> servidor da comunidade OpenGroupware.org</a>. Uma equipe restrita de membros da comunidade OpenGroupware possui o acesso a estes dados.<br /><br /> Os mantenedores deste banco de dados se comprometem a não divulgar ou distribuir suas informações sem o seu consentimento expresso.  Isto inclui seu endereço de e-mail, seu endereço pessoal ou qualquer outra informação que você tenha fornecido. Qualquer contato feito pela comunidade OpenGroupware será com o propósito exclusivo de aperfeiçoar o produto, <b>somente caso você tenha autorizado</b> a ser contactado por meio deste formulário.";
