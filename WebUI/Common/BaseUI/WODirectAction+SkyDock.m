@@ -61,7 +61,14 @@
   WOComponent *page;
   
   if ((pageName = [[self request] formValueForKey:@"page"]) == nil) {
-    [self logWithFormat:@"missing page parameter in dock action !"];
+    NSString *dockKey;
+
+    if ((dockKey = [[self request] formValueForKey:@"key"]) == nil)
+      [self logWithFormat:@"missing page parameter in dock action!"];
+    else {
+      // TODO: lookup pageName by 'dockable page name' (key)
+      [self errorWithFormat:@"'key' form parameter not yet implemented!"];
+    }
     return [self pageWithName:@"Main"];
   }
 

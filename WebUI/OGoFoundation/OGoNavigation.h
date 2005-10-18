@@ -29,8 +29,8 @@
   OGoNavigation
   
   This objects tracks the navigation through OGo. It does some clever detection
-  of duplicates.
-
+  of duplicates (TODO: document).
+  
   You can debug operation by enabling the 'OGoDebugNavigation' bool default.
   
   TODO: explain more.

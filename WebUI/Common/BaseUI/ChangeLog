@@ -1,3 +1,11 @@
+2005-10-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* v5.3.116
+
+	* WODirectAction+SkyDock: prepared a 'dock key' based page activation
+
+	* SkyDock.m: minor code cleanups
+
 2005-10-13  Helge Hess  <helge.hess@skyrix.com>
 
 	* Defaults.plist: registration page is now the first dock entry

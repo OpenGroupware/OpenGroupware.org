@@ -163,10 +163,10 @@ static NSNumber *NoNumber  = nil;
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     NSArray *tmp;
     
-    if ([(tmp = allDockablePages) count] > 0) {
+    if ([(tmp = allDockablePages) isNotEmpty]) {
       [self _processDockablePages:tmp 
             includeRootPages:[[self session] activeAccountIsRoot]
             onlyExtraAccountPages:NO];
@@ -307,7 +307,7 @@ static NSNumber *NoNumber  = nil;
   ASSIGN(self->account, _account);
   
   tmp = self->defaults;
-  self->defaults = _account
+  self->defaults = (_account != nil)
     ? [self runCommand:@"userdefaults::get", @"user", _account, nil]
     : [self runCommand:@"userdefaults::get", nil];
   
@@ -752,15 +752,15 @@ static NSNumber *NoNumber  = nil;
     NSDictionary   *entry;
 
     array = [NSMutableArray arrayWithCapacity:16];
-    e     = [self->dockedPages objectEnumerator];
     
-    while ((entry = [e nextObject])) {
+    e = [self->dockedPages objectEnumerator];
+    while ((entry = [e nextObject]) != nil) {
       NSString *pageName;
-
-      pageName = [entry objectForKey:@"name"];
-
-      if (pageName)
-        [array addObject:pageName];
+      
+      if ((pageName = [entry objectForKey:@"name"]) == nil)
+        continue;
+      
+      [array addObject:pageName];
     }
     reloadDock = YES;
 

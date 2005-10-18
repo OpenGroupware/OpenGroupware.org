@@ -84,7 +84,7 @@ struct DockInfo {
   if ((self = [super init]) != nil) {
     [self registerAsPersistentInstance];
 
-    // TODO: rather use the session center?
+    // TODO: rather use the session center? (remember to adjust observers!)
     [[NSNotificationCenter defaultCenter]
                            addObserver:self selector:@selector(reloadConfig:)
                            name:@"SkyDockReload"
@@ -494,7 +494,7 @@ struct DockInfo {
     [self logWithFormat:@"missing labelkey for dock item !"];
     return nil;
   }
-  if (table) {
+  if (table != nil) {
     label = [[[self application]
                     resourceManager]
                     stringForKey:labelKey
@@ -504,7 +504,7 @@ struct DockInfo {
 
     if (label == nil) {
 #if DEBUG
-      [self logWithFormat:@"couldn't resolve string key %@ in table %@",
+      [self logWithFormat:@"could not resolve string key %@ in table %@",
               labelKey, table];
 #endif
       label = labelKey;
