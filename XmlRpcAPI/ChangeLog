@@ -1,3 +1,8 @@
+2005-10-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* XmlRpcCoding.subproj/SkyPersonDocument+XmlRpcCoding.m: do not encode
+	  middlename twice (OGo bug #1598) (v5.2.65)
+
 2005-06-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Actions.subproj/DirectAction+Job.m: added support for changing

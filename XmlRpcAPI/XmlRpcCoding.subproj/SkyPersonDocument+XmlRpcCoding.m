@@ -51,7 +51,6 @@
   [super encodeWithXmlRpcCoder:_coder];
   [_coder encodeString:[self firstname]  forKey:@"firstname"];
   [_coder encodeString:[self middlename] forKey:@"middlename"];
-  [_coder encodeString:[self middlename] forKey:@"middlename"];
   [_coder encodeString:[self name]       forKey:@"name"];
   [_coder encodeString:[self nickname]   forKey:@"nickname"];
   [_coder encodeString:[self number]     forKey:@"number"];
