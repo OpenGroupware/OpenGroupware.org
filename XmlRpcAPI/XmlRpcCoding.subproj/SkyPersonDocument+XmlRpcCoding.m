@@ -27,7 +27,7 @@
 @implementation SkyPersonDocument(XmlRpcCoding)
 
 - (id)initWithXmlRpcCoder:(XmlRpcDecoder *)_coder {
-  if ((self = [super initWithXmlRpcCoder:_coder])) {
+  if ((self = [super initWithXmlRpcCoder:_coder]) != nil) {
     [self setFirstname: [_coder decodeStringForKey:@"firstname"]];
     [self setMiddlename:[_coder decodeStringForKey:@"middlename"]];
     [self setName:      [_coder decodeStringForKey:@"name"]];
@@ -50,7 +50,6 @@
 - (void)encodeWithXmlRpcCoder:(id)_coder {
   [super encodeWithXmlRpcCoder:_coder];
   [_coder encodeString:[self firstname]  forKey:@"firstname"];
-  [_coder encodeString:[self middlename] forKey:@"middlename"];
   [_coder encodeString:[self middlename] forKey:@"middlename"];
   [_coder encodeString:[self name]       forKey:@"name"];
   [_coder encodeString:[self nickname]   forKey:@"nickname"];
