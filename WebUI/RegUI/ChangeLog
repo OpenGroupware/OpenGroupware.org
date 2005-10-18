@@ -1,3 +1,8 @@
+2005-10-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoRegPage.m: implemented 'register later' and 'register never'
+	  methods
+
 2005-10-12  Helge Hess  <helge.hess@skyrix.com>
 
 	* started registration app

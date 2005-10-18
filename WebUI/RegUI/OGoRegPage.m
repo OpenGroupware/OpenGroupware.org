@@ -21,11 +21,12 @@
 
 #include <OGoFoundation/OGoContentPage.h>
 
-@class NSMutableDictionary;
+@class NSMutableDictionary, NSUserDefaults;
 
 @interface OGoRegPage : OGoContentPage
 {
   NSMutableDictionary *private;
+  NSUserDefaults *defaults;
 }
 
 @end
@@ -54,7 +55,8 @@
 }
 
 - (void)dealloc {
-  [self->private release];
+  [self->defaults release];
+  [self->private  release];
   [super dealloc];
 }
 
@@ -133,7 +135,9 @@
 }
 
 - (NSUserDefaults *)userDefaults {
-  return [[self session] userDefaults];
+  if (self->defaults == nil)
+    self->defaults = [[[self session] userDefaults] retain];
+  return self->defaults;
 }
 - (NSUserDefaults *)systemUserDefaults {
   return [NSUserDefaults standardUserDefaults];
@@ -143,16 +147,77 @@
 
 - (void)sleep {
   [super sleep];
+  [self->defaults release]; self->defaults = nil;
+}
+
+/* defaults operations */
+
+- (void)postDockReloadNotification {
+  [[NSNotificationCenter defaultCenter]
+                         postNotificationName:@"SkyDockReload"
+                         object:[self userDefaults]];
+}
+
+- (void)_writeDefault:(NSString *)_key value:(id)_value {
+  [self runCommand:@"userdefaults::write",
+	  @"key",      _key,
+          @"value",    _value,
+          @"defaults", [self userDefaults],
+          @"userId", [[[self session] activeAccount] valueForKey:@"companyId"],
+	nil];
 }
 
 /* dock operations */
 
-- (void)removeRegistrationFromDock {
-  // TODO
+- (BOOL)removeOrRepositionRegistrationInDock:(BOOL)_doRemove {
+  NSArray *dockKeys;
+  NSMutableArray *tmp;
+  
+  dockKeys = [[self userDefaults] arrayForKey:@"SkyDockablePagesOrdering"];
+  if (![dockKeys containsObject:@"Registration"]) {
+    [self warnWithFormat:@"Registration page is not in dock ..."];
+    return NO;
+  }
+  if (![dockKeys isNotEmpty])
+    return NO;
+  
+  tmp = [dockKeys mutableCopy];
+  [tmp removeObject:@"Registration"];
+  if (!_doRemove) [tmp addObject:@"Registration"];
+  
+  [self _writeDefault:@"SkyDockablePagesOrdering" value:tmp];
+  [tmp release]; tmp = nil;
+  
+  [self postDockReloadNotification];
+
+  return YES;
 }
+
+- (NSDictionary *)bundleInfoForDockKey:(NSString *)_key {
+  NGBundleManager *bm;
+  NSBundle *bundle;
+  
+  if (![_key isNotEmpty]) return nil;
+  
+  bm     = [NGBundleManager defaultBundleManager];
+  bundle = [bm bundleProvidingResource:_key ofType:@"DockablePages"];
+  if (bundle == nil) {
+    [self warnWithFormat:@"did not find bundle for dockable page: '%@'", _key];
+    return nil;
+  }
+  
+  return [bundle configForResource:_key ofType:@"DockablePages"];
+}
+
 - (id)firstPageInDock {
-  // TODO
-  return nil;
+  NSDictionary *dockInfo;
+  NSArray  *dockKeys;
+  NSString *dockKey;
+  
+  dockKeys = [[self userDefaults] arrayForKey:@"SkyDockablePagesOrdering"];
+  dockKey  = [dockKeys isNotEmpty] ? [dockKeys objectAtIndex:0] : nil;
+  dockInfo = [self bundleInfoForDockKey:dockKey];
+  return [self pageWithName:[dockInfo valueForKey:@"component"]];
 }
 
 /* actions */
@@ -161,22 +226,22 @@
   // TODO: submit info, remove page from dock and jump to first page
   [self setErrorString:@"reg not yet enabled."];
 
-  [self removeRegistrationFromDock];
+  // [self removeOrRepositionRegistrationInDock:YES];
   return [self firstPageInDock];
 }
 
 - (id)doRegisterLater {
-  // TODO: move panel to last position in dock and jump to first page
-  [self setErrorString:@"reg not yet enabled."];
-  
+  [self logWithFormat:@"account has choosen to register later: %@",
+        [[[self session] activeAccount] valueForKey:@"login"]];
+  [self removeOrRepositionRegistrationInDock:NO];
   return [self firstPageInDock];
 }
 
 - (id)doNeverRegister {
-  // TODO: remove panel from dock and jump to first page
-  [self setErrorString:@"disable not yet implemented"];
-
-  [self removeRegistrationFromDock];
+  /* remove panel from dock and jump to first page */
+  [self logWithFormat:@"account has choosen not to register: %@",
+        [[[self session] activeAccount] valueForKey:@"login"]];
+  [self removeOrRepositionRegistrationInDock:YES];
   return [self firstPageInDock];
 }
 

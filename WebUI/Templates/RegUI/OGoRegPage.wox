@@ -192,10 +192,10 @@
         <input type="submit" name="do_register"
                var:value="labels.send_reg"
                var:action="doRegister" />
-        <input type="submit" name="do_register"
+        <input type="submit" name="do_register_later"
                var:value="labels.send_reg_later"
                var:action="doRegisterLater" />
-        <input type="submit" name="do_register"
+        <input type="submit" name="do_register_never"
                var:value="labels.send_reg_never"
                var:action="doNeverRegister" />
       </form>
