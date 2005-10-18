@@ -317,65 +317,84 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
   return nil;
 }
 
-- (BOOL)validateForSearch {
-  if (![self->startDate isNotNull])
-    return NO;
-  if (![self->endDate isNotNull])
-    return NO;
-
-  if ((self->duration < 0) || (self->interval < 0) ||
-      (self->earliestStartTime < 0) || (self->latestFinishTime < 0))
-    return NO;
-  return YES;
-}
-
-
-- (id)search {
-  NSMutableArray *resourceNames;
-  NSMutableArray *categories;
-  NSEnumerator   *enumerator;
-  id             obj;
-  NSString       *str;
+- (void)_splitArray:(NSArray *)_rescat withCategorySuffix:(NSString *)str
+  intoCategories:(NSMutableArray *)_cat andResources:(NSMutableArray *)_res
+{
+  NSEnumerator *enumerator;
+  id           obj;
   
-  /* split self->resources into resourceNames and categories? */
-  // TODO: move to own method?!
-
-  str = [[self labels] valueForKey:@"resCategory"];
-  if (str == nil) str = @"resCategory";
-  str           = [NSString stringWithFormat:@" (%@)", str];
-  resourceNames = [[NSMutableArray alloc] initWithCapacity:16];
-  categories    = [[NSMutableArray alloc] initWithCapacity:16];
-  
-  enumerator    = [self->resources objectEnumerator];
+  enumerator = [_rescat objectEnumerator];
   while ((obj = [enumerator nextObject]) != nil) {
     if ([obj hasSuffix:str]) {
       NSString *s;
       
       s = [obj substringWithRange:NSMakeRange(0, [obj length] - [str length])];
-      [categories addObject:s];
+      [_cat addObject:s];
     }
     else
-      [resourceNames addObject:obj];
+      [_res addObject:obj];
 #if 0      
     NSArray *comp;
 
     comp = [obj componentsSeparatedByString:@" ("];
     
     if ([comp count] == 1)
-      [resourceNames addObject:obj];
-    else {
-      [categories addObject:[comp objectAtIndex:0]];
-    }
+      [_res addObject:obj];
+    else
+      [_cat addObject:[comp objectAtIndex:0]];
 #endif    
   }
+}
+
+- (BOOL)validateForSearch {
+  if (![self->startDate isNotNull]) {
+    [self setErrorString:@"Missing startdate!"]; // TODO: localize
+    return NO;
+  }
+  if (![self->endDate isNotNull]) {
+    [self setErrorString:@"Missing enddate!"]; // TODO: localize
+    return NO;
+  }
+  
+  // TODO: explain this condition
+  if ((self->duration < 0) || (self->interval < 0) ||
+      (self->earliestStartTime < 0) || (self->latestFinishTime < 0)) {
+    [self setErrorString:@"Inconsistency in duration!"]; // TODO: localize
+    return NO;
+  }
+
+  if (![self->selectedParticipants isNotEmpty]) {
+    [self setErrorString:@"No participants selected!"]; // TODO: localize
+    return NO;
+  }
+  
+  return YES;
+}
+
+- (id)search {
+  NSMutableArray *resourceNames;
+  NSMutableArray *categories;
+  NSString       *str;
+  
+  /* split self->resources into resourceNames and categories? */
+  // TODO: move to own method?!
+  
+  str = [[self labels] valueForKey:@"resCategory"];
+  str = (str == nil) 
+    ? @" (resCategory)"
+    : [NSString stringWithFormat:@" (%@)", str];
+  
+  resourceNames = [[NSMutableArray alloc] initWithCapacity:16];
+  categories    = [[NSMutableArray alloc] initWithCapacity:16];
+
+  [self _splitArray:self->resources withCategorySuffix:str
+        intoCategories:categories andResources:resourceNames];
   
   /* validate input */
   
-  if (![self validateForSearch]) {
-    [self setErrorString:@"Some search criteria is incorrect!"];
-    return nil;
-  }
-
+  if (![self validateForSearch])
+    return self;
+  
   /* free old stuff */
 
   [self->searchList      release]; self->searchList = nil;
