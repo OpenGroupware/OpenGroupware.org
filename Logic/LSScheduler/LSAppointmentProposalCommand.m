@@ -43,6 +43,7 @@
 */
 
 @class NSCalendarDate, NSTimeZone;
+@class LSCommandContext;
 
 @interface LSAppointmentProposalCommand : LSDBObjectBaseCommand
 {
@@ -81,8 +82,8 @@
 - (NSMutableArray *)_datesForParticipantsAndResources:(id)_context;
 - (NSMutableArray *)_datesForCategories:(id)_ctx;
 
-- (void)_sortDates:(NSMutableArray *)_dates  inContext:(id)_context;
-- (void)_mergeDates:(NSMutableArray *)_dates inContext:(id)_context;
+- (void)_sortDates:(NSMutableArray *)_dates  inContext:(LSCommandContext *)_cx;
+- (void)_mergeDates:(NSMutableArray *)_dates inContext:(LSCommandContext *)_cx;
 
 @end
 
@@ -771,15 +772,19 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
 
 /* bubble sort (dates should be already sorted) */
 
-- (void)_sortDates:(NSMutableArray *)_dates inContext:(id)_context {
-  BOOL isReady = NO;
+- (void)_sortDates:(NSMutableArray *)_dates inContext:(LSCommandContext *)_cx {
+  BOOL     isReady = NO;
+  unsigned cnt;
+
+  if ((cnt = [_dates count]) == 0)
+    return;
   
   while (!isReady) {
-    unsigned i, cnt;
+    unsigned i;
     
     isReady = YES;
     
-    for (i = 0, cnt = [_dates count]; i < cnt - 1; i++) {
+    for (i = 0; i < (cnt - 1); i++) {
       NSDictionary *date1;
       NSDictionary *date2;
       NSCalendarDate *startDate1, *startDate2;
@@ -798,10 +803,15 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   }
 }
 
-- (void)_mergeDates:(NSMutableArray *)_dates inContext:(id)_context {
+- (void)_mergeDates:(NSMutableArray *)_dates
+  inContext:(LSCommandContext *)_context
+{
   unsigned i, cnt;
+
+  if ((cnt = [_dates count]) == 0)
+    return;
   
-  for (i = 0, cnt = [_dates count]; i < cnt - 1; i++) {
+  for (i = 0; i < cnt - 1; i++) {
     // date probably means "appointment" here
     NSDictionary   *date1;
     NSDictionary   *date2;
@@ -811,7 +821,7 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
     NSDictionary   *dict     = nil;
     
     date1    = [_dates objectAtIndex:i];
-    date2    = [_dates objectAtIndex:i+1];
+    date2    = [_dates objectAtIndex:i + 1];
     endDate1 = [date1 objectForKey:@"endDate"];
     
     if ([endDate1 compare:

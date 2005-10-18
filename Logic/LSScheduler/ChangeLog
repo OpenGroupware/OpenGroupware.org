@@ -1,3 +1,8 @@
+2005-10-18  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSAppointmentProposalCommand.m: fixed exception as described in OGo
+	  bug #1591 (v5.3.80)
+
 2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetDateWithConflictCommand.m: filter out objects with
