@@ -1309,6 +1309,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/share/opengroupware.org-%{ogo_v}/templates/OGoUIElements
 %{prefix}/share/opengroupware.org-%{ogo_v}/templates/PreferencesUI
 %{prefix}/share/opengroupware.org-%{ogo_v}/templates/PropertiesUI
+%{prefix}/share/opengroupware.org-%{ogo_v}/templates/RegUI
 %{prefix}/share/opengroupware.org-%{ogo_v}/templates/RelatedLinksUI
 
 %files webui-core-devel
