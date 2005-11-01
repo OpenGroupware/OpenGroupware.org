@@ -1,3 +1,10 @@
+2005-11-02 Frank Reppin  <frank@opengroupware.org>
+
+	* politely ask in opengroupware/opengroupware-devel config,
+	  if the (required) PostgreSQL server runs on the same host or not
+	  (in order to inhale a dependency on postgresql${DEFAULT_PGSQL_VER}-server, or not)
+	* read DEFAULT_PGSQL_VER in opengroupware-devel from env as well
+
 2005-11-01 Frank Reppin  <frank@opengroupware.org>
 
 	* use DEFAULT_PGSQL_VER in sope44/sope45-devel ports
