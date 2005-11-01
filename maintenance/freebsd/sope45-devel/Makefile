@@ -57,6 +57,7 @@ MAKE_ARGS+=	HAS_LIBRARY_ssl=yes
 .endif
 .if defined(WITH_PQ) || !defined(WITHOUT_PQ)
 USE_PGSQL=	YES
+DEFAULT_PGSQL_VER?=	80
 MAKE_ARGS+=	HAS_LIBRARY_pq=yes
 .endif
 .if defined(WITH_SQLITE3)

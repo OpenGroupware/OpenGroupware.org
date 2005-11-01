@@ -42,6 +42,11 @@ MAKEFILE=	GNUmakefile
 MAKE_ARGS=	debug=yes \
 		GNUSTEP_INSTALLATION_DIR=${PREFIX} \
 		FHS_INSTALL_ROOT=${PREFIX}
+.if ${OSVERSION} >= 600000
+EXTRACT_DEPENDS+=	${LOCALBASE}/bin/gtar:${PORTSDIR}/archivers/gtar
+TAR=	gtar
+MAKE_ARGS+=	TAR=${TAR}
+.endif
 
 .if defined(WITH_SOPE_44) || !defined(WITHOUT_SOPE_44)
 BUILD_DEPENDS+=	${LOCALBASE}/sbin/sope-4.4:${PORTSDIR}/devel/sope44
@@ -51,10 +56,6 @@ BUILD_DEPENDS+=	${LOCALBASE}/sbin/sope-4.5:${PORTSDIR}/devel/sope45-devel
 .endif
 
 pre-everything::
-.if ${OSVERSION} >= 600000
-BUILD_DEPENDS+=	${LOCALBASE}/bin/gtar:${PORTSDIR}/archivers/gtar
-.endif
-
 .if defined(WITH_SOPE_44) && defined(WITH_SOPE_45_DEVEL)
 	@${ECHO_MSG} "WARNING!!!   WARNING!!!   WARNING!!!   WARNING!!!   WARNING!!!"
 	@${ECHO_MSG} "You must either choose sope-4.4 or sope-4.5, not both!"

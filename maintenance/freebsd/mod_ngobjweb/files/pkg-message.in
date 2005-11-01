@@ -6,5 +6,6 @@
   %%AP_RC%% stop
   %%AP_RC%% start
 
+  (requires %%AP_RCCONF%% in /etc/rc.conf)
 
 

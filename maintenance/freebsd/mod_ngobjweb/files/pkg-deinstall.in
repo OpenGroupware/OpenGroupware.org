@@ -11,5 +11,7 @@ POST-DEINSTALL)
   echo -e "  %%AP_RC%% stop"
   echo -e "  %%AP_RC%% start"
   echo -e ""
+  echo -e " (please check if you still need '%%AP_RCCONF%%' in /etc/rc.conf)"
+  echo -e ""
 esac
 

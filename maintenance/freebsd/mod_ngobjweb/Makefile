@@ -21,7 +21,7 @@ USE_APACHE=	yes
 USE_GMAKE=	yes
 MAKEFILE=	GNUmakefile
 SUB_FILES=	pkg-message pkg-deinstall
-SUB_LIST=	AP_RC=${AP_RC} P_NAME=${PORTNAME} P_VERSION=${PORTVERSION}
+SUB_LIST=	AP_RC=${AP_RC} AP_RCCONF=${AP_RCCONF} P_NAME=${PORTNAME} P_VERSION=${PORTVERSION}
 
 DOCS=		COPYRIGHT CHANGES README ChangeLog skyrix.conf
 
@@ -38,10 +38,12 @@ APACHE_PORT=	www/apache13
 MAKE_ARGS=	APXS=${APXS} APXS_INCLUDE_DIRS=-I${LOCALBASE}/include/apache2
 PLIST_SUB=	APACHE=apache2
 AP_RC?=		${LOCALBASE}/etc/rc.d/apache2.sh
+AP_RCCONF=	"apache2_enable=\"YES\""
 .else
 MAKE_ARGS=	APXS=${APXS} APXS_INCLUDE_DIRS=-I${LOCALBASE}/include/apache
 PLIST_SUB=	APACHE=apache
 AP_RC?=		${LOCALBASE}/etc/rc.d/apache.sh
+AP_RCCONF=	"apache_enable=\"YES\""
 .endif
 
 do-build:
