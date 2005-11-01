@@ -24,7 +24,8 @@ UNIQUENAME=	${PORTNAME}
 DIST_SUBDIR=	ogo-suite
 
 OPTIONS=	SOPE_45_DEVEL	"link with sope-4.5" off \
-		SOPE_44		"link with sope-4.4" on
+		SOPE_44		"link with sope-4.4" on \
+		PGSQLSERVER_HERE  "use PostgreSQL Server ${DEFAULT_PGSQL_VER} on this host?" on
 
 .include <bsd.port.pre.mk>
 
@@ -34,7 +35,7 @@ NO_FILTER_SHLIBS=	yes
 USE_OPENLDAP=	yes
 USE_RC_SUBR=	yes
 USE_PGSQL=	yes
-DEFAULT_PGSQL_VER=	80
+DEFAULT_PGSQL_VER?=	80
 USE_GMAKE=	yes
 USE_ICONV=	yes
 PREFIX=		${LOCALBASE}
@@ -48,6 +49,9 @@ TAR=	${LOCALBASE}/bin/gtar
 MAKE_ARGS+=	TAR=${TAR}
 .endif
 
+.if defined(WITH_PGSQLSERVER_HERE) || !defined(WITHOUT_PGSQLSERVER_HERE)
+BUILD_DEPENDS+=	${LOCALBASE}/bin/postmaster:${PORTSDIR}/databases/postgresql${DEFAULT_PGSQL_VER}-server
+.endif
 .if defined(WITH_SOPE_44) || !defined(WITHOUT_SOPE_44)
 BUILD_DEPENDS+=	${LOCALBASE}/sbin/sope-4.4:${PORTSDIR}/devel/sope44
 .endif
