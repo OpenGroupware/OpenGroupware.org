@@ -44,7 +44,7 @@ MAKE_ARGS=	debug=yes \
 		FHS_INSTALL_ROOT=${PREFIX}
 .if ${OSVERSION} >= 600000
 EXTRACT_DEPENDS+=	${LOCALBASE}/bin/gtar:${PORTSDIR}/archivers/gtar
-TAR=	gtar
+TAR=	${LOCALBASE}/bin/gtar
 MAKE_ARGS+=	TAR=${TAR}
 .endif
 
