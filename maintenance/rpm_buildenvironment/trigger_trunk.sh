@@ -1,11 +1,13 @@
 #!/bin/sh
 
 echo -en "WARNING: not yet configured!\n" && exit 127
-DISTRI="fedora-core3"
+DISTRI="fedora-core4"
+#DISTRI="fedora-core3"
 #DISTRI="fedora-core2"
 #DISTRI="redhat9"
 #DISTRI="mdk-10.1"
 #DISTRI="mdk-10.0"
+#DISTRI="suse10-0"
 #DISTRI="suse93"
 #DISTRI="suse92"
 #DISTRI="suse91"

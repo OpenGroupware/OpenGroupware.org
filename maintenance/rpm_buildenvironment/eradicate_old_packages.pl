@@ -21,6 +21,7 @@ my @distris = qw(fedora-core2
   suse91
   suse92
   suse93
+  suse10-0
   conectiva10
 );
 
