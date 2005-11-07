@@ -1,4 +1,5 @@
-// $Id: LSWDocumentEditor.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
+// TODO: where is this template used?
 
 Frame: LSWSkyrixFrame {}
 
