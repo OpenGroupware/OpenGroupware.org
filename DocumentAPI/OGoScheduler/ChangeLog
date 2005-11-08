@@ -1,3 +1,7 @@
+2005-11-08  Norbert Schulze  <ahh05@herr-der-mails.de>
+
+	* Holidays.plist: added German holidays 2006 (v5.3.37)
+
 2005-09-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile.preamble: added link deps for OSX (v5.3.36)

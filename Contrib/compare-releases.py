@@ -5,7 +5,7 @@ import sys, os, stat
 excludeList = (
     ".svn", "obj",
     "config.guess", "config.status", "config.log", "config.cache",
-    "Resources",
+    #"Resources",
     "ix86", "core"
 )
 excludeSuffixes = (
@@ -68,6 +68,7 @@ def makeRelPath(base, path):
     return relpath
 
 def compareChangeLogs(pathA, pathB):
+    #print "COMP:", pathA, "and", pathB
     if os.stat(pathA)[stat.ST_SIZE] == os.stat(pathB)[stat.ST_SIZE]:
         "sufficiently correct in practice, ChangeLogs should always grow ..."
         return None
