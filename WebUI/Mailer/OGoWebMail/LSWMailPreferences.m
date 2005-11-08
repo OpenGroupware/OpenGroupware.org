@@ -196,7 +196,7 @@ static NSArray *NumberOfUploadFieldsValues = nil;
     self->draftsFolder = [[[self imapContext] draftsFolder] retain];
 }
 
-- (void)appendToResponse:(id)_rep inContext:(id)_ctx {
+- (void)appendToResponse:(WOResponse *)_rep inContext:(WOContext *)_ctx {
   [self _initFolder];
 
   if ([self->defaults valueForKey:@"mail_fromPopupList"] == nil) {

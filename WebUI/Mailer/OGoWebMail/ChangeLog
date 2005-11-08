@@ -1,3 +1,9 @@
+2005-11-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyImapMailPrintViewer.m, LSWMailPreferences.m,
+	  LSWImapMailFolderMove.m: fixed some gcc4
+	  warnings, minor code cleanups (v5.3.105)
+
 2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
 
 	* bundle-info.plist: moved mailing-list registry entries to

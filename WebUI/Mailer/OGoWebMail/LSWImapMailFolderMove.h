@@ -24,7 +24,8 @@
 
 #include <OGoFoundation/OGoContentPage.h>
 
-@class NSMutableDictionary, NGImap4Folder, NSString;
+@class NSString, NSMutableDictionary;
+@class NGImap4Folder;
 
 @interface LSWImapMailFolderMove : OGoContentPage
 {
@@ -36,8 +37,8 @@
 
 /* accessors */
 
-- (void)setFolder:(id)_folder;
-- (void)setRootFolder:(id)_rootFolder;
+- (void)setFolder:(NGImap4Folder *)_folder;
+- (void)setRootFolder:(NGImap4Folder *)_rootFolder;
 
 @end
 

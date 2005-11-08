@@ -19,8 +19,8 @@
   02111-1307, USA.
 */
 
-#include "common.h"
 #include "LSWImapMailFolderMove.h"
+#include "common.h"
 
 @implementation LSWImapMailFolderMove
 
@@ -31,32 +31,32 @@
   [super dealloc];
 }
 
-- (NGImap4Folder *)item {
-  return self->item;
-}
 - (void)setItem:(NGImap4Folder *)_item {
   ASSIGN(self->item, _item);
 }
-
-- (NGImap4Folder *)folder {
-  return self->folder;
+- (NGImap4Folder *)item {
+  return self->item;
 }
+
 - (void)setFolder:(NGImap4Folder *)_folder {
   ASSIGN(self->folder, _folder);
 }
-
-- (NGImap4Folder *)rootFolder {
-  return self->rootFolder;
+- (NGImap4Folder *)folder {
+  return self->folder;
 }
+
 - (void)setRootFolder:(NGImap4Folder *)_rootFolder {
   ASSIGN(self->rootFolder, _rootFolder);
+}
+- (NGImap4Folder *)rootFolder {
+  return self->rootFolder;
 }
 
 - (NSArray *)rootFolders {
   return [NSArray arrayWithObject:self->rootFolder];
 }
 
-// --- conditionals ---------------------------
+/* conditionals */
 
 - (BOOL)canMoveToFolder {
   return
@@ -68,7 +68,7 @@
   return [self->item isEqual:self->folder];
 }
 
-// --- actions --------------------------------
+/* actions */
 
 - (id)cancel {
   [self leavePage];
@@ -76,6 +76,8 @@
 }
 
 - (id)moveFolder {
+  // TODO: cleanup
+  
   [self->folder resetLastException];
   [[self->folder parentFolder] moveSubFolder:self->folder to:self->item];
   [[[[self session] navigation] activePage]
@@ -99,9 +101,8 @@
         [self setErrorString:s];
         [s release];
       }
-      else {
+      else
         [self setErrorString:[localException description]];
-      }
     }
     else
       [self leavePage];
@@ -109,7 +110,7 @@
   return nil;
 }
 
-// ------------------------------------------------------
+/* icon */
 
 - (NSString *)_iconName {
   NSMutableString *result;
@@ -151,14 +152,8 @@
 }
 
 - (NSString *)folderBGColor {
-  id conf = [self config];
-
-  if ([self isFolderToMove])
-    return [conf valueForKey:@"colors_valueCell"];
-  else
-    return [conf valueForKey:@"colors_attributeCell"];
+  return [[self config] valueForKey:[self isFolderToMove]
+                        ? @"colors_valueCell" : @"colors_attributeCell"];
 }
 
-
-@end
-
+@end /* LSWImapMailFolderMove */

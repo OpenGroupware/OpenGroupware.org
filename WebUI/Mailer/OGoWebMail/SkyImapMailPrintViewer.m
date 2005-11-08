@@ -84,29 +84,31 @@
 }
 
 - (NSString *)_formatDateValue:(NSCalendarDate *)_date {
-  unsigned char buf[32];
+  char buf[32];
   
-  sprintf(buf, "%04i-%02i-%02i %02i:%02i",
-	  [_date yearOfCommonEra], [_date monthOfYear], [_date dayOfMonth],
-	  [_date hourOfDay], [_date minuteOfHour]);
+  snprintf(buf, sizeof(buf), "%04i-%02i-%02i %02i:%02i",
+           [_date yearOfCommonEra], [_date monthOfYear], [_date dayOfMonth],
+           [_date hourOfDay], [_date minuteOfHour]);
   return [NSString stringWithCString:buf];
 }
 
-- (id)headerValue {
+- (id)headerValue { // TODO: can we set typing to return an NSString?
   NSMutableString *ms;
   NSEnumerator    *e;
   id              one;
 
   ms = [NSMutableString stringWithCapacity:32];
   e  = [self->emailContent valuesOfHeaderFieldWithName:self->header];
-  while ((one = [e nextObject])) {
+  while ((one = [e nextObject]) != nil) {
     if ([one isKindOfClass:[NSCalendarDate class]])
       one = [self _formatDateValue:one];
     else if (![one isKindOfClass:[NSString class]])
       one = [one description];
     
-    if ([ms length])
-      [ms appendFormat:@", %@", one];
+    if ([ms isNotEmpty]) {
+      [ms appendString:@", "];
+      [ms appendString:[one stringValue]];
+    }
     else
       [ms appendString:one];
   }
@@ -115,7 +117,8 @@
 
 /* KVC */
 
-- (void)takeValue:(id)_val forKey:(id)_key {
+- (void)takeValue:(id)_val forKey:(NSString *)_key {
+  // TODO: is this required? (maybe due to the superclass?)
   if ([_key isEqualToString:@"object"]) {
     ASSIGN(self->object, _val);
   }
