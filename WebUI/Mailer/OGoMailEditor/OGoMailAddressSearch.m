@@ -57,6 +57,7 @@ static NSNumber *manyKeyNum = nil;
 static Class    DateClass   = Nil;
 
 static BOOL profileOn                     = NO;
+static BOOL showMultiResultsMessage       = NO;
 static int  UseCCForMultipleAddressSearch = -1;
 static int  SearchMailingLists            = -1;
 static int  DefMaxSearchCount             = 10;
@@ -71,6 +72,8 @@ static int  DefMaxSearchCount             = 10;
     [ud integerForKey:@"OGoMailAddressSearch_MaxSearchCount"];
   
   profileOn = [ud boolForKey:@"OGoProfileMailAddressSearch"];
+  showMultiResultsMessage = 
+    [ud boolForKey:@"OGoMailAddressSearch_ShowMultiResultsWarning"];
   
   DateClass = [NSDate class];
   if (manyKeyNum == nil)
@@ -243,6 +246,13 @@ static int  DefMaxSearchCount             = 10;
   return [searchItem stringByTrimmingLeadSpaces];
 }
 
+- (OGoMailAddressRecord *)_multiEntry {
+  /* this will create the "multi results" entry in the popup */
+  NSString *l;
+  
+  l = [[self labels] valueForKey:@"multiple_searchresults"];
+  return [OGoMailAddressRecord mailRecordForEMail:@"" andLabel:l];
+}
 - (OGoMailAddressRecord *)_emptyEntry {
   /* this will create the "ignore" entry in the popup */
   NSString *l;
@@ -439,7 +449,7 @@ static int  DefMaxSearchCount             = 10;
 - (OGoMailAddressRecordResult *)resultSetForMails:(NSArray *)_emails
   addFirstFoundAsTo:(BOOL)_addFirstFoundAsTo
 {
-  OGoMailAddressRecordResult *addresses = nil;
+  OGoMailAddressRecordResult *addresses;
   
   addresses = [[[OGoMailAddressRecordResult alloc] init] autorelease];
   [addresses setEMails:_emails];
@@ -450,7 +460,7 @@ static int  DefMaxSearchCount             = 10;
   else
     [addresses setHeader:UseCCForMultipleAddressSearch ? @"cc" : @"to"];
   
-  if ([_emails count] > 0)
+  if ([_emails isNotEmpty])
     [addresses setEMail:[_emails objectAtIndex:0]];
   
   return addresses;
@@ -465,7 +475,7 @@ static int  DefMaxSearchCount             = 10;
   NSString       *e, *l;
   
   if (prohibited_) *prohibited_ = nil;
-  if (!(_email != nil && [_email length] > 0))
+  if (!(_email != nil && [_email isNotEmpty]))
     return nil;
 
   prohibited = [NSMutableArray arrayWithCapacity:2];
@@ -489,7 +499,7 @@ static int  DefMaxSearchCount             = 10;
                     addFirstFoundAsTo:_addFirstFoundAsTo];
   
   if (prohibited_)
-    *prohibited_ = [prohibited count] > 0 ? prohibited : nil;
+    *prohibited_ = [prohibited isNotEmpty] ? prohibited : nil;
   
   return addresses;
 }
@@ -525,7 +535,7 @@ static int  DefMaxSearchCount             = 10;
   profStartDate = profileOn ? [NSDate date] : nil;
   
   if (prohibited_) *prohibited_ = nil;
-  if (!(_searchString != nil && [_searchString length] > 0))
+  if (!(_searchString != nil && [_searchString isNotEmpty]))
     return nil;
   
   self->currentMailCount  = 0;
@@ -557,7 +567,7 @@ static int  DefMaxSearchCount             = 10;
     /* scan mails in 'array' for prohibited ones */
           
     enumerator = [array objectEnumerator];
-    while ((obj = [enumerator nextObject])) {
+    while ((obj = [enumerator nextObject]) != nil) {
       NSString *e, *l;
             
       e = [obj objectForKey:@"email"];
@@ -594,13 +604,15 @@ static int  DefMaxSearchCount             = 10;
   
   if (self->currentMailCount >= self->maxSearchCount)
     [emails insertObject:[self _restrictedSearchEntry:searchItem] atIndex:0];
+  else if (showMultiResultsMessage && [emails count] > 2)
+    [emails insertObject:[self _multiEntry] atIndex:0];
   
   /* setup email result object */
   addresses = [self resultSetForMails:emails 
                     addFirstFoundAsTo:_addFirstFoundAsTo];
   
   if (prohibited_)
-    *prohibited_ = [prohibited count] > 0 ? prohibited : nil;
+    *prohibited_ = [prohibited isNotEmpty] ? prohibited : nil;
   
   if (profileOn) {
     NSTimeInterval ti = [[NSDate date] timeIntervalSinceDate:profStartDate];
@@ -667,7 +679,7 @@ static int  DefMaxSearchCount             = 10;
   [pool release];
   
   if (prohibited_)
-    *prohibited_ = [prohibited count] > 0 ? prohibited : nil;
+    *prohibited_ = [prohibited isNotEmpty] ? prohibited : nil;
   
   return [resultSets autorelease];
 }

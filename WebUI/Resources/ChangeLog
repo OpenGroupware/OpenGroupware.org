@@ -1,3 +1,8 @@
+2005-11-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* English|German.lproj/OGoMailEditor.strings: added label
+	  multiple_searchresults
+
 2005-10-14  Helge Hess  <helge.hess@skyrix.com>
 
 	* German.lproj/SkyProject4.strings: cleanups

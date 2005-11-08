@@ -1,3 +1,10 @@
+2005-11-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoMailAddressSearch.m: added ability to show a warning in the popup
+	  in case a search resulted in more than one email address. This
+	  behaviour can be enabled using the "multiple_searchresults" default
+	  (v5.3.10)
+
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
 
 	* fixed some gcc4 warnings (v5.3.9)

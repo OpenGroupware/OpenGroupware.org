@@ -1,4 +1,4 @@
-// $Id: LSWImapMailEditor.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
@@ -29,6 +29,7 @@ AddressKeysPopup: WOPopUpButton {
 }
 
 RecipientsPopup: WOPopUpButton {
+  // addressEntry is an 'OGoMailAddressRecordResult' object
   list      = addressEntry.emails;
   string    = addressEntryPopupItem.label;
   selection = addressEntry.email;

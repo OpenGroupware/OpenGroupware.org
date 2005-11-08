@@ -24,6 +24,18 @@
 
 #import <Foundation/NSObject.h>
 
+/*
+  OGoMailAddressRecordResult
+  
+  This is used in the RecipientsPopup inside LSWImapMailEditor. The 'email'
+  is the selected record.
+  
+  This object manages three things:
+  a) the array of email records which matched a search
+  b) the selected email record
+  c) the type of the recipient field (to/cc/bcc)
+*/
+
 @class NSString, NSArray;
 
 @interface OGoMailAddressRecordResult : NSObject

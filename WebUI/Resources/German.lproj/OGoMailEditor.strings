@@ -229,6 +229,7 @@ move                            = "verschiebe nach";
 moveFolder                      = "Ordner verschieben";
 moveMail                        = "verschieben";
 moveTo                          = "verschiebe nach";
+multiple_searchresults          = "Mehrere Treffer bei der Suche, bitte wählen Sie einen Empfänger:";
 name                            = "Name";
 navigation_separator            = "/";
 navigation_startLabel           = "Sie sind hier:";
