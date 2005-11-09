@@ -3,8 +3,7 @@
   Please restart apache in order to activate the
   changes we've just made to your configuration:
 
-  %%AP_RC%% stop
-  %%AP_RC%% start
+  %%AP_RC%% restart
 
   (requires %%AP_RCCONF%% in /etc/rc.conf)
 

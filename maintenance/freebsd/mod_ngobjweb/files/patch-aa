@@ -1,0 +1,11 @@
+--- GNUmakefile.dist	Wed Nov  9 14:34:40 2005
++++ GNUmakefile	Wed Nov  9 14:28:37 2005
+@@ -93,7 +93,7 @@
+ 	config.o		\
+ 	ngobjweb_module.o	\
+ 
+-product = mod_ngobjweb$(SHARED_LIBEXT)
++product = ngobjweb_module$(SHARED_LIBEXT)
+ 
+ all :: $(product)
+ 

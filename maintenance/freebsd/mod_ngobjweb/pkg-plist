@@ -1,9 +1,9 @@
-libexec/%%APACHE%%/mod_ngobjweb.so
-@exec %D/sbin/apxs -e -a -n ngobjweb %D/%F
-@unexec %D/sbin/apxs -e -A -n ngobjweb %D/%F
+libexec/%%APACHE%%/ngobjweb_module.so
+@exec %D/sbin/apxs -e -a %D/%F
+@unexec %D/sbin/apxs -e -A %D/%F
+libexec/%%APACHE%%/ngobjweb_module.c
 %%PORTDOCS%%%%DOCSDIR%%/COPYRIGHT
 %%PORTDOCS%%%%DOCSDIR%%/CHANGES
 %%PORTDOCS%%%%DOCSDIR%%/README
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog
-%%PORTDOCS%%%%DOCSDIR%%/skyrix.conf
 %%PORTDOCS%%@dirrm %%DOCSDIR%%

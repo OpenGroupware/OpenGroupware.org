@@ -5,13 +5,13 @@ case $2 in
 POST-DEINSTALL)
   echo -e ""
   echo -e "==> %%P_NAME%%-%%P_VERSION%% post deinstall message"
+  echo -e ""
   echo -e "  Please restart apache in order to acticate"
   echo -e "  the changes we've made to your configuration:"
   echo -e ""
-  echo -e "  %%AP_RC%% stop"
-  echo -e "  %%AP_RC%% start"
+  echo -e "  %%AP_RC%% restart"
   echo -e ""
-  echo -e " (please check if you still need '%%AP_RCCONF%%' in /etc/rc.conf)"
+  echo -e "  (please check if you still need '%%AP_RCCONF%%' in /etc/rc.conf)"
   echo -e ""
 esac
 

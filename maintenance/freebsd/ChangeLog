@@ -1,3 +1,12 @@
+2005-11-09 Frank Reppin  <frank@opengroupware.org>
+
+	* fixed APXS based module installation (mod_ngobjweb)
+	* added files/patch-aa (mod_ngobjweb)
+	  (changed module name from mod_ngobjweb.so to ngobjweb_modules.so
+	  to make apxs happy - in GNUmakefile)
+	* removed skyrix.conf from DOCS and pkg-plist (mod_ngobjweb)
+	* simplified install/deinstall message to 'restart' instead of 'stop'/'start'
+
 2005-11-02 Frank Reppin  <frank@opengroupware.org>
 
 	* politely ask in opengroupware/opengroupware-devel config,

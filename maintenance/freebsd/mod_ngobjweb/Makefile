@@ -23,7 +23,7 @@ MAKEFILE=	GNUmakefile
 SUB_FILES=	pkg-message pkg-deinstall
 SUB_LIST=	AP_RC=${AP_RC} AP_RCCONF=${AP_RCCONF} P_NAME=${PORTNAME} P_VERSION=${PORTVERSION}
 
-DOCS=		COPYRIGHT CHANGES README ChangeLog skyrix.conf
+DOCS=		COPYRIGHT CHANGES README ChangeLog
 
 .include <bsd.port.pre.mk>
 
@@ -36,21 +36,30 @@ APACHE_PORT=	www/apache13
 
 .if defined(WITH_APACHE2)
 MAKE_ARGS=	APXS=${APXS} APXS_INCLUDE_DIRS=-I${LOCALBASE}/include/apache2
-PLIST_SUB=	APACHE=apache2
+.if exists(${APXS})
+AP_LIBEXEC!=	${APXS} -q LIBEXECDIR
+.endif
+AP_MOD_DIR?=	${AP_LIBEXEC:S/${PREFIX}//}
 AP_RC?=		${LOCALBASE}/etc/rc.d/apache2.sh
 AP_RCCONF=	"apache2_enable=\"YES\""
+PLIST_SUB=	APACHE=apache2
 .else
 MAKE_ARGS=	APXS=${APXS} APXS_INCLUDE_DIRS=-I${LOCALBASE}/include/apache
-PLIST_SUB=	APACHE=apache
+.if exists(${APXS})
+AP_LIBEXEC!=	${APXS} -q LIBEXECDIR
+.endif
+AP_MOD_DIR?=	${AP_LIBEXEC:S/${PREFIX}//}
 AP_RC?=		${LOCALBASE}/etc/rc.d/apache.sh
 AP_RCCONF=	"apache_enable=\"YES\""
+PLIST_SUB=	APACHE=apache
 .endif
 
 do-build:
 	(cd ${WRKSRC}; ${GMAKE} ${MAKE_ARGS})
 
 do-install:
-	@${APXS} -i -a -n ngobjweb ${WRKSRC}/mod_ngobjweb.so
+	@${APXS} -i -a ${WRKSRC}/ngobjweb_module.so
+	@${INSTALL_DATA} ${WRKSRC}/ngobjweb_module.c ${PREFIX}/${AP_MOD_DIR}
 
 post-install:
 	@${CAT} ${PKGMESSAGE}
