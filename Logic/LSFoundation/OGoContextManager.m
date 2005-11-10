@@ -71,8 +71,18 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0/";
 			    @"127.0.0.1", @"hostName",
 			  nil];
   
-  timeZoneNames = [NSArray arrayWithObjects:
-			     @"MET", @"GMT", @"PST", @"EST", @"CST", nil];
+  timeZoneNames =
+    [[NSArray alloc] initWithObjects:
+                     @"MET", @"GMT", @"PST", @"EST", @"CST",
+                     @"EET", @"HST", @"MST", @"NZ",
+                     @"GMT+0100", @"GMT+0200", @"GMT+0300", @"GMT+0400",
+                     @"GMT+0500", @"GMT+0600", @"GMT+0700", @"GMT+0800",
+                     @"GMT+0900", @"GMT+1000", @"GMT+1100", @"GMT+1200",
+                     @"GMT-0100", @"GMT-0200", @"GMT-0300", @"GMT-0400",
+                     @"GMT-0500", @"GMT-0600", @"GMT-0700", @"GMT-0800",
+                     @"GMT-0900", @"GMT-1000", @"GMT-1100", @"GMT-1200",
+                     nil];
+  
   defs = [NSDictionary dictionaryWithObjectsAndKeys:
            @"",                            @"LSAuthLDAPServer",
            @"c=DE",                        @"LSAuthLDAPServerRoot",
@@ -86,6 +96,8 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.0/";
            @"lib/opengroupware.org-1.0/",  @"OGoFHSBundleSubPath",
            [NSNumber numberWithBool:YES],  @"LSSessionAccountLogEnabled",
           nil];
+  [timeZoneNames release]; timeZoneNames = nil;
+
   [_defs registerDefaults:defs];
 }
 

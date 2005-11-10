@@ -1,3 +1,8 @@
+2005-11-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoContextManager.m: added more default timezones (OGo bug #1612)
+	  (v5.2.104)
+
 2005-05-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* EOSQLQualifier+LS.m: added hack to split keywords containing ", "
