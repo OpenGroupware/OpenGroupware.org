@@ -54,38 +54,60 @@ static int      LSAllowSpacesInLogin           = -1;
 static BOOL     loadCommandBundlesOnStartup    = YES;
 static BOOL     loadDataSourceBundlesOnStartup = YES;
 static NSString *OGoBundlePathSpecifier        = nil;
-static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
+static NSString *FHSOGoBundleDir               = nil;
 
 + (void)registerInUserDefaults:(NSUserDefaults *)_defs {
   NSArray      *timeZoneNames;
   NSDictionary *defs;
   NSDictionary *condict;
+  NSString *bps, *fsp;
   
   // TODO: why are the timezone names declared in this place? Sounds like
   //       a task for the user-interface?!
   
   condict = [NSDictionary dictionaryWithObjectsAndKeys:
-			    @"OGo",       @"userName",
-			    @"OGo",       @"databaseName",
-  			    @"5432",      @"port",
-			    @"127.0.0.1", @"hostName",
+			    OGO_DBUSER, @"userName",
+			    OGO_DB,     @"databaseName",
+                            [NSNumber numberWithInt:OGO_DBPORT], @"port",
+			    OGO_DBHOST, @"hostName",
 			  nil];
   
-  timeZoneNames = [NSArray arrayWithObjects:
-			     @"MET", @"GMT", @"PST", @"EST", @"CST", nil];
+  // TODO: would be nice to derive the first entry from the Linux setting
+  timeZoneNames =
+    [[NSArray alloc] initWithObjects:
+                     @"MET", @"GMT", @"PST", @"EST", @"CST",
+                     @"EET", @"HST", @"MST", @"NZ",
+                     @"GMT+0100", @"GMT+0200", @"GMT+0300", @"GMT+0400",
+                     @"GMT+0500", @"GMT+0600", @"GMT+0700", @"GMT+0800",
+                     @"GMT+0900", @"GMT+1000", @"GMT+1100", @"GMT+1200",
+                     @"GMT-0100", @"GMT-0200", @"GMT-0300", @"GMT-0400",
+                     @"GMT-0500", @"GMT-0600", @"GMT-0700", @"GMT-0800",
+                     @"GMT-0900", @"GMT-1000", @"GMT-1100", @"GMT-1200",
+                     nil];
+  
+  /* eg OGo soversion 5.3 => 1.1 */
+  bps = [[NSString alloc] initWithFormat:@"OpenGroupware.org-%i.%i",
+                          OGO_MAJOR_VERSION - 4, OGO_MINOR_VERSION - 2];
+  fsp = [[NSString alloc] initWithFormat:@"lib/opengroupware.org-%i.%i/",
+                          OGO_MAJOR_VERSION - 4, OGO_MINOR_VERSION - 2];
+  
   defs = [NSDictionary dictionaryWithObjectsAndKeys:
            @"",                            @"LSAuthLDAPServer",
            @"c=DE",                        @"LSAuthLDAPServerRoot",
-           [NSNumber numberWithInt:389],   @"LSAuthLDAPServerPort",
+           [NSNumber numberWithInt:OGO_LDAPPORT], @"LSAuthLDAPServerPort",
            @"uid",                         @"LSLDAPLoginField",
            @"OGoModel",                    @"LSOfficeModel",
-           @"PostgreSQL",                  @"LSAdaptor",
+           OGO_DBADAPTOR,                  @"LSAdaptor",
            timeZoneNames,                  @"LSTimeZones",
 	   condict,                        @"LSConnectionDictionary",
-           @"OpenGroupware.org-1.1",      @"OGoBundlePathSpecifier",
-           @"lib/opengroupware.org-1.1/", @"OGoFHSBundleSubPath",
+           bps,                            @"OGoBundlePathSpecifier",
+           fsp,                            @"OGoFHSBundleSubPath",
            [NSNumber numberWithBool:YES],  @"LSSessionAccountLogEnabled",
           nil];
+  [timeZoneNames release]; timeZoneNames = nil;
+  [bps release]; bps = nil;
+  [fsp release]; fsp = nil;
+  
   [_defs registerDefaults:defs];
 }
 
@@ -126,7 +148,7 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
 					       YES);
 #endif
 
-  if ([FHSOGoBundleDir length] > 0) {
+  if ([FHSOGoBundleDir isNotEmpty]) {
     // TODO: should be some search path, eg LD_LIBRARY_PATH?
     NSString *bp, *p;
     

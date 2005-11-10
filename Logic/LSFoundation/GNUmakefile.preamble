@@ -1,7 +1,25 @@
-# $Id: GNUmakefile.preamble 10 2004-08-21 01:23:23Z helge $
+# compilation settings
 
 ADDITIONAL_CPPFLAGS += -Wall
 
+# default settings
+
+ADDITIONAL_CPPFLAGS += \
+        -DOGO_MAJOR_VERSION=$(MAJOR_VERSION) \
+        -DOGO_MINOR_VERSION=$(MINOR_VERSION) \
+        -DOGO_SUBMINOR_VERSION=$(SUBMINOR_VERSION)
+
+ADDITIONAL_CPPFLAGS += \
+        -DOGO_DBUSER=@\"OGo\"           \
+        -DOGO_DB=@\"OGo\"               \
+        -DOGO_DBPORT=5432               \
+        -DOGO_DBHOST=@\"127.0.0.1\"
+
+ADDITIONAL_CPPFLAGS += \
+        -DOGO_DBADAPTOR=@\"PostgreSQL\" \
+        -DOGO_LDAPPORT=389
+
+# library dependencies
 
 libLSFoundation_LIBRARIES_DEPEND_UPON += \
 	-lGDLAccess -lNGLdap -lNGMime \

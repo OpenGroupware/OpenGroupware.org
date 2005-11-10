@@ -1,3 +1,9 @@
+2005-11-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoContextManager.m: moved some default-defaults to GNUmakefile,
+	  added more timezones (bug #1612), derive pathes from OGo version
+	  (v5.3.113)
+
 2005-10-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSDBObjectNewCommand.m: leave out all entities ending in Assignment
