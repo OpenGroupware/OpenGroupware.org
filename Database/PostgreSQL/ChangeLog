@@ -1,3 +1,7 @@
+2005-11-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* added pg-fill-objinfo.psql script from trunk
+
 2005-03-22  Stefan Huehner  <stefan@huehner.org>
 	
 	* pg-build-schema.psql.constraints: removed all table creation and
