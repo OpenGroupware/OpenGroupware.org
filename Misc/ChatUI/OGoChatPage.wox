@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<OGo:page
+  var:title="labels.$name"
+  var:onClose="cancel"
+  
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  
+>
+  <OGo:body>
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+      <tr var:bgcolor="config.colors_mainButtonRow">
+        <td align="left">
+          <iframe src="/jwchat/index.html.html" frameborder="1"
+                  width="100%" height="500" scrolling="yes" />
+        </td>
+      </tr>
+    </table>
+  </OGo:body>
+</OGo:page>

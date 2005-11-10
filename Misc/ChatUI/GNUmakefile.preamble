@@ -1,0 +1,12 @@
+# compilation settings
+
+OGoROOT   =../..
+WebUIROOT =..
+
+ADDITIONAL_WOBUNDLE_LIBS += \
+	-lGDLAccess	\
+	-lDOM -lSaxObjC
+
+ADDITIONAL_BUNDLE_LIBS += $(ADDITIONAL_WOBUNDLE_LIBS)
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
