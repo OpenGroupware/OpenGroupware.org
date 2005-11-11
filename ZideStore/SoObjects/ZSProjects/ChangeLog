@@ -1,3 +1,7 @@
+2005-11-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxDocumentFolder.m: fixed a bug in file lookup (v1.4.97)
+
 2005-06-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed gcc 4.0 warnings (v1.3.96)
