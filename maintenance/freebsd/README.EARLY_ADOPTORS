@@ -25,3 +25,10 @@ required dependencies should be resolved automatically.
 (Once alive - the port won't reside in devel/
 alone - I may/will deorbit some parts to other groups according
 to the ports-developer guidelines)
+
+If you test this port using -CURRENT... please make sure
+to link at least:
+
+  ln -s 'j' /etc/malloc.conf
+
+(http://bugzilla.opengroupware.org/bugzilla/show_bug.cgi?id=1303)

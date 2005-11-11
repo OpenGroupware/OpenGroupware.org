@@ -1,3 +1,16 @@
+2005-11-11 Frank Reppin  <frank@opengroupware.org>
+
+	* added required 'else' condition to take care of non present
+	  ${APXS} during 'make' (mod_ngobjweb)
+	* updated all distinfo files to reflect changes announced with
+	  OSVERSION 504102 (SHA256 checksums)
+	* corrected opengroupware/opengroupware-devel Makefile and
+	  set correct OSVERSION (600022) to depend on gtar from ports
+	  when gtar was finally completely deorbited from base
+	  (opengroupware/opengroupware-devel)
+	* added important hint to 'README.EARLY_ADOPTORS' for users
+	  testing this port on -CURRENT
+
 2005-11-09 Frank Reppin  <frank@opengroupware.org>
 
 	* fixed APXS based module installation (mod_ngobjweb)

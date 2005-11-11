@@ -38,6 +38,8 @@ APACHE_PORT=	www/apache13
 MAKE_ARGS=	APXS=${APXS} APXS_INCLUDE_DIRS=-I${LOCALBASE}/include/apache2
 .if exists(${APXS})
 AP_LIBEXEC!=	${APXS} -q LIBEXECDIR
+.else
+AP_LIBEXEC?=	${LOCALBASE}/libexec/apache2
 .endif
 AP_MOD_DIR?=	${AP_LIBEXEC:S/${PREFIX}//}
 AP_RC?=		${LOCALBASE}/etc/rc.d/apache2.sh
@@ -47,6 +49,8 @@ PLIST_SUB=	APACHE=apache2
 MAKE_ARGS=	APXS=${APXS} APXS_INCLUDE_DIRS=-I${LOCALBASE}/include/apache
 .if exists(${APXS})
 AP_LIBEXEC!=	${APXS} -q LIBEXECDIR
+.else
+AP_LIBEXEC?=	${LOCALBASE}/libexec/apache
 .endif
 AP_MOD_DIR?=	${AP_LIBEXEC:S/${PREFIX}//}
 AP_RC?=		${LOCALBASE}/etc/rc.d/apache.sh
