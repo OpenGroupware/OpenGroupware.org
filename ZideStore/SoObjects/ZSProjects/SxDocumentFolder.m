@@ -270,10 +270,14 @@ static BOOL debugOn = NO;
   if ([_name length] == 0) return nil;
   
   /* first check for methods */
-  if ((tmp = [super lookupName:_name inContext:_ctx acquire:NO]))
-    return tmp;
+  if ((tmp = [super lookupName:_name inContext:_ctx acquire:NO]) != nil) {
+    if (![tmp isKindOfClass:[NSException class]])
+      return tmp;
+    if ([tmp httpStatus] != 404 /* Not Found */)
+      return tmp; /* object found but had some error? */
+  }
   
-  if ((tmp = [self lookupStoredName:_name inContext:_ctx]))
+  if ((tmp = [self lookupStoredName:_name inContext:_ctx]) != nil)
     return tmp;
   
   return [super lookupName:_name inContext:_ctx acquire:_flag];
