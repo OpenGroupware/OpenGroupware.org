@@ -9,7 +9,7 @@ PORTVERSION=	4.4
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/sope/
-DISTNAME=	sope-4.4rc.2-rock-r944
+DISTNAME=	sope-4.4.0-cell-r1160
 
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	SOPE is a framework for developing web applications and services
@@ -23,11 +23,10 @@ UNIQUENAME=	${PORTNAME}44
 CONFLICTS=	sope-4.5*
 DIST_SUBDIR=	ogo-suite
 
-OPTIONS=	LIBXML2		"link with libxml2" on \
-		LDAP		"link with ldap" on \
-		PQ		"link with pq" on \
-		SSL		"link with ssl" on \
-		MYSQLCLIENT	"link with mysqlclient" off
+OPTIONS=	LIBXML2		"link with libxml2 (required)" on \
+		LDAP		"link with ldap (required)" on \
+		PQ		"link with pq (required if you build for OGo)" on \
+		MYSQLCLIENT	"link with mysqlclient (optional)" off
 
 .include <bsd.port.pre.mk>
 
@@ -42,25 +41,34 @@ MAKE_ARGS=	debug=yes \
 		GNUSTEP_INSTALLATION_DIR=${PREFIX} \
 		FHS_INSTALL_ROOT=${PREFIX}
 
-.if defined(WITH_LIBXML2) || !defined(WITHOUT_LIBXML2)
+.if defined(WITH_LIBXML2)
 MAKE_ARGS+=	HAS_LIBRARY_xml2=yes
 LIB_DEPENDS+=	xml2.5:${PORTSDIR}/textproc/libxml2
+.else
+MAKE_ARGS+=	HAS_LIBRARY_xml2=no
 .endif
-.if defined(WITH_LDAP) || !defined(WITHOUT_LDAP)
+.if defined(WITH_LDAP)
 USE_OPENLDAP=	YES
 MAKE_ARGS+=	HAS_LIBRARY_ldap=yes
+.else
+MAKE_ARGS+=	HAS_LIBRARY_ldap=no
 .endif
 # not yet optional at all
-.if defined(WITH_SSL) || !defined(WITHOUT_SSL)
-MAKE_ARGS+=	HAS_LIBRARY_ssl=yes
-.endif
-.if defined(WITH_PQ) || !defined(WITHOUT_PQ)
+#.if defined(WITH_SSL)
+#MAKE_ARGS+=	HAS_LIBRARY_ssl=yes
+#.else
+#MAKE_ARGS+=	HAS_LIBRARY_ssl=no
+#.endif
+.if defined(WITH_PQ)
 USE_PGSQL=	YES
 DEFAULT_PGSQL_VER?=	80
 MAKE_ARGS+=	HAS_LIBRARY_pq=yes
+.else
+MAKE_ARGS+=	HAS_LIBRARY_pq=no
 .endif
 .if defined(WITH_MYSQLCLIENT)
 USE_MYSQL=	yes
+DEFAULT_MYSQL_VER?=	41
 MAKE_ARGS+=	HAS_LIBRARY_mysqlclient=yes
 .else
 MAKE_ARGS+=	HAS_LIBRARY_mysqlclient=no
@@ -68,8 +76,14 @@ MAKE_ARGS+=	HAS_LIBRARY_mysqlclient=no
 
 do-build:
 	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
+.if defined(WITH_MYSQLCLIENT)
+	(cd ${WRKSRC}/sope-gdl1/MySQL; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
+.endif
 
 do-install:
 	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
+.if defined(WITH_MYSQLCLIENT)
+	(cd ${WRKSRC}/sope-gdl1/MySQL; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
+.endif
 
 .include <bsd.port.post.mk>

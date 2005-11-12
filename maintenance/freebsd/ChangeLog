@@ -1,3 +1,8 @@
+2005-11-12 Frank Reppin  <frank@opengroupware.org>
+
+	* fixed MySQL Adaptor build/install (sope44)
+	* update to sope-4.4.0-cell (sope44)
+
 2005-11-11 Frank Reppin  <frank@opengroupware.org>
 
 	* added required 'else' condition to take care of non present
