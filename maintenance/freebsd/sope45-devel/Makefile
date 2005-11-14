@@ -68,6 +68,7 @@ MAKE_ARGS+=	HAS_LIBRARY_pq=yes
 MAKE_ARGS+=	HAS_LIBRARY_pq=no
 .endif
 .if defined(WITH_SQLITE3)
+USE_SQLITE=	YES
 MAKE_ARGS+=	HAS_LIBRARY_sqlite3=yes
 LIB_DEPENDS+=	sqlite3.8:${PORTSDIR}/databases/sqlite3
 .else
