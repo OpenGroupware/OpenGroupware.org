@@ -1,3 +1,9 @@
+2005-11-14 Frank Reppin  <frank@opengroupware.org>
+
+	* updated sope45-devel to more recent sope-trunk-r1173-200511091500 (sope45-devel)
+	* updated port itself to reflect recent changes made to sope44 port (sope45-devel)
+	* use pre-everything hint in Makefile (sope44)
+
 2005-11-12 Frank Reppin  <frank@opengroupware.org>
 
 	* fixed MySQL Adaptor build/install (sope44)

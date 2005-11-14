@@ -477,46 +477,49 @@ lib/libDOM_d.so.4.5
 lib/libDOM_d.so.4.5.20
 lib/libEOControl_d.so
 lib/libEOControl_d.so.4.5
-lib/libEOControl_d.so.4.5.60
+lib/libEOControl_d.so.4.5.61
 lib/libGDLAccess_d.so
 lib/libGDLAccess_d.so.4.5
-lib/libGDLAccess_d.so.4.5.54
+lib/libGDLAccess_d.so.4.5.55
 lib/libGDLContentStore_d.so
 lib/libGDLContentStore_d.so.4.5
 lib/libGDLContentStore_d.so.4.5.35
 lib/libNGExtensions_d.so
 lib/libNGExtensions_d.so.4.5
-lib/libNGExtensions_d.so.4.5.173
+lib/libNGExtensions_d.so.4.5.176
 @unexec rm -f %D/lib/libNGLdap_d.so 2>/dev/null || true
 @unexec rm -f %D/lib/libNGLdap_d.so.4.5 2>/dev/null || true
-@unexec rm -f %D/lib/libNGLdap_d.so.4.5.25 2>/dev/null || true
+@unexec rm -f %D/lib/libNGLdap_d.so.4.5.26 2>/dev/null || true
 lib/libNGMime_d.so
 lib/libNGMime_d.so.4.5
-lib/libNGMime_d.so.4.5.235
+lib/libNGMime_d.so.4.5.236
 lib/libNGObjWeb_d.so
 lib/libNGObjWeb_d.so.4.5
-lib/libNGObjWeb_d.so.4.5.198
+lib/libNGObjWeb_d.so.4.5.209
 lib/libNGStreams_d.so
 lib/libNGStreams_d.so.4.5
 lib/libNGStreams_d.so.4.5.49
 lib/libNGXmlRpc_d.so
 lib/libNGXmlRpc_d.so.4.5
-lib/libNGXmlRpc_d.so.4.5.12
+lib/libNGXmlRpc_d.so.4.5.13
 lib/libNGiCal_d.so
 lib/libNGiCal_d.so.4.5
-lib/libNGiCal_d.so.4.5.60
+lib/libNGiCal_d.so.4.5.69
 lib/libSaxObjC_d.so
 lib/libSaxObjC_d.so.4.5
 lib/libSaxObjC_d.so.4.5.52
 lib/libSoOFS_d.so
 lib/libSoOFS_d.so.4.5
-lib/libSoOFS_d.so.4.5.18
+lib/libSoOFS_d.so.4.5.19
 lib/libWEExtensions_d.so
 lib/libWEExtensions_d.so.4.5
-lib/libWEExtensions_d.so.4.5.81
+lib/libWEExtensions_d.so.4.5.83
+lib/libWEPrototype_d.so
+lib/libWEPrototype_d.so.4.5
+lib/libWEPrototype_d.so.4.5.6
 lib/libWOExtensions_d.so
 lib/libWOExtensions_d.so.4.5
-lib/libWOExtensions_d.so.4.5.28
+lib/libWOExtensions_d.so.4.5.29
 lib/libWOXML_d.so
 lib/libWOXML_d.so.4.5
 lib/libWOXML_d.so.4.5.8
@@ -565,6 +568,10 @@ lib/sope-4.5/wox-builders/WEExtensions.wox/Resources/Info-gnustep.plist
 lib/sope-4.5/wox-builders/WEExtensions.wox/WEExtensions
 lib/sope-4.5/wox-builders/WEExtensions.wox/bundle-info.plist
 lib/sope-4.5/wox-builders/WEExtensions.wox/stamp.make
+lib/sope-4.5/wox-builders/WEPrototype.wox/Resources/Info-gnustep.plist
+lib/sope-4.5/wox-builders/WEPrototype.wox/WEPrototype
+lib/sope-4.5/wox-builders/WEPrototype.wox/bundle-info.plist
+lib/sope-4.5/wox-builders/WEPrototype.wox/stamp.make
 lib/sope-4.5/wox-builders/WOExtensions.wox/Resources/Info-gnustep.plist
 lib/sope-4.5/wox-builders/WOExtensions.wox/WOExtensions
 lib/sope-4.5/wox-builders/WOExtensions.wox/bundle-info.plist
@@ -581,6 +588,8 @@ share/sope-4.5/saxmappings/NGiCal.xmap
 @dirrm share/sope-4.5
 @dirrm lib/sope-4.5/wox-builders/WOExtensions.wox/Resources
 @dirrm lib/sope-4.5/wox-builders/WOExtensions.wox
+@dirrm lib/sope-4.5/wox-builders/WEPrototype.wox/Resources
+@dirrm lib/sope-4.5/wox-builders/WEPrototype.wox
 @dirrm lib/sope-4.5/wox-builders/WEExtensions.wox/Resources
 @dirrm lib/sope-4.5/wox-builders/WEExtensions.wox
 @dirrm lib/sope-4.5/wox-builders

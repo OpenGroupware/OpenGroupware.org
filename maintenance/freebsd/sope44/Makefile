@@ -74,6 +74,29 @@ MAKE_ARGS+=	HAS_LIBRARY_mysqlclient=yes
 MAKE_ARGS+=	HAS_LIBRARY_mysqlclient=no
 .endif
 
+pre-everything::
+	@${ECHO_CMD} "################################################################"
+	@${ECHO_CMD} "# README !!! README!!! README!!! README!!! README!!! README!!! #"
+	@${ECHO_CMD} "#                                                              #"
+	@${ECHO_CMD} "# The preselected values in the following survey are OK if     #"
+	@${ECHO_CMD} "# you're going to build SOPE for OpenGroupware.org - so        #"
+	@${ECHO_CMD} "# simply TAB to [OK] and wait for it to finish.                #"
+	@${ECHO_CMD} "#                                                              #"
+	@${ECHO_CMD} "# If you've built this port before or changed your mind        #"
+	@${ECHO_CMD} "# regarding the settings - please do a CTRL+C now and:         #"
+	@${ECHO_CMD} "#                                                              #"
+	@${ECHO_CMD} "#  make rmconfig - will remove the current config              #"
+	@${ECHO_CMD} "#                  for this port                               #"
+	@${ECHO_CMD} "#                                                              #"
+	@${ECHO_CMD} "#  make config   - will summon the config panel                #"
+	@${ECHO_CMD} "#                  again                                       #"
+	@${ECHO_CMD} "#                                                              #"
+	@${ECHO_CMD} "#  (make sure that you're in the correct portsdir prior        #"
+	@${ECHO_CMD} "#  executing the above mentioned commands)                     #"
+	@${ECHO_CMD} "#                                                              #"
+	@${ECHO_CMD} "################################################################"
+	@sleep 5
+
 do-build:
 	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
 .if defined(WITH_MYSQLCLIENT)
