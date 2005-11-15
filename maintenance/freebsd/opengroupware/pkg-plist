@@ -1005,5 +1005,5 @@ share/zidestore-1.4/PersonalFolderInfo.plist
 @dirrm Library/Headers/OGoBase
 @dirrm Library/Headers/OGoAccounts
 @dirrm Library/Headers/LSFoundation
-@dirrm Library/Headers
-@dirrm Library
+@unexec rmdir %D/Library/Headers 2>/dev/null || true
+@unexec rmdir %D/Library 2>/dev/null || true

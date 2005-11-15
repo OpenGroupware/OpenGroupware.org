@@ -1,3 +1,9 @@
+2005-11-15 Frank Reppin  <frank@opengroupware.org>
+
+	* updated to 1.0beta2 (opengroupware)
+	* fiddled around with the extract_depends on gtar... but
+	  found no better way, alas unchanged (opengroupware)
+
 2005-11-14 Frank Reppin  <frank@opengroupware.org>
 
 	* updated sope45-devel to more recent sope-trunk-r1173-200511091500 (sope45-devel)

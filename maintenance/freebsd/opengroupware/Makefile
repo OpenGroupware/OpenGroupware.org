@@ -9,7 +9,7 @@ PORTVERSION=	1.0
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/opengroupware/
-DISTNAME=	opengroupware.org-1.0beta.1-rock-r1175
+DISTNAME=	opengroupware.org-1.0beta.2-rock-r1412
 
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	OpenGroupware suite
