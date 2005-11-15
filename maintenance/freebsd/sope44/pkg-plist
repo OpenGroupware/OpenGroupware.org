@@ -589,7 +589,7 @@ share/sope-4.4/saxmappings/NGiCal.xmap
 @dirrm Library/WOxElemBuilders-4.4
 @dirrm Library/SoProducts-4.4
 @dirrm Library/SaxDrivers-4.4
-@dirrm Library/Libraries
+@unexec rmdir %D/Library/Libraries 2>/dev/null || true
 @dirrm Library/Headers/XmlRpc
 @dirrm Library/Headers/WOXML
 @dirrm Library/Headers/WOExtensions

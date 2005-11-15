@@ -42,13 +42,13 @@ MAKE_ARGS=	debug=yes \
 		GNUSTEP_INSTALLATION_DIR=${PREFIX} \
 		FHS_INSTALL_ROOT=${PREFIX}
 
-.if defined(WITH_LIBXML2)
+.if defined(WITH_LIBXML2) || !defined(WITHOUT_LIBXML2)
 MAKE_ARGS+=	HAS_LIBRARY_xml2=yes
 LIB_DEPENDS+=	xml2.5:${PORTSDIR}/textproc/libxml2
 .else
 MAKE_ARGS+=	HAS_LIBRARY_xml2=no
 .endif
-.if defined(WITH_LDAP)
+.if defined(WITH_LDAP) || !defined(WITHOUT_LDAP)
 USE_OPENLDAP=	YES
 MAKE_ARGS+=	HAS_LIBRARY_ldap=yes
 .else
@@ -60,7 +60,7 @@ MAKE_ARGS+=	HAS_LIBRARY_ldap=no
 #.else
 #MAKE_ARGS+=	HAS_LIBRARY_ssl=no
 #.endif
-.if defined(WITH_PQ)
+.if defined(WITH_PQ) || !defined(WITHOUT_PQ)
 USE_PGSQL=	YES
 DEFAULT_PGSQL_VER?=	80
 MAKE_ARGS+=	HAS_LIBRARY_pq=yes
@@ -103,29 +103,6 @@ MAN3=		JSAlertPanel.3 JSClipboard.3 JSConfirmPanel.3 JSImageFlyover.3 JSMenu.3 \
 		WOThresholdColoredNumber.3 WOVBScript.3
 
 MAN5=		sope-ngobjweb-defaults.5
-
-pre-everything::
-	@${ECHO_CMD} "################################################################"
-	@${ECHO_CMD} "# README !!! README!!! README!!! README!!! README!!! README!!! #"
-	@${ECHO_CMD} "#                                                              #"
-	@${ECHO_CMD} "# The preselected values in the following survey are OK if     #"
-	@${ECHO_CMD} "# you're going to build SOPE for OpenGroupware.org - so        #"
-	@${ECHO_CMD} "# simply TAB to [OK] and wait for it to finish.                #"
-	@${ECHO_CMD} "#                                                              #"
-	@${ECHO_CMD} "# If you've built this port before or changed your mind        #"
-	@${ECHO_CMD} "# regarding the settings - please do a CTRL+C now and:         #"
-	@${ECHO_CMD} "#                                                              #"
-	@${ECHO_CMD} "#  make rmconfig - will remove the current config              #"
-	@${ECHO_CMD} "#                  for this port                               #"
-	@${ECHO_CMD} "#                                                              #"
-	@${ECHO_CMD} "#  make config   - will summon the config panel                #"
-	@${ECHO_CMD} "#                  again                                       #"
-	@${ECHO_CMD} "#                                                              #"
-	@${ECHO_CMD} "#  (make sure that you're in the correct portsdir prior        #"
-	@${ECHO_CMD} "#  executing the above mentioned commands)                     #"
-	@${ECHO_CMD} "#                                                              #"
-	@${ECHO_CMD} "################################################################"
-	@sleep 5
 
 do-build:
 	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})

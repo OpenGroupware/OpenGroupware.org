@@ -3,6 +3,10 @@
 	* updated to 1.0beta2 (opengroupware)
 	* fiddled around with the extract_depends on gtar... but
 	  found no better way, alas unchanged (opengroupware)
+	* made PDA part optional (opengroupware)
+	* reintroduced '|| !defined(XXX)' parts to have some required default
+	  values if none are given (sope44/sope45-devel)
+	* exit on another weird option combo (opengroupware)
 
 2005-11-14 Frank Reppin  <frank@opengroupware.org>
 

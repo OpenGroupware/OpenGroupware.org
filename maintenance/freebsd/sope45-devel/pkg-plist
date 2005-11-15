@@ -636,7 +636,7 @@ share/sope-4.5/saxmappings/NGiCal.xmap
 @dirrm Library/WOxElemBuilders-4.5
 @dirrm Library/SoProducts-4.5
 @dirrm Library/SaxDrivers-4.5
-@dirrm Library/Libraries
+@unexec rmdir %D/Library/Libraries 2>/dev/null || true
 @dirrm Library/Headers/XmlRpc
 @dirrm Library/Headers/WOXML
 @dirrm Library/Headers/WOExtensions
@@ -657,4 +657,5 @@ share/sope-4.5/saxmappings/NGiCal.xmap
 @dirrm Library/Headers/GDLAccess
 @dirrm Library/Headers/EOControl
 @dirrm Library/Headers/DOM
+@unexec rmdir %D/Library/Headers 2>/dev/null || true
 @unexec rmdir %D/Library/GDLAdaptors-4.5 2>/dev/null || true
