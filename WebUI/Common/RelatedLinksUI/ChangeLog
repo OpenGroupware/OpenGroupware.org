@@ -1,3 +1,8 @@
+2005-11-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoObjectLinkList.m: added ability to create generic links using the
+	  clipboard (v5.3.10)
+
 2004-07-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.0.9

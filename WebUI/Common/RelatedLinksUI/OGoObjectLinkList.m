@@ -50,6 +50,7 @@
 @end
 
 #include "common.h"
+#include <OGoFoundation/OGoClipboard.h>
 #include <NGObjWeb/WORequest.h>
 
 @interface NSObject(Links)
@@ -83,7 +84,7 @@ static NSArray      *OGoObjectLinkTypes   = nil;
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     NSNotificationCenter *nc;
     
     nc = [self notificationCenter];
@@ -242,10 +243,98 @@ static NSArray      *OGoObjectLinkTypes   = nil;
 }
 
 - (NSArray *)linkTypeNames {
-  return OGoObjectLinkTypes;
+  OGoClipboard   *clipboard;
+  NSMutableArray *objs;
+  unsigned i, count;
+  
+  clipboard = [[self existingSession] favorites];
+  if (![clipboard isNotNull])
+    return OGoObjectLinkTypes;
+  
+  objs = [[OGoObjectLinkTypes mutableCopy] autorelease];
+  for (i = 0, count = [(NSArray *)clipboard count]; i < count; i++) {
+    NSString *s;
+    
+    s = [[NSString alloc] initWithFormat:@"clip:%d", i];
+    [objs addObject:s];
+    [s release]; s = nil;
+  }
+  
+  return objs;
 }
+
+- (id)clipTypeObject {
+  OGoClipboard *clipboard;
+  NSString *t;
+  unsigned idx;
+  
+  t = [self linkType];
+  if (![t hasPrefix:@"clip:"])
+    return nil;
+
+  t   = [t substringFromIndex:5];
+  idx = [t intValue];
+  clipboard = [[self existingSession] favorites];
+  if (idx >= [(NSArray *)clipboard count])
+    return nil;
+  
+  return [(NSArray *)clipboard objectAtIndex:idx];
+}
+
+- (NSString *)linkTypeValueForObject:(id)_object {
+  NSString *target = nil;
+  
+  if ([_object isKindOfClass:[NSNumber class]])
+    target = [(NSNumber *)_object stringValue];
+  else if ([_object isKindOfClass:[EOKeyGlobalID class]])
+    target = [[(EOKeyGlobalID *)_object keyValues][0] stringValue];
+  else if ([_object isKindOfClass:[NSURL class]])
+    target = [(NSURL *)_object absoluteString];
+  else if ([_object isKindOfClass:[NSString class]])
+    target = _object;
+  else {
+    id tmp;
+    
+    if ((tmp = [_object valueForKey:@"globalID"]) != nil)
+      target = [self linkTypeValueForObject:tmp];
+  }
+  
+  return target;
+}
+- (NSString *)linkTypeValue {
+  id clip;
+  
+  if ((clip = [self clipTypeObject]) != nil) {
+    NSString *target = nil;
+    
+    target = [self linkTypeValueForObject:clip];
+    if ([target isNotEmpty])
+      return [@"target:" stringByAppendingString:target];
+  }
+  return [self linkType];
+}
+
+- (NSString *)popupLinkTypeLabel {
+  id clip;
+  
+  if ((clip = [self clipTypeObject]) != nil) {
+    NSString *s, *p;
+    
+    p = [[self labels] valueForKey:@"linkType_clipprefix"];
+    s = [[self existingSession] labelForObject:clip];
+    
+    return [p isNotEmpty] ? [p stringByAppendingString:s] : s;
+  }
+  return [[self labels] valueForKey:[self linkType]];
+}
+
 - (BOOL)hasConfiguredLinkTypes {
-  return [OGoObjectLinkTypes count] > 0 ? YES : NO;
+  if ([OGoObjectLinkTypes isNotEmpty])
+    return YES;
+  if ([[[self existingSession] favorites] isNotEmpty])
+    return YES;
+  
+  return NO;
 }
 
 /* entity labels */
@@ -309,12 +398,22 @@ static NSArray      *OGoObjectLinkTypes   = nil;
 }
 
 - (id)createLinkAction {
+  /*
+    This is a direct action. Form parameters:
+      linktype   - [defaults to generic, otherwise the configured type]
+      sourceId   - id of sourceobject
+      entityName - ??
+      
+    Link editors are invoked with the following properties:
+      linkType       - NSString
+      sourceGlobalID - EOKeyGlobalID
+  */
   LSCommandContext *cmdctx;
   OGoContentPage *page;
   WORequest  *rq;
   NSString   *newLinkType;
   NSNumber   *newSourceId;
-  EOGlobalID *newSourceGID;
+  EOGlobalID *newSourceGID, *newTargetGID = nil;
   NSString   *editorPageName;
   id tmp;
   
@@ -338,16 +437,30 @@ static NSArray      *OGoObjectLinkTypes   = nil;
     return page;
   }
   
-  if ([newLinkType length] == 0)
+  if (![newLinkType isNotEmpty])
     newLinkType = @"generic";
-
-  editorPageName = [OGoObjectLinkTypeMap objectForKey:newLinkType];
-  if ([editorPageName length] == 0) {
-    [page setErrorString:
-            [@"found no component to create links of specified type: "
-              stringByAppendingString:newLinkType]];
-    return page;
+  else if ([newLinkType hasPrefix:@"target:"]) {
+    newTargetGID = [[cmdctx typeManager] globalIDForPrimaryKey:
+					   [newLinkType substringFromIndex:7]];
+    if (newTargetGID == nil) {
+      [page setErrorString:
+	      @"did not find object specified as target for link!"];
+      return page;
+    }
+    newLinkType = @"generic";
   }
+  
+  if (![newTargetGID isNotNull]) {
+    editorPageName = [OGoObjectLinkTypeMap objectForKey:newLinkType];
+    if (![editorPageName isNotEmpty]) {
+      [page setErrorString:
+              [@"found no component to create links of specified type: "
+                stringByAppendingString:newLinkType]];
+      return page;
+    }
+  }
+  else
+    editorPageName = nil;
   
   if ([newSourceId intValue] < 9000) {
     [page setErrorString:@"missing source id for link!"];
@@ -360,19 +473,51 @@ static NSArray      *OGoObjectLinkTypes   = nil;
     return page;
   }
   
-  if ((tmp = [self pageWithName:editorPageName]) == nil) {
-    [page setErrorString:
-            [@"could not find configured link creator page: " 
-              stringByAppendingString:editorPageName]];
+  if ([newTargetGID isNotNull]) {
+    /* we already have a target */
+    OGoObjectLinkManager *linkManager;
+    NSException   *error;
+    NSString      *label;
+    OGoObjectLink *link;
+    
+    linkManager = [[[self session] commandContext] linkManager];
+    label       = [[self session] labelForObject:newTargetGID];
+    
+    link = [[[OGoObjectLink alloc] initWithSource:(EOKeyGlobalID *)newSourceGID
+				   target:newTargetGID
+				   type:newLinkType
+				   label:label] autorelease];
+    [self debugWithFormat:@"create link: %@", link];
+    
+    if ((error = [linkManager createLink:link]) != nil) {
+      [self logWithFormat:@"ERROR: could not create link (type=%@): %@", 
+  	    linkType, error];
+      
+      [page setErrorString:[error reason]];
+      [[[self session] commandContext] rollback];
+      return page;
+    }
+    
+    // TODO: notification should be sent by link manager?
+    [[NSNotificationCenter defaultCenter] 
+      postNotificationName:@"OGoLinkWasCreated" object:link];
     return page;
   }
+  else {
+    if ((tmp = [self pageWithName:editorPageName]) == nil) {
+      [page setErrorString:
+              [@"could not find configured link creator page: " 
+                stringByAppendingString:editorPageName]];
+      return page;
+    }
   
-  /* setup link editor */
+    /* setup link editor */
   
-  page = tmp;
-  [page takeValue:newLinkType  forKey:@"linkType"];
-  [page takeValue:newSourceGID forKey:@"sourceGlobalID"];
-  // TODO: we might want to pass in some info on where we are coming from
+    page = tmp;
+    [page takeValue:newLinkType  forKey:@"linkType"];
+    [page takeValue:newSourceGID forKey:@"sourceGlobalID"];
+    // TODO: we might want to pass in some info on where we are coming from
+  }
   
 #if 0
   [self debugWithFormat:@"create link of type %@ source %@(%@) ...",

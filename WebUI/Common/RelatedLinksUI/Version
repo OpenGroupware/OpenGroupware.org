@@ -1,6 +1,6 @@
-# $Id$
+# Version file
 
-SUBMINOR_VERSION:=9
+SUBMINOR_VERSION:=10
 
 # Requirements:
 #   v5.0.9 => libNGObjWeb   v4.2.386

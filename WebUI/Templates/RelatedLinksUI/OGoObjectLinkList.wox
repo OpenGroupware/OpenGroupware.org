@@ -32,8 +32,8 @@
           <var:if condition="hasConfiguredLinkTypes">
             <var:popup const:name="linktype" 
                        list="linkTypeNames" item="linkType" 
-                       value="linkType"
-                       string="labels.$linkType" 
+                       var:value="linkTypeValue"
+                       string="popupLinkTypeLabel" 
                        var:noSelectionString="labels.popup_createLink"
                        html:onChange="this.form.submit(); return true" />
             

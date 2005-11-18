@@ -1,9 +1,8 @@
-// $Id: RelatedLinksUI.strings,v 1.5 2004/07/04 20:43:38 helge Exp $
-
 button_linkadd                      = "add";
 linkType_pda_conflicting_ogo_entry  = "conflicting OGo entry";
 linkType_pda_conflicting_palm_entry = "conflicting Palm entry";
 linkType_pda_new_ogo_entry          = "new OGo entry";
+linkType_clipprefix                 = "Clip: ";
 linkentity_Date                     = "Appointment";
 linkentity_Enterprise               = "Company";
 linkentity_Job                      = "Task";
@@ -12,7 +11,7 @@ linkentity_Project                  = "Project";
 linkentity_Team                     = "Team";
 linkentity_external                 = "external";
 linksToObject                       = "Links pointing to this object";
-note_nolinksconfigured              = "Note: no linktypes configured for manual link creation.";
+note_nolinksconfigured              = "To add links, either select the target object with the clip button or configure link types.";
 popup_createLink                    = "[create link]";
 tableview_footertitle               = "Links";
 tableview_linklabel                 = "link";

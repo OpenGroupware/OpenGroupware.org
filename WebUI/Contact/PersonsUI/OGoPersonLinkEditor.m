@@ -104,7 +104,7 @@
 
   targetID = [obj valueForKey:@"globalID"];
   label    = [[self session] labelForObject:targetID];
-    
+  
   link = [[[OGoObjectLink alloc] initWithSource:[self sourceGlobalID]
 				 target:targetID
 				 type:[self linkType]
