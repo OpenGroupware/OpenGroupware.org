@@ -42,7 +42,7 @@
 
 /* accessors */
 
-- (BOOL)containsObjects;
+- (BOOL)isNotEmpty;
 
 /* operations */
 

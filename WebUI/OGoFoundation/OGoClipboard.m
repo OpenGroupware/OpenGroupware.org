@@ -52,8 +52,8 @@ static BOOL debugFavorites = YES;
 
 /* accessors */
 
-- (BOOL)containsObjects {
-  return ([self->favorites count] > 0) ? YES : NO;
+- (BOOL)containsObjects { // DEPRECATED
+  return [self isNotEmpty];
 }
 
 /* operations */
@@ -134,7 +134,7 @@ static BOOL debugFavorites = YES;
     if ([favGid isNotNull] && 
 	[favGid isEqual:[efav valueForKey:@"globalID"]])
       continue;
-
+    
     [newFavs addObject:efav];
   }
   ASSIGN(self->favorites, newFavs);
