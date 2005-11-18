@@ -1,6 +1,6 @@
 # version info
 
-SUBMINOR_VERSION:=116
+SUBMINOR_VERSION:=117
 
 # v5.3.112 requires libNGObjWeb      v4.5.198
 # v5.1.97  requires libOGoFoundation v5.1.75

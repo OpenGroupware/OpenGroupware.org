@@ -99,7 +99,7 @@
   int max;
   
   s = [(OGoSession *)[self session] labelForObject:[self favorite]];
-  if ([s length] == 0)
+  if (![s isNotEmpty])
     return @"[ERROR: got no label for favorite from session]";
   
   max = [self maxDockLabelWidth];
@@ -107,7 +107,7 @@
     s = [s substringToIndex:(max - 3)];
     s = [s stringByAppendingString:@"..."];
   }
-  if ([s length] == 0)
+  if (![s isNotEmpty]) // TODO: how can this fail?
     s = @"[ERROR: could not determine label of favorite]";
   return s;
 }
