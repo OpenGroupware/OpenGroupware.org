@@ -1675,12 +1675,17 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   
   if (![self->selectedAccessMembers isNotEmpty])
     return nil;
-
+  
+  // TODO: just:
+  //  [[self->selectedAccessMembers valueForKeyPath:@"companyId.stringValue"]
+  //   componentsJoinedByString:@","
+  // ... or at least move to some array method
+  
   isFirst    = YES;
   accessList = [NSMutableString stringWithCapacity:128];
   enumerator = [self->selectedAccessMembers objectEnumerator];
-
-  while ((obj = [enumerator nextObject])) {
+  
+  while ((obj = [enumerator nextObject]) != nil) {
     if (isFirst)
       isFirst = NO;
     else

@@ -282,7 +282,7 @@ static NSArray      *coreTeamAttrs   = nil;
 - (BOOL)appointmentViewAccessAllowed {
   NSString *perms;
   
-  if ((perms = [self->appointment valueForKey:@"permissions"]))
+  if ((perms = [self->appointment valueForKey:@"permissions"]) != nil)
     return [perms rangeOfString:@"v"].length > 0 ? YES : NO;
   
   return [[self->appointment valueForKey:@"isViewAllowed"] boolValue];

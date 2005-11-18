@@ -44,7 +44,7 @@
   
   qs = [[NSMutableString alloc] initWithCapacity:64];
   
-  if ([_s length] == 0)
+  if (![_s isNotEmpty])
     ; /* keep length at 0 */
   else if ([_s rangeOfString:@" "].length == 0)
     [qs appendFormat:qfmt, _s, _s, _s, _s];
@@ -64,7 +64,7 @@
     }
   }
   
-  if ([qs length] == 0)
+  if (![qs isNotEmpty])
     [qs setString:@"1=1"];
   
   /* build qualifier */
