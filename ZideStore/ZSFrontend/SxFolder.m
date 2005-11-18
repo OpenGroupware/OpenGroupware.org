@@ -517,14 +517,19 @@ static NSString *cachePath  = nil;
     ? [self childForNewKey:nkey inContext:_ctx]
     : [self childForExistingKey:nkey inContext:_ctx];
   
-  if (value == nil) {
-    [self logWithFormat:@"ERROR(%s): got no record for key %@", 
-	    __PRETTY_FUNCTION__, nkey];
-    return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-                        reason:@"could not resolve given key"];
-  }
-  
-  // TODO: add to cache
+  /*
+    Important:
+    
+    We should *not* return a 404 exception. If the lookup fails, this will
+    be handled by the object request handler! In case we return an exception
+    all method dispatching will _stop_.
+    
+    For example a PUT for a new object would not succeed since the URL of the
+    new object won't be found. (this 'path info' stuff is otherwise handled
+    by the request handler if we correctly return nil)
+    
+    TODO: we changed this recently. Maybe other code depends on the 404?
+  */
   return value;
 }
 
