@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<var:if condition="session.favorites.isNotEmpty"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+>
+  <var:component className="OGoMenuBox" title="labels.Clipboard">
+    <var:foreach list="session.favorites" item="favorites" index="index">
+      <tr>
+        <td valign="middle"><font class="skydockfont">
+          <var:if condition="linksDisabled" const:negate="1">
+            <var:js-drag tag="favoriteDragType" object="favorite">
+              <a var:action="showChoosenFavorite" class="skydockfont"
+                ><var:string value="labelForFavorite" /></a>
+            </var:js-drag>
+          </var:if>
+          <var:if condition="linksDisabled">
+            <font class="skydockfont"
+              ><var:string value="labelForFavorite" /></font>
+          </var:if>
+        </font></td>
+      </tr>
+    </var:foreach>
+  </var:component>
+  <br />
+</var:if>
