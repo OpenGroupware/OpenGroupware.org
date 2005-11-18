@@ -78,6 +78,25 @@ pre-everything::
 .endif
 
 do-build:
+.if (defined(WITH_SOPE_45_DEVEL) && ((!exists(${LOCALBASE}/lib/libGDLAccess_d.so.4.5)) || (!exists(${LOCALBASE}/lib/libNGLdap_d.so.4.5)) || (!exists(${LOCALBASE}/lib/libNGObjWeb_d.so.4.5)))) || \
+	(defined(WITH_SOPE_44) && (!exists(${LOCALBASE}/lib/libGDLAccess_d.so.4.4) || !exists(${LOCALBASE}/lib/libNGLdap_d.so.4.4) || !exists(${LOCALBASE}/lib/libNGObjWeb_d.so.4.4)))
+	@${ECHO_MSG} "#########################################################################"
+	@${ECHO_MSG} "# WARNING!!!   WARNING!!!   WARNING!!!   WARNING!!!   WARNING!!!        #"
+	@${ECHO_MSG} "#                                                                       #"
+	@${ECHO_MSG} "# OpenGroupware cannot be compiled due to missing SOPE libraries.       #"
+	@${ECHO_MSG} "#                                                                       #"
+	@${ECHO_MSG} "# This isn't necessarily a 'bug' - chances are that you've compiled     #"
+	@${ECHO_MSG} "# SOPE earlier and didn't intend to use it for OpenGroupware at this    #"
+	@${ECHO_MSG} "# time.                                                                 #"
+	@${ECHO_MSG} "# Please reinstall the SOPE port and use at least the following knobs:  #"
+	@${ECHO_MSG} "#                                                                       #"
+	@${ECHO_MSG} "#   WITH_LIBXML2  WITH_LDAP  WITH_PQ                                    #"
+	@${ECHO_MSG} "#                                                                       #"
+	@${ECHO_MSG} "# Thankyou!                                                             #"
+	@${ECHO_MSG} "#                                                                       #"
+	@${ECHO_MSG} "#########################################################################"
+	@exit 1
+.endif
 	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
 
 do-install:
