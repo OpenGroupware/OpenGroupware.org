@@ -6,7 +6,7 @@
   xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
 >
   <var:component className="OGoMenuBox" title="labels.Clipboard">
-    <var:foreach list="session.favorites" item="favorites" index="index">
+    <var:foreach list="session.favorites" item="favorite" index="index">
       <tr>
         <td valign="middle"><font class="skydockfont">
           <var:if condition="linksDisabled" const:negate="1">
