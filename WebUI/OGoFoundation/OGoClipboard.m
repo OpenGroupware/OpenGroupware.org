@@ -146,6 +146,9 @@ static BOOL debugFavorites = YES;
 - (unsigned int)count {
   return [self->favorites count];
 }
+- (BOOL)isNotEmpty {
+  return [self->favorites isNotEmpty];
+}
 - (id)objectAtIndex:(unsigned)_idx {
   return [self->favorites objectAtIndex:_idx];
 }

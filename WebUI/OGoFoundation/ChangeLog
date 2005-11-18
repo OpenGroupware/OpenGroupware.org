@@ -1,3 +1,7 @@
+2005-11-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoClipboard.m: added -isNotEmpty (v5.3.93)
+
 2005-10-14  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoSession.m: minor code clenaups (v5.3.92)
