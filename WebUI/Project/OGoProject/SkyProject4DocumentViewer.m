@@ -157,7 +157,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   md      = [[NSMutableDictionary alloc] initWithCapacity:(count + 1)];
   
   for (i = 0; i < count; i++) {
-    id rec;
+    NSDictionary *rec;
 
     rec = [viewers objectAtIndex:i];
     [md setObject:rec forKey:[rec objectForKey:@"name"]];
@@ -174,7 +174,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   
   /* viewer rules */
   
-  if ([(viewers = [ud arrayForKey:@"OGoDocViewerRules"]) count] > 0) {
+  if ([(viewers = [ud arrayForKey:@"OGoDocViewerRules"]) isNotEmpty]) {
     NSArray *defRules;
     
     NSLog(@"Note: using custom doc-viewers rules (#%i).", [viewers count]);
@@ -322,7 +322,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
     return nil;
   
   pgid = [class projectGlobalIDForDocumentGlobalID:dgid
-                context:[(id)[self session] commandContext]];
+                context:[(OGoSession *)[self session] commandContext]];
   if (pgid == nil) {
       [self debugWithFormat:
               @"did not find project gid "
@@ -330,7 +330,8 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
       return nil;        
   }
     
-  fm = [[[class alloc] initWithContext:[(id)[self session] commandContext]
+  fm = [[[class alloc] initWithContext:
+                         [(OGoSession *)[self session] commandContext]
                        projectGlobalID:pgid] 
                        autorelease];
   if (fm == nil) {
@@ -370,18 +371,18 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   EOGlobalID *pid;
   id         fm, doc;
   
-  if (SkyFSGlobalIDClass) {
+  if (SkyFSGlobalIDClass != Nil) {
     if (![_object isKindOfClass:SkyFSGlobalIDClass]) {
-      [self logWithFormat:@"couldn't activate object %@", _object];
+      [self logWithFormat:@"could not activate object %@", _object];
       return nil;
     }
   }
   pid  = [_object projectGID];
   path = [_object path];
 
-  fm = [OGoFileManagerFactory fileManagerInContext:
-                                [[self session] commandContext]
-                              forProjectGID:pid];
+  fm = [[OGoFileManagerFactory sharedFileManagerFactory]
+         fileManagerInContext:[(OGoSession *)[self session] commandContext]
+         forProjectGID:pid];
   if (fm == nil) {
     [self logWithFormat:@"couldn't activate object %@", _object];
     return nil;
@@ -503,7 +504,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   return [[self document] content];
 }
 
-- (void)setDocument:(SkyProjectDocument *)_doc {
+- (void)setDocument:(id)_doc {
   id            fm;
   EOKeyGlobalID *gid;
   NSString      *path;
@@ -513,7 +514,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
 
   [_doc reload]; // clear ?
     
-  if ((fm = [_doc fileManager]) == nil) {
+  if ((fm = [(SkyProjectDocument *)_doc fileManager]) == nil) {
     [self logWithFormat:@"missing filemanager in document %@ !!", _doc];
     return;
   }
@@ -538,7 +539,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
     
   [self->fsinfo release]; self->fsinfo = nil;
 }
-- (SkyProjectDocument *)document {
+- (id)document {
   id            fm;
   EOKeyGlobalID *gid;
   
@@ -854,11 +855,13 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
 }
 
 - (void)setTestMode:(BOOL)_flag {
-  [[self session] setObject:[NSNumber numberWithBool:_flag]
-                  forKey:@"SkyP4FormTestMode"];
+  [(OGoSession *)[self session] 
+                 setObject:[NSNumber numberWithBool:_flag]
+                 forKey:@"SkyP4FormTestMode"];
 }
 - (BOOL)isTestMode {
-  return [[[self session] objectForKey:@"SkyP4FormTestMode"] boolValue];
+  return [[(OGoSession *)[self session] 
+                         objectForKey:@"SkyP4FormTestMode"] boolValue];
 }
 
 - (void)setDefaultProjectViewerTabKey:(NSString *)_key {
@@ -917,7 +920,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
     return [self activateObject:pgid1 withVerb:@"view"];
   }
   
-  if ((fm = [(id)page fileManager]) == nil) {
+  if ((fm = [(SkyProject4DocumentViewer *)page fileManager]) == nil) {
     // TODO: replace with a proper label
     [self setErrorString:
 	    @"could not change current folder in last page.."];
@@ -955,7 +958,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   
   /* fill new page with filemanager context */
   
-  if ((fm = [(id)page fileManager]) == nil) {
+  if ((fm = [(SkyProject4DocumentViewer *)page fileManager]) == nil) {
     [self setErrorString:@"couldn't change current folder in last page .."];
     return self;
   }
@@ -1189,7 +1192,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   NSString *p;
 
   fm   = [self fileManager];
-  cntx = [[self session] commandContext];
+  cntx = [(OGoSession *)[self session] commandContext];
   p    = [[self _documentPath] stringByDeletingPathVersion];
   [fm writeContents:[self documentContent] atPath:p];
   [cntx commit];
@@ -1442,9 +1445,9 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   self->tabKeys = [keys copy];
   [keys release]; keys = nil;
 
-  if ([self->tabKeys count] == 0) {
-    [self logWithFormat:
-	    @"ERROR: got no tab keys from rule model: %@, rules=%@",
+  if (![self->tabKeys isNotEmpty]) {
+    [self errorWithFormat:
+	    @"got no tab keys from rule model: %@, rules=%@",
 	    viewerRules, [viewerRules candidateRulesForKey:@"tabkeys"]];
     return nil;
   }

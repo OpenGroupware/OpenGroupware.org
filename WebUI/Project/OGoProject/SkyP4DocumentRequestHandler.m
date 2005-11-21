@@ -483,9 +483,8 @@ static NSCharacterSet *digits = nil;
   if (pgid == nil)
     return response;
   
-  fm = [[OGoFileManagerFactory fileManagerInContext:_ctx
-			       forProjectGID:pgid] 
-	                       retain];
+  fm = [[[OGoFileManagerFactory sharedFileManagerFactory]
+          fileManagerInContext:_ctx forProjectGID:pgid] retain];
   if (fm == nil) {
     [self logWithFormat:
 	    @"%s: got no filemanager for project gid %@ (ctx=%@)",
@@ -499,7 +498,7 @@ static NSCharacterSet *digits = nil;
 	    @"%s: got no data from fileManager %@ for project gid %@: "
 	    @"path %@ (ctx=%@)",
             __PRETTY_FUNCTION__, fm, pgid, path, _ctx];
-    [fm release];
+    [fm release]; fm = nil;
     [response setStatus:404 /* Not Found */];
     return response;
   }
@@ -510,7 +509,7 @@ static NSCharacterSet *digits = nil;
   [self _postProcessResponse:response fileManager:fm path:path
 	disposition:disposition];
   
-  [fm release];
+  [fm release]; fm = nil;
   
   return response;
 }

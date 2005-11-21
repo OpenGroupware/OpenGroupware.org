@@ -1275,7 +1275,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
 }
 - (BOOL)containsFavorites {
   // DEPRECATED
-  return [self->favorites containsObjects];
+  return [self->favorites isNotEmpty];
 }
 
 - (void)setChoosenFavorite:(id)_fav { // TODO: what does that do?

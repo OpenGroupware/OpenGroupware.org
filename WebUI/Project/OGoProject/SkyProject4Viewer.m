@@ -165,9 +165,9 @@ static inline BOOL _showUnknownFiles(id self) {
   fm        = nil;
   exception = nil;
   NS_DURING {
-    fm = [[OGoFileManagerFactory fileManagerInContext:
-				   [(id)[self session] commandContext]
-				 forProjectGID:gid] retain];
+    fm = [[[OGoFileManagerFactory sharedFileManagerFactory]
+            fileManagerInContext:[(id)[self session] commandContext]
+            forProjectGID:gid] retain];
   }
   NS_HANDLER {
     fm = nil;
@@ -278,9 +278,10 @@ static inline BOOL _showUnknownFiles(id self) {
          [self->fileManager pathForGlobalID:gid]];
 }
 
-- (void)setFileManager:(id<NSObject,SkyDocumentFileManager>)_fm {
+- (void)setFileManager:(id)_fm {
   if (_fm == self->fileManager)
     return;
+  
   ASSIGN(self->fileManager, _fm);
   [self->fileManager changeCurrentDirectoryPath:@"/"];
   [self->pathToDS removeAllObjects];

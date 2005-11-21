@@ -36,13 +36,9 @@
 
 @end
 
-#include <OGoFoundation/OGoSession.h>
-#include <OGoFoundation/OGoNavigation.h>
+#include "common.h"
 #include <OGoFoundation/OGoClipboard.h>
 #include <OGoFoundation/WOComponent+Commands.h>
-#include <NGObjWeb/NGObjWeb.h>
-#import <EOControl/EOControl.h>
-#import <GDLAccess/GDLAccess.h>
 
 @interface NSObject(gid)
 - (EOGlobalID *)globalID;

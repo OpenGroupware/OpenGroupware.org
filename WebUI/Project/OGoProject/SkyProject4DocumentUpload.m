@@ -399,15 +399,16 @@
 }
 
 - (NSString *)uploadFilenameFromPath:(NSString *)_path {
+  // TODO: Unicode
   NSString *s;
   
   if ([[self fileName] length] > 0)
     return [self fileName];
   
   if ([self isWindowsPath:_path]) {
-    const unsigned char *cstr;
+    const char *cstr;
     
-    if ((cstr = [_path cString]))
+    if ((cstr = [_path cString]) != NULL)
       cstr = rindex(cstr, '\\');
     
     s = (cstr)
@@ -415,12 +416,12 @@
       : _path;
   }
   else {
-    const unsigned char *cstr;
+    const char *cstr;
 
-    if ((cstr = [_path cString]))
+    if ((cstr = [_path cString]) != NULL)
       cstr = rindex(cstr, '/');
     
-    s = (cstr)
+    s = (cstr != NULL)
       ? [NSString stringWithCString:(cstr + 1)]
       : _path;
   }

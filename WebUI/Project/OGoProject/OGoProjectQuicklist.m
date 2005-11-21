@@ -137,8 +137,8 @@ static int sortByName(id obj1, id obj2, void *data) {
   NSDictionary *attrs;
   
   // TODO: hack to get EO
-  attrs =
-    [[[self selectedProject] fileManager] fileSystemAttributesAtPath:@"/"];
+  attrs = [[(SkyProject *)[self selectedProject] fileManager] 
+            fileSystemAttributesAtPath:@"/"];
   return [attrs valueForKey:@"object"];
 }
 

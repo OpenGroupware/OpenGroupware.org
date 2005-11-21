@@ -1,3 +1,7 @@
+2005-11-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyFavorites.m: properly include common.h (v5.3.118)
+
 2005-11-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyFavorites.m: minor code cleanups (v5.3.117)

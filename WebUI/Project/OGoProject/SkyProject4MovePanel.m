@@ -105,14 +105,17 @@
 }
 
 - (BOOL)isProjectSelectionEnabled {
+#if 1
   return NO;
-  //return ![[self tabKey] isEqualToString:@"delete"];
+#else
+  // TODO: explain why this is commented out or what it does
+  return ![[self tabKey] isEqualToString:@"delete"];
+#endif
 }
 
 /* title */
 
 - (NSString *)windowTitle {
-  NSString *title;
   NSString *projectName;
   NSString *action;
 
@@ -129,11 +132,9 @@
     ? action
     : @"copy / move files from project ";
 
-  projectName = [[self fileSystemAttributes] objectForKey:@"NSFileSystemName"];
-  
-  title = [NSString stringWithFormat:@"%@ %@", action, projectName];
-  
-  return title;
+  projectName = [(NSDictionary *)[self fileSystemAttributes] 
+                                 objectForKey:@"NSFileSystemName"];
+  return [NSString stringWithFormat:@"%@ %@", action, projectName];
 }
 
 /* accessors */
@@ -150,9 +151,10 @@
   ASSIGN(self->selectedProject, _project);
 }
 - (id)selectedProject {
-  if (self->selectedProject == nil)
-    return [[self fileSystemAttributes] objectForKey:NSFileSystemNumber];
-  
+  if (self->selectedProject == nil) {
+    return [(NSDictionary *)[self fileSystemAttributes] 
+                            objectForKey:NSFileSystemNumber];
+  }
   return self->selectedProject;
 }
 

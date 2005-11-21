@@ -177,19 +177,19 @@
   ASSIGN(self->fileManager, _fm);
 }
 - (id)fileManager {
-  if (self->fileManager)
+  if (self->fileManager != nil)
     return self->fileManager;
   
-  if (self->document) {
+  if (self->document != nil) {
     if ([self->document respondsToSelector:@selector(fileManager)])
-      return [self->document fileManager];
+      return [(SkyProjectDocument *)self->document fileManager];
   }
-  else if (self->project) {
+  else if (self->project != nil) {
     self->speFlags.fileManagerCreatByProj = 1;
     self->fileManager =
-      [[OGoFileManagerFactory fileManagerInContext:
-                                [(id)[self session] commandContext]
-			      forProjectGID:[self->project globalID]] retain];
+      [[[OGoFileManagerFactory sharedFileManagerFactory]
+         fileManagerInContext:[(id)[self session] commandContext]
+         forProjectGID:[self->project globalID]] retain];
   }
   return self->fileManager;
 }
@@ -294,9 +294,10 @@
   
   self->speFlags.documentCreaByFM = 0;
   
-  if (_doc) {
+  if (_doc != nil) {
     if ([_doc isNew])
-      [self setFolderId:[[_doc fileManager] globalIDForPath:@"."]];
+      [self setFolderId:
+              [[(SkyProjectDocument *)_doc fileManager] globalIDForPath:@"."]];
     else
       [self setFileId:[_doc globalID]];
     
@@ -308,7 +309,7 @@
 - (id)document {
   SkyProjectFileManager *fm;
   
-  if (self->document)
+  if (self->document != nil)
     return self->document;
 
   if ((fm = (id)[self fileManager]) == nil)
@@ -587,7 +588,7 @@
   return self->project;
 }
 
-- (void)takeValue:(id)_v forKey:(id)_key {
+- (void)takeValue:(id)_v forKey:(NSString *)_key {
   if ([_key isEqualToString:@"blob"])
     [self setBlob:_v];
   else if ([_key isEqualToString:@"fileName"])
@@ -601,7 +602,7 @@
 }
 
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"blob"])
     return [self blob];
   if ([_key isEqualToString:@"fileName"])
@@ -657,9 +658,9 @@
   [self->fileManager release]; self->fileManager = nil;
   
   self->fileManager =
-    [[OGoFileManagerFactory fileManagerInContext:
-                            [(id)[self session] commandContext]
-                            forProjectGID:gid] retain];
+    [[[OGoFileManagerFactory sharedFileManagerFactory]
+       fileManagerInContext:[(id)[self session] commandContext]
+       forProjectGID:gid] retain];
 
   [self->fileManager changeCurrentDirectoryPath:self->folderPath];
   [self setFolderId:[self->fileManager globalIDForPath:self->folderPath]];

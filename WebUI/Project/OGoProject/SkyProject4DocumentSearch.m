@@ -84,22 +84,23 @@
 }
 
 - (void)setProjectId:(EOGlobalID *)_gid {
-  if (![self->projectId isEqual:_gid]) {
-    ASSIGN(self->projectId, _gid);
-    
-    [self->dataSource release]; self->dataSource = nil;
+  if ([self->projectId isEqual:_gid])
+    return;
 
-    if (self->fileManager == nil) {
-      self->fileManager =
-        [OGoFileManagerFactory fileManagerInContext:
-				 [[self session] commandContext]
-                               forProjectGID:_gid];
-    }
-    self->dataSource =
-      [[self->fileManager dataSourceForDocumentSearchAtPath:@"/"] retain];
+  ASSIGN(self->projectId, _gid);
     
-    [self->dataSource setFetchSpecification:[self fetchSpecification]];
+  [self->dataSource release]; self->dataSource = nil;
+
+  if (self->fileManager == nil) {
+    self->fileManager =
+      [[OGoFileManagerFactory sharedFileManagerFactory]
+          fileManagerInContext:[[self session] commandContext]
+          forProjectGID:_gid];
   }
+  self->dataSource =
+    [[self->fileManager dataSourceForDocumentSearchAtPath:@"/"] retain];
+    
+  [self->dataSource setFetchSpecification:[self fetchSpecification]];
 }
 - (EOGlobalID *)projectId {
   return self->projectId;
