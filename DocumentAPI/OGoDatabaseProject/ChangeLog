@@ -1,3 +1,7 @@
+2005-11-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* SkyProjectFileManager+FileAttributes.m: minor code cleanups (v5.3.53)
+
 2005-09-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile.preamble: added link deps for OSX (v5.3.52)

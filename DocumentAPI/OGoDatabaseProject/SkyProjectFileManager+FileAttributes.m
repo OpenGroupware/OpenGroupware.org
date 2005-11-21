@@ -182,8 +182,8 @@ static BOOL isRootAccountID(NSNumber *cid) {
   // TODO: this is not per user?! should use standard defaults, right?
   static NSDictionary *types = nil;
   NSString *mimeType;
-
-  if ([types count] == 0) {
+  
+  if (![types isNotEmpty]) {
     NSUserDefaults *ud;
     
     ud    = [NSUserDefaults standardUserDefaults];
@@ -202,8 +202,8 @@ static BOOL isRootAccountID(NSNumber *cid) {
       warnedExt = [[NSMutableSet alloc] initWithCapacity:16];
     
     if (![warnedExt containsObject:_ext]) {
-      [self logWithFormat:
-	      @"WARNING: did not find MIME type for extension %@: %@",
+      [self warnWithFormat:
+	      @"did not find MIME type for extension %@: %@",
               _ext, [[types allKeys] componentsJoinedByString:@","]];
       [warnedExt addObject:_ext];
     }

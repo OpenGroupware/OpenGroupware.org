@@ -54,6 +54,7 @@
         "htm"     = "text/html";
         "html"    = "text/html";
         "ico"     = "image/x-icon";
+        "ics"     = "text/calendar";
         "ief"     = "image/ief";
         "ifs"     = "image/ifs";
         "ins"     = "application/x-NET-Install";
@@ -190,6 +191,7 @@
         "tsv"     = "text/tab-separated-values";
         "txt"     = "text/plain";
         "vbs"     = "video/mpeg";
+        "vcf"     = "text/x-vcard";
         "viv"     = "video/vivo";
         "vivo"    = "video/vivo";
         "vrt"     = "x-world/x-vrt";

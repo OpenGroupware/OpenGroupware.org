@@ -1,3 +1,8 @@
+2005-11-21  Helge Hess  <helge.hess@skyrix.com>
+
+	* Defaults.plist: map 'ics' extension to 'text/calendar' MIME type and
+	  'vcf' to 'text/x-vcard' (v5.3.26)
+
 2005-08-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSAddSessionLogCommand.m: marked as irrelevant for obj_info cache
