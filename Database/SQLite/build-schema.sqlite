@@ -301,7 +301,7 @@ CREATE TABLE appointment ( /* Sybase: date */
   start_date             TIMESTAMP /* t_datetime */,
   end_date               TIMESTAMP /* t_datetime */,
   cycle_end_date         TIMESTAMP /* t_datetime */,
-  ftype                  VARCHAR(50) /* t_tinystring */, /* Sybase: type:weekday daily weekly monthly yearly */
+  ftype                  VARCHAR(255) /* t_tinystring */, /* Sybase: type:weekday daily weekly monthly yearly */
   title                  VARCHAR(255) /* t_string */,
   location               VARCHAR(255) /* t_string */,
   absence                VARCHAR(255) /* t_string */,

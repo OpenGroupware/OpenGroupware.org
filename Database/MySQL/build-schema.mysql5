@@ -158,7 +158,7 @@ CREATE TABLE appointment (
   start_date             datetime  not null,
   end_date               datetime  not null,
   cycle_end_date         datetime,
-  type                   varchar(50),     -- repetition type
+  type                   varchar(255),     -- repetition type
   title                  varchar(255) not null,
   location               varchar(255),
   absence                varchar(255),

@@ -2,17 +2,18 @@
 
 ifneq ($(PYTHON),)
 
+ifeq ($(GEN_MODELS),yes)
+
 OpenGroupware.org_FrontBase2.eomodel : OGoModel.py
-	@echo "The FrontBase2.eomodel seems to be outdated, you might want to regenerate!"
-	#$(PYTHON) genmodel.py $< FrontBase >$@
+	$(PYTHON) genmodel.py $< FrontBase >$@
 
 OpenGroupware.org_PostgreSQL.eomodel : OGoModel.py
-	@echo "The PostgreSQL.eomodel seems to be outdated, you might want to regenerate!"
-	#$(PYTHON) genmodel.py $< PostgreSQL >$@
+	$(PYTHON) genmodel.py $< PostgreSQL >$@
 
 OpenGroupware.org_MySQL5.eomodel : OGoModel.py
-	@echo "The MySQL5.eomodel seems to be outdated, you might want to regenerate!"
-	#$(PYTHON) genmodel.py $< MySQL5 >$@
+	$(PYTHON) genmodel.py $< MySQL5 >$@
+
+endif
 
 endif
 

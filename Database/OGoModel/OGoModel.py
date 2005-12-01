@@ -23,6 +23,7 @@ calendarFormat = "@calendarFormat"
 fb             = "FrontBase"
 pgsql          = "PostgreSQL"
 mysql5         = "MySQL5"
+sqlite         = "SQLite"
 
 adaptorInfo = {
   fb: {
@@ -2615,7 +2616,7 @@ Date = {
       mysql5+column: "type",      
       coltype:       't_tinystring', # weekday,daily,weekly,monthly,yearly
       valueClass:    'NSString',
-      width:         50,
+      width:         255,
       flags:         [ property, allowsNull, ],
     },
     "title": {

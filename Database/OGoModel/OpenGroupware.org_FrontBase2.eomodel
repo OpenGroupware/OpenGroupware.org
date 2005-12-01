@@ -1231,7 +1231,7 @@
           externalType   = "t_tinystring";
           valueClassName = "NSString";
           allowsNull     = Y;
-          width          = 50;
+          width          = 255;
         },
         {
           name           = "writeAccessList";
@@ -6293,11 +6293,18 @@
       className            = "LSTeam";
       primaryKeyAttributes = ( "companyId" );
       
-      attributesUsedForLocking = ( companyId, objectVersion, ownerId );
+      attributesUsedForLocking = (
+        isReadonly,
+        companyId,
+        isPrivate,
+        objectVersion,
+        ownerId,
+      );
       classProperties = (
         isLocationTeam,
         emailAlias,
         office,
+        isReadonly,
         sensitivity,
         assistantName,
         number,
@@ -6307,14 +6314,14 @@
         companyId,
         anniversary,
         fileas,
-        department,
+        isPrivate,
         email,
         partnerName,
         associatedContacts,
         description,
         objectVersion,
         isTeam,
-        nameTitle,
+        department,
         bossName,
         freebusyUrl,
         associatedCategories,
@@ -6323,6 +6330,7 @@
         imAddress,
         ownerId,
         login,
+        nameTitle,
         dirServer,
         toCompanyAssignment,
         toStaff,
@@ -6478,6 +6486,22 @@
         {
           name           = "isLocationTeam";
           columnName     = "is_location_team";
+          externalType   = "t_bool";
+          valueClassName = "NSNumber";
+          valueType      = i;
+          allowsNull     = Y;
+        },
+        {
+          name           = "isPrivate";
+          columnName     = "is_private";
+          externalType   = "t_bool";
+          valueClassName = "NSNumber";
+          valueType      = i;
+          allowsNull     = Y;
+        },
+        {
+          name           = "isReadonly";
+          columnName     = "is_readonly";
           externalType   = "t_bool";
           valueClassName = "NSNumber";
           valueType      = i;

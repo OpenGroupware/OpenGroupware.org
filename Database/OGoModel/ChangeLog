@@ -1,3 +1,7 @@
+2005-12-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* OGoModel.py (Date): bumped length of type field to 255 (v5.3.18)
+
 2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoModel.py (Team): expose isPrivate and isReadonly columns of
