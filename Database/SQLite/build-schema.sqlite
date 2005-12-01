@@ -1,6 +1,6 @@
 /*
   OpenGroupware.org database schema creation script
-  (C) 2000-2004 SKYRIX Software AG
+  (C) 2000-2005 SKYRIX Software AG
 
   Creating a DB:
     sqlite3 ogo.db <build-schema.sqlite
@@ -115,7 +115,7 @@ CREATE TABLE company (
 
   url               VARCHAR(255) /* t_string */,
   email             VARCHAR(50)  /* t_tinystring */, 
-  ftype             VARCHAR(50)  /* t_tinystring */, /* Sybase:type */
+  ftype             VARCHAR(255) /* t_tinystring */, /* Sybase:type */
   bank              VARCHAR(50)  /* t_tinystring */,
   bank_code         VARCHAR(50)  /* t_tinystring */,
   account           VARCHAR(50)  /* t_tinystring */,

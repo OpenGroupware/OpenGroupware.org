@@ -1,3 +1,8 @@
+2005-12-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* pg-build-schema.psql: bumped length of date_x 'type' field to 255
+	  chars (recurrence pattern)
+
 2005-11-10  Helge Hess  <helge.hess@skyrix.com>
 
 	* added pg-fill-objinfo.psql script from trunk
