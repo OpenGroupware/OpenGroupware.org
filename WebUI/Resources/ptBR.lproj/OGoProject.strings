@@ -1,4 +1,3 @@
-// $Id: OGoProject.strings,v 1.8 2004/05/16 01:20:46 olivier Exp $
 "missing filename"          = "Falta o nome do arquivo";
 "missing project"           = "Falta o projeto";
 00_created                  = "Criado";

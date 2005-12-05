@@ -1,5 +1,3 @@
-// $Id: OGoWebMail.strings 2 2004-08-20 11:37:44Z znek $
-
 to                           = "Para";
 bcc                          = "bcc";
 cc                           = "cc";
@@ -11,6 +9,7 @@ search                       = "Pesquisar destinatário";
 mail_editor_extsearch        = "Pesquisa completa nos Contatos (lento)";
 mailText                     = "Texto";
 mail_editor_options          = "Opções do editor";
+multiple_searchresults       = "Selecione um dos seguintes endereços:";
 plainText                    = "Enviar como texto";
 returnReceipt                = "Aviso de recebimento";
 saveButtonLabel              = "Salvar";
@@ -19,3 +18,4 @@ send                         = "Enviar";
 upload                       = "Anexar";
 uploads                      = "Anexos";
 MailEditorTitle              = "Editor de mensagens";
+

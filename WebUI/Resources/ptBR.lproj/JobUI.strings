@@ -1,5 +1,3 @@
-// $Id: JobUI.strings,v 1.7 2004/05/16 01:20:46 olivier Exp $
-
 00_created                   = "Criada";
 02_rejected                  = "Rejeitada";
 05_accepted                  = "Aceita";

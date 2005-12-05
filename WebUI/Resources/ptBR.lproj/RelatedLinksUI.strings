@@ -1,5 +1,3 @@
-// localized link types
-
 button_linkadd                      = "Adicionar";
 linkentity_Date                     = "Compromisso";
 linkentity_Enterprise               = "Empresa";
@@ -12,7 +10,8 @@ linksToObject                       = "Vínculo apontando para este objeto";
 linkType_pda_conflicting_ogo_entry  = "Entrada OGo conflitante";
 linkType_pda_conflicting_palm_entry = "Entrada Palm conflitante";
 linkType_pda_new_ogo_entry          = "Nova entrada OGo";
-note_nolinksconfigured              = "Nota: Não há tipos configurados para criar o vínculo manual.";
+linkType_clipprefix                 = "Clip: ";
+note_nolinksconfigured              = "Para vincular, selecione os destinos com o botão de clip ou configure os tipos de vínculos.";
 popup_createLink                    = "[Criar um vínculo]";
 tableview_footertitle               = "Vínculos";
 tableview_linklabel                 = "Vínculo";

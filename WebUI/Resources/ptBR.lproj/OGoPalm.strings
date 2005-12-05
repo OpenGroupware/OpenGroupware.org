@@ -1,4 +1,3 @@
-// $Id: OGoPalm.strings,v 1.7 2004/02/24 13:43:12 olivier Exp $
 SkyPalmAddressEditor                   = "Editar contato Palm";
 SkyPalmAddressViewer                   = "Painel de contatos Palm";
 SkyPalmAssignAddress                   = "Atribuir contato OGo";
