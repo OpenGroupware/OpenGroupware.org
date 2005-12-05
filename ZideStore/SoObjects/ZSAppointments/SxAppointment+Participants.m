@@ -85,6 +85,25 @@ static BOOL debugOn = NO;
                   @"searchString", _search, nil];
 }
 
+- (NSString *)stripMailToPrefix:(NSString *)_email {
+  /* mailto:hh@oo.zz (length: 7) */
+  static unichar cl[7] = { 'm', 'a', 'i', 'l', 't', 'o', ':' };
+  static unichar cu[7] = { 'M', 'A', 'I', 'L', 'T', 'O', ':' };
+  int i;
+  
+  if ((i = [_email length]) < 7)
+    return _email;
+
+  for (i = 6; i >= 0; i--) {
+    register unichar c;
+    
+    c = [_email characterAtIndex:i];
+    if (c != cl[i] && c != cu[i])
+      return _email; /* does not have mailto prefix */
+  }
+  return [_email substringFromIndex:7]; /* cut off prefix */
+}
+
 - (BOOL)classifyParticipant:(id)_participant
   map:(NSMutableDictionary *)_map
   emails:(NSMutableArray *)_emails
@@ -92,78 +111,79 @@ static BOOL debugOn = NO;
   unknown:(NSMutableArray *)_unknown
   commandContext:(id)_cmdctx
 {
+  NSArray  *contacts;
+  NSString *cn, *email;
+  id contact;
   id tmp;
-
-  if (([(tmp = [_participant valueForKey:@"email"]) isNotNull]) &&
-      ([tmp length]) && (![tmp isEqualToString:@"MAILTO:"])) {
-    
-    if ([(NSString *)tmp hasPrefix:@"MAILTO:"])
-      tmp = [tmp substringFromIndex:7];
-
-    [_emails addObject:tmp];
-    [_map setObject:_participant forKey:tmp];
+  
+  /* first check whether the iCal contained an email */
+  
+  if ([(email = [_participant valueForKey:@"email"]) isNotEmpty]) {
+    email = [self stripMailToPrefix:email];
+    if ([email isNotEmpty]) {
+      [_emails addObject:email];
+      [_map setObject:_participant forKey:email];
+      return YES;
+    }
+  }
+  
+  /* check whether the iCal contained a CN */
+  
+  if (!([(cn = [_participant valueForKey:@"cn"]) isNotEmpty])) {
+    // this seems to be an invalid participant: %@",
+    [_unknown addObject:_participant];
+    return YES; // NO;
+  }
+  
+  // try login first
+  cn       = [cn stringByTrimmingWhiteSpaces];
+  contacts = [self accountsForLogin:cn commandContext:_cmdctx];
+  
+  if (![contacts isNotEmpty]) // try team description
+    contacts = [self teamsForDescription:cn commandContext:_cmdctx];
+  if (![contacts isNotEmpty]) // try team login
+    contacts = [self teamsForLogin:cn commandContext:_cmdctx];      
+  if (![contacts isNotEmpty]) // try team number
+    contacts = [self teamsForNumber:cn commandContext:_cmdctx];      
+  if (![contacts isNotEmpty]) // try full search
+    contacts = [self personFullSearch:cn commandContext:_cmdctx];
+  
+  if (![contacts isNotEmpty]) {
+    [self warnWithFormat:
+            @"%s: did not find person for CN: %@",
+          __PRETTY_FUNCTION__, cn];
+    [_unknown addObject:_participant];
     return YES;
   }
   
-  if (([(tmp = [_participant valueForKey:@"cn"]) isNotNull]) &&
-      ([tmp length])) {
-    NSArray *contacts;
-    // try login first
-    tmp      = [tmp stringByTrimmingWhiteSpaces];
-    
-    contacts = [self accountsForLogin:tmp commandContext:_cmdctx];
-    
-    if ([contacts count] == 0) // try team description
-      contacts = [self teamsForDescription:tmp commandContext:_cmdctx];
-    if ([contacts count] == 0) // try team login
-      contacts = [self teamsForLogin:tmp commandContext:_cmdctx];      
-    if ([contacts count] == 0) // try team number
-      contacts = [self teamsForNumber:tmp commandContext:_cmdctx];      
-    if ([contacts count] == 0) // try full search
-      contacts = [self personFullSearch:tmp commandContext:_cmdctx];
-    
-    if ([contacts count] == 0) {
-      [self logWithFormat:
-            @"WARNING[%s]: didn't find person for entry: %@",
-            __PRETTY_FUNCTION__, tmp];
-      [_unknown addObject:_participant];
-    }
-    else {
-      id contact;
-
-      if ([contacts count] > 1) {
-        [self logWithFormat:
-              @"WARNING[%s] found more than one person for entry: %@",
-              __PRETTY_FUNCTION__, tmp];
-      }
-      contact = [contacts objectAtIndex:0];
-      tmp = [contact valueForKey:@"globalID"];
-      if (tmp == nil) {
-        tmp = [contact valueForKey:@"companyId"];
-        if ([[contact valueForKey:@"isTeam"] boolValue])
-          tmp = [EOKeyGlobalID globalIDWithEntityName:@"Team"
-                               keys:&tmp keyCount:1 zone:NULL];
-        else
-          tmp = [EOKeyGlobalID globalIDWithEntityName:@"Person"
-                               keys:&tmp keyCount:1 zone:NULL];
-      }
-      if (tmp != nil) {
-        [_persons addObject:tmp];
-        [_map setObject:_participant forKey:[tmp keyValues][0]];
-      }
-      else if ((([(tmp = [contact valueForKey:@"email"]) isNotNull]) &&//teams
-           ([tmp length])) || 
-          (([(tmp = [contact valueForKey:@"email1"]) isNotNull]) &&//persons
-           ([tmp length]))) {
-        [_emails addObject:tmp];
-        [_map setObject:_participant forKey:tmp];
-      }
-    }
-    return YES;
+  if ([contacts count] > 1) {
+    [self warnWithFormat:
+            @"%s: found more than one person for CN (using first): %@",
+            __PRETTY_FUNCTION__, cn];
   }
-  // this seems to be an invalid participant: %@",
-  [_unknown addObject:_participant];
-  return YES; // NO;
+  contact = [contacts objectAtIndex:0];
+  tmp     = [contact valueForKey:@"globalID"];
+  if (tmp == nil) {
+      tmp = [contact valueForKey:@"companyId"];
+        
+      tmp = [EOKeyGlobalID globalIDWithEntityName:
+                             [[contact valueForKey:@"isTeam"] boolValue]
+                           ? @"Team" : @"Person"
+                           keys:&tmp keyCount:1 zone:NULL];
+  }
+  if (tmp != nil) {
+      [_persons addObject:tmp];
+      [_map setObject:_participant forKey:[tmp keyValues][0]];
+  }
+  else if ([(tmp = [contact valueForKey:@"email"])  isNotEmpty]) { // teams
+      [_emails addObject:tmp];
+      [_map setObject:_participant forKey:tmp];
+  }
+  else if ([(tmp = [contact valueForKey:@"email1"]) isNotEmpty]) { // persons
+      [_emails addObject:tmp];
+      [_map setObject:_participant forKey:tmp];
+  }
+  return YES;
 }
 
 - (void)addAccountInfos:(NSEnumerator *)_accountInfos 
@@ -280,29 +300,44 @@ static BOOL debugOn = NO;
     
   NSEnumerator *e;
   NSDictionary *person;
-  NSString *name, *email;
-  id newPerson, tmp;
-
+  
   if (StoreUnkownPerson == -1) {
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     StoreUnkownPerson = [ud boolForKey:@"StoreUnkownPerson"]? 1 : 0;
   }
   
-  NSLog(@"WARNING[%s]: creating entries for unknown participants: %@",
-        __PRETTY_FUNCTION__,
-        [[_unknown valueForKey:@"cn"] componentsJoinedByString:@", "]);
-    
+  [self warnWithFormat:
+          @"%s: creating entries for unknown participants: %@",
+          __PRETTY_FUNCTION__,
+          [[_unknown valueForKey:@"cn"] componentsJoinedByString:@", "]];
+  
   e = [_unknown objectEnumerator];
   // unknown participants
   while ((person = [e nextObject]) != nil) {
+    NSString *name, *email;
+    id newPerson, tmp;
+    
     name  = [person objectForKey:@"cn"];
     email = [person objectForKey:@"email"];
-
+    
+    // TODO: explain that
     if (!StoreUnkownPerson && [name isEqualToString:@"Unknown"])
       continue;
-
-    if ([name length]) {
-      newPerson =
+    
+    if (![name isNotEmpty]) {
+      [self warnWithFormat:
+            @"cannot create entry for unknown participant (missing CN): %@",
+            email];
+      continue;
+    }
+    if (![email isNotEmpty]) {
+      [self warnWithFormat:
+            @"cannot create entry for unknown participant (missing email): %@",
+            email];
+      continue;
+    }
+    
+    newPerson =
         [_cmdctx runCommand:@"person::new",
                  @"name",      name,
                  @"comment",
@@ -310,23 +345,21 @@ static BOOL debugOn = NO;
                  @"isPrivate", [NSNumber numberWithBool:YES],
                  @"email1",    email,
                  nil];
-        
-      if (newPerson) {
-        if ((tmp = [person objectForKey:@"rsvp"]))
-          [newPerson takeValue:tmp forKey:@"rsvp"];
-        if ((tmp = [person objectForKey:@"partStat"]))
-          [newPerson takeValue:tmp forKey:@"partStatus"];
-        if ((tmp = [person objectForKey:@"role"]))
-          [newPerson takeValue:tmp forKey:@"role"];
 
-        [_result addObject:newPerson];
-      }
+    if (![newPerson isNotEmpty]) {
+      [self errorWithFormat:
+              @"could not auto-create attendee person (%@/%@)", name, email];
+      continue;
     }
-    else {
-      [self logWithFormat:
-            @"cannot create entry for unknown participant: %@",
-            [person valueForKey:@"cn"]];
-    }
+    
+    if ((tmp = [person objectForKey:@"rsvp"]))
+      [newPerson takeValue:tmp forKey:@"rsvp"];
+    if ((tmp = [person objectForKey:@"partStat"]))
+      [newPerson takeValue:tmp forKey:@"partStatus"];
+    if ((tmp = [person objectForKey:@"role"]))
+      [newPerson takeValue:tmp forKey:@"role"];
+    
+    [_result addObject:newPerson];
   }
 }
 
@@ -393,7 +426,7 @@ static BOOL debugOn = NO;
   persons = [NSMutableArray arrayWithCapacity:8];
   unknown = [NSMutableArray arrayWithCapacity:4];
   
-  e      = [_persons objectEnumerator];
+  e = [_persons objectEnumerator];
   while ((person = [e nextObject]) != nil) {
     if (![self classifyParticipant:person
                map:map
@@ -407,11 +440,11 @@ static BOOL debugOn = NO;
   }
 
   /* try to get accounts for the listed emails */
-  if ([emails count] > 0) {
+  if ([emails isNotEmpty]) {
     if (usePKeyMails)
       [self addPKeyEmails:emails toGIDList:persons];
     
-    if ([emails count] > 0) {
+    if ([emails isNotEmpty]) {
       [self addAccountInfos:[cm listAccountsWithEmails:emails]
             toGIDList:persons];
       [self addAccountInfos:[cm listPublicPersonsWithEmails:emails]
@@ -425,22 +458,22 @@ static BOOL debugOn = NO;
   
   /* try to get accounts for collected cns */
   e       = [persons objectEnumerator];
-  persons = [NSMutableArray array];
+  persons = [NSMutableArray arrayWithCapacity:8];
   [emails removeAllObjects];
   [self findAccountsForGIDs:e
         accounts:emails nonAccounts:persons
         contactManager:cm];
   
-  // get persons for collected gids
-  if ([persons count] > 0) { // got participants, who are not accounts
+  /* get persons for collected gids */
+  if ([persons isNotEmpty]) { /* got participants, who are not accounts */
     if ((tmp = [self fetchStaffForGIDs:persons commandContext:cmdctx]) != nil)
       [emails addObjectsFromArray:tmp];
   }
   
   /* append additional apt attributes */
   emails = [self mapParticipants:emails backWithMap:map];
-
-  if ([map count] > 0) {
+  
+  if ([map isNotEmpty]) {
     /*
       unmatched entries cannot be found in the database
       so they are unknown
@@ -448,7 +481,7 @@ static BOOL debugOn = NO;
     [unknown addObjectsFromArray:[map allValues]];
   }
   
-  if ([unknown count] > 0) {
+  if ([unknown isNotEmpty]) {
     [self createEntriesForUnknown:unknown
           addToResult:emails
           commandContext:cmdctx];

@@ -1,3 +1,8 @@
+2005-12-05  Helge Hess  <helge.hess@skyrix.com>
+
+	* SxAppointment+Participants.m: fixed handling of mixed-case mailto:
+	  prefixes (OGo bug #1593) (v1.5.102)
+
 2005-06-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.3.101
