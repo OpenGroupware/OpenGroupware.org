@@ -1,3 +1,7 @@
+2005-12-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* LSChangePasswordCommand.m: minor code cleanups (v5.3.20)
+
 2005-10-04  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSGetAccountByLoginCommand.m: minor code cleanups (v5.3.19)

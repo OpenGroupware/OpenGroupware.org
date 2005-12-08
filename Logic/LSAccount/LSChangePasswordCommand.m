@@ -24,16 +24,19 @@
 
 @class NSString;
 
-/* the command doesn't check the old password.
- * just crypts the password, if not yet crypted
- * and sets it
- * only allowed for account itself or root
- * if not root password length must be at least 6 characters
- * (this might not be valid if password already crypted)
- *
- * bindings: object/account, newPassword/password, isCrypted
- *
- */
+/*
+  The command does not check the old password.
+  just crypts the password, if not yet crypted
+  and sets it.
+  Only allowed for account itself or root
+  if not root password length must be at least 6 characters
+  (this might not be valid if password already crypted)
+  
+   parameters:
+     object/account
+     newPassword/password
+     isCrypted
+*/
 
 @interface LSChangePasswordCommand : LSSetCompanyCommand
 {
@@ -55,15 +58,13 @@ static int UsePlainLdapPWD     = -1;
 static int WritePasswordToLDAP = -1;
 
 + (void)initialize {
-  if (UsePlainLdapPWD == -1) {
-    UsePlainLdapPWD = [[NSUserDefaults standardUserDefaults]
-                                       boolForKey:@"UsePlainLdapPWD"] ? 1 : 0;
-  }
-  if (WritePasswordToLDAP == -1) {
-    WritePasswordToLDAP = [[NSUserDefaults standardUserDefaults]
-                                       boolForKey:@"WritePasswordToLDAP"]
-      ? 1 : 0;
-  }
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+
+  if (UsePlainLdapPWD == -1)
+    UsePlainLdapPWD = [ud boolForKey:@"UsePlainLdapPWD"] ? 1 : 0;
+  
+  if (WritePasswordToLDAP == -1)
+    WritePasswordToLDAP = [ud boolForKey:@"WritePasswordToLDAP"];
 }
 
 - (NSNumber *)checkAccess {
@@ -193,12 +194,10 @@ static int WritePasswordToLDAP = -1;
 
     attr = [[NGLdapAttribute alloc] initWithAttributeName:@"userPassword"];
 
-    if (UsePlainLdapPWD) {
-      [attr addStringValue:[NSString stringWithFormat:@"%@",
-                                     self->newPlainTextPassword]];
-    }
+    if (UsePlainLdapPWD)
+      [attr addStringValue:[self->newPlainTextPassword stringValue]];
     else {
-      [attr addStringValue:[NSString stringWithFormat:@"{crypt}%@",
+      [attr addStringValue:[@"{crypt}" stringByAppendingString:
                                      self->newPassword]];
     }
     
@@ -215,10 +214,12 @@ static int WritePasswordToLDAP = -1;
     [attr release]; attr = nil;
   }
   [con release]; con = nil;
+  
   if (_wo == NO) {
     if (self->newPlainTextPassword != nil) {
-      if ([[NSUserDefaults standardUserDefaults]
-                           boolForKey:@"UseSkyrixLoginForImap"] && !isRoot)
+      NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+      
+      if ([ud boolForKey:@"UseSkyrixLoginForImap"] && !isRoot)
         [_context takeValue:self->newPlainTextPassword
                   forKey:@"LSUser_P_W_D_Key"];
 
@@ -227,6 +228,10 @@ static int WritePasswordToLDAP = -1;
                   forKey:@"LSUser_P_W_D_Key"];
     }
   }
+}
+
+- (BOOL)isRootId:(int)_root inContext:(LSCommandContext *)_ctx {
+  return _root == 10000 ? YES : NO;
 }
 
 - (void)_prepareForExecutionInContext:(id)_context {
@@ -241,17 +246,19 @@ static int WritePasswordToLDAP = -1;
   accountId = [[obj valueForKey:@"companyId"] intValue];
   activeAcc = [[[_context valueForKey:LSAccountKey]
                           valueForKey:@"companyId"] intValue];
-  [self assert:((activeAcc == 10000) || (activeAcc == accountId))
+  [self assert:([self isRootId:activeAcc inContext:_context] || 
+                (activeAcc == accountId))
         reason:@"Only root or user itself can change password."];
-  
-  [self assert:((activeAcc == 10000) ||
+
+  [self assert:([self isRootId:activeAcc inContext:_context] ||
                 ([self->newPassword length] > 5))
         reason:@"Password too short - must be at least 6 characters"];
   
   [super _prepareForExecutionInContext:_context];
-
-  if ((!self->isCrypted) && ([self->newPassword length])) {
+  
+  if ((!self->isCrypted) && [self->newPassword isNotEmpty]) {
     NSString *cryptedPasswd;
+    
     cryptedPasswd = LSRunCommandV(_context,
                                   @"system",   @"crypt",
                                   @"password", self->newPassword,
@@ -271,11 +278,13 @@ static int WritePasswordToLDAP = -1;
   }
   else {
     [super _executeInContext:_context];
-    if (WritePasswordToLDAP == 1) {
+    
+    if (WritePasswordToLDAP)
       [self _writePasswordToLdap:_context writeOnly:YES];
-    }
   }
 }
+
+/* KVC */
 
 - (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"object"] ||
