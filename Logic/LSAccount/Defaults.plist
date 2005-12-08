@@ -7,4 +7,5 @@
   LSWriteLDAPServer     = "";
   LSWriteLDAPServerRoot = "";
   LSWriteLDAPServerPort = 0;
+  LDAPPasswordField     = "userPassword";
 }

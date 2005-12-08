@@ -25,6 +25,8 @@
 @class NSString;
 
 /*
+  account::change-password
+
   The command does not check the old password.
   just crypts the password, if not yet crypted
   and sets it.
@@ -59,19 +61,24 @@ static int      WritePasswordToLDAP = -1;
 static NSString *LDAPHost = nil;
 static NSString *LDAPRoot = nil;
 static int      LDAPPort  = 0;
+static NSString *LDAPPasswordField = nil;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 
   if ((UsePlainLdapPWD = [ud boolForKey:@"UsePlainLdapPWD"] ? 1 : 0))
-    NSLog(@"password::change: configured to use plain LDAP password.");
+    NSLog(@"account::change-password: configured to use plain LDAP password.");
   
   if ((WritePasswordToLDAP = [ud boolForKey:@"WritePasswordToLDAP"]))
-    NSLog(@"password::change: configured to write password to LDAP.");
-
+    NSLog(@"account::change-password: configured to write password to LDAP.");
+  
   LDAPHost = [[ud stringForKey:@"LSWriteLDAPServer"]     copy];
   LDAPRoot = [[ud stringForKey:@"LSWriteLDAPServerRoot"] copy];
   LDAPPort = [ud integerForKey:@"LSWriteLDAPServerPort"];
+  
+  LDAPPasswordField = [[ud stringForKey:@"LDAPPasswordField"] copy];
+  NSLog(@"account::change-password: using password field: '%@'", 
+        LDAPPasswordField);
   
   if (![LDAPHost isNotEmpty])
     LDAPHost = [[ud stringForKey:@"LSAuthLDAPServer"] copy];
@@ -109,6 +116,19 @@ static int      LDAPPort  = 0;
 
 /* writing to LDAP */
 
+- (NSException *)handleBindException:(NSException *)_ex
+  isInvalidCredentials:(BOOL *)_iC
+{
+  [self errorWithFormat:@"got bind exception %@ host %@ port %d \n", 
+        [_ex description], LDAPHost, LDAPPort];
+  
+  /* quite hackish, no better way to do this? */
+  if ([[[_ex reason] lowercaseString] hasPrefix:@"invalid credentials"])
+    *_iC = YES;
+  
+  return nil;
+}
+
 - (void)_writePasswordToLdap:(id)_context writeOnly:(BOOL)_wo {
   NSString         *login, *accLogin, *dn, *accDn, *authPwd;
   NGLdapConnection *con;
@@ -142,7 +162,6 @@ static int      LDAPPort  = 0;
 
   {
     BOOL     res = NO, iC;
-    NSString *invalidCredentials = @"invalid credentials";
     
     iC    = NO;
     dn    = nil;
@@ -158,18 +177,15 @@ static int      LDAPPort  = 0;
                     credentials:authPwd];
     }
     NS_HANDLER {
-      fprintf(stderr, "Error[_makeConnectionWithContext:]: got exception %s "
-              "host %s port %d \n", [[localException description] cString],
-              [LDAPHost cString], LDAPPort);
-      if ([[localException reason] isEqualToString:invalidCredentials])
-        iC = YES;
-      
       [con release]; con = nil;
+      [[self handleBindException:localException
+             isInvalidCredentials:&iC] raise];
     }
     NS_ENDHANDLER;
-
+    
     if (iC) {
-      [self assert:NO reason:@"Wrong ldap password"];
+      [self errorWithFormat:@"cannot bind due to incorrect LDAP password."];
+      [self assert:NO reason:@"Wrong LDAP password"];
       return;
     }
     
@@ -190,8 +206,8 @@ static int      LDAPPort  = 0;
     NSArray            *changes;
     NGLdapModification *mod;
     NGLdapAttribute    *attr;
-
-    attr = [[NGLdapAttribute alloc] initWithAttributeName:@"userPassword"];
+    
+    attr = [[NGLdapAttribute alloc] initWithAttributeName:LDAPPasswordField];
 
     if (UsePlainLdapPWD)
       [attr addStringValue:[self->newPlainTextPassword stringValue]];
@@ -233,10 +249,12 @@ static int      LDAPPort  = 0;
   id  obj = [self object];
   int accountId, activeAcc;
 
-  ASSIGN(self->newPlainTextPassword, nil);
+  [self->newPlainTextPassword release]; self->newPlainTextPassword = nil;
   
   [self assert:([self object] != nil)
         reason:@"no account object to act on"];
+
+  /* check permissions */
 
   accountId = [[obj valueForKey:@"companyId"] intValue];
   activeAcc = [[[_context valueForKey:LSAccountKey]
@@ -251,6 +269,9 @@ static int      LDAPPort  = 0;
   
   [super _prepareForExecutionInContext:_context];
   
+
+  /* crypt new password */
+  
   if ((!self->isCrypted) && [self->newPassword isNotEmpty]) {
     NSString *cryptedPasswd;
     
@@ -261,22 +282,29 @@ static int      LDAPPort  = 0;
     ASSIGN(self->newPlainTextPassword, self->newPassword);
     ASSIGN(self->newPassword,cryptedPasswd);
   }
-  if ([self->newPassword length])
+  if ([self->newPassword isNotEmpty])
     [[self object] takeValue:self->newPassword forKey:@"password"];
   else
     [[self object] takeValue:[NSNull null] forKey:@"password"];
 }
 
+/* main entry */
+
 - (void)_executeInContext:(id)_context {
-  if ([LSCommandContext useLDAPAuthorization]) {
+  if ([LSCommandContext useLDAPAuthorization])
     [self _writePasswordToLdap:_context writeOnly:NO];
-  }
   else {
     [super _executeInContext:_context];
     
     if (WritePasswordToLDAP)
       [self _writePasswordToLdap:_context writeOnly:YES];
   }
+  
+  /* reset given passwords */
+  
+  [self->newPlainTextPassword release]; self->newPlainTextPassword = nil;
+  [self->newPassword          release]; self->newPassword          = nil;
+  [self->oldPassword          release]; self->oldPassword          = nil;
 }
 
 /* KVC */

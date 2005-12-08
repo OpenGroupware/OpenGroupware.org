@@ -1,5 +1,8 @@
 2005-12-08  Helge Hess  <helge.hess@skyrix.com>
 
+	* LSChangePasswordCommand.m: used LDAP password field is now
+	  configurable with the LDAPPasswordField default (v5.3.22)
+
 	* LSChangePasswordCommand.m: cleaned up default handling (v5.3.21)
 
 	* LSChangePasswordCommand.m: minor code cleanups (v5.3.20)
