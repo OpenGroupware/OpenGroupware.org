@@ -54,17 +54,34 @@
 
 @implementation LSChangePasswordCommand
 
-static int UsePlainLdapPWD     = -1;
-static int WritePasswordToLDAP = -1;
+static int      UsePlainLdapPWD     = -1;
+static int      WritePasswordToLDAP = -1;
+static NSString *LDAPHost = nil;
+static NSString *LDAPRoot = nil;
+static int      LDAPPort  = 0;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 
-  if (UsePlainLdapPWD == -1)
-    UsePlainLdapPWD = [ud boolForKey:@"UsePlainLdapPWD"] ? 1 : 0;
+  if ((UsePlainLdapPWD = [ud boolForKey:@"UsePlainLdapPWD"] ? 1 : 0))
+    NSLog(@"password::change: configured to use plain LDAP password.");
   
-  if (WritePasswordToLDAP == -1)
-    WritePasswordToLDAP = [ud boolForKey:@"WritePasswordToLDAP"];
+  if ((WritePasswordToLDAP = [ud boolForKey:@"WritePasswordToLDAP"]))
+    NSLog(@"password::change: configured to write password to LDAP.");
+
+  LDAPHost = [[ud stringForKey:@"LSWriteLDAPServer"]     copy];
+  LDAPRoot = [[ud stringForKey:@"LSWriteLDAPServerRoot"] copy];
+  LDAPPort = [ud integerForKey:@"LSWriteLDAPServerPort"];
+  
+  if (![LDAPHost isNotEmpty])
+    LDAPHost = [[ud stringForKey:@"LSAuthLDAPServer"] copy];
+  if (![LDAPRoot isNotEmpty])
+    LDAPRoot = [[ud stringForKey:@"LSAuthLDAPServerRoot"] copy];
+  if (LDAPPort == 0)
+    LDAPPort = [ud integerForKey:@"LSAuthLDAPServerPort"];
+  
+  if (LDAPPort == 0)
+    LDAPPort = 389;
 }
 
 - (NSNumber *)checkAccess {
@@ -84,59 +101,41 @@ static int WritePasswordToLDAP = -1;
   [super dealloc];
 }
 
+/* support methods */
+
+- (BOOL)isRootId:(int)_root inContext:(LSCommandContext *)_ctx {
+  return _root == 10000 ? YES : NO;
+}
+
+/* writing to LDAP */
+
 - (void)_writePasswordToLdap:(id)_context writeOnly:(BOOL)_wo {
   NSString         *login, *accLogin, *dn, *accDn, *authPwd;
   NGLdapConnection *con;
   BOOL             isRoot;
   id               acc, obj;
- 
-  static NSString *LDAPHost = nil;
-  static NSString *LDAPRoot = nil;
-  static int      LDAPPort  = -1;
-
+  
   acc      = [_context valueForKey:LSAccountKey];
-  isRoot   = ([[acc valueForKey:@"companyId"] intValue] == 10000)?YES:NO;
+  isRoot   = [self isRootId:[[acc valueForKey:@"companyId"] intValue]
+                   inContext:_context];
   accLogin = [acc valueForKey:@"login"];
   obj      = [self object];
   login    = [obj valueForKey:@"login"];
 
-  if (isRoot) {
-    authPwd = [_context valueForKey:@"LSUser_P_W_D_Key"];
-  }
-  else {
-    authPwd = self->oldPassword;
-  }
+  authPwd = isRoot // better: "isModifyingOtherUsersPwd"
+    ? [_context valueForKey:@"LSUser_P_W_D_Key"]
+    : self->oldPassword;
+  
   if (![accLogin isEqualToString:login] && !isRoot) {
     if (!isRoot) {
-      [self logWithFormat:@"only root can change foreign password`s"];
+      [self errorWithFormat:@"only root can change foreign password`s"];
       return;
     }
   }
   
-  if (LDAPHost == nil || LDAPRoot == nil || LDAPPort == -1) {
-    NSUserDefaults *ud;
-
-    ud       = [NSUserDefaults standardUserDefaults];
-    LDAPHost = [[ud stringForKey:@"LSWriteLDAPServer"] retain];
-    LDAPRoot = [[ud stringForKey:@"LSWriteLDAPServerRoot"] retain];
-    LDAPPort = [ud integerForKey:@"LSWriteLDAPServerPort"];
-    if (LDAPPort == 0)
-      LDAPPort = 389;
-  }
-  if (LDAPHost == nil || LDAPRoot == nil || LDAPPort == -1) {
-    NSUserDefaults *ud;
-
-    ud       = [NSUserDefaults standardUserDefaults];
-    LDAPHost = [[ud stringForKey:@"LSAuthLDAPServer"] retain];
-    LDAPRoot = [[ud stringForKey:@"LSAuthLDAPServerRoot"] retain];
-    LDAPPort = [ud integerForKey:@"LSAuthLDAPServerPort"];
-    if (LDAPPort == 0)
-      LDAPPort = 389;
-  }
-
-  if (!login) {
-    [self logWithFormat:@"%s: missing login for %@", __PRETTY_FUNCTION__,
-          [self object]];
+  if (![login isNotEmpty]) {
+    [self errorWithFormat:@"%s: missing login for %@", __PRETTY_FUNCTION__,
+            [self object]];
     [self assert:NO reason:@"Missing login"];
     return;
   }
@@ -230,10 +229,6 @@ static int WritePasswordToLDAP = -1;
   }
 }
 
-- (BOOL)isRootId:(int)_root inContext:(LSCommandContext *)_ctx {
-  return _root == 10000 ? YES : NO;
-}
-
 - (void)_prepareForExecutionInContext:(id)_context {
   id  obj = [self object];
   int accountId, activeAcc;
@@ -311,7 +306,7 @@ static int WritePasswordToLDAP = -1;
     return;
   }
   
-  [self logWithFormat:@"WARNING(%s): key %@ (value: %@) is not setable in "
+  [self warnWithFormat:@"%s: key %@ (value: %@) is not setable in "
         @"change-password command",
         __PRETTY_FUNCTION__, _key, _value];
 }
@@ -334,7 +329,7 @@ static int WritePasswordToLDAP = -1;
            [_key isEqualToString:@"companyId"])
     return [super valueForKey:_key];
   
-  [self logWithFormat:@"WARNING(%s): key %@ is not valid in "
+  [self warnWithFormat:@"%s: key %@ is not valid in "
         @"change-password command",
         __PRETTY_FUNCTION__, _key];
   return nil;

@@ -1,4 +1,10 @@
 {
-  LSAccountCVSID = "$Id$";
   LSCreateAccountsReadonly = NO;
+  UsePlainLdapPWD       = NO;
+  WritePasswordToLDAP   = NO;
+  
+  /* those can be used to write to a different LDAP server */
+  LSWriteLDAPServer     = "";
+  LSWriteLDAPServerRoot = "";
+  LSWriteLDAPServerPort = 0;
 }
