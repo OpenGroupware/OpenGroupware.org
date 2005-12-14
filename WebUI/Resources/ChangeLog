@@ -1,3 +1,8 @@
+2005-12-14  Albrecht Dress  <albrecht.dress@lios-tech.com>
+
+	* German.lproj/OGoWebMail.strings: replaced entities with utf-8 chars
+	  (fixes OGo bug #1632)
+
 2005-11-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* English|German.lproj/RelatedLinksUI.strings: added label key
