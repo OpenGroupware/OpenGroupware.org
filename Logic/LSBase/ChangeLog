@@ -1,3 +1,9 @@
+2005-12-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Defaults.plist: added extension => MIME type mappings for PHP,
+	  map 'ics' extension to 'text/calendar' MIME type and 'vcf' to
+	  'text/x-vcard' (v5.2.24)
+
 2005-06-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetLogsCommand.m: minor code cleanups (v5.1.23)

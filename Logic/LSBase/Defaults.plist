@@ -54,6 +54,7 @@
         "htm"     = "text/html";
         "html"    = "text/html";
         "ico"     = "image/x-icon";
+        "ics"     = "text/calendar";
         "ief"     = "image/ief";
         "ifs"     = "image/ifs";
         "ins"     = "application/x-NET-Install";
@@ -119,6 +120,13 @@
         "pcd"     = "image/x-photo-cd";               
         "pdf"     = "application/pdf";
         "pgm"     = "image/x-portable-graymap";
+        "php"     = "application/x-httpd-php";
+        "php3"    = "application/x-httpd-php3";
+        "php3p"   = "application/x-httpd-php3-preprocessed";
+        "php4"    = "application/x-httpd-php4";
+        "phps"    = "application/x-httpd-php-source";
+        "pht"     = "application/x-httpd-php";
+        "phtml"   = "application/x-httpd-php";
         "pjp"     = "image/jpeg";
         "pjpeg"   = "image/pjpeg";
         "pl"      = "application/x-perl";
@@ -190,6 +198,7 @@
         "tsv"     = "text/tab-separated-values";
         "txt"     = "text/plain";
         "vbs"     = "video/mpeg";
+        "vcf"     = "text/x-vcard";
         "viv"     = "video/vivo";
         "vivo"    = "video/vivo";
         "vrt"     = "x-world/x-vrt";
