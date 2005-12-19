@@ -120,6 +120,13 @@
         "pcd"     = "image/x-photo-cd";               
         "pdf"     = "application/pdf";
         "pgm"     = "image/x-portable-graymap";
+        "php"     = "application/x-httpd-php";
+        "php3"    = "application/x-httpd-php3";
+        "php3p"   = "application/x-httpd-php3-preprocessed";
+        "php4"    = "application/x-httpd-php4";
+        "phps"    = "application/x-httpd-php-source";
+        "pht"     = "application/x-httpd-php";
+        "phtml"   = "application/x-httpd-php";
         "pjp"     = "image/jpeg";
         "pjpeg"   = "image/pjpeg";
         "pl"      = "application/x-perl";

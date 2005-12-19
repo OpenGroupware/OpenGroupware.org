@@ -1,3 +1,8 @@
+2005-12-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Defaults.plist: added extension => MIME type mappings for PHP
+	  (v5.3.27)
+
 2005-11-21  Helge Hess  <helge.hess@skyrix.com>
 
 	* Defaults.plist: map 'ics' extension to 'text/calendar' MIME type and
