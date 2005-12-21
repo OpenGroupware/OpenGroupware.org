@@ -418,7 +418,8 @@
   _login = [_login stringValue];
   if ([_login length] == 0)
     return [NSNumber numberWithBool:NO];
-  
+ 
+// TODO: I thought we want to delete by number ?
   if ((account = [self _getAccountByLogin:_login]) == nil)
     return [NSNumber numberWithBool:NO];
 
