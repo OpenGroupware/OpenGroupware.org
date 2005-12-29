@@ -159,6 +159,7 @@ extension                   = "Extensão";
 external                    = "Vínculo externo";
 favorites                   = "Favoritos";
 fax                         = "Download de documento FAX";
+fileListFooterLabel         = "Arquivos";
 fileName                    = "Nome do arquivo";
 fileSize                    = "Tamanho";
 fileType                    = "Tipo de objeto";

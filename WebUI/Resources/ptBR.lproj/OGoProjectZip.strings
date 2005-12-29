@@ -18,3 +18,4 @@ archiveContent       = "Conteúdo do arquivo arquivado";
 cancel               = "Cancelar";
 unzip                = "Unzip";
 zip                  = "Zip";
+zipActionTitle       = "Comprimir arquivos";
