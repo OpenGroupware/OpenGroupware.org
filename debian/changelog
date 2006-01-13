@@ -1,8 +1,9 @@
 opengroupware.org (1.1.0-0) UNRELEASED; urgency=low
 
-  * New upstream release. 
+  * New upstream release.
+  * Drop dependency on objc-compiler. Always require gobjc.
 
- -- Sebastian Ley <ley@debian.org>  Mon, 27 Jun 2005 12:25:59 +0200
+ -- Sebastian Ley <ley@debian.org>  Fri, 13 Jan 2006 13:58:36 +0100
 
 opengroupware.org (1.0a.13-0) UNRELEASED; urgency=low
 
