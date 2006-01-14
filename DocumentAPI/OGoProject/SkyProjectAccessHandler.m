@@ -19,18 +19,16 @@
   02111-1307, USA.
 */
 
-#include <LSFoundation/SkyAccessHandler.h>
+#include <LSFoundation/OGoAccessHandler.h>
 
-@interface SkyProjectAccessHandler : SkyAccessHandler
+@interface SkyProjectAccessHandler : OGoAccessHandler
 @end
 
-#import <Foundation/Foundation.h>
-#import <EOControl/EOControl.h>
-#include <LSFoundation/LSFoundation.h>
+#include "common.h"
 
-@interface SkyAccessHandler(Internals)
+@interface OGoAccessHandler(Internals)
 - (BOOL)_checkGIDs:(NSArray *)_ids;
-@end /* SkyAccessHandler(Internals) */
+@end
 
 @implementation SkyProjectAccessHandler
 
@@ -42,56 +40,59 @@
   NSArray             *array;
 
   projCache = [[self context] valueForKey:@"_cache_project_access"];
-  if (!projCache) {
+  if (projCache == nil) {
     projCache = [NSMutableDictionary dictionaryWithCapacity:64];
     [[self context] takeValue:projCache forKey:@"_cache_project_access"];
   }
-  projs = malloc(sizeof(id) * [_gids count]);
-  gids  = malloc(sizeof(id) * [_gids count]);
+  projs = calloc([_gids count] + 1, sizeof(id));
+  gids  = calloc([_gids count] + 1, sizeof(id));
 
   gidCnt  = 0;
   projCnt = 0;
 
   enumerator = [_gids objectEnumerator];
 
-  while ((obj = [enumerator nextObject])) {
+  while ((obj = [enumerator nextObject]) != nil) {
     id proj;
     
     if ((proj = [projCache objectForKey:[obj keyValues][0]])) {
-      projs[projCnt++] = proj;
+      projs[projCnt] = proj;
+      projCnt++;
     }
     else {
-      gids[gidCnt++] = obj;
+      gids[gidCnt] = obj;
+      gidCnt++;
     }
   }
-  if (gidCnt) {
+  if (gidCnt > 0) {
     array = [NSArray arrayWithObjects:gids count:gidCnt];
     array = [[self context] runCommand:@"project::get-by-globalid",
                             @"noAccessCheck", [NSNumber numberWithBool:YES],
                             @"gids", array, nil];
 
-  [[self context] runCommand:@"project::get-company-assignments",
+    [[self context] runCommand:@"project::get-company-assignments",
                 @"objects",     array,
                 @"relationKey", @"companyAssignments", nil];
-  [[self context] runCommand:@"project::get-team",
+    [[self context] runCommand:@"project::get-team",
                   @"objects", array, @"relationKey", @"team", nil];
-  [[self context] runCommand:@"project::get-owner",
+    [[self context] runCommand:@"project::get-owner",
                   @"objects", array, @"relationKey", @"owner", nil];
     
     enumerator = [array objectEnumerator];
 
-    while ((obj = [enumerator nextObject])) {
+    while ((obj = [enumerator nextObject]) != nil) {
       EOKeyGlobalID *kid;
 
       kid = [obj valueForKey:@"globalID"];
       
       [projCache setObject:obj forKey:[kid keyValues][0]];
-      projs[projCnt++] = obj;
+      projs[projCnt] = obj;
+      projCnt++;
     }
   }
   array = [NSArray arrayWithObjects:projs count:projCnt];
-  free(projs); projs = NULL;
-  free(gids);  gids  = NULL;
+  if (projs != NULL) free(projs); projs = NULL;
+  if (gids  != NULL) free(gids);  gids  = NULL;
   return array;
 }
 
