@@ -10,6 +10,7 @@ $(XMLRPCD_NAME)_TOOL_LIBS += \
 	-lGDLAccess		\
 	-lNGXmlRpc -lNGObjWeb	\
 	-lNGLdap -lNGMime	\
+	-lNGiCal		\
 	-lNGStreams -lNGExtensions -lEOControl \
 	-lXmlRpc -lDOM -lSaxObjC
 
