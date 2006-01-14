@@ -1,3 +1,12 @@
+2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoStringTableManager.m: use -isNotEmpty, minor code cleanups
+	  (v5.3.97)
+
+2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWLabelHandler.m: deal gracefully with NSNull keys (v5.3.96)
+
 2005-11-21  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoSession.m: fixed a warning (v5.3.95)

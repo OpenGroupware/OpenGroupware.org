@@ -39,7 +39,7 @@ static BOOL   debugOn = NO;
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     if ([WOApplication isCachingEnabled]) {
       // TODO: find proper capacities
       self->nameToTable = 
@@ -112,11 +112,11 @@ static BOOL   debugOn = NO;
   NSString        *cname;
   id cacheKey;
   
-  if ([_key length] == 0)
+  if (![_key isNotEmpty])
     return _key;
   if (_component == nil)
     return _key;
-
+  
   if (null == nil) null = [[NSNull null] retain];
   
   cname = [_component name];

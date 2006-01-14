@@ -138,9 +138,7 @@ static inline NSString *_computedKey(LSWLabelHandler *self, NSString *_key) {
   id value = nil;
   BEGIN_PROFILE;
   
-  if ([_key length] == 0)
-    return _key;
-  if (_key == nil)
+  if (![_key isNotEmpty])
     return _key;
   
   if (null == nil) null = [[NSNull null] retain];

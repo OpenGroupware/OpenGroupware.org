@@ -43,7 +43,7 @@ static BOOL debugOn = NO;
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     [[self notificationCenter]
       addObserver:self selector:@selector(resetSession:)
       name:@"OGoSessionFinalizing" object:[self session]];
