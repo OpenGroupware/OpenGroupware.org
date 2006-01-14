@@ -231,8 +231,13 @@ DayCaptionCell: WOGenericContainer {
 MinuteCaptionCellValue: WOString { value = item; }
 
 DayRepetition: WORepetition {
-  list = calcTableKeys;
+  list = calcTableKeys; /* sorted keys of calculatedTable */
   item = calcItem;
+}
+DayValueRepetition: WORepetition {
+  list  = calcArray; /* this is calculatedTable[calcItem] (the key) */
+  item  = item;
+  index = itemIdx;
 }
 
 DayCell: WOGenericContainer {
@@ -246,11 +251,6 @@ DayCell: WOGenericContainer {
 DayValue: WOString { value = calcItem; }
 
 
-DayValueRepetition: WORepetition {
-  list  = calcArray;
-  item  = item;
-  index = itemIdx;
-}
 
 DayValueFreeCell: WOGenericContainer {
   elementName = "td";

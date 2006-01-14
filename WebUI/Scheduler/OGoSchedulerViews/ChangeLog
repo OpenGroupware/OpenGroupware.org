@@ -1,3 +1,7 @@
+2005-11-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyInlineDayOverview.m: code cleanups (v5.3.51)
+
 2005-09-23  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyMonthRepetition.m: fixed a warning on OSX (v5.3.50)

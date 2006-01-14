@@ -16,6 +16,7 @@
   skyp4_desktop_cachetimeout       = 30; // seconds
   skyp4_filelist_hide_folders      = NO;
 
+  // TODO: document
   skyp4_project_groupings = (
   );
   skyp4_desktop_selected_projects  = ();
@@ -35,6 +36,13 @@
   "skyp4_desktop_tab"        = "favorites";
   "skyp4_documentviewer_tab" = "attributes";
   
+  /*
+    This configures the tabs being displayed in the project list. You can add
+    arbitary queries involving project core attributes. Eg one common example
+    is:
+       { key = pwww; labelKey=www; qualifier="name like 'www.*'"; }
+    To display all projects named www.something come up in an additional tab.
+  */
   skyp4_desktop_tabs = (
     { key = ppublic;   labelKey = common;   qualifier = "type='common'";   },
     { key = pprivate;  labelKey = private;  qualifier = "type='private'";  },

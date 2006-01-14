@@ -156,7 +156,8 @@
     return;
   
   [super setDataSource:_ds];
-  [self->intervalDataSource release];
+  [self->intervalDataSource release]; self->intervalDataSource = nil;
+  
 #if 0 // TODO: explain
   self->intervalDataSource =
     [[EOFilterDataSource alloc] initWithDataSource:_ds];
@@ -179,10 +180,11 @@
 }
 
 - (void)setCurrentTime:(NSCalendarDate *)_time {
-  if (![_time isEqual:self->currentDate]) {
-    RELEASE(self->currentApts); self->currentApts = nil;
-    [self setCurrentDate:_time];
-  }
+  if ([_time isEqual:self->currentDate])
+    return;
+
+  [self->currentApts release]; self->currentApts = nil;
+  [self setCurrentDate:_time];
 }
 - (NSCalendarDate *)currentTime {
   return [self currentDate];
@@ -254,42 +256,42 @@
 
   firstDate = nil;
   
-  if ([apts count] > 0) {
-    int            cnt = 0;
-    id             apt;
-    NSCalendarDate *d;
-    BOOL           hasOneDayApts = NO;
+  if ([apts isNotEmpty]) { // TODO: move section to own method?
+    unsigned       cnt;
+    BOOL           hasOneDayApts;
     NSArray        *ma;
 
     firstDate = [self->day beginOfDay];
     ma        = [self moreDayApts];
-
-    while (cnt < [apts count]) {
-      apt = [apts objectAtIndex:cnt++];
+    
+    for (cnt = 0, hasOneDayApts = NO; cnt < [apts count]; cnt++) { 
+      NSCalendarDate *d;
+      id apt;
+     
+      apt = [apts objectAtIndex:cnt];
       d   = [apt valueForKey:@"startDate"];
-
-      if (!d)
+      
+      if (d == nil)
         continue;
-
+      
       // ignore all day apts
       if ([self isThisAllDayApt:apt])
         continue;
       // to jump over more day apts
       if ([ma containsObject:apt])
         continue;
-
+      
       firstDate     = d;
       hasOneDayApts = YES;
       break;
     }
     if (!hasOneDayApts) {
-      // no one-day apts
+      /* no one-day apts */
       firstDate = [self->day endOfDay];
       lastDate  = [self->day beginOfDay];
     }
-    else {
+    else
       lastDate = [[apts lastObject] valueForKey:@"startDate"];
-    }
   }
   else {
     // to force the next condition to proceed
