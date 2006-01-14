@@ -1,3 +1,10 @@
+2006-01-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* WebServerResources/English_orange.lproj/OGo.css: replaced invalid
+	  'text-color' attribute with 'color', fix 'border' attribute, replace
+	  'align' attribute with 'text-align', uncommented invalid background
+	  color of .skybuttoncolor class
+
 2005-09-22  Helge Hess  <helge.hess@skyrix.com>
 
 	* WebServerResources/English.lproj/LSWAppointmentEditor.js: prepared
