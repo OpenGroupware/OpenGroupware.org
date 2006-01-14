@@ -39,6 +39,7 @@ skyaptnotify_TOOL_LIBS += \
 	-lOGoSchedulerTools	\
 	-lOGoDocuments		\
 	-lGDLAccess		\
+	-lNGiCal		\
 	-lNGMime -lNGLdap	\
 
 
@@ -52,6 +53,8 @@ ogo-jobs-export_TOOL_LIBS        += $(LSFoundationLIBS)
 ogo-acl-list_TOOL_LIBS           += $(LSFoundationLIBS)
 ogo-check-permission_TOOL_LIBS   += $(LSFoundationLIBS)
 ogo-check-aptconflicts_TOOL_LIBS += $(LSFoundationLIBS)
+ogo-prop-list_TOOL_LIBS          += $(LSFoundationLIBS)
+ogo-prop-set_TOOL_LIBS           += $(LSFoundationLIBS)
 
 ogo-vcard-get_TOOL_LIBS += $(LSFoundationLIBS)
 ogo-vcard-put_TOOL_LIBS += $(LSFoundationLIBS) -lNGiCal

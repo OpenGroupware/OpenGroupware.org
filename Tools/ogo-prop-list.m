@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -22,15 +22,15 @@
 #import <Foundation/NSObject.h>
 
 /*
-  ogo-acl-list
+  ogo-prop-list
 
-  A small sample program that fetches access control information of an object.
+  A small sample program that fetches the properties of a given identifier.
 */
 
 @class NSArray;
 @class OGoContextManager, LSCommandContext;
 
-@interface ListACLs : NSObject
+@interface ListProps : NSObject
 {
   OGoContextManager *lso;
   LSCommandContext  *ctx;
@@ -49,33 +49,12 @@
 #include <LSFoundation/LSCommandContext.h>
 #include <LSFoundation/LSCommandKeys.h>
 #include <LSFoundation/LSTypeManager.h>
-#include <LSFoundation/SkyAccessManager.h>
+#include <LSFoundation/SkyObjectPropertyManager.h>
 
-#if 0
-- (id)accessIds {
-  return [[[(id)[self session] commandContext] accessManager]
-                      allowedOperationsForObjectId:[[self person] globalID]];
-}
-
-- (id)eoForPerson {
-  return [[self runCommand:@"object::get-by-globalID",
-                @"gid", [[self object] globalID], nil] lastObject];
-}
-
-- (BOOL)isEditDisabled {
-  id am;
-  
-  am = [[[self session] valueForKey:@"commandContext"] accessManager];
-  return ![am operation:@"w" 
-              allowedOnObjectID:[[self object] valueForKey:@"globalID"]];
-  
-}
-#endif
-
-@implementation ListACLs
+@implementation ListProps
 
 - (void)usage {
-  NSLog(@"ogo-acl-list -login <login> -password <pwd> [object-id]+");
+  NSLog(@"ogo-prop-list -login <login> -password <pwd> [object-id]+");
 }
 
 - (id)init {
@@ -128,8 +107,8 @@
 }
 
 - (int)run:(NSArray *)_args onContext:(LSCommandContext *)_ctx {
-  id<LSTypeManager> tm;
-  SkyAccessManager  *am;
+  id<LSTypeManager>        tm;
+  SkyObjectPropertyManager *pm;
   NSArray *gids, *pkeys;
   
   [self logWithFormat:@"Args: %@", _args];
@@ -147,15 +126,10 @@
   gids = [tm globalIDsForPrimaryKeys:pkeys];
   [self logWithFormat:@"global-ids: %@", gids];
   
-  /* 
-     retrieve ACL info on the objects ...
-     
-     Note: this does not return implicit access rights! It only lists explicit
-           ACL entries.
-  */
-  am = [_ctx accessManager];
-  [self logWithFormat:@"allowed operations: %@", 
-	  [am allowedOperationsForObjectIds:gids]];
+  /* retrieve ACL info on the objects ... */
+  pm = [_ctx propertyManager];
+  [self logWithFormat:@"properties: %@", 
+	  [pm propertiesForGlobalIDs:gids namespace:nil]];
   
   return 0;
 }
@@ -184,7 +158,7 @@
   return [[[[self alloc] init] autorelease] run:_args];
 }
 
-@end /* ListACLs */
+@end /* ListProps */
 
 int main(int argc, char **argv, char **env) {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -193,7 +167,7 @@ int main(int argc, char **argv, char **env) {
   [NSProcessInfo initializeWithArguments:argv count:argc environment:env];
 #endif
   
-  rc = [ListACLs run:[[NSProcessInfo processInfo] argumentsWithoutDefaults]];
+  rc = [ListProps run:[[NSProcessInfo processInfo] argumentsWithoutDefaults]];
   [pool release];
   return rc;
 }

@@ -1,3 +1,11 @@
+2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added ogo-prop-set tool
+
+2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added ogo-prop-list tool
+
 2005-09-29  Helge Hess  <helge.hess@skyrix.com>
 
 	* ogo-check-permission.m: fixed toolname in usage

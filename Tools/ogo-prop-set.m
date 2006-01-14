@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
 
@@ -22,15 +22,15 @@
 #import <Foundation/NSObject.h>
 
 /*
-  ogo-acl-list
-
-  A small sample program that fetches access control information of an object.
+  ogo-prop-set
+  
+  A small sample program that sets a property for a given object id.
 */
 
 @class NSArray;
 @class OGoContextManager, LSCommandContext;
 
-@interface ListACLs : NSObject
+@interface SetProp : NSObject
 {
   OGoContextManager *lso;
   LSCommandContext  *ctx;
@@ -49,33 +49,13 @@
 #include <LSFoundation/LSCommandContext.h>
 #include <LSFoundation/LSCommandKeys.h>
 #include <LSFoundation/LSTypeManager.h>
-#include <LSFoundation/SkyAccessManager.h>
+#include <LSFoundation/SkyObjectPropertyManager.h>
 
-#if 0
-- (id)accessIds {
-  return [[[(id)[self session] commandContext] accessManager]
-                      allowedOperationsForObjectId:[[self person] globalID]];
-}
-
-- (id)eoForPerson {
-  return [[self runCommand:@"object::get-by-globalID",
-                @"gid", [[self object] globalID], nil] lastObject];
-}
-
-- (BOOL)isEditDisabled {
-  id am;
-  
-  am = [[[self session] valueForKey:@"commandContext"] accessManager];
-  return ![am operation:@"w" 
-              allowedOnObjectID:[[self object] valueForKey:@"globalID"]];
-  
-}
-#endif
-
-@implementation ListACLs
+@implementation SetProp
 
 - (void)usage {
-  NSLog(@"ogo-acl-list -login <login> -password <pwd> [object-id]+");
+  NSLog(@"ogo-prop-set -login <login> -password <pwd> <propname> <propval> "
+	@"<object-id>");
 }
 
 - (id)init {
@@ -110,53 +90,59 @@
 
 /* process */
 
-- (NSArray *)primaryKeysForStringsAndSkipFirst:(NSArray *)_args {
-  NSMutableArray *ma = nil;
-  NSEnumerator   *e;
-  NSString       *s;
-
-  e = [_args objectEnumerator];
-  [e nextObject]; // skip first ;-)
-  while ((s = [e nextObject])) {
-    NSNumber *n;
-    
-    n = [NSNumber numberWithUnsignedInt:[s unsignedIntValue]];
-    if (ma == nil) ma = [NSMutableArray arrayWithCapacity:16];
-    [ma addObject:n];
-  }
-  return ma;
-}
-
 - (int)run:(NSArray *)_args onContext:(LSCommandContext *)_ctx {
-  id<LSTypeManager> tm;
-  SkyAccessManager  *am;
-  NSArray *gids, *pkeys;
+  SkyObjectPropertyManager *pm;
+  NSDictionary *propDict;
+  EOGlobalID   *gid;
+  NSString     *propName, *propValue;
+  NSNumber     *pkey;
+  NSException  *error;
   
-  [self logWithFormat:@"Args: %@", _args];
-  if ([_args count] < 2) {
+  if ([_args count] < 4) {
     [self usage];
     return 1;
   }
-  pkeys = [self primaryKeysForStringsAndSkipFirst:_args];
-  [self logWithFormat:@"pkeys: %@", [pkeys componentsJoinedByString:@","]];
+
+  propName  = [_args objectAtIndex:1];
+  propValue = [_args objectAtIndex:2];
+  pkey      = [NSNumber numberWithInt:[[_args objectAtIndex:3] intValue]];
   
   /* convert primary key array into EOGlobalID array */
   
-  tm = [_ctx typeManager];
-  [self logWithFormat:@"type manager: %@", tm];
-  gids = [tm globalIDsForPrimaryKeys:pkeys];
-  [self logWithFormat:@"global-ids: %@", gids];
+  gid = [[_ctx typeManager] globalIDForPrimaryKey:pkey];
+  [self logWithFormat:@"global-id: %@", gid];
+  if (gid == nil) {
+    [self errorWithFormat:@"did not find gid for primary key: %@", pkey];
+    return 2;
+  }
   
-  /* 
-     retrieve ACL info on the objects ...
-     
-     Note: this does not return implicit access rights! It only lists explicit
-           ACL entries.
-  */
-  am = [_ctx accessManager];
-  [self logWithFormat:@"allowed operations: %@", 
-	  [am allowedOperationsForObjectIds:gids]];
+  /* first retrieve properties, then set properties */
+
+  pm = [_ctx propertyManager];
   
+  if ((propDict = [pm propertiesForGlobalID:gid]) != nil) {
+    NSMutableDictionary *md;
+    
+    md = [propDict mutableCopy];
+    [md takeValue:propValue forKey:propName];
+    propDict = [[md copy] autorelease];
+    [md release];
+  }
+  else /* object had no properties */
+    propDict  = [NSDictionary dictionaryWithObject:propValue forKey:propName];
+  
+  if ((error = [pm takeProperties:propDict globalID:gid]) != nil) {
+    [self errorWithFormat:@"failed: %@", error];
+    return 5;
+  }
+  
+  if ([_ctx isTransactionInProgress]) {
+    if (![_ctx commit]) {
+      [self errorWithFormat:@"failed to commit changed to database!"];
+      return 3;
+    }
+  }
+
   return 0;
 }
 
@@ -184,7 +170,7 @@
   return [[[[self alloc] init] autorelease] run:_args];
 }
 
-@end /* ListACLs */
+@end /* SetProp */
 
 int main(int argc, char **argv, char **env) {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -193,7 +179,7 @@ int main(int argc, char **argv, char **env) {
   [NSProcessInfo initializeWithArguments:argv count:argc environment:env];
 #endif
   
-  rc = [ListACLs run:[[NSProcessInfo processInfo] argumentsWithoutDefaults]];
+  rc = [SetProp run:[[NSProcessInfo processInfo] argumentsWithoutDefaults]];
   [pool release];
   return rc;
 }
