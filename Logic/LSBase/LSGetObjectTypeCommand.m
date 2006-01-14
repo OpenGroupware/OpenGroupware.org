@@ -84,10 +84,13 @@
 }
 
 - (id)_typeOfManyOidsInContext:(id)_context 
-  cache:(NSMutableDictionary *)keyToType 
+  cache:(NSMutableDictionary *)keyToTypeCache 
 {
+  // TODO: this method fails on mixed OID sets, eg:
+  //         ogo-prop-list -login helge -password abc 11410 10130
   // TODO: split up this big method!
   // TODO: describe what this method does
+  static unsigned fullScanCount = 0;
   NSString          **types;
   NSArray           *result;
   unsigned          i, count;
@@ -100,10 +103,10 @@
   
   if ((count = [self->oids count]) == 0)
     return nil;
-  
+
   openCount = count;
   types     = calloc(count + 1, sizeof(NSString *));
-  inString  = [[NSMutableString alloc] init];  
+  inString  = [[NSMutableString alloc] initWithCapacity:256];
   idToIdx   = NSCreateMapTable(NSObjectMapKeyCallBacks,
                                NSIntMapValueCallBacks,
                                64);
@@ -111,10 +114,10 @@
     id oid;
     
     oid      = [self->oids objectAtIndex:i];
-    types[i] = [keyToType objectForKey:oid];
+    types[i] = [keyToTypeCache objectForKey:oid];
     
     if (types[i] == nil) {
-      if ([inString length] > 0)
+      if ([inString isNotEmpty])
         [inString appendString:@","];
       [inString appendString:[oid stringValue]];
       NSMapInsert(idToIdx, oid, (void *)(i + 1));
@@ -127,12 +130,12 @@
   [self assert:(adChannel != nil) reason:@"no adaptor channel available !"];
 
   /* first take look in ObjectInfo table */
-
-  if (openCount > 0 && ([inString length] > 0)) {
+  
+  if (openCount > 0 && [inString isNotEmpty]) {
     EOEntity       *entity;
     EOSQLQualifier *qualifier;
     NSArray        *attrs;
-
+    
     entity    = [[self databaseModel] entityNamed:@"ObjectInfo"];
     attrs     = [entity attributes];
     qualifier = [[EOSQLQualifier alloc] initWithEntity:entity
@@ -157,7 +160,7 @@
         
           types[idx] = [row objectForKey:@"objectType"];
         
-          [keyToType setObject:types[idx] forKey:oid];
+          [keyToTypeCache setObject:types[idx] forKey:oid];
           openCount--;
         }
       }
@@ -169,23 +172,29 @@
 
   /* then search all tables */
   
-  inString = [[NSMutableString alloc] init];
+  fullScanCount++;
+  if (fullScanCount % 100 == 0) {
+    [self warnWithFormat:@"scanning all tables for types of object ids: %@",
+	    self->oids];
+  }
+  
+  inString = [[NSMutableString alloc] initWithCapacity:16];
   for (i = 0; i < count; i++) {
     if (types[i] == nil) {
-      if ([inString length] > 0)
+      if ([inString isNotEmpty])
         [inString appendString:@","];
       
       [inString appendString:[[self->oids objectAtIndex:i] stringValue]]; 
     }
   }
-  if (openCount > 0 && [inString length] == 0) {
+  if (openCount > 0 && ![inString isNotEmpty]) {
     [self logWithFormat:@"got empty SQL IN select string"];
     openCount = 0; // hack?
   }
   
   /* search all tables */
   entities = [[[self databaseModel] entities] objectEnumerator];
-  while ((openCount > 0) && (entity = [entities nextObject])) {
+  while ((openCount > 0) && ((entity = [entities nextObject]) != nil)) {
     NSString       *eName;
     NSString       *pkeyName;
     EOAttribute    *attribute;
@@ -210,7 +219,7 @@
     if ((attribute = [entity attributeNamed:pkeyName]) == nil)
       continue;
 
-    [self assert:(pkeyName != nil)  reason:@"missing primary key name !"];
+    [self assert:(pkeyName  != nil) reason:@"missing primary key name !"];
     [self assert:(attribute != nil) reason:@"missing attribute object !"];
     
     attributes = [NSArray arrayWithObject:attribute];
@@ -243,7 +252,7 @@
         
         types[idx] = eName;
         
-        [keyToType setObject:eName forKey:oid];
+        [keyToTypeCache setObject:eName forKey:oid];
         openCount--;
       }
     }
@@ -285,7 +294,7 @@
 }
 
 - (id)_typeOfSingleOidInContext:(id)_context 
-  cache:(NSMutableDictionary *)keyToType 
+  cache:(NSMutableDictionary *)keyToTypeCache 
 {
   // TODO: split up this big method
   NSString          *type;
@@ -293,7 +302,7 @@
   EOEntity          *entity;
   EOAdaptorChannel  *adChannel;
   
-  if ((type = [keyToType objectForKey:[self objectId]]))
+  if ((type = [keyToTypeCache objectForKey:[self objectId]]))
     return type;
   
   adChannel = [[self databaseChannel] adaptorChannel];
@@ -320,7 +329,7 @@
       if ((row = [adChannel fetchAttributes:attrs withZone:NULL])) {
         type = [row objectForKey:@"objectType"];
         [self assert:(type != nil)       reason:@"missing entity name !"];
-        [keyToType setObject:type forKey:[self objectId]];
+        [keyToTypeCache setObject:type forKey:[self objectId]];
       }
       [adChannel cancelFetch];
     }
@@ -384,7 +393,7 @@
       type = eName;
       [self assert:(type != nil)       reason:@"missing entity name !"];
       [self assert:(self->oids != nil) reason:@"missing objectId !"];
-      [keyToType setObject:type forKey:[self objectId]];
+      [keyToTypeCache setObject:type forKey:[self objectId]];
       [adChannel cancelFetch];
       break;
     }
@@ -403,7 +412,7 @@
   }
   
   if ((keyToType = [_context valueForKey:@"LSObjectIdToType"]) == nil) {
-    keyToType = [NSMutableDictionary dictionaryWithCapacity:64];
+    keyToType = [NSMutableDictionary dictionaryWithCapacity:1024];
     [_context takeValue:keyToType forKey:@"LSObjectIdToType"];
   }
   

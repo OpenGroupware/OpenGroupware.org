@@ -1,3 +1,9 @@
+2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetObjectTypeCommand.m: code cleanups, use -isNotEmpty, print a log
+	  if all tables must be scanned for a primary key (every 100 scans)
+	  (v5.3.28)
+
 2005-12-19  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Defaults.plist: added extension => MIME type mappings for PHP
