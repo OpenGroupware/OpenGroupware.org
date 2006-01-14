@@ -21,12 +21,18 @@
 
 #include <LSAddress/LSGetCompanyForMemberCommand.h>
 
+/*
+  Note: the members (accounts!) must be mutable objects since the superclass
+        sets certain KVC keys in them. NSDictionary's are not sufficient, they
+	will break on OSX.
+*/
+
 @interface LSGetTeamForAccountCommand : LSGetCompanyForMemberCommand
 @end
 
 @interface LSGetTeamForAccountCommand(PrivateMethodes)
 - (BOOL)fetchGlobalIDs;
-@end /* LSGetTeamForAccountCommand(PrivateMethodes) */
+@end
 
 #import "common.h"
 
