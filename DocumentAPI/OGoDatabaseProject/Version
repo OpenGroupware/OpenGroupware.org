@@ -1,5 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=53
+SUBMINOR_VERSION:=54
 
-# v5.0.24 requires libEOControl v4.2.39
+# v5.3.54 requires libLSFoundation v5.3.109
+# v5.0.24 requires libEOControl    v4.2.39

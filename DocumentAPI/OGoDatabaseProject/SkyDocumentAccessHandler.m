@@ -19,9 +19,9 @@
   02111-1307, USA.
 */
 
-#include <LSFoundation/SkyAccessHandler.h>
+#include <LSFoundation/OGoAccessHandler.h>
 
-@interface SkyDocumentAccessHandler : SkyAccessHandler
+@interface SkyDocumentAccessHandler : OGoAccessHandler
 @end
 
 #include <OGoDatabaseProject/SkyProjectFileManager.h>
@@ -32,16 +32,18 @@
 - (id)project;
 @end
 
-@interface SkyAccessHandler(Internals)
+@interface OGoAccessHandler(Internals)
 - (BOOL)_checkGIDs:(NSArray *)_ids;
-@end /* SkyAccessHandler(Internals) */
+@end
+
 @interface SkyDocumentAccessHandler(Internals)
+
 - (BOOL)operation:(NSString *)_operation
   allowedOnObjectIDs:(NSArray *)_oids
   forAccessGlobalID:(EOGlobalID *)_accessGID
   cache:(NSMutableDictionary *)_cache;
 
-@end /* SkyAccessHandler(Internals) */
+@end
 
 @implementation SkyDocumentAccessHandler
 
@@ -78,10 +80,15 @@ static NSArray *entityNames = nil;
 - (NSArray *)_fetchTeamsForPersonID:(NSNumber *)_gid buildGids:(BOOL)_gids {
   NSDictionary *acc;
   NSArray      *teamIds;
+  static NSString *key = @"companyId";
   
-  acc = [NSDictionary dictionaryWithObject:_gid forKey:@"companyId"];
+  // Note: this must be mutable for LSGetCompanyForMemberCommand
+  acc = [[NSMutableDictionary alloc] initWithObjects:&_gid forKeys:&key
+				     count:1];
   
   teamIds = [[self context] runCommand:@"account::teams", @"account", acc,nil];
+  [acc release]; acc = nil;
+
   teamIds = _gids
     ? [teamIds map:@selector(globalID)]
     : [teamIds map:@selector(valueForKey:) with:@"companyId"];
@@ -95,19 +102,20 @@ static NSArray *entityNames = nil;
 - (int)_checkAccessForAssigments:(NSArray *)_ass
   companyIds:(NSArray *)_companyIds
   operation:(NSString *)_op
-{ /* check whether person id is in assignments */
+{ 
+  /* check whether person id is in assignments */
   NSEnumerator *compEnum;
   NSNumber     *kid;
   int          res;
   
   res = -1;
   compEnum = [_companyIds objectEnumerator];
-  while ((kid = [compEnum nextObject])) {
+  while ((kid = [compEnum nextObject]) != nil) {
     NSEnumerator *enumerator;
     id           obj;
 
     enumerator = [_ass objectEnumerator];
-    while ((obj = [enumerator nextObject])) {
+    while ((obj = [enumerator nextObject]) != nil) {
       if ([[obj valueForKey:@"companyId"] isEqual:kid]) {
         if ([self _checkAccessMask:[obj valueForKey:@"accessRight"]
                   with:_op]) { /* access matched */
@@ -129,7 +137,7 @@ static NSArray *entityNames = nil;
   NSArray *teamIds, *assignments;
 
   if (![_project isNotNull]) {
-    NSLog(@"WARNING[%s]: missing project ");
+    [self warnWithFormat:@"%s: missing project ", __PRETTY_FUNCTION__];
     return NO;
   }
   
