@@ -19,28 +19,18 @@
   02111-1307, USA.
 */
 
-#import "common.h"
+#include "LSWFormLetterComponent.h"
 #include <OGoFoundation/OGoFoundation.h>
-#import "LSWFormLetterComponent.h"
+#include "common.h"
 
 @implementation LSWFormLetterComponent
 
-- (id)init {
-  if ((self = [super init])) {
-  }
-  return self;
-}
-
-#if !LIB_FOUNDATION_BOEHM_GC
-- (void)dealloc {
-  [super dealloc];
-}
-#endif
+/* accessors */
 
 - (NSString *)size {
   return [NSString stringWithFormat:@"%d", [[self->data content] length]];
 }
-                    
+
 - (id)downloadTarget {
   return [[self context] contextID];
 }
@@ -52,4 +42,4 @@
   return self->data;
 }
 
-@end
+@end /* LSWFormLetterComponent */

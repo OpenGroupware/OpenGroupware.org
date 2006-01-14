@@ -1,3 +1,11 @@
+2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWFormLetterComponent.m: code cleanups (v5.3.53)
+
+2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added OGoFormLetterAction (v5.3.52)
+
 2005-09-06  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyCompanySavedSearchPopUp.m: fixed gcc4 warnings, improved defaults

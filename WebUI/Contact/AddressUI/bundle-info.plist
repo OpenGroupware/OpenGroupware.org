@@ -49,6 +49,7 @@
       { name = SkyContactImportUploadPage;  },
       { name = SkyContactImportPage;        },
       { name = SkyCompanySavedSearchPopUp;  },
+      { name = OGoFormLetterAction;         },
     );
 
     PreferencePages = (

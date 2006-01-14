@@ -33,6 +33,7 @@ AddressUI_OBJC_FILES = \
 	SkyContactImportUploadPage.m	\
 	SkyContactImportPage.m		\
 	SkyCompanySavedSearchPopUp.m	\
+	OGoFormLetterAction.m		\
 
 AddressUI_LANGUAGES = English German
 
