@@ -14,6 +14,15 @@
 
 	* LSTypeManager.m: minor code cleanups
 
+2005-11-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.114
+
+	* LSDBObjectNewCommand.m: do not attempt to register companyValue
+	  objects in objinfo
+
+	* OGoAccessManager.m: improved logging of missing access handlers
+
 2005-11-10  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoContextManager.m: moved some default-defaults to GNUmakefile,

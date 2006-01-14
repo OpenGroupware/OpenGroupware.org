@@ -97,6 +97,8 @@
   en = [self entityName];
   if ([en hasSuffix:@"Assignment"])
     return NO;
+  if ([en isEqualToString:@"CompanyValue"])
+    return NO;
   
   return YES;
 }

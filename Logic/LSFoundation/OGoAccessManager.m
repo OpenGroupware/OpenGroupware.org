@@ -905,9 +905,17 @@ static Class   StrClass = Nil;
 	                     bundleProvidingResource:entityName
 	                     ofType:@"SkyAccessHandlers"];
   if (bundle == nil) {
-    [self errorWithFormat:
-	    @"found no access handler for GID %@ (entity=%@): %@", 
-	    _gid, entityName, self->accessHandlers];
+    static NSMutableSet *warnedEntities = nil;
+    
+    if (warnedEntities == nil)
+      warnedEntities = [[NSMutableSet alloc] initWithCapacity:16];
+    
+    if (![warnedEntities containsObject:entityName]) {
+      [self errorWithFormat:
+	      @"found no access handler for GID %@ (entity=%@): %@", 
+	      _gid, entityName, self->accessHandlers];
+      [warnedEntities addObject:entityName];
+    }
   }
   
   /* this fills the cache */
