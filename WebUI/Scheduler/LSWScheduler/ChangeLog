@@ -1,3 +1,8 @@
+2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWAppointmentViewer.m: prepared support for extended attributes on
+	  events (v5.3.94)
+
 2005-10-18  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWAppointmentProposal.m: code cleanups, ensure that the participants

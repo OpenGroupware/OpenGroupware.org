@@ -819,6 +819,24 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
                          isEqualToString:@"archived"];
 }
 
+/* extended attributes */
+
+- (BOOL)showProperties {
+#warning TODO: VZ NRW, only set to yes if properties are configured
+  return YES;
+}
+
+- (NSDictionary *)properties {
+  SkyObjectPropertyManager *pm;
+  
+  pm = [[[self session] commandContext] propertyManager];
+  
+  // TODO: do we need to cache this or is this already done in the propmanager?
+  return [pm propertiesForGlobalID:
+	       [[self appointment] valueForKey:@"globalID"]
+	     namespace:XMLNS_OGoExtAttrPropNamespace];
+}
+
 /* label generation */
 
 - (NSString *)objectLabel {

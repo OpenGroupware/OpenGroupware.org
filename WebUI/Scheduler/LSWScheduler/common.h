@@ -41,4 +41,9 @@
 #include <OGoFoundation/OGoFoundation.h>
 #include <OGoFoundation/LSWNotifications.h>
 
+#ifndef XMLNS_OGoExtAttrPropNamespace
+#  define XMLNS_OGoExtAttrPropNamespace \
+     @"http://www.opengroupware.org/properties/ext-attr"
+#endif
+
 #endif /* __OGo_LSWScheduler_common_H__ */
