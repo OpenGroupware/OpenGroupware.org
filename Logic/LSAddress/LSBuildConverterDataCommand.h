@@ -24,6 +24,14 @@
 
 #include <LSFoundation/LSBaseCommand.h>
 
+/*
+  address::build-converter-data
+  
+  TODO: document!
+  
+  Called by SkyAddressConverterDataSource.
+*/
+
 @class NSString, NSArray, NSDictionary;
 
 @interface LSBuildConverterDataCommand : LSBaseCommand

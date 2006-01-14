@@ -70,7 +70,7 @@ Class Hierachy
 
 vCard Notes
 ===========
-- some generation stuff is explain in the formatter header files
+- some generation stuff is explained in the formatter header files
 - addresses:
   - Evolution 2.2.2 shows these types (hardcoded, no settings):
     - work, home, other

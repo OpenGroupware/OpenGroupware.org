@@ -26,6 +26,11 @@
 // TODO: this class uses WOResponse ! either move the class to the UI or
 //       split the functionality
 
+/*
+  Note: this can also trigger external Python programs for export. Is this
+        actually used somwhere? (forkExport)
+*/
+
 @implementation LSAddressConverterCommand
 
 - (void)dealloc {
@@ -62,6 +67,8 @@
 		       nil);
   return data;
 }
+
+/* optional support for forking converter processes */
 
 - (NSData *)_buildDataWithForkedProcessInContext:(id)_context
   stringEncoding:(NSStringEncoding)enc

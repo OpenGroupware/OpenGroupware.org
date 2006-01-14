@@ -29,6 +29,9 @@
   
   Used to retrieve teams for an account and other company<->company
   relationships.
+  
+  Note: the members must not be immutable dictionaries! The commands sets some
+        values in them.
 */
 
 @class NSArray, NSString, NSNumber;

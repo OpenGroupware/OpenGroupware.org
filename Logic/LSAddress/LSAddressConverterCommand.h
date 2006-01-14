@@ -24,6 +24,14 @@
 
 #include <LSFoundation/LSBaseCommand.h>
 
+/*
+  address::convert
+
+  TODO: document
+  
+  Apparently this command can even fork Python scripts for producing the data.
+*/
+
 @class NSString, NSArray, NSDictionary, NSNumber;
 
 @interface LSAddressConverterCommand : LSBaseCommand

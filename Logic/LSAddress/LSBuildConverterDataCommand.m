@@ -33,11 +33,11 @@
 @implementation LSBuildConverterDataCommand
 
 - (void)dealloc {
-  [self->type release];
-  [self->kind release];
-  [self->ids release];
+  [self->type       release];
+  [self->kind       release];
+  [self->ids        release];
   [self->objectList release];
-  [self->labels release];
+  [self->labels     release];
   [self->entityName release];
   [self->returnKind release];
   [super dealloc];
@@ -57,7 +57,7 @@
   else if ([self->type isEqualToString:@"formLetter"])
     data = [self _createFormLetterDataInCtx:_ctx];
   else {
-    [self logWithFormat:@"WARNING: Unknown type! Can not convert address!"];
+    [self warnWithFormat:@"Unknown type! Cannot convert address!"];
     data = [NSData data];
   }
   if (self->returnKind != nil) {
@@ -67,8 +67,8 @@
                          autorelease];
     }
     else if (![self->returnKind isEqualToString:@"NSData"]) {
-      [self logWithFormat:
-            @"WARNING: Unknown returnKind / expected NSString/NSData"];
+      [self warnWithFormat:
+            @"Unknown returnKind / expected NSString/NSData"];
     }
   }
   [self setReturnValue:data];
@@ -91,6 +91,8 @@
 }
 
 - (NSData *)_createVCardDataInCtx:(id)_ctx {
+  // DEPRECATED
+  // TODO: replace with company::get-vcard command
   NSMutableString *res       = nil;
   NSDictionary    *defaults  = nil;
   NSArray         *keyList   = nil;
@@ -99,10 +101,10 @@
   NSString        *key       = nil;
 
   if (self->objectList == nil) {
-    [self logWithFormat:@"WARNING: Address is not set. Can't create vCard."];
+    [self warnWithFormat:@"Address is not set. Cannot create vCard."];
     return [NSData data];
   }
-
+  
   res       = [NSMutableString stringWithCapacity:512];
   defaults  = [(NSUserDefaults *)[_ctx valueForKey:LSUserDefaultsKey]
                                  dictionaryForKey:@"ConverterAttributes"];
@@ -143,7 +145,7 @@
   [key release]; key = nil;
   
   if (fields == nil) {
-    [self logWithFormat:@"WARNING: unknown FormLetter format!"];
+    [self warnWithFormat:@"unknown FormLetter format!"];
     return [NSData data];
   }
   
@@ -163,14 +165,17 @@
       
       fieldEnum = [fields objectEnumerator];
       while ((field = [fieldEnum nextObject]) != nil) {
-        NSString *strObj;
-        
+        NSString *strObj, *t;
+	
         strObj = [self _getObj:obj forKey:[field objectForKey:@"key"]];
         strObj = [strObj isNotNull] ? [strObj stringValue] : nil;
-        
-        [result appendString:[field objectForKey:@"prefix"]];
-        [result appendString:strObj];
-        [result appendString:[field objectForKey:@"suffix"]];
+	
+	if ([(t = [field objectForKey:@"prefix"]) isNotEmpty])
+	  [result appendString:t];
+	if (strObj != nil)
+	  [result appendString:strObj];
+	if ([(t = [field objectForKey:@"suffix"]) isNotEmpty])
+	  [result appendString:t];
       }
     }
     data = [result dataUsingEncoding:[NSString defaultCStringEncoding]];

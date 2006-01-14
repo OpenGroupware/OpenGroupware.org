@@ -1,3 +1,17 @@
+2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSVCardAddressFormatter.m: avoid adding of 'nil' strings to make it
+	  work on Cocoa (v5.3.85)
+
+2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.84
+
+	* LSBuildConverterDataCommand.m: avoid adding of 'nil' strings to make
+	  it work in Cocoa, use -warnWithFormat:
+
+	* LSGetCompanyForMemberCommand.m: minor code cleanups
+
 2005-10-14  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSGetVCardForGlobalIDsCommand.m: use -isNotEmpty and -warnWithFormat:

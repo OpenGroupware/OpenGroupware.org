@@ -223,6 +223,7 @@ static int compareGroups(id group1, id group2, void *context) {
 				eName, @"check-permission",
 				@"object", myGroups, nil);
   
+  // Note: members must be mutable
   [[self member] takeValue:checkedGroups forKey:[self relationKey]];
   return checkedGroups;
 }
@@ -246,20 +247,20 @@ static int compareGroups(id group1, id group2, void *context) {
   id           myMember;
 
   listEnum = [self->members objectEnumerator];
-
   while ((myMember = [listEnum nextObject]) != nil) {
     // TODO: move to own method
-    NSMutableArray *myGroups = nil;
-    NSNumber       *memberId = nil;
+    NSMutableArray *myGroups;
+    NSNumber       *memberId;
     int            i, cnt    = [_assignments count];
 
     myGroups = [NSMutableArray arrayWithCapacity:64];
     memberId = [myMember valueForKey:@"companyId"];
-
+    
     i = 0;
     while (i < cnt) {
-      id myAssignment = [_assignments objectAtIndex:i];
-
+      id myAssignment;
+      
+      myAssignment = [_assignments objectAtIndex:i];
       if ([memberId isEqual:[myAssignment valueForKey:@"subCompanyId"]]) {
         NSNumber *cId;
         id       myGroup;
@@ -470,7 +471,7 @@ static int compareGroups(id group1, id group2, void *context) {
   ASSIGN(self->members, m);
 }
 - (id)member {
-  return [[self->members objectEnumerator] nextObject];
+  return [self->members lastObject];
 }
 
 - (void)setMembers:(NSArray *)_members {

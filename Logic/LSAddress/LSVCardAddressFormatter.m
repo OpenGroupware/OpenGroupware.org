@@ -47,7 +47,8 @@ static NSDictionary *addressMapping = nil;
 }
 
 - (void)_appendTextValue:(NSString *)_str toVCard:(NSMutableString *)_vCard {
-  [_vCard appendString:[_str stringByEscapingUnsafeVCardCharacters]];
+  if ([_str isNotEmpty]) /* required for Cocoa (nil adds) */
+    [_vCard appendString:[_str stringByEscapingUnsafeVCardCharacters]];
 }
 
 - (NSString *)stringForObjectValue:(id)address {
