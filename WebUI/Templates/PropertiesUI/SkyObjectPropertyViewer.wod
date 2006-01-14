@@ -1,6 +1,9 @@
-// $Id: SkyObjectPropertyViewer.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
-PropertyRep: WODictionaryRepetition {
+// WOx TODO:
+//   SkySubAttribute with dynamic label
+
+PropertyRep: WODictionaryRepetition { // var:foreach-key
   dictionary = properties;
   key        = currentPropertyName;
   item       = currentPropertyValue;
@@ -10,8 +13,8 @@ ShowNamespace: WOConditional {
   condition = showNamespace;
 }
 
-PropNameAttr: SkySubAttribute {
-  label      = currentPropertyLabel;
+PropNameAttr: SkySubAttribute { // OGo:attribute is-sub=1
+  label      = currentPropertyLabel; // no WOx for that?
   width      = "15%";
 }
 

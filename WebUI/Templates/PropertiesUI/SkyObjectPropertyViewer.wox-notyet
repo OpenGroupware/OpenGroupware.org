@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<table border='0' cellspacing='0' cellpadding='1' width='100%'
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+  <var:foreach-key 
+      dictionary = "properties"
+      key        = "currentPropertyName"
+      item       = "currentPropertyValue>
+  >
+    <tr>
+      <td valign="top" align="right" width="15%"
+          var:bgcolor="config.colors_subAttributeCell">
+        <OGo:font><var:string value="currentPropertyLabel" /></OGo:font>
+      </td>
+      <td valign="top" align="left"
+          var:bgcolor="config.colors_subValueCell">
+        <OGo:font><var:string value="currentPropertyValue" /></OGo:font>
+XML      </td>
+    </tr>
+  </var:foreach-key>
+</table>
