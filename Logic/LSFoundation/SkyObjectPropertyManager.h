@@ -134,8 +134,9 @@ extern NSString *SkyOPMWrongPropertyKeyExceptionName;
   globalID:(EOGlobalID *)_gid;
 
 /*
-  insert new keys and set update already exists keys
-  set nil (public access) for new entries
+  Insert new keys and update already existing keys. Delete keys missing in the
+  dictionary.
+  Set nil (public access) for new entries
 */
 
 - (NSException *)takeProperties:(NSDictionary *)_properties

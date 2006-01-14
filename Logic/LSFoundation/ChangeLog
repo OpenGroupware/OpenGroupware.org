@@ -1,3 +1,19 @@
+2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.115
+	
+	* SkyObjectPropertyManager+Internals.m: check for NSNull when accessing
+	  global ids (fixes some OSX 10.3 issue)
+
+	* SkyObjectPropertyManager.m: changed to use -isNotEmpty
+
+	* OGoAccessManager.m: log an error when initialized with a nil context
+	  instead of throwing an exception, fixed an access handler lookup
+	  issue on OSX 10.3, load access handler bundler prior accessing the
+	  handler class, minor code cleanups
+
+	* LSTypeManager.m: minor code cleanups
+
 2005-11-10  Helge Hess  <helge.hess@skyrix.com>
 
 	* OGoContextManager.m: moved some default-defaults to GNUmakefile,

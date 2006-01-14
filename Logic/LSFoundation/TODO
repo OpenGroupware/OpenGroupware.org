@@ -1,5 +1,3 @@
-# $Id$
-
 LSGetObjectForGlobalIDs.m:
 - reduce usage of " IN " SQL qualifier if possible (ie, use "=" if there is
   only one ID to select)

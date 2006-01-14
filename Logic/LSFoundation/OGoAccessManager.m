@@ -87,10 +87,14 @@ static Class   StrClass = Nil;
 }
 
 - (id)initWithContext:(LSCommandContext *)_ctx {
-  if ((self = [super init])) {
-    self->context           = _ctx; /* not retained */
-    NSAssert(self->context, @"###1 couldn`t find command context");
-    self->commitTransaction = NO;
+  if ((self = [super init]) != nil) {
+    self->context = _ctx; /* not retained */
+
+    if (self->context == nil) {
+      [self errorWithFormat:@"###1 could not find command context"];
+      [self release];
+      return nil;
+    }
   }
   return self;
 }
@@ -537,14 +541,14 @@ static Class   StrClass = Nil;
     return [self deleteOperationForObjectID:_objId accessGlobalID:_accessId
                  checkAccess:NO];
   }
-  else if ([self allowedOperationsForObjectId:_objId accessGlobalID:_accessId]) {
+  
+  if ([self allowedOperationsForObjectId:_objId accessGlobalID:_accessId]) {
     return [self updateOperation:_operation onObjectID:_objId
                  forAccessGlobalID:_accessId checkAccess:NO];
   }
-  else {
-    return [self insertOperation:_operation onObjectID:_objId
-                 forAccessGlobalID:_accessId checkAccess:NO];
-  }
+  
+  return [self insertOperation:_operation onObjectID:_objId
+	       forAccessGlobalID:_accessId checkAccess:NO];
 }
 
 /* _operation is a dictionary with globalid as key and operation as value */
@@ -810,13 +814,26 @@ static Class   StrClass = Nil;
     [self debugWithFormat:@"check access handler bundle: %@", _bundle];
   
   if ((path = [_bundle pathForResource:@"bundle-info" ofType:@"plist"])==nil) {
-    [self warnWithFormat:@"did not find bundle-info.plist in bundle: %@",
-	  _bundle];
-    return NO;
+    static NSFileManager *fm = nil; // THREAD
+    
+    /* the following is required on OSX 10.3 with gstep-make */
+    if (fm == nil) fm = [[NSFileManager defaultManager] retain];
+    path = [_bundle bundlePath];
+    path = [path stringByAppendingPathComponent:@"bundle-info.plist"];
+    if (![fm isReadableFileAtPath:path]) {
+      [self warnWithFormat:@"did not find bundle-info.plist in bundle: %@",
+	      _bundle];
+      return NO;
+    }
   }
   
   if ((bundleInfo = [NSDictionary dictionaryWithContentsOfFile:path]) == nil) {
     [self errorWithFormat:@"could not load bundle-info.plist: %@", path];
+    return NO;
+  }
+
+  if (![_bundle load]) {
+    [self errorWithFormat:@"could not load access handler bundle: %@",_bundle];
     return NO;
   }
   

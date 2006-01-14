@@ -1,5 +1,3 @@
-# $Id: README 1 2004-08-20 11:17:52Z znek $
-
 LSFoundation
 ============
 
@@ -43,24 +41,25 @@ Access Rules (TODO: translate to English)
 ============
 (by JR)
 
-Access Regeln fuer Personen/Accounts/Unternehmen
+access permissions for persons / accounts / companies
 
 
-root darf immer alles.
+- root is always allowed to do everything
 
-wenn nichts gesetzt wird, duerfen alle lesen/schreiben. Sobald ein Recht auf ein 
-Object gesetzt wurde, ist der Zugriff fuer alle nicht aufgefuehrten Verboten.
+- if nothing is set, everyone may read and write. As soon as an ACL is
+  set on an object, access is forbidden for everyone who is not listed
 
+- everyone who has write access may set the ACL.
+- you cannot remove permissions from the owner.
 
-Jeder der Write-Rechte hat, darf die Access Rechte setzten.
-Dem Owner koennen die Rechte nicht weggenommen werden.
+When read permissions are lacked the objects won't be fetched. This way it can
+happen that there are appointments without participants.
 
-Wenn die lese Rechte fehlen, wird das Object nicht gefetcht. So kann es 
-passieren, dass es Termine ohne Participanten gibt.
-Die Rechte werden in den Kommandos abgefangen, so kann es passieren,
-dass Edit-Formulare zu erreichen sind (wegen noch vorhandener Knoepfe), 
-aber das abspeichern wegen fehlender Rechte fehlschlaegt.
+The permissions are checked in the command objects, due to this it can happen
+that edit forms can be reached (due to still available buttons) but that a
+save fails due to missing permissions.
+=> TODO: this would be a bug
 
-IsReadOnly/IsPrivate wird bei gesetzten Rechten uebereschrieben.
+IsReadOnly/IsPrivate are overridden in case an ACL is set.
 
-Man kann sich selbst immer lesen und schreiben.
+The own account record can always be read/written.

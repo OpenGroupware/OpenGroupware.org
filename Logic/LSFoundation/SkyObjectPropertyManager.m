@@ -365,18 +365,13 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   NSMutableDictionary *obj;
 
   _gids = [[self->context accessManager] objects:_gids forOperation:@"r"];
-
-  if ([_gids count] == 0)
+  
+  if (![_gids isNotEmpty])
     return nil;
   
   mapOIDsWithGIDs = [self mapOIDsWithGIDs:_gids];
   
-  if (![_namespace isNotNull])
-    ns = nil;
-  else if ([_namespace length] == 0)
-    ns = nil;
-  else
-    ns = _namespace;
+  ns = [_namespace isNotEmpty] ? _namespace : nil;
   
   [self _ensureOpenTransaction];
 

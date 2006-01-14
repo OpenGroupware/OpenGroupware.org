@@ -274,8 +274,8 @@
 - (NSArray *)globalIDsForPrimaryKeys:(NSArray *)_pkeys {
   NSArray  *entityNames;
   unsigned i, pc = [_pkeys count];
-  id       gids[pc];
-
+  id       gids[pc + 1]; // TODO: replace with malloced array?
+  
   if (pc == 0)
     return _pkeys;
 
@@ -287,19 +287,19 @@
     
     pkey    = [_pkeys objectAtIndex:i];
     pkeyInt = [pkey intValue];
-
+    
     gids[i] = NSMapGet(self->pkeyToGid, (void*)pkeyInt);
     if (gids[i] == nil)
       break;
   }
-  if (i == pc)
+  if (i == pc) /* all found in cache*/
     return [NSArray arrayWithObjects:gids count:pc];
   
   /* then query entities */
   
   entityNames =
     [self->context runCommand:@"system::get-object-type", @"oids", _pkeys,nil];
-
+  
   for (i = 0; i < pc; i++) {
     NSString      *eName;
     EOKeyGlobalID *gid;

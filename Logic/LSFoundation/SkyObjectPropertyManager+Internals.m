@@ -210,7 +210,12 @@ extern NSString *SkyOPMWrongPropertyKeyExceptionName;
   enumerator = [_gids objectEnumerator];
   str        = nil;
   
-  while ((gid = [enumerator nextObject])) {
+  while ((gid = [enumerator nextObject]) != nil) {
+    if (![gid isNotNull]) {
+      [self errorWithFormat:@"%s: got NSNull global-id", __PRETTY_FUNCTION__];
+      continue;
+    }
+
     if (str == nil)
       str = [NSMutableString stringWithCapacity:256];
     else
@@ -1492,18 +1497,20 @@ FREE_ARRAYS:
   oids    = calloc(cnt + 1, sizeof(id));
   gids    = calloc(cnt + 1, sizeof(id));
   cnt     = 0;
-    
+  
+  // TODO: When can 'kgid' be NSNull?
+  //       This occurred and resulted in keyValues being sent to NSNull (fixed
+  //       with the isNotNull)
   gidEnum = [_gids objectEnumerator];
-  while ((kgid = [gidEnum nextObject])) {
-    oids[cnt] = [kgid keyValues][0];
+  for (cnt = 0; (kgid = [gidEnum nextObject]) != nil; cnt++) {
+    oids[cnt] = [kgid isNotNull] ? [kgid keyValues][0] : kgid;
     gids[cnt] = kgid;
-    cnt++;
   }
   mapOIDsWithGIDs = [NSDictionary dictionaryWithObjects:gids forKeys:oids
                                   count:cnt];
-  free(oids); oids = NULL;
-  free(gids); gids = NULL;
-
+  if (oids != NULL) free(oids); oids = NULL;
+  if (gids != NULL) free(gids); gids = NULL;
+  
   return mapOIDsWithGIDs;
 }
 
