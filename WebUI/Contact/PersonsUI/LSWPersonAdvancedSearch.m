@@ -46,7 +46,8 @@
 
 #include "common.h"
 #include <NGExtensions/NSString+Ext.h>
-#include <OGoContacts/SkyPersonAddressConverterDataSource.h>
+#include <OGoContacts/SkyAddressConverterDataSource.h>
+#include <OGoContacts/SkyPersonDataSource.h>
 
 @interface LSWPersonAdvancedSearch(PrivateMethodes)
 - (NSArray *)extendedPersonAttributeKeys;
@@ -336,33 +337,38 @@ static NSString *KeywordSeparator = @", ";
 }
 
 - (id)formletter {
-  SkyPersonAddressConverterDataSource *ds;
-  EOFetchSpecification                *fspec;
-  NSDictionary                        *hints;
-  NSString                            *kind;
-  LSCommandContext                    *ctx;
-  NSData  *data = nil;
-
+  SkyAddressConverterDataSource *ds;
+  SkyPersonDataSource           *sds;
+  EOFetchSpecification          *fspec;
+  NSDictionary                  *hints;
+  NSString                      *kind;
+  LSCommandContext              *ctx;
+  
   [self _createQualifier];
   
   kind  = [self defaultFormLetterKind];
   fspec = [[EOFetchSpecification alloc] init];
   hints = [[NSDictionary alloc] initWithObjectsAndKeys:kind, @"kind", nil];
   ctx   = [(OGoSession *)[self session] commandContext];
-  ds    = [[SkyPersonAddressConverterDataSource alloc] 
-	    initWithContext:ctx labels:[self labels]];
+  
+  sds   =
+    [(SkyPersonDataSource *)[SkyPersonDataSource alloc] initWithContext:ctx];
+  ds    = [[SkyAddressConverterDataSource alloc] 
+	    initWithDataSource:sds context:ctx labels:[self labels]];
+  [sds release]; sds = nil;
   
   [fspec setQualifier:self->qualifier];
   [fspec setFetchLimit:[self->maxSearchCount intValue]];
   [fspec setHints:hints];
   [ds setFetchSpecification:fspec];
+  [fspec release]; fspec = nil;
+  [hints release]; hints = nil;
   
-  data  = [[ds fetchObjects] lastObject];
-  ASSIGN(self->formletterData, data);
+  /* fetch */
   
-  [fspec release];
-  [ds    release];
-  [hints release];
+  [self->formletterData release]; self->formletterData = nil;
+  self->formletterData = [[[ds fetchObjects] lastObject] retain];
+  [ds release]; ds = nil;
   return nil;
 }
 

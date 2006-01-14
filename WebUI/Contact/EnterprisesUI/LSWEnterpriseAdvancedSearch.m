@@ -49,11 +49,12 @@
 - (void)_setSearchFields:(NSDictionary *)_fields;
 - (id)search;
 
-@end /* LSWEnterpriseAdvancedSearch */
+@end
 
 #include "common.h"
 #include <NGExtensions/NSString+Ext.h>
-#include <OGoContacts/SkyEnterpriseAddressConverterDataSource.h>
+#include <OGoContacts/SkyAddressConverterDataSource.h>
+#include <OGoContacts/SkyEnterpriseDataSource.h>
 
 @implementation LSWEnterpriseAdvancedSearch
 
@@ -321,31 +322,38 @@ static NSString *KeywordSeparator = @", ";
 }
 
 - (id)formletter {
-  SkyEnterpriseAddressConverterDataSource *ds    = nil;
+  SkyAddressConverterDataSource *ds = nil;
+  SkyEnterpriseDataSource *sds;
   EOFetchSpecification *fspec;
   NSDictionary         *hints;
   NSString             *kind;
-  id                   ctx;
-  NSData               *data  = nil;
-
+  LSCommandContext     *ctx;
+  
   [self _createQualifier];
 
   kind  = [[[self session] userDefaults] objectForKey:@"formletter_kind"];
   fspec = [[EOFetchSpecification alloc] init];
   hints = [[NSDictionary alloc] initWithObjectsAndKeys:kind, @"kind", nil];
   ctx   = [(OGoSession *)[self session] commandContext];
-  ds    = [[SkyEnterpriseAddressConverterDataSource alloc] 
-	    initWithContext:ctx labels:[self labels]];
+  
+  sds = [(SkyEnterpriseDataSource *)[SkyEnterpriseDataSource alloc] 
+				    initWithContext:ctx];
+  ds  = [[SkyAddressConverterDataSource alloc] 
+	  initWithDataSource:sds context:ctx labels:[self labels]];
+  [sds release]; sds = nil;
   
   [fspec setQualifier:self->qualifier];
   [fspec setHints:hints];
   [ds setFetchSpecification:fspec];
-  data  = [[ds fetchObjects] lastObject];
-  ASSIGN(self->formletterData, data);
-  
   [fspec release]; fspec = nil;
-  [ds    release]; ds    = nil;
   [hints release]; hints = nil;
+
+  /* perform fetch */
+
+  [self->formletterData release]; self->formletterData = nil;
+  self->formletterData = [[[ds fetchObjects] lastObject] retain];
+  
+  [ds release]; ds = nil;
   return nil;
 }
 

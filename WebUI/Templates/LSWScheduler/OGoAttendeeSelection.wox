@@ -22,6 +22,14 @@
     <input type="text"   var:value="searchParticipantText" />
     <input type="submit" var:value="labels.searchButtonLabel"
            var:action="searchAction" class="button_narrow" />
+<!-- TODO: VZ NRW -->
+<!--
+    <var:if const:condition="1">  isJavaScriptEnabled
+      <a href="#" class="button_narrow"
+         onclick="alert('TODO: show editor')"
+         ><OGo:label key="new" /></a>
+    </var:if>
+-->
   </nobr>
 
   <!-- Options -->

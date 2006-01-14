@@ -1,3 +1,19 @@
+2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.57
+
+	* SkyPersonViewer.m: show all configured form letter types
+
+2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.56
+
+	* SkyPersonViewer.m: removed code for formletter downloads (now in
+	  OGoFormLetterAction)
+	
+	* LSWPersonAdvancedSearch.m, SkyPersonViewer.m: removed usage of
+	  SkyPersonAddressConverterDataSource class
+
 2005-10-14  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWAddressFunctions.m: minor code cleanups (v5.3.55)

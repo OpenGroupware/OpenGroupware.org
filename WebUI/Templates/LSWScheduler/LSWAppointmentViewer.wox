@@ -24,7 +24,16 @@
     </buttons>
     <attributes>
       <attribute label="title"    var:string="appointment.title" />
+
+      <!-- TODO: add map24 / gmaps / etc support -->
       <attribute label="location" var:string="appointment.location" />
+
+<!-- TODO: VZ NRW -->
+<!--
+      <attribute label="download">
+        TODO: formletter download links in here
+      </attribute>
+-->
     </attributes>
   </head>
   
@@ -76,6 +85,34 @@
           <attribute label="objectVersionLabel"
                      var:string="appointment.objectVersion"
                      is-sub="1" />
+
+<!-- TODO: VZ NRW -->
+<!--
+          <var:if const:condition="1"> 'if attrs are defined'
+foreach doesn't work here
+            <var:foreach list="properties.allKeys" item="propKey>
+              <attribute var:label="propKey" is-sub="1">
+                <font>
+                  HERE WE WANT VZ NRW Attributevalue
+<var:string value="properties.$propKey" />
+                </font>
+              </attribute>
+            </var:foreach>
+
+              <attribute label="Attribute 1" is-sub="1">
+                <font>
+                  HERE WE WANT VZ NRW Attributes
+<var:string value="properties" />
+                </font>
+              </attribute>
+
+              <attribute label="Attribute 2" is-sub="1">
+                <font>
+                  HERE WE WANT VZ NRW Attributes
+                </font>
+              </attribute>
+          </var:if>
+-->
         </attributes>
       </tabitem>
 

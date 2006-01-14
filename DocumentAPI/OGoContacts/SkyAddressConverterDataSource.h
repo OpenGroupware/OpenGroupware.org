@@ -28,6 +28,12 @@
   SkyAddressConverterDataSource
 
   TODO: document
+  
+  Used by:
+    LSWPersonAdvancedSearch
+    SkyPersonViewer
+    LSWEnterpriseAdvancedSearch
+    SkyEnterpriseViewer
 */
 
 @class EODataSource, EOFetchSpecification;

@@ -1,3 +1,13 @@
+2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* PersonsUI/SkyPersonViewer.wod: show all configured form letter types
+
+2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* EnterprisesUI/SkyEnterpriseViewer.wod (FormLetterLink),
+	  PersonsUI/SkyPersonViewer.wod (FormLetterLink): use new direct action
+	  'OGoFormLetterAction' for formletter and vCard download link
+
 2005-11-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* BaseUI/SkyFavorites: rewritten as WOx template

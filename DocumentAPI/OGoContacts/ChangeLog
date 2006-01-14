@@ -1,3 +1,15 @@
+2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.51
+
+	* SkyCompanyDocument.m: code cleanups
+
+2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* removed unnecessary SkyPersonAddressConverterDataSource and
+	  SkyEnterpriseAddressConverterDataSource (just use the
+	  SkyAddressConverterDataSource directly) (v5.3.50)
+
 2005-09-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyContactsAccessHandler.m: moved to Logic/LSAddress as

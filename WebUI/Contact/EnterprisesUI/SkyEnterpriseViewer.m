@@ -61,8 +61,9 @@
 #include <OGoFoundation/LSWMailEditorComponent.h>
 #include <EOControl/EOArrayDataSource.h>
 #include <NGMime/NGMimeType.h>
-#include <OGoContacts/SkyEnterpriseAddressConverterDataSource.h>
+#include <OGoContacts/SkyAddressConverterDataSource.h>
 #include <OGoContacts/SkyEnterpriseDocument.h>
+#include <OGoContacts/SkyEnterpriseDataSource.h>
 #include <OGoDatabaseProject/SkyProjectFileManager.h>
 
 @interface NSObject(SkyEnterpriseViewer)
@@ -690,55 +691,21 @@ static inline void _newObjectLinkEnterprise(SkyEnterpriseViewer *self) {
   [self _newObjectLinkEnterprise];
 }
 
-- (id)_downloadFormLetterType:(NSString *)_type {
-  SkyEnterpriseAddressConverterDataSource *ds;
-  EOFetchSpecification                    *fs;
-  EOQualifier                             *qual;
-  NSDictionary                            *hints;
-  id result, ctx;
-
-  ctx = [self commandContext];
-  
-  ds = [[SkyEnterpriseAddressConverterDataSource alloc] initWithContext:ctx
-                                                        labels:[self labels]];
-  fs    = [[EOFetchSpecification alloc] init];
-  qual  = [EOQualifier qualifierWithQualifierFormat:
-                       @"companyId = %@", [[self enterprise] companyId]];
-  
-  // TODO: isn't formletter_kind a global default?
-  hints = [NSDictionary dictionaryWithObjectsAndKeys:
-                        [[[self session] userDefaults]
-                                objectForKey:@"formletter_kind"],
-                        @"kind", _type, @"type", nil];
-  [fs setQualifier:qual];
-  [fs setHints:hints];
-  [ds setFetchSpecification:fs];
-  result = [[[ds fetchObjects] lastObject] retain];
-  [ds release];
-  [fs release];
-  
-  return [result autorelease];
-}
-
-- (id)downloadFormLetter {
-  return [self _downloadFormLetterType:@"formLetter"];
-}
-
 - (id)formLetterTarget {
   return [[self context] contextID];
 }
 
-- (id)downloadVCard {
-  return [self _downloadFormLetterType:@"vCard"];
-}
-
 - (NSArray *)_selectedDocuments {
-  NSEnumerator   *docEnum  = [self->docs objectEnumerator];
-  NSMutableArray *docList  = [NSMutableArray array];
-  NSString       *keyName  = [self checkKeyName];
+  NSEnumerator   *docEnum;
+  NSMutableArray *docList;
+  NSString       *keyName;
   id             myDoc;
 
-  while ((myDoc = [docEnum nextObject])) {
+  docEnum  = [self->docs objectEnumerator];
+  docList  = [NSMutableArray arrayWithCapacity:16];
+  keyName  = [self checkKeyName];
+  
+  while ((myDoc = [docEnum nextObject]) != nil) {
     if ([[myDoc valueForKey:keyName] boolValue]) {
       [myDoc takeValue:[NSNumber numberWithBool:NO] forKey:keyName];
       [docList addObject:myDoc];
@@ -751,7 +718,7 @@ static inline void _newObjectLinkEnterprise(SkyEnterpriseViewer *self) {
   NSMutableDictionary *result;
   NSNumber            *compId;
   
-  result = [NSMutableDictionary dictionary];
+  result = [NSMutableDictionary dictionaryWithCapacity:2];
   compId = [[self object] valueForKey:@"companyId"];
   [result setObject:compId                 forKey:@"companyId"];
   [result setObject:[[self object] entity] forKey:@"entity"];

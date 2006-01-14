@@ -31,7 +31,7 @@
 - (void)_registerForGID;
 - (void)_fetchAddresses;
 - (void)_setObjectVersion:(NSNumber *)_version;
-- (EOKeyGlobalID *)_personGidFrom:(NSString *)_personId;
+- (EOKeyGlobalID *)_personGidFrom:(NSNumber *)_personId;
 - (void)_reloadImage;
 - (void)_setGlobalID:(id)_gid;
 - (void)_setCompanyId:(id)_companyId;
@@ -330,21 +330,19 @@
 /* contact */
 
 - (void)setContact:(SkyDocument *)_contact {
-  id inputId   = nil;
-  id currentId = nil;
+  NSNumber *inputId, *currentId;
 
   inputId = [[(EOKeyGlobalID *)[_contact globalID] keyValuesArray] lastObject];
   currentId = [[(EOKeyGlobalID *)self->contactGID keyValuesArray] lastObject];
 
-  if (![currentId isEqual:inputId]) {
-    RELEASE(self->contact);    self->contact = nil;
-    RELEASE(self->contactGID); self->contactGID = nil;
-    //    ASSIGN(self->contact,    (id)nil);
-    //    ASSIGN(self->contactGID, (id)nil);
-    self->contactGID = [self _personGidFrom:inputId];
-    RETAIN(self->contactGID);
-    self->status.isEdited = YES;
-  }
+  if ([currentId isEqual:inputId])
+    return;
+
+  [self->contact    release]; self->contact = nil;
+  [self->contactGID release]; self->contactGID = nil;
+  
+  self->contactGID = [[self _personGidFrom:inputId] retain];
+  self->status.isEdited = YES;
 }
 
 - (SkyDocument *)contact {
@@ -834,10 +832,7 @@
   self->status.isEdited   = NO;
 }
 
-@end /* SkyCompanyDocument */
-
-
-@implementation SkyCompanyDocument(Private)
+/* Private */
 
 - (void)_registerForGID {
   if (!self->addAsObserver) return;
@@ -897,19 +892,13 @@
   self->addresses = dict; dict = nil;
 }
 
-- (EOKeyGlobalID *)_personGidFrom:(NSString *)_personId {
-  EOKeyGlobalID *result = nil;
-  
-  if ([_personId isNotNull]) {
-    id values[1];
+- (EOKeyGlobalID *)_personGidFrom:(NSNumber *)_personId {
+  if (![_personId isNotNull])
+    return nil;
 
-    values[0] = _personId;
-    result    = [EOKeyGlobalID globalIDWithEntityName:@"Person"
-                               keys:values
-                               keyCount:1
-                               zone:[self zone]];
-  }
-  return result;
+  return [EOKeyGlobalID globalIDWithEntityName:@"Person"
+			keys:&_personId keyCount:1
+			zone:NULL];
 }
 
 
@@ -928,69 +917,78 @@
   companyId = [[(EOKeyGlobalID *)self->globalID keyValuesArray] lastObject];
 
   if (companyId == nil) return;
-  RELEASE(self->imageData); self->imageData = nil;
-  RELEASE(self->imageType); self->imageType = nil;
-  RELEASE(self->imagePath); self->imagePath = nil;
-
-
+  [self->imageData release]; self->imageData = nil;
+  [self->imageType release]; self->imageType = nil;
+  [self->imagePath release]; self->imagePath = nil;
+  
   if (![self isAttributeSupported:@"image"]) return;
   
   manager  = [NSFileManager defaultManager];
   defaults = [[self context] valueForKey:LSUserDefaultsKey];
   path     = [defaults stringForKey:@"LSAttachmentPath"];
   
+  /* check for .jpg */
+  
   imgPath = [NSString stringWithFormat:@"%@/%@.picture.jpg", path, companyId];
   if ([manager fileExistsAtPath:imgPath]) {
     self->imageData = [[NSData alloc] initWithContentsOfFile:imgPath];
     self->imageType = @"image/jpeg";
-    RETAIN(self->imageType);
-    ASSIGN(self->imagePath, imgPath);
+    
+    ASSIGNCOPY(self->imagePath, imgPath);
     return;
   }
 
+  /* check for .gif */
+  
   imgPath = [NSString stringWithFormat:@"%@/%@.picture.gif", path, companyId];
   if ([manager fileExistsAtPath:imgPath]) {
     self->imageData = [[NSData alloc] initWithContentsOfFile:imgPath];
     self->imageType = @"image/gif";
-    ASSIGN(self->imagePath, imgPath);
-    RETAIN(self->imageType);
+    ASSIGNCOPY(self->imagePath, imgPath);
+    return;
   }
-  if (self->imageData == nil) self->imageData = [[NSData alloc] init];
+  
+  /* empty */
+  if (self->imageData == nil) self->imageData = [[NSData   alloc] init];
   if (self->imageType == nil) self->imageType = [[NSString alloc] init];
 }
 
 - (NSArray *)_newTelephones:(id)_ctx {
-  NSEnumerator   *e    = nil;
-  id             one   = nil;
+  NSEnumerator   *e;
+  id             one;
   NSMutableArray *tels = nil;
-  NSArray *types =
-    [[[_ctx userDefaults]
-             dictionaryForKey:@"LSTeleType"]
-             objectForKey:[self entityName]];
-
+  NSArray *types;
+  
+  types =
+    [[[_ctx userDefaults] dictionaryForKey:@"LSTeleType"] 
+            objectForKey:[self entityName]];
+  
+  tels = [NSMutableArray arrayWithCapacity:4];
+  
   e = [types objectEnumerator];
-  tels = [NSMutableArray array];
-  while ((one = [e nextObject])) {
-    NSMutableDictionary *tel = [NSMutableDictionary dictionaryWithCapacity:4];
+  while ((one = [e nextObject]) != nil) {
+    NSMutableDictionary *tel;
+    
+    tel = [[NSMutableDictionary alloc] initWithCapacity:4];
     [tel setObject:one forKey:@"type"];
     [tels addObject:tel];
+    [tel release]; tel = nil;
   }
   return tels;
 }
 
-- (NSArray *)_attributesForState:(NSString *)_state ctx:(id)_ctx {
-  NSString  *key     = [NSString stringWithFormat:@"Sky%@Extended",
-                                       _state];
-
-  key = [key stringByAppendingString:[self entityName]];
-  key = [key stringByAppendingString:@"Attributes"];
-
+- (NSArray *)_attributesForState:(NSString *)_st ctx:(LSCommandContext *)_ctx {
+  NSString  *key;
+  
+  key = [NSString stringWithFormat:@"Sky%@Extended%@Attributes",
+		  _st, [self entityName]];
+  
   return [[_ctx userDefaults] arrayForKey:key];
 }
 
-- (NSDictionary *)_newAttributeMap:(id)_ctx {
-  NSMutableDictionary *map      = nil;
-  NSArray             *allAttrs = nil;
+- (NSDictionary *)_newAttributeMap:(LSCommandContext *)_ctx {
+  NSMutableDictionary *map;
+  NSArray             *allAttrs;
   unsigned cnt, pos;
   
   map = [NSMutableDictionary dictionaryWithCapacity:12];
@@ -1013,16 +1011,7 @@
   return map;
 }
 
-- (NSString *)description {
-  return [NSString stringWithFormat:@"%@[%@] owner:%@ "
-                   @"self->supportedAttributes %@ self->attributeMap %@",
-                   [super description], self->globalID, self->owner,
-                   self->supportedAttributes, self->attributeMap];
-}
-
-@end /* SkyCompanyDocument(Private) */
-
-@implementation SkyCompanyDocument(EOGenericRecord)
+/* EOGenericRecord */
 
 /* compatibility with EOGenericRecord (is deprecated!!!)*/
 
@@ -1093,4 +1082,13 @@
   return [super valueForKey:_key];
 }
 
-@end /* SkyCompanyDocument(EOGenericRecord) */
+/* description */
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"%@[%@] owner:%@ "
+                   @"self->supportedAttributes %@ self->attributeMap %@",
+                   [super description], self->globalID, self->owner,
+                   self->supportedAttributes, self->attributeMap];
+}
+
+@end /* SkyCompanyDocument */

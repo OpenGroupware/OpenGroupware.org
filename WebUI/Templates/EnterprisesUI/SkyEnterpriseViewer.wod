@@ -177,17 +177,31 @@ IsEditEnabledCond: WOConditional {
 }
 
 FormLetterLink: WOHyperlink {
-  target = formLetterTarget;
-  action = downloadFormLetter;
-  STYLE  = "text-decoration:none";
+  actionClass      = "OGoFormLetterAction";
+  directActionName = "download";
+  ?wosid           = YES;
+  ?ds              = "company";
+  ?companyId       = enterprise.companyId;
+  ?kind            = session.userDefaults.formletter_kind;
+  ?format          = "formLetter";
+  ?v               = enterprise.objectVersion;
+  target           = formLetterTarget;
+  style            = "text-decoration:none"; // TODO: move to CSS
 }
 
 FormLetterName: WOString { value = labels.FormLetterLink; }
 DownloadLabel:  WOString { value = labels.download;       }
 
-VCardLink: WOHyperlink {
+VCardLink: WOHyperlink { // TODO: replace with better vCard support
+  actionClass      = "OGoFormLetterAction";
+  directActionName = "download";
+  ?wosid           = YES;
+  ?ds              = "company";
+  ?companyId       = enterprise.companyId;
+  ?kind            = session.userDefaults.formletter_kind;
+  ?format          = "vCard";
+  ?v               = enterprise.objectVersion;
   target   = formLetterTarget;
-  action   = downloadVCard;
   mimeType = "text/directory";
   STYLE    = "text-decoration:none";
 }

@@ -214,14 +214,29 @@ Buttons: SkyButtonRow {
   editaccount    = labels.action_editAccount;
 }
 
+FormLetterTypes: WORepetition {
+  list = formLetterTypes;
+  item = formLetterType;
+  separator = ", ";
+}
 FormLetterLink: WOHyperlink {
-  target = formLetterTarget;
-  action = downloadFormLetter;
-  style  = "text-decoration:none";
+  actionClass      = "OGoFormLetterAction";
+  directActionName = "download";
+  ?wosid           = YES;
+  ?ds              = "person";
+  ?companyId       = person.companyId;
+  ?kind            = formLetterType; // session.userDefaults.formletter_kind;
+  ?format          = "formLetter";
+  ?v               = person.objectVersion;
+  target           = formLetterTarget;
+  style            = "text-decoration:none"; // TODO: move to CSS
 }
 
-FormLetterName: WOString {
+FormLetterLabel: WOString {
   value = labels.FormLetterLink;
+}
+FormLetterTypeLabel: WOString {
+  value = labels.$formLetterType;
 }
 
 DownloadLabel: WOString {
@@ -229,8 +244,15 @@ DownloadLabel: WOString {
 }
 
 VCardLink: WOHyperlink {
+  actionClass      = "OGoFormLetterAction";
+  directActionName = "download";
+  ?wosid           = YES;
+  ?ds              = "person";
+  ?companyId       = person.companyId;
+  ?kind            = session.userDefaults.formletter_kind;
+  ?format          = "vCard";
+  ?v               = person.objectVersion;
   target   = formLetterTarget;
-  action   = downloadVCard;
   mimeType = "text/directory";
   style    = "text-decoration:none";
 }

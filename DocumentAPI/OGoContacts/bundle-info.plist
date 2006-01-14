@@ -14,7 +14,7 @@
       { name = SkyPersonEnterpriseDataSource; },
       { name = SkyEnterprisePersonDataSource; },
       { name = SkyPersonDocument;             },
-      { name = SkyEnterpriseAddressConverterDataSource; }
+      { name = SkyAddressConverterDataSource; }
     );
     datasources = (
       { name = SkyPersonDataSource;           },
@@ -22,7 +22,7 @@
       { name = SkyEnterpriseDataSource;       },
       { name = SkyPersonEnterpriseDataSource; },
       { name = SkyEnterprisePersonDataSource; },
-      { name = SkyEnterpriseAddressConverterDataSource; }
+      { name = SkyAddressConverterDataSource; }
     );
     
     SkyDocumentGlobalIDResolver = (

@@ -41,6 +41,8 @@
 
   BOOL           isLDAPEnabled;
   BOOL           isProjectEnabled;
+
+  NSString       *formLetterType;
 }
 
 - (NSData *)imageData;
@@ -55,7 +57,7 @@
 #include <EOControl/EOKeyGlobalID.h>
 #include <OGoContacts/SkyPersonDocument.h>
 #include <OGoContacts/SkyPersonDataSource.h>
-#include <OGoContacts/SkyPersonAddressConverterDataSource.h>
+#include <OGoContacts/SkyAddressConverterDataSource.h>
 #include <NGMime/NGMimeType.h>
 #include "common.h"
 
@@ -78,11 +80,12 @@
 static BOOL         isLinkEnabled             = NO;
 static BOOL         isLogEnabled              = YES;
 static BOOL         enableTaskReferredPersons = NO;
-static NSArray      *AptAttributeNames      = nil;
-static NSDictionary *AptFetchHints          = nil;
-static NGMimeType   *eoJobType              = nil;
-static BOOL         hasSkyGenericLDAPViewer = NO;
-static BOOL         hasSkyProject4Desktop   = NO;
+static NSArray      *AptAttributeNames        = nil;
+static NSDictionary *AptFetchHints            = nil;
+static NGMimeType   *eoJobType                = nil;
+static BOOL         hasSkyGenericLDAPViewer   = NO;
+static BOOL         hasSkyProject4Desktop     = NO;
+static NSArray      *formLetterTypes          = nil;
 
 + (void)initialize {
   static BOOL didInit = NO;
@@ -111,6 +114,12 @@ static BOOL         hasSkyProject4Desktop   = NO;
                         @"attributeKeys", nil];
   }
   
+  formLetterTypes = 
+    [[[[ud dictionaryForKey:@"LSPersonFormLetter"] allKeys]
+       sortedArrayUsingSelector:@selector(compare:)] copy];
+  NSLog(@"SkyPersonViewer: form letter types: %@",
+	[formLetterTypes componentsJoinedByString:@", "]);
+  
   if (eoJobType == nil)
     eoJobType = [[NGMimeType mimeType:@"eo" subType:@"job"] retain];
 }
@@ -121,7 +130,7 @@ static BOOL         hasSkyProject4Desktop   = NO;
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     [self registerForNotificationNamed:LSWUpdatedPersonNotificationName];
     
     self->isLDAPEnabled    = hasSkyGenericLDAPViewer;
@@ -134,6 +143,7 @@ static BOOL         hasSkyProject4Desktop   = NO;
 
 - (void)dealloc {
   [self unregisterAsObserver];
+  [self->formLetterType release];
   [self->tabKey       release];
   [self->viewerTitle  release];
   [self->defaults     release];
@@ -435,48 +445,25 @@ static BOOL         hasSkyProject4Desktop   = NO;
 
 - (void)syncSleep {
   [self->defaults synchronize];
+  [self->formLetterType release]; self->formLetterType = nil;
   [super syncSleep];
 }
 
-- (id)_downloadFormLetterType:(NSString *)_type {
-  SkyPersonAddressConverterDataSource *ds;
-  EOFetchSpecification                *fs;
-  EOQualifier                         *qual;
-  NSDictionary                        *hints;
-  id                                  result, ctx;
-
-  ctx   = [[self session] commandContext];
-
-  ds    = [[SkyPersonAddressConverterDataSource alloc] initWithContext:ctx
-                                                       labels:[self labels]];
-  fs    = [[EOFetchSpecification alloc] init];
-  qual  = [EOQualifier qualifierWithQualifierFormat:
-                       @"companyId = %@", [[self person] companyId]];
-
-  hints = [NSDictionary dictionaryWithObjectsAndKeys:
-                        [self->defaults objectForKey:@"formletter_kind"],
-                        @"kind", _type, @"type", nil];
-
-  [fs setQualifier:qual];
-  [fs setHints:hints];
-  [ds setFetchSpecification:fs];
-  result = [[[ds fetchObjects] lastObject] retain];
-  [ds release];
-  [fs release];
-
-  return [result autorelease];
-}
-
-- (id)downloadFormLetter {
-  return [self _downloadFormLetterType:@"formLetter"];
-}
+/* downloads */
 
 - (id)formLetterTarget {
   return [[self context] contextID];
 }
 
-- (id)downloadVCard {
-  return [self _downloadFormLetterType:@"vCard"];
+- (NSArray *)formLetterTypes {
+  return formLetterTypes;
+}
+
+- (void)setFormLetterType:(NSString *)_ft {
+  ASSIGNCOPY(self->formLetterType, _ft);
+}
+- (NSString *)formLetterType {
+  return self->formLetterType;
 }
 
 /* private methods */

@@ -15,47 +15,43 @@ libOGoContacts_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 libOGoContacts_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 libOGoContacts_HEADER_FILES = \
-	SkyPersonDataSource.h				\
 	SkyAddressConverterDataSource.h 		\
-	SkyPersonAddressConverterDataSource.h		\
-	SkyPersonDocument.h				\
 	SkyAddressDocument.h				\
-	SkyEnterpriseDataSource.h			\
-	SkyEnterpriseAddressConverterDataSource.h 	\
-	SkyCompanyDocument.h				\
-	SkyEnterpriseDocument.h				\
 	SkyCompanyDataSource.h				\
-	SkyPersonProjectDataSource.h			\
-	SkyEnterpriseProjectDataSource.h		\
-	SkyPersonEnterpriseDataSource.h			\
-	SkyEnterprisePersonDataSource.h			\
-	SkyContactAddressDataSource.h			\
+	SkyCompanyDocument.h				\
 	SkyCompanyProjectDataSource.h			\
+	SkyContactAddressDataSource.h			\
+	SkyEnterpriseDataSource.h			\
+	SkyEnterpriseDocument.h				\
+	SkyEnterprisePersonDataSource.h			\
+	SkyEnterpriseProjectDataSource.h		\
+	SkyPersonDataSource.h				\
+	SkyPersonDocument.h				\
+	SkyPersonEnterpriseDataSource.h			\
+	SkyPersonProjectDataSource.h			\
 
 libOGoContacts_OBJC_FILES = \
-	SkyPersonDataSource.m				\
 	SkyAddressConverterDataSource.m 		\
-	SkyPersonAddressConverterDataSource.m		\
-	SkyCompanyDocument.m				\
-	SkyPersonDocument.m 				\
-	SkyAddressDocument.m				\
-	SkyPersonDocument+JS.m 				\
 	SkyAddressDocument+JS.m				\
-	SkyCompanyDocument+JS.m				\
-	SkyEnterpriseDataSource.m			\
-	SkyEnterpriseAddressConverterDataSource.m	\
-	SkyEnterpriseDocument.m				\
-	SkyCompanyDataSource.m				\
+	SkyAddressDocument.m				\
 	SkyCompanyCompanyDataSource.m			\
+	SkyCompanyDataSource.m				\
+	SkyCompanyDocument+JS.m				\
+	SkyCompanyDocument.m				\
 	SkyCompanyProjectDataSource.m			\
-	SkyPersonProjectDataSource.m			\
-	SkyEnterpriseProjectDataSource.m		\
-	SkyPersonEnterpriseDataSource.m			\
-	SkyEnterprisePersonDataSource.m			\
-	SkyEnterpriseDocument+JS.m			\
-	SkyPersonDocument+JobDS.m			\
 	SkyContactAddressDataSource.m			\
 	SkyEnterpriseAllProjectsDataSource.m		\
+	SkyEnterpriseDataSource.m			\
+	SkyEnterpriseDocument+JS.m			\
+	SkyEnterpriseDocument.m				\
+	SkyEnterprisePersonDataSource.m			\
+	SkyEnterpriseProjectDataSource.m		\
+	SkyPersonDataSource.m				\
+	SkyPersonDocument+JS.m 				\
+	SkyPersonDocument+JobDS.m			\
+	SkyPersonDocument.m 				\
+	SkyPersonEnterpriseDataSource.m			\
+	SkyPersonProjectDataSource.m			\
 
 libOGoContacts_HEADER_FILES_DIR         = .
 libOGoContacts_HEADER_FILES_INSTALL_DIR = /OGoContacts

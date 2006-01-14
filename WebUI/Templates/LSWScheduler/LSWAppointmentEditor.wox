@@ -9,7 +9,7 @@
   xmlns:rsrc="OGo:url"
 >
   <OGo:warn okAction="warningOkAction" var:phrase="warningPhrase" />
-  
+
   <OGo:body>
     <var:if condition="session.isJavaScriptEnabled">
       <OGo:calpopup-script />
@@ -155,6 +155,23 @@
                 </var:if>
               </td>
             </tr>
+
+<!-- TODO: VZ NRW -->
+<!--
+            <var:if const:condition="1"> 'if attrs are defined'
+              <OGo:attribute label="Attribute 1">
+                <OGo:font>
+                  HERE WE WANT VZ NRW Attributes
+                </OGo:font>
+              </OGo:attribute>
+
+              <OGo:attribute label="Attribute 2">
+                <OGo:font>
+                  HERE WE WANT VZ NRW Attributes
+                </OGo:font>
+              </OGo:attribute>
+            </var:if>
+-->
           </table>
         </td>
 
@@ -221,6 +238,9 @@
               </OGo:font></td>
             </tr>
             <tr><td colspan="2">
+              <!-- TODO: it would be nice to show all groups with radio buttons
+                         in case there are just a few, to allow for faster
+                         selection -->
               <OGo:editfont>
                 <var:popup list="accessTeams" item="item" 
                            string="item.description"
