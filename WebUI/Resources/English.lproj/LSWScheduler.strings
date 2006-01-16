@@ -20,7 +20,7 @@
 13                        = "13:00";
 14                        = "14:00";
 1440                      = "1 day";
-14_daily                  = "all 2 weeks";
+14_daily                  = "every 2 weeks";
 15                        = "15:00";
 16                        = "16:00";
 17                        = "17:00";
@@ -33,7 +33,7 @@
 2880                      = "2 days";
 30                        = "30 minutes";
 360                       = "6 hours";
-4_weekly                  = "all 4 weeks";
+4_weekly                  = "every 4 weeks";
 5760                      = "4 days";
 60                        = "1 hour";
 720                       = "12 hours";
