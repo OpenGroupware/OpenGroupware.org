@@ -1,4 +1,8 @@
-// $Id: SkyJobAttributesEditor.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
+
+// WOx TODO:
+// - LSWObjectEditor, property list (replace with <attributes> section?)
+// - JS for field focus
 
 Frame: LSWSkyrixFrame {}
 
@@ -91,7 +95,7 @@ PriorityPopup: WOPopUpButton {
   name      = "taskpriority";
   list      = priorities;
   item      = item;
-  string    = priorityName;
+  string    = priorityName; // TODO: should be 'displayString'?
   selection = job.priority;
 }
 
@@ -99,6 +103,6 @@ SensitivityPopup: WOPopUpButton {
   name      = "tasksensitivity";
   list      = sensitivities;
   item      = item;
-  string    = sensitivity;
+  string    = sensitivity;  // TODO: should be 'displayString'?
   selection = job.sensitivity;
 }

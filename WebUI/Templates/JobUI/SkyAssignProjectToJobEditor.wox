@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<OGo:page
+  var:title="labels.SkyAssignProjectToJobEditor"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+  <form var:action="save">
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+      <OGo:attribute label="taskName" var:string="job.name" />
+
+      <var:component className="SkyProjectSelection"
+          project="project" const:noProjectEnabled="0" />
+
+      <tr>
+        <td></td>
+        <td>
+          <input type="submit" var:action="save" class="button_narrow"
+                 var:value="labels.save" var:title="labels.save" />
+
+          <a var:action="cancel" class="button_narrow"
+             ><OGo:label key="cancel" /></a>
+        </td>
+      </tr>
+    </table>
+  </form>
+</OGo:page>
