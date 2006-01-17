@@ -28,6 +28,11 @@
 
 /*
   Usage:
+    TODO: document bindings
+    - attributeKeys
+    - labels
+    - map
+    - showOnly
 
     Attribute-Keys:
 

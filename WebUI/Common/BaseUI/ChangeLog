@@ -1,5 +1,9 @@
 2006-01-17  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSWObjectEditor.m: code cleanups (v5.3.120)
+
+2006-01-17  Helge Hess  <helge.hess@opengroupware.org>
+
 	* SkyObjectValue.m, SkyObjectField.m, OGoElemBuilder.m: code cleanups
 	  (v5.3.119)
 

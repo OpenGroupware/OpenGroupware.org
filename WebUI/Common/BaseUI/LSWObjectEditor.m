@@ -53,7 +53,7 @@
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     self->privateLabel = @"";
   }
   return self;
@@ -107,7 +107,7 @@
 }
 
 - (void)setPrefix:(NSString *)_prefix {
-  ASSIGN(self->prefix, _prefix);
+  ASSIGNCOPY(self->prefix, _prefix);
 }
 - (NSString *)prefix {
   return self->prefix;
@@ -118,7 +118,7 @@
 }
 - (NSArray *)attributes {
   NSMutableArray *result;
-  int count, i;
+  unsigned count, i;
   
   if (self->showOnly == nil)
     return self->attributes;
@@ -162,9 +162,9 @@
   }
 
   attrs  = [_attributes objectEnumerator];
-  result = [NSMutableArray arrayWithCapacity:[_attributes count]];
+  result = [[NSMutableArray alloc] initWithCapacity:[_attributes count]];
   
-  while ((key = [attrs nextObject])) {
+  while ((key = [attrs nextObject]) != nil) {
     static NSString *kkey = @"key";
     NSDictionary *row;
     
@@ -174,6 +174,7 @@
   }
   
   [self setAttributes:result];
+  [result release];
 }
 - (NSArray *)attributeKeys {
   NSEnumerator   *attrs;
@@ -467,23 +468,24 @@
   return @"string";
 }
 
-- (int)colVal {
-  return self->colVal;
-}
 - (void)setColVal:(int)_i {
   self->colVal = _i;
 }
-- (int)colAttr {
-  return self->colAttr;
+- (int)colVal {
+  return self->colVal;
 }
+
 - (void)setColAttr:(int)_i {
   self->colAttr = _i;
+}
+- (int)colAttr {
+  return self->colAttr;
 }
 
 - (int)colspanA {
   return self->colAttr > 0 ? self->colAttr : 1;
 }
-- (int)colspanV {
+- (int)colspanV { // TODO: explain this
   return self->colVal > 0 ? self->colVal : 1;
 }
 
