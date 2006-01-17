@@ -39,14 +39,20 @@
 
 @implementation SkyCompanyDocument
 
+static BOOL DebugDocumentRegistration = NO;
+
 + (int)version {
   return [super version] + 7; /* v8 */
 }
 
 + (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
   NSAssert2([super version] == 1,
             @"invalid superclass (%@) version %i !",
             NSStringFromClass([self superclass]), [super version]);
+
+  DebugDocumentRegistration = [ud boolForKey:@"DebugDocumentRegistration"];
 }
 
 // designated initializer
@@ -716,12 +722,10 @@
   self->phoneTypes = [[NSMutableArray alloc] initWithArray:tmp];
 }
 
-- (void)_loadDocument:(id)_object {
+- (void)_loadPhonesFromObject:(id)_object {
   NSArray *list;
   int     i, cnt;
 
-  // set telephone numbers
-  if ([self isAttributeSupported:@"telephones"]) {
     list = [_object valueForKey:@"telephones"];
     cnt  = [list count];
     [self->phones release]; self->phones = nil;
@@ -742,8 +746,8 @@
       [dict takeValue:[phone valueForKey:@"type"]   forKey:@"type"];
       [dict takeValue:[phone valueForKey:@"number"] forKey:@"number"];
       [dict takeValue:[phone valueForKey:@"info"]   forKey:@"info"];
-      if ([(NSDictionary *)phone objectForKey:@"telephoneId"] != nil) {
-	[dict setObject:[(NSDictionary *)phone objectForKey:@"telephoneId"]
+      if ([phone objectForKey:@"telephoneId"] != nil) {
+	[dict setObject:[phone objectForKey:@"telephoneId"]
 	      forKey:@"telephoneId"];
       }
       [self->phones setObject:dict forKey:type];
@@ -751,65 +755,91 @@
     }
 
     [self _loadPhoneTypes];
-  }
+}
 
-  [self _setObjectVersion:[_object valueForKey:@"objectVersion"]];
+- (void)_loadExtAttrsFromObject:(id)_object {
+  /*
+    If the subclass supports extended attributes this derives the following
+    ivars from the 'attributeMap' KVC key of the _object:
+    - TODO
+  */
+  NSMutableArray *slist = nil;
+  NSArray *list;
+  int     i, cnt;
 
-  if ([self isAttributeSupported:@"extendedAttributes"]) {
-    NSMutableArray *slist = nil;
+  list = [[_object valueForKey:@"attributeMap"] allKeys];
+  list = [list sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+  cnt  = [list count];
+
+  slist = [[NSMutableArray alloc] initWithCapacity:cnt];
     
-    list = [[_object valueForKey:@"attributeMap"] allKeys];
-    list = [list sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-    cnt  = [list count];
-
-    slist = [NSMutableArray arrayWithCapacity:cnt];
+  [self->extendedAttrs release]; self->extendedAttrs = nil;
+  self->extendedAttrs = [[NSMutableDictionary alloc] initWithCapacity:cnt];
     
-    [self->extendedAttrs release];
-    self->extendedAttrs = [[NSMutableDictionary alloc] initWithCapacity:cnt];
+  for (i = 0; i < cnt; i++) {
+      NSString *key;
+      id       obj;
 
-    for (i = 0; i < cnt; i++) {
-      NSString *key = [list objectAtIndex:i];
-      id       obj  = [_object valueForKey:key];
+      key = [list objectAtIndex:i];
+      obj = [_object valueForKey:key];
 
-      if (obj)
+      if (obj != nil)
         [self->extendedAttrs setObject:obj forKey:key];
-
+    
+      /* Note: we sort in email1/email2 in the front (hack hack hack) */
       if ([key isEqualToString:@"email1"])
         [slist insertObject:key atIndex:0];
       else if ([key isEqualToString:@"email2"]) {
-        if ([slist count] > 0)
+        if ([slist isNotEmpty])
           [slist insertObject:key atIndex:1];
         else
           [slist addObject:key];
       }
       else
         [slist addObject:key];
-    }
-    ASSIGN(self->extendedKeys, slist);
-    
-    [self->attributeMap release];
-    self->attributeMap = [[_object valueForKey:@"attributeMap"] retain];
   }
-
+  ASSIGN(self->extendedKeys, slist); // TODO: can we use a copy?
+  [slist release]; slist = nil;
   
-  [self->contact release];    self->contact = nil;
-  [self->contactGID release]; self->contactGID = nil;
-  self->contactGID = [self _personGidFrom:[_object valueForKey:@"contactId"]];
-  [self->contactGID retain];
+  [self->attributeMap release]; self->attributeMap = nil;
+  self->attributeMap = [[_object valueForKey:@"attributeMap"] retain];
+}
 
+- (void)_resetDocumentPriorLoad {
+  [self->extendedAttrs release]; self->extendedAttrs = nil;
+  [self->attributeMap  release]; self->attributeMap  = nil;
+  [self->contact       release]; self->contact       = nil;
+  [self->contactGID    release]; self->contactGID    = nil;
+  [self->owner         release]; self->owner         = nil;
+  [self->ownerGID      release]; self->ownerGID      = nil;
+  [self->addresses     release]; self->addresses     = nil;
+}
 
-  [self->owner release];    self->owner    = nil;
-  [self->ownerGID release]; self->ownerGID = nil;
+- (void)_loadCommentFromObject:(id)_object {
+  [self setComment:[[_object valueForKey:@"comment"]
+                             valueForKey:@"comment"]];
+}
+
+- (void)_loadDocument:(id)_object {
+  [self _resetDocumentPriorLoad];
   
-  self->ownerGID = [self _personGidFrom:[_object valueForKey:@"ownerId"]];
-  [self->ownerGID retain];
+  // set telephone numbers
+  if ([self isAttributeSupported:@"telephones"])
+    [self _loadPhonesFromObject:_object];
 
-  [self->addresses release]; self->addresses = nil;
+  [self _setObjectVersion:[_object valueForKey:@"objectVersion"]];
 
-  if ([self isAttributeSupported:@"comment"]) {
-    [self setComment:[[_object valueForKey:@"comment"]
-                               valueForKey:@"comment"]];
-  }
+  if ([self isAttributeSupported:@"extendedAttributes"])
+    [self _loadExtAttrsFromObject:_object];
+  
+  self->contactGID = 
+    [[self _personGidFrom:[_object valueForKey:@"contactId"]] retain];
+  
+  self->ownerGID = 
+    [[self _personGidFrom:[_object valueForKey:@"ownerId"]] retain];
+  
+  if ([self isAttributeSupported:@"comment"])
+    [self _loadCommentFromObject:_object];
   
   if ([self isAttributeSupported:@"keywords"])
     [self setKeywords:[_object valueForKey:@"keywords"]];
@@ -837,15 +867,15 @@
 - (void)_registerForGID {
   if (!self->addAsObserver) return;
 
-  if ([[NSUserDefaults standardUserDefaults]
-                       boolForKey:@"DebugDocumentRegistration"]) {
-    NSLog(@"++++++++++++++++++ Warning: register Document"
-          @" in NotificationCenter(%s)",
-          __PRETTY_FUNCTION__);
+  if (DebugDocumentRegistration) {
+    [self warnWithFormat:@"register Document in NotificationCenter(%s)",
+          __PRETTY_FUNCTION__];
   }
-  if (self->globalID) {
-    //printf("%s: %s[%p]\n", __PRETTY_FUNCTION__, [self->globalID class]->name,
-    //       self->globalID);
+  if (self->globalID != nil) {
+#if 0
+    printf("%s: %s[%p]\n", __PRETTY_FUNCTION__, [self->globalID class]->name,
+           self->globalID);
+#endif
     [[NSNotificationCenter defaultCenter] addObserver:self
                                           selector:@selector(invalidate:)
                                           name:SkyGlobalIDWasDeleted
