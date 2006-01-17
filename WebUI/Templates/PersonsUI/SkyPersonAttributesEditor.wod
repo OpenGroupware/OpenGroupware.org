@@ -1,4 +1,9 @@
-// $Id: SkyPersonAttributesEditor.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
+
+// WOx todo:
+// - JavaScript focus (move to own .js resource?)
+// - SkyCalendarScript?
+// - LSWObjectEditor?
 
 Frame: LSWSkyrixFrame {}
 

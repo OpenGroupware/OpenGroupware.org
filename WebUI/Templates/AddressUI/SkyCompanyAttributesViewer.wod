@@ -1,6 +1,11 @@
 // bind template to controller class
 
-// WOx TODO: LSWObjectViewer
+// WOx TODO: LSWObjectViewer (proplist value)
+/*
+  Note: the typing of the value is done in the SkyObjectField dynamic element.
+        This elements does links / emails / related-links / localization /
+        date formatting etc.
+*/
 
 TitleContent: WOComponentContent {}
 
