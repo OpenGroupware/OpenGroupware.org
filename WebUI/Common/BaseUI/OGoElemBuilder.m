@@ -424,6 +424,8 @@ static WOAssociation *yesAssoc = nil;
       label  = "TestInfoA";
       string = fileManager;
     }
+    
+    Note: the 'attributes' tag generates nothing unless used with 'sub-table'!
   */
   NSArray   *children;
   WOElement *result;
@@ -439,6 +441,7 @@ static WOAssociation *yesAssoc = nil;
     
     /* Note: this definition was taken from LSWAppointmentViewer.wod */
     // TODO: replace table-values with CSS
+    // TODO: what about the 'bgcolor' attribute?!
     [ma addObject:
           @"<table width=\"100%\" bgcolor=\"#FAE8B8\" border=\"0\" "
           @"cellpadding=\"4\" cellspacing=\"0\">"];
@@ -567,14 +570,14 @@ static WOAssociation *yesAssoc = nil;
 
 - (WOElement *)buildPageHead:(id<DOMElement>)_element templateBuilder:(id)_b {
   /*
-    <OGo:page-head title="IPK Publisher Project">
-      <OGo:buttons>...</OGo:buttons>
-      <OGo:attributes>
+    <page-head title="IPK Publisher Project">
+      <buttons>...</buttons>
+      <attributes>
         <attribute label="FileManager" string="fileManager" />
         <attribute label="Test Info"   const:string="blub" />
          ..
-      </OGo:attributes>
-    </OGo:page-head>
+      </attributes>
+    </page-head>
     
     Builds:
     <table width="100%" border="0" cellpadding="4" cellspacing="0">

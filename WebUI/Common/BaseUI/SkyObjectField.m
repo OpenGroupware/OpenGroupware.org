@@ -27,7 +27,14 @@
 /*
   SkyObjectField
   
-  Note: this is used by SkyCompanyAttributesViewer.
+  Note: this is used by SkyCompanyAttributesViewer which in turn is used to
+        display extended company_value attributes.
+
+        CurrentAttrValue: SkyObjectField {
+          object     = company;
+          attributes = currentAttr;
+          labels     = labels;
+        }
 
   TODO: document!
 
@@ -163,9 +170,12 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
 - (BOOL)isEMailTypeInContext:(WOContext *)_ctx {
   id           ttype;
   NSDictionary *attrib;
+  
   attrib = [self _attributesDictInContext:_ctx];
   ttype = [attrib valueForKey:@"type"];
-  return ([ttype intValue] == 3) ? YES : NO;
+
+  // TODO: use constants for checking the type?!
+  return ([ttype intValue] == 3 /* email */) ? YES : NO;
 }
 
 - (BOOL)hasTargetInContext:(WOContext *)_ctx {
@@ -333,6 +343,7 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
   /* avoid output of ZideLook richtext fields (base64 encoded content) */
   if ([data hasPrefix:ZIDELOOK_MARKER]) {
     // TODO: localize warning
+    // TODO: use CSS
     [_res appendContentString:@"<i>"];
     [_res appendContentString:@"Binary Outlook content (hidden)"];
     [_res appendContentString:@"</i>"];

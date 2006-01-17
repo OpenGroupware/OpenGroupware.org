@@ -1,3 +1,8 @@
+2006-01-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyObjectValue.m, SkyObjectField.m, OGoElemBuilder.m: code cleanups
+	  (v5.3.119)
+
 2005-11-21  Helge Hess  <helge.hess@skyrix.com>
 
 	* SkyFavorites.m: properly include common.h (v5.3.118)

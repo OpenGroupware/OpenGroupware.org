@@ -75,10 +75,14 @@
     self->action = OWGetProperty(_config, @"action");
     self->bold   = OWGetProperty(_config, @"bold");
 
-    if (self->object == nil)
-      NSLog(@"WARNING: missing 'object' association in element %@ !", _name);
-    if (self->value == nil)
-      NSLog(@"WARNING: missing 'value' association in element %@ !", _name);
+    if (self->object == nil) {
+      [self warnWithFormat:
+	      @"missing 'object' association in element %@ !", _name];
+    }
+    if (self->value == nil) {
+      [self warnWithFormat:
+	      @"missing 'value' association in element %@ !", _name];
+    }
   }
   return self;
 }
@@ -103,21 +107,26 @@
 
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
   WOComponent *c;
-  NSString    *t         = nil;
+  NSString    *t = nil;
+  NSString    *v;
   id          cfg;
   BOOL        isArchived;
-  BOOL        b          = NO;
+  BOOL        b;
   BOOL        isLink;
   
-  c   = [_ctx component];
+  c = [_ctx component];
+  v = [self->value stringValueInComponent:c];
+  
+  if (![v isNotEmpty])
+    return;
+  
   cfg = [c config];
-
-  if (self->bold != nil)
-    b = [[self->bold valueInComponent:c] boolValue];
+  
+  b = (self->bold != nil) ? [[self->bold valueInComponent:c] boolValue] : NO;
   
   isArchived = [[[self->object valueInComponent:c] valueForKey:@"dbStatus"]
                                isEqualToString:@"archived"];
-  isLink     = ((!isArchived) && (self->action != nil));
+  isLink     = ((!isArchived) && (self->action != nil)) ? YES : NO;
 
   /* open font tag */
   [_response appendContentString:@"<font"]; 
@@ -152,14 +161,9 @@
     [_response appendContentString:[_ctx componentActionURL]]; 
     [_response appendContentString:@"\">"];
   }
-
+  
   if (b) [_response appendContentString:@"<b>"];
-  {
-    NSString *v;
-
-    if ((v = [self->value stringValueInComponent:c]) != nil)
-      [_response appendContentString:v];
-  } 
+  [_response appendContentString:v];
   if (b)      [_response appendContentString:@"</b>"];
   if (isLink) [_response appendContentString:@"</a>"];
   [_response appendContentString:@"</font>"];
@@ -168,7 +172,9 @@
 /* description */
 
 - (NSString *)associationDescription {
-  NSMutableString *str = [NSMutableString stringWithCapacity:64];
+  NSMutableString *str;
+
+  str = [NSMutableString stringWithCapacity:64];
   if (self->object) [str appendFormat:@" object=%@", self->object];
   if (self->value)  [str appendFormat:@" value=%@",  self->value];
   return str;
