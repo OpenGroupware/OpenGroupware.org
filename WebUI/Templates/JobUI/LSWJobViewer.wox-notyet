@@ -1,0 +1,223 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<page
+  var:title="labels.jobViewerWindowTitle"
+  xmlns="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+>
+<!--
+THIS IS FAR FROM BEING STARTED, just annotations
+the weird thing is the 'IsNotInConfigMode'
+
+WOx TODO:
+- LSWTableView ...
+-->
+
+  <head var:title="job.name">
+    <buttons>
+TODO: plenty of buttons
+  ordering          = ( start, stop, clear, accept, done, archive, reject, 
+                        annotation, delete, assignproject, detachproject );
+      <button name="clip" label="clip"
+              action="placeInClipboard" />
+
+    </buttons>
+
+    <attributes>
+      <var:if condition="viewerConfigMode" const:negate="1">
+        <tr>
+          <#AttributeCell><#Font><#JobLabel/>:</#Font></#AttributeCell>
+          <#ValueCell><#Font><b><#JobName/></b></#Font></#ValueCell>
+        </tr>
+
+        <var:if condition="hasProject">
+          <tr>
+            <#AttributeCell><#Font><#ProjectLabel/>:</#Font></#AttributeCell>
+            <#ValueCell>
+              <#Font>
+                <#EnableProjectLink><#Project      /></#EnableProjectLink>
+                <#ForbidProjectLink><#ProjectString/></#ForbidProjectLink>
+                &nbsp;
+              </#Font>
+            </#ValueCell>
+          </tr>
+        </var:if>
+
+        <tr>
+          <#AttributeCell><#Font><#CreatorLabel/>:</#Font></#AttributeCell>
+          <#ValueCell>
+            <#CreatorVisibleCond><#CreatorName/></#CreatorVisibleCond>
+            <#CreatorVisibleCondElse>*</#CreatorVisibleCondElse>
+          </#ValueCell>
+        </tr>
+
+        <tr>
+          <#AttributeCell><#Font><#ExecutantLabel/>:</#Font></#AttributeCell>
+          <#ValueCell>
+            <var:if condition="job.isTeamJob">
+              <#ExecutantTeamName/>
+            </var:if>
+
+            <var:if condition="job.isTeamJob" const:negate="1">
+              <var:if condition="executantIsVisible">
+TODO: SkyObjectValue {
+  value  = executantName;
+  object = job.executant;
+  action = viewExecutant;
+  bold   = userIsExecutant;
+}
+              </var:if>
+              <#ExecutantVisibleCondElse>*</#ExecutantVisibleCondElse>
+            </var:if>
+          </#ValueCell>
+        </tr>
+
+        <tr>
+          <#AttributeCell><#Font><#StartDateLabel/>:</#Font></#AttributeCell>
+          <#ValueCell><#Font><#StartDate/></#Font></#ValueCell>
+        </tr>
+
+        <tr>
+          <#AttributeCell><#Font><#EndDateLabel/>:</#Font></#AttributeCell>
+          <#ValueCell><#Font>
+            <var:if condition="endDateOnTime"><#EndDate/></var:if>
+            <var:if condition="endDateOnTime" const:negate="1">
+              <#OutOffTimeFont><#EndDate/></#OutOffTimeFont>
+            </var:if></#Font>
+          </#ValueCell>
+        </tr>
+
+        <var:if condition="hasPrefExec">
+          <tr>
+            <#AttributeCell><#Font><#PrefExecLabel/>:</#Font></#AttributeCell>
+            <#ValueCell><#Font><#PrefExcString /></#Font></#ValueCell>
+          </tr>
+        </var:if>
+          
+        <var:if condition="hasReferredPerson">
+          <tr>
+            <#AttributeCell>
+              <#Font><#ReferredPersonLabel/>:</#Font>
+            </#AttributeCell>
+            <#ValueCell><#Font>
+              <a href="<#RefPersonLink />"><#RefPersonLabel /></a>
+            </#Font></#ValueCell>
+          </tr>
+        </var:if>
+          
+        <var:if condition="hasRunningTimer">
+          <tr>
+            <#AttributeCell><#Font><#TimerLabel/>:</#Font></#AttributeCell>
+            <#ValueCell><#Font><#TimerValue/>&nbsp;&nbsp;
+              <#TimerImage /></#Font></#ValueCell>
+          </tr>
+        </var:if>
+      </var:if>
+        
+      <var:if condition="viewerConfigMode">
+        <var:component className="SkyPersonalViewerConfig"
+            object         = "object"
+            viewerPattern  = "currentPattern"
+            checkedItems   = "patternValues"
+            isInConfigMode = "viewerConfigMode" />
+      </var:if>
+    </table>
+  </head>
+
+  <body>
+    <var:if condition="viewerConfigMode" const:negate="1">
+      <tab selection="tabKey">
+
+        <tabitem key="attributes" label="attributesTab">
+          <var:component className="SkyPersonalAttributesViewer" object="job"/>
+        </tabitem>
+ 
+          
+        <tabitem key="jobHistoryList" label="jobHistoryList">
+          <#CanComment>
+              <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                <#CommentCollapsible>
+                  <tr>
+                    <td colspan="2">
+                      <#CommentQuickCreateForm>
+                        <#CommentTextArea/><br />
+                        <#CommentSubmit />
+                      </#CommentQuickCreateForm>
+                    </td>
+                  </tr>
+                </#CommentCollapsible>
+              </table>
+          </#CanComment>
+
+TODO: this is an LSWTableView
+
+JobHistoryList: LSWTableView {
+  labels            = labels;
+  title             = labels.jobHistoryTitle;
+  start             = start;
+  label             = labels.jobHistoryLabel;
+  list              = job.jobHistory;
+  item              = jobHistory;
+  selectedAttribute = selectedAttribute;
+  blockSize         = 12;
+  sorter            = session.eoSorter;
+  dateFormatter     = session.formatDateTime;
+  isDescending      = isDescending;
+  attributes        = (
+  { 
+    key      = "actionDate"; 
+    labelKey = "date"; 
+    sort     = YES; 
+  },
+  { 
+    key      = "jobStatus";
+    labelKey = "jobStatus";
+    sort  = NO;
+    image = {
+              "00_created"    = "led_red.gif";
+              "02_rejected"   = "led_red.gif";
+              "20_processing" = "led_yellow.gif";
+              "25_done"       = "led_green.gif";
+              "30_archived"   = "led_dark.gif";
+    };
+    alt = "jobStatus";
+    isAltLocalized = YES;
+  },
+  { 
+    key                      = "actor"; 
+    relKey                   = "login";
+    labelKey                 = "actor";
+    sort                     = NO;
+    changeFontColorCondition = isActorArchived;
+    electFontColor           = "colors_deleted_object";
+    fontColor                = "font_color"; 
+  },
+  { 
+    key      = "action";
+    labelKey = "action";
+    sort     = NO;
+    isLocalized = YES;
+  },
+  { 
+    key       = "toJobHistoryInfo";
+    labelKey  = "Comment";
+    relKey    = "comment";
+    label     = "comment";
+    sort      = NO;
+  });
+}
+        </tabitem>
+
+TODO:  IsLinkTabEnabled: WOConditional { condition = isLinkTabEnabled; }
+        <tabitem key="links" label="jobviewer_tab_links">
+          <var:component className="OGoObjectLinkList" object="job" />
+        </tabitem>
+
+TODO:  IsLogTabEnabled:  WOConditional { condition = isLogTabEnabled;  }
+        <tabitem key="log" label="logsTitle">
+          <var:component className="SkyObjectLogList" object="job" />
+        </tabitem>
+      </tab>
+    </var:if>
+  </body>
+</page>
