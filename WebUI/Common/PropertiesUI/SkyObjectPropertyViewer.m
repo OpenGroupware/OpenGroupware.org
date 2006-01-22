@@ -21,9 +21,20 @@
 
 #include <NGObjWeb/WOComponent.h>
 
-@class EOGlobalID;
+/*
+  SkyObjectPropertyViewer
 
-/* fix namespaces .. */
+  Bindings:
+    globalID         - EOGlobalID - used to query the attributes
+    defaultNamespace - string     - show those w/o namespace
+    omitTable        - bool       - do not render <table> tag
+  
+  TODO: document
+  
+  TODO: fix namespaces
+*/
+
+@class EOGlobalID;
 
 @interface SkyObjectPropertyViewer : WOComponent
 {
@@ -32,6 +43,8 @@
   NSString     *defaultNamespace;
 
   NSDictionary *properties;
+
+  BOOL omitTable;
   
   /* transient */
   NSString *currentPropertyName;
@@ -74,6 +87,13 @@
   return self->defaultNamespace;
 }
 
+- (void)setOmitTable:(BOOL)_flag {
+  self->omitTable = _flag;
+}
+- (BOOL)omitTable {
+  return self->omitTable;
+}
+
 - (void)setCurrentPropertyName:(NSString *)_propName {
   ASSIGNCOPY(self->currentPropertyName, _propName);
 }
@@ -86,10 +106,9 @@
   unsigned nslen;
   NSRange  r;
   
-  if ((k = [self currentPropertyName]) == nil) return nil;
-
-  if ([k length] == 0) return k;
-
+  if (![(k = [self currentPropertyName]) isNotEmpty])
+    return k;
+  
   nslen = [self->defaultNamespace length];
 #if DEBUG && 0
   NSLog(@"key: %@", k);
@@ -127,7 +146,7 @@
 }
 
 - (NSDictionary *)properties {
-  if (self->properties)
+  if (self->properties != nil)
     return self->properties;
   
   if (![self useNamespaces]) {
@@ -143,7 +162,7 @@
 	   initWithCapacity:[self->namespaces count]];
     
     nse = [self->namespaces objectEnumerator];
-    while ((ns = [nse nextObject])) {
+    while ((ns = [nse nextObject]) != nil) {
       NSDictionary *props;
       
       props = [[self propertyManager]

@@ -1,3 +1,8 @@
+2006-01-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyObjectPropertyViewer.m: added binding to disable generation of
+	  table (v5.3.10)
+
 2005-08-31  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile: removed .wo wrappers from makefile (v5.3.9)
