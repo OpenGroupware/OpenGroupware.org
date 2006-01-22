@@ -57,6 +57,7 @@
 
 @end
 
+#include <SaxObjC/XMLNamespaces.h>
 #include "common.h"
 
 #ifndef XMLNS_OGoWOx
@@ -378,11 +379,16 @@ static WOAssociation *yesAssoc = nil;
     [assocs setObject:color forKey:@"valueFontColor"];
   }
   
-  if ((s = [_elem attribute:@"label" namespaceURI:@"*"]) != nil) {
+  if ((s = [_elem attribute:@"label" namespaceURI:XMLNS_OD_BIND]) != nil) {
+    [assocs setObject:[WOAssociation associationWithKeyPath:s]
+	    forKey:@"label"];
+  }
+  else if ((s = [_elem attribute:@"label" namespaceURI:@"*"]) != nil) {
     s = [@"labels." stringByAppendingString:s];
     [assocs setObject:[WOAssociation associationWithKeyPath:s]
 	    forKey:@"label"];
   }
+  
   if ((attr = [attrs namedItem:@"string" namespaceURI:@"*"]))
     [assocs setObject:[_b associationForAttribute:attr] forKey:@"string"];
   if ((attr = [attrs namedItem:@"width" namespaceURI:@"*"]))
