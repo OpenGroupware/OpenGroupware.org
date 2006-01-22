@@ -3,6 +3,11 @@
 // WOx TODO:
 //   SkySubAttribute with dynamic label
 
+DoTable: WOConditional {
+  condition = omitTable;
+  negate    = YES;
+}
+
 PropertyRep: WODictionaryRepetition { // var:foreach-key
   dictionary = properties;
   key        = currentPropertyName;
