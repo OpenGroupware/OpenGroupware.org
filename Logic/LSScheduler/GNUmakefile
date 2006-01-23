@@ -68,13 +68,17 @@ LSScheduler_OBJC_FILES = \
 	LSNewAppointmentFromVEventCommand.m		\
 	LSGetICalForAppointmentsCommand.m		\
 	NSString+ICal.m					\
+	OGoAptAccessHandler.m				\
 
 LSScheduler_RESOURCE_FILES += Version
 
 LSScheduler_BUNDLE_LIBS += \
 	-lLSFoundation -lOGoSchedulerTools -lNGiCal
 
-libOGoSchedulerTools_LIBRARIES_DEPEND_UPON += -lNGiCal
+libOGoSchedulerTools_LIBRARIES_DEPEND_UPON += \
+	-lNGiCal	\
+	-lNGExtensions -lEOControl	\
+	-lDOM -lSaxObjC
 
 ADDITIONAL_LIB_DIRS += -L./$(GNUSTEP_OBJ_DIR)
 

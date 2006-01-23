@@ -21,6 +21,12 @@
 
 #include <LSFoundation/OGoAccessHandler.h>
 
+/*
+  OGoCompanyAccessHandler
+  
+  TODO: document
+*/
+
 @interface OGoCompanyAccessHandler : OGoAccessHandler
 @end
 

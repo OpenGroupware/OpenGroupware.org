@@ -1,3 +1,11 @@
+2006-01-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.81
+
+	* started OGoAptAccessHandler class
+
+	* GNUmakefile: added static linking for MacOSX
+
 2005-10-18  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSAppointmentProposalCommand.m: fixed exception as described in OGo

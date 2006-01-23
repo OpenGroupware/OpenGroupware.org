@@ -122,6 +122,13 @@
         { name = LSSetResourcesCommand;              },
         { name = LSUpdateAppointmentWithVEventCommand; },
         { name = LSUsedResourcesCommand;             },
+        { name = OGoAptAccessHandler;                },
     );     
+
+    SkyAccessHandlers = ( { name = "Date"; }, );
+  };
+
+  SkyAccessHandlers = {
+    Date = "OGoAptAccessHandler";
   };
 }

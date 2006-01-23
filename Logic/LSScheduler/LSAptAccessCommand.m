@@ -22,9 +22,21 @@
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
 /*
-  takes either a single global-id or multiple gids and returns either
+  appointment::access (LSAptAccessCommand)
+  
+  Parameters
+  - gid  - EOKeyGlobalID
+  or
+  - gids - array of EOKeyGlobalID
+  
+  Takes either a single global-id or multiple gids and returns either
   a single string containing the permissions or a dictionary where the
   key is the gid and the value is the permission-string.
+
+  TODO: better documentation
+
+  TODO: add ability to check permissions of other accounts, not just the
+        login user.
 */
 
 @class NSArray;
@@ -32,7 +44,7 @@
 @interface LSAptAccessCommand : LSDBObjectBaseCommand
 {
   NSArray *gids;
-  BOOL    singleFetch;
+  BOOL    singleFetch; /* set if the 'gid' parameter is used */
 }
 @end
 
