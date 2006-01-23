@@ -27,6 +27,14 @@
 /*
   OGoAccessHandler protocol / OGoAccessHandler base class
 
+  This is an abstract superclass for objects which check whether a user has
+  access to a given object.
+  
+  Subclasses include:
+  - OGoCompanyAccessHandler
+  - OGoAptAccessHandler
+  - ...
+  
   TODO: document
 */
 
@@ -34,15 +42,24 @@
 @class EOGlobalID, EOKeyGlobalID;
 @class LSCommandContext;
 
-@protocol OGoAccessHandler<NSObject>
+@protocol OGoAccessHandler < NSObject >
 
 + (id)accessHandlerWithContext:(LSCommandContext *)_ctx;
 - (id)initWithContext:(LSCommandContext *)_ctx;
 
+/*
+  This is the primary access-check method and must be overridden by subclasses.
+
+  The 'access global-id' is the primary key of the login account.
+*/
 - (BOOL)operation:(NSString *)_operation
   allowedOnObjectIDs:(NSArray *)_oids
   forAccessGlobalID:(EOGlobalID *)_access;
 
+/*
+  Returns all oids which have access for the given operation. Overwrite in
+  subclasses for batch operation (performance).
+*/
 - (NSArray *)objects:(NSArray *)_oids
   forOperation:(NSString *)_str
   forAccessGlobalID:(EOGlobalID *)_accountID;

@@ -78,6 +78,7 @@ static BOOL debugOn = NO;
   return [[self context] accessManager];
 }
 - (NSMutableDictionary *)accessManagerCache {
+  // TODO: does this work properly for different access-ids?
   return [[self accessManager] objectId2AccessCache];
 }
 
@@ -114,10 +115,10 @@ static BOOL debugOn = NO;
 	    __PRETTY_FUNCTION__];
   }
   
-  a          = [NSMutableArray array];
+  a          = [NSMutableArray arrayWithCapacity:16];
   enumerator = [_oids objectEnumerator];
-
-  while ((obj = [enumerator nextObject])) {
+  
+  while ((obj = [enumerator nextObject]) != nil) {
     NSArray *oids;
     
     oids = [NSArray arrayWithObject:obj];

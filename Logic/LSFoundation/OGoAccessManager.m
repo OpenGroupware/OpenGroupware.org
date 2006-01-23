@@ -174,15 +174,13 @@ static Class   StrClass = Nil;
   result  = YES;
   login   = [self->context valueForKey:LSAccountKey];
   loginID = [login valueForKey:@"globalID"];
-
+  
   if (![_accountID isNotNull]) {
     [self warnWithFormat:@"%s: missing _accountID", __PRETTY_FUNCTION__];
     return NO;
   }
-  if (![_oids isNotNull])       return NO;
-  if ([_oids count] == 0)       return NO;
-  if (![_operation isNotNull])  return YES;
-  if ([_operation length] == 0) return YES;
+  if (![_oids isNotEmpty])      return NO;
+  if (![_operation isNotEmpty]) return YES;
   
   oids = nil;
   { /* use cache */
@@ -219,23 +217,28 @@ static Class   StrClass = Nil;
       result = NO;
   }
   
-  if (result) {
-    if ([oids isNotEmpty]) {
-      handler = [self _accessHandlerForObjectID:[_oids lastObject]];
-      result = YES;
-      if (handler != nil) {
-        result = [handler operation:_operation
-                          allowedOnObjectIDs:oids 
-			  forAccessGlobalID:_accountID];
+  if (result && [oids isNotEmpty]) {
+    handler = [self _accessHandlerForObjectID:[_oids lastObject]];
+      
+    if (handler != nil) {
+      result = [handler operation:_operation
+			allowedOnObjectIDs:oids 
+			forAccessGlobalID:_accountID];
 	
-	if (debugOn) {
-	  [self debugWithFormat:
-		  @"%s\n  operation: %@\n  check on: %@\n  access-gid: %@\n"
-		  @"  handler: %@\n  => %@",
-		  __PRETTY_FUNCTION__, _operation, oids, _accountID,
-		  handler, result ? @"allowed" : @"denied"];
-        }
+      if (debugOn) {
+	[self debugWithFormat:
+		@"%s\n  operation: %@\n  check on: %@\n  access-gid: %@\n"
+		@"  handler: %@\n  => %@",
+		__PRETTY_FUNCTION__, _operation, oids, _accountID,
+		handler, result ? @"allowed" : @"denied"];
       }
+    }
+    else {
+      /* 
+	 We default to access-allowed (permissions will usually get checked 
+	 later in the commands).
+      */
+      result = YES;
     }
   }
   TIME_END();
@@ -253,7 +256,7 @@ static Class   StrClass = Nil;
   agid = [[self->context valueForKey:LSAccountKey] valueForKey:@"globalID"];
   
   if (debugOn) {
-    [self logWithFormat:@"CHECK permission '%@' against %@ on IDs (%d): %@", 
+    [self logWithFormat:@"CHECK permission '%@' against %@ on IDs (#%d): %@", 
 	  _str, agid, [_oids count], _oids];
   }
   
@@ -299,7 +302,7 @@ static Class   StrClass = Nil;
   }
   
   if (unCnt > 0) oids = [NSArray arrayWithObjects:unknown count:unCnt];
-  if (unknown) free(unknown);  unknown  = NULL;
+  if (unknown != NULL) free(unknown); unknown  = NULL;
   return oids;
 }
 - (void)_checkOIDs:(NSArray *)_oids forOperation:(NSString *)_str
@@ -312,9 +315,9 @@ static Class   StrClass = Nil;
   EOKeyGlobalID *gid;
   NSArray       *oids;
   
-  if ([_oids count] == 0) /* nothing to check */
+  if (![_oids isNotEmpty]) /* nothing to check */
     return;
-
+  
   if ((handler = [self _accessHandlerForObjectID:[_oids lastObject]]) == nil)
     [self warnWithFormat:@"found no access handler for %@",[_oids lastObject]];
   
@@ -912,8 +915,8 @@ static Class   StrClass = Nil;
     
     if (![warnedEntities containsObject:entityName]) {
       [self errorWithFormat:
-	      @"found no access handler for GID %@ (entity=%@): %@", 
-	      _gid, entityName, self->accessHandlers];
+	      @"found no access handler for entity %@ GID %@: %@", 
+	      entityName, _gid, self->accessHandlers];
       [warnedEntities addObject:entityName];
     }
   }
