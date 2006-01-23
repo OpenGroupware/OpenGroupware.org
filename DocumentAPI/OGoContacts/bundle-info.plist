@@ -3,6 +3,10 @@
   
   requires = {
     bundleManagerVersion = 1;
+
+    bundles = (
+      { name = LSAddress;  type = cmd; },
+    );
   };
   
   provides = {
