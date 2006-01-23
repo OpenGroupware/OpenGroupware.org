@@ -826,17 +826,6 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
   return YES;
 }
 
-- (NSDictionary *)properties {
-  SkyObjectPropertyManager *pm;
-  
-  pm = [[[self session] commandContext] propertyManager];
-  
-  // TODO: do we need to cache this or is this already done in the propmanager?
-  return [pm propertiesForGlobalID:
-	       [[self appointment] valueForKey:@"globalID"]
-	     namespace:XMLNS_OGoExtAttrPropNamespace];
-}
-
 /* label generation */
 
 - (NSString *)objectLabel {

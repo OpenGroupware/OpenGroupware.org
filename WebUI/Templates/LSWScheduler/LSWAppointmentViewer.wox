@@ -86,33 +86,13 @@
                      var:string="appointment.objectVersion"
                      is-sub="1" />
 
-<!-- TODO: VZ NRW -->
-<!--
-          <var:if const:condition="1"> 'if attrs are defined'
-foreach doesn't work here
-            <var:foreach list="properties.allKeys" item="propKey>
-              <attribute var:label="propKey" is-sub="1">
-                <font>
-                  HERE WE WANT VZ NRW Attributevalue
-<var:string value="properties.$propKey" />
-                </font>
-              </attribute>
-            </var:foreach>
-
-              <attribute label="Attribute 1" is-sub="1">
-                <font>
-                  HERE WE WANT VZ NRW Attributes
-<var:string value="properties" />
-                </font>
-              </attribute>
-
-              <attribute label="Attribute 2" is-sub="1">
-                <font>
-                  HERE WE WANT VZ NRW Attributes
-                </font>
-              </attribute>
+          <var:if condition="showProperties">
+            <var:component className="SkyObjectPropertyViewer"
+              globalID="appointment.globalID"
+              const:defaultNamespace=
+                "http://www.opengroupware.org/properties/ext-attr" 
+              const:omitTable="1"/>
           </var:if>
--->
         </attributes>
       </tabitem>
 
