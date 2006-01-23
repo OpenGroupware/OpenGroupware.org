@@ -1,4 +1,4 @@
-// $Id: SkyObjectPropertyEditor.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
@@ -11,25 +11,25 @@ Form: WOForm {
   action = save;
 }
 
-HasProps: WOConditional {
-  condition = hasProperties;
+HasPropTypeSpec: WOConditional {
+  condition = attributes.isNotNull;
 }
-HasNoProps: WOConditional {
-  condition = hasProperties;
+HasNoPropTypeSpec: WOConditional {
+  condition = attributes.isNotNull;
   negate    = YES;
 }
+
+HasProps:   WOConditional { condition = hasProperties; }
+HasNoProps: WOConditional { condition = hasProperties; negate = YES; }
 
 PropertyRep : WORepetition {
   list = propertyNames;
   item = currentPropertyName;
 }
 
-PropertyNamespace: WOString {
-  value = currentPropertyNamespace;
-}
-PropertyName: WOString {
-  value = currentPropertyLocalName;
-}
+PropertyNamespace: WOString { value = currentPropertyNamespace; }
+PropertyName:      WOString { value = currentPropertyLocalName; }
+
 PropertyValue: WOTextField {
   value = currentPropertyValue;
   size  = 40;
@@ -83,8 +83,8 @@ NewSubmit: WOSubmitButton {
 
 /* style */
 
-AttributeCell: SkyAttributeCell  { VALIGN='right'; width='5%'; }
-ValueCell:     SkyValueCell      { VALIGN='left';  width='5%'; }
+AttributeCell: SkyAttributeCell  { valign='right'; width='5%'; }
+ValueCell:     SkyValueCell      { valign='left';  width='5%'; }
 
 Font:          SkyConfigFont     {}
 EditFont:      SkyConfigEditFont {}

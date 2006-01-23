@@ -7,6 +7,7 @@
     classes = (
       { name = NSObject;       },
       { name = WOComponent;    },
+      { name = OGoComponent;   },
       { name = OGoContentPage; },
     );
   };
@@ -16,12 +17,14 @@
         { name = PropertiesUI;     },
         { name = SkyObjectPropertyViewer; },
         { name = SkyObjectPropertyEditor; },
+        { name = OGoObjPropInlineEditor;  },
     );
     WODynamicElements = (
     );
     WOComponents = (
         { name = SkyObjectPropertyViewer; },
         { name = SkyObjectPropertyEditor; },
+        { name = OGoObjPropInlineEditor;  },
     );
   };
 }

@@ -1,3 +1,11 @@
+2006-01-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.11
+
+	* SkyObjectPropertyEditor.m: prepared attributes support
+
+	* started OGoObjPropInlineEditor.m
+
 2006-01-22  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyObjectPropertyViewer.m: added binding to disable generation of

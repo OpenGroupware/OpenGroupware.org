@@ -11,7 +11,8 @@ PropertiesUI_PCH_FILE = common.h
 PropertiesUI_OBJC_FILES = \
 	PropertiesUI.m			\
 	SkyObjectPropertyViewer.m	\
-	SkyObjectPropertyEditor.m
+	SkyObjectPropertyEditor.m	\
+	OGoObjPropInlineEditor.m
 
 PropertiesUI_RESOURCE_FILES += Version
 

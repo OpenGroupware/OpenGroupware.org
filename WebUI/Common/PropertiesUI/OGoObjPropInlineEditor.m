@@ -19,10 +19,10 @@
   02111-1307, USA.
 */
 
-#include <OGoFoundation/OGoContentPage.h>
+#include <OGoFoundation/OGoComponent.h>
 
 /*
-  SkyObjectPropertyEditor
+  OGoObjPropInlineEditor
 
   Bindings
   - globalID - EOGlobalID - object
@@ -30,11 +30,13 @@
   TODO: document
 */
 
+#warning TODO: implement me
+
 @class NSArray, NSMutableSet;
 @class EOGlobalID;
 @class SkyObjectPropertyManager;
 
-@interface SkyObjectPropertyEditor : OGoContentPage
+@interface OGoObjPropInlineEditor : OGoComponent
 {
   EOGlobalID          *gid;
   NSArray             *namespaces;
@@ -50,9 +52,7 @@
   BOOL                didFetch;
   NSString            *currentPropertyName;
   id                  currentPropertyValue;
-
-  NSMutableSet        *keysToBeDeleted;
-
+  
   id                  labels;
 }
 
@@ -65,9 +65,11 @@
 #include <LSFoundation/LSCommandContext.h>
 #include <OGoFoundation/OGoSession.h>
 #include <OGoFoundation/OGoNavigation.h>
+#include <OGoFoundation/OGoContentPage.h>
+#include <NGObjWeb/WOContext.h>
 #include "common.h"
 
-@implementation SkyObjectPropertyEditor
+@implementation OGoObjPropInlineEditor
 
 static NSArray *calFormats = nil;
 
@@ -86,8 +88,6 @@ static NSArray *calFormats = nil;
 }
 
 - (void)dealloc {
-  [self->keysToBeDeleted release];
-  
   [self->currentPropertyValue release];
   [self->currentPropertyName  release];
   [self->displayNamespaces    release];
@@ -212,20 +212,6 @@ static NSArray *calFormats = nil;
   return self->currentPropertyName;
 }
 
-- (void)setDeleteFlag:(BOOL)_flag {
-  if (_flag) {
-    if (self->keysToBeDeleted == nil)
-      self->keysToBeDeleted = [[NSMutableSet alloc] initWithCapacity:16];
-    [self->keysToBeDeleted addObject:[self currentPropertyName]];
-  }
-  else {
-    [self->keysToBeDeleted removeObject:[self currentPropertyName]];
-  }
-}
-- (BOOL)deleteFlag {
-  return NO;
-}
-
 - (NSString *)currentPropertyNamespace {
   NSRange range;
   
@@ -268,49 +254,20 @@ static NSArray *calFormats = nil;
   return [[(OGoSession *)[self session] commandContext] propertyManager];
 }
 
-/* notifications */
-
-- (void)awake {
-  [super awake];
-  [self->keysToBeDeleted removeAllObjects];
-}
-
 /* actions */
-
-- (void)_removeDeleted {
-  NSEnumerator *keys;
-  NSString     *key;
-
-  keys = [self->keysToBeDeleted objectEnumerator];
-  while ((key = [keys nextObject]) != nil)
-    [self->props removeObjectForKey:key];
-  
-  [self->keysToBeDeleted removeAllObjects];
-}
 
 - (id)save {
   NSException *exc;
-  
-  [self _removeDeleted];
   
   exc = [[self propertyManager]
                takeProperties:self->props globalID:[self globalID]];
 
   if (exc != nil) {
-    [self setErrorString:[exc description]];
+    [(OGoContentPage *)[[self context] page] setErrorString:[exc description]];
     return nil;
   }
   
   return [[(OGoSession *)[self session] navigation] leavePage];
-}
-
-- (id)cancel {
-  return [[(OGoSession *)[self session] navigation] leavePage];
-}
-
-- (id)delete {
-  [self _removeDeleted];
-  return nil;
 }
 
 - (NSArray *)calendarFormats {
@@ -347,25 +304,4 @@ static NSArray *calFormats = nil;
   return self->newAttributeValue;
 }
 
-- (id)addAttribute {
-  NSString *tn;
-  id value;
-
-  if ((value = [self _valueForNewAttribute]) == nil) {
-    [self setErrorString:@"no proper value for new attribute."];
-    return nil;
-  }
-  
-  tn = [[NSString alloc] initWithFormat:@"{%@}%@",
-			   [self newAttributeNamespace],
-			   [self newAttributeName]];
-  [self->props setObject:value forKey:tn];
-  [tn release];
-  
-  [self setNewAttributeName:nil];
-  [self setNewAttributeValue:nil];
-  
-  return nil; /* stay on page */
-}
-
-@end /* SkyObjectPropertyEditor */
+@end /* OGoObjPropInlineEditor */
