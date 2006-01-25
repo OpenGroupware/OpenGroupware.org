@@ -28,10 +28,12 @@
     globalID         - EOGlobalID - used to query the attributes
     defaultNamespace - string     - show those w/o namespace
     omitTable        - bool       - do not render <table> tag
+    attributes       - NSArray    - OGo ext-attribute specification
   
   TODO: document
   
   TODO: fix namespaces
+  TODO: implement attribute specs
 */
 
 @class EOGlobalID;
@@ -43,8 +45,9 @@
   NSString     *defaultNamespace;
 
   NSDictionary *properties;
-
-  BOOL omitTable;
+  
+  BOOL    omitTable;
+  NSArray *attributes;
   
   /* transient */
   NSString *currentPropertyName;
@@ -64,6 +67,7 @@
   [self->defaultNamespace release];
   [self->properties       release];
   [self->namespaces       release];
+  [self->attributes       release];
   [self->gid              release];
   [super dealloc];
 }
@@ -128,6 +132,13 @@
 }
 - (id)currentPropertyValue {
   return self->currentPropertyValue;
+}
+
+- (void)setAttributes:(NSArray *)_ns {
+  ASSIGN(self->attributes, _ns);
+}
+- (NSArray *)attributes {
+  return self->attributes;
 }
 
 - (void)setNamespaces:(NSArray *)_ns {
