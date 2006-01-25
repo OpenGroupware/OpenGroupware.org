@@ -221,8 +221,7 @@
     [self saveAddresses:[_arg valueForKey:@"addresses"] company:enterprise];
     return enterprise;
   }
-  [self logWithFormat:@"ERROR: did not find enterprise for argument '%@'",
-        _arg];
+  [self errorWithFormat:@"did not find enterprise for argument '%@'", _arg];
   return [NSNumber numberWithBool:NO];
 }
 
@@ -232,23 +231,26 @@
   NSArray *result;
 
   if ((enterprise = [self _getEnterpriseByArgument:_arg]) == nil) {
-    [self logWithFormat:@"ERROR: no valid enterprise for argument '%@' found",
+    [self errorWithFormat:@"no valid enterprise for argument '%@' found",
 	    _arg];
     return [NSNumber numberWithBool:NO];
   }
   if (![enterprise isKindOfClass:[SkyEnterpriseDocument class]]) {
-    [self logWithFormat:
+    [self errorWithFormat:
           @"did not find enterprise for argument '%@' - found '%@' instead",
           _arg, NSStringFromClass([enterprise class])];
     return [NSNumber numberWithBool:NO];
   }
 
-  if ((personDS = [enterprise personDataSource]) == nil)
+  if ((personDS = [enterprise personDataSource]) == nil) {
+    [self warnWithFormat:@"got no personDataSource for given enterprise?"];
     return [NSArray array];
+  }
   
   if ((result = [personDS fetchObjects]) != nil)
     return result;
   
+  [self warnWithFormat:@"personDataSource fetch returned nil result."];
   return [NSNumber numberWithBool:NO];
 }
 
@@ -267,21 +269,23 @@
     [self logWithFormat:@"did not find persons for enterprise '%@'", _arg];
     return [NSNumber numberWithBool:NO];
   }
-  
-  if ([persons count] > 0) {
-    [self logWithFormat:
-              @"ERROR: there are still persons associated with "
+ 
+  if ([persons isKindOfClass:[NSArray class]]) { 
+    if ([persons isNotEmpty]) {
+      [self errorWithFormat:
+              @"there are still persons associated with "
               @"enterprise '%@', can not delete it", _arg];
-    return [NSNumber numberWithBool:NO];
+      return [NSNumber numberWithBool:NO];
+    }
   }
 
   NS_DURING
     [[self enterpriseDataSource] deleteObject:enterprise];
   NS_HANDLER
-    hasFailed = YES;
+    hasFailed = YES; // TODO: better to return the exception as a fault?
   NS_ENDHANDLER;
 
-  return [NSNumber numberWithBool:!hasFailed];
+  return [NSNumber numberWithBool:hasFailed ? NO : YES];
 }
 
 - (NSArray *)enterprise_fetchPersonsAction:(id)_enterprise :(id)_fSpec {
@@ -329,34 +333,32 @@
 
             return [NSNumber numberWithBool:!hasFailed];
           }
-          [self logWithFormat:@"ERROR: did not find person datasource"];
+          [self errorWithFormat:@"did not find person datasource"];
           return [NSNumber numberWithBool:NO];
         }
       }
-      [self logWithFormat:@"ERROR: did not find person for argument '%@'",
-            _person];
+      [self errorWithFormat:@"did not find person for argument '%@'", _person];
       return [NSNumber numberWithBool:NO];
     }
   }
-  [self logWithFormat:@"ERROR: did not find enterprise for argument '%@'",
-        _arg];
+  [self errorWithFormat:@"did not find enterprise for argument '%@'",_arg];
   return [NSNumber numberWithBool:NO];
 }
 
 - (void)enterprise_insertPersonAction:(id)_arg :(id)_person {
-  SkyEnterpriseDocument *enterprise = nil;
-  SkyPersonDocument     *person     = nil;
-  EODataSource          *personDS   = nil;
+  SkyEnterpriseDocument *enterprise;
+  SkyPersonDocument     *person;
+  EODataSource          *personDS;
 
   enterprise = [self _getEnterpriseByArgument:_arg];
   person     = [self _getPersonByArgument:_person];
   personDS   = [enterprise personDataSource];
   
-  if (personDS) [personDS insertObject:person];
+  if (personDS != nil) [personDS insertObject:person];
 }
 
 - (SkyEnterpriseDocument *)_getEnterpriseByArgument:(id)_arg {
-  id tmp = nil;
+  id tmp;
 
   if ((tmp = [self getDocumentByArgument:_arg]) != nil)
     return tmp;
