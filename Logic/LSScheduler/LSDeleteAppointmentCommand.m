@@ -307,6 +307,9 @@
   
   pId  = [obj valueForKey:@"parentDateId"];
   type = [obj valueForKey:@"type"];
+
+  [[_context propertyManager] removeAllPropertiesForGlobalID:
+				[obj valueForKey:@"globalID"]];
   
   [self _deleteDateInfo:_context];
   [self _separateNotesInContext:_context];
