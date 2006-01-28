@@ -298,6 +298,9 @@ static NSArray  *startDateOrderings = nil;
                        @"isWarningIgnored",  _flag ? yesNum : noNum,
                        @"comment",           _comment,
                        @"participants",      _participants,
+		       @"customAttributes",  
+		       self->customAttributes
+		       ? self->customAttributes : (id)[NSNull null],
                        nil);
 }
 - (void)addLogText:(NSString *)_t andAction:(NSString *)_a inContext:(id)_ctx {
@@ -335,7 +338,7 @@ static NSArray  *startDateOrderings = nil;
   [[obj valueForKey:@"startDate"] setTimeZone:tzsD];
   [[obj valueForKey:@"endDate"]   setTimeZone:tzeD];
   
-  if (self->comment) [self assert:[self _setDateInfo]];
+  if (self->comment != nil) [self assert:[self _setDateInfo]];
   
   if ([self->participants isNotEmpty])
     [self _assignParticipantsInContext:_context];
@@ -354,7 +357,7 @@ static NSArray  *startDateOrderings = nil;
   }
   
   /* extended attributes */
-
+  
   if ([self->customAttributes isNotNull]) {
     SkyObjectPropertyManager *pm;
     NSException *ex;
@@ -375,6 +378,25 @@ static NSArray  *startDateOrderings = nil;
     la = [obj valueForKey:@"logAction"];
   
   [self addLogText:lt andAction:la inContext:_context];
+}
+
+- (void)_increaseVersion {
+  id  obj;
+  int objVer;
+  id  lastMod;
+  
+  if ((obj = [self object]) == nil)
+    [self warnWithFormat:@"missing object !!!"];
+  
+  objVer = [[obj valueForKey:@"objectVersion"] intValue] + 1;
+
+  lastMod = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]];
+
+  [self takeValue:[NSNumber numberWithInt:objVer] forKey:@"objectVersion"];
+  [obj  takeValue:[NSNumber numberWithInt:objVer] forKey:@"objectVersion"];
+
+  [self takeValue:lastMod forKey:@"lastModified"];
+  [obj  takeValue:lastMod forKey:@"lastModified"];
 }
 
 /* record initializer */
@@ -448,27 +470,6 @@ static NSArray  *startDateOrderings = nil;
   if ([_key isEqualToString:@"setAllCyclic"])
     return [NSNumber numberWithBool:[self setAllCyclic]];
   return [super valueForKey:_key];
-}
-
-/* --- LSSetAppointmentCommand(PrivateMethodes) ----------------------------- */
-
-- (void)_increaseVersion {
-  id  obj;
-  int objVer;
-  id  lastMod;
-  
-  if ((obj = [self object]) == nil)
-    [self warnWithFormat:@"missing object !!!"];
-  
-  objVer = [[obj valueForKey:@"objectVersion"] intValue] + 1;
-
-  lastMod = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]];
-
-  [self takeValue:[NSNumber numberWithInt:objVer] forKey:@"objectVersion"];
-  [obj  takeValue:[NSNumber numberWithInt:objVer] forKey:@"objectVersion"];
-
-  [self takeValue:lastMod forKey:@"lastModified"];
-  [obj  takeValue:lastMod forKey:@"lastModified"];
 }
 
 @end /* LSSetAppointmentCommand */

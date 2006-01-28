@@ -1,5 +1,9 @@
 2006-01-28  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSSetAppointmentCommand.m, LSNewAppointmentCommand.m,
+	  LSCyclicAppointmentsCommand.m: fixed custom attribute handling for
+	  cyclic appointments (v5.3.83)
+
 	* v5.3.82
 
 	* LSSetAppointmentCommand.m, LSNewAppointmentCommand.m: added ability

@@ -396,17 +396,20 @@ static NSArray  *startDateOrderings = nil;
   [self assert:[self->participants isNotEmpty]
         reason:@"no participants set !"];
   [self _assignParticipantsInContext:_context];
-
-  if (self->customAttributes != nil) {
+  
+  if ([self->customAttributes isNotNull]) {
     SkyObjectPropertyManager *pm;
     NSException *ex;
     
     pm = [_context propertyManager];
     ex = [pm takeProperties:self->customAttributes 
-	     globalID:[[self object] valueForKey:@"globalID"]];
+	     globalID:[obj valueForKey:@"globalID"]];
     [ex raise]; // TODO: improve cmd error handling ...
   }
-
+#warning DEBUG LOG, REMOVE ME
+  [self logWithFormat:@"SET on %@: %@", 
+	[obj valueForKey:@"globalID"], self->customAttributes];
+  
   if ([self _dateIsCyclic] && ![self _hasParent])
     [self _newCyclicDatesInContext:_context];
   
@@ -525,6 +528,7 @@ static NSArray  *startDateOrderings = nil;
                       @"isWarningIgnored",  self->isWarningIgnored,
                       @"participants",      self->participants,
                       @"comment",           [self valueForKey:@"comment"],
+		      @"customAttributes",  self->customAttributes,
                       nil);
   // TODO: should check result
 }

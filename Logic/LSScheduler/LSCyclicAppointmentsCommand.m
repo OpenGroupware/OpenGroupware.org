@@ -48,7 +48,7 @@
     appointment::set (with 'setAllCyclic' YES)
 */
 
-@class NSString, NSArray;
+@class NSString, NSArray, NSDictionary;
 
 @interface LSCyclicAppointmentsCommand : LSDBObjectBaseCommand
 {
@@ -56,6 +56,7 @@
   BOOL     isWarningIgnored;
   NSArray  *participants;
   NSString *comment;
+  NSDictionary *customAttributes;
 }
 
 @end
@@ -75,13 +76,14 @@ static int maxCycleCount = 100;
 }
 
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
-  if ((self = [super initForOperation:_operation inDomain:_domain])) {
+  if ((self = [super initForOperation:_operation inDomain:_domain]) != nil) {
     self->isWarningIgnored = NO;
   }
   return self;
 }
 
 - (void)dealloc {
+  [self->customAttributes release];
   [self->comment      release];
   [self->participants release];
   [super dealloc];
@@ -128,6 +130,9 @@ static int maxCycleCount = 100;
                 @"isWarningIgnored",
                 [NSNumber numberWithBool:self->isWarningIgnored],
                 @"comment",           self->comment,
+		@"customAttributes",  
+		self->customAttributes
+		? self->customAttributes : (id)[NSNull null],
                 nil);
 }
 
@@ -332,6 +337,13 @@ static int maxCycleCount = 100;
   return self->isWarningIgnored;
 }
 
+- (void)setCustomAttributes:(NSDictionary *)_dict {
+  ASSIGNCOPY(self->customAttributes, _dict);
+}
+- (NSDictionary *)customAttributes {
+  return self->customAttributes;
+}
+
 /* key/value coding */
 
 - (void)takeValue:(id)_value forKey:(NSString  *)_key {
@@ -339,6 +351,8 @@ static int maxCycleCount = 100;
     [self setCyclicAppointment:_value];
   else  if ([_key isEqualToString:@"participants"])
     [self setParticipants:_value];
+  else  if ([_key isEqualToString:@"customAttributes"]) 
+    [self setCustomAttributes:_value];
   else  if ([_key isEqualToString:@"comment"])
     [self setComment:_value];
   else if ([_key isEqualToString:@"isWarningIgnored"])
@@ -350,6 +364,8 @@ static int maxCycleCount = 100;
 - (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"cyclicAppointment"])
     return [self cyclicAppointment];
+  if ([_key isEqualToString:@"customAttributes"])
+    return [self customAttributes];
   if ([_key isEqualToString:@"participants"])
     return [self participants];
   if ([_key isEqualToString:@"comment"])

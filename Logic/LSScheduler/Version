@@ -1,6 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=82
+SUBMINOR_VERSION:=83
 
 # v5.3.76 requires libNGiCal       v5.3.64
 # v5.0.40 requires libLSFoundation v5.0.49
