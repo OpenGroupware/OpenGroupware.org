@@ -73,6 +73,7 @@ static NSArray  *startDateOrderings = nil;
 }
 
 - (void)dealloc {
+  [self->customAttributes release];
   [self->comment          release];
   [self->isWarningIgnored release];
   [self->participants     release];
@@ -98,14 +99,17 @@ static NSArray  *startDateOrderings = nil;
 }
 
 - (void)_checkAndPrepareAddedCommands {
-  id<NSObject,LSCommand> cmd = nil;
-  NSEnumerator *cmds = [[self commands] objectEnumerator];
-  id           pkey  = [[self object] valueForKey:[self primaryKeyName]];
+  // TODO: is this actually used?
+  id<NSObject,LSCommand> cmd;
+  NSEnumerator *cmds;
+  NSNumber     *pkey;
 
-  while ((cmd = [cmds nextObject])) {
-    if ([cmd isKindOfClass:[LSDBObjectBaseCommand class]]) {
+  cmds = [[self commands] objectEnumerator];
+  pkey = [[self object] valueForKey:[self primaryKeyName]];
+
+  while ((cmd = [cmds nextObject]) != nil) {
+    if ([cmd isKindOfClass:[LSDBObjectBaseCommand class]])
       [cmd takeValue:pkey forKey:@"dateId"];
-    }
   }
 }
 
@@ -118,7 +122,7 @@ static NSArray  *startDateOrderings = nil;
     return;
   
   if ([startDate compare:endDate] == NSOrderedDescending) {
-    [self logWithFormat:@"WARNING: enddate before startdate, reversing!"];
+    [self warnWithFormat:@"enddate before startdate, reversing!"];
     LSCommandSet(self, @"endDate",   startDate);
     LSCommandSet(self, @"startDate", endDate);
   }
@@ -129,10 +133,9 @@ static NSArray  *startDateOrderings = nil;
 {
   // TODO: duplicate conflict code in new-command! DUP
   // TODO: better use some structure conflict reporting?
-  NSString *title = nil;
+  NSString *title;
   NSString *resN  = nil;
-  id       sD     = nil;
-  id       eD     = nil;
+  id       sD, eD;
   NSArray  *ps    = nil;
   NSMutableString *p = nil;
   int      j, psCnt;
@@ -141,16 +144,15 @@ static NSArray  *startDateOrderings = nil;
       [ap valueForKey:@"accessTeamId"] == nil) {
     title = @"*";          
   } 
-  else {
+  else
     title = [ap valueForKey:@"title"];
-  }
   
   sD = [ap valueForKey:@"startDate"];
   eD = [ap valueForKey:@"endDate"];
 
   ps = [ap valueForKey:@"participants"]; 
   p  = [[NSMutableString alloc] initWithCapacity:64];
-        
+  
   for (j = 0, psCnt = [ps count]; j < psCnt; j++) {
     NSString *s;
     
@@ -368,16 +370,15 @@ static NSArray  *startDateOrderings = nil;
 /* execute */
 
 - (void)_executeInContext:(id)_context {
-  id obj               = nil;
+  id obj;
   NSCalendarDate *sD, *eD;
-  NSTimeZone     *tzsD = nil;
-  NSTimeZone     *tzeD = nil;
+  NSTimeZone     *tzsD, *tzeD;
   
   sD = [self valueForKey:@"startDate"];
   eD = [self valueForKey:@"endDate"];
   
   if (![sD isNotNull] || ![eD isNotNull]) {
-    [self logWithFormat:@"ERROR: got no proper start-date and/or end-date"];
+    [self errorWithFormat:@"got no proper start-date and/or end-date"];
     return;
   }
   
@@ -396,6 +397,16 @@ static NSArray  *startDateOrderings = nil;
         reason:@"no participants set !"];
   [self _assignParticipantsInContext:_context];
 
+  if (self->customAttributes != nil) {
+    SkyObjectPropertyManager *pm;
+    NSException *ex;
+    
+    pm = [_context propertyManager];
+    ex = [pm takeProperties:self->customAttributes 
+	     globalID:[[self object] valueForKey:@"globalID"]];
+    [ex raise]; // TODO: improve cmd error handling ...
+  }
+
   if ([self _dateIsCyclic] && ![self _hasParent])
     [self _newCyclicDatesInContext:_context];
   
@@ -411,10 +422,17 @@ static NSArray  *startDateOrderings = nil;
 /* date info accessors */
 
 - (void)setComment:(NSString *)_comment {
-  ASSIGNCOPY(comment, _comment);
+  ASSIGNCOPY(self->comment, _comment);
 }
 - (NSString *)comment {
-  return comment;
+  return self->comment;
+}
+
+- (void)setCustomAttributes:(NSDictionary *)_dict {
+  ASSIGNCOPY(self->customAttributes, _dict);
+}
+- (NSDictionary *)customAttributes {
+  return self->customAttributes;
 }
 
 - (void)setIsWarningIgnored:(NSNumber *)_isWarningIgnored {
@@ -462,6 +480,8 @@ static NSArray  *startDateOrderings = nil;
     [self setParticipants:_value];
   else  if ([_key isEqualToString:@"comment"]) 
     [self setComment:_value];
+  else  if ([_key isEqualToString:@"customAttributes"]) 
+    [self setCustomAttributes:_value];
   else if ([_key isEqualToString:@"isWarningIgnored"]) 
     [self setIsWarningIgnored:_value];
   else
@@ -471,12 +491,14 @@ static NSArray  *startDateOrderings = nil;
 - (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"comment"])
     return [self comment];
-  else if ([_key isEqualToString:@"participants"])
+  if ([_key isEqualToString:@"customAttributes"])
+    return [self customAttributes];
+  if ([_key isEqualToString:@"participants"])
     return [self participants];
-  else if ([_key isEqualToString:@"isWarningIgnored"])
+  if ([_key isEqualToString:@"isWarningIgnored"])
     return [self isWarningIgnored];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
 /* UsedCommands */

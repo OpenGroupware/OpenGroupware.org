@@ -95,9 +95,7 @@
   
   permMap =
     [[self context] runCommand:@"appointment::access", @"gids", _oids, nil];
-
-  [self logWithFormat:@"CHECK: %@", permMap];
-
+  
   for (i = 0; i < count; i++) {
     NSString *perms;
     

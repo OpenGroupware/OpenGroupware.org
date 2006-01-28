@@ -85,8 +85,8 @@
   
   if (![channel selectAttributes:attrs describedByQualifier:qualifier
 		fetchOrder:nil lock:NO]) {
-    [self logWithFormat:
-            @"ERROR: database select failed: attributes %@, qualifier %@",
+    [self errorWithFormat:
+            @"database select failed: attributes %@, qualifier %@",
             attrs, qualifier];
     [self setReturnValue:nil];
     return;

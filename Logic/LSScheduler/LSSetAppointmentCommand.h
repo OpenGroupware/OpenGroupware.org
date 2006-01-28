@@ -34,6 +34,8 @@
     LSUpdateAppointmentWithVEventCommand ?
 */
 
+@class NSString, NSArray, NSDictionary;
+
 @interface LSSetAppointmentCommand : LSDBObjectSetCommand
 {
 @private
@@ -41,6 +43,7 @@
   NSArray  *participants;
   BOOL     setAllCyclic;
   BOOL     isWarningIgnored;
+  NSDictionary *customAttributes;
 }
 
 - (void)_increaseVersion;

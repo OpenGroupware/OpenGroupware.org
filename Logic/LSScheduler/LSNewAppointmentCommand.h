@@ -31,14 +31,15 @@
     LSNewAppointmentFromVEventCommand
 */
 
-@class NSNumber;
+@class NSNumber, NSString, NSArray, NSDictionary;
 
 @interface LSNewAppointmentCommand : LSDBObjectNewCommand
 {
 @private
-  NSNumber *isWarningIgnored;
-  NSString *comment;
-  NSArray  *participants;
+  NSNumber     *isWarningIgnored;
+  NSString     *comment;
+  NSArray      *participants;
+  NSDictionary *customAttributes;
 }
 
 - (void)setComment:(NSString *)_comment;

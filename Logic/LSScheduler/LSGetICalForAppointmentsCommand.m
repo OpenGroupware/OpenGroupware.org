@@ -173,7 +173,7 @@ static NSString   *skyrixId = nil;
     else if ([tmp intValue] == 3 /* confidential */)
       tmp = @"CONFIDENTIAL";
     else {
-      [self logWithFormat:@"ERROR: unknown sensitivity: %@", tmp];
+      [self errorWithFormat:@"unknown sensitivity: %@", tmp];
       tmp = nil;
     }
     if (tmp != nil) [self _appendName:@"CLASS" andValue:tmp toICal:_iCal];

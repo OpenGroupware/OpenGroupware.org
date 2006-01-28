@@ -153,28 +153,28 @@
     attach  = [alarm objectForKey:@"attachment"];
 
     tmp = [alarm objectForKey:@"action"];
-    if ([tmp length]) [ms appendFormat:@"'%@'", tmp];
+    if ([tmp isNotEmpty]) [ms appendFormat:@"'%@'", tmp];
     else [ms appendString:@""];
 
     tmp = [alarm objectForKey:@"comment"];
-    if ([tmp length]) [ms appendFormat:@",'%@'", tmp];
+    if ([tmp isNotEmpty]) [ms appendFormat:@",'%@'", tmp];
     else [ms appendString:@","];
 
     
     tmp = [trigger objectForKey:@"valueType"];
-    if ([tmp length]) [ms appendFormat:@",'%@'", tmp];
+    if ([tmp isNotEmpty]) [ms appendFormat:@",'%@'", tmp];
     else [ms appendString:@","];
     
     tmp = [trigger objectForKey:@"value"];
-    if ([tmp length]) [ms appendFormat:@",'%@'", tmp];
+    if ([tmp isNotEmpty]) [ms appendFormat:@",'%@'", tmp];
     else [ms appendString:@","];
     
     tmp = [attach objectForKey:@"valueType"];
-    if ([tmp length]) [ms appendFormat:@",'%@'", tmp];
+    if ([tmp isNotEmpty]) [ms appendFormat:@",'%@'", tmp];
     else [ms appendString:@","];
     
     tmp = [attach objectForKey:@"value"];
-    if ([tmp length]) [ms appendFormat:@",'%@'", tmp];
+    if ([tmp isNotEmpty]) [ms appendFormat:@",'%@'", tmp];
     else [ms appendString:@","];
     
     [ms appendString:@"\n"];
@@ -243,7 +243,7 @@
     else if ([tmp length] == 0)
       sensitivity = -1;
     else {
-      [self logWithFormat:@"ERROR: unknown iCal class: '%@'", tmp];
+      [self errorWithFormat:@"unknown iCal class: '%@'", tmp];
       sensitivity = -1;
     }
     if (sensitivity >= 0) {

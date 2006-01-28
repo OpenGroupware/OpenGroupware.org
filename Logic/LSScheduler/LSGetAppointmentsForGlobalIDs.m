@@ -645,7 +645,7 @@ static NSSet *AllListAttrs = nil;
 }
 
 - (NSException *)_handleEOSortException:(NSException *)_exception {
-  [self logWithFormat:@"ERROR: sort failed: %@", _exception];
+  [self errorWithFormat:@"sort failed: %@", _exception];
   return nil;
 }
 

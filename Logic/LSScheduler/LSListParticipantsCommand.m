@@ -203,8 +203,8 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
 	EOAttribute *a;
 
 	if ((a = [_entity attributeNamed:one]) == nil) {
-	  [self logWithFormat:
-		  @"ERROR: did not find attribute in entity %@: '%@'",
+	  [self errorWithFormat:
+		  @"did not find attribute in entity %@: '%@'",
 		  _entity, one];
 	}
 	else

@@ -139,27 +139,27 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
   [self->now setTimeZone:self->timeZone];
   
   if (![self->startDate isNotNull]) {
-    [self logWithFormat:@"WARNING: startDate == nil, take today"];
+    [self warnWithFormat:@"startDate == nil, take today"];
     self->startDate = [[self dateAtHour:0 minute:0 second:0] retain];
   }
   if (![self->endDate isNotNull]) {
-    [self logWithFormat:@"WARNING: endDate == nil, take today"];
+    [self warnWithFormat:@"endDate == nil, take today"];
     self->endDate = [[self dateAtHour:0 minute:0 second:0] copy];
   }
   if (![self->participants isNotNull]) {
-    [self logWithFormat:@"WARNING: no participants are set"];
+    [self warnWithFormat:@"no participants are set"];
     self->participants = [emptyArray retain];
   }
   if ((![self->resources isNotNull]) || (self->resources == nil)) {
-    [self logWithFormat:@"WARNING: no resources are set"];
+    [self warnWithFormat:@"no resources are set"];
     self->resources = [emptyArray retain];
   }
   if (self->startTime == -1) {
-    [self logWithFormat:@"WARNING: no startTime is set"];
+    [self warnWithFormat:@"no startTime is set"];
     self->startTime = 60 * 8;    
   }
   if (self->endTime == -1) {
-    [self logWithFormat:@"WARNING: no endTime is set"];
+    [self warnWithFormat:@"no endTime is set"];
     self->endTime = 60 * 20;    
   }
   if (self->duration == -1) {
@@ -571,7 +571,7 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
 	    }
 	    else {
 	      // TODO: explain?!
-	      [self logWithFormat:@"ERROR: impossible cDate %@ aDate %@", 
+	      [self errorWithFormat:@"impossible cDate %@ aDate %@", 
 		    cDate, aDate];
 	    }
 	  }
@@ -744,10 +744,8 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
          
       if (qualifier)
 	[q conjoinWithQualifier:qualifier];
-      else {
-	[self logWithFormat:@"WARNING(%s): missing qualifier!",
-	      __PRETTY_FUNCTION__];
-      }
+      else
+	[self warnWithFormat:@"%s: missing qualifier!", __PRETTY_FUNCTION__];
     }
        
     if ([channel selectAttributes:attributes describedByQualifier:q

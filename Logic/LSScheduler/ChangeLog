@@ -1,3 +1,14 @@
+2006-01-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.82
+
+	* LSSetAppointmentCommand.m, LSNewAppointmentCommand.m: added ability
+	  to save properties using the 'customAttributes' argument (which gets
+	  directly passed in the SkyObjectPropertyManager)
+	
+	* use warnWithFormat/errorWithFormat where appropriate, minor code
+	  cleanups
+
 2006-01-23  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.81

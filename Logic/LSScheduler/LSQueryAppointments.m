@@ -264,19 +264,21 @@ static EONull   *null = nil;
           if (typeQual == nil) typeQual = qual;
           else {
             [typeQual disjoinWithQualifier:qual];
-            RELEASE(qual);
+            [qual release];
           }
         }
         [q conjoinWithQualifier:typeQual];
-        RELEASE(typeQual);
+        [typeQual release];
       }
 
-      // access team ids
-      if ([_accessTeams count]) {
-        // array of gids
+      /* access team ids */
+      if ([_accessTeams isNotEmpty]) {
+        /* array of gids */
         if ([_accessTeams count] > 200) {
-          NSLog(@"WARNING[%s]: more than 200 access teams per query "
-                @"not supported", __PRETTY_FUNCTION__);
+	  // TODO: hu? explain this
+          [self warnWithFormat:
+		  @"%s: more than 200 access teams per query "
+                  @"not supported", __PRETTY_FUNCTION__];
         }
         else {
           EOSQLQualifier *qual        = nil;
@@ -285,7 +287,7 @@ static EONull   *null = nil;
 
           in         = [NSMutableString stringWithCapacity:256];
           enumerator = [_accessTeams objectEnumerator];
-          while ((obj = [enumerator nextObject])) {
+          while ((obj = [enumerator nextObject]) != nil) {
             if ([obj isNotNull]) {
               NSString *pkey;
               if (i != 0) [in appendString:@","];
@@ -351,11 +353,11 @@ static EONull   *null = nil;
 - (void)_executeInContext:(id)_context {
   // TODO: split up this big method
   NSAutoreleasePool *pool;
-  NSMutableSet      *teamGids   = nil;
-  NSMutableSet      *personGids = nil;
+  NSMutableSet      *teamGids;
+  NSMutableSet      *personGids;
   NSMutableSet      *queryGids  = nil;
-  NSEnumerator      *e          = nil;
-  EOKeyGlobalID     *gid        = nil;
+  NSEnumerator      *e;
+  EOKeyGlobalID     *gid;
   EOSQLQualifier    *q          = nil;
   NSArray           *gids       = nil;
   
@@ -367,7 +369,7 @@ static EONull   *null = nil;
   personGids = [NSMutableSet setWithCapacity:16];
 
   e = [self->companies objectEnumerator];
-  while ((gid = [e nextObject])) {
+  while ((gid = [e nextObject]) != nil) {
     NSString *eName;
     
     eName = [gid entityName];
@@ -377,8 +379,8 @@ static EONull   *null = nil;
     else if ([eName isEqualToString:@"Person"])
       [personGids addObject:gid];
     else {
-      NSLog(@"WARNING: %s ignored gid %@ (wrong type)",
-            __PRETTY_FUNCTION__, gid);
+      [self warnWithFormat:@"%s ignored gid %@ (wrong type)",
+            __PRETTY_FUNCTION__, gid];
     }
   }
   

@@ -408,7 +408,7 @@
 
   if (gmt == nil) gmt = [[NSTimeZone timeZoneWithAbbreviation:@"GMT"] retain];
   if (self->delegate == nil) {
-    NSLog(@"WARNING[%s] no delegate set", __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"%s: no delegate set", __PRETTY_FUNCTION__];
     return NO;
   }
   start = [(*_start) hour:12 minute:0 second:0];

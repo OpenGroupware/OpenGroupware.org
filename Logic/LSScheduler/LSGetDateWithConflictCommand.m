@@ -138,7 +138,7 @@ static NSArray *startDateSortOrderings = nil;
     if ([(pKey = [self pkeyFromCompanyObject:item]) isNotNull])
       [idSet addObject:pKey];
     else
-      [self logWithFormat:@"ERROR: got a staff-id which is nil!: %@", item];
+      [self errorWithFormat:@"got a staff-id which is nil!: %@", item];
   }
   return [idSet allObjects];
 }
@@ -737,7 +737,7 @@ static NSArray *startDateSortOrderings = nil;
 
 - (void)setResourceList:(NSArray *)_resourceList {
   if (![_resourceList isNotNull]) {
-    //[self logWithFormat:@"ERROR: resourcelist is null !"];
+    //[self errorWithFormat:@"resourcelist is null !"];
     _resourceList = nil;
   }
   

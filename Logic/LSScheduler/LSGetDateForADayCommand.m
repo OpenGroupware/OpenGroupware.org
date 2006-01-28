@@ -124,9 +124,10 @@ static NSNumber *nNo  = nil;
     [self assert:(participants != nil)
           reason:@"participants key not set in appointment"];
     
-    if ([participants count] == 0) {
-      NSLog(@"WARNING: %@ no participants set for appointment %@, filtered out.",
-            self, [appointment valueForKey:@"title"]);
+    if (![participants isNotEmpty]) {
+      [self warnWithFormat:
+	      @"%@ no participants set for appointment %@, filtered out.",
+              self, [appointment valueForKey:@"title"]];
       continue;
     }
     
@@ -143,7 +144,7 @@ static NSNumber *nNo  = nil;
     return AUTORELEASE(filtered);
   }
   else {
-    RELEASE(filtered); filtered = nil;
+    [filtered release]; filtered = nil;
     return _dates;
   }
 }
@@ -258,7 +259,7 @@ static NSNumber *nNo  = nil;
   /* fetch owners */
   
   if (self->fetchOwners) {
-    [self logWithFormat:@"ERROR(%s): fetching owners is not implemented!",
+    [self errorWithFormat:@"%s: fetching owners is not implemented!",
 	  __PRETTY_FUNCTION__];
   }
   

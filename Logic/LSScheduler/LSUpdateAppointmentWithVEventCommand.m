@@ -238,7 +238,7 @@ static NSNumber *noNum  = nil;
     else if ([tmp length] == 0)
       sensitivity = -1;
     else {
-      [self logWithFormat:@"ERROR: unknown iCal class: '%@'", tmp];
+      [self errorWithFormat:@"unknown iCal class: '%@'", tmp];
       sensitivity = -1;
     }
     if (sensitivity >= 0) {

@@ -61,6 +61,7 @@ static NSArray  *startDateOrderings = nil;
 }
 
 - (void)dealloc {
+  [self->customAttributes release];
   [self->comment      release];
   [self->participants release];
   [super dealloc];
@@ -224,23 +225,22 @@ static NSArray  *startDateOrderings = nil;
 }
 
 - (BOOL)_setDateInfo {
-  BOOL isOk     = NO;
-  id   dateInfo = nil;
+  id dateInfo;
   
-  if ((dateInfo = [[self object] valueForKey:@"toDateInfo"])) {
+  if ((dateInfo = [[self object] valueForKey:@"toDateInfo"]) != nil) {
     [dateInfo takeValue:self->comment  forKey:@"comment"];
     [dateInfo takeValue:@"updated"     forKey:@"dbStatus"];
     return [[self databaseChannel] updateObject:dateInfo];
   }
   
-  if (self->comment)
-    [self logWithFormat:@"WARNING: missing 'toDateInfo' to set comment !"];
+  if (self->comment != nil)
+    [self warnWithFormat:@"missing 'toDateInfo' to set comment !"];
   
-  return isOk;
+  return NO;
 }
 
 - (void)_assignParticipantsInContext:(id)_context {
-  if ([self->participants count] == 0)
+  if (![self->participants isNotEmpty])
     return;
   
   [_context runCommand:@"appointment::set-participants",
@@ -290,10 +290,8 @@ static NSArray  *startDateOrderings = nil;
 {
   if (_object  == nil) return nil;
   if (_comment == nil) _comment = (id)null;
-  if ([_participants count] < 1) {
-    [self logWithFormat:@"WARNING(%s): got no participants?",
-            __PRETTY_FUNCTION__];
-  }
+  if (![_participants isNotEmpty])
+    [self warnWithFormat:@"%s: got no participants?", __PRETTY_FUNCTION__];
   
   return LSRunCommandV(_context, @"appointment", @"new-cyclic",
                        @"cyclicAppointment", _object,
@@ -323,7 +321,7 @@ static NSArray  *startDateOrderings = nil;
   if (![sD isNotNull]) sD = [obj valueForKey:@"startDate"];
   if (![eD isNotNull]) eD = [obj valueForKey:@"endDate"];
   if (![sD isNotNull] || ![eD isNotNull]) {
-    [self logWithFormat:@"ERROR: got no proper start-date and/or end-date"];
+    [self errorWithFormat:@"got no proper start-date and/or end-date"];
     return;
   }
   
@@ -339,7 +337,7 @@ static NSArray  *startDateOrderings = nil;
   
   if (self->comment) [self assert:[self _setDateInfo]];
   
-  if ([self->participants count] > 0)
+  if ([self->participants isNotEmpty])
     [self _assignParticipantsInContext:_context];
   
   if ([self _appointmentIsCyclic] && self->setAllCyclic) {
@@ -354,7 +352,19 @@ static NSArray  *startDateOrderings = nil;
                 inContext:_context];
     [self setObject:res];
   }
+  
+  /* extended attributes */
 
+  if ([self->customAttributes isNotNull]) {
+    SkyObjectPropertyManager *pm;
+    NSException *ex;
+    
+    pm = [_context propertyManager];
+    ex = [pm takeProperties:self->customAttributes 
+	     globalID:[[self object] valueForKey:@"globalID"]];
+    [ex raise]; // TODO: improve cmd error handling ...
+  }
+  
   /* log */
   
   // first check whether the log is set as a parameter, then whether it
@@ -381,6 +391,14 @@ static NSArray  *startDateOrderings = nil;
 - (NSString *)comment {
   return self->comment;
 }
+
+- (void)setCustomAttributes:(NSDictionary *)_dict {
+  ASSIGNCOPY(self->customAttributes, _dict);
+}
+- (NSDictionary *)customAttributes {
+  return self->customAttributes;
+}
+
 - (void)setParticipants:(NSArray *)_participants {
   ASSIGN(self->participants, _participants);
 }
@@ -408,6 +426,8 @@ static NSArray  *startDateOrderings = nil;
     [self setComment:_value];
   else if ([_key isEqualToString:@"participants"])
     [self setParticipants:_value];
+  else  if ([_key isEqualToString:@"customAttributes"]) 
+    [self setCustomAttributes:_value];
   else if ([_key isEqualToString:@"isWarningIgnored"])
     [self setIsWarningIgnored:[_value boolValue]];
   else if ([_key isEqualToString:@"setAllCyclic"])
@@ -419,6 +439,8 @@ static NSArray  *startDateOrderings = nil;
 - (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"comment"])
     return [self comment];
+  if ([_key isEqualToString:@"customAttributes"])
+    return [self customAttributes];
   if ([_key isEqualToString:@"participants"])
     return [self participants];
   if ([_key isEqualToString:@"isWarningIgnored"])
@@ -435,9 +457,8 @@ static NSArray  *startDateOrderings = nil;
   int objVer;
   id  lastMod;
   
-  obj = [self object];
-  if (obj == nil)
-    NSLog(@"WARNING: missing object !!!");
+  if ((obj = [self object]) == nil)
+    [self warnWithFormat:@"missing object !!!"];
   
   objVer = [[obj valueForKey:@"objectVersion"] intValue] + 1;
 
