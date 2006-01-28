@@ -146,4 +146,12 @@
   proposal_minutearray = ( 00, 30 );
   
   scheduler_default_readaccessteam = "all intranet";
+
+  OGoPrivateExtendedAptAttributes = (
+   /* eg:
+    { key = "EMail";    type = 3; },
+    { key = "Color";    },
+    { key = "Billable"; type = 2; },
+    */
+  );
 }

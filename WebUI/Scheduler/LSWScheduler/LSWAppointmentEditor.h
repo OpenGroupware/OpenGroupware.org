@@ -31,8 +31,8 @@
   bloated and needs a replacement ;-)
 */
 
-@class NSString, NSArray, NSMutableArray, NSUserDefaults, NSTimeZone;
-@class NSMutableDictionary;
+@class NSString, NSArray, NSUserDefaults, NSTimeZone;
+@class NSMutableArray, NSMutableDictionary;
 
 @interface LSWAppointmentEditor : LSWEditorPage
 {
@@ -66,14 +66,19 @@
   NSString       *measure;           // (minutes, hours, days)
   NSString       *selectedMeasure;   // (minutes, hours, days)
 
-  // preferences
+  /* preferences */
   NSString       *timeInputType;
   
-  // resources
+  /* resources */
   NSMutableArray *resources;
-  NSArray        *moreResources;  
-
-  //NSArray        *aptTypes;
+  NSArray        *moreResources;
+  
+  /* extended attributes */
+  NSMutableDictionary *extendedAttributes;
+  
+#if 0
+  NSArray        *aptTypes;
+#endif
   
   // move fields
   char moveAmount;

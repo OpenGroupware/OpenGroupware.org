@@ -156,22 +156,14 @@
               </td>
             </tr>
 
-<!-- TODO: VZ NRW -->
-<!--
-            <var:if const:condition="1"> 'if attrs are defined'
-              <OGo:attribute label="Attribute 1">
-                <OGo:font>
-                  HERE WE WANT VZ NRW Attributes
-                </OGo:font>
-              </OGo:attribute>
-
-              <OGo:attribute label="Attribute 2">
-                <OGo:font>
-                  HERE WE WANT VZ NRW Attributes
-                </OGo:font>
-              </OGo:attribute>
+            <var:if condition="showProperties">
+              <var:component className="LSWObjectEditor"
+                object="extendedAttributes"
+                attributes="extendedAttributeSpec" 
+                const:namespace=
+                  "http://www.opengroupware.org/properties/ext-attr"
+                />
             </var:if>
--->
           </table>
         </td>
 

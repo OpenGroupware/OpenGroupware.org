@@ -1,3 +1,19 @@
+2006-01-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWAppointmentEditor.m: added support for editing custom attibutes
+	  (v5.3.96)
+
+2006-01-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.95
+
+	* SkyAptTypeSelection.m: use -isNotEmpty to avoid [NSNull length] calls
+	  on MacOSX
+
+	* LSWAppointmentViewer.m: code cleanups, added check whether an extattr
+	  specification is configured prior using extattr viewer (keep speed
+	  for non-extattr users)
+
 2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWAppointmentViewer.m: prepared support for extended attributes on

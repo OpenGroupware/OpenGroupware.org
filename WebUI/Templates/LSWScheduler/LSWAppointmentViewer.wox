@@ -89,6 +89,7 @@
           <var:if condition="showProperties">
             <var:component className="SkyObjectPropertyViewer"
               globalID="appointment.globalID"
+              attributes="extendedAttributeSpec"
               const:defaultNamespace=
                 "http://www.opengroupware.org/properties/ext-attr" 
               const:omitTable="1"/>

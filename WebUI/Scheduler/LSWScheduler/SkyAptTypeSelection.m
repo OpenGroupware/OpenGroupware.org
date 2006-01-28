@@ -162,7 +162,7 @@
 
     key    = [one valueForKey:@"type"];
     
-    if ((![wanted length]) && [key isEqualToString:@"none"])
+    if ((![wanted isNotEmpty]) && [key isEqualToString:@"none"])
       return one;
     if ([wanted isEqualToString:key])
       return one;
@@ -183,7 +183,7 @@
   key    = [self->item valueForKey:@"type"];
   wanted = [self selection];
 
-  if ((![wanted length]) && [key isEqualToString:@"none"])
+  if ((![wanted isNotEmpty]) && [key isEqualToString:@"none"])
     return YES;
   if ([wanted isEqualToString:key])
     return YES;
@@ -195,24 +195,29 @@
 - (NSString *)buttonValue {
   return [self->item valueForKey:@"type"];
 }
+
 - (void)setSelectedButton:(NSString *)_button {
   [self setSelection:[_button isEqualToString:@"none"] ? nil : _button];
 }
 - (NSString *)selectedButton {
   NSString *sel;
+  
   sel = [self selection];
-  return [sel length] ? sel : @"none";
+  return [sel isNotEmpty] ? sel : @"none";
 }
 
 - (NSString *)aptTypeImageFilename {
   NSString *icon;
+  
   icon = [self->item valueForKey:@"icon"];
-  return [icon length] ? icon : @"apt_icon_default.gif";
+  return [icon isNotEmpty] ? icon : @"apt_icon_default.gif";
 }
 
 - (NSString *)jsScriptOnClick {
-  return [NSString stringWithFormat:@"javascript:selectAptType(%d)",
-                   [self itemIndex]];
+  char buf[128];
+  
+  snprintf(buf, sizeof(buf), "javascript:selectAptType(%d)", [self itemIndex]);
+  return [NSString stringWithCString:buf];
 }
 
 @end /* SkyAptTypeSelection */

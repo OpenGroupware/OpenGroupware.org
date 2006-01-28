@@ -95,6 +95,7 @@ static NSArray    *Delimiter = nil;
 static NSNull     *null      = nil;
 static NGMimeType *eoDateType= nil;
 static BOOL       debugConstraints = NO;
+static NSArray    *extAttrSpec = nil;
 
 // TODO: document those formats
 static NSString *DateParseFmt      = @"%Y-%m-%d %H:%M:%S %Z";
@@ -125,6 +126,12 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     Delimiter = [[ud arrayForKey:@"scheduler_editor_hourdelimiters"] copy];
   if (eoDateType == nil)
     eoDateType = [[NGMimeType mimeType:@"eo" subType:@"date"] copy];
+
+  extAttrSpec = [[ud arrayForKey:@"OGoPrivateExtendedAptAttributes"] copy];
+  if ([extAttrSpec isNotEmpty])
+    NSLog(@"Note(LSWAppointmentEditor): extended apt attrs are configured.");
+  else
+    extAttrSpec = nil;
 }
 
 - (id)init {
@@ -161,6 +168,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (void)dealloc {
+  [self->extendedAttributes    release];
   [self->roleMap               release];
   [self->accessTeams           release];
   [self->comment               release];
@@ -406,6 +414,17 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   
   [self _setupResourcesFromSnapshot:[self snapshot]];
   [self _setupNotificationTimeFromAppointment:appointment];
+  
+  /* load extended attributes */
+  
+  if ([extAttrSpec isNotEmpty]) { /* only if we have a spec (for speed) */
+    SkyObjectPropertyManager *pm;
+    
+    pm = [[[self session] commandContext] propertyManager];
+    self->extendedAttributes =
+      [[pm propertiesForGlobalID:[appointment valueForKey:@"globalID"]
+	   namespace:XMLNS_OGoExtAttrPropNamespace] mutableCopy];
+  }
   
   return YES;
 }
@@ -1792,6 +1811,10 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 
     [apmt takeValue:time forKey:@"notificationTime"];
   }
+  
+  /* copy extendedAttributes */
+  if ([extAttrSpec isNotEmpty])
+    [apmt takeValue:self->extendedAttributes forKey:@"customAttributes"];
 }
 
 - (void)_correctSnapshotTimeZone {
@@ -2402,6 +2425,25 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 - (NSArray *)moreResources {
   return self->moreResources;
 }
+
+/* extended apt attributes (properties) */
+
+- (BOOL)showProperties {
+  return [extAttrSpec isNotEmpty];
+}
+- (NSArray *)extendedAttributeSpec {
+  return extAttrSpec;
+}
+
+- (NSMutableDictionary *)extendedAttributes {
+  if (self->extendedAttributes == nil) {
+    self->extendedAttributes =
+      [[NSMutableDictionary alloc] initWithCapacity:8];
+  }
+  return self->extendedAttributes;
+}
+
+/* formatting objects */
 
 - (NSString *)_personName:(id)_person {
   // TODO: this should be a formatter!

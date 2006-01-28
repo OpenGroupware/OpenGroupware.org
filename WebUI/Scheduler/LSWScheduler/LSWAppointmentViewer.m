@@ -81,6 +81,7 @@ static NSArray  *teamAttrNames   = nil;
 static NSArray  *personAttrNames = nil;
 static NSNumber *yesNum = nil;
 static NSNumber *noNum  = nil;
+static NSArray  *extAttrSpec = nil;
 
 + (int)version {
   return [super version] + 4;
@@ -98,11 +99,17 @@ static NSNumber *noNum  = nil;
   attrArray       = [[ud arrayForKey:@"scheduler_viewer_fetchattrnames"] copy];
   teamAttrNames   = [[ud arrayForKey:@"scheduler_viewer_teamattrnames"]  copy];
   personAttrNames =[[ud arrayForKey:@"scheduler_viewer_personattrnames"] copy];
+  
+  extAttrSpec = [[ud arrayForKey:@"OGoPrivateExtendedAptAttributes"] copy];
+  if ([extAttrSpec isNotEmpty])
+    NSLog(@"Note(LSWAppointmentViewer): extended apt attrs are configured.");
+  else
+    extAttrSpec = nil;
 }
 
 - (id)init {
-  if ((self = [super init])) {
-    self->writeAccessList = [[NSMutableString alloc] init];
+  if ((self = [super init]) != nil) {
+    self->writeAccessList = [[NSMutableString alloc] initWithCapacity:64];
     [self registerForNotificationNamed:@"LSWNewNote"];
     [self registerForNotificationNamed:@"LSWDeletedNote"];
     [self registerForNotificationNamed:LSWDeletedAppointmentNotificationName];
@@ -127,32 +134,32 @@ static NSNumber *noNum  = nil;
 
 - (void)_fetchComment {
   id tmp;
-  id obj = [self object];
+  id obj;
   
+  obj = [self object];
   if ([obj isKindOfClass:[NSDictionary class]]) return;
 
   [obj run:@"appointment::get-comment", @"relationKey", @"dateInfo", nil];
   tmp = [[obj valueForKey:@"dateInfo"] valueForKey:@"comment"];
-  if (tmp) [obj takeValue:tmp forKey:@"comment"];
+  if (tmp != nil) [obj takeValue:tmp forKey:@"comment"];
 }
 
 static NSString *_personName(id self, id _person) {
-  NSMutableString *str   = nil;
-
+  NSMutableString *str;
+  NSString *n, *f;
+  
   str = [NSMutableString stringWithCapacity:64];   
-
-  if (_person != nil) {
-    id n = [_person valueForKey:@"name"];
-    id f = [_person valueForKey:@"firstname"];
-
-    if (f != nil) {
-      [str appendString:f];
-       [str appendString:@" "];
-    }
-    if (n != nil) {
-      [str appendString:n];
-    }
+  if (_person == nil) return str; // intentional?
+  
+  n = [_person valueForKey:@"name"];
+  f = [_person valueForKey:@"firstname"];
+  if ([f isNotEmpty]) {
+    [str appendString:f];
+    [str appendString:@" "];
   }
+  if ([n isNotEmpty])
+    [str appendString:n];
+  
   return str;
 }
 
@@ -171,17 +178,15 @@ static NSString *_personName(id self, id _person) {
 
 /* bindings */
 
-static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
+- (NSDictionary *)_bindingForAppointment:(id)obj {
   /* split up that method */
+  // TODO: document what this is used for!
   // TODO: could that be moved into a "binding" object?
-  NSMutableDictionary *bindings = nil;
-  id                  c         = nil;
-  NSString            *format   = nil;
-  NSString            *title    = nil;
-  NSString            *location = nil;
-  NSString            *resNames = nil;
-  NSCalendarDate      *sd       = nil;
-  NSCalendarDate      *ed       = nil;
+  NSMutableDictionary *bindings;
+  id                  c;
+  NSString            *format;
+  NSString            *title, *location, *resNames;
+  NSCalendarDate      *sd, *ed;
   
   // TODO: a formatter would be better
   format = [self defaultSchedulerMailTemplateDateFormat];
@@ -209,21 +214,24 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
     [bindings setObject:@"" forKey:@"comment"];
           
   { /* set creator */
-    id cId = [obj valueForKey:@"ownerId"];
-    if (cId != nil) {
-      id c = [self runCommand:@"account::get", @"companyId", cId, nil];
+    NSNumber *cId;
+
+    if ((cId = [obj valueForKey:@"ownerId"]) != nil) {
+      id c;
+      
+      c = [self runCommand:@"account::get", @"companyId", cId, nil];
       if ([c isKindOfClass:[NSArray class]])
         c = [c lastObject];
       [bindings setObject:_personName(self, c) forKey:@"creator"];
     }
   }
   { /* set participants */
-    NSEnumerator    *enumerator = [[obj valueForKey:@"participants"]
-                                        objectEnumerator];
-    id              part        = nil;
+    NSEnumerator    *enumerator;
+    id              part;
     NSMutableString *str        = nil;
           
-    while ((part = [enumerator nextObject])) {
+    enumerator = [[obj valueForKey:@"participants"] objectEnumerator];
+    while ((part = [enumerator nextObject]) != nil) {
       if (str == nil)
         str = [[NSMutableString alloc] initWithCapacity:128];
       else
@@ -306,7 +314,7 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
     [mailEditor setContentWithoutSign:@""];
   else {
     tmp = [template stringByReplacingVariablesWithBindings:
-		      _bindingForAppointment(self, obj)
+		      [self _bindingForAppointment:obj]
 		    stringForUnknownBindings:@""];
     [mailEditor setContentWithoutSign:tmp];
   }
@@ -616,17 +624,17 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
 - (NSString *)loginPermissions {
   NSString *perms;
   
-  if ((perms = [[self object] valueForKey:@"permissions"]))
+  if ((perms = [[self object] valueForKey:@"permissions"]) != nil)
     return perms;
-
+  
   perms = [self runCommand:@"appointment::access",
                   @"gid", [[self object] valueForKey:@"globalID"],
                   nil];
   if (perms == nil) {
-    [self setErrorString:@"couldn't get permissions for appointment !"];
+    [self setErrorString:@"could not get permissions for appointment !"];
     return @"";
   }
-
+  
   [[self object] takeValue:perms forKey:@"permissions"];
   return perms;
 }
@@ -647,11 +655,13 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
 
 - (NSString *)dateTimeTZFormat {
   // TODO: move format to default
-  NSString *format = nil;
-  BOOL showAMPMDates =
+  NSString *format;
+  BOOL     showAMPMDates;
+  
+  showAMPMDates =
     [[[self session] userDefaults] boolForKey:@"scheduler_AMPM_dates"];
+  
   format = showAMPMDates ? @"%Y-%m-%d %I:%M %p %Z" : @"%Y-%m-%d %H:%M %Z";
-  format = [format retain];
   return format;
 }
 - (NSString *)timeTZFormat {
@@ -819,11 +829,13 @@ static NSDictionary *_bindingForAppointment(LSWAppointmentViewer *self,id obj){
                          isEqualToString:@"archived"];
 }
 
-/* extended attributes */
+/* extended apt attributes (properties) */
 
 - (BOOL)showProperties {
-#warning TODO: VZ NRW, only set to yes if properties are configured
-  return YES;
+  return [extAttrSpec isNotEmpty];
+}
+- (NSArray *)extendedAttributeSpec {
+  return extAttrSpec;
 }
 
 /* label generation */
