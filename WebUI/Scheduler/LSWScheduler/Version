@@ -1,6 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=96
+SUBMINOR_VERSION:=97
 
 # v5.3.89 requires libNGObjWeb v4.5.202
 # v5.3.83 requires libNGiCal   v4.5.64

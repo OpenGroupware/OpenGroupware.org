@@ -1,5 +1,8 @@
 2006-01-28  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSWAppointmentEditor.m: fixed an incorrect warning about a missing
+	  access team (v5.3.97)
+	
 	* LSWAppointmentEditor.m: added support for editing custom attibutes
 	  (v5.3.96)
 

@@ -472,7 +472,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
      searches the accessTeams array for all-intranet and sets that as the 
      selected team 
   */
-  int i, cnt;
+  unsigned i, cnt;
   
   for (i = 0, cnt = [_teams count]; i < cnt; i++) {
     id t;
@@ -480,7 +480,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     t = [_teams objectAtIndex:i];
     if ([[t valueForKey:@"description"] isEqualToString:_teamName]) {
       ASSIGN(self->selectedAccessTeam, t);
-      break;
+      return;
     }
   }
   [self warnWithFormat:
