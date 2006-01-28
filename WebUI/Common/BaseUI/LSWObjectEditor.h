@@ -63,6 +63,7 @@
   NSDictionary *map;          // API
   NSArray      *showOnly;
   NSString     *prefix;
+  NSString     *namespace;    // API
   
   // transient
   NSDictionary *attribute;    // non-retained

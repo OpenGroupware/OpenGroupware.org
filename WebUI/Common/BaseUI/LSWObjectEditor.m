@@ -60,6 +60,7 @@
 }
 
 - (void)dealloc {
+  [self->namespace    release];
   [self->prefix       release];
   [self->object       release];  
   [self->attributes   release];
@@ -113,10 +114,21 @@
   return self->prefix;
 }
 
+- (void)setNamespace:(NSString *)_namespace {
+  ASSIGNCOPY(self->namespace, _namespace);
+}
+- (NSString *)namespace {
+  return self->namespace;
+}
+
 - (void)setAttributes:(NSArray *)_attributes {
   ASSIGN(self->attributes, _attributes);
 }
 - (NSArray *)attributes {
+  /*
+    If the 'showOnly' binding was set, this filters out unwanted keys. Note
+    that this is bad style and should be done in a separate method!
+  */
   NSMutableArray *result;
   unsigned count, i;
   
@@ -145,7 +157,7 @@
 }
 
 - (void)setPrivateLabel:(NSString *)_label {
-  ASSIGN(self->privateLabel, _label);
+  ASSIGNCOPY(self->privateLabel, _label);
 }
 - (NSString *)privateLabel {
   return self->privateLabel;
@@ -278,6 +290,29 @@
   return components;
 }
 
+/* attribute value accessors */
+
+- (void)setAttributeRawValue:(id)_value {
+  NSString *k;
+  
+  k = self->currentKey;
+  if ([self->namespace isNotEmpty]) {
+    k = [[NSString alloc] initWithFormat:@"{%@}%@", self->namespace, k];
+    [self->object takeValue:_value forKey:k];
+    [k release];
+  }
+  else
+    [self->object takeValue:_value forKey:k];
+}
+- (id)attributeRawValue {
+  NSString *k;
+  
+  k = self->currentKey;
+  if ([self->namespace isNotEmpty])
+    k = [NSString stringWithFormat:@"{%@}%@", self->namespace, k];
+  return [self->object valueForKey:k];
+}
+
 - (void)setAttributeValue:(id)_value {
   id           value;
   NSString     *calendarFormat;
@@ -303,7 +338,7 @@
     time = [dict valueForKey:@"time"];
     tz   = [[(id)[self session] timeZone] abbreviation];
     
-    if (time) {
+    if (time != nil) {
       calendarFormat =
         [calendarFormat stringByAppendingString:@" %H:%M:%S %Z"];
       
@@ -325,42 +360,7 @@
   
   NSAssert(self->currentKey, @"no key set ..");
   if (value != nil)
-    [self->object takeValue:value forKey:self->currentKey];
-}
-
-- (NSString *)attributeLabel {
-  id            value;
-  NSDictionary  *attr;
-  NSString      *label, *private;
-
-  attr = ([self->map isNotNull])
-    ? [self->map objectForKey:self->currentKey]
-    : self->attribute;
-  private = @"";
-  
-  if (![(value = [attr objectForKey:@"label"]) isNotNull]) {
-    if ((value = [self->attribute valueForKey:@"label"]) == nil) {
-      value = [self->attribute valueForKey:@"key"];
-
-      if ([(NSString *)value hasPrefix:@"{"]) {
-	NSRange r;
-	
-	r = [value rangeOfString:@"}"];
-	if (r.length > 0)
-          value = [value substringFromIndex:(r.location + r.length)];
-      }
-    }
-  }
-  
-  label = self->labels ? [self->labels valueForKey:value] : value;
-
-  if ([[attr valueForKey:@"isPrivate"] boolValue] &&
-      [self->privateLabel length] > 0)
-    private = [NSString stringWithFormat:@" (%@)",self->privateLabel];
-  
-  return label
-    ? [label stringByAppendingString:private]
-    : [value stringByAppendingString:private];
+    [self setAttributeRawValue:value];
 }
 
 - (id)attributeValue {
@@ -372,7 +372,7 @@
   
   /* retrieve raw value */
   
-  value = [self->object valueForKey:self->currentKey];
+  value = [self attributeRawValue];
   
   // TODO: check for multi, return array
   if ([self currentTypeCode] == ATTR_TYPECODE_MULTI) {
@@ -401,24 +401,56 @@
   return value;
 }
 
+- (void)setIsValueChecked:(BOOL)_flag {
+  [self setAttributeRawValue:(_flag ? @"YES" : @"NO")];
+}
 - (BOOL)isValueChecked {
   id value;
   
-  value = [self->object valueForKey:self->currentKey];
+  value = [self attributeRawValue];
   if (![value isNotNull]) return NO;
-  return ([value isEqualToString:@"YES"]);
+  return [value isEqualToString:@"YES"]; // TODO: better use -boolValue?
 }
 
-- (void)setIsValueChecked:(BOOL)_flag {
-  [self->object takeValue:((_flag) ? @"YES" : @"NO") forKey:self->currentKey];
+/* attribute label */
+
+- (NSString *)attributeLabel {
+  id            value;
+  NSDictionary  *attr;
+  NSString      *label, *private;
+
+  attr = ([self->map isNotNull])
+    ? [self->map objectForKey:self->currentKey]
+    : self->attribute;
+  private = @"";
+  
+  if (![(value = [attr objectForKey:@"label"]) isNotNull]) {
+    if ((value = [self->attribute valueForKey:@"label"]) == nil) {
+      value = [self->attribute valueForKey:@"key"];
+      
+      /* strip namespace names */
+      if ([(NSString *)value xmlIsFQN])
+	value = [value xmlLocalName];
+    }
+  }
+  
+  label = self->labels ? [self->labels valueForKey:value] : value;
+  
+  if ([[attr valueForKey:@"isPrivate"] boolValue] &&
+      [self->privateLabel length] > 0)
+    private = [NSString stringWithFormat:@" (%@)",self->privateLabel];
+  
+  return label
+    ? [label stringByAppendingString:private]
+    : [value stringByAppendingString:private];
 }
 
 - (id)textFieldName {
   NSString *tmp;
-
+  
   tmp = [self valueForKey:@"prefix"];
-
-  return (tmp)
+  
+  return (tmp != nil)
     ? [tmp stringByAppendingString:[self->attribute valueForKey:@"key"]]
     : [self->attribute valueForKey:@"key"];
 }

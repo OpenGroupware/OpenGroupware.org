@@ -1,3 +1,9 @@
+2006-01-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWObjectEditor.m: consolidated object property access in separate
+	  methods, added 'namespace' binding to access dictionaries with XML
+	  style FQN keys (like SkyObjectPropertyManager dicts) (v5.3.122)
+
 2006-01-22  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoElemBuilder.m: added support for dynamic 'label' attributes in
