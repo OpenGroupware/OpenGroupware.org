@@ -406,9 +406,6 @@ static NSArray  *startDateOrderings = nil;
 	     globalID:[obj valueForKey:@"globalID"]];
     [ex raise]; // TODO: improve cmd error handling ...
   }
-#warning DEBUG LOG, REMOVE ME
-  [self logWithFormat:@"SET on %@: %@", 
-	[obj valueForKey:@"globalID"], self->customAttributes];
   
   if ([self _dateIsCyclic] && ![self _hasParent])
     [self _newCyclicDatesInContext:_context];
