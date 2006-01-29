@@ -271,6 +271,7 @@ static NSString *autoNumberPrefix = @"OGo";
 }
 
 - (void)_newExtendedAttributesInContext:(id)_context {
+  // TODO: see below, this might be broken
   NSNumber       *accountId   = nil;
   id              obj;
   NSEnumerator   *keyEnum;
@@ -282,7 +283,7 @@ static NSString *autoNumberPrefix = @"OGo";
   obj         = [self object];
   keyEnum     = [[self->defaultAttrs allKeys] objectEnumerator];
   map         = [NSMutableDictionary dictionaryWithCapacity:16];
-  compValues  = [NSMutableArray array];
+  compValues  = [NSMutableArray arrayWithCapacity:8];
   
   accountId = [[_context valueForKey:LSAccountKey] valueForKey:@"companyId"];
   excludeKeys = 
@@ -299,6 +300,13 @@ static NSString *autoNumberPrefix = @"OGo";
     
     if ([excludeKeys containsObject:key])
       continue;
+
+    // TODO: this doesn't make a lot of sense to me? The 'object' is the
+    //       newly created company EO which can't contain a value for an
+    //       extended attribute?! Maybe this is just a moron copy of the set
+    //       command?
+    //       Note: but it _does_ seem to work (just using extattrs as
+    //             additional command arguments)
     if ([obj valueForKey:key] == nil)
       continue;
     

@@ -32,7 +32,11 @@
   Abstract superclass for
     person::new
     enterprise::new
-  etc
+    account::new
+    team::new
+    
+  TODO: add some way to create filled address records, subcommands do not work
+        since the primary key of the company is not known at that point.
 */
 
 @class NSString, NSMutableArray, NSArray, NSData, NSDictionary;
@@ -46,7 +50,7 @@
   NSMutableArray *_newAddrCmds;
   NSMutableArray *_newTelephoneCmds;
 
-  NSArray *telephones;
+  NSArray  *telephones;
   NSData   *pictureData;
   NSString *pictureFilePath;
   BOOL     deleteImage;
