@@ -71,7 +71,7 @@ static NSArray *typeOrderings = nil;
       
   while ((obj = [p nextObject]) != nil) {
     NSMutableDictionary *md;
-        
+    
     md = [NSMutableDictionary dictionaryWithObject:obj forKey:@"type"];
     if ([wanted containsObject:obj])
       [array addObject:md];
@@ -332,17 +332,17 @@ static NSArray *typeOrderings = nil;
   return [[self->gatheringCompany valueForKey:@"description"] isNotNull];
 }
 - (BOOL)hasAddedCompanies {
-  return [self->addedCompanies count] > 0 ? YES : NO;
+  return [self->addedCompanies isNotEmpty];
 }
 
 - (BOOL)validateForEditorSave {
-  if (![self isGatheringPersonNameSet]) {
+  if (![self isGatheringPersonNameSet]) { // TODO: localize
     [self setErrorString:@"no name for person is set"];
     return NO;
   }
   
   if (![self isGatheringCompanyNameSet] && ![self hasAddedCompanies]) {
-    [self setErrorString:@"no name for enterprise is set"];
+    [self setErrorString:@"no name for enterprise is set"]; // TODO: localize
     return NO;
   }
   
@@ -398,7 +398,7 @@ static NSArray *typeOrderings = nil;
 
   /* set owner */
   
-  ownerId = [[[self session] activeAccount] valueForKey:@"companyId"];    
+  ownerId = [[[self session] activeAccount] valueForKey:@"companyId"];
   [self->gatheringPerson takeValue:ownerId forKey:@"ownerId"];
   
   /* extended records */
@@ -442,8 +442,8 @@ static NSArray *typeOrderings = nil;
 - (id)findBillAddressEOInCompanyEO:(id)company {
   NSEnumerator *enumerator;
   id           obj;
-    
-  // TODO: replace access of relationship fault
+  
+  // TODO: replace access of relationship fault with address::get
   enumerator = [[company valueForKey:@"toAddress"] objectEnumerator];
     
   while ((obj = [enumerator nextObject]) != nil) {
@@ -539,7 +539,7 @@ static NSArray *typeOrderings = nil;
   
   /* process assigned companies or create a new one */
   
-  if ([self->addedCompanies count] > 0) {
+  if ([self->addedCompanies isNotEmpty]) {
     if (debugOn) {
       [self debugWithFormat:@"associate with %d companies ...", 
 	      [self->addedCompanies count]];
@@ -577,8 +577,8 @@ static NSArray *typeOrderings = nil;
   if (values != nil)
     [self->gatheringPerson addEntriesFromDictionary:values];
   else {
-    NSLog(@"%s: unable to preset values from object: %@ (%@)",
-          __PRETTY_FUNCTION__, _person, NSStringFromClass([_person class]));
+    [self logWithFormat:@"%s: unable to preset values from object: %@ (%@)",
+          __PRETTY_FUNCTION__, _person, NSStringFromClass([_person class])];
     [self setErrorString:@"unable to preset values"];
   }
 }
