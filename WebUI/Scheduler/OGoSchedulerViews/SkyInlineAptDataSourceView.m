@@ -821,7 +821,7 @@ static NSArray      *coreTeamAttrs   = nil;
                              keys:&c keyCount:1 zone:NULL];
 
         c = [self runCommand:@"person::get-by-globalid",
-                  @"gid", gid];
+                  @"gid", gid, nil];
 
         if ([c isKindOfClass:[NSArray class]])
           c = ([c count] > 0) ? [c lastObject] : nil;
