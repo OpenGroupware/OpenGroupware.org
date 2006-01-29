@@ -89,29 +89,69 @@ static NSString *autoNumberPrefix = @"OGo";
 
 /* command methods */
 
+- (BOOL)_hasCommandWithEntityName:(NSString *)_entityName andKey:(id)_key
+  andValue:(id)_value
+{
+  // TODO: only used by LSNewCompanyCommand, move there?!
+  BOOL         hasCommmand;
+  NSEnumerator *cmdEnumerator;
+  id<NSObject,LSDBCommand> cmd;
+
+  hasCommmand   = NO;
+  cmdEnumerator = [[self commands] objectEnumerator];
+  while ((cmd = [cmdEnumerator nextObject]) != nil) {
+    if (![cmd isKindOfClass:[LSDBObjectBaseCommand class]])
+      continue;
+    
+    if (![[cmd entityName] isEqualToString:_entityName])
+      continue;
+
+    if (_key != nil) {
+      if ([[cmd valueForKey:_key] isEqual:_value]) {
+	hasCommmand = YES;
+	break;
+      }
+    }
+    else {
+      hasCommmand = YES;
+      break;
+    }
+  }
+  return hasCommmand;
+}
+
+- (BOOL)_hasCommandWithEntityName:(NSString *)_entityName {
+  return [self _hasCommandWithEntityName:_entityName andKey:nil andValue:nil];
+}
+
 - (void)_prepareNewAddrCmdsInContext:(id)_ctx {
   /* this sets up an array of configured 'address::new' invocations */
   NSArray      *types;
   NSEnumerator *objEnum;
-  id obj;
+  id curtype;
   
   if ((types = [self addressTypesInContext:_ctx]) == nil)
     return;
   
   self->_newAddrCmds = [[NSMutableArray alloc] initWithCapacity:4];
-
+  
   objEnum = [types objectEnumerator]; 
-  while ((obj = [objEnum nextObject])) {
+  while ((curtype = [objEnum nextObject]) != nil) {
     id <NSObject,LSCommand> cmd;
     BOOL hasCommand;
     
     // TODO: what does that check?
+    // => see LSDBObjectBaseCommand, it searches for a 'subcommand' which
+    //    has the 'address' entity (namespace, not EO) and a parameter key
+    //    'type' which equals the given value
+    // TODO: how can this work? one can't attach a subcommand because the
+    //       command wouldn't know about the primary-key of the company?
     hasCommand = [self _hasCommandWithEntityName:@"address" andKey:@"type"
-		       andValue:obj];
+		       andValue:curtype];
     if (hasCommand) continue;
     
     cmd = LSLookupCommand(@"address", @"new");
-    [cmd takeValue:obj forKey:@"type"];
+    [cmd takeValue:curtype forKey:@"type"];
     [self->_newAddrCmds addObject:cmd];
   }
 }
@@ -128,7 +168,7 @@ static NSString *autoNumberPrefix = @"OGo";
   self->_newTelephoneCmds = [[NSMutableArray alloc] initWithCapacity:8];
   
   objEnum = [types objectEnumerator]; 
-  while ((obj = [objEnum nextObject])) {
+  while ((obj = [objEnum nextObject]) != nil) {
     id <NSObject,LSCommand> cmd;
     BOOL hasCommand;
     
@@ -151,7 +191,7 @@ static NSString *autoNumberPrefix = @"OGo";
   cmds = [[self commands] objectEnumerator];
   pkey = [[self object] valueForKey:[self primaryKeyName]];
   
-  while ((cmd = [cmds nextObject])) 
+  while ((cmd = [cmds nextObject]) != nil) 
     [cmd takeValue:pkey forKey:@"companyId"];
 }
 
@@ -164,7 +204,7 @@ static NSString *autoNumberPrefix = @"OGo";
   
   [self _prepareNewAddrCmdsInContext:_context];
   cmds = [self->_newAddrCmds objectEnumerator];
-  while ((cmd = [cmds nextObject])) {
+  while ((cmd = [cmds nextObject]) != nil) {
     [cmd takeValue:pkey forKey:@"companyId"];
     [cmd runInContext:_context];                  
   }
@@ -181,7 +221,7 @@ static NSString *autoNumberPrefix = @"OGo";
   [self _prepareNewTelephoneCmdsInContext:_context];
   
   cmds = [self->_newTelephoneCmds objectEnumerator];
-  while ((cmd = [cmds nextObject])) {
+  while ((cmd = [cmds nextObject]) != nil) {
     [cmd takeValue:pkey forKey:@"companyId"];
     [cmd runInContext:_context];                  
   }
@@ -250,7 +290,7 @@ static NSString *autoNumberPrefix = @"OGo";
   
   [excludeKeys addObjectsFromArray:defExcludeKeys];
   
-  while ((key = [keyEnum nextObject])) {
+  while ((key = [keyEnum nextObject]) != nil) {
     NSDictionary *attr;
     int           type;
     NSString     *label;
@@ -282,11 +322,10 @@ static NSString *autoNumberPrefix = @"OGo";
 
 - (void)_newTelephoneCommandsInContext:(id)_context {
   NSNumber *pkey;
-  int i, cnt;
+  unsigned i, cnt;
   
   pkey = [[self object] valueForKey:[self primaryKeyName]];
-  cnt  = [self->telephones count];
-  for (i = 0; i < cnt; i++) {
+  for (i = 0, cnt = [self->telephones count]; i < cnt; i++) {
     id<NSObject,LSCommand> cmd;
     id tel;
     
@@ -315,7 +354,7 @@ static NSString *autoNumberPrefix = @"OGo";
   l   = [self->recordDict valueForKey:@"login"];
   
   if ([n isKindOfClass:[NSString class]]) {
-    if ([n length] == 0)
+    if (![n isNotEmpty])
       n = nil;
   }
   
@@ -344,22 +383,22 @@ static NSString *autoNumberPrefix = @"OGo";
 }
 
 - (void)_saveAttachmentInContext:(id)_context {
-    NSFileManager  *manager;
-    NSUserDefaults *defaults;
-    id             obj;
-    NSString       *fileName = nil;
-    NSString       *fName    = nil;
-    BOOL           isOk      = NO;
+  NSFileManager  *manager;
+  NSUserDefaults *defaults;
+  id             obj;
+  NSString       *fileName;
+  NSString       *fName    = nil;
+  BOOL           isOk      = NO;
 
-    manager  = [NSFileManager defaultManager];
-    defaults = [_context userDefaults];
-    obj      = [self object];
+  manager  = [NSFileManager defaultManager];
+  defaults = [_context userDefaults];
+  obj      = [self object];
     
-    fileName = [defaults stringForKey:@"LSAttachmentPath"];
-    fileName = [NSString stringWithFormat:@"%@/%@.picture",
+  fileName = [defaults stringForKey:@"LSAttachmentPath"];
+  fileName = [NSString stringWithFormat:@"%@/%@.picture",
                          fileName, [obj valueForKey:@"companyId"]];
 
-    if ((self->pictureData != nil && self->pictureFilePath != nil
+  if ((self->pictureData != nil && self->pictureFilePath != nil
          && [self->pictureData length] > 0)
         || self->deleteImage) {
       fName = [fileName stringByAppendingPathExtension:@"jpg"];
@@ -372,9 +411,9 @@ static NSString *autoNumberPrefix = @"OGo";
       if ([manager fileExistsAtPath:fName]) {
         [manager removeFileAtPath:fName handler:nil];        
       }
-    }
+  }
 
-    if (self->pictureData !=nil && self->pictureFilePath != nil &&
+  if (self->pictureData !=nil && self->pictureFilePath != nil &&
         [self->pictureData length] > 0) {
       fName = [fileName stringByAppendingPathExtension:
                         [self->pictureFilePath pathExtension]];
@@ -382,7 +421,7 @@ static NSString *autoNumberPrefix = @"OGo";
 
       [self assert:isOk
             reason:@"Error during save of person/enterprise picture!"];
-    }
+  }
 }
 
 - (void)_addCreationLogInContext:(id)_context {
@@ -428,7 +467,7 @@ static NSString *autoNumberPrefix = @"OGo";
 /* company info accessors */
 
 - (void)setComment:(NSString *)_comment {
-  ASSIGN(self->comment, _comment);
+  ASSIGNCOPY(self->comment, _comment);
 }
 - (NSString *)comment {
   return self->comment;
@@ -442,7 +481,7 @@ static NSString *autoNumberPrefix = @"OGo";
 }
 
 - (void)setPictureFilePath:(NSString *)_pictureFilePath {
-  ASSIGN(self->pictureFilePath, _pictureFilePath);
+  ASSIGNCOPY(self->pictureFilePath, _pictureFilePath);
 }
 - (NSString *)pictureFilePath {
   return self->pictureFilePath;

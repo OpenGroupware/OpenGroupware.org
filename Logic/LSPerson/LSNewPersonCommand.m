@@ -21,6 +21,12 @@
 
 #include <LSAddress/LSNewCompanyCommand.h>
 
+/*
+  LSNewPersonCommand / person::new
+
+  TODO: document
+*/
+
 @interface LSNewPersonCommand : LSNewCompanyCommand
 {
   id enterprise;
@@ -37,7 +43,8 @@
   [super dealloc];
 }
 
-// access check
+/* access check */
+
 - (NSArray *)accountAttributes {
   static NSArray *accountAttr = nil;
   if (accountAttr == nil) {
@@ -51,7 +58,8 @@
   return accountAttr;
 }
 
-// prepare
+/* prepare */
+
 - (void)_prepareForExecutionInContext:(id)_context {
   NSEnumerator *e;
   id one;
@@ -62,9 +70,10 @@
     
     newValue = [self valueForKey:one];
     if ([newValue isNotNull]) {
-      NSLog(@"WARNING[%s]: %@ tried to create person with account value '%@'",
-            __PRETTY_FUNCTION__, [[_context valueForKey:LSAccountKey]
-                                            valueForKey:@"login"], one);
+      [self warnWithFormat:
+	      @"%s: %@ tried to create person with account value '%@'",
+              __PRETTY_FUNCTION__, [[_context valueForKey:LSAccountKey]
+                                              valueForKey:@"login"], one];
       [self takeValue:[NSNull null] forKey:one];
     }
   }
@@ -76,7 +85,7 @@
 
 - (void)_executeInContext:(id)_context {
   [super _executeInContext:_context];
-
+  
   if (self->enterprise != nil) {
     LSRunCommandV(_context, @"person", @"set-enterprise",
                   @"member", [self object],

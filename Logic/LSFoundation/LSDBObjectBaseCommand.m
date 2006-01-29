@@ -186,38 +186,6 @@
   [self _validateInContext:_context];
 }
 
-// command checks
-
-- (BOOL)_hasCommandWithEntityName:(NSString *)_entityName andKey:(id)_key
-  andValue:(id)_value
-{
-  BOOL         hasCommmand = NO;
-  NSEnumerator *cmdEnumerator = [[self commands] objectEnumerator];
-  id<NSObject,LSDBCommand> cmd;
-
-  while ((cmd = [cmdEnumerator nextObject])) {
-    if ([cmd isKindOfClass:[LSDBObjectBaseCommand class]]) {
-      if ([[cmd entityName] isEqualToString:_entityName]) {
-        if (_key) {
-          if ([[cmd valueForKey:_key] isEqual:_value]) {
-            hasCommmand = YES;
-            break;
-          }
-        }
-        else {
-          hasCommmand = YES;
-          break;
-        }
-      }
-    }
-  }
-  return hasCommmand;
-}
-
-- (BOOL)_hasCommandWithEntityName:(NSString *)_entityName {
-  return [self _hasCommandWithEntityName:_entityName andKey:nil andValue:nil];
-}
-
 /* notifications */
 
 - (void)gotSybaseMessage:(NSNotification *)_notification {
@@ -411,11 +379,14 @@
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:128];
+  
   [ms appendFormat:@"<DBCommand: %@::%@ entity=%@ ",
         [self domain], [self operation],
         [self entityName]];
-  if ([[self commands] count] > 0)
+  
+  if ([[self commands] isNotEmpty])
     [ms appendString:@" has-subcmds"];
+  
   [ms appendString:@">"];
   return ms;
 }

@@ -95,29 +95,29 @@ id LSCommandRunV(id _ctx, id _factory, NSString *_domain, NSString *_command, ..
 + (void)setDebuggingEnabled:(BOOL)_flag;
 + (BOOL)isDebuggingEnabled;
 
-- (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain; // desig. i.
+// desig. i.
+- (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain;
 
-// accessors
+/* accessors */
 
 - (NSString *)operation;
 - (NSString *)domain;
 
-- (void)addCommand:(LSBaseCommand *)_command;
-- (NSArray *)commands;
+- (NSArray *)commands; // TODO: DEPRECATED
 
-- (id)returnValue;
 - (void)setReturnValue:(id)_object;
-- (id)object;
+- (id)returnValue;
 - (void)setObject:(id)_object;
+- (id)object;
 
 - (BOOL)isCommandOk;
 
-// command type
+/* command type */
 
 - (BOOL)requiresChannel;
 - (BOOL)requiresTransaction;
 
-// command methods
+/* command methods */
 
 - (id)runInContext:(id)_context;
 - (void)primaryRunInContext:(id)_context;
@@ -128,21 +128,21 @@ id LSCommandRunV(id _ctx, id _factory, NSString *_domain, NSString *_command, ..
 - (void)_executeCommandsInContext:(id)_context;
 - (void)_validateInContext:(id)_context;
 
-// key/value coding
+/* key/value coding */
 
 - (void)takeValue:(id)_value forKey:(NSString *)_key;
 - (id)valueForKey:(NSString *)_key;
 
-// context functions
+/* context functions */
 
 - (id<NSObject,LSCommandFactory>)commandFactory;
 
-// logging
+/* logging */
 
 - (void)logWithFormat:(NSString *)_format, ...;
 - (void)debugWithFormat:(NSString *)_format, ...;
 
-// assertions
+/* assertions */
 
 - (void)assert:(BOOL)_condition;
 - (void)assert:(BOOL)_condition reason:(NSString *)_reason;

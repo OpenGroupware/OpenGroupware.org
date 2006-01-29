@@ -24,6 +24,17 @@
 
 #include <LSFoundation/LSDBObjectNewCommand.h>
 
+/*
+  LSNewCompanyCommand
+
+  TODO: document
+
+  Abstract superclass for
+    person::new
+    enterprise::new
+  etc
+*/
+
 @class NSString, NSMutableArray, NSArray, NSData, NSDictionary;
 
 @interface LSNewCompanyCommand : LSDBObjectNewCommand

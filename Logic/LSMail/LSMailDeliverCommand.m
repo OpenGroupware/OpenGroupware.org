@@ -259,7 +259,7 @@ static EONull *null = nil;
     return toolPath;
   }
   
-  [self logWithFormat:@"ERROR: did not find 'sky_send_bulk_messages' tool."];
+  [self errorWithFormat:@"did not find 'sky_send_bulk_messages' tool."];
   toolPath = nil;
   return nil;
 }
@@ -277,7 +277,7 @@ static EONull *null = nil;
   toolPath = [self sendBulkMessagesToolPath];
 
   if (![[NSFileManager defaultManager] isExecutableFileAtPath:toolPath]) {
-    [self logWithFormat:@"ERROR: did not find executable "
+    [self errorWithFormat:@"did not find executable "
           @"sky_send_bulk_messages binary '%@'",
             toolPath];
     return;
@@ -592,8 +592,7 @@ static EONull *null = nil;
 
     str = [NSString stringWithFormat:@"NoExecutableSendmailBinary %@",
 		    sendMailPath];
-    [self logWithFormat:@"%@ is no executable file",
-	  sendmail];
+    [self logWithFormat:@"%@ is no executable file", sendmail];
 
     [self setReturnValue:[self _errorExceptionWithReason:str]];
     return;

@@ -38,6 +38,7 @@
   [self->project release];
   [self->executant release];
   [self->jobName release];
+  [super dealloc];
 }
 
 - (void)_validateKeysForContext:(id)_context {

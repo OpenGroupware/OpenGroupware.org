@@ -1,3 +1,14 @@
+2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.117
+
+	* LSDBObjectBaseCommand.m: moved -hasCommandWithEntityName: methods to
+	  LSNewCompanyCommand, code cleanups
+
+	* LSBaseCommand.m: removed -addCommand: method which was used nowhere
+
+	* LSCreateCommand.m: removed a method which was commented out
+
 2006-01-23  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoAccessManager.m, OGoAccessHandler.m: minor code cleanups, use

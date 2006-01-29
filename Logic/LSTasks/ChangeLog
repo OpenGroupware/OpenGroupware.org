@@ -1,3 +1,7 @@
+2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSControlJobCommand.m: added a missing [super dealloc] call (v5.3.5)
+
 2005-05-11  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSJobActionCommand.m: removed parent-job code, removed support for

@@ -23,7 +23,10 @@ LSPerson_OBJC_FILES += \
 LSPerson_RESOURCE_FILES += Version
 
 LSPerson_INCLUDE_DIRS += -I..
-LSPerson_BUNDLE_LIBS  += -lLSSearch -lLSFoundation -lLSAddress
+
+LSPerson_BUNDLE_LIBS  += \
+	-lLSSearch -lLSFoundation -lLSAddress \
+	-lNGiCal
 
 LSPerson_LIB_DIRS += \
 	-L../LSSearch/$(GNUSTEP_OBJ_DIR)	\

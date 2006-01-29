@@ -141,13 +141,6 @@ static BOOL debug = NO;
   return self->domain;
 }
 
-- (void)addCommand:(LSBaseCommand *)_command {
-  if (self->commands == nil)
-    self->commands = [[NSMutableArray alloc] initWithCapacity:4];
-
-  [self->commands addObject:_command];
-}
-
 - (NSArray *)commands {
   return self->commands;
 }

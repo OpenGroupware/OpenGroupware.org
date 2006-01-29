@@ -66,22 +66,3 @@ LSCommandA(NSString *_domain, NSString *_command, NSString *firstKey, ...) {
 
   return cmd;
 }
-
-// id<NSObject,LSCommand>
-// LSTCommandA(NSString *_domain, NSString *_command, NSString *firstKey, ...) {
-//   id<NSObject,LSCommand> cmd = nil;
-//   va_list va;
-  
-//   va_start(va, firstKey);
-//   cmd = LSCommandAV(_domain, _command, firstKey, va);
-//   va_end(va);
-
-//   if (cmd) {
-//     id<NSObject,LSCommand> tcmd = LSCommand(@"system", @"transaction");
-//     [(LSDBObjectTransactionCommand *)tcmd addCommand:cmd];
-//     cmd = tcmd;
-//   }
-  
-//   return cmd;
-// }
-

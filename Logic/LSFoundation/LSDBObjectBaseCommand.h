@@ -61,12 +61,6 @@
 
 - (void)_validateKeysForContext:(id)_context;
 
-/* check command existence */
-
-- (BOOL)_hasCommandWithEntityName:(NSString *)_entityName andKey:(id)_key
-  andValue:(id)_value;
-- (BOOL)_hasCommandWithEntityName:(NSString *)_entityName;
-
 /* accessors */
 
 - (void)setEntityName:(NSString *)_entityName;
