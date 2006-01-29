@@ -627,8 +627,8 @@ static BOOL DebugDocumentRegistration = NO;
 - (BOOL)save {
   BOOL result = YES;
 
-  if (self->status.isEdited == NO) return YES;
-  if (![self isComplete])          return NO;
+  if (!self->status.isEdited) return YES;
+  if (![self isComplete])     return NO;
   
   NS_DURING {
     if (self->globalID == nil) {
@@ -642,12 +642,13 @@ static BOOL DebugDocumentRegistration = NO;
                             nil];
 
       for (i = 0, cnt = [addrs count]; i < cnt; i++) {
-        SkyAddressDocument *addrDoc = nil;
-        EOKeyGlobalID      *gid     = nil;
-        id                 addrEO   = [addrs objectAtIndex:i];
+        SkyAddressDocument *addrDoc;
+        EOKeyGlobalID      *gid;
+        id                 addrEO;
         id                 value[1];
 
-        addrDoc = [self addressForType:[addrEO valueForKey:@"type"]];
+	addrEO   = [addrs objectAtIndex:i];
+        addrDoc  = [self addressForType:[addrEO valueForKey:@"type"]];
         value[0] = [addrEO valueForKey:@"addressId"];
         gid = [EOKeyGlobalID globalIDWithEntityName:@"Address"
                              keys:value
@@ -659,10 +660,11 @@ static BOOL DebugDocumentRegistration = NO;
       }
     }
     else {
-      NSEnumerator *typE = [[self addressTypes] objectEnumerator];
-      id           one   = nil;
+      NSEnumerator *typE;
+      id           one;
 
-      while ((one = [typE nextObject])) {
+      typE = [[self addressTypes] objectEnumerator];
+      while ((one = [typE nextObject]) != nil) {
         one = [self addressForType:one];
         if (one != nil)
           [one save];
@@ -683,9 +685,8 @@ static BOOL DebugDocumentRegistration = NO;
 - (BOOL)delete {
   BOOL result = YES;
   
-  NS_DURING {
+  NS_DURING
     [self->dataSource deleteObject:self];
-  }
   NS_HANDLER {
     result = NO;
     [self logException:localException];
@@ -696,7 +697,7 @@ static BOOL DebugDocumentRegistration = NO;
 }
 
 - (BOOL)reload {
-  if ([self isValid] == NO)
+  if (![self isValid])
     return NO;
 
   if ([self globalID] == nil) {
@@ -726,12 +727,12 @@ static BOOL DebugDocumentRegistration = NO;
   NSArray *list;
   int     i, cnt;
 
-    list = [_object valueForKey:@"telephones"];
-    cnt  = [list count];
-    [self->phones release]; self->phones = nil;
-    self->phones = [[NSMutableDictionary alloc] initWithCapacity:cnt];
+  list = [_object valueForKey:@"telephones"];
+  cnt  = [list count];
+  [self->phones release]; self->phones = nil;
+  self->phones = [[NSMutableDictionary alloc] initWithCapacity:cnt];
     
-    for (i = 0; i < cnt; i++) {
+  for (i = 0; i < cnt; i++) {
       NSMutableDictionary *dict;
       id       phone;
       NSString *type;
@@ -752,9 +753,9 @@ static BOOL DebugDocumentRegistration = NO;
       }
       [self->phones setObject:dict forKey:type];
       [dict release]; dict = nil;
-    }
+  }
 
-    [self _loadPhoneTypes];
+  [self _loadPhoneTypes];
 }
 
 - (void)_loadExtAttrsFromObject:(id)_object {
@@ -980,7 +981,7 @@ static BOOL DebugDocumentRegistration = NO;
   
   /* empty */
   if (self->imageData == nil) self->imageData = [[NSData   alloc] init];
-  if (self->imageType == nil) self->imageType = [[NSString alloc] init];
+  if (self->imageType == nil) self->imageType = @"";
 }
 
 - (NSArray *)_newTelephones:(id)_ctx {
