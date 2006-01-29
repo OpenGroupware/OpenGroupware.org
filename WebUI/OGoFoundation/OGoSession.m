@@ -360,15 +360,18 @@ static NSString *OGoDateTimeTZFormat     = nil;
 /* notifications */
 
 - (void)takeValuesFromRequest:(WORequest *)_req inContext:(WOContext *)_ctx {
-  if (self->lastContextId == nil) {
-    [self debugWithFormat:@"first request, skipping -takeValues.."];
-    return;
+  if ([[_ctx senderID] isNotEmpty]) { /* only run for WO actions */
+    if (self->lastContextId == nil) {
+      [self debugWithFormat:@"first request, skipping -takeValues.."];
+      return;
+    }
+    if (![[_ctx currentElementID] isEqualToString:self->lastContextId]) {
+      [self debugWithFormat:
+  	    @"old request (wrong context), skipping -takeValues.."];
+      return;
+    }
   }
-  if (![[_ctx currentElementID] isEqualToString:self->lastContextId]) {
-    [self debugWithFormat:
-	    @"old request (wrong context), skipping -takeValues.."];
-    return;
-  }
+  
   [super takeValuesFromRequest:_req inContext:_ctx];
 }
 

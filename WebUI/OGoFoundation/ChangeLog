@@ -1,3 +1,8 @@
+2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSession.m: disabled some -takeValues:.. consistency checks when
+	  the session is triggered with a direct action (v5.3.98)
+
 2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoStringTableManager.m: use -isNotEmpty, minor code cleanups
