@@ -160,13 +160,14 @@ static NSArray      *formLetterTypes          = nil;
   NSString        *fn;
 
   eo     = [self object];
-  str    = [[[NSMutableString alloc] initWithCapacity:30] autorelease];
-
-  [str appendString:[[eo valueForKey:@"name"] stringValue]];
-
-  fn = [eo valueForKey:@"firstname"];
+  str    = [NSMutableString stringWithCapacity:30];
   
-  if ([fn isNotNull] && [[fn stringValue] length] > 0) {
+  fn = [[eo valueForKey:@"name"] stringValue];
+  if ([fn isNotEmpty])
+    [str appendString:fn];
+  
+  fn = [eo valueForKey:@"firstname"];
+  if ([fn isNotEmpty] && [[fn stringValue] isNotEmpty]) {
     [str appendString:@", "];
     [str appendString:[fn stringValue]];
   }

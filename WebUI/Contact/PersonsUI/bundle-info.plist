@@ -42,6 +42,7 @@
       { name = SkyPersonAttributesEditor;    },
       { name = SkyPersonViewer;              },
       { name = OGoPersonLinkEditor;          },
+      { name = OGoPersonQCreatePanel;        },
     );
 
     DockablePages = (
@@ -70,6 +71,7 @@
       { name = SkyPersonAttributesEditor;    },
       { name = SkyPersonViewer;              },
       { name = OGoPersonLinkEditor;          },
+      { name = OGoPersonQCreatePanel;        },
    );
     
     LSWCommands = (

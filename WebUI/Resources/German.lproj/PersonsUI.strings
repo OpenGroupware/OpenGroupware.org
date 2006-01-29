@@ -304,6 +304,7 @@ projects                       = "Projekte";
 prospect_category              = "Kategorie";
 prospect_category_other        = "Kategorie (Sonstige)";
 purchased_product              = "erworbenes Produkt";
+qcreate_panel_title            = "OGo: Kontakt anlegen";
 qualification                  = "Qualifikation";
 readonly                       = "nur lesbar";
 readonlyLabel                  = "nur lesbar";

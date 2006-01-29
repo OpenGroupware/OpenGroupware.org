@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+ <var:if condition="existingSession.isNotNull">
+  <head>
+    <title><OGo:label key="qcreate_panel_title" /></title>
+
+    <link rel="stylesheet" type="text/css" rsrc:href="OGo.css" />
+
+    <meta name="keywords"    content="SKYRiX, OpenGroupware.org" />
+    <meta name="description" content="OpenGroupware.org Web Interface" />
+    <meta name="author"      content="SKYRIX Software AG" />
+    <meta name="generator"   content="SKYRiX Object Publishing System" />
+    <meta rev="made"         href="http://www.opengroupware.org/" />
+    
+    <meta name="OGoSessionID" var:content="existingSession.sessionID" />
+  </head>
+
+  <body>
+    <form actionClass="OGoPersonQCreatePanel" directActionName="save">
+      <!-- 
+        Note: we do not use OGo:page-head because we want to have everything
+              in one table
+        -->
+      <table width="100%" border="0" cellpadding="4" cellspacing="0">
+        <tr var:bgcolor="config.colors_mainButtonRow">
+          <td colspan="2"><OGo:font>
+            <OGo:label key="qcreate_panel_title"/>
+          </OGo:font></td>
+        </tr>
+        <tr><td colspan="2">
+
+          <table width="100%" border="0" cellpadding="4" cellspacing="0">
+            <OGo:attribute label="name" editfont="1">
+              <input type="text" name="lastname" size="20"
+                     var:value="values.name" />
+            </OGo:attribute>
+            <OGo:attribute label="firstname" editfont="1">
+              <input type="text" name="firstname" size="20"
+                     var:value="values.firstname" />
+            </OGo:attribute>
+
+            <OGo:attribute label="telephoneLabel" editfont="1">
+              <input type="text" name="01_tel" size="20"
+                     var:value="values.01_tel" />
+            </OGo:attribute>
+            <OGo:attribute label="03_tel_funk" editfont="1">
+              <input type="text" name="03_tel_funk" size="20"
+                     var:value="values.03_tel_funk" />
+            </OGo:attribute>
+            <OGo:attribute label="email" editfont="1">
+              <input type="text" name="email1" size="20"
+                     var:value="values.email1" />
+            </OGo:attribute>
+
+            <OGo:attribute label="city" editfont="1">
+              <input type="text" name="city" size="20"
+                     var:value="values.city" />
+            </OGo:attribute>
+            <OGo:attribute label="zip" editfont="1">
+              <input type="text" name="zip" size="20"
+                     var:value="values.zip" />
+            </OGo:attribute>
+            <OGo:attribute label="street" editfont="1">
+              <input type="text" name="street" size="20"
+                     var:value="values.street" />
+            </OGo:attribute>
+
+            <!-- buttons -->
+            <tr>
+              <td></td>
+              <td>
+                <nobr>
+                  <input type="submit" var:action="save" class="button_narrow"
+                         var:value="labels.saveButtonLabel"
+                         var:title="labels.saveButtonLabel_title" />
+                </nobr>
+              </td>
+            </tr>
+          </table>
+        </td></tr>
+      </table>
+    </form>
+  </body>
+  </var:if>
+
+  <var:if condition="existingSession.isNotNull" const:negate="1">
+    <!--
+      This can happen if a session expired but the panel was active somewhere
+      in the background. (eg enter the apt-editor, restart the appserver,
+      click on 'new' in the still open editor)
+      -->
+    <head><title>Closing ...</title></head>
+    <body>
+      <script language="JavaScript">
+        opener.location.reload();
+        window.close();
+      </script>
+    </body>
+  </var:if>
+</html>

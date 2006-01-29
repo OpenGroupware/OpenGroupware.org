@@ -25,6 +25,7 @@ PersonsUI_OBJC_FILES += \
 	SkyPersonWizard.m		\
 	OGoPersonLinkEditor.m		\
 	EOQualifier+PersonUI.m		\
+	OGoPersonQCreatePanel.m		\
 
 PersonsUI_RESOURCE_FILES += Defaults.plist Version
 

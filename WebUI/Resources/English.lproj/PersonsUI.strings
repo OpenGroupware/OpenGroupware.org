@@ -307,6 +307,7 @@ projects                           = "projects";
 prospect_category                  = "Category";
 prospect_category_other            = "Category (Other)";
 purchased_product                  = "Purchased product";
+qcreate_panel_title                = "OGo: Create Contact";
 qualification                      = "Qualification";
 readonly                           = "read only";
 readonlyLabel                      = "Readonly";

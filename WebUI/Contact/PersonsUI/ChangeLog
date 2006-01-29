@@ -1,3 +1,12 @@
+2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.58
+
+	* added OGoPersonQCreatePanel for creating person records in a separate
+	  HTML panel
+
+	* SkyPersonViewer.m, SkyPersonEditor.m: code cleanups
+
 2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.57

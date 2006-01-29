@@ -1,3 +1,8 @@
+2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* English|German.lproj/PersonsUI.strings: added 'qcreate_panel_title'
+	  label (title of new contact quick create panel)
+
 2006-01-16  Helge Hess  <helge.hess@opengroupware.org>
 
 	* English.lproj/LSWScheduler.strings: fixed wording in 14_daily and

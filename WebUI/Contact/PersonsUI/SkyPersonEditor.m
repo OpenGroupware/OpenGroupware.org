@@ -45,7 +45,7 @@
 
 @interface SkyPersonEditor(PrivateMethodes)
 - (NSString *)_violatedUniqueKeyName;
-@end /* SkyPersonEditor(PrivateMethodes) */
+@end
 
 @implementation SkyPersonEditor
 
@@ -124,7 +124,7 @@
 }
 
 - (void)setFilePath:(id)_path {
-  ASSIGN(self->pictureFilePath, _path);
+  ASSIGNCOPY(self->pictureFilePath, _path);
 }
 - (id)filePath {
   return self->pictureFilePath;
@@ -148,22 +148,35 @@
   return self->limitAccessToCreator;
 }
 
+- (BOOL)isCompanyIdRoot:(NSNumber *)_pkey {
+  // TODO: remove direct check for 10000
+  return [_pkey intValue] == 10000 ? YES : NO;
+}
+
 - (BOOL)isDeleteEnabled {
   // TODO: remove direct check for 10000
   id obj;
   
+  if ([self isInNewMode])
+    return NO; /* no delete button in new-mode ... */
+
   obj = [self object];
-  return ![self isInNewMode] && ![obj isAccount] &&
-         [[obj companyId] intValue] != 10000;
-         /* user = [[self person] owner] */
+  
+  if ([self isCompanyIdRoot:[obj companyId]])
+    return NO; /* forbid deletion of root account */
+  
+  return ![obj isAccount];
+  /* user = [[self person] owner] */
 }
 
 - (BOOL)isOwnerLoggedInOrNew {
-  id   myAccount  = [[self session] activeAccount];
-  id   accountId  = [myAccount valueForKey:@"companyId"];
-
-  return ([accountId isEqual:[[self object] valueForKey:@"ownerId"]] ||
-          [self isInNewMode]);
+  NSNumber *accountId;
+  
+  if ([self isInNewMode])
+    return YES;
+  
+  accountId = [[[self session] activeAccount] valueForKey:@"companyId"];
+  return [accountId isEqual:[[self object] valueForKey:@"ownerId"]];
 }
 
 - (BOOL)checkConstraintsForSave {
@@ -175,13 +188,13 @@
   error  = [NSMutableString stringWithCapacity:128];
   lname  = [[self person] valueForKey:@"name"];
   
-  if (lname == nil || ![lname isNotNull] || [lname length] == 0)
+  if (![lname isNotEmpty])
     [error appendString:[labels valueForKey:@"error_no_name"]];
 
   if ([[self person] birthday] == nil)
     [error appendString:[labels valueForKey:@"error_birthday_format"]];
 
-  if ([error length] > 0) {
+  if ([error isNotEmpty]) {
     [self setErrorString:error];
     return NO;
   }
@@ -205,9 +218,9 @@
   id       result;
 
   result = [super save];
-
+  
   if ([self isAccessRightEnabled]) {
-    if (result && ([self isInNewMode]) && self->limitAccessToCreator) {
+    if (result != nil && ([self isInNewMode]) && self->limitAccessToCreator) {
       OGoSession       *sn;
       SkyAccessManager *manager;
       EOGlobalID *accessGID, *objectGID;
@@ -230,13 +243,13 @@
 
   if (result) {
     if ([self deleteImage] || ([[self data] length] > 0 &&
-			       [[self filePath] length] > 0)) {
+			       [[self filePath] isNotEmpty])) {
       [[self person] setImageData:[self data] filePath:[self filePath]];
     }
     return result;
   }
   
-  if ((key = [self _violatedUniqueKeyName])) {
+  if ((key = [self _violatedUniqueKeyName]) != nil) {
     NSMutableString *str;
     
     str = [[NSMutableString alloc] initWithCapacity:128];
@@ -246,7 +259,7 @@
     [str appendString:@": "];
     [str appendString:[[self labels] valueForKey:key]];
     [self setErrorString:str];
-    [str release];
+    [str release]; str = nil;
     return nil;
   }
   
@@ -257,9 +270,9 @@
 
 - (BOOL)_isKeyViolated:(NSString *)_key {
   static id searchRec = nil;  
-  NSArray   *list     = nil;
-  unsigned  maxCount  = ([self isInNewMode]) ? 0 : 1;
-
+  NSArray   *list;
+  unsigned  maxCount;
+  
   if (searchRec == nil) {
     searchRec = [self runCommand:@"search::newrecord",
                                   @"entity", @"Person", nil];
@@ -275,6 +288,7 @@
                @"maxSearchCount", [NSNumber numberWithInt:2],
                nil];
   
+  maxCount  = [self isInNewMode] ? 0 : 1;
   return ([list count] > maxCount) ? YES : NO;
 }
 
