@@ -65,3 +65,27 @@ function LSWAptEditor_updateMonth(sender) {
   else
     cycleDiv.style.display = "inline";
 }
+
+
+var LSWAptEditor_newContactPanelRef = null;
+
+function LSWAptEditor_newContactPanel(sender) {
+  LSWAptEditor_newContactPanelRef =
+    window.open(sender.href, sender.target,
+		"location=no, menubar=no, status=no, toolbar=no, " +
+		"scrollbars=no, resizable=yes, dependent=yes," +
+		"width=260, height=300");
+  LSWAptEditor_newContactPanelRef.focus();
+  
+  return false;
+}
+
+function LSWAptEditor_addNewContact(newContactId) {
+  var t;
+
+  t = document.getElementById("newCompanyId");
+  t.value = newContactId;
+
+  t = document.getElementById("addNewSubmit");
+  t.click()
+}
