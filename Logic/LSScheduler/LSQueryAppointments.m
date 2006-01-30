@@ -53,11 +53,7 @@
 
 @end
 
-#import <Foundation/Foundation.h>
-#import <GDLAccess/GDLAccess.h>
-#import <EOControl/EOControl.h>
-#import <LSFoundation/LSFoundation.h>
-#include <NGExtensions/NSNull+misc.h>
+#include "common.h"
 
 @implementation LSQueryAppointments
 

@@ -1,3 +1,11 @@
+2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.85
+
+	* LSGetAppointmentsForGlobalIDs.m: minor code cleanups
+
+	* LSQueryAppointments.m: properly include common.h
+
 2006-01-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSDeleteAppointmentCommand.m: properly delete custom properties

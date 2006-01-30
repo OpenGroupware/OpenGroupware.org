@@ -330,10 +330,10 @@ static NSSet *AllListAttrs = nil;
   if ([teamGids count] == 0)
     return nil;
 
-      teamEntity = [[self database] entityNamed:@"Team"];
-      count      = [participantKeys count];
-      objs       = calloc(count + 1, sizeof(id));
-      for (i = 0, count2=0; i < count; i++) {
+  teamEntity = [[self database] entityNamed:@"Team"];
+  count      = [participantKeys count];
+  objs       = calloc(count + 1, sizeof(id));
+  for (i = 0, count2=0; i < count; i++) {
         NSString *key;
 
         key = [participantKeys objectAtIndex:i];
@@ -341,12 +341,12 @@ static NSSet *AllListAttrs = nil;
           objs[count2] = key;
           count2++;
         }
-      }
-      objs[count2] = @"dbStatus"; count2++;
+  }
+  objs[count2] = @"dbStatus"; count2++;
       
-      teamAttrs = [NSArray arrayWithObjects:objs count:count2];
-      if (objs != NULL) free(objs);
-      
+  teamAttrs = [NSArray arrayWithObjects:objs count:count2];
+  if (objs != NULL) free(objs);
+  
   return LSRunCommandV(_context, @"team", @"get-by-globalid",
 		       @"gids",       teamGids,
 		       @"groupBy",    @"globalID",
@@ -601,7 +601,7 @@ static NSSet *AllListAttrs = nil;
     else
       teamGids = nil;
     
-    if ([personGids count] > 0) {
+    if ([personGids isNotEmpty]) {
       EOEntity *personEntity; 
       NSArray  *personAttrs;
       unsigned i, count, count2;
@@ -609,7 +609,7 @@ static NSSet *AllListAttrs = nil;
       
       personEntity = [[self database] entityNamed:@"Person"];
       count        = [participantKeys count];
-      objs         = calloc(count + 1, sizeof(id));
+      objs         = calloc(count + 2, sizeof(id));
       
       for (i = 0, count2 = 0; i < count; i++) {
         NSString *key;
