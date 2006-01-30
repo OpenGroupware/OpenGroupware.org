@@ -94,7 +94,7 @@
 }
 
 - (void)setAction:(NSString *)_action {
-  ASSIGN(self->action, _action);
+  ASSIGNCOPY(self->action, _action);
 }
 - (NSString *)action {
   return self->action;
@@ -102,7 +102,7 @@
 
 - (void)setList:(NSArray *)_list {
   if ((id)self->selectedItems == (id)_list) {
-    RELEASE(self->list); self->list = nil;
+    [self->list release]; self->list = nil;
     self->list = [_list copy];
   }
   else
@@ -120,7 +120,7 @@
 }
 
 - (void)setPopUpValueKey:(NSString *)_key {
-  ASSIGN(self->popUpValueKey, _key);
+  ASSIGNCOPY(self->popUpValueKey, _key);
 }
 - (NSString *)popUpValueKey {
   return self->popUpValueKey;
@@ -177,7 +177,7 @@
 }
 
 - (void)setItemTemplate:(NSString *)_template {
-  ASSIGN(self->itemTemplate,_template);
+  ASSIGNCOPY(self->itemTemplate,_template);
 }
 - (NSString *)itemTemplate {
   return self->itemTemplate;
@@ -217,7 +217,7 @@
 }
 
 - (void)setNilString:(NSString *)_str {
-  ASSIGN(self->nilString, _str);
+  ASSIGNCOPY(self->nilString, _str);
 }
 - (NSString *)nilString {
   return (self->nilString != nil) ? self->nilString : @"no object";
@@ -252,7 +252,7 @@
 /* complex accessors */
 
 - (NSArray *)rowList {
-  int            rows, i;
+  unsigned       rows, i;
   NSMutableArray *rowList;
   
   rows    = [self _rows];
@@ -265,7 +265,7 @@
 
 - (NSArray *)columnList {
   NSMutableArray *columnList;
-  int i;
+  unsigned i;
   
   columnList = [NSMutableArray arrayWithCapacity:self->columns];
   for (i = 0; i < self->columns; i++)
@@ -286,7 +286,7 @@
   
   result = [NSMutableString stringWithCapacity:128];
   if ((s = [self->attribute objectForKey:@"prefix"])) [result appendString:s];
-  if ((s = [self _getValue]))                         [result appendString:s];
+  if ((s = [self _getValue]) != nil)                  [result appendString:s];
   if ((s = [self->attribute objectForKey:@"suffix"])) [result appendString:s];
   return (NSString *)result;
 }
@@ -320,14 +320,14 @@
   }
 #if DEBUG
   else
-    NSLog(@"Warning: SkyListView list has changed");
+    [self debugWithFormat:@"SkyListView list has changed"];
 #endif
 }
 
 - (BOOL)isChecked {
-  id myItem = [self _item];
-
-  if (myItem == nil) return YES;
+  id myItem;
+  
+  if ((myItem = [self _item]) == nil) return YES;
 
   return (self->selectInverse)
     ? ![self->selectedItems containsObject:[self _item]]
@@ -345,12 +345,12 @@
   }
 }
 - (NSString *)popUpSelection {
-  NSString *sel = nil;
+  NSString *sel;
 
   sel = [[self _item] valueForKey:self->popUpValueKey];
-  if ((![sel isNotNull]) && [self->popUpList count] > 0)
+  if ((![sel isNotNull]) && [self->popUpList isNotEmpty])
     sel = [self->popUpList objectAtIndex:0];
-
+  
   return sel;
 }
 
@@ -365,39 +365,39 @@
 }
 
 - (void)setIsEmptyChecked:(BOOL)_flag {
-  if (_flag == YES)
+  if (_flag)
     [self->selectedItems removeAllObjects];
 }
 - (BOOL)isEmptyChecked {
-  return ([self->selectedItems count] == 0);
+  return [self->selectedItems isNotEmpty] ? NO : YES;
 }
 
 - (BOOL)isItalicStyle {
-  NSString *key = [self->attribute objectForKey:@"key"];
-
+  NSString *key;
+  
+  key = [self->attribute objectForKey:@"key"];
   return ([[key componentsSeparatedByString:@"."] count] > 1) ? YES : NO;
 }
 
 /* PrivateMethodes */
 
 - (int)_rows {
-  int r = [self->list count] / self->columns;
+  int r;
 
+  r = [self->list count] / self->columns;
   return (([self->list count] % self->columns) > 0) ? r+1 : r;
 }
 - (int)_itemIndex {
-  int r   = [self->row    intValue];
-  int c   = [self->column intValue];
-
+  int r = [self->row    intValue];
+  int c = [self->column intValue];
+  
   return (self->sortHorizontal) ? r*self->columns+c : c*[self _rows]+r;
 }
 - (int)nilColSpan {
-  int attrCount = 0;
+  int attrCount;
 
-  if ((self->attributes != nil) && ([self->attributes count] > 0))
-    attrCount = [self->attributes count];
-  else
-    attrCount = 1;
+  attrCount = [self->attributes isNotEmpty]
+    ? [self->attributes count] : 1;
   
   return (self->columns * attrCount + self->columns - 1);
 }
@@ -418,35 +418,36 @@
   obj     = [self _item];
   key     = [self->attribute valueForKey:@"key"];
 
-  if (key && [key rangeOfString:@"."].length > 0) {
+  if (key != nil && [key rangeOfString:@"."].length > 0) {
     keyList = [key componentsSeparatedByString:@"."];
     keyEnum = [keyList objectEnumerator];
-
-    while ((key = [keyEnum nextObject])) {
-      obj = [obj valueForKey:key];
     
+    while ((key = [keyEnum nextObject]) != nil) {
+      obj = [obj valueForKey:key]; // TODO: intended sideeffect on fallthrough?
+      
       if ([obj isKindOfClass:[NSArray class]]) {
-        NSMutableString *result = [NSMutableString stringWithCapacity:64];
-        int             i, cnt; 
-
+        NSMutableString *result;
+        unsigned        i, cnt; 
+	
+	result = [NSMutableString stringWithCapacity:64];
         key = [keyEnum nextObject];
-
+	
         for (i = 0, cnt = [(NSArray *)obj count]; i < cnt; i++) {
           NSString *s;
 
-          if ((s = [[obj objectAtIndex:i] valueForKey:key]))
+          if ([(s = [[obj objectAtIndex:i] valueForKey:key]) isNotNull])
             [result appendString:s];
           
           if (i < cnt - 1) {
             s = [self->attribute valueForKey:@"separator"];
-            if (s) [result appendString:s];
+            if (s != nil) [result appendString:s];
           }
         }
         return result;
       }
     }
   }
-  if (key && [key rangeOfString:@","].length > 0) {
+  if (key != nil && [key rangeOfString:@","].length > 0) {
     NSMutableString *result;
     BOOL first = YES;
 
@@ -455,26 +456,26 @@
     keyEnum = [keyList objectEnumerator];
 
     while ((key = [keyEnum nextObject])) {
-      NSString *s = [obj valueForKey:key];
+      NSString *s;
 
-      if (s == nil)
+      if (![(s = [obj valueForKey:key]) isNotNull])
         s = @"";
-
-      if (!first && [s length] > 0) {
+      
+      if (!first && [s isNotEmpty]) {
         NSString *s;
         
-        if ((s = [self->attribute valueForKey:@"separator"]))
+        if ((s = [self->attribute valueForKey:@"separator"]) != nil)
           [result appendString:s];
       }
       else
         first = NO;
       
-      if (s) [result appendString:s];
+      if (s != nil) [result appendString:s];
     }
     return result;
   }
   
-  if (key)
+  if (key != nil)
     obj = [obj valueForKey:key];
 
   if ((tmp = [self->attribute valueForKey:@"binding"]) != nil) {
@@ -487,11 +488,10 @@
       result = [parent performSelector:sel];
       [self setValue:[self item] forBinding:@"item"];
     }
-    return (result) ? result : @"";
+    return (result != nil) ? result : @"";
   }
-  if ([obj respondsToSelector:@selector(stringValue)])
-    return [obj stringValue];
-  return @"";
+  
+  return [obj stringValue];
 }
 
 - (NSString *)_createId {
@@ -500,15 +500,17 @@
   cid++;
   return [NSString stringWithFormat:@"%d", cid];
 #else
-  return [NSString stringWithFormat:@"%d", random()];
+  char buf[16];
+  snprintf(buf, sizeof(buf), "%d", (int)random());
+  return [NSString stringWithCString:buf];
 #endif
 }
 
 - (BOOL)hasAttributes {
-  return !((self->attributes == nil) || ([self->attributes count] == 0));
+  return !((self->attributes == nil) || ![self->attributes isNotEmpty]);
 };
 - (BOOL)hasTemplate {
-  return (self->itemTemplate != nil && ([self->itemTemplate length] > 0));
+  return [self->itemTemplate isNotEmpty];
 }
 
 @end /* SkyListView */

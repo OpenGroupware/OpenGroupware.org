@@ -1,3 +1,7 @@
+2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyListView.m: code cleanups, improved NSNull stability (v5.3.123)
+
 2006-01-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWObjectEditor.m: consolidated object property access in separate
