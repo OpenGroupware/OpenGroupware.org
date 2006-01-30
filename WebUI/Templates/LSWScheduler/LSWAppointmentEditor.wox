@@ -100,12 +100,14 @@
               <td>
                 <nobr>
                   <input type="submit" var:action="save" class="button_narrow"
+                         name="apt_save"
                          var:value="labels.saveButtonLabel"
                          var:title="labels.saveButtonLabel_title" />
           
                   <var:if condition="isMailEnabled">
                     <input type="submit" var:action="saveAndSendMail"
                            class="button_narrow"
+                           name="apt_saveAndSend"
                            var:value="labels.saveAndMailButtonLabel"
                            var:title="labels.saveAndMailButtonLabel_title" />
                   </var:if>
@@ -189,6 +191,7 @@
                    const:searchLabel="searchParticipants"
                    const:selectionLabel="addParticipants"
                    const:viewHeadLine="0"
+                   const:newContactJSCB="LSWAptEditor_addNewContact"
                    isClicked="isParticipantsClicked" />
               </var:if>
               <var:if condition=

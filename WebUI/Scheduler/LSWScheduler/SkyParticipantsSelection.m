@@ -74,8 +74,8 @@ static BOOL hasLSWEnterprises = NO;
 - (void)dealloc {
   [self->removedParticipants release];
   [self->addedParticipants   release];
-  [self->headLineLabel  release];
-  [self->selectionLabel release];
+  [self->headLineLabel       release];
+  [self->selectionLabel      release];
   [super dealloc];
 }
 

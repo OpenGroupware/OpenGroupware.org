@@ -194,8 +194,6 @@ static NSString *qCreateAddrType = @"mailing";
   if ((em1 = [self->values objectForKey:@"email1"]) == nil)
     em1 = (id)[NSNull null];
 
-  [self logWithFormat:@"email1: %@", em1];
-  
   /* create record */
   
   eo = [self runCommand:@"person::new",
@@ -251,6 +249,7 @@ static NSString *qCreateAddrType = @"mailing";
 }
 
 - (id)saveAction {
+  WOResponse  *r;
   NSException *error;
   id eo;
   
@@ -262,7 +261,27 @@ static NSString *qCreateAddrType = @"mailing";
   
   eo = [self createPersonRecord];
   [self->values removeAllObjects]; // clear editor
-  return self;
+
+  r = [[self context] response];
+  
+  [r setHeader:@"text/html" forKey:@"content-type"];
+
+  [r appendContentString:@"<html><head>"];
+  [r appendContentString:@"<script language='JavaScript'>\n"];
+
+  /* close panel window */
+  [r appendContentString:@"window.close()\n"];
+  
+  /* refresh apt editor with new participant */
+  
+  // TODO: make this configurable to allow usage of the panel in different
+  //       contexts
+  [r appendContentString:@"opener.LSWAptEditor_addNewContact("];
+  [r appendContentString:[[eo valueForKey:@"companyId"] stringValue]];
+  [r appendContentString:@");\n"];
+  
+  [r appendContentString:@"</script></head><body></body></html>"];
+  return r;
 }
 
 @end /* OGoPersonQCreatePanel */

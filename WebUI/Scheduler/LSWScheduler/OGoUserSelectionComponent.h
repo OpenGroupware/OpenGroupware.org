@@ -63,6 +63,8 @@
   id       item;
 
   NSString *searchLabel;
+  NSString *newContactJSCB;
+  NSString *newCompanyId;
 
   struct {
     int showExtended:1;

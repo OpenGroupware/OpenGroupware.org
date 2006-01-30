@@ -61,6 +61,8 @@ static NSArray  *emptyArray          = nil;
 }
 
 - (void)dealloc {
+  [self->newContactJSCB      release];
+  [self->newCompanyId        release];
   [self->searchText          release];
   [self->searchTeam          release];
   [self->participants        release];
@@ -212,6 +214,20 @@ static NSArray  *emptyArray          = nil;
 - (BOOL)hasParticipantSelection {
   return ([self->participants count] + [self->resultList count]) > 0 
     ? YES : NO;
+}
+
+- (void)setNewContactJSCB:(NSString *)_str {
+  ASSIGNCOPY(self->newContactJSCB, _str);
+}
+- (NSString *)newContactJSCB {
+  return self->newContactJSCB;
+}
+
+- (void)setNewCompanyId:(NSString *)_str {
+  ASSIGNCOPY(self->newCompanyId, _str);
+}
+- (NSString *)newCompanyId {
+  return self->newCompanyId;
 }
 
 /* commands */
@@ -524,7 +540,7 @@ static NSArray  *emptyArray          = nil;
     if ([self->participants containsObject:obj])
       continue;
     
-    m = [obj mutableCopy]; // make it mutable (why is this necessary???)
+    m = [obj mutableCopy]; // make it mutable (TODO: why is this necessary???)
     [self->resultList addObject:m];
     [m release];
   }
@@ -618,6 +634,31 @@ static NSArray  *emptyArray          = nil;
 - (id)searchAction {
   if (debugOn) [self debugWithFormat:@"0x%08X did click search ...", self];
   self->uscFlags.isClicked = 1;
+  return nil;
+}
+
+- (id)addNew {
+  EOKeyGlobalID *gid;
+  NSNumber     *pkey;
+  NSDictionary *result;
+  
+  if (![(pkey = (id)[self newCompanyId]) isNotEmpty])
+    return nil;
+  
+  /* make a global-id */
+  
+  pkey = [NSNumber numberWithUnsignedInt:[pkey unsignedIntValue]];
+  gid = [EOKeyGlobalID globalIDWithEntityName:@"Person" keys:&pkey keyCount:1
+		       zone:NULL];
+
+  /* fetch person info */
+  
+  result = [self _fetchPersonNameAttributesGroupedByGlobalIDs:
+		   [NSArray arrayWithObject:gid]];
+
+  /* add to set of selected participants */
+  
+  [self->participants addObject:[result objectForKey:gid]];
   return nil;
 }
 

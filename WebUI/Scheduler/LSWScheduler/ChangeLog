@@ -1,3 +1,8 @@
+2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoUserSelectionComponent.m: added code to refresh the selection if
+	  a new contact was created in the quick panel (v5.3.98)
+
 2006-01-28  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWAppointmentEditor.m: fixed an incorrect warning about a missing

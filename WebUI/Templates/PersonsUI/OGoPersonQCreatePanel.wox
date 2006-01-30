@@ -30,7 +30,7 @@
       <table width="100%" border="0" cellpadding="4" cellspacing="0">
         <tr var:bgcolor="config.colors_mainButtonRow">
           <td colspan="2"><OGo:font>
-            <OGo:label key="qcreate_panel_title"/>
+            <b><OGo:label key="qcreate_panel_title"/></b>
           </OGo:font></td>
         </tr>
         <tr><td colspan="2">
@@ -77,8 +77,14 @@
               <td>
                 <nobr>
                   <input type="submit" var:action="save" class="button_narrow"
+                         name="saveButton"
                          var:value="labels.saveButtonLabel"
-                         var:title="labels.saveButtonLabel_title" />
+                         var:title="labels.saveButtonLabel" />
+                  <input type="button" class="button_narrow"
+                         name="cancelButton"
+                         var:value="labels.cancelButtonLabel"
+                         var:title="labels.cancelButtonLabel"
+                         onclick="window.close()" />
                 </nobr>
               </td>
             </tr>
