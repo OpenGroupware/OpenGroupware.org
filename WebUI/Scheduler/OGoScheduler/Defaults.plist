@@ -160,4 +160,20 @@
     team.isTeam, team.description,
     person.name, person.firstname
   );
+  
+  /*
+    those are keys mapped to the bindings dictionary available for formletters
+   */
+  schedulerformletter_personkeys = (
+    emailAlias, office, assistantName, number, sex, keywords,
+    contactId, salutation, nameAffix, firstname, companyId,
+    anniversary, priority, occupation, partnerName, description,
+    degree, middlename, objectVersion, freebusyUrl, department,
+    birthday, bossName, name, url, imAddress, nameTitle, dirServer
+  );
+  schedulerformletter_aptkeys = (
+    startDate, endDate, resourceNames, keywords, title, cycleEndDate,
+    location, type, dateId, objectVersion, aptType, busyType, fbtype,
+    ownerId
+  );
 }

@@ -1,3 +1,7 @@
+2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* started OGoAptFormLetter class (v5.3.45)
+
 2005-10-05  Olivier Hallot  <olivier@ig.com.br>
 
 	* WODirectAction+SchedulerViews.m: use "todays" month/week/day if those

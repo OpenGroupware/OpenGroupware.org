@@ -18,6 +18,7 @@ OGoScheduler_OBJC_FILES = \
 	SkySchedulerSelectPopUp.m	\
 	WODirectAction+SchedulerViews.m	\
 	OGoAptConflictsList.m		\
+	OGoAptFormLetter.m		\
 
 OGoScheduler_RESOURCE_FILES += Defaults.plist Version
 

@@ -26,6 +26,7 @@
       { name = SkySchedulerConflictPage;   },
       { name = SkyAptDeletePanel;          },
       { name = OGoAptConflictsList;        },
+      { name = OGoAptFormLetter;           },
     );
     
     WOComponents = (
@@ -92,16 +93,6 @@
         type      = "eo-gid/appointmentresource";
         component = SkyAptResourceViewer; 
       },
-//      { 
-//        verb      = new; 
-//        type      = "eo/event"; 
-//        component = SkyEventEditor; 
-//      },
-//      { 
-//        verb      = edit; 
-//        type      = "eo/event"; 
-//        component = SkyEventEditor; 
-//      },
     );
   };
 }
