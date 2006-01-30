@@ -100,7 +100,7 @@ static NSArray  *extAttrSpec = nil;
   teamAttrNames   = [[ud arrayForKey:@"scheduler_viewer_teamattrnames"]  copy];
   personAttrNames =[[ud arrayForKey:@"scheduler_viewer_personattrnames"] copy];
   
-  extAttrSpec = [[ud arrayForKey:@"OGoPrivateExtendedAptAttributes"] copy];
+  extAttrSpec = [[ud arrayForKey:@"OGoExtendedAptAttributes"] copy];
   if ([extAttrSpec isNotEmpty])
     NSLog(@"Note(LSWAppointmentViewer): extended apt attrs are configured.");
   else

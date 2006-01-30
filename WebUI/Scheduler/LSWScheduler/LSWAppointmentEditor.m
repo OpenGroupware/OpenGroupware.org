@@ -127,7 +127,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   if (eoDateType == nil)
     eoDateType = [[NGMimeType mimeType:@"eo" subType:@"date"] copy];
 
-  extAttrSpec = [[ud arrayForKey:@"OGoPrivateExtendedAptAttributes"] copy];
+  extAttrSpec = [[ud arrayForKey:@"OGoExtendedAptAttributes"] copy];
   if ([extAttrSpec isNotEmpty])
     NSLog(@"Note(LSWAppointmentEditor): extended apt attrs are configured.");
   else

@@ -147,7 +147,7 @@
   
   scheduler_default_readaccessteam = "all intranet";
 
-  OGoPrivateExtendedAptAttributes = (
+  OGoExtendedAptAttributes = (
    /* eg:
     { key = "EMail";    type = 3; },
     { key = "Color";    },

@@ -1,5 +1,9 @@
 2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
 
+	* Defaults.plist, LSWAppointmentViewer.m, LSWAppointmentEditor.m:
+	  changed default name from 'OGoPrivateExtendedAptAttributes' to
+	  'OGoExtendedAptAttributes' as requested in OGo bug #1673 (v5.3.99)
+
 	* OGoUserSelectionComponent.m: added code to refresh the selection if
 	  a new contact was created in the quick panel (v5.3.98)
 
