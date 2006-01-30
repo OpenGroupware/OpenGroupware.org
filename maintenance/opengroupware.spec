@@ -1276,6 +1276,8 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/bin/ogo-project-export
 %{prefix}/bin/ogo-project-import
 %{prefix}/bin/ogo-project-list
+%{prefix}/bin/ogo-prop-list
+%{prefix}/bin/ogo-prop-set
 %{prefix}/bin/ogo-runcmd
 %{prefix}/bin/ogo-vcard-get
 %{prefix}/bin/ogo-vcard-put
@@ -1485,6 +1487,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ********************************* changelog *************************
 %changelog
+* Mon Jan 30 2006 Frank Reppin <frank@opengroupware.org>
+- added ogo-prop-list/ogo-prop-set to tools
 * Fri Oct 30 2005 Frank Reppin <frank@opengroupware.org>
 - templates/GroupsUI
 * Fri Aug 26 2005 Frank Reppin <frank@opengroupware.org>
