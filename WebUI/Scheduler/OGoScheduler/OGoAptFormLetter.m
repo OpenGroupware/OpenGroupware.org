@@ -21,6 +21,14 @@
 
 #import <NGObjWeb/WODirectAction.h>
 
+/*
+  OGoAptFormLetter
+  
+  This is a direct action which renders a textfile from an appointment for use
+  in serial letters.
+*/
+
+@class NSString;
 @class EOGlobalID;
 @class LSCommandContext;
 
@@ -28,6 +36,7 @@
 {
   LSCommandContext *cmdctx;
   EOGlobalID *gid;
+  NSString   *formLetterType;
 }
 
 @end
@@ -60,9 +69,60 @@ static NSArray *aptKeys    = nil;
 }
 
 - (void)dealloc {
+  [self->formLetterType release];
   [self->cmdctx release];
   [self->gid    release];
   [super dealloc];
+}
+
+
+/* definition */
+
+- (NSDictionary *)formLetterDefinitionForType:(NSString *)_type {
+  static NSDictionary *def = nil;
+  
+  if (def == nil) {
+    def = [[[NSUserDefaults standardUserDefaults] 
+	     dictionaryForKey:@"OGoSchedulerFormLetterTypes"] copy];
+    if (def == nil)
+      [self errorWithFormat:@"did not find OGoSchedulerFormLetterTypes!"];
+  }
+  return [_type isNotNull] ? [def objectForKey:_type] : nil;
+}
+
+- (NSDictionary *)formLetterDefinition {
+  return [self formLetterDefinitionForType:self->formLetterType];
+}
+
+- (NSString *)fieldSeparator {
+  return [[self formLetterDefinition] valueForKey:@"fieldSeparator"];
+}
+- (NSString *)lineSeparator {
+  return [[self formLetterDefinition] valueForKey:@"lineSeparator"];
+}
+- (NSString *)quoteFields {
+  return [[self formLetterDefinition] valueForKey:@"quoteFields"];
+}
+
+- (id)preamble {
+  return [[self formLetterDefinition] valueForKey:@"preamble"];
+}
+- (id)postamble {
+  return [[self formLetterDefinition] valueForKey:@"postamble"];
+}
+
+- (id)linePattern {
+  return [[self formLetterDefinition] valueForKey:@"line"];
+}
+
+- (id)dateFormat {
+  id s;
+  
+  s = [[self formLetterDefinition] valueForKey:@"dateformat"];
+  if ([s isNotEmpty])
+    return s;
+  
+  return @"%Y-%m-%d %H:%M";
 }
 
 
@@ -79,7 +139,23 @@ static NSArray *aptKeys    = nil;
 /* derive binding dictionary from a record */
 
 - (NSString *)calendarFormatForKey:(NSString *)_key {
-  return @"%Y-%m-%d %H:%M";
+  id df;
+  
+  df = [self dateFormat];
+  if ([df isKindOfClass:[NSDictionary class]]) {
+    NSString *s;
+    
+    if ((s = [df objectForKey:_key]) != nil)
+      return s;
+    if ((s = [df objectForKey:@"*"]) != nil)
+      return s;
+    if ((s = [df objectForKey:@""]) != nil)
+      return s;
+    
+    return @"%Y-%m-%d %H:%M";
+  }
+
+  return [df stringValue];
 }
 
 - (NSString *)stringValueForObject:(id)_obj ofKey:(NSString *)_key {
@@ -156,14 +232,59 @@ static NSArray *aptKeys    = nil;
   return @"text/plain";
 }
 
-- (void)appendPreambleToResponse:(WOResponse *)_r {
-}
-- (void)appendPostambleToResponse:(WOResponse *)_r {
-}
+- (void)appendLine:(id)_line withBindings:(NSDictionary *)_bindings
+  toResponse:(WOResponse *)_r
+{
+  /* Note: be careful with trimming spaces, they could be intended in CSV! */
+  NSString *s;
 
-- (void)appendRecord:(NSDictionary *)_bindings toResponse:(WOResponse *)_r {
-  [_r appendContentString:[_bindings description]];
-  [_r appendContentString:@"\n"];
+  if (![_line isNotNull])
+    return;
+  
+  if ([_line isKindOfClass:[NSArray class]]) {
+    /* special support for CSV */
+    unsigned i, count;
+    NSString *fs, *quote;
+    
+    fs    = [self fieldSeparator];
+    quote = [self quoteFields];
+    
+    for (i = 0, count = [_line count]; i < count; i++) {
+      NSString *pat;
+      
+      if (i > 0 && fs != nil)
+	[_r appendContentString:fs];
+      
+      pat = [_line objectAtIndex:i];
+      if ([_bindings isNotEmpty]) {
+	pat = [pat stringByReplacingVariablesWithBindings:_bindings
+		   stringForUnknownBindings:@""];
+      }
+
+      if (quote != nil) /* open quote */
+	[_r appendContentString:quote];
+      
+      if (pat != nil) [_r appendContentString:pat];
+      
+      if (quote != nil) /* close quote */
+	[_r appendContentString:quote];
+    }
+  }
+  else {
+    _line = [_line stringValue];
+    
+    if ([_bindings isNotEmpty]) {
+      // TODO: we might need to escape the bindings?
+      _line = [_line stringByReplacingVariablesWithBindings:_bindings
+		     stringForUnknownBindings:@""];
+    }
+    [_r appendContentString:_line];
+  }
+  
+  /* finish record */
+  
+  if ((s = [self lineSeparator]) != nil)
+    [_r appendContentString:s];
 }
 
 - (void)appendAttendees:(NSArray *)_contacts ofAppointment:(id)_aptEO
@@ -197,7 +318,7 @@ static NSArray *aptKeys    = nil;
     [self applyBindingsForCompany:companyEO
 	  ofAppointment:_aptEO
 	  onDictionary:bindings];
-    [self appendRecord:bindings toResponse:_r];
+    [self appendLine:[self linePattern] withBindings:bindings toResponse:_r];
     
     [bindings removeAllObjects];
   }
@@ -222,6 +343,13 @@ static NSArray *aptKeys    = nil;
     return nil;
   }
   
+  self->formLetterType =
+    [[[[self context] request] formValueForKey:@"type"] copy];
+  if (![self->formLetterType isNotEmpty]) {
+    [self errorWithFormat:@"missing formletter 'type' parameter."];
+    return nil;
+  }
+  
   s = [[[self context] request] formValueForKey:@"oid"];
   self->gid = [[[self->cmdctx typeManager] globalIDForPrimaryKey:s] retain];
   if (self->gid == nil) {
@@ -239,11 +367,13 @@ static NSArray *aptKeys    = nil;
   r = [[self context] response];
   [r setHeader:[self formLetterContentType] forKey:@"content-type"];
   
-  [self appendPreambleToResponse:r];
+  [self appendLine:[self preamble] withBindings:nil toResponse:r];
+  
   [self appendAttendees:[apt valueForKey:@"participants"] 
 	ofAppointment:apt
 	toResponse:r];
-  [self appendPostambleToResponse:r];
+  
+  [self appendLine:[self postamble] withBindings:nil toResponse:r];
   
   return r;
 }

@@ -169,11 +169,66 @@
     contactId, salutation, nameAffix, firstname, companyId,
     anniversary, priority, occupation, partnerName, description,
     degree, middlename, objectVersion, freebusyUrl, department,
-    birthday, bossName, name, url, imAddress, nameTitle, dirServer
+    birthday, bossName, name, url, imAddress, nameTitle, dirServer,
+    email1, email2
   );
   schedulerformletter_aptkeys = (
     startDate, endDate, resourceNames, keywords, title, cycleEndDate,
     location, type, dateId, objectVersion, aptType, busyType, fbtype,
     ownerId
   );
+
+  OGoSchedulerFormLetterTypes = {
+    OOo = {
+      fieldSeparator = "\t";
+      lineSeparator  = "\n";
+      quoteFields    = "\"";
+      /* dateformat     = "%d.%m.%Y"; */
+      preamble = (
+        "Title", "First Name", "Last Name", "Company Name",
+        "Address Line 1", "Address Line 2",
+        "City", "State", "ZIP", "Country",
+        "Telephone private", "Telephone business",
+        "E-mail Address", "Gender",
+
+        "Appointment"
+      );
+      line = (
+        "$salutation$", "$firstname$", "$name$", "",
+        "$mailing_name1$", "$mailing_name2$",
+        "$city$", "$state$", "$ZIP$", "$Country$",
+        "", "",
+        "$email1$", "$sex$",
+        
+        "$title$ - $location$ ($startDate$ - $endDate$)"
+      );
+    };
+
+    FrameMaker = {
+      lineSeparator = "";
+      line = "$mailing_name1$\n$mailing_name2$\n$mailing_name3$\n$degree$ $firstname$ $name$\n\n$mailing_street$\n$mailing_zip$ $mailing_city$\n\n\n\n\n\n$salutation$ $name$,\n\n";
+    };
+
+    WinWord = {
+      fieldSeparator = ";";
+      lineSeparator  = "\n";
+      line = (
+        "$salutation$",
+        "$gender$",
+        "$degree$",
+        "$firstname$",
+        "$name$",
+        "$mailing_name1$",
+        "$mailing_name2$",
+        "$mailing_name3$",
+        "$mailing_street$",
+        "$mailing_zip$",
+        "$mailing_city$",
+        "",
+        "$email1$",
+
+        "$title$ - $location$ ($startDate$ - $endDate$)"
+      );
+    };
+  };
 }

@@ -1,3 +1,11 @@
+2006-01-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.46
+
+	* OGoAptFormLetter.m: finished pattern replacer
+
+	* Defaults.plist: added example form letter definitions
+
 2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* started OGoAptFormLetter class (v5.3.45)
