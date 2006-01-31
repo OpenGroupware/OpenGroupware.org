@@ -83,6 +83,9 @@
 
 - (id)search;
 
+- (id)fetchNewContactEO;
+- (id)addNew;
+
 @end
 
 #endif /* __OGoUserSelectionComponent_H__ */

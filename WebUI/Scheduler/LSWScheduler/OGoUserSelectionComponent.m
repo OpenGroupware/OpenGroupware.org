@@ -637,28 +637,38 @@ static NSArray  *emptyArray          = nil;
   return nil;
 }
 
-- (id)addNew {
+- (id)fetchNewContactEO {
   EOKeyGlobalID *gid;
   NSNumber     *pkey;
   NSDictionary *result;
-  
-  if (![(pkey = (id)[self newCompanyId]) isNotEmpty])
+
+  if (![(pkey = (id)[self newCompanyId]) isNotEmpty]) {
+    [self errorWithFormat:@"called addNew action w/o a company-id?"];
     return nil;
+  }
   
   /* make a global-id */
   
   pkey = [NSNumber numberWithUnsignedInt:[pkey unsignedIntValue]];
   gid = [EOKeyGlobalID globalIDWithEntityName:@"Person" keys:&pkey keyCount:1
 		       zone:NULL];
-
+  
   /* fetch person info */
   
   result = [self _fetchPersonNameAttributesGroupedByGlobalIDs:
 		   [NSArray arrayWithObject:gid]];
+  return [result objectForKey:gid];
+}
 
+- (id)addNew {
+  NSDictionary *result;
+  
+  if ((result = [self fetchNewContactEO]) == nil)
+    return nil;
+  
   /* add to set of selected participants */
   
-  [self->participants addObject:[result objectForKey:gid]];
+  [self->participants addObject:result];
   return nil;
 }
 

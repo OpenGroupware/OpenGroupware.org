@@ -1,5 +1,12 @@
 2006-01-31  Helge Hess  <helge.hess@opengroupware.org>
 
+	* v5.3.101
+
+	* OGoAttendeeSelection.m: properly add newly created contacts to
+	  attendee list
+
+	* OGoUserSelectionComponent.m: code cleanups
+
 	* LSWAppointmentViewer.m: properly generate links to formletter
 	  download action if one was defined (v5.3.100)
 

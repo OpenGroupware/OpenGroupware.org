@@ -150,7 +150,7 @@
     role = [self->roleMap objectForKey:[part valueForKey:@"companyId"]];
     if ([role isNotEmpty] && ![role hasPrefix:@"-"])
       continue;
-
+    
     /* abuse self->resultList as a temporary delete-list */
     [self->resultList addObject:part];
   }
@@ -170,6 +170,24 @@
   [self applyAddDelActionsInRoleMap];
   
   return [super search];
+}
+
+- (id)addNew {
+  NSDictionary *result;
+  
+  /* process result-list before it gets replaced */ // TODO: required?
+  [self applyAddDelActionsInRoleMap];
+
+  /* process new contact */
+  if ((result = [self fetchNewContactEO]) == nil)
+    return nil;
+  
+  /* add to set of selected participants */
+  [self->participants addObject:result];
+  [self->roleMap setObject:@"REQ-PARTICIPANT" 
+                 forKey:[result valueForKey:@"companyId"]];
+  
+  return nil;
 }
 
 @end /* OGoAttendeeSelection */
