@@ -1,5 +1,7 @@
 2006-01-31  Helge Hess  <helge.hess@opengroupware.org>
 
+	* Defaults.plist: fixed addresses in OOo formletter format (v5.3.48)
+
 	* OGoAptFormLetter.m: adjust timezone of date fields to the session
 	  timezone, localize sex/salutation fields using PersonsUI.strings,
 	  sort result set by lastname/name (v5.3.47)

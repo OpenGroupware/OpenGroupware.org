@@ -196,7 +196,8 @@
       line = (
         "$salutation$", "$firstname$", "$name$", "",
         "$mailing_name1$", "$mailing_name2$",
-        "$city$", "$state$", "$ZIP$", "$Country$",
+        "$mailing_city$", "$mailing_state$", "$mailing_zip$",
+        "$mailing_country$",
         "", "",
         "$email1$", "$sex$",
         
