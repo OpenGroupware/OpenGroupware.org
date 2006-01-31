@@ -24,20 +24,20 @@
            var:action="searchAction" class="button_narrow" />
 
     <var:if condition="session.isJavaScriptEnabled">
-        <var:if condition="newContactJSCB.isNotEmpty">
+      <var:if condition="newContactJSCB.isNotEmpty">
           <span style="display: none;">
             <input id="addNewSubmit" name="addNewSubmit"
                    type="submit" value="1" var:action="addNew" />
             <input id="newCompanyId" name="newCompanyId"
                    var:value="newCompanyId" />
           </span>
-        
+
           <a class="button_narrow" id="newContactButton"
              actionClass="OGoPersonQCreatePanel" directActionName="default"
              target="OGoPersonQCreatePanel"
              onclick="LSWAptEditor_newContactPanel(this); return false"
              ><OGo:label key="new" /></a>
-        </var:if>
+      </var:if>
     </var:if>
   </nobr>
 

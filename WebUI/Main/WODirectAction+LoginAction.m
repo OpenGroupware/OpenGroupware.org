@@ -26,12 +26,17 @@
 #include <NGExtensions/NSString+Ext.h>
 #include "common.h"
 
+#if !LIB_FOUNDATION_LIBRARY  
+#  include <NGExtensions/NGPropertyListParser.h>
+#endif
+
 @interface LSCommandContext(LDAPSupport)
 + (BOOL)useLDAPAuthorization;
 @end
 
 @interface OGoSession(ConfigLogin)
 - (BOOL)configureForLSOfficeSession:(OGoContextSession *)_sn;
+- (void)setIsJavaScriptEnabled:(BOOL)_flag;
 @end
 
 @protocol WOComponentRestore
@@ -198,30 +203,27 @@ static int LSAllowSpacesInLogin = -1;
 }
 
 - (void)_applyBrowserConfigurationFromRequest:(WORequest *)req {
-  id           browserConfig;
-  NSEnumerator *keys;
-  NSString     *key;
-  WOSession    *s;
+  id         browserConfig;
+  OGoSession *s;
   
   browserConfig = [req formValueForKey:@"browserconfig"];
-  if ([browserConfig length] == 0)
+  if (![browserConfig isNotEmpty])
     return;
   
+#if LIB_FOUNDATION_LIBRARY  
   browserConfig = [browserConfig propertyList];
-  if (![browserConfig respondsToSelector:@selector(keyEnumerator)])
-    return;
-  
-  s = [self session];
-  keys = [browserConfig keyEnumerator];
-  while ((key = [keys nextObject])) {
-    id value;
-      
-    value = [(NSDictionary *)browserConfig objectForKey:key];
-#if DEBUG
-    [self debugWithFormat:@"browser capability: %@ is %@", key, value];
+#else
+  browserConfig = NGParsePropertyListFromString(browserConfig);
 #endif
-    [s takeValue:value forKey:key];
+  if (![browserConfig respondsToSelector:@selector(keyEnumerator)]) {
+    [self errorWithFormat:@"could not parse browser config string ..."];
+    return;
   }
+  
+  s = (OGoSession *)[self session];
+
+  [s setIsJavaScriptEnabled:
+       [[browserConfig objectForKey:@"isJavaScriptEnabled"] boolValue]];
 }
 
 - (void)_configureUserAgentFromRequest:(WORequest *)req {

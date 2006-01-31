@@ -208,6 +208,7 @@
                    roleMap="roleMap"
                    const:onlyAccounts="0"
                    const:searchLabel="searchParticipants"
+                   const:newContactJSCB="LSWAptEditor_addNewContact"
                    isClicked="isParticipantsClicked" />
               </var:if>
             </td></tr>

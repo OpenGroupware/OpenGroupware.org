@@ -1,3 +1,8 @@
+2006-01-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWScheduler/LSWAppointmentEditor.wox: properly pass the JavaScript
+	  callback to the OGoAttendeeSelection
+
 2006-01-23  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWScheduler/LSWAppointmentViewer.wox: use SkyObjectPropertyViewer

@@ -578,7 +578,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
   self->isJavaScriptEnabled = _flag;
 }
 - (BOOL)isJavaScriptEnabled {
-  return forceJavaScript || self->isJavaScriptEnabled ? YES : NO;
+  return (forceJavaScript || self->isJavaScriptEnabled) ? YES : NO;
 }
 
 /* configuration */
