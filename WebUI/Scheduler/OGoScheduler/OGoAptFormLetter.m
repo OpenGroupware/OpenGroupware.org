@@ -42,6 +42,7 @@
 @end
 
 #include <NGObjWeb/WORequest.h>
+#include <NGObjWeb/WOResourceManager.h>
 #include <LSFoundation/LSFoundation.h>
 #include "common.h"
 
@@ -163,6 +164,7 @@ static NSArray *aptKeys    = nil;
     return @"";
   
   if ([_obj isKindOfClass:[NSDate class]]) {
+    [_obj setTimeZone:[(OGoSession *)[self session] timeZone]];
     return [_obj descriptionWithCalendarFormat:
 		   [self calendarFormatForKey:_key]];
   }
@@ -192,13 +194,20 @@ static NSArray *aptKeys    = nil;
   }
 }
 
+- (WOResourceManager *)resourceManager {
+  return [[[self context] application] resourceManager];
+}
+
 - (void)applyBindingsForCompany:(id)_company ofAppointment:(id)_aptEO
   onDictionary:(NSMutableDictionary *)_md
 {
+  WOResourceManager *rm;
   NSDictionary *d;
   NSEnumerator *e;
   NSString     *key;
   id address;
+  
+  rm = [self resourceManager];
   
   /* company EO */
   
@@ -208,7 +217,20 @@ static NSArray *aptKeys    = nil;
     [_md setObject:[self stringValueForObject:[d objectForKey:key] ofKey:key]
 	 forKey:key];
   }
-
+  
+  /* fixup some localized fields */
+  
+  if ([(key = [_md objectForKey:@"sex"]) isNotEmpty]) {
+    key = [rm stringForKey:key inTableNamed:@"PersonsUI"
+	      withDefaultValue:key languages:[[self session] languages]];
+    [_md setObject:key forKey:@"sex"];
+  }
+  if ([(key = [_md objectForKey:@"salutation"]) isNotEmpty]) {
+    key = [rm stringForKey:key inTableNamed:@"PersonsUI"
+	      withDefaultValue:key languages:[[self session] languages]];
+    [_md setObject:key forKey:@"salutation"];
+  }
+  
   /* addresses */
 
   e = [[_company valueForKey:@"toAddress"] objectEnumerator];
@@ -287,11 +309,32 @@ static NSArray *aptKeys    = nil;
     [_r appendContentString:s];
 }
 
+static int sortContact(id eo1, id eo2, void *ctx) {
+  NSString *s1, *s2;
+  NSComparisonResult r;
+  
+  s1 = [eo1 valueForKey:@"name"];
+  s2 = [eo2 valueForKey:@"name"];
+  if (![s2 isNotNull]) return NSOrderedAscending;
+  if (![s1 isNotNull]) return NSOrderedDescending;
+  if ((r = [s1 compare:s2]) != NSOrderedSame) return r;
+  
+  s1 = [eo1 valueForKey:@"firstname"];
+  s2 = [eo2 valueForKey:@"firstname"];
+  if (![s2 isNotNull]) return NSOrderedAscending;
+  if (![s1 isNotNull]) return NSOrderedDescending;
+  if ((r = [s1 compare:s2]) != NSOrderedSame) return r;
+  
+  return NSOrderedSame;
+}
+
 - (void)appendAttendees:(NSArray *)_contacts ofAppointment:(id)_aptEO
   toResponse:(WOResponse *)_r
 {
   NSMutableDictionary *bindings;
   unsigned i, count;
+  
+  _contacts = [_contacts sortedArrayUsingFunction:sortContact context:nil];
   
   bindings = [NSMutableDictionary dictionaryWithCapacity:32];
   
