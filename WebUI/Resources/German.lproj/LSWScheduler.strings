@@ -234,6 +234,7 @@ filteredForLabel        = "gefiltert für:";
 firstMay                = "Erster Mai";
 footerRowLabel1         = "SKYRiX";
 footerRowLabel2         = "2000-2005 SKYRIX Software AG";
+formletter              = "Serienbrief";
 forSeveralDays          = "mit mehrtägigen Terminen";
 forward                 = "vor";
 fromLabel               = "Von";

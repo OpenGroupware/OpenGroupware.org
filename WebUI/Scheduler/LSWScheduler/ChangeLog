@@ -1,3 +1,8 @@
+2006-01-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWAppointmentViewer.m: properly generate links to formletter
+	  download action if one was defined (v5.3.100)
+
 2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Defaults.plist, LSWAppointmentViewer.m, LSWAppointmentEditor.m:

@@ -4,6 +4,7 @@
   xmlns="http://www.opengroupware.org/ns/wox/ogo"
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:html="http://www.w3.org/1999/xhtml"
 >
   <head var:title="startDate">
     <buttons>
@@ -27,13 +28,17 @@
 
       <!-- TODO: add map24 / gmaps / etc support -->
       <attribute label="location" var:string="appointment.location" />
-
-<!-- TODO: VZ NRW -->
-<!--
-      <attribute label="download">
-        TODO: formletter download links in here
+      
+      <attribute label="formletter" enabled="formLetterTypes.isNotEmpty">
+        <var:foreach list="formLetterTypes" item="formLetterType"
+                     const:separator=", "
+          ><html:a actionClass="OGoAptFormLetter" directActionName="default"
+             var:_oid="appointment.dateId"
+             var:_type="formLetterType"
+             var:_v="appointment.objectVersion"
+             target="formletter"><var:string value="formLetterType" /></html:a>
+        </var:foreach>
       </attribute>
--->
     </attributes>
   </head>
   

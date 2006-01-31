@@ -954,4 +954,24 @@ static NSString *_personName(id self, id _person) {
   return app;
 }
 
-@end /* LSWAppointmentViewer(PrivateMethodes) */
+/* formletter support */
+
+- (NSArray *)formLetterTypes {
+  static NSArray *formLetterTypes = nil;
+
+  if (formLetterTypes == nil) {
+    /* 
+       Note: this cannot be done in +initialize because the default comes from
+             the OGoScheduler bundle
+    */
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    
+    formLetterTypes = 
+      [[ud dictionaryForKey:@"OGoSchedulerFormLetterTypes"] allKeys];
+    formLetterTypes =
+      [[formLetterTypes sortedArrayUsingSelector:@selector(compare:)] copy];
+  }
+  return formLetterTypes;
+}
+
+@end /* LSWAppointmentViewer */

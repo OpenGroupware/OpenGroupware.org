@@ -1,3 +1,8 @@
+2006-01-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* English|German.lproj/LSWScheduler.strings: added 'formletter' label
+	  for the formletter-download section in the apt-viewer
+
 2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* English|German.lproj/PersonsUI.strings: added 'qcreate_panel_title'
