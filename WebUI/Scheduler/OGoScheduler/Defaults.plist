@@ -215,7 +215,7 @@
       lineSeparator  = "\n";
       line = (
         "$salutation$",
-        "$gender$",
+        "$sex$",
         "$degree$",
         "$firstname$",
         "$name$",
