@@ -182,8 +182,11 @@
 /* labels */
 
 - (NSString *)itemLabel {
-  id i = [self item];
-  id l = [self labels];
+  NSString *i;
+  id l;
+  
+  i = [[self item] stringValue]; // Note: required on OSX 10.3
+  l = [self labels];
   return l ? [l valueForKey:i] : i;
 }
 
