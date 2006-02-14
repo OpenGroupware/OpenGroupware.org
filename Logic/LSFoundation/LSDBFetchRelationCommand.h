@@ -24,6 +24,20 @@
 
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
+/*
+  LSDBFetchRelationCommand
+
+  TODO: document
+  
+  Note: internally this command uses an array as the 'object'. The 'object'
+        parameter is converted to an array automagically and you can use
+	the 'objects' argument if you want to specify multiple base objects.
+
+  Subclasses:
+    LSFetchJobCommand
+    TODO: ...
+*/
+
 @class NSString, NSArray;
 @class EOSQLQualifier, EOEntity;
 

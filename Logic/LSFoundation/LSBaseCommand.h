@@ -27,10 +27,14 @@
 #include <LSFoundation/LSCommand.h>
 
 /*
-  LSBaseCommand, die Command-Klasse, von der alle anderen Kommandos erben.
+  LSBaseCommand
 
-  Bei einem runInContext: werden folgende Methoden ausgefuehrt:
+  This is the command base class which is used by all other commands in OGo.
 
+  TODO: more documentation
+
+  On a -runInContext: the following methods are called:
+  
     runInContext:ctx
     {
       sets activeContext

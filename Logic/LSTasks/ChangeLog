@@ -1,5 +1,8 @@
 2006-02-14  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSFetchJobCommand.m: if no 'object' is passed to job related fetch
+	  commands use the account object from the context (v5.3.7)
+
 	* code cleanups, fixed gcc4 warnings (v5.3.6)
 
 2006-01-29  Helge Hess  <helge.hess@opengroupware.org>

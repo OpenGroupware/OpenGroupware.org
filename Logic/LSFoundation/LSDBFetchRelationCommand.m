@@ -84,7 +84,7 @@ static int RelMaxSearchCount = 0;
   relKey   = [self relationKey];
   isMany   = [self isToMany];
 
-  while ((item = [listEnum nextObject])) {
+  while ((item = [listEnum nextObject]) != nil) {
     NSNumber *pKey;
     
     pKey = [item valueForKey:srcKey];
@@ -113,7 +113,7 @@ static int RelMaxSearchCount = 0;
   listEnum = [[self object] objectEnumerator];
   srcKey   = [self sourceKey];
   
-  while ((item = [listEnum nextObject])) {
+  while ((item = [listEnum nextObject]) != nil) {
     NSNumber *pKey;
     
     pKey = [item valueForKey:srcKey];
@@ -130,7 +130,7 @@ static int RelMaxSearchCount = 0;
   in        = [self->currentIds componentsJoinedByString:@","];
   qualifier = [EOSQLQualifier alloc];
   
-  if ([in length] > 0) {
+  if ([in isNotEmpty]) {
     qualifier = [qualifier initWithEntity:[self destinationEntity]
                            qualifierFormat:@"%A IN (%@)",
                            [self destinationKey], in];
@@ -287,10 +287,10 @@ static int RelMaxSearchCount = 0;
   [pool release]; pool = nil;
 }
 
-// accessors
+/* accessors */
 
 - (void)setRelationKey:(NSString *)_key {
-  ASSIGN(self->relationKey, _key);
+  ASSIGNCOPY(self->relationKey, _key);
 }
 - (NSString *)relationKey {
   return self->relationKey;
@@ -314,14 +314,14 @@ static int RelMaxSearchCount = 0;
 }
 
 - (void)setSourceKey:(NSString *)_key {
-  ASSIGN(self->sourceKey, _key);
+  ASSIGNCOPY(self->sourceKey, _key);
 }
 - (NSString *)sourceKey {
   return self->sourceKey;
 }
 
 - (void)setDestinationKey:(NSString *)_key {
-  ASSIGN(self->destinationKey, _key);
+  ASSIGNCOPY(self->destinationKey, _key);
 }
 - (NSString *)destinationKey {
   return self->destinationKey;

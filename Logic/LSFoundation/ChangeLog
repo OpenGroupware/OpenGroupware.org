@@ -1,3 +1,7 @@
+2006-02-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSDBFetchRelationCommand.m: minor code cleanups (v5.3.118)
+
 2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.117

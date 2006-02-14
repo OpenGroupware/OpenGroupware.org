@@ -67,7 +67,8 @@
   NSMutableSet *idSet;
   NSEnumerator *listEnum;
   id           item;
-
+  
+  // Note: the 'object' is an array, this is done in LSDBFetchRelationCommand
   idSet    = [NSMutableSet setWithCapacity:16];
   listEnum = [[self object] objectEnumerator];
   

@@ -114,6 +114,15 @@ static unsigned MaxFetchIdCount = 200;
   return _qualifier;
 }
 
+- (void)_prepareForExecutionInContext:(id)_context {
+  NSArray *objs;
+  
+  if ((objs = [self object]) == nil) {
+    objs = [NSArray arrayWithObject:[_context valueForKey:LSAccountKey]];
+    [self setObject:objs];
+  }
+}
+
 - (void)_executeInContext:(id)_context {
   if ([self fetchGlobalIDs])
     [self setReturnValue:[self _fetchIds:_context]];
