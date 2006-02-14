@@ -19,7 +19,12 @@
   02111-1307, USA.
 */
 
-#import <LSFoundation/LSDBFetchRelationCommand.h>
+#ifndef __LSTasks_LSFetchJobCommand_H__
+#define __LSTasks_LSFetchJobCommand_H__
+
+#include <LSFoundation/LSDBFetchRelationCommand.h>
+
+@class EOSQLQualifier;
 
 @interface LSFetchJobCommand : LSDBFetchRelationCommand
 {
@@ -29,6 +34,6 @@
 
 - (EOSQLQualifier *)_checkConjoinWithQualifier:(EOSQLQualifier *)_qualifier;
 
-@end /* LSFetchJobCommand */
+@end
 
-
+#endif /* __LSTasks_LSFetchJobCommand_H__ */

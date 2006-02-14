@@ -24,14 +24,12 @@
 
 @implementation LSImportJobCommand
 
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->data);
-  RELEASE(self->errorReport);
-  RELEASE(self->accounts);
+  [self->data        release];
+  [self->errorReport release];
+  [self->accounts    release];
   [super dealloc];
 }
-#endif
 
 static id _searchAccounts(LSImportJobCommand *self, NSString *_id) {
   IMP     objAtIdx;
@@ -56,9 +54,10 @@ static id _searchAccounts(LSImportJobCommand *self, NSString *_id) {
 static inline void _writeError(LSImportJobCommand *self,
                                int _pos,
                                NSString *_report) {
-  NSMutableArray *report = nil;
-  NSString       *number = [[NSNumber numberWithInt:_pos] stringValue];
-
+  NSMutableArray *report;
+  NSString       *number;
+  
+  number = [[NSNumber numberWithInt:_pos] stringValue];
   if ((report = [self->errorReport objectForKey:number]) == nil) {
     report = [NSMutableArray arrayWithCapacity:16];
     [self->errorReport setObject:report forKey:number];
@@ -67,9 +66,13 @@ static inline void _writeError(LSImportJobCommand *self,
 }
 
 static inline NSString *_skipCtrlsAndSpaces(NSString *_string) {
+  // TODO: Unicode!
   int        i;
-  char const *string = [_string cString];
-  int        length  = [_string cStringLength];
+  char const *string;
+  int        length;
+  
+  string = [_string cString];
+  length = [_string cStringLength];
 
   for (i = length - 1; i >= 0; i--) {
     if (string[i] != ' ' && string[i] != '\n' && string[i] != '\r')
@@ -108,13 +111,13 @@ BOOL _setDatabaseField(id self, NSMutableDictionary *_job, NSString *_timeZone,
   jobList = [NSMutableArray arrayWithCapacity:64];
   
   if ((fctCount = _setFcts(self, config, &importFcts)) != -1) {
-    NSString       *seperator     = nil;
-    NSString       *timeZone      = nil;
-    NSArray        *import        = nil;
+    NSString       *seperator;
+    NSString       *timeZone;
+    NSArray        *import;
     IMP            objAtIdxImport = NULL;
-    SEL            objAtIdx       = NULL;
+    SEL            objAtIdx;
     int            i, cnt         = 0;
-    NSArray        *importMap     = nil;
+    NSArray        *importMap;
     IMP            objAtIdxMap    = NULL;
 
     objAtIdx = @selector(objectAtIndex:);
@@ -128,28 +131,32 @@ BOOL _setDatabaseField(id self, NSMutableDictionary *_job, NSString *_timeZone,
     objAtIdxImport = [import methodForSelector:objAtIdx];
     
     for (i = 0, cnt = [import count]; i < cnt; i++) {
-      NSArray *jobImportColumn =
-                        [objAtIdxImport(import, objAtIdx, i)
-                                       componentsSeparatedByString:seperator];
+      NSArray *jobImportColumn;
+
+      jobImportColumn =
+	[objAtIdxImport(import, objAtIdx, i)
+		       componentsSeparatedByString:seperator];
       
       if (_checkJobColumn(self, jobImportColumn, fctCount)) {
         IMP                 objAtIdxColumn = NULL;
-        int                 iC, cntC       = 0;
-        NSMutableDictionary *job           = nil;
-        BOOL                checkImp       = YES;
+        int                 iC, cntC;
+        NSMutableDictionary *job;
+        BOOL                checkImp;
 
-        cntC = [jobImportColumn count];
-        job = [NSMutableDictionary dictionaryWithCapacity:cntC];
-        objAtIdxColumn  = [jobImportColumn methodForSelector:objAtIdx];
-        checkImp = YES;
+        cntC           = [jobImportColumn count];
+        job            = [NSMutableDictionary dictionaryWithCapacity:cntC];
+        objAtIdxColumn = [jobImportColumn methodForSelector:objAtIdx];
+        checkImp       = YES;
         for (iC = 0; iC < cntC; iC++) {
-          BOOL check = importFcts[iC](self, job, timeZone,
-                             _skipCtrlsAndSpaces(objAtIdxColumn(jobImportColumn,
-                                                                objAtIdx, iC)),
-                             objAtIdxMap(importMap, objAtIdx, iC), i);
+          BOOL check;
+
+	  check = importFcts[iC](self, job, timeZone,
+		_skipCtrlsAndSpaces(objAtIdxColumn(jobImportColumn,
+						   objAtIdx, iC)),
+				 objAtIdxMap(importMap, objAtIdx, iC), i);
           checkImp = checkImp && check;
         }
-        if (checkImp && ([job count] ==fctCount))
+        if (checkImp && ([job count] == fctCount))
           [jobList addObject:job];
       }
     }
@@ -164,7 +171,7 @@ static inline NSString *_getTimeZone(id self, id _context) {
   timeZone = [(NSUserDefaults *)[_context valueForKey:LSUserDefaultsKey] 
                                 objectForKey:@"timezone"];
   if (timeZone == nil) {
-    [self logWithFormat:@"Note: user has no timezone ste, using GMT."];
+    [self warnWithFormat:@"user has no timezone set, using GMT."];
     timeZone = @"GMT";
   }
   return timeZone;
@@ -354,22 +361,23 @@ BOOL _checkJobColumn(id self, id _obj, int _cnt) {
   ASSIGN(self->data, _data);
 }
 
-- (id)accounts {
-  return self->accounts;
-}
 - (void)setAccounts:(id)_accounts {
   ASSIGN(self->accounts, _accounts);
 }
-
-- (NSMutableDictionary *)errorReport {
-  return self->errorReport;
+- (id)accounts {
+  return self->accounts;
 }
+
 - (void)setErrorReport:(NSMutableDictionary *)_report {
   ASSIGN(self->errorReport, _report);
 }
-// key/value coding
+- (NSMutableDictionary *)errorReport {
+  return self->errorReport;
+}
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+/* key/value coding */
+
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"data"])
     [self setData:_value];
   else if ([_key isEqualToString:@"errorReport"]) {
@@ -384,12 +392,11 @@ BOOL _checkJobColumn(id self, id _obj, int _cnt) {
     [self foundInvalidSetKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"data"])
     return [self data];
-  else
-    return [self foundInvalidGetKey:_key];
+
+  return [self foundInvalidGetKey:_key];
 }
 
-
-@end
+@end /* LSImportJobCommand */

@@ -1,3 +1,7 @@
+2006-02-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* code cleanups, fixed gcc4 warnings (v5.3.6)
+
 2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSControlJobCommand.m: added a missing [super dealloc] call (v5.3.5)

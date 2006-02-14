@@ -19,8 +19,10 @@
   02111-1307, USA.
 */
 
-#import "common.h"
-#import "LSGetParentJobsCommand.h"
+// DEPRECATED
+
+#include "LSGetParentJobsCommand.h"
+#include "common.h"
 
 @implementation LSGetParentJobsCommand
 
@@ -32,15 +34,15 @@
 /* command methods */
 
 - (void)_executeInContext:(id)_context {
-  [self logWithFormat:
-	  @"WARNING: this command is deprecated (nothing was executed)"];
+  [self warnWithFormat:
+	  @"this command is deprecated (nothing was executed)"];
   return;
 }
 
 /* accessors */
 
 - (id)job {
-  NSAssert([self->jobs count] > 0, @"no jobs in array");
+  NSAssert([self->jobs isNotEmpty], @"no jobs in array");
   return [self->jobs objectAtIndex:0];
 }
 
@@ -53,7 +55,7 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"job"]) {
     [self setJobs:[NSArray arrayWithObject:_value]];
     return;
@@ -65,7 +67,7 @@
   [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"job"])
     return [self job];
   if ([_key isEqualToString:@"jobs"])

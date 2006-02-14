@@ -24,9 +24,11 @@
 
 @interface LSDBFetchRelationCommand(Private)
 - (NSArray *)_ids;
-@end /* LSDBFetchRelationCommand(Private) */
+@end
 
 @implementation LSFetchJobCommand
+
+static unsigned MaxFetchIdCount = 200;
 
 /* accessors */
 
@@ -53,15 +55,18 @@
   return @"companyId";
 }
 
-- (NSArray *)_fetchIds:(id)_context {
-  int maxSearch = 0;
-  int cnt       = 0;
-  EOAdaptorChannel *channel    = nil;
-  EOSQLQualifier   *qualifier  = nil;
-  EOEntity         *entity     = nil;
-  NSArray          *attributes = nil;
-  NSMutableArray   *results    = nil;
+/* fetching */
 
+- (NSArray *)_fetchIds:(id)_context {
+  unsigned int cnt, maxSearch;
+  EOAdaptorChannel *channel;
+  EOSQLQualifier   *qualifier;
+  EOEntity         *entity;
+  NSArray          *attributes;
+  NSMutableArray   *results;
+  
+  maxSearch = 0; // unused?
+  
   channel    = [[self databaseChannel] adaptorChannel];
   qualifier  = [self _qualifier];
   entity     = [qualifier entity];
@@ -73,18 +78,18 @@
                         describedByQualifier:qualifier
                         fetchOrder:nil lock:YES]];
   
-  while ((maxSearch == 0) || (cnt < maxSearch)) {
+  for (cnt = 0; (maxSearch == 0) || (cnt < maxSearch); ) {
     NSDictionary *row;
     EOGlobalID   *gid;
     
     if ((row = [channel fetchAttributes:attributes withZone:NULL]) == nil)
       break;
-
+    
     gid = [entity globalIDForRow:row];
     [results addObject:gid];
     
     cnt = [results count];
-    if ((maxSearch != 0) && (cnt == maxSearch)) {
+    if ((maxSearch != 0) && (cnt >= maxSearch)) {
       [[self databaseChannel] cancelFetch];
       break;
     }
@@ -94,17 +99,17 @@
 
 - (EOSQLQualifier *)_checkConjoinWithQualifier:(EOSQLQualifier *)_qualifier {
   NSArray *array;
-
+  
   array = [self _ids];
-
+  
   // TODO: explain?!
-  if ([array count] > 200) {
-    NSLog(@"WARNING[%s]: unexpected number of current ids (>200) ...",
-          __PRETTY_FUNCTION__);
+  if ([array count] > MaxFetchIdCount) {
+    [self warnWithFormat:@"%s: unexpected number of current ids (>%i) ...",
+          __PRETTY_FUNCTION__, MaxFetchIdCount];
   }
   [self setCurrentIds:array];
-
-  if ([[self currentIds] count] > 0)
+  
+  if ([[self currentIds] isNotEmpty])
     [_qualifier conjoinWithQualifier:[super _qualifier]];
   return _qualifier;
 }
@@ -118,19 +123,19 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"fetchGlobalIDs"]) {
     [self setFetchGlobalIDs:[_value boolValue]];
     return;
   }
-  else
-    [super takeValue:_value forKey:_key];
+
+  [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"fetchGlobalIDs"])
     return [NSNumber numberWithBool:[self fetchGlobalIDs]];
-
+  
   return [super valueForKey:_key];
 }
 

@@ -228,7 +228,7 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"assignmentKind"])
     [self setCreateAs:_value];
   else if ([_key isEqualToString:@"toProject"] ||

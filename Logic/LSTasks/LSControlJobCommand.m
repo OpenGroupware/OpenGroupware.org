@@ -21,6 +21,9 @@
 
 #import <LSFoundation/LSDBObjectSetCommand.h>
 
+// TODO: document
+//       I think this is used for delegate jobs
+
 @interface LSControlJobCommand : LSDBObjectSetCommand
 {
   id project;
@@ -35,9 +38,9 @@
 @implementation LSControlJobCommand
 
 - (void)dealloc {
-  [self->project release];
+  [self->project   release];
   [self->executant release];
-  [self->jobName release];
+  [self->jobName   release];
   [super dealloc];
 }
 
@@ -49,11 +52,14 @@
 }  
 
 - (void)_buildControlJobInContext:(id)_context {
-  id controlJob    = nil;
-  id obj           = [self object];
-  id nCmd          = LSLookupCommand(@"Job", @"new");
-  NSNumber *userId = [[_context valueForKey:LSAccountKey]
-                                valueForKey:@"companyId"];
+  id<LSCommand> nCmd, jCmd;
+  NSNumber      *userId;
+  id controlJob;
+  id obj;
+  
+  obj     = [self object];
+  nCmd   = LSLookupCommand(@"Job", @"new");
+  userId = [[_context valueForKey:LSAccountKey] valueForKey:@"companyId"];
   
   [nCmd takeValue:LSJobProcessing                forKey:@"jobStatus"];
   [nCmd takeValue:[obj valueForKey:@"startDate"] forKey:@"startDate"];
@@ -63,29 +69,30 @@
   [nCmd takeValue:[NSNumber numberWithBool:YES]  forKey:@"isControlJob"];
   [nCmd takeValue:self->project                  forKey:@"toProject"];  
 
-  if (self->jobName == nil) { //JobName
-    NSMutableString *string = [[NSMutableString allocWithZone:[self zone]]
-                                                initWithString:@"Job for "];
+  if (![self->jobName isNotNull]) { //JobName
+    NSMutableString *string;
+    
+    string = [[NSMutableString alloc] initWithString:@"Job for "];
     [string appendString:[self->executant valueForKey:@"login"]];
     [nCmd takeValue:string forKey:@"name"];
-    RELEASE(string); string = nil;
+    [string release]; string = nil;
   }
-  else {
+  else
     [nCmd takeValue:self->jobName forKey:@"name"];    
-  }
-
+  
   controlJob = [nCmd runInContext:_context];
-
+  
   [obj takeValue:[controlJob valueForKey:@"jobId"] forKey:@"parentJobId"];
-  {
-    id jCmd = LSLookupCommand(@"Job", @"jobAction");
-
-    [jCmd takeValue:@"accept"  forKey:@"action"];
-    [jCmd takeValue:controlJob forKey:@"object"];
-    [jCmd runInContext:_context];
-  }
+  
+  jCmd = LSLookupCommand(@"Job", @"jobAction");
+  [jCmd takeValue:@"accept"  forKey:@"action"];
+  [jCmd takeValue:controlJob forKey:@"object"];
+  [jCmd runInContext:_context];
+  
   [self setReturnValue:controlJob];
 }
+
+/* accessors */
 
 - (void)setProject:(id)_project {
   ASSIGN(self->project, _project);
@@ -108,35 +115,35 @@
   return self->jobName;
 }
 
+/* execute */
+
 - (void)_executeInContext:(id)_context {
   [self _buildControlJobInContext:_context];
   //  [super _executeInContext:_context];
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
-  if ([_key isEqualToString:@"project"]) {
+/* key/value coding */
+
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
+  if ([_key isEqualToString:@"project"])
     [self setProject:_value];
-  }
-  else if ([_key isEqualToString:@"executant"]) {
+  else if ([_key isEqualToString:@"executant"])
     [self setExecutant:_value];
-  }
-  else if ([_key isEqualToString:@"name"]) {
+  else if ([_key isEqualToString:@"name"])
     [self setName:_value];
-  }
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"project"])
     return [self project];
-  else if ([_key isEqualToString:@"executant"])
+  if ([_key isEqualToString:@"executant"])
     return [self executant];
-  else if ([_key isEqualToString:@"name"])
+  if ([_key isEqualToString:@"name"])
     return [self name];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
-
-@end
+@end /* LSControlJobCommand */

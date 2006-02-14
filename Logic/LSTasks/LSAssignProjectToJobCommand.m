@@ -82,9 +82,12 @@
   [self setReturnValue:job];
 }
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+/* key/value coding */
+
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
+  // TODO: use proper accessors
   if ([_key isEqualToString:@"jobId"]) {
-    ASSIGN(self->jobId,_value);
+    ASSIGNCOPY(self->jobId,_value);
   }
   else if (([_key isEqualToString:@"job"]) ||
            ([_key isEqualToString:@"object"])) {
@@ -92,27 +95,28 @@
     ASSIGN(self->jobId,_value);
   }
   else if ([_key isEqualToString:@"projectId"]) {
-    ASSIGN(self->projectId,_value);
+    ASSIGNCOPY(self->projectId,_value);
   }
   else if ([_key isEqualToString:@"project"]) {
     _value = [_value valueForKey:@"projectId"];
     ASSIGN(self->projectId,_value);
   }
   else if ([_key isEqualToString:@"logText"]) {
-    ASSIGN(self->logText,_value);
+    ASSIGNCOPY(self->logText,_value);
   }
   else {
     [self assert:NO
           reason:[NSString stringWithFormat:@"Unknown key: %@",_key]];
   }
 }
-- (id)valueForKey:(id)_key {
-  if ([_key isEqualToString:@"jobId"]) {
+- (id)valueForKey:(NSString *)_key {
+  // TODO: use proper accessors
+  if ([_key isEqualToString:@"jobId"])
     return self->jobId;
-  }
-  if ([_key isEqualToString:@"projectId"]) {
+  
+  if ([_key isEqualToString:@"projectId"])
     return self->projectId;
-  }
+  
   if ([_key isEqualToString:@"logText"])
     return self->logText;
   return nil;

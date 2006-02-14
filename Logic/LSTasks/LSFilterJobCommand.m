@@ -38,12 +38,9 @@
 }
 
 - (id)filter {
-#if LIB_FOUNDATION_LIBRARY
-  return [self subclassResponsibility:_cmd];
-#else
-  NSLog(@"%s: subclass should override this method!", __PRETTY_FUNCTION__);
+  [self warnWithFormat:
+	  @"%s: subclass should override this method!", __PRETTY_FUNCTION__];
   return nil;
-#endif
 }
 
 /* accessors */
@@ -71,7 +68,7 @@
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"jobList"]) {
     [self setJobList:_value];
     return;
@@ -94,14 +91,14 @@
                                           [self operation]]];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"jobList"])
     return [self jobList];
-  else   if ([_key isEqualToString:@"creatorId"])
+  if ([_key isEqualToString:@"creatorId"])
     return [self creatorId];
-  else   if ([_key isEqualToString:@"executantId"])
+  if ([_key isEqualToString:@"executantId"])
     return [self executantId];
-  return nil;
+  return nil; // TODO: intentional?
 }
 
 @end /* LSFilterJobCommand */

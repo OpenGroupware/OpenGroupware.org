@@ -19,28 +19,32 @@
   02111-1307, USA.
 */
 
-#import "common.h"
-#import "LSNewJobHistoryCommand.h"
+#include "LSNewJobHistoryCommand.h"
+#include "common.h"
 
 @implementation LSNewJobHistoryCommand
 
 - (void)dealloc {
   [self->comment release];
-
   [super dealloc];
 }
 
-- (BOOL)_newJobHistoryInfoInContext:(id)_context {
-  id           jobHistoryInfo = nil;
-  NSDictionary *pk            = nil;
-  EOEntity     *myEntity = [[self databaseModel] entityNamed:@"JobHistoryInfo"];
-  id           pkey      = [[self object] valueForKey:[self primaryKeyName]];
+/* execute */
 
+- (BOOL)_newJobHistoryInfoInContext:(id)_context {
+  id           jobHistoryInfo;
+  NSDictionary *pk;
+  EOEntity     *myEntity;
+  NSNumber     *pkey;
+  
+  myEntity = [[self databaseModel] entityNamed:@"JobHistoryInfo"];
+  pkey      = [[self object] valueForKey:[self primaryKeyName]];
+  
   pk = [self newPrimaryKeyDictForContext:_context keyName:@"jobHistoryInfoId"];
 
   jobHistoryInfo = [self produceEmptyEOWithPrimaryKey:pk entity:myEntity];
   
-  if ([self comment]) 
+  if ([self comment] != nil) 
     [jobHistoryInfo takeValue:[self comment] forKey:@"comment"];
 
   [jobHistoryInfo takeValue:pkey forKey:@"jobHistoryId"];
@@ -50,7 +54,7 @@
 }
 
 - (void)_executeInContext:(id)_context {
-  BOOL isOk = NO;
+  BOOL isOk;
 
   [super _executeInContext:_context];
   isOk = [self _newJobHistoryInfoInContext:_context];
@@ -60,32 +64,32 @@
 }
 
 - (void)setComment:(NSString *)_comment {
-  ASSIGN(comment, _comment);
+  ASSIGNCOPY(comment, _comment);
 }
 - (NSString *)comment {
   return comment;
 }
 
-// initialize records
+/* initialize records */
 
 - (NSString *)entityName {
   return @"JobHistory";
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"comment"])
     [self setComment:_value];
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"comment"])
     return [self comment];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
-@end
+@end /* LSNewJobHistoryCommand */

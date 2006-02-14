@@ -21,6 +21,8 @@
 
 #include <LSFoundation/LSBaseCommand.h>
 
+// TODO: deprecated and should be removed?
+
 @interface LSAllSubJobsDoneJobCommand : LSBaseCommand
 @end
 
@@ -29,57 +31,62 @@
 @implementation LSAllSubJobsDoneJobCommand
 
 static BOOL _checkJobs(id self, id _context, NSArray *_jobs) {
-  id   obj       = nil;  
+  unsigned int  i, cnt;
   IMP  objAtIdx;
   IMP  eqlStr;
-  int  i,cnt;
-  BOOL isValid   = YES;  
+  BOOL isValid;
+  
+  if (![_jobs isNotNull])
+    return YES;
 
-  if ([_jobs isNotNull]) {
-    objAtIdx = [_jobs methodForSelector:@selector(objectAtIndex:)];
-    eqlStr   = [LSJobDone methodForSelector:@selector(isEqualToString:)];
+  objAtIdx = [_jobs methodForSelector:@selector(objectAtIndex:)];
+  eqlStr   = [LSJobDone methodForSelector:@selector(isEqualToString:)];
+  
+  isValid = YES;
+  for (i = 0, cnt = [_jobs count]; i < cnt; i++) {
+    id obj;
     
-    for (i = 0, cnt = [_jobs count]; i < cnt; i++) {
-      obj = [objAtIdx(_jobs, @selector(objectAtIndex:), i)
-                     valueForKey:@"jobStatus"];
+    obj = [objAtIdx(_jobs, @selector(objectAtIndex:), i)
+		   valueForKey:@"jobStatus"];
       
-      if (!(isValid = ((BOOL)(long)(eqlStr(LSJobDone,
-                                           @selector(isEqualToString:), obj)) ||
-                       (BOOL)(long)(eqlStr(LSJobArchived,
-                                           @selector(isEqualToString:), obj)))))
-        break;
-    }
+    if (!(isValid = ((BOOL)(long)(eqlStr(LSJobDone,
+					 @selector(isEqualToString:), obj)) ||
+		     (BOOL)(long)(eqlStr(LSJobArchived,
+					 @selector(isEqualToString:), obj)))))
+      break;
   }
   return isValid;
 }
 
 - (void)_validateKeysForContext:(id)_context {
-  if ([self object] == nil) 
+  if (![[self object] isNotNull]) {
     [LSDBObjectCommandException raiseOnFail:NO object:self
                                 reason:@"no job set!"];
+  }
 }
 
 - (void)_executeInContext:(id)_context {
-  [self setReturnValue:[NSNumber numberWithBool:
-                                 _checkJobs(self, _context, [[self object]
-                                                   valueForKey:@"jobs"])]];
+  id result;
+  
+  result = [NSNumber numberWithBool:
+		       _checkJobs(self, _context, [[self object] valueForKey:@"jobs"])];
+  [self setReturnValue:result];
 }
 
-// key/value coding
+/* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"job"])
     [self setObject:_value];
   else
     [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"job"])
     return [self object];
-  else
-    return [super valueForKey:_key];
+
+  return [super valueForKey:_key];
 }
 
-
-@end
+@end /* LSAllSubJobsDoneJobCommand */

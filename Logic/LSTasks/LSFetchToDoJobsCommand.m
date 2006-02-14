@@ -20,7 +20,6 @@
 */
 
 #include "LSFetchJobCommand.h"
-#include "common.h"
 
 @class NSCalendarDate;
 
@@ -29,28 +28,30 @@
   NSCalendarDate *startDate;
   NSCalendarDate *endDate;
 }
-@end /* LSFetchJobCommand */
+
+@end
+
+#include "common.h"
 
 @implementation LSFetchToDoJobsCommand
 
 - (void)dealloc {
   [self->startDate release];
-  [self->endDate release];
-
+  [self->endDate   release];
   [super dealloc];
 }
 
 /* accessors */
 
 - (void)setStartDate:(NSCalendarDate *)_startDate {
-  ASSIGN(self->startDate, _startDate);
+  ASSIGNCOPY(self->startDate, _startDate);
 }
 - (NSCalendarDate *)startDate {
   return self->startDate;
 }
 
 - (void)setEndDate:(NSCalendarDate *)_endDate {
-  ASSIGN(self->endDate, _endDate);
+  ASSIGNCOPY(self->endDate, _endDate);
 }
 - (NSCalendarDate *)endDate {
   return self->endDate;
@@ -60,39 +61,46 @@
   return @"executantId";
 }
 
+/* operation */
+
 - (NSString *)_idString {
   NSMutableSet *idSet;
   NSEnumerator *listEnum;
   id           item;
 
-  idSet    = [NSMutableSet set];
+  idSet    = [NSMutableSet setWithCapacity:16];
   listEnum = [[self object] objectEnumerator];
   
-  while ((item = [listEnum nextObject])) {
-    id pKey = [item valueForKey:[self sourceKey]];
-    
-    [self assert:(pKey != nil) reason:@"found foreign key which is nil !"];
+  while ((item = [listEnum nextObject]) != nil) {
+    NSNumber *pKey;
+    NSArray  *gr;
 
-    if (pKey != nil) {
-      [idSet addObject:pKey];
-      { // getGroups
-        NSArray *gr = [[item valueForKey:@"groups"]
-                             map:@selector(valueForKey:)
-                             with:@"companyId"];
-        [idSet addObjectsFromArray:gr];
-      }
-      
-    }
+    pKey = [item valueForKey:[self sourceKey]];
+    [self assert:(pKey != nil) reason:@"found foreign key which is nil !"];
+    
+    if (![pKey isNotNull])
+      continue;
+    
+    [idSet addObject:pKey];
+
+    // getGroups
+    gr = [[item valueForKey:@"groups"]
+	        map:@selector(valueForKey:)
+                with:@"companyId"];
+    [idSet addObjectsFromArray:gr];
   }
   return [[idSet allObjects] componentsJoinedByString:@","];
   
 }
 
 - (EOSQLQualifier *)_qualifier {
-  EOSQLQualifier *qualifier = nil;
-  NSString *s = [self _idString];
-
-  if ((self->startDate != nil) && (self->endDate != nil)) {
+  EOSQLQualifier *qualifier;
+  NSString *s;
+  
+  s = [self _idString];
+  
+  qualifier = [EOSQLQualifier alloc];
+  if ([self->startDate isNotNull] && [self->endDate isNotNull]) {
     id             formattedBegin = nil;
     id             formattedEnd   = nil;
     EOAdaptor      *adaptor       = [self databaseAdaptor];
@@ -105,9 +113,8 @@
     formattedEnd   = [adaptor formatValue:self->endDate
                               forAttribute:endDateAttr];
 
-    qualifier = [[EOSQLQualifier allocWithZone:[self zone]]
-                                 initWithEntity:[self destinationEntity]
-                                 qualifierFormat:
+    qualifier = [qualifier initWithEntity:[self destinationEntity]
+			   qualifierFormat:
                                  @"((%A <> '%@') AND ((%A <> '%@') OR "
                                  @"(%A IN (%@))) AND ((%A IS NULL) OR "
                                  @"(%A = 0)) AND (%A IN (%@)) AND (%A IS NULL)"
@@ -124,9 +131,8 @@
                                  @"endDate",   formattedEnd, nil];
   }
   else {
-    qualifier = [[EOSQLQualifier allocWithZone:[self zone]]
-                                 initWithEntity:[self destinationEntity]
-                                 qualifierFormat:
+    qualifier = [qualifier initWithEntity:[self destinationEntity]
+			   qualifierFormat:
                                  @"((%A <> '%@') AND ((%A <> '%@') OR "
                                  @"(%A IN (%@))) AND ((%A IS NULL) OR "
                                  @"(%A = 0)) AND (%A IN (%@)) AND "
@@ -138,30 +144,30 @@
                                  @"executantId", s,
                                  @"kind", nil];
   }
-  return AUTORELEASE(qualifier);
+  return [qualifier autorelease];
 }
 
 /* key/value coding */
 
-- (void)takeValue:(id)_value forKey:(id)_key {
+- (void)takeValue:(id)_value forKey:(NSString *)_key {
   if ([_key isEqualToString:@"startDate"]) {
     [self setStartDate:_value];
     return;
   }
-  else if ([_key isEqualToString:@"endDate"]) {
+  if ([_key isEqualToString:@"endDate"]) {
     [self setEndDate:_value];
     return;
   }
-  else
-    [super takeValue:_value forKey:_key];
+  
+  [super takeValue:_value forKey:_key];
 }
 
-- (id)valueForKey:(id)_key {
+- (id)valueForKey:(NSString *)_key {
   if ([_key isEqualToString:@"startDate"])
     return [self startDate];
   if ([_key isEqualToString:@"endDate"])
     return [self endDate];
- 
+  
   return [super valueForKey:_key];
 }
 
