@@ -1,0 +1,580 @@
+- bug ids touched by ChangeLog:
+  1591, 1593, 1598, 1603, 1612, 1632, 1673
+
+
+logic
+- removed some superflous AddressConverterDataSource subclasses
+- fixed a crasher in some access handler debug log
+- added German holidays 2006
+- LDAP password field is now configurable (LDAPPasswordField default)
+- changed job-fetch command to use the login-account as a fallback
+- fixed a small memory leak in the control-job command
+- removed unused -addCommand: API in LSBaseCommand
+- some minor improvements in access handler code
+- added more default timezones (OGo bug #1612)
+- derive resource/bundle lookup pathes from OGo version
+- added custom attributes to appointments (affects apt commands)
+- added OGoAptAccessHandler class
+- fixed an exception in appointment proposal (OGo bug #1591)
+- print a log if full type scans must be done (obj_info not filled)
+- added PHP MIME type and extension
+- map ics and vcf MIME type /extensions
+
+webui
+- added ability to create contacts from the appointment editor
+- improved form letter generation code, moved code to a direct action
+- added form letter capability to appointment editor
+- added support for displaying/editing extended appointment attributes
+- fixed a minor bug in the apt proposal (OGo bug #1591)
+- fixed a crasher in a command call with IE DnD
+- minor improvements in JavaScript detection
+- webmail address search can now show a warning on multiple matches
+- added namespace support to LSWObjectEditor
+- added OGoObjPropInlineEditor
+- discover OGo translations on startup
+- removed 'f' permission from project editor (OGo bug #1603)
+- added support for dynamic 'label' attributes in WOx
+- added ability to create generic links to all clipped DB objects
+- added ChatUI example in Misc
+- fixed some incorrect CSS attributes in OGo.css
+- started registration interface
+- fixed a label charset issue in webmail (OGo bug #1632)
+- rewrote SkyFavorites, SkyAssignProjectToJobEditor as a WOx
+- improved direct action handling in OGoSession
+- added -isNotEmpty to OGoClipboard, deprecated -containsObjects
+
+xmlrpcd
+- fixed some return types in enterprise related methods
+- properly link against NGiCal
+- fixed duplicate encoding of middlenmae (OGo bug #1598)
+
+zidestore
+- fixed 404 handling in SxFolder
+- fixed a file lookup bug in the document folder object
+- fixed handling of mixed-case mailto prefixes (OGo bug #1593)
+
+tools
+- added ogo-prop-list and ogo-prop-set tools
+
+database scripts / model
+- bumbed length of appointment table 'type' column to 255
+- added a Perl script to fill the database with contacts (fill-test-db.pl)
+
+general
+- use new -isNotEmpty method when appropriate
+- use -warnWithFormat/-errorWithFormat when appropriate
+- major code cleanups in various files
+- fixed some gcc4 related warnings
+- added SuSE 10.0 spec files
+- improved FreeBSD port
+- fixed some minor MacOSX compatibility issues
+
+
+
+Major sponsoring of enhancements by VZ NRW - THANKS!
+
+Contributors for 1.1.3:
+Norbert Schulze
+Olivier Hallot
+Frank Reppin
+Albrecht Dress
+Sebastian Ley
+Marcus Mueller
+Helge Hess
+... and many more :-)
+
+===========================================================================
+r1558
+compare ../complete/OpenGroupware.org/releases/1.1.2-moveon with .
+added:   Recycler
+added:   config.make
+changed: Database/MySQL/
+     2005-12-01  Helge Hess  <helge.hess@skyrix.com>
+     	* build-schema.mysql5: bumped length of appointment 'type' field to 255
+     	  chars (recurrence pattern)
+changed: Database/OGoModel/
+     2005-12-01  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoModel.py (Date): bumped length of type field to 255 (v5.3.18)
+changed: Database/SQLite/
+     2005-12-01  Helge Hess  <helge.hess@skyrix.com>
+     	* build-schema.sqlite: bumped length of appointment type field to 255
+changed: Database/PostgreSQL/
+     2005-12-01  Helge Hess  <helge.hess@skyrix.com>
+     	* pg-build-schema.psql: bumped length of date_x 'type' field to 255
+     	  chars (recurrence pattern)
+changed: DocumentAPI/OGoContacts/
+     2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyCompanyDocument.m: minor code cleanups (v5.3.54)
+     2006-01-23  Helge Hess  <helge.hess@opengroupware.org>
+     	* bundle-info.plist: fixed bundle dependencies (properly mark LSAddress
+     	  as a dependency) (v5.3.53)
+     2006-01-17  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyCompanyDocument.m: code cleanups (v5.3.52)
+     2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyCompanyDocument.m: code cleanups (v5.3.51)
+     2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+     	* removed unnecessary SkyPersonAddressConverterDataSource and
+     	  SkyEnterpriseAddressConverterDataSource (just use the
+     	  SkyAddressConverterDataSource directly) (v5.3.50)
+removed: DocumentAPI/OGoContacts/SkyPersonAddressConverterDataSource.h
+removed: DocumentAPI/OGoContacts/SkyPersonAddressConverterDataSource.m
+removed: DocumentAPI/OGoContacts/SkyEnterpriseAddressConverterDataSource.h
+removed: DocumentAPI/OGoContacts/SkyEnterpriseAddressConverterDataSource.m
+changed: DocumentAPI/OGoProject/
+     2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyProjectAccessHandler.m: changed to use OGoAccessHandler (v5.3.41)
+changed: DocumentAPI/OGoDatabaseProject/
+     2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyDocumentAccessHandler.m: use OGoAccessHandler as superclass, fixed
+     	  a crasher in a debug log (v5.3.54)
+     2005-11-21  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyProjectFileManager+FileAttributes.m: minor code cleanups (v5.3.53)
+changed: DocumentAPI/OGoScheduler/
+     2005-11-08  Norbert Schulze  <ahh05@herr-der-mails.de>
+     	* Holidays.plist: added German holidays 2006 (v5.3.37)
+added:   Misc/ChatUI
+changed: Themes/
+     2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* WebServerResources/English.lproj/LSWAppointmentEditor.js: added
+     	  function to create contact creation panel
+     2006-01-09  Helge Hess  <helge.hess@opengroupware.org>
+     	* WebServerResources/English_orange.lproj/OGo.css: replaced invalid
+     	  'text-color' attribute with 'color', fix 'border' attribute, replace
+     	  'align' attribute with 'text-align', uncommented invalid background
+     	  color of .skybuttoncolor class
+changed: ZideStore/ZSFrontend/
+     2005-11-18  Helge Hess  <helge.hess@opengroupware.org>
+     	* SxFolder.m: do not log an error if an object could not be found and
+     	  do not return 404 on failed lookups (just return nil, the 404 will be
+     	  generated by the request handler) (v1.5.114)
+changed: ZideStore/SoObjects/ZSProjects/
+     2005-11-11  Helge Hess  <helge.hess@opengroupware.org>
+     	* SxDocumentFolder.m: fixed a bug in file lookup (v1.5.98)
+changed: ZideStore/SoObjects/ZSAppointments/
+     2005-12-05  Helge Hess  <helge.hess@skyrix.com>
+     	* SxAppointment+Participants.m: fixed handling of mixed-case mailto:
+     	  prefixes (OGo bug #1593) (v1.5.102)
+added:   maintenance/changes-1.1.2-to-1.1.3.txt
+added:   maintenance/rpm_buildenvironment/prepare_yum_fcore4.sh
+added:   maintenance/rpm_buildenvironment/macros/suse10-0
+changed: maintenance/freebsd/
+     2005-11-16 Frank Reppin  <frank@opengroupware.org>
+     	* updated to more recent trunk (opengroupware-devel)
+     	* synced Makefile features (opengroupware-devel)
+     	* bail out if SOPE build doesn't seem to be complete
+     	  (opengroupware/opengroupware-devel)
+     2005-11-15 Frank Reppin  <frank@opengroupware.org>
+     	* updated to 1.0beta2 (opengroupware)
+     	* fiddled around with the extract_depends on gtar... but
+     	  found no better way, alas unchanged (opengroupware)
+     	* made PDA part optional (opengroupware)
+     	* reintroduced '|| !defined(XXX)' parts to have some required default
+     	  values if none are given (sope44/sope45-devel)
+     	* exit on another weird option combo (opengroupware)
+     2005-11-14 Frank Reppin  <frank@opengroupware.org>
+     	* updated sope45-devel to more recent sope-trunk-r1173-200511091500 (sope45-devel)
+     	* updated port itself to reflect recent changes made to sope44 port (sope45-devel)
+     	* use pre-everything hint in Makefile (sope44)
+     2005-11-12 Frank Reppin  <frank@opengroupware.org>
+     	* fixed MySQL Adaptor build/install (sope44)
+     	* update to sope-4.4.0-cell (sope44)
+     2005-11-11 Frank Reppin  <frank@opengroupware.org>
+     	* added required 'else' condition to take care of non present
+     	  ${APXS} during 'make' (mod_ngobjweb)
+     	* updated all distinfo files to reflect changes announced with
+     	  OSVERSION 504102 (SHA256 checksums)
+     	* corrected opengroupware/opengroupware-devel Makefile and
+     	  set correct OSVERSION (600022) to depend on gtar from ports
+     	  when gtar was finally completely deorbited from base
+     	  (opengroupware/opengroupware-devel)
+     	* added important hint to 'README.EARLY_ADOPTORS' for users
+     	  testing this port on -CURRENT
+     2005-11-09 Frank Reppin  <frank@opengroupware.org>
+     	* fixed APXS based module installation (mod_ngobjweb)
+     	* added files/patch-aa (mod_ngobjweb)
+     	  (changed module name from mod_ngobjweb.so to ngobjweb_modules.so
+     	  to make apxs happy - in GNUmakefile)
+     	* removed skyrix.conf from DOCS and pkg-plist (mod_ngobjweb)
+     	* simplified install/deinstall message to 'restart' instead of 'stop'/'start'
+     2005-11-02 Frank Reppin  <frank@opengroupware.org>
+     	* politely ask in opengroupware/opengroupware-devel config,
+     	  if the (required) PostgreSQL server runs on the same host or not
+     	  (in order to inhale a dependency on postgresql${DEFAULT_PGSQL_VER}-server, or not)
+     	* read DEFAULT_PGSQL_VER in opengroupware-devel from env as well
+     2005-11-01 Frank Reppin  <frank@opengroupware.org>
+     	* use DEFAULT_PGSQL_VER in sope44/sope45-devel ports
+     	* fixed gtar/bsdtar handling in opengroupware/opengroupware-devel
+     	  port (for ${OSVERSION} >=600000)
+     	* added another hint in pkg-message/pkg-deinstall for mod_ngobjweb
+     	  (regarding rcvars)
+     20
+added:   maintenance/freebsd/mod_ngobjweb/files/patch-aa
+changed: Logic/LSAccount/
+     2005-12-08  Helge Hess  <helge.hess@skyrix.com>
+     	* LSChangePasswordCommand.m: used LDAP password field is now
+     	  configurable with the LDAPPasswordField default (v5.3.22)
+     	* LSChangePasswordCommand.m: cleaned up default handling (v5.3.21)
+     	* LSChangePasswordCommand.m: minor code cleanups (v5.3.20)
+changed: Logic/LSAddress/
+     2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSNewCompanyCommand.m: moved in -hasCommandWithEntityName: methods
+     	  from LSDBObjectBaseCommand, various code cleanups (v5.3.86)
+     2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSVCardAddressFormatter.m: avoid adding of 'nil' strings to make it
+     	  work on Cocoa (v5.3.85)
+     2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.84
+     	* LSBuildConverterDataCommand.m: avoid adding of 'nil' strings to make
+     	  it work in Cocoa, use -warnWithFormat:
+     	* LSGetCompanyForMemberCommand.m: minor code cleanups
+     2005-10-14  Helge Hess  <helge.hess@skyrix.com>
+     	* LSGetVCardForGlobalIDsCommand.m: use -isNotEmpty and -warnWithFormat:
+     	  where appropriate (v5.3.83)
+     2005-10-13  Helge Hess  <helge.hess@skyrix.com>
+     	* use -warnWithFormat/-errorWithFormat when appropriate, several code
+     	  cleanups, use -isNotEmpty when appropriate (v5.3.82)
+changed: Logic/LSPerson/
+     2005-10-14  Helge Hess  <helge.hess@skyrix.com>
+     	* LSGetPersonCommand.m: minor code cleanups (v5.3.29)
+changed: Logic/LSTasks/
+     2006-02-14  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSFetchJobCommand.m: if no 'object' is passed to job related fetch
+     	  commands use the account object from the context (v5.3.7)
+     	* code cleanups, fixed gcc4 warnings (v5.3.6)
+     2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSControlJobCommand.m: added a missing [super dealloc] call (v5.3.5)
+changed: Logic/LSFoundation/
+     2006-02-14  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSDBFetchRelationCommand.m: minor code cleanups (v5.3.118)
+     2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.117
+     	* LSDBObjectBaseCommand.m: moved -hasCommandWithEntityName: methods to
+     	  LSNewCompanyCommand, code cleanups
+     	* LSBaseCommand.m: removed -addCommand: method which was used nowhere
+     	* LSCreateCommand.m: removed a method which was commented out
+     2006-01-23  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoAccessManager.m, OGoAccessHandler.m: minor code cleanups, use
+     	  -isNotEmpty when appropriate (v5.3.116)
+     2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.115
+     	* SkyObjectPropertyManager+Internals.m: check for NSNull when accessing
+     	  global ids (fixes some OSX 10.3 issue)
+     	* SkyObjectPropertyManager.m: changed to use -isNotEmpty
+     	* OGoAccessManager.m: log an error when initialized with a nil context
+     	  instead of throwing an exception, fixed an access handler lookup
+     	  issue on OSX 10.3, load access handler bundler prior accessing the
+     	  handler class, minor code cleanups
+     	* LSTypeManager.m: minor code cleanups
+     2005-11-28  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.114
+     	* LSDBObjectNewCommand.m: do not attempt to register companyValue
+     	  objects in objinfo
+     	* OGoAccessManager.m: improved logging of missing access handlers
+     2005-11-10  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoContextManager.m: moved some default-defaults to GNUmakefile,
+     	  added more timezones (bug #1612), derive pathes from OGo version
+     	  (v5.3.113)
+changed: Logic/LSScheduler/
+     2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.85
+     	* LSGetAppointmentsForGlobalIDs.m: minor code cleanups
+     	* LSQueryAppointments.m: properly include common.h
+     2006-01-28  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSDeleteAppointmentCommand.m: properly delete custom properties
+     	  (v5.3.84)
+     	* LSSetAppointmentCommand.m, LSNewAppointmentCommand.m,
+     	  LSCyclicAppointmentsCommand.m: fixed custom attribute handling for
+     	  cyclic appointments (v5.3.83)
+     	* v5.3.82
+     	* LSSetAppointmentCommand.m, LSNewAppointmentCommand.m: added ability
+     	  to save properties using the 'customAttributes' argument (which gets
+     	  directly passed in the SkyObjectPropertyManager)
+     	* use warnWithFormat/errorWithFormat where appropriate, minor code
+     	  cleanups
+     2006-01-23  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.81
+     	* started OGoAptAccessHandler class
+     	* GNUmakefile: added static linking for MacOSX
+     2005-10-18  Helge Hess  <helge.hess@skyrix.com>
+     	* LSAppointmentProposalCommand.m: fixed exception as described in OGo
+     	  bug #1591 (v5.3.80)
+added:   Logic/LSScheduler/OGoAptAccessHandler.m
+changed: Logic/LSBase/
+     2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSGetObjectTypeCommand.m: code cleanups, use -isNotEmpty, print a log
+     	  if all tables must be scanned for a primary key (every 100 scans)
+     	  (v5.3.28)
+     2005-12-19  Helge Hess  <helge.hess@opengroupware.org>
+     	* Defaults.plist: added extension => MIME type mappings for PHP
+     	  (v5.3.27)
+     2005-11-21  Helge Hess  <helge.hess@skyrix.com>
+     	* Defaults.plist: map 'ics' extension to 'text/calendar' MIME type and
+     	  'vcf' to 'text/x-vcard' (v5.3.26)
+added:   Contrib/fill-test-db.pl
+changed: XmlRpcAPI/
+     2006-01-25  Helge Hess  <helge.hess@opengroupware.org>
+     	* Actions.subproj/DirectAction+Enterprise.m: fixed handling of a
+     	  certain return type, use -errorWithFormat: when appropriate (v5.3.69)
+     2006-01-14  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile.preamble: link against NGiCal to make the OSX linker
+     	  happy (v5.3.68)
+     2005-10-18  Helge Hess  <helge.hess@opengroupware.org>
+     	* XmlRpcCoding.subproj/SkyPersonDocument+XmlRpcCoding.m: do not encode
+     	  middlename twice (OGo bug #1598) (v5.3.67)
+changed: Tools/
+     2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* added ogo-prop-set tool
+     2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+     	* added ogo-prop-list tool
+added:   Tools/ogo-prop-list.m
+added:   Tools/ogo-prop-set.m
+added:   WebUI/RegUI
+changed: WebUI/Contact/PersonsUI/
+     2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoPersonQCreatePanel.m: properly refresh appointment editor if the
+     	  save operation was successful (v5.3.59)
+     2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.58
+     	* added OGoPersonQCreatePanel for creating person records in a separate
+     	  HTML panel
+     	* SkyPersonViewer.m, SkyPersonEditor.m: code cleanups
+     2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.57
+     	* SkyPersonViewer.m: show all configured form letter types
+     2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.56
+     	* SkyPersonViewer.m: removed code for formletter downloads (now in
+     	  OGoFormLetterAction)
+     	* LSWPersonAdvancedSearch.m, SkyPersonViewer.m: removed usage of
+     	  SkyPersonAddressConverterDataSource class
+     2005-10-14  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWAddressFunctions.m: minor code cleanups (v5.3.55)
+added:   WebUI/Contact/PersonsUI/OGoPersonQCreatePanel.m
+changed: WebUI/Contact/AddressUI/
+     2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyBusinessCardGathering.m: minor code cleanups (v5.3.54)
+     2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWFormLetterComponent.m: code cleanups (v5.3.53)
+     2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+     	* added OGoFormLetterAction (v5.3.52)
+added:   WebUI/Contact/AddressUI/OGoFormLetterAction.m
+changed: WebUI/Contact/EnterprisesUI/
+     2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.36
+     	* SkyEnterpriseViewer.m: removed code for formletter downloads
+     	  (now in OGoFormLetterAction)
+     	* LSWEnterpriseAdvancedSearch.m, SkyEnterpriseViewer.m: removed usage
+     	  of SkyEnterpriseAddressConverterDataSource class
+changed: WebUI/Resources/
+     2006-01-31  Helge Hess  <helge.hess@opengroupware.org>
+     	* English|German.lproj/LSWScheduler.strings: added 'formletter' label
+     	  for the formletter-download section in the apt-viewer
+     2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* English|German.lproj/PersonsUI.strings: added 'qcreate_panel_title'
+     	  label (title of new contact quick create panel)
+     2006-01-16  Helge Hess  <helge.hess@opengroupware.org>
+     	* English.lproj/LSWScheduler.strings: fixed wording in 14_daily and
+     	  4_weekly labels
+     2005-12-14  Albrecht Dress  <albrecht.dress@lios-tech.com>
+     	* German.lproj/OGoWebMail.strings: replaced entities with utf-8 chars
+     	  (fixes OGo bug #1632)
+     2005-11-18  Helge Hess  <helge.hess@opengroupware.org>
+     	* English|German.lproj/RelatedLinksUI.strings: added label key
+     	  'linkType_clipprefix' used in the link-creation popup, updated
+     	  'note_nolinksconfigured' label
+     2005-11-08  Helge Hess  <helge.hess@skyrix.com>
+     	* English|German.lproj/OGoMailEditor.strings: added label
+     	  multiple_searchresults
+     2005-10-14  Helge Hess  <helge.hess@skyrix.com>
+     	* German.lproj/SkyProject4.strings: cleanups
+     2005-10-13  Helge Hess  <helge.hess@skyrix.com>
+     	* English|German.lproj/RegUI.strings: added OGoRegPage and Registration
+     	  keys
+     2005-10-12  Helge Hess  <helge.hess@skyrix.com>
+     	* English|German.lproj: prepared RegUI string files
+changed: WebUI/Resources/ptBR.lproj/
+     2005-12-29 Olivier Hallot (olivier@ig.com.br>
+     	* Updates in translations, minor corrections
+     2005-11-05 Olivier Hallot (olivier@ig.com.br>
+     	* Updates in translations, removal of //comments
+     2005-10-17 Olivier Hallot (olivier@ig.com.br>
+             * Added RegUI strings
+added:   WebUI/Resources/ptBR.lproj/RegUI.strings
+added:   WebUI/Resources/English.lproj/RegUI.strings
+added:   WebUI/Resources/German.lproj/RegUI.strings
+changed: WebUI/Scheduler/LSWScheduler/
+     2006-01-31  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.101
+     	* OGoAttendeeSelection.m: properly add newly created contacts to
+     	  attendee list
+     	* OGoUserSelectionComponent.m: code cleanups
+     	* LSWAppointmentViewer.m: properly generate links to formletter
+     	  download action if one was defined (v5.3.100)
+     2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
+     	* Defaults.plist, LSWAppointmentViewer.m, LSWAppointmentEditor.m:
+     	  changed default name from 'OGoPrivateExtendedAptAttributes' to
+     	  'OGoExtendedAptAttributes' as requested in OGo bug #1673 (v5.3.99)
+     	* OGoUserSelectionComponent.m: added code to refresh the selection if
+     	  a new contact was created in the quick panel (v5.3.98)
+     2006-01-28  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWAppointmentEditor.m: fixed an incorrect warning about a missing
+     	  access team (v5.3.97)
+     	* LSWAppointmentEditor.m: added support for editing custom attibutes
+     	  (v5.3.96)
+     2006-01-23  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.95
+     	* SkyAptTypeSelection.m: use -isNotEmpty to avoid [NSNull length] calls
+     	  on MacOSX
+     	* LSWAppointmentViewer.m: code cleanups, added check whether an extattr
+     	  specification is configured prior using extattr viewer (keep speed
+     	  for non-extattr users)
+     2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWAppointmentViewer.m: prepared support for extended attributes on
+     	  events (v5.3.94)
+     2005-10-18  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWAppointmentProposal.m: code cleanups, ensure that the participants
+     	  array is filled (OGo bug #1591) (v5.3.93)
+changed: WebUI/Scheduler/OGoSchedulerViews/
+     2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyInlineAptDataSourceView.m: fixed a crasher in a command call
+     	  (occurred during IE DnD of an appointment) (v5.3.52)
+     2005-11-30  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyInlineDayOverview.m: code cleanups (v5.3.51)
+changed: WebUI/Scheduler/OGoScheduler/
+     2006-02-03  Helge Hess  <helge.hess@opengroupware.org>
+     	* Defaults.plist: fixed gender field in WinWord formletter type
+     	  (v5.3.49)
+     2006-01-31  Helge Hess  <helge.hess@opengroupware.org>
+     	* Defaults.plist: fixed addresses in OOo formletter format (v5.3.48)
+     	* OGoAptFormLetter.m: adjust timezone of date fields to the session
+     	  timezone, localize sex/salutation fields using PersonsUI.strings,
+     	  sort result set by lastname/name (v5.3.47)
+     	* v5.3.46
+     	* OGoAptFormLetter.m: finished pattern replacer
+     	* Defaults.plist: added example form letter definitions
+     2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
+     	* started OGoAptFormLetter class (v5.3.45)
+added:   WebUI/Scheduler/OGoScheduler/OGoAptFormLetter.m
+changed: WebUI/Main/
+     2006-01-31  Helge Hess  <helge.hess@opengroupware.org>
+     	* WODirectAction+LoginAction.m: minor improvement in JavaScript
+     	  detection (v5.3.81)
+     2005-10-13  Helge Hess  <helge.hess@skyrix.com>
+     	* OpenGroupware.m: trigger OGoStringTableManager to detect translations
+     	  on startup (v5.3.80)
+changed: WebUI/Templates/
+     2006-01-31  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWScheduler/LSWAppointmentEditor.wox: properly pass the JavaScript
+     	  callback to the OGoAttendeeSelection
+     2006-01-23  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWScheduler/LSWAppointmentViewer.wox: use SkyObjectPropertyViewer
+     	  to show extended appointment attributes
+     2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* PersonsUI/SkyPersonViewer.wod: show all configured form letter types
+     2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+     	* EnterprisesUI/SkyEnterpriseViewer.wod (FormLetterLink),
+     	  PersonsUI/SkyPersonViewer.wod (FormLetterLink): use new direct action
+     	  'OGoFormLetterAction' for formletter and vCard download link
+     2005-11-18  Helge Hess  <helge.hess@opengroupware.org>
+     	* BaseUI/SkyFavorites: rewritten as WOx template
+     2005-11-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWProject/LSWProjectEditor.html: removed 'f' permission from project
+     	  editor (OGo bug #1603)
+     2005-10-12  Helge Hess  <helge.hess@skyrix.com>
+     	* prepared RegUI templates
+added:   WebUI/Templates/RegUI
+added:   WebUI/Templates/PersonsUI/OGoPersonQCreatePanel.wox
+added:   WebUI/Templates/PersonsUI/GNUmakefile
+added:   WebUI/Templates/BaseUI/SkyFavorites.wox
+added:   WebUI/Templates/BaseUI/GNUmakefile
+removed: WebUI/Templates/BaseUI/SkyFavorites.wod
+removed: WebUI/Templates/BaseUI/SkyFavorites.html
+changed: WebUI/Templates/JobUI/
+     2006-01-17  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyAssignProjectToJobEditor: rewritten as WOx template
+added:   WebUI/Templates/JobUI/LSWJobViewer.wox-notyet
+added:   WebUI/Templates/JobUI/GNUmakefile
+added:   WebUI/Templates/JobUI/SkyAssignProjectToJobEditor.wox
+removed: WebUI/Templates/JobUI/SkyAssignProjectToJobEditor.wod
+removed: WebUI/Templates/JobUI/SkyAssignProjectToJobEditor.html
+added:   WebUI/Templates/PropertiesUI/SkyObjectPropertyViewer.wox-notyet
+changed: WebUI/Mailer/OGoWebMail/
+     2005-11-08  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyImapMailPrintViewer.m, LSWMailPreferences.m,
+     	  LSWImapMailFolderMove.m: fixed some gcc4
+     	  warnings, minor code cleanups (v5.3.105)
+changed: WebUI/Mailer/OGoMailEditor/
+     2005-11-08  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoMailAddressSearch.m: added ability to show a warning in the popup
+     	  in case a search resulted in more than one email address. This
+     	  behaviour can be enabled using the default
+     	  "OGoMailAddressSearch_ShowMultiResultsWarning" (v5.3.10)
+changed: WebUI/Common/BaseUI/
+     2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyListView.m: code cleanups, improved NSNull stability (v5.3.123)
+     2006-01-28  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWObjectEditor.m: consolidated object property access in separate
+     	  methods, added 'namespace' binding to access dictionaries with XML
+     	  style FQN keys (like SkyObjectPropertyManager dicts) (v5.3.122)
+     2006-01-22  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoElemBuilder.m: added support for dynamic 'label' attributes in
+     	  <attribute> tag (v5.3.121)
+     2006-01-17  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWObjectEditor.m: code cleanups (v5.3.120)
+     2006-01-17  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyObjectValue.m, SkyObjectField.m, OGoElemBuilder.m: code cleanups
+     	  (v5.3.119)
+     2005-11-21  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyFavorites.m: properly include common.h (v5.3.118)
+     2005-11-18  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyFavorites.m: minor code cleanups (v5.3.117)
+     2005-10-18  Helge Hess  <helge.hess@skyrix.com>
+     	* v5.3.116
+     	* WODirectAction+SkyDock: prepared a 'dock key' based page activation
+     	* SkyDock.m: minor code cleanups
+     2005-10-13  Helge Hess  <helge.hess@skyrix.com>
+     	* Defaults.plist: registration page is now the first dock entry
+     	  (v5.3.115)
+changed: WebUI/Common/RelatedLinksUI/
+     2005-11-18  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoObjectLinkList.m: added ability to create generic links using the
+     	  clipboard (v5.3.10)
+changed: WebUI/Common/PropertiesUI/
+     2006-01-23  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.12
+     	* SkyObjectPropertyViewer.m: prepared attributes support
+     	* v5.3.11
+     	* SkyObjectPropertyEditor.m: prepared attributes support
+     	* started OGoObjPropInlineEditor.m
+     2006-01-22  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyObjectPropertyViewer.m: added binding to disable generation of
+     	  table (v5.3.10)
+added:   WebUI/Common/PropertiesUI/OGoObjPropInlineEditor.m
+changed: WebUI/OGoFoundation/
+     2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoSession.m: disabled some -takeValues:.. consistency checks when
+     	  the session is triggered with a direct action (v5.3.98)
+     2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoStringTableManager.m: use -isNotEmpty, minor code cleanups
+     	  (v5.3.97)
+     2006-01-11  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSWLabelHandler.m: deal gracefully with NSNull keys (v5.3.96)
+     2005-11-21  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoSession.m: fixed a warning (v5.3.95)
+     2005-11-18  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoClipboard.m: deprecated -containsObjects (use -isNotEmpty)
+     	  (v5.3.94)
+     	* OGoClipboard.m: added -isNotEmpty (v5.3.93)
+     2005-10-14  Helge Hess  <helge.hess@skyrix.com>
+     	* OGoSession.m: minor code clenaups (v5.3.92)
+changed: WebUI/PreferencesUI/
+     2006-02-06  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyDefaultEditField.m: fixed a small issue on OSX 10.3 (v5.3.42)
+     2005-10-18  Helge Hess  <helge.hess@skyrix.com>
+     	* SkyDisplayPreferences.m: minor code cleanups (v5.3.41)
+     2005-10-14  Helge Hess  <helge.hess@skyrix.com>
+     	* LSWPreferencesViewer.m: minor code cleanups (v5.3.40)
+changed: WebUI/Project/OGoProject/
+     2005-11-21  Helge Hess  <helge.hess@skyrix.com>
+     	* removed use of deprecated DocumentAPI methods, fixed gcc4 warnings
+     	  (v5.3.69)
