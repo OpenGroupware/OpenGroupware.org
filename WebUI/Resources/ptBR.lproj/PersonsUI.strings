@@ -310,6 +310,7 @@ projects                      = "Projetos";
 prospect_category             = "Categoria";
 prospect_category_other       = "Categoria (Outra)";
 purchased_product             = "Compra do produto";
+qcreate_panel_title           = "OGo: Novo contato";
 qualification                 = "Qualificação";
 readonly                      = "Somente leitura";
 readonlyLabel                 = "Somente leitura";

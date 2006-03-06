@@ -9,6 +9,7 @@ calendarPopupEndDate    = "Localizar data de finalização";
 calendarPopupStartDate  = "Localizar data de início";
 cancel                  = "Cancelar";
 clearErrorString        = "Limpar";
+clipboard		= "Clipboard: ";
 creationDate            = "Data";
 delete                  = "Excluir";
 deselectAll             = "De-selecionar tudo";

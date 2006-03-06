@@ -234,6 +234,7 @@ filteredForLabel       = "Filtrado para:";
 firstMay               = "Primeiro de Maio";
 footerRowLabel1        = "OpenGroupware.org";
 footerRowLabel2        = "2000-2005 SKYRIX Software AG";
+formletter             = "Mala direta";
 forSeveralDays         = "presente por vários dias";
 forward                = "Encaminhar";
 fromLabel              = "De";
