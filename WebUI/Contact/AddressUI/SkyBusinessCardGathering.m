@@ -204,6 +204,7 @@ static NSArray *typeOrderings = nil;
   ma = [self categories];
   if (self->categoryIndex >= [self categoryCount]) {
     NSLog(@"WARNING[%s]: invalid category index: %d [count: %d]",
+	  __PRETTY_FUNCTION__,
           self->categoryIndex, [self categoryCount]);
     return;
   }
@@ -585,7 +586,7 @@ static NSArray *typeOrderings = nil;
 
 /* KVC */
 
-- (void)takeValue:(id)_val forKey:(id)_key {
+- (void)takeValue:(id)_val forKey:(NSString *)_key {
   if ([_key isEqualToString:@"presetGatheringPerson"]) {
     [self presetGatheringPerson:_val];
     return;
