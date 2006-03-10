@@ -42,6 +42,18 @@
 
 @implementation SkyEnterpriseEditor
 
+static BOOL OGoEnterpriseEditor_PreselectPrivateCheckbox  = NO;
+static BOOL OGoEnterpriseEditor_PreselectReadonlyCheckbox = NO;
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+
+  OGoEnterpriseEditor_PreselectPrivateCheckbox  =
+    [ud boolForKey:@"OGoEnterpriseEditor_PreselectPrivateCheckbox"];
+  OGoEnterpriseEditor_PreselectReadonlyCheckbox = 
+    [ud boolForKey:@"OGoEnterpriseEditor_PreselectReadonlyCheckbox"];
+}
+
 - (void)dealloc {
   [self->addressType release];
   [super dealloc];
@@ -60,11 +72,25 @@
   if (!r) return NO;
   
   if (![[self object] isKindOfClass:[SkyDocument class]]) {
-    id obj = [[self object] globalID];
+    id obj;
+
+    obj = [[self object] globalID];
     obj = [self runCommand:@"object::get-by-globalid", @"gid", obj, nil];
     obj = [obj lastObject];
     [self setObject:obj];
   }
+
+  if ([self isInNewMode]) {
+    if (OGoEnterpriseEditor_PreselectPrivateCheckbox) {
+      [[self object] takeValue:[NSNumber numberWithBool:YES]
+		     forKey:@"isPrivate"];
+    }
+    if (OGoEnterpriseEditor_PreselectReadonlyCheckbox) {
+      [[self object] takeValue:[NSNumber numberWithBool:YES]
+		     forKey:@"isReadonly"];
+    }
+  }
+
   return r;
 }
 

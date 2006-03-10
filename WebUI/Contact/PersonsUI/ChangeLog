@@ -1,3 +1,11 @@
+2006-03-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyPersonEditor.m: added two defaults:
+	  OGoPersonEditor_PreselectReadonlyCheckbox,
+	  OGoPersonEditor_PreselectPrivateCheckbox
+	  to control the readonly and private checkboxes when the editor is
+	  invoked to create a new contact (v5.3.60)
+
 2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoPersonQCreatePanel.m: properly refresh appointment editor if the

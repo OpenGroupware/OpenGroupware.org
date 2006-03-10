@@ -21,6 +21,12 @@
 
 #include <OGoFoundation/SkyEditorPage.h>
 
+/*
+  SkyPersonEditor
+  
+  TODO: document
+*/
+
 @class NSString, NSData;
 
 @interface SkyPersonEditor : SkyEditorPage
@@ -49,6 +55,18 @@
 
 @implementation SkyPersonEditor
 
+static BOOL OGoPersonEditor_PreselectPrivateCheckbox  = NO;
+static BOOL OGoPersonEditor_PreselectReadonlyCheckbox = NO;
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+
+  OGoPersonEditor_PreselectPrivateCheckbox  =
+    [ud boolForKey:@"OGoPersonEditor_PreselectPrivateCheckbox"];
+  OGoPersonEditor_PreselectReadonlyCheckbox = 
+    [ud boolForKey:@"OGoPersonEditor_PreselectReadonlyCheckbox"];
+}
+
 - (void)dealloc {
   [self->pictureFilePath release];
   [self->pictureData     release];
@@ -68,7 +86,11 @@
   r = [super prepareForActivationCommand:_command
 	     type:_type configuration:_cfg];
   
+  // TODO: shouldn't we return here if the superclass said no?
+  
   if (![[self object] isKindOfClass:[SkyDocument class]]) {
+    id obj;
+    
     obj = [[self object] globalID];
     obj = [self runCommand:@"object::get-by-globalid", @"gid", obj, nil];
     obj = [obj lastObject];
@@ -80,6 +102,17 @@
   if ([obj respondsToSelector:@selector(setBirthday:)] &&
       ![[obj valueForKey:@"birthday"] isNotNull]) {
     [obj setBirthday:(id)[EONull null]];
+  }
+  
+  if ([self isInNewMode]) {
+    if (OGoPersonEditor_PreselectPrivateCheckbox) {
+      [[self object] takeValue:[NSNumber numberWithBool:YES]
+		     forKey:@"isPrivate"];
+    }
+    if (OGoPersonEditor_PreselectReadonlyCheckbox) {
+      [[self object] takeValue:[NSNumber numberWithBool:YES]
+		     forKey:@"isReadonly"];
+    }
   }
   
   return r;

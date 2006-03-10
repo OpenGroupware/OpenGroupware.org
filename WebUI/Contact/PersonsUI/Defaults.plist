@@ -28,4 +28,11 @@
   );
   
   OGoPersonLinksEnabled = YES;
+  
+  /*
+    Whether the person edit panel presets the private and readonly checkbox if
+    its used to create a new contact.
+  */
+  OGoPersonEditor_PreselectPrivateCheckbox  = NO;
+  OGoPersonEditor_PreselectReadonlyCheckbox = NO;
 }
