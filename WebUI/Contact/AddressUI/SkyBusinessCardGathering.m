@@ -203,8 +203,9 @@ static NSArray *typeOrderings = nil;
   
   ma = [self categories];
   if (self->categoryIndex >= [self categoryCount]) {
-    NSLog(@"WARNING[%s]: invalid category index: %d [count: %d]",
-          self->categoryIndex, [self categoryCount]);
+    [self warnWithFormat:@"%s: invalid category index: %d [count: %d]",
+	  __PRETTY_FUNCTION__,
+          self->categoryIndex, [self categoryCount]];
     return;
   }
   [ma replaceObjectAtIndex:self->categoryIndex
