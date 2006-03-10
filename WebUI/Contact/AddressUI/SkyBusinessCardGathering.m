@@ -28,6 +28,8 @@
 
 @implementation SkyBusinessCardGathering
 
+static BOOL OGoCardGathering_CreateContactsAsPrivate  = NO;
+static BOOL OGoCardGathering_CreateContactsAsReadonly = NO;
 static BOOL    debugOn = NO;
 static NSArray *typeOrderings = nil;
 
@@ -37,12 +39,19 @@ static NSArray *typeOrderings = nil;
   if (typeOrderings == nil) {
     EOSortOrdering *to;
     
-    to = [EOSortOrdering sortOrderingWithKey:@"type" 
-			 selector:EOCompareAscending];
+    to = [[EOSortOrdering alloc] initWithKey:@"type" 
+				 selector:EOCompareAscending];
     typeOrderings = [[NSArray alloc] initWithObjects:&to count:1];
+    [to release]; to = nil;
   }
   
-  debugOn = [ud boolForKey:@"OGoCardGatheringDebugEnabled"];
+  if ((debugOn = [ud boolForKey:@"OGoCardGatheringDebugEnabled"]))
+    NSLog(@"Note(SkyBusinessCardGathering): debugging is enabled!");
+  
+  OGoCardGathering_CreateContactsAsPrivate  =
+    [ud boolForKey:@"OGoCardGathering_CreateContactsAsPrivate"];
+  OGoCardGathering_CreateContactsAsReadonly = 
+    [ud boolForKey:@"OGoCardGathering_CreateContactsAsReadonly"];
 }
 
 /* defaults */
@@ -402,6 +411,15 @@ static NSArray *typeOrderings = nil;
   ownerId = [[[self session] activeAccount] valueForKey:@"companyId"];
   [self->gatheringPerson takeValue:ownerId forKey:@"ownerId"];
   
+  if (OGoCardGathering_CreateContactsAsPrivate) {
+    [self->gatheringPerson 
+	 takeValue:[NSNumber numberWithBool:YES] forKey:@"isPrivate"];
+  }
+  if (OGoCardGathering_CreateContactsAsReadonly) {
+    [self->gatheringPerson 
+	 takeValue:[NSNumber numberWithBool:YES] forKey:@"isReadonly"];
+  }
+  
   /* extended records */
   
   [self applyPhonesOnGatheringPerson];
@@ -471,12 +489,28 @@ static NSArray *typeOrderings = nil;
        setObject:[self->gatheringPerson objectForKey:@"keywords"]
        forKey:@"keywords"];
   
+  /* set owner */
+  
   loginId = [[[self session] activeAccount] valueForKey:@"companyId"];
   [self->gatheringCompany setObject:loginId forKey:@"ownerId"];
+
+  if (OGoCardGathering_CreateContactsAsPrivate) {
+    [self->gatheringCompany 
+	 takeValue:[NSNumber numberWithBool:YES] forKey:@"isPrivate"];
+  }
+  if (OGoCardGathering_CreateContactsAsReadonly) {
+    [self->gatheringCompany
+	 takeValue:[NSNumber numberWithBool:YES] forKey:@"isReadonly"];
+  }
+  
+  /* set contact */
+
   [self->gatheringCompany 
        setObject:
 	 ([self shouldUseLoginAsCompanyContact] ? loginId : (id)[EONull null])
-       forKey:@"contactId"];    
+       forKey:@"contactId"];
+  
+  /* create using command */
   
   company = [self _createEnterpriseWithParameters:self->gatheringCompany];
   [self postEnterpriseCreated:company];
@@ -560,6 +594,8 @@ static NSArray *typeOrderings = nil;
 }
 
 - (id)cancel {
+  // TODO: can't we return the result of -leavePage? 'nil' usually means
+  //       that we stay on the page ...
   [self leavePage];
   return nil;
 }
@@ -567,15 +603,17 @@ static NSArray *typeOrderings = nil;
 /* accessor */
 
 - (void)presetGatheringPerson:(id)_person {
-  NSDictionary *values = nil;
+  // TODO: what is this used for?
+  NSDictionary *values;
   
-  if ([_person isKindOfClass:[SkyPersonDocument class]]) {
+  if ([_person isKindOfClass:[SkyPersonDocument class]])
     values = [_person asDict];
-  }
   else if ([_person isKindOfClass:[NSDictionary class]])
     values = _person;
-
-  if (values != nil)
+  else
+    values = nil;
+  
+  if ([values isNotNull])
     [self->gatheringPerson addEntriesFromDictionary:values];
   else {
     [self logWithFormat:@"%s: unable to preset values from object: %@ (%@)",
@@ -586,7 +624,7 @@ static NSArray *typeOrderings = nil;
 
 /* KVC */
 
-- (void)takeValue:(id)_val forKey:(id)_key {
+- (void)takeValue:(id)_val forKey:(NSString *)_key {
   if ([_key isEqualToString:@"presetGatheringPerson"]) {
     [self presetGatheringPerson:_val];
     return;

@@ -24,6 +24,13 @@
 
 #include <OGoFoundation/OGoContentPage.h>
 
+/*
+  SkyBusinessCardGathering
+
+  This page is a small editor which can be used to create a person and a
+  connected enterprise in one run.
+*/
+
 @class NSMutableDictionary, NSMutableArray, NSString;
 
 @interface SkyBusinessCardGathering : OGoContentPage

@@ -574,4 +574,11 @@
   );
 
   OGoCardGatheringDebugEnabled = NO;
+
+  /*
+    Whether the gathering panel creates the person/company as private and/or
+    readonly.
+  */
+  OGoCardGathering_CreateContactsAsPrivate  = NO;
+  OGoCardGathering_CreateContactsAsReadonly = NO;
 }
