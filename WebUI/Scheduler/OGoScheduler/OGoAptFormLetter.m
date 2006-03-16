@@ -140,7 +140,7 @@ static NSArray *aptKeys    = nil;
 /* derive binding dictionary from a record */
 
 - (NSString *)calendarFormatForKey:(NSString *)_key {
-  id df;
+  NSDictionary *df;
   
   df = [self dateFormat];
   if ([df isKindOfClass:[NSDictionary class]]) {
@@ -199,6 +199,7 @@ static NSArray *aptKeys    = nil;
 }
 
 - (void)applyBindingsForCompany:(id)_company ofAppointment:(id)_aptEO
+  withProperties:(NSDictionary *)_aptProps
   onDictionary:(NSMutableDictionary *)_md
 {
   WOResourceManager *rm;
@@ -237,6 +238,15 @@ static NSArray *aptKeys    = nil;
   while ((address = [e nextObject]) != nil)
     [self applyBindingsOfAddress:address onDictionary:_md];
   
+  /* appointment props */
+  
+  e = [_aptProps keyEnumerator];
+  while ((key = [e nextObject]) != nil) {
+    [_md setObject:
+	   [self stringValueForObject:[_aptProps objectForKey:key] ofKey:key]
+	 forKey:[key xmlLocalName]];
+  }
+
   /* appointment EO */
   
   d = [_aptEO valuesForKeys:aptKeys];
@@ -329,6 +339,7 @@ static int sortContact(id eo1, id eo2, void *ctx) {
 }
 
 - (void)appendAttendees:(NSArray *)_contacts ofAppointment:(id)_aptEO
+  withProperties:(NSDictionary *)_aptProps
   toResponse:(WOResponse *)_r
 {
   NSMutableDictionary *bindings;
@@ -359,7 +370,7 @@ static int sortContact(id eo1, id eo2, void *ctx) {
     [bindings removeAllObjects];
     
     [self applyBindingsForCompany:companyEO
-	  ofAppointment:_aptEO
+	  ofAppointment:_aptEO withProperties:_aptProps
 	  onDictionary:bindings];
     [self appendLine:[self linePattern] withBindings:bindings toResponse:_r];
     
@@ -370,8 +381,9 @@ static int sortContact(id eo1, id eo2, void *ctx) {
 /* actions */
 
 - (id<WOActionResults>)defaultAction {
-  WOResponse *r;
-  NSString   *s;
+  WOResponse   *r;
+  NSString     *s;
+  NSDictionary *aptProps;
   id apt;
 
   /* setup environment */
@@ -405,6 +417,11 @@ static int sortContact(id eo1, id eo2, void *ctx) {
   apt = [self->cmdctx runCommand:@"appointment::get-by-globalid",
 	     @"gid", self->gid, nil];
   
+  aptProps =
+    [[self->cmdctx propertyManager] propertiesForGlobalID:
+				      [apt valueForKey:@"globalID"]
+				    namespace:XMLNS_OGoExtAttrPropNamespace];
+  
   /* generate response */
   
   r = [[self context] response];
@@ -413,7 +430,7 @@ static int sortContact(id eo1, id eo2, void *ctx) {
   [self appendLine:[self preamble] withBindings:nil toResponse:r];
   
   [self appendAttendees:[apt valueForKey:@"participants"] 
-	ofAppointment:apt
+	ofAppointment:apt withProperties:aptProps
 	toResponse:r];
   
   [self appendLine:[self postamble] withBindings:nil toResponse:r];

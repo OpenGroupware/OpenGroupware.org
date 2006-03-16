@@ -39,4 +39,9 @@
 - (EOGlobalID *)globalID;
 @end
 
+#ifndef XMLNS_OGoExtAttrPropNamespace
+#  define XMLNS_OGoExtAttrPropNamespace \
+     @"http://www.opengroupware.org/properties/ext-attr"
+#endif
+
 #endif /* __OGoScheduler_common_H__ */

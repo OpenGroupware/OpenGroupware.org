@@ -1,3 +1,8 @@
+2006-03-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoAptFormLetter.m: added ability to reference extended appointment
+	  properties from formletter definitions (v5.3.50)
+
 2006-02-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Defaults.plist: fixed gender field in WinWord formletter type
