@@ -312,6 +312,15 @@
   
   return (projectDS != nil) ? [projectDS fetchObjects] : [NSArray array];
 }
+- (NSArray *)enterprise_getAllProjectsAction:(id)_arg {
+  SkyEnterpriseDocument *enterprise;
+  EODataSource          *projectDS;
+
+  enterprise = [self _getEnterpriseByArgument:_arg];
+  projectDS  = [enterprise allProjectsDataSource];
+  
+  return (projectDS != nil) ? [projectDS fetchObjects] : [NSArray array];
+}
 
 - (id)enterprise_deletePersonAction:(id)_arg:(id)_person {
   SkyEnterpriseDocument *enterprise = nil;
@@ -362,8 +371,6 @@
 
   if ((tmp = [self getDocumentByArgument:_arg]) != nil)
     return tmp;
-  if ([_arg respondsToSelector:@selector(stringValue)])
-    return [self _getEnterpriseByNumber:[_arg stringValue]]; 
   
   if ([_arg isKindOfClass:[NSDictionary class]]) {
     if ((tmp = [(NSDictionary *)_arg objectForKey:@"id"]) != nil)
@@ -377,7 +384,10 @@
   
   if ([_arg isKindOfClass:[SkyEnterpriseDocument class]])
     return _arg;
-
+  
+  if ([_arg isKindOfClass:[NSString class]])
+    return [self _getEnterpriseByNumber:[_arg stringValue]]; 
+  
   return nil;
 }
 

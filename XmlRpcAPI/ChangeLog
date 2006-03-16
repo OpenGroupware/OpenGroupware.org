@@ -1,3 +1,12 @@
+2006-03-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Enterprise.m: fixed incorrect handling
+	  of enterprise arguments (always used _getEnterpriseByNumber to
+	  lookup enterprise objects),
+	  added new method enterprise.getAllProjects which includes fake
+	  projects in the resultset
+	  (v5.3.70)
+
 2006-01-25  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Actions.subproj/DirectAction+Enterprise.m: fixed handling of a
