@@ -1,3 +1,8 @@
+2006-03-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSMailDeliverCommand.m: improved error logging if popen call to
+	  sendmail fails (v5.2.15)
+
 2005-04-27  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSMailDeliverCommand.m: deprecated 'SendmailPath' default in favor of

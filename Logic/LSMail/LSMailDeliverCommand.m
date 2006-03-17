@@ -561,7 +561,8 @@ static EONull *null = nil;
 
 - (void)_logMailSend:(NSString *)sendmail {
   fprintf(stderr, "%s \n", [sendmail cString]);
-
+  fflush(stderr);
+  
   if (self->mimeData == nil) {
     fprintf(stderr, "read data from %s\n", [self->messageTmpFile cString]);
     return;
@@ -642,8 +643,13 @@ static EONull *null = nil;
   }
   
   if (self->mimeData == nil && self->messageTmpFile == nil) {
-    if (![self _generateTemporaryFileForPart])
+    if (![self _generateTemporaryFileForPart]) {
+      fprintf(stderr, 
+	      "ERROR(%s): failed to generate tmpfile for mail!",
+	      __PRETTY_FUNCTION__);
+      fflush(stderr);
       return;
+    }
     
     deleteTmp = keepTmpFiles ? NO : YES;
     if (!deleteTmp)
@@ -688,7 +694,17 @@ static EONull *null = nil;
   }
   
   if ((toMail = popen([sendmail cString], "w")) == NULL) {
+    fprintf(stderr, 
+	    "ERROR(%s): failed to invoke sendmail process.\n"
+	    "  commandline: '%s'\n"
+	    "  errno %i: '%s'\n",
+	    __PRETTY_FUNCTION__, [sendmail cString], errno, strerror(errno));
+    fflush(stderr);
+    
     if (deleteTmp) [self _removeMailTmpFile];
+    
+    [NSException raise:@"LSMailDeliveryException"
+		 format:@"Failed to invoke mail delivery program!"];
     return;
   }
     
