@@ -593,7 +593,7 @@ static EONull *null = nil;
     str = [NSString stringWithFormat:@"NoExecutableSendmailBinary %@",
 		    sendMailPath];
     [self logWithFormat:@"%@ is no executable file", sendmail];
-
+    
     [self setReturnValue:[self _errorExceptionWithReason:str]];
     return;
   }
@@ -687,6 +687,16 @@ static EONull *null = nil;
   }
   
   if ((toMail = popen([sendmail cString], "w")) == NULL) {
+    [self errorWithFormat:
+	    @"%s: failed to invoke sendmail process.\n"
+	    @"  commandline: '%s'\n"
+	    @"  errno %i: '%s'",
+	    __PRETTY_FUNCTION__, [sendmail cString], errno, strerror(errno)];
+    
+    [self setReturnValue:
+	    [self _errorExceptionWithReason:
+		    @"Failed to invoke mail delivery program!"]];
+    
     if (deleteTmp) [self _removeMailTmpFile];
     return;
   }

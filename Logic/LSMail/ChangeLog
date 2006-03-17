@@ -1,3 +1,9 @@
+2006-03-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSMailDeliverCommand.m: added error log in case the popen() call in
+	  the message delivery fails. Sets an exception as the return value.
+	  (v5.3.15)
+
 2005-04-27  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSMailDeliverCommand.m: deprecated 'SendmailPath' default in favor of
