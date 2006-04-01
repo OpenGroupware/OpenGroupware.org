@@ -175,7 +175,7 @@
   schedulerformletter_aptkeys = (
     startDate, endDate, resourceNames, keywords, title, cycleEndDate,
     location, type, dateId, objectVersion, aptType, busyType, fbtype,
-    ownerId
+    ownerId, comment
   );
 
   OGoSchedulerFormLetterTypes = {

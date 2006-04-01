@@ -276,15 +276,16 @@ static NSArray *aptKeys    = nil;
   if ([_line isKindOfClass:[NSArray class]]) {
     /* special support for CSV */
     unsigned i, count;
-    NSString *fs, *quote;
+    NSString *fs, *ls, *quote;
     
     fs    = [self fieldSeparator];
+    ls    = [self lineSeparator];
     quote = [self quoteFields];
     
     for (i = 0, count = [_line count]; i < count; i++) {
       NSString *pat;
       
-      if (i > 0 && fs != nil)
+      if (i > 0 && [fs isNotEmpty])
 	[_r appendContentString:fs];
       
       pat = [_line objectAtIndex:i];
@@ -292,13 +293,36 @@ static NSArray *aptKeys    = nil;
 	pat = [pat stringByReplacingVariablesWithBindings:_bindings
 		   stringForUnknownBindings:@""];
       }
-
-      if (quote != nil) /* open quote */
+      
+      if ([quote isNotEmpty]) { /* open quote */
+	if ([pat rangeOfString:quote].length > 0) {
+	  /* we quote the quote with a backslash "a\"bc" */
+	  // TODO: we might want to have this configurable?
+	  pat = [pat stringByReplacingString:quote
+		     withString:[@"\\" stringByAppendingString:quote]];
+	}
+	
 	[_r appendContentString:quote];
+      }
       
-      if (pat != nil) [_r appendContentString:pat];
+      if (pat != nil) {
+	/* Note: if the content contains the field separator, use quotes! */
+	// TODO: we might want to add some escaping in addition?
+	if (![quote isNotEmpty]) {
+	  if ([pat rangeOfString:fs].length > 0) {
+	    [self warnWithFormat:
+		    @"found field separator in content, use quotes!"];
+	  }
+	  if ([pat rangeOfString:ls].length > 0) {
+	    [self warnWithFormat:
+		    @"found line separator in content, use quotes!"];
+	  }
+	}
+	
+	[_r appendContentString:pat];
+      }
       
-      if (quote != nil) /* close quote */
+      if ([quote isNotEmpty]) /* close quote */
 	[_r appendContentString:quote];
     }
   }

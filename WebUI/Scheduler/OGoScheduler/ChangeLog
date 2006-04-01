@@ -1,3 +1,12 @@
+2006-04-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.51
+
+	* Defaults.plist: added appointment 'comment' to default formletter
+	  fetch keys
+
+	* OGoAptFormLetter.m: improved quoting of CSV fields
+
 2006-03-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoAptFormLetter.m: added ability to reference extended appointment
