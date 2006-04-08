@@ -9,7 +9,7 @@ PORTVERSION=	1.1
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/opengroupware/
-DISTNAME=	opengroupware.org-trunk-r1453-200511121104
+DISTNAME=	opengroupware.org-trunk-r1572-200604011102
 
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	OpenGroupware suite
@@ -33,7 +33,7 @@ WRKSRC=		${WRKDIR}/opengroupware.org
 INSTALLS_SHLIB=	yes
 NO_FILTER_SHLIBS=	yes
 USE_OPENLDAP=	yes
-USE_RC_SUBR=	yes
+USE_RC_SUBR=	rcng/ogo-nhsd.sh rcng/ogo-webui.sh rcng/ogo-xmlrpcd.sh rcng/ogo-zidestore.sh
 USE_PGSQL=	yes
 DEFAULT_PGSQL_VER?=	80
 USE_GMAKE=	yes
@@ -50,6 +50,9 @@ TAR=	${LOCALBASE}/bin/gtar
 MAKE_ARGS+=	TAR=${TAR}
 .endif
 
+.if defined(SHOW_MESSAGES)
+MAKE_ARGS+=	messages=yes
+.endif
 .if defined(WITH_SOPE_44)
 BUILD_DEPENDS+=	${LOCALBASE}/sbin/sope-4.4:${PORTSDIR}/devel/sope44
 .endif
