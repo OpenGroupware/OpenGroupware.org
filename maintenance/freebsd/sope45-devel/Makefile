@@ -9,7 +9,7 @@ PORTVERSION=	4.5
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/sope/
-DISTNAME=	sope-trunk-r1173-200511091500
+DISTNAME=	sope-trunk-r1247-200604081100
 
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	SOPE is a framework for developing web applications and services
@@ -42,6 +42,9 @@ MAKE_ARGS=	debug=yes \
 		GNUSTEP_INSTALLATION_DIR=${PREFIX} \
 		FHS_INSTALL_ROOT=${PREFIX}
 
+.if defined(SHOW_MESSAGES)
+MAKE_ARGS+=	messages=yes
+.endif
 .if defined(WITH_LIBXML2) || !defined(WITHOUT_LIBXML2)
 MAKE_ARGS+=	HAS_LIBRARY_xml2=yes
 LIB_DEPENDS+=	xml2.5:${PORTSDIR}/textproc/libxml2

@@ -276,6 +276,7 @@ include/NGObjWeb/SoApplication.h
 include/NGObjWeb/SoClass.h
 include/NGObjWeb/SoClassRegistry.h
 include/NGObjWeb/SoClassSecurityInfo.h
+include/NGObjWeb/SoCookieAuthenticator.h
 include/NGObjWeb/SoComponent.h
 include/NGObjWeb/SoControlPanel.h
 include/NGObjWeb/SoDAV.h
@@ -297,6 +298,7 @@ include/NGObjWeb/SoPageInvocation.h
 include/NGObjWeb/SoPermissions.h
 include/NGObjWeb/SoProduct.h
 include/NGObjWeb/SoProductClassInfo.h
+include/NGObjWeb/SoProductLoader.h
 include/NGObjWeb/SoProductRegistry.h
 include/NGObjWeb/SoProductResourceManager.h
 include/NGObjWeb/SoSecurityException.h
@@ -477,7 +479,7 @@ lib/libDOM_d.so.4.5
 lib/libDOM_d.so.4.5.20
 lib/libEOControl_d.so
 lib/libEOControl_d.so.4.5
-lib/libEOControl_d.so.4.5.61
+lib/libEOControl_d.so.4.5.63
 lib/libGDLAccess_d.so
 lib/libGDLAccess_d.so.4.5
 lib/libGDLAccess_d.so.4.5.55
@@ -486,16 +488,16 @@ lib/libGDLContentStore_d.so.4.5
 lib/libGDLContentStore_d.so.4.5.35
 lib/libNGExtensions_d.so
 lib/libNGExtensions_d.so.4.5
-lib/libNGExtensions_d.so.4.5.176
+lib/libNGExtensions_d.so.4.5.182
 @unexec rm -f %D/lib/libNGLdap_d.so 2>/dev/null || true
 @unexec rm -f %D/lib/libNGLdap_d.so.4.5 2>/dev/null || true
-@unexec rm -f %D/lib/libNGLdap_d.so.4.5.26 2>/dev/null || true
+@unexec rm -f %D/lib/libNGLdap_d.so.4.5.28 2>/dev/null || true
 lib/libNGMime_d.so
 lib/libNGMime_d.so.4.5
-lib/libNGMime_d.so.4.5.236
+lib/libNGMime_d.so.4.5.240
 lib/libNGObjWeb_d.so
 lib/libNGObjWeb_d.so.4.5
-lib/libNGObjWeb_d.so.4.5.209
+lib/libNGObjWeb_d.so.4.5.225
 lib/libNGStreams_d.so
 lib/libNGStreams_d.so.4.5
 lib/libNGStreams_d.so.4.5.49
@@ -504,19 +506,19 @@ lib/libNGXmlRpc_d.so.4.5
 lib/libNGXmlRpc_d.so.4.5.13
 lib/libNGiCal_d.so
 lib/libNGiCal_d.so.4.5
-lib/libNGiCal_d.so.4.5.69
+lib/libNGiCal_d.so.4.5.73
 lib/libSaxObjC_d.so
 lib/libSaxObjC_d.so.4.5
-lib/libSaxObjC_d.so.4.5.52
+lib/libSaxObjC_d.so.4.5.54
 lib/libSoOFS_d.so
 lib/libSoOFS_d.so.4.5
 lib/libSoOFS_d.so.4.5.19
 lib/libWEExtensions_d.so
 lib/libWEExtensions_d.so.4.5
-lib/libWEExtensions_d.so.4.5.83
+lib/libWEExtensions_d.so.4.5.85
 lib/libWEPrototype_d.so
 lib/libWEPrototype_d.so.4.5
-lib/libWEPrototype_d.so.4.5.6
+lib/libWEPrototype_d.so.4.5.7
 lib/libWOExtensions_d.so
 lib/libWOExtensions_d.so.4.5
 lib/libWOExtensions_d.so.4.5.29
@@ -525,7 +527,7 @@ lib/libWOXML_d.so.4.5
 lib/libWOXML_d.so.4.5.8
 lib/libXmlRpc_d.so
 lib/libXmlRpc_d.so.4.5
-lib/libXmlRpc_d.so.4.5.25
+lib/libXmlRpc_d.so.4.5.27
 @unexec rm -f %D/lib/sope-4.5/dbadaptors/MySQL.gdladaptor/MySQL 2>/dev/null || true
 @unexec rm -f %D/lib/sope-4.5/dbadaptors/MySQL.gdladaptor/Resources/Info-gnustep.plist 2>/dev/null || true
 @unexec rm -f %D/lib/sope-4.5/dbadaptors/MySQL.gdladaptor/Resources/Version 2>/dev/null || true
