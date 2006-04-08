@@ -34,4 +34,8 @@ CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--with-local-root=${PREFIX} \
 		--without-system-root
 
+.if defined(SHOW_MESSAGES)
+MAKE_ARGS+=	messages=yes
+.endif
+
 .include <bsd.port.mk>

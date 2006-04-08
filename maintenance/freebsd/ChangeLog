@@ -1,3 +1,10 @@
+2006-04-08 Frank Reppin  <frank@opengroupware.org>
+
+	* updated to more recent trunk (ogo-libfoundation/ogo-libobjc-lf2)
+	* ogo-gnustep-make/Makefile -> SHOW_MESSAGES condition
+	* ogo-gnustep-make/pkg-plist -> conditional removal of libdata/ldconfig(32)
+	  (which both suddenly appeared...)
+
 2005-11-16 Frank Reppin  <frank@opengroupware.org>
 
 	* updated to more recent trunk (opengroupware-devel)

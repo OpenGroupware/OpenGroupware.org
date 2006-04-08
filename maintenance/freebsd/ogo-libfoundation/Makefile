@@ -5,12 +5,12 @@
 # $FreeBSD$
 
 PORTNAME=	libfoundation
-PORTVERSION=	1.0.78
+PORTVERSION=	1.0.84
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/thirdparty/ogo-libfoundation/
 PKGNAMEPREFIX=	ogo-
-DISTNAME=	libfoundation-trunk-r124-200508291710
+DISTNAME=	libfoundation-trunk-r137-200512061107
 
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	The libFoundation required by the OGo suite
@@ -24,7 +24,7 @@ DIST_SUBDIR=	ogo-suite
 
 SHLIB_MAJOR=	1
 SHLIB_MINOR=	0
-SHLIB_SUBMINOR=	78
+SHLIB_SUBMINOR=	84
 SHLIB_VERSION=	${SHLIB_MAJOR}.${SHLIB_MINOR}.${SHLIB_SUBMINOR}
 PLIST_SUB=	SHLIB_MAJOR=${SHLIB_MAJOR} \
 		SHLIB_MINOR=${SHLIB_MINOR} \
