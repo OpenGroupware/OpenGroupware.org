@@ -72,12 +72,10 @@ include/OGoContacts/SkyCompanyDataSource.h
 include/OGoContacts/SkyCompanyDocument.h
 include/OGoContacts/SkyCompanyProjectDataSource.h
 include/OGoContacts/SkyContactAddressDataSource.h
-include/OGoContacts/SkyEnterpriseAddressConverterDataSource.h
 include/OGoContacts/SkyEnterpriseDataSource.h
 include/OGoContacts/SkyEnterpriseDocument.h
 include/OGoContacts/SkyEnterprisePersonDataSource.h
 include/OGoContacts/SkyEnterpriseProjectDataSource.h
-include/OGoContacts/SkyPersonAddressConverterDataSource.h
 include/OGoContacts/SkyPersonDataSource.h
 include/OGoContacts/SkyPersonDocument.h
 include/OGoContacts/SkyPersonEnterpriseDataSource.h
@@ -249,10 +247,10 @@ include/ZSFrontend/SxStoreInfoFolder.h
 include/ZSFrontend/SxUserFolder.h
 lib/libLSAddress_d.so
 lib/libLSAddress_d.so.5.3
-lib/libLSAddress_d.so.5.3.83
+lib/libLSAddress_d.so.5.3.85
 lib/libLSFoundation_d.so
 lib/libLSFoundation_d.so.5.3
-lib/libLSFoundation_d.so.5.3.114
+lib/libLSFoundation_d.so.5.3.118
 lib/libLSSearch_d.so
 lib/libLSSearch_d.so.5.3
 lib/libLSSearch_d.so.5.3.26
@@ -264,10 +262,10 @@ lib/libOGoBase_d.so.5.3
 lib/libOGoBase_d.so.5.3.8
 lib/libOGoContacts_d.so
 lib/libOGoContacts_d.so.5.3
-lib/libOGoContacts_d.so.5.3.49
+lib/libOGoContacts_d.so.5.3.54
 lib/libOGoDatabaseProject_d.so
 lib/libOGoDatabaseProject_d.so.5.3
-lib/libOGoDatabaseProject_d.so.5.3.52
+lib/libOGoDatabaseProject_d.so.5.3.54
 lib/libOGoDocuments_d.so
 lib/libOGoDocuments_d.so.5.3
 lib/libOGoDocuments_d.so.5.3.26
@@ -276,7 +274,7 @@ lib/libOGoFileSystemProject_d.so.5.3
 lib/libOGoFileSystemProject_d.so.5.3.26
 lib/libOGoFoundation_d.so
 lib/libOGoFoundation_d.so.5.3
-lib/libOGoFoundation_d.so.5.3.92
+lib/libOGoFoundation_d.so.5.3.98
 lib/libOGoJobs_d.so
 lib/libOGoJobs_d.so.5.3
 lib/libOGoJobs_d.so.5.3.24
@@ -291,13 +289,13 @@ lib/libOGoJobs_d.so.5.3.24
 @unexec rm -f %D/lib/libOGoPalm_d.so.5.3.31 2>/dev/null || true
 lib/libOGoProject_d.so
 lib/libOGoProject_d.so.5.3
-lib/libOGoProject_d.so.5.3.40
+lib/libOGoProject_d.so.5.3.41
 lib/libOGoRawDatabase_d.so
 lib/libOGoRawDatabase_d.so.5.3
 lib/libOGoRawDatabase_d.so.5.3.12
 lib/libOGoSchedulerTools_d.so
 lib/libOGoSchedulerTools_d.so.5.3
-lib/libOGoSchedulerTools_d.so.5.3.80
+lib/libOGoSchedulerTools_d.so.5.3.85
 lib/libOGoScheduler_d.so
 lib/libOGoScheduler_d.so.5.3
 lib/libOGoScheduler_d.so.5.3.37
@@ -318,7 +316,7 @@ lib/libZSContacts_d.so.1.5
 lib/libZSContacts_d.so.1.5.0
 lib/libZSFrontend_d.so
 lib/libZSFrontend_d.so.1.5
-lib/libZSFrontend_d.so.1.5.113
+lib/libZSFrontend_d.so.1.5.114
 lib/libZSProjects_d.so
 lib/libZSProjects_d.so.1.5
 lib/libZSProjects_d.so.1.5.0

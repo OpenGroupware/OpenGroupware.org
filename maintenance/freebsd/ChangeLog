@@ -6,6 +6,11 @@
 	  (which both suddenly appeared...)
 	* updated to more recent trunk (sope45-devel)
 	* sope45-devel/Makefile -> added SHOW_MESSAGES condition
+	* updated to more recent trunk (opengroupware-devel)
+	* opengroupware-devel/Makefile -> added SHOW_MESSAGES condition
+	* opengroupware-devel/Makefile -> proper usage of USE_RC_SUBR made portlint happy again
+	* renamed 'files/rcng/(.*).sh' to 'files/rcng/$1.sh.in' (bc of USE_RC_SUBR usage)
+	* moved rc.d scripts up into 'files/' (dropped directory 'rcng/')
 
 2005-11-16 Frank Reppin  <frank@opengroupware.org>
 
