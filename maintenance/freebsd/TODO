@@ -6,6 +6,8 @@ STATUS:
     make it autoconfig everything required depending on if
     is an upgrade or a fresh install
 
+  * give README/HOWTO covering the process to move
+    the old port to the new one
 
   * Joe Auty <joe at netmusician dot org> was so kind to test and
      reported:
