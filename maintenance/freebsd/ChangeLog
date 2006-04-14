@@ -1,3 +1,8 @@
+2006-04-14 Frank Reppin  <frank@opengroupware.org>
+
+	* svn'moved opengroupware to opengroupware10 in order
+	  to distinguish upcoming releases (surprise, surprise :)!)
+
 2006-04-08 Frank Reppin  <frank@opengroupware.org>
 
 	* updated to more recent trunk (ogo-libfoundation/ogo-libobjc-lf2)
