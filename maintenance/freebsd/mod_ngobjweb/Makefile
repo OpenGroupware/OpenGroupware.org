@@ -27,14 +27,22 @@ DOCS=		COPYRIGHT CHANGES README ChangeLog
 
 .include <bsd.port.pre.mk>
 
-.if exists(${LOCALBASE}/include/apache2/httpd.h) || !exists(${LOCALBASE}/include/apache/httpd.h)
-APACHE_PORT=	www/apache2
+.if exists(${LOCALBASE}/include/apache2/httpd.h) || (!exists(${LOCALBASE}/include/apache/httpd.h) && \
+	!exists(${LOCALBASE}/include/apache21/httpd.h) && !exists(${LOCALBASE}/include/apache22/httpd.h))
+APACHE_PORT=	www/apache20
 WITH_APACHE2=	yes
+.elif exists(${LOCALBASE}/include/apache21/httpd.h)
+APACHE_PORT=	www/apache21
+BROKEN=		Doesn't work as expected! Please use www/apache20 instead if possible.
+.elif exists(${LOCALBASE}/include/apache22/httpd.h)
+APACHE_PORT=	www/apache22
+BROKEN=		Doesn't work as expected! Please use www/apache20 instead if possible.
 .else
 APACHE_PORT=	www/apache13
 .endif
 
-.if defined(WITH_APACHE2)
+# apache20
+.if (${APACHE_PORT} == "www/apache20")
 MAKE_ARGS=	APXS=${APXS} APXS_INCLUDE_DIRS=-I${LOCALBASE}/include/apache2
 .if exists(${APXS})
 AP_LIBEXEC!=	${APXS} -q LIBEXECDIR
@@ -45,6 +53,31 @@ AP_MOD_DIR?=	${AP_LIBEXEC:S/${PREFIX}//}
 AP_RC?=		${LOCALBASE}/etc/rc.d/apache2.sh
 AP_RCCONF=	"apache2_enable=\"YES\""
 PLIST_SUB=	APACHE=apache2
+# apache21
+.elif (${APACHE_PORT} == "www/apache21")
+MAKE_ARGS=	APXS=${APXS} APXS_INCLUDE_DIRS="-I${LOCALBASE}/include/apache21 -I${LOCALBASE}/include/apr-1"
+.if exists(${APXS})
+AP_LIBEXEC!=	${APXS} -q LIBEXECDIR
+.else
+AP_LIBEXEC?=	${LOCALBASE}/libexec/apache21
+.endif
+AP_MOD_DIR?=	${AP_LIBEXEC:S/${PREFIX}//}
+AP_RC?=		${LOCALBASE}/etc/rc.d/apache21.sh
+AP_RCCONF=	"apache21_enable=\"YES\""
+PLIST_SUB=	APACHE=apache21
+# apache22
+.elif (${APACHE_PORT} == "www/apache22")
+MAKE_ARGS=	APXS=${APXS} APXS_INCLUDE_DIRS="-I${LOCALBASE}/include/apache22 -I${LOCALBASE}/include/apr-1"
+.if exists(${APXS})
+AP_LIBEXEC!=	${APXS} -q LIBEXECDIR
+.else
+AP_LIBEXEC?=	${LOCALBASE}/libexec/apache22
+.endif
+AP_MOD_DIR?=	${AP_LIBEXEC:S/${PREFIX}//}
+AP_RC?=		${LOCALBASE}/etc/rc.d/apache22.sh
+AP_RCCONF=	"apache22_enable=\"YES\""
+PLIST_SUB=	APACHE=apache22
+# apache13
 .else
 MAKE_ARGS=	APXS=${APXS} APXS_INCLUDE_DIRS=-I${LOCALBASE}/include/apache
 .if exists(${APXS})

@@ -1,3 +1,9 @@
+2006-04-16 Frank Reppin  <frank@opengroupware.org>
+
+	* mod_ngobjweb/Makefile -> update to honor apache21/22
+	  (and bail out early if they are in use bc mod_ngobjweb
+	  needs an update to work with these apache version)
+
 2006-04-14 Frank Reppin  <frank@opengroupware.org>
 
 	* svn'moved opengroupware to opengroupware10 in order
