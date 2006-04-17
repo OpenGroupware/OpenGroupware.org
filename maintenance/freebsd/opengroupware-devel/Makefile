@@ -24,8 +24,15 @@ DIST_SUBDIR=	ogo-suite
 
 OGO_VERSION=	1.1
 ZIDE_VERSION=	1.5
-SUB_FILES=	pkg-install ogo-webui.sh ogo-xmlrpcd.sh ogo-nhsd.sh ogo-zidestore.sh
-SUB_LIST=	OGO_VERSION=${OGO_VERSION} ZIDE_VERSION=${ZIDE_VERSION} PREFIX=${PREFIX}
+SUB_FILES=	pkg-install pkg-message ogo-webui.sh ogo-xmlrpcd.sh ogo-nhsd.sh ogo-zidestore.sh \
+		ogo-webui-apache.conf ogo-zidestore-apache.conf ogo-xmlrpcd-apache.conf \
+		README_APACHE_SETUP README_POSTGRESQL_SETUP
+SUB_LIST=	OGO_VERSION=${OGO_VERSION} ZIDE_VERSION=${ZIDE_VERSION} PREFIX=${PREFIX} \
+		P_NAME=${PORTNAME} P_VERSION=${PORTVERSION}
+DOCS=		README_APACHE_SETUP README_POSTGRESQL_SETUP
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
+EXAMPLES=	ogo-webui-apache.conf ogo-xmlrpcd-apache.conf ogo-zidestore-apache.conf
+EXAMPLESDIR=	${PREFIX}/share/examples/${PORTNAME}-${PORTVERSION}
 
 OPTIONS=	SOPE_45_DEVEL	"link with sope-4.5" on \
 		SOPE_44		"link with sope-4.4" off \
@@ -120,5 +127,18 @@ do-install:
 
 post-install:
 	 PKG_PREFIX=${PREFIX} ${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL
+
+.if !defined(NOPORTDOCS)
+	@${MKDIR} ${DOCSDIR}
+	@${MKDIR} ${EXAMPLESDIR}
+.for example in ${EXAMPLES}
+	@${INSTALL_DATA} ${WRKDIR}/${example} ${EXAMPLESDIR}
+.endfor
+.for doc in ${DOCS}
+	@${INSTALL_DATA} ${WRKDIR}/${doc} ${DOCSDIR}
+.endfor
+.endif
+
+	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.post.mk>

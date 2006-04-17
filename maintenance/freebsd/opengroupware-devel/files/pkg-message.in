@@ -1,0 +1,17 @@
+==> %%P_NAME%%-%%P_VERSION%% post install notice:
+
+  Thankyou for installing OpenGroupware!
+
+  You are now only 2 steps away from using me:
+
+    1) add prepared configuration files to your
+       apache setup
+
+    2) setup the database
+
+  For a detailed explanation check the documentation
+  and examples in:
+
+  %%DOCSDIR%%
+  %%EXAMPLESDIR%%
+

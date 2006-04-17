@@ -1,3 +1,11 @@
+2006-04-18 Frank Reppin  <frank@opengroupware.org>
+
+	* opengroupware-devel port -> added documentation (README_APACHE_SETUP.in/
+	  README_POSTGRESQL_SETUP.in) with detailed instructions on how to finalize
+	  the installation
+	* changed pkg-install.in to not do anything if a previous setup was found
+	* added pkg-message.in which points to the instructions mentioned above
+
 2006-04-17 Frank Reppin  <frank@opengroupware.org>
 
 	* opengroupware-devel/Makefile -> fixed installation

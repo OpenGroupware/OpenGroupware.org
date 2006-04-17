@@ -4845,3 +4845,10 @@ share/zidestore-1.5/PersonalFolderInfo.plist
 @dirrm Library/Headers/LSFoundation
 @unexec rmdir %D/Library/Headers 2>/dev/null || true
 @unexec rmdir %D/Library 2>/dev/null || true
+%%PORTDOCS%%%%EXAMPLESDIR%%/ogo-webui-apache.conf
+%%PORTDOCS%%%%EXAMPLESDIR%%/ogo-xmlrpcd-apache.conf
+%%PORTDOCS%%%%EXAMPLESDIR%%/ogo-zidestore-apache.conf
+%%PORTDOCS%%%%DOCSDIR%%/README_APACHE_SETUP
+%%PORTDOCS%%%%DOCSDIR%%/README_POSTGRESQL_SETUP
+%%PORTDOCS%%@dirrm %%EXAMPLESDIR%%
+%%PORTDOCS%%@dirrm %%DOCSDIR%%
