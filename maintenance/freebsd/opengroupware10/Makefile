@@ -27,6 +27,8 @@ OPTIONS=	SOPE_45_DEVEL	"link with sope-4.5" off \
 		PDA_SUPPORT	"build with support for PDA" on \
 		PGSQLSERVER_HERE  "use PostgreSQL Server ${DEFAULT_PGSQL_VER} on this host?" on
 
+BROKEN=		Need to sync with opengroupware-devel preview port.
+
 .include <bsd.port.pre.mk>
 
 WRKSRC=		${WRKDIR}/opengroupware.org

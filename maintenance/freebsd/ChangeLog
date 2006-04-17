@@ -1,6 +1,6 @@
 2006-04-18 Frank Reppin  <frank@opengroupware.org>
 
-	* temporarily break opengroupware10 until feature were synced from opengroupware-devel
+	* temporarily break opengroupware10 until features were synced from opengroupware-devel
 	  (to avoid that testers run into obvious issues)
 
 2006-04-18 Frank Reppin  <frank@opengroupware.org>
