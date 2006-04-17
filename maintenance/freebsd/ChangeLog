@@ -1,8 +1,22 @@
+2006-04-17 Frank Reppin  <frank@opengroupware.org>
+
+	* opengroupware-devel/Makefile -> fixed installation
+	  issue where we ended up having symlinks pointing into our
+	  WRKSRC in the final installation (introduced patch-aa)
+	* opengroupware-devel/pkg-plist -> redone, honoring changes
+	  introduced by patch-aa
+	* opengroupware-devel/files/pkg-install.in -> started working
+	  on initial setup (hm, almost complete)
+	* opengroupware-devel/files/ogo-.*sh.*in$ -> use SUB_LIST/SUB_FILES
+	  from toplevel Makefile in initscripts
+	  (and pkill -9 now - otherwise the processes won't go away in the
+	  stop case)
+
 2006-04-16 Frank Reppin  <frank@opengroupware.org>
 
 	* mod_ngobjweb/Makefile -> update to honor apache21/22
 	  (and bail out early if they are in use bc mod_ngobjweb
-	  needs an update to work with these apache version)
+	  needs an update to work with these apache versions)
 
 2006-04-14 Frank Reppin  <frank@opengroupware.org>
 

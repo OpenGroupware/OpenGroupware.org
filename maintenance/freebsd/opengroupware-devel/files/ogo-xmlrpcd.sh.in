@@ -1,5 +1,5 @@
 #!/bin/sh
-# Frank Reppin
+# Frank Reppin <frank@opengroupware.org>
 # (work in progress)
 
 # PROVIDE: ogo-xmlrpcd
@@ -13,7 +13,7 @@
 # ogo_xmlrpcd_user (string): the user                     (default: ogo)
 # ogo_xmlrpcd_args (string): some defaults                (default: none, virtually everything
 #                                                          can/and should be set in the configfiles)
-# ogo_xmlrpcd_version (string): the version               (default: currently 1.1)
+# ogo_xmlrpcd_version (string): the version               (default: currently %%OGO_VERSION%%)
 # ogo_xmlrpcd_delayedrestart (int): delay in seconds      (default: 3)
 
 
@@ -23,12 +23,12 @@ name="ogo_xmlrpcd"
 rcvar=`set_rcvar`
 load_rc_config ${name}
 
-prefix="/usr/local"
+prefix="%%PREFIX%%"
 
 ogo_xmlrpcd_enable=${ogo_xmlrpcd_enable:-"NO"}
 ogo_xmlrpcd_user=${ogo_xmlrpcd_user:-"ogo"}
 ogo_xmlrpcd_args=${ogo_xmlrpcd_args:-""}
-ogo_xmlrpcd_version=${ogo_xmlrpcd_version:-"1.1"}
+ogo_xmlrpcd_version=${ogo_xmlrpcd_version:-"%%OGO_VERSION%%"}
 ogo_xmlrpcd_delayedrestart=${ogo_xmlrpcd_delayedrestart:-"3"}
 
 procname="ogo-xmlrpcd-${ogo_xmlrpcd_version}"
@@ -58,7 +58,7 @@ ogo_xmlrpcd_start() {
 
 ogo_xmlrpcd_stop() {
   echo -e "Stopping ${procname}."
-  pkill ${procname}
+  pkill -9 ${procname}
 }
 
 ogo_xmlrpcd_restart() {

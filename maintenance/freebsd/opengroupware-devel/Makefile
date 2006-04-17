@@ -22,6 +22,11 @@ BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.csh:${PORTSDIR}/devel/
 UNIQUENAME=	${PORTNAME}-devel
 DIST_SUBDIR=	ogo-suite
 
+OGO_VERSION=	1.1
+ZIDE_VERSION=	1.5
+SUB_FILES=	pkg-install ogo-webui.sh ogo-xmlrpcd.sh ogo-nhsd.sh ogo-zidestore.sh
+SUB_LIST=	OGO_VERSION=${OGO_VERSION} ZIDE_VERSION=${ZIDE_VERSION} PREFIX=${PREFIX}
+
 OPTIONS=	SOPE_45_DEVEL	"link with sope-4.5" on \
 		SOPE_44		"link with sope-4.4" off \
 		PDA_SUPPORT     "build with support for PDA" on \
@@ -104,5 +109,16 @@ do-build:
 
 do-install:
 	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
+	# the following procedure is required because we use 'patch-aa'
+	# (and patch-aa is required or we'll end up with a link into WRKSRC in our final installation :/)
+	${MKDIR} ${PREFIX}/share/opengroupware.org-${OGO_VERSION}/templates
+	${MKDIR} ${PREFIX}/share/opengroupware.org-${OGO_VERSION}/translations
+	${MKDIR} ${PREFIX}/share/opengroupware.org-${OGO_VERSION}/www
+	${CP} -fRp ${WRKSRC}/WebUI/Templates/* ${PREFIX}/share/opengroupware.org-${OGO_VERSION}/templates
+	${CP} -fRp ${WRKSRC}/WebUI/Resources/* ${PREFIX}/share/opengroupware.org-${OGO_VERSION}/translations
+	${CP} -fRp ${WRKSRC}/Themes/WebServerResources/* ${PREFIX}/share/opengroupware.org-${OGO_VERSION}/www
+
+post-install:
+	 PKG_PREFIX=${PREFIX} ${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL
 
 .include <bsd.port.post.mk>

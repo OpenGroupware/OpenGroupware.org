@@ -1,5 +1,5 @@
 #!/bin/sh
-# Frank Reppin
+# Frank Reppin <frank@opengroupware.org>
 # (work in progress)
 
 # PROVIDE: ogo-zidestore
@@ -13,7 +13,7 @@
 # ogo_zidestore_user (string): the user                     (default: ogo)
 # ogo_zidestore_args (string): some defaults                (default: none, virtually everything
 #                                                            can/and should be set in the configfiles)
-# ogo_zidestore_version (string): the version               (default: currently 1.5)
+# ogo_zidestore_version (string): the version               (default: currently %%ZIDE_VERSION%%)
 # ogo_zidestore_delayedrestart (int): delay in seconds      (default: 3)
 
 
@@ -23,12 +23,12 @@ name="ogo_zidestore"
 rcvar=`set_rcvar`
 load_rc_config ${name}
 
-prefix="/usr/local"
+prefix="%%PREFIX%%"
 
 ogo_zidestore_enable=${ogo_zidestore_enable:-"NO"}
 ogo_zidestore_user=${ogo_zidestore_user:-"ogo"}
 ogo_zidestore_args=${ogo_zidestore_args:-""}
-ogo_zidestore_version=${ogo_zidestore_version:-"1.5"}
+ogo_zidestore_version=${ogo_zidestore_version:-"%%ZIDE_VERSION%%"}
 ogo_zidestore_delayedrestart=${ogo_zidestore_delayedrestart:-"3"}
 
 procname="ogo-zidestore-${ogo_zidestore_version}"
@@ -58,7 +58,7 @@ ogo_zidestore_start() {
 
 ogo_zidestore_stop() {
   echo -e "Stopping ${procname}."
-  pkill ${procname}
+  pkill -9 ${procname}
 }
 
 ogo_zidestore_restart() {
