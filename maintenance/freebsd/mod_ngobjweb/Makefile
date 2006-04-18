@@ -9,7 +9,7 @@ PORTVERSION=	1.0
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/sope/
-DISTNAME=	sope-mod_ngobjweb-trunk-r1102-200509071705
+DISTNAME=	sope-mod_ngobjweb-trunk-r1249-200604121502
 
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	Apache mod for forwarding HTTP requests to SOPE appl. server instances
@@ -33,10 +33,8 @@ APACHE_PORT=	www/apache20
 WITH_APACHE2=	yes
 .elif exists(${LOCALBASE}/include/apache21/httpd.h)
 APACHE_PORT=	www/apache21
-BROKEN=		Doesn't work as expected! Please use www/apache20 instead if possible.
 .elif exists(${LOCALBASE}/include/apache22/httpd.h)
 APACHE_PORT=	www/apache22
-BROKEN=		Doesn't work as expected! Please use www/apache20 instead if possible.
 .else
 APACHE_PORT=	www/apache13
 .endif

@@ -1,7 +1,10 @@
-2006-04-19 Frank Reppin  <frank@opengroupware.org>
+2006-04-18 Frank Reppin  <frank@opengroupware.org>
 
 	* unbreak opengroupware10 port
 	* fixed previous commit (accidently broke pkg-plist)
+	* updated sources for mod_ngobjweb
+	* unbreak mod_ngobjweb for apache21/apache22 installations
+	  (mod_ngobjweb/files/patch-ab deals with this issue)
 
 2006-04-18 Frank Reppin  <frank@opengroupware.org>
 

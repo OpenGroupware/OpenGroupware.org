@@ -1,0 +1,22 @@
+--- handler.c.dist	Wed Apr 12 15:02:26 2006
++++ handler.c	Tue Apr 18 22:22:35 2006
+@@ -528,14 +528,15 @@
+       // TODO: this seems to be broken with some Apache's!
+       // see: http://www.mail-archive.com/modssl-users@modssl.org/msg16396.html
+       if (r->server->port != 0) {
+-        apr_snprintf(tmp, sizeof(tmp), "%s://%s:%i",
+-                     ap_http_method(r),
++        apr_snprintf(tmp, sizeof(tmp), "http(s)://%s:%i",
++                     //ap_http_method(r),
+                      r->server->server_hostname,
+                      r->server->port);
+       }
+       else {
+-        apr_snprintf(tmp, sizeof(tmp), "%s://%s",
+-                     ap_http_method(r), r->server->server_hostname);
++        apr_snprintf(tmp, sizeof(tmp), "http(s)://%s",
++                     //ap_http_method(r),
++                     r->server->server_hostname);
+       }
+       if (!NGBufferedDescriptor_writeHttpHeader(toApp,
+                                                 "x-webobjects-server-url",
