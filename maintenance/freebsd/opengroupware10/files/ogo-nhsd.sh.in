@@ -1,5 +1,5 @@
 #!/bin/sh
-# Frank Reppin
+# Frank Reppin <frank@opengroupware.org>
 # (work in progress)
 
 # PROVIDE: ogo-nhsd
@@ -13,7 +13,7 @@
 # ogo_nhsd_user (string): the user                     (default: ogo)
 # ogo_nhsd_args (string): some defaults                (default: none, virtually everything
 #                                                       can/and should be set in the configfiles)
-# ogo_nhsd_version (string): the version               (default: currently 1.1)
+# ogo_nhsd_version (string): the version               (default: currently %%OGO_VERSION%%)
 # ogo_nhsd_delayedrestart (int): delay in seconds      (default: 3)
 
 
@@ -23,12 +23,12 @@ name="ogo_nhsd"
 rcvar=`set_rcvar`
 load_rc_config ${name}
 
-prefix="/usr/local"
+prefix="%%PREFIX%%"
 
 ogo_nhsd_enable=${ogo_nhsd_enable:-"NO"}
 ogo_nhsd_user=${ogo_nhsd_user:-"ogo"}
 ogo_nhsd_args=${ogo_nhsd_args:-""}
-ogo_nhsd_version=${ogo_nhsd_version:-"1.1"}
+ogo_nhsd_version=${ogo_nhsd_version:-"%%OGO_VERSION%%"}
 ogo_nhsd_delayedrestart=${ogo_nhsd_delayedrestart:-"3"}
 
 procname="ogo-nhsd-${ogo_nhsd_version}"
@@ -58,7 +58,7 @@ ogo_nhsd_start() {
 
 ogo_nhsd_stop() {
   echo -e "Stopping ${procname}."
-  pkill ${procname}
+  pkill -9 ${procname}
 }
 
 ogo_nhsd_restart() {

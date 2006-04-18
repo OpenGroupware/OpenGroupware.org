@@ -1,5 +1,5 @@
 #!/bin/sh
-# Frank Reppin
+# Frank Reppin <frank@opengroupware.org>
 # (work in progress)
 
 # PROVIDE: ogo-webui
@@ -13,7 +13,7 @@
 # ogo_webui_user (string): the user                     (default: ogo)
 # ogo_webui_args (string): some defaults                (default: none, virtually everything
 #                                                        can/and should be set in the configfiles)
-# ogo_webui_version (string): the version               (default: currently 1.1)
+# ogo_webui_version (string): the version               (default: currently %%OGO_VERSION%%)
 # ogo_webui_delayedrestart (int): delay in seconds      (default: 3)
 
 
@@ -23,12 +23,12 @@ name="ogo_webui"
 rcvar=`set_rcvar`
 load_rc_config ${name}
 
-prefix="/usr/local"
+prefix="%%PREFIX%%"
 
 ogo_webui_enable=${ogo_webui_enable:-"NO"}
 ogo_webui_user=${ogo_webui_user:-"ogo"}
 ogo_webui_args=${ogo_webui_args:-""}
-ogo_webui_version=${ogo_webui_version:-"1.1"}
+ogo_webui_version=${ogo_webui_version:-"%%OGO_VERSION%%"}
 ogo_webui_delayedrestart=${ogo_webui_delayedrestart:-"3"}
 
 procname="ogo-webui-${ogo_webui_version}"
@@ -58,7 +58,7 @@ ogo_webui_start() {
 
 ogo_webui_stop() {
   echo -e "Stopping ${procname}."
-  pkill ${procname}
+  pkill -9 ${procname}
 }
 
 ogo_webui_restart() {

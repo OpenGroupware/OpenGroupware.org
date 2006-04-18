@@ -1,0 +1,22 @@
+#
+# Please include me into your apache setup!
+# (usually loaded when found in /usr/local/etc/apache{apache_version}/Includes/)
+#
+
+# explicitly allow access
+<DirectoryMatch %%PREFIX%%/share/opengroupware.org-([0-9a-zA-Z]{1}).([0-9a-zA-Z]{1,})/www> 
+  Order allow,deny 
+  Allow from all 
+</DirectoryMatch>
+
+# required aliases
+AliasMatch ^/OpenGroupware([0-9a-zA-Z]{1})([0-9a-zA-Z]{1,})\.woa/WebServerResources/(.*) %%PREFIX%%/share/opengroupware.org-$1.$2/www/$3
+Alias /ArticleImages /var/lib/opengroupware.org/news
+
+# hook up
+<IfModule ngobjweb_module.c>
+  <LocationMatch "^/OpenGroupware*">
+    SetAppPort 20000
+    SetHandler ngobjweb-adaptor
+  </LocationMatch>
+</IfModule>

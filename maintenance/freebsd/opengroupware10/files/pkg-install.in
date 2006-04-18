@@ -1,0 +1,89 @@
+#!/bin/sh
+# Frank Reppin <frank@opengroupware.org>
+
+OGO_USER="ogo"
+OGO_GROUP="ogo"
+OGO_GECOS="OpenGroupware Suite"
+OGO_HOME_BASEDIR="/var/lib"
+OGO_HOME="${OGO_HOME_BASEDIR}/opengroupware.org"
+OGO_LOGDIR="/var/log/opengroupware"
+OGO_VERSION="%%OGO_VERSION%%"
+
+PKG_PREFIX="${PKG_PREFIX:=/usr/local}"
+
+CHMOD="/bin/chmod"
+CHOWN="/usr/sbin/chown"
+MKDIR="/bin/mkdir"
+PW="/usr/sbin/pw"
+SU="/usr/bin/su"
+
+case "$2" in POST-INSTALL)
+  if [ ! -e "${OGO_HOME}/.preconfigure_done" ]; then
+    if [ ! -d "${OGO_HOME_BASEDIR}" ]; then
+      echo -e "=> creating home basement (${OGO_HOME_BASEDIR})"
+      ${MKDIR} -p ${OGO_HOME_BASEDIR}
+    fi
+    if [ ! "`${PW} groupshow ${OGO_GROUP}`" ]; then
+      echo -e "=> group '${OGO_GROUP}' not found..."
+      echo -e "=> will create group ${OGO_GROUP}"
+      ${PW} groupadd -n ${OGO_GROUP}
+    else
+      echo -e "found group ${OGO_GROUP}"
+    fi
+    if [ ! "`${PW} usershow ${OGO_USER}`" ]; then
+      echo -e "=> user ${OGO_USER} not found..."
+      echo -e "=> will create user ${OGO_USER}"
+      ${PW} useradd -g "${OGO_GROUP}" -c "${OGO_GECOS}" -d "${OGO_HOME}" -n "${OGO_USER}"
+      echo -e "=> locking its password"
+      ${PW} lock ${OGO_USER}
+    else
+      echo -e "found user ${OGO_USER}"
+    fi
+    echo -e "=> creating necessary directories in '${OGO_HOME}'"
+    ${MKDIR} -p ${OGO_HOME}/.libFoundation/Defaults
+    ${MKDIR} -p ${OGO_HOME}/documents
+    ${MKDIR} -p ${OGO_HOME}/news
+    ${MKDIR} -p ${OGO_HOME}/skyfs
+    echo -e "=> creating log dir '${OGO_LOGDIR}'"
+    ${MKDIR} -p ${OGO_LOGDIR}
+    echo -e "=> readjusting directory permissions"
+    ${CHOWN} -R ${OGO_USER}:${OGO_GROUP} ${OGO_HOME}
+    ${CHOWN} ${OGO_USER}:${OGO_GROUP} ${OGO_LOGDIR}
+    ${CHMOD} 0750 ${OGO_HOME}
+    ${CHMOD} 0750 ${OGO_HOME}/.libFoundation
+    ${CHMOD} 0750 ${OGO_HOME}/.libFoundation/Defaults
+    ${CHMOD} 0750 ${OGO_HOME}/documents
+    ${CHMOD} 0750 ${OGO_HOME}/news
+    ${CHMOD} 0750 ${OGO_HOME}/skyfs
+    ${CHMOD} 0750 ${OGO_LOGDIR}
+    echo -e "=> do some basic configuration"
+    ${SU} - ${OGO_USER} -c "
+      Defaults write NSGlobalDomain JobPreferredExecutantsEnabled Yes
+      Defaults write NSGlobalDomain JobReferredPersonEnabled Yes
+      Defaults write NSGlobalDomain LSAttachmentPath '${OGO_HOME}/documents'
+      Defaults write NSGlobalDomain LSConnectionDictionary '{hostName=\"127.0.0.1\"; userName=OGo; password=\"\"; port=5432; databaseName=OGo}'
+      Defaults write NSGlobalDomain LSDisableSessionLog No
+      Defaults write NSGlobalDomain LSNewsImagesPath '${OGO_HOME}/news'
+      Defaults write NSGlobalDomain LSNewsImagesUrl '/ArticleImages'
+      Defaults write NSGlobalDomain scheduler_apttype_input_type PopUp
+      Defaults write NSGlobalDomain scheduler_memberteams_only Yes
+      Defaults write NSGlobalDomain SendMailPath '/usr/sbin/sendmail'
+      Defaults write NSGlobalDomain SkyFSPath '${OGO_HOME}/skyfs'
+      Defaults write NSGlobalDomain skyrix_id `hostname`
+      Defaults write NSGlobalDomain TimeZoneName GMT
+      Defaults write NSGlobalDomain WOHttpAllowHost '( localhost, 127.0.0.1, localhost.localdomain)'
+      Defaults write ogo-nhsd-${OGO_VERSION} NGBundlePath '${PKG_PREFIX}/lib/opengroupware.org-${OGO_VERSION}/conduits'
+      Defaults write skyaptnotify AptNotifyVerbose NO
+      Defaults write skyaptnotify AptNotifyFromAdress '${OGO_USER}@`hostname`'
+      Defaults write skyaptnotify AptNotifySendmailPath '/usr/sbin/sendmail'
+      Defaults write skyaptnotify AptNotifySentResourcesFile '${OGO_LOGDIR}/sent-resources'
+      Defaults write skyaptnotify AptNotifySkyrixPassword '\"\"'
+      Defaults write skyaptnotify AptNotifySkyrixUser root
+    " 1>/dev/null
+    echo -e "configuration by post-install done!" >${OGO_HOME}/.preconfigure_done
+  else
+    echo -e "=> You configuration should be already ok - I quit!"
+    echo -e "=> If you really think that this is wrong - remove ${OGO_HOME}/.preconfigure_done and 'make reinstall' me."
+  fi
+  ;;
+esac

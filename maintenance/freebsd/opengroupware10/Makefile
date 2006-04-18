@@ -22,12 +22,22 @@ BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.csh:${PORTSDIR}/devel/
 UNIQUENAME=	${PORTNAME}
 DIST_SUBDIR=	ogo-suite
 
+OGO_VERSION=	1.0
+ZIDE_VERSION=	1.4
+SUB_FILES=	pkg-install pkg-message ogo-webui.sh ogo-xmlrpcd.sh ogo-nhsd.sh ogo-zidestore.sh \
+		ogo-webui-apache.conf ogo-zidestore-apache.conf ogo-xmlrpcd-apache.conf \
+		README_APACHE_SETUP README_POSTGRESQL_SETUP
+SUB_LIST=	OGO_VERSION=${OGO_VERSION} ZIDE_VERSION=${ZIDE_VERSION} PREFIX=${PREFIX} \
+		P_NAME=${PORTNAME} P_VERSION=${PORTVERSION}
+DOCS=		README_APACHE_SETUP README_POSTGRESQL_SETUP
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
+EXAMPLES=	ogo-webui-apache.conf ogo-xmlrpcd-apache.conf ogo-zidestore-apache.conf
+EXAMPLESDIR=	${PREFIX}/share/examples/${PORTNAME}-${PORTVERSION}
+
 OPTIONS=	SOPE_45_DEVEL	"link with sope-4.5" off \
 		SOPE_44		"link with sope-4.4" on \
 		PDA_SUPPORT	"build with support for PDA" on \
 		PGSQLSERVER_HERE  "use PostgreSQL Server ${DEFAULT_PGSQL_VER} on this host?" on
-
-BROKEN=		Need to sync with opengroupware-devel preview port.
 
 .include <bsd.port.pre.mk>
 
@@ -50,6 +60,10 @@ MAKE_ARGS=	debug=yes \
 EXTRACT_DEPENDS+=	${LOCALBASE}/bin/gtar:${PORTSDIR}/archivers/gtar
 TAR=	${LOCALBASE}/bin/gtar
 MAKE_ARGS+=	TAR=${TAR}
+.endif
+
+.if defined(SHOW_MESSAGES)
+MAKE_ARGS+=	messages=yes
 .endif
 
 .if defined(WITH_SOPE_44) || !defined(WITHOUT_SOPE_44)
@@ -103,5 +117,29 @@ do-build:
 
 do-install:
 	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
+	# the following procedure is required because we use 'patch-aa'
+	# (and patch-aa is required or we'll end up with a link into WRKSRC in our final installation :/)
+	${MKDIR} ${PREFIX}/share/opengroupware.org-${OGO_VERSION}/templates
+	${MKDIR} ${PREFIX}/share/opengroupware.org-${OGO_VERSION}/translations
+	${MKDIR} ${PREFIX}/share/opengroupware.org-${OGO_VERSION}/www
+	${CP} -fRp ${WRKSRC}/WebUI/Templates/* ${PREFIX}/share/opengroupware.org-${OGO_VERSION}/templates
+	${CP} -fRp ${WRKSRC}/WebUI/Resources/* ${PREFIX}/share/opengroupware.org-${OGO_VERSION}/translations
+	${CP} -fRp ${WRKSRC}/Themes/WebServerResources/* ${PREFIX}/share/opengroupware.org-${OGO_VERSION}/www
+
+post-install:
+	PKG_PREFIX=${PREFIX} ${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL
+
+.if !defined(NOPORTDOCS)
+	@${MKDIR} ${DOCSDIR}
+	@${MKDIR} ${EXAMPLESDIR}
+.for example in ${EXAMPLES}
+	@${INSTALL_DATA} ${WRKDIR}/${example} ${EXAMPLESDIR}
+.endfor
+.for doc in ${DOCS}
+	@${INSTALL_DATA} ${WRKDIR}/${doc} ${DOCSDIR}
+.endfor
+.endif
+
+	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.post.mk>

@@ -1,3 +1,7 @@
+2006-04-19 Frank Reppin  <frank@opengroupware.org>
+
+	* unbreak opengroupware10 port
+
 2006-04-18 Frank Reppin  <frank@opengroupware.org>
 
 	* temporarily break opengroupware10 until features were synced from opengroupware-devel
