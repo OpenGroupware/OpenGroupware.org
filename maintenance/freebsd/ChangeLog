@@ -1,6 +1,7 @@
 2006-04-19 Frank Reppin  <frank@opengroupware.org>
 
 	* unbreak opengroupware10 port
+	* fixed previous commit (accidently broke pkg-plist)
 
 2006-04-18 Frank Reppin  <frank@opengroupware.org>
 
