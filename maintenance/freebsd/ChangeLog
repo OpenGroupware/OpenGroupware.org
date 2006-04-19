@@ -1,3 +1,7 @@
+2006-04-19 Frank Reppin  <frank@opengroupware.org>
+
+	* commit correct checksum file for mod_ngobjweb
+
 2006-04-18 Frank Reppin  <frank@opengroupware.org>
 
 	* unbreak opengroupware10 port
