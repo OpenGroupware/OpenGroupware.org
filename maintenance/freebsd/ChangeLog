@@ -1,3 +1,23 @@
+2006-04-22 Frank Reppin  <frank@opengroupware.org>
+
+	* ogo-libfoundation/files/patch-aa - explicitly backout usage
+	  of recently exposed reentrant netdb.h functions,
+	  because of (cited from http://www.freebsd.org/cgi/cvsweb.cgi/src/lib/libc/net/Symbol.map):
+
+	  Revision 1.5 / (download) - annotate - [select for diffs], Sat Apr 15 16:20:27 2006 UTC (7 days ago) by ume
+	  Branch: MAIN
+	  CVS Tags: HEAD
+	  Changes since 1.4: +13 -0 lines
+	  Diff to previous 1.4 (colored)
+
+	  - make reentrant version of netdb functions glibc style API, and
+	    expose them to outside of libc.
+	  - make netdb functions NSS friendly.
+
+	  Reviewed by: arch@ and current@ (no objection)
+
+	* should be relevant for -CURRENT users only (as of this previous commit)
+
 2006-04-19 Frank Reppin  <frank@opengroupware.org>
 
 	* commit correct checksum file for mod_ngobjweb

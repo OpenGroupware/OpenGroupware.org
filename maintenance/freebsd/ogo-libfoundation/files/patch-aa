@@ -1,0 +1,19 @@
+--- config.h.in.dist	Sat Apr 22 18:48:36 2006
++++ config.h.in	Sat Apr 22 18:48:56 2006
+@@ -53,13 +53,13 @@
+ #undef HAVE_SIGACTION
+ 
+ /* Define if you have the gethostbyname_r function. */
+-#undef HAVE_GETHOSTBYNAME_R
++//#undef HAVE_GETHOSTBYNAME_R
+ 
+ /* Define if you have the gethostbyaddr_r function. */
+-#undef HAVE_GETHOSTBYADDR_R
++//#undef HAVE_GETHOSTBYADDR_R
+ 
+ /* Define if you have the gethostent_r function. */
+-#undef HAVE_GETHOSTENT_R
++//#undef HAVE_GETHOSTENT_R
+ 
+ /* Define if the Objective-C runtime contains the objc_thread_create function;
+    this function was defined in the multi-thread support in the 960906
