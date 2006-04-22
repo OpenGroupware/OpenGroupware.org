@@ -17,6 +17,7 @@
 	  Reviewed by: arch@ and current@ (no objection)
 
 	* should be relevant for -CURRENT users only (as of this previous commit)
+	* same for sope45-devel/files/patch-aa commit
 
 2006-04-19 Frank Reppin  <frank@opengroupware.org>
 
