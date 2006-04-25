@@ -18,7 +18,7 @@
       <var:switch selection="fieldType">
 	<var:case const:key="enum">
           <var:popup list="currentValues"  item="item" 
-                     string="currentLabel" selection="attributeValue" 
+                     displayString="currentLabel" selection="attributeValue" 
                      const:nilString="-" />
         </var:case>
 	
