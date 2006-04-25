@@ -1,3 +1,9 @@
+2006-04-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWObjectViewer.m: added support for namespace prefixes in attribute
+	  keys (used by properties), minor code cleanups, use -isNotEmpty,
+	  fixed some gcc 4.1 warnings (v5.3.124)
+
 2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyListView.m: code cleanups, improved NSNull stability (v5.3.123)

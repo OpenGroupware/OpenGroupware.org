@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -83,10 +84,10 @@
   NSDictionary *attribute;    // non-retained
   NSString     *attributeKey; // non-retained
   NSString     *relKey;       // non-retained
-  BOOL          isExtendedAttribute;
-  BOOL          useMap;
-  BOOL          isMailAvailable;
-  BOOL          isInternalMailEditor;
+  BOOL         isExtendedAttribute;
+  BOOL         useMap;
+  BOOL         isMailAvailable;
+  BOOL         isInternalMailEditor;
   
   NSDictionary *attributesMap;
   NSDictionary *mapItem;
@@ -97,7 +98,8 @@
   NSFormatter *dateFormatter;
   NSFormatter *numberFormatter;
 
-  BOOL markArchivedObjects;
+  BOOL        markArchivedObjects;
+  NSString    *namespace;    // API
 }
 
 @end

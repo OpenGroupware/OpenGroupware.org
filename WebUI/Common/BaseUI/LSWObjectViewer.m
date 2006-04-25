@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -57,6 +58,7 @@
 }
 
 - (void)dealloc {
+  [self->namespace      release];
   [self->object         release];
   [self->attributes     release];
   [self->attributeColor release];
@@ -72,6 +74,8 @@
 /* finals */
 
 static inline id _getAttrValue(LSWObjectViewer *self) {
+  NSString *k;
+  
   if (self->object == nil)
     return nil;
   
@@ -81,8 +85,13 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
   NSCAssert1(self->attributeKey, @"invalid attribute key in %@ ..", self);
 #endif
 
-  return self->getValue(self->object,
-                        @selector(valueForKey:), self->attributeKey);
+  k = self->attributeKey;
+  if ([self->namespace isNotEmpty]) {
+    if (![k xmlIsFQN])
+      k = [NSString stringWithFormat:@"{%@}%@", self->namespace, k];
+  }
+  
+  return self->getValue(self->object, @selector(valueForKey:), k);
 }
 
 - (NSString *)_boolLabelForValue: (NSNumber*)_value {
@@ -109,9 +118,9 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
 
 - (void)syncSleep {
   self->attribute  = nil;
-  RELEASE(self->attributes); self->attributes = nil;
-  RELEASE(self->object);     self->object     = nil;
-  RELEASE(self->labels);     self->labels     = nil;
+  [self->attributes release]; self->attributes = nil;
+  [self->object     release]; self->object     = nil;
+  [self->labels     release]; self->labels     = nil;
   [super syncSleep];
 }
 
@@ -197,6 +206,13 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
   return self->labels;
 }
 
+- (void)setNamespace:(NSString *)_namespace {
+  ASSIGNCOPY(self->namespace, _namespace);
+}
+- (NSString *)namespace {
+  return self->namespace;
+}
+
 - (void)setAttributeConfig:(NSDictionary *)_attribute {
   NSDictionary *mapI = nil;
 
@@ -217,39 +233,39 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
   return self->attribute;
 }
 
-- (NSDictionary *)attributesMap {
-  return self->attributesMap;
-}
 - (void)setAttributesMap: (NSDictionary*)_map {
   ASSIGN(self->attributesMap, _map);
 }
-
-- (NSDictionary *)mapItem {
-  return self->mapItem;
+- (NSDictionary *)attributesMap {
+  return self->attributesMap;
 }
+
 - (void)setMapItem: (NSDictionary*)_mapItem {
   ASSIGN(self->mapItem, _mapItem);
 }
-
-- (BOOL)useMap {
-  return self->useMap;
+- (NSDictionary *)mapItem {
+  return self->mapItem;
 }
+
 - (void)setUseMap: (BOOL)_useMap {
   self->useMap = _useMap;
 }
-
-- (NSString*)privateLabel {
-  return self->privateLabel;
+- (BOOL)useMap {
+  return self->useMap;
 }
+
 - (void)setPrivateLabel: (NSString*)_privateLabel {
   ASSIGN(self->privateLabel, _privateLabel);
 }
-
-- (BOOL)isExtendedAttribute {
-  return self->isExtendedAttribute;
+- (NSString*)privateLabel {
+  return self->privateLabel;
 }
+
 - (void)setIsExtendedAttribute: (BOOL)_isExtendedAttribute {
   self->isExtendedAttribute = _isExtendedAttribute;
+}
+- (BOOL)isExtendedAttribute {
+  return self->isExtendedAttribute;
 }
 
 - (NSString *)attributeKey {
@@ -268,7 +284,7 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
   /* check if is extendedAttribute */
   
   if ([[self->attribute valueForKey:@"isPrivate"] boolValue] &&
-      [self->privateLabel length] > 0)
+      [self->privateLabel isNotEmpty])
     private = [NSString stringWithFormat:@" (%@)",self->privateLabel];
 
   if ((value = [self->attribute valueForKey:@"label"]) == nil) {
@@ -277,7 +293,8 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
       value = [self->mapItem valueForKey:@"label"];
       if (([value isNotNull]) &&
           (![[self->mapItem valueForKey:@"isLabelLocalized"] boolValue])) {
-        return private ? [value stringByAppendingString:private] : value;
+        return private
+	  ? [value stringByAppendingString:private] : (NSString *)value;
       }
     } 
     if (![value isNotNull])
@@ -286,12 +303,11 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
   
   /* check if a label-mapping is supplied, if so, localize the label */
 
-  if (self->labels) {
-    id label = [self->labels valueForKey:value];
-    // NSLog(@"lookup label %@, got %@", value, label);
-    if (label) value = label;
+  if (self->labels != nil) {
+    NSString *label = [self->labels valueForKey:value];
+    if (label != nil) value = label;
   }
-  return private ? [value stringByAppendingString:private] : value;
+  return private ? [value stringByAppendingString:private] : (NSString*)value;
 }
 
 - (void)setDateFormatter:(NSFormatter *)_formatter {
@@ -337,7 +353,7 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
     NSString *tmp;
     tmp = [values valueForKey:value];
     if (self->labels)
-      tmp = [self->labels valueForKey:tmp ? tmp : value];
+      tmp = [self->labels valueForKey:(tmp ? tmp : (NSString *)value)];
     if (tmp) value = tmp;
   }
   /* localizeValue is not longer supported, use isLocalized instead */
@@ -416,7 +432,7 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
       
       if (type == 3) {// email
 	s = [[self->mapItem valueForKey:@"value"] stringValue];
-	if ([s length] > 0) 
+	if ([s isNotEmpty]) 
 	  s = [@"mailto:" stringByAppendingString:s];
 	
 	return nil;
@@ -439,7 +455,7 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
 - (NSString *)linkImage {
   NSString *img = [self->attribute valueForKey:@"image"];
 
-  return img ? img : @"/missingresource?image";
+  return img ? img : (NSString *)@"/missingresource?image";
 }
 
 - (NSString *)linkTarget {
@@ -448,7 +464,7 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
 
 - (id)hrefAttrValue {
   id value = _getAttrValue(self);
-  return [value isNotNull] ? value : @"";
+  return [value isNotNull] ? (NSString *)value : (NSString *)@"";
 }
 
 - (BOOL)isActionLink {
@@ -510,7 +526,8 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
     
     if (![v isNotNull])
       return NO;
-
+    
+    /* TODO: hm, cStringLength???, more likely we want length? */
     if ([v respondsToSelector:@selector(cStringLength)]) {
       if ([v cStringLength] == 0)
         return NO;
@@ -521,10 +538,7 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
 
 - (void)setNullString:(NSString *)_value {
   NSAssert(_value, @"cannot assign <nil> to nullString");
-  if (self->nullString != _value) {
-    RELEASE(self->nullString); self->nullString = nil;
-    self->nullString = [_value copyWithZone:[self zone]];
-  }
+  ASSIGNCOPY(self->nullString, _value);
 }
 - (NSString *)nullString {
   return self->nullString;
@@ -543,7 +557,8 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
   return self->isInternalMailEditor;
 }
 
-// actions
+
+/* actions */
 
 - (id)editObject {
   return [self performParentAction:[self linkAction]];
@@ -590,4 +605,4 @@ static inline id _getAttrValue(LSWObjectViewer *self) {
   return result;
 }
 
-@end
+@end /* LSWObjectViewer */
