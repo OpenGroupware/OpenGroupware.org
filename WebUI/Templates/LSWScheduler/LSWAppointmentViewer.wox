@@ -92,12 +92,12 @@
                      is-sub="1" />
 
           <var:if condition="showProperties">
-            <var:component className="SkyObjectPropertyViewer"
-              globalID="appointment.globalID"
-              attributes="extendedAttributeSpec"
-              const:defaultNamespace=
-                "http://www.opengroupware.org/properties/ext-attr" 
-              const:omitTable="1"/>
+            <var:component className="LSWObjectViewer"
+              object="extendedAttributes"
+              attributes="extendedAttributeSpec" 
+              const:namespace=
+                "http://www.opengroupware.org/properties/ext-attr"
+              />
           </var:if>
         </attributes>
       </tabitem>

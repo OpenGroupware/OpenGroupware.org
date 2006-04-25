@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -836,6 +837,14 @@ static NSString *_personName(id self, id _person) {
 }
 - (NSArray *)extendedAttributeSpec {
   return extAttrSpec;
+}
+
+- (NSDictionary *)extendedAttributes {
+  SkyObjectPropertyManager *pm;
+    
+  pm = [[[self session] commandContext] propertyManager];
+  return [pm propertiesForGlobalID:[[self object] valueForKey:@"globalID"]
+	     namespace:XMLNS_OGoExtAttrPropNamespace];
 }
 
 /* label generation */
