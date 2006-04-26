@@ -37,6 +37,6 @@
 
 - (id)initWithContext:(id)_ctx enterpriseId:(id)_enterpriseId;
 
-@end /* SkyEnterpriseAllProjectsDataSource */
+@end
 
 #endif /* __SkyEnterpriseAllProjectsDataSource_H__ */
