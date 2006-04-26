@@ -1,5 +1,7 @@
 2006-04-26  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoMailFilter/LSWImapMailFilterEditor: rewritten as WOx template
+
 	* LSWScheduler/LSWAppointmentViewer.wox: changed to use LSWObjectViewer
 	  instead of SkyObjectPropertyViewer for displaying appointment
 	  attributes (related to OGo bug #1712)
