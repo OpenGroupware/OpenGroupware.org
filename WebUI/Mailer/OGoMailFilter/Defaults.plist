@@ -4,7 +4,20 @@
     "contains", "doesn't contain", "is", "isn't", "begins with", "ends with"
   );
   
+  /* You can add arbitary header fields to the filter popup */
   OGoFilterEditor_Fields = (
     "from", "to", "cc", "to:cc", "subject", "Organization", "List-Id"
   );
+
+  /*
+    And if you want you can give the above fields customized names w/o
+    touching the .strings file.
+    
+    OGoFilterEditor_FieldLabels = {
+      German = { 
+        "X-Spam-Status" = "Spamwert";
+      };
+      "to" = "grummel";
+    };
+  */
 }

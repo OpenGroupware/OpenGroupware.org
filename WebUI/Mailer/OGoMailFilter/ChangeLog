@@ -1,5 +1,8 @@
 2006-04-26  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSWImapMailFilterEditor.m: implemented custom labels for the filter
+	  popup. Caches the two other defaults. (v5.3.6)
+
 	* LSWImapMailFilterEditor.m: major code cleanups (v5.3.5)
 
 2004-12-21  Helge Hess  <helge.hess@opengroupware.org>

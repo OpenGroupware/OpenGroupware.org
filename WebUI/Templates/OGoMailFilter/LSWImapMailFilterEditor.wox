@@ -42,14 +42,14 @@
                 <td align="right"><OGo:font
                     ><var:string value="theLabel"/></OGo:font></td>
 
-                <td><var:popup list="userDefaults.OGoFilterEditor_Fields"
+                <td><var:popup list="filterFieldKeys"
 	                       item="item" string="mailHeaderLabel"
                                selection="entry.headerField" /></td>
 
                 <td><OGo:font><entity name="nbsp"/>
                     <OGo:label key="ofTheMessage" /></OGo:font></td>
 
-                <td><var:popup list="userDefaults.OGoFilterEditor_FilterKinds"
+                <td><var:popup list="filterKinds"
 	                       item="item" string="filterKindLabel"
                                selection="entry.filterKind" /></td>
 

@@ -38,8 +38,11 @@
 
 @implementation LSWImapMailFilterEditor
 
-static NSArray *andOrList = nil;
-static BOOL    reuseOGoLoginForMailServer = NO;
+static NSArray      *andOrList = nil;
+static BOOL         reuseOGoLoginForMailServer   = NO;
+static NSArray      *OGoFilterEditor_FilterKinds = nil;
+static NSArray      *OGoFilterEditor_Fields      = nil;
+static NSDictionary *OGoFilterEditor_FieldLabels = nil;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -48,10 +51,22 @@ static BOOL    reuseOGoLoginForMailServer = NO;
     andOrList = [[NSArray alloc] initWithObjects:@"and", @"or", nil];
 
   reuseOGoLoginForMailServer = [ud boolForKey:@"UseSkyrixLoginForImap"];
+  
+  OGoFilterEditor_FilterKinds =
+    [[ud arrayForKey:@"OGoFilterEditor_FilterKinds"] copy];
+  OGoFilterEditor_Fields =
+    [[ud arrayForKey:@"OGoFilterEditor_Fields"] copy];
+  OGoFilterEditor_FieldLabels =
+    [[ud dictionaryForKey:@"OGoFilterEditor_FieldLabels"] copy];
+  
+  if (![OGoFilterEditor_Fields isNotEmpty])
+    NSLog(@"ERROR: missing OGoFilterEditor_Fields default!");
+  if (![OGoFilterEditor_FilterKinds isNotEmpty])
+    NSLog(@"ERROR: missing OGoFilterEditor_FilterKinds default!");
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     id account;
     
     // TODO: not really a good idea to access a session in -init (awake?)
@@ -102,6 +117,13 @@ static BOOL    reuseOGoLoginForMailServer = NO;
 }
 - (NSString *)defaultMailServerPassword {
   return [[self userDefaults] stringForKey:@"imap_passwd"];
+}
+
+- (NSArray *)filterFieldKeys {
+  return OGoFilterEditor_Fields;
+}
+- (NSArray *)filterKinds {
+  return OGoFilterEditor_FilterKinds;
 }
 
 /* context */
@@ -187,11 +209,10 @@ static BOOL    reuseOGoLoginForMailServer = NO;
 }
 
 - (void)_preprocessFilterPosition {
-  int length = 0;
-  int cnt    = 0;
-
-  ASSIGN(self->filterPos, nil);
-
+  unsigned cnt = 0, length = 0;
+  
+  [self->filterPos release]; self->filterPos = nil;
+  
   self->filterPos = [[NSMutableArray alloc] initWithCapacity:64];
   
   for (length = [self->filters count], cnt = 0; cnt < length; cnt++)
@@ -242,7 +263,44 @@ static BOOL    reuseOGoLoginForMailServer = NO;
 }
 
 - (NSString *)mailHeaderLabel {
-  NSString *result = [[self labels] valueForKey:self->item];
+  NSString *result;
+
+  /*
+    The user has specified an own filter label configuration. Either a simple:
+      { "x-spam-status" = "Spam-Status"; }
+    or a localized variant:
+      {
+        English = {
+	  "x-spam-status" = "Spam-Status";
+        };
+        German = {
+	  "x-spam-status" = "Spamwert";
+        };
+      }
+    the latter is checked first.
+  */
+  if (OGoFilterEditor_FieldLabels != nil) {
+    /* first check for the language */
+    if ((result = [[self existingSession] primaryLanguage]) != nil) {
+      NSDictionary *keyToLabel;
+      NSRange r;
+      
+      r = [result rangeOfString:@"_"];
+      if (r.length > 0) result = [result substringToIndex:r.location];
+      keyToLabel = [OGoFilterEditor_FieldLabels objectForKey:result];
+      
+      if ((result = [keyToLabel objectForKey:self->item]) != nil)
+	/* found a localized custom label */
+	return result;
+    }
+    
+    /* next check for the key directly (customized but not localized) */
+    if ((result = [OGoFilterEditor_FieldLabels objectForKey:self->item])!=nil)
+      return result;
+  }
+  
+  /* now check the regular labels system for standard translations */
+  result = [[self labels] valueForKey:self->item];
   return (result != nil) ? result : (NSString *)self->item;
 }
 
@@ -451,6 +509,8 @@ static BOOL    reuseOGoLoginForMailServer = NO;
   }
   return nil;
 }
+
+// TODO: we should properly type those object parameters
 
 - (void)setFilter:(id)_id {
   ASSIGN(self->filter,    _id);
