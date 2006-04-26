@@ -1,5 +1,8 @@
 2006-04-26  Helge Hess  <helge.hess@opengroupware.org>
 
+	* English|German.lproj/OGoMailFilter.strings: added 'lessButtonLabel'
+	  key (was fewerButtonLabel which again was missing)
+
 	* German.lproj/OGoMailFilter.strings (match): changed match label
 	  not to use HTML entities (but use UTF-8 code in place)
 

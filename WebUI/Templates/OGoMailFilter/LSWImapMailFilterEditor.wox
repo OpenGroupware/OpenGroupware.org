@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
+<OGo:page
+  var:title="LSWMailFilterEditor_windowTitle"
+  var:onClose="cancel"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+>
+  <!-- TODO: this page needs serious cleanup in the element 
+             grouping / positioning -->
+  
+  <OGo:warn okAction="warningOkAction" var:phrase="warningPhrase" />
+
+  <OGo:body>
+
+    <form name="filtereditor" var:action="save">
+      <table border="0" cellspacing="0" cellpadding="4" width="100%">
+
+        <OGo:attribute label="filterName" editfont="1">
+          <input type="text" name="filtername" var:value="filter.name"
+                 var:formatter="session.formatString" size="40" />
+        </OGo:attribute>
+
+        <OGo:attribute label="filterPos" editfont="1">
+          <var:popup list="filterPos" selection="filter.filterPos" 
+                     item="item" />
+        </OGo:attribute>
+
+        <OGo:attribute label="match" editfont="1">
+          <OGo:font>
+          <var:radio-button-list
+            list="matchList" item="item"
+            selection="filter.match" suffix="matchSuffix" />
+          </OGo:font>
+          <br />
+
+          <table border="0" cellspacing="0" cellpadding="4">
+            <var:foreach list="filter.entries" index="index" item="entry">
+              <tr>
+                <td align="right"><OGo:font
+                    ><var:string value="theLabel"/></OGo:font></td>
+
+                <td><var:popup list="userDefaults.OGoFilterEditor_Fields"
+	                       item="item" string="mailHeaderLabel"
+                               selection="entry.headerField" /></td>
+
+                <td><OGo:font><entity name="nbsp"/>
+                    <OGo:label key="ofTheMessage" /></OGo:font></td>
+
+                <td><var:popup list="userDefaults.OGoFilterEditor_FilterKinds"
+	                       item="item" string="filterKindLabel"
+                               selection="entry.filterKind" /></td>
+
+                <td><input type="text" var:value="entry.string" size="40"
+                           var:formatter="session.formatString" /></td>
+              </tr>
+            </var:foreach>
+
+            <tr>
+              <td colspan="5">
+                <input type="submit" name="more" var:action="more"
+                       var:value="labels.moreButtonLabel"
+                       class="button_narrow" />
+
+                <var:if condition="forbidfewer" const:negate="1">
+                  <input type="submit" name="less" var:action="fewer"
+                         var:value="labels.lessButtonLabel"
+                         disabled="forbidfewer"
+                         class="button_narrow" />
+                </var:if>
+              </td>
+            </tr>
+          </table>
+        </OGo:attribute>
+
+        <OGo:attribute label="action" editfont="1">
+          <OGo:font>
+            <table>
+              <tr>
+                <td><input type="radio" name="filter"
+                           var:checked="selectionMove" /></td>
+                <td><OGo:font
+                   ><OGo:label key="thenMoveToFolder" /></OGo:font></td>
+                <td><var:popup list="folderList" selection="filterFolder"
+                               const:name="folderselect"
+			       item="item" string="folderString" /></td>
+              </tr>
+              <tr>
+                <td><input type="radio" name="filter"
+                           var:checked="selectionForward" /></td>
+                <td><OGo:font><OGo:label key="thenRedirectTo"/></OGo:font></td>
+                <td><input type="text" name="fwdAddress"
+                           var:value="filter.forwardAddress" /></td>
+              </tr>
+            </table>
+          </OGo:font>
+        </OGo:attribute>
+
+        <tr><td colspan="2"><hr /></td></tr>
+
+        <var:if condition="hasPassword" const:negate="1">
+          <OGo:attribute label="password" editfont="1">
+            <input type="password" name="password" var:value="password" />
+          </OGo:attribute>
+        </var:if>
+
+        <tr>
+          <td></td>
+          <td>
+            <nobr>
+              <input type="submit" var:action="save" class="button_narrow"
+                     name="filter_save"
+                     var:value="labels.saveButtonLabel"
+                     var:title="labels.saveButtonLabel" />
+
+              <a var:action="cancel" class="button_narrow"
+                 ><OGo:label key="cancelButtonLabel" /></a>
+
+              <var:if condition="isDeleteDisabled" const:negate="1">
+                <!-- Note: this must be a submit button because the panel can
+			   contain a password field! -->
+                <input type="submit" var:action="delete" class="button_narrow"
+                       name="filter_delete"
+                       var:value="labels.deleteButtonLabel"
+                       var:title="labels.deleteButtonLabel" />
+              </var:if>
+            </nobr>
+          </td>
+        </tr>
+      </table>
+    </form>
+
+    <var:if condition="session.isJavaScriptEnabled">
+      <script language="JavaScript">
+        if (document.filtereditor.filtername) {
+          document.filtereditor.filtername.focus();
+          document.filtereditor.filtername.select();
+        }
+      </script>
+    </var:if>
+  </OGo:body>
+</OGo:page>

@@ -21,6 +21,7 @@ inDays                          = "Tag(en)";
 is                              = "ist";
 keepMails                       = "Mails behalten";
 List-Id                         = "Mailingliste";
+lessButtonLabel                 = "Weniger";
 match                           = "Übereinstimmung";
 moreButtonLabel                 = "Mehr";
 newVacation                     = "Neu";

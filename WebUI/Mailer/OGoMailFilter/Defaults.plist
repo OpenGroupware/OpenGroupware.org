@@ -1,2 +1,10 @@
 {
+  /* Do not add new kinds, skyinstallsieve depends on the exact wording. */
+  OGoFilterEditor_FilterKinds = (
+    "contains", "doesn't contain", "is", "isn't", "begins with", "ends with"
+  );
+  
+  OGoFilterEditor_Fields = (
+    "from", "to", "cc", "to:cc", "subject", "Organization", "List-Id"
+  );
 }

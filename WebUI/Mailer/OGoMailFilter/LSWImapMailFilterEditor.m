@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -236,38 +237,35 @@ static BOOL    reuseOGoLoginForMailServer = NO;
 }
 
 - (NSString *)matchSuffix {
-  NSString* result = [[self labels] valueForKey:self->item];
-  return (result != nil) ? result : self->item;
+  NSString *result = [[self labels] valueForKey:self->item];
+  return (result != nil) ? result : (NSString *)self->item;
 }
 
 - (NSString *)mailHeaderLabel {
-  NSString* result = [[self labels] valueForKey:self->item];
-  return (result != nil) ? result : self->item;
+  NSString *result = [[self labels] valueForKey:self->item];
+  return (result != nil) ? result : (NSString *)self->item;
 }
 
 - (NSString *)filterKindLabel {
-  NSString* result = [[self labels] valueForKey:self->item];
-  return (result != nil) ? result : self->item;
+  NSString *result = [[self labels] valueForKey:self->item];
+  return (result != nil) ? result : (NSString *)self->item;
 }
 
 - (NSString *)theLabel {
-  NSString *match = nil;
+  NSString *match;
   
-  match = [self-> filter objectForKey:@"match"];
-  if (self->index == 0) {
+  match = [self->filter objectForKey:@"match"];
+  if (self->index == 0)
     return [[self labels] valueForKey:@"the"];
-  }
-  else {
-    if ([match isEqual:@"or"]) {
-      return [[self labels] valueForKey:@"orThe"];
-    }
-    else
-      return [[self labels] valueForKey:@"andThe"];
-  }
-  return nil;
+
+  if ([match isEqual:@"or"])
+    return [[self labels] valueForKey:@"orThe"];
+  
+  return [[self labels] valueForKey:@"andThe"];
 }
 
 - (void)setPassword:(NSString *)_pwd {
+  /* Note: do not use ASSIGNCOPY for passwords */
   ASSIGN(self->password, _pwd);
 }
 - (NSString *)password {
@@ -275,7 +273,7 @@ static BOOL    reuseOGoLoginForMailServer = NO;
 }
 
 - (BOOL)hasPassword {
-  return (self->password == nil || [self->password length] == 0) ? NO : YES;
+  return [self->password isNotEmpty];
 }
 
 /* actions */
@@ -303,12 +301,12 @@ static BOOL    reuseOGoLoginForMailServer = NO;
 
   la = [self labels];
 
-  if (self->password == nil || [self->password length] == 0) {
+  if (![self->password isNotEmpty]) {
     [self setErrorString:[la valueForKey:@"missing password"]];
     return nil;
   }
   if (self->action == Action_Forward) {
-    if ([[self->filter objectForKey:@"forwardAddress"] length] == 0) {
+    if (![[self->filter objectForKey:@"forwardAddress"] isNotEmpty]) {
       [self setErrorString:[la valueForKey:@"missing forward address"]];
       return nil;
     }
@@ -324,8 +322,8 @@ static BOOL    reuseOGoLoginForMailServer = NO;
   }
   
   enumerator = [[self->filter objectForKey:@"entries"] objectEnumerator];
-  while ((obj = [enumerator nextObject])) {
-    if ([[obj objectForKey:@"string"] length] > 0)
+  while ((obj = [enumerator nextObject]) != nil) {
+    if ([[obj objectForKey:@"string"] isNotEmpty])
       break;
   }
   if (obj == nil) {
@@ -377,7 +375,7 @@ static BOOL    reuseOGoLoginForMailServer = NO;
   int            i, cnt;
   NSMutableArray *allF  = nil;
 
-  if (self->password == nil || [self->password length] == 0) {
+  if (![self->password isNotEmpty]) {
     [self setErrorString:[[self labels] valueForKey:@"missing password"]];
     return nil;
   }
@@ -412,30 +410,28 @@ static BOOL    reuseOGoLoginForMailServer = NO;
 }
 
 - (NSString *)folderString {
-  NSString *newFolderName = @"";
-  NSArray  *items         = [self->item componentsSeparatedByString:@"@ @"];
-  int      i              = 0;
-
-  while (i < [items count]-1) {
+  NSString *newFolderName;
+  NSArray  *items;
+  unsigned i;
+  
+  items = [self->item componentsSeparatedByString:@"@ @"];
+  for (i = 0, newFolderName = @""; i < [items count] - 1; i++)
     newFolderName = [newFolderName stringByAppendingString:@"-- "];
-    i++;
-  }
+  
   return [newFolderName stringByAppendingString:[items lastObject]];
 }
 
 - (void)setFilterFolder:(NSString *)_name {
   NSString *folderName;
-
-  folderName = [[self->folders objectForKey:_name] absoluteName];
-  if (folderName)
+  
+  if ((folderName = [[self->folders objectForKey:_name] absoluteName]) != nil)
     [self->filter setObject:folderName forKey:@"folder"];
 }
 
 - (void)setFolderForFilter:(NGImap4Folder *)_folder {
   NSString *folderName;
 
-  folderName = [_folder absoluteName];
-  if (folderName)
+  if ((folderName = [_folder absoluteName]) != nil)
     [self->filter setObject:folderName forKey:@"folder"];
 }
 
@@ -443,9 +439,9 @@ static BOOL    reuseOGoLoginForMailServer = NO;
   id           folderName, obj;
   NSEnumerator *enumerator;
   
-  if ((folderName = [self->filter objectForKey:@"folder"]) == nil) {
+  if ((folderName = [self->filter objectForKey:@"folder"]) == nil)
     return nil;
-  }
+  
   enumerator = [self->folders keyEnumerator];
   while ((obj = [enumerator nextObject]) != nil) {
     if ([[[self->folders objectForKey:obj] absoluteName]
@@ -454,27 +450,27 @@ static BOOL    reuseOGoLoginForMailServer = NO;
     }
   }
   return nil;
-};
+}
 
-- (void)setFilter:(id)_id    {
+- (void)setFilter:(id)_id {
   ASSIGN(self->filter,    _id);
 }
-- (void)setEntry:(id)_id     {
+- (void)setEntry:(id)_id {
   ASSIGN(self->entry,     _id);
 }
 - (void)setFilterPos:(id)_id {
   ASSIGN(self->filterPos, _id);
 }
-- (void)setItem:(id)_id      {
+- (void)setItem:(id)_id {
   ASSIGN(self->item,      _id);
 }
 - (void)setMatchList:(id)_id {
   ASSIGN(self->matchList, _id);
 }
-- (void)setFolders:(id)_id   {
+- (void)setFolders:(id)_id {
   ASSIGN(self->folders,   _id);
 }
-- (void)setFolder:(id)_id    {
+- (void)setFolder:(id)_id {
   ASSIGN(self->folder,    _id);
 }
 - (void)setIndex:(int)_index {
@@ -517,7 +513,7 @@ static BOOL    reuseOGoLoginForMailServer = NO;
   [LSWImapMailFilterManager exportFilterWithSession:[self session]
                             pwd:self->password
                             page:self];
-  if ([[self errorString] length] == 0) {
+  if (![[self errorString] isNotEmpty]) {
     [self postChange:@"LSWImapFilterChanged" onObject:nil];
     [self leavePage];
   }
