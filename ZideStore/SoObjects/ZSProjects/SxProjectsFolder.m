@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -130,9 +131,11 @@ static BOOL kontactGroupDAV = YES;
       }
     }
   }
-  
+
+#if LOG_CLIENT
   [self logWithFormat:@"CC: %@",
 	[[_ctx request] clientCapabilities]];
+#endif
   
   return [super lookupName:_key inContext:_ctx acquire:_flag];
 }

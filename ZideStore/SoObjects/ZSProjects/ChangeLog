@@ -1,3 +1,7 @@
+2006-05-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxProjectsFolder.m: so not log client capabilities object (v1.5.99)
+
 2005-11-11  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxDocumentFolder.m: fixed a bug in file lookup (v1.5.98)
