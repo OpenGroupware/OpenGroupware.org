@@ -762,8 +762,8 @@ static BOOL embedViewURL             = NO;
 
   cmdctx = [self commandContextInContext:_ctx];
   tzName = [[cmdctx userDefaults] stringForKey:@"timezone"];
-  tz     = ([tzName length])
-    ? [NSTimeZone timeZoneWithAbbreviation:tzName] : nil;
+  tz     = [tzName isNotEmpty]
+    ? (id)[NSTimeZone timeZoneWithAbbreviation:tzName] : nil;
   
   if ((obj = [self objectInContext:_ctx]) == nil) {
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */

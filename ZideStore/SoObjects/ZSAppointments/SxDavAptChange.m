@@ -77,14 +77,16 @@ static BOOL     logAppChange = NO;
   NSString    *log;
   id          tmp;
   
-  [self->eo release];
+  [self->eo release]; self->eo = nil;
   if ((self->eo = [[[self appointment] objectInContext:_ctx] retain]) == nil) {
     return [NSException exceptionWithHTTPStatus:404 /* not found */
                         reason:@"did not find appointment for update"];
   }
 
-  if (logAppChange)
-    NSLog(@"%s: got properties: %@", __PRETTY_FUNCTION__, self->props);
+  if (logAppChange) {
+    [self logWithFormat:
+	    @"%s: got properties: %@", __PRETTY_FUNCTION__, self->props];
+  }
   
   [self removeUnusedKeys];
   
@@ -93,13 +95,13 @@ static BOOL     logAppChange = NO;
                         reason:@"unexpected message class"];
   }
   
-  if ((error = [self processTitleInContext:_ctx]))
+  if ((error = [self processTitleInContext:_ctx]) != nil)
     return error;
-  if ((error = [self processAppointmentRangeInContext:_ctx]))
+  if ((error = [self processAppointmentRangeInContext:_ctx]) != nil)
     return error;
 
   // TODO: remove Outlook specific stuff
-  if ((tmp = [self->props objectForKey:@"rtfCompressed"])) {
+  if ((tmp = [self->props objectForKey:@"rtfCompressed"]) != nil) {
     if ([tmp length] > 0) {
 #if 0
       [self->changeSet setObject:[@"ZideLook rich-text compressed comment: "

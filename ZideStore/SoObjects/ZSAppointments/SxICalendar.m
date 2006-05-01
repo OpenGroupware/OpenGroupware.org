@@ -73,7 +73,8 @@ static BOOL debugZSICal = NO;
 }
 - (SxAptSetIdentifier *)currentAptSet {
   return [self isPublish] 
-    ? nil // only publish available here // TODO: explain the comment left
+    // only publish available here // TODO: explain the comment left
+    ? (SxAptSetIdentifier *)nil 
     : [[self container] aptSetID];
 }
 
@@ -148,23 +149,25 @@ static SaxObjectDecoder          *sax   = nil;
     [parser setErrorHandler:sax];
   }
   if (parser == nil) {
-    NSLog(@"%s: WARNING! failed to init parser for type text/calendar",
-          __PRETTY_FUNCTION__);
+    [self errorWithFormat:
+	    @"%s: WARNING! failed to init parser for type text/calendar",
+            __PRETTY_FUNCTION__];
   }
   else if (sax == nil) {
-    NSLog(@"%s: WARNING! failed to init object decoder for mapping NGiCal",
-          __PRETTY_FUNCTION__);
+    [self errorWithFormat:
+	    @"%s: WARNING! failed to init object decoder for mapping NGiCal",
+            __PRETTY_FUNCTION__];
   }
 
   cmdctx = [self commandContextInContext:_ctx];
   tzId   = [[cmdctx userDefaults] stringForKey:@"timezone"];
-  tz     = ([tzId length])
-    ? [NSTimeZone timeZoneWithAbbreviation:tzId] : nil;
+  tz     = [tzId isNotEmpty]
+    ? [NSTimeZone timeZoneWithAbbreviation:tzId] : (NSTimeZone *)nil;
 
   if (debugZSICal) {
     [self logWithFormat:@"parsing PUT-request with parser: %@ handler: %@ "
           @"user timeZone: %@",
-          parser, sax, tz ? [tz abbreviation] : @"not specified"];
+          parser, sax, tz ? [tz abbreviation] : (NSString *)@"not specified"];
   }
   [iCalObject setICalDefaultTimeZone:tz];
   
@@ -173,7 +176,8 @@ static SaxObjectDecoder          *sax   = nil;
   [parser parseFromSource:content];
   object = [sax rootObject];
   if (object == nil) {
-    NSLog(@"%s: failed parsing PUT-request content", __PRETTY_FUNCTION__);
+    [self errorWithFormat:@"%s: failed parsing PUT-request content", 
+	  __PRETTY_FUNCTION__];
     return nil;
   }
   return object;

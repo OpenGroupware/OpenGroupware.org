@@ -280,12 +280,13 @@ static BOOL debugOn = NO;
       [success addObject:person];
     }
     else {
-      NSLog(@"%s found no mapping for participant:%@(%@,%@,%@)",
+      [self errorWithFormat:
+	      @"%s found no mapping for participant:%@(%@,%@,%@)",
             __PRETTY_FUNCTION__,
             [person valueForKey:@"companyId"],
             [person valueForKey:@"name"],
             [person valueForKey:@"firstname"],
-            [person valueForKey:@"description"]);
+            [person valueForKey:@"description"]];
     }
   }
 
@@ -540,8 +541,8 @@ static BOOL debugOn = NO;
       
       if (![newVal isEqual:oldVal]) {
 	if ([SxAppointment logAptChange])
-	  NSLog(@"%s: %@ has changed partStatus '%@' -> '%@'",
-		__PRETTY_FUNCTION__, pkey, oldVal, newVal);
+	  [self logWithFormat:@"%s: %@ has changed partStatus '%@' -> '%@'",
+		__PRETTY_FUNCTION__, pkey, oldVal, newVal];
 	if (debugOn) {
 	  [self logWithFormat:@"   partstat changed: %@ (%@ => %@)", pkey,
 		oldVal, newVal];

@@ -188,7 +188,7 @@
     // TODO: 'Overview' is a to-many key?
     keys = [[NSArray alloc] initWithObjects:@"Overview", nil];
   
-  return [self canHaveOverviewSubfolder] ? keys : nil;
+  return [self canHaveOverviewSubfolder] ? keys : (NSArray *)nil;
 }
 
 
@@ -401,18 +401,18 @@
   
   cmdctx = [self commandContextInContext:_ctx];
   tzName = [[cmdctx userDefaults] stringForKey:@"timezone"];
-  tz     = ([tzName length])
-    ? [NSTimeZone timeZoneWithAbbreviation:tzName] : nil;
+  tz     = [tzName isNotEmpty]
+    ? [NSTimeZone timeZoneWithAbbreviation:tzName] : (NSTimeZone *)nil;
 
   result = [NSMutableArray arrayWithCapacity:count];
   for (i = 0; i < count; i++) {
     NSString     *entryName, *url;
     NSDictionary *values;
-    id apt, pkey;
-    id icaldata;
+    id       apt, pkey;
+    id       icaldata;
     NSString *keys[5];
-    id  vals[5];
-    int p;
+    id       vals[5];
+    int      p;
     
     apt = [apts objectAtIndex:i];
     

@@ -484,7 +484,7 @@ static int createGroupAptsInGroupFolder = -1;
     cycleEndYear = [[cycle substringWithRange:NSMakeRange(0,4)] intValue];
 
     if (cycleEndYear > 2300) {
-      NSLog(@"Invalid cycle end year detected!");
+      [self errorWithFormat:@"Invalid cycle end year detected!"];
       cycleEndDate = [[[NSCalendarDate alloc] initWithYear:2037 month:12 day:31
                                       hour:18 minute:0 second:0
                                       timeZone:
