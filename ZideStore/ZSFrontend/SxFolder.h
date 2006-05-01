@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -112,10 +113,6 @@
 
 - (int)zlGenerationCount;
 
-- (BOOL)isMsgInfoQuery:(EOFetchSpecification *)_fs;
-- (BOOL)isSubFolderQuery:(EOFetchSpecification *)_fs;
-
-- (id)performMsgInfoQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx;
 - (id)performSubFolderQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx;
 
 @end

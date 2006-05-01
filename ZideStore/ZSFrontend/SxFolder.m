@@ -53,39 +53,8 @@ static NSString *cachePath  = nil;
 }
 
 - (NSArray *)subPropMapper {
-  int DidCheckClass = -1;
-  
-  Class clazz;
-  id    pm;
-  
-  if (self->subPropMapper) 
-    return self->subPropMapper;
-
-  if (DidCheckClass == 0)
-    return nil;
-  
-  if ((clazz = NSClassFromString(@"ZLPropMapper")) == Nil) {
-    static BOOL didNote = NO;
-    if (!didNote)
-      [self logWithFormat:@"Note: no ZideLook support installed."];
-    didNote = YES;
-    DidCheckClass = 0;
-    return nil;
-  }
-  else
-    DidCheckClass = 1;
-  
-  if ((pm = [[[clazz alloc] initWithDictionary:nil] autorelease]) == nil) {
-    [self logWithFormat:@"could not instantiate prop mapper: %@", clazz];
-    return nil;
-  }
-  
-  if ([pm respondsToSelector:@selector(propertySetNamed:)])
-    self->subPropMapper = [[NSArray alloc] initWithObjects:&pm count:1];
-  else
-    [self logWithFormat:@"ZLPropMapper has not propertySetNamed: ?"];
-  
-  return self->subPropMapper;
+  // DEPRECATED (was for ZL support)
+  return nil;
 }
 
 - (id)initWithName:(NSString *)_name inContainer:(id)_container {
@@ -500,6 +469,10 @@ static NSString *cachePath  = nil;
       [self debugWithFormat:@"  value from superclass: %@", value];
     return value;
   }
+  
+  /* to avoid a warning, let the dispatcher do the OPTIONS work */
+  if ([_name isEqualToString:@"OPTIONS"])
+    return nil;
   
   /* normalize key */
   

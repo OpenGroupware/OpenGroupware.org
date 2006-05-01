@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -133,63 +134,6 @@
 
 /* query detection */
 
-- (BOOL)isMsgInfoQuery:(EOFetchSpecification *)_fs {
-  // ZL messages
-  static NSSet *zlSet = nil;
-  id propNames;
-  
-  if (zlSet == nil) 
-    zlSet = [[self propertySetNamed:@"ZideLookFolderQuery1"] retain];
-  if ((propNames = [_fs selectedWebDAVPropertyNames]) == nil)
-    return NO;
-  if ([propNames count] > [zlSet count])
-    return NO;
-  
-  propNames = [NSSet setWithArray:propNames];
-  if (![propNames isSubsetOfSet:zlSet])
-    return NO;
-  
-  return YES;
-}
-
-- (BOOL)isSubFolderQuery:(EOFetchSpecification *)_fs {
-  // subfolders
-  static NSSet *zlSet  = nil;
-  static NSSet *evoSet = nil;
-  id propNames;
-
-  if (zlSet == nil) 
-    zlSet = [[self propertySetNamed:@"ZideLookFolderQuery2"] retain];
-  if (evoSet == nil) 
-    evoSet = [[self propertySetNamed:@"EvolutionSubFolderSet"] retain];
-  
-  if ((propNames = [_fs selectedWebDAVPropertyNames]) == nil)
-    return NO;
-
-  if ([propNames count] > [zlSet count] &&
-      [propNames count] > [evoSet count])
-    return NO;
-  
-  propNames = [NSSet setWithArray:propNames];
-  
-  if ([propNames isSubsetOfSet:zlSet])
-    return YES;
-  
-  if ([propNames isSubsetOfSet:evoSet])
-    return YES;
-  
-  return NO;
-}
-
-- (id)performMsgInfoQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx {
-  /* the second query by ZideLook, get basic message infos */
-  /* davDisplayName,davResourceType,outlookMessageClass,cdoDisplayType */
-  [self logWithFormat:@"ZL Messages Query [depth=%@] (returning nothing): %@",
-          [[(WOContext *)_ctx request] headerForKey:@"depth"],
-          [[_fs selectedWebDAVPropertyNames] componentsJoinedByString:@","]];
-  return [NSArray array];
-}
-
 - (id)performSubFolderQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx {
   /* the third query by ZideLook, get all subfolder infos */
   /*
@@ -242,30 +186,12 @@
     url = [child baseURLInContext:_ctx];
     rec = (queriedAttrNames == nil)
       ? child
-      : [child valuesForKeys:queriedAttrNames];
+      : (id)[child valuesForKeys:queriedAttrNames];
     rec = [[entryClass alloc] initWithURI:url object:child values:rec];
     [objects addObject:rec];
     [rec release];
   }
   return objects;
-}
-
-/* deprecated */
-
-- (BOOL)isZideLookFolderQuery1:(EOFetchSpecification *)_fs {
-  return [self isMsgInfoQuery:_fs];
-}
-
-- (BOOL)isZideLookFolderQuery2:(EOFetchSpecification *)_fs {
-  return [self isSubFolderQuery:_fs];
-}
-
-- (id)performZideLookQuery1:(EOFetchSpecification *)_fs inContext:(id)_ctx {
-  return [self performMsgInfoQuery:_fs inContext:_ctx];
-}
-
-- (id)performZideLookQuery2:(EOFetchSpecification *)_fs inContext:(id)_ctx {
-  return [self performSubFolderQuery:_fs inContext:_ctx];
 }
 
 /* range queries */

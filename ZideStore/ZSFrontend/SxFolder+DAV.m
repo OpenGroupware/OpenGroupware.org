@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -324,13 +325,6 @@
           selectors using some rule.
   */
   
-  /* ZideLook Folder */
-  
-  if ([self isMsgInfoQuery:_fs])
-    return @selector(performMsgInfoQuery:inContext:);
-  if ([self isSubFolderQuery:_fs])
-    return @selector(performSubFolderQuery:inContext:);
-
   /* check some standard methods */
   
   if ([_attrSet count] == 1) {
@@ -372,17 +366,6 @@
   NSString *ua;
 
   ua = [[[(WOContext *)_ctx request] clientCapabilities] userAgentType];
-  
-  if ([ua isEqualToString:@"ZideLook"]) {
-    if ([self doExplainQueries])
-      [self logWithFormat:@"use default-ZideLook query for unknown query-set"];
-    return [self defaultFetchSelectorForZLQuery];
-  }
-  if ([ua isEqualToString:@"Evolution"]) {
-    if ([self doExplainQueries])
-      [self logWithFormat:@"use default-evo query for unknown query-set"];
-    return [self defaultFetchSelectorForEvoQuery];
-  }
   
   if ([self isETagsQuery:_fs]) {
     if ([self doExplainQueries])

@@ -588,20 +588,13 @@ static BOOL kontactGroupDAV = YES;
   error = [self primaryDeleteObjectInContext:_ctx];
   
   /* check result or commit */
-  return error ? error : (id)[NSNumber numberWithBool:YES];
+  return (error != nil) ? (id)error : (id)[NSNumber numberWithBool:YES];
 }
 
 - (id)GETAction:(WOContext *)_ctx {
   if ([self isNew]) {
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-			reason:@"this object does not exist"];
-  }
-  
-  if ([[[_ctx request] headerForKey:@"user-agent"] hasPrefix:@"Evolution/"]) {
-    WOResponse *r = [_ctx response];
-    [self logWithFormat:@"GET from Evolution, just saying OK ..."];
-    [r setStatus:200];
-    return r;
+			reason:@"this object does not exist (yet)"];
   }
   
   return self;

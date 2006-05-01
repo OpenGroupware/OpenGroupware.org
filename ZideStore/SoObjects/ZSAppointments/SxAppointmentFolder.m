@@ -38,7 +38,6 @@
 
 @interface SxAppointmentFolder(Privates)
 - (SxAptManager *)aptManagerInContext:(id)_ctx;
-- (id)performZideLookAptQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx;
 - (id)performZideLookBulkQueryOnGIDs:(NSArray *)_gids inContext:(id)_ctx;
 @end
 
@@ -459,14 +458,11 @@
   inContext:(id)_ctx 
 {
   static NSSet *evoICalSet = nil;
-  static NSSet *zlAptSet   = nil;
   NSSet *propNames;
 
   if (evoICalSet == nil)
     evoICalSet = [[self propertySetNamed:@"EvoAptICalQuerySet"] copy];
-  if (zlAptSet == nil)
-    zlAptSet = [[self propertySetNamed:@"ZideLookAptQuery"] copy];
-    
+  
   if ([_gids count] == 0)
     return [NSArray array];
 
@@ -478,15 +474,6 @@
             [[_fs selectedWebDAVPropertyNames] componentsJoinedByString:@","]];
     }
     return [self performEvoBulkQueryOnGIDs:_gids inContext:_ctx];
-  }
-  
-  if ([propNames isSubsetOfSet:zlAptSet]){
-    if ([self doExplainQueries]) {
-      [self logWithFormat:@"perform ZideLook apt bulk query: %@",
-            [[_fs selectedWebDAVPropertyNames] componentsJoinedByString:@","]];
-    }
-    
-    return [self performZideLookBulkQueryOnGIDs:_gids inContext:_ctx];
   }
   
   /* unknown bulk query */
@@ -570,16 +557,10 @@
   inContext:(id)_ctx
 {
   static NSSet *cadaverSet = nil;
-  static NSSet *korgExSet  = nil;
-  static NSSet *zlAptSet   = nil;
   SEL handler = NULL;
   
   if (cadaverSet == nil)
     cadaverSet = [[self propertySetNamed:@"CadaverListSet"] copy];
-  if (korgExSet == nil)
-    korgExSet = [[self propertySetNamed:@"KOrgExInitialAptQuerySet"] copy];
-  if (zlAptSet == nil)
-    zlAptSet = [[self propertySetNamed:@"ZideLookAptQuery"] copy];
   
   if ([propNames count] == 1) {
     NSString *propName;
@@ -597,28 +578,14 @@
     }
   }
   
-  if ([propNames isSubsetOfSet:korgExSet])
-    return @selector(performInitialKOrgExchangeQuery:inContext:);
   if ([propNames isSubsetOfSet:cadaverSet])
     return @selector(performListQuery:inContext:);
   
   handler = [super fetchSelectorForQuery:_fs onAttributeSet:propNames
                    inContext:_ctx];
-  if (handler) return handler;
-  
-  /* ZideLook */
-  if ([propNames isSubsetOfSet:zlAptSet])
-    handler = @selector(performZideLookAptQuery:inContext:);
+  if (handler != NULL) return handler;
   
   return handler;
-}
-
-- (SEL)defaultFetchSelectorForZLQuery {
-  return @selector(performZideLookAptQuery:inContext:);
-}
-- (SEL)defaultFetchSelectorForEvoQuery {
-  // TODO: maybe not a clever choice ...
-  return @selector(performDavUidAndModDateQuery:inContext:);
 }
 
 - (NSString *)folderAllPropSetName {

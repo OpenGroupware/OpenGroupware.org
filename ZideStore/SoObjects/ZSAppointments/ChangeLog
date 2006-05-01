@@ -1,5 +1,7 @@
 2006-05-01  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SxAppointmentFolder.m: removed some ZL/KOrgEx/EvoEx support(v1.5.104)
+	
 	* changed to use logging framework, fixed gcc 4.1 warnings (v1.5.103)
 
 2005-12-05  Helge Hess  <helge.hess@skyrix.com>

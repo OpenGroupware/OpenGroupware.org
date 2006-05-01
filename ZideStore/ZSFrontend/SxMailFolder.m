@@ -24,32 +24,4 @@
 
 @implementation SxMailFolder
 
-- (SEL)fetchSelectorForQuery:(EOFetchSpecification *)_fs
-  onAttributeSet:(NSSet *)propNames
-  inContext:(id)_ctx
-{
-  SEL handler = NULL;
-
-  handler = [super fetchSelectorForQuery:_fs onAttributeSet:propNames
-                   inContext:_ctx];
-  if (handler) return handler;
-
-  /* ZideLook */
-  if ([propNames isSubsetOfSet:[self propertySetNamed:@"ZideLookMailQuery"]])
-    handler = @selector(performZideLookMailQuery:inContext:);
-  
-  return handler;
-}
-
-/* queries */
-
-- (id)performZideLookMailQuery:(EOFetchSpecification *)_fs inContext:(id)_ctx {
-  if ([self doExplainQueries]) {
-    [self logWithFormat:@"perform ZideLook mail query: %@",
-            [[_fs selectedWebDAVPropertyNames] componentsJoinedByString:@","]];
-  }
-  /* currently we only have empty mail folders ;-) */
-  return [NSArray array];
-}
-
 @end /* SxMailFolder */

@@ -1,3 +1,19 @@
+2006-05-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.5.115
+
+	* SxObject.m: removed special GET handling for Evolution
+
+	* SxFolder+DAV.m: removed some old ZideLook/Evo support
+
+	* SxMailFolder.m: removed support for ZideLook mail query (was empty
+	  anyway)
+
+	* SxFolder+ZL.m: removed some unused methods
+
+	* SxFolder.m: special support for OPTIONS key (let SOPE do the OPTIONS
+	  work), removed some ZL specific stuff
+
 2005-11-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxFolder.m: do not log an error if an object could not be found and
