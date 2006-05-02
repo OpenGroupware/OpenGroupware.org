@@ -1,5 +1,7 @@
 2006-05-02  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSWAppointmentEditor.m: major code cleanups (v5.3.104)
+
 	* v5.3.103
 	
 	* LSWAppointmentEditor.m: use warn/errorWithFormat: when appropriate,

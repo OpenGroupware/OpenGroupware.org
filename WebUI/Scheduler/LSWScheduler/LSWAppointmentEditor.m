@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -458,10 +459,10 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   if (![self isFilledWriteAccessList:_list]) return;
   
   enumerator = [[_list componentsSeparatedByString:@","] objectEnumerator];
-  while ((objId = [enumerator nextObject])) {
+  while ((objId = [enumerator nextObject]) != nil) {
     id res;
     
-    if ((res = [self _fetchAccountOrTeamForPrimaryKey:objId]))
+    if ((res = [self _fetchAccountOrTeamForPrimaryKey:objId]) != nil)
       [self->accessMembers addObject:res];
   }
 }
@@ -1672,11 +1673,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return (n > 0) ? n : 2;
 }
 
-- (NSString *)mailTemplate {
-  return [[self userDefaults] stringForKey:@"scheduler_mail_template"];
-}
 - (NSString *)mailTemplateDateFormat {
-  return [[self userDefaults] 
+  return [[self userDefaults]
 	        stringForKey:@"scheduler_mail_template_date_format"];
 }
 
@@ -1855,19 +1853,32 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return _ds;
 }
 
+- (NSException *)handleMailTemplateException:(NSException *)_exception {
+  [self errorWithFormat:
+          @"exception during mail-template evaluation: %@",
+          _exception];
+  return nil;
+}
 - (NSString *)mailContentForAppointment:(id)_appointmentOrSnapshot {
   NSString *s;
   
   if (_appointmentOrSnapshot == nil)
     return nil;
   
-  s = [self mailTemplate];
+  s = [[self userDefaults] stringForKey:@"scheduler_mail_template"];
   if (![s isNotEmpty])
     return @"";
   
-  s = [s stringByReplacingVariablesWithBindings:
-           [self templateBindingsForAppointment:_appointmentOrSnapshot]
-         stringForUnknownBindings:@""];
+  // TODO: do we really need that exception handler?
+  NS_DURING {
+    s = [s stringByReplacingVariablesWithBindings:
+	     [self templateBindingsForAppointment:_appointmentOrSnapshot]
+	   stringForUnknownBindings:@""];
+  }
+  NS_HANDLER
+    [[self handleMailTemplateException:localException] raise];
+  NS_ENDHANDLER;
+  
   return s;
 }
 
@@ -1973,82 +1984,24 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   return ms;
 }
 
-- (NSString *)appointmentRemovedSubjectWithTitle:(NSString *)_title {
+- (NSString *)mailSubjectForAppointment:(id)_apt action:(NSString *)_action {
+  /*
+    Actions: created, edited, deleted, moved
+  */
   NSMutableString *ms;
+  NSString *str;
   id l;
   
   l = [self labels];
   ms = [NSMutableString stringWithCapacity:80];
+
+  str = [l valueForKey:_action];
   [ms appendString:[l valueForKey:@"appointment"]];
   [ms appendString:@": '"];
-  [ms appendString:_title];
+  [ms appendString:[_apt valueForKey:@"title"]];
   [ms appendString:@"' "];
-  [ms appendString:[l valueForKey:@"removed"]];
+  [ms appendString:str];
   return ms;
-}
-
-- (id)reallyDelete {
-  id<LSWMailEditorComponent, OGoContentPage> mailEditor;
-  NSArray      *ps;
-  NSString     *title, *cc, *tmp;
-  NGMimeType   *t;
-  NSEnumerator *recEn;
-  id           rec;
-  BOOL         first;
-  BOOL         attach;
-  id obj;
-  id l;
-
-  l = [self labels];
-  
-  [self deleteAndGoBackWithCount:2];
-  
-  if (![self isMailEnabled])
-    return nil;
-  
-  if ([[self navigation] activePage] == self)
-    return nil;
-
-  obj        = [self object];
-  mailEditor = (id)[self pageWithName:@"LSWImapMailEditor"];
-    
-  if (mailEditor == nil)
-    return nil;
-  
-  ps    = self->participants; 
-  title = [[self object] valueForKey:@"title"];
-
-  /* set default cc */
-  cc = [self ccForNotificationMails];
-  if (cc) [mailEditor addReceiver:cc type:@"cc"];
-  
-  t      = eoDateType;
-  attach = [self shouldAttachAppointmentsToMails];
-  [mailEditor addAttachment:obj type:t sendObject:(attach ? yesNum : noNum)];
-  
-  tmp = [self appointmentRemovedSubjectWithTitle:title];
-  [mailEditor setSubject:tmp];
-  [mailEditor setContentWithoutSign:[self mailContentForAppointment:obj]];
-  
-  recEn = [ps objectEnumerator];
-  first = YES;
-          
-  while ((rec = [recEn nextObject])) {
-    if (first) {
-      [mailEditor addReceiver:rec];
-      first = NO;
-    }
-    else 
-      [mailEditor addReceiver:rec type:@"cc"];
-  }
-  return mailEditor;
-}
-
-- (NSException *)handleMailTemplateException:(NSException *)_exception {
-  [self warnWithFormat:
-          @"exception during mail-template evaluation: %@",
-          _exception];
-  return nil;
 }
 
 - (void)_addParticipants:(NSArray *)_ps toMailEditor:(id)mailEditor {
@@ -2057,9 +2010,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   BOOL         first;
   
   recEn = [_ps objectEnumerator];
-  first = YES;
-          
-  while ((rec = [recEn nextObject])) {
+  for (first = YES; (rec = [recEn nextObject]) != nil;) {
     if (first) {
       [mailEditor addReceiver:rec];
       first = NO;
@@ -2069,16 +2020,77 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   }
 }
 
+- (id<LSWMailEditorComponent, OGoContentPage>)_setupMailEditorForApt:(id)_o
+  action:(NSString *)_action
+{
+  id<LSWMailEditorComponent, OGoContentPage> mailEditor;
+  NSString *cc;
+  
+  if (![self isMailEnabled]) {
+    [self warnWithFormat:@"mail is not enabled, not entering the editor .."];
+    return nil;
+  }
+
+  if ((mailEditor = (id)[self pageWithName:@"LSWImapMailEditor"]) == nil) {
+    [self logWithFormat:@"did not find mail editor component"];
+    return nil;
+  }
+
+  // TODO: document this specialty
+
+  if ([self isInNewMode])
+    [(LSWEditorPage *)mailEditor setIsAppointmentNotification:YES];
+  
+  /* set default cc */
+  
+  cc = [self ccForNotificationMails];
+  if ([cc isNotEmpty]) [mailEditor addReceiver:cc type:@"cc"];
+  
+  /* subject and content */
+  
+  [mailEditor setSubject:[self mailSubjectForAppointment:_o action:_action]];
+  [mailEditor setContentWithoutSign:[self mailContentForAppointment:_o]];
+
+  /* recipients */
+
+  [self _addParticipants:self->participants toMailEditor:mailEditor];
+  
+  /* attach appointment */
+  
+  [mailEditor addAttachment:_o type:eoDateType
+	      sendObject:([self shouldAttachAppointmentsToMails]
+			  ? yesNum : noNum)];
+
+#if 0 /* this was in saveAndSendMail */
+  attach = [self shouldAttachAppointmentsToMails];
+  if (!attach) {
+    str = [template stringByTrimmingWhiteSpaces];
+    [mailEditor addAttachment:obj type:eoDateType
+                sendObject:[str isNotEmpty] ? noNum : yesNum];
+  }
+  else 
+    [mailEditor addAttachment:obj type:eoDateType];
+#endif
+  
+  return mailEditor;
+}
+
+- (id)reallyDelete {
+  [self deleteAndGoBackWithCount:2];
+  
+  // TODO: document this check
+  if ([[self navigation] activePage] == self)
+    return nil;
+  
+  return [self _setupMailEditorForApt:[self object] action:@"removed"];
+}
+
 - (id)saveAndSendMail {
   /* TODO: this method is *far* too long, split it up! */
-  NSArray    *ps;
-  NSString   *str, *title, *template;
-  NSString   *cc;
-  id         obj;
-  id         mailEditor;
-  id         page, l;
-  NGMimeType *t;
-  BOOL       attach;
+  NSArray *ps;
+  id      obj;
+  id      mailEditor;
+  id      page, l;
   
   l    = [self labels];
   page = [self saveAndGoBackWithCount:1
@@ -2092,17 +2104,14 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     [self warnWithFormat:@"mail is not enabled, not entering the editor .."];
     return nil;
   }
+  // TODO: document this
   if ([[self navigation] activePage] == self) {
     [self logWithFormat:@"staying on editor page (active-page==self)"];
     [self logWithFormat:@"  active-page: %@",[[self navigation] activePage]];
     [self logWithFormat:@"  page:        %@", page];
     return nil;
   }
-  if ((mailEditor = [self pageWithName:@"LSWImapMailEditor"]) == nil) {
-    [self warnWithFormat:@"could not instantiate mail editor!"];
-    return nil;
-  }
-  
+
   /*
     Undoing changes is currently only possible if we're
     in new mode, not while being in edit mode, because
@@ -2115,58 +2124,18 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 
   /* fetch object, configure editor */
   
-  obj   = [self object];
-  title = [obj valueForKey:@"title"];
-  
-  ps = [self _fetchParticipantsOfAppointment:obj force:YES];
+  obj = [self object];
+  ps  = [self _fetchParticipantsOfAppointment:obj force:YES];
   [self setParticipants:ps];
 
-  /* set default cc */
+  [self setErrorString:nil];
   
-  cc = [self ccForNotificationMails];
-  if ([cc isNotEmpty]) [mailEditor addReceiver:cc type:@"cc"];
-  
-  /* set subject */
-  
-  str = [self isInNewMode] ? @"created" : @"edited";
-  str = [[NSString alloc] initWithFormat:@"%@: '%@' %@",
-                            [l valueForKey:@"appointment"], 
-                            title,
-                            [l valueForKey:str]];
-  [mailEditor setSubject:str];
-  [str release]; str = nil;
-
-  /* setup mail template */
-  
-  template = [self mailTemplate];
-  if ([template isNotNull]) {
-    [self setErrorString:nil];
-    NS_DURING {
-      template = [template stringByReplacingVariablesWithBindings:
-			     [self templateBindingsForAppointment:obj]
-			   stringForUnknownBindings:@""];
-    }
-    NS_HANDLER
-      [[self handleMailTemplateException:localException] raise];
-    NS_ENDHANDLER;
+  mailEditor = [self _setupMailEditorForApt:obj
+		     action:[self isInNewMode] ? @"created" : @"edited"];
+  if (mailEditor == nil) {
+    [self warnWithFormat:@"could not instantiate mail editor!"];
+    return nil;
   }
-  else
-    template = @"";
-  
-  [mailEditor setContentWithoutSign:template];
-  
-  t      = eoDateType;
-  attach = [self shouldAttachAppointmentsToMails];
-  if (!attach) {
-    str = [template stringByTrimmingWhiteSpaces];
-    [mailEditor addAttachment:obj type:t
-                sendObject:[str length] > 0 ? noNum : yesNum];
-  }
-  else 
-    [mailEditor addAttachment:obj type:t];
-  
-  [self _addParticipants:ps toMailEditor:mailEditor];
-  [self debugWithFormat:@"returning mail editor: %@", mailEditor];
   
   /* the following is required for no known reason (OGo Bug #1!) */
   [[self navigation] enterPage:mailEditor];
@@ -2174,6 +2143,9 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (id)moveAppointment {
+  NSMutableDictionary *appointment;
+  NSCalendarDate      *start, *end, *oldStart, *oldEnd;
+  int                 amount;
   id l;
 
   l = [self labels];
@@ -2184,122 +2156,72 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
           [[self labels] valueForKey:@"error_specifyMoveAmount"]];
     return nil;
   }
-  else {
-    NSMutableDictionary *appointment;
-    NSCalendarDate      *start, *end, *oldStart, *oldEnd;
-    int                 amount;
 
-    appointment = [self snapshot];
-    start       = [appointment valueForKey:@"startDate"];
-    end         = [appointment valueForKey:@"endDate"];
-    oldStart    = [[start copy] autorelease];
-    oldEnd      = [[end   copy] autorelease]; 
-    amount      = self->moveAmount;
+  appointment = [self snapshot];
+  start       = [appointment valueForKey:@"startDate"];
+  end         = [appointment valueForKey:@"endDate"];
+  oldStart    = [[start copy] autorelease];
+  oldEnd      = [[end   copy] autorelease]; 
+  amount      = self->moveAmount;
 
-    if (self->moveDirection != 0) // backward (1)
-      amount = -amount;
+  if (self->moveDirection != 0) // backward (1)
+    amount = -amount;
 
-    [self setErrorString:nil];
+  [self setErrorString:nil];
     
-    switch (self->moveUnit) {
-      case 0: // days
-        start = [start dateByAddingYears:0 months:0 days:amount
-                       hours:0 minutes:0 seconds:0];
-        end   = [end   dateByAddingYears:0 months:0 days:amount
-                       hours:0 minutes:0 seconds:0];
-        break;
-      case 1: // weeks
-        start = [start dateByAddingYears:0 months:0 days:(amount * 7)
-                       hours:0 minutes:0 seconds:0];
-        end   = [end   dateByAddingYears:0 months:0 days:(amount * 7)
-                       hours:0 minutes:0 seconds:0];
-        break;
-      case 2: // months
-        start = [start dateByAddingYears:0 months:amount days:0
-                       hours:0 minutes:0 seconds:0];
-        end   = [end   dateByAddingYears:0 months:amount days:0
-                       hours:0 minutes:0 seconds:0];
-        break;
+  switch (self->moveUnit) {
+  case 0: // days
+    start = [start dateByAddingYears:0 months:0 days:amount
+		   hours:0 minutes:0 seconds:0];
+    end   = [end   dateByAddingYears:0 months:0 days:amount
+		   hours:0 minutes:0 seconds:0];
+    break;
+  case 1: // weeks
+    start = [start dateByAddingYears:0 months:0 days:(amount * 7)
+		   hours:0 minutes:0 seconds:0];
+    end   = [end   dateByAddingYears:0 months:0 days:(amount * 7)
+		   hours:0 minutes:0 seconds:0];
+    break;
+  case 2: // months
+    start = [start dateByAddingYears:0 months:amount days:0
+		   hours:0 minutes:0 seconds:0];
+    end   = [end   dateByAddingYears:0 months:amount days:0
+		   hours:0 minutes:0 seconds:0];
+    break;
 
-      default:
-        [self setErrorString:[l valueForKey:@"error_invalidMoveAmount"]];
-        return nil;
-    }
-    [appointment takeValue:start forKey:@"startDate"];
-    [appointment takeValue:end   forKey:@"endDate"];
-    {
-      id page;
+  default:
+    [self setErrorString:[l valueForKey:@"error_invalidMoveAmount"]];
+    return nil;
+  }
+  [appointment takeValue:start forKey:@"startDate"];
+  [appointment takeValue:end   forKey:@"endDate"];
+
+  {
+    OGoContentPage *page;
       
-      [appointment takeValue:oldStart forKey:@"oldStartDate"];
-      page = [self saveAndGoBackWithCount:2 action:@"moved"];
-      if ([page isKindOfClass:NSClassFromString(@"SkySchedulerConflictPage")])
-        return page;
+    [appointment takeValue:oldStart forKey:@"oldStartDate"];
+    page = [self saveAndGoBackWithCount:2 action:@"moved"];
+    if ([page isKindOfClass:NSClassFromString(@"SkySchedulerConflictPage")])
+      return page;
+  }
+
+  /* mail section ... */
+  
+  if ([self isMailEnabled]) {
+    if ([[self navigation] activePage] != self) {
+      id<LSWMailEditorComponent, OGoContentPage> mailEditor;
+      
+      [[self object] takeValue:oldStart forKey:@"oldStartDate"];
+      
+      mailEditor = [self _setupMailEditorForApt:[self object] action:@"moved"];
+      if (mailEditor != nil)
+	[self enterPage:mailEditor];
+      return nil; /* TODO: hm, even if we have no mail editor? */
     }
-    if ([self isMailEnabled]) {
-      if ([[self navigation] activePage] != self) {
-        id<LSWMailEditorComponent, OGoContentPage> mailEditor;
-
-        mailEditor = (id)[self pageWithName:@"LSWImapMailEditor"];
-
-        if (mailEditor) {
-          NSArray  *ps;
-          NSString *title, *s;
-
-          ps    = self->participants; 
-          title = [[self object] valueForKey:@"title"];
-
-          [[self object] takeValue:oldStart forKey:@"oldStartDate"];
-
-          { // set default cc
-            NSString *cc;
-
-            if ((cc = [self ccForNotificationMails]))
-              [mailEditor addReceiver:cc type:@"cc"];
-          }
-	  s = [[NSString alloc] initWithFormat:@"%@: '%@' %@",
-				  [l valueForKey:@"appointment"],
-				  title,
-				  [l valueForKey:@"moved"]];
-          [mailEditor setSubject:s];
-	  [s release]; s = nil;
-          {
-            NGMimeType *t;
-            BOOL       attach;
-
-            t      = [NGMimeType mimeType:@"eo" subType:@"date"];
-            attach = [self shouldAttachAppointmentsToMails];
-            [mailEditor addAttachment:[self object] type:t
-                        sendObject:(attach ? yesNum : noNum)];
-          }
-            
-          s = [self mailContentForAppointment:[self object]];
-          [mailEditor setContentWithoutSign:s];
-          
-          {
-            NSEnumerator *recEn;
-            id           rec;  
-            BOOL         first;
-
-            recEn = [ps objectEnumerator];
-            first = YES;
-            
-            while ((rec = [recEn nextObject])) {
-              if (first) {
-                [mailEditor addReceiver:rec];
-                first = NO;
-              }
-              else 
-                [mailEditor addReceiver:rec type:@"cc"];
-            }
-          }
-          [self enterPage:mailEditor];
-        }
-        return nil;
-      }
-      [self enterPage:self];
-      [appointment takeValue:oldStart forKey:@"startDate"];
-      [appointment takeValue:oldEnd forKey:@"endDate"];
-    }
+    
+    [self enterPage:self];
+    [appointment takeValue:oldStart forKey:@"startDate"];
+    [appointment takeValue:oldEnd   forKey:@"endDate"];
   }
   return nil;
 }
@@ -2345,7 +2267,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 
   sn         = [self snapshot];
   ct         = [[self session] instantiateComponentForCommand:@"proposal"
-                               type:[NGMimeType mimeType:@"eo/date"]];  
+                               type:eoDateType];
   r          = [[NSMutableArray alloc] init];
   enumerator = [self->resources objectEnumerator];
   
@@ -2369,7 +2291,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
                           calendarFormat:@"%Y-%m-%d %H:%M:%S %Z"];
   
   if (![self scanTo24HourTime:self->endTime hour:&hour minute:&minute]) {
-    hour+= 1; minute = 0;
+    hour   += 1;
+    minute = 0;
   }
   s = [NSString stringWithFormat:@"%@ %02i:%02i:00 %@",
 		  [self endDate], hour, minute, tzs];
