@@ -103,7 +103,7 @@ static BOOL profileOn = NO;
   if ([self shouldSearchTeams]) {
     teams = [self canFetchMoreMailEntries]
       ? [self fetchTeamsWithDescription:_search]
-      : nil;
+      : (NSArray *)nil;
   }
   else
     teams = nil;

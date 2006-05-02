@@ -499,7 +499,7 @@ static int  DefMaxSearchCount             = 10;
                     addFirstFoundAsTo:_addFirstFoundAsTo];
   
   if (prohibited_)
-    *prohibited_ = [prohibited isNotEmpty] ? prohibited : nil;
+    *prohibited_ = [prohibited isNotEmpty] ? prohibited : (NSMutableArray*)nil;
   
   return addresses;
 }
@@ -612,7 +612,7 @@ static int  DefMaxSearchCount             = 10;
                     addFirstFoundAsTo:_addFirstFoundAsTo];
   
   if (prohibited_)
-    *prohibited_ = [prohibited isNotEmpty] ? prohibited : nil;
+    *prohibited_ = [prohibited isNotEmpty] ? prohibited : (NSMutableArray*)nil;
   
   if (profileOn) {
     NSTimeInterval ti = [[NSDate date] timeIntervalSinceDate:profStartDate];
@@ -679,7 +679,7 @@ static int  DefMaxSearchCount             = 10;
   [pool release];
   
   if (prohibited_)
-    *prohibited_ = [prohibited isNotEmpty] ? prohibited : nil;
+    *prohibited_ = [prohibited isNotEmpty] ? prohibited : (NSMutableArray*)nil;
   
   return [resultSets autorelease];
 }

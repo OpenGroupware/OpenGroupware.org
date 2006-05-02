@@ -135,6 +135,7 @@ static NSString     *skyrixId           = nil;
 static NSString     *CompanyDisclaimer  = nil;
 static NSString     *htmlMailHeader     = nil;
 static NSString     *htmlMailFooter     = nil;
+static NSString     *OGoXMailer         = nil;
 static NSDictionary *mimeTypeMap        = nil;
 
 static NGMimeType *AppOctetType   = nil;
@@ -158,6 +159,8 @@ static Class      StrClass        = nil;
   
   DataClass = [NSData   class];
   StrClass  = [NSString class];
+
+  OGoXMailer = [[ud stringForKey:@"OGoXMailer"] copy];
   
   LSWMailLogEnabled   = [ud boolForKey:@"LSWMailLogEnabled"]     ? 1 : 0;
   SearchMailingLists  = [ud boolForKey:@"UseMailingListManager"] ? 1 : 0;
@@ -193,10 +196,11 @@ static Class      StrClass        = nil;
   if (skyrixId != nil) {
     NSDictionary *paras;
     
-    paras = [NSDictionary dictionaryWithObjectsAndKeys: 
-			    skyrixId, @"skyrix_id", nil];
+    paras = [[NSDictionary alloc] initWithObjectsAndKeys: 
+				    skyrixId, @"skyrix_id", nil];
     MultiSxTypeID = [[NGMimeType mimeType:@"multipart" subType:@"skyrix"
 				 parameters:paras] retain];
+    [paras release]; paras = nil;
   }
   else
     MultiSxTypeID = [MultiSxType retain];
@@ -227,8 +231,8 @@ static Class      StrClass        = nil;
 }
 
 - (id)init {
-  if ((self = [super init])) {
-    self->addresses   = [[NSMutableArray alloc] init];
+  if ((self = [super init]) != nil) {
+    self->addresses   = [[NSMutableArray alloc] initWithCapacity:4];
     self->attachments = [[NSMutableArray alloc] initWithCapacity:8];
     self->mimeParts   = [[NSMutableArray alloc] initWithCapacity:5];
     self->warningKind = Warning_Send;
@@ -404,18 +408,18 @@ static Class      StrClass        = nil;
   firstName = [_person valueForKey:@"firstname"];
   lastName  = [_person valueForKey:@"name"];
   
-  if ([firstName isNotNull] && [firstName length] > 0)
+  if ([firstName isNotEmpty])
     [ms appendString:firstName];
   else
     firstName = nil;
 
-  if ([lastName isNotNull] && [lastName length] > 0) {
-    if (firstName) [ms appendString:@" "];
+  if ([lastName isNotEmpty]) {
+    if (firstName != nil) [ms appendString:@" "];
     [ms appendString:lastName];
   }
   else
     lastName = nil;
-
+  
   if (firstName != nil || lastName != nil) {
     [ms appendString:@" <"];
     [ms appendString:_addr];
@@ -536,7 +540,7 @@ static Class      StrClass        = nil;
                      addFirstFoundAsTo:([self->addresses count] == 0)
                      prohibited:&prohibited];
   
-  if ([result count] > 0)
+  if ([result isNotEmpty])
     [self->addresses addObjectsFromArray:result];
   
   [searcher release]; searcher = nil;
@@ -544,7 +548,7 @@ static Class      StrClass        = nil;
   /* intentional, reset extended search to make long running searches harder */
   self->flags.isExtendedSearch = 0;
   
-  if ([prohibited count] > 0)
+  if ([prohibited isNotEmpty])
     return [self _processesProhibitedAddresses:prohibited];
   
   return self; /* stay on page */
@@ -727,21 +731,21 @@ static Class      StrClass        = nil;
 - (void)_addDefaultReplyToIfMissingToMap:(NGMutableHashMap *)map {
   NSString *replyTo;
   
-  if ([[map objectsForKey:@"reply-to"] count] > 0)
+  if ([[map objectsForKey:@"reply-to"] isNotEmpty])
     return; /* has reply-to set */
   
   replyTo = [[self userDefaults] stringForKey:@"mail_reply-to"];
-  if ([replyTo length] > 0)
+  if ([replyTo isNotEmpty])
     [map setObject:replyTo forKey:@"reply-to"];
 }
 - (void)_addDefaultOrganizationIfMissingToMap:(NGMutableHashMap *)map {
   NSString *organ;
   
-  if ([[map objectsForKey:@"organization"] count] > 0)
+  if ([[map objectsForKey:@"organization"] isNotEmpty])
     return; /* has an organization set */
   
   organ = [[self userDefaults] stringForKey:@"mail_organization"];
-  if ([organ length] > 0)
+  if ([organ isNotEmpty])
     [map setObject:organ forKey:@"organization"];
 }
 
@@ -754,7 +758,7 @@ static Class      StrClass        = nil;
   enumerator = [[[self mailingListDS] fetchObjects] objectEnumerator];
   ms         = [NSMutableArray arrayWithCapacity:[mailingLists count]];
 
-  while ((obj = [enumerator nextObject])) {
+  while ((obj = [enumerator nextObject]) != nil) {
     if (![mailingLists containsObject:[obj objectForKey:@"name"]])
       continue;
     [ms addObject:obj];
@@ -842,7 +846,7 @@ static Class      StrClass        = nil;
   [map addObject:self->mailSubject              forKey:@"subject"];
   [map addObject:[NSCalendarDate date]          forKey:@"date"];
   [map addObject:@"1.0"                         forKey:@"MIME-Version"];
-  [map addObject:@"OpenGroupware.org"           forKey:@"X-Mailer"];
+  [map addObject:OGoXMailer                     forKey:@"X-Mailer"];
 }
 
 - (NGMimeMessage *)_buildMultiPartMessageWithHeaders:(NGMutableHashMap *)map
@@ -947,7 +951,7 @@ static Class      StrClass        = nil;
   if (![self _sendMessage:message path:messageFileName to:emailAddrs])
     return NO;
   
-  if ([mailingLists count] > 0) {
+  if ([mailingLists isNotEmpty]) {
     // TODO: explain this code
     // TODO: do we really need the emailAddrs here?
     // TODO: error handling!
@@ -1197,7 +1201,7 @@ static Class      StrClass        = nil;
   [self _addDefaultReplyToIfMissingToMap:map]; // default 'reply-to' header
   [self _addDefaultOrganizationIfMissingToMap:map]; // 'organization' header
   
-  if ([atts count] > 0) { 
+  if ([atts isNotEmpty]) { 
     /* add attachments */
     message = [self _buildMultiPartMessageWithHeaders:map
 		    andAttachments:atts];
@@ -1376,7 +1380,7 @@ static Class      StrClass        = nil;
     return self;
   }
 
-  if ([self->attachments count] > 0) {
+  if ([self->attachments isNotEmpty]) {
     id obj;
 
     obj = [self->attachments objectAtIndex:0];
@@ -1750,7 +1754,7 @@ static Class      StrClass        = nil;
   /* decode special args inreceiver type */
   
   objType = nil;
-  if ([_rcvType rangeOfString:@":"] .length > 0) {
+  if ([_rcvType rangeOfString:@":"].length > 0) {
     // TODO: explain why this is done!
     if ((array = [_rcvType componentsSeparatedByString:@":"]) != nil) {
       _rcvType = [array objectAtIndex:0];
@@ -1775,7 +1779,7 @@ static Class      StrClass        = nil;
       addr = [_person valueForKey:@"email"];
     else {
       addr = [objType isEqualToString:@"email2"]
-        ? [_person valueForKey:@"email2"]
+        ? (NSString *)[_person valueForKey:@"email2"]
 	: [self _eAddressForPerson:_person];
       
       if (addr == nil && [[_person valueForKey:@"isAccount"] boolValue])
@@ -1793,11 +1797,22 @@ static Class      StrClass        = nil;
     else if (isTeam)
       label = [self _recipientLabelForTeam:_person address:addr];
     else if (isEp) {
-      label = [StrClass stringWithFormat:@"%@ <%@>",
-                        [_person valueForKey:@"name"], addr];
+      if ([(label = [_person valueForKey:@"name"]) isNotEmpty]) {
+	NSMutableString *ms;
+	
+	ms = [[NSMutableString alloc] initWithCapacity:128];
+	[ms appendString:label];
+	[ms appendString:@" <"];
+	[ms appendString:[addr stringValue]];
+	[ms appendString:@">"];
+	label = [[ms copy] autorelease];
+	[ms release]; ms = nil;
+      }
+      else
+	label = [addr stringValue];
     }
   }
-
+  
   // TODO: what does the stuff below do?
   {  
     NSMutableDictionary *dict;
@@ -2045,12 +2060,12 @@ static Class      StrClass        = nil;
  
   res = [NSMutableArray arrayWithCapacity:[persons count] + [teams count]];
   
-  if ([persons count] > 0)
+  if ([persons isNotEmpty])
     [res addObjectsFromArray:persons];
-  if ([teams count] > 0)
+  if ([teams isNotEmpty])
     [res addObjectsFromArray:teams];
 
-  if ([enterprises count] > 0)
+  if ([enterprises isNotEmpty])
     [res addObjectsFromArray:enterprises];
 
   return res;
@@ -2624,7 +2639,7 @@ static Class      StrClass        = nil;
       else {
         // TODO: always convert to NSData?
         _data = isString
-          ? (id)[_data stringByEncodingQuotedPrintable]
+          ? (NSData *)[_data stringByEncodingQuotedPrintable]
           : [_data dataByEncodingQuotedPrintable];
         
         transEnc = @"quoted-printable";
@@ -2633,7 +2648,7 @@ static Class      StrClass        = nil;
     else {
       // TODO: always convert to NSData?
       _data = isString
-        ? (id)[_data stringByEncodingBase64]
+        ? (NSData *)[_data stringByEncodingBase64]
         : [_data dataByEncodingBase64];
       
       transEnc = @"base64";
@@ -2667,6 +2682,7 @@ static Class      StrClass        = nil;
 }
 
 - (void)setUploadItem:(id)_i {
+  // TODO: document type of _i
   ASSIGN(self->uploadItem, _i);
 }
 - (id)uploadItem {
@@ -2687,9 +2703,10 @@ static Class      StrClass        = nil;
   for (i = 0; i < num; i++) {
     NSMutableDictionary *md;
     
+    // TODO: better use a specific object for the upload records?
     md = [[NSMutableDictionary alloc] initWithCapacity:2];
     [self->uploadArray addObject:md];
-    [md release];
+    [md release]; md = nil;
   }
 }
 
@@ -2714,7 +2731,7 @@ static Class      StrClass        = nil;
     [self confirmUploadWithData:[dict objectForKey:@"data"]
           fileName:[dict objectForKey:@"fileName"]];
 
-    if ([[self errorString] length] > 0)
+    if ([[self errorString] isNotEmpty])
       break;
   }
   [self _initUploadArray];
@@ -2735,7 +2752,7 @@ static Class      StrClass        = nil;
     [pool release];
     return nil;
   }
-  if (([_data length] == 0) || ([_fileName length] == 0)) {
+  if (![_data isNotEmpty] || ![_fileName isNotEmpty]) {
     [pool release];
     return nil;
   }
@@ -2765,6 +2782,7 @@ static Class      StrClass        = nil;
 }
 
 - (void)_buildEditAsNewForText:(id<NGMimePart>)_part type:(NGMimeType *)_type {
+  // TODO: document when this is called
   NSString *s;
   id txt;
   
@@ -2775,6 +2793,7 @@ static Class      StrClass        = nil;
   
   txt = [_part body];
   if ([txt isKindOfClass:DataClass]) {
+    // TODO: dubious, probably we want to use some other encoding?
     s = [[StrClass alloc] initWithData:txt
                           encoding:[StrClass defaultCStringEncoding]];
   }
@@ -2962,7 +2981,7 @@ static Class      StrClass        = nil;
                                password:self->pwd login:&self->login
                                host:&self->host errorString:&errorStr];
   
-  if (ctx == nil && [errorStr length] > 0)
+  if (ctx == nil && [errorStr isNotEmpty])
     [self setErrorString:[[self labels] valueForKey:errorStr]];
   
   self->login = [self->login retain];
@@ -2999,8 +3018,8 @@ static Class      StrClass        = nil;
 
   /* check whether we have a from default */
   
-  list = [[sn userDefaults] valueForKey:@"mail_fromPopupList"];
-  if ([list count] > 0)
+  list = [[sn userDefaults] objectForKey:@"mail_fromPopupList"];
+  if ([list isNotEmpty])
     return list;
   
   /* otherwise build the address */

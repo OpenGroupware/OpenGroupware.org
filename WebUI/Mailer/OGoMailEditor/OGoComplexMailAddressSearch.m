@@ -147,7 +147,7 @@ static int  SearchMailingLists = -1;
   
   teams = [self canFetchMoreMailEntries]
     ? [self fetchTeamsWithDescription:_search]
-    : nil;
+    : (NSArray *)nil;
   
   res = [NSMutableArray arrayWithCapacity:[persons count] + [teams count]];
   
