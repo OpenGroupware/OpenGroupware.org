@@ -280,7 +280,7 @@ static NSNumber *maxSearchCount    = nil;
                    @"operator",       @"OR",
                    @"category",       _category,
                    @"maxSearchCount", maxSearchCount, nil];
-  return [result isNotNull] ? result : nil;
+  return [result isNotNull] ? result : (NSArray *)nil;
 }
 - (NSArray *)_fetchGlobalIDsMatchingSubstring:(NSString *)_token
   doSearchCategory:(BOOL)_searchCategory

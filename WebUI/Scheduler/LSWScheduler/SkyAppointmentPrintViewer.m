@@ -324,22 +324,23 @@
 }
 
 - (id)_appointmentType {
+  // TODO: document the return type
   NSEnumerator *e;
   id           one     = nil;
   NSString     *wanted;
   
-  if (self->aptType)
+  if (self->aptType != nil)
     return self->aptType;
 
   e      = [[self aptTypes] objectEnumerator];
   wanted = [[self appointment] valueForKey:@"aptType"];
   
-  while ((one = [e nextObject])) {
+  while ((one = [e nextObject]) != nil) {
     NSString *key;
     
     key = [one valueForKey:@"type"];
     
-    if (([wanted length] == 0) && [key isEqualToString:@"none"])
+    if ((![wanted isNotEmpty]) && [key isEqualToString:@"none"])
       self->aptType = [one retain];
     else if ([wanted isEqualToString:key])
       self->aptType = [one retain];
@@ -351,21 +352,22 @@
 }
 
 - (NSString *)aptTypeLabel {
-  id       type   = [self _appointmentType];
-  NSString *label = [type valueForKey:@"label"];
- 
-  return (label != nil)
-    ? label
-    : [[self labels] valueForKey:
-                     [NSString stringWithFormat:@"aptType_%@",
-                               [type valueForKey:@"type"]]];
+  id       type; // TODO: use proper type?
+  NSString *label;
+  
+  type = [self _appointmentType];
+  if ((label = [type valueForKey:@"label"]) != nil)
+    return label;
+  
+  label = [@"aptType_" stringByAppendingString:[type valueForKey:@"type"]];
+  return [[self labels] valueForKey:label];
 }
 
 - (NSString *)accessTeamLabel {
-  id accessTeam = nil;
+  id accessTeam;
 
   accessTeam = [self _getAccessTeamOf:[self appointment]];
-
+  
   return ([accessTeam isNotNull])
     ? [accessTeam valueForKey:@"description"]
     : nil;

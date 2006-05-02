@@ -1,3 +1,12 @@
+2006-05-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.103
+	
+	* LSWAppointmentEditor.m: use warn/errorWithFormat: when appropriate,
+	  minor code cleanups
+	
+	* fixed all gcc 4.1 warnings
+
 2006-04-26  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWAppointmentViewer.m: added method to return the properties of an

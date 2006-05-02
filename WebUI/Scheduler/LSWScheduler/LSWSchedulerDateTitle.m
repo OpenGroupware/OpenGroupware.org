@@ -181,9 +181,9 @@
         }
       }
       
-      da  = [self->directActionName valueInComponent:sComponent];
-      da  = (da) ? da : @"viewDay";
-      da  = [NSString stringWithFormat:@"/%@", da];
+      da  = [self->directActionName stringValueInComponent:sComponent];
+      da  = (da != nil) ? da : (NSString *)@"viewDay";
+      da  = [@"/" stringByAppendingString:da];
       url = [_ctx urlWithRequestHandlerKey:@"wa"
                   path:da
                   queryString:url];
@@ -203,11 +203,11 @@
       }
 
       [_response appendContentCharacter:'>'];      
-      [_response appendContentHTMLString:dd ? dd : @"<nil>"];      
+      [_response appendContentHTMLString:dd ? dd : (NSString *)@"<nil>"];      
       [_response appendContentString:@"</a>"];
     }
     else {
-      [_response appendContentHTMLString:dd ? dd : @"<nil>"];
+      [_response appendContentHTMLString:dd ? dd : (NSString *)@"<nil>"];
     }
     
     [_response appendContentString:@"</td>"];
@@ -227,7 +227,7 @@
                  doHi ? @"skydatetitlehigh" : @"skydatetitle"];
     [_response appendContentString:@"\">"];
     
-    [_response appendContentHTMLString:l ? l : @"<missing>"];
+    [_response appendContentHTMLString:l ? l : (NSString *)@"<missing>"];
     
     [_response appendContentString:@"<br />"];
     
@@ -276,7 +276,7 @@
         [self appendJS:alt toReponse:_response inContext:_ctx];
       
       [_response appendContentCharacter:'>'];        
-      [_response appendContentHTMLString:nt ? nt : @"new"];      
+      [_response appendContentHTMLString:nt ? nt : (NSString *)@"new"];      
       [_response appendContentString:@"</a>]"];
     }
     

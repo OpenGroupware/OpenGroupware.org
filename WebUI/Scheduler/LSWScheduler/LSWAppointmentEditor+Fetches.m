@@ -61,7 +61,7 @@
   [self runCommand:@"appointment::get-participants",
           @"appointment", _apt, nil];
   ps = [_apt valueForKey:@"participants"];
-  return [ps isNotNull] ? ps : nil;
+  return [ps isNotNull] ? ps : (NSArray *)nil;
 }
 
 - (NSArray *)_fetchPartCoreInfoOfAppointment:(id)_apt {

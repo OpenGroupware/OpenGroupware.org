@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -99,7 +100,7 @@
   } aeFlags;
 }
 
-// move accessors
+/* move accessors */
 
 - (void)setMoveAmount:(char)_amount;
 - (char)moveAmount;

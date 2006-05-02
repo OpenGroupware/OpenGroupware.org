@@ -143,8 +143,8 @@
 
   key = [_type valueForKey:@"type"];
   key = [key isNotNull]
-     ? ([key isEqualToString:@"none"] ? nil : key)
-    : nil;
+    ? ([key isEqualToString:@"none"] ? (NSString *)nil : key)
+    : (NSString *)nil;
 
   [self setSelection:key];
 }
@@ -197,20 +197,21 @@
 }
 
 - (void)setSelectedButton:(NSString *)_button {
-  [self setSelection:[_button isEqualToString:@"none"] ? nil : _button];
+  [self setSelection:
+	  [_button isEqualToString:@"none"] ? (NSString *)nil : _button];
 }
 - (NSString *)selectedButton {
   NSString *sel;
   
   sel = [self selection];
-  return [sel isNotEmpty] ? sel : @"none";
+  return [sel isNotEmpty] ? sel : (NSString *)@"none";
 }
 
 - (NSString *)aptTypeImageFilename {
   NSString *icon;
   
   icon = [self->item valueForKey:@"icon"];
-  return [icon isNotEmpty] ? icon : @"apt_icon_default.gif";
+  return [icon isNotEmpty] ? icon : (NSString *)@"apt_icon_default.gif";
 }
 
 - (NSString *)jsScriptOnClick {

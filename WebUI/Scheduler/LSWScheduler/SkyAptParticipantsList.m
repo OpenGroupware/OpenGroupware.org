@@ -227,7 +227,7 @@ static NGMimeType   *eoDateType        = nil;
   NSString *color;
   
   color = [colorMapping objectForKey:[self participantStatus]];
-  return [color length] > 0 ? color : @"black";
+  return [color isNotEmpty] ? color : (NSString *)@"black";
 }
 
 - (void)setEnterprise:(id)_ep {

@@ -381,8 +381,8 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
   
   str = [[self labels] valueForKey:@"resCategory"];
   str = (str == nil) 
-    ? @" (resCategory)"
-    : [NSString stringWithFormat:@" (%@)", str];
+    ? (NSString *)@" (resCategory)"
+    : (NSString *)[NSString stringWithFormat:@" (%@)", str];
   
   resourceNames = [[NSMutableArray alloc] initWithCapacity:16];
   categories    = [[NSMutableArray alloc] initWithCapacity:16];
@@ -489,7 +489,7 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
 	r = [tmp rangeOfString:str];
         catName = (r.length > 0)
 	  ? [tmp substringToIndex:r.location]
-          : tmp;
+          : (NSString *)tmp;
 	
         allRes = [[self runCommand:@"appointmentresource::categories",
                         @"category", catName, nil] mutableCopy];
@@ -578,7 +578,7 @@ static inline NSDictionary *_getTimeEntry(LSWAppointmentProposal*,NSArray*,
   NSString *tz;
   
   tz = [[[self session] userDefaults] objectForKey:@"timezone"];
-  return [tz isNotEmpty] ? tz : @"GMT";
+  return [tz isNotEmpty] ? tz : (NSString *)@"GMT";
 }
 
 // TODO: clean up this startDate/endDate conversions

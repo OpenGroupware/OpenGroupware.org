@@ -274,14 +274,14 @@
 }
 
 - (NSString *)defaultCycleSectionStyle {
-  return [self->cycleType isNotEmpty] ? nil : @"display: none;";
+  return [self->cycleType isNotEmpty] ? nil : (id)@"display: none;";
 }
 - (NSString *)defaultMonthSectionStyle {
   return [self->cycleType isEqualToString:@"monthly"] 
-    ? nil : @"display: none;";
+    ? nil : (id)@"display: none;";
 }
 - (NSString *)defaultMonthCycleStyle {
-  return [self hasDayOccurence] ? nil : @"display: none;";
+  return [self hasDayOccurence] ? nil : (id)@"display: none;";
 }
 
 /* labels */

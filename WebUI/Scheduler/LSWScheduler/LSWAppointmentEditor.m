@@ -278,8 +278,11 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     [s release]; s = nil;
   }
   
+  // TODO: maybe we should shallow-copy the participants array?
   [self setSelectedParticipants:
-        (self->participants != nil) ? self->participants : [NSArray array]];
+	  (self->participants != nil) 
+	  ? (NSArray *)self->participants
+	  : (NSArray *)[NSArray array]];
   
   [self _fetchEnterprisesOfPersons:self->participants];
   
@@ -305,15 +308,15 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   id appointment;
 
   if ((appointment = [self object]) == nil) {
-    [self logWithFormat:@"ERROR: got no object for edit-activation!"];
+    [self errorWithFormat:@"got no object for edit-activation!"];
     return NO;
   }
   if (self->comment != nil || self->selectedAccessTeam != nil) {
-    [self logWithFormat:@"ERROR: editor object is mixed up!"];
+    [self errorWithFormat:@"editor object is mixed up!"];
     return NO;
   }
   if (self->participants == nil) {
-    [self logWithFormat:@"ERROR: participants array is not setup!"];
+    [self errorWithFormat:@"participants array is not setup!"];
     return NO;
   }
   
@@ -329,8 +332,11 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   
   [self->participants removeAllObjects];
   [self->participants addObjectsFromArray:ps];
+
+  // TODO: maybe copy the participants array? (see other occurence above)
   [self setSelectedParticipants:
-        [self->participants isNotNull] ? self->participants : [NSArray array]];
+	  [self->participants isNotNull] 
+	  ? (NSArray *)self->participants : (NSArray *)[NSArray array]];
   
   // TODO: not always required? (and if required, task of the subcomponent?)
   [self _fetchEnterprisesOfPersons:self->participants];
@@ -562,7 +568,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   [self->accessMembers removeAllObjects];
   list = [self isInNewMode]
     ? [self defaultWriteAccessList]
-    : [appointment valueForKey:@"writeAccessList"];
+    : (NSString *)[appointment valueForKey:@"writeAccessList"];
       
   [self fillAccessMembersFromWriteAccessList:list];
   [self setSelectedAccessMembers:self->accessMembers];
@@ -616,9 +622,9 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 /* resources */
 
 - (NSString *)_resourceString {
-  return ([self->resources count] == 0)
-    ? (id)null
-    : [self->resources componentsJoinedByString:@", "];
+  return [self->resources isNotEmpty]
+    ? [self->resources componentsJoinedByString:@", "]
+    : (NSString *)null;
 }
 
 /* calendar */
@@ -833,7 +839,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (void)setAppointmentType:(NSString *)_type {
-  [[self snapshot] setObject:(_type ? _type : (id)null) forKey:@"type"];
+  [[self snapshot] setObject:(_type ? _type : (NSString*)null) forKey:@"type"];
 }
 - (NSString *)appointmentType {
   return [[self snapshot] objectForKey:@"type"];
@@ -950,8 +956,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
       [self->resources addObject:obj];
   }
   if ([_res count] != [self->resources count]) {
-    [self logWithFormat:
-            @"WARNING[%s:%d]: couldn`t associate all resource names %@ %@",
+    [self warnWithFormat:
+            @"%s:%d: could not associate all resource names %@ %@",
             __PRETTY_FUNCTION__, __LINE__, _res, self->resources];
   }
 }
@@ -1640,6 +1646,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (NSString *)ccForNotificationMails {
+  // TODO: check whether we can use -stringForKey:
+  //       (maybe it can return an array)
   return [[self userDefaults]
 	        objectForKey:@"scheduler_ccForNotificationMails"];
 }
@@ -1854,7 +1862,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     return nil;
   
   s = [self mailTemplate];
-  if (![s isNotNull])
+  if (![s isNotEmpty])
     return @"";
   
   s = [s stringByReplacingVariablesWithBindings:
@@ -1872,9 +1880,9 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   [[[_ds appointment] valueForKey:@"startDate"] setTimeZone:self->timeZone];
   [[[_ds appointment] valueForKey:@"endDate"]   setTimeZone:self->timeZone];
   
-  s = (_action)
+  s = (_action != nil)
     ? [self mailContentForAppointment:[self snapshot]]
-    : @"";
+    : (NSString *)@"";
   
   return [self conflictPageWithDataSource:_ds timeZone:self->timeZone
                action:_action mailContent:s];
@@ -1954,7 +1962,7 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   [ms appendString:[self appointmentDayLabel]];
   
   s = [self isInNewMode]
-    ? nil
+    ? (NSString *)nil
     : [[self recurrenceFormatter] stringForObjectValue:[self snapshot]];
   
   if ([s isNotEmpty]) {
@@ -2037,8 +2045,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 }
 
 - (NSException *)handleMailTemplateException:(NSException *)_exception {
-  [self logWithFormat:
-          @"WARNING: exception during mail-template evaluation: %@",
+  [self warnWithFormat:
+          @"exception during mail-template evaluation: %@",
           _exception];
   return nil;
 }
@@ -2403,8 +2411,10 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   if ((d = [p valueForKey:@"name"]) == nil)
     return [p valueForKey:@"login"];
   
-  if ((fd = [p valueForKey:@"firstname"]))
-    d = [NSString stringWithFormat:@"%@, %@", d, fd];
+  if ((fd = [p valueForKey:@"firstname"]) != nil) {
+    d = [[d stringValue] stringByAppendingString:@", "];
+    d = [d stringByAppendingString:[fd stringValue]];
+  }
   return d;
 }
 

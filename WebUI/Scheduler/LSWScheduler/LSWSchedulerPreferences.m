@@ -1106,7 +1106,7 @@ static NSNumber *noNum = nil;
   return [[self labels] valueForKey:[self item]];
 }
 - (NSString *)holidayLabel {
-  id l = nil;
+  NSString *l;
 
   l = [[self labels] valueForKey:self->holiday];
   return (l == nil) ? self->holiday : l;
@@ -1804,11 +1804,11 @@ static NSNumber *noNum = nil;
   NSString *l;
   
   l = [[self labels] valueForKey:[self valueForKey:@"binding"]];
-  return l ? l : [self valueForKey:@"binding"];
+  return l ? l : (NSString *)[self valueForKey:@"binding"];
 }
 
 - (NSArray *)bindingValues {
-  return [[(id)[self session] userDefaults]
+  return [[(OGoSession *)[self session] userDefaults]
                  arrayForKey:@"scheduler_mail_binding_values"];
 }
 
