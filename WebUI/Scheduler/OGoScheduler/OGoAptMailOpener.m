@@ -21,6 +21,7 @@
 */
 
 #include "OGoAptMailOpener.h"
+#include <OGoFoundation/LSWMailEditorComponent.h>
 #include "common.h"
 
 @interface WOComponent(MailEditorPage)
@@ -51,8 +52,10 @@ static NGMimeType *eoDateType = nil;
     if ([bm bundleProvidingResource:@"LSWImapMailEditor"
             ofType:@"WOComponents"] != nil)
       isMailEnabled = 1;
-    else
+    else {
       isMailEnabled = 0;
+      NSLog(@"OGoAptMailOpener: did not find LSWImapMailEditor!");
+    }
   }
   return isMailEnabled ? YES : NO;
 }
@@ -72,7 +75,7 @@ static NGMimeType *eoDateType = nil;
   page:(OGoComponent *)_component
 {
   OGoAptMailOpener *opener;
-
+  
   if (![self isMailEnabled])
     return nil;
   
@@ -85,7 +88,8 @@ static NGMimeType *eoDateType = nil;
   page:(OGoComponent *)_component
 {
   if ((self = [super init]) != nil) {
-    if (self->object == nil) {
+    if (_object == nil) {
+      [self errorWithFormat:@"got passed no object."];
       [self release];
       return nil;
     }
@@ -96,9 +100,12 @@ static NGMimeType *eoDateType = nil;
     
     self->defaults = [[[_component session] userDefaults] retain];
     self->labels   = [[_component labels] retain];
-    
-    self->comment  = [[_component valueForKey:@"comment"] copy];
+
     self->cmdctx   = [(OGoSession *)[_component session] commandContext];
+    
+    /* Important: 'comment' and 'participants' must be fetched! */
+    self->comment      = [[_component valueForKey:@"comment"] copy];
+    self->participants = [[_component valueForKey:@"participants"] retain];
   }
   return self;
 }
@@ -108,6 +115,7 @@ static NGMimeType *eoDateType = nil;
 }
 
 - (void)dealloc {
+  [self->templateBindings release];
   [self->defaults     release];
   [self->labels       release];
   [self->cmdctx       release];
@@ -227,27 +235,25 @@ static NGMimeType *eoDateType = nil;
   id                  c;
   NSString            *format, *title, *location, *resNames;
   NSCalendarDate      *sd, *ed;
-
+  
   format = [self mailTemplateDateFormat];
   
   sd = [obj valueForKey:@"startDate"];
-  if (format != nil && [sd isNotNull]) {
+  if (format != nil && [sd isNotNull])
     [sd setCalendarFormat:format];
-  }
   ed = [obj valueForKey:@"endDate"];
-  if (format != nil && [ed isNotNull]) {
+  if (format != nil && [ed isNotNull])
     [ed setCalendarFormat:format];
-  }
   
   bindings = [NSMutableDictionary dictionaryWithCapacity:8];
   [bindings setObject:sd forKey:@"startDate"];
   [bindings setObject:ed forKey:@"endDate"];
-
-  if ((title = [obj valueForKey:@"title"]))
+  
+  if ((title = [obj valueForKey:@"title"]) != nil)
     [bindings setObject:title forKey:@"title"];
-  if ((location = [obj valueForKey:@"location"]))
+  if ((location = [obj valueForKey:@"location"]) != nil)
     [bindings setObject:location forKey:@"location"];
-  if ((resNames = [obj valueForKey:@"resourceNames"]))
+  if ((resNames = [obj valueForKey:@"resourceNames"]) != nil)
     [bindings setObject:resNames forKey:@"resourceNames"];        
   
   [bindings setObject:
@@ -259,61 +265,58 @@ static NGMimeType *eoDateType = nil;
   c = [self _fetchAccountForPrimaryKey:[obj valueForKey:@"ownerId"]];
   [bindings setObject:[self _personName:c] forKey:@"creator"];
   
-  { /* set participants */
-    NSString *str;
-    
-    str = [self stringByJoiningParticipantNames:
-                  [obj valueForKey:@"participants"]];
-    if (str) [bindings setObject:str forKey:@"participants"];
+  /* set participants */
+  
+  c = [self stringByJoiningParticipantNames:
+	      [obj valueForKey:@"participants"]];
+  if (c != nil) [bindings setObject:c forKey:@"participants"];
+  
+  /* add some labels */
+  
+  if ((c = [self->labels valueForKey:@"appointment"]) != nil)
+    [bindings setObject:c forKey:@"label_apt"];
+  
+  /* action and action-label */
+  
+  if ([self->action isNotEmpty]) {
+    [bindings setObject:self->action forKey:@"action"];
+    if ((c = [self->labels valueForKey:self->action]) != nil)
+      [bindings setObject:c forKey:@"label_action"];
   }
+  
   return bindings;
+}
+
+- (NSDictionary *)templateBindings {
+  if (self->templateBindings == nil) {
+    self->templateBindings =
+      [[self templateBindingsForAppointment:self->object] copy];
+  }
+  return self->templateBindings;
+}
+
+- (NSString *)contentForTemplateOfDefault:(NSString *)_defName {
+  NSString *s;
+  
+  s = [[self userDefaults] stringForKey:_defName];
+  if ([s isNotEmpty]) {
+    s = [s stringByReplacingVariablesWithBindings:[self templateBindings]
+	   stringForUnknownBindings:@""];
+  }
+  else
+    s = @"";
+  return s;
 }
 
 - (NSString *)mailSubject {
   /*
     Actions: created, edited, deleted, moved
   */
-  NSMutableString *ms;
-  NSString *str;
-  
-  ms = [NSMutableString stringWithCapacity:80];
-  
-  str = [self->labels valueForKey:self->action];
-  [ms appendString:[self->labels valueForKey:@"appointment"]];
-  [ms appendString:@": '"];
-  [ms appendString:[self->object valueForKey:@"title"]];
-  [ms appendString:@"' "];
-  [ms appendString:str];
-  return ms;
+  return [self contentForTemplateOfDefault:@"scheduler_mailsubject_template"];
 }
 
-- (NSException *)handleMailTemplateException:(NSException *)_exception {
-  [self errorWithFormat:
-          @"exception during mail-template evaluation: %@",
-          _exception];
-  return nil;
-}
 - (NSString *)mailContent {
-  NSString *s;
-  
-  if (self->object == nil)
-    return nil;
-
-  s = [[self userDefaults] stringForKey:@"scheduler_mail_template"];
-  if (![s isNotEmpty])
-    return @"";
-  
-  // TODO: do we really need that exception handler?
-  NS_DURING {
-    s = [s stringByReplacingVariablesWithBindings:
-	     [self templateBindingsForAppointment:self->object]
-	   stringForUnknownBindings:@""];
-  }
-  NS_HANDLER
-    [[self handleMailTemplateException:localException] raise];
-  NS_ENDHANDLER;
-  
-  return s;
+  return [self contentForTemplateOfDefault:@"scheduler_mail_template"];
 }
 
 - (void)_addParticipants:(NSArray *)_ps toMailEditor:(id)mailEditor {

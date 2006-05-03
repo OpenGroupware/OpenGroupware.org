@@ -19,6 +19,7 @@ OGoScheduler_OBJC_FILES = \
 	WODirectAction+SchedulerViews.m	\
 	OGoAptConflictsList.m		\
 	OGoAptFormLetter.m		\
+	OGoAptMailOpener.m		\
 
 OGoScheduler_RESOURCE_FILES += Defaults.plist Version
 

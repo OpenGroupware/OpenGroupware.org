@@ -32,12 +32,13 @@
 
 @class NSString, NSArray, NSTimeZone;
 @class EODataSource;
+@class OGoAptMailOpener;
 
 @interface SkySchedulerConflictPage : OGoContentPage
 {
   id       conflictDataSource;
   NSString *action;
-  NSString *mailContent;
+  OGoAptMailOpener *mailOpener;
   NSArray  *participantIds;
   id       conflict;
   unsigned index;
@@ -45,8 +46,7 @@
   NSTimeZone *timeZone;
   struct {
     int sendMail:1;
-    int isMailEnabled:1;
-    int reserved:30;
+    int reserved:31;
   } sscFlags;
 
   // cache
@@ -56,14 +56,14 @@
 
 @end
 
-#include "common.h"
-
-#include <NGExtensions/EOFilterDataSource.h>
-#include <OGoFoundation/OGoSession.h>
+#include "OGoAptMailOpener.h"
 #include <OGoFoundation/LSWMailEditorComponent.h>
+#include <OGoFoundation/LSWNotifications.h>
 #include <OGoFoundation/NSObject+Commands.h>
 #include <OGoFoundation/OGoNavigation.h>
-#include <OGoFoundation/LSWNotifications.h>
+#include <OGoFoundation/OGoSession.h>
+#include <NGExtensions/EOFilterDataSource.h>
+#include "common.h"
 
 @implementation SkySchedulerConflictPage
 
@@ -75,7 +75,7 @@ static NSNumber   *noNum      = nil;
   static BOOL didInit = NO;
   if (didInit) return;
   didInit = YES;
-
+  
   eoDateType = [[NGMimeType mimeType:@"eo" subType:@"date"] retain];
   yesNum     = [[NSNumber numberWithBool:YES] retain];
   noNum      = [[NSNumber numberWithBool:NO]  retain];
@@ -83,13 +83,7 @@ static NSNumber   *noNum      = nil;
 
 - (id)init {
   if ((self = [super init]) != nil) {
-    NGBundleManager *bm = [NGBundleManager defaultBundleManager];
-    
-    self->sscFlags.isMailEnabled = 
-      ([bm bundleProvidingResource:@"LSWImapMailEditor"
-           ofType:@"WOComponents"] != nil) ? 1 : 0;
-    
-    self->action   = @"edited";
+    self->action = @"edited";
   }
   return self;
 }
@@ -97,7 +91,7 @@ static NSNumber   *noNum      = nil;
 - (void)dealloc {
   [self->conflictDataSource release];
   [self->action             release];
-  [self->mailContent        release];
+  [self->mailOpener         release];
   [self->conflict           release];
   [self->participantConflicts release];
   [self->resourceConflicts  release];
@@ -137,11 +131,11 @@ static NSNumber   *noNum      = nil;
   return self->timeZone;
 }
 
-- (void)setMailContent:(NSString *)_mailContent {
-  ASSIGNCOPY(self->mailContent, _mailContent);
+- (void)setMailOpener:(OGoAptMailOpener *)_opener {
+  ASSIGN(self->mailOpener, _opener);
 }
-- (NSString *)mailContent {
-  return self->mailContent;
+- (OGoAptMailOpener *)mailOpener {
+  return self->mailOpener;
 }
 
 - (void)setSendMail:(BOOL)_send {
@@ -315,7 +309,7 @@ static NSNumber   *noNum      = nil;
   in = nil;
 
   resources = (![resourceNames isNotNull])
-    ? [NSArray array]
+    ? (NSArray *)[NSArray array]
     : [resourceNames componentsSeparatedByString:@", "];
   
   for (i = 0, cnt = [resources count]; i < cnt; i++) {
@@ -324,13 +318,13 @@ static NSNumber   *noNum      = nil;
     res = [resources objectAtIndex:i];
     in = (i != 0)
       ? [in stringByAppendingString:@" OR "]
-      : @"";
+      : (NSString *)@"";
     
     in = [in stringByAppendingFormat:
-             @"(resourceNames LIKE '%@*\' "
-             @"OR resourceNames LIKE '*%@*' "
-             @"OR resourceNames LIKE '%@*' "
-             @"OR resourceNames = '%@')", res, res, res, res];
+             @"((resourceNames LIKE '%@*\') "
+             @"OR (resourceNames LIKE '*%@*') "
+             @"OR (resourceNames LIKE '%@*') "
+             @"OR (resourceNames = '%@'))", res, res, res, res];
   }
   if (in == nil) {
     // no resources -> no conflicts
@@ -480,66 +474,6 @@ static NSNumber   *noNum      = nil;
 	         objectForKey:@"scheduler_ccForNotificationMails"];
 }
 
-- (id)createMail:(id)_apt {
-  /* TODO: split up into smaller methods */
-  id<LSWMailEditorComponent,OGoContentPage> mailEditor;
-  NSString     *str     = nil;
-  NSArray      *ps      = nil;
-  NSString     *title, *cc, *subject;
-  BOOL         attach;
-  NSEnumerator *recEn;
-  id           rec    = nil;
-  BOOL         first  = YES;
-  
-  if (!self->sscFlags.isMailEnabled) {
-    [self setErrorString:@"mail module is not enabled !"];
-    return nil;
-  }
-
-  if ((mailEditor = (id)[self pageWithName:@"LSWImapMailEditor"]) == nil)
-    return nil;
-    
-  title   = [_apt valueForKey:@"title"];
-  
-  [self runCommand:@"appointment::get-participants",@"appointment",_apt,nil];
-  ps  = [_apt valueForKey:@"participants"];
-  ps  = [self expandedParticipants:ps];
-  str = [self action];
-
-  /* set default cc */
-  
-  if ([(cc = [self ccForNotificationMails]) isNotEmpty])
-    [mailEditor addReceiver:cc type:@"cc"];
-  
-  // TODO: make that a formatter
-  subject = [[NSString alloc] initWithFormat:@"%@: '%@' %@",
-		        [[self labels] valueForKey:@"appointment"],
-		        title,
-		        [[self labels] valueForKey:str]];
-  [mailEditor setSubject:subject];
-  [subject release]; subject = nil;
-  
-  attach = [self shouldAttachAppointmentsToMails];
-  [mailEditor addAttachment:_apt type:eoDateType
-	      sendObject:(attach ? yesNum : noNum)];
-
-  if (self->mailContent == nil) self->mailContent = @"";
-  [mailEditor setContentWithoutSign:self->mailContent];
-  
-  recEn = [ps objectEnumerator];
-  first = YES;
-  while ((rec = [recEn nextObject]) != nil) {
-    if (first) {
-      [mailEditor addReceiver:rec];
-      first = NO;
-    }
-    else 
-      [mailEditor addReceiver:rec type:@"cc"];
-  }
-
-  return mailEditor;
-}
-
 - (id)backToNonEditorPage {
   OGoNavigation *nav;
   
@@ -579,32 +513,43 @@ static NSNumber   *noNum      = nil;
   
   if (self->sscFlags.sendMail) {
     /* Note: we must call -enterPage:, otherwise it doesn't work (#138) */
-    [[[self session] navigation] enterPage:[self createMail:result]];
+    /* Note: the opener uses the editor page! */
+    [[[self session] navigation] enterPage:[self->mailOpener mailEditor]];
   }
+  
+  /* reset as early as possible */
+  [self->mailOpener release]; self->mailOpener = nil;
   
   return [[[self session] navigation] activePage];
 }
 
 - (id)ignoreConflicts {
-  id apt, tmp;
+  OGoContentPage *page;
+  id apt;
   
   apt = [self appointment];
   [apt takeValue:yesNum forKey:@"isWarningIgnored"];
-  tmp = [self save];
+
+  page = [self save];
+
   [apt takeValue:noNum forKey:@"isWarningIgnored"];
-  return tmp;
+
+  return page;
 }
 
 - (id)ignoreAlwaysConflicts {
-  id apt, tmp;
+  OGoContentPage *page;
+  id apt;
   
   apt = [self appointment];
   [apt takeValue:yesNum forKey:@"isWarningIgnored"];
   [apt takeValue:yesNum forKey:@"isConflictDisabled"];
-  tmp = [self save];
+  
+  page = [self save];
   
   [apt takeValue:noNum forKey:@"isWarningIgnored"];
-  return tmp;
+  
+  return page;
 }
 
 /* description */

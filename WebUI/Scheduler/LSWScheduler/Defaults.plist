@@ -24,14 +24,12 @@
   "scheduler_pref_expand_weekOverview"   = 0;
   "scheduler_pref_expand_holidays"       = 0;
   "scheduler_pref_expand_access"         = 0;
-  "scheduler_mail_binding_values"        = ("startDate", "endDate", "title",
-                                          "location", "creator",
-                                          "participants", "comment",
-                                          "resourceNames");
 
-  scheduler_mail_template             = "";
-  //scheduler_mail_template             = "Appointment data:\n\nTitle: $title$\nLocation: $location$\nStart: $startDate$\nEnd: $endDate$\nCreator: $creator$\nParticipants: $participants$\nResources: $resourceNames$\nComment: $comment$\n\n";
-  scheduler_mail_template_date_format = "%Y-%m-%d %H:%M %Z";
+  /* this is just used to display available bindings beside the textarea */
+  "scheduler_mail_binding_values" = (
+    "startDate", "endDate", "title", "location", "creator",
+    "participants", "comment", "resourceNames"
+  );
 
   rootAccessSkyAptNotifyDevices     = YES;
   scheduler_editor_canResolveTeams  = NO;

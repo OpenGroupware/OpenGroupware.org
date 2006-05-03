@@ -1,3 +1,14 @@
+2006-05-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.52
+
+	* SkySchedulerConflictPage.m: rewritten to use the new OGoAptMailOpener
+	  object
+
+	* added new OGoAptMailOpener object to consolidate creation of a mail
+	  editor for a given appointment, subject is now also generated from
+	  a template default ('scheduler_mailsubject_template')
+
 2006-04-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.51

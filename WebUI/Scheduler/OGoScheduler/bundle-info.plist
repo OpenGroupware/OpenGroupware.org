@@ -27,6 +27,7 @@
       { name = SkyAptDeletePanel;          },
       { name = OGoAptConflictsList;        },
       { name = OGoAptFormLetter;           },
+      { name = OGoAptMailOpener;           },
     );
     
     WOComponents = (

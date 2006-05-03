@@ -29,7 +29,7 @@
   containing a notification mail for appointments.
 */
 
-@class NSString, NSArray, NSUserDefaults;
+@class NSString, NSArray, NSDictionary, NSUserDefaults;
 @class LSCommandContext;
 @class OGoComponent, OGoContentPage;
 
@@ -43,8 +43,10 @@
   OGoComponent     *page;
   LSCommandContext *cmdctx;
 
-  NSString *comment;
-  NSArray  *participants;
+  NSString         *comment;
+  NSArray          *participants;
+
+  NSDictionary     *templateBindings;
 }
 
 + (id)mailEditorForObject:(id)_object action:(NSString *)_action

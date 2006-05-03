@@ -232,4 +232,9 @@
       );
     };
   };
+  
+  scheduler_mailsubject_template = "$label_apt$: '$title$' $label_action$";
+  scheduler_mail_template             = "";
+  //scheduler_mail_template             = "Appointment data:\n\nTitle: $title$\nLocation: $location$\nStart: $startDate$\nEnd: $endDate$\nCreator: $creator$\nParticipants: $participants$\nResources: $resourceNames$\nComment: $comment$\n\n";
+  scheduler_mail_template_date_format = "%Y-%m-%d %H:%M %Z";
 }
