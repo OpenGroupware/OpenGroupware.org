@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2004 Helge Hess
+  Copyright (C) 2004-2006 Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -28,11 +28,18 @@
 static BOOL logBundleLoading          = NO;
 static BOOL loadWebUIBundlesOnStartup = YES;
 static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
+static NSArray  *FHSPathes = nil;
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 
   logBundleLoading = [ud boolForKey:@"OGoLogBundleLoading"];
+  
+  // TODO: should be some search path, eg LD_LIBRARY_SEARCHPATH?
+  if (FHSPathes == nil) {
+    FHSPathes = 
+      [[NSArray alloc] initWithObjects:@"/usr/local/", @"/usr/", nil];
+  }
 }
 
 + (id)bundleLoader {
@@ -56,14 +63,16 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
   
   reg = [SoProductRegistry sharedProductRegistry];
   
-  if (logBundleLoading)
-    NSLog(@"  load bundles of type '%@' in path: '%@'", _type, _p);
+  if (logBundleLoading) {
+    [self logWithFormat:@"  load bundles of type '%@' in path: '%@'", 
+	  _type, _p];
+  }
   bm = [NGBundleManager defaultBundleManager];
   fm = [NSFileManager defaultManager];
   e  = [[[fm directoryContentsAtPath:_p] 
 	  sortedArrayUsingSelector:@selector(compare:)] objectEnumerator];
   
-  while ((p = [e nextObject])) {
+  while ((p = [e nextObject]) != nil) {
     NSBundle *bundle;
     
     if (![[p pathExtension] isEqualToString:_type])
@@ -74,13 +83,13 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
       continue;
     
     if (![bm loadBundle:bundle]) {
-      NSLog(@"could not load bundle: %@", bundle);
+      [self errorWithFormat:@"could not load bundle: %@", bundle];
       continue;
     }
     
     if (logBundleLoading) {
-      NSLog(@"    did load bundle: %@", 
-	    [[bundle bundlePath] lastPathComponent]);
+      [self logWithFormat:@"    did load bundle: %@", 
+	    [[bundle bundlePath] lastPathComponent]];
     }
     
     // TODO: this should happen automagically? (SoProductRegistry listens for
@@ -106,25 +115,25 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
 
   /* find pathes */
   
-  // TODO: use "Skyrix5" for Skyrix5 (patch in migration script)
   pathes = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,
 					       NSAllDomainsMask,
 					       YES);
-  if ([FHSOGoBundleDir length] > 0) {
-    // TODO: should be some search path, eg LD_LIBRARY_SEARCHPATH?
-    p      = [@"/usr/local/" stringByAppendingPathComponent:FHSOGoBundleDir];
-    p      = [p stringByAppendingPathComponent:@"webui/"];
-    pathes = [pathes arrayByAddingObject:p];
-    p      = [@"/usr/" stringByAppendingString:FHSOGoBundleDir];
-    p      = [p stringByAppendingPathComponent:@"webui/"];
-    pathes = [pathes arrayByAddingObject:p];
+  if ([FHSOGoBundleDir isNotEmpty]) {
+    unsigned i, count;
+    
+    for (i = 0, count = [FHSPathes count]; i < count; i++) {
+      p = [FHSPathes objectAtIndex:i];
+      p = [p stringByAppendingPathComponent:FHSOGoBundleDir];
+      p = [p stringByAppendingPathComponent:@"webui/"];
+      pathes = [pathes arrayByAddingObject:p];
+    }
   }
   
   /* temporarily patch bundle search path */
   
   bm = [NGBundleManager defaultBundleManager];
   oldPathes = [[bm bundleSearchPaths] copy];
-  if ([pathes count] > 0) {
+  if ([pathes isNotEmpty]) {
     /* add default fallback */
     [bm setBundleSearchPaths:[pathes arrayByAddingObjectsFromArray:oldPathes]];
   }
@@ -132,9 +141,9 @@ static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
   /* load WebUI bundles */
   
   if (loadWebUIBundlesOnStartup) {
-    if (logBundleLoading) NSLog(@"load WebUI plugins ...");
+    if (logBundleLoading) [self logWithFormat:@"load WebUI plugins ..."];
     e = [pathes objectEnumerator];
-    while ((p = [e nextObject])) {
+    while ((p = [e nextObject]) != nil) {
 
       if ([p rangeOfString:FHSOGoBundleDir].length > 0) {
         // this is an FHS path, use different lookup algorithm

@@ -1,3 +1,7 @@
+2006-05-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoWebBundleLoader.m: minor code cleanups (v5.3.82)
+
 2006-01-31  Helge Hess  <helge.hess@opengroupware.org>
 
 	* WODirectAction+LoginAction.m: minor improvement in JavaScript
