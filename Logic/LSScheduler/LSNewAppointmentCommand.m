@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -170,7 +171,7 @@ static NSArray  *startDateOrderings = nil;
   
   resN = [resN isNotEmpty]
     ? [NSString stringWithFormat:@"(%@)", resN]
-    : @"";
+    : (id)@"";
   
   [conflictString appendFormat:@"%@ - %@, %@: %@ %@\n", 
                     sD, eD, p, title, resN];
@@ -326,7 +327,7 @@ static NSArray  *startDateOrderings = nil;
   id owner = nil;
   NSNumber *pId;
   
-  [self assert:([[self valueForKey:@"title"] length] != 0)
+  [self assert:[[self valueForKey:@"title"] isNotEmpty]
         reason:@"missing title attribute"];
   
   pId   = [self valueForKey:@"parentDateId"];
@@ -335,19 +336,23 @@ static NSArray  *startDateOrderings = nil;
   /* set owner of appointment */
 
   if (![pId isNotNull]) {
-    if (owner != nil) {
-      if (![self isRootCompanyId:[[_context valueForKey:LSAccountKey]
-                                   valueForKey:@"companyId"]]) {
+    NSNumber *loginId;
+    
+    loginId = [[_context valueForKey:LSAccountKey] valueForKey:@"companyId"];
+    if ([owner isNotNull]) {
+      if (!([owner isEqual:loginId] || [self isRootCompanyId:loginId])) {
+	[self errorWithFormat:
+		@"Attempt to create apt with owner (owner=%@, login=%@)",
+	        loginId, owner];
         [self assert:NO
-              reason:@"Only root is allowd to explicitly set an owner for "
-              @"appointments!"];
+              reason:
+		@"Only root is allowed to explicitly set an owner for "
+                @"appointments!"];
       }
     }
     else {
-      owner = [[_context valueForKey:LSAccountKey] valueForKey:@"companyId"];
-    
-      [self assert:(owner != nil) reason:@"No owner for appointment!"];
-
+      owner = loginId;
+      [self assert:[owner isNotNull] reason:@"No owner for appointment!"];
       [self takeValue:owner forKey:@"ownerId"];
     }
   }

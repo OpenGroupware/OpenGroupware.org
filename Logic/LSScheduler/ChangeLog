@@ -1,3 +1,9 @@
+2006-05-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSNewAppointmentCommand.m: improved check whether setting the
+	  owner is allowed (do not complain if the owner-id is the same
+	  like the login account) (v5.3.86)
+
 2006-01-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.85
