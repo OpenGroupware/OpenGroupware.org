@@ -1,3 +1,8 @@
+2006-05-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* German.lproj/LSWScheduler.strings: replaced an entity with an UTF-8
+	  char in the 'changed' label
+
 2006-04-26  Helge Hess  <helge.hess@opengroupware.org>
 
 	* English|German.lproj/OGoMailFilter.strings: added 'lessButtonLabel'
