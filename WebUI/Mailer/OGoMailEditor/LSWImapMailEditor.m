@@ -1363,13 +1363,20 @@ static Class      StrClass        = nil;
   if (![_apt isNotNull])
     return;
 
-  cyc = [[_apt valueForKey:@"type"] isNotNull] ? YES : NO;
+  if (![[_apt valueForKey:@"globalID"] isNotNull]) {
+    /* BUG: this somehow happens when a conflict occurred */
+    [self errorWithFormat:
+	    @"Got no global-id for appointment object, can't delete it."];
+    return;
+  }
+  
+  cyc = [[_apt valueForKey:@"type"] isNotEmpty] ? YES : NO;
   
   [self runCommand:@"appointment::delete",
-              @"object",          _apt,
-              @"deleteAllCyclic", [NSNumber numberWithBool:cyc],
-              @"reallyDelete",    [NSNumber numberWithBool:YES],
-              nil];
+	  @"object",          _apt,
+	  @"deleteAllCyclic", [NSNumber numberWithBool:cyc],
+	  @"reallyDelete",    [NSNumber numberWithBool:YES],
+	nil];
 }
 
 - (id)cancelAndDeleteAppointment {
