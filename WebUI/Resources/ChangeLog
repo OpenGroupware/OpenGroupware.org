@@ -1,5 +1,9 @@
 2006-05-03  Helge Hess  <helge.hess@opengroupware.org>
 
+	* German.lproj/JobUI.strings: changed 'prefExeJobs' label from
+	  "Zugewiesene Aufgaben" to "Zugewiesen" because it was too long for
+	  the tab in the task application
+
 	* German.lproj/LSWScheduler.strings: replaced an entity with an UTF-8
 	  char in the 'changed' label
 
