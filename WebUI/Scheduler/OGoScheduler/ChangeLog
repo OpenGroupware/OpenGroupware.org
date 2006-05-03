@@ -1,5 +1,8 @@
 2006-05-03  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoAptMailOpener.m: implemented per appointment type mail templates
+	  (bug #1720) (v5.3.53)
+
 	* v5.3.52
 
 	* SkySchedulerConflictPage.m: rewritten to use the new OGoAptMailOpener

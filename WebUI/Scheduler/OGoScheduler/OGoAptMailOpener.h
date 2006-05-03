@@ -66,4 +66,6 @@
 - (NSString *)mailContent;
 - (OGoContentPage *)mailEditor;
 
+- (NSDictionary *)templateBindingsForAppointment:(id)obj;
+
 @end

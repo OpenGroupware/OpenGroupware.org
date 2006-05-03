@@ -500,6 +500,13 @@ static NSNumber   *noNum      = nil;
   if ((isNew = [[apt valueForKey:@"dateId"] isNotNull] ? NO : YES)) {
     result           = [self runCommand:@"appointment::new" arguments:apt];
     notificationName = LSWNewAppointmentNotificationName;
+    
+#if 0 // TODO: this produces a fault exception
+    if ([result isNotNull]) {
+      [apt takeValue:[result valueForKey:@"dateId"]   forKey:@"dateId"];
+      [apt takeValue:[result valueForKey:@"globalID"] forKey:@"globalID"];
+    }
+#endif
   }
   else {
     result           = [self runCommand:@"appointment::set" arguments:apt];

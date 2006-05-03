@@ -106,6 +106,9 @@ static NGMimeType *eoDateType = nil;
     /* Important: 'comment' and 'participants' must be fetched! */
     self->comment      = [[_component valueForKey:@"comment"] copy];
     self->participants = [[_component valueForKey:@"participants"] retain];
+    
+    self->templateBindings = 
+      [[self templateBindingsForAppointment:self->object] copy];
   }
   return self;
 }
@@ -249,6 +252,8 @@ static NGMimeType *eoDateType = nil;
   [bindings setObject:sd forKey:@"startDate"];
   [bindings setObject:ed forKey:@"endDate"];
   
+  if ((title = [obj valueForKey:@"aptType"]) != nil)
+    [bindings setObject:title forKey:@"type"];
   if ((title = [obj valueForKey:@"title"]) != nil)
     [bindings setObject:title forKey:@"title"];
   if ((location = [obj valueForKey:@"location"]) != nil)
@@ -287,21 +292,53 @@ static NGMimeType *eoDateType = nil;
   return bindings;
 }
 
-- (NSDictionary *)templateBindings {
-  if (self->templateBindings == nil) {
-    self->templateBindings =
-      [[self templateBindingsForAppointment:self->object] copy];
-  }
-  return self->templateBindings;
-}
-
 - (NSString *)contentForTemplateOfDefault:(NSString *)_defName {
-  NSString *s;
+  NSDictionary *typeToTemplate;
+  NSString *s, *template;
+
+  template = nil;
+
+  /* first check per type configuration, possibly with localization */
   
-  s = [[self userDefaults] stringForKey:_defName];
-  if ([s isNotEmpty]) {
-    s = [s stringByReplacingVariablesWithBindings:[self templateBindings]
-	   stringForUnknownBindings:@""];
+  s = [_defName stringByAppendingString:@"_for_type"];
+  if ((typeToTemplate = [[self userDefaults] dictionaryForKey:s]) != nil) {
+    if ([(s = [self->templateBindings valueForKey:@"type"]) isNotEmpty]) {
+      /*
+	The dictionary can contain either a string value or a dictionary
+	which has a language key and a string value.
+	Eg:
+	  birthday = { English = "Happy Birthday!"; German = "Herzlichen!"; }
+      */
+      typeToTemplate = [typeToTemplate objectForKey:s]; /* lookup type */
+      
+      if ([typeToTemplate isKindOfClass:[NSString class]])
+	template = (NSString *)typeToTemplate;
+      else if ([typeToTemplate isKindOfClass:[NSDictionary class]]) {
+	NSRange r;
+	
+	s = [[self->page session] primaryLanguage];
+	r = [s rangeOfString:@"_"];
+	if (r.length > 0) /* cut off theme */
+	  s = [s substringToIndex:r.location];
+	
+	if (![(template = [typeToTemplate valueForKey:s]) isNotNull])
+	  template = [typeToTemplate valueForKey:@"English"];
+      }
+      else if (typeToTemplate != nil) {
+	[self errorWithFormat:@"Unsupported value for per-type default %@: %@",
+	      _defName, typeToTemplate];
+      }
+    }
+  }
+  
+  /* then check the generic configuration */
+  
+  if (![template isNotEmpty])
+    template = [[self userDefaults] stringForKey:_defName];
+  
+  if ([template isNotEmpty]) {
+    s = [template stringByReplacingVariablesWithBindings:self->templateBindings
+		  stringForUnknownBindings:@""];
   }
   else
     s = @"";
@@ -363,9 +400,9 @@ static NGMimeType *eoDateType = nil;
   
   [mailEditor setSubject:[self mailSubject]];
   [mailEditor setContentWithoutSign:[self mailContent]];
-
+  
   /* recipients */
-
+  
   [self _addParticipants:self->participants toMailEditor:mailEditor];
   
   /* attach appointment */
