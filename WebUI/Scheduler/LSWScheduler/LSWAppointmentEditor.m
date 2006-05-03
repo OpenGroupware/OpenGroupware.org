@@ -1797,6 +1797,15 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
     [apmt takeValue:time forKey:@"notificationTime"];
   }
   
+  /* add creator */
+
+  if ([self isInNewMode]) {
+    if (![[apmt valueForKey:@"ownerId"] isNotNull]) {
+      [apmt takeValue:[[[self session] activeAccount] valueForKey:@"companyId"]
+	    forKey:@"ownerId"];
+    }
+  }
+  
   /* copy extendedAttributes */
   if ([extAttrSpec isNotEmpty])
     [apmt takeValue:self->extendedAttributes forKey:@"customAttributes"];
@@ -1840,8 +1849,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   [self _correctSnapshotTimeZone];
   [[[_ds appointment] valueForKey:@"startDate"] setTimeZone:self->timeZone];
   [[[_ds appointment] valueForKey:@"endDate"]   setTimeZone:self->timeZone];
-
-  if (_action != nil) {
+  
+  if ([_action isNotNull]) {
     opener = [OGoAptMailOpener mailOpenerForObject:[self snapshot] 
 			       action:_action
 			       page:self];

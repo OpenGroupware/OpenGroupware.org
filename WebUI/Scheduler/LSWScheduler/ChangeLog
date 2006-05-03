@@ -1,5 +1,8 @@
 2006-05-03  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSWAppointmentEditor.m: set ownerId in snapshot. This fixes issues
+	  in other places (v5.3.106)
+
 	* LSWAppointmentEditor.m: rewritten to use the new OGoAptMailOpener
 	  object from the OGoScheduler bundle (v5.3.105)
 
