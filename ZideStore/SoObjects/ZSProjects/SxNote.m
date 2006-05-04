@@ -354,7 +354,7 @@ static BOOL debugOn = NO;
   NSString *s;
   
   s = [self contentAsString];
-  return [s isNotNull] ? [NSNumber numberWithInt:[s length]] : nil;
+  return [s isNotNull] ? [NSNumber numberWithInt:[s length]] : (NSNumber *)nil;
 }
 
 - (NSDate *)davLastModified {

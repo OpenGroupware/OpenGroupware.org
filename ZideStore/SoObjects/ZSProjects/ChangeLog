@@ -1,3 +1,11 @@
+2006-05-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.5.102
+
+	* SxDocument.m: properly include the document-id in the etag
+
+	* SxNote.m, SxDocumentFolder+Perf.m: code cleanups
+
 2006-05-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* use errorWithFormat/warnWithFormat where appropriate (v1.5.101)

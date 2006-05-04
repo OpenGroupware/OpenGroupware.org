@@ -119,6 +119,17 @@ static BOOL debugOn = NO;
     return nil;
 
   if ([(s = [attrs valueForKey:@"SkyStatus"]) isNotNull]) {
+    /* 
+       Note: just the file version is not enough because the file can be
+             deleted and then get recreated resulting in the same version
+	     for a different file.
+	     So we add the file-id which is supposed to be unique forever
+	     (well, the livetime of the database).
+    */
+    EOKeyGlobalID *gid;
+    
+    gid = [attrs valueForKey:@"globalID"];
+    
     /* we assume a DB backend */
     if ([s isEqualToString:@"edited"]) {
       s = [attrs valueForKey:@"NSFileModificationDate"];
@@ -134,9 +145,16 @@ static BOOL debugOn = NO;
     
     s = [s stringByAppendingString:
              [[attrs valueForKey:@"SkyVersionCount"] stringValue]];
+
+    if ([gid isNotNull]) {
+      s = [[[[gid keyValues][0] stringValue] stringByAppendingString:@"-"]
+	          stringByAppendingString:s];
+    }
+    
     return s;
   }
-  else if ([(s = [attrs valueForKey:@"NSFileModificationDate"]) isNotNull]) {
+  
+  if ([(s = [attrs valueForKey:@"NSFileModificationDate"]) isNotNull]) {
     /* we assume an FS backend */
     if ([s isKindOfClass:[NSDate class]]) {
       s = [NSString stringWithFormat:@"md%09d",

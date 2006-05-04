@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -21,6 +22,7 @@
 
 #include "SxDocumentFolder.h"
 #include <ZSFrontend/SxMapEnumerator.h>
+#include <NGObjWeb/SoWebDAVValue.h>
 #include "common.h"
 
 /* 
@@ -46,19 +48,35 @@
 @implementation SxDocumentFolder(Perf)
 
 /*
-  Hehe: the actual gain of the stuff below is minimal, well, almost 
+  Note: the actual gain of the stuff below is minimal, well, almost 
         non-existant! Why? Because the SkyProjectFileManager already does
 	a whole lot of internal caching, eg it has all the file metadata
 	as soon as a file existence check is performed!
 */
+
+#define MS_TYPING_NS @"{urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/}dt"
+
+static inline SoWebDAVValue *msBoolNo(void) {
+  static SoWebDAVValue *_msBoolNo = nil; // THREAD
+  if (_msBoolNo == nil) {
+    NSDictionary *typing;
+    
+    typing = [[NSDictionary alloc] 
+	       initWithObjectsAndKeys: @"boolean", MS_TYPING_NS, nil];
+    _msBoolNo = [[SoWebDAVValue valueForObject:@"0"
+				attributes:typing] retain];
+    [typing release]; typing = nil;
+  }
+  return _msBoolNo;
+}
 
 - (id)renderListEntry:(id)_entry {
   /*
     Attrs: davContentLength, davLastModified, davDisplayName,
            davIsExecutable, davResourceType
   */
-  NSString *keys[16];
-  id       values[16];
+  NSString *keys[32];
+  id       values[32];
   unsigned count;
   id       tmp;
   
@@ -75,12 +93,12 @@
   values[count] = tmp;
   if (tmp) count++;
   
-  if ((tmp = [_entry valueForKey:NSFileSize])) {
+  if ((tmp = [_entry valueForKey:NSFileSize]) != nil) {
     keys[count]   = @"davContentLength";
     values[count] = tmp;
     count++;
   }
-  if ((tmp = [_entry valueForKey:NSFileModificationDate])) {
+  if ((tmp = [_entry valueForKey:NSFileModificationDate]) != nil) {
     keys[count]   = @"davLastModified";
     values[count] = tmp;
     count++;
@@ -96,7 +114,7 @@
     values[count] = @"1976-09-21T12:00:00Z";
     count++;
   }
-  if ((tmp = [_entry valueForKey:@"NSFileSubject"])) {
+  if ((tmp = [_entry valueForKey:@"NSFileSubject"]) != nil) {
     keys[count]   = @"davDisplayName";
     values[count] = tmp;
     count++;
@@ -113,7 +131,7 @@
     values[count] = @"httpd/unix-directory";
     count++;
   }
-  else {
+  else { /* files */
     keys[count]   = @"davResourceType";
     values[count] = @""; // we might render nil/not-set as propstat 404
     count++;
@@ -127,6 +145,17 @@
     if (values[count] == nil)
       values[count] = @"application/octet-stream";
     count++;
+
+#if 0 /* we now generate a 404 for those */    
+    keys[count] = @"davIsHidden";
+    values[count] = msBoolNo();
+    count++;
+    
+    // TODO: maybe we can return some real info here
+    keys[count] = @"davIsReadOnly";
+    values[count] = msBoolNo();
+    count++;
+#endif
   }
   
   keys[count]   = @"davIsExecutable";
@@ -191,12 +220,12 @@
 }
 
 - (id)nextObject {
-  if (self->obj) {
+  if (self->obj != nil) {
     id tmp = self->obj;
     self->obj = nil;
     return [tmp autorelease];
   }
-  if (self->e) {
+  if (self->e != nil) {
     id tmp = [self->e nextObject];
     if (tmp == nil) {
       [self->e release];
