@@ -100,8 +100,8 @@
 	 [NSClassFromString(@"SkyPersonJobDataSource") alloc] 
 	 initWithContext:[self commandContext]];
   if (ds == nil) {
-    [self logWithFormat:
-	    @"ERROR(%s): could not instantiate SkyPersonJobDataSource!",
+    [self errorWithFormat:
+	    @"%s: could not instantiate SkyPersonJobDataSource!",
 	    __PRETTY_FUNCTION__];
   }
   
@@ -137,7 +137,7 @@
     return YES;
   
   if (![ctx commit]) {  
-    [self logWithFormat:@"ERROR: could not commit transaction ..."];
+    [self errorWithFormat:@"could not commit transaction ..."];
     return NO;
   }
   return YES;
@@ -154,7 +154,7 @@
   
   if (_gid == nil) {
     // TODO: raise fault?
-    [self debugWithFormat:@"ERROR: got no identifier for job."];
+    [self errorWithFormat:@"got no identifier for job."];
     return nil;
   }
   
@@ -662,7 +662,7 @@
   [fSpec release]; fSpec = nil;
   
   jobs = [jobDS fetchObjects];
-  return [jobs isNotNull] ? jobs : [NSArray array];
+  return [jobs isNotNull] ? jobs : (NSArray *)[NSArray array];
 }
 
 - (NSArray *)_fetchJobIdsOf:(id)_doc fSpec:(id)_fSpec {

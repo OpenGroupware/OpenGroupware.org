@@ -105,7 +105,7 @@ static id noNum(void) {
   
   r = [_pid isNotNull]
     ? [NSString stringWithFormat:@"Unknown project ID: %@", _pid]
-    : @"Invalid project ID";
+    : (id)@"Invalid project ID";
   return [NSException exceptionWithName:@"InvalidProjectID"
 		      reason:r userInfo:ui];
 }
@@ -153,8 +153,7 @@ static id noNum(void) {
     project = [self _projectForProjectCode:_projectID];
     
     if (project == nil) {
-      [self logWithFormat:@"ERROR: no project for code '%@' found",
-            _projectID];
+      [self errorWithFormat:@"no project for code '%@' found", _projectID];
       return noNum();
     }
 
@@ -172,7 +171,8 @@ static id noNum(void) {
     if (![self isCurrentUserRoot] &&
         ![loginGID isEqual:[[project valueForKey:@"leader"] globalID]])
     {
-      NSLog(@"ERROR: Only the project leader is allowed to add accounts");
+      [self errorWithFormat:
+	      @"Only the project leader is allowed to add accounts"];
       return noNum();
     }
     
@@ -181,8 +181,7 @@ static id noNum(void) {
                    nil];
 
     if (account == nil) {
-      [self logWithFormat:@"ERROR: no account matching login '%@' found",
-            _login];
+      [self errorWithFormat:@"no account matching login '%@' found", _login];
       return noNum();
     }
 
@@ -208,8 +207,7 @@ static id noNum(void) {
     project = [self _projectForProjectCode:_projectID];
     
     if (project == nil) {
-      [self logWithFormat:@"ERROR: no project for code '%@' found",
-            _projectID];
+      [self errorWithFormat:@"no project for code '%@' found", _projectID];
       return noNum();
     }
 

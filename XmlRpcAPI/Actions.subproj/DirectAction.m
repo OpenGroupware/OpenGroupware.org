@@ -119,8 +119,8 @@
   
   gid = [gids objectAtIndex:0];
   if (![[gid entityName] isEqualToString:_entityName]) {
-    [self logWithFormat:
-            @"ERROR: gid entity '%@' does not match given entity '%@': %@",
+    [self errorWithFormat:
+            @"gid entity '%@' does not match given entity '%@': %@",
             [gid entityName], _entityName, gid];
     return nil;
   }
@@ -185,7 +185,7 @@
     }
   }
   
-  return (doReturnArray) ? returnElements : [returnElements lastObject];
+  return (doReturnArray) ? (id)returnElements : [returnElements lastObject];
 }
 
 - (LSCommandContext *)_commandContextForAuth:(NSString *)_cred

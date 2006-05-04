@@ -426,7 +426,7 @@
     return _parts;
   }
   
-  [self logWithFormat:@"ERROR: unexpected participant parameter type: '%@'",
+  [self errorWithFormat:@"unexpected participant parameter type: '%@'",
 	NSStringFromClass([_parts class])];
   return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
 	       reason:@"Unexpected participants parameter type"];
