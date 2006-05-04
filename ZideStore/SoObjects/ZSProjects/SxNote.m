@@ -73,12 +73,12 @@ static BOOL debugOn = NO;
   
   if (_ctx == nil) _ctx = [[WOApplication application] context];
   if ((cmdctx = [self commandContextInContext:_ctx]) == nil) {
-    [self logWithFormat:@"ERROR: got no command context ..."];
+    [self errorWithFormat:@"got no command context ..."];
     return nil;
   }
   
   if ((pkey = [self primaryKey]) == nil) {
-    [self logWithFormat:@"ERROR: got no primary key for note ..."];
+    [self errorWithFormat:@"got no primary key for note ..."];
     return nil;
   }
   
@@ -100,12 +100,12 @@ static BOOL debugOn = NO;
   id neo;
   
   if ((neo = [self _fetchNoteEOInContext:nil]) == nil) {
-    [self logWithFormat:@"ERROR: could not fetch note EO ..."];
+    [self errorWithFormat:@"could not fetch note EO ..."];
     return nil;
   }
   
   if ((fileName = [neo valueForKey:@"attachmentName"]) == nil) {
-    [self logWithFormat:@"ERROR: got no attachment path for note: %@", neo];
+    [self errorWithFormat:@"got no attachment path for note: %@", neo];
     return nil;
   }
   
@@ -128,11 +128,11 @@ static BOOL debugOn = NO;
   ctx = [[WOApplication application] context];
   
   if ((cmdctx = [self commandContextInContext:ctx]) == nil) {
-    [self logWithFormat:@"ERROR: missing command context!"];
+    [self errorWithFormat:@"missing command context!"];
     return NO;
   }
   if ((neo = [self _fetchNoteEOInContext:ctx]) == nil) {
-    [self logWithFormat:@"ERROR: missing EO!"];
+    [self errorWithFormat:@"missing EO!"];
     return NO;
   }
   
@@ -237,7 +237,7 @@ static BOOL debugOn = NO;
   [self debugWithFormat:@"write file content: %@ ...", [self nameInContainer]];
   
   if ((cmdctx = [self commandContextInContext:_ctx]) == nil) {
-    [self logWithFormat:@"ERROR: got no command context ..."];
+    [self errorWithFormat:@"got no command context ..."];
     return [NSException exceptionWithHTTPStatus:500 /* Internal Error */
 			reason:@"got no command context"];
   }
@@ -297,7 +297,7 @@ static BOOL debugOn = NO;
   id neo;
   
   if ((cmdctx = [self commandContextInContext:_ctx]) == nil) {
-    [self logWithFormat:@"ERROR: got no command context ..."];
+    [self errorWithFormat:@"got no command context ..."];
     return [NSException exceptionWithHTTPStatus:500 /* Internal Error */
 			reason:@"got no command context"];
   }

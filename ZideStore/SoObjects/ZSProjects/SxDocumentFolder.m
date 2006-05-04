@@ -372,7 +372,7 @@ static BOOL debugOn = NO;
     return [self internalError:@"could not locate filemanager for project"];
   
   *p_ = [self storagePath];
-  if ([*p_ length] == 0)
+  if (![*p_ isNotEmpty])
     return [self internalError:@"could not calc project relative path"];
 
   if ((*cmdctx_ = [self commandContextInContext:_ctx]) == nil)
@@ -578,20 +578,20 @@ static BOOL debugOn = NO;
 
   if (![fm writeContents:[_content dataUsingEncoding:NSISOLatin1StringEncoding]
 	   atPath:p]) {
-    [self logWithFormat:@"ERROR: could not write to path: %@", p];
+    [self errorWithFormat:@"could not write to path: %@", p];
     return nil;
   }
   
   /* then set attrs */
   
   if ((doc = [fm documentAtPath:p]) == nil) {
-    [self logWithFormat:@"ERROR: did not find new document: %@", p];
+    [self errorWithFormat:@"did not find new document: %@", p];
     return nil;
   }
   
   [doc takeValue:_title forKey:@"NSFileSubject"];
   if (![doc save]) {
-    [self logWithFormat:@"ERROR: could not save document: %@", p];
+    [self errorWithFormat:@"could not save document: %@", p];
     return nil;
   }
 
@@ -599,7 +599,7 @@ static BOOL debugOn = NO;
   
   if ([[self commandContextInContext:_ctx] isTransactionInProgress]) {
     if (![[self commandContextInContext:_ctx] commit]) {
-      [self logWithFormat:@"ERROR: could not commit transaction!"];
+      [self errorWithFormat:@"could not commit transaction!"];
       [[self commandContextInContext:_ctx] rollback];
       return nil;
     }

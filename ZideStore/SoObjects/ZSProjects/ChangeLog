@@ -1,5 +1,7 @@
 2006-05-04  Helge Hess  <helge.hess@opengroupware.org>
 
+	* use errorWithFormat/warnWithFormat where appropriate (v1.5.101)
+
 	* v1.5.100
 	
 	* SxDocumentFolder.m: instantiate SxTmpDocument for lookups which match

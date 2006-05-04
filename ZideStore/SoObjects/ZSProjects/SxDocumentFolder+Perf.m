@@ -144,8 +144,8 @@
   NSString *uaType;
   
   if ((ds = [self folderDataSourceInContext:_ctx]) == nil) {
-    [self logWithFormat:
-            @"WARNING: got no datasource for folder (path '%@', name '%@')",
+    [self warnWithFormat:
+            @"got no datasource for folder (path '%@', name '%@')",
             [self storagePath], [self nameInContainer]];
     return [NSException exceptionWithHTTPStatus:404 /* Not Found */
                         reason:@"got no datasource for folder ..."];

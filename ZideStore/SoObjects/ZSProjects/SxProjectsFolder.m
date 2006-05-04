@@ -121,8 +121,8 @@ static BOOL kontactGroupDAV = YES;
     if ([[cc userAgentType] isEqualToString:@"Konqueror"]) {
       if ([cc majorVersion] == 3 && [cc minorVersion] == 4) {
 	if (![[_ctx valueForKey:@"KontactGroupDAVDidWarn"] boolValue]) {
-	  [self logWithFormat:
-		  @"WARNING: applying Kontact 3.4 GroupDAV hack"
+	  [self warnWithFormat:
+		  @"applying Kontact 3.4 GroupDAV hack"
 		  @" - project browsing is disabled!"
 		  @" (can be enabled using 'ZSDisableKontact34GroupDAVHack')"];
 	  [_ctx takeValue:@"YES" forKey:@"KontactGroupDAVDidWarn"];

@@ -81,8 +81,8 @@ static BOOL    debugOn = NO;
     return nil;
   
   if ([tmp count] > 1) {
-    [self logWithFormat:
-	    @"WARNING: multiple projects mapped to filename '%@' (key=%@)",
+    [self warnWithFormat:
+	    @"multiple projects mapped to filename '%@' (key=%@)",
 	    [self nameInContainer], [self projectNameKey]];
   }
   self->projectGlobalID = [[[tmp objectAtIndex:0] globalID] retain];
