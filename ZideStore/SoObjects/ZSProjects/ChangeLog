@@ -1,3 +1,20 @@
+2006-05-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.5.100
+	
+	* SxDocumentFolder.m: instantiate SxTmpDocument for lookups which match
+	  the name pattern for tmpfiles (~/._ prefix or .tmp suffix), only
+	  use tmpfiles with database projects
+	  
+	* SxDocument.m: rewrote PUT support to share functionality with COPY,
+	  some code cleanups, added special handling for MOVEing to
+	  SxTmpDocument objects (source is NOT deleted in this case),
+	  implemented COPYing to SxTmpDocument's.
+
+	* added new SxTmpDocument object which implements a temporary storage
+	  for temporary files (files starting with ~ or ending in .tmp)
+	  (see bug #1221 for details)
+
 2006-05-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxProjectsFolder.m: so not log client capabilities object (v1.5.99)

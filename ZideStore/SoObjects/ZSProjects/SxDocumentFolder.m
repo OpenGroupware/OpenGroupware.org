@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -106,9 +107,9 @@ static BOOL debugOn = NO;
   NSMutableString *ma;
   id folder;
   
-  if (self->projectPath)
+  if (self->projectPath != nil)
     return self->projectPath;
-
+  
   if ([self isProjectRootFolder]) {
     self->projectPath = @"/";
     return self->projectPath;
@@ -164,7 +165,7 @@ static BOOL debugOn = NO;
   }
   
   ma = [NSMutableArray arrayWithCapacity:16];
-  while ((p = [contents nextObject])) {
+  while ((p = [contents nextObject]) != nil) {
     BOOL isDir;
     
     if (![fm fileExistsAtPath:[sp stringByAppendingString:p] 
@@ -232,6 +233,42 @@ static BOOL debugOn = NO;
   return [file autorelease];
 }
 
+- (BOOL)isTmpFileName:(NSString *)_name inContext:(id)_ctx {
+  /* 
+     We have a separate store for temporary files as created by Word. We
+     only do this for database projects.
+     
+     Files look like (Word 2003):
+       ~WRD0000.tmp
+     or
+       ~$in%20Word%20Document.doc
+  */
+  if ([_name hasPrefix:@"~"])
+    return YES;
+  if ([_name hasSuffix:@".tmp"])
+    return YES;
+  if ([_name hasPrefix:@"._"]) /* this is Apple */
+    return YES; // TODO: do they also use directories with the prefix?
+  return NO;
+}
+
+- (id)lookupTmpName:(NSString *)_name inContext:(id)_ctx {
+  /* 
+     Note: we do not check whether the file already exists. Because of this
+           the davCreateObject method will not be called.
+  */
+  id file;
+  
+  [self logWithFormat:@"lookup tmpfile: '%@'", _name];
+  file = [[NSClassFromString(@"SxTmpDocument") alloc] 
+             initWithName:_name inContainer:self];
+  return [file autorelease];
+}
+
+- (BOOL)useSeparateTmpFilesWithFileManager:(id)_fm {
+  return [_fm isKindOfClass:NSClassFromString(@"SkyProjectFileManager")];
+}
+
 - (id)lookupStoredName:(NSString *)_name inContext:(id)_ctx {
   id       fm;
   NSString *p;
@@ -242,7 +279,13 @@ static BOOL debugOn = NO;
     [self debugWithFormat:@"  missing filemanager ..."];
     return nil;
   }
-  if ([(p = [self storagePath]) length] == 0) {
+  
+  if ([self useSeparateTmpFilesWithFileManager:fm]) {
+    if ([self isTmpFileName:_name inContext:_ctx])
+      return [self lookupTmpName:_name inContext:_ctx];
+  }
+  
+  if (![(p = [self storagePath]) isNotEmpty]) {
     [self debugWithFormat:@"  missing storage path ..."];
     return nil;
   }
@@ -251,7 +294,7 @@ static BOOL debugOn = NO;
   if (![fm fileExistsAtPath:p isDirectory:&isDir]) {
     NSException *error;
     
-    if ((error = [fm lastException]))
+    if ((error = [fm lastException]) != nil)
       return error;
     [self debugWithFormat:@"  file does not exist at '%@'", p];
     return nil;
@@ -267,9 +310,10 @@ static BOOL debugOn = NO;
 - (id)lookupName:(NSString *)_name inContext:(id)_ctx acquire:(BOOL)_flag {
   id tmp;
   
-  if ([_name length] == 0) return nil;
+  if (![_name isNotEmpty]) return nil;
   
   /* first check for methods */
+  
   if ((tmp = [super lookupName:_name inContext:_ctx acquire:NO]) != nil) {
     if (![tmp isKindOfClass:[NSException class]])
       return tmp;
@@ -277,8 +321,13 @@ static BOOL debugOn = NO;
       return tmp; /* object found but had some error? */
   }
   
+  /* lookup name as a project file */
+  
   if ((tmp = [self lookupStoredName:_name inContext:_ctx]) != nil)
     return tmp;
+  
+  /* and now with acquisition */
+  // TODO: should we disable this or is it required for something?
   
   return [super lookupName:_name inContext:_ctx acquire:_flag];
 }

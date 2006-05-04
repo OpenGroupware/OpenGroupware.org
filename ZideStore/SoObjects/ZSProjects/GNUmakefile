@@ -18,6 +18,7 @@ libZSProjects_OBJC_FILES = \
 	SxDocument.m		\
 	SxProjectNotesFolder.m	\
 	SxNote.m		\
+	SxTmpDocument.m		\
 	\
 	SxProjectNotesRSS.m	\
 	\

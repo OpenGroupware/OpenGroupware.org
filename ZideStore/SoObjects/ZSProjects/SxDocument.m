@@ -21,6 +21,7 @@
 
 #include "SxDocument.h"
 #include "SxProjectFolder.h"
+#include "SxTmpDocument.h"
 #include <OGoDocuments/SkyDocumentFileManager.h>
 #include <OGoDocuments/SkyDocument.h>
 #include "common.h"
@@ -201,30 +202,26 @@ static BOOL debugOn = NO;
 /* actions */
 
 - (id)internalError:(NSString *)_error {
+  if (![_error isNotEmpty])
+    _error = @"unknown internal error";
   return [NSException exceptionWithHTTPStatus:500 /* server error */
-		      reason:_error ? _error : @"unknown internal error"];
+		      reason:_error];
 }
 
-- (id)PUTAction:(id)_ctx {
+- (NSException *)putContent:(NSData *)_content
+  asCopyFromDocument:(id)_document
+  inContext:(id)_ctx
+{
   LSCommandContext *cmdctx;
-  NSException *error;
-  NSData   *data;
-  unsigned len;
   id       fm;
   NSString *p;
   
-  if ([[self nameInContainer] hasPrefix:@"._"]) {
-    // TODO: should we fake a 200 instead?
-    return [NSException exceptionWithHTTPStatus:404 /* not found */
-			reason:@"rejecting writes to resourcefork file"];
-  }
-  
   [self debugWithFormat:@"write file content: %@ ...", [self nameInContainer]];
-  
+
   if ((fm = [self fileManagerInContext:_ctx]) == nil)
     return [self internalError:@"could not locate filemanager for project"];
   
-  if ([(p = [self storagePath]) length] == 0)
+  if (![(p = [self storagePath]) isNotEmpty])
     return [self internalError:@"could not calc project relative path"];
   
   /* check locking status and lock on demand */
@@ -232,22 +229,16 @@ static BOOL debugOn = NO;
   // TODO: checkout-on-demand, "checkin-after-time?"
   
   /* write the file */
-  
-  if ((data = [[(WOContext *)_ctx request] content]) == nil) {
-    static NSData *emptyData = nil;
-    if (emptyData == nil) emptyData = [[NSData alloc] init];
-    data = (id)emptyData;
-  }
-  
-  len = [data length];
-  
-  if (![fm writeContents:data atPath:p]) {
+
+  if (![fm writeContents:_content atPath:p]) {
+    NSException *error;
+    
     [self debugWithFormat:@"could not write %i bytes to %@ (fm=%@)", 
-	    len, p, fm];
+	    [_content length], p, fm];
     
     if ([fm respondsToSelector:@selector(lastException)])
       error = [fm lastException];
-    if (error)
+    if (error != nil)
       return error;
     return [self internalError:@"file writing failed, reason unknown"];
   }
@@ -257,6 +248,31 @@ static BOOL debugOn = NO;
     if (![cmdctx commit])
       return [self internalError:@"could not commit transaction!"];
   }
+  
+  return nil;
+}
+
+- (id)PUTAction:(id)_ctx {
+  NSException *error;
+  NSData   *data;
+  
+  if ([[self nameInContainer] hasPrefix:@"._"]) {
+    // TODO: should we fake a 200 instead?
+    return [NSException exceptionWithHTTPStatus:404 /* not found */
+			reason:@"rejecting writes to resourcefork file"];
+  }
+  
+  /* write the file */
+  
+  if ((data = [[(WOContext *)_ctx request] content]) == nil) {
+    static NSData *emptyData = nil;
+    if (emptyData == nil) emptyData = [[NSData alloc] init];
+    data = (id)emptyData;
+  }
+  
+  error = [self putContent:data asCopyFromDocument:nil inContext:_ctx];
+  if (error != nil)
+    return error;
   
   return [NSNumber numberWithBool:YES];
 }
@@ -285,7 +301,7 @@ static BOOL debugOn = NO;
   if ((fm = [self fileManagerInContext:_ctx]) == nil)
     return [self internalError:@"could not locate filemanager for project"];
   
-  if ([(p = [self storagePath]) length] == 0)
+  if (![(p = [self storagePath]) isNotEmpty])
     return [self internalError:@"could not calc project relative path"];
   
   if (![fm fileExistsAtPath:p]) {
@@ -297,8 +313,6 @@ static BOOL debugOn = NO;
   [r setStatus:200 /* OK */];
   [r setContent:(NSData *)[NSData data]];
   [self applyFileAttributesOnResponse:r];
-  
-  // TODO: add MIME typing etc
   return r;
 }
 
@@ -311,7 +325,7 @@ static BOOL debugOn = NO;
   if ((fm = [self fileManagerInContext:_ctx]) == nil)
     return [self internalError:@"could not locate filemanager for project"];
   
-  if ([(p = [self storagePath]) length] == 0)
+  if (![(p = [self storagePath]) isNotEmpty])
     return [self internalError:@"could not calc project relative path"];
   
   if ((content = [fm contentsAtPath:p]) == nil) {
@@ -327,8 +341,6 @@ static BOOL debugOn = NO;
   [r setContent:content];
   
   [self applyFileAttributesOnResponse:r];
-  
-  // TODO: add MIME typing etc
   return r;
 }
 
@@ -370,6 +382,14 @@ static BOOL debugOn = NO;
 - (NSException *)davMoveToTargetObject:(id)_target newName:(NSString *)_name
   inContext:(id)_ctx
 {
+  if ([_target isKindOfClass:NSClassFromString(@"SxTmpDocument")]) {
+    /* 
+       We do not delete "real" resources for temporary files, see bug #1921 for
+       details.
+    */
+    return [self davCopyToTargetObject:_target newName:_name inContext:_ctx];
+  }
+  
   return [[self projectFolder] moveObject:self toTarget:_target
 			       newName:_name inContext:_ctx];
 }
@@ -377,6 +397,28 @@ static BOOL debugOn = NO;
 - (NSException *)davCopyToTargetObject:(id)_target newName:(NSString *)_name
   inContext:(id)_ctx
 {
+  if ([_target isKindOfClass:NSClassFromString(@"SxTmpDocument")]) {
+    id       fm;
+    NSString *p;
+    NSData   *content;
+    
+    if ((fm = [self fileManagerInContext:_ctx]) == nil)
+      return [self internalError:@"could not locate filemanager for project"];
+    
+    if (![(p = [self storagePath]) isNotEmpty])
+      return [self internalError:@"could not calc project relative path"];
+    
+    if ((content = [fm contentsAtPath:p]) == nil) {
+      if ([fm respondsToSelector:@selector(lastException)])
+        return [fm lastException];
+      
+      return [NSException exceptionWithHTTPStatus:404 /* not found */
+			  reason:@"could not read content of document"];
+    }
+    
+    return [_target putContent:content asCopyFromDocument:self inContext:_ctx];
+  }
+  
   return [[self projectFolder] copyObject:self toTarget:_target
 			       newName:_name inContext:_ctx];
 }
