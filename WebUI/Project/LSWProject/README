@@ -1,5 +1,3 @@
-# $Id$
-
 This bundle contains the "old" SKYRiX 3.x project application. Most components
 are outdated, but *some* are still used. The project application is now mainly
 implemented by the OGoProject bundle.

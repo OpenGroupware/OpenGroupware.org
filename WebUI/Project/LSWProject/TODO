@@ -9,7 +9,7 @@ TODO LSWProject
 - SkyProjectSelection
   - should list favorite projects!
 
-- remove unused components, most (all?) things are covered by OGoProject now !
+- remove unused components, most (all?) things are covered by OGoProject now!
   - "LSWProjects"       used by SkyNote
   - "LSWProjectJobList" used by SkyProject4Viewer, LSWProjectViewer
 
