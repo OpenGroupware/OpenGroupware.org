@@ -5,16 +5,14 @@ Frame: LSWSkyrixFrame {}
 Window: LSWWindowFrame {
   title   = label;
   onClose = closeWindow;
-  hasTest = isTestMode;
-  onTest  = disableTest;
 }
 
 Buttons: SkyButtonRow {
   oid         = documentId;
-  ordering    = ( editasnew, delete, rename,
+  ordering    = ( openloc, editasnew, delete, rename,
                   checkout, reject, release, 
                   lock, unlock, mail,
-                  upload, edit, test, refresh, unzip, saveas);
+                  upload, edit, refresh, unzip, saveas);
   
   /* default buttons */
   onClip      = placeInClipboard;
@@ -22,7 +20,6 @@ Buttons: SkyButtonRow {
   onMail      = mailObject;
   onDelete    = deleteDocument;
   onRename    = renameDocument;
-  onTest      = testDocument;
   
   onEditasnew = editAsNew;
   onCheckout  = checkoutDocument;
@@ -34,13 +31,13 @@ Buttons: SkyButtonRow {
   onRefresh   = refresh;
   onUnzip     = unzipDocument;
   onSaveas    = saveAs;
-
+  
   urlMail     = objectUrl;
-
+  urlOpenloc  = openerUrlForFile;
+  
   hasMail     = hasMail;
   hasClip     = hasClip;
-  hasEditAsNew= hasEditAsNew;
-  hasTest     = canTestDocument;
+  hasEditasnew= hasEditAsNew;
   hasCheckout = hasCheckout;
   hasReject   = hasReject;
   hasRelease  = hasRelease;
@@ -51,24 +48,26 @@ Buttons: SkyButtonRow {
   hasDelete   = hasDelete;
   hasRename   = hasRename;
   hasUnzip    = hasUnzip;
-  hasSaveAs   = hasSaveAs;
+  hasSaveas   = hasSaveAs;
+  hasOpenloc  = hasOpenLocally;
   
   /* labels */
   checkout    = labels.checkout;
+  clip        = labels.clip;
+  delete      = labels.delete;
+  edit        = labels.edit;
+  editasnew   = labels.editAsNew;
+  lock        = labels.lock;
+  mail        = labels.send;
+  openloc     = labels.openloc;
+  refresh     = labels.refresh;
   reject      = labels.reject;
   release     = labels.release;
-  lock        = labels.lock;
-  unlock      = labels.unlock;
-  upload      = labels.upload;
-  edit        = labels.edit;
-  delete      = labels.delete;
   rename      = labels.rename;
-  mail        = labels.send;
-  editasnew   = labels.editAsNew;
-  test        = labels.test;
-  refresh     = labels.refresh;
-  unzip       = labels.unzip;
   saveas      = labels.saveAs;
+  unlock      = labels.unlock;
+  unzip       = labels.unzip;
+  upload      = labels.upload;
 }
 
 /* standard viewer */

@@ -215,7 +215,7 @@
   
   uploadl = (uploadl != nil)
     ? uploadl
-    : @"upload file at path ";
+    : (NSString *)@"upload file at path ";
   
   path = [self fileId]
     ? [[self fileManager] pathForGlobalID:[self fileId]]
@@ -413,7 +413,7 @@
     
     s = (cstr)
       ? [NSString stringWithCString:(cstr + 1)]
-      : _path;
+      : (id)_path;
   }
   else {
     const char *cstr;
@@ -423,7 +423,7 @@
     
     s = (cstr != NULL)
       ? [NSString stringWithCString:(cstr + 1)]
-      : _path;
+      : (id)_path;
   }
   
   [self setFileName:s];

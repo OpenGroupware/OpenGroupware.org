@@ -130,7 +130,7 @@
 
   action = (action != nil)
     ? action
-    : @"copy / move files from project ";
+    : (NSString *)@"copy / move files from project ";
 
   projectName = [(NSDictionary *)[self fileSystemAttributes] 
                                  objectForKey:@"NSFileSystemName"];
@@ -197,7 +197,7 @@
     return fname;
   
   comps = [fname componentsSeparatedByString:@"."];
-  return [comps count] > 0 ? [comps objectAtIndex:0] : fname;
+  return [comps isNotEmpty] ? (NSString *)[comps objectAtIndex:0] : fname;
 }
 
 - (void)setNewDocuments:(NSArray *)_newDocuments {

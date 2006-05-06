@@ -249,8 +249,8 @@
 }
 - (NSString *)subject {
   return [self hasDocument]
-    ?[[self document] valueForKey:@"NSFileSubject"]
-    :self->subject;
+    ? (NSString *)[[self document] valueForKey:@"NSFileSubject"]
+    : self->subject;
 }
 
 - (NSString *)folderPath {
@@ -359,12 +359,12 @@
   NSString *edit;
 
   edit = [[self labels] valueForKey:@"EditFileAtPath"];
-
+  
   edit = (edit != nil)
     ? edit
-    : @"Edit file at path ";
+    : (NSString *)@"Edit file at path ";
   
-  path = [self fileId]
+  path = ([self fileId] != nil)
     ? [[self fileManager] pathForGlobalID:[self fileId]]
     : [[self fileManager] pathForGlobalID:[self folderId]];
   
@@ -394,8 +394,8 @@
 
 - (void)setIsImport:(BOOL)_imp {
   if (_imp) {
-    [self logWithFormat:
-	    @"WARNING: attempt to set import flag, the import panel is now a"
+    [self warnWithFormat:
+	    @"attempt to set import flag, the import panel is now a"
 	    @"separate component (OGoDocumentImport)"];
   }
   self->speFlags.isImport = _imp ? 1 : 0;

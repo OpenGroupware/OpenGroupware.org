@@ -1,5 +1,8 @@
 2006-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoProject/SkyProject4DocumentViewer.wod: added button for opening
+	  from a local URL, removed 'test' button (was for forms)
+
 	* LSWProject/LSWProjectPreferences.html: added section to configure
 	  document URL pattern
 

@@ -171,7 +171,7 @@ static inline BOOL _showUnknownFiles(id self) {
   }
   NS_HANDLER {
     fm = nil;
-    printf("ERROR: couldn`t get filemanager, goy exception %s",
+    printf("ERROR: could not get filemanager, goy exception %s",
 	   [[localException description] cString]);
     exception = localException;
   }
@@ -239,7 +239,7 @@ static inline BOOL _showUnknownFiles(id self) {
     return self->project;
 
   if ((projectID = [self fileSystemNumber]) == nil) {
-    [self logWithFormat:@"ERROR: could not find valid project ID"];
+    [self errorWithFormat:@"could not find valid project ID"];
     return nil;
   }
     
@@ -480,7 +480,7 @@ static inline BOOL _showUnknownFiles(id self) {
              [self->fileManager currentDirectoryPath]];
 
   if ([gid isKindOfClass:[EOKeyGlobalID class]])
-    return [gid isNotNull] ? [gid keyValues][0] : [EONull null];
+    return [gid isNotNull] ? [gid keyValues][0] : (id)[EONull null];
 
   return [EONull null];
 }

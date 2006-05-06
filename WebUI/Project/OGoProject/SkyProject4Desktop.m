@@ -548,8 +548,7 @@ static NSArray     *extDesktopPages   = nil;
   return [[self session] instantiateComponentForCommand:@"new" type:mt];
 }
 - (id)newWizard {
-  [self logWithFormat:@"WARNING(%s): used deprecated method!",
-        __PRETTY_FUNCTION__];
+  [self warnWithFormat:@"%s: used deprecated method!", __PRETTY_FUNCTION__];
   return [self newProject];
 }
 

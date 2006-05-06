@@ -224,7 +224,7 @@
   if ([mType isEqualToString:@"x-skyrix/filemanager-link"]) {
     NSArray *comps = [fname componentsSeparatedByString:@"."];
     
-    return ([comps count]) ? [comps objectAtIndex:0] : fname;
+    return [comps isNotEmpty] ? (NSString *)[comps objectAtIndex:0] : fname;
   }
   return fname;
 }

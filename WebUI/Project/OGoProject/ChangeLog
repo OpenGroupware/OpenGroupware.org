@@ -1,3 +1,14 @@
+2006-05-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.70
+
+	* SkyProject4DocumentViewer.m: added ability to create a local file
+	  URL (file:///) from a pattern configured in the preferences, removed
+	  some test-mode support (old forms)
+
+	* fixed gcc 4.1 warnings, use errorWithFormat/warnWithFormat when
+	  appropriate
+
 2005-11-21  Helge Hess  <helge.hess@skyrix.com>
 
 	* removed use of deprecated DocumentAPI methods, fixed gcc4 warnings

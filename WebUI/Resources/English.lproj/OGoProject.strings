@@ -321,6 +321,7 @@ objectVersionLabel                  = "version";
 ofProcess                           = "subtask of";
 oldJobs                             = "Tasks";
 operativePart                       = "Operative Part";
+openloc                             = "Open Locally";
 orEnterprise                        = "or Company";
 owner                               = "Owner";
 parallelProcess                     = "parallel process";

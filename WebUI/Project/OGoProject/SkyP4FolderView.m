@@ -124,9 +124,9 @@ static NSArray *fileTypeGroupings = nil;
 }
 
 - (void)setErrorString:(NSString *)_s {
-  if ([_s length] > 0) {
+  if ([_s isNotEmpty]) {
     [(id)[[self context] page] setErrorString:_s];
-    [self logWithFormat:@"ERROR: %@", _s];
+    [self errorWithFormat:@"%@", _s];
   }
 }
 
@@ -341,7 +341,7 @@ static NSArray *fileTypeGroupings = nil;
     return fname;
   
   comps = [fname componentsSeparatedByString:@"."];
-  return ([comps count] > 0) ? [comps objectAtIndex:0] : fname;
+  return [comps isNotEmpty] ? (NSString *)[comps objectAtIndex:0] : fname;
 }
 
 - (BOOL)isEpozEnabled {
@@ -871,7 +871,7 @@ static NSArray *fileTypeGroupings = nil;
   /* an old view link */
   NSRange r;
   
-  [self logWithFormat:@"WARNING: encountered old-style link: %@", _linkTarget];
+  [self warnWithFormat:@"encountered old-style link: %@", _linkTarget];
   
   r = [_linkTarget rangeOfString:@"="];
   return (r.length > 0)

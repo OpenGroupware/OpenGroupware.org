@@ -528,7 +528,7 @@ static NSCharacterSet *digits = nil;
   authType = [_request headerForKey:@"x-webobjects-auth-type"];
   authUser = [[authType lowercaseString] isEqualToString:@"basic"]
     ? [_request headerForKey:@"x-webobjects-remote-user"]
-    : nil;
+    : (NSString *)nil;
   
   if ([authUser length] == 0) {
     /* missing auth */
@@ -557,7 +557,7 @@ static NSCharacterSet *digits = nil;
   r = [auth rangeOfString:@":"];
   auth = (r.length > 0)
     ? [auth substringFromIndex:(r.location + r.length)]
-    : nil;
+    : (NSString *)nil;
   
   if (auth == nil) {
     /* invalid auth */

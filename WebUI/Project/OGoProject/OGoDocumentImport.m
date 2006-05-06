@@ -170,8 +170,8 @@
 }
 - (NSString *)subject {
   return [self hasDocument]
-    ?[[self document] valueForKey:@"NSFileSubject"]
-    :self->subject;
+    ? (NSString *)[[self document] valueForKey:@"NSFileSubject"]
+    : self->subject;
 }
 
 - (NSString *)folderPath {
@@ -273,7 +273,7 @@
 
   edit = (edit != nil)
     ? edit
-    : @"Edit file at path ";
+    : (NSString *)@"Edit file at path ";
   
   path = [self fileId]
     ? [[self fileManager] pathForGlobalID:[self fileId]]
@@ -297,8 +297,7 @@
 }
 
 - (BOOL)isImport {
-  [self logWithFormat:@"WARNING(%s): called deprecated method.",
-	  __PRETTY_FUNCTION__];
+  [self warnWithFormat:@"%s: called deprecated method.", __PRETTY_FUNCTION__];
   return YES;
 }
 

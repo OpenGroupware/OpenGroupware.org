@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -43,6 +44,8 @@
   NSString            *activeTabKey;
   NSMutableDictionary *tabComponentCache;
   NSArray             *tabKeys;
+
+  NSString *openerURL;
 }
 
 - (NSDictionary *)fileSystemInfo;
@@ -199,7 +202,8 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   [self->tabComponentCache release];
   [self->activeTabKey      release];
   [self->tabKeys           release];
-  
+
+  [self->openerURL         release];
   [self->fsinfo            release];
   [self->documentGID       release];
   [self->historyDataSource release];
@@ -223,22 +227,15 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   p = [self _documentPath];
   l = [[p lastPathComponent] stringByDeletingPathVersion];
   v = [p pathVersion];
-
-  if (v != nil)
-    l = [NSString stringWithFormat:@"%@ (%@)", l, v];
   
-  if ([self isTestMode]) {
-    NSString *t;
-
-    t = [[self labels] valueForKey:@"test"];
-    l = [NSString stringWithFormat:@"%@: %@", t, l];
-  }
+  if ([v isNotEmpty])
+    l = [NSString stringWithFormat:@"%@ (%@)", l, v];
   
   return l;
 }
 
 - (BOOL)isVersion {
-  return [[self _documentPath] pathVersion] != nil;
+  return [[[self _documentPath] pathVersion] isNotEmpty];
 }
 
 - (BOOL)isViewerForSameObject:(id)_object {
@@ -279,7 +276,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   
   if (addPart) {
     id doceo;
-
+    
     doceo = [[_object fileManager] genericRecordForDocGID:[_object globalID]];
     [mailEditor addAttachment:doceo type:[NGMimeType mimeType:@"eo/doc"]];
   }
@@ -310,7 +307,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
 - (id)activateKeyGlobalID:(EOKeyGlobalID *)_object
   verb:(NSString *)_verb type:(NGMimeType *)_type
 {
-  EOKeyGlobalID      *dgid = nil; // document gid
+  EOKeyGlobalID      *dgid; // document gid
   EOGlobalID         *pgid = nil; // project gid
   id                 fm   = nil;
   SkyProjectDocument *doc  = nil;
@@ -413,6 +410,13 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   }
   [self logWithFormat:@"couldn't activate object %@", _object];
   return nil;
+}
+
+/* notifications */
+
+- (void)sleep {
+  [self->openerURL release]; self->openerURL = nil;
+  [super sleep];
 }
 
 /* accessors */
@@ -566,7 +570,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
     
     if ([self->document isNew]) {
       if (debugOn) {
-	[self logWithFormat:@"ERROR: created *new* 'document' ???: %@",
+	[self errorWithFormat:@"created *new* 'document' ???: %@",
 	        self->document];
       }
     }
@@ -598,11 +602,13 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
                       stringByEscapingURL];
 }
 
-- (BOOL)showOnlyForm {
+- (BOOL)showOnlyForm { // TODO: DEPRECATED?
+  [self logWithFormat:@"Called deprecated method: %s", __PRETTY_FUNCTION__];
   return NO;
 }
 
-- (BOOL)canTestDocument {
+- (BOOL)canTestDocument { // TODO: DEPRECATED?
+  [self logWithFormat:@"Called deprecated method: %s", __PRETTY_FUNCTION__];
   return NO;
 }
 
@@ -659,6 +665,58 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
     return [mimeType stringValue];
   
   return @"application/octet-stream";
+}
+
+- (NSString *)urlPattern {
+  return [[[self session] userDefaults] stringForKey:@"project_docurlpat"];
+}
+
+- (NSString *)openerUrlForFile {
+  NSMutableDictionary *bindings;
+  NSDictionary *fs;
+  NSString *pat;
+  id tmp;
+
+  if (self->openerURL != nil)
+    return self->openerURL;
+  
+  pat = [self urlPattern];
+  
+  bindings = [[NSMutableDictionary alloc] initWithCapacity:8];
+  
+  if ([(tmp = [self documentPath]) isNotEmpty])
+    [bindings setObject:tmp forKey:@"path"];
+  if ([(tmp = [self documentName]) isNotEmpty])
+    [bindings setObject:tmp forKey:@"name"];
+  
+  if ([(tmp = [self documentId]) isKindOfClass:[EOKeyGlobalID class]])
+    [bindings setObject:[[tmp keyValues][0] stringValue] forKey:@"doc_id"];
+  
+  /* project */
+
+  fs = [self fileSystemInfo];
+
+  if ([(tmp = [fs valueForKeyPath:@"object.projectId"]) isNotEmpty])
+    [bindings setObject:[tmp stringValue] forKey:@"project_id"];
+  else if ([(tmp =[self projectGlobalID]) isKindOfClass:[EOKeyGlobalID class]])
+    [bindings setObject:[[tmp keyValues][0] stringValue] forKey:@"project_id"];
+  
+  if ([(tmp = [fs valueForKeyPath:@"object.name"]) isNotEmpty])
+    [bindings setObject:[tmp stringValue] forKey:@"project_name"];
+  else if ([(tmp = [fs valueForKey:@"NSFileSystemName"]) isNotEmpty])
+    [bindings setObject:[tmp stringValue] forKey:@"project_name"];
+  
+  if ([(tmp = [fs valueForKeyPath:@"object.number"]) isNotNull])
+    [bindings setObject:[tmp stringValue] forKey:@"project_number"];
+  
+  /* create URL */
+  
+  self->openerURL = [[pat stringByReplacingVariablesWithBindings:bindings
+			  stringForUnknownBindings:@""] copy];
+  
+  [bindings release]; bindings = nil;
+  
+  return self->openerURL;
 }
 
 /* button config */
@@ -846,20 +904,27 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   return [self isVersion];
 }
 
+- (BOOL)hasOpenLocally {
+  return [[self urlPattern] isNotEmpty];
+}
+
 /* operations */
 
-- (BOOL)isAccountDesigner {
+- (BOOL)isAccountDesigner { // TODO: DEPRECATED?
+  [self logWithFormat:@"Called deprecated method: %s", __PRETTY_FUNCTION__];
   return [[self fileManager]
                 isOperation:@"f"
                 allowedOnPath:[self _documentPath]];
 }
 
-- (void)setTestMode:(BOOL)_flag {
+- (void)setTestMode:(BOOL)_flag { // TODO: DEPRECATED?
+  [self logWithFormat:@"Called deprecated method: %s", __PRETTY_FUNCTION__];
   [(OGoSession *)[self session] 
                  setObject:[NSNumber numberWithBool:_flag]
                  forKey:@"SkyP4FormTestMode"];
 }
-- (BOOL)isTestMode {
+- (BOOL)isTestMode { // TODO: DEPRECATED?
+  [self logWithFormat:@"Called deprecated method: %s", __PRETTY_FUNCTION__];
   return [[(OGoSession *)[self session] 
                          objectForKey:@"SkyP4FormTestMode"] boolValue];
 }
@@ -883,6 +948,8 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
 /* actions */
 
 - (id)clearJavaScriptLog {
+  // TODO: deprecated forms support?
+  [self logWithFormat:@"Called deprecated method: %s", __PRETTY_FUNCTION__];
   [[self session] clearJavaScriptLog];
   return nil;
 }
@@ -1421,7 +1488,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
     
     if ((info = [docViewerPlugins objectForKey:k]) == nil) {
       /* rule selected key, but it isn't installed */
-      [self logWithFormat:@"WARNING: did not find tab key: '%@'", k];
+      [self warnWithFormat:@"did not find tab key: '%@'", k];
       continue;
     }
     
@@ -1473,7 +1540,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   s    = [info objectForKey:@"component"];
   
   if ((plugin = [self pageWithName:s]) == nil) {
-    [self logWithFormat:@"ERROR: did not find component: '%@'", s];
+    [self errorWithFormat:@"did not find component: '%@'", s];
     return nil;
   }
   

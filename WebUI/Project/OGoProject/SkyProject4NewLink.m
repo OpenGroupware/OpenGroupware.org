@@ -130,7 +130,7 @@ static BOOL debugOn = NO;
 
   lnk = (lnk != nil)
     ? lnk
-    : @"create link at path ";
+    : (NSString *)@"create link at path ";
 
   path = [[self fileManager] pathForGlobalID:[self folderId]];
   path = [lnk stringByAppendingString:path];

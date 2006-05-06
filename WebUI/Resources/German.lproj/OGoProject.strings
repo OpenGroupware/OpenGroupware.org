@@ -334,6 +334,7 @@ objectVersionLabel    = "Version";
 ofProcess             = "Untervorgang von";
 oldJobs               = "Aufgaben";
 operativePart         = "Anteil";
+openloc               = "Lokal öffnen";
 orEnterprise          = "oder Unternehmen";
 owner                 = "Ersteller";
 parallelProcess       = "Paralleler Vorgang";
