@@ -20,6 +20,7 @@ is                           = "é";
 "isn't"                      = "não é";
 keepMails                    = "Manter mensagens";
 List-Id                      = "ID da lista";
+lessButtonLabel              = "Menos";
 LSWMailFilterEditor_windowTitle      = "Editor de filtro de mensagens";
 match                        = "Confere";
 moreButtonLabel              = "Mais";
