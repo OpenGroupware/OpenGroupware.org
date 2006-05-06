@@ -1,5 +1,8 @@
 2006-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSWProject/LSWProjectPreferences.html: added section to configure
+	  document URL pattern
+
 	* OGoProject/SkyProject4Viewer.html: removed superflous project name
 	  attribute section (project name already displayed in title and button
 	  row
