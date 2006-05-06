@@ -1,4 +1,4 @@
-// $Id: LSWProjectPreferences.wod 2 2004-08-20 11:37:44Z znek $
+/* bind template to controller */
 
 Frame: LSWSkyrixFrame {}
 
@@ -8,7 +8,7 @@ Window: LSWWindowFrame {
 }
 
 WindowTitle: LSWViewerTitle {
-  title     = accountLabel;
+  title = accountLabel;
 }
 
 PreferencesForm: WOForm {
@@ -36,6 +36,15 @@ ProjectSubviewField: SkyDefaultEditField {
   valueType  = "popup";
   value      = projectSubview;
   valueList  = ( "documents", "search", "notes", "jobs", "attributes" );
+}
+
+UrlPatternField: SkyDefaultEditField {
+  labels     = labels;
+  label      = labels.urlPattern;
+  isEditable = isUrlPatternEditable;
+  valueType  = "string";
+  value      = urlPattern;
+  rows       = 40;
 }
 
 SaveSubmit: WOSubmitButton {
@@ -75,4 +84,4 @@ DockedProjects: SkyProjectSelections {
   selectedProjects  = dockedProjects;   // returns the selected projects
   title             = labels.project;   // (optional)
   searchEnterprises = NO;               // don't search for enterpriseProjects
-};
+}
