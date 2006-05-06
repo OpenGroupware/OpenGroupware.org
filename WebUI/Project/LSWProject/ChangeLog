@@ -1,3 +1,8 @@
+2006-05-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWProjectPreferences.m: code cleanups, added field to edit the
+	  urlPattern default (v5.3.48)
+
 2005-04-01  Helge Hess  <helge.hess@skyrix.com>
 
 	* added Defaults.plist as a resource (to fix OGo bug #1268) (v5.1.47)

@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -37,7 +38,9 @@
   BOOL           isBlockSizeEditable;
   BOOL           isNoOfColsEditable;
   BOOL           isDockedProjectsEditable;
+  BOOL           isUrlPatternEditable;
   BOOL           isRoot;
+  NSString       *urlPattern;
 }
 
 @end
@@ -47,6 +50,7 @@
 @implementation LSWProjectPreferences
 
 - (void)dealloc {
+  [self->urlPattern      release];
   [self->account         release];
   [self->defaults        release];
   [self->projectSubview  release];
@@ -91,59 +95,73 @@
   cnt        = [projectIds count];
   gIDs       = [[NSMutableArray alloc] initWithCapacity:cnt];
 
-  for (i=0; i<cnt; i++) {
+  for (i = 0; i < cnt; i++) {
     EOKeyGlobalID *gID;
     NSString      *projectId;
 
     projectId = [projectIds objectAtIndex:i];
-
+    
     gID = [EOKeyGlobalID globalIDWithEntityName:entityName
-                         keys: &projectId
-                         keyCount:1
-                         zone:[self zone]];
+                         keys:&projectId keyCount:1
+                         zone:NULL];
     [gIDs addObject:gID];
   }
 
   projects = [self runCommand:@"project::get-by-globalid",
                    @"gids", gIDs, nil];
-
+  
   ASSIGN(self->dockedProjects, projects);
-  RELEASE(gIDs);
+  
+  [gIDs release]; gIDs = nil;
 }
 
-- (void)setAccount:(id)_account {
-  NSUserDefaults *ud;
-  
+- (void)_resetValues {
   RELEASE(self->defaults);        self->defaults        = nil;
   RELEASE(self->projectSubview);  self->projectSubview  = nil;
   RELEASE(self->projectsSubview); self->projectsSubview = nil;
   RELEASE(self->noOfCols);        self->noOfCols        = nil;
   RELEASE(self->blockSize);       self->blockSize       = nil;
+  RELEASE(self->urlPattern);      self->urlPattern      = nil;
+}
+- (void)_setupValues {
+  NSUserDefaults *ud;
+
+  ud = (self->account != nil)
+    ? [self runCommand:@"userdefaults::get", @"user", self->account, nil]
+    : [self runCommand:@"userdefaults::get", nil];
+  
+  self->defaults = [ud retain];
+
+  self->projectSubview =
+    [[self->defaults stringForKey:@"skyp4_projectviewer_tab"] copy];
+  self->projectsSubview =
+    [[self->defaults stringForKey:@"skyp4_desktop_tab"] copy];
+  self->urlPattern =
+    [[self->defaults stringForKey:@"project_docurlpat"] copy];
+  self->blockSize = 
+    [[self->defaults objectForKey:@"projects_blocksize"] retain];
+  self->noOfCols  =
+    [[self->defaults stringForKey:@"projects_no_of_cols"] retain];
+
+  [self _getDockedProjectsOfAccount:self->account];
+  
+  self->isBlockSizeEditable       = [self _isEditable:@"projects_blocksize"];
+  self->isNoOfColsEditable        = [self _isEditable:@"projects_no_of_cols"];
+  self->isProjectSubviewEditable  = [self _isEditable:@"project_sub_view"];
+  self->isProjectsSubviewEditable = [self _isEditable:@"projects_sub_view"];
+  self->isDockedProjectsEditable  = [self _isEditable:@"docked_projects"];
+  self->isUrlPatternEditable      = [self _isEditable:@"project_docurlpat"];
+}
+
+- (void)setAccount:(id)_account {
+  if (_account == self->account)
+    return;
+  
+  [self _resetValues];
   
   ASSIGN(self->account, _account);
   
-  ud = _account
-    ? [self runCommand:@"userdefaults::get",
-              @"user", _account, nil]
-    : [self runCommand:@"userdefaults::get", nil];
-
-  self->defaults = RETAIN(ud);
-
-  self->projectSubview =
-      [[self->defaults stringForKey:@"skyp4_projectviewer_tab"] copy];
-  self->projectsSubview =
-      [[self->defaults stringForKey:@"skyp4_desktop_tab"] copy];
-  self->blockSize = [self->defaults objectForKey:@"projects_blocksize"];
-  self->noOfCols  = [self->defaults stringForKey:@"projects_no_of_cols"];
-  [self _getDockedProjectsOfAccount:_account];
-  RETAIN(self->blockSize);
-  RETAIN(self->noOfCols);
-
-  self->isBlockSizeEditable = [self _isEditable:@"projects_blocksize"];
-  self->isNoOfColsEditable = [self _isEditable:@"projects_no_of_cols"];
-  self->isProjectSubviewEditable = [self _isEditable:@"project_sub_view"];
-  self->isProjectsSubviewEditable = [self _isEditable:@"projects_sub_view"];
-  self->isDockedProjectsEditable  = [self _isEditable:@"docked_projects"];
+  [self _setupValues];
 }
 - (id)account {
   return self->account;
@@ -153,6 +171,8 @@
   return [[self session] labelForObject:[self account]];
 }
 
+/* noOfCols */
+
 - (void)setNoOfCols:(NSString *)_number {
   ASSIGN(self->noOfCols, _number);
 }
@@ -161,13 +181,14 @@
 }
 
 - (void)setIsNoOfColsEditableRoot:(BOOL)_flag {
-  if (self->isRoot) {
+  if (self->isRoot)
     self->isNoOfColsEditable = _flag;
-  }
 }
 - (BOOL)isNoOfColsEditable {
   return self->isNoOfColsEditable || self->isRoot;
 }
+
+/* block size */
 
 - (void)setBlockSize:(NSNumber *)_number {
   ASSIGN(self->blockSize, _number);
@@ -177,13 +198,31 @@
 }
 
 - (void)setIsBlockSizeEditableRoot:(BOOL)_flag {
-  if (self->isRoot) {
+  if (self->isRoot)
     self->isBlockSizeEditable = _flag;
-  }
 }
 - (BOOL)isBlockSizeEditable {
   return self->isBlockSizeEditable || self->isRoot;
 }
+
+/* url pattern */
+
+- (void)setUrlPattern:(NSString *)_value {
+  ASSIGN(self->urlPattern, _value);
+}
+- (NSString *)urlPattern {
+  return self->urlPattern;
+}
+
+- (void)setUrlPatternEditableRoot:(BOOL)_flag {
+  if (self->isRoot)
+    self->isUrlPatternEditable = _flag;
+}
+- (BOOL)isUrlPatternEditable {
+  return self->isUrlPatternEditable || self->isRoot;
+}
+
+/* docked projects */
 
 - (void)setIsDockedProjectsEditableRoot:(BOOL)_flag {
   if (self->isRoot) {
@@ -194,10 +233,20 @@
   return self->isDockedProjectsEditable || self->isRoot;
 }
 
+- (void)setDockedProjects:(NSArray *)_dockedProjects {
+  ASSIGN(self->dockedProjects, _dockedProjects);
+}
+- (NSArray *)dockedProjects {
+  return self->dockedProjects;
+}
+
+/* root */
 
 - (BOOL)isRoot {
   return self->isRoot;
 }
+
+/* projects subview */
 
 - (BOOL)isProjectsSubviewEditable {
   return self->isProjectsSubviewEditable || self->isRoot;
@@ -219,25 +268,29 @@
     self->isProjectSubviewEditable = _flag;
 }
 
-- (NSString *)projectSubview {
-  return self->projectSubview;
-}
 - (void)setProjectSubview:(NSString *)_subview {
   ASSIGN(self->projectSubview, _subview);
 }
-
-- (NSString *)projectsSubview {
-  return self->projectsSubview;
+- (NSString *)projectSubview {
+  return self->projectSubview;
 }
+
 - (void)setProjectsSubview:(NSString *)_subview {
   ASSIGN(self->projectsSubview, _subview);
 }
-
-- (void)setDockedProjects:(NSArray *)_dockedProjects {
-  ASSIGN(self->dockedProjects, _dockedProjects);
+- (NSString *)projectsSubview {
+  return self->projectsSubview;
 }
-- (NSArray *)dockedProjects {
-  return self->dockedProjects;
+
+/* writing defaults */
+
+- (void)_writeDefault:(NSString *)_defName value:(id)_value {
+  [self runCommand:@"userdefaults::write",
+	  @"key",      _defName,
+	  @"value",    _value,
+	  @"defaults", self->defaults,
+	  @"userId",   [[self account] valueForKey:@"companyId"],
+	nil];
 }
 
 /* actions */
@@ -248,55 +301,27 @@
 }
 
 - (id)save {
-  id uid;
+  // TODO: is this still used?
+  if ([self isProjectSubviewEditable])
+    [self _writeDefault:@"project_sub_view" value:[self projectSubview]];
 
-  uid = [[self account] valueForKey:@"companyId"];
+  // TODO: is this still used?
+  if ([self isProjectsSubviewEditable])
+    [self _writeDefault:@"projects_sub_view" value:[self projectsSubview]];
+  
+  if ([self isBlockSizeEditable])
+    [self _writeDefault:@"projects_blocksize" value:[self blockSize]];
+  
+  if ([self isNoOfColsEditable])
+    [self _writeDefault:@"projects_no_of_cols" value:[self noOfCols]];
 
-  if ([self isProjectSubviewEditable]) {
-    [self runCommand:@"userdefaults::write",
-            @"key",      @"project_sub_view",
-            @"value",    [self projectSubview],
-            @"defaults", self->defaults,
-            @"userId",   uid,
-            nil];
-  }
-  if ([self isBlockSizeEditable]) {
-    id tmp;
-
-    tmp = [self blockSize];
-
-    if ([tmp isNotNull]) {
-      [self runCommand:@"userdefaults::write",
-            @"key",      @"projects_blocksize",
-            @"value",    tmp,
-            @"defaults", self->defaults,
-            @"userId",   uid,
-            nil];
-    }
-  }
-  if ([self isNoOfColsEditable]) {
-    [self runCommand:@"userdefaults::write",
-            @"key",      @"projects_no_of_cols",
-            @"value",    [self noOfCols],
-            @"defaults", self->defaults,
-            @"userId",   uid,
-            nil];
-  }
-  if ([self isProjectsSubviewEditable]) {
-    [self runCommand:@"userdefaults::write",
-            @"key",      @"projects_sub_view",
-            @"value",    [self projectsSubview],
-            @"defaults", self->defaults,
-            @"userId",   uid,
-            nil];
-  }
+  if ([self isUrlPatternEditable])
+    [self _writeDefault:@"project_docurlpat" value:[self urlPattern]];
+  
   if ([self isDockedProjectsEditable]) {
-    [self runCommand:@"userdefaults::write",
-            @"key",      @"docked_projects",
-            @"value",    [self->dockedProjects valueForKey:@"projectId"],
-            @"defaults", self->defaults,
-            @"userId",   uid,
-            nil];
+    [self _writeDefault:@"docked_projects" 
+	  value:[self->dockedProjects valueForKey:@"projectId"]];
+    
     [(OGoSession *)[self session] fetchDockedProjectInfos];
   }
 
