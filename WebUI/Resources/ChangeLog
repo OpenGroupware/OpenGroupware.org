@@ -1,3 +1,10 @@
+2006-05-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* English|German.lproj/LSWProject.strings: added 'urlPattern' label
+
+	* German.lproj/OGoProject.strings: renamed 'upload' label to
+	  "Hochladen", fixed case of some buttons
+
 2006-05-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* German.lproj/JobUI.strings: changed 'prefExeJobs' label from

@@ -175,16 +175,3 @@ FolderView: SkyP4FolderView {
 ShowFolderContent: WOConditional {
   condition = showFolderContent;
 }
-
-ProjectLabel: WOString { value = labels.project; }
-ProjectName:  WOString { value = label; }
-
-AttributeCell: WOGenericContainer {
-  elementName = "td";
-  align	      = "right"; // hh: not top aligned?
-  bgcolor     = config.colors_attributeCell;
-  width       = "15%";
-}
-
-ValueCell: SkyValueCell {}
-Font:      SkyConfigFont {}

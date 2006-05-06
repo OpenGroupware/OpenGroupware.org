@@ -1,5 +1,3 @@
-// $Id: LSWProject.strings,v 1.10 2004/02/13 23:36:56 helge Exp $
-
 00_created 	            = "created";
 00_sequential               = "sequential";
 00_sleeping                 = "sleeping";
@@ -400,6 +398,7 @@ totalWorkSum          = "Total Work";
 txt                   = "Download text document";
 type                  = "Type";
 unknown               = "download miscellaneous document type";
+urlPattern            = "Local Path";
 useStartEndDate       = "Start/Enddate";
 version               = "Version";
 view                  = "Viewer";
