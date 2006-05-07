@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -31,6 +32,25 @@
 @implementation SxDocument
 
 static BOOL debugOn = NO;
+static BOOL SxDocumentAutoCheckout = YES;
+
+static NSException *FMLastError(id fm) {
+  if (![fm respondsToSelector:@selector(lastException)])
+    return nil;
+  return [fm lastException];
+}
+
++ (void)initialize {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+
+  if ((debugOn = [ud boolForKey:@"SxDocumentDebugEnabled"]))
+    NSLog(@"SxDocument: debugging enabled.");
+  
+  if ([ud boolForKey:@"SxDocumentNoAutoCheckout"]) {
+    SxDocumentAutoCheckout = NO;
+    NSLog(@"SxDocument: auto-checkout disabled.");
+  }
+}
 
 - (id)initWithName:(NSString *)_name inContainer:(id)_container {
   return [self initWithName:_name inFolder:_container];
@@ -231,8 +251,11 @@ static BOOL debugOn = NO;
   inContext:(id)_ctx
 {
   LSCommandContext *cmdctx;
+  NSException *error;
   id       fm;
   NSString *p;
+  BOOL     doesExist;
+  BOOL     isDir;
   
   [self debugWithFormat:@"write file content: %@ ...", [self nameInContainer]];
 
@@ -241,25 +264,77 @@ static BOOL debugOn = NO;
   
   if (![(p = [self storagePath]) isNotEmpty])
     return [self internalError:@"could not calc project relative path"];
+
+  doesExist = [fm fileExistsAtPath:p isDirectory:&isDir];
+  
+  if (doesExist && isDir) {
+    // TODO: is 400 a good status for that? Maybe 501 is more appropriate if
+    //       the collection supports no content.
+    return [NSException exceptionWithHTTPStatus:400 /* bad request */
+			reason:@"Tried to write content of a collection"];
+  }
   
   /* check locking status and lock on demand */
   // TODO: check whether its a locking or versioned storage etc
   // TODO: checkout-on-demand, "checkin-after-time?"
   
   /* write the file */
-
-  if (![fm writeContents:_content atPath:p]) {
-    NSException *error;
+  
+  if (doesExist) {
+    /* overwrite an existing file */
     
-    [self debugWithFormat:@"could not write %i bytes to %@ (fm=%@)", 
-	    [_content length], p, fm];
+    if (![fm isWritableFileAtPath:p]) {
+      return [NSException exceptionWithHTTPStatus:403 /* Forbidden */
+			  reason:@"You are not allowed to write this file."];
+    }
     
-    if ([fm respondsToSelector:@selector(lastException)])
-      error = [fm lastException];
-    if (error != nil)
-      return error;
-    return [self internalError:@"file writing failed, reason unknown"];
+    if (SxDocumentAutoCheckout) {
+      if ([fm supportsVersioningAtPath:p]) {
+	[self debugWithFormat:@"auto-checkout of path: %@", p];
+	
+	if ((error = FMLastError(fm)) != nil)
+	  return error;
+	
+	if (![fm checkoutFileAtPath:p handler:nil]) {
+	  return [NSException exceptionWithHTTPStatus:403 /* Forbidden */
+			      reason:@"Could not checkout this file."];
+	}
+      }
+    }
+    
+    if (![fm writeContents:_content atPath:p]) {
+      [self debugWithFormat:@"could not write %i bytes to %@ (fm=%@)", 
+	      [_content length], p, fm];
+      
+      if ((error = FMLastError(fm)) != nil)
+	return error;
+      
+      return [self internalError:@"file writing failed, reason unknown"];
+    }
   }
+  else {
+    /* create a new file */
+
+#if 0 // TODO: not a public method?    
+    if (![fm isInsertableDirectoryAtPath:
+	       [p stringByDeletingLastPathComponent]]) {
+      return [NSException exceptionWithHTTPStatus:403 /* Forbidden */
+			  reason:@"You are not allowed to create a file."];
+    }
+#endif
+    
+    if (![fm createFileAtPath:p contents:_content attributes:nil]) {
+      [self debugWithFormat:@"could not create file %i bytes at %@ (fm=%@)", 
+	      [_content length], p, fm];
+      
+      if ((error = FMLastError(fm)) != nil)
+	return error;
+      
+      return [self internalError:@"file creation failed, reason unknown"];
+    }
+  }
+  
+  /* commit transaction */
   
   cmdctx = [self commandContextInContext:_ctx];
   if ([cmdctx isTransactionInProgress]) {
@@ -276,6 +351,7 @@ static BOOL debugOn = NO;
   
   if ([[self nameInContainer] hasPrefix:@"._"]) {
     // TODO: should we fake a 200 instead?
+    // Note: this is handled by SxDocumentFolder as temp files now!
     return [NSException exceptionWithHTTPStatus:404 /* not found */
 			reason:@"rejecting writes to resourcefork file"];
   }

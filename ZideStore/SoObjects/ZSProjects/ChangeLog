@@ -1,3 +1,11 @@
+2006-05-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxDocument.m: use different methods for creating files and changing
+	  files. If a file is changed, check it out prior writing (this can be
+	  disabled using the 'SxDocumentNoAutoCheckout' default). Added a
+	  default to enable debug logs ('SxDocumentDebugEnabled')
+	  (v1.5.103)
+
 2006-05-05  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.5.102
