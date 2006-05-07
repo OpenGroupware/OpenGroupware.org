@@ -675,7 +675,7 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   NSMutableDictionary *bindings;
   NSDictionary *fs;
   NSString *pat;
-  id tmp;
+  id tmp, user;
 
   if (self->openerURL != nil)
     return self->openerURL;
@@ -708,6 +708,17 @@ static int sortByIntField(id obj1, id obj2, void *ctx) {
   
   if ([(tmp = [fs valueForKeyPath:@"object.number"]) isNotNull])
     [bindings setObject:[tmp stringValue] forKey:@"project_number"];
+
+  /* user info */
+
+  user = [[self session] activeAccount];
+  
+  if ([(tmp = [user valueForKey:@"companyId"]) isNotNull])
+    [bindings setObject:[tmp stringValue] forKey:@"user_id"];
+  if ([(tmp = [user valueForKey:@"login"]) isNotNull])
+    [bindings setObject:[tmp stringValue] forKey:@"user_login"];
+  if ([(tmp = [user valueForKey:@"number"]) isNotNull])
+    [bindings setObject:[tmp stringValue] forKey:@"user_number"];
   
   /* create URL */
   

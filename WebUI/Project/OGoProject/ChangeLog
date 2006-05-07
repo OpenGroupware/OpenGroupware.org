@@ -1,5 +1,8 @@
 2006-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SkyProject4DocumentViewer.m: added support for user_ keys in URL
+	  template (v5.3.71)
+
 	* v5.3.70
 
 	* SkyProject4DocumentViewer.m: added ability to create a local file
