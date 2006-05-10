@@ -1,0 +1,18 @@
+{
+  requires = {
+    bundleManagerVersion = 1;
+    classes = (
+      { name = NSObject;    }
+    );
+  };
+  
+  provides = {
+    CTIDialers = ( 
+        { name = STLIDialer;     }
+    );
+    classes    = ( 
+        { name = STLIDialer;     },
+        { name = STLIConnection; }
+    );
+  };
+}

@@ -1,0 +1,231 @@
+{
+  /* 
+    Maps parameter positions of STLI events to keys for STLI event
+    notification 
+  */
+
+  STLICallEvents = ( /* events which come with a device info ... */
+    "ConnectionCleared",
+    "Delivered",
+    "Initiated",
+    "Originated",
+  );
+  
+  AgentBusy = (
+    "monitoredDevice",
+    "cause",
+    "agentDevice"
+  );
+  
+  AutoAnswer = (
+    "monitoredDevice",
+    "device",
+    "onOff"
+  );
+  
+  Conferenced = (
+    "monitoredDevice",
+    "cause",
+    "confController",
+    "addedParty",
+    "conferenceConnectionsList"
+  );
+  
+  ConnectionCleared = (
+    "monitoredDevice",
+    "cause",
+    "releasingDevice",
+    "activeConnectionsList"
+  );
+  
+  Delivered = (
+    "monitoredDevice",
+    "cause",
+    "alertingDevice",
+    "callingDevice",
+    "calledDevice",
+    "lastRedirectionDevice"
+  );
+  
+  Diverted = (
+    "monitoredDevice",
+    "cause",
+    "divertingDevice",
+    "newDestination"
+  );
+  
+  DoNotDisturb = (
+    "monitoredDevice",
+    "device",
+    "onOff"
+  );
+  
+  Established = (
+    "monitoredDevice",
+    "cause",
+    "answeringDevice",
+    "callingDevice",
+    "calledDevice",
+    "lastRedirectionDevice"
+  );
+  
+  Failed = (
+    "monitoredDevice",
+    "cause",
+    "failedDevice",
+    "calledDevice"
+  );
+  
+  Forwarding = (
+    "monitoredDevice",
+    "device",
+    "type",
+    "forwardDN",
+    "forwardedTo"
+  );
+  
+  Held = (
+    "monitoredDevice",
+    "cause",
+    "holdingDevice"
+  );
+  
+  Initiated = (
+    "monitoredDevice",
+    "cause"
+  );
+  
+  LoggedOn = (
+    "monitoredDevice",
+    "cause",
+    "agentDevice",
+    "agentID",
+    "agentGroup",
+    "password"
+  );
+  
+  LoggedOff = (
+    "monitoredDevice",
+    "cause",
+    "agentDevice",
+    "agentID",
+    "agentGroup",
+    "password"
+  );
+  
+  MessageWaiting = (
+    "monitoredDevice",
+    "device",
+    "invoking",
+    "onOff"
+  );
+
+  MicrophoneMute = (
+    "monitoredDevice",
+    "device",
+    "onOff"
+  );
+  
+  NetworkReached = (
+    "monitoredDevice",
+    "cause",
+    "calledDevice",
+    "trunkDevice",
+    "callId",
+    "deviceId"
+  );
+  
+  NotReady = (
+    "monitoredDevice",
+    "cause",
+    "agentDevice",
+    "agentID"
+  );
+  
+  Originated = (
+    "monitoredDevice",
+    "cause",
+    "callingDevice",
+    "calledDevice",
+    "originatingDevice"
+  );
+  
+  Queued = (
+    "monitoredDevice",
+    "cause",
+    "queue",
+    "callingDevice",
+    "calledDevice",
+    "lastRedirectionDevice",
+    "numberQueued",
+    "callsInFront",
+    "callId",
+    "deviceId"
+  );
+  
+  Ready = (
+    "monitoredDevice",
+    "cause",
+    "agentDevice",
+    "agentID"
+  );
+  
+  Retrieved = (
+    "monitoringDevice",
+    "cause",
+    "retrievingDevice"
+  );
+
+  SpeakerMute = (
+    "monitoredDevice",
+    "device",
+    "onOff"
+  );
+  
+  SpeakerVolume = (
+    "monitoredDevice",
+    "device",
+    "volume"
+  );
+  
+  Transferred = (
+    "monitoredDevice",
+    "cause",
+    "transferringDevice",
+    "transferredDevice",
+    "transferredConnectionList",
+    "primaryOldCall",
+    "secondaryOldCall",
+    "newCall",
+    "correlatorData"
+  );
+
+  WorkingAfterCall = (
+    "monitoredDevice",
+    "cause",
+    "agentDevice",
+    "agentID",
+    "agentGroup"
+  );
+
+  WorkNotReady = (
+    "monitoredDevice",
+    "cause",
+    "agentDevice",
+    "agentID"
+  );
+
+  WorkReady = (
+    "monitoredDevice",
+    "cause",
+    "agentDevice",
+    "agentID"
+  );
+  
+  /* could be joined with the call event */
+  DeviceInformation = (
+    "deviceId",
+    "numberOfCalls",
+    "info"
+  );
+}
