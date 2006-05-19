@@ -1,3 +1,9 @@
+2006-05-20 Frank Reppin  <frank@opengroupware.org>
+
+	* sope45-devel -> bumped to SVN r1263
+	  deorbited all versions (most cases) from pkg-plist into Makefile
+	  (and thus abusing PLIST_SUB heavily)
+
 2006-04-22 Frank Reppin  <frank@opengroupware.org>
 
 	* ogo-libfoundation/files/patch-aa - explicitly backout usage

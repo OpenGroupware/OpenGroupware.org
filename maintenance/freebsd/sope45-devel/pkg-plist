@@ -475,146 +475,146 @@ include/XmlRpc/XmlRpcCoder.h
 include/XmlRpc/XmlRpcMethodCall.h
 include/XmlRpc/XmlRpcMethodResponse.h
 lib/libDOM_d.so
-lib/libDOM_d.so.4.5
-lib/libDOM_d.so.4.5.20
+lib/libDOM_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libDOM_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBDOM_SUBMINOR%%
 lib/libEOControl_d.so
-lib/libEOControl_d.so.4.5
-lib/libEOControl_d.so.4.5.63
+lib/libEOControl_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libEOControl_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBEOCONTROL_SUBMINOR%%
 lib/libGDLAccess_d.so
-lib/libGDLAccess_d.so.4.5
-lib/libGDLAccess_d.so.4.5.55
+lib/libGDLAccess_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libGDLAccess_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBGDLACCESS_SUBMINOR%%
 lib/libGDLContentStore_d.so
-lib/libGDLContentStore_d.so.4.5
-lib/libGDLContentStore_d.so.4.5.35
+lib/libGDLContentStore_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libGDLContentStore_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBGDLCONTENTSTORE_SUBMINOR%%
 lib/libNGExtensions_d.so
-lib/libNGExtensions_d.so.4.5
-lib/libNGExtensions_d.so.4.5.182
+lib/libNGExtensions_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libNGExtensions_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGEXTENSIONS_SUBMINOR%%
 @unexec rm -f %D/lib/libNGLdap_d.so 2>/dev/null || true
-@unexec rm -f %D/lib/libNGLdap_d.so.4.5 2>/dev/null || true
-@unexec rm -f %D/lib/libNGLdap_d.so.4.5.28 2>/dev/null || true
+@unexec rm -f %D/lib/libNGLdap_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%% 2>/dev/null || true
+@unexec rm -f %D/lib/libNGLdap_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGLDAP_SUBMINOR%% 2>/dev/null || true
 lib/libNGMime_d.so
-lib/libNGMime_d.so.4.5
-lib/libNGMime_d.so.4.5.240
+lib/libNGMime_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libNGMime_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGMIME_SUBMINOR%%
 lib/libNGObjWeb_d.so
-lib/libNGObjWeb_d.so.4.5
-lib/libNGObjWeb_d.so.4.5.225
+lib/libNGObjWeb_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libNGObjWeb_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGOBJWEB_SUBMINOR%%
 lib/libNGStreams_d.so
-lib/libNGStreams_d.so.4.5
-lib/libNGStreams_d.so.4.5.49
+lib/libNGStreams_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libNGStreams_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGSTREAMS_SUBMINOR%%
 lib/libNGXmlRpc_d.so
-lib/libNGXmlRpc_d.so.4.5
-lib/libNGXmlRpc_d.so.4.5.13
+lib/libNGXmlRpc_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libNGXmlRpc_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGXMLRPC_SUBMINOR%%
 lib/libNGiCal_d.so
-lib/libNGiCal_d.so.4.5
-lib/libNGiCal_d.so.4.5.73
+lib/libNGiCal_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libNGiCal_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBNGICAL_SUBMINOR%%
 lib/libSaxObjC_d.so
-lib/libSaxObjC_d.so.4.5
-lib/libSaxObjC_d.so.4.5.54
+lib/libSaxObjC_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libSaxObjC_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBSAXOBJC_SUBMINOR%%
 lib/libSoOFS_d.so
-lib/libSoOFS_d.so.4.5
-lib/libSoOFS_d.so.4.5.19
+lib/libSoOFS_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libSoOFS_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBSOOFS_SUBMINOR%%
 lib/libWEExtensions_d.so
-lib/libWEExtensions_d.so.4.5
-lib/libWEExtensions_d.so.4.5.85
+lib/libWEExtensions_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libWEExtensions_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBWEEXTENSIONS_SUBMINOR%%
 lib/libWEPrototype_d.so
-lib/libWEPrototype_d.so.4.5
-lib/libWEPrototype_d.so.4.5.7
+lib/libWEPrototype_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libWEPrototype_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBWEPROTOTYPE_SUBMINOR%%
 lib/libWOExtensions_d.so
-lib/libWOExtensions_d.so.4.5
-lib/libWOExtensions_d.so.4.5.29
+lib/libWOExtensions_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libWOExtensions_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBWOEXTENSIONS_SUBMINOR%%
 lib/libWOXML_d.so
-lib/libWOXML_d.so.4.5
-lib/libWOXML_d.so.4.5.8
+lib/libWOXML_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libWOXML_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBWOXML_SUBMINOR%%
 lib/libXmlRpc_d.so
-lib/libXmlRpc_d.so.4.5
-lib/libXmlRpc_d.so.4.5.27
-@unexec rm -f %D/lib/sope-4.5/dbadaptors/MySQL.gdladaptor/MySQL 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/dbadaptors/MySQL.gdladaptor/Resources/Info-gnustep.plist 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/dbadaptors/MySQL.gdladaptor/Resources/Version 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/dbadaptors/MySQL.gdladaptor/stamp.make 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/dbadaptors/PostgreSQL.gdladaptor/PostgreSQL 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/dbadaptors/PostgreSQL.gdladaptor/Resources/Info-gnustep.plist 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/dbadaptors/PostgreSQL.gdladaptor/Resources/Version 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/dbadaptors/PostgreSQL.gdladaptor/stamp.make 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/dbadaptors/SQLite3.gdladaptor/Resources/Info-gnustep.plist 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/dbadaptors/SQLite3.gdladaptor/Resources/Version 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/dbadaptors/SQLite3.gdladaptor/SQLite3 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/dbadaptors/SQLite3.gdladaptor/stamp.make 2>/dev/null || true
-lib/sope-4.5/products/SoCore.sxp/Resources/Info-gnustep.plist
-lib/sope-4.5/products/SoCore.sxp/Resources/Version
-lib/sope-4.5/products/SoCore.sxp/Resources/product.plist
-lib/sope-4.5/products/SoCore.sxp/SoCore
-lib/sope-4.5/products/SoCore.sxp/stamp.make
-lib/sope-4.5/products/SoOFS.sxp/Resources/Info-gnustep.plist
-lib/sope-4.5/products/SoOFS.sxp/Resources/Version
-lib/sope-4.5/products/SoOFS.sxp/Resources/product.plist
-lib/sope-4.5/products/SoOFS.sxp/SoOFS
-lib/sope-4.5/products/SoOFS.sxp/stamp.make
-lib/sope-4.5/saxdrivers/STXSaxDriver.sax/Resources/Info-gnustep.plist
-lib/sope-4.5/saxdrivers/STXSaxDriver.sax/Resources/Version
-lib/sope-4.5/saxdrivers/STXSaxDriver.sax/STXSaxDriver
-lib/sope-4.5/saxdrivers/STXSaxDriver.sax/bundle-info.plist
-lib/sope-4.5/saxdrivers/STXSaxDriver.sax/stamp.make
-@unexec rm -f %D/lib/sope-4.5/saxdrivers/libxmlSAXDriver.sax/Resources/Info-gnustep.plist 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/saxdrivers/libxmlSAXDriver.sax/Resources/Version 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/saxdrivers/libxmlSAXDriver.sax/Resources/bundle-info.plist 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/saxdrivers/libxmlSAXDriver.sax/bundle-info.plist 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/saxdrivers/libxmlSAXDriver.sax/libxmlSAXDriver 2>/dev/null || true
-@unexec rm -f %D/lib/sope-4.5/saxdrivers/libxmlSAXDriver.sax/stamp.make 2>/dev/null || true
-lib/sope-4.5/saxdrivers/versitSaxDriver.sax/Resources/Info-gnustep.plist
-lib/sope-4.5/saxdrivers/versitSaxDriver.sax/Resources/bundle-info.plist
-lib/sope-4.5/saxdrivers/versitSaxDriver.sax/bundle-info.plist
-lib/sope-4.5/saxdrivers/versitSaxDriver.sax/stamp.make
-lib/sope-4.5/saxdrivers/versitSaxDriver.sax/versitSaxDriver
-lib/sope-4.5/wox-builders/WEExtensions.wox/Resources/Info-gnustep.plist
-lib/sope-4.5/wox-builders/WEExtensions.wox/WEExtensions
-lib/sope-4.5/wox-builders/WEExtensions.wox/bundle-info.plist
-lib/sope-4.5/wox-builders/WEExtensions.wox/stamp.make
-lib/sope-4.5/wox-builders/WEPrototype.wox/Resources/Info-gnustep.plist
-lib/sope-4.5/wox-builders/WEPrototype.wox/WEPrototype
-lib/sope-4.5/wox-builders/WEPrototype.wox/bundle-info.plist
-lib/sope-4.5/wox-builders/WEPrototype.wox/stamp.make
-lib/sope-4.5/wox-builders/WOExtensions.wox/Resources/Info-gnustep.plist
-lib/sope-4.5/wox-builders/WOExtensions.wox/WOExtensions
-lib/sope-4.5/wox-builders/WOExtensions.wox/bundle-info.plist
-lib/sope-4.5/wox-builders/WOExtensions.wox/stamp.make
-sbin/sope-4.5
+lib/libXmlRpc_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+lib/libXmlRpc_d.so.%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%.%%LIBXMLRPC_SUBMINOR%%
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/MySQL.gdladaptor/MySQL 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/MySQL.gdladaptor/Resources/Info-gnustep.plist 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/MySQL.gdladaptor/Resources/Version 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/MySQL.gdladaptor/stamp.make 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/PostgreSQL.gdladaptor/PostgreSQL 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/PostgreSQL.gdladaptor/Resources/Info-gnustep.plist 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/PostgreSQL.gdladaptor/Resources/Version 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/PostgreSQL.gdladaptor/stamp.make 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/SQLite3.gdladaptor/Resources/Info-gnustep.plist 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/SQLite3.gdladaptor/Resources/Version 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/SQLite3.gdladaptor/SQLite3 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/SQLite3.gdladaptor/stamp.make 2>/dev/null || true
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoCore.sxp/Resources/Info-gnustep.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoCore.sxp/Resources/Version
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoCore.sxp/Resources/product.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoCore.sxp/SoCore
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoCore.sxp/stamp.make
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoOFS.sxp/Resources/Info-gnustep.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoOFS.sxp/Resources/Version
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoOFS.sxp/Resources/product.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoOFS.sxp/SoOFS
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoOFS.sxp/stamp.make
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/STXSaxDriver.sax/Resources/Info-gnustep.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/STXSaxDriver.sax/Resources/Version
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/STXSaxDriver.sax/STXSaxDriver
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/STXSaxDriver.sax/bundle-info.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/STXSaxDriver.sax/stamp.make
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/libxmlSAXDriver.sax/Resources/Info-gnustep.plist 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/libxmlSAXDriver.sax/Resources/Version 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/libxmlSAXDriver.sax/Resources/bundle-info.plist 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/libxmlSAXDriver.sax/bundle-info.plist 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/libxmlSAXDriver.sax/libxmlSAXDriver 2>/dev/null || true
+@unexec rm -f %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/libxmlSAXDriver.sax/stamp.make 2>/dev/null || true
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/versitSaxDriver.sax/Resources/Info-gnustep.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/versitSaxDriver.sax/Resources/bundle-info.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/versitSaxDriver.sax/bundle-info.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/versitSaxDriver.sax/stamp.make
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/versitSaxDriver.sax/versitSaxDriver
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WEExtensions.wox/Resources/Info-gnustep.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WEExtensions.wox/WEExtensions
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WEExtensions.wox/bundle-info.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WEExtensions.wox/stamp.make
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WEPrototype.wox/Resources/Info-gnustep.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WEPrototype.wox/WEPrototype
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WEPrototype.wox/bundle-info.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WEPrototype.wox/stamp.make
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/Resources/Info-gnustep.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/WOExtensions
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/bundle-info.plist
+lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/stamp.make
+sbin/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
 share/nls/POSIX
 share/nls/en_US.US-ASCII
-share/sope-4.5/ngobjweb/DAVPropMap.plist
-share/sope-4.5/ngobjweb/Defaults.plist
-share/sope-4.5/ngobjweb/Languages.plist
-share/sope-4.5/saxmappings/NGiCal.xmap
-@dirrm share/sope-4.5/saxmappings
-@dirrm share/sope-4.5/ngobjweb
-@dirrm share/sope-4.5
-@dirrm lib/sope-4.5/wox-builders/WOExtensions.wox/Resources
-@dirrm lib/sope-4.5/wox-builders/WOExtensions.wox
-@dirrm lib/sope-4.5/wox-builders/WEPrototype.wox/Resources
-@dirrm lib/sope-4.5/wox-builders/WEPrototype.wox
-@dirrm lib/sope-4.5/wox-builders/WEExtensions.wox/Resources
-@dirrm lib/sope-4.5/wox-builders/WEExtensions.wox
-@dirrm lib/sope-4.5/wox-builders
-@dirrm lib/sope-4.5/saxdrivers/versitSaxDriver.sax/Resources
-@dirrm lib/sope-4.5/saxdrivers/versitSaxDriver.sax
-@unexec rmdir %D/lib/sope-4.5/saxdrivers/libxmlSAXDriver.sax/Resources 2>/dev/null || true
-@unexec rmdir %D/lib/sope-4.5/saxdrivers/libxmlSAXDriver.sax 2>/dev/null || true
-@dirrm lib/sope-4.5/saxdrivers/STXSaxDriver.sax/Resources
-@dirrm lib/sope-4.5/saxdrivers/STXSaxDriver.sax
-@dirrm lib/sope-4.5/saxdrivers
-@dirrm lib/sope-4.5/products/SoOFS.sxp/Resources
-@dirrm lib/sope-4.5/products/SoOFS.sxp
-@dirrm lib/sope-4.5/products/SoCore.sxp/Resources
-@dirrm lib/sope-4.5/products/SoCore.sxp
-@dirrm lib/sope-4.5/products
-@unexec rmdir %D/lib/sope-4.5/dbadaptors/SQLite3.gdladaptor/Resources 2>/dev/null || true
-@unexec rmdir %D/lib/sope-4.5/dbadaptors/SQLite3.gdladaptor 2>/dev/null || true
-@unexec rmdir %D/lib/sope-4.5/dbadaptors/PostgreSQL.gdladaptor/Resources 2>/dev/null || true
-@unexec rmdir %D/lib/sope-4.5/dbadaptors/PostgreSQL.gdladaptor 2>/dev/null || true
-@unexec rmdir %D/lib/sope-4.5/dbadaptors/MySQL.gdladaptor/Resources 2>/dev/null || true
-@unexec rmdir %D/lib/sope-4.5/dbadaptors/MySQL.gdladaptor 2>/dev/null || true
-@unexec rmdir %D/lib/sope-4.5/dbadaptors 2>/dev/null || true
-@dirrm lib/sope-4.5
+share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb/DAVPropMap.plist
+share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb/Defaults.plist
+share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb/Languages.plist
+share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings/NGiCal.xmap
+@dirrm share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings
+@dirrm share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/ngobjweb
+@dirrm share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox/Resources
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WOExtensions.wox
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WEPrototype.wox/Resources
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WEPrototype.wox
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WEExtensions.wox/Resources
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders/WEExtensions.wox
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/versitSaxDriver.sax/Resources
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/versitSaxDriver.sax
+@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/libxmlSAXDriver.sax/Resources 2>/dev/null || true
+@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/libxmlSAXDriver.sax 2>/dev/null || true
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/STXSaxDriver.sax/Resources
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/STXSaxDriver.sax
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoOFS.sxp/Resources
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoOFS.sxp
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoCore.sxp/Resources
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoCore.sxp
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products
+@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/SQLite3.gdladaptor/Resources 2>/dev/null || true
+@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/SQLite3.gdladaptor 2>/dev/null || true
+@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/PostgreSQL.gdladaptor/Resources 2>/dev/null || true
+@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/PostgreSQL.gdladaptor 2>/dev/null || true
+@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/MySQL.gdladaptor/Resources 2>/dev/null || true
+@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/MySQL.gdladaptor 2>/dev/null || true
+@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors 2>/dev/null || true
+@dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
 @dirrm include/XmlRpc
 @dirrm include/WOXML
 @dirrm include/WOExtensions
@@ -635,9 +635,9 @@ share/sope-4.5/saxmappings/NGiCal.xmap
 @dirrm include/GDLAccess
 @dirrm include/EOControl
 @dirrm include/DOM
-@dirrm Library/WOxElemBuilders-4.5
-@dirrm Library/SoProducts-4.5
-@dirrm Library/SaxDrivers-4.5
+@dirrm Library/WOxElemBuilders-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+@dirrm Library/SoProducts-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
+@dirrm Library/SaxDrivers-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
 @unexec rmdir %D/Library/Libraries 2>/dev/null || true
 @dirrm Library/Headers/XmlRpc
 @dirrm Library/Headers/WOXML
@@ -660,4 +660,4 @@ share/sope-4.5/saxmappings/NGiCal.xmap
 @dirrm Library/Headers/EOControl
 @dirrm Library/Headers/DOM
 @unexec rmdir %D/Library/Headers 2>/dev/null || true
-@unexec rmdir %D/Library/GDLAdaptors-4.5 2>/dev/null || true
+@unexec rmdir %D/Library/GDLAdaptors-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%% 2>/dev/null || true
