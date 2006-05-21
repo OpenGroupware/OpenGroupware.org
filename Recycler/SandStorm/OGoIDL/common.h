@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -33,6 +34,7 @@
 #endif
 
 #include <SaxObjC/SaxObjC.h>
+#include <NGExtensions/NGExtensions.h>
 
 static inline BOOL isSkyIdlNamespace(NSString *_namespace) {
   static NSString *SkyIdlSchemaNS = @"http://www.skyrix.com/skyrix-idl";

@@ -1,9 +1,10 @@
-# $Id$
+# GNUstep makefile, common settings
 
-OGoROOT=..
+OGoROOT=../../..
 
+include $(OGoROOT)/config.make
 include $(GNUSTEP_MAKEFILES)/common.make
-include $(OGoROOT)/Version
+#include $(OGoROOT)/Version
 -include ./Version
 
 GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)

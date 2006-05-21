@@ -160,7 +160,7 @@ static NSMutableDictionary *key2infoDict      = nil;
     sigDict   = [key2signatureDict objectForKey:[self cacheKey]];
     signature = [sigDict objectForKey:actionName];
   }
-  return ([signature count] > 0) ? signature : nil;
+  return [signature isNotEmpty] ? signature : (NSArray *)nil;
 }
 
 - (NSString *)system_methodHelpAction:(NSString *)_xmlrpcMethod {
@@ -174,8 +174,8 @@ static NSMutableDictionary *key2infoDict      = nil;
     infoStr  = [infoDict objectForKey:actionName];
   }
   
-  /* calling super doesn't make sense here ... */
-  return infoStr ? infoStr : @"";
+  /* calling super does not make sense here ... */
+  return (infoStr != nil) ? infoStr : (NSString *)@"";
 }
 
 @end /* NGXmlRpcAction(Introspection) */

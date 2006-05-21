@@ -93,7 +93,7 @@
     self = [self initWithEntityName:nil
                  qualifier:qual
                  sortOrderings:nil
-                 usesDistinct:NO];
+                 usesDistinct:NO isDeep:NO hints:nil];
   }
   else {
     [self release];

@@ -1,4 +1,4 @@
-# $Id$
+# makefile actions
 
 after-install ::
 	$(MKDIRS) $(TEMPLATE_INSTALL_DIR)/ $(INSTANCE_INSTALL_DIR)
@@ -8,5 +8,5 @@ after-install ::
 before-all :: $(GENFILES)
 
 after-clean ::
-	rm $(GENFILES)
+	rm -f $(GENFILES)
 

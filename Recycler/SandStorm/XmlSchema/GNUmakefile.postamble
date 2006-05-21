@@ -1,4 +1,4 @@
-# $Id$
+# installation
 
 $(RESOURCES_DIR) :
 	$(MKDIRS) $(RESOURCES_DIR)

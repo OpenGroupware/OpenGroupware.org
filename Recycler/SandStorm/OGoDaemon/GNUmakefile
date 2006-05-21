@@ -1,4 +1,4 @@
-# $Id$
+# GNUstep makefile
 
 include ../common.make
 

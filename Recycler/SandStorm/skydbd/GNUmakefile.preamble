@@ -1,8 +1,21 @@
-# $Id$
+# compilation settings
 
 skydbd_TOOL_LIBS += \
-	-lLSFoundation	\
-	-lOGoDaemon -lXmlSchema		\
-	-lSxComponents -lNGObjWeb	\
+	-lLSFoundation
+
+skydbd_TOOL_LIBS += \
+	-lOGoDaemon -lXmlSchema	\
+	-lSxComponents
+
+skydbd_TOOL_LIBS += \
+	-lNGXmlRpc	\
+	-lNGObjWeb	\
 	-lGDLAccess	\
-	-lEOControl	\
+	-lEOControl
+
+ADDITIONAL_LIB_DIRS += \
+	-L../XmlSchema/$(GNUSTEP_OBJ_DIR)	\
+	-L../OGoIDL/$(GNUSTEP_OBJ_DIR)		\
+	-L../OGoDaemon/$(GNUSTEP_OBJ_DIR)
+
+SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib

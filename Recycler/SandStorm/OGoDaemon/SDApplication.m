@@ -188,7 +188,7 @@ static NSMutableArray *namespacesToBeRegistered = nil;
 }
 
 - (BOOL)hasNoLicenseKey {
-  return [self->lso hasNoLicenseKey];
+  return NO;
 }
 
 - (BOOL)cantConnectToDatabase {

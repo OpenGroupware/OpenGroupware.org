@@ -1,4 +1,4 @@
-# $Id$
+# GNUstep makefile
 
 include ../common.make
 
@@ -17,7 +17,7 @@ GENFILES = 			\
 	AutostartInstance.m	\
 
 $(GENFILES) : $(XMLSCHEMA)
-	@(createSchemaClasses skymasterd-config.xsd)
+	@(../XmlSchema/$(GNUSTEP_OBJ_DIR)/createSchemaClasses skymasterd-config.xsd)
 
 # Sources
 

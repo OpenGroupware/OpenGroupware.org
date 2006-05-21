@@ -1,3 +1,7 @@
+2006-05-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: include OGo config.make to allow compilation (v4.5.6)
+
 2004-04-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* initial import to OpenGroupware.org (v4.2.5)

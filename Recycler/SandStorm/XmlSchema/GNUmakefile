@@ -1,5 +1,6 @@
-# $Id$
+# GNUstep makefile
 
+-include ../../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ./Version
 
@@ -117,3 +118,5 @@ xschema_OBJC_FILES = xschema.m
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/tool.make
 -include GNUmakefile.postamble
+include ../fhslib.make
+include ../fhstool.make
