@@ -22,14 +22,7 @@ libZSAppointments_OBJC_FILES = \
 	SxDavAptAction.m		\
 	SxDavAptCreate.m		\
 	SxDavAptChange.m		\
-
-ifeq ($(zidelook),yes)
-
-Appointments_OBJC_FILES += \
-	SxZLAptRenderer.m		\
-	SxZLFullAptRenderer.m
-
-endif
+	SxDavCalendarQuery.m		\
 
 Appointments_RESOURCE_FILES += \
 	bundle-info.plist	\
