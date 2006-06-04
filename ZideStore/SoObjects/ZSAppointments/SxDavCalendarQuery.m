@@ -53,7 +53,7 @@ END:VCALENDAR
     </D:multistatus>
 */
 
-@class NSString, NSDate, NSArray, NSMutableArray;
+@class NSString, NSDate, NSArray, NSMutableArray, NSEnumerator;
 @class WORequest, WOResponse, WOContext;
 
 @interface SxDavCalendarQuery : WODirectAction
@@ -67,15 +67,21 @@ END:VCALENDAR
   NSString *queryType;
   NSDate   *startDate;
   NSDate   *endDate;
+
+  NSEnumerator *results;
 }
 
 - (void)takeValuesFromRequest:(WORequest *)_rq inContext:(WOContext *)_ctx;
 - (void)appendToResponse:(WOResponse *)_r      inContext:(WOContext *)_ctx;
 
+- (NSEnumerator *)fetchDatesInContext:(id)_ctx;
+
 @end
 
+#include "SxAppointmentFolder.h"
 #include <NGiCal/NSCalendarDate+ICal.h>
 #include <SaxObjC/XMLNamespaces.h>
+#include <ZSBackend/SxAptManager.h>
 #include "common.h"
 
 @implementation SxDavCalendarQuery
@@ -83,6 +89,8 @@ END:VCALENDAR
 static BOOL debugOn = YES;
 
 - (void)dealloc {
+  [self->results   release];
+
   [self->queryType release];
   [self->startDate release];
   [self->endDate   release];
@@ -98,25 +106,78 @@ static BOOL debugOn = YES;
 
 - (id)defaultAction {
   // TODO: remember the depth!
+  
   [self takeValuesFromRequest:[self request] inContext:[self context]];
   
-  [self debugWithFormat:@"CalDAV REPORT on: %@", [self clientObject]];
-  [self debugWithFormat:@"  type: %@", self->queryType];
-  if (self->startDate != nil)
-    [self debugWithFormat:@"  range: %@-%@", self->startDate, self->endDate];
+  if ([self isDebuggingEnabled]) {
+    [self debugWithFormat:@"CalDAV REPORT on: %@", [self clientObject]];
+    [self debugWithFormat:@"  type: %@", self->queryType];
+    if (self->startDate != nil)
+      [self debugWithFormat:@"  range: %@-%@", self->startDate, self->endDate];
+  }
   
-  // TODO: run query
+  if ([self->queryType isEqualToString:@"VEVENT"]) {
+    if ((self->results = [self fetchDatesInContext:[self context]]) == nil)
+      [self debugWithFormat:@"got no dates ..."];
+    else if ([self->results isKindOfClass:[NSException class]]) {
+      [self errorWithFormat:@"failed to fetch: %@", self->results];
+      return self->results;
+    }
+  }
+  
+  if (self->results == nil)
+    self->results = [[NSArray array] objectEnumerator];
   
   [self appendToResponse:[[self context] response] inContext:[self context]];
   return [[self context] response];
 }
 
+/* fetching */
+
+- (SxAptManager *)aptManagerInContext:(id)_ctx {
+  return [[self clientObject] aptManagerInContext:_ctx];
+}
+- (SxAptSetIdentifier *)currentAptSet {
+  return [[self clientObject] aptSetID];
+}
+
+- (NSEnumerator *)fetchDatesInContext:(id)_ctx {
+  id           folder;
+  SxAptManager *manager;
+  NSArray      *dates;
+  SxAptSetIdentifier *sid;
+  
+  folder  = [self clientObject];
+  manager = [self aptManagerInContext:_ctx];
+  
+#warning TODO: consider limit set by client
+  sid   = [self currentAptSet];
+  dates = [manager gidsOfAppointmentSet:sid];
+  [self debugWithFormat:@"for %@ got %d events ...", sid, [dates count]];
+  
+  return [manager pkeysAndModDatesAndICalsForGlobalIDs:dates];
+}
 
 /* generate response */
 
+- (NSString *)hrefForEvent:(id)_event inContext:(WOContext *)_ctx {
+  NSString *u;
+  id pkey;
+
+  if (![(pkey = [_event valueForKey:@"pkey"]) isNotEmpty])
+    return nil;
+  
+  u = [[self clientObject] baseURLInContext:_ctx];
+  return [u stringByAppendingFormat:
+	      ([u hasSuffix:@"/"] ? @"%@.ics" : @"/%@.ics"), pkey];
+}
+
 - (void)appendToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx {
+  id event;
+  
   [self debugWithFormat:@"generating responses"];
   
+  [_r setContentEncoding:NSUTF8StringEncoding];
   [_r setStatus:200 /* OK */];
   [_r setHeader:@"text/xml; charset=\"utf-8\"" forKey:@"content-type"];
   
@@ -126,7 +187,50 @@ static BOOL debugOn = YES;
   [_r appendContentString:XMLNS_CALDAV];
   [_r appendContentString:@"\">\n"];
   
-  /* TODO: generate responses */
+  /* generate events */
+  while ((event = [self->results nextObject]) != nil) {
+    [_r appendContentString:@"  <D:response>\n"];
+
+    [_r appendContentString:@"    <D:href>"];
+    [_r appendContentXMLString:[self hrefForEvent:event inContext:_ctx]];
+    [_r appendContentString:@"</D:href>\n"];
+
+    /* successful properties */
+    
+    [_r appendContentString:@"    <D:propstat>\n"];
+    [_r appendContentString:@"      <D:status>HTTP/1.1 200 OK</D:status>\n"];
+    [_r appendContentString:@"      <D:prop>\n"];
+    
+    // TODO: render properties
+    // [self logWithFormat:@"RENDER DATE: %@", [event allKeys]];
+    
+    if (vEventDataFields != nil) {
+      // TODO: render specific properties if requested ..., we just deliver
+      //       everything
+      id tmp;
+      
+      if ([(tmp = [event valueForKey:@"iCalData"]) isNotEmpty]) {
+	[_r appendContentString:@"<calendar-data>"];
+	[_r appendContentXMLString:@"BEGIN:VCALENDAR\r\n"];
+	[_r appendContentXMLString:@"VERSION:2.0\r\n"];
+	// TODO: product-id
+	
+	[_r appendContentXMLString:[tmp stringValue]];
+	
+	[_r appendContentXMLString:@"END:VCALENDAR\r\n"];
+	[_r appendContentString:@"</calendar-data>\n"];
+      }
+      else
+	[self errorWithFormat:@"got no iCalendar data for event: %@", event];
+    }
+    
+    [_r appendContentString:@"      </D:prop>\n"];
+    [_r appendContentString:@"    </D:propstat>\n"];
+    
+    // TODO: failed properties?
+    
+    [_r appendContentString:@"  </D:response>\n"];
+  }
   
   /* close multistatus */
   [_r appendContentString:@"</D:multistatus>"];
@@ -196,6 +300,12 @@ static BOOL debugOn = YES;
   
   self->calendarDataFields = [[NSMutableArray alloc] initWithCapacity:4];
   [self _loadRequestedCalDataProperties:_props list:&self->calendarDataFields];
+
+  /* was an empty element, so request everything ... */
+  if (![self->calendarDataFields isNotEmpty]) {
+    self->vEventDataFields = [[NSMutableArray alloc] init];
+    self->vTodoDataFields  = [[NSMutableArray alloc] init];
+  }
 }
 
 - (void)_loadRequestedProperties:(id<DOMElement>)_props {
