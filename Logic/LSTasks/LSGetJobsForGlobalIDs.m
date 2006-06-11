@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -32,10 +33,7 @@
 @end
 
 #include <LSFoundation/LSCommandKeys.h>
-#import <Foundation/Foundation.h>
-#import <EOControl/EOControl.h>
-#import <GDLAccess/GDLAccess.h>
-
+#include "common.h"
 
 @implementation LSGetJobsForGlobalIDs
 
@@ -44,11 +42,11 @@
 }
 
 - (void)fetchAdditionalInfosForObjects:(NSArray *)_objs context:(id)_context {
-/*
+#if 0
   LSRunCommandV(_context, @"job", @"get-",
                 @"objects", _objs,
                 @"relationKey", @"telephones", nil);
-*/
+#endif
 }
 
 @end /* LSGetJobsForGlobalIDs */
