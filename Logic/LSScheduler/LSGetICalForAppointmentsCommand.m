@@ -97,15 +97,21 @@ static NSString   *skyrixId = nil;
 }
 
 - (void)_appendName:(NSString *)_name
-    andTimelessDate:(NSCalendarDate *)_date
-             toICal:(NSMutableString *)_iCal
+  andTimelessDate:(NSCalendarDate *)_date
+  toICal:(NSMutableString *)_iCal
 {
-  NSString *str;
-  str = [NSString stringWithFormat:@"%04d%02d%02d",
+  NSString *s;
+  char buf[32];
+  
+  snprintf(buf, sizeof(buf), "%04d%02d%02d",
                   [_date yearOfCommonEra],
                   [_date monthOfYear],
-                  [_date dayOfMonth]];
-  [self _appendName:_name andValue:str toICal:_iCal];
+                  [_date dayOfMonth]);
+  
+  _name = [_name stringByAppendingString:@";VALUE=DATE"];
+  s = [[NSString alloc] initWithCString:buf];
+  [self _appendName:_name andValue:s toICal:_iCal];
+  [s release]; s = nil;
 }
 
 - (NSString *)skyrixIdUrl:(id)_plainId {
@@ -152,6 +158,21 @@ static NSString   *skyrixId = nil;
                 )
 
 */
+
+- (BOOL)isAllDayEvent:(id)_date {
+  NSCalendarDate *start;
+  NSCalendarDate *end;
+  
+  start = [_date valueForKey:@"startDate"];
+  if (([start hourOfDay] != 0) || ([start minuteOfHour] != 0))
+    return NO;
+  
+  end   = [_date valueForKey:@"endDate"];
+  if (([end hourOfDay] != 23) || ([end minuteOfHour] != 59))
+    return NO;
+
+  return YES;
+}
 
 - (void)_appendCoreAptData:(id)_date toICal:(NSMutableString *)_iCal {
   // CATEGORIES, CLASS, COMMENT, DESCRIPTION, LOCATION,
@@ -201,24 +222,22 @@ static NSString   *skyrixId = nil;
   {
     NSCalendarDate *start;
     NSCalendarDate *end;
+    
     start = [_date valueForKey:@"startDate"];
     end   = [_date valueForKey:@"endDate"];
-    if (([start hourOfDay] == 0) &&
-        ([start minuteOfHour] == 0) &&
-        ([end hourOfDay] == 23) &&
-        ([end minuteOfHour] == 59)) {
-      // all day apt
-      end = [[end tomorrow] beginOfDay];
-    if ([end isNotNull]) 
-      [self _appendName:@"DTEND" andTimelessDate:end toICal:_iCal];
-    if ([start isNotNull])
-      [self _appendName:@"DTSTART" andTimelessDate:start toICal:_iCal];
+    if ([self isAllDayEvent:_date]) {
+      end = [[end tomorrow] beginOfDay]; /* different range */
+      
+      if ([start isNotNull])
+	[self _appendName:@"DTSTART" andTimelessDate:start toICal:_iCal];
+      if ([end isNotNull]) 
+	[self _appendName:@"DTEND" andTimelessDate:end toICal:_iCal];
     }
     else {
-      if ([end isNotNull]) 
-        [self _appendName:@"DTEND" andValue:end toICal:_iCal];
       if ([start isNotNull])
         [self _appendName:@"DTSTART" andValue:start toICal:_iCal];
+      if ([end isNotNull]) 
+        [self _appendName:@"DTEND" andValue:end toICal:_iCal];
     }
     
   }
@@ -248,7 +267,12 @@ static NSString   *skyrixId = nil;
   if (![(tmp = [_date valueForKey:@"fbtype"]) isNotNull])     tmp = @"BUSY";
   [self _appendName:@"X-MICROSOFT-CDO-BUSYSTATUS" andValue:tmp toICal:_iCal];
   [_iCal appendString:@"X-MICROSOFT-CDO-INSTTYPE:0\r\n"];
-  [_iCal appendString:@"X-MICROSOFT-CDO-ALLDAYEVENT:FALSE\r\n"];
+  
+  [_iCal appendString:@"X-MICROSOFT-CDO-ALLDAYEVENT:"];
+  if ([self isAllDayEvent:_date])
+    [_iCal appendString:@"TRUE\r\n"];
+  else
+    [_iCal appendString:@"FALSE\r\n"];
 }
 
 - (NSString *)checkCSVEntry:(NSString *)_entry {
@@ -357,21 +381,25 @@ static NSString   *skyrixId = nil;
       [self _appendName:@"DESCRIPTION" andValue:tmp toICal:_iCal];
 
     if ((tmp = [alarm objectForKey:@"trigger"])) {
-      id v  = [tmp valueForKey:@"value"];
-      id vt = [tmp valueForKey:@"valueType"];
-      [self _appendName:(vt != nil)
-            ? [NSString stringWithFormat:@"TRIGGER;VALUE=%@;RELATED=START",
-                        [vt uppercaseString]]
-            : @"TRIGGER;RELATED=START"
-            andValue:v toICal:_iCal];
+      id       v   = [tmp valueForKey:@"value"];
+      NSString *vt = [tmp valueForKey:@"valueType"];
+      
+      if ([vt isNotEmpty]) {
+	vt = [NSString stringWithFormat:@"TRIGGER;VALUE=%@;RELATED=START",
+		       [vt uppercaseString]];
+      }
+      else
+	vt = @"TRIGGER;RELATED=START";
+      
+      [self _appendName:vt andValue:v toICal:_iCal];
     }
 
     if ((tmp = [alarm objectForKey:@"attachment"])) {
-      id v  = [tmp valueForKey:@"value"];
-      id vt = [tmp valueForKey:@"valueType"];
-      [self _appendName:(vt != nil)
-            ? [NSString stringWithFormat:@"ATTACH;VALUE=%@", vt]
-            : @"ATTACH"
+      id       v   = [tmp valueForKey:@"value"];
+      NSString *vt = [tmp valueForKey:@"valueType"];
+      [self _appendName:[vt isNotEmpty]
+            ? [@"ATTACH;VALUE=" stringByAppendingString:vt]
+            : (NSString *)@"ATTACH"
             andValue:v toICal:_iCal];
     }
 
@@ -439,13 +467,13 @@ static NSString   *skyrixId = nil;
     else {
       NSString *tmp;
       
-      cn = ((tmp = [participant valueForKey:@"firstname"]) != nil)
-	? [tmp stringByAppendingString:@" "] : @"";
+      cn = ([(tmp = [participant valueForKey:@"firstname"]) isNotEmpty])
+	? [tmp stringByAppendingString:@" "] : (NSString *)@"";
       
-      if ((tmp = [participant valueForKey:@"name"]) != nil)
+      if ([(tmp = [participant valueForKey:@"name"]) isNotEmpty])
         cn = [cn stringByAppendingString:tmp];
       
-      if (![cn isNotEmpty] == 0) cn = @"No Name";
+      if (![cn isNotEmpty]) cn = @"No Name";
       
       if ([(tmp = [participant valueForKey:@"email1"]) isNotEmpty])
 	email = tmp;
@@ -457,12 +485,14 @@ static NSString   *skyrixId = nil;
       }
     }
     
+    if (![state isNotEmpty]) state = @"NEEDS-ACTION";
+    if (![role  isNotEmpty]) role  = @"OPT-PARTICIPANT";
+    // TODO: better use a mutable string ...
     tmp = [[NSString alloc] initWithFormat:
                     @"ATTENDEE;CUTYPE=\"%@\";PARTSTAT=\"%@\""
                     @";ROLE=\"%@\";RSVP=\"%@\";CN=\"%@\"",
                     isTeam               ? @"GROUP" : @"INDIVIDUAL",
-                    [state isNotEmpty]   ? state    : @"NEEDS-ACTION",
-                    [role  isNotEmpty]   ? role     : @"OPT-PARTICIPANT",
+		    state, role,
                     [rsvp boolValue]     ? @"TRUE"  : @"FALSE",
                     cn];
     [self _appendName:tmp

@@ -1,3 +1,10 @@
+2006-06-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetICalForAppointmentsCommand.m: properly tag DATE values in
+	  DTSTART, DTEND as VALUE=DATE (thanks Mathew McBride for reporting!),
+	  set X-MICROSOFT-CDO-ALLDAYEVENT to TRUE for all day events,
+	  fixed some gcc 4.1 warnings (v5.3.87)
+
 2006-05-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSNewAppointmentCommand.m: improved check whether setting the
