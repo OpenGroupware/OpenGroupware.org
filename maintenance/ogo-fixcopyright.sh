@@ -21,9 +21,9 @@ fi
 DRYRUN="no"
 
 SOPE_SIG="This file is part of OpenGroupware.org."
-SOPE_COPYRIGHT="Copyright (C) 2000-2005 SKYRIX Software AG"
-SOPE_COPYRIGHT2="Copyright (C) 2002-2005 SKYRIX Software AG"
-SOPE_COPYRIGHT4="Copyright (C) 2004-2005 SKYRIX Software AG"
+SOPE_COPYRIGHT="Copyright (C) 2000-2006 SKYRIX Software AG"
+SOPE_COPYRIGHT2="Copyright (C) 2002-2006 SKYRIX Software AG"
+SOPE_COPYRIGHT4="Copyright (C) 2004-2006 SKYRIX Software AG"
 
 echo "working on files `date +%Y-%m-%d/%H:%M` ..."
 
@@ -46,7 +46,7 @@ for FILE in `find $BASEDIR -type f -name "$INPAT" | grep -v ".o$" | grep -v ".so
     
     # copyright
     
-    PAT="Copyright.*2000-200[34].*SKYRIX.*\$"
+    PAT="Copyright.*2000-200[345].*SKYRIX.*\$"
     grep "$PAT" $INPUTNAME >/dev/null
     if test $? = 0; then
 	echo -n " (c) .."
@@ -56,7 +56,7 @@ for FILE in `find $BASEDIR -type f -name "$INPAT" | grep -v ".o$" | grep -v ".so
 	DELFILES="$DELFILES $OUT"
     fi
 
-    PAT="Copyright.*2002-200[34].*SKYRIX.*\$"
+    PAT="Copyright.*2002-200[345].*SKYRIX.*\$"
     grep "$PAT" $INPUTNAME >/dev/null
     if test $? = 0; then
 	echo -n " (c) .."
