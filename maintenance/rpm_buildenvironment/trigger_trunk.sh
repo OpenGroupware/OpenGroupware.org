@@ -70,3 +70,8 @@ if [ "x${DISTRI}" = "xfedora-core5" ]; then
   sh ${HOME}/prepare_yum_fcore5.sh
 fi
 
+if [ "x${DISTRI}" = "xcentos43" ]; then
+  echo -en "we're on ${DISTRI} - creating yum repo for ${DISTRI}...\n"
+  sh ${HOME}/prepare_yum_centos43.sh
+fi
+
