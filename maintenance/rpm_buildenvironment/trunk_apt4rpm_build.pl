@@ -17,22 +17,25 @@ my $repo;
 my @repos = qw( OGo SOPE ThirdParty );
 my $type = "trunk";
 my $verbose = "no";
-my @distris = qw( fedora-core3
+my @distris = qw( redhat9
   fedora-core2
+  fedora-core3
   fedora-core4
+  fedora-core5
   suse82
   suse91
   suse92
   suse93
   suse10-0
-  sles9
+  suse10-1
   mdk-10.1
   mdk-10.0
   slss8
+  sles9
   rhel3
   rhel4
-  redhat9
   conectiva10
+  centos43
 );
 
 getopt('dtv');
@@ -107,8 +110,8 @@ for $repo (@repos) {
   print RELEASE "Version: $type\n";
   print RELEASE "Origin: http://download.opengroupware.org\n";
   print RELEASE "Label: $distri\n";
-  print RELEASE "Architecture: i386\n" if (("$distri" eq "suse82") or ("$distri" eq "fedora-core2") or ("$distri" eq "fedora-core3") or ("$distri" eq "fedora-core4") or ("$distri" eq "rhel3") or ("$distri" eq "rhel4") or ("$distri" eq "redhat9") or ("$distri" eq "conectiva10"));
-  print RELEASE "Architecture: i586\n" if (("$distri" eq "suse91") or ("$distri" eq "suse92") or ("$distri" eq "suse93") or ("$distri" eq "sles9") or ("$distri" eq "mdk-10.0") or ("$distri" eq "mdk-10.1") or ("$distri" eq "suse10-0"));
+  print RELEASE "Architecture: i386\n" if (("$distri" eq "suse82") or ("$distri" eq "fedora-core2") or ("$distri" eq "fedora-core3") or ("$distri" eq "fedora-core4") or ("$distri" eq "fedora-core5") or ("$distri" eq "rhel3") or ("$distri" eq "rhel4") or ("$distri" eq "redhat9") or ("$distri" eq "conectiva10") or ("$distri" eq "centos43"));
+  print RELEASE "Architecture: i586\n" if (("$distri" eq "suse91") or ("$distri" eq "suse92") or ("$distri" eq "suse93") or ("$distri" eq "sles9") or ("$distri" eq "mdk-10.0") or ("$distri" eq "mdk-10.1") or ("$distri" eq "suse10-0") or ("$distri" eq "suse10-1"));
   print RELEASE "NotAutomatic: false\n";
   close(RELEASE);
 }

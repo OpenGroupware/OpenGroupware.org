@@ -221,6 +221,10 @@ if($i_really_had_sth_todo eq "yes") {
     print "building yum-repo for $host_i_runon\n";
     system("sh $ENV{HOME}/prepare_yum_fcore4.sh");
   }
+  if($host_i_runon eq "fedora-core5") {
+    print "building yum-repo for $host_i_runon\n";
+    system("sh $ENV{HOME}/prepare_yum_fcore5.sh");
+  }
   #polish buildenv after we're done...
   print "we're almost at the end... cleaning up what we've done so far...\n";
   system("sudo rpm -e `rpm -qa|grep -i ^libobjc-lf2` --nodeps");

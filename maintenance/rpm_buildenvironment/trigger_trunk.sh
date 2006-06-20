@@ -1,12 +1,14 @@
 #!/bin/sh
 
 echo -en "WARNING: not yet configured!\n" && exit 127
-DISTRI="fedora-core4"
+DISTRI="fedora-core5"
+#DISTRI="fedora-core4"
 #DISTRI="fedora-core3"
 #DISTRI="fedora-core2"
 #DISTRI="redhat9"
 #DISTRI="mdk-10.1"
 #DISTRI="mdk-10.0"
+#DISTRI="suse10-1"
 #DISTRI="suse10-0"
 #DISTRI="suse93"
 #DISTRI="suse92"
@@ -18,6 +20,7 @@ DISTRI="fedora-core4"
 #DISTRI="rhel4"
 #DISTRI="redhat9"
 #DISTRI="conectiva10"
+#DISTRI="centos43"
 
 SPECS="ogo-gnustep_make
 libobjc-lf2
@@ -60,5 +63,10 @@ fi
 if [ "x${DISTRI}" = "xfedora-core4" ]; then
   echo -en "we're on ${DISTRI} - creating yum repo for ${DISTRI}...\n"
   sh ${HOME}/prepare_yum_fcore4.sh
+fi
+
+if [ "x${DISTRI}" = "xfedora-core5" ]; then
+  echo -en "we're on ${DISTRI} - creating yum repo for ${DISTRI}...\n"
+  sh ${HOME}/prepare_yum_fcore5.sh
 fi
 

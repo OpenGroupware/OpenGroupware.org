@@ -26,7 +26,7 @@ my $dl_host = "download.opengroupware.org";
 # this are the packages I can deal with
 # every package given here should have its own specfile...
 # adding new packages is more or less a copy'n'paste job of code snippets below
-my @poss_packages = qw( ogo-gnustep_make libobjc-lf2 libfoundation libical-sope-devel opengroupware-pilot-link opengroupware-nhsc sope opengroupware mod_ngobjweb_slss8 mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_suse93 mod_ngobjweb_suse100 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_rhel4 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment epoz ogo-database-setup ogofull);
+my @poss_packages = qw( ogo-gnustep_make libobjc-lf2 libfoundation libical-sope-devel opengroupware-pilot-link opengroupware-nhsc sope opengroupware mod_ngobjweb_slss8 mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_suse93 mod_ngobjweb_suse100 mod_ngobjweb_suse101 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_rhel4 mod_ngobjweb_centos43 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment epoz ogo-database-setup ogofull );
 my $flavour_we_build_upon;
 my $distrib_define;
 my $memyself = basename($0);
@@ -39,7 +39,7 @@ my @rpms_build;
 #package_wo_source contains packages wo source at all or where i refuse to download
 #the source (source should be already in \$sources_dir)
 my @package_wo_source = qw( ogo-gnustep_make ogo-environment ogo-database-setup ogofull);
-my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_suse93 mod_ngobjweb_suse100 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_rhel4 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment opengroupware-pilot-link opengroupware-nhsc ogo-database-setup ogo-meta ogofull);
+my @dont_install = qw( mod_ngobjweb_fedora mod_ngobjweb_suse82 mod_ngobjweb_suse91 mod_ngobjweb_suse92 mod_ngobjweb_suse93 mod_ngobjweb_suse100 mod_ngobjweb_suse101 mod_ngobjweb_slss8 mod_ngobjweb_mdk100 mod_ngobjweb_mdk101 mod_ngobjweb_sles9 mod_ngobjweb_rhel3 mod_ngobjweb_rhel4 mod_ngobjweb_centos43 mod_ngobjweb_redhat9 mod_ngobjweb_conectiva10 ogo-environment opengroupware-pilot-link opengroupware-nhsc ogo-database-setup ogo-meta ogofull );
 my $release_codename;
 my $remote_release_dirname;
 my $libversion;
@@ -733,6 +733,7 @@ sub get_latest_sources {
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_suse91");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_suse92");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_suse93");
+    $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_suse101");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_suse100");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_slss8");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_sles9");
@@ -740,6 +741,7 @@ sub get_latest_sources {
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_rhel4");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_redhat9");
     $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_conectiva10");
+    $package_mapped_tosrc = "sope-mod_ngobjweb" if ("$package" eq "mod_ngobjweb_centos43");
     $package_mapped_tosrc = "sope-epoz" if ("$package" eq "epoz");
     foreach $sourcefile (@latest) {
       $destfilename = shift;
@@ -985,7 +987,6 @@ sub prepare_build_env {
   }
 }
 
-#eval getconf("$ENV{'HOME'}/purveyor_of_rpms.conf") or die "FATAL: $@\n";
 sub getconf {
   my $conffile = shift;
   local *F;

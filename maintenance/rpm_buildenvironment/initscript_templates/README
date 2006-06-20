@@ -7,9 +7,7 @@ We distinguish between:
 
   redhat_* -> initscripts which should work
               fine on `redhat` based distributions
-              (Fedora/RedHat/Mandrake/Conectiva)
+              (Fedora/RedHat/Mandrake/Conectiva/CentOS)
 
   suse_*   -> initscripts with extra requirements
               seen in SUSE initscripts
-
-

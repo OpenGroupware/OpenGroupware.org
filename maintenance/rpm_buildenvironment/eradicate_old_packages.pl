@@ -10,6 +10,7 @@ my $must_rebuild_sth = "no";
 my @distris = qw(fedora-core2
   fedora-core3
   fedora-core4
+  fedora-core5
   mdk-10.0
   mdk-10.1
   redhat9
@@ -21,8 +22,10 @@ my @distris = qw(fedora-core2
   suse91
   suse92
   suse93
+  suse10-1
   suse10-0
   conectiva10
+  centos43
 );
 
 my $current_group;
