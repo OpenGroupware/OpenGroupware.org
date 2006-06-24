@@ -284,18 +284,26 @@ static NSException *FMLastError(id fm) {
     /* overwrite an existing file */
     
     if (![fm isWritableFileAtPath:p]) {
+      [self debugWithFormat:@"not allowed to write file: %@", p];
       return [NSException exceptionWithHTTPStatus:403 /* Forbidden */
 			  reason:@"You are not allowed to write this file."];
     }
     
     if (SxDocumentAutoCheckout) {
       if ([fm supportsVersioningAtPath:p]) {
-	[self debugWithFormat:@"auto-checkout of path: %@", p];
+	[self debugWithFormat:
+		@"supports versioning, auto-checkout of path: %@", p];
 	
 	if ((error = FMLastError(fm)) != nil)
 	  return error;
 	
-	if (![fm checkoutFileAtPath:p handler:nil]) {
+	if ([fm isFileLockedAtPath:p]) {
+	  [self debugWithFormat:@"file is locked, no auto-checkout: %@", p];
+	}
+	else if (![fm checkoutFileAtPath:p handler:nil]) {
+	  [self debugWithFormat:@"attempt to checkout file failed: %@",
+		  FMLastError(fm)];
+	  
 	  return [NSException exceptionWithHTTPStatus:403 /* Forbidden */
 			      reason:@"Could not checkout this file."];
 	}
