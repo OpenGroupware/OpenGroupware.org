@@ -184,7 +184,7 @@ static BOOL     showOnlyMemberTeams  = NO;
 	         @"fetchGlobalIDs", yesNum,
                  @"onlyTeamsWithAccount", 
                  (showOnlyMemberTeams
-                  ? [[self session] activeAccount] : [NSNull null]),
+                  ? [[self session] activeAccount] : (id)[NSNull null]),
 	         @"description", @"%%", nil];
 }
 
@@ -196,7 +196,7 @@ static BOOL     showOnlyMemberTeams  = NO;
                  @"maxSearchCount",       [NSNumber numberWithInt:_max],
                  @"onlyTeamsWithAccount", 
                  (showOnlyMemberTeams
-                  ? [[self session] activeAccount] : [NSNull null]),
+                  ? [[self session] activeAccount] : (id)[NSNull null]),
 	       nil];
 }
 
@@ -425,19 +425,19 @@ static BOOL     showOnlyMemberTeams  = NO;
       fn = [self->item valueForKey:@"firstname"];
       ln = [self->item valueForKey:@"name"];
       
-      kind = [l valueForKey:kind];
+      kind = [[l valueForKey:kind] stringValue];
       
-      if (![ln isNotNull])
+      if (![ln isNotEmpty])
         n = [self->item valueForKey:@"login"];
       else {
-        n = ![fn isNotNull]
+        n = ![fn isNotEmpty]
           ? ln
-          : [StrClass stringWithFormat:@"%@ %@", fn, ln];
+          : [[fn stringByAppendingString:@" "] stringByAppendingString:ln];
       }
-      d = [StrClass stringWithFormat:@"%@: %@", kind, n];
+      d = [[kind stringByAppendingString:@": "] stringByAppendingString:n];
     }
   }
-
+  
   maxLen = [self maxLabelLength];
   if ([d length] > maxLen)
     // TODO: use a category or even better a formatter

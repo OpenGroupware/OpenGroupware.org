@@ -251,9 +251,9 @@
   
   tzName = [[self request] formValueForKey:@"tz"];
   
-  tz = (tzName)
+  tz = [tzName isNotEmpty]
     ? [NSTimeZone timeZoneWithAbbreviation:tzName]
-    : nil;
+    : (NSTimeZone *)nil;
   
   if (tz == nil)
     tz = [sn timeZone];
@@ -385,9 +385,9 @@
 
   tzName = [[self request] formValueForKey:@"tz"];
   
-  tz = (tzName)
+  tz = [tzName isNotEmpty]
     ? [NSTimeZone timeZoneWithAbbreviation:tzName]
-    : nil;
+    : (NSTimeZone *)nil;
   
   if (tz == nil)
     tz = [sn timeZone];

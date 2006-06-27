@@ -299,16 +299,16 @@ static BOOL         showOnlyMemberTeams = NO;
 }
 
 - (void)setSelectedTeams:(NSArray *)_teams {
-  ASSIGN(self->selectedTeams,_teams);
+  ASSIGN(self->selectedTeams, _teams);
 }
 - (NSMutableArray *)selectedTeams {
   return (self->selectedTeams == nil)
-    ? [NSMutableArray array]
+    ? (NSMutableArray *)[NSMutableArray arrayWithCapacity:4]
     : self->selectedTeams;
 }
 
 - (void)setResources:(NSArray *)_resources {
-  ASSIGN(self->resources,_resources);
+  ASSIGN(self->resources, _resources);
 }
 - (NSArray *)resources {
   return self->resources;
@@ -319,7 +319,7 @@ static BOOL         showOnlyMemberTeams = NO;
 }
 - (NSArray *)selectedResources {
   return (self->selectedResources == nil)
-    ? [NSMutableArray array]
+    ? (NSMutableArray *)[NSMutableArray arrayWithCapacity:4]
     : self->selectedResources;
 }
 
@@ -1252,7 +1252,7 @@ static BOOL         showOnlyMemberTeams = NO;
                 @"maxSearchCount", [NSNumber numberWithInt:(max - cnt)],
                 @"onlyTeamsWithAccount", 
                  (showOnlyMemberTeams
-                  ? [[self session] activeAccount] : [NSNull null]),
+                  ? [[self session] activeAccount] : (id)[NSNull null]),
                 nil];
     if (res != nil) {
       res = [self runCommand:@"team::get-by-globalID",

@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2005 SKYRIX Software AG
+  Copyright (C) 2005-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -139,7 +140,9 @@ static NSArray  *conflictAttrs = nil;
 
 - (NSArray *)conflictDates {
   if (self->conflictDates != nil)
-    return [self->conflictDates isNotNull] ? self->conflictDates : nil;
+    return [self->conflictDates isNotNull]
+      ? self->conflictDates
+      : (NSArray *)nil;
   
   [self _fetchConflictInfos];
   if (self->conflictDates == nil) {
@@ -161,7 +164,7 @@ static NSArray  *conflictAttrs = nil;
   NSString *s;
   
   s = [[self currentConflict] valueForKey:@"partStatus"];
-  s = [s isNotNull] ? s : @"NEEDS-ACTION";
+  s = [s isNotEmpty] ? s : (NSString *)@"NEEDS-ACTION";
   s = [@"partStat_" stringByAppendingString:s];
   return [[self labels] valueForKey:s];
 }

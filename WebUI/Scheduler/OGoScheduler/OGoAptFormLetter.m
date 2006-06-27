@@ -169,6 +169,14 @@ static NSArray *aptKeys    = nil;
 		   [self calendarFormatForKey:_key]];
   }
   
+  if ([_obj isKindOfClass:[EOGenericRecord class]] ||
+      [_obj isKindOfClass:[NSDictionary class]]) {
+    // Note: this is kinda hackish, but well
+    // its used to catch "CompanyInfo" generic records ('comment' key which
+    // leads to the EOGenericRecord which in turn contains a 'comment' key)
+    return [self stringValueForObject:[_obj valueForKey:_key] ofKey:_key];
+  }
+  
   return [_obj stringValue];
 }
 

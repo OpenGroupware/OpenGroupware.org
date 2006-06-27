@@ -1,3 +1,15 @@
+2006-06-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.54
+
+	* OGoAptFormLetter.m: added special detection of EOGenericRecord and
+	  NSDictionary values (to fix OGo bug #1742)
+
+	* SkySchedulerSelectPopUp.m: use -isNotEmpty instead of -isNotNull in
+	  name formatting, avoid use of +stringWithFormat
+
+	* fixed some gcc 4.1 warnings
+
 2006-05-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoAptMailOpener.m: implemented per appointment type mail templates
