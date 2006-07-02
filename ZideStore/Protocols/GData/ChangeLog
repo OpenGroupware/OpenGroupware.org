@@ -1,5 +1,7 @@
 2006-07-02  Helge Hess  <helge.hess@opengroupware.org>
 
+	* GCalCalendar.m: return an empty feed (v1.5.3)
+
 	* prepared SoObject's for comment handling (v1.5.2)
 
 	* implemented basic URL lookup

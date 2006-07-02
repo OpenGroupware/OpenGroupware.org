@@ -21,6 +21,7 @@
 
 #include "GCalCalendar.h"
 #include "GCalEvent.h"
+#include <SaxObjC/XMLNamespaces.h>
 #include "common.h"
 
 @implementation GCalCalendar
@@ -130,8 +131,44 @@
 /* actions */
 
 - (id)GETAction:(WOContext *)_ctx {
-  // TODO: implement me
+  WOResponse *r = [_ctx response];
+  
+  [r setHeader:@"application/atom+xml; charset=utf-8" forKey:@"content-type"];
+  
+  [r appendContentString:@"<feed xmlns=\""];
+  [r appendContentString:XMLNS_ATOM_2005];
+  [r appendContentString:@"\" xmlns:gCal=\""];
+  [r appendContentString:XMLNS_GOOGLE_CAL_2005];
+  [r appendContentString:@"\" xmlns:openSearch=\""];
+  [r appendContentString:XMLNS_OPENSEARCH_RSS];
+  [r appendContentString:@"\" xmlns:gd=\""];
+  [r appendContentString:XMLNS_GOOGLE_2005];
+  [r appendContentString:@"\">"];
+
+  // id, update
+  // title, subtitle
+  // links
+  // author (name, email)
+
+  [r appendContentString:@"<generator version=\"1.5\" uri=\""];
+  [r appendContentString:@"http://www.opengroupware.org/"];
+  [r appendContentString:@"\">OpenGroupware.org</generator>"];
+
+  // TODO: find out about this:
+  [r appendContentString:
+       @"<openSearch:itemsPerPage>25</openSearch:itemsPerPage>"];
+  
+  [r appendContentString:@"<gCal:timezone xmlns:gCal=\""];
+  [r appendContentString:XMLNS_GOOGLE_CAL_2005];
+  [r appendContentString:@"\" value=\""];
+  [r appendContentString:@"Europe/Berlin"]; // TODO: retrieve from user-defs
+  [r appendContentString:@"\" />"];
+
+  // TODO: encode entries
   [self logWithFormat:@"TODO: return feed ..."];
+
+  [r appendContentString:@"</feed>"];
+  
   return [_ctx response];
 }
 
