@@ -19,32 +19,34 @@
   02111-1307, USA.
 */
 
-#ifndef __ZideStore_GCalEvent_H__
-#define __ZideStore_GCalEvent_H__
+#ifndef __ZideStore_GCalComments_H__
+#define __ZideStore_GCalComments_H__
 
 #import <Foundation/NSObject.h>
 
 /*
-  GCalEvent
+  GCalComments
 
-    parent-folder: GCalCalendar
-    subobjects:    GCalComments
+    parent-folder: GCalEvent
+    subobjects:    GCalComment's
 
-  This maps to /calendar/feeds/$USERNAME/private/full/$PKEY
+  This maps to /calendar/feeds/$USERNAME/private/full/$PKEY/comments.
+
+  GCal comments are to be mapped to OGo notes.
 
   A complete URL:
-    /calendar/feeds/$USER/private/full/$PKEY
+    /calendar/feeds/$USER/private/full/$PKEY/comments
 
   Schema:
-    /calendar/feeds/$USER/visibility/projection/$PKEY
+    /calendar/feeds/$USER/visibility/projection/$PKEY/comments[/$COMMENTID]
 */
 
-@class GCalCalendar;
+@class GCalEvent;
 
-@interface GCalEvent : NSObject
+@interface GCalComments : NSObject
 {
-  GCalCalendar *container;
-  NSString     *name; /* primary key */
+  GCalEvent *container;
+  NSString  *name; /* primary key */
 }
 
 - (id)initWithName:(NSString *)_name inContainer:(id)_container;
@@ -54,9 +56,6 @@
 - (id)container;
 - (NSString *)nameInContainer;
 
-- (NSString *)visibility;
-- (NSString *)projection;
-
 @end
 
-#endif /* __ZideStore_GCalEvent_H__ */
+#endif /* __ZideStore_GCalComments_H__ */

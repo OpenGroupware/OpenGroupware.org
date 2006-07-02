@@ -45,3 +45,9 @@ Default URL: /calendar/feeds/$user/private/full
   Java API to use a different URL for a feed
 - /calendar       is mapped to GCalEntryPoint in products.plist
 - /calendar/feeds is passed through by GCalEntryPoint (returns the same object)
+
+
+Notes:
+- when GETing a feed, the Java API sets an Accept header which prefers
+  text/html
+  - the request content-type is set to application/x-www-form-urlencoded

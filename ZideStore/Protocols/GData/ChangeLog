@@ -1,5 +1,7 @@
 2006-07-02  Helge Hess  <helge.hess@opengroupware.org>
 
+	* prepared SoObject's for comment handling (v1.5.2)
+
 	* implemented basic URL lookup
 
 2006-04-23  Helge Hess  <helge.hess@opengroupware.org>

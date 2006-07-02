@@ -32,6 +32,24 @@
       protectedBy   = "View";
       defaultAccess = "allow";
     };
+
+    GCalEvent = {
+      superclass    = "NSObject";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+    };
+
+    GCalComments = {
+      superclass    = "NSObject";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+    };
+
+    GCalComment = {
+      superclass    = "NSObject";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+    };
   };
 
   categories = {

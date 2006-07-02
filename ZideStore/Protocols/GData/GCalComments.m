@@ -19,12 +19,11 @@
   02111-1307, USA.
 */
 
-#include "GCalEvent.h"
-#include "GCalCalendar.h"
 #include "GCalComments.h"
+#include "GCalEvent.h"
 #include "common.h"
 
-@implementation GCalEvent
+@implementation GCalComments
 
 - (id)initWithName:(NSString *)_name inContainer:(id)_container {
   if ((self = [super init]) != nil) {
@@ -54,26 +53,6 @@
   return self->name;
 }
 
-- (NSString *)visibility {
-  return [[self container] visibility];
-}
-- (NSString *)projection {
-  return [[self container] projection];
-}
-
-
-/* lookup */
-
-- (id)lookupName:(NSString *)_name inContext:(id)_ctx acquire:(BOOL)_flag {
-  if ([_name isEqualToString:@"comments"]) {
-    return [[[GCalComments alloc] initWithName:_name inContainer:self] 
-	                   autorelease];
-  }
-  
-  return [super lookupName:_name inContext:_ctx acquire:_flag];
-}
-
-
 /* debugging */
 
 - (BOOL)isDebuggingEnabled {
@@ -85,12 +64,10 @@
   
   [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
   
-  [ms appendFormat:@" name='%@'", [self nameInContainer]];
-  [ms appendFormat:@" projection=%@", [self projection]];
-  [ms appendFormat:@" visibility=%@", [self visibility]];
+  [ms appendFormat:@" event=%@", [self container]];
   
   [ms appendString:@">"];
   return ms;
 }
 
-@end /* GCalEvent */
+@end /* GCalComments */

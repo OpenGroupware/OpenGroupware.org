@@ -18,6 +18,8 @@ GData_OBJC_FILES = \
 	GCalEntryPoint.m	\
 	GCalCalendar.m		\
 	GCalEvent.m		\
+	GCalComments.m		\
+	GCalComment.m		\
 
 GData_RESOURCE_FILES += \
 	bundle-info.plist	\
