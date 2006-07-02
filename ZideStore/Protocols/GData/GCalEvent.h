@@ -35,8 +35,11 @@
   A complete URL:
     /calendar/feeds/$USER/private/full/$PKEY
 
+  For PUTs:
+    /calendar/feeds/$USER/private/full/$PKEY/1234
+
   Schema:
-    /calendar/feeds/$USER/visibility/projection/$PKEY
+    /calendar/feeds/$USER/visibility/projection/$PKEY[/$VERSION]
 */
 
 @class GCalCalendar;

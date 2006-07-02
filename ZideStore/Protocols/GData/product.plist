@@ -63,6 +63,10 @@
           protectedBy = "<public>";
           valueClass = GCalEntryPoint;
         };
+        feeds = { /* if 'calendar' is mapped to the appname */
+          protectedBy = "<public>";
+          valueClass = GCalEntryPoint;
+        };
       };
     };
   };

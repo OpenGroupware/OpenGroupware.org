@@ -37,8 +37,6 @@
 
 @interface GCalEntryPoint : NSObject
 {
-  NSString     *userName;
-  GCalCalendar *calendar;
 }
 
 @end
@@ -49,8 +47,6 @@
 @implementation GCalEntryPoint
 
 - (void)dealloc {
-  [self->calendar release];
-  [self->userName release];
   [super dealloc];
 }
 
@@ -59,8 +55,10 @@
 - (id)lookupName:(NSString *)_name inContext:(id)_ctx acquire:(BOOL)_flag {
   id tmp;
 
+  // Note: this implies that 'feeds' is an invalid username ;-)
   if ([_name isEqualToString:@"feeds"]) {
     /* set a marker in the context to let other lookup objects know ... */
+    [self debugWithFormat:@"lookup feeds ..."];
     [_ctx takeValue:[NSNumber numberWithBool:YES] forKey:@"GCalFeedLookup"];
     return self;
   }
@@ -70,27 +68,15 @@
 
   /* lookup user */
 
-  if (self->userName != nil) {
-    if ([_name isEqual:self->userName])
-      return self->calendar;
+  [self debugWithFormat:@"lookup user: %@", _name];
 
-    return nil;
-  }
-
-  self->userName = [_name copy];
-  [self debugWithFormat:@"tied to user: %@", self->userName];
-  
   tmp = [[_ctx application] lookupName:_name inContext:_ctx acquire:NO];
   [self debugWithFormat:@"user folder: %@", tmp];
   
-  if ([tmp isNotNull] && ![tmp isKindOfClass:[NSException class]]) {
-    self->calendar = [[GCalCalendar alloc] initWithUserFolder:tmp];
-    [self debugWithFormat:@"calendar: %@", self->calendar];
-  }
-  else
-    self->calendar = [tmp retain];
+  if ([tmp isNotNull] && ![tmp isKindOfClass:[NSException class]])
+    return [[[GCalCalendar alloc] initWithUserFolder:tmp] autorelease];
   
-  return self->calendar;
+  return tmp;
 }
 
 @end /* GCalEntryPoint */
