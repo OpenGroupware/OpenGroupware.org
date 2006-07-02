@@ -1,0 +1,51 @@
+{
+  requires = ( ZSCommon, Tasks );
+
+  publicResources = (
+  );
+
+  factories = {
+  };
+
+  classes = {
+    GDataAccounts = {
+      superclass    = "NSObject";
+      protectedBy   = "<public>";
+      defaultAccess = "allow";
+
+      methods = {
+        ClientLogin = {
+          protectedBy = "<public>";
+	  selector    = "clientLoginInContext:";
+        };
+      };
+    };
+
+    GCalEntryPoint = {
+      superclass    = "NSObject";
+      protectedBy   = "<public>";
+      defaultAccess = "allow";
+    };
+
+    GCalCalendar = {
+      superclass    = "NSObject";
+      protectedBy   = "View";
+      defaultAccess = "allow";
+    };
+  };
+
+  categories = {
+    ZideStore = {
+      slots = {
+        accounts = {
+          protectedBy = "<public>";
+          valueClass = GDataAccounts;
+        };
+        calendar = {
+          protectedBy = "<public>";
+          valueClass = GCalEntryPoint;
+        };
+      };
+    };
+  };
+}

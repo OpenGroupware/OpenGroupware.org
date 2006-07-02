@@ -1,0 +1,47 @@
+Google GData API Support for ZideStore
+======================================
+
+NOTE: this is just playstuff, don't use it ;-) Patches are welcome ;-)
+
+TODO: document
+
+* Apache Config
+
+<LocationMatch "^/accounts/ClientLogin*">
+SetAppPort 21010
+SetHandler ngobjweb-adaptor
+</LocationMatch>
+
+<LocationMatch "^/calendar/feeds/*">
+SetAppPort 21010
+SetHandler ngobjweb-adaptor
+</LocationMatch>
+
+
+* PUT/DELETE vs POST handling
+
+- this is implemented in SOPE
+
+
+* Login
+
+URL: /accounts/ClientLogin
+
+- the URL is hardcoded in GoogleService.java?
+  service = new GoogleService("cl", /* calendar */
+                              "exampleCo-myApp-1", /* app-id",
+                              "http",
+			      "myhost:myport");
+
+- the Login action is in the GDataAccounts SoObject which is mapped to
+  /accounts in products.plist
+
+
+* Calendar feeds
+
+Default URL: /calendar/feeds/$user/private/full
+
+- we support the default URL scheme, though we can also instruct the Google
+  Java API to use a different URL for a feed
+- /calendar       is mapped to GCalEntryPoint in products.plist
+- /calendar/feeds is passed through by GCalEntryPoint (returns the same object)
