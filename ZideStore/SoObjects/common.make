@@ -21,4 +21,4 @@ ADDITIONAL_LIB_DIRS += \
 	-L../../ZSBackend/$(GNUSTEP_OBJ_DIR)	\
 	-L./$(GNUSTEP_OBJ_DIR)
 
-SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)

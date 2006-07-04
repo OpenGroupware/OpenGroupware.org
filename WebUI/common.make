@@ -18,8 +18,6 @@ ADDITIONAL_LIB_DIRS += \
 	-L$(OGoROOT)/DocumentAPI/OGoDocuments/$(GNUSTEP_OBJ_DIR)\
 	-L$(OGoROOT)/Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
 
-SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
-
 ADDITIONAL_BUNDLE_LIBS += \
 	-lOGoFoundation -lOGoDocuments	\
 	-lLSFoundation		\
@@ -30,3 +28,5 @@ ADDITIONAL_BUNDLE_LIBS += \
 	-lXmlRpc
 
 ADDITIONAL_CPPFLAGS += -Wall -pipe -Wno-protocol
+
+SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)

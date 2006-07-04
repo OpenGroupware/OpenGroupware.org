@@ -71,10 +71,10 @@ ADDITIONAL_TOOL_LIBS += \
 	-lNGStreams -lNGExtensions -lEOControl	\
 	-lDOM -lSaxObjC
 
-SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
-
 # platform specific stuff
 
 ifeq ($(findstring openbsd3, $(GNUSTEP_TARGET_OS)), openbsd3)
 ADDITIONAL_TOOL_LIBS	+= -liconv
 endif
+
+SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)

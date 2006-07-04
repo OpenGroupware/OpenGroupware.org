@@ -31,7 +31,7 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-I$(OGoROOT)/Logic      \
 	-I$(OGoROOT)/DocumentAPI
 
-SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)
 
 # OS dependend stuff
 ifeq ($(findstring openbsd3, $(GNUSTEP_TARGET_OS)), openbsd3)
