@@ -650,7 +650,7 @@ static NSArray *startDateSortOrderings = nil;
   if (self->resourceList != nil) {
     if (![self->resourceList isNotNull]) {
 #if DEBUG
-      [self debugWithFormat:@"WARNING: self->resourceList is NSNull .."];
+      [self warnWithFormat:@"self->resourceList is NSNull .."];
 #endif
       ;
     }

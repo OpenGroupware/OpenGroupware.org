@@ -1,7 +1,7 @@
 # GNUstep makefile
 
 -include ../../config.make
-include $(GNUSTEP_MAKEFILES)/common.make
+include ../common.make
 -include ../Version
 -include ./Version
 
@@ -71,17 +71,6 @@ LSScheduler_OBJC_FILES = \
 	OGoAptAccessHandler.m				\
 
 LSScheduler_RESOURCE_FILES += Version
-
-LSScheduler_BUNDLE_LIBS += \
-	-lLSFoundation -lOGoSchedulerTools -lNGiCal
-
-libOGoSchedulerTools_LIBRARIES_DEPEND_UPON += \
-	-lNGiCal	\
-	-lNGExtensions -lEOControl	\
-	-lDOM -lSaxObjC
-
-ADDITIONAL_LIB_DIRS += -L./$(GNUSTEP_OBJ_DIR)
-
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/library.make

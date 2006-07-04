@@ -91,9 +91,9 @@ static NSArray *sortStartDateAsc = nil;
 
   /* construct date range */
   
-  fromDate = self->monday
+  fromDate = self->monday != nil
     ? self->monday
-    : [NSCalendarDate date];
+    : (NSCalendarDate *)[NSCalendarDate date];
   
   /* these two stmts should be reversed (workaround for LSWScheduler1) ! */
   /* this *breaks* SkyScheduler ! */

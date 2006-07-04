@@ -877,7 +877,7 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
 
   resources = self->llpcFlags.listCSVResources
     ? [self fetchResourceInfosInContext:_context]
-    : nil;
+    : (NSArray *)nil;
   
   /* special case: no extra attributes (teams/persons/enterprises requested)*/
     

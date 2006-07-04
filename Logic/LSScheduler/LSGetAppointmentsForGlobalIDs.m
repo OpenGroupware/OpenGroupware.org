@@ -425,7 +425,7 @@ static NSSet *AllListAttrs = nil;
   if (addCount == 0)
     [self logWithFormat:@"did not add any GID to IN query !"];
   
-  return addCount == 0 ? nil : in;
+  return addCount == 0 ? (NSMutableString *)nil : in;
 }
 
 - (id)_fetchAttributesInContext:(id)_context gids:(NSArray *)_gids {
@@ -867,7 +867,8 @@ static NSSet *AllListAttrs = nil;
     [self setTimeZone:_value];
   else if ([_key isEqualToString:@"timeZoneName"]) {
     id tz;
-    tz = _value ? [NSTimeZone timeZoneWithAbbreviation:_value] : nil;
+    tz = _value != nil
+      ? [NSTimeZone timeZoneWithAbbreviation:_value] : (NSTimeZone *)nil;
     [self setTimeZone:tz];
   }
   else

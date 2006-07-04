@@ -80,7 +80,8 @@ extern NSString *LSWJobHasChanged;
   [command takeValue:[job valueForKey:@"jobId"]       forKey:@"jobId"];
   [command takeValue:[job valueForKey:@"jobStatus"]   forKey:@"jobStatus"];
   [command takeValue:[NSCalendarDate calendarDate]    forKey:@"actionDate"];
-  [command takeValue:self->comment?self->comment:@""  forKey:@"comment"];
+  [command takeValue:(self->comment != nil ? self->comment: (NSString *)@"")
+	   forKey:@"comment"];
   [command takeValue:_action                          forKey:@"action"];
   [command runInContext:_context];
 }
@@ -145,7 +146,8 @@ extern NSString *LSWJobHasChanged;
   [command takeValue:[job valueForKey:@"jobId"]       forKey:@"jobId"];
   [command takeValue:[job valueForKey:@"jobStatus"]   forKey:@"jobStatus"];
   [command takeValue:[NSCalendarDate calendarDate]    forKey:@"actionDate"];
-  [command takeValue:self->comment?self->comment:@""  forKey:@"comment"];
+  [command takeValue:self->comment ? self->comment : (NSString *)@""
+	   forKey:@"comment"];
   [command takeValue:LSJobDivided                     forKey:@"action"];
   [command runInContext:_context];
 }
@@ -158,7 +160,7 @@ extern NSString *LSWJobHasChanged;
 			       @"accept", @"done", @"archive", @"reactivate",
 			       @"reject", @"comment", @"divided", nil];
   }
-  if ([_action length] == 0)
+  if (![_action isNotEmpty])
     return NO;
   
   return [actions containsObject:_action];

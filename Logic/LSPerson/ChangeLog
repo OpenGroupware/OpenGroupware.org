@@ -1,3 +1,7 @@
+2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed gcc 4.1 warnings, 64bit tweaks (v5.3.30)
+
 2005-10-14  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSGetPersonCommand.m: minor code cleanups (v5.3.29)

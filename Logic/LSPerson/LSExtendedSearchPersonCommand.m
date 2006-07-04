@@ -144,7 +144,7 @@ static BOOL debugOn = NO;
 
     keyComponents = [key componentsSeparatedByString:@"."];
     entity        = [types objectForKey:[keyComponents objectAtIndex:0]];
-    entity        = (entity) ? entity : @"Person";
+    entity        = (entity != nil) ? entity : (NSString *)@"Person";
     
     if ((![oldEntity isEqualToString:entity]) ||
         [entity isEqualToString:@"CompanyValue"]) {

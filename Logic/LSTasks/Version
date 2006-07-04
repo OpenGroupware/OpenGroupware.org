@@ -1,5 +1,5 @@
 # Version file
 
-SUBMINOR_VERSION:=8
+SUBMINOR_VERSION:=9
 
 # v5.0.2 requires LSProject v5.0.27

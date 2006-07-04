@@ -226,7 +226,8 @@
     [self setTimeZone:_value];
   else if ([_key isEqualToString:@"timeZoneName"]) {
     id tz;
-    tz = _value ? [NSTimeZone timeZoneWithAbbreviation:_value] : nil;
+    tz = _value
+      ? [NSTimeZone timeZoneWithAbbreviation:_value] : (NSTimeZone *)nil;
     [self setTimeZone:tz];
   }
   else

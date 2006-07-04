@@ -357,7 +357,8 @@ static BOOL       debugOn      = NO; // LSAppointmentProposalCommand_DEBUG
 	        __PRETTY_FUNCTION__];
       }
   }
-  return (qualifier != nil) ? [NSArray arrayWithObject:qualifier] : emptyArray;
+  return (qualifier != nil) 
+    ? (NSArray *)[NSArray arrayWithObject:qualifier] : emptyArray;
 }
 
 - (EOSQLQualifier *)_dateQualifierForEntity:(EOEntity *)_entity

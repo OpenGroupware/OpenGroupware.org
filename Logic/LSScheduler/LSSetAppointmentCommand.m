@@ -213,7 +213,7 @@ static NSArray  *startDateOrderings = nil;
 
       resN = (resN != nil) 
         ? [NSString stringWithFormat:@"(%@)", resN]
-        : @"";
+        : (id)@"";
       
       [conflictString appendFormat:@"%@ - %@, %@: %@ %@\n", 
                         sD, eD, p, title, resN];
@@ -300,7 +300,8 @@ static NSArray  *startDateOrderings = nil;
                        @"participants",      _participants,
 		       @"customAttributes",  
 		       self->customAttributes
-		       ? self->customAttributes : (id)[NSNull null],
+		       ? self->customAttributes
+		       : (NSDictionary *)[NSNull null],
                        nil);
 }
 - (void)addLogText:(NSString *)_t andAction:(NSString *)_a inContext:(id)_ctx {

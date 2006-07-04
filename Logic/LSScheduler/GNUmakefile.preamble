@@ -1,0 +1,11 @@
+# compilation settings
+
+LSScheduler_BUNDLE_LIBS += \
+	-lLSFoundation -lOGoSchedulerTools -lNGiCal
+
+libOGoSchedulerTools_LIBRARIES_DEPEND_UPON += \
+	-lNGiCal	\
+	-lNGExtensions -lEOControl	\
+	-lDOM -lSaxObjC
+
+ADDITIONAL_LIB_DIRS += -L./$(GNUSTEP_OBJ_DIR)

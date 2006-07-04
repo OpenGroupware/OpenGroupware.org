@@ -132,7 +132,7 @@ static int maxCycleCount = 100;
                 @"comment",           self->comment,
 		@"customAttributes",  
 		self->customAttributes
-		? self->customAttributes : (id)[NSNull null],
+		? self->customAttributes : (NSDictionary *)[NSNull null],
                 nil);
 }
 
