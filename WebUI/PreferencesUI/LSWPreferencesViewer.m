@@ -194,10 +194,10 @@ static int keySort(id o1, id o2, void *ctx) {
 
   firstname = [[self object] valueForKey:@"firstname"];
   userName  = [[self object] valueForKey:@"name"];
-
-  return (firstname == nil)
+  
+  return ![firstname isNotEmpty]
     ? userName
-    : [NSString stringWithFormat:@"%@ %@", firstname, userName];
+    : (NSString *)[NSString stringWithFormat:@"%@ %@", firstname, userName];
 }
 
 - (NSString *)windowTitle {

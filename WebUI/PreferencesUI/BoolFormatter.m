@@ -39,9 +39,9 @@
 - (NSString *)stringForObjectValue:(id)_obj {
   NSString *str;
 
-  str = ([_obj boolValue]) ? @"YES" : @"NO";
-
-  return (self->labels != nil) ? [self->labels valueForKey:str] : str;
+  str = [_obj boolValue] ? @"YES" : @"NO";
+  return (self->labels != nil)
+    ? (NSString *)[self->labels valueForKey:str] : str;
 }
 
 @end /* SimpleTextAreaFormatter */

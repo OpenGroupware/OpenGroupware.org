@@ -1,3 +1,7 @@
+2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyMailingListManager.m: fixed a memory leak (v5.3.4)
+
 2005-03-16  Helge Hess  <helge.hess@opengroupware.org>
 
 	* bundle-info.plist: moved in mailing-list registry entries from

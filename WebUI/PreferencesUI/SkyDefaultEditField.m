@@ -187,7 +187,7 @@
   
   i = [[self item] stringValue]; // Note: required on OSX 10.3
   l = [self labels];
-  return l ? [l valueForKey:i] : i;
+  return l != nil ? (NSString *)[l valueForKey:i] : i;
 }
 
 @end /* SkyDefaultEditField */

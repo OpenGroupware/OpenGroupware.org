@@ -1,3 +1,7 @@
+2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoMailFilterManager.m: fixed some gcc 4.1 warnings (v5.3.7)
+
 2006-04-26  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWImapMailFilterEditor.m: implemented custom labels for the filter

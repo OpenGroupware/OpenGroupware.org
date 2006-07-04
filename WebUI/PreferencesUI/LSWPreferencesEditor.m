@@ -318,9 +318,9 @@ static NSArray  *UserDefKeys        = nil;
   if ([self isInNewMode])
     return [[self labels] valueForKey:@"newAccount"];
 
-  return (firstname == nil)
+  return ![firstname isNotEmpty]
     ? userName
-    : [NSString stringWithFormat:@"%@ %@", firstname, userName];
+    : (NSString *)[NSString stringWithFormat:@"%@ %@", firstname, userName];
 }
 
 - (NSString *)rootOnlyLabel {

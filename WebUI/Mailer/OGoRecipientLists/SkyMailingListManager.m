@@ -26,16 +26,18 @@
 
 - (id)initWithContext:(id)_ctx {
   if ((self = [super init])) {
-    ASSIGN(self->context, _ctx);
-    self->path = nil;
+    self->context = [_ctx retain];
   }
   return self;
 }
 
 - (void)dealloc {
-  RELEASE(self->context);
-  RELEASE(self->path);
+  [self->context release];
+  [self->path    release];
+  [super dealloc];
 }
+
+/* accessors */
 
 - (NSString *)path {
   if (self->path == nil) {
@@ -43,11 +45,10 @@
                                     valueForKey:@"companyId"]
                                     stringValue]
                                     stringByAppendingPathExtension:
-                                    @"mailingListManager"] retain];
+                                    @"mailingListManager"] copy];
   }
   return self->path;
 }
-
 
 - (NSArray *)mailingLists {
   NSFileManager *fm;

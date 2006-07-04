@@ -678,8 +678,8 @@ static NSNumber *NoNumber  = nil;
     l = _splitMe;
     t = nil;
   }
-  [self setLanguage:[l isNotEmpty] ? l : @"English"];
-  [self setTheme:   [t isNotEmpty] ? t : @"default"];
+  [self setLanguage:[l isNotEmpty] ? l : (NSString *)@"English"];
+  [self setTheme:   [t isNotEmpty] ? t : (NSString *)@"default"];
 }
 - (NSString *)languageAndTheme {
   /* join lang and theme, eg "English_blue" as required by OGo internally */

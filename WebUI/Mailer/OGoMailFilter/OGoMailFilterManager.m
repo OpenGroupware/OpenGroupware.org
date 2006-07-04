@@ -250,7 +250,7 @@ static BOOL     SieveLogPassword      = NO;
   tmppath    = [CyrusSieveTempPath stringByAppendingPathComponent:tmppath];
   
   if (ImapDebugEnabled) {
-      debugArgs = [NSArray arrayWithObjects:
+    debugArgs = [NSArray arrayWithObjects:
 			     @"-l",  imapLogin,
                              @"-p",  @"PASSWORD",
                              @"-s",  imapHost,
@@ -258,8 +258,8 @@ static BOOL     SieveLogPassword      = NO;
                              @"-id", filterPath,
                              @"-t",  tmppath,
                              @"-ImapDebugEnabled", @"YES",
-                             SieveLogPassword ? @"-SieveLogPassword" : nil,
-                             SieveLogPassword ? @"YES" : nil,
+			     SieveLogPassword ? (id)@"-SieveLogPassword" : nil,
+			     SieveLogPassword ? (id)@"YES" : nil,
                            nil];
   }
   
@@ -270,10 +270,10 @@ static BOOL     SieveLogPassword      = NO;
 		         @"-po", _port,
 		         @"-id", filterPath,
 		         @"-t",  tmppath,
-                         imapDeb ? @"-ImapDebugEnabled" : nil,
-                         imapDeb ? @"YES" : nil,
-                         SieveLogPassword ? @"-SieveLogPassword":nil,
-                         SieveLogPassword ? @"YES":nil,
+		         imapDeb ? (id)@"-ImapDebugEnabled" : nil,
+		         imapDeb ? (id)@"YES" : nil,
+		         SieveLogPassword ? (id)@"-SieveLogPassword" : nil,
+		         SieveLogPassword ? (id)@"YES" : nil,
 		       nil];
   
   if (_debugArgs && ImapDebugEnabled) *_debugArgs = debugArgs;
