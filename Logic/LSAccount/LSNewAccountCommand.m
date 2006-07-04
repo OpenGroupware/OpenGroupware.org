@@ -94,7 +94,7 @@
       // only user can create a skyrix account for itself
       // compare by login
       NSString *ldapLogin = [_context valueForKey:@"authorizedLDAPLogin"];
-      [self assert:([ldapLogin length] != 0) reason:@"no ldap login authorized"];
+      [self assert:[ldapLogin isNotEmpty] reason:@"no ldap login authorized"];
       [self assert:([[self valueForKey:@"login"] isEqualToString:ldapLogin])
             reason:@"LDAPAuthorization is enabled. Cannot create "
             @"skyrix-accounts."];

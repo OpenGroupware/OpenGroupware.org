@@ -73,8 +73,8 @@
     [self setObject:_value];
     return;
   }
-  [self logWithFormat:
-	  @"WARNING(%s): key %@ is not setable in toperson command",
+  [self warnWithFormat:
+	  @"%s: key %@ is not setable in toperson command",
           __PRETTY_FUNCTION__, _key];
 }
 
@@ -84,7 +84,7 @@
     return [self object];
   }
 
-  [self logWithFormat:@"WARNING(%s): key %@ is not valid in toperson command",
+  [self warnWithFormat:@"%s: key %@ is not valid in toperson command",
         __PRETTY_FUNCTION__, _key];
   return nil;
 }

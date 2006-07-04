@@ -65,15 +65,15 @@
     return @"txt";
   
   ft = [self->filePath pathExtension];
-  ft = ([ft length] == 0)
-    ? @"txt"
-    : (id)[ft lowercaseString];
+  ft = [ft isNotEmpty]
+    ? [ft lowercaseString]
+    : (NSString *)@"txt";
   return ft;
 }
 
 - (BOOL)isRootAccountId:(NSNumber *)_accId {
   if (_accId == nil) return NO;
-  return [_accId intValue] == 10000 ? YES : NO;
+  return [_accId unsignedLongValue] == 10000 ? YES : NO;
 }
 
 - (void)_validatePermissionsInContext:(id)_context {
@@ -170,11 +170,11 @@
       if ([fm fileExistsAtPath:oldFN]) {
 
         if (!(isOk = [fm movePath:oldFN toPath:fileName handler:nil]))
-          NSLog(@"ERROR[%s]: move failed", __PRETTY_FUNCTION__);
+	  [self errorWithFormat:@"[%s]: move failed", __PRETTY_FUNCTION__];
       }
       else {
-        NSLog(@"ERROR[%s]: missing file for %@ with name %@",
-              __PRETTY_FUNCTION__, [self object], fileName);
+        [self errorWithFormat:@"[%s]: missing file for %@ with name %@",
+              __PRETTY_FUNCTION__, [self object], fileName];
       }
     }
   }

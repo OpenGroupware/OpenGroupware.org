@@ -89,7 +89,7 @@
     }
     result = LSRunCommandV(_context, @"project", @"get",
                            @"projectId", projectId, nil);
-    if ([result count] == 0)
+    if (![result isNotEmpty])
       continue;
     
     [permittedObjs addObjectsFromArray:

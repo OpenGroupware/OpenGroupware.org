@@ -60,8 +60,8 @@
     obj = [obj lastObject];
   
   if ([EOFault isFault:obj]) {
-    [self logWithFormat:
-	    @"WARNING: toDocumentEditing for %@ is a fault: %@", _docId, obj];
+    [self warnWithFormat:
+	    @"toDocumentEditing for %@ is a fault: %@", _docId, obj];
   }
   return obj;
 }
@@ -191,7 +191,7 @@
     NSString       *source, *dest;
       
     if ([EOFault isFault:obj])
-      [self logWithFormat:@"WARNING: obj is a fault: %@", obj];
+      [self warnWithFormat:@"obj is a fault: %@", obj];
 
     [editing takeValue:[obj valueForKey:@"title"]         forKey:@"title"];
     [editing takeValue:[obj valueForKey:@"abstract"]      forKey:@"abstract"];

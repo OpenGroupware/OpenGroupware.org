@@ -145,11 +145,10 @@
   
   [self assert: (cache != nil) reason: @"got no cache .."];
 
-  [self assert:([[self object] count] > 0) reason:@"no staff list is set !"];
+  [self assert:[[self object] isNotEmpty] reason:@"no staff list is set !"];
   
   staffEnum  = [[self object] objectEnumerator];
-  
-  while ((staffItem = [staffEnum nextObject])) {
+  while ((staffItem = [staffEnum nextObject]) != nil) {
     NSArray *members = nil;
     register IMP objAtIdx;
     register int i, n;
@@ -237,7 +236,7 @@
 }
 
 - (void)takeValue:(id)_value forKey:(NSString *)_key {
-  if ([_key length] == 0)
+  if (![_key isNotEmpty])
     return;
   
   if ([_key isEqualToString:@"object"] || 

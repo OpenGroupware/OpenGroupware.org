@@ -152,9 +152,9 @@
   accounts = [self returnValue];
 
   if ([accounts count] > 1)
-    NSLog(@"WARNING: more than one user for login '%@' !!!", [self login]);
+    [self warnWithFormat:@"more than one user for login '%@'.", [self login]];
 
-  account = [accounts count] > 0
+  account = [accounts isNotEmpty]
     ? [accounts lastObject]
     : nil;
 
@@ -194,7 +194,7 @@
       if (accountPassword == nil)
         accountPassword = @"";
       
-      if ([self->crypted boolValue] == NO && [[self password] length] > 0) {
+      if (![self->crypted boolValue] && [[self password] isNotEmpty]) {
         id cmd = LSLookupCommandV(@"system", @"crypt",
                                   @"password", [self password],
                                   @"salt",     accountPassword,
@@ -223,9 +223,10 @@
   }
 
   if (account == nil)
-      NSLog(@"%s: login failed: '%@'.", __PRETTY_FUNCTION__, [self login]);
+    NSLog(@"%s: login failed: '%@'.", __PRETTY_FUNCTION__, [self login]);
   
-  [_context takeValue:account ? account : [NSNull null] forKey:LSAccountKey];
+  [_context takeValue:(account != nil ? account : (id)[NSNull null])
+	    forKey:LSAccountKey];
   [self setReturnValue:account];
 
   if (account) {

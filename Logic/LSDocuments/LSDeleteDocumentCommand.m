@@ -97,7 +97,7 @@
   editing = [self docEditing:_context];
   
   if (![editing isNotNull]) {
-    [self logWithFormat:@"WARNING[%s] missing documentEditing for doc %@",
+    [self warnWithFormat:@"[%s] missing documentEditing for doc %@",
             __PRETTY_FUNCTION__, [self object]];
     return;
   }
@@ -238,7 +238,7 @@
     if ([manager removeFileAtPath:fileName handler:nil])
       continue;
     
-    [self logWithFormat:@"WARNING[%s] could not delete file '%@'",
+    [self warnWithFormat:@"[%s] could not delete file '%@'",
 	  __PRETTY_FUNCTION__, fileName];
   }
 }

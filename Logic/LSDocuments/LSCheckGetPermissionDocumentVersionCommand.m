@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -19,37 +20,41 @@
   02111-1307, USA.
 */
 
-#import <LSFoundation/LSBaseCommand.h>
+#include <LSFoundation/LSBaseCommand.h>
 
 @interface LSCheckGetPermissionDocumentVersionCommand : LSBaseCommand
 @end
 
-#import "common.h"
+#include "common.h"
 
 @implementation LSCheckGetPermissionDocumentVersionCommand
 
-// command methods
+/* command methods */
 
 - (void)_executeInContext:(id)_context {
-  NSMutableArray *permittedObjs = nil;
-  id             obj            = [self object];  
-  int            i, cnt         = [obj count];
+  NSMutableArray *permittedObjs;
+  id             obj;
+  unsigned int   i, cnt;
+  
+  cnt           = [obj count];
+  permittedObjs = [[NSMutableArray alloc] initWithCapacity:cnt];
 
-  permittedObjs = [[NSMutableArray allocWithZone:[self zone]] init];
-
+  obj = [self object];  
   for (i = 0; i < cnt; i++) {
-    id       docVersion = [obj objectAtIndex:i];
-    NSNumber *docId     = [docVersion valueForKey:@"documentId"];
+    id       docVersion;
+    NSNumber *docId;
     NSArray  *result    = nil;
 
-    result = LSRunCommandV(_context, @"doc", @"get", @"documentId", docId, nil);
+    docVersion = [obj objectAtIndex:i];
+    docId      = [docVersion valueForKey:@"documentId"];
     
-    if ([result count] > 0)
+    result = LSRunCommandV(_context, @"doc", @"get", @"documentId", docId,nil);
+    if ([result isNotEmpty])
       [permittedObjs addObject:docVersion];
  
   }
   [self setReturnValue:permittedObjs];
-  RELEASE(permittedObjs); permittedObjs = nil;
+  [permittedObjs release]; permittedObjs = nil;
 }
 
-@end
+@end /* LSCheckGetPermissionDocumentVersionCommand */

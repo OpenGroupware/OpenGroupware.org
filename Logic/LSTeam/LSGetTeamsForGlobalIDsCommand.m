@@ -85,7 +85,7 @@
 - (id)valueForKey:(NSString *)_key {
   return [_key isEqualToString:@"fetchArchivedTeams"]
     ? [NSNumber numberWithBool:self->fetchArchivedTeams]
-    : [super valueForKey:_key];
+    : (NSNumber *)[super valueForKey:_key];
 }
 
 @end /* LSGetTeamsForGlobalIDsCommand */

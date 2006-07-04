@@ -68,8 +68,8 @@ static BOOL UseFoldersForIDRanges        = NO;
   }
   pkeys = [entity primaryKeyAttributeNames];
   if ([pkeys count] != 1) {
-    [self logWithFormat:
-	    @"ERROR[%s]: can only handle entities with one primary key "
+    [self errorWithFormat:
+	    @"[%s]: can only handle entities with one primary key "
             @"(entity=%@, keys=%@, obj=%@)",__PRETTY_FUNCTION__,
             entity, pkeys, _obj];
     return nil;
@@ -121,7 +121,7 @@ static BOOL UseFoldersForIDRanges        = NO;
 
   pid = [self->projectId isNotNull] 
     ? self->projectId
-    : [_obj valueForKey:@"projectId"];
+    : (NSNumber *)[_obj valueForKey:@"projectId"];
   
   if (![pid isNotNull]) {
     pid = [[_obj valueForKey:@"toDocument"] valueForKey:@"projectId"];
@@ -133,7 +133,7 @@ static BOOL UseFoldersForIDRanges        = NO;
   }
   
   if (![pid isNotNull]) {
-    [self logWithFormat:@"ERROR[%s]: missing project id for doc %@",
+    [self errorWithFormat:@"[%s]: missing project id for doc %@",
           __PRETTY_FUNCTION__, _obj];
     return nil;
   }
@@ -146,8 +146,8 @@ static BOOL UseFoldersForIDRanges        = NO;
     proj = LSRunCommandV(_ctx, @"project", @"get", @"projectId", pid, nil);
     
     if (![fm createDirectoryAtPath:path attributes:nil]) {
-      [self logWithFormat:
-	      @"ERROR[%s]: could not createDirectoryAtPath '%@' "
+      [self errorWithFormat:
+	      @"[%s]: could not createDirectoryAtPath '%@' "
 	      @"for obj %@ proj %@",
               __PRETTY_FUNCTION__, path, _obj, proj];
       return nil;
@@ -158,8 +158,8 @@ static BOOL UseFoldersForIDRanges        = NO;
     s = [proj description];
     if (![s writeToFile:[path stringByAppendingPathComponent:@"index.txt"]
 	    atomically:YES]) {
-      [self logWithFormat:
-	      @"WARNING[%s]: could not write index file at path '%@' with "
+      [self warnWithFormat:
+	      @"[%s]: could not write index file at path '%@' with "
 	      @"contents %@",
               __PRETTY_FUNCTION__,
               [path stringByAppendingPathComponent:@"index.txt"], proj];
@@ -167,7 +167,7 @@ static BOOL UseFoldersForIDRanges        = NO;
     isDir = YES;
   }
   if (!isDir) {
-    [self logWithFormat:@"ERROR[%s]: path '%@' for doc %@ is no dir",
+    [self errorWithFormat:@"[%s]: path '%@' for doc %@ is no dir",
             __PRETTY_FUNCTION__, path, _obj];
     return nil;
   }
@@ -201,14 +201,15 @@ static BOOL UseFoldersForIDRanges        = NO;
   
   if (![fm fileExistsAtPath:path isDirectory:&isDir]) {
     if (![fm createDirectoryAtPath:path attributes:nil]) {
-      NSLog(@"ERROR[%s]: couldn't createDirectoryAtPath %@ for obj %@",
-            __PRETTY_FUNCTION__, path, _obj);
+      [self errorWithFormat:
+	      @"[%s]: could not createDirectoryAtPath %@ for obj %@",
+	      __PRETTY_FUNCTION__, path, _obj];
       return nil;
     }
     isDir = YES;
   }
   if (!isDir) {
-    [self logWithFormat:@"ERROR[%s]: path %@ for doc %@ is no dir",
+    [self errorWithFormat:@"[%s]: path %@ for doc %@ is no dir",
           __PRETTY_FUNCTION__, path, _obj];
     return nil;
   }
@@ -263,7 +264,7 @@ static BOOL UseFoldersForIDRanges        = NO;
     }
   }
   if (str == nil) {
-    [self logWithFormat:@"ERROR[%s]: missing attachment name for %@",
+    [self errorWithFormat:@"[%s]: missing attachment name for %@",
             __PRETTY_FUNCTION__, obj];
     return;
   }

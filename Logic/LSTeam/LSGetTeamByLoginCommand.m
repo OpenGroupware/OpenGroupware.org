@@ -61,7 +61,7 @@
   /* perform fetch */
   dbChannel = [self databaseChannel];
   [dbChannel selectObjectsDescribedByQualifier:myQualifier fetchOrder:nil];
-  while ((obj = [dbChannel fetchWithZone:NULL])) {
+  while ((obj = [dbChannel fetchWithZone:NULL]) != nil) {
     [result addObject:obj];
     obj = nil;
   }

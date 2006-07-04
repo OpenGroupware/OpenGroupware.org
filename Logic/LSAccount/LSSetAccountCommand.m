@@ -119,7 +119,7 @@
   }
   // save attachement
 
-  if (self->data != nil && self->filePath != nil && [self->data length] > 0) {
+  if (self->data != nil && self->filePath != nil && [self->data isNotEmpty]) {
     BOOL     isOk;
     NSString *path     = nil;
     NSString *fileName = nil;
@@ -135,9 +135,9 @@
     [self assert:isOk reason:@"error during save of attachment"];
   }
 
-  // save Filter
+  /* save filter */
 
-  if ((self->filter != nil) && ([self->filter length] > 0)) {
+  if ((self->filter != nil) && [self->filter isNotEmpty]) {
     BOOL     isOk;
     NSString *path     = nil;
     NSString *fileName = nil;

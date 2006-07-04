@@ -215,7 +215,7 @@ static NSNumber *yesNum = nil;
     [ma removeObject:eoOrGID];
   }
   
-  return (ma != nil) ? ma : _results;
+  return (ma != nil) ? (NSArray *)ma : _results;
 }
 
 /* override fetch methods to support onlyTeamsWithAccountId */

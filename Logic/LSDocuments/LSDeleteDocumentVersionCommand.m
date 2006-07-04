@@ -45,7 +45,7 @@
 
   if ([manager fileExistsAtPath:fileName] && [self reallyDelete]) {
     if (![manager removeFileAtPath:fileName handler:nil])
-      [self logWithFormat:@"WARNING[%s]: couldn`t delete file at path %@",
+      [self warnWithFormat:@"[%s]: couldn`t delete file at path %@",
             __PRETTY_FUNCTION__, fileName];
   }
 }

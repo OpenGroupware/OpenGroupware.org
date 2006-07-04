@@ -143,7 +143,7 @@ static NSString *LDAPPasswordField = nil;
   login    = [obj valueForKey:@"login"];
 
   authPwd = isRoot // better: "isModifyingOtherUsersPwd"
-    ? [_context valueForKey:@"LSUser_P_W_D_Key"]
+    ? (NSString *)[_context valueForKey:@"LSUser_P_W_D_Key"]
     : self->oldPassword;
   
   if (![accLogin isEqualToString:login] && !isRoot) {
@@ -190,13 +190,14 @@ static NSString *LDAPPasswordField = nil;
     }
     
     if (con == nil) {
-      NSLog(@"ERROR[%s]: missing ldap-connection (host:%@; port:%d)",
-            __PRETTY_FUNCTION__, LDAPHost, LDAPPort);
+      [self errorWithFormat:
+	      @"[%s]: missing ldap-connection (host:%@; port:%d)",
+              __PRETTY_FUNCTION__, LDAPHost, LDAPPort];
       [self assert:NO reason:@"Couldn`t connect to ldap server"];
       return;
     }
     if (!res) {
-      NSLog(@"ERROR[%s] couldn't connect", __PRETTY_FUNCTION__);
+      [self errorWithFormat:@"[%s] could not connect", __PRETTY_FUNCTION__];
       [self assert:NO reason:@"Wrong ldap password"];
       return;
     }
@@ -220,8 +221,8 @@ static NSString *LDAPPasswordField = nil;
     changes = [NSArray arrayWithObject:mod];
 
     if (![con modifyEntryWithDN:dn changes:changes]) {
-      NSLog(@"ERROR[%s]: modifyEntryWithDN: %@ changes:%@ failed",
-            __PRETTY_FUNCTION__, dn, changes);
+      [self errorWithFormat:@"%s: modifyEntryWithDN: %@ changes:%@ failed",
+            __PRETTY_FUNCTION__, dn, changes];
       [self assert:NO
             reason:@"Couldn`t modify password entry"];
       return;
