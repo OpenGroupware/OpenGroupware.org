@@ -299,7 +299,7 @@ static int          maxLabelLength = 28;  // TODO: make a default!
     if ((str = [part valueForKey:@"name"]) == nil)
       str = [part valueForKey:@"description"];
   }
-  return [str isNotNull] ? str : nil;
+  return [str isNotNull] ? str : (NSString *)nil;
 }
 
 - (int)maxLabelLength {

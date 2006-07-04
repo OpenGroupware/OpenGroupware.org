@@ -239,7 +239,7 @@ static NSArray *fullWeekdayNames = nil;
 
   l = [fullWeekdayNames objectAtIndex:self->dayOfWeek];
   if (YES) // configuration possibility may come later (shortWeekdayTitles)
-    l = l ? [@"short_" stringByAppendingString:l] : nil;
+    l = l ? [@"short_" stringByAppendingString:l] : (NSString *)nil;
   return [[self labels] valueForKey:l];
 }
 

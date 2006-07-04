@@ -279,7 +279,7 @@
     label = [_part valueForKey:@"firstname"];
     label = ([label length])
       ? [label stringByAppendingFormat:@" %@", [_part valueForKey:@"name"]]
-      : [_part valueForKey:@"name"];
+      : (NSString *)[_part valueForKey:@"name"];
   }
   else if ([[_part valueForKey:@"isAccount"] boolValue]) {
     label = [_part valueForKey:@"login"];

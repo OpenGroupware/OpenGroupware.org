@@ -141,7 +141,7 @@ static BOOL hideListOnlyAppointments = NO;
       label1 = [_person valueForKey:@"firstname"];
       label1 = ([label1 length])
         ? [label1 stringByAppendingFormat:@" %@",[_person valueForKey:@"name"]]
-        : [_person valueForKey:@"name"];
+        : (NSString *)[_person valueForKey:@"name"];
     }
     else
       label1         = [_person valueForKey:@"login"];
@@ -160,7 +160,7 @@ static BOOL hideListOnlyAppointments = NO;
       label1 = [_person valueForKey:@"firstname"];
       label1 = ([label1 length])
         ? [label1 stringByAppendingFormat:@" %@",[_person valueForKey:@"name"]]
-        : [_person valueForKey:@"name"];
+        : (NSString *)[_person valueForKey:@"name"];
     }
     else
       label1 = [_person valueForKey:@"name"];

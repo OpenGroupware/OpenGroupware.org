@@ -347,7 +347,7 @@
 - (NSString *)yearIcon {
   return ((self->year > 1995) && (self->year < 2016))
     ? [NSString stringWithFormat:@"year%04d", self->year]
-    : @"year";
+    : (id)@"year";
 }
 
 - (NSString *)dayIcon {

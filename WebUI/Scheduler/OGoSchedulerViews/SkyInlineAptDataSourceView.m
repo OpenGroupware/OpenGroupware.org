@@ -418,7 +418,7 @@ static NSArray      *coreTeamAttrs   = nil;
 	intoPersonGIDs:personGids andTeamGIDs:teamGids];
   
   /* fetching persons and appending to name */
-  if ([personGids count] > 0) {
+  if ([personGids isNotEmpty]) {
     NSEnumerator *compEnum;
     id company;
 
@@ -429,7 +429,7 @@ static NSArray      *coreTeamAttrs   = nil;
     while ((company = [compEnum nextObject])) {
       all = [all isNotNull]
 	? [all stringByAppendingString:@"; "]
-        : (id)@"";
+        : (NSString *)@"";
 	    
       if ((d = [company valueForKey:@"name"]) == nil)
         d = [company valueForKey:@"login"];
@@ -442,7 +442,7 @@ static NSArray      *coreTeamAttrs   = nil;
       all = [all stringByAppendingString:d];
     }
   }
-  if ([teamGids count] > 0) {
+  if ([teamGids isNotEmpty]) {
     NSEnumerator *compEnum;
     id company;
     
@@ -451,7 +451,9 @@ static NSArray      *coreTeamAttrs   = nil;
     
     compEnum = [comps objectEnumerator];
     while ((company = [compEnum nextObject])) {
-      all = [all isNotNull] ? [all stringByAppendingString:@"; "] : (id)@"";
+      // TODO: is this correct? instead of empty string return all?
+      all = [all isNotNull] 
+	? [all stringByAppendingString:@"; "] : (NSString *)@"";
       
       all = [all stringByAppendingString:
                  [company valueForKey:@"description"]];
@@ -476,14 +478,15 @@ static NSArray      *coreTeamAttrs   = nil;
   info  = [NSMutableString stringWithCapacity:20];  
   {
     // append holidays
-    int      cnt;
+    unsigned cnt;
     NSString *label;
-    for (cnt = 0; cnt<[infos count]; cnt++) {
-      if ([info length] != 0)
+    
+    for (cnt = 0; cnt < [infos count]; cnt++) {
+      if ([info isNotEmpty])
         [info appendString:@", "];
       label = [[self labels] valueForKey:[infos objectAtIndex:cnt]];
       label = (label == nil)
-        ? [infos objectAtIndex:cnt]
+        ? (NSString *)[infos objectAtIndex:cnt]
         : label;
       [info appendString:label];
     }
@@ -629,7 +632,7 @@ static NSArray      *coreTeamAttrs   = nil;
   
   key = [self aptTypeKey];
   one = [key isNotNull] ? [aptTypeMap valueForKey:key] : nil;
-  return (one != nil) ? one : defaultAppType;
+  return (one != nil) ? (NSDictionary *)one : defaultAppType;
 }
 
 - (NSString *)aptTypeLabel {
