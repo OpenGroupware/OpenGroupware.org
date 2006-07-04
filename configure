@@ -271,6 +271,13 @@ function genConfigMake() {
   done
   cfgwrite "LIBRARY_COMBO:=$LIBRARY_COMBO"
   cfgwrite ""
+
+  # TODO: does it make sense before common.make?
+  cfgwrite "ifeq (\$(findstring _64, \$(GNUSTEP_TARGET_CPU)), _64)"
+  cfgwrite "SYSTEM_LIB_DIR += -L/usr/local/lib64 -L/usr/lib64"
+  cfgwrite "else"
+  cfgwrite "SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib"
+  cfgwrite "endif"
   
   cfgwrite "# avoid a gstep-make warning"
   cfgwrite "PATH:=\$(GNUSTEP_SYSTEM_ROOT)/Tools:\$(PATH)"
@@ -285,13 +292,19 @@ function checkLinking() {
   cp ../maintenance/dummytool.m .
   
   tmpmake="GNUmakefile"
-  echo  >$tmpmake "include ../config.make"
+  #echo  >$tmpmake "include ../config.make"
+  cat ../config.make >$tmpmake
   echo >>$tmpmake "include \$(GNUSTEP_MAKEFILES)/common.make"
   echo >>$tmpmake "TOOL_NAME           := linktest"
   echo >>$tmpmake "linktest_OBJC_FILES := dummytool.m"
   echo >>$tmpmake "linktest_TOOL_LIBS  += -l$1"
-  echo >>$tmpmake "SYSTEM_LIB_DIR      += -L/usr/local/lib -L/usr/lib"
   echo >>$tmpmake "include \$(GNUSTEP_MAKEFILES)/tool.make"
+
+  echo >>$tmpmake "ifeq (\$(findstring _64, \$(GNUSTEP_TARGET_CPU)), _64)"
+  echo >>$tmpmake "SYSTEM_LIB_DIR += -L/usr/local/lib64 -L/usr/lib64"
+  echo >>$tmpmake "else"
+  echo >>$tmpmake "SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib"
+  echo >>$tmpmake "endif"
   
   make -s messages=yes -f $tmpmake linktest >out.log 2>err.log
   LINK_RESULT=$?
