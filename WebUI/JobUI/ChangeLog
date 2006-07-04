@@ -1,3 +1,8 @@
+2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+        * LSWJobEditor.m: fixed a weirdness in hasJobAttributes
+          (v5.2.52)
+
 2005-03-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyJobList.m: changed to use direct action for activating a job

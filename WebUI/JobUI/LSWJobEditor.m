@@ -995,7 +995,8 @@ static BOOL HasSkyProject4Desktop    = NO;
   if (!JobAttributesCollapsible)
     return NO;
 
-  return self->referredPerson != nil > 0 ? YES : NO;
+  // TODO: is this correct?
+  return self->referredPerson != nil ? YES : NO;
 }
 
 - (void)setReferredPerson:(NSString *)_per {
