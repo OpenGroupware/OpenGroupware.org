@@ -809,7 +809,7 @@ lookupCommand(LSCommandContext *self, NSString *_domain, NSString *_command,
   if (command == nil)
     return nil;
 
-  argName  = _arg1 ? _arg1 : (va ? va_arg(*va, NSString *) : nil);
+  argName  = _arg1 ? _arg1 : (va ? va_arg(*va, NSString *) : (NSString *)nil);
   argValue = va ? va_arg(*va, id) : nil;
     
   while (argName) {

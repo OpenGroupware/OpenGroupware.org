@@ -50,7 +50,7 @@ static int arraySorter(id obj1, id obj2, void *sortAttribute) {
   else {
     compareMethod = @selector(compare:);
   }
-  return (int)[value1 performSelector:compareMethod withObject:value2];
+  return (long)[value1 performSelector:compareMethod withObject:value2];
 }
 static int arrayWithRelKeySorter(id obj1, id obj2, void *sortAttribute) {
   id value1 = [obj1 valueForKey:[(id)sortAttribute valueForKey:@"key"]];
@@ -85,7 +85,7 @@ static int arrayDescSorter(id obj1, id obj2, void *sortAttribute) {
   else
     compareMethod = @selector(compare:);
   
-  return (int)[value2 performSelector:compareMethod withObject:value1];
+  return (long)[value2 performSelector:compareMethod withObject:value1];
 }
 static int arrayWithRelKeyDescSorter
   (id obj1, id obj2, void *sortAttribute)

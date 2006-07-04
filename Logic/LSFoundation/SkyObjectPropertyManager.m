@@ -371,7 +371,7 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   
   mapOIDsWithGIDs = [self mapOIDsWithGIDs:_gids];
   
-  ns = [_namespace isNotEmpty] ? _namespace : nil;
+  ns = [_namespace isNotEmpty] ? _namespace : (NSString *)nil;
   
   [self _ensureOpenTransaction];
 
@@ -872,7 +872,7 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   result = nil;
   e      = [self entity];
   adc    = [self adaptorChannel];
-  _keys  = [_keys isNotNull] ? _keys : nil;
+  _keys  = [_keys isNotNull] ? _keys : (NSArray *)nil;
   cnt    = [_keys count];
   objId  = nil;
   type   = nil;
@@ -948,20 +948,23 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
   NSAssert([_access isKindOfClass:EOKeyGlobalIDClass],
            @"expected EOKeyGlobalIDClass for _access");
     
-  _access = [(EOKeyGlobalID *)_access isNotNull] ? _access : nil;
-  _keys   = [_keys isNotNull] ? _keys : nil;
+  _access = [(EOKeyGlobalID *)_access isNotNull] ? _access : (EOGlobalID *)nil;
+  _keys   = [_keys isNotNull] ? _keys : (NSArray *)nil;
 
-  if ([_keys count] == 0)
+  if (![_keys isNotEmpty])
     return nil;
 
   if ([self operation:@"e" allowedOnObjectID:_gid forPropertyKeys:_keys]) {
+    NSException  *e;
     NSDictionary *ui;
 
-    ui = [NSDictionary dictionaryWithObjectsAndKeys:
-			 @"properties", _keys, nil];
-    return [NSException exceptionWithName:SkyOPMNoAccessExceptionName
-                        reason:@"no access to edit properties"
-                        userInfo:ui];
+    ui = [[NSDictionary alloc] initWithObjectsAndKeys:
+				 @"properties", _keys, nil];
+    e = [NSException exceptionWithName:SkyOPMNoAccessExceptionName
+		     reason:@"no access to edit properties"
+		     userInfo:ui];
+    [ui release]; ui = nil;
+    return e;
   }
   accessId = [[NSDictionary alloc] initWithObjects:
                                      &[(EOKeyGlobalID *)_access keyValues][0]
@@ -1025,8 +1028,8 @@ static NSString *nsNameString(NSString *ns, NSString *n) {
 
   e     = [self entity];
   adc   = [self adaptorChannel];
-  _mask = [_mask isNotNull] ? _mask : nil;
-  _keys = [_keys isNotNull] ? _keys : nil;
+  _mask = [_mask isNotNull] ? _mask : (NSString *)nil;
+  _keys = [_keys isNotNull] ? _keys : (NSArray *)nil;
     
   if (_mask == nil)
     return YES;

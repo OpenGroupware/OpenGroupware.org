@@ -367,9 +367,9 @@
   // raises with sybaseMessages
   NSString *s;
   
-  s = ([self->sybaseMessages count] > 0)
+  s = [self->sybaseMessages isNotEmpty]
     ? [self->sybaseMessages description]
-    : @"unknown reason (no sybase messages found)";
+    : (NSString *)@"unknown reason (no database messages found)";
   [self assert:_condition reason:s];
 }
 

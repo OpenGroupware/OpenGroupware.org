@@ -105,7 +105,7 @@
 }
 - (id)valueForKey:(NSString *)_key {
   return ([_key isEqualToString:@"removeFromSource"])
-    ? [self removeFromSource]
+    ? (id)[self removeFromSource]
     : [super valueForKey:_key];
 }
 

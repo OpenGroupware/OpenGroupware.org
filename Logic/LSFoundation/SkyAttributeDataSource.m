@@ -200,7 +200,7 @@ static BOOL debugOn = NO;
   
   ns = (self->namespaces != nil)
     ? self->namespaces
-    : [[self->fetchSpecification hints] objectForKey:@"namespaces"];
+    : (NSSet *)[[self->fetchSpecification hints] objectForKey:@"namespaces"];
   
   if (debugOn) {
     [self debugWithFormat:@"fetch namespaces (default=%@): %@",

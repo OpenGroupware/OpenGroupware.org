@@ -1053,8 +1053,8 @@ FREE_ARRAYS:
   keys[12] = @"blobSize";  
   keys[13] = @"valueBlob";  
 
-  _access     = [_access isNotNull]     ? _access     : nil;
-  _properties = [_properties isNotNull] ? _properties : nil;
+  _access     = [_access isNotNull]     ? _access     : (EOGlobalID *)nil;
+  _properties = [_properties isNotNull] ? _properties : (NSDictionary *)nil;
 
   NSAssert(_access == nil || [_access isKindOfClass:EOKeyGlobalIDClass],
            @"expected EOKeyGlobalIDClass for accessOID");
@@ -1175,7 +1175,7 @@ FREE_ARRAYS:
   result      = nil;
   adc         = [self adaptorChannel];
   e           = [self entity];
-  _properties = [_properties isNotNull] ? _properties : nil;
+  _properties = [_properties isNotNull] ? _properties : (NSDictionary *)nil;
   objId       = nil;
   type        = nil;
   rollback    = NO;
@@ -1226,7 +1226,7 @@ FREE_ARRAYS:
 	  
 	  ui = [NSDictionary dictionaryWithObjectsAndKeys:
 			       k, @"key",
-  			       ns != nil ? ns : (id)SharedEONull,
+  			       ns != nil ? ns : (NSString *)SharedEONull,
 			       @"namespace", nil];
           return [NSException exceptionWithName:
                                 SkyOPMKeyDoesntExistExceptionName
@@ -1428,7 +1428,7 @@ FREE_ARRAYS:
 	? [[[@"{" stringByAppendingString:nsp]
 	          stringByAppendingString:@"}"]
 	          stringByAppendingString:[fetch objectForKey:@"key"]]
-        : [fetch objectForKey:@"key"];
+        : (NSString *)[fetch objectForKey:@"key"];
     }
     {
       EOKeyGlobalID    *kgid = nil;
@@ -1503,7 +1503,7 @@ FREE_ARRAYS:
   //       with the isNotNull)
   gidEnum = [_gids objectEnumerator];
   for (cnt = 0; (kgid = [gidEnum nextObject]) != nil; cnt++) {
-    oids[cnt] = [kgid isNotNull] ? [kgid keyValues][0] : kgid;
+    oids[cnt] = [kgid isNotNull] ? [kgid keyValues][0] : (id)kgid;
     gids[cnt] = kgid;
   }
   mapOIDsWithGIDs = [NSDictionary dictionaryWithObjects:gids forKeys:oids

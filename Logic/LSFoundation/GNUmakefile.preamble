@@ -34,8 +34,6 @@ load-LSModel_TOOL_LIBS += \
 	-lEOControl -lNGExtensions -lNGStreams \
 	-lDOM -lSaxObjC
 
-SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
-
 # OS dependend stuff
 ifeq ($(findstring openbsd3, $(GNUSTEP_TARGET_OS)), openbsd3)
 load-LSModel_TOOL_LIBS += -liconv

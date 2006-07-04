@@ -271,13 +271,13 @@ static BOOL debug = NO;
       [command runInContext:_context];
   }
   NS_HANDLER {
-    [_context takeValue:oldParent ? oldParent : [NSNull null]
+    [_context takeValue:(oldParent ? oldParent : (id)[NSNull null])
               forKey:parentKey];
     [localException raise];
   }
   NS_ENDHANDLER;
 
-  [_context takeValue:oldParent ? oldParent : [NSNull null]
+  [_context takeValue:(oldParent ? oldParent : (id)[NSNull null])
             forKey:parentKey];
 }
 

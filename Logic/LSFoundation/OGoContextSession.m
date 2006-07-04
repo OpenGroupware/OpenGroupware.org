@@ -332,7 +332,7 @@ static OGoContextSession *activeSession = nil;
   va_end(ap);
 
   NSLog(@"OGo[%@]: %@",
-        self->login ? self->login : @"no login",
+        (self->login != nil ? self->login : (NSString *)@"no login"),
         value);
   [value release];
 }
@@ -353,7 +353,8 @@ static OGoContextSession *activeSession = nil;
   value = [[NSString alloc] initWithFormat:_format arguments:ap];
   va_end(ap);
   
-  NSLog(@"OGo[%@]D: %@", self->login ? self->login : @"no login", value);
+  NSLog(@"OGo[%@]D: %@",
+	self->login ? self->login : (NSString *)@"no login", value);
   [value release];
 }
 
@@ -371,8 +372,8 @@ static OGoContextSession *activeSession = nil;
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@[0x%p]: login=%@ tx=%s>",
                      NSStringFromClass([self class]), self,
-                     self->login ? self->login : @"<no login>",
-                     [self->cmdContext isTransactionInProgress] ? "yes" : "no"];
+		     self->login ? self->login : (NSString *)@"<no login>",
+                     [self->cmdContext isTransactionInProgress] ? "yes" :"no"];
 }
 
 @end /* OGoContextSession */

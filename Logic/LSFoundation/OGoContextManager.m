@@ -673,7 +673,8 @@ static NSString *fmt = @"%@..-/.%@";
   return [sn login:_login
              password:_password
              crypted:_crypted
-             isSessionLogEnabled:_isSessionLogEnabled] ? sn:nil;
+             isSessionLogEnabled:_isSessionLogEnabled] 
+    ? sn : (OGoContextSession *)nil;
 }
 
 /* logging */

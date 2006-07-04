@@ -256,7 +256,7 @@ static BOOL doCacheGIDs = YES;
   /* fetch additional info */
   
   [self fetchAdditionalInfosForObjects:
-	  (self->groupBy != nil) ? [results allValues] : results
+	  ((self->groupBy != nil) ? [results allValues] : (NSArray *)results)
         context:_context];
   
   return results;
@@ -534,9 +534,8 @@ static BOOL doCacheGIDs = YES;
   TIME_END();
 
   TIME_START(@"fetchAdditionalInfosForObjects ");
-  [self fetchAdditionalInfosForObjects:(self->groupBy != nil)
-                                       ? [results allValues]
-                                       : results
+  [self fetchAdditionalInfosForObjects:
+	  (self->groupBy != nil) ? [results allValues] : (NSArray *)results
         context:_context];
 
   TIME_END();

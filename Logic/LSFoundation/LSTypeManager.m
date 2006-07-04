@@ -239,12 +239,12 @@
 /* PrimaryKeyTypes */
 
 - (EOGlobalID *)globalIDForPrimaryKey:(id)_pkey {
-  EOGlobalID   *gid;
-  id           pkey;
-  unsigned int pkeyInt;
-  NSString     *entityName;
+  EOGlobalID    *gid;
+  id            pkey;
+  unsigned long pkeyInt;
+  NSString      *entityName;
   
-  pkeyInt = [_pkey unsignedIntValue];
+  pkeyInt = [_pkey unsignedLongValue];
   
   if (pkeyInt == 0) /* '0' as pkey is not allowed here */
     return nil;
@@ -282,8 +282,8 @@
   /* first check in cache */
   
   for (i = 0; i < pc; i++) {
-    id       pkey;
-    unsigned pkeyInt;
+    NSNumber      *pkey;
+    unsigned long pkeyInt;
     
     pkey    = [_pkeys objectAtIndex:i];
     pkeyInt = [pkey intValue];
@@ -304,19 +304,19 @@
     NSString      *eName;
     EOKeyGlobalID *gid;
     id            pkey;
-    unsigned      pkeyInt;
+    unsigned long pkeyInt;
     
     eName   = [entityNames objectAtIndex:i];
 
     if ([eName isNotNull]) {
-      pkey    = [_pkeys      objectAtIndex:i];
-      pkeyInt = [pkey intValue];
+      pkey    = [_pkeys objectAtIndex:i];
+      pkeyInt = [pkey unsignedLongValue];
     
       gid = [EOKeyGlobalID globalIDWithEntityName:eName
                            keys:&pkey keyCount:1
                            zone:NULL];
       if (gid)
-        NSMapInsert(self->pkeyToGid, (void*)pkeyInt, gid);
+        NSMapInsert(self->pkeyToGid, (void *)pkeyInt, gid);
     
       gids[i] = gid;
       if (gids[i] == nil)

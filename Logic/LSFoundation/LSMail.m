@@ -35,10 +35,10 @@
 {
   LSMail *mail = [LSMail mail];
 
-  [mail setMailTo :_to     ?_to     :@""];
-  [mail setMessage:_string ?_string :@""];
-  [mail setSubject:_subject?_subject:@""];
-  [mail setFrom   :_from   ?_from   :@""];
+  [mail setMailTo :_to      ? _to      : (NSString *)@""];
+  [mail setMessage:_string  ? _string  : (NSString *)@""];
+  [mail setSubject:_subject ? _subject : (NSString *)@""];
+  [mail setFrom   :_from    ? _from    : (NSString *)@""];
   [mail sendMail];
 }
 + (void)sendMessage:(NSString *)_string
