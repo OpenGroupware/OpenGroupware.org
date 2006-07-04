@@ -37,7 +37,7 @@
       return firstname;
   }
   else {
-    return (lastname != nil) ? lastname : @"No Name";
+    return (lastname != nil) ? lastname : (NSString *)@"No Name";
   }
 }
 

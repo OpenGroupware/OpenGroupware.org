@@ -1,3 +1,7 @@
+2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxTask.m: fixed a gcc 4.1 warning (v1.5.80)
+
 2005-06-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.3.79

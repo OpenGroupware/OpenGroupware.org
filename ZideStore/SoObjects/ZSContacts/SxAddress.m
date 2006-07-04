@@ -712,7 +712,8 @@ static BOOL debugEO = NO;
                        @"entityName",    [self entityName],
                        @"createPrivate", 
                          [NSNumber numberWithBool:self->isPrivate],
-                       @"gid",           [self isNew] ? nil : [self globalID],
+                       @"gid",
+		         [self isNew] ? (EOGlobalID *)nil : [self globalID],
                        nil];
     }
     else {

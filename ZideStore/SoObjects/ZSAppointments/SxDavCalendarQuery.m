@@ -150,7 +150,7 @@ static BOOL debugOn = YES;
   folder  = [self clientObject];
   manager = [self aptManagerInContext:_ctx];
   
-#warning TODO: consider limit set by client
+  // TODO: consider limit set by client
   sid   = [self currentAptSet];
   dates = [manager gidsOfAppointmentSet:sid];
   [self debugWithFormat:@"for %@ got %d events ...", sid, [dates count]];

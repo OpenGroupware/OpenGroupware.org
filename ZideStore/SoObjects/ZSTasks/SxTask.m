@@ -116,9 +116,9 @@
   obj = [[self object] valueForKey:@"creator"];
   name = [obj valueForKey:@"name"];
   tmp  = [obj valueForKey:@"firstname"];
-  if (tmp) {
-    name = name
-      ? [NSString stringWithFormat:@"%@ %@", tmp, name]
+  if ([tmp isNotEmpty]) {
+    name = [name isNotEmpty]
+      ? (NSString *)[NSString stringWithFormat:@"%@ %@", tmp, name]
       : tmp;
   }
   else {
@@ -129,7 +129,6 @@
 }
 - (NSString *)ownerName {
   return [self fromName];
-  /*    @"Bjoern Stierand"; */
 }
 
 - (int)sensitivity { // same as access_class, only as int, see NOTES

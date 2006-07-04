@@ -42,10 +42,11 @@
   id d;
   
   d = [[self team] valueForKey:@"description"];
-  return [d isNotNull] ? [d stringValue] : nil;
+  return [d isNotEmpty] ? [d stringValue] : (NSString *)nil;
 }
 
 - (NSString *)title {
+  // TODO: localize prefix
   return [NSString stringWithFormat:
                    @"User Homepage of Account '%@'",
                    [[self account] valueForKey:@"login"]];

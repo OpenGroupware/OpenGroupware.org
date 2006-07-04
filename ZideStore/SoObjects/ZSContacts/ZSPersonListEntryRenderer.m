@@ -55,8 +55,8 @@ static id sharedRenderer = nil; // THREAD
   // getting: pkey, sn, givenname
   sn   = [record objectForKey:@"sn"];
   gn   = [record objectForKey:@"givenname"];
-  gn   = [gn isNotNull] ? ([gn length] > 0 ? gn : nil) : nil;
-  sn   = [sn isNotNull] ? ([sn length] > 0 ? sn : nil) : nil;
+  gn   = [gn isNotEmpty] ? gn : (NSString *)nil;
+  sn   = [sn isNotEmpty] ? sn : (NSString *)nil;
   pkey = [[record objectForKey:@"pkey"] stringValue];
   
   /* get URL */
