@@ -96,8 +96,8 @@ static NSString *autoNumberPrefix = @"OGo";
     return NO;
 
   c = [self comment];
-  if ([c length] == 0)
-        c = [NSNull null];
+  if (![c isNotEmpty])
+    c = [NSNull null];
     
   [genObjInfo takeValue:c forKey:@"comment"];
 
@@ -128,7 +128,7 @@ static NSString *autoNumberPrefix = @"OGo";
   extAttrs = [obj valueForKey:@"companyValue"]; // TODO: who does that?
   // TODO: autofetch if 'companyValue' isn't set?
   if (extAttrs == nil)
-    [self logWithFormat:@"WARNING: companyValue is not set, might DUP attrs."];
+    [self warnWithFormat:@"companyValue is not set, might DUP attrs."];
   
   for (i = 0, cnt = [extAttrs count]; i < cnt; i++) {
     id extAttr, value;
@@ -251,7 +251,7 @@ static NSString *autoNumberPrefix = @"OGo";
   n   = [obj valueForKey:@"number"];
   
   if ([n isKindOfClass:[NSString class]]) {
-    if ([n length] == 0)
+    if (![n isNotEmpty])
       n = nil;
   }
   if ([n isNotNull])
@@ -295,7 +295,7 @@ static NSString *autoNumberPrefix = @"OGo";
                          fileName, [obj valueForKey:@"companyId"]];
 
   if ((self->pictureData != nil && self->pictureFilePath != nil
-       && [self->pictureData length] > 0)
+       && [self->pictureData isNotEmpty])
       || self->deleteImage) {
     fName = [fileName stringByAppendingPathExtension:@"jpg"];
     
@@ -309,7 +309,7 @@ static NSString *autoNumberPrefix = @"OGo";
   }
 
   if (self->pictureData !=nil && self->pictureFilePath != nil &&
-      [self->pictureData length] > 0) {
+      [self->pictureData isNotEmpty]) {
     fName = [fileName stringByAppendingPathExtension:
                         [self->pictureFilePath pathExtension]];
     isOk  = [self->pictureData writeToFile:fName atomically:YES];

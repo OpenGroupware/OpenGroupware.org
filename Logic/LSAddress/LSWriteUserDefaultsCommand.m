@@ -69,7 +69,7 @@
   id account;
   
   if (self->defaults == nil) {
-    NSLog(@"WARNING: defaults == nil using StandardUserDefaults");
+    [self warnWithFormat:@"defaults == nil using StandardUserDefaults"];
     self->defaults = [[_context valueForKey:LSUserDefaultsKey] retain];
   }
   [self assert:[self->key isNotNull] reason:@"expect a key"];

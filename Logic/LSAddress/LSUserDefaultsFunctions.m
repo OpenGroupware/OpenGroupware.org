@@ -54,7 +54,7 @@ NSString *__getUserDefaultsPath_LSLogic_LSAddress(id self, id _context,
         
       if (![fm createDirectoriesAtPath:LSAttachmentPath attributes:nil]) {
         [self errorWithFormat:
-                @"ERROR: could not create LSAttachmentPath (ensure that "
+                @"could not create LSAttachmentPath (ensure that "
                 @"the OGo process can write in this directory!): %@",
                 LSAttachmentPath];
         LSAttachmentPath = nil;

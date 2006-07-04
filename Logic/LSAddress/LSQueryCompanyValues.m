@@ -134,7 +134,7 @@ static EONull *null = nil;
         i = 0;
       }
     }
-    if ([in length] > 0)
+    if ([in isNotEmpty])
       [ins addObject:in];
   }
 
@@ -148,7 +148,7 @@ static EONull *null = nil;
   while ((in = [ine nextObject])) {
     EOSQLQualifier *q = nil;
     
-    if (in != (id)null && [in length] > 0) {
+    if (in != (id)null && [in isNotEmpty]) {
       q = [[EOSQLQualifier alloc]
                            initWithEntity:entity
                            qualifierFormat:@"%A IN (%@)", @"companyId", in];

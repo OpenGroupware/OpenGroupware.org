@@ -96,7 +96,7 @@ static NSDictionary *addressMapping = nil;
     type = [address valueForKey:@"type"];
     type = [addressMapping valueForKey:type];
     
-    if ([type length] > 0) [ms appendFormat:@";TYPE=%@", type];
+    if ([type isNotEmpty]) [ms appendFormat:@";TYPE=%@", type];
   }
   if ([self generateTag] || [self generateType]) 
     [ms appendString:@":"];

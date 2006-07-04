@@ -93,7 +93,7 @@ static NSTimeZone *gmt = nil;
   
   tz = ((abbrev = [self tzInContext:_context]))
     ? [NSTimeZone timeZoneWithAbbreviation:abbrev]
-    : nil;
+    : (NSTimeZone *)nil;
   if (tz == nil) tz = gmt;
   
   channel   = [self databaseChannel];
@@ -105,7 +105,7 @@ static NSTimeZone *gmt = nil;
   obj = [self object];
 
   if (![obj isNotNull]) {
-    NSLog(@"WARNING[%s]: missing object", __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"[%s]: missing object", __PRETTY_FUNCTION__];
     return;
   }
   

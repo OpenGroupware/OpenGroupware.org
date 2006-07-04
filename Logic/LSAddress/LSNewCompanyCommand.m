@@ -407,7 +407,7 @@ static NSString *autoNumberPrefix = @"OGo";
                          fileName, [obj valueForKey:@"companyId"]];
 
   if ((self->pictureData != nil && self->pictureFilePath != nil
-         && [self->pictureData length] > 0)
+         && [self->pictureData isNotEmpty])
         || self->deleteImage) {
       fName = [fileName stringByAppendingPathExtension:@"jpg"];
 
@@ -422,7 +422,7 @@ static NSString *autoNumberPrefix = @"OGo";
   }
 
   if (self->pictureData !=nil && self->pictureFilePath != nil &&
-        [self->pictureData length] > 0) {
+        [self->pictureData isNotEmpty]) {
       fName = [fileName stringByAppendingPathExtension:
                         [self->pictureFilePath pathExtension]];
       isOk  = [self->pictureData writeToFile:fName atomically:YES];

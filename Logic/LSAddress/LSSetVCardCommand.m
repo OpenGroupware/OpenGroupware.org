@@ -219,7 +219,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
       tmp = [_value objectAtIndex:i];
       if (![tmp isNotNull]) continue;
       tmp = [tmp stringValue];
-      if ([tmp length] == 0) continue;
+      if (![tmp isNotEmpty]) continue;
       
       if (ms == nil)
         ms = [NSMutableString stringWithCapacity:32];
@@ -227,7 +227,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
         [ms appendString:@","];
       [ms appendString:tmp];
     }
-    _value = (ms != nil) ? ms : (id)[EONull null];
+    _value = (ms != nil) ? ms : (NSMutableString *)[EONull null];
   }
   else if (![_value isNotNull]) {
     if (_value == nil) 
@@ -237,7 +237,8 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
     _value = [_value stringValue];
   }
   
-  [self->changeset setObject:(_value ? _value : [EONull null]) forKey:_key];
+  [self->changeset setObject:(_value != nil ? _value : (id)[EONull null]) 
+                   forKey:_key];
 }
 
 - (void)mapVKey:(NSString *)_rkey to:(NSString *)_lkey {
@@ -462,9 +463,9 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
 
     k = [[NSString alloc] initWithFormat:@"email%i", i];
     email = [mails nextObject];
-    email = [email isNotNull] ? [email stringValue] : (id)null;
+    email = [email isNotNull] ? [email stringValue] : (NSString *)null;
     [self->changeset setObject:email forKey:k];
-    [k release];
+    [k release]; k = nil;
   }
 }
 
@@ -502,7 +503,8 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   [self appendOrg:_vc];
   
   /* finish up */
-  cs = [self->changeset isNotEmpty] ? self->changeset : nil;
+  cs = [self->changeset isNotEmpty]
+    ? self->changeset : (NSMutableDictionary *)nil;
   [self->changeset autorelease]; self->changeset = nil;
   return cs;
 }
@@ -535,7 +537,8 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   [self appendOrg:_vc];
   
   /* finish up */
-  cs = [self->changeset isNotEmpty] ? self->changeset : nil;
+  cs = [self->changeset isNotEmpty]
+    ? self->changeset : (NSMutableDictionary *)nil;
   [self->changeset autorelease]; self->changeset = nil;
   return cs;
 }
@@ -546,7 +549,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   [self assert:([self->vCard isNotNull] || [self->vCardObject isNotNull])
 	reason:@"missing either vCard or vCardObject parameter!"];
   if ([self->vCard isNotNull])
-    [self assert:([self->vCard length] > 0) reason:@"vCard has no content!"];
+    [self assert:[self->vCard isNotEmpty] reason:@"vCard has no content!"];
 }
 
 /* working on type arrays */
@@ -849,7 +852,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
                  componentsJoinedByString:@","];
   vct = [vct uppercaseString];
   
-  if ([vct length] == 0) vct = @"untyped";
+  if (![vct isNotEmpty]) vct = @"untyped";
       
   mappedType = [@"V:" stringByAppendingString:vct];
   if (![usedTypes containsObject:mappedType])

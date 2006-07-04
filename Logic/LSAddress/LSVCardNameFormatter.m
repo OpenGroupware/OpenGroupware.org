@@ -34,13 +34,12 @@
 
   tmp  = [_person valueForKey:@"name"];
   tmp2 = [_person valueForKey:@"firstname"];
-  if (([tmp isNotNull] && ([tmp length] > 0)) &&
-      ([tmp2 isNotNull] && ([tmp2 length] > 0))) {
+  if ([tmp isNotEmpty] && [tmp2 isNotEmpty]) {
     fn = [[tmp2 stringByAppendingString:@" "] stringByAppendingString:tmp];
   }
-  else if ([tmp isNotNull] && [tmp length])
+  else if ([tmp isNotEmpty])
     fn = tmp;  // ok, lastname
-  else if ([tmp2 isNotNull] && [tmp2 length])
+  else if ([tmp2 isNotEmpty])
     fn = tmp2; // take firstname
   else { // no firstname, no lastname, take id
     fn = [@"Person: " stringByAppendingString:
@@ -79,19 +78,19 @@
   [ms appendString:@";"];
   // firstname
   tmp = tmp2;
-  [self _appendTextValue:[tmp isNotNull] ? tmp : @"" toVCard:ms];
+  [self _appendTextValue:[tmp isNotNull] ? tmp : (NSString *)@"" toVCard:ms];
   [ms appendString:@";"];
   // middlename
   tmp = [_person valueForKey:@"middlename"];
-  [self _appendTextValue:[tmp isNotNull] ? tmp : @"" toVCard:ms];
+  [self _appendTextValue:[tmp isNotNull] ? tmp : (NSString *)@"" toVCard:ms];
   [ms appendString:@";"];
   // degree
   tmp = [_person valueForKey:@"degree"];
-  [self _appendTextValue:[tmp isNotNull] ? tmp : @"" toVCard:ms];
+  [self _appendTextValue:[tmp isNotNull] ? tmp : (NSString *)@"" toVCard:ms];
   [ms appendString:@";"];
   // other title
   tmp = [_person valueForKey:@"other_title1"];
-  [self _appendTextValue:[tmp isNotNull] ? tmp : @"" toVCard:ms];
+  [self _appendTextValue:[tmp isNotNull] ? tmp : (NSString *)@"" toVCard:ms];
   if ([(tmp = [_person valueForKey:@"other_title2"]) isNotNull]) {
     [ms appendString:@","];
     [self _appendTextValue:tmp toVCard:ms];

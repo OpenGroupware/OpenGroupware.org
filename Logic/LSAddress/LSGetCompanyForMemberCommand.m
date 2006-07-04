@@ -149,7 +149,7 @@ static int compareGroups(id group1, id group2, void *context) {
   EOSQLQualifier *qualifier;
   NSString       *qfmt;
 
-  if ([_in length] == 0)
+  if (![_in isNotEmpty])
     return nil;
 
   assignmentEntity = [[self database] entityNamed:@"CompanyAssignment"];
@@ -172,7 +172,7 @@ static int compareGroups(id group1, id group2, void *context) {
   
   memberEntity = [[self database] entityNamed:[self groupEntityName]];
 
-  if ([_in length] == 0)
+  if (![_in isNotEmpty])
     return [self falseSQLQualifierForEntity:memberEntity];
 
   qfmt = [self isSingleKeyBatchString:_in]

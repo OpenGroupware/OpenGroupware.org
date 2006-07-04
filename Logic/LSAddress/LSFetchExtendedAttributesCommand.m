@@ -93,9 +93,8 @@
 
     if (![obj isNotNull]) {
 #if DEBUG
-      [self logWithFormat:
-              @"WARNING: got invalid item %@ in set %@",
-              obj, [self object]];
+      [self warnWithFormat:@"got invalid item %@ in set %@",
+	      obj, [self object]];
 #endif
       continue;
     }

@@ -163,52 +163,38 @@ static BOOL         renderOGoPhoneType = NO;
   }
 
   /* URL */
-  if ([(tmp = [_contact valueForKey:@"url"]) isNotNull]) {
-    if ([tmp length] > 0)
-      [self _appendName:@"URL" andValue:tmp toVCard:_vCard];
-  }
+  if ([(tmp = [_contact valueForKey:@"url"]) isNotEmpty])
+    [self _appendName:@"URL" andValue:tmp toVCard:_vCard];
   
   /* X-EVOLUTION-FILE-AS */
-  if ([(tmp = [_contact valueForKey:@"fileas"]) isNotNull]) {
-    if ([tmp length] > 0)
-      [self _appendName:@"X-EVOLUTION-FILE-AS" andValue:tmp toVCard:_vCard];
-  }
+  if ([(tmp = [_contact valueForKey:@"fileas"]) isNotEmpty])
+    [self _appendName:@"X-EVOLUTION-FILE-AS" andValue:tmp toVCard:_vCard];
   
   /* X-EVOLUTION-MANAGER */
-  if ([(tmp = [_contact valueForKey:@"bossName"]) isNotNull]) {
-    if ([tmp length] > 0)
-      [self _appendName:@"X-EVOLUTION-MANAGER" andValue:tmp toVCard:_vCard];
-  }
+  if ([(tmp = [_contact valueForKey:@"bossName"]) isNotEmpty])
+    [self _appendName:@"X-EVOLUTION-MANAGER" andValue:tmp toVCard:_vCard];
   
   /* X-EVOLUTION-ASSISTANT */
-  if ([(tmp = [_contact valueForKey:@"assistantName"]) isNotNull]) {
-    if ([tmp length] > 0)
-      [self _appendName:@"X-EVOLUTION-ASSISTANT" andValue:tmp toVCard:_vCard];
-  }
+  if ([(tmp = [_contact valueForKey:@"assistantName"]) isNotEmpty])
+    [self _appendName:@"X-EVOLUTION-ASSISTANT" andValue:tmp toVCard:_vCard];
   
   /* X-EVOLUTION-SPOUSE */
-  if ([(tmp = [_contact valueForKey:@"partnerName"]) isNotNull]) {
-    if ([tmp length] > 0)
-      [self _appendName:@"X-EVOLUTION-SPOUSE" andValue:tmp toVCard:_vCard];
-  }
+  if ([(tmp = [_contact valueForKey:@"partnerName"]) isNotEmpty])
+    [self _appendName:@"X-EVOLUTION-SPOUSE" andValue:tmp toVCard:_vCard];
   
   /* ROLE */
-  if ([(tmp = [_contact valueForKey:@"occupation"]) isNotNull]) {
+  if ([(tmp = [_contact valueForKey:@"occupation"]) isNotEmpty])
     /* 'profession' in Evo UI */
-    if ([tmp length] > 0)
-      [self _appendName:@"ROLE" andValue:tmp toVCard:_vCard];
-  }
+    [self _appendName:@"ROLE" andValue:tmp toVCard:_vCard];
   
   /* X-AIM or X-ICQ or X-JABBER */
-  if ([(tmp = [_contact valueForKey:@"imAddress"]) isNotNull]) {
-    if ([tmp length] > 0) {
-      if (isdigit([tmp characterAtIndex:0]))
-	[self _appendName:@"X-ICQ" andValue:tmp toVCard:_vCard];
-      else if ([tmp rangeOfString:@"@"].length > 0)
-	[self _appendName:@"X-JABBER" andValue:tmp toVCard:_vCard];
-      else
-	[self _appendName:@"X-AIM" andValue:tmp toVCard:_vCard];
-    }
+  if ([(tmp = [_contact valueForKey:@"imAddress"]) isNotEmpty]) {
+    if (isdigit([tmp characterAtIndex:0]))
+      [self _appendName:@"X-ICQ" andValue:tmp toVCard:_vCard];
+    else if ([tmp rangeOfString:@"@"].length > 0)
+      [self _appendName:@"X-JABBER" andValue:tmp toVCard:_vCard];
+    else
+      [self _appendName:@"X-AIM" andValue:tmp toVCard:_vCard];
   }
   
   /* X-EVOLUTION-ANNIVERSARY */
@@ -226,16 +212,16 @@ static BOOL         renderOGoPhoneType = NO;
   if (![type isNotNull])       return nil;
   if (![type hasPrefix:@"V:"]) return nil;
 
-      /* a vCard specific type */
-      type = [type substringFromIndex:2];
+  /* a vCard specific type */
+  type = [type substringFromIndex:2];
       
-      // remove counter (eg V:1work, V:2work)
-      if ([type length] > 0 && isdigit([type characterAtIndex:0]))
-        type = [type substringFromIndex:1];
+  // remove counter (eg V:1work, V:2work)
+  if ([type isNotEmpty] && isdigit([type characterAtIndex:0]))
+    type = [type substringFromIndex:1];
       
-      if ([type hasSuffix:@"untyped"]) /* imported VCF had no ADR type */
-        type = nil;
-      return type;
+  if ([type hasSuffix:@"untyped"]) /* imported VCF had no ADR type */
+    type = nil;
+  return type;
 }
 
 - (void)_appendAddressData:(id)_contact toVCard:(NSMutableString *)_vCard {
@@ -244,7 +230,7 @@ static BOOL         renderOGoPhoneType = NO;
   int i, cnt;
   
   if (![(addrs = [_contact valueForKey:@"addresses"]) isNotNull]) {
-    [self logWithFormat:@"WARNING: got no addresses for contact with id: %@",
+    [self warnWithFormat:@"got no addresses for contact with id: %@",
           [_contact valueForKey:@"companyId"]];
     return;
   }
@@ -260,21 +246,21 @@ static BOOL         renderOGoPhoneType = NO;
     
     type = ([type isNotNull] && [type hasPrefix:@"V:"])
       ? [self typeFromVCardTypeHack:type]
-      : [addressMapping valueForKey:type];
+      : (NSString *)[addressMapping valueForKey:type];
     
     s = [[LSVCardAddressFormatter formatter] stringForObjectValue:address];
     if (s != nil) {
       [_vCard appendString:@"ADR"];
-      if ([type length] > 0) [_vCard appendFormat:@";TYPE=%@", type];
+      if ([type isNotEmpty]) [_vCard appendFormat:@";TYPE=%@", type];
       [_vCard appendString:@":"];
       [_vCard appendString:s];
       [_vCard appendString:@"\r\n"];
     }
     
     s = [[LSVCardLabelFormatter formatter] stringForObjectValue:address];
-    if ([s length] > 0) {
+    if ([s isNotEmpty]) {
       [_vCard appendString:@"LABEL"];
-      if ([type length] > 0) [_vCard appendFormat:@";TYPE=%@", type];
+      if ([type isNotEmpty]) [_vCard appendFormat:@";TYPE=%@", type];
       [_vCard appendString:@":"];
       [_vCard appendString:s];
       [_vCard appendString:@"\r\n"];
@@ -286,7 +272,7 @@ static BOOL         renderOGoPhoneType = NO;
   NSMutableString *ms;
   
   if (![info isNotNull])  return nil;
-  if ([info length] == 0) return nil;
+  if (![info isNotEmpty]) return nil;
   
   if (![info hasPrefix:@"V:"]) {
     info = [info stringByEscapingUnsafeVCardCharacters];
@@ -342,12 +328,12 @@ static int compareKey(id o1, id o2, void *ctx) {
     num         = [telephoneEO valueForKey:@"number"];
     
     if (![num isNotNull])  continue;
-    if ([num length] == 0) continue;
+    if (![num isNotEmpty]) continue;
     
     name = [[NSMutableString alloc] initWithCapacity:128];
     [name appendString:@"TEL"];
     
-    if ([type isNotNull] && [type length] > 0) {
+    if ([type isNotEmpty]) {
       if (renderOGoPhoneType) {
         [name appendString:@";X-OGO-TYPE="];
         [name appendString:type];
@@ -366,7 +352,7 @@ static int compareKey(id o1, id o2, void *ctx) {
           ? [(id)type objectEnumerator]
           : [[type componentsSeparatedByString:@","] objectEnumerator];
         while ((type = [e nextObject]) != nil) {
-          if ([type length] == 0) continue;
+          if (![type isNotEmpty]) continue;
           [name appendString:@";TYPE="];
           [name appendString:type];
         }
@@ -438,7 +424,7 @@ static int compareKey(id o1, id o2, void *ctx) {
   id tmp;
   
   tmp  = [_team valueForKey:@"description"];
-  if (![tmp isNotNull] || [tmp length] == 0) {
+  if (![tmp isNotNull] || ![tmp isNotEmpty]) {
     tmp = [NSString stringWithFormat:@"Team: %@",
                     [_team valueForKey:@"companyId"]];
   }
@@ -496,20 +482,20 @@ static int compareKey(id o1, id o2, void *ctx) {
   org    = [_person valueForKey:@"associatedCompany"]; // TODO: CSV?
   dep    = [_person valueForKey:@"department"];
   office = [_person valueForKey:@"office"];
-  if (![org    isNotNull] || [org    length] == 0) org    = nil;
-  if (![dep    isNotNull] || [dep    length] == 0) dep    = nil;
-  if (![office isNotNull] || [office length] == 0) office = nil;
+  if (![org    isNotNull] || ![org    isNotEmpty]) org    = nil;
+  if (![dep    isNotNull] || ![dep    isNotEmpty]) dep    = nil;
+  if (![office isNotNull] || ![office isNotEmpty]) office = nil;
   
   if (org == nil && dep == nil && office == nil)
     return;
   
   [_vCard appendString:@"ORG:"];
   [_vCard appendString:(org != nil) 
-          ? [org stringByEscapingUnsafeVCardCharacters] : @""];
+          ? [org stringByEscapingUnsafeVCardCharacters] : (NSString *)@""];
   if (dep != nil || office != nil) {
     [_vCard appendString:@";"];
     [_vCard appendString:(dep != nil) 
-            ? [dep stringByEscapingUnsafeVCardCharacters] : @""];
+            ? [dep stringByEscapingUnsafeVCardCharacters] : (NSString *)@""];
   }
   if (office != nil) {
     [_vCard appendString:@";"];
@@ -577,20 +563,20 @@ static int compareKey(id o1, id o2, void *ctx) {
   org    = [_contact valueForKey:@"description"];
   dep    = [_contact valueForKey:@"department"];
   office = [_contact valueForKey:@"office"];
-  if (![org    isNotNull] || [org    length] == 0) org    = nil;
-  if (![dep    isNotNull] || [dep    length] == 0) dep    = nil;
-  if (![office isNotNull] || [office length] == 0) office = nil;
+  if (![org    isNotNull] || ![org    isNotEmpty]) org    = nil;
+  if (![dep    isNotNull] || ![dep    isNotEmpty]) dep    = nil;
+  if (![office isNotNull] || ![office isNotEmpty]) office = nil;
   
   if (org == nil && dep == nil && office == nil)
     return;
   
   [_vCard appendString:@"ORG:"];
   [_vCard appendString:(org != nil) 
-          ? [org stringByEscapingUnsafeVCardCharacters] : @""];
+          ? [org stringByEscapingUnsafeVCardCharacters] : (NSString *)@""];
   if (dep != nil || office != nil) {
     [_vCard appendString:@";"];
     [_vCard appendString:(dep != nil) 
-            ? [dep stringByEscapingUnsafeVCardCharacters] : @""];
+            ? [dep stringByEscapingUnsafeVCardCharacters] : (NSString *)@""];
   }
   if (office != nil) {
     [_vCard appendString:@";"];
@@ -605,7 +591,7 @@ static int compareKey(id o1, id o2, void *ctx) {
   id tmp;
   
   tmp  = [_e valueForKey:@"description"];
-  if ([tmp length] == 0) {
+  if (![tmp isNotEmpty]) {
     tmp = [NSString stringWithFormat:@"Enterprise: %@",
                     [_e valueForKey:@"companyId"]];
   }

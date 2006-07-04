@@ -46,8 +46,7 @@
 
 - (void)_prepareForExecutionInContext:_context {
   if (self->defaults == nil) {
-    [self logWithFormat:
-            @"WARNING: no defaults set --> using StandardUserDefaults"];
+    [self warnWithFormat:@"no defaults set --> using StandardUserDefaults"];
     self->defaults = [[NSUserDefaults standardUserDefaults] retain];
   }
 }

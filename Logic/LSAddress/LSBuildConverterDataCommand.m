@@ -168,7 +168,7 @@
         NSString *strObj, *t;
 	
         strObj = [self _getObj:obj forKey:[field objectForKey:@"key"]];
-        strObj = [strObj isNotNull] ? [strObj stringValue] : nil;
+        strObj = [strObj isNotNull] ? [strObj stringValue] : (NSString *)nil;
 	
 	if ([(t = [field objectForKey:@"prefix"]) isNotEmpty])
 	  [result appendString:t];
@@ -191,9 +191,9 @@
 
   value = [self _getObj:[self->objectList lastObject] forKey:_key];
 
-  return ([value length] > 0)
+  return [value isNotEmpty]
     ? [[_keys objectForKey:_key] stringByAppendingString:value]
-    : @"";
+    : (NSString *)@"";
 }
 
 

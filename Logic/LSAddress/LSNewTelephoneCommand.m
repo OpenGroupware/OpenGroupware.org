@@ -35,18 +35,18 @@
 @implementation LSNewTelephoneCommand
 
 - (void)_prepareForExecutionInContext:(id)_ctx {
-  id obj;
+  id       obj;
   NSString *number;
   
   [super _prepareForExecutionInContext:_ctx];
   
-  obj = [self object];
-  number     = [obj valueForKey:@"number"];
-  if ([number isNotNull] && [number length]) {
+  obj    = [self object];
+  number = [obj valueForKey:@"number"];
+  if ([number isNotNull] && [number isNotEmpty]) {
     NSString *realNumber;
     
     realNumber = [obj valueForKey:@"realNumber"];
-    if ((![realNumber isNotNull]) || ([realNumber length] == 0)) {
+    if ((![realNumber isNotNull]) || ![realNumber isNotEmpty]) {
       realNumber = [number stringByNormalizingOGoPhoneNumber];
       [obj takeValue:realNumber forKey:@"realNumber"];
     }
@@ -62,15 +62,16 @@
 @implementation LSSetTelephoneCommand
 
 - (void)_prepareForExecutionInContext:(id)_ctx {
-  id obj;
+  id       obj;
   NSString *number;
   
   [super _prepareForExecutionInContext:_ctx];
-  obj = [self object];
-  number     = [obj valueForKey:@"number"];
-  if ([number isNotNull] && [number length]) {
+  
+  obj    = [self object];
+  number = [obj valueForKey:@"number"];
+  if ([number isNotNull] && [number isNotEmpty]) {
     NSString *realNumber = [obj valueForKey:@"realNumber"];
-    if ((![realNumber isNotNull]) || (![realNumber length])) {
+    if ((![realNumber isNotNull]) || (![realNumber isNotEmpty])) {
       realNumber = [number stringByNormalizingOGoPhoneNumber];
       [obj takeValue:realNumber forKey:@"realNumber"];
     }

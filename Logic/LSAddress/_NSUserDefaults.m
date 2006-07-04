@@ -152,10 +152,10 @@
     
     domain = (NSMutableDictionary *)[self persistentDomainForName:appDomain];
     if (value == nil) {
-        fprintf(stderr,
-                "WARNING: attempt to set nil value for "
-                "default %s in domain %s\n",
-                [defaultName cString], [appDomain cString]);
+      fprintf(stderr,
+	      "WARNING: attempt to set nil value for "
+	      "default %s in domain %s\n",
+	      [defaultName cString], [appDomain cString]);
     }
     [domain setObject:value forKey:defaultName];
     [self persistentDomainHasChanged:appDomain];

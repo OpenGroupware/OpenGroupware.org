@@ -198,13 +198,13 @@ static BOOL debugOn = NO;
   id old;
 
   if (_key == nil) {
-    [self debugWithFormat:
-            @"WARNING: LSUserDefaults: called -setObject:forKey: without key"];
+    [self warnWithFormat:
+            @"LSUserDefaults: called -setObject:forKey: without key"];
     return;
   }
   if (_obj == nil) {
-    [self debugWithFormat:
-            @"WARNING: LSUserDefaults: tried to save nil for key: '%@'", _key];
+    [self warnWithFormat:
+            @"LSUserDefaults: tried to save nil for key: '%@'", _key];
     return;
   }
   

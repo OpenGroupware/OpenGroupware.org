@@ -120,7 +120,7 @@
       if ([inString isNotEmpty])
         [inString appendString:@","];
       [inString appendString:[oid stringValue]];
-      NSMapInsert(idToIdx, oid, (void *)(i + 1));
+      NSMapInsert(idToIdx, oid, (void *)(unsigned long)(i + 1));
     }
     else
       openCount--;
@@ -147,13 +147,13 @@
                    lock:NO]) {
       NSDictionary *row;
       
-      while ((row = [adChannel fetchAttributes:attrs withZone:NULL])) {
+      while ((row = [adChannel fetchAttributes:attrs withZone:NULL]) != nil) {
         id oid;
         
         if ((oid = [row objectForKey:@"objectId"])) {
           unsigned idx;
 
-          idx = (unsigned)NSMapGet(idToIdx, oid);
+          idx = (unsigned long)NSMapGet(idToIdx, oid);
           if (idx == 0)
             continue;
           idx--;
@@ -239,13 +239,13 @@
     }
     [qualifier release]; qualifier = nil;
     
-    while ((row = [adChannel fetchAttributes:attributes withZone:NULL])) {
+    while ((row = [adChannel fetchAttributes:attributes withZone:NULL])!=nil) {
       id oid;
       
-      if ((oid = [row objectForKey:pkeyName])) {
+      if ((oid = [row objectForKey:pkeyName]) != nil) {
         unsigned idx;
 
-        idx = (unsigned)NSMapGet(idToIdx, oid);
+        idx = (unsigned long)NSMapGet(idToIdx, oid);
         if (idx == 0)
           continue;
         idx--;

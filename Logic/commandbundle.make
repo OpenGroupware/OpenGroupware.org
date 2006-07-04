@@ -66,7 +66,7 @@ endif
 
 ifneq ($(FHS_INSTALL_ROOT),)
 
-FHS_LIB_DIR=$(FHS_INSTALL_ROOT)/lib/
+FHS_LIB_DIR=$(CONFIGURE_FHS_INSTALL_LIBDIR)
 FHS_CMD_DIR=$(FHS_LIB_DIR)opengroupware.org-1.1/commands/
 
 fhs-command-dirs ::

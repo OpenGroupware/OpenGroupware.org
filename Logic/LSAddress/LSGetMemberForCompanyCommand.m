@@ -145,7 +145,7 @@ static BOOL debugCache      = NO;
   assignmentEntity = [[self databaseModel] entityNamed:@"CompanyAssignment"];
   
   qualifier = [EOSQLQualifier alloc];
-  if ([_in length] > 0) {
+  if ([_in isNotEmpty]) {
     qualifier = [qualifier initWithEntity:assignmentEntity
                            qualifierFormat:
                              @"%A IN (%@)", @"companyId", _in];
@@ -406,17 +406,17 @@ static BOOL debugCache      = NO;
   
   /* more-groups fetch */
   {
-    EOEntity       *memberEntity = nil;
+    EOEntity       *memberEntity;
     EOSQLQualifier *qualifier    = nil;
-    NSString       *in           = nil;
+    NSString       *in;
     NSEnumerator   *e;
   
     memberEntity = [[self databaseModel] entityNamed:[self memberEntityName]];
 
     e = [[self _groupIdString] objectEnumerator];
-    while ((in = [e nextObject])) {
+    while ((in = [e nextObject]) != nil) {
       qualifier = [EOSQLQualifier alloc];
-      if ([in length] > 0) {
+      if ([in isNotEmpty]) {
         qualifier = [qualifier initWithEntity:memberEntity
                                qualifierFormat:@"%A IN (%@)",
                                @"toCompanyAssignment1.companyId", in];
@@ -521,7 +521,7 @@ static BOOL debugCache      = NO;
 
 - (void)setGroup:(id)_group {
   if (![_group isNotNull]) {
-    [self logWithFormat:@"WARNING: called without a group parameter!"];
+    [self warnWithFormat:@"called without a group parameter!"];
     if (coreOnNullGroup) {
       [self logWithFormat:@"  => dumping core because core-on-null-group ..."];
       abort();
@@ -543,14 +543,14 @@ static BOOL debugCache      = NO;
     group = [self->groups objectAtIndex:0];
   }
   else {
-    [self logWithFormat:@"WARNING(%s): used -group method, with %d groups set",
+    [self warnWithFormat:@"%s: used -group method, with %d groups set",
             __PRETTY_FUNCTION__, count];
     group = [self->groups objectAtIndex:0];
   }
 
 #if DEBUG
   if (![group isNotNull]) {
-    [self logWithFormat:@"WARNING: null group ! (groups=%@)", self->groups];
+    [self warnWithFormat:@"null group ! (groups=%@)", self->groups];
     if (coreOnNullGroup) {
       [self logWithFormat:@"  => dumping core because core-on-null-group ..."];
       abort();
