@@ -263,7 +263,7 @@
   
   partNames = ([_args count] > 3)
     ? [_args subarrayWithRange:NSMakeRange(3, [_args count] - 3)]
-    : [NSArray arrayWithObject:self->login];
+    : (NSArray *)[NSArray arrayWithObject:self->login];
   
   return [self checkFrom:from to:to 
                forParticipants:

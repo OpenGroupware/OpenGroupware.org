@@ -262,7 +262,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
       // TODO: shouldn't we abort in case we found an error?
       NSLog(@"ERROR: missing/invalid forwardAddress for filter: %@", aFilter);
     
-    [sieveFilter appendString:str != nil ? str : @""];
+    [sieveFilter appendString:(str != nil ? str : (NSString *)@"")];
     [sieveFilter appendString:@"\";\n "];
   }
   [sieveFilter appendString:@"}\n"];
