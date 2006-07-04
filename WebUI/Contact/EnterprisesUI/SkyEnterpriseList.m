@@ -89,15 +89,14 @@
   ASSIGN(self->favoritesKey,_key);
 }
 - (NSString *)favoritesKey {
-  return [self->favoritesKey length]
-    ? self->favoritesKey : @"enterprise_favorites";
+  return [self->favoritesKey isNotEmpty]
+    ? self->favoritesKey : (NSString *)@"enterprise_favorites";
 }
 
 - (NSArray *)favoriteCompanyIds {
   if (self->favoriteCompanyIds == nil) {
     self->favoriteCompanyIds =
-      [[[self session] userDefaults] arrayForKey:[self favoritesKey]];
-    RETAIN(self->favoriteCompanyIds);
+      [[[[self session] userDefaults] arrayForKey:[self favoritesKey]] retain];
   }
   return self->favoriteCompanyIds;
 }

@@ -149,9 +149,9 @@ static NSString *KeywordSeparator = @", ";
   return self->extendedAttributeKeys;
 }
 
-- (NSArray *)currentLabel {
+- (NSString *)currentLabel {
   NSString *label = [[self labels] valueForKey:self->item];
-  return (label == nil) ? self->item : label;
+  return (label == nil) ? (NSString *)self->item : label;
 }
 
 - (BOOL)hasSearched {
@@ -251,7 +251,7 @@ static NSString *KeywordSeparator = @", ";
 }
 - (NSString *)qualifierOperator {
   return [self->qualifierOperator isNotNull] 
-    ? self->qualifierOperator : @"AND";
+    ? self->qualifierOperator : (NSString *)@"AND";
 }
 
 - (void)_createQualifier {

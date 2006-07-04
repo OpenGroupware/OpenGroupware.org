@@ -406,7 +406,7 @@ static NSArray      *formLetterTypes          = nil;
 
   l = [[self labels] valueForKey:@"privateLabel"];
 
-  return (l != nil) ? l : @"private";
+  return (l != nil) ? l : (NSString *)@"private";
 }
 
 - (BOOL)showLDAPInfo {

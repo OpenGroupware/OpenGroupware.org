@@ -342,7 +342,7 @@ static NSString *birthdayDateFormat;
   dict = [NSDictionary dictionaryWithContentsOfFile:[self fileName]];
   if (dict == nil) {
     [self setErrorString:@"failed to load import file"];
-    [self logWithFormat:@"WARNING[%s] failed to load file: '%@'",
+    [self warnWithFormat:@"[%s] failed to load file: '%@'",
             __PRETTY_FUNCTION__, [self fileName]];
     self->importCnt     = 0;
     self->ignoreCnt     = 0;
@@ -378,7 +378,7 @@ static NSString *birthdayDateFormat;
 				     initWithContext:(id)ctx];
   }
   else {
-    [self logWithFormat:@"WARNING[%s] invalid contactType: %@",
+    [self warnWithFormat:@"[%s] invalid contactType: %@",
 	  __PRETTY_FUNCTION__, self->contactType];
     ds = nil;
   }
@@ -479,15 +479,15 @@ static NSString *birthdayDateFormat;
   
   newRecord = [[self contactDataSource] createObject];
   if (newRecord == nil) {
-    [self logWithFormat:
-	    @"WARNING[%s] failed to create an empty new record from "
+    [self warnWithFormat:
+	    @"[%s] failed to create an empty new record from "
             @"dataSource %@",
             __PRETTY_FUNCTION__, [self contactDataSource]];
     return nil;
   }
   
   e = [_values keyEnumerator];
-  while ((one = [e nextObject])) {
+  while ((one = [e nextObject]) != nil) {
     // TODO: move body to separate method
     val = [(NSDictionary *)_values objectForKey:one];
     
@@ -503,7 +503,8 @@ static NSString *birthdayDateFormat;
       
       str  = [one substringFromIndex:8];
       r    = [str rangeOfString:@"."];
-      addr = (r.length > 0) ? [str substringToIndex:r.location] : nil;
+      addr = (r.length > 0) 
+	? [str substringToIndex:r.location] : (NSString *)nil;
       if (addr != nil) {
         id aD = [newRecord addressForType:addr];
         str   = [str substringFromIndex:(r.location + r.length)];
@@ -511,12 +512,12 @@ static NSString *birthdayDateFormat;
           [aD takeValue:val forKey:str];
         }
         else {
-          [self logWithFormat:@"WARNING[%s]: cannot get address type %@",
+          [self warnWithFormat:@"[%s]: cannot get address type %@",
                 __PRETTY_FUNCTION__, addr];
         }
       }
       else {
-	[self logWithFormat:@"WARNING[%s]: invalid address key %@",
+	[self warnWithFormat:@"[%s]: invalid address key %@",
               __PRETTY_FUNCTION__, str];
       }
       continue;

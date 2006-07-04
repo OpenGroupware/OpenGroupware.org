@@ -1,3 +1,7 @@
+2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed some gcc 4.1 warnings (v5.3.38)
+
 2006-03-10  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyEnterpriseEditor.m: added two defaults:

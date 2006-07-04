@@ -227,7 +227,7 @@ static NSArray *typeOrderings = nil;
     return nil;
   
   cat = [[self categories] objectAtIndex:self->categoryIndex];
-  return (cat == [self nilDummy]) ? nil : cat;
+  return (cat == [self nilDummy]) ? (NSString *)nil : cat;
 }
 
 - (BOOL)isLastCategory {
@@ -478,7 +478,7 @@ static NSArray *typeOrderings = nil;
   id company = nil;
   
   if (![person isNotNull]) {
-    [self logWithFormat:@"ERROR: missing person for card company?!"];
+    [self errorWithFormat:@"missing person for card company?!"];
     return;
   }
   
@@ -507,7 +507,8 @@ static NSArray *typeOrderings = nil;
 
   [self->gatheringCompany 
        setObject:
-	 ([self shouldUseLoginAsCompanyContact] ? loginId : (id)[EONull null])
+	 ([self shouldUseLoginAsCompanyContact] 
+	  ? loginId : (NSNumber *)[EONull null])
        forKey:@"contactId"];
   
   /* create using command */

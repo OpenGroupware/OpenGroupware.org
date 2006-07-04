@@ -138,7 +138,7 @@ static NSString *KeywordSeparator = @", ";
 }
 - (NSString *)qualifierOperator {
   return [self->qualifierOperator isNotNull] 
-    ? self->qualifierOperator : @"AND";
+    ? self->qualifierOperator : (NSString *)@"AND";
 }
 
 - (void)setItem:(id)_item {
@@ -171,11 +171,11 @@ static NSString *KeywordSeparator = @", ";
               sortedArrayUsingSelector:@selector(compare:)];
 }
 
-- (NSArray *)currentLabel {
+- (NSString *)currentLabel {
   NSString *label;
 
   label = [[self labels] valueForKey:self->item];
-  return (label == nil) ? self->item : label;
+  return (label == nil) ? (NSString *)self->item : label;
 }
 
 /* search support */

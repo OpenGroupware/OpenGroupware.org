@@ -134,7 +134,7 @@ static int compareAccounts(id e1, id e2, void* context) {
 - (NSString *)noContactLabel {
   NSString *l = [[self labels] valueForKey:@"noContact"];
 
-  return (l != nil) ? l : @"- no contact -";
+  return (l != nil) ? l : (NSString *)@"- no contact -";
 }
 
 - (NSString *)fullNameString {

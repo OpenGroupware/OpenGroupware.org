@@ -66,8 +66,8 @@ static int compareAttributes(id attr1, id attr2, void *context) {
   name1 = [(id)context valueForKey:attr1];
   name2 = [(id)context valueForKey:attr2];
   
-  name1 = (name1 == nil) ? attr1 : name1;
-  name2 = (name2 == nil) ? attr2 : name2;
+  name1 = (name1 == nil) ? (NSString *)attr1 : name1;
+  name2 = (name2 == nil) ? (NSString *)attr2 : name2;
                                                         
   return [name1 caseInsensitiveCompare:name2];
 }
@@ -397,7 +397,7 @@ static int compareAttributes(id attr1, id attr2, void *context) {
       NSString *tmp;
 
       tmp = [[self labels] valueForKey:@"patternAlreadyExists"];
-      tmp = (tmp) ? tmp : @"Pattern already exists";
+      tmp = (tmp != nil) ? tmp : (NSString *)@"Pattern already exists";
       tmp = [tmp stringByAppendingString:@" ("];
       tmp = [tmp stringByAppendingString:self->patternName];
       tmp = [tmp stringByAppendingString:@")!"];
@@ -453,7 +453,7 @@ static int compareAttributes(id attr1, id attr2, void *context) {
       NSString *tmp;
 
       tmp = [[self labels] valueForKey:@"patternAlreadyExists"];
-      tmp = (tmp) ? tmp : @"Pattern already exists";
+      tmp = (tmp != nil) ? tmp : (NSString *)@"Pattern already exists";
       tmp = [tmp stringByAppendingString:@" ("];
       tmp = [tmp stringByAppendingString:self->patternName];
       tmp = [tmp stringByAppendingString:@")!"];

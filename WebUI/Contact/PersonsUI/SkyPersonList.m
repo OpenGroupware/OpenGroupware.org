@@ -89,8 +89,8 @@
   ASSIGN(self->favoritesKey,_key);
 }
 - (NSString *)favoritesKey {
-  return [self->favoritesKey length] > 0
-    ? self->favoritesKey : @"person_favorites";
+  return [self->favoritesKey isNotEmpty] 
+    ? self->favoritesKey : (NSString *)@"person_favorites";
 }
 
 - (NSArray *)favoriteCompanyIds {
@@ -114,7 +114,7 @@
   if ([self->person isNotNull])
     s = [(SkyPersonDocument *)self->person name];
 
-  return ([s length]) ? s : @"---";
+  return [s isNotEmpty] ? s : (NSString *)@"---";
 }
 
 - (NSString *)personFirstname {
@@ -123,7 +123,7 @@
   if ([self->person isNotNull])
     s = [self->person firstname];
 
-  return ([s length]) ? s : @"---";
+  return [s isNotEmpty] ? s : (NSString *)@"---";
 }
 
 - (NSString *)companyIdString {

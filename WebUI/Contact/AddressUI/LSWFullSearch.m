@@ -171,7 +171,7 @@ static BOOL enableMultiSearch = YES;
   [self->qualifier release]; self->qualifier = nil;
 }
 - (id)joinMode {
-  return [self->joinMode length] > 0 ? self->joinMode : @"and";
+  return [self->joinMode isNotEmpty] ? self->joinMode : (NSString *)@"and";
 }
 
 - (void)setLimitedString:(NSString *)_limitedString {

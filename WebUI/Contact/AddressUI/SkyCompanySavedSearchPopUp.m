@@ -257,7 +257,9 @@
   if (![[self searchTitle] length]) {
     [self setQualifier:nil];
     [self setMaxSearchCount:[ud objectForKey:@"LSMaxSearchCount"]];
-    //NSLog(@"WARNING[%s] cannot rebuild qualifer", __PRETTY_FUNCTION__);
+#if 0
+    [self warnWithFormat:@"[%s] cannot rebuild qualifer", __PRETTY_FUNCTION__];
+#endif
     return;
   }
 
@@ -465,8 +467,8 @@
     return [self arrayForNotQualifier:(EONotQualifier *)_qual];
   else if ([_qual isKindOfClass:[EOKeyValueQualifier class]])
     return [self arrayForKeyValueQualifiers:(EOKeyValueQualifier *)_qual];
-  NSLog(@"WARNING[%s]: cannot handle qualifier class %@",
-        __PRETTY_FUNCTION__, NSStringFromClass([_qual class]));
+  [self warnWithFormat:@"[%s]: cannot handle qualifier class %@",
+        __PRETTY_FUNCTION__, NSStringFromClass([_qual class])];
   return nil;
 }
 
@@ -478,8 +480,8 @@
 
   max = [_array count];
   if (max < 2) {
-    NSLog(@"WARNING[%s]: cannot build and-qualifier",
-          __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"[%s]: cannot build and-qualifier",
+	    __PRETTY_FUNCTION__];
     return nil;
   }
   ma = [NSMutableArray arrayWithCapacity:max-1];
@@ -499,8 +501,8 @@
 
   max = [_array count];
   if (max < 2) {
-    NSLog(@"WARNING[%s]: cannot build or-qualifier",
-          __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"[%s]: cannot build or-qualifier",
+          __PRETTY_FUNCTION__];
     return nil;
   }
   ma = [NSMutableArray arrayWithCapacity:max-1];
@@ -519,8 +521,8 @@
 
   max = [_array count];
   if (max < 2) {
-    NSLog(@"WARNING[%s]: cannot build not-qualifier",
-          __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"[%s]: cannot build not-qualifier",
+          __PRETTY_FUNCTION__];
     return nil;
   }
   qual = [self buildQualifierWithArray:[_array objectAtIndex:1]];
@@ -537,7 +539,7 @@
 
   max = [_array count];
   if (max < 4) {
-    [self logWithFormat:@"WARNING[%s]: cannot build key-value-qualifier",
+    [self warnWithFormat:@"[%s]: cannot build key-value-qualifier",
           __PRETTY_FUNCTION__];
     return nil;
   }
@@ -574,8 +576,8 @@
       }
     }
     else {
-      [self logWithFormat:
-	      @"WARNING[%s]: unknown qualifier value-type:%@ is:[%@]",
+      [self warnWithFormat:
+	      @"[%s]: unknown qualifier value-type:%@ is:[%@]",
               __PRETTY_FUNCTION__, type, NSStringFromClass([value class])];
     }
   }
@@ -592,22 +594,23 @@
     return [[[EOQualifier alloc] initWithString:(id)_array] autorelease];
   
   if ([_array count] == 0) {
-    NSLog(@"WARNING[%s]: cannot build qualifier from empty array",
-          __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"[%s]: cannot build qualifier from empty array",
+          __PRETTY_FUNCTION__];
     return nil;
   }
 
   type = [_array objectAtIndex:0];
   if ([type isEqualToString:@"and"]) 
     return [self buildAndQualifierWithArray:_array];
-  else if ([type isEqualToString:@"or"])
+  if ([type isEqualToString:@"or"])
     return [self buildOrQualifierWithArray:_array];
-  else if ([type isEqualToString:@"not"])
+  if ([type isEqualToString:@"not"])
     return [self buildNotQualifierWithArray:_array];
-  else if ([type isEqualToString:@"kv"])
+  if ([type isEqualToString:@"kv"])
     return [self buildKeyValueQualifierWithArray:_array];
-  NSLog(@"WARNING[%s]: unknown qualifier type: %@",
-        __PRETTY_FUNCTION__, type);
+  
+  [self warnWithFormat:@"[%s]: unknown qualifier type: %@",
+        __PRETTY_FUNCTION__, type];
   return nil;
 }
 

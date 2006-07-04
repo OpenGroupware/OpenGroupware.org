@@ -225,13 +225,13 @@ static NSDictionary *telPrivateDict = nil;
   return self->company;
 }
 
-- (void)setAddressType:(id)_type {
+- (void)setAddressType:(NSString *)_type {
   if (_type != nil) 
     [[self snapshot] takeValue:_type forKey:@"addressType"];
   else
     [[self snapshot] removeObjectForKey:@"addressType"];
 }
-- (id)addressType {
+- (NSString *)addressType {
   return [[self snapshot] valueForKey:@"addressType"];
 }
 

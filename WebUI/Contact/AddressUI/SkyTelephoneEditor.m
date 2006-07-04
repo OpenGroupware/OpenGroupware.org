@@ -188,7 +188,7 @@ static int cmpTypes(id t1, id t2, void* context) {
   NSString *str;
   
   str = [[self labels] valueForKey:self->teleType];
-  return (str == nil) ? self->teleType : str;
+  return (str == nil) ? self->teleType : (id)str;
 }
 
 - (NSString *)textFieldNumberName {

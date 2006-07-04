@@ -659,8 +659,8 @@ static NSArray      *availEntAttr = nil;
     return [self availablePersonAttributes];
   if ([self->contactType isEqualToString:@"Enterprise"])
     return [self availableEnterpriseAttributes];
-  NSLog(@"WARNING[%s]: unknown contact type %@",
-        __PRETTY_FUNCTION__, self->contactType);
+  [self warnWithFormat:@"[%s]: unknown contact type %@",
+        __PRETTY_FUNCTION__, self->contactType];
   return [NSArray array];
 }
 
@@ -809,8 +809,8 @@ static NSArray      *availEntAttr = nil;
 		  self->contactType, self->importType];
   importCfg = [[[self session] userDefaults] dictionaryForKey:tmp];
   if (importCfg == nil) {
-    [self logWithFormat:
-	    @"WARNING[%s]: taking default cfg", __PRETTY_FUNCTION__];
+    [self warnWithFormat:
+	    @"[%s]: taking default cfg", __PRETTY_FUNCTION__];
     importCfg = defaultCfg;
   }
   

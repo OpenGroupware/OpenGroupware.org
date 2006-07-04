@@ -349,7 +349,7 @@ static NSArray *accessChecks = nil;
   sn  = [self session];
   tb  = [[sn userDefaults] objectForKey:@"enterprise_sub_view"]; 
     
-  self->tabKey = (tb != nil) ? [tb copy] : @"documents";
+  self->tabKey = (tb != nil) ? [tb copy] : (id)@"documents";
 
   if ([self->tabKey isEqualToString:@"overview"])
     [self _fetchFakeProject];
@@ -529,7 +529,7 @@ static NSArray *accessChecks = nil;
 - (NSString *)privateLabel {
   NSString *l = [[self labels] valueForKey:@"privateLabel"];
 
-  return (l != nil) ? l : @"private";
+  return (l != nil) ? l : (NSString *)@"private";
 }
 
 - (NSString *)checkKeyName {
