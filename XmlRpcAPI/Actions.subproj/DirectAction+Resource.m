@@ -42,7 +42,7 @@
 
     quals = ([_qual respondsToSelector:@selector(qualifiers)])
       ? [(id)_qual qualifiers]
-      : [NSArray arrayWithObject:_qual];
+      : (NSArray *)[NSArray arrayWithObject:_qual];
 
     qualEnum = [quals objectEnumerator];
     while ((qualifier = [qualEnum nextObject]) != nil) {

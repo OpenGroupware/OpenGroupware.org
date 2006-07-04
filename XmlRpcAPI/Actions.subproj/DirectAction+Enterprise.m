@@ -167,7 +167,7 @@
                  entityName:@"Enterprise"
                  attributes:_attributes];
 
-  return (result != nil) ? result : [NSNumber numberWithBool:NO];
+  return (result != nil) ? result : (id)[NSNumber numberWithBool:NO];
 }
 
 - (id)enterprise_deleteByNumberAction:(NSString *)_number {
@@ -300,7 +300,8 @@
   [personDS setFetchSpecification:fSpec];
   [fSpec release];
   
-  return (personDS != nil) ? [personDS fetchObjects] : [NSArray array];
+  return (personDS != nil)
+    ? [personDS fetchObjects] : (NSArray *)[NSArray array];
 }
 
 - (NSArray *)enterprise_getProjectsAction:(id)_arg {
@@ -310,8 +311,10 @@
   enterprise = [self _getEnterpriseByArgument:_arg];
   projectDS  = [enterprise projectDataSource];
   
-  return (projectDS != nil) ? [projectDS fetchObjects] : [NSArray array];
+  return (projectDS != nil)
+    ? [projectDS fetchObjects] : (NSArray *)[NSArray array];
 }
+
 - (NSArray *)enterprise_getAllProjectsAction:(id)_arg {
   SkyEnterpriseDocument *enterprise;
   EODataSource          *projectDS;
@@ -319,7 +322,8 @@
   enterprise = [self _getEnterpriseByArgument:_arg];
   projectDS  = [enterprise allProjectsDataSource];
   
-  return (projectDS != nil) ? [projectDS fetchObjects] : [NSArray array];
+  return (projectDS != nil)
+    ? [projectDS fetchObjects] : (NSArray *)[NSArray array];
 }
 
 - (id)enterprise_deletePersonAction:(id)_arg:(id)_person {

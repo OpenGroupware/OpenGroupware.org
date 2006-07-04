@@ -160,7 +160,7 @@
                   entityName:@"Person"
                   attributes:_attributes];
 
-  return (result != nil) ? result : [NSNumber numberWithBool:NO];
+  return (result != nil) ? result : (id)[NSNumber numberWithBool:NO];
 }
 
 - (NSArray *)person_fetchIdsAction:(id)_arg {
@@ -256,7 +256,7 @@
   enterpriseDS = [person enterpriseDataSource];
   enterprises  = [enterpriseDS fetchObjects];
   
-  return (enterprises == nil) ? [NSArray array] : enterprises;
+  return (enterprises == nil) ? (NSArray *)[NSArray array] : enterprises;
 }
 
 - (id)person_fetchEnterprisesAction:(id)_person:(id)_fSpec {
@@ -288,7 +288,7 @@
   
   enterprises = [enterpriseDS fetchObjects];
   
-  return (enterprises == nil) ? [NSArray array] : enterprises;
+  return (enterprises == nil) ? (NSArray *)[NSArray array] : enterprises;
 }
 
 - (id)person_getProjectsAction:(id)_arg {
@@ -311,7 +311,7 @@
   }
   
   projects  = [projectDS fetchObjects];
-  return (projects == nil) ? [NSArray array] : projects;
+  return (projects == nil) ? (NSArray *)[NSArray array] : projects;
 }
 
 - (id)person_deleteEnterpriseAction:(id)_arg:(id)_enterprise {
@@ -353,7 +353,7 @@
     error = [localException retain];
   NS_ENDHANDLER;
   
-  return (error != nil) ? (id)error : [NSNumber numberWithBool:YES];
+  return (error != nil) ? (id)error : (id)[NSNumber numberWithBool:YES];
 }
 
 - (id)person_insertEnterpriseAction:(id)_arg:(id)_enterprise {
@@ -377,7 +377,7 @@
     error = [localException retain];
   NS_ENDHANDLER;
   
-  return (error != nil) ? (id)error : [NSNumber numberWithBool:YES];
+  return (error != nil) ? (id)error : (id)[NSNumber numberWithBool:YES];
 }
 
 /* helper methods */
