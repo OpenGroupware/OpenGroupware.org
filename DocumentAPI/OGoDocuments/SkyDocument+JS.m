@@ -129,8 +129,8 @@ static void _ensureBools(void) {
     key = [_args objectAtIndex:0];
     ns  = [_args objectAtIndex:1];
     
-    key = [ns length] > 0
-      ? [NSString stringWithFormat:@"{%@}%@", ns, key]
+    key = [ns isNotEmpty]
+      ? (NSString *)[NSString stringWithFormat:@"{%@}%@", ns, key]
       : key;
     
     return [self valueForKey:key];
@@ -165,8 +165,8 @@ static void _ensureBools(void) {
     ns    = [_args objectAtIndex:1];
     value = [_args objectAtIndex:2];
     
-    key = [ns length] > 0
-      ? [NSString stringWithFormat:@"{%@}%@", ns, key]
+    key = [ns isNotEmpty]
+      ? (NSString *)[NSString stringWithFormat:@"{%@}%@", ns, key]
       : key;
   }
   
@@ -196,8 +196,8 @@ static void _ensureBools(void) {
     key = [_args objectAtIndex:0];
     ns  = [_args objectAtIndex:1];
     
-    key = [ns length] > 0
-      ? [NSString stringWithFormat:@"{%@}%@", ns, key]
+    key = [ns isNotEmpty]
+      ? (NSString *)[NSString stringWithFormat:@"{%@}%@", ns, key]
       : key;
   }
 
@@ -261,7 +261,7 @@ static void _ensureBools(void) {
   }
   
   s = [[_args valueForKey:@"stringValue"] componentsJoinedByString:@""];
-  [(id<SkyStringBLOBDocument>)self setContentString:(s ? s : (id)@"")];
+  [(id<SkyStringBLOBDocument>)self setContentString:(s ? s : (NSString *)@"")];
   return yesNum;
 }
 - (id)_jsfunc_getContent:(NSArray *)_args {
@@ -274,7 +274,7 @@ static void _ensureBools(void) {
   }
   
   s = [(id<SkyStringBLOBDocument>)self contentAsString];
-  return s ? s : @"";
+  return s != nil ? s : (NSString *)@"";
 }
 
 - (id)_jsfunc_setContentAsDOM:(NSArray *)_args {

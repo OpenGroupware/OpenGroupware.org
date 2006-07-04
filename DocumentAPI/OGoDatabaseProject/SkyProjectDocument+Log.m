@@ -20,23 +20,22 @@
 */
 
 #include "SkyProjectDocument.h"
-#import <Foundation/Foundation.h>
-#include <EOControl/EOKeyGlobalID.h>
-#include <LSFoundation/LSCommandContext.h>
+#include "common.h"
 
 @implementation SkyProjectDocument(Log)
 
 - (void)logDownloadOfVersion:(NSString *)_version {
-  NSString *text =
-    ([_version length] != 0)
+  NSString *text;
+
+  text = [_version isNotEmpty]
     ? [NSString stringWithFormat:@"document version %@ downloaded", _version]
-    : @"document downloaded";
+    : (id)@"document downloaded";
   
   [[self context] runCommand:@"object::add-log",
-                  @"logText",     text,
-                  @"action",      @"download",
-                  @"objectId",    [(EOKeyGlobalID *)[self globalID]
-                                                    keyValues][0],
+                    @"logText",     text,
+                    @"action",      @"download",
+                    @"objectId",
+	  	  [(EOKeyGlobalID *)[self globalID] keyValues][0],
                   nil];
 }
 - (void)logDownload {

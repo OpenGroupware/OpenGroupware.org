@@ -114,7 +114,7 @@
 
 - (NSArray *)fetchObjects {
   NSArray *objs = [self->source fetchObjects];
-  return (objs == nil) ? [NSArray array] : objs;
+  return (objs == nil) ? (NSArray *)[NSArray array] : objs;
 }
 
 // SkyScheduler support

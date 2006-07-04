@@ -382,7 +382,7 @@ static BOOL debugOn = NO;
     
     [array addObject:obj];
   }
-  return didFilter ? array : (id)result;
+  return didFilter ? array : (NSMutableArray *)result;
 }
 
 - (NSArray *)primaryFetchObjects {

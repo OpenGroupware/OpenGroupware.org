@@ -94,8 +94,9 @@
   if (self->fileName)
     return [self->fileManager globalIDForPath:[self path]];
   else {
-    NSLog(@"ERROR(%s) couldn`t create globalID for document with no fileName",
-          __PRETTY_FUNCTION__);
+    [self errorWithFormat:
+	    @"(%s) could not create globalID for document with no fileName",
+            __PRETTY_FUNCTION__];
     return nil;
   }
 }
@@ -149,12 +150,12 @@
 - (BOOL)save {
   BOOL isDir;
 
-  if (![self->fileName length]) {
+  if (![self->fileName isNotEmpty]) {
     NSLog(@"%s: couldn`t save file, missing fileName", __PRETTY_FUNCTION__);
     return NO;
   }
   if ([self->fileManager fileExistsAtPath:[self path] isDirectory:&isDir]) {
-    if (isDir & [self->content length]) {
+    if (isDir & [self->content isNotEmpty]) {
       NSLog(@"%s: couldn`t save content in directory ... (%@)",
             __PRETTY_FUNCTION__, [self path]);
       return NO;

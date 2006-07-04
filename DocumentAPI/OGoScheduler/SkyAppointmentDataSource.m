@@ -143,7 +143,7 @@
   if (qual == nil)
     ;// do nothing
   else if ([qual isKindOfClass:[SkyAppointmentQualifier class]]) {
-    SkyAppointmentQualifier *aq = qual;
+    SkyAppointmentQualifier *aq = (SkyAppointmentQualifier *)qual;
     
     startDate        = [aq startDate];
     endDate          = [aq endDate];
@@ -286,9 +286,10 @@
 }
 
 - (void)insertObject:(id)_obj {
-  NSDictionary *dict = nil;
+  NSDictionary *dict;
 
-  dict = ([_obj respondsToSelector:@selector(asDict)]) ? [_obj asDict] : _obj;
+  dict = [_obj respondsToSelector:@selector(asDict)]
+    ? [_obj asDict] : (NSDictionary *)_obj;
   
   [dict takeValue:[NSNumber numberWithBool:YES] forKey:@"isWarningIgnored"];
   [dict takeValue:[NSNumber numberWithBool:YES] forKey:@"isConflictDisabled"];

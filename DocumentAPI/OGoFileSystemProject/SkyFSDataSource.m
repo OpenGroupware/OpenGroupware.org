@@ -39,14 +39,16 @@ static BOOL debugOn = NO;
   _path = [_fm _makeAbsoluteInSky:_path];
 
   if (![_fm fileExistsAtPath:_path isDirectory:&isDir]) {
-    NSLog(@"ERROR[%s]: try to create SkyFSDataSource with no existing"
-          @"path (%@)", __PRETTY_FUNCTION__, _path);
+    [self errorWithFormat:
+	    @"[%s]: try to create SkyFSDataSource with no existing path (%@)",
+	    __PRETTY_FUNCTION__, _path];
     [self release];
     return nil;
   }
   if (!isDir) {
-    NSLog(@"ERROR[%s]: SkyFSDataSource can only be used with directories"
-          @" path (%@) fileManager %@", __PRETTY_FUNCTION__, _path, _fm);
+    [self errorWithFormat:
+	    @"[%s]: SkyFSDataSource can only be used with directories"
+            @" path (%@) fileManager %@", __PRETTY_FUNCTION__, _path, _fm];
     [self release];
     return nil;
   }

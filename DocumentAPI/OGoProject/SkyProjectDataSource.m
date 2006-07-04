@@ -486,7 +486,8 @@ static NSNumber *yesNum = nil;
 - (void)insertObject:(id)_obj {
   NSDictionary *dict;
 
-  dict = ([_obj respondsToSelector:@selector(asDict)]) ? [_obj asDict] : _obj;
+  dict = [_obj respondsToSelector:@selector(asDict)] 
+    ? [_obj asDict] : (NSDictionary *)_obj;
   dict = [self->context runCommand:@"project::new" arguments:dict];
   [(id)_obj _setGlobalID:[dict valueForKey:@"globalID"]];
   

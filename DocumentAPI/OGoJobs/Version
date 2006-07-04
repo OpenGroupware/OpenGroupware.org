@@ -1,5 +1,5 @@
 # Version file
 
-SUBMINOR_VERSION:=24
+SUBMINOR_VERSION:=25
 
 # v5.0.21 requires libOGoDocuments v5.0.20

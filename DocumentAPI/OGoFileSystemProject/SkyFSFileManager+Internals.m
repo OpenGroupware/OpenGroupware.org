@@ -56,7 +56,7 @@
     return nil;
   
   if (_path == nil) {
-    NSLog(@"WARNING[%s]: missing path ", __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"[%s]: missing path ", __PRETTY_FUNCTION__];
     [self setLastException:[SkyFSException reason:@"missing path"]];
     return nil;
   }
@@ -64,7 +64,7 @@
     ? _path
     : [[self currentDirectoryPath] stringByAppendingPathComponent:_path];
   
-  if ([_path length] == 0)
+  if (![_path isNotEmpty])
     return @"/";
 
   while ([_path hasSuffix:@"/"]) {
@@ -87,7 +87,7 @@
         NSString *name = nil;
 
         name = [pathComponents objectAtIndex:i];
-        if ([name isEqualToString:@"."] || ![name length])
+        if ([name isEqualToString:@"."] || ![name isNotEmpty])
         //        if ([name isEqualToString:@"."])        
           continue;
         if ([name isEqualToString:@".."]) {
@@ -96,8 +96,9 @@
           continue;
         }
         if ([name isEqualToString:[self attributesPath]]) {
-          NSLog(@"ERROR(%s): try to read in internal skyrix structures ..."
-                @" _path %@", __PRETTY_FUNCTION__, _path);
+          [self errorWithFormat:
+		  @"(%s): try to read in internal skyrix structures ..."
+                  @" _path %@", __PRETTY_FUNCTION__, _path];
           pnCnt = 0;
           break;
         }
@@ -149,8 +150,8 @@
                                         _path, @"path",
                                         self->workingPath, @"workingPath",
                                         nil]]];
-    NSLog(@"ERROR[%s] unexpected path %@ repositoryPath %@",
-          __PRETTY_FUNCTION__, _path, self->workingPath);
+    [self errorWithFormat:@"[%s] unexpected path %@ repositoryPath %@",
+          __PRETTY_FUNCTION__, _path, self->workingPath];
     return nil;
   }
   str = [_path substringWithRange:
@@ -215,7 +216,7 @@ static NSArray *FileSystemAttributes = nil;
                        objectForKey:@"SkyFSHiddenAttributesPath"] stringValue]
                          retain];
 
-    if (![SkyFSHiddenAttributesPath length])
+    if (![SkyFSHiddenAttributesPath isNotEmpty])
       SkyFSHiddenAttributesPath = @".skyrix_attributes";
   }
   return SkyFSHiddenAttributesPath;
@@ -232,15 +233,15 @@ static NSArray *FileSystemAttributes = nil;
 
   if ([self->fileManager fileExistsAtPath:path isDirectory:&isDir]) {
     if (!isDir) {
-      NSLog(@"WARNING[%s] Attributes path is not a directory %@",
-            __PRETTY_FUNCTION__, path);
+      [self warnWithFormat:@"[%s] Attributes path is not a directory %@",
+            __PRETTY_FUNCTION__, path];
       return nil;
     }
   }
   else if (_create) {
     if (![self->fileManager createDirectoryAtPath:path attributes:nil]) {
-      NSLog(@"WARNING[%s] couldn`t create directory at path %@",
-            __PRETTY_FUNCTION__, path);
+      [self warnWithFormat:@"[%s] could not create directory at path %@",
+            __PRETTY_FUNCTION__, path];
       return nil;
     }
   }

@@ -353,7 +353,7 @@ static NSArray *entityNames = nil;
           [gids addObject:gid];
 
           path = ([path isEqualToString:@"/"])
-            ? nil : [path stringByDeletingLastPathComponent];
+            ? (NSString *)nil : [path stringByDeletingLastPathComponent];
         }
       }
       {

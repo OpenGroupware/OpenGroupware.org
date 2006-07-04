@@ -347,7 +347,7 @@ extern NSDictionary *NSParseDictionaryFromData(NSData *);
   
   ds = ([sfm supportsFolderDataSourceAtPath:_directoryPath])
     ? [(id<NGFileManagerDataSources>)sfm dataSourceAtPath:_directoryPath]
-    : nil;
+    : (EODataSource *)nil;
   
   oldTarget = [self targetDirectory];
   newTarget = [[self targetDirectory]

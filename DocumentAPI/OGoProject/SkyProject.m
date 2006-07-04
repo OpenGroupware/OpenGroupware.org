@@ -473,7 +473,7 @@ static NSNull   *null  = nil;
     return [self performSelector:NSSelectorFromString(_key)];
   
   if ([_key isEqualToString:@"type"])
-    return (self->type) ? self->type : (id)null;
+    return self->type != nil ? self->type : (NSString *)null;
   if ([_key isEqualToString:@"projectId"])
     return [[(EOKeyGlobalID *)self->globalID keyValuesArray] lastObject];
   if ([_key isEqualToString:@"leaderName"])
@@ -532,7 +532,7 @@ static NSNull   *null  = nil;
   [dict takeValue:[self url]       forKey:@"url"];
   {
     id s = [self status];
-    [dict takeValue:s?s:@"05_processing" forKey:@"status"];
+    [dict takeValue:(s != nil ? s : (id)@"05_processing") forKey:@"status"];
   }
 
   [dict takeValue:noNum forKey:@"isFake"];

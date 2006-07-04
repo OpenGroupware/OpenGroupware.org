@@ -1,3 +1,7 @@
+2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed gcc 4.1 warnings, 64bit tweaks (v5.3.27)
+
 2005-09-12  Sebastian Reitenbach  <reitenbach@rapideye.de>
 
 	* NGLocalFileManager.h: fixed a compilation issue (v5.3.26)

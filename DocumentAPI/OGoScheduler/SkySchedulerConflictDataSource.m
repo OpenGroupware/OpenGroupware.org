@@ -113,7 +113,7 @@ static int      LSMaxAptCycles = 0;
   eD   = [[[apt valueForKey:@"endDate"]   copy] autorelease];
   
   tmp = [apt valueForKey:@"cycleEndDate"];
-  cycleDate = [tmp isNotNull] ? [tmp endOfDay] : nil;
+  cycleDate = [tmp isNotNull] ? [tmp endOfDay] : (NSCalendarDate *)nil;
   
   dateId = [apt valueForKey:@"dateId"];
   

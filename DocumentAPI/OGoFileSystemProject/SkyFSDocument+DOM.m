@@ -144,8 +144,8 @@ static void _categoryInitialize(void) {
     [parser declarePrefix:@"const" namespaceURI:XMLNS_OD_CONST];
   }
   else if (parser != nil && debugPredefinedNS) {
-    [self logWithFormat:
-            @"WARNING: SAX parser doesn't support predefined namespaces !"];
+    [self warnWithFormat:
+            @"SAX parser doesn't support predefined namespaces !"];
   }
   
   if (parser)

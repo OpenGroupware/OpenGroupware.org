@@ -47,8 +47,8 @@ static BOOL SkyFSDebug = NO;
 - (id)initWithContext:(id)_context project:(id)_project {
   if ((self = [super init])) {
     if (_context == nil || _project == nil) {
-      NSLog(@"ERROR[%s] missing context(%@) or project (%@)",
-            __PRETTY_FUNCTION__, _context, _project);
+      [self errorWithFormat:@"[%s] missing context(%@) or project (%@)",
+            __PRETTY_FUNCTION__, _context, _project];
       [self release];
       return nil;
     }
@@ -69,17 +69,18 @@ static BOOL SkyFSDebug = NO;
       
       if (![self->fileManager fileExistsAtPath:self->workingPath
                 isDirectory:&isDir]) {
-        NSLog(@"ERROR[%s]: missing path <%@> for project %@",
-              __PRETTY_FUNCTION__, self->workingPath, _project);
-        [self release];
+        [self errorWithFormat:@"[%s]: missing path <%@> for project %@",
+              __PRETTY_FUNCTION__, self->workingPath, _project];
+        [self release]; self = nil;
+	
         [[SkyFSException exceptionWithName:@"SkyFSException"
                          reason:@"Missing path for project"
                          userInfo:nil] raise];
         return nil;
       }
       if (!isDir){
-        NSLog(@"ERROR[%s]: path <%@> is no directory. project %@",
-              __PRETTY_FUNCTION__, self->workingPath, _project);
+        [self errorWithFormat:@"[%s]: path <%@> is no directory. project %@",
+              __PRETTY_FUNCTION__, self->workingPath, _project];
         [self release];
         [[SkyFSException exceptionWithName:@"SkyFSException"
                          reason:@"Missing path for project"
@@ -104,9 +105,9 @@ static BOOL SkyFSDebug = NO;
 - (id)initWithContext:(id)_context projectGlobalID:(EOGlobalID *)_gid {
   id p;
 
-  if (!_context || !_gid) {
-    NSLog(@"ERROR[%s] missing context(%@) or gid (%@)",
-          __PRETTY_FUNCTION__, _context, _gid);
+  if (_context == nil || _gid == nil) {
+    [self errorWithFormat:@"[%s] missing context(%@) or gid (%@)",
+          __PRETTY_FUNCTION__, _context, _gid];
     return nil;
   }
   p = [_context runCommand:@"project::get",
@@ -117,8 +118,8 @@ static BOOL SkyFSDebug = NO;
   }
 
   if (p == nil) {
-    NSLog(@"ERROR[%s]: missing project for gif %@",
-          __PRETTY_FUNCTION__, _gid);
+    [self errorWithFormat:@"[%s]: missing project for gif %@",
+          __PRETTY_FUNCTION__, _gid];
     [self release];
     return nil;
   }
@@ -502,7 +503,8 @@ static NSDictionary *LSMimeTypes = nil;
 }
 
 - (BOOL)linkPath:(NSString *)_s toPath:(NSString *)_d handler:(id)_handler {
-  NSLog(@"WARNING(%s): not implemented, path: '%@'", __PRETTY_FUNCTION__,_s);
+  [self warnWithFormat:@"(%s): not implemented, path: '%@'",
+	  __PRETTY_FUNCTION__,_s];
   return NO;
 }
 
@@ -580,8 +582,8 @@ static NSDictionary *LSMimeTypes = nil;
 }
 
 - (NSDirectoryEnumerator *)enumeratorAtPath:(NSString *)_path {
-  NSLog(@"WARNING(%s): not implemented, path: '%@'",
-	__PRETTY_FUNCTION__, _path);
+  [self warnWithFormat:@"(%s): not implemented, path: '%@'",
+	__PRETTY_FUNCTION__, _path];
   return nil;
 }
 
@@ -606,7 +608,8 @@ static NSDictionary *LSMimeTypes = nil;
 /* symbolic-link operations */
 
 - (BOOL)createSymbolicLinkAtPath:(NSString *)_p pathContent:(NSString *)_dp {
-  NSLog(@"WARNING(%s): not implemented, path: '%@'", __PRETTY_FUNCTION__, _p);
+  [self warnWithFormat:@"(%s): not implemented, path: '%@'", 
+	  __PRETTY_FUNCTION__, _p];
   return NO;
 }
 - (NSString *)pathContentOfSymbolicLinkAtPath:(NSString *)_path {
@@ -805,32 +808,32 @@ static NSString *LockPrefix = @"lock";
           [self logWithFormat:@"createDirectoryAtPath %@ failed",
                 tmp];
         
-	tmp = LockPath != nil ? LockPath : @"/tmp/";
+	tmp = LockPath != nil ? LockPath : (NSString *)@"/tmp/";
 	
         if (SkyFSDebug)
           [self logWithFormat:@"try now %@", tmp];
         
         if (![self->fileManager fileExistsAtPath:tmp isDirectory:&isDir]) {
-          NSLog(@"ERROR[%s:%d]: "
-                @"Couldn`t read lock directory at path %@, use Default "
+          [self errorWithFormat:@"[%s:%d]: "
+                @"Could not read lock directory at path %@, use Default "
                 @"\"SkyFSLockPath\" to set a path for lock-files",
-                __PRETTY_FUNCTION__, __LINE__, tmp);
+                __PRETTY_FUNCTION__, __LINE__, tmp];
           return nil;
         }
         else if (!isDir) {
-          NSLog(@"ERROR[%s:%d]: "
+          [self errorWithFormat:@"[%s:%d]: "
                 @"Lockfile-Path %@ should be a directory, use Default "
                 @"\"SkyFSLockPath\" to set a path for lock-files",
-                __PRETTY_FUNCTION__, __LINE__, tmp);
+                __PRETTY_FUNCTION__, __LINE__, tmp];
           return nil;
         }
       }
     }
     else if (!isDir) {
-      NSLog(@"ERROR[%s]: "
+      [self errorWithFormat:@"[%s]: "
             @"Lockfile-Path %@ should be a directory, use Default "
             @"\"SkyFSLockPath\" to set a path for lock-files",
-            __PRETTY_FUNCTION__, tmp);
+            __PRETTY_FUNCTION__, tmp];
       return nil;
     }
     tmp = [tmp stringByAppendingPathComponent:
@@ -865,9 +868,9 @@ static NSString *LockPrefix = @"lock";
   }
   if ((lockDate = [self lockDate])) {
       if (abs([lockDate timeIntervalSinceNow]) > MaxLockTime) {
-        NSLog(@"WARNING[%s]: unlock locked FS-Project %@, locked "
+        [self warnWithFormat:@"[%s]: unlock locked FS-Project %@, locked "
               @"since %@ now %@", __PRETTY_FUNCTION__,
-              self, lockDate, [NSDate date]);
+              self, lockDate, [NSDate date]];
         [l breakLock];
       
         if ([l tryLock]) {
@@ -875,9 +878,9 @@ static NSString *LockPrefix = @"lock";
         }
       }
   } 
-  NSLog(@"WARNING[%s] try to lock already locked FS-Project %@."
+  [self warnWithFormat:@"[%s] try to lock already locked FS-Project %@."
         @"Locked since:%@ now:%@.", __PRETTY_FUNCTION__, self, lockDate,
-        [NSDate date]);
+        [NSDate date]];
   
   ui = [NSDictionary dictionaryWithObjectsAndKeys:
                                         self, @"project",
@@ -894,8 +897,8 @@ static NSString *LockPrefix = @"lock";
 }
 
 - (NSException *)_handleUnlockException:(NSException *)_exception {
-  [self logWithFormat:
-          @"ERROR[SkyFSFileManager::unlock]: got exception during unlock: %@",
+  [self errorWithFormat:
+          @"[SkyFSFileManager::unlock]: got exception during unlock: %@",
           _exception];
   return nil;
 }
@@ -932,7 +935,7 @@ static NSString *LockPrefix = @"lock";
   if (![url isNotNull])
     url = @"";
     
-  if ([url length] > 0)
+  if ([url isNotEmpty])
     return [NSURL URLWithString:url];
     
   return [[OGoFileManagerFactory sharedFileManagerFactory]

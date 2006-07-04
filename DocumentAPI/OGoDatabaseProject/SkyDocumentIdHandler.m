@@ -61,16 +61,16 @@ static EOSQLQualifier *trueQualifier = nil;
   refreshOnFail:(BOOL)_refresh
   context:(id)_ctx
 {
-  int pid;
+  unsigned long pid;
   NSNumber *nr;
 
   if (_gid == nil)
     return nil;
   
   pid = [self projectIdForDocumentId:
-		[[(EOKeyGlobalID *)_gid keyValues][0] intValue]
+		[[(EOKeyGlobalID *)_gid keyValues][0] unsignedLongValue]
               context:_ctx];
-  nr = pid > 0 ? [NSNumber numberWithInt:pid] : nil;
+  nr = pid > 0 ? [NSNumber numberWithUnsignedLong:pid] : (NSNumber *)nil;
   
   if (![nr isNotNull]) {
     if (_refresh) {
@@ -80,7 +80,7 @@ static EOSQLQualifier *trueQualifier = nil;
 		   context:_ctx];
     }
     
-    [self logWithFormat:@"WARNING(%s): got no project GID for document: %@",
+    [self warnWithFormat:@"(%s): got no project GID for document: %@",
 	  __PRETTY_FUNCTION__, _gid];
     return nil;
   }

@@ -433,11 +433,12 @@ static inline NSNumber *boolNum(BOOL value) {
                      cmd:_cmd];
     }
   }
-  if (!doc)
+  if (doc == nil) {
     doc = (![[_srcGen entityName] isEqualToString:@"Doc"])
-        ? [_srcGen valueForKey:@"toDoc"]
-        : _srcGen;
-
+      ? [_srcGen valueForKey:@"toDoc"]
+      : (id)_srcGen;
+  }
+  
   if (![[doc valueForKey:@"parentDocumentId"]
             isEqual:[_destGen valueForKey:@"documentId"]]) {
     NS_DURING {

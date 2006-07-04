@@ -321,7 +321,7 @@
 
   qual = [self->fetchSpecification qualifier];
   if ([qual isKindOfClass:keyValueQualClass])
-    return ([[(id)qual key] isEqualToString:@"type"]) ? nil : qual;
+    return [[(id)qual key] isEqualToString:@"type"] ? (EOQualifier *)nil :qual;
 
   return qual;
 }

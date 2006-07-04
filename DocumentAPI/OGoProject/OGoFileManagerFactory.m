@@ -169,7 +169,7 @@ static NSDictionary *baseToClass  = nil;
   
   url = (![urlString isNotNull])
     ? [self skyrixBaseURL]
-    : [NSURL URLWithString:urlString];
+    : (NSURL *)[NSURL URLWithString:urlString];
   
   scheme = [url scheme];
 

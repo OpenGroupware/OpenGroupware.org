@@ -189,7 +189,7 @@ static inline NSNumber *boolNum(BOOL value) {
   project = [[pds fetchObjects] lastObject];
   
   pgid = [project valueForKey:@"globalID"];
-  return [pgid isNotNull] ? pgid : nil;
+  return [pgid isNotNull] ? pgid : (EOGlobalID *)nil;
 }
 
 - (id)initWithContext:(id)_context projectCode:(NSString *)_code {
