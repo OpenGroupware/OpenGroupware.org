@@ -332,7 +332,7 @@ static NSSet *NativeKeys = nil;
 
   quals = ([_qualifier respondsToSelector:@selector(qualifiers)])
     ? [(id)_qualifier qualifiers]
-    : [NSArray arrayWithObject:_qualifier];
+    : (NSArray *)[NSArray arrayWithObject:_qualifier];
 
   if ([_qualifier isKindOfClass:[EOKeyValueQualifier class]]) {
     cmp = (SEL_EQ([(id)_qualifier selector], EOQualifierOperatorEqual))

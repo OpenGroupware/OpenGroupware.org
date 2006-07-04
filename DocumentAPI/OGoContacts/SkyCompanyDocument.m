@@ -1104,7 +1104,7 @@ static BOOL DebugDocumentRegistration = NO;
 
     return ([frags count] == 2)
       ? [self phoneInfoForType:[frags objectAtIndex:0]]
-      : nil;
+      : (NSString *)nil;
   }
   
   if ([self->extendedKeys containsObject:_key])

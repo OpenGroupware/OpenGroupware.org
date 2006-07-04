@@ -36,15 +36,13 @@
   return self;
 }
 
-- (id)initWithValues:(id)_values
-          dataSource:(SkyLogDataSource *)_dataSource
-{
-  if ((self = [self init])) {
+- (id)initWithValues:(id)_values dataSource:(SkyLogDataSource *)_dataSource {
+  if ((self = [self init]) != nil) {
     ASSIGN(self->dataSource,_dataSource);
 
     self->globalID = ([_values respondsToSelector:@selector(globalID)])
       ? [_values globalID]
-      : [_values valueForKey:@"globalID"];
+      : (EOGlobalID *)[_values valueForKey:@"globalID"];
     if (self->globalID == nil) {
       id key = [_values valueForKey:@"logId"];
       self->globalID = [[EOKeyGlobalID globalIDWithEntityName:@"log"
@@ -63,8 +61,9 @@
 }
 
 - (id)initAsNewWithDataSource:(SkyLogDataSource *)_dataSource {
-  if ((self = [self init])) {
+  if ((self = [self init]) != nil) {
     ASSIGN(self->dataSource,_dataSource);
+    
     self->accountId =
       [[[[self->dataSource context] valueForKey:LSAccountKey]
 	 valueForKey:@"companyId"] retain];
@@ -97,36 +96,40 @@
   }
 }
 
+- (void)setObjectId:(NSNumber *)_objectId {
+  if (self->status.isNew) {
+    ASSIGN(self->objectId,_objectId);
+  }
+}
 - (NSNumber *)objectId {
   return self->objectId;
 }
-- (void)setObjectId:(NSNumber *)_objectId {
-  if (self->status.isNew)
-    ASSIGN(self->objectId,_objectId);
-}
 
+- (void)_setCreationDate:(NSCalendarDate *)_date {
+  if (self->status.isNew) {
+    ASSIGNCOPY(self->creationDate,_date);
+  }
+}
 - (NSCalendarDate *)creationDate {
   return self->creationDate;
 }
-- (void)_setCreationDate:(NSCalendarDate *)_date {
-  if (self->status.isNew)
-    ASSIGN(self->creationDate,_date);
-}
 
+- (void)setLogText:(NSString *)_text {
+  if (self->status.isNew) {
+    ASSIGNCOPY(self->logText,_text);
+  }
+}
 - (NSString *)logText {
   return self->logText;
 }
-- (void)setLogText:(NSString *)_text {
-  if (self->status.isNew)
-    ASSIGN(self->logText,_text);
-}
 
+- (void)setAction:(NSString *)_action {
+  if (self->status.isNew) {
+    ASSIGNCOPY(self->action,_action);
+  }
+}
 - (NSString *)action {
   return self->action;
-}
-- (void)setAction:(NSString *)_action {
-  if (self->status.isNew)
-    ASSIGN(self->action,_action);
 }
 
 - (NSNumber *)accountId {
@@ -134,10 +137,9 @@
 }
 
 - (id)account {
-  if (self->account == nil) {
-    self->account = [self _fetchAccount];
-    RETAIN(self->account);
-  }
+  if (self->account == nil)
+    self->account = [[self _fetchAccount] retain];
+  
   return self->account;
 }
 - (id)actor {
@@ -147,6 +149,8 @@
 - (BOOL)isSaved {
   return (self->status.isNew) ? NO : YES;
 }
+
+/* operations */
 
 - (BOOL)save {
   if (self->status.isNew) {

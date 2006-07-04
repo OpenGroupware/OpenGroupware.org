@@ -1,3 +1,7 @@
+2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed gcc 4.1 warnings, 64bit tweaks (v5.3.21)
+
 2005-09-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile.preamble: added link deps for OSX (v5.3.20)

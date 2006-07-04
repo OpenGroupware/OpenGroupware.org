@@ -404,7 +404,7 @@ static BOOL doExplain = NO;
   result    = [self _morphEOsToDocuments:companies];
   result    = [self _sortResultDocuments:result];
   
-  return result ? result : [NSArray array];
+  return result ? result : (NSArray *)[NSArray array];
 }
 
 /* datasource operations */
@@ -776,7 +776,7 @@ static BOOL doExplain = NO;
   
   quals = ([_qualifier respondsToSelector:@selector(qualifiers)])
     ? [(id)_qualifier qualifiers]
-    : [NSArray arrayWithObject:_qualifier];
+    : (NSArray *)[NSArray arrayWithObject:_qualifier];
   
   if ([_qualifier isKindOfClass:[EOKeyValueQualifier class]]) {
     cmp = (SEL_EQ([(id)_qualifier selector], EOQualifierOperatorEqual))

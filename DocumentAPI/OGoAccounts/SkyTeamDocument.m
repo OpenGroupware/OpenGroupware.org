@@ -74,7 +74,7 @@
 
   gid = ([_account respondsToSelector:@selector(globalID)])
     ? (EOKeyGlobalID *)[_account globalID]
-    : [_account valueForKey:@"globalID"];
+    : (EOKeyGlobalID *)[_account valueForKey:@"globalID"];
   
   return [self initWithTeam:_account globalID:gid dataSource:_ds];
 }

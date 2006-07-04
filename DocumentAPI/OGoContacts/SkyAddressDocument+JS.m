@@ -74,8 +74,8 @@ static void _ensureBools(void) {
     key = [_args objectAtIndex:0];
     ns  = [_args objectAtIndex:1];
     
-    key = [ns length] > 0
-      ? [NSString stringWithFormat:@"{%@}%@", ns, key]
+    key = [ns isNotEmpty]
+      ? (NSString *)[NSString stringWithFormat:@"{%@}%@", ns, key]
       : key;
     
     return [self valueForKey:key];
