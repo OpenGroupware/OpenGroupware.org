@@ -79,7 +79,7 @@
   NSMutableString *string = nil;
 
   string =  [NSMutableString stringWithFormat:
-                             @"<%@[0x%08X]: type: %@ lastMod: %@ actions: %d>",
+                             @"<%@[0x%p]: type: %@ lastMod: %@ actions: %d>",
                              NSStringFromClass([self class]), self,
                              self->changeType, self->changeDate,
                              [self->actions count]];

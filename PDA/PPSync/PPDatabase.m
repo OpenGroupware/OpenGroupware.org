@@ -169,7 +169,7 @@
 
   s = [NSMutableString stringWithCapacity:128];
   
-  [s appendFormat:@"<%@[0x%08X]: name=%@", 
+  [s appendFormat:@"<%@[0x%p]: name=%@", 
        NSStringFromClass([self class]), self,
        self->name];
 

@@ -261,7 +261,7 @@ static BOOL onlyCacheDirs = NO;
     return ![doc isNotNull] ? nil : doc;
 
 #if 0
-  NSLog(@"doc cache miss: %@ (fm=0x%08X,src=0x%08X,cache=%s)",
+  NSLog(@"doc cache miss: %@ (fm=0x%p,src=0x%p,cache=%s)",
         _path, self, self->fileManager,
         pathToDoc?"yes":"no");
 #endif
@@ -284,7 +284,7 @@ static BOOL onlyCacheDirs = NO;
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:64];
-  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
   
   if (self->fileManager)
     [ms appendFormat:@" source=%@", self->fileManager];

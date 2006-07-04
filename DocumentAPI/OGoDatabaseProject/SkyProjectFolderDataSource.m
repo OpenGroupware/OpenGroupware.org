@@ -518,13 +518,13 @@ static BOOL debugOn = NO;
 }
 
 - (NSString *)loggingPrefix {
-  return [NSString stringWithFormat:@"<0x%08X[SPF-DS:%@]>", self, self->path];
+  return [NSString stringWithFormat:@"<0x%p[SPF-DS:%@]>", self, self->path];
 }
 
 /* description */
 
 - (void)appendAttributesToDescription:(NSMutableString *)ms {
-  if (self->context)     [ms appendFormat:@" ctx=0x%08X", self->context];
+  if (self->context)     [ms appendFormat:@" ctx=0x%p", self->context];
   if (self->projectGID)  [ms appendFormat:@" pgid=%@", self->projectGID];
   if (self->folderGID)   [ms appendFormat:@" fgid=%@", self->folderGID];
   if (self->path)        [ms appendFormat:@" path='%@'", self->path];
@@ -542,7 +542,7 @@ static BOOL debugOn = NO;
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
   [self appendAttributesToDescription:ms];
   [ms appendString:@">"];
   return ms;

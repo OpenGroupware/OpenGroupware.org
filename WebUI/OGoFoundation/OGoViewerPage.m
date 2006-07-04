@@ -177,7 +177,7 @@
   
   fmt = [NSString stringWithFormat:
                       @"ERROR (please report): couldn't get entity of object "
-                      @"0x%08X<%@>: %@",
+                      @"0x%p<%@>: %@",
                       _obj, NSStringFromClass([_obj class]),
                       _obj];
   [self setErrorString:fmt];

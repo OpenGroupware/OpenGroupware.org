@@ -292,7 +292,7 @@ static BOOL debugOn;
     /* generate qualifier */
     
     qualifier = [(LSFullSearch *)fullSearch qualifier];
-    if (debugOn) [self debugWithFormat:@"    qualifier: 0x%08X", qualifier];
+    if (debugOn) [self debugWithFormat:@"    qualifier: 0x%p", qualifier];
 
     /* add permission check qualifier to 'qualifier' */
     

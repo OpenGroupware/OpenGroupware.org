@@ -29,7 +29,7 @@ static BOOL debugDealloc = NO;
 
 - (void)dealloc {
   if (debugDealloc)
-    NSLog(@"%s: dealloc JS sendmail 0x%08X ..", __PRETTY_FUNCTION__, self);
+    NSLog(@"%s: dealloc JS sendmail 0x%p ..", __PRETTY_FUNCTION__, self);
   
   [self->subject release];
   [self->from    release];

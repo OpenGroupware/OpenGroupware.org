@@ -282,7 +282,7 @@
 
   ms = [NSMutableString stringWithCapacity:64];
 
-  [ms appendFormat:@"<%@[0x%08X]:", [self class], self];
+  [ms appendFormat:@"<%@[0x%p]:", [self class], self];
   [ms appendFormat:@" form=%@", self->formComponent];
   [ms appendFormat:@" rm=%@", self->parentRM];
   [ms appendString:@">"];

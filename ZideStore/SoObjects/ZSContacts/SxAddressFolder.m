@@ -374,7 +374,7 @@
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:64];
-  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
   if (self->type) [ms appendFormat:@" type=%@", self->type];
   [ms appendFormat:@" name=%@", [self nameInContainer]];
   [ms appendString:@">"];

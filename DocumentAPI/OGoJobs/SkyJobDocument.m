@@ -792,7 +792,7 @@ static BOOL debugDocRegistration = NO;
   }
   
   if (self->dataSource) {
-    [_md appendFormat:@" ds=0x%08X[%@]", 
+    [_md appendFormat:@" ds=0x%p[%@]", 
 	   self->dataSource, NSStringFromClass([self->dataSource class])];
   }
   

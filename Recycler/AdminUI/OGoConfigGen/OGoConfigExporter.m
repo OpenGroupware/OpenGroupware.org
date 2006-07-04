@@ -148,9 +148,9 @@
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
   
-  if (self->database) [ms appendFormat:@" db=0x%08X", self->database];
+  if (self->database) [ms appendFormat:@" db=0x%p", self->database];
   
   [ms appendString:@">"];
   return ms;

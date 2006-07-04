@@ -860,7 +860,7 @@ static NSString *SkyExternalLinkAction = nil;
   NSMutableString *s;
   
   s = [NSMutableString stringWithCapacity:32];
-  [s appendFormat:@"<%@[0x%08X]:", NSStringFromClass([self class]), self];
+  [s appendFormat:@"<%@[0x%p]:", NSStringFromClass([self class]), self];
   [s appendFormat:@" buttons=%@",
        [[self->activeButtons allObjects] componentsJoinedByString:@","]];
   [s appendString:@">"];

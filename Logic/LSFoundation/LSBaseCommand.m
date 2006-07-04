@@ -202,7 +202,7 @@ static BOOL debug = NO;
 }
 
 - (NSString *)callStackDescription {
-  return [NSString stringWithFormat:@"%@::%@ (class=%@, self=0x%08X)",
+  return [NSString stringWithFormat:@"%@::%@ (class=%@, self=0x%p)",
                      [self domain], [self operation],
                      NSStringFromClass([self class]), self];
 }

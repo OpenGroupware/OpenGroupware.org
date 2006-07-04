@@ -511,7 +511,7 @@ static NSDictionary *personalFolderMap = nil;
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:64];
-  [ms appendFormat:@"<0x%08X[%@]: login=%@>",
+  [ms appendFormat:@"<0x%p[%@]: login=%@>",
         self, NSStringFromClass([self class]), self->login];
   return ms;
 }

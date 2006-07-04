@@ -95,7 +95,7 @@
 
   s = [NSMutableString stringWithCapacity:128];
   
-  [s appendFormat:@"<%@[0x%08X]: db=%@ uid=%i", 
+  [s appendFormat:@"<%@[0x%p]: db=%@ uid=%i", 
        NSStringFromClass([self class]), self,
        self->dbName, self->uniqueID];
   
@@ -119,7 +119,7 @@
   [s appendString:PPStringFromCreator(self->creator)];
   [s appendString:@"/"];
   [s appendString:PPStringFromType(self->type)];
-  [s appendFormat:@"/%08X", self->uniqueID];
+  [s appendFormat:@"/%p", self->uniqueID];
   return s;
 }
 

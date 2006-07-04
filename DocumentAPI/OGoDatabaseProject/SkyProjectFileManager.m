@@ -1568,7 +1568,7 @@ static inline NSNumber *boolNum(BOOL value) {
 /* description */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<0x%08X[%@]: cache=%@ cwd=%@>",
+  return [NSString stringWithFormat:@"<0x%p[%@]: cache=%@ cwd=%@>",
                      self, NSStringFromClass([self class]),
                      self->cache, [self currentDirectoryPath]];
 }

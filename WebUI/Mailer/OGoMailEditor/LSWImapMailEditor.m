@@ -1043,7 +1043,7 @@ static Class      StrClass        = nil;
       /* this happens if attachData in the dict is set to 0 */
       // TODO: what about 'sendObject' objects?
       if ([[obj valueForKey:@"sendObject"] boolValue]) {
-	[self warnWithFormat:@"not attaching: %@/%@/0x%08X", 
+	[self warnWithFormat:@"not attaching: %@/%@/0x%p", 
 	      [obj valueForKey:@"mimeType"],
 	      NSStringFromClass([obj class]), obj];
       }
@@ -1441,7 +1441,7 @@ static Class      StrClass        = nil;
     [viewer takeValue:[object body] forKey:@"body"];
   else {
     [self logWithFormat:
-	    @"WARNING(%s): object does not respond -body: 0x%08X<%@>",
+	    @"WARNING(%s): object does not respond -body: 0x%p<%@>",
 	    __PRETTY_FUNCTION__, object, NSStringFromClass([object class])];
   }
   return viewer;

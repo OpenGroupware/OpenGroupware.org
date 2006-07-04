@@ -113,7 +113,7 @@
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@[0x%08X]: cmd: %@>",
+  return [NSString stringWithFormat:@"<%@[0x%p]: cmd: %@>",
                    NSStringFromClass([self class]), self,
                    self->commandString];
 }

@@ -779,7 +779,7 @@ static NSDictionary *enterprisePhoneRevMapping = nil;
   /* check whether the address type already exists */
 
 #if 0
-  [self debugWithFormat:@"  phone: %@ (0x%08X)", lChangeSet, phoneEO];
+  [self debugWithFormat:@"  phone: %@ (0x%p)", lChangeSet, phoneEO];
 #endif
 
   if (![phoneEO isNotNull]) {

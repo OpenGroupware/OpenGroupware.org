@@ -846,7 +846,7 @@ static Class DOMNodeClass = Nil;
   NSMutableString *s;
 
   s = [NSMutableString stringWithCapacity:32];
-  [s appendFormat:@"<%@[0x%08X]:", NSStringFromClass([self class]), self];
+  [s appendFormat:@"<%@[0x%p]:", NSStringFromClass([self class]), self];
 
   if ([self isNew]) {
     [s appendString:@" new"];
@@ -947,7 +947,7 @@ static Class DOMNodeClass = Nil;
   /* TODO: split up big method */
   if (DebugOn) {
     [self logWithFormat:
-            @"%s: refetching doc=0x%08X,path=%@: attrs=%s, ext=%s",
+            @"%s: refetching doc=0x%p,path=%@: attrs=%s, ext=%s",
           __PRETTY_FUNCTION__, self, [self path],
           self->attributes         ? "yes" : "no",
           self->extendedAttributes ? "yes" : "no"];
@@ -977,7 +977,7 @@ static Class DOMNodeClass = Nil;
     NSAutoreleasePool *pool;
     
     if (DebugOn) {
-      NSLog(@"%s: refetching props of '%@' (instance=0x%08X) ...",
+      NSLog(@"%s: refetching props of '%@' (instance=0x%p) ...",
             __PRETTY_FUNCTION__, [self path], self);
     }
     

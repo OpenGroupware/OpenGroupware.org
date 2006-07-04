@@ -114,7 +114,7 @@
 
 - (NSString *)loggingPrefix {
   /* improve perf ... */
-  return [NSString stringWithFormat:@"<0x%08X[%@]:%@>",
+  return [NSString stringWithFormat:@"<0x%p[%@]:%@>",
 		     self, NSStringFromClass([self class]),
 		     [self nameInContainer]];
 }

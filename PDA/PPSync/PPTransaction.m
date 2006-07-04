@@ -841,7 +841,7 @@ static NSArray *_arrayFrom2Tables(NSHashTable *t1, NSHashTable *t2) {
 /* description */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@[0x%08X]: parent=%@ hasChanges=%s>",
+  return [NSString stringWithFormat:@"<%@[0x%p]: parent=%@ hasChanges=%s>",
                      NSStringFromClass([self class]), self,
                      [self parentObjectStore],
                      [self hasChanges] ? "yes" : "no"];

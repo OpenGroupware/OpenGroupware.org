@@ -1025,7 +1025,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
   desc = [[NSMutableString alloc] init];
   pb   = [self transferPasteboard];
 
-  [desc appendFormat:@"<%@[0x%08X]: id=%@",
+  [desc appendFormat:@"<%@[0x%p]: id=%@",
           NSStringFromClass([self class]), self,
           [self sessionID]];
 

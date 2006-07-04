@@ -116,13 +116,13 @@
   NSMutableString *ms;
 
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
   [ms appendFormat:@" entity=%@", [self->entity name]];
   
   if ([self->searchDict count] == 0)
-    [ms appendFormat:@" empty-dict<0x%08X>", self->searchDict];
+    [ms appendFormat:@" empty-dict<0x%p>", self->searchDict];
   else
-    [ms appendFormat:@" dict<0x%08X>=%@", self->searchDict, self->searchDict];
+    [ms appendFormat:@" dict<0x%p>=%@", self->searchDict, self->searchDict];
 
   [ms appendString:@">"];
   return ms;

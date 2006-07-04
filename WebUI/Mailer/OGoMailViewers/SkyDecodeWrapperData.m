@@ -77,7 +77,7 @@
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<0x%08X[%@]: data=%@ encoding=%@",
+  return [NSString stringWithFormat:@"<0x%p[%@]: data=%@ encoding=%@",
                    self, NSStringFromClass([self class]), self->data,
                    self->encoding];
 }

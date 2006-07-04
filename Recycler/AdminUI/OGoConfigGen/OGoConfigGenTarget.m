@@ -83,7 +83,7 @@
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
   
   [ms appendFormat:@" name='%@'",   self->name];
   [ms appendFormat:@" content: %@", self->content];

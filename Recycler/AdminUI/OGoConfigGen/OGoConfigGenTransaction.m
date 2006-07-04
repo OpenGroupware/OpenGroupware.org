@@ -156,12 +156,12 @@
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
 
   if (self->database)
-    [ms appendFormat:@" db=0x%08X", self->database];
+    [ms appendFormat:@" db=0x%p", self->database];
   if (self->coordinator)
-    [ms appendFormat:@" master=0x%08X", self->coordinator];
+    [ms appendFormat:@" master=0x%p", self->coordinator];
 
   if (self->targets)
     [ms appendFormat:@" #targets=%d", [self->targets count]];

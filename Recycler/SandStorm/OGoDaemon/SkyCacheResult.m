@@ -140,7 +140,7 @@
 /* description */
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<0x%08X[%@]: cached#: %d uncached#: %d>",
+  return [NSString stringWithFormat:@"<0x%p[%@]: cached#: %d uncached#: %d>",
                    self, NSStringFromClass([self class]),
                    [[self cachedElements] count],
                    [[self uncachedIds] count]];

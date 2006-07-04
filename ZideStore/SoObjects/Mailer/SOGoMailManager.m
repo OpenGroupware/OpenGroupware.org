@@ -390,7 +390,7 @@ static NSString       *imap4Separator  = nil;
     
     [entry cacheHierarchyResults:result];
     if (debugCache) {
-      [self logWithFormat:@"cached results in entry %@: 0x%08X(%d)", 
+      [self logWithFormat:@"cached results in entry %@: 0x%p(%d)", 
 	      entry, result, [result count]];
     }
   }
@@ -437,7 +437,7 @@ static NSString       *imap4Separator  = nil;
     
     [entry cacheHierarchyResults:result];
     if (debugCache) {
-      [self logWithFormat:@"cached results in entry %@: 0x%08X(%d)", 
+      [self logWithFormat:@"cached results in entry %@: 0x%p(%d)", 
 	      entry, result, [result count]];
     }
   }

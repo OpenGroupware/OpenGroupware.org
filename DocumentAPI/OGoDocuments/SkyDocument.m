@@ -126,14 +126,14 @@
     [_md appendFormat:@" gid=%@", gid];
   
   if ((ctx = [self context]) != nil)
-    [_md appendFormat:@" ctx=0x%08X", ctx];
+    [_md appendFormat:@" ctx=0x%p", ctx];
 }
 
 - (NSString *)description {
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%08X[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
   [self appendAttributesToDescription:ms];
   [ms appendString:@">"];
   return ms;
