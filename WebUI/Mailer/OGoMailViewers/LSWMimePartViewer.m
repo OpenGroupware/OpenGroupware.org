@@ -333,9 +333,9 @@ static int ShowBodySize = -1;
 
   changed = NO;
   len     = [_str length];
-  c       = calloc(len + 3, sizeof(id));
+  c       = calloc(len + 6 /* be defensive */, sizeof(id));
   
-  [_str getCString:c];
+  [_str getCString:(char *)c];
   for (i = 0; i < len; i++) {
     if (c[i] > 127) {
       c[i] = '_';
@@ -344,7 +344,8 @@ static int ShowBodySize = -1;
   }
   if (changed) {
 #if LIB_FOUNDATION_LIBRARY
-    _str = [NSString stringWithCStringNoCopy:c length:len freeWhenDone:YES];
+    _str = [NSString stringWithCStringNoCopy:(char *)c length:len
+		     freeWhenDone:YES];
 #else
     _str = [NSString stringWithCString:c length:len];
     if (c) free(c); c = NULL;
@@ -711,10 +712,10 @@ static int ShowBodySize = -1;
   NSString *key;
   
   if ((key = [self url]) == nil) {
-    unsigned char buf[32];
+    char buf[32];
     
     // TODO: better use some part hier-id?
-    sprintf(buf, "%08x", (unsigned)[self body]); 
+    sprintf(buf, "%p", [self body]); 
     key = [NSString stringWithCString:buf];
   }
   return key;

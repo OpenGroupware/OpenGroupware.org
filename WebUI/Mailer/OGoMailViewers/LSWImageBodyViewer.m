@@ -53,12 +53,13 @@
   ASSIGN(self->mimeType, _mimeType);
 }
 - (NGMimeType *)mimeType {
-  return self->mimeType ? self->mimeType : (id)@"image/gif";
+  return self->mimeType != nil ? self->mimeType : (NGMimeType *)@"image/gif";
 }
 
 - (NSString *)imageKey {
   char ikey[32];
-  sprintf(ikey, "img%x", (unsigned int)self);
+  
+  sprintf(ikey, "img%p", self);
   return [NSString stringWithCString:ikey];
 }
 

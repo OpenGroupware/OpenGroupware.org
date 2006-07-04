@@ -570,17 +570,17 @@
   ASSIGN(self->nilString, _nilString);
 }
 
-// object => string
+/* object => string */
 
 - (NSString *)stringForObjectValue:(id)_object {
-  if (![_object isNotNull] || [_object length] == 0)
-    return (self->nilString) ? self->nilString :  @"";
-
+  if (![_object isNotEmpty])
+    return (self->nilString != nil) ? self->nilString :  (NSString *)@"";
+  
   if (([_object length] <= self->length) || ([_object length] <= 4))
     return [_object stringValue];
-  else {
+
+  {
     NSString *result = [_object substringToIndex:self->length-2];
-    
     return [result stringByAppendingString:@".."];
   }
 }
@@ -597,7 +597,7 @@
   forString:(NSString *)_string
   errorDescription:(NSString **)_error
 {
-  *_object = ([_string length] == 0) ? [EONull null] : (id)_string;
+  *_object = [_string isNotEmpty] ? _string : (NSString *)[NSNull null];
 
   return YES;
 }

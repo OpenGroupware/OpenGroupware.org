@@ -144,7 +144,7 @@ static NSDictionary *SoMapping   = nil;
   {  
     if (profileDS) [self logWithFormat:@"fetchObjects: fetch ..."];
     
-    tmp = (self->folder) ? [self fetchMessages] : [NSArray array];
+    tmp = (self->folder) ? [self fetchMessages] : (NSArray *)[NSArray array];
 
     if (profileDS) [self logWithFormat:@"fetchObjects:   done ..."];
     ASSIGN(self->messages, tmp);
@@ -443,7 +443,7 @@ static int sortEmailHeader(id o1, id o2, void *_so) {
     else if ((ccmp = (void *)[v1 methodForSelector:sel]))
       result = ccmp(v1, sel, v2);
     else
-      result = (int)[v1 performSelector:sel withObject:v2];
+      result = (long)[v1 performSelector:sel withObject:v2];
 
     if (result != NSOrderedSame)
       return result;

@@ -217,11 +217,11 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
       filename = [type valueOfParameter:@"name"];
     
     if ([filename length] > 0) {
-      unsigned const char *cstr;
+      const unsigned char *cstr;
       unsigned char       *buf;
       int                 i, clen;
       
-      cstr = [filename cString];
+      cstr = (unsigned char *)[filename cString];
       clen = [filename cStringLength];
       buf = alloca(clen + 3);
       for (i = 0; i < clen; i++) {
@@ -234,7 +234,7 @@ static BOOL UseOnly7BitHeadersForMailBlobDownload = NO;
       }
       if (changed) {
         buf[clen] = '\0';
-        filename = [NSString stringWithCString:buf length:clen];
+        filename = [NSString stringWithCString:(char *)buf length:clen];
       }
     }
     if (changed) {

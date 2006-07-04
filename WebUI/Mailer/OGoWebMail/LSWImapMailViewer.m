@@ -710,13 +710,13 @@ static NSString   *sendDateDateFmt = @"%Y-%m-%d %H:%M";
       tmp = [[self object] valueForKey:@"sendDate"];
       tmp = [tmp respondsToSelector:@selector(descriptionWithCalendarFormat:)]
 	? [tmp descriptionWithCalendarFormat:sendDateDateFmt]
-	: @"<unknown>";
+	: (NSString *)@"<unknown>";
       
-      if ([tmp length] == 0)
+      if (![tmp isNotEmpty])
         tmp = @"<unknown>";
       
       subject = [[self object] valueForKey:@"subject"];
-      if (!subject)
+      if (![subject isNotEmpty])
         subject = @"<unknown>";
       
       [page takeValue:[NSString stringWithFormat:@"%@ [%@]", subject, tmp]
@@ -1154,7 +1154,7 @@ static NSString   *sendDateDateFmt = @"%Y-%m-%d %H:%M";
 }
 
 static inline NSString *_a(NSString *_obj) {
-  return (_obj == nil)? @"" : (id)_obj;
+  return (_obj == nil) ? (NSString *)@"" : _obj;
 }
 
 - (NSDictionary *)_messageProperties {

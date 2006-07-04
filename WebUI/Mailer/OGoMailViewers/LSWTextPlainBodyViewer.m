@@ -88,7 +88,7 @@ static int UseFoundationStringEncodingForMimeText = -1;
   NSString *charset;
   
   charset = [[[self partOfBody] contentType] valueOfParameter:@"charset"];
-  return ([charset length] > 0) ? charset : @"us-ascii";
+  return [charset isNotEmpty] ? charset : (NSString *)@"us-ascii";
 }
 
 - (NSString *)bodyAsString {
@@ -151,7 +151,7 @@ static int UseFoundationStringEncodingForMimeText = -1;
          wrapLongLines:[self defShouldWrapLongLines]];
   
   return [self printMode]
-    ? [NSArray arrayWithObject:[self printInfoWithTextValue:s]]
+    ? (NSArray *)[NSArray arrayWithObject:[self printInfoWithTextValue:s]]
     : [s findContainedLinks];
 }
 

@@ -85,26 +85,25 @@
                                [date stringValue]];
     }
     
-    return (date != nil) ? date : (id)[NSNull null];
+    return (date != nil) ? date : (NSCalendarDate *)[NSNull null];
   }
-  else if ([_key isEqualToString:@"contentLen"])
+  if ([_key isEqualToString:@"contentLen"])
     return [NSNumber numberWithInt:[self size]];
-  else if ([_key isEqualToString:@"size"])
+  if ([_key isEqualToString:@"size"])
     return [NSNumber numberWithInt:[self size]];
-  else if ([_key isEqualToString:@"isRead"])
+  if ([_key isEqualToString:@"isRead"])
     return [NSNumber numberWithBool:[self isRead]];
-  else if ([_key isEqualToString:@"isNew"])
+  if ([_key isEqualToString:@"isNew"])
     return [NSNumber numberWithBool:[[self flags] containsObject:@"recent"]];
-  else if ([_key isEqualToString:@"emailFolder"])
+  if ([_key isEqualToString:@"emailFolder"])
     return [self folder];
-  else if ([_key isEqualToString:@"emailFolderName"])
+  if ([_key isEqualToString:@"emailFolderName"])
     return [[self folder] name];
-  else {
-    if ([[self flags] containsObject:_key])
-      return [NSNumber numberWithBool:YES];
-    else
-      return [NSNumber numberWithBool:NO];
-  }
+
+  if ([[self flags] containsObject:_key])
+    return [NSNumber numberWithBool:YES];
+  
+  return [NSNumber numberWithBool:NO];
 }
 
 @end /* NGImap4Message(KVC) */

@@ -72,7 +72,7 @@
 
   return ([contentLength isKindOfClass:[NSNumber class]])
     ? contentLength
-    : [NSNumber numberWithInt:[contentLength intValue]];
+    : (id)[NSNumber numberWithInt:[contentLength intValue]];
 }
 
 - (id)bodyViewerComponent {
@@ -88,4 +88,4 @@
   return self->part;
 }
 
-@end
+@end /* LSWMimeMessageViewer */

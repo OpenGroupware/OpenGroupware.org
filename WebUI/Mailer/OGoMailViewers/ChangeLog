@@ -1,3 +1,7 @@
+2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* code cleanups, fixed gcc 4.1 warnings, 64bit fixups (v5.3.26)
+
 2005-04-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWInlineBodyViewer.m: minor code cleanups (v5.1.25)

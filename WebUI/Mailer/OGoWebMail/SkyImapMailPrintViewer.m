@@ -75,8 +75,10 @@
 - (NSString *)printTitle {
   NSString *tmp;
   
+  // TODO: localize prefix?
   tmp = [self->object valueForKey:@"subject"];
-  return [tmp isNotNull] ? [@"OGo Mails: " stringByAppendingString:tmp] : nil;
+  return [tmp isNotEmpty] ?
+    [@"OGo Mails: " stringByAppendingString:tmp] : (NSString *)nil;
 }
 
 - (id)headerLabel {

@@ -211,19 +211,22 @@ static NSString *ClientScrollTreshold = @"MailListClientSideScrollTreshold";
 }
 
 - (void)setShowMessages:(NSString *)_showString {
-  NSString *key = [self->name stringByAppendingString:ShowMessages];
-  key = [key stringByAppendingString:[self->folder absoluteName]];
+  NSString *key;
 
+  key = [self->name stringByAppendingString:ShowMessages];
+  key = [key stringByAppendingString:[self->folder absoluteName]];
+  
   [self->defaults setObject:_showString forKey:key];
 }
 - (NSString *)showMessages {
-  NSString *key = [self->name stringByAppendingString:ShowMessages];
-  NSString *tmp;
+  NSString *key, *tmp;
+  
+  key = [self->name stringByAppendingString:ShowMessages];
   key = [key stringByAppendingString:[self->folder absoluteName]];
 
   tmp = [self->defaults stringForKey:key];
 
-  return (tmp) ? tmp : @"all";
+  return (tmp != nil) ? tmp : (NSString *)@"all";
 }
 
 - (BOOL)doClientSideScroll {
