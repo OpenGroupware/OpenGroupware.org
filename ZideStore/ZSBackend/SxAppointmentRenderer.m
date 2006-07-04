@@ -231,20 +231,20 @@ static BOOL debugRenderer = NO;
   else {
     NSString *tmp;
       
-    if ((tmp = [_participant valueForKey:@"firstname"]) != nil)
+    if ([(tmp = [_participant valueForKey:@"firstname"]) isNotEmpty])
       cn = [tmp stringByAppendingString:@" "];
     else
       cn = @"";
-
-    if ((tmp = [_participant valueForKey:@"name"]) != nil)
+    
+    if ([(tmp = [_participant valueForKey:@"name"]) isNotEmpty])
       cn = [cn stringByAppendingString:tmp];
 
-    if ([cn length] == 0)
+    if (![cn isNotEmpty])
       cn = @"No Name";
     
-    email = ((tmp = [_participant valueForKey:@"email1"]) != nil)
+    email = ([(tmp = [_participant valueForKey:@"email1"]) isNotEmpty])
       ? tmp
-      : cn;
+      : (NSString *)cn;
   }
   
   [_ms appendString:@"ATTENDEE;CUTYPE=\""];
@@ -253,10 +253,10 @@ static BOOL debugRenderer = NO;
   [_ms appendString:isTeam ? @"GROUP" : @"INDIVIDUAL"];
   
   [_ms appendString:@"\";PARTSTAT=\""];
-  [_ms appendString:([state length] > 0) ? state : @"NEEDS-ACTION"];
+  [_ms appendString:[state isNotEmpty] ? state : (id)@"NEEDS-ACTION"];
   
   [_ms appendString:@"\";ROLE=\""];
-  [_ms appendString:([role length] > 0) ? role : @"OPT-PARTICIPANT"];
+  [_ms appendString:[role isNotEmpty] ? role : (id)@"OPT-PARTICIPANT"];
   
   [_ms appendString:@"\";RSVP=\""];
   [_ms appendString:[rsvp boolValue] ? @"TRUE" : @"FALSE"];

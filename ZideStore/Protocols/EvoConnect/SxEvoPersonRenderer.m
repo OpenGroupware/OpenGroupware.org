@@ -37,9 +37,12 @@
   pkey       = [[record valueForKey:@"pkey"] stringValue];
   sn         = [record valueForKey:@"sn"];
   givenname  = [record valueForKey:@"givenname"];
-  middlename = ((tmp = [record valueForKey:@"middlename"]) != nil) ? tmp : @"";
-  title      = ((tmp = [record valueForKey:@"nametitle"]) != nil)  ? tmp : @"";
-  affix      = ((tmp = [record valueForKey:@"nameaffix"]) != nil)  ? tmp : @"";
+  middlename = ((tmp = [record valueForKey:@"middlename"]) != nil) 
+    ? tmp : (id)@"";
+  title      = ((tmp = [record valueForKey:@"nametitle"]) != nil)  
+    ? tmp : (id)@"";
+  affix      = ((tmp = [record valueForKey:@"nameaffix"]) != nil)  
+    ? tmp : (id)@"";
 
   /* render some compound names */
 

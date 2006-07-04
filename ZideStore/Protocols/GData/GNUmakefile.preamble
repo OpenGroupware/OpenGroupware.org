@@ -12,6 +12,6 @@ ADDITIONAL_LIB_DIRS += \
 	-L../../ZSFrontend/$(GNUSTEP_OBJ_DIR) \
 	-L../../ZSBackend/$(GNUSTEP_OBJ_DIR)
 
-SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
-
 GData_BUNDLE_LIBS += -lNGObjWeb
+
+SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)

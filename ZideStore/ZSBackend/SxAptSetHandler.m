@@ -146,7 +146,7 @@ static BOOL debugOn = NO;
   
   cgid = ([[self->setId group] length] > 0)
     ? [self->manager globalIDForGroupWithName:[self->setId group]]
-    : (id)[NSNull null]; /* this says "fetch private" */
+    : (EOKeyGlobalID *)[NSNull null]; /* this says "fetch private" */
   if (cgid == nil) {
     [self logWithFormat:@"got no gids for group/login %@ !", 
             [self->setId group]];
@@ -226,7 +226,7 @@ static BOOL debugOn = NO;
   
   cgid = (_group)
     ? [self->manager globalIDForGroupWithName:_group]
-    : (id)[NSNull null]; /* this says "fetch private" */
+    : (EOKeyGlobalID *)[NSNull null]; /* this says "fetch private" */
   
   gids = [[self commandContext] runCommand:@"appointment::query",
 		@"fromDate",  _from, 
@@ -445,9 +445,9 @@ static BOOL debugOn = NO;
 
 /* set */
 
-static int dateIdCompare(NSDictionary *date1, NSDictionary *date2, void *self){
-  return [(NSNumber *)[date1 objectForKey:@"pkey"] 
-		      compare:[date2 objectForKey:@"pkey"]];
+static int dateIdCompare(id date1, id date2, void *self){
+  return [(NSNumber *)[(NSDictionary *)date1 objectForKey:@"pkey"] 
+		      compare:[(NSDictionary *)date2 objectForKey:@"pkey"]];
 }
 
 - (NSString *)idsAndVersionsCSV {

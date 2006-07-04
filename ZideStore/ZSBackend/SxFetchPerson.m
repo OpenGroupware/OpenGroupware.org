@@ -98,7 +98,7 @@
 static BOOL debugOn = NO;
 
 static inline NSString *attrV(id _v) {
-  return [_v isNotNull] ? _v : @"";
+  return [_v isNotNull] ? _v : (id)@"";
 }
 
 - (NSString *)entityName {

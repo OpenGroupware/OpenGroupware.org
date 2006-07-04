@@ -81,8 +81,8 @@
     : [self objectForTeam:_group];
   
   if (object == nil) {
-    [self logWithFormat:
-          @"ERROR: got no object for %@", _group ? _group : @"login"];
+    [self errorWithFormat:
+	    @"got no object for %@", _group != nil ? _group : (id)@"login"];
     return nil;
   }
   

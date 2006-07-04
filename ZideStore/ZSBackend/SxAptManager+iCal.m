@@ -309,7 +309,7 @@ static BOOL catchExceptions = YES;
           _event, _exception];
   [self rollback];
   
-  return catchExceptions ? nil : _exception;
+  return catchExceptions ? (NSException *)nil : _exception;
 }
 
 - (void)putUnknownEvents:(NSArray *)_events {
