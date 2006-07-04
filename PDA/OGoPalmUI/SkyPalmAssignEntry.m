@@ -106,17 +106,19 @@
   return YES;
 }
 
-// overwriting
+/* overwriting */
+
 - (id)fetchSkyrixRecord {
-  NSLog(@"<%@> fetchSkyrixRecord not overwritten!!", self);
+  [self logWithFormat:@"<%@> fetchSkyrixRecord not overwritten!!", self];
   return nil;
 }
 - (NSString *)primarySkyKey {
-  NSLog(@"<%@> primarySkyKey not overwritten!!", self);
+  [self logWithFormat:@"<%@> primarySkyKey not overwritten!!", self];
   return nil;
 }
 
-// accessors
+/* accessors */
+
 - (void)setSkyrixRecord:(id)_rec {
   ASSIGN(self->skyrixRecord,_rec);
 }
@@ -130,7 +132,7 @@
   [self setSyncType:[_doc syncType]];
   [self setDeviceId:[_doc deviceId]];
 }
-- (SkyPalmDocument *)doc {
+- (id)doc {
   return self->doc;
 }
 

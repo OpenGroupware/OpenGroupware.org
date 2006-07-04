@@ -595,6 +595,7 @@
 - (id)createSkyrixRecordCopy {
   SkyAppointmentDocument *newApt = nil;
   id oldSkyrixRecord;
+
   oldSkyrixRecord = [self skyrixRecord];
   if (oldSkyrixRecord != nil) { 
     SkyAppointmentDataSource *ds;
@@ -627,14 +628,14 @@
         [ud stringForKey:@"ogopalm_default_scheduler_read_access_team"];
       readAccess = [readAccess length]
         ? [NSNumber numberWithInt:[readAccess intValue]]
-        : nil;
+        : (NSNumber *)nil;
       
       [newApt setWriteAccess:writeAccess];
       [newApt setAccessTeamId:readAccess];
     }
   }
 
-  return [newApt save] ? newApt : nil;
+  return [newApt save] ? newApt : (SkyAppointmentDocument *)nil;
 }
 
 
@@ -768,7 +769,7 @@
   OGoCycleDateCalculator *calc;
 
   if (self->repeatType == REPEAT_TYPE_SINLGE) // single date
-    return (_idx == 0) ? self : nil;
+    return (_idx == 0) ? (id)self : nil;
 
   if ((delegate = [self cycleDelegate]) == nil)
     return nil;

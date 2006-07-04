@@ -456,6 +456,7 @@ NSDictionary *__dP(id _obj, NSString *_key) {
 - (id)createSkyrixRecordCopy {
   SkyCompanyDocument *newCompany = nil;
   id oldSkyrixRecord;
+  
   oldSkyrixRecord = [self skyrixRecord];
   if (oldSkyrixRecord != nil) {
     NSString *type;
@@ -482,10 +483,11 @@ NSDictionary *__dP(id _obj, NSString *_key) {
 
   }
 
-  return [newCompany save] ? newCompany : nil;
+  return [newCompany save] ? newCompany : (SkyCompanyDocument *)nil;
 }
 
 @end /* SkyPalmAddressDocument(SkyrixSync) */
+
 
 @implementation SkyPalmAddressDocument(SkyrixSync_PrivatMethods)
 

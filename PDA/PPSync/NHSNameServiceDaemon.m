@@ -345,7 +345,7 @@ char   pilotport[255];
 - (void)runTransaction {
   struct sockaddr_in caddr;
   struct pi_socket   *pisock;
-  int                caddrLen;
+  socklen_t          caddrLen;
   int                csd;
   pid_t              pid;
   id                 clientAddress;
@@ -504,4 +504,3 @@ char   pilotport[255];
 }
 
 @end /* NHSNameServiceDaemon */
-

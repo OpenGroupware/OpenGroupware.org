@@ -791,7 +791,7 @@
   if (!record)
     NSLog(@"%s WARNING record is invalid");
 
-  len = pack_CategoryAppInfo(&info, record, sizeof(record));
+  len = pack_CategoryAppInfo(&info, (char *)record, sizeof(record));
 
   return [NSData dataWithBytes:record length:len];
 }
@@ -1034,11 +1034,11 @@
     id           one      = nil;
 
     e = [[rec valueForKey:@"cycleExceptionsArray"] objectEnumerator];
-    while ((one = [e nextObject])) {
+    while ((one = [e nextObject]) != nil) {
       one = [one descriptionWithCalendarFormat:@"%Y-%m-%d"];
       excepts = (excepts == nil)
         ? one
-        : [excepts stringByAppendingFormat:@",%@", one];
+        : (id)[excepts stringByAppendingFormat:@",%@", one];
     }
     [dict takeValue:((excepts == nil)
                      ? (NSString *)@""

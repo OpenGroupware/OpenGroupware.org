@@ -102,7 +102,7 @@
 
 - (NSString *)subKey {
   NSString *sk = [self valueForBinding:@"subKey"];
-  return (sk == nil) ? (id)@"" : sk;
+  return (sk == nil) ? (NSString *)@"" : sk;
 }
 
 - (SkyPalmEntryListState *)state {

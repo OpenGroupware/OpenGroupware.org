@@ -433,10 +433,11 @@
 
 - (NSString *)postSyncMethod {
   NSUserDefaults *ud;
-  NSString *method;
+  NSString       *method;
+  
   ud = [[self->palmDataSource context] userDefaults];
   method = [ud stringForKey:@"SkyPalm_AddressImportPalmData"];
-  return [method length] ? method : @"sync_non_private";
+  return [method isNotEmpty] ? method : (NSString *)@"sync_non_private";
 }
 
 - (NSArray *)fetchPalmEntriesToInsertIntoOGo {
@@ -504,7 +505,7 @@
                               @"new enterprise created during palm postsync"];
   }
 
-  return [newCompany save] ? newCompany : nil;
+  return [newCompany save] ? newCompany : (SkyCompanyDocument *)nil;
 }
 
 @end /* SkyPalmAddressPostSync */
@@ -561,9 +562,10 @@
 - (NSString *)postSyncMethod {
   NSUserDefaults *ud;
   NSString *method;
-  ud = [[self->palmDataSource context] userDefaults];
+  
+  ud     = [[self->palmDataSource context] userDefaults];
   method = [ud stringForKey:@"SkyPalm_DatesPostSyncMethod"];
-  return [method length] ? method : @"sync_non_private";
+  return [method isNotEmpty] ? method : (NSString *)@"sync_non_private";
 }
 
 - (NSArray *)fetchPalmEntriesToInsertIntoOGo {
@@ -619,7 +621,7 @@
     [newApt setWriteAccess:[self writeAccessIds]];
     [newApt setAccessTeamId:[self accessTeamId]];
   }
-  return [newApt save] ? newApt : nil;
+  return [newApt save] ? newApt : (SkyAppointmentDocument *)nil;
 }
 
 - (id)appointmentAsEO:(EOGlobalID *)_gid {

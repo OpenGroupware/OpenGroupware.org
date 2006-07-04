@@ -44,4 +44,4 @@ ADDITIONAL_LIB_DIRS += \
 	-L$(OGoROOT)/Logic/LSScheduler/$(GNUSTEP_OBJ_DIR)/	    \
 	-L$(OGoROOT)/Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)/
 
-SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
+SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)

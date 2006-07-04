@@ -172,13 +172,13 @@
   return self->category;
 }
 
-// additional
+/* additional */
 // changes won't be saved by category name
 // --> change categoryId
 - (NSString *)categoryName {
   return (self->category != nil)
     ? [self->category categoryName]
-    : @"";
+    : (NSString *)@"";
 }
 
 - (BOOL)isEditable {
@@ -850,7 +850,7 @@
       save = [self syncTwoWay];
       break;
   }
-  return save ? [self saveWithoutReset] : self;
+  return save ? [self saveWithoutReset] : (id)self;
 }
 
 - (int)actualSkyrixSyncAction {
@@ -910,12 +910,12 @@
 - (id)forceSkyrixOverPalmSync {
   BOOL save = NO;
   save = [self syncSkyrixOverPalm];
-  return save ? [self saveWithoutReset] : self;
+  return save ? [self saveWithoutReset] : (id)self;
 }
 - (id)forcePalmOverSkyrixSync {
   BOOL save = NO;
   save = [self syncPalmOverSkyrix];
-  return save ? [self saveWithoutReset] : self;
+  return save ? [self saveWithoutReset] : (id)self;
 }
 
 - (void)saveSkyrixRecord {

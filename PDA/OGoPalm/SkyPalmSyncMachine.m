@@ -34,7 +34,7 @@
 @implementation SkyPalmSyncMachine
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     self->syncMode            = SYNC_MODE_SKY_OVER_PALM;
     self->onDeleteInSkyrix    = ON_DELETE_IN_SKYRIX_REALYDELETE_IN_SKYRIX;
     self->categorySyncMode    = SYNC_CATEGORY_FROM_PALM;
@@ -62,7 +62,7 @@
   ASSIGNCOPY(self->logLabel, _label);
 }
 
-- (void)logInFunction:(char *)_func
+- (void)logInFunction:(const char *)_func
   message:(NSString *)_log, ...
 {
   va_list va;
@@ -110,12 +110,14 @@
 
 - (void)setSyncWithSkyrixRecordBefore:(BOOL)_flag {
 #if DEBUG
-  if (_flag)
+  if (_flag) {
     [self logInFunction:__PRETTY_FUNCTION__
           message:@" presync enabled"];
-  else
+  }
+  else {
     [self logInFunction:__PRETTY_FUNCTION__
           message:@" presync disabled"];
+  }
 #endif
   self->syncWithSkyrixRecordBefore = _flag;
 }
@@ -146,7 +148,7 @@
 - (NSArray *)errorMessages {
   return (self->errorMessages != nil)
     ? self->errorMessages
-    : [NSArray array];
+    : (NSArray *)[NSArray array];
 }
 - (void)_appendErrorMessage:(NSString *)_msg {
   [self setErrorMessages:[[self errorMessages] arrayByAddingObject:_msg]];
@@ -166,8 +168,9 @@
       [dict takeValue:one forKey:palmId];
     else {
       NSArray *newRecs = [dict valueForKey:@"new"];
+      
       newRecs = (newRecs == nil)
-        ? [NSArray arrayWithObject:one]
+        ? (NSArray *)[NSArray arrayWithObject:one]
         : [newRecs arrayByAddingObject:one];
       [dict takeValue:newRecs forKey:@"new"];
     }
@@ -231,17 +234,17 @@
   id             palmId             = nil;
 
   // settings vars
-  changedInPalm   = [NSMutableArray array];
-  newInPalm       = [NSMutableArray array];
-  untouchedInPalm = [NSMutableArray array];
-  deletedInPalm   = [NSMutableArray array];
+  changedInPalm   = [NSMutableArray arrayWithCapacity:64];
+  newInPalm       = [NSMutableArray arrayWithCapacity:64];
+  untouchedInPalm = [NSMutableArray arrayWithCapacity:64];
+  deletedInPalm   = [NSMutableArray arrayWithCapacity:64];
   
-  changedInSkyrix   = [NSMutableArray array];
+  changedInSkyrix   = [NSMutableArray arrayWithCapacity:64];
   newInSkyrix       = nil;
-  untouchedInSkyrix = [NSMutableArray array];
-  deletedInSkyrix   = [NSMutableArray array];
+  untouchedInSkyrix = [NSMutableArray arrayWithCapacity:64];
+  deletedInSkyrix   = [NSMutableArray arrayWithCapacity:64];
 
-  changedInBoth     = [NSMutableArray array];
+  changedInBoth     = [NSMutableArray arrayWithCapacity:64];
 
   skyRecordMapping  = [self _recordsMappedByPalmId:_skyRecs];
   palmRecordMapping = [self _recordsMappedByPalmId:_palmRecs];
@@ -250,7 +253,7 @@
   newInSkyrix      = [[skyRecordMapping valueForKey:@"new"] mutableCopy];
   AUTORELEASE(newInSkyrix);
   if (newInSkyrix == nil)
-    newInSkyrix = [NSMutableArray array];
+    newInSkyrix = [NSMutableArray arrayWithCapacity:64];
 
   // palm recs without palm Id
   if ((tmp = [palmRecordMapping valueForKey:@"new"]) != nil) {
@@ -262,13 +265,14 @@
 
   // checking palmRecs
   e = [_palmRecs objectEnumerator];
-  while ((one = [e nextObject])) {
+  while ((one = [e nextObject]) != nil) {
     palmId = [NSNumber numberWithInt:[one palmId]];
     if ((palmId == nil) || ([palmId intValue] < 1)) {
+      // TODO: localization?
       [self _appendErrorMessage:
             [NSString stringWithFormat:
                       @"WARNING!! Palm-Record without palmId: %@ | %@",
-                      one, (palmId == nil) ? @"<nil>" : palmId]];
+                      one, (palmId == nil) ? (id)@"<nil>" : palmId]];
       continue;
     }
 
@@ -852,7 +856,7 @@
   id           tmp     = nil;
   NSNumber     *palmId = nil;
 
-  NSMutableArray *all = [NSMutableArray array];
+  NSMutableArray *all = [NSMutableArray arrayWithCapacity:64];
 
   e = [[skyMapping allKeys] objectEnumerator];
 
@@ -1008,10 +1012,10 @@
                                 primaryKey:(NSString *)_pkey
                                     entity:(NSString *)_entity
 {
-  NSString    *query = nil;
-  EOQualifier *qual  = nil;
+  NSString    *query;
+  EOQualifier *qual;
 
-  if ([_pkeys count] > 0) {
+  if ([_pkeys isNotEmpty]) {
     query = [NSString stringWithFormat:@" OR %@=", _pkey];
     query = [NSString stringWithFormat:@"%@=%@", _pkey,
                       [_pkeys componentsJoinedByString:query]];
@@ -1027,8 +1031,8 @@
 }
 
 - (void)_extractSkyrixIds:(NSArray **)_skyIds
-               andMapping:(NSDictionary **)_sky2Palm
-               forListing:(NSArray *)_mapping
+  andMapping:(NSDictionary **)_sky2Palm
+  forListing:(NSArray *)_mapping
 {
   NSMutableArray      *skyIds   = nil;
   NSMutableDictionary *sky2Palm = nil;
@@ -1038,7 +1042,7 @@
   NSEnumerator *e;
   id           one;
 
-  skyIds   = [NSMutableArray array];
+  skyIds   = [NSMutableArray arrayWithCapacity:64];
   sky2Palm = [NSMutableDictionary dictionaryWithCapacity:16];
 
   e = [_mapping objectEnumerator];
