@@ -410,7 +410,7 @@ static BOOL     PreferredAccountsEnabled = NO;
     id tb;
 
     tb = [[self defaults] objectForKey:@"job_view"]; 
-    self->tabKey = (tb != nil) ? RETAIN(tb) : @"attributes";
+    self->tabKey = (tb != nil) ? [tb copy] : (id)@"attributes";
   }
   return YES;
 }
@@ -947,7 +947,7 @@ static BOOL     PreferredAccountsEnabled = NO;
   
   str = [array objectAtIndex:1];
   // TODO: find out about that
-  map = NGDecodeUrlFormParameters([str cString], [str length]);
+  map = NGDecodeUrlFormParameters((unsigned char *)[str cString],[str length]);
   str = [map objectForKey:@"label"];
   
   if ([str length] == 0)

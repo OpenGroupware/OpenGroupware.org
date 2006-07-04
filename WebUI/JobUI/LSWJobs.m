@@ -86,14 +86,14 @@ static BOOL       LSCoreOnCommandException = NO;
   id p;
 
   /* this component is a session-singleton */
-  if ((p = [self persistentInstance])) {
+  if ((p = [self persistentInstance]) != nil) {
     [self release];
     return [p retain];
   }
   
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     id tb = [[[self session] userDefaults] objectForKey:@"joblist_view"]; 
-    self->tabKey = (tb != nil) ? [tb copy] : @"toDoList";
+    self->tabKey = (tb != nil) ? [tb copy] : (id)@"toDoList";
     
     [self registerAsPersistentInstance];
 

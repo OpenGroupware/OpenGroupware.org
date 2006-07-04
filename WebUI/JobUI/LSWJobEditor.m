@@ -256,9 +256,9 @@ static BOOL HasSkyProject4Desktop    = NO;
 
 - (NSString *)priorityName {
   NSString *pri;
-  unsigned char buf[64];
+  char buf[64];
   
-  sprintf(buf, "priority_%d", [self->item intValue]);
+  snprintf(buf, sizeof(buf), "priority_%d", [self->item unsignedIntValue]);
   pri = [[self labels] valueForKey:[NSString stringWithCString:buf]];
   
   if (pri == nil)
@@ -322,7 +322,7 @@ static BOOL HasSkyProject4Desktop    = NO;
   NSString *l;
 
   l = [[self labels] valueForKey:@"noProject"];
-  return (l != nil) ? l : @"- no project -";
+  return (l != nil) ? l : (NSString *)@"- no project -";
 }
 
 - (BOOL)hasExecutants {
@@ -995,7 +995,9 @@ static BOOL HasSkyProject4Desktop    = NO;
   if (!JobAttributesCollapsible)
     return NO;
 
-  return self->referredPerson != nil > 0 ? YES : NO;
+  // TODO: was: return self->referredPerson != nil > 0 ? YES : NO;
+  //       what do we want here? :-)
+  return self->referredPerson != nil ? YES : NO;
 }
 
 - (void)setReferredPerson:(NSString *)_per {
@@ -1320,7 +1322,7 @@ static BOOL _isIntKeyEq(id a, id b, NSString *key) {
   fmt = [l valueForKey:@"searchPreferredAccounts"];
   s   = (self->team != nil)
     ? [self labelForAccount:self->team]
-    : [l valueForKey:@"noTeamSelected"];
+    : (NSString *)[l valueForKey:@"noTeamSelected"];
   return [NSString stringWithFormat:fmt, s];
 }
 
