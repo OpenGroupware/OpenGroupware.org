@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -88,8 +89,13 @@ static NSString *FHSOGoBundleDir               = nil;
   /* eg OGo soversion 5.3 => 1.1 */
   bps = [[NSString alloc] initWithFormat:@"OpenGroupware.org-%i.%i",
                           OGO_MAJOR_VERSION - 4, OGO_MINOR_VERSION - 2];
-  fsp = [[NSString alloc] initWithFormat:@"lib/opengroupware.org-%i.%i/",
-                          OGO_MAJOR_VERSION - 4, OGO_MINOR_VERSION - 2];
+  fsp = [[NSString alloc] initWithFormat:
+#if CONFIGURE_64BIT
+			    @"lib64/opengroupware.org-%i.%i/",
+#else
+			    @"lib/opengroupware.org-%i.%i/",
+#endif
+                            OGO_MAJOR_VERSION - 4, OGO_MINOR_VERSION - 2];
   
   defs = [NSDictionary dictionaryWithObjectsAndKeys:
            @"",                            @"LSAuthLDAPServer",
@@ -151,6 +157,14 @@ static NSString *FHSOGoBundleDir               = nil;
   if ([FHSOGoBundleDir isNotEmpty]) {
     // TODO: should be some search path, eg LD_LIBRARY_PATH?
     NSString *bp, *p;
+
+#ifdef FHS_INSTALL_ROOT
+    bp     = [FHS_INSTALL_ROOT stringByAppendingPathComponent:FHSOGoBundleDir];
+    p      = [bp stringByAppendingPathComponent:@"commands"];
+    pathes = [pathes arrayByAddingObject:p];
+    p      = [bp stringByAppendingPathComponent:@"datasources"];
+    pathes = [pathes arrayByAddingObject:p];
+#endif
     
     bp     = [@"/usr/local/" stringByAppendingPathComponent:FHSOGoBundleDir];
     p      = [bp stringByAppendingPathComponent:@"commands"];

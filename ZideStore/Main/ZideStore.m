@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -114,9 +115,18 @@
 
   /* check FHS locations */
   
-  relName = [NSString stringWithFormat:@"lib/zidestore-%i.%i/",
-                      ZS_MAJOR_VERSION, ZS_MINOR_VERSION];
-  // TODO: add some configured path
+  relName = [NSString stringWithFormat:
+#if CONFIGURE_64BIT
+			@"lib64/zidestore-%i.%i/",
+#else
+			@"lib/zidestore-%i.%i/",
+#endif
+                        ZS_MAJOR_VERSION, ZS_MINOR_VERSION];
+
+#ifdef FHS_INSTALL_ROOT
+  [ma addObject:[FHS_INSTALL_ROOT stringByAppendingPathComponent:relName]];
+#endif
+  
   [ma addObject:[@"/usr/local/" stringByAppendingPathComponent:relName]];
   [ma addObject:[@"/usr/"       stringByAppendingPathComponent:relName]];
   

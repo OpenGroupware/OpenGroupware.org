@@ -27,7 +27,13 @@
 
 static BOOL logBundleLoading          = NO;
 static BOOL loadWebUIBundlesOnStartup = YES;
+
+// TODO: derive versions from Version file (see SaxXMLReaderFactory.m)
+#if CONFIGURE_64BIT
+static NSString *FHSOGoBundleDir = @"lib64/opengroupware.org-1.1/";
+#else
 static NSString *FHSOGoBundleDir = @"lib/opengroupware.org-1.1/";
+#endif
 static NSArray  *FHSPathes = nil;
 
 + (void)initialize {
@@ -38,7 +44,11 @@ static NSArray  *FHSPathes = nil;
   // TODO: should be some search path, eg LD_LIBRARY_SEARCHPATH?
   if (FHSPathes == nil) {
     FHSPathes = 
-      [[NSArray alloc] initWithObjects:@"/usr/local/", @"/usr/", nil];
+      [[NSArray alloc] initWithObjects:
+#ifdef FHS_INSTALL_ROOT
+			 FHS_INSTALL_ROOT,
+#endif
+			 @"/usr/local/", @"/usr/", nil];
   }
 }
 
