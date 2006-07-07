@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -31,6 +32,12 @@
     appointment::get-participants
     appointment::get-comments
     appointment::get-access-team-info
+  
+  Special key for 'attributes' fetches:
+    participants. => used when fetching the persons
+    comment       => fetch the comment (additionalKeys)
+    globalID
+    permissions
 */
 
 @interface LSGetAppointmentsForGlobalIDs : LSDBObjectBaseCommand
@@ -131,6 +138,10 @@ static NSSet *AllListAttrs = nil;
   fetchGlobalIDs:(BOOL *)getGids
 {
   // TODO: move to own object?
+  /*
+    Keys:
+    - participants.
+  */
   EOEntity *entity;
   unsigned i, count;
 
@@ -458,7 +469,7 @@ static NSSet *AllListAttrs = nil;
 	participantKeys:&participantKeys additionalKeys:&additionalKeys
 	makeMutable:&makeMutable fetchPermissions:&getPerms
 	fetchGlobalIDs:&getGids];
-  if ([participantKeys count] > 0)
+  if ([participantKeys isNotEmpty])
     gidToApt = [NSMutableDictionary dictionaryWithCapacity:256];
   
   *(&batchSize) = gidCount > 200 ? 200 : gidCount;
@@ -522,7 +533,7 @@ static NSSet *AllListAttrs = nil;
                    lock:NO];
         [q release]; q = nil;
         
-        if (!ok) [self assert:ok format:@"couldn't select objects by gid"];
+        if (!ok) [self assert:ok format:@"could not select objects by gid"];
         /* fetch appointment rows */
         while ((row = [adCh fetchAttributes:attrs withZone:NULL]) != nil)
           [all addObject:row];
@@ -615,10 +626,17 @@ static NSSet *AllListAttrs = nil;
         NSString *key;
 
         key = [participantKeys objectAtIndex:i];
-        if ([personEntity attributeNamed:key]) {
+        if ([personEntity attributeNamed:key] != nil) {
           objs[count2] = key;
           count2++;
         }
+	else {
+	  /* special keys */
+	  if ([key isEqualToString:@"comment"]) {
+	    objs[count2] = key;
+	    count2++;
+	  }
+	}
       }
       objs[count2] = @"dbStatus"; count2++;
       personAttrs  = [NSArrayClass arrayWithObjects:objs count:count2];
