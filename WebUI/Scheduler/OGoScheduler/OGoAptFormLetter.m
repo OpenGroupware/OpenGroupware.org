@@ -48,7 +48,7 @@
 
 @implementation OGoAptFormLetter
 
-static NSArray *personKeys = nil;
+static BOOL    debugOn     = NO;
 static NSArray *aptKeys    = nil;
 
 - (id)initWithContext:(WOContext *)_ctx {
@@ -56,13 +56,10 @@ static NSArray *aptKeys    = nil;
     // TODO: for unknown reasons this doesn't work in +initialize ...
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   
-    if (personKeys == nil)
-      personKeys = [[ud arrayForKey:@"schedulerformletter_personkeys"] copy];
-    if (aptKeys == nil)
-      aptKeys    = [[ud arrayForKey:@"schedulerformletter_aptkeys"]    copy];
-  
-    if (personKeys == nil)
-      NSLog(@"OGoAptFormLetter: missing person formletter key definitions ..");
+    if (aptKeys == nil) {
+      aptKeys = [[ud arrayForKey:@"schedulerformletter_aptkeys"] copy];
+      debugOn = [ud boolForKey:@"OGoSchedulerFormLetterDebugEnabled"];
+    }
     if (aptKeys == nil)
       NSLog(@"OGoAptFormLetter: missing apt formletter key definitions ..");
   }
@@ -220,11 +217,18 @@ static NSArray *aptKeys    = nil;
   
   /* company EO */
   
-  d = [_company valuesForKeys:personKeys];
+  d = _company;
   e = [d keyEnumerator];
   while ((key = [e nextObject]) != nil) {
     [_md setObject:[self stringValueForObject:[d objectForKey:key] ofKey:key]
 	 forKey:key];
+  }
+  
+  /* fixup (rename) comment to person_comment so that it doesn't conflict */
+  
+  if ((key = [_md objectForKey:@"comment"]) != nil) {
+    [_md setObject:key forKey:@"person_comment"];
+    [_md removeObjectForKey:@"comment"];
   }
   
   /* fixup some localized fields */
@@ -289,11 +293,19 @@ static NSArray *aptKeys    = nil;
     fs    = [self fieldSeparator];
     ls    = [self lineSeparator];
     quote = [self quoteFields];
+
+    if (debugOn) {
+      [self debugWithFormat:@"  field separator: %@", 
+	      [fs stringByApplyingCEscaping]];
+      [self debugWithFormat:@"  line separator: %@", 
+	      [ls stringByApplyingCEscaping]];
+    }
     
     for (i = 0, count = [_line count]; i < count; i++) {
       NSString *pat;
       
-      if (i > 0 && [fs isNotEmpty])
+      // IMPORTANT: do NOT use isEmpty here! it strips spaces in the first char
+      if (i > 0 && [fs length] != 0)
 	[_r appendContentString:fs];
       
       pat = [_line objectAtIndex:i];
@@ -380,6 +392,8 @@ static int sortContact(id eo1, id eo2, void *ctx) {
   _contacts = [_contacts sortedArrayUsingFunction:sortContact context:nil];
   
   bindings = [NSMutableDictionary dictionaryWithCapacity:32];
+
+  if (debugOn) [self debugWithFormat:@"append attendees ..."];
   
   for (i = 0, count = [_contacts count]; i < count; i++) {
     id companyEO;
@@ -389,12 +403,16 @@ static int sortContact(id eo1, id eo2, void *ctx) {
     /* filter */
     
     if (![self includeTeams]) {
-      if ([[companyEO valueForKey:@"isTeam"] boolValue])
+      if ([[companyEO valueForKey:@"isTeam"] boolValue]) {
+	if (debugOn) [self debugWithFormat:@"  skipping team"];
 	continue;
+      }
     }
     if (![self includeAccounts]) {
-      if ([[companyEO valueForKey:@"isAccount"] boolValue])
+      if ([[companyEO valueForKey:@"isAccount"] boolValue]) {
+	if (debugOn) [self debugWithFormat:@"  skipping account"];
 	continue;
+      }
     }
     
     /* setup bindings */
@@ -404,10 +422,18 @@ static int sortContact(id eo1, id eo2, void *ctx) {
     [self applyBindingsForCompany:companyEO
 	  ofAppointment:_aptEO withProperties:_aptProps
 	  onDictionary:bindings];
+    
+    if (debugOn) {
+      [self debugWithFormat:@"  add attendee with bindings: %@",
+	    bindings];
+    }
+    
     [self appendLine:[self linePattern] withBindings:bindings toResponse:_r];
     
     [bindings removeAllObjects];
   }
+
+  if (debugOn) [self debugWithFormat:@"finished appending attendees."];
 }
 
 /* actions */
@@ -447,7 +473,13 @@ static int sortContact(id eo1, id eo2, void *ctx) {
   /* fetch appointment */
   
   apt = [self->cmdctx runCommand:@"appointment::get-by-globalid",
-	     @"gid", self->gid, nil];
+	     @"gid",        self->gid,
+	     @"attributes", aptKeys,
+	     nil];
+  if ([apt isKindOfClass:[NSArray class]])
+    apt = [apt lastObject];
+  
+  if (debugOn) [self debugWithFormat:@"fetched record: %@", apt];
   
   aptProps =
     [[self->cmdctx propertyManager] propertiesForGlobalID:
@@ -466,8 +498,22 @@ static int sortContact(id eo1, id eo2, void *ctx) {
 	toResponse:r];
   
   [self appendLine:[self postamble] withBindings:nil toResponse:r];
+
+  if (debugOn) {
+    NSString *s;
+    
+    s = [r contentAsString];
+    s = [s stringByReplacingString:@"\t" withString:@"[TAB]"];
+    [self debugWithFormat:@"FORM:\n---\n%@\n---", s];
+  }
   
   return r;
+}
+
+/* debugging */
+
+- (BOOL)isDebuggingEnabled {
+  return debugOn;
 }
 
 @end /* OGoAptFormLetter */

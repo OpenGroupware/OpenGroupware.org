@@ -1,3 +1,15 @@
+2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.55
+	
+	* Defaults.plist: fixed formletter fetch-keys for new fetch-style
+	
+	* OGoAptFormLetter.m: changed the way formletter values are fetched
+	  to avoid incomplete EO objects
+	  
+	* OGoAptFormLetter.m: expose company comments as 'person_comment' so
+	  that it doesn't conflict with appointment comments
+	  
 2006-06-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.54

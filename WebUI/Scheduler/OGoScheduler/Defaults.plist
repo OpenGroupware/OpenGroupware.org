@@ -162,22 +162,32 @@
   );
   
   /*
-    those are keys mapped to the bindings dictionary available for formletters
-   */
-  schedulerformletter_personkeys = (
-    emailAlias, office, assistantName, number, sex, keywords,
-    contactId, salutation, nameAffix, firstname, companyId,
-    anniversary, priority, occupation, partnerName, description,
-    degree, middlename, objectVersion, freebusyUrl, department,
-    birthday, bossName, name, url, imAddress, nameTitle, dirServer,
-    email1, email2
-  );
+    Those are keys fetched from the backend and are then mapped to the
+    bindings dictionary available for formletters.
+  */
   schedulerformletter_aptkeys = (
     startDate, endDate, resourceNames, keywords, title, cycleEndDate,
     location, type, dateId, objectVersion, aptType, busyType, fbtype,
-    ownerId, comment
+    ownerId, comment,
+    
+    participants.isAccount, participants.isTeam, // those are required!
+    
+    participants.emailAlias, participants.office, participants.assistantName,
+    participants.number, participants.sex, participants.keywords,
+    participants.contactId, participants.salutation, participants.nameAffix,
+    participants.firstname, participants.companyId,
+    participants.anniversary, participants.priority, participants.occupation,
+    participants.partnerName, participants.description,
+    participants.degree, participants.middlename, participants.objectVersion,
+    participants.freebusyUrl, participants.department,
+    participants.birthday, participants.bossName, participants.name,
+    participants.url, participants.imAddress, participants.nameTitle,
+    participants.dirServer,
+    participants.email1, participants.email2,
+    participants.comment
   );
 
+  OGoSchedulerFormLetterDebugEnabled = NO;
   OGoSchedulerFormLetterTypes = {
     OOo = {
       fieldSeparator = "\t";

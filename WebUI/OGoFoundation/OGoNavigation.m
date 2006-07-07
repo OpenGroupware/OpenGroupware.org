@@ -245,7 +245,7 @@ static BOOL debugNavigation = NO;
       [self->session instantiateComponentForCommand:_command
            type:type object:[self->session getTransferObject]];
     
-    if (component) {
+    if (component != nil) {
       if (![component conformsToProtocol:@protocol(OGoContentPage)]) {
         [self->session warnWithFormat:
              @"command component %@ is not a content page !", component];
