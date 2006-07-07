@@ -1,3 +1,9 @@
+2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyPersonViewer.m: properly use person::get-by-globalID, not
+	  the generic object::get-by-globalID to activate the person viewer
+	  from a global id (should fix bug #1744) (v5.3.62)
+
 2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed some gcc 4.1 warnings (v5.3.61)

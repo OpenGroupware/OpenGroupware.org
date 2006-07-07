@@ -337,7 +337,7 @@ static NSArray *accessChecks = nil;
       id ctx;
 
       if ([obj isKindOfClass:[EOGlobalID class]]) {
-        obj = [[self runCommand:@"object::get-by-globalid",
+        obj = [[self runCommand:@"enterprise::get-by-globalid",
                      @"gid", obj, nil] lastObject];
       }
       ctx = [self commandContext];

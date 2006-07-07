@@ -276,7 +276,7 @@ static NSArray      *formLetterTypes          = nil;
     id ctx;
     
     if ([obj isKindOfClass:[EOKeyGlobalID class]]) {
-      obj = [[self runCommand:@"object::get-by-globalID",
+      obj = [[self runCommand:@"person::get-by-globalID",
                                 @"gid", obj, nil] lastObject];
     }
     else {
