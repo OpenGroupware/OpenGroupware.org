@@ -258,7 +258,7 @@
   
   entity = [obj respondsToSelector:@selector(entity)]
     ? [obj entity]
-    : [obj valueForKey:@"entity"];
+    : (EOEntity *)[obj valueForKey:@"entity"];
   
   if (entity == nil)
     return [self missingEntityOfObjectPage:obj];

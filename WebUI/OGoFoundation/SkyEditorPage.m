@@ -132,13 +132,13 @@ static NSArray *objVersionName = nil;
   NSString *l;
   id obj;
 
-  if ((obj = [self object]))
+  if ((obj = [self object]) != nil)
     return [[self session] labelForObject:obj];
   if (!self->isInNewMode)
     return nil;
   
   l = [[self labels] valueForKey:@"new"];
-  return (l != nil) ? l : @"new";
+  return (l != nil) ? l : (NSString *)@"new";
 }
 
 /* content page */

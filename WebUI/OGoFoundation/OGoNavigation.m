@@ -1,6 +1,7 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
-
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
+  
   This file is part of OpenGroupware.org.
 
   OGo is free software; you can redistribute it and/or modify it under
@@ -142,8 +143,8 @@ static BOOL debugNavigation = NO;
   /* TODO: can be removed? */
   id newPage  = nil;
   
-  [self logWithFormat:@"WARNING: calling deprecated %@ ..", 
-  	  NSStringFromSelector(_cmd)];
+  [self warnWithFormat:@"calling deprecated %@ ..", 
+	  NSStringFromSelector(_cmd)];
 
   if (debugNavigation)
     [self->session logWithFormat:@"create and show page %@", _name];
@@ -171,7 +172,7 @@ static BOOL debugNavigation = NO;
   }
   
   if (_page == nil) {
-    [self->session logWithFormat:@"WARNING: tried to enter <nil> page !"];
+    [self->session warnWithFormat:@"tried to enter <nil> page !"];
     return;
   }
 
@@ -186,8 +187,7 @@ static BOOL debugNavigation = NO;
   OGoContentPage *page = nil;
   
   if (self->pages.count < 2) {
-    [self->session debugWithFormat:
-	   @"WARNING: no page to leave (%i pages active) ..", 
+    [self->session warnWithFormat:@"no page to leave (%i pages active) ..", 
 	   self->pages.count];
     return nil;
   }
@@ -247,29 +247,30 @@ static BOOL debugNavigation = NO;
     
     if (component) {
       if (![component conformsToProtocol:@protocol(OGoContentPage)]) {
-        [self->session logWithFormat:
-             @"WARNING: command component %@ is not a content page !",
-             component];
+        [self->session warnWithFormat:
+             @"command component %@ is not a content page !", component];
       }
 
       [self enterPage:(id)component];
       return YES;
     }
   }
-  [self->session logWithFormat:
-       @"WARNING: Could not execute command %@ for types %@",
-       _command, [pb types]];
+  [self->session warnWithFormat:
+	 @"Could not execute command %@ for types %@", _command, [pb types]];
 
   page = [self activePage];
-  if ([[page errorString] length] < 1) {
+  if ([[page errorString] isNotEmpty])
+    return NO;
+
+  {
     NSString *error;
     
-    error = @"Could not execute command %@ for types: %@";
-    error = [NSString stringWithFormat:error, _command,
-                        [[pb types] componentsJoinedByString:@", "]];
+    error = [[NSString alloc] 
+	      initWithFormat:@"Could not execute command %@ for types: %@",
+	        _command, [[pb types] componentsJoinedByString:@", "]];
     [page setErrorString:error];
+    [error release]; error = nil;
   }
-  
   return NO;
 }
 
@@ -278,25 +279,25 @@ static BOOL debugNavigation = NO;
   id page;
     
   page = [[self->session context] page];
-    
+  
   error = [NSString stringWithFormat:@"no object available for %@ operation",
 		      _verb];
   [page takeValue:error forKey:@"errorString"];
     
-  [self->session logWithFormat:
-         @"cannot activate 'nil' object with verb '%@' !", _verb];
+  [self->session errorWithFormat:
+         @"cannot activate 'nil' object with verb: '%@'", _verb];
   return page;
 }
 
 - (id)activateObject:(id)_object withVerb:(NSString *)_verb {
-  if ([_verb length] == 0)
+  if (![_verb isNotEmpty])
     _verb = @"view";
   
   if (_object == nil)
     return [self handleActivationErrorForObject:_object withVerb:_verb];
   
   [self->session transferObject:_object owner:nil];
-  [self executePasteboardCommand:_verb ? _verb : @"view"];
+  [self executePasteboardCommand:(_verb != nil ? _verb : (NSString *)@"view")];
   return [self activePage];
 }
 

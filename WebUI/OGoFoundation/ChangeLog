@@ -1,3 +1,13 @@
+2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.99
+
+	* use -warnWithFormat:, -isNotEmpty, minor code cleanups
+
+	* fixed gcc 4.1 warnings
+
+	* GNUmakefile: disable -O to avoid unknown gcc 4.1 warnings
+
 2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoSession.m: disabled some -takeValues:.. consistency checks when

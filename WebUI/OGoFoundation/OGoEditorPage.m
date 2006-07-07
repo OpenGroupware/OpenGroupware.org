@@ -166,7 +166,7 @@
   
   if (self->isInNewMode) {
     NSString *l = [[self labels] valueForKey:@"new"];
-    return (l != nil) ? l : @"new";
+    return (l != nil) ? l : (NSString *)@"new";
   }
   
   return nil;

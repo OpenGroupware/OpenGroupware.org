@@ -37,9 +37,9 @@
   canEntity = [self respondsToSelector:@selector(entity)] ? YES : NO;
   
   if ([self respondsToSelector:@selector(headers)]) {
-    return ([self valueForKey:@"subject"] != nil)
+    return [[self valueForKey:@"subject"] isNotNull]
       ? [self valueForKey:@"subject"]
-      : @"";
+      : (id)@"";
   }
   
   if (canEntity || gid != nil) {
@@ -99,7 +99,7 @@
         pkey = [(EOKeyGlobalID *)gid keyValues][0];
       
       label = [NSString stringWithFormat:@"%@<%@>", name,
-                        pkey ? pkey : @"null"];
+                        pkey != nil ? pkey : (id)@"null"];
     }
     return label;
   }

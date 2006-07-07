@@ -18,7 +18,8 @@ libOGoFoundation_LIBRARIES_DEPEND_UPON += \
 # flags
 
 ADDITIONAL_CPPFLAGS  += $(FND_DEFINE) $(RUNTIME_DEFINE) -DGC_DEBUG -pipe
-ADDITIONAL_OBJCFLAGS += -Wno-protocol -Wno-import -Wall -O
+ADDITIONAL_OBJCFLAGS += -Wno-protocol -Wno-import -Wall
+# Note: -O triggers weird warnings with GCC 4.1
 ADDITIONAL_CFLAGS    += -Wall -O
 
 ifeq ($(FOUNDATION_LIB),nx)

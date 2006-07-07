@@ -43,12 +43,12 @@
   if ([self isNew]) {
     return ([self respondsToSelector:@selector(entityName)])
       ? [self entityName]
-      : @"new";
+      : (NSString *)@"new";
   }
   
   return ([self respondsToSelector:@selector(entityName)])
     ? [self entityName]
-    : @"Doc";
+    : (NSString *)@"Doc";
 }
 
 @end /* SkyDocument(OGoSessionLabel) */

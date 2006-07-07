@@ -149,18 +149,16 @@
 
 - (BOOL)setObject:(id)_object forType:(NGMimeType *)_type {
   if (_type == nil) {
-    [self logWithFormat:
-            @"WARNING: missing type for pasteboard, object: %@",
-            self];
+    [self warnWithFormat:@"missing type for pasteboard, object: %@", self];
     return NO;
   }
   if (![self isTypeDeclared:_type]) {
-    [self logWithFormat:
-            @"WARNING: type %@ is not declared for pasteboard %@: types=%@",
+    [self warnWithFormat:
+            @"type %@ is not declared for pasteboard %@: types=%@",
             _type, self, self->declaredTypes];
     return NO;
   }
-
+  
   [self->type2content setObject:_object forKey:[_type stringValue]];
 
   return YES;
@@ -173,8 +171,8 @@
   
   if (_type == nil) {
     /* this can happen if called by OGoSession -removeTransferObject */
-    [self debugWithFormat:
-            @"WARNING: missing type argument for retrieving object from "
+    [self warnWithFormat:
+            @"missing type argument for retrieving object from "
             @"the pasteboard: %@", self];
     return nil;
   }

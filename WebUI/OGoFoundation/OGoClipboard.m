@@ -67,7 +67,7 @@ static BOOL debugFavorites = YES;
   else {
     favGid = [_fav respondsToSelector:@selector(globalID)]
       ? [_fav globalID]
-      : [_fav valueForKey:@"globalID"];
+      : (EOGlobalID *)[_fav valueForKey:@"globalID"];
   }
   
   if (![favGid isNotNull]) {

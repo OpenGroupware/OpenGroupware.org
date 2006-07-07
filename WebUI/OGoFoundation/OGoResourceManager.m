@@ -330,7 +330,7 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   path = checkCache(self->keyToPath, self->cachedKey, _name, _fwName, _lang);
   if (path != nil) {
     if (debugOn) [self debugWithFormat:@"  found in cache: %@", path];
-    return [path isNotNull] ? path : nil;
+    return [path isNotNull] ? path : (NSString *)nil;
   }
   
   /* check for framework resources (webserver resources + framework) */
@@ -390,7 +390,7 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
 		    _fwName, _theme);
   if (path != nil) {
     if (debugOn) [self debugWithFormat:@"  found in cache: %@", path];
-    return [path isNotNull] ? path : nil;
+    return [path isNotNull] ? path : (NSString *)nil;
   }
 
   /* traverse template dirs */
@@ -444,14 +444,14 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
     r = [rpath rangeOfString:@"_"];
     theme = (r.length > 0)
       ? [rpath substringFromIndex:(r.location + r.length)]
-      : nil; /* default theme */
+      : (NSString *)nil; /* default theme */
     
     rpath = [self lookupComponentsConfigInFramework:_fwName theme:theme];
     if (rpath != nil)
       return rpath;
     
     [self logWithFormat:@"Note: did not find components.cfg(%@) for theme: %@",
-            _fwName, (theme != nil ? theme : @"default-theme")];
+	    _fwName, (theme != nil ? theme : (NSString *)@"default-theme")];
   }
   
   /* look using OWResourceManager */
@@ -464,7 +464,7 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   
   if (rpath == nil) {
     [self logWithFormat:@"Note: did not find components.cfg: %@/%@", 
-	    _fwName ? _fwName : @"[app]",
+	    _fwName != nil ? _fwName : (NSString *)@"[app]",
             [_langs componentsJoinedByString:@","]];
   }
   return rpath;
@@ -561,7 +561,7 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
       [self debugWithFormat:@"  found in cache: %@ (#%d)", url, 
 	      [self->keyToURL count]];
     }
-    return [url isNotNull] ? url : nil;
+    return [url isNotNull] ? url : (NSString *)nil;
   }
   
   if (debugOn) {
@@ -807,7 +807,7 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
     r = [theme rangeOfString:@"_"];
     theme = (r.length > 0)
       ? [theme substringFromIndex:(r.location + r.length)]
-      : nil;
+      : (NSString *)nil;
   }
   else
     theme = nil;
@@ -883,11 +883,12 @@ checkCache(NSDictionary *_cache, OGoResourceKey *_key,
   /* first check cache */
   
   path = checkCache(self->keyToComponentPath, self->cachedKey, _name, _fw,
-		    [_langs count] > 0 ? [_langs objectAtIndex:0]:@"English");
+		    [_langs isNotEmpty] 
+		    ? [_langs objectAtIndex:0] : (id)@"English");
   if (path != nil) {
     if (debugComponents)
       [self logWithFormat:@"  use cached location: %@", path];
-    return [path isNotNull] ? path : nil;
+    return [path isNotNull] ? path : (NSString *)nil;
   }
   
   /* look in FHS locations */

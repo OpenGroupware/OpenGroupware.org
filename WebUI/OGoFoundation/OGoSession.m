@@ -871,12 +871,12 @@ static NSString *OGoDateTimeTZFormat     = nil;
 
 - (NSString *)labelForGlobalID:(EOGlobalID *)_gid {
   return (_gid == nil) 
-    ? (id)@"empty"
+    ? (NSString *)@"empty"
     : [_gid labelForObjectInSession:self];
 }
 - (NSString *)labelForObject:(id)_object {
   return (_object == nil) 
-    ? (id)@"empty"
+    ? (NSString *)@"empty"
     : [_object labelForObjectInSession:self];
 }
 
@@ -1011,9 +1011,9 @@ static NSString *OGoDateTimeTZFormat     = nil;
 }
 - (NSString *)primaryLanguage {
   NSArray *langs;
-
+  
   langs = [self languages];
-  return ([langs count] == 0) ? @"English" : [langs objectAtIndex:0];
+  return [langs isNotEmpty] ? [langs objectAtIndex:0] : (id)@"English";
 }
 
 /* description */

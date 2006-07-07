@@ -39,14 +39,13 @@
     ? [_object stringValue] : (NSString *)@"";
 }
 
-// string => object
+/* string => object */
 
 - (BOOL)getObjectValue:(id *)_object
   forString:(NSString *)_string
-  errorDescription:(NSString **)_error {
-
-  *_object = ([_string length] == 0) ? [EONull null] : (id)_string;
-
+  errorDescription:(NSString **)_error
+{
+  *_object = [_string isNotEmpty] ? (id)_string : (id)[NSNull null];
   return YES;
 }
 

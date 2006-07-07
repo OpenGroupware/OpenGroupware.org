@@ -65,17 +65,20 @@ static inline NSMutableDictionary *_vaToDict(OGoSession *self, va_list *va) {
   inCommand:(NSString *)_command
   arguments:(NSDictionary *)_args
 {
+  NSString *s;
+  
   [self logWithFormat:@"command %@(%@) failed:\n"
           @"  name:   %@"
           @"  reason: %@"
           @"  info:   %@",
-          _command, _args ? (id)_args : @"<void>",
+	  _command,
+	  _args ? _args : (NSDictionary *)@"<void>", // TODO, hm ;-)
           [_exc name], [_exc reason],
-          [_exc userInfo] ? (id)[_exc userInfo] : @"<none>"];
+	  [_exc userInfo] ? [_exc userInfo] : (NSDictionary *)@"<none>"];
 
-  [[[self context] page]
-          setErrorString:[NSString stringWithFormat:@"%@: %@ %@",
-                                     _command, [_exc name], [_exc reason]]];
+  s = [NSString stringWithFormat:@"%@: %@ %@",
+		_command, [_exc name], [_exc reason]];
+  [[[self context] page] setErrorString:s];
   
   if ([[NSUserDefaults standardUserDefaults]
                        boolForKey:@"LSCoreOnCommandException"]) {
@@ -86,8 +89,8 @@ static inline NSMutableDictionary *_vaToDict(OGoSession *self, va_list *va) {
   return NO;
 }
 - (void)logFailedCommand:(NSString *)_command arguments:(NSDictionary *)_args {
-  [self logWithFormat:@"FAIL: %@(%@) failed.",
-          _command, _args ? (id)_args : @"<void>"];
+  [self errorWithFormat:@"failed: %@(%@)",
+	  _command, _args ? _args : (NSDictionary *)@"<void>"];
 }
 
 - (id)runCommand:(NSString *)_command arguments:(NSDictionary *)_args {
