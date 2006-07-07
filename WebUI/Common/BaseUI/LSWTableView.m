@@ -455,22 +455,24 @@ static inline id _getAttrValue(LSWTableView *self, NSString *_key) {
 }
 
 - (NSString *)attributeLabel {
-  id labelKey = _getAttrValue(self, @"labelKey");
+  NSString *labelKey = _getAttrValue(self, @"labelKey");
   id value    = _getAttrValue(self, @"label");
   
   if ((labelKey != nil) && (self->labels != nil)) {
-    NSString *tmp = [self->labels valueForKey:labelKey];
+    NSString *tmp;
 
+    tmp = [self->labels valueForKey:labelKey];
     value = (tmp != nil) ? tmp : labelKey;
   }
   return value ? value : _getAttrValue(self, @"key");
 }
 
 - (NSString *)currentSortAttrName {
-  id value = [self->selectedAttribute valueForKey:@"label"];
+  id value;
 
-  return  value ? value : [self->selectedAttribute valueForKey:@"key"];
-};
+  value = [self->selectedAttribute valueForKey:@"label"];
+  return value != nil ? value : [self->selectedAttribute valueForKey:@"key"];
+}
 
 - (NSArray *)arrayAttrList {
   return _getItemValue(self);
@@ -492,11 +494,12 @@ static inline id _getAttrValue(LSWTableView *self, NSString *_key) {
     value = [self->attribute valueForKey:@"nilString"];  
 
   if (isLocalized && (self->labels != nil)) {
-    NSString *tmp = [self->labels valueForKey:[value stringValue]];
+    NSString *tmp;
 
-    value = (tmp != nil) ? tmp : value;
+    tmp = [self->labels valueForKey:[value stringValue]];
+    value = (tmp != nil) ? tmp : (NSString *)value;
   }
-  if (labelDict) {
+  if (labelDict != nil) {
     id l;
     
     l = [labelDict objectForKey:[value stringValue]]; // if it is NSNumber
@@ -524,17 +527,18 @@ static inline id _getAttrValue(LSWTableView *self, NSString *_key) {
 
   alt = [self->item valueForKey:alt];
 
-  if (alt) {
+  if (alt != nil) {
     if (isAltLocalized && (self->labels != nil)) {
-      NSString *tmp = [self->labels valueForKey:[alt stringValue]];
+      NSString *tmp;
 
-      return (tmp != nil) ? tmp : alt;
+      tmp = [self->labels valueForKey:[alt stringValue]];
+      return (tmp != nil) ? tmp : (NSString *)alt;
     }
     if ([altLabel isKindOfClass:DictClass]) {
       NSString *l;
       
       l = [(NSDictionary *)altLabel objectForKey:alt];
-      return (l == nil) ? alt : l;
+      return (l == nil) ? (NSString *)alt : l;
     }
     return alt;
   }
@@ -591,9 +595,8 @@ static inline id _getAttrValue(LSWTableView *self, NSString *_key) {
           
           appendObj = [o valueForKey:
                            [(NSDictionary *)obj objectForKey:@"relValue"]];
-          [mString appendString:([appendObj isKindOfClass:StringClass])
-                   ? appendObj
-                   : @""];
+          [mString appendString:[appendObj isKindOfClass:StringClass]
+                   ? appendObj : (id)@""];
         }
       }
       else {

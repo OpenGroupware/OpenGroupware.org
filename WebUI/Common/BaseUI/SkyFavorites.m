@@ -114,8 +114,8 @@
   
   obj = [self favorite];
   dragType = ([obj isKindOfClass:NSClassFromString(@"NGImap4Message")])
-    ? @"mail" // TODO: fix me
-    : (id)[obj favoriteDragType];
+    ? (NSString *)@"mail" // TODO: fix me
+    : (NSString *)[obj favoriteDragType];
   
   if ([dragType isEqualToString:@"date"])
     dragType = @"appointment";

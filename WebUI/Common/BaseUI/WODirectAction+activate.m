@@ -64,14 +64,15 @@
     return mainPage;
   }
   
-  if ((verb = [[self request] formValueForKey:@"verb"]) == nil)
+  if (![(verb = [[self request] formValueForKey:@"verb"]) isNotEmpty])
     verb = @"view";
   
-  if ((oid = [[self request] formValueForKey:@"oid"])) {
+  if ([(oid = [[self request] formValueForKey:@"oid"]) isNotEmpty]) {
     /* lookup global-id and activate */
     gid = [[[sn commandContext] typeManager] globalIDForPrimaryKey:oid];
-    if (gid) {
-      id page;
+    if (gid != nil) {
+      WOComponent *page;
+      
       page = [[sn navigation] activateObject:gid withVerb:verb];
       return page;
     }
@@ -80,36 +81,37 @@
     
     type = [sn runCommand:@"get-object-type", @"oid", oid, nil];
     if (type == nil) {
-      [self logWithFormat:@"couldn't determine type of objectid %@", oid];
+      [self errorWithFormat:@"could not determine type of objectid: %@", oid];
       return nil;
     }
     
     if ((object = [self retrieveObject:oid ofType:type]) == nil) {
-      [self logWithFormat:
-              @"couldn't get object with id %@ of type %@", oid, type];
+      [self errorWithFormat:
+              @"could not get object with id %@ of type %@", oid, type];
       return nil;
     }
     
     return [[sn navigation] activateObject:object withVerb:verb];
   }
-  else if ((oid = [[self request] formValueForKey:@"url"])) {
+  
+  if ([(oid = [[self request] formValueForKey:@"url"]) isNotEmpty]) {
     NSURL *url;
     
     url = [NSURL URLWithString:oid
                  relativeToURL:
                    [[[sn commandContext] documentManager] skyrixBaseURL]];
     if (url == nil) {
-      [self logWithFormat:@"couldn't parse URL '%@' !", oid];
+      [self errorWithFormat:@"could not parse activation URL: '%@'", oid];
       return nil;
     }
 
     oid = (id)[[[sn commandContext] documentManager] globalIDForURL:url];
-    return [[sn navigation] activateObject:oid ? oid : (id)url withVerb:verb];
+    return [[sn navigation] activateObject:oid ? oid : (NSString *)url
+			    withVerb:verb];
   }
-  else {
-    [self logWithFormat:@"missing object id in activation-action."];
-    return nil;
-  }
+  
+  [self errorWithFormat:@"missing object id in activation-action."];
+  return nil;
 }
 
 @end /* WODirectAction(DirectActivation) */

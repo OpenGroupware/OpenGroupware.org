@@ -231,7 +231,7 @@
   
   dict = [self->map isNotNull]
     ? [self->map objectForKey:self->currentKey]
-    : self->attribute;
+    : (id)self->attribute;
   
   values    = [dict valueForKey:@"values"];
   valueKeys = [dict valueForKey:@"valueKeys"];
@@ -251,7 +251,7 @@
 
   dict = ([self->map isNotNull])
     ? [self->map objectForKey:self->currentKey]
-    : self->attribute;
+    : (id)self->attribute;
   
   values    = [dict valueForKey:@"values"];
   valueKeys = [dict valueForKey:@"valueKeys"];
@@ -328,7 +328,7 @@
 
   dict = ([self->map isNotNull])
     ? [self->map objectForKey:self->currentKey]
-    : self->attribute;
+    : (id)self->attribute;
   
   value          = _value;
   calendarFormat = [dict valueForKey:@"calendarFormat"];
@@ -389,7 +389,7 @@
   
   dict = ([self->map isNotNull])
     ? [self->map objectForKey:self->currentKey]
-    : self->attribute;
+    : (id)self->attribute;
   
   calendarFormat = [dict valueForKey:@"calendarFormat"];
 
@@ -422,7 +422,7 @@
 
   attr = ([self->map isNotNull])
     ? [self->map objectForKey:self->currentKey]
-    : self->attribute;
+    : (id)self->attribute;
   private = @"";
   
   if (![(value = [attr objectForKey:@"label"]) isNotNull]) {
@@ -453,7 +453,7 @@
   
   return (tmp != nil)
     ? [tmp stringByAppendingString:[self->attribute valueForKey:@"key"]]
-    : [self->attribute valueForKey:@"key"];
+    : (NSString *)[self->attribute valueForKey:@"key"];
 }
 
 /* conditions */
@@ -466,7 +466,7 @@
     
   dict = [self->map isNotNull]
     ? [self->map objectForKey:self->currentKey]
-    : self->attribute;
+    : (id)self->attribute;
 
   if ([dict valueForKey:@"valueKeys"] != nil)
     return YES;

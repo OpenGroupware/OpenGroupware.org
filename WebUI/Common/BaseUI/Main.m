@@ -171,10 +171,10 @@ static BOOL LSUseBasicAuth           = NO;
     r = [auth rangeOfString:@":"];
     auth = (r.length > 0)
       ? [auth substringFromIndex:(r.location + r.length)]
-      : nil;
+      : (NSString *)nil;
   }
         
-  if ([auth length] == 0)
+  if (![auth isNotEmpty])
     return NO;
   
   lso = [[WOApplication application] lsoServer];
@@ -190,15 +190,15 @@ static BOOL LSUseBasicAuth           = NO;
   NSString *authType;
   NSString *authUser;
 
-  if ([self->user length] > 0)
+  if ([self->user isNotEmpty])
     return YES;
   
   authType = [[_ctx request] headerForKey:@"x-webobjects-auth-type"];
   authUser = [[authType lowercaseString] isEqualToString:@"basic"]
     ? [[_ctx request] headerForKey:@"x-webobjects-remote-user"]
-    : nil;
+    : (NSString *)nil;
   
-  if ([authUser length] > 0) {
+  if ([authUser isNotEmpty]) {
     [self setUser:authUser];
     
     if (LSUseBasicAuth)
@@ -323,7 +323,7 @@ static BOOL LSUseBasicAuth           = NO;
   ASSIGNCOPY(self->password, _value);
 }
 - (NSString *)password {
-  return self->password ? self->password : @"";
+  return self->password != nil ? self->password : (NSString *)@"";
 }
 
 - (void)setAuthURL:(NSString *)_value {
@@ -378,15 +378,15 @@ static BOOL LSUseBasicAuth           = NO;
 
 - (NSString *)databaseName {
   NSString *v = [[self connectionDictionary] objectForKey:@"databaseName"];
-  return [v length] > 0 ? v : @"missing";
+  return [v isNotEmpty] ? v : (NSString *)@"missing";
 }
 - (NSString *)databaseServer {
   NSString *v = [[self connectionDictionary] objectForKey:@"hostName"];
-  return [v length] > 0 ? v : @"missing";
+  return [v isNotEmpty] ? v : (NSString *)@"missing";
 }
 - (NSString *)databaseUser {
   NSString *v = [[self connectionDictionary] objectForKey:@"userName"];
-  return [v length] > 0 ? v : @"missing";
+  return [v isNotEmpty] ? v : (NSString *)@"missing";
 }
 
 /* form restore functionality */

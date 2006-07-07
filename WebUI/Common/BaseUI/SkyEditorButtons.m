@@ -90,30 +90,30 @@
 }
 
 - (void)setSaveLabel:(NSString *)_label {
-  ASSIGN(self->saveLabel, _label);
+  ASSIGNCOPY(self->saveLabel, _label);
 }
 - (NSString *)_saveLabel {
   return (self->saveLabel != nil)
     ? self->saveLabel
-    : [[self labels] valueForKey:@"save"];
+    : (NSString *)[[self labels] valueForKey:@"save"];
 }
 
 - (void)setCancelLabel:(NSString *)_label {
-  ASSIGN(self->cancelLabel, _label);
+  ASSIGNCOPY(self->cancelLabel, _label);
 }
 - (NSString *)_cancelLabel {
   return (self->cancelLabel != nil)
     ? self->cancelLabel
-    : [[self labels] valueForKey:@"cancel"];
+    : (NSString *)[[self labels] valueForKey:@"cancel"];
 }
 
 - (void)setDeleteLabel:(NSString *)_label {
-  ASSIGN(self->deleteLabel, _label);
+  ASSIGNCOPY(self->deleteLabel, _label);
 }
 - (NSString *)_deleteLabel {
   return (self->deleteLabel != nil)
     ? self->deleteLabel
-    : [[self labels] valueForKey:@"delete"];
+    : (NSString *)[[self labels] valueForKey:@"delete"];
 }
 
 /* actions */

@@ -163,8 +163,8 @@ static NSString *SkyPanel_IsScriptSet = @"IsPanelScriptSet";
 
 - (NSString *)visibility {  // used by netscape
   return ([self isNetscape])
-    ? ([self isVisible]) ? @"visible" : @"hide"
-    : nil;
+    ? (id)([self isVisible] ? @"visible" : @"hide")
+    : (id)nil;
 }
 
 - (NSString *)browserDependentWidth {

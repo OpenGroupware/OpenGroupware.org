@@ -300,8 +300,9 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
   tmp  = ([tmp isEqualToString:@""]) ? data : tmp;
   tmp  = [tmp stringByEscapingURL];
   
-  if (![tmp hasPrefix:@"/"] > 0 && [tmp rangeOfString:@"://"].length == 0)
-    tmp = [tmp length] > 0 ? [@"http://" stringByAppendingString:tmp] : @"";
+  if (![tmp hasPrefix:@"/"] && [tmp rangeOfString:@"://"].length == 0)
+    tmp = [tmp isNotEmpty] 
+      ? [@"http://" stringByAppendingString:tmp] : (NSString *)@"";
   
   /* prefix with external link action and append url as a parameter */
   

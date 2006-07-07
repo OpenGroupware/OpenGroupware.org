@@ -1,3 +1,12 @@
+2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.125
+
+	* fixed gcc 4.1 warnings, various minor code cleanups
+
+	* WODirectAction+activate.m: changed to use errorWithFormat, some
+	  code cleanups
+
 2006-04-26  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWObjectViewer.m: added support for namespace prefixes in attribute

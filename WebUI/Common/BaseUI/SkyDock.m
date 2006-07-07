@@ -441,7 +441,7 @@ struct DockInfo {
 
 - (NSString *)dockComponent {
   return (self->idx >= self->count)
-    ? nil
+    ? (NSString *)nil
     : self->dockInfo[self->idx].component;
 }
 

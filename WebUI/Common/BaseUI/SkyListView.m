@@ -220,7 +220,7 @@
   ASSIGNCOPY(self->nilString, _str);
 }
 - (NSString *)nilString {
-  return (self->nilString != nil) ? self->nilString : @"no object";
+  return (self->nilString != nil) ? self->nilString : (NSString *)@"no object";
 }
 - (NSString *)popUpNilString {
   return self->nilString;
@@ -361,7 +361,7 @@
     return self->popUpItem;
 
   l = [self->labels valueForKey:self->popUpItem];
-  return (l != nil) ? l : self->popUpItem;
+  return (l != nil) ? l : (NSString *)self->popUpItem;
 }
 
 - (void)setIsEmptyChecked:(BOOL)_flag {
@@ -479,16 +479,18 @@
     obj = [obj valueForKey:key];
 
   if ((tmp = [self->attribute valueForKey:@"binding"]) != nil) {
-    WOComponent *parent = [self parent];
-    SEL         sel     = NSSelectorFromString(tmp);
+    WOComponent *parent;
+    SEL         sel;
     NSString    *result = nil;
     
+    parent = [self parent];
+    sel     = NSSelectorFromString(tmp);
     if ([parent respondsToSelector:sel]) {
       [self setValue:[self _item] forBinding:@"item"];
       result = [parent performSelector:sel];
       [self setValue:[self item] forBinding:@"item"];
     }
-    return (result != nil) ? result : @"";
+    return (result != nil) ? result : (NSString *)@"";
   }
   
   return [obj stringValue];

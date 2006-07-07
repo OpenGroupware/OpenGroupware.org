@@ -248,7 +248,7 @@ static WOAssociation *yesAssoc = nil;
   
   children = [_elem hasChildNodes]
     ? [_b buildNodes:[_elem childNodes] templateBuilder:_b]
-    : nil;
+    : (NSArray *)nil;
   
   element = [[[self tabClass] alloc] initWithName:nil
 				     associations:assocs
@@ -293,7 +293,7 @@ static WOAssociation *yesAssoc = nil;
   }
   
   condition = ((s = [_elem attribute:@"enabled" namespaceURI:@"*"]))
-    ? [WOAssociation associationWithKeyPath:s] : nil;
+    ? [WOAssociation associationWithKeyPath:s] : (WOAssociation *)nil;
   
   /* create element */
   
@@ -396,13 +396,13 @@ static WOAssociation *yesAssoc = nil;
 
   
   condition = ((s = [_elem attribute:@"enabled" namespaceURI:@"*"]))
-    ? [WOAssociation associationWithKeyPath:s] : nil;
+    ? [WOAssociation associationWithKeyPath:s] : (WOAssociation *)nil;
   
   /* create element */
 
   children = [_elem hasChildNodes]
     ? [_b buildNodes:[_elem childNodes] templateBuilder:_b]
-    : nil;
+    : (NSArray *)nil;
   if (children != nil) {
     if ([[_elem attribute:@"editfont" namespaceURI:@"*"] boolValue]) {
       WOElement *font;
@@ -438,7 +438,7 @@ static WOAssociation *yesAssoc = nil;
   
   children = [_elem hasChildNodes]
     ? [_b buildNodes:[_elem childNodes] templateBuilder:_b]
-    : nil;
+    : (NSArray *)nil;
   
   if ([[_elem attribute:@"sub-table" namespaceURI:@"*"] boolValue]) {
     NSMutableArray *ma;
@@ -675,7 +675,7 @@ static WOAssociation *yesAssoc = nil;
   
   children = [_element hasChildNodes]
     ? [_b buildNodes:[_element childNodes] templateBuilder:_b]
-    : nil;
+    : (NSArray *)nil;
   
   ma = [[NSMutableArray alloc] initWithCapacity:[children count] + 3];
   [ma addObject:@"<p>"]; // TODO: add CSS class
@@ -790,10 +790,10 @@ static WOAssociation *yesAssoc = nil;
     
     head = ((tmp = [self lookupUniqueTag:@"head" inElement:_element]) != nil)
       ? [self buildPageHead:tmp templateBuilder:_b]
-      : nil;
+      : (WOElement *)nil;
     
     warn = ((tmp = [self lookupUniqueTag:@"warn" inElement:_element]) != nil)
-      ? [self buildPageWarn:tmp templateBuilder:_b] : nil;
+      ? [self buildPageWarn:tmp templateBuilder:_b] : (WOElement *)nil;
 
     if (warn != nil) {
       /* wrap body / wrap warn using 'isInWarningMode' binding */
@@ -822,7 +822,7 @@ static WOAssociation *yesAssoc = nil;
     // TODO: check whether returned children array are retained!
     children = [_element hasChildNodes]
       ? [_b buildNodes:[_element childNodes] templateBuilder:_b]
-      : nil;
+      : (NSArray *)nil;
   }
   
   /* build associations */
@@ -869,7 +869,7 @@ static WOAssociation *yesAssoc = nil;
   
   children = [_element hasChildNodes]
     ? [_b buildNodes:[_element childNodes] templateBuilder:_b]
-    : nil;
+    : (NSArray *)nil;
   
   ma = [[NSMutableArray alloc] initWithCapacity:[children count] + 3];
   [ma addObject:@"<span>"]; // TODO: add CSS class
@@ -886,7 +886,7 @@ static WOAssociation *yesAssoc = nil;
   
   children = [_element hasChildNodes]
     ? [_b buildNodes:[_element childNodes] templateBuilder:_b]
-    : nil;
+    : (NSArray *)nil;
   
   return [self elementForElementsAndStrings:children];
 }
