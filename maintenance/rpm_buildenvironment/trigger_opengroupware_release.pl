@@ -125,10 +125,10 @@ foreach $orel (@ogo_releases) {
     #cleanup everything prior the actual wanted OGo *and* SOPE builds
     #I don't use apt-get here bc not every RPM based distri provides a package (apt-get).
     #we must ensure that we have a debug=no libobjc-lf2 present...
-    print "ensuring that we have a debug=no libobjc-lf2 present...\n";
+    #print "ensuring that we have a debug=no libobjc-lf2 present...\n";
     system("sudo rpm -e `rpm -qa|grep -i ^libobjc-lf2` --nodeps");
     system("sudo /sbin/ldconfig");
-    system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -d yes -u no -t release -c libobjc-lf2-trunk-latest.tar.gz -f yes -b no");
+    #system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -d yes -u no -t release -c libobjc-lf2-trunk-latest.tar.gz -f yes -b no");
     #we must ensure that we have a debug=no libfoundation present...
     print "ensuring that we have a debug=no libfoundation present...\n";
     system("sudo rpm -e `rpm -qa|grep -i ^libfoundation` --nodeps");
@@ -239,7 +239,7 @@ if($i_really_had_sth_todo eq "yes") {
   #go back to latest trunk build - that is, before we grabbed a new release we had
   #the most current trunk of everything built/installed
   print "restoring latest build state...\n";
-  system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -v yes -u no -d yes -f yes -b no -n yes");
+  #system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -v yes -u no -d yes -f yes -b no -n yes");
   system("$ENV{HOME}/purveyor_of_rpms.pl -p libfoundation -v yes -u no -d yes -f yes -b no -n yes");
   system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -u no -d yes -f yes -b no -n yes");
   system("$ENV{HOME}/purveyor_of_rpms.pl -p opengroupware -v yes -u no -d yes -f yes -b no -n yes");

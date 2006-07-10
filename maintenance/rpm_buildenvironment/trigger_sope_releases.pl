@@ -96,20 +96,20 @@ foreach $srel (@sope_releases) {
     close(BUILDHINTS);
     foreach $line(@sope_spec) {
       chomp $line;
-      $uselibobjc_lf2 = $line if ($line =~ s/^#UseLibObjc:\s+//g);
+      #$uselibobjc_lf2 = $line if ($line =~ s/^#UseLibObjc:\s+//g);
       $uselibfoundation = $line if ($line =~ s/^#UseLibFoundation:\s+//g);
-      $has_certain_tp_requirements = "yes" if($uselibobjc_lf2);
+      #$has_certain_tp_requirements = "yes" if($uselibobjc_lf2);
       $has_certain_tp_requirements = "yes" if($uselibfoundation);
     }
     if($has_certain_tp_requirements eq "yes") {
       my $rc;
       my $single_req_package;
-      my $libobjc_install_candidate;
-      my $libobjc_install_candidate_devel;
-      my $libobjc_install_candidate_name;
-      my $libobjc_install_candidate_version;
-      my $libobjc_install_candidate_release;
-      my $libobjc_install_candidate_arch;
+      #my $libobjc_install_candidate;
+      #my $libobjc_install_candidate_devel;
+      #my $libobjc_install_candidate_name;
+      #my $libobjc_install_candidate_version;
+      #my $libobjc_install_candidate_release;
+      #my $libobjc_install_candidate_arch;
       my $libfoundation_install_candidate;
       my $libfoundation_install_candidate_devel;
       my $libfoundation_install_candidate_name;
@@ -118,7 +118,7 @@ foreach $srel (@sope_releases) {
       my $libfoundation_install_candidate_arch;
       system("mkdir $ENV{HOME}/install_tmp/") unless (-e "$ENV{HOME}/install_tmp/");
       print "building $buildtarget.spec requires me to install:\n";
-      print "libobjc-lf2   -> $uselibobjc_lf2\n" if($uselibobjc_lf2);
+      #print "libobjc-lf2   -> $uselibobjc_lf2\n" if($uselibobjc_lf2);
       print "libFoundation -> $uselibfoundation\n" if($uselibfoundation);
       print "going to check availability of those ThirdParty requirements for $host_i_runon\n" if($has_certain_tp_requirements eq "yes");
       @tp_requirements = `wget -q --proxy=off -O - http://$dl_host/nightly/packages/$host_i_runon/releases/ThirdParty/MD5_INDEX`;
@@ -126,32 +126,32 @@ foreach $srel (@sope_releases) {
         chomp $single_req_package;
         next unless($single_req_package =~ m/\.rpm$/i);
         $single_req_package =~ s/^.*\s+//g;
-        if($uselibobjc_lf2) {
-          $libobjc_install_candidate = $single_req_package if ($single_req_package =~ m/^$uselibobjc_lf2/i);
-        } 
+        #if($uselibobjc_lf2) {
+        #  $libobjc_install_candidate = $single_req_package if ($single_req_package =~ m/^$uselibobjc_lf2/i);
+        #} 
         if ($uselibfoundation) {
           $libfoundation_install_candidate = $single_req_package if ($single_req_package =~ m/^$uselibfoundation/i);
         }
       }
-      if($libobjc_install_candidate) {
-        print "downloading $libobjc_install_candidate to install_tmp/\n";
-        $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libobjc_install_candidate http://$dl_host/nightly/packages/$host_i_runon/releases/ThirdParty/$libobjc_install_candidate");
-        print "FATAL: system call (wget) returned $rc whilst downloading $libobjc_install_candidate into install_tmp/\n" and exit 1 unless($rc == 0);
-        #dissecting $libobjc_install_candidate in order to get the proper name for the corresponding -devel RPM
-        $libobjc_install_candidate_arch = `/bin/rpm --qf '%{arch}' -qp $ENV{HOME}/install_tmp/$libobjc_install_candidate`;
-        $libobjc_install_candidate_release = `/bin/rpm --qf '%{release}' -qp $ENV{HOME}/install_tmp/$libobjc_install_candidate`;
-        $libobjc_install_candidate_version = `/bin/rpm --qf '%{version}' -qp $ENV{HOME}/install_tmp/$libobjc_install_candidate`;
-        $libobjc_install_candidate_name = `/bin/rpm --qf '%{name}' -qp $ENV{HOME}/install_tmp/$libobjc_install_candidate`;
-        $libobjc_install_candidate_devel = "$libobjc_install_candidate_name" . "-devel-" . "$libobjc_install_candidate_version" . "-" . "$libobjc_install_candidate_release" . "\." . "$libobjc_install_candidate_arch" . "\.rpm";
-        print "downloading $libobjc_install_candidate_devel to install_tmp/\n";
-        $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libobjc_install_candidate_devel http://$dl_host/nightly/packages/$host_i_runon/releases/ThirdParty/$libobjc_install_candidate_devel");
-        print "FATAL: system call (wget) returned $rc whilst downloading $libobjc_install_candidate_devel into install_tmp/\n" and exit 1 unless($rc == 0);
-        #wipe out old and install the chosen one.
-        system("sudo rpm -e `rpm -qa|grep -i '^libobjc-lf2'` --nodeps");
-        system("/usr/bin/sudo /bin/rpm -Uvh --force $ENV{HOME}/install_tmp/$libobjc_install_candidate");
-        system("/usr/bin/sudo /bin/rpm -Uvh --force $ENV{HOME}/install_tmp/$libobjc_install_candidate_devel");
-        system("sudo /sbin/ldconfig");
-      }
+#      if($libobjc_install_candidate) {
+#        print "downloading $libobjc_install_candidate to install_tmp/\n";
+#        $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libobjc_install_candidate http://$dl_host/nightly/packages/$host_i_runon/releases/ThirdParty/$libobjc_install_candidate");
+#        print "FATAL: system call (wget) returned $rc whilst downloading $libobjc_install_candidate into install_tmp/\n" and exit 1 unless($rc == 0);
+#        #dissecting $libobjc_install_candidate in order to get the proper name for the corresponding -devel RPM
+#        $libobjc_install_candidate_arch = `/bin/rpm --qf '%{arch}' -qp $ENV{HOME}/install_tmp/$libobjc_install_candidate`;
+#        $libobjc_install_candidate_release = `/bin/rpm --qf '%{release}' -qp $ENV{HOME}/install_tmp/$libobjc_install_candidate`;
+#        $libobjc_install_candidate_version = `/bin/rpm --qf '%{version}' -qp $ENV{HOME}/install_tmp/$libobjc_install_candidate`;
+#        $libobjc_install_candidate_name = `/bin/rpm --qf '%{name}' -qp $ENV{HOME}/install_tmp/$libobjc_install_candidate`;
+#        $libobjc_install_candidate_devel = "$libobjc_install_candidate_name" . "-devel-" . "$libobjc_install_candidate_version" . "-" . "$libobjc_install_candidate_release" . "\." . "$libobjc_install_candidate_arch" . "\.rpm";
+#        print "downloading $libobjc_install_candidate_devel to install_tmp/\n";
+#        $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libobjc_install_candidate_devel http://$dl_host/nightly/packages/$host_i_runon/releases/ThirdParty/$libobjc_install_candidate_devel");
+#        print "FATAL: system call (wget) returned $rc whilst downloading $libobjc_install_candidate_devel into install_tmp/\n" and exit 1 unless($rc == 0);
+#        #wipe out old and install the chosen one.
+#        system("sudo rpm -e `rpm -qa|grep -i '^libobjc-lf2'` --nodeps");
+#        system("/usr/bin/sudo /bin/rpm -Uvh --force $ENV{HOME}/install_tmp/$libobjc_install_candidate");
+#        system("/usr/bin/sudo /bin/rpm -Uvh --force $ENV{HOME}/install_tmp/$libobjc_install_candidate_devel");
+#        system("sudo /sbin/ldconfig");
+#      }
       if($libfoundation_install_candidate) {
         print "downloading $libfoundation_install_candidate to install_tmp/\n";
         $rc = system("wget -q --proxy=off -O $ENV{HOME}/install_tmp/$libfoundation_install_candidate http://$dl_host/nightly/packages/$host_i_runon/releases/ThirdParty/$libfoundation_install_candidate");
@@ -217,7 +217,7 @@ if($i_really_had_sth_todo eq "yes") {
   #go back to latest trunk build - that is, before we grabbed a new release we had
   #the most current sope trunk built/installed
   print "restoring latest build state...\n";
-  system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -v yes -u no -d yes -f yes -b no -n yes");
+  #system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -v yes -u no -d yes -f yes -b no -n yes");
   system("$ENV{HOME}/purveyor_of_rpms.pl -p libfoundation -v yes -u no -d yes -f yes -b no -n yes");
   system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -u no -d yes -f yes -b no -n yes");
 }

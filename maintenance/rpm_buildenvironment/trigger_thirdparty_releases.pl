@@ -104,7 +104,7 @@ foreach $tprel (@tp_releases) {
       print "We're building a release for $package_to_build - ensuring that we have a debug=no libobjc-lf2 present...\n";
       system("sudo rpm -e `rpm -qa|grep -i ^libobjc-lf2` --nodeps");
       system("sudo /sbin/ldconfig");
-      system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -d yes -u no -t release -c libobjc-lf2-trunk-latest.tar.gz -f yes -b no -n yes");
+      #system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -d yes -u no -t release -c libobjc-lf2-trunk-latest.tar.gz -f yes -b no -n yes");
     }
     print "calling `purveyor_of_rpms.pl -p $package_to_build $build_opts -c $tprel -s $ENV{HOME}/spec_tmp/$buildtarget.spec\n";
     system("$ENV{HOME}/purveyor_of_rpms.pl -p $package_to_build $build_opts -c $tprel -s $ENV{HOME}/spec_tmp/$buildtarget.spec");
@@ -114,7 +114,7 @@ foreach $tprel (@tp_releases) {
       print "We've built a release for $package_to_build - restoring (force) to debug=yes libobjc-lf2\n";
       system("sudo rpm -e `rpm -qa|grep -i ^libobjc-lf2` --nodeps");
       system("sudo /sbin/ldconfig");
-      system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -d yes -u no -t trunk -c libobjc-lf2-trunk-latest.tar.gz -f yes -b no -n yes");
+      #system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -d yes -u no -t trunk -c libobjc-lf2-trunk-latest.tar.gz -f yes -b no -n yes");
     }
     print KNOWN_TP_RELEASES "$tprel\n";
     print "recreating apt-repository for: $host_i_runon\n";
@@ -154,6 +154,6 @@ if($i_really_had_sth_todo eq "yes") {
   #go back to latest trunk build - that is, before we grabbed a new release we had
   #the most current trunk built/installed
   print "restoring latest build state...\n";
-  system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -v yes -u no -d yes -f yes -b no -n yes");
+  #system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -v yes -u no -d yes -f yes -b no -n yes");
   system("$ENV{HOME}/purveyor_of_rpms.pl -p libfoundation -v yes -u no -d yes -f yes -b no -n yes");
 }

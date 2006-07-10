@@ -23,7 +23,6 @@ DISTRI="fedora-core5"
 #DISTRI="centos43"
 
 SPECS="ogo-gnustep_make
-libobjc-lf2
 libfoundation
 sope
 opengroupware
