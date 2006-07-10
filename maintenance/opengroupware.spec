@@ -1,7 +1,7 @@
 %define smaj 4
 %define smin 5
 %define lfmaj 1
-%define lfmin 0
+%define lfmin 1
 %define ogo_v 1.1
 %define zide_v 1.5
 %define libogo_v 5.3
@@ -34,7 +34,7 @@ SOPE application server.
 %package meta
 Summary:      OpenGroupware.org META package
 Group:        Development/Libraries
-Requires:     libobjc-lf2 libfoundation%{lfmaj}%{lfmin} sope%{smaj}%{smin}-xml sope%{smaj}%{smin}-core sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-ical sope%{smaj}%{smin}-gdl1-postgresql sope%{smaj}%{smin}-gdl1 ogo-docapi ogo-docapi-db-project ogo-docapi-fs-project ogo-logic ogo-logic-tools ogo-pda ogo-theme-default ogo-tools ogo-webui-app ogo-webui-calendar ogo-webui-contact ogo-webui-core ogo-webui-mailer ogo-webui-news ogo-webui-project ogo-webui-resource-de ogo-webui-resource-en ogo-webui-task ogo-xmlrpcd ogo-zidestore ogo-environment mod_ngobjweb
+Requires:     libfoundation%{lfmaj}%{lfmin} sope%{smaj}%{smin}-xml sope%{smaj}%{smin}-core sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-ical sope%{smaj}%{smin}-gdl1-postgresql sope%{smaj}%{smin}-gdl1 ogo-docapi ogo-docapi-db-project ogo-docapi-fs-project ogo-logic ogo-logic-tools ogo-pda ogo-theme-default ogo-tools ogo-webui-app ogo-webui-calendar ogo-webui-contact ogo-webui-core ogo-webui-mailer ogo-webui-news ogo-webui-project ogo-webui-resource-de ogo-webui-resource-en ogo-webui-task ogo-xmlrpcd ogo-zidestore ogo-environment mod_ngobjweb
 AutoReqProv:  off
 
 %description meta
@@ -114,7 +114,7 @@ This package contains OpenGroupware.org's application logic.
 %package logic-tools
 Summary:      OpenGroupware.org application logic tools
 Group:        Development/Libraries
-Requires:     ogo-logic sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml libfoundation%{lfmaj}%{lfmin} libobjc-lf2
+Requires:     ogo-logic sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml libfoundation%{lfmaj}%{lfmin}
 AutoReqProv:  off
 
 %description logic-tools
@@ -136,7 +136,7 @@ application logic.
 %package pda
 Summary:      PDA syncing framework for OpenGroupware.org
 Group:        Development/Libraries
-Requires:     sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-core sope%{smaj}%{smin}-xml sope%{smaj}%{smin}-ldap libfoundation%{lfmaj}%{lfmin} libobjc-lf2 ogo-webui-app ogo-docapi ogo-logic pilot-link
+Requires:     sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-core sope%{smaj}%{smin}-xml sope%{smaj}%{smin}-ldap libfoundation%{lfmaj}%{lfmin} ogo-webui-app ogo-docapi ogo-logic pilot-link
 AutoReqProv:  off
 
 %description pda
@@ -200,7 +200,7 @@ This package contains an orange theme for OpenGroupware.org's web UI.
 %package tools
 Summary:      Various commandline Tools for OpenGroupware.org
 Group:        Development/Libraries
-Requires:     sope%{smaj}%{smin}-core sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-gdl1 libfoundation%{lfmaj}%{lfmin} libobjc-lf2 ogo-logic ogo-docapi
+Requires:     sope%{smaj}%{smin}-core sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-gdl1 libfoundation%{lfmaj}%{lfmin} ogo-logic ogo-docapi
 AutoReqProv:  off
 
 %description tools
@@ -218,7 +218,7 @@ with the ogo-webui-mailer package:
 %package webui-app
 Summary:      Web UI application of OpenGroupware.org
 Group:        Development/Libraries
-Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-webui-core ogo-logic ogo-docapi ogo-theme-default ogo-webui-resource-en ogo-webui-resource-de libfoundation%{lfmaj}%{lfmin} libobjc-lf2
+Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-webui-core ogo-logic ogo-docapi ogo-theme-default ogo-webui-resource-en ogo-webui-resource-de libfoundation%{lfmaj}%{lfmin}
 AutoReqProv:  off
 
 %description webui-app
@@ -248,7 +248,7 @@ of OpenGroupware.org's Web UI
 %package webui-calendar
 Summary:      Calendar component of OpenGroupware.org's Web UI
 Group:        Development/Libraries
-Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation%{lfmaj}%{lfmin} libobjc-lf2
+Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation%{lfmaj}%{lfmin}
 AutoReqProv:  off
 
 %description webui-calendar
@@ -260,7 +260,7 @@ new appointments.
 %package webui-contact
 Summary:      Contact component of OpenGroupware.org's Web UI
 Group:        Development/Libraries
-Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation%{lfmaj}%{lfmin} libobjc-lf2
+Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation%{lfmaj}%{lfmin}
 AutoReqProv:  off
 
 %description webui-contact
@@ -271,7 +271,7 @@ importing contacts from a csv file.
 %package webui-mailer
 Summary:      Mailer component of OpenGroupware.org's Web UI
 Group:        Development/Libraries
-Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation%{lfmaj}%{lfmin} libobjc-lf2
+Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation%{lfmaj}%{lfmin}
 AutoReqProv:  off
 
 %description webui-mailer
@@ -292,7 +292,7 @@ of OpenGroupware.org's Web UI
 %package webui-news
 Summary:      News component of OpenGroupware.org's Web UI
 Group:        Development/Libraries
-Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation%{lfmaj}%{lfmin} libobjc-lf2
+Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation%{lfmaj}%{lfmin}
 AutoReqProv:  off
 
 %description webui-news
@@ -312,7 +312,7 @@ related to projects or standalone.
 %package webui-project
 Summary:      Project component of OpenGroupware.org's Web UI
 Group:        Development/Libraries
-Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation%{lfmaj}%{lfmin} libobjc-lf2
+Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-core sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-xml ogo-docapi ogo-logic ogo-webui-app ogo-webui-core libfoundation%{lfmaj}%{lfmin}
 AutoReqProv:  off
 
 %description webui-project
@@ -459,7 +459,7 @@ This package contains the Portuguese (Brazilian) translation for OpenGroupware.o
 %package xmlrpcd
 Summary:      XMLRPC daemon for OpenGroupware.org
 Group:        Development/Libraries
-Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-core sope%{smaj}%{smin}-xml libfoundation%{lfmaj}%{lfmin} libobjc-lf2 ogo-logic ogo-docapi
+Requires:     sope%{smaj}%{smin}-appserver sope%{smaj}%{smin}-gdl1 sope%{smaj}%{smin}-mime sope%{smaj}%{smin}-ldap sope%{smaj}%{smin}-core sope%{smaj}%{smin}-xml libfoundation%{lfmaj}%{lfmin} ogo-logic ogo-docapi
 AutoReqProv:  off
 
 %description xmlrpcd
