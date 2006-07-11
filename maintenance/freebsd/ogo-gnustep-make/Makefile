@@ -9,8 +9,8 @@ PORTNAME=	gnustep_make
 PORTVERSION=	1.10.0
 PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES= 	http://ftp.easynet.nl/mirror/GNUstep/pub/gnustep/core/ \
-		http://download.opengroupware.org/nightly/packages/freebsd/thirdparty/ogo-gnustep-make/ \
+MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/thirdparty/ogo-gnustep-make/ \
+		http://ftp.easynet.nl/mirror/GNUstep/pub/gnustep/core/ \
 		http://archive.progeny.com/gnustep/core/ \
 		http://ftp.gnustep.org/pub/gnustep/core/
 PKGNAMEPREFIX=	ogo-
