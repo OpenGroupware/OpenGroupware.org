@@ -69,7 +69,7 @@ MAKE_ARGS+=	messages=yes
 BUILD_DEPENDS+=	${LOCALBASE}/sbin/sope-4.4:${PORTSDIR}/devel/sope44
 .endif
 .if defined(WITH_SOPE_45_DEVEL) || !defined(WITHOUT_SOPE_45_DEVEL)
-BUILD_DEPENDS+=	${LOCALBASE}/sbin/sope-4.5:${PORTSDIR}/devel/sope45-devel
+BUILD_DEPENDS+=	${LOCALBASE}/sbin/sope-4.5:${PORTSDIR}/devel/sope-devel
 .endif
 .if defined(WITH_PDA_SUPPORT) || !defined(WITHOUT_PDA_SUPPORT)
 LIB_DEPENDS+=	pisock.8:${PORTSDIR}/palm/pilot-link
