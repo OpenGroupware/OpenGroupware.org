@@ -1,0 +1,28 @@
+--- configure.dist	Tue Jul 11 23:43:47 2006
++++ configure	Tue Jul 11 23:44:38 2006
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/usr/local/bin/bash
+ 
+ #
+ # Note: When adding make options to this script, ensure that the source still
+@@ -225,8 +225,8 @@
+   cfgwrite "#   created by: '$CFG_ARGS'"
+   cfgwrite ""
+   
+-  cfgwrite "# Note: you can override any option as a 'make' parameter, eg:"
+-  cfgwrite "#         make debug=yes"
++  cfgwrite "# Note: you can override any option as a 'gmake' parameter, eg:"
++  cfgwrite "#         gmake debug=yes"
+   cfgwrite ""
+   
+   #cfgwrite "# print on the cmdline that this file is being used"
+@@ -312,7 +312,7 @@
+ 
+   echo >>$tmpmake "SYSTEM_LIB_DIR += \$(CONFIGURE_SYSTEM_LIB_DIR)"
+   
+-  make -s messages=yes -f $tmpmake linktest >out.log 2>err.log
++  gmake -s messages=yes -f $tmpmake linktest >out.log 2>err.log
+   LINK_RESULT=$?
+ 
+   if test $LINK_RESULT = 0; then

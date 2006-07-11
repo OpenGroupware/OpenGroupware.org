@@ -15,7 +15,7 @@ MAINTAINER=	frank@opengroupware.org
 COMMENT=	OpenGroupware suite
 
 BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.csh:${PORTSDIR}/devel/ogo-gnustep-make \
-		${LOCALBASE}/lib/libFoundation_d.so.1.0:${PORTSDIR}/devel/ogo-libfoundation \
+		${LOCALBASE}/lib/libFoundation_d.so.1.1:${PORTSDIR}/devel/ogo-libfoundation \
 		pkg-config:${PORTSDIR}/devel/pkg-config
 
 UNIQUENAME=	${PORTNAME}-devel
@@ -23,6 +23,12 @@ DIST_SUBDIR=	ogo-suite
 
 OGO_VERSION=	1.1
 ZIDE_VERSION=	1.5
+
+SOPE_DEVEL_MAJOR=	4
+SOPE_DEVEL_MINOR=	5
+SOPE44_MAJOR=	4
+SOPE44_MINOR=	4
+
 SUB_FILES=	pkg-install pkg-message ogo-webui.sh ogo-xmlrpcd.sh ogo-nhsd.sh ogo-zidestore.sh \
 		ogo-webui-apache.conf ogo-zidestore-apache.conf ogo-xmlrpcd-apache.conf \
 		README_APACHE_SETUP README_POSTGRESQL_SETUP
@@ -33,8 +39,8 @@ DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
 EXAMPLES=	ogo-webui-apache.conf ogo-xmlrpcd-apache.conf ogo-zidestore-apache.conf
 EXAMPLESDIR=	${PREFIX}/share/examples/${PORTNAME}-${PORTVERSION}
 
-OPTIONS=	SOPE_45_DEVEL	"link with sope-4.5" on \
-		SOPE_44		"link with sope-4.4" off \
+OPTIONS=	SOPE_DEVEL	"link with sope-devel (sope-${SOPE_DEVEL_MAJOR}.${SOPE_DEVEL_MINOR})" on \
+		SOPE_44		"link with sope44 (sope-${SOPE44_MAJOR}.${SOPE44_MINOR})" off \
 		PDA_SUPPORT     "build with support for PDA" on \
 		PGSQLSERVER_HERE  "use PostgreSQL Server ${DEFAULT_PGSQL_VER} on this host?" on
 
@@ -64,11 +70,12 @@ MAKE_ARGS+=	TAR=${TAR}
 .if defined(SHOW_MESSAGES)
 MAKE_ARGS+=	messages=yes
 .endif
+
 .if defined(WITH_SOPE_44)
 BUILD_DEPENDS+=	${LOCALBASE}/sbin/sope-4.4:${PORTSDIR}/devel/sope44
 .endif
-.if defined(WITH_SOPE_45_DEVEL) || !defined(WITHOUT_SOPE_45_DEVEL)
-BUILD_DEPENDS+=	${LOCALBASE}/sbin/sope-4.5:${PORTSDIR}/devel/sope-devel
+.if defined(WITH_SOPE_DEVEL) || !defined(WITHOUT_SOPE_DEVEL)
+BUILD_DEPENDS+=	${LOCALBASE}/sbin/sope-${SOPE_DEVEL_MAJOR}.${SOPE_DEVEL_MINOR}:${PORTSDIR}/devel/sope-devel
 .endif
 .if defined(WITH_PDA_SUPPORT) || !defined(WITHOUT_PDA_SUPPORT)
 LIB_DEPENDS+=	pisock.8:${PORTSDIR}/palm/pilot-link
@@ -84,16 +91,19 @@ pre-everything::
 .if (defined(WITH_SOPE_44) && defined(WITH_SOPE_45_DEVEL)) || (defined(WITHOUT_SOPE_44) && defined(WITHOUT_SOPE_45_DEVEL))
 	@${ECHO_MSG} "#########################################################################"
 	@${ECHO_MSG} "# WARNING!!!   WARNING!!!   WARNING!!!   WARNING!!!   WARNING!!!        #"
-	@${ECHO_MSG} "# You must either choose sope-4.4 or sope-4.5, not both or even none!   #"
+	@${ECHO_MSG} "# You must either choose sope44 or sope-devel, not both or even none!   #"
 	@${ECHO_MSG} "# Please run 'make config' again...                                     #"
 	@${ECHO_MSG} "#   ... or 'make rmconfig' prior your next 'make' attempt               #"
 	@${ECHO_MSG} "#########################################################################"
 	@exit 1
 .endif
 
+do-configure:
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ./configure)
+
 do-build:
-.if (defined(WITH_SOPE_45_DEVEL) && ((!exists(${LOCALBASE}/lib/libGDLAccess_d.so.4.5)) || (!exists(${LOCALBASE}/lib/libNGLdap_d.so.4.5)) || (!exists(${LOCALBASE}/lib/libNGObjWeb_d.so.4.5)))) || \
-	(defined(WITH_SOPE_44) && (!exists(${LOCALBASE}/lib/libGDLAccess_d.so.4.4) || !exists(${LOCALBASE}/lib/libNGLdap_d.so.4.4) || !exists(${LOCALBASE}/lib/libNGObjWeb_d.so.4.4)))
+.if (defined(WITH_SOPE_DEVEL) && ((!exists(${LOCALBASE}/lib/libGDLAccess_d.so.${SOPE_DEVEL_MAJOR}.${SOPE_DEVEL_MINOR})) || (!exists(${LOCALBASE}/lib/libNGLdap_d.so.${SOPE_DEVEL_MAJOR}.${SOPE_DEVEL_MINOR})) || (!exists(${LOCALBASE}/lib/libNGObjWeb_d.so.${SOPE_DEVEL_MAJOR}.${SOPE_DEVEL_MINOR})))) || \
+	(defined(WITH_SOPE_44) && (!exists(${LOCALBASE}/lib/libGDLAccess_d.so.${SOPE44_MAJOR}.${SOPE44_MINOR}) || !exists(${LOCALBASE}/lib/libNGLdap_d.so.${SOPE44_MAJOR}.${SOPE44_MINOR}) || !exists(${LOCALBASE}/lib/libNGObjWeb_d.so.${SOPE44_MAJOR}.${SOPE44_MINOR})))
 	@${ECHO_MSG} "#########################################################################"
 	@${ECHO_MSG} "# WARNING!!!   WARNING!!!   WARNING!!!   WARNING!!!   WARNING!!!        #"
 	@${ECHO_MSG} "#                                                                       #"
