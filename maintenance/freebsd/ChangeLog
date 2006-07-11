@@ -3,6 +3,9 @@
 	* several upcoming updates...
 	* moved sope45-devel to sope-devel
 	* bumped all versions to current trunk state
+	* sope ports require BUILD_DEPENDS 'shells/bash'
+	  because of the included 'configure' script
+	  (which cannot be run by /bin/sh here)
 
 2006-05-20 Frank Reppin  <frank@opengroupware.org>
 
