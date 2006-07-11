@@ -17,7 +17,7 @@ COMMENT=	SOPE is a framework for developing web applications and services
 BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.csh:${PORTSDIR}/devel/ogo-gnustep-make \
 		${LOCALBASE}/lib/libobjc_d.so.lf2.95.3:${PORTSDIR}/devel/ogo-libobjc-lf2 \
 		${LOCALBASE}/lib/libFoundation_d.so.1.0:${PORTSDIR}/devel/ogo-libfoundation \
-		pkg-config:${PORTSDIR}/devel/pkgconfig
+		pkg-config:${PORTSDIR}/devel/pkg-config
 
 UNIQUENAME=	${PORTNAME}44
 CONFLICTS=	sope-4.5*
