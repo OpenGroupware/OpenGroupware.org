@@ -14,7 +14,7 @@ DISTNAME=	opengroupware.org-1.0beta.2-rock-r1412
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	OpenGroupware suite
 
-BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.csh:${PORTSDIR}/devel/ogo-gnustep-make \
+BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.csh:${PORTSDIR}/devel/ogo-gnustep-make \
 		${LOCALBASE}/lib/libobjc_d.so.lf2.95.3:${PORTSDIR}/devel/ogo-libobjc-lf2 \
 		${LOCALBASE}/lib/libFoundation_d.so.1.0:${PORTSDIR}/devel/ogo-libfoundation \
 		pkg-config:${PORTSDIR}/devel/pkg-config
