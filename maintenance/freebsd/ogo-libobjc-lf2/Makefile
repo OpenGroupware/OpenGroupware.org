@@ -15,7 +15,7 @@ DISTNAME=	libobjc-lf2-trunk-r152-200607111107
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	Library needed to run Objective-C applications which use libFoundation
 
-BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.csh:${PORTSDIR}/devel/ogo-gnustep-make
+BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.csh:${PORTSDIR}/devel/ogo-gnustep-make
 
 DIST_SUBDIR=	ogo-suite
 
@@ -36,9 +36,9 @@ MAKE_ARGS+=	messages=yes
 .endif
 
 do-build:
-	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
 
 do-install:
-	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
 
 .include <bsd.port.mk>
