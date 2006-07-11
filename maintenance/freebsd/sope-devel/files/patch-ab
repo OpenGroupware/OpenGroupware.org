@@ -1,0 +1,46 @@
+--- configure.dist	Tue Jul 11 11:01:31 2006
++++ configure	Tue Jul 11 22:31:14 2006
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/usr/local/bin/bash
+ 
+ #
+ # Note: When adding make options to this script, ensure that the source still
+@@ -31,7 +31,7 @@
+ USES_INTERNAL_MAKE=no
+ 
+ # TODO: add pg_config, mysql_config etc!
+-LINK_SYSLIBDIRS="-L/usr/local/pgsql/lib -L/usr/local/lib -L/usr/lib"
++LINK_SYSLIBDIRS="-L/usr/local/pgsql/lib -L/usr/local/lib/mysql -L/usr/local/lib -L/usr/lib"
+ 
+ # ******************** usage ********************
+ 
+@@ -148,7 +148,7 @@
+       --with-library-combo="${SETUP_COMBO}"
+ 
+     echo -n ".. install .."
+-    make install >>${pregsmdir}/${SETUP_LOGNAME}
++    gmake install >>${pregsmdir}/${SETUP_LOGNAME}
+     
+     ARG_GSMAKE="${INTERNAL_MAKEDIR}/Library/Makefiles/"
+     ARG_IS_FHS=1
+@@ -303,8 +303,8 @@
+   cfgwrite "#   created by: '$CFG_ARGS'"
+   cfgwrite ""
+   
+-  cfgwrite "# Note: you can override any option as a 'make' parameter, eg:"
+-  cfgwrite "#         make debug=yes"
++  cfgwrite "# Note: you can override any option as a 'gmake' parameter, eg:"
++  cfgwrite "#         gmake debug=yes"
+   cfgwrite ""
+   
+   #cfgwrite "# print on the cmdline that this file is being used"
+@@ -398,7 +398,7 @@
+   echo >>$tmpmake "SYSTEM_LIB_DIR      += ${LINK_SYSLIBDIRS}"
+   echo >>$tmpmake "include \$(GNUSTEP_MAKEFILES)/ctool.make"
+   
+-  make -s messages=yes -f $tmpmake linktest >out.log 2>err.log
++  gmake -s messages=yes -f $tmpmake linktest >out.log 2>err.log
+   LINK_RESULT=$?
+   
+   if test $LINK_RESULT = 0; then
