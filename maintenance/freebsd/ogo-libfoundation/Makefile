@@ -5,7 +5,7 @@
 # $FreeBSD$
 
 PORTNAME=	libfoundation
-PORTVERSION=	1.0.84
+PORTVERSION=	1.1.2
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/thirdparty/ogo-libfoundation/
@@ -15,16 +15,13 @@ DISTNAME=	libfoundation-trunk-r152-200607111107
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	The libFoundation required by the OGo suite
 
-BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.csh:${PORTSDIR}/devel/ogo-gnustep-make \
-		${LOCALBASE}/lib/libobjc_d.so.lf2.95.3:${PORTSDIR}/devel/ogo-libobjc-lf2
-# can't use LIB_DEPENDS because OGo/SOPE libraries are not in the proper
-# format (bsd.port.mk uses ldconfig -r to look them up)
+BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.csh:${PORTSDIR}/devel/ogo-gnustep-make 
 
 DIST_SUBDIR=	ogo-suite
 
 SHLIB_MAJOR=	1
-SHLIB_MINOR=	0
-SHLIB_SUBMINOR=	84
+SHLIB_MINOR=	1
+SHLIB_SUBMINOR=	2
 SHLIB_VERSION=	${SHLIB_MAJOR}.${SHLIB_MINOR}.${SHLIB_SUBMINOR}
 PLIST_SUB=	SHLIB_MAJOR=${SHLIB_MAJOR} \
 		SHLIB_MINOR=${SHLIB_MINOR} \
@@ -46,12 +43,12 @@ MAKE_ARGS+=     messages=yes
 .endif
 
 do-configure:
-	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ./configure)
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.sh; ./configure)
 
 do-build:
-	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS})
 
 do-install:
-	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
+	(cd ${WRKSRC}; . ${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.sh; ${GMAKE} ${MAKE_ARGS} install)
 
 .include <bsd.port.mk>
