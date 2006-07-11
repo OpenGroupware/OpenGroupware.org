@@ -1,3 +1,9 @@
+2006-07-11 Frank Reppin  <frank@opengroupware.org>
+
+	* several upcoming updates...
+	* moved sope45-devel to sope-devel
+	* bumped all versions to current trunk state
+
 2006-05-20 Frank Reppin  <frank@opengroupware.org>
 
 	* sope45-devel -> bumped to SVN r1263

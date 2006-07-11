@@ -9,7 +9,7 @@ PORTVERSION=	1.1
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/opengroupware/
-DISTNAME=	opengroupware.org-trunk-r1572-200604011102
+DISTNAME=	opengroupware.org-trunk-r1687-200607111102
 
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	OpenGroupware suite

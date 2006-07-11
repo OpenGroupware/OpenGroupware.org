@@ -9,7 +9,7 @@ PORTVERSION=	4.5
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/sope/
-DISTNAME=	sope-trunk-r1263-200605171100
+DISTNAME=	sope-trunk-r1313-200607111100
 
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	SOPE is a framework for developing web applications and services

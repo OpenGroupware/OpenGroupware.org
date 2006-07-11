@@ -10,7 +10,7 @@ PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/thirdparty/ogo-libfoundation/
 PKGNAMEPREFIX=	ogo-
-DISTNAME=	libfoundation-trunk-r137-200512061107
+DISTNAME=	libfoundation-trunk-r152-200607111107
 
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	The libFoundation required by the OGo suite

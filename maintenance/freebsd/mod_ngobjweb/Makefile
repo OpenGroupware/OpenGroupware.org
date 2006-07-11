@@ -9,7 +9,7 @@ PORTVERSION=	1.0
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/sope/
-DISTNAME=	sope-mod_ngobjweb-trunk-r1249-200604121502
+DISTNAME=	sope-mod_ngobjweb-trunk-r1313-200607111102
 
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	Apache mod for forwarding HTTP requests to SOPE appl. server instances

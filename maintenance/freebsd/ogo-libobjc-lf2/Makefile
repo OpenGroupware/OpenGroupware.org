@@ -10,7 +10,7 @@ PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/thirdparty/ogo-libobjc-lf2/
 PKGNAMEPREFIX=	ogo-
-DISTNAME=	libobjc-lf2-trunk-r137-200512061107
+DISTNAME=	libobjc-lf2-trunk-r152-200607111107
 
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	Library needed to run Objective-C applications which use libFoundation
