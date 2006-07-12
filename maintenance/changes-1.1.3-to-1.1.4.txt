@@ -55,7 +55,7 @@ general
 - fixed some gcc 4.1 warnings
 
 
-Contributors for 1.1.3:
+Contributors for 1.1.4:
 Frank Reppin
 Olivier Hallot
 Marcus Mueller
