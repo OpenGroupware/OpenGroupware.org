@@ -69,6 +69,11 @@ clean-controlfiles:
 debian/control: debian/control.in debian/rules
 	sed -e s/_OGOVER_/$(OGOVER)/g -e s/_OGOSONAME_/$(OGOSONAME)/g -e s/_ZSVER_/$(ZSVER)/g < debian/control.in > debian/control
 
+config.status: configure
+	dh_testdir
+	CFLAGS="$(CFLAGS)" . $(GNUSTEP_SETUP); \
+		./configure
+
 build: build-stamp
 build-stamp: patch-stamp controlfiles
 	dh_testdir
@@ -98,7 +103,8 @@ install: build controlfiles
 	CFLAGS="$(CFLAGS)" . $(GNUSTEP_SETUP); \
 		$(MAKE) $(MAKE_FLAGS) install \
 		GNUSTEP_INSTALLATION_DIR=$(CURDIR)/debian/tmp/$$GNUSTEP_SYSTEM_ROOT \
-		FHS_INSTALL_ROOT=$(CURDIR)/debian/tmp/usr
+		FHS_INSTALL_ROOT=$(CURDIR)/debian/tmp/usr \
+		FHS_LIB_DIR=$(CURDIR)/debian/tmp/usr/lib
 
 	rm -rf $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/translations
 	rm -rf $(CURDIR)/debian/tmp/usr/share/opengroupware.org-$(OGOVER)/templates
