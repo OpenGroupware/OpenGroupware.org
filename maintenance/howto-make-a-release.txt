@@ -1,0 +1,45 @@
+
+- make sure you have a clean and current working copy:
+    svn up
+    svn stat
+
+- 'make distclean' in your working copy
+
+- Write a changes file in the 'maintenance' directory, eg:
+
+     maintenance/changes-1.1.4-to-1.1.5.txt
+
+  To assist that, run Contrib/compare-releases.py against the last release:
+
+     ./Contrib/compare-releases.py \
+       ~/dev/complete/OpenGroupware.org/releases/1.1.4-moveon \
+       . \
+       > maintenance/changes-1.1.4-to-1.1.5.txt 
+  
+  This walks all ChangeLog files and produces a summary which we include at
+  the bottom of the changes file.
+  
+  In the changes file summarize the ChangeLog information a bit, see old files
+  for examples.
+
+  Don't forget to add the changes to the repository:
+
+    svn add maintenance/changes-1.1.4-to-1.1.5.txt
+
+- Commit all changes in the prerelease
+
+  svn commit
+
+- Tag the prerelease as a release
+
+  REP="http://developer.opengroupware.org/OpenGroupware.org"
+  REL="${REP}/releases/1.1.5-moveon"
+
+  svn cp -m "tagged OGo 1.1.5" ${REP}/trunk ${REL}
+
+- Be sure to remove unnecessary things from the release
+
+  svn rm -m "removed Recycler from release" ${REL}/Recycler
+  svn rm -m "removed non-release directories from release" ${REL}/Migration
+  svn rm -m "removed non-release directories from release" ${REL}/Misc
+  svn rm -m "removed non-release directories from release" ${REL}/Contrib

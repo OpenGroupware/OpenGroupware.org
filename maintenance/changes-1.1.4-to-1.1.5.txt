@@ -1,0 +1,212 @@
+- bug ids touched by ChangeLog (check Bugzilla for the complete list):
+  1730, 1742, 1744
+
+Logic
+- improved appointment-by-globalid fetches ('participants.comment' key)
+
+WebUI
+- properly load person/company viewer (OGo bug #1744)
+- changed implementation of appointment formletters (OGo bug #1742)
+- fixed a memleak in OGoRecipientLists
+
+ZideStore
+- fixed a WebDAV auto-check issue (OGo bug #1730)
+
+general
+- 64bit fixes
+- added RPM specs for CentOS 4.3, Fedora Core 5, SuSE 10.1
+- improved FreeBSD port
+- use isNotEmpty, warnWithFormat etc when appropriate
+- fixed a lot of gcc 4.1 warnings
+
+Contributors for 1.1.5:
+Frank Reppin
+Helge Hess
+... and many more :-)
+
+===========================================================================
+compare /home/helge/dev/complete/OpenGroupware.org/releases/1.1.4-moveon with .
+changed: DocumentAPI/OGoContacts/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks (v5.3.55)
+changed: DocumentAPI/OGoDocuments/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks (v5.3.27)
+changed: DocumentAPI/OGoProject/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks (v5.3.42)
+changed: DocumentAPI/OGoBase/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.9
+     	* SkyLogDocument.m: use ASSIGNCOPY in accessor methods
+     	* fixed gcc 4.1 warnings, 64bit tweaks
+changed: DocumentAPI/OGoAccounts/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks (v5.3.21)
+changed: DocumentAPI/OGoDatabaseProject/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks (v5.3.55)
+changed: DocumentAPI/OGoScheduler/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks (v5.3.38)
+changed: DocumentAPI/OGoJobs/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks (v5.3.25)
+changed: DocumentAPI/OGoFileSystemProject/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks, changed to use
+     	  -warnWithFormat:, -errorWithFormat: (v5.3.27)
+changed: ZideStore/ZSBackend/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks (v1.5.88)
+changed: ZideStore/Main/
+     2006-07-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* ZideStore.m: changed to find OGo bundles on 64bit systems
+     	  in lib64, added FHS_INSTALL_ROOT to lookup path (v1.5.91)
+added:   ZideStore/Protocols/GData
+changed: ZideStore/SoObjects/ZSProjects/
+     2006-06-24  Helge Hess  <helge.hess@opengroupware.org>
+     	* SxDocument.m: properly check whether a file is already checked out
+     	  before doing an auto-checkout (fixes bug #1730) (1.5.104)
+changed: ZideStore/SoObjects/ZSTasks/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* SxTask.m: fixed a gcc 4.1 warning (v1.5.80)
+changed: ZideStore/SoObjects/ZSContacts/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed some gcc 4.1 warnings (v1.5.94)
+added:   maintenance/howto-make-a-release.txt
+added:   maintenance/changes-1.1.4-to-1.1.5.txt
+added:   maintenance/rpm_buildenvironment/prepare_yum_centos43.sh
+added:   maintenance/rpm_buildenvironment/prepare_yum_fcore5.sh
+added:   maintenance/rpm_buildenvironment/macros/centos43
+added:   maintenance/rpm_buildenvironment/macros/fedora-core5
+added:   maintenance/rpm_buildenvironment/macros/suse10-1
+changed: maintenance/freebsd/
+     2006-07-11 Frank Reppin  <frank@opengroupware.org>
+     	* several upcoming updates...
+     	* moved sope45-devel to sope-devel
+     	* bumped all versions to current trunk state
+     	* sope ports require BUILD_DEPENDS 'shells/bash'
+     	  because of the included 'configure' script
+     	  (which cannot be run by /bin/sh here)
+added:   maintenance/freebsd/sope-devel
+removed: maintenance/freebsd/sope45-devel
+added:   maintenance/freebsd/opengroupware-devel/files/patch-ab
+changed: Logic/LSAccount/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks, use -warnWithFormat:,
+     	  -errorWithFormat: (v5.3.23)
+changed: Logic/LSAddress/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* 64bit tweaks, use -isNotEmpty when appropriate, use -warnWithFormat:
+     	  (v5.3.87)
+changed: Logic/LSPerson/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks (v5.3.30)
+changed: Logic/LSTasks/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks (v5.3.9)
+changed: Logic/LSFoundation/
+     2006-07-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoContextManager.m: changed to find OGo bundles on 64bit systems
+     	  in lib64, added FHS_INSTALL_ROOT to lookup path (v5.3.120)
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* 64bit port, fixed gcc 4.1 warnings (v5.3.119)
+changed: Logic/LSTeam/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks, use -isNotEmpty: (v5.3.19)
+changed: Logic/LSScheduler/
+     2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSGetAppointmentsForGlobalIDs.m: added support for
+     	  'participants.comment' key in fetch attributes (v5.3.89)
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks, use ../common.make (v5.3.88)
+added:   Logic/LSScheduler/GNUmakefile.preamble
+changed: Logic/LSDocuments/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit tweaks, use -warnWithFormat:,
+     	  -errorWithFormat: (v5.3.7)
+changed: Logic/LSBase/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* 64bit tweaks, use ../common.make (v5.3.29)
+changed: XmlRpcAPI/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed some gcc 4.1 warnings (v5.3.72)
+changed: PDA/OGoPalm/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed some gcc 4.1 warnings, 64bit tweaks, some code cleanups
+     	  (v5.3.32)
+changed: PDA/OGoPalmUI/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, 64bit fixups (v5.3.8)
+changed: WebUI/JobUI/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.53
+     	* LSWJobEditor.m: fixed a weirdness in hasJobAttributes
+     	* fixed some gcc 4.1 warnings
+changed: WebUI/Contact/PersonsUI/
+     2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyPersonViewer.m: properly use person::get-by-globalID, not
+     	  the generic object::get-by-globalID to activate the person viewer
+     	  from a global id (should fix bug #1744) (v5.3.62)
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed some gcc 4.1 warnings (v5.3.61)
+changed: WebUI/Contact/AddressUI/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed gcc 4.1 warnings, use -warn/errorWithFormat: (v5.3.57)
+changed: WebUI/Contact/EnterprisesUI/
+     2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyEnterpriseViewer.m: properly use person::get-by-globalID, not
+     	  the generic object::get-by-globalID to activate the person viewer
+     	  from a global id (should fix bug #1744) (v5.3.39)
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed some gcc 4.1 warnings (v5.3.38)
+changed: WebUI/Scheduler/OGoSchedulerViews/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed some gcc 4.1 warnings (v5.3.53)
+changed: WebUI/Scheduler/OGoScheduler/
+     2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.55
+     	* Defaults.plist: fixed formletter fetch-keys for new fetch-style
+     	* OGoAptFormLetter.m: changed the way formletter values are fetched
+     	  to avoid incomplete EO objects
+     	* OGoAptFormLetter.m: expose company comments as 'person_comment' so
+     	  that it doesn't conflict with appointment comments
+     2006-06-27  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.54
+     	* OGoAptFormLetter.m: added special detection of EOGenericRecord and
+     	  NSDictionary values (to fix OGo bug #1742)
+     	* SkySchedulerSelectPopUp.m: use -isNotEmpty instead of -isNotNull in
+     	  name formatting, avoid use of +stringWithFormat
+     	* fixed some gcc 4.1 warnings
+changed: WebUI/Mailer/OGoWebMail/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* code cleanups, fixed gcc 4.1 warnings, 64bit fixups (v5.3.106)
+changed: WebUI/Mailer/OGoMailViewers/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* code cleanups, fixed gcc 4.1 warnings, 64bit fixups (v5.3.26)
+changed: WebUI/Mailer/OGoMailFilter/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoMailFilterManager.m: fixed some gcc 4.1 warnings (v5.3.7)
+changed: WebUI/Mailer/OGoRecipientLists/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyMailingListManager.m: fixed a memory leak (v5.3.4)
+changed: WebUI/Common/BaseUI/
+     2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.125
+     	* fixed gcc 4.1 warnings, various minor code cleanups
+     	* WODirectAction+activate.m: changed to use errorWithFormat, some
+     	  code cleanups
+changed: WebUI/OGoFoundation/
+     2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.99
+     	* use -warnWithFormat:, -isNotEmpty, minor code cleanups
+     	* fixed gcc 4.1 warnings
+     	* GNUmakefile: disable -O to avoid unknown gcc 4.1 warnings
+changed: WebUI/PreferencesUI/
+     2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* fixed some gcc 4.1 warnings (v5.3.43)
+changed: WebUI/Main/
+     2006-07-05  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoWebBundleLoader.m: changed to find OGo bundles on 64bit systems
+     	  in lib64, added FHS_INSTALL_ROOT to lookup path (v5.3.83)
