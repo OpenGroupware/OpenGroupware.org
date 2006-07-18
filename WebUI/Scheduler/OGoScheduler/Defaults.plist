@@ -183,8 +183,8 @@
     participants.birthday, participants.bossName, participants.name,
     participants.url, participants.imAddress, participants.nameTitle,
     participants.dirServer,
-    participants.email1, participants.email2,
-    participants.comment
+    participants.comment,
+    participants.extendedAttributes
   );
 
   OGoSchedulerFormLetterDebugEnabled = NO;
@@ -210,7 +210,6 @@
         "$mailing_country$",
         "", "",
         "$email1$", "$sex$",
-        
         "$title$ - $location$ ($startDate$ - $endDate$)"
       );
     };
