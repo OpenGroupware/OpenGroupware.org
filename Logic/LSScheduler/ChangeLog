@@ -1,3 +1,8 @@
+2006-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSGetAppointmentsForGlobalIDs.m: added support for
+	  'participants.extendedAttributes' key in fetch attributes (5.3.90)
+
 2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetAppointmentsForGlobalIDs.m: added support for

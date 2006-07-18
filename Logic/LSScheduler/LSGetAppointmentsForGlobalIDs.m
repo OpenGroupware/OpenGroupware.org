@@ -602,15 +602,17 @@ static NSSet *AllListAttrs = nil;
 	    toPersonGIDs:personGids andTeamGIDs:teamGids];
     }
     
-    /* fetch companies */
+    /* fetch teams */
     
-    if ([teamGids count] > 0) {
+    if ([teamGids isNotEmpty]) {
       teams = [self _fetchTeamsForGIDs:teamGids 
 		    participantKeys:participantKeys
 		    inContext:_context];
     }
     else
       teamGids = nil;
+    
+    /* fetch persons */
     
     if ([personGids isNotEmpty]) {
       EOEntity *personEntity; 
@@ -624,7 +626,7 @@ static NSSet *AllListAttrs = nil;
       
       for (i = 0, count2 = 0; i < count; i++) {
         NSString *key;
-
+	
         key = [participantKeys objectAtIndex:i];
         if ([personEntity attributeNamed:key] != nil) {
           objs[count2] = key;
@@ -636,12 +638,16 @@ static NSSet *AllListAttrs = nil;
 	    objs[count2] = key;
 	    count2++;
 	  }
+	  else if ([key isEqualToString:@"extendedAttributes"]) {
+	    objs[count2] = key;
+	    count2++;
+	  }
 	}
       }
       objs[count2] = @"dbStatus"; count2++;
       personAttrs  = [NSArrayClass arrayWithObjects:objs count:count2];
       if (objs != NULL) free(objs); objs = NULL;
-      
+
       persons = [self _fetchPersonEOsForGIDs:personGids 
 		      attributes:personAttrs inContext:_context];
     }
