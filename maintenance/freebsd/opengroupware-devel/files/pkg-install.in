@@ -9,10 +9,12 @@ OGO_HOME="${OGO_HOME_BASEDIR}/opengroupware.org"
 OGO_LOGDIR="/var/log/opengroupware"
 OGO_VERSION="%%OGO_VERSION%%"
 
+SYSCONFDIR="/usr/local/etc"
 PKG_PREFIX="${PKG_PREFIX:=/usr/local}"
 
 CHMOD="/bin/chmod"
 CHOWN="/usr/sbin/chown"
+LN="/bin/ln"
 MKDIR="/bin/mkdir"
 PW="/usr/sbin/pw"
 SU="/usr/bin/su"
@@ -33,7 +35,7 @@ case "$2" in POST-INSTALL)
     if [ ! "`${PW} usershow ${OGO_USER}`" ]; then
       echo -e "=> user ${OGO_USER} not found..."
       echo -e "=> will create user ${OGO_USER}"
-      ${PW} useradd -g "${OGO_GROUP}" -c "${OGO_GECOS}" -d "${OGO_HOME}" -n "${OGO_USER}"
+      ${PW} useradd -g "${OGO_GROUP}" -c "${OGO_GECOS}" -d "${OGO_HOME}" -n "${OGO_USER}" -s "/bin/csh"
       echo -e "=> locking its password"
       ${PW} lock ${OGO_USER}
     else
@@ -60,18 +62,20 @@ case "$2" in POST-INSTALL)
     ${SU} - ${OGO_USER} -c "
       Defaults write NSGlobalDomain JobPreferredExecutantsEnabled Yes
       Defaults write NSGlobalDomain JobReferredPersonEnabled Yes
+      Defaults write NSGlobalDomain LSCreateAccountsReadonly = Yes;
       Defaults write NSGlobalDomain LSAttachmentPath '${OGO_HOME}/documents'
       Defaults write NSGlobalDomain LSConnectionDictionary '{hostName=\"127.0.0.1\"; userName=OGo; password=\"\"; port=5432; databaseName=OGo}'
-      Defaults write NSGlobalDomain LSDisableSessionLog No
+      Defaults write NSGlobalDomain LSDisableSessionLog Yes
       Defaults write NSGlobalDomain LSNewsImagesPath '${OGO_HOME}/news'
       Defaults write NSGlobalDomain LSNewsImagesUrl '/ArticleImages'
       Defaults write NSGlobalDomain scheduler_apttype_input_type PopUp
       Defaults write NSGlobalDomain scheduler_memberteams_only Yes
-      Defaults write NSGlobalDomain SendMailPath '/usr/sbin/sendmail'
       Defaults write NSGlobalDomain SkyFSPath '${OGO_HOME}/skyfs'
       Defaults write NSGlobalDomain skyrix_id `hostname`
       Defaults write NSGlobalDomain TimeZoneName GMT
+      Defaults write NSGlobalDomain WODefaultSessionTimeOut 3600
       Defaults write NSGlobalDomain WOHttpAllowHost '( localhost, 127.0.0.1, localhost.localdomain)'
+      Defaults write NSGlobalDomain WOSendMail '/usr/sbin/sendmail'
       Defaults write ogo-nhsd-${OGO_VERSION} NGBundlePath '${PKG_PREFIX}/lib/opengroupware.org-${OGO_VERSION}/conduits'
       Defaults write skyaptnotify AptNotifyVerbose NO
       Defaults write skyaptnotify AptNotifyFromAdress '${OGO_USER}@`hostname`'
@@ -81,8 +85,12 @@ case "$2" in POST-INSTALL)
       Defaults write skyaptnotify AptNotifySkyrixUser root
     " 1>/dev/null
     echo -e "configuration by post-install done!" >${OGO_HOME}/.preconfigure_done
+    if [ ! -h "${SYSCONFDIR}/opengroupware.org" ]; then
+      echo -e "=> expose configuration directory as symlink: '${SYSCONFDIR}/opengroupware.org'"
+      ${LN} -s ${OGO_HOME}/.libFoundation/Defaults ${SYSCONFDIR}/opengroupware.org
+    fi
   else
-    echo -e "=> You configuration should be already ok - I quit!"
+    echo -e "=> Your configuration should be already ok - I quit!"
     echo -e "=> If you really think that this is wrong - remove ${OGO_HOME}/.preconfigure_done and 'make reinstall' me."
   fi
   ;;
