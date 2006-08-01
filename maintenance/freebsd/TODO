@@ -4,7 +4,14 @@ STATUS:
   * general TODO:
 
     make it autoconfig everything required depending on if
-    is an upgrade or a fresh install
+    it's an upgrade or a fresh install
+
+    mod_ngobjweb/files/patch-ab is broken... (needs to be fixed)
+    if used with apache13 [for instance] /zidestore gives NSURL
+    errors ala:
+
+    xxx.xxx.xxx.xxx - - [01/Aug/2006:16:46:18 GMT] "GET /zidestore/so/http(s)://current.undermydesk.org:80
+    /zidestore/so/ControlPanel/Products/PrefsUI/Resources/banner_back.gif HTTP/1.1" 404 170/0 0.100 - - -
 
   * give README/HOWTO covering the process to move
     the old port to the new one
