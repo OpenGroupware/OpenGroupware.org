@@ -50,8 +50,7 @@ ogo_nhsd_start() {
     echo -e "Starting ${procname}."
     su -l ${ogo_nhsd_user} -c \
       "daemon ${command} ${ogo_nhsd_args} \
-       2>> /var/log/opengroupware/ogo-nhsd-err.log \
-       1>> /var/log/opengroupware/ogo-nhsd-out.log \
+       >&/var/log/opengroupware/ogo-nhsd.log
       "
   fi
 }

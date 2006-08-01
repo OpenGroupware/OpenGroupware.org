@@ -50,8 +50,7 @@ ogo_webui_start() {
     echo -e "Starting ${procname}."
     su -l ${ogo_webui_user} -c \
       "daemon ${command} ${ogo_webui_args} \
-       2>> /var/log/opengroupware/ogo-webui-err.log \
-       1>> /var/log/opengroupware/ogo-webui-out.log \
+       >&/var/log/opengroupware/ogo-webui.log
       "
   fi
 }

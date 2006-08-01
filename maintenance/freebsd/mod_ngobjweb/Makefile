@@ -29,14 +29,14 @@ DOCS=		COPYRIGHT CHANGES README ChangeLog
 
 .if exists(${LOCALBASE}/include/apache2/httpd.h) || (!exists(${LOCALBASE}/include/apache/httpd.h) && \
 	!exists(${LOCALBASE}/include/apache21/httpd.h) && !exists(${LOCALBASE}/include/apache22/httpd.h))
-APACHE_PORT=	www/apache20
+APACHE_PORT?=	www/apache20
 WITH_APACHE2=	yes
 .elif exists(${LOCALBASE}/include/apache21/httpd.h)
-APACHE_PORT=	www/apache21
+APACHE_PORT?=	www/apache21
 .elif exists(${LOCALBASE}/include/apache22/httpd.h)
-APACHE_PORT=	www/apache22
+APACHE_PORT?=	www/apache22
 .else
-APACHE_PORT=	www/apache13
+APACHE_PORT?=	www/apache13
 .endif
 
 # apache20

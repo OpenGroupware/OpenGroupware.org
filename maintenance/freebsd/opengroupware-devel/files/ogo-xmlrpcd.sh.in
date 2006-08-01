@@ -50,8 +50,7 @@ ogo_xmlrpcd_start() {
     echo -e "Starting ${procname}."
     su -l ${ogo_xmlrpcd_user} -c \
       "daemon ${command} ${ogo_xmlrpcd_args} \
-       2>> /var/log/opengroupware/ogo-xmlrpcd-err.log \
-       1>> /var/log/opengroupware/ogo-xmlrpcd-out.log \
+       >&/var/log/opengroupware/ogo-xmlrpcd.log
       "
   fi
 }

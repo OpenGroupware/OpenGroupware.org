@@ -50,8 +50,7 @@ ogo_zidestore_start() {
     echo -e "Starting ${procname}."
     su -l ${ogo_zidestore_user} -c \
       "daemon ${command} ${ogo_zidestore_args} \
-       2>> /var/log/opengroupware/ogo-zidestore-err.log \
-       1>> /var/log/opengroupware/ogo-zidestore-out.log \
+       >&/var/log/opengroupware/ogo-zidestore.log
       "
   fi
 }

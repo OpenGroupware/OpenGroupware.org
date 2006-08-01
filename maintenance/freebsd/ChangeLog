@@ -1,3 +1,9 @@
+2006-08-01 Frank Reppin  <frank@opengroupware.org>
+
+	* fixed rc script redirection
+	* fixed distinfo for mod_ngobjweb
+	* use APACHE_PORT?= ...
+
 2006-07-19 Frank Reppin  <frank@opengroupware.org>
 
 	* plist sub'ified pkg-plist 
