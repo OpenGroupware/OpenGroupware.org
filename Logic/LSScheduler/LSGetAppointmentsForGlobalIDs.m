@@ -622,7 +622,7 @@ static NSSet *AllListAttrs = nil;
       
       personEntity = [[self database] entityNamed:@"Person"];
       count        = [participantKeys count];
-      objs         = calloc(count + 2, sizeof(id));
+      objs         = calloc(count + 4, sizeof(id));
       
       for (i = 0, count2 = 0; i < count; i++) {
         NSString *key;
@@ -639,6 +639,10 @@ static NSSet *AllListAttrs = nil;
 	    count2++;
 	  }
 	  else if ([key isEqualToString:@"extendedAttributes"]) {
+	    objs[count2] = key;
+	    count2++;
+	  }
+	  else if ([key isEqualToString:@"telephones"]) {
 	    objs[count2] = key;
 	    count2++;
 	  }
