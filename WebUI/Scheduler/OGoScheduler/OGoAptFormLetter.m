@@ -203,7 +203,9 @@ static NSArray *aptKeys    = nil;
   return [[[self context] application] resourceManager];
 }
 
-- (void)applyBindingsForCompany:(id)_company ofAppointment:(id)_aptEO
+- (void)applyBindingsForCompany:(NSDictionary *)_company
+  addresses:(NSArray *)_addresses
+  ofAppointment:(id)_aptEO
   withProperties:(NSDictionary *)_aptProps
   onDictionary:(NSMutableDictionary *)_md
 {
@@ -246,7 +248,7 @@ static NSArray *aptKeys    = nil;
   
   /* addresses */
 
-  e = [[_company valueForKey:@"toAddress"] objectEnumerator];
+  e = [_addresses objectEnumerator];
   while ((address = [e nextObject]) != nil)
     [self applyBindingsOfAddress:address onDictionary:_md];
   
@@ -396,20 +398,28 @@ static int sortContact(id eo1, id eo2, void *ctx) {
   if (debugOn) [self debugWithFormat:@"append attendees ..."];
   
   for (i = 0, count = [_contacts count]; i < count; i++) {
-    id companyEO;
+    NSDictionary *companyAttrs;
+    NSArray      *addresses;
 
-    companyEO = [_contacts objectAtIndex:i];
-
+    companyAttrs = [_contacts objectAtIndex:i];
+    
+    /* fetch addresses of company */
+    
+    addresses = [self->cmdctx runCommand:@"address::get",
+		     @"companyId",  [companyAttrs valueForKey:@"companyId"],
+		     @"returnType", intObj(LSDBReturnType_ManyObjects),
+		     nil];
+    
     /* filter */
     
     if (![self includeTeams]) {
-      if ([[companyEO valueForKey:@"isTeam"] boolValue]) {
+      if ([[companyAttrs valueForKey:@"isTeam"] boolValue]) {
 	if (debugOn) [self debugWithFormat:@"  skipping team"];
 	continue;
       }
     }
     if (![self includeAccounts]) {
-      if ([[companyEO valueForKey:@"isAccount"] boolValue]) {
+      if ([[companyAttrs valueForKey:@"isAccount"] boolValue]) {
 	if (debugOn) [self debugWithFormat:@"  skipping account"];
 	continue;
       }
@@ -419,7 +429,7 @@ static int sortContact(id eo1, id eo2, void *ctx) {
     
     [bindings removeAllObjects];
     
-    [self applyBindingsForCompany:companyEO
+    [self applyBindingsForCompany:companyAttrs addresses:addresses
 	  ofAppointment:_aptEO withProperties:_aptProps
 	  onDictionary:bindings];
     

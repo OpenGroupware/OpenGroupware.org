@@ -1,3 +1,8 @@
+2006-08-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoAptFormLetter.m: properly fetch contact addresses for formletters
+	  (v5.3.56)
+
 2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.55
