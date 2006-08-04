@@ -167,7 +167,7 @@
   */
   schedulerformletter_aptkeys = (
     startDate, endDate, resourceNames, keywords, title, cycleEndDate,
-    location, type, dateId, objectVersion, aptType, busyType, fbtype,
+    location, type, dateId, globalID, objectVersion, aptType, busyType, fbtype,
     ownerId, comment,
     
     participants.isAccount, participants.isTeam, // those are required!
@@ -222,7 +222,7 @@
     WinWord = {
       fieldSeparator = ";";
       lineSeparator  = "\n";
-      line = ( "TEST: $person_keywords$", "TEST1: $person_keyword1$",
+      line = (
         "$salutation$",
         "$sex$",
         "$degree$",

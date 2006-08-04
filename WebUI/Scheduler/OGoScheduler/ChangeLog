@@ -1,5 +1,9 @@
 2006-08-04  Helge Hess  <helge.hess@opengroupware.org>
 
+	* Defaults.plist: added 'globalID' to formletter attributes, this is
+	  required for extended apt properties. Removed some debug config
+	  (v5.3.58)
+
 	* OGoAptFormLetter.m: expose person keywords as person_keywords and
 	  person_keyword1...n, expose individual apt keywords as keyword1..n
 	  (v5.3.57)
