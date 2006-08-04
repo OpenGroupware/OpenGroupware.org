@@ -1,3 +1,7 @@
+2006-08-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoCompanyAccessHandler.m: fixed a logging bug (v5.3.88)
+
 2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* 64bit tweaks, use -isNotEmpty when appropriate, use -warnWithFormat:

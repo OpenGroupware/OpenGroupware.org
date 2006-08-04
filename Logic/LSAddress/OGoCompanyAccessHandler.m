@@ -337,9 +337,9 @@ static BOOL debugOn = YES;
                        @"attributes",    contactPermAttrs, nil];
     
   if ([objects count] != [_oids count]) {
-      [self errorWithFormat:
-	      @"s: could not fetch all persons oids[%d] objects[%d]",
-              __PRETTY_FUNCTION__, [_oids count], [objects count]];
+    [self errorWithFormat:
+	    @"%s: could not fetch all persons oids[%d] objects[%d]",
+            __PRETTY_FUNCTION__, [_oids count], [objects count]];
   }
   return objects;
 }
