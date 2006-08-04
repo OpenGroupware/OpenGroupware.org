@@ -232,6 +232,20 @@ static NSArray *aptKeys    = nil;
     [_md setObject:key forKey:@"person_comment"];
     [_md removeObjectForKey:@"comment"];
   }
+  if ((key = [_md objectForKey:@"keywords"]) != nil) {
+    if ([key isNotEmpty]) {
+      NSArray  *kw;
+      unsigned i, count;
+      
+      kw = [key componentsSeparatedByString:@", "];
+      for (i = 0, count = [kw count]; i < count; i++) {
+	[_md setObject:[kw objectAtIndex:i] 
+	     forKey:[NSString stringWithFormat:@"person_keyword%i", i + 1]];
+      }
+    }
+    [_md setObject:key forKey:@"person_keywords"];
+    [_md removeObjectForKey:@"keywords"];
+  }
   
   /* fixup some localized fields */
   
@@ -252,7 +266,7 @@ static NSArray *aptKeys    = nil;
   while ((address = [e nextObject]) != nil)
     [self applyBindingsOfAddress:address onDictionary:_md];
   
-  /* appointment props */
+  /* appointment properties */
   
   e = [_aptProps keyEnumerator];
   while ((key = [e nextObject]) != nil) {
@@ -268,6 +282,19 @@ static NSArray *aptKeys    = nil;
   while ((key = [e nextObject]) != nil) {
     [_md setObject:[self stringValueForObject:[d objectForKey:key] ofKey:key]
 	 forKey:key];
+  }
+
+  /* split up keywords (expose as keyword1, keyword2, etc) */
+
+  if ([(key = [_md objectForKey:@"keywords"]) isNotEmpty]) {
+    NSArray  *kw;
+    unsigned i, count;
+    
+    kw = [key componentsSeparatedByString:@", "];
+    for (i = 0, count = [kw count]; i < count; i++) {
+      [_md setObject:[kw objectAtIndex:i] 
+	   forKey:[NSString stringWithFormat:@"keyword%i", i + 1]];
+    }
   }
 }
 

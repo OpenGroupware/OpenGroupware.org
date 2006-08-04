@@ -222,7 +222,7 @@
     WinWord = {
       fieldSeparator = ";";
       lineSeparator  = "\n";
-      line = (
+      line = ( "TEST: $person_keywords$", "TEST1: $person_keyword1$",
         "$salutation$",
         "$sex$",
         "$degree$",

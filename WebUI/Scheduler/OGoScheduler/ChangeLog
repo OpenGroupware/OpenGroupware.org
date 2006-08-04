@@ -1,5 +1,9 @@
 2006-08-04  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoAptFormLetter.m: expose person keywords as person_keywords and
+	  person_keyword1...n, expose individual apt keywords as keyword1..n
+	  (v5.3.57)
+
 	* OGoAptFormLetter.m: properly fetch contact addresses for formletters
 	  (v5.3.56)
 
