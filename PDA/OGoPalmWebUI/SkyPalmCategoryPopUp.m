@@ -122,16 +122,16 @@
   ma = [NSMutableArray array];
   while ((one = [e nextObject]) != nil) {
     NSEnumerator *e2;
-    id           tmp = nil;
+    id           tmp;
 
     e2 = [[ds categoriesForDevice:one] objectEnumerator];
     [ma addObject:[NSDictionary dictionaryWithObject:one
                                   forKey:@"device_id"]];
     while ((tmp = [e2 nextObject]) != nil) {
-        tmp = [NSDictionary dictionaryWithObjectsAndKeys:
+      tmp = [NSDictionary dictionaryWithObjectsAndKeys:
                             one, @"device_id",
                             tmp, @"category", nil];
-        [ma addObject:tmp];
+      [ma addObject:tmp];
     }
   }
   self->categories = [ma copy];
@@ -140,7 +140,7 @@
 - (NSDictionary *)mappedCategories {
   NSArray             *ar;
   NSEnumerator        *e;
-  id                  one, dev, cat;
+  id                  one;
   NSMutableDictionary *md;
   
   if (self->mappedCategories != nil)
@@ -150,12 +150,14 @@
   e  = [ar objectEnumerator];
   md = [NSMutableDictionary dictionaryWithCapacity:[ar count]];
   
-  while ((one = [e nextObject])) {
-      cat = [one valueForKey:@"category"];
-      dev = [one valueForKey:@"device_id"];
-      cat = (cat == nil) ? dev
-        : [dev stringByAppendingFormat:@"__%i", [cat categoryIndex]];
-      [md setObject:one forKey:cat];
+  while ((one = [e nextObject]) != nil) {
+    id dev, cat;
+
+    cat = [one valueForKey:@"category"];
+    dev = [one valueForKey:@"device_id"];
+    cat = (cat == nil)
+      ? dev : (id)[dev stringByAppendingFormat:@"__%i", [cat categoryIndex]];
+    [md setObject:one forKey:cat];
   }
   self->mappedCategories = [md copy];
   return self->mappedCategories;

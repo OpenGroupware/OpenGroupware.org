@@ -94,7 +94,7 @@
   EOGlobalID *aIgid;
   
   activeAccount = [[[self session] activeAccount] valueForKey:@"globalID"];
-  aIgid         = (self->onlyMyAppointments) ? nil :[self allIntranetGID];
+  aIgid         = (self->onlyMyAppointments) ? nil : (id)[self allIntranetGID];
   return [NSArray arrayWithObjects:activeAccount, aIgid, nil];
 }
 
@@ -259,7 +259,7 @@
     
     dateId = [one hasParentDate]
       ? [one parentDateId]
-      : [one valueForKey:@"dateId"];
+      : (NSNumber *)[one valueForKey:@"dateId"];
     if (dateId == nil) {
       dateId =
         [[[one valueForKey:@"globalID"] keyValuesArray] objectAtIndex:0];
@@ -641,9 +641,9 @@
     else writeAccess = [writeAccess arrayByAddingObjectsFromArray:tmp];
   }
   readAccess = [ud stringForKey:@"ogopalm_default_scheduler_read_access_team"];
-  readAccess = [readAccess length]
+  readAccess = [readAccess isNotEmpty]
     ? [NSNumber numberWithInt:[readAccess intValue]]
-    : nil;    
+    : (NSNumber *)nil;    
     
   
   rec = [[[das createObject] retain] autorelease];
