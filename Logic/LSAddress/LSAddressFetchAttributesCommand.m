@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -21,6 +22,14 @@
 
 #include <LSFoundation/LSBaseCommand.h>
 
+/*
+  address::fetchAttributes / LSAddressFetchAttributesCommand
+
+  entityName - NSString (eg Person, Enterprise)
+  searchKeys - 
+
+  TODO: this is not used by anything?
+*/
 // TODO: the whole file needs major cleanups
 
 @class NSArray, NSString;

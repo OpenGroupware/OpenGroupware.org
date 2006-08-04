@@ -910,20 +910,20 @@ static BOOL doExplain = NO;
   if (company != nil && ![result containsObject:company])
     [result addObject:company];
   
-  if ([[[info searchDict] allKeys] count] > 0)
+  if ([[[info searchDict] allKeys] isNotEmpty])
     [result addObject:info];
-  if ([[[address searchDict] allKeys] count] > 0)
+  if ([[[address searchDict] allKeys] isNotEmpty])
     [result addObject:address];
-  if ([[[pValue searchDict] allKeys] count] > 0)
+  if ([[[pValue searchDict] allKeys] isNotEmpty])
     [result addObject:pValue];
-  if ([[[phone searchDict] allKeys] count] > 0)
+  if ([[[phone searchDict] allKeys] isNotEmpty])
     [result addObject:phone];
   
   if (fullText_ != NULL) {
     *fullText_ = [[fullSearchKeys copy] autorelease];
   }
-  else if ([fullSearchKeys count] > 0) {
-    [self logWithFormat:@"WARNING: not processing fulltext searches: %@",
+  else if ([fullSearchKeys isNotEmpty]) {
+    [self warnWithFormat:@"not processing fulltext searches: %@",
             fullSearchKeys];
   }
 

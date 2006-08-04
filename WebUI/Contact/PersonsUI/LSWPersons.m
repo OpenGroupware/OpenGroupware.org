@@ -153,11 +153,11 @@ static BOOL       hasSkyInfolineGathering = NO;
   id p;
 
   /* this component is a session-singleton */
-  if ((p = [self persistentInstance])) {
+  if ((p = [self persistentInstance]) != nil) {
     [self release];
     return [p retain];
   }
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     [self registerAsPersistentInstance];
     [self _setupDataSource];
     
