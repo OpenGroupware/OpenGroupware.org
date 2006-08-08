@@ -1,3 +1,7 @@
+2006-08-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* German.lproj/PersonsUI.strings: replaced &szlig; with an UTF-8 umlaut
+
 2006-05-06  Helge Hess  <helge.hess@opengroupware.org>
 
 	* English|German.lproj/LSWProject.strings: added 'urlPattern' label
