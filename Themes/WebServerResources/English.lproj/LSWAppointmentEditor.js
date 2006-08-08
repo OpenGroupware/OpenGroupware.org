@@ -74,7 +74,7 @@ function LSWAptEditor_newContactPanel(sender) {
     window.open(sender.href, sender.target,
 		"location=no, menubar=no, status=no, toolbar=no, " +
 		"scrollbars=no, resizable=yes, dependent=yes," +
-		"width=260, height=300");
+		"width=260, height=320");
   LSWAptEditor_newContactPanelRef.focus();
   
   return false;

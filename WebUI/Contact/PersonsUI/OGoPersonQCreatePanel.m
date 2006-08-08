@@ -182,10 +182,13 @@ static NSString *qCreateAddrType = @"mailing";
 
 - (id)createPersonRecord {
   NSNumber *loginId;
-  NSString *fn, *ln, *em1;
+  NSString *fn, *ln, *em1, *sal;
   id eo;
   
   loginId = [[[self existingSession] activeAccount] valueForKey:@"companyId"];
+
+  if ((sal = [self->values objectForKey:@"salutation"]) == nil)
+    sal = (id)[NSNull null];
   
   if ((fn = [self->values objectForKey:@"firstname"]) == nil)
     fn = (id)[NSNull null];
@@ -199,6 +202,7 @@ static NSString *qCreateAddrType = @"mailing";
   eo = [self runCommand:@"person::new",
 	       @"firstname",  fn,
 	       @"name",       ln, 
+	       @"salutation", sal,
 	       @"email1",     em1,
 	       @"ownerId",    loginId,
 	       @"telephones", [self _createPhoneRecords],

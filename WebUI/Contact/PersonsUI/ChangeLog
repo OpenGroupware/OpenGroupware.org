@@ -1,3 +1,8 @@
+2006-08-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoPersonQCreatePanel.m: added salutation to quick-create panel
+	  (v5.3.63)
+
 2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyPersonViewer.m: properly use person::get-by-globalID, not

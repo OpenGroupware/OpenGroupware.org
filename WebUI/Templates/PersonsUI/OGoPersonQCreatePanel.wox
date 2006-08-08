@@ -44,6 +44,10 @@
               <input type="text" name="firstname" size="20"
                      var:value="values.firstname" />
             </OGo:attribute>
+            <OGo:attribute label="salutation" editfont="1">
+              <input type="text" name="salutation" size="20"
+                     var:value="values.salutation" />
+            </OGo:attribute>
 
             <OGo:attribute label="telephoneLabel" editfont="1">
               <input type="text" name="01_tel" size="20"
