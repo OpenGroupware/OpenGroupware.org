@@ -278,16 +278,16 @@ function genConfigMake() {
   #       common.make
   cfgwrite "ifeq (\$(findstring _64, \$(GNUSTEP_HOST_CPU)), _64)"
   cfgwrite "CONFIGURE_64BIT:=yes"
-  cfgwrite "ifneq (\$(FHS_INSTALL_ROOT),)"
-  cfgwrite "CONFIGURE_FHS_INSTALL_LIBDIR:=\$(FHS_INSTALL_ROOT)/lib64/"
-  cfgwrite "endif"
-  cfgwrite "CONFIGURE_SYSTEM_LIB_DIR += -L\$(CONFIGURE_FHS_INSTALL_LIBDIR) -L/usr/lib64"
+  cfgwrite "CGS_LIBDIR_NAME:=lib64"
   cfgwrite "else"
+  cfgwrite "CGS_LIBDIR_NAME:=lib"
+  cfgwrite "endif"
+
   cfgwrite "ifneq (\$(FHS_INSTALL_ROOT),)"
-  cfgwrite "CONFIGURE_FHS_INSTALL_LIBDIR:=\$(FHS_INSTALL_ROOT)/lib/"
+  cfgwrite "CONFIGURE_FHS_INSTALL_LIBDIR:=\$(FHS_INSTALL_ROOT)/\$(CGS_LIBDIR_NAME)/"
+  cfgwrite "CONFIGURE_SYSTEM_LIB_DIR += -L\$(CONFIGURE_FHS_INSTALL_LIBDIR)"
   cfgwrite "endif"
-  cfgwrite "CONFIGURE_SYSTEM_LIB_DIR += -L\$(CONFIGURE_FHS_INSTALL_LIBDIR) -L/usr/lib"
-  cfgwrite "endif"
+  cfgwrite "CONFIGURE_SYSTEM_LIB_DIR += -L/usr/\$(CGS_LIBDIR_NAME)/"
   
   cfgwrite "# avoid a gstep-make warning"
   cfgwrite "PATH:=\$(GNUSTEP_SYSTEM_ROOT)/Tools:\$(PATH)"
