@@ -60,6 +60,10 @@
 #define APT_INCLUSION_TYPE_MISSING 1
 #define APT_INCLUSION_TYPE_INTEAM  2
 
+#if COCOA_Foundation_LIBRARY || APPLE_Foundation_LIBRARY
+#  define HAS_CRAPPY_NSMutableDictionary 1
+#endif
+
 @implementation SkyAptParticipantsList
 
 static BOOL hasLSWPersons        = NO;
@@ -856,8 +860,11 @@ static NSString *_personName(id self, id _person) {
     return nil;
   if ([[partSettings valueForKey:@"partSettings"] isEqualToString:_state])
     return nil;
-  
+
+#if HAS_CRAPPY_NSMutableDictionary
+#warning TODO: investigate me on MacOSX, triggered by 'confirm' button  
   if (![partSettings isKindOfClass:[NSMutableDictionary class]]) {
+#endif
     if ([partSettings isKindOfClass:[NSDictionary class]]) {
       id oldpart = partSettings;
       partSettings = [[partSettings mutableCopy] autorelease];
@@ -865,7 +872,9 @@ static NSString *_personName(id self, id _person) {
       [parts removeObject:oldpart];
       [parts addObject:partSettings];
     }
+#if HAS_CRAPPY_NSMutableDictionary
   }
+#endif
 
   [partSettings takeValue:_state forKey:@"partStatus"];  
   

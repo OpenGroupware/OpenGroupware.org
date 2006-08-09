@@ -1,3 +1,13 @@
+2006-08-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.107
+
+	* LSWAppointmentEditor.m: fixed a linking issue on MacOSX (do not refer
+	  to OGoAptMailOpener class directly, its in a different bundle)
+
+	* SkyAptParticipantsList.m: catch some OSX mutable dictionary issue,
+	  needs further investigation
+
 2006-05-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWAppointmentEditor.m: set ownerId in snapshot. This fixes issues

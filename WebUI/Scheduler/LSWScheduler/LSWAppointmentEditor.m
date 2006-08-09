@@ -158,7 +158,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
             ofType:@"WOComponents"] != nil)
       self->aeFlags.isSchedulerClassicEnabled = 1;
     
-    self->aeFlags.isMailEnabled = [OGoAptMailOpener isMailEnabled] ? 1 : 0;
+    self->aeFlags.isMailEnabled =
+      [NSClassFromString(@"OGoAptMailOpener") isMailEnabled] ? 1 : 0;
     
     self->aeFlags.isAllDayEvent      = 0;
     self->aeFlags.isAllDayEventSetup = 0;
@@ -1851,7 +1852,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   [[[_ds appointment] valueForKey:@"endDate"]   setTimeZone:self->timeZone];
   
   if ([_action isNotNull]) {
-    opener = [OGoAptMailOpener mailOpenerForObject:[self snapshot] 
+    opener = [NSClassFromString(@"OGoAptMailOpener")
+			       mailOpenerForObject:[self snapshot] 
 			       action:_action
 			       page:self];
   }
@@ -1954,7 +1956,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
   if ([[self navigation] activePage] == self)
     return nil;
 
-  return [OGoAptMailOpener mailEditorForObject:[self object]
+  return [NSClassFromString(@"OGoAptMailOpener")
+			   mailEditorForObject:[self object]
 			   action:@"removed" page:self];
 }
 
@@ -2000,7 +2003,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
 
   [self setErrorString:nil];
   
-  mailEditor = [OGoAptMailOpener mailEditorForObject:obj
+  mailEditor = [NSClassFromString(@"OGoAptMailOpener")
+				 mailEditorForObject:obj
 				 action:
 				   [self isInNewMode] ? @"created" : @"edited"
 				 page:self];
@@ -2086,7 +2090,8 @@ static NSString *DayLabelDateFmt   = @"%Y-%m-%d %Z";
       
       [[self object] takeValue:oldStart forKey:@"oldStartDate"];
       
-      mailEditor = [OGoAptMailOpener mailEditorForObject:[self object]
+      mailEditor = [NSClassFromString(@"OGoAptMailOpener")
+				     mailEditorForObject:[self object]
 				     action:@"moved"
 				     page:self];
       if (mailEditor != nil)

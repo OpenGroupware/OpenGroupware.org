@@ -1,6 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=106
+SUBMINOR_VERSION:=107
 
 # v5.3.106 requires LSScheduler.cmd  v5.3.86
 # v5.3.105 requires OGoScheduler.lso v5.3.52
