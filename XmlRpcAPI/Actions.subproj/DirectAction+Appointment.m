@@ -485,4 +485,62 @@
   return app;
 }
 
+/*
+  \brief Set the resources associated with an appointment
+  \param _app An appointment id;  either a string or a number
+  \param _resources A list of resources
+  \note _resources can be an array of resource ids or a comma
+    delimited list of resource ids.
+*/
+-(id)appointment_setResourcesAction:(id)_app:(id)_resources {
+  SkyAppointmentDocument *app;
+  NSArray                *resourceNames;
+  
+  /* If _args is a number convert it to a string */
+  if ([_app isKindOfClass:[NSNumber class]])
+    _app = [_app stringValue];
+  
+  /* Retrieve appointment object */
+  app = (SkyAppointmentDocument *)[self getDocumentByArgument:_app];
+  
+  /* Was attempt to retrieve appointment successful */
+  if (![app isNotNull]) {
+    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_RESULT
+                 reason:@"No appointment for argument found"];
+  }
+  
+  /* Verify resource list */
+  if([_resources isKindOfClass:[NSString class]]) {
+    resourceNames = [_resources componentsSeparatedByString:@","];
+  }
+  else if ([_resources isKindOfClass:[NSArray class]]) {
+    resourceNames = _resources;
+  }
+  else {
+    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+		 reason:@"resource list invalid type"];
+  }
+  
+  if ([resourceNames isKindOfClass:[NSArray class]]) {
+    /* Verify resource ids */
+    if ([resourceNames isNotEmpty]) {
+#if 0
+      /* Not implemented yet */
+        if ((error = [self _validateResources:resourceNames]))
+          return error;
+#endif
+	[app setResourceNames:[resourceNames componentsJoinedByString:@","]];
+     } 
+    else {
+      [app setResourceNames:@""];
+    }
+    
+    [app save];
+    return [NSNumber numberWithBool:YES];
+  }
+  
+  return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+               reason:@"cannot make heads or tails of parameter list"];
+}
+
 @end /* DirectAction(Appointment) */
