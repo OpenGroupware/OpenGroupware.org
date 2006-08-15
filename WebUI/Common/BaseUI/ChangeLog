@@ -1,3 +1,8 @@
+2006-08-15  Olivier Hallot  <olivier@ig.com.br>
+
+	* LSWViewerTitle.m: added a missing semicolon to a generated '&nbsp'
+	  (#1647) (v5.3.126)
+
 2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.125

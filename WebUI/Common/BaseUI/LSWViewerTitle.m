@@ -128,10 +128,10 @@
   sIconLabel = [self->iconLabel stringValueInComponent:sComponent];
   bIconCond  = [self->iconCond  boolValueInComponent:sComponent];
 
-  hasIcon = [sIcon length] ? YES : NO;
+  hasIcon = [sIcon isNotEmpty] ? YES : NO;
   hasFont = (sC || sF || sS) ? YES : NO;
   
-  if (self->colspan) {
+  if (self->colspan != nil) {
     if (lGenTable) {
       [_response appendContentString:
                    @"<table id=\"vt1\" width=\"100%\" border=\"0\" "
@@ -183,14 +183,14 @@
                         languages:[[_ctx session] languages]
                         request:[_ctx request]];
       if (iconUrl == nil) {
-        NSLog(@"%@: did not find resource %@", self, sIcon);
+        [self errorWithFormat:@"did not find resource %@", sIcon];
         iconUrl = sIcon;
       }
       [_response appendContentString:@"<img border=\"0\" src=\""];
       [_response appendContentHTMLAttributeValue:iconUrl];
       [_response appendContentCharacter:'"'];
   
-      if ([sIconLabel length]) {
+      if ([sIconLabel isNotEmpty]) {
         [_response appendContentString:@" alt=\""];
         [_response appendContentHTMLAttributeValue:sIconLabel];
         [_response appendContentCharacter:'"'];
@@ -201,13 +201,13 @@
       [_response appendContentString:@" />&nbsp;"];
     }
     
-    if (self->title) {
+    if (self->title != nil) {
       [_response appendContentHTMLString:
                    [self->title stringValueInComponent:sComponent]];
     }
     
     [_response appendContentString:
-                 hasFont ? @"</b>&nbsp</font></td>" : @"</b>&nbsp;</td>"];
+                 hasFont ? @"</b>&nbsp;</font></td>" : @"</b>&nbsp;</td>"];
   }
 
   /* button cell */
@@ -223,7 +223,7 @@
   /* close row & table */
   [_response appendContentString:@"</tr></table>"];
 
-  if (self->colspan) {
+  if (self->colspan != nil) {
     [_response appendContentString:@"</td></tr><tr><td colspan=\""];
     [_response appendContentString:
                  [self->colspan stringValueInComponent:sComponent]];
