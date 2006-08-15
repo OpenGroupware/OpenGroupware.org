@@ -66,7 +66,7 @@ static int useDirectActionDialer = -1;
   daDialerTarget = [[ud stringForKey:@"SkyDirectActionDialer_Target"] copy];
   if (daDialerTarget == nil) daDialerTarget = @"SkyDirectActionDialerFrame";
 
-  useDirectActionDialer = [daDialerLink length] ? 1 : 0;
+  useDirectActionDialer = [daDialerLink isNotEmpty] ? 1 : 0;
 }
 
 - (id)initWithName:(NSString *)_name
@@ -105,15 +105,14 @@ static int useDirectActionDialer = -1;
   num = [self->number stringValueInComponent:[_ctx component]];
     
   if (![[_ctx session] canDialNumber:num]) {
-      [page takeValue:
-              [NSString stringWithFormat:@"cannot dial number '%@'", num]
-            forKey:@"errorString"];
+    [page takeValue:
+	    [NSString stringWithFormat:@"cannot dial number '%@'", num]
+	  forKey:@"errorString"];
   }
   else if (![[_ctx session] dialNumber:num]) {
-      [page takeValue:
-              [NSString stringWithFormat:
-                          @"dialing of number '%@' failed", num]
-            forKey:@"errorString"];
+    [page takeValue:
+	    [NSString stringWithFormat:@"dialing of number '%@' failed", num]
+	  forKey:@"errorString"];
   }
   return page;
 }
@@ -143,8 +142,8 @@ static int useDirectActionDialer = -1;
     
   if (rm == nil)
     return nil;
-    
-  languages = [_ctx hasSession] ? [[_ctx session] languages] : nil;
+  
+  languages = [_ctx hasSession] ? [[_ctx session] languages] : (NSArray *)nil;
       
   dialIconURL = [rm urlForResourceNamed:dialIconName
                     inFramework:nil
@@ -158,24 +157,30 @@ static int useDirectActionDialer = -1;
   toResponse:(WOResponse *)_response
   inContext:(WOContext *)_ctx
 {
-  NSString *dialIconURL = [self dialIconURLInContext:_ctx];
+  NSString *dialIconURL;
+  NSString *label = @"dial"; // TODO: localize
   
   [_response appendContentString:@"<a href=\""];
   [_response appendContentString:_link];
-  if ([_target length] > 0) {
+  if ([_target isNotEmpty]) {
     [_response appendContentString:@"\" target=\""];
     [_response appendContentString:_target];
   }
   [_response appendContentString:@"\">"];
-  if ([dialIconURL length] > 0) {
-    [_response appendContentString:@"<img border='0' src=\""];
+
+  if ([(dialIconURL = [self dialIconURLInContext:_ctx]) isNotEmpty]) {
+    [_response appendContentString:@"<img border=\"0\" src=\""];
     [_response appendContentString:dialIconURL];
+    [_response appendContentString:@"\" title=\""];
+    [_response appendContentHTMLAttributeValue:label];
     [_response appendContentString:@"\" alt=\""];
-    [_response appendContentHTMLAttributeValue:@"dial"];
+    [_response appendContentHTMLAttributeValue:label];
     [_response appendContentString:@"\" />"];
   }
   else {
-    [_response appendContentString:@"[dial]"];
+    [_response appendContentString:@"["];
+    [_response appendContentHTMLString:label];
+    [_response appendContentString:@"]"];
   }
   [_response appendContentString:@"</a>"];
 }
@@ -193,29 +198,31 @@ static int useDirectActionDialer = -1;
 
   remoteHost = [[_ctx session] valueForKey:@"RemoteClientHost"];
   remoteIP   = [[_ctx session] valueForKey:@"RemoteClientAddress"];
-  if ([remoteHost length] == 0) {
-      remoteHost = [[_ctx request] headerForKey:@"x-webobjects-remote-host"];
-      if ((remoteHost != nil)) {
-	NGInternetSocketAddress *ip;
-	
-        [[_ctx session] takeValue:remoteHost forKey:@"RemoteClientHost"];
-	ip = [NGInternetSocketAddress addressWithPort:0 onHost:remoteHost];
-        remoteIP = [ip address];
-        if (remoteIP != nil)
-          [[_ctx session] takeValue:remoteIP forKey:@"RemoteClientAddress"];
-      }
+  if (![remoteHost isNotEmpty]) {
+    // TODO: check bug #1745
+    remoteHost = [[_ctx request] headerForKey:@"x-webobjects-remote-host"];
+    if ([remoteHost isNotEmpty]) {
+      NGInternetSocketAddress *ip;
+      
+      [[_ctx session] takeValue:remoteHost forKey:@"RemoteClientHost"];
+      ip = [NGInternetSocketAddress addressWithPort:0 onHost:remoteHost];
+      if ((remoteIP = [ip address]) != nil)
+	[[_ctx session] takeValue:remoteIP forKey:@"RemoteClientAddress"];
+    }
   }
+  
   bindings =
-      [NSDictionary dictionaryWithObjectsAndKeys:
+    [[NSDictionary alloc] initWithObjectsAndKeys:
                     num,        @"number",
                     login,      @"login",
                     remoteHost, @"remoteHost",
                     remoteIP,   @"remoteAddress",
-                    nil];
+		  nil];
   link = [link stringByReplacingVariablesWithBindings:bindings
                stringForUnknownBindings:@"unknown"];
-
-  [self _appendDialLink:link target:target
+  [bindings release]; bindings = nil;
+  
+  [self _appendDialLink:[link stringByEscapingURL] target:target
         toResponse:_response inContext:_ctx];
 }
 
@@ -233,20 +240,20 @@ static int useDirectActionDialer = -1;
   if (![self useDirectActionDialer]) {
     if (![[_ctx session] canDialNumber:num])
       num = nil;
-
-
-    if ([num length] > 0) {
+    
+    if ([num isNotEmpty]) {
       [self _appendDialLink:[_ctx componentActionURL] target: nil
             toResponse:_response inContext:_ctx];
     }
   }
-  else if ([self useDirectActionDialer] && [num length] > 0) {
+  else if ([self useDirectActionDialer] && [num isNotEmpty]) {
     [self appendURLDialerForNumber:num
 	  toResponse:_response inContext:_ctx];
   }
 }
 
 @end /* SkyDialNumber */
+
 
 @interface WOApplication(CTI)
 - (id)createCTIDialer;
@@ -276,22 +283,18 @@ static int useDirectActionDialer = -1;
   NSString *clientHost;
   NSString *activePhone;
 
-  if ((activePhone = [self objectForKey:@"CTIDialerActivePhone"])) {
-    if ([activePhone length] > 0)
-      return activePhone;
-    else
-      return nil;
-  }
+  if ((activePhone = [self objectForKey:@"CTIDialerActivePhone"]) != nil)
+    return [activePhone isNotEmpty] ? activePhone : (NSString *)nil;
   
   clientHost = [[[self context] request]
                        headerForKey:@"x-webobjects-remote-host"];
-
+  
   ud = [NSUserDefaults standardUserDefaults];
   activePhone = [[ud dictionaryForKey:@"CTIRemoteHostToDevice"]
                      objectForKey:clientHost];
 
 #if 0
-  if ([activePhone length] == 0) {
+  if (![activePhone isNotEmpty]) {
     [self debugWithFormat:@"no CTI device associated with host %@",
             clientHost];
   }
@@ -301,12 +304,12 @@ static int useDirectActionDialer = -1;
 }
 
 - (BOOL)canDialNumber:(NSString *)_number {
-  if ([_number length] == 0) {
+  if (![_number isNotEmpty]) {
     //[self debugWithFormat:@"can't dial empty number ..."];
     return NO;
   }
   
-  if ([[self activeCTITelephone] length] == 0) {
+  if (![[self activeCTITelephone] isNotEmpty]) {
     if ([self isDebuggingEnabled]) {
       if (![[self objectForKey:@"DidLogCTI"] boolValue]) {
         [self debugWithFormat:@"no CTI device associated with session ..."];
@@ -327,7 +330,7 @@ static int useDirectActionDialer = -1;
   NSString *phone;
   
   phone = [self activeCTITelephone];
-  if ([phone length] == 0)
+  if (![phone isNotEmpty])
     return NO;
   if (![self canDialNumber:_number])
     return NO;
