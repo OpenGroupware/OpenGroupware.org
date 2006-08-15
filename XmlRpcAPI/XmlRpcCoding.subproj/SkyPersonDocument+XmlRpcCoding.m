@@ -41,7 +41,6 @@
     [self setLogin:     [_coder decodeStringForKey:@"login"]];
     
     [self setIsAccount: [_coder decodeBooleanForKey:@"isAccount"]];
-    [self setIsPrivate: [_coder decodeBooleanForKey:@"isPrivate"]];
   }
   return self;
 }
@@ -60,7 +59,6 @@
   [_coder encodeString:[self gender]     forKey:@"gender"];
   [_coder encodeString:[self login]      forKey:@"login"];
   [_coder encodeBoolean:[self isAccount] forKey:@"isAccount"];
-  [_coder encodeBoolean:[self isPrivate] forKey:@"isPrivate"];
 }
 
 @end /* SkyPersonDocument(XmlRpcCoding) */

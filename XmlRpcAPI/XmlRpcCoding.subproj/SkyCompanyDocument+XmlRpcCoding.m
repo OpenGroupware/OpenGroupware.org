@@ -71,7 +71,6 @@
     if ([self isAttributeSupported:@"contact"])
       [self setContact:[_coder decodeObjectForKey:@"contact"]];
 
-
     if ([self isAttributeSupported:@"owner"])
       [self setOwner:[_coder decodeObjectForKey:@"owner"]];
     
@@ -80,6 +79,8 @@
 
     if ([self isAttributeSupported:@"keywords"])
       [self setKeywords:[_coder decodeStringForKey:@"keywords"]];
+    
+    [self setIsPrivate: [_coder decodeBooleanForKey:@"isPrivate"]];
     
     // [self _setGlobalID:[_coder decodeObjectForKey:@"globalID"]];
     [self _setObjectVersion:
@@ -142,6 +143,7 @@
   [_coder encodeObject:[self globalID]              forKey:@"globalID"];
 #endif
   [_coder encodeInt:[[self objectVersion] intValue] forKey:@"objectVersion"];
+  [_coder encodeBoolean:[self isPrivate]            forKey:@"isPrivate"];
   [_coder encodeBoolean:self->status.isComplete     forKey:@"isComplete"];
 }
 

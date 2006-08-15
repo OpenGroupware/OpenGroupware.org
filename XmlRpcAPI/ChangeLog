@@ -1,5 +1,10 @@
 2006-08-15  Adam Tauno Williams  <awilliam@whitemice.org>
 
+	* XmlRpcCoding.subproj/SkyCompanyDocument+XmlRpcCoding.m,
+	  SkyPersonDocument+XmlRpcCoding.m: moved isPrivate handling from
+	  PersonDocument into CompanyDocument object to allow for isPrivate
+	  in company records (#316) (v5.3.78)
+
 	* Actions.subproj/DirectAction+Generic.m: added generic.getTypeById
 	  method (#1708) (v5.3.77)
 
