@@ -1,5 +1,8 @@
 2006-08-15  Adam Tauno Williams  <awilliam@whitemice.org>
 
+	* Actions.subproj/DirectAction+Appointment.m: added
+	  appointment.setPermissions method (#219) (v5.3.75)
+
 	* XmlRpcCoding.subproj/SkyPersonDocument+XmlRpcCoding.m: removed
 	  duplicate encoding of 'comment' key (#1598) (v5.3.74)
 

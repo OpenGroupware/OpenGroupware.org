@@ -42,7 +42,7 @@
   // TODO: document. Apparently those are the keys which can be changed?
   [*_to takeValuesFromObject:_from
         keys:@"startDate", @"endDate", @"title", @"location", @"cycleEndDate",
-	@"type", @"comment", @"aptType", nil];
+	@"type", @"comment", @"aptType", @"accessTeamId", @"writeAccess", nil];
 }
 
 - (NSCalendarDate *)_calendarDateForValue:(id)_val {
@@ -152,6 +152,56 @@
   }
 
   // nothing found
+  return nil;
+}
+
+/*
+  /brief Check whether the contents of the argument is/are teams
+  /param _args An array of team ids or a team id as either a string or a number
+  /note Used by appointment_setPermissionsAction
+*/
+- (NSException *)_validateTeams:(id)_arg {
+  NSArray  *gids;
+  unsigned i, cnt;
+
+  /* If _args is a number convert it to a string */
+  if ([_arg isKindOfClass:[NSNumber class]])
+    _arg = [_arg stringValue];
+  
+  /* If _args is a string convert to a single element array */
+  if ([_arg isKindOfClass:[NSString class]])
+    _arg = [NSArray arrayWithObjects:&_arg count:1];
+
+  /* If _arg is an array loop through the contents */
+  if (![_arg isKindOfClass:[NSArray class]]) {
+    /* We do not know how to handle the provided _arg */
+    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+		 reason:@"Invalid team identifier cannot be validated"];
+  }
+
+  gids = [[[self commandContext] documentManager] globalIDsForURLs:_arg];
+  if ((cnt = [gids count]) == 0) {
+    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+		 reason:@"Team specification is empty"];
+  }
+  if ([gids containsObject:[NSNull null]]) {
+    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+		 reason:
+                   @"Invalid team identifier specified "
+		   @"parameter is not a valid URL/ID"];
+  }
+  
+  for (i = 0; i < cnt; i++) {
+    EOGlobalID *gid;
+    
+    gid = [gids objectAtIndex:i];
+    if (![[gid entityName] isEqualToString:@"Team"]) {
+      return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+		   reason:
+		     @"Invalid team identifier specified "
+		   @"URL/ID is not a team "];
+    }
+  }
   return nil;
 }
 
@@ -359,7 +409,7 @@
 }
 
 - (id)appointment_updateAction:(id)_arg {
-  SkyAppointmentDocument *appointment = nil;
+  SkyAppointmentDocument *appointment;
   
   appointment = (SkyAppointmentDocument *)[self getDocumentByArgument:_arg];
   
@@ -396,13 +446,17 @@
                  reason:@"No participants supplied"];
   }
 
+  /* Is _parts an array 
+     If so there is no way to come out of this clause and proceed,
+     we always return something. */
   if ([_parts isKindOfClass:[NSArray class]]) {
     id firstPart;
     
-    if ([_parts count] == 0) {
+    if (![_parts isNotEmpty]) {
       return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
 		   reason:@"No participants supplied"];
     }
+    
     firstPart = [_parts objectAtIndex:0];
     
     if ([firstPart isKindOfClass:[NSString class]])
@@ -417,21 +471,33 @@
     return [_parts valueForKey:@"id"];
   }
 
+  /* Is _parts a string?  If so then we turn it into a single
+     element array and return that. */
   if ([_parts isKindOfClass:[NSString class]])
     return [NSArray arrayWithObjects:&_parts count:1];
 
+  /* Is _parts a dictionary?  If so then we assume it is a
+     team document and retrieve the id value from the
+     dictionary and store it into a sungle element array. */
   if ([_parts isKindOfClass:[NSDictionary class]]) {
     if ([(_parts = [_parts valueForKey:@"id"]) isNotNull])
       _parts = [NSArray arrayWithObjects:&_parts count:1];
     return _parts;
   }
   
+  /* Since nothing so far matches we don't have a bloody clue
+     what to do with these parameters, so we throw an exception. */
   [self errorWithFormat:@"unexpected participant parameter type: '%@'",
 	NSStringFromClass([_parts class])];
   return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
 	       reason:@"Unexpected participants parameter type"];
 }
 
+/*
+   /brief Set the participants of an appointment
+   /param _app
+   /param _parts
+*/
 - (id)appointment_setParticipantsAction:(id)_app:(id)_parts {
   SkyAppointmentDocument *app;
   NSArray                *gids;
@@ -541,6 +607,49 @@
   
   return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
                reason:@"cannot make heads or tails of parameter list"];
+}
+
+/*
+  \brief Set access permissions on an appointment
+  \param _reader number or string indicating read access team
+  \param _writers number, string, or array indicating write access team(s)
+*/
+- (id)appointment_setPermissionsAction:(id)_app:(id)_reader:(id)_writers {
+  SkyAppointmentDocument *app;
+  id                     error;
+  
+  /* Retrieve appointment object */
+  app = (SkyAppointmentDocument *)[self getDocumentByArgument:_app];
+  /* Was attempt to retrieve appointment successful */
+  if (app == nil) {
+    /* NO! */
+    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_RESULT
+                 reason:@"No appointment for argument found"];
+  }
+
+  /* Check reader parameter */
+  if ((error = [self _validateTeams:_reader]))
+    return error;
+
+  /* Check _writers parameter */
+  if ((error = [self _validateTeams:_writers]))
+    return error;
+
+  /* If _reader is a number convert it to a string */
+  if ([_reader isKindOfClass:[NSNumber class]])
+    _reader = [_reader stringValue];
+
+  /* If _writer is a number convert it to a string */
+  if ([_writers isKindOfClass:[NSNumber class]])
+    _writers = [_reader stringValue];
+  /* If _writer is a string convert to a single element array */
+  if ([_writers isKindOfClass:[NSString class]])
+    _writers = [NSArray arrayWithObjects:&_writers count:1];
+
+  [app setWriteAccess:_writers];
+  [app setAccessTeamId:_reader];
+  [app save];
+  return [NSNumber numberWithBool:YES];
 }
 
 @end /* DirectAction(Appointment) */
