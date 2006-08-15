@@ -38,6 +38,8 @@
     [self setComment:     [_coder decodeStringForKey:@"comment"]];
     [self setParticipants:[_coder decodeArrayForKey:@"participants"]];
     [self setAptType:     [_coder decodeStringForKey:@"aptType"]];
+    [self setAccessTeamId:[_coder decodeStringForKey:@"accessTeamId"]];
+    [self setWriteAccess:[_coder decodeArrayForKey:@"writeAccess"]];
   }  
   return self;
 }
@@ -54,6 +56,8 @@
   [_coder encodeString:[self comment]        forKey:@"comment"];
   [_coder encodeArray:[self participants]    forKey:@"participants"];
   [_coder encodeString:[self aptType]        forKey:@"aptType"];
+  [_coder encodeObject:[self accessTeamId]   forKey:@"accessTeamId"];
+  [_coder encodeArray:[self writeAccess]     forKey:@"writeAccess"];
 }
 
 @end /* SkyAppointmentDocument(XmlRpcCoding) */
