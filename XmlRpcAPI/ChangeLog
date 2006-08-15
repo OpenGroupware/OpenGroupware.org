@@ -1,5 +1,8 @@
 2006-08-15  Adam Tauno Williams  <awilliam@whitemice.org>
 
+	* XmlRpcCoding.subproj/SkyPersonDocument+XmlRpcCoding.m: removed
+	  duplicate encoding of 'comment' key (#1598) (v5.3.74)
+
 	* Actions.subproj/DirectAction+Appointment.m: added
 	  appointment.setResources method (#1599) (v5.3.73)
 
