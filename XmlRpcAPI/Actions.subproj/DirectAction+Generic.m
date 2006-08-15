@@ -117,4 +117,98 @@
   return [NSNumber numberWithBool:ok];
 }
 
+- (id)access_getACLByIdAction:(id)_arg {
+  SkyAccessManager       *accessManager;
+  NSDictionary           *result;
+  NSMutableDictionary    *objectList;
+  NSArray                *eoIDs;
+  NSMutableArray         *pkeys;
+  unsigned               i;
+  
+  /* If _arg is a number make it an array of one
+     ELSE if _arg is a string make it an array by splitting on ","
+     ELSE if _arg is an array take it into a mutable array
+     ELSE bail */
+  if ([_arg isKindOfClass:[NSNumber class]]) {
+    pkeys = [NSMutableArray arrayWithObject:_arg];
+  }
+  else if ([_arg isKindOfClass:[NSString class]]) {
+    pkeys =
+      [[[_arg componentsSeparatedByString:@","] mutableCopy] autorelease];
+  }
+  else if ([_arg isKindOfClass:[NSArray class]]) {
+    pkeys = [[_arg mutableCopy] autorelease];
+  }
+  else {
+    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+		 reason: @"invalid argument type"];
+  }
+  
+  /* Loop through array making everything into an NSNumber */
+  
+  for (i = 0; i < [pkeys count]; i++) {
+    if ([[pkeys objectAtIndex:i] isKindOfClass:[NSNumber class]]) {
+      /* We don't need to do anything, already a number */
+    }
+    else if ([[pkeys objectAtIndex:i] isKindOfClass:[NSString class]]) {
+      /* Convert any NSString values into NSNumbers */
+      [pkeys replaceObjectAtIndex:i 
+	     withObject:[NSNumber numberWithInt:
+				    [[pkeys objectAtIndex:i] intValue]]];
+    } 
+    else {
+      return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+		   reason: @"invalid argument type in array"];
+    }
+  } /* End of for */
+
+  
+  /* Construct nice array of EOGlobalIDs */
+  
+  eoIDs = [[[self commandContext] typeManager] globalIDsForPrimaryKeys:pkeys];
+  if ([eoIDs containsObject:[NSNull null]]) {
+    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+		 reason: @"Invalid object primary key identifier specified"];
+  }
+  
+  
+  /* Marshal accessManager and retrieve ACL info */
+  accessManager = [[self commandContext] accessManager];
+  result        = [accessManager allowedOperationsForObjectIds:eoIDs];
+  
+  _arg       = [result allKeys];
+  objectList = [NSMutableDictionary dictionaryWithCapacity:16];
+  
+  /* Build response */
+  for (i = 0; i < [_arg count]; i++) {
+    NSMutableArray *aclList;
+    NSDictionary   *payload, *acl;
+    EOKeyGlobalID  *keyEOID;
+    unsigned       j;
+    NSArray        *aclKeys;
+    
+    keyEOID = [_arg objectAtIndex: i];
+    payload = [result objectForKey: keyEOID];
+    aclList = [NSMutableArray arrayWithCapacity:16];
+    aclKeys = [payload allKeys];
+    for (j = 0; j < [aclKeys count]; j++) {
+      EOKeyGlobalID *aclKeyEOID;
+      
+      aclKeyEOID = [aclKeys objectAtIndex: j];
+      acl = [NSDictionary dictionaryWithObjectsAndKeys:
+			    [aclKeyEOID entityName], @"entityName",
+			    [[aclKeyEOID keyValuesArray] objectAtIndex: 0], 
+			    @"objectId",
+			    [payload objectForKey: aclKeyEOID], @"operations",
+			  nil];
+	[aclList addObject: acl];
+    }
+    [objectList setObject: aclList 
+		forKey:
+		  [[[keyEOID keyValuesArray] objectAtIndex: 0] stringValue]];
+  }
+  
+  return objectList;
+}
+
 @end /* DirectAction(Generic) */
