@@ -29,13 +29,13 @@
 
 
 /*
-  Returns true or false if the object with url _access has access (_op (rw..))
-  to the objects referred as urls in _objs
-
-  Parameters:
-    op:     string containing the char flags, eg: 'rw' for read/write
-    objs:   array of OGo URLs, eg: ( 10000, 10001 )
-    access: OGo URL to the principal to test for (default: login account)
+  \brief Returns true or false if the object with url _access 
+         has access (_op (rw..)) to the objects referred as urls 
+         in _objs
+  \param op string containing the char flags, eg: 'rw' for read/write
+  \param objs array of OGo URLs, eg: ( 10000, 10001 )
+  \access access OGo URL to the principal to test (default: login account)
+  \addtogroup XmlRpcGeneric
 */
 - (id)access_operationAllowedOnObjectsForAccessAction:(id)_op
   :(id)_objs:(id)_access
@@ -81,14 +81,13 @@
 }
 
 /*
-  Set the access given access right (_op) to the object referred as url
-  in _obj to the object _access (also referred as url. Returns true or false
-  on success or failed.
-
-  Parameters:
-    op:     string containing the char flags, eg: 'rw' for read/write
-    obj:    OGo URL of the object (eg: "10000")
-    access: OGo URL to the principal to test for (default: login account)
+  \brief Set the access given access right (_op) to the object referred as 
+   url in _obj to the object _access (also referred as url. Returns true or 
+   false on success or failed.
+  \param op string containing the char flags, eg: 'rw' for read/write
+  \param obj OGo URL of the object (eg: "10000")
+  \param access: OGo URL to the principal to test for (default: login account)
+  \addtogroup XmlRpcGeneric
 */
 - (id)access_setOperationOnObjectForAccessAction:(id)_op:(id)_obj:(id)_access {
   LSCommandContext *cmdctx;
@@ -115,6 +114,32 @@
 		      onObjectID:objId
 		      forAccessGlobalID:accessId];
   return [NSNumber numberWithBool:ok];
+}
+
+/*
+  \brief Retrieve document type by id
+  \param _arg String or number of document
+  \note Returns "Unknown" if the document id is not valid
+  \addtogroup XmlRpcGeneric
+*/
+- (id)generic_getTypeByIdAction:(id)_arg {
+  EOGlobalID *gid;
+
+  /* If _args is a number convert it to a string */
+  if ([_arg isKindOfClass:[NSNumber class]])
+    _arg = [_arg stringValue];
+  
+  /* If _args is a String then attempt the lookup */
+  if (![_arg isKindOfClass:[NSString class]]) {
+    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+		 reason:@"Unable to process parameter type."];
+  }
+
+  gid = [[[self commandContext] documentManager] globalIDForURL:_arg];
+  if (gid == nil)
+    return @"Unknown"; // TODO: would be better to return an empty string?
+  
+  return [gid entityName];
 }
 
 - (id)access_getACLByIdAction:(id)_arg {

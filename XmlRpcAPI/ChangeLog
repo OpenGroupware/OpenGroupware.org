@@ -1,5 +1,8 @@
 2006-08-15  Adam Tauno Williams  <awilliam@whitemice.org>
 
+	* Actions.subproj/DirectAction+Generic.m: added generic.getTypeById
+	  method (#1708) (v5.3.77)
+
 	* Actions.subproj/DirectAction+Generic.m: added access.getACLById
 	  method (#1684) (v5.3.76)
 
