@@ -7,7 +7,18 @@ ADDITIONAL_INCLUDE_DIRS += -I..	-I../OGoDocuments/
 ADDITIONAL_LIB_DIRS += -L../OGoDocuments/$(GNUSTEP_OBJ_DIR) \
 
 OGoBase_LIB_DIRS    += -L./$(GNUSTEP_OBJ_DIR)
-OGoBase_BUNDLE_LIBS += -lOGoBase
+
+libOGoBase_LIBRARIES_DEPEND_UPON += \
+	-lOGoDocuments		\
+	-lLSFoundation		\
+	-lGDLAccess		\
+	-lNGLdap -lNGMime	\
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
+
+OGoBase_BUNDLE_LIBS += \
+	-lOGoBase	\
+	$(libOGoBase_LIBRARIES_DEPEND_UPON)
 
 ifeq ($(FOUNDATION_LIB),nx)
 ADDITIONAL_LDFLAGS += -framework Foundation

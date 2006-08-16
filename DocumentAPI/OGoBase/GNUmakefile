@@ -26,11 +26,6 @@ libOGoBase_HEADER_FILES_DIR         = .
 libOGoBase_HEADER_FILES_INSTALL_DIR = /OGoBase
 FHS_HEADER_DIRS = OGoBase
 
-libOGoBase_LIBRARIES_DEPEND_UPON += \
-	-lOGoDocuments			\
-	-lLSFoundation -lNGExtensions 	\
-	-lEOControl
-
 OGoBase_PRINCIPAL_CLASS = SkyBaseBundleManager
 
 OGoBase_OBJC_FILES = 	\

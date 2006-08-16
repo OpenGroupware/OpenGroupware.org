@@ -1,3 +1,7 @@
+2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoRawDatabaseModule.m: fixed MacOS linking warnings (v5.3.13)
+
 2005-09-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyDBDocument.m: fixed a gcc4 warning (v5.3.12)

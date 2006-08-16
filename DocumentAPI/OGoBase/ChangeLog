@@ -1,3 +1,7 @@
+2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: fixed OSX linking warnings (v5.3.10)
+
 2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.9

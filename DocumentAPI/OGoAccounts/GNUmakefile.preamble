@@ -5,9 +5,19 @@ ADDITIONAL_LIB_DIRS += \
 	-L../OGoDocuments/$(GNUSTEP_OBJ_DIR) \
 	-L../../Logic/LSFoundation/$(GNUSTEP_OBJ_DIR)
 
+OGoAccounts_BUNDLE_LIBS += \
+	-lOGoAccounts	\
+	-lOGoDocuments	\
+	-lLSFoundation	\
+	-lGDLAccess	\
+	-lNGLdap -lNGMime \
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
+
 libOGoAccounts_LIBRARIES_DEPEND_UPON += \
-	-lOGoDocuments			\
-	-lLSFoundation -lGDLAccess	\
+	-lOGoDocuments	\
+	-lLSFoundation	\
+	-lGDLAccess	\
 	-lNGLdap -lNGMime \
 	-lNGStreams -lNGExtensions -lEOControl \
 	-lDOM -lSaxObjC

@@ -36,8 +36,6 @@ FHS_HEADER_DIRS = OGoAccounts
 OGoAccounts_PRINCIPAL_CLASS = SkyAccountsBundleManager
 OGoAccounts_OBJC_FILES = SkyAccountsBundleManager.m
 
-OGoAccounts_LIB_DIRS       += -L./$(GNUSTEP_OBJ_DIR)
-OGoAccounts_BUNDLE_LIBS    += -lOGoAccounts
 OGoAccounts_RESOURCE_FILES += Defaults.plist
 
 -include GNUmakefile.preamble

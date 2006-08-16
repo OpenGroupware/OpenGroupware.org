@@ -1,15 +1,9 @@
-# $Id$
+# compilation settings
 
 libOGoFileSystemProject_INCLUDE_DIRS += \
-	-I. -I.. -I../OGoDocuments	\
-	-I../../Logic/LSFoundation	\
-
-libOGoFileSystemProject_LIBRARIES_DEPEND_UPON += \
-	-lOGoProject	\
-	-lOGoDocuments	\
-	-lLSFoundation	\
-	-lNGStreams -lNGExtensions -lEOControl \
-	-lDOM -lSaxObjC
+	-I. -I.. \
+	-I../OGoDocuments		\
+	-I../../Logic/LSFoundation
 
 ADDITIONAL_LIB_DIRS += \
         -L./$(GNUSTEP_OBJ_DIR)  \
@@ -17,6 +11,19 @@ ADDITIONAL_LIB_DIRS += \
 	-L../OGoAccounts/$(GNUSTEP_OBJ_DIR)		\
 	-L../OGoProject/$(GNUSTEP_OBJ_DIR)		\
 	-L../OGoDocuments/$(GNUSTEP_OBJ_DIR)		\
+
+libOGoFileSystemProject_LIBRARIES_DEPEND_UPON += \
+	-lOGoProject	\
+	-lOGoDocuments	\
+	-lLSFoundation	\
+	-lGDLAccess	\
+	-lNGLdap -lNGMime	\
+	-lNGStreams -lNGExtensions -lEOControl \
+	-lDOM -lSaxObjC
+
+OGoFileSystemProject_BUNDLE_LIBS += \
+	-lOGoFileSystemProject	\
+	$(libOGoFileSystemProject_LIBRARIES_DEPEND_UPON)
 
 SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
 
