@@ -1,0 +1,16 @@
+# compilation settings
+
+LSTeam_INCLUDE_DIRS = -I../LSAddress
+
+LSTeam_BUNDLE_LIBS += \
+	-lLSSearch -lLSAddress \
+	-lNGiCal \
+	-lldap
+
+LSTeam_LIB_DIRS    += \
+	-L../LSSearch/$(GNUSTEP_OBJ_DIR)	\
+	-L../LSAddress/$(GNUSTEP_OBJ_DIR)
+
+# The BSD's definitely need this
+# TODO: should be done by config.make?
+SYSTEM_LIB_DIR += -L/usr/local/lib

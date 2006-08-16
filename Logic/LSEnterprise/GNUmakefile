@@ -20,11 +20,6 @@ LSEnterprise_OBJC_FILES += \
 
 LSEnterprise_RESOURCE_FILES += Version
 
-LSEnterprise_INCLUDE_DIRS += -I../LSAddress/Headers
-LSEnterprise_BUNDLE_LIBS  += -lLSSearch -lLSAddress
-
-LSEnterprise_LIB_DIRS += \
-	-L../LSSearch/$(GNUSTEP_OBJ_DIR)	\
-	-L../LSAddress/$(GNUSTEP_OBJ_DIR)
-
+-include GNUmakefile.preamble
 include ../commandbundle.make
+-include GNUmakefile.postamble

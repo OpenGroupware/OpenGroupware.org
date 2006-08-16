@@ -1,0 +1,11 @@
+# compilation settings
+
+LSEnterprise_INCLUDE_DIRS += -I../LSAddress
+
+LSEnterprise_BUNDLE_LIBS  += \
+	-lLSSearch -lLSAddress \
+	-lNGiCal
+
+LSEnterprise_LIB_DIRS += \
+	-L../LSSearch/$(GNUSTEP_OBJ_DIR)	\
+	-L../LSAddress/$(GNUSTEP_OBJ_DIR)
