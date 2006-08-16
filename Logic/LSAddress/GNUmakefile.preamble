@@ -12,8 +12,9 @@ LSAddress_BUNDLE_LIBS += \
 	-lLSSearch	\
 	-lLSAddress	\
 	-lNGObjWeb	\
+	-lNGiCal	\
 	-lNGLdap -lNGMime -lNGExtensions \
-	-lldap		\
+	-lldap
 
 libLSAddress_LIBRARIES_DEPEND_UPON += \
 	-lLSFoundation	\
@@ -23,6 +24,7 @@ libLSAddress_LIBRARIES_DEPEND_UPON += \
 	-lDOM -lSaxObjC
 
 ADDITIONAL_LIB_DIRS += \
+	-L./$(GNUSTEP_OBJ_DIR) \
 	-L../LSFoundation/$(GNUSTEP_OBJ_DIR) \
 	-L../LSSearch/$(GNUSTEP_OBJ_DIR) -L./$(GNUSTEP_OBJ_DIR)
 

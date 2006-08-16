@@ -33,6 +33,17 @@
 
 @implementation LSAddressConverterCommand
 
+static NSData *nullData = nil;
+
++ (void)initialize {
+  [super initialize];
+
+  if (nullData == nil) {
+    unsigned char b0 = 0;
+    nullData = [[NSData alloc] initWithBytes:&b0 length:1];
+  }
+}
+
 - (void)dealloc {
   [self->type       release];
   [self->kind       release];
@@ -106,41 +117,40 @@
   [task release]; task = nil;
     
   [handle writeData:[entityName dataUsingEncoding:enc]];
-  [handle writeData:[@"\0" dataUsingEncoding:enc]];
+  [handle writeData:nullData];
   [handle writeData:[self->type dataUsingEncoding:enc]];
-  [handle writeData:[@"\0" dataUsingEncoding:enc]];
+  [handle writeData:nullData];
   [handle writeData:[self->kind dataUsingEncoding:enc]];
-  [handle writeData:[@"\0" dataUsingEncoding:enc]];
+  [handle writeData:nullData];
   [handle writeData:
             [[[self->ids map:@selector(valueForKey:)
                         with:@"companyId"] componentsJoinedByString:@" "]
                          dataUsingEncoding:enc]];
-  [handle writeData:[@"\0" dataUsingEncoding:enc]];
+  [handle writeData:nullData];
 
   { /* Got format */
-      NSDictionary    *dict       = nil;
-      NSMutableString *str        = nil;
+      NSDictionary    *dict;
+      NSMutableData   *data;
       NSEnumerator    *enumerator = nil;
       NSDictionary    *obj        = nil;
-      NSString        *format     = nil;
+      NSString        *format;
 
       format = [[NSString alloc] initWithFormat:@"LS%@FormLetter", entityName];
       dict = [[[_context valueForKey:LSUserDefaultsKey]
                          valueForKey:format] valueForKey:self->kind];
       [format release]; format = nil;
         
-      str = [[NSMutableString alloc] init];
-
+      data = [[NSMutableData alloc] initWithCapacity:1024];
+      
       enumerator = [dict objectEnumerator];
-
-      while ((obj = [enumerator nextObject])) {
-        [str appendString:[obj objectForKey:@"key"]];
-        [str appendString:@"\0"];
-        [str appendString:[obj objectForKey:@"suffix"]];
-        [str appendString:@"\0"];             
+      while ((obj = [enumerator nextObject]) != nil) {
+        [data appendData:[[obj objectForKey:@"key"] dataUsingEncoding:enc]];
+        [data appendData:nullData];
+        [data appendData:[[obj objectForKey:@"suffix"] dataUsingEncoding:enc]];
+        [data appendData:nullData];
       }
-      [handle writeData:[str dataUsingEncoding:enc]];  
-      [str release]; str = nil;
+      [handle writeData:data];
+      [data release]; data = nil;
   }
   [handle closeFile];
 

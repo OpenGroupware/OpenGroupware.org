@@ -1,3 +1,13 @@
+2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.89
+
+	* LSAddressConverterCommand.m: reworked not to use NSString's that
+	  contain 0 bytes (use NSData instead)
+
+	* GNUmakefile.preamble: explicitly link bundle against libNGiCal to
+	  avoid a warning on MacOS
+
 2006-08-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoCompanyAccessHandler.m: fixed a logging bug (v5.3.88)

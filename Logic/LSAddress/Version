@@ -1,6 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=88
+SUBMINOR_VERSION:=89
 
 # v5.3.80 requires OGoModel        v5.3.17
 # v5.1.43 requires libNGExtensions v4.3.113
