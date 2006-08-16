@@ -1,0 +1,12 @@
+# compilation settings
+
+LSAccount_INCLUDE_DIRS = -IHeaders -I../LSAddress/Headers
+
+LSAccount_BUNDLE_LIBS += \
+	-lLSSearch -lLSAddress \
+	-lNGiCal -lNGLdap
+
+LSAccount_LIB_DIRS    += \
+	-L../LSSearch/$(GNUSTEP_OBJ_DIR) \
+	-L../LSAddress/$(GNUSTEP_OBJ_DIR)
+

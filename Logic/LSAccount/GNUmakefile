@@ -21,10 +21,6 @@ LSAccount_OBJC_FILES = \
 
 LSAccount_RESOURCE_FILES += Defaults.plist Version
 
-LSAccount_INCLUDE_DIRS = -IHeaders -I../LSAddress/Headers
-
-LSAccount_BUNDLE_LIBS += -lLSSearch -lLSAddress -lNGLdap
-
-LSAccount_LIB_DIRS    += -L../LSSearch/$(GNUSTEP_OBJ_DIR) -L../LSAddress/$(GNUSTEP_OBJ_DIR)
-
+-include GNUmakefile.preamble
 include ../commandbundle.make
+-include GNUmakefile.postamble
