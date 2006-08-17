@@ -27,7 +27,9 @@
 @implementation SkyAppointmentDocument(XmlRpcCoding)
 
 - (id)initWithXmlRpcCoder:(XmlRpcDecoder *)_coder {
-  if ((self = [super initWithXmlRpcCoder:_coder])) {
+  if ((self = [super initWithXmlRpcCoder:_coder]) != nil) {
+    NSArray *tmp;
+    
     [self setStartDate:   [_coder decodeDateTimeForKey:@"startDate"]];
     [self setEndDate:     [_coder decodeDateTimeForKey:@"endDate"]];
     [self setCycleEndDate:[_coder decodeDateTimeForKey:@"cycleEndDate"]];
@@ -39,12 +41,20 @@
     [self setParticipants:[_coder decodeArrayForKey:@"participants"]];
     [self setAptType:     [_coder decodeStringForKey:@"aptType"]];
     [self setAccessTeamId:[_coder decodeStringForKey:@"accessTeamId"]];
-    [self setWriteAccess:[_coder decodeArrayForKey:@"writeAccess"]];
+    [self setWriteAccess: [_coder decodeArrayForKey:@"writeAccess"]];
+
+    tmp = [_coder decodeArrayForKey:@"resourceNames"];
+    if ([tmp isNotEmpty])
+      [self setResourceNames:[tmp componentsJoinedByString:@", "]];
+    else
+      [self setResourceNames:nil];
   }  
   return self;
 }
 
 - (void)encodeWithXmlRpcCoder:(id)_coder {
+  id tmp;
+  
   [super encodeWithXmlRpcCoder:_coder];
   [_coder encodeDateTime:[self startDate]    forKey:@"startDate"];
   [_coder encodeDateTime:[self endDate]      forKey:@"endDate"];
@@ -58,6 +68,12 @@
   [_coder encodeString:[self aptType]        forKey:@"aptType"];
   [_coder encodeObject:[self accessTeamId]   forKey:@"accessTeamId"];
   [_coder encodeArray:[self writeAccess]     forKey:@"writeAccess"];
+
+  if ([(tmp = [self resourceNames]) isNotEmpty])
+    tmp = [tmp componentsSeparatedByString:@", "];
+  else
+    tmp = [NSArray array];
+  [_coder encodeArray:tmp forKey:@"resourceNames"];
 }
 
 @end /* SkyAppointmentDocument(XmlRpcCoding) */
