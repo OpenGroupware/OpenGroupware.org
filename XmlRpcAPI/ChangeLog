@@ -1,3 +1,11 @@
+2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Appointment.m: a few code cleanups,
+	  added new XML-RPC methods for changing an appointment status
+	  (appointment.changeStatus, appointment.accept, appointment.decline,
+	   appointment.acceptTentatively and appointment.resetStatus)
+	  (v5.3.80)
+
 2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* XmlRpcCoding.subproj/SkyAppointmentDocument+XmlRpcCoding.m: expose

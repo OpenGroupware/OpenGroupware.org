@@ -83,7 +83,9 @@
                              calendarFormat:@"%Y-%m-%d %H:%M:%S"];
     }
     else {
-      NSLog(@"%s: unhandled date format: %@", __PRETTY_FUNCTION__, _val);
+      [self errorWithFormat:
+	      @"%s: cannot deal with date format: %@", 
+	      __PRETTY_FUNCTION__, _val];
     }
 
     if (tz != nil) 
@@ -97,60 +99,78 @@
   return date;
 }
 
+- (NSArray *)_gidsArrayForTeamNamed:(NSString *)_name
+  inContext:(LSCommandContext *)_cmdctx
+{
+  NSArray *a;
+
+  // TODO: use attributes
+  a = [_cmdctx runCommand:@"team::get",
+	         @"description", _name,
+	         @"returnType", 
+	         [NSNumber numberWithInt:LSDBReturnType_ManyObjects], 
+	       nil];
+  if (![a isKindOfClass:[NSArray class]])
+    a = a != nil ? [NSArray arrayWithObject:a] : nil;
+  
+  return [a valueForKey:@"globalID"];
+}
+- (NSArray *)_gidsArrayForPersonWithLogin:(NSString *)_name
+  inContext:(LSCommandContext *)_cmdctx
+{
+  NSArray *a;
+
+  // TODO: use attributes
+  a = [_cmdctx runCommand:@"person::get",
+	         @"login", _name,
+	         @"returnType", 
+	         [NSNumber numberWithInt:LSDBReturnType_ManyObjects], 
+	       nil];
+  if (![a isKindOfClass:[NSArray class]])
+    a = a != nil ? [NSArray arrayWithObject:a] : nil;
+  
+  return [a valueForKey:@"globalID"];
+}
+
 - (NSArray *)_validateCompanyValue:(id)_value {
+  // TODO: explain what this does, seems to be a bit weird
   LSCommandContext   *cmdctx;
   id<SkyDocumentManager> dm;
   id activeUser;
   id tmp;
-  id returnMany;
-
+  
   cmdctx     = [self commandContext];
-  activeUser = [[cmdctx valueForKey:LSAccountKey]
-                        valueForKey:@"globalID"];  
+  activeUser = [[cmdctx valueForKey:LSAccountKey] valueForKey:@"globalID"];  
   
   if (![_value isNotNull])
     return [NSArray arrayWithObject:activeUser];
 
   if (!([_value isKindOfClass:[NSString class]] ||
         [_value isKindOfClass:[NSNumber class]])) {
-    NSLog(@"%s: class %@ not accept as company value",
-          __PRETTY_FUNCTION__, NSStringFromClass([_value class]));
+    [self errorWithFormat:@"%s: class %@ not accept as company value",
+          __PRETTY_FUNCTION__, NSStringFromClass([_value class])];
     return nil;
   }
   
   /* check whether it is a skyrix id */
   dm = [cmdctx documentManager];
-  if ((tmp = [dm globalIDForURL:_value])) {
+  if ((tmp = [dm globalIDForURL:_value]) != nil) {
     // found a matching globalID
     return [NSArray arrayWithObject:tmp];
   }
-
-  returnMany = [NSNumber numberWithInt:LSDBReturnType_ManyObjects];
+  
   /* check wether it is a team name */
-  if ((tmp = [cmdctx runCommand:@"team::get",
-                     @"description", _value,
-                     @"returnType", returnMany, nil])) {
-    if (![tmp isKindOfClass:[NSArray class]])
-      tmp = [NSArray arrayWithObject:tmp];
-    if ([tmp count]) {
-      // found team(s) with that description
-      return [tmp valueForKey:@"globalID"];
-    }
+  if ((tmp = [self _gidsArrayForTeamNamed:_value inContext:cmdctx]) != nil) {
+    if ([tmp isNotEmpty]) // found team(s) with that description
+      return tmp;
     // else no team found
   }
+  
   /* check wether it is a person */ 
-  if ((tmp = [cmdctx runCommand:@"person::get",
-                     @"login", _value, 
-                     @"returnType", returnMany, nil])) {
-    if (![tmp isKindOfClass:[NSArray class]])
-      tmp = [NSArray arrayWithObject:tmp];
-    if ([tmp count]) {
-      // found account(s) with that login
-      return [tmp valueForKey:@"globalID"];
-    }
-    // else no account found
-  }
-
+  tmp = [self _gidsArrayForPersonWithLogin:_value inContext:cmdctx];
+  if ([tmp isNotEmpty])
+    return tmp;
+  
   // nothing found
   return nil;
 }
@@ -650,6 +670,46 @@
   [app setAccessTeamId:_reader];
   [app save];
   return [NSNumber numberWithBool:YES];
+}
+
+- (id)appointment_changeStatusAction:(id)_apt:
+  (NSString *)_partstat:(NSString *)_role:
+  (NSString *)_comment:(NSNumber *)_rsvp
+{
+  LSCommandContext    *cmdctx;
+  NSMutableDictionary *args;
+  
+  cmdctx = [self commandContext];
+  
+  if (![_apt isNotEmpty]) {
+    return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER
+		 reason:@"got no appointment to work upon"];
+  }
+  
+  args = [NSMutableDictionary dictionaryWithCapacity:8];
+  [args setObject:_apt forKey:@"appointment"];
+  
+  if (_partstat != nil) [args setObject:_partstat forKey:@"partstatus"];
+  if (_role     != nil) [args setObject:_role     forKey:@"role"];
+  if (_comment  != nil) [args setObject:_comment  forKey:@"comment"];
+  if (_rsvp     != nil) [args setObject:_rsvp     forKey:@"rsvp"];
+  
+  return [cmdctx runCommand:@"appointment::change-attendee-status"
+		 arguments:args];
+}
+
+- (id)appointment_acceptAction:(id)_apt {
+  return [self appointment_changeStatusAction:_apt:@"ACCEPT":nil:nil:nil];
+}
+- (id)appointment_declineAction:(id)_apt {
+  return [self appointment_changeStatusAction:_apt:@"DECLINED":nil:nil:nil];
+}
+- (id)appointment_acceptTentativelyAction:(id)_apt {
+  return [self appointment_changeStatusAction:_apt:@"TENTATIVE":nil:nil:nil];
+}
+- (id)appointment_resetStatusAction:(id)_apt {
+  return [self appointment_changeStatusAction:
+		 _apt:@"NEEDS-ACTION":nil:nil:nil];
 }
 
 @end /* DirectAction(Appointment) */
