@@ -70,6 +70,7 @@ LSScheduler_OBJC_FILES = \
 	NSString+ICal.m					\
 	OGoAptAccessHandler.m				\
 	LSChangeAttendeeStatusCommand.m			\
+	LSAddOrRemoveMeCommand.m			\
 
 LSScheduler_RESOURCE_FILES += Version
 

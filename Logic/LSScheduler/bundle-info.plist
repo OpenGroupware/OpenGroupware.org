@@ -81,6 +81,8 @@
         { name = "appointment::new-with-vevent";         },
         { name = "appointment::get-ical";                },
         { name = "appointment::change-attendee-status";  },
+        { name = "appointment::add-me";                  },
+        { name = "appointment::remove-me";               },
     );
     classes = (
         { name = LSAppointmentProposalCommand;         },

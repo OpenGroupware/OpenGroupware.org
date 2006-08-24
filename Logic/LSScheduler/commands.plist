@@ -112,6 +112,15 @@
 
 	"change-attendee-status" = { class = "LSChangeAttendeeStatusCommand";};
 	
+	"add-me" = {
+	  class = "LSAddOrRemoveMeCommand";
+	  init = { mode  = "add"; };
+	};
+	"remove-me" = {
+	  class = "LSAddOrRemoveMeCommand";
+	  init = { mode  = "remove"; };
+	};
+	
         // old mappings
         "filteramdates"     = { class = "LSFilterAMWeekDaysCommand";    };
         "filterpmdates"     = { class = "LSFilterPMWeekDaysCommand";    };
