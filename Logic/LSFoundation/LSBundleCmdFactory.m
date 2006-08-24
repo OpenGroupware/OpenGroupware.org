@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -78,7 +79,7 @@
   domainKeys = [domains keyEnumerator];
   
   /* for each domain */
-  while ((domainKey = [domainKeys nextObject])) {
+  while ((domainKey = [domainKeys nextObject]) != nil) {
     NSDictionary *domainInfo;
     NSDictionary *domainOps;
     NSEnumerator *opKeys;
@@ -91,7 +92,7 @@
     opKeys     = [domainOps  keyEnumerator];
 
     /* for each operation in domain */
-    while ((opKey = [opKeys nextObject])) {
+    while ((opKey = [opKeys nextObject]) != nil) {
       NSString     *commandName;
       NSString     *commandClassName;
       NSDictionary *commandInfo;
@@ -100,12 +101,12 @@
       commandInfo      = [domainOps objectForKey:opKey];
       commandClassName = [commandInfo objectForKey:@"class"];
       commandName      = [commandName lowercaseString];
-
+      
       if ((info = NSMapGet(self->nameToInfo, commandName))) {
-        NSLog(@"command %@ already registered.");
+        [self warnWithFormat:@"command %@ already registered.", commandName];
         continue;
       }
-
+      
       info = [[_LSBundleCommandInfo alloc]
                   initWithName:commandName
                   className:commandClassName
@@ -150,7 +151,7 @@
   if (_command == nil) return nil;
   
   /* look into info cache */
-  if ((info = NSMapGet(self->nameToInfo, _command)))
+  if ((info = NSMapGet(self->nameToInfo, _command)) != nil)
     return info;
   
   bm = [NGBundleManager defaultBundleManager];
@@ -227,8 +228,10 @@
     return nil;
   }
 
+  // [self debugWithFormat:@"CONFIG: %@", _i];
+
   cmd = [_i->commandClass alloc];
-  if (_i->config) {
+  if (_i->config != nil) {
     cmd = [cmd initForOperation:_i->operation inDomain:_i->domain
                initDictionary:_i->config];
   }
@@ -304,6 +307,24 @@
   [self->commandClassName release];
   [self->config    release];
   [super dealloc];
+}
+
+/* description */
+
+- (NSString *)description {
+  NSMutableString *ms;
+  
+  ms = [NSMutableString stringWithCapacity:128];
+  
+  [ms appendFormat:@"<0x%p[%@]: ", self, NSStringFromClass([self class])];
+  [ms appendFormat:@" command=%@::%@", self->domain, self->command];
+  [ms appendFormat:@" op=%@",          self->operation];
+  [ms appendFormat:@" name=%@",        self->commandClassName];
+  [ms appendFormat:@" class=%@",       self->commandClass];
+  [ms appendFormat:@" config=%@",      self->config];
+  
+  [ms appendString:@">"];
+  return ms;
 }
 
 @end /* _LSBundleCommandInfo */

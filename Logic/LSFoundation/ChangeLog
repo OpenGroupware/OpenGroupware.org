@@ -1,5 +1,8 @@
 2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSBundleCmdFactory.m: added -description, code cleanups, fixed a
+	  potential logging crasher (v5.3.123)
+
 	* LSDBObjectBaseCommand.m: added support for string keys (v5.3.122)
 
 	* LSDBObjectBaseCommand.m: added a convenience method to extract

@@ -104,7 +104,7 @@ static BOOL debug = NO;
 }
 
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     static BOOL didInit = NO;
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     
