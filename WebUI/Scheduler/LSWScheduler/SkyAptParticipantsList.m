@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -769,118 +770,56 @@ static NSString *_personName(id self, id _person) {
   return nil; // TODO: check whether we can use a simple return
 }
 
-- (id)updateParticipants:(NSArray *)_participants ofEO:(id)_eo 
-  logText:(NSString *)_logText
-{
-  // TODO: this should live in a command and get triggered by a DA
-  id ac;
-
-  ac = [[self session] activeAccount];
-  
-  [self runCommand:@"appointment::set-participants", 
-	  @"object", _eo,
-	  @"participants", _participants, 
-	nil];
-  
+- (BOOL)commitThenClearThenNotifyAndSendMail:(id)_eo logText:(NSString *)_txt {
   if (![self commit]) {
-    [self setErrorString:@"Could not commit transaction"];
+    [self setErrorString:@"Could not commit database transaction"];
     [self rollback];
-    return nil;
+    return NO;
   }
   
-  _logText = [_logText stringByAppendingString:[ac valueForKey:@"name"]];
-  [self runCommand:@"object::add-log",
-          @"objectToLog", _eo, 
-          @"logText",     _logText,
-          @"action",      @"05_changed",
-	nil];
-
+  /* reset relationships so that they get refetched */
+  [self->participants release]; self->participants = nil;
+  
   [self postChange:LSWUpdatedAppointmentNotificationName
 	onObject:_eo];
   
   if ([self isMailAvailable])
-    [self sendMailWithSubject:_logText];
+    [self sendMailWithSubject:_txt];
   
-  return nil;
+  return YES;
 }
 
 - (id)addMeToParticipants {
-  NSMutableArray *parts = nil;
-  id             ac     = nil;
-  id app;
-
-  //  parts = [NSMutableArray arrayWithArray:[self participants]];
-  app   = [self appointmentAsEO];
-  parts = [NSMutableArray arrayWithArray:[app valueForKey:@"participants"]];
-  ac    = [[self session] activeAccount];
-
-  if (![parts containsObject:ac]) {
-    [parts addObject:ac];
-
-    [self updateParticipants:parts ofEO:app
-          logText:[[self labels] valueForKey:@"addParticipantLog"]];
-    
-    [self->participants release]; self->participants = nil;
-  }
+  id       eo   = [self appointmentAsEO];
+  NSString *log = [[self labels] valueForKey:@"addParticipantLog"];
+  
+  [self runCommand:@"appointment::add-me",
+	  @"appointment", eo, @"logText", log, nil];
+  [self commitThenClearThenNotifyAndSendMail:eo logText:log];
   return nil;
 }
 
 - (id)removeMeFromParticipants {
-  NSMutableArray *parts;
-  id ac, app;
+  id       eo   = [self appointmentAsEO];
+  NSString *log = [[self labels] valueForKey:@"removeParticipantLog"];
   
-  app   = [self appointmentAsEO];
-  parts = [NSMutableArray arrayWithArray:[app valueForKey:@"participants"]];
-  ac    = [[self session] activeAccount];
-
-  if (![parts containsObject:ac])
-    return nil;
-  
-  while ([parts containsObject:ac])
-    [parts removeObject:ac];
-  
-  app = [self appointmentAsEO];
-  [self updateParticipants:parts ofEO:app
-	logText:[[self labels] valueForKey:@"removeParticipantLog"]];
-
-  [self->participants release]; self->participants = nil;
+  [self runCommand:@"appointment::remove-me",
+	  @"appointment", eo, @"logText", log, nil];
+  [self commitThenClearThenNotifyAndSendMail:eo logText:log];
   return nil;
 }
 
 - (id)changeParticipantStateTo:(NSString *)_state logKey:(NSString *)_key {
-  // TODO: this should live in a command and get triggered by a DA
-  NSMutableArray *parts;
-  id partSettings;
+  id       eo   = [self appointmentAsEO];
+  NSString *log = [[self labels] valueForKey:_key];
   
-  // we need the assignment attributes (partStatus, role, ..)
-  parts        = [NSMutableArray arrayWithArray:[self participants]];
-  partSettings = [self myParticipantSettingsInList:parts];
+  [self runCommand:@"appointment::change-attendee-status",
+	  @"appointment", [eo valueForKey:@"dateId"],
+	  @"partStatus", _state,
+	  @"logText",    log,
+	nil];
   
-  if (partSettings == nil)
-    return nil;
-  if ([[partSettings valueForKey:@"partSettings"] isEqualToString:_state])
-    return nil;
-
-#if HAS_CRAPPY_NSMutableDictionary
-#warning TODO: investigate me on MacOSX, triggered by 'confirm' button  
-  if (![partSettings isKindOfClass:[NSMutableDictionary class]]) {
-#endif
-    if ([partSettings isKindOfClass:[NSDictionary class]]) {
-      id oldpart = partSettings;
-      partSettings = [[partSettings mutableCopy] autorelease];
-      
-      [parts removeObject:oldpart];
-      [parts addObject:partSettings];
-    }
-#if HAS_CRAPPY_NSMutableDictionary
-  }
-#endif
-
-  [partSettings takeValue:_state forKey:@"partStatus"];  
-  
-  [self updateParticipants:parts ofEO:[self appointmentAsEO]
-	logText:[[self labels] valueForKey:_key]];
-  [self->participants release]; self->participants = nil;
+  [self commitThenClearThenNotifyAndSendMail:eo logText:log];
   return nil;
 }
 

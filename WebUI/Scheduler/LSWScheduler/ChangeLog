@@ -1,3 +1,10 @@
+2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAptParticipantsList.m: rewrote handling of status changes and
+	  add/remove-me buttons. The operation is now performed by specific
+	  commands and do not update the full participant list but just the
+	  login account (should fix bug #1771) (v5.3.108)
+
 2006-08-09  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.107
