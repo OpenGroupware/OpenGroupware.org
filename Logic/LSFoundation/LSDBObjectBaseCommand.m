@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -21,6 +22,7 @@
 
 #include "LSDBObjectBaseCommand.h"
 #include "LSDBObjectTransactionCommand.h"
+#include "LSCommandContext.h"
 #include "common.h"
 
 @implementation LSDBObjectBaseCommand
@@ -35,7 +37,7 @@
 }
 
 - (id)initForOperation:(NSString *)_operation inDomain:(NSString *)_domain {
-  if ((self = [super initForOperation:_operation inDomain:_domain])) {
+  if ((self = [super initForOperation:_operation inDomain:_domain]) != nil) {
     self->recordDict     = [[NSMutableDictionary alloc] init];
     self->sybaseMessages = [[NSMutableArray alloc] init];
     self->returnType     = LSDBReturnType_OneObject;
@@ -289,6 +291,66 @@
 }
 
 /* convenience methods */
+
+- (NSArray *)extractPrimaryKeysNamed:(NSString *)_pkeyName
+  fromObjectArray:(NSArray *)_array
+  inContext:(LSCommandContext *)_cmdctx
+{
+  NSMutableArray *pkeys;
+  unsigned       i, count;
+  
+  if (![_array isNotEmpty])
+    return nil;
+
+  count = [_array count];
+  pkeys = [NSMutableArray arrayWithCapacity:count];
+  
+  for (i = 0; i < count; i++) {
+    id object, tmp;
+    
+    if (![(object = [_array objectAtIndex:i]) isNotNull]) {
+      [self warnWithFormat:@"given list contained null object (pkey %@)",
+	      _pkeyName];
+      continue;
+    }
+    
+    /* check for global IDs */
+    
+    if ([object isKindOfClass:[EOKeyGlobalID class]]) {
+      [pkeys addObject:[(EOKeyGlobalID *)object keyValues][0]];
+      continue;
+    }
+
+    /* check for NSNumber (primary keys) */
+
+    if ([object isKindOfClass:[NSNumber class]]) {
+      [pkeys addObject:object];
+      continue;
+    }
+
+    /* try to extract primary key from object */
+    
+    if ([(tmp = [object valueForKey:_pkeyName]) isNotNull]) {
+      [pkeys addObject:tmp];
+      continue;
+    }
+
+    /* try to extract globalID from object */
+    
+    if ([(tmp = [object valueForKey:@"globalID"]) isNotNull]) {
+      [pkeys addObject:[(EOKeyGlobalID *)object keyValues][0]];
+      continue;
+    }
+
+    /* could not process given object */
+    
+    [self errorWithFormat:
+	    @"got an object which I cannot extract the pkey (%@) from: %@", 
+	    _pkeyName, object];
+  }
+  
+  return pkeys;
+}
 
 - (NSArray *)fetchAllForQualifier:(EOSQLQualifier *)_qualifier
   fetchOrder:(NSArray *)_order

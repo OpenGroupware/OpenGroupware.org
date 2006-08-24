@@ -1,5 +1,6 @@
 /*
   Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -37,6 +38,7 @@
 @class EOAdaptor, EOModel, EODatabase, EOEntity;
 @class EOAttribute, EORelationship, EOSQLQualifier;
 @class EODatabaseContext, EODatabaseChannel;
+@class LSCommandContext;
 
 @protocol LSDBCommand < LSCommand >
 
@@ -90,6 +92,10 @@
 - (id)primaryKeyValue;
 
 /* convenience methods */
+
+- (NSArray *)extractPrimaryKeysNamed:(NSString *)_pkeyName
+  fromObjectArray:(NSArray *)_array
+  inContext:(LSCommandContext *)_cmdctx;
 
 - (NSArray *)fetchAllForQualifier:(EOSQLQualifier *)_qualifier
   fetchOrder:(NSArray *)_order;
