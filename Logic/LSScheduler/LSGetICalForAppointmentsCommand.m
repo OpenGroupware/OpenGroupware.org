@@ -22,11 +22,11 @@
 #include <LSFoundation/LSDBObjectBaseCommand.h>
 
 /*
-  This command fetches iCalenderStrings for globalIDs (Date)
+  This command fetches iCalender strings for globalIDs (Date)
   date-objects can also be set directly.
   It does not cache anything so far.
   Just fetches the dates and builds the iCal-Strings
-  @see: rfc 2445
+  @see: RFC 2445
 */
 
 @interface LSGetICalForAppointmentsCommand : LSDBObjectBaseCommand

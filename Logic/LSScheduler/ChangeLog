@@ -1,3 +1,11 @@
+2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.92
+
+	* added new appointment::change-attendee-status command
+
+	* LSGetDateForADayCommand.m: code cleanups
+
 2006-08-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSGetAppointmentsForGlobalIDs.m: added support for

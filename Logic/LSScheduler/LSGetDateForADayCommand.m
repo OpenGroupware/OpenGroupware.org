@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -55,17 +56,15 @@ static NSNumber *nNo  = nil;
   if (nNo  == nil) nNo  = [[NSNumber numberWithBool:NO]  retain];
 }
   
-#if !LIB_FOUNDATION_BOEHM_GC
 - (void)dealloc {
-  RELEASE(self->accounts);
-  RELEASE(self->team);
-  RELEASE(self->timeZone);
-  RELEASE(self->day);
+  [self->accounts release];
+  [self->team     release];
+  [self->timeZone release];
+  [self->day      release];
   [super dealloc];
 }
-#endif
 
-// command methods
+/* command methods */
 
 - (void)_prepareForExecutionInContext:(id)_context {
   // prepare team
@@ -80,39 +79,40 @@ static NSNumber *nNo  = nil;
                                     initWithCapacity:16];
   }
   
-  if (self->team) {
-    NSArray *tmp;
-    int i, count;
+  if (self->team != nil) {
+    NSArray  *tmp;
+    unsigned i, count;
 
     tmp = [_context runCommand:@"team::members", @"object", self->team, nil];
     
     for (i = 0, count = [tmp count]; i < count; i++) {
-      id account = [tmp objectAtIndex:i];
-      if (account) [self->accounts addObject:account];
+      id account;
+      
+      if ((account = [tmp objectAtIndex:i]) != nil)
+	[self->accounts addObject:account];
     }
+
     if (!self->withoutPrivate) {
-      id login = nil;
+      id login;
 	
-      // get login
       login = [_context valueForKey:LSAccountKey];
-      if (login) [self->accounts addObject:login];
-    }
-    else {
+      if (login != nil) [self->accounts addObject:login];
     }
   }
   else { // if team=nil => private
-    id login = nil;
+    id login;
 
     login = [_context valueForKey:LSAccountKey];
-    if (login) [self->accounts addObject:login];
+    if (login != nil) [self->accounts addObject:login];
   }
 }
 
 - (NSArray *)_filterAppointments:(NSArray *)_dates context:(id)_ctx {
-  NSMutableArray *filtered = nil;
-  int i, count = [_dates count];
+  NSMutableArray *filtered;
+  unsigned i, count;
   
-  filtered = [[NSMutableArray allocWithZone:[self zone]] initWithCapacity:count];
+  count = [_dates count];
+  filtered = [[NSMutableArray alloc] initWithCapacity:count];
   
   for (i = 0; i < count; i++) {
     id appointment;
@@ -140,13 +140,11 @@ static NSNumber *nNo  = nil;
       [filtered addObject:appointment];
   }
 
-  if ([filtered count] != count) {
-    return AUTORELEASE(filtered);
-  }
-  else {
-    [filtered release]; filtered = nil;
-    return _dates;
-  }
+  if ([filtered count] != count)
+    return [filtered autorelease];
+
+  [filtered release]; filtered = nil;
+  return _dates;
 }
 
 - (EOSQLQualifier *)_buildQualifierInContext:(id)_ctx {
@@ -190,26 +188,26 @@ static NSNumber *nNo  = nil;
     EOSQLQualifier *titleQua  = nil;
     
     titleAttr = [entity attributeNamed:@"title"];
-    titleQua  = [EOSQLQualifier allocWithZone:[self zone]];
-    titleQua = [titleQua initWithEntity:entity
-                         qualifierFormat:@"%@ = %@",
-                         [adaptor formatAttribute:titleAttr],
-                         [adaptor formatValue:self->title
-                                  forAttribute:titleAttr]];
+    titleQua  = [EOSQLQualifier alloc];
+    titleQua  = [titleQua initWithEntity:entity
+                          qualifierFormat:@"%@ = %@",
+                           [adaptor formatAttribute:titleAttr],
+                           [adaptor formatValue:self->title
+				    forAttribute:titleAttr]];
     [result conjoinWithQualifier:titleQua];
   }
   [result setUsesDistinct:YES];
-  return AUTORELEASE(result);
+  return [result autorelease];
 }
 
 - (void)_executeInContext:(id)_context {
-  id             appointment = nil;
-  EOSQLQualifier *q          = nil;
-  NSArray        *fetchOrder = nil;
-  NSMutableArray *results    = nil;
+  id             appointment;
+  EOSQLQualifier *q;
+  NSArray        *fetchOrder;
+  NSMutableArray *results;
   NSArray        *filtered;
-
-  [self assert:[self->accounts count] > 0
+  
+  [self assert:[self->accounts isNotEmpty]
         reason:@"selected team has no members or user is not logged in."];
 
   /* construct qualifier */
@@ -227,7 +225,7 @@ static NSNumber *nNo  = nil;
                                        fetchOrder:fetchOrder]];
 
   results = [[NSMutableArray allocWithZone:[self zone]] initWithCapacity:32];
-  while ((appointment = [[self databaseChannel] fetchWithZone:NULL])) {
+  while ((appointment = [[self databaseChannel] fetchWithZone:NULL]) != nil) {
     [results addObject:appointment];
     
     if (self->timeZone) {

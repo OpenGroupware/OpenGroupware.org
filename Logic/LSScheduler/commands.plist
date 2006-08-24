@@ -110,6 +110,8 @@
 
         "query" = { class = "LSQueryAppointments"; };
 
+	"change-attendee-status" = { class = "LSChangeAttendeeStatusCommand";};
+	
         // old mappings
         "filteramdates"     = { class = "LSFilterAMWeekDaysCommand";    };
         "filterpmdates"     = { class = "LSFilterPMWeekDaysCommand";    };
@@ -120,7 +122,7 @@
         "filter-attendance" = { class = "LSFilterAttendanceCommand";    };
         "used-resources"    = { class = "LSUsedResourcesCommand";       };
         "move"              = { class = "LSMoveAppointmentCommand";     };
-        "update-with-vevent"={class="LSUpdateAppointmentWithVEventCommand";};
+        "update-with-vevent"= { class="LSUpdateAppointmentWithVEventCommand";};
         "get-by-sourceurl"  = { class="LSGetAppointmentsForSourceUrls"; };
         "new-with-vevent"   = { class="LSNewAppointmentFromVEventCommand"; };
         "get-ical"          = { class = "LSGetICalForAppointmentsCommand"; };
