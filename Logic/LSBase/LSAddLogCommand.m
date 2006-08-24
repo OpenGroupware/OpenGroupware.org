@@ -29,6 +29,7 @@
 
 @end
 
+#include <EOControl/EOKeyGlobalID.h>
 #include "common.h"
 
 @implementation LSAddLogCommand
@@ -55,13 +56,19 @@
   owner = [_context valueForKey:LSAccountKey];
   
   if ([self valueForKey:@"objectId"] == nil) {
-    if (self->objectToLog != nil) {
+    if ([self->objectToLog isKindOfClass:[NSNumber class]])
+      [self takeValue:self->objectToLog forKey:@"objectId"];
+    else if ([self->objectToLog isKindOfClass:[EOKeyGlobalID class]]) {
+      [self takeValue:[(EOKeyGlobalID *)self->objectToLog keyValues][0]
+	    forKey:@"objectId"];
+    }
+    else if ([self->objectToLog isNotNull]) {
       EOEntity *objectEntity;
       NSNumber *objectId;
 
       objectEntity = [[self->objectToLog classDescription] entity];
       objectId = [self->objectToLog valueForKey:
-                  [[objectEntity primaryKeyAttributeNames] lastObject]];
+			[[objectEntity primaryKeyAttributeNames] lastObject]];
       [self takeValue:objectId  forKey:@"objectId"];
     }
   }
