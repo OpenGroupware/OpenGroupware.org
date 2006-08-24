@@ -328,20 +328,42 @@
       continue;
     }
 
-    /* try to extract primary key from object */
-    
-    if ([(tmp = [object valueForKey:_pkeyName]) isNotNull]) {
-      [pkeys addObject:tmp];
+    /* do something with strings */
+
+    if ([object isKindOfClass:[NSString class]]) {
+      /* this could be a URL or a number or a ?? */
+      if (![object isNotEmpty]) {
+	[self errorWithFormat:
+		@"got an empty string object, can't derive a pkey from it."];
+	continue;
+      }
+      
+      if (isdigit([object characterAtIndex:0])) {
+	[pkeys addObject:
+		 [NSNumber numberWithUnsignedInt:[object unsignedIntValue]]];
+	continue;
+      }
+
+      [self errorWithFormat:@"cannot process string parameter: %@", object];
       continue;
     }
-
+    
+    /* try to extract primary key from object */
+    
+    if ([_pkeyName isNotEmpty]) {
+      if ([(tmp = [object valueForKey:_pkeyName]) isNotNull]) {
+	[pkeys addObject:tmp];
+	continue;
+      }
+    }
+    
     /* try to extract globalID from object */
     
     if ([(tmp = [object valueForKey:@"globalID"]) isNotNull]) {
       [pkeys addObject:[(EOKeyGlobalID *)object keyValues][0]];
       continue;
     }
-
+    
     /* could not process given object */
     
     [self errorWithFormat:

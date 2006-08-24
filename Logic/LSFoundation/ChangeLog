@@ -1,5 +1,7 @@
 2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSDBObjectBaseCommand.m: added support for string keys (v5.3.122)
+
 	* LSDBObjectBaseCommand.m: added a convenience method to extract
 	  primary keys from an array of EOs, global-ids, primary-keys, etc
 	  (v5.3.121)

@@ -61,8 +61,8 @@
 
 - (void)conjoinWithQualifier:(EOSQLQualifier *)_qualifier;
 
-- (NSNumber *)checkAccess;
 - (void)setCheckAccess:(NSNumber *)_n;
+- (NSNumber *)checkAccess;
 
 @end
 
