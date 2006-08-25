@@ -1,0 +1,186 @@
+- bug ids touched by ChangeLog (check Bugzilla for the complete list):
+  219, 316, 1598, 1599, 1684, 1708, 1771, 1739
+
+Logic
+- improved LSAddressConverterCommand (do not use \0 in NSString's)
+- fixed some access handler logging bug
+- added a convenience method to LSDBObjectBaseCommand to convert arrays of
+  objects into arrays of primary keys
+- added appointment::change-attendee-status, appointment::add-me,
+  appointment::remove-me commands to work on individual attendees (related to
+  OGo bug #1771)
+- added support for 'participants.telephones' and
+  'participants.extendedAttributes' keys in appointment fetches
+- improved parameter handling in object::add-log command
+
+WebUI
+- added 'salutation' to contact quick-create panel in apt-editor
+- fixed some label
+- use new add-me/remove-me/change-attendee status commands in participants
+  list (fixes OGo bug #1771)
+- fixed some issues in apt formletter support
+- expose more contact values to apt formletters
+- fixed a missing semicolon in some &nbsp entity
+- properly escape dial URLs (fixes OGo bug #1739)
+
+XML-RPC
+- added isPrivate support for teams/companies (OGo bug #316)
+- added generic.getTypeById method (OGo bug #1708)
+- added access.getACLById method (OGo bug #1684)
+- added appointment.setPermissions method (OGo bug #219)
+- added appointment.setResources method (OGo bug #1599)
+- fixed duplicate 'comment' key in person records (OGo bug #1598)
+
+general
+- various code cleanups
+- fixed some MacOS linking warnings
+- fixed/improved FreeBSD port scripts
+
+Contributors on the 1.1.6 release:
+Adam Tauno Williams
+Olivier Hallot
+Frank Reppin
+Helge Hess
+... and many more :-)
+
+===========================================================================
+
+compare ../complete/OpenGroupware.org/releases/1.1.5-moveon with .
+changed: DocumentAPI/OGoRawDatabase/
+     2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoRawDatabaseModule.m: fixed MacOS linking warnings (v5.3.13)
+changed: DocumentAPI/OGoBase/
+     2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile.preamble: fixed OSX linking warnings (v5.3.10)
+changed: DocumentAPI/OGoAccounts/
+     2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyAccountsBundleManager.m: fixed OSX linking warnings (v5.3.22)
+changed: DocumentAPI/OGoFileSystemProject/
+     2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile.preamble: fixed OSX linking warnings (v5.3.28)
+changed: WebUI/Contact/PersonsUI/
+     2006-08-08  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoPersonQCreatePanel.m: added salutation to quick-create panel
+     	  (v5.3.63)
+changed: WebUI/Resources/
+     2006-08-08  Helge Hess  <helge.hess@opengroupware.org>
+     	* German.lproj/PersonsUI.strings: replaced &szlig; with an UTF-8 umlaut
+changed: WebUI/Scheduler/LSWScheduler/
+     2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyAptParticipantsList.m: rewrote handling of status changes and
+     	  add/remove-me buttons. The operation is now performed by specific
+     	  commands and do not update the full participant list but just the
+     	  login account (should fix bug #1771) (v5.3.108)
+     2006-08-09  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.107
+     	* LSWAppointmentEditor.m: fixed a linking issue on MacOSX (do not refer
+     	  to OGoAptMailOpener class directly, its in a different bundle)
+     	* SkyAptParticipantsList.m: catch some OSX mutable dictionary issue,
+     	  needs further investigation
+changed: WebUI/Scheduler/OGoScheduler/
+     2006-08-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* Defaults.plist: added 'globalID' to formletter attributes, this is
+     	  required for extended apt properties. Removed some debug config
+     	  (v5.3.58)
+     	* OGoAptFormLetter.m: expose person keywords as person_keywords and
+     	  person_keyword1...n, expose individual apt keywords as keyword1..n
+     	  (v5.3.57)
+     	* OGoAptFormLetter.m: properly fetch contact addresses for formletters
+     	  (v5.3.56)
+removed: WebUI/Scheduler/OGoScheduler/GNUmakefile.postamble
+changed: WebUI/Common/BaseUI/
+     2006-08-15  Olivier Hallot  <olivier@ig.com.br>
+     	* LSWViewerTitle.m: added a missing semicolon to a generated '&nbsp'
+     	  (#1647) (v5.3.126)
+changed: WebUI/Common/OGoUIElements/
+     2006-08-15  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyDialNumber.m: code cleanups, use -isNotEmpty, properly escape
+     	  dial URLs (#1739) (v5.3.47)
+changed: maintenance/freebsd/
+     2006-08-01 Frank Reppin  <frank@opengroupware.org>
+     	* fixed rc script redirection
+     	* fixed distinfo for mod_ngobjweb
+     	* use APACHE_PORT?= ...
+     2006-07-19 Frank Reppin  <frank@opengroupware.org>
+     	* plist sub'ified pkg-plist 
+     	* adjust pkg-install.in
+changed: Logic/LSAccount/
+     2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile.preamble: explicitly link libNGiCal to please MacOS
+     	  (v5.3.24)
+added:   Logic/LSAccount/GNUmakefile.preamble
+changed: Logic/LSAddress/
+     2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.89
+     	* LSAddressConverterCommand.m: reworked not to use NSString's that
+     	  contain 0 bytes (use NSData instead)
+     	* GNUmakefile.preamble: explicitly link bundle against libNGiCal to
+     	  avoid a warning on MacOS
+     2006-08-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* OGoCompanyAccessHandler.m: fixed a logging bug (v5.3.88)
+changed: Logic/LSEnterprise/
+     2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile.preamble: explicitly link libNGiCal to make OSX happy
+     	  (v5.3.17)
+added:   Logic/LSEnterprise/GNUmakefile.preamble
+changed: Logic/LSFoundation/
+     2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSBundleCmdFactory.m: added -description, code cleanups, fixed a
+     	  potential logging crasher (v5.3.123)
+     	* LSDBObjectBaseCommand.m: added support for string keys (v5.3.122)
+     	* LSDBObjectBaseCommand.m: added a convenience method to extract
+     	  primary keys from an array of EOs, global-ids, primary-keys, etc
+     	  (v5.3.121)
+changed: Logic/LSTeam/
+     2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
+     	* GNUmakefile.preamble: explicitly link libNGiCal to make OSX happy
+     	  (v5.3.20)
+added:   Logic/LSTeam/GNUmakefile.preamble
+changed: Logic/LSScheduler/
+     2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
+     	* v5.3.92
+     	* added new appointment::change-attendee-status command
+     	* LSGetDateForADayCommand.m: code cleanups
+     2006-08-03  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSGetAppointmentsForGlobalIDs.m: added support for
+     	  'participants.telephones' key in fetch attributes (5.3.91)
+     2006-07-18  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSGetAppointmentsForGlobalIDs.m: added support for
+     	  'participants.extendedAttributes' key in fetch attributes (5.3.90)
+added:   Logic/LSScheduler/LSAddOrRemoveMeCommand.m
+added:   Logic/LSScheduler/LSChangeAttendeeStatusCommand.m
+changed: Logic/LSBase/
+     2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
+     	* LSAddLogCommand.m: allow primarykeys and globalids in the
+     	  'objectToLog' parameter (v5.3.30)
+changed: XmlRpcAPI/
+     2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
+     	* Actions.subproj/DirectAction+Appointment.m: a few code cleanups,
+     	  added new XML-RPC methods for changing an appointment status
+     	  (appointment.changeStatus, appointment.accept, appointment.decline,
+     	   appointment.acceptTentatively and appointment.resetStatus)
+     	  (v5.3.80)
+     2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
+     	* XmlRpcCoding.subproj/SkyAppointmentDocument+XmlRpcCoding.m: expose
+     	  resourceNames to XML-RPC (v5.3.79)
+     2006-08-15  Adam Tauno Williams  <awilliam@whitemice.org>
+     	* XmlRpcCoding.subproj/SkyCompanyDocument+XmlRpcCoding.m,
+     	  SkyPersonDocument+XmlRpcCoding.m: moved isPrivate handling from
+     	  PersonDocument into CompanyDocument object to allow for isPrivate
+     	  in company records (#316) (v5.3.78)
+     	* Actions.subproj/DirectAction+Generic.m: added generic.getTypeById
+     	  method (#1708) (v5.3.77)
+     	* Actions.subproj/DirectAction+Generic.m: added access.getACLById
+     	  method (#1684) (v5.3.76)
+     	* Actions.subproj/DirectAction+Appointment.m: added
+     	  appointment.setPermissions method (#219) (v5.3.75)
+     	* XmlRpcCoding.subproj/SkyPersonDocument+XmlRpcCoding.m: removed
+     	  duplicate encoding of 'comment' key (#1598) (v5.3.74)
+     	* Actions.subproj/DirectAction+Appointment.m: added
+     	  appointment.setResources method (#1599) (v5.3.73)
+added:   XmlRpcAPI/tests/createTask1.py
+added:   XmlRpcAPI/tests/changeAptStatus.py
+changed: PDA/OGoPalmWebUI/
+     2006-08-04  Helge Hess  <helge.hess@opengroupware.org>
+     	* SkyPalmAssignDate.m, SkyPalmCategoryPopUp.m: fixed some gcc 4.1 
+     	  warnings (v5.3.30)
