@@ -73,7 +73,7 @@ static BOOL embedViewURL             = NO;
   SxAptManager *am;
   if (_ctx == nil) _ctx = [[WOApplication application] context];
   if ((am = [[self container] aptManagerInContext:_ctx]) == nil) 
-    [self logWithFormat:@"WARNING: got no appointment manager !"];
+    [self errorWithFormat:@"got no appointment manager !"];
   return am;
 }
 
@@ -269,12 +269,12 @@ static BOOL embedViewURL             = NO;
     tmp = [[tmp mutableCopy] autorelease];
     [tmp removeObject:@"isWarningIgnored"];
   }
-  if ([tmp count] > 0) {
+  if ([tmp isNotEmpty]) {
     [log appendString:@" "];
     [log appendString:[tmp componentsJoinedByString:@","]];
   }
 
-  if ([_k count] > 0) {
+  if ([_k isNotEmpty]) {
     tmp = [_k componentsJoinedByString:@","];
     [self logWithFormat:@"Note: loosing keys: %@", tmp];
     [log appendString:@" (lost="];
@@ -318,11 +318,11 @@ static BOOL embedViewURL             = NO;
   tmp = [self fetchParticipantsForPersons:
                 [_info objectForKey:@"participants"]
               inContext:_ctx];
-  if ([tmp count] > 0) { // if at least one participant
+  if ([tmp isNotEmpty]) { // if at least one participant
     [(NSMutableArray *)participants addObjectsFromArray:tmp];
     [keys removeObject:@"participants"];
   }
-  else if ([participants count] == 0) // if no parts, add current account
+  else if (![participants isNotEmpty]) // if no parts, add current account
     participants = [self defaultParticipantsInContext:_ctx];
   
   /* check values */
@@ -489,7 +489,7 @@ static BOOL embedViewURL             = NO;
   tmp = [self fetchParticipantsForPersons:[_info objectForKey:@"participants"]
               inContext:_ctx];
   
-  if ([tmp count] > 0)
+  if ([tmp isNotEmpty])
     [participants addObjectsFromArray:tmp];
   
   /* TODO: mh: hack */
@@ -499,7 +499,7 @@ static BOOL embedViewURL             = NO;
   */
   [self reloadObjectInContext:_ctx];
   
-  if ([participants count] == 0) {
+  if (![participants isNotEmpty]) {
     // if no participants, take current account
     id account;
     
@@ -520,7 +520,7 @@ static BOOL embedViewURL             = NO;
   participants = (NSMutableArray *)[self checkChangedParticipants:participants
                                          forOldParticipants:tmp
                                          inContext:_ctx];
-  if ([participants count] > 0) {
+  if ([participants isNotEmpty]) {
     /* participants changed */
     [changeSet setObject:participants forKey:@"participants"];
   }
@@ -564,7 +564,7 @@ static BOOL embedViewURL             = NO;
   NSArray *infos;
   id      info;
   
-  if ([_content length] == 0) {
+  if (![_content isNotEmpty]) {
     return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
                         reason:@"got empty PUT body"];
   }
@@ -578,13 +578,13 @@ static BOOL embedViewURL             = NO;
     return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
                         reason:@"could not parse submitted data!"];
   }
-  if ([infos count] == 0) {
+  if (![infos isNotEmpty]) {
     return [NSException exceptionWithHTTPStatus:400 /* Bad Request */
                         reason:@"no vevent record found in submitted data!"];
   }
   if ([infos count] > 1) {
-    [self logWithFormat:
-	    @"WARNING: got more than one ical component, using the first: %@",
+    [self warnWithFormat:
+	    @"got more than one ical component, using the first: %@",
 	    infos];
   }
   info = [infos objectAtIndex:0];
@@ -633,7 +633,7 @@ static BOOL embedViewURL             = NO;
   if ([ctype hasPrefix:@"text/calendar"])
     return [self putICalendarAction:_ctx];
   
-  if ([ctype length] == 0) {
+  if (![ctype isNotEmpty]) {
     // TODO: which clients do that? (eg when editing in Cadaver)
     // DUP in SxTask.m
     static NSData *iCalSignature = nil;

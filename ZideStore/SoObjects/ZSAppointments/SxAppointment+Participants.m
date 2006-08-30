@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -257,9 +258,9 @@ static BOOL debugOn = NO;
     //}
 
     if (mapped == nil) {
-      if ([(key = [person valueForKey:@"email"]) length])
+      if ([(key = [person valueForKey:@"email"]) isNotEmpty])
         mapped = [_map objectForKey:key];
-      else if ([(key = [person valueForKey:@"email1"]) length])
+      else if ([(key = [person valueForKey:@"email1"]) isNotEmpty])
         mapped = [_map objectForKey:key];
     }
     
@@ -304,7 +305,7 @@ static BOOL debugOn = NO;
   
   if (StoreUnkownPerson == -1) {
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    StoreUnkownPerson = [ud boolForKey:@"StoreUnkownPerson"]? 1 : 0;
+    StoreUnkownPerson = [ud boolForKey:@"StoreUnkownPerson"] ? 1 : 0;
   }
   
   [self warnWithFormat:
@@ -315,8 +316,9 @@ static BOOL debugOn = NO;
   e = [_unknown objectEnumerator];
   // unknown participants
   while ((person = [e nextObject]) != nil) {
-    NSString *name, *email;
-    id newPerson, tmp;
+    NSString *name, *email, *firstname;
+    id       newPerson, tmp;
+    NSRange  r;
     
     name  = [person objectForKey:@"cn"];
     email = [person objectForKey:@"email"];
@@ -338,15 +340,27 @@ static BOOL debugOn = NO;
       continue;
     }
     
+    /* try to extract firstname from name */
+    
+    if ((r = [name rangeOfString:@" "]).length > 0) {
+      firstname = [name substringToIndex:r.location];
+      name      = [name substringFromIndex:(r.location + r.length)];
+    }
+    else
+      firstname = @"";
+    
+    /* create person */
+    
     newPerson =
         [_cmdctx runCommand:@"person::new",
                  @"name",      name,
+                 @"firstname", firstname,
                  @"comment",
-                 @"Created by ZideStore during editing of appointment",
+                   @"Created by ZideStore during editing of appointment",
                  @"isPrivate", [NSNumber numberWithBool:YES],
                  @"email1",    email,
                  nil];
-
+    
     if (![newPerson isNotEmpty]) {
       [self errorWithFormat:
               @"could not auto-create attendee person (%@/%@)", name, email];
@@ -386,13 +400,13 @@ static BOOL debugOn = NO;
   /*
    * format of persons:
    *  {
-   *    cn    = "Martin Hoerning";
-   *    email = "mh@in.skyrix.com"; 
-   *    role  = "REQ-PARTICIPANT";
+   *    cn        = "Martin Hoerning";
+   *    email     = "mh@in.skyrix.com"; 
+   *    role      = "REQ-PARTICIPANT";
    *    emailType = "SMTP"; // zidelook
-   *    rsvp  = YES; // only supported by evo
-   *    partStat = NEEDS-ACTION; 
-   *    xuid = "something"; // evo
+   *    rsvp      = YES; // only supported by evo
+   *    partStat  = NEEDS-ACTION; 
+   *    xuid      = "something"; // evo
    *  }
    *
    */  
@@ -409,7 +423,7 @@ static BOOL debugOn = NO;
   NSMutableDictionary *map;
   BOOL                createNewEntriesForUnknownParticipants;
 
-  if ([_persons count] == 0)
+  if (![_persons isNotEmpty])
     return [NSArray array];
   
   if (usePKeyMails == -1) {
@@ -671,7 +685,7 @@ static BOOL debugOn = NO;
     return [SxAppointment pKeyEmailForParticipant:_participant];
   
   email = [_participant valueForKey:@"email"];
-  if ([email length] == 0) email = [_participant valueForKey:@"email1"];
+  if (![email isNotEmpty]) email = [_participant valueForKey:@"email1"];
   return email;
 }
 

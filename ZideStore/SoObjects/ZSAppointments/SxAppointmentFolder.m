@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -515,8 +516,15 @@
   pkey = [self renderGIDAsName:_entry];
   url  = [[NSString alloc] initWithFormat:@"%@%@.ics", [self baseURL], pkey];
   [record setObject:url  forKey:@"{DAV:}href"];
+  [url release]; url = nil;
+  
+  [record setObject:@"text/vcalendar" forKey:@"davContentType"];
   [record setObject:pkey forKey:@"davDisplayName"]; // small hack, use title
-  [url release];
+
+#if 0 // might be necessary for some
+  [record setObject:@"1024" forKey:@"davContentLength"];
+#endif
+
   return record;
 }
 
@@ -632,6 +640,34 @@
   s = [s stringByAppendingString:[[self container] nameInContainer]];
   s = [s stringByAppendingString:@"'"];
   return s;
+}
+
+/* WebDAV/CalDAV */
+
+- (NSArray *)davAllowedMethodsInContext:(id)_ctx {
+  NSMutableArray *m;
+
+  m = (id)[super davAllowedMethodsInContext:_ctx];
+  if (![m containsObject:@"REPORT"]) {
+    m = [[m mutableCopy] autorelease];
+    [m addObject:@"REPORT"];
+  }
+  
+  return m;
+}
+
+- (NSArray *)davComplianceClassesInContext:(id)_ctx {
+  NSMutableArray *m;
+
+  m = [[[super davComplianceClassesInContext:_ctx] mutableCopy] autorelease];
+
+  // TODO: well, actually implement it ...
+  if (![m containsObject:@"calendar-access"])
+    [m addObject:@"calendar-access"];
+  if (![m containsObject:@"access-control"])
+    [m addObject:@"access-control"];
+  
+  return m;
 }
 
 /* description */

@@ -1,3 +1,12 @@
+2006-08-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.5.105
+
+	* SxAppointment+Participants.m: when auto-creating private persons for
+	  missing attendees, the code now splits the CN into firstname/lastname
+
+	* SxAppointment.m: use -isNotEmpty when appropriate
+
 2006-05-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxAppointmentFolder.m: removed some ZL/KOrgEx/EvoEx support(v1.5.104)
