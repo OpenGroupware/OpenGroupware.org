@@ -39,4 +39,5 @@
 #include <LSFoundation/LSFoundation.h>
 #include <LSFoundation/LSCommandContext.h>
 
-#define OGo_ZS_PRODID @"-//OpenGroupware.org/ZideStore 1.3//"
+// TODO: can't we derive that from the Version files?
+#define OGo_ZS_PRODID @"-//OpenGroupware.org/ZideStore 1.5//"

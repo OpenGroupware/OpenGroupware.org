@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -48,7 +49,7 @@ static BOOL catchExceptions = YES;
   ical = [[self commandContext] runCommand:@"appointment::get-ical",
 				@"gid", [_eo valueForKey:@"globalID"], nil];
   return [ical isKindOfClass:[NSArray class]]
-    ? ([ical count] > 0 ? [ical objectAtIndex:0] : nil)
+    ? ([ical isNotEmpty] ? [ical objectAtIndex:0] : nil)
     : ical;
 }
 - (id)renderAppointmentAsMIME:(id)_eo timezone:(NSTimeZone *)_tz {
@@ -73,8 +74,6 @@ static BOOL catchExceptions = YES;
   NSDictionary   *participants;
   NSEnumerator   *aptEnum;
   id             apt;
-  id             dateId;
-  id             dateParts;
   int            accountId;
 
   if (attributes == nil) {
@@ -106,8 +105,12 @@ static BOOL catchExceptions = YES;
 
   accountId = [[[[self commandContext] valueForKey:LSAccountKey]
                        valueForKey:@"companyId"] intValue];
+  
   aptEnum   = [_apts objectEnumerator];
-  while ((apt = [aptEnum nextObject])) {
+  while ((apt = [aptEnum nextObject]) != nil) {
+    NSNumber *dateId;
+    NSArray  *dateParts;
+
     dateId    = [apt valueForKey:@"dateId"];
     dateParts = [participants objectForKey:dateId];
     if (dateParts != nil) {
@@ -127,8 +130,8 @@ static BOOL catchExceptions = YES;
       }
     }
     else {
-      NSLog(@"WARNING[%s] didn't find participants for date %@",
-            __PRETTY_FUNCTION__, apt);
+      [self warnWithFormat:@"%s: did not find participants for date %@",
+              __PRETTY_FUNCTION__, apt];
       [apt takeValue:[NSArray array] forKey:@"participants"];
     }
   }
@@ -166,7 +169,7 @@ static BOOL catchExceptions = YES;
     nil];
   }
   
-  if ([_gids count] == 0)
+  if (![_gids isNotEmpty])
     return [[NSArray array] objectEnumerator];
   
   [self logWithFormat:@"process %i gids ...", [_gids count]];
@@ -246,8 +249,8 @@ static BOOL catchExceptions = YES;
     gid   = [apt valueForKey:@"globalID"];
     event = [_map objectForKey:gid];
     if (event == nil) {
-      NSLog(@"%s didn't find event for gid %@ in map %@",
-            __PRETTY_FUNCTION__, gid, _map);
+      [self logWithFormat:@"%s did not find event for gid %@ in map %@",
+              __PRETTY_FUNCTION__, gid, _map];
       continue;
     }
     [ctx runCommand:@"appointment::update-with-vevent",
@@ -259,7 +262,7 @@ static BOOL catchExceptions = YES;
 }
 
 - (void)putOGoSourceEvents:(NSMutableDictionary *)_map
-            withOldGIDList:(NSMutableArray *)_oldGids
+  withOldGIDList:(NSMutableArray *)_oldGids
 {
   // these are ogo-gid's mapped to iCalEvents
   LSCommandContext *ctx;
@@ -271,19 +274,22 @@ static BOOL catchExceptions = YES;
 
   ctx        = [self commandContext];
   sourceUrls = [_map allKeys];
-  if ([sourceUrls count]) {
-    NSLog(@"%s: checking sourceUrls: %@",
-          __PRETTY_FUNCTION__, [sourceUrls componentsJoinedByString:@", "]);
+  if ([sourceUrls isNotEmpty]) {
+    [self debugWithFormat:@"%s: checking sourceUrls: %@",
+          __PRETTY_FUNCTION__, [sourceUrls componentsJoinedByString:@", "]];
   }
-  apts       = [ctx runCommand:@"appointment::get-by-sourceurl",
-                       @"sourceUrls", sourceUrls, nil];
-
+  
+  apts = [ctx runCommand:@"appointment::get-by-sourceurl",
+	        @"sourceUrls", sourceUrls, nil];
+  
   for (i = 0, cnt = [apts count]; i < cnt; i++) {
     apt   = [apts objectAtIndex:i];
     url   = [[[apt valueForKey:@"sourceUrl"] copy] autorelease];
     event = [_map objectForKey:url];
     if (event == nil) {
-      NSLog(@"%s: sourceUrl '%@' is linked more than once. ignoring.");
+      [self logWithFormat:
+	      @"%s: sourceUrl '%@' is linked more than once. ignoring.",
+	      __PRETTY_FUNCTION__, url];
       continue;
     }
     [ctx runCommand:@"appointment::update-with-vevent",
@@ -293,7 +299,7 @@ static BOOL catchExceptions = YES;
         != NSNotFound)
       [_oldGids removeObjectAtIndex:idx];
   }
-  if ([_map count]) {
+  if ([_map isNotEmpty]) {
     [self logWithFormat:@"got %d unknown sourceIds: %@",
           [[_map allKeys] count],
           [[_map allKeys] componentsJoinedByString:@","]];
@@ -396,9 +402,10 @@ static BOOL catchExceptions = YES;
   for (i = 0; i < cnt; i ++) {
     NSString  *uid;
     id        event;
+    
     event = [_events objectAtIndex:i];
     uid   = [event uid];
-    if ([uid length]) {
+    if ([uid isNotEmpty]) {
       if ([uid hasPrefix:skyrixId]) {
         id gid;
         gid = [uid substringFromIndex:[skyrixId length]];
@@ -425,7 +432,8 @@ static BOOL catchExceptions = YES;
   // TODO: what todo with them ? 
   {
     NSArray *left = [skyVEvents allKeys];
-    if ([left count])
+    
+    if ([left isNotEmpty])
       [self logWithFormat:@"%d vevents with unknown ogo-ids where not put! "
             @"maybe the ogo-records have been deleted.",
             [left count]];
@@ -458,14 +466,15 @@ static BOOL catchExceptions = YES;
      TODO: we need a bulk delete
    */
   if ((cnt = [oldGIDList count]) > 0) {
-    EOKeyGlobalID *gid;
-    id            error = nil;
-    id            pKey;
-    
     for (i = 0; i < cnt; i++) {
+      EOKeyGlobalID *gid;
+      id            error;
+      id            pKey;
+      
       gid  = (EOKeyGlobalID *)[oldGIDList objectAtIndex:i];
       pKey = [gid keyValues][0];
-      if ((error = [self deleteRecordWithPrimaryKey:pKey]))
+      
+      if ((error = [self deleteRecordWithPrimaryKey:pKey]) != nil)
         return error;
     }
   }
