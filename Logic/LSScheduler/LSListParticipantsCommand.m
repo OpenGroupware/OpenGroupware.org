@@ -683,8 +683,8 @@ static NSString *defaultPartStatus = nil; // ACCEPTED or NEEDS-ACTION?
     }
     else {
       [self warnWithFormat:
-              @"%s: did not find company for assignment: %@"
-              @"the company seems to not exist any more. ignoring.",
+              @"%s: failed to resolve company for assignment "
+	      @"(read protected?): %@",
             __PRETTY_FUNCTION__, assignmentRecord];
       continue;
     }

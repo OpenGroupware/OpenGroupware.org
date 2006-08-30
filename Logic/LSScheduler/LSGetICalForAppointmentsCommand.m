@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -43,7 +44,6 @@
 
 @implementation LSGetICalForAppointmentsCommand
 
-static NSString   *iCalDateFmt   = @"%Y%m%dT%H%M%SZ";
 static NSTimeZone *gmt      = nil;
 static NSString   *skyrixId = nil;
 
@@ -73,8 +73,17 @@ static NSString   *skyrixId = nil;
 }
 
 - (void)_appendDateValue:(NSCalendarDate *)_date toICal:(NSMutableString*)_s {
+  NSString *s;
+  char buf[32];
+  
   [_date setTimeZone:gmt];
-  [_s appendString:[_date descriptionWithCalendarFormat:iCalDateFmt]];
+  
+  snprintf(buf, sizeof(buf), "%04i%02i%02iT%02i%02i%02iZ",
+	   [_date yearOfCommonEra], [_date monthOfYear], [_date dayOfMonth],
+	   [_date hourOfDay], [_date minuteOfHour], [_date secondOfMinute]);
+  s = [[NSString alloc] initWithCString:buf];
+  [_s appendString:s];
+  [s release]; s = nil;
 }
 
 - (void)_appendName:(NSString *)_name andValue:(id)_value 
@@ -83,9 +92,17 @@ static NSString   *skyrixId = nil;
   [_iCal appendString:_name];
   [_iCal appendString:@":"];
   if ([_value isKindOfClass:[NSArray class]]) {
-    int cnt, i;
-    for (i = 0, cnt = [_value count]; i < cnt; i++)
-      [self _appendTextValue:[_value objectAtIndex:i] toICal:_iCal];
+    unsigned cnt, i;
+    
+    for (i = 0, cnt = [_value count]; i < cnt; i++) {
+      id value = [_value objectAtIndex:i];
+      
+      if (i != 0) [_iCal appendString:@","];
+      if ([_value isKindOfClass:[NSCalendarDate class]])
+	[self _appendDateValue:_value toICal:_iCal];
+      else
+	[self _appendTextValue:value toICal:_iCal];
+    }
   }
   else if ([_value isKindOfClass:[NSString class]])
     [self _appendTextValue:_value toICal:_iCal];
@@ -104,9 +121,7 @@ static NSString   *skyrixId = nil;
   char buf[32];
   
   snprintf(buf, sizeof(buf), "%04d%02d%02d",
-                  [_date yearOfCommonEra],
-                  [_date monthOfYear],
-                  [_date dayOfMonth]);
+	   [_date yearOfCommonEra], [_date monthOfYear], [_date dayOfMonth]);
   
   _name = [_name stringByAppendingString:@";VALUE=DATE"];
   s = [[NSString alloc] initWithCString:buf];
@@ -115,7 +130,7 @@ static NSString   *skyrixId = nil;
 }
 
 - (NSString *)skyrixIdUrl:(id)_plainId {
-  return [skyrixId stringByAppendingFormat:@"%@", _plainId];
+  return [skyrixId stringByAppendingString:[_plainId stringValue]];
 }
 
 /* rendering */
@@ -160,6 +175,7 @@ static NSString   *skyrixId = nil;
 */
 
 - (BOOL)isAllDayEvent:(id)_date {
+  // TODO: this should take into account the configured timezone of the user
   NSCalendarDate *start;
   NSCalendarDate *end;
   
@@ -181,8 +197,11 @@ static NSString   *skyrixId = nil;
   // CREATED, DTSTAMP, LAST-MODIFIED, SEQUENCE
   NSString *tmp;
 
-  if ([(tmp = [[_date valueForKey:@"keywords"] stringValue]) isNotEmpty])
-    [self _appendName:@"CATEGORIES" andValue:tmp toICal:_iCal];
+  if ([(tmp = [[_date valueForKey:@"keywords"] stringValue]) isNotEmpty]) {
+    [self _appendName:@"CATEGORIES" 
+	  andValue:[tmp componentsSeparatedByString:@","]
+	  toICal:_iCal];
+  }
   
   /* class */
   if ([(tmp = [_date valueForKey:@"sensitivity"]) isNotNull]) {
@@ -206,8 +225,11 @@ static NSString   *skyrixId = nil;
   if ([(tmp = [[_date valueForKey:@"importance"] stringValue]) isNotEmpty])
     [self _appendName:@"PRIORITY" andValue:tmp toICal:_iCal];
   
-  if ([(tmp = [[_date valueForKey:@"resourceNames"] stringValue]) isNotEmpty])
-    [self _appendName:@"RESOURCES" andValue:tmp toICal:_iCal];
+  if ([(tmp = [[_date valueForKey:@"resourceNames"] stringValue]) isNotEmpty]){
+    [self _appendName:@"RESOURCES" 
+	  andValue:[tmp componentsSeparatedByString:@", "]
+	  toICal:_iCal];
+  }
   
   [self _appendName:@"STATUS" andValue:@"CONFIRMED" toICal:_iCal];
   
@@ -430,25 +452,44 @@ static NSString   *skyrixId = nil;
                 )
 */
 
+- (NSString *)cnForAttendee:(id)_attendee {
+  NSString *cn = nil, *tmp;
+  
+  if ([(tmp = [_attendee valueForKey:@"firstname"]) isNotEmpty])
+    cn = tmp;
+  
+  if ([(tmp = [_attendee valueForKey:@"name"]) isNotEmpty]) {
+    if ([cn isNotEmpty]) {
+      cn = [cn stringByAppendingString:@" "];
+      cn = [cn stringByAppendingString:tmp];
+    }
+    else
+      cn = tmp;
+  }
+
+  return cn;
+}
+
 - (void)_appendAttendees:(id)_date toICal:(NSMutableString *)_iCal {
   // ATTENDEE, ORGANIZER
-  NSArray *parts;
-  id participant;
-  int cnt, i;
-  id ownerId;
+  NSArray  *parts;
+  unsigned cnt, i;
+  id       ownerId;
   
   parts   = [_date valueForKey:@"participants"];
   ownerId = [_date valueForKey:@"ownerId"];
 
-  if ([parts count] == 0) {
+  if (![parts isNotEmpty]) {
     [self warnWithFormat:@"no participants in appointment: %@",
 	  [_date valueForKey:@"dateId"]];
   }
   
   for (i = 0, cnt = [parts count]; i < cnt; i++) { 
+    NSMutableString *ms;
     NSString *role, *rsvp, *cn, *email, *state;
     NSString *tmp;
     NSNumber *companyId;
+    id       participant;
     BOOL     isTeam;
     
     participant = [parts objectAtIndex:i];
@@ -461,19 +502,20 @@ static NSString   *skyrixId = nil;
     if (isTeam) {
       cn    = [participant valueForKey:@"description"];
       email = [participant valueForKey:@"email"];
-      if (![email isNotNull] || [email length] == 0)
+      if (![email isNotNull] || ![email isNotEmpty]) {
+	[self warnWithFormat:@"using CN as email for team: %@", cn];
 	email = cn;
+      }
     }
     else {
       NSString *tmp;
       
-      cn = ([(tmp = [participant valueForKey:@"firstname"]) isNotEmpty])
-	? [tmp stringByAppendingString:@" "] : (NSString *)@"";
-      
-      if ([(tmp = [participant valueForKey:@"name"]) isNotEmpty])
-        cn = [cn stringByAppendingString:tmp];
-      
-      if (![cn isNotEmpty]) cn = @"No Name";
+      cn = [self cnForAttendee:participant];
+      if (![cn isNotEmpty]) {
+	cn = nil;
+	[self warnWithFormat:@"got not CN for participant record: %@", 
+	        participant];
+      }
       
       if ([(tmp = [participant valueForKey:@"email1"]) isNotEmpty])
 	email = tmp;
@@ -487,19 +529,40 @@ static NSString   *skyrixId = nil;
     
     if (![state isNotEmpty]) state = @"NEEDS-ACTION";
     if (![role  isNotEmpty]) role  = @"OPT-PARTICIPANT";
-    // TODO: better use a mutable string ...
-    tmp = [[NSString alloc] initWithFormat:
-                    @"ATTENDEE;CUTYPE=\"%@\";PARTSTAT=\"%@\""
-                    @";ROLE=\"%@\";RSVP=\"%@\";CN=\"%@\"",
-                    isTeam               ? @"GROUP" : @"INDIVIDUAL",
-		    state, role,
-                    [rsvp boolValue]     ? @"TRUE"  : @"FALSE",
-                    cn];
-    [self _appendName:tmp
-          andValue:[@"MAILTO:" stringByAppendingString:email]
-          toICal:_iCal];
-    [tmp release]; tmp = nil;
+
+    ms = [[NSMutableString alloc] initWithCapacity:256];
+    [ms appendString:@"ATTENDEE"];
     
+    [ms appendString:@";CUTYPE=\""];
+    [ms appendString:isTeam ? @"GROUP" : @"INDIVIDUAL"];
+    [ms appendString:@"\""];
+
+    if (state != nil) {
+      [ms appendString:@";PARTSTAT=\""];
+      [ms appendString:state];
+      [ms appendString:@"\""];
+    }
+    if (role != nil) {
+      [ms appendString:@";ROLE=\""];
+      [ms appendString:role];
+      [ms appendString:@"\""];
+    }
+
+    [ms appendString:@";RSVP=\""];
+    [ms appendString:[rsvp boolValue] ? @"TRUE" : @"FALSE"];
+    [ms appendString:@"\""];
+
+    if ([cn isNotEmpty]) {
+      [ms appendString:@";CN=\""];
+      [ms appendString:cn];
+      [ms appendString:@"\""];
+    }
+    
+    [self _appendName:ms andValue:[@"MAILTO:" stringByAppendingString:email]
+          toICal:_iCal];
+    [ms release]; ms = nil;
+    
+    // TODO: explain this
     if (([companyId intValue] == [ownerId intValue]) &&
         ([companyId intValue] != 0)) {
       tmp = [[NSString alloc] initWithFormat:@"ORGANIZER;CN=\"%@\"", cn];
@@ -523,7 +586,7 @@ static NSString   *skyrixId = nil;
 
   [self _appendAlarmData:_date toICal:iCal];
   [self _appendAttendees:_date toICal:iCal];
-
+  
   [iCal appendString:@"END:VEVENT\r\n"];
   
   return iCal;

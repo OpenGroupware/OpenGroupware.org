@@ -1,3 +1,13 @@
+2006-08-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.93
+
+	* LSListParticipantsCommand.m: fixed a warning
+
+	* LSGetICalForAppointmentsCommand.m: improved datefield generation,
+	  improved handling of array iCal values (RESOURCES/CATEGORIES), do
+	  not encode CN as "No Name" in ATTENDEE fields
+
 2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.92
