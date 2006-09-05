@@ -87,19 +87,19 @@
     int pkeyInt;
     
     if ([davKey rangeOfString:@"/"].length > 0) {
-      [self logWithFormat:
-              @"ERROR: cannot process complex bulk key: '%@'", davKey];
+      [self errorWithFormat:
+              @"cannot process complex bulk key: '%@'", davKey];
       continue;
     }
     
     if ((pkeyInt = [davKey intValue]) == 0) {
-      [self logWithFormat:
-              @"ERROR: could not process non-int key: '%@'", davKey];
+      [self errorWithFormat:
+              @"could not process non-int key: '%@'", davKey];
       continue;
     }
     else if (pkeyInt < 8000)
-      [self logWithFormat:
-              @"WARNING: got weird bulk-key (<8000): '%@'", davKey];
+      [self warnWithFormat:
+              @"got weird bulk-key (<8000): '%@'", davKey];
     
     // TODO
     [pkeys addObject:[NSNumber numberWithInt:pkeyInt]];
@@ -128,16 +128,16 @@
     
     davKey = [[davKeys objectAtIndex:i] stringByDeletingPathExtension];
     if ([davKey rangeOfString:@"/"].length > 0) {
-      [self logWithFormat:@"ERROR: cannot process complex bulk key: '%@'", davKey];
+      [self errorWithFormat:@"cannot process complex bulk key: '%@'", davKey];
       continue;
     }
     
     if ((pkeyInt = [davKey intValue]) == 0) {
-      [self logWithFormat:@"ERROR: could not process non-int key: '%@'", davKey];
+      [self errorWithFormat:@"could not process non-int key: '%@'", davKey];
       continue;
     }
     else if (pkeyInt < 8000)
-      [self logWithFormat:@"WARNING: got weird bulk-key (<8000): '%@'", davKey];
+      [self warnWithFormat:@"got weird bulk-key (<8000): '%@'", davKey];
     
     pkey = [NSNumber numberWithInt:pkeyInt];
     gid  = [EOKeyGlobalID globalIDWithEntityName:entityName 
@@ -243,7 +243,7 @@
   for (i = 0; remKeys[i]; i++)
     [props removeObjectForKey:remKeys[i]];
   
-  if ([props count] == 0) {
+  if (![props isNotNull]) {
     [self logWithFormat:@"nothing to patch ..."];
     return nil;
   }
@@ -252,10 +252,10 @@
     [self setAssociatedContents:tmp];
     [props removeObjectForKey:@"zlAssocContents"];
   }
-  if ([props count] > 0)
+  if ([props isNotNull])
     [self debugWithFormat:@"should patch folder: %@", props];
   
-  if ([_delProps count] > 0)
+  if ([_delProps isNotNull])
     [self logWithFormat:@"not deleting properties: %@", _delProps];
   
   return nil;
@@ -280,7 +280,7 @@
     if ([ctx isTransactionInProgress]) {
       [self debugWithFormat:@"rollback open transaction ..."];
       if (![ctx rollback])
-	[self logWithFormat:@"ERROR: failed to rollback transaction !"];
+	[self errorWithFormat:@"failed to rollback transaction !"];
     }
   }
   return result;
@@ -436,8 +436,8 @@
     }
     
     if ((m = (void *)[self methodForSelector:handler]) == NULL) {
-      [self logWithFormat:
-              @"ERROR: did not find method for selected handler '%@' !",
+      [self errorWithFormat:
+              @"did not find method for selected handler '%@' !",
 	      NSStringFromSelector(handler)];
       return [NSException exceptionWithHTTPStatus:500 /* server error */
 			  reason:@"missing handler for attribute set !"];
@@ -446,7 +446,7 @@
   }
   
   if ([self doExplainQueries]) {
-    [self logWithFormat:
+    [self warnWithFormat:
             @"found no default handler to process query[depth=%@]: %@", 
             [[(WOContext *)_ctx request] headerForKey:@"depth"], 
 	    [[_fs selectedWebDAVPropertyNames] componentsJoinedByString:@","]];
