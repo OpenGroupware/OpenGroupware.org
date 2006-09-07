@@ -460,6 +460,71 @@
   return [NSNumber numberWithBool:YES];
 }
 
+- (NSNumber *)aptPrimaryKeyFromArgument:(id)_arg error:(NSException **)_err {
+  NSNumber *pkey;
+  
+  *_err = nil;
+
+  if (_arg == nil) {
+    *_err = [self faultWithFaultCode:XMLRPC_FAULT_MISSING_PARAMETER
+		  reason:@"Missing appointment key"];
+    return nil;
+  }
+  
+  if ([_arg isKindOfClass:[NSDictionary class]]) {
+    if ((pkey = [_arg objectForKey:@"dateId"]) == nil)
+      pkey = [_arg objectForKey:@"id"];
+
+    if (pkey == nil) {
+      *_err = [self faultWithFaultCode:XMLRPC_FAULT_INVALID_RESULT
+		    reason:@"Did not find appointment key in argument"];
+      return nil;
+    }
+    
+    if (![pkey isKindOfClass:[NSNumber class]])
+      pkey = [NSNumber numberWithInt:[pkey intValue]];
+  }
+  else if ([_arg isKindOfClass:[NSNumber class]])
+    pkey = _arg;
+  else
+    pkey = [NSNumber numberWithInt:[_arg intValue]];
+  
+  return pkey;
+}
+
+- (id)appointment_deleteByKeyAction:(id)_arg:(id)_deleteAll {
+  LSCommandContext *cmdctx;
+  NSNumber    *pkey;
+  NSException *error = nil;
+
+  if ((pkey = [self aptPrimaryKeyFromArgument:_arg error:&error]) == nil)
+    return error;
+  
+  
+  if ((cmdctx = [self commandContext]) == nil) {
+    return [self faultWithFaultCode:XMLRPC_FAULT_MISSING_CONTEXT
+		 reason:@"missing login context"];
+  }
+  
+  [cmdctx runCommand:@"appointment::delete",
+	    @"dateId",          pkey,
+	    @"reallyDelete",    [NSNumber numberWithBool:YES],
+	    @"deleteAllCyclic",
+	      [NSNumber numberWithBool:[_deleteAll boolValue]],
+	  nil];
+  
+  if (![cmdctx commit]) {
+    return [self faultWithFaultCode:XMLRPC_FAULT_MISSING_CONTEXT
+		 reason:@"could not commit database transaction"];
+  }
+  
+  return [NSNumber numberWithBool:YES];
+}
+- (id)appointment_deleteByKeyAction:(id)_arg {
+  return
+    [self appointment_deleteByKeyAction:_arg:[NSNumber numberWithBool:NO]];
+}
+
 - (id)urlStringsForNonEmptyParticipants:(id)_parts {
   if (![_parts isNotNull]) {
     return [self faultWithFaultCode:XMLRPC_FAULT_INVALID_PARAMETER

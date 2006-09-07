@@ -1,3 +1,9 @@
+2006-09-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Actions.subproj/DirectAction+Appointment.m: added new
+	  appointment.deleteByKey method (takes primary key and a flag whether
+	  to delete all events of a cycle) (v5.3.81)
+
 2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* Actions.subproj/DirectAction+Appointment.m: a few code cleanups,
