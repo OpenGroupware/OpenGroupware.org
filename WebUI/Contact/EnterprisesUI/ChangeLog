@@ -1,3 +1,8 @@
+2006-09-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyEnterpriseList.m: properly inherit from OGoComponent, not
+	  OGoContentPage (its not a page, its a reusable component) (v5.3.40)
+
 2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyEnterpriseViewer.m: properly use person::get-by-globalID, not

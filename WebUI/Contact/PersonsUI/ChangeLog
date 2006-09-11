@@ -1,3 +1,8 @@
+2006-09-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyPersonList.m: properly inherit from OGoComponent, not
+	  OGoContentPage (its not a page, its a reusable component) (v5.3.64)
+
 2006-08-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoPersonQCreatePanel.m: added salutation to quick-create panel

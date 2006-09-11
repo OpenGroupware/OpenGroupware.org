@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -19,7 +20,7 @@
   02111-1307, USA.
 */
 
-#include <OGoFoundation/OGoContentPage.h>
+#include <OGoFoundation/OGoComponent.h>
 
 /*
   Example:
@@ -46,15 +47,15 @@
 @class NSString, NSArray;
 @class EODataSource;
 
-@interface SkyPersonList : OGoContentPage
+@interface SkyPersonList : OGoComponent
 {
-@protected
   EODataSource *dataSource;
   id           person;
   NSString     *favoritesKey;
   NSArray      *favoriteCompanyIds;
 }
-@end /* SkyPersonList */
+
+@end
 
 #include "common.h"
 #include <OGoContacts/SkyPersonDocument.h>
@@ -86,7 +87,7 @@
 }
 
 - (void)setFavoritesKey:(NSString *)_key {
-  ASSIGN(self->favoritesKey,_key);
+  ASSIGN(self->favoritesKey, _key);
 }
 - (NSString *)favoritesKey {
   return [self->favoritesKey isNotEmpty] 
@@ -163,7 +164,7 @@
 - (id)updateFavoritesAction {
   if ([self hasBinding:@"onFavoritesChange"])
     return [self valueForBinding:@"onFavoritesChange"];
-  return nil;
+  return nil /* stay on page */;
 }
 
 - (id)addToFavorites {
