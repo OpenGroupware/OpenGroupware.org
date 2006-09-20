@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -317,8 +318,8 @@
   NSParameterAssert(_obj != nil);
   
   if ((values = [_obj asDict]) == nil) {
-    [self logWithFormat:
-            @"ERROR: could not represent object '%@'(%@) as a dictionary!",
+    [self errorWithFormat:
+            @"could not represent object '%@'(%@) as a dictionary!",
             _obj, NSStringFromClass([_obj class])];
     [NSException raise:@"ParameterError"
                  format:
