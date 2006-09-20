@@ -288,6 +288,9 @@
   keyAttribute:(EOAttribute *)_key
   valueAttribute:(EOAttribute *)_value
 {
+  /* Note: This is b0rked. because we do not use OUTER joins here. So we use
+           a crappy but easy subselect variant, see below ...
+  */
   NSString *operator, *sqlValue;
   BOOL     needsUpper, isNull;
   
@@ -367,6 +370,121 @@
   [self->sql appendString:@" )"];
 }
 
+- (void)appendSubSelectExtAttrKeyValueQualifier:(EOKeyValueQualifier *)_q
+  entity:(EOEntity *)_relEntity prefix:(NSString *)_prefix
+  joinAttribute:(EOAttribute *)_join
+  keyAttribute:(EOAttribute *)_key
+  valueAttribute:(EOAttribute *)_value
+{
+  /* our crappy but working subselect attribute scanner */
+  NSString     *operator, *sqlValue;
+  BOOL         needsUpper, isNull;
+  EOAttribute  *pkey;
+  NSString     *basePKeyColumn;
+  NSString     *pkeyName;
+
+#if 1
+  NSAssert(_join != nil && _key != nil && _value != nil,
+	   @"missing an attribute for fetch");
+#endif
+  
+  operator   = [self sqlForOperator:[_q selector]];
+  needsUpper = [self needsUpperForOperator:[_q selector]];
+  isNull     = ![[_q value] isNotNull];
+  
+  [self->sql appendString:@"( 0 < ( SELECT COUNT(*) FROM "];
+  [self->sql appendString:[_relEntity externalName]];
+  [self->sql appendString:@" AS "];
+  [self->sql appendString:_prefix];
+  [self->sql appendString:@" WHERE "];
+  
+  /* join clause */
+
+  pkey           = [[self->entity primaryKeyAttributes] lastObject];
+  pkeyName       = [pkey name];
+  basePKeyColumn = [@"B." stringByAppendingString:[pkey columnName]];
+
+  [self->sql appendString:basePKeyColumn];
+  [self->sql appendString:@" = "];
+  [self->sql appendString:[_join columnName]];
+  [self->sql appendString:@" AND "];
+  
+  /* check key */
+  
+  /* Note: yes! -formatValue on the key, its not a DB column, its a value */
+  sqlValue = [self->adaptor formatValue:[_q key] forAttribute:_key];
+  if ([_prefix isNotEmpty]) {
+    [self->sql appendString:_prefix];
+    [self->sql appendString:@"."];
+  }
+  [self->sql appendString:[_key columnName]];
+  [self->sql appendString:@" = "];
+  [self->sql appendString:sqlValue];
+  sqlValue = nil;
+  
+  /* check value */
+  
+  [self->sql appendString:@" AND "];
+  
+  if (!isNull) {
+    if (needsUpper) [self->sql appendString:@"UPPER("];
+    if ([_prefix isNotEmpty]) {
+      [self->sql appendString:_prefix];
+      [self->sql appendString:@"."];
+    }
+    [self->sql appendString:[_value columnName]];
+    if (needsUpper) [self->sql appendString:@")"];
+
+    /* operator */
+    [self->sql appendString:@" "];
+    [self->sql appendString:operator];
+    [self->sql appendString:@" "];
+    
+    /* RHS */
+    
+    if ([self replaceShellPatternsForOperator:[_q selector]]) {
+      // TODO: improve
+      sqlValue = [[_q value] stringValue];
+      sqlValue = [sqlValue stringByReplacingString:@"%" withString:@"%%"];
+      sqlValue = [sqlValue stringByReplacingString:@"*" withString:@"%"];
+    }
+    else
+      sqlValue = [_q value];
+    
+    sqlValue = [self->adaptor formatValue:sqlValue forAttribute:_value];
+    
+    if (needsUpper) [self->sql appendString:@"UPPER("];
+    [self->sql appendString:sqlValue];
+    if (needsUpper) [self->sql appendString:@")"];
+  }
+  else {
+    // TODO: 'null' should also match if the attribute is not in the table!
+    if ([_prefix isNotEmpty]) {
+      [self->sql appendString:_prefix];
+      [self->sql appendString:@"."];
+    }
+    [self->sql appendString:[_value columnName]];
+    
+    if ([operator isEqualToString:@"="])
+      [self->sql appendString:@" IS NULL"];
+    else if ([operator isEqualToString:@"!="])
+      [self->sql appendString:@" IS NOT NULL"];
+    else {
+      [self->sql appendString:@" "];
+      [self->sql appendString:operator];
+      [self->sql appendString:@" NULL"];
+    }
+  }
+
+  /* close check */
+  [self->sql appendString:@" ) )"];
+}
+
+- (BOOL)useExtAttrSubSelects {
+  /* whether to use JOINs or SUBSELECTs for queries */
+  return YES;
+}
+
 - (void)appendExtAttrKeyValueQualifier:(EOKeyValueQualifier *)_q {
   NSString *operator;
   BOOL     needsUpper, isNull, doBoth;
@@ -376,7 +494,9 @@
   isNull     = ![[_q value] isNotNull];
   doBoth     = [self doGenerateCompanyValueChecks] && 
                [self doGenerateObjectPropertyChecks];
-
+  
+  // TODO: maybe we only need to use subselects if we join both attr tables?
+  //       for just the company_value it seemed to be decent
   if (doBoth) [self->sql appendString:@"( "];
   
   /* first generate company_value checks */
@@ -390,12 +510,22 @@
     
     /* ensure that the join is setup, we use special alias 'CV' */
     cvEntity = [self->model entityNamed:@"CompanyValue"];
-    [self->prefixToAlias  setObject:@"CV"    forKey:@"extendedAttributes"];
-    [self->prefixToEntity setObject:cvEntity forKey:@"extendedAttributes"];
+
+    if ([self useExtAttrSubSelects]) {
+      [self appendSubSelectExtAttrKeyValueQualifier:_q 
+	    entity:cvEntity prefix:@"CV"
+	    joinAttribute:[cvEntity attributeNamed:@"companyId"]
+	    keyAttribute:[cvEntity attributeNamed:@"attribute"]
+	    valueAttribute:[cvEntity attributeNamed:@"value"]];
+    }
+    else {
+      [self->prefixToAlias  setObject:@"CV"    forKey:@"extendedAttributes"];
+      [self->prefixToEntity setObject:cvEntity forKey:@"extendedAttributes"];
     
-    [self appendExtAttrKeyValueQualifier:_q prefix:@"CV"
-	  keyAttribute:[cvEntity attributeNamed:@"attribute"]
-	  valueAttribute:[cvEntity attributeNamed:@"value"]];
+      [self appendExtAttrKeyValueQualifier:_q prefix:@"CV"
+	    keyAttribute:[cvEntity attributeNamed:@"attribute"]
+	    valueAttribute:[cvEntity attributeNamed:@"value"]];
+    }
   }
 
   if (doBoth) [self->sql appendString:@" ) OR ( "];
@@ -415,13 +545,23 @@
     
     /* ensure that the join is setup, we use special alias 'OP' */
     opEntity = [self->model entityNamed:@"ObjectProperty"];
-    [self->prefixToAlias  setObject:@"OP"    forKey:@"objectProperties"];
-    [self->prefixToEntity setObject:opEntity forKey:@"objectProperties"];
-
+    
     // TODO: add namespace support?
-    [self appendExtAttrKeyValueQualifier:_q prefix:@"OP"
-	  keyAttribute:[opEntity attributeNamed:@"key"]
-	  valueAttribute:[opEntity attributeNamed:@"valueString"]];
+    if ([self useExtAttrSubSelects]) {
+      [self appendSubSelectExtAttrKeyValueQualifier:_q 
+	    entity:opEntity prefix:@"OP"
+	    joinAttribute:[opEntity attributeNamed:@"objectId"]
+	    keyAttribute:[opEntity attributeNamed:@"key"]
+	    valueAttribute:[opEntity attributeNamed:@"valueString"]];
+    }
+    else {
+      [self->prefixToAlias  setObject:@"OP"    forKey:@"objectProperties"];
+      [self->prefixToEntity setObject:opEntity forKey:@"objectProperties"];
+      
+      [self appendExtAttrKeyValueQualifier:_q prefix:@"OP"
+	    keyAttribute:[opEntity attributeNamed:@"key"]
+	    valueAttribute:[opEntity attributeNamed:@"valueString"]];
+    }
   }
 
   if (doBoth) [self->sql appendString:@" )"];

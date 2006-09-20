@@ -1,5 +1,8 @@
 2006-09-20  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoSQLGenerator.m: changed to use subselects instead of joins for
+	  extended attribute queries (v5.3.29)
+
 	* OGoSQLGenerator.m: fixed a few bugs in SQL generation (LIKE patterns,
 	  duplicate prefixes) (v5.3.28)
 
