@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -26,6 +27,11 @@
 
 @class LSGenericSearchRecord, NSArray, NSString, EOEntity, EOSQLQualifier;
 
+/*
+  LSExtendedSearch
+
+  TODO: document
+*/
 @interface LSExtendedSearch : LSBaseSearch
 {
 @private
@@ -36,6 +42,8 @@
 
 - (id)initWithSearchRecord:(LSGenericSearchRecord *)_searchRecord
   andRelatedRecords:(NSArray *)_relatedRecords;
+
+/* accessors */
   
 - (EOSQLQualifier *)qualifier;
 - (EOEntity *)entity;

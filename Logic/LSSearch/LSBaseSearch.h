@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -27,24 +28,29 @@
 @class LSGenericSearchRecord, NSArray, NSString;
 @class EOAttribute, EOEntity, EOSQLQualifier, EOAdaptor;
 
+/*
+  LSBaseSearch
+
+  TODO: document
+*/
 @interface LSBaseSearch : NSObject
 {
   EOAdaptor *dbAdaptor;
   NSString  *comparator;
 }
 
-// protected
+/* protected */
 
 - (NSString *)_formatForStringValue:(id)_value;
 - (NSString *)_formatForNumberValue:(id)_value;
 - (NSString *)_formatForTextAttribute:(EOAttribute *)_attr andValue:(id)_value;
-- (NSString *)_formatForStringAttribute:(EOAttribute *)_attr andValue:(id)_value;
-- (NSString *)_formatForNumberAttribute:(EOAttribute *)_attr andValue:(id)_value;
+- (NSString *)_formatForStringAttribute:(EOAttribute *)_attr andValue:(id)_val;
+- (NSString *)_formatForNumberAttribute:(EOAttribute *)_attr andValue:(id)_val;
 - (NSString *)_formatForTextAttribute:(EOAttribute *)_attr andValue:(id)_value
   entity:(EOEntity *)_entity;
-- (NSString *)_formatForStringAttribute:(EOAttribute *)_attr andValue:(id)_value
+- (NSString *)_formatForStringAttribute:(EOAttribute *)_attr andValue:(id)_val
   entity:(EOEntity *)_entity;
-- (NSString *)_formatForNumberAttribute:(EOAttribute *)_attr andValue:(id)_value
+- (NSString *)_formatForNumberAttribute:(EOAttribute *)_attr andValue:(id)_val
   entity:(EOEntity *)_entity;
 
 - (void)setDbAdaptor:(EOAdaptor *)_adaptor;

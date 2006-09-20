@@ -1,5 +1,21 @@
-# $Id$
+libLSSearch
+===========
 
+This package contains classes for searching database records. Its a library
+with reusable (subclassed) classes and a command bundle containing commands.
+
+
+TODO: document the split between the command classes and the SQL generation
+      classes
+
+Defaults
+========
+
+  LSFullSearchDebugEnabled
+
+
+SQL
+===
 
 SQL issued by person fullsearch
 ---snip---

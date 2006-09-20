@@ -22,13 +22,14 @@ LSSearch_PRINCIPAL_CLASS =  LSSearchCommands
 LSSearch_OBJC_FILES = LSSearchCommands.m
 
 libLSSearch_OBJC_FILES = \
-	LSGenericSearchRecord.m    \
-	LSBaseSearch.m             \
-	LSFullSearch.m             \
-	LSExtendedSearch.m         \
-	LSNewSearchRecordCommand.m \
-	LSExtendedSearchCommand.m  \
-	LSFullSearchCommand.m      \
+	LSGenericSearchRecord.m		\
+	LSBaseSearch.m			\
+	LSFullSearch.m			\
+	LSExtendedSearch.m		\
+	LSNewSearchRecordCommand.m	\
+	LSExtendedSearchCommand.m	\
+	LSFullSearchCommand.m		\
+	OGoSQLGenerator.m		\
 
 LSSearch_RESOURCE_FILES += Defaults.plist
 

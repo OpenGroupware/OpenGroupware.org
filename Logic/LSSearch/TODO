@@ -1,4 +1,3 @@
-# $Id$
-
 - the search limit processing needs to be improved. it currently cannot
   reliably report a limitation!
+  - one reason: because ACL processing happens afterwards

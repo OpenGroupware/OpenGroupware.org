@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -288,7 +289,7 @@
   
   if (self->entity)
     [ms appendFormat:@" entity=%@", [self->entity name]];
-  if ([self->relatedEntities count] > 0) {
+  if ([self->relatedEntities isNotEmpty]) {
     id tmp;
     
     tmp = [self->relatedEntities valueForKey:@"name"];
@@ -296,7 +297,7 @@
     [ms appendFormat:@" related-entities=%@", tmp];
   }
   
-  if ([self->furtherSearches count] > 0)
+  if ([self->furtherSearches isNotEmpty])
     [ms appendFormat:@" further-searches=%d", [self->furtherSearches count]];
   
   if (self->includesOwnAttributes) 
