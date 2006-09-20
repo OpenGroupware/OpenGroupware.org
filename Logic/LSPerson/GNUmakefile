@@ -19,6 +19,7 @@ LSPerson_OBJC_FILES += \
 	LSSetPersonCommand.m				\
 	LSGetPersonsForGlobalIDs.m			\
 	LSPersonToAccountCommand.m			\
+	LSQualifierSearchPersonCommand.m		\
 
 LSPerson_RESOURCE_FILES += Version
 

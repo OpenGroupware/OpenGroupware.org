@@ -1,3 +1,13 @@
+2006-09-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.31
+
+	* added first version of LSQualifierSearchPersonCommand which allows
+	  searches based on rather arbitary EOQualifier's (person::qsearch)
+
+	* LSGetAssignedProjectIdsForPersonCommand.m,
+	  LSExtendedSearchPersonCommand.m: minor code cleanups
+
 2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed gcc 4.1 warnings, 64bit tweaks (v5.3.30)

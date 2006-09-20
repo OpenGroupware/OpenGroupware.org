@@ -1,5 +1,8 @@
 2006-09-20  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoSQLGenerator.m: fixed a bug in the 'comment' key detection
+	  (v5.3.30)
+
 	* OGoSQLGenerator.m: changed to use subselects instead of joins for
 	  extended attribute queries (v5.3.29)
 

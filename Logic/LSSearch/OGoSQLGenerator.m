@@ -694,7 +694,7 @@
   /* if we get nil we have a special case, either a comment or an extattr */
   
   if ((lkColumn = [self columnNameForKey:lk attribute:&attribute]) == nil) {
-    if ([lkColumn isEqualToString:@"comment"])
+    if ([[_q key] isEqualToString:@"comment"])
       [self appendCommentKeyValueQualifier:_q];
     else
       [self appendExtAttrKeyValueQualifier:_q];
@@ -1094,6 +1094,7 @@
   loginTeams:(NSArray *)_teams
 {
   /* oh yes, this uses nested selects. but well, ... */
+  // Note: we do not treat 'root' in a special way here!
   NSMutableString *ms = [NSMutableString stringWithCapacity:2048];
   NSString     *loginPKeyStr;
   EOAttribute  *pkey;

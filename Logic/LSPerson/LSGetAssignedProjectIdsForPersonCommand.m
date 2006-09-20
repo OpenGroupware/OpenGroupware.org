@@ -116,13 +116,14 @@
   expr      = [self _sqlExprForAllProjectIds];
 
   if ([adChannel evaluateExpression:expr]) {
-    NSDictionary *r = nil;
-
     if ([adChannel isFetchInProgress]) {
-      while ((r = [adChannel fetchAttributes:[adChannel describeResults]
-                             withZone:[self zone]])) {
+      NSDictionary *r;
+      NSArray *attrs;
+      
+      attrs = [adChannel describeResults];
+      while ((r = [adChannel fetchAttributes:attrs withZone:NULL]) != nil)
         [result addObject:[r valueForKey:@"projectId"]];
-      }
+      
       [adChannel cancelFetch];
     }
   }

@@ -33,6 +33,7 @@
         "get-telephones"   = { class = "LSFetchTelsForPersonCommand";      };
         "full-search"      = { class = "LSFullSearchPersonCommand";        };
         "extended-search"  = { class = "LSExtendedSearchPersonCommand";    };
+        "qsearch"          = { class = "LSQualifierSearchPersonCommand";   };
         "get-projects"     = { class = "LSGetProjectForPersonCommand";     };
         "get-assigned-projects" = { 
           class = "LSGetProjectForPersonCommand";

@@ -137,7 +137,7 @@ static BOOL debugOn = NO;
   allKeys = [self->searchAttributes allKeys];
   allKeys = [allKeys sortedArrayUsingSelector:@selector(isEqualToString:)];
   keyEnum = [allKeys objectEnumerator];
-
+  
   while ((key = [keyEnum nextObject]) != nil) {
     NSArray  *keyComponents; // i.e. "01_tel.info" -> ("01_tel", "info")
     NSString *entity;
@@ -288,7 +288,7 @@ static BOOL debugOn = NO;
 /* command methods */
 
 - (void)_prepareForExecutionInContext:(id)_context {
-  if (self->searchAttributes) {
+  if (self->searchAttributes != nil) {
     [self takeValue:[self _searchRecordsInContext:_context]
 	  forKey:@"searchRecords"];
   }
