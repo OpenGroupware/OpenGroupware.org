@@ -40,9 +40,9 @@
   - extra attributes (company_value and obj_property)
 */
 
-@class NSMutableString, NSMutableDictionary;
+@class NSString, NSNumber, NSMutableString, NSMutableDictionary;
 @class EOQualifier;
-@class EOAdaptor, EOModel, EOEntity;
+@class EOAdaptor, EOModel, EOEntity, EOAttribute;
 
 @interface OGoSQLGenerator : NSObject
 {
@@ -52,11 +52,34 @@
   NSMutableString     *sql;
   NSMutableDictionary *prefixToAlias;
   NSMutableDictionary *prefixToEntity;
+  NSString            *whereClause;
 }
+
+- (id)initWithAdaptor:(EOAdaptor *)_adaptor entityName:(NSString *)_entity;
+
+/* access results */
+
+- (NSString *)sql;
+- (NSString *)whereClause;
 
 /* qualifier generation */
 
+- (NSString *)processQualifier:(EOQualifier *)_qualifier;
 - (void)appendQualifier:(EOQualifier *)_qualifier;
+
+/* generate joins */
+
+- (NSString *)generateTableList;
+- (NSString *)generateJoinClause;
+
+/* ACL support */
+
+- (NSNumber *)primaryKeyFromObject:(id)_obj;
+
+- (NSString *)aclClauseWithOwnerAttribute:(EOAttribute *)_ownerAttr
+  privateAttribute:(EOAttribute *)_privateAttr
+  loginId:(id)_loginId
+  loginTeams:(NSArray *)_teams;
 
 @end
 

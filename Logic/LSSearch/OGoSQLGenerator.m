@@ -20,20 +20,46 @@
 */
 
 #include "OGoSQLGenerator.h"
+#include <LSFoundation/LSCommandContext.h>
 #include <NGExtensions/EOTrueQualifier.h>
 #include <EOControl/EOKeyGlobalID.h>
 #include "common.h"
 
 @implementation OGoSQLGenerator
 
+- (id)initWithAdaptor:(EOAdaptor *)_adaptor entityName:(NSString *)_entity {
+  if ((self = [self init]) != nil) {
+    self->adaptor = [_adaptor retain];
+    self->model   = [[self->adaptor model] retain];
+    self->entity  = [[self->model entityNamed:_entity] retain];
+    
+    self->prefixToEntity = [[NSMutableDictionary alloc] initWithCapacity:4];
+    self->prefixToAlias  = [[NSMutableDictionary alloc] initWithCapacity:4];
+    
+    self->sql = [[NSMutableString alloc] initWithCapacity:4096];
+  }
+  return self;
+}
+
 - (void)dealloc {
   [self->prefixToEntity release];
   [self->prefixToAlias  release];
+  [self->whereClause    release];
   [self->sql            release];
   [self->adaptor        release];
   [self->entity         release];
   [self->model          release];
   [super dealloc];
+}
+
+/* access results */
+
+- (NSString *)sql {
+  return [[self->sql copy] autorelease];
+}
+
+- (NSString *)whereClause {
+  return self->whereClause;
 }
 
 /* raw content */
@@ -100,7 +126,13 @@
   
   return NO;
 }
-
+- (BOOL)replaceShellPatternsForOperator:(SEL)_sel {
+  NSString *sop;
+  
+  sop = [EOQualifier stringForOperatorSelector:_sel];
+  // like/caseInsensitiveLike or everything else with 'ike' ;-)
+  return [sop rangeOfString:@"ike"].length > 0 ? YES : NO;
+}
 
 /* column processing */
 
@@ -267,6 +299,7 @@
   
   /* check key */
   
+  /* Note: yes! -formatValue on the key, its not a DB column, its a value */
   sqlValue = [self->adaptor formatValue:[_q key] forAttribute:_key];
   if ([_prefix isNotEmpty]) {
     [self->sql appendString:_prefix];
@@ -275,7 +308,8 @@
   [self->sql appendString:[_key columnName]];
   [self->sql appendString:@" = "];
   [self->sql appendString:sqlValue];
-
+  sqlValue = nil;
+  
   /* check value */
   
   [self->sql appendString:@" AND "];
@@ -294,8 +328,19 @@
     [self->sql appendString:@" "];
     
     /* RHS */
+    
+    if ([self replaceShellPatternsForOperator:[_q selector]]) {
+      // TODO: improve
+      sqlValue = [[_q value] stringValue];
+      sqlValue = [sqlValue stringByReplacingString:@"%" withString:@"%%"];
+      sqlValue = [sqlValue stringByReplacingString:@"*" withString:@"%"];
+    }
+    else
+      sqlValue = [_q value];
+    
+    sqlValue = [self->adaptor formatValue:sqlValue forAttribute:_value];
+    
     if (needsUpper) [self->sql appendString:@"UPPER("];
-    sqlValue = [self->adaptor formatValue:[_q value] forAttribute:_value];
     [self->sql appendString:sqlValue];
     if (needsUpper) [self->sql appendString:@")"];
   }
@@ -324,15 +369,19 @@
 
 - (void)appendExtAttrKeyValueQualifier:(EOKeyValueQualifier *)_q {
   NSString *operator;
-  BOOL     needsUpper, isNull;
+  BOOL     needsUpper, isNull, doBoth;
   
   operator   = [self sqlForOperator:[_q selector]];
   needsUpper = [self needsUpperForOperator:[_q selector]];
   isNull     = ![[_q value] isNotNull];
+  doBoth     = [self doGenerateCompanyValueChecks] && 
+               [self doGenerateObjectPropertyChecks];
+
+  if (doBoth) [self->sql appendString:@"( "];
   
   /* first generate company_value checks */
   
-  if ([self doGenerateCompanyValueChecks]) {
+  if (doBoth || [self doGenerateCompanyValueChecks]) {
     /*
        eg: email1 caseInsensitiveLike '*@def.de'
        =>  (CV.attribute = 'email1' AND CV.value_string ILIKE '%@def.de')
@@ -348,6 +397,8 @@
 	  keyAttribute:[cvEntity attributeNamed:@"attribute"]
 	  valueAttribute:[cvEntity attributeNamed:@"value"]];
   }
+
+  if (doBoth) [self->sql appendString:@" ) OR ( "];
   
   /* then generate obj_property checks */
   // TODO: this is almost a DUP
@@ -355,7 +406,7 @@
   //       qualifier is an INT.
   //       Currently we always check against the valueString.
 
-  if ([self doGenerateObjectPropertyChecks]) {
+  if (doBoth || [self doGenerateObjectPropertyChecks]) {
     /*
        eg: email1 caseInsensitiveLike '*@def.de'
        =>  (OP.attribute = 'email1' AND OP.value_string ILIKE '%@def.de')
@@ -372,6 +423,8 @@
 	  keyAttribute:[opEntity attributeNamed:@"key"]
 	  valueAttribute:[opEntity attributeNamed:@"valueString"]];
   }
+
+  if (doBoth) [self->sql appendString:@" )"];
 }
 
 /* comments */
@@ -396,7 +449,16 @@
       
       attribute = [centity attributeNamed:@"comment"];
       
-      sqlValue   = [self->adaptor formatValue:value forAttribute:attribute];
+      if ([self replaceShellPatternsForOperator:[_q selector]]) {
+	// TODO: improve
+	sqlValue = [value stringValue];
+	sqlValue = [sqlValue stringByReplacingString:@"%" withString:@"%%"];
+	sqlValue = [sqlValue stringByReplacingString:@"*" withString:@"%"];
+      }
+      else
+	sqlValue = value;
+      
+      sqlValue   = [self->adaptor formatValue:sqlValue forAttribute:attribute];
       operator   = [self sqlForOperator:[_q selector]];
       needsUpper = [self needsUpperForOperator:[_q selector]];
       
@@ -588,8 +650,16 @@
   }
   
   /* regular key/value comparison */
-  
-  sqlValue = [self->adaptor formatValue:value forAttribute:attribute];
+
+  if ([self replaceShellPatternsForOperator:[_q selector]]) {
+    // TODO: improve
+    sqlValue = [value stringValue];
+    sqlValue = [sqlValue stringByReplacingString:@"%" withString:@"%%"];
+    sqlValue = [sqlValue stringByReplacingString:@"*" withString:@"%"];
+  }
+  else
+    sqlValue = value;
+  sqlValue = [self->adaptor formatValue:sqlValue forAttribute:attribute];
   
   /* lhs */
   if (needsUpper) [self->sql appendString:@"UPPER("];
@@ -711,6 +781,16 @@
   // don't need to generate anything for TRUE
 }
 
+- (NSString *)processQualifier:(EOQualifier *)_qualifier {
+  if ([_qualifier isNotEmpty]) {
+    [self appendQualifier:_qualifier];
+    self->whereClause = [self->sql copy];
+    [self->sql setString:@""];
+  }
+  else
+    self->whereClause = nil;
+  return self->whereClause;
+}
 
 /* qualifier generation */
 
@@ -920,7 +1000,7 @@
   /* first check whether we an ACL is attached to the object */
   
   [ms appendString:
-	@"0 = ( SELECT COUNT(*) FROM object_acl WHERE object_id = B."];
+	@"0 = ( SELECT COUNT(*) FROM object_acl WHERE object_id = "];
   [ms appendString:basePKeyColumn];
   [ms appendString:@" )"];
   
@@ -929,7 +1009,7 @@
   [ms appendString:@" OR "]; /* only need to check IF we have an ACL */
   
   [ms appendString:
-	@"0 < ( SELECT COUNT(*) FROM object_acl WHERE object_id = B."];
+	@"0 < ( SELECT COUNT(*) FROM object_acl WHERE object_id = "];
   [ms appendString:basePKeyColumn];
 
   // Note: we support no ordering and we support no 'forbidden'
