@@ -73,7 +73,7 @@
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     
     if ((self->lso = [[OGoContextManager defaultManager] retain]) == nil) {
-      NSLog(@"ERROR: could not create OGo context manager.");
+      [self errorWithFormat:@"could not create OGo context manager."];
       [self release];
       return nil;
     }

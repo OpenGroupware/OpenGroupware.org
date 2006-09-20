@@ -1,3 +1,7 @@
+2006-09-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added ogo-qsearch-persons test tool
+
 2006-01-12  Helge Hess  <helge.hess@opengroupware.org>
 
 	* added ogo-prop-set tool
