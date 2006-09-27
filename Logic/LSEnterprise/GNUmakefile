@@ -17,6 +17,7 @@ LSEnterprise_OBJC_FILES += \
         LSNewEnterpriseCommand.m                \
         LSSetEnterpriseCommand.m                \
         LSGetEnterprisesForGlobalIDs.m          \
+	LSQualifierSearchEnterpriseCommand.m	\
 
 LSEnterprise_RESOURCE_FILES += Version
 

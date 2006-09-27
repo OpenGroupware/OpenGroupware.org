@@ -19,6 +19,7 @@
       { name = LSExtendedSearchCommand;  exact-version = 2; },
       { name = LSFullSearchCommand;      exact-version = 3; },
       { name = LSGetObjectForGlobalIDs;  exact-version = 1; },      
+      { name = LSQualifierSearchCommand; exact-version = 1; },
     );
   };
 

@@ -1,4 +1,3 @@
-// $Id$
 {
   bundleHandler = LSEnterpriseCommands;
   
@@ -20,6 +19,7 @@
       { name = LSExtendedSearchCommand;  exact-version = 2; },
       { name = LSFullSearchCommand;      exact-version = 3; },
       { name = LSGetObjectForGlobalIDs;  exact-version = 1; },
+      { name = LSQualifierSearchCommand; exact-version = 1; },
     );
   };
 
@@ -42,6 +42,7 @@
         { name = "enterprise::extended-search";  },
         { name = "enterprise::assign-projects";  },
         { name = "enterprise::get-by-globalid";  },        
+        { name = "enterprise::qsearch";          },
     );
     classes = (
         { name = LSExtendedSearchEnterpriseCommand;   },
@@ -54,6 +55,7 @@
         { name = LSSetEnterpriseCommand;              },
         { name = LSEnterpriseCommands;                },
         { name = LSGetEnterprisesForGlobalIDs;        },        
+        { name = LSQualifierSearchEnterpriseCommand;  },        
     );
   };
 }

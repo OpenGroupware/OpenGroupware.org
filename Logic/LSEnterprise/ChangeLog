@@ -1,3 +1,7 @@
+2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added enterprise::qsearch command (v5.3.18)
+
 2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* GNUmakefile.preamble: explicitly link libNGiCal to make OSX happy
