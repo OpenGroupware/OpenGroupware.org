@@ -1,3 +1,7 @@
+2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSQualifierSearchPersonCommand.m: completed team ACL fetche (v5.3.32)
+
 2006-09-20  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.31

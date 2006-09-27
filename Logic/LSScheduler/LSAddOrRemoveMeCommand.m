@@ -54,9 +54,6 @@
 		initDictionary:_init];
   if (self != nil) {
     self->mode = [[_init objectForKey:@"mode"] copy];
-    
-#warning REMOVE DEBUG LOG
-    [self logWithFormat:@"MODE: %@", self->mode];
   }
   return self;
 }

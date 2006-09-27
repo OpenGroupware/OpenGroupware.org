@@ -1,3 +1,7 @@
+2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSAddOrRemoveMeCommand.m: removed a debug log (v5.3.94)
+
 2006-08-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.93

@@ -102,8 +102,27 @@ static BOOL debugOn = NO;
   NSMutableString *msql;
   NSMutableArray  *ands;
   NSString        *s;
+  id              account;
+  NSArray         *teams;
 
   [super _prepareForExecutionInContext:_context];
+  
+  account = [_context valueForKey:LSAccountKey];
+#if 1
+  /*
+    Retrieve the teams of the login account using a separate
+    command because they are already cached in the command context.
+  */
+  teams   = LSRunCommandV(_context, @"account", @"teams", 
+			  @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
+			  @"account", [account valueForKey:@"globalID"], nil);
+#else
+  /*
+    Retrieve ACL via subselects. It doesn't matter for the performance ...,
+    both approaches give almost the same performance.
+  */
+  teams = nil;
+#endif
   
   sqlGen = [[OGoSQLGenerator alloc] initWithAdaptor:[self databaseAdaptor]
 				    entityName:[self entityName]];
@@ -124,8 +143,8 @@ static BOOL debugOn = NO;
 		[[self entity] attributeNamed:@"ownerId"]
 	      privateAttribute:
 		[[self entity] attributeNamed:@"isPrivate"]
-	      loginId:[_context valueForKey:LSAccountKey]
-	      loginTeams:nil]; // TODO: use LSGetTeamForAccountCommand
+	      loginId:account
+	      loginTeams:teams];
   if ([s isNotEmpty]) [ands addObject:s];
   
   if ([(s = [sqlGen generateJoinClause]) isNotEmpty])
@@ -170,7 +189,7 @@ static BOOL debugOn = NO;
   NSMutableArray   *result;
   NSException      *error;
   
-  [self logWithFormat:@"RUN SQL: %@", self->sql];
+  // [self logWithFormat:@"RUN SQL: %@", self->sql];
   
   adChannel = [[self databaseChannel] adaptorChannel];
   if ((error = [adChannel evaluateExpressionX:self->sql]) != nil) {

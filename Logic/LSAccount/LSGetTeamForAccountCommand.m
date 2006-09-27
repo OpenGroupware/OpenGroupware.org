@@ -68,7 +68,7 @@
   cacheKey = ([self fetchGlobalIDs])
     ? @"_cache_account_teamGIDs"
     : @"_cache_account_teams";
-
+  
   companyId = [self member];
   companyId = ([companyId isKindOfClass:[EOKeyGlobalID class]])
     ? [companyId keyValues][0]
