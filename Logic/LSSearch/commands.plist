@@ -1,7 +1,6 @@
-// $Id$
 {
   domainList = (
-        search
+    search
   );
 
   domains = {
@@ -10,6 +9,7 @@
         "newrecord"      = { class = "LSNewSearchRecordCommand"; };
         "extendedsearch" = { class = "LSExtendedSearchCommand";  };
         "fullsearch"     = { class = "LSFullSearchCommand";      };
+        "qsearch"        = { class = "LSQualifierSearchCommand"; };
       };
     };
   };

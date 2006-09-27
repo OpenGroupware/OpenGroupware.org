@@ -30,6 +30,7 @@ libLSSearch_OBJC_FILES = \
 	LSExtendedSearchCommand.m	\
 	LSFullSearchCommand.m		\
 	OGoSQLGenerator.m		\
+	LSQualifierSearchCommand.m	\
 
 LSSearch_RESOURCE_FILES += Defaults.plist
 

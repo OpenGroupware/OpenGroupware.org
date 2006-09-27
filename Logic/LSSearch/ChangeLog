@@ -1,3 +1,7 @@
+2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added generic LSQualifierSearchCommand (v5.3.31)
+
 2006-09-20  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoSQLGenerator.m: fixed a bug in the 'comment' key detection
