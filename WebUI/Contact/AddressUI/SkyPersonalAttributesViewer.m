@@ -192,7 +192,7 @@
   return self->object;
 }
 
-// actions
+/* actions */
 
 - (id)viewerConfigModeActivate {
   self->viewerConfigMode = YES;

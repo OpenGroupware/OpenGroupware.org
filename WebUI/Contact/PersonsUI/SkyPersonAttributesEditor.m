@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -28,7 +29,8 @@
   NSString *patternName;
   NSArray  *attributes;
 }
-@end /* SkyPersonAttributesEditor */
+
+@end
 
 #include "common.h"
 #include <NGMime/NGMimeType.h>
@@ -37,7 +39,7 @@
 
 @interface SkyPersonAttributesEditor(PrivateMethodes)
 - (NSString *)_violatedUniqueKeyName;
-@end /* SkyPersonAttributesEditor(PrivateMethodes) */
+@end
 
 @implementation SkyPersonAttributesEditor
 
@@ -53,6 +55,8 @@
   
   if (![[self object] isKindOfClass:[SkyDocument class]]) {
     id obj = [[self object] globalID];
+    
+    [self warnWithFormat:@"got no doc, fetch object by global-id: %@", obj];
     obj = [self runCommand:@"object::get-by-globalid", @"gid", obj, nil];
     obj = [obj lastObject];
     [self setObject:obj];
@@ -68,12 +72,17 @@
     }
   }
 
+#if 0
+#warning DEBUG LOG, REMOVE ME
+  [self logWithFormat:@"WORK ON: %@", [self object]];
+#endif
+
   return YES;
 }
 
 - (void)dealloc {
   [self->patternName release];
-  [self->attributes release];
+  [self->attributes  release];
   [super dealloc];
 }
 
@@ -88,20 +97,22 @@
   NSMutableArray *pats;
   NSEnumerator   *patEnum;
   NSString       *pat;
-
+  
   if (_pattern == nil) return;
-
-  ASSIGN(self->patternName, _pattern);
+  
+  ASSIGNCOPY(self->patternName, _pattern);
+  
   ud      = [[self session] userDefaults];
   patEnum = [[[ud dictionaryForKey:@"persons_view_attributes"]
                   objectForKey:_pattern] objectEnumerator];
   pats    = [NSMutableArray arrayWithCapacity:32];
-  while ((pat = [patEnum nextObject])) {
+  while ((pat = [patEnum nextObject]) != nil) {
     if ([pat isEqualToString:@"description"])
       pat = @"nickname";
     [pats addObject:pat];
   }
-  ASSIGN(self->attributes, pats);
+  
+  ASSIGNCOPY(self->attributes, pats);
 }
 - (NSString *)patternName {
   return self->patternName;
@@ -112,18 +123,20 @@
 }
 
 - (NSArray *)addressTypes {
-  NSArray        *types   = [[self person] addressTypes];
-  NSMutableArray *result  = [[NSMutableArray alloc] init];
-  int            i, count = [types count];
-
-  for (i = 0; i < count; i++) {
+  NSArray        *types;
+  NSMutableArray *result;
+  unsigned       i, count;
+  
+  types  = [[self person] addressTypes];
+  result = [NSMutableArray arrayWithCapacity:4];
+  
+  for (i = 0, count  = [types count]; i < count; i++) {
     NSString *type = [types objectAtIndex:i];
-
-    if ([self->attributes containsObject:type]) {
+    
+    if ([self->attributes containsObject:type])
       [result addObject:type];
-    }
   }
-  return [result autorelease];
+  return result;
 }
 
 - (SkyDocument *)addressDocument {
@@ -153,10 +166,9 @@
     [self setErrorString:@"Birthday format is incorrect!"];
     return NO;
   }
-  else {
-    [self setErrorString:nil];
-    return [super checkConstraintsForSave];
-  }
+
+  [self setErrorString:nil];
+  return [super checkConstraintsForSave];
 }
 
 /* operations */
@@ -176,15 +188,28 @@
 }
 
 - (id)save {
-  NSString *key   = nil;
-  id       result = nil;
+  NSString *key;
+  id       result;
+
+#if 0
+#warning DEBUG LOG, REMOVE ME
+  [self logWithFormat:@"SAVE: %@", [self object]];
+  [self logWithFormat:@"  PAT: %@: %@", [self patternName], [self attributes]];
+#endif
 
   result = [super save];
   
-  if (result)
+  if (result != nil)
     return result;
-  if ((key = [self _violatedUniqueKeyName]))
+  if ((key = [self _violatedUniqueKeyName]) != nil)
     return [self _handleUniqueKeyError:key];
+
+#if 0
+#warning DEBUG LOG, REMOVE ME
+  [self logWithFormat:@"DID SAVE: %@", [self object]];
+
+  [[self object] reload];
+#endif
   
   return nil;
 }
@@ -193,11 +218,12 @@
 
 - (BOOL)_isKeyViolated:(NSString *)_key {
   static id searchRec = nil;  
-  NSArray   *list     = nil;
+  NSArray   *list;
   unsigned  maxCount;
 
   maxCount = ([self isInNewMode]) ? 0 : 1;
-  
+
+  // TODO: explain what this does
   if (searchRec == nil) {
     searchRec = [[self runCommand:@"search::newrecord",
 		         @"entity", @"Person", nil] retain];

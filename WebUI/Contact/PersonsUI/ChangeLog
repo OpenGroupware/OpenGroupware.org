@@ -1,5 +1,7 @@
 2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SkyPersonAttributesEditor.m: code cleanups (v5.3.66)
+
 	* v5.3.65
 
 	* LSWPersons.m: minor code cleanups, added some comments
