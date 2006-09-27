@@ -72,7 +72,6 @@
 @interface NSObject(GID)
 - (EOGlobalID *)globalID;
 - (BOOL)isProfessionalEdition;
-- (BOOL)hasLogTab;
 @end
 
 @implementation LSWAppointmentViewer
@@ -647,7 +646,7 @@ static NSString *_personName(id self, id _person) {
 }
 
 - (BOOL)isLogTabEnabled {
-  return [[self application] hasLogTab];
+  return YES;
 }
 
 - (BOOL)isUserOwner {

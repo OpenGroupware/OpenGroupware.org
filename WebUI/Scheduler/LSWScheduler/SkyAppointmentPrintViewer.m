@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -22,7 +23,7 @@
 #include <OGoFoundation/LSWViewerPage.h>
 
 /* most code copied from 'LSWAppointmentViewer.m' */
-// TODO: hh asks: ^^^ says who? WTF???
+// TODO: hh asks: ^^^ says who? why???
 
 @class NSTimeZone, NSArray, NSString, NSMutableString;
 
@@ -58,17 +59,46 @@
 
 @interface NSObject(GID)
 - (EOGlobalID *)globalID;
-- (BOOL)hasLogTab;
 @end
 
 @implementation SkyAppointmentPrintViewer
+
+static NSArray *fetchAttrs = nil;
 
 + (int)version {
   return [super version] + 4;
 }
 
++ (void)initialize {
+  if (fetchAttrs == nil) {
+    fetchAttrs = [[NSArray alloc] initWithObjects:
+                                         @"globalID",
+                                         @"startDate",
+                                         @"endDate",
+                                         @"title",
+                                         @"aptType",
+                                         @"location",
+                                         @"resourceNames",
+                                         @"comment",
+                                         @"ownerId",
+                                         @"accessTeamId",
+                                         @"comment",
+                                         @"objectVersion",
+                                         @"isConflictDisabled",
+                                         @"cycleEndDate",
+                                         @"isAttendance",
+                                         @"isAbsence",
+                                         @"isViewAllowed",
+                                         @"type",
+                                         @"writeAccessList",
+                                         @"notificationTime",
+                                         @"dbStatus",
+				  nil];
+  }
+}
+
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     self->writeAccessList = [[NSMutableString alloc] initWithCapacity:128];
   }
   return self;
@@ -251,20 +281,22 @@
   [[[self object] valueForKey:@"endDate"]   setTimeZone:self->timeZone];
 }
 
-// accessors
+/* notifications */
 
 - (void)sleep {
   [super sleep];
   RELEASE(self->aptTypes); self->aptTypes = nil;
   RELEASE(self->aptType);  self->aptType  = nil;
 }
+
+/* accessors */
  
 - (id)appointment {
   return [self object];
 }
 
 - (BOOL)isLogTabEnabled {
-  return [[self application] hasLogTab];
+  return YES; // TODO: is this used in the print view?
 }
 
 - (NSString *)startDate {
@@ -415,10 +447,6 @@
 
 /* actions */
 
-@end /* SkyAppointmentPrintViewer */
-
-@implementation SkyAppointmentPrintViewer(PrivateMethodes)
-
 - (id)_getOwnerOf:(id)_app {
   NSString *ownerId;
 
@@ -458,34 +486,10 @@
   result = [self run:@"appointment::get-by-globalid",
                  @"gids",       [NSArray arrayWithObject:_gid],
                  @"timeZone",   self->timeZone,
-#if 1
-                 @"attributes", [NSArray arrayWithObjects:
-                                         @"globalID",
-                                         @"startDate",
-                                         @"endDate",
-                                         @"title",
-                                         @"aptType",
-                                         @"location",
-                                         @"resourceNames",
-                                         @"comment",
-                                         @"ownerId",
-                                         @"accessTeamId",
-                                         @"comment",
-                                         @"objectVersion",
-                                         @"isConflictDisabled",
-                                         @"cycleEndDate",
-                                         @"isAttendance",
-                                         @"isAbsence",
-                                         @"isViewAllowed",
-                                         @"type",
-                                         @"writeAccessList",
-                                         @"notificationTime",
-                                         @"dbStatus",
-                                         nil],
-#endif              
+                 @"attributes", fetchAttrs,
                  nil];
   
   return [result lastObject];
 }
 
-@end /* SkyAppointmentPrintViewer(PrivateMethodes) */
+@end /* SkyAppointmentPrintViewer */

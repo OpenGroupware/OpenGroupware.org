@@ -1,3 +1,7 @@
+2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWStaff.m: do not call -hasLogTab (v5.3.38)
+
 2005-09-30  Helge Hess  <helge.hess@skyrix.com>
 
 	* LSWTeamEditor.m: added support for setting the readonly flag of a

@@ -68,7 +68,6 @@
 
 @interface NSObject(SkyEnterpriseViewer)
 - (void)setParentFolder:(id)_parent;
-- (BOOL)hasLogTab;
 @end
  
 @interface SkyEnterpriseViewer(PrivateMethods)
@@ -88,7 +87,7 @@ static NSArray *accessChecks = nil;
 }
 
 - (id)init {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     NGBundleManager *bm = nil;
 
     bm = [NGBundleManager defaultBundleManager];
@@ -472,7 +471,7 @@ static NSArray *accessChecks = nil;
 }
 
 - (BOOL)isLogTabEnabled {
-  return [[self application] hasLogTab];
+  return YES;
 }
 - (BOOL)isLinkTabEnabled {
   return YES;

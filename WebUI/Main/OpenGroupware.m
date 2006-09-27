@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -259,8 +260,8 @@ static BOOL logBundleLoading          = NO;
     }
     
     if ([ud boolForKey:@"LSCoreOnCommandException"]) {
-      NSLog(@"Note: LSCoreOnCommandException=YES, "
-            @"OGo will dump core on uncatched exceptions!");
+      [self logWithFormat:@"Note: LSCoreOnCommandException=YES, "
+              @"OGo will dump core on uncatched exceptions!"];
     }
     
     [self setPageRefreshOnBacktrackEnabled:
@@ -327,8 +328,7 @@ static BOOL logBundleLoading          = NO;
 
 - (BOOL)hasLogTab {
   // TODO: remove
-  [self logWithFormat:@"WARNING(%s): called deprecated method.",
-	__PRETTY_FUNCTION__];
+  [self warnWithFormat:@"%s: called deprecated method.", __PRETTY_FUNCTION__];
   return YES;
 }
 
@@ -433,9 +433,9 @@ static BOOL logBundleLoading          = NO;
   pageName  = [req formValueForKey:@"restorePageName"];
   loginName = [req formValueForKey:@"loginName"];
   
-  if ([pageName length] == 0 || [loginName length] == 0)
+  if (![pageName isNotEmpty] || ![loginName isNotEmpty])
     return nil;
-      
+  
   page = [self pageWithName:@"Main"];
   
   [page initRestoreWithRequest:req];
@@ -491,7 +491,7 @@ static BOOL logBundleLoading          = NO;
       query = nil;
     }
     
-    if ([query length] > 0) {
+    if ([query isNotEmpty]) {
       NSEnumerator   *e;
       NSMutableArray *t = nil;
       NSString       *kvpair;
@@ -512,7 +512,7 @@ static BOOL logBundleLoading          = NO;
     }
     
     jumpTo = lpath;
-    if ([query length] > 0) {
+    if ([query isNotEmpty]) {
       jumpTo = [[jumpTo stringByAppendingString:@"?"]
                         stringByAppendingString:query];
     }
@@ -662,7 +662,7 @@ static BOOL logBundleLoading          = NO;
     
   zoneNames = [[NSUserDefaults standardUserDefaults]
                                arrayForKey:@"LSTimeZones"];
-  if ([zoneNames count] == 0) {
+  if (![zoneNames isNotEmpty]) {
     zoneNames = [NSArray arrayWithObject:@"GMT"];
     [self logWithFormat:@"Note: no LSTimeZones default set, using just GMT!"];
   }
@@ -673,7 +673,7 @@ static BOOL logBundleLoading          = NO;
     NSTimeZone *tzone;
     
     tzone = [NSTimeZone timeZoneWithAbbreviation:[zoneNames objectAtIndex:i]];
-    if (tzone)
+    if (tzone != nil)
       [(NSMutableArray *)zones addObject:tzone];
   }
   zones = [[zones autorelease] copy];
@@ -722,7 +722,7 @@ static BOOL logBundleLoading          = NO;
     
     r = [[(WOResponse *)[WOResponse alloc] initWithRequest:rq] autorelease];
     if (r == nil)
-      NSLog(@"%@: could not create response !", self);
+      [self logWithFormat:@"could not create response!"];
     
     [r setHeader:@"no-cache"  forKey:@"cache-control"];
     [r setHeader:@"text/html" forKey:@"content-type"];

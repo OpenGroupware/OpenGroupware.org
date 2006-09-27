@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -304,12 +305,12 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 
   obj = [_n object];
   if (![obj respondsToSelector:@selector(globalID)]) {
-    [self logWithFormat:@"ERROR: cannot process notification: %@", _n];
+    [self errorWithFormat:@"cannot process notification: %@", _n];
     return;
   }
-  
+
+  /* this changes the list so that freshly created objects get displayed */
   fspec = [self fetchSpecification];
-  
   [fspec setQualifier:[EOQualifier qualifierForGlobalID:[obj globalID]]];
   [self->dataSource setFetchSpecification:fspec];
 }
@@ -317,8 +318,12 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 /* actions */
 
 - (WOComponent *)tabClicked {
+  /*
+    If a tab gets clicked, we reset the fetch specification so that no
+    objects get displayed.
+  */
   EOFetchSpecification *fspec;
-
+  
   self->opFlags.hasSearched = 0;
   
   fspec = [self fetchSpecification];
@@ -337,9 +342,12 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
   EOFetchSpecification *fspec;
   EOKeyValueQualifier  *qual;
   NSString             *value;
-
+  
+  /* search for lastname which starts with the letter, eg: a*, b*, c* */
   value = [self->tabKey stringByAppendingString:@"*"];
   qual  = [[EOKeyValueQualifier alloc] initWithKey:@"name"
+				       // TODO: is this case-insensitive?!
+				       // EOQualifierOperatorCaseInsensitive..?
                                        operatorSelector:EOQualifierOperatorLike
                                        value:value];
   fspec = [self fetchSpecification];
@@ -347,7 +355,7 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
   [qual release]; qual = nil;
   [self->dataSource setFetchSpecification:fspec];
   
-  return nil;
+  return nil; /* stay on page */
 }
 
 - (NSArray *)_performFetch {
@@ -388,6 +396,7 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 }
 
 - (id)personSearch {
+  /* this action is triggered if the search button is pressed */
   EOFetchSpecification *fspec;
   
   fspec = [self fetchSpecification];

@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -69,8 +70,6 @@
 - (BOOL)hasImage;
 - (BOOL)isInEnterprise;
 - (NSDictionary *)_idDict;
-- (BOOL)isProfessionalEdition;
-- (BOOL)hasLogTab;
 - (NSString *)_personFullName;
 
 @end
@@ -313,7 +312,7 @@ static NSArray      *formLetterTypes          = nil;
 }
 
 - (BOOL)hasImage {
-  return [[self imageData] length] > 0;
+  return [[self imageData] isNotEmpty];
 }
 
 - (BOOL)isLDAPEnabled {
@@ -334,7 +333,7 @@ static NSArray      *formLetterTypes          = nil;
 }
 
 - (BOOL)isLogTabEnabled {
-  return isLogEnabled && [[self application] hasLogTab];
+  return isLogEnabled;
 }
 - (BOOL)isLinkTabEnabled {
   return isLinkEnabled;
@@ -345,9 +344,7 @@ static NSArray      *formLetterTypes          = nil;
      TODO: this should be replace with a *much* shorter command call which
            checks the assignment table
   */
-  return ([[[[self person] enterpriseDataSource] fetchObjects] count] > 0)
-    ? YES
-    : NO;
+  return [[[[self person] enterpriseDataSource] fetchObjects] isNotEmpty];
 }
 - (BOOL)isPersonNotRoot {
   // TODO: should use some command to determine root?
@@ -369,14 +366,12 @@ static NSArray      *formLetterTypes          = nil;
 - (BOOL)canMakeAccountFromPerson {
   if ([LSCommandContext useLDAPAuthorization]) return NO;
   if (![[self session] activeAccountIsRoot]) return NO;
-  return ([[[self object] valueForKey:@"isAccount"] boolValue])
-    ? NO : YES;
+  return [[[self object] valueForKey:@"isAccount"] boolValue] ? NO : YES;
 }
 
 - (BOOL)objectIsAccountButNotRoot {
   if (![[self session] activeAccountIsRoot]) return NO;
-  return ([[[self object] valueForKey:@"isAccount"] boolValue])
-    ? YES : NO;
+  return [[[self object] valueForKey:@"isAccount"] boolValue] ? YES : NO;
 }
 
 - (BOOL)canViewAccount {
@@ -388,9 +383,8 @@ static NSArray      *formLetterTypes          = nil;
 }
 
 - (NSString *)objectUrlKey {
-  return [NSString stringWithFormat:
-                     @"wa/activate?oid=%@",
-                     [[self object] valueForKey:@"companyId"]];
+  return [@"wa/activate?oid=" stringByAppendingString:
+	       [[[self object] valueForKey:@"companyId"] stringValue]];
 }
 
 - (NSString *)viewerTitle {
@@ -411,18 +405,15 @@ static NSArray      *formLetterTypes          = nil;
 
 - (BOOL)showLDAPInfo {
   NSUserDefaults *ud;
-  NSString *tmp;
   
   if (!self->isLDAPEnabled)
     return NO;
 
   ud = [NSUserDefaults standardUserDefaults];
 
-  tmp = [ud stringForKey:@"LSAuthLDAPServer"];
-  if ([tmp length] == 0)
+  if (![[ud stringForKey:@"LSAuthLDAPServer"] isNotEmpty])
     return NO;
-  tmp = [ud stringForKey:@"LSAuthLDAPServerRoot"];
-  if ([tmp length] == 0)
+  if (![[ud stringForKey:@"LSAuthLDAPServerRoot"] isNotEmpty])
     return NO;
   
   if (([[[self object] valueForKey:@"isAccount"] boolValue]))

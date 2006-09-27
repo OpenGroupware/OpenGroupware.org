@@ -1,3 +1,7 @@
+2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyEnterpriseViewer.m: do not call hasLogTab (v5.3.41)
+
 2006-09-11  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyEnterpriseList.m: properly inherit from OGoComponent, not

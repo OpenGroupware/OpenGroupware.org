@@ -61,12 +61,7 @@
 @interface NSObject(LSWStaff_PRIVATE)
 - (void)setIsTemplateUser:(BOOL)_flag;
 - (WOComponent *)search;
-- (BOOL)isProfessionalEdition;
-@end /* NSObject(LSWStaff_PRIVATE) */
-
-@interface WOApplication(LSWStaff_Skyrix)
-- (BOOL)hasLogTab;
-@end /* WOApplication(Skyrix) */
+@end
 
 @implementation LSWStaff
 
@@ -370,7 +365,7 @@ static NGMimeType *eoTeamType           = nil;
 }
 
 - (BOOL)isLogTabEnabled {
-  return [[self application] hasLogTab];
+  return YES;
 }
 
 - (BOOL)canCreateAccounts {

@@ -1,3 +1,11 @@
+2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.65
+
+	* LSWPersons.m: minor code cleanups, added some comments
+
+	* SkyPersonViewer.m: do not call hasLogTab, minor code cleanups
+
 2006-09-11  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyPersonList.m: properly inherit from OGoComponent, not

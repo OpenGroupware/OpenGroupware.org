@@ -1,3 +1,11 @@
+2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.109
+
+	* LSWAppointmentViewer.m: do not call hasLogTab
+
+	* SkyAppointmentPrintViewer.m: major code cleanups
+
 2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyAptParticipantsList.m: rewrote handling of status changes and
