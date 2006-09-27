@@ -24,6 +24,8 @@
 #include <LSSearch/OGoSQLGenerator.h>
 #include <EOControl/EOKeyGlobalID.h>
 
+// TODO: add support for fetch specifications?!
+
 @implementation LSQualifierSearchCommand
 
 static BOOL debugOn = NO;
@@ -48,6 +50,7 @@ static BOOL debugOn = NO;
 }
 
 - (void)dealloc {
+  [self->offset         release];
   [self->maxSearchCount release];
   [self->qualifier      release];
   [self->attributes     release];
@@ -58,7 +61,7 @@ static BOOL debugOn = NO;
 /* subclasses */
 
 - (NSString *)sqlSelect {
-  return @"*";
+  return nil;
 }
 
 - (NSString *)aclOwnerAttributeName {
@@ -100,7 +103,24 @@ static BOOL debugOn = NO;
   if ([s isNotEmpty]) [ands addObject:s];
   
   [msql appendString:@"SELECT DISTINCT "];
-  [msql appendString:[self sqlSelect]];
+  if (self->fetchCount)
+    [msql appendString:@"COUNT(B.*)"];
+  else {
+    NSString *csql;
+    
+    if ((csql = [self sqlSelect]) != nil)
+      [msql appendString:csql];
+    else {
+      /* per default we fetch just the primary key */
+      // TODO: if we have a fetch specification, possibly use the 'attributes'
+      //       from that
+      EOAttribute *pkey;
+      
+      pkey = [[self entity] attributeNamed: [self primaryKeyName]];
+      [msql appendString:@"B."];
+      [msql appendString:[pkey columnName]];
+    }
+  }
   [msql appendString:@" FROM "];
   [msql appendString:[sqlGen generateTableList]];
 
@@ -166,10 +186,18 @@ static BOOL debugOn = NO;
       [msql appendString:@")"];
     }
   }
-
-  if ([self->maxSearchCount isNotEmpty]) {
-    [msql appendString:@" LIMIT "];
-    [msql appendString:[self->maxSearchCount stringValue]];
+  
+  // TODO: add support for sort orderings
+  
+  if (!self->fetchCount) {
+    if ([self->offset isNotEmpty]) {
+      [msql appendString:@" OFFSET "];
+      [msql appendString:[self->offset stringValue]];
+    }
+    if ([self->maxSearchCount isNotEmpty]) {
+      [msql appendString:@" LIMIT "];
+      [msql appendString:[self->maxSearchCount stringValue]];
+    }
   }
   
   self->sql = [msql copy];
@@ -189,7 +217,8 @@ static BOOL debugOn = NO;
   
   adChannel = [[self databaseChannel] adaptorChannel];
   if ((error = [adChannel evaluateExpressionX:self->sql]) != nil) {
-    [self errorWithFormat:@"could not evaluate SQL: %@", self->sql];
+    [self errorWithFormat:@"could not evaluate SQL for qualifier %@: %@",
+	    self->qualifier, self->sql];
     [error raise];
   }
   
@@ -288,11 +317,25 @@ static BOOL debugOn = NO;
   return self->fetchGlobalIDs;
 }
 
-- (void)setMaxSearchCount:(NSNumber *)_maxSearchCount {
-  ASSIGN(self->maxSearchCount, _maxSearchCount);
+- (void)setFetchCount:(BOOL)_flag {
+  self->fetchCount = _flag;
+}
+- (BOOL)fetchCount {
+  return self->fetchCount;
+}
+
+- (void)setMaxSearchCount:(NSNumber *)_value {
+  ASSIGNCOPY(self->maxSearchCount, _value);
 }
 - (NSNumber *)maxSearchCount {
   return self->maxSearchCount;
+}
+
+- (void)setOffset:(NSNumber *)_value {
+  ASSIGNCOPY(self->offset, _value);
+}
+- (NSNumber *)offset {
+  return self->offset;
 }
 
 /* key/value coding */
@@ -304,8 +347,12 @@ static BOOL debugOn = NO;
     [self setAttributes:_value ];
   else if ([_key isEqualToString:@"maxSearchCount"])
     [self setMaxSearchCount:_value];
+  else if ([_key isEqualToString:@"offset"])
+    [self setOffset:_value];
   else if ([_key isEqualToString:@"fetchGlobalIDs"])
     [self setFetchGlobalIDs:[_value boolValue]];
+  else if ([_key isEqualToString:@"fetchCount"])
+    [self setFetchCount:[_value boolValue]];
   else
     [super takeValue:_value forKey:_key];
 }
@@ -319,6 +366,14 @@ static BOOL debugOn = NO;
   
   if ([_key isEqualToString:@"fetchGlobalIDs"])
     return [NSNumber numberWithBool:[self fetchGlobalIDs]];
+  
+  if ([_key isEqualToString:@"fetchCount"])
+    return [NSNumber numberWithBool:[self fetchCount]];
+
+  if ([_key isEqualToString:@"maxSearchCount"])
+    return [self maxSearchCount];
+  if ([_key isEqualToString:@"offset"])
+    return [self offset];
   
   return [super valueForKey:_key];
 }

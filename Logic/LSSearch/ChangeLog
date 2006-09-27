@@ -1,5 +1,7 @@
 2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSQualifierSearchCommand.m: improved select-expr generation (v5.3.32)
+
 	* added generic LSQualifierSearchCommand (v5.3.31)
 
 2006-09-20  Helge Hess  <helge.hess@opengroupware.org>

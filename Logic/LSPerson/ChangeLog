@@ -1,6 +1,9 @@
 2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
-	* LSQualifierSearchPersonCommand.m: completed team ACL fetche (v5.3.32)
+	* LSQualifierSearchPersonCommand.m: adopt new generic qualifier search
+	  command (v5.3.33)
+
+	* LSQualifierSearchPersonCommand.m: completed team ACL fetches(v5.3.32)
 
 2006-09-20  Helge Hess  <helge.hess@opengroupware.org>
 

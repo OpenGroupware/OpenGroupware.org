@@ -39,8 +39,10 @@
 {
   EOQualifier *qualifier;
   NSArray     *attributes;
+  NSNumber    *offset;
   NSNumber    *maxSearchCount;
   BOOL        fetchGlobalIDs;
+  BOOL        fetchCount;
   
   NSString *sql;
 }
