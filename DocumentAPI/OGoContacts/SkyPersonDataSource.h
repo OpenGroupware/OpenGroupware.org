@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -64,6 +65,11 @@
    hints:
       fetchIds = "YES" | "NO", default = "NO"
 
+
+  Names/Keys which differ between EO and document:
+    EO            Document
+    description   nickname
+    sex           gender
 */
 
 #include <OGoContacts/SkyCompanyDataSource.h>

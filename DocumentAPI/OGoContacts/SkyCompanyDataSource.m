@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -52,14 +53,14 @@ static BOOL doExplain = NO;
 }
 
 - (void)_registerForChangeNotifications {
-  [self logWithFormat:@"ERROR: subclasses should override this method!"];
+  [self errorWithFormat:@"subclasses should override this method!"];
 }
 
 - (id)initWithContext:(LSCommandContext *)_context { // designated initializer
   if (_context == nil) {
-    [self logWithFormat:
-            @"WARNING(%s): missing context for datasource creation ..",
-            __PRETTY_FUNCTION__];
+    [self errorWithFormat:
+            @"%s: missing context for datasource creation ..",
+	    __PRETTY_FUNCTION__];
     [self release];
     return nil;
   }
@@ -101,14 +102,14 @@ static BOOL doExplain = NO;
 }
 
 - (Class)documentClass {
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"%s: subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return Nil;
 }
 
 - (NSSet *)nativeKeys {
   /* Note: returns the EOModel attribute names */
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"%s: subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
@@ -126,7 +127,7 @@ static BOOL doExplain = NO;
     entries they may be filtered implementing the following 2 methods
     in subclasses
   */
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"%s: subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
@@ -148,42 +149,42 @@ static BOOL doExplain = NO;
 /* commands */
 
 - (NSString *)nameOfFullSearchCommand {
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"(%s): subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
 - (NSString *)nameOfExtSearchCommand {
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"(%s): subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
 - (NSString *)nameOfGetCommand {
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"(%s): subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
 - (NSString *)nameOfDeleteCommand {
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"(%s): subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
 - (NSString *)nameOfSetCommand {
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"(%s): subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
 - (NSString *)nameOfNewCommand {
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"(%s): subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
 - (NSString *)nameOfGetByGIDCommand {
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"(%s): subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
 - (NSString *)nameOfEntity {
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"(%s): subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
@@ -191,17 +192,17 @@ static BOOL doExplain = NO;
 /* notifications */
 
 - (NSString *)nameOfNewCompanyNotification {
-  [self logWithFormat:@"ERROR(%s): subclasses need to override this method!",
+  [self errorWithFormat:@"(%s): subclasses need to override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
 - (NSString *)nameOfUpdatedCompanyNotification {
-  [self logWithFormat:@"ERROR(%s): subclasses need to override this method!",
+  [self errorWithFormat:@"(%s): subclasses need to override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
 - (NSString *)nameOfDeletedCompanyNotification {
-  [self logWithFormat:@"ERROR(%s): subclasses need to override this method!",
+  [self errorWithFormat:@"(%s): subclasses need to override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
@@ -238,7 +239,7 @@ static BOOL doExplain = NO;
   }
   
   if ((key = [self _mapKeyFromDocToEO:[_q key]]) == nil) {
-    [self logWithFormat:@"ERROR(%s): key '%@' is not available: %@",
+    [self errorWithFormat:@"(%s): key '%@' is not available: %@",
           __PRETTY_FUNCTION__, [_q key], _q];
     return nil;
   }
@@ -312,7 +313,7 @@ static BOOL doExplain = NO;
     if (![companies isKindOfClass:[NSArray class]] && companies != nil)
       companies = [NSArray arrayWithObject:companies];
       
-    if ([companies count] > 0)
+    if ([companies isNotEmpty])
       companies = [self _pkeyDictsForCompanies:companies];
       
     if (shouldMakeGidsFromIds_) *shouldMakeGidsFromIds_ = YES;
@@ -375,6 +376,9 @@ static BOOL doExplain = NO;
   qualifier  = [self->fetchSpecification qualifier];
   fetchLimit = [self->fetchSpecification fetchLimit];
 
+
+  // [self logWithFormat:@"QUALIFIER: %@", qualifier];
+
   if (fetchLimit <= 0) {
     fetchLimit =
       [[self->context userDefaults] integerForKey:@"LSMaxSearchCount"];
@@ -411,7 +415,7 @@ static BOOL doExplain = NO;
 
 - (id)createObject {
   // TODO: should rather set -lastException?
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"(%s): subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
@@ -642,7 +646,7 @@ static BOOL doExplain = NO;
                           [fullSearchStrings objectAtIndex:0]
                         fetchLimit:_fetchLimit];
   }
-  else if ([fullSearchStrings count] > 0) {
+  else if ([fullSearchStrings isNotEmpty]) {
     /* multiple fulltext keys */
     if (doExplain) {
       [self logWithFormat:@"EXPLAIN:   run multiple fullsearches: %@",
@@ -652,7 +656,7 @@ static BOOL doExplain = NO;
                         isAndMode:[_qual isKindOfClass:[EOAndQualifier class]]
                         fetchLimit:_fetchLimit];
   }
-  else if ([searchRecords count] > 0) {
+  else if ([searchRecords isNotEmpty]) {
     if (doExplain) {
       [self logWithFormat:@"EXPLAIN:   run regular search (%@ / %@) ..",
               [self nameOfExtSearchCommand], _operator];
@@ -668,8 +672,8 @@ static BOOL doExplain = NO;
   // TODO: process context restrictions
 
   if (result != nil && fullResults != nil) {
-    [self logWithFormat:
-            @"ERROR: cannot do fulltext search at the same time "
+    [self errorWithFormat:
+            @"cannot do fulltext search at the same time "
             @"with a regular search!"];
   }
   else if (fullResults)
@@ -825,7 +829,7 @@ static BOOL doExplain = NO;
     
     if (checkForAsterisk && ![value hasSuffix:@"*"]) {
       // TODO: do not raise
-      [self logWithFormat:@"ERROR: value has no star-suffix: '%@'", value];
+      [self errorWithFormat:@": value has no star-suffix: '%@'", value];
       exception = [self _unsupportedKeyValueQualifierError:(id)qual];
       [exception raise];
     }
@@ -894,7 +898,7 @@ static BOOL doExplain = NO;
       else if ([firstFrag isEqualToString:@"phone"])
         [phone takeValue:value forKey:secondFrag];
       else {
-       [self logWithFormat:@"ERROR(%s): does not support key '%@'", 
+       [self errorWithFormat:@"(%s): does not support key '%@'", 
                __PRETTY_FUNCTION__, key];
       }
     }
