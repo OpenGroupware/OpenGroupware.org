@@ -1,3 +1,7 @@
+2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSDBObjectNewCommand.m: autocreate obj_info records (v5.3.124)
+
 2006-08-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSBundleCmdFactory.m: added -description, code cleanups, fixed a

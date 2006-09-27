@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -103,23 +104,54 @@
   return YES;
 }
 
-- (void)insertObjectInObjectInfoTable:(id)_object inContext:(id)_ctx {
-  // TODO: implement
-  [self debugWithFormat:@"TODO: register in objinfo: %@ / %@",
-	[self entityName],
-	[_object valueForKey:[self primaryKeyName]]];
+- (void)insertObjectInObjectInfoTable:(id)_object
+  inContext:(LSCommandContext *)_ctx
+{
+  EOAdaptorChannel *adChannel;
+  NSMutableString  *sql;
+  NSNumber         *pkey;
+  NSString         *entityName;
+  NSException      *error;
+  
+  pkey       = [_object valueForKey:[self primaryKeyName]];
+  entityName = [self entityName];
+  
+  if (![pkey isNotEmpty] && ![entityName isNotEmpty])
+    return;
+  
+  /* build SQL */
+  
+  /* What we do here should be pretty safe wrt SQL injection given the
+   * nature of the values. Would be better to do with the entity/adaptor
+   * anyways */
+  sql = [NSMutableString stringWithCapacity:256];
+  [sql appendString:@"INSERT INTO obj_info ( obj_id, obj_type ) VALUES ( "];
+  [sql appendString:[pkey stringValue]];
+  [sql appendString:@", '"];
+  [sql appendString:entityName];
+  [sql appendString:@"' );"];
+  
+  /* perform insert */
+  
+  adChannel = [[self databaseChannel] adaptorChannel];
+  if ((error = [adChannel evaluateExpressionX:sql]) != nil) {
+    [self errorWithFormat:@"could not insert objinfo record: %@", error];
+    return; /* not a huge problem */
+  }
 }
 
 - (void)_executeInContext:(id)_context {
-  BOOL isOk = NO;
-
+  BOOL isOk;
+  
   isOk = [[self databaseChannel] insertObject:[self object]];
   
-  if (!isOk && [self->sybaseMessages count] > 0)
-    [self assert:NO];
-  else if (!isOk && [self->sybaseMessages count] == 0)
-    [self assert:NO reason:@"Insert failed!"];
-
+  if (!isOk) {
+    if ([self->sybaseMessages isNotEmpty])
+      [self assert:NO];
+    else
+      [self assert:NO reason:@"Insert failed!"];
+  }
+  
   [self assert:[[self databaseChannel] refetchObject:[self object]]
         reason:@"Could not refetch inserted object!"];
   
