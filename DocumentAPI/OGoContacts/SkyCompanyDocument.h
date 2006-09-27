@@ -203,6 +203,6 @@
 
 - (void)_loadDocument:(id)_object;
 
-@end /* SkyCompanyDocument */
+@end
 
 #endif /* __OGoContacs_SkyCompanyDocument_H_ */

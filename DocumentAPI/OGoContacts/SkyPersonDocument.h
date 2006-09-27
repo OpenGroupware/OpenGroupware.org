@@ -146,7 +146,6 @@
 #include <OGoDocuments/SkyDocumentType.h>
 
 @interface SkyPersonDocumentType : SkyDocumentType
-@end /* SkyPersonDocumentType */
-
+@end
 
 #endif /* __OGoContacts_SkyPersonDocument_H_ */
