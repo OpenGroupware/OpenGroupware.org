@@ -1,5 +1,8 @@
 2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SkyCompanyDataSource.m, SkyCompanyDocument.m: code cleanups, added
+	  debug logs (v5.3.57)
+
 	* SkyPersonDataSource.m, SkyCompanyDataSource.m: use isNotEmpty and new
 	  logging methods. Some code cleanups (v5.3.56)
 

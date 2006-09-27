@@ -376,8 +376,10 @@ static BOOL doExplain = NO;
   qualifier  = [self->fetchSpecification qualifier];
   fetchLimit = [self->fetchSpecification fetchLimit];
 
-
-  // [self logWithFormat:@"QUALIFIER: %@", qualifier];
+#if 0
+#warning DEBUG LOG, REMOVE ME
+  [self logWithFormat:@"QUALIFIER: %@", qualifier];
+#endif
 
   if (fetchLimit <= 0) {
     fetchLimit =
@@ -441,6 +443,13 @@ static BOOL doExplain = NO;
     return;
 
   args = [_obj asDict];
+
+#if 0
+#warning DEBUG LOG, REMOVE ME
+  [self logWithFormat:@"saving using %@: %@", 
+	  [self nameOfSetCommand], args];
+#endif
+  
   [self->context runCommand:[self nameOfSetCommand] arguments:args];
   
   [self postDataSourceChangedNotification];

@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -79,7 +80,7 @@ static BOOL DebugDocumentRegistration = NO;
 }
 
 - (id)initWithEO:(id)_eo dataSource:(EODataSource *)_ds {
-  [self logWithFormat:@"ERROR(%s): subclasses need to override this method!",
+  [self errorWithFormat:@"%s: subclasses need to override this method!",
 	  __PRETTY_FUNCTION__];
   [self release];
   return nil;
@@ -142,8 +143,8 @@ static BOOL DebugDocumentRegistration = NO;
     return [(id)self->dataSource context];
   
 #if DEBUG
-  NSLog(@"WARNING(%s): document %@ has no datasource/context !!",
-        __PRETTY_FUNCTION__, self);
+  [self warnWithFormat:@"%s: document has no datasource/context: %@",
+         __PRETTY_FUNCTION__, self];
 #endif
   return nil;
 }
@@ -176,13 +177,13 @@ static BOOL DebugDocumentRegistration = NO;
 }
 
 - (void)invalidate {
-  RELEASE(self->phones);       self->phones       = nil;
-  RELEASE(self->phoneTypes);   self->phoneTypes   = nil;
-  RELEASE(self->addresses);    self->addresses    = nil;
-  RELEASE(self->comment);      self->comment      = nil;
-  RELEASE(self->keywords);     self->keywords     = nil;
-  RELEASE(self->imageType);    self->imageType    = nil;
-  RELEASE(self->imageData);    self->imageData    = nil;
+  [self->phones     release]; self->phones       = nil;
+  [self->phoneTypes release]; self->phoneTypes   = nil;
+  [self->addresses  release]; self->addresses    = nil;
+  [self->comment    release]; self->comment      = nil;
+  [self->keywords   release]; self->keywords     = nil;
+  [self->imageType  release]; self->imageType    = nil;
+  [self->imageData  release]; self->imageData    = nil;
 
   [self->bossName   release]; self->bossName   = nil;
   [self->department release]; self->department = nil;
@@ -209,7 +210,10 @@ static BOOL DebugDocumentRegistration = NO;
 - (void)setPhoneNumber:(NSString *)_number forType:(NSString *)_type {
   id phone;
   
-  if (_type == nil) return;
+  if (_type == nil) {
+    [self warnWithFormat:@"got no type when setting phone number: %@",_number];
+    return;
+  }
   
   if ([[self phoneNumberForType:_type] isEqual:_number]) /* did not change */
     return;
@@ -221,9 +225,22 @@ static BOOL DebugDocumentRegistration = NO;
         
     [phone takeValue:_type   forKey:@"type"];
     [self->phones takeValue:phone forKey:_type];
+
+#if 0
+#warning DEBUG LOG, DISABLE ME
+    [self logWithFormat:@"created new phone for type %@: %@", _type, phone];
+#endif
   }
+#if 0
+  else {
+    [self logWithFormat:@"changing number(%@) in existing phone type %@: %@",
+	    _number, _type, phone];
+  }
+#endif
+
   [phone takeValue:_number forKey:@"number"];
 }
+
 - (NSString *)phoneNumberForType:(NSString *)_type {
   id tmp = nil;
 
@@ -301,7 +318,7 @@ static BOOL DebugDocumentRegistration = NO;
   if (![self isAttributeSupported:@"addresses"])
     return nil;
   
-  [self logWithFormat:@"ERROR(%s): subclasses need to override this method!",
+  [self errorWithFormat:@"%s: subclasses need to override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
@@ -615,18 +632,19 @@ static BOOL DebugDocumentRegistration = NO;
 /* actions */
 
 - (void)logException:(NSException *)_exception {
-  NSLog(@"%s: catched exception: %@", __PRETTY_FUNCTION__, _exception);
+  [self errorWithFormat:@"%s: catched exception: %@", 
+	  __PRETTY_FUNCTION__, _exception];
 }
 
 - (NSString *)nameOfSetCommand {
-  [self logWithFormat:@"ERROR(%s): subclasses need to override this method!",
+  [self errorWithFormat:@"%s: subclasses need to override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
 
 - (BOOL)save {
   BOOL result = YES;
-
+  
   if (!self->status.isEdited) return YES;
   if (![self isComplete])     return NO;
   
@@ -634,6 +652,11 @@ static BOOL DebugDocumentRegistration = NO;
     if (self->globalID == nil) {
       NSArray *addrs;
       int     i, cnt;
+
+#if 0
+#warning DEBUG LOG, REMOVE ME
+      [self logWithFormat:@"saving w/o GID ..."];
+#endif
       
       [self->dataSource insertObject:self];
       addrs = [[self context] runCommand:@"address::get",
@@ -663,6 +686,11 @@ static BOOL DebugDocumentRegistration = NO;
       NSEnumerator *typE;
       id           one;
 
+#if 0
+#warning DEBUG LOG, REMOVE ME
+      [self logWithFormat:@"updating using DS ..."];
+#endif
+      
       typE = [[self addressTypes] objectEnumerator];
       while ((one = [typE nextObject]) != nil) {
         one = [self addressForType:one];
@@ -704,10 +732,15 @@ static BOOL DebugDocumentRegistration = NO;
     [self invalidate];
   }
   else {
+    NSString *cmdName;
     id obj;
-
-    obj = [[[self context] runCommand:@"object::get-by-globalid",
-                @"gid", [self globalID], nil] lastObject];
+    
+    // eg person::get-by-globalid
+    cmdName = [[[self entityName] lowercaseString]
+		      stringByAppendingString:@"::get-by-globalid"];
+    
+    obj = [[[self context] runCommand:cmdName, @"gid", [self globalID], nil] 
+	    lastObject];
     [self _loadDocument:obj];
   }
   return YES;
@@ -1048,21 +1081,28 @@ static BOOL DebugDocumentRegistration = NO;
 
 - (void)takeValue:(id)_value forKey:(NSString *)_key {
   NSAssert1((_key != nil), @"%s: key is nil", __PRETTY_FUNCTION__);
-  if (_value == nil)
+  
+  if (_value == nil) {
+    // TODO: hm, why is this?
+    [self warnWithFormat:@"attempt to set key to nil: %@", _key];
     return;
-  else if (![self isValid]) {
+  }
+  
+  if (![self isValid]) {
     [NSException raise:@"invalid person document"
                  format:@"cannot takeValue:forKey:%@, document %@ is invalid",
                  _key, self];
     return;
   }
-  else if (![self isComplete]) {
+  
+  if (![self isComplete]) {
     [NSException raise:@"person document is not complete, use reload"
                format:@"cannot takeValue:forKey:%@, document %@ is incomplete",
                    _key, self];
     return;
   }
-  else if ([self->extendedKeys containsObject:_key])
+  
+  if ([self->extendedKeys containsObject:_key])
     [self setExtendedAttribute:_value forKey:_key];
   else if ([[self phoneTypes] containsObject:_key])
     [self setPhoneNumber:_value forType:_key];
@@ -1073,8 +1113,8 @@ static BOOL DebugDocumentRegistration = NO;
       [self setPhoneInfo:_value forType:[frags objectAtIndex:0]];
   }
   else if ([_key isEqualToString:@"extendedAttrs"]) {
-    NSLog(@"WARNING[%s]: tried to set extendedAttrs",
-          __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"%s: attempt to set 'extendedAttrs' key via KVC",
+          __PRETTY_FUNCTION__];
   }
   else {
     //NSLog(@"%s: _value[%@][%p] %@ _key[%@][%p] %@",
@@ -1115,11 +1155,23 @@ static BOOL DebugDocumentRegistration = NO;
 
 /* description */
 
-- (NSString *)description {
-  return [NSString stringWithFormat:@"%@[%@] owner:%@ "
-                   @"self->supportedAttributes %@ self->attributeMap %@",
-                   [super description], self->globalID, self->owner,
-                   self->supportedAttributes, self->attributeMap];
+- (void)appendAttributesToDescription:(NSMutableString *)_md {
+  [super appendAttributesToDescription:_md];
+  
+  if (self->owner != nil)
+    [_md appendFormat:@" owner=%@", self->owner];
+  
+  if (self->supportedAttributes != nil)
+    [_md appendFormat:@" supattrs=%@", self->supportedAttributes];
+  
+  if (self->attributeMap != nil)
+    [_md appendFormat:@" amap=%@", self->attributeMap];
+  
+  if (self->phoneTypes != nil)
+    [_md appendFormat:@" ptypes=%@", self->phoneTypes];
+  
+  [_md appendFormat:@" phones=#%d", [self->phones    count]];
+  [_md appendFormat:@" addrs=#%d",  [self->addresses count]];
 }
 
 @end /* SkyCompanyDocument */
