@@ -28,7 +28,7 @@
 - (NSDictionary *)searchDict;
 @end
 
-#define USE_QSEARCH 1
+//#define USE_QSEARCH 1
 
 @implementation SkyCompanyDataSource
 
@@ -334,6 +334,9 @@ static BOOL doExplain = NO;
     
     if (doExplain)
       [self logWithFormat:@"EXPLAIN: using qsearch command: %@", _qualifier];
+    
+    if (shouldMakeGidsFromIds_ != NULL)
+      *shouldMakeGidsFromIds_ = NO;
     
     results = [self->context runCommand:
 		   [[self commandDomain] stringByAppendingString:@"::qsearch"],
