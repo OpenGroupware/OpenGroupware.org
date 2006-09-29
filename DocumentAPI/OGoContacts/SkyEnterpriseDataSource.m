@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -69,27 +70,6 @@ static NSSet *nativeKeys = nil;
 
 /* commands */
 
-- (NSString *)nameOfFullSearchCommand {
-  return @"enterprise::full-search";
-}
-- (NSString *)nameOfExtSearchCommand {
-  return @"enterprise::extended-search";
-}
-- (NSString *)nameOfGetCommand {
-  return @"enterprise::get";
-}
-- (NSString *)nameOfNewCommand {
-  return @"enterprise::new";
-}
-- (NSString *)nameOfDeleteCommand {
-  return @"enterprise::delete";
-}
-- (NSString *)nameOfSetCommand {
-  return @"enterprise::set";
-}
-- (NSString *)nameOfGetByGIDCommand {
-  return @"enterprise::get-by-globalid";
-}
 - (NSString *)nameOfEntity {
   return @"Enterprise";
 }

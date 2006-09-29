@@ -101,13 +101,6 @@
 - (NSString *)_mapKeyFromEOToDoc:(NSString *)_key;
 - (NSString *)_mapKeyFromDocToEO:(NSString *)_key;
 
-- (NSString *)nameOfFullSearchCommand;
-- (NSString *)nameOfExtSearchCommand;
-- (NSString *)nameOfGetCommand;
-- (NSString *)nameOfDeleteCommand;
-- (NSString *)nameOfSetCommand;
-- (NSString *)nameOfNewCommand;
-- (NSString *)nameOfGetByGIDCommand;
 - (NSString *)nameOfEntity;
 
 - (NSString *)nameOfNewCompanyNotification;

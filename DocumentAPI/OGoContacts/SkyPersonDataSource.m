@@ -82,28 +82,6 @@ static NSSet *nativeKeys = nil;
 
 /* commands */
 
-- (NSString *)nameOfFullSearchCommand {
-  return @"person::full-search";
-}
-- (NSString *)nameOfExtSearchCommand {
-  return @"person::extended-search";
-}
-- (NSString *)nameOfGetCommand {
-  return @"person::get";
-}
-- (NSString *)nameOfDeleteCommand {
-  return @"person::delete";
-}
-- (NSString *)nameOfNewCommand {
-  return @"person::new";
-}
-- (NSString *)nameOfSetCommand {
-  return @"person::set";
-}
-- (NSString *)nameOfGetByGIDCommand {
-  return @"person::get-by-globalid";
-}
-
 - (NSString *)nameOfEntity {
   return @"Person";
 }

@@ -28,6 +28,8 @@
 - (NSDictionary *)searchDict;
 @end
 
+#define USE_QSEARCH 1
+
 @implementation SkyCompanyDataSource
 
 static BOOL doExplain = NO;
@@ -148,41 +150,10 @@ static BOOL doExplain = NO;
 
 /* commands */
 
-- (NSString *)nameOfFullSearchCommand {
-  [self errorWithFormat:@"(%s): subclasses must override this method!",
-	  __PRETTY_FUNCTION__];
-  return nil;
+- (NSString *)commandDomain {
+  return [[self nameOfEntity] lowercaseString];
 }
-- (NSString *)nameOfExtSearchCommand {
-  [self errorWithFormat:@"(%s): subclasses must override this method!",
-	  __PRETTY_FUNCTION__];
-  return nil;
-}
-- (NSString *)nameOfGetCommand {
-  [self errorWithFormat:@"(%s): subclasses must override this method!",
-	  __PRETTY_FUNCTION__];
-  return nil;
-}
-- (NSString *)nameOfDeleteCommand {
-  [self errorWithFormat:@"(%s): subclasses must override this method!",
-	  __PRETTY_FUNCTION__];
-  return nil;
-}
-- (NSString *)nameOfSetCommand {
-  [self errorWithFormat:@"(%s): subclasses must override this method!",
-	  __PRETTY_FUNCTION__];
-  return nil;
-}
-- (NSString *)nameOfNewCommand {
-  [self errorWithFormat:@"(%s): subclasses must override this method!",
-	  __PRETTY_FUNCTION__];
-  return nil;
-}
-- (NSString *)nameOfGetByGIDCommand {
-  [self errorWithFormat:@"(%s): subclasses must override this method!",
-	  __PRETTY_FUNCTION__];
-  return nil;
-}
+
 - (NSString *)nameOfEntity {
   [self errorWithFormat:@"(%s): subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
@@ -210,7 +181,8 @@ static BOOL doExplain = NO;
 /* commands */
 
 - (NSArray *)_performFullTextSearch:(NSString *)_txt fetchLimit:(int)_limit {
-  return [self->context runCommand:[self nameOfFullSearchCommand],
+  return [self->context runCommand:
+	      [[self commandDomain] stringByAppendingString:@"::full-search"],
               @"maxSearchCount", [NSNumber numberWithInt:_limit],
               @"searchString",   _txt, nil];
 }
@@ -218,7 +190,8 @@ static BOOL doExplain = NO;
   isAndMode:(BOOL)_isAndMode fetchLimit:(int)_limit 
 {
   // TODO: ensure that we have no dups in _txts!
-  return [self->context runCommand:[self nameOfFullSearchCommand],
+  return [self->context runCommand:
+	      [[self commandDomain] stringByAppendingString:@"::full-search"],
               @"maxSearchCount", [NSNumber numberWithInt:_limit],
               @"searchStrings",   _txts, 
               @"isAndMode", [NSNumber numberWithBool:_isAndMode],
@@ -326,30 +299,68 @@ static BOOL doExplain = NO;
   return companies;
 }
 
-- (NSArray *)_primaryFetchCompaniesForQualifier:(EOQualifier *)qualifier 
-  fetchLimit:(int)fetchLimit
+- (BOOL)isFullSearchQualifier:(EOQualifier *)_q {
+  /*
+    We currently handle fulltext searches with a different command. This
+    should be changed in the future (OGoSQLGenerator should be able to
+    generate full searches).
+  */
+  
+  if (_q == nil)
+    return NO;
+  
+  /* if we have a compound qualifier, check one of the subqualifiers */
+  if ([_q isKindOfClass:[EOAndQualifier class]])
+    _q = [[_q subqualifiers] lastObject];
+  else if ([_q isKindOfClass:[EOOrQualifier class]])
+    _q = [[_q subqualifiers] lastObject];
+  
+  if (![_q isKindOfClass:[EOKeyValueQualifier class]])
+    return NO;
+  
+  return [[(EOKeyValueQualifier *)_q key] isEqualToString:@"fullSearchString"];
+}
+
+- (NSArray *)_primaryFetchCompaniesForQualifier:(EOQualifier *)_qualifier 
+  fetchLimit:(int)_limit
   shouldMakeGidsFromIds:(BOOL *)shouldMakeGidsFromIds_
 {
-  if (qualifier == nil)
+  if (_qualifier == nil)
     return nil;
   
-  if ([qualifier isKindOfClass:[EOKeyValueQualifier class]]) {
-    return [self _fetchCompaniesForKeyValueQualifier:(id)qualifier
-                 fetchLimit:fetchLimit
+#if USE_QSEARCH
+  if (![self isFullSearchQualifier:_qualifier]) {
+    NSArray  *results;
+    
+    if (doExplain)
+      [self logWithFormat:@"EXPLAIN: using qsearch command: %@", _qualifier];
+    
+    results = [self->context runCommand:
+		   [[self commandDomain] stringByAppendingString:@"::qsearch"],
+		   @"qualifier",      _qualifier,
+		   @"maxSearchCount", [NSNumber numberWithInt:_limit],
+		   @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
+		   nil];
+  }
+#endif
+  
+  if ([_qualifier isKindOfClass:[EOKeyValueQualifier class]]) {
+    return [self _fetchCompaniesForKeyValueQualifier:(id)_qualifier
+                 fetchLimit:_limit
                  shouldMakeGidsFromIds:shouldMakeGidsFromIds_];
   }
   
-  if ([qualifier isKindOfClass:[EOOrQualifier class]]) {
-    return [self _fetchCompaniesWithQualifier:qualifier
-                 operator:@"OR" fetchLimit:fetchLimit];
+  if ([_qualifier isKindOfClass:[EOOrQualifier class]]) {
+    return [self _fetchCompaniesWithQualifier:_qualifier
+                 operator:@"OR" fetchLimit:_limit];
   }
-  if ([qualifier isKindOfClass:[EOAndQualifier class]]) {
-    return [self _fetchCompaniesWithQualifier:qualifier
-                 operator:@"AND" fetchLimit:fetchLimit];
+  if ([_qualifier isKindOfClass:[EOAndQualifier class]]) {
+    return [self _fetchCompaniesWithQualifier:_qualifier
+                 operator:@"AND" fetchLimit:_limit];
   }
   
-  // returns the exception
-  return (id)[self _handleUnsupportedQualifier:qualifier];
+  /* return an exception */
+  return (id)[self _handleUnsupportedQualifier:_qualifier];
 }
 
 - (NSArray *)_sortResultDocuments:(NSArray *)result {
@@ -375,12 +386,10 @@ static BOOL doExplain = NO;
   
   qualifier  = [self->fetchSpecification qualifier];
   fetchLimit = [self->fetchSpecification fetchLimit];
-
-#if 0
-#warning DEBUG LOG, REMOVE ME
-  [self logWithFormat:@"QUALIFIER: %@", qualifier];
-#endif
-
+  
+  if (doExplain)
+    [self logWithFormat:@"EXPLAIN: fetchObjects: %@", qualifier];
+  
   if (fetchLimit <= 0) {
     fetchLimit =
       [[self->context userDefaults] integerForKey:@"LSMaxSearchCount"];
@@ -425,7 +434,9 @@ static BOOL doExplain = NO;
 - (void)insertObject:(id)_obj {
   id  dict = [_obj asDict];
 
-  dict = [self->context runCommand:[self nameOfNewCommand] arguments:dict];
+  dict = [self->context runCommand:
+		[[self commandDomain] stringByAppendingString:@"::new"]
+	      arguments:dict];
 
   [_obj _setGlobalID:[dict valueForKey:@"globalID"]];
   [_obj takeValue:[dict valueForKey:@"number"] forKey:@"number"];
@@ -450,7 +461,9 @@ static BOOL doExplain = NO;
 	  [self nameOfSetCommand], args];
 #endif
   
-  [self->context runCommand:[self nameOfSetCommand] arguments:args];
+  [self->context runCommand:
+	 [[self commandDomain] stringByAppendingString:@"::set"]
+       arguments:args];
   
   [self postDataSourceChangedNotification];
   [[self notificationCenter]
@@ -459,10 +472,15 @@ static BOOL doExplain = NO;
 }
 
 - (void)deleteObject:(id)_obj {
-  NSDictionary *dict = [_obj asDict];
+  NSDictionary *dict;
   
-  //[dict takeValue:[NSNumber numberWithBool:YES] forKey:@"reallyDelete"];
-  [self->context runCommand:[self nameOfDeleteCommand] arguments:dict];
+  dict = [_obj asDict];
+#if 0 // TODO: explain this
+  [dict takeValue:[NSNumber numberWithBool:YES] forKey:@"reallyDelete"];
+#endif
+  [self->context runCommand:
+	 [[self commandDomain] stringByAppendingString:@"::delete"]
+       arguments:dict];
   [self postDataSourceChangedNotification];
   
   [[self notificationCenter]
@@ -528,22 +546,32 @@ static BOOL doExplain = NO;
 }
 
 - (NSArray *)_makeGIDsFromIDs:(NSArray *)_ids {
+  static Class gidClass = nil;
+  static Class numClass = nil;
   NSMutableArray *gids;
-  int            i, cnt;
+  unsigned       i, cnt;
+
+  if (gidClass == nil) gidClass = [EOGlobalID class];
+  if (numClass == nil) numClass = [NSNumber class];
   
   cnt  = [_ids count];
   gids = [NSMutableArray arrayWithCapacity:(cnt + 1)];
   
   for (i = 0; i < cnt; i++) {
     id obj;
-    id values[1];
     EOGlobalID *gid;
     
-    obj       = [_ids objectAtIndex:i];
-    values[0] = [NSNumber numberWithInt:
-                          [[obj valueForKey:@"companyId"] intValue]];
+    if ([(obj = [_ids objectAtIndex:i]) isKindOfClass:gidClass]) {
+      [gids addObject:obj];
+      continue;
+    }
+    
+    obj = [obj valueForKey:@"companyId"];
+    if (![obj isKindOfClass:numClass])
+      obj = [NSNumber numberWithInt:[obj intValue]];
+      
     gid = [EOKeyGlobalID globalIDWithEntityName:[self nameOfEntity]
-                         keys:values keyCount:1 zone:NULL];
+			 keys:&obj keyCount:1 zone:NULL];
     [gids addObject:gid];
   }
   return gids;  
@@ -553,11 +581,15 @@ static BOOL doExplain = NO;
   NSArray *result;
   
   if (_attrs == nil) {
-    result = [self->context runCommand:[self nameOfGetByGIDCommand],
+    result = [self->context runCommand:
+		    [[self commandDomain] 
+		      stringByAppendingString:@"::get-by-globalid"],
                   @"gids", _gids, nil];
   }
   else {
-    result = [self->context runCommand:[self nameOfGetByGIDCommand],
+    result = [self->context runCommand:
+		    [[self commandDomain] 
+		      stringByAppendingString:@"::get-by-globalid"],
                   @"gids",       _gids,
                   @"attributes", _attrs,
                   nil];
@@ -667,10 +699,12 @@ static BOOL doExplain = NO;
   }
   else if ([searchRecords isNotEmpty]) {
     if (doExplain) {
-      [self logWithFormat:@"EXPLAIN:   run regular search (%@ / %@) ..",
-              [self nameOfExtSearchCommand], _operator];
+      [self logWithFormat:@"EXPLAIN:   run regular ext search (op %@) ..",
+              _operator];
     }
-    result = [self->context runCommand:[self nameOfExtSearchCommand],
+    result = [self->context runCommand:
+		  [[self commandDomain] 
+		      stringByAppendingString:@"::extended-search"],
                   @"operator",       _operator,
                   @"searchRecords",  searchRecords,
                   @"fetchIds",       [NSNumber numberWithBool:YES],
@@ -952,7 +986,9 @@ static BOOL doExplain = NO;
   /* used by resolver */
   NSArray *companies;
 
-  companies = [self->context runCommand:[self nameOfGetByGIDCommand],
+  companies = [self->context runCommand:
+		    [[self commandDomain] 
+		      stringByAppendingString:@"::get-by-globalid"],
                    @"gids", _gids, nil];
   
   return [self _morphEOsToDocuments:companies];

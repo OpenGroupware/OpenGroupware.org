@@ -19,8 +19,8 @@
   02111-1307, USA.
 */
 
-#ifndef __SkyContacts_SkyPersonEnterpriseDataSource_H__
-#define __SkyContacts_SkyPersonEnterpriseDataSource_H__
+#ifndef __OGoContacts_SkyPersonEnterpriseDataSource_H__
+#define __OGoContacts_SkyPersonEnterpriseDataSource_H__
 
 #import "SkyCompanyCompanyDataSource.h"
 
@@ -30,7 +30,9 @@
 {
   SkyEnterpriseDataSource *enterpriseDS;
 }
+
 - (id)initWithContext:(id)_ctx personId:(EOGlobalID *)_gid;
+
 @end
 
-#endif /* __SkyContacts_SkyPersonEnterpriseDataSource_H__ */
+#endif /* __OGoContacts_SkyPersonEnterpriseDataSource_H__ */

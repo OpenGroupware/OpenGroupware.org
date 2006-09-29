@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -30,9 +31,12 @@
 }
 
 - (void)dealloc {
-  RELEASE(self->enterpriseDS);
+  [self->enterpriseDS release];
   [super dealloc];
 }
+
+/* subclass setup */
+
 - (NSString *)nameOfGetByGIDCommand {
   return @"enterprise::get-by-globalid";
 }
