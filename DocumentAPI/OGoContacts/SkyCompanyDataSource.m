@@ -341,6 +341,7 @@ static BOOL doExplain = NO;
 		   @"maxSearchCount", [NSNumber numberWithInt:_limit],
 		   @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
 		   nil];
+    return results;
   }
 #endif
   
