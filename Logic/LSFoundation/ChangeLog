@@ -1,3 +1,7 @@
+2006-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoAccessManager.m: fixed an incorrect error log (v5.3.125)
+
 2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSDBObjectNewCommand.m: autocreate obj_info records (v5.3.124)

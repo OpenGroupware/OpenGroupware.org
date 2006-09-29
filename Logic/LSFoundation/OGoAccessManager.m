@@ -910,8 +910,13 @@ static Class   StrClass = Nil;
   if (bundle == nil) {
     static NSMutableSet *warnedEntities = nil;
     
-    if (warnedEntities == nil)
+    if (warnedEntities == nil) {
       warnedEntities = [[NSMutableSet alloc] initWithCapacity:16];
+
+      /* otherwise we get a lot of warnings ... */
+      [warnedEntities addObject:@"Telephone"];
+      [warnedEntities addObject:@"Address"];
+    }
     
     if (![warnedEntities containsObject:entityName]) {
       [self errorWithFormat:
