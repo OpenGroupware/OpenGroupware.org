@@ -1,3 +1,8 @@
+2006-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSQualifierSearchCommand.m: properly set result set when fetching
+	  gids (v5.3.33)
+
 2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSQualifierSearchCommand.m: improved select-expr generation (v5.3.32)

@@ -213,7 +213,8 @@ static BOOL debugOn = NO;
   NSMutableArray   *result;
   NSException      *error;
   
-  // [self logWithFormat:@"RUN SQL: %@", self->sql];
+  if (debugOn)
+    [self logWithFormat:@"qsearch SQL: %@", self->sql];
   
   adChannel = [[self databaseChannel] adaptorChannel];
   if ((error = [adChannel evaluateExpressionX:self->sql]) != nil) {
@@ -248,6 +249,7 @@ static BOOL debugOn = NO;
   
   if (![result isNotEmpty]) {
     /* found no matches */
+    if (debugOn) [self logWithFormat:@"found no matches."];
     [self setReturnValue:[NSArray array]];
     return;
   }
@@ -255,8 +257,11 @@ static BOOL debugOn = NO;
   /* post processing */
   
   if ([self fetchGlobalIDs]) {
-    if (debugOn) 
-      [self logWithFormat:@"  fetching gids/ids, no post-processing .."];
+    [self setReturnValue:result];
+    if (debugOn) {
+      [self logWithFormat:@"  fetching gids/ids, no post-processing: %d ids",
+	      [result count]];
+    }
     return;
   }
   
@@ -281,8 +286,6 @@ static BOOL debugOn = NO;
   }
   [self setReturnValue:result];
 }
-
-/* entity */
 
 /* accessors */
 
