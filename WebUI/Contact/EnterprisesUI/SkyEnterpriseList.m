@@ -55,10 +55,10 @@
 @implementation SkyEnterpriseList
 
 + (int)version {
-  return [super version] + 0 /* v2 */;
+  return [super version] + 0 /* v3 */;
 }
 + (void)initialize {
-  NSAssert2([super version] == 2,
+  NSAssert2([super version] == 3,
             @"invalid superclass (%@) version %i !",
             NSStringFromClass([self superclass]), [super version]);
 }
@@ -66,8 +66,10 @@
 /* accessors */
 
 - (NSString *)defaultFavoritesKey {
-  return [self->favoritesKey isNotEmpty]
-    ? self->favoritesKey : (NSString *)@"enterprise_favorites";
+  return @"enterprise_favorites";
+}
+- (NSString *)defaultConfigKey {
+  return @"enterprise_defaultlist";
 }
 
 - (NSString *)itemIdString {

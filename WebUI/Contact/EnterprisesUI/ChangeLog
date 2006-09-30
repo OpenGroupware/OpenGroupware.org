@@ -1,5 +1,8 @@
 2006-09-30  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SkyEnterpriseList.m: moved column configuration to user defaults
+	  (v5.3.43)
+
 	* SkyEnterpriseList.m: changed to use new OGoListComponent class
 	  (v5.3.42)
 

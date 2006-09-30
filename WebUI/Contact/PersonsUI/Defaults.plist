@@ -26,6 +26,12 @@
     "participants.description",
     "participants.isTeam", "participants.isAccount"
   );
+
+  // lists
+  person_defaultlist = (
+    nickname, firstname, degree, job_title,
+    email1, "01_tel"
+  );
   
   OGoPersonLinksEnabled = YES;
   

@@ -19,7 +19,7 @@ Font: SkyConfigFont {}
 /* custom columns */
 
 ColumnsRep: WORepetition {
-  list = ( number, email, "01_tel", url );
+  list = configList;
   item = currentColumn;
 }
 
@@ -31,13 +31,13 @@ IsUrlColumn:     WOConditional { condition = columnType; value = "url";   };
 RegularColumn: WETableData {
   title   = currentColumnLabel;
   string  = currentColumnValue;
-  sortKey = currentColumn;
+  sortKey = currentSortKey;
 }
-
 ContentColumn: WETableData {
   title   = currentColumnLabel;
-  sortKey = currentColumn;
+  sortKey = currentSortKey;
 }
+
 MailColumnLink: SkyObjectField {
   object     = item;
   attributes = mailColumnDict;

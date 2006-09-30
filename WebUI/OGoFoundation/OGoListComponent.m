@@ -26,7 +26,7 @@
 @implementation OGoListComponent
 
 + (int)version {
-  return [super version] + 0 /* v2 */;
+  return [super version] + 1 /* v3 */;
 }
 + (void)initialize {
   NSAssert2([super version] == 2,
@@ -40,6 +40,8 @@
   [self->item          release];
   [self->favoritesKey  release];
   [self->favoriteIds   release];
+  [self->configList    release];
+  [self->configKey     release];
   [super dealloc];
 }
 
@@ -48,6 +50,7 @@
 - (void)sleep {
   [self->item          release]; self->item          = nil;
   [self->favoriteIds   release]; self->favoriteIds   = nil;
+  [self->configList    release]; self->configList    = nil;
   [self->currentColumn release]; self->currentColumn = nil;
   [super sleep];
 }
@@ -82,6 +85,10 @@
 - (NSString *)currentColumn {
   return self->currentColumn;
 }
+- (NSString *)currentSortKey {
+  NSString *s = [self currentColumn];
+  return (s == nil || [s rangeOfString:@"."].length > 0) ? nil : (id)s;
+}
 
 - (NSString *)currentColumnLabel {
   return [[self labels] valueForKey:[self currentColumn]];
@@ -110,6 +117,27 @@
 
 - (id)viewItem {
   return [self activateObject:[self item] withVerb:@"view"];
+}
+
+/* list configuration */
+
+- (NSString *)defaultConfigKey {
+  return nil; /* override in subclasses */
+}
+- (void)setConfigKey:(NSString *)_s {
+  ASSIGNCOPY(self->configKey, _s);
+}
+- (NSString *)configKey {
+  return [self->configKey isNotEmpty] 
+    ? self->configKey : [self defaultConfigKey];
+}
+
+- (NSArray *)configList {
+  if (self->configList == nil) {
+    self->configList =
+      [[[[self session] userDefaults] arrayForKey:[self configKey]] copy];
+  }
+  return self->configList;
 }
 
 /* favorites */

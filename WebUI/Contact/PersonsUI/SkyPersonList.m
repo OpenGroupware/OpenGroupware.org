@@ -56,16 +56,21 @@
 @implementation SkyPersonList
 
 + (int)version {
-  return [super version] + 0 /* v2 */;
+  return [super version] + 0 /* v3 */;
 }
 + (void)initialize {
-  NSAssert2([super version] == 2,
+  NSAssert2([super version] == 3,
             @"invalid superclass (%@) version %i !",
             NSStringFromClass([self superclass]), [super version]);
 }
 
+/* config */
+
 - (NSString *)defaultFavoritesKey {
   return @"person_favorites";
+}
+- (NSString *)defaultConfigKey {
+  return @"person_defaultlist";
 }
 
 - (NSString *)itemIdString {

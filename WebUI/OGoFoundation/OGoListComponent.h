@@ -46,6 +46,8 @@
   NSString     *favoritesKey;
   NSArray      *favoriteIds;
   NSString     *currentColumn;
+  NSString     *configKey;
+  NSArray      *configList;
 }
 
 /* accessors */

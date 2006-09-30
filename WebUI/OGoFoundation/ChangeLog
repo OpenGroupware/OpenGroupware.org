@@ -1,5 +1,8 @@
 2006-09-30  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoListComponent.m: removed sorting for pathes, added list
+	  configuration support (v5.3.103)
+
 	* OGoListComponent.m: allow keypathes as column values (v5.3.102)
 
 	* OGoListComponent.h: added URL column type (v5.3.101)
