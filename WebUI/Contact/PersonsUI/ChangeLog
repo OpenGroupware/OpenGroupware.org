@@ -1,5 +1,7 @@
 2006-09-30  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SkyPersonList.m: modified to use new OGoListComponent class (v5.3.68)
+
 	* SkyPersonList.m: prepared support for custom column configurations
 	  (v5.3.67)
 

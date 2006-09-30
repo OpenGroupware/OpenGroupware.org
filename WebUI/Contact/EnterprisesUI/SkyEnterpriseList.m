@@ -20,7 +20,7 @@
   02111-1307, USA.
 */
 
-#include <OGoFoundation/OGoComponent.h>
+#include <OGoFoundation/OGoListComponent.h>
 
 /*
   Example:
@@ -44,17 +44,10 @@
    
 */
 
-@class NSString, NSArray;
-@class EODataSource;
-
-@interface SkyEnterpriseList : OGoComponent
+@interface SkyEnterpriseList : OGoListComponent
 {
 @protected
-  EODataSource *dataSource;
-  id           enterprise;
-  int          currentBatch;
-  NSString     *favoritesKey;
-  NSArray      *favoriteCompanyIds;
+  int currentBatch;
 }
 
 @end
@@ -63,51 +56,20 @@
 
 @implementation SkyEnterpriseList
 
-- (void)dealloc {
-  [self->dataSource         release];
-  [self->enterprise         release];
-  [self->favoritesKey       release];
-  [self->favoriteCompanyIds release];
-  [super dealloc];
++ (int)version {
+  return [super version] + 0 /* v2 */;
 }
-
-/* notifications */
-
-- (void)sleep {
-  [self->favoriteCompanyIds release]; self->favoriteCompanyIds = nil;
-  [super sleep];
++ (void)initialize {
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
 }
 
 /* accessors */
 
-- (void)setDataSource:(EODataSource *)_dataSource {
-  ASSIGN(self->dataSource, _dataSource);
-}
-- (EODataSource *)dataSource {
-  return self->dataSource;
-}
-
-- (void)setFavoritesKey:(NSString *)_key {
-  ASSIGN(self->favoritesKey,_key);
-}
-- (NSString *)favoritesKey {
+- (NSString *)defaultFavoritesKey {
   return [self->favoritesKey isNotEmpty]
     ? self->favoritesKey : (NSString *)@"enterprise_favorites";
-}
-
-- (NSArray *)favoriteCompanyIds {
-  if (self->favoriteCompanyIds == nil) {
-    self->favoriteCompanyIds =
-      [[[[self session] userDefaults] arrayForKey:[self favoritesKey]] retain];
-  }
-  return self->favoriteCompanyIds;
-}
-
-- (void)setEnterprise:(id)_enterprise {
-  ASSIGN(self->enterprise, _enterprise);
-}
-- (id)enterprise {
-  return self->enterprise;    
 }
 
 - (void)setCurrentBatch:(int)_val {
@@ -117,59 +79,21 @@
   return self->currentBatch;
 }
 
-- (NSString *)companyIdString {
-  return [[[self enterprise] valueForKey:@"companyId"] stringValue];
+- (NSString *)itemIdString {
+  return [[[self item] valueForKey:@"companyId"] stringValue];
 }
 
-- (BOOL)isInFavorites {
-  return [[self favoriteCompanyIds] containsObject:[self companyIdString]];
+/* deprecated */
+
+- (id)viewEnterprise { // DEPRECATED
+  return [self viewItem];
 }
 
-- (BOOL)_modifyFavorites:(BOOL)_doRemove {
-  NSMutableArray *favIds;
-  NSUserDefaults *ud;
-    
-  if (_doRemove && ![self isInFavorites])
-    return NO; /* not in favorites */
-  if (!_doRemove && [self isInFavorites])
-    return NO; /* already in favorites */
-
-  favIds = [[NSMutableArray alloc] initWithArray:[self favoriteCompanyIds]];
-    
-  if (_doRemove)
-    [favIds removeObject:[self companyIdString]];
-  else
-    [favIds addObject:[self companyIdString]];
-
-  ud = [[self session] userDefaults];
-  [ud setObject:favIds forKey:[self favoritesKey]];
-  [ud synchronize];
-  [self->favoriteCompanyIds release]; self->favoriteCompanyIds = nil;
-  [favIds release];
-  return YES;
+- (void)setEnterprise:(id)_person { // DEPRECATED
+  [self setItem:_person];
 }
-
-/* actions */
-
-- (id)updateFavoritesAction {
-  if ([self hasBinding:@"onFavoritesChange"])
-    return [self valueForBinding:@"onFavoritesChange"];
-  return nil; /* stay on page */
-}
-
-- (id)addToFavorites {
-  [self _modifyFavorites:NO /* NO means "add favorite" */];
-  return [self updateFavoritesAction];
-}
-- (id)removeFromFavorites {
-  [self _modifyFavorites:YES /* YES means "remove favorite" */];
-  return [self updateFavoritesAction]; 
-}
-
-/* actions */
-
-- (id)viewEnterprise {
-  return [self activateObject:self->enterprise withVerb:@"view"];
+- (id)enterprise { // DEPRECATED
+  return [self item];
 }
 
 @end /* SkyEnterpriseList */

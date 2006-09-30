@@ -20,7 +20,7 @@
   02111-1307, USA.
 */
 
-#include <OGoFoundation/OGoComponent.h>
+#include <OGoFoundation/OGoListComponent.h>
 
 /*
   Example:
@@ -44,16 +44,8 @@
    
 */
 
-@class NSString, NSArray;
-@class EODataSource;
-
-@interface SkyPersonList : OGoComponent
+@interface SkyPersonList : OGoListComponent
 {
-  EODataSource *dataSource;
-  id           person;
-  NSString     *favoritesKey;
-  NSArray      *favoriteCompanyIds;
-  NSString     *currentColumn;
 }
 
 @end
@@ -63,60 +55,28 @@
 
 @implementation SkyPersonList
 
-- (void)dealloc {
-  [self->currentColumn      release];
-  [self->dataSource         release];
-  [self->person             release];
-  [self->favoritesKey       release];
-  [self->favoriteCompanyIds release];
-  [super dealloc];
++ (int)version {
+  return [super version] + 0 /* v2 */;
+}
++ (void)initialize {
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
 }
 
-/* notifications */
-
-- (void)sleep {
-  [self->favoriteCompanyIds release]; self->favoriteCompanyIds = nil;
-  [self->currentColumn      release]; self->currentColumn      = nil;
-  [super sleep];
+- (NSString *)defaultFavoritesKey {
+  return @"person_favorites";
 }
 
-/* accessors */
-
-- (void)setDataSource:(EODataSource *)_dataSource {
-  ASSIGN(self->dataSource, _dataSource);
-}
-- (EODataSource *)dataSource {
-  return self->dataSource;
-}
-
-- (void)setFavoritesKey:(NSString *)_key {
-  ASSIGN(self->favoritesKey, _key);
-}
-- (NSString *)favoritesKey {
-  return [self->favoritesKey isNotEmpty] 
-    ? self->favoritesKey : (NSString *)@"person_favorites";
-}
-
-- (NSArray *)favoriteCompanyIds {
-  if (self->favoriteCompanyIds == nil) {
-    self->favoriteCompanyIds =
-      [[[[self session] userDefaults] arrayForKey:[self favoritesKey]] copy];
-  }
-  return self->favoriteCompanyIds;
-}
-
-- (void)setPerson:(id)_person {
-  ASSIGN(self->person, _person);
-}
-- (id)person {
-  return self->person;
+- (NSString *)itemIdString {
+  return [[[self item] valueForKey:@"companyId"] stringValue];
 }
 
 - (NSString *)personName {
   NSString *s = nil;
   
-  if ([self->person isNotNull])
-    s = [(SkyPersonDocument *)self->person name];
+  if ([[self item] isNotNull])
+    s = [(SkyPersonDocument *)[self item] name];
 
   return [s isNotEmpty] ? s : (NSString *)@"---";
 }
@@ -124,105 +84,22 @@
 - (NSString *)personFirstname {
   NSString *s = nil;
 
-  if ([self->person isNotNull])
-    s = [self->person firstname];
+  if ([[self item] isNotNull])
+    s = [[self item] firstname];
 
   return [s isNotEmpty] ? s : (NSString *)@"---";
 }
 
-- (NSString *)companyIdString {
-  return [[[self person] valueForKey:@"companyId"] stringValue];
+/* deprecated */
+
+- (id)viewPerson { // DEPRECATED
+  return [self viewItem];
 }
-
-/* custom columns */
-
-- (void)setCurrentColumn:(NSString *)_s {
-  ASSIGNCOPY(self->currentColumn, _s);
+- (void)setPerson:(id)_person { // DEPRECATED
+  [self setItem:_person];
 }
-- (NSString *)currentColumn {
-  return self->currentColumn;
-}
-
-- (NSString *)currentColumnLabel {
-  return [[self labels] valueForKey:[self currentColumn]];
-}
-- (id)currentColumnValue {
-  return [[self person] valueForKey:[self currentColumn]];
-}
-
-- (BOOL)isMailColumn {
-  return [[self currentColumn] hasPrefix:@"email"];
-}
-- (BOOL)isPhoneColumn {
-  NSString *s = [self currentColumn];
-  if ([s hasSuffix:@"tel"]) return YES;
-  if ([s hasSuffix:@"fax"]) return YES;
-  return NO;
-}
-- (BOOL)isRegularColumn {
-  if ([self isMailColumn])  return NO;
-  if ([self isPhoneColumn]) return NO;
-  return YES;
-}
-
-- (NSDictionary *)mailColumnDict {
-  return [NSDictionary dictionaryWithObjectsAndKeys:
-			 [self currentColumn], @"key",
-		         @"3", @"type", /* email */
-		       nil];
-}
-
-/* favorites */
-
-- (BOOL)isInFavorites {
-  return [[self favoriteCompanyIds] containsObject:[self companyIdString]];
-}
-
-- (BOOL)_modifyFavorites:(BOOL)_doRemove {
-  NSMutableArray *favIds;
-  NSUserDefaults *ud;
-    
-  if (_doRemove && ![self isInFavorites])
-    return NO; /* not in favorites */
-  if (!_doRemove && [self isInFavorites])
-    return NO; /* already in favorites */
-
-  favIds = [[NSMutableArray alloc] initWithArray:[self favoriteCompanyIds]];
-    
-  if (_doRemove)
-    [favIds removeObject:[self companyIdString]];
-  else
-    [favIds addObject:[self companyIdString]];
-
-  ud = [[self session] userDefaults];
-  [ud setObject:favIds forKey:[self favoritesKey]];
-  [ud synchronize];
-  [self->favoriteCompanyIds release]; self->favoriteCompanyIds = nil;
-  [favIds release];
-  return YES;
-}
-
-/* actions */
-
-- (id)updateFavoritesAction {
-  if ([self hasBinding:@"onFavoritesChange"])
-    return [self valueForBinding:@"onFavoritesChange"];
-  return nil /* stay on page */;
-}
-
-- (id)addToFavorites {
-  [self _modifyFavorites:NO /* NO means "add favorite" */];
-  return [self updateFavoritesAction];
-}
-- (id)removeFromFavorites {
-  [self _modifyFavorites:YES /* YES means "remove favorite" */];
-  return [self updateFavoritesAction]; 
-}
-
-/* actions */
-
-- (id)viewPerson {
-  return [self activateObject:[self person] withVerb:@"view"];
+- (id)person { // DEPRECATED
+  return [self item];
 }
 
 @end /* SkyPersonList */

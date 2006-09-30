@@ -1,3 +1,8 @@
+2006-09-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyEnterpriseList.m: changed to use new OGoListComponent class
+	  (v5.3.42)
+
 2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyEnterpriseViewer.m: do not call hasLogTab (v5.3.41)
