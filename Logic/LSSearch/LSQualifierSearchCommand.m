@@ -238,10 +238,16 @@ static BOOL debugOn = NO;
       EOKeyGlobalID *gid;
       NSNumber      *pkey;
       
-      pkey = [r valueForKey:pkeyName];
-      gid  = [EOKeyGlobalID globalIDWithEntityName:ename keys:&pkey keyCount:1
-			    zone:NULL];
-      [result addObject:gid];
+      if ((pkey = [r valueForKey:pkeyName]) != nil) {
+	gid  = [EOKeyGlobalID globalIDWithEntityName:ename 
+			      keys:&pkey keyCount:1
+			      zone:NULL];
+	[result addObject:gid];
+      }
+      else {
+	[self errorWithFormat:@"did not find primary key %@ in record: %@",
+	        pkeyName, r];
+      }
     }
     
     [adChannel cancelFetch];
