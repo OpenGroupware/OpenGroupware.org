@@ -1,3 +1,8 @@
+2006-09-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyPersonList.m: prepared support for custom column configurations
+	  (v5.3.67)
+
 2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyPersonAttributesEditor.m: code cleanups (v5.3.66)

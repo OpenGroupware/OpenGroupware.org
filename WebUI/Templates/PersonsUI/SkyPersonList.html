@@ -4,18 +4,19 @@
 
   <#NameTD><#ViewAction /></#NameTD>
 
-  <#NickNameTD  />
-  <#FirstNameTD />
-  <#DegreeTD    />
-  <#JobTitleTD  />
+  <#ColumnsRep>
+    <#IsPhoneColumn>
+      <#ContentColumn><#Font>
+        <#PhoneColumnDial><#ColumnValue/></#PhoneColumnDial>
+      </#Font></#ContentColumn>
+    </#IsPhoneColumn>
 
-  <#Email1TD>
-    <#Font><#MailLink /></#Font>
-  </#Email1TD>
+    <#IsMailColumn>
+      <#ContentColumn><#Font><#MailColumnLink/></#Font></#ContentColumn>
+    </#IsMailColumn>
 
-  <#Phone1TD>
-    <#Font><#PhoneDial><#PhoneNum /></#PhoneDial></#Font>
-  </#Phone1TD>
+    <#IsRegularColumn><#RegularColumn/></#IsRegularColumn>
+  </#ColumnsRep>
   
   <#PFavoritesHeader>&nbsp;</#PFavoritesHeader>
   <#PFavorites>

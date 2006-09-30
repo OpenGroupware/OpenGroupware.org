@@ -16,6 +16,45 @@ TableView: SkyTableView {
 ButtonMode: WETableViewButtonMode {}
 Font: SkyConfigFont {}
 
+/* custom columns */
+
+ColumnsRep: WORepetition {
+  list = ( 
+    nickname, firstname, degree, job_title,
+    email1, "01_tel"
+  );
+  item = currentColumn;
+}
+
+IsRegularColumn: WOConditional { condition = isRegularColumn; }
+IsPhoneColumn:   WOConditional { condition = isPhoneColumn;   }
+IsMailColumn:    WOConditional { condition = isMailColumn;    }
+
+RegularColumn: WETableData {
+  title   = currentColumnLabel;
+  string  = currentColumnValue;
+  sortKey = currentColumn;
+}
+
+ContentColumn: WETableData {
+  title   = currentColumnLabel;
+  sortKey = currentColumn;
+}
+MailColumnLink: SkyObjectField {
+  object     = person;
+  attributes = mailColumnDict;
+}
+
+PhoneColumnDial: SkyDialNumber {
+  number = currentColumnValue;
+}
+
+ColumnValue: WOString {
+  value = currentColumnValue;
+}
+
+/* static columns */
+
 NameTD: WETableData {
   title   = labels.name;
   sortKey = "name";
@@ -24,45 +63,6 @@ ViewAction: WOHyperlink {
   directActionName = "activate";
   ?oid             = person.companyId;
   string           = personName;
-}
-
-NickNameTD: WETableData {
-  title   = labels.nickname;
-  string  = person.nickname;
-  sortKey = "nickname";
-}
-
-FirstNameTD: WETableData {
-  title   = labels.firstname;
-  string  = person.firstname;
-  sortKey = "firstname";
-}
-
-DegreeTD: WETableData {
-  title   = labels.degree;
-  string  = person.degree;
-}
-
-JobTitleTD: WETableData {
-  title   = labels.job_title;
-  string  = person.job_title;
-}
-
-Email1TD: WETableData {
-  title   = labels.email1;
-  sortKey = "email1";
-}
-
-Phone1TD: WETableData {
-  title   = labels.01_tel;
-  sortKey = "01_tel";
-}
-PhoneDial: SkyDialNumber { number = person.01_tel; }
-PhoneNum:  WOString      { value  = person.01_tel; }
-
-MailLink: SkyObjectField {
-  object     = person;
-  attributes = { key = "email1"; type="3"; /* email */ };
 }
 
 /* favorites */

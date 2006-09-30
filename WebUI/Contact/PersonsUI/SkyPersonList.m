@@ -53,6 +53,7 @@
   id           person;
   NSString     *favoritesKey;
   NSArray      *favoriteCompanyIds;
+  NSString     *currentColumn;
 }
 
 @end
@@ -63,6 +64,7 @@
 @implementation SkyPersonList
 
 - (void)dealloc {
+  [self->currentColumn      release];
   [self->dataSource         release];
   [self->person             release];
   [self->favoritesKey       release];
@@ -74,6 +76,7 @@
 
 - (void)sleep {
   [self->favoriteCompanyIds release]; self->favoriteCompanyIds = nil;
+  [self->currentColumn      release]; self->currentColumn      = nil;
   [super sleep];
 }
 
@@ -130,6 +133,46 @@
 - (NSString *)companyIdString {
   return [[[self person] valueForKey:@"companyId"] stringValue];
 }
+
+/* custom columns */
+
+- (void)setCurrentColumn:(NSString *)_s {
+  ASSIGNCOPY(self->currentColumn, _s);
+}
+- (NSString *)currentColumn {
+  return self->currentColumn;
+}
+
+- (NSString *)currentColumnLabel {
+  return [[self labels] valueForKey:[self currentColumn]];
+}
+- (id)currentColumnValue {
+  return [[self person] valueForKey:[self currentColumn]];
+}
+
+- (BOOL)isMailColumn {
+  return [[self currentColumn] hasPrefix:@"email"];
+}
+- (BOOL)isPhoneColumn {
+  NSString *s = [self currentColumn];
+  if ([s hasSuffix:@"tel"]) return YES;
+  if ([s hasSuffix:@"fax"]) return YES;
+  return NO;
+}
+- (BOOL)isRegularColumn {
+  if ([self isMailColumn])  return NO;
+  if ([self isPhoneColumn]) return NO;
+  return YES;
+}
+
+- (NSDictionary *)mailColumnDict {
+  return [NSDictionary dictionaryWithObjectsAndKeys:
+			 [self currentColumn], @"key",
+		         @"3", @"type", /* email */
+		       nil];
+}
+
+/* favorites */
 
 - (BOOL)isInFavorites {
   return [[self favoriteCompanyIds] containsObject:[self companyIdString]];
