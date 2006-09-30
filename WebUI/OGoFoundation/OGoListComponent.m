@@ -87,7 +87,7 @@
   return [[self labels] valueForKey:[self currentColumn]];
 }
 - (id)currentColumnValue {
-  return [[self item] valueForKey:[self currentColumn]];
+  return [[self item] valueForKeyPath:[self currentColumn]];
 }
 
 - (NSString *)columnType {
