@@ -1,6 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=99
+SUBMINOR_VERSION:=100
 
 # v5.1.72 requires libNGObjWeb v4.3.41
 # v5.1.66 requires libNGObjWeb v4.3.36

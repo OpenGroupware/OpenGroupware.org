@@ -1,3 +1,8 @@
+2006-09-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added new 'OGoListComponent', an abstract superclass for components
+	  which display configurable tableviews (v5.3.100)
+
 2006-07-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.99

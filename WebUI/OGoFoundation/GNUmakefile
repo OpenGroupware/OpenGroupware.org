@@ -22,6 +22,7 @@ libOGoFoundation_HEADER_FILES = \
 	OGoComponent.h			\
 	OGoContentPage.h		\
 	OGoFoundation.h			\
+	OGoListComponent.h		\
 	OGoNavigation.h			\
 	OGoSession.h			\
 	OGoViewerPage.h			\
@@ -64,6 +65,7 @@ libOGoFoundation_OBJC_FILES = \
 	OGoComponent.m			\
 	OGoContentPage+OldDA.m		\
 	OGoContentPage.m		\
+	OGoListComponent.m		\
 	OGoFoundation.m 		\
 	OGoModuleManager.m		\
 	OGoNavigation.m			\
