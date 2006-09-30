@@ -1,81 +1,78 @@
-// $Id: SkyEnterpriseList.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 ButtonContent: WOComponentContent {};
 
 TableView: SkyTableView {
-  dataSource     = dataSource;
-  item           = enterprise;
-  batchSize      = session.userDefaults.address_blocksize;
+  dataSource   = dataSource;
+  item         = item;
+  batchSize    = session.userDefaults.address_blocksize;
 
-  sortedKey      = "name";
+  sortedKey    = "name";
 
-  titleString    = labels.EnterpriseListTitle;
-  footerString   = labels.EnterpriseListLabel;
-};
+  titleString  = labels.EnterpriseListTitle;
+  footerString = labels.EnterpriseListLabel;
+}
 
 ButtonMode: WETableViewButtonMode {};
 Font: SkyConfigFont {}
 
+/* custom columns */
+
+ColumnsRep: WORepetition {
+  list = ( number, email, "01_tel", url );
+  item = currentColumn;
+}
+
+IsRegularColumn: WOConditional { condition = columnType; value = "plain"; };
+IsPhoneColumn:   WOConditional { condition = columnType; value = "phone"; };
+IsMailColumn:    WOConditional { condition = columnType; value = "email"; };
+IsUrlColumn:     WOConditional { condition = columnType; value = "url";   };
+
+RegularColumn: WETableData {
+  title   = currentColumnLabel;
+  string  = currentColumnValue;
+  sortKey = currentColumn;
+}
+
+ContentColumn: WETableData {
+  title   = currentColumnLabel;
+  sortKey = currentColumn;
+}
+MailColumnLink: SkyObjectField {
+  object     = item;
+  attributes = mailColumnDict;
+}
+
+UrlColumnLink: SkyExternalLink {
+  href   = item.url;
+  string = item.url;
+  target = "exturl";
+}
+
+PhoneColumnDial: SkyDialNumber {
+  number = currentColumnValue;
+}
+
+ColumnValue: WOString {
+  value = currentColumnValue;
+}
+
+/* static columns */
+
 NameTD: WETableData {
-  title   = labels.project_name;
+  title   = labels.project_name; // project_name?!
   sortKey = "name";
 }
 ViewAction: WOHyperlink {
   directActionName = "activate";
-  ?oid             = enterprise.companyId;
-  string           = enterprise.name;
+  ?oid             = item.companyId;
+  string           = item.name;
 }
 
-NumberTD: WETableData {
-  title   = labels.number;
-  string  = enterprise.number;
-  sortKey = "number";
-}
+/* favorites */
 
-EmailTD: WETableData {
-  title   = labels.email;
-  sortKey = "email";
-}
-
-UrlTD: WETableData {
-  title   = labels.url;
-  sortKey = "url";
-}
-
-KeywordsTD: WETableData {
-  title   = labels.keywords;
-  string  = enterprise.keywords;
-  sortKey = "keywords";
-}
-
-//UrlLink: WOHyperlink {
-//  href   = enterprise.url;
-//  string = enterprise.url;
-//  target = "enterprise";
-//}
-UrlLink: SkyExternalLink {
-  href   = enterprise.url;
-  string = enterprise.url;
-  target = "enterprise";
-}
-Phone1TD: WETableData {
-  title   = labels.01_tel;
-  sortKey = "01_tel";
-}
-PhoneDial: SkyDialNumber {
-  number = enterprise.01_tel;
-}
-PhoneNum: WOString {
-  value = enterprise.01_tel;
-}
-
-MailLink: SkyObjectField {
-  object     = enterprise;
-  attributes = { key = "email"; type="3"; /* email */ };
-}
-// favorites
-PFavoritesHeader: WETableHeader { WIDTH = 20; }
-PFavorites:       WETableData   { WIDTH = 20; }
+PFavoritesHeader: WETableHeader { width = 20; }
+PFavorites:       WETableData   { width = 20; }
 
 IsInFavoritesCond: WOConditional {
   condition = isInFavorites;

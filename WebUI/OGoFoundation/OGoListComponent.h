@@ -61,12 +61,9 @@
 - (void)setCurrentColumn:(NSString *)_s;
 - (NSString *)currentColumn;
 
+- (NSString *)columnType;
 - (NSString *)currentColumnLabel;
 - (id)currentColumnValue;
-
-- (BOOL)isMailColumn;
-- (BOOL)isPhoneColumn;
-- (BOOL)isRegularColumn;
 
 - (NSDictionary *)mailColumnDict;
 

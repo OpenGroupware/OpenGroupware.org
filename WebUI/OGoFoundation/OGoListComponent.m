@@ -90,19 +90,13 @@
   return [[self item] valueForKey:[self currentColumn]];
 }
 
-- (BOOL)isMailColumn {
-  return [[self currentColumn] hasPrefix:@"email"];
-}
-- (BOOL)isPhoneColumn {
+- (NSString *)columnType {
   NSString *s = [self currentColumn];
-  if ([s hasSuffix:@"tel"]) return YES;
-  if ([s hasSuffix:@"fax"]) return YES;
-  return NO;
-}
-- (BOOL)isRegularColumn {
-  if ([self isMailColumn])  return NO;
-  if ([self isPhoneColumn]) return NO;
-  return YES;
+  if ([s hasPrefix:@"email"]) return @"email";
+  if ([s hasSuffix:@"tel"])   return @"phone";
+  if ([s hasSuffix:@"fax"])   return @"phone"; // TODO: hm, do we want that?
+  if ([s hasSuffix:@"url"])   return @"url";
+  return @"plain";
 }
 
 - (NSDictionary *)mailColumnDict {

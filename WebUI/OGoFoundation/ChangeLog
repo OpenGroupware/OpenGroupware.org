@@ -1,5 +1,7 @@
 2006-09-30  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoListComponent.h: added URL column type (v5.3.101)
+
 	* added new 'OGoListComponent', an abstract superclass for components
 	  which display configurable tableviews (v5.3.100)
 

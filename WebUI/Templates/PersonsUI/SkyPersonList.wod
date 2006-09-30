@@ -4,7 +4,7 @@ ButtonContent: WOComponentContent {};
 
 TableView: SkyTableView {
   dataSource     = dataSource;
-  item           = person;
+  item           = item;
   batchSize      = session.userDefaults.address_blocksize;
 
   sortedKey      = "name";
@@ -26,9 +26,10 @@ ColumnsRep: WORepetition {
   item = currentColumn;
 }
 
-IsRegularColumn: WOConditional { condition = isRegularColumn; }
-IsPhoneColumn:   WOConditional { condition = isPhoneColumn;   }
-IsMailColumn:    WOConditional { condition = isMailColumn;    }
+IsRegularColumn: WOConditional { condition = columnType; value = "plain"; };
+IsPhoneColumn:   WOConditional { condition = columnType; value = "phone"; };
+IsMailColumn:    WOConditional { condition = columnType; value = "email"; };
+IsUrlColumn:     WOConditional { condition = columnType; value = "url";   };
 
 RegularColumn: WETableData {
   title   = currentColumnLabel;
@@ -41,8 +42,14 @@ ContentColumn: WETableData {
   sortKey = currentColumn;
 }
 MailColumnLink: SkyObjectField {
-  object     = person;
+  object     = item;
   attributes = mailColumnDict;
+}
+
+UrlColumnLink: SkyExternalLink {
+  href   = item.url;
+  string = item.url;
+  target = "exturl";
 }
 
 PhoneColumnDial: SkyDialNumber {
@@ -61,7 +68,7 @@ NameTD: WETableData {
 }
 ViewAction: WOHyperlink {
   directActionName = "activate";
-  ?oid             = person.companyId;
+  ?oid             = item.companyId;
   string           = personName;
 }
 

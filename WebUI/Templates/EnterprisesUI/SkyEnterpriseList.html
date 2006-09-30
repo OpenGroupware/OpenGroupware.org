@@ -3,19 +3,29 @@
   <#ButtonMode><#ButtonContent/></#ButtonMode>
 
   <#NameTD><#ViewAction/></#NameTD>
-  <#NumberTD/>
-  <#EmailTD><#Font><#MailLink/></#Font></#EmailTD>
 
-  <#Phone1TD>
-    <#Font><#PhoneDial><#PhoneNum/></#PhoneDial></#Font></#Phone1TD>
-  
-  <#UrlTD><#Font><#UrlLink/></#Font></#UrlTD>
+  <#ColumnsRep>
+    <#IsPhoneColumn>
+      <#ContentColumn><#Font>
+        <#PhoneColumnDial><#ColumnValue/></#PhoneColumnDial>
+      </#Font></#ContentColumn>
+    </#IsPhoneColumn>
+
+    <#IsMailColumn>
+      <#ContentColumn><#Font><#MailColumnLink/></#Font></#ContentColumn>
+    </#IsMailColumn>
+
+    <#IsUrlColumn>
+      <#ContentColumn><#Font><#UrlColumnLink/></#Font></#ContentColumn>
+    </#IsUrlColumn>
+
+    <#IsRegularColumn><#RegularColumn/></#IsRegularColumn>
+  </#ColumnsRep>
+
 
   <#PFavoritesHeader>&nbsp;</#PFavoritesHeader>
   <#PFavorites>
     <#IsInFavoritesCond    ><#RemoveFromFavorites/></#IsInFavoritesCond>
     <#IsInFavoritesCondElse><#AddToFavorites     /></#IsInFavoritesCondElse>
   </#PFavorites>
-
-  <!--#KeywordsTD/-->
 </#TableView>

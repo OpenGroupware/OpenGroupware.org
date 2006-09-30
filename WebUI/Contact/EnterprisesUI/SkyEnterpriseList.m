@@ -46,8 +46,6 @@
 
 @interface SkyEnterpriseList : OGoListComponent
 {
-@protected
-  int currentBatch;
 }
 
 @end
@@ -70,13 +68,6 @@
 - (NSString *)defaultFavoritesKey {
   return [self->favoritesKey isNotEmpty]
     ? self->favoritesKey : (NSString *)@"enterprise_favorites";
-}
-
-- (void)setCurrentBatch:(int)_val {
-  self->currentBatch = _val;
-}
-- (int)currentBatch {
-  return self->currentBatch;
 }
 
 - (NSString *)itemIdString {
