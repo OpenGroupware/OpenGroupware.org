@@ -27,7 +27,9 @@ EnterpriseList: SkyEnterpriseList {
   dataSource        = dataSource;
   currentBatch      = currentBatch;
   onFavoritesChange = updateFavorites;
-  configKey         = "enterprise_defaultlist";
+  
+  configKey         = activeConfigKey;
+  isInConfigMode    = isInConfigMode;
 }
 
 AdvancedSearch: LSWEnterpriseAdvancedSearch {
@@ -43,7 +45,7 @@ FullSearch: LSWFullSearch {
 }
 
 Buttons: SkyButtonRow {
-  ordering = ( new, import );
+  ordering = ( config, import, new );
   onNew    = newEnterprise;
   new      = labels.new;
   tipNew   = labels.new;
@@ -51,10 +53,13 @@ Buttons: SkyButtonRow {
   hasImport = YES;
   import    = labels.import;
   onImport  = import;
+
+  config    = labels.config;
+  onConfig  = showColumnConfigEditor;
 }
 
 CustomButtons: SkyButtonRow {
-  ordering = ( new, import, removetab );
+  ordering = ( config, import, new, removetab);
   onNew    = newEnterprise;
   new      = labels.new;
   tipNew   = labels.new;
@@ -66,6 +71,9 @@ CustomButtons: SkyButtonRow {
   hasRemovetab = YES;
   removetab    = labels.removeTab;
   onRemovetab  = removeTab;
+
+  config    = labels.config;
+  onConfig  = showColumnConfigEditor;
 }
 
 SearchField: WOTextField {

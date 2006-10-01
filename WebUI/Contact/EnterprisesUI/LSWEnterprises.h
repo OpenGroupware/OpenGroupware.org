@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -35,13 +36,14 @@
   id                item;          // non-retained
   int               itemIdx;
   BOOL              hasSearched;
+  BOOL              isInConfigMode;
 
   // for tab view
-  NSString     *tabKey;
-  BOOL         isDescending;
+  NSString          *tabKey;
+  BOOL              isDescending;
   
-  NSString     *searchText;
-  NSString     *searchTitle;
+  NSString          *searchText;
+  NSString          *searchTitle;
 }
 
 /* actions */

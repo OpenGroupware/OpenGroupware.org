@@ -46,6 +46,7 @@
 
 @interface SkyEnterpriseList : OGoListComponent
 {
+  int currentBatch;
 }
 
 @end
@@ -64,6 +65,13 @@
 }
 
 /* accessors */
+
+- (void)setCurrentBatch:(int)_idx { // TODO: what is this good for?
+  self->currentBatch = _idx;
+}
+- (int)currentBatch {
+  return self->currentBatch;
+}
 
 - (NSString *)defaultFavoritesKey {
   return @"enterprise_favorites";

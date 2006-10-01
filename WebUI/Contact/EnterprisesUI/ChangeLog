@@ -1,5 +1,7 @@
 2006-10-01  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSWEnterprises.m: added configurable company lists (v5.3.45)
+
 	* v5.3.44
 
 	* SkyEnterpriseViewer.m: added tableview configuration

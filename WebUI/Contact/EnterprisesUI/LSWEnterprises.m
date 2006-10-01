@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -103,18 +104,37 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self->maxSearchCount release];
-  [self->dataSource release];
-  [self->enterprise release];
-  [self->searchText release];
-  [self->tabKey release];
-  [self->searchText release];
+  [self->dataSource     release];
+  [self->enterprise     release];
+  [self->searchText     release];
+  [self->tabKey         release];
+  [self->searchText     release];
   [super dealloc];
 }
 
 /* accessors */
 
+- (NSString *)activeConfigKey {
+  if ([self->tabKey isEqualToString:@"_favorites_"])
+    return @"enterprise_favlist_cols";
+  if ([self->tabKey isEqualToString:@"enterpriseSearch"])
+    return @"enterprise_searchlist_cols";
+  if ([self->tabKey isEqualToString:@"advancedSearch"])
+    return @"enterprise_advsearchlist_cols";
+  if ([self->tabKey isEqualToString:@"search"])
+    return @"enterprise_fullsearchlist_cols";
+  
+  return [NSString stringWithFormat:@"enterprise_customlist_%i",self->itemIdx];
+}
+- (void)setIsInConfigMode:(BOOL)_flag {
+  self->isInConfigMode = _flag ? 1 : 0;
+}
+- (BOOL)isInConfigMode {
+  return self->isInConfigMode ? YES : NO;
+}
+
 - (void)setTabKey:(NSString *)_key {
-  ASSIGN(self->tabKey, _key);
+  ASSIGNCOPY(self->tabKey, _key);
 }
 - (NSString *)tabKey {
   return self->tabKey;
@@ -142,6 +162,7 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
 - (unsigned)maxTabTitleLength {
   return maxLength;
 }
+
 - (NSString *)customTabLabel {
   // TODO: use formatter for that
   NSString *label;
@@ -156,7 +177,7 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   return label;
 }
 
-- (NSString *)iconForTab {
+- (NSString *)iconForTab { // TODO: this is deprecated, right?
   NSMutableString *myIcon;
   NSString        *t;
 
@@ -178,7 +199,7 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   return [myIcon stringByAppendingString: @"_right"];
 }
 
-- (NSString *)advTabIcon {
+- (NSString *)advTabIcon { // TODO: this is deprecated, right?
   NSString *t;
 
   t = [self tabKey];
@@ -192,7 +213,7 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   return @"advanced_left";
 }
 
-- (NSString *)fullTabIcon {
+- (NSString *)fullTabIcon { // TODO: this is deprecated, right?
   NSString *t;
 
   t = [self tabKey];
@@ -209,7 +230,7 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
 }
 
 - (void)setSearchText:(NSString *)_text {
-  ASSIGN(self->searchText, _text);
+  ASSIGNCOPY(self->searchText, _text);
 }
 - (NSString *)searchText {
   return self->searchText;
@@ -275,7 +296,7 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   return ([[self->dataSource fetchObjects] count] == (unsigned)maxSearch);
 }
 
-// actions
+/* actions */
 
 - (void)enterpriseAdded:(NSNotification *)_n {
   id obj;
@@ -436,10 +457,15 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   return [self _viewIfOneEnterprise];
 }
 
-// custom tabs
+- (id)showColumnConfigEditor {
+  [self setIsInConfigMode:YES];
+  return nil; /* start on page */
+}
+
+/* custom tabs */
 
 - (void)setSearchTitle:(NSString *)_title {
-  ASSIGN(self->searchTitle,_title);
+  ASSIGNCOPY(self->searchTitle,_title);
 }
 - (NSString *)searchTitle {
   return self->searchTitle;

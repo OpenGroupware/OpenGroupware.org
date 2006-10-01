@@ -16,6 +16,50 @@
 
   // lists
   enterprise_defaultlist = ( number, email, "01_tel", url );
+
+  enterprise_defaultlist_opts = (
+    name, /* this is 'description' in the DB but mapped in the document */
+    number,
+    keywords,
+    bank,
+    bankCode,
+    account,
+
+    /* emails */
+    email,
+
+    /* phones */
+    "01_tel",
+    "02_tel",
+    "10_fax",
+
+    /* adresses */
+    
+    "bill.name1",
+    "bill.name2",
+    "bill.name3",
+    "bill.street",
+    "bill.city",
+    "bill.zip",
+    "bill.state",
+    "bill.country",
+
+    "ship.name1",
+    "ship.name2",
+    "ship.name3",
+    "ship.street",
+    "ship.city",
+    "ship.zip",
+    "ship.state",
+    "ship.country",
+
+    /* URLs */
+    url,
+    
+    /* Outlook attributes */
+    bossName, partnerName, assistantName, department, office,
+    occupation, imAddress
+  );
   
   /*
     Whether the company edit panel presets the private and readonly checkbox if
