@@ -53,6 +53,7 @@
   id   newObjectLinkEnterpriseObj;
 
   BOOL isProjectEnabled;
+  BOOL isInConfigMode;
 }
 
 @end /* SkyEnterpriseViewer */
@@ -375,6 +376,13 @@ static NSArray *accessChecks = nil;
 
 /* accessors */
 
+- (void)setIsInConfigMode:(BOOL)_flag {
+  self->isInConfigMode = _flag ? 1 : 0;
+}
+- (BOOL)isInConfigMode {
+  return self->isInConfigMode ? YES : NO;
+}
+
 - (void)setRootDocument:(id)_rootDocument {
   ASSIGN(self->rootDocument, _rootDocument);
 }
@@ -535,7 +543,7 @@ static NSArray *accessChecks = nil;
   return @"isDocumentChecked";
 }
 
-/* actions */
+/* notifications */
 
 - (void)syncAwake {
   [super syncAwake];
@@ -562,12 +570,17 @@ static NSArray *accessChecks = nil;
   return nil;
 }
 
+- (id)showColumnConfigEditor {
+  [self setIsInConfigMode:YES];
+  return nil; /* start on page */
+}
+
 - (id)assignPerson {
   WOSession   *sn = [self session];
-  WOComponent *ct = nil;
-  NGMimeType  *mt = nil;
-
-  [[self session] transferObject:[self object] owner:self];
+  WOComponent *ct;
+  NGMimeType  *mt;
+  
+  [sn transferObject:[self object] owner:self];
   mt = [NGMimeType mimeType:@"objc" subType:@"SkyEnterpriseDocument"];
   ct = [sn instantiateComponentForCommand:@"assignPerson" type:mt];
   [self enterPage:(id)ct];

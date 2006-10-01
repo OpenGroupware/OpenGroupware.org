@@ -42,12 +42,18 @@
 @interface OGoListComponent : OGoComponent
 {
   EODataSource *dataSource;
-  id           item;
   NSString     *favoritesKey;
   NSArray      *favoriteIds;
-  NSString     *currentColumn;
   NSString     *configKey;
   NSArray      *configList;
+  BOOL         isInConfigMode;
+  
+  /* transient */
+  id           item;
+  NSString     *currentColumn;
+  int          currentColumnIdx;
+  NSString     *currentColumnOpt;
+  NSArray      *configOptList;
 }
 
 /* accessors */

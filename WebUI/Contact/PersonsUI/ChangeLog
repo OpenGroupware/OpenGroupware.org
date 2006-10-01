@@ -1,3 +1,7 @@
+2006-10-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWPersons.m: added userlist configuration (v5.3.70)
+
 2006-09-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyPersonList.m: moved column configuration to user defaults

@@ -26,7 +26,7 @@
 @implementation OGoListComponent
 
 + (int)version {
-  return [super version] + 1 /* v3 */;
+  return [super version] + 2 /* v4 */;
 }
 + (void)initialize {
   NSAssert2([super version] == 2,
@@ -42,6 +42,8 @@
   [self->favoriteIds   release];
   [self->configList    release];
   [self->configKey     release];
+  [self->configOptList release];
+  [self->currentColumnOpt release];
   [super dealloc];
 }
 
@@ -52,6 +54,7 @@
   [self->favoriteIds   release]; self->favoriteIds   = nil;
   [self->configList    release]; self->configList    = nil;
   [self->currentColumn release]; self->currentColumn = nil;
+  [self->currentColumnOpt release]; self->currentColumnOpt = nil;
   [super sleep];
 }
 
@@ -77,7 +80,26 @@
   return nil;
 }
 
+- (void)setIsInConfigMode:(BOOL)_flag {
+  self->isInConfigMode = _flag;
+}
+- (BOOL)isInConfigMode {
+  return self->isInConfigMode;
+}
+
 /* custom columns */
+
+- (void)setCurrentColumnIndex:(int)_idx {
+  self->currentColumnIdx = _idx;
+}
+- (int)currentColumnIndex {
+  return self->currentColumnIdx;
+}
+
+- (int)columnLabelIndex {
+  /* we start at 0 and the first column is not configurable */
+  return [self currentColumnIndex] + 2;
+}
 
 - (void)setCurrentColumn:(NSString *)_s {
   ASSIGNCOPY(self->currentColumn, _s);
@@ -90,20 +112,70 @@
   return (s == nil || [s rangeOfString:@"."].length > 0) ? nil : (id)s;
 }
 
+- (void)setCurrentColumnOpt:(NSString *)_s {
+  ASSIGNCOPY(self->currentColumnOpt, _s);
+}
+- (NSString *)currentColumnOpt {
+  return self->currentColumnOpt;
+}
+- (NSString *)currentColumnOptLabel {
+  return [[self labels] valueForKey:[self currentColumnOpt]];
+}
+
+- (NSString *)currentColumnCheckerName {
+  return [NSString stringWithFormat:@"cb%i", [self currentColumnIndex]];
+}
+- (BOOL)isCurrentColumnOptActive {
+  return [[self currentColumn] isEqualToString:[self currentColumnOpt]];
+}
+
 - (NSString *)currentColumnLabel {
   return [[self labels] valueForKey:[self currentColumn]];
 }
+
 - (id)currentColumnValue {
-  return [[self item] valueForKeyPath:[self currentColumn]];
+  NSString *kp = [self currentColumn];
+  id       v   = [[self item] valueForKeyPath:kp];
+
+  if (![[self columnType] isEqualToString:@"plain"])
+    return v;
+  
+  if ([v isKindOfClass:[NSDate class]]) /* birthday */
+    return [v descriptionWithCalendarFormat:@"%Y-%m-%d"];
+  
+  if ([kp rangeOfString:@"."].length > 0) /* addresses */
+    return v;
+  if ([kp rangeOfString:@"name"].length > 0)
+    return v;
+  
+  /* attempt to localize everything else ... */
+  if ([v isKindOfClass:[NSString class]])
+    return [[self labels] valueForKey:v];
+  
+  return v;
 }
 
-- (NSString *)columnType {
-  NSString *s = [self currentColumn];
+- (NSString *)columnTypeForKey:(NSString *)s {
   if ([s hasPrefix:@"email"]) return @"email";
   if ([s hasSuffix:@"tel"])   return @"phone";
   if ([s hasSuffix:@"fax"])   return @"phone"; // TODO: hm, do we want that?
   if ([s hasSuffix:@"url"])   return @"url";
+  if ([s rangeOfString:@"_tel_"].length > 0) return @"phone";
+  if ([s rangeOfString:@"_fax_"].length > 0) return @"phone";
   return @"plain";
+}
+- (NSString *)columnType {
+  return [self columnTypeForKey:[self currentColumn]];
+}
+
+- (NSString *)columnOptItemGroup {
+  NSString *s = [self currentColumnOpt];
+  
+  s = ([s rangeOfString:@"."].length > 0)
+    ? (NSString *)@"address"
+    : [self columnTypeForKey:s];
+  s = [@"listcoltype_" stringByAppendingString:s];
+  return [[self labels] valueForKey:s];
 }
 
 - (NSDictionary *)mailColumnDict {
@@ -132,13 +204,95 @@
     ? self->configKey : [self defaultConfigKey];
 }
 
+- (NSUserDefaults *)userDefaults {
+  return [[self session] userDefaults];
+}
+
 - (NSArray *)configList {
   if (self->configList == nil) {
-    self->configList =
-      [[[[self session] userDefaults] arrayForKey:[self configKey]] copy];
+    NSArray *t;
+    
+    t = [[self userDefaults] arrayForKey:[self configKey]];
+    if (![t isNotEmpty])
+      t = [[self userDefaults] arrayForKey:[self defaultConfigKey]];
+    
+    self->configList = [t copy];
   }
   return self->configList;
 }
+
+- (NSArray *)configOptList {
+  if (self->configOptList == nil) {
+    NSString *opt = [[self defaultConfigKey] stringByAppendingString:@"_opts"];
+    self->configOptList = [[[self userDefaults] arrayForKey:opt] copy];
+  }
+  return self->configOptList;
+}
+
+- (void)setCurrentColumnSelection:(NSString *)_newValue {
+  NSMutableArray *ma;
+  
+  if (![_newValue isNotEmpty])
+    return;
+  if ([_newValue isEqualToString:[self currentColumn]])
+    return; /* didn't change */
+  
+  /* changed */
+  ma = [[self configList] mutableCopy];
+  [ma replaceObjectAtIndex:[self currentColumnIndex] withObject:_newValue];
+  [self->configList release]; self->configList = nil;
+  self->configList = [ma copy];
+  [ma release]; ma = nil;
+}
+- (NSString *)currentColumnSelection {
+  return [self currentColumn];
+}
+
+
+/* config actions */
+
+- (id)leaveConfigMode {
+  [self setIsInConfigMode:NO];
+  return nil; /* stay on page */
+}
+
+- (id)applyConfig {
+  [[self userDefaults] setObject:[self configList] forKey:[self configKey]];
+  [[self userDefaults] synchronize];
+  [self setIsInConfigMode:NO]; /* we leave the config on apply */
+  return nil; /* stay on page */
+}
+
+- (id)addColumn {
+  NSArray *cfglist;
+  
+  cfglist = [self configOptList];
+  cfglist = [[self configList] arrayByAddingObject:[cfglist objectAtIndex:0]];
+  [[self userDefaults] setObject:cfglist forKey:[self configKey]];
+  [[self userDefaults] synchronize];
+  [self->configList release]; self->configList = nil;
+  
+  return nil; /* stay on page */
+}
+
+- (id)removeColumn {
+  NSMutableArray *cfglist;
+  
+  cfglist = [[self configList] mutableCopy];
+  [self->configList release]; self->configList = nil;
+  
+  if ([cfglist count] > 0)
+    [cfglist removeObjectAtIndex:([cfglist count] - 1)];
+  
+  self->configList = [cfglist copy];
+  [cfglist release]; cfglist = nil;
+  
+  [[self userDefaults] setObject:self->configList forKey:[self configKey]];
+  [[self userDefaults] synchronize];
+  
+  return nil; /* stay on page */
+}
+
 
 /* favorites */
 
@@ -190,7 +344,7 @@
   return YES;
 }
 
-/* actions */
+/* favorite actions */
 
 - (id)updateFavoritesAction {
   if ([self hasBinding:@"onFavoritesChange"])

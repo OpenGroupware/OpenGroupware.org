@@ -39,7 +39,8 @@
   struct {
     int hasSearched:1;
     int isSearchLimited:1;
-    int reserved:30;
+    int isInConfigMode:1;
+    int reserved:29;
   } opFlags;
   
   // for tab view
@@ -212,6 +213,25 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 }
 - (BOOL)hasSearched {
   return self->opFlags.hasSearched ? YES : NO;
+}
+
+- (NSString *)activeConfigKey {
+  if ([self->tabKey isEqualToString:@"_favorites_"])
+    return @"person_favlist_cols";
+  if ([self->tabKey isEqualToString:@"personSearch"])
+    return @"person_searchlist_cols";
+  if ([self->tabKey isEqualToString:@"advancedSearch"])
+    return @"person_advsearchlist_cols";
+  if ([self->tabKey isEqualToString:@"search"])
+    return @"person_fullsearchlist_cols";
+  
+  return [NSString stringWithFormat:@"person_customlist_%i", self->itemIdx];
+}
+- (void)setIsInConfigMode:(BOOL)_flag {
+  self->opFlags.isInConfigMode = _flag ? 1 : 0;
+}
+- (BOOL)isInConfigMode {
+  return self->opFlags.isInConfigMode ? YES : NO;
 }
 
 - (void)setTabKey:(NSString *)_key {
@@ -569,24 +589,16 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
   return [[self context] contextID];
 }
 
-- (Class)wizardClass {
-  // TODO: check whether this is used somewhere
-  return NSClassFromString(@"SkyPersonWizard");
-}
-- (id)wizard {
-  // TODO: check whether this is used somewhere
-  SkyWizard *wizard;
-  
-  wizard = [[self wizardClass] wizardWithSession:[self session]];
-  [wizard setStartPage:self];
-  return [wizard start];
-}
-
 - (id)gathering {
   return [self pageWithName:@"SkyBusinessCardGathering"];
 }
 - (id)infolineGathering {
   return [self pageWithName:@"SkyInfolineGathering"];
+}
+
+- (id)showColumnConfigEditor {
+  [self setIsInConfigMode:YES];
+  return nil; /* start on page */
 }
 
 /* direct activation */
@@ -598,6 +610,23 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
   if ((page = (id)[self tabClicked]) == nil)
     page = self;
   return page;
+}
+
+/* wizards */
+
+- (Class)wizardClass {
+  // TODO: check whether this is used somewhere
+  return NSClassFromString(@"SkyPersonWizard");
+}
+- (id)wizard {
+  // TODO: check whether this is used somewhere
+  SkyWizard *wizard;
+  
+  [self logWithFormat:@"starting wizard: %@", [self wizardClass]];
+  
+  wizard = [[self wizardClass] wizardWithSession:[self session]];
+  [wizard setStartPage:self];
+  return [wizard start];
 }
 
 @end /* LSWPersons */

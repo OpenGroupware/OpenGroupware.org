@@ -150,7 +150,7 @@ ClearSubmit: WOSubmitButton {
 HasSearchedCondElse: WOConditional { condition = hasSearched; negate = YES; }
 
 AttributeCell: SkyAttributeCell { keyColor = "subAttributeCell"; }
-ValueCell:     SkyValueCell     { valign="top";valueColor = "subValueCell";   }
+ValueCell:     SkyValueCell     { valign="top"; valueColor = "subValueCell"; }
 
 MainButtonRow: WOGenericContainer {
   elementName = "tr";

@@ -529,8 +529,11 @@ static WOAssociation *yesAssoc = nil;
   unsigned  i, count;
   
   children = [_element childNodes];
-  if ((count = [children length]) == 0) /* no buttons */
+  if ((count = [children length]) == 0) { /* no buttons */
+    if (debugOn)
+      [self debugWithFormat:@"found no button children: %@", _element];
     return nil;
+  }
   
   assocs   = [[NSMutableDictionary alloc] initWithCapacity:16];
   ordering = [[NSMutableArray alloc] initWithCapacity:(count + 1)];

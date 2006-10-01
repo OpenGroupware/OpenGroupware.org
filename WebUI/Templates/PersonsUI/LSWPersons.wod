@@ -18,10 +18,13 @@ PersonList: SkyPersonList {
   dataSource        = dataSource;
   favoritesKey      = "person_favorites";
   onFavoritesChange = updateFavorites;
+  
+  configKey         = activeConfigKey;
+  isInConfigMode    = isInConfigMode;
 }
 
 Buttons: SkyButtonRow {
-  ordering    = ( gathering, import );
+  ordering    = ( config, gathering, import, new );
   onNew       = newPerson;
   onGathering = gathering;
   new         = labels.new;
@@ -31,25 +34,13 @@ Buttons: SkyButtonRow {
   hasImport = YES;
   import    = labels.import;
   onImport  = import;
-}
 
-ButtonsWithInfoline: SkyButtonRow {
-  ordering            = ( gathering, infolinegathering, import );
-  onNew               = newPerson;
-  onGathering         = gathering;
-  onInfolinegathering = infolineGathering;
-  new                 = labels.new;
-  tipNew              = labels.new;
-  gathering           = labels.gathering;
-  infolinegathering   = labels.infolineGathering;
-
-  hasImport = YES;
-  import    = labels.import;
-  onImport  = import;
+  config    = labels.config;
+  onConfig  = showColumnConfigEditor;
 }
 
 CustomButtons: SkyButtonRow {
-  ordering    = ( gathering, import, removetab );
+  ordering    = ( config, gathering, import, removetab );
   onNew       = newPerson;
   onGathering = gathering;
   new         = labels.new;
@@ -63,37 +54,13 @@ CustomButtons: SkyButtonRow {
   hasRemovetab = YES;
   removetab    = labels.removeTab;
   onRemovetab  = removeTab;
-}
 
-CustomButtonsWithInfoline: SkyButtonRow {
-  ordering            = ( gathering, infolinegathering, import, removetab );
-  onNew               = newPerson;
-  onGathering         = gathering;
-  onInfolinegathering = infolineGathering;
-  new                 = labels.new;
-  tipNew              = labels.new;
-  gathering           = labels.gathering;
-  infolinegathering   = labels.infolineGathering;
-
-  hasImport = YES;
-  import    = labels.import;
-  onImport  = import;
-
-  hasRemovetab = YES;
-  removetab    = labels.removeTab;
-  onRemovetab  = removeTab;
+  config    = labels.config;
+  onConfig  = showColumnConfigEditor;
 }
 
 HasSearchedCond: WOConditional {
   condition = hasSearched;
-}
-
-IsInfolineEnabled: WOConditional {
-  condition = isInfolineEnabled;
-}
-IsInfolineDisabled: WOConditional {
-  condition = isInfolineEnabled;
-  negate    = YES;
 }
 
 AdvancedSearch: LSWPersonAdvancedSearch {

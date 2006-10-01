@@ -55,10 +55,10 @@
 @implementation SkyEnterpriseList
 
 + (int)version {
-  return [super version] + 0 /* v3 */;
+  return [super version] + 0 /* v4 */;
 }
 + (void)initialize {
-  NSAssert2([super version] == 3,
+  NSAssert2([super version] == 4,
             @"invalid superclass (%@) version %i !",
             NSStringFromClass([self superclass]), [super version]);
 }

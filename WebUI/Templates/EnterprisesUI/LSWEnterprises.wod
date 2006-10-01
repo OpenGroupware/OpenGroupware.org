@@ -24,9 +24,10 @@ NewEnterpriseLink: WOHyperlink {
 }
 
 EnterpriseList: SkyEnterpriseList {
-  dataSource   = dataSource;
-  currentBatch = currentBatch;
+  dataSource        = dataSource;
+  currentBatch      = currentBatch;
   onFavoritesChange = updateFavorites;
+  configKey         = "enterprise_defaultlist";
 }
 
 AdvancedSearch: LSWEnterpriseAdvancedSearch {

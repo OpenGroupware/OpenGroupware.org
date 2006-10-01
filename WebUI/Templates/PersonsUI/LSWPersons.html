@@ -2,10 +2,7 @@
   <#Window>
     <#TabBody>
       <#FavoritesTab>
-        <#PersonList>
-          <#IsInfolineEnabled><#ButtonsWithInfoline/></#IsInfolineEnabled>
-          <#IsInfolineDisabled><#Buttons/></#IsInfolineDisabled>
-        </#PersonList>
+        <#PersonList><#Buttons/></#PersonList>
       </#FavoritesTab>
       
       <#SearchTab>
@@ -21,40 +18,28 @@
           <td align="right"><#SavedSearchPopUp/></td></tr>
         </table>
         
-        <#PersonList>
-          <#IsInfolineEnabled><#ButtonsWithInfoline/></#IsInfolineEnabled>
-          <#IsInfolineDisabled><#Buttons/></#IsInfolineDisabled>
-        </#PersonList>
+        <#PersonList><#Buttons/></#PersonList>
       </#SearchTab>
 
       <#AdvSearchTab><#AdvancedSearch/></#AdvSearchTab>
 
       <#FullSearchTab>
         <#FullSearch/>
-        <#PersonList>
-          <#IsInfolineEnabled><#ButtonsWithInfoline/></#IsInfolineEnabled>
-          <#IsInfolineDisabled><#Buttons/></#IsInfolineDisabled>
-        </#PersonList>
+        <#PersonList><#Buttons/></#PersonList>
       </#FullSearchTab>
 
       <#CustomTabs>
         <#CustomTab>
-            <#CustomLabel />
-            <div align="right"><#CustomSavedSearchPopUp/></div>
-            <#PersonList>
-              <#IsInfolineEnabled><#CustomButtonsWithInfoline/></#IsInfolineEnabled>
-              <#IsInfolineDisabled><#CustomButtons/></#IsInfolineDisabled>
-            </#PersonList>
+          <#CustomLabel />
+          <div align="right"><#CustomSavedSearchPopUp/></div>
+          <#PersonList><#CustomButtons/></#PersonList>
         </#CustomTab>
       </#CustomTabs>
 
       <#ShowLetterButtons>
         <#LetterRepetition>
           <#LetterTab>
-            <#PersonList>
-              <#IsInfolineEnabled><#ButtonsWithInfoline/></#IsInfolineEnabled>
-              <#IsInfolineDisabled><#Buttons/></#IsInfolineDisabled>
-            </#PersonList>
+            <#PersonList><#Buttons/></#PersonList>
           </#LetterTab>
         </#LetterRepetition>
       </#ShowLetterButtons>

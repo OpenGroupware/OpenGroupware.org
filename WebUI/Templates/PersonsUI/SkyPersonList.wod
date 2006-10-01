@@ -14,13 +14,78 @@ TableView: SkyTableView {
 }
 
 ButtonMode: WETableViewButtonMode {}
-Font: SkyConfigFont {}
+Font:       SkyConfigFont {}
+EditFont:   SkyConfigEditFont {}
+
+MainButtonRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_mainButtonRow;
+}
+ColSpanTD: WOGenericContainer {
+  elementName = "td";
+  colspan     = configList.count;
+}
+
+
+/* configuration */
+
+IsConfigMode: WOConditional { condition = isInConfigMode; }
+IsViewMode:   WOConditional { condition = isInConfigMode; negate = YES; }
+
+CfgForm: WOForm {
+  action = applyConfig;
+}
+
+ConfigTitleLabel: WOString { value = labels.title_ListConfig; }
+ColumnLabel:      WOString { value = labels.column; }
+
+CheckerLabel: WOGenericContainer {
+  elementName = "label";
+  for         = currentColumnCheckerName;
+}
+CheckerLabelValue: WOString {
+  value = labels.$currentColumnOpt;
+}
+
+ColOptPopUp: WOPopUpButton {
+  name      = currentColumnCheckerName;
+  list      = configOptList;
+  itemGroup = columnOptItemGroup;
+  item      = currentColumnOpt;
+  value     = currentColumnOpt;
+  string    = currentColumnOptLabel;
+  selection = currentColumnSelection;
+  style     = "width: 98%;";
+}
+
+CfgButtons: SkyButtonRow {
+  ordering  = ( remove, add, done );
+  onDone    = leaveConfigMode;
+  onAdd     = addColumn;
+  onRemove  = removeColumn;
+  done      = labels.listcfg_done;
+  add       = labels.listcfg_addcolumn;
+  remove    = labels.listcfg_removecolumn;
+}
+
+CfgSave: WOSubmitButton {
+  name  = "savecfg";
+  value = labels.listcfg_apply;
+}
+
+AttributeCell: SkyAttributeCell { keyColor = "subAttributeCell"; }
+ValueCell:     SkyValueCell     { valign="top"; valueColor = "subValueCell"; }
+
 
 /* custom columns */
 
 ColumnsRep: WORepetition {
-  list = configList;
-  item = currentColumn;
+  list  = configList;
+  item  = currentColumn;
+  index = currentColumnIndex;
+}
+ColIdx: WOString {
+  value = columnLabelIndex;
 }
 
 IsRegularColumn: WOConditional { condition = columnType; value = "plain"; };

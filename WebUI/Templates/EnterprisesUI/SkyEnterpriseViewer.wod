@@ -59,7 +59,9 @@ LinkTab: SkySimpleTabItem {
 // content
 
 PersonList: SkyPersonList {
-  dataSource = enterprise.personDataSource;
+  dataSource     = enterprise.personDataSource;
+  configKey      = "contactpersons_list";
+  isInConfigMode = isInConfigMode;
 }
 
 PersonalAttributes: SkyPersonalAttributesViewer {
@@ -80,10 +82,13 @@ LogList:      SkyObjectLogList  { object = enterprise; }
 RelatedLinks: OGoObjectLinkList { object = enterprise; }
 
 PersonButtons: SkyButtonRow {
-  ordering  = ( assign );
+  ordering  = ( config, assign );
   onAssign  = assignPerson;
   hasAssign = isEditEnabled;
   assign    = labels.assignPerson;
+  
+  config    = labels.config;
+  onConfig  = showColumnConfigEditor;
 }
 
 ShortEnterpriseViewer: LSWObjectViewer {

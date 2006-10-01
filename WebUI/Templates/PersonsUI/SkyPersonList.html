@@ -1,31 +1,76 @@
-<#TableView>
-
-  <#ButtonMode><#ButtonContent /></#ButtonMode>
-
-  <#NameTD><#ViewAction /></#NameTD>
-
-  <#ColumnsRep>
-    <#IsPhoneColumn>
-      <#ContentColumn><#Font>
-        <#PhoneColumnDial><#ColumnValue/></#PhoneColumnDial>
-      </#Font></#ContentColumn>
-    </#IsPhoneColumn>
-
-    <#IsMailColumn>
-      <#ContentColumn><#Font><#MailColumnLink/></#Font></#ContentColumn>
-    </#IsMailColumn>
-
-    <#IsUrlColumn>
-      <#ContentColumn><#Font><#UrlColumnLink/></#Font></#ContentColumn>
-    </#IsUrlColumn>
-
-    <#IsRegularColumn><#RegularColumn/></#IsRegularColumn>
-  </#ColumnsRep>
+<#IsViewMode>
+  <#TableView>
   
-  <#PFavoritesHeader>&nbsp;</#PFavoritesHeader>
-  <#PFavorites>
-    <#IsInFavoritesCond><#RemoveFromFavorites /></#IsInFavoritesCond>
-    <#IsInFavoritesCondElse><#AddToFavorites /></#IsInFavoritesCondElse>
-  </#PFavorites>
+    <#ButtonMode><#ButtonContent /></#ButtonMode>
+  
+    <#NameTD><#ViewAction /></#NameTD>
+  
+    <#ColumnsRep>
+      <#IsPhoneColumn>
+        <#ContentColumn><#Font>
+          <#PhoneColumnDial><#ColumnValue/></#PhoneColumnDial>
+        </#Font></#ContentColumn>
+      </#IsPhoneColumn>
+  
+      <#IsMailColumn>
+        <#ContentColumn><#Font><#MailColumnLink/></#Font></#ContentColumn>
+      </#IsMailColumn>
+  
+      <#IsUrlColumn>
+        <#ContentColumn><#Font><#UrlColumnLink/></#Font></#ContentColumn>
+      </#IsUrlColumn>
+  
+      <#IsRegularColumn><#RegularColumn/></#IsRegularColumn>
+    </#ColumnsRep>
+    
+    <#PFavoritesHeader>&nbsp;</#PFavoritesHeader>
+    <#PFavorites>
+      <#IsInFavoritesCond><#RemoveFromFavorites /></#IsInFavoritesCond>
+      <#IsInFavoritesCondElse><#AddToFavorites /></#IsInFavoritesCondElse>
+    </#PFavorites>
+  
+  </#TableView>
+</#IsViewMode>
 
-</#TableView>
+<#IsConfigMode>
+  <#CfgForm>
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+      <#MainButtonRow>
+        <#ColSpanTD>
+          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td><#Font><b><#ConfigTitleLabel /></b></#Font></td>
+              <td align="right"><#CfgButtons/></td>
+            </tr>
+          </table>
+        </#ColSpanTD>
+      </#MainButtonRow>
+    </table>
+
+    <br />
+
+    <table border="0">
+      <tr>
+        <#AttributeCell><#Font>
+          <#CheckerLabel><#ColumnLabel/> 1:</#CheckerLabel>
+        </#Font></#AttributeCell>
+        <#ValueCell><#Font>Name</#Font></#ValueCell>
+      </tr>
+
+      <#ColumnsRep>
+        <tr>
+          <#AttributeCell><#Font>
+            <#CheckerLabel><#ColumnLabel/> <#ColIdx/>:</#CheckerLabel>
+          </#Font></#AttributeCell>
+          <#ValueCell><#EditFont><#ColOptPopUp/></#EditFont></#ValueCell>
+        </tr>
+      </#ColumnsRep>
+
+      <tr>
+        <td></td>
+        
+        <#ValueCell><#EditFont><#CfgSave/></#EditFont></#ValueCell>
+      </tr>
+    </table>
+  </#CfgForm>
+</#IsConfigMode>

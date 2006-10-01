@@ -32,6 +32,54 @@
     nickname, firstname, degree, job_title,
     email1, "01_tel"
   );
+  person_defaultlist_opts = (
+    name, firstname, middlename, nickname,
+    salutation, degree, job_title, birthday, sex,
+    login,
+
+    /* emails */
+    email1, email2, email3,
+    
+    /* phones */
+    "01_tel", "02_tel", "03_tel_funk", "05_tel_private",
+    "10_fax", "15_fax_private",
+
+    /* URLs */
+    url,
+
+    /* Adresses */
+    
+    "private.name1",
+    "private.name2",
+    "private.name3",
+    "private.street",
+    "private.city",
+    "private.zip",
+    "private.state",
+    "private.country",
+
+    "mailing.name1",
+    "mailing.name2",
+    "mailing.name3",
+    "mailing.street",
+    "mailing.city",
+    "mailing.zip",
+    "mailing.state",
+    "mailing.country",
+
+    "location.name1",
+    "location.name2",
+    "location.name3",
+    "location.street",
+    "location.city",
+    "location.zip",
+    "location.state",
+    "location.country",
+    
+    /* Outlook attributes */
+    bossName, partnerName, assistantName, department, office,
+    occupation, imAddress
+  );
   
   OGoPersonLinksEnabled = YES;
   

@@ -46,7 +46,7 @@
 @implementation OGoContentPage
 
 + (int)version {
-  return [super version] + 1;
+  return [super version] + 1 /* v3 */;
 }
 + (void)initialize {
   NSAssert2([super version] == 2,

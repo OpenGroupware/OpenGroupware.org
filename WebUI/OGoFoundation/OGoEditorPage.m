@@ -439,6 +439,7 @@
 
 @end /* OGoEditorPage */
 
+
 @implementation NSObject(OGoEditorPageTyping)
 
 - (BOOL)isEditorPage {
@@ -446,6 +447,7 @@
 }
 
 @end /* NSObject(OGoEditorPageTyping) */
+
 
 @implementation OGoEditorPage(OGoEditorPageTyping)
 
