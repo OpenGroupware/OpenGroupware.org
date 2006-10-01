@@ -15,7 +15,8 @@
   "enterprise_editor_privateVisibility"  = 0;
 
   // lists
-  enterprise_defaultlist = ( number, email, "01_tel", url );
+  enterprise_defaultlist      = ( number, email, "01_tel", url );
+  enterprise_defaultprintlist = ( name, number, email, "01_tel", url );
 
   enterprise_defaultlist_opts = (
     name, /* this is 'description' in the DB but mapped in the document */

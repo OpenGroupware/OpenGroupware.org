@@ -21,10 +21,6 @@ MainButtonRow: WOGenericContainer {
   elementName = "tr";
   bgcolor     = config.colors_mainButtonRow;
 }
-ColSpanTD: WOGenericContainer {
-  elementName = "td";
-  colspan     = configList.count;
-}
 
 
 /* configuration */

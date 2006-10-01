@@ -449,3 +449,7 @@ wizardCancel               = "Abbrechen";
 wizardFinish               = "Ende";
 wizardForward              = "Vorwärts";
 zip                        = "PLZ";
+printlist_person           = "Personendruckansicht";
+printlist_enterprise       = "Firmendruckansicht";
+listcfg_addcolumn          = "Spalte hinzufügen";
+listcfg_removecolumn       = "Spalte entfernen";

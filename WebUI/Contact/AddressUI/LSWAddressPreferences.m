@@ -26,19 +26,24 @@
 
 @interface LSWAddressPreferences : OGoContentPage
 {
-  id              account;
-  NSUserDefaults* defaults;
+  id             account;
+  NSUserDefaults *defaults;
 
-  NSString        *formletterKind;
-  NSNumber        *blockSize;
-  NSString        *clipboardFormat;
+  NSString       *formletterKind;
+  NSNumber       *blockSize;
+  NSString       *clipboardFormat;
+  NSArray        *personPrintList;
+  NSArray        *enterprisePrintList;
   
-  BOOL            isEnterpriseSubviewEditable;
-  BOOL            isBlockSizeEditable;
-  BOOL            isPersonsSubviewEditable;
-  BOOL            isRoot;
-  BOOL            isFormletterKindEditable;
-  BOOL            isClipboardFormatEditable;
+  BOOL           isBlockSizeEditable;
+  BOOL           isRoot;
+  BOOL           isFormletterKindEditable;
+  BOOL           isClipboardFormatEditable;
+
+  /* transient */
+  NSString       *currentColumn;
+  int            currentColumnIndex;
+  NSString       *currentColumnOpt;
 }
 
 @end
@@ -52,16 +57,20 @@
 static NSNumber *yes = nil, *no = nil;
 
 + (void)initialize {
-  yes = [[NSNumber numberWithBool:YES] retain];
-  no  = [[NSNumber numberWithBool:NO]  retain];
+  if (yes == nil) yes = [[NSNumber numberWithBool:YES] retain];
+  if (no  == nil) no  = [[NSNumber numberWithBool:NO]  retain];
 }
 
 - (void)dealloc {
-  [self->account           release];
-  [self->defaults          release];
-  [self->blockSize         release];
-  [self->formletterKind    release];
-  [self->clipboardFormat   release];
+  [self->currentColumn       release];
+  [self->currentColumnOpt    release];
+  [self->personPrintList     release];
+  [self->enterprisePrintList release];
+  [self->account             release];
+  [self->defaults            release];
+  [self->blockSize           release];
+  [self->formletterKind      release];
+  [self->clipboardFormat     release];
   [super dealloc];
 }
 
@@ -73,6 +82,8 @@ static NSNumber *yes = nil, *no = nil;
 }
 
 - (void)sleep {
+  [self->currentColumnOpt release]; self->currentColumnOpt = nil;
+  [self->currentColumn    release]; self->currentColumn    = nil;
   [super sleep];
 }
 
@@ -96,10 +107,40 @@ static NSNumber *yes = nil, *no = nil;
 }
 
 - (void)resetDefaults {
-  [self->defaults          release]; self->defaults          = nil;
-  [self->formletterKind    release]; self->formletterKind    = nil;
-  [self->blockSize         release]; self->blockSize         = nil;
-  [self->clipboardFormat   release]; self->clipboardFormat   = nil;
+  [self->personPrintList     release]; self->personPrintList     = nil;
+  [self->enterprisePrintList release]; self->enterprisePrintList = nil;
+  [self->defaults            release]; self->defaults            = nil;
+  [self->formletterKind      release]; self->formletterKind      = nil;
+  [self->blockSize           release]; self->blockSize           = nil;
+  [self->clipboardFormat     release]; self->clipboardFormat     = nil;
+}
+
+- (void)loadDefaults:(NSUserDefaults *)_ud {
+  NSArray  *a;
+  NSString *s;
+  
+  self->formletterKind = [[_ud stringForKey:@"formletter_kind"] copy];
+  self->blockSize      = [[_ud objectForKey:@"address_blocksize"] copy];
+  
+  s = [_ud stringForKey:@"address_clipboard_format"];
+  s = [s stringByReplacingString:@"\\r\\n" withString:@"\n"];
+  self->clipboardFormat = [s copy];
+  
+  /* print lists */
+  
+  if (![(a = [_ud arrayForKey:@"person_printlist"]) isNotEmpty])
+    a = [_ud arrayForKey:@"person_defaultprintlist"];
+  self->personPrintList = [a copy];
+  
+  if (![(a = [_ud arrayForKey:@"enterprise_printlist"]) isNotEmpty])
+    a = [_ud arrayForKey:@"enterprise_defaultprintlist"];
+  self->enterprisePrintList = [a copy];
+  
+  /* permissions */
+  self->isBlockSizeEditable         = [self _isEditable:@"address_blocksize"];
+  self->isFormletterKindEditable    = [self _isEditable:@"formletter_kind"];
+  self->isClipboardFormatEditable   =
+    [self _isEditable:@"address_clipboard_format"];
 }
 
 - (void)setAccount:(id)_account {
@@ -108,31 +149,14 @@ static NSNumber *yes = nil, *no = nil;
   [self resetDefaults];
   
   ASSIGN(self->account, _account);
-
-  ud = _account
-    ? [self runCommand:@"userdefaults::get",
-            @"user", _account, nil]
+  
+  ud = (_account != nil)
+    ? [self runCommand:@"userdefaults::get", @"user", _account, nil]
     : [self runCommand:@"userdefaults::get", nil];
-
-  self->defaults = RETAIN(ud);
- 
-  self->formletterKind =
-    [[self->defaults stringForKey:@"formletter_kind"] copy];
-  self->blockSize = [[self->defaults objectForKey:@"address_blocksize"] copy];
   
-  self->clipboardFormat =
-    [self->defaults stringForKey:@"address_clipboard_format"];
-  self->clipboardFormat =
-    [[[self->clipboardFormat componentsSeparatedByString:@"\\r\\n"]
-                             componentsJoinedByString:@"\n"]
-                             copy];
-  
-  self->isBlockSizeEditable         = [self _isEditable:@"address_blocksize"];
-  self->isFormletterKindEditable    = [self _isEditable:@"formletter_kind"];
-  self->isClipboardFormatEditable   =
-    [self _isEditable:@"address_clipboard_format"];
+  self->defaults = [ud retain];
+  [self loadDefaults:self->defaults];
 }
-
 - (id)account {
   return self->account;
 }
@@ -163,24 +187,6 @@ static NSNumber *yes = nil, *no = nil;
 }
 - (void)setIsClipboardFormatEditable:(BOOL)_flag {
   if (self->isRoot) self->isClipboardFormatEditable = _flag;
-}
-
-- (BOOL)isPersonsSubviewEditable {
-  return self->isPersonsSubviewEditable || self->isRoot;
-}
-- (void)setIsPersonsSubviewEditableRoot:(BOOL)_flag {
-  if (self->isRoot) {
-    self->isPersonsSubviewEditable = _flag;
-  }
-}
-
-- (BOOL)isEnterpriseSubviewEditable {
-  return self->isEnterpriseSubviewEditable || self->isRoot;
-}
-- (void)setIsEnterpriseSubviewEditableRoot:(BOOL)_flag {
-  if (self->isRoot) {
-    self->isEnterpriseSubviewEditable = _flag;
-  }
 }
 
 - (BOOL)isFormletterKindEditable {
@@ -216,6 +222,153 @@ static NSNumber *yes = nil, *no = nil;
   return self->formletterKind;
 }
 
+/* print lists */
+
+- (void)setCurrentColumn:(NSString *)_s {
+  ASSIGNCOPY(self->currentColumn, _s);
+}
+- (NSString *)currentColumn {
+  return self->currentColumn;
+}
+
+- (void)setCurrentColumnIndex:(int)_idx {
+  self->currentColumnIndex = _idx;
+}
+- (int)currentColumnIndex {
+  return self->currentColumnIndex;
+}
+- (int)columnIndexPlusOne {
+  /* we start at 0 */
+  return [self currentColumnIndex] + 1;
+}
+
+- (void)setCurrentColumnOpt:(NSString *)_s {
+  ASSIGNCOPY(self->currentColumnOpt, _s);
+}
+- (NSString *)currentColumnOpt {
+  return self->currentColumnOpt;
+}
+
+- (NSString *)currentPersonColumnOptLabel {
+  return [[self resourceManager] stringForKey:[self currentColumnOpt]
+				 inTableNamed:@"PersonsUI"
+				 withDefaultValue:[self currentColumnOpt]
+				 languages:[[self session] languages]];
+}
+- (NSString *)currentEnterpriseColumnOptLabel {
+  return [[self resourceManager] stringForKey:[self currentColumnOpt]
+				 inTableNamed:@"EnterprisesUI"
+				 withDefaultValue:[self currentColumnOpt]
+				 languages:[[self session] languages]];
+}
+
+- (NSArray *)personPrintList {
+  return self->personPrintList;
+}
+- (NSArray *)enterprisePrintList {
+  return self->enterprisePrintList;
+}
+
+- (NSArray *)personConfigOptList {
+  static NSArray *configOptList = nil;
+  if (configOptList == nil) {
+    configOptList = [[[NSUserDefaults standardUserDefaults] 
+		       arrayForKey:@"person_defaultlist_opts"] copy];
+  }
+  return configOptList;
+}
+- (NSArray *)enterpriseConfigOptList {
+  static NSArray *configOptList = nil;
+  if (configOptList == nil) {
+    configOptList = [[[NSUserDefaults standardUserDefaults] 
+		       arrayForKey:@"enterprise_defaultlist_opts"] copy];
+  }
+  return configOptList;
+}
+
+- (NSString *)currentPersonColumnCheckerName {
+  return [NSString stringWithFormat:@"pcb%i", [self currentColumnIndex]];
+}
+- (NSString *)currentEnterpriseColumnCheckerName {
+  return [NSString stringWithFormat:@"ecb%i", [self currentColumnIndex]];
+}
+
+- (void)setCurrentPersonColumnSelection:(NSString *)_newValue {
+  NSMutableArray *ma;
+  
+  if (![_newValue isNotEmpty])
+    return;
+  if ([_newValue isEqualToString:[self currentColumn]])
+    return; /* didn't change */
+  
+  /* changed */
+  ma = [self->personPrintList mutableCopy];
+  [ma replaceObjectAtIndex:[self currentColumnIndex] withObject:_newValue];
+  [self->personPrintList release]; self->personPrintList = nil;
+  self->personPrintList = [ma copy];
+  [ma release]; ma = nil;
+}
+- (NSString *)currentPersonColumnSelection {
+  return [self currentColumn];
+}
+
+- (void)setCurrentEnterpriseColumnSelection:(NSString *)_newValue {
+  NSMutableArray *ma;
+  
+  if (![_newValue isNotEmpty])
+    return;
+  if ([_newValue isEqualToString:[self currentColumn]])
+    return; /* didn't change */
+  
+  /* changed */
+  ma = [self->enterprisePrintList mutableCopy];
+  [ma replaceObjectAtIndex:[self currentColumnIndex] withObject:_newValue];
+  [self->enterprisePrintList release]; self->enterprisePrintList = nil;
+  self->enterprisePrintList = [ma copy];
+  [ma release]; ma = nil;
+}
+- (NSString *)currentEnterpriseColumnSelection {
+  return [self currentColumn];
+}
+
+- (id)addColumnToList:(NSArray **)_list default:(NSString *)_def {
+  NSArray *cfglist;
+  
+  cfglist = [*_list arrayByAddingObject:_def];
+  [*_list release]; *_list = nil;
+  *_list = [cfglist copy];
+  
+  return nil; /* stay on page */
+}
+- (id)removeColumnFromList:(NSArray **)_list {
+  NSMutableArray *cfglist;
+  
+  cfglist = [*_list mutableCopy];
+  [*_list release]; *_list = nil;
+  
+  if ([cfglist isNotEmpty])
+    [cfglist removeObjectAtIndex:([cfglist count] - 1)];
+  
+  *_list = [cfglist copy];
+  [cfglist release]; cfglist = nil;
+  
+  return nil; /* stay on page */
+}
+
+- (id)addPersonColumn {
+  return [self addColumnToList:&(self->personPrintList) default:@"name"];
+}
+- (id)addEnterpriseColumn {
+  return [self addColumnToList:&(self->enterprisePrintList) default:@"name"];
+}
+
+- (id)removePersonColumn {
+  return [self removeColumnFromList:&(self->personPrintList)];
+}
+- (id)removeEnterpriseColumn {
+  return [self removeColumnFromList:&(self->enterprisePrintList)];
+}
+
 /* operations */
 
 - (BOOL)_writeDefault:(NSString *)_name value:(id)_value {
@@ -249,13 +402,20 @@ static NSNumber *yes = nil, *no = nil;
 
     [self _writeDefault:@"address_clipboard_format" value:tmp];
   }
-
+  
   if ([self isBlockSizeEditable])
     [self _writeDefault:@"address_blocksize" value:[self blockSize]];
   
   if ([self isFormletterKindEditable])
     [self _writeDefault:@"formletter_kind" value:[self formletterKind]];
 
+  if ([self->personPrintList isNotEmpty])
+    [self _writeDefault:@"person_printlist" value:self->personPrintList];
+  if ([self->enterprisePrintList isNotEmpty]) {
+    [self _writeDefault:@"enterprise_printlist" 
+	  value:self->enterprisePrintList];
+  }
+  
   if (self->isRoot) {
     [self _writeDefault:@"rootAccessformletter_kind"
           value:self->isFormletterKindEditable ? yes : no];

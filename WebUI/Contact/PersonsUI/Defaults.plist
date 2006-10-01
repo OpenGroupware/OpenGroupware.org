@@ -32,6 +32,10 @@
     nickname, firstname, degree, job_title,
     email1, "01_tel"
   );
+  person_defaultprintlist = (
+    name, nickname, firstname, degree, job_title,
+    email1, "01_tel"
+  );
   person_defaultlist_opts = (
     name, firstname, middlename, nickname,
     salutation, degree, job_title, birthday, sex,

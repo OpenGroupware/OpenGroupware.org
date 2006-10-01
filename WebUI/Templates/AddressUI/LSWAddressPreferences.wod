@@ -1,3 +1,4 @@
+// bind template to controller
 
 Frame: LSWSkyrixFrame {}
 
@@ -6,14 +7,10 @@ Window: LSWWindowFrame {
   onClose = session.navigation.leavePage;
 }
 
-WindowTitle: LSWViewerTitle {
-  title     = accountLabel;
-}
-AccessWindowTitle: LSWViewerTitle {
-  title     = labels.AddressAccessPreferences;
-}
+WindowTitle:       LSWViewerTitle { title = accountLabel; }
+AccessWindowTitle: LSWViewerTitle { title = labels.AddressAccessPreferences; }
 
-PreferencesForm: WOForm{
+PreferencesForm: WOForm {
 }
 
 FormletterKindField: SkyDefaultEditField {
@@ -22,25 +19,6 @@ FormletterKindField: SkyDefaultEditField {
   valueType  = "popup";
   value      = formletterKind;
   valueList  = session.userDefaults.formletter_kinds;
-}
-
-EnterpriseSubviewField: SkyDefaultEditField {
-  labels     = labels;
-  label      = labels.enterprise_sub_view;
-  isEditable = isEnterpriseSubviewEditable;
-  valueType  = "popup";
-  value      = enterprise_sub_view;
-  valueList  = ( "attributes", "persons", "documents", "projects", "overview",
-                 "address" );
-}
-
-PersonsSubviewField: SkyDefaultEditField {
-  labels     = labels;
-  label      = labels.persons_sub_view;
-  isEditable = isPersonsSubviewEditable;
-  valueType  = "popup";
-  value      = persons_sub_view;
-  valueList  = ( "attributes", "enterprises", "projects", "address", "picture" );
 }
 
 BlockSizeField: SkyDefaultEditField {
@@ -140,3 +118,71 @@ AttributesSubViewLabel: WOString {
   value = labels.inAttributesSubView;
 }
 
+/* print columns */
+
+PersonPrintTitle:     WOString { value = labels.printlist_person;     }
+EnterprisePrintTitle: WOString { value = labels.printlist_enterprise; }
+
+PersonColumnsRep: WORepetition {
+  list  = personPrintList;
+  item  = currentColumn;
+  index = currentColumnIndex;
+  separator = "<br />";
+}
+EnterpriseColumnsRep: WORepetition {
+  list  = enterprisePrintList;
+  item  = currentColumn;
+  index = currentColumnIndex;
+  separator = "<br />";
+}
+
+PersonColOptPopUp: WOPopUpButton {
+  name      = currentPersonColumnCheckerName;
+  list      = personConfigOptList;
+  item      = currentColumnOpt;
+  value     = currentColumnOpt;
+  string    = currentPersonColumnOptLabel;
+  selection = currentPersonColumnSelection;
+  style     = "width: 98%;";
+}
+
+EnterpriseColOptPopUp: WOPopUpButton {
+  name      = currentEnterpriseColumnCheckerName;
+  list      = enterpriseConfigOptList;
+  item      = currentColumnOpt;
+  value     = currentColumnOpt;
+  string    = currentEnterpriseColumnOptLabel;
+  selection = currentEnterpriseColumnSelection;
+  style     = "width: 98%;";
+}
+
+AddPersonColumn: WOSubmitButton {
+  name   = "addpercol";
+  value  = labels.listcfg_addcolumn;
+  action = addPersonColumn;
+  style  = "width: 98%;";
+}
+AddEnterpriseColumn: WOSubmitButton {
+  name  = "addentcol";
+  value = labels.listcfg_addcolumn;
+  action = addEnterpriseColumn;
+  style  = "width: 98%;";
+}
+
+RemovePersonColumn: WOSubmitButton {
+  name   = "rempercol";
+  value  = labels.listcfg_removecolumn;
+  action = removePersonColumn;
+  style  = "width: 98%;";
+}
+RemoveEnterpriseColumn: WOSubmitButton {
+  name  = "rementcol";
+  value = labels.listcfg_removecolumn;
+  action = removeEnterpriseColumn;
+  style  = "width: 98%;";
+}
+
+MainButtonCell: WOGenericContainer {
+  elementName = "td";
+  bgcolor     = config.colors_mainButtonRow;
+}

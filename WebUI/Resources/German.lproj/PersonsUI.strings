@@ -402,6 +402,7 @@ telephones                         = "Telefon";
 time_of_download                   = "Zeit des Downloads";
 title                              = "Titel";
 title_ListConfig                   = "Spalten der Liste konfigurieren";
+title_PrintListConfig              = "Spalten der Druckansicht konfigurieren";
 trial_download                     = "Trial Download";
 turnover                           = "Umsatz";
 undefined                          = "unbekannt";

@@ -73,6 +73,15 @@
   return @"person_defaultlist";
 }
 
+- (NSArray *)configOptList {
+  static NSArray *lConfigOptList = nil;
+  if (lConfigOptList == nil) {
+    lConfigOptList = [[[NSUserDefaults standardUserDefaults] 
+			arrayForKey:@"person_defaultlist_opts"] copy];
+  }
+  return lConfigOptList;
+}
+
 - (NSString *)itemIdString {
   return [[[self item] valueForKey:@"companyId"] stringValue];
 }
