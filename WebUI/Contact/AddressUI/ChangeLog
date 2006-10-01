@@ -1,3 +1,7 @@
+2006-10-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWAddressPreferences.m: removed deprecated defaults (v5.3.58)
+
 2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed gcc 4.1 warnings, use -warn/errorWithFormat: (v5.3.57)

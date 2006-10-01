@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -28,8 +29,6 @@
   id              account;
   NSUserDefaults* defaults;
 
-  NSString        *enterpriseSubView;
-  NSString        *personsSubView;
   NSString        *formletterKind;
   NSNumber        *blockSize;
   NSString        *clipboardFormat;
@@ -60,10 +59,8 @@ static NSNumber *yes = nil, *no = nil;
 - (void)dealloc {
   [self->account           release];
   [self->defaults          release];
-  [self->enterpriseSubView release];
   [self->blockSize         release];
   [self->formletterKind    release];
-  [self->personsSubView    release];
   [self->clipboardFormat   release];
   [super dealloc];
 }
@@ -98,16 +95,18 @@ static NSNumber *yes = nil, *no = nil;
   return obj ? [obj boolValue] : YES;
 }
 
-- (void)setAccount:(id)_account {
-  NSUserDefaults *ud;
-
+- (void)resetDefaults {
   [self->defaults          release]; self->defaults          = nil;
-  [self->enterpriseSubView release]; self->enterpriseSubView = nil;
-  [self->personsSubView    release]; self->personsSubView    = nil;
   [self->formletterKind    release]; self->formletterKind    = nil;
   [self->blockSize         release]; self->blockSize         = nil;
   [self->clipboardFormat   release]; self->clipboardFormat   = nil;
+}
 
+- (void)setAccount:(id)_account {
+  NSUserDefaults *ud;
+  
+  [self resetDefaults];
+  
   ASSIGN(self->account, _account);
 
   ud = _account
@@ -119,10 +118,6 @@ static NSNumber *yes = nil, *no = nil;
  
   self->formletterKind =
     [[self->defaults stringForKey:@"formletter_kind"] copy];
-  self->personsSubView =
-    [[self->defaults stringForKey:@"persons_sub_view"] copy];
-  self->enterpriseSubView =
-    [[self->defaults stringForKey:@"enterprise_sub_view"] copy];
   self->blockSize = [[self->defaults objectForKey:@"address_blocksize"] copy];
   
   self->clipboardFormat =
@@ -134,8 +129,6 @@ static NSNumber *yes = nil, *no = nil;
   
   self->isBlockSizeEditable         = [self _isEditable:@"address_blocksize"];
   self->isFormletterKindEditable    = [self _isEditable:@"formletter_kind"];
-  self->isPersonsSubviewEditable    = [self _isEditable:@"persons_sub_view"];
-  self->isEnterpriseSubviewEditable =[self _isEditable:@"enterprise_sub_view"];
   self->isClipboardFormatEditable   =
     [self _isEditable:@"address_clipboard_format"];
 }
@@ -203,35 +196,21 @@ static NSNumber *yes = nil, *no = nil;
 }
 
 - (void)setBlockSize:(NSNumber *)_number {
-  ASSIGN(self->blockSize, _number);
+  ASSIGNCOPY(self->blockSize, _number);
 }
 - (NSNumber *)blockSize {
   return self->blockSize;
 }
 
 - (void)setClipboardFormat:(NSString *)_format {
-  ASSIGN(self->clipboardFormat,_format);
+  ASSIGNCOPY(self->clipboardFormat,_format);
 }
 - (NSString *)clipboardFormat {
   return self->clipboardFormat;
 }
   
-- (void)setPersons_sub_view:(NSString *)_subview {
-  ASSIGN(self->personsSubView, _subview);
-}
-- (NSString *)persons_sub_view {
-  return self->personsSubView;
-}
-
-- (void)setEnterprise_sub_view:(NSString *)_subview {
-  ASSIGN(self->enterpriseSubView, _subview);
-}
-- (NSString *)enterprise_sub_view {
-  return self->enterpriseSubView;
-}
-
 - (void)setFormletterKind:(NSString *)_formletterKind {
-  ASSIGN(self->formletterKind, _formletterKind);
+  ASSIGNCOPY(self->formletterKind, _formletterKind);
 }
 - (NSString *)formletterKind {
   return self->formletterKind;
@@ -242,9 +221,9 @@ static NSNumber *yes = nil, *no = nil;
 - (BOOL)_writeDefault:(NSString *)_name value:(id)_value {
   NSNumber *uid;
   
-  if ((uid = [[self account] valueForKey:@"companyId"]) == nil)
+  if (![(uid = [[self account] valueForKey:@"companyId"]) isNotNull])
     return NO;
-
+  
   [self runCommand:@"userdefaults::write",
           @"key", _name, @"value", _value, @"defaults", self->defaults,
           @"userId",   uid, nil];
@@ -261,16 +240,7 @@ static NSNumber *yes = nil, *no = nil;
   id uid;
 
   uid = [[self account] valueForKey:@"companyId"];
-
-#if 0 // TODO: hh asks: why is that?
-  if ([self isPersonsSubviewEditable])
-    [self _writeDefault:@"persons_sub_view" value:[self persons_sub_view]];
-
-  if ([self isEnterpriseSubviewEditable]) {
-    [self _writeDefault:@"enterprise_sub_view" 
-          value:[self enterprise_sub_view]];
-  }
-#endif
+  
   if ([self isClipboardFormatEditable]) {
     id tmp = [[[self clipboardFormat] componentsSeparatedByString:@"\r\n"]
                      componentsJoinedByString:@"\n"];
