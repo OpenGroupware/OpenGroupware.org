@@ -338,6 +338,7 @@ personviewer_title                 = "Person Viewer";
 picture                            = "Picture";
 pictureUpload                      = "Picture Upload";
 previous                           = "previous";
+print                              = "print";
 private                            = "private";
 private.city                       = "Private: City";
 private.country                    = "Private: Country";

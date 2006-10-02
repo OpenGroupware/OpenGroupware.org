@@ -82,7 +82,7 @@
   return lConfigOptList;
 }
 
-- (NSString *)itemIdString {
+- (NSString *)itemIdString { /* used for favorites */
   return [[[self item] valueForKey:@"companyId"] stringValue];
 }
 

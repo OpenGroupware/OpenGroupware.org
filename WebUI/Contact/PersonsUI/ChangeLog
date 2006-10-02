@@ -1,3 +1,7 @@
+2006-10-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWPersons.m: added print button (v5.3.71)
+
 2006-10-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWPersons.m: added userlist configuration (v5.3.70)

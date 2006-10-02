@@ -5,87 +5,50 @@
         <#WindowTitle />
       </table>
 
-      <table border="0" cellspacing="4" cellpadding="0" width="100%">
-        <tr><td width="70%" valign="top" rowspan="2">
-
-          <table border="0" cellspacing="0" cellpadding="4" width="100%">
-            <#FormletterKindField />
-            <#BlockSizeField />
-            <#HasClipboardCond>
-              <#ClipboardFormat><#ClipboardFormatHelp /></#ClipboardFormat>
-            </#HasClipboardCond>
+      <table border="0" cellspacing="0" cellpadding="4" width="100%">
+        <#FormletterKindField />
+        <#BlockSizeField />
+        <#HasClipboardCond>
+          <#ClipboardFormat><#ClipboardFormatHelp /></#ClipboardFormat>
+        </#HasClipboardCond>
     
-            <#AttributesColumnSizeField>
-              <#Font>(<#AttributesSubViewLabel />)</#Font>
-            </#AttributesColumnSizeField>
+        <#AttributesColumnSizeField>
+          <#Font>(<#AttributesSubViewLabel />)</#Font>
+        </#AttributesColumnSizeField>
     
-            <#EditorSearchResultColumnSizeField>
-              <#Font>(<#EditorSearchResultLabel />)</#Font>
-            </#EditorSearchResultColumnSizeField>
+        <#EditorSearchResultColumnSizeField>
+          <#Font>(<#EditorSearchResultLabel />)</#Font>
+        </#EditorSearchResultColumnSizeField>
     
-            <#EditorAddressColumnSizeField>
-              <#Font>(<#AddressesInCompanyEditorLabel />)</#Font>
-            </#EditorAddressColumnSizeField>
+        <#EditorAddressColumnSizeField>
+          <#Font>(<#AddressesInCompanyEditorLabel />)</#Font>
+        </#EditorAddressColumnSizeField>
     
-            <#EditorAddressColumnSizeField>
-              <#Font>(<#AddressesInCompanyEditorLabel />)</#Font>
-            </#EditorAddressColumnSizeField>
+        <#EditorAddressColumnSizeField>
+          <#Font>(<#AddressesInCompanyEditorLabel />)</#Font>
+        </#EditorAddressColumnSizeField>
     
-            <#IsRoot>
-              <tr><td colspan="2"></td></tr>
+        <#IsRoot>
+          <tr><td colspan="2"></td></tr>
     
-              <#AccessWindowTitle />
+          <#AccessWindowTitle />
     
-              <tr>
-                <#AttributeCell>
-                  <#Font><#FormletterKindLabel />:</#Font>
-                </#AttributeCell>
+          <tr>
+            <#AttributeCell>
+              <#Font><#FormletterKindLabel />:</#Font>
+            </#AttributeCell>
       
-                <#ValueCell>
-                  <#EditFont><#FormletterKindAccess /></#EditFont>
-                </#ValueCell>
-              </tr>
-            </#IsRoot>
+            <#ValueCell>
+              <#EditFont><#FormletterKindAccess /></#EditFont>
+            </#ValueCell>
+          </tr>
+        </#IsRoot>
     
-            <tr>
-              <td></td>
-              <td>
-                <#SaveSubmit />
-                <#CancelButton />
-              </td>
-            </tr>
-          </table>
-    
-          </td>
-    
-          <#MainButtonCell>
-            <#Font><#PersonPrintTitle/></#Font>
-          </#MainButtonCell>
-          <#MainButtonCell>
-            <#Font><#EnterprisePrintTitle/></#Font>
-          </#MainButtonCell>
-        </tr>
         <tr>
-          <td valign="top">
-	    <#EditFont>
-              <#AddPersonColumn/>
-              <#RemovePersonColumn/>
-
-              <#PersonColumnsRep>
-                <#PersonColOptPopUp/>
-              </#PersonColumnsRep>
-            </#EditFont>
-          </td>
-
-          <td valign="top">
-	    <#EditFont>
-              <#AddEnterpriseColumn/>
-              <#RemoveEnterpriseColumn/>
-
-              <#EnterpriseColumnsRep>
-                <#EnterpriseColOptPopUp/>
-              </#EnterpriseColumnsRep>
-            </#EditFont>
+          <td></td>
+          <td>
+            <#SaveSubmit />
+            <#CancelButton />
           </td>
         </tr>
       </table>

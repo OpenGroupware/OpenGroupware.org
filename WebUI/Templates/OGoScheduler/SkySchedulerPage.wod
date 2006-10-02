@@ -143,7 +143,6 @@ MonthOverviewTab: SkySimpleTabItem {
 YearOverviewTab: SkySimpleTabItem {
   key    = "yearoverview";
   label  = year;
-  //icon   = yearIcon;
 }
 
 // buttons
@@ -156,12 +155,11 @@ ToggleCell: WOGenericContainer {
 }
 ButtonCell: WOGenericContainer {
   elementName = "td";
-  //COLSPAN   = "2";
   ALIGN       = "right";
   BGCOLOR     = config.colors_mainButtonRow;
 }
 Buttons: SkyButtonRow {
-  ordering    = (print, proposal );
+  ordering    = ( print, proposal );
   onProposal  = appointmentProposal;
   onPrint     = overviewPrint;
   targetPrint = "SkyrixPrintView";

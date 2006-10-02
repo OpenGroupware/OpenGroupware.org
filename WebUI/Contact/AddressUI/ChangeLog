@@ -1,3 +1,12 @@
+2006-10-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.60
+
+	* added OGoPrintCompanyList component (used to print person or
+	  enterprise lists)
+
+	* disabled separate printlist configuration in address preferences
+
 2006-10-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWAddressPreferences.m: added person/enterprise printlist

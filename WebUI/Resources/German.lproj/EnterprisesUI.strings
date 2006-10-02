@@ -284,6 +284,7 @@ personviewer_title                 = "Personen Ansicht";
 picture                            = "Bild";
 pictureUpload                      = "Bild laden";
 previous                           = "vorherige Seite";
+print                              = "Drucken";
 private                            = "Privat";
 privateAttributes                  = "Privat / Nur Lesbar";
 privateLabel                       = "Privat";

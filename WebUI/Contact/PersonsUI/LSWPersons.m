@@ -601,6 +601,25 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
   return nil; /* start on page */
 }
 
+
+/* printing */
+
+- (id)printList {
+  OGoComponent *page;
+  WOResponse   *r;
+  
+  page = [self pageWithName:@"OGoPrintCompanyList"];
+  [page takeValue:[self dataSource]      forKey:@"dataSource"];
+  [page takeValue:[self activeConfigKey] forKey:@"configKey"];
+  [page takeValue:[self labels]          forKey:@"labels"];
+  
+  r = [page generateResponse];
+  [r setHeader:@"text/html" forKey:@"content-type"];
+  
+  return r;
+}
+
+
 /* direct activation */
 
 - (id<WOActionResults>)showAdvancedSearchAction {
@@ -611,6 +630,7 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
     page = self;
   return page;
 }
+
 
 /* wizards */
 

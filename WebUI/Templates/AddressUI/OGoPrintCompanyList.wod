@@ -1,0 +1,24 @@
+// bind template to controller
+
+ItemsRep: WORepetition {
+  list = dataSource.fetchObjects;
+  item = item;
+}
+
+ColumnsRep: WORepetition {
+  list  = configList;
+  item  = currentColumn;
+  index = currentColumnIndex;
+}
+
+ColumnLabel: WOString {
+  value = currentColumnLabel;
+}
+
+ColumnValue: WOString {
+  value = currentColumnValue;
+}
+
+Name: WOString {
+  value = item.name;
+}

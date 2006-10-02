@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>Print</title>
+  </head>
+
+  <body bgcolor="white" text="black" onload="window.print()">
+
+    <table border="1" width="99%" cellspacing="0" cellpadding="4">
+      <tr>
+        <th>Name</th>
+        <#ColumnsRep>
+          <th><nobr><#ColumnLabel/></nobr></th>
+        </#ColumnsRep>
+      </tr>
+
+      <#ItemsRep>
+        <tr>
+          <td valign="top" align="left">
+            <nobr><#Name/></nobr>
+          </td>
+          
+          <#ColumnsRep>
+            <td valign="top" align="left">&nbsp;
+              <nobr><#ColumnValue/></nobr>
+            </td>
+          </#ColumnsRep>
+        </tr>
+      </#ItemsRep>
+    </table>
+  </body>
+</html>

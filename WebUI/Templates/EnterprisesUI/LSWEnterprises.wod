@@ -45,35 +45,43 @@ FullSearch: LSWFullSearch {
 }
 
 Buttons: SkyButtonRow {
-  ordering = ( config, import, new );
-  onNew    = newEnterprise;
-  new      = labels.new;
-  tipNew   = labels.new;
+  ordering    = ( print, config, import, new );
+  onNew       = newEnterprise;
+  new         = labels.new;
+  tipNew      = labels.new;
 
-  hasImport = YES;
-  import    = labels.import;
-  onImport  = import;
+  hasImport   = YES;
+  import      = labels.import;
+  onImport    = import;
 
-  config    = labels.config;
-  onConfig  = showColumnConfigEditor;
+  config      = labels.config;
+  onConfig    = showColumnConfigEditor;
+
+  print       = labels.print;
+  onPrint     = printList;
+  targetPrint = "SkyrixPrintView";
 }
 
 CustomButtons: SkyButtonRow {
-  ordering = ( config, import, new, removetab);
-  onNew    = newEnterprise;
-  new      = labels.new;
-  tipNew   = labels.new;
+  ordering     = ( print, config, import, new, removetab);
+  onNew        = newEnterprise;
+  new          = labels.new;
+  tipNew       = labels.new;
 
-  hasImport = YES;
-  import    = labels.import;
-  onImport  = import;
+  hasImport    = YES;
+  import       = labels.import;
+  onImport     = import;
 
   hasRemovetab = YES;
   removetab    = labels.removeTab;
   onRemovetab  = removeTab;
 
-  config    = labels.config;
-  onConfig  = showColumnConfigEditor;
+  config       = labels.config;
+  onConfig     = showColumnConfigEditor;
+
+  print        = labels.print;
+  onPrint      = printList;
+  targetPrint  = "SkyrixPrintView";
 }
 
 SearchField: WOTextField {

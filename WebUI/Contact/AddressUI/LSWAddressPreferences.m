@@ -32,18 +32,22 @@
   NSString       *formletterKind;
   NSNumber       *blockSize;
   NSString       *clipboardFormat;
+#if WITH_PRINTLIST_CONFIG
   NSArray        *personPrintList;
   NSArray        *enterprisePrintList;
+#endif
   
   BOOL           isBlockSizeEditable;
   BOOL           isRoot;
   BOOL           isFormletterKindEditable;
   BOOL           isClipboardFormatEditable;
 
+#if WITH_PRINTLIST_CONFIG
   /* transient */
   NSString       *currentColumn;
   int            currentColumnIndex;
   NSString       *currentColumnOpt;
+#endif
 }
 
 @end
@@ -62,10 +66,12 @@ static NSNumber *yes = nil, *no = nil;
 }
 
 - (void)dealloc {
+#if WITH_PRINTLIST_CONFIG
   [self->currentColumn       release];
   [self->currentColumnOpt    release];
   [self->personPrintList     release];
   [self->enterprisePrintList release];
+#endif
   [self->account             release];
   [self->defaults            release];
   [self->blockSize           release];
@@ -82,8 +88,10 @@ static NSNumber *yes = nil, *no = nil;
 }
 
 - (void)sleep {
+#if WITH_PRINTLIST_CONFIG
   [self->currentColumnOpt release]; self->currentColumnOpt = nil;
   [self->currentColumn    release]; self->currentColumn    = nil;
+#endif
   [super sleep];
 }
 
@@ -107,8 +115,10 @@ static NSNumber *yes = nil, *no = nil;
 }
 
 - (void)resetDefaults {
+#if WITH_PRINTLIST_CONFIG
   [self->personPrintList     release]; self->personPrintList     = nil;
   [self->enterprisePrintList release]; self->enterprisePrintList = nil;
+#endif
   [self->defaults            release]; self->defaults            = nil;
   [self->formletterKind      release]; self->formletterKind      = nil;
   [self->blockSize           release]; self->blockSize           = nil;
@@ -116,7 +126,9 @@ static NSNumber *yes = nil, *no = nil;
 }
 
 - (void)loadDefaults:(NSUserDefaults *)_ud {
+#if WITH_PRINTLIST_CONFIG
   NSArray  *a;
+#endif
   NSString *s;
   
   self->formletterKind = [[_ud stringForKey:@"formletter_kind"] copy];
@@ -126,6 +138,7 @@ static NSNumber *yes = nil, *no = nil;
   s = [s stringByReplacingString:@"\\r\\n" withString:@"\n"];
   self->clipboardFormat = [s copy];
   
+#if WITH_PRINTLIST_CONFIG
   /* print lists */
   
   if (![(a = [_ud arrayForKey:@"person_printlist"]) isNotEmpty])
@@ -135,6 +148,7 @@ static NSNumber *yes = nil, *no = nil;
   if (![(a = [_ud arrayForKey:@"enterprise_printlist"]) isNotEmpty])
     a = [_ud arrayForKey:@"enterprise_defaultprintlist"];
   self->enterprisePrintList = [a copy];
+#endif
   
   /* permissions */
   self->isBlockSizeEditable         = [self _isEditable:@"address_blocksize"];
@@ -222,6 +236,7 @@ static NSNumber *yes = nil, *no = nil;
   return self->formletterKind;
 }
 
+#if WITH_PRINTLIST_CONFIG
 /* print lists */
 
 - (void)setCurrentColumn:(NSString *)_s {
@@ -368,6 +383,7 @@ static NSNumber *yes = nil, *no = nil;
 - (id)removeEnterpriseColumn {
   return [self removeColumnFromList:&(self->enterprisePrintList)];
 }
+#endif
 
 /* operations */
 
@@ -409,12 +425,14 @@ static NSNumber *yes = nil, *no = nil;
   if ([self isFormletterKindEditable])
     [self _writeDefault:@"formletter_kind" value:[self formletterKind]];
 
+#if WITH_PRINTLIST_CONFIG
   if ([self->personPrintList isNotEmpty])
     [self _writeDefault:@"person_printlist" value:self->personPrintList];
   if ([self->enterprisePrintList isNotEmpty]) {
     [self _writeDefault:@"enterprise_printlist" 
 	  value:self->enterprisePrintList];
   }
+#endif
   
   if (self->isRoot) {
     [self _writeDefault:@"rootAccessformletter_kind"
