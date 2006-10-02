@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -365,17 +366,17 @@ static int compareTeams(id team1, id team2, void *context) {
   [self->companies addObjectsFromArray:tmpArray];
   [tmpArray release]; tmpArray = NULL;
       
-  if (teams)   free(teams);   teams   = NULL;
-  if (persons) free(persons); persons = NULL;
+  if (teams   != NULL) free(teams);   teams   = NULL;
+  if (persons != NULL) free(persons); persons = NULL;
   
   if (![self->searchString isNotNull])
     self->searchString = @"";
   
-  if ([self->searchString length] > 0) {
+  if ([self->searchString isNotEmpty]) {
     /* add search accounts to companies; set accessRights */
     [self _processSearchString];
   }
-  else if (self->team) {
+  else if (self->team != nil) {
     /* add team entries to companies; set accessRights */
     [self _addTeamEntries];
   }

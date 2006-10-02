@@ -1,4 +1,4 @@
-// $Id: SkyAccessList.wod 2 2004-08-20 11:37:44Z znek $
+// bind template to controller
 
 TableContent:  WOTableContent    {}
 TableHeader:   WOTableHeader     {}
@@ -64,7 +64,6 @@ AccountsList: WOTable {
   list        = companies;
   hasOwnTDs   = accessListCount;
   cellspacing = 0;
-  //  BORDER     = 1;
 }
 
 Description: WOString { value = item.description; }
@@ -113,4 +112,3 @@ CheckedIcon: WOImage {
   VALIGN   = "middle";
   ALIGN    = "center";
 }
-

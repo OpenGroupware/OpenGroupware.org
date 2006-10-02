@@ -1,3 +1,7 @@
+2006-10-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAccessList.m: minor code cleanups (v5.3.48)
+
 2006-08-15  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyDialNumber.m: code cleanups, use -isNotEmpty, properly escape

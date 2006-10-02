@@ -1,3 +1,7 @@
+2006-10-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyCompanyAccessEditor.m: minor code cleanups (v5.3.72)
+
 2006-05-07  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyProject4DocumentViewer.m: added support for user_ keys in URL

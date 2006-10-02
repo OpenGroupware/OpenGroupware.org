@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -53,8 +54,9 @@
 @implementation SkyCompanyAccessEditor
 
 - (void)dealloc {
-  [self->globalID  release];
-  [self->accessIds release];
+  [self->accessChecks release];
+  [self->globalID     release];
+  [self->accessIds    release];
   [super dealloc];
 }
 
@@ -82,10 +84,10 @@
   return self->accessIds;
 }
 
-- (void)setAccessChecks:(id)_id {
+- (void)setAccessChecks:(NSArray *)_id {
   ASSIGN(self->accessChecks, _id);
 }
-- (id)accessChecks {
+- (NSArray *)accessChecks {
   return self->accessChecks;
 }
 
@@ -116,7 +118,7 @@
 
   enumerator = [gidsObj objectEnumerator];
 
-  while ((obj = [enumerator nextObject]))
+  while ((obj = [enumerator nextObject]) != nil)
     [self->accessIds setObject:@"" forKey:obj];
   
   if (![manager setOperations:self->accessIds onObjectID:self->globalID]) {
