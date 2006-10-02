@@ -4,16 +4,70 @@
   <#Window>
     <#WarningMode>
       <#PersonForm>
-          <table border="0" cellspacing="0" cellpadding="2" width="100%">     
-            <#CommonCollapsible><#PersonEditor/></#CommonCollapsible>
-            <tr><td colspan="2"></td></tr>
+        <table border="0" cellspacing="2" cellpadding="0" width="100%">
+          <tr>
+            <td width="50%" valign="top">
+              <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                <#CommonCollapsible><#PersonEditor/></#CommonCollapsible>
+                <tr><td colspan="2"></td></tr>
+                
+                <#ExtendedCollapsible><#ExtendedAttrEditor/></#ExtendedCollapsible>
+              </table>
+            </td>
+            <td valign="top">
+              <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                <#TelephoneCollapsible><#PhoneEditor/></#TelephoneCollapsible>
+                <tr><td colspan="2"></td></tr>
 
-            <#TelephoneCollapsible><#PhoneEditor/></#TelephoneCollapsible>
-            <tr><td colspan="2"></td></tr>
+                <#CategoryCollapsible><#CategoryEditor/></#CategoryCollapsible>
+                <tr><td colspan="2"></td></tr>
 
-            <#ExtendedCollapsible><#ExtendedAttrEditor/></#ExtendedCollapsible>
-            <tr><td colspan="2"></td></tr>
+                <#ContactCollapsible><#ContactEditor/></#ContactCollapsible>
+                <tr><td colspan="2"></td></tr>
+    
+                <#PictureCollapsible>
+                  <tr>
+                    <#AttributeCell>
+                      <#Font><#PictureUploadLabel/>:</#Font>
+                    </#AttributeCell>
+                    <#ValueCell>
+                      <#EditFont><#PictureUpload/></#EditFont>
+                    </#ValueCell>
+                  </tr>
+            
+                  <#DeleteImageCond>
+                    <tr>
+                      <#AttributeCell>
+                        <#Font><#DeleteImageLabel/>:</#Font>
+                      </#AttributeCell>
+                      <#ValueCell>
+                        <#EditFont><#DeleteImageCheckBox/></#EditFont>
+                      </#ValueCell>
+                    </tr>
+                  </#DeleteImageCond>
+                </#PictureCollapsible>
+    
+                <#IsOwnerLoggedInOrNewCond>
+                  <tr><td colspan="2"></td></tr>
+     
+                  <#PrivateCollapsible>
+                    <#CompanyFlagEditor/>
+                    <#HasAccessRightsCond>
+                      <#IsInNewModeCond>
+                        <#CreateLimitedAttr>
+                          <#CreateLimitedCheckBox/>
+                        </#CreateLimitedAttr>
+                      </#IsInNewModeCond>
+                    </#HasAccessRightsCond>
+                  </#PrivateCollapsible>
+                </#IsOwnerLoggedInOrNewCond>
+    
+              </table>
+            </td>
+          </tr>
+        </table>
 
+          <table border="0" cellspacing="0" cellpadding="2" width="100%">
             <#AddressCollapsible>
               <tr>
                 <td colspan="2">
@@ -23,51 +77,8 @@
             </#AddressCollapsible>
             <tr><td colspan="2"></td></tr>
 
-            <#CategoryCollapsible><#CategoryEditor/></#CategoryCollapsible>
-            <tr><td colspan="2"></td></tr>
-
             <#CommentCollapsible><#CommentEditor/></#CommentCollapsible>
             <tr><td colspan="2"></td></tr>
-
-            <#ContactCollapsible><#ContactEditor/></#ContactCollapsible>
-            <tr><td colspan="2"></td></tr>
-
-            <#PictureCollapsible>
-              <tr>
-                <#AttributeCell>
-                  <#Font><#PictureUploadLabel/>:</#Font>
-                </#AttributeCell>
-                <#ValueCell>
-                  <#EditFont><#PictureUpload/></#EditFont>
-                </#ValueCell>
-              </tr>
-        
-              <#DeleteImageCond>
-                <tr>
-                  <#AttributeCell>
-                    <#Font><#DeleteImageLabel/>:</#Font>
-                  </#AttributeCell>
-                  <#ValueCell>
-                    <#EditFont><#DeleteImageCheckBox/></#EditFont>
-                  </#ValueCell>
-                </tr>
-              </#DeleteImageCond>
-            </#PictureCollapsible>
-
-            <#IsOwnerLoggedInOrNewCond>
-              <tr><td colspan="2"></td></tr>
- 
-              <#PrivateCollapsible>
-                <#CompanyFlagEditor/>
-                <#HasAccessRightsCond>
-                  <#IsInNewModeCond>
-                    <#CreateLimitedAttr>
-                      <#CreateLimitedCheckBox/>
-                    </#CreateLimitedAttr>
-                  </#IsInNewModeCond>
-                </#HasAccessRightsCond>
-              </#PrivateCollapsible>
-            </#IsOwnerLoggedInOrNewCond>
 
             <#EditorButtons/>
           </table>
