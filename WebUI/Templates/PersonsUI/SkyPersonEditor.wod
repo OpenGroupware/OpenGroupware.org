@@ -68,7 +68,7 @@ PersonEditor: LSWObjectEditor {
 AddressTypes: WOTable {
   list       = person.addressTypes;
   item       = addressType;
-  maxColumns = company_editor_address_columns;
+  maxColumns = session.userDefaults.company_editor_address_columns;
   width      = "100%";
 }
 

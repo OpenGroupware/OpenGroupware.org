@@ -1,5 +1,11 @@
 2006-10-02  Helge Hess  <helge.hess@opengroupware.org>
 
+	* PersonsUI/SkyPersonEditor.wod: properly retrieve userdefaults for
+	  address column configuration
+
+	* BaseUI/LSWObjectEditor.wox: decreased default textfield length from
+	  40 to 37
+
 	* PersonsUI/SkyPersonEditor.html: slightly reorganized person editor
 
 2006-10-01  Helge Hess  <helge.hess@opengroupware.org>

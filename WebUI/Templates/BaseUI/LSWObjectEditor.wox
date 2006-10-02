@@ -36,7 +36,9 @@
         <!-- TODO: add special support for email (using JS validation) -->
 
         <var:default>
-          <input type="text" size="40" maxlength="255"
+          <!-- Note: CSS width 98% doesn't look too good, size=37 works
+                     ok in 3-column setups -->
+          <input type="text" size="37" maxlength="255"
                  var:name="textFieldName" 
                  var:value="attributeValue" 
                  var:formatter="session.formatString" />
