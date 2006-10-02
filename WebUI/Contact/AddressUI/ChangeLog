@@ -1,5 +1,7 @@
 2006-10-02  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SkyCategorySubEditor.m: code cleanups (v5.3.61)
+
 	* v5.3.60
 
 	* added OGoPrintCompanyList component (used to print person or

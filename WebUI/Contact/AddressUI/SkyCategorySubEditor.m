@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -19,9 +20,9 @@
   02111-1307, USA.
 */
 
-#import "common.h"
 #include <OGoFoundation/SkyEditorComponent.h>
-#include <OGoContacts/SkyCompanyDocument.h>
+
+@class NSString, NSMutableSet, NSMutableArray;
 
 @interface SkyCategorySubEditor : SkyEditorComponent
 {
@@ -33,25 +34,28 @@
 }
 @end
 
+#include "common.h"
+#include <OGoContacts/SkyCompanyDocument.h>
+
 @implementation SkyCategorySubEditor
 
 - (id)init {
-  if ((self = [super init])) {
-    self->addedCategories = [[NSMutableSet alloc]   init];
-    self->categories      = [[NSMutableArray alloc] init];
+  if ((self = [super init]) != nil) {
+    self->addedCategories = [[NSMutableSet   alloc] initWithCapacity:4];
+    self->categories      = [[NSMutableArray alloc] initWithCapacity:4];
   }
   return self;
 }
 
 - (void)dealloc {
-  [self->categories release];
+  [self->categories      release];
   [self->addedCategories release];
-  [self->category release];
-  [self->item release];
+  [self->category        release];
+  [self->item            release];
   [super dealloc];
 }
 
-// accessors
+/* accessors */
 
 - (NSArray *)categories {
   return self->categories;
@@ -81,12 +85,11 @@
 - (void)setSelectedCategory:(NSString *)_category {
   NSString *c;
 
-  c =  [self->categories objectAtIndex:self->categoryIndex];
+  c = [self->categories objectAtIndex:self->categoryIndex];
   
-  if ([_category isNotNull] && [_category length]) {
-    if (![_category isEqualToString:c]) {
+  if ([_category isNotEmpty]) {
+    if (![_category isEqualToString:c])
       [self->addedCategories removeObject:c];
-    }
     [self->addedCategories addObject:_category];
   }
   else {
@@ -97,7 +100,10 @@
   return [self->categories objectAtIndex:self->categoryIndex];
 }
 
-// ***
+
+/* keywords handling */
+
+static NSString *KeywordSplitString = @", ";
 
 - (void)prepareEditor {
   id k = [(SkyCompanyDocument *)[self document] keywords];
@@ -105,16 +111,15 @@
   if ([k isNotNull]) {
     NSArray *c;
     int i, cnt;
+    
+    c = [k componentsSeparatedByString:KeywordSplitString];
+    for (i = 0, cnt = [c count]; i < cnt; i++) {
+      NSString *cName;
       
-    c   = [k componentsSeparatedByString:@", "];
-    cnt = [c count];
-      
-    for (i = 0; i < cnt; i++) {
-      NSString *cName = [c objectAtIndex:i];
-      cName = AUTORELEASE([cName copyWithZone:[self->categories zone]]);
-      
-      [self->categories addObject:cName];
+      cName = [[c objectAtIndex:i] copy];
+      [self->categories      addObject:cName];
       [self->addedCategories addObject:cName];
+      [cName release];
     }
   }
   [self->categories addObject:@""];
@@ -130,11 +135,14 @@
   str = [NSMutableString stringWithCapacity:64];
 
   for (i = 0; i < count; i++) {
-    if (i > 0) [str appendString:@", "];
+    if (i > 0) [str appendString:KeywordSplitString];
     [str appendString:[cats objectAtIndex:i]];
   }
   return str;
 }
+
+
+/* actions */
 
 - (BOOL)save {
   [(SkyCompanyDocument *)[self document] setKeywords:[self _categoryString]];
