@@ -30,11 +30,18 @@
     phoneType+"_info ->phone info (string)
     
     (phoneType is element of phoneTypes)
+
+    Examples:
+      01_tel
+      01_tel_info
     
   accessing addresses:
     addrType -> addressDocument
     (addrType is element of addressTyps)
-    
+
+    Examples:
+      ship
+      bill
 */
 
 #ifndef __OGoContacts_SkyCompanyDocument_H_
