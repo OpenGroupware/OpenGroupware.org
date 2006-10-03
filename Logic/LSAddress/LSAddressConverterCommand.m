@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -19,7 +20,28 @@
   02111-1307, USA.
 */
 
-#include "LSAddressConverterCommand.h"
+#include <LSFoundation/LSBaseCommand.h>
+
+/*
+  address::convert
+
+  TODO: document
+  
+  Apparently this command can even fork Python scripts for producing the data.
+*/
+
+@class NSString, NSArray, NSDictionary, NSNumber;
+
+@interface LSAddressConverterCommand : LSBaseCommand
+{
+  NSString     *type;
+  NSString     *kind;
+  NSArray      *ids;
+  NSDictionary *labels;
+  NSNumber     *forkExport;
+}
+@end
+
 #include "common.h"
 #include <NGObjWeb/WOResponse.h>
 
@@ -29,6 +51,7 @@
 /*
   Note: this can also trigger external Python programs for export. Is this
         actually used somwhere? (forkExport)
+	=> yes, in SkyAddressConverterDataSource
 */
 
 @implementation LSAddressConverterCommand
@@ -57,6 +80,9 @@ static NSData *nullData = nil;
 
 - (void)_prepareForExecutionInContext:(id)_context {
   [super _prepareForExecutionInContext:_context];
+  
+  // TODO: explain this
+  [self->forkExport release]; self->forkExport = nil;
   self->forkExport = [[NSNumber numberWithBool:NO] retain];
 }
 
@@ -201,10 +227,11 @@ static NSData *nullData = nil;
     
     [response setHeader:t forKey:@"content-type"];
   }
-
+  
   [response setHeader:@"identity" forKey:@"content-encoding"];
-
+  
   if (![self->forkExport boolValue]) { // default behaviour (no fork)
+    /* eg: type=formLetter, kind=winword */
     data = [self _buildConverterDataOfType:self->type
 		 kind:self->kind
 		 primaryKeys:
@@ -223,6 +250,7 @@ static NSData *nullData = nil;
   [self setReturnValue:response];
   [response release];
 }
+
 
 /* accessors */
 

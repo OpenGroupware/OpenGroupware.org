@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -19,7 +20,31 @@
   02111-1307, USA.
 */
 
-#include "LSBuildConverterDataCommand.h"
+#include <LSFoundation/LSBaseCommand.h>
+
+/*
+  address::build-converter-data
+  
+  TODO: document!
+  
+  Called by SkyAddressConverterDataSource.
+*/
+
+@class NSString, NSArray, NSDictionary;
+
+@interface LSBuildConverterDataCommand : LSBaseCommand
+{
+  NSString     *type;
+  NSString     *kind;
+  NSArray      *ids;
+  NSArray      *objectList;
+  NSDictionary *labels;
+  NSString     *entityName;
+  NSString     *returnKind;
+}
+
+@end
+
 #include "common.h"
 
 @interface LSBuildConverterDataCommand(Private)
@@ -43,7 +68,7 @@
   [super dealloc];
 }
 
-// command methods
+/* command methods */
 
 - (void)_executeInContext:(id)_ctx {
   id data = nil;
@@ -60,6 +85,7 @@
     [self warnWithFormat:@"Unknown type! Cannot convert address!"];
     data = [NSData data];
   }
+  
   if (self->returnKind != nil) {
     if ([self->returnKind isEqualToString:@"NSString"]) {
       data = [[[NSString alloc] initWithData:data
@@ -68,7 +94,7 @@
     }
     else if (![self->returnKind isEqualToString:@"NSData"]) {
       [self warnWithFormat:
-            @"Unknown returnKind / expected NSString/NSData"];
+	      @"Unknown returnKind / expected NSString/NSData"];
     }
   }
   [self setReturnValue:data];
@@ -77,9 +103,10 @@
 - (void)_prepareForIdsInCtx:(id)_ctx {
   [self assert:(self->ids != nil) reason:@"enter _prepareForIds without ids"];
 
-  if (self->objectList != nil)
+  if (self->objectList != nil) {
     [self->objectList release];
-  self->objectList = nil;
+    self->objectList = nil;
+  }
   
   if ([self->ids isNotEmpty]) {
     self->objectList = LSRunCommandV(_ctx, @"address", @"fetchAttributes",
@@ -89,6 +116,8 @@
   }
   return;  
 }
+
+/* vCard generation */
 
 - (NSData *)_createVCardDataInCtx:(id)_ctx {
   // DEPRECATED
@@ -124,17 +153,32 @@
   return [res dataUsingEncoding:[NSString defaultCStringEncoding]];
 }
 
+- (NSString *)_getVCardValueForKey:(NSString *)_key
+  keys:(NSDictionary *)_keys
+{
+  NSString *value;
+
+  value = [self _getObj:[self->objectList lastObject] forKey:_key];
+
+  return [value isNotEmpty]
+    ? [[_keys objectForKey:_key] stringByAppendingString:value]
+    : (NSString *)@"";
+}
+
+
+/* generate form letter */
+
 - (NSData *)_createFormLetterDataInCtx:(id)_ctx {
-  NSString *objType = nil;
-  NSString *key     = nil;
-  NSArray  *fields  = nil;
+  NSString *objType;
+  NSString *key;
+  NSArray  *fields;
   id tmp;
   
   if (![self->objectList isNotEmpty])
     return [NSData data];
-
-  tmp = [(NSDictionary *)[self->objectList objectAtIndex:0] 
-                         objectForKey:@"object"];
+  
+  tmp = [(NSDictionary *)[self->objectList objectAtIndex:0]
+			                   objectForKey:@"object"];
   if ((objType = [[tmp entity] name]) == nil)
     objType = self->entityName;
   
@@ -184,24 +228,12 @@
   }
 }
 
-- (NSString *)_getVCardValueForKey:(NSString *)_key
-  keys:(NSDictionary *)_keys
-{
-  NSString *value;
-
-  value = [self _getObj:[self->objectList lastObject] forKey:_key];
-
-  return [value isNotEmpty]
-    ? [[_keys objectForKey:_key] stringByAppendingString:value]
-    : (NSString *)@"";
-}
-
 
 - (NSString *)_getObj:(id)_obj forKey:(NSString *)_key {
-  NSArray      *keys    = nil;
-  NSEnumerator *keyEnum = nil;
-  id           result   = nil;
-  id           key      = nil;
+  NSArray      *keys;
+  NSEnumerator *keyEnum;
+  id           result;
+  id           key;
 
   keys    = [_key componentsSeparatedByString:@"."];
   keyEnum = [keys objectEnumerator];
@@ -217,7 +249,7 @@
       result = [result valueForKey:@"object"];
   }
   
-  while ((key = [keyEnum nextObject])) {
+  while ((key = [keyEnum nextObject]) != nil) {
     result = [result valueForKey:key];
 
     if ((result != nil) && ([key isEqualToString:@"salutation"])) {
@@ -226,29 +258,31 @@
   }
   if (![result isNotNull])
     return @"";
-  else if ([result isKindOfClass:[NSCalendarDate class]])
+  
+  if ([result isKindOfClass:[NSCalendarDate class]])
     return [result descriptionWithCalendarFormat:@"%Y-%m-%d"];
-  else if ([result respondsToSelector:@selector(stringValue)])
+  
+  if ([result respondsToSelector:@selector(stringValue)])
     return [result stringValue];
-  else 
-    return [result description];
+  
+  return [result description];
 }
 
 - (void)_validateInContext:(id)_context {
   [super _validateInContext:_context];
 }
 
-// accessors
+/* accessors */
 
 - (void)setType:(NSString *)_type {
-  ASSIGN(self->type, _type);
+  ASSIGNCOPY(self->type, _type);
 }
 - (NSString *)type {
   return self->type;
 }
 
 - (void)setKind:(NSString *)_kind {
-  ASSIGN(self->kind, _kind);
+  ASSIGNCOPY(self->kind, _kind);
 }
 - (NSString *)kind {
   return self->kind;
@@ -269,14 +303,14 @@
 }
 
 - (void)setEntityName:(NSString *)_name {
-  ASSIGN(self->entityName, _name);
+  ASSIGNCOPY(self->entityName, _name);
 }
 - (NSString *)entityName {
   return self->entityName;
 }
 
 - (void)setReturnKind:(NSString *)_kind {
-  ASSIGN(self->returnKind, _kind);
+  ASSIGNCOPY(self->returnKind, _kind);
 }
 - (NSString *)returnKind {
   return self->returnKind;
@@ -302,6 +336,7 @@
 }
 
 - (id)valueForKey:(NSString *)_key {
+  // TODO: no get accessors?
   return [super valueForKey:_key];
 }
 

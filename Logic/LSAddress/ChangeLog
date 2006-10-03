@@ -1,3 +1,8 @@
+2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSAddressConverterCommand.m, LSBuildConverterDataCommand.m: moved in
+	  interfaces, code cleanups (v5.3.90)
+
 2006-08-17  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.89
