@@ -26,7 +26,7 @@
    SkyCompanyAccessEditor
 
    TODO: why is that in OGoProject, looks like a generic component for
-         editing ACLs?!
+         editing ACLs?
 
    Posts: 
      SkyAccessHasChangedNotification - if the operation was changed
@@ -110,17 +110,27 @@
   NSSet            *gidsNew;
 
   manager = [[(OGoSession *)[self session] commandContext] accessManager];
-  dict    = [manager allowedOperationsForObjectId:self->globalID];
+
+  /*
+    The dict will be empty if no ACL was set on the object. Otherwise the
+    keys will be the global-ids of accounts or teams and the values the
+    respective permissions assigned ('', 'rw' or 'r').
+  */
+  dict = [manager allowedOperationsForObjectId:self->globalID];
+  
   gidsObj = [NSMutableSet setWithArray:[dict allKeys]];
   gidsNew = [NSSet setWithArray:[self->accessIds allKeys]];
 
+  /* after this one 'gidsObj' will contain users/teams which got access
+     removed */
   [gidsObj minusSet:gidsNew];
 
+  /* reset permissions */
   enumerator = [gidsObj objectEnumerator];
-
   while ((obj = [enumerator nextObject]) != nil)
     [self->accessIds setObject:@"" forKey:obj];
   
+  /* now update the full ACL */
   if (![manager setOperations:self->accessIds onObjectID:self->globalID]) {
     // TODO: localize
     [self setErrorString:@"Could not set access rights"];
