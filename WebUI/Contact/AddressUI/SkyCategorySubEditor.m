@@ -128,17 +128,11 @@ static NSString *KeywordSplitString = @", ";
 
 
 - (NSString *)_categoryString {
-  NSMutableString *str  = nil;
-  NSArray         *cats = [self->addedCategories allObjects];
-  int i, count = [cats count];
-
-  str = [NSMutableString stringWithCapacity:64];
-
-  for (i = 0; i < count; i++) {
-    if (i > 0) [str appendString:KeywordSplitString];
-    [str appendString:[cats objectAtIndex:i]];
-  }
-  return str;
+  NSArray *cats;
+  
+  cats = [self->addedCategories allObjects];
+  cats = [cats sortedArrayUsingSelector:@selector(compare:)];
+  return [cats componentsJoinedByString:KeywordSplitString];
 }
 
 
