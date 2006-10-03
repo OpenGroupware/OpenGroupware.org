@@ -71,8 +71,9 @@
 /* command methods */
 
 - (void)_executeInContext:(id)_ctx {
-  id data = nil;
-
+  id data;
+  
+  /* ids is a set of primary keys */
   NSAssert((self->ids != nil), @"no ids set");
   
   [self _prepareForIdsInCtx:_ctx];
@@ -120,7 +121,7 @@
 /* vCard generation */
 
 - (NSData *)_createVCardDataInCtx:(id)_ctx {
-  // DEPRECATED
+  // DEPRECATED: we have special vcard commands
   // TODO: replace with company::get-vcard command
   NSMutableString *res       = nil;
   NSDictionary    *defaults  = nil;
@@ -177,21 +178,35 @@
   if (![self->objectList isNotEmpty])
     return [NSData data];
   
+  /* extract the entity from the first list object */
+  
   tmp = [(NSDictionary *)[self->objectList objectAtIndex:0]
 			                   objectForKey:@"object"];
   if ((objType = [[tmp entity] name]) == nil)
     objType = self->entityName;
-  
+
+  /*
+    Load the render specification, eg "LSPersonFormLetter". The toplevel is a
+    dictionary keyed on the type (eg 'framemaker', 'winword' etc).
+
+    The fields then contains an array of dictionaries which have those keys:
+    - key    (eg 'toAddress.name1')
+    - suffix (eg \n)
+    - prefix
+  */
   key    = [[NSString alloc] initWithFormat:@"LS%@FormLetter", objType];
   fields = [[(NSUserDefaults *)[_ctx valueForKey:LSUserDefaultsKey] 
-                               dictionaryForKey:key]
-             objectForKey:self->kind];
+                                     dictionaryForKey:key]
+                                     objectForKey:self->kind];
   [key release]; key = nil;
   
   if (fields == nil) {
-    [self warnWithFormat:@"unknown FormLetter format!"];
+    [self errorWithFormat:@"unknown FormLetter format: %@ / %@",
+	    objType, self->kind];
     return [NSData data];
   }
+
+  /* process specification */
   
   {
     NSMutableString *result;
@@ -201,11 +216,15 @@
 
     result  = [[NSMutableString alloc]
                 initWithCapacity:[self->objectList count] * 128];
-    objEnum = [self->objectList objectEnumerator];
 
+    /* walk over each object */
+
+    objEnum = [self->objectList objectEnumerator];
     while ((obj = [objEnum nextObject]) != nil) {
       NSEnumerator *fieldEnum;
       NSDictionary *field;
+
+      /* and process the specified fields for each object */
       
       fieldEnum = [fields objectEnumerator];
       while ((field = [fieldEnum nextObject]) != nil) {
@@ -222,6 +241,8 @@
 	  [result appendString:t];
       }
     }
+    
+    /* apply charset */
     data = [result dataUsingEncoding:[NSString defaultCStringEncoding]];
     [result release]; result = nil;
     return data;
@@ -229,33 +250,43 @@
 }
 
 
+/* get a normalized string representation of some object key */
+
 - (NSString *)_getObj:(id)_obj forKey:(NSString *)_key {
   NSArray      *keys;
   NSEnumerator *keyEnum;
   id           result;
   id           key;
 
-  keys    = [_key componentsSeparatedByString:@"."];
-  keyEnum = [keys objectEnumerator];
-  result  = _obj;
-
+  /* Note: '_obj' is a preprocessed dictionary */
+  
+  /* split keypathes, eg toAddress.name1 */
+  keys   = [_key componentsSeparatedByString:@"."];
+  result = _obj;
+  
   if (self->ids == nil) {
+    // TODO: document when this happens
     id obj = nil;
-
+    
     if ((obj = [keys objectAtIndex:0]) == nil)
       return @"";
     
     if (![(NSString *)obj hasPrefix:@"to"])
       result = [result valueForKey:@"object"];
   }
+
+  /* traverse keypath */
   
+  keyEnum = [keys objectEnumerator];
   while ((key = [keyEnum nextObject]) != nil) {
     result = [result valueForKey:key];
 
-    if ((result != nil) && ([key isEqualToString:@"salutation"])) {
+    if ((result != nil) && [key isEqualToString:@"salutation"])
       result = [self->labels valueForKey:result];
-    }
   }
+  
+  /* process plain value */
+
   if (![result isNotNull])
     return @"";
   

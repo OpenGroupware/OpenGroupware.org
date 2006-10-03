@@ -1,3 +1,13 @@
+2006-10-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.91
+
+	* LSAddressFetchAttributesCommand.m: added comments, code cleanups,
+	  fetch all addresses and make them available under their 'type'
+	  (eg allows you to use 'bill.street' in formletters)
+
+	* LSBuildConverterDataCommand.m: code cleanups, added comments
+
 2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSAddressConverterCommand.m, LSBuildConverterDataCommand.m: moved in

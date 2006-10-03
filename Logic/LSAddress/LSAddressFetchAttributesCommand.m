@@ -26,9 +26,48 @@
   address::fetchAttributes / LSAddressFetchAttributesCommand
 
   entityName - NSString (eg Person, Enterprise)
-  searchKeys - 
+  searchKeys - array of companyIds (NSNumber primary keys)
 
   TODO: this is not used by anything?
+     => this is used by address::build-converter-data, aka formletters
+
+  TODO: I think this can be replaced by person::get-by-globalid
+
+  Result for a person looks like:
+    (
+      { companyId = abc;
+        gender    = "Herr";         <- special hack!
+        email1    = "abc123@def.de";
+        ...
+
+        fax = { 
+          companyId = 10280; info = "jjk"; number = "123"; type="10_fax";
+        };
+        10_fax = { 
+          companyId = 10280; info = "jjk"; number = "123"; type="10_fax";
+        };
+        tel1 = { 
+          companyId = 10280; info = "jjk"; number = "123"; type="01_tel";
+        };
+        01_tel = { 
+          companyId = 10280; info = "jjk"; number = "123"; type="01_tel";
+        };
+        tel2 = { 
+          companyId = 10280; info = "jjk"; number = "123"; type="02_tel";
+        };
+        02_tel = { 
+          companyId = 10280; info = "jjk"; number = "123"; type="02_tel";
+        };
+
+        toAddress = {
+          name1 = ....; name2 = ....;
+          // no type!
+        };
+        toEnterprise = {
+          // same thing like person but nested
+        };
+      }
+    )
 */
 // TODO: the whole file needs major cleanups
 
@@ -48,33 +87,41 @@
                                 model] entityNamed:_a_]
 
 @interface LSAddressFetchAttributesCommand(Private)
+
 - (NSArray *)attributesForEntity:(EOEntity *)_entity inContext:(id)_ctx;
 - (NSArray *)extendedAttrsForEntity:(EOEntity *)_entity inContext:(id)_ctx;
+
 - (NSDictionary *)fetchRequiredAttributesForKeys:(NSArray *)_keys
   entity:(EOEntity *)_entity keyAttribute:(EOAttribute *)_keyAttr
-  context:(id)_ctx;
+  context:(LSCommandContext *)_ctx;
+
 - (NSArray *)fetchAttributes:(NSArray *)_attrs keys:(id)_keys
-  entity:(id)_entity keyAttribute:(EOAttribute *)_keyAttr context:(id)_ctx ;
+  entity:(id)_entity keyAttribute:(EOAttribute *)_keyAttr
+  context:(LSCommandContext *)_ctx ;
+
 - (NSArray *)fetchExtendedAttrs:(NSArray *)_extAttrs keys:(NSArray *)_keys
-  context:(id)_ctx;
+  context:(LSCommandContext *)_ctx;
+
 - (NSArray *)fetchValuesWithAttributes:(NSArray *)_attrs
   entity:(EOEntity *)_entity keys:(NSArray *)_keys
   keyAttribute:(EOAttribute *)_keyAttr qualifier:(EOSQLQualifier *)_qualifier
   context:(id)_ctx;
+
 - (NSArray *)fetchManyToManyRelationWithSource:(EOEntity *)_src
   keys:(NSArray *)_keys target:(EOEntity *)_target
   assignment:(EOEntity *)_assignment sourceKeyAttr:(EOAttribute *)_srcAttr
-  targetKeyAttr:(EOAttribute *)_trgAttr context:(id)_ctx;
+  targetKeyAttr:(EOAttribute *)_trgAttr
+  context:(LSCommandContext *)_ctx;
 - (NSArray *)fetchAddressesForKeys:(NSArray *)_keys kind:(NSString *)_kind
-  context:(id)_ctx;
+  context:(LSCommandContext *)_ctx;
 - (NSArray *)fetchTelephonesForKeys:(NSArray *)_keys entity:(EOEntity *)_entity
-  context:(id)_ctx;
+  context:(LSCommandContext *)_ctx;
 - (NSArray *)fetchCommentsForKeys:(NSArray *)_keys entity:(EOEntity *)_entity
-  context:(id)_ctx;
+  context:(LSCommandContext *)_ctx;
 - (NSArray *)fetchLogForKeys:(NSArray *)_keys entity:(EOEntity *)_entity
-  context:(id)_ctx;
+  context:(LSCommandContext *)_ctx;
 - (NSArray *)fetchOwnerForKeys:(NSArray *)_keys entity:(EOEntity *)_entity
-  context:(id)_ctx;
+  context:(LSCommandContext *)_ctx;
 @end
 
 @implementation LSAddressFetchAttributesCommand
@@ -115,7 +162,6 @@ static EONull       *null = nil;
   EOEntity       *trgEntity; 
   EOEntity       *assEntity   = nil;
   NSArray        *assignments = nil;
-  void           *z           = [self zone];
   NSMutableSet   *trgIds      = nil;
   NSString       *trgPrimKey  = nil;
   NSString       *targetKey;
@@ -126,8 +172,8 @@ static EONull       *null = nil;
 
   entity   = _getEntityNamed(self->entityName);
   primAttr = [(EOAttribute *)[[entity primaryKeyAttributes] lastObject] name];
-  keys     = self->searchKeys;
-
+  keys     = self->searchKeys; /* those are the company-ids */
+  
   /* array contains all ids for entity */
 
   source = [self fetchRequiredAttributesForKeys:keys entity:entity
@@ -135,10 +181,10 @@ static EONull       *null = nil;
                 context:_ctx];
 
   /*
-    dict contains all attributes (attributes and extended attributes
-    sorted by primary key
+    'source' dict contains all attributes (attributes and extended attributes)
+    keyed by primary key
   */
-
+  
   if ([[entity name] isEqualToString:@"Person"]) {
     isPerson  = YES;
     targetKey =  @"toEnterprise";
@@ -174,10 +220,10 @@ static EONull       *null = nil;
 			  [assEntity attributeNamed:@"subCompanyId"]
                         context:_ctx];
   }
-
+  
   trgPrimKey = 
-  [(EOAttribute *)[[trgEntity primaryKeyAttributes] lastObject] name];
-    
+    [(EOAttribute *)[[trgEntity primaryKeyAttributes] lastObject] name];
+  
   // TODO: cleanup
   if ([trgPrimKey isEqualToString:
 		    [(EOAttribute *)[[entity primaryKeyAttributes] 
@@ -188,70 +234,111 @@ static EONull       *null = nil;
   trgIds = [[NSMutableSet alloc] initWithCapacity:[assignments count]];
   
   enumerator = [assignments objectEnumerator];
-  while ((obj = [enumerator nextObject]))
+  while ((obj = [enumerator nextObject]) != nil)
     [trgIds addObject:[obj objectForKey:trgPrimKey]];
-    
+
+  
+  /* here we seem to fetch the attributes of the target relationship */
+  
   target = [self fetchRequiredAttributesForKeys:[trgIds allObjects]
                  entity:trgEntity
                  keyAttribute:[[trgEntity primaryKeyAttributes] lastObject]
                  context:_ctx];
   [trgIds release]; trgIds = nil;
 
-  result = [[NSMutableSet alloc] initWithCapacity:
-				   ([source count] + [assignments count])];
+  
+  /* create result set. Not sure why this is a set. Apparently 'result' is an
+     array of dictionaries containing one dict per object.
+     Possibly we used it instead of a DISTINCT fetch? */
+  
+  result = [[NSMutableSet alloc] 
+	     initWithCapacity:([source count] + [assignments count])];
+  
+
+  // TODO: whats happening next?
   {
     NSMutableDictionary *dict;
+    id assignment;
     
-    dict = [source mutableCopyWithZone:z];
+    dict = [source mutableCopy]; // the 'source' dict is kept the same
+    
     enumerator = [assignments objectEnumerator];
-    while ((obj = [enumerator nextObject]))
-      [dict removeObjectForKey:[obj objectForKey:primAttr]];
+    while ((assignment = [enumerator nextObject]) != nil)
+      [dict removeObjectForKey:[assignment objectForKey:primAttr]];
     
+    /* here we add an array to the result *set* */
     [result addObjectsFromArray:[dict allValues]];
     [dict release]; dict = nil;
   }
-  enumerator = [assignments objectEnumerator];
-  while ((obj = [enumerator nextObject]) != nil) {
-    NSMutableDictionary *sourceTmp;
+  // Note: in a test 'result' still contained no objects here
+  
 
-    sourceTmp = [source objectForKey:[obj objectForKey:primAttr]];
-    if ([sourceTmp objectForKey:targetKey] == nil) {
-      NSDictionary *t;
+  // TODO: whats happening next?
+  
+  {
+    NSEnumerator *enumerator;
+    id assignment;
+    
+    enumerator = [assignments objectEnumerator];
+    while ((assignment = [enumerator nextObject]) != nil) {
+      NSMutableDictionary *sourceTmp;
       
-      t = [target objectForKey:[obj objectForKey:trgPrimKey]];
-      if (t != nil) {
-        [sourceTmp setObject:t forKey:targetKey];
-        if (isPerson) {
-          [sourceTmp setObject:[t objectForKey:@"toAddress"]
-                     forKey:@"toAddress"];
-        }
-      }
-      [result addObject:sourceTmp];
-    }
-    else {
-      NSMutableDictionary *tmp;
-      NSDictionary        *t;
+      /* I think primAttr is always 'companyId'. 'sourceTmp' will contain
+	 one record */
+      sourceTmp = [source objectForKey:[assignment objectForKey:primAttr]];
       
-      tmp = [sourceTmp mutableCopy];
-      t   = [target objectForKey:[obj objectForKey:trgPrimKey]];
-      if (t != nil) {
-        [tmp setObject:t forKey:targetKey];
-        if (isPerson)
-          [tmp setObject:[t objectForKey:@"toAddress"] forKey:@"toAddress"];
+      /* targetKey is either 'toPerson' or 'toEnterprise' */
+      if ([sourceTmp objectForKey:targetKey] == nil) {
+	/* we have no cached relationship/fault */
+	NSDictionary *t;
+	
+	/* 'target' is a dict containing the enterprise/person ID with the
+	   associated record dictionary.
+	   't' will contain the dict.
+	*/
+	t = [target objectForKey:[assignment objectForKey:trgPrimKey]];
+	if (t != nil) {
+	  /* patch the source to include the relationship */
+	  // TODO: should we copy prior patching?
+	  [sourceTmp setObject:t forKey:targetKey];
+	  if (isPerson) {
+	    [sourceTmp setObject:[t objectForKey:@"toAddress"]
+		       forKey:@"toAddress"];
+	  }
+	}
+	
+	[result addObject:sourceTmp];
       }
-      [result addObject:tmp];
-      [tmp release];
+      else {
+	NSMutableDictionary *tmp;
+	NSDictionary        *t;
+      
+	// TODO: why the mutableCopy?
+	tmp = [sourceTmp mutableCopy];
+	
+	t   = [target objectForKey:[assignment objectForKey:trgPrimKey]];
+	if (t != nil) {
+	  [tmp setObject:t forKey:targetKey];
+	  if (isPerson)
+	    [tmp setObject:[t objectForKey:@"toAddress"] forKey:@"toAddress"];
+	}
+	
+	[result addObject:tmp];
+	[tmp release]; tmp = nil;
+      }
     }
   }
+  
+  /* convert the result *set* into an array and return it */
   [self setReturnValue:[result allObjects]];
-  [result release];
+  [result release]; result = nil;
 }
 
 - (NSArray *)attributesForEntity:(EOEntity *)_entity inContext:(id)_ctx {
   NSEnumerator *attrNames;
   NSMutableSet *attributes;
-  NSArray      *result     = nil;
-  id           obj         = nil;
+  NSArray      *result;
+  id           obj;
 
   NSAssert(_entity != nil, @"_entity is nil");
 
@@ -300,10 +387,11 @@ static EONull       *null = nil;
 }
 
 
-- (NSDictionary *)fetchRequiredAttributesForKeys:(NSArray *)_keys
+- (NSDictionary *)fetchRequiredAttributesForKeys:(NSArray *)_pkeys
   entity:(EOEntity *)_entity keyAttribute:(EOAttribute *)_keyAttr
-  context:(id)_ctx 
+  context:(LSCommandContext *)_ctx 
 {
+  /* Remember: 'keys' are the companyId's (primary keys)! */
   NSArray             *values;
   NSMutableDictionary *result;
   NSString            *primAttr;
@@ -311,16 +399,19 @@ static EONull       *null = nil;
   NSMutableDictionary *obj        = nil;
   NSString            *addrKind   = nil;
   BOOL                isPerson;
+  NSArray             *allKeys;
   
   isPerson = [[_entity name] isEqualToString:@"Person"];
-
+  
   /* Required attributes */
   values = [self fetchAttributes:
                    [self attributesForEntity:_entity inContext:_ctx]
-                 keys:_keys
+                 keys:_pkeys
                  entity:_entity keyAttribute:_keyAttr context:_ctx];
   primAttr = [(EOAttribute *)[[_entity primaryKeyAttributes] lastObject] name];
   result   = [NSMutableDictionary dictionaryWithCapacity:[values count]];
+  
+  /* build results dictionary, key is the company_id, value is a mutabledict */
 
   enumerator = [values objectEnumerator];
   while ((obj = [enumerator nextObject]) != nil) {
@@ -338,14 +429,14 @@ static EONull       *null = nil;
       else
         [md setObject:@"Frau" forKey:@"gender"];
     }
-    [md release];
+    [md release]; md = nil;
   }
 
   /* extended attributes */
-
+  
   values = [self fetchExtendedAttrs:
                    [self extendedAttrsForEntity:_entity inContext:_ctx]
-                 keys:_keys
+                 keys:_pkeys
                  context:_ctx];
   
   enumerator = [values objectEnumerator];
@@ -356,92 +447,121 @@ static EONull       *null = nil;
     [record setObject:[obj objectForKey:@"value"]
             forKey:[obj objectForKey:@"attribute"]];
   }
-  {
-    NSArray *allKeys = [result allKeys];
-    /* addresses */
-  
-    if ([[_entity name] isEqualToString:@"Enterprise"]) {
-      addrKind = @"bill";
-    }
-    else if ([[_entity name] isEqualToString:@"Person"]) {
-      addrKind = @"mailing";
-    }
-    if (addrKind != nil) {
-      values     = [self fetchAddressesForKeys:allKeys kind:addrKind 
-                         context:_ctx];
-      enumerator = [values objectEnumerator];
-      while ((obj = [enumerator nextObject])) {
-        NSMutableDictionary *record;
 
-        record = [result objectForKey:[obj objectForKey:@"companyId"]];
-        [record setObject:obj forKey:@"toAddress"];
+
+  allKeys = [result allKeys];
+    
+  /* addresses */
+  
+  if ([[_entity name] isEqualToString:@"Enterprise"])
+    addrKind = @"bill";
+  else if ([[_entity name] isEqualToString:@"Person"])
+    addrKind = @"mailing";
+    
+  if (addrKind != nil) {
+    NSArray  *addrKinds;
+    unsigned i;
+
+    addrKinds = [[[_ctx userDefaults]
+                        dictionaryForKey:@"LSAddressType"]
+		        objectForKey:[_entity name]];
+    if (![addrKinds isNotEmpty])
+      addrKinds = [NSArray arrayWithObject:addrKind];
+
+    for (i = 0; i < [addrKinds count]; i++) {
+      NSEnumerator *enumerator;
+      NSArray  *values;
+      NSString *currentAddrKind;
+      id       obj;
+      
+      currentAddrKind = [addrKinds objectAtIndex:i];
+      values = [self fetchAddressesForKeys:allKeys 
+		     kind:currentAddrKind
+		     context:_ctx];
+      
+      enumerator = [values objectEnumerator];
+      while ((obj = [enumerator nextObject]) != nil) {
+	NSMutableDictionary *record;
+	
+	/* find primary person/enterprise record for given address */
+	record = [result objectForKey:[obj objectForKey:@"companyId"]];
+	
+	/* store address under kind (eg 'bill') */
+	[record setObject:obj forKey:currentAddrKind];
+
+	/* store primary address as 'toAddress' */
+	if ([currentAddrKind isEqualToString:addrKind])
+	  [record setObject:obj forKey:@"toAddress"];
       }
     }
+  }
 
-    /* telephone */
+  /* telephone */
 
-    values      = [self fetchTelephonesForKeys:allKeys entity:_entity
-                        context:_ctx];
-    enumerator  = [values objectEnumerator];
-    while ((obj = [enumerator nextObject])) {
-      NSMutableDictionary *record;
-      NSString *key;
+  values      = [self fetchTelephonesForKeys:allKeys entity:_entity
+		      context:_ctx];
+  enumerator  = [values objectEnumerator];
+  while ((obj = [enumerator nextObject])) {
+    NSMutableDictionary *record;
+    NSString *key;
 
-      record = [result objectForKey:[obj objectForKey:@"companyId"]];
-      key = [phoneCodeToNameMap objectForKey:[obj objectForKey:@"type"]];
-      if (key != nil)
-        [record setObject:obj  forKey:key];
-      
-      [record setObject:obj forKey:[obj objectForKey:@"type"]];
-    }
+    record = [result objectForKey:[obj objectForKey:@"companyId"]];
+    key    = [phoneCodeToNameMap objectForKey:[obj objectForKey:@"type"]];
+
+    /* here we store under a key like 'tel1', 'fax' */
+    if (key != nil)
+      [record setObject:obj  forKey:key];
     
-    /* fetch comments */
+    /* and the same info again under the type, eg '01_tel', '10_fax' */
+    [record setObject:obj forKey:[obj objectForKey:@"type"]];
+  }
     
-    values      = [self fetchCommentsForKeys:allKeys entity:_entity
-                        context:_ctx];
-    enumerator  = [values objectEnumerator];
-    while ((obj = [enumerator nextObject])) {
+  /* fetch comments */
+    
+  values      = [self fetchCommentsForKeys:allKeys entity:_entity
+		      context:_ctx];
+  enumerator  = [values objectEnumerator];
+  while ((obj = [enumerator nextObject])) {
       NSMutableDictionary *record;
       
       record = [result objectForKey:[obj objectForKey:@"companyId"]];
       [record setObject:obj forKey:@"toComment"];
-    }
+  }
     
-    /* fetch logs */
+  /* fetch logs */
     
-    values      = [self fetchLogForKeys:allKeys entity:_entity
-                        context:_ctx];
-    enumerator  = [values objectEnumerator];
-    while ((obj = [enumerator nextObject])) {
-      NSMutableDictionary *record;
+  values      = [self fetchLogForKeys:allKeys entity:_entity
+		      context:_ctx];
+  enumerator  = [values objectEnumerator];
+  while ((obj = [enumerator nextObject])) {
+    NSMutableDictionary *record;
       
-      record = [result objectForKey:[obj objectForKey:@"companyId"]];
-      [record setObject:obj forKey:@"toLog"];
-    }
+    record = [result objectForKey:[obj objectForKey:@"companyId"]];
+    [record setObject:obj forKey:@"toLog"];
+  }
     
-    /* fetch owner */
-    {
-      NSArray *ownerIds;
+  /* fetch owner */
+  {
+    NSArray *ownerIds;
 
-      ownerIds = [[result allValues] valueForKey:@"ownerId"];
-      
-      if ([ownerIds isNotEmpty] && ![ownerIds containsObject:[EONull null]]) {
-        NSMutableDictionary *ownDict;
+    ownerIds = [[result allValues] valueForKey:@"ownerId"];
+    
+    if ([ownerIds isNotEmpty] && ![ownerIds containsObject:[EONull null]]) {
+      NSMutableDictionary *ownDict;
         
-        ownDict = [NSMutableDictionary dictionaryWithCapacity:16];
-        values      = [self fetchOwnerForKeys:ownerIds entity:_entity
-                            context:_ctx];
-        enumerator = [values objectEnumerator];
-        while ((obj = [enumerator nextObject]))
-          [ownDict setObject:obj forKey:[obj valueForKey:@"companyId"]];
+      ownDict = [NSMutableDictionary dictionaryWithCapacity:16];
+      values      = [self fetchOwnerForKeys:ownerIds entity:_entity
+			  context:_ctx];
+      enumerator = [values objectEnumerator];
+      while ((obj = [enumerator nextObject]))
+	[ownDict setObject:obj forKey:[obj valueForKey:@"companyId"]];
         
-        enumerator  = [result objectEnumerator];
-        while ((obj = [enumerator nextObject])) {
-          id own = [ownDict valueForKey:[obj valueForKey:@"ownerId"]];
+      enumerator  = [result objectEnumerator];
+      while ((obj = [enumerator nextObject])) {
+	id own = [ownDict valueForKey:[obj valueForKey:@"ownerId"]];
 
-          if ([own isNotNull])
-            [obj setObject:own forKey:@"toOwner"];
-        }
+	if ([own isNotNull])
+	  [obj setObject:own forKey:@"toOwner"];
       }
     }
   }
@@ -449,38 +569,39 @@ static EONull       *null = nil;
 }
 
 - (NSArray *)fetchTelephonesForKeys:(NSArray *)_keys entity:(EOEntity *)_entity
-  context:(id)_ctx
+  context:(LSCommandContext *)_ctx
 {
   NSArray         *result    = nil;
-  EOEntity        *entity    = _getEntityNamed(@"Telephone");
+  EOEntity        *entity;
   EOSQLQualifier  *qualifier = nil;
-  NSArray         *types     = nil;
+  NSArray         *types;
   NSMutableString *str       = nil;
 
+  entity = _getEntityNamed(@"Telephone");
   types  = [[[_ctx valueForKey:LSUserDefaultsKey] valueForKey:@"LSTeleType"]
                    valueForKey:[_entity name]];
 
   {
-    NSEnumerator *enumerator = nil;
+    NSEnumerator *enumerator;
     id           obj         = nil;
     BOOL         isFirst     = YES;
-    NSString     *type       = nil;
+    NSString     *type;
 
     type       = [[entity attributeNamed:@"type"] columnName];
     enumerator = [types objectEnumerator];
     str        = [[NSMutableString alloc] initWithCapacity:128];
     
-    while ((obj = [enumerator nextObject])) {
+    while ((obj = [enumerator nextObject]) != nil) {
       if (isFirst)
         isFirst = NO;
       else
-        [str appendString:@"OR"];
+        [str appendString:@"OR "];
       
-      [str appendString:@"("];
+      [str appendString:@"( "];
       [str appendString:type];
-      [str appendString:@"='"];
+      [str appendString:@" = '"];
       [str appendString:obj];
-      [str appendString:@"')"];
+      [str appendString:@"' )"];
     }
   }
   
@@ -501,7 +622,7 @@ static EONull       *null = nil;
 }
 
 - (NSArray *)fetchCommentsForKeys:(NSArray *)_keys entity:(EOEntity *)_entity
-  context:(id)_ctx
+  context:(LSCommandContext *)_ctx
 {
   NSArray  *result = nil;
   EOEntity *entity = _getEntityNamed(@"CompanyInfo");
@@ -522,7 +643,7 @@ static EONull       *null = nil;
 }
 
 - (NSArray *)fetchLogForKeys:(NSArray *)_keys entity:(EOEntity *)_entity
-  context:(id)_ctx
+  context:(LSCommandContext *)_ctx
 {
   NSArray         *result    = nil;
   EOEntity        *entity    = _getEntityNamed(@"Log");
@@ -550,20 +671,21 @@ static EONull       *null = nil;
 }
 
 - (NSArray *)fetchOwnerForKeys:(NSArray *)_keys entity:(EOEntity *)_entity
-  context:(id)_ctx
+  context:(LSCommandContext *)_ctx
 {
-  NSArray         *result    = nil;
-  EOEntity        *entity    = _getEntityNamed(@"Staff");
-  NSArray         *attrs     = nil;
+  NSArray  *result;
+  EOEntity *entity;
+  NSArray  *attrs;
 
+  entity    = _getEntityNamed(@"Staff");
   attrs  = [self attributesForEntity:entity inContext:_ctx];
 
   if (attrs == nil)
     return nil;
   
   result = [self fetchValuesWithAttributes:
-                 [attrs arrayByAddingObject:
-                        [entity attributeNamed:@"companyId"]]
+		   [attrs arrayByAddingObject:
+			    [entity attributeNamed:@"companyId"]]
                  entity:entity keys:_keys
                  keyAttribute:[entity attributeNamed:@"companyId"]
                  qualifier:nil context:_ctx];
@@ -572,7 +694,7 @@ static EONull       *null = nil;
 
 
 - (NSArray *)fetchAddressesForKeys:(NSArray *)_keys kind:(NSString *)_kind
-  context:(id)_ctx
+  context:(LSCommandContext *)_ctx
 {
   NSArray        *result    = nil;
   EOEntity       *entity;
@@ -595,14 +717,15 @@ static EONull       *null = nil;
 }
 
 - (NSArray *)fetchAttributes:(NSArray *)_attrs keys:(id)_keys
-  entity:(id)_entity keyAttribute:(EOAttribute *)_keyAttr context:(id)_ctx 
+  entity:(id)_entity keyAttribute:(EOAttribute *)_keyAttr
+  context:(LSCommandContext *)_ctx 
 {
   return [self fetchValuesWithAttributes:_attrs entity:_entity
                keys:_keys keyAttribute:_keyAttr qualifier:nil context:_ctx];
 }
 
 - (NSArray *)fetchExtendedAttrs:(NSArray *)_extAttrs keys:(NSArray *)_keys
-  context:(id)_ctx
+  context:(LSCommandContext *)_ctx
 {
   NSArray         *attrs      = nil;
   NSArray         *result     = nil;  
@@ -662,7 +785,7 @@ static EONull       *null = nil;
   assignment:(EOEntity *)_assignment
   sourceKeyAttr:(EOAttribute *)_srcAttr
   targetKeyAttr:(EOAttribute *)_trgAttr
-  context:(id)_ctx
+  context:(LSCommandContext *)_ctx
 {
   // TODO: cleanup
   NSMutableString  *qualifier   = nil;
