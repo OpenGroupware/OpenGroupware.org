@@ -333,6 +333,7 @@ static NSString *KeywordSeparator = @", ";
 }
 
 - (NSString *)defaultFormLetterKind {
+  // TODO: the user should be able to select this in the panel
   return [[[self session] userDefaults] objectForKey:@"formletter_kind"];
 }
 

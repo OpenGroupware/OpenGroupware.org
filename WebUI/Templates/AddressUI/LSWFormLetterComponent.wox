@@ -3,5 +3,6 @@
    xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
    xmlns:var="http://www.skyrix.com/od/binding"
    xmlns:const="http://www.skyrix.com/od/constant"
+
    var:action="data" var:target="downloadTarget"
 ><var:string value="labels.downloadFormletter" /></a>
