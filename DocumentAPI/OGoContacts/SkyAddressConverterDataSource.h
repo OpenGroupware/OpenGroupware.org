@@ -43,7 +43,7 @@
 {
   EOFetchSpecification *fetchSpecification;
   EODataSource         *source;
-  LSCommandContext      *context;
+  LSCommandContext     *context;
   id                   labels;
 }
 

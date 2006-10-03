@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -28,34 +29,36 @@
   context:(LSCommandContext *)_ctx
   labels:(id)_labels
 {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     NSAssert1((_ds  != nil), @"%s: No dataSource set!", __PRETTY_FUNCTION__);
     NSAssert1((_ctx != nil), @"%s: No context set!",    __PRETTY_FUNCTION__);
-    ASSIGN(self->source,  _ds);
-    ASSIGN(self->context, _ctx);
-    ASSIGN(self->labels,  _labels);
+    
+    self->source  = [_ds     retain];
+    self->context = [_ctx    retain];
+    self->labels  = [_labels retain];
     self->fetchSpecification = [[EOFetchSpecification alloc] init];
   }
   return self;
 }
 
 - (void)dealloc {
-  RELEASE(self->source);
-  RELEASE(self->context);
-  RELEASE(self->labels);
-  RELEASE(self->fetchSpecification);
+  [self->source             release];
+  [self->context            release];
+  [self->labels             release];
+  [self->fetchSpecification release];
   [super dealloc];
 }
 
 - (void)setFetchSpecification:(EOFetchSpecification *)_fSpec {
-  if (![self->fetchSpecification isEqual:_fSpec]) {
-    ASSIGNCOPY(self->fetchSpecification, _fSpec);
-    [self postDataSourceChangedNotification];
-  }
+  if ([self->fetchSpecification isEqual:_fSpec])
+    return;
+
+  ASSIGNCOPY(self->fetchSpecification, _fSpec);
+  [self postDataSourceChangedNotification];
 }
 
 - (EOFetchSpecification *)fetchSpecification {
-  return AUTORELEASE([self->fetchSpecification copy]);
+  return [[self->fetchSpecification copy] autorelease];
 }
 
 - (NSArray *)fetchObjects {
@@ -72,7 +75,7 @@
 
   if (qual == nil)
     return [NSArray array];
-
+  
   type = [hints objectForKey:@"type"]; // e.g. 'formLetter' or 'vCard'
   kind = [hints objectForKey:@"kind"]; // e.g. 'winword' or 'excel'
 
@@ -91,6 +94,7 @@
                        ([type isEqualToString:@"vCard"]
                         ? @"fetchGlobalIDs" : @"fetchIds"), nil]];
   [self->source setFetchSpecification:fspec];
+  [fspec release]; fspec = nil;
 
   ids = [self->source fetchObjects];
   
@@ -108,8 +112,7 @@
                   @"forkExport", [NSNumber numberWithBool:YES],
                   @"labels",  self->labels , nil];
   }
-
-  RELEASE(fspec);
+  
   return [NSArray arrayWithObject:result];
 }
 

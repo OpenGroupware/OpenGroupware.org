@@ -1,3 +1,7 @@
+2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyAddressConverterDataSource.m: code cleanups (v5.3.59)
+
 2006-09-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyCompanyDataSource.m, SkyPersonDataSource.m,

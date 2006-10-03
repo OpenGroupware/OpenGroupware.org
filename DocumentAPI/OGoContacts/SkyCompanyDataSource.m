@@ -28,7 +28,7 @@
 - (NSDictionary *)searchDict;
 @end
 
-//#define USE_QSEARCH 1
+// #define USE_QSEARCH 1
 
 @implementation SkyCompanyDataSource
 
@@ -344,6 +344,10 @@ static BOOL doExplain = NO;
 		   @"maxSearchCount", [NSNumber numberWithInt:_limit],
 		   @"fetchGlobalIDs", [NSNumber numberWithBool:YES],
 		   nil];
+
+#warning DEBUG LOG
+    [self logWithFormat:@"FETCHED: %@ (limit=%i)", results, _limit];
+    
     return results;
   }
 #endif
