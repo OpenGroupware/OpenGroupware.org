@@ -627,7 +627,7 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
           || [fileType isEqualToString:@"gif"]
           || [fileType isEqualToString:@"jpg"])
     ? [[self->version valueForKey:@"documentId"] stringValue]
-    : @"";
+    : (NSString *)@"";
 }
 
 - (NSString *)attachmentTarget {
@@ -640,7 +640,7 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
           || [fileType isEqualToString:@"gif"]
           || [fileType isEqualToString:@"jpg"])
     ? [[[self object] valueForKey:@"documentId"] stringValue]
-    : @"";
+    : (NSString *)@"";
 }
 
 - (BOOL)isVersionCheckedOut {
@@ -667,12 +667,12 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
 
 - (NSCalendarDate *)checkoutDate {
   NSCalendarDate *cD = [editing valueForKey:@"checkoutDate"];
-  return (cD == nil) ? nil : cD;
+  return [cD isNotNull] ? cD : (NSCalendarDate *)nil;
 }
 
 - (NSString *)currentEditor {
   id l = [[editing valueForKey:@"currentOwner"] valueForKey:@"login"];
-  return [l isNotNull] ? l : @"";
+  return [l isNotNull] ? l : (id)@"";
 }
 
 /* actions */
@@ -893,9 +893,10 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
     [self _fetchEditing];
   }
 
-  if ([tmp length]) {
+  if ([tmp isNotEmpty]) {
     [self setErrorString:[NSString stringWithFormat:@"%@ %@", tmp,
-                           [self errorString] ? [self errorString] : @""]];
+				   [self errorString] 
+				   ? [self errorString] : (NSString *)@""]];
   }
   return nil;
 }
@@ -930,9 +931,10 @@ static int compareDocumentVersions(id version1, id version2, void *context) {
     [self _fetchEditing];
   }
 
-   if ([tmp length]) {
+   if ([tmp isNotEmpty]) {
     [self setErrorString:[NSString stringWithFormat:@"%@ %@", tmp,
-                           [self errorString] ? [self errorString] : @""]];
+				   [self errorString]
+				   ? [self errorString] : (NSString *)@""]];
   }
 
   return nil;

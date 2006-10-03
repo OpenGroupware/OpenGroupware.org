@@ -258,7 +258,7 @@ int _compareAccounts(id e1, id e2, void* context) {
   ASSIGN(self->accountResultList, _accountResultList);
 }
 
-- (void)setPersons:(NSArray *)_persons {
+- (void)setPersons:(NSMutableArray *)_persons {
   ASSIGN(self->persons, _persons);
 }
 - (NSMutableArray *)persons {

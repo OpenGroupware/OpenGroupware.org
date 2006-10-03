@@ -49,10 +49,11 @@
   forString:(NSString *)string
   errorDescription:(NSString **)error
 {
-  unsigned int intResult;
-  NSScanner *scanner = [NSScanner scannerWithString:string];
-  BOOL       result  = NO;
+  int       intResult;
+  NSScanner *scanner;
+  BOOL      result  = NO;
   
+  scanner = [NSScanner scannerWithString:string];
   if ([scanner scanInt:&intResult] && obj &&
       !([scanner scanLocation] == [string length])) {
     while ([scanner scanString:@" " intoString:NULL]) {

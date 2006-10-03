@@ -72,7 +72,7 @@
     [self registerAsPersistentInstance];
     
     tb  = [[[self session] userDefaults] stringForKey:@"projects_sub_view"];
-    self->tabKey = (tb!=nil) ? [tb copy] : @"common";
+    self->tabKey = (tb != nil) ? [tb copy] : (id)@"common";
     self->fetchProjects = YES;
 
     [self registerForNotificationNamed:LSWNewProjectNotificationName];

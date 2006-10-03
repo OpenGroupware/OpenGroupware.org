@@ -43,7 +43,7 @@
   }
   
   s = [self valueForKey:@"name"];
-  return [s isNotNull] ? s : nil;
+  return [s isNotNull] ? s : (NSString *)nil;
 }
 
 @end /* NSObject(SkyProjectSelectionLabel) */

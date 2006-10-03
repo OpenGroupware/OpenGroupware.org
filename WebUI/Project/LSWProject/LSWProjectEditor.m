@@ -974,8 +974,7 @@ static int      OldProjectCompatiblity = -1;
   NSString *l;
 
   l = [[self labels] valueForKey:@"private"];
-
-  return (l != nil) ? l : @"private";
+  return (l != nil) ? l : (NSString *)@"private";
 }
 
 // --------------------------------------------------------------------
@@ -1440,6 +1439,7 @@ static int      OldProjectCompatiblity = -1;
     str    = calloc([dic count] + 2, sizeof(char));
     strCnt = 0;
     
+    // TODO: rewrite with unichar
     keyEnum = [dic keyEnumerator];
     while ((k = [keyEnum nextObject])) {
       if (![[dic objectForKey:k] boolValue])
@@ -1448,7 +1448,7 @@ static int      OldProjectCompatiblity = -1;
       str[strCnt] = [k cString][0];
       strCnt++;
     }
-    ar = [[NSString alloc] initWithCString:str length:strCnt];
+    ar = [[NSString alloc] initWithCString:(char *)str length:strCnt];
     [a setObject:ar forKey:@"accessRight"];
     [ar release];
 }

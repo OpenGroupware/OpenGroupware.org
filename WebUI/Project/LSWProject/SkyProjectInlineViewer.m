@@ -288,7 +288,7 @@
   NSString *l;
 
   l = [[self labels] valueForKey:@"private"];
-  return (l != nil) ? l : @"private";
+  return (l != nil) ? l : (NSString *)@"private";
 }
 
 /* actions */

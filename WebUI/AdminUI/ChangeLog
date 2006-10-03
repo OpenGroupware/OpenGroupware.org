@@ -1,3 +1,7 @@
+2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SkyDefaultsElement.m: fixed a gcc4 warning (v5.3.39)
+
 2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWStaff.m: do not call -hasLogTab (v5.3.38)

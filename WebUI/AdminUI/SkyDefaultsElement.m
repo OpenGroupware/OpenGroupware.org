@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -28,7 +29,7 @@
   forLanguage:(NSString *)_language
   withValue:(id)_value
 {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     NSDictionary *langDict;
     id           tmp;
     
@@ -39,7 +40,7 @@
 
     self->type = ((tmp = [_dict valueForKey:@"type"]) != nil)
       ? [tmp retain]
-      : @"string";
+      : (id)@"string";
 
     if ((tmp = [_dict valueForKey:@"values"]) != nil)
       self->predefinedValues = [tmp retain];

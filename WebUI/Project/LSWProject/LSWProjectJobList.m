@@ -21,6 +21,7 @@
 
 #include <OGoFoundation/LSWContentPage.h>
 
+@class NSString, NSArray;
 @class EOGlobalID;
 
 @interface LSWProjectJobList : LSWContentPage
@@ -41,9 +42,9 @@
 }
 
 - (id)project;
-- (id)jobs;
+- (NSArray *)jobs;
 
-@end /* LSWProjectJobList */
+@end
 
 #include "common.h"
 
@@ -163,7 +164,7 @@ static NSArray *_getSubJobExecutants(NSArray *_list) {
 }
 
 - (NSArray *)jobs {
-  if ([self->sortedKey length]) {
+  if ([self->sortedKey isNotEmpty]) {
     EOSortOrdering *so;
     SEL            sel;
     NSArray        *sorted;
@@ -316,7 +317,7 @@ static NSArray *_getSubJobExecutants(NSArray *_list) {
 
 - (NSString *)jobImportCallBack {
   /* only set import callback when edit permission is set */
-  return [self isEditDisabled] ? nil : @"import";
+  return [self isEditDisabled] ? nil : (id)@"import";
 }
 
 - (id)newJob {

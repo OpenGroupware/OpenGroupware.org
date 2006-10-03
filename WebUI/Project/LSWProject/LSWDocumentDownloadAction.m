@@ -238,7 +238,8 @@
         filename = [filename stringByAppendingString:
                                [obj valueForKey:@"fileType"]];
 
-        cstr = [filename cString];
+	// TODO: rewrite with unichar
+        cstr = (unsigned char *)[filename cString];
         clen = [filename cStringLength];
         buf = alloca(clen + 1);
         for (i = 0; i < clen; i++) {
@@ -248,7 +249,7 @@
             buf[i] = '_';
         }
         buf[clen] = '\0';
-        filename = [NSString stringWithCString:buf length:clen];
+        filename = [NSString stringWithCString:(char *)buf length:clen];
     
         [response setHeader:
                   [@"attachment;filename=" stringByAppendingString:filename]
