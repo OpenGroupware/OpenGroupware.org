@@ -1,5 +1,8 @@
 2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
 
+	* LSWPersons.m: added action to open mail panel based on a list
+	  result (v5.3.73)
+
 	* LSWPersons.m: added 'bulk' button (v5.3.72)
 
 2006-10-02  Helge Hess  <helge.hess@opengroupware.org>

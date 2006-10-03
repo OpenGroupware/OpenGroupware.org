@@ -622,6 +622,29 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
   return nil; /* stay on page */
 }
 
+- (id)showMailer {
+  id<LSWMailEditorComponent, OGoContentPage> mailEditor;
+  unsigned i;
+  NSArray  *docs;
+
+  docs = [[self dataSource] fetchObjects];
+  if (![docs isNotEmpty]) {
+    [self setErrorString:@"no records selected!"]; // TODO: localize
+    return nil; /* stay on page */
+  }
+  
+  if ((mailEditor = (id)[self pageWithName:@"LSWImapMailEditor"]) == nil) {
+    [self logWithFormat:@"did not find mail editor component"];
+    return nil;
+  }
+
+  /* recipients */
+  
+  for (i = 0; i < [docs count]; i++)
+    [mailEditor addReceiver:[docs objectAtIndex:i]];
+  
+  return mailEditor;
+}
 
 /* printing */
 
