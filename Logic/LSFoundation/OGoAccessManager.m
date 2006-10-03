@@ -377,14 +377,14 @@ static Class   StrClass = Nil;
     [self warnWithFormat:@"%s: no oids passed in.", __PRETTY_FUNCTION__];
     return nil;
   }
-  if ([_oids count] == 0) {
+  if (![_oids isNotEmpty]) {
     [self debugWithFormat:@"  no IDs to check ..."];
     return [NSArray array];
   }
   
   if (![_str isNotNull])
     _str = nil;
-  if ([_str length] == 0) {
+  if (![_str isNotEmpty]) {
     [self debugWithFormat:@"  no permission to check ..."];
     return _oids;
   }
@@ -519,28 +519,18 @@ static Class   StrClass = Nil;
   onObjectID:(EOGlobalID *)_objId
   forAccessGlobalID:(EOGlobalID *)_accessId
 {
-  BOOL delete;
-
   if (![_objId isNotNull]) {
-    [self warnWithFormat:@"%s: object id", __PRETTY_FUNCTION__];
+    [self warnWithFormat:@"%s: got no object id", __PRETTY_FUNCTION__];
     return NO;
   }
-
+  
   if (![self operation:@"w" allowedOnObjectID:_objId]) {
     [self warnWithFormat:@"%s: setOperation not allowed for %@",
           __PRETTY_FUNCTION__, _objId];
     return NO;
   }
   
-  delete = NO;
-  
-  if (![_operation isNotNull]) {
-    delete = YES;
-  }
-  if (![_operation length])
-    delete = YES;
-
-  if (delete) {
+  if (![_operation isNotEmpty]) {
     return [self deleteOperationForObjectID:_objId accessGlobalID:_accessId
                  checkAccess:NO];
   }
@@ -566,7 +556,7 @@ static Class   StrClass = Nil;
   result = YES;
 
   if (![_objId isNotNull]) {
-    [self warnWithFormat:@"%s: object id", __PRETTY_FUNCTION__];
+    [self warnWithFormat:@"%s: got no object id", __PRETTY_FUNCTION__];
     return NO;
   }
   
@@ -578,19 +568,11 @@ static Class   StrClass = Nil;
   
   enumerator = [_operations keyEnumerator];
   while ((gid = [enumerator nextObject]) != nil) {
-    BOOL     delete;
     NSString *value;
 
     value  = [_operations objectForKey:gid];
-    delete = NO;
-  
-    if (![value isNotNull]) {
-      delete = YES;
-    }
-    if (![value isNotEmpty])
-      delete = YES;
     
-    if (delete) {
+    if (![value isNotEmpty]) {
       result = [self deleteOperationForObjectID:_objId accessGlobalID:gid
                      checkAccess:NO];
     }

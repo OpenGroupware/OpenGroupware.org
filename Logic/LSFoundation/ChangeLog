@@ -1,3 +1,7 @@
+2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoAccessManager.m: minor code cleanups (v5.3.126)
+
 2006-09-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoAccessManager.m: fixed an incorrect error log (v5.3.125)
