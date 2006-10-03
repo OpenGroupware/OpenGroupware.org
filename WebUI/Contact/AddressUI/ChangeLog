@@ -1,5 +1,8 @@
 2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
 
+	* OGoCompanyBulkOpPanel.m: improved speed of category changes by
+	  directly generating SQL (v5.3.64)
+
 	* added first version of OGoCompanyBulkOpPanel which can be used to
 	  change the ACL or the categories of a full company list (v5.3.63)
 

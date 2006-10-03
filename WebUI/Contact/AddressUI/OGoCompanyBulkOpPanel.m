@@ -40,11 +40,12 @@
 @end
 
 #include "common.h"
+#include <EOControl/EOKeyGlobalID.h>
 #include <OGoContacts/SkyCompanyDocument.h>
 
 @implementation OGoCompanyBulkOpPanel
 
-static BOOL debugOn = YES;
+static BOOL debugOn = NO;
 
 + (int)version {
   return [super version] + 0 /* v2 */;
@@ -173,23 +174,82 @@ typedef enum {
 
 static NSString *KeywordSplitString = @", ";
 
+- (NSString *)generateSQLForMap:(NSDictionary *)_map {
+  NSMutableString *sql;
+  NSEnumerator *e;
+  NSString     *kw;
+  
+  if (![_map isNotEmpty])
+    return nil;
+  
+  sql = [NSMutableString stringWithCapacity:4096];
+  
+  /* Note: joining SQL using ; is kinda PostgreSQL specific? */
+  e = [_map keyEnumerator];
+  while ((kw = [e nextObject]) != nil) {
+    NSArray  *gids;
+    unsigned i, count;
+    
+    /* not really subject to SQL injection because the keywords are
+       specified by the admin? */
+    gids = [_map objectForKey:kw];
+    kw   = [kw stringByReplacingString:@"'" withString:@"''"];
+    
+    if ([sql isNotEmpty]) [sql appendString:@"; "];
+
+    [sql appendString:@"UPDATE company SET keywords = '"];
+    [sql appendString:kw];
+    [sql appendString:@"' WHERE company_id IN ( "];
+
+    for (i = 0, count = [gids count]; i < count; i++) {
+      EOKeyGlobalID *gid;
+      
+      gid = (EOKeyGlobalID *)[gids objectAtIndex:i];
+      if (i > 0) [sql appendString:@", "];
+      [sql appendString:[[gid keyValues][0] stringValue]];
+    }
+    [sql appendString:@" )"];
+  }
+  
+  return sql;
+}
+
 - (id)applyCategories:(NSArray *)_cats operation:(OGoCatOpType)_optype {
   // TODO: this really belongs into SkyCompanyDocument?
+  NSMutableDictionary *kwToGIDs;
+  OGoAccessManager *manager;
   NSString *keywords;
   NSArray  *docs;
+  NSArray  *gids;
   unsigned i, affected, failCount;
   
+  manager   = [[(OGoSession *)[self session] commandContext] accessManager];
   keywords  = [_cats componentsJoinedByString:KeywordSplitString];
   affected  = 0;
   failCount = 0;
   
   docs = [[self dataSource] fetchObjects];
+  gids = [docs valueForKey:@"globalID"];
+  gids = [manager objects:gids forOperation:@"w"];
+  
+  kwToGIDs = [NSMutableDictionary dictionaryWithCapacity:256];
+  
   for (i = 0; i < [docs count]; i++) {
     SkyCompanyDocument *doc;
-    NSString     *oldKeywords;
+    NSMutableArray     *kwGIDs;
+    NSString     *oldKeywords, *newKeywords;
     
-    doc         = [docs objectAtIndex:i];
+    doc = [docs objectAtIndex:i];
+    
+    /* ensure that we have write access */
+    if (![gids containsObject:[doc globalID]]) {
+      failCount++;
+      continue;
+    }
+    
+    /* setup keywords */
     oldKeywords = [doc keywords];
+    newKeywords = nil;
     
     switch (_optype) {
       case OGoCatOpType_Set:
@@ -198,7 +258,7 @@ static NSString *KeywordSplitString = @", ";
 	if ([oldKeywords isEqual:keywords]) /* didn't change */
 	  continue;
 	
-	[doc setKeywords:keywords];
+	newKeywords = keywords;
 	break;
 
       case OGoCatOpType_Remove:
@@ -218,7 +278,7 @@ static NSString *KeywordSplitString = @", ";
 	    continue;
 	  }
 	  
-	  [doc setKeywords:[ma componentsJoinedByString:KeywordSplitString]];
+	  newKeywords = [ma componentsJoinedByString:KeywordSplitString];
 	  [ma release]; ma = nil;
 	}
 	break;
@@ -247,29 +307,74 @@ static NSString *KeywordSplitString = @", ";
 	    continue;
 	  }
 	  
-	  [doc setKeywords:[ma componentsJoinedByString:KeywordSplitString]];
+	  newKeywords = [ma componentsJoinedByString:KeywordSplitString];
 	  [ma release]; ma = nil;
 	}
 	else if ([_cats isNotEmpty]) {
 	  /* no categories set, add ours */
-	  [doc setKeywords:
-		 [_cats componentsJoinedByString:KeywordSplitString]];
+	  newKeywords = [_cats componentsJoinedByString:KeywordSplitString];
 	}
 	break;
     }
+    if (![newKeywords isNotEmpty]) newKeywords = @"";
     
     if (debugOn) {
       [self logWithFormat:@"OLD: %@", oldKeywords];
       [self logWithFormat:@"NEW: %@", [doc keywords]];
     }
-    
-    /* this is kinda slow, but anyway ... */
-    if ([doc save])
-      affected++;
-    else
-      failCount++;
-  }
 
+    /* add to map, prepare for UPDATE ... SET keywords = .. WHERE id IN ... */
+    
+    if ((kwGIDs = [kwToGIDs objectForKey:newKeywords]) == nil) {
+      kwGIDs = [NSMutableArray arrayWithCapacity:64];
+      [kwToGIDs setObject:kwGIDs forKey:newKeywords];
+    }
+    [kwGIDs addObject:[doc globalID]];
+
+    /* also patch document so that we can see the change w/o refetch, its
+       kinda hack because we don't save it */
+    
+    [doc setKeywords:newKeywords];
+    if (debugOn) {
+      [self logWithFormat:@"OLD: %@", oldKeywords];
+      [self logWithFormat:@"NEW: %@", [doc keywords]];
+    }
+
+    affected++;
+  }
+  
+  if (debugOn)
+    [self logWithFormat:@"MAP: %@", kwToGIDs];
+  
+  if ([kwToGIDs isNotEmpty]) {
+    LSCommandContext *cmdctx;
+    EOAdaptorChannel *ch;
+    NSException      *error;
+    
+    cmdctx = [(OGoSession *)[self session] commandContext];
+    if (![cmdctx isTransactionInProgress])
+      [cmdctx begin];
+    
+    ch = [[cmdctx valueForKey:LSDatabaseChannelKey] adaptorChannel];
+    
+    error = [ch evaluateExpressionX:[self generateSQLForMap:kwToGIDs]];
+    if (error != nil) {
+      [self errorWithFormat:@"could not change categories: %@", error];
+      [[[self context] page]
+	setErrorString:@"Category changed failed!"]; // TODO: localize
+      [cmdctx rollback];
+      return nil; /* stay on page */
+    }
+    
+    if (![cmdctx commit]) {
+      [self errorWithFormat:@"could not commit changed categories."];
+      [[[self context] page]
+	setErrorString:@"Category changed failed!"]; // TODO: localize
+      [cmdctx rollback];
+      return nil; /* stay on page */
+    }
+  }
+  
   /* we are done */
   
   [self reportAffected:affected failed:failCount];
@@ -307,7 +412,7 @@ static NSString *KeywordSplitString = @", ";
 }
 
 - (id)setPermissions {
-  SkyAccessManager    *manager;
+  OGoAccessManager    *manager;
   NSMutableDictionary *acl;
   NSMutableArray      *changedGIDs;
   NSArray             *docs, *gids;
