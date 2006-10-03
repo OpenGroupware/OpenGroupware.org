@@ -60,11 +60,4 @@
   return [NSString stringWithCString:buf];
 }
 
-/* notifications */
-
-- (void)sleep {
-  [self->data release]; self->data = nil;
-  [super sleep];
-}
-
 @end /* LSWFormLetterComponent */
