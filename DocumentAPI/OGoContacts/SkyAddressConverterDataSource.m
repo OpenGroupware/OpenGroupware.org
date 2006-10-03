@@ -105,6 +105,7 @@
                   nil];
   }
   else {
+    /* Note: the 'forkExport' is apparently ignored in address::convert */
     result = [self->context runCommand:@"address::convert",
                   @"type", type, 
                   @"kind", kind,
