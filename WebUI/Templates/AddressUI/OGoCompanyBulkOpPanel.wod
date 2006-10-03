@@ -1,0 +1,83 @@
+// bind template to controller
+
+WindowTitle: LSWViewerTitle { title = labels.title_ListBulkOps; }
+
+CatsTitle:   WOString { value = "Kategorien";    }
+PermsTitle:  WOString { value = "Rechte setzen"; }
+ActionLabel: WOString { value = "Aktionen";      }
+CatLabel:    WOString { value = labels.personeditor_categoryLabel; }
+
+BulkOpForm: WOForm {
+  name   = "editform";     /* name required for SkyAccessList */
+  action = context.page;   /* per default do nothing, stay on page */
+  style  = "border-bottom: 1px solid black; padding-bottom: 8px;";
+}
+
+AttributeCell: SkyAttributeCell  {}
+ValueCell:     SkyValueCell      {}
+Font:          SkyConfigFont     {}
+EditFont:      SkyConfigEditFont {}
+
+MainButtonRow: WOGenericContainer {
+  elementName = "tr";
+  bgcolor     = config.colors_mainButtonRow;
+}
+MainButtonCell: WOGenericContainer {
+  elementName = "td";
+  bgcolor     = config.colors_mainButtonRow;
+}
+
+Buttons: SkyButtonRow {
+  ordering  = ( done );
+  onDone    = close;
+  done      = labels.listcfg_done;
+}
+
+
+/* access */
+
+AccessEditor: SkyAccessList {
+  accessList   = accessIds;
+  accessChecks = ( r, w );
+  isInTable    = YES;
+  isViewerMode = NO;
+  labels       = labels;
+}
+
+SetPermissions: WOSubmitButton {
+  name  = "bsetperms";
+  value = "Setzen";
+  action = setPermissions;
+}
+
+
+/* categories */
+
+CategoryRep: WORepetition {
+  list = ( 0, 1, 2, 3, 4, 5 );
+  item = category;
+}
+
+CategoryPopup: WOPopUpButton {
+  list      = session.categoryNames;
+  item      = item;
+  string    = item;
+  selection = selectedCategory;
+  nilString = "-";
+}
+
+SetCategories: WOSubmitButton {
+  name   = "bsetcats";
+  value  = "Setzen";
+  action = setCategories;
+}
+AddCategories: WOSubmitButton {
+  name  = "baddcats";
+  value = "Hinzufuegen";
+  action = addCategories;
+}
+RemoveCategories: WOSubmitButton {
+  name  = "bdelcats";
+  value = "Entfernen";
+  action = removeCategories;
+}

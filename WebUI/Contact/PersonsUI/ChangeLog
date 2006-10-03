@@ -1,3 +1,7 @@
+2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWPersons.m: added 'bulk' button (v5.3.72)
+
 2006-10-02  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWPersons.m: added print button (v5.3.71)

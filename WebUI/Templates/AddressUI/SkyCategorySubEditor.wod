@@ -22,4 +22,3 @@ AttributeCell: SkyAttributeCell  {}
 ValueCell:     SkyValueCell      {}
 Font:          SkyConfigFont     {}
 EditFont:      SkyConfigEditFont {}
-

@@ -5,7 +5,6 @@
       xmlns:var="http://www.skyrix.com/od/binding"
       xmlns:const="http://www.skyrix.com/od/constant"
 >
-  <!-- WOx version: $Id: LSWFullSearch.wox,v 1.2 2004/04/21 14:11:42 helge Exp $ -->
   <OGo:editfont><input type="text" name="focusField" 
                        var:value="searchString" size="20" /></OGo:editfont>
   

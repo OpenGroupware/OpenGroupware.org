@@ -29,7 +29,7 @@
             <#Font>
               <#AccountsList>
                 <#TableContent>
-                  <td>
+                  <td><#Font>
                     <#IsTeamCond>
                       <b><#TeamString />:&nbsp;</b>
                       <#Description />
@@ -39,7 +39,8 @@
                       <#FirstName />&nbsp;
                       <#LastName />
                     </#IsTeamCondElse>
-                  </td>
+                  </#Font></td>
+                  
                   <#AccessCheckRepetition>
                     <td align="center"><#AccessCheck /></td>
                   </#AccessCheckRepetition>
@@ -51,6 +52,7 @@
                     <#AttributeCellTableLeft>
                       <#AccountName />
                     </#AttributeCellTableLeft>
+
                     <#AccessCheckRepetition>
                       <#AttributeCellTable>
                         <#AccessCheckIcon />

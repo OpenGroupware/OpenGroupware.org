@@ -1,5 +1,8 @@
 2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
 
+	* added first version of OGoCompanyBulkOpPanel which can be used to
+	  change the ACL or the categories of a full company list (v5.3.63)
+
 	* SkyCategorySubEditor.m: sort keywords(aka categories) prior turning
 	  them into a string. Use -componentsJoinedByString: instead of a
 	  custom merger (v5.3.62)

@@ -1,5 +1,4 @@
 <?xml version='1.0' encoding="iso-8859-1" standalone="yes" ?>
-<!-- $Id: LSWFormLetterComponent.wox,v 1.1 2004/04/29 12:12:44 helge Exp $ -->
 <a xmlns="http://www.w3.org/1999/xhtml"
    xmlns:OGo="http://www.opengroupware.org/ns/wox/ogo"
    xmlns:var="http://www.skyrix.com/od/binding"

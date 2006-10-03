@@ -51,6 +51,7 @@
       { name = SkyCompanySavedSearchPopUp;  },
       { name = OGoFormLetterAction;         },
       { name = OGoPrintCompanyList;         },
+      { name = OGoCompanyBulkOpPanel;       },
     );
 
     PreferencePages = (
@@ -88,6 +89,7 @@
       { name = SkyContactImportPage;        },
       { name = SkyCompanySavedSearchPopUp;  },
       { name = OGoPrintCompanyList;         },
+      { name = OGoCompanyBulkOpPanel;       },
     );
     
     LSWCommands = (

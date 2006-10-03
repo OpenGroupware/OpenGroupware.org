@@ -1,5 +1,3 @@
-// $Id: SkyPhoneSubEditor.wod 2 2004-08-20 11:37:44Z znek $
-
 PhonesRep: WORepetition {
   list = phoneTypes;
   item = phoneType;

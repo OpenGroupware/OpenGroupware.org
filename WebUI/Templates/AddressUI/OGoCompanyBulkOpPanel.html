@@ -1,0 +1,53 @@
+<div id="bulkopeditor">
+  <#BulkOpForm>
+
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+      <#WindowTitle><#Buttons/></#WindowTitle>
+    </table>
+
+    <table border="0" cellspacing="4" cellpadding="0" width="100%">
+      <tr>
+        <td valign="top">
+          <table border="0" cellspacing="0" cellpadding="3" width="100%">
+            <#MainButtonRow>
+              <td colspan="2"><#Font><b><#CatsTitle/></b></#Font></td>
+            </#MainButtonRow>
+
+            <tr>
+              <#AttributeCell><#Font><#ActionLabel/>:</#Font></#AttributeCell>
+              <#ValueCell><#EditFont>
+                <#AddCategories /><#RemoveCategories /><#SetCategories />
+              </#EditFont></#ValueCell>
+            </tr>
+
+            <tr>
+              <#AttributeCell><#Font><#CatLabel/>:</#Font></#AttributeCell>
+              <#ValueCell><#EditFont>
+                <#CategoryRep>
+                  <#CategoryPopup/><br />
+                </#CategoryRep>
+              </#EditFont></#ValueCell>
+            </tr>
+          </table>
+        </td>
+
+        <td width="60%" valign="top">
+          <table border="0" cellspacing="0" cellpadding="3" width="100%">
+            <#MainButtonRow>
+              <td colspan="2"><#Font><b><#PermsTitle/></b></#Font></td>
+            </#MainButtonRow>
+            <tr>
+              <#AttributeCell><#Font><#ActionLabel/>:</#Font></#AttributeCell>
+              <#ValueCell><#EditFont>
+                <#SetPermissions />
+              </#EditFont></#ValueCell>
+            </tr>
+
+            <#AccessEditor />
+          </table>
+        </td>
+      </tr>
+    </table>
+
+  </#BulkOpForm>
+</div>

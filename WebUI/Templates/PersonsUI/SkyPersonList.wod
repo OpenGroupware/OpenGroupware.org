@@ -39,9 +39,6 @@ CheckerLabel: WOGenericContainer {
   elementName = "label";
   for         = currentColumnCheckerName;
 }
-CheckerLabelValue: WOString {
-  value = labels.$currentColumnOpt;
-}
 
 ColOptPopUp: WOPopUpButton {
   name      = currentColumnCheckerName;

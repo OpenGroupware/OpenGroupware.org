@@ -1,8 +1,6 @@
-// $Id: LSWAddressViewer.wod 2 2004-08-20 11:37:44Z znek $
-
 AddressTitle: LSWViewerTitle {
   title     = title;
-};
+}
 
 AddressViewer : LSWObjectViewer {
   labels     = labels;

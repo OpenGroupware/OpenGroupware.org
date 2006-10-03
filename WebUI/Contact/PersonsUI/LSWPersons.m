@@ -40,7 +40,8 @@
     int hasSearched:1;
     int isSearchLimited:1;
     int isInConfigMode:1;
-    int reserved:29;
+    int showsBulkOps:1;
+    int reserved:28;
   } opFlags;
   
   // for tab view
@@ -232,6 +233,22 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 }
 - (BOOL)isInConfigMode {
   return self->opFlags.isInConfigMode ? YES : NO;
+}
+
+- (void)setShowsBulkOps:(BOOL)_flag {
+  self->opFlags.showsBulkOps = _flag ? 1 : 0;
+}
+- (BOOL)showsBulkOps {
+  return self->opFlags.showsBulkOps ? YES : NO;
+}
+
+- (BOOL)isEditorPage {
+  /* 
+     This is necessary because for non-editors the page meta-refreshes and
+     by this looses the form contents.
+     Possibly we also want to enable this for the config mode?
+  */
+  return [self showsBulkOps];
 }
 
 - (void)setTabKey:(NSString *)_key {
@@ -597,8 +614,12 @@ static inline void _newPersonNotifiction(LSWPersons *self, id _obj) {
 }
 
 - (id)showColumnConfigEditor {
-  [self setIsInConfigMode:YES];
-  return nil; /* start on page */
+  [self setIsInConfigMode:([self isInConfigMode] ? NO : YES)];
+  return nil; /* stay on page */
+}
+- (id)showBulkOperations {
+  [self setShowsBulkOps:([self showsBulkOps] ? NO : YES)];
+  return nil; /* stay on page */
 }
 
 

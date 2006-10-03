@@ -16,6 +16,7 @@
   "person_editor_contactVisibility"  = 0;
   "person_editor_categoryVisibility" = 0;
   "person_editor_privateVisibility"  = 0;
+  "company_editor_address_columns"   = 3;
 
   // person viewer
   person_viewer_aptfetchattrs = (
@@ -39,7 +40,7 @@
   person_defaultlist_opts = (
     name, firstname, middlename, nickname,
     salutation, degree, job_title, birthday, sex,
-    login,
+    login, keywords,
 
     /* emails */
     email1, email2, email3,
