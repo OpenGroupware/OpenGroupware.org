@@ -2,10 +2,10 @@
 
 WindowTitle: LSWViewerTitle { title = labels.title_ListBulkOps; }
 
-CatsTitle:   WOString { value = "Kategorien";    }
-PermsTitle:  WOString { value = "Rechte setzen"; }
-ActionLabel: WOString { value = "Aktionen";      }
-CatLabel:    WOString { value = labels.personeditor_categoryLabel; }
+CatsTitle:   WOString { value = labels.bulk_categories_title; };
+PermsTitle:  WOString { value = labels.bulk_permchange_title; };
+ActionLabel: WOString { value = labels.bulk_actionslabel;     };
+CatLabel:    WOString { value = labels.bulk_categorylabel;    };
 
 BulkOpForm: WOForm {
   name   = "editform";     /* name required for SkyAccessList */
@@ -30,7 +30,7 @@ MainButtonCell: WOGenericContainer {
 Buttons: SkyButtonRow {
   ordering  = ( done );
   onDone    = close;
-  done      = labels.listcfg_done;
+  done      = labels.bulk_close_title;
 }
 
 
@@ -46,7 +46,7 @@ AccessEditor: SkyAccessList {
 
 SetPermissions: WOSubmitButton {
   name  = "bsetperms";
-  value = "Setzen";
+  value = labels.bulk_button_setperms;
   action = setPermissions;
 }
 
@@ -68,16 +68,16 @@ CategoryPopup: WOPopUpButton {
 
 SetCategories: WOSubmitButton {
   name   = "bsetcats";
-  value  = "Setzen";
+  value  = labels.bulk_button_setcategories;
   action = setCategories;
 }
 AddCategories: WOSubmitButton {
-  name  = "baddcats";
-  value = "Hinzufuegen";
+  name   = "baddcats";
+  value  = labels.bulk_button_addcategories;
   action = addCategories;
 }
 RemoveCategories: WOSubmitButton {
-  name  = "bdelcats";
-  value = "Entfernen";
+  name   = "bdelcats";
+  value  = labels.bulk_button_removecategories;
   action = removeCategories;
 }
