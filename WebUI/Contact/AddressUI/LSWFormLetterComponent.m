@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -19,27 +20,51 @@
   02111-1307, USA.
 */
 
-#include "LSWFormLetterComponent.h"
+#include <OGoFoundation/OGoComponent.h>
+
+@class WOResponse;
+
+@interface LSWFormLetterComponent : OGoComponent
+{
+  WOResponse *data;
+}
+
+@end
+
 #include <OGoFoundation/OGoFoundation.h>
 #include "common.h"
 
 @implementation LSWFormLetterComponent
 
-/* accessors */
-
-- (NSString *)size {
-  return [NSString stringWithFormat:@"%d", [[self->data content] length]];
+- (void)dealloc {
+  [self->data release];
+  [super dealloc];
 }
+
+/* accessors */
 
 - (id)downloadTarget {
   return [[self context] contextID];
 }
 
 - (void)setData:(id)_data {
-  self->data = _data;
+  ASSIGN(self->data, _data);
 }
 - (id)data {
   return self->data;
+}
+
+- (NSString *)size {
+  char buf[32];
+  snprintf(buf, sizeof(buf), "%d", [[self->data content] length]);
+  return [NSString stringWithCString:buf];
+}
+
+/* notifications */
+
+- (void)sleep {
+  [self->data release]; self->data = nil;
+  [super sleep];
 }
 
 @end /* LSWFormLetterComponent */

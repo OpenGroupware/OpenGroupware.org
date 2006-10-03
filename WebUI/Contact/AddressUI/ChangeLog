@@ -1,5 +1,7 @@
 2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
-	
+
+	* LSWFormLetterComponent.m: properly use RC (v5.3.66)
+
 	* OGoCompanyBulkOpPanel.m: improved label handling (v5.3.65)
 
 	* OGoCompanyBulkOpPanel.m: improved speed of category changes by
