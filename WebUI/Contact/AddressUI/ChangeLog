@@ -1,4 +1,6 @@
 2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* OGoCompanyBulkOpPanel.m: improved label handling (v5.3.65)
 
 	* OGoCompanyBulkOpPanel.m: improved speed of category changes by
 	  directly generating SQL (v5.3.64)

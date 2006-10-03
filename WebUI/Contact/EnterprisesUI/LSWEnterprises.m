@@ -20,7 +20,42 @@
   02111-1307, USA.
 */
 
-#include "LSWEnterprises.h"
+#include <OGoFoundation/OGoContentPage.h>
+
+@class NSArray, NSString, NSDictionary, EOCacheDataSource;
+
+@interface LSWEnterprises : OGoContentPage
+{
+  NSString          *maxSearchCount;
+  EOCacheDataSource *dataSource;
+  unsigned          currentBatch;
+  id                enterprise;
+  id                item;          // non-retained
+  int               itemIdx;
+  
+  NSString          *searchText;
+  NSString          *searchTitle;
+
+  struct {
+    int hasSearched:1;
+    int isInConfigMode:1;
+    int showsBulkOps:1;
+    int isDescending:1;
+    int reserved:28;
+  } opFlags;
+
+  // for tab view
+  NSString          *tabKey;
+}
+
+/* actions */
+
+- (WOComponent *)tabClicked;
+- (WOComponent *)fullSearch;
+- (WOComponent *)advancedSearch;
+
+@end
+
 #include "common.h"
 #include <OGoFoundation/LSWNotifications.h>
 #include <NGExtensions/EOCacheDataSource.h>
@@ -127,10 +162,26 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   return [NSString stringWithFormat:@"enterprise_customlist_%i",self->itemIdx];
 }
 - (void)setIsInConfigMode:(BOOL)_flag {
-  self->isInConfigMode = _flag ? 1 : 0;
+  self->opFlags.isInConfigMode = _flag ? 1 : 0;
 }
 - (BOOL)isInConfigMode {
-  return self->isInConfigMode ? YES : NO;
+  return self->opFlags.isInConfigMode ? YES : NO;
+}
+
+- (void)setShowsBulkOps:(BOOL)_flag {
+  self->opFlags.showsBulkOps = _flag ? 1 : 0;
+}
+- (BOOL)showsBulkOps {
+  return self->opFlags.showsBulkOps ? YES : NO;
+}
+
+- (BOOL)isEditorPage {
+  /* 
+     This is necessary because for non-editors the page meta-refreshes and
+     by this looses the form contents.
+     Possibly we also want to enable this for the config mode?
+  */
+  return [self showsBulkOps];
 }
 
 - (void)setTabKey:(NSString *)_key {
@@ -237,10 +288,10 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
 }
 
 - (void)setHasSearched:(BOOL)_searched {
-  self->hasSearched = _searched;
+  self->opFlags.hasSearched = _searched ? 1 : 0;
 }
 - (BOOL)hasSearched {
-  return self->hasSearched;
+  return self->opFlags.hasSearched ? YES : NO;
 }
 
 - (int)blockSize {
@@ -257,10 +308,10 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
 }
 
 - (void)setIsDescending:(BOOL)_isDescending {
-  self->isDescending = _isDescending;
+  self->opFlags.isDescending = _isDescending ? 1 : 0;
 }
 - (BOOL)isDescending {
-  return self->isDescending;    
+  return self->opFlags.isDescending;    
 }
 
 - (void)setEnterprise:(id)_enterprise {
@@ -383,7 +434,7 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   [fspec setQualifier:qual];
   [self->dataSource setFetchSpecification:fspec];
 
-  self->hasSearched = YES;
+  self->opFlags.hasSearched = 1;
   [qual release];
 
   return [self _viewIfOneEnterprise];
@@ -397,15 +448,20 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   fspec = [self fetchSpecification];
   s = self->searchText;
   
-  if ([s length] > 0) {
-    qual = [EOQualifier qualifierWithQualifierFormat:
-                        [NSString stringWithFormat:
-                                  @"name like '*%@*' or number like '*%@*' or "
-                                  @"keywords like '*%@*'", s, s, s]];
+  if ([s isNotEmpty]) {
+    NSString *s;
+
+    // Note: we can't pass in the format to EOQualifier because it can't parse
+    //       that '*%@*' stuff (I think).
+    s = [NSString stringWithFormat:
+		    @"name like '*%@*' or number like '*%@*' or "
+		    @"keywords like '*%@*'", s, s, s];
+    qual = [EOQualifier qualifierWithQualifierFormat:s];
+    
     [fspec setQualifier:qual];
     [self->dataSource setFetchSpecification:fspec];
     self->currentBatch = 0;
-    self->hasSearched  = YES;
+    self->opFlags.hasSearched = 1;
   }
   return [self _viewIfOneEnterprise];
 }
@@ -427,8 +483,8 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   [fspec setQualifier:qual];
   [self->dataSource setFetchSpecification:fspec];
 
-  self->hasSearched = YES;
-  [qual release];
+  self->opFlags.hasSearched = 1;
+  [qual release]; qual = nil;
 
   return nil;
 }
@@ -451,8 +507,8 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   [self setTabKey:@"enterpriseSearch"];
   [self->searchText release]; self->searchText = nil;
 
-  self->currentBatch      = 0;
-  self->hasSearched       = YES;
+  self->currentBatch        = 0;
+  self->opFlags.hasSearched = 1;
   
   return [self _viewIfOneEnterprise];
 }
@@ -460,6 +516,10 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
 - (id)showColumnConfigEditor {
   [self setIsInConfigMode:YES];
   return nil; /* start on page */
+}
+- (id)showBulkOperations {
+  [self setShowsBulkOps:([self showsBulkOps] ? NO : YES)];
+  return nil; /* stay on page */
 }
 
 
@@ -533,7 +593,7 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
 }
 - (id)searchSaved {
   [self setSearchText:@""];
-  self->hasSearched = NO;
+  self->opFlags.hasSearched = 0;
   return nil;
 }
 - (id)searchSelected {
@@ -559,7 +619,7 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
   [self->dataSource setFetchSpecification:fspec];
 
   [self setSearchText:@""];
-  self->hasSearched = NO;
+  self->opFlags.hasSearched = 0;
   
   return nil;
 }

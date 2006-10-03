@@ -32,7 +32,7 @@ PersonList: SkyPersonList {
 }
 
 Buttons: SkyButtonRow {
-  ordering    = ( print, config, bulk, gathering, import, new );
+  ordering    = ( print, config, bulk, gathering, import, email, new );
   onNew       = newPerson;
   onGathering = gathering;
   new         = labels.new;
@@ -52,11 +52,14 @@ Buttons: SkyButtonRow {
 
   bulk        = labels.bulk;
   onBulk      = showBulkOperations;
+
+  email       = labels.email;
+  onEmail     = showMailer;
 }
 
 // TODO: why not 'hasRemoveTab'?
 CustomButtons: SkyButtonRow {
-  ordering    = ( print, config, bulk, gathering, import, removetab );
+  ordering    = ( print, config, bulk, gathering, import, email, removetab );
   onNew       = newPerson;
   onGathering = gathering;
   new         = labels.new;
@@ -80,6 +83,9 @@ CustomButtons: SkyButtonRow {
 
   bulk        = labels.bulk;
   onBulk      = showBulkOperations;
+
+  email       = labels.email;
+  onEmail     = showMailer;
 }
 
 HasSearchedCond: WOConditional {

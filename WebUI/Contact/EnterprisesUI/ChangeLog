@@ -1,3 +1,8 @@
+2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWEnterprises.m: added support for bulk-ops, code cleanups, moved in
+	  interface (v5.3.47)
+
 2006-10-02  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWEnterprises.m: added print button (v5.3.46)

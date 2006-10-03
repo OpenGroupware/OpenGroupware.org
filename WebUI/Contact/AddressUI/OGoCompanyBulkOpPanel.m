@@ -95,6 +95,9 @@ static BOOL debugOn = NO;
 - (id)labels {
   return self->labels;
 }
+- (id)ownLabels {
+  return [super labels];
+}
 
 - (void)setAccessIds:(id)_id {
   ASSIGN(self->accessIds, _id);
@@ -158,8 +161,9 @@ static BOOL debugOn = NO;
 - (void)reportAffected:(unsigned)_affected failed:(unsigned)_failed {
   NSString *msg;
   
-  msg = [NSString stringWithFormat:@"affected: %i, failed: %i",
-		  _affected, _failed];
+  msg = [NSString stringWithFormat:
+		    [[self ownLabels] valueForKey:@"bulk_resultnote_pattern"],
+		    _affected, _failed];
   [[[self context] page] setErrorString:msg];
 }
 

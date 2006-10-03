@@ -1,12 +1,13 @@
 <#Frame>
   <#Window>
-     <#TabBody>
+    <#ShowsBulkOps><#BulkOps/></#ShowsBulkOps>
 
-        <#FavoritesTab>
-          <#EnterpriseList><#Buttons/></#EnterpriseList>
-        </#FavoritesTab>
+    <#TabBody>
+      <#FavoritesTab>
+        <#EnterpriseList><#Buttons/></#EnterpriseList>
+      </#FavoritesTab>
 
-        <#SearchTab>
+      <#SearchTab>
           <table width="100%" cellpadding="0" sellspacing="0" border="0">
             <tr>
               <td align="left">
@@ -22,24 +23,24 @@
           </table>
 
           <#EnterpriseList><#Buttons/></#EnterpriseList>
-        </#SearchTab>
+      </#SearchTab>
 
-        <#AdvSearchTab><#AdvancedSearch/></#AdvSearchTab>
+      <#AdvSearchTab><#AdvancedSearch/></#AdvSearchTab>
 
-        <#FullSearchTab>
+      <#FullSearchTab>
           <#FullSearch/>
           <#EnterpriseList><#Buttons/></#EnterpriseList>
-        </#FullSearchTab>
+      </#FullSearchTab>
 
-        <#CustomTabs>
+      <#CustomTabs>
           <#CustomTab>
             <#CustomLabel />
             <div align="right"><#CustomSavedSearchPopUp/></div>
             <#EnterpriseList><#CustomButtons/></#EnterpriseList>
           </#CustomTab>
-        </#CustomTabs>
+      </#CustomTabs>
 
-<!--
+      <#ShowLetterButtons>
         <#IsNotTextMode>
           <#LetterRepetition>
             <#LetterTab>
@@ -47,9 +48,9 @@
             </#LetterTab>
           </#LetterRepetition>
         </#IsNotTextMode>
--->
-     </#TabBody>
-</#Window>
+      </#ShowLetterButtons>
+    </#TabBody>
+  </#Window>
 
 <script language="JavaScript">
 <!-- hide

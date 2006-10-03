@@ -136,7 +136,7 @@ static BOOL debugPageRefresh = NO;
   
   if ((ccaps = [[[self context] request] clientCapabilities]) == nil)
     return YES;
-
+  
   if ([ccaps isMozilla])
     return NO;
   

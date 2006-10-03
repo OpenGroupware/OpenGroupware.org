@@ -14,6 +14,14 @@ Form: WOForm {
 
 Font: SkyConfigFont {}
 
+ShowsBulkOps: WOConditional { condition = showsBulkOps; }
+
+BulkOps: OGoCompanyBulkOpPanel {
+  dataSource = dataSource;
+  labels     = labels;
+  isVisible  = showsBulkOps;
+}
+
 EnterpriseSearchField: WOTextField {
   value  = searchText;
 }
@@ -45,7 +53,7 @@ FullSearch: LSWFullSearch {
 }
 
 Buttons: SkyButtonRow {
-  ordering    = ( print, config, import, new );
+  ordering    = ( print, config, bulk, import, email, new );
   onNew       = newEnterprise;
   new         = labels.new;
   tipNew      = labels.new;
@@ -60,10 +68,16 @@ Buttons: SkyButtonRow {
   print       = labels.print;
   onPrint     = printList;
   targetPrint = "SkyrixPrintView";
+
+  bulk        = labels.bulk;
+  onBulk      = showBulkOperations;
+
+  email       = labels.email;
+  onEmail     = showMailer;
 }
 
 CustomButtons: SkyButtonRow {
-  ordering     = ( print, config, import, new, removetab);
+  ordering     = ( print, config, bulk, import, email, new, removetab);
   onNew        = newEnterprise;
   new          = labels.new;
   tipNew       = labels.new;
@@ -82,6 +96,12 @@ CustomButtons: SkyButtonRow {
   print        = labels.print;
   onPrint      = printList;
   targetPrint  = "SkyrixPrintView";
+
+  bulk        = labels.bulk;
+  onBulk      = showBulkOperations;
+
+  email       = labels.email;
+  onEmail     = showMailer;
 }
 
 SearchField: WOTextField {
@@ -180,4 +200,8 @@ LetterRepetition: WORepetition {
 IsNotTextMode: WOConditional {
   condition = session.isTextModeBrowser;
   negate    = YES;
+}
+
+ShowLetterButtons: WOConditional {
+  condition = shouldShowLetterButtons;
 }
