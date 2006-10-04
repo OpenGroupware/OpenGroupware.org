@@ -233,11 +233,12 @@
         strObj = [self _getObj:obj forKey:[field objectForKey:@"key"]];
         strObj = [strObj isNotNull] ? [strObj stringValue] : (NSString *)nil;
 	
-	if ([(t = [field objectForKey:@"prefix"]) isNotEmpty])
+	// Important: do not use -isNotEmpty, this fails for "\n" seperators!
+	if ([(t = [field objectForKey:@"prefix"]) length] > 0)
 	  [result appendString:t];
 	if (strObj != nil)
 	  [result appendString:strObj];
-	if ([(t = [field objectForKey:@"suffix"]) isNotEmpty])
+	if ([(t = [field objectForKey:@"suffix"]) length] > 0)
 	  [result appendString:t];
       }
     }
