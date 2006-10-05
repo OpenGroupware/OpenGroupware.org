@@ -441,15 +441,10 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
 }
 
 - (id)enterpriseSearch {
-  EOFetchSpecification *fspec;
-  EOQualifier          *qual  = nil;
-  NSString             *s     = nil;
-
-  fspec = [self fetchSpecification];
-  s = self->searchText;
-  
-  if ([s isNotEmpty]) {
-    NSString *s;
+  if ([self->searchText isNotEmpty]) {
+    EOFetchSpecification *fspec;
+    EOQualifier          *qual  = nil;
+    NSString *s = self->searchText;
 
     // Note: we can't pass in the format to EOQualifier because it can't parse
     //       that '*%@*' stuff (I think).
@@ -458,6 +453,7 @@ static NGMimeType *mimeTypeEnterpriseDoc = nil;
 		    @"keywords like '*%@*'", s, s, s];
     qual = [EOQualifier qualifierWithQualifierFormat:s];
     
+    fspec = [self fetchSpecification];
     [fspec setQualifier:qual];
     [self->dataSource setFetchSpecification:fspec];
     self->currentBatch = 0;

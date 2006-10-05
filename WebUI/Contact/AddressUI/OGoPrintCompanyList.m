@@ -63,4 +63,15 @@
   return self->labels;
 }
 
+/* config key */
+
+- (NSString *)defaultConfigKey {
+  if ([self->configKey rangeOfString:@"person"].length > 0)
+    return @"person_defaultlist";
+  if ([self->configKey rangeOfString:@"enterprise"].length > 0)
+    return @"enterprise_defaultlist";
+
+  return nil;
+}
+
 @end /* OGoPrintCompanyList */

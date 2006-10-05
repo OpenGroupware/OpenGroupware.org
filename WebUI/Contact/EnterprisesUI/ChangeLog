@@ -1,3 +1,7 @@
+2006-10-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWEnterprises.m: fixed a crasher (v5.3.49)
+
 2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWEnterprises.m: added action to open mail panel based on a list
