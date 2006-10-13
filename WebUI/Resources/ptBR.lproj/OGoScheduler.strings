@@ -197,6 +197,7 @@ firstMay                    = "Primeiro de Maio";
 fourthAdvent                = "Quarto Advento";
 germanUnityDay              = "Tag der Deutschen Einheit";
 goodFriday                  = "Sexta-feira da Paixão";
+goToParentDir               = "Outras agendas";
 group                       = "Categoria";
 hchart                      = "Lista";
 holyThreeKings              = "Dia de Reis";
