@@ -1,3 +1,8 @@
+2006-11-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWTextPlainBodyViewer.m: improved decoding of quoted printable
+	  content (OGo bug #1753) (v5.3.27)
+
 2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* code cleanups, fixed gcc 4.1 warnings, 64bit fixups (v5.3.26)
@@ -398,4 +403,3 @@ Thu Oct 28 13:46:14 1999  Helge Hess  <helge.hess@mdlink.de>
 Tue Oct 12 11:50:25 1999  Jan Reichmann  <jan@mdlink.de>
 
 	* LSWPartBodyViewer.m: make Netscape conforms url parsing behaviour
-

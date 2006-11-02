@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -101,20 +102,27 @@ static int UseFoundationStringEncodingForMimeText = -1;
 
   if ([self->body isKindOfClass:[NSURL class]]) {
     NSString *part;
-
-    part = [[[self->body query] componentsSeparatedByString:@"="] lastObject];
+    
+    part = [self->body query];
+    part = [[part componentsSeparatedByString:@"="] lastObject];
     data = [self->source contentsOfPart:part];
   }
   else if ([self->body isKindOfClass:[NSData class]])
     data = self->body;
-
+  
+  /* 
+     Note: decoding must be done prior NSString setup because QP is defined
+           on byte level, not on characters.
+     Note: there are two variants of QP encoding (Q and transfer-encoding)
+  */
   if ((en = [[self encoding] lowercaseString]) != nil) {
-    if ([en isEqualToString:@"quoted-printable"]) {
-        data = [data dataByDecodingQuotedPrintable];
-    }
-    else if ([en isEqualToString:@"base64"]) {
-        data = [data dataByDecodingBase64];
-    }
+    if ([en isEqualToString:@"quoted-printable"])
+      /* this RFC 2045 variant of QP doesn't replace _ with space */
+      data = [data dataByDecodingQuotedPrintableTransferEncoding];
+    else if ([en isEqualToString:@"base64"])
+      data = [data dataByDecodingBase64];
+    else
+      [self errorWithFormat:@"unknown encoding: %@", en];
   }
   
   s = nil;
