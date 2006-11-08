@@ -22,6 +22,7 @@
 #include "OGoSQLGenerator.h"
 #include <LSFoundation/LSCommandContext.h>
 #include <NGExtensions/EOTrueQualifier.h>
+#include <NGExtensions/NSString+Ext.h>
 #include <EOControl/EOKeyGlobalID.h>
 #include "common.h"
 

@@ -40,7 +40,7 @@
   - extra attributes (company_value and obj_property)
 */
 
-@class NSString, NSNumber, NSMutableString, NSMutableDictionary;
+@class NSString, NSNumber, NSMutableString, NSMutableDictionary, NSArray;
 @class EOQualifier;
 @class EOAdaptor, EOModel, EOEntity, EOAttribute;
 

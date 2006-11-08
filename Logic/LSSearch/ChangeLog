@@ -1,3 +1,7 @@
+2006-11-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoSQLGenerator.[hm]: fixed OSX compilation issues (v5.3.35)
+
 2006-09-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSQualifierSearchCommand.m: catch and log an edge condition (if the
