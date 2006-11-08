@@ -1,3 +1,7 @@
+2006-11-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWSchedulerDateTitle.m: fixed a MacOS incompatibility (v5.3.110)
+
 2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.109

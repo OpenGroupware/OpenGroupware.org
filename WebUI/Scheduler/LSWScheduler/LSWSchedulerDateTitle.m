@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -82,13 +83,13 @@
     self->directActionName = OWGetProperty(_config, @"directActionName");
 
     if ((tmp = OWGetProperty(_config, @"action"))) {
-      NSLog(@"WARNING: %s 'action' binding is not supported anymore !",
-            __PRETTY_FUNCTION__);
-      [tmp release];
+      [self warnWithFormat:@"%s 'action' binding is not supported anymore !",
+            __PRETTY_FUNCTION__];
+      [tmp release]; tmp = nil;
     }
     if ((tmp = OWGetProperty(_config, @"onNew"))) {
-      NSLog(@"WARNING: %s 'onNew' binding is not supported anymore !",
-            __PRETTY_FUNCTION__);
+      [self warnWithFormat:@"%s 'onNew' binding is not supported anymore !",
+            __PRETTY_FUNCTION__];
       [tmp release];
     }
   }
@@ -129,7 +130,7 @@
   BOOL           doJavaScript;
   
   sComponent = [_ctx component];
-  d  = [self->date valueInComponent:sComponent];
+  d          = [self->date valueInComponent:sComponent];
   
   doJavaScript =
     [[[_ctx session] valueForKey:@"isJavaScriptEnabled"] boolValue];
@@ -153,32 +154,34 @@
       NSString *da;
       NSString *tz;
       static unsigned serial = 0;
+      char buf[256];
         
       [_response appendContentString:@"<a class=\"skydatetitlelink\" href=\""];
       
       serial++;
       tz = [[d timeZone] abbreviation];
       tz = [tz stringByEscapingURL];
-          
-      url = [NSString stringWithFormat:
-                      @"year=%i&month=%i&day=%i&"
-                      @"tz=%@",
-                      [d yearOfCommonEra],
-                      [d monthOfYear],
-                      [d dayOfMonth],
-                      tz];
-
+      if (tz == nil) tz = @"GMT";
+      
+      snprintf(buf, sizeof(buf), "year=%i&month=%i&day=%i&tz=%s",
+	       [d yearOfCommonEra], [d monthOfYear], [d dayOfMonth],
+	       [tz UTF8String]);
+      url = [NSString stringWithCString:buf];
+      
       if ([_ctx hasSession]) {
 	// TODO: use some WOContext URL generation method?
         WOSession *sn;
 	
 	sn = [_ctx session];
-        url = [NSString stringWithFormat:@"%@&wosid=%@", url, [sn sessionID]];
-
+	url = [[url stringByAppendingString:@"&wosid="]
+		    stringByAppendingString:[sn sessionID]];
+	
+#if 0 /* not used in OGo anyway */
         if (![sn isDistributionEnabled]) {
           url = [NSString stringWithFormat:@"%@&woinst=%@", url,
                           [[WOApplication application] number]];
         }
+#endif
       }
       
       da  = [self->directActionName stringValueInComponent:sComponent];
@@ -227,26 +230,28 @@
                  doHi ? @"skydatetitlehigh" : @"skydatetitle"];
     [_response appendContentString:@"\">"];
     
-    [_response appendContentHTMLString:l ? l : (NSString *)@"<missing>"];
+    [_response appendContentHTMLString:
+		 (l != nil) ? l : (NSString *)@"<missing>"];
     
     [_response appendContentString:@"<br />"];
     
     /* new button ... */
     
     if (![self->disableNew boolValueInComponent:sComponent]) {
-      NSString *nt;
-      NSString *alt;
-      NSString *url;
-      NSString *tz;
-      NSString *calFormat;
+      NSString *nt, *alt, *url, *tz, *calFormat;
       static unsigned serial = 0;
-
+      
       calFormat = [self->showAMPMDates boolValueInComponent:sComponent]
         ? @"%Y-%m-%d 11:00 AM %Z" : @"%Y-%m-%d 11:00 %Z";
+      calFormat = [d descriptionWithCalendarFormat:calFormat];
+      if (calFormat == nil) {
+	[self warnWithFormat:@"could not format date: %@", d];
+	calFormat = @"-";
+      }
+      
       nt  = [self->newLabel stringValueInComponent:sComponent];
       alt = @"Create new appointment on ";
-      alt = [alt stringByAppendingString:
-                 [d descriptionWithCalendarFormat:calFormat]];
+      alt = calFormat != nil ? [alt stringByAppendingString:calFormat] : alt;
       
       [_response appendContentString:
                    @"[<a class=\"skydatetitlenewlink\" href=\""];
@@ -276,7 +281,8 @@
         [self appendJS:alt toReponse:_response inContext:_ctx];
       
       [_response appendContentCharacter:'>'];        
-      [_response appendContentHTMLString:nt ? nt : (NSString *)@"new"];      
+      [_response appendContentHTMLString:
+		   (nt != nil ? nt : (NSString *)@"new")];
       [_response appendContentString:@"</a>]"];
     }
     
