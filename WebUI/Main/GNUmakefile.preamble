@@ -13,6 +13,9 @@ ADDITIONAL_LIB_DIRS += \
 
 ifneq ($(FOUNDATION_LIB),apple)
 SYSTEM_LIB_DIR += $(CONFIGURE_SYSTEM_LIB_DIR)
+else
+# TODO: explain this apple special
+SYSTEM_LIB_DIR += -L/usr/local/lib
 endif
 
 # TODO: explain what apr is good for
