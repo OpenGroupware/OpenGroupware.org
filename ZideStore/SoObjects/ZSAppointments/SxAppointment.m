@@ -211,13 +211,28 @@ static BOOL embedViewURL             = NO;
   
   cc = [[(WOContext *)_ctx request] clientCapabilities];
   ua = [cc userAgentType];
+
   if ([ua isEqualToString:@"Evolution"])
     /* Evo needs 201, otherwise an error will be shown */
     return YES;
   if ([ua isEqualToString:@"ZideLook"])
     return YES;
+  if ([ua isEqualToString:@"Sunbird"])
+    return YES;
+
+  /*
+    According to the RFC 2616, 9.6 PUT:
+    "If a new resource is created, the origin server MUST inform the user
+     agent via the 201 (Created) response."
+     
+    We'll keep this since we don't know what else expects a 200. Possibly the
+    wrong approach.
+  */
+  if ([ua isEqualToString:@"Cadaver"]) {
+    /* if I remember right, Cadaver complains on 201 */
+    return NO;
+  }
   
-  /* if I remember right, Cadaver complains on 201 */
   return NO;
 }
 
@@ -545,9 +560,17 @@ static BOOL embedViewURL             = NO;
   
   r = [(WOContext *)_ctx response];
 
+#if 0 /* thats wrong in any case? 201 is only returned for _new_ resources */
   [r setStatus:
        [self shouldReturn201AfterPUTInContext:_ctx]
        ? 201 /* Created */ : 200 /* OK */];
+#else
+  /* 
+     Hopefully we don't confuse clients by not returning 200, but 204 is
+     required by Sunbird 0.3.
+  */
+  [r setStatus:204 /* No Content */];
+#endif
   
   if ((etag = [self davEntityTag]) != nil)
     [r setHeader:etag forKey:@"etag"];
@@ -869,6 +892,7 @@ static BOOL embedViewURL             = NO;
 }
 
 - (id)primaryDeleteObjectInContext:(id)_ctx {
+  /* Note: Sunbird 0.3 expects a 204 after a delete */
   NSException *error;
 
   error = [[self aptManagerInContext:_ctx] 

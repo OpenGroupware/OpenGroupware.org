@@ -1,5 +1,12 @@
 2006-11-14  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SxAppointment.m: return a 201 if Sunbird creates an item, this makes
+	  the created appointment show up in Sunbird. However, Sunbird doesn't
+	  detect the 'location' header we return, resulting in a new
+	  appointment created for every change until the next restart.
+	  Also changed to return 204 instead of 200 after a PUT which modifies
+	  a resource. (v1.5.107)
+
 	* SxDavCalendarQuery.m: properly mark responses as multistatus (207,
 	  not 200 OK), fixes event display issue with Sunbird 0.3 (v1.5.106)
 
