@@ -1,3 +1,8 @@
+2006-11-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxDavCalendarQuery.m: properly mark responses as multistatus (207,
+	  not 200 OK), fixes event display issue with Sunbird 0.3 (v1.5.106)
+
 2006-08-30  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v1.5.105

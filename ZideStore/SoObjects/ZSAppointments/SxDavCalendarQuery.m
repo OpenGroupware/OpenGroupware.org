@@ -178,7 +178,7 @@ static BOOL debugOn = YES;
   [self debugWithFormat:@"generating responses"];
   
   [_r setContentEncoding:NSUTF8StringEncoding];
-  [_r setStatus:200 /* OK */];
+  [_r setStatus:207 /* multistatus */];
   [_r setHeader:@"text/xml; charset=\"utf-8\"" forKey:@"content-type"];
   
   /* open multistatus */
