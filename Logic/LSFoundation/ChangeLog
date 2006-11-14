@@ -1,3 +1,7 @@
+2006-11-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoContextManager.m: use CET instead of MET on MacOS (v5.3.127)
+
 2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoAccessManager.m: minor code cleanups (v5.3.126)
