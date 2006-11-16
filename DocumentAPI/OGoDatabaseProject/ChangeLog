@@ -1,3 +1,21 @@
+2006-11-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.56
+
+	* SkyProjectDocumentDataSource.m, SkyProjectFileManager+*.m: use
+	  NGExtensions to fix implementation for non-libFoundation environments
+
+	* SkyDocumentIdHandler.m: fixed a bug with opening projects from 
+	  document viewers showing new documents (introduced when converting
+	  int pkeys to unsigned int ones), added a -description
+
+	* SkyProjectFileManager+Extensions.m: consolidated various categories
+	  in a single one
+
+	* SkyDocumentAccessHandler.m, SkyProjectFileManager+Extensions.m,
+	  SkyDocumentIdHandler.m, SkyProjectFileManagerCache+Internals.m:
+	  use -warn/errorWithFormat:
+
 2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* fixed gcc 4.1 warnings, 64bit tweaks (v5.3.55)

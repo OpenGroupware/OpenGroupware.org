@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -22,6 +23,7 @@
 // TODO: needs serious cleanup
 
 #include <OGoDatabaseProject/SkyProjectFileManagerCache.h>
+#include <NGExtensions/NSString+Ext.h>
 #include <EOControl/EOQualifier.h>
 #include "common.h"
 
@@ -265,7 +267,7 @@ static inline NSNumber *boolNum(BOOL value) {
       }
       childs = nextChilds;
     }
-    if ([childs count] == 0)
+    if (![childs isNotEmpty])
       break;
   }
   [self takeCacheValue:pk2path forKey:Pk2FileNameCache_key];
@@ -310,10 +312,10 @@ static inline NSNumber *boolNum(BOOL value) {
                                       @"isFolder", boolNum(YES)];
   if (![channel selectAttributes:fileNameAttributes
                 describedByQualifier:qualifier fetchOrder:nil lock:NO]) {
-    NSLog(@"ERROR[%s]: select failed for qualifier %@ attrs %@ ",
-          __PRETTY_FUNCTION__, qualifier, fileNameAttributes);
+    [self errorWithFormat:@"%s: select failed for qualifier %@ attrs %@ ",
+          __PRETTY_FUNCTION__, qualifier, fileNameAttributes];
     [self rollbackTransaction];
-    RELEASE(qualifier); qualifier = nil;
+    [qualifier release]; qualifier = nil;
     return;
   }
   
@@ -349,9 +351,8 @@ static inline NSNumber *boolNum(BOOL value) {
   if (!(dic = [self cacheValueForKey:Pk2FileNameCache_key])) {
     [self initializeFolderNameCaches];
     dic = [self cacheValueForKey:Pk2FileNameCache_key];
-    if (!dic) {
-      NSLog(@"ERROR[%s]: missing pk2FileNameCache ...");
-    }
+    if (dic == nil)
+      [self errorWithFormat:@"%s: missing pk2FileNameCache ..."];
   }
   return dic;
 }
@@ -363,8 +364,8 @@ static inline NSNumber *boolNum(BOOL value) {
     [self initializeFolderNameCaches];
     dic = [self cacheValueForKey:Parent2ChildFolders_key];
     if (dic == nil) {
-      NSLog(@"ERROR[%s]: missing parent2ChildDirectoriesCache ...",
-            __PRETTY_FUNCTION__);
+      [self errorWithFormat:@"%s: missing parent2ChildDirectoriesCache ...",
+            __PRETTY_FUNCTION__];
     }
   }
   return dic;
@@ -447,9 +448,8 @@ static inline NSNumber *boolNum(BOOL value) {
   if (!(dic = [self cacheValueForKey:FileName2GIDCache_key])) {
     [self initializeFolderNameCaches];
     dic = [self cacheValueForKey:FileName2GIDCache_key];
-    if (!dic) {
-      NSLog(@"ERROR[%s]: missing fileName2GIDCache ...");
-    }
+    if (dic == nil)
+      [self errorWithFormat:@"%s: missing fileName2GIDCache ..."];
   }
   return dic;
 }
@@ -657,8 +657,9 @@ static inline NSNumber *boolNum(BOOL value) {
   EOAdaptorChannel *channel;
 
   if (_parentId && _sid) {
-    NSLog(@"ERROR[%s]: internal inconsistency, _parentId != nil and _sid != nil",
-          __PRETTY_FUNCTION__);
+    [self errorWithFormat:
+	    @"%s: internal inconsistency, _parentId != nil and _sid != nil",
+            __PRETTY_FUNCTION__];
     return nil;
   }
   entity = [[[[self->context valueForKey:LSDatabaseKey] adaptor] model]
@@ -679,22 +680,21 @@ static inline NSNumber *boolNum(BOOL value) {
 
     if (![channel selectAttributes:docAttrs
                   describedByQualifier:qualifier fetchOrder:nil lock:NO]) {
-      NSLog(@"ERROR[%s]: select failed for qualifier %@ attrs %@ ",
-            __PRETTY_FUNCTION__, qualifier, docAttrs);
+      [self errorWithFormat:@"%s: select failed for qualifier %@ attrs %@ ",
+            __PRETTY_FUNCTION__, qualifier, docAttrs];
       [self rollbackTransaction];
-      RELEASE(qualifier); qualifier = nil;
+      [qualifier release]; qualifier = nil;
       return nil;
     }
-    RELEASE(qualifier); qualifier = nil;
+    [qualifier release]; qualifier = nil;
   }
   else if ([_sid isNotNull]) {
     static NSString *selExpr = nil;
-
     NSString *expression;
-
+    
     if (selExpr == nil) {
-      selExpr = [self buildSelectForSiblingSearch:entity attrs:docAttrs];
-      RETAIN(selExpr);
+      selExpr =
+	[[self buildSelectForSiblingSearch:entity attrs:docAttrs] retain];
     }
 
     expression = [[NSString alloc] initWithFormat:selExpr,
@@ -702,9 +702,9 @@ static inline NSNumber *boolNum(BOOL value) {
                                    _sid];
 
     if (![channel evaluateExpression:expression]) {
-      NSLog(@"ERROR[%s]: select failed for expression %@ attrs %@ ",
-            __PRETTY_FUNCTION__, expression, docAttrs);
-      RELEASE(expression); expression = nil;
+      [self errorWithFormat:@"%s: select failed for expression %@ attrs %@ ",
+            __PRETTY_FUNCTION__, expression, docAttrs];
+      [expression release]; expression = nil;
       [self rollbackTransaction];
       return nil;
     }
@@ -719,18 +719,14 @@ static inline NSNumber *boolNum(BOOL value) {
     expr      = [_qual sqlExpressionWithAdaptor:
                        [[channel adaptorContext] adaptor]
                        attributes:docAttrs];
-#if LIB_FOUNDATION_LIBRARY
     expr      = [expr stringByReplacingString:@"%" withString:@"%%"];
-#else
-#  warning FIXME: incorrect implementation for this Foundation library
-#endif
     qualifier = [[EOSQLQualifier alloc] initWithEntity:entity
                                         qualifierFormat:expr];
 
     if (![channel selectAttributes:docAttrs
                   describedByQualifier:qualifier fetchOrder:nil lock:NO]) {
-      NSLog(@"ERROR[%s]: select failed for qualifier %@ attrs %@ ",
-            __PRETTY_FUNCTION__, qualifier, docAttrs);
+      [self errorWithFormat:@"%s: select failed for qualifier %@ attrs %@ ",
+            __PRETTY_FUNCTION__, qualifier, docAttrs];
       [self rollbackTransaction];
       [qualifier release]; qualifier = nil;
       return nil;
@@ -738,7 +734,7 @@ static inline NSNumber *boolNum(BOOL value) {
     [qualifier release]; qualifier = nil;
   }
   else {
-    NSLog(@"ERROR[%s]: internal error ", __PRETTY_FUNCTION__);
+    [self errorWithFormat:@"%s: internal error ", __PRETTY_FUNCTION__];
     //    abort();
     return nil;
   }
@@ -792,8 +788,8 @@ static inline NSNumber *boolNum(BOOL value) {
                                      [sArray componentsJoinedByString:@","]];
 
       if (![channel evaluateExpression:expression]) {
-        NSLog(@"ERROR[%s]: select failed for expression %@ attrs %@ ",
-              __PRETTY_FUNCTION__, expression, docAttrs);
+        [self errorWithFormat:@"%s: select failed for expression %@ attrs %@ ",
+              __PRETTY_FUNCTION__, expression, docAttrs];
         [expression release]; expression = nil;
         [self rollbackTransaction];
         return nil;
@@ -853,8 +849,8 @@ static inline NSNumber *boolNum(BOOL value) {
                                      [sArray componentsJoinedByString:@","]];
       
       if (![channel evaluateExpression:expression]) {
-        NSLog(@"ERROR[%s]: select failed for expression %@ attrs %@ ",
-              __PRETTY_FUNCTION__, expression, editingAttrs);
+        [self errorWithFormat:@"%s: select failed for expression %@ attrs %@ ",
+              __PRETTY_FUNCTION__, expression, editingAttrs];
         [expression release]; expression = nil;
         [self rollbackTransaction];
         return nil;
@@ -880,8 +876,9 @@ static inline NSNumber *boolNum(BOOL value) {
   NSDictionary        *row;
 
   if (_parentId && _sid) {
-    NSLog(@"ERROR[%s]: internal inconsistency, _parentId != nil and _sid != nil",
-          __PRETTY_FUNCTION__);
+    [self errorWithFormat:
+	    @"%s: internal inconsistency, _parentId != nil and _sid != nil",
+            __PRETTY_FUNCTION__];
     return nil;
   }
   entity = [[[[self->context valueForKey:LSDatabaseKey] adaptor] model]
@@ -906,8 +903,8 @@ static inline NSNumber *boolNum(BOOL value) {
                                              valueForKey:@"projectId"]];
     if (![channel selectAttributes:editingAttrs
                   describedByQualifier:qualifier fetchOrder:nil lock:NO]) {
-      NSLog(@"ERROR[%s]: select failed for qualifier %@ attrs %@ ",
-            __PRETTY_FUNCTION__, qualifier, editingAttrs);
+      [self errorWithFormat:@"%s: select failed for qualifier %@ attrs %@ ",
+            __PRETTY_FUNCTION__, qualifier, editingAttrs];
       [self rollbackTransaction];
       [qualifier release]; qualifier = nil;
       return nil;
@@ -920,8 +917,8 @@ static inline NSNumber *boolNum(BOOL value) {
     NSString *expression;
 
     if (selExpr == nil) {
-      selExpr = [self buildSelectForSiblingSearch:entity attrs:editingAttrs];
-      RETAIN(selExpr);
+      selExpr =
+	[[self buildSelectForSiblingSearch:entity attrs:editingAttrs] retain];
     }
 
     expression = [[NSString alloc] initWithFormat:selExpr,
@@ -929,15 +926,15 @@ static inline NSNumber *boolNum(BOOL value) {
                                    _sid];
 
     if (![channel evaluateExpression:expression]) {
-      NSLog(@"ERROR[%s]: select failed for expression %@ attrs %@ ",
-            __PRETTY_FUNCTION__, expression, editingAttrs);
-      RELEASE(expression); expression = nil;
+      [self errorWithFormat:@"%s: select failed for expression %@ attrs %@ ",
+            __PRETTY_FUNCTION__, expression, editingAttrs];
+      [expression release]; expression = nil;
       [self rollbackTransaction];
       return nil;
     }
-    RELEASE(expression); expression = nil;
+    [expression release]; expression = nil;
   }
-  else if ([_pkeys count]) {
+  else if ([_pkeys isNotEmpty]) {
     EOSQLQualifier *qualifier;
 
     if ([_pkeys count] > 200) { // --> fetch all
@@ -966,8 +963,8 @@ static inline NSNumber *boolNum(BOOL value) {
     }
     if (![channel selectAttributes:editingAttrs
                   describedByQualifier:qualifier fetchOrder:nil lock:NO]) {
-      NSLog(@"ERROR[%s]: select failed for qualifier %@ attrs %@ ",
-            __PRETTY_FUNCTION__, qualifier, editingAttrs);
+      [self errorWithFormat:@"%s: select failed for qualifier %@ attrs %@ ",
+            __PRETTY_FUNCTION__, qualifier, editingAttrs];
       [self rollbackTransaction];
       [qualifier release]; qualifier = nil;
       return nil;
@@ -1052,11 +1049,12 @@ static inline NSNumber *boolNum(BOOL value) {
   /* the parameters are either or, and cannot be specified at the same time */
   
   if (_folderPath != nil && _sid != nil) {
-    NSLog(@"ERROR[%s]: internal inconsistency _folder != nil && _sid != nil",
-          __PRETTY_FUNCTION__);
+    [self errorWithFormat:
+	    @"%s: internal inconsistency _folder != nil && _sid != nil",
+            __PRETTY_FUNCTION__];
     return;
   }
-  if (![_sid isNotNull] && [_folderPath cStringLength] == 0)
+  if (![_sid isNotNull] && ![_folderPath isNotEmpty])
     return;
   
   gid = nil;
@@ -1077,8 +1075,8 @@ static inline NSNumber *boolNum(BOOL value) {
     gid = [[self fileName2GIDCache] objectForKey:_folderPath];
     if (![gid isNotNull]) {
 #if 0 // TODO: why commented out? regular operation?
-      NSLog(@"WARNING[%s]: missing gid for path %@", __PRETTY_FUNCTION__,
-            _folderPath);
+      [self warnWithFormat:@"%s: missing gid for path %@", __PRETTY_FUNCTION__,
+            _folderPath];
 #endif      
       return;
     }
@@ -1105,14 +1103,14 @@ static inline NSNumber *boolNum(BOOL value) {
     
     // TODO: document what the stuff below does (and why it is recursive)
     
-    if (_folderPath == nil && [docs count] > 0) { /* got parent from cache */
+    if (_folderPath == nil && [docs isNotEmpty]) { /* got parent from cache */
       static int recursionFlag = 0;
       NSNumber *key;
       
       // TODO: does this limit folder nesting to 10 levels?
       if (recursionFlag > 10) {
-        [self logWithFormat:
-		@"ERROR[%s] internal inconsistency recursion during retrieval "
+        [self errorWithFormat:
+		@"%s internal inconsistency recursion during retrieval "
 	        @"of file attributes (rec %i > 10) ...",
                 __PRETTY_FUNCTION__, recursionFlag];
         return;
@@ -1149,7 +1147,7 @@ static inline NSNumber *boolNum(BOOL value) {
 
     /* derive folder name from attributes */
     
-    if (_folderPath == nil && ([childAttrs count] > 0)) {
+    if (_folderPath == nil && [childAttrs isNotEmpty]) {
       NSDictionary *child;
       
       child = [childAttrs lastObject];
@@ -1196,7 +1194,7 @@ static inline NSNumber *boolNum(BOOL value) {
         folder = [self pathForGID:gid manager:nil];
     }
     else {
-      [self logWithFormat:@"ERROR(%s): missing parentDocumentId", 
+      [self errorWithFormat:@"%s: missing parentDocumentId", 
 	    __PRETTY_FUNCTION__];
       continue;
     }
@@ -1235,7 +1233,7 @@ static inline NSNumber *boolNum(BOOL value) {
 }
 
 - (NSException *)handleRootFolderAttrsException:(NSException *)_exception {
-  NSLog(@"ERROR[-rootFolderAttrs]: catched exception: %@", _exception);
+  [self errorWithFormat:@"-rootFolderAttrs: catched exception: %@",_exception];
   return nil;
 }
 - (NSDictionary *)rootFolderAttrs {

@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -277,11 +278,12 @@ static NSArray *entityNames = nil;
     pGID    = [SkyProjectFileManager projectGlobalIDForDocumentGlobalID:obj
 				     context:[self context]];
     if (pGID == nil) {
-        NSLog(@"ERROR[%s]: missing project id for doc %@", __PRETTY_FUNCTION__,
-              obj);
+      [self errorWithFormat:
+	      @"%s: missing project id for doc %@", __PRETTY_FUNCTION__,
+              obj];
     }
     else {
-        if (_cache) {
+        if (_cache != nil) {
           NSNumber            *access, *pid;
           NSMutableDictionary *dict;
 

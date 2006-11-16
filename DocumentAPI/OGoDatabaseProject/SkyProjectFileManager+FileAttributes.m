@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -20,6 +21,7 @@
 */
  
 #include "SkyProjectFileManager.h"
+#include <NGExtensions/NSString+Ext.h>
 #include "common.h"
 
 @interface SkyProjectFileManager(Extensions_Internals)
@@ -31,7 +33,7 @@
 + (NSNumber *)pidForDocId:(NSNumber *)_did context:(id)_ctx;
 + (NSDictionary *)projectIdsForDocsInContext:(id)_ctx;
 + (void)setProjectIdsForDocs:(NSDictionary *)_dict inContext:(id)_ctx;
-@end /* SkyProjectFileManager(Extensions_Internals) */
+@end
 
 @implementation SkyProjectFileManager(FileAttributes)
 
@@ -141,17 +143,13 @@ static inline NSNumber *boolNum(BOOL value) {
 }
 
 + (NSString *)formatTitle:(NSString *)_title {
-  if (![_title isNotNull])
+  if (![_title isNotEmpty])
     return @"";
-
+  
   if ([_title rangeOfString:@"/"].length == 0)
     return _title;
-#if LIB_FOUNDATION_LIBRARY
+
   return [_title stringByReplacingString:@"/" withString:@"_"];
-#else
-#  warning FIXME: incorrect implementation for this Foundation library
-  return _title;
-#endif
 }
 
 + (NSDictionary *)buildFileAttrsForDoc:(NSDictionary *)_doc

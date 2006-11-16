@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -92,11 +93,11 @@ static NSDictionary *baseToClass  = nil;
   id project;
 
   if (_context == nil) {
-    [self logWithFormat:@"ERROR: missing context argument!"];
+    [self errorWithFormat:@"missing context argument!"];
     return nil;
   }
   if (![_gid isNotNull]) {
-    [self logWithFormat:@"WARNING: no GID for filemanager construction!"];
+    [self warnWithFormat:@"no GID for filemanager construction!"];
     return nil;
   }
 
@@ -117,8 +118,9 @@ static NSDictionary *baseToClass  = nil;
   }
   
   if (project == nil) {
-    [self logWithFormat:@"ERROR(%s); missing project for gid: %@",
+    [self errorWithFormat:@"%s; missing project for gid: %@",
             __PRETTY_FUNCTION__, _gid];
+    abort();
     return nil;
   }
   return [self fileManagerInContext:_context forProject:project];
@@ -142,7 +144,7 @@ static NSDictionary *baseToClass  = nil;
   else if ([_scheme isEqualToString:@"skyrix"])
     fmClass = NSClassFromString(@"SkyProjectFileManager");
   else {
-    [self logWithFormat:@"WARNING(%s): unknown filemanager scheme '%@', "
+    [self warnWithFormat:@"%s: unknown filemanager scheme '%@', "
 	  @"trying SkyProjectFileManager !",
 	  __PRETTY_FUNCTION__, _scheme];
     fmClass = NSClassFromString(@"SkyProjectFileManager");
@@ -157,11 +159,11 @@ static NSDictionary *baseToClass  = nil;
   Class    fmClass = Nil;
 
   if (_context == nil) {
-    [self logWithFormat:@"ERROR: missing context argument!"];
+    [self errorWithFormat:@"missing context argument!"];
     return nil;
   }
   if (_project == nil) {
-    [self logWithFormat:@"WARNING: no EO for filemanager construction!"];
+    [self warnWithFormat:@"no EO for filemanager construction!"];
     return nil;
   }
   
@@ -176,8 +178,8 @@ static NSDictionary *baseToClass  = nil;
   /* construct filemanager */
   
   if ((fmClass = [self fileManagerClassForScheme:scheme]) == Nil) {
-    NSLog(@"ERROR[%s] found no filemanager class for scheme %@: %@", 
-	  __PRETTY_FUNCTION__, scheme, url);
+    [self errorWithFormat:@"%s found no filemanager class for scheme %@: %@", 
+	  __PRETTY_FUNCTION__, scheme, url];
     return nil;
   }
   
@@ -256,22 +258,24 @@ static NSDictionary *baseToClass  = nil;
 
       if (![fm fileExistsAtPath:fsPath isDirectory:&isDir]) {
         if (![fm createDirectoryAtPath:fsPath attributes:nil]) {
-          NSLog(@"ERROR[%s]: Couldn`t create directory for skyrix filesystem "
-                @"at path %@", __PRETTY_FUNCTION__, fsPath);
+          [self errorWithFormat:
+		  @"%s: Couldn`t create directory for skyrix filesystem "
+                  @"at path %@", __PRETTY_FUNCTION__, fsPath];
           return nil;
         }
       }
       else {
         if (!isDir) {
-          NSLog(@"ERROR[%s]: couldn`t create directory at path %@, file exist",
-                __PRETTY_FUNCTION__, fsPath);
+          [self errorWithFormat:
+		  @"%s: couldn`t create directory at path %@, file exist",
+                __PRETTY_FUNCTION__, fsPath];
           return nil;
         }
       }
   }
   fsPath = [NSString stringWithFormat:@"file://%@", fsPath];
   FSBase = [[NSURL alloc] initWithString:fsPath relativeToURL:nil];
-  NSLog(@"FS BaseURL: '%@'", FSBase);
+  [self logWithFormat:@"FS BaseURL: '%@'", FSBase];
   return FSBase;
 }
 
@@ -284,7 +288,7 @@ static NSDictionary *baseToClass  = nil;
   
   project = [[_ctx valueForKey:LSDatabaseKey] entityNamed:@"Project"];
   if (project == nil) {
-    [self logWithFormat:@"ERROR: missing 'Project' entity?!"];
+    [self errorWithFormat:@"missing 'Project' entity?!"];
     return nil;
   }
   
@@ -298,13 +302,13 @@ static NSDictionary *baseToClass  = nil;
   fm = [NSFileManager defaultManager];
 
   if ([fm fileExistsAtPath:path isDirectory:NULL]) {
-    [self logWithFormat:@"ERROR(%s): project path already exist: '%@'",
+    [self errorWithFormat:@"%s: project path already exist: '%@'",
           __PRETTY_FUNCTION__, path];
     return nil;
   }
   if (![fm createDirectoryAtPath:path attributes:nil]) {
-    [self logWithFormat:
-	    @"ERROR(%s): could not create path for directory: '%@'",
+    [self errorWithFormat:
+	    @"%s: could not create path for directory: '%@'",
             __PRETTY_FUNCTION__, path];
     return nil;
   }

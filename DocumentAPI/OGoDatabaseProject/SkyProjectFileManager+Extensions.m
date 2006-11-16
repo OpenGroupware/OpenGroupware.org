@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -17,6 +18,10 @@
   License along with OGo; see the file COPYING.  If not, write to the
   Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
   02111-1307, USA.
+*/
+
+/*
+  Note: uses 'docToProjectCache' key in LSCommandContext.
 */
 
 #include <OGoDatabaseProject/SkyProjectFileManager.h>
@@ -96,7 +101,7 @@
                 @"attributes", [NSArray arrayWithObject:@"documentId"], nil];
     
   if ([did isKindOfClass:[NSArray class]])
-    did = [did count] > 0 ? [did lastObject] : nil;
+    did = [did isNotEmpty] ? [did lastObject] : nil;
     
   if (![(did = [did valueForKey:@"documentId"]) isNotNull]) {
       NSLog(@"ERROR[%s]: missing documentId for documentEditingId %@",
@@ -168,7 +173,6 @@
     NSLog(@"ERROR[%s]: missing globalID or context", __PRETTY_FUNCTION__);
     return nil;
   }
-
   if (![_dgid isKindOfClass:[EOKeyGlobalID class]]) {
     NSLog(@"WARNING(%s): wrong global id for method", __PRETTY_FUNCTION__, 
 	  _dgid);
@@ -187,7 +191,8 @@
   
   handler = [SkyDocumentIdHandler handlerWithContext:_ctx];
   
-  if ((gid = [handler projectGIDForDocumentGID:dgid context:_ctx]) == nil)
+  gid = [handler projectGIDForDocumentGID:dgid context:_ctx];
+  if (gid == nil)
     return nil;
   
   [SkyProjectFileManager setProjectID:[(EOKeyGlobalID *)gid keyValues][0]
@@ -242,8 +247,8 @@
     ec = 0;
     if ((d = [self->cache genericRecordForAttrs:attrs manager:self])) {
       [[self context] runCommand:@"doc::set",
-                      @"object", d,
-                      @"data", _content,
+                      @"object",   d,
+                      @"data",     _content,
                       @"fileSize", [NSNumber numberWithInt:[_content length]],
                       nil];
     }
@@ -317,8 +322,8 @@
     return nil;
   
   if (![_pgid isKindOfClass:[EOKeyGlobalID class]]) {
-    [self logWithFormat:
-	    @"WARNING(%s): cannot process GID %@, expected EOKeyGlobalID",
+    [self warnWithFormat:
+	    @"%s: cannot process GID %@, expected EOKeyGlobalID",
             __PRETTY_FUNCTION__, _pgid];
     return nil;
   }
@@ -393,9 +398,7 @@
   return readOnlyDocumentKeys;
 }
 
-@end /* SkyProjectFileManager(ExtendedFileManagerImp) */
-
-@implementation SkyProjectFileManager(Datasources)
+/* SkyProjectFileManager(Datasources) */
 
 - (EODataSource *)dataSourceAtPath:(NSString *)_path {
   SkyProjectFolderDataSource *ds;
@@ -425,9 +428,7 @@
   return [self dataSourceAtPath:[self currentDirectoryPath]];
 }
 
-@end /* SkyProjectFolder(Datasources) */
-
-@implementation SkyProjectFileManager(CustomRights)
+/* SkyProjectFileManager(CustomRights) */
 
 - (BOOL)isOperation:(NSString *)_op allowedOnPath:(NSString *)_path {
   return [self->cache isOperation:_op allowedOnPath:_path manager:self];
@@ -435,9 +436,8 @@
 - (NSString *)filePermissionsAtPath:(NSString *)_path {
   return [self->cache filePermissionsAtPath:_path manager:self];
 }
-@end /* SkyProjectFileManager(CustomRights) */
 
-@implementation SkyProjectFileManager(Extensions_Internals)
+/* SkyProjectFileManager(Extensions_Internals) */
 
 + (void)setProjectID:(NSNumber *)_pid forDocID:(NSNumber *)_did
   context:(id)_cxt
@@ -453,7 +453,7 @@
 
 + (NSNumber *)pidForDocId:(NSNumber *)_did context:(id)_ctx {
   return [(NSDictionary *)[_ctx valueForKey:@"docToProjectCache"] 
-			  objectForKey:_did];
+			        objectForKey:_did];
 }
 
 + (NSDictionary *)projectIdsForDocsInContext:(id)_ctx {
@@ -478,9 +478,7 @@
   return [SkyProjectFileManager supportQualifier:_qual];
 }
 
-@end /* SkyProjectFileManager(ExtendedFileManager) */
-
-@implementation SkyProjectFileManager(Cache)
+/* SkyProjectFileManager(Cache) */
 
 - (BOOL)useSessionCache {
   return [self->cache useSessionCache];
@@ -501,10 +499,7 @@
   [self->cache setFlushTimeout:_timeInt];
 }
 
-@end /* SkyProjectFileManager(Cache) */
-
-
-@implementation SkyProjectFileManager(ErrorHandling)
+/* SkyProjectFileManager(ErrorHandling) */
 
 static NSNumber *num(int _i) {
   return [NSNumber numberWithInt:_i];
@@ -537,12 +532,10 @@ static NSNumber *num(int _i) {
   return self->errorUserInfo;
 }
 
-@end
-
-@implementation SkyProjectFileManager(GenericRecordGeneration)
+/* SkyProjectFileManager(GenericRecordGeneration) */
 
 - (EOGenericRecord *)genericRecordForDocGID:(EOGlobalID *)_dgig {
   return [self->cache genericRecordForGID:_dgig manager:self];
 }
 
-@end /* SkyProjectFileManager(GenericRecordGeneration) */
+@end /* SkyProjectFileManager(xxx) */

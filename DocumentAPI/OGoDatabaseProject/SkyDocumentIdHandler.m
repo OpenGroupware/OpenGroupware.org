@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -57,42 +58,8 @@ static EOSQLQualifier *trueQualifier = nil;
 
 /* operations */
 
-- (EOGlobalID *)projectGIDForDocumentGID:(EOGlobalID *)_gid 
-  refreshOnFail:(BOOL)_refresh
-  context:(id)_ctx
-{
-  unsigned long pid;
-  NSNumber *nr;
-
-  if (_gid == nil)
-    return nil;
-  
-  pid = [self projectIdForDocumentId:
-		[[(EOKeyGlobalID *)_gid keyValues][0] unsignedLongValue]
-              context:_ctx];
-  nr = pid > 0 ? [NSNumber numberWithUnsignedLong:pid] : (NSNumber *)nil;
-  
-  if (![nr isNotNull]) {
-    if (_refresh) {
-      // TODO: this is suboptimal, can't we check for the ID?
-      [self resetData];
-      return [self projectGIDForDocumentGID:_gid refreshOnFail:NO
-		   context:_ctx];
-    }
-    
-    [self warnWithFormat:@"(%s): got no project GID for document: %@",
-	  __PRETTY_FUNCTION__, _gid];
-    return nil;
-  }
-  
-  return [EOKeyGlobalID globalIDWithEntityName:@"Project"
-			keys:&nr keyCount:1 zone:NULL];
-}
-- (EOGlobalID *)projectGIDForDocumentGID:(EOGlobalID *)_gid context:(id)_ctx {
-  return [self projectGIDForDocumentGID:_gid refreshOnFail:YES context:_ctx];
-}
-
 - (int)projectIdForDocumentId:(int)_i context:(id)_ctx {
+  /* private method, only used inside this class */
   int i;
   
   if (self->itemCnt == -1)
@@ -103,6 +70,46 @@ static EOSQLQualifier *trueQualifier = nil;
       return self->projects[i];
   }
   return -1;
+}
+- (EOGlobalID *)projectGIDForDocumentGID:(EOGlobalID *)_gid 
+  refreshOnFail:(BOOL)_refresh
+  context:(id)_ctx
+{
+  /* 
+     Note: Must use a signed int for the pid here because the method below
+           returns -1 for missing projects.
+  */
+  int      pid;
+  NSNumber *nr;
+  
+  if (_gid == nil)
+    return nil;
+  
+  /* Note: remember that this returns -1 if the lookup failed */
+  pid = [self projectIdForDocumentId:
+		[[(EOKeyGlobalID *)_gid keyValues][0] unsignedLongValue]
+              context:_ctx];
+  nr = pid > 0 ? [NSNumber numberWithUnsignedLong:pid] : (NSNumber *)nil;
+  
+  if (![nr isNotNull]) {
+    if (_refresh) {
+      // TODO: this is suboptimal, can't we check for the ID?
+      [self resetData];
+      return [self projectGIDForDocumentGID:_gid
+		   refreshOnFail:NO /* avoid recursion */
+		   context:_ctx];
+    }
+    
+    [self warnWithFormat:@"%s: got no project GID for document: %@",
+	  __PRETTY_FUNCTION__, _gid];
+    return nil;
+  }
+  
+  return [EOKeyGlobalID globalIDWithEntityName:@"Project"
+			keys:&nr keyCount:1 zone:NULL];
+}
+- (EOGlobalID *)projectGIDForDocumentGID:(EOGlobalID *)_gid context:(id)_ctx {
+  return [self projectGIDForDocumentGID:_gid refreshOnFail:YES context:_ctx];
 }
 
 - (void)resetData {
@@ -156,7 +163,7 @@ static EOSQLQualifier *trueQualifier = nil;
   if (![channel selectAttributes:attrs
                 describedByQualifier:trueQualifier
                 fetchOrder:nil lock:NO]) {
-    [self logWithFormat:@"ERROR: could not select attributes: %@", attrs];
+    [self errorWithFormat:@"could not select attributes: %@", attrs];
     if (closeTrans)
       [_ctx rollback];
     return;
@@ -205,6 +212,26 @@ static EOSQLQualifier *trueQualifier = nil;
           self->itemSize, self->itemCnt];
   if (closeTrans)
     [_ctx commit];
+}
+
+/* description */
+
+- (void)appendAttributesToDescription:(NSMutableString *)ms {
+  [ms appendFormat:@" item=#%i/%i min=%i,max=%i",
+        self->itemCnt, self->itemSize, self->minId, self->maxId];
+  
+  if (self->documents != nil) [ms appendFormat:@" d=0x%p", self->documents];
+  if (self->projects  != nil) [ms appendFormat:@" p=0x%p", self->projects];
+}
+
+- (NSString *)description {
+  NSMutableString *ms;
+  
+  ms = [NSMutableString stringWithCapacity:128];
+  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [self appendAttributesToDescription:ms];
+  [ms appendString:@">"];
+  return ms;
 }
 
 @end /* SkyDocumentIdHandler */

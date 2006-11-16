@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org
 
@@ -47,12 +48,11 @@
 /* lookup IDs */
 
 - (EOGlobalID *)projectGIDForDocumentGID:(EOGlobalID *)_gid context:(id)_ctx;
-- (int)projectIdForDocumentId:(int)_i context:(id)_ctx;
 
 /* reset caches */
 
 - (void)resetData;
 
-@end /* SkyDocumentIdHandler */
+@end
 
 #endif /* __SkyDocumentIdHandler_H__ */

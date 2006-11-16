@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -22,6 +23,7 @@
 #include "SkyProjectDocumentDataSource.h"
 #include "SkyProjectFileManager.h"
 #include <OGoProject/SkyProjectDataSource.h>
+#include <NGExtensions/NSString+Ext.h>
 #include "FMContext.h"
 #include "common.h"
 
@@ -45,12 +47,12 @@ static inline BOOL _showUnknownFiles(id self) {
 
 @interface SkyProjectDocumentDataSource(Internals)
 - (NSArray *)projects;
-@end /*SkyProjectDocumentDataSource(Internals)*/
+@end
 
 @implementation SkyProjectDocumentDataSource
 
 - (id)initWithContext:(id)_ctx {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     self->context = [_ctx retain];
   }
   return self;
@@ -194,11 +196,9 @@ SELECT DISTINCT p1.kind FROM project p1;
     s = [NSString stringWithFormat:@" AND (projectId IN (%@))",
 		   [subProjectIds componentsJoinedByString:@","]];
     expr = [expr stringByAppendingString:s];
-#if LIB_FOUNDATION_LIBRARY
+
     expr = [expr stringByReplacingString:@"%" withString:@"%%"];
-#else
-#  warning FIXME: incorrect implementation for this Foundation library!
-#endif
+    
     sqlQual  = [[EOSQLQualifier alloc] initWithEntity:entity
                                        qualifierFormat:expr];
     if (![_channel selectAttributes:docAttrs

@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -20,6 +21,7 @@
 */
  
 #include "SkyProjectFileManager.h"
+#include <NGExtensions/NSString+Ext.h>
 #include "common.h"
 
 @implementation SkyProjectFileManager(Qualifier)
@@ -187,12 +189,8 @@ static inline NSNumber *boolNum(BOOL value) {
     key = [kvq key];
     val = [kvq value];
 
-#if LIB_FOUNDATION_LIBRARY
     if ([val isKindOfClass:[NSString class]])
       val = [val stringByReplacingString:@"*" withString:@"%"];
-#else
-#  warning FIXME: incorrect implementation on this Foundation library!
-#endif
     
     if ([key isEqualToString:@"NSFileSubject"]) {
       SEL selector;
