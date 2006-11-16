@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -37,19 +38,19 @@
 }
 
 - (SkyDocumentType *)documentType {
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"%s: subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
 
 - (BOOL)isComplete {
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"%s: subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return NO;
 }
 
 - (EOGlobalID *)globalID {
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"%s: subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
@@ -80,10 +81,10 @@
                            documentManager] urlForDocument:self];
 }
 
-/* SKYRiX context the document lives in */
+/* OGo context (LSCommandContext) the document lives in */
 
 - (id)context {
-  [self logWithFormat:@"ERROR(%s): subclasses must override this method!",
+  [self errorWithFormat:@"%s: subclasses must override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }

@@ -1,5 +1,7 @@
 2006-11-16  Helge Hess  <helge.hess@opengroupware.org>
 
+	* SkyProjectDocument.m: code cleanups (v5.3.57)
+
 	* v5.3.56
 
 	* SkyProjectDocumentDataSource.m, SkyProjectFileManager+*.m: use

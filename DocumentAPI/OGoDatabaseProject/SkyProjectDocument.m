@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -67,6 +68,7 @@
 
 @implementation SkyProjectDocument
 
+static BOOL debugDocRegistration = NO;
 static int DebugOn = -1;
 static NSNumber *yesNum = nil;
 static NSNumber *noNum  = nil;
@@ -83,6 +85,8 @@ static NSNumber *noNum  = nil;
   
   DebugOn = [ud boolForKey:@"SkyProjectDocumentDebug"] ? 1 : 0;
 
+  debugDocRegistration = [ud boolForKey:@"DebugDocumentRegistration"];
+
   if (yesNum == nil) yesNum = [[NSNumber numberWithBool:YES] retain];
   if (noNum  == nil) noNum  = [[NSNumber numberWithBool:NO]  retain];
 }
@@ -95,8 +99,8 @@ static NSNumber *noNum  = nil;
 #endif
   
   if ((self = [super init])) {
-    self->globalID    = RETAIN(_gid);
-    self->fileManager = RETAIN(_fm);
+    self->globalID    = [_gid retain];
+    self->fileManager = [_fm  retain];
     
     self->status.isValid        = YES;
     self->status.blobChanged    = NO;
@@ -140,8 +144,8 @@ static NSNumber *noNum  = nil;
 - (BOOL)isValid {
 #if DEBUG  
   if (!self->status.isValid) {
-    NSLog(@"WARNING[%s]: call for invalid SkyProjectDocument",
-          __PRETTY_FUNCTION__);
+    [self warnWithFormat:@"%s: call for invalid SkyProjectDocument",
+          __PRETTY_FUNCTION__];
   }
 #endif  
   return self->status.isValid;
@@ -342,18 +346,18 @@ static NSNumber *noNum  = nil;
 
 - (void)setContentAsString:(NSString *)_string {
   // DEPRECATED
-  NSLog(@"DEPRECATED: %s", __PRETTY_FUNCTION__);
+  [self warnWithFormat:@"DEPRECATED: %s", __PRETTY_FUNCTION__];
   [self setContentString:_string];
 }
 
 - (void)setString:(NSString *)_string {
   // DEPRECATED
-  NSLog(@"DEPRECATED: %s", __PRETTY_FUNCTION__);
+  [self warnWithFormat:@"DEPRECATED: %s", __PRETTY_FUNCTION__];
   [self setContentString:_string];
 }
 - (NSString *)string {
   // DEPRECATED
-  NSLog(@"DEPRECATED: %s", __PRETTY_FUNCTION__);
+  [self warnWithFormat:@"DEPRECATED: %s", __PRETTY_FUNCTION__];
   return [self contentAsString];
 }
 
@@ -490,7 +494,7 @@ static NSNumber *noNum  = nil;
 - (SkyDocumentType *)documentType {
   static SkyProjectDocumentType *docType = nil;
   
-  if (!docType)
+  if (docType == nil)
     docType = [[SkyProjectDocumentType alloc] init];
 
   return docType;
@@ -499,7 +503,8 @@ static NSNumber *noNum  = nil;
 /* actions */
 
 - (void)logException:(NSException *)_exception {
-  NSLog(@"%s: catched exception: %@", __PRETTY_FUNCTION__, _exception);
+  [self errorWithFormat:@"%s: catched exception: %@", 
+	  __PRETTY_FUNCTION__, _exception];
 }
 
 - (BOOL)save {
@@ -507,19 +512,19 @@ static NSNumber *noNum  = nil;
   NSString *path;
   
   if (self->fileManager == nil) {
-    NSLog(@"ERROR(%s): document has no filemanager: %@ !",
-          __PRETTY_FUNCTION__, self);
+    [self errorWithFormat:@"%s: document has no filemanager: %@ !",
+          __PRETTY_FUNCTION__, self];
     return NO;
   }
-  if (self->dataSource) {
+  if (self->dataSource != nil) {
     NSString *dsPath;
 
     dsPath = [self->dataSource path];
     
-    if (([(path = [self path]) length])) {
+    if (([(path = [self path]) isNotEmpty])) {
       ;
     }
-    else if (([(path = [self filename]) length]) > 0)
+    else if ([(path = [self filename]) isNotEmpty])
       path = [dsPath stringByAppendingPathComponent:path];
     else
       path = dsPath;
@@ -528,9 +533,7 @@ static NSNumber *noNum  = nil;
     path = [self path];
   }
   NS_DURING {
-    *(&result) = [self->fileManager
-                      writeDocument:self
-                      toPath:path];
+    *(&result) = [self->fileManager writeDocument:self toPath:path];
   }
   NS_HANDLER {
     result = NO;
@@ -543,8 +546,8 @@ static NSNumber *noNum  = nil;
   
 #if DEBUG
   if (!result) {
-    NSLog(@"WARNING(%s): couldn't save document %@: %@ path: <%@>",
-          __PRETTY_FUNCTION__, self, [self->fileManager lastException], path);
+    [self warnWithFormat:@"%s: could not save document %@: %@ path: <%@>",
+          __PRETTY_FUNCTION__, self, [self->fileManager lastException], path];
   }
 #endif
   return result;
@@ -689,8 +692,8 @@ static Class DOMNodeClass = Nil;
         }
       }
       else {
-        NSLog(@"ERROR[%s]: try to write read only attribute %@",
-              __PRETTY_FUNCTION__, _key);
+        [self errorWithFormat:@"%s: try to write read only attribute %@",
+              __PRETTY_FUNCTION__, _key];
       }
     }
     else {
@@ -866,16 +869,15 @@ static Class DOMNodeClass = Nil;
   return s;
 }
 
-@end /* SkyProjectDocument */
-
-@implementation SkyProjectDocument(Internals)
+/* Internals */
 
 - (void)_setGlobalID:(EOGlobalID *)_gid {
   if (self->globalID) {
     if ([self->globalID isEqual:_gid])
       return;
     
-    NSLog(@"ERROR[%s]: globalID is already set %@", __PRETTY_FUNCTION__, self);
+    [self errorWithFormat:@"%s: globalID is already set %@", 
+	    __PRETTY_FUNCTION__, self];
     return;
   }
   
@@ -989,8 +991,8 @@ static Class DOMNodeClass = Nil;
       return;
     
     if ((pm = [[self->fileManager context] propertyManager]) == nil) {
-      NSLog(@"ERROR[%s]: missing propertyManager for %@",
-            __PRETTY_FUNCTION__, self->fileManager);
+      [self errorWithFormat:@"%s: missing propertyManager for %@",
+            __PRETTY_FUNCTION__, self->fileManager];
       return;
     }
     
@@ -1013,8 +1015,9 @@ static Class DOMNodeClass = Nil;
           continue;
         }
         else {
-          NSLog(@"WARNING(%s): couldn't remove XML namespace from key %@",
-                __PRETTY_FUNCTION__, key);
+          [self warnWithFormat:
+		  @"%s: could not remove XML namespace from key %@",
+                  __PRETTY_FUNCTION__, key];
         }
       }
       
@@ -1032,16 +1035,18 @@ static Class DOMNodeClass = Nil;
 
 - (void)_setFileAttributes:(NSDictionary *)_attrs {
   if (self->fileAttributes != (id)_attrs) {
-    RELEASE(self->fileAttributes);
+    [self->fileAttributes release]; self->fileAttributes = nil;
     self->fileAttributes = [_attrs mutableCopy];
-    RELEASE(self->subject); self->subject = nil;
+    
+    [self->subject release]; self->subject = nil;
+    
     self->status.subjectChanged = YES;
     self->status.isEdited       = YES;
   }
 }
 - (void)_setExtendedAttributes:(NSDictionary *)_attrs {
   if (self->extendedAttributes != (id)_attrs) {
-    RELEASE(self->extendedAttributes);
+    [self->extendedAttributes release]; self->extendedAttributes = nil;
     self->extendedAttributes = [_attrs mutableCopy];
     self->status.isEdited    = YES;
   }
@@ -1081,11 +1086,10 @@ static Class DOMNodeClass = Nil;
 }
 
 - (void)_registerForGID {
-  if ([[NSUserDefaults standardUserDefaults]
-                       boolForKey:@"DebugDocumentRegistration"]) {
-    NSLog(@"++++++++++++++++++ Warning: register Document"
+  if (debugDocRegistration) {
+    [self logWithFormat:@"++++++++++++++++++ Warning: register Document"
           @" in NotificationCenter(%s)",
-          __PRETTY_FUNCTION__);
+          __PRETTY_FUNCTION__];
   }
 
   if (self->globalID) {
@@ -1100,4 +1104,4 @@ static Class DOMNodeClass = Nil;
   ASSIGN(self->dataSource, _ds);
 }
 
-@end /* SkyProjectDocument(Internals) */
+@end /* SkyProjectDocument */
