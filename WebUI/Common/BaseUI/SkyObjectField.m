@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software A
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -77,12 +78,6 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
 
 + (int)version {
   return [super version] + 0;
-}
-+ (void)initialize {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-
-  if (SkyExternalLinkAction == nil)
-    SkyExternalLinkAction = [[ud stringForKey:@"SkyExternalLinkAction"] copy];
 }
 
 - (id)initWithName:(NSString *)_name
@@ -293,22 +288,34 @@ static NSString *tlink = @"<a href=\"%@\" target=\"_new\">";
   /* external link */
   // TODO: use SkyExternalLink dynamic element to render this?
   NSString *tmp;
-  NSString *link;
+
+  /* this is defined in OGoUIElements, so we cannot set it in +initialize */
+  if (SkyExternalLinkAction == nil) {
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    SkyExternalLinkAction = [[ud stringForKey:@"SkyExternalLinkAction"] copy];
+  }
   
   tmp  = [self hrefAttributeInContext:_ctx];
-  link = SkyExternalLinkAction;
-  tmp  = ([tmp isEqualToString:@""]) ? data : tmp;
-  tmp  = [tmp stringByEscapingURL];
+  tmp  = [tmp isNotEmpty] ? tmp : data;
+
+#warning DEBUG LOG
+  [self logWithFormat:@"X: %@", tmp];
   
-  if (![tmp hasPrefix:@"/"] && [tmp rangeOfString:@"://"].length == 0)
-    tmp = [tmp isNotEmpty] 
+  if (![tmp hasPrefix:@"/"] && ([tmp rangeOfString:@"://"].length == 0)) {
+    tmp = [tmp isNotEmpty]
       ? [@"http://" stringByAppendingString:tmp] : (NSString *)@"";
+  }  
   
   /* prefix with external link action and append url as a parameter */
   
-  tmp  = [[[link stringValue] stringByAppendingString:@"?url="]
+  tmp  = [tmp stringByEscapingURL];
+  tmp  = [[[SkyExternalLinkAction stringValue] 
+	         stringByAppendingString:@"?url="]
                  stringByAppendingString:tmp];
   
+#warning DEBUG LOG
+  [self logWithFormat:@"X: %@", tmp];
+
   // TODO: the following looks weird! Use the proper NSString method
   tmp = [WOResponse stringByEscapingHTMLAttributeValue:tmp];
   tmp = [NSString stringWithFormat:tlink, tmp];

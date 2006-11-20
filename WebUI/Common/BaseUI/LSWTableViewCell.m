@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -91,18 +92,18 @@ static NSString *SkyExternalLinkAction = nil;
 }
 
 - (void)dealloc {
-  RELEASE(self->onClick);
-  RELEASE(self->target);
-  RELEASE(self->value);
-  RELEASE(self->formatter);
-  RELEASE(self->valueColor);
-  RELEASE(self->isItem);
-  RELEASE(self->disabled);
-  RELEASE(self->action);
-  RELEASE(self->href);
-  RELEASE(self->icon);
-  RELEASE(self->iconLabel);
-  RELEASE(self->onMailTo);
+  [self->onClick    release];
+  [self->target     release];
+  [self->value      release];
+  [self->formatter  release];
+  [self->valueColor release];
+  [self->isItem     release];
+  [self->disabled   release];
+  [self->action     release];
+  [self->href       release];
+  [self->icon       release];
+  [self->iconLabel  release];
+  [self->onMailTo   release];
   [super dealloc];
 }
 
@@ -172,7 +173,7 @@ static NSString *SkyExternalLinkAction = nil;
                 languages:[[_ctx session] languages]
                 request:[_ctx request]];
   if (uFi == nil) {
-    NSLog(@"%@: did not find resource %@", self, _icon);
+    [self logWithFormat:@"did not find resource: %@", _icon];
     uFi = _icon;
   }
 
@@ -226,12 +227,12 @@ static NSString *SkyExternalLinkAction = nil;
 
   if (isActionLink || isHrefLink) {
     [_response appendContentString:@"<a href=\""];
-
+    
     if (isActionLink) {    /* ActionLinkCond    */
       [_response appendContentHTMLAttributeValue:[_ctx componentActionURL]];
     }
     else if (isHrefLink) { /* HrefLinkCond      */
-      if ([sTarget length] > 0) {
+      if ([sTarget isNotEmpty]) {
         // seems to be an external link
         NSString *link;
         
@@ -245,7 +246,7 @@ static NSString *SkyExternalLinkAction = nil;
         [_response appendContentHTMLAttributeValue:sHref];
       }
     }
-    if ([sTarget length] > 0) {
+    if ([sTarget isNotEmpty]) {
       [_response appendContentString:@"\" target=\""];
       [_response appendContentString:sTarget];
     }

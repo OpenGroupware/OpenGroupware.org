@@ -1,3 +1,11 @@
+2006-11-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.127
+
+	* LSWTableViewCell.m: code cleanups, use isNotEmpty
+
+	* SkyObjectField.m: fixed generation of external links (bug #1772)
+
 2006-08-15  Olivier Hallot  <olivier@ig.com.br>
 
 	* LSWViewerTitle.m: added a missing semicolon to a generated '&nbsp'
