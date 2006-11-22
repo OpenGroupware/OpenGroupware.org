@@ -1,3 +1,8 @@
+2006-11-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* bundle-info.plist: properly register person::qsearch command
+	  (v5.3.34)
+
 2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSQualifierSearchPersonCommand.m: adopt new generic qualifier search

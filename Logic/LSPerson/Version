@@ -1,6 +1,6 @@
 # version file
 
-SUBMINOR_VERSION:=33
+SUBMINOR_VERSION:=34
 
 # v5.1.25 requires libLSSearch     v5.1.20
 # v5.1.24 requires libLSFoundation v5.1.102
