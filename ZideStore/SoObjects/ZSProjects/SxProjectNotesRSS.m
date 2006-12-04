@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2003-2004 SKYRIX Software AG
+  Copyright (C) 2003-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -43,6 +44,7 @@
 
 @implementation SxProjectNotesRSS
 
+static BOOL format = NO;
 static NSString *docTypeID  = @"-//Netscape Communications//DTD RSS 0.91//EN";
 static NSString *docTypeDTD = 
   @"http://my.netscape.com/publish/formats/rss-0.91.dtd";
@@ -108,24 +110,40 @@ static NSString *docTypeDTD =
 - (void)appendRSSItem:(id)_note
   toResponse:(WOResponse *)_r inContext:(WOContext *)_ctx
 {
-  NSString *url;
+  NSString *url, *content;
   
   [self debugWithFormat:@"gen RSS item: %@", _note];
 
   url = [_note baseURLInContext:_ctx];
   url = [url stringByAppendingString:@"/asBrHTML"];
   
-  [_r appendContentString:@"        <title>"];
+  content = [_note valueForKey:@"noteContent"];
+  if ([content isNotEmpty]) {
+    /* we are apparently doing RSS 0.91, so lets deliver old-style HTML */
+    content = [content stringByReplacingString:@"\n" withString:@"<BR>"];
+  }
+  
+  if (format) [_r appendContentString:@"        "];
+  [_r appendContentString:@"<title>"];
   [_r appendContentXMLString:[_note davDisplayName]];
-  [_r appendContentString:@"</title>\n"];
+  [_r appendContentString:@"</title>"];
+  if (format) [_r appendContentString:@"\n"];
   
-  [_r appendContentString:@"        <link>"];
-  [_r appendContentXMLString:url];
-  [_r appendContentString:@"</link>\n"];
+  if ([url isNotEmpty]) {
+    if (format) [_r appendContentString:@"        "];
+    [_r appendContentString:@"<link>"];
+    [_r appendContentXMLString:url];
+    [_r appendContentString:@"</link>"];
+    if (format) [_r appendContentString:@"\n"];
+  }
   
-  [_r appendContentString:@"        <description>"];
-  [_r appendContentXMLString:[_note valueForKey:@"noteContent"]];
-  [_r appendContentString:@"</description>\n"];
+  if ([content isNotEmpty]) {
+    if (format) [_r appendContentString:@"        "];
+    [_r appendContentString:@"<description>"];
+    [_r appendContentXMLString:content];
+    [_r appendContentString:@"</description>"];
+    if (format) [_r appendContentString:@"\n"];
+  }
 }
 
 - (void)appendRSSItemsToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx{
@@ -134,9 +152,9 @@ static NSString *docTypeDTD =
   
   e = [self->notes objectEnumerator];
   while ((note = [e nextObject]) != nil) {
-    [_r appendContentString:@"    <item>\n"];
+    [_r appendContentString:format ? @"    <item>\n" : @"<item>"];
     [self appendRSSItem:note toResponse:_r inContext:_ctx];
-    [_r appendContentString:@"    </item>\n"];
+    [_r appendContentString:format ? @"    </item>\n" : @"</item>"];
   }
 }
 
@@ -157,16 +175,22 @@ static NSString *docTypeDTD =
   
   project = [self clientObject];
   
-  [_r appendContentString:@"    <title>"];
+  if (format) [_r appendContentString:@"    "];
+  [_r appendContentString:@"<title>"];
   [_r appendContentString:@"Notes of OGo Project '"];
   [_r appendContentXMLString:[project nameInContainer]];
-  [_r appendContentString:@"'</title>\n"];
+  [_r appendContentString:@"'</title>"];
+  if (format) [_r appendContentString:@"\n"];
   
-  [_r appendContentString:@"    <link>"];
+  if (format) [_r appendContentString:@"    "];
+  [_r appendContentString:@"<link>"];
   [_r appendContentXMLString:[project baseURLInContext:[self context]]];
-  [_r appendContentString:@"</link>\n"];
+  [_r appendContentString:@"</link>"];
+  if (format) [_r appendContentString:@"\n"];
   
-  [_r appendContentString:@"    <language>en</language>\n"];
+  if (format) [_r appendContentString:@"    "];
+  [_r appendContentString:@"<language>en</language>"];
+  if (format) [_r appendContentString:@"\n"];
 }
 
 - (void)appendRSSHeaderToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx{
@@ -178,17 +202,19 @@ static NSString *docTypeDTD =
   [_r appendContentString:@"\">\n"];
   
   [_r appendContentString:@"<rss version=\"0.91\">\n"];
-  [_r appendContentString:@"  <channel>\n"];
+  [_r appendContentString:format ? @"  <channel>\n" : @"<channel>"];
   [self appendRSSChannelToResponse:_r inContext:_ctx];
   
   /* yes, in RSS the items are children of the channel! */
 }
 - (void)appendRSSFooterToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx{
-  [_r appendContentString:@"  </channel>\n</rss>\n"];
+  [_r appendContentString:format ? @"  </channel>\n" : @"</channel>"];
+  [_r appendContentString:@"</rss>\n"];
 }
 
 - (void)appendToResponse:(WOResponse *)_r inContext:(WOContext *)_ctx {
-  [_r setHeader:@"text/xml" forKey:@"content-type"];
+  [_r setContentEncoding:NSUTF8StringEncoding];
+  [_r setHeader:@"text/xml; charset=utf-8" forKey:@"content-type"];
   [self appendRSSHeaderToResponse:_r inContext:_ctx];
   [self appendRSSItemsToResponse:_r  inContext:_ctx];
   [self appendRSSFooterToResponse:_r inContext:_ctx];

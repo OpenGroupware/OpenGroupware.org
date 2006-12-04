@@ -1,3 +1,8 @@
+2006-12-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxProjectNotesRSS.m: render \n in <description> tags as <BR>, do not
+	  format content (v1.5.105)
+
 2006-06-24  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxDocument.m: properly check whether a file is already checked out
