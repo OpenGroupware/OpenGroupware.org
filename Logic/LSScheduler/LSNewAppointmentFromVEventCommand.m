@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -72,13 +73,13 @@
   if ((tmp = [_person cn]))       [record setObject:tmp forKey:@"cn"];
   if ((tmp = [_person xuid]))     [record setObject:tmp forKey:@"xuid"];
   
-  if ((tmp = [_person rsvp]))
+  if ((tmp = [_person rsvp]) != nil)
     [record setObject:[self rsvpValue:tmp] forKey:@"rsvp"];
   
-  if ((tmp = [_person partStat]))
+  if ((tmp = [_person partStat]) != nil)
     [record setObject:[self partStatusValue:tmp] forKey:@"partStat"];
   
-  if ((tmp = [_person role]))
+  if ((tmp = [_person role]) != nil)
     [record setObject:[self roleValue:tmp] forKey:@"role"];
   
   return record;
@@ -111,22 +112,24 @@
   id tmp;
 
   record = [NSMutableDictionary dictionaryWithCapacity:4];
+  
   if ((tmp = [_alarm comment])) [record setObject:tmp forKey:@"comment"];
   if ((tmp = [_alarm action]))  [record setObject:tmp forKey:@"action"];
-  if ((tmp = [_alarm trigger])) [record setObject:[self processTrigger:tmp]
-                                        forKey:@"trigger"];
-  if ((tmp = [_alarm attach]))  [record setObject:[self processAttachment:tmp]
-                                        forKey:@"attachment"];
-
+  
+  if ((tmp = [_alarm trigger]))
+    [record setObject:[self processTrigger:tmp] forKey:@"trigger"];
+  if ((tmp = [_alarm attach]))
+    [record setObject:[self processAttachment:tmp] forKey:@"attachment"];
+  
   return record;
 }
 
 // TODO: implement and use this
 - (NSString *)toCSVValue:(id)_val {
-  NSString        *source;
-
+  NSString *source;
+  
   if (_val == nil) return nil;
-  if (![(source = [_val stringValue]) length]) return @"";
+  if (![(source = [_val stringValue]) isNotEmpty]) return @"";
 
   return nil;
 }
@@ -240,7 +243,7 @@
       sensitivity = 1;
     else if ([tmp isEqualToString:@"CONFIDENTIAL"]) /* non-standard */
       sensitivity = 3;
-    else if ([tmp length] == 0)
+    else if (![tmp isNotEmpty])
       sensitivity = -1;
     else {
       [self errorWithFormat:@"unknown iCal class: '%@'", tmp];
@@ -253,24 +256,27 @@
   }
   
   if ([(tmp = [event attendees]) isNotNull]) {
-    unsigned max = [tmp count];
-    if (max) {
-      NSMutableArray *persons = [NSMutableArray arrayWithCapacity:max];
+    unsigned max;
+    
+    if ((max = [tmp count]) > 0) {
+      NSMutableArray *persons;
       unsigned       i;
-      id             one;
+      
+      persons = [NSMutableArray arrayWithCapacity:max];
       for (i = 0; i < max; i++) {
-        one = [self processPerson:[tmp objectAtIndex:i]];
-        if (one)
+        id one = [self processPerson:[tmp objectAtIndex:i]];
+        if (one != nil)
           [persons addObject:one];
-        else 
+        else {
           [self logWithFormat:@"failed processing person: %@",
                 [tmp objectAtIndex:i]];
+	}
       }
       [self takeValue:persons forKey:@"participants"];
     }
   }
   
-  if ([[self valueForKey:@"participants"] count] == 0) {
+  if (![[self valueForKey:@"participants"] isNotEmpty]) {
     [self takeValue:
 	    [NSArray arrayWithObject:[_context valueForKey:LSAccountKey]]
           forKey:@"participants"];
@@ -283,16 +289,16 @@
     if ((max = [tmp count]) > 0) {
       NSMutableArray *alarms;
       unsigned       i;
-      id             one;
       
       alarms = [NSMutableArray arrayWithCapacity:max];
       for (i = 0; i < max; i++) {
-        one = [self processAlarm:[tmp objectAtIndex:i]];
-        if (one)
+        id one = [self processAlarm:[tmp objectAtIndex:i]];
+        if (one != nil)
           [alarms addObject:one];
-        else 
+        else {
           [self logWithFormat:@"failed processing alarm: %@",
                 [tmp objectAtIndex:i]];
+	}
       }
       [self takeValue:[self alarmsToCSV:alarms] forKey:@"evoReminder"];
     }
@@ -310,7 +316,6 @@
   }
   return self;
 }
-
 
 /* accessors */
 

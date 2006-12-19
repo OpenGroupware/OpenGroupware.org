@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -139,13 +140,14 @@ static EONull   *null = nil;
       enumerator = [_compGids objectEnumerator];
 
       i = 0;
-      while ((obj = [enumerator nextObject])) {
+      while ((obj = [enumerator nextObject]) != nil) {
         NSString *pkey;
-      
-        if (i != 0) [in appendString:@","];
-
-        pkey = [[obj keyValues][0] stringValue];
-      
+	
+        if (![(pkey = [[obj keyValues][0] stringValue]) isNotEmpty])
+	  continue;
+	
+        if ([in isNotEmpty]) [in appendString:@","];
+	
         [in appendString:pkey];
         i++;
       
@@ -155,54 +157,54 @@ static EONull   *null = nil;
           i = 0;
         }
       }
-      if ([in length] > 0) {
+      if ([in isNotEmpty])
         [ins addObject:in];
-      }
     }
   
     /* build qualifiers */
   
     qualifiers = [NSMutableArray arrayWithCapacity:[ins count]];
-    if ([ins count] > 0)
+    if ([ins isNotEmpty])
       ine = [ins objectEnumerator];
     else
       ine = [[NSArray arrayWithObject:null] objectEnumerator];
     
-    while ((in = [ine nextObject])) {
-      if (in != (id)null) {
-        if ([in length] > 0) {
-          tq = [[EOSQLQualifier alloc]
-                                initWithEntity:entity
-                                qualifierFormat:
+    while ((in = [ine nextObject]) != nil) {
+      if ([in isNotEmpty]) {
+	tq = [[EOSQLQualifier alloc]
+                              initWithEntity:entity
+                              qualifierFormat:
                                 @"%A IN (%@)",
                                 @"toDateCompanyAssignment.companyId", in];
-          if (q == nil)
-            q = tq;
-          else {
-            [q conjoinWithQualifier:tq];
-            [tq release]; tq = nil;
-          }
+        if (q == nil)
+          q = tq;
+        else {
+          [q conjoinWithQualifier:tq];
+          [tq release]; tq = nil;
         }
       }
     
       /* create qualifier for resourceNames */
       enumerator = [_resourceNames objectEnumerator];
-      while ((obj = [enumerator nextObject])) {
+      while ((obj = [enumerator nextObject]) != nil) {
         EOSQLQualifier *qual = nil;
         id             tmp1, tmp2, tmp3, tmp4;
+	NSString *s;
 
         tmp1 = [adaptor formatValue:obj forAttribute:strAttribute];
 	
-        tmp2 = [adaptor formatValue:[NSString stringWithFormat:@"%@,%%", obj]
-                        forAttribute:strAttribute];
+	s = [[NSString alloc] initWithFormat:@"%@,%%", obj];
+        tmp2 = [adaptor formatValue:s forAttribute:strAttribute];
+	[s release]; s = nil;
 	
-        tmp3 = [adaptor formatValue:[NSString stringWithFormat:@"%%, %@", obj]
-                        forAttribute:strAttribute];
+	s = [NSString stringWithFormat:@"%%, %@", obj];
+        tmp3 = [adaptor formatValue:s forAttribute:strAttribute];
+	[s release]; s = nil;
 
-        tmp4 = [adaptor formatValue:[NSString stringWithFormat:@"%%, %@,%%",
-                                              obj]
-                        forAttribute:strAttribute]; 
-       
+	s = [NSString stringWithFormat:@"%%, %@,%%", obj];
+        tmp4 = [adaptor formatValue:s forAttribute:strAttribute]; 
+	[s release]; s = nil;
+	
         
         qual = [[EOSQLQualifier alloc]
                                 initWithEntity:entity
@@ -217,7 +219,7 @@ static EONull   *null = nil;
           q = qual;
         else {
           [q disjoinWithQualifier:qual];
-          RELEASE(qual); qual = nil;
+          [qual release]; qual = nil;
         }
       }
   
@@ -231,7 +233,7 @@ static EONull   *null = nil;
         }
         else {
           [q conjoinWithQualifier:tq];
-          RELEASE(tq); tq = nil;
+          [tq release]; tq = nil;
         }
       }
       if (fmtToDate) {
@@ -247,26 +249,28 @@ static EONull   *null = nil;
       }
 
       // appointment types
-      if ([self->aptTypes count]) {
+      if ([self->aptTypes isNotEmpty]) {
         EOSQLQualifier *qual     = nil;
         EOSQLQualifier *typeQual = nil;
+	
         enumerator = [self->aptTypes objectEnumerator];
         while ((obj = [enumerator nextObject])) {
           qual = [[EOSQLQualifier alloc]
                                   initWithEntity:entity
                                   qualifierFormat:@"%A = '%@'",
-                                  @"aptType", obj, nil];
+		                    @"aptType", obj, nil];
         
-          if (typeQual == nil) typeQual = qual;
+          if (typeQual == nil) 
+	    typeQual = qual;
           else {
             [typeQual disjoinWithQualifier:qual];
             [qual release];
           }
         }
         [q conjoinWithQualifier:typeQual];
-        [typeQual release];
+        [typeQual release]; typeQual = nil;
       }
-
+      
       /* access team ids */
       if ([_accessTeams isNotEmpty]) {
         /* array of gids */
@@ -286,9 +290,12 @@ static EONull   *null = nil;
           while ((obj = [enumerator nextObject]) != nil) {
             if ([obj isNotNull]) {
               NSString *pkey;
-              if (i != 0) [in appendString:@","];
-                
+	      
               pkey = [[obj keyValues][0] stringValue];                
+	      if (![pkey isNotNull]) continue;
+	      
+              if ([in isNotEmpty]) [in appendString:@","];
+                
               [in appendString:pkey];
               i++;
             }
@@ -298,11 +305,11 @@ static EONull   *null = nil;
           }
 	  // TODO: move qualifiers to methods
           if (fetchPrivate) {
-            id accountId;
+            NSNumber *accountId;
 	    
             accountId = [[_ctx valueForKey:LSAccountKey]
                                valueForKey:@"companyId"];
-            if (i) 
+            if (i) {
               qual = [[EOSQLQualifier alloc]
                                       initWithEntity:entity
                                       qualifierFormat:
@@ -312,7 +319,8 @@ static EONull   *null = nil;
                                       @"accessTeamId",
                                       @"ownerId", accountId,
                                       nil];
-            else 
+	    }
+            else {
               qual = [[EOSQLQualifier alloc]
                                       initWithEntity:entity
                                       qualifierFormat:
@@ -320,14 +328,15 @@ static EONull   *null = nil;
                                       @"accessTeamId",
                                       @"ownerId", accountId,
                                       nil];
+	    }
           }
-          else 
+          else {
             // i must be > 0
             qual = [[EOSQLQualifier alloc]
                                     initWithEntity:entity
                                     qualifierFormat:
-                                    @"%A IN (%@)",
-                                    @"accessTeamId", in, nil];
+                                      @"%A IN (%@)", @"accessTeamId", in, nil];
+	  }
           if (q != nil) {
             [q conjoinWithQualifier:qual];
             [qual release];
@@ -344,7 +353,8 @@ static EONull   *null = nil;
     }
     return qualifiers;
 }
-  /* execute query */
+
+/* execute query */
 
 - (void)_executeInContext:(id)_context {
   // TODO: split up this big method
@@ -387,7 +397,7 @@ static EONull   *null = nil;
   [queryGids unionSet:personGids];
   
   /* expand team gids (include members into query set) */
-  if ([teamGids count] > 0) {
+  if ([teamGids isNotEmpty]) {
     id members;
     
     /* fetch members */
@@ -410,7 +420,7 @@ static EONull   *null = nil;
   }
   
   /* expand persons (query) gids (include teams of person into query set) */
-  if ([queryGids count] > 0) {
+  if ([queryGids isNotEmpty]) {
     id teams;
     
     /* first add the persons themselves */

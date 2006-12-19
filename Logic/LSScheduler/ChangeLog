@@ -1,3 +1,13 @@
+2006-12-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v5.3.95
+
+	* LSNewAppointmentFromVEventCommand.m, LSAptAccessCommand.m: code
+	  cleanups
+
+	* LSQueryAppointments.m: avoid missing pkeys in IN queries, major code
+	  cleanups
+
 2006-09-27  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSAddOrRemoveMeCommand.m: removed a debug log (v5.3.94)

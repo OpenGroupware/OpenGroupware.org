@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2006 SKYRIX Software AG
+  Copyright (C) 2006      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -182,57 +183,57 @@ static EONull   *null  = nil;
   }
         
   if (hasReadAccess) {
-          id   l;
-          BOOL hasWriteAccess = NO;
+    id   l;
+    BOOL hasWriteAccess = NO;
 	  
-          l = [row valueForKey:@"writeAccessList"];
+    l = [row valueForKey:@"writeAccessList"];
 	  
-          if ([l isNotNull]) {
-            NSArray    *acl;
-            int        j, cnt;
-            EOGlobalID *wAccessTeamGid;
+    if ([l isNotNull]) {
+      NSArray    *acl;
+      int        j, cnt;
+      EOGlobalID *wAccessTeamGid;
 
-            acl = [l componentsSeparatedByString:@","];
-            cnt = [acl count];
+      acl = [l componentsSeparatedByString:@","];
+      cnt = [acl count];
             
-            for (j = 0; j < cnt; j++) {
-              NSNumber *staffPid;
+      for (j = 0; j < cnt; j++) {
+	NSNumber *staffPid;
 
-              staffPid = [NSNumber numberWithInt:
-                                   [[acl objectAtIndex:j] intValue]];
+	staffPid = [NSNumber numberWithInt:
+			       [[acl objectAtIndex:j] intValue]];
               
-              wAccessTeamGid = [EOKeyGlobalID globalIDWithEntityName:@"Team"
-                                              keys:&staffPid keyCount:1
-                                              zone:NULL];
+	wAccessTeamGid = [EOKeyGlobalID globalIDWithEntityName:@"Team"
+					keys:&staffPid keyCount:1
+					zone:NULL];
 
-              if ([loginTeams containsObject:wAccessTeamGid]) {
-                hasWriteAccess = YES;
-                break;
-              }
-              else if (loginPid == [staffPid intValue]) {
-                hasWriteAccess = YES;
-                break;
-              }
-            }
-          }
-          if (hasWriteAccess) {
-            [access setObject:right_deluv forKey:gid];
-          }
-          else {
-            [readAccessDates addObject:gid]; /* check for 'u' later */
-            [access setObject:right_lv forKey:gid];
-          }
+	if ([loginTeams containsObject:wAccessTeamGid]) {
+	  hasWriteAccess = YES;
+	  break;
+	}
+	else if (loginPid == [staffPid intValue]) {
+	  hasWriteAccess = YES;
+	  break;
+	}
+      }
+    }
+    if (hasWriteAccess) {
+      [access setObject:right_deluv forKey:gid];
+    }
+    else {
+      [readAccessDates addObject:gid]; /* check for 'u' later */
+      [access setObject:right_lv forKey:gid];
+    }
   }
   else {
-          [readAccessDates addObject:gid]; /* check for 'u' and 'v' later */
-          [access setObject:right_l forKey:gid];
-          {
-            // write access list may be needed later
-            id l = [row valueForKey:@"writeAccessList"];
+    [readAccessDates addObject:gid]; /* check for 'u' and 'v' later */
+    [access setObject:right_l forKey:gid];
+    {
+      // write access list may be needed later
+      id l = [row valueForKey:@"writeAccessList"];
 	    
-            if ([l isNotNull])
-              [writeAccessLists setObject:l forKey:gid];
-          }
+      if ([l isNotNull])
+	[writeAccessLists setObject:l forKey:gid];
+    }
   }
 }
 
@@ -249,7 +250,7 @@ static EONull   *null  = nil;
   EOGlobalID          *gid;
   NSMutableDictionary *teamToPs; /* cache team members */
 
-  if ([readAccessDates count] == 0)
+  if (![readAccessDates isNotEmpty])
     return;
   
   ps = LSRunCommandV(_ctx, @"appointment", @"get-participants",
@@ -260,86 +261,86 @@ static EONull   *null  = nil;
   teamToPs  = nil;
   agids = [readAccessDates objectEnumerator];
   while ((gid = [agids nextObject]) != nil) {
-      NSArray  *psa;
-      unsigned psac;
-      BOOL     hasReadAccess  = NO;
-      BOOL     hasWriteAccess = NO;
+    NSArray  *psa;
+    unsigned psac;
+    BOOL     hasReadAccess  = NO;
+    BOOL     hasWriteAccess = NO;
      
-      psa  = [ps objectForKey:gid];
-      psac = [psa count];
+    psa  = [ps objectForKey:gid];
+    psac = [psa count];
       
-      if ([psa containsObject:loginGid]) {
-        /* is participant */
-        [access setObject:right_luv forKey:gid];
-        hasReadAccess = YES;
-      }
-      else if (psac > 0) {
-        unsigned i;
+    if ([psa containsObject:loginGid]) {
+      /* is participant */
+      [access setObject:right_luv forKey:gid];
+      hasReadAccess = YES;
+    }
+    else if (psac > 0) {
+      unsigned i;
         
-        if (teamToPs == nil)
-          teamToPs = [NSMutableDictionary dictionaryWithCapacity:32];
+      if (teamToPs == nil)
+	teamToPs = [NSMutableDictionary dictionaryWithCapacity:32];
 
-        for (i = 0; i < psac; i++) {
-          EOGlobalID *pgid;
+      for (i = 0; i < psac; i++) {
+	EOGlobalID *pgid;
           
-          pgid = [psa objectAtIndex:i];
+	pgid = [psa objectAtIndex:i];
 	  
-          if ([[pgid entityName] isEqualToString:@"Team"]) {
-            NSSet *pss;
+	if ([[pgid entityName] isEqualToString:@"Team"]) {
+	  NSSet *pss;
             
-            if ((pss = [teamToPs objectForKey:pgid]) == nil) {
-              NSArray *tmp;
+	  if ((pss = [teamToPs objectForKey:pgid]) == nil) {
+	    NSArray *tmp;
 	      
-	      tmp = [self _fetchMemberGIDsOfTeamWithGID:pgid inContext:_ctx];
-              if (tmp != nil) {
-                pss = [NSSet setWithArray:tmp];
-                [teamToPs setObject:pss forKey:pgid];
-              }
-            }
-            if ([pss containsObject:loginGid]) {
-              [access setObject:right_luv forKey:gid];
-              hasReadAccess = YES;
-              break;
-            }
-          }
-        }
+	    tmp = [self _fetchMemberGIDsOfTeamWithGID:pgid inContext:_ctx];
+	    if (tmp != nil) {
+	      pss = [NSSet setWithArray:tmp];
+	      [teamToPs setObject:pss forKey:pgid];
+	    }
+	  }
+	  if ([pss containsObject:loginGid]) {
+	    [access setObject:right_luv forKey:gid];
+	    hasReadAccess = YES;
+	    break;
+	  }
+	}
       }
-      if (hasReadAccess) {
-        // now account has read access
-        // maybe also write access
-        // --> check writeAccessList
-        id l;
+    }
+    if (hasReadAccess) {
+      // now account has read access
+      // maybe also write access
+      // --> check writeAccessList
+      id l;
 	
-        if ([(l = [writeAccessLists objectForKey:gid]) isNotNull]) {
-          NSArray    *acl;
-          int        j, cnt;
-          EOGlobalID *wAccessTeamGid;
-          EOGlobalID *wAccessPartGid;
+      if ([(l = [writeAccessLists objectForKey:gid]) isNotNull]) {
+	NSArray    *acl;
+	int        j, cnt;
+	EOGlobalID *wAccessTeamGid;
+	EOGlobalID *wAccessPartGid;
 
-          acl = [l componentsSeparatedByString:@","];
-          cnt = [acl count];
+	acl = [l componentsSeparatedByString:@","];
+	cnt = [acl count];
             
-          for (j = 0; j < cnt; j++) {
-            NSNumber *staffPid;
+	for (j = 0; j < cnt; j++) {
+	  NSNumber *staffPid;
 	    
-            staffPid = [NSNumber numberWithInt:
-				   [[acl objectAtIndex:j] intValue]];
+	  staffPid = [NSNumber numberWithInt:
+				 [[acl objectAtIndex:j] intValue]];
 	    
-            wAccessTeamGid = [self teamGID:staffPid];
-            wAccessPartGid = [self personGID:staffPid];
-            if ([loginTeams containsObject:wAccessTeamGid]) {
-              hasWriteAccess = YES;
-              break;
-            }
-            else if ([loginGid isEqual:wAccessPartGid]) {
-              hasWriteAccess = YES;
-              break;
-            }
-          }
-        }
-        if (hasWriteAccess)
-          [access setObject:right_deluv forKey:gid];
+	  wAccessTeamGid = [self teamGID:staffPid];
+	  wAccessPartGid = [self personGID:staffPid];
+	  if ([loginTeams containsObject:wAccessTeamGid]) {
+	    hasWriteAccess = YES;
+	    break;
+	  }
+	  else if ([loginGid isEqual:wAccessPartGid]) {
+	    hasWriteAccess = YES;
+	    break;
+	  }
+	}
       }
+      if (hasWriteAccess)
+	[access setObject:right_deluv forKey:gid];
+    }
   }
 }
 
@@ -422,7 +423,7 @@ static EONull   *null  = nil;
         [in appendString:@","];
       
       s = [[gid keyValues][0] stringValue];
-      if ([s length] == 0) {
+      if (![s isNotEmpty]) {
         [self logWithFormat:@"weird GID for IN query: %@ ('%@')", gid, s];
         continue;
       }
