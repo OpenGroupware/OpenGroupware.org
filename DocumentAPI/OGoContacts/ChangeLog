@@ -1,3 +1,7 @@
+2006-12-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved deprecated JavaScript bindings to Recycler (v5.3.60)
+
 2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyAddressConverterDataSource.m: code cleanups (v5.3.59)

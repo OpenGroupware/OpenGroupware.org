@@ -1,3 +1,7 @@
+2006-12-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved deprecated JavaScript bindings to Recycler (v5.3.29)
+
 2006-11-16  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SkyDocument.m: use -warn/errorWithFormat: (v5.3.28)

@@ -33,7 +33,6 @@ libOGoProject_OBJC_FILES = \
 	EOQualifier+Project.m			\
 	OGoFileManagerFactory.m			\
 	SkyContentHandler.m			\
-	SkyProject+JS.m				\
 	SkyProject+JobDS.m			\
 	SkyProject.m				\
 	SkyProjectDataSource.m			\

@@ -43,7 +43,6 @@ libOGoDatabaseProject_OBJC_FILES = \
 	SkyProjectFileManagerCache+Internals.m	\
 	SkyProjectFileManagerCache+Settings.m	\
 	SkyProjectFileManagerCache.m		\
-	SkyProjectDocument+JS.m			\
 	SkyProjectDocument+DOM.m		\
 	SkyProjectDocument+Log.m		\
 	SkyProjectDocumentDataSource.m		\

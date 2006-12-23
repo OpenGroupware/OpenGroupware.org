@@ -27,7 +27,6 @@ libOGoRawDatabase_OBJC_FILES = 	\
 	SkyDBDocument.m		\
 	SkyDBDataSource.m	\
 	SkyDBDocumentType.m	\
-	SkyDBDocument+JS.m	\
 	SkyAdaptorDataSource.m	\
 
 OGoRawDatabase_OBJC_FILES = \

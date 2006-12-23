@@ -32,22 +32,18 @@ libOGoContacts_HEADER_FILES = \
 
 libOGoContacts_OBJC_FILES = \
 	SkyAddressConverterDataSource.m 		\
-	SkyAddressDocument+JS.m				\
 	SkyAddressDocument.m				\
 	SkyCompanyCompanyDataSource.m			\
 	SkyCompanyDataSource.m				\
-	SkyCompanyDocument+JS.m				\
 	SkyCompanyDocument.m				\
 	SkyCompanyProjectDataSource.m			\
 	SkyContactAddressDataSource.m			\
 	SkyEnterpriseAllProjectsDataSource.m		\
 	SkyEnterpriseDataSource.m			\
-	SkyEnterpriseDocument+JS.m			\
 	SkyEnterpriseDocument.m				\
 	SkyEnterprisePersonDataSource.m			\
 	SkyEnterpriseProjectDataSource.m		\
 	SkyPersonDataSource.m				\
-	SkyPersonDocument+JS.m 				\
 	SkyPersonDocument+JobDS.m			\
 	SkyPersonDocument.m 				\
 	SkyPersonEnterpriseDataSource.m			\

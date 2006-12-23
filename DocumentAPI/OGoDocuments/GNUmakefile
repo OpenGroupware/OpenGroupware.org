@@ -15,7 +15,6 @@ libOGoDocuments_HEADER_FILES = \
 	SkyDocumentType.h		\
 	SkyDocumentFileManager.h	\
 	SkyDocumentManager.h		\
-	SkyDocument+JS.h		\
 	NGLocalFileManager.h		\
 	NGLocalFileDocument.h		\
 	NGLocalFileDataSource.h		\
@@ -27,19 +26,16 @@ libOGoDocuments_OBJC_FILES = \
 	SkyDocument.m			\
 	SkyDocumentType.m		\
 	SkyURLHandle.m			\
-	SkyDocument+JS.m		\
 	NGCustomFileManager+Docs.m	\
 	NGLocalFileManager.m		\
 	NGLocalFileDocument+DOM.m	\
 	NGLocalFileDocument.m		\
 	NGLocalFileDataSource.m		\
 	NGLocalFileGlobalID.m		\
-	NGFileManager+DocJS.m		\
 	SkyDocument+XmlRpcCoding.m	\
 	\
 	LSCommandContext+Doc.m		\
 	SkyDocumentManagerImp.m		\
-	SkyDocumentManagerImp+JS.m	\
 
 libOGoDocuments_HEADER_FILES_DIR         = .
 libOGoDocuments_HEADER_FILES_INSTALL_DIR = /OGoDocuments

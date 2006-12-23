@@ -25,10 +25,8 @@ libOGoJobs_OBJC_FILES = 				\
 	SkyProjectJobDataSource.m			\
 	SkyPersonJobDataSource.m			\
 	SkyJobDocument.m				\
-	SkyJobDocument+JS.m				\
 	SkyJobHistoryDataSource.m			\
 	SkyJobHistoryDocument.m				\
-	SkyJobHistoryDocument+JS.m			\
 	SkySchedulerJobDataSource.m			\
 
 libOGoJobs_HEADER_FILES_DIR         = .
