@@ -133,7 +133,16 @@ foreach $orel (@ogo_releases) {
     print "ensuring that we have a debug=no libfoundation present...\n";
     system("sudo rpm -e `rpm -qa|grep -i ^libfoundation` --nodeps");
     system("sudo /sbin/ldconfig");
-    system("$ENV{HOME}/purveyor_of_rpms.pl -p libfoundation -d yes -u no -t release -c libfoundation-trunk-latest.tar.gz -f yes -b no");
+    if($orel =~ m/^opengroupware.org-1.0.0-finally/i) {
+      print "weird hack to get older libfoundation10 and libobjc-lf2...";
+      system("sudo rpm -e --nodeps libobjc");
+      system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -d yes -u no -t release -c libobjc-lf2-trunk-latest.tar.gz -f yes -b no");
+      system("$ENV{HOME}/purveyor_of_rpms.pl -p libfoundation -d yes -u no -t release -c libFoundation-1.0.84-r137.tar.gz -f yes -b no");
+    } else {
+      print "weird hack to get current libfoundation...";
+      system("sudo yum -y install libobjc");
+      system("$ENV{HOME}/purveyor_of_rpms.pl -p libfoundation -d yes -u no -t release -c libfoundation-trunk-latest.tar.gz -f yes -b no");
+    }
     print "cleaning up previous SOPE build...\n";
     system("sudo rpm -e `rpm -qa|grep -i ^sope` --nodeps");
     print "cleaning up previous OGo build...\n";
@@ -239,6 +248,7 @@ if($i_really_had_sth_todo eq "yes") {
   #go back to latest trunk build - that is, before we grabbed a new release we had
   #the most current trunk of everything built/installed
   print "restoring latest build state...\n";
+  system("sudo yum -y install libobjc");
   #system("$ENV{HOME}/purveyor_of_rpms.pl -p libobjc-lf2 -v yes -u no -d yes -f yes -b no -n yes");
   system("$ENV{HOME}/purveyor_of_rpms.pl -p libfoundation -v yes -u no -d yes -f yes -b no -n yes");
   system("$ENV{HOME}/purveyor_of_rpms.pl -p sope -v yes -u no -d yes -f yes -b no -n yes");
