@@ -233,7 +233,11 @@ initial()
   # create user...
   if [ "x${CREATE_DB_USER}" = "xYES" ]; then
     echo -e "creating database user: ${OGO_DB_USER}"
-    RC_CREATE_USER="`su - ${COMMON_PG_USER} -c \"createuser -A -D ${OGO_DB_USER}\" 2>&1>/dev/null`"
+    if [ "x${THIS_PG_VERSION}" = "x8.1" ]; then
+      RC_CREATE_USER="`su - ${COMMON_PG_USER} -c \"createuser -D -R -S ${OGO_DB_USER}\" 2>&1>/dev/null`"
+    else
+      RC_CREATE_USER="`su - ${COMMON_PG_USER} -c \"createuser -A -D ${OGO_DB_USER}\" 2>&1>/dev/null`"
+    fi
     if [ -n "${RC_CREATE_USER}" ]; then
       echo -e "  Whoups! We've encountered an error during 'createuser':"
       echo -e "  The errormessage was => ${RC_CREATE_USER}"
