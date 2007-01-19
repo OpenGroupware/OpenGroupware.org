@@ -1,3 +1,8 @@
+2007-01-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OGoCycleDateCalculator.m: fixed handling of workday cycles (fixes OGo
+	  bug #530) (v5.3.96)
+
 2006-12-19  Helge Hess  <helge.hess@opengroupware.org>
 
 	* v5.3.95

@@ -96,7 +96,7 @@
   sD = [_startDate hour:12 minute:0 second:0];
   eD = [_endDate   hour:12 minute:0 second:0];
   ma = [NSMutableArray arrayWithCapacity:64];
-  
+
   for (i = _offset, cnt = 0, cycleEnd = NO; !cycleEnd; ) {
     NSCalendarDate *newStartDate = nil;
     NSCalendarDate *newEndDate   = nil;
@@ -108,6 +108,7 @@
       newEndDate   = [eD dateByAddingYears:0 months:0 days:i*1];
     }
     else if ([_type isEqual:@"weekday"]) {
+      /* every working day, that is, Monday to Friday */
       newStartDate = [sD dateByAddingYears:0 months:0 days:i*1];
       newEndDate   = [eD dateByAddingYears:0 months:0 days:i*1];
       ignoreWeekends = YES;
@@ -149,7 +150,8 @@
     }
     
     if (ignoreWeekends) {
-      int day = [sD dayOfWeek];
+      // TODO: is checking the startdate sufficient? I suppose so.
+      int day = [newStartDate dayOfWeek];
       if (day == 0 /* Sunday */ || day == 6 /* Saturday */)
         continue;
     }
