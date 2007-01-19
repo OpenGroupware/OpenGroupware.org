@@ -1,3 +1,8 @@
+2007-01-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* English.lproj/LSWScheduler.strings: renamed 'weekdays' to 'workdays'
+	  (for cyclic and move units), related to OGo bug #530
+
 2006-10-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* English.lproj|German.lproj: added various labels for bulk change
