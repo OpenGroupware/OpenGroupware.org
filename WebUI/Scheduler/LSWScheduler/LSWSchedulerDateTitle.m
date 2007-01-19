@@ -243,11 +243,14 @@
       
       calFormat = [self->showAMPMDates boolValueInComponent:sComponent]
         ? @"%Y-%m-%d 11:00 AM %Z" : @"%Y-%m-%d 11:00 %Z";
-      calFormat = [d descriptionWithCalendarFormat:calFormat];
-      if (calFormat == nil) {
-	[self warnWithFormat:@"could not format date: %@", d];
-	calFormat = @"-";
+      if ([d isNotNull]) {
+	if ((calFormat = [d descriptionWithCalendarFormat:calFormat]) == nil) {
+	  [self warnWithFormat:@"could not format date: %@", d];
+	  calFormat = @"-";
+	}
       }
+      else /* happens on MacOS */
+	calFormat = @"-";
       
       nt  = [self->newLabel stringValueInComponent:sComponent];
       alt = @"Create new appointment on ";

@@ -1,3 +1,7 @@
+2006-12-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWSchedulerDateTitle.m: avoid a warning on MacOS (v5.3.111)
+
 2006-11-08  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWSchedulerDateTitle.m: fixed a MacOS incompatibility (v5.3.110)
