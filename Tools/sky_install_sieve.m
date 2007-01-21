@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -84,7 +85,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
   if ([_kind isEqualToString:@"ends with"])
     return @"header :matches";
   
-  NSLog(@"ERROR: could not process filter with kind: '%@'", _kind);
+  [self errorWithFormat:@"could not process filter with kind: '%@'", _kind];
   return nil;
 }
 
@@ -172,7 +173,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
   }
   [sieveFilter appendString:@"]"];
 
-  if ([[vacation objectForKey:@"subject"] length] > 0) {
+  if ([[vacation objectForKey:@"subject"] isNotEmpty]) {
     [sieveFilter appendFormat:@" :subject \"%@\"",
                  [vacation objectForKey:@"subject"]];
   }
@@ -181,26 +182,37 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
 }
 
 - (NSString *)sieveFilenameForString:(NSString *)fileName {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSString *sep;
+  
   if ([fileName hasPrefix:@"/"]) {
     fileName = [fileName substringWithRange:
                            NSMakeRange(1, [fileName length] - 1)];
   }
+
+  sep = [ud stringForKey:@"SieveFilenameSeparator"];
+  if (![sep isNotEmpty])
+    sep = @".";
+  
+  if ([sep isEqualToString:@"/"])
+    return fileName; /* return as-is, no transformation required */
+  
   fileName = [[fileName componentsSeparatedByString:@"/"]
-                        componentsJoinedByString:@"."];
+	                componentsJoinedByString:sep];
   return fileName;
 }
 - (NSString *)sieveRedirectAddressForString:(NSString *)fileName {
   NGMailAddressParser *parser;
   NSString *str;
   
-  if ([fileName length] == 0)
+  if (![fileName isNotEmpty])
     return nil;
   
   parser = [NGMailAddressParser mailAddressParserWithString:fileName];
   str    = [(NGMailAddress *)[parser parse] address];
       
-  if ([str length] == 0) {
-    NSLog(@"ERROR: could not parse address %@", fileName);
+  if (![str isNotEmpty]) {
+    [self errorWithFormat:@"could not parse address %@", fileName];
     return nil;
   }
   return str;
@@ -219,7 +231,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
     // TODO: do we need to log an error?
     return;
     
-  if ([entries count] == 0)
+  if (![entries isNotEmpty])
     return;
 
   isFirst = YES;
@@ -242,7 +254,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
       
   [sieveFilter appendString:@")\n {\n"];
 
-  if ([[aFilter objectForKey:@"folder"] length] > 0) {
+  if ([[aFilter objectForKey:@"folder"] isNotEmpty]) {
     NSString *fileName;
     
     [sieveFilter appendString:@"fileinto \""];
@@ -251,7 +263,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
     [sieveFilter appendString:fileName];
     [sieveFilter appendString:@"\";\n "];
   }
-  else if ([[aFilter objectForKey:@"forwardAddress"] length] > 0) {
+  else if ([[aFilter objectForKey:@"forwardAddress"] isNotEmpty]) {
     NSString *str;
     
     [sieveFilter appendString:@"redirect \""];
@@ -260,7 +272,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
                   [aFilter objectForKey:@"forwardAddress"]];
     if (str == nil)
       // TODO: shouldn't we abort in case we found an error?
-      NSLog(@"ERROR: missing/invalid forwardAddress for filter: %@", aFilter);
+      [self errorWithFormat:@"missing/invalid forwardAddress for filter: %@", aFilter];
     
     [sieveFilter appendString:(str != nil ? str : (NSString *)@"")];
     [sieveFilter appendString:@"\";\n "];
@@ -281,7 +293,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
   
   if (f == nil)
     return nil;
-  if ([f count] == 0) /* we may not return nil! */
+  if (![f isNotEmpty]) /* we may not return nil! */
     return @"";
   
   vacation = nil;
@@ -425,7 +437,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
   NSString *scriptName;
   
   scriptName = [ud stringForKey:@"SieveScriptName"];
-  if ([scriptName length] == 0)
+  if (![scriptName isNotEmpty])
     scriptName = @"ogo";
   return scriptName;
 }
@@ -447,7 +459,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
 
   /* validate */
   
-  if ([login length] == 0) {
+  if (![login isNotEmpty]) {
     NSLog(@"missing login");
     return NO;
   }
@@ -505,7 +517,7 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
   
   res = [client login:self->login password:self->password];
   if (![[res objectForKey:@"result"] boolValue]) {
-    NSLog(@"ERROR: login failed for %@ user %@", client, login);
+    [self errorWithFormat:@"login failed for %@ user %@", client, login];
     exit(3);
   }
   
@@ -530,16 +542,17 @@ static id _getArg(NSDictionary *_arg, NSArray *_keys) {
     scriptName = [self sieveScriptName];
     
     if ((filter = [self _extractFilter]) == nil) {
-      NSLog(@"ERROR: got no filter, exiting (dict: %@).", self->dictName);
+      [self errorWithFormat:@"got no filter, exiting (dict: %@).",
+	      self->dictName];
       return 1;
     }
     
     if ((client = [self openConnection]) == nil) {
-      NSLog(@"ERROR: could not connect to Sieve server!");
+      [self errorWithFormat:@"could not connect to Sieve server!"];
       exit(3);
     }
       
-    if ([filter length] > 0) {
+    if ([filter isNotEmpty]) {
       result = [client putScript:scriptName script:filter]; 
       if (![[result valueForKey:@"result"] boolValue]) {
         [self logWithFormat:@"ERROR: could not upload script '%@': %@",

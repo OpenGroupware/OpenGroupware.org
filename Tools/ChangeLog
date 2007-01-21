@@ -1,3 +1,9 @@
+2007-01-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* sky_install_sieve.m: added 'SieveFilenameSeparator' default to
+	  configure the filename separator used by Sieve (. or /), fixes
+	  OGo bug #1664
+
 2006-09-20  Helge Hess  <helge.hess@opengroupware.org>
 
 	* added ogo-qsearch-persons test tool
