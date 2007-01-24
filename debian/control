@@ -2,7 +2,7 @@ Source: opengroupware.org
 Section: web
 Priority: extra
 Maintainer: Sebastian Ley <ley@debian.org>
-Build-Depends: debhelper (>= 4.0.0), dpatch, gnustep-make-ogo, libfoundation-dev, libobjc1, libsope-core-dev, libsope-appserver-dev, libsope-xml-dev, libsope-gdl1-dev, libsope-mime-dev, libsope-ldap-dev, libldap-dev, libsope-ical-dev, gobjc, libpisock-dev, po-debconf
+Build-Depends: debhelper (>= 4.0.0), dpatch, gnustep-make-ogo, libfoundation1.1-dev, libobjc1, libsope-core-dev, libsope-appserver-dev, libsope-xml-dev, libsope-gdl1-dev, libsope-mime-dev, libsope-ldap-dev, libldap-dev, libsope-ical-dev, gobjc, libpisock-dev, po-debconf
 Standards-Version: 3.6.1
 
 Package: opengroupware.org
@@ -48,7 +48,7 @@ Description: Web UI for OpenGroupware.org
 Package: opengroupware.org-environment
 Section: web
 Architecture: all
-Depends: daemon, opengroupware.org-database-scripts, libfoundation-tools
+Depends: daemon, opengroupware.org-database-scripts, libfoundation1.1-tools
 Description: Useful tools for an OpenGroupware.org runtime environment
  This package contains an init script for OpenGroupware.org as well as 
  a configurator, which allows for automatic instance creation.
