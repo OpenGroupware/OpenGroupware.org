@@ -45,7 +45,15 @@
         <#AttributeCell><#Font><#CategoryLabel/>:</#Font></#AttributeCell>
         <#ValueCell><#EditFont><#CategoryPopUp/></#EditFont></#ValueCell>
         <#AttributeCell><#Font><#ExtendedAttrs/>:</#Font></#AttributeCell>
-        <#ValueCell><#EditFont><#ExtendedValue/></#EditFont></#ValueCell>
+        <#ValueCell><#EditFont>
+          <#ExtendedValue/><br />
+          <label for="restrictowner">
+            <#RestrictOwner /> <#Font><#RestrictOwnerLabel /></#Font>
+          </label><br />
+          <label for="restrictcontact">
+	    <#RestrictContact /> <#Font><#RestrictContactLabel /></#Font>
+          </label>
+        </#EditFont></#ValueCell>
       </tr>  
       <tr>
         <#AttributeCell><#Font><#OperatorLabel/>:</#Font></#AttributeCell>
@@ -53,7 +61,7 @@
           <#AndOperator/> <#Font><#AndOperatorLabel/></#Font>
           <#OrOperator /> <#Font><#OrOperatorLabel /></#Font>
         </#EditFont></#ValueCell>
-      </tr>  
+      </tr>
       <tr> 
         <td> </td>
         <td colspan="3">

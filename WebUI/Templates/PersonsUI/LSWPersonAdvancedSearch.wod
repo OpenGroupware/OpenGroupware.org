@@ -4,25 +4,27 @@ Form: WOForm {
   name = "searchform";
 }
 
-Label:               WOString { value = labels.LSWPersonAdvancedSearch; }
-Zip:                 WOString { value = labels.zip;            }
-LastName:            WOString { value = labels.lastName;       }
-CategoryLabel:       WOString { value = labels.categoryLabel;  }
-FirstName:           WOString { value = labels.firstName;      }
-City:                WOString { value = labels.city;           }
-StateName:           WOString { value = labels.state;          }
-CountryName:         WOString { value = labels.country;        }
-StreetLabel:         WOString { value = labels.street; escapeHTML = NO; }
-CommentLabel:        WOString { value = labels.comment;        }
-TelephoneLabel:      WOString { value = labels.telephoneLabel; }
-EmailLabel:          WOString { value = labels.email;          }
-UrlLabel:            WOString { value = labels.url;            }
-MaxSearchCountLabel: WOString { value = labels.maxResults;     }
-SaveSearchLabel:     WOString { value = labels.saveSearch;     }
-LoadSearchLabel:     WOString { value = labels.loadSearch;     }
-OperatorLabel:       WOString { value = labels.operator;       }
-AndOperatorLabel:    WOString { value = labels.operator_and;   }
-OrOperatorLabel:     WOString { value = labels.operator_or;    }
+Label:                WOString { value = labels.LSWPersonAdvancedSearch; }
+Zip:                  WOString { value = labels.zip;            }
+LastName:             WOString { value = labels.lastName;       }
+CategoryLabel:        WOString { value = labels.categoryLabel;  }
+FirstName:            WOString { value = labels.firstName;      }
+City:                 WOString { value = labels.city;           }
+StateName:            WOString { value = labels.state;          }
+CountryName:          WOString { value = labels.country;        }
+StreetLabel:          WOString { value = labels.street; escapeHTML = NO; }
+CommentLabel:         WOString { value = labels.comment;        }
+TelephoneLabel:       WOString { value = labels.telephoneLabel; }
+EmailLabel:           WOString { value = labels.email;          }
+UrlLabel:             WOString { value = labels.url;            }
+MaxSearchCountLabel:  WOString { value = labels.maxResults;     }
+SaveSearchLabel:      WOString { value = labels.saveSearch;     }
+LoadSearchLabel:      WOString { value = labels.loadSearch;     }
+OperatorLabel:        WOString { value = labels.operator;       }
+RestrictOwnerLabel:   WOString { value = "Created by me";       }
+RestrictContactLabel: WOString { value = "My Contacts";         }
+AndOperatorLabel:     WOString { value = labels.operator_and;   }
+OrOperatorLabel:      WOString { value = labels.operator_or;    }
 
 AndOperator: WORadioButton {
   name      = "operator";
@@ -174,6 +176,19 @@ HasFormletterCond: WOConditional {
 
 Formletter: LSWFormLetterComponent {
   data = formletterData;
+}
+
+// checkboxes
+
+RestrictOwner: WOCheckBox {
+  id      = "restrictowner";
+  name    = "restrictowner";
+  checked = limitByOwner;
+}
+RestrictContact: WOCheckBox {
+  id      = "restrictcontact";
+  name    = "restrictcontact";
+  checked = limitByContact;
 }
 
 // Saved Searches
