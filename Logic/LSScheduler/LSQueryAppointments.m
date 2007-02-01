@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2000-2006 SKYRIX Software AG
-  Copyright (C) 2006      Helge Hess
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -134,9 +134,10 @@ static EONull   *null = nil;
   {
       unsigned i;
       const int batchSize = 200;
+      NSMutableString *in;
     
       ins        = [NSMutableArray arrayWithCapacity:16];
-      in         = [NSMutableString stringWithCapacity:256];
+      in         = [[NSMutableString alloc] initWithCapacity:256];
       enumerator = [_compGids objectEnumerator];
 
       i = 0;
@@ -151,14 +152,21 @@ static EONull   *null = nil;
         [in appendString:pkey];
         i++;
       
-        if (i == batchSize) {
-          [ins addObject:[[in copy] autorelease]];
+        if (i == batchSize && [in isNotEmpty]) {
+	  NSString *s = [in copy];
+          [ins addObject:s];
+	  [s release]; s = nil;
           [in setString:@""];
           i = 0;
         }
       }
-      if ([in isNotEmpty])
-        [ins addObject:in];
+      if ([in isNotEmpty]) {
+	NSString *s = [in copy];
+        [ins addObject:s];
+	[s release]; s = nil;
+      }
+
+      [in release]; in = nil;
     }
   
     /* build qualifiers */
@@ -197,11 +205,11 @@ static EONull   *null = nil;
         tmp2 = [adaptor formatValue:s forAttribute:strAttribute];
 	[s release]; s = nil;
 	
-	s = [NSString stringWithFormat:@"%%, %@", obj];
+	s = [[NSString alloc] initWithFormat:@"%%, %@", obj];
         tmp3 = [adaptor formatValue:s forAttribute:strAttribute];
 	[s release]; s = nil;
-
-	s = [NSString stringWithFormat:@"%%, %@,%%", obj];
+	
+	s = [[NSString alloc] initWithFormat:@"%%, %@,%%", obj];
         tmp4 = [adaptor formatValue:s forAttribute:strAttribute]; 
 	[s release]; s = nil;
 	
@@ -236,7 +244,7 @@ static EONull   *null = nil;
           [tq release]; tq = nil;
         }
       }
-      if (fmtToDate) {
+      if (fmtToDate != nil) {
         tq = [[EOSQLQualifier alloc]
                               initWithEntity:entity
                               qualifierFormat:@"%A < %@", @"startDate",
@@ -254,7 +262,7 @@ static EONull   *null = nil;
         EOSQLQualifier *typeQual = nil;
 	
         enumerator = [self->aptTypes objectEnumerator];
-        while ((obj = [enumerator nextObject])) {
+        while ((obj = [enumerator nextObject]) != nil) {
           qual = [[EOSQLQualifier alloc]
                                   initWithEntity:entity
                                   qualifierFormat:@"%A = '%@'",
@@ -373,7 +381,7 @@ static EONull   *null = nil;
   
   teamGids   = [NSMutableSet setWithCapacity:16];
   personGids = [NSMutableSet setWithCapacity:16];
-
+  
   e = [self->companies objectEnumerator];
   while ((gid = [e nextObject]) != nil) {
     NSString *eName;
@@ -452,7 +460,7 @@ static EONull   *null = nil;
   
   /* build qualifiers and fetch gids */
   {
-    NSEnumerator *qs;
+    NSEnumerator   *qs;
     NSMutableArray *mgids;
     id tmp;
 
@@ -461,18 +469,19 @@ static EONull   *null = nil;
                 resourceQuerySet:self->resourceNames
                 accessTeams:self->accessTeams];
     
-    qs = [tmp objectEnumerator];
+    qs    = [tmp objectEnumerator];
     mgids = [NSMutableArray arrayWithCapacity:200];
 
-    while ((q = [qs nextObject])) {
+    while ((q = [qs nextObject]) != nil) {
+#if 0
       /* 
 	 ordering for Ids is redundant FB 1.x allows no ordering for attributes
          which are not in select list
-     
-         sortOrderings = [NSArray arrayWithObject:
-         [EOSortOrdering sortOrderingWithKey:@"startDate"
-         selector:EOCompareAscending]];
       */
+      sortOrderings = [NSArray arrayWithObject:
+			       [EOSortOrdering sortOrderingWithKey:@"startDate"
+					       selector:EOCompareAscending]];
+#endif
       
       gids = [[self databaseChannel]
                     globalIDsForSQLQualifier:q
@@ -487,7 +496,7 @@ static EONull   *null = nil;
   
   [self setReturnValue:gids];
   
-  [pool release];
+  [pool release]; pool = nil;
 }
 
 /* key-value coding */
@@ -534,7 +543,7 @@ static EONull   *null = nil;
     NSArray *ats;
     if (_value == nil) _value = [NSNull null];
     ats = [NSArray arrayWithObject:_value];
-    ASSIGN(self->accessTeams,ats);
+    ASSIGN(self->accessTeams, ats);
     return;
   }
   [super takeValue:_value forKey:_key];
