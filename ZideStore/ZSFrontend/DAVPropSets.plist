@@ -36,5 +36,5 @@
     isOOoVolume,
   );
   
-  QueryETagsSet = ( davEntityTag );
+  QueryETagsSet = ( davEntityTag, davResourceType );
 }

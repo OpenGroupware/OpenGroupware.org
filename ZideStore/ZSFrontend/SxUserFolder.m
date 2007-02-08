@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -27,6 +28,7 @@
 #include "SxMsgRootFolder.h"
 #include "ExStoreEntryID.h"
 #include <NGExtensions/NGPropertyListParser.h>
+#include <SaxObjC/XMLNamespaces.h>
 
 #define USE_ZIDELOOK_HACK 1
 
@@ -454,6 +456,52 @@ static NSDictionary *personalFolderMap = nil;
 - (BOOL)davHasSubFolders {
   /* user folders are there to have child folders */
   return YES;
+}
+
+- (id)davCalendarHomeSet {
+  /*
+    <C:calendar-home-set xmlns:D="DAV:"
+        xmlns:C="urn:ietf:params:xml:ns:caldav">
+      <D:href>http://cal.example.com/home/bernard/calendars/</D:href>
+    </C:calendar-home-set>
+
+    Note: this is the *container* for calendar collections, not the
+          collections itself. So for use its the home folder, the
+	  public folder and the groups folder.
+  */
+  WOContext *ctx;
+  NSMutableArray *homeSet;
+  id tag;
+#if 0
+  id obj;
+#endif
+
+  ctx = [(WOApplication *)[WOApplication application] context];
+
+  homeSet = [NSMutableArray arrayWithCapacity:3];
+  
+  tag = [[NSArray alloc] initWithObjects:@"href", XMLNS_WEBDAV, @"D",
+			   [self baseURLInContext:ctx], nil];
+  [homeSet addObject:tag];
+  [tag release]; tag = nil;
+ 
+#if 0 /* multiple roots unsupported by iCal */ 
+  if ((obj = [self lookupName:@"public" inContext:ctx acquire:NO]) != nil) {
+    tag = [[NSArray alloc] initWithObjects:@"href", XMLNS_WEBDAV, @"D",
+			     [obj baseURLInContext:ctx], nil];
+    [homeSet addObject:tag];
+    [tag release]; tag = nil;
+  }
+  
+  if ((obj = [self lookupName:@"Groups" inContext:ctx acquire:NO]) != nil) {
+    tag = [[NSArray alloc] initWithObjects:@"href", XMLNS_WEBDAV, @"D",
+			     [obj baseURLInContext:ctx], nil];
+    [homeSet addObject:tag];
+    [tag release]; tag = nil;
+  }
+#endif
+  
+  return homeSet;
 }
 
 /* messages */

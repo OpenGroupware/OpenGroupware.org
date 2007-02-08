@@ -1,3 +1,14 @@
+2007-02-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v1.5.117
+
+	* SxUserFolder.m: added a preliminary davCalendarHomeSet property
+	  which points to the personal calendar to make it work iCal.app CalDAV
+
+	* DAVPropSets.plist: added davResourceType to QueryETagsSet
+
+	* a few minor cleanups
+
 2006-09-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxFolder+DAV.m: code cleanups (v1.5.116)

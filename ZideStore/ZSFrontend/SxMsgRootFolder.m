@@ -168,18 +168,18 @@ static NSDictionary *personalFolderMap = nil;
   
   ua = [[[(WOContext *)_ctx request] clientCapabilities] userAgentType];
   if ([ua isEqualToString:@"AppleDAVAccess"]) {
-    [self logWithFormat:@"UA: %@ - probably iCalendar", ua];
-    if ([_key isEqualToString:@".ics"]) {
+    [self logWithFormat:@"UA: %@ - probably iCal.app / iCal-over-HTTP", ua];
+    if ([_key isEqualToString:@".ics"])
       return [self iCalendarForName:@"calendar.ics" inContext:_ctx];
-    }
   }
   
   if ([_key isEqualToString:@"Public"] || [_key isEqualToString:@"public"]) {
-    if (![ua hasPrefix:@"Evolution"])
+    if (![ua hasPrefix:@"Evolution"]) {
       /* with Evolution we use a separate root-url for public folders */
       return [[WOApplication application] publicFolder:_key container:self];
-    else
-      return nil;
+    }
+    
+    return nil;
   }
   
   if ([_key isEqualToString:@"calendar.ics"] || [_key isEqualToString:@"ics"])

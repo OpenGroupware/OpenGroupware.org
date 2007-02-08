@@ -148,7 +148,10 @@
 }
 
 - (NSArray *)davURLRecordsForChildGIDs:(NSArray *)_gids inContext:(id)_ctx {
-  /* Transform a set of child GIDs into records contained davURL and {DAV:}href */
+  /* 
+     Transform a set of child GIDs into records contained davURL and
+     {DAV:}href
+  */
   NSMutableArray *results;
   NSString       *folderURL, *ext;
   int i, count;

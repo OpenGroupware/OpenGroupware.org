@@ -424,7 +424,7 @@ static BOOL kontactGroupDAV = YES;
   if (kontactGroupDAV) {
     WEClientCapabilities *cc;
     
-    cc = [[_ctx request] clientCapabilities];
+    cc = [(WORequest *)[_ctx request] clientCapabilities];
     if ([[cc userAgentType] isEqualToString:@"Konqueror"]) {
       if ([cc majorVersion] == 3 && [cc minorVersion] == 4) {
 	[self logWithFormat:

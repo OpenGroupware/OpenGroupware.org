@@ -271,11 +271,11 @@ static NSString *cachePath  = nil;
     if (_ctx == nil) 
       _ctx = [(WOApplication *)[WOApplication application] context];
     
-    if ((b = [super baseURLInContext:_ctx])) {
-      if ([b hasSuffix:@"/"])
-	self->baseURL = [b copy];
-      else
-	self->baseURL = [[b stringByAppendingString:@"/"] copy];
+    if ((b = [super baseURLInContext:_ctx]) != nil) {
+      if (![b hasSuffix:@"/"])
+	b = [b stringByAppendingString:@"/"];
+      
+      self->baseURL = [b copy];
       self->baseContext = _ctx;
     }
   }
@@ -413,7 +413,7 @@ static NSString *cachePath  = nil;
   for (i = 0; i < count; i++) {
     NSDictionary *record;
     NSString *line, *pkey, *etag, *url;
-    id       keys[2], values[2];
+    id       keys[3], values[3];
     NSRange  r;
     
     line = [lines objectAtIndex:i];
@@ -429,11 +429,12 @@ static NSString *cachePath  = nil;
     
     url  = [[NSString alloc] initWithFormat:@"%@%@.ics", [self baseURL], pkey];
     
-    keys[0] = @"{DAV:}href";   values[0] = url;
-    keys[1] = @"davEntityTag"; values[1] = etag;
+    keys[0] = @"{DAV:}href";      values[0] = url;
+    keys[1] = @"davEntityTag";    values[1] = etag;
+    keys[2] = @"davResourceType"; values[2] = @"";
     
     record = [[NSDictionary alloc] initWithObjects:values forKeys:keys
-				   count:2];
+				   count:3];
     [entries addObject:record];
     [record release]; record = nil;
     [url    release]; url    = nil;
