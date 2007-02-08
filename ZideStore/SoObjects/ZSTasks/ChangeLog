@@ -1,3 +1,7 @@
+2007-02-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SxTaskFolder.m: added CalDAV marker to WebDAV resource type (v1.5.81)
+
 2006-07-04  Helge Hess  <helge.hess@opengroupware.org>
 
 	* SxTask.m: fixed a gcc 4.1 warning (v1.5.80)

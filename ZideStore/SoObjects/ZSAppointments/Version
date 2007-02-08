@@ -1,7 +1,8 @@
 # version file
 
-SUBMINOR_VERSION:=107
+SUBMINOR_VERSION:=108
 
+# v1.5.108 requires libSaxObjC  v4.5.63
 # v1.5.105 requires libSaxObjC  v4.5.56
 # v1.5.105 requires libNGObjWeb v4.5.234
 # v1.3.86  requires libNGObjWeb v4.3.80

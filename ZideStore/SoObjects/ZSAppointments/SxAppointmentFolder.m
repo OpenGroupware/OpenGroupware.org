@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2002-2006 SKYRIX Software AG
-  Copyright (C) 2006      Helge Hess
+  Copyright (C) 2002-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -32,6 +32,8 @@
 #include <ZSBackend/SxAptManager.h>
 #include <ZSBackend/SxContactManager.h>
 #include <ZSBackend/SxBackendMaster.h>
+
+#include <SaxObjC/XMLNamespaces.h>
 
 @interface NSObject(UsedPrivates) // TODO: fix that
 - (id)rendererWithFolder:(id)_folder inContext:(id)_ctx;
@@ -520,7 +522,7 @@
   
   [record setObject:@"text/vcalendar" forKey:@"davContentType"];
   [record setObject:pkey forKey:@"davDisplayName"]; // small hack, use title
-
+  
 #if 0 // might be necessary for some
   [record setObject:@"1024" forKey:@"davContentLength"];
 #endif
@@ -584,6 +586,11 @@
         [propNames containsObject:@"davLastModified"]) {
       return @selector(performDavUidAndModDateQuery:inContext:);
     }
+    
+    if ([propNames containsObject:@"davEntityTag"] &&
+        [propNames containsObject:@"davResourceType"]) {
+      return @selector(performETagsQuery:inContext:);
+    }
   }
   
   if ([propNames isSubsetOfSet:cadaverSet])
@@ -603,16 +610,22 @@
   return @"DefaultAppointmentProperties";
 }
 
-- (NSString *)davResourceType {
+- (id)davResourceType {
   static id coltype = nil;
   if (coltype == nil) {
-    id tmp;
+    id gdCol, cdCol;
     
-    tmp = [NSArray arrayWithObjects:
-		     @"vevent-collection", @"http://groupdav.org/", nil];
-    coltype = [[NSArray alloc] initWithObjects:@"collection", tmp, nil];
+    cdCol = [[NSArray alloc] initWithObjects:
+		     @"calendar", XMLNS_CALDAV, nil];
+    gdCol = [[NSArray alloc] initWithObjects:
+		     @"vevent-collection", XMLNS_GROUPDAV, nil];
+    coltype = [[NSArray alloc] initWithObjects:
+				 @"collection", cdCol, gdCol, nil];
+    
+    [gdCol release];
+    [cdCol release];
   }
-  return (NSString *)coltype; // TODO: type should be fixed in SOPE (OGo 1.1)
+  return coltype;
 }
 
 - (NSArray *)defaultWebDAVPropertyNamesInContext:(id)_ctx {

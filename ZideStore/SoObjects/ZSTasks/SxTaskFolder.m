@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -26,6 +27,7 @@
 #include <NGObjWeb/WEClientCapabilities.h>
 #include <NGObjWeb/SoObject+SoDAV.h>
 #include <EOControl/EOControl.h>
+#include <SaxObjC/XMLNamespaces.h>
 #include "common.h"
 
 #include <ZSBackend/SxTaskManager.h>
@@ -211,10 +213,16 @@
 - (NSString *)davResourceType {
   static id coltype = nil;
   if (coltype == nil) {
-    id tmp;
-    tmp = [NSArray arrayWithObjects:
-		     @"vtodo-collection", @"http://groupdav.org/", nil];
-    coltype = [[NSArray alloc] initWithObjects:@"collection", tmp, nil];
+    id gdCol, cdCol;
+    
+    cdCol = [[NSArray alloc] initWithObjects:
+		     @"calendar", XMLNS_CALDAV, nil];
+    gdCol = [[NSArray alloc] initWithObjects:
+		     @"vtodo-collection", XMLNS_GROUPDAV, nil];
+    coltype = [[NSArray alloc] initWithObjects:
+				 @"collection", cdCol, gdCol, nil];
+    [gdCol release];
+    [cdCol release];
   }
   return coltype;
 }

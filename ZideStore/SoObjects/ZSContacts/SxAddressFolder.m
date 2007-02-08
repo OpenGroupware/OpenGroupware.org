@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2002-2005 SKYRIX Software AG
+  Copyright (C) 2002-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -27,6 +28,7 @@
 #include <NGObjWeb/WEClientCapabilities.h>
 #include <ZSFrontend/EOQualifier+Additions.h>
 #include <EOControl/EOControl.h>
+#include <SaxObjC/XMLNamespaces.h>
 #include "common.h"
 
 #include <ZSBackend/SxContactManager.h>
@@ -360,10 +362,16 @@
 - (NSString *)davResourceType {
   static id coltype = nil;
   if (coltype == nil) {
-    id tmp;
-    tmp = [NSArray arrayWithObjects:
-		     @"vcard-collection", @"http://groupdav.org/", nil];
-    coltype = [[NSArray alloc] initWithObjects:@"collection", tmp, nil];
+    id gdCol, cdCol;
+    
+    cdCol = [[NSArray alloc] initWithObjects:
+		     @"adbk", XMLNS_CARDDAV, nil];
+    gdCol = [[NSArray alloc] initWithObjects:
+		     @"vcard-collection", XMLNS_GROUPDAV, nil];
+    coltype = [[NSArray alloc] initWithObjects:
+				 @"collection", cdCol, gdCol, nil];
+    [gdCol release];
+    [cdCol release];
   }
   return coltype;
 }
@@ -375,7 +383,7 @@
   
   ms = [NSMutableString stringWithCapacity:64];
   [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
-  if (self->type) [ms appendFormat:@" type=%@", self->type];
+  if (self->type != nil) [ms appendFormat:@" type=%@", self->type];
   [ms appendFormat:@" name=%@", [self nameInContainer]];
   [ms appendString:@">"];
   return ms;
