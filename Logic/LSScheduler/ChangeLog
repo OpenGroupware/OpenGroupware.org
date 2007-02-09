@@ -1,5 +1,8 @@
 2007-02-09  Helge Hess  <helge.hess@opengroupware.org>
 
+	* removed unused/deprecated LSGetDateForADayCommand (aka
+	  appointment::daydates) (v5.3.99)
+
 	* removed unused/deprecated LSGetDateForAWeekCommand (aka
 	  appointment::weekdates) (v5.3.98)
 

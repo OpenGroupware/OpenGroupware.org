@@ -106,7 +106,6 @@
         { name = LSGetAppointmentsOfAccountCommand;    },
         { name = LSGetCommentForAppointmentsCommand;   },
         { name = LSGetCompanyForDateCommand;           },
-        { name = LSGetDateForADayCommand;              },
         { name = LSGetDateWithConflictCommand;         },
         { name = LSGetICalForAppointmentsCommand;      },
         { name = LSGetResourcesForGlobalIDs;           },

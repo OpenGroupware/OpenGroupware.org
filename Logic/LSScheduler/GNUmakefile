@@ -36,7 +36,6 @@ LSScheduler_OBJC_FILES = \
 	LSNewAppointmentCommand.m      			\
 	LSGetAppointmentCommand.m      			\
 	LSDeleteAppointmentCommand.m   			\
-	LSGetDateForADayCommand.m      			\
 	LSGetDateWithConflictCommand.m 			\
 	LSDateAssignmentCommand.m      			\
 	LSGetCompanyForDateCommand.m   			\
