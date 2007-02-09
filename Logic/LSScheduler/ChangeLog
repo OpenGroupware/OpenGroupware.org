@@ -1,3 +1,8 @@
+2007-02-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* removed unused/deprecated LSGetDateForAWeekCommand (aka
+	  appointment::weekdates) (v5.3.98)
+
 2007-02-01  Helge Hess  <helge@senogo>
 
 	* LSQueryAppointments.m: fixed an autorelease crasher bug introduced in

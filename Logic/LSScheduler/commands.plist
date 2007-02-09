@@ -73,7 +73,6 @@
         "access"               = { class = "LSAptAccessCommand";           };
         
         "converttimezone"      = { class = "LSConvertTimeZoneCommand";     };
-        "weekdates"            = { class = "LSGetDateForAWeekCommand";     };
         "daydates"             = { class = "LSGetDateForADayCommand";      };
         "filter-amdates"       = { class = "LSFilterAMWeekDaysCommand";    };
         "filter-pmdates"       = { class = "LSFilterPMWeekDaysCommand";    };
