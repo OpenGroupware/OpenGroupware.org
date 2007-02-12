@@ -142,7 +142,7 @@ _generateCell(SkyMonthRepetition *self, WOResponse *response,
   [ctx appendElementIDComponent:key];
   if (dateId != nil) {
     NSString *eid;
-    char buf[8];
+    char buf[32];
     
     sprintf(buf, "%d", (unsigned)[dateId timeIntervalSince1970]);
     eid = [[NSString alloc] initWithCString:buf];
