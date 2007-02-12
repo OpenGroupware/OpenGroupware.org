@@ -108,6 +108,8 @@ function validateGNUstepArgs() {
       ARG_GSMAKE="$HOME/OGoRoot/Library/Makefiles/"
     elif test -f $HOME/GNUstep/Library/Makefiles/GNUstep.sh; then
       ARG_GSMAKE="$HOME/GNUstep/Library/Makefiles/"
+    elif test -f $HOME/GNUstep/System/Library/Makefiles/GNUstep.sh; then
+      ARG_GSMAKE="$HOME/GNUstep/System/Library/Makefiles/"
     elif test -f /usr/GNUstep/System/Library/Makefiles/GNUstep.sh; then
       ARG_GSMAKE="/usr/GNUstep/System/Library/Makefiles/"
     else
