@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -124,9 +125,9 @@ _applyDate(SkyMonthRepetition *self, WOComponent *sComponent,
 
   m = [self->month unsignedIntValueInComponent:sComponent];
   
-  if (self->startDate)
+  if (self->startDate != nil)
     [self->startDate setValue:[day beginOfDay] inComponent:sComponent];
-  if (self->endDate)
+  if (self->endDate != nil)
     [self->endDate setValue:[day endOfDay] inComponent:sComponent];
   
   if (self->isInMonth) {
@@ -140,14 +141,15 @@ _generateCell(SkyMonthRepetition *self, WOResponse *response,
               WOContext *ctx, NSString *key, NSString *value,
               NSCalendarDate *dateId)
 {
-  [ctx takeValue:
-         [NSDictionary dictionaryWithObject:value forKey:key]
-       forKey:@"SkyMonthRepetition"];
+  NSDictionary *d = [[NSDictionary alloc] initWithObjects:&value forKeys:&key
+					  count:1];
+  [ctx takeValue:d forKey:@"SkyMonthRepetition"];
+  [d release]; d = nil;
   
   [ctx appendElementIDComponent:key];
   if (dateId != nil) {
     NSString *eid;
-    char buf[8];
+    char buf[32 /* space for ulonglong */];
     
     sprintf(buf, "%d", (unsigned)[dateId timeIntervalSince1970]);
     eid = [[NSString alloc] initWithCString:buf];
