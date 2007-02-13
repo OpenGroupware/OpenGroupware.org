@@ -1,3 +1,9 @@
+2007-02-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* LSWImapMailEditor+Activation.m: do not apply quoted-printable
+	  decoding on email addresses. Decoding is already done in the
+	  NGImap4 library (should fix OGo bug #1834) (v5.3.13)
+
 2006-05-03  Helge Hess  <helge.hess@opengroupware.org>
 
 	* LSWImapMailEditor.m: detect incomplete appointment EOs when trying

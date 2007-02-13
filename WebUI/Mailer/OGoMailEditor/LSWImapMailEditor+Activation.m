@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -85,9 +86,7 @@ static NSArray *ReplyAllArray = nil;
   NGMailAddressParser *parser;
   NGMailAddress       *addr;
   
-  // TODO: shouldn't the decoding be done in NGImap4Message?
-  parser   = [NGMailAddressParser mailAddressParserWithString:
-				    [_to stringByDecodingQuotedPrintable]];
+  parser   = [NGMailAddressParser mailAddressParserWithString:_to];
   addrEnum = [[parser parseAddressList] objectEnumerator];
 
   if (addrEnum == nil) {
@@ -107,14 +106,17 @@ static NSArray *ReplyAllArray = nil;
     [dict release]; dict = nil;
   } 
   else {
-    while ((addr = [addrEnum nextObject])) {
+    while ((addr = [addrEnum nextObject]) != nil) {
       NSString *eAddr, *l;
       
       l = eAddr = [addr address];
-	
+      
       if (![[self mailRestrictions] emailAddressAllowed:eAddr]) {
-	l = [l stringByAppendingFormat:@" (%@)",
-	       [[self labels] valueForKey:@"label_prohibited"]];
+	l = [l stringByAppendingString:@" ("];
+	l = [l stringByAppendingString:
+		 [[self labels] valueForKey:@"label_prohibited"]];
+	l = [l stringByAppendingString:@")"];
+	
 	eAddr = @"";
       }
 
@@ -200,7 +202,7 @@ static NSArray *ReplyAllArray = nil;
   
   if ((from = [[obj valueForKey:@"reply-to"] stringValue]) == nil)
     from = [obj valueForKey:@"sender"];
-  
+
   [self _buildReplyHeader:obj to:(from ? [NSArray arrayWithObject:from] : nil) 
         h:nil];
   [self _setBodyForReply:obj from:from part:nil];
@@ -239,21 +241,19 @@ static NSArray *ReplyAllArray = nil;
     NGMailAddressParser *parser;
     NGMailAddress       *addr;
 
-    parser = [NGMailAddressParser mailAddressParserWithString:
-                                    [tmp stringByDecodingQuotedPrintable]];
+    parser = [NGMailAddressParser mailAddressParserWithString:tmp];
     addrs  = [[parser parseAddressList] objectEnumerator];
 
     while ((addr = [addrs nextObject]))
       [self addReceiver:[addr address] type:@"to"];
   }
   enumerator = [message valuesOfHeaderFieldWithName:@"cc"];
-  while ((tmp = [enumerator nextObject])) {
+  while ((tmp = [enumerator nextObject]) != nil) {
     NSEnumerator        *addrs;
     NGMailAddressParser *parser;
     NGMailAddress       *addr;
 
-    parser = [NGMailAddressParser mailAddressParserWithString:
-                                    [tmp stringByDecodingQuotedPrintable]];
+    parser = [NGMailAddressParser mailAddressParserWithString:tmp];
     addrs  = [[parser parseAddressList] objectEnumerator];
 
     while ((addr = [addrs nextObject]))
