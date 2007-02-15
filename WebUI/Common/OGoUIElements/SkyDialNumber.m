@@ -213,16 +213,18 @@ static int useDirectActionDialer = -1;
   
   bindings =
     [[NSDictionary alloc] initWithObjectsAndKeys:
-                    num,        @"number",
-                    login,      @"login",
-                    remoteHost, @"remoteHost",
-                    remoteIP,   @"remoteAddress",
+                    num,                         @"number",
+                    [num stringByEscapingURL],   @"numberEscaped",
+                    login,                       @"login",
+                    [login stringByEscapingURL], @"loginEscaped",
+                    [remoteHost stringByEscapingURL], @"remoteHost",
+                    remoteIP,                    @"remoteAddress",
 		  nil];
   link = [link stringByReplacingVariablesWithBindings:bindings
                stringForUnknownBindings:@"unknown"];
   [bindings release]; bindings = nil;
   
-  [self _appendDialLink:[link stringByEscapingURL] target:target
+  [self _appendDialLink:link target:target
         toResponse:_response inContext:_ctx];
 }
 
