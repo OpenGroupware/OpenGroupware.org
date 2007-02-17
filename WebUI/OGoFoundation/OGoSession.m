@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -218,8 +219,8 @@ static NSString *OGoDateTimeTZFormat     = nil;
 - (BOOL)configureForLSOfficeSession:(OGoContextSession *)_sn {
   NSString *language;
   
-  if (self->lso) {
-    [self logWithFormat:@"WARNING: session was already initialized."];
+  if (self->lso != nil) {
+    [self warnWithFormat:@"session was already initialized."];
     return YES;
   }
   
@@ -427,7 +428,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
     if ((oldActive = [[self navigation] activePage])) {
       if (oldActive != reqPage && (reqPage != nil)) {
         [self debugWithFormat:
-                @"WARNING: active page != request page (%@ vs %@)",
+                @"active page != request page (%@ vs %@)",
                 [oldActive name], [reqPage name]];
       }
     }
@@ -470,9 +471,9 @@ static NSString *OGoDateTimeTZFormat     = nil;
   }
 
   if ((ud = [self userDefaults]) == nil)
-    [self logWithFormat:@"WARNING: missing defaults object in session!"];
+    [self warnWithFormat:@"missing defaults object in session!"];
   else if (![ud synchronize])
-    [self logWithFormat:@"WARNING: could not synchronize defaults: %@", ud];
+    [self warnWithFormat:@"could not synchronize defaults: %@", ud];
   
   [super appendToResponse:_response inContext:_ctx];
 }
@@ -505,9 +506,9 @@ static NSString *OGoDateTimeTZFormat     = nil;
     ownSleepStart = [[NSDate date] timeIntervalSince1970];
   
   if ((ud = [self userDefaults]) == nil)
-    [self logWithFormat:@"WARNING: missing defaults object in session!"];
+    [self warnWithFormat:@"missing defaults object in session!"];
   else if (![ud synchronize])
-    [self logWithFormat:@"WARNING: could not synchronize defaults: %@", ud];
+    [self warnWithFormat:@"could not synchronize defaults: %@", ud];
   
   if (profileSleep) {
     NSTimeInterval endTime;
@@ -614,14 +615,14 @@ static NSString *OGoDateTimeTZFormat     = nil;
   
   bundle = [bm bundleProvidingResource:pageName ofType:@"DockablePages"];
   if (bundle == nil) {
-    [self logWithFormat:@"ERROR: did not find dockable page: '%@'", pageName];
+    [self errorWithFormat:@"did not find dockable page: '%@'", pageName];
     return nil;
   }
 
   cfgEntry = [bundle configForResource:pageName ofType:@"DockablePages"];
   if (cfgEntry == nil) {
-    [self logWithFormat:@"ERROR: missing configuration of dockable page: '%@'",
-	  pageName];
+    [self errorWithFormat:@"missing configuration of dockable page: '%@'",
+	    pageName];
     return nil;
   }
   
@@ -676,8 +677,8 @@ static NSString *OGoDateTimeTZFormat     = nil;
       continue;
     
     if ((componentName = [cfgEntry objectForKey:@"component"]) == nil) {
-      [self logWithFormat:
-	      @"ERROR: missing component-name of page: '%@'", pageName];
+      [self errorWithFormat:
+	      @"missing component-name of page: '%@'", pageName];
       continue;
     }
 	
@@ -744,8 +745,8 @@ static NSString *OGoDateTimeTZFormat     = nil;
       path = [resMan pathForResourceNamed:@"components.cfg" inFramework:nil
                      languages:langs];
       if (path == nil) {
-        [self logWithFormat:
-                @"ERROR: did not find components.cfg for languages: %@",
+        [self errorWithFormat:
+                @"did not find components.cfg for languages: %@",
                 [langs componentsJoinedByString:@", "]];
       }
       else {
@@ -758,9 +759,8 @@ static NSString *OGoDateTimeTZFormat     = nil;
           [tmp release];
         }
         else {
-          [self logWithFormat:
-                  @"ERROR: file is not in dictionary plist format: '%@'", 
-                  path];
+          [self errorWithFormat:
+                  @"file is not in dictionary plist format: '%@'", path];
         }
       }
   }
@@ -771,7 +771,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
   NSDictionary *cfg;
   
   if (((cfg = self->componentsConfig) == nil) && (self->lso != nil)) {
-    [self debugWithFormat:@"WARNING: no component config loaded! "
+    [self debugWithFormat:@"no component config loaded! "
             @"(probably an unavailable theme is selected in the prefs)"];
   }
   return cfg;
@@ -889,7 +889,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
   NSString   *abbrev;
   
   if (self->userDefaults == nil)
-    [self logWithFormat:@"WARNING: user-defaults not yet set in session!"];
+    [self warnWithFormat:@"user-defaults not yet set in session!"];
   
   abbrev = [self->userDefaults objectForKey:@"timezone"];
   tzone  = nil;
@@ -907,7 +907,7 @@ static NSString *OGoDateTimeTZFormat     = nil;
 #endif
 
   if (tzone == nil)
-    [self logWithFormat:@"ERROR: got not timezone for session!"];
+    [self errorWithFormat:@"got not timezone for session!"];
   
   return tzone;
 }

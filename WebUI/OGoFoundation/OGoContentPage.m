@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -124,7 +125,7 @@
 }
 
 - (id)master {
-  [self logWithFormat:@"WARNING: -master was called, returning self"];
+  [self warnWithFormat:@"-master was called, returning self"];
   return self;
 }
 

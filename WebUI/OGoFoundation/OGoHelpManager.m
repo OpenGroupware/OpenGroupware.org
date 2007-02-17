@@ -107,7 +107,7 @@ static OGoHelpManager *shared = nil; // THREAD
   NSURL *url;
   
   if ((url = [_ctx urlForKey:@"so"]) == nil) {
-    [self logWithFormat:@"ERROR: got no baseURL!"];
+    [self errorWithFormat:@"got no baseURL!"];
     return nil;
   }
   url = [NSURL URLWithString:_section relativeToURL:url];

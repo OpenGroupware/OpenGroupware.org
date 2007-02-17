@@ -72,7 +72,7 @@ static BOOL useLatin1Strings = NO;
   
   rawData = [[NSData alloc] initWithContentsOfMappedFile:self->path];
   if (rawData == nil) {
-    [self logWithFormat:@"ERROR: could not load strings file: %@", self->path];
+    [self errorWithFormat:@"could not load strings file: %@", self->path];
     return;
   }
   
@@ -85,7 +85,7 @@ static BOOL useLatin1Strings = NO;
 				  encoding:[self stringsFileEncoding]];
   [rawData release]; rawData = nil;
   if (plistString == nil) {
-    [self logWithFormat:@"ERROR: could not decode strings file charset: %@", 
+    [self errorWithFormat:@"could not decode strings file charset: %@",
 	    self->path];
     return;
   }

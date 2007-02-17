@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -56,7 +57,7 @@
 /* accessors */
 
 - (int)maxSteps {
-  [self logWithFormat:@"ERROR(%s): subclass should override this method!",
+  [self errorWithFormat:@"%s: subclass should override this method!",
 	  __PRETTY_FUNCTION__];
   return 0;
 }
@@ -64,7 +65,7 @@
 /* operations */
 
 - (id)doStep:(int)_step withObject:(id)_obj {
-  [self logWithFormat:@"ERROR(%s): subclass should override this method!",
+  [self errorWithFormat:@"%s: subclass should override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
@@ -82,7 +83,7 @@
   self->stepForward = YES;
   
   if (self->step >= ([self maxSteps] - 1)) {
-    [self logWithFormat:@"WARNING: inconsistence state -> to much steps"];
+    [self warnWithFormat:@"inconsistent state -> to much steps"];
     return nil;
   }
   
@@ -118,13 +119,13 @@
     return [self doStep:self->step withObject:obj];
   }
   
-  [self logWithFormat:@"WARNING: inconsistence state "];
+  [self warnWithFormat:@"inconsistent state "];
   return nil;
 }
 
 - (id)cancel {
   if ((self->startPage != nil) && (self->parent != nil)) {
-    [self logWithFormat:@"WARNING: inconsistence state "];
+    [self warnWithFormat:@"inconsistent state "];
     [[self->session navigation] enterPage:self->startPage];
     return nil;
   }
@@ -135,7 +136,7 @@
   if (self->parent != nil)
     return [self->parent cancel];
   
-  [self logWithFormat:@"inconsistence state"];
+  [self logWithFormat:@"inconsistent state"];
   return nil;
 }
 
@@ -156,7 +157,7 @@
 }
 
 - (BOOL)isFinish {
-  [self logWithFormat:@"ERROR(%s): subclass should override this method!",
+  [self errorWithFormat:@"%s: subclass should override this method!",
 	  __PRETTY_FUNCTION__];
   return NO;
 }
@@ -241,7 +242,7 @@
   cnt = [self->objects count];
   if (cnt < self->step - 1) {
     [self logWithFormat:
-	    @"inconsistence state self->step %d [self->objects count]"
+	    @"inconsistent state self->step %d [self->objects count]"
             @" %d", self->step, cnt];
     return;
   }
@@ -267,13 +268,13 @@
 }
 
 - (NSString *)wizardName {
-  [self logWithFormat:@"ERROR(%s): subclass should override this method!",
+  [self errorWithFormat:@"%s: subclass should override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
 
 - (BOOL)pageCouldChangeForStep:(int)_step {
-  [self logWithFormat:@"ERROR(%s): subclass should override this method!",
+  [self errorWithFormat:@"%s: subclass should override this method!",
 	  __PRETTY_FUNCTION__];
   return NO;
 }
@@ -310,7 +311,7 @@
 
 - (id)goToPage:(id)_page {
   if (_page == nil) {
-    NSLog(@"ERROR: goToPage with nil page");
+    [self errorWithFormat:@"goToPage with nil page"];
     return nil;
   }
   if ((int)[self->pageCache count] <= self->step) {
@@ -333,7 +334,7 @@
 }
 
 - (NSString *)labelPage {
-  [self logWithFormat:@"ERROR(%s): subclass should override this method!",
+  [self errorWithFormat:@"%s: subclass should override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }

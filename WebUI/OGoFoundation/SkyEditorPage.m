@@ -180,8 +180,8 @@ static NSArray *objVersionName = nil;
                     nil] lastObject] valueForKey:@"objectVersion"];
 
   if (newVers == nil) {
-    [self logWithFormat:@"WARNING(%s): Cannot check objectVersion", 
-	  __PRETTY_FUNCTION__];
+    [self warnWithFormat:@"%s: Cannot check objectVersion",
+	    __PRETTY_FUNCTION__];
     return YES;
   }
   if ([newVers isEqual:objVers])

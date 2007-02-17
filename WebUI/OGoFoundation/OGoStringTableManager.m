@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2004-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -210,11 +211,11 @@ static BOOL   debugOn = NO;
       return [table stringForKey:_key withDefaultValue:_default];
     }
   }
-  else if ([_languages count] == 0) {
+  else if (![_languages isNotEmpty]) {
     id table;
     
-    NSLog(@"WARNING: called %s without languages array %@ !",
-          __PRETTY_FUNCTION__, _languages);
+    [self warnWithFormat:@"%s: called without languages array %@ !",
+          __PRETTY_FUNCTION__, _languages];
     
     if ((table = [self->nameToTable objectForKey:_tableName]))
       return [table stringForKey:_key withDefaultValue:_default];
@@ -283,8 +284,8 @@ static BOOL   debugOn = NO;
     return [table stringForKey:_key withDefaultValue:_default];
   }
   else if (debugOn) {
-    NSLog(@"WARNING: missing string table %@ in bundle %@",
-          _tableName, [bundle bundlePath]);
+    [self warnWithFormat:@"missing string table %@ in bundle %@",
+          _tableName, [bundle bundlePath]];
   }
   return _default;
 }
@@ -408,7 +409,7 @@ static BOOL   debugOn = NO;
   }
   
   if (debugOn)
-    NSLog(@"WARNING: missing string table %@ in %@", _tableName, path);
+    [self warnWithFormat:@"missing string table %@ in %@", _tableName, path];
   
   return _default;
 }

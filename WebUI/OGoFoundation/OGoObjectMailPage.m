@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -77,13 +78,13 @@ static NGMimeType *appOctetType = nil;
 }
 
 - (NSString *)entityName {
-  [self logWithFormat:@"ERROR(%s): subclass needs to override this method!",
+  [self errorWithFormat:@"%s: subclass needs to override this method!",
   	  __PRETTY_FUNCTION__];
   return nil;
 }
 
 - (NSString *)getCmdName {
-  [self logWithFormat:@"ERROR(%s): subclass needs to override this method!",
+  [self errorWithFormat:@"%s: subclass needs to override this method!",
   	  __PRETTY_FUNCTION__];
   return nil;
 }
@@ -122,7 +123,7 @@ static NGMimeType *appOctetType = nil;
   type = [[self->partOfBody valuesOfHeaderFieldWithName:@"content-type"]
                             nextObject];
   if (type == nil) {
-    [self logWithFormat:@"ERROR: missing content type of part: %@", 
+    [self errorWithFormat:@"missing content type of part: %@", 
             self->partOfBody];
     return nil;
   }
@@ -132,7 +133,7 @@ static NGMimeType *appOctetType = nil;
                          entityNamed:[self entityName]];
   
   if ((pkName = [[entity primaryKeyAttributeNames] lastObject]) == nil) {
-    [self logWithFormat:@"ERROR: missing primary key of entity: %@ (part=%@)",
+    [self errorWithFormat:@"missing primary key of entity: %@ (part=%@)",
             entity, self->partOfBody];
     return nil;
   }
@@ -145,7 +146,7 @@ static NGMimeType *appOctetType = nil;
     [self setObject:obj];
   }
   else {
-    [self logWithFormat:@"WARNING: more than one object for a primary key"];
+    [self warnWithFormat:@"more than one object for a primary key"];
     obj = [obj objectAtIndex:0];
     [self setObject:obj];
   }
@@ -166,7 +167,7 @@ static NGMimeType *appOctetType = nil;
 }
 
 - (NSString *)objectUrlKey {
-  [self logWithFormat:@"ERROR(%s): subclass needs to override this method!",
+  [self errorWithFormat:@"%s: subclass needs to override this method!",
   	  __PRETTY_FUNCTION__];
   return nil;
 }
@@ -184,14 +185,13 @@ static NGMimeType *appOctetType = nil;
   
   ms = [NSMutableString stringWithCapacity:256];
   
-  if ([url length] > 0) {
+  if ([url isNotEmpty]) {
     [ms appendString:url];
     [ms appendString:urlPrefix];
   }
   else {
-    [self logWithFormat:
-            @"WARNING: missing serverURL in context "
-            @"(may generate invalid URLs)!"];
+    [self warnWithFormat:
+            @"missing serverURL in context (may generate invalid URLs)!"];
     
     [ms appendString:@"http://"];
     [ms appendString:[[[self context] request] headerForKey:@"host"]];

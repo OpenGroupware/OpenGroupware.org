@@ -123,7 +123,7 @@
 }
 
 - (NSString *)wizardObjectType {
-  [self logWithFormat:@"ERROR(%s): subclass should override this method!",
+  [self errorWithFormat:@"%s: subclass should override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
@@ -137,7 +137,7 @@
 }
 
 - (id)wizardSave {
-  [self logWithFormat:@"ERROR(%s): subclasses need to override this method!",
+  [self errorWithFormat:@"%s: subclasses need to override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }

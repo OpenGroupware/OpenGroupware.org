@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -176,7 +177,7 @@
   NSString *fmt;
   
   fmt = [NSString stringWithFormat:
-                      @"ERROR (please report): couldn't get entity of object "
+                      @"ERROR (please report): could not get entity of object "
                       @"0x%p<%@>: %@",
                       _obj, NSStringFromClass([_obj class]),
                       _obj];
@@ -197,13 +198,13 @@
   
   mailEditor = (id)[[self application] pageWithName:@"LSWImapMailEditor"];
   if (mailEditor == nil) {
-    [self logWithFormat:@"ERROR: missing LSWImapMailEditor component !"];
-    [self setErrorString:@"missing mail-editor component !"];
+    [self errorWithFormat:@"missing LSWImapMailEditor component!"];
+    [self setErrorString:@"missing mail-editor component!"];
     return nil;
   }
   if ((obj = [self object]) == nil) {
-    [self logWithFormat:@"ERROR: missing object in viewer component !"];
-    [self setErrorString:@"missing object in viewer component !"];
+    [self errorWithFormat:@"missing object in viewer component!"];
+    [self setErrorString:@"missing object in viewer component!"];
     return nil;
   }
   
@@ -225,13 +226,13 @@
         obj = tmp;
       }
       else
-        [self logWithFormat:@"WARNING: could not get object for gid: %@",gid];
+        [self warnWithFormat:@"could not get object for gid: %@",gid];
     }
     else
-      [self logWithFormat:@"WARNING: document has no globalID: %@!", obj];
+      [self warnWithFormat:@"document has no globalID: %@!", obj];
   }
   
-  if ((mail = [[self config] valueForKey:@"mail"])) {
+  if ((mail = [[self config] valueForKey:@"mail"]) != nil) {
     if ([(str = [mail valueForKey:@"subject"]) isNotNull])
       [mailEditor setSubject:str];
     
@@ -274,7 +275,7 @@
 }
 
 - (NSString *)objectUrlKey {
-  [self logWithFormat:@"WARNING(%s): subclass should override this method!",
+  [self warnWithFormat:@"%s: subclass should override this method!",
 	  __PRETTY_FUNCTION__];
   return nil;
 }
@@ -287,7 +288,7 @@
   urlPrefix = [ctx urlSessionPrefix];
   url       = [[ctx request] headerForKey:@"x-webobjects-server-url"];
   
-  if ([url length] > 0) {
+  if ([url isNotEmpty]) {
     urlPrefix = [NSString stringWithFormat:@"mailto:?body=%@%@/%@",
                             url, urlPrefix,
                             [self objectUrlKey]];

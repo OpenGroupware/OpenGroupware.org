@@ -193,14 +193,14 @@ static inline NSMutableDictionary *_vaToDict(OGoSession *self, va_list *va) {
 
 - (BOOL)commit {
   BOOL ok = [[self commandContext] commit];
-  if (!ok) [self logWithFormat:@"WARNING: tx commit failed !"];
+  if (!ok) [self warnWithFormat:@"tx commit failed!"];
   return ok;
 }
 - (BOOL)rollback {
   BOOL ok;
   [self logWithFormat:@"tx is going to be rolled back .."];
   ok = [[self commandContext] rollback];
-  if (!ok) [self logWithFormat:@"WARNING: tx commit failed !"];
+  if (!ok) [self warnWithFormat:@"tx commit failed !"];
   return ok;
 }
 

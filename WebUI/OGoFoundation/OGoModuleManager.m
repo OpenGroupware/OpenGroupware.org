@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -65,8 +66,8 @@ static BOOL debugOn = NO;
   defaults = [NSDictionary dictionaryWithContentsOfFile:_path];
 #endif
   if (defaults == nil) {
-    [self logWithFormat:
-	    @"WARNING(%s): could not load defaults of bundle %@ (path=%@)",
+    [self warnWithFormat:
+	    @"%s: could not load defaults of bundle %@ (path=%@)",
 	    __PRETTY_FUNCTION__, 
 	    [[NSBundle bundleForClass:[self class]] bundleName], 
 	    _path];
@@ -100,13 +101,13 @@ static BOOL debugOn = NO;
     Class    clazz;
     
     if ((clazzName = [classDict objectForKey:@"name"]) == nil) {
-      [self logWithFormat:@"ERROR: got invalid 'classes' dict: %@", classDict];
+      [self errorWithFormat:@"got invalid 'classes' dict: %@", classDict];
       continue;
     }
     
     if ((clazz = NSClassFromString(clazzName)) == Nil) {
-      [self logWithFormat:
-	      @"WARNING: did not find class as registered in bundle: '%@'\n  "
+      [self warnWithFormat:
+	      @"did not find class as registered in bundle: '%@'\n  "
 	      @"%@", clazzName, _bundle];
       continue;
     }

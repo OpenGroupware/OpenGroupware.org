@@ -1,7 +1,12 @@
+2007-02-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* various files: properly use -warnWithFormat:/errorWithFormat:
+	  (v5.3.105)
+
 2006-10-01  Helge Hess  <helge.hess@opengroupware.org>
 
 	* OGoListComponent.m: added user configuration support for lists
-	  (v5.3.103)
+	  (v5.3.104)
 
 2006-09-30  Helge Hess  <helge.hess@opengroupware.org>
 

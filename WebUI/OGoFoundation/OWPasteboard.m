@@ -177,8 +177,8 @@
     return nil;
   }
   if (![self isTypeDeclared:_type]) {
-    [self logWithFormat:
-            @"WARNING: type %@ is not declared for pasteboard: %@",_type,self];
+    [self warnWithFormat:
+            @"type %@ is not declared for pasteboard: %@",_type,self];
     return nil;
   }
   

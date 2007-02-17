@@ -1,5 +1,6 @@
 /*
-  Copyright (C) 2000-2005 SKYRIX Software AG
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -63,26 +64,25 @@
   id           type;
   id           object;
 
-  if ([types count] == 0) {
-    [self logWithFormat:
-            @"WARNING: could not get object from clipboard (no types declared)"];
+  if (![types isNotEmpty]) {
+    [self warnWithFormat:
+            @"could not get object from clipboard (no types declared)"];
     return nil;
   }
   type = [cb availableTypeFromArray:types];
   if (type == nil) {
-    [self logWithFormat:@"WARNING: could not get object from clipboard .."];
+    [self warnWithFormat:@"could not get object from clipboard .."];
     return nil;
   }
   
   object = [self objectInClipboardWithType:type];
-  if (object)
+  if (object != nil)
     return object;
-  else {
-    [self logWithFormat:
-            @"WARNING: could not get object from clipboard for type %@.",
+  
+  [self warnWithFormat:
+            @"could not get object from clipboard for type %@.",
             type];
-    return nil;
-  }
+  return nil;
 }
 
 - (NSString *)labelForObjectInClipboard {
