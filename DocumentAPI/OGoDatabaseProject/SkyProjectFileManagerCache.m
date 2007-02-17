@@ -115,33 +115,38 @@ static NSNumber *yesNum = nil;
 }
 
 - (id)initWithContext:(id)_context projectGlobalID:(EOGlobalID *)_gid {
-  if ((self = [super init])) {
+  if ((self = [super init]) != nil) {
     NSString *ctx;
     NSUserDefaults *defaults;
     id              tmp;
     
-    NSAssert(_context, @"missing context ..");
-    NSAssert(_gid,     @"missing gid ..");
+    if (_context == nil) {
+      [self errorWithFormat:@"missing context!"];
+      [self release];
+      return nil;
+    }
+    if (_gid == nil) {
+      [self errorWithFormat:@"missing project global-id!"];
+      [self release];
+      return nil;
+    }
     
     ctx           = @"context";
     self->context = [_context retain];
-      
+    
     defaults = [NSUserDefaults standardUserDefaults];
-    tmp      = [defaults valueForKey:@"SkyProjectFileManagerUseSessionCache"];
 
-    self->useSessionCache = (tmp) ? [tmp boolValue] : YES;
+    tmp = [defaults valueForKey:@"SkyProjectFileManagerUseSessionCache"];
+    self->useSessionCache = (tmp != nil) ? [tmp boolValue] : YES;
 
     tmp = [defaults valueForKey:@"SkyProjectFileManagerFlushTimeout"];
-
-    self->flushTimeout = (!tmp) ? 0 : [tmp intValue];
+    self->flushTimeout = (tmp == nil) ? 0 : [tmp intValue];
 
     tmp = [defaults valueForKey:@"SkyProjectFileManagerClickTimeout"];
-
-    self->clickTimeout = (!tmp) ? 0 : [tmp intValue];
+    self->clickTimeout = (tmp == nil) ? 0 : [tmp intValue];
 
     tmp = [defaults valueForKey:@"SkyProjectFileManagerCacheTimeout"];
-
-    self->cacheTimeout = (!tmp) ? 0 : [tmp intValue];
+    self->cacheTimeout = (tmp == nil) ? 0 : [tmp intValue];
 
     [self initSessionCache];
     [self initClickTimer];
@@ -153,9 +158,11 @@ static NSNumber *yesNum = nil;
     self->notifyUserInfo   = 
       [[NSDictionary alloc] initWithObjects:&self->context
 			    forKeys:&ctx count:1];
+    
     self->project = [[self _projectForGID:_gid] retain];
     if (self->project == nil) {
-      NSLog(@"ERROR[%s] missing project", __PRETTY_FUNCTION__);
+      [self errorWithFormat:@"%s: did not find project for gid: %@", 
+	    __PRETTY_FUNCTION__, _gid];
       [self release];
       return nil;
     }
@@ -270,25 +277,26 @@ static NSNumber *yesNum = nil;
   BOOL                boolResult;
   NSString            *readCache;
   NSMutableDictionary *cache;
-
+  
   if ([_path pathVersion] != nil) {
-    NSLog(@"WARNING[%s]: versions for isReadableFileAtPath: are not allowed",
-          __PRETTY_FUNCTION__);
+    [self warnWithFormat:
+	    @"%s: versions for isReadableFileAtPath: are not allowed",
+            __PRETTY_FUNCTION__];
     return NO;
   }
   boolResult = NO;
-  if (!(_path = [_manager _makeAbsolute:_path])) {
+  if ((_path = [_manager _makeAbsolute:_path]) == nil) {
     return [_manager _buildErrorWithSource:_path dest:nil msg:20
                      handler:nil cmd:_cmd];
   }
   
   readCache  = @"_FileManager_isReadableFileAtPath_Cache";
   
-  if (!(cache = [self cacheValueForKey:readCache])) {
+  if ((cache = [self cacheValueForKey:readCache]) == nil) {
     cache = [NSMutableDictionary dictionaryWithCapacity:256];
     [self takeCacheValue:cache forKey:readCache];
   }
-  if (!(result = [cache objectForKey:_path])) {
+  if ((result = [cache objectForKey:_path]) == nil) {
     EOGlobalID *gid;
 
     if ((gid = [self gidForPath:_path manager:_manager])) {
