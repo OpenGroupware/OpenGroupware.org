@@ -1,3 +1,7 @@
+2006-02-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* WebServerResources/English.lproj/: added mimeicon_image_png_16x19.gif
+
 2006-01-29  Helge Hess  <helge.hess@opengroupware.org>
 
 	* WebServerResources/English.lproj/LSWAppointmentEditor.js: added
