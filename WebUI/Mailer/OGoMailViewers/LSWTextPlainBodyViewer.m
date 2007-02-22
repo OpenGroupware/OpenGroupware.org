@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2000-2006 SKYRIX Software AG
-  Copyright (C) 2006      Helge Hess
+  Copyright (C) 2000-2007 SKYRIX Software AG
+  Copyright (C) 2007      Helge Hess
 
   This file is part of OpenGroupware.org.
 
@@ -121,8 +121,14 @@ static int UseFoundationStringEncodingForMimeText = -1;
       data = [data dataByDecodingQuotedPrintableTransferEncoding];
     else if ([en isEqualToString:@"base64"])
       data = [data dataByDecodingBase64];
+    else if ([en isEqualToString:@"7bit"])
+      ; /* nothing to be done (RFC 1521) */
+    else if ([en isEqualToString:@"8bit"])
+      ; /* nothing to be done (RFC 1521) */
+    else if ([en isEqualToString:@"identity"])
+      ; /* nothing to be done (RFC 1521) */
     else
-      [self errorWithFormat:@"unknown encoding: %@", en];
+      [self warnWithFormat:@"unknown encoding (returning as-is): %@", en];
   }
   
   s = nil;
