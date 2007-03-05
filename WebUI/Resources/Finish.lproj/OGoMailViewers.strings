@@ -1,0 +1,11 @@
+
+
+bcc = "Piilokopio"; //  "Bcc";
+cc = "Kopio"; //  "Cc";
+contentLength = "Koko"; //  "Size";
+date = "Päivämäärä"; //  "Date";
+download = "Lataa viesti"; //  "download mail";
+sender = "Lähettäjä"; //  "Sender";
+subject = "Aihe"; //  "Subject";
+to = "Vastaanottaja"; //  "To";
+toDoc = "Viesti asiakirjaksi"; //  "mail to document";

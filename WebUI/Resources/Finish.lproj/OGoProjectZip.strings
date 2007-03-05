@@ -1,0 +1,22 @@
+
+
+archiveFormat = "Arkiston tyyppi"; //  "archive format";
+targetFile = "Kohdetiedosto"; //  "target file";
+compressionLevel = "Tiivistyksen taso"; //  "compression level";
+saveAttributes = "tallenna ominaisuudet"; //  "save attributes";
+targetDir = "kohdekansio"; //  "target directory";
+fileName = "Tiedoston nimi"; //  "Filename";
+size = "Koko"; //  "Size";
+owner = "Nykyinen omistaja"; //  "Current Owner";
+subject = "Otsikko"; //  "Title";
+releaseDate = "Muokattu"; //  "Modified";
+exclude = "sulje pois"; //  "exclude";
+filePath = "tiedostopolku"; //  "Filepath";
+date = "Päivämäärä"; //  "Date";
+remove = "poista arkisto"; //  "remove archive file";
+overwrite = "ylikirjoita olemassaolevat tiedostot"; //  "overwrite existing files";
+restoreAttributes = "yritä palauttaa tiedostojen ominaisuudet"; //  "try to restore file attributes";
+archiveContent = "arkiston sisältö"; //  "contents of archive file";
+cancel = "Peruuta"; //  "cancel";
+unzip = "pura"; //  "unzip";
+zip = "Pakkaa"; //  "zip";

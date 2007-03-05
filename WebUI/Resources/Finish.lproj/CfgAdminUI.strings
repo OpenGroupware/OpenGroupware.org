@@ -1,0 +1,24 @@
+
+
+// Note: work in progress, no need for translation yet // // Note: work in progress, no need for translation yet
+
+OGoAccountsVirtualConfigFile = "Postfix Virtual: OGo Accounts"; //  "Postfix Virtual: OGo Accounts";
+OGoCfgAdminPage = "Config Administration"; //  "Config Administration";
+OGoCyrusConfigFile = "Cyrus Configuration"; //  "Cyrus Configuration";
+OGoPostfixConfigFile = "Postfix Main Configuration"; //  "Postfix Main Configuration";
+OGoTeamsVirtualConfigFile = "Postfix Virtual: OGo Teams"; //  "Postfix Virtual: OGo Teams";
+OGoCyrusConfigEditor = "Cyrus Configuration Editor"; //  "Cyrus Configuration Editor";
+OGoPostfixConfigEditor = "Postfix Configuration Editor"; //  "Postfix Configuration Editor";
+OGoAccountsVirtualEditor = "Accounts Virtual Editor"; //  "Accounts Virtual Editor";
+OGoTeamsVirtualEditor = "Teams Virtual Editor"; //  "Teams Virtual Editor";
+OGoQuotaTabConfigFile = "Cyrus Quota and Mailbox Configuration"; //  "Cyrus Quota and Mailbox Configuration";
+OGoQuotaTabEditor = "Cyrus Mailboxes and Quota Configuration"; //  "Cyrus Mailboxes and Quota Configuration";
+dock_cfgadminapp = "Config Administration"; //  "Config Administration";
+tab_config = "configuration"; //  "configuration";
+tab_configs = "Configurations"; //  "Configurations";
+tab_debug = "debug"; //  "debug";
+tab_pathconfig = "pathes"; //  "pathes";
+tab_preview = "preview";
+tab_saslconfig = "SASL"; //  "SASL";
+tab_tlsconfig = "TLS"; //  "TLS";
+tv_config_database = "Configuration Database"; //  "Configuration Database";

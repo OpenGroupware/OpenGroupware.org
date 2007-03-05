@@ -1,0 +1,10 @@
+access = "Oikeudet"; //  "permissions";
+accountName = "Käyttäjätunnus"; //  "Account";
+attributes = "Ominaisuudet"; //  "attributes";
+contents = "sisältö"; //  "contents";
+download = "Lataa"; //  "Download";
+edit = "Muokkaa"; //  "edit";
+mimetype = "MIME-tyyppi"; //  "MIME Type";
+size = "Koko"; //  "Size";
+standardAttributes = "Perusominaisuudet"; // "standard attributes";
+subject = "Aihe"; //  "Titel";

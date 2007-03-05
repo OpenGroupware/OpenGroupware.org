@@ -1,0 +1,9 @@
+
+
+// Note: work in progress, no need for translation yet // // Note: work in progress, no need for translation yet
+
+dock_cyrusadminapp = "Cyrus Administration"; //  "Cyrus Administration";
+OGoCyrusAdminPage = "Cyrus Administration"; //  "Cyrus Administration";
+tab_mailboxes = "mailboxes"; //  "mailboxes";
+tab_info = "serverinfo"; //  "serverinfo";
+tab_ogo = "OGo"; //  "OGo";
