@@ -1,3 +1,7 @@
+2007-03-05  Samuli Seppaenen  <samuli.seppanen@tietoteema.fi>
+
+        * Added Finish translation
+
 2007-01-18  Helge Hess  <helge.hess@opengroupware.org>
 
 	* English.lproj/LSWScheduler.strings: renamed 'weekdays' to 'workdays'
