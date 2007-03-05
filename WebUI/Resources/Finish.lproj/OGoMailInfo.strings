@@ -1,0 +1,37 @@
+
+
+mail_editor_type = "Viestimuokkaimen tyyppi"; //  "Type of Maileditor";
+mail_send_type = "Lähetettävien viestien tyyppi"; //  "Send Mail as";
+DefaultAccessPreferences = "Oletuskäyttöoikeudet"; //  "Default Access Preferences";
+Imap = "Viestit"; //  "Mails";
+LSWMailPreferences = "Sähköpostin asetukset"; //  "Mail Preferences";
+NO = "Ei"; //  "No";
+YES = "Kyllä"; //  "Yes";
+action_closeWindow = "Sulje ikkuna"; //  "close window";
+action_refresh = "virkistä"; //  "refresh";
+action_viewMail = "Näytä viesti"; //  "view mail";
+activeMail = "Sähköposti"; //  "Email";
+asIcon = "kuvakkeena"; //  "as icon";
+cancelButtonLabel = "Peruuta"; //  "cancel";
+external = "Ulkoinen"; //  "External";
+html = "Html"; //  "Html";
+imapHost = "IMAP-palvelin"; //  "imap host";
+imapPasswd1 = "IMAP-salasana"; //  "imap password";
+imapPasswd2 = "toista IMAP-salasana"; //  "repeat imap password";
+imapUser = "IMAP-käyttäjätunnus"; //  "imap user name";
+inactiveMail = "Sähköposti (poissa käytöstä)"; //  "Email (inactive)";
+internal = "Sisäinen"; //  "Internal";
+label_newMail_multi = "%i uutta viestiä!"; //  "You have %i new mails!";
+label_newMail_no = "Ei uusia viestejä."; //  "You have no new mails!";
+label_newMail_single = "Yksi uusi viesti!"; //  "You have one new mail!";
+login = "Kirjautuminen"; //  "Login";
+newMail = "Sähköposti (lukemattomia)"; //  "Email (unread)";
+plain = "Teksti"; //  "Text";
+saveButtonLabel = "Tallenna"; //  "save";
+senderLength = "Lähettäjä-kentän pituus"; //  "Sender Length";
+signature = "Allekirjoitus"; //  "Signature";
+subjectLength = "Otsikon pituus"; //  "Subject Length";
+viewAttachmentBodysInEditor = "Näytä liitetiedostot suoraan viestimuokkaimessa"; // "View attachment bodys in editor";
+viewAttachmentsInline = "Näytä liitetiedostot upotettuna"; //  "View attachments inline";
+viewImagesInline = "Näytä kuvat upotettuna"; //  "View images inline";
+viewStatus = "Näytä viestin tila"; //  "View mail status";

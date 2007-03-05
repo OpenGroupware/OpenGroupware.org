@@ -1,0 +1,20 @@
+
+
+button_linkadd = "Lisää"; //  "add";
+linkType_pda_conflicting_ogo_entry = "OGo-merkintä jo olemassa"; //  "conflicting OGo entry";
+linkType_pda_conflicting_palm_entry = "Palm-merkintä on jo olemassa"; // "conflicting Palm entry";
+linkType_pda_new_ogo_entry = "Uusi OGo-merkintä"; //  "new OGo entry";
+linkentity_Date = "Tapahtuma"; //  "Appointment";
+linkentity_Enterprise = "Yritys"; //  "Company";
+linkentity_Job = "Tehtävä"; //  "Task";
+linkentity_Person = "Henkilö"; //  "Person";
+linkentity_Project = "Projekti"; //  "Project";
+linkentity_Team = "Ryhmä"; //  "Team";
+linkentity_external = "ulkoinen"; //  "external";
+linksToObject = "Objektiin viittaavat linkit"; //  "Links pointing to this object";
+note_nolinksconfigured = "Huom: linkkien tyyppejä ei ole määritelty"; //  "Note: no linktypes configured for manual link creation.";
+popup_createLink = "[uusi linkki]"; //  "[create link]";
+tableview_footertitle = "Linkit"; //  "Links";
+tableview_linklabel = "Linkki"; //  "link";
+tableview_linkstitle = "Linkit"; //  "Related Links";
+tableview_linktype = "Tyyppi"; //  "type";

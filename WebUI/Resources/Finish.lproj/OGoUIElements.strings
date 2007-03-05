@@ -1,0 +1,28 @@
+
+
+accountName = "Käyttäjätunnus"; //  "account";
+cal_birthday = "Syntymäpäivä"; //  "birthday";
+cal_browse = "Valitse"; //  "browse";
+cal_completionDate = "Erääntymispäivä"; //  "due date";
+cal_cycleEndDate = "Toiston loppu"; //  "cycle end";
+cal_duedate = "Erääntymispäivä"; //  "due date";
+cal_endDate = "päättymispäivä"; //  "end";
+cal_enddate = "päättymispäivä"; //  "end";
+cal_from = "Aloituspäivä"; //  "start";
+cal_repeatEnddate = "Toiston loppu"; //  "cycle end";
+cal_startDate = "Aloituspäivä"; //  "start";
+cal_startdate = "Aloituspäivä"; //  "start";
+cal_taskcompletiondate = "valmistumispäivä";
+cal_to = "Loppu"; //  "end";
+deselectAll = "Poista kaikki valinnat"; //  "deselect all";
+first = "Ensimmäinen"; //  "first";
+last = "Viimeinen"; //  "last";
+next = "Seuraava"; //  "next";
+of = "yhteensä"; //  "of";
+page = "Sivu"; //  "Page";
+previous = "Edellinen"; //  "previous";
+selectAll = "valitse kaikki"; //  "select all";
+sortColumn = "Lajittele palsta"; //  "sort Column";
+to = "=>"; //  "to";
+validateHTML = "Tarkista HTML"; //  "validate HTML";
+validateXML = "Tarkista XML"; //  "validate XML";

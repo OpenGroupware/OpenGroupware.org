@@ -1,0 +1,35 @@
+
+
+April = "Huhtikuu"; //  "April";
+August = "Elokuu"; //  "August";
+December = "Joulukuu"; //  "December";
+February = "Helmikuu"; //  "February";
+January = "Tammikuu"; //  "January";
+July = "Heinäkuu"; //  "July";
+June = "Kesäkuu"; //  "June" ;
+March = "Maaliskuu"; //  "March";
+May = "Toukokuu"; //  "May";
+November = "Marraskuu"; //  "November";
+October = "Lokakuu"; //  "October";
+ResourceScheduler = "Resurssit"; //  "Resources";
+September = "Syyskuu"; //  "September";
+SkyResourceSchedulerPage = "Resurssikalenteri";
+hchart = "Luettelo"; //  "List";
+next_day = "Seuraava päivä"; //  "next day";
+next_month = "Seuraava kuukausi"; //  "next month";
+next_week = "Seuraava viikko"; //  "next week";
+next_year = "Seuraava vuosi"; //  "next year";
+overview = "Yleisnäkymä"; //  "Overview";
+previous_day = "Edellinen päivä"; //  "previous day";
+previous_month = "Edellinen kuukausi"; //  "previous month";
+previous_week = "Edellinen viikko"; //  "previous week";
+previous_year = "Edellinen vuosi"; //  "previous year";
+print_view = "Tulosta"; //  "printview";
+proposal = "Ehdotus"; //  "proposal";
+showButtonLabel = "Etsi"; //  "show";
+this_day = "Tänään"; //  "today";
+this_month = "Tämä kuukausi"; //  "this month";
+this_week = "Tämä viikko"; //  "this week";
+this_year = "Tämä vuosi"; //  "this year";
+vchart = "Kaavio"; //  "Chart";
+weekTabLabelFormat = "Viikko %d"; //  "Week %d";
