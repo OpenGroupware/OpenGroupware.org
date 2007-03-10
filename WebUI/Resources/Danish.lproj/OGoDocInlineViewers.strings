@@ -1,0 +1,10 @@
+access             = "rettigheder";
+accountName        = "Konto";
+attributes         = "egenskaber";
+contents           = "indhold";
+download           = "Download";
+edit               = "ret";
+mimetype           = "MIME Type";
+size               = "Størrelse";
+standardAttributes = "standard egenskaber";
+subject            = "Titel";

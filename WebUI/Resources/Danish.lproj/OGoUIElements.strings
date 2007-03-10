@@ -1,0 +1,28 @@
+// $Id: OGoUIElements.strings,v 1.5 2004/07/27 10:29:41 helge Exp $
+
+accountName            = "konto";
+cal_birthday           = "fødselsdag";
+cal_browse             = "gennemse";
+cal_completionDate     = "forfaldsdato";
+cal_cycleEndDate       = "cycle end";
+cal_duedate            = "forfaldsdato";
+cal_endDate            = "slutdato";
+cal_enddate            = "slutdato";
+cal_from               = "start";
+cal_repeatEnddate      = "cycle end";
+cal_startDate          = "start";
+cal_startdate          = "start";
+cal_taskcompletiondate = "opgave fuldførelsesdato";
+cal_to                 = "til";
+deselectAll            = "fravælg alle";
+first                  = "første";
+last                   = "sidste";
+next                   = "næste";
+of                     = "af";
+page                   = "Side";
+previous               = "forrige";
+selectAll              = "vælg alle";
+sortColumn             = "sorter Kolonne";
+to                     = "til";
+validateHTML           = "valider HTML";
+validateXML            = "valider XML";

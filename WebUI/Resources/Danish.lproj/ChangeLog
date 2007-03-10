@@ -1,3 +1,20 @@
+2007-03-10  Per Jensen  <per@net-es.dk>
+
+	* Updated PROJECTLEAD
+	
+	* Improved existing .strings files
+
+	* Added: AddressUI.strings, AdminUI.strings, GroupsUI.strings,
+	  JobUI.strings, LSWMail.strings,  LSWProject.strings,
+	  LSWScheduler.strings, OGoDocInlineViewers.strings,
+	  OGoMailEditor.strings, OGoProjectInfo.strings, OGoProject.strings,
+	  OGoRecipientLists.strings, OGoResourceScheduler.strings,
+	  OGoSchedulerDock.strings, OGoScheduler.strings,
+	  OGoSchedulerViews.strings, OGoUIElements.strings,
+	  PersonsUI.strings
+
+	* Temporary: OGoWebMail.strings -> OGoMailEditor.strings
+
 2004-02-12  Helge Hess  <helge.hess@skyrix.com>
 
 	* created ChangeLog - please update when doing modifications!

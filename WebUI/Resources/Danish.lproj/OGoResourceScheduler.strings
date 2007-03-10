@@ -1,0 +1,35 @@
+// $Id: OGoResourceScheduler.strings,v 1.4 2004/02/13 01:14:42 helge Exp $
+
+April                    = "April";
+August                   = "August";
+December                 = "December";
+February                 = "Februar";
+January                  = "Januar";
+July                     = "Juli";
+June                     = "Juni" ;
+March                    = "Marts";
+May                      = "Maj";
+November                 = "November";
+October                  = "Oktober";
+ResourceScheduler        = "Resourcer";
+September                = "September";
+SkyResourceSchedulerPage = "Resource Kalender";
+hchart                   = "Liste";
+next_day                 = "næste dag";
+next_month               = "næste måned";
+next_week                = "næste uge";
+next_year                = "næste år";
+overview                 = "Overblik";
+previous_day             = "forrige dag";
+previous_month           = "forrige måned";
+previous_week            = "forrige uge";
+previous_year            = "forrige år";
+print_view               = "print venlig";
+proposal                 = "forslag";
+showButtonLabel          = "vis";
+this_day                 = "i dag";
+this_month               = "denne måned";
+this_week                = "denne uge";
+this_year                = "dette år";
+vchart                   = "Chart";
+weekTabLabelFormat       = "Uge %d";

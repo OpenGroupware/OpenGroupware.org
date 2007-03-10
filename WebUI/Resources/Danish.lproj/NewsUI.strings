@@ -37,6 +37,6 @@ no                       = "Nej";
 relatedArticlesLabel     = "Henvisninger";
 saveButtonLabel          = "gem";
 showNewsOnTop            = "Vis nyheder i toppen";
-showOverdueJobs          = "Vis forfaldne opgaver"; // FIXME
+showOverdueJobs          = "Vis forfaldne opgaver";
 textLabel                = "Tekst";
 yes                      = "Ja";
