@@ -112,6 +112,7 @@ Library/Makefiles/transform_paths.sh
 Library/Makefiles/user_home
 Library/Makefiles/vendor.sh
 Library/Makefiles/which_lib
+@dirrmtry Library/Makefiles/amd64
 Makefiles
 Tools/debugapp
 Tools/openapp
@@ -470,13 +471,11 @@ share/nls/en_US.US-ASCII
 @dirrm man/en.ISO8859-1/cat9/i386
 @dirrm man/en.ISO8859-1/cat9
 @dirrm man/en.ISO8859-1/cat8/i386
-@dirrm man/en.ISO8859-1/cat8/alpha
 @dirrm man/en.ISO8859-1/cat8
 @dirrm man/en.ISO8859-1/cat7
 @dirrm man/en.ISO8859-1/cat6
 @dirrm man/en.ISO8859-1/cat5
 @dirrm man/en.ISO8859-1/cat4/i386
-@dirrm man/en.ISO8859-1/cat4/alpha
 @dirrm man/en.ISO8859-1/cat4
 @dirrm man/en.ISO8859-1/cat3
 @dirrm man/en.ISO8859-1/cat2
@@ -519,8 +518,8 @@ share/nls/en_US.US-ASCII
 @dirrm man/cat1
 @dirrm man
 @dirrm libexec
-@dirrmtry %D/libdata/ldconfig
-@dirrmtry %D/libdata/ldconfig32
+@dirrmtry libdata/ldconfig
+@dirrmtry libdata/ldconfig32
 @dirrm libdata/pkgconfig
 @dirrm libdata
 @dirrm lib
@@ -536,7 +535,6 @@ share/nls/en_US.US-ASCII
 @dirrm Library/Sounds
 @dirrm Library/Services
 @dirrm Library/PostScript
-@dirrm Library/Makefiles/ix86
 @dirrm Library/Makefiles/Master
 @dirrm Library/Makefiles/Instance/Shared
 @dirrm Library/Makefiles/Instance/Documentation
