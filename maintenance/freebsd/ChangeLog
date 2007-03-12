@@ -4,6 +4,7 @@
 	* deorbit opengroupware10
 	* fixed directory removal clashes between ogo-gnustep-make vs. ogo-libfoundation
 	* updated ogo-libfoundation to 'libfoundation-trunk-r162-200701261110.tar.gz' (1.1.5)
+	* make ChangeLog more clear when it comes to deparse ogo-libfoundation changes
 
 2006-08-01 Frank Reppin  <frank@opengroupware.org>
 
@@ -35,7 +36,9 @@
 
 	* ogo-libfoundation/files/patch-aa - explicitly backout usage
 	  of recently exposed reentrant netdb.h functions,
-	  because of (cited from http://www.freebsd.org/cgi/cvsweb.cgi/src/lib/libc/net/Symbol.map):
+	  because of (cited from http://www.freebsd.org/cgi/cvsweb.cgi/src/lib/libc/net/Symbol.map) which
+	  in turn should lead you to ('http://www.freebsd.org/cgi/cvsweb.cgi/src/lib/libc/net/Symbol.map?rev=1.5&content-type=text/x-cvsweb-markup')
+	  to see the commit I hereby reference:
 
 	  Revision 1.5 / (download) - annotate - [select for diffs], Sat Apr 15 16:20:27 2006 UTC (7 days ago) by ume
 	  Branch: MAIN
