@@ -1,7 +1,9 @@
 2007-03-12 Frank Reppin  <frank@opengroupware.org>
 
 	* use @dirrmtry whereever required instead of 'old' method
-	* dropped opengroupware10
+	* deorbit opengroupware10
+	* fixed directory removal clashes between ogo-gnustep-make vs. ogo-libfoundation
+	* updated ogo-libfoundation to 'libfoundation-trunk-r162-200701261110.tar.gz' (1.1.5)
 
 2006-08-01 Frank Reppin  <frank@opengroupware.org>
 

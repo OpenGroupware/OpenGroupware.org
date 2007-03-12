@@ -112,7 +112,6 @@ Library/Makefiles/transform_paths.sh
 Library/Makefiles/user_home
 Library/Makefiles/vendor.sh
 Library/Makefiles/which_lib
-@dirrmtry Library/Makefiles/amd64
 Makefiles
 Tools/debugapp
 Tools/openapp
@@ -471,11 +470,13 @@ share/nls/en_US.US-ASCII
 @dirrm man/en.ISO8859-1/cat9/i386
 @dirrm man/en.ISO8859-1/cat9
 @dirrm man/en.ISO8859-1/cat8/i386
+@dirrmtry man/en.ISO8859-1/cat8/alpha
 @dirrm man/en.ISO8859-1/cat8
 @dirrm man/en.ISO8859-1/cat7
 @dirrm man/en.ISO8859-1/cat6
 @dirrm man/en.ISO8859-1/cat5
 @dirrm man/en.ISO8859-1/cat4/i386
+@dirrmtry man/en.ISO8859-1/cat4/alpha
 @dirrm man/en.ISO8859-1/cat4
 @dirrm man/en.ISO8859-1/cat3
 @dirrm man/en.ISO8859-1/cat2
@@ -535,13 +536,15 @@ share/nls/en_US.US-ASCII
 @dirrm Library/Sounds
 @dirrm Library/Services
 @dirrm Library/PostScript
+@dirrmtry Library/Makefiles/amd64
+@dirrmtry Library/Makefiles/ix86
 @dirrm Library/Makefiles/Master
 @dirrm Library/Makefiles/Instance/Shared
 @dirrm Library/Makefiles/Instance/Documentation
 @dirrm Library/Makefiles/Instance
 @dirrm Library/Makefiles/Auxiliary
-@dirrm Library/Makefiles/Additional
-@dirrm Library/Makefiles
+@dirrmtry Library/Makefiles/Additional
+@dirrmtry Library/Makefiles
 @dirrm Library/Libraries/Resources
 @dirrm Library/Libraries/Java
 @dirrm Library/Libraries
@@ -560,5 +563,5 @@ share/nls/en_US.US-ASCII
 @dirrm Library/ColorPickers
 @dirrm Library/Bundles
 @dirrm Library/ApplicationSupport
-@dirrm Library
+@dirrmtry Library
 @dirrm Applications

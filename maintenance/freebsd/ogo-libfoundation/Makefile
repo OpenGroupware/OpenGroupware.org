@@ -5,23 +5,23 @@
 # $FreeBSD$
 
 PORTNAME=	libfoundation
-PORTVERSION=	1.1.2
+PORTVERSION=	1.1.5
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.opengroupware.org/nightly/packages/freebsd/thirdparty/ogo-libfoundation/
 PKGNAMEPREFIX=	ogo-
-DISTNAME=	libfoundation-trunk-r152-200607111107
+DISTNAME=	libfoundation-trunk-r162-200701261110
 
 MAINTAINER=	frank@opengroupware.org
 COMMENT=	The libFoundation required by the OGo suite
 
-BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.csh:${PORTSDIR}/devel/ogo-gnustep-make 
+BUILD_DEPENDS=	${LOCALBASE}/OGo-GNUstep/Library/Makefiles/GNUstep.csh:${PORTSDIR}/devel/ogo-gnustep-make
 
 DIST_SUBDIR=	ogo-suite
 
 SHLIB_MAJOR=	1
 SHLIB_MINOR=	1
-SHLIB_SUBMINOR=	2
+SHLIB_SUBMINOR=	5
 SHLIB_VERSION=	${SHLIB_MAJOR}.${SHLIB_MINOR}.${SHLIB_SUBMINOR}
 PLIST_SUB=	SHLIB_MAJOR=${SHLIB_MAJOR} \
 		SHLIB_MINOR=${SHLIB_MINOR} \
@@ -29,7 +29,7 @@ PLIST_SUB=	SHLIB_MAJOR=${SHLIB_MAJOR} \
 
 WRKSRC=		${WRKDIR}/libfoundation
 HAS_CONFIGURE=	yes
-INSTALLS_SHLIB=	yes
+USE_LDCONFIG=	yes
 NO_FILTER_SHLIBS=	yes
 USE_GMAKE=	yes
 PREFIX=		${LOCALBASE}
