@@ -4655,40 +4655,40 @@ share/zidestore-1.5/PersonalFolderInfo.plist
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoProject.lso/Resources/WebServer
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoProject.lso/Resources
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoProject.lso
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/WebServer 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmStringAttribute.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmRecordList.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmProjectListing.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmPreferences.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmPage.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmMemoViewer.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmMemoList.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmMemoEditor.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmJobViewer.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmJobListing.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmJobList.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmJobEditor.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmInlineDateViewer.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmFileListing.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmEntryListHeader.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmEntryListContent.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmDateWeekOverview.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmDateViewer.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmDateList.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmDateEditor.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmDateCopyViewer.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmCompanyListing.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmCategoryPopUp.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAssignMemo.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAssignJob.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAssignDate.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAssignAddress.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAppointmentListing.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAddressViewer.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAddressList.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAddressEditor.wo 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso 2>/dev/null || true
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/WebServer
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmStringAttribute.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmRecordList.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmProjectListing.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmPreferences.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmPage.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmMemoViewer.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmMemoList.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmMemoEditor.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmJobViewer.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmJobListing.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmJobList.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmJobEditor.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmInlineDateViewer.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmFileListing.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmEntryListHeader.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmEntryListContent.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmDateWeekOverview.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmDateViewer.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmDateList.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmDateEditor.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmDateCopyViewer.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmCompanyListing.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmCategoryPopUp.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAssignMemo.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAssignJob.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAssignDate.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAssignAddress.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAppointmentListing.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAddressViewer.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAddressList.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources/SkyPalmAddressEditor.wo
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso/Resources
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoPalm.lso
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoNote.lso/Resources/WebServer
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoNote.lso/Resources
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/webui/OGoNote.lso
@@ -4749,8 +4749,8 @@ share/zidestore-1.5/PersonalFolderInfo.plist
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/datasources/OGoRawDatabase.ds
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/datasources/OGoProject.ds/Resources
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/datasources/OGoProject.ds
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/datasources/OGoPalmDS.ds/Resources 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/datasources/OGoPalmDS.ds 2>/dev/null || true
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/datasources/OGoPalmDS.ds/Resources
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/datasources/OGoPalmDS.ds
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/datasources/OGoJobs.ds/Resources
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/datasources/OGoJobs.ds
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/datasources/OGoFileSystemProject.ds/Resources
@@ -4764,9 +4764,9 @@ share/zidestore-1.5/PersonalFolderInfo.plist
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/datasources/OGoAccounts.ds/Resources
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/datasources/OGoAccounts.ds
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/datasources
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/conduits/OpenGroupwareNHS.conduit/Resources 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/conduits/OpenGroupwareNHS.conduit 2>/dev/null || true
-@unexec rmdir %D/lib/opengroupware.org-%%OGO_VERSION%%/conduits 2>/dev/null || true
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/conduits/OpenGroupwareNHS.conduit/Resources
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/conduits/OpenGroupwareNHS.conduit
+@dirrmtry %D/lib/opengroupware.org-%%OGO_VERSION%%/conduits
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/commands/OGo.model/Resources
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/commands/OGo.model
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%/commands/LSTeam.cmd/Resources
@@ -4799,15 +4799,15 @@ share/zidestore-1.5/PersonalFolderInfo.plist
 @dirrm lib/opengroupware.org-%%OGO_VERSION%%
 @dirrm include/ZSFrontend
 @dirrm include/ZSBackend
-@unexec rmdir %D/include/PPSync 2>/dev/null || true
+@dirrmtry %D/include/PPSync
 @dirrm include/OGoWebMail
 @dirrm include/OGoSchedulerTools
 @dirrm include/OGoScheduler
 @dirrm include/OGoRawDatabase
 @dirrm include/OGoProject
-@unexec rmdir %D/include/OGoPalmUI 2>/dev/null || true
-@unexec rmdir %D/include/OGoPalm 2>/dev/null || true
-@unexec rmdir %D/include/OGoNHS 2>/dev/null || true
+@dirrmtry %D/include/OGoPalmUI
+@dirrmtry %D/include/OGoPalm
+@dirrmtry %D/include/OGoNHS
 @dirrm include/OGoJobs
 @dirrm include/OGoFoundation
 @dirrm include/OGoFileSystemProject
@@ -4824,15 +4824,15 @@ share/zidestore-1.5/PersonalFolderInfo.plist
 @dirrm Library/OpenGroupware.org-%%OGO_VERSION%%
 @dirrm Library/Headers/ZSFrontend
 @dirrm Library/Headers/ZSBackend
-@unexec rmdir %D/Library/Headers/PPSync 2>/dev/null || true
+@dirrmtry %D/Library/Headers/PPSync
 @dirrm Library/Headers/OGoWebMail
 @dirrm Library/Headers/OGoSchedulerTools
 @dirrm Library/Headers/OGoScheduler
 @dirrm Library/Headers/OGoRawDatabase
 @dirrm Library/Headers/OGoProject
-@unexec rmdir %D/Library/Headers/OGoPalmUI 2>/dev/null || true
-@unexec rmdir %D/Library/Headers/OGoPalm 2>/dev/null || true
-@unexec rmdir %D/Library/Headers/OGoNHS 2>/dev/null || true
+@dirrmtry %D/Library/Headers/OGoPalmUI
+@dirrmtry %D/Library/Headers/OGoPalm
+@dirrmtry %D/Library/Headers/OGoNHS
 @dirrm Library/Headers/OGoJobs
 @dirrm Library/Headers/OGoFoundation
 @dirrm Library/Headers/OGoFileSystemProject
@@ -4842,8 +4842,8 @@ share/zidestore-1.5/PersonalFolderInfo.plist
 @dirrm Library/Headers/OGoBase
 @dirrm Library/Headers/OGoAccounts
 @dirrm Library/Headers/LSFoundation
-@unexec rmdir %D/Library/Headers 2>/dev/null || true
-@unexec rmdir %D/Library 2>/dev/null || true
+@dirrmtry %D/Library/Headers
+@dirrmtry %D/Library
 %%PORTDOCS%%%%EXAMPLESDIR%%/ogo-webui-apache.conf
 %%PORTDOCS%%%%EXAMPLESDIR%%/ogo-xmlrpcd-apache.conf
 %%PORTDOCS%%%%EXAMPLESDIR%%/ogo-zidestore-apache.conf

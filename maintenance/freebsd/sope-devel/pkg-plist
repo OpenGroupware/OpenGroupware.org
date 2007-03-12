@@ -597,8 +597,8 @@ share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings/NGiCal.xmap
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/wox-builders
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/versitSaxDriver.sax/Resources
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/versitSaxDriver.sax
-@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/libxmlSAXDriver.sax/Resources 2>/dev/null || true
-@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/libxmlSAXDriver.sax 2>/dev/null || true
+@dirrmtry %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/libxmlSAXDriver.sax/Resources
+@dirrmtry %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/libxmlSAXDriver.sax
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/STXSaxDriver.sax/Resources
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers/STXSaxDriver.sax
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxdrivers
@@ -607,13 +607,13 @@ share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings/NGiCal.xmap
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoCore.sxp/Resources
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products/SoCore.sxp
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/products
-@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/SQLite3.gdladaptor/Resources 2>/dev/null || true
-@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/SQLite3.gdladaptor 2>/dev/null || true
-@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/PostgreSQL.gdladaptor/Resources 2>/dev/null || true
-@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/PostgreSQL.gdladaptor 2>/dev/null || true
-@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/MySQL.gdladaptor/Resources 2>/dev/null || true
-@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/MySQL.gdladaptor 2>/dev/null || true
-@unexec rmdir %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors 2>/dev/null || true
+@dirrmtry %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/SQLite3.gdladaptor/Resources
+@dirrmtry %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/SQLite3.gdladaptor
+@dirrmtry %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/PostgreSQL.gdladaptor/Resources
+@dirrmtry %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/PostgreSQL.gdladaptor
+@dirrmtry %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/MySQL.gdladaptor/Resources
+@dirrmtry %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors/MySQL.gdladaptor
+@dirrmtry %D/lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/dbadaptors
 @dirrm lib/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
 @dirrm include/XmlRpc
 @dirrm include/WOXML
@@ -627,7 +627,7 @@ share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings/NGiCal.xmap
 @dirrm include/NGObjWeb
 @dirrm include/NGMime
 @dirrm include/NGMail
-@unexec rmdir %D/include/NGLdap 2>/dev/null || true
+@dirrmtry %D/include/NGLdap
 @dirrm include/NGImap4
 @dirrm include/NGHttp
 @dirrm include/NGExtensions
@@ -638,7 +638,7 @@ share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings/NGiCal.xmap
 @dirrm Library/WOxElemBuilders-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
 @dirrm Library/SoProducts-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
 @dirrm Library/SaxDrivers-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
-@unexec rmdir %D/Library/Libraries 2>/dev/null || true
+@dirrmtry %D/Library/Libraries
 @dirrm Library/Headers/XmlRpc
 @dirrm Library/Headers/WOXML
 @dirrm Library/Headers/WOExtensions
@@ -651,7 +651,7 @@ share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings/NGiCal.xmap
 @dirrm Library/Headers/NGObjWeb
 @dirrm Library/Headers/NGMime
 @dirrm Library/Headers/NGMail
-@unexec rmdir %D/Library/Headers/NGLdap 2>/dev/null || true
+@dirrmtry %D/Library/Headers/NGLdap
 @dirrm Library/Headers/NGImap4
 @dirrm Library/Headers/NGHttp
 @dirrm Library/Headers/NGExtensions
@@ -659,5 +659,5 @@ share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings/NGiCal.xmap
 @dirrm Library/Headers/GDLAccess
 @dirrm Library/Headers/EOControl
 @dirrm Library/Headers/DOM
-@unexec rmdir %D/Library/Headers 2>/dev/null || true
-@unexec rmdir %D/Library/GDLAdaptors-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%% 2>/dev/null || true
+@dirrmtry %D/Library/Headers
+@dirrmtry %D/Library/GDLAdaptors-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%

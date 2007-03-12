@@ -551,8 +551,8 @@ share/sope-4.4/saxmappings/NGiCal.xmap
 @dirrm lib/sope-4.4/wox-builders
 @dirrm lib/sope-4.4/saxdrivers/versitSaxDriver.sax/Resources
 @dirrm lib/sope-4.4/saxdrivers/versitSaxDriver.sax
-@unexec rmdir %D/lib/sope-4.4/saxdrivers/libxmlSAXDriver.sax/Resources 2>/dev/null || true
-@unexec rmdir %D/lib/sope-4.4/saxdrivers/libxmlSAXDriver.sax 2>/dev/null || true
+@dirrmtry %D/lib/sope-4.4/saxdrivers/libxmlSAXDriver.sax/Resources
+@dirrmtry %D/lib/sope-4.4/saxdrivers/libxmlSAXDriver.sax
 @dirrm lib/sope-4.4/saxdrivers/STXSaxDriver.sax/Resources
 @dirrm lib/sope-4.4/saxdrivers/STXSaxDriver.sax
 @dirrm lib/sope-4.4/saxdrivers
@@ -561,11 +561,11 @@ share/sope-4.4/saxmappings/NGiCal.xmap
 @dirrm lib/sope-4.4/products/SoCore.sxp/Resources
 @dirrm lib/sope-4.4/products/SoCore.sxp
 @dirrm lib/sope-4.4/products
-@unexec rmdir %D/lib/sope-4.4/dbadaptors/PostgreSQL.gdladaptor/Resources 2>/dev/null || true
-@unexec rmdir %D/lib/sope-4.4/dbadaptors/PostgreSQL.gdladaptor 2>/dev/null || true
-@unexec rmdir %D/lib/sope-4.4/dbadaptors/MySQL.gdladaptor/Resources 2>/dev/null || true
-@unexec rmdir %D/lib/sope-4.4/dbadaptors/MySQL.gdladaptor 2>/dev/null || true
-@unexec rmdir %D/lib/sope-4.4/dbadaptors 2>/dev/null || true
+@dirrmtry %D/lib/sope-4.4/dbadaptors/PostgreSQL.gdladaptor/Resources
+@dirrmtry %D/lib/sope-4.4/dbadaptors/PostgreSQL.gdladaptor
+@dirrmtry %D/lib/sope-4.4/dbadaptors/MySQL.gdladaptor/Resources
+@dirrmtry %D/lib/sope-4.4/dbadaptors/MySQL.gdladaptor
+@dirrmtry %D/lib/sope-4.4/dbadaptors
 @dirrm lib/sope-4.4
 @dirrm include/XmlRpc
 @dirrm include/WOXML
@@ -579,7 +579,7 @@ share/sope-4.4/saxmappings/NGiCal.xmap
 @dirrm include/NGObjWeb
 @dirrm include/NGMime
 @dirrm include/NGMail
-@unexec rmdir %D/include/NGLdap 2>/dev/null || true
+@dirrmtry %D/include/NGLdap
 @dirrm include/NGImap4
 @dirrm include/NGHttp
 @dirrm include/NGExtensions
@@ -589,7 +589,7 @@ share/sope-4.4/saxmappings/NGiCal.xmap
 @dirrm Library/WOxElemBuilders-4.4
 @dirrm Library/SoProducts-4.4
 @dirrm Library/SaxDrivers-4.4
-@unexec rmdir %D/Library/Libraries 2>/dev/null || true
+@dirrmtry %D/Library/Libraries
 @dirrm Library/Headers/XmlRpc
 @dirrm Library/Headers/WOXML
 @dirrm Library/Headers/WOExtensions
@@ -602,12 +602,12 @@ share/sope-4.4/saxmappings/NGiCal.xmap
 @dirrm Library/Headers/NGObjWeb
 @dirrm Library/Headers/NGMime
 @dirrm Library/Headers/NGMail
-@unexec rmdir %D/Library/Headers/NGLdap 2>/dev/null || true
+@dirrmtry %D/Library/Headers/NGLdap
 @dirrm Library/Headers/NGImap4
 @dirrm Library/Headers/NGHttp
 @dirrm Library/Headers/NGExtensions
 @dirrm Library/Headers/GDLAccess
 @dirrm Library/Headers/EOControl
 @dirrm Library/Headers/DOM
-@unexec rmdir %D/Library/Headers 2>/dev/null || true
-@unexec rmdir %D/Library/GDLAdaptors-4.4 2>/dev/null || true
+@dirrmtry %D/Library/Headers
+@dirrmtry %D/Library/GDLAdaptors-4.4

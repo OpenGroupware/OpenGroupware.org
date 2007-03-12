@@ -519,8 +519,8 @@ share/nls/en_US.US-ASCII
 @dirrm man/cat1
 @dirrm man
 @dirrm libexec
-@unexec rmdir %D/libdata/ldconfig 2>/dev/null || true
-@unexec rmdir %D/libdata/ldconfig32 2>/dev/null || true
+@dirrmtry %D/libdata/ldconfig
+@dirrmtry %D/libdata/ldconfig32
 @dirrm libdata/pkgconfig
 @dirrm libdata
 @dirrm lib
