@@ -1,6 +1,6 @@
 # Version file
 
-SUBMINOR_VERSION:=14
+SUBMINOR_VERSION:=15
 
 # Requirements:
 #   v5.0.9 => BaseUI v5.0.73

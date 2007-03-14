@@ -86,7 +86,7 @@ static NGMimeType *eoNoteType    = nil;
 
   bm = [NGBundleManager defaultBundleManager];
   hasLSWProjects = 
-    [bm bundleProvidingResource:@"LSWProjects" ofType:@"WOComponents"] == nil
+    [bm bundleProvidingResource:@"LSWProjects" ofType:@"WOComponents"] != nil
     ? YES : NO;
 
   if (eoNoteType == nil)
