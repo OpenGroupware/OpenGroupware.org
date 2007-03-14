@@ -660,4 +660,5 @@ share/sope-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%/saxmappings/NGiCal.xmap
 @dirrm Library/Headers/EOControl
 @dirrm Library/Headers/DOM
 @dirrmtry Library/Headers
+@dirrmtry Library
 @dirrmtry Library/GDLAdaptors-%%SHLIB_MAJOR%%.%%SHLIB_MINOR%%
