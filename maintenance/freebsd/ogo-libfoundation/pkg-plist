@@ -269,7 +269,6 @@ share/libFoundation/TimeZoneInfo/WET
 @dirrm include/extensions
 @dirrm include/Foundation/exceptions
 @dirrm include/Foundation
-@dirrm Tools
 @dirrmtry Library/Headers/libFoundation/ix86/freebsd/GNU
 @dirrmtry Library/Headers/libFoundation/ix86/freebsd
 @dirrmtry Library/Headers/libFoundation/ix86
@@ -281,7 +280,10 @@ share/libFoundation/TimeZoneInfo/WET
 @dirrm Library/Headers/libFoundation/Foundation/exceptions
 @dirrm Library/Headers/libFoundation/Foundation
 @dirrm Library/Headers/libFoundation
-@dirrmtry OGo-GNUstep/Library/Makefiles/Additional
+@dirrm Library/Headers
+@dirrm Library/Libraries
+@dirrm Library
 @dirrmtry OGo-GNUstep/Library/Makefiles
 @dirrmtry OGo-GNUstep/Library
 @dirrmtry OGo-GNUstep
+@dirrm Tools

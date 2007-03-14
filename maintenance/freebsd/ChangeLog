@@ -1,3 +1,9 @@
+2007-03-14 Frank Reppin  <frank@opengroupware.org>
+
+	* refixed another removal clash on directory created by ogo-gnustep-make
+	  but populated by ogo-libfoundation
+	* properly remove 'Tools/' and 'Library/' directory from ${PREFIX}
+
 2007-03-12 Frank Reppin  <frank@opengroupware.org>
 
 	* use @dirrmtry whereever required instead of 'old' method
